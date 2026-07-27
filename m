@@ -1,126 +1,87 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21AB2AE78
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 12:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DCD23394C;
+	Mon, 27 Jul 2026 12:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785154863; cv=none; b=O+3P65cqsDFV1fkZxwfCUYZHImRaysOrNg/QvSAD1gVkNnpBfC4lsxQt1e4uQDk390qQdIrBieUen6nZEzuUEyFz/cifc/OafWG9CTsyFGO3okK0bK+66EMNl3pXfHI5nU6ax8/2sDFTe9lIdroYahb0bB2jctML7Un8AxREJeo=
+	t=1785154881; cv=none; b=rB9jvul/4DOtVpoJQyVh30mzshg6pKRoqMSzrjb15XxRGRSmIf2JiKGoH5VsSERp0HNeBdL0fOertBI3CQN1SZ9zG8QCZnzg3cX3E1OQvQhnx9QQEsDIBFsAgjy+f+ZGWADSZrrB4pVYl37J/255PElzvwHDQh1ewTkp8vXMF5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785154863; c=relaxed/simple;
-	bh=wFUxiSQrjhgg1LqLsImPUk7bWXvDpxCTcBCCMQuppO4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TUOocGUV/jnzMkKrVzmLSFMD4L36+Y0FvLFfs2xvD10PzU74tINdzKkK2lkR733XZUNEDPQcpgMX8+gDpvSetZShU69Ex4lJztnoUsHKuaViVsv8xfl1kk48cT8QhQq6r9poWvd+/zbwYkDXLfmTUznVXuHkEdmf4tmmjtW9drc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Z/YpPcLq; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Z/YpPcLq"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id BA1882069C;
-	Mon, 27 Jul 2026 14:20:58 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id cUKV7o8uqfuu; Mon, 27 Jul 2026 14:20:58 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 1C6DD206D2;
-	Mon, 27 Jul 2026 14:20:58 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 1C6DD206D2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1785154858;
-	bh=I3UAhik44KqbRaY175Ph+jAAj1wVKvW7kA2+6Oy9gWs=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=Z/YpPcLqEZ9e7o3b2HkH3c5/0HU3eBH01VxntnlLfK4xxv+F7MVabg1e8Bh6blR91
-	 agh71Id4QLq83NKsDUhWVLrR4xPbz558UFd+IzvjCcQ0FZJ3nBsx+EIdIiFD108OjZ
-	 xIic9koZhwGFDyUkpl7FOWmHNLMiOLXRncZSLu4KVm4RjjY7WCzyp8kcu+d+9ntWiX
-	 nT9R0z2eThNtlGDfrFVOmjVosRp4f5F1SXo211I9WLYIrGx2bVJJENU114LPlQCPxH
-	 pb+TE1fXi4AMgp1OJ5eQYP9g4++FVwLA06g2d0I8yT/bP8x9pZnv/CvFaMpRjBMJO1
-	 E0t1x/WFf6DIA==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 27 Jul
- 2026 14:20:57 +0200
-Received: (nullmailer pid 4023483 invoked by uid 1000);
-	Mon, 27 Jul 2026 12:20:56 -0000
-Date: Mon, 27 Jul 2026 14:20:56 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Ashish Kunwar <ashishkunwar280@gmail.com>
-CC: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>
-Subject: Re: [PATCH v2] xfrm: fix TOCTOU race in per-CPU state cache add path
-Message-ID: <amdNKFJzzxj2OM2i@secunet.com>
-References: <CACk7sWd8q8Go4BEBNiVstgJpK6FvC4myj6yNEHdOMEE9QaB3Vg@mail.gmail.com>
+	s=arc-20240116; t=1785154881; c=relaxed/simple;
+	bh=/qgAaYQWaAbeyAP3PJcBiiWFMkeJAumbwCm16UYsfl8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZHaT/bymZtmUVq/KpuRARfr24Twp0rm/KsXWIloBtqQ5aLHHn3qQRm5wWWyensi5+JdNT5baKpWEEre6k5+kU6VTsFWSPKZhZAMY5bpV8349grsq1LAebM+RTN/xps6MSxaHUe/RGgtZfQMgomyeJFsjHv28VBUGh7OwbhTdL0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hadess.net; spf=pass smtp.mailfrom=hadess.net; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hadess.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hadess.net
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 485123E9B9;
+	Mon, 27 Jul 2026 12:21:08 +0000 (UTC)
+Message-ID: <03ff73c4dd251ed115b4f2149f9c0e9a1a2569a6.camel@hadess.net>
+Subject: Re: [PATCH 0/4] usb: enable sysfs module symlink for more built-in
+ drivers
+From: Bastien Nocera <hadess@hadess.net>
+To: Shashank Balaji <shashank.mahadasyam@sony.com>, Andrew Lunn	
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni	 <pabeni@redhat.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,  Matthias Kaehlcke	 <mka@chromium.org>,
+ Valentina Manea <valentina.manea.m@gmail.com>, Shuah Khan	
+ <shuah@kernel.org>, Hongren Zheng <i@zenithal.me>, Heikki Krogerus	
+ <heikki.krogerus@linux.intel.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Daniel Palmer <daniel.palmer@sony.com>, Rahul
+ Bukte <rahul.bukte@sony.com>, Tim Bird <tim.bird@sony.com>,
+ linux-embedded@vger.kernel.org
+Date: Mon, 27 Jul 2026 14:21:07 +0200
+In-Reply-To: <20260722-mod_name_usb-v1-0-96d781530f3f@sony.com>
+References: <20260722-mod_name_usb-v1-0-96d781530f3f@sony.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CACk7sWd8q8Go4BEBNiVstgJpK6FvC4myj6yNEHdOMEE9QaB3Vg@mail.gmail.com>
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
- (10.32.0.171)
+X-GND-Sasl: hadess@hadess.net
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: dmFkZTF1VpgYiuSWtj1F0o3toIdSnVbZh0YOqLUcmkqOXRKcLnbr3AM3SOD1nKNCwgpzxEAUJ7CVLeQFTzX/etcWn4kpSv+4+aACvfElJJbyO7X0aQ5zaXsrLe/idtOjSeF41WVwhnDT89qARREA3zII5z2pyKfX9gsQ6Nusj9EetT9d63MikP3Q97QWxF8JJ1BJeZcOhM0eKF+h/dtQoaQCrpt0JPKT3Jl2NkC2Wjtxac7lKb5iovBvkmf0SzpY7ZCIJcO5eKSjig0r07x2897SF2p1AW+vxH5wZNUaO79o4OsibrDJrEQOi3xV7r1VnWQa+XWT/t43wU/VI0Ol72t8KtLOIBS14rMNBWnkrKLfKzGzq3ZrNNpOAx31GlAnUEt3z63DH3rQ+EqX27v8aZhmgmhHJViP4GN5uj0j6f5yK7EBaSULtjoQz7in+PAPXADUYo7rvS4TLAHXMfyGZuy4/KFmzVvFx+YYTW9CJTNa7uqbykPhN4XPvOJv7mXfDIGCy8MZ2uYGu4EBUqQu8ok/uMO1lUzcTqby3FLXY+B99KlXL79iYBsA/i50DtWBqadvvne6FQdKGBinHzzPO69x4xBjFZGtpCa9WuDK5QZKsPamcxvuLWtVqnph3FmhVzzmg8xO3XNNJBa4BVLy2nmWMPJyO5ZK+7oDVxOCMTtj17QSjA
 
-On Mon, Jul 27, 2026 at 05:46:21PM +0530, Ashish Kunwar wrote:
-> xfrm_input_state_lookup() checks x->km.state == XFRM_STATE_VALID
-> without holding xfrm_state_lock, then acquires the lock and adds the
-> state to the per-CPU state_cache_input list. A concurrent
-> __xfrm_state_delete() on another CPU can set km.state to DEAD and
-> remove the state from the cache between the check and the lock
-> acquisition. The lookup then re-adds the now-DEAD state to the cache.
-> 
-> After GC frees the xfrm_state, the per-CPU cache holds a dangling
-> pointer. The next inbound packet that iterates the cache dereferences
-> freed slab memory.
-> 
-> The same pattern exists in xfrm_state_find() for the outbound
-> state_cache.
-> 
-> Fix both by re-checking km.state inside the lock before adding the
-> state to the cache. For xfrm_input_state_lookup, a DEAD state must
-> not be returned to the caller, so drop the refcount and return NULL.
-> For xfrm_state_find, fold the state check into the existing
-> conditional so the cache insertion is simply skipped.
-> 
-> Fixes: 81a331a0e72 ("xfrm: add an inbound state cache")
-> Signed-off-by: Ashish Kunwar <ashishkunwar280@gmail.com>
-> ---
-> v2: Rebased, fixed outbound path to use proper conditional instead of
-> empty statement. Submitted to netdev per Steffen's feedback.
-> ---
-> net/xfrm/xfrm_state.c | 9 ++++++++-
-> 1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-> index 1748d37..d8a9cd1 100644
-> --- a/net/xfrm/xfrm_state.c
-> +++ b/net/xfrm/xfrm_state.c
-> @@ -1230,6 +1230,12 @@ struct xfrm_state *xfrm_input_state_lookup(struct
-> net *net, u32 mark,
-> 
-> if (x && x->km.state == XFRM_STATE_VALID) {
-> spin_lock_bh(&net->xfrm.xfrm_state_lock);
-> + if (x->km.state != XFRM_STATE_VALID) {
-> + spin_unlock_bh(&net->xfrm.xfrm_state_lock);
-> + xfrm_state_put(x);
-> + x = NULL;
-> + goto out;
-> + }
-> if (hlist_unhashed(&x->state_cache_input)) {
-> hlist_add_head_rcu(&x->state_cache_input, state_cache_input);
-> } else {
-> @@ -1622,7 +1628,8 @@ out:
-> if (x && x->km.state == XFRM_STATE_VALID && !cached &&
-> (!(pol->flags & XFRM_POLICY_CPU_ACQUIRE) || x->pcpu_num == pcpu_id)) {
-> spin_lock_bh(&net->xfrm.xfrm_state_lock);
-> - if (hlist_unhashed(&x->state_cache))
-> + if (x->km.state == XFRM_STATE_VALID &&
-> + hlist_unhashed(&x->state_cache))
-> hlist_add_head_rcu(&x->state_cache, &pol->state_cache_list);
-> spin_unlock_bh(&net->xfrm.xfrm_state_lock);
-> }
+T24gV2VkLCAyMDI2LTA3LTIyIGF0IDEyOjMxICswOTAwLCBTaGFzaGFuayBCYWxhamkgd3JvdGU6
+Cj4gVGhpcyBpcyBpbiBjb250aW51YXRpb24gdG8gWzFdLgo+IAo+IHN0cnVjdCBkZXZpY2VfZHJp
+dmVyJ3MgbW9kX25hbWUgaXMgbm90IHNldCBieSBhIG51bWJlciBvZiBidXMnIGRyaXZlcgo+IHJl
+Z2lzdHJhdGlvbgo+IGZ1bmN0aW9ucy4gV2l0aG91dCB0aGF0LCBidWlsdC1pbiBkcml2ZXJzIGRv
+bid0IGhhdmUgdGhlIG1vZHVsZQo+IHN5bWxpbmsgaW4gc3lzZnMuCj4gV2Ugd2FudCB0aGlzIHRv
+IGdvIGZyb20gdW5ib3VuZCBkcml2ZXIgbmFtZSAtPiBtb2R1bGUgbmFtZSAtPiBrZXJuZWwKPiBj
+b25maWcgbmFtZS4KPiBUaGlzIGlzIHVzZWZ1bCBvbiBlbWJlZGRlZCBwbGF0Zm9ybXMgdG8gbWlu
+aW1pemUga2VybmVsIGNvbmZpZywKPiByZWR1Y2Uga2VybmVsIHNpemUsCj4gYW5kIHJlZHVjZSBi
+b290IHRpbWUuCj4gCj4gVGhpcyBwYXRjaHNldCBhZGRzIG1vZF9uYW1lIHRvIHVzYi1yZWxhdGVk
+IGRyaXZlcnMuCj4gCj4gWzFdCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzIwMjYwNTE4
+LWFjcGlfbW9kX25hbWUtdjUtMC03MDVjY2M0MzA4ODVAc29ueS5jb20vCj4gCj4gU2lnbmVkLW9m
+Zi1ieTogU2hhc2hhbmsgQmFsYWppIDxzaGFzaGFuay5tYWhhZGFzeWFtQHNvbnkuY29tPgoKUmV2
+aWV3ZWQtYnk6IEJhc3RpZW4gTm9jZXJhIDxoYWRlc3NAaGFkZXNzLm5ldD4KCj4gLS0tCj4gU2hh
+c2hhbmsgQmFsYWppICg0KToKPiDCoMKgwqDCoMKgIHVzYjogY29yZTogcGFzcyBUSElTX01PRFVM
+RSBpbXBsaWNpdGx5IHRocm91Z2ggYSBtYWNybwo+IMKgwqDCoMKgwqAgdXNiOiBjb3JlOiBzZXQg
+bW9kX25hbWUgaW4gZHJpdmVyIHJlZ2lzdHJhdGlvbgo+IMKgwqDCoMKgwqAgdXNiOiB0eXBlYzog
+c2V0IG1vZF9uYW1lIGluIGRyaXZlciByZWdpc3RyYXRpb24KPiDCoMKgwqDCoMKgIHVzYjogdWxw
+aTogc2V0IG1vZF9uYW1lIGluIGRyaXZlciByZWdpc3RyYXRpb24KPiAKPiDCoGluY2x1ZGUvbGlu
+dXgvdWxwaS9kcml2ZXIuaMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgNCArKy0tCj4gwqBp
+bmNsdWRlL2xpbnV4L3VzYi5owqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCB8wqAgNiArKysrLS0KPiDCoGluY2x1ZGUvbGludXgvdXNiL3R5cGVjX2FsdG1vZGUuaMKgwqDC
+oMKgwqDCoCB8wqAgNCArKy0tCj4gwqBkcml2ZXJzL25ldC91c2IvcjgxNTIuY8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAyICstCj4gwqBkcml2ZXJzL3VzYi9jb21tb24vdWxw
+aS5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgNCArKystCj4gwqBkcml2ZXJzL3Vz
+Yi9jb3JlL2RyaXZlci5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8IDEwICsrKysrKy0t
+LS0KPiDCoGRyaXZlcnMvdXNiL2NvcmUvdXNiLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIHzCoCAyICstCj4gwqBkcml2ZXJzL3VzYi9taXNjL2FwcGxlLW1maS1mYXN0Y2hhcmdl
+LmMgfMKgIDIgKy0KPiDCoGRyaXZlcnMvdXNiL21pc2Mvb25ib2FyZF91c2JfZGV2LmPCoMKgwqDC
+oMKgIHzCoCAyICstCj4gwqBkcml2ZXJzL3VzYi90eXBlYy9idXMuY8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIHzCoCA0ICsrKy0KPiDCoGRyaXZlcnMvdXNiL3VzYmlwL3N0dWJfbWFp
+bi5jwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDIgKy0KPiDCoDExIGZpbGVzIGNoYW5nZWQsIDI1
+IGluc2VydGlvbnMoKyksIDE3IGRlbGV0aW9ucygtKQo+IC0tLQo+IGJhc2UtY29tbWl0OiAyNDg5
+NTFkZGMxNGRlODRkZTM5MTBmOWIxM2Y1MTQ5MWE4Y2Q5MWRmCj4gY2hhbmdlLWlkOiAyMDI2MDcy
+Mi1tb2RfbmFtZV91c2ItZTNiYWY1OGUxZTFlCj4gCj4gQmVzdCByZWdhcmRzLAo+IC0twqAgCj4g
+U2hhc2hhbmsgQmFsYWppIDxzaGFzaGFuay5tYWhhZGFzeWFtQHNvbnkuY29tPgo=
 
-Your mailer removed all indentations.
