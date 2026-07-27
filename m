@@ -1,42 +1,57 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D476323BD17;
-	Mon, 27 Jul 2026 22:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ECB3C2B8D;
+	Mon, 27 Jul 2026 23:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785193130; cv=none; b=nSP2If4u0ne23sselOdHGDRfIAZHxqnH5i+8Vc8Ib6pUjyCbEApumxSYfLnJcK5J5LXfR0fkrTw+zXj8fm/K6M1kYzZnl0HEFB1vMC3hAVedoy50FiGBFq1Ls3iJAV42rxToQyswC4c09Lkg2OSyF4XZ7QDcg22wpJYwRVo6DSs=
+	t=1785193724; cv=none; b=eLLR1HaGh6iTfLDi9QUg4dyXsy7S0wJ79YKAbY4K9orDkZ6Z2aaYRcLA5EaAIYDF+GFOWs2vS8xG5zBrEP8ys4asZN7+voIhVQ9dijYjCOcrUlIzhlAWibMGyDaVRYwgGChWLVlRxRGX2tipYbmsaLyT3ed45SswDMopvmwuBeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785193130; c=relaxed/simple;
-	bh=3ARINi7/8/8jq7By+QNG+0e1/qT1Qidv9621l7v3IGQ=;
+	s=arc-20240116; t=1785193724; c=relaxed/simple;
+	bh=I78J8rlILj0qomHIOdPBN4IPMyQJ6lurM+p5CZWcrtc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eUi6zzMfPm3CovyC84zmP+oXaFYapagkfSgT9SIkZeU0v/J/BMK1PG0m8bU9Wj8kkWiWt+CdcMNh221Hxo7v4WbgFYFQejNLnFGceoBiIFApeWEq6crjqp2i0ELDE52RPz19L/eXqvq/7aI6PD7IH5gvmEGq+nO7d/fbKSZuDSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a33mjbGp; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=aqUEmiDxoInuJ1IaPfheqJDBP7vqXP8067CzDqSiC9xaJLfF63qXm0WBhMylrxGN6iFYJE39tgezyrEUvidYmCcGgFSznyRSvi6CV6tg8oF4kteCPoaXCPdr6nefMQLKqpOoaYsm+Hl1W8Ui6jTN1T36wdkxGjEEI872o51W+7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IuX+/7D7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a33mjbGp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458861F000E9;
-	Mon, 27 Jul 2026 22:58:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IuX+/7D7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D627C1F00A3A;
+	Mon, 27 Jul 2026 23:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785193129;
-	bh=QoM27bDr3vhO5Be7WeU/fTyHXRw3cVZ6el78HEIouw0=;
+	s=k20260515; t=1785193723;
+	bh=PxFa8mBAJMO2Gptu6EU6UbOF+/7VolunlsPoWte10eI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=a33mjbGp0+df3ExF1WLMlDZ+91dm7dWzNwUvDD/4X/wU0z25KJcefgybt48cOmXLA
-	 SzX4pfKa26aXdpauNEH3+QjqnSCjCRd06xUIA1ILtftw3+oy2i0RvHuyUtp37wBqBF
-	 WL+bNevAgtF8PP3xQlHeXGnqgYXhd1Xc9Wi0S8C8Xqc0D5XMnD7X++LVSB2BwZJ59t
-	 prUxYdsRxWmGUATU9bwK76pLz4zjmRlVFIdl9A7hI09avbRhD+ki3chxbmiC40Ebie
-	 NNKH6Xc2pAXuobQlJADaoyArZ6eRhG/2/rsQOxHxwfvU5lwNWoPP38rYbDouJf0ll3
-	 IJ5X9gH6P5IRA==
-Date: Mon, 27 Jul 2026 15:58:48 -0700
+	b=IuX+/7D7lEEEwqdad4Jq6UJvUexUMhpvd7sDZVcpJXWgrFUA+6HNfjsuGkxE3f/00
+	 aauvNLMM8W8oqIBKhqXDOG5PSudSuoJT58QXY1d5zIS9Yb6lFJheGfSo7lDBrdHfmM
+	 FBwuHPzC4BRdYLa8vLqle4kIFtJ9KPBiO9RTPuvViqfrBly9+RlnpU0zJ4xNX5T2BD
+	 osND9Ygv9VsMl9tt4QhE0TeTXXSuhy4nznb1mD6fK5D15t+NotLhKxt0sWGE90LkGg
+	 +rFrzCegova+mS0kVpaHP3ecCjpG/Nqfctomlu0KrVTGQp+ZtAOp6ZXMSDyl9yTltM
+	 ORz+nQD6ppgvw==
+Date: Mon, 27 Jul 2026 16:08:42 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Jiawen Liu <1298662399@qq.com>
-Cc: Jian Shen <shenjian15@huawei.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: hisilicon: hix5hd2_gmac: fix NAPI teardown order
-Message-ID: <20260727155848.387245f6@kernel.org>
-In-Reply-To: <tencent_3C891D50F517A212AE7EAA88051244B7C005@qq.com>
-References: <tencent_3C891D50F517A212AE7EAA88051244B7C005@qq.com>
+To: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>
+Cc: "horms@kernel.org" <horms@kernel.org>, "dsahern@kernel.org"
+ <dsahern@kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "jhs@mojatatu.com" <jhs@mojatatu.com>,
+ "stephen@networkplumber.org" <stephen@networkplumber.org>,
+ "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+ <edumazet@google.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "donald.hunter@gmail.com" <donald.hunter@gmail.com>, "kuniyu@google.com"
+ <kuniyu@google.com>, "ij@kernel.org" <ij@kernel.org>,
+ "ncardwell@google.com" <ncardwell@google.com>, "Koen De Schepper (Nokia)"
+ <koen.de_schepper@nokia-bell-labs.com>, "g.white@cablelabs.com"
+ <g.white@cablelabs.com>, "ingemar.s.johansson@ericsson.com"
+ <ingemar.s.johansson@ericsson.com>, "mirja.kuehlewind@ericsson.com"
+ <mirja.kuehlewind@ericsson.com>, "cheshire@apple.com" <cheshire@apple.com>,
+ "rs.ietf@gmx.at" <rs.ietf@gmx.at>, "Jason_Livingood@comcast.com"
+ <Jason_Livingood@comcast.com>, "vidhi_goel@apple.com"
+ <vidhi_goel@apple.com>
+Subject: Re: [PATCH v4 net-next 1/1] tcp: allow congestion controls to
+ override TSO autosizing
+Message-ID: <20260727160842.5bf1b6ac@kernel.org>
+In-Reply-To: <PAXPR07MB79842FC5D44F3964BFEDA505A3CC2@PAXPR07MB7984.eurprd07.prod.outlook.com>
+References: <20260726193802.397321-1-chia-yu.chang@nokia-bell-labs.com>
+	<PAXPR07MB79842FC5D44F3964BFEDA505A3CC2@PAXPR07MB7984.eurprd07.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,16 +61,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 26 Jul 2026 10:35:55 +0400 Jiawen Liu wrote:
-> hix5hd2_dev_remove() deletes the NAPI instance before unregistering the
-> netdev.
+On Mon, 27 Jul 2026 08:02:00 +0000 Chia-Yu Chang (Nokia) wrote:
+> I see this commit is marked as Changes Requested; however, I do not see any request yet.
 > 
-> The netdev should be unregistered first so the networking core can stop the
-> device while its NAPI instance is still present.  Delete the NAPI instance
-> after unregister_netdev() has completed, matching the usual teardown order
-> for drivers that call netif_napi_add() during probe.
+> Could anyone let me know which specific request it is?
+> 
+> This commit updated our previously submitted v3 https://lore.kernel.org/all/20260630120145.286497-1-chia-yu.chang@nokia-bell-labs.com/ to have no impact on BPF.
 
-Just delete that call. Unregistering deletes all the NAPIs
-automatically. Also you're missing a Fixes tag
--- 
-pw-bot: cr
+The BPF CI has failed with your patch applied, that's why it was
+auto-ejected. You need to fix up the BPF selftests to use the new
+callback.
