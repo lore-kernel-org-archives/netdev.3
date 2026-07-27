@@ -1,198 +1,250 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012049.outbound.protection.outlook.com [52.101.48.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C20371CE4;
-	Mon, 27 Jul 2026 05:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785130350; cv=fail; b=OdInt9TSaKSP9a20VKeIXphwG71EDRLLSRpFOHAfI7bLvumdpOGclnhX1NMNhN2h1rRQkYFwsYRHvFPyA8FgMjwnCgYggmDRRSE6aZSwkt7vkIhHkauYDkx+KICun9HCg3Ay0g5H28E2BIjOy9LPeZsGMRXSN5aTNNiijiMEh7A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785130350; c=relaxed/simple;
-	bh=siYa+uHYdvm/Rm03Hjmy8+UBjV+OVNYGv1+g0qwVP/M=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=dNocZQ+9Lp3FOADx+j377hs0ObSw5/3kuhq/Jm8ZhvoORC+StD583bIgSvBDSchDhZ7PkT7yYgo7XdiBJvEfmFo6Id4bL/DIlx8Q4zcRJPscMf5DC/q3+z2Z8/4kAZjCUmunuQud3ISPRex1e0LmMhBtlDmwinifltTeIRHfLsk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2omjp/km; arc=fail smtp.client-ip=52.101.48.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D10D233723
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 05:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785131316; cv=none; b=mqlEzozUoWgQP2kU64pvWWIgvqHWib+waiJgimb+2ymHP1IHU4X/wGe1B9RbTVy1s0rtb97ToRlH6FP4UMURfdCv2ONcVaDqogX7CCFM3/+hGEj+1ZQWkUDFbKsuDKm26Qdlmo2sNJ03rTyyi+rwS+l7ugaXYUVGowuA8s8s6rw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785131316; c=relaxed/simple;
+	bh=jYdrv5aLTGoq6MVHdBhKqdOC5Emi1SDW6/+dotr+YZE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ql8MKxFIf5Dj6xdn1KQGGNwc2Yc7sVjjHbGUgOn+E1Dww/NCR13TrGGR10I86XrR0809D8ybO/Tn3X+KMLPZq3gbJ0aVlNkeIroebAIpEMi4XjUO5XhN2qsMnCHEUZ3UXvrX1GTeHTrhYbzgmAco1hmNfsGae/7rL33OTElIXIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lz2X8XPD; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2omjp/km"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NRUpngR/R60qqJ72W+jtQ/G2yLF0kJ6v7kZSZF/1i/7F1+1NN0UK2yMXoawhvF1bE1TyuZTJAEre9eKjC9/2JfLSpiYxbiJqpoSkxVn4vgZ43SUyMRnmRap1Ox+FiHZoTz0kDcVwfb6SLQBDLuJIdvcgorBXS0zBkFM8HDsW+mvhfE+vtVJcJnyD0wCyqiMwFhFZwT1Y51bdBBhQ1tSgZal/Uy5/aCjoE7xOBv6IT5F/XI9bsS9wRQNNjAVBrlnPnCdrkqokOoJ5raFXZUzDL3UkM0FgR9y6VQjkx8+dQJXCldb7Jc6yKvo9/dW+8zeGfaTugze/YzgVRCAlwaUmoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s7tIpDyopXqPjzJROoGr8n0Bz66fTD0S65dSTZGWeBI=;
- b=Epy7Dm94QnfvkfMzXPb9g5/KU+0y1lpIqRPbgXu2mfKsWXdSuNmcwv+rwELfDOp7VSZrgwh5bm4EpWMX1LDFUpNO3oaC9EOcsb/HIEdKWMWEmIg8C7lLZCwHOqTQ4iTZjH24V0OKprW4QTDF17KZ013vauKE8fbRZDt5AO1zbseYyZdSk72lMbDyB9CLqFqsBPocSV2PBDQDiRTUKfFWEliUpPEXMdt/IKnXokKA4KIMrQik4BCfXIvYiwYfbXbLh+g7RQep5iU8kammSE5oG4Fb9yZSGp6I926WokzhS5Odk6GjJ6ztkKHRT0gP9ibIK+U/NAdxtXp6hTT8qsbCPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s7tIpDyopXqPjzJROoGr8n0Bz66fTD0S65dSTZGWeBI=;
- b=2omjp/kmgSlZRWNg8U652CqfmLeGZytDbMCmC4xxsSKl7PkOygt+nbbwJC/OoQ/opqtg5aThVUJtpKZJU2IvBRktW+KMOslruqhwJ1tHf4IZTp/53LrUHj2CvBeouc+AsF78N+vxiXU1rDKOxp3EfwhfTOhtLJMku4VRqblQF14=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8953.namprd12.prod.outlook.com (2603:10b6:a03:544::14)
- by SJ0PR12MB6989.namprd12.prod.outlook.com (2603:10b6:a03:448::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
- 2026 05:32:24 +0000
-Received: from SJ2PR12MB8953.namprd12.prod.outlook.com
- ([fe80::f3b5:fc98:8973:5c0b]) by SJ2PR12MB8953.namprd12.prod.outlook.com
- ([fe80::f3b5:fc98:8973:5c0b%4]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
- 05:32:23 +0000
-Message-ID: <3924babc-9755-46ce-97b2-bd6dfce6f6c6@amd.com>
-Date: Mon, 27 Jul 2026 11:02:16 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/2] net: macb: configure ENST registers for all
- queues
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>,
- Vineeth Karumanchi <vineeth.karumanchi@amd.com>, conor.dooley@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com
-Cc: git@amd.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260724043257.2221030-1-vineeth.karumanchi@amd.com>
- <20260724043257.2221030-3-vineeth.karumanchi@amd.com>
- <DK701YU8OWST.2CDXDR5SUJYJQ@bootlin.com>
-Content-Language: en-US
-From: "Karumanchi, Vineeth" <vineeth@amd.com>
-In-Reply-To: <DK701YU8OWST.2CDXDR5SUJYJQ@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0227.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1b4::8) To SJ2PR12MB8953.namprd12.prod.outlook.com
- (2603:10b6:a03:544::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lz2X8XPD"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-84830c774a0so2239663b3a.1
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 22:48:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785131314; x=1785736114; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+P1l48Cfs9m3W+Af7BHX+7RVWzaGG0yiwW8zKxNko4U=;
+        b=Lz2X8XPD9+AHqeQIcC1509/bLaCOAFxFb6h0ySKu0EeVD7K6fJsOGNaOlnSl1O+Cez
+         5kWkP+qVoAQewHIG08koik180zPsjxAygPumuEBRg6YF26bFbFs63I24yWtWk5lC/zNP
+         UD6vXo8mSmtxW2s5XYt6G9UULKLOo8hWlW3a2XL+RV0cEvcLnjv2EbqYTtwdT7+DkhVw
+         5psKigBPTecgTiQJI+KClrjrOX1cGeeR8iNU+FKLhs+wENm+aLEwG4gVFD6TcLMriIPQ
+         uTRPEr+ul5ifklVmu+hC6YmU47LQAIbfy7WqqwHokthhiTphSrhIisFcyx8FLCB0pP68
+         oddg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785131314; x=1785736114;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+P1l48Cfs9m3W+Af7BHX+7RVWzaGG0yiwW8zKxNko4U=;
+        b=rJEG5brbFWHudC/2QJXKoe25loAdq1xGZsbSWfD56+rfCCOIrE+9r/jTqjyoixOtKV
+         TL83UN08jsNvL7gZ6d3Um+NbZvhuZl8QJ0l+liIFabaACWRlpizg1E8zG4ZdDVn1dgGE
+         7aZqp+AY/eat04MmG0OJfs9w1czHsvT5XPa3v4SM6+2YXefqQdsWM6TGtp6UyQ/Up1lS
+         A9tUbYGiF6LWvdFFsDfVHQ0gNr/TODWh0Mas59rx1akreCpJvgBPDM+IqMe9nTWUydB5
+         kcxl2gfXmHuiS/BuijKnG2sTdVuGttRfJ8RFYa9G3iOvUZqsjOdXovAsiLiGM1siN0SJ
+         kOoQ==
+X-Gm-Message-State: AOJu0Yw1fOAAM79imA/8rTlHyCa9J1ko/WPe0YWsmV8oCTYmmdAyKBtB
+	MdlS9TT8SfftXbtCb7H+Z+rT+wNUoi+PgoBzacZzTj7ru5WegPbXC9dS4KWZ+3/4
+X-Gm-Gg: AR+sD11fMw7ZFcUeILVY+vRk8eOvYL8de9xvdwUf8wugGsuCdoCnAoXWwhdJD2IExD5
+	QGt2VbCA1irNQL3006BfVDLIOYxTh4IrI8NyAaWM5AJDf+j6XiVmnbbumAkvRsUruwYnbnhNBB6
+	uyppsYf399ufUwZg0Vg12k5WwaeS42GwJ27TFEK2dqf1iJT2bXiumX9lxmNJsh8qUxS7TErSDqa
+	2BSHQhYT2B7usqAGA/r3+1ABh5vscpAVnMzfxSlK2AaTRenxwEwAUKED3wxKj/9f3hoU0i2tkD/
+	BneCetbLwuulRMV+LuMNZC6JsQbo/AGwVGkf5m6D2gKd9XPGVwlrgp/7dkge1HdLl7r2uKq/lrv
+	vbTt+T2l2f3XsDp2leozpBs8EzxFEP0ZtrN0n+FS79ny04wengK5vYbOwriha/lSioFmaMGauwn
+	imUU+havMKdzA=
+X-Received: by 2002:aa7:88c9:0:b0:848:6dd1:8195 with SMTP id d2e1a72fcca58-84e5947debfmr5484549b3a.34.1785131314448;
+        Sun, 26 Jul 2026 22:48:34 -0700 (PDT)
+Received: from gmail.com ([140.123.97.71])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e5346dc8bsm2514476b3a.61.2026.07.26.22.48.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jul 2026 22:48:34 -0700 (PDT)
+From: ArBin <eric91102091@gmail.com>
+To: netdev@vger.kernel.org
+Cc: 3chas3@gmail.com,
+	linux-atm-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Xiang-Bin Shi <eric91102091@gmail.com>
+Subject: [PATCH net-next] atm: remove unused exported helpers
+Date: Mon, 27 Jul 2026 13:45:38 +0800
+Message-Id: <20260727054538.196437-1-eric91102091@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8953:EE_|SJ0PR12MB6989:EE_
-X-MS-Office365-Filtering-Correlation-Id: 670659e3-7dbb-4e00-753f-08deeba06fba
-X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|6133799003|56012099006|22082099003|10067099003|18002099003|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	+sWYIh1ywwEgdd2ewrWpqRs5w8CqtIsT0gA+Q1YCpNe9SvIoQj90DiU0RfL2dNhs90HJ9Z5tVn7X4Mr63lBvt9F+jTbsMOVkB7W+bQ9M8xfnFYtYZ0VjCPIPxzjq/FjP229m2eODIe0PSOmngC5mTjIyJy/j2vfoZ0Sg3frzgBFQyT4AMXXB43KmfyjDEeahhA3GmlVKmNyjOHQwm8l/od2ovTlQpeTgoJtAZ5P0UADB5CfrvBDxVFcxWsVyt0SCKdXe1SkrieHlmz4nbAFydOgobI+101O3l7EBaiuBfTNHAFg3K0qim5SZam73O1Bprn4TIRUFzLNXrgjLJB5b+c+O1f3BFidRnqddBQ1sVtaSPl1V51aSwicR2NVrDbc2dbHBXdahxO4ff2OzWAsVxuuWjYT7pIETDLhgP/lfR43OJS1FsVNvobLYtj2pcGuZMEJu4h1Jl9WOaQosHDZKnOLhRM5ARwQYhsrR+mbNNhJh4g1xbAp22I1hkgdMoELh4zzY6htfSduCAm6pB5HpwGFZQ0Q+wFBMjJ97tK+jJNXlPnXdyr2G1y3CNMsfyUPAuLkdbu6p+ORQXaJ9nJ+yXShYz/UTO+KHHd27h6OeLx0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8953.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(6133799003)(56012099006)(22082099003)(10067099003)(18002099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TmxuMFlFa2xKeEtPRHEvanhGMk91WEVwZUJ1dUFjV3BJUUlnekNOSTIvSVc0?=
- =?utf-8?B?b2dhUzNpcnN4dElyVHczeEY0ak9sMU5KTUpXSURPbmJMNFdscjFnSjh1Ujgv?=
- =?utf-8?B?VVRnZnQyZUJqWjJzd2UxVXdrWTdOVENuVGRzc256blZldzJOQ2dTYUg5bUE0?=
- =?utf-8?B?YkJqcFEvZ2ZndG5ialVaR1NBU0pKRHJlaXdEYTJzU1lUb1FtM1lYY1JtZzdn?=
- =?utf-8?B?a1hZbDFpbzUzYlRBTXhrTDQ5bHJRdXQ1SDFnZ096b2NtdlR4T2h5NjUwQi9B?=
- =?utf-8?B?K3hXSGQwRFhobHMra2JCMnFiTmlIK2xCa0YrMU0rY0o5S1RrZ3hWb2MrS2g0?=
- =?utf-8?B?YVJKN1FtbW5LakNyY0tvcDd0Mi9vS2graitvZlpuejNndjhTVlU1dklWVXlH?=
- =?utf-8?B?VnlpZExLTUZXQmZhZjdaei9ZNXlVK1M1NDlBNjcrZHcwdld3eVB1OGdXL2tD?=
- =?utf-8?B?eWpKeWV3NitReUNac1A0Vnp4QWFkYjBnckFvL0hNN2thN3hyZERTQm53alhV?=
- =?utf-8?B?Tm9qa09LUlMrTzJ5T1JMWkhhWDVRSis0aHJOQ0JtN3FkbFRjeHpVcWc0WWVo?=
- =?utf-8?B?bTZHSUQ5Y3QwbmJMaW53M2dzWGJoYldFb2k4K2JUWGNkUFhLZGZ6cTVLTUZt?=
- =?utf-8?B?S2s1ZFFCSThlbnhIYTdSamoxd2NsUG15YmhXSGdPREg2UTJpMzFWc25JWDln?=
- =?utf-8?B?dUNJSnBjVkxBeWZlQmZxb3ZYb1Y2YXZDZThjMlpwUEc0S096SzFiWmVqekNm?=
- =?utf-8?B?ekJwMEt4OXduaFN1QnNxV2l3alhvTFBxWWtsSkcvelVKZkZDWitNM0RVS0x1?=
- =?utf-8?B?UUJPcDlCRStaVEZUNEhtMlVnVUxleHJVY05LZ3RsMmFuSDNPSDVOcHpzRTVi?=
- =?utf-8?B?OWxCR1hFZnJkSFF6TXFkbGV2U3AyRSt1eWFveTVJRjhOajdpand2WlJRVG1L?=
- =?utf-8?B?NFBha0VmUXdVcjZ5R3M2TlpLQUE0M25zc0NjeUVFZiszNnIzVWRDMFdBeEFK?=
- =?utf-8?B?UGx1TElUTVRsTVBtVTB2anlTbUtmT1ExSGM2MFBZWm5NOVVHbWVZRjVKZ3ZU?=
- =?utf-8?B?R1dwMCs1aURNZ0wwS1NhS3ZXdWNIL0dOanNVQ0FOdjRZYngyUjZEcG1WallH?=
- =?utf-8?B?Q2pjRjFOK3BSd1diTGxBcDIrUkFFM1lMbDZEbVBiUTB5L3BXb01UNllGMXpo?=
- =?utf-8?B?UjBxT25xempON2dZa0dlTmZudzhubGxwcVFNdSt1Q1pQWWdSS0VJZHNFMmpM?=
- =?utf-8?B?M3I1V2hOYmcxd1kyQllzYW9hSHZJbzRSVUJPcU5PYlgvcWt0bE10ZTkvcEZ6?=
- =?utf-8?B?S2xROUdBMjI5VDM5bUhMbHJLM0lRSXFnTWhROVJzS284SHhhQnkyQWhneXpD?=
- =?utf-8?B?ZmdFZXBRVFNSWWhqd1BMN1BwRzRVTlhDZGRRSi9yNHVYbm1HWmFYRThpUWV4?=
- =?utf-8?B?bTY2MDRORzVROXhuN1c4Wm9rM3htS3RZcGF2UTlEdGdvTURxTjFYdjcyeVpi?=
- =?utf-8?B?R0l2THlpU1I4M2JEUDk3eHRJemtXSEp0NTBDenBoYVFVTTJ6T0RVTVRRQklE?=
- =?utf-8?B?WnBxdmxkTENQa3U2WGZvVUZQMDlrMVVmMnlRRGFLSU9ZZ3p2OU5Jb0l2ZDlE?=
- =?utf-8?B?WTI4bkJyT0xObEQ0Y3hZUGFCMHNGN3p5SWxxckVXMzJvTENJcTg3VXFHLzZV?=
- =?utf-8?B?VWdBY0g0U3RaKzZXSFZnU2F1eTJuckVPbHIzUGpKMGZSR1lzcHBLRjY1S0VM?=
- =?utf-8?B?c20wK21odFhrNXdzOFFaRGtQTENJcmNnUlFYQ1N0cEs3UEVjbzl6WXlPdGxi?=
- =?utf-8?B?RTZsWE5QbzN6TWNNVHpacmtLQ0EwYlBEbmJpazRaVVh4ZlA4WDhISDZ3WUNh?=
- =?utf-8?B?TGplVUdZQUo0KzAycVk4V0xzTzR5dTVhODQ3c2hFSmMwRGlaVlMyYzJUai9T?=
- =?utf-8?B?ZkhMRmlZY2U0T0ovZXVIMGVnTlVQREx3cDRDVGJYK3ZCSDVkaFJKMEpqMmhu?=
- =?utf-8?B?eFJvd2p0TURKWjlLNTFvSXlpSjc5R1F6ajVsYWZHMk9adVpxcXh3cFI1YmIw?=
- =?utf-8?B?d0FTdnhmai84cXlUNVlHQ29ZMGc2Unpjd0k2NFhGRmpSK1BlTjQyRmxFUDhV?=
- =?utf-8?B?R2p4QndIaWxBZVFuMG1Ma3FaS1pla3FoWCtKYXRUL25pYmRNdmR4Vzl6NjRI?=
- =?utf-8?B?U1A1alhBOW1IVW1wRmZYV2dIL0RVeUZZRTd0ZUJtdkkxbTMvN1VqamNSSEZy?=
- =?utf-8?B?a3NhVk9qKzRVbTdqVTZtZnJZTlIvTUs4ZXlKb0xFb2dnYVZWTnhxYk84bys3?=
- =?utf-8?B?b1VlSnB1VWNFVWV3SDBqWnhUbUo5bjFtNHNONGxuakxnNnpiM0ZOQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 670659e3-7dbb-4e00-753f-08deeba06fba
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8953.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 05:32:23.8645
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xSPHJ6MPwREZ75ak7iNTkSTgR73q6uq+UXIsjvl456AukxGArZZjC9vtmrNscfv6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6989
+Content-Transfer-Encoding: 8bit
 
-Hi Théo Lebrun,
+From: Xiang-Bin Shi <eric91102091@gmail.com>
 
-On 7/24/2026 11:36 PM, Théo Lebrun wrote:
-> Hello Vineeth,
->
-> On Fri Jul 24, 2026 at 6:32 AM CEST, Vineeth Karumanchi wrote:
->> The initial "tc" command was not overwriting the reset value of ENST
->> registers if only a subset of queues were configured, leading to an
->> invalid setup. To fix this, configure all queues unconditionally.
->> Unconfigured queues are zero-initialized via kcalloc(), ensuring a
->> complete and consistent configuration.
-> But if a subset of queues are configured, the remaining queues don't
-> have their ENST support enabled thanks to ENST_CONTROL and their ENST
-> per-queue register values aren't read? Or HW is broken and reads ENST
-> registers anyway? Or something else I misunderstood?
->
-> What reset value of ENST regs you observed that caused you trouble?
-> That info could make it into the commit message.
-//
-Yes, this is a confirmed hardware issue. We raised it with Cadence, and 
-they have
-acknowledged the problem. The reset value of the |enst_on_time_qX| 
-registers is *0x0001FFFF*.
+Commit 6deb53595092 ("net: remove unused ATM protocols and legacy
+ATM device drivers") removed the remaining in-tree users of
+atm_alloc_charge(), atm_pcr_goal(), sonet_copy_stats() and
+sonet_subtract_stats().
 
-During ENST initialization, packet interleaving was observed when only a
-subset of the available queues was configured, while the remaining 
-queues—whose
-corresponding |enst_on_time_qX| registers still contained non-zero 
-values—were left disabled in |ENST_CONTROL|.
+Remove these unused exported helpers and their declarations. The
+removal of the SONET statistics helpers also leaves
+include/linux/sonet.h without users, so remove the internal header and
+its MAINTAINERS entry.
 
+Signed-off-by: Xiang-Bin Shi <eric91102091@gmail.com>
+---
+ MAINTAINERS            |  1 -
+ include/linux/atmdev.h |  3 --
+ include/linux/sonet.h  | 20 -----------
+ net/atm/atm_misc.c     | 79 ------------------------------------------
+ 4 files changed, 103 deletions(-)
+ delete mode 100644 include/linux/sonet.h
 
-For example, in a configuration where only two of the four queues are 
-enabled,
-some packets from *Q0* getting transmitted during the *Q1* time slot, 
-and vice versa.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 60cff00953dc..e7ebe79843cb 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4279,7 +4279,6 @@ W:	http://linux-atm.sourceforge.net
+ F:	drivers/atm/
+ F:	drivers/usb/atm/
+ F:	include/linux/atm*
+-F:	include/linux/sonet.h
+ F:	include/uapi/linux/atm*
+ F:	include/uapi/linux/sonet.h
+ F:	net/atm/
+diff --git a/include/linux/atmdev.h b/include/linux/atmdev.h
+index fe21d2f547b5..92c2e20e7416 100644
+--- a/include/linux/atmdev.h
++++ b/include/linux/atmdev.h
+@@ -229,9 +229,6 @@ static inline void atm_dev_put(struct atm_dev *dev)
+ 
+ 
+ int atm_charge(struct atm_vcc *vcc,int truesize);
+-struct sk_buff *atm_alloc_charge(struct atm_vcc *vcc,int pdu_size,
+-    gfp_t gfp_flags);
+-int atm_pcr_goal(const struct atm_trafprm *tp);
+ 
+ void vcc_release_async(struct atm_vcc *vcc, int reply);
+ 
+diff --git a/include/linux/sonet.h b/include/linux/sonet.h
+deleted file mode 100644
+index 2b802b6d12ad..000000000000
+--- a/include/linux/sonet.h
++++ /dev/null
+@@ -1,20 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* sonet.h - SONET/SHD physical layer control */
+-#ifndef LINUX_SONET_H
+-#define LINUX_SONET_H
+-
+-
+-#include <linux/atomic.h>
+-#include <uapi/linux/sonet.h>
+-
+-struct k_sonet_stats {
+-#define __HANDLE_ITEM(i) atomic_t i
+-	__SONET_ITEMS
+-#undef __HANDLE_ITEM
+-};
+-
+-extern void sonet_copy_stats(struct k_sonet_stats *from,struct sonet_stats *to);
+-extern void sonet_subtract_stats(struct k_sonet_stats *from,
+-    struct sonet_stats *to);
+-
+-#endif
+diff --git a/net/atm/atm_misc.c b/net/atm/atm_misc.c
+index a30b83c1cb3f..c9d7609da184 100644
+--- a/net/atm/atm_misc.c
++++ b/net/atm/atm_misc.c
+@@ -7,7 +7,6 @@
+ #include <linux/atm.h>
+ #include <linux/atmdev.h>
+ #include <linux/skbuff.h>
+-#include <linux/sonet.h>
+ #include <linux/bitops.h>
+ #include <linux/errno.h>
+ #include <linux/atomic.h>
+@@ -22,81 +21,3 @@ int atm_charge(struct atm_vcc *vcc, int truesize)
+ 	return 0;
+ }
+ EXPORT_SYMBOL(atm_charge);
+-
+-struct sk_buff *atm_alloc_charge(struct atm_vcc *vcc, int pdu_size,
+-				 gfp_t gfp_flags)
+-{
+-	struct sock *sk = sk_atm(vcc);
+-	int guess = SKB_TRUESIZE(pdu_size);
+-
+-	atm_force_charge(vcc, guess);
+-	if (atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf) {
+-		struct sk_buff *skb = alloc_skb(pdu_size, gfp_flags);
+-
+-		if (skb) {
+-			atomic_add(skb->truesize-guess,
+-				   &sk->sk_rmem_alloc);
+-			return skb;
+-		}
+-	}
+-	atm_return(vcc, guess);
+-	atomic_inc(&vcc->stats->rx_drop);
+-	return NULL;
+-}
+-EXPORT_SYMBOL(atm_alloc_charge);
+-
+-
+-/*
+- * atm_pcr_goal returns the positive PCR if it should be rounded up, the
+- * negative PCR if it should be rounded down, and zero if the maximum available
+- * bandwidth should be used.
+- *
+- * The rules are as follows (* = maximum, - = absent (0), x = value "x",
+- * (x+ = x or next value above x, x- = x or next value below):
+- *
+- *	min max pcr	result		min max pcr	result
+- *	-   -   -	* (UBR only)	x   -   -	x+
+- *	-   -   *	*		x   -   *	*
+- *	-   -   z	z-		x   -   z	z-
+- *	-   *   -	*		x   *   -	x+
+- *	-   *   *	*		x   *   *	*
+- *	-   *   z	z-		x   *   z	z-
+- *	-   y   -	y-		x   y   -	x+
+- *	-   y   *	y-		x   y   *	y-
+- *	-   y   z	z-		x   y   z	z-
+- *
+- * All non-error cases can be converted with the following simple set of rules:
+- *
+- *   if pcr == z then z-
+- *   else if min == x && pcr == - then x+
+- *     else if max == y then y-
+- *	 else *
+- */
+-
+-int atm_pcr_goal(const struct atm_trafprm *tp)
+-{
+-	if (tp->pcr && tp->pcr != ATM_MAX_PCR)
+-		return -tp->pcr;
+-	if (tp->min_pcr && !tp->pcr)
+-		return tp->min_pcr;
+-	if (tp->max_pcr != ATM_MAX_PCR)
+-		return -tp->max_pcr;
+-	return 0;
+-}
+-EXPORT_SYMBOL(atm_pcr_goal);
+-
+-void sonet_copy_stats(struct k_sonet_stats *from, struct sonet_stats *to)
+-{
+-#define __HANDLE_ITEM(i) to->i = atomic_read(&from->i)
+-	__SONET_ITEMS
+-#undef __HANDLE_ITEM
+-}
+-EXPORT_SYMBOL(sonet_copy_stats);
+-
+-void sonet_subtract_stats(struct k_sonet_stats *from, struct sonet_stats *to)
+-{
+-#define __HANDLE_ITEM(i) atomic_sub(to->i, &from->i)
+-	__SONET_ITEMS
+-#undef __HANDLE_ITEM
+-}
+-EXPORT_SYMBOL(sonet_subtract_stats);
+-- 
+2.34.1
 
-Furthermore, once the hardware enters this state, it does not recover 
-even after a
-complete ENST queue reconfiguration is performed.
-
-Thanks
-
-🙏 Vineeth
-
->> The queue_id field in struct macb_queue_enst_config becomes redundant
->> once the array is indexed by queue id, so drop it.
->>
->> Key changes:
->> - Drop queue_id from struct macb_queue_enst_config
->> - Allocate enst_queue[] based on bp->num_queues instead of
->>    conf->num_entries
->> - Index enst_queue[] directly with the queue number
->> - Program ENST registers for all queues
->>
->> Fixes: 89934dbf169e ("net: macb: Add TAPRIO traffic scheduling support")
->> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-> Thanks,
->
-> --
-> Théo Lebrun, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
->
