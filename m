@@ -1,561 +1,192 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F51E3F4DD2;
-	Mon, 27 Jul 2026 10:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36BC3F39C8;
+	Mon, 27 Jul 2026 10:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785146862; cv=none; b=hDgc8jcXhuw5tw/wokvwyed8IhLDF+qomefzBhpcLV+aME8zZ+2OT8j9xr2AudOQelro6gt0mkl6XAWkDTMjVO9L15Vjzc4oJymWep21hwUtWL4ZqZKufxuD2JnQ7csD4OWAjreN5RDg1MMKgYNr2cOjlMXoqsfIpedrTdy/UiY=
+	t=1785147392; cv=none; b=sRfkv7c2GO7nGbHgrtYAJmFHfjsSp77eLkeE/YI5nAmbznSlA3c6SoDCdgl91UtuRRjP6Meu/bMfVFCTDC8XINbp4NP7zedtHYKzHh+tF1OP3Bd98/ifF6M4z6q600cpzANeI4XRHeS4/tiY3FqCqhCdXl80taq3dTcEZiw61eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785146862; c=relaxed/simple;
-	bh=BMVcLJmCpyRrXXcCWpXQRymEof2ePWajEjCSCzomzHM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CQojyMjuRubAP1mX8G0dV8aRykwomOcak+p/8qYZGaGj/f7+s6Bf9J84GMtujgeUV3TGL5cCtsX4TziCya038DSC2BbARhyz4aVGgsCJZPmtvRDqOtSGGaP5oKSzjylfms7daulm6kuxy/sLg8tBgOrwuN7uJfTxyDMyUF1mFHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=e4CLreeQ; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1785147392; c=relaxed/simple;
+	bh=o7FyTBbL3mhtNnJmIsKYs4Lu4DCXqHhAH5v7njg2+jE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dyl2e76EADDAvd6tG3tL51YhbNvQsRnzsSXNtbvgdVA020ot2sZqXdpxo60/xNOEr+UTxgNEsGFpj6S40l2RNLq/bQMwOFBEF506byCQR0co5a1sM8nrE5NKAnOGVBojW6pK5UklFcXnAgx3g/jf4N7pc9X6Zpv+wxJY2IZszoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=JUVpXSsz; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="e4CLreeQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=AdApMorL2H4fBahescJf2ENcSZCp0VBZUBRzJxG+IS0=; b=e4CLreeQBe5evIE/lzOj7q5k4z
-	RMIVhFakVPMEcNUOS2lrp7yPVf7HqnwaOr3YIyPMzaki8o+GMkUU+LYwCGEvZ0sv6g73mFqh+DjB7
-	QN/eHyiHsLOjXSlozHaQYw/xXTpeZQQcDMlviXulLh/4vJfBX3FbxDFpQtslEUkVYJJWuP4S5ifqq
-	wcYzwAGoPhsuNiYHgWSKwc47X7uor3lWAoVnzUFMbPSR81vJkp4AFul75L7oLOx1+lNGNdCk2SoK5
-	5RSPn9540flI6Fmc0HRKGYCW1puJh9LiC/zEl859KXtCIMT8ell9hefT2bYIZ1r2mCBxXqeQ8HxP0
-	amNiutXA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1woIFG-006ouy-36;
-	Mon, 27 Jul 2026 10:07:39 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 27 Jul 2026 03:06:41 -0700
-Subject: [PATCH net-next v3 7/7] selftests: net: getsockopt_iter: cover
- rawv6, ieee802154, phonet and tls
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="JUVpXSsz"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66R7UVCN596548;
+	Mon, 27 Jul 2026 03:16:22 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=FY/F3H1n8oGrT7UH/gUu4hm
+	cIZwHreoC3DkT7Bu2Or4=; b=JUVpXSszJIc2DGcEsVuJ7yFRPxw6TGr/o5M1+Is
+	95RDsXuD4N47RCszr4OMvpsWZ2wgMiazrAufSaC4T69Wnzr0JTI4S+3wgq8n9LQy
+	nCNq/wpVUAVc6sQenoaDfvii6HnT112+FBe4EZmNBY0Mnko5qcfMKF19ElWdtltx
+	+zLg3DlRQ3Etm+SeMZ5Oux/eoA9Thz5Jix9dqfdwWfi1l+zTLHYwnXiiGQ+jyDqX
+	eV49zegWCyNXJ4iJHctWCOrJvLQx+Pdkb9DJC7kS6iEZ45Jmth1KCtqANMgMkp1m
+	LcLMhOZzIbQGD/nIxDInoXkNkOtVtPW8/wuwqqwAMEdgIpw==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fmvnekj2e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jul 2026 03:16:21 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 27 Jul 2026 03:16:21 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 27 Jul 2026 03:16:21 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id 5CEC93F703F;
+	Mon, 27 Jul 2026 03:16:18 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        Satha Rao
+	<skoteshwar@marvell.com>,
+        Ratheesh Kannoth <rkannoth@marvell.com>
+Subject: [PATCH v3 net-next] octeontx2-af: add new mbox to support sync cycle on rx path
+Date: Mon, 27 Jul 2026 15:46:08 +0530
+Message-ID: <20260727101608.300290-1-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260727-getsockopt_phase4-v3-7-e89627544639@debian.org>
-References: <20260727-getsockopt_phase4-v3-0-e89627544639@debian.org>
-In-Reply-To: <20260727-getsockopt_phase4-v3-0-e89627544639@debian.org>
-To: sdf@fomichev.me, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Alexander Aring <alex.aring@gmail.com>, 
- Stefan Schmidt <stefan@datenfreihafen.org>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Remi Denis-Courmont <courmisch@gmail.com>, 
- =?utf-8?q?R=C3=A9mi_Denis-Courmont?= <remi.denis-courmont@nokia.com>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-wpan@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>, kernel-team@meta.com, 
- =?utf-8?q?R=C3=A9mi_Denis-Courmont?= <remi@remlab.net>, 
- Joe Damato <joe@dama.to>
-X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11804; i=leitao@debian.org;
- h=from:subject:message-id; bh=BMVcLJmCpyRrXXcCWpXQRymEof2ePWajEjCSCzomzHM=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqZy23HSLdzEwxTA2W71W9n6x8k5SRpwJQUm6V6
- NQNKb3tTu2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCamcttwAKCRA1o5Of/Hh3
- be9sD/kBXDoyAgg8IrAaQnuLvqjcNOdyKX/kGAncEjlyAULRboa0sDtRTj/8sXKZ73mwz06YlsC
- ouNunfNNcK+kR1aN1RSe3caH3OXTkGoSu+rIjGZw9ZpeMKWBl3X1Z/WuZAN3Bu2YbZmBQuHmDHO
- XtTt+0wJE+xljyIcWP9vrRZR7jvJ1d7Qpik86gQ3Cyi3rWiqdIQ+fiRxVrIIFSZJcxzMoIbP8Ie
- Qlw77LPLI8d9YIbRyjOBxyEH6Mypdcm8lecxzWlTjRw9iSnOqh5IGHB2/Y+qvD+ywmXoQAjqB32
- PIT6bVOnfxxm5bm+Ia+DoMSXwcYwAlFneszyOBZOhnRgTCsEveeB0VKiQR9arBUaKFYEuXxwDt9
- 8VxVuf7kbTCl93EPL2i1/oyjW+qqo3CdK4jeot2ekT40LMFq5fCgtgG4bfyIkLSgtrLc4i3KpJh
- Zv+zF3ZuVpMvNKkkUxmqt5NztG+md0vkhVJhJj99E13jSzHi3XLySJ9874OnxbgImnYFNAihoDm
- HAT04TvHyktCCrZxbhQeMKSGDfR8U+3alOelPC85R8dDxEMrfYkDOZEiJbKpcTuVQRcZqXIOK2r
- dqrJS8rvOW4ZQGteLMhifvnA5Zp4x90FXYLYIK8/HPp/sAVFjNLXf1Pr8lVsXeiRJ75Qq7Fi4zD
- 8GJ+ygX6imHMK2w==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Type: text/plain
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDEwMCBTYWx0ZWRfX4kDE2Ur1ZMmS
+ aWKwg1d52LSdVGjBZ+muzxBmg3DPPsqSy7By9V2E9yBTYhfmLYhxShCv7XSFO/q4Ls/8XYO2YnH
+ 0BSo/DAHmBWu7RyQnnL2RVVj9dfcDvc=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDEwMCBTYWx0ZWRfX52BkXlsiqMQr
+ 9lmdVEVEsRRU4zvtB1LcOMyfxUGTs8BY1NjOR/4F4BYZH2gQvpV9cTlnXHO+ccFIrAE6WGhgw+0
+ ZFn1mC/K4o7JAfdz5z8PcGc9pvoEKnkBsEZwynRnO7hJJuxmUa68FxQKiJGmscBO4KxzeEPIzIK
+ tHihwyqgOlSnOFiqFkemdYmC5810bL6x3fWPgDgQAT2bDOdOxfXtKPiS37DStv4V7jxlxE44KXC
+ QkyBXtpD/y36tECcYcsHBST5zNuMqyTlFGbVVMtVdOxuUzL8DVp01pQ1PnRc3K9dZyGxG7zbBss
+ UkEr+nf0wU0fK0GtgB6EAonq11C6yliC/HLdd9SkQp4ibFOCRmhceFjvy7nRc6JbtEF5BUPMJIl
+ P8/biuPmY7PLC+7AFGsu9nu3+nCXqpnooeUZWzbiGDhlNKgzT9f5gdUym9O3rCkV+YvqvRCGC8+
+ PvIzEYWSv6XOM5uRUGg==
+X-Authority-Analysis: v=2.4 cv=e5A2j6p/ c=1 sm=1 tr=0 ts=6a672ff5 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=QXcCYyLzdtTjyudCfB6f:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
+ a=0iagpPcjLyzhSgOJ4cUA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: RYrW5TlxpTp7YHUYC7qGhfNCRujHC84V
+X-Proofpoint-ORIG-GUID: RYrW5TlxpTp7YHUYC7qGhfNCRujHC84V
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-27_02,2026-07-24_02,2025-10-01_01
 
-Add fixtures for the newly converted getsockopt leaves:
+From: Satha Rao <skoteshwar@marvell.com>
 
-  - rawv6:      IPV6_HDRINCL / IPV6_CHECKSUM int paths + a SOL_RAW
-                unknown-optname case that reaches do_rawv6_getsockopt().
-  - ieee802154: WPAN_WANTACK dgram int path + non-SOL_IEEE802154 level
-                rejection.
-  - phonet:     PNPIPE_ENCAP pep int path + non-SOL_PNPIPE level
-                rejection.
-  - tls:        TLS_TX_ZEROCOPY_RO, the TLS_TX crypto_info round-trip at
-                the base and full cipher sizes, the NULL-optval and short
-                buffer EINVAL paths, and an unknown optname. It skips when
-                the kernel lacks TLS or AES-GCM.
+sync ensures that all packets that were in flight are flushed out to
+memory. This can be used to assist in the tearing down of an active RQ.
 
-Each fixture pins the returned-length / errno semantics across exact,
-oversized and short buffers, an unknown optname and a bogus level. The
-semantics are unchanged by the sockopt_t conversion, so the tests pass
-both before and after the leaf conversions.
+To complete disabling RQs or disabling SMQ and its SQs, LF software
+send mbox to AF to complete RX_SW_SYNC.
 
-Acked-by: Rémi Denis-Courmont <remi@remlab.net>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Joe Damato <joe@dama.to>
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Both VF and PF and invoke this mbox.
+
+Signed-off-by: Satha Rao <skoteshwar@marvell.com>
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+
 ---
- tools/testing/selftests/net/getsockopt_iter.c | 424 ++++++++++++++++++++++++++
- 1 file changed, 424 insertions(+)
+v2 -> v3: Addressed Simon comments
+	https://lore.kernel.org/netdev/20260715041239.2052888-1-rkannoth@marvell.com/
+v1 -> v2: https://lore.kernel.org/netdev/20260715041239.2052888-1-rkannoth@marvell.com/
+---
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |  2 ++
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 31 +++++++++++++++++--
+ 2 files changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/getsockopt_iter.c b/tools/testing/selftests/net/getsockopt_iter.c
-index fe5a5268bc34e..974065a23fa82 100644
---- a/tools/testing/selftests/net/getsockopt_iter.c
-+++ b/tools/testing/selftests/net/getsockopt_iter.c
-@@ -28,7 +28,10 @@
- #include <linux/vm_sockets.h>
- #include <linux/icmp.h>
- #include <netinet/in.h>
-+#include <netinet/tcp.h>
-+#include <arpa/inet.h>
- #include <sys/socket.h>
-+#include <linux/tls.h>
- #include "kselftest_harness.h"
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index 10552e9cf519..73f743e4a83d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -362,6 +362,7 @@ M(NIX_CPT_BP_ENABLE,    0x8020, nix_cpt_bp_enable, nix_bp_cfg_req,	    \
+ 				nix_bp_cfg_rsp)				    \
+ M(NIX_CPT_BP_DISABLE,   0x8021, nix_cpt_bp_disable, nix_bp_cfg_req,	    \
+ 				msg_rsp)				\
++M(NIX_RX_SW_SYNC,	0x8022, nix_rx_sw_sync, msg_req, msg_rsp)		\
+ M(NIX_READ_INLINE_IPSEC_CFG, 0x8023, nix_read_inline_ipsec_cfg,		\
+ 				msg_req, nix_inline_ipsec_cfg)		\
+ M(NIX_MCAST_GRP_CREATE,	0x802b, nix_mcast_grp_create, nix_mcast_grp_create_req,	\
+@@ -952,6 +953,7 @@ enum nix_af_status {
+ 	NIX_AF_ERR_INVALID_MCAST_GRP	= -436,
+ 	NIX_AF_ERR_INVALID_MCAST_DEL_REQ = -437,
+ 	NIX_AF_ERR_NON_CONTIG_MCE_LIST = -438,
++	NIX_AF_ERR_RX_SW_SYNC_FAIL	= -439,
+ };
  
- #ifndef AF_VSOCK
-@@ -40,6 +43,45 @@
- #ifndef ICMP_FILTER
- #define ICMP_FILTER 1
- #endif
-+#ifndef IPV6_HDRINCL
-+#define IPV6_HDRINCL 36
-+#endif
-+#ifndef IPV6_CHECKSUM
-+#define IPV6_CHECKSUM 7
-+#endif
-+#ifndef AF_IEEE802154
-+#define AF_IEEE802154 36
-+#endif
-+#ifndef SOL_IEEE802154
-+#define SOL_IEEE802154 0
-+#endif
-+#ifndef WPAN_WANTACK
-+#define WPAN_WANTACK 0
-+#endif
-+#ifndef AF_PHONET
-+#define AF_PHONET 35
-+#endif
-+#ifndef SOL_PNPIPE
-+#define SOL_PNPIPE 275
-+#endif
-+#ifndef PN_PROTO_PIPE
-+#define PN_PROTO_PIPE 2
-+#endif
-+#ifndef PNPIPE_ENCAP
-+#define PNPIPE_ENCAP 1
-+#endif
-+#ifndef PNPIPE_ENCAP_NONE
-+#define PNPIPE_ENCAP_NONE 0
-+#endif
-+#ifndef PNPIPE_ENCAP_IP
-+#define PNPIPE_ENCAP_IP 1
-+#endif
-+#ifndef SOL_TLS
-+#define SOL_TLS 282
-+#endif
-+#ifndef TCP_ULP
-+#define TCP_ULP 31
-+#endif
- 
- /* ---------- netlink ---------- */
- 
-@@ -394,4 +436,386 @@ TEST_F(raw, bad_optname)
- 	ASSERT_EQ(sizeof(val), optlen);
+ /* For NIX RX vtag action  */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index dade7bb6deb7..e397c8cedbc7 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -269,15 +269,19 @@ u32 convert_bytes_to_dwrr_mtu(u32 bytes)
+ 	return 0;
  }
  
-+/* ---------- raw (ipv6) ---------- */
+-static void nix_rx_sync(struct rvu *rvu, int blkaddr)
++static int nix_rx_sync(struct rvu *rvu, int blkaddr)
+ {
+ 	int err;
+ 
++	mutex_lock(&rvu->rsrc_lock);
 +
-+FIXTURE(rawv6)
-+{
-+	int fd;
-+};
-+
-+FIXTURE_SETUP(rawv6)
-+{
-+	self->fd = socket(AF_INET6, SOCK_RAW, IPPROTO_UDP);
-+	if (self->fd < 0)
-+		SKIP(return, "SOCK_RAW/IPv6 socket: %s", strerror(errno));
-+}
-+
-+FIXTURE_TEARDOWN(rawv6)
-+{
-+	if (self->fd >= 0)
-+		close(self->fd);
-+}
-+
-+TEST_F(rawv6, hdrincl_exact)
-+{
-+	socklen_t optlen;
-+	int val = -1;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, IPPROTO_IPV6, IPV6_HDRINCL,
-+				&val, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+	ASSERT_TRUE(val == 0 || val == 1);
-+}
-+
-+TEST_F(rawv6, hdrincl_oversize_clamped)
-+{
-+	char buf[16] = {};
-+	socklen_t optlen = sizeof(buf);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, IPPROTO_IPV6, IPV6_HDRINCL,
-+				buf, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+}
-+
-+/* Raw int options clamp the reported length down to the user buffer
-+ * instead of returning EINVAL on a short buffer.
-+ */
-+TEST_F(rawv6, hdrincl_undersize_clamped)
-+{
-+	socklen_t optlen = 2;
-+	int val = 0;
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, IPPROTO_IPV6, IPV6_HDRINCL,
-+				&val, &optlen));
-+	ASSERT_EQ(2, optlen);
-+}
-+
-+TEST_F(rawv6, checksum_default)
-+{
-+	socklen_t optlen;
-+	int val = 0;
-+
-+	optlen = sizeof(val);
-+
-+	/* A non-ICMPv6 raw socket has the checksum disabled, reported as -1. */
-+	ASSERT_EQ(0, getsockopt(self->fd, IPPROTO_IPV6, IPV6_CHECKSUM,
-+				&val, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+	ASSERT_EQ(-1, val);
-+}
-+
-+TEST_F(rawv6, bad_optname)
-+{
-+	socklen_t optlen;
-+	int val;
-+
-+	optlen = sizeof(val);
-+
-+	/* SOL_RAW reaches do_rawv6_getsockopt() directly. */
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_RAW, 0x7fff, &val, &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
-+}
-+
-+/* ---------- ieee802154 (dgram) ---------- */
-+
-+FIXTURE(ieee802154)
-+{
-+	int fd;
-+};
-+
-+FIXTURE_SETUP(ieee802154)
-+{
-+	self->fd = socket(AF_IEEE802154, SOCK_DGRAM, 0);
-+	if (self->fd < 0)
-+		SKIP(return, "AF_IEEE802154 dgram socket: %s", strerror(errno));
-+}
-+
-+FIXTURE_TEARDOWN(ieee802154)
-+{
-+	if (self->fd >= 0)
-+		close(self->fd);
-+}
-+
-+TEST_F(ieee802154, wantack_exact)
-+{
-+	socklen_t optlen;
-+	int val = -1;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IEEE802154, WPAN_WANTACK,
-+				&val, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+	ASSERT_TRUE(val == 0 || val == 1);
-+}
-+
-+TEST_F(ieee802154, wantack_oversize_clamped)
-+{
-+	char buf[16] = {};
-+	socklen_t optlen = sizeof(buf);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IEEE802154, WPAN_WANTACK,
-+				buf, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+}
-+
-+TEST_F(ieee802154, wantack_undersize_clamped)
-+{
-+	socklen_t optlen = 2;
-+	int val = 0;
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IEEE802154, WPAN_WANTACK,
-+				&val, &optlen));
-+	ASSERT_EQ(2, optlen);
-+}
-+
-+TEST_F(ieee802154, bad_optname)
-+{
-+	socklen_t optlen;
-+	int val;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_IEEE802154, 0x7fff,
-+				 &val, &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
-+}
-+
-+/* dgram_getsockopt() rejects any level other than SOL_IEEE802154. */
-+TEST_F(ieee802154, bad_level)
-+{
-+	socklen_t optlen;
-+	int val;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_RAW, WPAN_WANTACK,
-+				 &val, &optlen));
-+	ASSERT_EQ(EOPNOTSUPP, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
-+}
-+
-+/* ---------- phonet (pep) ---------- */
-+
-+FIXTURE(phonet)
-+{
-+	int fd;
-+};
-+
-+FIXTURE_SETUP(phonet)
-+{
-+	self->fd = socket(AF_PHONET, SOCK_SEQPACKET, PN_PROTO_PIPE);
-+	if (self->fd < 0)
-+		SKIP(return, "AF_PHONET pipe socket: %s", strerror(errno));
-+}
-+
-+FIXTURE_TEARDOWN(phonet)
-+{
-+	if (self->fd >= 0)
-+		close(self->fd);
-+}
-+
-+TEST_F(phonet, encap_exact)
-+{
-+	socklen_t optlen;
-+	int val = -1;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_PNPIPE, PNPIPE_ENCAP,
-+				&val, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+	ASSERT_TRUE(val == PNPIPE_ENCAP_NONE || val == PNPIPE_ENCAP_IP);
-+}
-+
-+TEST_F(phonet, encap_oversize_clamped)
-+{
-+	char buf[16] = {};
-+	socklen_t optlen = sizeof(buf);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_PNPIPE, PNPIPE_ENCAP,
-+				buf, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+}
-+
-+/* pep clamps the reported length down to the user buffer. Use an
-+ * int-sized backing buffer with a short optlen so the baseline kernel,
-+ * which writes a full int via put_user(), does not scribble past it.
-+ */
-+TEST_F(phonet, encap_undersize_clamped)
-+{
-+	socklen_t optlen = 2;
-+	int val = 0;
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_PNPIPE, PNPIPE_ENCAP,
-+				&val, &optlen));
-+	ASSERT_EQ(2, optlen);
-+}
-+
-+TEST_F(phonet, bad_optname)
-+{
-+	socklen_t optlen;
-+	int val;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_PNPIPE, 0x7fff, &val, &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
-+}
-+
-+/* pep_getsockopt() rejects any level other than SOL_PNPIPE. */
-+TEST_F(phonet, bad_level)
-+{
-+	socklen_t optlen;
-+	int val;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_RAW, PNPIPE_ENCAP, &val, &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
-+}
-+
-+/* ---------- tls ---------- */
-+
-+FIXTURE(tls)
-+{
-+	int fd;
-+	int sfd;
-+};
-+
-+FIXTURE_SETUP(tls)
-+{
-+	struct sockaddr_in a = {
-+		.sin_family = AF_INET,
-+		.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
-+	};
-+	socklen_t alen = sizeof(a);
-+	int lfd;
-+
-+	self->fd = -1;
-+	self->sfd = -1;
-+
-+	lfd = socket(AF_INET, SOCK_STREAM, 0);
-+	if (lfd < 0)
-+		SKIP(return, "TCP socket: %s", strerror(errno));
-+	if (bind(lfd, (struct sockaddr *)&a, sizeof(a)) || listen(lfd, 1) ||
-+	    getsockname(lfd, (struct sockaddr *)&a, &alen)) {
-+		close(lfd);
-+		SKIP(return, "listener setup: %s", strerror(errno));
+ 	/* Sync all in flight RX packets to LLC/DRAM */
+ 	rvu_write64(rvu, blkaddr, NIX_AF_RX_SW_SYNC, BIT_ULL(0));
+ 	err = rvu_poll_reg(rvu, blkaddr, NIX_AF_RX_SW_SYNC, BIT_ULL(0), true);
+-	if (err)
++	if (err) {
+ 		dev_err(rvu->dev, "SYNC1: NIX RX software sync failed\n");
++		goto unlock;
 +	}
-+	self->fd = socket(AF_INET, SOCK_STREAM, 0);
-+	if (connect(self->fd, (struct sockaddr *)&a, sizeof(a))) {
-+		close(lfd);
-+		SKIP(return, "connect: %s", strerror(errno));
-+	}
-+	self->sfd = accept(lfd, NULL, NULL);
-+	close(lfd);
-+	if (setsockopt(self->fd, IPPROTO_TCP, TCP_ULP, "tls", sizeof("tls")))
-+		SKIP(return, "TCP_ULP=tls: %s (built without TLS?)",
-+		     strerror(errno));
-+}
+ 
+ 	/* SW_SYNC ensures all existing transactions are finished and pkts
+ 	 * are written to LLC/DRAM, queues should be teared down after
+@@ -289,6 +293,10 @@ static void nix_rx_sync(struct rvu *rvu, int blkaddr)
+ 	err = rvu_poll_reg(rvu, blkaddr, NIX_AF_RX_SW_SYNC, BIT_ULL(0), true);
+ 	if (err)
+ 		dev_err(rvu->dev, "SYNC2: NIX RX software sync failed\n");
 +
-+FIXTURE_TEARDOWN(tls)
++unlock:
++	mutex_unlock(&rvu->rsrc_lock);
++	return err;
+ }
+ 
+ static bool is_valid_txschq(struct rvu *rvu, int blkaddr,
+@@ -6336,6 +6344,25 @@ int rvu_mbox_handler_nix_bandprof_get_hwinfo(struct rvu *rvu, struct msg_req *re
+ 	return 0;
+ }
+ 
++int rvu_mbox_handler_nix_rx_sw_sync(struct rvu *rvu, struct msg_req *req,
++				    struct msg_rsp *rsp)
 +{
-+	if (self->fd >= 0)
-+		close(self->fd);
-+	if (self->sfd >= 0)
-+		close(self->sfd);
++	int blkaddr, nixlf, err;
++
++	/* NIX_AF_RX_SW_SYNC is global per NIX block; nix_rx_sync() serializes
++	 * access under rvu->rsrc_lock across mbox and teardown paths.
++	 */
++	err = nix_get_nixlf(rvu, req->hdr.pcifunc, &nixlf, &blkaddr);
++	if (err)
++		return err;
++
++	err = nix_rx_sync(rvu, blkaddr);
++	if (err)
++		return NIX_AF_ERR_RX_SW_SYNC_FAIL;
++
++	return 0;
 +}
 +
-+/* do_tls_getsockopt_tx_zc(): fixed-size int, exact length required. */
-+TEST_F(tls, tx_zerocopy_exact)
-+{
-+	socklen_t optlen = sizeof(int);
-+	int val = -1;
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_TLS, TLS_TX_ZEROCOPY_RO,
-+				&val, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+	ASSERT_TRUE(val == 0 || val == 1);
-+}
-+
-+TEST_F(tls, tx_zerocopy_wrong_len)
-+{
-+	socklen_t optlen = 2;
-+	int val;
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_TLS, TLS_TX_ZEROCOPY_RO,
-+				 &val, &optlen));
-+	ASSERT_EQ(EINVAL, errno);
-+}
-+
-+/* do_tls_getsockopt_conf(): NULL optval still yields EINVAL -- the
-+ * converted code tests opt->iter_out.ubuf in place of optval.
-+ */
-+TEST_F(tls, conf_null_optval)
-+{
-+	socklen_t optlen = 64;
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_TLS, TLS_TX, NULL, &optlen));
-+	ASSERT_EQ(EINVAL, errno);
-+}
-+
-+TEST_F(tls, conf_short)
-+{
-+	socklen_t optlen = 2;
-+	char buf[2];
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_TLS, TLS_TX, buf, &optlen));
-+	ASSERT_EQ(EINVAL, errno);
-+}
-+
-+/* TLS_TX before crypto is set reports not-ready. */
-+TEST_F(tls, conf_not_ready)
-+{
-+	struct tls_crypto_info info;
-+	socklen_t optlen = sizeof(info);
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_TLS, TLS_TX, &info, &optlen));
-+	ASSERT_EQ(EBUSY, errno);
-+}
-+
-+/* Set TX crypto, then read it back at the base and full sizes, exercising
-+ * both copy_to_iter() branches. SKIP if AES-GCM is unavailable.
-+ */
-+TEST_F(tls, conf_crypto_roundtrip)
-+{
-+	struct tls12_crypto_info_aes_gcm_128 tx = {
-+		.info.version = TLS_1_2_VERSION,
-+		.info.cipher_type = TLS_CIPHER_AES_GCM_128,
-+	};
-+	struct tls12_crypto_info_aes_gcm_128 full;
-+	struct tls_crypto_info base;
-+	socklen_t optlen;
-+
-+	if (setsockopt(self->fd, SOL_TLS, TLS_TX, &tx, sizeof(tx)))
-+		SKIP(return, "set TLS_TX aes_gcm_128: %s", strerror(errno));
-+
-+	optlen = sizeof(base);
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_TLS, TLS_TX, &base, &optlen));
-+	ASSERT_EQ(sizeof(base), optlen);
-+	ASSERT_EQ(TLS_1_2_VERSION, base.version);
-+	ASSERT_EQ(TLS_CIPHER_AES_GCM_128, base.cipher_type);
-+
-+	optlen = sizeof(full);
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_TLS, TLS_TX, &full, &optlen));
-+	ASSERT_EQ(sizeof(full), optlen);
-+	ASSERT_EQ(TLS_CIPHER_AES_GCM_128, full.info.cipher_type);
-+}
-+
-+TEST_F(tls, bad_optname)
-+{
-+	socklen_t optlen = sizeof(int);
-+	int val;
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_TLS, 0x7fff, &val, &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+}
-+
- TEST_HARNESS_MAIN
-
+ static struct nix_mcast_grp_elem *rvu_nix_mcast_find_grp_elem(struct nix_mcast_grp *mcast_grp,
+ 							      u32 mcast_grp_idx)
+ {
 -- 
-2.53.0-Meta
+2.43.0
 
