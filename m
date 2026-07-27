@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33903EC2FF
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 22:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B163ED109;
+	Mon, 27 Jul 2026 22:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785192055; cv=none; b=FZ+fwjpyioYwfPTx7+4h7l1Qj5ysCHYztKZYDjitLJyG1Mg4rilp5TRMrR6T+Bult23pi9de2lzVEsZrXeUdWo6OrwxYUu7Y0LTBi3ep+XkUy9815Gia9kU8/ig7fKdMgewtLLt91ZXkCmFnx+9eYIyFzyJVnrxaBGWwsaMowRA=
+	t=1785192056; cv=none; b=LsF6POXfEz3AAhapzCRasI/ChDub/dLHelgsXeKJ5/Q4X59c0IzJP0ErdbVZdg21Tnujq0bEakYZ5xqjL32IeFgKYcq4m3cWIHtmltAHxdfNJ2UPdLNfBmT3nC01xLG+N5RjMAqkrx/ws7rzgjFMQ2ClaeK4vc84Q3/6dx44poY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785192055; c=relaxed/simple;
-	bh=NjXv47orKv15xAXnsS9oXuIOzeJCeKSAHy/Z1btpha0=;
+	s=arc-20240116; t=1785192056; c=relaxed/simple;
+	bh=rf2bfZuVGszM70Samwl9CQmJhwVeNMnFbzxPN52Ll7g=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rTZqGrT5u1+WDmbTYfXix8IYBooAbaQ0B/+ODggSQ5IPTAC4+x2yLAYm5t2vhoAgLfmacsIiEzBspt48qJ6Xz9zs0ETwEuS5yk6dhch9gLdxRLRlaBxCyVJh4+hqMdtTRYQMBomI1qObIgUTXVXwvEwYvZ3DydLyROdgfzLuo+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UXh5xKKV; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Fyq1zbcFkL5zHve71OfEgKqu9+Jyd8tPU5pJY6mURTIh3OyPVYB5qRaOJ3Z00b0WqpccJNhn55JvX/EVXhDFQmfsoeOGfS8WNWCgnsEAAbtnu8opeSyuvRbLZpN3V3j3/MkB5l4HEmk9pVUAxAs6FUVUEFVzjVgtuA7M6M3m+CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R5Bb+z61; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UXh5xKKV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D741F000E9;
-	Mon, 27 Jul 2026 22:40:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R5Bb+z61"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5411F00A3A;
+	Mon, 27 Jul 2026 22:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785192053;
-	bh=T7ENtVEd0GzmtisQIa3FmH28XLnwD5IKKwoskG3iKlg=;
+	s=k20260515; t=1785192055;
+	bh=XRwfXWQ34ILdWnNLRPG2d7pC4hEEoox7ulKOeiP0BA4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=UXh5xKKVAzLirFE5pjxb+JO/fK2m5nUbRZzYuEanjSr3vdfCG/4q6yT/kDC7W+w7R
-	 1KQYoo3smURDNCBmRe6ey8Gfi5LchyZHtSZV4J6fKpNHZfwYGzqaI4pqKkjJZzVk88
-	 mwAdolzsBJ5a6krY6RnPPCXk3JGVD7CH3jHs57PLjWPAKpWKPdhvnTuPwbWiyarEdX
-	 bo3axCbnMP7FHXLwvvr/D9nL+2/lqb6QLPre3QYc7ijgBG50nigKl5ld7Hqsj21RbA
-	 mQU8Qxf69C68/r/McuCBH4SyF68hN4fN3lxscHge4scJVt8AtcLMG0rCUSaDv4zvS3
-	 b9AgeiEWN1Hmw==
+	b=R5Bb+z61fLsaze9AkWtBp9AOxgaXwByp8yP9BW3J1zW9mzzBn/PRSRpSJDBoUS4VJ
+	 reiaIwZEzDyLOJZJ3OS8DHzSppb/sNB9qwhD5snfufQI4NKEpyxShVkaNoWQaWqvIO
+	 RqeWv/qt9XE5HhIQbDJf9Jv+d/qVNPBLLYZSD8CpLvUAbJ0XS/FqVgLqRuvkxUUjfz
+	 NTtBZfj1KKPv06CzQZQ0nVkbiBFiOnnfcZJVw9o87nijTdMyJrjF8zPhpGIw8qGn7O
+	 1j8Tu4a9qZc+52luyYl9rO9nHvkzZEgupnUza61xo5mWOeF5+3swTt7K/UJbayCgLC
+	 h1VeQtVjs3i/g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1990E380CECF;
-	Mon, 27 Jul 2026 22:40:20 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93CF1380CECF;
+	Mon, 27 Jul 2026 22:40:21 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/1] tipc: avoid use-after-free in poll trace queue
- dumps
+Subject: Re: [PATCH net 0/1] net: bridge: fix fast-leave use-after-free
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178519201863.1443317.8809298946831933407.git-patchwork-notify@kernel.org>
-Date: Mon, 27 Jul 2026 22:40:18 +0000
-References: <cover.1784794294.git.zihanx@nebusec.ai>
-In-Reply-To: <cover.1784794294.git.zihanx@nebusec.ai>
+ <178519202013.1443317.3670329492058915531.git-patchwork-notify@kernel.org>
+Date: Mon, 27 Jul 2026 22:40:20 +0000
+References: <cover.1784707712.git.zhilinz@nebusec.ai>
+In-Reply-To: <cover.1784707712.git.zhilinz@nebusec.ai>
 To: Ren Wei <enjou1224z@gmail.com>
-Cc: netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- jmaloy@redhat.com, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, ying.xue@windriver.com,
- tuong.t.lien@dektech.com.au, vega@nebusec.ai, zihanx@nebusec.ai
+Cc: bridge@lists.linux.dev, netdev@vger.kernel.org, razor@blackwall.org,
+ idosch@nvidia.com, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, nbd@nbd.name, linus.luessing@c0d3.blue,
+ vega@nebusec.ai, zhilinz@nebusec.ai
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 24 Jul 2026 00:38:40 +0800 you wrote:
-> From: Zihan Xi <zihanx@nebusec.ai>
+On Fri, 24 Jul 2026 00:52:47 +0800 you wrote:
+> From: Zhiling Zou <zhilinz@nebusec.ai>
 > 
 > Hi Linux kernel maintainers,
 > 
-> We found and validated a bug in net/tipc/socket.c. The bug is
-> reachable by a local process that can create TIPC sockets and enable
-> TIPC tracepoints. We've rebuilt and rerun the reproducer with the
-> updated fix, and the crash no longer reproduces.
+> We found and validated a issue in net/bridge/br_multicast.c. The bug
+> is reachable by a non-root user via user and net namespace.
+> We've tested it, and it should not affect any other functionality.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/1] tipc: avoid use-after-free in poll trace queue dumps
-    https://git.kernel.org/netdev/net/c/b4f1719dfea0
+  - [net,1/1] net: bridge: stop fast-leave after deleting a port group
+    https://git.kernel.org/netdev/net/c/a39789f211b8
 
 You are awesome, thank you!
 -- 
