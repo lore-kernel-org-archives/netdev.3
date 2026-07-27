@@ -1,114 +1,95 @@
-Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684A6399CE9
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 15:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3803921C3
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 15:29:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785166036; cv=none; b=h0ANfaDk0y7swUwpAGA68mi3r0/qhSpmeGkwawDb4XWyQ46HCOsS614oIGSnk4+oMVqBByYfNtFatSdDdTNJ/JLy+33vJywljVWSP24MiFPMZYxy6Oty8ROyWfKJtOxtQbcgYI85YWjmZ4pa/gjPyAdZdXoUPZPVCIbO5z8i72k=
+	t=1785166195; cv=none; b=hKJid30GaGxCOT5zrwgRAXx2orXCequWWUZU55rCF20hKyb7h6g6NlUsDS+yKdBfyoc3T9CSU8XY5zmdEWA4/XMYfgz7TkbYry3cYiSCQIgrYycvKZZitWXThBphKgNZkVuTB7Pvw5bnVKcUlWI0vmMuU7pk6PDoa9LiPmLP1Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785166036; c=relaxed/simple;
-	bh=1XeOmQjiCmitTcAp2U7m3O2xukG+U0k4mys23LN33m8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y+eqg5qLql96FV7nVI8jRL/VUk+ZjZlRC97Oc96x6vI3DJ7kjBXa7tkMiUBxo+AKSc5gaihQcnYXGtZHUgnA1Ois1ZtPFbWqF7NoJiZi89569zpK77b3mX3vq+k7gZ1NlXo4zEUp4NJkyQn8gRbm4I4EiPy5KWMbI3QpVWkdlfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XDdCgNVt; arc=none smtp.client-ip=74.125.228.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785166195; c=relaxed/simple;
+	bh=I/NhP5JBdaUaGxYXMds0uw+Ox/KW4RdR+azuwJW9+oo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:In-Reply-To:
+	 Content-Type:References; b=l2oVR7gMDvrJNUglnz/j8U/UABJGXz35TiyWkeCTXM2QXqup4LitqP3z8ZpRal3W1Zwx4jaOtPmcQzbvz17Bb6+iJasCQVPhx1NVMv1o5crnmOP2mhFefvXGUlWBwHKPZ69RvDAGGEW96nP50lL8LhCsPuzMxMa/yfv+dhgra/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=YLVx715I; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XDdCgNVt"
-Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-c9fe62e0da3so949744a12.1
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 08:27:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785166034; x=1785770834; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PA2a81BeXH83G/BeP/kggUZUVWwJJJOgGGWCxqitXXc=;
-        b=XDdCgNVtCzEAe4yqWh+ezwqETD7BGhvrYizMdhpblNwmZRah5lPcDCT4JAmYrLyDJS
-         gi+ESZzsTA13ceDM+gHnIaUNPlQuyZhSUZx8DMJEV0hCtsWtdLSxCGI2CTf4kGBHWumQ
-         mbjp4BbzDqNWx8wY+s5pW8UvEXIlAY9C1Bbhxdo71h6kBDOhVEbqUJqOlsAVLxGSB+X1
-         zO/VJ6Sf3+LpM3IggwbKekKkhAqgsmc9zif2NT4+Ds/2C7t4OVUG8BVuAooF8UhVL9oO
-         eueQO7QcvPz2qaG4aYDdC/aV1W3W0JV6Nrldt55gj+iGNa0KNWSKkYQE7xm4ucKowKJm
-         DA8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785166034; x=1785770834;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=PA2a81BeXH83G/BeP/kggUZUVWwJJJOgGGWCxqitXXc=;
-        b=EEBrglE2Hh3sGvgu/H5gcYwLQRM7x4fXCOe7pk9mh4dS7iowFM7fAIR3Dw8nvDv5x4
-         TKGVwds6/4Hqy42rHlYyJktV/8VluT49OMfPKmR/iGAvvGcntWH8znhIlT5WeZWQIzPF
-         NjGcrp6rVRkjFH+BJGD24arg0lbfcKPpvSZOrTxVW6JJgpbbT2/2uFLXugKC9hDHNOx7
-         Apy6NGSkc+Zcf1mvStzBCzn1QwNqTGIwwGyWUpIbNgzN6XfTz6ewjJlGHmODnDP9J7b0
-         P9KPUju42JpOtaejB9ins0YZCb236tk5QJTkp4FJnVr+FSRPM+GLN2edQzJQHVyvfN3w
-         U+pQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqzn5ywYbXQDw1S8nkYAFcHMwwLyFsUJuV3hfK4+gH7AaIwH/JTAi7OvXRrK3mM+LZgSOhUJuA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywa4InWwdidOHqBgOnX7Bupq8ax7wTVW09nxzQgf7QjTD1U7g69
-	Bnlq1mhthvPrycBHqEMwFLt2HfcmG6GDtfJpUIQ0nvh3aGmwgxc+ogTA
-X-Gm-Gg: AR+sD13rC/JKV5/1CxYhhKyFJAXYZbUYTyzKGRjhxzNr6mXF2KdpPYy8nMToZq1QROU
-	Ls6ouGYTxSU89B4MlqvUWlcGJrtn1A0S9SwyDQ6g9hTlmKwsK+if7qgt9aooQk5arJmMJpUH6YY
-	umB1Hoqr1KHiG3wUWR/u+V3d3c2dx+PWHu818mKtpBKionKGFjOVFTqLdQyzT6j2VAuxdOxrQxv
-	MyRnCleE12f8fdSyu1NVL5oU6ik95OWJ3/B6gGqGSX4vbb0fzBo4qW9bNwZUNMzGdP1bW1k+xw/
-	gKTVxX5xRERwjOJ8KoI68c5mwH69zSQHG+fIGxzAJijWMcQFdbiNaCOW7FiIhhaUZ8pzCpKCON7
-	qe511q77z6xU/KAxMePtTRAHEzrEm7nEKwalc2a/YRPF6evAyW2Y4f9S6GXTGwfVSelYsRb8=
-X-Received: by 2002:a05:6a00:8018:b0:848:41e1:473c with SMTP id d2e1a72fcca58-84e595d13afmr7024673b3a.72.1785166033675;
-        Mon, 27 Jul 2026 08:27:13 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:48::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbbb66b2cc2sm3364331a12.17.2026.07.27.08.27.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 08:27:13 -0700 (PDT)
-Date: Mon, 27 Jul 2026 08:26:16 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: sdf@fomichev.me, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Alexander Aring <alex.aring@gmail.com>, Stefan Schmidt <stefan@datenfreihafen.org>, 
-	Miquel Raynal <miquel.raynal@bootlin.com>, Remi Denis-Courmont <courmisch@gmail.com>, 
-	=?utf-8?B?UsOpbWk=?= Denis-Courmont <remi.denis-courmont@nokia.com>, John Fastabend <john.fastabend@gmail.com>, 
-	Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wpan@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com, =?utf-8?B?UsOpbWk=?= Denis-Courmont <remi@remlab.net>, 
-	Joe Damato <joe@dama.to>
-Subject: Re: [PATCH net-next v3 7/7] selftests: net: getsockopt_iter: cover
- rawv6, ieee802154, phonet and tls
-Message-ID: <amd4ka3u1X80rQsZ@devvm7509.cco0.facebook.com>
-References: <20260727-getsockopt_phase4-v3-0-e89627544639@debian.org>
- <20260727-getsockopt_phase4-v3-7-e89627544639@debian.org>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="YLVx715I"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260727152950euoutp02ddadba436c40e5ba7d659c12cf711507~GLzEdHhj73162931629euoutp02m
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 15:29:50 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260727152950euoutp02ddadba436c40e5ba7d659c12cf711507~GLzEdHhj73162931629euoutp02m
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1785166190;
+	bh=tzE/OIn1Tay8h/zGuVWlDIRcDbJgWktvdWGG0ocimEw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=YLVx715I29DQ0HgDsb8KBWlloZYZFTwqf03EVYSw4UY2b75LkhVjeTnYHwhnyvUl0
+	 N07FslQBB1gbIx0JwuIfWgstvA75t2PpD9jtv+pz0GyJgeKE492+KIwfRgXQNh6ram
+	 PqtFG0AqsKBPK3Qti9j3EMULSr2uA7zwPU315luc=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260727152949eucas1p2a8679cd740d0bccf89db7d0af8904225~GLzD_LPhR0209002090eucas1p21;
+	Mon, 27 Jul 2026 15:29:49 +0000 (GMT)
+Received: from AMDC4622.eu.corp.samsungelectronics.net (unknown
+	[106.120.77.34]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260727152949eusmtip2fc87d328d97108676a708182a310cbbe~GLzDpDCZB2760827608eusmtip2U;
+	Mon, 27 Jul 2026 15:29:49 +0000 (GMT)
+Date: Mon, 27 Jul 2026 17:29:46 +0200
+From: Jakub Raczynski <j.raczynski@samsung.com>
+To: muhammad.nazim.amirul.nazle.asmade@altera.com
+Cc: netdev@vger.kernel.org, rohan.g.thomas@altera.com, pabeni@redhat.com,
+	rmk+kernel@armlinux.org.uk, richardcochran@gmail.com
+Subject: Re: [PATCH net] net: stmmac: Fix E2E delay mechanism
+Message-ID: <amd5aoSrOSPrcB5e@AMDC4622.eu.corp.samsungelectronics.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20260727022524.7521-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+X-CMS-MailID: 20260727152949eucas1p2a8679cd740d0bccf89db7d0af8904225
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+	boundary="----BPbw8mQRoEt0u-7Bumi.mWTL05vKK99i-nO8JDZ4gq6NpdnW=_9c09f_"
+X-RootMTR: 20260727152949eucas1p2a8679cd740d0bccf89db7d0af8904225
+X-EPHeader: CA
+X-CMS-RootMailID: 20260727152949eucas1p2a8679cd740d0bccf89db7d0af8904225
+References: <20260727022524.7521-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+	<CGME20260727152949eucas1p2a8679cd740d0bccf89db7d0af8904225@eucas1p2.samsung.com>
+
+------BPbw8mQRoEt0u-7Bumi.mWTL05vKK99i-nO8JDZ4gq6NpdnW=_9c09f_
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260727-getsockopt_phase4-v3-7-e89627544639@debian.org>
 
-On 07/27, Breno Leitao wrote:
-> Add fixtures for the newly converted getsockopt leaves:
+On Sun, Jul 26, 2026 at 07:25:24PM -0700, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
+> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 > 
->   - rawv6:      IPV6_HDRINCL / IPV6_CHECKSUM int paths + a SOL_RAW
->                 unknown-optname case that reaches do_rawv6_getsockopt().
->   - ieee802154: WPAN_WANTACK dgram int path + non-SOL_IEEE802154 level
->                 rejection.
->   - phonet:     PNPIPE_ENCAP pep int path + non-SOL_PNPIPE level
->                 rejection.
->   - tls:        TLS_TX_ZEROCOPY_RO, the TLS_TX crypto_info round-trip at
->                 the base and full cipher sizes, the NULL-optval and short
->                 buffer EINVAL paths, and an unknown optname. It skips when
->                 the kernel lacks TLS or AES-GCM.
-> 
-> Each fixture pins the returned-length / errno semantics across exact,
-> oversized and short buffers, an unknown optname and a bogus level. The
-> semantics are unchanged by the sockopt_t conversion, so the tests pass
-> both before and after the leaf conversions.
-> 
-> Acked-by: Rémi Denis-Courmont <remi@remlab.net>
-> Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-> Reviewed-by: Joe Damato <joe@dama.to>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 2a0d7eff88d3..24d8c6e9f1df 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -755,7 +755,8 @@ static int stmmac_hwtstamp_set(struct net_device *dev,
+>  			config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+>  			ptp_v2 = PTP_TCR_TSVER2ENA;
+>  			snap_type_sel = PTP_TCR_SNAPTYPSEL_1;
+> -			if (priv->synopsys_id < DWMAC_CORE_4_10)
+> +			if (priv->synopsys_id < DWMAC_CORE_3_70 &&
+> +			    !priv->plat->has_xgmac)
 
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+This change does not compile, as has_xgmac no longer exists
+since 26ab9830beabd. Please check patchwork for more details.
+
+But on my test kernel 6.18 from a while ago where E2E is broken,
+it fixes the issue.
+So Tested-by me but not really.
+
+BR
+Jakub Raczynski
+
+------BPbw8mQRoEt0u-7Bumi.mWTL05vKK99i-nO8JDZ4gq6NpdnW=_9c09f_
+Content-Type: text/plain; charset="utf-8"
+
+
+------BPbw8mQRoEt0u-7Bumi.mWTL05vKK99i-nO8JDZ4gq6NpdnW=_9c09f_--
