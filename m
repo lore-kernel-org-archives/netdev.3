@@ -1,217 +1,126 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACFD3BB4A;
-	Mon, 27 Jul 2026 12:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21AB2AE78
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 12:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785154803; cv=none; b=AvYxS68kr4N+pdtyrByTz64sQHhvDW30Ecr1tcs8TM92yCHt5EXnUvVmRY58pn94cLX2IvlTohMAOk4wJJHP7vTR2920y1WE1/6G6zYJBxTQliH7w4tV6S4eXtLeQkR+KFoLRsJ1ESTAieaMWFIj3PFnzp1ui99OQCsdfHXqGfI=
+	t=1785154863; cv=none; b=O+3P65cqsDFV1fkZxwfCUYZHImRaysOrNg/QvSAD1gVkNnpBfC4lsxQt1e4uQDk390qQdIrBieUen6nZEzuUEyFz/cifc/OafWG9CTsyFGO3okK0bK+66EMNl3pXfHI5nU6ax8/2sDFTe9lIdroYahb0bB2jctML7Un8AxREJeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785154803; c=relaxed/simple;
-	bh=xh9Fni2Hs25zCaJsSQLUmBgiGc90T+LMFjKzyDngqOk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=f832YeM7gwNiFqMXpzvjLfaMMjuj0e42GC2G/0DO+9YQsasG/NjPW096CHtUukc1nlS7YRq5z8PDEGHhdt4KPzZLYc5fbJnK/gEihuhkPDeJPllJaoQSmAcDrLb3ThrhAwHpO0eaPG4okhUgpH5s+N/jwYIZW8xK5tafei8FjQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hadess.net; spf=pass smtp.mailfrom=hadess.net; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hadess.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hadess.net
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AB3DA3EC09;
-	Mon, 27 Jul 2026 12:19:55 +0000 (UTC)
-Message-ID: <1b96b673264782427636f9924c3bc1221e199655.camel@hadess.net>
-Subject: Re: [PATCH 1/4] usb: core: pass THIS_MODULE implicitly through a
- macro
-From: Bastien Nocera <hadess@hadess.net>
-To: Shashank Balaji <shashank.mahadasyam@sony.com>, Andrew Lunn	
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni	 <pabeni@redhat.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  Matthias Kaehlcke	 <mka@chromium.org>,
- Valentina Manea <valentina.manea.m@gmail.com>, Shuah Khan	
- <shuah@kernel.org>, Hongren Zheng <i@zenithal.me>, Heikki Krogerus	
- <heikki.krogerus@linux.intel.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Daniel Palmer <daniel.palmer@sony.com>, Rahul
- Bukte <rahul.bukte@sony.com>, Tim Bird <tim.bird@sony.com>,
- linux-embedded@vger.kernel.org
-Date: Mon, 27 Jul 2026 14:19:55 +0200
-In-Reply-To: <20260722-mod_name_usb-v1-1-96d781530f3f@sony.com>
-References: <20260722-mod_name_usb-v1-0-96d781530f3f@sony.com>
-	 <20260722-mod_name_usb-v1-1-96d781530f3f@sony.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	s=arc-20240116; t=1785154863; c=relaxed/simple;
+	bh=wFUxiSQrjhgg1LqLsImPUk7bWXvDpxCTcBCCMQuppO4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TUOocGUV/jnzMkKrVzmLSFMD4L36+Y0FvLFfs2xvD10PzU74tINdzKkK2lkR733XZUNEDPQcpgMX8+gDpvSetZShU69Ex4lJztnoUsHKuaViVsv8xfl1kk48cT8QhQq6r9poWvd+/zbwYkDXLfmTUznVXuHkEdmf4tmmjtW9drc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Z/YpPcLq; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Z/YpPcLq"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id BA1882069C;
+	Mon, 27 Jul 2026 14:20:58 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id cUKV7o8uqfuu; Mon, 27 Jul 2026 14:20:58 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 1C6DD206D2;
+	Mon, 27 Jul 2026 14:20:58 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 1C6DD206D2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1785154858;
+	bh=I3UAhik44KqbRaY175Ph+jAAj1wVKvW7kA2+6Oy9gWs=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=Z/YpPcLqEZ9e7o3b2HkH3c5/0HU3eBH01VxntnlLfK4xxv+F7MVabg1e8Bh6blR91
+	 agh71Id4QLq83NKsDUhWVLrR4xPbz558UFd+IzvjCcQ0FZJ3nBsx+EIdIiFD108OjZ
+	 xIic9koZhwGFDyUkpl7FOWmHNLMiOLXRncZSLu4KVm4RjjY7WCzyp8kcu+d+9ntWiX
+	 nT9R0z2eThNtlGDfrFVOmjVosRp4f5F1SXo211I9WLYIrGx2bVJJENU114LPlQCPxH
+	 pb+TE1fXi4AMgp1OJ5eQYP9g4++FVwLA06g2d0I8yT/bP8x9pZnv/CvFaMpRjBMJO1
+	 E0t1x/WFf6DIA==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 27 Jul
+ 2026 14:20:57 +0200
+Received: (nullmailer pid 4023483 invoked by uid 1000);
+	Mon, 27 Jul 2026 12:20:56 -0000
+Date: Mon, 27 Jul 2026 14:20:56 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Ashish Kunwar <ashishkunwar280@gmail.com>
+CC: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>
+Subject: Re: [PATCH v2] xfrm: fix TOCTOU race in per-CPU state cache add path
+Message-ID: <amdNKFJzzxj2OM2i@secunet.com>
+References: <CACk7sWd8q8Go4BEBNiVstgJpK6FvC4myj6yNEHdOMEE9QaB3Vg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-GND-Sasl: hadess@hadess.net
-X-GND-Score: -100
-X-GND-Cause: dmFkZTFCoccScwC5eVdujGPuhT/cg/ZYb0LWRLOgqTl+QHzAiK4piS5l1d5izVMuPwRODDq/oQKpFBzarL7h6HiAvcn/ERfLmojsC+5jFe0sn+MibMrLpjOWNWtim4YuVJCmN8mautHRow0AzLyDZlYa+9F+KHmrauC5xIsNrp10A/BjCkMkMG+tIncF1P5N0hXXemDjBAsp2mDi2UGU0xLwdwRjQe57mEvzfqJ8a4QhpFloLcNfEoMZzLmQqyA9pDS90qlYPPKG8lGX4S4m7zC89pK26Hy78n1XtcC3lJW+oOREubK6tT4JHtZs+XzVwBad3WxImw7g+Z93zPwPguBGd5eeE4LN/mvLaL//zC0AQTviUCX/3DVZt7ojsi/pxoUCg3KFyQBnk21X3hp7kSCJxFDtMZcXXJFUI/rdjBA5Jnrk7vBl89K1hddKYChze5M8JYum6Uib49RYuFtxNEDQJ4sdC7uCR0ciROPpRqNT+gbynIV9z1Q/v2gHkdfCANr/pa91/GiRcv/oClTubrmpnlpLVABYUdbdt0CoTKPos5lDKoy5hsffVzcIhQn8OinnX+HuAufe4Nm/9Ue2dXCPFPxii2Cv5RDKIc4KodX+HzT5u8OtMkusoBSPQ/fX5zGMp32ikKzdeOTsUIKecw8Z11VYikuU4yqxOL/7aBmB/AD/Uw
-X-GND-State: clean
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CACk7sWd8q8Go4BEBNiVstgJpK6FvC4myj6yNEHdOMEE9QaB3Vg@mail.gmail.com>
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-On Wed, 2026-07-22 at 12:31 +0900, Shashank Balaji wrote:
-> Rename usb_register_device_driver() to __usb_register_device_driver()
-> and replace
-> it with a macro wrapper that passes THIS_MODULE implicitly. This is
-> in line with
-> what other buses do.
-
-I found some examples by grepping for:
-git grep 'THIS_MODULE)' include/ | grep driver
-
-It could have been useful to mention some examples by name in the
-commit message.
-
-Cheers
-
-> Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
-> Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
-> Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+On Mon, Jul 27, 2026 at 05:46:21PM +0530, Ashish Kunwar wrote:
+> xfrm_input_state_lookup() checks x->km.state == XFRM_STATE_VALID
+> without holding xfrm_state_lock, then acquires the lock and adds the
+> state to the per-CPU state_cache_input list. A concurrent
+> __xfrm_state_delete() on another CPU can set km.state to DEAD and
+> remove the state from the cache between the check and the lock
+> acquisition. The lookup then re-adds the now-DEAD state to the cache.
+> 
+> After GC frees the xfrm_state, the per-CPU cache holds a dangling
+> pointer. The next inbound packet that iterates the cache dereferences
+> freed slab memory.
+> 
+> The same pattern exists in xfrm_state_find() for the outbound
+> state_cache.
+> 
+> Fix both by re-checking km.state inside the lock before adding the
+> state to the cache. For xfrm_input_state_lookup, a DEAD state must
+> not be returned to the caller, so drop the refcount and return NULL.
+> For xfrm_state_find, fold the state check into the existing
+> conditional so the cache insertion is simply skipped.
+> 
+> Fixes: 81a331a0e72 ("xfrm: add an inbound state cache")
+> Signed-off-by: Ashish Kunwar <ashishkunwar280@gmail.com>
 > ---
-> =C2=A0include/linux/usb.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
-4 +++-
-> =C2=A0drivers/net/usb/r8152.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
-> =C2=A0drivers/usb/core/driver.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 6 +++---
-> =C2=A0drivers/usb/core/usb.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
-> =C2=A0drivers/usb/misc/apple-mfi-fastcharge.c | 2 +-
-> =C2=A0drivers/usb/misc/onboard_usb_dev.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
-2 +-
-> =C2=A0drivers/usb/usbip/stub_main.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
-> =C2=A07 files changed, 11 insertions(+), 9 deletions(-)
->=20
-> diff --git a/include/linux/usb.h b/include/linux/usb.h
-> index 1da4ad1610bc..2466183a45f0 100644
-> --- a/include/linux/usb.h
-> +++ b/include/linux/usb.h
-> @@ -1368,7 +1368,9 @@ extern void usb_deregister(struct usb_driver
-> *);
-> =C2=A0	module_driver(__usb_driver, usb_register, \
-> =C2=A0		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 usb_deregister)
-> =C2=A0
-> -extern int usb_register_device_driver(struct usb_device_driver *,
-> +#define usb_register_device_driver(new_udriver) \
-> +	__usb_register_device_driver(new_udriver, THIS_MODULE)
-> +extern int __usb_register_device_driver(struct usb_device_driver *,
-> =C2=A0			struct module *);
-> =C2=A0extern void usb_deregister_device_driver(struct usb_device_driver
-> *);
-> =C2=A0
-> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index f61686433031..73b9b2af1ed2 100644
-> --- a/drivers/net/usb/r8152.c
-> +++ b/drivers/net/usb/r8152.c
-> @@ -10495,7 +10495,7 @@ static int __init rtl8152_driver_init(void)
-> =C2=A0{
-> =C2=A0	int ret;
-> =C2=A0
-> -	ret =3D
-> usb_register_device_driver(&rtl8152_cfgselector_driver, THIS_MODULE);
-> +	ret =3D
-> usb_register_device_driver(&rtl8152_cfgselector_driver);
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> diff --git a/drivers/usb/core/driver.c b/drivers/usb/core/driver.c
-> index f63004417058..eac1ff468c08 100644
-> --- a/drivers/usb/core/driver.c
-> +++ b/drivers/usb/core/driver.c
-> @@ -980,7 +980,7 @@ bool is_usb_device_driver(const struct
-> device_driver *drv)
-> =C2=A0}
-> =C2=A0
-> =C2=A0/**
-> - * usb_register_device_driver - register a USB device (not
-> interface) driver
-> + * __usb_register_device_driver - register a USB device (not
-> interface) driver
-> =C2=A0 * @new_udriver: USB operations for the device driver
-> =C2=A0 * @owner: module owner of this driver.
-> =C2=A0 *
-> @@ -990,7 +990,7 @@ bool is_usb_device_driver(const struct
-> device_driver *drv)
-> =C2=A0 *
-> =C2=A0 * Return: A negative error code on failure and 0 on success.
-> =C2=A0 */
-> -int usb_register_device_driver(struct usb_device_driver
-> *new_udriver,
-> +int __usb_register_device_driver(struct usb_device_driver
-> *new_udriver,
-> =C2=A0		struct module *owner)
-> =C2=A0{
-> =C2=A0	int retval =3D 0;
-> @@ -1023,7 +1023,7 @@ int usb_register_device_driver(struct
-> usb_device_driver *new_udriver,
-> =C2=A0
-> =C2=A0	return retval;
-> =C2=A0}
-> -EXPORT_SYMBOL_GPL(usb_register_device_driver);
-> +EXPORT_SYMBOL_GPL(__usb_register_device_driver);
-> =C2=A0
-> =C2=A0/**
-> =C2=A0 * usb_deregister_device_driver - unregister a USB device (not
-> interface) driver
-> diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-> index df166cafe106..2559a180fdee 100644
-> --- a/drivers/usb/core/usb.c
-> +++ b/drivers/usb/core/usb.c
-> @@ -1241,7 +1241,7 @@ static int __init usb_init(void)
-> =C2=A0	retval =3D usb_hub_init();
-> =C2=A0	if (retval)
-> =C2=A0		goto hub_init_failed;
-> -	retval =3D usb_register_device_driver(&usb_generic_driver,
-> THIS_MODULE);
-> +	retval =3D usb_register_device_driver(&usb_generic_driver);
-> =C2=A0	if (!retval)
-> =C2=A0		goto out;
-> =C2=A0
-> diff --git a/drivers/usb/misc/apple-mfi-fastcharge.c
-> b/drivers/usb/misc/apple-mfi-fastcharge.c
-> index af266e19f2fd..02adec28d9e6 100644
-> --- a/drivers/usb/misc/apple-mfi-fastcharge.c
-> +++ b/drivers/usb/misc/apple-mfi-fastcharge.c
-> @@ -245,7 +245,7 @@ static struct usb_device_driver mfi_fc_driver =3D {
-> =C2=A0
-> =C2=A0static int __init mfi_fc_driver_init(void)
-> =C2=A0{
-> -	return usb_register_device_driver(&mfi_fc_driver,
-> THIS_MODULE);
-> +	return usb_register_device_driver(&mfi_fc_driver);
-> =C2=A0}
-> =C2=A0
-> =C2=A0static void __exit mfi_fc_driver_exit(void)
-> diff --git a/drivers/usb/misc/onboard_usb_dev.c
-> b/drivers/usb/misc/onboard_usb_dev.c
-> index 11508ed4df25..c60406240416 100644
-> --- a/drivers/usb/misc/onboard_usb_dev.c
-> +++ b/drivers/usb/misc/onboard_usb_dev.c
-> @@ -706,7 +706,7 @@ static int __init onboard_dev_init(void)
-> =C2=A0{
-> =C2=A0	int ret;
-> =C2=A0
-> -	ret =3D usb_register_device_driver(&onboard_dev_usbdev_driver,
-> THIS_MODULE);
-> +	ret =3D
-> usb_register_device_driver(&onboard_dev_usbdev_driver);
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> diff --git a/drivers/usb/usbip/stub_main.c
-> b/drivers/usb/usbip/stub_main.c
-> index 79110a69d697..01452f7bdabb 100644
-> --- a/drivers/usb/usbip/stub_main.c
-> +++ b/drivers/usb/usbip/stub_main.c
-> @@ -371,7 +371,7 @@ static int __init usbip_host_init(void)
-> =C2=A0		return -ENOMEM;
-> =C2=A0	}
-> =C2=A0
-> -	ret =3D usb_register_device_driver(&stub_driver, THIS_MODULE);
-> +	ret =3D usb_register_device_driver(&stub_driver);
-> =C2=A0	if (ret) {
-> =C2=A0		pr_err("usb_register failed %d\n", ret);
-> =C2=A0		goto err_usb_register;
+> v2: Rebased, fixed outbound path to use proper conditional instead of
+> empty statement. Submitted to netdev per Steffen's feedback.
+> ---
+> net/xfrm/xfrm_state.c | 9 ++++++++-
+> 1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+> index 1748d37..d8a9cd1 100644
+> --- a/net/xfrm/xfrm_state.c
+> +++ b/net/xfrm/xfrm_state.c
+> @@ -1230,6 +1230,12 @@ struct xfrm_state *xfrm_input_state_lookup(struct
+> net *net, u32 mark,
+> 
+> if (x && x->km.state == XFRM_STATE_VALID) {
+> spin_lock_bh(&net->xfrm.xfrm_state_lock);
+> + if (x->km.state != XFRM_STATE_VALID) {
+> + spin_unlock_bh(&net->xfrm.xfrm_state_lock);
+> + xfrm_state_put(x);
+> + x = NULL;
+> + goto out;
+> + }
+> if (hlist_unhashed(&x->state_cache_input)) {
+> hlist_add_head_rcu(&x->state_cache_input, state_cache_input);
+> } else {
+> @@ -1622,7 +1628,8 @@ out:
+> if (x && x->km.state == XFRM_STATE_VALID && !cached &&
+> (!(pol->flags & XFRM_POLICY_CPU_ACQUIRE) || x->pcpu_num == pcpu_id)) {
+> spin_lock_bh(&net->xfrm.xfrm_state_lock);
+> - if (hlist_unhashed(&x->state_cache))
+> + if (x->km.state == XFRM_STATE_VALID &&
+> + hlist_unhashed(&x->state_cache))
+> hlist_add_head_rcu(&x->state_cache, &pol->state_cache_list);
+> spin_unlock_bh(&net->xfrm.xfrm_state_lock);
+> }
+
+Your mailer removed all indentations.
