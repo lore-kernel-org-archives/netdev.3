@@ -1,176 +1,143 @@
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+Received: from mailhub16-fb.kaspersky-labs.com (mailhub16-fb.kaspersky-labs.com [5.79.125.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BEA2F7F00;
-	Mon, 27 Jul 2026 11:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA6D323416
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 11:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.79.125.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785153309; cv=none; b=fSwt7vClIkQXpd2WPQlrrrTdREDui8OdlGWvmMybsM+hznWyN+Uq42f/aIHQv+T9Aa9ZxjZ6jNDfiL0fO/Z1hG8P7XNCnC0W2lMYtjVCCDXV88cjNxHlPmz3Reg+7IvfM7q7mHA0VesGFJe7Y4nfZ7MYcypuHVvvl5LMJ3uxdl4=
+	t=1785153404; cv=none; b=So7KCCgruBXX+2P5/X43sSOyB9F3y8/hMH6eFWrDNK/3Rs+tvaVHkOt+L2jweAogAbX7T5ENFimhMbQsmKFL5iV4y38RrjIWjREdD2B6kO72/ci0dWrFsle+8Ncb27SYoimSJSADc3mwUSy68ersSN7qEgHFAmTpoVmdtp4a1/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785153309; c=relaxed/simple;
-	bh=YDm++PBz78yrj4Mo9DYPbca0wLNFAgnaEc4UoJoICIA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r9qtq/ztY1umzpuoUZbiZMNMxyzLhWD4RzGHelpbU7igUtuHzzNfMTi45tQC4EeRzpUNyq9Flb/4fS3/wKpHLvnHPeihbZvsErupW2cgMBP0HgITEXsJxIjtsH/x6gE0bfYfUv1lPtMSNLRIzVuSSkfPZcl/J7WbeexE6oSeTsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=nBmVjs1n; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mINXaGn6; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1785153404; c=relaxed/simple;
+	bh=aCRjKsoUvhAH8ed2G/SDT/uPX5xKPyyUIenUtluJ/bk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=VRqUHbiQdngiaBQR2PVcbbXmgUDsY7cVzb33rPCE3LflHNe6yNxwqNCUc1TD6e997j4YWGUjXhgKeN1xybqAl3zuzIDmsxNHM7sO9VRu5B1eJ/+5ypqJbI+CLdvdZSm67VFTqtI9DNbWCvL3vZVLQpWbnBheI3B3fd/M3MaCMss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=mCfDjYXO; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=OAlV1WKa; arc=none smtp.client-ip=5.79.125.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="nBmVjs1n";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mINXaGn6"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 6325AEC007B;
-	Mon, 27 Jul 2026 07:55:04 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Mon, 27 Jul 2026 07:55:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1785153304; x=
-	1785239704; bh=1n/Khldtg6xbHy2jtiCSkAd5klR193GG81GnZWYs2W8=; b=n
-	BmVjs1njU/gdi3MZQXViEmYQDyBFW8F66bkXt5EoriZlIrkUPdy32Gdlzep3fJzd
-	sUfQy+RbkmoaV92vAXq7W8mh7C5geUhcZo3YCJKttmj0G06SxGZM28EDg9/PTIZ9
-	NeD5w8jBA3Hul7NLxzdycaNvY2OmQ0YqwUMEyhH2kx4ZigX3ZtmcRaBWqAXrqo/T
-	z355R6OwPC0qqjv+VtfHqoMxW1ZoGzjloNkfZphLd6mgX81W2lO4kicXSW6VTNHt
-	KdZ/ArBpU5+ZyS4DQh0YN8w6jeFeTs79dWz3dIshGLIMRtmfx2FuTkQx5tfi2aYE
-	d7OjpDnq7+A2Jv6HmTW6A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1785153304; x=1785239704; bh=1n/Khldtg6xbHy2jtiCSkAd5klR193GG81G
-	nZWYs2W8=; b=mINXaGn6bqBsSWwec2QLRJdtUjKm88G0l6jnSKyveE39yXUNz/j
-	XQy8kvINczP9spG6vqwmeO0dTfQr401srmydpOAzdRtixql+6wxdlNuHSbavXaX5
-	iGAoe7qNrpzko/XeHUZSFfExW9hyaZvYksh133hUgRZiin7awbRSiNl0/7YWggYq
-	D6gXPU58fs5hTnktDE7UZO/kjOO9iGZciJukOCMHi9tlmqAazO/3fXn0n5IayLhD
-	f4Ts/E3cpdm4RNIL/4lGdtA+CODAni5OMSMVZU8G5tVFhsV07r11LVQYH9njlqrd
-	5uKInanwQYlUdNPrp4SvLo+CN6fLV+DcjcQ==
-X-ME-Sender: <xms:GEdnajmEe4WixFsR3CxQWICer3vV18xTzoajEWcLldUHz3an3DcDvA>
-    <xme:GEdnanjwna_MWsYTtLTOBFElkhc9rFxaF0Bmk9IWiaBSjk0fxYTzgPmHdR9IADyw7
-    wGW6iyAsqnRWW5SCEnqfvXLLAJdzRP2bPlZcm9j6ae3i2DHPzssJkI>
-X-ME-Received: <xmr:GEdnan0HoLKh5V2R0pUfxVYBZS96memdh38c1Kbbc7FW0c3asdmKNXMPX-8>
-X-ME-Proxy-Cause: dmFkZTEiaK2Ock2969CkF6+OcYxcbRC6FoAxf4St2dKsRvYdj0MWk6nNQrSq/KGlylvMgn
-    hjjop9ZjXKiLyW5w4/th1Wx7nh6GunxVGIqSnExzjLEFxNbEDEmB4I9l4+svrmKexLHsP/
-    gG+MSS+G5mue6/e2pmYTnYbq2wVcgWLZPZlR6BLmtQyPw+DesR92upaLa3+J8ca6M+W0RI
-    CtjznfgLPMNxUYxZ+e38Y97y7uVrnKuwXdDg7fzCbyPgo0yOm2NQkVKeVzXkyqyvehB4Zb
-    YC3eeB0C/NFsYjrf5AaW2mCoHbgSA+DegRXX7vsbG7oz+izbVmFQHw/I0D84Uf4NHp+bGb
-    Fyt9GgtM/H4isU4hwX/1wjYXHkfFhkxrUL6Og9uhGoWtbdIE9wcbdE7kZjDhNOIfqj+N4N
-    7SdbKAkxf5buy7UmvJaQnH/KqgrFTmRdS9B9EX4dWR5GiMvUIWGV0PJjCjwoSaJQVDygfe
-    Z0AosAWLmdNNPf23w5cfm1pPPMGIkdM6oDbHmxr3Uin6QVnc9An14uieR8uL5dKNz/BbJ9
-    3dNz07zAZAwYTJLjA7etG82sS6ZHE00p5qqWjKqibr4pH4K2rXIfoxlujM80hU7Q0Y9E2j
-    r0nmE2FE64QBcI3nb7DWfvjVghny0wOAv/+gi43puo4HpLn6fNnvHA5CgsrA
-X-ME-Proxy: <xmx:GEdnagLeZnQkpL1Rl4QyQztO6P-IgmzOQxYqws7Gdg-6zZoKpZ1xRA>
-    <xmx:GEdnanyu9NQ-GuWB18xzlSiEAWPdz1x119m0lCQTxA9zXwD_YA_LpQ>
-    <xmx:GEdnauWtqnEFWCCwtv6orgf1jn8YfgnFRFAB0IXQSNaDdhLnsF1iLQ>
-    <xmx:GEdnaniGkDYgx-mp7xRhj69Bn2brHrW1cMtbz55DSSBqnQ3SpgxVMQ>
-    <xmx:GEdnaq2_d-TAse9Ye4BRAd-h-eHZL2NK1jTDfhOTFZRLXeIHL9iPQphp>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Jul 2026 07:55:03 -0400 (EDT)
-Date: Mon, 27 Jul 2026 13:55:00 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: chanyoung <ppoo1220@gmail.com>
-Cc: netdev@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	David Howells <dhowells@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net 2/2] selftests: tls: add a test for splicing onto a
- full plaintext record
-Message-ID: <amdHFJlOVpACBir6@krikkit>
-References: <20260726105556.2719227-1-ppoo1220@gmail.com>
- <20260726105556.2719227-3-ppoo1220@gmail.com>
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="mCfDjYXO";
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="OAlV1WKa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202505; t=1785152794;
+	bh=aCRjKsoUvhAH8ed2G/SDT/uPX5xKPyyUIenUtluJ/bk=;
+	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+	b=mCfDjYXOwHM5KE36i2DhLWZWpY04D/z0nQx6yWfam0jVO2kya03kgKNffPBxjjN2I
+	 gVd3FD5RUiYtLFYmMbUXzP1K7imteHOkZgEMJA+bB7KL/fEnrtHGMPlDxcPl6/buge
+	 LzMjkCacdLMGDXaEnulzLBuC8xJmvavUAS3Ym8+xIsjuhTDBqJsDCDqRQT4211IN33
+	 SKG8A8JZpVCs+0YPaV9QVTmB+VS+KygJq5HQDBhj0cU/Sxieg93BkOiMZfmBZqCqwW
+	 KmYbzDr5Z39FhEg6IgVlRXZISCBMvJQUTEE0K6On+3hr/VVkvdROxiZAH65gAi07JZ
+	 QEUUqWtKcwVmw==
+Received: from mailhub16-fb.kaspersky-labs.com (localhost [127.0.0.1])
+	by mailhub16-fb.kaspersky-labs.com (Postfix) with ESMTP id DDF9FC08F15
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 14:46:34 +0300 (MSK)
+Received: from mx16.kaspersky-labs.com (mx16.kaspersky-labs.com [5.79.125.27])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "mx16.kaspersky-labs.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub16-fb.kaspersky-labs.com (Postfix) with ESMTPS id BAE42C08DC6
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 14:46:34 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202505; t=1785152786;
+	bh=aCRjKsoUvhAH8ed2G/SDT/uPX5xKPyyUIenUtluJ/bk=;
+	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+	b=OAlV1WKaLxIDng7F1OKTDY3xhM858IuigJJynaE/njgQV/bcHsbMZNdJVySGzYSXm
+	 FGumyKUvQbzym7EEYCoT67U1YAhAtT0RVuZY8+d5y2bphLuiZ7wE+YXSvC6Z4MWD9D
+	 7tyi8fpR/6yOmsLxvdn12X6Ig1DESlEeqweexxrXJKIS1AKyiTRc5k/I8fy3NKT+z/
+	 0AWoXA8zilztQMzwyO/26rjvaou9rO+3PRyHQl6SC7S3otBbB+L2p9kZMqvmsM8U/U
+	 YWMM4e0v+b/8qI+pEcUH1C5lj7aWYU2YXj0W0dh/21R0dMd26+7ZaBy1dp2cA6M1zL
+	 SFlP3IBtnUCtQ==
+Received: from relay16.kaspersky-labs.com (localhost [127.0.0.1])
+	by relay16.kaspersky-labs.com (Postfix) with ESMTP id BD386C07A8A;
+	Mon, 27 Jul 2026 14:46:26 +0300 (MSK)
+Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub16.kaspersky-labs.com (Postfix) with ESMTPS id 9711BC078CF;
+	Mon, 27 Jul 2026 14:46:25 +0300 (MSK)
+Received: from HQMAILSRV1.avp.ru (10.64.57.51) by HQMAILSRV2.avp.ru
+ (10.64.57.52) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 27 Jul
+ 2026 14:46:24 +0300
+Received: from HQMAILSRV1.avp.ru ([fe80::487c:531c:bded:f724]) by
+ HQMAILSRV1.avp.ru ([fe80::487c:531c:bded:f724%2]) with mapi id
+ 15.02.2562.045; Mon, 27 Jul 2026 14:46:24 +0300
+From: "Sergey V. Frolov" <Sergey.V.Frolov@kaspersky.com>
+To: "rkannoth@marvell.com" <rkannoth@marvell.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "sbhatta@marvell.com"
+	<sbhatta@marvell.com>, "davem@davemloft.net" <davem@davemloft.net>,
+	"bbhushan2@marvell.com" <bbhushan2@marvell.com>, "gakula@marvell.com"
+	<gakula@marvell.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"sgoutham@marvell.com" <sgoutham@marvell.com>, "edumazet@google.com"
+	<edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH net] net: octeontx2-pf: Fix UB in shift operation
+Thread-Topic: [PATCH net] net: octeontx2-pf: Fix UB in shift operation
+Thread-Index: AQHdG2cbGfNQf8WH/02d6/mTYwc6LraAhrYAgACLSgA=
+Date: Mon, 27 Jul 2026 11:46:24 +0000
+Message-ID: <159a6806dd1ea12bbd559f664ce30d306cdf1178.camel@kaspersky.com>
+References: <20260724121941.2637908-1-Sergey.V.Frolov@kaspersky.com>
+	 <ambQOBLp5yYDbRSr@rkannoth-OptiPlex-7090>
+In-Reply-To: <ambQOBLp5yYDbRSr@rkannoth-OptiPlex-7090>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-kse-serverinfo: HQMAILSRV2.avp.ru, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: Clean, bases: 7/27/2026 9:10:00 AM
+x-kse-bulkmessagesfiltering-scan-result: InTheLimit
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <EE71A4BF6ABC7C45BFA31E83F6811E9E@kaspersky.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260726105556.2719227-3-ppoo1220@gmail.com>
+X-KSMG-AntiPhishing: NotDetected
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/07/27 01:08:00 #28548458
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 52
 
-2026-07-26, 19:55:56 +0900, chanyoung wrote:
-> diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
-> index cbdd3ea28b9..d2666884ea8 100644
-> --- a/tools/testing/selftests/net/tls.c
-> +++ b/tools/testing/selftests/net/tls.c
-> @@ -835,6 +835,58 @@ TEST_F(tls, send_and_splice)
->  	EXPECT_EQ(memcmp(mem_send, mem_recv, send_len), 0);
->  }
->  
-> +/* Splicing into an open record whose plaintext scatterlist ring is already
-> + * full used to wrap the ring's end index onto its start, after which
-> + * sk_msg_full() reported the full ring as empty: further pages overwrote
-> + * live entries and sg.size desynced from the walkable scatterlist, which
-> + * oopsed in the AEAD walk once the record was pushed.  The ring is left
-> + * full and unpushed by the copy path, which does not push the record when
-> + * the fragment it adds is the one that fills the ring.
-> + */
-
-This comment (and the other one above the loop) duplicates contents of
-the commit message. Please drop them.
-
-> +TEST_F(tls, splice_onto_full_record)
-> +{
-> +	int frag_len = 100, extra = 4;
-
-Why 4 extra splices? One should be enough to hit tls_sw_sendmsg_splice
-with the skmsg already full?
-
-> +	char mem_send[5000];
-> +	char mem_recv[5000];
-> +	int nfrags, i, total;
-> +	int p[2];
-> +
-> +	memrnd(mem_send, sizeof(mem_send));
-> +
-> +	/* MAX_SKB_FRAGS is configurable (17 by default), so sweep the
-> +	 * plausible range to land the one-byte send exactly on a full ring
-> +	 * whatever this kernel was built with.
-> +	 */
-> +	for (nfrags = 12; nfrags <= 45; nfrags++) {
-> +		total = (nfrags + extra) * frag_len + 2;
-> +
-> +		for (i = 0; i < nfrags; i++) {
-> +			ASSERT_GE(pipe(p), 0);
-
-Do we really need a fresh pipe for each iteration?
-
-> +			EXPECT_EQ(write(p[1], mem_send, frag_len), frag_len);
-> +			EXPECT_EQ(splice(p[0], NULL, self->fd, NULL, frag_len,
-> +					 SPLICE_F_MORE), frag_len);
-> +			close(p[0]);
-> +			close(p[1]);
-> +		}
-> +
-> +		EXPECT_EQ(send(self->fd, mem_send, 1, MSG_MORE), 1);
-> +
-> +		for (i = 0; i < extra; i++) {
-> +			ASSERT_GE(pipe(p), 0);
-> +			EXPECT_EQ(write(p[1], mem_send, frag_len), frag_len);
-> +			EXPECT_EQ(splice(p[0], NULL, self->fd, NULL, frag_len,
-> +					 SPLICE_F_MORE), frag_len);
-> +			close(p[0]);
-> +			close(p[1]);
-> +		}
-> +
-> +		EXPECT_EQ(send(self->fd, mem_send, 1, 0), 1);
-> +
-> +		EXPECT_EQ(recv(self->cfd, mem_recv, total, MSG_WAITALL), total);
-> +		EXPECT_EQ(memcmp(mem_send, mem_recv, frag_len), 0);
-
-Only comparing the first chunk ("frag_len" bytes) and not the full blob
-("total" bytes) isn't very useful.
-
-> +	}
-> +}
-> +
->  TEST_F(tls, splice_to_pipe)
->  {
->  	int send_len = TLS_PAYLOAD_MAX_LEN;
-> -- 
-> 2.43.0
-> 
-
--- 
-Sabrina
+T24gTW9uLCAyMDI2LTA3LTI3IGF0IDA4OjU3ICswNTMwLCBSYXRoZWVzaCBLYW5ub3RoIHdyb3Rl
+Og0KPiANCj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBTZXJnZXkuVi5Gcm9sb3YgPFNlcmdleS5W
+LkZyb2xvdkBrYXNwZXJza3kuY29tPg0KPiA+IC0tLQ0KPiA+IMKgZHJpdmVycy9uZXQvZXRoZXJu
+ZXQvbWFydmVsbC9vY3Rlb250eDIvbmljL290eDJfdGMuYyB8IDExDQo+ID4gKysrKysrKystLS0N
+Cj4gPiDCoDEgZmlsZSBjaGFuZ2VkLCA4IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+
+ID4gDQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L21hcnZlbGwvb2N0ZW9u
+dHgyL25pYy9vdHgyX3RjLmMNCj4gPiBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L21hcnZlbGwvb2N0
+ZW9udHgyL25pYy9vdHgyX3RjLmMNCj4gPiBpbmRleCA0MDE2MmIwODAxNGQuLjM5YmQ3M2EyMTRh
+ZiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9tYXJ2ZWxsL29jdGVvbnR4
+Mi9uaWMvb3R4Ml90Yy5jDQo+ID4gKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvbWFydmVsbC9v
+Y3Rlb250eDIvbmljL290eDJfdGMuYw0KPiA+IEBAIC01MywxMCArNTMsMTUgQEAgc3RhdGljIHZv
+aWQgb3R4Ml9nZXRfZWdyZXNzX2J1cnN0X2NmZyhzdHJ1Y3QNCj4gPiBvdHgyX25pYyAqbmljLCB1
+MzIgYnVyc3QsDQo+ID4gwqDCoMKgwqDCoCBpZiAoYnVyc3QpIHsNCj4gPiDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCAqYnVyc3RfZXhwID0gaWxvZzIoYnVyc3QpID8gaWxvZzIoYnVyc3QpIC0g
+MSA6IDA7DQo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdG1wID0gYnVyc3QgLSByb3Vu
+ZGRvd25fcG93X29mX3R3byhidXJzdCk7DQo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBp
+ZiAoYnVyc3QgPCBtYXhfbWFudGlzc2EpDQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBp
+ZiAoYnVyc3QgPD0gbWF4X21hbnRpc3NhKSB7DQo+IA0KPiBUaGFua3MuDQo+IGNhbiB3ZSBoYW5k
+bGUgMjU1IGNhc2Ugd2l0aCA8PSA/IGl0IGxvb2tzIHNpbXBsZSB0byBtZS4NCg0KVGhhbmsgeW91
+IGZvciByZXZpZXdpbmcgdGhlIHBhdGNoLiBJIHNlZSB0aGF0IHlvdXIgc2ltcGxpZmljYXRpb24g
+d29ya3MNCndpdGggdGhlIGN1cnJlbnQgdmFsdWUgb2YgbWF4X21hbnRpc3NhICh3aGljaCBpcyAy
+NTUpLg0KDQpIb3dldmVyLCBteSBjb25jZXJuIGlzIHRoYXQgdGhpcyBhcHByb2FjaCBpbnRyb2R1
+Y2VzIGFuIGltcGxpY2l0DQpkZXBlbmRlbmN5IG9uIHRoZSBmYWN0IHRoYXQgbWF4X21hbnRpc3Nh
+IG5ldmVyIGJlaW5nIGNoYW5nZWQuIElmIGluIHRoZQ0KZnV0dXJlIHNvbWVvbmUgdXBkYXRlcyB0
+aGlzIGNvbnN0YW50IChlLmcuIHRvIHN1cHBvcnQgbmV3IGhhcmR3YXJlKSwNCnRoZSBzaGlmdCBv
+cGVyYXRpb24gY291bGQgYmVjb21lIGludmFsaWQgYWdhaW4sIGFuZCB0aGUgVUIgd291bGQNCnJl
+dHVybi4gaWYgbWF4X21hbnRpc3NhIGJlY29tZXMgMTI3LCB0aGVuIFVCIHdvdWxkIHJlYXBwZWFy
+IGZvciBidXJzdA0KdmFsdWVzIGluIHRoZSByYW5nZSAxMjgtMjU1ICh3aGVyZSBidXJzdF9leHAg
+d291bGQgYmUgNiwgbWFraW5nDQoqYnVyc3RfZXhwIC0gNyA9IC0xKS4NCg0KTXkgb3JpZ2luYWwg
+cGF0Y2ggZXhwbGljaXRseSBoYW5kbGVzIGJvdGggY2FzZXMgKCpidXJzdF9leHAgPj0gNyBhbmQg
+PA0KNyksIHNvIGl0J3Mgcm9idXN0IHJlZ2FyZGxlc3Mgb2YgbWF4X21hbnRpc3NhIHZhbHVlLiBJ
+J2QgcHJlZmVyIHRvIGtlZXANCnRoZSBleHBsaWNpdCBjaGVjayB0byBhdm9pZCBpbnRyb2R1Y2lu
+ZyBhIGhpZGRlbiBkZXBlbmRlbmN5IHRoYXQgbWlnaHQNCmFmZmVjdCBmdXR1cmUgbWFpbnRhaW5h
+YmlsaXR5Lg0KDQpXaGF0IGRvIHlvdSB0aGluaz8NCg==
