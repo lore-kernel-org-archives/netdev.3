@@ -1,561 +1,186 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013064.outbound.protection.outlook.com [52.101.83.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B999B21A453
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 04:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785127052; cv=none; b=rYFDxiK3Lw01BttK2CFmvkaLNBJd5gkXK9ZlUzP+gNnJltmFH+c6CXJ/Xswfb+yi0CScf5KS2fFw4oYFpA1klMj+CewBl6ogPfScmvCnq4/ZAF+BPiKhMQwXXVcWNnGtImK45SHDlCrRr1syKK7oWRMacShkttXF+/PwT77an70=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785127052; c=relaxed/simple;
-	bh=0ZczEzbNgwJtAgdsZnZI+NSmWooov4lGamBOGBDh1xY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wc0ExDJ676ywZpgXIK1pulLKSzKORx1bpsL4kfZH3W9MS3PyoFelVcSBDcnuk9fmN7Knva8M0h1prPeoh62j+FP8JLO+8+SebP6hEzkup/CDvRAQTar+cfwqWu1KWQhkZeLjSujj3QzpVqjVxm8GlOR0W16cxe6ZLYyqjA59AMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fCxv9Jlt; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9F215E5DC
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 04:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785127616; cv=fail; b=EeNQ3nIEoBl/U2oNw++CIHZqAoBK4bZyh4Dd/drP7PuURuIbZmFDWtR150ljbzBFKr21y//yXFORa2+rhZ80aNN12IcNmXi+S1ilYkhonjaRIZm86VltxO+sDhQ4ieZTIx4DPf5ndr1Trm1Xh3Rz96Cq0QTT1OyONW8ruqI8kos=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785127616; c=relaxed/simple;
+	bh=poVaPehiC+aW/QtwFgMj1RUNevFVvRdmZxVdYcMW5w0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ar9Lj5uSwmdWLhrYysyOpFH4B37HJXTqajbKu6POoctI7PxWTjhMq4nFcuuBpW2yZTJFp2op4HYjkUuOAkfNeZ/tJfXYg3jO9sHcNZJl4/fUWVOz4obuD2pzpA9kl7yDOF6TjBMeT5FeRF6IBiaB57k9UhKH7O1QQSXmBtmI8ow=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=J0stoObw; arc=fail smtp.client-ip=52.101.83.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fCxv9Jlt"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-381216921aaso2126615a91.1
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 21:37:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785127050; x=1785731850; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=y94L/TDRnaooi7e4Q9kVoWGG1TPVjdvJLR2iOWGfF8A=;
-        b=fCxv9JltZEdXsKDZl0+jIlCIXvHCVsEg+iBMFKa6OfgX3LrEwZEMUqoXkSyK1BIFEG
-         pQ5kG3eFo+kXGrm+hP4xZFz8+5t0MP5fJ4CQJCUFlKOyJeOs18xhDy/guCNxDNNnlcdc
-         x8rwRQX2FMYe1RkLtH5NqrlmUFLP7K3Lp44OZhnYJ/R+uxBygUEZ6sdYtXc+vN+EDnpL
-         qK2xujUZGir7k+uD+aV2dtVHr9gKRR3+gd+vTudS4ieM5yeooDpejoqRDQkDubWM02aU
-         Eg07fmgI43MiDywmQfdMui7O0aYs54b9IfEBDMoS5jZUFH5IbNx3EsEqR6bLB4PM0o1r
-         noUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785127050; x=1785731850;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=y94L/TDRnaooi7e4Q9kVoWGG1TPVjdvJLR2iOWGfF8A=;
-        b=kNC2kiP0RbczlrCiKCxT+d0Qonw4XOg+GHS0BjG1Q058mK2vcErg/f2yjqfXkRrjZz
-         nqwDEnTfpVBEuz2Cpl1ucLgbp1fe1aMEOBm+iMCNpKhnreWUw7FAXhfU1l9BM722Utk3
-         3YdJq0ss+0brfi1wT8X/0Ea3seKsUQzABLbD9p+N3SfAR2Q9vzAqPahjldAUZ/guE8Uf
-         br+Sg++kEJ7uioPNhX9x8oNJflPhiq7oCtWQIWS0JxikvFj5DdenPMjSf0kSHmoghtHl
-         kquEj5vwoVS0xXOpMU2ay7MZrgCn8uTtH2Q+V5s+1Cg8xnLPTyg6qc23yOoOyebYcR+T
-         xc9g==
-X-Gm-Message-State: AOJu0YyPTxHVpJOlgxKAOV/HD73VQ7DoQWhrlAA7ZhUBw/tycUXIhyqF
-	SFp8rzG6nLjcvAatAjFeK6DK66JmDedwc4tPwklvIQ+Vfie/+dNW9KrqywY2pg==
-X-Gm-Gg: AR+sD12Phxqv8voRK2f3Qn1g4JG60weCokS4r70Bh1vq3KXnRcll0eSq8Enqkc60bsw
-	aV9xdnMYkYlphczUzMQV/cgjdeW1Ps89Sexy6XUPI7R1lY+ZGd+Zx6hGp8QwBpG9t/jRFIZfcar
-	vjhIrqJUSH2i8tQpNHk6X8oetD+37mDniLe8OI4Pr480E8rpFmo8PflNSnezQPNo5Xr0jkViVDi
-	+snmOeG7MwaRfS+yTUOOnNgfdI32O+Dp6OOYpVvLmI5TcBJdimp3lhB5IlJ5MCBOk4bRH69d/ua
-	k4CcUWH7sl0qvT20OxdASP4MQrGRlj8HCzoSVKy6Lr2SUnE0mgcwRM1yY5M9YI20iO20sGtt3Hs
-	V7mR1j7FthMqCE941PUJlP2DhclS6TGFjIxI1keSz2LyG3SrYCXtty2YYbATxAJ4CIciBa6IqeH
-	lJQ8013gvtEnpwlQ==
-X-Received: by 2002:a17:90b:2ecd:b0:37f:9ce3:ca95 with SMTP id 98e67ed59e1d1-38f296563b8mr6287355a91.30.1785127050175;
-        Sun, 26 Jul 2026 21:37:30 -0700 (PDT)
-Received: from marceloPC ([2804:1b3:a8c2:99cf:6381:2414:ebe3:a179])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc4164ddsm26249985eec.9.2026.07.26.21.37.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 21:37:29 -0700 (PDT)
-From: Marcelo Mendes Spessoto Junior <marcelomspessoto@gmail.com>
-X-Google-Original-From: Marcelo Mendes Spessoto Junior <marcelospe@proton.me>
-To: netdev@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org,
-	Marcelo Mendes Spessoto Junior <marcelospe@proton.me>
-Subject: [PATCH 4/4] selftests: net: adopt harness for flow label mgr
-Date: Mon, 27 Jul 2026 01:25:10 -0300
-Message-ID: <20260727043516.93101-5-marcelospe@proton.me>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260727043516.93101-1-marcelospe@proton.me>
-References: <20260727043516.93101-1-marcelospe@proton.me>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="J0stoObw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XoZbpSCqxYFmgWTXMZchtnBX/VO42zp6CZMnRo9qHnRi09b7aXlvDyCYYpr5HNURCjGGd5oS/Caf/SYmFzuS75aMMkOIT8CRIaovzxrDxjoQfPdbTVrjsPLnDE9zZH6oacaECgushu+HYLnXR1xCJzRYTJfaUXBAmL8BOudd13C5xv1byWKoA3BpwymCsEUBzgkHTQwZdtuu8y/gDC8HHFi/u7//BghyxmobOhugY8ebzDwS9JSRs4geC6lb+jEZuzcLPR4+mK8cytqB5J7EixkO7RVa5gZ1eQg0CEKSPIVlVealGNVLBr+u3q11A1n5SerA/RT0UVzf1qY/5qlZfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=poVaPehiC+aW/QtwFgMj1RUNevFVvRdmZxVdYcMW5w0=;
+ b=LJjZrQWh1n6Rpq0OEY7NpPnwHOLSMAQug0GONcRJExQmU8Wvgp8lGSonZej5BHtASmaxqunp/1+G7Q27warBjafiXXv8rnTgBZFpNo9drbnsGu6VS+Qx56ILKOsWE4t9TkR39flkIPNVYECBV8hP37xLmQIsVfi9xJ9OfNQXB5RSzVN/wnqzrVufWOraf4laMgRFIVYW6POwg6SdB+77cZN/06qavaA0nruJX+y4mm0jbKC0pE/BB1N9J70iHzsfdBGFiWX3/ybdP6G7tHesz8FHdK+XnlPCaxSZTKPyA9l5htTFo39uhSGR6cbqBLDG2qLrLQivLV2zMw4UFJ0nuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=poVaPehiC+aW/QtwFgMj1RUNevFVvRdmZxVdYcMW5w0=;
+ b=J0stoObwcBjrlp8TP++C0JXNjJvqXnwWYdntQASa/uXFFTt7bZoHnrxCN4AuWkTJts2SxS2RbG16zX5H1Vgy1CFa2IoDu27J4z8/KKFuzYTENZ3TiAEuyDBzE3AYdKjev07ae83yeipGM8X4cPbRPlhMSN3F27QFWl0LlYQra6YbkOYTRRfL/OWwuZ63r5W0fDoWyFYoohEp/M2CukAk+ho7Ff4QDMoTa/i0SNC5OexrVnJam65FiNaEODeHmIOXtBjIU8zjzRp1dlc9MTpt5PV0YUFa8RSCrlvWk5UFdQCFPKcyDM6erTxkdRCKFOWqKrMeEvJprewRLvml3U9KDA==
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::18) by GV1PR04MB10077.eurprd04.prod.outlook.com
+ (2603:10a6:150:1a5::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 04:46:49 +0000
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 04:46:48 +0000
+From: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>
+To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
+CC: "Frank.Li@kernel.org" <Frank.Li@kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, network dev <netdev@vger.kernel.org>
+Subject: RE: [PATCH net] ptp: netc: fix potential interrupt storm caused by
+ incorrect unbind order
+Thread-Topic: [PATCH net] ptp: netc: fix potential interrupt storm caused by
+ incorrect unbind order
+Thread-Index: AQHdGzhTnxVBlxgFh06/H/5OlNpgMLZ9zI0AgAMC3XA=
+Date: Mon, 27 Jul 2026 04:46:48 +0000
+Message-ID:
+ <GV2PR04MB11739D22B9ABBFA122A56BBAE88CC2@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260724065116.521893-1-wei.fang@oss.nxp.com>
+ <20260725064745.3890F1F000E9@smtp.kernel.org>
+In-Reply-To: <20260725064745.3890F1F000E9@smtp.kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|GV1PR04MB10077:EE_
+x-ms-office365-filtering-correlation-id: 47d1b3cc-6494-4d8c-3362-08deeb9a11cb
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|19092799006|376014|1800799024|366016|56012099006|11063799006|4143699003|5023799004|10067099003|6133799003|22082099003|18002099003|3023799007|38070700021;
+x-microsoft-antispam-message-info:
+ tHaME+LFd6tkNPOBr6N8TmwUy8zQ/QciK9KCPMWAJv1m1QpEzgVnRFA+oUZ7fTMG/we2GFad/7RyR33lrV7GsP9yz7GNT0Dnw/sBBGOKPWmyFIM3+05gp6mUbEFvidjxUlmieQiq8obldOM8dky3+E2LdxgOmbx8KHRt1iTABgpli3hKH4izg5sXzMWSoagibWcJKieQJrXAvfUx0ihIKQ1SLQpSRP8lw5RWPN/UAIfbSL3AGjaAynDTIEhA3XQnydna22vQBYog+DMYN3pY4luX6ErRD/50ZT8x3zo5upcPz4RfrSPHTbovDplZ0MjqyCqQCTLrDajVCzIgeABa3fwJUGKTJQoeAe/bnh5cM6B9E+0dDILAk8VMoIrjF/omuyVUTa5juULEmtVw9+UvFTu7nL+DTVMwzhAB8RAc7QK93HqsNrdrGaifC+dEVsEMlECOyuJEyLg/PKo2w39ft20O7H6fsDmOtV87pTdr6PLHc84UoSF+r/5GZLDIBisWDakkUzCpoYGYyPLzsEFRYQ62T/WlO29T/sq4eClhi68gRPRBm7MjyA9AT+xS4khciA2qlksjOGUy+u/xbaa7Yr4QIGjWwvGIbnriQOv34WxfnlTLUBkhQyoi8/0ynk3shQ0aUQPSeYKyYgFiJsO3Hb7HV9F9JcoMB/iDlrLDIiw=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(376014)(1800799024)(366016)(56012099006)(11063799006)(4143699003)(5023799004)(10067099003)(6133799003)(22082099003)(18002099003)(3023799007)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?ZHZ1TytPRlRVMjYzMUpKL3lTNmYyQUVQOWdRSU5jdXp0YnczKzdqR3lZeXVG?=
+ =?utf-8?B?Y1BWRTJhMEh2S2Q5eVRXMzE4WEpTTWJqSmtLMTVkbGU0VUJ3czhmUFo1dUFo?=
+ =?utf-8?B?RU5EYjRsQnhOOFp5a2pEK09xMmtyMGdnNHZNZnF4VjNYaE9qbnhHU0pZZUJ3?=
+ =?utf-8?B?VkFEY3dCVWVOQ2lIY2wwZ01oREVCcDJYcmlkQ1QzUnhjcllOT0pMK3o3enYy?=
+ =?utf-8?B?ZEwwekRwSXhCT2ZFVGFtQ1c3MVFsRmpSRGxSeTl4L2l2dlNaVXlydkVxeURC?=
+ =?utf-8?B?V1JneTBKTXpTbDUyQUdOdWdyQ1ZtTHBSTElsT2tUNll0dFBra1V6c1BYZ3N3?=
+ =?utf-8?B?R2VhWGw5RHNNajVBN3F3RDIrKzlYWEhLZTNOeWRtUFZWYVlQU0xQSUUydjZH?=
+ =?utf-8?B?NzNTNXgxWENaMWNMR3JzcWVXSStCb21xdkJDUk5EUEJpRTVJSE83bUNpdkh3?=
+ =?utf-8?B?S1RIRjdIanF6dytuQnFIZWQvMzN6ODBnV0xKRnNpbXk2YmJ3N0NhQUlSb1Zz?=
+ =?utf-8?B?R2xVS215VTlNNXFQVHhxbGpzUGhMUjVVVHJabG9FWWtaMWNrSG1PMXJ5S0Q4?=
+ =?utf-8?B?RjhoTTlQRUJpUEhCeExHOXZwVzVydDRqMGcyUitJRVMyd0s3Q2NUVThPQXNL?=
+ =?utf-8?B?akN5N0tuNXlCTFNqMDRlRko2b1dPY1RDTWR1RzhuSCtlckRjbEMrdXJveWVE?=
+ =?utf-8?B?VnQwcGk0aDJ0Yk1sV3RJaVJ3bThDYnhZMGJJWW56RTlkdFBMQWJ0M0tFZlRx?=
+ =?utf-8?B?OWpoLzdKWWcvNzd0YUdLaU1rTmFMa3ZBbEtFUE4rdmpGVVY4VVVZNmpERUFz?=
+ =?utf-8?B?aDkrN0xlNkUrdTNwK243M1pUa2FSYmRFalhjc3h0dGQyWXVoNWx4d0I1UWZ6?=
+ =?utf-8?B?K0hCU3Z1cGNjTEg3aVJSYXEwK2hUQnpzTGtqRmc1OEs2NUFNR0IvMTlFdm9z?=
+ =?utf-8?B?MEdTRWpBb21Dcm1Ra0RISXZ1Mk1QYUpzZDVacUxqMnh0OVhNa1gyWlpJRUJH?=
+ =?utf-8?B?U2dwY1BRd2s0bmt4NDZJYXo0OE1jRGJTdUtGL1ZndENFV2txTzd1MlpzNW5o?=
+ =?utf-8?B?NTlLdlc2eGxhdEphdDA4WWFhdXZoUDg2ckMzeGhDbWZJRks3b3d1SkhGaDJB?=
+ =?utf-8?B?NGpKT1ZLeVFncG0wYWFlZ3hmVnBTNUNBVWpiaDNZM1JrcGpJNGhOQi82Q3Fy?=
+ =?utf-8?B?eDlib3lUUllwM1FPOWVhQ1lwMDRPWkVibVFXR0VPNVVOYXVnVmJjb2E0RGFP?=
+ =?utf-8?B?YTNCVllsbUNMaXR2VUJVSExseTFqeHVMazFnVER6elIrN01ZcDA5cWN5d3hU?=
+ =?utf-8?B?dExPTzY2NXJRdFJWRlE1THZFKzVpZlJtYjQ1Um9tUFdQaXVFcDh1aTBFWDh6?=
+ =?utf-8?B?Q1M0Z1pTUHRXZWczYVlCYlZZbWZ4MFU1a1RORVVjcCtJbWNHUHRDSG1vMEFG?=
+ =?utf-8?B?WmYrNVN2RjMwanB5emFkUzZpV3lDNkhKU2RjeEhMSHNNdVZwMzVmclY5ajRl?=
+ =?utf-8?B?VTVDYTNXOUd4ZHA0WW4rcGJGWWpOYmxaSGRzUHlDcjF0SFA1MGlFcmlCVWZZ?=
+ =?utf-8?B?ODJrMk92R3k3QWcrNndHRmovbXFoclZCZFkyc0xwTmxPZW8xUGtpTC9vMzVy?=
+ =?utf-8?B?Z25XcG8rTlhpTFBLeWhua1g5WlRSNVh1Umwxb2lIcGlQZDQxZWtEcWdVaUNk?=
+ =?utf-8?B?OU1Nemtyb1NxZ0o3dnZsaE9sL2ZiSTYxSkhoUXVKdVF5MktTY2VPSGFsSmJz?=
+ =?utf-8?B?R0NsczllWkZ4b0lvMmRSUStSUlZrbE42VVk2eEUyWjIyUE0vdEtpbXpaZzFm?=
+ =?utf-8?B?eVlwTXBGWFhydmQwcVQ4Y2RucUlzSjZqR1dkdUhHODJIbWxFTXZ0Z2JFN2dL?=
+ =?utf-8?B?QlhIcGdFcnRjVTVwdW04RUFTbzVtUnllR1laR3llM3FJcHNTY2pNWTE0RHQr?=
+ =?utf-8?B?a1VicndmSWlzcmY1OUE1NnovMk85dkhIbmZrQkFEL2dmWW5zZ2t0WVdLdWxS?=
+ =?utf-8?B?cFpHN05LRWc4bU1KLzJBWkFJMzhET2VXNFY3UEpFYlRWUDBTcW9XVUo1QTAw?=
+ =?utf-8?B?R0RVaDF5YU1GNm55WnBTN21CQklIenBTejZwNithRVZNSFErU1ZQK1dzSEFy?=
+ =?utf-8?B?dTVCaGlmTVlZMDlpbXhiaTJRS2hTN2tzMHd5R25HVTRVdmcyaGZ4TkdFMDBX?=
+ =?utf-8?B?OXVRUkkxTUg2ZEdIU1U4NDFOd3MwSWZyZlNyTGY1TGRpdDJnWFprdmxtcW9k?=
+ =?utf-8?B?dDNiaEVORS9DTHhMa2xGakovUzJRbWdpQ2FETHpod1ErbGlTa1JEZkM5QTNy?=
+ =?utf-8?Q?4AvfsVI3brHsD068rO?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47d1b3cc-6494-4d8c-3362-08deeb9a11cb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jul 2026 04:46:48.8625
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Y35mfs8iApEPw+kKr1rYk+p8/tNFktxqxeCrrVt0Qn5NHuMrKRs1BuXrNSOoGxoz7WX/YAIU6e0YK8ghQCR/Mw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10077
 
-The kselftest_harness.h file contains modern helpers to build tests
-for kselftest. Dropping current test helpers for ipv6_flowlabel_mgr
-to use harness helps tests to be more legible and conform to the
-structure of the latest tests. It also enforces TAP standard.
-
-Another change made to the structure of ipv6_flowlabel_mgr test file
-was the removal of parse_opts. The supported opts were already not
-used on TEST_GEN_PROGS and are not impactful for development. Opt (-l)
-skips long tests that are not time consuming at all, while the TH_LOG
-and code comments can cover the information obtainable from (-v).
-
-Signed-off-by: Marcelo Mendes Spessoto Junior <marcelospe@proton.me>
----
- .../selftests/net/ipv6_flowlabel_mgr.c        | 397 +++++++++++-------
- 1 file changed, 234 insertions(+), 163 deletions(-)
-
-diff --git a/tools/testing/selftests/net/ipv6_flowlabel_mgr.c b/tools/testing/selftests/net/ipv6_flowlabel_mgr.c
-index da253dff2cfd..9aa5c8146f17 100644
---- a/tools/testing/selftests/net/ipv6_flowlabel_mgr.c
-+++ b/tools/testing/selftests/net/ipv6_flowlabel_mgr.c
-@@ -20,6 +20,7 @@
- #include <sys/types.h>
- #include <sys/wait.h>
- #include <unistd.h>
-+#include "kselftest_harness.h"
- 
- /* uapi/glibc weirdness may leave this undefined */
- #ifndef IPV6_FLOWLABEL_MGR
-@@ -39,23 +40,6 @@
- 		.sin6_port	= htons(8888),				\
- 	}
- 
--#define explain(x)							\
--	do { if (cfg_verbose) fprintf(stderr, "       " x "\n"); } while (0)
--
--#define __expect(x)							\
--	do {								\
--		if (!(x))						\
--			fprintf(stderr, "[OK]   " #x "\n");		\
--		else							\
--			error(1, 0, "[ERR]  " #x " (line %d)", __LINE__); \
--	} while (0)
--
--#define expect_pass(x)	__expect(x)
--#define expect_fail(x)	__expect(!(x))
--
--static bool cfg_long_running;
--static bool cfg_verbose;
--
- static int flowlabel_get(int fd, uint32_t label, uint8_t share, uint16_t flags)
- {
- 	struct in6_flowlabel_req req = {
-@@ -141,6 +125,10 @@ static void tcp_connect(int listener, uint32_t flowlabel, int *client, int *acce
- 
- static void set_flowlabel_consistency(bool enable)
- {
-+	/* flowlabel_consistency must be disable to use the IPV6_FL_F_REFLECT
-+	 * flag. This helper function is required for setting up and tearing
-+	 * down test cases for this flag.
-+	 */
- 	int fd;
- 
- 	fd = open("/proc/sys/net/ipv6/flowlabel_consistency", O_WRONLY);
-@@ -152,187 +140,270 @@ static void set_flowlabel_consistency(bool enable)
- 		error(1, errno, "close flowlabel_consistency");
- }
- 
--static void run_tests(int fd)
-+TEST(cannot_get_non_existent_label)
-+{
-+	int fd, err;
-+
-+	fd = socket(PF_INET6, SOCK_DGRAM, 0);
-+	ASSERT_GE(fd, 0) TH_LOG("socket failed");
-+
-+	err = flowlabel_get(fd, 1, IPV6_FL_S_ANY, 0);
-+	ASSERT_TRUE(err) TH_LOG("expected get of a non-existent label to fail");
-+
-+	ASSERT_EQ(0, close(fd));
-+}
-+
-+TEST(cannot_put_non_existent_label)
- {
--	int wstatus;
-+	int fd, err;
-+
-+	fd = socket(PF_INET6, SOCK_DGRAM, 0);
-+	ASSERT_GE(fd, 0) TH_LOG("socket failed");
-+
-+	err = flowlabel_put(fd, 1);
-+	ASSERT_TRUE(err) TH_LOG("expected put of a non-existent label to fail");
-+
-+	ASSERT_EQ(0, close(fd));
-+}
-+
-+TEST(cannot_create_label_greater_than_20_bits)
-+{
-+	int fd, err;
-+
-+	fd = socket(PF_INET6, SOCK_DGRAM, 0);
-+	ASSERT_GE(fd, 0) TH_LOG("socket failed");
-+
-+	err = flowlabel_get(fd, 0x1FFFFF, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
-+	ASSERT_TRUE(err) TH_LOG("expected label > 20 bits to be rejected");
-+
-+	ASSERT_EQ(0, close(fd));
-+}
-+
-+TEST(can_create_and_get_and_put_labels)
-+{
-+	int fd, err;
-+
-+	fd = socket(PF_INET6, SOCK_DGRAM, 0);
-+	ASSERT_GE(fd, 0) TH_LOG("socket failed");
-+
-+	err = flowlabel_get(fd, 1, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
-+	ASSERT_TRUE(!err) TH_LOG("failed to create label (FL_F_CREATE)");
-+
-+	err = flowlabel_get(fd, 1, IPV6_FL_S_ANY, 0);
-+	ASSERT_TRUE(!err) TH_LOG("failed to get the label without FL_F_CREATE");
-+
-+	err = flowlabel_get(fd, 1, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
-+	ASSERT_TRUE(!err) TH_LOG("failed to get it again with create flag set, too");
-+
-+	err = flowlabel_get(fd, 1, IPV6_FL_S_ANY, IPV6_FL_F_CREATE | IPV6_FL_F_EXCL);
-+	ASSERT_TRUE(err) TH_LOG("expected FL_F_EXCL to reject an already-existing label");
-+
-+	err = flowlabel_put(fd, 1);
-+	ASSERT_TRUE(!err) TH_LOG("failed to put first reference");
-+	err = flowlabel_put(fd, 1);
-+	ASSERT_TRUE(!err) TH_LOG("failed to put second reference");
-+	err = flowlabel_put(fd, 1);
-+	ASSERT_TRUE(!err) TH_LOG("failed to put third reference");
-+	err = flowlabel_put(fd, 1);
-+	ASSERT_TRUE(err) TH_LOG("expected fourth put to fail, no references left");
-+
-+	ASSERT_EQ(0, close(fd));
-+}
-+
-+TEST(exclusive_label_share)
-+{
-+	int fd, err;
-+
-+	fd = socket(PF_INET6, SOCK_DGRAM, 0);
-+	ASSERT_GE(fd, 0) TH_LOG("socket failed");
-+
-+	err = flowlabel_get(fd, 2, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE);
-+	ASSERT_TRUE(!err) TH_LOG("failed to create a new exclusive label (FL_S_EXCL)");
-+
-+	err = flowlabel_get(fd, 2, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
-+	ASSERT_TRUE(err) TH_LOG("expected reuse in non-exclusive mode to fail");
-+
-+	err = flowlabel_get(fd, 2, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE);
-+	ASSERT_TRUE(err) TH_LOG("expected reuse in exclusive mode to fail too");
-+
-+	err = flowlabel_put(fd, 2);
-+	ASSERT_TRUE(!err) TH_LOG("failed to put the exclusive label");
-+
-+	err = flowlabel_get(fd, 2, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
-+	ASSERT_TRUE(err) TH_LOG("expected reuse to fail, due to linger");
-+
-+	sleep(FL_MIN_LINGER * 2 + 1);
-+
-+	err = flowlabel_get(fd, 2, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
-+	ASSERT_TRUE(!err) TH_LOG("expected reuse to succeed after linger");
-+
-+	ASSERT_EQ(0, close(fd));
-+}
-+
-+TEST(user_private_label_share)
-+{
-+	int fd, err, wstatus;
- 	pid_t pid;
- 
--	explain("cannot get non-existent label");
--	expect_fail(flowlabel_get(fd, 1, IPV6_FL_S_ANY, 0));
--
--	explain("cannot put non-existent label");
--	expect_fail(flowlabel_put(fd, 1));
--
--	explain("cannot create label greater than 20 bits");
--	expect_fail(flowlabel_get(fd, 0x1FFFFF, IPV6_FL_S_ANY,
--				  IPV6_FL_F_CREATE));
--
--	explain("create a new label (FL_F_CREATE)");
--	expect_pass(flowlabel_get(fd, 1, IPV6_FL_S_ANY, IPV6_FL_F_CREATE));
--	explain("can get the label (without FL_F_CREATE)");
--	expect_pass(flowlabel_get(fd, 1, IPV6_FL_S_ANY, 0));
--	explain("can get it again with create flag set, too");
--	expect_pass(flowlabel_get(fd, 1, IPV6_FL_S_ANY, IPV6_FL_F_CREATE));
--	explain("cannot get it again with the exclusive (FL_FL_EXCL) flag");
--	expect_fail(flowlabel_get(fd, 1, IPV6_FL_S_ANY,
--					 IPV6_FL_F_CREATE | IPV6_FL_F_EXCL));
--	explain("can now put exactly three references");
--	expect_pass(flowlabel_put(fd, 1));
--	expect_pass(flowlabel_put(fd, 1));
--	expect_pass(flowlabel_put(fd, 1));
--	expect_fail(flowlabel_put(fd, 1));
--
--	explain("create a new exclusive label (FL_S_EXCL)");
--	expect_pass(flowlabel_get(fd, 2, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE));
--	explain("cannot get it again in non-exclusive mode");
--	expect_fail(flowlabel_get(fd, 2, IPV6_FL_S_ANY,  IPV6_FL_F_CREATE));
--	explain("cannot get it again in exclusive mode either");
--	expect_fail(flowlabel_get(fd, 2, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE));
--	expect_pass(flowlabel_put(fd, 2));
--
--	if (cfg_long_running) {
--		explain("cannot reuse the label, due to linger");
--		expect_fail(flowlabel_get(fd, 2, IPV6_FL_S_ANY,
--					  IPV6_FL_F_CREATE));
--		explain("after sleep, can reuse");
--		sleep(FL_MIN_LINGER * 2 + 1);
--		expect_pass(flowlabel_get(fd, 2, IPV6_FL_S_ANY,
--					  IPV6_FL_F_CREATE));
--	}
-+	fd = socket(PF_INET6, SOCK_DGRAM, 0);
-+	ASSERT_GE(fd, 0) TH_LOG("socket failed");
-+
-+	err = flowlabel_get(fd, 3, IPV6_FL_S_USER, IPV6_FL_F_CREATE);
-+	ASSERT_TRUE(!err) TH_LOG("failed to create a new user-private label (FL_S_USER)");
-+
-+	err = flowlabel_get(fd, 3, IPV6_FL_S_ANY, 0);
-+	ASSERT_TRUE(err) TH_LOG("expected get in non-exclusive mode to fail");
-+
-+	err = flowlabel_get(fd, 3, IPV6_FL_S_EXCL, 0);
-+	ASSERT_TRUE(err) TH_LOG("expected get in exclusive mode to fail");
-+
-+	err = flowlabel_get(fd, 3, IPV6_FL_S_USER, 0);
-+	ASSERT_TRUE(!err) TH_LOG("failed to get it again in user mode");
- 
--	explain("create a new user-private label (FL_S_USER)");
--	expect_pass(flowlabel_get(fd, 3, IPV6_FL_S_USER, IPV6_FL_F_CREATE));
--	explain("cannot get it again in non-exclusive mode");
--	expect_fail(flowlabel_get(fd, 3, IPV6_FL_S_ANY, 0));
--	explain("cannot get it again in exclusive mode");
--	expect_fail(flowlabel_get(fd, 3, IPV6_FL_S_EXCL, 0));
--	explain("can get it again in user mode");
--	expect_pass(flowlabel_get(fd, 3, IPV6_FL_S_USER, 0));
--	explain("child process can get it too, but not after setuid(nobody)");
- 	pid = fork();
--	if (pid == -1)
--		error(1, errno, "fork");
-+	ASSERT_NE(-1, pid) TH_LOG("fork failed");
- 	if (!pid) {
--		expect_pass(flowlabel_get(fd, 3, IPV6_FL_S_USER, 0));
--		if (setuid(USHRT_MAX))
-+		if (flowlabel_get(fd, 3, IPV6_FL_S_USER, 0))
-+			exit(1);
-+		if (setuid(USHRT_MAX)) {
- 			fprintf(stderr, "[INFO] skip setuid child test\n");
--		else
--			expect_fail(flowlabel_get(fd, 3, IPV6_FL_S_USER, 0));
-+			exit(0);
-+		}
-+		if (!flowlabel_get(fd, 3, IPV6_FL_S_USER, 0))
-+			exit(1);
- 		exit(0);
- 	}
--	if (wait(&wstatus) == -1)
--		error(1, errno, "wait");
--	if (!WIFEXITED(wstatus) || WEXITSTATUS(wstatus) != 0)
--		error(1, errno, "wait: unexpected child result");
--
--	explain("create a new process-private label (FL_S_PROCESS)");
--	expect_pass(flowlabel_get(fd, 4, IPV6_FL_S_PROCESS, IPV6_FL_F_CREATE));
--	explain("can get it again");
--	expect_pass(flowlabel_get(fd, 4, IPV6_FL_S_PROCESS, 0));
--	explain("child process cannot can get it");
-+	ASSERT_EQ(pid, wait(&wstatus)) TH_LOG("wait failed");
-+	ASSERT_TRUE(WIFEXITED(wstatus)) TH_LOG("child did not exit normally");
-+	ASSERT_EQ(0, WEXITSTATUS(wstatus)) TH_LOG("child reported unexpected result");
-+
-+	ASSERT_EQ(0, close(fd));
-+}
-+
-+TEST(process_private_label_share)
-+{
-+	int fd, err, wstatus;
-+	pid_t pid;
-+
-+	fd = socket(PF_INET6, SOCK_DGRAM, 0);
-+	ASSERT_GE(fd, 0) TH_LOG("socket failed");
-+
-+	err = flowlabel_get(fd, 4, IPV6_FL_S_PROCESS, IPV6_FL_F_CREATE);
-+	ASSERT_TRUE(!err) TH_LOG("failed to create a new process-private label (FL_S_PROCESS)");
-+
-+	err = flowlabel_get(fd, 4, IPV6_FL_S_PROCESS, 0);
-+	ASSERT_TRUE(!err) TH_LOG("failed to get it again");
-+
- 	pid = fork();
--	if (pid == -1)
--		error(1, errno, "fork");
-+	ASSERT_NE(-1, pid) TH_LOG("fork failed");
- 	if (!pid) {
--		expect_fail(flowlabel_get(fd, 4, IPV6_FL_S_PROCESS, 0));
-+		if (!flowlabel_get(fd, 4, IPV6_FL_S_PROCESS, 0))
-+			exit(1);
- 		exit(0);
- 	}
--	if (wait(&wstatus) == -1)
--		error(1, errno, "wait");
--	if (!WIFEXITED(wstatus) || WEXITSTATUS(wstatus) != 0)
--		error(1, errno, "wait: unexpected child result");
--
--	if (cfg_long_running) {
--		explain("create a new label with FL_MIN_LINGER linger time");
--		expect_pass(flowlabel_get(fd, 5, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE));
--		explain("renew the label to increase its linger time and put it");
--		expect_pass(flowlabel_renew(fd, 5, 2 * (FL_MIN_LINGER * 2 + 1)));
--		expect_pass(flowlabel_put(fd, 5));
--		sleep(FL_MIN_LINGER * 2 + 1);
--		explain("The label cannot be created because the new linger time is not over yet");
--		expect_fail(flowlabel_get(fd, 5, IPV6_FL_S_ANY, IPV6_FL_F_CREATE));
--	}
-+	ASSERT_EQ(pid, wait(&wstatus)) TH_LOG("wait failed");
-+	ASSERT_TRUE(WIFEXITED(wstatus)) TH_LOG("child did not exit normally");
-+	ASSERT_EQ(0, WEXITSTATUS(wstatus)) TH_LOG("child reported unexpected result");
-+
-+	ASSERT_EQ(0, close(fd));
-+}
-+
-+TEST(renew_label_linger)
-+{
-+	/* After a label with EXCL share is put and lingered, it must be
-+	 * possible to create a new one. Check if RENEW action extends
-+	 * the linger period of put label, blocking creation after previous
-+	 * linger time.
-+	 */
-+	int fd, err;
-+
-+	fd = socket(PF_INET6, SOCK_DGRAM, 0);
-+	ASSERT_GE(fd, 0) TH_LOG("socket failed");
-+
-+	err = flowlabel_get(fd, 5, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE);
-+	ASSERT_TRUE(!err) TH_LOG("failed to create a new label with FL_MIN_LINGER linger time");
-+
-+	err = flowlabel_renew(fd, 5, 2 * (FL_MIN_LINGER * 2 + 1));
-+	ASSERT_TRUE(!err) TH_LOG("failed to renew the label to increase its linger time");
-+
-+	err = flowlabel_put(fd, 5);
-+	ASSERT_TRUE(!err) TH_LOG("failed to put the label");
-+
-+	sleep(FL_MIN_LINGER * 2 + 1);
-+
-+	err = flowlabel_get(fd, 5, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
-+	ASSERT_TRUE(err) TH_LOG("expected reuse to fail, new linger time not over yet");
-+
-+	ASSERT_EQ(0, close(fd));
-+}
- 
--	explain("Prepare TCP SYN for REMOTE flag validation");
--	int remote_listener = tcp_listen();
--	int remote_cfd, remote_afd;
--	tcp_connect(remote_listener, 6, &remote_cfd, &remote_afd);
-+TEST(remote_flag)
-+{
-+	/* The REMOTE flag, used for getsockopt, is expected to retrieve the
-+	 * label from the latest received header.
-+	 */
- 	struct in6_flowlabel_req freq = {
- 		.flr_action = IPV6_FL_A_GET,
- 		.flr_flags = IPV6_FL_F_REMOTE,
- 	};
- 	socklen_t freq_len = sizeof(freq);
--	explain("Query for label sent by client with IPV6_FL_F_REMOTE");
--	expect_pass(getsockopt(remote_afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &freq, &freq_len));
--	expect_pass(ntohl(freq.flr_label) != 6);
--	close(remote_afd);
--	close(remote_cfd);
--	close(remote_listener);
--
--	explain("Prepare TCP SYN for REFLECT flag validation");
--	set_flowlabel_consistency(false);
--	int reflect_listener = tcp_listen();
-+	int listener, cfd, afd, err;
-+
-+	listener = tcp_listen();
-+	tcp_connect(listener, 6, &cfd, &afd);
-+
-+	err = getsockopt(afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &freq, &freq_len);
-+	ASSERT_TRUE(!err) TH_LOG("getsockopt with IPV6_FL_F_REMOTE failed");
-+	ASSERT_EQ(6, ntohl(freq.flr_label)) TH_LOG("unexpected remote flow label");
-+
-+	ASSERT_EQ(0, close(afd));
-+	ASSERT_EQ(0, close(cfd));
-+	ASSERT_EQ(0, close(listener));
-+}
-+
-+TEST(reflect_flag)
-+{
-+	/* The REFLECT flag acts as a trigger to the REPFLOW bit. When REPFLOW
-+	 * is triggered for a socket, it adopts the label received from the
-+	 * connected socket.
-+	 */
- 	struct in6_flowlabel_req reflect_on = {
- 		.flr_action = IPV6_FL_A_GET,
- 		.flr_flags = IPV6_FL_F_REFLECT,
- 	};
--	explain("Enable REFLECT on the listener before the client connects");
--	expect_pass(setsockopt(reflect_listener, SOL_IPV6, IPV6_FLOWLABEL_MGR, &reflect_on, sizeof(reflect_on)));
--	int reflect_cfd, reflect_afd;
--	tcp_connect(reflect_listener, 7, &reflect_cfd, &reflect_afd);
- 	struct in6_flowlabel_req reflect_query = {
- 		.flr_action = IPV6_FL_A_GET,
- 	};
--	socklen_t reflect_query_len = sizeof(reflect_query);
--	explain("Query the accepted socket's outgoing label, should be reflected");
--	expect_pass(getsockopt(reflect_afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &reflect_query, &reflect_query_len));
--	expect_pass(ntohl(reflect_query.flr_label) != 7);
- 	struct in6_flowlabel_req reflect_off = {
- 		.flr_action = IPV6_FL_A_PUT,
- 		.flr_flags = IPV6_FL_F_REFLECT,
- 	};
--	explain("PUT+REFLECT disables reflection on the accepted socket");
--	expect_pass(setsockopt(reflect_afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &reflect_off, sizeof(reflect_off)));
--	explain("cannot disable reflection twice");
--	expect_fail(setsockopt(reflect_afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &reflect_off, sizeof(reflect_off)));
--	set_flowlabel_consistency(true);
--	close(reflect_afd);
--	close(reflect_cfd);
--	close(reflect_listener);
--}
-+	socklen_t reflect_query_len = sizeof(reflect_query);
-+	int listener, cfd, afd, err;
- 
--static void parse_opts(int argc, char **argv)
--{
--	int c;
--
--	while ((c = getopt(argc, argv, "lv")) != -1) {
--		switch (c) {
--		case 'l':
--			cfg_long_running = true;
--			break;
--		case 'v':
--			cfg_verbose = true;
--			break;
--		default:
--			error(1, 0, "%s: parse error", argv[0]);
--		}
--	}
--}
-+	set_flowlabel_consistency(false);
- 
--int main(int argc, char **argv)
--{
--	int fd;
-+	listener = tcp_listen();
-+	err = setsockopt(listener, SOL_IPV6, IPV6_FLOWLABEL_MGR, &reflect_on, sizeof(reflect_on));
-+	ASSERT_TRUE(!err) TH_LOG("failed to enable REFLECT on the listener");
- 
--	parse_opts(argc, argv);
-+	tcp_connect(listener, 7, &cfd, &afd);
- 
--	fd = socket(PF_INET6, SOCK_DGRAM, 0);
--	if (fd == -1)
--		error(1, errno, "socket");
-+	err = getsockopt(afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &reflect_query, &reflect_query_len);
-+	ASSERT_TRUE(!err) TH_LOG("failed to query the accepted socket's outgoing label");
-+	ASSERT_EQ(7, ntohl(reflect_query.flr_label)) TH_LOG("accepted socket did not reflect client's label");
- 
--	run_tests(fd);
-+	err = setsockopt(afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &reflect_off, sizeof(reflect_off));
-+	ASSERT_TRUE(!err) TH_LOG("failed to disable REFLECT on the accepted socket");
- 
--	if (close(fd))
--		error(1, errno, "close");
-+	err = setsockopt(afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &reflect_off, sizeof(reflect_off));
-+	ASSERT_TRUE(err) TH_LOG("expected disabling REFLECT twice to fail");
- 
--	return 0;
-+	set_flowlabel_consistency(true);
-+
-+	ASSERT_EQ(0, close(afd));
-+	ASSERT_EQ(0, close(cfd));
-+	ASSERT_EQ(0, close(listener));
- }
-+
-+TEST_HARNESS_MAIN
--- 
-2.55.0
-
+PiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3B0cC9wdHBfbmV0Yy5jIGIvZHJpdmVycy9wdHAvcHRw
+X25ldGMuYw0KPiA+IGluZGV4IDVlMzgxYzM1NGQ3NDYuLjNiYWI4NmFmZThlMjMgMTAwNjQ0DQo+
+ID4gLS0tIGEvZHJpdmVycy9wdHAvcHRwX25ldGMuYw0KPiA+ICsrKyBiL2RyaXZlcnMvcHRwL3B0
+cF9uZXRjLmMNCj4gPiBAQCAtMTAxOSw5ICsxMDE5LDkgQEAgc3RhdGljIHZvaWQgbmV0Y190aW1l
+cl9yZW1vdmUoc3RydWN0IHBjaV9kZXYNCj4gKnBkZXYpDQo+ID4gIHsNCj4gPiAgCXN0cnVjdCBu
+ZXRjX3RpbWVyICpwcml2ID0gcGNpX2dldF9kcnZkYXRhKHBkZXYpOw0KPiA+DQo+ID4gKwlwdHBf
+Y2xvY2tfdW5yZWdpc3Rlcihwcml2LT5jbG9jayk7DQo+ID4gKwluZXRjX3RpbWVyX3dyKHByaXYs
+IE5FVENfVE1SX1RFTUFTSywgMCk7DQo+IA0KPiBbU2V2ZXJpdHk6IEhpZ2hdDQo+IERvZXMgbW92
+aW5nIHB0cF9jbG9ja191bnJlZ2lzdGVyKCkgYmVmb3JlIG1hc2tpbmcgaGFyZHdhcmUgaW50ZXJy
+dXB0cw0KPiBpbnRyb2R1Y2UgYSB1c2UtYWZ0ZXItZnJlZSByZWdyZXNzaW9uIGluIHRoZSBpbnRl
+cnJ1cHQgaGFuZGxlcj8NCg0KVGhhdCBpcyBpbmRlZWQgYSBwcm9ibGVtLCBJIHdpbGwgZml4IGl0
+IGluIG5leHQgdmVyc2lvbi4NCg0KPiANCj4gSWYgRVhUVFMgZXZlbnRzIGFyZSBjb25maWd1cmVk
+LCBwdHBfY2xvY2tfdW5yZWdpc3RlcigpIGRyb3BzIHRoZSBmaW5hbA0KPiBkZXZpY2UgcmVmZXJl
+bmNlIGFuZCBmcmVlcyBwcml2LT5jbG9jayBpZiBubyBmaWxlIGRlc2NyaXB0b3JzIGFyZSBvcGVu
+Lg0KPiANCj4gQmVjYXVzZSB0aGUgaGFyZHdhcmUgaW50ZXJydXB0IG1hc2sgKE5FVENfVE1SX1RF
+TUFTSykgaXMgbm90IGNsZWFyZWQgdW50aWwNCj4gdGhlIG5leHQgaW5zdHJ1Y3Rpb24sIGFuZCBm
+cmVlX2lycSgpIGhhcyBub3QgeWV0IGJlZW4gY2FsbGVkLCB0aGUgaGFyZHdhcmUNCj4gY2FuIHN0
+aWxsIGZpcmUgYW4gRVhUVFMgaW50ZXJydXB0Lg0KPiANCj4gSWYgdGhpcyBvY2N1cnMsIHRoZSBJ
+U1IgbmV0Y190aW1lcl9pc3IoKSBwcm9jZXNzZXMgdGhlIGV2ZW50IGFuZA0KPiB1bmNvbmRpdGlv
+bmFsbHkgZGVyZWZlcmVuY2VzIHRoZSBmcmVlZCBjbG9jayBvYmplY3Q6DQo+IA0KPiBuZXRjX3Rp
+bWVyX2lzcigpIC0+IG5ldGNfdGltZXJfaGFuZGxlX2V0dHNfZXZlbnQoKSB7DQo+ICAgICAuLi4N
+Cj4gICAgIHB0cF9jbG9ja19ldmVudChwcml2LT5jbG9jaywgJmV2ZW50KTsNCj4gICAgIC4uLg0K
+PiB9DQo+IA0KPiA+ICAJbmV0Y190aW1lcl93cihwcml2LCBORVRDX1RNUl9DVFJMLCAwKTsNCj4g
+PiAtCXB0cF9jbG9ja191bnJlZ2lzdGVyKHByaXYtPmNsb2NrKTsNCj4gPiAgCW5ldGNfdGltZXJf
+ZnJlZV9tc2l4X2lycShwcml2KTsNCj4gPiAgCW5ldGNfdGltZXJfcGNpX3JlbW92ZShwZGV2KTsN
+Cj4gPiAgfQ0KPiANCj4gW1NldmVyaXR5OiBIaWdoXQ0KPiBUaGlzIGlzbid0IGEgYnVnIGludHJv
+ZHVjZWQgYnkgdGhpcyBwYXRjaCwgYnV0IGNhbiB0aGUgZHJpdmVyIGVuY291bnRlciBhDQo+IGhh
+cmQgbG9ja3VwIGR1cmluZyBwcm9iZSBvbiBrZXhlYyBvciBhbiB1bmNsZWFuIHNodXRkb3duPw0K
+PiANCj4gQmVjYXVzZSB0aGUgTkVUQyB0aW1lciBkb2VzIG5vdCBzdXBwb3J0IFBDSWUgRkxSLCBo
+YXJkd2FyZSByZWdpc3RlcnMNCj4gcmV0YWluIHRoZWlyIHN0YXRlLiBJbiBuZXRjX3RpbWVyX3By
+b2JlKCksIHRoZSBkcml2ZXIgcmVxdWVzdHMgdGhlIElSUSB2aWENCj4gbmV0Y190aW1lcl9pbml0
+X21zaXhfaXJxKCkgYmVmb3JlIHJlc2V0dGluZyB0aGUgaGFyZHdhcmUgc3RhdGUuDQo+IA0KPiBJ
+ZiB0aGUgaGFyZHdhcmUgaGFzIGEgcGVuZGluZyBpbnRlcnJ1cHQsIGl0IGZpcmVzIGltbWVkaWF0
+ZWx5IHVwb24NCj4gcmVxdWVzdF9pcnEoKS4gQXQgdGhpcyBwb2ludCwgcHJpdi0+dG1yX2VtYXNr
+IGlzIDAuDQo+IA0KPiBUaGUgSVNSIG5ldGNfdGltZXJfaXNyKCkgbWFza3MgdGhlIGhhcmR3YXJl
+IHN0YXR1cyB3aXRoIHByaXYtPnRtcl9lbWFzaw0KPiBhbmQgd3JpdGVzIDAgYmFjayB0byB0aGUg
+V3JpdGUtMS10by1DbGVhciAoVzFDKSByZWdpc3RlciwgZmFpbGluZyB0byBjbGVhcg0KPiB0aGUg
+cGVuZGluZyBoYXJkd2FyZSBpbnRlcnJ1cHQ6DQo+IA0KPiBuZXRjX3RpbWVyX2lzcigpIHsNCj4g
+ICAgIC4uLg0KPiAgICAgdG1yX2V2ZW50ID0gbmV0Y190aW1lcl9yZChwcml2LCBORVRDX1RNUl9U
+RVZFTlQpOw0KPiAgICAgdG1yX2V2ZW50ICY9IHByaXYtPnRtcl9lbWFzazsNCj4gICAgIC8qIENs
+ZWFyIGludGVycnVwdHMgc3RhdHVzICovDQo+ICAgICBuZXRjX3RpbWVyX3dyKHByaXYsIE5FVENf
+VE1SX1RFVkVOVCwgdG1yX2V2ZW50KTsNCj4gICAgIC4uLg0KPiB9DQo+IA0KPiBUaGUgSVNSIHRo
+ZW4gZGVmZWF0cyB0aGUga2VybmVsJ3Mgc3B1cmlvdXMgaW50ZXJydXB0IGRldGVjdGlvbiBieQ0K
+PiB1bmNvbmRpdGlvbmFsbHkgcmV0dXJuaW5nIElSUV9IQU5ETEVELCBjYXVzaW5nIHRoZSBpbnRl
+cnJ1cHQgY29udHJvbGxlciB0bw0KPiByZS1pbnZva2UgdGhlIElTUiBpbiBhbiBpbmZpbml0ZSBs
+b29wOg0KPiANCj4gbmV0Y190aW1lcl9pc3IoKSB7DQo+ICAgICAuLi4NCj4gICAgIHJldHVybiBJ
+UlFfSEFORExFRDsNCj4gfQ0KPiANCj4gLS0NCj4gU2FzaGlrbyBBSQ0KPiByZXZpZXcgwrcgaHR0
+cHM6Ly9zYXNoaWtvLmRldi8jL3BhdGNoc2V0LzIwMjYwNzI0MDY1MTE2LjUyMTg5My0xLXdlaS5m
+YW5nQA0KPiBvc3MubnhwLmNvbT9wYXJ0PTENCg==
