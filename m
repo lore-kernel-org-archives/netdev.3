@@ -1,112 +1,117 @@
-Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0C23F6C30
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 16:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C67442FCBB
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 16:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785170793; cv=none; b=Z9Bbt3q1oghMrLldKWpcZVYdArdCaLD7PxW1+NVtykMdP/MQ64EyDJyRA74gSCp3YSOWw12I/CbAFWLJVsr8D42HkYAI4rVXcVguc7ZG/AvtKlmYLamzteAc9U+CG+yRwe97NpYFZTW5X26FICq6IRUdM7RFdXM6tQad+E1R5e4=
+	t=1785171046; cv=none; b=scZDWGJgFya01VoPQ+jCu4T/fnGQPul2QW/5aquSzYQgAs1uxYjP2U7Q4lTvaLtTGHlosgnD6OzkwuleNgbm2HvnJcGuatkNps3onZMiZou+vAK2MdAiueAyITPpCQFjOcraePxgXqnheRhM4fyDrz3sA3Lkz66QPYcyzIWQ8m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785170793; c=relaxed/simple;
-	bh=kxId7MQ+zAvhC7OwaPwhkckeA9QjpjzDQQBUn6eAd3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yo/2qoWPT6yAxcCo+i6tnRT0hO9wH9HYqk+vxmsQ7Z5jesZWBPE561ti2KtHXxqVHB1Ci5i/W+5cyVn7/RQ7mccoKv7BwHT6GloTJuYuTHQVhiTB7lS80CCLVQtsuKjTPT/m/x73R9J5hYKuHjH0ZEx5E8sSSEm6swF4vXvByCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D5E2PqIK; arc=none smtp.client-ip=74.125.228.1
+	s=arc-20240116; t=1785171046; c=relaxed/simple;
+	bh=99QPdMY7ypUIG0/DStAmL9MjLjbr5hccZPNXJlXO1cY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s3yafJ52Vye/TnyQEmBTq4sesOhDTOk0sJjjblC5wM9KwfE9BTOgWrealF0MfJkdSTLArnbVqRjlYVLIu5Ik3dF9E11umh7jMJyApKDp6WzG/jQvgeLd9t9v/vuSM2W1xP5jqx3Bk3DDhz1v9/kLsiWPfohMNjrlpaqrYCROhpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BmR1DBC2; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D5E2PqIK"
-Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-ca7d1dc4554so1526293a12.1
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:46:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BmR1DBC2"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38e58034d05so3255199a91.2
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:50:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785170790; x=1785775590; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LGI9Ok2z6wQiVHpWHpCaegm9SgY2u01YCFL21u/wvQk=;
-        b=D5E2PqIKE0kDgI3jDq0XJEr4FHBC8ExrcmLlslyieCGr6zXHBfKFietOZATzxCvfVz
-         JtW0ZA35howiVbKBGSdiZ5dlwfanEYd2oLQwYZn/gdm+q3Owpj/3m15FpE/MIL6SkqKd
-         owI8KXgsyvhJj0JCFrUJ7DO3agtZLx1lfpqRCenib5w/JmKb2agQfhCV7vZN/SPJoMde
-         X2sT8b0UkAlKY/T9EUjB18DddvJPudd+m/kkAEMJi4+Orbd4RfqY8dwIOAnnwH5k4qTc
-         iS1mcXupggbc5hfZAMkV7ZSTphQImPS8gSSIHTSTr+C5KTWolf7+LX1zvd++Pjs/L2WO
-         DMVQ==
+        d=gmail.com; s=20251104; t=1785171042; x=1785775842; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Gr7yzf2AuczGpyRKBEIrthKpuHy20UHm+KHcnWJKJ6E=;
+        b=BmR1DBC23od0/QpqK/RgyDw7oFE4IS7Y8J13CvSPboclgTElTGG8SYbPYkwHRkodjf
+         pOHBI+uuqLnFcOLB7wYfbpFNxSZIOtK58Do/HYlFg3vbAcuQb6Gf6sNOy5M347wYu5MS
+         +nA8GykP5SRQWBm49a/4yfYPHdhXSXIAojiuWkqex5bbj+iW9MYHPE1KWYJo76gFXpGY
+         wa0ZsLaFljCt7LLEcsRSa51IgQE4WYCttvqDL6xi7ZAJZD35+CXclTUHgjoCgZpjuZPm
+         60Lx0g2/ZpwXK7U8R+NIj/jcX8jz3m25gTCPUXzBvvNASh1cD5W0V73b3bBEbIdLD+tA
+         w3hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785170790; x=1785775590;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LGI9Ok2z6wQiVHpWHpCaegm9SgY2u01YCFL21u/wvQk=;
-        b=b/sIsN78uL8O+Bxtz1DU8BQhIFFUVIqJsqtcGcxCfpqk1adhUeR5Qw3irb7HheSQaV
-         gyOPwgbvmUWiFuqgmgbFHcoxebbSnbcaW7Bw7sxhmKCWGwWe6jVXUiLBcoCw+nCMnryU
-         neyQxT18THc9A/TrbG1F1gP0zfIlCRKGXwkKL1LX+JUbW3a3hlkZILszaXMdQFQEAw+O
-         5cf+NcC7TTpV68jQCvW1LoRvJS9Bt4/8dx9nU2hMD2ord2t9zq6PvD8BkxCUN1jpk7jn
-         7t2H6bphOM1rgrjtR3zAI7QJdwsKa91btcAdtOyBUttE8DfoizvPwWkakvSGriU0iNh+
-         bnYg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp43U+DrVby6uGIZV16rTEMVL5nYYjOmxAuybreegleiJc80cp/xaPAXlCXLy+SWcEkE4AR83I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywq/VM1uPtRCyNR1gE+xLmz+p28BNMok76oa9Y2Ftf5jmPzkfYS
-	xZ5xRqwarmVoPRetkKmYlVZwE7vnXK3wBv3+MxcSj+3NKmQ96Z+S5qXP
-X-Gm-Gg: AR+sD121sGxMqltIWgry9A/sxmPCrVWBJu9n4CMIT/J5l/phWTkSy9j3uQ1eFNfDkcx
-	NF3uBh32h4x0ckXk0J8r8A0uCSv5qrMtTDlTtydN6gGbmtZ/+TLJTs/FSjs2McGsf1lT0kT2V2y
-	wkA/K/Ndj7WFsZWSsAItUIdEiBvw13zl67oMX1cV8LACe06zLgjyZ4CN2m193nPGrCxM7BRHfGb
-	grF39qpKfLT5ZdbpftveGwn4xqnJoUonlAYW4A0VNaxK17HgI17og1jpEIDbdEawJ2ufdQZnjh5
-	I2t+pzCDK2SOSaztdV/7Az5tvltyY3JgTpC6/04++0MExfVLRlomtluhB0pAcbPDF+5t3aXCe12
-	D9hZceqJ8KHxeqMpbkalgUoNwSAAWElOjQnw+6wLOGNxDfsPqGkEp+eKIH1oQKVGTIBmJffzxNq
-	4f1Gqc1moxcdBv7zNbCE8mmOSlgYW3eFgmXa4MAshyOT+6iRl+LIIGlA==
-X-Received: by 2002:a05:6a00:17a8:b0:848:67ca:bfd with SMTP id d2e1a72fcca58-84e8cf4d013mr208312b3a.16.1785170790323;
-        Mon, 27 Jul 2026 09:46:30 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:5e::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e533d1448sm3376385b3a.30.2026.07.27.09.46.29
+        d=1e100.net; s=20251104; t=1785171042; x=1785775842;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Gr7yzf2AuczGpyRKBEIrthKpuHy20UHm+KHcnWJKJ6E=;
+        b=rYSMt2KICGCprVZx0ooqdW8GOBdJ1QAAIw5CvSVP0CIuqBbbkclY0BaxPwGsYS9S+x
+         W0kb30tE/5OJqfWoQwGgsr7n+A//PZQZQY+5HlD8yHz5NsiyLtu2FT7iNgWn8HPFZS9X
+         nr877J/9lx2OAtaxVAEnfgDlfqG9zAu8/4YBonPUh54VkWh6RIIcM2T0UgnGAvuGu02a
+         HV62eSZxvXQcConMOuRWYcDaT8breYqkn5PXrGqH5H0pzpkLWi7CjLVmmTdNPldd864a
+         mxZMhr6n3pn1DHkbSsUG2I5iOj3co6YyGIhwHgO985fk7Prz9nVb0T6woPLTYKTwWXnt
+         nhqw==
+X-Gm-Message-State: AOJu0YxpCYuuNQs8KprXY0jsdfitZbaaitHYAK7T01l9NUdV4OuEdpqT
+	BCs+tjFAxDVOHbLEqgkm6L9KNQxTnHu1TYbZ3PxgvN6vDmRBRD7erKAgS/GWAh82
+X-Gm-Gg: AR+sD11ImLLh//dAwm2T7VThfeDnFvJuM7sz8+GAMlph8gDpRscU0Tg6InE36S4arVE
+	xwYYdpxX3ZOgV1UnWBcAsAP/Ubk+SjUbZMyfwdc/2XXMDLgAAOmxUWbu5UTLmekr/5P/zVmVFdE
+	QPcjSTKhqS+Lgi7i1f2YHnjbmYocyegCNCYTnn7oduoR2fmxe/lQzWRZp6g8XJOAqP7L5wyN/QR
+	sHtgVfUAdwRzhex55jfCTF6oUtdCtxVK42Y7bdGUEm+EwD0iwrB7qIy9w1xLel/75eUVTJRX0ef
+	1gtNnHgIzGmqR2It4Ve1xBZOcpqmWZYNZQHM6MddI0RTEy9GVNA4iSGSGn+P5aKUQRkkMDLRAnt
+	BQoqP6msKW9bpP6Y6ApnxSMvKlTWFPF9fS+trt6lKbFve97kEgnFgi1IkDXwhqRE1v6T16msw//
+	6QmrEnq8bKdszkvTnSj3+9X3fkaHrIrme2WeU0o/m83oC/zC3PoDIdwpQ6zXtU8E5QBoG9GmBk0
+	sXSlw==
+X-Received: by 2002:a17:90b:268e:b0:38e:baf:6087 with SMTP id 98e67ed59e1d1-38f649d2e5dmr72846a91.35.1785171042274;
+        Mon, 27 Jul 2026 09:50:42 -0700 (PDT)
+Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:8b84:a60e:2cad:e760])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc419e3asm33654029eec.11.2026.07.27.09.50.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 09:46:30 -0700 (PDT)
-Date: Mon, 27 Jul 2026 09:46:26 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Pavel Begunkov <asml.silence@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	Mina Almasry <almasrymina@google.com>, Bobby Eshleman <bobbyeshleman@gmail.com>
-Subject: Re: [PATCH net v2] net: devmem: prevent net-iov / page mixing
-Message-ID: <ameLB_goNrMbscXO@devvm7509.cco0.facebook.com>
-References: <e3199788c4732545627a4721097ebb71ad737bab.1785150502.git.asml.silence@gmail.com>
+        Mon, 27 Jul 2026 09:50:41 -0700 (PDT)
+From: "Hemendra M. Naik" <hemendranaik@gmail.com>
+To: netdev@vger.kernel.org
+Cc: jiri@resnulli.us,
+	jhs@mojatatu.com,
+	linux-kernel@vger.kernel.org,
+	vishy0777@gmail.com,
+	tahiliani@nitk.edu.in,
+	"Hemendra M. Naik" <hemendranaik@gmail.com>
+Subject: [PATCH iproute2-next v4 0/3] tc: fq_pie: add per-flow class statistics support
+Date: Mon, 27 Jul 2026 22:20:25 +0530
+Message-Id: <20260727165028.106817-1-hemendranaik@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <e3199788c4732545627a4721097ebb71ad737bab.1785150502.git.asml.silence@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On 07/27, Pavel Begunkov wrote:
-> We should either have net_iov or page backed frags in a single skb,
-> otherwise it blows up down the stack. Don't allow mixing in
-> zerocopy_fill_skb_from_devmem().
-> 
-> Fixes: bd61848900bff ("net: devmem: Implement TX path")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-> ---
-> 
-> v2: EEXIST -> EFAULT, as skb_zerocopy_iter_stream() doesn't handle
->     the former + for consistency. 
-> 
->  net/core/datagram.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/net/core/datagram.c b/net/core/datagram.c
-> index c285c6465923..173b5d97bd40 100644
-> --- a/net/core/datagram.c
-> +++ b/net/core/datagram.c
-> @@ -712,6 +712,9 @@ zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
->  	size_t virt_addr, size, off;
->  	struct net_iov *niov;
->  
-> +	if (i && skb_frags_readable(skb))
-> +		return -EFAULT;
-> +
+FQ-PIE exposes no per-flow AQM state in userspace today. This series
+adds tc support for printing per-flow statistics via
+'tc -s class show', matching the kernel fq_pie class ops series.
 
-Maybe we should do -EMSGSIZE? It is already properly plumbed via
-skb_zerocopy_iter_stream (and you'll hit 'skb->len == orig_len')
-and it hits 'new_segment' in tcp_sendmsg_locked?
+The corresponding kernel series can be viewed here:
+https://lore.kernel.org/netdev/20260727164056.106203-1-hemendranaik@gmail.com/
+
+---
+Changelog:
+
+v4:
+- Split into 3 patches: fq_pie class stats, pie avg_dq_rate
+  formatting, and tc_pie_xstats comment fixes.
+
+v3: https://lore.kernel.org/netdev/20260630184453.171410-1-hemendranaik@gmail.com/
+- Moved print_nl() into each xstats type block to preserve output
+  formatting.
+
+v2: https://lore.kernel.org/netdev/20260614130729.10076-1-hemendranaik@gmail.com/
+- Addressed ABI backward compatibility issue.
+
+v1: https://lore.kernel.org/netdev/20260531131411.28213-1-hemendranaik@gmail.com/
+- Initial submission
+
+Hemendra M. Naik (3):
+  tc: fq_pie: add support for printing per-flow PIE statistics
+  tc: pie: print avg_dq_rate in human-readable format
+  tc: correct tc_pie_xstats field documentation
+
+ include/uapi/linux/pkt_sched.h | 29 +++++++++++++++--
+ man/man8/tc-fq_pie.8           | 18 +++++++++++
+ man/man8/tc-pie.8              |  2 +-
+ tc/q_fq_pie.c                  | 59 +++++++++++++++++++++++-----------
+ tc/q_pie.c                     |  4 +--
+ 5 files changed, 88 insertions(+), 24 deletions(-)
+
+-- 
+2.34.1
+
