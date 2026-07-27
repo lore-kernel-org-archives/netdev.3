@@ -1,164 +1,168 @@
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010029.outbound.protection.outlook.com [52.101.46.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4C43A9D8D;
-	Mon, 27 Jul 2026 02:52:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785120740; cv=none; b=PvA4vUzRGnvQietm0PQWFKZY1vZ73vOJ99wKvbBB6aJFlMRJFdsSIOJRF/ybvA3uoWaKc7qiKX2Sk1rW41VLsLz42S6Ko9tBw96lljo3SG9NOTyfae27mcyRAV3mvLTZfAX7CG05VSS0bvNue6W1w9Bv3Gsq3L0oGZCTQ1VabS8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785120740; c=relaxed/simple;
-	bh=Sk5DH1qpuOBhupZmJA2XGj/yvV0yby0XvSGR0ToxIsg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m3asJT5HydJvIKB62L8mp+49xaaxjVFXDg6rTT67YfYDJnbSfp1Rk71SYju1yLEFteWz4jESbipWm2Y3U4Mf0RVWKR9qqokvJUcQifEObjNCYY+wbX66F8gwhvH/CuKhIBj6mNfmtpwSgWgkLz0r92TMfxOmuUI10WnHu6iCa2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4h7jlr1lLxzKHMXG;
-	Mon, 27 Jul 2026 10:51:20 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id 6215E4058C;
-	Mon, 27 Jul 2026 10:52:11 +0800 (CST)
-Received: from ultra.huawei.com (unknown [10.90.53.71])
-	by APP3 (Coremail) with UTF8SMTPA id _Ch0CgCHdUTZx2ZqzpVbAA--.58003S2;
-	Mon, 27 Jul 2026 10:52:11 +0800 (CST)
-From: Pu Lehui <pulehui@huaweicloud.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jeff Garzik <jeff@garzik.org>,
-	Auke Kok <auke-jan.h.kok@intel.com>,
-	Breno Leitao <leitao@debian.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pu Lehui <pulehui@huawei.com>,
-	Pu Lehui <pulehui@huaweicloud.com>
-Subject: [PATCH net v4] e1000e: Fix out-of-bounds MMIO access by validating BAR0 size
-Date: Mon, 27 Jul 2026 02:56:45 +0000
-Message-Id: <20260727025645.2600363-1-pulehui@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCE43BE62A;
+	Mon, 27 Jul 2026 03:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785121610; cv=fail; b=BSTzqNaDaf//02nuFR4xWRZtloRB+N4fBkPb2N7y5zGkFMSW8ifPd68KAmORwlxXlaVXfPoKUseb9IYMHyuHKgs+Kq0cPp0BLaS298q29NoihtWs5IZDrHhFTpNwO5iEPDaQT4fKpZ3lxENm2c2QXgtWIL8wTNxQOcybmDMwRgk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785121610; c=relaxed/simple;
+	bh=Hi3ozbyHD/Sj4b7S0QrRRH518t+Nx41WsueReYTyQlA=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=LQoJ0rqWYsRxNb8lIfMOxEpXH16qpWEMiNUQ/taPbtWQVeOl3ffxJlMUL5/XZeAQmyzPt2Ne5uW+r4NvgquW9jyy2JHBef9QCOsgMa5fWzQUXA9V2AeFSfjwB3OMGmyBbmpQXGjHHTrgjlZAHC7XyIt+nsRw742Q2BOJhyahdaI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=DKPucqjC; arc=fail smtp.client-ip=52.101.46.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="DKPucqjC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Z1cc4qpHi2tUw3iCB4xWsG7KBCcCSn80jkpjbG6PATBq6n0Bw/9X0pDB/Xjlm/2ivsfPpxftjcnSn/hrPcQ4bpO9lBBbJDSi3I2ZOWQg7qPbep/3tG/AFe8dfPlitWmDuiL86fv7Z65r1jA3/CIICF+AROrELJP0s6eDfRhwfKzHD+jQyXN+zn/a35M/IZjJsZYgMyFbLkwXYK5u7N7BY1gMOOPI5gdQewve7j7rQiix+fJUHC7Nb204q/aZYfsg2eThTbnGqOwYSFAJLAJc872DTaf5GHnls28SMWh24kCHlFv00Obka21IMAbyovSMaZTZGnxxUB0eq8GKP/JFDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JhHziu2sy5jBQHkshTnLnnEL2oMAVdslInTxEMS26LA=;
+ b=GHjDqkwh7n0FGF9LZQTQi66a64qzBbkipGh3k7Un3ixUlhePNiL1duQt/0phw7ARVxCmZY6q46/CqQZC7FQlY8UP2DouiSSwPdD2c7KV2O+FTw+wI4eGMxam1Zgp2kYWoI8dXferO5/KtyOKORf7Gdj4JR0BlHjo6UwqXE0Tjf0f2Qh3GQcjm8fGxT8sabOwSlOwmP/yC7Qu6V0OU+6NN6AhwiHN0O5YzLZkmSYxDNIhH5a7wQ2TecfM/D6ZOj3qjCcCni27CTslZEVREDVxod1gOyhgJY/KCrfuBUrCzBteNaiE40ETJXy0Ro0FxD5HyBLJr5Qu1nGzT+kLqSYXNw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
+ dkim=pass header.d=altera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JhHziu2sy5jBQHkshTnLnnEL2oMAVdslInTxEMS26LA=;
+ b=DKPucqjCnmO/8MZ38SOqueNZgUfkYJSHVCFaq5ZNS5Issy6TqICzwV8vBEYlL20BZfrAan4kWwF2vpuvLCuA2MJJDXvxwQqowfumHK2EhWX+ewNAhWM9O5L/3n1+gbshE9+yG6gIe3Y+Cc3KICoe28wNOrpNAjFDZoqFVgZ3Kkjsju39pi03mh6StWCdCifBolXkNYvjSJ2ia9LleC2YZNz83sb5008oLQRhh4NgWTDuV4voLZNGlNPt3Zkq/hYtM8tIcE9UVcp9oGLZNMwppcJvdALYbgWsf7DOrOZM0yaYWKxBuYZ2ASiAD5Ib82KLVrOVHBP/Lu76GWCLZ8OjtA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=altera.com;
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
+ by CO1PR03MB7819.namprd03.prod.outlook.com (2603:10b6:303:276::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 03:06:46 +0000
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775%4]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 03:06:46 +0000
+From: muhammad.nazim.amirul.nazle.asmade@altera.com
+To: netdev@vger.kernel.org
+Cc: ansuelsmth@gmail.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH net] net: stmmac: Disable queues before netif_tx_disable in xdp_release
+Date: Sun, 26 Jul 2026 20:06:45 -0700
+Message-ID: <20260727030645.13280-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+X-Mailer: git-send-email 2.43.7
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0156.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c7::11) To SJ0PR03MB6964.namprd03.prod.outlook.com
+ (2603:10b6:a03:432::18)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_Ch0CgCHdUTZx2ZqzpVbAA--.58003S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxWFyUtr1rZFWrGF4rKrWUXFb_yoWrtF1kpa
-	yfG3WUCr4rJr17Jw4xAr4jgF98CayDA3W5Ar12gw1F9F1j9FyUJry7GFW3Gr4xuFyktr9x
-	tryDJa4I9F4UAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9I14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxV
-	WxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
-	Yx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbV
-	WUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7Cj
-	xVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4I
-	kC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWU
-	WwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr
-	0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWU
-	JVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJb
-	IYCTnIWIevJa73UjIFyTuYvjfUonmRUUUUU
-X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR03MB6964:EE_|CO1PR03MB7819:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb0d74ac-b46b-41e7-27d6-08deeb8c17f2
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|56012099006|11063799006|10067099003|18002099003|55112099003;
+X-Microsoft-Antispam-Message-Info:
+	d5FX1oEy8T9QN7u/PG44RjMeXQqMG3d6v2WMxSMA2E9g8mNUpm7Vygfnu0Yy2CLWbB0ZKq/8nJMcxCTlE4Rc0hlfAwF1XBb+28V9BTOfAkle/3Ky4g+IX7gv9P4tEwBNJ/Wch1IBglP5T8yNXHgelHEsK8Q4RMMc9Rxs+5GCJbyN8Y0/RRy21DEDAsfw7/LghmkUekAhp5o5NuWLmhu3SpE0yzqSTaB33QuyUnuJei0GL3pm9jPtn35iG5dMx0zmpDi8K/9ajWUioHCkzn42Jqw82a/aQGma/9Ph+WEm8WYcRDvseamuTGU5nGo7I6AYaxzcKLhKqu3momCF3I+1dCP2T3zIb4EJVvbyEdkySfa+UQwvnYTWi4tY+hCuV1AiYz36nf7WhtO1Cv7Ca0jVAVpzbo8uPAUjZ70363IpaJV1tzBtiNHX/akFWjzaiAG6CFPsDS8/62AyP/JHbEeNl/icJH+NqYjITD7uShQtzCO96ejl59H9Z+jRFmslK9GmN7jnYpGrhjuvObyM2GREgCuzLMhfJJKD1HyjqWJLV+X0RevNF4xDBqauGaaNjGhZEWij5QeE9dLBFm6S0X6JZHpP/ZxdhanZrLHNlVCiS+73UPWhno0VhLo4UVj7awJ+mdtqB7Lu6fwD7aXCWgn2u9f3EpRtxImOlUs9hxxDTsU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(56012099006)(11063799006)(10067099003)(18002099003)(55112099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zfRQqf9cgrxn6fTT+LAujSQnDpqmYFTDNYR/kjdaYOOSc3zTv6iMECTl+FdM?=
+ =?us-ascii?Q?Mo0ZapoG5ey1wvpWLe64yYUYFmpJtLo6pgobbTZ1SPzFTu8BzRpNsFljANm8?=
+ =?us-ascii?Q?5FqmOXuhSY5bUUtioEyXUWO6brdENQBEih7WVR+MIsxXJ/X9LIXdxKt9gxWM?=
+ =?us-ascii?Q?sKxm/RCy2pfFpJuoTpRjrFA/UPyNPqlAIxqQtr8rDLtSG99l3OtUUd/RmvcO?=
+ =?us-ascii?Q?iTc6iyItX1XRWwgPD092LdbFfVoVrh2VSDM3N+2/WQ4QNYZSvMslyRep+VwK?=
+ =?us-ascii?Q?lcUuTi8aOf3RI/XCfxjIGcrzb40RWZUirZjJHCNjqTm0IGBZgumje2Tbx/D3?=
+ =?us-ascii?Q?LE+tR7A4XPDvWd7xq+OrJv3pfeLKinxcuI9/XlnqlyoRNZxvJ0ZL+/eDuYQA?=
+ =?us-ascii?Q?uezxm6a0CU03zduhNHmI6M6eOWOnUdvnxvb5ZGOfc0L0+geB+a+msr1fOt5I?=
+ =?us-ascii?Q?HJGag5qEzsnya1C4dF9IfbzcUTO89sPBL18tapPz2m+wqpMrcLBxx8KjYBOF?=
+ =?us-ascii?Q?O3nentk3NuA0LqZedvkB3eGq/YGuL2UOqAKx8FSVTHA0I29XdLtw7FC9iNoo?=
+ =?us-ascii?Q?lxXMHCMEN1ZTnTScI0F3PA/Kv6XFdLsGhbkA4290h/ddOFrUY1KMy8xlNuet?=
+ =?us-ascii?Q?1HqMZKJGNFN7jv4KJNctVSqtJfRkWAoH8zyiSIpeNKSEdN/h3kgK4bWyblbg?=
+ =?us-ascii?Q?HnRrmF7zynRzg0Sduqd3kIF97agJQgkY6ZrhWwgQltRsxT+QLik47gXMHako?=
+ =?us-ascii?Q?IAbKP7xdvGUozEHS4jATsclfQPTbMGtnyaFPHKqWFI5m3pu1CDQMKheUG6qY?=
+ =?us-ascii?Q?be2Q+EaBT7sXCTm82m4FERvU4pUmNzh31IQoA6cDnA2i7Ljac+3pun7UCO53?=
+ =?us-ascii?Q?kBExukjnAnhUz+0MGxUYjdPC9p6AViB7nMw9WxtEXHXcSrolgbFu4NqJ/wcZ?=
+ =?us-ascii?Q?EZHZav88MG4/VXNJP4PLM+cJFIqLGL0QKXTg8fWzI0FQuGQ2HElBGeJOpWlX?=
+ =?us-ascii?Q?ACDUP7nMenwk5HCTLnfbHrlmzxkqbhur92mIcL9Zr8yBZYYkl2XM9EmtgHea?=
+ =?us-ascii?Q?VzZ3vhgKPxJ+qEJp5BNaZB1GCuxZffMBFJ5q53jwKO0G/u0D6ITbWYPBcnGG?=
+ =?us-ascii?Q?M6XsXnGpOV6RB10BKM5DDo4Jti8InbNw+KokSN8vZ8Xv+HI0kYAIvSjIevhL?=
+ =?us-ascii?Q?EFBPNzsHfdBRYDrUbLd8bbo+6WrJwxh32vGVRHju4JZxOMSiDwJ1/UgjfhU8?=
+ =?us-ascii?Q?rs4mY3wGa1Z8PeAx1O2p/KiykShaH12bu/LIS4as66p3c4PuPOZmwNHimiGs?=
+ =?us-ascii?Q?pJUsAujO97ioEKyBpAxEUtBKSpjjd4w6Lmd06byYmVtWTF9XHHzA2WL/BUEf?=
+ =?us-ascii?Q?xlzBHOI7KjLrwoLpGezWNktRV4mJYI63grikzXNSqsUYKKsZAn/JJFlUZUwf?=
+ =?us-ascii?Q?YmwDbFLSGbIKspYleNCe95pgdElNT2YxD7azEzxsagi1tF86X5LUWGa/l7AD?=
+ =?us-ascii?Q?60O3uH66HUIPwMFSYGpQ+saopokiB2NnCzO62iw3dhAO5izw1vCjQMu8ru56?=
+ =?us-ascii?Q?cD3dD1c7zZrRPhwdT5h82/Xwc4yHmE5BLqQi8mus+sJDxhPwfQDuLT6/ZQC2?=
+ =?us-ascii?Q?aqqAyn+QVj7HVdmmzE3lA5+DitGMdnCAvjdI7ER5+/iTsWYPerfwWWfFD+Jp?=
+ =?us-ascii?Q?HMiEFP5KmBkENyRFBoPKRqp0eB4ZJ2kjNAtfOwxffTRdmiyi6zInvrcZ234/?=
+ =?us-ascii?Q?OhygYPvibv0SxdeOgydntrkvVn2eiPGp/CrxGApmNXQQ7sf6OvTtG+gkudPa?=
+X-MS-Exchange-AntiSpam-MessageData-1: fZZ2Jgv9LmUqyg==
+X-OriginatorOrg: altera.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb0d74ac-b46b-41e7-27d6-08deeb8c17f2
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 03:06:46.4410
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: E9mfNHrW3CJgNmLChDepCnVXXG6hPBLIzfz/jM6LCC1MtwS94b919uhwELGLhZa9wAHzBTge4ENqf1zHcxqKtYXTnxJDtSSJSwIjV375wtm4x+DdM6z+lrUO1LhiSfe+OaCvkmZtTFc/iK2FtLwtRQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR03MB7819
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 
-Syzkaller reported a kernel panic caused by an out-of-bounds MMIO
-access in the e1000e driver.
+stmmac_xdp_release() calls netif_tx_disable() before
+stmmac_disable_all_queues(), which creates a race window where NAPI
+is still running while TX is being disabled. If a packet is still
+queued at that point, it can be processed after TX is stopped,
+leading to a kernel panic.
 
-[   82.868719][  T404] e1000e 0000:00:02.0: The NVM Checksum Is Not Valid
-[   82.872328][  T404] Unable to handle kernel paging request at virtual address ffff80008894e090
-[   83.085218][  T404] CPU: 2 UID: 0 PID: 404 Comm: bash Not tainted 7.2.0-rc2-g3f1f75536668 #1 PREEMPTLAZY
-[   83.129013][  T404] pc : e1000_get_cfg_done_82571+0x70/0x158
-[   83.140092][  T404] lr : e1000_get_cfg_done_82571+0x68/0x158
-[   83.151196][  T404] sp : ffff80008ac37410
-[   83.158922][  T404] x29: ffff80008ac37410 x28: ffff0000cd6a11b8 x27: ffff0000c58190d0
-[   83.173919][  T404] x26: ffff0000cd6a11b8 x25: ffff0000cd6a0bc0 x24: ffff0000cd6a0000
-[   83.189417][  T404] x23: 0000000000001010 x22: ffff0000cd6a11c0 x21: ffff0000cd6a11b8
-[   83.205195][  T404] x20: 0000000000000064 x19: ffff80008894e090 x18: 0000000000000000
-[   83.220545][  T404] x17: ffff800081c1a3f4 x16: ffff800081c19c10 x15: ffff800081e86510
-[   83.235764][  T404] x14: 0000000000000001 x13: 0000000000000001 x12: ffff60001bc8a8b3
-[   83.251301][  T404] x11: 1fffe0001bc8a8b2 x10: ffff60001bc8a8b2 x9 : ffff800081eae25c
-[   83.266705][  T404] x8 : 00009fffe437574e x7 : ffff0000de454593 x6 : 0000000000000001
-[   83.281919][  T404] x5 : ffff0000cf2b9640 x4 : 0000000000000000 x3 : dfff800000000000
-[   83.297317][  T404] x2 : 0000000000000007 x1 : ffff0000cd6a11c0 x0 : 0000000000000000
-[   83.312601][  T404] Call trace:
-[   83.318662][  T404]  e1000_get_cfg_done_82571+0x70/0x158 (P)
-[   83.329748][  T404]  e1000e_phy_hw_reset_generic+0x17c/0x1a8
-[   83.341541][  T404]  e1000_probe+0xbd8/0x1988
-[   83.350334][  T404]  local_pci_probe+0x84/0x130
+Fix this by calling stmmac_disable_all_queues() first to stop NAPI
+processing before disabling TX, matching the order already used in
+stmmac_release() since 7028471edb64.
 
-Repetition steps:
-1. Find PCI device which BAR0 size <= 4K. If it's:
-   Device Addr: 0000:00:02.0   BAR0 SIZE: 4K
-   Vendor/Device ID: 0x1af4 0x1004
-2. Unbind the above PCI device
-   echo '0000:00:02.0' > /sys/bus/pci/devices/0000:00:02.0/driver/unbind
-3. Set the above device to e1000e new_id
-   echo '1af4 1004' > /sys/bus/pci/drivers/e1000e/new_id
-
-During e1000_probe(), the driver maps the device's BAR0 memory region.
-If the device has a 4K BAR0, ioremap() maps only 4K of space. Later in
-the probe process, when the NVM checksum validation fails, the driver
-attempts to perform a hardware reset and falls back to the err_eeprom
-cleanup path.
-
-This cleanup path will trigger an OOB access kernel panic:
-e1000_phy_hw_reset
-  e1000e_phy_hw_reset_generic
-    e1000_get_cfg_done_82571
-      er32(EEMNGCTL)
-        readl(hw->hw_addr + EEMNGCTL); <-- EEMNGCTL(0x1010) > 4K, OOB access
-
-Fix this by verifying that the MMIO length (pci_resource_len(pdev, 0))
-is at least SZ_64K before calling ioremap(). This accounts not only for
-standard registers up to E1000_SYSSTMPH, but also for flash registers
-mapped on ICH/PCH chipsets (up to offset 0xE074 / ~57.1 KB). Since PCI
-BAR sizes are power-of-two aligned, SZ_64K is the minimum valid BAR0
-size required to ensure all subsequent MMIO accesses remain strictly
-within the mapped boundary.
-
-Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Fixes: 7028471edb64 ("net: ethernet: stmicro: stmmac: first disable all queues and disconnect in release")
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 ---
-v4:
-- Increase minimum BAR0 size to SZ_64K to cover ICH/PCH flash registers
-  (~57.1KB) aligned to the power-of-two PCI BAR boundary. (Sashiko)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-v3: https://lore.kernel.org/all/20260722031603.1471127-1-pulehui@huaweicloud.com
-- Align the minimum BAR0 size to the largest register access offset. (Andrew)
-
-v2: https://lore.kernel.org/all/20260720133049.1289167-1-pulehui@huaweicloud.com
-- Update comment about E1000_MMIO_LEN_MIN. (Breno)
-
-v1: https://lore.kernel.org/all/20260715035850.588070-1-pulehui@huaweicloud.com
-
- drivers/net/ethernet/intel/e1000e/netdev.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 844f31ab37ad..f8eac648ac9a 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -7450,6 +7450,12 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	mmio_len = pci_resource_len(pdev, 0);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 2a0d7eff88d3..75cb53938519 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -7099,15 +7099,15 @@ void stmmac_xdp_release(struct net_device *dev)
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 	u8 chan;
  
- 	err = -EIO;
-+	/* Smallest BAR0 that covers every register the driver accesses */
-+	if (mmio_len < SZ_64K) {
-+		dev_err(&pdev->dev, "MMIO len is too small\n");
-+		goto err_ioremap;
-+	}
+-	/* Ensure tx function is not running */
+-	netif_tx_disable(dev);
+-
+ 	/* Disable NAPI process */
+ 	stmmac_disable_all_queues(priv);
+ 
+ 	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
+ 		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
+ 
++	/* Ensure tx function is not running */
++	netif_tx_disable(dev);
 +
- 	adapter->hw.hw_addr = ioremap(mmio_start, mmio_len);
- 	if (!adapter->hw.hw_addr)
- 		goto err_ioremap;
+ 	/* Free the IRQ lines */
+ 	stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
+ 
 -- 
-2.34.1
+2.43.7
 
