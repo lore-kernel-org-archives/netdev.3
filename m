@@ -1,196 +1,162 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022E2353A8A
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283F1363086
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785146217; cv=none; b=HCnrKJ6l5KhOB2nLbav0P2uqf2vBdFlEmwOvI16gncnWHqRN/e+zrZb5GH76YTZQGvvEuBfE3pk3Spl+k0ToBZPTYp1G6Qb8HlM1JMfvPFHZ3FJB5dI9xjH3cFIJEImTIySDj7Ji0F8bXITzYhapHCoeStNZkoqY38mJ2paqrnU=
+	t=1785146280; cv=none; b=TVPj85tTwx0ZeNu4npieOf/QQhTXUJ7gIYslb/dlRptt2hSkF9zgq1qMGtGn1ehoGPQBi9u+mEXv/uc8wAJommsGOjsKyHcGZwmyhGXGQiomhLUOaxlcKJaC3VMaqYU9d58gFjIG+j/ezoCExlTJsukmUegMK1DHvOrWBKcHYsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785146217; c=relaxed/simple;
-	bh=13GOSqAdgrF0dIuUjy81pMTDfGbzXmq8V5DyscCG2H8=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBZ1cuer8woheJj9Cp0AyQxx3pwoWr+rn7kDl+Zjl7oO25bZMMa2MfxPt0eWXpr4Z8D7Z5Q/HWXUo9k/Zhb/H5IlDzPLSrjfCNzfIDPKinI3qpjnitepgOPuUPe2st1BC4m45Rn6CXWHLO3miFPFJzOnE2n5kVlVWKarzBuHl9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=ZV0eGQN4; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
+	s=arc-20240116; t=1785146280; c=relaxed/simple;
+	bh=hksvnrMSdq2PW/vcmC8ra1BJNKLLl6/z6Q1cymyutok=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=RLHiBg1mgbgFzlTel08yhjY9yueFpxpYrKzxCjLXTk2tVWYv07G6CH2jOXY6xNrPSUutNx69P2Smjn0ODPTefBJBX8hYL4dbciU5mvaSlTzre1OwgIL8UztJo36l2lPjatu+vAEsMLnIfL9Sn/jLVrtSvADg8B9JxI4fGEwl8wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N4K5owNW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fl3to1ma; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="ZV0eGQN4"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38dd55ad76cso2324081a91.1
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:56:54 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N4K5owNW";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fl3to1ma"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785146277;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XbVK27mEZzmZWs2lCAM3oBTkoawfDeeknGdjVrkh03E=;
+	b=N4K5owNWlaNDm9FGVLTi+9/ETYd+bIROsSfZE2tjC5wxACd8CgHDh0c/5hRnlN0Yr2VMOa
+	+Qvq/2mSTVFSzcLNAAHU1KOra7mTxt2niQ6cqyW8KqJCnj6rrInl6Ui+SIPLmSEhCHfa8J
+	wlYHMKCpgDSXq97gmn7H1vB+FckARyQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-401-Z2NFlChQP8W4X3WiWoAK8Q-1; Mon, 27 Jul 2026 05:57:56 -0400
+X-MC-Unique: Z2NFlChQP8W4X3WiWoAK8Q-1
+X-Mimecast-MFC-AGG-ID: Z2NFlChQP8W4X3WiWoAK8Q_1785146275
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f6e8b5996so2628636f8f.2
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:57:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1785146214; x=1785751014; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=sYEClUMgtlxTRfHjpZUCI6IfQ0ehz2GfsZPhfUC/e30=;
-        b=ZV0eGQN4W4QZ87w72QXoir4QKNpCaoPNJuqfdTxjcgFOiNMIAjIqVYw9oyEewSH7yW
-         n+6bTD4gU2hBaHOcUPQT/mheBv8uswF/pC6gMlRG8Q40AFz4uI14vhWQJ5D71ZT/4xu0
-         CHAsnGAy0i6ahkFpmvO+ZU/PGa8NpmrEctph6d0xO2gUtWTVe+rK2fiGrfvwsMplfGKV
-         99oPKzLLqpNjV2pHNkiEWyDa3eRu6CEHOpX2L7vCYZJrkxZjteSPds0VXQC9dcpJtxgG
-         h1AZzmI9TSeuKY/+3XVAEPQstdauEy+ncE2+wsTQQYn3SeEQc0jDZusBhZaLWR9blPaG
-         u2Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785146214; x=1785751014;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+        d=redhat.com; s=google; t=1785146275; x=1785751075; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id
+         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=sYEClUMgtlxTRfHjpZUCI6IfQ0ehz2GfsZPhfUC/e30=;
-        b=NbqbPZs9hzibnU7iVMNLQuMnSA8jsa5pN2i+E2lsGLAvny/EYUD8d449NqouCMXpUF
-         NtVS40M0B7Gx++RattF1Xzd/bo9oHHCoc8Tn4v0shymY1ZWRFbV2tKw89+BHE33YkcJG
-         COz272h2BnGjvRH3lpVIN96+Zs73nGJGnsit7BdOV1JPwrUByEWCnO/Q1KjK5yaU221I
-         MalwXiuSUllpz54bI/eNHX+2hwEAcK6Q1WYOINOsvVh6FqWWeL3mvrUaq9eYZpEZkf/+
-         ZRFT2SaOIbXOk3hLGn1rmC5S36NGztZ8Vpp9+BKgKlTBmNkD3wqJibtnz68rtIlraRjr
-         mMsg==
-X-Forwarded-Encrypted: i=1; AHgh+RprknQvd2KignBe5xsC+/TDkUG30U8NNTTXh7pCVX9V+3mcrllQcb/2p0aEHzsFztD6EEYIbrA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1I+0QhkoprenrWPu1b76j6xqos3lnIyXKXsj/vB0VOB1vS3iF
-	QLslruVO1RXRKS6cuz8kHkqRrlrh8pcJDD28GViiwjA3TC5JDbAgcOsr4pXlPqA1Pt0=
-X-Gm-Gg: AR+sD13Ejt9uG6XxIX1gdhZQ6bTr1xLGxinPgyn54qZ+eoy0w7pPGICVvkqamsHcSdG
-	GxI46Y8I0kEmNV3e6vRPseXoecSA42dcPZborvQJnCBvpKAqxeWK3AM4NADvA6HpT1Mb23YSfWh
-	Chrojx/XnIv1kVFLtQxMLd2FLHWokvdMbl5CFJBRFjbOq5exyf8ziNh7dqJwUvq58pdD5KkZNJJ
-	vuoYqRndmtr/fxlIH1nzfGY5U+Stm4wa4IT3G7dcQiyc/d/45ylreLV5DjjHhMv8GA+L7OpT2lR
-	IENh+qOw5EYXcgfko7/ZA/5ulximMPdC+tPtnewevh4AKXtgWsNak7mf5W6Fg0oZdFops9r9r2D
-	c9JFwdLJFS4Om6PaoHD1mCl33aJFGcpnz042U27HgmsD8X1ipprVby4pkX/9KWtUoEI7ntmGnam
-	FbKre07e+Hycl2vCZObEkHF1Go
-X-Received: by 2002:a17:90b:398d:b0:38f:657:6823 with SMTP id 98e67ed59e1d1-38f2a97aa1emr5126778a91.8.1785146214078;
-        Mon, 27 Jul 2026 02:56:54 -0700 (PDT)
-Received: from localhost.localdomain ([2406:5900:1044:110c:fc36:f2a9:533e:766d])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f090619f4sm2806808a91.3.2026.07.27.02.56.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 02:56:53 -0700 (PDT)
-From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-To: "D. Wythe" <alibuda@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net/smc: fix out-of-bounds read of rkey array in SMC-Rv2 LLC processing
-Date: Mon, 27 Jul 2026 18:56:34 +0900
-Message-ID: <20260727095634.1079605-1-yhlee@isslab.korea.ac.kr>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260727021511.GA95674@j66a10360.sqa.eu95>
-References: <20260727021511.GA95674@j66a10360.sqa.eu95>
+        bh=XbVK27mEZzmZWs2lCAM3oBTkoawfDeeknGdjVrkh03E=;
+        b=Fl3to1ma/sl+E3J5ifxruwBiwKe/B2oB3nC+qp4TDdUzDTEAAg5UmKhDq4QeZ4uKum
+         P6/kfLWd4zgkuUVnMlPzDzsVs9LiPtBUrn/8cs2w+R5L78Y4a7mcILx3kMqXjGOIfbco
+         2M9bBoHsQEb+AGEkBH1WTN60Yxm+NVd6vcGN/a5Jarq43hmZhTRd7H2/ocbeGr0P6io0
+         A/WZOLhJXJhQi+CpoVQJQOWk/rD87azkBYTuYBPXCC3D/B7KQFOeiAvKr/mwVKhNui1K
+         Gp+zryamRcvP+DP4osxVJN8aW50I78+v1LGg28/V1MSie/bRXeqVeSenTmRDWHng21lC
+         OYjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785146275; x=1785751075;
+        h=content-transfer-encoding:content-type:mime-version:message-id
+         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XbVK27mEZzmZWs2lCAM3oBTkoawfDeeknGdjVrkh03E=;
+        b=T21SWyAdW3YasFnmO2/OpsQulOaLmB5BkaGMbmsf+8EyvGRA1hmD8IU5hSzVws2Y4u
+         yR/PQMjKR5J7FByK5EsCQ7TIauJ3iiCBA09clwagHo+ctditazy1k6+A+PrwrFueKFuh
+         VJYw0fHVPUqTlhdE4Umozmngihw/3yrbclYA6T7lZyh70FNxyMl94Da3+Lr26Ws8AcIh
+         C/K2qM1kE3+t5ltXcvwr35WBKGun//A30Iei6zUNXnWV3qdbPZuZRGD0kcG82t1h7Ydm
+         S6IUrXMyp8dAbbQiXjxCzRxhNEpMK6DlUKF3NALWL/RqFf8toXatmFZnHUpE3vALPE3H
+         6OXg==
+X-Forwarded-Encrypted: i=1; AHgh+RoMD/Xt3HsMA3AHX2Q+OV+h8Fe/UWaLxAKAGMQnBdDHXLI1apgny0eWnI+V/qzfB73Yg/UcmkY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yypq8R6g+w22VpUo00/xKVrBR55sbJlr/NttJ4cKfFnqtaVEps6
+	//V6PbeX0iTwKQEbihhfnHEmL8l1sdkiAFEnfANhwCq4u1D72uVq+WAt7Ej9/5KR5uFHvRctVqS
+	yqZIxzhGGPFNWWSOWgx+zfLgdRKQ/t3pX10w04duTYiAhQMkjzOBPPnAmug==
+X-Gm-Gg: AR+sD13FIaqbzWviX55TWLYxZwmUd0rEFcsHuIamMH/wBRqp1jQGK8j3FlGbn9mKmpj
+	3r2lkWK2SwjH4puEtW4hfoF8v0ViM3PM/8ix3Un7ed6R3WiwTckNmItfQChBVyIaY+OYI+2HkTq
+	qP6cVPvURWSEatgjFIJ1sOPOsMjjVesBH9Mj5nYHbTQTYTwaOLXaSmH4+f4iO2Ic0J6Emv6rnzX
+	urkgDRLuggn/pRKU7hMHGXjN4W73NApjjFkF1G6c9SAIFb9mstHI/UJLa935V0oBrsFgW0Zl8L7
+	MlcmDod8Pvdrc1jPlBQFqK7xDWQ/VOwf1P4nyRbu08QOCjfwK8gf6mjSNLDHdZPZGtEEhdoAyO7
+	4ADCQUJ/afRWiNrazbkorZZTmxYzD/MuH063FE7N0sUg/mG2svF5QyskAvQyll5rHbLc5Pg==
+X-Received: by 2002:a05:6000:491b:b0:47f:7c50:2222 with SMTP id ffacd0b85a97d-47f9fc8f0edmr10008707f8f.24.1785146274875;
+        Mon, 27 Jul 2026 02:57:54 -0700 (PDT)
+X-Received: by 2002:a05:6000:491b:b0:47f:7c50:2222 with SMTP id ffacd0b85a97d-47f9fc8f0edmr10008674f8f.24.1785146274443;
+        Mon, 27 Jul 2026 02:57:54 -0700 (PDT)
+Received: from ehlo.thunderbird.net (cst-prg-88-87.cust.vodafone.cz. [46.135.88.87])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85bdac28sm46707278f8f.16.2026.07.27.02.57.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jul 2026 02:57:54 -0700 (PDT)
+Date: Mon, 27 Jul 2026 11:57:49 +0200
+From: Ivan Vecera <ivecera@redhat.com>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>, kuba@kernel.org,
+ Prathosh Satish <Prathosh.Satish@microchip.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>
+CC: linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next_v2_1/4=5D_dpll=3A_zl3073x?=
+ =?US-ASCII?Q?=3A_remove_conditional_return_with_no_effect?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20260725150852.859188-2-ekffu200098@gmail.com>
+References: <20260725150852.859188-1-ekffu200098@gmail.com> <20260725150852.859188-2-ekffu200098@gmail.com>
+Message-ID: <613FABA8-E03B-49D3-ACB9-175BF46ED165@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 27, 2026 at 10:15:11AM +0800, D. Wythe wrote:
-> Could we consider attaching a full copy of the message body directly to
-> the qentry (e.g. kmalloc(wc->byte_len, GFP_ATOMIC)) for V2 messages that
-> exceed the 44-byte inline union smc_llc_msg? The only V2 types that grow
-> beyond the header are DELETE_RKEY_V2 (batch-delete, rare),
-> ADD_LINK_RESP_V2 with ext (link setup, rare), and REQ_ADD_LINK_V2
-> (~hundreds of bytes). Memory pressure should be acceptable, and this
-> also unifies the shared/non-shared paths.
 
-Yes, I agree, and I will send a v3 that does this.
 
-It is better than what I posted for a reason I underweighted. In my v2
-the body still lives in the per-link-group lgr->wr_rx_buf_v2, which
-every LLC message on that link group shares, so a later v2 message can
-overwrite it between reception and the llc_event_work item that consumes
-it. My v2 protects the header from exactly that by restoring it from the
-per-qentry copy, and the commit message says so - but it leaves the body
-exposed and I did not state that plainly. Copying the body onto the
-qentry removes the exposure rather than bounding it: the buffer then has
-the same lifetime as the request that owns it.
+25=2E =C4=8Dervence 2026 17:08:49 SEL=C4=8C, Sang-Heon Jeon <ekffu200098@g=
+mail=2Ecom> napsal:
+>Both branches of the check return the same value, so the check has
+>no effect=2E Remove it and return the value directly=2E
+>
+>This is the result of running the Coccinelle script from
+>scripts/coccinelle/misc/cond_return_no_effect=2Ecocci=2E
+>
+>Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail=2Ecom>
+>---
+> drivers/dpll/zl3073x/dpll=2Ec | 6 +-----
+> drivers/dpll/zl3073x/out=2Ec  | 8 ++------
+> 2 files changed, 3 insertions(+), 11 deletions(-)
+>
+>diff --git a/drivers/dpll/zl3073x/dpll=2Ec b/drivers/dpll/zl3073x/dpll=2E=
+c
+>index a2a641b8358f=2E=2E0488ae6ac486 100644
+>--- a/drivers/dpll/zl3073x/dpll=2Ec
+>+++ b/drivers/dpll/zl3073x/dpll=2Ec
+>@@ -2272,11 +2272,7 @@ zl3073x_dpll_init_fine_phase_adjust(struct zl3073x=
+_dev *zldev)
+> 	if (rc)
+> 		return rc;
+>=20
+>-	rc =3D zl3073x_write_u8(zldev, ZL_REG_SYNTH_PHASE_SHIFT_CTRL, 0x01);
+>-	if (rc)
+>-		return rc;
+>-
+>-	return rc;
+>+	return zl3073x_write_u8(zldev, ZL_REG_SYNTH_PHASE_SHIFT_CTRL, 0x01);
+> }
+>=20
+> /**
+>diff --git a/drivers/dpll/zl3073x/out=2Ec b/drivers/dpll/zl3073x/out=2Ec
+>index eb5628aebcee=2E=2E410d15b96d0b 100644
+>--- a/drivers/dpll/zl3073x/out=2Ec
+>+++ b/drivers/dpll/zl3073x/out=2Ec
+>@@ -85,12 +85,8 @@ int zl3073x_out_state_fetch(struct zl3073x_dev *zldev,=
+ u8 index)
+> 	if (rc)
+> 		return rc;
+>=20
+>-	rc =3D zl3073x_read_u32(zldev, ZL_REG_OUTPUT_PHASE_COMP,
+>-			      &out->phase_comp);
+>-	if (rc)
+>-		return rc;
+>-
+>-	return rc;
+>+	return zl3073x_read_u32(zldev, ZL_REG_OUTPUT_PHASE_COMP,
+>+				&out->phase_comp);
+> }
+>=20
+> /**
 
-One refinement. Since union smc_llc_msg is the last member of struct
-smc_llc_qentry, the body does not need a second allocation and a pointer
-to free; it can travel in the same allocation as a trailing flexible
-array:
+Reviewed-by: Ivan Vecera <ivecera@redhat=2Ecom>
 
-        struct smc_llc_qentry {
-                struct list_head list;
-                struct smc_link *link;
-                u16 body_len;
-                union smc_llc_msg msg;
-                u8 body[] __counted_by(body_len);
-        };
-
-I measured the layout rather than assuming it: msg sits at offset 28 and
-ends at 72, which is where body[] begins, so header and body stay
-contiguous and the existing v2 casts become correct instead of out of
-bounds - the non-shared line
-
-        llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)llc;
-
-stands as it is today, and the shared/non-shared branch in
-smc_llc_rmt_delete_rkey() and the two ternaries at the
-smc_llc_save_add_link_rkeys() call sites are deleted rather than
-rewritten. smc_llc.c already asserts the invariant this relies on:
-
-        BUILD_BUG_ON_MSG(sizeof(union smc_llc_msg) != SMC_WR_TX_SIZE,
-
-Every existing kfree(qentry) site also stays correct unchanged, since
-there is still exactly one allocation, so the flexible array adds no
-paired-free surface. One lifetime question does surface, though it is
-not created by this change: smc_llc_srv_add_link() calls
-smc_llc_flow_qentry_del() before the v2 rkeys are read, so the
-non-shared path already dereferences add_llc after the qentry has been
-freed. My v2 hid that by reading wr_rx_buf_v2 instead; reading from the
-qentry makes it load-bearing, so v3 keeps the qentry alive until the
-rkeys have been consumed.
-
-One consequence is worth stating, because it changes what the patch has
-to contain. Once the body lives on the qentry, the backing allocation is
-exactly as large as what arrived, so the loop bound has to come from
-what arrived as well. Today the count is capped only by
-SMC_LLC_RKEYS_PER_MSG_V2:
-
-        max = min_t(u8, llcv2->num_rkeys, SMC_LLC_RKEYS_PER_MSG_V2);
-
-In my v2 that was sufficient for memory safety only by accident of the
-destination: the reads always landed in the 8 KiB wr_rx_buf_v2, and
-num_rkeys = 255 reaches offset 1028. With a per-qentry body, a 44-byte
-DELETE_RKEY_V2 declaring num_rkeys = 255 gives body_len = 0 and the loop
-walks off the allocation again. The same applies to ext->num_rkeys on
-the ADD_LINK path, where even reading the count needs 28 bytes of body.
-
-So v3 bounds both counts by the received length instead of only by
-SMC_LLC_RKEYS_PER_MSG_V2. That is the validation I deferred as separate
-hardening in the v2 commit message; under this design it stops being
-hardening and becomes part of the fix, which I take as an argument for
-the design rather than against it.
-
-To be precise about unifying the two layouts: every consumer unifies,
-but smc_llc_enqueue() still needs one branch, because in the shared
-layout the body was DMA'd to lgr->wr_rx_buf_v2 + SMC_WR_TX_SIZE by the
-spillover SGE and is not contiguous with the header it copies from,
-while in the non-shared layout it is. That is one if/else at the single
-copy site instead of a branch in each consumer.
-
-Two things I would like your view on:
-
-- smc_llc_enqueue() already returns without queueing when the qentry
-  allocation fails, so the LLC request is dropped and the flow times
-  out. I plan to keep exactly that behaviour for the larger allocation
-  rather than adding a fallback.
-
-- The allocation grows from 72 bytes to at most SMC_WR_BUF_V2_SIZE per
-  queued request. Those three message types are rare, as you say, but
-  they are peer-driven. Is the llc_event_q depth bounded anywhere, or is
-  LLC flow control what limits it?
-
-I will keep the Fixes: tag and target net, since the out-of-bounds read
-is still what the patch fixes. Tell me if you would rather see the
-restructuring go to net-next with a minimal fix for net.
-
-Best regards,
-Yehyeong Lee
