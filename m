@@ -1,355 +1,172 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010024.outbound.protection.outlook.com [52.101.201.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D243BB9E1
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 07:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785138817; cv=none; b=CZvTkIeLOw7CznyFw220Bi7C1UzK0Er0LnTylHBZzBW31y6U83VukCPBw3fyLET3LG4ghGuybp/x3Y+8zZ/CDeKDu0Q2LUeaxRoK7BhpBneEVOQuRBkpYZicMWcTMicILZV2lz7teKdyVIuJcWZ1giRTd46K8AsZc+T4dQjSbao=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785138817; c=relaxed/simple;
-	bh=dHc6qETU8dJy4l4oVAiUuanu/oJ0tJBFINLaL+Gk8uI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ETojOrOGIW2t0e81G/sKWKUp+I6Y2m23n3rizWLCxrosHnFcfWu7jlYbkhfxgTERUwaFAbODTUu2qfQEBCa65EQ5faPXSALqajZC2MEiHMVsH0fAeLWgojToYv0b/TtrZ+W4KiQysF+ed75heqHCFmkIw2482IMM3XGi3z2DeeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=emdU0sro; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2603DD87B
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 07:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785139148; cv=fail; b=b2YvJzGx30uU9vFZAWwgjtmT08Liu1VIgY6rSAV57IQGpXEkaT5QH7IAKVmRs5DwuFZzd5P7thIIWpQSmrDEWIUkdRUQm1AEBQDumS0l4eN2rJoCTESrwFhwR0bo9HFeyISd7ww37A3G95jO0sCOGEpw+uyGA83MAIylsHBQZwM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785139148; c=relaxed/simple;
+	bh=yItzUFt5PWxD++h+ax/KeHuILukS6661v2U6bZSh/1c=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LlyrofoA0EtMgH4c1oXpYsXGb8uCgoa4LVJEw5pShIylZw2vh+xn5K2wvXlvEX6M20DyzjUqLRtRTMEVQu1PI3Sk93jyHOkCMqnAEjS2lNARYB5LBhdFC95y+ltw483c1xlkfNAP44CC5BZhqUunXyEbkvOL8JZFdR1BK1YKMkE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=rlf8HLf4; arc=fail smtp.client-ip=52.101.201.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="emdU0sro"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c1c4c7ddaf6so347944966b.3
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 00:53:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785138813; x=1785743613; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0JxZwrjGZGGkFMdjSD6WIMUsIUvSrTncEVdfBpUkOPU=;
-        b=emdU0sroRVIuTzzMFy35X08hyj7etNrMUPz+CioVPzWIdkfnK+0OuS5tfKLhucrbPH
-         RI0BW7QB1pJ6vuNFOnL1M2VHPczoTp2rzvKwpIkf2/bdczd6o8FONUrQKF5uXj0ZNKJu
-         ReP8V/nCoMpg5FWtg2ocCTO8i5N5xKf+1P0nWKUN7wO2iaexhWffB1LrwaJNOmCT2GZP
-         H7XZwg3VhoHOtaVmmWn6tiLXd4cKkLhoOgv+UWeXqPSiGaWjG/1Gj+mJoMqEMJeBnEM0
-         DBq0GsF5bt302ixJt0fZjIIRt227wIVQNuLPEqxs5VjWs0vaYgTfLW7KEhy9+LM359/o
-         eS3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785138813; x=1785743613;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0JxZwrjGZGGkFMdjSD6WIMUsIUvSrTncEVdfBpUkOPU=;
-        b=N140X46OyWdLuzDUzvAjlPQJ9thrkm1QFFo+gGE/XPnMpjsBaPFAVNb0sXZOFh1Qe3
-         QcEvKf1Mt6/gwrxvFt8kzQ3vIs9lAvQWTBoWXANq7CNsIGwqHyUb9I3YQZQWHRE46qxD
-         dW/yfMOpCuAmlTffMasquevxciW48u+7sgSkIaVoxzYGnN/qYXw81Utenj3SlGv506eA
-         Tpy3lfeYOt85dA9bh9WlDRn4RktOdauMBTBLy0BOGIjBXjJUMagQMG7bjhC4BoXuf3Y9
-         /BvgXzTiewGag6W4oXVfbfEOcyytMqUahV8+Sua88NO+NIiVyrZ5s7CjX+FCTmA8rnwt
-         YxvQ==
-X-Gm-Message-State: AOJu0YzwZ1tPKN9KzSAlBW4hTgKYfhJh7KtFTeQwBZW19CHSFZ9+7/BL
-	1v6SF3OT4TqiqDT1Fu4Ow75GBhBomiXHxcIF9lwEZ9Lxxqhkz3s1Nigx3nzZKA==
-X-Gm-Gg: AR+sD10BcDpaL/wlBSbbQzdPIQfKtL+OC0eoShrQwxaGWC1D44ZFLIE5fyH7vVjuJ08
-	r7qPWu6V/bEtm2W409ho7zaki1u27jf1LfZnmmiw+bXeRvRQZmti0SrHkKH2OKiHeH7gef66ujM
-	gKtRbnLAxXvdV48AyASwYwiWWu9OORusUlwAb+hsyytw2P1zyBp62Dp8yyfewhLJ6DywjtBxYb+
-	5dEUwA+OdXsxONWNmHrmtc4ESPI674fVDWEQ7pn5rAraVeU4tdGZPUyyZOnxsmjghSaFDetwW8c
-	fj156/6dGer/1zFqEg+rKMvfVHteCY8P7WTPd2/SVhEzzPUiGPNzSWUiH8tdtdgGEj3J6Fg3rwo
-	/Cc+X8kyhYolHh3536TsdAajo3yl7f+QyI1pfEDyd16SxwcFEINdfPy16bJWi+uk4++5qYyCz9P
-	pNstw=
-X-Received: by 2002:a17:906:6315:b0:c15:d608:f112 with SMTP id a640c23a62f3a-c1f1f16ba60mr307425366b.58.1785138813058;
-        Mon, 27 Jul 2026 00:53:33 -0700 (PDT)
-Received: from NB-6746.. ([188.243.183.76])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1c32ac0fa4sm596226866b.20.2026.07.27.00.53.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 00:53:32 -0700 (PDT)
-From: Artem Shimko <a.shimko.dev@gmail.com>
-To: netdev@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Artem Shimko <a.shimko.dev@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH net-next v4 2/2] net: phy: add DAPU Telecom DAP8211R(I) Gigabit Ethernet PHY driver
-Date: Mon, 27 Jul 2026 10:53:24 +0300
-Message-ID: <20260727075324.3555446-3-a.shimko.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260727075324.3555446-1-a.shimko.dev@gmail.com>
-References: <20260727075324.3555446-1-a.shimko.dev@gmail.com>
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="rlf8HLf4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uz4Gm7mIRLfVrAmYCHj/C8wnpkRXUVMBrm7A5bq4kZEvYBVLI1JZ9IMiDeQ8+Bwa//n5ApZ/ECGAUmOXtFZ6yr5+eFGbLe1gGIxhjDRzfXub4tcQnCI9bjp1Pq6GzihP4aTj4fHakWFuQu5Gze1j73wB4SAd3KUQngaGE//E4LL/+uk8IzxJwAVF9na3e+3bGQ9lPFP631YqjE8y32klV15DeJo6KA3WxPtSNtoiPQQYbcUa6SlTIwuO9Sinf1HvEPdJKwkmg3UZIYgiVbj/n7fRg0bj47aIZiB39YSMN6x5+DqTJAXVmyHGlUF1GPA26TKdiV3y2G2eQeJINuSz0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yItzUFt5PWxD++h+ax/KeHuILukS6661v2U6bZSh/1c=;
+ b=yM/RJpyNjn7NynMDf9D6bzIq/ns9iRkGWXWKZE77H6gVnMEQhopwcCGuvhYJyzBjom9eBWt9uF5kZqzy67Mzx7vYv3ZOBE4qQIsgb7MD+dIcmbl1/+277cuz8XkZHfFVImp/i80qnx28harfC6R3exSZId4Z7FucZCJfPf9VHDzFzBQic+bB2CvbrMdxx8mOp54nrluHMeHAVt3IojxnZGIUbvOlFX+54jzqycqtoYQtlRlAm1KsNTTe1b6oV7KqK+VpURgd4GUYNXYy1lIFC0W0TVE3FNOZioSIScDXLXyKNOwLeg0zakIwgN2mKtpPFNXuZiU3CMmpzyXuI+QY9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
+ dkim=pass header.d=altera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yItzUFt5PWxD++h+ax/KeHuILukS6661v2U6bZSh/1c=;
+ b=rlf8HLf4fXKyYfue7vyrn/MySP7VYX3kOXM+aDax/DQmL6WMq4xVitVHMnOHacSnpROK1oEM+CARF/J6nauqIgogA9aB3A4ITzlY5Kt85cggZSp2D5WqabGC6l6wx6ZiWd98O37DpyXgpzpREo+D7zHJIysvsb00rWHmYavbaizMyMNOurZAl7jNPEvOyjjFk30iL9PCEGP4ca+f0W45JVmbmItzzUbb2FkSOwmaoMCQOLe/H6mbo/c2vE9Nfwa9+QsZSAtn4LQsFKETJYNixWp8L66XeZ1lGqEQ7EbDLvp8raY/WE1DhynZhiaoSYHyTfHstoqRn3lZ8uZAvaB4PQ==
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
+ by BN9PR03MB6106.namprd03.prod.outlook.com (2603:10b6:408:11b::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 07:59:03 +0000
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775%4]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 07:59:03 +0000
+From: "Nazle Asmade, Muhammad Nazim Amirul"
+	<muhammad.nazim.amirul.nazle.asmade@altera.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "G Thomas, Rohan" <rohan.g.thomas@altera.com>, "pabeni@redhat.com"
+	<pabeni@redhat.com>, "rmk+kernel@armlinux.org.uk"
+	<rmk+kernel@armlinux.org.uk>, "richardcochran@gmail.com"
+	<richardcochran@gmail.com>
+Subject: Re: [PATCH net] net: stmmac: Fix E2E delay mechanism
+Thread-Topic: [PATCH net] net: stmmac: Fix E2E delay mechanism
+Thread-Index: AQHdHW9C1LxS6/B90Eil795H6yg8praA/tSAgAAB4AA=
+Date: Mon, 27 Jul 2026 07:59:03 +0000
+Message-ID: <04c444c7-606d-44bc-a2f7-b01dcdb53210@altera.com>
+References:
+ <20260727022524.7521-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+ <1af74c3b-f717-482c-9715-7f91f14d86aa@bootlin.com>
+In-Reply-To: <1af74c3b-f717-482c-9715-7f91f14d86aa@bootlin.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=altera.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR03MB6964:EE_|BN9PR03MB6106:EE_
+x-ms-office365-filtering-correlation-id: cf326bfc-4412-4547-792d-08deebb4ecee
+x-ms-exchange-atpmessageproperties: SA
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|38070700021|11063799006|10067099003|56012099006|4143699003|18002099003|55112099003|22082099003;
+x-microsoft-antispam-message-info:
+ dlvi4ytr4h/1Xx+Rx67Tez8Z6vI9Iz0ga+tctUBCOGD9kgwPiftDwWz9VKKSk5hPW+J0l7Pl5eyssPCN5XJ9Q5LPbvoDObcSYT8TEKtYizHILg6hlpYtIVEljTIy8VcMEOKiou4phAYt/wt4/VZf9CqINsOhlCTVGIEDymFjst6ajpsIPXIKeZrlcS+7UHV+EikLkb9CBC/dx31IrxIPU6Gb7a7el00JyfeWnYWX7PDNq5XBdQP+XPi4bGXBp7JpMoE0EqGchr8sf+1H0S3D1me1KnLrjK3WKLIHoM0lhFstGHgCWRR8Tft7OeZYyj39H/NsxlXSOtqsquTYj8xoTy1ZSVCzFpkncwc5xEW/O5Hl6Qz6wlkkP10Juqc/xJJiltDV1dGCckk05T1eShVtXstBY0VBoXd1hbdOBsqg1m1v6fgR9BMgo0EAJSvGaokBwnjw7BnaJmyxxTcZzSFFkrzUcLo6iKQP4c1oEdem3NIOZvUOj8xKCM5iwmmZ49ZLTa65mw1Mew1RqXvtbSgTT8sIDq4eW6RRITPkWO6hn6n5G9dHNaGB4/mtlw0YixbnG7FG6KcPH1Y0vb1WarF+IVXlgJIIMb81jJlTxnfvB41pAY130yXZzcFd04UOYiveXXooZ1y5hosmISNhpP1EIowMdhhvJbmf7nVJlOsOPzcExKaje1dLY4rzg0nr/xUY6+GT/+EtGyC0MXAlBxyJzg==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(38070700021)(11063799006)(10067099003)(56012099006)(4143699003)(18002099003)(55112099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?Z2FGV09qTTMvTk1LTFdFVFRBenlYWWhnSU5jS3NWaUNxc3pZV2VhYjg3U3V2?=
+ =?utf-8?B?SDd2VXZjSnRMVVJSd1BXdWx5a0Z0OVFUdXRWNEIzQ245SlJHazMyTEZlanFx?=
+ =?utf-8?B?MnpldjJJSXNWSEN4aEpXalFodnBQa0Z0aDBXVnRyZmdiS0pEZ20yYk84Q0xZ?=
+ =?utf-8?B?Z1pTdGZrREhSYXhMaHo0MFdOdDhYUnU1UERCNzRhSnV4dCt0N2l1UmVubjI5?=
+ =?utf-8?B?dlpiRVY3UW9Da2RHRGY2S2RZTk4xQTUwWW9ZOGpOVk5lU2xQQnIycURBYzJQ?=
+ =?utf-8?B?L3YrU21zWGJOKzkxZURkd1pRYWxqNEpOTmdobi9ERnJwVVdSYVlhdHZ3L3BI?=
+ =?utf-8?B?MWtmUFVzN0dNUUpBRHRKekNRMlpMTzVPVmtzejhKTUluUnQwQkxzNHBaanNt?=
+ =?utf-8?B?cjlsR3FzYXZsc1FMd2JvYXEvOUpvTmNxZ0htdXpSY2EwekpiUVRaaGlaVFFZ?=
+ =?utf-8?B?UWo4WDN2R2hHUTlTZE91WjFBZnJadERSVENUWStLcGZBK3FzcTBkRnY0SUYz?=
+ =?utf-8?B?N3ZCcEUraUZiNExKTEV2eERxVUlMU3RNZkk1ZzZlL25CbXhKeHB2NXFlL3lE?=
+ =?utf-8?B?SHlvaHVCYXJ1eU5kQ2E1RTdKUk9mWFVRMHF4cVJMbXBxVEFqYzFrR21NckxT?=
+ =?utf-8?B?SVllemlQM2U1RkpNcXpJc1JCVWQ2UzI2N2NkVWhMMk1nS1ZxSlB4TWcxKzhy?=
+ =?utf-8?B?Zm0xbkpIcXdoeTk1WjBVd3crQldqdmlqVmFrWkx3WC8xMHB4ZnN2L2dvbllk?=
+ =?utf-8?B?Y3VnRzRYQmxjVDg4S0FtZHg2WFByemw2aWxJK0hVT241Qk9iUUlMRERLSmdy?=
+ =?utf-8?B?Ui9ya0NXVktDdm5PcGxBWkN4WHRlUmZkMDBOWTBWM0RZSEs0am4xZlJrd0c1?=
+ =?utf-8?B?TW1VbjFFYlV1cjRIZUpmZU4yWkVOMThGMk1GZUpLalFjTXorclBaT3VKTHl2?=
+ =?utf-8?B?MjNxdnlFbGhnTXc0TzNNUHBnam5nTUN1dlZ1bXdYdHcvZDZLZzFBc3JnNjh5?=
+ =?utf-8?B?a2FHUVFCT1VKc3AvVUlSY2JwTm9MZlZ0N2hTbjlkYnR0ZFBCMkE0ZG9hZWNn?=
+ =?utf-8?B?ZTh6YkNxUXRsdXc0dW5DMU9SODN1R2RSaCs2V1lheDBYYm81ckIwVXRMWnB6?=
+ =?utf-8?B?NlNnVzVldXIwQ3NkaVMycFp6NTNnNjFvUjRYR3RKYTNWNU9lVldDNnY4OXpi?=
+ =?utf-8?B?bU9sZWo1bXljMFV2K1hPeGRKSkJoa2pZZ1M1djk2VWJMQm5VY0h4eitTOEpR?=
+ =?utf-8?B?ZVRzcXJpT1liZlRMVnB5aG8zM2s2bStKTHRaOVZ1WUVJMk9xYWQ3c3RWVjIz?=
+ =?utf-8?B?QytnS1BwaFlxcUY4UWRQMXppdlNQVitaKzBQMWx5cDNxWDQ1aHQzWUVjNEor?=
+ =?utf-8?B?Z0xHVWNlSzFtZFQ0cHpnbitIVTFCY0VsWjJxajB1NXBqOERaNDUvcWlkdENx?=
+ =?utf-8?B?TExGMzJjMzVJWDRFVnRFUUl1eHo2aytRZWFweGMyK1lzeGRkSm02N2pYcTJX?=
+ =?utf-8?B?cTIyaHNRNUh3QVFUclJTWlNrNDhqdG1hNlZEV0hBNGdySldHdXZseDM2Wm1G?=
+ =?utf-8?B?NmJRVEVwK08zeVpYQUFGd3oyMGZ6ZjhxTDVVRjBFWHRHZ2xvMjZPVjZuWkxp?=
+ =?utf-8?B?cElLdkJzYlJKK3lHQnpobURKT204R3R4dGdvQ2czcG5jWnlVWDZONmxkWEZC?=
+ =?utf-8?B?Sk0vUkJQTFc5Z2RrbTR3NkxvSHVER0Ftd1hhM2graTBYbGZvWEVFTUo5S2Ru?=
+ =?utf-8?B?cWR4NUlhS2JXcW1FQzh0V0xOSXRrd1pyQk9VMHVwWGZOMlhJcVVjdnk2SjRD?=
+ =?utf-8?B?TEJ6TmVUZGwzbVVJTkVzWU9NZ2h2VVJDN0VjOGRlc1k3NlZtTlBlWEg4b0Nq?=
+ =?utf-8?B?ZnQxdXJFang3L0ozVDRnT3MzSE1ZQ0l6RHl1eFYwdkZ4YmVZWnFjN0pYemR2?=
+ =?utf-8?B?UnVUVUhMa0FBZDR0N2d1V0wrTGx4aUljK09vVzc3U0pZT3dDUmNGai90d0E1?=
+ =?utf-8?B?c29BTGpjeG92M2pFa3BjR2hhZTkvTzRoQWRpQy9Zc21naW0wRGNSMnNpR0tZ?=
+ =?utf-8?B?amc1QnFzYmQvUm1WZGZ5WlRzRlFCUFd5RkVhSklLcEtVcytIQ0RQcFRwUXhn?=
+ =?utf-8?B?YlpKeFMzUXpxVW5SQldza2ppcm5kTGNLcDlTSlljajh6U2J2ZjhXNHNFYndl?=
+ =?utf-8?B?c2wrbmV2L0lrbXhWT0gvOFdrd0p0elJ4UUQwclk4UVhTN2hRTXAzdkVZK2c3?=
+ =?utf-8?B?djFPclBLUDZ5eTBBd2QyQm9SNGhvVHBGdzZyZENKMldwekxGb3JpN2QweDNK?=
+ =?utf-8?B?Uzd2am1aeDg4Z1o2VG1Ia29TT1dzREVJYnd3SVVaQWxMOFJnWlNYYzhyZW9C?=
+ =?utf-8?Q?FRnPP0ZJGAZNtytPTe2tf1L/NhMHhYF1ysPNCYp7nVgBI?=
+x-ms-exchange-antispam-messagedata-1: l5EwPb0x/BOgVOcZ/UY1v5yhQYmqTcNbEO8=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C60D6317C576204F8481C8CCE2F25E05@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: altera.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf326bfc-4412-4547-792d-08deebb4ecee
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jul 2026 07:59:03.3902
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: fbd72e03-d4a5-4110-adce-614d51f2077a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xwgu0KOFaMAKdKSFxA1yD2l7LZ6teUnsmnkTL6HME/X7P0HdiTq/WJsso2Wt0Ayjz8URHAiMcpulG7zdd4Jj6yK3KciKRCD7HiMb+uyjLvTKTGlNRruIETDdwYkxElwA/a2TWJT6gZEyXmQ+JMEGuQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR03MB6106
 
-Add a new PHY driver for the DAPU Telecom DAP8211R(I) Gigabit
-Ethernet PHY, which is commonly used in enterprise and industrial
-networking applications.
-
-The driver implements extended register access via indirect addressing
-through corresponding registers, and provides comprehensive device tree
-support for RGMII delay configuration. The rx-internal-delay-ps and
-tx-internal-delay-ps properties allow precise tuning of clock delays in
-150 ps steps from 0 to 2250 ps.
-
-Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
----
- drivers/net/phy/Kconfig    |  10 ++
- drivers/net/phy/Makefile   |   1 +
- drivers/net/phy/dap8211r.c | 206 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 217 insertions(+)
- create mode 100644 drivers/net/phy/dap8211r.c
-
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 099f25dceabb..4576f707ac94 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -237,6 +237,16 @@ config DAVICOM_PHY
- 	help
- 	  Currently supports dm9161e and dm9131
- 
-+config DAP8211R_PHY
-+	tristate "DAPU Telecom DAP8211R(I) Gigabit Ethernet PHY"
-+	depends on OF
-+	help
-+	  Support for the DAPU Telecom DAP8211R(I) Gigabit Ethernet PHY.
-+	  This PHY is designed for enterprise and industrial networking
-+	  applications, supporting 10/100/1000 Mbps operation.
-+	  RGMII with: configurable TX/RX clock delays, optional flag to enable
-+	  180-degree TX clock phase shift and internal packet generator.
-+
- config ICPLUS_PHY
- 	tristate "ICPlus PHYs"
- 	help
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index de660ae94945..ad35733eb4bb 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -53,6 +53,7 @@ obj-$(CONFIG_BROADCOM_PHY)	+= broadcom.o
- obj-$(CONFIG_CICADA_PHY)	+= cicada.o
- obj-$(CONFIG_CORTINA_PHY)	+= cortina.o
- obj-$(CONFIG_DAVICOM_PHY)	+= davicom.o
-+obj-$(CONFIG_DAP8211R_PHY)	+= dap8211r.o
- obj-$(CONFIG_DP83640_PHY)	+= dp83640.o
- obj-$(CONFIG_DP83822_PHY)	+= dp83822.o
- obj-$(CONFIG_DP83848_PHY)	+= dp83848.o
-diff --git a/drivers/net/phy/dap8211r.c b/drivers/net/phy/dap8211r.c
-new file mode 100644
-index 000000000000..65d6fef86f26
---- /dev/null
-+++ b/drivers/net/phy/dap8211r.c
-@@ -0,0 +1,206 @@
-+// SPDX-License-Identifier: GPL
-+/*
-+ * Driver for the DAPU Telecom DAP8211R(I) Gigabit Ethernet PHY.
-+ *
-+ * Specifications:
-+ *   - IEEE 802.3 10BASE-Te, 100BASE-TX, 1000BASE-T
-+ *   - IEEE 802.3az-2010 Energy Efficient Ethernet
-+ *   - IEEE 1588 SyncE support
-+ *   - RGMII
-+ *
-+ * Author: Artem Shimko <a.shimko.dev@gmail.com>
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/errno.h>
-+#include <linux/ethtool.h>
-+#include <linux/kernel.h>
-+#include <linux/iopoll.h>
-+#include <linux/mii.h>
-+#include <linux/module.h>
-+#include <linux/netdevice.h>
-+#include <linux/of.h>
-+#include <linux/phy.h>
-+
-+#define DAP8211R_PHY_ID			0x0008011B
-+#define DAP8211R_PHY_ID_MASK		0xFFFFFFFF
-+
-+#define DAP8211R_EXT_ADD		0x1E
-+#define DAP8211R_EXT_DATA		0x1F
-+
-+#define DAP8211R_PHY_CON		0xA001
-+#define DAP8211R_PHY_SW_RST		BIT(15)
-+
-+#define DAP8211R_RGMII_CON		0xA003
-+#define DAP8211R_RGMII_TX_DEL_MASK	GENMASK(3, 0)
-+#define DAP8211R_RGMII_RX_DEL_MASK	GENMASK(13, 10)
-+
-+#define DAP8211R_RGMII_CONFIG_MASK	(DAP8211R_RGMII_RX_DEL_MASK | DAP8211R_RGMII_TX_DEL_MASK)
-+
-+/* Default RGMII delay: 13 * 150 == 1.95ns */
-+#define DAP8211R_DEFAULT_DEL_SEL	0xD
-+
-+static const int dap8211r_internal_delay[] = {0, 150, 300, 450, 600, 750, 900,
-+					      1050, 1200, 1350, 1500, 1650, 1800,
-+					      1950, 2100, 2250};
-+
-+#define DAP8211R_DELAY_SIZE	ARRAY_SIZE(dap8211r_internal_delay)
-+
-+/**
-+ * dap8211r_read_ext() - Read extended register
-+ * @phydev: PHY device structure
-+ * @reg: Extended register address
-+ *
-+ * Reads a PHY extended register using the indirect access method.
-+ * The caller must hold the MDIO bus lock.
-+ *
-+ * Return: Register value on success, or negative error code
-+ */
-+static int dap8211r_read_ext(struct phy_device *phydev, u16 reg)
-+{
-+	int ret;
-+
-+	phy_lock_mdio_bus(phydev);
-+	ret = __phy_write(phydev, DAP8211R_EXT_ADD, reg);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = __phy_read(phydev, DAP8211R_EXT_DATA);
-+out:
-+	phy_unlock_mdio_bus(phydev);
-+	return ret;
-+}
-+
-+/**
-+ * dap8211r_modify_ext() - Modify extended register bits
-+ * @phydev: PHY device structure
-+ * @reg: Extended register address
-+ * @mask: Bit mask of bits to clear
-+ * @set: Bit mask of bits to set
-+ *
-+ * Modifies a PHY extended register using the indirect access method.
-+ * New value = (old value & ~mask) | set.
-+ * The caller must hold the MDIO bus lock.
-+ *
-+ * Return: 0 on success, or negative error code
-+ */
-+static int dap8211r_modify_ext(struct phy_device *phydev, u16 reg, u16 mask, u16 set)
-+{
-+	int ret;
-+
-+	phy_lock_mdio_bus(phydev);
-+	ret = __phy_write(phydev, DAP8211R_EXT_ADD, reg);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = __phy_modify(phydev, DAP8211R_EXT_DATA, mask, set);
-+out:
-+	phy_unlock_mdio_bus(phydev);
-+	return ret;
-+}
-+
-+/**
-+ * dap8211r_config_init() - Initialize PHY
-+ * @phydev: PHY device structure
-+ *
-+ * Configures the PHY during initialization:
-+ * - RGMII delays based on interface mode
-+ * - Software reset to apply settings (low active, self clear)
-+ *
-+ * Return: 0 on success, or negative error code
-+ */
-+static int dap8211r_config_init(struct phy_device *phydev)
-+{
-+	u16 set = 0;
-+	int ret, val;
-+	s32 rx_internal_delay;
-+	s32 tx_internal_delay;
-+
-+	if (!phy_interface_is_rgmii(phydev))
-+		return 0;
-+
-+	rx_internal_delay = phy_get_internal_delay(phydev, dap8211r_internal_delay,
-+						   DAP8211R_DELAY_SIZE, true);
-+	tx_internal_delay = phy_get_internal_delay(phydev, dap8211r_internal_delay,
-+						   DAP8211R_DELAY_SIZE, false);
-+
-+	switch (phydev->interface) {
-+	case PHY_INTERFACE_MODE_RGMII:
-+		if (rx_internal_delay < 0)
-+			rx_internal_delay = 0;
-+
-+		if (tx_internal_delay < 0)
-+			tx_internal_delay = 0;
-+		break;
-+	case PHY_INTERFACE_MODE_RGMII_RXID:
-+		if (rx_internal_delay < 0)
-+			rx_internal_delay = DAP8211R_DEFAULT_DEL_SEL;
-+
-+		tx_internal_delay = 0;
-+		break;
-+	case PHY_INTERFACE_MODE_RGMII_ID:
-+		if (rx_internal_delay < 0)
-+			rx_internal_delay = DAP8211R_DEFAULT_DEL_SEL;
-+		if (tx_internal_delay < 0)
-+			tx_internal_delay = DAP8211R_DEFAULT_DEL_SEL;
-+		break;
-+	case PHY_INTERFACE_MODE_RGMII_TXID:
-+		if (tx_internal_delay < 0)
-+			tx_internal_delay = DAP8211R_DEFAULT_DEL_SEL;
-+
-+		rx_internal_delay = 0;
-+		break;
-+	default:
-+		phydev_err(phydev, "Unsupported interface: %d\n",
-+			   phydev->interface);
-+		return -EINVAL;
-+	}
-+
-+	set |= FIELD_PREP(DAP8211R_RGMII_RX_DEL_MASK, rx_internal_delay);
-+	set |= FIELD_PREP(DAP8211R_RGMII_TX_DEL_MASK, tx_internal_delay);
-+
-+	ret = dap8211r_modify_ext(phydev, DAP8211R_PHY_CON, DAP8211R_PHY_SW_RST, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* Wait for reset self-clear (from low active to high) */
-+	ret = read_poll_timeout(dap8211r_read_ext, val,
-+				(val & DAP8211R_PHY_SW_RST),
-+				20, 200, false, phydev, DAP8211R_PHY_CON);
-+	if (ret)
-+		return ret;
-+	if (val < 0)
-+		return val;
-+
-+	ret = dap8211r_modify_ext(phydev, DAP8211R_RGMII_CON, DAP8211R_RGMII_CONFIG_MASK, set);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static struct phy_driver dap8211r_driver[] = {
-+	{
-+		PHY_ID_MATCH_EXACT(DAP8211R_PHY_ID),
-+		.name		= "DAP8211R Gigabit Ethernet",
-+		.soft_reset	= genphy_soft_reset,
-+		.config_init	= dap8211r_config_init,
-+		.read_status	= genphy_read_status,
-+		.set_loopback	= genphy_loopback,
-+		.config_aneg	= genphy_config_aneg,
-+		.suspend	= genphy_suspend,
-+		.resume		= genphy_resume,
-+	},
-+};
-+module_phy_driver(dap8211r_driver);
-+
-+MODULE_DESCRIPTION("DAP8211R Gigabit Ethernet PHY driver");
-+MODULE_AUTHOR("Artem Shimko <a.shimko.dev@gmail.com>");
-+MODULE_LICENSE("GPL");
-+
-+static const struct mdio_device_id __maybe_unused dap8211r_tb[] = {
-+	{ DAP8211R_PHY_ID, DAP8211R_PHY_ID_MASK },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(mdio, dap8211r_tb);
-+
--- 
-2.43.0
-
+T24gMjcvNy8yMDI2IDM6NTIgcG0sIE1heGltZSBDaGV2YWxsaWVyIHdyb3RlOg0KPiANCj4gDQo+
+IE9uIDcvMjcvMjYgMDQ6MjUsIG11aGFtbWFkLm5hemltLmFtaXJ1bC5uYXpsZS5hc21hZGVAYWx0
+ZXJhLmNvbSB3cm90ZToNCj4+IEZyb206IE5hemltIEFtaXJ1bCA8bXVoYW1tYWQubmF6aW0uYW1p
+cnVsLm5hemxlLmFzbWFkZUBhbHRlcmEuY29tPg0KPj4NCj4+IEZvciBFMkUgZGVsYXkgbWVjaGFu
+aXNtLCAicmVjZWl2ZWQgREVMQVlfUkVRIHdpdGhvdXQgdGltZXN0YW1wIiBlcnJvcg0KPj4gbWVz
+c2FnZXMgc2hvdyB1cCBmb3IgZHdtYWMgdjMuNzArIGFuZCBkd3hnbWFjIElQcy4NCj4+DQo+PiBU
+aGlzIGlzc3VlIGFmZmVjdHMgc29jZnBnYSBwbGF0Zm9ybXMsIEFnaWxleDcgKGR3bWFjIDMuNzAp
+IGFuZA0KPj4gQWdpbGV4NSAoZHd4Z21hYykuIEFjY29yZGluZyB0byB0aGUgZGF0YWJvb2ssIHRv
+IGVuYWJsZSB0aW1lc3RhbXBpbmcNCj4+IGZvciBhbGwgZXZlbnRzLCB0aGUgU05BUFRZUFNFTCBi
+aXRzIGluIHRoZSBNQUNfVGltZXN0YW1wX0NvbnRyb2wNCj4+IHJlZ2lzdGVyIG11c3QgYmUgc2V0
+IHRvIDInYjAxLCBhbmQgdGhlIFRTRVZOVEVOQSBiaXQgbXVzdCBiZSBjbGVhcmVkDQo+PiB0byAw
+J2IwLg0KPj4NCj4+IENvbW1pdCAzY2I5NTgwMjdjYjggKCJuZXQ6IHN0bW1hYzogRml4IEUyRSBk
+ZWxheSBtZWNoYW5pc20iKSBhbHJlYWR5DQo+PiBhZGRyZXNzZXMgdGhpcyBwcm9ibGVtIGZvciBh
+bGwgZHdtYWNzIGFib3ZlIHZlcnNpb24gdjQuMTAuIEhvd2V2ZXIsDQo+PiBzYW1lIGhvbGRzIHRy
+dWUgZm9yIHYzLjcwIGFuZCBhYm92ZSwgYXMgd2VsbCBhcyBmb3IgZHd4Z21hYy4gVXBkYXRlcw0K
+Pj4gdGhlIGNoZWNrIGFjY29yZGluZ2x5Lg0KPj4NCj4+IEZpeGVzOiAxNGYzNDczMzRiZjIgKCJu
+ZXQ6IHN0bW1hYzogQ29ycmVjdGx5IHRha2UgdGltZXN0YW1wIGZvciBQVFB2MiIpDQo+PiBGaXhl
+czogZjJmYjZiNjI3NWViICgibmV0OiBzdG1tYWM6IGVuYWJsZSB0aW1lc3RhbXAgc25hcHNob3Qg
+Zm9yIHJlcXVpcmVkIFBUUCBwYWNrZXRzIGluIGR3bWFjIHY1LjEwYSIpDQo+PiBGaXhlczogM2Ni
+OTU4MDI3Y2I4ICgibmV0OiBzdG1tYWM6IEZpeCBFMkUgZGVsYXkgbWVjaGFuaXNtIikNCj4+IFNp
+Z25lZC1vZmYtYnk6IFJvaGFuIEcgVGhvbWFzIDxyb2hhbi5nLnRob21hc0BhbHRlcmEuY29tPg0K
+Pj4gU2lnbmVkLW9mZi1ieTogTmF6aW0gQW1pcnVsIDxtdWhhbW1hZC5uYXppbS5hbWlydWwubmF6
+bGUuYXNtYWRlQGFsdGVyYS5jb20+DQo+IA0KPiBHaXZlbiB0aGUgb3JpZ2luYWwgZGlzY3Vzc2lv
+bnMgdGhhdCB0b29rIHBsYWNlLCBpdCBzZWVtc8KgdGhhdCB0aGlzIGlzDQo+IHRoZSBjb3JyZWN0
+IGZpeC4gQXMgUnVzc2VsbCBzdWdnZXN0LCB3ZSBuZWVkIHNvbWUgdGltZXN0YW1waW5nIHNlbGZ0
+ZXN0DQo+IHRvIG1ha2UgaXQgZWFzeSB0byBmaW5kIHJlZ3Jlc3Npb25zIHdpdGggdGhpcyBraW5k
+IG9mIHBhdGNoZXMsIGJ1dA0KPiBJJ3ZlIGV4cGVyaW1lbnRlZCB3aXRoIHN0bW1hYyBzZWxmdGVz
+dHMgb3ZlciB0aGUgd2Vla2VuZCBhbmQgdGhleSBhcmUNCj4gaW4gYSBzb3JyeSBzdGF0ZSByaWdo
+dCBub3cuLi4NCj4gDQo+IFJldmlld2VkLWJ5OiBNYXhpbWUgQ2hldmFsbGllciA8bWF4aW1lLmNo
+ZXZhbGxpZXJAYm9vdGxpbi5jb20+DQoNClRoYW5rcyBNYXhpbWUhPg0KPiBNYXhpbWUNCj4gDQo+
+IA0KDQo=
