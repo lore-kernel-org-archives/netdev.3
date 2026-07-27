@@ -1,97 +1,89 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78B44248AC
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 20:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09DF4248AC
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 20:34:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785184199; cv=none; b=RWZu+itti+F0VTjGKkcFbNIR+RtflZLE0PpJKFwXMjKubJnSmPqQ45Pxt9Q/ZD3BZJ+7wRrWT9L3f5Ua25HllqnwpIdbdbO04msEJudPlyLhgWIVNztAPkkk0/ygLI9FDXz9U6LFdAbxowEpy8O2jhvu0kKzyDmjvOHxJ3tFpPY=
+	t=1785184475; cv=none; b=Aml4s94NRtKcZycN8kg/cY8K7UOo8WwQSCsVsl7NRHx25byJhcPve7brdStTxVC5mdQAc5hLV+TkF3NBDF//WLYyjQbV3RxKGI0uWa5LR0fKtHgnVYcdxStEURSO7RU6+CCFVOaYlxFymh60v++zKF7pudy7gxi5Z+frjmLkVJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785184199; c=relaxed/simple;
-	bh=1caNyXLRKWyM25hq/Qow0s3803t1noNaWzSlXu6KhI8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aXxO+trimxkMHqBDakGZR25ZhJarXHnTo8X0JSfB4bes3HTo4O7+JRAd1k/tviwRPhPkuUApL+7N/3hiQuifQNEb5sEimeChgs9QwkDxmNFIxvyBsv0w5Cr9MpotbEKt1B4LJwO8D+d4CuccPTVQB2eJhACO9NKMV1oh6E6MP3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pqrs.dk; spf=pass smtp.mailfrom=pqrs.dk; dkim=pass (2048-bit key) header.d=pqrs.dk header.i=@pqrs.dk header.b=RnduKmPz; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pqrs.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pqrs.dk
+	s=arc-20240116; t=1785184475; c=relaxed/simple;
+	bh=rnQu/Dyoz7rMgjAg6JRDK1ICaVCqQAJwtGvirC/XXk4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FM94Jp214oF5T7Yy6+FviTHYSJNnAFPmzZPP0yOf6DcBf2ZRc+rKdO3Bd1QzMw6fO9Qd+zAiNL3LlsLb3+te4SoRf6L4aMztBVWTcB8uwjyKgy+7h+4/WqUSbNbyWBUCrGqCXK0DoG4dGcFOr4SHQ0JofJwN/zAYpj1U8+8jd+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LejWkDCb; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pqrs.dk header.i=@pqrs.dk header.b="RnduKmPz"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pqrs.dk; s=key1;
-	t=1785184190;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LejWkDCb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785184472;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0C3nU+PEEBhW7iHgFaaC5EqBgPQV5VuXjxoKfA8jqGI=;
-	b=RnduKmPzC5mIHowdya2CpfMh+Ip8giZ/nx9GiBlMpu9r0+8g50KK0wQ4KK8h4KOq64sJFE
-	arGcDuO/SPFFJewRMqb8hNTZ/EgQ2LCL4ssWQxFVJ8ysxMHYMK8PS/FAJj3LD0V93yZmVw
-	HuoWrxnjsu9+N9VA61utA04lRTi3JBG5ZsDV0wmrn3nOARkk0huzTmZ0qjtHyUJ8x3aREM
-	5leZIKPj/sUkTnwIyx1sv+yLlm2Y5eGlovFNK7yQk9xy2npLFpdED4bHudR2CsKYwCZUxm
-	ObBTGebDIDjK79lWPOJAjmkvB+wGeEwzVc9ZAv2W++YzJhK16GTHv5op/MIpsg==
-From: =?utf-8?q?Alvin_=C5=A0ipraga?= <alvin@pqrs.dk>
-Date: Mon, 27 Jul 2026 22:29:29 +0200
-Subject: [PATCH net] MAINTAINERS: make Luiz a maintainer and myself
- reviewer for Realtek DSA
+	 in-reply-to:in-reply-to:references:references;
+	bh=/gJbD0UYBY/q13F76z/tQmLjC5a55COLjlKpE4iIUoE=;
+	b=LejWkDCbGLaBaPyZVrbZhCtCbDOuk9arV6n/m8+2K5v+Q15wuA6u1RhcSbHBEuMdPll4a3
+	Nu5EFTx3Ia98zaWEAL5Zq4OQ6yrPBHaxiDROUC//LysFy2632QFnRPc2Ezy11tnIP+tT9A
+	2HMO3pbGz/njwxORxYnQpBQkQhmTnm8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-249-ztt-tIpBN4yKwqKa0Gw-TA-1; Mon,
+ 27 Jul 2026 16:34:27 -0400
+X-MC-Unique: ztt-tIpBN4yKwqKa0Gw-TA-1
+X-Mimecast-MFC-AGG-ID: ztt-tIpBN4yKwqKa0Gw-TA_1785184465
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 65991195D015;
+	Mon, 27 Jul 2026 20:34:25 +0000 (UTC)
+Received: from RHTRH0061144 (unknown [10.22.81.35])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5DF901956041;
+	Mon, 27 Jul 2026 20:34:23 +0000 (UTC)
+From: Aaron Conole <aconole@redhat.com>
+To: i.maximets@ovn.org
+Cc: netdev@vger.kernel.org, Eelco Chaudron <echaudro@redhat.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, dev@openvswitch.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [net,1/2] net: openvswitch: fix skb leak on flow key update
+ failure during recirculation
+In-Reply-To: <20260727181851.306076-2-i.maximets@ovn.org>
+References: <20260727181851.306076-1-i.maximets@ovn.org>
+ <20260727181851.306076-2-i.maximets@ovn.org>
+Date: Mon, 27 Jul 2026 16:34:21 -0400
+Message-ID: <f7t5x20xjci.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260727-realtek-maintainers-v1-1-ab501adc0cdb@analog.com>
-X-B4-Tracking: v=1; b=H4sIAKi/Z2oC/yWMywrCMBBFf6XM2kBMi6n+iriI06uOjygzqQil/
- 96oi7s4F86ZyKACo10zkeItJs9cYb1qiC8pn+FkqEzBh42PITpFuhfc3CNJLnVQc9Fzv+VuaEP
- PVM2X4iSfX3VPGYUO/9PG4xVcvj2a5wVHW1/yfAAAAA==
-X-Change-ID: 20260727-realtek-maintainers-70c89c4d328c
-To: Luiz Angelo Daros de Luca <luizluca@gmail.com>, 
- Linus Walleij <linusw@kernel.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- =?utf-8?q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-From: Alvin Šipraga <alvin.sipraga@analog.com>
+Ilya Maximets <i.maximets@ovn.org> writes:
 
-I have changed jobs and therefore no longer have access to hardware
-using Realtek Ethernet switches. Luiz has kindly agreed to take up the
-role of maintainer, while I will stick around as a reviewer.
+> do_execute_actions() returns right away when execute_recirc() fails on
+> the last action as it assumes this function always takes ownership of
+> the skb when 'last' is true.  But when the flow key update fails, the
+> function doesn't free the skb and it ends up leaked.
+> 
+> This is a very unlikely scenario as it requires the packet to become
+> unparseable by applying a set of actions on a previously parseable skb,
+> but should be fixed nevertheless.
+> 
+> Reported by Sashiko.
+> 
+> Fixes: 971427f353f3 ("openvswitch: Add recirc and hash action.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+> ---
+>  net/openvswitch/actions.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
 
-Also update .mailmap so that mails to my old company email stop
-bouncing. Use my new work email for Analog Devices Inc. instead.
-
-Signed-off-by: Alvin Šipraga <alvin.sipraga@analog.com>
----
----
- .mailmap    | 1 +
- MAINTAINERS | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/.mailmap b/.mailmap
-index a0f64c31abcc..b66c317e8f06 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -72,6 +72,7 @@ Alice Mikityanska <alice.kernel@fastmail.im> <maximmi@nvidia.com>
- Alice Mikityanska <alice.kernel@fastmail.im> <maxim@isovalent.com>
- Alice Mikityanska <alice.kernel@fastmail.im> <alice@isovalent.com>
- Aloka Dixit <quic_alokad@quicinc.com> <alokad@codeaurora.org>
-+Alvin Šipraga <alvin.sipraga@analog.com> <alsi@bang-olufsen.dk>
- Al Viro <viro@ftp.linux.org.uk>
- Al Viro <viro@zenIV.linux.org.uk>
- Amit Blay <quic_ablay@quicinc.com> <ablay@codeaurora.org>
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 61126d170e4a..2385c27f14b9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -22735,7 +22735,8 @@ F:	drivers/watchdog/realtek_otto_wdt.c
- 
- REALTEK RTL83xx SMI DSA ROUTER CHIPS
- M:	Linus Walleij <linusw@kernel.org>
--M:	Alvin Šipraga <alsi@bang-olufsen.dk>
-+M:	Luiz Angelo Daros de Luca <luizluca@gmail.com>
-+R:	Alvin Šipraga <alvin.sipraga@analog.com>
- S:	Maintained
- F:	Documentation/devicetree/bindings/net/dsa/realtek.yaml
- F:	drivers/net/dsa/realtek/*
-
-
+Reviewed-by: Aaron Conole <aconole@redhat.com>
 
