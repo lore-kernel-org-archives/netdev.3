@@ -1,413 +1,162 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012065.outbound.protection.outlook.com [52.101.48.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CC13F23BD
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785146336; cv=none; b=AAwiQxjkrmwgBA5eU7YGa+PtM+bsfM60bQWWoM8GKmrrpuDr99XvLJ+zSMmtEtqO26xwrdMYr1cfdCb0ELZcBn9+R9A0VeP8sF+2ENPwwzU03qf2Ko/qo1YCUMzm3/ZWsNSrJmvf2FlvRl1Vu7VHIQCF+66dm6856e/Qf/T2/BE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785146336; c=relaxed/simple;
-	bh=crIQtX20obF3TC5dV0O2T3AsJII0J1ZZB9Qecwr67PI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OwRRJ2q7y7QRclEbdV/AeAjY9O5+pZ5E6ETfl4ReZ1ZbfUuJTSWjrshB0eV/laFJgM+/Lh7ydclELtM0n20xgwwh0UvliMu4MGkdUiphwAZCiN0KUv+BTo3iEslJVsjQf+ny1zdPkeqrZmtTd508K4On8aknIDgE/3G5A3QD3KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=D2MIKSA8; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BC424BBF4;
+	Mon, 27 Jul 2026 10:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785146501; cv=fail; b=hdYZ7fDOZJ9SI7WMbTYO9ye3lTUR3eYmLhvIVfyKskzIFSbdnkb+vvh9ZFsfURGExFXbTGYFQDH1Hf24eSUWOIZiQVpgtjlDYG7MdO2TBXnChvPCvPIOc179z7Nf0hpwl9YE4HNPGO6gDqRraH/s1HbvO7vj9zfAWoMHxUTyeCc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785146501; c=relaxed/simple;
+	bh=OhCqhW4vmoRxBqtu0yxtJ8EXo7pxPgbazfrsnAdzfuQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=YM1df0WvXgBdbtynjAuKxYZ62kSMViRisn7VCVMstdv1nsVIp4HJheKnpsP4PK0ClVQgBioufkDbV7S5sh73hxSVBT1E7rapCiI7K41RVMt+UAB+Lnd26/wmGKj54Btthhf3LHSjh3qnA7RJbf2tQqRL3Mfe29YpStHqxExhH4U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=MFB6K+Zl; arc=fail smtp.client-ip=52.101.48.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="D2MIKSA8"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8486672f03cso2394517b3a.0
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:58:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1785146332; x=1785751132; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+DRMmn4/PFMcmqnUYa9ddb19KSYep8avFsbVeSVbwFQ=;
-        b=D2MIKSA8nJctnlnW+P463RspHheU7YjVtEMAmvb+krpZN1H+i89HYWeGGPo6D27O7n
-         hotiFLgoARkOrD4RluJBwtr3Jr3oI8rjfezsX6RT+N+Hghd0lMr/eZqMmSwHTgVzpm9S
-         fMORJmhqd5MwqQY2AUbPfOsu9beWvhkmackE2AbJupHxEXwP+MsrnXnBEQSjyTNm/WRf
-         Y8nCwSyQ9OHlx5u5hKx3+le6qwTLr4wqjpbb0yuesqN2q0GjIAEPhLDMDk+fxV9Zr+g+
-         2MeHNNMDTB5E79pOIwQqltsb36yjwrRo8InFyVlgRAiVwFBgf4Jf4rpiG1APJ9+qKAtK
-         J7Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785146332; x=1785751132;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+DRMmn4/PFMcmqnUYa9ddb19KSYep8avFsbVeSVbwFQ=;
-        b=Oa7IkgAgmKSBUXTXHwOfzMnPhl1vjlbX6BNm54iNyFOO2PVI+BJJn8mHeMwDFHjH8E
-         skqtfs5L7jQKhtse5lMi2cGGUV3kXZQuwG2XG1ehLJguVbnu8IUnX1OQZsTvMgg6vsdQ
-         K1M7u4sLsXOTae89bNhc8akoRyNHJ5D/94FEdnMIw574wAII0QkHuMfM6Z3Vd0zW3miX
-         is7pq2aPhQKrrbFImUxhjbjs01/hjjaF4Fn86oY1KDKWUo8WJEzRBN0sbI0OU3uae9Du
-         yTTIG2zL6LS20gs+ehPvCTyyLOtl6Hd+I363+YOKweNbrT+d0VU/199WrxFm50VF+H8B
-         vwSA==
-X-Forwarded-Encrypted: i=1; AHgh+RqTAIcZoHu5dds+zHPYzDGU2paMSlW1DJCr/dNvxoe0uRy/47zvMk5iQa8bb5lyl1gKi1cDU34=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyII8uGMEkNz+z4eFcBq7wJQVjD1J3TC4VVhnq7VNx6AcVX6rFY
-	vTLGDqGsgUdBulsaNjNyva44sEVXuWXmB7pJLt8hXjWITCNuGTlVcavZuYPrx+SbBS0=
-X-Gm-Gg: AR+sD11AZhuK7wIur7SEkEPMxXbtY+zvi/3TLfttBeq+P2lcaL9G0BsD5zeMCA1lEuI
-	k5L1Ln05/MBwJFkOHbeDuEDdg+/r0b7+PVRWb5XgAdcGzTcDTXRhGsFq5Op5AtKNTTzH1d4nvgE
-	84QV3hZPqLKL+FpzNBwYYIpn01IXsDL/6fV5bF3UiPNDtqsSSjJrhDwoMMrIesBw2yLY6dWnDmJ
-	9GSN9Gde3IOwP3xWJ+ihAO4EkBu/8lj53N+LF5SRmLP1qJf36lhmu69Df4LpRSgR7+CB2/TY1ma
-	rs4WMcvXM1amai4OF6YhUkvvbUevKdpCZKSaK91CyvpBWVxACeImJ3o37sww/SygJ7Kw2H/iWPz
-	hSLcdnI/HGZluOYDj7S+btTGDfYUy/h0X6f8vQaro/HV9rj86felxMjLAmeepaX2s+2Jv06jdvH
-	74/XqrS2drf3jKeREOUIIYdDOm
-X-Received: by 2002:a05:6a00:392a:b0:848:2f7a:2e50 with SMTP id d2e1a72fcca58-84e5957266amr6287578b3a.63.1785146331561;
-        Mon, 27 Jul 2026 02:58:51 -0700 (PDT)
-Received: from localhost.localdomain ([2406:5900:1044:110c:fc36:f2a9:533e:766d])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e5344d9e9sm2863367b3a.55.2026.07.27.02.58.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 02:58:51 -0700 (PDT)
-From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-To: "D. Wythe" <alibuda@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-Subject: [PATCH net v3] net/smc: fix out-of-bounds read of rkey array in SMC-Rv2 LLC processing
-Date: Mon, 27 Jul 2026 18:58:33 +0900
-Message-ID: <20260727095833.1079618-1-yhlee@isslab.korea.ac.kr>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="MFB6K+Zl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HeY7YSQFHhrYpCDQ1ocbUyxtrckOqjbVEIuC0Zbpc7LNbXPvzT/nZzqfEVSirGtvxMy6juofNYIuAYtCNt4AbcWM93yGc3Hh7ulOmFfxocCu3q9ntmuFeZ/JjtMyzeGJ/TkhHDg1SUYDH2YlRk1S4YbpmfW3tQeOHavph7+QxlKkLFPM/kYmUL0nkeMmoz+ndjGBF+QpLB39ULtkDoU7Vb3yl9/C9nS9I3YB4FVf/BOF//JLba1Q8epDA0b5n7/jgADtt6qflfkpdEHLSszV7pie1nSlUaennFVbbY3h8tIwgOu4tMHW3ozhH8b+MbVwA8g2XjZVBxpvO3sRx9zyng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Vz/hmCb0WDnCrxFkbTLTvjeJ9+2fSjgxfo23Edih8ns=;
+ b=QQSFes8PJ3qTgxBcn1v732U1TU7z+jne+jIwNmbgRqIvX3qTcHk3cuZ70R1hcbbb8oD+CeZDjuzRxpyOpoESxhtPgSDaDLcZOGejjPdEXELuz1TSKmEG0Ybkf0N6Hd5Lk3ZzkDEgEAuphUtKBGXCz1NXM956Bj6gP7rdViLPap4WnQpLtBnGaGV3KMkVvB7Iaacxc31/gA4dJsdABpzdV7bIJQ+kN38pUyG044SYpQjxCGA5cFaqXaZuO+gxP/+qKlX1wtUE4UK3pnTt32PqE1hoD5wYyltxFBy3WjXzYvC/LQk68hd8tq3H9nQKTvccS5Q2B7ZPjDCQ1SxlAjdTFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Vz/hmCb0WDnCrxFkbTLTvjeJ9+2fSjgxfo23Edih8ns=;
+ b=MFB6K+ZlDqFyrdZw2hC5ciRAJZgk/8zUIGb1I0Nc7oE1zRQZwh6X6fjeYVMiSztkR8eGvn8IXUiWmDJYtphsO8VskOZP97EQcSRhhw0+LWfyGoBbry1nM8Js/5mHeqbpuhSiBY/KtIdsK7JF6bOOgVxe5kdftYKzTHXRVrb2Enc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ2PR12MB8953.namprd12.prod.outlook.com (2603:10b6:a03:544::14)
+ by CH2PR12MB4054.namprd12.prod.outlook.com (2603:10b6:610:a6::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 10:01:36 +0000
+Received: from SJ2PR12MB8953.namprd12.prod.outlook.com
+ ([fe80::f3b5:fc98:8973:5c0b]) by SJ2PR12MB8953.namprd12.prod.outlook.com
+ ([fe80::f3b5:fc98:8973:5c0b%4]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 10:01:35 +0000
+Message-ID: <46f74c84-f07a-4f23-b72b-7af12838743e@amd.com>
+Date: Mon, 27 Jul 2026 15:31:28 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 2/2] net: macb: configure ENST registers for all
+ queues
+To: Nicolai Buchwitz <nb@tipi-net.de>,
+ Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, git@amd.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260724043257.2221030-1-vineeth.karumanchi@amd.com>
+ <20260724043257.2221030-3-vineeth.karumanchi@amd.com>
+ <49ccdd6682366239fef37bcfd99a908c@tipi-net.de>
+Content-Language: en-US
+From: "Karumanchi, Vineeth" <vineeth@amd.com>
+In-Reply-To: <49ccdd6682366239fef37bcfd99a908c@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA0PR01CA0061.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ac::18) To SJ2PR12MB8953.namprd12.prod.outlook.com
+ (2603:10b6:a03:544::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8953:EE_|CH2PR12MB4054:EE_
+X-MS-Office365-Filtering-Correlation-Id: a73c474c-768d-44b6-e192-08deebc60b18
+X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|23010399003|376014|366016|1800799024|4143699003|22082099003|10067099003|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	D3DZ3FtXivhHN0z9einxL8USR5QwErFV8frVzpb2Na4dMCUb5M9DYWVb3LnG4fZQHU/G3nbbujoAMIqMj4P6In7rNx9SmIIGtIkPwU3TyMSRCWjK/PGF306uxLhJkAdY1O07Pk0fM+h7PwZguv0nXSIrveCvhpprLlY4AwTadVftWDSvKB2z0YBwZVKVL4Qk6fFzKwqU5l+86cxCgbTC55w90AwjrxxDqv9p99HJeuhFRNG9O82/WMOrP9U9UGdBwhM9jh+VL9bP07al71GPn5aVaOmw4wwdi3Pcb2GALs/nlHTBZ80kaKSIgDiiq1o1NkUl+55rNoM61/uooce7PfLB5jDKwJH6iohfmdiG+07FxejqFYU2ZSvOEvWyiIUWyDRPbLKvsRIKmJCfXFkolJPSmPZy7/CwuOClROWpxG7xd9fWDYbsT5oQWA/gbenD9VJXuT5zeJWxEGKhTFMqm8DydEWRfpsNwaW5GS04TZRf9MZhuID5gl6zsl+yzdTklTl+KSGuNphzOn+qcJWZdwoRgt2wY8iQ6oeqByPSpYx+Ae4XtzRX/OkkBqjyn22SbTi3ip6e1jhJSz7kES8QWrvhGZqHibE5hZtosNFrve4cdx8CUAwW05z0YS9YxdBN16/CPFLRLsoJJNHRwovq43hvr/UhYY1cOwg9OioaP/0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8953.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(366016)(1800799024)(4143699003)(22082099003)(10067099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RVBHUHUyLytnaGIybFZPTUJwblVCYUxuVWlMaW5qeEVuN1c1NS9paUY3RlBV?=
+ =?utf-8?B?Tjg5aGorY0REZnFPSmhNd210MFd3bGdDYnJBOXVwSCtoMnJlYXlJM3VLaHg1?=
+ =?utf-8?B?N0h5aTVHTDBReFFEOVAwSVRLUHVNN0UzUzhTVzJtQjNhZXVDWjBsNzNydDBt?=
+ =?utf-8?B?eFNxcjM3MmRLZWRQYytpQmJLbll6UWUyQkVJREZFWFJzQzBpcmN3bWRNR0xO?=
+ =?utf-8?B?WmVzSEJRenNWSGdXTlRQdzRDUXFjcHVnM0c0M29Xa3JTK21FVW0vbEZCa1Uw?=
+ =?utf-8?B?THJsTE5kTUtGSndTM29kQktJTkUwUTh1T2RGaEdQV2lMb0Jod3hPOXBBc0Jj?=
+ =?utf-8?B?R25jMEdYUnJWSlp5dzVEajZ3MVNJemZxSGVWdW1USXViTURRcVljTlVaMkNI?=
+ =?utf-8?B?aGRBeDNNTHRhVU53c1VKWG5CcUlGNUpSMjgzTzJNaFpKcTlQTEtWanNhVDR5?=
+ =?utf-8?B?M0h0b1RPL1FWaVdTTUlrZFhiTlFHVFdxdXFTMmlucER5ZW1DcWkvOHE1Y2Z0?=
+ =?utf-8?B?eXJ4djRUSE8wV0ExbEFsK25sc2RTb3ZPaTRQd1pFN1NxUHJEbzY5U3F3Rk1I?=
+ =?utf-8?B?bGhhUUV1OTBNS0Y2bEljbmx3b2xOazRGV0dxaWtjNkhqUEF2L2ZnVDBCSjdN?=
+ =?utf-8?B?cUd2VGFLcmNMd1NPTjRpbVloZ05GTC9OVFNyKzRwelQwMHgrRHBTTkhIbERt?=
+ =?utf-8?B?SjFCaHVmOTNKQ1pqampHOTVsTXN0OHJuWUVCc0NkaGhmMUp2SEtxNHJRRkd3?=
+ =?utf-8?B?UHdneE51YiszOVZobDNvSkJ6NE8rZGg5cHg5a0w1VVB5dUZoZzlEa25HWjMr?=
+ =?utf-8?B?VVhrdURoZHJzaENjUmRtcTU1TGRrQnFrTmpnWms2a3E1Y1dMZjNIeGRSQ091?=
+ =?utf-8?B?WXlaNis1YlJ6S0d0MmZoMXRxQVV1cWdUR01SWFJLMkI5OUgrZDlDNkc1VUFC?=
+ =?utf-8?B?MEJMU3dTWVd6dVk1OWRKMWpKa1dPUUNxSmFHQnlVaEpBaVVFRjhDS0pSeEFv?=
+ =?utf-8?B?WUVRdkt3aE5SUnNTWll6bUJCUVFKNDhlQ1prZFl1NWliOWV5blpxVW1adGFV?=
+ =?utf-8?B?U2NSSE4rdzZ5V0ZDY0FVVHhjMVVrSXp2MGFOYUZPTk5ZdTJXL2w0alpxc296?=
+ =?utf-8?B?S0cvMGRGVGlZVVhhZTNoQmMyOXBCZS9yTllqQ2RZSjdXV3VKZUZId3diYkNm?=
+ =?utf-8?B?clFSSzA2bTFEYUx0MHVDc1lXMnhaRG5TaTNGRjIxbURjUGhrQjR6eDVGSWdZ?=
+ =?utf-8?B?VEF2b3ZkSFlYelVVdVRjWVRMNFhHOTVTd0VDQ2RXYUU3VDVPaUxlQkZzWkxD?=
+ =?utf-8?B?S256Y3Zkb0xxSWZLdVZ3SGlub3JjcFA5ZkVwd092aVVwTDdzS0pmVGdSNFEr?=
+ =?utf-8?B?WUFjR3V2SlJKUUtheVRTWDU0Y3gvUjhraXNTdEt5RGx0T3VlbU1mblVBeW43?=
+ =?utf-8?B?K1ZNUjdlSUhVazl5NS9WWVp1am13VnZWYmtZS20vTFBkVUtXZEVTV2VITnpP?=
+ =?utf-8?B?NmJURXJVL09NRTJZNWpSbE9KdjN2ZmN1VHVGQkFCNkNKdGE3UWV5dFlqaFhv?=
+ =?utf-8?B?bWk3NkdnYXJOb1ZRcDRVYjVtVm53VDZ2OTlweE51ODlVTU5WQkFNTC9xa0R2?=
+ =?utf-8?B?YkRBYU50eVp0ZzVFV2lTNzd2YWhFWUEycnMwOU1CVUF1REF4THpXbDBTanZF?=
+ =?utf-8?B?QVI0V1pscDlJLzdSWWRMVlBSRzQ5cC9VOGJBODdwamltSzBXK0RBbSszYTdT?=
+ =?utf-8?B?d0hURjM5TXVEMW9GK2JqRnJuKzAzZi9ZNWpOYXd4WVpFVHVzWCs1ckpQaWlW?=
+ =?utf-8?B?N0FrdkJoNi8yWU15RTN6b0Q3aDhXVVJpbHN5Y1drRDNJM3NrR2x0U0ZwYURv?=
+ =?utf-8?B?T0YzWkZkMTNNZ29BZnJZWGtjNXpDR2pMTzZKWWVWUi9tSGFqNDBkVklPOVRy?=
+ =?utf-8?B?VDRTS0x5V1l2L2RlQ2hORXEvZVRYcW9KaFkwWU4xVVRIeTFqdk5TdURYNUc3?=
+ =?utf-8?B?TXF2MnlXSkhEc3NLUzFKeGJOZEJPbllHZCtsb0hoZm1TTXR2VGJOM0JHY1VG?=
+ =?utf-8?B?ckpqeDF1N1pleVlCUnpOVWdKVDE4KzVrd3Y2N3hSZlY3V0lFaTJENkc1UWI1?=
+ =?utf-8?B?cU11dzRrZ3loV3RVV3RITTlZZjA0dGJ0aEhhRDYxRmlSbEhqUXFtRHNDK0cr?=
+ =?utf-8?B?Um5wWGtCTVBRT2dUV1p3aUhpZ0IyejB1S29TL0wvSEJmMUFmOFNZNlIzRlBI?=
+ =?utf-8?B?MTRBVVY2TDhrV0RpNU4wbG0vSjcyalRCUWl0VHhsNktnakJobTNaVjZxZ1Rt?=
+ =?utf-8?Q?kyXIwLPyA1YYJZVLkp?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a73c474c-768d-44b6-e192-08deebc60b18
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8953.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 10:01:35.8939
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3PBkNZbwvfC2RM3zeBB8CJdcW/SVOLzTqrirLahhIL0IM4hC+ZSD6ZVj/FAvD8hK
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4054
 
-An SMC-Rv2 LLC message can be longer than the 44-byte union smc_llc_msg.
-If the device offers two receive SGEs, the part beyond 44 bytes is
-scattered into the link group's shared v2 buffer. If it does not
-(max_recv_sge == 1, so smc_link_shared_v2_rxbuf() is false), the whole
-message is received into the link's own receive buffer.
+Hi Nicolai,
 
-smc_llc_enqueue() copies only sizeof(union smc_llc_msg) into the queue
-entry, but the consumers keep reading the message past that point:
+On 7/25/2026 1:27 AM, Nicolai Buchwitz wrote:
 
-  smc_llc_rmt_delete_rkey()      rkey[i] at message offset 8 + 4 * i
-  smc_llc_save_add_link_rkeys()  the v2 extension at message offset 44
+<..>
+>> Key changes:
+>> - Drop queue_id from struct macb_queue_enst_config
+>> - Allocate enst_queue[] based on bp->num_queues instead of
+>>   conf->num_entries
+>> - Index enst_queue[] directly with the queue number
+>> - Program ENST registers for all queues
+>>
+>> Fixes: 89934dbf169e ("net: macb: Add TAPRIO traffic scheduling support")
+>
+> In addition to what Théo already mentioned:
+>
+> The series targets net-next, but if this is a real bug fix it should
+> probably be routed via net. The offending commit is in stable since v6.18.
 
-In the non-shared layout those bytes are not in the queue entry at all,
-so the reads run off the end of the queue entry allocation. The buffer
-the message arrived in is no source either: smc_wr_rx_post() hands it
-back to the device immediately after the handler runs, while the message
-is consumed later from the llc_event_work work item.
+Sure, I will split the patch series accordingly and submit the updated 
+versions to *net-next* and *net*.
 
-Attach the body to the queue entry instead. smc_llc_enqueue() now takes
-the completion length, and copies whatever arrived beyond the first 44
-bytes into a flexible array at the tail of the same allocation. That
-copy is the only place that has to know which of the two receive layouts
-is in use; every consumer reads one buffer whose lifetime is the queue
-entry's, and the shared/non-shared branches in smc_llc_rmt_delete_rkey(),
-smc_llc_cli_add_link() and smc_llc_srv_add_link() go away.
-
-Because the backing allocation is now the size of the received message
-rather than a fixed 8 KiB buffer, the loop bounds have to come from the
-received length too. num_rkeys and the v2 extension's rkey count are
-peer-controlled and unrelated to the number of bytes the peer actually
-sent - a peer can declare 255 rkeys in a 44-byte DELETE_RKEY - so both
-are clamped to what was received, and the extension's count field is
-only read once enough bytes for it have arrived. This is not hardening
-added on top of the fix, it is part of it: the counts were never
-validated before either, the reads happened to stay in bounds only
-because the buffer they addressed was always 8 KiB. The commit message
-of v2 of this patch deferred that check "as a separate hardening"; with
-the body sized by the peer's message it cannot be deferred, so that is
-withdrawn.
-
-Passing the queue entry down also closes a use-after-free on the same
-path. smc_llc_srv_add_link() frees the queue entry before it reads the
-rkeys (net/smc/smc_llc.c, v7.2-rc5):
-
-  1494        smc_llc_save_add_link_info(link_new, add_llc);
-  1495        smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
-  ...
-  1503        if (lgr->smc_version == SMC_V2) {
-  1504                u8 *llc_msg = smc_link_shared_v2_rxbuf(link) ?
-  1505                        (u8 *)lgr->wr_rx_buf_v2 : (u8 *)add_llc;
-  1506                smc_llc_save_add_link_rkeys(link, link_new, llc_msg);
-
-add_llc points into the queue entry that line 1495 has already freed, so
-on a non-shared link the extension is read from freed memory. Detach the
-entry from the flow with smc_llc_flow_qentry_clr() and free it when the
-function is done with it. It was introduced by the same commit.
-
-Unpatched, a peer that declares 255 rkeys in a 44-byte DELETE_RKEY
-reads past the queue entry:
-
-  BUG: KASAN: slab-out-of-bounds in smc_llc_rmt_delete_rkey+0x6a4/0x780
-  Read of size 4 at addr ffff8880059ee748 by task kworker/0:0H/11
-  Workqueue: events_highpri smc_llc_event_work
-  Call Trace:
-   dump_stack_lvl+0x53/0x70
-   print_report+0xd0/0x630
-   kasan_report+0xce/0x100
-   smc_llc_rmt_delete_rkey+0x6a4/0x780
-   smc_llc_event_handler+0xa13/0xef0
-   smc_llc_event_work+0x189/0x260
-   process_one_work+0x633/0x1030
-   worker_thread+0x45b/0xd10
-   kthread+0x2c6/0x3b0
-   ret_from_fork+0x36e/0x5a0
-   ret_from_fork_asm+0x1a/0x30
-  Allocated by task 43:
-   __kmalloc_cache_noprof+0x158/0x370
-   smc_llc_enqueue+0x72/0x560
-   smc_wr_rx_tasklet_fn+0x474/0xa80
-   ...
-  The buggy address is located 0 bytes to the right of
-   allocated 72-byte region [ffff8880059ee700, ffff8880059ee748)
-
-Reachability does not depend on the peer being able to send a large
-message: the counts are read out of a normally sized message, and a
-malicious peer only has to declare more rkeys than it actually sent.
-Kernel-side injection is needed in the reproducer only because Linux
-never misdeclares its own count.
-
-Reproduced under KASAN with soft-RoCE (rdma_rxe) between two network
-namespaces, with wr_rx_sge_cnt forced to 1 (rxe itself advertises 32
-receive SGEs) and a test-only parameter that raises num_rkeys in the
-DELETE_RKEY the kernel sends. Not exercised: a real HCA with
-max_recv_sge == 1, a non-Linux peer that sends a DELETE_RKEY longer than
-44 bytes, and anything beyond the two link groups and two connections
-the test sets up.
-
-Fixes: 27ef6a9981fe ("net/smc: support SMC-R V2 for rdma devices with max_recv_sge equals to 1")
-Suggested-by: D. Wythe <alibuda@linux.alibaba.com>
-Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
----
-v3:
- - Carry the v2 message body on the qentry itself instead of the
-   per-link-group lgr->wr_rx_buf_v2, as suggested by D. Wythe. The body
-   travels in the same allocation as a trailing flexible array, so the
-   shared and non-shared layouts no longer diverge in any consumer and
-   the existing kfree(qentry) sites are unchanged.
- - Bound the rkey counts by the number of bytes actually received. With
-   a per-qentry body the backing allocation is exactly as large as what
-   arrived, so this is required for memory safety rather than being the
-   separate hardening promised in v2.
- - Keep the qentry alive in smc_llc_srv_add_link() until the rkeys have
-   been read; the non-shared path there dereferenced it after it had
-   already been freed.
- - Rebased onto v7.2-rc5; net/smc is unchanged between the v2 base and
-   this one.
-
-v2:
- - Guard the copy on lgr->smc_version == SMC_V2 to avoid a NULL
-   dereference of wr_rx_buf_v2 on a v1 link group.
- - Copy the message body only, restoring the header from the per-qentry
-   copy.
-
-Previous postings:
-  v1 20260723094027.391199-1-yhlee@isslab.korea.ac.kr
-  v2 20260724061606.433735-1-yhlee@isslab.korea.ac.kr
-
- net/smc/smc_llc.c | 70 +++++++++++++++++++++++++++++++----------------
- 1 file changed, 47 insertions(+), 23 deletions(-)
-
-diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
-index 954b2ff1815c..997664bbe4f2 100644
---- a/net/smc/smc_llc.c
-+++ b/net/smc/smc_llc.c
-@@ -199,10 +199,13 @@ union smc_llc_msg {
- struct smc_llc_qentry {
- 	struct list_head list;
- 	struct smc_link *link;
-+	u16 body_len;
- 	union smc_llc_msg msg;
-+	u8 body[] __counted_by(body_len);
- };
- 
--static void smc_llc_enqueue(struct smc_link *link, union smc_llc_msg *llc);
-+static void smc_llc_enqueue(struct smc_link *link, union smc_llc_msg *llc,
-+			    u32 byte_len);
- 
- struct smc_llc_qentry *smc_llc_flow_qentry_clr(struct smc_llc_flow *flow)
- {
-@@ -998,15 +1001,20 @@ static int smc_llc_cli_conf_link(struct smc_link *link,
- 
- static void smc_llc_save_add_link_rkeys(struct smc_link *link,
- 					struct smc_link *link_new,
--					u8 *llc_msg)
-+					struct smc_llc_qentry *qentry)
- {
-+	const u32 rt_off = offsetof(struct smc_llc_msg_add_link_v2_ext, rt);
- 	struct smc_llc_msg_add_link_v2_ext *ext;
- 	struct smc_link_group *lgr = link->lgr;
- 	int max, i;
- 
--	ext = (struct smc_llc_msg_add_link_v2_ext *)(llc_msg +
--						     SMC_WR_TX_SIZE);
-+	/* the rkey count itself is only there if enough bytes arrived */
-+	if (qentry->body_len < rt_off)
-+		return;
-+	ext = (struct smc_llc_msg_add_link_v2_ext *)qentry->body;
- 	max = min_t(u8, ext->num_rkeys, SMC_LLC_RKEYS_PER_MSG_V2);
-+	max = min_t(u32, max, (qentry->body_len - rt_off) /
-+			      sizeof(ext->rt[0]));
- 	down_write(&lgr->rmbs_lock);
- 	for (i = 0; i < max; i++) {
- 		smc_rtoken_set(lgr, link->link_idx, link_new->link_idx,
-@@ -1099,9 +1107,7 @@ int smc_llc_cli_add_link(struct smc_link *link, struct smc_llc_qentry *qentry)
- 	if (rc)
- 		goto out_clear_lnk;
- 	if (lgr->smc_version == SMC_V2) {
--		u8 *llc_msg = smc_link_shared_v2_rxbuf(link) ?
--			(u8 *)lgr->wr_rx_buf_v2 : (u8 *)llc;
--		smc_llc_save_add_link_rkeys(link, lnk_new, llc_msg);
-+		smc_llc_save_add_link_rkeys(link, lnk_new, qentry);
- 	} else {
- 		rc = smc_llc_cli_rkey_exchange(link, lnk_new);
- 		if (rc) {
-@@ -1481,7 +1487,7 @@ int smc_llc_srv_add_link(struct smc_link *link,
- 	}
- 	add_llc = &qentry->msg.add_link;
- 	if (add_llc->hd.flags & SMC_LLC_FLAG_ADD_LNK_REJ) {
--		smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
-+		smc_llc_flow_qentry_clr(&lgr->llc_flow_lcl);
- 		rc = -ENOLINK;
- 		goto out_err;
- 	}
-@@ -1492,7 +1498,7 @@ int smc_llc_srv_add_link(struct smc_link *link,
- 		lgr_new_t = SMC_LGR_ASYMMETRIC_PEER;
- 	}
- 	smc_llc_save_add_link_info(link_new, add_llc);
--	smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
-+	smc_llc_flow_qentry_clr(&lgr->llc_flow_lcl);
- 
- 	rc = smc_ib_ready_link(link_new);
- 	if (rc)
-@@ -1501,9 +1507,7 @@ int smc_llc_srv_add_link(struct smc_link *link,
- 	if (rc)
- 		goto out_err;
- 	if (lgr->smc_version == SMC_V2) {
--		u8 *llc_msg = smc_link_shared_v2_rxbuf(link) ?
--			(u8 *)lgr->wr_rx_buf_v2 : (u8 *)add_llc;
--		smc_llc_save_add_link_rkeys(link, link_new, llc_msg);
-+		smc_llc_save_add_link_rkeys(link, link_new, qentry);
- 	} else {
- 		rc = smc_llc_srv_rkey_exchange(link, link_new);
- 		if (rc)
-@@ -1512,6 +1516,7 @@ int smc_llc_srv_add_link(struct smc_link *link,
- 	rc = smc_llc_srv_conf_link(link, link_new, lgr_new_t);
- 	if (rc)
- 		goto out_err;
-+	kfree(qentry);
- 	kfree(ini);
- 	return 0;
- out_err:
-@@ -1520,6 +1525,7 @@ int smc_llc_srv_add_link(struct smc_link *link,
- 		smcr_link_clear(link_new, false);
- 	}
- out:
-+	kfree(qentry);
- 	kfree(ini);
- 	if (send_req_add_link_resp)
- 		smc_llc_send_req_add_link_response(req_qentry);
-@@ -1552,7 +1558,8 @@ void smc_llc_add_link_local(struct smc_link *link)
- 	add_llc.hd.common.llc_type = SMC_LLC_ADD_LINK;
- 	smc_llc_init_msg_hdr(&add_llc.hd, link->lgr, sizeof(add_llc));
- 	/* no dev and port needed */
--	smc_llc_enqueue(link, (union smc_llc_msg *)&add_llc);
-+	smc_llc_enqueue(link, (union smc_llc_msg *)&add_llc,
-+			sizeof(union smc_llc_msg));
- }
- 
- /* worker to process an add link message */
-@@ -1588,7 +1595,8 @@ void smc_llc_srv_delete_link_local(struct smc_link *link, u8 del_link_id)
- 	del_llc.link_num = del_link_id;
- 	del_llc.reason = htonl(SMC_LLC_DEL_LOST_PATH);
- 	del_llc.hd.flags |= SMC_LLC_FLAG_DEL_LINK_ORDERLY;
--	smc_llc_enqueue(link, (union smc_llc_msg *)&del_llc);
-+	smc_llc_enqueue(link, (union smc_llc_msg *)&del_llc,
-+			sizeof(union smc_llc_msg));
- }
- 
- static void smc_llc_process_cli_delete_link(struct smc_link_group *lgr)
-@@ -1811,16 +1819,15 @@ static void smc_llc_rmt_delete_rkey(struct smc_link_group *lgr)
- 
- 	if (lgr->smc_version == SMC_V2) {
- 		struct smc_llc_msg_delete_rkey_v2 *llcv2;
-+		const u32 rkey_off =
-+			offsetof(struct smc_llc_msg_delete_rkey_v2, rkey);
- 
--		if (smc_link_shared_v2_rxbuf(link)) {
--			memcpy(lgr->wr_rx_buf_v2, llc, sizeof(*llc));
--			llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)lgr->wr_rx_buf_v2;
--		} else {
--			llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)llc;
--		}
-+		llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)llc;
- 		llcv2->num_inval_rkeys = 0;
- 
- 		max = min_t(u8, llcv2->num_rkeys, SMC_LLC_RKEYS_PER_MSG_V2);
-+		max = min_t(u32, max, (sizeof(qentry->msg) + qentry->body_len -
-+				       rkey_off) / sizeof(llcv2->rkey[0]));
- 		for (i = 0; i < max; i++) {
- 			if (smc_rtoken_delete(link, llcv2->rkey[i]))
- 				llcv2->num_inval_rkeys++;
-@@ -2063,18 +2070,35 @@ static void smc_llc_rx_response(struct smc_link *link,
- 	wake_up(&link->lgr->llc_msg_waiter);
- }
- 
--static void smc_llc_enqueue(struct smc_link *link, union smc_llc_msg *llc)
-+static void smc_llc_enqueue(struct smc_link *link, union smc_llc_msg *llc,
-+			    u32 byte_len)
- {
- 	struct smc_link_group *lgr = link->lgr;
- 	struct smc_llc_qentry *qentry;
- 	unsigned long flags;
-+	u16 body_len = 0;
-+
-+	/* V2 messages can be longer than the inline union smc_llc_msg. Carry
-+	 * the remainder in the qentry itself, so that its lifetime and its
-+	 * length match the message the peer actually sent.
-+	 */
-+	if (lgr->smc_version == SMC_V2 && byte_len > SMC_WR_TX_SIZE)
-+		body_len = min_t(u32, byte_len, SMC_WR_BUF_V2_SIZE) -
-+			   SMC_WR_TX_SIZE;
- 
--	qentry = kmalloc_obj(*qentry, GFP_ATOMIC);
-+	qentry = kmalloc_flex(*qentry, body, body_len, GFP_ATOMIC);
- 	if (!qentry)
- 		return;
-+	qentry->body_len = body_len;
- 	qentry->link = link;
- 	INIT_LIST_HEAD(&qentry->list);
- 	memcpy(&qentry->msg, llc, sizeof(union smc_llc_msg));
-+	if (body_len) {
-+		u8 *src = smc_link_shared_v2_rxbuf(link) ?
-+			(u8 *)lgr->wr_rx_buf_v2 : (u8 *)llc;
-+
-+		memcpy(qentry->body, src + SMC_WR_TX_SIZE, body_len);
-+	}
- 
- 	/* process responses immediately */
- 	if ((llc->raw.hdr.flags & SMC_LLC_FLAG_RESP) &&
-@@ -2106,7 +2130,7 @@ static void smc_llc_rx_handler(struct ib_wc *wc, void *buf)
- 			return; /* invalid message */
- 	}
- 
--	smc_llc_enqueue(link, llc);
-+	smc_llc_enqueue(link, llc, wc->byte_len);
- }
- 
- /***************************** worker, utils *********************************/
+Thanks
 -- 
-2.43.0
+🙏 Vineeth
 
