@@ -1,283 +1,338 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [4.193.249.245])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C77D36EAB0;
-	Mon, 27 Jul 2026 15:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.193.249.245
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6BA37F74C;
+	Mon, 27 Jul 2026 15:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785166806; cv=none; b=jhXvkRJmAHF6sowDEaK/kVA9Y/dTp5jjC/9HpwTyDMfOzU5+693Mdpgk3eEBQ4SEkw9UmChKeVHCbaJW2PY0xB7wAGBrAt0AF6/GndAtgrX1eXCHyyvAfAkpa/NXvPKT/AnxvKv8NA13sRatuauoUk6G/PeaZqQwDHUytNlKuss=
+	t=1785167462; cv=none; b=CrOI8gjVGq9Ryj/50mIJlevJhCQIo7/VyJQaKempfVdJSTKDWieV+rKgl+js9hNa30rWFI1ltaPuEuZvJoeYKC7kJf8vreQGx1Fxra15S5I5XRnJv/O8rZTqSMIt/2Jn167J2r4DB7k38JiSqvk8RdVv7VkzNC2HMS52oHI04Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785166806; c=relaxed/simple;
-	bh=KoT7ajjqQkXpZLIy0VM8V5uz0aZlQpONCtN4QvAA3Pk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dCUWlfXK05PcW1emNjRel5fTWCRLrRF7BwQTMGG4rqEipLITPhN1+0iOsItoKBF7/e7UBaYBgPR6qt7+fAwh4PMEJgSRetFXDPHopPOhxlRS7sB67kdao+RkJNlMowJe2hOM84uNwJTlf777HSUY5RDFMX18oYNexRK1Zlly6s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=qmvU5vf2; arc=none smtp.client-ip=4.193.249.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1785167462; c=relaxed/simple;
+	bh=GUQFkp3yg7rHEw1gOx3edU3HLrUv02S4mm8be/6BKFo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sJTYtf3mK537DNThmKq538QPoIMKOWt72v6JMS/maUiECyjvjVBkERlXKvhtLL4znTt6nDqNDe/PVB7VcSPsWCXNAr0nrlduRUKpTDNHILwEPhWLEZ/W5NCNIJ/NRMmZP3mCC0c1OYRzd0P5wWdVefo1PQZZwzAzqCkIZ6s78+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=guVeLXwi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="qmvU5vf2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=XcVwp
-	ENAv7+Zg+J4I6zEF5HvgZR1PRElQHKD0xb8tVY=; b=qmvU5vf2Y8tPAzTG7vk7x
-	ZwUEQs1tlbY06JjK9ein8+EvWI61vZbKCtHTZ2Z0axUYZFCTR8R3tVP15+BmIJju
-	CtQ55E9dqwW2yveRm/mDn/OpIWerS2tmaab2u4QNFCjQgZC0S12jAj79InkKVnFq
-	VePEVnYkHtZwSZlYnMKVMs=
-Received: from localhost.localdomain (unknown [121.225.135.236])
-	by web3 (Coremail) with SMTP id ygQGZQA3BhXDe2dqDg1CAA--.29835S2;
-	Mon, 27 Jul 2026 23:39:48 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: netdev@vger.kernel.org
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net] inet_diag: make bytecode audit O(n) to prevent CPU DoS
-Date: Mon, 27 Jul 2026 23:39:35 +0800
-Message-ID: <20260727153936.28944-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.46.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="guVeLXwi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1CD1F000E9;
+	Mon, 27 Jul 2026 15:50:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785167460;
+	bh=a29v1I9AmtPmUzhtxOfU8juL9pMl/gW53UJw7j6i6Ec=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=guVeLXwiRRIWjU5sfFTtxrq6ZfihoLYMhpq6ttv26lfDXI+FR+1oBfAvwm7XACi6+
+	 DL595w1QC6+ft03CjZB9VbAOBTCWldxzMcUsYHk72qmQp2tesce2L7LatEhsG5TivV
+	 QHmO/4NEpa5u+PCvwSwrkr9oWb5Xmp9AgtghdxkRz/1X7E2qwtI95OlI4XXmgUbUWl
+	 X923tl53lZRzLIoNyszjrpH5DeLWci0FUwoXm48mB3g6WbU144U+oZ/r5Oa2NPusfi
+	 H4BVealwAZ/i6xgJ9b0V0QyEKBIuTukZnt3KCp//s5WakSKmL4rkS4dsug7qf7g3Ju
+	 IXfGH181mRiuA==
+Message-ID: <02792987-7ad8-4a6b-81ad-559c63174bb0@kernel.org>
+Date: Mon, 27 Jul 2026 17:50:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygQGZQA3BhXDe2dqDg1CAA--.29835S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3Jw4kJr45XF1UKr13WrW5GFg_yoWxCrWDpF
-	W5u3yjyrZ5tr9a9r10kFZruFW2k34qgFZFkrW3tw1fAwsrtr98tFn7KwnIq3Z3AFs3Kryx
-	KayYvF43ur1UJFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9q1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28E
-	F7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzx
-	vE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VCjz48v1sIEY20_GrWk
-	Jr1UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5c
-	I20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxkIecxE
-	wVAFwVW5WwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4rKr1UJr1l4I8I3I
-	0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWU
-	GVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI
-	0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0
-	rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJbIYCTnIWIevJa73UjIFyTuYvjfUOq2MUUUUU
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgEBAWpnVKQqjwAAsb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] dt-bindings: ptp: Document the TSCSS on Qualcomm
+ Lemans and Monaco SoCs
+To: Imran Shaik <imran.shaik@oss.qualcomm.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
+ Taniya Das <taniya.das@oss.qualcomm.com>,
+ Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20260727-tscss-v1-0-beed14e72510@oss.qualcomm.com>
+ <20260727-tscss-v1-1-beed14e72510@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20260727-tscss-v1-1-beed14e72510@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-inet_diag: make bytecode audit O(n) to prevent CPU DoS
+On 27/07/2026 16:10, Imran Shaik wrote:
+> Add Devicetree bindings for the Timestamp Counter Subsystem (TSCSS) found
+> on Qualcomm Lemans and Monaco SoCs.
+> 
+> TSCSS is a time synchronization subsystem composed of two main blocks:
+> Timestamp Counter (TSC) and Event Timestamp Unit (ETU). The TSC block
+> provides a continuously running counter used for timekeeping, while the
+> ETU captures timestamps for external hardware event triggers.
+> 
+> Co-developed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+> Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
+> Signed-off-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+> ---
+>  .../devicetree/bindings/ptp/qcom,lemans-tscss.yaml | 198 +++++++++++++++++++++
+>  1 file changed, 198 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/ptp/qcom,lemans-tscss.yaml b/Documentation/devicetree/bindings/ptp/qcom,lemans-tscss.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..4cbe4b00ff7dcacbd8cc111e2b4b61ebce7104aa
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/ptp/qcom,lemans-tscss.yaml
+> @@ -0,0 +1,198 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/ptp/qcom,lemans-tscss.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Timestamp Counter Subsystem (TSCSS) on Qualcomm Lemans and Monaco SoCs
+> +
+> +maintainers:
+> +  - Imran Shaik <imran.shaik@oss.qualcomm.com>
+> +  - Taniya Das <taniya.das@oss.qualcomm.com>
+> +
+> +description: |
+> +  Qualcomm TSCSS is a time synchronization subsystem composed of two main
+> +  blocks - the Time Stamp Counter (TSC) and the Event Timestamp Unit (ETU).
+> +
+> +  The TSC block is a timestamp generator that maintains a running counter used
+> +  for system timekeeping, and is functional with just the AHB and counter
+> +  clocks.
+> +  The ETU block is optional and captures TSC timestamps for external
+> +  hardware events, each ETU slice binding a slice identifier to an external
+> +  event selector. Support for the ETU block requires the additional ETU
+> +  clock along with the summary interrupt and slice subnodes.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - const: qcom,lemans-tscss
 
-inet_diag_bc_audit() validates the user-supplied INET_DIAG_REQ_BYTECODE
-filter of a SOCK_DIAG dump request.  It runs synchronously in the sender's
-sendmsg() at dump start, before any socket is iterated.
+There is no such SoC upstream.
 
-The audit's outer loop walks one opcode per iteration following the
-yes-chain, and for every non-NOP opcode whose 'no' branch stays inside the
-buffer it calls valid_cc(bytecode, bytecode_len, len - op->no).  valid_cc()
-re-walks the bytecode from offset 0 following yes-jumps until it reaches
-the target offset.  This is O(n) per opcode, nested inside the O(n) outer
-loop, making the whole audit O(n^2) in the bytecode length.
 
-NETLINK_SOCK_DIAG is reachable by unprivileged users (diag_nlsk is created
-with NL_CFG_F_NONROOT_RECV, the SOCK_DIAG_BY_FAMILY dump path has no
-capability gate, and netlink_sendmsg skips the NL_CFG_F_NONROOT_SEND check
-when dst_portid == 0 && dst_group == 0).  The bytecode length is bounded
-only by the u16 nla_len cap (~64 KB), so a local unprivileged attacker can
-submit a ~64 KB bytecode of JMP ops {yes=4, no=4} that passes every
-validation check, is accepted, and forces ~n^2/2 (~1.3e8) inner iterations
-per request, pinning a CPU for hundreds of milliseconds; concurrent
-requests pin all CPUs.  The burn happens at dump start, so it occurs even
-when zero sockets match.
+> +      - items:
+> +          - const: qcom,monaco-tscss
 
-Replace the repeated from-start re-walk with a single-pass bitmap
-reachability check that preserves the exact semantics of valid_cc().
-Allocate one bit per 4-byte slot: when an opcode's 'no' branch targets an
-offset strictly inside the buffer (op->no < len), set the bit for that
-target; when the yes-chain later arrives at an offset, clear its bit
-(proving it is a reachable opcode boundary).  After the walk, any bit still
-set marks a 'no' target the yes-chain never lands on -- i.e. it points
-mid-opcode or at an unreachable op -- which is exactly the condition
-valid_cc() rejected, so the audit returns -EINVAL.  Each opcode now does
-O(1) bitmap work, making the audit O(n).
+Neither this one.
 
-The bitmap is freed through a single 'out' label, and the now unused
-valid_cc() is removed.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: Claude-Code:GLM-5.2
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
----
-diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
-index 34b77aa..304f031 100644
---- a/net/ipv4/inet_diag.c
-+++ b/net/ipv4/inet_diag.c
-@@ -11,6 +11,7 @@
- #include <linux/fcntl.h>
- #include <linux/random.h>
- #include <linux/slab.h>
-+#include <linux/bitmap.h>
- #include <linux/cache.h>
- #include <linux/init.h>
- #include <linux/time.h>
-@@ -632,23 +633,6 @@ int inet_diag_bc_sk(const struct inet_diag_dump_data *cb_data, struct sock *sk)
- }
- EXPORT_SYMBOL_GPL(inet_diag_bc_sk);
- 
--static int valid_cc(const void *bc, int len, int cc)
--{
--	while (len >= 0) {
--		const struct inet_diag_bc_op *op = bc;
--
--		if (cc > len)
--			return 0;
--		if (cc == len)
--			return 1;
--		if (op->yes < 4 || op->yes & 3)
--			return 0;
--		len -= op->yes;
--		bc  += op->yes;
--	}
--	return 0;
--}
--
- /* data is u32 ifindex */
- static bool valid_devcond(const struct inet_diag_bc_op *op, int len,
- 			  int *min_len)
-@@ -729,8 +713,9 @@ static int inet_diag_bc_audit(struct inet_diag_dump_data *cb_data,
- 			      const struct sk_buff *skb)
- {
- 	const struct nlattr *attr = cb_data->inet_diag_nla_bc;
--	const void *bytecode, *bc;
--	int bytecode_len, len;
-+	int bytecode_len, len, nbits, err = -EINVAL;
-+	unsigned long *target;
-+	const void *bc;
- 	bool net_admin;
- 
- 	if (!attr)
-@@ -739,23 +724,38 @@ static int inet_diag_bc_audit(struct inet_diag_dump_data *cb_data,
- 	if (nla_len(attr) < sizeof(struct inet_diag_bc_op))
- 		return -EINVAL;
- 
-+	/* One bit per 4-byte slot tracks 'no'-branch targets that must be
-+	 * reached along the yes-chain.
-+	 */
-+	nbits = DIV_ROUND_UP(nla_len(attr), 4);
-+	target = bitmap_zalloc(nbits, GFP_KERNEL);
-+	if (!target)
-+		return -ENOMEM;
-+
- 	net_admin = netlink_net_capable(skb, CAP_NET_ADMIN);
--	bytecode = bc = nla_data(attr);
-+	bc = nla_data(attr);
- 	len = bytecode_len = nla_len(attr);
- 
- 	while (len > 0) {
- 		int min_len = sizeof(struct inet_diag_bc_op);
- 		const struct inet_diag_bc_op *op = bc;
-+		int off = bytecode_len - len;
-+
-+		/* Reaching 'off' along the yes-chain proves it is a valid
-+		 * opcode boundary, satisfying any earlier 'no' branch that
-+		 * targeted it.
-+		 */
-+		__clear_bit(off / 4, target);
- 
- 		switch (op->code) {
- 		case INET_DIAG_BC_S_COND:
- 		case INET_DIAG_BC_D_COND:
- 			if (!valid_hostcond(bc, len, &min_len))
--				return -EINVAL;
-+				goto out;
- 			break;
- 		case INET_DIAG_BC_DEV_COND:
- 			if (!valid_devcond(bc, len, &min_len))
--				return -EINVAL;
-+				goto out;
- 			break;
- 		case INET_DIAG_BC_S_EQ:
- 		case INET_DIAG_BC_S_GE:
-@@ -764,19 +765,21 @@ static int inet_diag_bc_audit(struct inet_diag_dump_data *cb_data,
- 		case INET_DIAG_BC_D_GE:
- 		case INET_DIAG_BC_D_LE:
- 			if (!valid_port_comparison(bc, len, &min_len))
--				return -EINVAL;
-+				goto out;
- 			break;
- 		case INET_DIAG_BC_MARK_COND:
--			if (!net_admin)
--				return -EPERM;
-+			if (!net_admin) {
-+				err = -EPERM;
-+				goto out;
-+			}
- 			if (!valid_markcond(bc, len, &min_len))
--				return -EINVAL;
-+				goto out;
- 			cb_data->mark_needed = true;
- 			break;
- #ifdef CONFIG_SOCK_CGROUP_DATA
- 		case INET_DIAG_BC_CGROUP_COND:
- 			if (!valid_cgroupcond(bc, len, &min_len))
--				return -EINVAL;
-+				goto out;
- 			cb_data->cgroup_needed = true;
- 			break;
- #endif
-@@ -787,23 +790,31 @@ static int inet_diag_bc_audit(struct inet_diag_dump_data *cb_data,
- 		case INET_DIAG_BC_NOP:
- 			break;
- 		default:
--			return -EINVAL;
-+			goto out;
- 		}
- 
- 		if (op->code != INET_DIAG_BC_NOP) {
- 			if (op->no < min_len || op->no > len + 4 || op->no & 3)
--				return -EINVAL;
--			if (op->no < len &&
--			    !valid_cc(bytecode, bytecode_len, len - op->no))
--				return -EINVAL;
-+				goto out;
-+			/* Record the 'no'-branch target; it must be cleared
-+			 * later when the yes-chain lands on it, otherwise the
-+			 * target is not a reachable opcode boundary.
-+			 */
-+			if (op->no < len)
-+				__set_bit((off + op->no) / 4, target);
- 		}
- 
- 		if (op->yes < min_len || op->yes > len + 4 || op->yes & 3)
--			return -EINVAL;
-+			goto out;
- 		bc  += op->yes;
- 		len -= op->yes;
- 	}
--	return len == 0 ? 0 : -EINVAL;
-+
-+	if (len == 0 && bitmap_empty(target, nbits))
-+		err = 0;
-+out:
-+	bitmap_free(target);
-+	return err;
- }
- 
- static int __inet_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
+> +          - const: qcom,lemans-tscss
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  reg-names:
+> +    items:
+> +      - const: tsc
 
---
-2.47.3
+Drop names, not really useful.
 
+> +
+
+> +  clocks:
+> +    minItems: 2
+> +    items:
+> +      - description: TSC AHB configuration clock.
+> +      - description: TSC global counter clock.
+> +      - description: TSC ETU clock.
+> +
+> +  clock-names:
+> +    minItems: 2
+
+Why is this flexible?
+
+> +    items:
+> +      - const: ahb
+> +      - const: cntr
+> +      - const: etu
+> +
+> +  interrupts:
+> +    description: Summary interrupt raised based on external event for any of the ETU slices.
+
+Please follow Linux coding style.
+
+> +    maxItems: 1
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: etu_summary
+> +
+> +  assigned-clocks: true
+> +  assigned-clock-rates: true
+
+Drop. From where did you take it?
+
+> +
+> +  "#address-cells":
+> +    const: 2
+> +
+> +  "#size-cells":
+> +    const: 2
+> +
+> +  ranges: true
+> +
+> +patternProperties:
+> +  "^etu-slice@[0-9a-f]+$":
+> +    type: object
+> +    description: ETU slice configuration
+> +    properties:
+> +      reg:
+> +        maxItems: 1
+> +
+> +      pinctrl-0: true
+> +
+> +      pinctrl-names:
+> +        items:
+> +          - const: default
+
+Heh? Which code do you copy?
+
+> +
+> +      qcom,etu-event-sel:
+> +        description: Event selection value for this slice.
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +      qcom,etu-slice:
+> +        description: ETU slice identifier.
+
+You do not get identifiers. Please read writing bindings.
+
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +    required:
+> +      - reg
+> +      - qcom,etu-event-sel
+> +      - qcom,etu-slice
+> +      - pinctrl-0
+> +      - pinctrl-names
+> +    unevaluatedProperties: false
+
+Please read writing bindings.
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - clocks
+> +  - clock-names
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        clock-names:
+> +          contains:
+> +            const: etu
+
+etu is third clock, what is the point of it?
+
+> +    then:
+> +      properties:
+> +        clocks:
+> +          minItems: 3
+> +        clock-names:
+> +          minItems: 3
+> +      required:
+> +        - interrupts
+> +        - interrupt-names
+> +        - "#address-cells"
+> +        - "#size-cells"
+> +        - ranges
+> +
+> +unevaluatedProperties: false
+
+Please read writing bindings.
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/qcom,sa8775p-gcc.h>
+> +
+> +    soc {
+> +      #address-cells = <2>;
+> +      #size-cells = <2>;
+> +
+> +      tscss@1c80000 {
+> +        compatible = "qcom,lemans-tscss";
+> +        reg = <0x0 0x01c80000 0x0 0x2000>;
+> +        reg-names = "tsc";
+> +
+> +        clocks = <&gcc GCC_TSCSS_AHB_CLK>,
+> +                 <&gcc GCC_TSCSS_GLOBAL_CNTR_CLK>;
+> +        clock-names = "ahb", "cntr";
+> +
+> +        assigned-clocks = <&gcc GCC_TSCSS_GLOBAL_CNTR_CLK>;
+> +        assigned-clock-rates = <15625000>;
+> +      };
+> +    };
+> +
+> +  - |
+> +    #include <dt-bindings/clock/qcom,sa8775p-gcc.h>
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +
+> +    soc {
+> +      #address-cells = <2>;
+> +      #size-cells = <2>;
+> +
+> +      tscss@1c80000 {
+
+This is the same node as previous.
+
+I don't understand this DTS.
+
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+If you cannot find a name matching your device, please check in kernel
+sources for similar cases or you can grow the spec (via pull request to
+DT spec repo).
+
+
+Best regards,
+Krzysztof
