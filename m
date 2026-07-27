@@ -1,155 +1,85 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888303D952C
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 20:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B4F3F8236;
+	Mon, 27 Jul 2026 20:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785182700; cv=none; b=BvC63yXWPDTECSFF7hGTXmzXpqIHNgZ1q7F33rrfwJd+OJ9Mq+O3aG9dBBURoYU5AacnU+TuOYKONyUmcMVjIquQPi7CH4bSxWY/wEGyTP5DsQcWTQc0hTaDWQgsKqDg6rvf29bXbXjLkHEmBdX4sEc1hCWAthe6T4U/R0j8opI=
+	t=1785183035; cv=none; b=ffEW+m4Er1juECZHpVqRlM3n+JPyIPBDCXefGepPLJ4so8owYEPews5J056b0KaNTKtsPb2aZ4FZpzIDX4ScgZBLEYQcKtiSdktN44xZXOIz0M0wJiARxwNiySXT6+Z6XC/piQ0QsfyByTsKClRuy/TNRW1wCZ0r0gULxm0QQzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785182700; c=relaxed/simple;
-	bh=vKQJ7QNJv+uZz9x0zSIk21ClMOvdIiAE3tig64AC2Ms=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CYMRVrsXTJW5px5sHgf0Ff1DXUQVWs9kyW67zuAIRY2V7Jj1t1oOYqqcC2EgplwI5bpPwF1ARHsHeP6FlfCwJFRGOcd7FQ0uPJw/wYPcd5/T89g9K4yqJvmAhqCSPOwI9t2hU51u/W+CmGK+Rc3Oh3Mzb71G+mYehho9+RaZ2I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ca10de42; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785183035; c=relaxed/simple;
+	bh=xV2yRk2jIp82V0i1IacFF4mR741G7XdVrhbOQiWY6ic=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pEFZv8kPI1gvhZ3hPx8epGxezjXncLhXBRoi1370WfD/Hjw8hX+OArcCR/t4nlK/MGmRqoGs9DKC1zbTMlSZ4m2d/BQxUzKZ+j+e1Vy7axnsykRvRr+ODmUiVhEDiwnZuSEt8NLPNfxCDb6BZHMUdoUiKRuDQpZZw9NOs+O4FzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QNLr8nFn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ca10de42"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4954aff6088so26745175e9.3
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 13:04:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785182697; x=1785787497; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZaCjvFlh04tSbrzp8Qm4VrJ+XEIKD0uan3d5oYYxA9I=;
-        b=ca10de4256robnFq86NIEIxsRDK+qjrxo4Z9mHKXeAfywqIeJVz673aPVdNZUGtT9j
-         0xfFIw+AJcjPi4PNEYJhRPT+om/BnNeTq4NvUJBqg+ywNs7A77kk/owLTu/RubN90DRP
-         AiEdUek5uHJdZxcZwN2mFchKkZyfrtkKdDSBiEVA0EkC81kEoF4zTSMBe0Q43dJRvWHV
-         Q8k0JpnNlrP1Z4OQdN08X5HPqri8qeRUOX34Sn4+fZB4cwyFY1ishYYvqCRQ4hz1y5zj
-         LigGKEFuu64FM/bBEwSiGluYN/Wdz73sZOpcuF9LI3+7OvTBxV53OlwnXzQkYiRMNNW9
-         gEeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785182697; x=1785787497;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZaCjvFlh04tSbrzp8Qm4VrJ+XEIKD0uan3d5oYYxA9I=;
-        b=RYyChd1fuPZjXRfJj3tCxYgKWGxdBPyVLJxkl4ZOXgtERQp/V4DK9519h0ridddvVO
-         cCdKowFbtYlIrpKYX3n5CDK8SJwd8YNwz+Q8PMDSsSpgmy9HXBTSD58350bfH9qSfxDB
-         0tGbNcFB8ro+ATDFWR2OkJWpGnPjTWQw/KWyKwe/ddHp2xp17c7fzMEsaz3xghKupmjm
-         L5+PY4ldrXFHUmhmbYsadlWI9t/egTCxZjG+rLa/5kL/DS7WKwclIfVBN56LF/zF4aeh
-         Q2kD+1vkLJWqnvfz19SYfk8uWUBPeYxfj8ctcRt44ACWWLYefVS+zzVsfTL8XfNL6rme
-         piFA==
-X-Gm-Message-State: AOJu0YwHc+2r1/FI6Nwz2KHlo7dQhUpCVY7/9A5TaRgOg+ZJD4FtsFSS
-	LPGgs5S8Xio5h1OYAPt0Zj8kmatfRMzn3JYBK7h2AyJo1b69gAlJvnnciS6I
-X-Gm-Gg: AR+sD11SNqjN/xp/gSDz+076OkS2ZmRxEg2gkVXr4hZiSquCnfCmdHEjCWOXF67cEUd
-	zYXgFH5hPZv6bfhbYoNgw/8vyKfuONBFntsr6u19ROo2rMsyEyrkSl5GTQ09SskwRxRhHDorjFF
-	mH3HOl7yCJRnSBMw85yzQoHr2cuhkOl9PRetm7fE8QCgaDYmUwcyez9fG9LxgFR1WbVgSN3HMj7
-	8Hxthy11a4oD0jztClMfQt76OXojyuo/NKlhpgb5QvP5TnnUPW5RpK7xeY1CEZ/i/TzH/K1r+N2
-	VKHgD65s1gU9wCIF4zTrcOjF0VUxQv0+bBuByK0+hXXDtxiItZhHwzPaAezoskpCrWfbrSimMPb
-	Fq5HlFu4lfQw20iPN5JnikKzs2yPXmWOGPaCPrg/g+xVHoE/1QxDmZ3t8QXdAWYh9v/skZ0f/Il
-	+h8J1OynX6I6nmTMqpDCuAPCI05nf1BwvtIwK8EGltwA==
-X-Received: by 2002:a05:600c:6dd5:b0:493:e583:7053 with SMTP id 5b1f17b1804b1-496c4fe26d3mr3319875e9.35.1785182696309;
-        Mon, 27 Jul 2026 13:04:56 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c46160dfsm18406235e9.10.2026.07.27.13.04.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 13:04:55 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	maheshb@google.com,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH net v3] net: reduce XMIT_RECURSION_LIMIT under KASAN
-Date: Mon, 27 Jul 2026 20:04:54 +0000
-Message-ID: <20260727200454.4048141-1-tristmd@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QNLr8nFn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB171F000E9;
+	Mon, 27 Jul 2026 20:10:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785183034;
+	bh=hT7rBXZFrJH1Jwk2GRv6Mrok4i24yc1tb1R1Myn9MLE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=QNLr8nFnTDLsTqlAJAnSsFQ6oGpBCmZZgzPzYBRpRpsLJWymVognwZFRU7dhVYsdy
+	 NoNIKclYkacsCTVgHuKOWIh7WQfB0LLZOQ8LfJhd4AkGTm7lUYyUxx7+T5muQdDWfc
+	 emItJkQRzdusaLBpIbvw7W3RWQ5JuSy9+dZ+lIDzyjCDSfxS++8KFeiHHS3Df5qRJH
+	 pcXbNLZmp/nZrDjeOekBUQcAzagCfj5qsCDG+DikYfCe6e52VLyIYWzxPKXxYeQ4vG
+	 9ySJ3PR2zFGEt21T/nw0+GyBwV+vjAwtp4uaO0bE/MpuRYHOn+yrexP0e0V+AUXEQb
+	 Iu/1aemnghuGA==
+Date: Mon, 27 Jul 2026 13:10:33 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Mark Bloch <mbloch@nvidia.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Saeed Mahameed
+ <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+ <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Jonathan Corbet
+ <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-doc@vger.kernel.org, Jiri Pirko <jiri@nvidia.com>
+Subject: Re: [PATCH net-next V7 4/4] devlink: Apply eswitch mode boot
+ defaults
+Message-ID: <20260727131033.237f70b6@kernel.org>
+In-Reply-To: <c6c0d67c-d832-49a1-b62a-57fa6ee56a47@nvidia.com>
+References: <20260716084852.549909-1-mbloch@nvidia.com>
+	<20260716084852.549909-5-mbloch@nvidia.com>
+	<20260724161111.2ac47089@kernel.org>
+	<c6c0d67c-d832-49a1-b62a-57fa6ee56a47@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Tristan Madani <tristan@talencesecurity.com>
+On Sat, 25 Jul 2026 09:51:34 +0300 Mark Bloch wrote:
+> So I think you and Jiri have different views on the basic design
+> here. It's hard to respin the series when addressing one review
+> takes it back to something the other reviewer objected to.
 
-Virtual network devices (ipvlan, macvlan, bonding) can enter legitimate
-transmit recursion when combined with packet forwarding configurations
-such as IPVS NAT.  The existing XMIT_RECURSION_LIMIT (8) in
-__dev_queue_xmit() detects and breaks these loops, but the allowed
-depth is too high for KASAN-instrumented kernels: each recursion level
-consumes significantly more stack due to KASAN inline instrumentation,
-and the cumulative usage overflows the kernel stack before the limit
-fires.
+It'd be great if Jiri, an nVidia employee and a devlink "maintainer",
+paid attention to at the very least revisions of nvidia's patches
+touching devlink. We discussed this on a prior revision and he didn't
+say anything.
 
-On x86_64, CONFIG_KASAN doubles THREAD_SIZE from 16KB to 32KB
-(KASAN_STACK_ORDER=1), but KASAN per-access checks inflate individual
-function frames by roughly 2-3x.  For an ipvlan L3 + IPVS NAT routing
-loop, objdump measurements on a non-KASAN kernel show ~1.4KB of stack
-consumed per recursion level (across 17 functions from __dev_queue_xmit
-through the full IP output path and back).  At KASAN ~2.3x inflation
-factor that becomes ~3.3KB per level.  Nine levels -- reached before the
-current limit fires -- total ~30KB plus the initial call chain, which
-exceeds the 32KB KASAN stack.  The overflow hits the VMAP_STACK guard
-page and causes a non-recoverable kernel panic (BUG: stack guard page
-was hit).
+> How about I drop the driver API from this series and submit it as
+> a follow-up? This series would only have the generic workqueue
+> fallback.
+> 
+> But where should the work be queued? 
+> - devl_register()
+> - devl_unlock()?
+> 
+> Can we settle that before I post the next version, so we don't go
+> in circles again?
 
-On non-KASAN kernels the same loop is safely caught by the existing
-limit: the "Dead loop on virtual device" message fires and the packet
-is dropped without any stack overflow.
+Maybe a middle ground would be to add a dedicated devl_init_unlock()*
+were we can stick such init? Slap a WARN_ON(!registered) in the normal
+unlock? I don't want the normal unlock to grow in complexity like
+rtnl_unlock ended up growing.
 
-Reduce XMIT_RECURSION_LIMIT to 3 when CONFIG_KASAN is enabled.  This
-keeps the recursion counter well within the 32KB KASAN stack budget
-while preserving the established limit of 8 for production kernels.
+* better name welcome
 
-The recursion path triggering this is:
-
-  __dev_queue_xmit -> dev_hard_start_xmit -> ipvlan_start_xmit
-  -> ipvlan_queue_xmit -> ipvlan_process_outbound -> ip_local_out
-  -> nf_hook (IPVS) -> ip_vs_in_hook -> ip_vs_nat_xmit -> ip_output
-  -> ip_finish_output2 -> neigh_resolve_output -> __dev_queue_xmit
-
-Tested:
-  - KASAN kernel (6.8.12 x86_64): panic before fix, "Dead loop"
-    drop after fix.
-  - Non-KASAN kernel (6.8.12 x86_64): "Dead loop" drop both before
-    and after fix (no behavior change for production kernels).
-
-Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
----
-v3:
- - no changes, repost per maintainer request
-v2: https://lore.kernel.org/20260711204700.1760374-1-tristmd@gmail.com
-v1: https://lore.kernel.org/20260711134732.1385563-1-tristmd@gmail.com
-
- include/linux/netdevice.h | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 9981d637f8b54..bdcb61d352afb 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3640,7 +3640,11 @@ struct page_pool_bh {
- };
- DECLARE_PER_CPU(struct page_pool_bh, system_page_pool);
-
-+#ifdef CONFIG_KASAN
-+#define XMIT_RECURSION_LIMIT	3
-+#else
- #define XMIT_RECURSION_LIMIT	8
-+#endif
-
- #ifndef CONFIG_PREEMPT_RT
- static inline int dev_recursion_level(void)
---
-2.47.3
+BTW AI reported that we reset the mode on reinit request. Based on
+the code this is entirely intentional but would be good to document?
