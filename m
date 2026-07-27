@@ -1,135 +1,85 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED1F389E02
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 01:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0217B282F17;
+	Mon, 27 Jul 2026 01:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785116505; cv=none; b=L4iH5lCNYxySY/Qvgzqq7W7bUZKNUBQ/k+5+MPXAHCeSK8/S91Ehy52UOuix8P7JC0av05nPk5t8BXdPXbnMn8n2kQGWvUXi7QZ12+2RnlzG/oRGHoPUyPQdU2WBZBarAcPa8Li4thlI+sKQlrE8jztCFbuYiOifq8M3YmI+Oy4=
+	t=1785116811; cv=none; b=f5RtlDiwH6x18XQXY4Y7XKQ7Mjqn8ZlLDQ4xXb58frieAm9tO1noSAEAr9cNmmsRgjwj/U0+5LCF0wKU42ZWk2C4yNXzMJAN7qOqZTQKJCM8m91rSEoV29Yqc1Nkxc7R6JtpBmoBGwpaK+L7DrEgaywdwluV1somWL3b2m+8DFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785116505; c=relaxed/simple;
-	bh=P+IeIdV3xEFBB4H/lA/+B+OOLo8fcz/TNMqrT2maHzI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oj74fPl4imEx48jGQ3DgY8jkvjk6YgGQIjUp6534jKCWsnWVuDQd7vJtUciLnkQuoUQ+X7MonsivuDLIXvQkzLs6MNWAqlOQSXCjB0o3L/8F5eky1XmZoczMQJNCxA/HPJxTstLAlpYF/uxhVxJRuVl5hngAM9OOwg8L1XMfuAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XwlkO8IM; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785116811; c=relaxed/simple;
+	bh=6rHE4yr9lgbWbrm8s9YVncuI0jtPTtiWmb7JprgDTnA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=BBz7RYavnGFHwBinPFCgh/Tm8N574B+Zai2xCe5nSPzmtMoUhflTY/21u4+66H08sIK0LjpfJ+PDjaM+X86Diis016IOk8Rq6OwHQlG5D9Y4vndlNZugG7Ju6b1LOvuB8bDdOji/ngdsajM/Uc1ckcXKW/1KFVXBuiaGn29k0tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=iWzU3suV; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XwlkO8IM"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-81ecf499af9so24125267b3.1
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 18:41:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785116503; x=1785721303; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v+AzfghQ44TeGSX/5Cn91O6zQUgy9oiVe8cggLcOOnA=;
-        b=XwlkO8IM90uGxg/QmyF4CowRaw2JSW7FdpVt+Px5e4dRFsQhsPae2mJ5WAoFzOG2Jc
-         pNooiSItaYF0q7c60gPZGfy+Bh4LPfmCWd80QNMQy3quxGfLGlO6HCAHPUmbIsD7Em/E
-         C8bWN3sV63e1YOr32aEdCTgx9oQ1xgEUAI3JKmocJ6ii9zuIqiVtSTWirDegZKWg9Or5
-         S9MnzoFRPOjaGbPvWZJpFcq4gi9YY7APxD5yhRaIDobm7g67QFFAQ6gUYtR9JtdQNsuB
-         xvsQu4Ky80UgUngsKZxOG94pilnFQZba5BkqotN4vQDQaKwhw5d/Z6aYtUTLv9fL4ZpC
-         fhZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785116503; x=1785721303;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=v+AzfghQ44TeGSX/5Cn91O6zQUgy9oiVe8cggLcOOnA=;
-        b=fjVyjta2g6aFScllph1W+oW5ja2c9bvq/YgVFaitqjvC2lmszICaIg9bn8Mjm62Q4A
-         zVpPLsttMNgfRCzlHm1d2r4cwYmjn25FRAVzD9Qnbn/tdrF286TwmqzLoqujsY40Ggri
-         j7qoHOPPAJUAb4BoByAs/SEzQ5nKYbn8pKogaGu4WpqDxSlqdWD7W1P9U+WmrXAZkSt6
-         h4gpYXqvXESh/p6rF155/wmUzYfqGlQXPJhzdedA+lexZv0mx7q27VXqzxvd/1DrkTT0
-         JY6seGKHe7hIP07UI+nI45xWeKeogkTkorVnAaBGm4jH/5A+g2Y7NuYbhMohbdgCiAqK
-         Nbkw==
-X-Forwarded-Encrypted: i=1; AHgh+RqIiTdue1/anW+3WHr3KgrwQQpwZY5gMxkifOppiCT3Ph6yWdYjqLaEZASFNSqKmUAUOvKAffc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsWhPm82gPvr4QSvuqX/6W2Wsr+R4z4kcW5jZcdr9aUo1XQhBP
-	uy7PK1eFk7agb/w2qgGtoNhh9RR3gn6kmMuRgB3ycwFfLxfUsoKeCB/I
-X-Gm-Gg: AR+sD12QuuLCBz1jTPReI1WkVNxwbtTGf4guu7dpraeqUaNC3LHXkRdP6RR0QfZUq0C
-	pjHWVd2mn5VHK0uE1VjGg907eXYzo6J5Mg7zdJfTWpN2pux/k3K1eEyKvUR9Vc+Qp5l66L6YazD
-	8idankXrqIwCuFo5SDu65oeVV3HpdRIygAcCrE8PYeaUTlSqclLe65uRRU2aPl87id3mGBRnyv6
-	I+Sz2MSoi7iKhJfYLEbSaIRfHJFGcsvFRAYIFZZ9k2JxZoeUW4s7VFAniM6CnWgaaIY67P2BzeL
-	mzcm2B/+6oTS5wxxoNq7RMXRjmSE5VMbo7s127dsUinIdHV15vIM+sSK6aZRPRDI6iNU0uN1EcN
-	waTGyvIiWKxXEo/B9H01CClT2mxxIfTn70A48kw/3Sz0I5y0O9VEwEqCbTWPEkjxNtF8WQ9TUsn
-	69IeYoIlm0GlmAKsbRODrcSbOG67dMNQc=
-X-Received: by 2002:a05:690c:317:b0:81e:29d8:fae3 with SMTP id 00721157ae682-81f69e5051bmr20875487b3.46.1785116502789;
-        Sun, 26 Jul 2026 18:41:42 -0700 (PDT)
-Received: from hoboy.vegasvil.org ([2600:1700:2430:6f6e:e2d5:5eff:fea5:802f])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f6592ec1asm25204717b3.45.2026.07.26.18.41.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 18:41:41 -0700 (PDT)
-Date: Sun, 26 Jul 2026 18:41:37 -0700
-From: Richard Cochran <richardcochran@gmail.com>
-To: Arthur Kiyanovski <akiyano@amazon.com>
-Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Miroslav Lichvar <mlichvar@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	David Woodhouse <dwmw@amazon.com>,
-	Yonatan Sarna <ysarna@amazon.com>,
-	Zorik Machulsky <zorik@amazon.com>,
-	Alexander Matushevsky <matua@amazon.com>,
-	Saeed Bshara <saeedb@amazon.com>, Matt Wilson <msw@amazon.com>,
-	Anthony Liguori <aliguori@amazon.com>,
-	Nafea Bshara <nafea@amazon.com>,
-	Evgeny Schmeilin <evgenys@amazon.com>,
-	Netanel Belgazal <netanel@amazon.com>,
-	Ali Saidi <alisaidi@amazon.com>,
-	Benjamin Herrenschmidt <benh@amazon.com>,
-	Noam Dagan <ndagan@amazon.com>, David Arinzon <darinzon@amazon.com>,
-	Evgeny Ostrovsky <evostrov@amazon.com>,
-	Ofir Tabachnik <ofirt@amazon.com>,
-	Amit Bernstein <amitbern@amazon.com>,
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
-	shuah@kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Simon Horman <horms@kernel.org>, vadim.fedorenko@linux.dev
-Subject: Re: [PATCH v4 net-next 0/7] ptp: Add PHC timestamp quality attributes
-Message-ID: <ama3UYqwwoJ3j8bq@hoboy.vegasvil.org>
-References: <20260714020340.25014-1-akiyano@amazon.com>
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="iWzU3suV"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66R1jGBf92742567, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1785116717;
+	bh=6rHE4yr9lgbWbrm8s9YVncuI0jtPTtiWmb7JprgDTnA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=iWzU3suVOggYEP2CUuAZxO6/6ypJZqiBCAATZUjilK7N9R7sYmvF1L1wrVDnJzc09
+	 +40Gk4EkYHSUFTg4xax/JrRE/en5UyqUQyK0F7FsJX+sRXpP7Eht1ugvxTduLxRmgK
+	 hD5IUbc/1LqYg5bBBFIpHOETPWT2ZLSqK3yeemJ1cBl8opvWU6tMd8szP7e5obiWTg
+	 Yz1c9iiyRhWw1o2dN/nAMVTPCbvCoZ/k9yl+XwqJ2uykwjIy3UD3YiHkRIB7rMb8kE
+	 hDcaq+yhFRs6SoiM6M7LXdJB4jwU+uQHzfNATt3c+ib8me9PI6+s/60L7YfjJpkLfa
+	 xWP2PCTzW4yPQ==
+Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66R1jGBf92742567
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 27 Jul 2026 09:45:16 +0800
+Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
+ RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 27 Jul 2026 09:45:16 +0800
+Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
+ RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.043; Mon,
+ 27 Jul 2026 09:45:15 +0800
+From: Javen <javen_xu@realsil.com.cn>
+To: Chukun Pan <amadeus@jmu.edu.cn>
+CC: "andrew@lunn.ch" <andrew@lunn.ch>, "daniel@makrotopia.org"
+	<daniel@makrotopia.org>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, =?utf-8?B?6aG+5pmT5Yab?=
+	<freddy_gu@realsil.com.cn>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux@armlinux.org.uk"
+	<linux@armlinux.org.uk>, "maxime.chevallier@bootlin.com"
+	<maxime.chevallier@bootlin.com>, "nb@tipi-net.de" <nb@tipi-net.de>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "pabeni@redhat.com"
+	<pabeni@redhat.com>, "vladimir.oltean@nxp.com" <vladimir.oltean@nxp.com>
+Subject: RE: [PATCH net-next v10 5/5] net: phy: realtek: add support for
+ RTL8261D
+Thread-Topic: [PATCH net-next v10 5/5] net: phy: realtek: add support for
+ RTL8261D
+Thread-Index: AQHdGLgFnWqKo3yoJ026TnnGe+U6QrZ48LqAgAeu6XA=
+Date: Mon, 27 Jul 2026 01:45:15 +0000
+Message-ID: <bb782164800a421397c2085f7e58aff4@realsil.com.cn>
+References: <20260721022410.1391-6-javen_xu@realsil.com.cn>
+ <202607270134.66R1YOaT41072024@rtits1.realtek.com.tw>
+In-Reply-To: <202607270134.66R1YOaT41072024@rtits1.realtek.com.tw>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260714020340.25014-1-akiyano@amazon.com>
 
-On Tue, Jul 14, 2026 at 02:03:01AM +0000, Arthur Kiyanovski wrote:
-> This series adds quality attributes to PTP Hardware Clock (PHC)
-> timestamps, allowing userspace to obtain error bound, clock status,
-> timescale, and system counter values alongside timestamps in a single
-> call.
-> 
-> Motivation
-> ----------
-> The existing PTP APIs return timestamps without any indication of
-> their quality. Applications that need clock accuracy and
-> synchronization status commonly rely on external tools such as
-> ptp4l, which implement synchronization logic and can export their
-> measurement of clock accuracy.
-
-Yes, and what is wrong with that?  Nothing, AFAICT
-
-? For managed PHC devices — such as
-> the ENA network adapter, whose clock is synchronized by the device
-> without userspace involvement — these tools are not available, and
-> the existing APIs lack a way to report quality metrics to consumers
-> of time.
-
-So make some user space tool that advertises your device's qualities.
-
-Don't push this stuff into the kernel, where it doesn't belong.
-
-Thanks,
-Richard
-
+SGksDQo+DQo+SGksDQo+DQo+PiAgICAgICAgICAgICAgIFBIWV9JRF9NQVRDSF9FWEFDVChSVExf
+ODI2MUNfQ0cpLA0KPj4gLSAgICAgICAgICAgICAubmFtZSAgICAgICAgICAgICAgICAgICA9ICJS
+ZWFsdGVrIFJUTDgyNjFDIDEwR2JwcyBQSFkiLA0KPj4gKyAgICAgICAgICAgICAubmFtZSAgICAg
+ICAgICAgICAgICAgICA9ICJSZWFsdGVrIFJUTDgyNjEgMTBHYnBzIFBIWSINCj4NCj5HaXZlbiB0
+aGF0IHRoZSBSVEw4MjYxIGhhcyBtdWx0aXBsZSBzdWZmaXhlcyAoQi9DL0QvTiksIHRoaXMgbmFt
+ZSBjaGFuZ2UNCj5jb3VsZCBiZSBjb25mdXNpbmcuDQoNClRoYW5rcyBmb3IgdGhlIGZlZWRiYWNr
+Lg0KVGhlIHJlYXNvbiBmb3IgdGhpcyBjaGFuZ2UgaXMgdGhhdCBSVEw4MjYxIDEwR2JwcyBQSFkg
+c2hhcmUgdGhlIHNhbWUgcGh5IGlkLiBUaGUgc3BlY2lmaWMgaGFyZHdhcmUgdmVyc2lvbnMgYXJl
+IGRpc3Rpbmd1aXNoZWQgYnkgYSBzdWItcGh5IGlkIGluc3RlYWQuIEFuZCBpbiBwcm9iZSBmdW5j
+dGlvbiwgd2Ugd2lsbCBwcmludCBvdXQgdGhlIGV4YWN0IGhhcmR3YXJlIHZlcnNpb24gZXhwbGlj
+aXRseS4NCg0KQlJzLA0KSmF2ZW4NCg==
