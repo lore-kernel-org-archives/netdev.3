@@ -1,42 +1,42 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E72C3FDC08
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 10:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A289D3FE679
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 10:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785147673; cv=none; b=Wl4d17RWEfc1wL8SqFRTrd8PUsHQG+egTaGRKpBD/8z6cePq0ZY40RjnvgjnCpNNcoS1yFy6ifpnvrgr0mAo/TdoablI1I+IGbnpdCCHM7+LOUaft2AZn/ZcietRTZnzH7OGhJ+6IzoytX+vV7l5PUInpq/soESAmHhX5ZdJCHM=
+	t=1785147675; cv=none; b=Sjn9Ip/0Bi5jgIy/nn+f3UXqVu1zJUWzwT5y3mVrF3Re9CYYfjGFBwYWD4jvw3RI7lAg1I/GdRT8868bithuSeeNcGvVDrxphnf2eg2uMyyr2w6JqEW5h2V8fYsyep0q1lWGxB1lPor37D5mfBqdGu1/YiKLaS+TwJvBewY82nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785147673; c=relaxed/simple;
-	bh=H09e3wtUmktniOpOsTYsfV+TZzdS9SCKKjyLPWevl0M=;
+	s=arc-20240116; t=1785147675; c=relaxed/simple;
+	bh=NOGBFn5xSvZUkZglx6HzyV0jBUsnXjLoKAxNeSUaGnA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WfdBg7FypoPHWyuczgVy62ONZGpkO80rDapd/q1wXJdq5Grtrtp9ONrv6I4vL18tsz5fABEx+70bdGjNXRfphBKQcHivkeSH8xeQxMqsSLzBRsLRMXrPIUnHEPelTJpqBKceIaasnzK7/E0EipY9e/aY2AXwWCFSUZDzr6CGujE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=tMq/+gef; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=UATewtQ50NIrYx01eX+lIWuxXjSKxX9M7TmEqWYLmDARUirPX1WeayXru9DpoHNTjy0btZl9TlbtScq1BZ2J3oscAKSlqmY0iQly6clD8PXguzZqDo7uyULqzgR9N12B1zOPpkXpd0A+Gpsi6pdOVKhTxEpynm6YdQblhxTpeHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=J7+P8EqT; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="tMq/+gef"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="J7+P8EqT"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id B11621A128E;
-	Mon, 27 Jul 2026 10:21:10 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 5CC821A128C;
+	Mon, 27 Jul 2026 10:21:12 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7F4A5601BE;
-	Mon, 27 Jul 2026 10:21:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F041E11C131B8;
-	Mon, 27 Jul 2026 12:21:07 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 30073601BE;
+	Mon, 27 Jul 2026 10:21:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CF64111C131BA;
+	Mon, 27 Jul 2026 12:21:09 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785147669; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1785147671; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=3+wNqSyx09KNNgAKrmFLDAfO7zv1h942HJw3kLDwPVQ=;
-	b=tMq/+gefKaUfqlNOSy7AWTq+QsZowiQSV0FK/7GraeQhrZSdv5vW5BCEPyblSLkAkrRGow
-	/Wjeen6N1QFxmCmRyS3vfJvjN+A8DDMweJPdmVQMlfeyP4Q0mevXYhFaAAj0R67vI+b8cq
-	U8aFYfXUsxTLP/Daagd40v0VQIW/LRaSDMBsqmRkJu8gvI124gw3h/hsziEpwiYT0YT5o1
-	2c6gKINtC3XsZjpWgq8K1mkFGfShJWO25yhx33Pwep2Pi6MmTt0EPGeimsw1i9+FNZU9Ph
-	s8PGwzJQhUat+LpTMp03SxagCNycFbAjPTU3dRfiy3EqtmfSWIeTP1z9hbXoFQ==
+	bh=CEA+gd9HgmN2Q92GsE+LDxBKpjS+zeD0NzQfZwQXakA=;
+	b=J7+P8EqT7+6bQY18a1vS1maxawMZvXRXfX5fV6NLhYTa8h3SDbubhikPUrakAA9iJDkn/2
+	cO3HOIkkoX9oIL5i28YMbjxWbymeXjwqaVqZC04bAt6TfJ6BIQh342WHYX0x1lxtwragYm
+	3bHM+aBBhp0WWuh+rAaxiaL/b/REkYWjDF3Bb8fIEjWEuzgN1WL4ts235yRw39J0JmEwYv
+	DIeY5ZECDESguRZQZ9ojJFOH99EVpXn4rNEnTtl3pGSL9k+y5LEYk/1JUMsl71IIv6vY4D
+	M3q+Cw8h8+KfxY6DV/qFdZd3tGHl7FEMotj7+tIW76Rsky2mBeQM3yB8RV6i+Q==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Mon, 27 Jul 2026 12:20:50 +0200
-Subject: [PATCH net-next v3 08/10] net: dsa: microchip: add KSZ8463 tail
- tag handling
+Date: Mon, 27 Jul 2026 12:20:51 +0200
+Subject: [PATCH net-next v3 09/10] net: dsa: microchip: explicitly enable
+ detection of L2 PTP frames
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260727-ksz-new-ptp-v3-8-caba39e680e3@bootlin.com>
+Message-Id: <20260727-ksz-new-ptp-v3-9-caba39e680e3@bootlin.com>
 References: <20260727-ksz-new-ptp-v3-0-caba39e680e3@bootlin.com>
 In-Reply-To: <20260727-ksz-new-ptp-v3-0-caba39e680e3@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -63,155 +63,35 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-KSZ8463 uses the KSZ9893 DSA TAG driver. However, the KSZ8463 doesn't
-use the tail tag to convey timestamps to the host as KSZ9893 does. It
-uses the reserved fields in the PTP header instead.
+Detection of L2 PTP frames needs to be enabled for PTP to work at the L2
+layer. The bit enabling this detection is set by default on the switches
+currently supported by the driver, but it is unset by default on the
+KSZ8463 for which support will be added in upcoming patches.
 
-Add a KSZ8463-specific DSA_TAG driver to handle KSZ8463 timestamps.
-There is no information in the tail tag to distinguish PTP packets from
-others so use the ptp_classify_raw() helper to find the PTP packets and
-extract the timestamp from their PTP headers.
+Explicitly enable the detection of L2 PTP frames for all switches when
+PTP is enabled.
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz8.c |  4 +--
- include/net/dsa.h                |  2 ++
- net/dsa/tag_ksz.c                | 66 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 70 insertions(+), 2 deletions(-)
+ drivers/net/dsa/microchip/ksz_ptp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-index 5e5bfc5cae2d..ac9e8ef5774a 100644
---- a/drivers/net/dsa/microchip/ksz8.c
-+++ b/drivers/net/dsa/microchip/ksz8.c
-@@ -2966,7 +2966,7 @@ static enum dsa_tag_protocol ksz8463_get_tag_protocol(struct dsa_switch *ds,
- 						      int port,
- 						      enum dsa_tag_protocol mp)
- {
--	return DSA_TAG_PROTO_KSZ9893;
-+	return DSA_TAG_PROTO_KSZ8463;
- }
+diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+index 89fbc1253f25..be6b8240ac03 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -953,8 +953,9 @@ int ksz_ptp_clock_register(struct dsa_switch *ds)
+ 	/* Currently only P2P mode is supported. When 802_1AS bit is set, it
+ 	 * forwards all PTP packets to host port and none to other ports.
+ 	 */
+-	ret = ksz_rmw16(dev, regs[PTP_MSG_CONF1], PTP_TC_P2P | PTP_802_1AS,
+-			PTP_TC_P2P | PTP_802_1AS);
++	ret = ksz_rmw16(dev, regs[PTP_MSG_CONF1],
++			PTP_TC_P2P | PTP_802_1AS | PTP_ETH_ENABLE,
++			PTP_TC_P2P | PTP_802_1AS | PTP_ETH_ENABLE);
+ 	if (ret)
+ 		return ret;
  
- static int ksz8463_connect_tag_protocol(struct dsa_switch *ds,
-@@ -2974,7 +2974,7 @@ static int ksz8463_connect_tag_protocol(struct dsa_switch *ds,
- {
- 	struct ksz_tagger_data *tagger_data;
- 
--	if (proto != DSA_TAG_PROTO_KSZ9893)
-+	if (proto != DSA_TAG_PROTO_KSZ8463)
- 		return -EPROTONOSUPPORT;
- 
- 	tagger_data = ksz_tagger_data(ds);
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 8c16ef23cc10..6f7f5c17b532 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -59,6 +59,7 @@ struct tc_action;
- #define DSA_TAG_PROTO_MXL_GSW1XX_VALUE		31
- #define DSA_TAG_PROTO_MXL862_VALUE		32
- #define DSA_TAG_PROTO_NETC_VALUE		33
-+#define DSA_TAG_PROTO_KSZ8463_VALUE		34
- 
- enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
-@@ -95,6 +96,7 @@ enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_MXL_GSW1XX	= DSA_TAG_PROTO_MXL_GSW1XX_VALUE,
- 	DSA_TAG_PROTO_MXL862		= DSA_TAG_PROTO_MXL862_VALUE,
- 	DSA_TAG_PROTO_NETC		= DSA_TAG_PROTO_NETC_VALUE,
-+	DSA_TAG_PROTO_KSZ8463		= DSA_TAG_PROTO_KSZ8463_VALUE,
- };
- 
- struct dsa_switch;
-diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
-index f8b40437c5fa..b4d70ba930dc 100644
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -12,6 +12,7 @@
- 
- #include "tag.h"
- 
-+#define KSZ8463_NAME "ksz8463"
- #define KSZ8795_NAME "ksz8795"
- #define KSZ9477_NAME "ksz9477"
- #define KSZ9893_NAME "ksz9893"
-@@ -396,6 +397,70 @@ static const struct dsa_device_ops ksz9893_netdev_ops = {
- DSA_TAG_DRIVER(ksz9893_netdev_ops);
- MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ9893, KSZ9893_NAME);
- 
-+#define KSZ8463_TAIL_TAG_PRIO		GENMASK(4, 3)
-+#define KSZ8463_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
-+
-+static struct sk_buff *ksz8463_xmit(struct sk_buff *skb,
-+				    struct net_device *dev)
-+{
-+	u16 queue_mapping = skb_get_queue_mapping(skb);
-+	u8 prio = netdev_txq_to_tc(dev, queue_mapping);
-+
-+	return ksz_common_xmit(skb, dev, false,
-+			       FIELD_PREP(KSZ8463_TAIL_TAG_PRIO, prio),
-+			       0);
-+}
-+
-+static struct sk_buff *ksz8463_rcv(struct sk_buff *skb, struct net_device *dev)
-+{
-+	unsigned int len = KSZ_EGRESS_TAG_LEN;
-+	struct ptp_header *ptp_hdr;
-+	unsigned int ptp_class;
-+	unsigned int port;
-+	ktime_t ts;
-+	u8 *tag;
-+
-+	if (skb_linearize(skb)) {
-+		kfree_skb(skb);
-+		return NULL;
-+	}
-+
-+	KSZ_SKB_CB(skb)->tstamp = 0;
-+
-+	/* Tag decoding */
-+	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-+	port = tag[0] & KSZ8463_TAIL_TAG_EG_PORT_M;
-+
-+	__skb_push(skb, ETH_HLEN);
-+	ptp_class = ptp_classify_raw(skb);
-+	__skb_pull(skb, ETH_HLEN);
-+	if (ptp_class == PTP_CLASS_NONE)
-+		goto common_rcv;
-+
-+	ptp_hdr = ptp_parse_header(skb, ptp_class);
-+	if (ptp_hdr) {
-+		ts = ksz_decode_tstamp(get_unaligned_be32(&ptp_hdr->reserved2));
-+		KSZ_SKB_CB(skb)->tstamp = ts;
-+		ptp_hdr->reserved2 = 0;
-+	}
-+
-+common_rcv:
-+	return ksz_common_rcv(skb, dev, port, len);
-+}
-+
-+static const struct dsa_device_ops ksz8463_netdev_ops = {
-+	.name	= KSZ8463_NAME,
-+	.proto	= DSA_TAG_PROTO_KSZ8463,
-+	.xmit	= ksz8463_xmit,
-+	.rcv	= ksz8463_rcv,
-+	.connect = ksz_connect,
-+	.disconnect = ksz_disconnect,
-+	.needed_tailroom = KSZ_INGRESS_TAG_LEN,
-+};
-+
-+DSA_TAG_DRIVER(ksz8463_netdev_ops);
-+MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ8463, KSZ8463_NAME);
-+
- /* For xmit, 2/6 bytes are added before FCS.
-  * ---------------------------------------------------------------------------
-  * DA(6bytes)|SA(6bytes)|....|Data(nbytes)|ts(4bytes)|tag0(1byte)|tag1(1byte)|
-@@ -468,6 +533,7 @@ DSA_TAG_DRIVER(lan937x_netdev_ops);
- MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_LAN937X, LAN937X_NAME);
- 
- static struct dsa_tag_driver *dsa_tag_driver_array[] = {
-+	&DSA_TAG_DRIVER_NAME(ksz8463_netdev_ops),
- 	&DSA_TAG_DRIVER_NAME(ksz8795_netdev_ops),
- 	&DSA_TAG_DRIVER_NAME(ksz9477_netdev_ops),
- 	&DSA_TAG_DRIVER_NAME(ksz9893_netdev_ops),
 
 -- 
 2.55.0
