@@ -1,63 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221673E0C7A;
-	Mon, 27 Jul 2026 19:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888303D952C
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 20:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785182373; cv=none; b=UrYZOOjclzpjpasDYDdCGVcNys6TPTS3A2LDRXoTCmo/dOccwrbfxqSLslLAYQlQdxHNANdsLMTQlAz69bSzDORZIhtZbRnBxYvoCsbUJWPJ++0cyL1nZxAsGyx1zIb/22ctQKYFTJq6c/QEqpSmxU2hRjd2Zq27mBCFaV6snuE=
+	t=1785182700; cv=none; b=BvC63yXWPDTECSFF7hGTXmzXpqIHNgZ1q7F33rrfwJd+OJ9Mq+O3aG9dBBURoYU5AacnU+TuOYKONyUmcMVjIquQPi7CH4bSxWY/wEGyTP5DsQcWTQc0hTaDWQgsKqDg6rvf29bXbXjLkHEmBdX4sEc1hCWAthe6T4U/R0j8opI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785182373; c=relaxed/simple;
-	bh=FLBmVTd819rjVdz6WKwpajtkqhS3+hfih6Ghu58PyWk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NssE4b5ozla73rFQoMyIWnKeHR48OUWgxmL3Mwl3crLxtRAfzhZA8dnRf2nww4voEz6c3jDLNM4hjOASL34ToI+vExZZpvl6o7RZ8CV8GmyisUgWgsNOVj0uv07nobVeWUtvl+CUkgzt358vISfDFih77i3VFeo6GGSP5gesAqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cpe8V1qo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785182700; c=relaxed/simple;
+	bh=vKQJ7QNJv+uZz9x0zSIk21ClMOvdIiAE3tig64AC2Ms=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CYMRVrsXTJW5px5sHgf0Ff1DXUQVWs9kyW67zuAIRY2V7Jj1t1oOYqqcC2EgplwI5bpPwF1ARHsHeP6FlfCwJFRGOcd7FQ0uPJw/wYPcd5/T89g9K4yqJvmAhqCSPOwI9t2hU51u/W+CmGK+Rc3Oh3Mzb71G+mYehho9+RaZ2I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ca10de42; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cpe8V1qo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140551F000E9;
-	Mon, 27 Jul 2026 19:59:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785182362;
-	bh=n/yvjIcw5QaNnhiVtdTRqE8CydXDUvrWbE6SFMgpj/8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Cpe8V1qoWEZ/ikuucBiwtzmd87494Dd+/pI83F7qba4mdWCCpw0TNpRn76kkJ9Aym
-	 qNUZmXL+jCEG0dwxX0y0LXEApaGEmUMVurfpDHoEwCdtVzA2urH/4SUhiWP3Qwad/N
-	 0PDMbYMJPcqsy0XUrvvM01IZxcUZzGjsUWtp71i4KkKNQqXPueWrrvD8B+tlBgB/LI
-	 CqxIhWXFMgos/RkgnziEW4u+3VkaKM3Y5RxYyK/m5M6sHv6CE8OrEZymQnMy3buaNf
-	 iVPrTezMjhcl9UTpL1dAfFq0uZbx2mqysEOHOoU3l6hUe9RTVz8JALsBeu2eSJJnjW
-	 1HwRLGL36/DGw==
-Date: Mon, 27 Jul 2026 12:59:21 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, Chris du Quesnay
- <Chris.duQuesnay@microchip.com>, Arkadiusz Kubalewski
- <arkadiusz.kubalewski@intel.com>, "David S. Miller" <davem@davemloft.net>,
- Jiri Pirko <jiri@resnulli.us>, Michal Schmidt <mschmidt@redhat.com>, Paolo
- Abeni <pabeni@redhat.com>, Pasi Vaananen <pvaanane@redhat.com>, Petr Oros
- <poros@redhat.com>, Prathosh Satish <Prathosh.Satish@microchip.com>,
- Richard Cochran <richardcochran@gmail.com>, Simon Horman
- <horms@kernel.org>, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] dpll: zl3073x: add PTP clock support
-Message-ID: <20260727125921.2e16bed9@kernel.org>
-In-Reply-To: <B047A851-87E8-4156-97CB-117A71CDBCD8@redhat.com>
-References: <20260713103739.1553284-1-ivecera@redhat.com>
-	<20260713103739.1553284-3-ivecera@redhat.com>
-	<20260722135848.2d401ada@kernel.org>
-	<B047A851-87E8-4156-97CB-117A71CDBCD8@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ca10de42"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4954aff6088so26745175e9.3
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 13:04:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785182697; x=1785787497; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZaCjvFlh04tSbrzp8Qm4VrJ+XEIKD0uan3d5oYYxA9I=;
+        b=ca10de4256robnFq86NIEIxsRDK+qjrxo4Z9mHKXeAfywqIeJVz673aPVdNZUGtT9j
+         0xfFIw+AJcjPi4PNEYJhRPT+om/BnNeTq4NvUJBqg+ywNs7A77kk/owLTu/RubN90DRP
+         AiEdUek5uHJdZxcZwN2mFchKkZyfrtkKdDSBiEVA0EkC81kEoF4zTSMBe0Q43dJRvWHV
+         Q8k0JpnNlrP1Z4OQdN08X5HPqri8qeRUOX34Sn4+fZB4cwyFY1ishYYvqCRQ4hz1y5zj
+         LigGKEFuu64FM/bBEwSiGluYN/Wdz73sZOpcuF9LI3+7OvTBxV53OlwnXzQkYiRMNNW9
+         gEeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785182697; x=1785787497;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZaCjvFlh04tSbrzp8Qm4VrJ+XEIKD0uan3d5oYYxA9I=;
+        b=RYyChd1fuPZjXRfJj3tCxYgKWGxdBPyVLJxkl4ZOXgtERQp/V4DK9519h0ridddvVO
+         cCdKowFbtYlIrpKYX3n5CDK8SJwd8YNwz+Q8PMDSsSpgmy9HXBTSD58350bfH9qSfxDB
+         0tGbNcFB8ro+ATDFWR2OkJWpGnPjTWQw/KWyKwe/ddHp2xp17c7fzMEsaz3xghKupmjm
+         L5+PY4ldrXFHUmhmbYsadlWI9t/egTCxZjG+rLa/5kL/DS7WKwclIfVBN56LF/zF4aeh
+         Q2kD+1vkLJWqnvfz19SYfk8uWUBPeYxfj8ctcRt44ACWWLYefVS+zzVsfTL8XfNL6rme
+         piFA==
+X-Gm-Message-State: AOJu0YwHc+2r1/FI6Nwz2KHlo7dQhUpCVY7/9A5TaRgOg+ZJD4FtsFSS
+	LPGgs5S8Xio5h1OYAPt0Zj8kmatfRMzn3JYBK7h2AyJo1b69gAlJvnnciS6I
+X-Gm-Gg: AR+sD11SNqjN/xp/gSDz+076OkS2ZmRxEg2gkVXr4hZiSquCnfCmdHEjCWOXF67cEUd
+	zYXgFH5hPZv6bfhbYoNgw/8vyKfuONBFntsr6u19ROo2rMsyEyrkSl5GTQ09SskwRxRhHDorjFF
+	mH3HOl7yCJRnSBMw85yzQoHr2cuhkOl9PRetm7fE8QCgaDYmUwcyez9fG9LxgFR1WbVgSN3HMj7
+	8Hxthy11a4oD0jztClMfQt76OXojyuo/NKlhpgb5QvP5TnnUPW5RpK7xeY1CEZ/i/TzH/K1r+N2
+	VKHgD65s1gU9wCIF4zTrcOjF0VUxQv0+bBuByK0+hXXDtxiItZhHwzPaAezoskpCrWfbrSimMPb
+	Fq5HlFu4lfQw20iPN5JnikKzs2yPXmWOGPaCPrg/g+xVHoE/1QxDmZ3t8QXdAWYh9v/skZ0f/Il
+	+h8J1OynX6I6nmTMqpDCuAPCI05nf1BwvtIwK8EGltwA==
+X-Received: by 2002:a05:600c:6dd5:b0:493:e583:7053 with SMTP id 5b1f17b1804b1-496c4fe26d3mr3319875e9.35.1785182696309;
+        Mon, 27 Jul 2026 13:04:56 -0700 (PDT)
+Received: from debian.. ([2001:41d0:303:db6b::])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c46160dfsm18406235e9.10.2026.07.27.13.04.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 13:04:55 -0700 (PDT)
+From: Tristan Madani <tristmd@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	maheshb@google.com,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Tristan Madani <tristan@talencesecurity.com>
+Subject: [PATCH net v3] net: reduce XMIT_RECURSION_LIMIT under KASAN
+Date: Mon, 27 Jul 2026 20:04:54 +0000
+Message-ID: <20260727200454.4048141-1-tristmd@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 27 Jul 2026 10:33:35 +0200 Ivan Vecera wrote:
->> Real dependency is probably better here?
->> The Optional is meant for NICs for which PTP truly is a side-feature.
-> 
-> There are some chip variants that don't support PTP. Should we depend non-optionally?
+From: Tristan Madani <tristan@talencesecurity.com>
 
-That's what I would do.
+Virtual network devices (ipvlan, macvlan, bonding) can enter legitimate
+transmit recursion when combined with packet forwarding configurations
+such as IPVS NAT.  The existing XMIT_RECURSION_LIMIT (8) in
+__dev_queue_xmit() detects and breaks these loops, but the allowed
+depth is too high for KASAN-instrumented kernels: each recursion level
+consumes significantly more stack due to KASAN inline instrumentation,
+and the cumulative usage overflows the kernel stack before the limit
+fires.
+
+On x86_64, CONFIG_KASAN doubles THREAD_SIZE from 16KB to 32KB
+(KASAN_STACK_ORDER=1), but KASAN per-access checks inflate individual
+function frames by roughly 2-3x.  For an ipvlan L3 + IPVS NAT routing
+loop, objdump measurements on a non-KASAN kernel show ~1.4KB of stack
+consumed per recursion level (across 17 functions from __dev_queue_xmit
+through the full IP output path and back).  At KASAN ~2.3x inflation
+factor that becomes ~3.3KB per level.  Nine levels -- reached before the
+current limit fires -- total ~30KB plus the initial call chain, which
+exceeds the 32KB KASAN stack.  The overflow hits the VMAP_STACK guard
+page and causes a non-recoverable kernel panic (BUG: stack guard page
+was hit).
+
+On non-KASAN kernels the same loop is safely caught by the existing
+limit: the "Dead loop on virtual device" message fires and the packet
+is dropped without any stack overflow.
+
+Reduce XMIT_RECURSION_LIMIT to 3 when CONFIG_KASAN is enabled.  This
+keeps the recursion counter well within the 32KB KASAN stack budget
+while preserving the established limit of 8 for production kernels.
+
+The recursion path triggering this is:
+
+  __dev_queue_xmit -> dev_hard_start_xmit -> ipvlan_start_xmit
+  -> ipvlan_queue_xmit -> ipvlan_process_outbound -> ip_local_out
+  -> nf_hook (IPVS) -> ip_vs_in_hook -> ip_vs_nat_xmit -> ip_output
+  -> ip_finish_output2 -> neigh_resolve_output -> __dev_queue_xmit
+
+Tested:
+  - KASAN kernel (6.8.12 x86_64): panic before fix, "Dead loop"
+    drop after fix.
+  - Non-KASAN kernel (6.8.12 x86_64): "Dead loop" drop both before
+    and after fix (no behavior change for production kernels).
+
+Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+---
+v3:
+ - no changes, repost per maintainer request
+v2: https://lore.kernel.org/20260711204700.1760374-1-tristmd@gmail.com
+v1: https://lore.kernel.org/20260711134732.1385563-1-tristmd@gmail.com
+
+ include/linux/netdevice.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 9981d637f8b54..bdcb61d352afb 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -3640,7 +3640,11 @@ struct page_pool_bh {
+ };
+ DECLARE_PER_CPU(struct page_pool_bh, system_page_pool);
+
++#ifdef CONFIG_KASAN
++#define XMIT_RECURSION_LIMIT	3
++#else
+ #define XMIT_RECURSION_LIMIT	8
++#endif
+
+ #ifndef CONFIG_PREEMPT_RT
+ static inline int dev_recursion_level(void)
+--
+2.47.3
