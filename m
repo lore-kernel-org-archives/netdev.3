@@ -1,604 +1,223 @@
-Received: from us.padl.com (us.padl.com [216.154.215.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395813DB626;
-	Mon, 27 Jul 2026 03:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739BB24A076
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 04:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785124798; cv=none; b=IteirB5xAhPJKhV9AuvRLmDJkvTw+B2WQrea/5yrUjhH6oWkP56lMtYsFkoX9HHNY2r33sVANOBk/DrhUBNWv/SaKscYdNZNwv/4HAa+/Gy/nujGTlAIGkpB2SxcOLIsN6IGZ+vXbsAv4kF5lGaa+8JzvFOl2I1QecsQ4rxAyZ4=
+	t=1785125299; cv=none; b=A6Sii11ZK5LIl5t7ep+Rluf/vpB6urajB02iAfSemvgb1Yuww5yH+IUvPxzAVnF4Xh/LeBpoU5WudE321iTA/bOJ95CQhqqT/WlgQJPQCosrL/4CjhBBh3bj1RgP7hbEcdASiZY8K5K0zjLe8wQ1WD7WIlq+/bItLCuGvuhAUnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785124798; c=relaxed/simple;
-	bh=sy0PmpIpFhmH5cFnllL9q7z513ZwMQODfcwEL1EMB7M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZnrVrbzL2daGuEFVNA51b8o9iDkQmtFKY3WP0RFJl0cPGWGC5rc73FiTwYdM6vV4balAh4o4tIfxfdlAzoL1clpuOsvNJJLzZr7WeBONzSFRuPWHOInGhwS78Dgd4qwcRfiEp+JwDDfX2K8BoVg/1izygHlDcWLFSxfvW3T8/v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=azMp3mao; arc=none smtp.client-ip=216.154.215.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+	s=arc-20240116; t=1785125299; c=relaxed/simple;
+	bh=JrsYXpcyeo2vtFHpIvsas/+QPGxz1jWIaodNwX7XowI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sVT8CfpSUJcZ5x2dBULQIQVtapyGGWXkspIerWoRaRAiUpNw4dhn8LPiCCOBkM9WWTp6iEtQwg9+53dg7+FKmKnz6qWr2IZCi+WPaBQT5E8zmG/UPBy+hPOC60sEfjXBA67gARW72N9gNltKp5qPCnnLqyUmmBCAaN30oJBj+Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hKRtvdZ+; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="azMp3mao"
-Received: from [127.0.1.1] (border.lukktone.com [139.130.100.52])
-	by us.padl.com (Postfix) with ESMTPSA id 5EB2760BED;
-	Sun, 26 Jul 2026 23:59:49 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1785124794; bh=pInsbW8VxvNPJOM8cbKxwKfOnk/j22NjLsGda4tRBOU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=azMp3maoyi8c/BLniCRpi5myOesu+CBDYVz8noMLFTdhfa3c1JVBSX6DJorf7uzrL
-	 8nbbipsvcj9UvATW45kIO2P3J3GRBi9UxwtwCb5lwbINJ2JZFhOFmGqgE6VfGPlc/C
-	 5lFzmerurnKwjWRQrDy65TjvfbLLFuf7VEIzLzJ/Cd0yrrK+b9jSRyzyZE4SkYyjfi
-	 C2EyDrtwv0aQoocyHJxYnl32CkOGKiwNuBr9GdtfK2N51XuiukFypWCv+1PwcrgKqg
-	 kNLr1UyQ9e29+FZPd7KiJf3e7f8gXtpyBwH420SPWTD8CE6vH1Q1Faf/JpI6XxVz1P
-	 BZDi4FCubZKqQ==
-From: Luke Howard <lukeh@padl.com>
-Date: Mon, 27 Jul 2026 13:59:16 +1000
-Subject: [PATCH net-next v4 5/5] net: dsa: mv88e6xxx: embedded PTP
- timestamp support
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hKRtvdZ+"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38e071ed6aeso1705608a91.0
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 21:08:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785125297; x=1785730097; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Wy9t1vWznuOAOQDWKHxu49XmVkBSgD+heYqFc0DMi2U=;
+        b=hKRtvdZ+uCyJnMjcBtQ5NgkNJGhbJuoHsvliZv5Hngm4MJqv0LBohQ7PulMdi5e0pp
+         pyahL6pXCMfb3v9py8Qj6Ao/SVLsIRiWV1Vk8HCWrdGfEMh5FFC6tQWEpdbJ7wbLZNnp
+         l3rvQB31gBJMYlQLsCBQaPnpnHATlLQZ3HxDvyvwIgu1JXftrwGpIdS0zw/kzJBDxmme
+         hD4KcbB15m2Kc/hEiR0Wqg07xzkPh2G/fEatsydzsR1vuKLKtPUhOkFYPGBvHY6ziubs
+         U+AXkiKIPqsvNP7Gfx0qXwMBAEITHL9NMVStGHodDDywMoXKXVmo3Zw0ru4gi5j78WUV
+         XtlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785125297; x=1785730097;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Wy9t1vWznuOAOQDWKHxu49XmVkBSgD+heYqFc0DMi2U=;
+        b=MXQWYvvzkPbjMkRsSq0k2TD1Jo6K44Vf6zsfIulDirSqa7x4hspud6GkvlDC7yT0wY
+         tWppVj8DLoAr7YlTkrgGqdm4btD+JFu86q8MujtK+WpMuja8Xwykckt1L+UlY+2Cwe71
+         Pi81y+T1ImPdkZc+oOiYc5jJPDgLMNI8Bt0q5eZoZJll2+NhMH6AdnJAsIrCHiwKlFMO
+         a7LDxX+Spe3vsGYlnMLz8lCUbyclQkj0vmVY7RNJTVpVF0HySY7zTUrW+6A3SL4cqTfG
+         tD6iibaRvPuGVAHYgVEBvaqzvfRwyzWvvzuw10UEvMyE1dzBavDw8J1+okJSCvUcht/d
+         WAKQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoBd/+AsEocfP0ghIb3JVAq2WUObc/bDQopzBGr8u//yLog4V8M7knQYPA4MHow2ep0B6zSnm4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1tqNN3nFV57/yDy4yWhVqb9fH9O+426/7Xmzk39MfMJg5bLTT
+	0QEOb5GAcWjOWwKB1lLDOKaM/dW5AAhD+hkeKfn/584PUrHMZRt1Zt3n
+X-Gm-Gg: AR+sD11X3JJuiX/02T0MKTrGmIDSKr8A8jTmmmqY0FT7mNcLOZUkwp7XEpgNUswRlYg
+	dvTqaMv0YXny8tPz+uGQhIMjF27wDxHixG6w7KCRnygYeGpaQa73RORTRgAb2VWq/14692UIr0n
+	hEFTeXEyP/8Ha3I0TY9uB+GgfiMQjuT22TM4eNwUEU4/8eeAHw2rFSiBNtuNx+QiCgphzE7z0R8
+	qd+GF3rHmto3NgtoYLxfl3J12Q6xj7eM8e7cqMPP+rHsbi3iOILs1HI+1XUpODBWv9DSHbi5aSj
+	rvSkwM3ZP+K0KRg16mtBmG/n48OAE1dIyt/Y1+J6Xm4VXcFTGzh4gpxlxj07w7ts0tuEEglRwkl
+	KS8V/rkl19sL4RfhpG3vw7QMAvd3LgqKjSBYnCfFdM34AzyF2VqxLjLQTloeviFlXn6iFw4CI5B
+	Z6WRQ=
+X-Received: by 2002:a17:90b:2791:b0:38e:67e1:15b with SMTP id 98e67ed59e1d1-38f293cc2eemr6412847a91.6.1785125296569;
+        Sun, 26 Jul 2026 21:08:16 -0700 (PDT)
+Received: from kali ([58.187.6.148])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f03b0e976sm4299087a91.5.2026.07.26.21.08.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jul 2026 21:08:15 -0700 (PDT)
+From: Nguyen Le Thanh Tung <nguyenlethanhtung555@gmail.com>
+To: "D . Wythe" <alibuda@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nguyen Le Thanh Tung <nguyenlethanhtung555@gmail.com>
+Subject: [PATCH net] net/smc: clamp peer supplied CDC cursors to the buffer size
+Date: Mon, 27 Jul 2026 00:08:06 -0400
+Message-ID: <20260727040806.1911118-1-nguyenlethanhtung555@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260727-mv88e6xxx-ptp-fixes-v4-5-10b4020155fc@padl.com>
-References: <20260727-mv88e6xxx-ptp-fixes-v4-0-10b4020155fc@padl.com>
-In-Reply-To: <20260727-mv88e6xxx-ptp-fixes-v4-0-10b4020155fc@padl.com>
-To: Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Vivien Didelot <vivien.didelot@gmail.com>, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, 
- Richard Cochran <richardcochran@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, 
- Simon Horman <horms@kernel.org>
-Cc: Cedric Jehasse <cedric.jehasse@gmail.com>, 
- Kieran Tyrrell <kieran@sienda.com>, Max Holtmann <mh@rme-audio.de>, 
- Max Hunter <max@huntershome.org>, 
- Christoph Mellauner <christoph.mellauner@joyned.at>, 
- Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>, 
- devicetree@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785124760; l=18981;
- i=lukeh@padl.com; s=20260701; h=from:subject:message-id;
- bh=sy0PmpIpFhmH5cFnllL9q7z513ZwMQODfcwEL1EMB7M=;
- b=hb3EL4BFLK8YCFSC6LogOGxc6qqS3gsQB2JdNcmG/MBYxeGkYEEX1NhyL78ugOS/JzLSMplkv
- spL9kz1aO3FBZqMj06iVwvqT9Pq5EtFux37mc0JtBqNslHzIRU+Nj/4
-X-Developer-Key: i=lukeh@padl.com; a=ed25519;
- pk=D6YgUnH9/OzSZsduYm9XDbvXn1IHDwKwI1hLTsKNRLw=
+Content-Transfer-Encoding: 8bit
 
-mv88e6xxx switches can embed the PTP arrival timestamp directly in the
-frame, at a configurable offset from the PTP common header, typically
-the offset of the reserved2 field.
+smc_cdc_cursor_to_host() converts a peer supplied CDC cursor into the
+connection's host cursor.  The count field is taken verbatim off the
+wire and is only compared against the previously known cursor to
+enforce monotonicity - it is never validated against the size of the
+buffer it indexes:
 
-Add support for this on the 88E6341 and 88E6352 switches, being those on
-which I was able to verify this. Other switch chips may also work. The
-arrival timestamp offsets are relative to the PTP common header and will
-work for both L2 and L3 PTP packets; the respective headers are skipped
-by the number of bytes set in the ETJump and IPJump registers, which are
-initialized to sensible defaults and are VLAN tag-aware.
+	temp.count = ntohl(net.count);
+	temp.wrap  = ntohs(net.wrap);
+	if ((old.wrap > temp.wrap) && temp.wrap)
+		return;
+	if ((old.wrap == temp.wrap) && (old.count > temp.count))
+		return;
+	smc_curs_copy(local, &temp, conn);
 
-This feature is off by default and must be enabled by selecting the
-"edsa-ptp-reserved2-ts" DSA tag protocol.
+On the first CDC message of a connection old is {wrap = 0, count = 0},
+so both guards are false for any peer chosen pair and a count of up to
+0xffffffff is accepted unconditionally.  A conforming peer never emits
+count >= size: smc_curs_add() wraps at the buffer size, which is what
+every consumer of the cursor assumes.
 
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Luke Howard <lukeh@padl.com>
+The most direct consequence is in smc_cdc_handle_urg_data_arrival(),
+which uses the producer cursor as a raw index with no further check:
+
+	base = (char *)conn->rmb_desc->cpu_addr + conn->rx_off;
+	if (conn->urg_curs.count)
+		conn->urg_rx_byte = *(base + conn->urg_curs.count - 1);
+
+That path is reached from the receive path whenever the producer cursor
+advances and prod_flags.urg_data_present is set - a single bit copied
+verbatim from the wire - so a peer can read at an attacker chosen offset
+of up to 4GB from a known heap pointer, far outside the RMB.  The same
+unvalidated cursor also feeds the atomic_add() into conn->bytes_to_rcv,
+breaking the 0 <= bytes_to_rcv <= rmb_desc->len invariant that
+smc_rx_recvmsg() relies on when it computes its second copy chunk.
+
+Clamp count to the size of the buffer the cursor refers to, so that
+everything derived from it stays inside that buffer.  The producer
+cursor indexes the local RMB and is bounded by conn->rmb_desc->len, the
+consumer cursor refers to the peer's RMBE and is bounded by
+conn->peer_rmbe_size - the same sizes smc_cdc_msg_recv_action() already
+passes to smc_curs_diff() for these two cursors, and which it already
+dereferences unconditionally a few lines after the conversion, so no new
+pointer is assumed valid here.  The SMC-D path reads the cursors from
+the DMB rather than off the wire, but they are equally peer controlled
+and reach the same consumers, so clamp there as well.  For SMC-D the DMB
+is registered with sizeof(struct smcd_cdc_msg) extra bytes and
+buf_desc->len holds the remainder (smcd_new_buf_create()), so bounding
+count by rmb_desc->len also keeps the rx_off based dereference inside
+the allocation.
+
+Found by code inspection.  The unbounded acceptance was confirmed by
+calling the unmodified smc_cdc_cursor_to_host() from a module with
+old = {0, 0} and a peer cursor of count = 0x40000000: the value is
+copied through unchanged.  Replaying the resulting dereference against a
+real 64 byte kmalloc() allocation produces a clean KASAN
+slab-out-of-bounds read.
+
+Fixes: 5f08318f617b ("smc: connection data control (CDC)")
+Signed-off-by: Nguyen Le Thanh Tung <nguyenlethanhtung555@gmail.com>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c     |  29 +++++-
- drivers/net/dsa/mv88e6xxx/chip.h     |  15 +++
- drivers/net/dsa/mv88e6xxx/hwtstamp.c | 194 ++++++++++++++++++++++++++++++++---
- drivers/net/dsa/mv88e6xxx/hwtstamp.h |  21 +++-
- include/net/dsa.h                    |   2 +
- net/dsa/tag_dsa.c                    |  18 ++++
- 6 files changed, 262 insertions(+), 17 deletions(-)
+Compile tested on 6.8.12 with CONFIG_SMC=m: `make W=1 net/smc/` produces
+no new warnings.  The two functions this patch touches are byte identical
+in 6.8 and current mainline.
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index b24ebbb275b34..e92524beb40c4 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3271,7 +3271,8 @@ static int mv88e6xxx_setup_port_mode(struct mv88e6xxx_chip *chip, int port)
- 	if (chip->tag_protocol == DSA_TAG_PROTO_DSA)
- 		return mv88e6xxx_set_port_mode_dsa(chip, port);
- 
--	if (chip->tag_protocol == DSA_TAG_PROTO_EDSA)
-+	if (chip->tag_protocol == DSA_TAG_PROTO_EDSA ||
-+	    chip->tag_protocol == DSA_TAG_PROTO_EDSA_PTP_RESERVED2_TS)
- 		return mv88e6xxx_set_port_mode_edsa(chip, port);
- 
- 	return -EINVAL;
-@@ -6370,6 +6371,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
- 		.ptp_support = true,
- 		.ops = &mv88e6341_ops,
-+		.supports_ptp_embedded_ts = true,
- 	},
- 
- 	[MV88E6350] = {
-@@ -6447,6 +6449,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
- 		.ptp_support = true,
- 		.ops = &mv88e6352_ops,
-+		.supports_ptp_embedded_ts = true,
- 	},
- 	[MV88E6361] = {
- 		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6361,
-@@ -6659,9 +6662,17 @@ static int mv88e6xxx_change_tag_protocol(struct dsa_switch *ds,
- 	struct mv88e6xxx_chip *chip = ds->priv;
- 	enum dsa_tag_protocol old_protocol;
- 	struct dsa_port *cpu_dp;
--	int err;
-+	int err = 0;
- 
-+	/* The embedded arrival-time-stamp protocol is an EDSA extension: EDSA
-+	 * is the modern tag format for these switches, so it is the one we
-+	 * extend; the legacy DSA tag is intentionally left un-extended.
-+	 */
- 	switch (proto) {
-+	case DSA_TAG_PROTO_EDSA_PTP_RESERVED2_TS:
-+		if (!chip->info->supports_ptp_embedded_ts)
-+			return -EPROTONOSUPPORT;
-+		fallthrough;
- 	case DSA_TAG_PROTO_EDSA:
- 		switch (chip->info->edsa_support) {
- 		case MV88E6XXX_EDSA_UNSUPPORTED:
-@@ -6690,7 +6701,12 @@ static int mv88e6xxx_change_tag_protocol(struct dsa_switch *ds,
- 			goto unwind;
- 		}
- 	}
-+
-+	if (chip->info->ptp_support)
-+		err = mv88e6xxx_hwtstamp_setup_arr_ts(chip);
- 	mv88e6xxx_reg_unlock(chip);
-+	if (err)
-+		goto unwind;
- 
- 	return 0;
- 
-@@ -6700,6 +6716,15 @@ static int mv88e6xxx_change_tag_protocol(struct dsa_switch *ds,
- 	mv88e6xxx_reg_lock(chip);
- 	dsa_switch_for_each_cpu_port_continue_reverse(cpu_dp, ds)
- 		mv88e6xxx_setup_port_mode(chip, cpu_dp->index);
-+	if (chip->info->ptp_support) {
-+		/* Nothing else can be done here, but leaving a port embedding
-+		 * time stamps the driver will not strip corrupts every PTP
-+		 * event frame it receives, so make the failure visible.
-+		 */
-+		if (mv88e6xxx_hwtstamp_setup_arr_ts(chip))
-+			dev_err(chip->dev,
-+				"failed to restore arrival time stamp mode\n");
-+	}
- 	mv88e6xxx_reg_unlock(chip);
- 
- 	return err;
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
-index 7272b7dc4955c..c75a71464b20a 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.h
-+++ b/drivers/net/dsa/mv88e6xxx/chip.h
-@@ -180,6 +180,13 @@ struct mv88e6xxx_info {
- 	 * port 0, 1 means internal PHYs range starts at port 1, etc
- 	 */
- 	unsigned int internal_phys_offset;
-+
-+	/* The switch can embed the PTP arrival time stamp in the reserved2
-+	 * field of the PTP common header, which the edsa-ptp-reserved2-ts
-+	 * tag protocol selects. Otherwise arrival time stamps are only
-+	 * available from the switch registers.
-+	 */
-+	bool supports_ptp_embedded_ts;
- };
- 
- struct mv88e6xxx_atu_entry {
-@@ -818,6 +825,14 @@ static inline bool mv88e6xxx_has_lag(struct mv88e6xxx_chip *chip)
- 	return !!chip->info->global2_addr;
- }
- 
-+/* Whether the active tagging protocol has the switch embed arrival time stamps
-+ * in the frame instead of leaving them in the PTP arrival registers.
-+ */
-+static inline bool mv88e6xxx_ptp_embedded_ts(struct mv88e6xxx_chip *chip)
-+{
-+	return chip->tag_protocol == DSA_TAG_PROTO_EDSA_PTP_RESERVED2_TS;
-+}
-+
- static inline bool mv88e6xxx_has_tcam(struct mv88e6xxx_chip *chip)
- {
- 	return !!chip->info->tcam_addr;
-diff --git a/drivers/net/dsa/mv88e6xxx/hwtstamp.c b/drivers/net/dsa/mv88e6xxx/hwtstamp.c
-index a5b362a999e64..74eaadeeeb784 100644
---- a/drivers/net/dsa/mv88e6xxx/hwtstamp.c
-+++ b/drivers/net/dsa/mv88e6xxx/hwtstamp.c
-@@ -15,6 +15,7 @@
- #include "hwtstamp.h"
- #include "ptp.h"
- #include <linux/ptp_classify.h>
-+#include <linux/unaligned.h>
- 
- #define SKB_PTP_TYPE(__skb) (*(unsigned int *)((__skb)->cb))
- 
-@@ -94,6 +95,7 @@ static int mv88e6xxx_set_hwtstamp_config(struct mv88e6xxx_chip *chip, int port,
- 	const struct mv88e6xxx_ptp_ops *ptp_ops = chip->info->ops->ptp_ops;
- 	struct mv88e6xxx_port_hwtstamp *ps = &chip->port_hwtstamp[port];
- 	bool tstamp_enable = false;
-+	int err = 0;
- 
- 	/* Prevent the TX/RX paths from trying to interact with the
- 	 * timestamp hardware while we reconfigure it.
-@@ -147,20 +149,30 @@ static int mv88e6xxx_set_hwtstamp_config(struct mv88e6xxx_chip *chip, int port,
- 	if (tstamp_enable) {
- 		chip->enable_count += 1;
- 		if (chip->enable_count == 1 && ptp_ops->global_enable)
--			ptp_ops->global_enable(chip);
--		if (ptp_ops->port_enable)
--			ptp_ops->port_enable(chip, port);
-+			err = ptp_ops->global_enable(chip);
-+		if (!err && ptp_ops->port_enable)
-+			err = ptp_ops->port_enable(chip, port);
- 	} else {
- 		if (ptp_ops->port_disable)
--			ptp_ops->port_disable(chip, port);
-+			err = ptp_ops->port_disable(chip, port);
- 		chip->enable_count -= 1;
- 		if (chip->enable_count == 0 && ptp_ops->global_disable)
- 			ptp_ops->global_disable(chip);
- 	}
- 	mv88e6xxx_reg_unlock(chip);
- 
-+	if (err)
-+		return err;
-+
- 	/* Once hardware has been configured, enable timestamp checks
- 	 * in the RX/TX paths.
-+	 *
-+	 * In embedded mode the switch starts overwriting the PTP header's
-+	 * reserved2 field as soon as CFG2 is armed above, which is before the
-+	 * RX path begins restoring it; on the way down the RX path stops
-+	 * restoring before the hardware stops embedding. An event frame
-+	 * received inside either window is delivered with the switch's
-+	 * arrival counter still in its header.
- 	 */
- 	if (tstamp_enable)
- 		set_bit(MV88E6XXX_HWTSTAMP_ENABLED, &ps->state);
-@@ -249,6 +261,52 @@ static int seq_match(struct sk_buff *skb, u16 ts_seqid)
- 	return ts_seqid == ntohs(hdr->sequence_id);
- }
- 
-+/* Recover the arrival time the switch wrote over the reserved2 field of the PTP
-+ * common header, restoring the field afterwards.
-+ */
-+static bool parse_embedded_ts(struct sk_buff *skb, u64 *ns)
-+{
-+	unsigned int off = MV88E6XXX_PTP_ARR_TS_OFFSET;
-+	struct ptp_header *hdr;
-+
-+	*ns = 0;
-+
-+	if (skb_linearize(skb))
-+		return false;
-+
-+	hdr = ptp_parse_header(skb, SKB_PTP_TYPE(skb));
-+	if (!hdr)
-+		return false;
-+
-+	*ns = get_unaligned_be32((u8 *)hdr + off);
-+	memset((u8 *)hdr + off, 0, 4);
-+	skb_checksum_complete_unset(skb);
-+
-+	return true;
-+}
-+
-+/* Apply the arrival time the switch embedded in the frame. No register access
-+ * is needed, so this runs inline on the receive path rather than being handed
-+ * to the PTP worker. Returns false if the frame could not be restored.
-+ */
-+static bool mv88e6xxx_ptp_rx_timestamp(struct mv88e6xxx_chip *chip,
-+				       struct sk_buff *skb)
-+{
-+	struct skb_shared_hwtstamps *shwt;
-+	u64 ns;
-+
-+	if (!parse_embedded_ts(skb, &ns))
-+		return false;
-+
-+	ns = mv88e6xxx_timecounter_cyc2time(chip, ns);
-+
-+	shwt = skb_hwtstamps(skb);
-+	memset(shwt, 0, sizeof(*shwt));
-+	shwt->hwtstamp = ns_to_ktime(ns);
-+
-+	return true;
-+}
-+
- static void mv88e6xxx_get_rxts(struct mv88e6xxx_chip *chip,
- 			       struct mv88e6xxx_port_hwtstamp *ps,
- 			       struct sk_buff *skb, u16 reg,
-@@ -310,7 +368,6 @@ static void mv88e6xxx_rxtstamp_work(struct mv88e6xxx_chip *chip,
- 	struct sk_buff *skb;
- 
- 	skb = skb_dequeue(&ps->rx_queue);
--
- 	if (skb)
- 		mv88e6xxx_get_rxts(chip, ps, skb, ptp_ops->arr0_sts_reg,
- 				   &ps->rx_queue);
-@@ -352,6 +409,21 @@ bool mv88e6xxx_port_rxtstamp(struct dsa_switch *ds, int port,
- 
- 	SKB_PTP_TYPE(skb) = type;
- 
-+	/* Embedded arrival times can be returned inline. The switch has
-+	 * overwritten the reserved2 field; if it cannot be restored the frame
-+	 * is no longer what the sender transmitted, so drop it rather than
-+	 * pass up a corrupted header that will fail the PTP-over-UDP checksum
-+	 * anyway.
-+	 */
-+	if (mv88e6xxx_ptp_embedded_ts(chip)) {
-+		if (!mv88e6xxx_ptp_rx_timestamp(chip, skb)) {
-+			kfree_skb_reason(skb, SKB_DROP_REASON_NOMEM);
-+			return true;
-+		}
-+
-+		return false;
-+	}
-+
- 	if (is_pdelay_msg(hdr))
- 		skb_queue_tail(&ps->rx_queue2, skb);
- 	else
-@@ -461,7 +533,9 @@ long mv88e6xxx_hwtstamp_work(struct ptp_clock_info *ptp)
- 		if (test_bit(MV88E6XXX_HWTSTAMP_TX_IN_PROGRESS, &ps->state))
- 			restart |= mv88e6xxx_txtstamp_work(chip, ps);
- 
--		mv88e6xxx_rxtstamp_work(chip, ps);
-+		/* Embedded arrival times are applied on the receive path. */
-+		if (!mv88e6xxx_ptp_embedded_ts(chip))
-+			mv88e6xxx_rxtstamp_work(chip, ps);
- 	}
- 
- 	return restart ? 1 : -1;
-@@ -530,14 +604,43 @@ int mv88e6165_global_enable(struct mv88e6xxx_chip *chip)
- 
- int mv88e6352_hwtstamp_port_disable(struct mv88e6xxx_chip *chip, int port)
- {
--	return mv88e6xxx_port_ptp_write(chip, port, MV88E6XXX_PORT_PTP_CFG0,
--					MV88E6XXX_PORT_PTP_CFG0_DISABLE_PTP);
-+	int err;
-+
-+	err = mv88e6xxx_port_ptp_write(chip, port, MV88E6XXX_PORT_PTP_CFG0,
-+				       MV88E6XXX_PORT_PTP_CFG0_DISABLE_PTP);
-+	if (err)
-+		return err;
-+
-+	err = mv88e6xxx_port_ptp_write(chip, port, MV88E6XXX_PORT_PTP_CFG2, 0);
-+	if (err)
-+		return err;
-+
-+	return 0;
-+}
-+
-+/* Return the CFG2 ArrTSMode field for the active arrival time-stamp mode. */
-+static u16 mv88e6xxx_arr_ts_cfg2(struct mv88e6xxx_chip *chip)
-+{
-+	return mv88e6xxx_ptp_embedded_ts(chip) ?
-+		MV88E6XXX_PORT_PTP_CFG2_ARR_TS_RESERVED2 :
-+		MV88E6XXX_PORT_PTP_CFG2_ARR_TS_DISABLED;
- }
- 
- int mv88e6352_hwtstamp_port_enable(struct mv88e6xxx_chip *chip, int port)
- {
--	return mv88e6xxx_port_ptp_write(chip, port, MV88E6XXX_PORT_PTP_CFG0,
--					MV88E6XXX_PORT_PTP_CFG0_DISABLE_TSPEC_MATCH);
-+	int err;
-+
-+	err = mv88e6xxx_port_ptp_write(chip, port, MV88E6XXX_PORT_PTP_CFG2,
-+				       mv88e6xxx_arr_ts_cfg2(chip));
-+	if (err)
-+		return err;
-+
-+	err = mv88e6xxx_port_ptp_write(chip, port, MV88E6XXX_PORT_PTP_CFG0,
-+				       MV88E6XXX_PORT_PTP_CFG0_DISABLE_TSPEC_MATCH);
-+	if (err)
-+		return err;
-+
-+	return 0;
- }
- 
- static int mv88e6xxx_hwtstamp_port_setup(struct mv88e6xxx_chip *chip, int port)
-@@ -556,6 +659,72 @@ static int mv88e6xxx_hwtstamp_port_setup(struct mv88e6xxx_chip *chip, int port)
- 	return 0;
- }
- 
-+/* Program the hardware for the arrival time-stamp mode the active tagging
-+ * protocol selects. Called from setup and again whenever the protocol changes,
-+ * as that is what decides where arrival time stamps are delivered.
-+ *
-+ * Must be called with the register lock held.
-+ */
-+int mv88e6xxx_hwtstamp_setup_arr_ts(struct mv88e6xxx_chip *chip)
-+{
-+	const struct mv88e6xxx_ptp_ops *ptp_ops = chip->info->ops->ptp_ops;
-+	int err, ret = 0;
-+	int i;
-+
-+	/* In embedded mode the switch stamps every event message it forwards,
-+	 * peer delay included, so leave the arrival capture pointer alone
-+	 * rather than diverting peer delay messages to the ARRIVAL1 registers.
-+	 */
-+	err = mv88e6xxx_ptp_write(chip, MV88E6XXX_PTP_TS_ARRIVAL_PTR,
-+				  mv88e6xxx_ptp_embedded_ts(chip) ? 0 :
-+				  MV88E6XXX_PTP_MSGTYPE_PDLAY_REQ |
-+				  MV88E6XXX_PTP_MSGTYPE_PDLAY_RES);
-+	if (err)
-+		return err;
-+
-+	if (!chip->info->supports_ptp_embedded_ts)
-+		return 0;
-+
-+	for (i = 0; i < mv88e6xxx_num_ports(chip); ++i) {
-+		struct mv88e6xxx_port_hwtstamp *ps = &chip->port_hwtstamp[i];
-+
-+		/* Anything already queued was queued under the previous mode
-+		 * and can no longer be matched with an arrival time.
-+		 */
-+		skb_queue_purge(&ps->rx_queue);
-+		skb_queue_purge(&ps->rx_queue2);
-+
-+		/* The arrival registers keep capturing in embedded mode with
-+		 * nothing to drain them, so clear the status here or the
-+		 * register path resumes on a stale capture.
-+		 */
-+		err = mv88e6xxx_port_ptp_write(chip, i, ptp_ops->arr0_sts_reg, 0);
-+		if (err && !ret)
-+			ret = err;
-+
-+		err = mv88e6xxx_port_ptp_write(chip, i, ptp_ops->arr1_sts_reg, 0);
-+		if (err && !ret)
-+			ret = err;
-+
-+		/* Ports that have not enabled time stamping pick the mode up in
-+		 * mv88e6352_hwtstamp_port_enable().
-+		 */
-+		if (ps->tstamp_config.rx_filter == HWTSTAMP_FILTER_NONE)
-+			continue;
-+
-+		/* Program every port even if one fails. A port left embedding
-+		 * time stamps that the driver no longer strips corrupts the
-+		 * PTP header of every event frame it receives.
-+		 */
-+		err = mv88e6xxx_port_ptp_write(chip, i, MV88E6XXX_PORT_PTP_CFG2,
-+					       mv88e6xxx_arr_ts_cfg2(chip));
-+		if (err && !ret)
-+			ret = err;
-+	}
-+
-+	return ret;
-+}
-+
- int mv88e6xxx_hwtstamp_setup(struct mv88e6xxx_chip *chip)
- {
- 	const struct mv88e6xxx_ptp_ops *ptp_ops = chip->info->ops->ptp_ops;
-@@ -591,10 +760,7 @@ int mv88e6xxx_hwtstamp_setup(struct mv88e6xxx_chip *chip)
- 	if (err)
- 		return err;
- 
--	/* Use ARRIVAL1 for peer delay messages. */
--	err = mv88e6xxx_ptp_write(chip, MV88E6XXX_PTP_TS_ARRIVAL_PTR,
--				  MV88E6XXX_PTP_MSGTYPE_PDLAY_REQ |
--				  MV88E6XXX_PTP_MSGTYPE_PDLAY_RES);
-+	err = mv88e6xxx_hwtstamp_setup_arr_ts(chip);
- 	if (err)
- 		return err;
- 
-diff --git a/drivers/net/dsa/mv88e6xxx/hwtstamp.h b/drivers/net/dsa/mv88e6xxx/hwtstamp.h
-index c359821d5a6ea..2fe7c7429bff1 100644
---- a/drivers/net/dsa/mv88e6xxx/hwtstamp.h
-+++ b/drivers/net/dsa/mv88e6xxx/hwtstamp.h
-@@ -13,6 +13,8 @@
- #ifndef _MV88E6XXX_HWTSTAMP_H
- #define _MV88E6XXX_HWTSTAMP_H
- 
-+#include <linux/ptp_classify.h>
-+
- #include "chip.h"
- 
- /* Global 6352 PTP registers */
-@@ -64,10 +66,21 @@
- 
- /* Offset 0x02: PTP Configuration 2 */
- #define MV88E6XXX_PORT_PTP_CFG2				0x02
--#define MV88E6XXX_PORT_PTP_CFG2_EMBED_ARRIVAL		0x1000
- #define MV88E6XXX_PORT_PTP_CFG2_DEP_IRQ_EN		0x0002
- #define MV88E6XXX_PORT_PTP_CFG2_ARR_IRQ_EN		0x0001
- 
-+/* Arrival Time Stamp Mode (ArrTSMode), CFG2 bits [15:8]: configures how the
-+ * switch embeds the arrival time stamp (PTPArr0Time) into enabled PTP event
-+ * frames. A non-zero value is the byte offset, from the start of the PTP common
-+ * header, at which the switch overwrites four bytes in place; we always point
-+ * it at the header's reserved2 field so the frame length is left alone.
-+ */
-+#define MV88E6XXX_PTP_ARR_TS_OFFSET			\
-+	offsetof(struct ptp_header, reserved2)
-+#define MV88E6XXX_PORT_PTP_CFG2_ARR_TS_DISABLED		0x0000
-+#define MV88E6XXX_PORT_PTP_CFG2_ARR_TS_RESERVED2	\
-+	(MV88E6XXX_PTP_ARR_TS_OFFSET << 8)
-+
- /* Offset 0x03: PTP LED Configuration */
- #define MV88E6XXX_PORT_PTP_LED_CFG	0x03
- 
-@@ -126,6 +139,7 @@ int mv88e6xxx_get_ts_info(struct dsa_switch *ds, int port,
- 
- long mv88e6xxx_hwtstamp_work(struct ptp_clock_info *ptp);
- int mv88e6xxx_hwtstamp_setup(struct mv88e6xxx_chip *chip);
-+int mv88e6xxx_hwtstamp_setup_arr_ts(struct mv88e6xxx_chip *chip);
- void mv88e6xxx_hwtstamp_free(struct mv88e6xxx_chip *chip);
- int mv88e6352_hwtstamp_port_enable(struct mv88e6xxx_chip *chip, int port);
- int mv88e6352_hwtstamp_port_disable(struct mv88e6xxx_chip *chip, int port);
-@@ -172,6 +186,11 @@ static inline int mv88e6xxx_hwtstamp_setup(struct mv88e6xxx_chip *chip)
- 	return 0;
- }
- 
-+static inline int mv88e6xxx_hwtstamp_setup_arr_ts(struct mv88e6xxx_chip *chip)
-+{
-+	return 0;
-+}
-+
- static inline void mv88e6xxx_hwtstamp_free(struct mv88e6xxx_chip *chip)
- {
- }
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 8c16ef23cc102..2dfcc549de296 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -59,6 +59,7 @@ struct tc_action;
- #define DSA_TAG_PROTO_MXL_GSW1XX_VALUE		31
- #define DSA_TAG_PROTO_MXL862_VALUE		32
- #define DSA_TAG_PROTO_NETC_VALUE		33
-+#define DSA_TAG_PROTO_EDSA_PTP_RESERVED2_TS_VALUE	34
- 
- enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
-@@ -95,6 +96,7 @@ enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_MXL_GSW1XX	= DSA_TAG_PROTO_MXL_GSW1XX_VALUE,
- 	DSA_TAG_PROTO_MXL862		= DSA_TAG_PROTO_MXL862_VALUE,
- 	DSA_TAG_PROTO_NETC		= DSA_TAG_PROTO_NETC_VALUE,
-+	DSA_TAG_PROTO_EDSA_PTP_RESERVED2_TS = DSA_TAG_PROTO_EDSA_PTP_RESERVED2_TS_VALUE,
- };
- 
- struct dsa_switch;
-diff --git a/net/dsa/tag_dsa.c b/net/dsa/tag_dsa.c
-index d5ffee35fbb53..7490ecc04aa57 100644
---- a/net/dsa/tag_dsa.c
-+++ b/net/dsa/tag_dsa.c
-@@ -402,6 +402,23 @@ static const struct dsa_device_ops edsa_netdev_ops = {
- 
- DSA_TAG_DRIVER(edsa_netdev_ops);
- MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_EDSA, EDSA_NAME);
-+
-+#define EDSA_PTP_RESERVED2_TS_NAME	"edsa-ptp-reserved2-ts"
-+
-+/* Same wire format as EDSA, except that the switch overwrites the reserved2
-+ * field of the PTP common header with the frame's arrival time stamp.
-+ */
-+static const struct dsa_device_ops edsa_ptp_reserved2_ts_netdev_ops = {
-+	.name		 = EDSA_PTP_RESERVED2_TS_NAME,
-+	.proto		 = DSA_TAG_PROTO_EDSA_PTP_RESERVED2_TS,
-+	.xmit		 = edsa_xmit,
-+	.rcv		 = edsa_rcv,
-+	.needed_headroom = EDSA_HLEN,
-+};
-+
-+DSA_TAG_DRIVER(edsa_ptp_reserved2_ts_netdev_ops);
-+MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_EDSA_PTP_RESERVED2_TS,
-+			    EDSA_PTP_RESERVED2_TS_NAME);
- #endif	/* CONFIG_NET_DSA_TAG_EDSA */
- 
- static struct dsa_tag_driver *dsa_tag_drivers[] = {
-@@ -410,6 +427,7 @@ static struct dsa_tag_driver *dsa_tag_drivers[] = {
- #endif
- #if IS_ENABLED(CONFIG_NET_DSA_TAG_EDSA)
- 	&DSA_TAG_DRIVER_NAME(edsa_netdev_ops),
-+	&DSA_TAG_DRIVER_NAME(edsa_ptp_reserved2_ts_netdev_ops),
- #endif
- };
- 
+ net/smc/smc_cdc.h | 34 ++++++++++++++++++++++++++++------
+ 1 file changed, 28 insertions(+), 6 deletions(-)
 
+diff --git a/net/smc/smc_cdc.h b/net/smc/smc_cdc.h
+index 696cc11..a71e46d 100644
+--- a/net/smc/smc_cdc.h
++++ b/net/smc/smc_cdc.h
+@@ -219,16 +219,34 @@ static inline void smc_host_msg_to_cdc(struct smc_cdc_msg *peer,
+ 	peer->conn_state_flags = local->conn_state_flags;
+ }
+ 
++/* Bound a peer supplied cursor count to the size of the buffer it indexes.
++ * A conforming peer never sends count >= size (see smc_curs_add()), and every
++ * user of the cursor - the byte accounting in smc_cdc_msg_recv_action() and
++ * the direct RMB dereference in smc_cdc_handle_urg_data_arrival() - relies on
++ * that. Nothing validates it, so do it here, once, where the value enters the
++ * connection state.
++ */
++static inline u32 smc_cdc_clamp_count(u32 count, unsigned int size)
++{
++	if (WARN_ON_ONCE(size && count >= size))
++		count = size - 1;
++	return count;
++}
++
++/* @size: size of the buffer the cursor indexes, i.e. conn->rmb_desc->len for
++ *	  a producer cursor and conn->peer_rmbe_size for a consumer cursor
++ */
+ static inline void smc_cdc_cursor_to_host(union smc_host_cursor *local,
+ 					  union smc_cdc_cursor *peer,
+-					  struct smc_connection *conn)
++					  struct smc_connection *conn,
++					  unsigned int size)
+ {
+ 	union smc_host_cursor temp, old;
+ 	union smc_cdc_cursor net;
+ 
+ 	smc_curs_copy(&old, local, conn);
+ 	smc_curs_copy_net(&net, peer, conn);
+-	temp.count = ntohl(net.count);
++	temp.count = smc_cdc_clamp_count(ntohl(net.count), size);
+ 	temp.wrap = ntohs(net.wrap);
+ 	if ((old.wrap > temp.wrap) && temp.wrap)
+ 		return;
+@@ -246,8 +264,10 @@ static inline void smcr_cdc_msg_to_host(struct smc_host_cdc_msg *local,
+ 	local->len = peer->len;
+ 	local->seqno = ntohs(peer->seqno);
+ 	local->token = ntohl(peer->token);
+-	smc_cdc_cursor_to_host(&local->prod, &peer->prod, conn);
+-	smc_cdc_cursor_to_host(&local->cons, &peer->cons, conn);
++	smc_cdc_cursor_to_host(&local->prod, &peer->prod, conn,
++			       conn->rmb_desc->len);
++	smc_cdc_cursor_to_host(&local->cons, &peer->cons, conn,
++			       conn->peer_rmbe_size);
+ 	local->prod_flags = peer->prod_flags;
+ 	local->conn_state_flags = peer->conn_state_flags;
+ }
+@@ -259,11 +279,13 @@ static inline void smcd_cdc_msg_to_host(struct smc_host_cdc_msg *local,
+ 	union smc_host_cursor temp;
+ 
+ 	temp.wrap = peer->prod.wrap;
+-	temp.count = peer->prod.count;
++	temp.count = smc_cdc_clamp_count(peer->prod.count,
++					 conn->rmb_desc->len);
+ 	smc_curs_copy(&local->prod, &temp, conn);
+ 
+ 	temp.wrap = peer->cons.wrap;
+-	temp.count = peer->cons.count;
++	temp.count = smc_cdc_clamp_count(peer->cons.count,
++					 conn->peer_rmbe_size);
+ 	smc_curs_copy(&local->cons, &temp, conn);
+ 	local->prod_flags = peer->cons.prod_flags;
+ 	local->conn_state_flags = peer->cons.conn_state_flags;
 -- 
-2.43.0
+2.53.0
 
