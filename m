@@ -1,76 +1,48 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2613DDDC0
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 08:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86A1361974;
+	Mon, 27 Jul 2026 08:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785141530; cv=none; b=bP3mmhQ0LrTKHqVSMB1mbkZmrvV/u1nd1KYeeVpxvbl3fOOD/0RBrsWxyRHcDzugyQXvmRCsLQF7w0wbUhLgzDxHOSQpD89SyS/Za8m64Z7FHROzaOx913Z2zO9MLv864mfPgrnT+/QFHEvrPSqif+mJQ7ZVwaSZqIMSM76hRX0=
+	t=1785141534; cv=none; b=ZPHi1UVKIKErB0mL3L2cljzd1BXH7MCSyIA+FleeUIAamM6nL/escFAvAJMdX1PCiSXl6JOPaiQNJQt/kNdqqBdZxxU6KfBCIEsresBo9akvtHOxFEGEgLQ6MMGArVuzIJb9LK3/YXZ80Fl4iqwmo0prO5+kWIyAZuMcdMbymTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785141530; c=relaxed/simple;
-	bh=W6FrXsh9s/8l/JhhIJScPW4N6ImngJ8og0oYLvuLR1U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NQHGHnr0QbVtG2jSjuJa8J2jVZIeJIIuqVl7Tqc+6EPpNC7EeSZdnf3nwO46rT1UBbfuz6rW3tspluUBhyZvwje59QPpTdlXTfyelokf5imqBDc3rnvRbd+Tsk+jFfyUqUjryNDt0tJB7pY6rj+oXnLcAPCuogIlFtSDwPFy3R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eID9RiKR; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785141534; c=relaxed/simple;
+	bh=PXt+8MjJEqVoNZSSj5nMMvqwhGPbt8q2Ius9SofHVqA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=S6FZQ5h7AMGsZCnjPN5EK754GrB9dSadjW3ZYLuhtEunootonPc16JYLoimbZsThqKbBYKiHQFJTuW8Rnmh2pxfU/8v9/R31fWGBzlUIkNdGInttEU0wiDI3kC7XQUltxOC0G3DmdNc97GVUyulDIxU2ISgMZS/z6zHzXRoEqJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K96snuGr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eID9RiKR"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84861fc51f5so1752846b3a.1
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 01:38:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785141527; x=1785746327; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rq//a2+g1++ptwBRb4eMsVp2qBHE3j2AbugIHLKYR+E=;
-        b=eID9RiKRds5VwGhrv+rygZITRjEjlcYp9JCKm6U/MS6aKREsB8/JqGVngCLBsHgO3a
-         3IjWN2J+aOhMetuxHYQx4Cl3adqw4Q086tSGKQBzIgfwloh1bFP3Vdw8JAg3z66/zBHZ
-         VmfwNVeOtBmnwwB1Q3ww3DkWQX74eUZ0l3BFcDkEjjM11KhnV9DPnh1BGk2OxyRTpbKu
-         dctvcb2UW/71W6CzvKsNGI1vzXDuAy7Vup4SPY1ng9KjMa85+HuPLeRhYGoulaOEQoeZ
-         HNPFdMwZyJd1ohr71sH0EmP+pS75TbU6hRPWy88VU12SaStNEVvd20SU72bUKWJ4g83o
-         tZdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785141527; x=1785746327;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rq//a2+g1++ptwBRb4eMsVp2qBHE3j2AbugIHLKYR+E=;
-        b=OlIdPNphD2oTGUDI+hvigsPOcQ+a7c+PJpIUQfEKTYTqUqzHYchl/LNYT7wLv623Fv
-         OTmgzNoQp4jaL2bLr8CKB4eCj69kxcikicNTGgFE+oio747Fl3fKcY1riqSKl37qNzo/
-         q1yEaL6T78UXqtsQELGOHKXhKWVauLvxOhfKqNIqvevE6Qlyb4+eFTPSNxr1HLL8uojb
-         lDHgd5J8h0PXjyPQwh9mA8oUpSbDKJvgUqMt3hiGVkTO+wfAyHjskGKYsm8G/jgF2U/S
-         TNKCaSJSvXkLfiUFbUCdXG24TQOtQwGhpjIZxoIebxtyIaOLbt2zfE2if49rFPgInOj6
-         3Xbg==
-X-Forwarded-Encrypted: i=1; AHgh+RrJmcuykDbBguU790ygqPaI+eCoTeq4z1EafVu86WTuD1PWd4ZOlmgco0yW13KDgU6pafkI1TI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm9PJgRNXAUN0xVbKezIQJjQ4rtOvcrQ1UbGF2s8jKmBfOuqqo
-	chAZ4+WDWjyWKUaoZmLvqVUSSOMlbk5/CW+iAZ8mbIAGv8qNgOhouespwtiv4bnN
-X-Gm-Gg: AR+sD11vsAq31E5OjZm8GECVzsFnSt3xWeDspgWqQ6sBarhg0KfUmsg288ormZf7sLG
-	u3kkQvsa6w6KQYdTbfnS7r4pFB2qT9nJDqKBblIVDLXSy4/8LrUvgkJJw75FJwtuOQpNsrMNu61
-	KesvfDgh/dQ+TEFirPM2hSQCGkyZG2MCIGzmYa7BbO4viWYUbiU214N5zw6BxjobZuaTdmpAQcG
-	mZXfh66qfEL3tpi67vJCkyovuOdSfXvm20jGBuOEL0LxihRn90EnKHm5FwCTrw64CoNr15pRlwf
-	9AFvj9auPK0j2uT8MRolTglhHXgdah/MOPUEGgFp5oHPKy9UYQ5Oe7BeCOq0I9QBBfPfwCq6U0s
-	0U6aMKnDo+tCWD32N9PLejOukFKXj704k7LlF9SvXbcrOatHrMniGrJFp0qdbw/w9tu6iynCSsV
-	k7qDYa
-X-Received: by 2002:a05:6a00:981:b0:847:5ec4:9a1d with SMTP id d2e1a72fcca58-84e5958371cmr5655774b3a.62.1785141527264;
-        Mon, 27 Jul 2026 01:38:47 -0700 (PDT)
-Received: from kali ([42.112.41.244])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e5327f54esm2644997b3a.20.2026.07.27.01.38.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 01:38:46 -0700 (PDT)
-From: Nguyen Le Thanh Tung <nguyenlethanhtung555@gmail.com>
-To: Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-can@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K96snuGr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B461F000E9;
+	Mon, 27 Jul 2026 08:38:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785141533;
+	bh=214qHaKsK4amtX062wCoq/SQE3RaV1Z8rBCxzjwLx+c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=K96snuGrpqffihOEGZUS5yzjUyKH9GmWp9evaEgxeaLeCSUleoqBLXk1Ij0CSPSJw
+	 EWPFa3Og1OroO+K8JAFdwMNYKEfPO9e0UfgpkWqPvt0d1AE4HBogVDAt/xUOBILO3k
+	 6gCyKg/duQKQQl+4lq7vlYAxDpneGaVy4L+792/dHUurSHYi2J5ko0qXWKF/gVZD+X
+	 GktxKqXjpGcMFXDEjZyC/ls956VE9zHP8+xxqSKymex0rcfcP5F+HrOjC1zh0uOIOs
+	 f1VRjGH4HqJOQN44PSrinHQ3NTX0AOXX+YWtpMvquggQ/1Ay2AYIhcyaoOOszjJPSW
+	 XYJa1JU+2SGZQ==
+From: Simon Horman <horms@kernel.org>
+To: shuangpeng.kernel@gmail.com
+Cc: Simon Horman <horms@kernel.org>,
+	david@ixit.cz,
+	oe-linux-nfc@lists.linux.dev,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Nguyen Le Thanh Tung <nguyenlethanhtung555@gmail.com>
-Subject: [PATCH net] can: bcm: add missing synchronize_rcu() in bcm_delete_rx_op()
-Date: Mon, 27 Jul 2026 04:37:50 -0400
-Message-ID: <20260727083750.2057304-1-nguyenlethanhtung555@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] nfc: llcp: Fix nfc_dev refcount leak in connect
+Date: Mon, 27 Jul 2026 09:38:38 +0100
+Message-ID: <20260727083838.710246-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260720193759.1773705-1-shuangpeng.kernel@gmail.com>
+References: <20260720193759.1773705-1-shuangpeng.kernel@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,64 +51,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-bcm_delete_rx_op(), reachable from an unprivileged user via an RX_DELETE
-bcm_msg_head, unregisters the CAN rx handler and then immediately calls
-bcm_remove_op(), which cancels op->timer and frees the op via call_rcu():
-
-	can_rx_unregister(..., bcm_rx_handler, op);
-	list_del_rcu(&op->list);
-	bcm_remove_op(op);		/* hrtimer_cancel() + call_rcu() */
-
-bcm_rx_handler() runs in an RCU read-side critical section and re-arms
-op->timer on frame reception via bcm_rx_starttimer(). A handler that is
-already in flight on another CPU when RX_DELETE is processed can be past
-its RX_NO_AUTOTIMER check -- a plain, unordered u32 store set a few lines
-earlier in bcm_delete_rx_op() -- and re-arm the timer after bcm_remove_op()
-has cancelled it. The op is then freed after the grace period with its
-hrtimer still enqueued, so the timer fires on freed memory in the timer
-softirq: an out-of-bounds access that can crash the machine or disclose
-adjacent kernel memory. AF_CAN BCM sockets are reachable in a user +
-network namespace (e.g. over a vcan interface), so this is triggerable
-by an unprivileged local user.
-
-commit d5f9023fa61e ("can: bcm: delay release of struct bcm_op after
-synchronize_rcu()") fixed exactly this race for the socket teardown path
-in bcm_release(), by draining in-flight handlers with synchronize_rcu()
-between can_rx_unregister() and bcm_remove_op(), but the RX_DELETE path in
-bcm_delete_rx_op() was left unchanged and still has the race.
-
-Add the same synchronize_rcu() to bcm_delete_rx_op() so that no
-bcm_rx_handler() can be running -- and thus re-arm the timer -- once
-bcm_remove_op() cancels it and frees the op. bcm_delete_rx_op() is only
-called from bcm_sendmsg() under lock_sock() in process context, so
-sleeping in synchronize_rcu() is safe here, exactly as it already is in
-bcm_release().
-
-Fixes: d5f9023fa61e ("can: bcm: delay release of struct bcm_op after synchronize_rcu()")
-Signed-off-by: Nguyen Le Thanh Tung <nguyenlethanhtung555@gmail.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260720193759.1773705-1-shuangpeng.kernel@gmail.com?part=1
 ---
- net/can/bcm.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Now I have all the information needed to write the report.
 
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index 75653584f..25f868530 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -822,6 +822,14 @@ static int bcm_delete_rx_op(struct list_head *ops, struct bcm_msg_head *mh,
- 						  bcm_rx_handler, op);
- 
- 			list_del_rcu(&op->list);
-+
-+			/* wait for any in-flight bcm_rx_handler() to finish so a
-+			 * concurrent frame reception cannot re-arm op->timer after
-+			 * bcm_remove_op() has cancelled it and the op is freed
-+			 * (same drain as the bcm_release() teardown path).
-+			 */
-+			synchronize_rcu();
-+
- 			bcm_remove_op(op);
- 			return 1; /* done */
- 		}
--- 
-2.34.1
+commit 01a1553c1a8c5e891087997a8fe9ee0913eb3c57
+Author: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
 
+nfc: llcp: Fix nfc_dev refcount leak in connect
+
+This patch drops the nfc_dev reference in llcp_sock_release() when the
+socket is still in LLCP_CONNECTING, addressing the leak path where
+llcp_sock_destruct() only puts the device on LLCP_CONNECTED. The gate
+is keyed on sk_state at release time.
+
+Link: https://lore.kernel.org/r/20260707183518.1888697-1-shuangpeng.kernel@gmail.com
+
+> diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
+> index feab29fc62f4..0a3d87c2c9b3 100644
+> --- a/net/nfc/llcp_sock.c
+> +++ b/net/nfc/llcp_sock.c
+> @@ -633,10 +633,12 @@ static int llcp_sock_release(struct socket *sock)
+>
+>  	if (sock->type == SOCK_RAW)
+>  		nfc_llcp_sock_unlink(&local->raw_sockets, sk);
+> -	else if (sk->sk_state == LLCP_CONNECTING)
+> +	else if (sk->sk_state == LLCP_CONNECTING) {
+>  		nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
+> -	else
+> +		nfc_put_device(llcp_sock->dev);
+> +	} else {
+>  		nfc_llcp_sock_unlink(&local->sockets, sk);
+> +	}
+
+[High]
+Can the leak still occur when the peer answers the outstanding CONNECT
+with a DM before userspace closes the socket?
+
+After llcp_sock_connect() returns -EINPROGRESS, the sk sits on
+local->connecting_sockets with sk_state == LLCP_CONNECTING and holds a
+device reference. If a DM with LLCP_DM_NOBOUND or LLCP_DM_REJ arrives,
+nfc_llcp_recv_dm() looks up the sk via nfc_llcp_connecting_sock_get()
+and does:
+
+    sk->sk_err = ENXIO;
+    sk->sk_state = LLCP_CLOSED;
+    sk->sk_state_change(sk);
+
+It does not unlink the sk from connecting_sockets and does not drop the
+device reference.
+
+When llcp_sock_release() then runs, sk_state is LLCP_CLOSED, so this
+new branch is skipped:
+
+    else if (sk->sk_state == LLCP_CONNECTING) {
+        nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
+        nfc_put_device(llcp_sock->dev);
+    } else {
+        nfc_llcp_sock_unlink(&local->sockets, sk);
+    }
+
+Two things fall out of the else branch:
+
+1. nfc_llcp_sock_unlink() is called against &local->sockets, but the sk
+   is actually hashed on &local->connecting_sockets. sk_del_node_init()
+   still removes it, but the wrong rwlock is taken, racing with
+   read-side walkers of connecting_sockets such as
+   nfc_llcp_connecting_sock_get() and nfc_llcp_recv_cc().
+
+2. The device reference taken by llcp_sock_connect() is not dropped.
+   llcp_sock_destruct() only puts it on LLCP_CONNECTED:
+
+     if (sk->sk_state == LLCP_CONNECTED)
+             nfc_put_device(llcp_sock->dev);
+
+Is gating on sk_state at release time sufficient, or does the release
+path need to track connecting_sockets membership (for example a
+per-sock flag set at nfc_llcp_sock_link(&local->connecting_sockets, ...)
+and cleared on transitions out of that list) so both the unlink target
+and the nfc_put_device() are chosen based on where the sk actually
+lives rather than its current state?
+
+The DM-driven variant of this leak predates b4011239a08e, but the Fixes:
+tag and the subject scope this patch as the fix for the connect-time
+nfc_dev leak, so it seems worth handling in the same change.
