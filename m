@@ -1,161 +1,161 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42F03DCDA3
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 07:13:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785136395; cv=none; b=LSkq7sT/q1HbgvxEdz8V0OhMRoJSvschJdY8TeeONwvJxCMKtLAo+9JiPN5dL5gf12TICLjjh6vnJ/YmkWQu879Wct/Q2bi8YRknlFnCJv2Alj/yrBqc57iOkV20zHXKMUJWqXuHY4Q7rV+uGmV9QdNwKv6crCebzwGRm8z6wiE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785136395; c=relaxed/simple;
-	bh=QM05rrJY85zLcn+2ylIFOtVP0wce8tYDJfOmna9dsgY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bSo8YU4pnOy5xkTSKomR8I3UmVNyz6F4gRYxC6Wg1zLLFSjyzlFan64SYKkOgv89AKd5FEqEt6m3gcYQTDVjC89mJZBRhRplvBgC7cg3kqFGIw8tQvuRJJC6YYEHjP3n/MzJ942FqJMTsCFVcHwMzkSJ2Rz1UJZiA0Oagm8gu0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=amvpdB3C; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149AC3DCDA7
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 07:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785136475; cv=pass; b=NQp2qMjpJd9IM6NTsiZC++1zwa/ku7Z+mQz54eOeRXc01+jOd28qyMsteGMFSv8fhIPJmKIx7VMrZNWfe3AAZA9vxvPISn4iJzl5ckXa1QhWVMj8AGZU8Vuq0LtJSa5FZbCGOAwIY8ykRy0uwf9tWP90bGaZt++djxv3sLADXW8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785136475; c=relaxed/simple;
+	bh=6DQJFvDiJ28dVkS82oPqp/ycFEM1kxGwvdKytkDLGJs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VukJ+gHCPaX8k4hfjURIhAsqJdr6iLXnB/z7MmNyVWKtqQpT/6RZQyeid2UmxkJqHcxN1Cx/TrgNiF8cSfMZoKYaj5t8Bh6163/mZi2CljXjC2cXlO2MxUq9Bpxnm5GrRFjjuiizmHY6sAq7aX0YtZezepLaA8O6arI+2FgSw54=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HeAO5kro; arc=pass smtp.client-ip=209.85.222.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="amvpdB3C"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso1695469a91.3
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 00:13:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HeAO5kro"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-92e5d6f35c1so203774385a.0
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 00:14:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785136471; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gEF13F2cjU7mt83HRuFz+jY2UB59kHbUe0P3FvkPMfRsokYjqiDho4Rp+MH5alKGuv
+         5rfKDTIhX1AjN+0M4GHgBpcuisWLpS/uIfWim3kyNrXozxLg5Uq2tIRYWCdXeYhM3SRZ
+         PbwGbLX10t58VXAvYPZQyK6mmbfKUvAA7K1RlgUjZt8q78ZDaxFxWdH2sS5nBbQvVUEx
+         gNq/VJdufCiWBpfJmIjCICFXKuYZS3gn23+tf8HLcJesEtdHA/xSNlPK/SkCa4Rmbf+2
+         CsnRBOcZcFEW8v0KsIcqVceQo5LVLc7rtwMh40oeH0LomteHH1fmrzopMDSJQmzyB/5y
+         n+Ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+/mmi/yKE1XX17GxFkgO2afry/vumxMd+JoqMLh+sdI=;
+        fh=fOX9hR5z7dVD7i5VshHMhn98qEMwoVZ7Q2iKUqWn7dk=;
+        b=hvEZDoo7XJ/oyczz1kU7UFo4xPYPz1MKYLuzNfnDpwKDyx+gU0KI7yfM1JiAcHCc83
+         clwcnXXTSPe+UpOkjgfs6h41V3pejyL9aaAlwcdbA8PutKGbM+m47GbteV6E6IJXITuM
+         3k8qGPK/ojDNRJEXBCAy5E8MnNY1cBYdDG9h24AVJdgwkgLDeTGo/zt64SvyjNL+AR3K
+         U4BX9Fnq6WDRhLEw9RrJrEfY0njJqoaTZIMVcCnF8jxIxHDKuxWQTGVSmHka/hNbyQz0
+         EnQ1y4AmOgparnUtRUr7F1vY4rLsFmZAW+N+7anW6yTRNLFiEhLg3MhX+q9hkqzY0mZS
+         LuuQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785136393; x=1785741193; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pHnrV3czUGHVnAIuseNPjMPOG4r9Mq38crYmq8Ga0JE=;
-        b=amvpdB3C5gQ1az/5E7tcrAyyjlPhFVFe02tNZjqt9BBrL10/SReckUZsuo/XH1Rel6
-         hN485LDv+xBdY/Cy7h8YLZmzl0gyI0c71rJldARyyjIuKVarx+lVHaxrSMqIBjhtNHLF
-         aYJDTVDch7pOPzKSJ96XHtuzjHAJq+oCUmIqNQV1Asds+jQ5J/qJ9vLnkUf5u6zSwq7t
-         2cGkFziUYvsDTRkijL/B7cf1Jybw5ei2IbtK1VQDpJI0NyAWq+4lLSuQb+N/anFR+l+x
-         nRow0mA101WPDDpyLy90c/OJArZ3jxg5rDZ063HQF9D1COBRvy/TE/XqzXUgvSGJyskX
-         +wbg==
+        d=gmail.com; s=20251104; t=1785136471; x=1785741271; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+/mmi/yKE1XX17GxFkgO2afry/vumxMd+JoqMLh+sdI=;
+        b=HeAO5kroARxCWgCvOdv52davu2OFeefaVb/kJr37JGMvWxCKIwsbr3/8vxwRc5OOVf
+         XXd8phVPq2CS8E826SfCFzQCXvROTppQjcD3hFUXxkVrx56t2UCCD+ysWQ30PgW+HhxE
+         YuWcYHJCSjrOhDut0/k7H+9RrBEDzYoCaBiDYFcT8PDyc9bG8UoS0AAq45a0R3872y9H
+         qEksfrZGsFRwf88id4zAAYooJ+J3zIiRQss6QiauUGacdF86lSHyFPxcfakGYZLbYr6b
+         OuFeJE3L5DW0aAxn0YWx0idzDzYRADS7cz+g5qPdJF79SOUE+y2l9iiloAHyRVysBu5X
+         hHrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785136393; x=1785741193;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pHnrV3czUGHVnAIuseNPjMPOG4r9Mq38crYmq8Ga0JE=;
-        b=cNzGWXj3CRRPedlKg006dwphTprq6Kk9EDZdUn1t8X4Ogbvkw412+2/vTi90Wt3x/9
-         DhovvPgzbkyk9j6EMOkzXHIJcJw3/a8DY8xJ9EppmjcV+Ri8jl//gnbeTr0SLwswmna6
-         mutCiWT6EFkfuW0wn4NfYvLKTxk6inUqmfJjDz5ZjQncbUgbrBi+1pyNEd1SS2TNANIO
-         9iYThGAU8f3sABwXNd9tJcnO22VYA902ILqjAqlnJrTv1YrIpRTPMTqCsT9vFulZLP4w
-         0StVgwmFAHgA6OOLbCs8x3y7lKT93ZovMGmQu2gM1VNmCp+r6g+tT8EAvdeuKAhoDmyQ
-         7M0g==
-X-Forwarded-Encrypted: i=1; AHgh+RrfBVkm7odhLXSMD1Ep0JeeDYEJ/sUgZPzFmDdBcK7DP2C9kCDt0bwFJu+wo5iJiQAQRBPagiI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXhBN6VCa/pYFH17qjkPrAoxSyx/g0OZg5wrawcmSE7upprBrU
-	sIU503djuhRXZM5GtEJj235daxR+eAIubW9vklqXRi1fn5ufd016kbdb
-X-Gm-Gg: AR+sD11XlsLUHXn0mqE2lspe/ZPVanl8os7pRCqeOpWgYU5IZyS0zdxEQ7koHX7Esjn
-	3LrMmIihlFUpA3AFVmsekJdjSxq5/jNjO39MP9xs5h0YrKCUEoTMi119yV1si4acyAVfik7Rsmu
-	9e7vsNNBaH9EvW0AfCyjZl4cmVxHR8/z64VX5fskJxFZVU4QGUOOtiJ+gr6c8H0e4UrBPj4iMyr
-	S59el+Ui3dNuCnCT8kBlx4bal8MOP7r+ZE2bEyiIS5cmlIQt5lBZvmxpO7SEMlvRksJ0n3CHL+M
-	xE83SSWh5y4XBN0ojsDw+WC6oGVpZrhSmqEzwlNuXNPeuJ7Q0EauOf6iWEZbnHVEq+Y1obnOtL+
-	RHgmheEIiqQP0/krt1h3ydLKnrQFV9n9z4XTkfzQATFbtKMl+mmxFCAMtttkf/WAzC83jO7A+bc
-	vpbeBK38wXSBB78A==
-X-Received: by 2002:a17:90b:4d0f:b0:381:28e0:6259 with SMTP id 98e67ed59e1d1-38f293caaddmr6801135a91.9.1785136393137;
-        Mon, 27 Jul 2026 00:13:13 -0700 (PDT)
-Received: from localhost.localdomain ([147.136.157.1])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-38f08968de4sm3238840a91.2.2026.07.27.00.13.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 00:13:12 -0700 (PDT)
-From: phind.uet@gmail.com
-To: Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andy King <acking@vmware.com>,
-	Dmitry Torokhov <dtor@vmware.com>,
-	George Zhang <georgezhang@vmware.com>
-Cc: Nguyen Dinh Phi <phind.uet@gmail.com>,
-	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] vsock: use sock_error() to consume sk_err after a 
-Date: Mon, 27 Jul 2026 15:13:02 +0800
-Message-ID: <20260727071305.45826-1-phind.uet@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1785136471; x=1785741271;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+/mmi/yKE1XX17GxFkgO2afry/vumxMd+JoqMLh+sdI=;
+        b=lvxW5fIjdEzxaQR95X2lK1yIH0F0RqsUgR3JnfDVtZB0M4tcu5+9k6/57mMin2M+FL
+         O4Y0QDcnoLJ4DFmfI4DgJp0CUEmILogJE8CrNrhvmohadXjLK/GF18bOXpsABp52ACSL
+         gSfb224TAiw6dksQum46owsoXyNH3AHe0qRr4Uk8TZjU3cwz12CwlS1wgFLlttECj5yy
+         QtvpwEGTXgcALjlS9BGsxnEmP4W3vFwRU93zcFFKpNTd8vv1JCO5HsU4i2McItsdg7u/
+         KTbRKHs28zPKgmE2eWIjAz8N0lwF2YG+tsRq4DNBmMwnQbfsnMlx+1tFGMU1bx0hNlsG
+         3CjA==
+X-Forwarded-Encrypted: i=1; AHgh+RqU2dSM0LkYv+FfPIQnaDoV5E2P6ultgEO9qzZr7W6jKl/EV65QIZrZ1nYbtoWEFFo45HJNlTs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJpycx21UnadyUPXtWxGC+UfU5jWD/fx9N92ObmlR7Ktr2OfRX
+	tI9LAIuPpHGpoQ+Qj5LgZA8cWXfaLe4b7aiQUDzreGbFbIDINDoh/QJKbDVEk1iXDRoYH2SJjhF
+	f4mfCAJeP1P9XdzBqQ8B8eBEqLHoHPoA=
+X-Gm-Gg: AR+sD13+yOV3QbWPYP+81iTaPu/6WmpmnKcysvJbl/+FSiU3bfsuTnZyRK/dykMaDn5
+	eZb+Og9blCgfAyrPPuPPLFQPQ0QtP6oNCNhAZ7REiWXENAYhmh0iSgaKT6kYSrFvmgcZ6BQaU2C
+	P9zAWc9hIYhUNiJhMih5VjmKWOiUZd73afmGAW3+Uokuj751sEtYdKe3xfBX8ZtoqRv7Dw7BanZ
+	REFBd0tDq8sCWUDL6Yjwjuv96K5DbiPBmC8OVPFxWf/PWFWJkGJwGip6woxQtbvpyywbzk5pzcC
+	oREt1lFkCywL52WrKg==
+X-Received: by 2002:a05:620a:271c:b0:92e:c118:18b0 with SMTP id
+ af79cd13be357-932df725cdfmr696946585a.79.1785136470873; Mon, 27 Jul 2026
+ 00:14:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260727021048.3375444-1-attinagaoxu@gmail.com>
+In-Reply-To: <20260727021048.3375444-1-attinagaoxu@gmail.com>
+From: Alexey Charkov <alchark@gmail.com>
+Date: Mon, 27 Jul 2026 11:14:18 +0400
+X-Gm-Features: AUfX_mx7QqYbJPKColdFHefAnfy7L2wNcFUU2ZgtkbVju2YipXpKoC8heF-3qZs
+Message-ID: <CABjd4YyohxfbVufd1pwJGsm8a8f3Cm6rJiz=WLz=jBjAQRLj4A@mail.gmail.com>
+Subject: Re: [PATCH net-next 0/3] net: stmmac: dwmac-rk: add RK3576 GMAC 25M
+ refout support
+To: Gavin Gao <attinagaoxu@gmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, heiko@sntech.de, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, mcoquelin.stm32@gmail.com, 
+	alexandre.torgue@foss.st.com, richardcochran@gmail.com, 
+	nicolas.frattaroli@collabora.com, sebastian.reichel@collabora.com, 
+	sashal@kernel.org, chaoyi.chen@rock-chips.com, amadeus@jmu.edu.cn, 
+	rmk+kernel@armlinux.org.uk, horms@kernel.org, alok.a.tiwari@oracle.com, 
+	david.wu@rock-chips.com, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Nguyen Dinh Phi <phind.uet@gmail.com>
+Hi Gavin,
 
-Syzbot report an issue which can be reproduced with these steps:
-   r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
-   bind(r0, {VMADDR_CID_ANY, PORT})
-   connect(r0, {VMADDR_CID_LOCAL, PORT})
-   listen(r0, backlog)
+On Mon, Jul 27, 2026 at 6:10=E2=80=AFAM Gavin Gao <attinagaoxu@gmail.com> w=
+rote:
+>
+> Hi,
+>
+> Some Rockchip GMAC instances can provide a 25 MHz reference clock output
+> for an external RGMII PHY. Boards already describe the MAC clock directio=
+n
+> with clock_in_out =3D "output", but the dwmac-rk driver does not currentl=
+y
+> request or enable the corresponding 25 MHz reference output clock.
+>
+> On RK3576, this means the REFCLKO25M_GMACx_OUT clock may be disabled by
+> the common clock framework as unused, even though the board expects the
+> GMAC block to provide the PHY reference clock.
+>
+> This series adds an optional "clk_mac_25m_refout" clock name to the
+> Rockchip DWMAC binding, wires it up for RK3576 GMAC0/GMAC1, and enables
+> it from the dwmac-rk driver when the MAC is configured for RGMII output
+> clock mode.
+>
+> The clock remains optional, so existing device trees and SoCs are not
+> affected.
+>
+> Tested on a PicoCOM RK3576 ACP board with a Motorcomm YT8521 PHY.
+> The GMAC 25 MHz reference clock output remains active and Ethernet works.
+>
+> Gavin Gao (3):
+>   dt-bindings: net: rockchip-dwmac: Add 25M refout clock
+>   arm64: dts: rockchip: Add RK3576 GMAC 25M refout clocks
+>   net: stmmac: dwmac-rk: Enable RGMII 25M refout clock
+>
+>  .../bindings/net/rockchip-dwmac.yaml          |  1 +
+>  arch/arm64/boot/dts/rockchip/rk3576.dtsi      |  8 ++---
+>  .../net/ethernet/stmicro/stmmac/dwmac-rk.c    | 33 ++++++++++++++++++-
+>  3 files changed, 37 insertions(+), 5 deletions(-)
 
-   r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
-   connect(r1, {VMADDR_CID_LOCAL, PORT})
-   connect(r0 -> self) -> -1, EPROTO
-  
-   listen(r0)          -> 0
-   connect(r1 -> r0)   -> 0
-   accept(r0)          -> -1, EPROTO
+Can you please try something like this [1] instead?
 
-Basically, it creates a socket (r0) and triggers a self-connect after
-binding it. This self-connect fails with EPROTO because it loops back to
-r0 while the socket is still in the TCP_SYN_SENT state, causing it to be
-incorrectly dispatched to the connecting-client path. The unexpected
-packet type encountered there sets sk_err to EPROTO.
+[1] https://lore.kernel.org/linux-rockchip/20260719034555.3623003-1-gahing@=
+gahingwoo.com/
 
-After that, it invokes a listen() call on the same socket. This listen()
-call succeeds because the kernel's listening path never inspects or
-clears sk_err. Then, a new socket (r1) is created as a normal client and
-connects to r0. However, vsock_accept() rejects this incoming connection
-because the listener's sk_err still holds the EPROTO error from the
-earlier failed self-connect.
+The GMAC on RK3576 neither produces nor consumes the clock. CRU is the
+producer, and PHY is the consumer. So the GMAC driver shouldn't be the
+one to enable it, nor should the dwmac binding have anything to do
+with it.
 
-This rejection causes the child socket created for r1's connection to
-never be freed on virtio or hyperv transports; only the VMCI transport
-implements pending_work to revisit and clean up a rejected socket
+Have a look at how other boards already upstream handle this. For
+example, the RK3576 EVB1 uses a similar arrangement but with a
+different PHY.
 
-Fix the issue by using sock_error() to read the sk_err to prevent the
-rejection branch from occurring  in this scenario.
-
-sock_error() atomically reads and clears sk_err, ensuring the error is
-consumed when vsock_connect() returns and cannot affect subsequent
-operations on the same socket. This matches the established pattern
-used by other protocol connect() implementations in the network
-stack like __inet_stream_connect(), tipc_wait_for_connect()...
-
-Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
-Fixes: d021c344051af ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
----
-V2: Add reproducer steps to commit message.
-
- net/vmw_vsock/af_vsock.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 622dbd046799..43eddc33ed12 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1847,14 +1847,11 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
- 		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
- 	}
- 
--	if (sk->sk_err) {
--		err = -sk->sk_err;
-+	err = sock_error(sk);
-+	if (err) {
- 		sk->sk_state = TCP_CLOSE;
- 		sock->state = SS_UNCONNECTED;
--	} else {
--		err = 0;
- 	}
--
- out_wait:
- 	finish_wait(sk_sleep(sk), &wait);
- out:
--- 
-2.53.0
-
+Best regards,
+Alexey
