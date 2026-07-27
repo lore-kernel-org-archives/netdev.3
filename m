@@ -1,67 +1,35 @@
-Received: from mail-wr2-f0.google.com (mail-wr2-f0.google.com [74.125.225.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23264433BCF
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 18:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CF1422E2E
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 18:30:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785176361; cv=none; b=T28ELSVP8eHkhCg1AVAf8IYhz4IoEUSg0Whod2TqGQKy0wQWl0Ymu61da0iLr27GrDdJm4i31BZ9cEF8mVNYX+8KoJEXmU54GGnqxB/wgFojG9X2FlmiWz+Ld0Pssi1JA1/p4T6V/szz3mFl36f8cFD1Xvs1ucsQI8qExzaMq0o=
+	t=1785177041; cv=none; b=WrWgtjQjg1ojmNbMK3Dqh3IgbvwxQUezWKhzw02ZOyzGLSR/tKI2EEAmhL9Dr12CK8O009OskP3iylsmskY47UJG8ndKSBAPs0naTH0ITwt+ap0ugMK/V2hXUCMU0aL3evkU66zIKYlWo6nGHqBgWClpzjD2E1/O3EOWSx/QIrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785176361; c=relaxed/simple;
-	bh=SXJDYsUmv5JMg6/c+xr1owdcCtCJpBAOMTufeVNb10E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WGdqtfhi2970LabFQAOeokB4vdfcSwWze2OM8cTHs9CZYqnRukVLZ0x3T0vLvNyzBd3hblAKC6VbKNdqw3C8j+Wn6fPFNCllBDpL6YYdCCcvYsywz+6P7R6ujw76yLcAhpQdEC8qEr/tZrizmPKI1Mlf4XtNUXEXOdy64dYgBzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr2-f0.google.com with SMTP id ffacd0b85a97d-47f8fd5f16aso1409799f8f.0
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 11:19:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785176348; x=1785781148;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PD3b+WprHse+odXNf+PGGAc9NxDJ0EKmW2InjOb5Vco=;
-        b=DfEZbiDL2WqWLUog77AmZd/LqnLH/qZPkEaxL6nHurQj1hivUYYT7RfVLSJi/FCpsd
-         1776zEIAihFiEfNUZTdGHmQYmKGzwSXaQEzC2wofZRhkqY0ZvCmmsCh0QJQ2uhunsb1g
-         g+RwBcr0R7/7I1DyAcLwZyYd6YzZXVkUGBGD4I4NMOjXe0Rl+7S9CuPnG8MlwD4H2yzt
-         ZllAepzKvjK776Pi+X1pekYhOAsOkFKu1ngNwi7WBWHCDGwc1mjmOy7Ma2UqnLKA40T+
-         69XIuAa/qgq80QQsef2RAcaU9CBR5FMcLyoZ5f0Ubn10phhATIDHojnczvUULx9JHSCr
-         XLHg==
-X-Gm-Message-State: AOJu0Yy5pgVLUBonSBzMMJNQWFlmm8ChDqCgxC1mxM5bHB2ryolno3pU
-	L/JZMXTpU06aGL46utdsB45NItHHFvpPxlMfWZYMt6lYWEo7P8QEMItwvrJjGvTt
-X-Gm-Gg: AR+sD130djMa+J8N1FWF9/gBMKW/CBEF6B75NujJ/UbJ25ss3A1CFkBy5z/LFXFaaII
-	JKYYnlIA47lMa06m3PzS5c4aqlqkccixLvaVuvaXATr7wLfaclvetwF8fkF2mIaF0meK7EXjixO
-	GXl6wHXG9XKm2RjWEwuml1tr0jk4ZWFAR3Vg9g4GySElia+YgPORbHV8LkskCUJgPH/EcRujQtw
-	9snN6FqN+lCqqfrHHho1tflNzitfJwNpLD00GQ4M+5rNd25SUfDwa+P6XkJOXT5JjWu/O6AbZN+
-	ClYmo6d0fh6tRwSzmYW9yVk9EHxAPfqSvBq2LokzbMmqGCJ/rQfUzteKaoUJ1gCJRll76E45bnZ
-	91B8xv7m6jtl/wSTlMzkhFESw2k6BHCjplXJaWWWYc4SEAWCChE4nT4fVzcXvwByn08qIPYxg7j
-	g6g1k1SQft7m71+xFU5yhCdAt1QccMTlV0fd8jVtVxDdQ=
-X-Received: by 2002:a05:6000:4b13:b0:47f:9629:b897 with SMTP id ffacd0b85a97d-47fafa7895dmr293725f8f.49.1785176348234;
-        Mon, 27 Jul 2026 11:19:08 -0700 (PDT)
-Received: from im-t490s.redhat.com (78-80-108-129.customers.tmcz.cz. [78.80.108.129])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c52fc0sm51042855f8f.23.2026.07.27.11.19.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 11:19:07 -0700 (PDT)
-From: Ilya Maximets <i.maximets@ovn.org>
-To: netdev@vger.kernel.org
-Cc: Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	dev@openvswitch.org,
-	linux-kernel@vger.kernel.org,
-	Ilya Maximets <i.maximets@ovn.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/2] net: openvswitch: fix skb leak on flow key update failure during ct
-Date: Mon, 27 Jul 2026 20:18:31 +0200
-Message-ID: <20260727181851.306076-3-i.maximets@ovn.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260727181851.306076-1-i.maximets@ovn.org>
-References: <20260727181851.306076-1-i.maximets@ovn.org>
+	s=arc-20240116; t=1785177041; c=relaxed/simple;
+	bh=g/1qYHzNy1Ze+aiwy+qlAJMvQCT06RuLaP2YxJ50lxE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=NZUg0fGswgdHZcSPl32bOxQ0ZvPLwicRUxABe0PyBBEvX451Pq2qjr7sM3qGqk9Ptl83G0W/xYBR33G4JpXzQXqU+Azj5sqs2FAshqpaYExZm1vzJ5xY1efHMK/w22tQvj90qmXgNKoPrCh3lYB6JLrsJ/glot2dR+KEMjwcmd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BCZPqzg0; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BCZPqzg0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779C81F000E9;
+	Mon, 27 Jul 2026 18:30:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785177040;
+	bh=v84hRnJ2CdK3Rg5JmMHOaJbFO1Kq/dqn8uyVU+dT7t0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=BCZPqzg07ZCvDAgZTx5a8ZoOZMt1G4rtC7wGSEdJ+L8zYpVYRxlm12u5HXvSKRjFG
+	 VA8HNW0LGo6nlYEzXghyDbSAG5mhx0BkZwl0ZkV/BLJWuOg5FD4Mv9DbWGYAyeVGh0
+	 IehlIFcX9pIKBUOBdTBl6m54HsCvCV2ayegXpopI6iFylTblTIHF02bv7FtpbF2Brm
+	 uglwT19vkmJXKbf8OvDyKe+uH/PjOqcc0FVBMKRkeBvHfVh7/MTI+MIM/jSLppxGrO
+	 o5qNLCjU4KfFgR7USh1cHDbplBVzUB5htDHFKLg2aodW6EzKuojL91DfZbJDCiCqV/
+	 FHP4oqIiz+YHw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197D7380AA77;
+	Mon, 27 Jul 2026 18:30:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,40 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH iproute2 v3] add print_hexstring helper
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178517700564.1360613.12711040299075285397.git-patchwork-notify@kernel.org>
+Date: Mon, 27 Jul 2026 18:30:05 +0000
+References: <20260726155004.75719-1-stephen@networkplumber.org>
+In-Reply-To: <20260726155004.75719-1-stephen@networkplumber.org>
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: netdev@vger.kernel.org
 
-ovs_ct_execute() always steals or frees the skb on failure while
-ovs_flow_key_update() does not.  So, if it fails and we return right
-away, the skb ends up leaked.
+Hello:
 
-Fix that by breaking instead and letting the common error handling
-code at the bottom of the loop to free the skb properly.
+This patch was applied to iproute2/iproute2.git (main)
+by Stephen Hemminger <stephen@networkplumber.org>:
 
-This is a very unlikely scenario as it requires the packet to become
-unparseable by applying a set of actions on a previously parseable skb,
-but should be fixed nevertheless.
+On Sun, 26 Jul 2026 08:50:04 -0700 you wrote:
+> hexstring_n2a() writes into a caller-supplied buffer and silently
+> truncates when it is too small: the loop stops once fewer than three
+> bytes remain and returns the partial string. Callers using a fixed
+> SPRINT_BUF therefore drop trailing bytes for keys wider than 31 bytes.
+> 
+> Add a new function print_hexstring() that formats and prints a binary
+> attribute in one call.
+> 
+> [...]
 
-Reported by Sashiko.
+Here is the summary with links:
+  - [iproute2,v3] add print_hexstring helper
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=5696fee4c69f
 
-Fixes: ec0d043d05e6 ("openvswitch: Ensure flow is valid before executing ct")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
----
- net/openvswitch/actions.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index 5653b6642e10..0500939cc8d8 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -1380,7 +1380,7 @@ static int do_execute_actions(struct datapath *dp, struct sk_buff *skb,
- 			if (!is_flow_key_valid(key)) {
- 				err = ovs_flow_key_update(skb, key);
- 				if (err)
--					return err;
-+					break;
- 			}
- 
- 			err = ovs_ct_execute(ovs_dp_get_net(dp), skb, key,
+You are awesome, thank you!
 -- 
-2.55.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
