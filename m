@@ -1,173 +1,102 @@
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFCC379990;
-	Mon, 27 Jul 2026 14:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=103.117.158.91
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785161863; cv=pass; b=PSqwym56don72O7gfAM8YaWgbDw0Xy1QXO5+K3e5Nl8kYQP8GuSZIIXM5R1eZfLI8SSrSIwdIoDa7eAFE6nkRiF0sRVYg7oDtlfFCKmIq9se7dqbIgSz41rOabkp8pj7b1aRXiwuMH1WMowXyIfXgYrPDEQCPVeV1R9zhM9MuvQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785161863; c=relaxed/simple;
-	bh=9+wN2OP+VN5YRtn4mhF1EF59I/ceBJXoESFcFVuCH8Q=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=lzhvUo5TX6/pcH+u6f4O1BgiiSeBtx0YbSsmi8YmiZdGdp9JNP2Al02V9zyLjjKwbkLE/twzAIFhERavKd3AQToBCHBb13OxV5utqUH8U3D0B0+YFLiZGzJ6ndY6QxWbS71D2C6ITsqEyDp5MyuhK9N9es3mC/S7OykUs79T4sk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in; spf=pass smtp.mailfrom=zohomail.in; dkim=pass (1024-bit key) header.d=zohomail.in header.i=linuxuser509@zohomail.in header.b=v9sGYDEg; arc=pass smtp.client-ip=103.117.158.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.in
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FC73845CF
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 14:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785162230; cv=none; b=URajJ8hJJJJVOBbG0Zpwv6/laGagqayLi3/SEK1o7C+Bd/sZlLLkuXCnr6Lss6ZCg66v8HVtGzXQx39OQjhX2Y1aaJwGADvq3U0wZZxXXFDtrffQBJ7HFHur8AHuMUoSlw5PJ/0Jubyg8eW0wy9jjyLTiJye5XH+QPtFsSoSnD4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785162230; c=relaxed/simple;
+	bh=zWNmRw0tdrfgtF8saqtc0jjAxfPd6fmLK6erat3inE0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=htgQcfTL/0QbTa5Xgk1jso5ysweUzSpiOufTLiIlM4i/KfVeG4o9kagD/GHDFZBhpA8gOEHn6934DrfoJE9qjwD32i4DIkIArr6wtzHGCSmBJf0OVI152CXOfRZ2DH4sB3fnke/wul5aUrjsVJGB/Lxej8djinwOLY1jAEl5uEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=eHFArjdR; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.in header.i=linuxuser509@zohomail.in header.b="v9sGYDEg"
-ARC-Seal: i=1; a=rsa-sha256; t=1785161855; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=CUWSggHXLqM8E10T1VtM9+98qDHB5d5qyNYILpvD0S7N5O2RFZ3cb6oSz+fcY6AkoIfZsiKYk5d63QsfTCgx0BM1H1f/XuNcKy8ZHK73DG3hRCkefLbs9EhHWp60Bg0XJSVe9GzF9wYsYX2O5vt/H3eUaijna/aawFIjWMoO7Q4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1785161855; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=T9hHBHR63j1NMl1lY512Q03I0uaCkxsT4y3nIXMLuR8=; 
-	b=JoAIUKuOW6CeNYaup6ma6H4ls0PA4diq6CssG5uT35BcEklXrvMhRQhPs/yR+VIf9PTn/xWgWNSFaCntaSUQZh+JzFjFQFOoreZFi1XILUUeL9d00+JoIcPZMQVIBihuixgMVi+dKyvWV5BcmLhoeD4lbShP9TcVpyx/QKjxVoU=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=linuxuser509@zohomail.in;
-	dmarc=pass header.from=<linuxuser509@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785161855;
-	s=zoho; d=zohomail.in; i=linuxuser509@zohomail.in;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=T9hHBHR63j1NMl1lY512Q03I0uaCkxsT4y3nIXMLuR8=;
-	b=v9sGYDEgaLZAIyL02VmqSYhemBKUA2hc7IkfEVBm4ghzvS28xvS7czUDnwl19Ecu
-	1v6+r0lmwLq0VTziq57YWgNOX5h4wqa+YpPl2ubmNWpwWwesTn5+njkBCOedP4lTRuK
-	V3SmiBPgObskSg5cZ6EP7UlDw4fDibYb8cWIW5ps=
-Received: from mail.zoho.in by mx.zoho.in
-	with SMTP id 1785161853152548.8193999763087; Mon, 27 Jul 2026 19:47:33 +0530 (IST)
-Received: from  [152.57.173.177] by mail.zoho.in
-	with HTTP;Mon, 27 Jul 2026 19:47:33 +0530 (IST)
-Date: Mon, 27 Jul 2026 19:47:33 +0530
-From: Ashwin Gundarapu <linuxuser509@zohomail.in>
-To: "netdev" <netdev@vger.kernel.org>
-Cc: "linux-usb" <linux-usb@vger.kernel.org>,
-	"linux-kernel" <linux-kernel@vger.kernel.org>
-Message-ID: <19fa3f028d9.fe65e7a4540.8296440890414077743@zohomail.in>
-In-Reply-To: <19fa3e79cfe.894831784405.7828961255432177577@zohomail.in>
-References: <19fa3e79cfe.894831784405.7828961255432177577@zohomail.in>
-Subject: Re: [PATCH] net: usb: net1080: add error handling to
- nc_vendor_write()
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="eHFArjdR"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id C99C66018F;
+	Mon, 27 Jul 2026 16:23:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1785162225;
+	bh=b8PqiTTkmEl9nyriMpFyyfj2wkHdNtBSiU5R8ZC/vCA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eHFArjdRAa5gKAHJJ9pFCF2bJtk8+0ZA54w9gzNHLkbvSzATTR4o8v5j2x9wT5A57
+	 aAF1cYCs1N9m4cmVFVLHeXU4dP3jkACb6DgoTdJimPAPaFHJGZyT6kYfNC5rrTeyKw
+	 xDBX5LPjRl5XSrbE1GFazl4+DC1Pz4E8W8IWInmYqUu557iYNZdr6O5WVWlcDbu6fi
+	 L+Z8ZZeAnWTcB2XbyXD5xg1JWHlKsmUFtUc+vW0lmk03hJ5JgQHS433Stxq3+PBsZa
+	 fzoDqRG/2hPTLUqBneYqb/lUkaQcV4jpuNQP4Xgc+4Aj/g7vIHzg/gELKkhC4du0g+
+	 ph+9KD3CGN5oA==
+Date: Mon, 27 Jul 2026 16:23:42 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: devel@lists.linux-ipsec.org, netdev@vger.kernel.org,
+	tobias@strongswan.org, eyal.birger@gmail.com, antony@phenome.org
+Subject: Re: [PATCH net-next,v3] xfrm: allow to enable udp encapsulation
+ without userspace socket
+Message-ID: <amdp7nY5kjatDzVx@chamomile>
+References: <20260717110118.251866-1-pablo@netfilter.org>
+ <amdJCg3QqOrO_4Bx@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <amdJCg3QqOrO_4Bx@secunet.com>
 
-From 70278069430a8b7d71728bc3c24400dc2bdffb63 Mon Sep 17 00:00:00 2001
-From: Ashwin Gundarapu <linuxuser509@zohomail.in>
-Date: Mon, 27 Jul 2026 19:34:16 +0530
-Subject: [PATCH] net: usb: net1080: add error handling to nc_vendor_write()
+On Mon, Jul 27, 2026 at 02:03:22PM +0200, Steffen Klassert wrote:
+> On Fri, Jul 17, 2026 at 01:01:17PM +0200, Pablo Neira Ayuso wrote:
+> > It is currently not possible to enable UDP encapsulation in xfrm without
+> > a userspace process that listens on the specified UDP listener port in
+> > the SA.
+> > 
+> > People have work around this by creating dummy userspace daemons such as
+> > the one in the smallish perl program (see the script at the bottom of
+> > this link):
+> > 
+> > http://techblog.newsnow.co.uk/2011/11/simple-udp-esp-encapsulation-nat-t-for.html
+> > 
+> > This patch adds XFRM_SA_XFLAG_UDP_ENCAP_SOCK to create the UDP socket
+> > from the kernel.
+> > 
+> > Use a hole in net->xfrm to place the new encap_socket list.
+> > 
+> > The following example shows how to enable the standalone UDP
+> > encapsulation:
+> > 
+> >     ip xfrm state add src 192.168.10.10 dst 192.168.10.11 proto esp spi 1 \
+> >             encap espinudp 9999 9999 0.0.0.0 \
+> >             if_id 0x1 reqid 1 replay-window 0 mode tunnel aead 'rfc4106(gcm(aes))' \
+> >             0x1111111111111111111111111111111111111111 96 \
+> >             sel src 10.141.10.0/24 dst 10.141.11.0/24 dir out
+> > 
+> > and the receiving side uses 'extra-flag udp-encap-sock':
+> > 
+> >     ip xfrm state add src 192.168.10.11 dst 192.168.10.10 proto esp spi 2 \
+> >             encap espinudp 9999 0 0.0.0.0 extra-flag udp-encap-sock \
+> >             if_id 0x1 reqid 2 replay-window 10 mode tunnel aead 'rfc4106(gcm(aes))' \
+> >             0x2222222222222222222222222222222222222222 96 dir in
+> > 
+> > This allows for multiple SAs using the same listener udp port.
+> > 
+> > This is useful for testing scenarios where UDP encapsulation is
+> > required.
+> > 
+> > Note this patch exports xfrm6_udp_encap_rcv() just like
+> > xfrm4_udp_encap_rcv() otherwise linker complains due to unreachable
+> > symbol.
+> > 
+> > Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> 
+> Sashiko found some issues that look valid, can you please check this:
+> 
+> https://patchwork.kernel.org/project/netdevbpf/patch/20260717110118.251866-1-pablo@netfilter.org/
 
-The nc_vendor_write() function currently ignores the return value of
-usbnet_write_cmd(). This can lead to silent failures when USB
-communication fails.
+Yes, I will follow up with v4.
 
-Change nc_vendor_write() and nc_register_write() to return int
-instead of void, and propagate the error from usbnet_write_cmd()
-back to the caller.
-
-Signed-off-by: Ashwin Gundarapu <linuxuser509@zohomail.in>
----
- drivers/net/usb/net1080.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/usb/net1080.c b/drivers/net/usb/net1080.c
-index 19f6e1222d93..dd9f1361aed6 100644
---- a/drivers/net/usb/net1080.c
-+++ b/drivers/net/usb/net1080.c
-@@ -113,18 +113,18 @@ nc_register_read(struct usbnet *dev, u8 regnum, u16 *retval_ptr)
- 	return nc_vendor_read(dev, REQUEST_REGISTER, regnum, retval_ptr);
- }
- 
--static void
-+static int
- nc_vendor_write(struct usbnet *dev, u8 req, u8 regnum, u16 value)
- {
--	usbnet_write_cmd(dev, req,
--			 USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
--			 value, regnum, NULL, 0);
-+	return usbnet_write_cmd(dev, req,
-+				USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
-+				value, regnum, NULL, 0);
- }
- 
--static inline void
-+static inline int
- nc_register_write(struct usbnet *dev, u8 regnum, u16 value)
- {
--	nc_vendor_write(dev, REQUEST_REGISTER, regnum, value);
-+	return nc_vendor_write(dev, REQUEST_REGISTER, regnum, value);
- }
- 
- 
--- 
-2.53.0
-
-
-
-From: Ashwin Gundarapu <linuxuser509@zohomail.in>
-To: "netdev"<netdev@vger.kernel.org>
-Cc: "linux-usb"<linux-usb@vger.kernel.org>, "linux-kernel"<linux-kernel@vger.kernel.org>
-Date: Mon, 27 Jul 2026 19:38:13 +0530
-Subject: [PATCH] net: usb: net1080: add error handling to nc_vendor_write()
-
- > From a822037e659f6c13022062b399a96b7d72780090 Mon Sep 17 00:00:00 2001 
- > From: Ashwin Gundarapu <gundarapuashwin@outlook.com> 
- > Date: Mon, 27 Jul 2026 19:34:16 +0530 
- > Subject: [PATCH] net: usb: net1080: add error handling to nc_vendor_write() 
- >  
- > The nc_vendor_write() function currently ignores the return value of 
- > usbnet_write_cmd(). This can lead to silent failures when USB 
- > communication fails. 
- >  
- > Change nc_vendor_write() and nc_register_write() to return int 
- > instead of void, and propagate the error from usbnet_write_cmd() 
- > back to the caller. 
- >  
- > Signed-off-by: Ashwin Gundarapu <linuxuser509@zohomail.in> 
- > --- 
- >  drivers/net/usb/net1080.c | 12 ++++++------ 
- >  1 file changed, 6 insertions(+), 6 deletions(-) 
- >  
- > diff --git a/drivers/net/usb/net1080.c b/drivers/net/usb/net1080.c 
- > index 19f6e1222d93..dd9f1361aed6 100644 
- > --- a/drivers/net/usb/net1080.c 
- > +++ b/drivers/net/usb/net1080.c 
- > @@ -113,18 +113,18 @@ nc_register_read(struct usbnet *dev, u8 regnum, u16 *retval_ptr) 
- >      return nc_vendor_read(dev, REQUEST_REGISTER, regnum, retval_ptr); 
- >  } 
- >  
- > -static void 
- > +static int 
- >  nc_vendor_write(struct usbnet *dev, u8 req, u8 regnum, u16 value) 
- >  { 
- > -    usbnet_write_cmd(dev, req, 
- > -             USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE, 
- > -             value, regnum, NULL, 0); 
- > +    return usbnet_write_cmd(dev, req, 
- > +                USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE, 
- > +                value, regnum, NULL, 0); 
- >  } 
- >  
- > -static inline void 
- > +static inline int 
- >  nc_register_write(struct usbnet *dev, u8 regnum, u16 value) 
- >  { 
- > -    nc_vendor_write(dev, REQUEST_REGISTER, regnum, value); 
- > +    return nc_vendor_write(dev, REQUEST_REGISTER, regnum, value); 
- >  } 
- >  
- >  
- > -- 
- > 2.53.0 
- >  
- >  
- > 
-
+Thanks!
