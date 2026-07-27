@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6BA37F74C;
-	Mon, 27 Jul 2026 15:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D2140097C;
+	Mon, 27 Jul 2026 15:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785167462; cv=none; b=CrOI8gjVGq9Ryj/50mIJlevJhCQIo7/VyJQaKempfVdJSTKDWieV+rKgl+js9hNa30rWFI1ltaPuEuZvJoeYKC7kJf8vreQGx1Fxra15S5I5XRnJv/O8rZTqSMIt/2Jn167J2r4DB7k38JiSqvk8RdVv7VkzNC2HMS52oHI04Jw=
+	t=1785167495; cv=none; b=biyAVJYvp/4wtNQ9sQq3z6ayNv3RwmVhIqrDAPBhXxV9VMscVF7c0EVKOi5dYl6mP9al8/nci9/jkxIPllvoAFqAEZaU75x62h75ayno8GN0f1ciTUtUMXutSdFSeVIVFiizy0gofzbswfgssUBjlVaCQ5I2QVI9i0ho0wWd1NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785167462; c=relaxed/simple;
-	bh=GUQFkp3yg7rHEw1gOx3edU3HLrUv02S4mm8be/6BKFo=;
+	s=arc-20240116; t=1785167495; c=relaxed/simple;
+	bh=DMbk7odlrLbWcT/0B/AuwO8wR/FQjBsTATVbhYryaVs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sJTYtf3mK537DNThmKq538QPoIMKOWt72v6JMS/maUiECyjvjVBkERlXKvhtLL4znTt6nDqNDe/PVB7VcSPsWCXNAr0nrlduRUKpTDNHILwEPhWLEZ/W5NCNIJ/NRMmZP3mCC0c1OYRzd0P5wWdVefo1PQZZwzAzqCkIZ6s78+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=guVeLXwi; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=dq34A6wOlGjQ6flJEccqOvoQE6WhMXUb0o0ts/cCNnvnOxaPnnZEsFaJCI8faMGtUOzE7wzVtvuoXnp4cwGBFMw73g075PJB0ugNGHZaXI5Buu7TPDoR5mqKTmnTLoC0wtQStV4WDZeOrEkgFsrAIS4rBbFHmkUkLAv1PIL17Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a4OYg1hI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="guVeLXwi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1CD1F000E9;
-	Mon, 27 Jul 2026 15:50:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a4OYg1hI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B141F000E9;
+	Mon, 27 Jul 2026 15:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785167460;
-	bh=a29v1I9AmtPmUzhtxOfU8juL9pMl/gW53UJw7j6i6Ec=;
+	s=k20260515; t=1785167490;
+	bh=bId9mau3ViNmF7rLJyY58n1Xss9ciYxqYMK2+cP9dlA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=guVeLXwiRRIWjU5sfFTtxrq6ZfihoLYMhpq6ttv26lfDXI+FR+1oBfAvwm7XACi6+
-	 DL595w1QC6+ft03CjZB9VbAOBTCWldxzMcUsYHk72qmQp2tesce2L7LatEhsG5TivV
-	 QHmO/4NEpa5u+PCvwSwrkr9oWb5Xmp9AgtghdxkRz/1X7E2qwtI95OlI4XXmgUbUWl
-	 X923tl53lZRzLIoNyszjrpH5DeLWci0FUwoXm48mB3g6WbU144U+oZ/r5Oa2NPusfi
-	 H4BVealwAZ/i6xgJ9b0V0QyEKBIuTukZnt3KCp//s5WakSKmL4rkS4dsug7qf7g3Ju
-	 IXfGH181mRiuA==
-Message-ID: <02792987-7ad8-4a6b-81ad-559c63174bb0@kernel.org>
-Date: Mon, 27 Jul 2026 17:50:49 +0200
+	b=a4OYg1hIf1OcQiP0ScXw1HAV8yQcwu04sjDwLyHiYLaAW05oqtw9jTleS/RMwxYZc
+	 60gLPkbokgTy/uzvdRtSfNH2IPUWBwkE0Np8Kf5pIgKvGueF6Jlxm19yBBBZz/Pblo
+	 hgfWZiLVLtYmjAlc+BRJb5EV1tTM4R8OVVnb0W1R1QrnkcM/6PWTI6LIvNyY++TiNM
+	 FR0YgemqPs9WzMKEo1xFmWo/Goy8dnCx9D/XXvL+Pow1UTLUWpJ0EVQrdE3eAADfpt
+	 F8OLH5OOcx5GK/exFRP2VU2NOgipgoTNy+dHDC/BVXZwaLtsZom1P+otBvZKcDTiOY
+	 lyHyAsKsyP8Pw==
+Message-ID: <184d7977-891b-4d18-983f-7d23a7d9ff83@kernel.org>
+Date: Mon, 27 Jul 2026 17:51:20 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] dt-bindings: ptp: Document the TSCSS on Qualcomm
- Lemans and Monaco SoCs
+Subject: Re: [PATCH 2/6] dt-bindings: ptp: Document TSCSS hardware on Qualcomm
+ QDU1000 SoC
 To: Imran Shaik <imran.shaik@oss.qualcomm.com>, Rob Herring
  <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>,
@@ -52,7 +52,7 @@ Cc: Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 References: <20260727-tscss-v1-0-beed14e72510@oss.qualcomm.com>
- <20260727-tscss-v1-1-beed14e72510@oss.qualcomm.com>
+ <20260727-tscss-v1-2-beed14e72510@oss.qualcomm.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -98,13 +98,13 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <20260727-tscss-v1-1-beed14e72510@oss.qualcomm.com>
+In-Reply-To: <20260727-tscss-v1-2-beed14e72510@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 27/07/2026 16:10, Imran Shaik wrote:
 > Add Devicetree bindings for the Timestamp Counter Subsystem (TSCSS) found
-> on Qualcomm Lemans and Monaco SoCs.
+> on Qualcomm QDU1000 SoC.
 > 
 > TSCSS is a time synchronization subsystem composed of two main blocks:
 > Timestamp Counter (TSC) and Event Timestamp Unit (ETU). The TSC block
@@ -115,22 +115,22 @@ On 27/07/2026 16:10, Imran Shaik wrote:
 > Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
 > Signed-off-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
 > ---
->  .../devicetree/bindings/ptp/qcom,lemans-tscss.yaml | 198 +++++++++++++++++++++
->  1 file changed, 198 insertions(+)
+>  .../bindings/ptp/qcom,qdu1000-tscss.yaml           | 187 +++++++++++++++++++++
+>  1 file changed, 187 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/ptp/qcom,lemans-tscss.yaml b/Documentation/devicetree/bindings/ptp/qcom,lemans-tscss.yaml
+> diff --git a/Documentation/devicetree/bindings/ptp/qcom,qdu1000-tscss.yaml b/Documentation/devicetree/bindings/ptp/qcom,qdu1000-tscss.yaml
 > new file mode 100644
-> index 0000000000000000000000000000000000000000..4cbe4b00ff7dcacbd8cc111e2b4b61ebce7104aa
+> index 0000000000000000000000000000000000000000..39387614ef8939b7840df2f0d5640b9e142fb4e5
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/ptp/qcom,lemans-tscss.yaml
-> @@ -0,0 +1,198 @@
+> +++ b/Documentation/devicetree/bindings/ptp/qcom,qdu1000-tscss.yaml
+> @@ -0,0 +1,187 @@
 > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/ptp/qcom,lemans-tscss.yaml#
+> +$id: http://devicetree.org/schemas/ptp/qcom,qdu1000-tscss.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Timestamp Counter Subsystem (TSCSS) on Qualcomm Lemans and Monaco SoCs
+> +title: Timestamp Counter Subsystem (TSCSS) on Qualcomm QDU1000 SoC
 > +
 > +maintainers:
 > +  - Imran Shaik <imran.shaik@oss.qualcomm.com>
@@ -146,193 +146,15 @@ On 27/07/2026 16:10, Imran Shaik wrote:
 > +  The ETU block is optional and captures TSC timestamps for external
 > +  hardware events, each ETU slice binding a slice identifier to an external
 > +  event selector. Support for the ETU block requires the additional ETU
-> +  clock along with the summary interrupt and slice subnodes.
+> +  clock along with the per slice interrupt and slice subnodes.
 > +
 > +properties:
 > +  compatible:
-> +    oneOf:
-> +      - const: qcom,lemans-tscss
+> +    const: qcom,qdu1000-tscss
 
-There is no such SoC upstream.
+Why do you create a new file with exactly the same binding?
 
-
-> +      - items:
-> +          - const: qcom,monaco-tscss
-
-Neither this one.
-
-
-> +          - const: qcom,lemans-tscss
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  reg-names:
-> +    items:
-> +      - const: tsc
-
-Drop names, not really useful.
-
-> +
-
-> +  clocks:
-> +    minItems: 2
-> +    items:
-> +      - description: TSC AHB configuration clock.
-> +      - description: TSC global counter clock.
-> +      - description: TSC ETU clock.
-> +
-> +  clock-names:
-> +    minItems: 2
-
-Why is this flexible?
-
-> +    items:
-> +      - const: ahb
-> +      - const: cntr
-> +      - const: etu
-> +
-> +  interrupts:
-> +    description: Summary interrupt raised based on external event for any of the ETU slices.
-
-Please follow Linux coding style.
-
-> +    maxItems: 1
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: etu_summary
-> +
-> +  assigned-clocks: true
-> +  assigned-clock-rates: true
-
-Drop. From where did you take it?
-
-> +
-> +  "#address-cells":
-> +    const: 2
-> +
-> +  "#size-cells":
-> +    const: 2
-> +
-> +  ranges: true
-> +
-> +patternProperties:
-> +  "^etu-slice@[0-9a-f]+$":
-> +    type: object
-> +    description: ETU slice configuration
-> +    properties:
-> +      reg:
-> +        maxItems: 1
-> +
-> +      pinctrl-0: true
-> +
-> +      pinctrl-names:
-> +        items:
-> +          - const: default
-
-Heh? Which code do you copy?
-
-> +
-> +      qcom,etu-event-sel:
-> +        description: Event selection value for this slice.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +
-> +      qcom,etu-slice:
-> +        description: ETU slice identifier.
-
-You do not get identifiers. Please read writing bindings.
-
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +
-> +    required:
-> +      - reg
-> +      - qcom,etu-event-sel
-> +      - qcom,etu-slice
-> +      - pinctrl-0
-> +      - pinctrl-names
-> +    unevaluatedProperties: false
-
-Please read writing bindings.
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reg-names
-> +  - clocks
-> +  - clock-names
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        clock-names:
-> +          contains:
-> +            const: etu
-
-etu is third clock, what is the point of it?
-
-> +    then:
-> +      properties:
-> +        clocks:
-> +          minItems: 3
-> +        clock-names:
-> +          minItems: 3
-> +      required:
-> +        - interrupts
-> +        - interrupt-names
-> +        - "#address-cells"
-> +        - "#size-cells"
-> +        - ranges
-> +
-> +unevaluatedProperties: false
-
-Please read writing bindings.
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/qcom,sa8775p-gcc.h>
-> +
-> +    soc {
-> +      #address-cells = <2>;
-> +      #size-cells = <2>;
-> +
-> +      tscss@1c80000 {
-> +        compatible = "qcom,lemans-tscss";
-> +        reg = <0x0 0x01c80000 0x0 0x2000>;
-> +        reg-names = "tsc";
-> +
-> +        clocks = <&gcc GCC_TSCSS_AHB_CLK>,
-> +                 <&gcc GCC_TSCSS_GLOBAL_CNTR_CLK>;
-> +        clock-names = "ahb", "cntr";
-> +
-> +        assigned-clocks = <&gcc GCC_TSCSS_GLOBAL_CNTR_CLK>;
-> +        assigned-clock-rates = <15625000>;
-> +      };
-> +    };
-> +
-> +  - |
-> +    #include <dt-bindings/clock/qcom,sa8775p-gcc.h>
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
-> +    soc {
-> +      #address-cells = <2>;
-> +      #size-cells = <2>;
-> +
-> +      tscss@1c80000 {
-
-This is the same node as previous.
-
-I don't understand this DTS.
-
-
-Node names should be generic. See also an explanation and list of
-examples (not exhaustive) in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-If you cannot find a name matching your device, please check in kernel
-sources for similar cases or you can grow the spec (via pull request to
-DT spec repo).
-
+Anyway, all comments apply.
 
 Best regards,
 Krzysztof
