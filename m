@@ -1,162 +1,142 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012065.outbound.protection.outlook.com [52.101.48.65])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BC424BBF4;
-	Mon, 27 Jul 2026 10:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785146501; cv=fail; b=hdYZ7fDOZJ9SI7WMbTYO9ye3lTUR3eYmLhvIVfyKskzIFSbdnkb+vvh9ZFsfURGExFXbTGYFQDH1Hf24eSUWOIZiQVpgtjlDYG7MdO2TBXnChvPCvPIOc179z7Nf0hpwl9YE4HNPGO6gDqRraH/s1HbvO7vj9zfAWoMHxUTyeCc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785146501; c=relaxed/simple;
-	bh=OhCqhW4vmoRxBqtu0yxtJ8EXo7pxPgbazfrsnAdzfuQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=YM1df0WvXgBdbtynjAuKxYZ62kSMViRisn7VCVMstdv1nsVIp4HJheKnpsP4PK0ClVQgBioufkDbV7S5sh73hxSVBT1E7rapCiI7K41RVMt+UAB+Lnd26/wmGKj54Btthhf3LHSjh3qnA7RJbf2tQqRL3Mfe29YpStHqxExhH4U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=MFB6K+Zl; arc=fail smtp.client-ip=52.101.48.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8681E31E820;
+	Mon, 27 Jul 2026 10:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785146821; cv=none; b=OBN6gb01W9l/Db1G2H/AWjRqCa9Xa1Zpw1VhmjGd3pabFu9JjbVwqoNnomA1lp6Qp97JHiYMTnKMMbJOXktv2dPd1ps7bexvvuxBd0PvLr7XFYUVDJ7mwqZRiwO2fKgH8S953FMVyxeWTOP1AlyjdX8fc80SOTZlj0nf7oqoY3g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785146821; c=relaxed/simple;
+	bh=4NPqPcWpwotJnjVLLDUBduZOBxwBnvIQGGsHSUwfPyk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cJyOMjCTFT8RE0OPCroK5lHPIdTdx6ve5F07I2oTStBtH3ByBtAMEHZc34rIcclh9SOuG1Un9KfPY3AmSNx25r9q6uqXAOzgYf6J7bTZd1aVOhsi8bYluPH4XAASp5DX+7gdw4rq43AkVWnTy5G59fqeKzfrt8/FVJT5uFLlEPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=NLWJrUXi; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="MFB6K+Zl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HeY7YSQFHhrYpCDQ1ocbUyxtrckOqjbVEIuC0Zbpc7LNbXPvzT/nZzqfEVSirGtvxMy6juofNYIuAYtCNt4AbcWM93yGc3Hh7ulOmFfxocCu3q9ntmuFeZ/JjtMyzeGJ/TkhHDg1SUYDH2YlRk1S4YbpmfW3tQeOHavph7+QxlKkLFPM/kYmUL0nkeMmoz+ndjGBF+QpLB39ULtkDoU7Vb3yl9/C9nS9I3YB4FVf/BOF//JLba1Q8epDA0b5n7/jgADtt6qflfkpdEHLSszV7pie1nSlUaennFVbbY3h8tIwgOu4tMHW3ozhH8b+MbVwA8g2XjZVBxpvO3sRx9zyng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Vz/hmCb0WDnCrxFkbTLTvjeJ9+2fSjgxfo23Edih8ns=;
- b=QQSFes8PJ3qTgxBcn1v732U1TU7z+jne+jIwNmbgRqIvX3qTcHk3cuZ70R1hcbbb8oD+CeZDjuzRxpyOpoESxhtPgSDaDLcZOGejjPdEXELuz1TSKmEG0Ybkf0N6Hd5Lk3ZzkDEgEAuphUtKBGXCz1NXM956Bj6gP7rdViLPap4WnQpLtBnGaGV3KMkVvB7Iaacxc31/gA4dJsdABpzdV7bIJQ+kN38pUyG044SYpQjxCGA5cFaqXaZuO+gxP/+qKlX1wtUE4UK3pnTt32PqE1hoD5wYyltxFBy3WjXzYvC/LQk68hd8tq3H9nQKTvccS5Q2B7ZPjDCQ1SxlAjdTFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vz/hmCb0WDnCrxFkbTLTvjeJ9+2fSjgxfo23Edih8ns=;
- b=MFB6K+ZlDqFyrdZw2hC5ciRAJZgk/8zUIGb1I0Nc7oE1zRQZwh6X6fjeYVMiSztkR8eGvn8IXUiWmDJYtphsO8VskOZP97EQcSRhhw0+LWfyGoBbry1nM8Js/5mHeqbpuhSiBY/KtIdsK7JF6bOOgVxe5kdftYKzTHXRVrb2Enc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8953.namprd12.prod.outlook.com (2603:10b6:a03:544::14)
- by CH2PR12MB4054.namprd12.prod.outlook.com (2603:10b6:610:a6::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
- 2026 10:01:36 +0000
-Received: from SJ2PR12MB8953.namprd12.prod.outlook.com
- ([fe80::f3b5:fc98:8973:5c0b]) by SJ2PR12MB8953.namprd12.prod.outlook.com
- ([fe80::f3b5:fc98:8973:5c0b%4]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
- 10:01:35 +0000
-Message-ID: <46f74c84-f07a-4f23-b72b-7af12838743e@amd.com>
-Date: Mon, 27 Jul 2026 15:31:28 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/2] net: macb: configure ENST registers for all
- queues
-To: Nicolai Buchwitz <nb@tipi-net.de>,
- Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, git@amd.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260724043257.2221030-1-vineeth.karumanchi@amd.com>
- <20260724043257.2221030-3-vineeth.karumanchi@amd.com>
- <49ccdd6682366239fef37bcfd99a908c@tipi-net.de>
-Content-Language: en-US
-From: "Karumanchi, Vineeth" <vineeth@amd.com>
-In-Reply-To: <49ccdd6682366239fef37bcfd99a908c@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0061.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ac::18) To SJ2PR12MB8953.namprd12.prod.outlook.com
- (2603:10b6:a03:544::14)
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="NLWJrUXi"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=GTyQHv3io296hlH7liLIH29JJ5mx+n2lNYZEFK3Ltuk=; b=NLWJrUXi309NY17PIxSi3Pjfk4
+	fJN/bxrb6bjUvbYBRMLRB3vUSUQMnDzN922gTI9kv31T7k2snqH3Io1lTG+DbX1ExE1avg4uKJBSh
+	lnoUlu2S0PxiaOE97qZVFitRC0Uob0iebzD3M95FEzG6pSqZ46X+YoEYJX4OKDOCCsfJFwWfytPRP
+	joJ4gUanLK6cpciYA0hkq0iiUTXxTcDutk8lnILHr8SZ2mMBylNL83YepLj37cUJdkRvqMAopzeeZ
+	jiIEeT3Jkwn/w68GMrD4pO4FRNM9gi5xL7i2RqABaJuKGJOHKhCmOmDOgzpBT2/Mg9slMyF7Tpvd8
+	ncB59fEA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1woIEW-006os9-38;
+	Mon, 27 Jul 2026 10:06:54 +0000
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH net-next v3 0/7] net: convert rawv6, ieee802154, phonet and
+ tls getsockopt to sockopt_t
+Date: Mon, 27 Jul 2026 03:06:34 -0700
+Message-Id: <20260727-getsockopt_phase4-v3-0-e89627544639@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8953:EE_|CH2PR12MB4054:EE_
-X-MS-Office365-Filtering-Correlation-Id: a73c474c-768d-44b6-e192-08deebc60b18
-X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|376014|366016|1800799024|4143699003|22082099003|10067099003|18002099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	D3DZ3FtXivhHN0z9einxL8USR5QwErFV8frVzpb2Na4dMCUb5M9DYWVb3LnG4fZQHU/G3nbbujoAMIqMj4P6In7rNx9SmIIGtIkPwU3TyMSRCWjK/PGF306uxLhJkAdY1O07Pk0fM+h7PwZguv0nXSIrveCvhpprLlY4AwTadVftWDSvKB2z0YBwZVKVL4Qk6fFzKwqU5l+86cxCgbTC55w90AwjrxxDqv9p99HJeuhFRNG9O82/WMOrP9U9UGdBwhM9jh+VL9bP07al71GPn5aVaOmw4wwdi3Pcb2GALs/nlHTBZ80kaKSIgDiiq1o1NkUl+55rNoM61/uooce7PfLB5jDKwJH6iohfmdiG+07FxejqFYU2ZSvOEvWyiIUWyDRPbLKvsRIKmJCfXFkolJPSmPZy7/CwuOClROWpxG7xd9fWDYbsT5oQWA/gbenD9VJXuT5zeJWxEGKhTFMqm8DydEWRfpsNwaW5GS04TZRf9MZhuID5gl6zsl+yzdTklTl+KSGuNphzOn+qcJWZdwoRgt2wY8iQ6oeqByPSpYx+Ae4XtzRX/OkkBqjyn22SbTi3ip6e1jhJSz7kES8QWrvhGZqHibE5hZtosNFrve4cdx8CUAwW05z0YS9YxdBN16/CPFLRLsoJJNHRwovq43hvr/UhYY1cOwg9OioaP/0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8953.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(366016)(1800799024)(4143699003)(22082099003)(10067099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RVBHUHUyLytnaGIybFZPTUJwblVCYUxuVWlMaW5qeEVuN1c1NS9paUY3RlBV?=
- =?utf-8?B?Tjg5aGorY0REZnFPSmhNd210MFd3bGdDYnJBOXVwSCtoMnJlYXlJM3VLaHg1?=
- =?utf-8?B?N0h5aTVHTDBReFFEOVAwSVRLUHVNN0UzUzhTVzJtQjNhZXVDWjBsNzNydDBt?=
- =?utf-8?B?eFNxcjM3MmRLZWRQYytpQmJLbll6UWUyQkVJREZFWFJzQzBpcmN3bWRNR0xO?=
- =?utf-8?B?WmVzSEJRenNWSGdXTlRQdzRDUXFjcHVnM0c0M29Xa3JTK21FVW0vbEZCa1Uw?=
- =?utf-8?B?THJsTE5kTUtGSndTM29kQktJTkUwUTh1T2RGaEdQV2lMb0Jod3hPOXBBc0Jj?=
- =?utf-8?B?R25jMEdYUnJWSlp5dzVEajZ3MVNJemZxSGVWdW1USXViTURRcVljTlVaMkNI?=
- =?utf-8?B?aGRBeDNNTHRhVU53c1VKWG5CcUlGNUpSMjgzTzJNaFpKcTlQTEtWanNhVDR5?=
- =?utf-8?B?M0h0b1RPL1FWaVdTTUlrZFhiTlFHVFdxdXFTMmlucER5ZW1DcWkvOHE1Y2Z0?=
- =?utf-8?B?eXJ4djRUSE8wV0ExbEFsK25sc2RTb3ZPaTRQd1pFN1NxUHJEbzY5U3F3Rk1I?=
- =?utf-8?B?bGhhUUV1OTBNS0Y2bEljbmx3b2xOazRGV0dxaWtjNkhqUEF2L2ZnVDBCSjdN?=
- =?utf-8?B?cUd2VGFLcmNMd1NPTjRpbVloZ05GTC9OVFNyKzRwelQwMHgrRHBTTkhIbERt?=
- =?utf-8?B?SjFCaHVmOTNKQ1pqampHOTVsTXN0OHJuWUVCc0NkaGhmMUp2SEtxNHJRRkd3?=
- =?utf-8?B?UHdneE51YiszOVZobDNvSkJ6NE8rZGg5cHg5a0w1VVB5dUZoZzlEa25HWjMr?=
- =?utf-8?B?VVhrdURoZHJzaENjUmRtcTU1TGRrQnFrTmpnWms2a3E1Y1dMZjNIeGRSQ091?=
- =?utf-8?B?WXlaNis1YlJ6S0d0MmZoMXRxQVV1cWdUR01SWFJLMkI5OUgrZDlDNkc1VUFC?=
- =?utf-8?B?MEJMU3dTWVd6dVk1OWRKMWpKa1dPUUNxSmFHQnlVaEpBaVVFRjhDS0pSeEFv?=
- =?utf-8?B?WUVRdkt3aE5SUnNTWll6bUJCUVFKNDhlQ1prZFl1NWliOWV5blpxVW1adGFV?=
- =?utf-8?B?U2NSSE4rdzZ5V0ZDY0FVVHhjMVVrSXp2MGFOYUZPTk5ZdTJXL2w0alpxc296?=
- =?utf-8?B?S0cvMGRGVGlZVVhhZTNoQmMyOXBCZS9yTllqQ2RZSjdXV3VKZUZId3diYkNm?=
- =?utf-8?B?clFSSzA2bTFEYUx0MHVDc1lXMnhaRG5TaTNGRjIxbURjUGhrQjR6eDVGSWdZ?=
- =?utf-8?B?VEF2b3ZkSFlYelVVdVRjWVRMNFhHOTVTd0VDQ2RXYUU3VDVPaUxlQkZzWkxD?=
- =?utf-8?B?S256Y3Zkb0xxSWZLdVZ3SGlub3JjcFA5ZkVwd092aVVwTDdzS0pmVGdSNFEr?=
- =?utf-8?B?WUFjR3V2SlJKUUtheVRTWDU0Y3gvUjhraXNTdEt5RGx0T3VlbU1mblVBeW43?=
- =?utf-8?B?K1ZNUjdlSUhVazl5NS9WWVp1am13VnZWYmtZS20vTFBkVUtXZEVTV2VITnpP?=
- =?utf-8?B?NmJURXJVL09NRTJZNWpSbE9KdjN2ZmN1VHVGQkFCNkNKdGE3UWV5dFlqaFhv?=
- =?utf-8?B?bWk3NkdnYXJOb1ZRcDRVYjVtVm53VDZ2OTlweE51ODlVTU5WQkFNTC9xa0R2?=
- =?utf-8?B?YkRBYU50eVp0ZzVFV2lTNzd2YWhFWUEycnMwOU1CVUF1REF4THpXbDBTanZF?=
- =?utf-8?B?QVI0V1pscDlJLzdSWWRMVlBSRzQ5cC9VOGJBODdwamltSzBXK0RBbSszYTdT?=
- =?utf-8?B?d0hURjM5TXVEMW9GK2JqRnJuKzAzZi9ZNWpOYXd4WVpFVHVzWCs1ckpQaWlW?=
- =?utf-8?B?N0FrdkJoNi8yWU15RTN6b0Q3aDhXVVJpbHN5Y1drRDNJM3NrR2x0U0ZwYURv?=
- =?utf-8?B?T0YzWkZkMTNNZ29BZnJZWGtjNXpDR2pMTzZKWWVWUi9tSGFqNDBkVklPOVRy?=
- =?utf-8?B?VDRTS0x5V1l2L2RlQ2hORXEvZVRYcW9KaFkwWU4xVVRIeTFqdk5TdURYNUc3?=
- =?utf-8?B?TXF2MnlXSkhEc3NLUzFKeGJOZEJPbllHZCtsb0hoZm1TTXR2VGJOM0JHY1VG?=
- =?utf-8?B?ckpqeDF1N1pleVlCUnpOVWdKVDE4KzVrd3Y2N3hSZlY3V0lFaTJENkc1UWI1?=
- =?utf-8?B?cU11dzRrZ3loV3RVV3RITTlZZjA0dGJ0aEhhRDYxRmlSbEhqUXFtRHNDK0cr?=
- =?utf-8?B?Um5wWGtCTVBRT2dUV1p3aUhpZ0IyejB1S29TL0wvSEJmMUFmOFNZNlIzRlBI?=
- =?utf-8?B?MTRBVVY2TDhrV0RpNU4wbG0vSjcyalRCUWl0VHhsNktnakJobTNaVjZxZ1Rt?=
- =?utf-8?Q?kyXIwLPyA1YYJZVLkp?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a73c474c-768d-44b6-e192-08deebc60b18
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8953.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 10:01:35.8939
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3PBkNZbwvfC2RM3zeBB8CJdcW/SVOLzTqrirLahhIL0IM4hC+ZSD6ZVj/FAvD8hK
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4054
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKstZ2oC/23NTQrDIBBA4avIrGMZbf6aVe9RSjFmTKSgQUVSQ
+ u5ekC5a6PrB93aIFCxFGNgOgbKN1jsY2LlioBflZuJ2goGBRNliJxo+U4peP/2aHuuiItVc9Cj
+ xoo1uUUHFYA1k7FbMGzhK3NGW4F4xWGxMPrzKLIvSP277x82CI69N3ehRyElTd51otMqdfJgLl
+ +UXIfEfITnyXmFvtFE4dfKHOI7jDSsokQUAAQAA
+X-Change-ID: 20260715-getsockopt_phase4-180209cfc60a
+To: sdf@fomichev.me, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Alexander Aring <alex.aring@gmail.com>, 
+ Stefan Schmidt <stefan@datenfreihafen.org>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Remi Denis-Courmont <courmisch@gmail.com>, 
+ =?utf-8?q?R=C3=A9mi_Denis-Courmont?= <remi.denis-courmont@nokia.com>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-wpan@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>, kernel-team@meta.com, 
+ Joe Damato <joe@dama.to>, 
+ =?utf-8?q?R=C3=A9mi_Denis-Courmont?= <remi@remlab.net>
+X-Mailer: b4 0.16-dev-d5d98
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2543; i=leitao@debian.org;
+ h=from:subject:message-id; bh=4NPqPcWpwotJnjVLLDUBduZOBxwBnvIQGGsHSUwfPyk=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqZy22YWF3FuS8kdCv4poHO8A8p0UXAxGY7nXPU
+ BmynVWYOVOJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCamcttgAKCRA1o5Of/Hh3
+ bZrOD/915zPBkHco03W0L7IaQhHTq4Y0gER43Ch8QubBg3tGLY/GLul9xNsfpGrQufpZUIEJQYv
+ aRXHEW2+WKm6c7cQIBQ6oSCoGlpIKdrS9pkHpTR8UG2A83YjW1+6O39FH/HssIh5cEVnTU/BCKs
+ ieu/o7cMtQL+20+q3d3kRasGvDThHVrv/C27CoL4DBri5edrhWdey8V9dcFOFY9Uu9wk2jFZx6v
+ curfCK3dAz3ynUrN2h/a3wLn0uKiUx/ulMQQwSkGy832/CBmmNbKOTbWdlEaocddE/r5Nsb3qPW
+ /jzrHt9OTvzaRochx5p+9KsNXV1tAlkmCIA1GkH9Wp0RIHtJ2T5E491DgQs6MUq9sPmotCoWEvN
+ 8kW5BSqbwzJVLCOf0yB/UR5jg7q5Oc+RPrXcAt9GH/WY81WVeWtCRiAnEoxDQ1CV8Mk4PzKIQyk
+ adQkclsB7RIMADZbw7Y0iG/1v5mvuRGvUxBLBeOCnpk5IcUxyGuEWvjyxBVY9/lkwmzmkOn4fmN
+ vrdOrcC5v2mX+YbD7Vl8xr4vl3UIwf159nMK2wmFXC2QbgzfEZNGKy9Z2pVYk0FnctW6NSxRkPr
+ ocym0qHs/hF3pyR1+81vqj4vyYrXBnK8iWPUCeTyH0zXlBevGnYYkoWuARIzqXoMMAcu9PJbrax
+ 6BvCgcy9NXVlraA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-Hi Nicolai,
+Now that sockopt_init_user() was already merged, builds a user-backed
+sockopt_t from the __user pair. A getsockopt leaf can then take
+a sockopt_t behind a thin __user wrapper: the wrapper builds it, calls
+the leaf, and writes the length back to optlen. The leaf copies with
+copy_to_iter() instead of copy_to_user().
 
-On 7/25/2026 1:27 AM, Nicolai Buchwitz wrote:
+Convert four more leaves the way udp and raw already were: ipv6 raw
+(do_rawv6_getsockopt), ieee802154 dgram, phonet pep, and tls
+(do_tls_getsockopt and its per-option helpers). 
 
-<..>
->> Key changes:
->> - Drop queue_id from struct macb_queue_enst_config
->> - Allocate enst_queue[] based on bp->num_queues instead of
->>   conf->num_entries
->> - Index enst_queue[] directly with the queue number
->> - Program ENST registers for all queues
->>
->> Fixes: 89934dbf169e ("net: macb: Add TAPRIO traffic scheduling support")
->
-> In addition to what Théo already mentioned:
->
-> The series targets net-next, but if this is a real bug fix it should
-> probably be routed via net. The offending commit is in stable since v6.18.
+Converting phonet surfaced a pre-existing bug: pep_getsockopt() clamps the
+length it reports but writes a full int with put_user(), overrunning an
+optval buffer shorter than sizeof(int). It is fixed in its own patch, with
+a Fixes: tag, before the phonet conversion, so it can be backported alone.
 
-Sure, I will split the patch series accordingly and submit the updated 
-versions to *net-next* and *net*.
+The last patch adds getsockopt_iter selftest fixtures for rawv6,
+ieee802154, phonet and tls, checking the returned length and errno across
+exact, oversized and short buffers, an unknown optname and a bad level.
 
-Thanks
--- 
-🙏 Vineeth
+For full motivation about these changes, please check the initial thread
+at link
+https://lore.kernel.org/all/20260401-getsockopt-v2-0-611df6771aff@debian.org/#t
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v3:
+- min_t() -> umin() on ieee802154/rawv6 (Joe)
+- Link to v2: https://patch.msgid.link/20260720-getsockopt_phase4-v2-0-8a08fcfa0d72@debian.org
+
+Changes in v2:
+- Replace min_t() by umin() (David)
+- Link to v1: https://patch.msgid.link/20260716-getsockopt_phase4-v1-0-4f45cb12dce7@debian.org
+
+---
+Breno Leitao (7):
+      ipv6: raw: drop unused level argument from do_rawv6_getsockopt
+      ipv6: raw: convert do_rawv6_getsockopt to sockopt_t
+      ieee802154: convert dgram getsockopt to sockopt_t
+      phonet: pep: do not write beyond optlen in getsockopt
+      phonet: pep: convert getsockopt to sockopt_t
+      tls: convert getsockopt to sockopt_t
+      selftests: net: getsockopt_iter: cover rawv6, ieee802154, phonet and tls
+
+ net/ieee802154/socket.c                       |  38 ++-
+ net/ipv6/raw.c                                |  29 +-
+ net/phonet/pep.c                              |  36 ++-
+ net/tls/tls_main.c                            |  80 +++--
+ tools/testing/selftests/net/getsockopt_iter.c | 424 ++++++++++++++++++++++++++
+ 5 files changed, 534 insertions(+), 73 deletions(-)
+---
+base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
+change-id: 20260715-getsockopt_phase4-180209cfc60a
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
