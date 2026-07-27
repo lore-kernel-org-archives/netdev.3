@@ -1,162 +1,120 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F3C3EFFC6;
-	Mon, 27 Jul 2026 09:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C17F3F411A;
+	Mon, 27 Jul 2026 09:43:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785145282; cv=none; b=R/0DgOg7MDK0CXZFWt5CbyW4YkZ47rOKDW3ZM3IwLQcWE0cTndEwjcxT5mYSF2rM51T0c57sq8B7tpz7WOgoTZt99Wl2vLr+XxazU88sfBMNUa+lSkWQBiD6dq6y5nPjS+iao1jEX2TbafNK8L8Pd5vBfK2mTtYyBpLmbjruLGI=
+	t=1785145400; cv=none; b=NhjL6NWvSbcRxkbMs/1pKHi4vqdSYJw8PAhCSmpPI1u/T7NXTKfsBMTng8biPfLWft+/jc8dgII2k7abE+UFZ9daHHfeGo68h/6ZMX0ZSp79OXWM0TnU0MG2gJ9VXBBpCRuiUn3Sb5jinqh/cKcYT56IaVUHd5jDzcgj77b3rXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785145282; c=relaxed/simple;
-	bh=QsU1Hl3KDTq2kPCdus7O9KPkLsBxoZKo06tRa8xywEs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cwgCICeQlhYXiV699FpkhVC7Mlf31kLlx6jRPpT7DDROGC7NsX9djVyJvRmgL5z2NW8zQ/0Y7qMmTXIrl1N5amxlCqim8nivrTbek5dRoVWZhfn8ZmKyQEoUWFJryNlRBFupfS/UNOE3c4OooRD2SlMkwPVUP5o43Um5/O5+mwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 4e8d3050899f11f1aa26b74ffac11d73-20260727
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:a521b600-eccc-4a26-8ed1-aac81545c42f,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACT
-	ION:release,TS:-45
-X-CID-META: VersionHash:e7bac3a,CLOUDID:7917a2cf90a553cd1e3dfb8a78cee128,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
-	DM:1,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:
-	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 4e8d3050899f11f1aa26b74ffac11d73-20260727
-X-User: heminhong@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <heminhong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1949693590; Mon, 27 Jul 2026 17:41:13 +0800
-From: Minhong He <heminhong@kylinos.cn>
-To: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ap420073@gmail.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Minhong He <heminhong@kylinos.cn>
-Subject: [PATCH net] ipv6: mld: use ma_put() after canceling mca delayed work
-Date: Mon, 27 Jul 2026 17:41:07 +0800
-Message-Id: <20260727094107.168272-1-heminhong@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1785145400; c=relaxed/simple;
+	bh=cn4UlB5bjIwDOkP1Lm0hlsqdtyxE3etQfrjCSSczwo4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X65wkTRfOYW9CwBrgk95WAGjmjtQYIAiFEvE1drGMfGVjgbJJ1kCp1rodvt/PlTmhp84k/a9yzuSxUr8S8/Mlnp9LMtHBLBZO39Yrt6KsaD4mXS62GXSCr3BpTUKX/nHQj3QgEm1ZsNaZmHD48YSREnwgWRBYlyiWL9LR0JwSIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=SN/JwiV0; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="SN/JwiV0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=y5ZYwJ8WMhJlvn6YuT4NTCYDvgCoMsIiQZxEsn87oKU=; b=SN/JwiV09SuqNaskAyMNiAHz+8
+	7VsW0ZbLZSEsE4UDbZDTY9xxdZO3PpQxCCPn+cWkNGRAsKM4jSYwQE7aZ+tueV1KzZVLyQcQ2Ejyx
+	lj35Vg0tg7Fe+2GUh+YpzAh6jIboKAIAQ7JMbpiIxCmbbR7kyuwExWJlj/DDbE5yRwC5SGc2o0UX3
+	C/RDjQY/P2kO66LuP9JDeCU996iO6/NBTKydYW2OncT2jvWGxfxVbRlIFj9CIG4uOEvq3jbedGYpw
+	NiSdBPri/y0Owfv7cc8/adrd/PizgBmk811Xyu7EBXrxX16IcGd07dZmmauxXR8UHyRIwbd4y/f6L
+	Tzs5Azmw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1woHr4-006nvd-2B;
+	Mon, 27 Jul 2026 09:42:38 +0000
+Date: Mon, 27 Jul 2026 02:42:33 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Pu Lehui <pulehui@huaweicloud.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jeff Garzik <jeff@garzik.org>, 
+	Auke Kok <auke-jan.h.kok@intel.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Pu Lehui <pulehui@huawei.com>
+Subject: Re: [PATCH net v4] e1000e: Fix out-of-bounds MMIO access by
+ validating BAR0 size
+Message-ID: <amcn2lVGnmxwvsVr@gmail.com>
+References: <20260727025645.2600363-1-pulehui@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260727025645.2600363-1-pulehui@huaweicloud.com>
+X-Debian-User: leitao
 
-When cancel_delayed_work() succeeds, MLD drops the work reference with
-refcount_dec(). Unlike ma_put(), that does not free the ifmcaddr6 when
-the count reaches zero.
+On Mon, Jul 27, 2026 at 02:56:45AM +0000, Pu Lehui wrote:
+> From: Pu Lehui <pulehui@huawei.com>
+> 
+> Syzkaller reported a kernel panic caused by an out-of-bounds MMIO
+> access in the e1000e driver.
+> 
+> [   82.868719][  T404] e1000e 0000:00:02.0: The NVM Checksum Is Not Valid
+> [   82.872328][  T404] Unable to handle kernel paging request at virtual address ffff80008894e090
+> [   83.085218][  T404] CPU: 2 UID: 0 PID: 404 Comm: bash Not tainted 7.2.0-rc2-g3f1f75536668 #1 PREEMPTLAZY
+> [   83.129013][  T404] pc : e1000_get_cfg_done_82571+0x70/0x158
+> [   83.140092][  T404] lr : e1000_get_cfg_done_82571+0x68/0x158
+> [   83.151196][  T404] sp : ffff80008ac37410
+> [   83.158922][  T404] x29: ffff80008ac37410 x28: ffff0000cd6a11b8 x27: ffff0000c58190d0
+> [   83.173919][  T404] x26: ffff0000cd6a11b8 x25: ffff0000cd6a0bc0 x24: ffff0000cd6a0000
+> [   83.189417][  T404] x23: 0000000000001010 x22: ffff0000cd6a11c0 x21: ffff0000cd6a11b8
+> [   83.205195][  T404] x20: 0000000000000064 x19: ffff80008894e090 x18: 0000000000000000
+> [   83.220545][  T404] x17: ffff800081c1a3f4 x16: ffff800081c19c10 x15: ffff800081e86510
+> [   83.235764][  T404] x14: 0000000000000001 x13: 0000000000000001 x12: ffff60001bc8a8b3
+> [   83.251301][  T404] x11: 1fffe0001bc8a8b2 x10: ffff60001bc8a8b2 x9 : ffff800081eae25c
+> [   83.266705][  T404] x8 : 00009fffe437574e x7 : ffff0000de454593 x6 : 0000000000000001
+> [   83.281919][  T404] x5 : ffff0000cf2b9640 x4 : 0000000000000000 x3 : dfff800000000000
+> [   83.297317][  T404] x2 : 0000000000000007 x1 : ffff0000cd6a11c0 x0 : 0000000000000000
+> [   83.312601][  T404] Call trace:
+> [   83.318662][  T404]  e1000_get_cfg_done_82571+0x70/0x158 (P)
+> [   83.329748][  T404]  e1000e_phy_hw_reset_generic+0x17c/0x1a8
+> [   83.341541][  T404]  e1000_probe+0xbd8/0x1988
+> [   83.350334][  T404]  local_pci_probe+0x84/0x130
+> 
+> Repetition steps:
+> 1. Find PCI device which BAR0 size <= 4K. If it's:
+>    Device Addr: 0000:00:02.0   BAR0 SIZE: 4K
+>    Vendor/Device ID: 0x1af4 0x1004
+> 2. Unbind the above PCI device
+>    echo '0000:00:02.0' > /sys/bus/pci/devices/0000:00:02.0/driver/unbind
+> 3. Set the above device to e1000e new_id
+>    echo '1af4 1004' > /sys/bus/pci/drivers/e1000e/new_id
+> 
+> During e1000_probe(), the driver maps the device's BAR0 memory region.
+> If the device has a 4K BAR0, ioremap() maps only 4K of space. Later in
+> the probe process, when the NVM checksum validation fails, the driver
+> attempts to perform a hardware reset and falls back to the err_eeprom
+> cleanup path.
+> 
+> This cleanup path will trigger an OOB access kernel panic:
+> e1000_phy_hw_reset
+>   e1000e_phy_hw_reset_generic
+>     e1000_get_cfg_done_82571
+>       er32(EEMNGCTL)
+>         readl(hw->hw_addr + EEMNGCTL); <-- EEMNGCTL(0x1010) > 4K, OOB access
+> 
+> Fix this by verifying that the MMIO length (pci_resource_len(pdev, 0))
+> is at least SZ_64K before calling ioremap(). This accounts not only for
+> standard registers up to E1000_SYSSTMPH, but also for flash registers
+> mapped on ICH/PCH chipsets (up to offset 0xE074 / ~57.1 KB). Since PCI
+> BAR sizes are power-of-two aligned, SZ_64K is the minimum valid BAR0
+> size required to ensure all subsequent MMIO accesses remain strictly
+> within the mapped boundary.
+> 
+> Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
+> Signed-off-by: Pu Lehui <pulehui@huawei.com>
 
-Use ma_put() on stop paths. On restart paths, re-arm the delayed work
-before dropping the old reference, matching the ordering used for IPv4
-IGMP timer updates.
-
-Similar to commit 3546deaa0c30 ("ipv4: igmp: Fix potential memory leaks
-in igmp_mod_timer() and igmp_stop_timer()").
-
-Fixes: 2d9a93b4902b ("mld: convert from timer to delayed work")
-Signed-off-by: Minhong He <heminhong@kylinos.cn>
----
- net/ipv6/mcast.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index aaba4c2aae23..32b194c97236 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -76,6 +76,7 @@ static struct in6_addr mld2_all_mcr = MLD2_ALL_MCR_INIT;
- static void igmp6_join_group(struct ifmcaddr6 *ma);
- static void igmp6_leave_group(struct ifmcaddr6 *ma);
- static void mld_mca_work(struct work_struct *work);
-+static void ma_put(struct ifmcaddr6 *mc);
- 
- static void mld_ifc_event(struct inet6_dev *idev);
- static bool mld_in_v1_mode(const struct inet6_dev *idev);
-@@ -724,7 +725,7 @@ static void igmp6_group_dropped(struct ifmcaddr6 *mc)
- 		igmp6_leave_group(mc);
- 
- 	if (cancel_delayed_work(&mc->mca_work))
--		refcount_dec(&mc->mca_refcnt);
-+		ma_put(mc);
- }
- 
- /* deleted ifmcaddr6 manipulation */
-@@ -1156,6 +1157,7 @@ static void mld_report_stop_work(struct inet6_dev *idev)
- static void igmp6_group_queried(struct ifmcaddr6 *ma, unsigned long resptime)
- {
- 	unsigned long delay = resptime;
-+	bool put = false;
- 
- 	mc_assert_locked(ma->idev);
- 
-@@ -1165,7 +1167,7 @@ static void igmp6_group_queried(struct ifmcaddr6 *ma, unsigned long resptime)
- 		return;
- 
- 	if (cancel_delayed_work(&ma->mca_work)) {
--		refcount_dec(&ma->mca_refcnt);
-+		put = true;
- 		delay = ma->mca_work.timer.expires - jiffies;
- 	}
- 
-@@ -1175,6 +1177,9 @@ static void igmp6_group_queried(struct ifmcaddr6 *ma, unsigned long resptime)
- 	if (!mod_delayed_work(mld_wq, &ma->mca_work, delay))
- 		refcount_inc(&ma->mca_refcnt);
- 	WRITE_ONCE(ma->mca_flags, ma->mca_flags | MAF_TIMER_RUNNING);
-+
-+	if (put)
-+		ma_put(ma);
- }
- 
- /* mark EXCLUDE-mode sources */
-@@ -1641,7 +1646,7 @@ static void __mld_report_work(struct sk_buff *skb)
- 	for_each_mc_mclock(idev, ma) {
- 		if (ipv6_addr_equal(&ma->mca_addr, &mld->mld_mca)) {
- 			if (cancel_delayed_work(&ma->mca_work))
--				refcount_dec(&ma->mca_refcnt);
-+				ma_put(ma);
- 			WRITE_ONCE(ma->mca_flags,
- 				   ma->mca_flags & ~(MAF_LAST_REPORTER |
- 						     MAF_TIMER_RUNNING));
-@@ -2622,6 +2627,7 @@ static void ip6_mc_clear_src(struct ifmcaddr6 *pmc)
- static void igmp6_join_group(struct ifmcaddr6 *ma)
- {
- 	unsigned long delay;
-+	bool put = false;
- 
- 	mc_assert_locked(ma->idev);
- 
-@@ -2633,7 +2639,7 @@ static void igmp6_join_group(struct ifmcaddr6 *ma)
- 	delay = get_random_u32_below(unsolicited_report_interval(ma->idev));
- 
- 	if (cancel_delayed_work(&ma->mca_work)) {
--		refcount_dec(&ma->mca_refcnt);
-+		put = true;
- 		delay = ma->mca_work.timer.expires - jiffies;
- 	}
- 
-@@ -2641,6 +2647,9 @@ static void igmp6_join_group(struct ifmcaddr6 *ma)
- 		refcount_inc(&ma->mca_refcnt);
- 	WRITE_ONCE(ma->mca_flags, ma->mca_flags |
- 		   MAF_TIMER_RUNNING | MAF_LAST_REPORTER);
-+
-+	if (put)
-+		ma_put(ma);
- }
- 
- static int ip6_mc_leave_src(struct sock *sk, struct ipv6_mc_socklist *iml,
--- 
-2.25.1
-
+Reviewed-by: Breno Leitao <leitao@debian.org>
