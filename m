@@ -1,57 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ECB3C2B8D;
-	Mon, 27 Jul 2026 23:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9093A9DA3;
+	Mon, 27 Jul 2026 23:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785193724; cv=none; b=eLLR1HaGh6iTfLDi9QUg4dyXsy7S0wJ79YKAbY4K9orDkZ6Z2aaYRcLA5EaAIYDF+GFOWs2vS8xG5zBrEP8ys4asZN7+voIhVQ9dijYjCOcrUlIzhlAWibMGyDaVRYwgGChWLVlRxRGX2tipYbmsaLyT3ed45SswDMopvmwuBeo=
+	t=1785194214; cv=none; b=mz50OjkF3aQT/VY2r8XJ2bgmUTlz/jmu9vaKBbxY2IqPIJRSJBdOvgXrrjgqJw6BPXaYWL7XFeYVRqgmHh2nZg+K1xYiMjAaKqgodxJX6jgxqWUB3lLfQuuqas1XsDNWsbniv2RhUiSIi04ayjaAAyCdLjsIlhimyenmp55HIws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785193724; c=relaxed/simple;
-	bh=I78J8rlILj0qomHIOdPBN4IPMyQJ6lurM+p5CZWcrtc=;
+	s=arc-20240116; t=1785194214; c=relaxed/simple;
+	bh=kZNXlNAfSVusVoPVriJ0v5XAtDbQ3QHe3+Vn4kPRYSA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aqUEmiDxoInuJ1IaPfheqJDBP7vqXP8067CzDqSiC9xaJLfF63qXm0WBhMylrxGN6iFYJE39tgezyrEUvidYmCcGgFSznyRSvi6CV6tg8oF4kteCPoaXCPdr6nefMQLKqpOoaYsm+Hl1W8Ui6jTN1T36wdkxGjEEI872o51W+7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IuX+/7D7; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=BNDA7anV9tb5iNPndyqkyvU6VRjRbW9hkK7CeVKLLgXIqOYpxY7xPAOBOda0QXEIsRyh3BFCcVFW9W7yNNlxs5NtC/HSaRwH4HcdbaTGmHXMaiS96SmM34Khwkc4zqtvFmY2p2w93Ihteoz0IgHd/RYUG99bksE2ce7Qwg6PxWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RzNM3WgT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IuX+/7D7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D627C1F00A3A;
-	Mon, 27 Jul 2026 23:08:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RzNM3WgT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1461F000E9;
+	Mon, 27 Jul 2026 23:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785193723;
-	bh=PxFa8mBAJMO2Gptu6EU6UbOF+/7VolunlsPoWte10eI=;
+	s=k20260515; t=1785194213;
+	bh=rHrgozeDMsPrY0ICPPbhjDXHnrKHdRVo/MfyqWmfxWI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=IuX+/7D7lEEEwqdad4Jq6UJvUexUMhpvd7sDZVcpJXWgrFUA+6HNfjsuGkxE3f/00
-	 aauvNLMM8W8oqIBKhqXDOG5PSudSuoJT58QXY1d5zIS9Yb6lFJheGfSo7lDBrdHfmM
-	 FBwuHPzC4BRdYLa8vLqle4kIFtJ9KPBiO9RTPuvViqfrBly9+RlnpU0zJ4xNX5T2BD
-	 osND9Ygv9VsMl9tt4QhE0TeTXXSuhy4nznb1mD6fK5D15t+NotLhKxt0sWGE90LkGg
-	 +rFrzCegova+mS0kVpaHP3ecCjpG/Nqfctomlu0KrVTGQp+ZtAOp6ZXMSDyl9yTltM
-	 ORz+nQD6ppgvw==
-Date: Mon, 27 Jul 2026 16:08:42 -0700
+	b=RzNM3WgTC11of8b6sMJWuBJj6bkb4060jsIdJaXI71TBtU/xNIxCs/tBQDWo/riVV
+	 A+v+PA9Jyad7q66wm5U6LYiVT/jtRv7SmK4fBua4LIyJ6IBNvYxk4+S/ImwAkLkRYD
+	 t8QxxE6fGMmOAulciSNfDtvJ3raI8r0Bh/Xb2Sx/fdBrDglOjqCLXmHY35gaUv/qRw
+	 fJfulV5KpE5cpoO5SedoQAtrx1n6U2BHfnnRT5Lcdlymed7iHq4wz4z+7y6yi3C9vo
+	 7TGN0UgHNHfSQk2sZqdvhsUR1YA/bAGWDgsSn+i40V0KsyaQOwDSO1T+PR5qID7JIh
+	 Fi7voY/HT5J1g==
+Date: Mon, 27 Jul 2026 16:16:52 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>
-Cc: "horms@kernel.org" <horms@kernel.org>, "dsahern@kernel.org"
- <dsahern@kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "pabeni@redhat.com"
- <pabeni@redhat.com>, "jhs@mojatatu.com" <jhs@mojatatu.com>,
- "stephen@networkplumber.org" <stephen@networkplumber.org>,
- "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
- <edumazet@google.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "donald.hunter@gmail.com" <donald.hunter@gmail.com>, "kuniyu@google.com"
- <kuniyu@google.com>, "ij@kernel.org" <ij@kernel.org>,
- "ncardwell@google.com" <ncardwell@google.com>, "Koen De Schepper (Nokia)"
- <koen.de_schepper@nokia-bell-labs.com>, "g.white@cablelabs.com"
- <g.white@cablelabs.com>, "ingemar.s.johansson@ericsson.com"
- <ingemar.s.johansson@ericsson.com>, "mirja.kuehlewind@ericsson.com"
- <mirja.kuehlewind@ericsson.com>, "cheshire@apple.com" <cheshire@apple.com>,
- "rs.ietf@gmx.at" <rs.ietf@gmx.at>, "Jason_Livingood@comcast.com"
- <Jason_Livingood@comcast.com>, "vidhi_goel@apple.com"
- <vidhi_goel@apple.com>
-Subject: Re: [PATCH v4 net-next 1/1] tcp: allow congestion controls to
- override TSO autosizing
-Message-ID: <20260727160842.5bf1b6ac@kernel.org>
-In-Reply-To: <PAXPR07MB79842FC5D44F3964BFEDA505A3CC2@PAXPR07MB7984.eurprd07.prod.outlook.com>
-References: <20260726193802.397321-1-chia-yu.chang@nokia-bell-labs.com>
-	<PAXPR07MB79842FC5D44F3964BFEDA505A3CC2@PAXPR07MB7984.eurprd07.prod.outlook.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: sdf@fomichev.me, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Alexander Aring <alex.aring@gmail.com>, Stefan Schmidt
+ <stefan@datenfreihafen.org>, Miquel Raynal <miquel.raynal@bootlin.com>,
+ Remi Denis-Courmont <courmisch@gmail.com>, =?UTF-8?B?UsOpbWk=?=
+ Denis-Courmont <remi.denis-courmont@nokia.com>, John Fastabend
+ <john.fastabend@gmail.com>, Sabrina Dubroca <sd@queasysnail.net>, Shuah
+ Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-wpan@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, kernel-team@meta.com, =?UTF-8?B?UsOpbWk=?=
+ Denis-Courmont <remi@remlab.net>, Joe Damato <joe@dama.to>
+Subject: Re: [PATCH net-next v3 7/7] selftests: net: getsockopt_iter: cover
+ rawv6, ieee802154, phonet and tls
+Message-ID: <20260727161652.58de366a@kernel.org>
+In-Reply-To: <20260727-getsockopt_phase4-v3-7-e89627544639@debian.org>
+References: <20260727-getsockopt_phase4-v3-0-e89627544639@debian.org>
+	<20260727-getsockopt_phase4-v3-7-e89627544639@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,13 +55,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 27 Jul 2026 08:02:00 +0000 Chia-Yu Chang (Nokia) wrote:
-> I see this commit is marked as Changes Requested; however, I do not see any request yet.
-> 
-> Could anyone let me know which specific request it is?
-> 
-> This commit updated our previously submitted v3 https://lore.kernel.org/all/20260630120145.286497-1-chia-yu.chang@nokia-bell-labs.com/ to have no impact on BPF.
+On Mon, 27 Jul 2026 03:06:41 -0700 Breno Leitao wrote:
+>   - ieee802154: WPAN_WANTACK dgram int path + non-SOL_IEEE802154 level
+>                 rejection.
+>   - phonet:     PNPIPE_ENCAP pep int path + non-SOL_PNPIPE level
+>                 rejection.
 
-The BPF CI has failed with your patch applied, that's why it was
-auto-ejected. You need to fix up the BPF selftests to use the new
-callback.
+The config options for these are not enabled in the config for net
+selftest target. Doesn't look like we're testing anything particularly
+meaningful here, so maybe just drop the cases for these?
