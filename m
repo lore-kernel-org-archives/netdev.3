@@ -1,68 +1,68 @@
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7902349CC4
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 01:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D3A349B0D
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 01:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785117411; cv=none; b=qsAWeMh+KTxo6j9XH24bCvfVR7M93fZouI9pZ8RghOEHHzpY/truvN7tMFeWZ96p1NHepjN+c+aSUaHYwNr1F/z0Cc+8Dmxjg6Y3T1akVxON1bOSEvtN3nVQZXoEfOV707beFYIj+8BSdYU05LG5KwJK289YSoizkGXN5OIW1zk=
+	t=1785117417; cv=none; b=RDluHgUF+WRoVWNS9i77Opqwyfil4fQ0PuvMXIQwI2AM8r1ZOQwTMTp9CfmLmHGzmHIWUHzxVrnETnOGRGEoHnfSE4sun8YQXwKzxvjA9G+Sv2W3X2ZkfRb0NbrahuniFYuG/rE9+PhrAQOkrn0HLri03CydPciOdpQg3/6j6k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785117411; c=relaxed/simple;
-	bh=bt/QBGH8jzebAVQSg2EnFHPWGTDYRoR2f82Z1pOduSM=;
+	s=arc-20240116; t=1785117417; c=relaxed/simple;
+	bh=EszWALJhinVIZObxCFPaUy794kjqgasQm0waxDhK8VM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LIOAxZJTnTWD8XQLPvm/xH5PpC/q2AV8UQSa4iEaj1LCUBSWtPN/nVGBggoqACjwD9JY42sy+6RK1GSbgToqWfyNYSyHt0FzMq6OTue6Nvv2PjEyU0D5kSy8hcXJJ6JgUxoMTwVBV55nreLHHW2MbeyLmgrxJvtZE8u3pVm2sNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gF5Mv+IX; arc=none smtp.client-ip=209.85.222.46
+	 In-Reply-To:To:Cc; b=seV+qwB3KgkX0gCGDT0+drKxbs+K1qbu2895i5F0Ta7veJOexuvPHKkcSVMaWK+AIDrBT3ml06DaE+Hzq+kWPq7PW6I3Ue28zyFVBx77rUPZnPsDmocBtIvImh4p4i9/CDC6rsizS0oJU4ml4dHCxKrsJeF1QKY16PQM+Cv/5Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q9BHaaKd; arc=none smtp.client-ip=209.85.222.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gF5Mv+IX"
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-97715c7df46so419205241.0
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 18:56:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q9BHaaKd"
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-976ea28c65fso1234343241.1
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 18:56:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785117408; x=1785722208; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785117415; x=1785722215; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6E4lr0nxe1bU+SeDOb65nuDXNro1fFH0tr+UijJu2Yw=;
-        b=gF5Mv+IXDzT8Pk65OwEfODe+PNBF6TroE6WUDLljYWF0hEexO6Qfe9Co8Vr85GJXo1
-         dcMddIpR/kokncSOkHEFnBJb38dhzPYr//22xDtAwyTFuUL/GP9rhYl3QsL1j7hXcBwI
-         RlwHEGKD6+4MR0N0ftRZ1AWwDXGmZktVaNANzj9Q2q5ZQv6H5x/Pq8Zj9Z0WMHhmSj5u
-         Gv6jxt8hcsM9BXvNKb/voA+WiBY7LFEu8diBaMuOrVtb6ZrOyJhl9pVO6/8mV+cX4IFq
-         6RmIJCNyb2NSSgFy5Gb1uJpcAbXzMnr6nT+mWJBO7Phs7xBuOKIIUZivJJZeAn46YCOU
-         Y/yw==
+        bh=NOayYCwfC+5qskftl9LJRPws5FfAU5LWClR050fKiVg=;
+        b=q9BHaaKdfDvcCSyRKGVFnvLOpUuIyHzeUTXGMgwJ3LSrSeKO2DuwRAWY5Oo1EXoRjK
+         ZmFqPfqG6miSiEFHYtwAJoD7qy4fJsfh8NXZ1ZIC8Gc1HneYapP86E/L+89jEPUW2Lmg
+         z2dmN2xQXnYk26nf7GVAHGRijY6nKVLqr3K+oGhQSPIDHvvZu9ft6pke+sv9FF42R/6h
+         GC6vGp2e/ML7rrUAZfHlgyTXyB4RvFu96fRHu/MtWHtxQrHXxEpJJqoBE/asV6QWCDVT
+         5FRdXIeeImI+V7uc0WnBwEIZBrmepBWp5etr+kFlZkgl8nRnZ93ZlXtyaKy2yE0kLwGx
+         A/LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785117408; x=1785722208;
+        d=1e100.net; s=20251104; t=1785117415; x=1785722215;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6E4lr0nxe1bU+SeDOb65nuDXNro1fFH0tr+UijJu2Yw=;
-        b=fYHuSKzWu5lHTijUPaf0T/cJP22VEhUBmsxM5HngGM4eqb8XZomHJpY7LnsCSvs9/F
-         B+sDPx1hdNiUO/XfyN7d4eoUfXxmyIMDfWjyl+WtqXNxoIwOGwp5s37IjnOqhdt9kreL
-         Na2hzEwJblrlenf3d3wXIkkkynWFvUlRs0sUgzJeWmcBmvi/g/qgfHhM6M5v+h1+/bhZ
-         2L5cTR74V1cH/rvFt2Edt1QQOo7vqypoW6/QfIyYm4nPTOMksB7IWmdf9R7W0dI3gixv
-         QdHs0VDoJTwIe0VK8JerB8Sx8lvlqQneAThg+EOOdFm/FBr3rdnh/gzEwRsrvUjb6KzJ
-         C++A==
-X-Forwarded-Encrypted: i=1; AHgh+RrijPX8A9Ovz43na4G/L+PwliOhjjIoy9KfS0bbr6uqXC1xG/Zy9CONpGcHEWluKvNe1JzOGRk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxqb0C6pAc3OcSJAqYWLhh4C05Lzs/xpHolUGBKBm4czH4U+Ju3
-	4mGDtaMkHH0jnZmbRgJ5Ps6yJM4faq4R2WMt6pPxdmr2F55QICQSW5NT
-X-Gm-Gg: AR+sD11hDVY/N89wDS3bY1Miiko0m+3CQidawzoTwl11ntnNobAB46AZ9gjcQ4ougr8
-	/jo98gXXaRvJ/3CgVnmdXKu5B87mA5G5ilxNIDnCIJ2I9jGkpNEtaXyIhNGtOST9ealKr+4tqvg
-	dTx4g41zYPB7YgsQ3vEyAbbBOSsOs7ccq9efLyYbLR15mRtJMh5tRD1dRmr/7FS5g8y43Gu8nKj
-	rJd3PbQ0SzXQ1Wf9l7rUmHaFKc6gCjWR9jJCs+nOZBvS3tYZUepGzE/8gdBHNjuOWkifOSffeYL
-	e1TGGF+BdEtEWWhLQ4XUflBnO2P/F1io542ydvxYnXmgMiU6T1CDyAV+vMP2fiEaqqoviQhT7D9
-	84DpkMTux/Dbxojnx62NnTnlp+ktoVrhEqjeZsbf8dKbJbXnnFJ8M1WGTVQeuSQz4qSjdFGtpf6
-	SRC2u+OOOLYzinBY3eUg==
-X-Received: by 2002:a05:6102:6b09:b0:631:26f6:701a with SMTP id ada2fe7eead31-750413f13c8mr3227468137.29.1785117408338;
-        Sun, 26 Jul 2026 18:56:48 -0700 (PDT)
+        bh=NOayYCwfC+5qskftl9LJRPws5FfAU5LWClR050fKiVg=;
+        b=PEPdxtMaZZTh+Ixk+k0h2yJTu+TWlyZ2b6Uz4d8MqjNh8CoZmD/8IYmuxaBFkBVs6e
+         Y0F54SbItclh05v0Mg6cEveUT0CaHn7/EVzsi926knRWuC+3DUaSB3ctom30g3zyywsW
+         Dwl4z5A1xc8QxQG/XMb501onZl6XZahoTYpw0q01W7NwYP1NjVJnu50ZIH6KhT2X9lnV
+         cRCgweaRGEtJU3DNuI7gkQ1+GjlwHHJvDtL7hrcyzo4IfEpGe9BKP1mo0TqGqx0fsasW
+         xyurknBSzRAuMhn90AgUeYKnwvxqvWpNtiTGZa78Rf7bmvCKuOIuDyeG1OpP5vv0EdLu
+         Liew==
+X-Forwarded-Encrypted: i=1; AHgh+Rp9W7Im1ZJzudWoWqPT9iTUEfFtA3G7a8Jy2cEzbp6xP90wBnHIuv6wCw6i5gebJxGPuOd8No0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIxHkK7Z/F2y3rfPBanafUZ231uwdFw3hwGnL1umm3MWJJncuG
+	kyABIneRui5SmVX0rccWCTau19qqgA3Ec2eANpMgr2vKZ/0JgsfTS8at
+X-Gm-Gg: AR+sD13aMlpUKjtrJ6PvZR15CeTu0ldrxbkDYKPwUhOuQO4B3MiuVMu5zj11lCXILN8
+	I7ylaQljJLsCCe22LpES1nUaYe32I7/zUfltwPmI9/sJ6mMuEjG7t6zae1v8qDj47o94cqAZ10Y
+	Zda7wyKM8ucklhmWvrO6eNHuD3DKNFLVlWr0f0vRUdwIyQoCmVF1d9p/vKpyiU8R1lGZxrbhaXx
+	z/uN/bwrSP9wzrDQW9cn+kcqITVe28EeAm1rbMg+5NzUiwk4TuGFg+GvEG5AfN4l4t/5bJ7h7zp
+	i71QUqLq3F4giFVSUeRsjFKBCbM8GewnQWm+JTrUa0JmYCDMPqhVU2DAMBZnVAuOmQXONNLL4Qe
+	7or5WR9KIoiTrQ8UQjtP/17GYdFBXxZJ7XjGPtUqbH//RJOpqMnXfyKAbH2haeTL3hoOb1LxiXZ
+	s3aV2s7P+l8lVggkT48Q==
+X-Received: by 2002:a05:6102:3ec8:b0:738:bf0f:d0c6 with SMTP id ada2fe7eead31-7503acf2e29mr4640443137.0.1785117414758;
+        Sun, 26 Jul 2026 18:56:54 -0700 (PDT)
 Received: from tresc054937.tre-sc.gov.br ([187.65.210.13])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-75036705086sm4545306137.12.2026.07.26.18.56.42
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-75036705086sm4545306137.12.2026.07.26.18.56.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 18:56:47 -0700 (PDT)
+        Sun, 26 Jul 2026 18:56:53 -0700 (PDT)
 From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Sun, 26 Jul 2026 22:56:10 -0300
-Subject: [PATCH net v2 3/4] net: dsa: realtek: use devm_mutex_init for
- vlan_lock
+Date: Sun, 26 Jul 2026 22:56:11 -0300
+Subject: [PATCH net v2 4/4] net: dsa: realtek: use devm_mutex_init for
+ l2_lock
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260726-realtek_mutext-v2-3-5d62ba998791@gmail.com>
+Message-Id: <20260726-realtek_mutext-v2-4-5d62ba998791@gmail.com>
 References: <20260726-realtek_mutext-v2-0-5d62ba998791@gmail.com>
 In-Reply-To: <20260726-realtek_mutext-v2-0-5d62ba998791@gmail.com>
 To: Linus Walleij <linusw@kernel.org>, 
@@ -90,29 +90,28 @@ With CONFIG_DEBUG_MUTEXES enabled, mutex_destroy() needs to be called
 before the lock is discarded. Use devm_mutex_init() instead so the
 cleanup is handled automatically.
 
-Fixes: 9da2c8672f771 ("net: dsa: realtek: rtl8365mb: add VLAN support")
+Fixes: 336e3e4a1ab37 ("net: dsa: realtek: rtl8365mb: add FDB support")
 Reviewed-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
 ---
- drivers/net/dsa/realtek/rtl83xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/dsa/realtek/rtl83xx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/dsa/realtek/rtl83xx.c b/drivers/net/dsa/realtek/rtl83xx.c
-index 9402bfe4f85a..9f40afb19ab2 100644
+index 9f40afb19ab2..9dd50b20c000 100644
 --- a/drivers/net/dsa/realtek/rtl83xx.c
 +++ b/drivers/net/dsa/realtek/rtl83xx.c
-@@ -160,7 +160,10 @@ rtl83xx_probe(struct device *dev,
+@@ -164,7 +164,9 @@ rtl83xx_probe(struct device *dev,
  	if (ret)
  		return ERR_PTR(ret);
  
--	mutex_init(&priv->vlan_lock);
-+	ret = devm_mutex_init(dev, &priv->vlan_lock);
+-	mutex_init(&priv->l2_lock);
++	ret = devm_mutex_init(dev, &priv->l2_lock);
 +	if (ret)
 +		return ERR_PTR(ret);
-+
- 	mutex_init(&priv->l2_lock);
  
  	rc.lock_arg = priv;
+ 	priv->map = devm_regmap_init(dev, NULL, priv, &rc);
 
 -- 
 2.55.0
