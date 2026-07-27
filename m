@@ -1,278 +1,340 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69D236F437;
-	Mon, 27 Jul 2026 09:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D383EC687
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785144946; cv=none; b=gSjTs2kYhll9f6gd2rNHqL8lbAqC1EMBJ+nLpVKKwDqRWbhofq0OBOZc0CttjTAYwuNH3AU9vWTU5Hv9SU34KhV3qs/6/t0XXYtPAp+GvY0ta6f2JYOa7pvTIdWqJeyD5Vc7awIFSw3p2TMHH1SLKDIFiKkssv6I+Obgnsem8FY=
+	t=1785145129; cv=none; b=lAIpCr39eW0ECOnU5PA0G6IGV8awk0V94t3YepPiavzKkWHhp7wG+RdgykykY5jp37xAfpYqnit0rQyKHUURMyDRGw+9FW3U829v1YPNZ8UYLKu/DICjY2ltzfhwu0kP8GZJlYYGoDUotdU4kcfdAT1nF+UNrCtQxiajOEmEPu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785144946; c=relaxed/simple;
-	bh=PiFexxv/63o2u/J1QELKyb7j+x37qLVEqk0JktAH1RE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hOPQZCg3ugUbsE88ucdSQXQEs/wsSmkDqd64q/eQe3UYDVMVGxxyRlgmc8ww9v2akfdvv0zFqokwmEX822LriqzhSCD/Yhpzp0K9awAWLy123f1L7Vw9tWQmBa312so0BYW5/Rwud6BdoJYPZPJ5inygNHy/INnOK/uyPClTMhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=i5QfeznJ; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785145129; c=relaxed/simple;
+	bh=+0yJ4I0gxabguzF8Rguw9ulXIZ3IsjgHi5CUS7s0U9o=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LJOOgiauOJbpRLIsm1RK4XemHKKGfmmtZoSLh64toTqWRKbqx6EsqMr4QT0ksdBcS2POoSh1jguMzO9BcB97ho32Yxh8KYTIJkgzzVbz++sShtOfkwB/ehY0UGixbzPxkW4hr35Sn6feyUW0oOqqkgetifVgHC/W85D7ZySwx9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sPjvsxfz; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="i5QfeznJ"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66R9UllS4154511;
-	Mon, 27 Jul 2026 09:35:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=UO61xM23KinFQFco9FSOtMYhQPc/AbGFT6ejY4z9+
-	yM=; b=i5QfeznJAZP49FNCrUZTHOanNI7NRqU3ZX7iFk6+/xZGo5N9IRddo9EJ/
-	2+j4jpKY2FWAetWI10v90vePkoQT7IpGKoKHbDzUp2t6lv9IVfJGC5vWv6uq+95t
-	7kHzajOJn504ZKopZjiaaG2BpFR7HSe6RjStY+OI3oQPCh+HIQf3KYz7xeKQ78Zs
-	dERlNxGaj7tP/kplV4KP+uG/S7xJMUf54BV/mpUyY6vsL08ttObsiwzOoID1EUj/
-	X/lQ0T025Ry/VSfHGyYfRhumcdFUcjMYfInl83lmpOvo4KhuUjbNn6/EedVAXoZk
-	tqkxaf56z/J5lHBwZMXi3Y5tYEemw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuyc78vr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 09:35:36 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66R9QGjR009764;
-	Mon, 27 Jul 2026 09:35:35 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8yh4qb9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 09:35:35 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66R9ZVV536176290
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Jul 2026 09:35:31 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7565E20076;
-	Mon, 27 Jul 2026 09:35:31 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2EF2920075;
-	Mon, 27 Jul 2026 09:35:31 +0000 (GMT)
-Received: from t83lp68.lnxne.boe (unknown [9.87.84.240])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Jul 2026 09:35:31 +0000 (GMT)
-From: Hidayath Khan <hidayath@linux.ibm.com>
-To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, wintera@linux.ibm.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com, wenjia@linux.ibm.com,
-        mjambigi@linux.ibm.com
-Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, horms@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, pasic@linux.ibm.com,
-        gbayer@linux.ibm.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH net] dibs: fix use-after-free of dmb_node in loopback attach/detach/unregister
-Date: Mon, 27 Jul 2026 11:35:30 +0200
-Message-ID: <20260727093530.968834-1-hidayath@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sPjvsxfz"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cf27856f9cso31020285ad.2
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:38:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785145127; x=1785749927; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Z16dJnLnSv95Qpq+A/raImdSjBDYDMk7y4iTWRylGiE=;
+        b=sPjvsxfzCIGhen9Vbt5/V1YKBbmfKWUg8tcXw0y0MGuyjenjqEVQggvMbLpDFXV9cM
+         ic5SbHeXrUfSOzktBGXZvENxrCucaw7ryc5hosIB3YR3xgMWQ6S5Vai9cEvDX1QF7g56
+         pKoOJEoUTvvR8acfg8+5Bmtai3MmHBBmoSYDO8QPTy8y/9txm/RSsvkOCgJqz1iZkEV1
+         Esv5yK/pMoXOn4hcbZ4sa85dpmSxe+ICv4wexCy7NT67lHBq6Q9TmLD0y70Pc6PLtVW8
+         UfrGimWgbCsbqwivM98CC9A1hgif23oie+Whj4B9T0DwO/6Zh9LRDmKUQMa859tqjrwf
+         wrJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785145127; x=1785749927;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Z16dJnLnSv95Qpq+A/raImdSjBDYDMk7y4iTWRylGiE=;
+        b=Y9/k7QzdyNKIyNlOaer7VlDjTy7eIQ+HRoHOQb+ZZ3F0ZtYC/aW6HOqkpo/namivNb
+         HQqvBVHJvQ6cYbrPKYnXh8/YO038Mte3qGOYHrtk5tRWzFXSUa3FJIKGfb/Ww/4Rz4c9
+         E8Ysai3GAsJYyqmwMjuWXDofGrkNQH4dstRq2qU7W8modhnmY3elrFISRUtNLVSTa7pM
+         qpiqA2MqMJziyEIM4UJFQ0bwiktQbiuwOQWo64JZWKu1L5WQsy2PPbCGEkEjpAzT75nR
+         f6vpl+keHs2l01zQLPDn3YUtgMuLfD76cslMcOiRhikKfxAETVpvSrjQ5x7GDBhzzALL
+         Pb1Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rob6SDuxsmuiF5gnjoE4+PybAeFkCRJ9HbUciW6ORbyYXCW4SeepU+M0crL/+8yJc4RKajQO+w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8qIq6B8bcaBnKKv7c6MhPPkyvojUmP5F5Z98PNooNKy2Q5g/j
+	ZmESIkG40sWM+M+2tGBTr56ww+RQQRZsmLr9l6r13O6ThVj0fTmOrbFK
+X-Gm-Gg: AR+sD10uiH87MrBds+JtLJ8t1I5FxIKoK6sEjqgIk7nA2NaemhNV2NxxUljDEoRPBUY
+	jC+5NEdllTjrZHnFTho2dF0Vp2IFmxCQ+t/mQd4XV1IcKdBLV2R29aULT8037vQQCrSqqMCXAWs
+	jpUCE/zWUcwCZ8MOc38O2K6aN6TjtGCeJp5b72uPneh81FrMOuvPjrJha6qqHaaYSvpbU4oHsPy
+	IxdobiXRYlwgfL42uZnqOcyEOlDURjeNYxDY3d8/QVaHwfAFLE/zxrsq55ZqkAo5L/1fK/dKk56
+	hwQtqFC3cluoomXAHyTnEXUt+iifP09nDC+0eryR133GCdnm6ppWULh5pqC1xp/cDVnk2OvjJAC
+	7wyEOCRqNINCB/2w786q5frqXIkbTXN/iZt4IxFTAOc4Q1YxC0Rj6e52mFfPjOoCyYwhVWjvK2A
+	U/
+X-Received: by 2002:a17:903:1c7:b0:2cc:6329:b7ba with SMTP id d9443c01a7336-2cfde7a9a93mr78616115ad.16.1785145126625;
+        Mon, 27 Jul 2026 02:38:46 -0700 (PDT)
+Received: from server227.. ([39.170.101.209])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde5e8a44sm32574905ad.35.2026.07.27.02.38.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 02:38:46 -0700 (PDT)
+From: Zxyan Zhu <zxyan0222@gmail.com>
+To: andrew+netdev@lunn.ch
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	linux@armlinux.org.uk,
+	hkallweit1@gmail.com,
+	rmk+kernel@armlinux.org.uk,
+	maxime.chevallier@bootlin.com,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	bjorn@kernel.org,
+	Zxyan Zhu <zxyan0222@gmail.com>
+Subject: [PATCH net-next v2] net: phylink: add phylink_pcs_loopback() method for PCS loopback support
+Date: Mon, 27 Jul 2026 17:38:35 +0800
+Message-Id: <20260727093835.1708262-1-zxyan0222@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260724085224.3321663-1-zxyan0222@gmail.com>
+References: <20260724085224.3321663-1-zxyan0222@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: -Ex0jxdPAV7rLypbSJS_B1Hl2CPzgfUq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDA5MSBTYWx0ZWRfX4MA6FT21YQAi
- VPg2k966gfn4TWI6izLysSu6sfUb7PQxGNBD6pOQWV/wwXWTIV+UF0LTzGqoAuQ+WQdTkbM+1iR
- Mpev6q8PcgLoWZ0bY6oZLmjPosEAx5hqw6YQ6onghmyXBbU1v53U+iUdaL3iSLfu1kYS9ba7+sk
- vVvZXLgBzIJPsY5KkXRukoOhwPiUd+huTvrmJaKm2wXqUKOjqlo2B7fp5IH6wglVk4tT67Wdl9q
- 00t4xapnnGZDjE2fV6VWi1ekP07KIF+2G5XKh/0XPfym870rw2Lo/P3o4TmIk1d9kYLo5vp0d6d
- hmHupieEMputlgzLwrlPcAmY+5eeUNjHi1jNTZk5ihcfXy5VXGoy6ZQS0dGStSIIsuJADX0M53o
- q8D0K3lzpS094kJxmDfZeYAl5U4dFq99jUEgqKXaQbUl+HPx7Ql+aWBZkftkjFqUiXmrT0nDSb4
- 3hvS9q53jYTSSrS+23w==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDA5MSBTYWx0ZWRfX9nnw/RLusy/R
- gHCuFEStcsYAQuY9pZG94BqtXVg2FZzKk/QxBZ24B0ghUezgh8szdJ4eZO875qVsihdL52pu3qH
- ynavxE6UUb5ORoCsP1y7WQftPAM8odU=
-X-Authority-Analysis: v=2.4 cv=AZeB2XXG c=1 sm=1 tr=0 ts=6a672669 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=j3-GGZ3PBAWOPdPpVlEA:9
-X-Proofpoint-GUID: 4rTJSMQnV6OKOOdUU71XWwUsWfdTPJJg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-27_02,2026-07-24_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 phishscore=0 adultscore=0 impostorscore=0
- clxscore=1011 malwarescore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607270091
 
-dibs_lo_attach_dmb(), dibs_lo_detach_dmb() and dibs_lo_unregister_dmb()
-look up the dmb_node under dmb_ht_lock, drop the lock and only then
-operate on the node's refcount. Nothing keeps the node alive across
-that window: __dibs_lo_unregister_dmb() removes the node from the hash
-table under the write lock and immediately frees it.
+Some Ethernet MAC drivers (such as stmmac) need to perform PCS-level
+loopback for selftest purposes when no external PHY is present. Add a
+new phylink_pcs_loopback() method that allows MAC drivers to request
+PCS loopback mode through the phylink framework.
 
-A concurrent final put can therefore free the node between the lookup
-and the refcount operation:
+Implement the pcs_loopback callback in the stmmac integrated PCS
+using the GMAC_AN_CTRL_ELE register bit. Add a helper function
+stmmac_selftest_get_pcs() in stmmac selftests to unify PCS lookup
+across glue driver PCS and integrated PCS. Update the selftest
+enable/disable paths to use the new helper.
 
-CPU0 (attach)                     CPU1 (owner unregisters)
-
-read_lock_bh(&dmb_ht_lock)
-find dmb_node (refcnt == 1)
-read_unlock_bh(&dmb_ht_lock)
-                                  refcount_dec_and_test() 1 -> 0
-                                  write_lock_bh(&dmb_ht_lock)
-                                  hash_del(&dmb_node->list)
-                                  write_unlock_bh(&dmb_ht_lock)
-                                  kfree(dmb_node)
-refcount_inc_not_zero(&dmb_node->refcnt)  <-- use-after-free
-
-The same window exists for the refcount_dec_and_test() calls in the
-detach and unregister paths.
-
-Close the race structurally by making hash table membership and the
-refcount transitions atomic with respect to each other:
-
-- Perform the final refcount_dec_and_test() and hash_del() in a single
-  dmb_ht_lock write-side critical section, in both the unregister and
-  the detach path. Freeing the node still happens after the lock is
-  dropped, which is safe because a node whose refcount reached zero has
-  left the hash table and can no longer be found.
-
-- This establishes the invariant that any node found in the hash table
-  holds at least one reference, and that the final reference can only
-  be dropped under the write lock. dibs_lo_attach_dmb() can thus take
-  its reference with a plain refcount_inc() while still holding the
-  read lock; refcount_inc_not_zero() is no longer needed.
-
-__dibs_lo_unregister_dmb() no longer touches the hash table and is
-renamed to dibs_lo_free_dmb() accordingly.
-
-Note: commit cc21191b584c ("dibs: Move data path to dibs layer") moved
-the code to its current location; the race was introduced earlier by
-commit c3a910f2380f ("net/smc: implement DMB-merged operations of
-loopback-ism").
-
-Tested SMC-D via ISM and dibs loopback.
-
-Fixes: c3a910f2380f ("net/smc: implement DMB-merged operations of loopback-ism")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
 ---
- drivers/dibs/dibs_loopback.c | 47 ++++++++++++++++++------------------
- 1 file changed, 24 insertions(+), 23 deletions(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_pcs.c  | 17 +++++++
+ .../stmicro/stmmac/stmmac_selftests.c         | 51 ++++++++++++++++---
+ drivers/net/phy/phylink.c                     | 19 +++++++
+ include/linux/phylink.h                       | 16 ++++++
+ 4 files changed, 95 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/dibs/dibs_loopback.c b/drivers/dibs/dibs_loopback.c
-index 0f2e09311152..fd5caf1e19a8 100644
---- a/drivers/dibs/dibs_loopback.c
-+++ b/drivers/dibs/dibs_loopback.c
-@@ -118,14 +118,9 @@ static int dibs_lo_register_dmb(struct dibs_dev *dibs, struct dibs_dmb *dmb,
- 	return rc;
+Changes in v2:
+- Implement pcs_loopback callback in stmmac integrated PCS using
+  GMAC_AN_CTRL_ELE register bit.
+- Add stmmac_selftest_get_pcs() helper to unify PCS lookup across glue
+  driver PCS and integrated PCS.
+- Add NULL check in phylink_pcs_loopback() wrapper.
+
+Note on loopback direction:
+The pcs_loopback callback uses a simple enable/disable boolean, matching
+the existing phy_loopback() API. Direction is not needed at this level:
+selftest loopback is always host-side (TX looped back to RX). The
+future ethtool user-space loopback API can handle direction selection
+at a higher layer.
+
+Note on phylink_set_loopback() vs phylink_pcs_loopback():
+This patch follows the same pattern as phy_loopback() - a direct
+callback on the PCS object. Keeping the API minimal avoids introducing
+a new phylink-level loopback abstraction with location enumeration
+before Björn's ethtool loopback series lands upstream. Once that
+series is merged, phylink_pcs_loopback() can serve as a building block
+for a higher-level phylink_set_loopback() if needed.
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
+index df37af5ab837..90a21a2f7e87 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
+@@ -168,6 +168,22 @@ static void dwmac_integrated_pcs_an_restart(struct phylink_pcs *pcs)
+ 	}
  }
  
--static void __dibs_lo_unregister_dmb(struct dibs_lo_dev *ldev,
--				     struct dibs_lo_dmb_node *dmb_node)
-+static void dibs_lo_free_dmb(struct dibs_lo_dev *ldev,
-+			     struct dibs_lo_dmb_node *dmb_node)
- {
--	/* remove dmb from hash table */
--	write_lock_bh(&ldev->dmb_ht_lock);
--	hash_del(&dmb_node->list);
--	write_unlock_bh(&ldev->dmb_ht_lock);
--
- 	clear_bit(dmb_node->sba_idx, ldev->sba_idx_mask);
- 	folio_put(virt_to_folio(dmb_node->cpu_addr));
- 	kfree(dmb_node);
-@@ -139,27 +134,33 @@ static int dibs_lo_unregister_dmb(struct dibs_dev *dibs, struct dibs_dmb *dmb)
- 	struct dibs_lo_dmb_node *dmb_node = NULL, *tmp_node;
- 	struct dibs_lo_dev *ldev;
- 	unsigned long flags;
-+	bool last;
- 
- 	ldev = dibs->drv_priv;
- 
- 	/* find dmb from hash table */
--	read_lock_bh(&ldev->dmb_ht_lock);
-+	write_lock_bh(&ldev->dmb_ht_lock);
- 	hash_for_each_possible(ldev->dmb_ht, tmp_node, list, dmb->dmb_tok) {
- 		if (tmp_node->token == dmb->dmb_tok) {
- 			dmb_node = tmp_node;
- 			break;
- 		}
- 	}
--	read_unlock_bh(&ldev->dmb_ht_lock);
--	if (!dmb_node)
-+	if (!dmb_node) {
-+		write_unlock_bh(&ldev->dmb_ht_lock);
- 		return -EINVAL;
-+	}
-+	last = refcount_dec_and_test(&dmb_node->refcnt);
-+	if (last)
-+		hash_del(&dmb_node->list);
-+	write_unlock_bh(&ldev->dmb_ht_lock);
- 
--	if (refcount_dec_and_test(&dmb_node->refcnt)) {
-+	if (last) {
- 		spin_lock_irqsave(&dibs->lock, flags);
- 		dibs->dmb_clientid_arr[dmb_node->sba_idx] = NO_DIBS_CLIENT;
- 		spin_unlock_irqrestore(&dibs->lock, flags);
- 
--		__dibs_lo_unregister_dmb(ldev, dmb_node);
-+		dibs_lo_free_dmb(ldev, dmb_node);
- 	}
- 	return 0;
- }
-@@ -188,14 +189,9 @@ static int dibs_lo_attach_dmb(struct dibs_dev *dibs, struct dibs_dmb *dmb)
- 		read_unlock_bh(&ldev->dmb_ht_lock);
- 		return -EINVAL;
- 	}
-+	refcount_inc(&dmb_node->refcnt);
- 	read_unlock_bh(&ldev->dmb_ht_lock);
- 
--	if (!refcount_inc_not_zero(&dmb_node->refcnt))
--		/* the dmb is being unregistered, but has
--		 * not been removed from the hash table.
--		 */
--		return -EINVAL;
--
- 	/* provide dmb information */
- 	dmb->idx = dmb_node->sba_idx;
- 	dmb->dmb_tok = dmb_node->token;
-@@ -209,11 +205,12 @@ static int dibs_lo_detach_dmb(struct dibs_dev *dibs, u64 token)
- {
- 	struct dibs_lo_dmb_node *dmb_node = NULL, *tmp_node;
- 	struct dibs_lo_dev *ldev;
-+	bool last;
- 
- 	ldev = dibs->drv_priv;
- 
- 	/* find dmb_node according to dmb->dmb_tok */
--	read_lock_bh(&ldev->dmb_ht_lock);
-+	write_lock_bh(&ldev->dmb_ht_lock);
- 	hash_for_each_possible(ldev->dmb_ht, tmp_node, list, token) {
- 		if (tmp_node->token == token) {
- 			dmb_node = tmp_node;
-@@ -221,13 +218,17 @@ static int dibs_lo_detach_dmb(struct dibs_dev *dibs, u64 token)
- 		}
- 	}
- 	if (!dmb_node) {
--		read_unlock_bh(&ldev->dmb_ht_lock);
-+		write_unlock_bh(&ldev->dmb_ht_lock);
- 		return -EINVAL;
- 	}
--	read_unlock_bh(&ldev->dmb_ht_lock);
-+	last = refcount_dec_and_test(&dmb_node->refcnt);
-+	if (last)
-+		hash_del(&dmb_node->list);
-+	write_unlock_bh(&ldev->dmb_ht_lock);
++static int dwmac_integrated_pcs_loopback(struct phylink_pcs *pcs, bool enable)
++{
++	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
++	void __iomem *an_control = spcs->base + GMAC_AN_CTRL(0);
++	u32 ctrl;
 +
-+	if (last)
-+		dibs_lo_free_dmb(ldev, dmb_node);
++	ctrl = readl(an_control);
++	if (enable)
++		ctrl |= GMAC_AN_CTRL_ELE;
++	else
++		ctrl &= ~GMAC_AN_CTRL_ELE;
++	writel(ctrl, an_control);
++
++	return 0;
++}
++
+ static const struct phylink_pcs_ops dwmac_integrated_pcs_ops = {
+ 	.pcs_inband_caps = dwmac_integrated_pcs_inband_caps,
+ 	.pcs_enable = dwmac_integrated_pcs_enable,
+@@ -175,6 +191,7 @@ static const struct phylink_pcs_ops dwmac_integrated_pcs_ops = {
+ 	.pcs_get_state = dwmac_integrated_pcs_get_state,
+ 	.pcs_config = dwmac_integrated_pcs_config,
+ 	.pcs_an_restart = dwmac_integrated_pcs_an_restart,
++	.pcs_loopback = dwmac_integrated_pcs_loopback,
+ };
  
--	if (refcount_dec_and_test(&dmb_node->refcnt))
--		__dibs_lo_unregister_dmb(ldev, dmb_node);
- 	return 0;
+ void stmmac_integrated_pcs_irq(struct stmmac_priv *priv, u32 status,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+index 29e824bd90ca..77a457b2fa5c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+@@ -19,6 +19,7 @@
+ #include <net/udp.h>
+ #include <net/tc_act/tc_gact.h>
+ #include "stmmac.h"
++#include "stmmac_pcs.h"
+ 
+ struct stmmachdr {
+ 	__be32 version;
+@@ -374,23 +375,51 @@ static int stmmac_test_mac_loopback(struct stmmac_priv *priv)
+ 	return __stmmac_test_loopback(priv, &attr);
  }
  
++static struct phylink_pcs *stmmac_selftest_get_pcs(struct stmmac_priv *priv)
++{
++	/* Try glue driver's PCS first, then the integrated PCS. */
++	if (priv->hw->phylink_pcs)
++		return priv->hw->phylink_pcs;
++
++	if (priv->integrated_pcs)
++		return &priv->integrated_pcs->pcs;
++
++	return NULL;
++}
++
+ static int stmmac_test_phy_loopback(struct stmmac_priv *priv)
+ {
+ 	struct stmmac_packet_attrs attr = { };
++	struct phylink_pcs *pcs;
+ 	int ret;
+ 
+-	if (!priv->dev->phydev)
+-		return -EOPNOTSUPP;
++	if (priv->dev->phydev) {
++		ret = phy_loopback(priv->dev->phydev, true, 0);
++		if (ret)
++			return ret;
+ 
+-	ret = phy_loopback(priv->dev->phydev, true, 0);
+-	if (ret)
++		attr.dst = priv->dev->dev_addr;
++		ret = __stmmac_test_loopback(priv, &attr);
++
++		phy_loopback(priv->dev->phydev, false, 0);
+ 		return ret;
++	}
+ 
+-	attr.dst = priv->dev->dev_addr;
+-	ret = __stmmac_test_loopback(priv, &attr);
++	/* Use PCS loopback for interfaces without an external PHY. */
++	pcs = stmmac_selftest_get_pcs(priv);
++	if (pcs) {
++		ret = phylink_pcs_loopback(pcs, true);
++		if (ret)
++			return ret;
+ 
+-	phy_loopback(priv->dev->phydev, false, 0);
+-	return ret;
++		attr.dst = priv->dev->dev_addr;
++		ret = __stmmac_test_loopback(priv, &attr);
++
++		phylink_pcs_loopback(pcs, false);
++		return ret;
++	}
++
++	return -EOPNOTSUPP;
+ }
+ 
+ static int stmmac_test_mmc(struct stmmac_priv *priv)
+@@ -1986,6 +2015,9 @@ void stmmac_selftest_run(struct net_device *dev,
+ 			ret = -EOPNOTSUPP;
+ 			if (dev->phydev)
+ 				ret = phy_loopback(dev->phydev, true, 0);
++			else
++				ret = phylink_pcs_loopback(stmmac_selftest_get_pcs(priv),
++							   true);
+ 			if (!ret)
+ 				break;
+ 			fallthrough;
+@@ -2019,6 +2051,9 @@ void stmmac_selftest_run(struct net_device *dev,
+ 			ret = -EOPNOTSUPP;
+ 			if (dev->phydev)
+ 				ret = phy_loopback(dev->phydev, false, 0);
++			else
++				ret = phylink_pcs_loopback(stmmac_selftest_get_pcs(priv),
++							   false);
+ 			if (!ret)
+ 				break;
+ 			fallthrough;
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 59dfe35afa54..69242caffaef 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -997,6 +997,25 @@ int phylink_pcs_pre_init(struct phylink *pl, struct phylink_pcs *pcs)
+ }
+ EXPORT_SYMBOL_GPL(phylink_pcs_pre_init);
+ 
++/**
++ * phylink_pcs_loopback() - Enable or disable loopback at the PCS
++ * @pcs: a pointer to a &struct phylink_pcs.
++ * @enable: true to enable loopback, false to disable
++ *
++ * Enable or disable loopback mode at the PCS level. This is used by MAC
++ * drivers for selftest purposes when no external PHY is present.
++ *
++ * Returns 0 on success, negative error code on failure.
++ */
++int phylink_pcs_loopback(struct phylink_pcs *pcs, bool enable)
++{
++	if (pcs && pcs->ops->pcs_loopback)
++		return pcs->ops->pcs_loopback(pcs, enable);
++
++	return -EOPNOTSUPP;
++}
++EXPORT_SYMBOL_GPL(phylink_pcs_loopback);
++
+ static void phylink_mac_config(struct phylink *pl,
+ 			       const struct phylink_link_state *state)
+ {
+diff --git a/include/linux/phylink.h b/include/linux/phylink.h
+index 2bc0db3d52ac..66c7016d4acd 100644
+--- a/include/linux/phylink.h
++++ b/include/linux/phylink.h
+@@ -518,6 +518,7 @@ struct phylink_pcs {
+  *		    the MAC.
+  * @pcs_pre_init: configure PCS components necessary for MAC hardware
+  *                initialization e.g. RX clock for stmmac.
++ * @pcs_loopback: enable/disable loopback mode at the PCS.
+  */
+ struct phylink_pcs_ops {
+ 	int (*pcs_validate)(struct phylink_pcs *pcs, unsigned long *supported,
+@@ -542,6 +543,7 @@ struct phylink_pcs_ops {
+ 	void (*pcs_disable_eee)(struct phylink_pcs *pcs);
+ 	void (*pcs_enable_eee)(struct phylink_pcs *pcs);
+ 	int (*pcs_pre_init)(struct phylink_pcs *pcs);
++	int (*pcs_loopback)(struct phylink_pcs *pcs, bool enable);
+ };
+ 
+ #if 0 /* For kernel-doc purposes only. */
+@@ -717,8 +719,22 @@ void pcs_enable_eee(struct phylink_pcs *pcs);
+  */
+ int pcs_pre_init(struct phylink_pcs *pcs);
+ 
++/**
++ * pcs_loopback() - Enable or disable loopback at the PCS
++ * @pcs: a pointer to a &struct phylink_pcs.
++ * @enable: true to enable loopback, false to disable
++ *
++ * Enable or disable loopback mode at the PCS level. This is used by MAC
++ * drivers for selftest purposes when no external PHY is present.
++ *
++ * Returns 0 on success, or a negative error code on failure.
++ */
++int pcs_loopback(struct phylink_pcs *pcs, bool enable);
++
+ #endif
+ 
++int phylink_pcs_loopback(struct phylink_pcs *pcs, bool enable);
++
+ struct phylink *phylink_create(struct phylink_config *,
+ 			       const struct fwnode_handle *,
+ 			       phy_interface_t,
 
-base-commit: 9dca6104d80f94a285aad6eb6712d004b7151e7d
+base-commit: 1df10cef2d1e7f9f2fb7eddb67fc70d3abf101f9
 -- 
-2.52.0
+2.34.1
 
