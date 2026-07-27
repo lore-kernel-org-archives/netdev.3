@@ -1,226 +1,211 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-wr2-f0.google.com (mail-wr2-f0.google.com [74.125.225.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B706E432BFF
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 17:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB75642D75F
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 18:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785174539; cv=none; b=EqfRiBRDh/DYW51WuLOpsdLelLny1waQctVCjdPDMdIOsjhcoYTjBCH+OcQmtJ+Bz0b10eLg5RjEvhzHA70bk3BNJM0aMBDjw9ZUSZqryRNdJ4AvFYZKIwHUns4dxahQUqIa08ith5HLQUnTijPyEUTzUCS3+yh2CimOVAhSG0k=
+	t=1785175297; cv=none; b=s3Tt1rbN3H+Qztj1dLrxy4xxS7EhwF6CBZVFk3jnBY/KBZIqn2ViH9RXbwA/I6THk4DfIs5VpSllKON2bOXHXATTYtVy7xSdXGvmI29aDHReahqOm1itUFLS28hU0JXycyG/z3qakTXF/4yRLIi9H7E2rPJohKuBBpaXj0KKcU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785174539; c=relaxed/simple;
-	bh=APSDTPUEgNFwya6Uj8Y2KMU/1rodoV6LqxS3uvEU5rg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KEoBwjTWc1fBm6DEvbYTdDD1oNs91zB3Mp25CFeb9dGWUkNxh7mkZ+JiF4toWT3DUB3XJ7MR4g5MRUCdeGh7bgxeivZIN9wVdyaLQo03LKad6ERX/gDusCWN7DpxV8G873cTXUebckzVJFuwkmbEZuljxLpSedaRWyr4MHEvFtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gY5N+qN+; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1785175297; c=relaxed/simple;
+	bh=b+n/2iB2uHX/RV9B+uAXOurS+RjncC8Tku/DSzHEW2M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kEEkIJljtPId4rTuDFLASr+iQwh1rmA/1wFsfsVB2R6BEH041FaCNCofukBlFRVi4KsMmOzlu/jZn8Zjzkrj4C1r7KTCwRwXEWRYhRdqRkyeXFB1ZXdt/AdUGhDDCFP1IVn73PGp889dK1AEEkuJw5jLjEgSmj9oOMhA6IE9Ok4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gY5N+qN+"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cffd93cdedso1190785ad.3
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 10:48:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785174531; x=1785779331; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/0L8UcHD2YSWW64Z5FD/06NrkfkvZfdKRpj1bBpinDQ=;
-        b=gY5N+qN+Zm+NioVy7pCHoKgj1Y3NLQ4/G6V+qe1AMgrjd6dLr/OYwGrLg04WRww9i1
-         j8wKaioEbpES9AWscMmkGPARLlHMVArAB3Jxhfp9iW3gKPejTRMajzDhtvuym6C0ojwK
-         vsEfUF8c7X50P56WJpY54P32sxUgZm9XqVvhZbRInawoiZvZ+pIQdL0yxkPEUP52yNJj
-         1x4R08bymPEPF4QnvsTmH5TmFSrrQznooMlLxd5eEOgS9iFc9iQr9NEQF2TVrELpXtES
-         6FpiNU6084tLEhKiKSzXaRvBF7msTeGp3UX/3ou51LOvuXFG3fVGjeVFjyxaESUC3Sts
-         rT+g==
+Received: by mail-wr2-f0.google.com with SMTP id ffacd0b85a97d-47f8fd5f16aso1404846f8f.0
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 11:01:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785174531; x=1785779331;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/0L8UcHD2YSWW64Z5FD/06NrkfkvZfdKRpj1bBpinDQ=;
-        b=RRvV4BQYsT6Fivl9ldRcSuLZxhmdT1krA860OgHo2Sog4w1Qrwc5g9Qjm0q8/FvFgj
-         7TaGxkYBR/dU0TvJWhnCaLlGkbYT1CEPf++dZudv+sAJr4ZRGdq9B7xla7uz81MsXLpV
-         nMx9wdKHkVyQ3vMNlFCS3MsXOvmtUlAskzLc2zuO8JykbhE3eC02/tAzr5N8L6qogceb
-         PUMmRk1L9v7UUqNFfaBQpn5sYp7/phYyXfVxfHaAu7y8+gRi3/OvdhL84EnRpCIsbip+
-         k515Gx1C51qvJaFiZKwlcm23+XpscMDpz9+NAIEbF6F+Cp1477hSG/htzSFLn+6T/tQG
-         kFDw==
-X-Gm-Message-State: AOJu0YzNG2m+nq7ydL5IEgMxdn7xxolhYU9+0lioTjbTh6b4xyI1it9w
-	yvLxlh50ePeFP5W5Em6xbWC3Y9NIA4/BCZlNHexk3TZwQJjZWEy9VADu
-X-Gm-Gg: AR+sD10zLHDi+cO/P1g1u5LUgE8r4unP7YOBsr/v5a1w6pslQnV9XvSCIjCw6LW7JCP
-	fV8jEQl/P//HOcTQa/QdnxwG4VORkZpKoSIzQ1zZityPgkQWxydwE2NvKNRZQbIjBbZp2Wl6oVV
-	BTaa9Si1NgLADe5XxUNS8Lq3m4VaKvpbnjxPY2S2a3oL+SDZg0wvZHH0SZxbhHYUf0HIxkLWPK2
-	dniYQtRRbM48emY9UVb/fxWkoUFD5FC5rN4Ln465eq38Kdp8LZh/l6VsIH9OYgDKjptcC+BwBA7
-	X/03WpPf3TCmoEjYhCCr4cHf4Wo9ytmaNV+hQ25Z09bLZoqPGaEI+AZNVts0hpgLqzS25WGlkc7
-	LRvwrWAjXhtOEdOGbOFgOTeEKWp7CZ3F+C2KZZNCIb6lE2nbMDyFtVF++yWkCkhrsVkk4NuQcN+
-	zlkcPTSLAGQjlVQOBaNfFE9wOb9zUx1IjCqVgwhRgxNLN1wgMqAnA+/brC6oFBjXE/mm2R
-X-Received: by 2002:a17:903:284:b0:2c9:99be:f011 with SMTP id d9443c01a7336-2d00ba3b644mr8041875ad.6.1785174530634;
-        Mon, 27 Jul 2026 10:48:50 -0700 (PDT)
-Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc3e878esm34560986eec.3.2026.07.27.10.48.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 10:48:49 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Allison Henderson <achender@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Santosh Shilimkar <santosh.shilimkar@oracle.com>,
-	Ka-Cheong Poon <ka-cheong.poon@oracle.com>,
-	Dan Carpenter <error27@gmail.com>
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	rds-devel@oss.oracle.com,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>
-Subject: [PATCH net-next v2] rds: synchronize info callbacks with module unload
-Date: Tue, 28 Jul 2026 01:48:26 +0800
-Message-ID: <20260727174826.135662-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260720184955.3008978-1-nicoyip.dev@gmail.com>
-References: <20260720184955.3008978-1-nicoyip.dev@gmail.com>
+        d=1e100.net; s=20251104; t=1785175292; x=1785780092;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pQbucOyUiEoW2tUJJeNL0F0/fNmQ8BYd2yE1zScqXc4=;
+        b=Kt4iiejVJcrtZZek41tHq8Q2cOPBTUg97U9uqffAf463EE/E2z2EKCjwbB2R1NOwgh
+         mTl/kx7ttM3c2VTpeJRoW+omLviDXP6HT+jiW/dr8iFLd5O/7LsoEC5tOGRHpZSU/Fzl
+         A5MnOWu3+38nnLxw4ubao3BlbVBlAW2CKJDgrdHwOtm1HBg62kG4ttoRMbmYm0FsmXBv
+         yw/e8EhdW47rhjBTrHeq9LsfebMh7lC0dEcvyliEulXc/UUbsTnTWyv749zvSwK21Psh
+         XWAL9gBgmSj0nnMNz9bKdaTd5ka5PBmPXrIBLc6hZcWObNErB9EiTJURcj7fA5hw0upV
+         GEbg==
+X-Gm-Message-State: AOJu0YzgdFHKh8a+UlxBPkqWwj8baRM3p7rZNGgrnf/HVtyrCfdJGlvH
+	Any2ERNaitJcHFqzZnwXrDAIiySZR35CQmmuuEcno4klmnTlf095Vc3N
+X-Gm-Gg: AR+sD11X4wRuqUvr4XTaZHwUbUHjQnF1iXXNuE3W8ylJ8uLR+AQ0GnZo9tDpW2TUbiL
+	1qUFPXn8rdY+lf+iTxHo9EEu5FiIR3PzJrMt1FlDs9S+B87WFjfhE4QQC+VhkE9Cirg6YhVrUsV
+	e8ELk0wiIJ66vgWkyvwc49hNED4p1C93xKiP/S7CAVO6dVcNKdLubks0jb/qp9lA6WYZt31Rzrz
+	HuyKQiZsMenyqXrh1jfqZ6gj1WE4HYnN0TeH2HrAYxCEQhbgFOXUm2s/jVl32EvsOQzLY6mtmtt
+	UEyEjkY2x8X6/hX7o4R7XQpzXJqIt5758JYD0Vyh/woGXLJEp0ARkRVkiUQhOgHypislRjTEqAI
+	i4mUZHHSPP6iacB/QLaRpA9VSz6q2/krfLPuaasksKcGbTC3YJIfuQg9b+s7jCwuzH2mh63EjdM
+	keTz9KrhKWzfal4PafFF3N+WYcqGM8bMkpbvgTEDw=
+X-Received: by 2002:a05:6000:2dca:b0:47f:87f9:6d06 with SMTP id ffacd0b85a97d-47fafa80cfcmr197487f8f.61.1785175291790;
+        Mon, 27 Jul 2026 11:01:31 -0700 (PDT)
+Received: from [192.168.88.241] (78-80-108-129.customers.tmcz.cz. [78.80.108.129])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c6f076sm51301231f8f.34.2026.07.27.11.01.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jul 2026 11:01:31 -0700 (PDT)
+Message-ID: <403ae4a4-5df3-4744-89e4-12e46fd56f25@ovn.org>
+Date: Mon, 27 Jul 2026 20:01:28 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4] net/openvswitch: check Ethernet header length in
+ key_extract()
+To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>, aconole@redhat.com,
+ echaudro@redhat.com, i.maximets@ovn.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+Cc: netdev@vger.kernel.org, dev@openvswitch.org,
+ linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com,
+ tgopinath@linux.microsoft.com, kys@microsoft.com
+References: <20260725043128.193164-1-blbllhy@gmail.com>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <20260725043128.193164-1-blbllhy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-rds_info_getsockopt() reads a callback from rds_info_funcs and invokes it
-without protecting the callback's lifetime.  Transport modules register
-functions stored in this array.  For example, rds_tcp.ko registers
-rds_tcp_tc_info() for RDS_INFO_TCP_SOCKETS.
+On 7/25/26 6:31 AM, Cen Zhang (Microsoft) wrote:
+> When a packet arrives on an ARPHRD_NONE device (e.g. TUN),
+> ovs_flow_key_extract() trusts the user-provided skb->protocol field: if
+> it is ETH_P_TEB, the packet is classified as MAC_PROTO_ETHERNET and
+> key_extract() is called without ensuring the skb has ETH_HLEN (14) bytes
+> of linear data. key_extract() unconditionally pulls 2 * ETH_ALEN bytes
+> for MAC addresses and parse_ethertype() pulls 2 more, either of which
+> triggers a kernel BUG in __skb_pull() when the linear area is too small.
+> 
+>   kernel BUG at include/linux/skbuff.h:2848!
+>   RIP: 0010:key_extract+0xa7e/0xd90 net/openvswitch/flow.c:933
+>   ovs_flow_key_extract+0x419/0xa70
+>   ovs_vport_receive+0x222/0x390
+>   netdev_frame_hook+0x3e0/0x630
+>   tun_get_user+0x2d0c/0x38e0
+> 
+> Fixed by calling check_header() in key_extract() before accessing the
+> Ethernet header.
+> 
+> Fixes: 217ac77a3c25 ("openvswitch: allow L3 netdev ports")
+> Reported-by: AutonomousCodeSecurity@microsoft.com
+> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+> ---
+> v4: Update documentation and move variables into the Ethernet block.
+> v3: Use check_header() per review, fix format issue.
+> v2: Moved the check into key_extract() per Ilya Maximets.
+> Link: https://lore.kernel.org/all/20260721143602.64677-1-blbllhy@gmail.com
+> 
+>  net/openvswitch/flow.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
+> index 66366982f604..8ad0be37a65a 100644
+> --- a/net/openvswitch/flow.c
+> +++ b/net/openvswitch/flow.c
+> @@ -889,8 +889,6 @@ static int key_extract_l3l4(struct sk_buff *skb, struct sw_flow_key *key)
+>   * Ethernet header
+>   * @key: output flow key
+>   *
+> - * The caller must ensure that skb->len >= ETH_HLEN.
+> - *
+>   * Initializes @skb header fields as follows:
+>   *
+>   *    - skb->mac_header: the L2 header.
+> @@ -910,8 +908,6 @@ static int key_extract_l3l4(struct sk_buff *skb, struct sw_flow_key *key)
+>   */
+>  static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
+>  {
+> -	struct ethhdr *eth;
+> -
+>  	/* Flags are always used as part of stats */
+>  	key->tp.flags = 0;
+>  
+> @@ -926,6 +922,12 @@ static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
+>  		skb_reset_network_header(skb);
+>  		key->eth.type = skb->protocol;
+>  	} else {
+> +		struct ethhdr *eth;
+> +		int err = check_header(skb, ETH_HLEN);
 
-This permits the following interleaving:
+Please, use the reverse x-mass tree ordering for variable declaration,
+i.e. lines longest to shortest.  In this particular case, just move
+the initialization to a separate line:
 
-  CPU0                             CPU1
-  rds_info_getsockopt()
-    func = rds_tcp_tc_info
-                                   rmmod rds_tcp
-                                     rds_tcp_exit()
-                                       rds_info_deregister_func()
-                                         rds_info_funcs[offset] = NULL
-                                     free rds_tcp module text
-    func()
+		struct ethhdr *eth;
+		int err;
 
-The reader can therefore branch to an address in unloaded module text.
+		err = check_header(skb, ETH_HLEN);
+		if (unlikely(err)) ...
 
-Protect callback invocation with SRCU.  Enter the SRCU read-side critical
-section before loading the callback and leave it only after the callback
-returns.  Clear the callback with release semantics and call
-synchronize_srcu() before deregistration returns, preventing module unload
-from freeing its text while an old reader is still executing it.  SRCU is
-required because callbacks such as RDS_INFO_COUNTERS can sleep.
+Otherwise, LGTM.
 
-Keep the callback array unannotated and use acquire and release operations
-for publication so sparse does not have to apply __rcu through the
-function-pointer typedef.  Replace the two callback-slot BUG_ON() checks
-with WARN_ON_ONCE() and return without changing the slot on mismatch.
 
-Fixes: 70041088e3b9 ("RDS: Add TCP transport to RDS")
-Link: https://lore.kernel.org/netdev/20260720184955.3008978-1-nicoyip.dev@gmail.com/
-Suggested-by: Allison Henderson <achender@kernel.org>
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
 
-Changes in v2:
-- Split the info callback/module-unload race from the independent
-  inc->i_conn lifetime bug.
-- Keep the callback array unannotated and use smp_load_acquire() and
-  smp_store_release() to resolve the sparse errors.
-- Replace the two touched callback-slot BUG_ON() checks with
-  WARN_ON_ONCE() error paths.
-- Rewrite the commit message for the callback race and omit the unrelated
-  inc->i_conn KASAN report.
+Sashiko reports two pre-existing issues that are not related to this patch:
 
-Link: https://lore.kernel.org/netdev/20260720184955.3008978-1-nicoyip.dev@gmail.com/ [v1]
+1. Potential use of uninitialized bits of the key during lookup if the
+   code takes the positive branch of the if statement, since the addresses
+   remain uninitialized in the flow key structure.
 
- net/rds/info.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+   There should be no functional issues, as those bits will be bitwise
+   ANDed with zeroes form the mask before the lookup in most cases, and
+   in case of L3 key comparison with the L2 flow where the addresses
+   will not be zero, the key must not match anyway due to prior mismatch
+   on the eth protocol.  However, it is possible that KASAN will not be
+   happy with these operations producing warnings.  I'll try to take a
+   closer look at this one.  The zeroing out of the key was previously
+   removed for performance reasons, since it doesn't affect flow matching.
+   But having KASAN splats is also not great and potentially dangerous.
 
-diff --git a/net/rds/info.c b/net/rds/info.c
-index 21b32eb16559..408a4f0d04a3 100644
---- a/net/rds/info.c
-+++ b/net/rds/info.c
-@@ -32,6 +32,7 @@
-  */
- #include <linux/percpu.h>
- #include <linux/seq_file.h>
-+#include <linux/srcu.h>
- #include <linux/slab.h>
- #include <linux/proc_fs.h>
- #include <linux/export.h>
-@@ -68,6 +69,7 @@ struct rds_info_iterator {
- 	unsigned long offset;
- };
- 
-+DEFINE_STATIC_SRCU(rds_info_srcu);
- static DEFINE_SPINLOCK(rds_info_lock);
- static rds_info_func rds_info_funcs[RDS_INFO_LAST - RDS_INFO_FIRST + 1];
- 
-@@ -78,8 +80,13 @@ void rds_info_register_func(int optname, rds_info_func func)
- 	BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
- 
- 	spin_lock(&rds_info_lock);
--	BUG_ON(rds_info_funcs[offset]);
--	rds_info_funcs[offset] = func;
-+	/* Validate the latest published slot value. */
-+	if (WARN_ON_ONCE(smp_load_acquire(&rds_info_funcs[offset]))) {
-+		spin_unlock(&rds_info_lock);
-+		return;
-+	}
-+	/* Pair with lockless callback lookup. */
-+	smp_store_release(&rds_info_funcs[offset], func);
- 	spin_unlock(&rds_info_lock);
- }
- EXPORT_SYMBOL_GPL(rds_info_register_func);
-@@ -91,9 +98,15 @@ void rds_info_deregister_func(int optname, rds_info_func func)
- 	BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
- 
- 	spin_lock(&rds_info_lock);
--	BUG_ON(rds_info_funcs[offset] != func);
--	rds_info_funcs[offset] = NULL;
-+	/* Validate the latest published slot value. */
-+	if (WARN_ON_ONCE(smp_load_acquire(&rds_info_funcs[offset]) != func)) {
-+		spin_unlock(&rds_info_lock);
-+		return;
-+	}
-+	/* Hide the callback before waiting for old readers. */
-+	smp_store_release(&rds_info_funcs[offset], NULL);
- 	spin_unlock(&rds_info_lock);
-+	synchronize_srcu(&rds_info_srcu);
- }
- EXPORT_SYMBOL_GPL(rds_info_deregister_func);
- 
-@@ -165,6 +178,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, sockopt_t *opt)
- 	int npages = 0;
- 	int ret;
- 	int len;
-+	int srcu_idx;
- 	int total;
- 
- 	len = opt->optlen;
-@@ -214,8 +228,11 @@ int rds_info_getsockopt(struct socket *sock, int optname, sockopt_t *opt)
- 	rdsdebug("len %d nr_pages %lu\n", len, nr_pages);
- 
- call_func:
--	func = rds_info_funcs[optname - RDS_INFO_FIRST];
-+	srcu_idx = srcu_read_lock(&rds_info_srcu);
-+	/* Pair with callback slot publication and removal. */
-+	func = smp_load_acquire(&rds_info_funcs[optname - RDS_INFO_FIRST]);
- 	if (!func) {
-+		srcu_read_unlock(&rds_info_srcu, srcu_idx);
- 		ret = -ENOPROTOOPT;
- 		goto out;
- 	}
-@@ -225,6 +242,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, sockopt_t *opt)
- 	iter.offset = offset0;
- 
- 	func(sock, len, &iter, &lens);
-+	srcu_read_unlock(&rds_info_srcu, srcu_idx);
- 	BUG_ON(lens.each == 0);
- 
- 	total = lens.nr * lens.each;
--- 
-2.43.0
+2. There is an unlikely case where ovs_flow_key_update() might fail,
+   which would cause skb leak on failure of recirc() or ct() actions.
+   I'm not really sure if this condition is reachable in practice as it
+   requires parsing to fail on a packet that we previously successfully
+   parsed and then modified.  But should be fixed nevertheless.
+   I'll send a separate small patch set for this.
 
+Best regards, Ilya Maximets.
