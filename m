@@ -1,223 +1,187 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1F33F6600
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 11:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785150343; cv=none; b=rL8clF9ZXVTfGAvQl5hZstISnhTtDVCIUasH/kEnA9KFJMKWrVSPiG2DwrBrKUTwSZ14lq/9eyh/w0Tkq/V8/4g9Hmtuyg3Gw8WUiQMNjQ4+0kWXVbVupbahQWtudMpmHcKtwpOAp1Y9oJ3JCuK/UrtLDZiOel3ZTFU509hVgkQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785150343; c=relaxed/simple;
-	bh=lBLZ1tsh4f74pQ3mA5Xm/Qr25AJkIJe2nRw9srQyT9Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P0deHrawSeQ2yUlkbCfDtZRjGUGX2OaQaBghMQ+3bbwgzqgZK6hBw78doGTTEG1Yx5i9LTwtylw+xB9krb5/X6ZGz9ZHCCJm027XD5fJ9iw0ja4UUVWeFtIA61LHn/+lDIW8ooNuC4zD2G5UPU667aLT3odh0gy5NMnP3hjcXB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WFT6CNPr; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBF23F9F51
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 11:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785150532; cv=pass; b=f1u8O9wQ0AgeV/18UVFJV6QL/veUB2rxiw3i71kKKRBMnyNlOzyCTK35zRIXfeKhYaPQ/9Rq7HMAMRzkdxTQnG42iVIRxKw6FnMs1RUVchBUNvheGRUelrbKY0TfTY1EyMZJWN3w4g3LDNFTo+7hsbHHO7ft8xoJ5THC2gmc4CI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785150532; c=relaxed/simple;
+	bh=pV1TDUaa2YAV2kxJY3x35Y0FQXGiZRc6WWYevwzWDGg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UEMyW/1+3V7RNHlvOr2eqGcUmOAj1ZIbpb+rq2bz27/sPA0c5ttX6xoOPAxuBEmAhKVAdR87ObBC4SPLckGufHGkZVE0tiQS4YBmyt6TTwI+X7/FMnhW6jTxfIvZLMEgZ4fyygBPQ3ArvhK/lY5JAGIhYOnmgmVUjaU0Ez2JxAQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M3mRoCn4; arc=pass smtp.client-ip=209.85.128.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WFT6CNPr"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c1600d040e4so357001766b.1
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 04:05:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M3mRoCn4"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-81e69a2db34so34332927b3.0
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 04:08:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785150525; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pEOnIziE1iUHclmt7t/+KlAtZ/lN4BAOwuiBigIvCP/mMF6PrZAleHVhWlvf+g5sug
+         tprMdkjSR6D9UAagtpYq9juWEkOch/wEi/MxqfQqWmBGXbPrlEQ7h57thalIt5Butj/x
+         meETMoJg9YZvO+ymEfxSRUpZEkhyzaJ3c3rTlJezoZf9D8Rorl5TPvIcRwczICgthHr+
+         CkNJKE63BuuKPZEpYfN78tnavVla9eE9kSYK93qi+ERj9ZeiC7Eoc7bvXHKs7C8YxZFS
+         DRMOqzdclY4dOXQWWSYI26OpcIpEOBq8zcwQSXRV6p2BxeNJ90cVRW4Jz/3p7o+suUii
+         6zHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pV1TDUaa2YAV2kxJY3x35Y0FQXGiZRc6WWYevwzWDGg=;
+        fh=Ro1tIejTwtpXutsMAoB8k/GnQ4Uo7bW0tOOg9f4FWm8=;
+        b=X6FIRX9OiSWCCm88Ezu9c6sLqUypLZYLuIYWGG1UBfeHzbISFu2XOYtGPdc7fnpwSO
+         2/In7zytq87+lsncmf+QXXhr0FZ4Id3yhnLmUO/dkoaBOMtW8cUSA12kyXT6h9jzHBYC
+         lEWg2r3dtGa7rLF1UDu5uV0wNQrdmWX+ZJ6/RYAW1oi9MPNO/TXjrb0X7LkTnM5XFpIL
+         ZLRHzCgB1y/5j7XqqwRI6Wc7+DBw3z6v3FweM+u/ndNISsOUS/bXE2ZSAQb39vsWgZ9K
+         mgKOjhSnKe6RN5EU6rXuaL7kj/mPbBDTfZAWqEyvAt8q8VlhUrQxgKKp6ZWdyKOa/jQH
+         9c4g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785150340; x=1785755140; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hYFROhFKEY3a6ZuQeJdM1K/C2vH7YwA+8ys4N7LWz7M=;
-        b=WFT6CNPr9ct7J5fG6TzCr28+DmAlAXSyVXuaF7P2NiBOw6T5rhFcI+xceaaxKF/rXT
-         L7dkT0dNzNYvYYhgrjQbZREvQVKYcfqH/QnoiQqeHxrpkaw+6v2Ky1bR1cgjbQlH9wsP
-         EZS+jdkUcEu/ZGWRi6ol3r6b4StaNyr82A4TvjT9SB0eTtzullTQZexUXTRVUjGytKd/
-         V1JVR9gaGZ/n4GBKGpx3pHymenV6t9T5M7wE0V2VGmANVHB1XnjSIInpsLovy7WOn1Ie
-         XOC0WwOJ+0e8JbSWBTDXHpcSB4046hJuBXUEw6C3EV05tZBb0lHzRAxPip/z0CQT7okT
-         kDWQ==
+        d=gmail.com; s=20251104; t=1785150525; x=1785755325; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pV1TDUaa2YAV2kxJY3x35Y0FQXGiZRc6WWYevwzWDGg=;
+        b=M3mRoCn4tl8RPjfQixKwIWWGSOwAsLGhmh+pOW5tV4opu6k/FIUqHgtBSUi/lYWXNo
+         K98eF+P/A41j+K8iwFXw6liU49SqTYrvvms0nmGWFjNMcapwdxy/m16HBI26xKOSiPvw
+         bHpYUNToOx9zQJmLUksPduoTCqqE2dSxgHeSldgGIbLqv2CWqoDhAou0N3efVhSwmwfM
+         VQbpCmhybFLItirVtnzw4TnneJchaVYJVzYdQrFlaDO4vxp9qnK66elczaAbAPUjs+C1
+         1bvSmITqLw2KhR3gNZaWHhZGr+7ZSQD962od3gweFtTkzKTtbvFjOOIGdEoRbtgOHS17
+         oVMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785150340; x=1785755140;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hYFROhFKEY3a6ZuQeJdM1K/C2vH7YwA+8ys4N7LWz7M=;
-        b=U/yRxQu7yerAWzCEkAx7ov//hx0/Rb4HIy4zRXgNIr/wskCLQ1hV6nX6gxGScSI+Zy
-         8JabKVI6ehxPDX9mA07SFZ/HBeOlVOAypAQfM885O9yeoc+wnOWApgyJlqqonljPt12L
-         o5amVk9bXQP/6od6k9Fj+q+6/QGp50dwSgfoGgBELyJTNn8fMsNlHIGlbWuqBjUeicFQ
-         9hClgxeWclvATcHZxY8Nxoz10fGCoH7ll9m3ScyIFeV58rS06v3BmCCQp5va/JZREymQ
-         ho9z8yJhQfjou88ZRfgiK7pCF1bknTs1ptM7CfHE6Q55k6MjCXfK9AF7QRLQhSSBhGvo
-         nyUQ==
-X-Forwarded-Encrypted: i=1; AHgh+RolsivasbYsdIE0fQCdWPNkSZAma7faSH8u85W0ixFfe4K6umt6s/5zS3bGkp4kzYHZoLFHLII=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6JIeQPWKNLB323/bBeHQhd0qEaqvFit21cTwAPD1YI1HPydCR
-	f9R1xxodEmxB8krLfVmCC0lQlpxQMPJpK9ezsXDL7nqhsZ9FPU49Z/XU
-X-Gm-Gg: AR+sD13FjJj3Yio/TJCtcJeNjcLAzth6Xfuu4xQ6ARetfF+ge9zbL9QHUW+K+5nEOPm
-	DDl9UKjIwxCmACLzMRv0ELKrxqBvzIf7Pxj64OEv6h3VqujJE/Nxc++K2ID1zk2vPVew5TOdxmO
-	g2r7FwaAo5y25+55YevvY5wwM6HA2+UgH74/0I6MvJDTdDaV4VxicVumz5191phvS1owIY2C8A/
-	1hppecD3UukfjZKDMKK7VL28TQ6u2FKPyYEKERmEFe97p4/4Y/b1oBiEGEEzSUmnsz5Jqr8cS6k
-	62/Hvfkq3A0EPUVjIXMM2q2F1T3fDOg8WZF0pYFEqnysUJ3kpvExtpuiFT9zRPspL7y3QiqNYiy
-	/uukHwrKvdhjZ11HekqTChaifQcF9SHWbGAap+t0w/Zkns2JYViRC6Umu1C36B8bhD6XyoKLWSz
-	UkSfKi8Zs8ko/Jw5wV89N/2GGHPEmaBLDd4L6n6FfnOk9AcH5saPiBRMG/fKntAHBDtKEG9R4G0
-	Jk97T6TJohvVY1LCp6jqx1C/NfXWfBod0qr7g==
-X-Received: by 2002:a17:907:7ba3:b0:c12:7f75:7900 with SMTP id a640c23a62f3a-c1f1fdf39b1mr352714466b.27.1785150339883;
-        Mon, 27 Jul 2026 04:05:39 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:4f63])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1c32c8f7a2sm639435466b.37.2026.07.27.04.05.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jul 2026 04:05:39 -0700 (PDT)
-Message-ID: <58a645d1-7e42-4b02-817e-78ab81ed1b6d@gmail.com>
-Date: Mon, 27 Jul 2026 12:05:33 +0100
+        d=1e100.net; s=20251104; t=1785150525; x=1785755325;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pV1TDUaa2YAV2kxJY3x35Y0FQXGiZRc6WWYevwzWDGg=;
+        b=iN2DdF92fZebihBbuxq+4oS1AoXTM+pj3+zpCTRywvn6suxF71ljlMuvUgZ1dapGHX
+         /UnQCtqdgtDK2twOvV9zefPh+XbWQb+J1Dt5ORC7aacfpFLUwS+6YdwLx8NvL7KdviTH
+         dRla8ctbBiGln5AXdgMEWeHvVDrCQbaIkPDH/U5Zr+88e8lNdSFd93VrxLDW78FMG2PG
+         dInqMwPwJur4HYGB1Au5ShVXJngKNbXT30tqy1hgoZVBY/brFKtl9bXzlYQTTpLL1DwO
+         dBBmTCQc/asTeDwlXaFyB6IwEhoforN80GcGm9hMf9+ZCflGMhxda7PuPudQ4mCvFb/o
+         /BiQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqYYIpxORtlvkuUnxfnOgYO3DlHDmEDXFURnHJWoXp+nUcUgIWQJar6OcdOPxziYFv14eUqY1k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxj5zV8pN2QdMypxW+txEmtrDgrs5g7uFz4Wl+YwrnT4bR5ch5m
+	O7cjpUMFShimcfJyWHyAchHHjt4g76g8chfFu9+MvPoD4w9bWL1FZvV/uBpe5k8+8filSIVWdtL
+	aaY7TwL8S5HYRuEpwO3vy4nlrhralsWw=
+X-Gm-Gg: AR+sD13nU37tf2wc2t8GmMxXPxxIvxUAITeQScJES7MPjfkTbESkUrFiObDHo+kp9Qb
+	ywFXOrJxD7gUQFQEfFqKf8x0bwX9XHhpSEbwighGFnnjZR3gP3TMBToj1ev+Mpobi9lrHNN7Z0x
+	j8C45srwB7KDRtDsZENbkkCoZE+ZY5GJQu8rm0mY8ysWAutFBYq3khpfyoZ6EtsTYxGQEGOoUjc
+	vk7L6iGq0IbfxkJTYGfu1BkLgvrex4uIzywzKS/clqUzrIX6mgEA8fR1CY=
+X-Received: by 2002:a05:690c:3747:b0:809:86c6:ee18 with SMTP id
+ 00721157ae682-81f69e3978bmr27868337b3.37.1785150525277; Mon, 27 Jul 2026
+ 04:08:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/1] net: devmem: prevent net-iov / page mixing
-To: Mina Almasry <almasrymina@google.com>,
- Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org
-References: <06f0d5ce07dd8593a69239cfa56745cb9c7d957c.1784717791.git.asml.silence@gmail.com>
- <CAHS8izPiZ_1aysWG-up6eW285+MzJN17L9QREfVWgRLkdqL5sQ@mail.gmail.com>
- <amJOXKql1nbskGZJ@devvm29614.prn0.facebook.com>
- <CAHS8izOAgMX4wSbyUpSLGD_uo7G01cSqnMvrXP9KDdhrYrjNCw@mail.gmail.com>
- <CAHS8izOS9C63UMvVN=Z+enWkwFhPr9Aa69UZE4dkUOL_JyGUGQ@mail.gmail.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <CAHS8izOS9C63UMvVN=Z+enWkwFhPr9Aa69UZE4dkUOL_JyGUGQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20260723184538.3888637-1-ekffu200098@gmail.com>
+ <20260724144822.6af8213f@kernel.org> <0ee1ef4aa7daa908bf28397ccc639c89b6aabd9c@intel.com>
+In-Reply-To: <0ee1ef4aa7daa908bf28397ccc639c89b6aabd9c@intel.com>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Mon, 27 Jul 2026 20:08:33 +0900
+X-Gm-Features: AUfX_mzhfgKW48GB4CRuyNKliFu1x1EH8aDGDqYePXeE0rGOBX3Wid5IOU1hKpc
+Message-ID: <CABFDxMFMOAZ_3kYxEGCutnGt1OSSmgvmwx-=M1RxGc3VGKORYQ@mail.gmail.com>
+Subject: Re: [PATCH 00/36] treewide: remove conditional returns with no effect
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Julia.Lawall@inria.fr, 
+	Alex Deucher <alexander.deucher@amd.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, Borislav Petkov <bp@alien8.de>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, David Airlie <airlied@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Florian Westphal <fw@strlen.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Hans de Goede <hansg@kernel.org>, 
+	Hans Verkuil <hverkuil@kernel.org>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Jaroslav Kysela <perex@perex.cz>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Jiri Pirko <jiri@resnulli.us>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+	Johan Hovold <johan@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Julian Anastasov <ja@ssi.bg>, 
+	Leon Romanovsky <leon@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Linus Walleij <linusw@kernel.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Mark Brown <broonie@kernel.org>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Matthew Sakai <msakai@redhat.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Maxime Ripard <mripard@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Mike Rapoport <rppt@kernel.org>, 
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>, Nicolas Palix <nicolas.palix@imag.fr>, 
+	Pablo Neira Ayuso <pablo@netfilter.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Ping-Ke Shih <pkshih@realtek.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Sebastian Reichel <sre@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Simona Vetter <simona@ffwll.ch>, Simon Horman <horms@verge.net.au>, Stephen Boyd <sboyd@kernel.org>, 
+	Steve French <sfrench@samba.org>, Takashi Iwai <tiwai@suse.com>, Thomas Renninger <trenn@suse.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Tony Luck <tony.luck@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Vinod Koul <vkoul@kernel.org>, Will Deacon <will@kernel.org>, 
+	Yazen Ghannam <Yazen.Ghannam@amd.com>, cocci@inria.fr, amd-gfx@lists.freedesktop.org, 
+	dmaengine@vger.kernel.org, dm-devel@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
+	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-edac@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-rtc@vger.kernel.org, 
+	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, lvs-devel@vger.kernel.org, 
+	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, 
+	nouveau@lists.freedesktop.org, platform-driver-x86@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/24/26 18:25, Mina Almasry wrote:
-> On Thu, Jul 23, 2026 at 11:35 AM Mina Almasry <almasrymina@google.com> wrote:
->>
->> On Thu, Jul 23, 2026 at 10:24 AM Bobby Eshleman <bobbyeshleman@gmail.com> wrote:
->>>
->>> On Wed, Jul 22, 2026 at 12:49:07PM -0700, Mina Almasry wrote:
->>>> On Wed, Jul 22, 2026 at 3:59 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
->>>>>
->>>>> We should either have net_iov or page backed frags in a single skb,
->>>>> otherwise it blows up down the stack. Don't allow mixing in
->>>>> zerocopy_fill_skb_from_devmem().
->>>>>
->>>>> Fixes: bd61848900bff ("net: devmem: Implement TX path")
->>>>> Cc: stable@vger.kernel.org
->>>>> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
->>>>
->>>> It's true that we don't support mixing niov types and doing so would
->>>> blow up, but this is an unnecessary defensive check imo. The calling
->>>> code should not (and does not, I hope) have an edge case where it
->>>> tries to mix and match niov types.
->>>>
->>>> Maybe a DEBUG_NET_WARN_ON check to help catch bugs in the calling code
->>>> may be fine?
->>>>
->>>> Also we don't really support mixing different niov sub-types in an skb
->>>> (like IO_URING + DMABUF) afaict, so might as well go the extra mile
->>>> and check that it's all devmem niovs specifically.
->>>>
->>>> And might as well put the check in skb_add_rx_frag_netmem. It's the
->>>> same situation on RX, we don't support mixing there (and I hope no
->>>> code path leads to mixing today).
->>>
->>> Hey Mina and Pavel,
->>>
->>> I was able to confirm this mixing case does exist.
->>>
->>> It looks like in tcp_sendmsg_locked() when new message is non-devmem (zc
->>> == 0) and tcp_write_queue_tail is devmem, the skb collapsing is allowed
->>> (though same-frag merge is disallowed).
->>>
->>> Adding a mode to ncdevmem that sends mixed devmem and non-devmem
->>> messages, it can be caught hacking this in:
->>>
->>> /* DEBUG (DROP ME): detect a TX skb that mixes devmem (net_iov, unreadable)
->>>   * and non-devmem (page, readable) fragments. Such an skb must never exist.
->>>   */
->>> static bool tcp_dbg_skb_frags_mixed(const struct sk_buff *skb)
->>> {
->>>          bool readable = false, unreadable = false;
->>>          int i;
->>>
->>>          for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
->>>                  if (skb_frag_is_net_iov(&skb_shinfo(skb)->frags[i]))
->>>                          unreadable = true;
->>>                  else
->>>                          readable = true;
->>>          }
->>>          return readable && unreadable;
->>> }
->>>
->>> static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb, ...)
->>> {
->>>          ...
->>>          BUG_ON(!skb || !tcp_skb_pcount(skb));
->>>
->>>          WARN_ONCE(tcp_dbg_skb_frags_mixed(skb),
->>>                    "DEBUG: TX skb mixes devmem+non-devmem frags (nr_frags=%u len=%u)\n",
->>>                    skb_shinfo(skb)->nr_frags, skb->len);
->>>          ...
->>> }
->>>
->>>
->>> Resulting in:
->>>
->>> [   85.908005] DEBUG: TX skb mixes devmem+non-devmem frags (nr_frags=2 len=24)
->>> [   85.908342] WARNING: net/ipv4/tcp_output.c:1570 at __tcp_transmit_skb+0x9bb/0x1030, CPU#2: ncdevmem/278
->>> [   85.910646] RIP: 0010:__tcp_transmit_skb+0x9c2/0x1030
->>>     ...
->>> [   85.915617]  tcp_write_xmit+0x47b/0x17d0
->>> [   85.915802]  __tcp_push_pending_frames+0x38/0x100
->>> [   85.916025]  tcp_sendmsg_locked+0xe51/0x1280
->>> [   85.916244]  tcp_sendmsg+0x2c/0x50
->>> [   85.916903]  do_syscall_64+0x11c/0x610
->>>
->>>
->>> My feeling is that we should guard against this when
->>> tcp_sendmsg_locked() is doing its "new segment or not" calculus.  In the
->>> zc == 0 case, I think we need to check if the queue tail is unreadable
->>> and 'goto new_segment' if it is?
->>>
->>> This is a different case than Pavel's patch addresses though, where the
->>> new sendmsg is devmem and write queue tail is readable.
->>>
->>
->> :( Yep looks like we have a couple of bugs in the TX mixing. Sorry
->> about that. We do indeed need to fix this ASAP.
->>
->> I don't think it's enough to check readable vs unreadable, no? Because
->> I think appending io_uring niovs to a devmem skb will still blow up
->> and vise versa, even though both are unreadable, right? Or is io_uring
->> saved from this somehow in both cases?
->>
->> If io_uring is vulnerable to this as well, then fixing this becomes a
->> bit more hairy because this is a TCP fast path. We don't have bits in
->> the skb header telling us exactly what the skb memtype is (only
->> readable vs not), so we'll have to check skb_frag_is_net_iov(frags[0])
->> and netmem_to_net_iov(frags[0]->netmem)->niov_type to check the exact
->> type of the skb memtype, and that may be a lot of cachelines to fetch
->> in the fast path. :(
->>
->>
-> 
-> Responding to my question here:
-> 
-> So AFAICT we can't actually have io_uring net_iovs in this path.
-> IO_uring ZC deos not support TX, and (the LLM) thinks that if we
+Hello,
 
-To be specific, io_uring doesn't support net_iov / device memory tx,
-zc with normal pages has been around for a while.
+On Mon, Jul 27, 2026 at 5:30=E2=80=AFPM Jani Nikula <jani.nikula@linux.inte=
+l.com> wrote:
+>
+> On Fri, 24 Jul 2026, Jakub Kicinski <kuba@kernel.org> wrote:
+> > On Fri, 24 Jul 2026 03:45:02 +0900 Sang-Heon Jeon wrote:
+> >> Patch 1 adds a Coccinelle script that matches the pattern, including
+> >> negation and constant-comparison variants. Where a local variable is
+> >> assigned right before the check, the assignment and the two returns
+> >> turn into a single return of the assigned expression.
+> >
+> > Huh, I thought we already had such script. Various script children have
+> > been sending such "cleanups" in the past.
+>
+> We did, and it was removed, I believe in 1a617a8475e8 ("coccinelle:
+> misc: remove "complex return code" warnings"), because people just don't
+> want this constant churn.
+>
+> It's perfectly fine to have the error case and happy day scenario
+> separated.
 
-> receive an io_uring zc rx packet and forward it, it's still not going
-> to hit the tcp_sendmsg_locked path.
+Thanks for sharing the history.
 
-tcp_sendmsg_locked() only takes msghdr, there is no way to pass
-net_iov into it directly. The only way I see it might be a problem
-is if someone pushed io_uring zcrx skb into the write queue. I
-don't think it's possible but might be wrong.
+I checked the mailing list. The removed script looks similar to the
+new one, but it is different. The removed script reported a
+conditional return followed by an explicit return 0, where the error
+case and happy day scenario are separated as you mentioned, and Johan
+also complained about this 10 years ago.
 
-> So this seems sufficient to me, Reviewed-by: Mina Almasry
-> <almasrymina@google.com>
--- 
-Pavel Begunkov
+But the new script only reports when both branches return the same
+variable, not the explicit 0. So, I think the new script is close to
+the restricted version that Julia mentioned 10 years ago, and it
+should be acceptable.
 
+>
+> BR,
+> Jani.
+>
+>
+> --
+> Jani Nikula, Intel
+
+Best Regards,
+Sang-Heon Jeon
