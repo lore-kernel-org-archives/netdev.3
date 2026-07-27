@@ -1,192 +1,181 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD6134F27F
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1C1349CD7;
+	Mon, 27 Jul 2026 02:14:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785118287; cv=none; b=ZMZFJZsO2HW9rBFtNbAV7q/eQ086rE9rdJdeHI7B+mIfGh8XrhoOGoB9hfks25nzaXCmscMgeCwKhJ/KsqV9zj35zXtg6U/g4RTIMNB4NMfJNj9hr3bYHR3FGWe3CSF7SmfbYLrcx120GY9QiPLSr175Tgurdx9MfFO7o5DjzGE=
+	t=1785118445; cv=none; b=flfc1apoBPkVciQZyfC8MEJhqHhtZFjiQTVpGIp2LSQUtrla39sotI9UQFk87njRIuJN1pfHqe+5YIVOzmOvvJ4RBjNrNfXVlvHdMdjU99DBAXlE2fNJF4cdPExiBDg8HdDdPUMSB04PuqbxGV0fmV13mrJCfR113MJArijaEo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785118287; c=relaxed/simple;
-	bh=ulcn1ONX1LKOvS48LR+Zlazfgeceskv/+G7RTNzpweE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KLukkETfMbF7dHbuQ1+rPcdfX5K+aMVEGp/Kp0PWcd6gATeCj2s3cIdrX3MuQGiomVDiAPvk/pfxVbouWySAdGD4cO5WgJ9SmCX1uC6cj4oA4B+YLe7VNNK8xjz8W0AnrCcyKgapq08r9r6frht3KfuuDooOFkpHcTFsv2/Xx90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m5qVb9CS; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785118445; c=relaxed/simple;
+	bh=UcyWkhB1BwqyVGewzPWhmauGmdL0yqumW3alZv/j3zQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZOlZAZT5n5sscHxatYHHADZk7tqG/rl61G8qOgXHlBD6LnsAQOHM3G/0YQCQUaEPBW8IGFRKYsAJD09US2LKwuiW9KcodBI9Wv/pQdJDTPRuIAu4rPVrE2BAzYZ/DBSqHubpbMUoSQmsoSDwGUFcPul4Kgm0WhgHNUJphbmZkvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GnaWqrFh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m5qVb9CS"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso2557345a91.2
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 19:11:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785118286; x=1785723086; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dPr6vbLu8PqQb1lWRy/QmQ4lRtcpmb3vtoKOeXxnr9U=;
-        b=m5qVb9CSXLqkGb+r586ipZ4RfoX2a6yv1o+y+AcS0hKlGmjTRD5XTKy6GARfB+dsAt
-         PoOX8B7re2fc8F3Pw5U/HoLy+LtGvOW1cB9VqSrAlrdXC5f79F0+RmnQlY3KVZcuA+UW
-         OABYqTJEWLXMaRJNBkgUCYDO7A51pMRcuW3h7rxJ//6ev7dI3o/TK5VZk+8hTQVMm9gN
-         mdQPRvacvw3pNjlSl44GIH6gmQMa5zB2zwQne1K4p+KYyjOKgyI0yjsfn73t4YnfDumK
-         E/Kf0iABfkFQa+a9ivfquIeuaTUM6Nh+qoRfMSamzB60giNxePt6xi4aQ2dXYjmY7eUY
-         1Wnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785118286; x=1785723086;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dPr6vbLu8PqQb1lWRy/QmQ4lRtcpmb3vtoKOeXxnr9U=;
-        b=eWV/+fWPu2s9mHmd5LOEveMQtdcf3G7NlqTnm8JShkl5xOWsB5kBKmL3jSNcrCno5t
-         H48BL/hTRzA6kKPXYiL8SaHBHRKdFbk9qEiqLS1EATG5a8BFf2PKiwV0qGamIOcxlP6c
-         Zqc3RjzVl7afLZ53rH6Xddq16XC2Q7iEEB9VYml1i17TSlEPDL1tUMs2B2A3lPkQAaqz
-         rFqqoHhaGnvLIcLlqMmrsFwLO0khnFUTuWgBpfP/xiCQwLMYrekK+nuNM3DKaEITcHmx
-         UJc2bm2GwrltZfL7evM+NqBA5LdedEdvQRYBxmBbSeYi7RC17H4di7UeZwLeq/5jdo2n
-         vSnQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqJ3Tagx/r3Sr4+sdmLdhxP9HF5J1tite47WNaCqB1nIRtt06FfPU2KqOObloAxom5IDqaYEnY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpnR41F8l4bQieDAWr2Mb9qSfGvIlCawzzpWaaNFSnlJoa/Le+
-	TvZaAEOydj8SUiWzh/P7irNjEktRz2zcw0kG/mXWSTYGVcT/8ceWFj40
-X-Gm-Gg: AR+sD10VQWl/RVaEFemYtzcSlHLn83fXmSuAFOcJgMjnEia/JnH9S8DnkPb/09Qu+PI
-	T+3RjyX2odx5tLiXES/JUvB06dxQJ9OCbsl6IXu5/sD/yfErd7659cBnExmTVPF7wHegAAk6oWP
-	NxAvwIcxyZwnZKnefm4j9+0n608IwzB9hOwyfAHL8vbQ0kABytgmTtNFk8GCEdQA5qW6qMg8G6S
-	9CbVir8TYCDzzg++VX6tyyFcvTPfr4z2OmJYGugfHoTnWt7iPYAa1NBrmubpaq9JwpUPQwy1+bv
-	D/b2whjBn98+JfZDCMpgQwLW9cRV1Dngwik7MVphtzoPbN5AuHxHj3SXizII2B29HL8j2xfWRaN
-	1qqPx45BWnYRgNVDh/lomlwd6DXmvhs2L8ylRWYsUqeWwViOzPgt5JHfrAl++Ky2Ae+o2oPWxJl
-	Cfg3WSP1frKadWHb8yfUH+poY=
-X-Received: by 2002:a17:90b:584f:b0:38e:79f:76c6 with SMTP id 98e67ed59e1d1-38f29641ae1mr5689783a91.24.1785118285724;
-        Sun, 26 Jul 2026 19:11:25 -0700 (PDT)
-Received: from attina.synaptics-inc.local ([199.33.119.15])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e53094d65sm19162200c88.13.2026.07.26.19.11.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 19:11:25 -0700 (PDT)
-From: Gavin Gao <attinagaoxu@gmail.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	heiko@sntech.de
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	richardcochran@gmail.com,
-	nicolas.frattaroli@collabora.com,
-	sebastian.reichel@collabora.com,
-	sashal@kernel.org,
-	alchark@gmail.com,
-	chaoyi.chen@rock-chips.com,
-	attinagaoxu@gmail.com,
-	amadeus@jmu.edu.cn,
-	rmk+kernel@armlinux.org.uk,
-	horms@kernel.org,
-	alok.a.tiwari@oracle.com,
-	david.wu@rock-chips.com,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH net-next 3/3] net: stmmac: dwmac-rk: Enable RGMII 25M refout clock
-Date: Mon, 27 Jul 2026 10:10:47 +0800
-Message-ID: <20260727021048.3375444-4-attinagaoxu@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260727021048.3375444-1-attinagaoxu@gmail.com>
-References: <20260727021048.3375444-1-attinagaoxu@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GnaWqrFh"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C70D1C2BCB3;
+	Mon, 27 Jul 2026 02:14:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785118444;
+	bh=UcyWkhB1BwqyVGewzPWhmauGmdL0yqumW3alZv/j3zQ=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=GnaWqrFhb6gX+1bSws1JWfWjaX46zMpbLsFcN2PGHSmi4JpfoB3VjO5HnzboxsKBw
+	 cKIZIujR5JT/NYxS3dDgqwYNShQiAlpdnFqmrNAvPS5n79TXMUF26BgdV2JJYk3P69
+	 vfQyNpzfdclXQOv1dBeAlFyAGgsOnrJEWa44wZojaBNw5N2FapObjDEbGvxC/6fW1L
+	 LfT7jGbW/2FsWOV+qo9nFtrKMAlMpXns6wuwZxK8QgocfulxCJpOACwFOa3GOIko6f
+	 6pmYsNawv8qo/cgYqqBNZYlRojvTCbLTWWledxqkYwGlTvPGx3qgBxodCKRehWWm9X
+	 qgkjX3e5l5SzQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3998C53200;
+	Mon, 27 Jul 2026 02:14:04 +0000 (UTC)
+From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
+Date: Sun, 26 Jul 2026 21:14:04 -0500
+Subject: [PATCH net] net/smc: drain the rx tasklet before detaching the
+ ghost sndbuf
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260726-b4-disp-a135b4e5-v1-1-705aaec79986@proton.me>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ5EMBCA4VeROe8kVS1rX0UcVAfjYKWDSMS7K
+ 47f4f8PEApMAr/kgEAbC/+niPSTQDs0U0/IPhq00rkqdI7OoGeZsUkz6wxZLI21hXFeldkXYjY
+ H6nh/llX9WlY3UrvcHzjPC8SRSId0AAAA
+X-Change-ID: 20260726-b4-disp-a135b4e5-945574bd0938
+To: Dust Li <dust.li@linux.alibaba.com>, 
+ Wenjia Zhang <wenjia@linux.ibm.com>, "D. Wythe" <alibuda@linux.alibaba.com>, 
+ Sidraya Jayagond <sidraya@linux.ibm.com>
+Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>, netdev@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tony Lu <tonylu@linux.alibaba.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Wen Gu <guwen@linux.alibaba.com>, linux-rdma@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785118443; l=4217;
+ i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
+ bh=wYjklXpHMVg2rxAnVlYLWc6qQreV8jc7yrCCSeUtrwM=;
+ b=1GEGA8s3WVGo60Q4bcloSNg1Gju64r30GQhhMxdGRBVQOQGm5bUWZLlmQF5+7v/EwNEdFwmyY
+ 3MQ0zZej/HwDEyRt3LXmJTVZTCeaahQGJu4AWQ4SoAroZrHNEg2RKd0
+X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
+ pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
+X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
+ auth_id=893
+X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
+Reply-To: hexlabsecurity@proton.me
 
-Boards can set clock_in_out = "output" to request a MAC-provided clock,
-but dwmac-rk currently does not enable the optional 25 MHz RGMII
-reference output clock. The common clock framework may therefore disable
-the clock as unused.
+From: Bryam Vargas <hexlabsecurity@proton.me>
 
-Request the optional clk_mac_25m_refout clock in RGMII output mode, set
-it to 25 MHz, and keep it enabled while the MAC clocks are enabled.
+On the SMC-D DMB-nocopy path smcd_buf_detach() frees conn->sndbuf_desc
+while the receive tasklet can still be running: both teardown sites free
+first and drain afterwards. A tasklet already past the conn->killed check
+then dereferences the freed buffer in smc_cdc_msg_recv_action(), which
+reaches the same field again through smc_tx_prepared_sends().
 
-Signed-off-by: Gavin Gao <attinagaoxu@gmail.com>
+Drain the tasklet before the detach at both sites, mirroring rmb_desc,
+which smc_buf_unuse() only releases after the drain.
+
+Fixes: ae2be35cbed2 ("net/smc: {at|de}tach sndbuf to peer DMB if supported")
+Cc: stable@kernel.org
+Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac-rk.c    | 33 ++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+Found with KASAN on an SMC-D loopback rig (CONFIG_SMC_LO, x86_64).
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-index 643578266dfc..5e7e5e8f8d62 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -81,6 +81,7 @@ struct rk_priv_data {
- 	struct clk_bulk_data *clks;
- 	int num_clks;
- 	struct clk *clk_phy;
-+	struct clk *clk_mac_25m_refout;
- 
- 	struct reset_control *phy_reset;
- 
-@@ -1419,6 +1420,24 @@ static int rk_gmac_clk_init(struct plat_stmmacenet_data *plat)
- 		clk_set_rate(bsp_priv->clk_phy, 50000000);
+The teardown is driven through smc_conn_kill() by arming abort_work from a debug
+module parameter: on SMC-D nothing in the receive path queues that work, while on
+SMC-R smc_cdc_msg_validate() queues it for an out-of-range peer seqno. Everything
+after the abort is the unmodified path. A second parameter holds the receive tasklet
+just past the conn->killed check, so the free lands mid-run.
+
+  arm         ordering           abort armed   result
+  vulnerable  detach then drain  yes           KASAN slab-use-after-free
+  control     detach then drain  no            clean
+  patched     drain then detach  yes           clean
+
+Same module, same boot, same trigger, same delay; only the ordering differs.
+
+  BUG: KASAN: slab-use-after-free in smc_cdc_msg_recv_action+0x1ed9/0x1f20 [smc]
+  Read of size 4 at addr ffff88810f6c9720 by task kworker/3:1/147
+  Workqueue: smc_close_wq smc_conn_abort_work [smc]
+   <IRQ>
+    smc_cdc_msg_recv_action+0x1ed9/0x1f20 [smc]
+    smcd_cdc_rx_tsklet+0x1f2/0x2f0 [smc]
+    tasklet_action_common+0x2fd/0x850
+    handle_softirqs+0x18c/0x4f0
+    do_softirq+0x3a/0x60
+   </IRQ>
+   <TASK>
+    __local_bh_enable_ip+0x5d/0x60
+    smc_cdc_get_slot_and_msg_send+0x253/0x680 [smc]
+    smc_conn_kill+0xa8/0x4d0 [smc]
+    smc_conn_abort_work+0x34/0x90 [smc]
+   </TASK>
+
+  Allocated by task 70:
+    smcd_buf_attach+0xbd/0x2a0 [smc]
+    smc_listen_work+0x2499/0x49a0 [smc]
+
+  Freed by task 44:
+    kfree+0x135/0x390
+    smc_conn_kill+0x3ab/0x4d0 [smc]
+    smc_conn_abort_work+0x34/0x90 [smc]
+
+  The buggy address belongs to the object at ffff88810f6c9700
+   which belongs to the cache kmalloc-128 of size 128
+  The buggy address is located 32 bytes inside of
+   freed 128-byte region [ffff88810f6c9700, ffff88810f6c9780)
+
+The read is conn->sndbuf_desc->len.
+
+A plain close() does not get there: smc_close_active() always moves the socket to
+SMC_PEERCLOSEWAIT1, so the free happens in smc_close_passive_work() after the peer's
+close CDC -- the same event that stops feeding the tasklet. About 18000 such teardowns
+produced nothing. The ordering is wrong either way, and smc_conn_kill() has no such
+coupling.
+
+Logs on request.
+---
+ net/smc/smc_core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index cf6b620fef05..da64e7a6bd73 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -1270,9 +1270,9 @@ void smc_conn_free(struct smc_connection *conn)
+ 	if (lgr->is_smcd) {
+ 		if (!list_empty(&lgr->list))
+ 			smc_ism_unset_conn(conn);
++		tasklet_kill(&conn->rx_tsklet);
+ 		if (smc_ism_support_dmb_nocopy(lgr->smcd))
+ 			smcd_buf_detach(conn);
+-		tasklet_kill(&conn->rx_tsklet);
+ 	} else {
+ 		smc_cdc_wait_pend_tx_wr(conn);
+ 		if (current_work() != &conn->abort_work)
+@@ -1525,12 +1525,12 @@ static void smc_conn_kill(struct smc_connection *conn, bool soft)
+ 	smc_sk_wake_ups(smc);
+ 	if (conn->lgr->is_smcd) {
+ 		smc_ism_unset_conn(conn);
+-		if (smc_ism_support_dmb_nocopy(conn->lgr->smcd))
+-			smcd_buf_detach(conn);
+ 		if (soft)
+ 			tasklet_kill(&conn->rx_tsklet);
+ 		else
+ 			tasklet_unlock_wait(&conn->rx_tsklet);
++		if (smc_ism_support_dmb_nocopy(conn->lgr->smcd))
++			smcd_buf_detach(conn);
+ 	} else {
+ 		smc_cdc_wait_pend_tx_wr(conn);
  	}
- 
-+	if (!bsp_priv->clock_input && phy_interface_mode_is_rgmii(phy_iface)) {
-+		bsp_priv->clk_mac_25m_refout =
-+			devm_clk_get_optional(dev, "clk_mac_25m_refout");
-+		if (IS_ERR(bsp_priv->clk_mac_25m_refout)) {
-+			ret = PTR_ERR(bsp_priv->clk_mac_25m_refout);
-+			return dev_err_probe(dev, ret,
-+					     "Cannot get 25M refout clock\n");
-+		}
-+
-+		if (bsp_priv->clk_mac_25m_refout) {
-+			ret = clk_set_rate(bsp_priv->clk_mac_25m_refout,
-+					   25000000);
-+			if (ret)
-+				return dev_err_probe(dev, ret,
-+						     "Cannot set 25M refout clock rate\n");
-+		}
-+	}
-+
- 	return 0;
- }
- 
-@@ -1433,9 +1452,13 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
- 			if (ret)
- 				return ret;
- 
-+			ret = clk_prepare_enable(bsp_priv->clk_mac_25m_refout);
-+			if (ret)
-+				goto err_disable_clks;
-+
- 			ret = clk_prepare_enable(bsp_priv->clk_phy);
- 			if (ret)
--				return ret;
-+				goto err_disable_25m_refout;
- 
- 			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection)
- 				bsp_priv->ops->set_clock_selection(bsp_priv,
-@@ -1454,12 +1477,20 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
- 			clk_bulk_disable_unprepare(bsp_priv->num_clks,
- 						   bsp_priv->clks);
- 			clk_disable_unprepare(bsp_priv->clk_phy);
-+			clk_disable_unprepare(bsp_priv->clk_mac_25m_refout);
- 
- 			bsp_priv->clk_enabled = false;
- 		}
- 	}
- 
- 	return 0;
-+
-+err_disable_25m_refout:
-+	clk_disable_unprepare(bsp_priv->clk_mac_25m_refout);
-+err_disable_clks:
-+	clk_bulk_disable_unprepare(bsp_priv->num_clks, bsp_priv->clks);
-+
-+	return ret;
- }
- 
- static int phy_power_on(struct rk_priv_data *bsp_priv, bool enable)
--- 
-2.55.0
+
+---
+base-commit: 4235cb24ec1e8e96843f3671ba4da2a6ccca2c7b
+change-id: 20260726-b4-disp-a135b4e5-945574bd0938
+
+Best regards,
+--  
+Bryam Vargas <hexlabsecurity@proton.me>
+
+
