@@ -1,165 +1,166 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3785368D42;
-	Mon, 27 Jul 2026 08:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FD73CFF46;
+	Mon, 27 Jul 2026 08:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785139912; cv=none; b=DKC5LFODH/aInxdYpzW3ODub229mwDF+ngdDaGIjcQR2Ek33wqZ104B/32zFnyr2kAGleB89tsnw94EceoJnkdBEO/8WWj0XI64vdBMgxclNGAzPe2P1JLe9h9RK61bC1uUf2tdssljCMJQYj0mF8XnIl2Xr7zDbcPkTZuy1ZYg=
+	t=1785140305; cv=none; b=cHkR/EalxzAU2nV1IgZdvTU1I8WUqRTmeZLw40OQ0d6SeQdVjg5rWLfYTKfLjJne4Jc9j8m3edrJ803W3d3vdgIoxAqDvoLWvKNAGQYHiRyc1Hbg+TIH4KOAZZMUmVXGb/wi93KzQ1NECE9Y33pc7qK+HuEoU4I7qR8GUPjCb5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785139912; c=relaxed/simple;
-	bh=7a8ht4g1gQ+LlsfWON/B35MWFEnoJ/t41lGSGmpJiq8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SmJs36jn3T1qhfFyZAaKIoK6rxqnTd8H1XTuqAKhxZbHDhnAbkTC7zWI6BrlITCikZdaFYblPx8A3361QUx3qVXysvYFSCgTOY7b19O2h/IzTyQ2VtDVjau1lCBrzvpDz8yb1jGquCQjwH2bT7wR6z0FDPES44/1NtXUWat5g7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LO4yI3cX; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785140305; c=relaxed/simple;
+	bh=zY48Y6El/48sSVOyFlW+fwchlkNp7fWHZSxZamfHqhs=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qc780vaf421JdBV28XwJaaptchEvSdUD6mInrKpVMsdRwyeEmm6fpOrEpAiAhwfw5ylf21V7b6HSkhwHzZUiZ+VYbuHRlLVKiFITYaASJdeEigLZAJMXXrOO2qnhT/dzd+/HqNLhMADb+iHio9ozLTpl0lMsB4YvRtea9n2Q+1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=S/4O1ox/; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LO4yI3cX"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 421ED4E40F92;
-	Mon, 27 Jul 2026 08:11:48 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 06272601BE;
-	Mon, 27 Jul 2026 08:11:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8111911C12243;
-	Mon, 27 Jul 2026 10:11:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785139906; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=nKa8XSu47DLzEg4eeaPfmMAiuo/GOOsLCJU6TJ0k7LA=;
-	b=LO4yI3cXRdAyaI3myrjwfXedgQocVB83IBPr9x6NF8O8Uv1R2/queGYeu4mPNXAyt9JhYU
-	VSoDqzroqt3RNXUyWRfIBgZTXE8H6BH5F85hciTwxXW/Xrl9bbuOJylxX+j0wPAT5S1XkB
-	lZxQYS+ukOtbZbg5tc7UEz6D4oJwUfvMuXKhci+Fyalx2nZPC72bHyu97FC+FLMycy5gjV
-	fswosZT41fOCWfLSpr8pZP02YuXiWztXOHOGQOlijw7g7utaSAwY8YuFvecobGxKM7Whe4
-	REt0EVwE4biL1TonCXC48n+paV2eW20FjfMKNjy4XZHJQdEDbmYdjOqLA+stQQ==
-Message-ID: <70cf4cfa-c329-41a5-b335-561a565627d9@bootlin.com>
-Date: Mon, 27 Jul 2026 10:11:39 +0200
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="S/4O1ox/"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id E34B5206D0;
+	Mon, 27 Jul 2026 10:18:19 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id JkXNZPJ0Zokn; Mon, 27 Jul 2026 10:18:19 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id F2F8E20523;
+	Mon, 27 Jul 2026 10:18:18 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com F2F8E20523
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1785140299;
+	bh=RtG9lxViQDlHXlTYnbnDA9XWHam+JC3ie2AWetNOxU4=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=S/4O1ox/0P6ALoJgkWmOkaj0bCJpU2gVF1wFuGjFHyp1DlPH0ajsCOEaU0FFKWeuC
+	 xwUBgR6aGy55PGSlkf1i+qedXTGVVSq6y2wd9VHv9P8jcVMQUUpW39GCKdCzcVI6Rq
+	 oGTUzpnVkTE5KJqddWDspvW7jHV/tizXu1SSJFaJiw13t7YSo6MReL+9X+N3hnkGyB
+	 l/zGRGpAe7+byPyU1GgZwafFUf+0vAC9ovFg2nnMhnHb4MqMOSWaaDi/W/vlqDNgkI
+	 TNiau7CESbOVYDhlTLePNpA4zQWsAT+dTpqkBEn2uCkMG4I0HjYbSOflflyFrDj0LO
+	 k/oQvoex0zeoA==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 27 Jul
+ 2026 10:18:18 +0200
+Received: (nullmailer pid 3858205 invoked by uid 1000);
+	Mon, 27 Jul 2026 08:18:17 -0000
+Date: Mon, 27 Jul 2026 10:18:17 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+CC: <netdev@vger.kernel.org>, <herbert@gondor.apana.org.au>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>, Ao
+ Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>, Qi Li
+	<qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>, <yyxroy22@gmail.com>
+Subject: Re: [PATCH net] xfrm: enforce hard byte lifetime in xfrm_input()
+Message-ID: <amcUSYGFPCWkXOqQ@secunet.com>
+References: <20260724104517.3852159-1-yangyx22@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: stmmac: fpe: Keep pmac always enabled
-To: muhammad.nazim.amirul.nazle.asmade@altera.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260727051303.14925-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260727051303.14925-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260724104517.3852159-1-yangyx22@mails.tsinghua.edu.cn>
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-Hi,
-
-On 7/27/26 07:13, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
-> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+On Fri, Jul 24, 2026 at 10:45:17AM +0000, Yuxiang Yang wrote:
+> xfrm_input() checks an inbound state's hard lifetime before processing
+> the current packet, but accounts the packet only after the transform
+> succeeds. The check therefore sees only the previous byte count.
 > 
-> The preemptive MAC in DWMAC is always enabled, meaning DWMAC is always
-> ready to receive preemptive mPackets. Keep pmac_enabled true at init
-> time and reject attempts to disable it via ethtool set_mm.
+> If the current packet makes the new count exceed the hard byte limit,
+> that packet is still delivered. The state is not expired until the next
+> matching packet arrives. The effect is limited to the packet that crosses
+> the configured limit.
 > 
-> The FPE residual queue (fprq) controls which Rx queue receives residual
-> preemptive mPackets from the pmac. Move its configuration from
-> stmmac_fpe_configure_tx() to stmmac_fpe_configure_pmac() where it
-> logically belongs.
+> This affects only states configured with a finite hard byte limit. The
+> default XFRM_INF lifetime is unaffected. IPComp makes the issue especially
+> visible because decompression can increase skb->len before it is accounted.
 > 
-> Also add a missing return in stmmac_fpe_init() so that the pmac_enabled
-> initialization is not reached on hardware where FPE is not supported by
-> the driver.
+> Account the actual post-transform length, then enforce the finite hard byte
+> limit before delivering the packet. Use a strict comparison so a packet
+> that brings the count exactly to the limit remains accepted.
+> 
+> Saturate the byte counter at XFRM_INF - 1 because XFRM_INF is also the
+> unlimited-lifetime sentinel. Carry a separate saturation flag so a finite
+> lifetime still expires if the addition overflows or reaches the sentinel.
+> 
+> The transform and replay update have already completed when an overshooting
+> packet is dropped. Checking the compressed length before the transform
+> would not enforce the correct limit because IPComp can increase skb->len
+> during decompression.
+> 
+> With this change applied to net at 78f75d632f74, a local QEMU/TCG test
+> dropped a 136-byte packet at a hard limit of 135 and accepted the same
+> packet at limits of 136 and 100000. XfrmInStateExpired increased by 1, 0,
+> and 0, respectively. A characterization-only kprobe module seeded
+> curlft.bytes at U64_MAX - 100 for an unlimited lifetime; two packets were
+> delivered, the counter saturated at U64_MAX - 1, and XfrmInStateExpired
+> did not change.
+> 
+> This change is limited to hard byte lifetime handling in xfrm_input().
+> xfrm6_input_addr() and the output path use separate byte accounting and
+> are not changed here.
+> 
+> The faulty ordering predates the available Git development history, so
+> there is no accurate introducing commit to reference with a Fixes tag.
 
-Can you split this up into individual patches, one for the stmmac_set_mm() and
-stmmac_fpe_init() to validate that we keep pmac on, one for the missing return,
-and one for the pmac configuration in the right fonction ?
+A fix needs a 'Fixes:' tag. If the bug predates the git history,
+then use the first commit in the git history for the fixes tag.
 
-Also one comment bellow :> 
-> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-> Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
 > ---
->  .../ethernet/stmicro/stmmac/stmmac_ethtool.c  |  7 ++++
->  .../net/ethernet/stmicro/stmmac/stmmac_fpe.c  | 34 ++++++++++++-------
->  2 files changed, 29 insertions(+), 12 deletions(-)
+>  net/xfrm/xfrm_input.c | 20 +++++++++++++++++++-
+>  1 file changed, 19 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-> index 92585d27ab88..8ebdd249e5c8 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-> @@ -1064,6 +1064,13 @@ static int stmmac_set_mm(struct net_device *ndev, struct ethtool_mm_cfg *cfg,
->  	if (err)
->  		return err;
->  
-> +	if (!priv->dma_cap.fpesel)
-> +		return -EOPNOTSUPP;
+> diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+> index eecab337b..6846ccb39 100644
+> --- a/net/xfrm/xfrm_input.c
+> +++ b/net/xfrm/xfrm_input.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/slab.h>
+>  #include <linux/module.h>
+>  #include <linux/netdevice.h>
+> +#include <linux/overflow.h>
+>  #include <linux/percpu.h>
+>  #include <net/dst.h>
+>  #include <net/ip.h>
+> @@ -582,6 +583,9 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+>  	daddr = (xfrm_address_t *)(skb_network_header(skb) +
+>  				   XFRM_SPI_SKB_CB(skb)->daddroff);
+>  	do {
+> +		bool saturated;
+> +		u64 bytes, len;
 > +
-> +	/* DWMAC always have preemptible MAC enabled */
-> +	if (!cfg->pmac_enabled)
-> +		return -EINVAL;
-> +
->  	stmmac_fpe_set_add_frag_size(priv, frag_size);
->  	ethtool_mmsv_set_mm(&priv->fpe_cfg.mmsv, cfg);
+>  		sp = skb_sec_path(skb);
 >  
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
-> index c54c70224351..2bfa84ad04a6 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
-> @@ -47,20 +47,13 @@ static void stmmac_fpe_configure_tx(struct ethtool_mmsv *mmsv, bool tx_enable)
->  	struct stmmac_fpe_cfg *cfg = container_of(mmsv, struct stmmac_fpe_cfg, mmsv);
->  	struct stmmac_priv *priv = container_of(cfg, struct stmmac_priv, fpe_cfg);
->  	const struct stmmac_fpe_reg *reg = cfg->reg;
-> -	u32 num_rxq = priv->plat->rx_queues_to_use;
->  	void __iomem *ioaddr = priv->ioaddr;
-> -	u32 value;
+>  		if (sp->len == XFRM_MAX_DEPTH) {
+> @@ -689,10 +693,24 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
 >  
-> -	if (tx_enable) {
-> +	if (tx_enable)
->  		cfg->fpe_csr = STMMAC_MAC_FPE_CTRL_STS_EFPE;
-> -		value = readl(ioaddr + reg->rxq_ctrl1_reg);
-> -		value &= ~reg->fprq_mask;
-> -		/* Keep this SHIFT, FIELD_PREP() expects a constant mask :-/ */
-> -		value |= (num_rxq - 1) << __ffs(reg->fprq_mask);
-> -		writel(value, ioaddr + reg->rxq_ctrl1_reg);
-> -	} else {
-> +	else
->  		cfg->fpe_csr = 0;
-> -	}
-> +
->  	writel(cfg->fpe_csr, ioaddr + reg->mac_fpe_reg);
->  }
+>  		xfrm_replay_advance(x, seq);
 >  
-> @@ -68,10 +61,11 @@ static void stmmac_fpe_configure_pmac(struct ethtool_mmsv *mmsv, bool pmac_enabl
->  {
->  	struct stmmac_fpe_cfg *cfg = container_of(mmsv, struct stmmac_fpe_cfg, mmsv);
->  	struct stmmac_priv *priv = container_of(cfg, struct stmmac_priv, fpe_cfg);
-> +	u32 num_rxq = priv->plat->rx_queues_to_use;
->  	const struct stmmac_fpe_reg *reg = cfg->reg;
->  	void __iomem *ioaddr = priv->ioaddr;
->  	unsigned long flags;
-> -	u32 value;
-> +	u32 value, value_2;
+> -		x->curlft.bytes += skb->len;
+> +		len = skb->len;
+> +		saturated = check_add_overflow(x->curlft.bytes, len, &bytes);
+> +		if (saturated || bytes == XFRM_INF) {
+> +			bytes = XFRM_INF - 1;
+> +			saturated = true;
+> +		}
+> +		x->curlft.bytes = bytes;
+>  		x->curlft.packets++;
+>  		x->lastused = ktime_get_real_seconds();
 >  
->  	spin_lock_irqsave(&priv->hw->irq_ctrl_lock, flags);
->  	value = readl(ioaddr + reg->int_en_reg);
-> @@ -83,6 +77,14 @@ static void stmmac_fpe_configure_pmac(struct ethtool_mmsv *mmsv, bool pmac_enabl
->  
->  			value |= reg->int_en_bit;
->  		}
-> +		/* Frame Preemption Residue Queue is the Rx Queue to which
-> +		 * residual preemptive mPackets must be forwarded from the pmac.
-> +		 */
-> +		value_2 = readl(ioaddr + reg->rxq_ctrl1_reg);
-> +		value_2 &= ~reg->fprq_mask;
-> +		/* Keep this SHIFT, FIELD_PREP() expects a constant mask :-/ */
+> +		/* IPComp may expand skb->len during the input transform. */
 
-you can use u32_replace_bits for non constant expr :
+Please don't make the xfrm input path more complicated just for
+an IPcomp lifebyte check. Nobody uses this anymore and we
+discussed to deprecate it at the IPsec Workshop last week.
 
-https://elixir.bootlin.com/linux/v7.2-rc4/source/include/linux/bitfield.h#L236
-
-(it's autogenerated and not documented, hence very hard to find IMO)
-
-Maxime
