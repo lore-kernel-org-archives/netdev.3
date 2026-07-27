@@ -1,37 +1,37 @@
 Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6293DEFFE;
-	Mon, 27 Jul 2026 03:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6763DEAF6;
+	Mon, 27 Jul 2026 03:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785124784; cv=none; b=aNqTOBEIE+2f0oBe43n2o7a8IeQKTUgONOMz12UHHQl/JyteGHY1vekVj8m4vV9qFYgPLx9XJmZSbmLUIzoNDsOD708eQL563t0ddZSWtuAICIwP3Ayss/Znwr86tyyGSamsV6N7W8k7g9lO+YcArksV6sCOw9VKbAd16FvNlrQ=
+	t=1785124786; cv=none; b=PGnMfUte5YZ9mXP16ntqPxAV7laN4I29SixFnys88Xvwq6Zu6C2RNGFhFiJnd+X2l53VH6BUHQasMnhir+cUJGJIPm/fuRB3Mv5Uz8GB77p1fla9n3yZxy466zn79m415dTK8kR6dWVhNE5s2BHpnhdX80kqZUsDjqB5haovSMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785124784; c=relaxed/simple;
-	bh=wCfxgErhzZkjcA9+yD3lKGRQ1vh3Zp0pgx9oWbvLZAk=;
+	s=arc-20240116; t=1785124786; c=relaxed/simple;
+	bh=BWY+UJOOmFr/bSZpHMdzJNEVBajFyZxZ2BPIn0zyB4k=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ovFKHUWT+c+JZM/MNI/kSMJRqHL6l1P7P1DHRyNa0ZSGEgLm1whCA9OZYmk1659wpenRCMInkFos36/WOJRcNxnjdTuub1916uau28vhWt6BjIdO3kRIsqe6g6EEOxTLJTrrnoBzsvNSHCmY9FW1pv+oipddbstRBH859HhBazE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=HEQXZFsH; arc=none smtp.client-ip=216.154.215.154
+	 In-Reply-To:To:Cc; b=BlazTTw8x4LE1qbopKeIgaLOhSceeaZYhO5KCmBFVtModsvtfHY0nUgPZLLosLkiASB7SxyjjT9caP2+kUucfnrBryZStJrABffErPRdXsWFU2SpE5n8cNNdc3yxSU8fDfyfUaA005yJcNiHW8eshB/aw3WWPqoTcfmxLSM3rtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=NjyiILBv; arc=none smtp.client-ip=216.154.215.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="HEQXZFsH"
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="NjyiILBv"
 Received: from [127.0.1.1] (border.lukktone.com [139.130.100.52])
-	by us.padl.com (Postfix) with ESMTPSA id 626C56227C;
-	Sun, 26 Jul 2026 23:59:32 -0400 (EDT)
+	by us.padl.com (Postfix) with ESMTPSA id 0F8BA6227F;
+	Sun, 26 Jul 2026 23:59:37 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1785124777; bh=47023XEFQ9ph2HePpdoqHS701MsGITqkFgVF0aHCvlI=;
+	t=1785124783; bh=Eh/HKI8Qn4mJ4lNapJUHHII2ryT1ZabVIqrHcGjHBvA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=HEQXZFsH0z0py3lL6YFDckIRUQASXNkVW1G/TyLetw9l6EZr1hmnzfxeY/O89z/e2
-	 q9CS+P2obxu2J4fvc7n2I+bny+OJEYoLSkBku3ShZrdREyPKrALJkN4A5e3ReyXZvg
-	 gwf3qg12FI6/EdizwlfKMdkANj5PQ/jmtP06YGWxt1LW4WQdRBvrbxUYzuN5wuvU3I
-	 OO8oaBvfO+i1dqcf3+Ostx5/LLpGaADxST1nQJ7etIL/svOcRbD4yRlVko90n63+Wg
-	 YabwI+f9ZImMSr0SKMB69/bHpzSWXlEkWhxJioXtCrUNa6KbJfG5MFc3/ZRWXiNqCM
-	 VCEPGx3emlS0g==
+	b=NjyiILBvH0cs5u9i3mQsEcjAVTBHve5dDXDRfAUfvflxVu90W4pLyDhjMQTemfDZE
+	 u55uK8aIlhcEPcKprvjgYw4pVAZ2blUYiw4f15ebDp+manpu6Wrbfk/YJWgsXsn9rY
+	 Dgo7UV7d0A2fJ+QNOt3GIMT7GIG/ptz7Os/voJZS1gvX2f8pDhbEPx3Wq1AVdXzYVA
+	 Ry8p1wIIJaqNtctqNjdPVSWUxQGCvnj1cLQIl7J1tLKnupGgNVX9Qgz2Dl/wcABAJc
+	 zCdQ79RQtch3924BsCpSYA4YbS8KJsr/yH7qw8x33/SngQ0DBghc20yivhGTQymJgH
+	 08Swu0fcULggg==
 From: Luke Howard <lukeh@padl.com>
-Date: Mon, 27 Jul 2026 13:59:13 +1000
-Subject: [PATCH net-next v4 2/5] net: dsa: mv88e6xxx: use ARRIVAL1 counter
- for all peer delay messages
+Date: Mon, 27 Jul 2026 13:59:14 +1000
+Subject: [PATCH net-next v4 3/5] net: dsa: mv88e6xxx: decouple the PTP
+ timecounter from the register lock
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260727-mv88e6xxx-ptp-fixes-v4-2-10b4020155fc@padl.com>
+Message-Id: <20260727-mv88e6xxx-ptp-fixes-v4-3-10b4020155fc@padl.com>
 References: <20260727-mv88e6xxx-ptp-fixes-v4-0-10b4020155fc@padl.com>
 In-Reply-To: <20260727-mv88e6xxx-ptp-fixes-v4-0-10b4020155fc@padl.com>
 To: Vladimir Oltean <olteanv@gmail.com>, 
@@ -60,71 +60,229 @@ Cc: Cedric Jehasse <cedric.jehasse@gmail.com>,
  linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>, 
  devicetree@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785124760; l=2031;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785124760; l=7973;
  i=lukeh@padl.com; s=20260701; h=from:subject:message-id;
- bh=wCfxgErhzZkjcA9+yD3lKGRQ1vh3Zp0pgx9oWbvLZAk=;
- b=F9tmRm1mqiNs3zegWDhnsiUH8RZAmS5RniXDW12TDTaL9ko9avaEQ+19cM7KgaGZj+eQWfK71
- 5a4r4lqawwYCHyhgor47oQuKoEwsx17SKUDtXbWWili0Ul0AJvuH4s2
+ bh=BWY+UJOOmFr/bSZpHMdzJNEVBajFyZxZ2BPIn0zyB4k=;
+ b=PD/YVfpR9SN5KjWAjX82s2Bhn5bqiubsu3cdMxbDLyQF2ZXt/Y5E/7fKdDnPA5JAb1bq3IL0S
+ SUjzFgwssupCyirDYD/MrqN9bQTo1Mrtppv8ONpmgfcdVq9FpA8VHV6
 X-Developer-Key: i=lukeh@padl.com; a=ed25519;
  pk=D6YgUnH9/OzSZsduYm9XDbvXn1IHDwKwI1hLTsKNRLw=
 
-mv88e6xxx switches have two arrival timestamp counters for timestamping
-PTP event messages. This permits more than one arriving event message's
-timestamp to be captured. This is useful for the case where event
-messages from a grandmaster arrive at the same time as PDelayReq/PDelayResp
-messages from a peer.
+Use a dedicated spinlock, rather than the chip register mutex, to
+protect read access to the hardware timestamp cycle counter.
 
-Previously only PDelayResp messages were assigned to the second arrival
-counter; this patch does so for PDelayReq messages as well.
-
+Assisted-by: Claude:claude-opus-4-8
 Signed-off-by: Luke Howard <lukeh@padl.com>
 ---
- drivers/net/dsa/mv88e6xxx/hwtstamp.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c     |  1 +
+ drivers/net/dsa/mv88e6xxx/chip.h     |  7 ++--
+ drivers/net/dsa/mv88e6xxx/hwtstamp.c |  8 ++---
+ drivers/net/dsa/mv88e6xxx/ptp.c      | 65 +++++++++++++++++++++++++++++++-----
+ drivers/net/dsa/mv88e6xxx/ptp.h      |  1 +
+ 5 files changed, 65 insertions(+), 17 deletions(-)
 
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 80b877c74513d..b24ebbb275b34 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -6635,6 +6635,7 @@ static struct mv88e6xxx_chip *mv88e6xxx_alloc_chip(struct device *dev)
+ 	chip->dev = dev;
+ 
+ 	mutex_init(&chip->reg_lock);
++	spin_lock_init(&chip->ptp_clock_lock);
+ 	INIT_LIST_HEAD(&chip->mdios);
+ 	idr_init(&chip->policies);
+ 	INIT_LIST_HEAD(&chip->msts);
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
+index e966e7c4cc5de..7272b7dc4955c 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -419,9 +419,12 @@ struct mv88e6xxx_chip {
+ 	/* GPIO resources */
+ 	u8 gpio_data[2];
+ 
+-	/* This cyclecounter abstracts the switch PTP time.
+-	 * reg_lock must be held for any operation that read()s.
++	/* This cyclecounter abstracts the switch PTP time. ptp_clock_lock
++	 * protects tstamp_cc and tstamp_tc. tstamp_cycles caches the
++	 * result most recently returned by mv88e6xxx_ptp_read_cycles().
+ 	 */
++	spinlock_t		ptp_clock_lock;
++	u64			tstamp_cycles;
+ 	struct cyclecounter	tstamp_cc;
+ 	struct timecounter	tstamp_tc;
+ 	struct delayed_work	overflow_work;
 diff --git a/drivers/net/dsa/mv88e6xxx/hwtstamp.c b/drivers/net/dsa/mv88e6xxx/hwtstamp.c
-index e4326165e1896..d468d988b258c 100644
+index d468d988b258c..a5b362a999e64 100644
 --- a/drivers/net/dsa/mv88e6xxx/hwtstamp.c
 +++ b/drivers/net/dsa/mv88e6xxx/hwtstamp.c
-@@ -323,9 +323,16 @@ static void mv88e6xxx_rxtstamp_work(struct mv88e6xxx_chip *chip,
- 				   &ps->rx_queue2);
+@@ -293,9 +293,7 @@ static void mv88e6xxx_get_rxts(struct mv88e6xxx_chip *chip,
+ 		if (mv88e6xxx_ts_valid(status) && seq_match(skb, seq_id)) {
+ 			ns = timehi << 16 | timelo;
+ 
+-			mv88e6xxx_reg_lock(chip);
+-			ns = timecounter_cyc2time(&chip->tstamp_tc, ns);
+-			mv88e6xxx_reg_unlock(chip);
++			ns = mv88e6xxx_timecounter_cyc2time(chip, ns);
+ 			shwt = skb_hwtstamps(skb);
+ 			memset(shwt, 0, sizeof(*shwt));
+ 			shwt->hwtstamp = ns_to_ktime(ns);
+@@ -420,9 +418,7 @@ static int mv88e6xxx_txtstamp_work(struct mv88e6xxx_chip *chip,
+ 
+ 	memset(&shhwtstamps, 0, sizeof(shhwtstamps));
+ 	time_raw = ((u32)departure_block[2] << 16) | departure_block[1];
+-	mv88e6xxx_reg_lock(chip);
+-	ns = timecounter_cyc2time(&chip->tstamp_tc, time_raw);
+-	mv88e6xxx_reg_unlock(chip);
++	ns = mv88e6xxx_timecounter_cyc2time(chip, time_raw);
+ 	shhwtstamps.hwtstamp = ns_to_ktime(ns);
+ 
+ 	dev_dbg(chip->dev,
+diff --git a/drivers/net/dsa/mv88e6xxx/ptp.c b/drivers/net/dsa/mv88e6xxx/ptp.c
+index f7603573d3a98..2a7f97625e375 100644
+--- a/drivers/net/dsa/mv88e6xxx/ptp.c
++++ b/drivers/net/dsa/mv88e6xxx/ptp.c
+@@ -231,15 +231,37 @@ static void mv88e6352_tai_event_work(struct work_struct *ugly)
+ 
+ 	/* We only have one timestamping channel. */
+ 	ev.index = 0;
+-	mv88e6xxx_reg_lock(chip);
+-	ev.timestamp = timecounter_cyc2time(&chip->tstamp_tc, raw_ts);
+-	mv88e6xxx_reg_unlock(chip);
++	ev.timestamp = mv88e6xxx_timecounter_cyc2time(chip, raw_ts);
+ 
+ 	ptp_clock_event(chip->ptp_clock, &ev);
+ out:
+ 	schedule_delayed_work(&chip->tai_event_work, TAI_EVENT_WORK_INTERVAL);
  }
  
--static int is_pdelay_resp(const struct ptp_header *hdr)
-+static bool is_pdelay_msg(const struct ptp_header *hdr)
++/* Refresh the cached counter value that the read() callback returns. The
++ * read cannot acquire the register lock whilst holding ptp_clock_lock
++ * because MDIO reads can sleep. The caller must hold reg_lock, which
++ * serializes against the other timecounter writers.
++ */
++static void mv88e6xxx_ptp_read_cycles(struct mv88e6xxx_chip *chip)
++{
++	const struct mv88e6xxx_ptp_ops *ptp_ops = chip->info->ops->ptp_ops;
++
++	if (ptp_ops->clock_read)
++		chip->tstamp_cycles = ptp_ops->clock_read(&chip->tstamp_cc);
++}
++
++u64 mv88e6xxx_timecounter_cyc2time(struct mv88e6xxx_chip *chip, u64 cycles)
++{
++	u64 ns;
++
++	spin_lock_bh(&chip->ptp_clock_lock);
++	ns = timecounter_cyc2time(&chip->tstamp_tc, cycles);
++	spin_unlock_bh(&chip->ptp_clock_lock);
++
++	return ns;
++}
++
+ static int mv88e6xxx_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
  {
--	return (hdr->tsmt & 0xf) == 3;
-+	switch (ptp_get_msgtype(hdr, PTP_CLASS_V2)) {
-+	case PTP_MSGTYPE_PDELAY_REQ:
-+		fallthrough;
-+	case PTP_MSGTYPE_PDELAY_RESP:
-+		return true;
-+	default:
-+		return false;
-+	}
+ 	struct mv88e6xxx_chip *chip = ptp_to_chip(ptp);
+@@ -258,9 +280,12 @@ static int mv88e6xxx_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+ 	diff = div_u64(adj, chip->cc_coeffs->cc_mult_dem);
+ 
+ 	mv88e6xxx_reg_lock(chip);
++	mv88e6xxx_ptp_read_cycles(chip);
+ 
++	spin_lock_bh(&chip->ptp_clock_lock);
+ 	timecounter_read(&chip->tstamp_tc);
+ 	chip->tstamp_cc.mult = neg_adj ? mult - diff : mult + diff;
++	spin_unlock_bh(&chip->ptp_clock_lock);
+ 
+ 	mv88e6xxx_reg_unlock(chip);
+ 
+@@ -271,8 +296,16 @@ static int mv88e6xxx_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
+ {
+ 	struct mv88e6xxx_chip *chip = ptp_to_chip(ptp);
+ 
++	/* No register access is needed here, but reg_lock still serialises
++	 * this against the other timecounter writers, which drop it only
++	 * after their hardware read has completed.
++	 */
+ 	mv88e6xxx_reg_lock(chip);
++
++	spin_lock_bh(&chip->ptp_clock_lock);
+ 	timecounter_adjtime(&chip->tstamp_tc, delta);
++	spin_unlock_bh(&chip->ptp_clock_lock);
++
+ 	mv88e6xxx_reg_unlock(chip);
+ 
+ 	return 0;
+@@ -285,7 +318,12 @@ static int mv88e6xxx_ptp_gettime(struct ptp_clock_info *ptp,
+ 	u64 ns;
+ 
+ 	mv88e6xxx_reg_lock(chip);
++	mv88e6xxx_ptp_read_cycles(chip);
++
++	spin_lock_bh(&chip->ptp_clock_lock);
+ 	ns = timecounter_read(&chip->tstamp_tc);
++	spin_unlock_bh(&chip->ptp_clock_lock);
++
+ 	mv88e6xxx_reg_unlock(chip);
+ 
+ 	*ts = ns_to_timespec64(ns);
+@@ -302,7 +340,12 @@ static int mv88e6xxx_ptp_settime(struct ptp_clock_info *ptp,
+ 	ns = timespec64_to_ns(ts);
+ 
+ 	mv88e6xxx_reg_lock(chip);
++	mv88e6xxx_ptp_read_cycles(chip);
++
++	spin_lock_bh(&chip->ptp_clock_lock);
+ 	timecounter_init(&chip->tstamp_tc, &chip->tstamp_cc, ns);
++	spin_unlock_bh(&chip->ptp_clock_lock);
++
+ 	mv88e6xxx_reg_unlock(chip);
+ 
+ 	return 0;
+@@ -444,14 +487,12 @@ const struct mv88e6xxx_ptp_ops mv88e6390_ptp_ops = {
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_DELAY_REQ),
+ };
+ 
++/* Return the value most recently fetched by mv88e6xxx_ptp_read_cycles()
++ * rather than reading the hardware over MDIO.
++ */
+ static u64 mv88e6xxx_ptp_clock_read(struct cyclecounter *cc)
+ {
+-	struct mv88e6xxx_chip *chip = cc_to_chip(cc);
+-
+-	if (chip->info->ops->ptp_ops->clock_read)
+-		return chip->info->ops->ptp_ops->clock_read(cc);
+-
+-	return 0;
++	return cc_to_chip(cc)->tstamp_cycles;
  }
  
- bool mv88e6xxx_port_rxtstamp(struct dsa_switch *ds, int port,
-@@ -347,7 +354,7 @@ bool mv88e6xxx_port_rxtstamp(struct dsa_switch *ds, int port,
+ /* With a 250MHz input clock, the 32-bit timestamp counter overflows in ~17.2
+@@ -486,6 +527,12 @@ int mv88e6xxx_ptp_setup(struct mv88e6xxx_chip *chip)
+ 	chip->tstamp_cc.mult	= chip->cc_coeffs->cc_mult;
+ 	chip->tstamp_cc.shift	= chip->cc_coeffs->cc_shift;
  
- 	SKB_PTP_TYPE(skb) = type;
++	/* Prime the cycle counter cache for the timecounter_init() below.
++	 * The caller holds reg_lock, and nothing can reach the PTP clock
++	 * until ptp_clock_register() below, so no locking is needed here.
++	 */
++	mv88e6xxx_ptp_read_cycles(chip);
++
+ 	timecounter_init(&chip->tstamp_tc, &chip->tstamp_cc,
+ 			 ktime_to_ns(ktime_get_real()));
  
--	if (is_pdelay_resp(hdr))
-+	if (is_pdelay_msg(hdr))
- 		skb_queue_tail(&ps->rx_queue2, skb);
- 	else
- 		skb_queue_tail(&ps->rx_queue, skb);
-@@ -588,8 +595,9 @@ int mv88e6xxx_hwtstamp_setup(struct mv88e6xxx_chip *chip)
- 	if (err)
- 		return err;
+diff --git a/drivers/net/dsa/mv88e6xxx/ptp.h b/drivers/net/dsa/mv88e6xxx/ptp.h
+index 95bdddb0bf39f..44718e120de20 100644
+--- a/drivers/net/dsa/mv88e6xxx/ptp.h
++++ b/drivers/net/dsa/mv88e6xxx/ptp.h
+@@ -68,6 +68,7 @@
  
--	/* Use ARRIVAL1 for peer delay response messages. */
-+	/* Use ARRIVAL1 for peer delay messages. */
- 	err = mv88e6xxx_ptp_write(chip, MV88E6XXX_PTP_TS_ARRIVAL_PTR,
-+				  MV88E6XXX_PTP_MSGTYPE_PDLAY_REQ |
- 				  MV88E6XXX_PTP_MSGTYPE_PDLAY_RES);
- 	if (err)
- 		return err;
+ int mv88e6xxx_ptp_setup(struct mv88e6xxx_chip *chip);
+ void mv88e6xxx_ptp_free(struct mv88e6xxx_chip *chip);
++u64 mv88e6xxx_timecounter_cyc2time(struct mv88e6xxx_chip *chip, u64 cycles);
+ 
+ #define ptp_to_chip(ptp) container_of(ptp, struct mv88e6xxx_chip,	\
+ 				      ptp_clock_info)
 
 -- 
 2.43.0
