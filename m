@@ -1,97 +1,269 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C107F1F03DE;
-	Mon, 27 Jul 2026 09:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AC63EE1E0
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785144799; cv=none; b=FgOUPjZxvu1UC/jHT46/+rRe7wGvHIq+ZJeBTSnC+Y7TDPdCX32zriB3jW4B7NM9UohdiOuerPEBXzH5+gYTJFdSdJNArlG7j0o7sjMPVlq9IvabRa7hvFKG28zkFXeKPpodXCxeXiTCvhjzQUGZAVoLitqvDyPrESH9vCgLIv8=
+	t=1785144813; cv=none; b=uebU2BpqV46Ma3UyZPYR89FnIl7g2ChApOrHBAWQuxip3zVEj4KLOXkfGDpZd58ddYljbgH+8LYn/3DeTnyfBKFYux3bzAod5/M8AkMyXsnRwtKgiCTJVsUtoWND/bjU4yO81IzVeZsCsulmiYfJRcBYg6TcpSyWVaF7G79PamA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785144799; c=relaxed/simple;
-	bh=Rm2OQdxtQcMMVWf4wd1kSKoD95zFWKCB+zHjmmhMU+0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N8oe3H/DksykGl/0qA0Ftnp2Kq202m427K4kqluz29cZzlsJk8Fh52cwGsL7pg84Ij1vpRp0qjdQuHOtI/E+PnLwtcAotfM9oNDXZvNS8IYxFAZdDozbA+fvtovRqnGl0gLgGeSnTVY7CYKJLa5Lc0d5Tp1eZsQGJddmEcBlYtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Ukz5Ox90; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1785144813; c=relaxed/simple;
+	bh=X+YegrBBhRAi4oW55RZLgS1GnS6TchcCHYhjOP1LOxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EIGw2aZKC+pw+kiBfg4PIPXdi0oqo/25xdqmEO8hiOHPsH2ewvRemUkKkOvVngCBTgq9OQA5RZYSXeMVlTN0SPMsSonmoeHLGDbqTk0c+4OkQ5ua3GU0fpuDeM+Qy3qNXZEVTlVLh22abwPtUa+KqkctW/6jLmZt1avIZnOWSCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nwKYGMAL; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Ukz5Ox90"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66R7UH4k2643359;
-	Mon, 27 Jul 2026 02:33:08 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=Rm2OQdxtQcMMVWf4wd1kSKoD9
-	5zFWKCB+zHjmmhMU+0=; b=Ukz5Ox90FO8R9ixqguo/TyM8bHpUO3G9nB3HP396F
-	lpZOsFAVez5PFDBHRmjgibXQSBqmRyb17T+Jv600WTy8Fkp3+BliX5qC2ildLy15
-	2lgkWWc7GC2fZFS3j8z9NrU8RWcBm7oCU7EShvcqufsS8E2fkq6dDzGHEKwg0imL
-	9mpFDdzh/as80moOPhDOIlY6Em9KvIaqfLveZTJVNDap8/yvXCDUBneNnRZZWy6F
-	qk4yGyME9T7bCy1djWYLkldeQhZdfL9+2j++gN6EgcxHU/uWv3feDuTzqZktvlP4
-	/4TsW9CtqnroIBV19eQCpYzUuCl0TRbzgGtovilcsa7mA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fndw8t2xf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 02:33:08 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 27 Jul 2026 02:33:07 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 27 Jul 2026 02:33:07 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 003823F703F;
-	Mon, 27 Jul 2026 02:33:04 -0700 (PDT)
-Date: Mon, 27 Jul 2026 15:03:03 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
-Subject: Re: [PATCH net] octeontx2-pf: add mqprio bandwidth offload for NIX
- TX schedulers
-Message-ID: <amclzwg3qXGbaZVa@rkannoth-OptiPlex-7090>
-References: <20260724075010.2665758-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nwKYGMAL"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38e3617ba36so2473018a91.3
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:33:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785144811; x=1785749611; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=E5/cTqswXiZuGVscIIuZbdXwuPfb3kXOxcV1hKzlbOc=;
+        b=nwKYGMALx6FLeJ47xWxR15/u22PJNeinBY56BjP5D+azywiEAqUvd3JSGHHLxR2Pog
+         RM0zv9MeCzU6thaE50FxFoiOWsiD2YIyLdu+wM/nutpEdnH7ibu0lSMzMAsAcSZEP7nY
+         G7DXx7h1DF+vjTpAbXMNvRz1nMGA1ooQp6Ngkqr8cwdX/hIOmvemgvWY4Tj9OJXmSaxB
+         y7zI4gQyXue+WOMN0FK+HBDHs1n4aJNUnAOq+wJBe1nq6ctcemCa8YISyD+oiV+zodnI
+         s2AHCYcLoDP7S9QKRhj4kuilDspyBz0G4w5KPYC2WrXOSLLulJYevbciMZ8qqZqt5liI
+         hjyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785144811; x=1785749611;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=E5/cTqswXiZuGVscIIuZbdXwuPfb3kXOxcV1hKzlbOc=;
+        b=PaljIwioV5ebpiDPk4mdKTSNe9UZIshe79SwehvKgXkDZtb/zVXTHivKH3ynQNDq8j
+         RhraioszdrPflh6Zv1tJEbMWI4oL2Fhy3jtOq49Vu767kXYSyDtaslUIwPI7xHjQgcmR
+         YRL9vSG2ThwZ6Zqop4OBkp9EOax/kIfH8+g6dNZqUHtoadK2U/ndE8XtX2BPzX6Iq6qG
+         QNONv/N9ZQwC3gAT4QrMhRWGfEQnBhLeDvtH8hrdwWNvwTaTd4B2fmRlxs59fPYmY+DZ
+         nuZoy6JwgqTB0CfrQ16I5a7avV5K6QY6uVUENlcSwDWDlbSnWM+nvCJaNSLPEZodOMJP
+         CqNQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro6RskSxg7phQeqZ17hkqAO2lKnb7gu7W+uMuDo9TinuwzRrjLfKxXzpwXiIFX/AY4YR9bw/gI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRnqHwmk+M9tlEFJVGyTu+D0gaQPm7Bor1wKlv88HnxzjDR+lv
+	KcYb4EuMBpLvP+QCHFSafHl5x+txSMh4iZyppl23XGsuKdO92ItpVMqx
+X-Gm-Gg: AR+sD12CT4SlXcid/oehjpAUCfNcK5Nf+ENPS6R8k4fxpXx8hrEpERiZ4oYCOw2E6BD
+	dV6EmztcT1mSP7Lqf6QBac/wPbeMnPLo315dJOYNfqxCrhoCLoAqzpiGxEk4kA9+91AUVZCUAjA
+	dowXmR6Kw096Yvaz6LrgiSM4qBFs/f69waI1ceunneuI2HbdCFFKD+wyZHiqAmgSNmo9arhGXS7
+	tO1nD9127mpPc4pIt79D4jluo+ve5x8IFYWuvpDiv8y24VwRbyTEUrwrpRqcUKrexeiMCtxm8gd
+	Ik7+Q48vGqKwSQfNWMUKm0AUh0zCsN1sQKn10YpEWmCs/xwC6M2UpHLFlzT2AsNDo/u49weE+Pr
+	eupt6j0aD588ykAwgtymaAxaYSBpRKKo3Ym9U/Ral4tHoBQdDXR97Hfiz7DhONJgdCA7Hd7eUcn
+	+M5HfzOher
+X-Received: by 2002:a05:6a20:4305:b0:3bf:b60b:da95 with SMTP id adf61e73a8af0-3c67dfeb47dmr7475969637.60.1785144810622;
+        Mon, 27 Jul 2026 02:33:30 -0700 (PDT)
+Received: from localhost ([2402:e280:3e0d:544:91b3:77c4:f31d:d706])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d13003f12sm89948285c88.2.2026.07.27.02.33.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 02:33:30 -0700 (PDT)
+From: Vaibhav Nagare <nagarevaibhav@gmail.com>
+X-Google-Original-From: Vaibhav Nagare <vnagare@redhat.com>
+To: horms@kernel.org,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com
+Cc: andrew+netdev@lunn.ch,
+	matvey.kovalev@ispras.ru,
+	Pavel.Zhigulin@kaspersky.com,
+	aelior@marvell.com,
+	manishc@marvell.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Vaibhav Nagare <vnagare@redhat.com>
+Subject: [PATCH net v3] qede: Fix NULL pointer dereference in TPA fragment processing
+Date: Mon, 27 Jul 2026 15:03:22 +0530
+Message-ID: <20260727093322.1119035-1-vnagare@redhat.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260724075010.2665758-1-rkannoth@marvell.com>
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDA5MyBTYWx0ZWRfX46JaG0KAi37X
- 6CYDr/OWPC0VoDEpPc2U4XQXgVLeOAdd4LxZYRipguy5Svazt+zhDQPOGS3zJlVBKtPDtiYUin/
- xU+kbeULQOf9wg+cb+uhtZeJWm5jKaQ=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDA5MyBTYWx0ZWRfX0QJYQn8Zkh/G
- SgkbKRX2upG0oEQQ04d1hoXezkXvjPcazA8O8w5HD1Y3BQuW0LCjUlFnuHD6S5CPZ71re3yJr0f
- coxqUTBfINrSdv6HH28MTSfvpWzLC6J5t6OcO1MGcDopw/u/TZVVoll8eUh7ZsidiaosAc0Z3Fw
- L5m0HQI89Pao1FG7q0FSkzSce24FtNVm/fNMbyubnZISPXHMyYkHAU8w5+UMThuiS6kr8f/EYaz
- cXHrgVgUBQ5BfrKNCvkMOMsUw2gJTWId+7DpYU2b+VPtVb8QdBNriDZ1KnqFTHJKEIoNOeQE/bu
- hWZysdd+03wvQ5Qc6pLHjKJ52rBDV+5I959W79bnFUY1e7zrgJRtXXUIrRDqdgyv6OHMlgx6myP
- 9/IAMJdqcqVRFD+vH152K0RbJPwfby1f9jcxjVquDsNf8mb+wakyGBhQO0P6B7bnmB0SxQ284Pn
- Ttgzlg9r/X5iuCsGj2A==
-X-Proofpoint-ORIG-GUID: VV7H4h6VxsylDTI9A2vYJ-oCvpiR8vB-
-X-Authority-Analysis: v=2.4 cv=DeknbPtW c=1 sm=1 tr=0 ts=6a6725d4 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8
- a=pUhW0NasXGczhlxQT_kA:9 a=CjuIK1q_8ugA:10 a=ZXulRonScM0A:10
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: VV7H4h6VxsylDTI9A2vYJ-oCvpiR8vB-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-27_02,2026-07-24_02,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 
-On 2026-07-24 at 13:20:10, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
-> Add TC_SETUP_QDISC_MQPRIO handling to program per-queue MDQ CIR/PIR
-> shaping after mqprio channel mode setup, widen SMQ allocation when
-> per-queue rate limiting is enabled, and align MDQ parents under that
-> mode. Reuse otx2_convert_rate for bps-to-Mbps, fix sparse register
-> writes when only one of min/max is set, and improve AF txschq map
-> mismatch diagnostics.
->
+Under memory pressure, the qede driver encounters NULL pointer
+dereferences when processing TPA continuation fragments because:
+1. qede_fill_frag_skb() does not validate the page pointer before use
+2. qede_tpa_end() checks error state AFTER calling qede_fill_frag_skb()
 
-The patch was pushed to net instead of net-next. Will post v2 to net-next.
+The crash occurs when:
+1. System experiences memory pressure (GFP_ATOMIC allocations fail)
+2. qede_alloc_rx_buffer() returns -ENOMEM, leaving sw_rx_data->data NULL
+3. qede_tpa_start() sets QEDE_AGG_STATE_ERROR on SKB allocation failure
+4. Hardware delivers TPA_CONT and TPA_END events for this aggregation
+5. qede_tpa_end() calls qede_fill_frag_skb() before checking error state
+6. qede_fill_frag_skb() accesses NULL pointer in skb_fill_page_desc()
+7. Kernel panics with NULL pointer dereference
 
-pw-bot: changes-requested
+Example crash from production system:
+ BUG: unable to handle kernel NULL pointer dereference at 0x8
+ RIP: qede_fill_frag_skb+0x96/0x430 [qede]
+ Call Trace:
+   qede_rx_int+0xb06/0x1de0
+   qede_poll+0x2f4/0x6c0
+   __napi_poll+0x2d/0x130
+
+Observed on HPE Synergy 480 Gen11 running RHEL 8.10
+(4.18.0-553.134.1.el8_10.x86_64), but the vulnerable code path
+exists in mainline.
+
+Fix by:
+1. Adding NULL page validation in qede_fill_frag_skb()
+   before dereferencing.
+2. Checking error state EARLY in qede_tpa_end() and qede_tpa_cont() before
+   processing fragments.
+3. Ensuring NULL buffer descriptors are consumed rather than recycled to
+   prevent NULL pointers from re-entering the active Rx ring.
+4. Correcting buffer capacity tracking (rxq->filled_buffers) when dropping
+   empty descriptors to avoid Rx ring starvation.
+5. Validating uninitialized buffers before reusing them in error paths to
+   prevent DMA and memory leaks.
+
+Fixes: 55482edc25f0 ("qede: Add slowpath/fastpath support and enable hardware GRO")
+Cc: stable@vger.kernel.org
+
+Signed-off-by: Vaibhav Nagare <vnagare@redhat.com>
+---
+ v3: Addressed AI review feedback:
+   - Fixed out-of-bounds array read by correcting logical AND condition 
+     order in qede_tpa_end() loop.
+   - Decremented rxq->filled_buffers when dropping NULL descriptors to 
+     prevent Rx ring starvation.
+   - Checked rx_bd->data validity before recycling BDs in TPA error loops 
+     to prevent re-injecting NULL pointers into the active ring.
+   - Fixed qede_tpa_end() error jump to prevent qede_reuse_page() from 
+     recycling uninitialized buffers and leaking DMA mappings.
+   - Moved version history below the '---' marker per subsystem guidelines.
+
+ v2: Addressed AI review feedback from Simon Horman:
+   - Added net_ratelimit() to prevent printk storm in NAPI fast path
+   - Fixed NULL buffer recycling: check if page is valid before recycling,
+     otherwise just consume the BD to prevent NULL from re-entering the ring
+   - Added proper cleanup in qede_tpa_end() before early exit to prevent
+     memory leaks and ring desynchronization (DMA unmap + BD recycling)
+
+ v1: https://lore.kernel.org/netdev/20260709044704.141507-1-vnagare@redhat.com/
+
+ drivers/net/ethernet/qlogic/qede/qede_fp.c | 59 ++++++++++++++++++++--
+ 1 file changed, 54 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_fp.c b/drivers/net/ethernet/qlogic/qede/qede_fp.c
+index 33e18bb69774..dd6032200f52 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_fp.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_fp.c
+@@ -670,13 +670,23 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
+ 							 NUM_RX_BDS_MAX];
+ 	struct qede_agg_info *tpa_info = &rxq->tpa_info[tpa_agg_index];
+ 	struct sk_buff *skb = tpa_info->skb;
++	struct page *page = current_bd->data;
+ 
+ 	if (unlikely(tpa_info->state != QEDE_AGG_STATE_START))
+ 		goto out;
+ 
++	/* Avoid NULL pointer dereference when under severe memory pressure */
++	if (unlikely(!page)) {
++		if (net_ratelimit())
++			DP_NOTICE(edev,
++				  "Failed to allocate RX buffer for TPA agg %u\n",
++				  tpa_agg_index);
++		goto out;
++	}
++
+ 	/* Add one frag and update the appropriate fields in the skb */
+ 	skb_fill_page_desc(skb, tpa_info->frag_id++,
+-			   current_bd->data,
++			   page,
+ 			   current_bd->page_offset + rxq->rx_headroom,
+ 			   len_on_bd);
+ 
+@@ -684,7 +694,7 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
+ 		/* Incr page ref count to reuse on allocation failure
+ 		 * so that it doesn't get freed while freeing SKB.
+ 		 */
+-		page_ref_inc(current_bd->data);
++		page_ref_inc(page);
+ 		goto out;
+ 	}
+ 
+@@ -698,8 +708,12 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
+ 
+ out:
+ 	tpa_info->state = QEDE_AGG_STATE_ERROR;
+-	qede_recycle_rx_bd_ring(rxq, 1);
+-
++	if (current_bd->data) {
++		qede_recycle_rx_bd_ring(rxq, 1);
++	} else {
++		qede_rx_bd_ring_consume(rxq);
++		rxq->filled_buffers--;
++	}
+ 	return -ENOMEM;
+ }
+ 
+@@ -959,8 +973,24 @@ static inline void qede_tpa_cont(struct qede_dev *edev,
+ 				 struct qede_rx_queue *rxq,
+ 				 struct eth_fast_path_rx_tpa_cont_cqe *cqe)
+ {
++	struct qede_agg_info *tpa_info = &rxq->tpa_info[cqe->tpa_agg_index];
+ 	int i;
+ 
++	/* Don't process fragments if TPA start failed */
++	if (unlikely(tpa_info->state != QEDE_AGG_STATE_START)) {
++		for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++) {
++			struct sw_rx_data *rx_bd = &rxq->sw_rx_ring[rxq->sw_rx_cons &
++								NUM_RX_BDS_MAX];
++				if (likely(rx_bd->data)) {
++					qede_recycle_rx_bd_ring(rxq, 1);
++				} else {
++					qede_rx_bd_ring_consume(rxq);
++					rxq->filled_buffers--;
++				}
++		}
++		return;
++	}
++
+ 	for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++)
+ 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
+ 				   le16_to_cpu(cqe->len_list[i]));
+@@ -982,6 +1012,22 @@ static int qede_tpa_end(struct qede_dev *edev,
+ 	tpa_info = &rxq->tpa_info[cqe->tpa_agg_index];
+ 	skb = tpa_info->skb;
+ 
++	/* Drop the packet if TPA start failed */
++	if (unlikely(tpa_info->state != QEDE_AGG_STATE_START || !skb)) {
++		/* Recycle BDs from cqe->len_list to keep ring synchronized */
++		for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++) {
++			struct sw_rx_data *rx_bd = &rxq->sw_rx_ring[rxq->sw_rx_cons &
++								NUM_RX_BDS_MAX];
++			if (likely(rx_bd->data)) {
++				qede_recycle_rx_bd_ring(rxq, 1);
++			} else {
++				qede_rx_bd_ring_consume(rxq);
++				rxq->filled_buffers--;
++			}
++		}
++		goto err;
++	}
++
+ 	if (tpa_info->buffer.page_offset == PAGE_SIZE)
+ 		dma_unmap_page(rxq->dev, tpa_info->buffer.mapping,
+ 			       PAGE_SIZE, rxq->data_direction);
+@@ -1023,8 +1069,11 @@ static int qede_tpa_end(struct qede_dev *edev,
+ err:
+ 	tpa_info->state = QEDE_AGG_STATE_NONE;
+ 
+-	if (tpa_info->tpa_start_fail) {
++	if (likely(tpa_info->buffer.data)) {
+ 		qede_reuse_page(rxq, &tpa_info->buffer);
++	} else if (tpa_info->buffer.page_offset == PAGE_SIZE) {
++		dma_unmap_page(rxq->dev, tpa_info->buffer.mapping,
++			       PAGE_SIZE, rxq->data_direction);
+ 		tpa_info->tpa_start_fail = false;
+ 	}
+ 
+-- 
+2.54.0
+
