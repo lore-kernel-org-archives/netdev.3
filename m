@@ -1,42 +1,42 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FB23F58EB;
-	Mon, 27 Jul 2026 10:20:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4666B3F6C24
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 10:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785147662; cv=none; b=d7X9jsBjF+SOuUK3FWTt5HjgGhTo0PBSS7PuAKAsicoz+wLyD7vaZUCsY7Dc8IOyKM8iSfDFrHyULl1ISVhjWhDAepzyLIPqqp9qhXgnIvU/WWy+eJv6ha79weOboEuJoVYN7ref6baCvsxM6TUETLz0qzIT6rML3V59WfaDZ8s=
+	t=1785147664; cv=none; b=AC7jWx/1wk6gsWvB9YwVDTdNLVwxEDqctYE/orJE8nVNwTPxm0aIC4wI39LSxaRX1rNbYpc8ljgL1jZqmV8vziRYLTNH7QsqN0ZQjYi3jn/cggjxHb7yYilBKu+wnKa4Aqq98FvnPKpJwdqjEWsmTkOalpN5UJ39DhpGsclsNIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785147662; c=relaxed/simple;
-	bh=FpC4O2CHaRWqbhytP6KuvE80GXxdCg5/hKwwCiv8Vq4=;
+	s=arc-20240116; t=1785147664; c=relaxed/simple;
+	bh=BIDRldgZwguuxTScvq7SIry4n11WrGF0Y9q5s1x/4pc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HeXJ9uPPkNnGhOeXuDP79zE1oMgMwQzZE4SQoGgk3ONYkM65tW0W0bo26gNMG8r0Dk4l2Mk/CSnxhukpZBQ8aL6L06iigN3oTtZ5lhfwyl16uVFG0PBBS0PEkfwxpQm4ojXi19bgH8bT6HR5/9i3W1akuAaBIrPhyPHzQI/V5FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FYhxfPDV; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=YN2pxTazuZpVkWQc8Z79TKbAvAsPoWBSEldZKwRiZoniC7s6pRQykyOvoVt0in44X2CL+Nr70z582bfXUhHhbbYRtLn+Oblr1SfSX3aNswGGafg3EOp980oVs0eUkS6AvQrQ9Eln0BTlGdIBtLenlVvgWNOHwIvAKq22WIsr/mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=V42x8F2I; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FYhxfPDV"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="V42x8F2I"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id CDFB54E40F96;
-	Mon, 27 Jul 2026 10:20:57 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A0F621A128E;
+	Mon, 27 Jul 2026 10:20:59 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 990F6601BE;
-	Mon, 27 Jul 2026 10:20:57 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EBE1211C131B7;
-	Mon, 27 Jul 2026 12:20:54 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 74986601BE;
+	Mon, 27 Jul 2026 10:20:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 016D211C131B5;
+	Mon, 27 Jul 2026 12:20:56 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785147656; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1785147658; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=GOVOhenxfVhzWi2kyEqoreyx0WbLNOrumR1PFHToGYQ=;
-	b=FYhxfPDVNOmAUoEhsTi76mFNKPgfBaeYMuWuzPIuFVqtUQdsrSWBy2xgSSnQVmeFci8lcP
-	eNZk33DHsJ4fwPXEXM6c72C0HGjP2HPMKin6LsbNIdhe8iJd6iYH44L44sS4C6FKl3ZWlJ
-	z28J5yda9R+I3+7M2KnIp17W5OkEeTAommyli3F7FCS/iIULvglP34ZZvBNmishLNe+cP7
-	Iu8RxOpyMhHU0KhNGM/XH/c9IQmfaepnypG6/wumqGVQDpCnFi+e7YvGnT6vCqxb1nwAoT
-	qKz49CDgTsY30MwRZa4SYOubVkZ+TTYjqFUfr3WDSTcR7Mo642PtBwW3Z1WacQ==
+	bh=Ih3eQKvCXt+AE7A7jpmRaaKpONc/RrDX6tZZblgWFo4=;
+	b=V42x8F2IBJwM5gHxDnr7YFECEDeUagYxbSWWmTmIkSrEhxNhNnkV3ceB0q4JoGEYXnu5+r
+	JUCMXSo5P21KfzqlgHFgWIL/XAArMnRG9CVxNnEAE3yywsffhrZtK4ronfv/73vSqwzENG
+	slQAKqO8Yz/3RETQBbV/Uq+BHytE46ACMc5Z8J8aDCeaJQl/yz8sFY1vPSDuqIk32hIHbu
+	HiUEe8RLhd536SXd77+zCVvmJE5wUpBTD4Srd8L02w+OT529M9latpLdIawKEJj/X9IfZG
+	xKxVmeYA/jgyWZAIvIrqKZPI7hmLz2bS1WujLC+kgWza1egq6KVCBML3HMYHuw==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Mon, 27 Jul 2026 12:20:43 +0200
-Subject: [PATCH net-next v3 01/10] net: dsa: microchip: implement
- ksz8463_setup()
+Date: Mon, 27 Jul 2026 12:20:44 +0200
+Subject: [PATCH net-next v3 02/10] net: dsa: microchip: split
+ ksz8_config_cpu_port()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260727-ksz-new-ptp-v3-1-caba39e680e3@bootlin.com>
+Message-Id: <20260727-ksz-new-ptp-v3-2-caba39e680e3@bootlin.com>
 References: <20260727-ksz-new-ptp-v3-0-caba39e680e3@bootlin.com>
 In-Reply-To: <20260727-ksz-new-ptp-v3-0-caba39e680e3@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -63,204 +63,124 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-KSZ8463 uses the ksz8_setup() as setup() callback for its DSA
-operations. Its behavior is quite different than other KSZ8 switches,
-especially its interrupt scheme.
+ksz8_config_cpu_port() is only called twice, once by ksz8_setup() and
+once by ksz8463_setup(). It contains a ksz8463 branch that could be
+avoided in the ksz8_setup() case and a ksz87xx/ksz88xx branches that
+could be avoided in ksz8463_setup() case.
 
-Remove from the ksz8_setup()/ksz8_reset_switch() everything that is
-ksz8463-related.
-Create a dedicated ksz8463_setup() and a ksz8463_reset_switch() function.
-This new ksz8463_setup() is widely inspired from ksz8_setup, it has
-following differences:
-- it doesn't configure drive strength (not supported on KSZ8463)
-- it uses the ksz8463_reset_switch()
-- it doesn't call ksz8_handle_global_errata() (the handled errata only
-  affects the KSZ87xx variant)
-- it doesn't configure IRQs. Note that ksz8_setup()'s IRQ initialization
-  doesn't work for the KSZ8463 anyway. Proper support for it comes in
-  upcoming patches.
-
-Remove the teardown implementation from the KSZ8463 operations. Since
-PTP and interrupts aren't setup, the common ksz_teardown() wouldn't do
-anything anyway.
+Create ksz8463_config_cpu_port() that only handles the ksz8463 case and
+remove the ksz8463 specificities from the common ksz8_config_cpu_port().
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz8.c | 126 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 114 insertions(+), 12 deletions(-)
+ drivers/net/dsa/microchip/ksz8.c | 73 +++++++++++++++++++++++++---------------
+ 1 file changed, 45 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-index c4c769028a20..5ed63f425013 100644
+index 5ed63f425013..3bbca6f9cfc5 100644
 --- a/drivers/net/dsa/microchip/ksz8.c
 +++ b/drivers/net/dsa/microchip/ksz8.c
-@@ -181,6 +181,14 @@ static int ksz8_pme_pwrite8(struct ksz_device *dev, int port, int offset, u8 dat
- 	return ksz8_ind_write8(dev, table, (u8)(offset), data);
+@@ -2029,6 +2029,50 @@ static void ksz88x3_config_rmii_clk(struct ksz_device *dev)
+ 		KSZ88X3_PORT3_RMII_CLK_INTERNAL, rmii_clk_internal);
  }
  
-+static int ksz8463_reset_switch(struct ksz_device *dev)
-+{
-+	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET, true);
-+	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET,
-+		false);
-+	return 0;
-+}
-+
- static int ksz8_reset_switch(struct ksz_device *dev)
- {
- 	if (ksz_is_ksz88x3(dev)) {
-@@ -189,11 +197,6 @@ static int ksz8_reset_switch(struct ksz_device *dev)
- 			KSZ8863_GLOBAL_SOFTWARE_RESET | KSZ8863_PCS_RESET, true);
- 		ksz_cfg(dev, KSZ8863_REG_SW_RESET,
- 			KSZ8863_GLOBAL_SOFTWARE_RESET | KSZ8863_PCS_RESET, false);
--	} else if (ksz_is_ksz8463(dev)) {
--		ksz_cfg(dev, KSZ8463_REG_SW_RESET,
--			KSZ8463_GLOBAL_SOFTWARE_RESET, true);
--		ksz_cfg(dev, KSZ8463_REG_SW_RESET,
--			KSZ8463_GLOBAL_SOFTWARE_RESET, false);
- 	} else {
- 		/* reset switch */
- 		ksz_write8(dev, REG_POWER_MANAGEMENT_1,
-@@ -2300,6 +2303,110 @@ static void ksz88xx_r_mib_stats64(struct ksz_device *dev, int port)
- 	spin_unlock(&mib->stats64_lock);
- }
- 
-+static int ksz8463_setup(struct dsa_switch *ds)
++static void ksz8463_config_cpu_port(struct dsa_switch *ds)
 +{
 +	struct ksz_device *dev = ds->priv;
-+	u16 storm_mask, storm_rate;
 +	struct ksz_port *p;
++	u8 fiber_ports = 0;
++	const u32 *masks;
 +	const u16 *regs;
-+	int i, ret;
++	int i;
 +
++	masks = dev->info->masks;
 +	regs = dev->info->regs;
 +
-+	dev->vlan_cache = devm_kcalloc(dev->dev, sizeof(struct vlan_table),
-+				       dev->info->num_vlans, GFP_KERNEL);
-+	if (!dev->vlan_cache)
-+		return -ENOMEM;
++	ksz_cfg(dev, regs[S_TAIL_TAG_CTRL], masks[SW_TAIL_TAG_ENABLE], true);
 +
-+	ret = ksz8463_reset_switch(dev);
-+	if (ret) {
-+		dev_err(ds->dev, "failed to reset switch\n");
-+		return ret;
++	ksz8_port_setup(dev, dev->cpu_port, true);
++
++	for (i = 0; i < dev->phy_port_cnt; i++)
++		ksz_port_stp_state_set(ds, i, BR_STATE_DISABLED);
++
++	for (i = 0; i < dev->phy_port_cnt; i++) {
++		p = &dev->ports[i];
++		ksz_port_cfg(dev, i, regs[P_STP_CTRL], PORT_FORCE_FLOW_CTRL,
++			     p->fiber);
++		if (p->fiber)
++			fiber_ports |= (1 << i);
 +	}
 +
-+	/* set broadcast storm protection 10% rate */
-+	storm_mask = BROADCAST_STORM_RATE;
-+	storm_rate = (BROADCAST_STORM_VALUE * BROADCAST_STORM_PROT_RATE) / 100;
-+	storm_mask = swab16(storm_mask);
-+	storm_rate = swab16(storm_rate);
-+	regmap_update_bits(ksz_regmap_16(dev), regs[S_BROADCAST_CTRL],
-+			   storm_mask, storm_rate);
-+
-+	ksz8_config_cpu_port(ds);
-+
-+	ksz8_enable_stp_addr(dev);
-+
-+	ds->num_tx_queues = dev->info->num_tx_queues;
-+
-+	regmap_update_bits(ksz_regmap_8(dev), regs[S_MULTICAST_CTRL],
-+			   MULTICAST_STORM_DISABLE, MULTICAST_STORM_DISABLE);
-+
-+	ksz_init_mib_timer(dev);
-+
-+	ds->configure_vlan_while_not_filtering = false;
-+	ds->dscp_prio_mapping_is_global = true;
-+	ds->mtu_enforcement_ingress = true;
-+
-+	/* We rely on software untagging on the CPU port, so that we
-+	 * can support both tagged and untagged VLANs
-+	 */
-+	ds->untag_bridge_pvid = true;
-+
-+	/* VLAN filtering is partly controlled by the global VLAN
-+	 * Enable flag
-+	 */
-+	ds->vlan_filtering_is_global = true;
-+
-+	/* Enable automatic fast aging when link changed detected. */
-+	ksz_cfg(dev, S_LINK_AGING_CTRL, SW_LINK_AUTO_AGING, true);
-+
-+	/* Enable aggressive back off algorithm in half duplex mode. */
-+	ret = ksz_rmw8(dev, REG_SW_CTRL_1, SW_AGGR_BACKOFF, SW_AGGR_BACKOFF);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Make sure unicast VLAN boundary is set as default and
-+	 * enable no excessive collision drop.
-+	 */
-+	ret = ksz_rmw8(dev, REG_SW_CTRL_2,
-+		       UNICAST_VLAN_BOUNDARY | NO_EXC_COLLISION_DROP,
-+		       UNICAST_VLAN_BOUNDARY | NO_EXC_COLLISION_DROP);
-+	if (ret)
-+		return ret;
-+
-+	ksz_cfg(dev, S_REPLACE_VID_CTRL, SW_REPLACE_VID, false);
-+
-+	ksz_cfg(dev, S_MIRROR_CTRL, SW_MIRROR_RX_TX, false);
-+
-+	for (i = 0; i < (dev->info->num_vlans / 4); i++)
-+		ksz8_r_vlan_entries(dev, i);
-+
-+	/* Start with learning disabled on standalone user ports, and enabled
-+	 * on the CPU port. In lack of other finer mechanisms, learning on the
-+	 * CPU port will avoid flooding bridge local addresses on the network
-+	 * in some cases.
-+	 */
-+	p = &dev->ports[dev->cpu_port];
-+	p->learning = true;
-+
-+	ret = ksz_mdio_register(dev);
-+	if (ret < 0) {
-+		dev_err(dev->dev, "failed to register the mdio");
-+		return ret;
++	/* Setup fiber ports. */
++	if (fiber_ports) {
++		fiber_ports &= 3;
++		regmap_update_bits(ksz_regmap_16(dev), KSZ8463_REG_CFG_CTRL,
++				   fiber_ports << PORT_COPPER_MODE_S,
++				   0);
++		regmap_update_bits(ksz_regmap_16(dev), KSZ8463_REG_DSP_CTRL_6,
++				   COPPER_RECEIVE_ADJUSTMENT, 0);
 +	}
 +
-+	ret = ksz_dcb_init(dev);
-+	if (ret)
-+		return ret;
-+
-+	/* start switch */
-+	regmap_update_bits(ksz_regmap_8(dev), regs[S_START_CTRL],
-+			   SW_START, SW_START);
-+
-+	return 0;
++	/* Turn off PTP function as the switch enables it by default */
++	regmap_update_bits(ksz_regmap_16(dev), KSZ8463_PTP_MSG_CONF1,
++			   PTP_ENABLE, 0);
++	regmap_update_bits(ksz_regmap_16(dev), KSZ8463_PTP_CLK_CTRL,
++			   PTP_CLK_ENABLE, 0);
 +}
 +
- /**
-  * ksz88x3_drive_strength_write() - Set the drive strength configuration for
-  *				    KSZ8863 compatible chip variants.
-@@ -2445,10 +2552,6 @@ static int ksz8_setup(struct dsa_switch *ds)
- 	/* set broadcast storm protection 10% rate */
- 	storm_mask = BROADCAST_STORM_RATE;
- 	storm_rate = (BROADCAST_STORM_VALUE * BROADCAST_STORM_PROT_RATE) / 100;
--	if (ksz_is_ksz8463(dev)) {
--		storm_mask = swab16(storm_mask);
--		storm_rate = swab16(storm_rate);
+ static void ksz8_config_cpu_port(struct dsa_switch *ds)
+ {
+ 	struct ksz_device *dev = ds->priv;
+@@ -2036,7 +2080,6 @@ static void ksz8_config_cpu_port(struct dsa_switch *ds)
+ 	const u32 *masks;
+ 	const u16 *regs;
+ 	u8 remote;
+-	u8 fiber_ports = 0;
+ 	int i;
+ 
+ 	masks = dev->info->masks;
+@@ -2067,32 +2110,6 @@ static void ksz8_config_cpu_port(struct dsa_switch *ds)
+ 		else
+ 			ksz_port_cfg(dev, i, regs[P_STP_CTRL],
+ 				     PORT_FORCE_FLOW_CTRL, false);
+-		if (p->fiber)
+-			fiber_ports |= (1 << i);
 -	}
+-	if (ksz_is_ksz8463(dev)) {
+-		/* Setup fiber ports. */
+-		if (fiber_ports) {
+-			fiber_ports &= 3;
+-			regmap_update_bits(ksz_regmap_16(dev),
+-					   KSZ8463_REG_CFG_CTRL,
+-					   fiber_ports << PORT_COPPER_MODE_S,
+-					   0);
+-			regmap_update_bits(ksz_regmap_16(dev),
+-					   KSZ8463_REG_DSP_CTRL_6,
+-					   COPPER_RECEIVE_ADJUSTMENT, 0);
+-		}
+-
+-		/* Turn off PTP function as the switch's proprietary way of
+-		 * handling timestamp is not supported in current Linux PTP
+-		 * stack implementation.
+-		 */
+-		regmap_update_bits(ksz_regmap_16(dev),
+-				   KSZ8463_PTP_MSG_CONF1,
+-				   PTP_ENABLE, 0);
+-		regmap_update_bits(ksz_regmap_16(dev),
+-				   KSZ8463_PTP_CLK_CTRL,
+-				   PTP_CLK_ENABLE, 0);
+ 	}
+ }
+ 
+@@ -2332,7 +2349,7 @@ static int ksz8463_setup(struct dsa_switch *ds)
  	regmap_update_bits(ksz_regmap_16(dev), regs[S_BROADCAST_CTRL],
  			   storm_mask, storm_rate);
  
-@@ -2499,7 +2602,7 @@ static int ksz8_setup(struct dsa_switch *ds)
+-	ksz8_config_cpu_port(ds);
++	ksz8463_config_cpu_port(ds);
  
- 	ksz_cfg(dev, S_MIRROR_CTRL, SW_MIRROR_RX_TX, false);
+ 	ksz8_enable_stp_addr(dev);
  
--	if (!ksz_is_ksz88x3(dev) && !ksz_is_ksz8463(dev))
-+	if (!ksz_is_ksz88x3(dev))
- 		ksz_cfg(dev, REG_SW_CTRL_19, SW_INS_TAG_ENABLE, true);
- 
- 	for (i = 0; i < (dev->info->num_vlans / 4); i++)
-@@ -2889,8 +2992,7 @@ const struct ksz_dev_ops ksz88xx_dev_ops = {
- const struct dsa_switch_ops ksz8463_switch_ops = {
- 	.get_tag_protocol	= ksz8463_get_tag_protocol,
- 	.connect_tag_protocol   = ksz8463_connect_tag_protocol,
--	.setup			= ksz8_setup,
--	.teardown		= ksz_teardown,
-+	.setup			= ksz8463_setup,
- 	.phy_read		= ksz8463_phy_read16,
- 	.phy_write		= ksz8463_phy_write16,
- 	.phylink_get_caps	= ksz8_phylink_get_caps,
 
 -- 
 2.55.0
