@@ -1,206 +1,197 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8D33DCDA7;
-	Mon, 27 Jul 2026 09:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034CA3EB10C
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785143786; cv=none; b=mT3LxAOKu1hmoiWxfUYIGWkXobsNzHbOEjOJrEVAMQqNnACKWxA+OGV2HS6POyVp4YkxQaQtfM5EsvBH9Sg5U/nqbj4XbbPDAw9EdHJgnRUfdZ0GOn2iBP8GKrwiOzIUzaAhtvNCKSkPXgZ16EVZaC/B7glLO07Exh1gG8URZGc=
+	t=1785143847; cv=none; b=ef4CJ5JYPFGw2nsoANemKD+a+4KcAaVc2hzAZFLM/17ap3/yF8nt/p40Ht+hv4uGbJ1CSO+jvTgGh6WSEnPYBogsPitkaJoLjk42tVMUNrTEEAHx0RnUosSD5t8sKNXXpdvvEgV5IGT2qFbFZQZzQ9XbCKiWkFv8/E+A4Sf0d/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785143786; c=relaxed/simple;
-	bh=HSy3ff8pX99w8vG6JoHYo49ZM+SqmJXwfsY2MxpNXHg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=Z36lA4VVEtITuSPed7qGArZVQOYARgEhoAwwVigjKnn6UYidMtn2tuIodkHi0ViYXHceR0CCzExHBwYWmK5BjAsj3QPvST0/NNGdzYuCOoLdcbgyLKOuyGv+kfX1OV7v/cSUCWUMBeB5fnGcEHzB/ScMt1qWabADzNcFbwzw6lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mWIRtZMw; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1785143847; c=relaxed/simple;
+	bh=2t8+f3IJxQKqHq8pkD2sMr87CLhwqbX7d9WNPaal7YQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=csR4zD/lnhQPX975DDYGY0oe+UPdhu/gEIym8UTKgHgjTMJluZvwlO7V7AaQtRVSGIM6SOZra2dSt6OMgMRHun7M50ooxsrdyQ9pHAhhqKeJbyBklg3ZvJ1We7iZV1MMIUIcLkqq2Mjmi08Q7krC2H+0SG0yFglBhhqea6678Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=KJih1ci+; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mWIRtZMw"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=HSy3ff8pX99w8vG6JoHYo49ZM+SqmJXwfsY2MxpNXHg=; b=mWIRtZMw296utaGtPzTddZ8ac2
-	IlRbQ0fyVj48iKsQjUJkV2KtQjGJBe94IgJm2gUvBnlUfsze5NuPhkDTZ7I6DoURnVs/0gvc3gOum
-	cRpkQDROrJ91N4+TrJoYp5VAZ2C1en4c5jqV5ndwLlfIbwLJktJ11K3JBZHLo/l/GfNRfaxBhronA
-	N7bg6iGRkEkLFc8E58RZ8lQzNIJ8w2ojVhjP3COiP85J/fiqfGRtOLIdGiRvrfwQZGhDlnXyarMir
-	xefZwoMQP1E9Wbxfc7pViiZSEBBPF52pIGMpbQnK1qfCnTvg4CNCrT+KE4VVeWZUkaXS9eWk/fsF8
-	CqoQePUA==;
-Received: from [2001:8b0:10b:5:45df:678b:e980:5dcd] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woHRd-0000000ALyY-2J29;
-	Mon, 27 Jul 2026 09:16:21 +0000
-Message-ID: <4537c44bb52273263815154209f7e61f77e62d36.camel@infradead.org>
-Subject: Re: [PATCH v5 net-next 7/7] net: ena: Implement gettimexattrs64
- callback for PTP attributes
-From: David Woodhouse <dwmw2@infradead.org>
-To: Arthur Kiyanovski <akiyano@amazon.com>, David Miller
- <davem@davemloft.net>,  Jakub Kicinski	 <kuba@kernel.org>,
- netdev@vger.kernel.org
-Cc: Arthur Kiyanovski <akiyano@amazon.com>, Richard Cochran	
- <richardcochran@gmail.com>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	 <pabeni@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Miroslav
- Lichvar	 <mlichvar@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Wen Gu
-	 <guwen@linux.alibaba.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Yonatan
- Sarna <ysarna@amazon.com>, Zorik Machulsky <zorik@amazon.com>, Alexander
- Matushevsky	 <matua@amazon.com>, Saeed Bshara <saeedb@amazon.com>, Matt
- Wilson <msw@amazon.com>,  Anthony Liguori <aliguori@amazon.com>, Nafea
- Bshara <nafea@amazon.com>, Evgeny Schmeilin <evgenys@amazon.com>,  Netanel
- Belgazal <netanel@amazon.com>, Ali Saidi <alisaidi@amazon.com>, Benjamin
- Herrenschmidt <benh@amazon.com>,  Noam Dagan <ndagan@amazon.com>, David
- Arinzon <darinzon@amazon.com>, Evgeny Ostrovsky	 <evostrov@amazon.com>,
- Ofir Tabachnik <ofirt@amazon.com>, Amit Bernstein	 <amitbern@amazon.com>,
- linux-kselftest@vger.kernel.org, 	linux-doc@vger.kernel.org,
- shuah@kernel.org, Jonathan Corbet <corbet@lwn.net>,  Shuah Khan
- <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, Bjorn Helgaas
-	 <bhelgaas@google.com>, vadim.fedorenko@linux.dev
-Date: Mon, 27 Jul 2026 10:16:20 +0100
-In-Reply-To: <20260717070936.10718-3-akiyano@amazon.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-qlzEAJrF25hQnpj9c6fQ"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="KJih1ci+"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47ddf7b09aaso1253614f8f.3
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1785143844; x=1785748644; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ocErKRhaJjo4lzi/wGI6E8uXFqRDLnbYSUhaKxO4VCs=;
+        b=KJih1ci+3lLdEv6xKdiq1KHMfQROQR+nHIuy2y0zOIdrSRCyhHTF3v38MpkwzYf4uZ
+         03qYr2aRwyXkRes3HET03rlaG/NdH3V3/pPmB+sLgotvEL/6GrRmI1bfhfAY+SmwuFvQ
+         nlKwFD6dhSv753U1E6OskDkcSqxftW1VH62DdDnqzqrAAephcWRORAsrsfJPqqmJxvE7
+         ft7ueV6O4SMuWqr9VzfnkI+q1uemUXDLaPY4n/VLQLzjtvMYHVtOuZuWcGHXUTkNr5JZ
+         OCzfLqfAm/o8IbAiJO8GN9gjTmxoT48cndbpA+DYRKWjTJLKkbEp1ItEhfeIT7FNWyMX
+         hHGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785143844; x=1785748644;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ocErKRhaJjo4lzi/wGI6E8uXFqRDLnbYSUhaKxO4VCs=;
+        b=ZQXuoKgPIuVHjT6sDn8YVN5v3yNoAhBkBOwwwDkrv8av2b7iRuxP3CmM/ukR4RxDVH
+         Y1VY3UWJcw2y/+mLEhg2Nnp25GlaL5EHh453qi2TndSMwNl3GPGlLvuUKxm0kBJgFJMt
+         FLVJLwTPKV4u7j5piF4+adXca0CvAghD8o/iQa+BdMTFm96rjxdkX7tYLXa3NwE19b5S
+         0CIiz6akrGwXqInsW7dezAC5ZkCqNvxaFnFLxxBNOBFHtmhN+BJuEBsmrhswQp5j11Na
+         uxAuFFdS3EzlPYyiO8PkvJ7dyALwCvyL4Bha5vtOCR8h5x6TDOOxIUBxfGB08Pz/74k+
+         NBjQ==
+X-Gm-Message-State: AOJu0YzWWCiPUuytE5drGnxCvQ1hJ/4we2nGDMrgBbWgPGFjq3wMWTHl
+	jajwUTnVe+WmMizC2YMUspZaDGD27vZD8aM1EnW0BdkZGZ93pp1+RWPTtiNmmwe8AfU=
+X-Gm-Gg: AR+sD114BNc4vu7GW+eRTuUiKHxenMObRJC9Ah/B1tprvIpB1fhZ0763qDyBCoVxsxt
+	BwezUb5VQeJibLZN4+YKohSGU2EmnBqCmqYvezSPhfE6jBhsN7Rpq3f5bf/d/H6CckmjOCkXKLE
+	Kom+SEzlDmignXQJ8BEqTA0xkm5q6oyK6wgvxdgelJwc6TKyjDLcJIlbfXjeq5A5PRVDlw5YaaT
+	ZeYKpcZGQW93w1WpLR0N06bSbCYZuKVWRtWSApaedt8exUauD10DScXSYRTel+EwGG8Y3e2e6Yy
+	Sui5Wgd+TA5t1iWgTBFDX47PvIxDAxBu+VO/A6ofD0bE2hf6hro2YwvEiUzqbuFLuSugBfPoudS
+	9hCNvWhjY9aCbHBdll0rFg5P4CnNDOjQeB/WOpNWYnB9EPva7JLAMBl52WyHdUixUV9n/9BmfDw
+	==
+X-Received: by 2002:a05:6000:2381:b0:47f:8802:c182 with SMTP id ffacd0b85a97d-47f9fe97babmr9245974f8f.29.1785143844041;
+        Mon, 27 Jul 2026 02:17:24 -0700 (PDT)
+Received: from localhost ([109.160.73.171])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85b9a6d7sm47287920f8f.2.2026.07.27.02.17.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 02:17:23 -0700 (PDT)
+Date: Mon, 27 Jul 2026 12:17:17 +0300
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: Danielle Ratson <danieller@nvidia.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"dsahern@kernel.org" <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>, "ja@ssi.bg" <ja@ssi.bg>,
+	Petr Machata <petrm@nvidia.com>, "fw@strlen.de" <fw@strlen.de>,
+	"kuniyu@google.com" <kuniyu@google.com>,
+	"bridge@lists.linux.dev" <bridge@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 4/5] bridge: Linearize skb once the ND message
+ type is validated
+Message-ID: <amciHRD1fvLO_ZWi@penguin>
+References: <cover.1784463131.git.danieller@nvidia.com>
+ <c431f129eb438c12ef1e48d91039e09489a8f862.1784463131.git.danieller@nvidia.com>
+ <27d8e26e-3498-4741-949a-742d057bbcde@blackwall.org>
+ <SJ2PR12MB9008AD38B9DA4AE6CF0A3998D8CD2@SJ2PR12MB9008.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SJ2PR12MB9008AD38B9DA4AE6CF0A3998D8CD2@SJ2PR12MB9008.namprd12.prod.outlook.com>
 
+On Sun, Jul 26, 2026 at 11:03:54AM +0000, Danielle Ratson wrote:
+> > -----Original Message-----
+> > From: Nikolay Aleksandrov <razor@blackwall.org>
+> > Sent: Monday, 20 July 2026 12:26
+> > To: Danielle Ratson <danieller@nvidia.com>; netdev@vger.kernel.org
+> > Cc: dsahern@kernel.org; Ido Schimmel <idosch@nvidia.com>;
+> > davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> > pabeni@redhat.com; horms@kernel.org; ja@ssi.bg; Petr Machata
+> > <petrm@nvidia.com>; fw@strlen.de; kuniyu@google.com;
+> > bridge@lists.linux.dev; linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH net-next 4/5] bridge: Linearize skb once the ND message
+> > type is validated
+> > 
+> > On 19/07/2026 16:34, Danielle Ratson wrote:
+> > > br_nd_send() parses ND options from ns->opt[] and therefore needs the
+> > > skb to be linear. Commit a01aee7cafc5 ("bridge: br_nd_send: linearize
+> > > skb before parsing ND options") ensured that by linearizing inside
+> > > br_nd_send() itself.
+> > >
+> > > Move the linearization up into br_is_nd_neigh_msg(), right after
+> > > ndisc_check_ns_na() has validated the message as an NS/NA. This makes
+> > > a linear buffer a property of every recognized ND message, so that
+> > > this and any future ND message handling operate on a linear skb and
+> > > cannot reintroduce that class of bug by forgetting to linearize.
+> > >
+> > > Since the skb is now linear by the time br_nd_send() runs, drop the
+> > > linearization there and derive ns from the transport header set by
+> > > ndisc_check_ns_na(), instead of recomputing it from the network header.
+> > >
+> > > If linearization fails under memory pressure, br_is_nd_neigh_msg()
+> > > returns NULL and the packet falls back to normal forwarding rather
+> > > than being suppressed.
+> > >
+> > > Reviewed-by: Petr Machata <petrm@nvidia.com>
+> > > Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+> > > ---
+> > >   net/bridge/br_arp_nd_proxy.c | 8 +++++---
+> > >   1 file changed, 5 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/net/bridge/br_arp_nd_proxy.c
+> > > b/net/bridge/br_arp_nd_proxy.c index 445c930ed59b..46779d9fad61
+> > 100644
+> > > --- a/net/bridge/br_arp_nd_proxy.c
+> > > +++ b/net/bridge/br_arp_nd_proxy.c
+> > > @@ -240,6 +240,9 @@ struct nd_msg *br_is_nd_neigh_msg(struct sk_buff
+> > *skb)
+> > >   	if (ndisc_check_ns_na(skb))
+> > >   		return NULL;
+> > >
+> > > +	if (skb_linearize(skb))
+> > > +		return NULL;
+> > > +
+> > >   	return (struct nd_msg *)skb_transport_header(skb);
+> > >   }
+> > 
+> > This one is a bit weird - I wouldn't expect the check and validation to also
+> > linearize the skb. I'd rename this helper to show that it also linearizes the skb.
+> > Other than that the patch looks good.
+> 
+> I agree it's not obvious from the name. But, I think it might be better to add a short comment than rename.
+> The name captures the intent, while linearizing is just prep for the option parsing in br_nd_send().
+> This also follows ipv6_mc_check_mld(), which is also a "check" that sets the transport header and documents its skb side effects in text rather than the name.
+> 
 
---=-qlzEAJrF25hQnpj9c6fQ
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Yeah, I'm not a fan of check functions having side effects at all, but
+it's not that big of a deal and more of a personal preference.
 
-On Fri, 2026-07-17 at 07:09 +0000, Arthur Kiyanovski wrote:
-> Implement the gettimexattrs64 callback in the ENA driver to support
-> the PTP_SYS_OFFSET_EXTENDED_ATTRS ioctl.
->
-> This enables applications to retrieve PHC timestamps with quality
-> attributes through the standard PTP ioctl interface.
->
-> The ENA device currently reports only error_bound (valid bit set).
-> Other attributes are not reported (valid bits unset).
->
-> Signed-off-by: Amit Bernstein <amitbern@amazon.com>
-> Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
+> No other function here has a kdoc, so I'd keep it a plain comment:
+> 
+> /* Validate skb as an NS/NA and linearize it for br_nd_send()'s ND
+>   * option parsing; returns the nd_msg, or NULL on failure.
+>   */
+>   
+> Would that work, or do you feel strongly about the rename?
+> 
 
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+That is ok.
 
---=-qlzEAJrF25hQnpj9c6fQ
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Thanks,
+ Nik
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-0SHYWLjGU8/tr91xyPL5SFYAAAAAAAA=
-
-
---=-qlzEAJrF25hQnpj9c6fQ--
+> > 
+> > >
+> > > @@ -259,7 +262,7 @@ static void br_nd_send(struct net_bridge *br, struct
+> > net_bridge_port *p,
+> > >   	bool dad;
+> > >   	u16 pvid;
+> > >
+> > > -	if (!dev || skb_linearize(request))
+> > > +	if (!dev)
+> > >   		return;
+> > >
+> > >   	len = LL_RESERVED_SPACE(dev) + sizeof(struct ipv6hdr) + @@ -276,8
+> > > +279,7 @@ static void br_nd_send(struct net_bridge *br, struct
+> > net_bridge_port *p,
+> > >   	skb_set_mac_header(reply, 0);
+> > >
+> > >   	daddr = eth_hdr(request)->h_source;
+> > > -	ns = (struct nd_msg *)(skb_network_header(request) +
+> > > -			       sizeof(struct ipv6hdr));
+> > > +	ns = (struct nd_msg *)skb_transport_header(request);
+> > >
+> > >   	/* Do we need option processing ? */
+> > >   	ns_olen = request->len - (skb_network_offset(request) +
+> 
