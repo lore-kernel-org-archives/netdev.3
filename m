@@ -1,124 +1,165 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538AA3E0230
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 08:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3785368D42;
+	Mon, 27 Jul 2026 08:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785139394; cv=none; b=r64Q7/Tl39HBzpdiweMmSjgHWX3HWwuD+zaV7f/ZeRUwppwNPzJvStpF9G6Sa03T2KABR0C/vGQqr3IB+I92IeMfZzyvvNeGKD5vE2j7brws5chrJKVBeMmhBtLEmM+L8lVwe5cXoCByjtE9xJqCcZO2paA6Ndu/pMAQ3fMi14U=
+	t=1785139912; cv=none; b=DKC5LFODH/aInxdYpzW3ODub229mwDF+ngdDaGIjcQR2Ek33wqZ104B/32zFnyr2kAGleB89tsnw94EceoJnkdBEO/8WWj0XI64vdBMgxclNGAzPe2P1JLe9h9RK61bC1uUf2tdssljCMJQYj0mF8XnIl2Xr7zDbcPkTZuy1ZYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785139394; c=relaxed/simple;
-	bh=ieSAsQ0y548BNMnJ472yGH+KhvpzsF/yp3+FUAQfOp4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jOWRKyKhy2n7PrgNwSmGE/MMUL2bDNEqkZhLq7QmXrlY0ASmTDdKl3NWRgy388X8GqSmk7LBiDvxWxp3pL/nxVCnBvXTwg7pR/qIwsJnJ9M5KmwTLjdR2XisKeRUGTmaICcvuE81xHVPlBTKgXxVyGJEdcfRm872HomUTElLFQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=DtXEeVjv; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
+	s=arc-20240116; t=1785139912; c=relaxed/simple;
+	bh=7a8ht4g1gQ+LlsfWON/B35MWFEnoJ/t41lGSGmpJiq8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SmJs36jn3T1qhfFyZAaKIoK6rxqnTd8H1XTuqAKhxZbHDhnAbkTC7zWI6BrlITCikZdaFYblPx8A3361QUx3qVXysvYFSCgTOY7b19O2h/IzTyQ2VtDVjau1lCBrzvpDz8yb1jGquCQjwH2bT7wR6z0FDPES44/1NtXUWat5g7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LO4yI3cX; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b="DtXEeVjv"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cf27856f9cso30177035ad.2
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 01:03:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1785139389; x=1785744189; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7Tm2X0pi/lU+RwWD3OympRfnFsE8L6GJ39TGJpdkpUg=;
-        b=DtXEeVjv4SHLVVsAQtkEtR1Nd6ItsU6ZQdx+e7Oa7peABJTCTyZHl60m9CC/JyWt2k
-         cxmuPrAuD2Pj2mfz8TteokK6Fjcr9IK7lC5AoJcDnnSuF86X5prPmcOdyUVAwfdIBVnv
-         5rEr5nYB2t9yURYKI708kzXAtzPzCVAEDfLCttcemec0Z4VanCM5lWrIrj4wcQHwj81D
-         x39cCQ+6XsSGp78Ecrcl79DV6C/mez3RVBHA4PKf0dyv/LoAV0kfMop4gayWmUb/KG+Z
-         9hHsidMEa2C7dAuUKWfvvuUC+YUYjJI/98mkIhNu2K5Dv1trR7gBM8IyLAROJAHegTUg
-         pNzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785139389; x=1785744189;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7Tm2X0pi/lU+RwWD3OympRfnFsE8L6GJ39TGJpdkpUg=;
-        b=HB813tZLdjj/oSkM5C1y5KNB5MNss4jfoWVNETXjk4QJ4phFD0AM9oX0Ig6rDvyJmQ
-         H78pGyzaUS2jGRm01gJoSKDjRs9htCS1ZjQ2j6GCQRZG4u0WffIwZQXYCpGjabKa5yjq
-         eLTU3EwQ1XBa5vVCHvDybGHgJYQGBF+WGFKj4kd5+rMuRUvMYiLrZOCfJ97iR+yrDEfl
-         8kSDDL17ordJ5Mn7ka0nGjtIuSzF62trs+IjYUADNVWQUuFVJuXAjL6hqWYgSIMJGFED
-         nS4bUXJBLA90KzkmkRekZQLskvD3KEnazx0WE6n3tP9u5h0J/sFBcRZ/irp/eQq86jtL
-         RcjA==
-X-Forwarded-Encrypted: i=1; AHgh+RqYXOAd+Lj7NtlzM3Oc+LxRlbMNgP8HQevKAGnqIDf6uEc4W6JLkLIahSqKCnN48G6582ILAfI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHjyknd1KSyixKVct0hJZb4MniWfvlCmvZfiT55ya1T3IneiXy
-	vYbp3Z40kmwnssju1mA0fw3A1PvdAx0hOg+PI/s/MwVdp05BkRUPHLPgAGtBjdo0Q94=
-X-Gm-Gg: AR+sD13en8XiLdEB5VoDytLp5fF1oUsj8+DjpGVQZ58s3wcVMK2ZtrSDCwOukIVaCqR
-	kSYKq5GJAA5TkRKq1FaKpJ8Fdq5z2wHnIOLOHN6YEAs1bUVjZwpNt2UPWuLOIqXmn3Mq8MLlLwl
-	UigZ9Oj2irZHtawH+mzAjgrfUY7HU6GQLcXunTKKx5WTX1FWuqbABtwaSUg5G4E1ODtwZPKbl4X
-	e5X5KV3SxrDJdBFh0XgLc/LMmzrRAcl2+3XVuAUApwR1GUNrWWdAsyXRKgVFi/0DtQvukCCqS32
-	X8UKEl4ksw38ZG4gx9PScwOPSvuWQLUrJ7JOAw6W4sUX9MwSc7scYvo3ruQZyZkal5qFEt6d1AG
-	AA/aic9/fkrQBgWUwBNDIyyhYMgQJF1Fw/U5VTvG9Y+anvPaOt1kbO3VzSqC4kc4PTC0/hAIwqo
-	vmghC7RGJtJslCKiqhNe9Z3P2HgUduGwE9W6iUUUE03k39UoYy4kUJ1PfT93dqd7b2VZJefz2Md
-	oRg/0kxWJquSBEdIPEboCL/W8roFtBW
-X-Received: by 2002:a17:903:1846:b0:2cf:b6b5:9cce with SMTP id d9443c01a7336-2cfde89378amr69538425ad.46.1785139389264;
-        Mon, 27 Jul 2026 01:03:09 -0700 (PDT)
-Received: from Metius.iitm.ac.in ([103.158.43.43])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2cfde59bb13sm31072945ad.1.2026.07.27.01.03.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 01:03:08 -0700 (PDT)
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: andrew+netdev@lunn.ch
-Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net] liquidio: Fix possible memory leak in lio_reset_queues()
-Date: Mon, 27 Jul 2026 13:32:56 +0530
-Message-ID: <20260727080258.86279-1-nihaal@cse.iitm.ac.in>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LO4yI3cX"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 421ED4E40F92;
+	Mon, 27 Jul 2026 08:11:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 06272601BE;
+	Mon, 27 Jul 2026 08:11:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8111911C12243;
+	Mon, 27 Jul 2026 10:11:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785139906; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=nKa8XSu47DLzEg4eeaPfmMAiuo/GOOsLCJU6TJ0k7LA=;
+	b=LO4yI3cXRdAyaI3myrjwfXedgQocVB83IBPr9x6NF8O8Uv1R2/queGYeu4mPNXAyt9JhYU
+	VSoDqzroqt3RNXUyWRfIBgZTXE8H6BH5F85hciTwxXW/Xrl9bbuOJylxX+j0wPAT5S1XkB
+	lZxQYS+ukOtbZbg5tc7UEz6D4oJwUfvMuXKhci+Fyalx2nZPC72bHyu97FC+FLMycy5gjV
+	fswosZT41fOCWfLSpr8pZP02YuXiWztXOHOGQOlijw7g7utaSAwY8YuFvecobGxKM7Whe4
+	REt0EVwE4biL1TonCXC48n+paV2eW20FjfMKNjy4XZHJQdEDbmYdjOqLA+stQQ==
+Message-ID: <70cf4cfa-c329-41a5-b335-561a565627d9@bootlin.com>
+Date: Mon, 27 Jul 2026 10:11:39 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: stmmac: fpe: Keep pmac always enabled
+To: muhammad.nazim.amirul.nazle.asmade@altera.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260727051303.14925-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260727051303.14925-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-The memory allocated in lio_setup_glists() and setup_rx_oom_poll_fn() is
-not freed in some of the error paths in lio_reset_queues().
-Fix that by adding the corresponding free functions to the error paths.
+Hi,
 
-Fixes: 4b6e326b2d34 ("liquidio: Per queue oom work queue")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
----
-Compile tested only. Issue found using static analysis.
+On 7/27/26 07:13, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
+> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+> 
+> The preemptive MAC in DWMAC is always enabled, meaning DWMAC is always
+> ready to receive preemptive mPackets. Keep pmac_enabled true at init
+> time and reject attempts to disable it via ethtool set_mm.
+> 
+> The FPE residual queue (fprq) controls which Rx queue receives residual
+> preemptive mPackets from the pmac. Move its configuration from
+> stmmac_fpe_configure_tx() to stmmac_fpe_configure_pmac() where it
+> logically belongs.
+> 
+> Also add a missing return in stmmac_fpe_init() so that the pmac_enabled
+> initialization is not reached on hardware where FPE is not supported by
+> the driver.
 
- drivers/net/ethernet/cavium/liquidio/lio_ethtool.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Can you split this up into individual patches, one for the stmmac_set_mm() and
+stmmac_fpe_init() to validate that we keep pmac on, one for the missing return,
+and one for the pmac configuration in the right fonction ?
 
-diff --git a/drivers/net/ethernet/cavium/liquidio/lio_ethtool.c b/drivers/net/ethernet/cavium/liquidio/lio_ethtool.c
-index c849e2c871a9..222ef0b661da 100644
---- a/drivers/net/ethernet/cavium/liquidio/lio_ethtool.c
-+++ b/drivers/net/ethernet/cavium/liquidio/lio_ethtool.c
-@@ -1242,15 +1242,20 @@ static int lio_reset_queues(struct net_device *netdev, uint32_t num_qs)
- 
- 		if (setup_rx_oom_poll_fn(netdev)) {
- 			dev_err(&oct->pci_dev->dev, "lio_setup_rx_oom_poll_fn failed\n");
-+			lio_delete_glists(lio);
- 			return 1;
- 		}
- 
- 		/* Send firmware the information about new number of queues
- 		 * if the interface is a VF or a PF that is SRIOV enabled.
- 		 */
--		if (oct->sriov_info.sriov_enabled || OCTEON_CN23XX_VF(oct))
--			if (lio_send_queue_count_update(netdev, num_qs))
-+		if (oct->sriov_info.sriov_enabled || OCTEON_CN23XX_VF(oct)) {
-+			if (lio_send_queue_count_update(netdev, num_qs)) {
-+				cleanup_rx_oom_poll_fn(netdev);
-+				lio_delete_glists(lio);
- 				return -1;
-+			}
-+		}
- 	}
- 
- 	return 0;
--- 
-2.43.0
+Also one comment bellow :> 
+> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+> Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+> ---
+>  .../ethernet/stmicro/stmmac/stmmac_ethtool.c  |  7 ++++
+>  .../net/ethernet/stmicro/stmmac/stmmac_fpe.c  | 34 ++++++++++++-------
+>  2 files changed, 29 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> index 92585d27ab88..8ebdd249e5c8 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> @@ -1064,6 +1064,13 @@ static int stmmac_set_mm(struct net_device *ndev, struct ethtool_mm_cfg *cfg,
+>  	if (err)
+>  		return err;
+>  
+> +	if (!priv->dma_cap.fpesel)
+> +		return -EOPNOTSUPP;
+> +
+> +	/* DWMAC always have preemptible MAC enabled */
+> +	if (!cfg->pmac_enabled)
+> +		return -EINVAL;
+> +
+>  	stmmac_fpe_set_add_frag_size(priv, frag_size);
+>  	ethtool_mmsv_set_mm(&priv->fpe_cfg.mmsv, cfg);
+>  
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
+> index c54c70224351..2bfa84ad04a6 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
+> @@ -47,20 +47,13 @@ static void stmmac_fpe_configure_tx(struct ethtool_mmsv *mmsv, bool tx_enable)
+>  	struct stmmac_fpe_cfg *cfg = container_of(mmsv, struct stmmac_fpe_cfg, mmsv);
+>  	struct stmmac_priv *priv = container_of(cfg, struct stmmac_priv, fpe_cfg);
+>  	const struct stmmac_fpe_reg *reg = cfg->reg;
+> -	u32 num_rxq = priv->plat->rx_queues_to_use;
+>  	void __iomem *ioaddr = priv->ioaddr;
+> -	u32 value;
+>  
+> -	if (tx_enable) {
+> +	if (tx_enable)
+>  		cfg->fpe_csr = STMMAC_MAC_FPE_CTRL_STS_EFPE;
+> -		value = readl(ioaddr + reg->rxq_ctrl1_reg);
+> -		value &= ~reg->fprq_mask;
+> -		/* Keep this SHIFT, FIELD_PREP() expects a constant mask :-/ */
+> -		value |= (num_rxq - 1) << __ffs(reg->fprq_mask);
+> -		writel(value, ioaddr + reg->rxq_ctrl1_reg);
+> -	} else {
+> +	else
+>  		cfg->fpe_csr = 0;
+> -	}
+> +
+>  	writel(cfg->fpe_csr, ioaddr + reg->mac_fpe_reg);
+>  }
+>  
+> @@ -68,10 +61,11 @@ static void stmmac_fpe_configure_pmac(struct ethtool_mmsv *mmsv, bool pmac_enabl
+>  {
+>  	struct stmmac_fpe_cfg *cfg = container_of(mmsv, struct stmmac_fpe_cfg, mmsv);
+>  	struct stmmac_priv *priv = container_of(cfg, struct stmmac_priv, fpe_cfg);
+> +	u32 num_rxq = priv->plat->rx_queues_to_use;
+>  	const struct stmmac_fpe_reg *reg = cfg->reg;
+>  	void __iomem *ioaddr = priv->ioaddr;
+>  	unsigned long flags;
+> -	u32 value;
+> +	u32 value, value_2;
+>  
+>  	spin_lock_irqsave(&priv->hw->irq_ctrl_lock, flags);
+>  	value = readl(ioaddr + reg->int_en_reg);
+> @@ -83,6 +77,14 @@ static void stmmac_fpe_configure_pmac(struct ethtool_mmsv *mmsv, bool pmac_enabl
+>  
+>  			value |= reg->int_en_bit;
+>  		}
+> +		/* Frame Preemption Residue Queue is the Rx Queue to which
+> +		 * residual preemptive mPackets must be forwarded from the pmac.
+> +		 */
+> +		value_2 = readl(ioaddr + reg->rxq_ctrl1_reg);
+> +		value_2 &= ~reg->fprq_mask;
+> +		/* Keep this SHIFT, FIELD_PREP() expects a constant mask :-/ */
 
+you can use u32_replace_bits for non constant expr :
+
+https://elixir.bootlin.com/linux/v7.2-rc4/source/include/linux/bitfield.h#L236
+
+(it's autogenerated and not documented, hence very hard to find IMO)
+
+Maxime
