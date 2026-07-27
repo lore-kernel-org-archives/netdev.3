@@ -1,93 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FD741B8DC;
-	Mon, 27 Jul 2026 14:47:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF2C4156F5
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 14:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785163641; cv=none; b=YoPdgXuPIXu6ZcWBvTMG11Aah3N+UbU4dlAbjS1+SGdMuUEvI7afdC4L1OKG0hKBv0nFE1z9D3rg4A27Etn8qokd0LWFqVdpvVOoUx6RBgZ36S1Tvrht+1zi+MQXCutDbmFOUgHntcikLemAp2GMhukENMRXGBqG9lSCpA0h75Q=
+	t=1785164299; cv=none; b=IG1EPRfkWpJ1o72OqbijxjOzInmFNQ77nUUYAWCdoekoKR3Vb4v7f3Ud/2SBQO5gqDt/Zghbbey5agelyLUDiDfMKqE1HOwiGnUTpRVPXvopBi1VZ9kfnbrpt5vJcaC3siv6Bngenm/RF2OhXFiICBiMd3fXHdNaJZ2Zoqnz01w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785163641; c=relaxed/simple;
-	bh=KPZUzUP2ppcXQ0krnCRhLvC6gZNE4ii9C/jMU3ppoEo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A/yNg2NViXM13DVnifTAxZN7n3k8e18/heag/fXbunvQlF43ZgjsYKt9sy6h5XHdtNrfN7PQ2Hs9SWzmds6ahgBkpkqdCOVxJFQ0cEj+h8TO2tZ4Hgdl77G0GWa+ZIDicf9xXL2NRCqgNnyNZEx9KGMO/Nwq52uc5lVa6jH2SKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZxlWssoX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785164299; c=relaxed/simple;
+	bh=/pHEhqhHim6zbvXlXGSytIteuWLfY5Kr9gwBWC8fFio=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B9FJoI+/J7bcW5Fk+fB0vFSYhaTUK721cjjAwBowt00TopjdNpZ2yhQduKSssPWwsT0i3hSTvOFNbDg84nlt7xYaGHHdKZcX5T9+twdaWkUcfu8EJWEot7xjdG5Pj3nCX/qtLuk/KgbRMGYXtj5ee1O0+gXvOhPkPJ9+/3Jydd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=WtIrJspU; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZxlWssoX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E341F00A3A;
-	Mon, 27 Jul 2026 14:47:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785163640;
-	bh=1B432qyY/MpnjPPckN29PSOluxxxTLAr73fp4YIVH34=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZxlWssoX2nxj3euO4/V1PpJXGL76ZbIVjVo2AeMiuZl9+/Q4oN2uirisnnFtNVBVX
-	 hXpuNfNtRcGRWqrxQzacSKsu4LUWYiBFPI2fd/cd8DnZqV1Pcd8gIVoAiAypE7PuRB
-	 b+JSqS5wsjK34rJ6iktSzyLWPPNg4TBFW0gvkJDZ1gkPVmT2pv/iwxa1fM1Q46e2Sl
-	 aiF8Of9GwDe+2BsEGBBJumBoBtEfYoSym/JB3c1K6aAu/cPi5sFaXVu36cKH9+lZCE
-	 z6d7+Mq7Y9VeLVQQnMpiBYPcskwWRhTKmRxNRn++/CWcqaKav0wDQagmoKMwM+cm1a
-	 e+mog1r9FsyLA==
-Date: Mon, 27 Jul 2026 15:47:13 +0100
-From: Simon Horman <horms@kernel.org>
-To: Larysa Zaremba <larysa.zaremba@intel.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>, davem@davemloft.net,
-	pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org, przemyslaw.kitszel@intel.com,
-	aleksander.lobakin@intel.com, sridhar.samudrala@intel.com,
-	michal.swiatkowski@linux.intel.com, maciej.fijalkowski@intel.com,
-	emil.s.tantilov@intel.com, madhu.chittim@intel.com,
-	joshua.a.hay@intel.com, jacob.e.keller@intel.com,
-	jayaprakash.shanmugam@intel.com, jiri@resnulli.us, corbet@lwn.net,
-	richardcochran@gmail.com, skhan@linuxfoundation.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next v5 00/15][pull request] Introduce iXD driver
-Message-ID: <20260727144713.GO418547@horms.kernel.org>
-References: <20260715180042.1972010-1-anthony.l.nguyen@intel.com>
- <al5Lr2Qm5pDa-yOF@soc-5CG4396X81.clients.intel.com>
- <20260723061526.38902608@kernel.org>
- <amcX1fyBBKwzwMUu@soc-5CG4396X81.clients.intel.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="WtIrJspU"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4954dff6536so20797965e9.0
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 07:58:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1785164294; x=1785769094; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cdTAOusKdU7cIGVdiXhGRlX7Lluomu67uAna+oJrbLI=;
+        b=WtIrJspUFDv9uYL8E4OhCURfnCutsSkbOm+juL/6yCshO8FMCiFZrYMSEpcfsdW4Nh
+         iKdHsW3hXXVC8Pl4kUTysqT9Zr8oF1RzlXcRzFSGc2UBRbewwmpIc4cUdB8jmp3pl1An
+         f6O93wZ1uT86BMhjp0hkFyCYKEgWqWi968vQRJXARDoAz7+tu8TEFguRFWLq/na2hZxb
+         h+/lKgJgJ7KvEmuOlPlx1TgAEAOP3gxpUS2jY/c4WBF4cEndQhBSKAsMyUFZVAH/YqQT
+         oXvZ+5VFrjrP5i1FIj+Vs0SajlFsW+dWgVvOzDcsFpUW8FB2tzSLDDUFkca3REdCvM53
+         ZAVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785164294; x=1785769094;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cdTAOusKdU7cIGVdiXhGRlX7Lluomu67uAna+oJrbLI=;
+        b=Qbjk2f8KfAQlxkTbegcGPQa8c3WFufgSU0RqUvzzon8eBNBwq5iFCV5ydwSrbBYZG/
+         17shrwsD4gPjYnaOX2+bd7GNaKccorwZGTFs/WqE5u1u8emR63y+ScaRghc/84bcZgM6
+         7VLHzdmcBpvvsaPR9CESCCnM65glASepNPRayGmh+GZVde8QVrKMrtRswTOXOfnGzvFx
+         cvVXCG2LUqwLSA0SPkAGrw3+dbskDi5EbPoOtYQEuXItY6IANP1XIkCm16uIPvyNmqcX
+         z7qbdu+xUUMM5PRoAmjvT1jpx+0kqJirMesgBm8AUZ+KHsmF6RQtlrQ2MgnkpW9ugE2+
+         n9Lw==
+X-Forwarded-Encrypted: i=1; AHgh+RrVMKY92bQ9ERsT8ilX3jJZPkbjp9UrXQb1VnOzvKJkyYmCOMZFaOxQMgQlcLwWRBJzL5bIM1E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyD8AzHA+9gXj3eYFgB1ouCt4wnUexo/L2O319dYlzGAv5KcgWL
+	PgwQjK0NZpOpyppi+toFUy/4lvoUU59nFzWF68ZtudFPdRead92ITNFR9kiZcbGPObs=
+X-Gm-Gg: AR+sD110eEcwDHZgc/A/R6z5sJGIcqDy85AoHM9/WWsko1311aYlCN1Ot0a87KyAoKB
+	wR6q2igabhA3KUVNxZu4vk3trOCNsPw4VapGvDAQk0Y25PaRWTu79ubXotn5PhLzKWPsRvdU05Z
+	l596/ofA/EjDUuwmEWTpg/5rLCKjVkEi7e0bjynfVjVwh6f4dL38qMgrImnONgGAImclFqdrPU/
+	FkxtewNn0gghsTOEro8yh0f3TDBbnkf3LCVWQrg5hB91zM4XG7KS//e0dfOxDFrLMAQw5Oyqru4
+	sJV17TuRIABCK7i1pGJ9/r4ayTaH3sao3fsc1e/ppMMA9OHRcooId/nXM0uo0wHgH1GwDmBamEX
+	vJc3m6g9H898mSg1LXWOHdh8n9ibktQ8LU2++wLzlvplb/FviXm+dVpMJpLpKGGKFnZGcrfZn2I
+	LP5E9KSDkTDvOfebyuAvWCRcuRMvWDAzm2Gf0hz8k=
+X-Received: by 2002:a05:600c:1553:b0:493:e97c:216e with SMTP id 5b1f17b1804b1-496b5731987mr114339235e9.39.1785164294020;
+        Mon, 27 Jul 2026 07:58:14 -0700 (PDT)
+Received: from ?IPV6:2a07:de40:8100:0:fc6c:f9a2:4a0a:6354? ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4ee0e91sm231594995e9.4.2026.07.27.07.58.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jul 2026 07:58:13 -0700 (PDT)
+Message-ID: <ead73f81-26ef-4a46-9ad8-fcd2915563e1@suse.com>
+Date: Mon, 27 Jul 2026 16:58:11 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amcX1fyBBKwzwMUu@soc-5CG4396X81.clients.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] time/jiffies: Include linux/sysctl.h for
+ proc_int_u2k_conv_uop(), ...
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Philipp Reisner <philipp.reisner@linbit.com>,
+ Lars Ellenberg <lars.ellenberg@linbit.com>,
+ =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+ Jens Axboe <axboe@kernel.dk>, Johan Hovold <johan@kernel.org>,
+ Alex Elder <elder@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Michal Januszewski <spock@gentoo.org>, Helge Deller <deller@gmx.de>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+ Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+ Joseph Qi <joseph.qi@linux.alibaba.com>, Tejun Heo <tj@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Luis Chamberlain <mcgrof@kernel.org>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>, Pavel Machek <pavel@kernel.org>,
+ Len Brown <lenb@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Nikolay Aleksandrov
+ <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, David Howells <dhowells@redhat.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Kentaro Takeda <takedakn@nttdata.co.jp>,
+ Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
+ drbd-dev@lists.linux.dev, linux-block@vger.kernel.org,
+ greybus-dev@lists.linaro.org, linuxppc-dev@lists.ozlabs.org,
+ linux-acpi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+ cgroups@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-pm@vger.kernel.org, driver-core@lists.linux.dev,
+ bridge@lists.linux.dev, netdev@vger.kernel.org, keyrings@vger.kernel.org,
+ linux-security-module@vger.kernel.org
+References: <20260721131207.803760-1-petr.pavlu@suse.com>
+ <20260721131207.803760-3-petr.pavlu@suse.com> <874ihmke0k.ffs@fw13>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <874ihmke0k.ffs@fw13>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 27, 2026 at 10:33:25AM +0200, Larysa Zaremba wrote:
-> On Thu, Jul 23, 2026 at 06:15:26AM -0700, Jakub Kicinski wrote:
-> > On Mon, 20 Jul 2026 18:24:15 +0200 Larysa Zaremba wrote:
-> > > I have looked though Sashiko feedback for this version. A lot medium+ comments 
-> > > were things that I have addressed as false-positives in v4, so those are left 
-> > > out, same as many of low-severity subjective issues. Unfortunately, patch 4 does 
-> > > need a fixup (see Re: for the patch itself), but hopefully this does not warrant 
-> > > another PR.
-> > 
-> > There's gazillion patches in the queue. Just fix the bugs and repost.
-> > This "we will follow up" attitude is getting out of hand IMHO.
+On 7/25/26 10:31 PM, Thomas Gleixner wrote:
+> On Tue, Jul 21 2026 at 15:11, Petr Pavlu wrote:
 > 
-> I was suggesting you could apply the fixup that I have posted under patch 4 
-> ("libie: add control queue support"). If this is not possible, then Tony will do 
-> that and send another revision. (please respond)
+>> The kernel/time/jiffies.c file uses proc_int_u2k_conv_uop(),
 > 
-> Other feedback does not interfere with code working as intended, although 
-> Sashiko's feedback was pretty valuable in getting to the point where I can say 
-> that.
+> jiffies.c uses ...
 > 
-> I see that Simon posted only medium+ feedback, I could address it one-by-one 
-> once more, if anyone would read that.
+>> proc_int_k2u_conv_kop(), proc_int_conv(), proc_dointvec_conv() and
+>> proc_doulongvec_minmax_conv(), which are declared in linux/sysctl.h. It
+>> currently relies on this header being included indirectly through
+>> linux/module.h -> linux/kmod.h. Add the missing include in preparation for
+>> removing the linux/sysctl.h include from linux/kmod.h.
+> 
+> Can you please split that spaghetti sentence into paragraphs?
+> 
+> https://docs.kernel.org/process/maintainer-tip.html#changelog
 
-I realise that in the case of this patchset I forwarded AI-generated review
-which somewhat overlapped with your own efforts: somehow I missed your
-emails and I apologise for that.
+I will update it to:
 
-But I wanted to make a general statement regarding commenting on
-AI-generated review:
+    jiffies.c uses proc_int_u2k_conv_uop(), proc_int_k2u_conv_kop(),
+    proc_int_conv(), proc_dointvec_conv() and proc_doulongvec_minmax_conv(),
+    which are declared in linux/sysctl.h. It currently gets that header
+    indirectly through linux/module.h -> linux/kmod.h, but the latter no longer
+    needs to include linux/sysctl.h.
 
-I do try (and as we see, sometimes fail), to take into account prior
-discussion on the mailing list as part of my review process.  And I would
-like to think that I am not alone in taking this approach.  So to that
-extent, I think that responses on the ML to concerns flagged by
-AI-generated review have value.
+    Include linux/sysctl.h directly in jiffies.c ahead of removing the
+    unnecessary include from linux/kmod.h.
+
+> 
+>> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+> 
+> Other than that.
+> 
+> Acked-by: Thomas Gleixner <tglx@kernel.org>
+
+-- 
+Thanks,
+Petr
