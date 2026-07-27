@@ -1,108 +1,69 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85DD3FBEAB;
-	Mon, 27 Jul 2026 23:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3062C15BB;
+	Mon, 27 Jul 2026 23:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785195662; cv=none; b=AKcqSp57C17JJaoBcm1jrMo+LpJEQqVabRE+4WtJ65u7M96lo4nX7hv8KZMDpMQZWG7lLY2xusHgtYJtvHwi0b/dQowDvJWsaZpQDBYIS8QVH3x5+Yklb+9H14wxWZllbaNsQBXwORAJpy6t0bDApNm3tmHShaSEBafj1fsAkPQ=
+	t=1785195858; cv=none; b=OyrtXQ4LxDZh6IP3oWDmH2GaQ0eFG4ht8CmURZerayhnWVzR2rp26UjWg9IGZw4HAFc5wnz5a7YV5kkXTs9WKTVWjZVW0LAquY/vtSfET2kB0CO8xA3Q0qdYyUUMtBct/f/re6cXxzOxPPYt84D6q5pyI1SqqsbTPW+Lfe9FRvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785195662; c=relaxed/simple;
-	bh=zc8S+Te32538dsqXhNyDDKcl9I5cteXaEMIU9pL6ObQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OEmlYzlN+tHd84l3yzwReHm5wzPAQUoFd3M6sX8gv2ku/9z8xGEm4ntNz1e/LI5jXQcw1j83buluk0OWWaX23KZVO5EgYvv1WI3UmJnzzQQ2yBEXrI1mH3CDPExB/zp7A2W2rnpN7Rdff7kAgHlHzUxCtqWW5O7cmszUUhq3KLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kqNRNaMr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785195858; c=relaxed/simple;
+	bh=Rg8zAjsDqdYTZ5snzup8VqlmzlqHuhEQjTrHKdAxQVY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fBG/w5CvfruEbEy5q8QHOBUdfoWjQERwpSHJqy2EXc4zmRExwzvf44KYygRYXODqySlNwv9PE+F682LjB4mxQGDnxHaekhKQarYE5T1698TU0BSNgnvAIShhuqMW2F8x3PhkR+YpJfVsI78Htn8i1PyEx+eb3gQrTF/R+CRpwQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OkuzGnVx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kqNRNaMr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFEF1F000E9;
-	Mon, 27 Jul 2026 23:41:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OkuzGnVx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821591F000E9;
+	Mon, 27 Jul 2026 23:44:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785195660;
-	bh=+AkDulFJvGbU+T4ibTyIoVY+rmeIInL85BGIirfLA5k=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kqNRNaMrE1Z23E7OwSTuE8VhlwGmYwdoexj10/ehEOPMpB6r9rIS5aigWPz0UrFGP
-	 ZRevf6/7PzYKgG8YmSryF5fLbnPt23wvSxtkYPI2IEPAOwDYxOqjk9UKSXqRTwtYkJ
-	 niKE5vcMKJ2sOrvAwlftF7fAmTiiPoqj0u4U4e7kr0f4Q1X5NWMIyEtPWNi3rKa2pH
-	 bvLPZ7Ge1DzRee5WHPBqKIIqmj8LRU+2YISrm/OQDs814IdAndNM27o1VW5bkvcNwR
-	 XXNF1oE2pejeg6pIkWzrwHDX/KbtLGSoIxRaSb0S37Cv3wsL6Te60OIJ+ipH6JAguM
-	 26eI5t0Hjmiag==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198EC380CED4;
-	Mon, 27 Jul 2026 23:40:27 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1785195856;
+	bh=OrI3AWor3wjL+wY/8pscrVbRp8o4aDq+lBAl9Kk3kws=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=OkuzGnVxCi5zd/JSH3d6lodW5e1QFIjZAj5fdbLRtk3hgfaAs+MntPiNxZrgZZTi1
+	 mPeJIO6ipA/VVVONQGCxxI9dadixhq1VmljlfOidfFzMJHaLAw4eIEo4OSn1hDZ3B1
+	 bTGRIIT84Z+xwYxFtKgKbTUkoSP3Qk7ATvrm80YHoWkYSxR789BLmbxcTeI/YE7xro
+	 N470L0tU1TFKs8gD9O09yKU+MB7dCVFY99kWEbRd2L3+PcORvN5rHsy7jjaaZTjoBA
+	 eYXeZYla80P2I4RSO+cLWXR8AeyUBSIchpedc6lVxVj13ZYAk9xTIHx11xHphzWHNP
+	 1srZrPMcMwziQ==
+Date: Mon, 27 Jul 2026 16:44:15 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: "Chester A. Unal" <chester.a.unal@arinc9.com>, Andrew Lunn
+ <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net-next v4 0/8] net: dsa: mt7530: modernise register
+ access and add two DSA ops
+Message-ID: <20260727164415.7181b193@kernel.org>
+In-Reply-To: <cover.1784481922.git.daniel@makrotopia.org>
+References: <cover.1784481922.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH RESEND v4 net-next 00/14] net: enetc: cleanups and
- improvements
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178519562589.1461983.12874776848447820701.git-patchwork-notify@kernel.org>
-Date: Mon, 27 Jul 2026 23:40:25 +0000
-References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
-In-Reply-To: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
-To: Wei Fang (OSS) <wei.fang@oss.nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk, wei.fang@nxp.com,
- chleroy@kernel.org, maxime.chevallier@bootlin.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Sun, 19 Jul 2026 18:33:45 +0100 Daniel Golle wrote:
+> v4:
+>  * rebase onto current net-next
+>  * 5/8: zero the read-back buffer in mt7530_regmap_read() instead of
+>    initialising the result variables at every call site, as suggested
+>    by Jakub
+>  * 6/8: keep MT753X_CTRL_PHY_ADDR() as plain address arithmetic rather
+>    than converting it to FIELD_PREP() as suggested in review: the macro
+>    computes the MDIO bus address of the switch PHYs, used as the addr
+>    argument of bus->read/write and as an iterator base in
+>    mt7530_setup_mdio(), not a hardware register field
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Looks like this needs another rebase
 
-On Mon, 20 Jul 2026 09:43:02 +0800 you wrote:
-> From: Wei Fang <wei.fang@nxp.com>
-> 
-> The first group of patches (1, 2, 5-7) eliminates code duplication
-> between the ENETC v1 and v4 drivers. Since both hardware generations
-> share identical register layouts for MAC promiscuous mode, MAC hash
-> filters, and VLAN promiscuous mode - differing only in register address
-> offsets - common helper functions are extracted into enetc_pf_common.c
-> and shared by both drivers.
-> 
-> [...]
-
-Here is the summary with links:
-  - [RESEND,v4,net-next,01/14] net: enetc: extract common helpers for MAC promiscuous mode setting
-    https://git.kernel.org/netdev/net-next/c/2557834ad0ff
-  - [RESEND,v4,net-next,02/14] net: enetc: extract common helpers for MAC hash filter configuration
-    https://git.kernel.org/netdev/net-next/c/0ce10770963e
-  - [RESEND,v4,net-next,03/14] net: enetc: convert ndo_set_rx_mode() to ndo_set_rx_mode_async()
-    https://git.kernel.org/netdev/net-next/c/debf0c7a34fa
-  - [RESEND,v4,net-next,04/14] net: enetc: improve MAFT entry management with bitmap tracking
-    https://git.kernel.org/netdev/net-next/c/6228fc9c2bbe
-  - [RESEND,v4,net-next,05/14] net: enetc: use PCI device name for debugfs directory
-    https://git.kernel.org/netdev/net-next/c/9db43e6f35db
-  - [RESEND,v4,net-next,06/14] net: enetc: simplify enetc4_set_port_speed()
-    https://git.kernel.org/netdev/net-next/c/c969fbc01d9e
-  - [RESEND,v4,net-next,07/14] net: enetc: differentiate phylink capabilities for pseudo-MAC and standalone MAC
-    https://git.kernel.org/netdev/net-next/c/7c9a6ae0edb2
-  - [RESEND,v4,net-next,08/14] net: enetc: remove invalid code from enetc4_pl_mac_link_up()
-    https://git.kernel.org/netdev/net-next/c/59bb3d62489c
-  - [RESEND,v4,net-next,09/14] net: enetc: open-code enetc4_set_default_si_vlan_promisc()
-    https://git.kernel.org/netdev/net-next/c/75e134261f61
-  - [RESEND,v4,net-next,10/14] net: enetc: refactor SI VLAN promiscuous mode configuration
-    https://git.kernel.org/netdev/net-next/c/f7c6dcd6444b
-  - [RESEND,v4,net-next,11/14] net: enetc: move enetc_set_si_vlan_promisc() to enetc_pf_common.c
-    https://git.kernel.org/netdev/net-next/c/ba07e3bef1b5
-  - [RESEND,v4,net-next,12/14] net: enetc: remove redundant num_vsi field from enetc_port_caps
-    https://git.kernel.org/netdev/net-next/c/75b136cf0f6f
-  - [RESEND,v4,net-next,13/14] net: enetc: use alloc_etherdev_mqs() to create netdev for VF driver
-    https://git.kernel.org/netdev/net-next/c/f0c1f31afd97
-  - [RESEND,v4,net-next,14/14] net: enetc: use kzalloc_flex() for enetc_psfp_gate allocation
-    https://git.kernel.org/netdev/net-next/c/18bf0ac84334
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+BTW Sashiko is still complaining about corner cases of patch 5:
+https://sashiko.dev/#/patchset/16c17477dc9eea8054455ef0e444a687336ced70.1784481922.git.daniel@makrotopia.org
