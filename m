@@ -1,114 +1,132 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15373B14B1
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 19:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CE54734C4;
+	Tue, 28 Jul 2026 19:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785266572; cv=none; b=dN8bM4m8yRS4Io45d6V9Wwx/tsLCweqww38JQHAy6ghrXCarQeVe8HGaHTZQrZnW9BohwudVGcX6F2pYLGwfhezh860jvIEq3UMpUzzcyx2PkdRWCLMMvPlTqQrO7MnltRgSlVV50aozXYiXQQnSczaZO/snpLVyGGXwUosJLzw=
+	t=1785266804; cv=none; b=JPoY08Zui2671KjXRGWTJNheqnXnd1ywWSFuzQUAATDorti0p2rUREGhxGw2xl6cAmHxgO7mAojfEOGHj/G4qhZ/FSAzyzUtzZ/L13CsMVXpigX74WzYvDNI0cnUJlz+cUSA5E4Kqa3ISLLArgNGt7rIgnEvnXak4SyF4FhsCQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785266572; c=relaxed/simple;
-	bh=2D/FRK6IKfH3OlCbpGXwXKTryIfvwjIoDuGgo/L1TQA=;
+	s=arc-20240116; t=1785266804; c=relaxed/simple;
+	bh=86K6vg15VfD9OXa2/xauBqFIPOM5uTHnBK6Jx4CCyKc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E42LKMPHlPHmVxol39EGf4K1LkUqqsa6gnlQtXmDA+HIoCkib8neG/44N68V0nJHr/JYhuNFtmxj7NSGlOqSzdRzMpomPHbJBP4GcaNL4lWZqi0BqgJT6qixK7yrHM/Yalw/D68FhScofypK0yhfN9luTxXg1aH4zrNl8z1Wub8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=lorJfZJ9; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	 Content-Type:Content-Disposition:In-Reply-To; b=bLQfK1/ahuWFxco5vsw3NDsDUCuWuplNuNuKNvkL6GLa1Fq1gY1+tYiqIcKK4auXTGgHLFlInUU2p3g7Ii9oJfXW1yv3mBngcQuNjT6168KDPiTXXsXaARQSyVNUWsReuQUhRM5HeDHVejthZKOAJVcigMxwDbL5+O3Z1rgxjY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=CoS//Fk2; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="lorJfZJ9"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84874b52eabso294921b3a.0
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 12:22:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1785266570; x=1785871370; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Nw6alsg9i/3zFCeIZXaBR9Fk17tbjbQpGkOg3KxSAGc=;
-        b=lorJfZJ9XqDmSSPRNQ5W4qKbdGaYDgmBwEy+2VwWfu/X4oH7S9JFC9SNUmYAY6HZMy
-         dmda4kTlbOmQP2LHG9Xhkh3EDnR8wvbMJQYBppwk0fkUiA9KhxnpP5/rVn3Iul+TQWSz
-         LCiboeXFaDy2oXCQbjjk7FWP99UP65pl9SFP34W8sVJxBcRaM2hAu9yTPqS7kCEySCrN
-         1pRDjPHf3y6KGPUTVhjw50LP/UGDnX5G9PTBk1OTP7gSPrJh8gbQFscu4SXVNWUL+oB/
-         OhNv6QpH7IJDXhlb/P+sEpoIEPAjGcOrzv5K7ueEmoTaQnHLmjk8Vn5MbiUiGWeJMYKu
-         ATOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785266570; x=1785871370;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Nw6alsg9i/3zFCeIZXaBR9Fk17tbjbQpGkOg3KxSAGc=;
-        b=jmznrYx1BCszZIT6TqsCBgDlsvBOG1Rnvex3myCZ9aeENiuQhTk4wM/lSVWMR+OUdW
-         3CVv8mqPm9PzDQmAIJ/y3icid3uuYfAH5ArU/j3b8y/NlCWdkCM6ElsQk9jVpWAq0tHV
-         KS4+c6V71d7QiAg3pB7unHnj52SKDNiSh0u7XOYpOTQF1hiNjHOWVdjynOMBX9BO581g
-         I9PZeE0hWV6eDZxviJPLyDuQ93B5ZnxPnUUT2YXwwUea2xLYW1zMoaPGWvOd7LOD92yx
-         Vw0XWUfPqoRe2sOkbBCyu91EAc+s8eMN+fQLvxX93+Y8imddAF97uijl0ofV8k4lVqhg
-         6Mwg==
-X-Forwarded-Encrypted: i=1; AHgh+RpUUDhXe7ikiifqxgxfbAvuUbVh/R5O2+TQw117N5vnYn9uZoBLwSv01M4yEUoxePRHiIB8WLs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHRUW6Px3W82dL7D5HACkzJA5/sVfmelJpM2LmXkC+KCv9wh1Y
-	25WN+2dt9IzaZ7n6K0swYVLXc+11K6BYF6fGA5cB4syqfADY97ZTp0oI4nd3NzTk7UU=
-X-Gm-Gg: AR+sD11V9BSz67YQov56vvWYValZBnbQgt6znU2LPgRTcGNR5uSTtEhCuPH933IR+cP
-	93d/6xQ2KcMl1DHUNoYuFwwuXCI9aTzeeYitxLKJ0oeICzvsNez3Aducwf2gVsa8DEojSb350m1
-	cJqttBpws7bFYYlTsGjuGyodKUwqb1WHyUR394+Q3oEWisk1ApSUWj6rJniXnxXKCLRPQLCQtJn
-	ReflvrcJQ3g4K6EXBhBFuIGhDTYyjD3N5A6/5M+Ua/tx8SZoQGaqGr8fO1c9VqhQiXpLPzfHopl
-	uVgKusX0pJPqD34dfPWaZ51794YSnR31toO7s1B2iKNxuydZuxYsIrdkp3yBY2G+KCX9eauaq+c
-	701q3+KIu/98PB7kPCCIo2jQgH7cmF4TkI8xaWUqBzFPQa/cA0+2cbPsAOBTPXwmvh++EaQ==
-X-Received: by 2002:a05:6a00:1f05:b0:848:2f77:e2e5 with SMTP id d2e1a72fcca58-84e933abfa9mr4241034b3a.78.1785266570052;
-        Tue, 28 Jul 2026 12:22:50 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:4b::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea02fa474sm344039b3a.30.2026.07.28.12.22.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 12:22:49 -0700 (PDT)
-Date: Tue, 28 Jul 2026 12:22:48 -0700
-From: Joe Damato <joe@dama.to>
-To: Will Chen <will.chen.tty@gmail.com>
-Cc: Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="CoS//Fk2"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id A93E360196;
+	Tue, 28 Jul 2026 21:26:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1785266799;
+	bh=MEECRbHkWBREqJmphTODP5tOHFNRtm4Szv75Afqgxo0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CoS//Fk2N71KPTPMbUEuwoTkOr43RLuYC7r27LdeGxw0qAjlufRTZS/X2DJGpral/
+	 +7ZrDfmoDJ5MYOvHh+Ud4ZHPD/AjyLvpm7sVh2Nfk1MVYN5U7zQ8/eJ8ChzDalZn8V
+	 Z8BDuXkZYmb54H7UMxdDCQZe96Rn7mTga6kayghzBbyulDg7AXrpBw+TG1vcsapU3K
+	 RusjR6eGUgKZ8M5Ycm7gesBBLEce55f5jB40/DoPTzWkkCbui43zbMO2UOc1E6YbNz
+	 /yHzyXkX/zdS1GwcOjrLS6STNmEmJ4E1vDn8yBhLixQijrSr5G57UifC8E0RbCFSTX
+	 XEkPSCLWFK2lg==
+Date: Tue, 28 Jul 2026 21:26:37 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: netfilter-devel@vger.kernel.org, Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Wei <dw@davidwei.uk>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] bnxt: fix memory leak in bnxt_queue_mem_alloc error
- cases
-Message-ID: <amkBiJ5V9tgzZcYS@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Will Chen <will.chen.tty@gmail.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Wei <dw@davidwei.uk>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-References: <20260728191146.1744825-1-will.chen.tty@gmail.com>
+	Simon Horman <horms@kernel.org>, coreteam@netfilter.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>
+Subject: Re: [PATCH nf] netfilter: conntrack: sctp: verify vtag before state
+ changes
+Message-ID: <amkCbQ1UDRKcZBez@chamomile>
+References: <20260728073507.30635-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260728191146.1744825-1-will.chen.tty@gmail.com>
+In-Reply-To: <20260728073507.30635-1-zhaoyz24@mails.tsinghua.edu.cn>
 
-On Tue, Jul 28, 2026 at 12:11:45PM -0700, Will Chen wrote:
-> There is a small memory leak in bnxt_queue_mem_alloc:
-> when bnxt_alloc_rx_agg_bmap() succeeds
-> but bnxt_alloc_one_tpa_info() later fails,
-> the rx_agg_bmap allocated by bnxt_alloc_rx_agg_bmap()
-> is not freed in the fallthrough cleanup cases.
+Hi,
+
+On Tue, Jul 28, 2026 at 03:35:06PM +0800, Yizhou Zhao wrote:
+> The packet-wide vtag check in nf_conntrack_sctp_packet() is skipped when
+> the bundle map contains any chunk type with special vtag handling.  The
+> per-chunk path re-checks INIT, ABORT, SHUTDOWN_COMPLETE, and
+> COOKIE_ECHO, but other state-changing chunks still fall through to
+> sctp_new_state() without validating sh->vtag.
 > 
-> Simply free the rx_agg_bmap in theerr_free_tpa_info case,
-> as this is the only remaining error path where
-> rx_agg_bmap is allocated and needs to be freed.
-> 
-> Fixes: bd649c5cc958 ("bnxt_en: handle tpa_info in queue API implementation")
-> Signed-off-by: Will Chen <will.chen.tty@gmail.com>
+> This lets a wrong-vtag packet bundle HEARTBEAT with COOKIE_ACK, ERROR,
+> SHUTDOWN, or SHUTDOWN_ACK and still advance conntrack state.  That can
+> desynchronize conntrack from the real SCTP association and cause denial
+> of service for SCTP traffic behind a stateful firewall.
+
+Are you assuming a specific policy in place? The connection tracking
+does not police packets, it just provides tracking.
+
+Can you provide a more specific scenario?
+
+We are seeing several reports related to the connection tracking from
+your university lately.
+
+> Check sh->vtag before processing those chunks when conntrack already
+> knows the expected direction vtag.  This keeps the existing
+> HEARTBEAT/HEARTBEAT_ACK learning and connection-reuse behavior for the
+> `vtag == 0` cases.
+
+Proposed patches to hardening the connection tracking state machine
+should be targeted at nf-next.
+
+Thanks.
+
+> Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
+> Cc: stable@vger.kernel.org
+> Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+> Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+> Reported-by: Ao Wang <wangao@seu.edu.cn>
+> Reported-by: Xuewei Feng <fengxw06@126.com>
+> Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+> Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+> Assisted-by: Claude-Code:GLM-5.2
+> Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 > ---
->  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-
-Reviewed-by: Joe Damato <joe@dama.to>
+>  net/netfilter/nf_conntrack_proto_sctp.c | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
+> index 7e10fa65cbdd..9978ecd05b1e 100644
+> --- a/net/netfilter/nf_conntrack_proto_sctp.c
+> +++ b/net/netfilter/nf_conntrack_proto_sctp.c
+> @@ -407,9 +407,17 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
+>  			/* (D) vtag must be same as init_vtag as found in INIT_ACK */
+>  			if (sh->vtag != ct->proto.sctp.vtag[dir])
+>  				goto out_unlock;
+> -		} else if (sch->type == SCTP_CID_COOKIE_ACK) {
+> -			ct->proto.sctp.init[dir] = 0;
+> -			ct->proto.sctp.init[!dir] = 0;
+> +		} else if (sch->type == SCTP_CID_COOKIE_ACK ||
+> +			   sch->type == SCTP_CID_ERROR ||
+> +			   sch->type == SCTP_CID_SHUTDOWN ||
+> +			   sch->type == SCTP_CID_SHUTDOWN_ACK) {
+> +			if (ct->proto.sctp.vtag[dir] &&
+> +			    sh->vtag != ct->proto.sctp.vtag[dir])
+> +				goto out_unlock;
+> +			if (sch->type == SCTP_CID_COOKIE_ACK) {
+> +				ct->proto.sctp.init[dir] = 0;
+> +				ct->proto.sctp.init[!dir] = 0;
+> +			}
+>  		} else if (sch->type == SCTP_CID_HEARTBEAT) {
+>  			if (ct->proto.sctp.vtag[dir] == 0) {
+>  				pr_debug("Setting %d vtag %x for dir %d\n", sch->type, sh->vtag, dir);
+> -- 
+> 2.47.3
+> 
