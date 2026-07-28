@@ -1,910 +1,186 @@
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5374279E9
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 12:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7B842BC4C;
+	Tue, 28 Jul 2026 13:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785243469; cv=none; b=NarV5lffUOKEaYynGtAE40THRjWlXiOH1OzwxuRUveECjMPChwhBY+KYaM5TKx3SXCglSxchZIx+g9r7MjaxX78pC8mP4bvi7GH8tdhN/jMijG/YDN4Sf+9xhgGZQZN1b4iCgZBj9/6RU7BDw0Xhft19BSWdVbuXzrVuz+FCoGs=
+	t=1785243776; cv=none; b=EuBuSDQzKk1WfDWixCNgOhzu47m2wskQ3ybCSiSFJCapH5kXORQFD54kTOgLT0nG/dRwHWLXWQw3TSnk6H+eYjHZqr7ItEOhYvGuXrrFqqbV/e+PbNZ0FD3GkJhZ7TVeG0an7SnZ7JTQqSrbbEJDeJb6WqTj62pXT7r2VGdZC/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785243469; c=relaxed/simple;
-	bh=j4xq9XKIoMqVAgMM0pEH/aemHgCALIAmy48b+k/j7tg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dS/RlJXEn2aIoD/Epkbzoynru+8zKCuSnz8ojXa7s3+cc1eFX5wmMJ8bX8xama1ZXdO7K0FyhYQrthRHVxKsh3o4irVOBmkSlCXrvs71nVQJE1u+nqMKnC8j3NpzgjkbBg+G6gyl66puKRKaDVWMYkRopC7pKKceRjUoD1pT660=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RvBdAmwt; arc=none smtp.client-ip=95.215.58.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785243776; c=relaxed/simple;
+	bh=26Qp+BZ/+1E2Dxw2HUwMD5QcEfmCQEJX6lQOB/fOny0=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=IOJWuT9jFK7gUEDDoidkkxQcKNCMLTX4QS74b8uPqWez3ZrNz3QJUrGPZyEUmBQYwTxwN0hyxoYW914vAttMXce/vUgsruIlWh6iRNpcTZdPqV0bOy41VTZesg1UCaDb8D7gxp3BAO35oqstpm4XaERtAwkM2vfy1AmoBiqBq/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=2PyaNxRi; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RvBdAmwt"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785243464;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5KOAL684844pKNNELyiA+H+4CRAghzckF2EDj/tc8i0=;
-	b=RvBdAmwt+O2AplRJCP/bLkjOLGPktADWaFTHNaXN2itcADUumDyEnPhLvPsOhcXOu7+YqF
-	zX1KZTmiBcR+RjRIZHCGjRSAiTJ6myYqv/dhSifKgTIk52RC5v0grFDeK8QmQGpXNUdri9
-	wxADmQpu8CACw8/qyagjLBuJaL/Mj8Y=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: netdev@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [RFC PATCH net-next 2/2] selftests: netdevsim: add a kTLS device offload test
-Date: Tue, 28 Jul 2026 20:56:41 +0800
-Message-ID: <20260728125658.390500-3-jiayuan.chen@linux.dev>
-In-Reply-To: <20260728125658.390500-1-jiayuan.chen@linux.dev>
-References: <20260728125658.390500-1-jiayuan.chen@linux.dev>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="2PyaNxRi"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=H638AJVooUPeV5BJAph53dS3nW9xX6WMoxQhJdeaS5c=;
+	b=2PyaNxRiW1wh8i8ZWj2P04XKVc2BWXTmFDPxhNgrCCmMJ/H4/d56dpW1kxaV8fYE5I2cersa/
+	4LX4We9WoBFWagROAXDCbWJ7nDN3dRUhFkKkEkFQh3mvtnkixP56pdZxKNZ3Jw1CxB8mVT+6WcV
+	znYS4uhTWEB+3/MpGrS2gkQ=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4h8b405mv5zmVCq;
+	Tue, 28 Jul 2026 20:53:20 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7373940586;
+	Tue, 28 Jul 2026 21:02:47 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Tue, 28 Jul 2026 21:02:46 +0800
+Message-ID: <cb487e64-62ad-41cb-b7ef-6cc286640eca@huawei.com>
+Date: Tue, 28 Jul 2026 21:02:46 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <yangshuaisong@h-partners.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 net] net: page_pool: fix UAF in
+ __page_pool_release_netmem_dma on xa_cmpxchg race
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
+	<hawk@kernel.org>, <ilias.apalodimas@linaro.org>, <almasrymina@google.com>,
+	<toke@redhat.com>
+References: <20260727132612.3277927-1-shaojijie@huawei.com>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <20260727132612.3277927-1-shaojijie@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
-Run kTLS over a linked netdevsim pair, one port per netns.  The test
-reads /proc/net/tls_stat around the setsockopt() calls and fails unless
-both directions landed on the device path, so it cannot quietly pass on
-the software one.  It then does a bulk transfer both ways, small
-MSG_MORE writes, splice() with TLS_TX_ZEROCOPY_RO, and a run with the
-record limit at its minimum so that whole records pack several to a
-segment, checking the payload each time, plus the ethtool off/on path.
 
-  # ./tls.sh
-  PASS: tls-hw-tx-offload advertised and on by default
-  PASS: tls-hw-rx-offload advertised and on by default
-  PASS: per-port debugfs tls file exists
-  PASS: offloaded TLS data transfer
-  PASS: tx and rx contexts installed on both ports
-  PASS: both ends used the device path
-  PASS: no silent fallback to the software path
-  PASS: no decrypt errors
-  PASS: driver counted offloaded packets both ways
-  PASS: all offload contexts released on close
-  PASS: no device contexts left behind
-  PASS: offload declined once the feature is off
-  PASS: software path used when offload is off
-  PASS: offload works again after re-enabling
+on 2026/7/27 21:26, Jijie Shao wrote:
+> page_pool_scrub() iterates pool->dma_mapped via xa_for_each() with no
+> page ref held. __page_pool_release_netmem_dma() currently reads and
+> writes netmem fields (dma_addr, DMA index bits in pp_magic) after
+> xa_cmpxchg() returns. The unref path calls put_page() unconditionally
+> regardless of the cmpxchg outcome; when it loses the cmpxchg, it still
+> frees the page before the scrub winner finishes these netmem accesses,
+> so scrub touches a freed page -- a Use-After-Free.
+>
+> Fix this by:
+>
+> 1. Cache dma_addr to a local variable before xa_cmpxchg() in
+>     __page_pool_release_netmem_dma(), so the scrub winner uses the
+>     cached address for dma_unmap and never touches netmem fields after
+>     the cmpxchg.
+>
+> 2. Rename page_pool_release_dma_index() to page_pool_remove_dma_mapping()
+>     and strip it down to a pure cmpxchg wrapper; it no longer clears DMA
+>     index bits.
+>
+> 3. Move dma_addr and DMA index cleanup to page_pool_return_netmem(),
+>     which holds a page ref and can safely write netmem fields regardless
+>     of the cmpxchg outcome.
+>
+> The scrub path (no ref) only does cmpxchg + dma_unmap on the cached
+> address; the unref path (holds ref) clears dma_addr and DMA index bits
+> unconditionally before put_page().
+>
+> Suggested-by: Mina Almasry <almasrymina@google.com>
+> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when destroying the pool")
+> Assisted-by: OhMyOpenCode:GLM-5.2
+> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+> ---
+> Changes in v2:
+> - Redesign the fix per Mina's review: v1's unconditional
+>    netmem_set_dma_index() introduced a UAF when the scrub path (no
+>    page ref) writes to a page freed by the unref path.
+> - Cache dma_addr before xa_cmpxchg; move dma_addr/DMA index cleanup
+>    to page_pool_return_netmem() which holds a page ref.
+> - Rename page_pool_release_dma_index() to page_pool_remove_dma_mapping()
+>    to reflect its new role as a pure cmpxchg wrapper.
+> - Link to v1: https://lore.kernel.org/r/20260724092135.414699-1-shaojijie@huawei.com
+> ---
+>   net/core/page_pool.c | 33 +++++++++++++++++++--------------
+>   1 file changed, 19 insertions(+), 14 deletions(-)
+>
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index 21dc4a9c8714..a0bac2bfde74 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -500,8 +500,8 @@ static int page_pool_register_dma_index(struct page_pool *pool,
+>   	return err;
+>   }
+>   
+> -static int page_pool_release_dma_index(struct page_pool *pool,
+> -				       netmem_ref netmem)
+> +static int page_pool_remove_dma_mapping(struct page_pool *pool,
+> +					netmem_ref netmem)
+>   {
+>   	struct page *old, *page = netmem_to_page(netmem);
+>   	unsigned long id;
+> @@ -517,12 +517,7 @@ static int page_pool_release_dma_index(struct page_pool *pool,
+>   		old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
+>   	else
+>   		old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
+> -	if (old != page)
+> -		return -1;
+> -
+> -	netmem_set_dma_index(netmem, 0);
+> -
+> -	return 0;
+> +	return (old == page) ? 0 : -1;
+>   }
+>   
+>   static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t gfp)
+> @@ -736,16 +731,19 @@ static __always_inline void __page_pool_release_netmem_dma(struct page_pool *poo
+>   		 */
+>   		return;
+>   
+> -	if (page_pool_release_dma_index(pool, netmem))
+> -		return;
+> -
+> +	/* Cache dma_addr before xa_cmpxchg. The scrub path holds no page ref;
+> +	 * the unref path calls put_page() regardless of cmpxchg outcome, so
+> +	 * after the cmpxchg we cannot safely touch netmem fields.
+> +	 */
+>   	dma = page_pool_get_dma_addr_netmem(netmem);
+>   
+> +	if (page_pool_remove_dma_mapping(pool, netmem))
+> +		return;
+> +
+>   	/* When page is unmapped, it cannot be returned to our pool */
+>   	dma_unmap_page_attrs(pool->p.dev, dma,
+>   			     PAGE_SIZE << pool->p.order, pool->p.dma_dir,
+>   			     DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
+> -	page_pool_set_dma_addr_netmem(netmem, 0);
+>   }
+>   
+>   /* Disconnects a page (from a page_pool).  API users can have a need
+> @@ -759,10 +757,17 @@ static void page_pool_return_netmem(struct page_pool *pool, netmem_ref netmem)
+>   	bool put;
+>   
+>   	put = true;
+> -	if (static_branch_unlikely(&page_pool_mem_providers) && pool->mp_ops)
+> +	if (static_branch_unlikely(&page_pool_mem_providers) && pool->mp_ops) {
+>   		put = pool->mp_ops->release_netmem(pool, netmem);
+> -	else
+> +	} else {
+>   		__page_pool_release_netmem_dma(pool, netmem);
+> +		/* clear dma_addr/DMA index; safe because we hold a ref */
+> +		if (pool->dma_map) {
+> +			page_pool_set_dma_addr_netmem(netmem, 0);
+> +			if (unlikely(PP_DMA_INDEX_BITS))
+> +				netmem_set_dma_index(netmem, 0);
 
-  passed: 14 failed: 0
+the unlikely() on the PP_DMA_INDEX_BITS check should be likely() — BITS > 0 is the common case. My mistake, will fix in v3.
 
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- .../drivers/net/netdevsim/.gitignore          |   2 +
- .../selftests/drivers/net/netdevsim/Makefile  |   7 +
- .../selftests/drivers/net/netdevsim/tls.sh    | 271 ++++++++++
- .../drivers/net/netdevsim/tls_offload.c       | 498 ++++++++++++++++++
- 4 files changed, 778 insertions(+)
- create mode 100644 tools/testing/selftests/drivers/net/netdevsim/.gitignore
- create mode 100755 tools/testing/selftests/drivers/net/netdevsim/tls.sh
- create mode 100644 tools/testing/selftests/drivers/net/netdevsim/tls_offload.c
-
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/.gitignore b/tools/testing/selftests/drivers/net/netdevsim/.gitignore
-new file mode 100644
-index 000000000000..9d4f57cb2baa
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/netdevsim/.gitignore
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+tls_offload
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/Makefile b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-index 9808c2fbae9e..5beb4ed64eb5 100644
---- a/tools/testing/selftests/drivers/net/netdevsim/Makefile
-+++ b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-@@ -1,5 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0+ OR MIT
- 
-+CFLAGS += $(KHDR_INCLUDES)
-+
- TEST_PROGS := \
- 	devlink.sh \
- 	devlink_in_netns.sh \
-@@ -15,9 +17,14 @@ TEST_PROGS := \
- 	peer.sh \
- 	psample.sh \
- 	tc-mq-visibility.sh \
-+	tls.sh \
- 	udp_tunnel_nic.sh \
- # end of TEST_PROGS
- 
-+TEST_GEN_FILES := \
-+	tls_offload
-+# end of TEST_GEN_FILES
-+
- TEST_FILES := \
- 	ethtool-common.sh
- # end of TEST_FILES
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/tls.sh b/tools/testing/selftests/drivers/net/netdevsim/tls.sh
-new file mode 100755
-index 000000000000..399e2c4d382d
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/netdevsim/tls.sh
-@@ -0,0 +1,271 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Exercise netdevsim's emulated kTLS device offload over a linked
-+# netdevsim pair, one port per network namespace.
-+#
-+# shellcheck disable=SC2154 # ksft_skip comes from lib.sh
-+
-+lib_dir=$(dirname "$0")
-+# shellcheck source=./../../../net/lib.sh
-+# shellcheck disable=SC1091
-+source "$lib_dir"/../../../net/lib.sh
-+
-+NSIM_DEV_1_ID=$((256 + RANDOM % 256))
-+NSIM_DEV_1_SYS=/sys/bus/netdevsim/devices/netdevsim$NSIM_DEV_1_ID
-+NSIM_DEV_2_ID=$((512 + RANDOM % 256))
-+NSIM_DEV_2_SYS=/sys/bus/netdevsim/devices/netdevsim$NSIM_DEV_2_ID
-+
-+NSIM_DEV_SYS_NEW=/sys/bus/netdevsim/new_device
-+NSIM_DEV_SYS_DEL=/sys/bus/netdevsim/del_device
-+NSIM_DEV_SYS_LINK=/sys/bus/netdevsim/link_device
-+
-+DEBUGFS=/sys/kernel/debug/netdevsim
-+NSIM_DEV_1_TLS=$DEBUGFS/netdevsim$NSIM_DEV_1_ID/ports/0/tls
-+NSIM_DEV_2_TLS=$DEBUGFS/netdevsim$NSIM_DEV_2_ID/ports/0/tls
-+
-+SRV_IP=192.168.13.1
-+CLI_IP=192.168.13.2
-+PORT=4433
-+
-+SYNCDIR=
-+BIN=$lib_dir/tls_offload
-+
-+num_pass=0
-+num_fail=0
-+
-+check()
-+{
-+	local msg="$1"
-+	local ret="$2"
-+
-+	if [ "$ret" -eq 0 ]; then
-+		echo "PASS: $msg"
-+		num_pass=$((num_pass + 1))
-+	else
-+		echo "FAIL: $msg"
-+		num_fail=$((num_fail + 1))
-+	fi
-+}
-+
-+# shellcheck disable=SC2317,SC2329 # invoked from the EXIT trap
-+cleanup()
-+{
-+	ip netns del nscl 2>/dev/null
-+	ip netns del nssv 2>/dev/null
-+	echo "$NSIM_DEV_2_ID" > "$NSIM_DEV_SYS_DEL" 2>/dev/null
-+	echo "$NSIM_DEV_1_ID" > "$NSIM_DEV_SYS_DEL" 2>/dev/null
-+	[ -n "$SYNCDIR" ] && rm -rf "$SYNCDIR"
-+}
-+
-+setup()
-+{
-+	set -e
-+
-+	echo "$NSIM_DEV_1_ID" > "$NSIM_DEV_SYS_NEW"
-+	echo "$NSIM_DEV_2_ID" > "$NSIM_DEV_SYS_NEW"
-+	udevadm settle 2>/dev/null || sleep 1
-+
-+	NSIM_DEV_1_NAME=$(find "$NSIM_DEV_1_SYS"/net -maxdepth 1 -type d ! \
-+		-path "$NSIM_DEV_1_SYS"/net -exec basename {} \;)
-+	NSIM_DEV_2_NAME=$(find "$NSIM_DEV_2_SYS"/net -maxdepth 1 -type d ! \
-+		-path "$NSIM_DEV_2_SYS"/net -exec basename {} \;)
-+
-+	ip netns add nssv
-+	ip netns add nscl
-+
-+	ip link set "$NSIM_DEV_1_NAME" netns nssv
-+	ip link set "$NSIM_DEV_2_NAME" netns nscl
-+
-+	ip netns exec nssv ip addr add "$SRV_IP/24" dev "$NSIM_DEV_1_NAME"
-+	ip netns exec nscl ip addr add "$CLI_IP/24" dev "$NSIM_DEV_2_NAME"
-+
-+	ip netns exec nssv ip link set dev "$NSIM_DEV_1_NAME" up
-+	ip netns exec nscl ip link set dev "$NSIM_DEV_2_NAME" up
-+
-+	NSIM_DEV_1_FD=$((256 + RANDOM % 256))
-+	exec {NSIM_DEV_1_FD}</var/run/netns/nssv
-+	NSIM_DEV_1_IFIDX=$(ip netns exec nssv \
-+		cat /sys/class/net/"$NSIM_DEV_1_NAME"/ifindex)
-+
-+	NSIM_DEV_2_FD=$((256 + RANDOM % 256))
-+	exec {NSIM_DEV_2_FD}</var/run/netns/nscl
-+	NSIM_DEV_2_IFIDX=$(ip netns exec nscl \
-+		cat /sys/class/net/"$NSIM_DEV_2_NAME"/ifindex)
-+
-+	echo "$NSIM_DEV_1_FD:$NSIM_DEV_1_IFIDX $NSIM_DEV_2_FD:$NSIM_DEV_2_IFIDX" \
-+		> "$NSIM_DEV_SYS_LINK"
-+
-+	SYNCDIR=$(mktemp -d)
-+	set +e
-+}
-+
-+feature()
-+{
-+	local netns="$1"
-+	local dev="$2"
-+	local feat="$3"
-+
-+	ip netns exec "$netns" ethtool -k "$dev" 2>/dev/null | \
-+		sed -n "s/^$feat: \([a-z]*\).*/\1/p"
-+}
-+
-+dbg_field()
-+{
-+	sed -n "s/.*\<$2=\([0-9]*\).*/\1/p" "$1" | head -1
-+}
-+
-+tls_stat()
-+{
-+	ip netns exec "$1" cat /proc/net/tls_stat | \
-+		sed -n "s/^$2 \([0-9]*\)/\1/p"
-+}
-+
-+# Both ends park once their offload is installed and before any data is
-+# sent, so the driver's context count can be sampled without racing the
-+# transfer.  Pass "nosample" when the offload is expected to be refused,
-+# since then neither end ever reaches the barrier.
-+run_pair()
-+{
-+	local sample="${1:-sample}"
-+	local srv_rc cli_rc waited=0
-+
-+	rm -f "$SYNCDIR"/*.ready "$SYNCDIR"/go
-+	CONNS_1=0
-+	CONNS_2=0
-+
-+	ip netns exec nssv "$BIN" server "$SRV_IP" "$PORT" "$SYNCDIR" &
-+	local srv_pid=$!
-+	ip netns exec nscl "$BIN" client "$SRV_IP" "$PORT" "$SYNCDIR" &
-+	local cli_pid=$!
-+
-+	if [ "$sample" = "sample" ]; then
-+		while [ ! -e "$SYNCDIR/server.ready" ] ||
-+		      [ ! -e "$SYNCDIR/client.ready" ]; do
-+			[ "$waited" -ge 200 ] && break
-+			sleep 0.05
-+			waited=$((waited + 1))
-+		done
-+		CONNS_1=$(dbg_field "$NSIM_DEV_1_TLS" count)
-+		CONNS_2=$(dbg_field "$NSIM_DEV_2_TLS" count)
-+		: "${CONNS_1:=0}"
-+		: "${CONNS_2:=0}"
-+	fi
-+	touch "$SYNCDIR/go"
-+
-+	wait "$srv_pid"; srv_rc=$?
-+	wait "$cli_pid"; cli_rc=$?
-+
-+	[ "$srv_rc" -eq 0 ] && [ "$cli_rc" -eq 0 ]
-+}
-+
-+###
-+### Code start
-+###
-+
-+if [ "$(id -u)" -ne 0 ]; then
-+	echo "SKIP: need root"
-+	exit "$ksft_skip"
-+fi
-+
-+if ! command -v ethtool >/dev/null; then
-+	echo "SKIP: ethtool not found"
-+	exit "$ksft_skip"
-+fi
-+
-+if [ ! -x "$BIN" ]; then
-+	echo "SKIP: $BIN not built"
-+	exit "$ksft_skip"
-+fi
-+
-+modprobe netdevsim 2>/dev/null
-+if [ ! -d /sys/bus/netdevsim ]; then
-+	echo "SKIP: netdevsim not available"
-+	exit "$ksft_skip"
-+fi
-+
-+modprobe tls 2>/dev/null
-+if [ ! -e /proc/net/tls_stat ]; then
-+	echo "SKIP: kernel TLS not available"
-+	exit "$ksft_skip"
-+fi
-+
-+trap cleanup EXIT
-+setup
-+
-+# The offload has to be advertised, and on by default like the other
-+# netdevsim crypto offloads.
-+for f in tls-hw-tx-offload tls-hw-rx-offload; do
-+	[ "$(feature nssv "$NSIM_DEV_1_NAME" "$f")" = "on" ]
-+	check "$f advertised and on by default" $?
-+done
-+
-+[ -e "$NSIM_DEV_1_TLS" ]
-+check "per-port debugfs tls file exists" $?
-+
-+# Main data path run.
-+run_pair
-+check "offloaded TLS data transfer" $?
-+
-+# Sampled at the barrier, so each port must be holding exactly the TX and
-+# the RX context of its own socket.
-+[ "$CONNS_1" -eq 2 ] && [ "$CONNS_2" -eq 2 ]
-+check "tx and rx contexts installed on both ports" $?
-+
-+# Both ends must have gone through the device path, not the SW fallback.
-+[ "$(tls_stat nssv TlsTxDevice)" -ge 1 ] && \
-+	[ "$(tls_stat nssv TlsRxDevice)" -ge 1 ] && \
-+	[ "$(tls_stat nscl TlsTxDevice)" -ge 1 ] && \
-+	[ "$(tls_stat nscl TlsRxDevice)" -ge 1 ]
-+check "both ends used the device path" $?
-+
-+[ "$(tls_stat nssv TlsTxSw)" -eq 0 ] && [ "$(tls_stat nscl TlsTxSw)" -eq 0 ]
-+check "no silent fallback to the software path" $?
-+
-+[ "$(tls_stat nssv TlsDecryptError)" -eq 0 ] && \
-+	[ "$(tls_stat nscl TlsDecryptError)" -eq 0 ]
-+check "no decrypt errors" $?
-+
-+# The driver must have seen the records go by in both directions.
-+[ "$(dbg_field "$NSIM_DEV_1_TLS" tx_packets)" -ge 1 ] && \
-+	[ "$(dbg_field "$NSIM_DEV_1_TLS" rx_packets)" -ge 1 ] && \
-+	[ "$(dbg_field "$NSIM_DEV_2_TLS" tx_packets)" -ge 1 ] && \
-+	[ "$(dbg_field "$NSIM_DEV_2_TLS" rx_packets)" -ge 1 ]
-+check "driver counted offloaded packets both ways" $?
-+
-+# Sockets are closed by now, so every context must have been given back.
-+[ "$(dbg_field "$NSIM_DEV_1_TLS" count)" -eq 0 ] && \
-+	[ "$(dbg_field "$NSIM_DEV_2_TLS" count)" -eq 0 ]
-+check "all offload contexts released on close" $?
-+
-+[ "$(tls_stat nssv TlsCurrTxDevice)" -eq 0 ] && \
-+	[ "$(tls_stat nssv TlsCurrRxDevice)" -eq 0 ]
-+check "no device contexts left behind" $?
-+
-+# Turning the feature off has to make the offload refuse the connection;
-+# the test binary insists on the device path, so it must now fail.
-+ip netns exec nssv ethtool -K "$NSIM_DEV_1_NAME" tls-hw-tx-offload off
-+ip netns exec nssv ethtool -K "$NSIM_DEV_1_NAME" tls-hw-rx-offload off
-+ip netns exec nscl ethtool -K "$NSIM_DEV_2_NAME" tls-hw-tx-offload off
-+ip netns exec nscl ethtool -K "$NSIM_DEV_2_NAME" tls-hw-rx-offload off
-+
-+run_pair nosample
-+rc=$?
-+[ "$rc" -ne 0 ]
-+check "offload declined once the feature is off" $?
-+
-+[ "$(tls_stat nssv TlsTxSw)" -ge 1 ]
-+check "software path used when offload is off" $?
-+
-+ip netns exec nssv ethtool -K "$NSIM_DEV_1_NAME" tls-hw-tx-offload on
-+ip netns exec nssv ethtool -K "$NSIM_DEV_1_NAME" tls-hw-rx-offload on
-+ip netns exec nscl ethtool -K "$NSIM_DEV_2_NAME" tls-hw-tx-offload on
-+ip netns exec nscl ethtool -K "$NSIM_DEV_2_NAME" tls-hw-rx-offload on
-+
-+run_pair
-+check "offload works again after re-enabling" $?
-+
-+echo
-+echo "passed: $num_pass failed: $num_fail"
-+[ "$num_fail" -eq 0 ] && exit 0
-+exit 1
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/tls_offload.c b/tools/testing/selftests/drivers/net/netdevsim/tls_offload.c
-new file mode 100644
-index 000000000000..ebfb4bfcd4f4
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/netdevsim/tls_offload.c
-@@ -0,0 +1,498 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * kTLS device offload data path exercise, driven by tls.sh.
-+ *
-+ * One instance runs as the server and one as the client, each in its own
-+ * network namespace, connected back to back by a linked netdevsim pair.
-+ * Both ends enable kTLS and rely on netdevsim's emulated TLS offload, so
-+ * every record travels through net/tls/tls_device.c rather than the
-+ * software path.
-+ *
-+ * The two processes rendezvous through a shared directory so that neither
-+ * side sends before the other has installed its RX offload.
-+ */
-+
-+#define _GNU_SOURCE
-+
-+#include <arpa/inet.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <netinet/in.h>
-+#include <netinet/tcp.h>
-+#include <stdarg.h>
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/socket.h>
-+#include <sys/stat.h>
-+#include <sys/types.h>
-+#include <time.h>
-+#include <unistd.h>
-+
-+#include <linux/tls.h>
-+
-+#ifndef SOL_TLS
-+#define SOL_TLS			282
-+#endif
-+
-+#ifndef TCP_ULP
-+#define TCP_ULP			31
-+#endif
-+
-+#define BULK_LEN		(200 * 1024)
-+#define MORE_FRAGS		64
-+#define SPLICE_FRAG_LEN		4096
-+#define SPLICE_FRAGS		8
-+
-+/* TLS_MIN_RECORD_SIZE_LIM and TLS_MAX_PAYLOAD_SIZE, which are not uapi. */
-+#define REC_LIM_MIN		64
-+#define REC_LIM_MAX		16384
-+
-+#define SMALL_RECS		100
-+#define SMALL_LEN		(REC_LIM_MIN * SMALL_RECS)
-+
-+#define SYNC_TIMEOUT_MS		20000
-+#define CONNECT_TIMEOUT_MS	20000
-+
-+static const char *role;
-+
-+static void die(const char *what)
-+{
-+	fprintf(stderr, "%s: %s: %s\n", role, what, strerror(errno));
-+	exit(1);
-+}
-+
-+static void fail(const char *fmt, ...)
-+{
-+	va_list ap;
-+
-+	fprintf(stderr, "%s: ", role);
-+	va_start(ap, fmt);
-+	vfprintf(stderr, fmt, ap);
-+	va_end(ap);
-+	fprintf(stderr, "\n");
-+	exit(1);
-+}
-+
-+static void msleep(unsigned int ms)
-+{
-+	struct timespec ts = {
-+		.tv_sec = ms / 1000,
-+		.tv_nsec = (ms % 1000) * 1000000L,
-+	};
-+
-+	nanosleep(&ts, NULL);
-+}
-+
-+/* /proc/net/tls_stat is per netns, so both ends can check that their own
-+ * connection really landed on the device path.
-+ */
-+static unsigned long read_tls_stat(const char *name)
-+{
-+	char line[256];
-+	unsigned long val;
-+	FILE *f;
-+
-+	f = fopen("/proc/net/tls_stat", "r");
-+	if (!f)
-+		die("open /proc/net/tls_stat");
-+
-+	while (fgets(line, sizeof(line), f)) {
-+		char key[64];
-+
-+		if (sscanf(line, "%63s %lu", key, &val) != 2)
-+			continue;
-+		if (!strcmp(key, name)) {
-+			fclose(f);
-+			return val;
-+		}
-+	}
-+
-+	fclose(f);
-+	fail("%s not found in /proc/net/tls_stat", name);
-+	return 0;
-+}
-+
-+static void fill_pattern(char *buf, size_t len, unsigned int seed)
-+{
-+	size_t i;
-+
-+	for (i = 0; i < len; i++)
-+		buf[i] = (char)(seed + i * 31 + (i >> 8) * 7);
-+}
-+
-+static void check_pattern(const char *buf, size_t len, unsigned int seed,
-+			  const char *what)
-+{
-+	char *want = malloc(len);
-+	size_t i;
-+
-+	if (!want)
-+		die("malloc");
-+
-+	fill_pattern(want, len, seed);
-+	for (i = 0; i < len; i++) {
-+		if (buf[i] != want[i])
-+			fail("%s: payload mismatch at byte %zu: got 0x%02x want 0x%02x",
-+			     what, i, (unsigned char)buf[i],
-+			     (unsigned char)want[i]);
-+	}
-+
-+	free(want);
-+}
-+
-+static void write_all(int fd, const char *buf, size_t len)
-+{
-+	size_t done = 0;
-+
-+	while (done < len) {
-+		ssize_t n = send(fd, buf + done, len - done, 0);
-+
-+		if (n < 0) {
-+			if (errno == EINTR)
-+				continue;
-+			die("send");
-+		}
-+		done += n;
-+	}
-+}
-+
-+static void read_all(int fd, char *buf, size_t len)
-+{
-+	size_t done = 0;
-+
-+	while (done < len) {
-+		ssize_t n = recv(fd, buf + done, len - done, 0);
-+
-+		if (n < 0) {
-+			if (errno == EINTR)
-+				continue;
-+			die("recv");
-+		}
-+		if (n == 0)
-+			fail("peer closed after %zu of %zu bytes", done, len);
-+		done += n;
-+	}
-+}
-+
-+static void enable_ktls(int fd)
-+{
-+	struct tls12_crypto_info_aes_gcm_128 ci = {};
-+	unsigned long tx_before, rx_before;
-+
-+	tx_before = read_tls_stat("TlsTxDevice");
-+	rx_before = read_tls_stat("TlsRxDevice");
-+
-+	if (setsockopt(fd, IPPROTO_TCP, TCP_ULP, "tls", sizeof("tls")))
-+		die("setsockopt(TCP_ULP, tls)");
-+
-+	ci.info.version = TLS_1_2_VERSION;
-+	ci.info.cipher_type = TLS_CIPHER_AES_GCM_128;
-+	memset(ci.iv, 'i', sizeof(ci.iv));
-+	memset(ci.key, 'k', sizeof(ci.key));
-+	memset(ci.salt, 's', sizeof(ci.salt));
-+	memset(ci.rec_seq, 0, sizeof(ci.rec_seq));
-+
-+	if (setsockopt(fd, SOL_TLS, TLS_TX, &ci, sizeof(ci)))
-+		die("setsockopt(TLS_TX)");
-+	if (setsockopt(fd, SOL_TLS, TLS_RX, &ci, sizeof(ci)))
-+		die("setsockopt(TLS_RX)");
-+
-+	/* The whole point of the exercise: refuse to silently fall back to
-+	 * the software path, otherwise the test would pass without ever
-+	 * touching tls_device.c.
-+	 */
-+	if (read_tls_stat("TlsTxDevice") != tx_before + 1)
-+		fail("TX did not land on the device path (TlsTxDevice %lu -> %lu)",
-+		     tx_before, read_tls_stat("TlsTxDevice"));
-+	if (read_tls_stat("TlsRxDevice") != rx_before + 1)
-+		fail("RX did not land on the device path (TlsRxDevice %lu -> %lu)",
-+		     rx_before, read_tls_stat("TlsRxDevice"));
-+}
-+
-+static void sync_path(char *out, size_t len, const char *dir, const char *who)
-+{
-+	if ((size_t)snprintf(out, len, "%s/%s.ready", dir, who) >= len)
-+		fail("sync dir path too long");
-+}
-+
-+static void rendezvous(const char *dir, const char *me, const char *peer)
-+{
-+	char mine[PATH_MAX], theirs[PATH_MAX];
-+	unsigned int waited = 0;
-+	int fd;
-+
-+	sync_path(mine, sizeof(mine), dir, me);
-+	sync_path(theirs, sizeof(theirs), dir, peer);
-+
-+	fd = open(mine, O_CREAT | O_WRONLY, 0600);
-+	if (fd < 0)
-+		die("create sync file");
-+	close(fd);
-+
-+	while (access(theirs, F_OK)) {
-+		if (waited >= SYNC_TIMEOUT_MS)
-+			fail("timed out waiting for %s", peer);
-+		msleep(20);
-+		waited += 20;
-+	}
-+}
-+
-+/* Both ends stop here with their offload installed and no data sent yet,
-+ * so that the driver state can be inspected from the outside.
-+ */
-+static void wait_for_go(const char *dir)
-+{
-+	unsigned int waited = 0;
-+	char go[PATH_MAX];
-+
-+	if ((size_t)snprintf(go, sizeof(go), "%s/go", dir) >= sizeof(go))
-+		fail("sync dir path too long");
-+
-+	while (access(go, F_OK)) {
-+		if (waited >= SYNC_TIMEOUT_MS)
-+			fail("timed out waiting for go");
-+		msleep(20);
-+		waited += 20;
-+	}
-+}
-+
-+/* Small writes with MSG_MORE accumulate into one open record before it is
-+ * pushed, which is the interesting part of tls_push_data().
-+ */
-+static void send_msg_more(int fd, unsigned int seed)
-+{
-+	char buf[MORE_FRAGS + 1];
-+	int i;
-+
-+	fill_pattern(buf, sizeof(buf), seed);
-+
-+	for (i = 0; i < MORE_FRAGS; i++) {
-+		if (send(fd, buf + i, 1, MSG_MORE) != 1)
-+			die("send(MSG_MORE)");
-+	}
-+	if (send(fd, buf + MORE_FRAGS, 1, 0) != 1)
-+		die("send(last)");
-+}
-+
-+/* splice() reaches tls_push_data() with MSG_SPLICE_PAGES once
-+ * TLS_TX_ZEROCOPY_RO is enabled, which is a distinct fragment path.
-+ */
-+static void send_splice(int fd, unsigned int seed)
-+{
-+	char buf[SPLICE_FRAG_LEN];
-+	int val = 1;
-+	int i;
-+
-+	if (setsockopt(fd, SOL_TLS, TLS_TX_ZEROCOPY_RO, &val, sizeof(val)))
-+		die("setsockopt(TLS_TX_ZEROCOPY_RO)");
-+
-+	for (i = 0; i < SPLICE_FRAGS; i++) {
-+		int p[2];
-+
-+		fill_pattern(buf, sizeof(buf), seed + i * SPLICE_FRAG_LEN);
-+
-+		if (pipe(p))
-+			die("pipe");
-+		if (write(p[1], buf, sizeof(buf)) != sizeof(buf))
-+			die("write to pipe");
-+		if (splice(p[0], NULL, fd, NULL, sizeof(buf),
-+			   i == SPLICE_FRAGS - 1 ? 0 : SPLICE_F_MORE) !=
-+		    sizeof(buf))
-+			die("splice");
-+		close(p[0]);
-+		close(p[1]);
-+	}
-+
-+	val = 0;
-+	if (setsockopt(fd, SOL_TLS, TLS_TX_ZEROCOPY_RO, &val, sizeof(val)))
-+		die("setsockopt(TLS_TX_ZEROCOPY_RO off)");
-+}
-+
-+/* A record can be up to 16K, so normally one segment carries a piece of a
-+ * single record.  Shrinking the limit puts a dozen or so whole records in
-+ * every segment instead, which is the multi-record path through the driver.
-+ */
-+static void send_small_records(int fd, unsigned int seed)
-+{
-+	char buf[SMALL_LEN];
-+	uint16_t limit;
-+
-+	limit = REC_LIM_MIN;
-+	if (setsockopt(fd, SOL_TLS, TLS_TX_MAX_PAYLOAD_LEN, &limit,
-+		       sizeof(limit)))
-+		die("setsockopt(TLS_TX_MAX_PAYLOAD_LEN)");
-+
-+	fill_pattern(buf, sizeof(buf), seed);
-+	write_all(fd, buf, sizeof(buf));
-+
-+	limit = REC_LIM_MAX;
-+	if (setsockopt(fd, SOL_TLS, TLS_TX_MAX_PAYLOAD_LEN, &limit,
-+		       sizeof(limit)))
-+		die("setsockopt(TLS_TX_MAX_PAYLOAD_LEN restore)");
-+}
-+
-+#define SEED_C2S_BULK	0x11
-+#define SEED_S2C_BULK	0x22
-+#define SEED_C2S_MORE	0x33
-+#define SEED_C2S_SPLICE	0x44
-+#define SEED_C2S_SMALL	0x55
-+
-+static void run_client(int fd)
-+{
-+	char *buf = malloc(BULK_LEN);
-+
-+	if (!buf)
-+		die("malloc");
-+
-+	fill_pattern(buf, BULK_LEN, SEED_C2S_BULK);
-+	write_all(fd, buf, BULK_LEN);
-+
-+	read_all(fd, buf, BULK_LEN);
-+	check_pattern(buf, BULK_LEN, SEED_S2C_BULK, "server -> client bulk");
-+
-+	send_msg_more(fd, SEED_C2S_MORE);
-+	send_splice(fd, SEED_C2S_SPLICE);
-+	send_small_records(fd, SEED_C2S_SMALL);
-+
-+	/* Wait for the server's verdict before tearing anything down. */
-+	read_all(fd, buf, 1);
-+	if (buf[0] != 'k')
-+		fail("server reported a failure");
-+
-+	free(buf);
-+}
-+
-+static void run_server(int fd)
-+{
-+	size_t splice_len = (size_t)SPLICE_FRAG_LEN * SPLICE_FRAGS;
-+	char *buf = malloc(BULK_LEN);
-+	char more[MORE_FRAGS + 1];
-+	char *sbuf;
-+	char ok = 'k';
-+	int i;
-+
-+	sbuf = malloc(splice_len);
-+	if (!buf || !sbuf)
-+		die("malloc");
-+
-+	read_all(fd, buf, BULK_LEN);
-+	check_pattern(buf, BULK_LEN, SEED_C2S_BULK, "client -> server bulk");
-+
-+	fill_pattern(buf, BULK_LEN, SEED_S2C_BULK);
-+	write_all(fd, buf, BULK_LEN);
-+
-+	read_all(fd, more, sizeof(more));
-+	check_pattern(more, sizeof(more), SEED_C2S_MORE, "client -> server MSG_MORE");
-+
-+	read_all(fd, sbuf, splice_len);
-+	for (i = 0; i < SPLICE_FRAGS; i++)
-+		check_pattern(sbuf + (size_t)i * SPLICE_FRAG_LEN,
-+			      SPLICE_FRAG_LEN, SEED_C2S_SPLICE +
-+			      i * SPLICE_FRAG_LEN, "client -> server splice");
-+
-+	read_all(fd, buf, SMALL_LEN);
-+	check_pattern(buf, SMALL_LEN, SEED_C2S_SMALL,
-+		      "client -> server small records");
-+
-+	write_all(fd, &ok, 1);
-+
-+	free(sbuf);
-+	free(buf);
-+}
-+
-+static int do_server(const char *ip, int port, const char *syncdir)
-+{
-+	struct sockaddr_in sa = {};
-+	int lfd, fd, one = 1;
-+
-+	lfd = socket(AF_INET, SOCK_STREAM, 0);
-+	if (lfd < 0)
-+		die("socket");
-+	if (setsockopt(lfd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one)))
-+		die("SO_REUSEADDR");
-+
-+	sa.sin_family = AF_INET;
-+	sa.sin_port = htons(port);
-+	if (inet_pton(AF_INET, ip, &sa.sin_addr) != 1)
-+		fail("bad bind address %s", ip);
-+
-+	if (bind(lfd, (struct sockaddr *)&sa, sizeof(sa)))
-+		die("bind");
-+	if (listen(lfd, 1))
-+		die("listen");
-+
-+	fd = accept(lfd, NULL, NULL);
-+	if (fd < 0)
-+		die("accept");
-+	close(lfd);
-+
-+	enable_ktls(fd);
-+	rendezvous(syncdir, "server", "client");
-+	wait_for_go(syncdir);
-+
-+	run_server(fd);
-+
-+	close(fd);
-+	return 0;
-+}
-+
-+static int do_client(const char *ip, int port, const char *syncdir)
-+{
-+	struct sockaddr_in sa = {};
-+	unsigned int waited = 0;
-+	int fd;
-+
-+	sa.sin_family = AF_INET;
-+	sa.sin_port = htons(port);
-+	if (inet_pton(AF_INET, ip, &sa.sin_addr) != 1)
-+		fail("bad server address %s", ip);
-+
-+	for (;;) {
-+		fd = socket(AF_INET, SOCK_STREAM, 0);
-+		if (fd < 0)
-+			die("socket");
-+		if (!connect(fd, (struct sockaddr *)&sa, sizeof(sa)))
-+			break;
-+		close(fd);
-+		if (waited >= CONNECT_TIMEOUT_MS)
-+			die("connect");
-+		msleep(20);
-+		waited += 20;
-+	}
-+
-+	enable_ktls(fd);
-+	rendezvous(syncdir, "client", "server");
-+	wait_for_go(syncdir);
-+
-+	run_client(fd);
-+
-+	close(fd);
-+	return 0;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	int port;
-+
-+	if (argc != 5) {
-+		fprintf(stderr,
-+			"usage: %s server|client <ip> <port> <syncdir>\n",
-+			argv[0]);
-+		return 2;
-+	}
-+
-+	role = argv[1];
-+	port = atoi(argv[3]);
-+
-+	if (!strcmp(role, "server"))
-+		return do_server(argv[2], port, argv[4]);
-+	if (!strcmp(role, "client"))
-+		return do_client(argv[2], port, argv[4]);
-+
-+	fprintf(stderr, "unknown role %s\n", role);
-+	return 2;
-+}
--- 
-2.43.0
-
+> +		}
+> +	}
+>   
+>   	/* This may be the last page returned, releasing the pool, so
+>   	 * it is not safe to reference pool afterwards.
+>
+> base-commit: 04026c998c24ac47eb76886b9790c5710b603eb4
