@@ -1,76 +1,46 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E174248B1
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 11:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30FB384CD1;
+	Tue, 28 Jul 2026 11:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785238608; cv=none; b=KzNhMfzqv+nx1M00rrCarWJOfeRpdD8I6bv8rkp/GTtlN4aUb1idErTWqiQLa7CBFQjqMdU/L5JsBSHTHKzweYRURRhyAPKdEDeNGBg4hB5Q+Cz4pRlwR4A8pG4jEPEgrVGO0NfcYis1sAMj+L5/0uRE+kgPb7hTaiuH9nA7lrY=
+	t=1785238636; cv=none; b=f4tXcSQX+ctDHEt1u9I6AnsEPbIjdqtutJ5bVVMzhPC99Z6WKQ3G1oWd5SzgF2ple1lsTb4WDkg28U97WBeaLYG1pMRXTNc9jye3d+FRxiPkpbkmrc3YEbJzv/dG4tljSpLnfwjLNHt3fQh2VI5eR9BFTKjZ8vcFaEUVxf/mwLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785238608; c=relaxed/simple;
-	bh=etyOxhZtuIAJwlcg8fQ7QuNknS3EtiZbY1soNGp9BIU=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EkrFR6SbVyBikxkFOb/d68pMbU00foeLiRq79nskij+V+6Gussuz+iKEHp3Si27HnoA9WHYSPgIWvSH6BPceAP/RH1KpHQWJ/J9EkCBw0XVQ+JUkCE9VV33ezNu/QsJdGQheYtE/rhoGN+xrMCAyjvlUYr0+f3oqiKQpBp7hEcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=tZ+gFCJz; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
+	s=arc-20240116; t=1785238636; c=relaxed/simple;
+	bh=9Rka7PqY93z5NlRwJnKe56x5z6jdTCf/o/Szyc76aFg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tDNdZHEmXX5tLCADv3uXQlwX1tSSthIYvcZPO+6LEkKn73ZBErjqpgAaMZ0gOW0cuo+eRkEekZoxF1BqotbPckbFlHXtFpKg9g8VAz353KEA+ErsFNJRpz1XVWqk3xc0VcVeGU60eLSk9w0fTQk4aJklhq6ARmPdauFJGYjXgmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=VCfg1RLV; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b="tZ+gFCJz"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-ca766c1c9ccso1981780a12.0
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 04:36:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1785238604; x=1785843404; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/HtC2XnkozbL1BOm4MB4z4Sheq8vJSJof34ikV5vSyE=;
-        b=tZ+gFCJzAGWg50n2lqlTPVzqEn94rQgvyQvceweBomUtwRm+d7lIFDy2Pq+WaxFKPj
-         XY2GCftHxAcD4bz2DHwHR7ZgJafmqmSFj2rnmXG50JsDvYckdSNBcQiaxJV+joze1U+3
-         icJPyL6BI/VC7AJBdIBUwADebm9O9qscILmt9ilCHws7x9msK28mDkDHmaLqbR9N2i1v
-         Mr8XA1/iDQBVn05n+w8gBQlljwuoiAHebWHJSBzpveU+fWHYubcPtPIej481bKmKcqgY
-         MQYarnhMEcXLXdRkVdMjkVLOKe+mQNVQKUihbDNCrUrsLT80euceBsqMXNjlWWDV5wzs
-         cXaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785238604; x=1785843404;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/HtC2XnkozbL1BOm4MB4z4Sheq8vJSJof34ikV5vSyE=;
-        b=ca213a+2gu17pW+Ulb2yJcy8ADgLGTpdHrbKoP3nvA6i8tZzm2cy+TSeua0tjdehcT
-         bCLKkp5wVvmtYkENwoiEfWi2BpsrTaxy1jLB1R3fdV+7VhEkY+/0mBMHt4pnjmXFhl7D
-         vX/X93q78cQEGtCOW+VQcCxn+Y2rl2hby9ssf4oZknhnbxcxUzHmaTw2bRcFMnPd8G6x
-         fs/uuUyT3nOncmtI/rfeQl7CuOzqw+YNCQmf6+aSpAQpB4njvvXqmNgu6os3dCCmgOwe
-         67dnVfLS+n5GWnfw6fTecooY3nZztqNv7f+AGo5rCBMHvN1nrKouucedXagCmOm7j4Yz
-         PWlg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq+tIguJbHRvP/nvfaiG4Keq2EHMrgUNtD1tU9G/X7bnPvck0Tc2jviPUgpBdUjHrhABGyuhjE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNOIFFETc9PiadxlmCy0oWrDGc7ahTt3eM4srXaT8jM0nyYMgv
-	DPAgrvj687dngKQ2Br8myMNhmBToV0szOhjaRH/kkCP75nKd3H9eCziJeNC6USsozxU=
-X-Gm-Gg: AR+sD11jZWCwYc8Z1aEg9I7+jOc+7zMBCzAGfOH5M82nW4Sl9OGg7htHXpJMhUz7qA2
-	ELSzeTTyr5WWvYqbh4lPWRDsFldoJIatZE2Kogueims806H4BC3GOVI09klL4kRoYlAbfEiRl4L
-	VAmf9gwZGxXtW4EhAam6ymM8awQudy5xTXYKkwQcVEDtRoMGNNeAMS0NXVeB8aYFt7adOiiEaZ0
-	aD3o304f4zeX7BE+zhyEKXm7pE1Ag99RfLch8hTzxiVY06NNUWP77TGIVXgvmysI+u813ENY15K
-	m//8AEiPnaOwiBym8hVa8WCcmv0GYcKNcz8LTJ+BOaCyz9PzNG/gDT3cNCfeBMnSlHq2cCnKiGp
-	zdLAR04MNTBw5wslDbS9GIQi8ST7UDYEjkrIszmVRrowDG3SdKIvWwjuINmCLiA+6DrA6ScK7PE
-	9TtM8cJFdbpslrI4N8rmIDHOK9UCJRFvyfOEJNCBGPp+6QHrdThZmhU0jy4UexaZpzGW6biQ1Dm
-	MDRyCXUAA4rV8+2pA==
-X-Received: by 2002:a05:6a21:487:b0:3c0:9c19:65a0 with SMTP id adf61e73a8af0-3c8ba63bac4mr2823692637.72.1785238603787;
-        Tue, 28 Jul 2026 04:36:43 -0700 (PDT)
-Received: from Metius ([103.158.43.43])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc548efesm44173814eec.14.2026.07.28.04.36.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 04:36:43 -0700 (PDT)
-Date: Tue, 28 Jul 2026 17:06:36 +0530
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: Joe Damato <joe@dama.to>, Steen.Hegelund@microchip.com, 
-	daniel.machon@microchip.com, UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: microchip: vcap api: Fix possible memory leak
- in vcap_decode_rule()
-Message-ID: <fgtzc4qsfhquom2ipslp6w63v7v4m2gdglo4rzvgrzjbeoq5yj@67lizsbkscr6>
-References: <20260727125757.134611-1-nihaal@cse.iitm.ac.in>
- <ameUygDr01/ZvnPD@devvm20253.cco0.facebook.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="VCfg1RLV"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1785238627; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=jkYJfqj3q6zOmjb9xF64tdOwzEH4MqIt3aPdm8N0htc=;
+	b=VCfg1RLVqWGfggSN8WEDr37ku75noAb8WfA7qDpJYSaNEn+eEDVV05cJ06TRqQdh7wf9kN5TB2gNjhWp3l/nj5lsHC02k950C5prAY0OtUqKMZsqMwXlsWfeAn0MPeKaQnEsbWUzvcmwxhce4lqzZwXMUH+n+93rox2/1FpmGIY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X8-kB6Y_1785238625;
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X8-kB6Y_1785238625 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 28 Jul 2026 19:37:06 +0800
+Date: Tue, 28 Jul 2026 19:37:05 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: Paolo Abeni <pabeni@redhat.com>,
+	Ibrahim Hashimov <security@auditcode.ai>, alibuda@linux.alibaba.com,
+	wenjia@linux.ibm.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org
+Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, horms@kernel.org,
+	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net/smc: validate peer CDC cursor against RMBE
+ size before accepting it
+Message-ID: <amiUYVILfbgKPUte@linux.alibaba.com>
+Reply-To: dust.li@linux.alibaba.com
+References: <20260722101758.37817-1-security@auditcode.ai>
+ <a0d58258-4042-41e9-ab32-8f7e5deba5e5@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,18 +49,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ameUygDr01/ZvnPD@devvm20253.cco0.facebook.com>
+In-Reply-To: <a0d58258-4042-41e9-ab32-8f7e5deba5e5@redhat.com>
 
-On Mon, Jul 27, 2026 at 10:26:34AM -0700, Joe Damato wrote:
-> On Mon, Jul 27, 2026 at 06:27:55PM +0530, Abdun Nihaal wrote:
-> Not sure what the style guidelines say, but the label err and the local
-> variable err having the same name is a bit confusing.
-> 
-> Maybe you could make the label "out_err" and update the gotos instead?
-> 
-> Either way, the code looks right other than the style nit, so if you resend
-> you can apply my tag:
-> 
-> Reviewed-by: Joe Damato <joe@dama.to>
+On 2026-07-28 12:04:32, Paolo Abeni wrote:
+>On 7/22/26 12:17 PM, Ibrahim Hashimov wrote:
+>> smc_cdc_cursor_to_host() converts the wire-format producer/consumer
+>> cursor of an incoming CDC message into a host smc_host_cursor. It rejects
+>> a cursor that goes backwards, but never checks that the cursor stays
+>> inside the buffer it indexes. Per smc_host_cursor ("an offset in an
+>> RMBE") and the invariant smc_curs_add() enforces for every local advance
+>> (0 <= count < size), a valid cursor count must be < size and a single
+>> advance can be at most one bufferful; the wire cursor is peer-controlled
+>> and was never checked against either.
+>> 
+>> smcr_cdc_msg_to_host() accepts the producer and consumer cursors, and the
+>> unbounded value feeds smc_curs_diff() in smc_cdc_msg_recv_action(), which
+>> computes the advance without clamping against size. A peer can inflate it
+>> two ways: an out-of-range prod.count (e.g. 0x7fffffff), or -- since on a
+>> wrap increment smc_curs_diff() returns (size - old.count) + new.count --
+>> a cursor with a bumped wrap and new.count above old.count. Either drives
+>> bytes_to_rcv far past rmb_desc->len, the very invariant the comment above
+>> the atomic_add() claims but does not enforce.
+>> 
+>> smc_rx_recvmsg() then trusts bytes_to_rcv as the amount of valid RMB
+>> data. Its first copy chunk is safely bounded by rmb_desc->len -
+>> cons.count, but the second chunk copies (copylen - chunk_len) bytes from
+>> offset 0, and copylen came from the inflated readable -- an out-of-bounds
+>> read of the RMB's backing (v)malloc allocation, copied straight to the
+>> receiving process via _copy_to_iter(). This is a remote kernel-memory
+>> disclosure driven by a malicious SMC-R peer, needing no local privilege
+>> on the victim. The same unbounded count also reaches
+>> smc_cdc_handle_urg_data_arrival() (base + urg_curs.count - 1) -- a
+>> second, narrower OOB read.
+>> 
+>> Reject the bad cursor at ingress, mirroring the cursor-sanity idiom two
+>> lines above: drop any incoming cursor whose count is outside the buffer
+>> (>= size), and any whose advance from the last accepted cursor exceeds
+>> one bufferful (smc_curs_diff() > size), which catches the wrap case.
+>> smc_cdc_cursor_to_host() gains a size parameter; smcr_cdc_msg_to_host()
+>> passes conn->rmb_desc->len for the producer cursor and
+>> conn->peer_rmbe_size for the consumer cursor, bounding it at its single
+>> origin instead of patching every downstream consumer. SMC-D
+>> (smcd_cdc_msg_to_host()) does not use this helper and is a separate,
+>> out-of-scope gap.
+>
+>@SMC crew: please review.
+>
+>The above looks so correlated and quite simple to address that possibly
+>it makes sense to address it in the same series.
 
-Sure, I'll change the labels to out_err and send a v2.
+Hi Paolo,
+
+This patch was discussed in the v1 thread. Bryan had already sent a the
+v5 addressing the issue, so I think this patch can be dropped.
+
+https://lore.kernel.org/netdev/20260723-b4-disp-0d07164f-v5-0-6a9e235dbc4e@proton.me
+
+Best regards,
+Dust
