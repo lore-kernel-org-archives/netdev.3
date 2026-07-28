@@ -1,255 +1,208 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011053.outbound.protection.outlook.com [52.101.70.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C114B459AF6
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 16:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785255007; cv=none; b=fBFIrPtG0uil62sJuPRrXnZ8R1qi+splhhBT17wlUIaHfnPIReD098BKoygsJ+9m2nfttSBPkR2RR5etYjTG22/sQ/VQfccHdaB+4B2XIuNQc016iJ3NyVzwOVHT8Qbne4sWrYSHPLliZ2wiMuyRPax6U2AgTTC8JgP3em90/Ow=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785255007; c=relaxed/simple;
-	bh=qTQ94GDWz13qQ8wsjs5bSk//XeqVn3eDxi9Sa9U6g0k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWsc4Cpdn8zk9xNBAEbPEpdXAGpWJxBR27xziFg70OEX4t2/jr+XZ5E2FlnFPp7vklnXW3g/4bGla1ZWwi85Rfc9ZOEFENtKY90nhEdeDmendJjeUBoo6wU+OyjHW6+XQhyJJ1suVx0YJ3vlzyrsgnUmux1W92c0vBC8UVxcyNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=zSBcpFFc; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFCC3B71A4;
+	Tue, 28 Jul 2026 16:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785255048; cv=fail; b=f1PGTsrW1Os8r0MXceGgkYLYo/0raHhZKFg0qBmj919lV5ibHJR2o/KCHPGoO+X3EXWzezx1xonm8Vo/2hcO09PWwmjVMhbjkJtgofmxhllNh2oqW9IaOLeyDgLd9sW1nk1qFf5rNO7mmz3/80TZC9dlD6J7CIMEvEp0muZ9uIQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785255048; c=relaxed/simple;
+	bh=/92eRHjQInCH3SyL1t03YgoE9ORBelvj/EDrRzwy5Sc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=sA3MzozCysoPQJ8H7uqwWnhB3QkYxt50X/j9ttglJbB7AE7/CnNAywIxh/Grw3elHg0dr4l/sIh95hMVPuPFhoibADifqbaHpmcXbpirv4Em40tYf4In78BZFrYsYUqIgdTGIolMMkgCOFlJwdiEA8mnAF2DHfOPJuxPvBxz9AU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=NWjlDdal; arc=fail smtp.client-ip=52.101.70.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="zSBcpFFc"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c9e0b89e228so2775584a12.1
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 09:10:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1785255005; x=1785859805; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VPWxgaLDrPWFJHW7bhO6DGEGBljMDa2/8aUKOWLglUQ=;
-        b=zSBcpFFc9OJ0y8G80rCopiYnw2FdTELIU55N2GCaSW9pnoDzVkFQ+w99xVz/oSeBmK
-         v7/EE6N2UsApb2AvHaUcTJhEUvSKVQwQ+w68CfnTZeH48jwCMlYbZv3AM56wu0FG5GrH
-         1jedfxzjGRK44DoCyqRdeulz45AHxE4gBrzslokBxMjt4Y9r6qIsd/BdeoBv6mhkZ0bw
-         jpo4RlxcdKRfuW2epxdSrYjh27HDblw1eBjspjOjDyhbrUYdgsq+E8pmP7Psh0PP1ziO
-         ji7Xy2BdQDx4928ce0q7l4tK18TBZdS5Gc/a6DK/O9+zdbzORqTdRzxsE/MNa/FUNBiY
-         8sSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785255005; x=1785859805;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VPWxgaLDrPWFJHW7bhO6DGEGBljMDa2/8aUKOWLglUQ=;
-        b=NFiXWa5vKYl5SOCteGIbcaC9lO8uU1RrvzsMy/kUe7M8W42TMpm1oRqM+VTAh/1sSj
-         r17qcEOrEcwHqRs+NJ+fDY6PmTjPdFapOT821Qyy/pGLohGbuPee7pVdA8tHeQVqma9m
-         /tgn10h7oS0TNhSUmvc8CCmYKib5ByQMkkmwuRm4QhGUxMvFGz5ZtVKIcl0gkl7b884U
-         qndDkzqAo8kvItUe2TWpKomhvWo7Pziiyh0BsucuiAebIPDOeNC8zzECNDip6MXebooe
-         Nx5u8ObITwT7MpzaNsVPXB1I7kUUhEsyHMVFoxzjWr3ftm/XVUmJVmRX9h3Wqz7+NREN
-         /c7A==
-X-Gm-Message-State: AOJu0YwfQJooPN+5wypdX26u78g8LN1DEmhFD8YCcuKvmwx7BgVy7K0Y
-	N17DcX9TpIgz2PKnfH1OZ6we4jLpYvIxZEpyMWFObTK40Pll+bsV7WC0Du/IfZVK7berPVxRR/m
-	Owt+VggCWSAnc
-X-Gm-Gg: AR+sD13tW5PIYdr+7uD1Gy07Ltcr7Ne6kpqSosceGVNxv0CzbN33viW50JaRcpxtQJx
-	IlNsqOzWAS24UYEKjm6U+0vt/te+6cxTROj8DOXxb24pGnpAbg8cEYIbrOQRy7SOWTU+/t8fqCg
-	YwKRrmgOkZWRCbMwPKW/MWVuzLKGaS98VZ3ERwV8Hxwbq2tTzd+VByfqoSQqq1YEa+b1TdjCQpj
-	+seugknXgPtzzYupUrQ5RX2vM+C3tURmByl8VrMDaROZzRH6k6w2fnVIGaemJ05yBP/tCxG1W9Q
-	chca27l7EDlRPXueD6u00bsBx8Tg1mAscP4dsa07+LdXbDFAmgnAffYWJPc9GHHrbZI+x1NeS9A
-	RfDNHIkBlDU/BOCtQpT3AmQC6xiAODmoI2t/kPibD8FmFPeqQ/S93nxnIb6Y=
-X-Received: by 2002:a05:6a21:4cc7:b0:3c3:9fc4:3ff5 with SMTP id adf61e73a8af0-3c8ba45e8eemr3908138637.29.1785255004809;
-        Tue, 28 Jul 2026 09:10:04 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:42::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbbb660deeasm4872205a12.3.2026.07.28.09.10.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 09:10:04 -0700 (PDT)
-From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: andrew+netdev@lunn.ch,
-	willemb@google.com,
+	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="NWjlDdal"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oKoFvmfItZ/h3Ti4+xgmDSmclcqnQvpjD3CwH8zqDD4+9+/wPsLNcbKJZyHmo//sKnBsZR0rQcCJyrfyDYlR3x1kW4AbCGQPlRWtNs5CYF3C68Y4Wio4+U7zYafxAyVw1QrJcyuZF/w8bX93xVuWOH/7FZfzmm0S23ege/9pAC0djKD5Oz7hSKa7pbt4Ps/utlAJNbSdGNZFviXBSD6cG3AWj7DP+hPKIb5aiLKkfDUgfxGxIR1gkLUkiG4tVYP9osG/UJQMJ76BYlBUZl8ludULkPOTfTzngm4OLtDJy1yIemYcheY7P5YjPLbrIAn3oX0Lz2HsZl9eOBY1SrxSFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JbJC25GmM3Xpbk9kEzYteSCbTjNFqqiKKLAA+00BXS8=;
+ b=NBmwIKGTvJi8zHaMh0oHyJ2uqtndwP+EjW9bqW+/T4j3K0XHNs4PNPuzPBScaOqcXrRPIv9bOVzZRpBOHaGilLkld7hBysTU64dOdHSCoQJUJPBBkYkf3afL5wI0MgtMHOw8jTBrSAjn3LE9DBhHVuQTRSgiurQ9khYcZtTaabTeJfNqzGlUq6Tq6w/8AcKSyHC3bvDCVPEXxE0oOlbcl5KSttbPeqVhxUzPyAN9Ln9FBr5LZ50yBtQAakBSu6onM+bun0VF3cOPG/jCF8VzIYERO5Cve9mNSjxurWJQm+vjBpBwMSnVqOPzAlmLqnRBXW/ZQcuWOkTonMlK6bSvKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 131.228.2.85) smtp.rcpttodomain=apple.com smtp.mailfrom=nokia-bell-labs.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nokia-bell-labs.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JbJC25GmM3Xpbk9kEzYteSCbTjNFqqiKKLAA+00BXS8=;
+ b=NWjlDdalFU0PkotII8HmJbtwv7K4jdPnGF0aHMJqi2Itt49K/9NVMoPM3kZ6yskGuEZEMOlEXrWObl/M5Vti0FkxZHWrhgTwfWIs+XV0DuadbibikZLuzXxr+eT1sH2QIjL7xUIIY4WrEZQTOhimsT4okrWMdM5SlC57d/DJl6A9YtdHH4kFfx7y6kufjXeX92bghDSdnqiAEP1eKA6UQF8E5DdanfDh64i+OfI5fOQBs572toROAdIkJ6oFYf/vvsIwH4UdYAlT5I7Oryc4GNRupIq21HMgvy224Bf+zGa0bO+VmWI0p4MJsc02A9DGzKcwnhw1YlO5G0zwo+XTiA==
+Received: from AS4P189CA0028.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:5db::18)
+ by DU0PR07MB8881.eurprd07.prod.outlook.com (2603:10a6:10:310::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Tue, 28 Jul
+ 2026 16:10:38 +0000
+Received: from AM4PEPF00027A6B.eurprd04.prod.outlook.com
+ (2603:10a6:20b:5db:cafe::70) by AS4P189CA0028.outlook.office365.com
+ (2603:10a6:20b:5db::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.12 via Frontend Transport; Tue,
+ 28 Jul 2026 16:10:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.2.85)
+ smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
+Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
+ designates 131.228.2.85 as permitted sender) receiver=protection.outlook.com;
+ client-ip=131.228.2.85; helo=fihe02smtplvp01.emea.nsn-net.net; pr=C
+Received: from fihe02smtplvp01.emea.nsn-net.net (131.228.2.85) by
+ AM4PEPF00027A6B.mail.protection.outlook.com (10.167.16.89) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.5
+ via Frontend Transport; Tue, 28 Jul 2026 16:10:37 +0000
+Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
+	by fihe02smtplvp01.emea.nsn-net.net (Postfix) with ESMTP id 1F27180000A4;
+	Tue, 28 Jul 2026 19:10:36 +0300 (EEST)
+From: chia-yu.chang@nokia-bell-labs.com
+To: linux-rdma@vger.kernel.org,
+	eperezma@redhat.com,
+	jasowang@redhat.com,
+	virtualization@lists.linux.dev,
+	mst@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	linux-doc@vger.kernel.org,
+	corbet@lwn.net,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	kuniyu@google.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	dave.taht@gmail.com,
+	jhs@mojatatu.com,
+	kuba@kernel.org,
+	stephen@networkplumber.org,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	andrew+netdev@lunn.ch,
+	donald.hunter@gmail.com,
+	ast@fiberby.net,
+	liuhangbin@gmail.com,
+	shuah@kernel.org,
 	linux-kselftest@vger.kernel.org,
-	Joe Damato <joe@dama.to>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 5/5] selftests/net: test PACKET_IGNORE_OUTGOING
-Date: Tue, 28 Jul 2026 09:09:30 -0700
-Message-ID: <20260728160935.4128982-6-joe@dama.to>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260728160935.4128982-1-joe@dama.to>
-References: <20260728160935.4128982-1-joe@dama.to>
+	ij@kernel.org,
+	ncardwell@google.com,
+	koen.de_schepper@nokia-bell-labs.com,
+	g.white@cablelabs.com,
+	ingemar.s.johansson@ericsson.com,
+	mirja.kuehlewind@ericsson.com,
+	cheshire@apple.com,
+	rs.ietf@gmx.at,
+	Jason_Livingood@comcast.com,
+	vidhi_goel@apple.com
+Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
+	Parav Pandit <parav@nvidia.com>
+Subject: [PATCH v4 net-next 1/1] net: update comments for SKB_GSO_TCP_ECN and SKB_GSO_TCP_ACCECN
+Date: Tue, 28 Jul 2026 18:10:07 +0200
+Message-Id: <20260728161007.650717-1-chia-yu.chang@nokia-bell-labs.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM4PEPF00027A6B:EE_|DU0PR07MB8881:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2ec4b0d4-a356-4371-c347-08deecc2c362
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700016|23010399003|18002099003|11063799006|56012099006|10063799003|10067099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	DLnuqZySk2338TfnMLSf3RD2ZtaFFN/cNQnytbs+IVy7dKZXRx0JJwDAQL4VdmVhGJpBbz2CbBYpUYdew0MIRKQfSliqoC8w3lmQ8TFAfngu8KV1wNp03W0vcoiCCToWhOX6rmambvdzZQd0xayuHTZL85ZL7zashna1pGw/E3U6Ak58sXOTUAsbm1uMTe5s6lTAg4NYP6Kiyqm4XYWw2OcCI+rnkJVU1B437KnRdGEP8hyxDxnWSo0qq24AYAhsWCs1+CKF92Zb8fsX2QHpoPZq7cwhukWxR00mwT6WRoXGlclcB9NbSyoYrTfs/Ao/7ggvmTwXjFchy8CBXdIosOZ1kKRDKVCHqyrEkqz2KYJy8rMCB8UTTjxywLFayDx3oKBUJJ1sEOZ1vH9wgDCLwU8sA3hLIySNVVgjEV+42LE4gcjXUv3vv9ibvCcDN3ToNYML0C5P4jepvPLmsJBnpXrvdi+UU+Q4+ENy8kxoOlrZScueEYHZgwgq3KsrL6jCDZrEmUi6TTWn7vwm4531Xz7iEnKMeDh2ENKs1QI+9INhZZCbUzwf2tJMwncaUmVheIwRPzErPhLFysLdrLkG4+eOX159cN7Xwdbcou14gOxeVQB0L1zvW3KmRY6tXEpiJcuk7a2kISkh66A/G69msbYz6/Hu4NArgOaIRUJ+3eQZqmuAO6By9QSLd0qjPvDh2Rc9Q8k6FDmDrB08LjULx5OYP1ZjbF2iOP1BOSUcNcNQu0IO+fZFqdXZjNvB8Zzp
+X-Forefront-Antispam-Report:
+	CIP:131.228.2.85;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe02smtplvp01.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700016)(23010399003)(18002099003)(11063799006)(56012099006)(10063799003)(10067099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	1P16IADuZQ1yPsGuvLmEklGINfYZSZhp/7m92qV0qggk1bPWJp2VXNZ61ZcNrEMY8onn5+QimYYsntlZgpfF24K95vWxz0fGv+sCB2LwykpBI5Q2be1TNDU3t83ODXlmWXrB125nQjNT08cYewzXU+i7Ls+GsFA4+a0A+rPhE7AAXrh323D27Y9g+wQYlH4HQx96wxxBBYgYalljdgx7UTFuNLwjqUn+lnwJteYmDLbT76j0CcsEG/YEcAe3KyUh9+WgqtU6i0kH8EV6dcwSg7nnfnWb/lwb04r7EL7hjvWnyv8VqANRxqBGUK3fIYj9otc7qzZHNus3RD1tCwLuHXNYxfAJjxPapt7qtzxKtBVSGi0ns7A+13Mgil7entl3PP9pZ/BQ7GlveBtVfOFW7kNGkHdJeyYjs6om526WtMQFSgYholgF3rwI+zvq4ywi
+X-OriginatorOrg: nokia-bell-labs.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 16:10:37.8287
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2ec4b0d4-a356-4371-c347-08deecc2c362
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.85];Helo=[fihe02smtplvp01.emea.nsn-net.net]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-AM4PEPF00027A6B.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR07MB8881
 
-Test that setsockopt PACKET_IGNORE_OUTGOING:
+From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 
- - works with valid values (0 and 1),
- - rejects values outside of that range, and
+This patch updates the documentation of ECN‑related GSO flags, it
+clarifies the limitations of SKB_GSO_TCP_ECN and explains how to preserve
+the CWR flag (part of the ACE signal) in the Rx path.
 
-When enabled for a loopback sniffer, it only produces 1 copy of the
-packet (rx) instead of two copies (tx and rx). Use sll_pkttype to check
-the direction of the packet to ensure the correct packet is sniffed.
+For Tx, SKB_GSO_TCP_ECN and SKB_GSO_TCP_ACCECN are used respectively for
+RFC3168 ECN and AccECN (RFC9768). SKB_GSO_TCP_ECN indicates that the
+first segment has CWR set, while subsequent segments have CWR cleared.
+In contrast, SKB_GSO_TCP_ACCECN means that the segment uses AccECN and
+therefore its CWR flag must not be modified during segmentation.
 
-Signed-off-by: Joe Damato <joe@dama.to>
+For RX, SKB_GSO_TCP_ECN shall NOT be used, because the stack cannot know
+whether the connection uses RFC3168 ECN or AccECN, whereas RFC3168 ECN
+offload may clear CWR flag and thus corrupts the ACE signal. Instead, any
+segment that arrives with CWR set must use the SKB_GSO_TCP_ACCECN flag
+to prevent RFC3168 ECN offload logic from clearing the CWR flag.
+
+This corresponds to discussions in virtio mailing list:
+https://lore.kernel.org/all/20250814120118.81787-1-chia-yu.chang@nokia-bell-labs.com/
+And it was suggested to clarify SKB_GSO_TCP_ECN and SKB_GSO_TCP_ACCECN.
+
+Co-developed-by: Ilpo Järvinen <ij@kernel.org>
+Signed-off-by: Ilpo Järvinen <ij@kernel.org>
+Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Cc: Parav Pandit <parav@nvidia.com>
+
 ---
- tools/testing/selftests/net/psock_snd.c  | 84 +++++++++++++++++++++++-
- tools/testing/selftests/net/psock_snd.sh |  5 ++
- 2 files changed, 87 insertions(+), 2 deletions(-)
+v4:
+- Update commit message
 
-diff --git a/tools/testing/selftests/net/psock_snd.c b/tools/testing/selftests/net/psock_snd.c
-index f23877942ea3..0f6a30b26912 100644
---- a/tools/testing/selftests/net/psock_snd.c
-+++ b/tools/testing/selftests/net/psock_snd.c
-@@ -41,6 +41,7 @@ static bool	cfg_use_vlan;
- static bool	cfg_use_vnet;
- static bool	cfg_drop;
- static bool	cfg_aux_data;
-+static bool	cfg_ignore_outgoing;
+v3:
+- Update commit messages and documentation for clarity
+---
+ include/linux/skbuff.h | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 22eda1d54a0e..6c0d725facf0 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -671,7 +671,13 @@ enum {
+ 	/* This indicates the skb is from an untrusted source. */
+ 	SKB_GSO_DODGY = 1 << 1,
  
- static char	*cfg_ifname = "lo";
- static int	cfg_mtu	= 1500;
-@@ -377,7 +378,14 @@ static int setup_sniffer(void)
- 			error(1, errno, "setsockopt PACKET_AUXDATA");
- 
- 	pair_udp_setfilter(fd);
--	do_bind(fd);
-+
-+	/* binding to ETH_P_ALL adds the sniffer to ptype_all, which will see
-+	 * the dev_queue_xmit_nit copy. ignore_outgoing should suppress this.
+-	/* This indicates the tcp segment has CWR set. */
++	/* For TX, this indicates that the first TCP segment has CWR set, and
++	 * any subsequent segment in the same skb has CWR cleared. This flag
++	 * must not be used in RX, because the connection to which the segment
++	 * belongs is not tracked to use RFC3168 or AccECN. Using RFC3168 ECN
++	 * offload may clear CWR and corrupt ACE signal (CWR is part of it).
++	 * Instead, SKB_GSO_TCP_ACCECN shall be used to avoid CWR corruption.
 +	 */
-+	if (cfg_ignore_outgoing)
-+		do_bind_proto(fd, ETH_P_ALL);
-+	else
-+		do_bind(fd);
+ 	SKB_GSO_TCP_ECN = 1 << 2,
  
- 	return fd;
- }
-@@ -386,7 +394,7 @@ static void parse_opts(int argc, char **argv)
- {
- 	int c;
+ 	__SKB_GSO_TCP_FIXEDID = 1 << 3,
+@@ -706,6 +712,13 @@ enum {
  
--	while ((c = getopt(argc, argv, "abcCdDgl:qt:vV")) != -1) {
-+	while ((c = getopt(argc, argv, "abcCdDgil:qt:vV")) != -1) {
- 		switch (c) {
- 		case 'a':
- 			cfg_aux_data = true;
-@@ -409,6 +417,9 @@ static void parse_opts(int argc, char **argv)
- 		case 'g':
- 			cfg_use_gso = true;
- 			break;
-+		case 'i':
-+			cfg_ignore_outgoing = true;
-+			break;
- 		case 'l':
- 			cfg_payload_len = strtoul(optarg, NULL, 0);
- 			break;
-@@ -443,6 +454,10 @@ static void parse_opts(int argc, char **argv)
+ 	SKB_GSO_FRAGLIST = 1 << 18,
  
- 	if (cfg_aux_data && cfg_drop)
- 		error(1, 0, "option aux data (-a) conflicts with drop (-D)");
-+
-+	if (cfg_ignore_outgoing && (cfg_drop || cfg_aux_data))
-+		error(1, 0,
-+		      "option ignore outgoing (-i) conflicts with -D and -a");
- }
- 
- static void check_packet_stats(int fd, unsigned int expected_packets)
-@@ -486,6 +501,66 @@ static void check_packet_stats(int fd, unsigned int expected_packets)
- 		error(1, 0, "stats: tp_drops %u != 0 after clear", st.tp_drops);
- }
- 
-+static void set_ignore_outgoing(int fd, int val)
-+{
-+	socklen_t len = sizeof(int);
-+	int got = -1;
-+
-+	if (setsockopt(fd, SOL_PACKET, PACKET_IGNORE_OUTGOING,
-+		       &val, sizeof(val)))
-+		error(1, errno, "setsockopt PACKET_IGNORE_OUTGOING %d", val);
-+
-+	if (getsockopt(fd, SOL_PACKET, PACKET_IGNORE_OUTGOING, &got, &len))
-+		error(1, errno, "getsockopt PACKET_IGNORE_OUTGOING");
-+	if (got != val)
-+		error(1, 0, "getsockopt: expected %d got %d", val, got);
-+}
-+
-+static void check_ignore_outgoing_range(int fd)
-+{
-+	int val;
-+
-+	/* Values outside [0, 1] must be rejected with -EINVAL. */
-+	val = 2;
-+	if (setsockopt(fd, SOL_PACKET, PACKET_IGNORE_OUTGOING,
-+		       &val, sizeof(val)) != -1 || errno != EINVAL)
-+		error(1, errno,
-+		      "setsockopt PACKET_IGNORE_OUTGOING val=2: expected EINVAL");
-+
-+	val = -1;
-+	if (setsockopt(fd, SOL_PACKET, PACKET_IGNORE_OUTGOING,
-+		       &val, sizeof(val)) != -1 || errno != EINVAL)
-+		error(1, errno,
-+		      "setsockopt PACKET_IGNORE_OUTGOING val=-1: expected EINVAL");
-+}
-+
-+static void test_ignore_outgoing(int fds)
-+{
-+	char *expected = tbuf + sizeof(struct virtio_net_hdr);
-+	int expected_len;
-+
-+	/* ptype_all sniffer on loopback should produce two copies per packet
-+	 * (RX and TX).
++	/* For TX, this indicates that the TCP segment uses the CWR flag as part
++	 * of the ACE signal, and the CWR flag must not be modified in the skb.
++	 * For RX, any incoming segment with CWR set must use this flag so that
++	 * no RFC3168 ECN offload can clear the CWR flag. This is required to
++	 * preserve ACE signal correctness (CWR is part of it) in a forwarding
++	 * scenario, e.g., from one netdevice RX to other netdevice TX
 +	 */
-+	expected_len = do_tx();
-+	expected_len -= sizeof(struct virtio_net_hdr);
-+	do_rx(fds, expected_len, expected, true, PACKET_OUTGOING);
-+	do_rx(fds, expected_len, expected, true, PACKET_HOST);
-+	check_packet_stats(fds, 2);
-+
-+	/* 0 and 1 accepted; anything else rejected. */
-+	set_ignore_outgoing(fds, 0);
-+	set_ignore_outgoing(fds, 1);
-+	check_ignore_outgoing_range(fds);
-+
-+	/* With PACKET_IGNORE_OUTGOING set, only the rx copy survives. */
-+	do_tx();
-+	do_rx(fds, expected_len, expected, true, PACKET_HOST);
-+	if (recv(fds, rbuf, sizeof(rbuf), 0) != -1 || errno != EAGAIN)
-+		error(1, errno, "expected EAGAIN, got extra packet");
-+	check_packet_stats(fds, 1);
-+}
-+
- static void run_test(void)
- {
- 	int fdr, fds, total_len;
-@@ -493,6 +568,11 @@ static void run_test(void)
- 	fdr = setup_rx();
- 	fds = setup_sniffer();
+ 	SKB_GSO_TCP_ACCECN = 1 << 19,
  
-+	if (cfg_ignore_outgoing) {
-+		test_ignore_outgoing(fds);
-+		goto out;
-+	}
-+
- 	total_len = do_tx();
- 
- 	if (cfg_drop) {
-diff --git a/tools/testing/selftests/net/psock_snd.sh b/tools/testing/selftests/net/psock_snd.sh
-index 111c9e2f0d21..7fa0a3297988 100755
---- a/tools/testing/selftests/net/psock_snd.sh
-+++ b/tools/testing/selftests/net/psock_snd.sh
-@@ -102,4 +102,9 @@ echo "test drops statistics"
- echo "test aux data"
- ./in_netns.sh ./psock_snd -a
- 
-+# test ignore outgoing
-+
-+echo "test ignore outgoing"
-+./in_netns.sh ./psock_snd -i
-+
- echo "OK. All tests passed"
+ 	/* These indirectly map onto the same netdev feature.
 -- 
-2.53.0-Meta
+2.34.1
 
