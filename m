@@ -1,77 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304642641FC;
-	Tue, 28 Jul 2026 01:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2501B18C933
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 01:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785201063; cv=none; b=Lhsh5M4CvwD2ngvOOypKi7L9gcl+AZpF3P4ysFlUatbobF69pJfvczmL6Gjv/c2FJUwu+RqjZLG86WRyKAeRqiMZJjZ6NeWPgNRlIFxrT9T++FvNjDVjqfoibjivr/QR6a0BAsvdpNJYAsZk6rUoJHidURiX3RtXTper/fNR7XU=
+	t=1785201121; cv=none; b=Y5lij3tR08Q97+V/zX6TTH1kkyLuP1YKOil1QwclOPN5h5qzcdRjdMUZES3m/o+1xW2AWfZbmUv3QwLF/9vQoEEHeuoETTQ6rWkfDdJQrZb+JK6cK3K3lrpKijpvCs+g/44syGmfoYEeFeivS+WKnUgA14aqaaBpll0qxPgKve8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785201063; c=relaxed/simple;
-	bh=QcTNW/xl76b51zbatSHVNa2jP7l1csY3QI0mJIV3xUA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kyMZHq0tcrU9mJ1HD9hX6t8giU/Q9QZsHw6zu/dlEtlDfkntKsRe+syG+xGh3tP2HXswnpS3wFXxFTIfbbF4nWs7gBjAO5zsGGLIqRlvI/CcEwo12LA+z6otYEZ2kBrud9psRIvN0LSR3QuCSsAeE0WJ+zRYJur/R8Nze0jnMRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6IdMCTP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785201121; c=relaxed/simple;
+	bh=3mLfRO/PPrsrdybsmFq5DHs4SE/oj4WkhpM6l1jHqVY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eIDWKcuaQyzibnNnpkyW34AANQLMLbyXFAYInOjIDjJRKXUOMJZC2xCoGwqQkGQ8A5jyr93ZKhFGrvJc07N2ezATzDL1ekQbz5fVmURmsIQU14DMgi1GRaOo5BGfWzSh8sZh4Og3jRCnHx+xJzO1xP9ws3lRuTo0xcSECwjUIQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FFwgaeOL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6IdMCTP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F451F000E9;
-	Tue, 28 Jul 2026 01:11:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FFwgaeOL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A827C1F000E9;
+	Tue, 28 Jul 2026 01:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785201061;
-	bh=XpGz++o1hIG6hggRhPu8aPVTpDuVu7JWAALkS9dQhzs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Q6IdMCTPLhyZnf9mMjOx/v9EaS5oCGR2Yd0HZjrSK0/BAkCFayFnq6v+Q6Psr6R+w
-	 D16J/3NaeL6MwxBX40J/ALShOr4DcIjWHp+rqEXFODITxJ0jpdj3b/U8sygdlmBGUc
-	 lyjmdRgs5qtoiMbmoLZp+cjSTKMZaiWtFBVrFfM5UeFOOXbfUSwfnN2Ckl/G5p/N8i
-	 4dwpe1yznvDhWzhpHWrt42hjBnlhZ28aab2CX0Ep8RvFUtuHjoKa/oS1yam6BIrycF
-	 Cbip5JA+t7WhJojox7/i1VunheyrRYnG4S+FDiZQcvMVlJauy6aTmVy61wUDHSw7ZA
-	 NlaE3ciYYbYQw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19B97380CED8;
-	Tue, 28 Jul 2026 01:10:28 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1785201120;
+	bh=aA8TNZhxi8Y6E2rakA2uAUqcefRIYqdd2Gk/Fpzawbo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=FFwgaeOLODQgrXKSTchu9qa3xcGwAxuG1XSP5xMLOQKB7mS6GBFAcRU++YBcP74rg
+	 dUgTAqi6xuGvrILH3DxxmTNTqD1PuvgWEl3aUsB6aK9ij/TXn4xdOvDDUBBoGTqAxA
+	 WCkrE11YR3zg0TIZNKL0W97rmBRSDCsk8Gmn/klhMBhGlDPvDf9aAspq7p9OgfQYjs
+	 Ta6sidXQcpkvuNcc0eIVIg3pU4MAQX2AI1atyAw+1A6um/kuYt/96N+/2bs4EzcSNC
+	 otkl3S0qR45A+niOsuc6GKE4dJZ88/7AcT4CDK8DghLGOk4PQzJ8eOLeTICFtj5I4g
+	 rqOoD2PlbYJsg==
+Date: Mon, 27 Jul 2026 18:11:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Siddaraju DH <siddaraju.dh@intel.com>
+Cc: Michal Kubecek <mkubecek@suse.cz>, Andrew Lunn <andrew@lunn.ch>, Maxime
+ Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org, Shubham
+ Das <Shubham.Das@intel.com>, Balaji Chintalapalle
+ <balaji.chintalapalle@intel.com>, Vijay Srinivasan
+ <vijay.srinivasan@intel.com>, Magnus Lindberg
+ <magnus.k.lindberg@ericsson.com>, Niklas Damberg
+ <niklas.damberg@ericsson.com>, Jonas Wirandi <jonas.wirandi@ericsson.com>,
+ Siddaraju DH <siddarajudh@gmail.com>
+Subject: Re: [PATCH v3 net-next] ethtool: link 10000baseCR to SFF-8431,
+ Appendix-E SFP+ DA
+Message-ID: <20260727181158.1791cf45@kernel.org>
+In-Reply-To: <20260721150638.3084698-1-siddaraju.dh@intel.com>
+References: <20260721150638.3084698-1-siddaraju.dh@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] selftests: net: Add a missing config option
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178520102663.1486027.17250560117614369813.git-patchwork-notify@kernel.org>
-Date: Tue, 28 Jul 2026 01:10:26 +0000
-References: <20260723140241.132120-1-alice.kernel@fastmail.im>
-In-Reply-To: <20260723140241.132120-1-alice.kernel@fastmail.im>
-To: Alice Mikityanska <alice.kernel@fastmail.im>
-Cc: kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, alice@isovalent.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 23 Jul 2026 17:02:41 +0300 you wrote:
-> From: Alice Mikityanska <alice@isovalent.com>
+On Tue, 21 Jul 2026 20:36:38 +0530 Siddaraju DH wrote:
+> Add comment to clarify the physical media 10000baseCR follows.
 > 
-> Commit 5cb53743e1ff ("selftests: net: Add a test for BIG TCP in UDP
-> tunnels") used iptables match comment, which was missed from the CI
-> kernel config. Add the missing config option.
-> 
-> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-> 
-> [...]
+> 10000baseCR does not correspond to any IEEE 802.3 *base-CR PMD.
+> It has no autonegotiation, no link training, and no mandatory FEC.
+> The industry standard for this media type is SFF-8431 Appendix-E
+> Direct Attach cable, also known as 10G_SFI_DA.
 
-Here is the summary with links:
-  - [net-next] selftests: net: Add a missing config option
-    https://git.kernel.org/netdev/net-next/c/8fe79aa2f1d6
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+v2 as already applied (no need to repost just for review tags)
