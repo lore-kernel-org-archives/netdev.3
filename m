@@ -1,50 +1,50 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70382FF675;
-	Tue, 28 Jul 2026 03:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFDB30E82E;
+	Tue, 28 Jul 2026 03:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785208257; cv=none; b=U8rsxB0V/CjoNAMHAKDCVkPOnwKlNRlqU8ZVJLlxcMXSymQfMFxt79XOkEpt5d0dyPY6RIuXM1P8oQImKfcbPRNOCE8nleggK47fY4vyMo7bxoGEpd4tb/3+VV4mASp3xMCc9ety9ggMpigISTmJ8GvxzywJMIx3IJVN6A97qfU=
+	t=1785208267; cv=none; b=S4ZiqWc/1/wthjVfIPcDYcC3qjLhonTD5p6UbQpQ5zx8/4RQSaqKZgU9FXRhSs+CowcED5UoJ77Mnav7+gaTK6wLg9PPSgNUtQiCZB5EqogptDiIzCk21T6gF53+Y2HYEX3ZLZaqYHoXnGRnemnx1KCmbc+ICSvaJjKxURmZ+JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785208257; c=relaxed/simple;
-	bh=zrG1RdNNGSxI9T3yhkH5dV5kNVwg4+sQdxl7ljLH+BY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t78KSFD+xDV3WdtXf+2SY/d4yvCOC/Pk3sgK0W6yyx5ur9YJAOuQytLl22AmkBXegciPuEvBPbS2R1HkTR61WczokZAhp08rWnaMU4ldDRWEaEzxqPZdl/4fv+jelgO/9KH1S6brXPGxt3FGA5nAt8CsA4mxbCn9tQRA8C0WR7I=
+	s=arc-20240116; t=1785208267; c=relaxed/simple;
+	bh=zbzDIac7wN/UD0dBkaiHYxWyG4nv6KeKwKJqNQU5nq0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R8rI3PqyQraLWuHY3lC/1MA0byXTv78y3HN27zvprCVbTMTjY5SxdIFHEROXvkS1w1b4D7foyhXh1AWLxLmsX4SjkGUwYzHVwcbQOqu9xIxkO6e4lSXW/mwnzgEAc9Uh7f9vmTYxN1s+7RYHIC3w1ocTCXYnn5UGOuIDza1ItuA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: efba61d68a3111f1aa26b74ffac11d73-20260728
+X-UUID: f599b5c08a3111f1aa26b74ffac11d73-20260728
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:47ea0dea-bfe5-4d84-b5bd-77b28e6aa841,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:02b4a51e17288904b0765b21b61e8fcb,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|850|865|898|915,TC:nil,Content:0
-	|15|50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,O
-	SI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-O-INFO: VERSION:1.3.12,REQID:c6b318ce-08cd-4ace-9b83-857df5e0ee1d,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-30
+X-CID-META: VersionHash:e7bac3a,CLOUDID:991b81fab16968a64d22acced820850e,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|850|865|898,TC:nil,Content:0|15|
+	50,EDM:2,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,
+	OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: efba61d68a3111f1aa26b74ffac11d73-20260728
+X-UUID: f599b5c08a3111f1aa26b74ffac11d73-20260728
 X-User: heminhong@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <heminhong@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 492294208; Tue, 28 Jul 2026 11:10:50 +0800
+	with ESMTP id 1370908918; Tue, 28 Jul 2026 11:11:00 +0800
 From: Minhong He <heminhong@kylinos.cn>
-To: Paul Moore <paul@paul-moore.com>,
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org
-Cc: linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] netlabel: check register_netdevice_notifier() error in netlbl_unlabel_init()
-Date: Tue, 28 Jul 2026 11:10:43 +0800
-Message-Id: <20260728031043.76586-1-heminhong@kylinos.cn>
+Cc: linux-kernel@vger.kernel.org
+Subject: [PATCH net] ipv4: nexthop: handle errors in nexthop_init()
+Date: Tue, 28 Jul 2026 11:10:55 +0800
+Message-Id: <20260728031055.76708-1-heminhong@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -54,47 +54,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-netlbl_unlabel_init() installs the unlabeled connection hash table and
-registers a netdevice notifier, but ignores notifier registration errors
-and always returns success.
+nexthop_init() ignores errors from register_pernet_subsys(),
+register_netdevice_notifier() and rtnl_register_many(), so a partial
+initialization can appear successful.
 
-Check the error and unwind the hash table allocation on failure.
+Check each step and unwind the registrations that already succeeded.
 
 Signed-off-by: Minhong He <heminhong@kylinos.cn>
 ---
- net/netlabel/netlabel_unlabeled.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ net/ipv4/nexthop.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/net/netlabel/netlabel_unlabeled.c b/net/netlabel/netlabel_unlabeled.c
-index 47bae5e48db6..34704f6eb1d8 100644
---- a/net/netlabel/netlabel_unlabeled.c
-+++ b/net/netlabel/netlabel_unlabeled.c
-@@ -1397,6 +1397,7 @@ static struct notifier_block netlbl_unlhsh_netdev_notifier = {
-  */
- int __init netlbl_unlabel_init(u32 size)
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 6205bd57aa85..0ad40d93e3b5 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -4192,12 +4192,26 @@ static const struct rtnl_msg_handler nexthop_rtnl_msg_handlers[] __initconst = {
+ 
+ static int __init nexthop_init(void)
  {
+-	register_pernet_subsys(&nexthop_net_ops);
 +	int err;
- 	u32 iter;
- 	struct netlbl_unlhsh_tbl *hsh_tbl;
- 
-@@ -1419,7 +1420,16 @@ int __init netlbl_unlabel_init(u32 size)
- 	rcu_assign_pointer(netlbl_unlhsh, hsh_tbl);
- 	spin_unlock(&netlbl_unlhsh_lock);
- 
--	register_netdevice_notifier(&netlbl_unlhsh_netdev_notifier);
-+	err = register_netdevice_notifier(&netlbl_unlhsh_netdev_notifier);
-+	if (err) {
-+		spin_lock(&netlbl_unlhsh_lock);
-+		RCU_INIT_POINTER(netlbl_unlhsh, NULL);
-+		spin_unlock(&netlbl_unlhsh_lock);
-+		synchronize_rcu();
-+		kfree(hsh_tbl->tbl);
-+		kfree(hsh_tbl);
++
++	err = register_pernet_subsys(&nexthop_net_ops);
++	if (err)
 +		return err;
-+	}
+ 
+-	register_netdevice_notifier(&nh_netdev_notifier);
++	err = register_netdevice_notifier(&nh_netdev_notifier);
++	if (err)
++		goto err_unregister_pernet;
+ 
+-	rtnl_register_many(nexthop_rtnl_msg_handlers);
++	err = rtnl_register_many(nexthop_rtnl_msg_handlers);
++	if (err)
++		goto err_unregister_notifier;
  
  	return 0;
++
++err_unregister_notifier:
++	unregister_netdevice_notifier(&nh_netdev_notifier);
++err_unregister_pernet:
++	unregister_pernet_subsys(&nexthop_net_ops);
++	return err;
  }
+ subsys_initcall(nexthop_init);
 -- 
 2.25.1
 
