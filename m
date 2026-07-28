@@ -1,64 +1,64 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578FE44E665
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 14:36:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB054483A5
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 14:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785249376; cv=none; b=Hi+GO4jl/xrRwxA7Lb5bQm1Sho+ZzOWuwvvx9XktgfJXXxNpUk7dRVdPXGj72rlxoS+3bjMXSp7iphOob6jXVikm6/9AQ4cGKwZmnWB4pTsii/5C04OLAFsZD6u9mkUiD27+d9jfOi5FuDWdzE/T2AfJtRauxjjCa19Yr5MHtkI=
+	t=1785249377; cv=none; b=b0I5k/vnFk8v5gMNCSMFMHNF/qOA/sBgpGvon8fheIb2nYYpdHy57IusLeN0nZ9Vpt7lrKVaheaBZKM9ehIk2qu8qeORDmy4e4e1XuIyIG1MZjRIWlnEFuO5XvHTPHG71+g/hoLcszJ78btmSK2s4WO+A16FUszp8C1OCQDVOhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785249376; c=relaxed/simple;
-	bh=/zgZQOPZCtTW3qW7iAPjRY9cXoUBdIpT/63KCVTOCVM=;
+	s=arc-20240116; t=1785249377; c=relaxed/simple;
+	bh=bnPrbIsgo0B4ui24nEEHwECPfVxDiL54JLh1BUGmpig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVmjFeeXMQttLj5xm+IiuQoXrxszhrQ83YXtU1bR/ZEOumEjVVcXDbRZutVRd92wYuB3C8/ucef3eYenlU7wRz9Fzpuf4YDP3gbVGv5+2fHveUTpLVNN4SJcU6QEyB/oy8kJLarrWCDYYjcZE3SB9qNn5srmjaeBcNwjEDzntrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o8PP+b/1; arc=none smtp.client-ip=209.85.128.46
+	 MIME-Version; b=u/kbJMbBYVLLldljs2OgmfuAujbIJi19dM+sGAxtUSr1/uslGLjeMWzFxa5syQKYEx+m+9LKw3FBEpzvkgKoCY3Ac4fX8ZRWzH1duIHUL5h5mUv7a/p2mjSfm/URURuVSa45EHuee1wbgGUVYXTnjjIOfJv+xK2KuazuwxdwDcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fS1KGjaz; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o8PP+b/1"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490791a3e92so5250885e9.0
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 07:36:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fS1KGjaz"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-495502852d1so3694185e9.2
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 07:36:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785249369; x=1785854169; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785249370; x=1785854170; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wwIhEfi9+6USJOv/w81ZBdN5gBR90fsvVRhVWHIYqds=;
-        b=o8PP+b/16WJOZWpsUbUtEVkzZewoW7gQJaxEX+sXOG9XP2grdnEANTKdTwyoVFLrH/
-         K50xpS3NGo+2o4kvogvb3m3EmfULi0Yke3VXqWbyF4B4JodoXSz2m3X7ov00up7m1Jb/
-         XncQ91XCanE3F9ksjcCEDW/gWWbzen45v40Vg9BsBYzovD58Q0tuy3HqbZBCTIGORyJF
-         QEi9kUqmsPlIZ59GtEPvEkG6ALHF339oHD4oQcdDNkdVw11wWfdd2lJdlWpbPa17krQG
-         o/1CdxO1SE0rIxpaLDEeipDWcdk/fWASOlkNa4tosCIMykVpvs8OGTy/WCLAg1a62ppR
-         ebRA==
+        bh=NdInEAZ8nn3vO1nlplnXdsK6Xwfl3pVvKWeDQ7dke3Y=;
+        b=fS1KGjaz0eGsDdzhzYezsMIiHR9ZOOOga9Bh4nhcp5XS6MGZAY51r/dFKK4l/wRYjD
+         8UiJ9jyW62xLLz9BzT6VMQl16knZb5d7XGxuLrnDkWCaf+I7w9NIXvZjCGJrQWa+p8ry
+         f0M4c2Fq8aS6QKTWAYRlg+NuPFSfBAPZf3Ym6EpK4yomIv1dFYReGQL2SgaoEbhzmIaA
+         XDaTkCVCZo/sRUfKYv/zf5qkpvMf5kaNwWWmPE7sEcuhbzA15PrcgHML5QPPj9W3K9z1
+         hiHavk7jMRNeqmkHt0e5t21+2c2uSGplL5qFm6ERZ+jPzmfCtkzA9JpyZOhjiWQ0y5K3
+         uR2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785249369; x=1785854169;
+        d=1e100.net; s=20251104; t=1785249370; x=1785854170;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wwIhEfi9+6USJOv/w81ZBdN5gBR90fsvVRhVWHIYqds=;
-        b=oU/8CQvPdAg1lY+ajNwIH55dMUbaGRrLP3a1f96SRk6EwcUzJjgWWxck8iPyK46FZj
-         gysVsTD9w6HkeAZnFak8wkiausG4ggYgsZdoAB0whDiT6OLUstCFQ1FTETofML2IQ0Uo
-         BAwEEpPQyqiwu2jWdnheg1bHfXLybBowF8T/AnYZZu1CYglqdZ1aSEiVQrAJu/tEym/3
-         fPsoMU7GtGOQ7cYjW4+4rfumShjEENbFcG3AtMVeKCSB+q+bOpRafNvm/oLk7A5JT94L
-         xwU+LGOmzX85a/28q9B5y8W5H/wMrHcaK6k+vDwZtqtq3AZB2/YHXcmgdv4/vW+gzq3b
-         NnJQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrZy8EUE/u1ieerFcK1t8hEBlsNR4ya8kWDVLWbH2xgSpQ7/X7/OtM0BQPmVYx2d77qA+ZIq5M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAvZy6MNCLHuNh27uyPyY4RZKs2fsPNLfUoKPzUMnqmW1COYFX
-	LqxwanBHRaIJbzkP+Sey/yoZhx/2vri5TN8vX6GQRryAIc9PSbIdY9iaIeTIEq0wsTo=
-X-Gm-Gg: AR+sD13sZA6Rs11nvV1o8zwwQOPzbLyRpc+WPILr1h69Keih4jFAGoqpRQ27KWtxVLu
-	JTDGzG0SEJKnlh7Qk7gcnlHsWLERu9WK6wXAwLrVuEzvV2YBy+K426+pJDYCsVhJxe0oH9UqHqE
-	L6YdbxwENCxllC86NpuD8XY75QYGrJkYipKqtLfNaKAORU39VrQBCqEsCgSMtHy7S73t1kdrDhA
-	kSsP0Pp19YI/5NVk3bdqJl4rK98IK3dNMO22HcYFQ/jhL4hBVy1uimaa01XSar6WRaDwxSuSWFW
-	dc2D/5BOZQWhuuI0q7VUDuQneiinQDjDxHCxfUaqXdormCHAL+4XfWymVM8jGfAx6/kO5BKfLAJ
-	0pJWftsynMIIOUqMwd3Zpzu0w5be0jqBdreuJsKzGxtBFh9xGV0HMX0OMdsqDnSe6N6wgXbYs5H
-	vvtAPv2NZlAqTnBxUNAdBSkRmiPy7ZGO+SKW7+45EBlIAS2GxQpkZDJFCPV7s9xdEP007IQLZNC
-	wcYcNUqnt2aofsVWDbvaGiUu8Z7hYD2AFjv4Tg=
-X-Received: by 2002:a05:600c:4f8a:b0:495:7287:2937 with SMTP id 5b1f17b1804b1-496c65dc24fmr16790635e9.8.1785249368784;
-        Tue, 28 Jul 2026 07:36:08 -0700 (PDT)
+        bh=NdInEAZ8nn3vO1nlplnXdsK6Xwfl3pVvKWeDQ7dke3Y=;
+        b=bmT4H8o8OncdPdp06xihA0Ydyj0Dacp9SdkvS/XVKmW/eikZAf/cPEvCpqL5oqTxgZ
+         yaS0CkmwqCMhy0Zlyr5JYclJThXx9BCmdHBXZ9rrArcC3DI7Jq1T+ZumXZfO2MZLfO8T
+         J7NMv4R9BYXk1qXA2rvid7MM8lCRI1l6cEh7c6LDXJLMKv2CDvDpzu/+pvUmW7hL4MmA
+         7q2DINPbGNhYQYW/te76WxYJdHMmIs7HNdygUhbJtcdykBIVrIu94lbTrE4zuCPlzLg7
+         jbYgmV+qG+ZT2chbHlFC+FpUNkdDhwOwUkYx0ClspC+zOjZSi5ruv51nZYMbdHZ+LAmt
+         HtIw==
+X-Forwarded-Encrypted: i=1; AHgh+RoUwTULaSeGA5wYVLltQa0tQ+ZCzSUIXu6e7cZpe/aHP8iynkVRLUMSSt2G4lYgubBcqzrgW78=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBIabnc0pX5Xzkcf09MCbDAeofML/H/eGG6ni7zplPgWF1+a7N
+	t+C8r6n4CR/iNPbxdygGVOPZOZKCCaxBg10zgy7rySRW3EKkFNmLccH4
+X-Gm-Gg: AR+sD11qKd+9A8TuXD4bh0xwsaUc+edon1+2CHy9BYUccHgPsWtK7yeRNo7xbkqT/K+
+	1kgQbS2LgxvzQwSITP9UwIVxpUrclg15P8H4oZzKmUJMXrzlw+r2qDD1vuLL9tG73QpYbLcnJxx
+	VmmbSq3inx+IDl8Hd0TL4UdRV9gLHJEFazD870SlDpc6nQd8smO0hjRzxlF5KnnlzwHQahO5tpA
+	b/7/0lfM6+gJPKZoijyXlHZMq5yz0TVETwR7HjzZrJ2jfLKptx2KwnLi9dd/OrVVC2fPTP2k+KK
+	fSw0Dqvr8OL4BaHpOeNMHsVRWyiOiTXu3mwZ+8kPXjNv+gIznFqE81QOz3bSfzO52pye4I9ebMG
+	GcHEwg2o/XGdKtsvdeVTOSaTlkXYPcxyMn45T8TJ06t8AocQ8kA8A4dMXgyi2ptvzucjV9LCBlr
+	2IfbpGsua6+lh8ivHftnVRmcKFcjTFpPR53CqgJaZUACYsV/0epItLmOLaprlVH1vl2JmPncqee
+	rSKHJxZKymnvWN2TZ0CXoUsj70lqff8DPImoWA=
+X-Received: by 2002:a05:600c:1912:b0:490:ec79:3046 with SMTP id 5b1f17b1804b1-496c60b4949mr17676285e9.0.1785249370304;
+        Tue, 28 Jul 2026 07:36:10 -0700 (PDT)
 Received: from L-022584.energy.envision.com (dynamic-077-179-168-074.77.179.pool.telefonica.de. [77.179.168.74])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957bfe07e1sm303390105e9.3.2026.07.28.07.36.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957bfe07e1sm303390105e9.3.2026.07.28.07.36.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 07:36:08 -0700 (PDT)
+        Tue, 28 Jul 2026 07:36:09 -0700 (PDT)
 From: Xin Xie <xiexinet@gmail.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -71,9 +71,9 @@ Cc: edumazet@google.com,
 	netdev@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Xin Xie <xiexinet@gmail.com>
-Subject: [PATCH net 2/3] net: hsr: clone before updating path and LAN IDs in tagged frames
-Date: Tue, 28 Jul 2026 16:36:03 +0200
-Message-ID: <20260728143604.26-3-xiexinet@gmail.com>
+Subject: [PATCH net 3/3] selftests: net: hsr: add shared-mutation regression test
+Date: Tue, 28 Jul 2026 16:36:04 +0200
+Message-ID: <20260728143604.26-4-xiexinet@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260728143604.26-1-xiexinet@gmail.com>
 References: <20260728143604.26-1-xiexinet@gmail.com>
@@ -85,111 +85,261 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-hsr_create_tagged_frame() and prp_create_tagged_frame() update the
-path/LAN ID in the received skb data buffer and then skb_clone() it
-for the egress port. When the same frame is forwarded to both slave
-ports, the second port ID update lands in the same shared buffer the
-first port clone still points at; if that clone is still queued
-(qdisc backlog, NETEM, BQL), it is transmitted with the second port
-ID - a silent on-wire corruption.
+Cover both shared-skb mutation classes with one test. The PRP LAN-ID
+case injects 200 pre-tagged frames on the master with one slave
+egress delayed by netem and selects exactly the injected flow: on an
+affected kernel all 200 frames leave slave A with slave B LAN ID
+(FAIL); with the helpers privatizing clone data before the ID update
+both sides stay isolated (PASS). The HSR RedBox source-MAC case
+injects a tagged multicast data frame on a slave of an HSR RedBox:
+on an affected kernel the local stack receives the RedBox MAC
+instead of the originating node MAC (FAIL); with the interlink-bound
+skb privatized before the rewrite, the master keeps the node MAC and
+the interlink keeps the RedBox MAC (PASS).
 
-One always-available trigger is the master transmit path: a
-pre-tagged frame transmitted on the master (for example injected
-locally via AF_PACKET with a valid RCT) passes prp_fill_frame_info()
-with frame->skb_prp set, the master-origin gate lets it through to
-both slaves, and both slaves run prp_set_lan_id() + skb_clone() on
-the same buffer. Tagged frames arriving on an HSR RedBox interlink
-take the analogous path through hsr_create_tagged_frame(). Normal
-traffic tests do not expose the race: the window between the first
-dev_queue_xmit() and the second ID write is only a few instructions
-and opens only under egress backpressure. With a 200 ms netem delay
-on one slave, all 200 injected frames left that slave carrying the
-other slave LAN ID in testing.
+Capture filters select destination, post-strip EtherType, and the
+exact payload while leaving the asserted source MAC unfiltered.
+Capability probes (tc, python3, sch_netem, HSR/PRP support) exit
+ksft_skip and that status is propagated; real failures exit 1.
 
-Reorder both helpers: clone first, privatize the clone with
-skb_cow(), reacquire the header/trailer pointer, then update the ID.
-skb_cow() is used rather than skb_cow_head() because privacy is
-needed for the whole linear area, not only the header: the HSR tag
-sits in the head, but the PRP RCT sits at the linear tail.
-skb_get_PRP_rct() computes the trailer from skb_tail_pointer(), so
-the returned pointer is always inside the linear area that
-pskb_expand_head() copies; frames with a nonlinear tail are
-mis-parsed by the existing helper regardless and are out of scope
-here. (Both wrappers currently reach pskb_expand_head(); they differ
-in the cloned-data predicate, and correctness here needs full data
-privacy, not only header privacy.) This adds one linear-head copy
-per tagged egress; untagged master traffic keeps the existing
-__pskb_copy() path and pays nothing from this patch.
-
-Fixes: 451d8123f897 ("net: prp: add packet handling support")
 Signed-off-by: Xin Xie <xiexinet@gmail.com>
 ---
- net/hsr/hsr_forward.c | 35 ++++++++++++++++++++++++++++++-----
- 1 file changed, 30 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/hsr/Makefile      |   1 +
+ .../selftests/net/hsr/hsr_shared_mutation.sh  | 213 ++++++++++++++++++
+ 2 files changed, 214 insertions(+)
+ create mode 100755 tools/testing/selftests/net/hsr/hsr_shared_mutation.sh
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 67aaf5a862..974b55f248 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -336,12 +336,24 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_frame_info *frame,
- 	int movelen;
+diff --git a/tools/testing/selftests/net/hsr/Makefile b/tools/testing/selftests/net/hsr/Makefile
+index 31fb9326cf..aeae7f3d6d 100644
+--- a/tools/testing/selftests/net/hsr/Makefile
++++ b/tools/testing/selftests/net/hsr/Makefile
+@@ -7,6 +7,7 @@ TEST_PROGS := \
+ 	hsr_redbox.sh \
+ 	link_faults.sh \
+ 	prp_ping.sh \
++	hsr_shared_mutation.sh \
+ # end of TEST_PROGS
  
- 	if (frame->skb_hsr) {
--		struct hsr_ethhdr *hsr_ethhdr =
--			(struct hsr_ethhdr *)skb_mac_header(frame->skb_hsr);
-+		struct hsr_ethhdr *hsr_ethhdr;
+ TEST_FILES += hsr_common.sh
+diff --git a/tools/testing/selftests/net/hsr/hsr_shared_mutation.sh b/tools/testing/selftests/net/hsr/hsr_shared_mutation.sh
+new file mode 100755
+index 0000000000..27103541cd
+--- /dev/null
++++ b/tools/testing/selftests/net/hsr/hsr_shared_mutation.sh
+@@ -0,0 +1,213 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++#
++# Verify that per-egress mutations of shared skb data are private:
++#
++# F2 (path/LAN ID): on an affected kernel the second slave's LAN-ID write
++# lands in the first slave's still-queued clone; with a netem delay on
++# slave A, injected frames leave A carrying B's LAN ID.
++#
++# F1 (RedBox source MAC): on an affected kernel an HSR-tagged multicast
++# frame received on a RedBox slave is cloned for master and interlink,
++# and the interlink's RedBox-MAC rewrite lands in the master clone's
++# buffer, so the local stack receives the RedBox MAC instead of the
++# originating node's MAC.
 +
-+		/* The original skb data may be shared with another egress
-+		 * clone. Make the clone data private before updating the
-+		 * path id so the update cannot corrupt the other copy.
-+		 */
-+		skb = skb_clone(frame->skb_hsr, GFP_ATOMIC);
-+		if (!skb)
-+			return NULL;
-+		if (skb_cow(skb, 0)) {
-+			kfree_skb(skb);
-+			return NULL;
-+		}
- 
- 		/* set the lane id properly */
-+		hsr_ethhdr = (struct hsr_ethhdr *)skb_mac_header(skb);
- 		hsr_set_path_id(frame, hsr_ethhdr, port);
--		return skb_clone(frame->skb_hsr, GFP_ATOMIC);
-+		return skb;
- 	} else if (port->dev->features & NETIF_F_HW_HSR_TAG_INS) {
- 		return skb_clone(frame->skb_std, GFP_ATOMIC);
- 	}
-@@ -377,15 +389,28 @@ struct sk_buff *prp_create_tagged_frame(struct hsr_frame_info *frame,
- 	struct sk_buff *skb;
- 
- 	if (frame->skb_prp) {
--		struct prp_rct *trailer = skb_get_PRP_rct(frame->skb_prp);
-+		struct prp_rct *trailer;
- 
-+		/* Same sharing hazard as above: privatize the clone data
-+		 * before updating the LAN id.
-+		 */
-+		skb = skb_clone(frame->skb_prp, GFP_ATOMIC);
-+		if (!skb)
-+			return NULL;
-+		if (skb_cow(skb, 0)) {
-+			kfree_skb(skb);
-+			return NULL;
-+		}
++ipv6=false
 +
-+		trailer = skb_get_PRP_rct(skb);
- 		if (trailer) {
- 			prp_set_lan_id(trailer, port);
- 		} else {
- 			WARN_ONCE(!trailer, "errored PRP skb");
-+			kfree_skb(skb);
- 			return NULL;
- 		}
--		return skb_clone(frame->skb_prp, GFP_ATOMIC);
-+		return skb;
- 	} else if (port->dev->features & NETIF_F_HW_HSR_TAG_INS) {
- 		return skb_clone(frame->skb_std, GFP_ATOMIC);
- 	}
++source ./hsr_common.sh
++
++DUR=5
++
++require()
++{
++	command -v "$1" >/dev/null 2>&1 && return 0
++	echo "SKIP: $1 not available"
++	exit $ksft_skip
++}
++
++require ip
++require tc
++require python3
++
++trap cleanup_all_ns EXIT
++
++# ------------------------------------------------------- F2: LAN-ID isolation
++# PRP DANP (proto 1), AF_PACKET pre-tagged injection, netem on slave A.
++run_f2()
++{
++	setup_ns ns 2>/dev/null || return $ksft_skip
++	nsx() { ip netns exec "$ns" "$@"; }
++
++	# Probe sch_netem inside the disposable namespace only.
++	if ! nsx tc qdisc add dev lo root netem delay 1ms 2>/dev/null; then
++		echo "SKIP: sch_netem not available"
++		return $ksft_skip
++	fi
++	nsx tc qdisc del dev lo root 2>/dev/null
++
++	# Capability probes end here; setup or runtime failure below is FAIL.
++	nsx ip link add vA type veth peer name vAp || { echo "FAIL: veth A"; return 1; }
++	nsx ip link add vB type veth peer name vBp || { echo "FAIL: veth B"; return 1; }
++	for i in vA vB vAp vBp; do
++		nsx ip link set "$i" up || { echo "FAIL: $i up"; return 1; }
++	done
++	nsx ip link add name prp0 type hsr slave1 vA slave2 vB supervision 45 proto 1 2>/dev/null
++	if [ $? -ne 0 ]; then
++		echo "SKIP: HSR/PRP not supported by this kernel"
++		return $ksft_skip
++	fi
++	nsx ip link set prp0 up || { echo "FAIL: prp0 up"; return 1; }
++	nsx tc qdisc add dev vA root netem delay 200ms || { echo "FAIL: netem"; return 1; }
++
++	nsx python3 /dev/stdin "$DUR" <<'PYF2'
++import socket, struct, select, sys, time
++
++dur = int(sys.argv[1])
++def lanid(pkt):
++    if len(pkt) < 20 or pkt[-2:] != b"\x88\xfb":
++        return None
++    return (pkt[-4] >> 4) & 0xF
++
++SRC = bytes.fromhex(open("/sys/class/net/prp0/address").read().replace(":", ""))
++DST = bytes.fromhex("02aabbccdd01")
++PAY = bytes(range(46))
++rct0 = struct.pack(">H", 0) + struct.pack(">H", 52 & 0x0FFF) + b"\x88\xfb"
++frame = DST + SRC + b"\x08\x00" + PAY + rct0
++
++tx = socket.socket(socket.AF_PACKET, socket.SOCK_RAW); tx.bind(("prp0", 0))
++sA = socket.socket(socket.AF_PACKET, socket.SOCK_RAW,
++        socket.ntohs(0x0003))
++sA.bind(("vAp", 0))
++sB = socket.socket(socket.AF_PACKET, socket.SOCK_RAW,
++        socket.ntohs(0x0003))
++sB.bind(("vBp", 0))
++sA.setblocking(False); sB.setblocking(False)
++for _ in range(200):
++    tx.send(frame); time.sleep(0.001)
++
++a, b = [], []
++end = time.time() + dur
++while time.time() < end:
++    r, _, _ = select.select([sA, sB], [], [], 0.3)
++    for s in r:
++        pkt = s.recv(65535)
++        if (pkt[:6] != DST or pkt[6:12] != SRC or pkt[12:14] != b"\x08\x00"
++                or pkt[14:14 + len(PAY)] != PAY):
++            continue
++        lid = lanid(pkt)
++        if lid is not None:
++            (a if s is sA else b).append(lid)
++
++print("A-side count=%d lan ids=%s" % (len(a), sorted(set(a))))
++print("B-side count=%d lan ids=%s" % (len(b), sorted(set(b))))
++if len(a) < 150 or len(b) < 150:
++    print("FAIL: too few injected frames captured (A=%d B=%d, sent 200)" % (len(a), len(b)))
++    sys.exit(1)
++bad_a = [x for x in a if (x & 1) != 0]
++bad_b = [x for x in b if (x & 1) != 1]
++if bad_a or bad_b:
++    print("FAIL: shared-mutation corruption - A: %d/%d wrong-lan, B: %d/%d wrong-lan"
++          % (len(bad_a), len(a), len(bad_b), len(b)))
++    sys.exit(1)
++print("PASS: per-egress LAN IDs isolated (A all bit0=0, B all bit0=1)")
++sys.exit(0)
++PYF2
++}
++
++# --------------------------------------------- F1: RedBox source-MAC privacy
++# HSR RedBox (proto 0), tagged multicast from a slave: master must keep
++# the node MAC, interlink must carry the RedBox MAC.
++run_f1()
++{
++	setup_ns ns 2>/dev/null || return $ksft_skip
++	nsx() { ip netns exec "$ns" "$@"; }
++
++	nsx ip link add vA type veth peer name vAp || { echo "FAIL: veth A"; return 1; }
++	nsx ip link add vB type veth peer name vBp || { echo "FAIL: veth B"; return 1; }
++	nsx ip link add vI type veth peer name vIp || { echo "FAIL: veth I"; return 1; }
++	for i in vA vB vI vAp vBp vIp; do
++		nsx ip link set "$i" up || { echo "FAIL: $i up"; return 1; }
++	done
++	nsx ip link add name hsr0 type hsr slave1 vA slave2 vB interlink vI \
++		supervision 45 proto 0 2>/dev/null
++	if [ $? -ne 0 ]; then
++		echo "SKIP: HSR RedBox not supported by this kernel"
++		return $ksft_skip
++	fi
++	nsx ip link set hsr0 up || { echo "FAIL: hsr0 up"; return 1; }
++
++	nsx python3 /dev/stdin <<'PYF1'
++import socket, select, sys, time
++
++NODE  = bytes.fromhex("021122334455")
++MCAST = bytes.fromhex("01005e000001")
++RB    = bytes.fromhex(open("/sys/class/net/vI/address").read().replace(":", ""))
++PAY   = bytes(range(46))
++
++def frame(seq):
++    tag = ((1 << 12) | len(PAY)).to_bytes(2, "big") + seq.to_bytes(2, "big") + b"\x08\x00"
++    return MCAST + NODE + b"\x89\x2f" + tag + PAY
++
++tx = socket.socket(socket.AF_PACKET, socket.SOCK_RAW); tx.bind(("vAp", 0))
++sm = socket.socket(socket.AF_PACKET, socket.SOCK_RAW,
++        socket.ntohs(0x0003))
++sm.bind(("hsr0", 0))
++si = socket.socket(socket.AF_PACKET, socket.SOCK_RAW,
++        socket.ntohs(0x0003))
++si.bind(("vIp", 0))
++sm.setblocking(False); si.setblocking(False)
++
++for i in range(3):
++    tx.send(frame(i + 1)); time.sleep(0.05)
++
++m_src = i_src = None
++end = time.time() + 4
++while time.time() < end and (m_src is None or i_src is None):
++    r, _, _ = select.select([sm, si], [], [], 0.3)
++    for s in r:
++        pkt = s.recv(65535)
++        # exact flow: dst, post-strip EtherType, exact payload, min length;
++        # h_source is the asserted value and must NOT be filtered on
++        if (len(pkt) < 60 or pkt[:6] != MCAST or pkt[12:14] != b"\x08\x00"
++                or pkt[14:14 + len(PAY)] != PAY):
++            continue
++        if s is sm and m_src is None:
++            m_src = pkt[6:12]
++        elif s is si and i_src is None:
++            i_src = pkt[6:12]
++
++print("master h_source    =", m_src.hex() if m_src else None)
++print("node MAC           =", NODE.hex())
++print("interlink h_source =", i_src.hex() if i_src else None)
++print("redbox MAC         =", RB.hex())
++if i_src != RB:
++    print("FAIL: interlink did not carry the RedBox MAC")
++    sys.exit(1)
++if m_src != NODE:
++    print("FAIL: master received %s instead of the node MAC "
++          "(shared-mutation corruption)" % (m_src.hex() if m_src else "nothing"))
++    sys.exit(1)
++print("PASS: master kept node MAC, interlink kept RedBox MAC")
++sys.exit(0)
++PYF1
++}
++
++rc=0
++
++run_f2
++ret=$?
++[ "$ret" -eq "$ksft_skip" ] && exit "$ksft_skip"
++[ "$ret" -eq 0 ] || rc=1
++
++run_f1
++ret=$?
++[ "$ret" -eq "$ksft_skip" ] && exit "$ksft_skip"
++[ "$ret" -eq 0 ] || rc=1
++
++if [ $rc -eq 0 ]; then
++	echo "hsr_shared_mutation: per-egress mutation isolation (F1+F2) [ OK ]"
++else
++	echo "hsr_shared_mutation: per-egress mutation isolation [ FAIL ] rc=$rc" 1>&2
++fi
++exit $rc
 -- 
 2.43.0
 
