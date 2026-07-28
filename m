@@ -1,76 +1,73 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B7015A86D
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 05:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687EF3B27FF
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 05:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785216317; cv=none; b=XWlhW+XvUG4LcMUuVG/CPJaZvWT+vrcTLlLbcI5uHTL0utmy5x6NtNrQqgTQEC/mjIsrhuy/xrm9UuWIZDmHZLPnMQpDvPe7xpidmHVYaOk8oAExszVQ+gu4bv/Qlkq0MqZdgeMjh3BVrm5n/KP4Ukox99T9+P6u7UO7q3iXEX4=
+	t=1785216390; cv=none; b=Mf/rEAt5YPvBoXo7GYORCX5emFsVaGxJudGtVb0PhJF4Vci3WvABBZyY5brGgu1ERrNAI7ToFtPGO6h3ZtFMefUMXRWFNl1C2XRnXvg++GanU4jhJ1fpYN6BSXJCdAhjKd2Cedg4THAjFck55hNDJqrkv8Aig6tImLk9ByC/kQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785216317; c=relaxed/simple;
-	bh=UFgwWFaUDHNfS7pe9YQMo1osWM7ZIU7JHCt0yYbjg5s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k0d667R1DHIKFooX8qWR1LGgF/uHeSJNqdZTD6UBSsFXzqS4wqdcbutHuUxZF/gAsa+wAcK6NJSJesGhtiGdC40Qqs/X/fuCDNadtZJ6d02qioT3uq2pNm0Q4UsIOKQmYAAkYjDjOIYw/zFDWrG4r8MYrFTLLc160tTX7xbc+1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WapjTEQm; arc=none smtp.client-ip=209.85.216.47
+	s=arc-20240116; t=1785216390; c=relaxed/simple;
+	bh=+jsDXD+CJF6jZBGaHiQSU4RRZEAF2rns1O9DXteUKEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Er0DAD2PO7sd5UPHLQ04G9z4EKFTU/0fgrYit+tBvfb8OER06o5Av4wx81rBMtl02ZXj/t4w4kQ4r10TyT1vUpnemU784kp/CXKekTFwDOyEwSPtCay9uJep1zoE4NmnXpMcsyfHwa8NjyIJSK6aHW/FkJCz8oNMyIx/EWAae+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NlJfSDbH; arc=none smtp.client-ip=209.85.215.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WapjTEQm"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so3330692a91.0
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 22:25:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NlJfSDbH"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c9c26a5fb98so411359a12.0
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 22:26:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785216316; x=1785821116; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785216389; x=1785821189; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3ystWRSu0XGzWLVNCp/qZNWLqhKRo+gG6ngoi7HTHAw=;
-        b=WapjTEQmaUuQRP0mz8HApPfyFRyXeWTnQuqPbvtAYT07mT2WZrxziGY8gd3m5ELnOB
-         FjdsCRswGdQLmhX0bhBRrltlV6LCJ1Vwx8574OtxsLjWYpFiRPrn9WiyUg7XmeqznzMK
-         iJFFwYwOXj8iZjgGp+lEx4yjuN+sd1LJ7xnuMiPOdau4TuaVMgmfhdrpORnmbrvnUc/y
-         ZmENDttNVjJfgRzhQUKEvPKQxVUc7uvnIN2gUexUTFZeLgnGTZenx0CVqiwnxFmhkIR+
-         8A3CwJAl4n8gl/LRFtXwD8hpKtDO+3NgEfVsWi0JArcyUKGsFs3lVhW4xp61J5e6l68e
-         y8tg==
+        bh=wOvqhkG9iTx6EoJ6BYnQkA6CDv3u67pJRtcHT715CtQ=;
+        b=NlJfSDbHE2+aP5Kf1j/T1zox0lEvCGbTSye2ufwh03q6ZBYMO4ToBiwAPsBv39azXM
+         VOtkQHw9+5eS1dcBULO/uMXK2yhMdX/5AsURfUkntm21NTmJe5WX1xcBBU43WKNnLYSL
+         ZDal8+YUVzhsp8GODgeReG8nJW+Z2KNu4UAkVdpm1AmYkJRYBG+zCKjeitZ0FEXoI+u5
+         DwQ5Pa610wOMgwy7JE1ribe/rDaohdvj44jxZcrDtp60la+0MHUhDq4MuM5EKucSzbtg
+         x2C/SqFviy3tjagDw98xHWc/6F/i9zNpDtQPsJYtpwirz3lVjL+zlAQOdgNVb7ceINnM
+         kBiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785216316; x=1785821116;
+        d=1e100.net; s=20251104; t=1785216389; x=1785821189;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=3ystWRSu0XGzWLVNCp/qZNWLqhKRo+gG6ngoi7HTHAw=;
-        b=CyAq8jMO8K8Eqh+qo65VdYhe+vm0ZilHmm7Ou0R/1gLjAU2hnMZczqiHNzEuZ9jNNn
-         wZkhQDOjEWTy/zn+WdRVaDXDr4Lia88iF8yMw/2Zo6cio6qQomnvsao8/AglfoP5AnK/
-         cDXUjCgXPJCZZIs1vvj6/S2wU2mOOCQLpaRe3jA8iNtGOm9o37io+sk/WBd5Cr/fhyao
-         lBeWNx9DS1UcVz5NHg4inv4X78geko116Qsmf+inckmOlTmnwvbaKyG8E3YujjJUWqU8
-         QdcK2rGK/4/bO8F4DPp5cxn31s45pPU/zWunmt5wCGjXYCOdlifTgFJ3dU4WXdZY9fYX
-         0i0A==
-X-Forwarded-Encrypted: i=1; AHgh+RqQ+UL9Fp/dQ6+vitjOXcJ5HskCXy27qN6I/BEBJg5KiqBuSTe/M8SCSuEqoXhf3jkB9Bx2syE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgAatq3buVFDBz9RAPCV9TNpZzKNiztLihhNMyBlvEkVlcuwnp
-	a07sia5NBBw5i13YXTVsoqj+2fTqSPQMNKberm3h7OiN/njD9JGmKLE=
-X-Gm-Gg: AR+sD12ktjy82Eqo3oHO7rggbSmMhNFNBHQjXQXa6kXpSlpsKb7nNzppEgpb+wv8Xmf
-	Rj93ZzVOk7sWygc7jMJrH+2WxCl+xfzDj8zvf1R9d9oZw+twbI2z/IwwX3NXOvb7JXsZsQUDRZo
-	h4DwPsZd7yvtXPmgSi67hRG02jSMf8BdYMDnCdncts6BSjiwJVYPuuTqW5pAZraMec96xImDvEn
-	IwBbY3FSX+oboBydxw5BQviMoCPlNqYfsvo70OMYoZFcVd0v4WDNNl9UvjGgAu1LPyGss96Zm6d
-	vpETGjLG4im66aXoBa3q15/3n/Muem7jGnLQBPSAg2FfK5w86E5CcYl51PBA61SkU9fYm04hWph
-	nfO3sCUL6ykqJ7V2dMBURoNTZSW6k3IF7FCZsYjHP/S+hXPQ6vDuVgKtAuzYqXTFMn6CJFhSGS3
-	f98a1u
-X-Received: by 2002:a17:90b:4ccb:b0:38d:e658:5959 with SMTP id 98e67ed59e1d1-38f6a34e4bemr1207868a91.5.1785216315635;
-        Mon, 27 Jul 2026 22:25:15 -0700 (PDT)
-Received: from localhost ([2405:201:8018:1843:4ab6:2030:c63a:e807])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d13015052sm56592223c88.5.2026.07.27.22.25.14
+        bh=wOvqhkG9iTx6EoJ6BYnQkA6CDv3u67pJRtcHT715CtQ=;
+        b=W/GjPjqsPU+QJoTD3dgcJx8jfFPhTMoE8FP0Ab+HEyYzJPuFKRGCPwr/fYMh4R4HFo
+         FRkayhecgriPeLjvY4CnlT2yXc5BMtgWRD1OvGpGaQLE0793cz+46gsNSUHKvIHQgidk
+         kM/OV0WXyE9WaD4irobjfMhUxbTFKp2yFHtt7bThkKbMeEPh2u5q/yduntznBukJbIYq
+         6T7anbkzSy81x64BNP7YfN70764dBbGjBZ0EblafWuYeYNKikknY+Coin/C4v1i2XFCQ
+         QMaO/4qOY60AZ06mO0jv+FCB28mK3AkrktBT/aOECNqaEVfviO3X7sVg40AA5Cuc1HsJ
+         w1IQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqlAuAKixBybbiHwdsCe+x7Jy0Bw0PJg63fUxQmYfqHXHE+OwUK7fxTZofBYVQ++AWzCY+Wrks=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaMStwwphsWDbD1cKDq90XxpLuv+9uMtJfBMJg4KwaYVe2Uqom
+	vN/9VuUxm9sUZ7ytr/yLPhYWwoirgB2D40OT5M7HkjopgivFLv2hIbeGM6wq6FANmVY=
+X-Gm-Gg: AR+sD13qSaaLimR5ewDV/WpYPGxO2/ktk96jAJrOtgrEbFdonuOuybgnLjc47woh4Gt
+	coUWag6tqaLLvy1Q7Sl7SKDwvWgYRPoaFqNAthXVRHh292FhrlapvkLWnT6P+pP1fRTX6rKNn8d
+	DgUxKc7hgKLNS3dIyP0C7O+gygujquG0vrwuyE62gTL3N0KACdCmjnErONgXPdIKGMBgPy2cAzO
+	56rbmC67OLr+NtG8xRZKvP52Rn8DNUCRPvSYAGZ5Mit9ZtzgZ5Wjvlmxy4j5Ke6jLWKn8HbVgms
+	Uc5VUSQv+lRC7sJ5Q+zfBfHQiyQ2gVqRpdkbeuh2GY8S6EhEWFUxFXgSn5QKsK+HgEFESzf6PMy
+	S5RRGWCB0OBx1M4bWBvbNeYyhI+uw15oIAQwL4HxmEmCG2XSeMUDsY19JjyeW6Jzt5FNm
+X-Received: by 2002:a05:6a21:6f8b:b0:3ba:d7b0:fcac with SMTP id adf61e73a8af0-3c8ab0d42f8mr1265946637.5.1785216388524;
+        Mon, 27 Jul 2026 22:26:28 -0700 (PDT)
+Received: from fox.. ([43.242.224.196])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc3e1255sm58198016eec.4.2026.07.27.22.26.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 22:25:15 -0700 (PDT)
-From: Ayananta Paul <ayanantapaul@gmail.com>
-To: donald.hunter@gmail.com,
-	kuba@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
+        Mon, 27 Jul 2026 22:26:28 -0700 (PDT)
+From: Roshan Kumar <roshaen09@gmail.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+	netdev@vger.kernel.org
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+	Christian Hopps <chopps@labn.net>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S . Miller" <davem@davemloft.net>,
 	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Ayananta Paul <ayanantapaul@gmail.com>
-Subject: [PATCH 1/3] Documentation: netlink: fix spelling in tcp_metrics.yaml
-Date: Tue, 28 Jul 2026 10:55:07 +0530
-Message-ID: <20260728052507.9954-1-ayanantapaul@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	Roshan Kumar <roshaen09@gmail.com>
+Subject: [PATCH] xfrm: iptfs: fix stack OOB read in iptfs_skb_reset_frag_walk()
+Date: Tue, 28 Jul 2026 10:56:08 +0530
+Message-ID: <20260728052608.2898018-1-roshaen09@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,32 +76,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Correct the spelling of "reordering" which was incorrectly
-written as "reodering" on lines 113 and 115.
+iptfs_skb_reset_frag_walk() advances to the fragment containing @offset
+with an unbounded loop:
 
-Issues identified using `codespell -D - -S "*.bin,*.o,*.a,*.so,*.ko,*.gz,*.png,*.jpg" Documentation/`
+	while (offset >= walk->past + walk->frags[walk->fragi].len)
+		walk->past += walk->frags[walk->fragi++].len;
 
-Signed-off-by: Ayananta Paul <ayanantapaul@gmail.com>
+walk->fragi is advanced and walk->frags[walk->fragi] is dereferenced
+without ever checking fragi against walk->nr_frags. When the requested
+offset is at or beyond the total length spanned by the walk's fragments,
+fragi runs past nr_frags and off the end of the fixed-size on-stack
+frags[MAX_SKB_FRAGS + 1] array, reading out-of-bounds stack memory.
+
+The two callers behave differently: iptfs_skb_add_frags() already guards
+against this with
+
+	if (!walk->nr_frags ||
+	    offset >= walk->total + walk->initial_offset)
+		return len;
+
+but iptfs_skb_can_add_frags() has no such guard and calls
+iptfs_skb_reset_frag_walk() unconditionally, so it performs the
+out-of-range walk. Its own "fragi < walk->nr_frags" bound check runs only
+afterwards, too late to prevent the read.
+
+This is reachable from the receive path: a crafted IP-TFS (AGGFRAG)
+payload delivered to an IPTFS SA drives iptfs_reassem_cont() ->
+iptfs_skb_can_add_frags() with an offset past the fragment total, e.g.:
+
+  BUG: KASAN: stack-out-of-bounds in iptfs_skb_reset_frag_walk+0x235/0x250
+  Read of size 4 at addr ffff888008ad7210 by task repro/345
+   iptfs_skb_reset_frag_walk+0x235/0x250 net/xfrm/xfrm_iptfs.c:392
+   iptfs_skb_can_add_frags+0x155/0x310  net/xfrm/xfrm_iptfs.c:420
+   iptfs_reassem_cont+0xcf8/0x1140      net/xfrm/xfrm_iptfs.c:902
+   iptfs_input_ordered+0x552/0x670      net/xfrm/xfrm_iptfs.c:1280
+   iptfs_input+0x3d6/0xde0              net/xfrm/xfrm_iptfs.c:1741
+   xfrm_input+0x282f/0x6140             net/xfrm/xfrm_input.c:700
+   xfrm4_esp_rcv+0x93/0x120             net/ipv4/xfrm4_protocol.c:104
+   ip_rcv+0x278/0x2d0                   net/ipv4/ip_input.c:612
+
+Give iptfs_skb_can_add_frags() the same up-front guard that
+iptfs_skb_add_frags() already has, so the walk is never entered with an
+out-of-range offset. When it triggers, the caller falls back to the
+existing linearize-and-copy path, which is safe.
+
+Fixes: 5f2b6a909574 ("xfrm: iptfs: add skb-fragment sharing code")
+Reported-by: Roshan Kumar <roshaen09@gmail.com>
+Signed-off-by: Roshan Kumar <roshaen09@gmail.com>
 ---
- Documentation/netlink/specs/tcp_metrics.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_iptfs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/Documentation/netlink/specs/tcp_metrics.yaml b/Documentation/netlink/specs/tcp_metrics.yaml
-index 13144aeed31a..dddf92bedc4d 100644
---- a/Documentation/netlink/specs/tcp_metrics.yaml
-+++ b/Documentation/netlink/specs/tcp_metrics.yaml
-@@ -110,9 +110,9 @@ attribute-sets:
-         type: u32
-         doc: Congestion Window.
-       -
--        name: reodering
-+        name: reordering
-         type: u32
--        doc: Reodering metric.
-+        doc: Reordering metric.
-       -
-         name: rtt-us
-         type: u32
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+index 597aedeac..2ce15c472 100644
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -416,6 +416,14 @@ static bool iptfs_skb_can_add_frags(const struct sk_buff *skb,
+ 	if (skb_has_frag_list(skb) || skb->pp_recycle != walk->pp_recycle)
+ 		return false;
+ 
++	/* Reject an @offset that is at or beyond the end of the walk's data
++	 * before calling iptfs_skb_reset_frag_walk(), whose fragment-advance
++	 * loop is otherwise unbounded and would index past walk->frags[].
++	 * This mirrors the guard already present in iptfs_skb_add_frags().
++	 */
++	if (!walk->nr_frags || offset >= walk->total + walk->initial_offset)
++		return false;
++
+ 	/* Make offset relative to current frag after setting that */
+ 	offset = iptfs_skb_reset_frag_walk(walk, offset);
+ 
 -- 
-2.53.0
+2.43.0
 
