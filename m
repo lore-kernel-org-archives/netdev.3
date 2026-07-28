@@ -1,121 +1,115 @@
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E484943A7F5;
-	Tue, 28 Jul 2026 13:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD91313E36;
+	Tue, 28 Jul 2026 13:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785245862; cv=none; b=EJEzCK5xMqq6dEpxnEqoTL6j68UxTUMUFCKOwxRi41lxxsIbNApBf21Q5f9nG7+XT5JQXgtzBuwy5yPGN7oCdyAbLH0X41QkO0N77JMZv5naTTQVl6BWeed5VMxG1mTeJxynKJAjN1YYDdVtWRlITNMUli5L0f3T6ZcsYCJA62o=
+	t=1785245972; cv=none; b=Q9Ro17pwXtSPWXFO5ACghD3UsGsjOw0CWh9tj6xsvXNVUDypefUbW8GEuKwVSTAJ/UPwzESSIc/PNpTV94aFKXJWCl/12je1gfB2TW17ySSZCjw4OXTT83ybjg+ucCH9flilCS8ubDwxtfeVj6pFhcCxMMzMt6rcLMu6BjoDtvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785245862; c=relaxed/simple;
-	bh=sgTsdDlDtly0xWZbITV5hfRbMCJc89OxwyuGM3l6jKU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nxgST2iS9XdigFvqjnNZmsda572JdczmYhI4n4/g0R0JBRULMv5mcFFADLik0Og2IMiNNrjq6G62KaKiBLAqXilgQAFuWVg+bNispNxMDPBJIZ/wnkQ7UIsroBpOUch3Z7BFlWDpAScv0lq1FGnxvMbERg1Zs4Uf3p+LEx8z++0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=Ose2vTHb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=UF3GcCme; arc=none smtp.client-ip=103.168.172.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+	s=arc-20240116; t=1785245972; c=relaxed/simple;
+	bh=Nw8OJylIrP4aOEXuoQob6nceh71QQGwEfnaVAB0zTaQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tCOml+tyhwrtpScbnCK6cgt4Vy+Y7JofR0qrF+3ifCbpnPkuvIrP8QL/bencQojJsmpqJziYZS38S5K4nm2qDt0sRNJFJdx0/l37rq8Z2Gx0dkb4FH/AesxXlGELkhoK2BgJS95VuIrivDBj0uI6zWpCNbTaFYug7ebQrOUFwRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=mT/Pa/eu; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="Ose2vTHb";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="UF3GcCme"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id D7F2C1400120;
-	Tue, 28 Jul 2026 09:37:35 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 28 Jul 2026 09:37:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1785245855;
-	 x=1785332255; bh=z3f2OgbFkTa0yiSQNdRvT4FZULvSq630d80q9uArK0M=; b=
-	Ose2vTHbM8TLg/Gj1loNczvnocumSA1kx1n247d4DElL/fuHf8Yd5e3GZEwUQ5sN
-	r27vKROpoCSerOxCO0AnsWvCvsp+l1NDcdwipGOtWRJhFFzjUtQ28PvWd8aCEWnZ
-	J7wrwWgcWXPs4xFbyuuvLfqJVIcIZz00SNTdhpuXe4W9Joz/6dol4h5F2tkuF8E6
-	bK85tuLuPavGpup8Y1cvU5c0zH8QNxyWC2an1CMQ++FDeUXzJmTn7n96XUNSabrT
-	sd92/l/ufThls6Do7uTXUBhh2qoy3JCb0WNTc3jZgwzuK7o79qPL/ZWpqo19DFXD
-	L3kYP9mvUmkAs3DjlO+ZQA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785245855; x=
-	1785332255; bh=z3f2OgbFkTa0yiSQNdRvT4FZULvSq630d80q9uArK0M=; b=U
-	F3GcCmeeAraaSMGdpVUnB0xyCMkywHgJsk9oWk7i01nH3gkCqn00a81uLTEYlAHo
-	cyhQB+hADUn6zgLcogrFMfFjGN0cS2s08hITbZEe3catB5TkqTdxAhXQ8ocy2MA9
-	YnlAjYypC+31H4BtxIWmcA13Mvn86MaX2k68PcPHkoGGvpjC2wu1WB+74aAri6+a
-	HPHRB5DVCAYUZVFKZOl5DMC7cUj0FrdIGNkgcCPhV4kxtr/PHzjMsXgL6KU/z2z2
-	01tG/PcGBiDOVspM1MYgDi9IsBcx3c+V7VuIV3pDgLC8hLoocpH7OqjmSq7HZ9t3
-	tzv+KOew4OAehdTI4lATA==
-X-ME-Sender: <xms:n7BoaqHbG5GgC2n4u91xxqdahXIh2UrPX_7ErzdpsVzJcsjPxwi19A>
-    <xme:n7Boap1nIcblkuRlSr6_mfe3A9aeAIJvwhbYUrubbJaQ42OfMWGYVQjl_Yv8iBnQ0
-    oz6hn5MNRwYLS1AbtOyb3TyTRed5m0dRjUfUrjWipnOz4LLdLyIUDMM>
-X-ME-Received: <xmr:n7Boaq9HCIBtu2tC-mPXQzlHHVw-fpKduFvDc7IUIasn9l5CS7p6kr0Viz4afyuX3SfXADPUj-DtepQhrneIN0kD9L6KERw>
-X-ME-Proxy-Cause: dmFkZTEBljVdT5JYx+4e7s2/xtHk4InHzmN6oAJ7bZDMZDH9QSGzEF5FdkyK9S7wHN+95u
-    ERnlPpE5MLjq5y0HPjFD8+WkObZUdbjsHndhQGgpMVpyBJ/5v8jR3LOoApedAqQG06UBL6
-    Y+53H+fDGSyy1kJ9Nkw1s1IH2H8LFgfoz09CI4aM7p95q6y8MGGXjEB/v5TueW/yQl8+zj
-    k+VCI9zPSCOh/v9QncVFBIL5YY0AkvzAPpbT1pdraNmeQzo1+xY60rvtk1eWOJwmyMCVmC
-    5DIX5aCOYsC3XA/TRSnTaaKxLAjNp1axUTOpfg/PODao+7Xw1nJ/D/HWk3F+19AXsT/YZk
-    rFGp1AdGof1S3HnG2yHcGxLYVKyXrUtOe+36eDa7y7EjcRSVSX4nV43oiJ6yVDnzrzJqoH
-    o3kYKNMQwtj69tVp19JOP9Ixc7X2eCgGImz2mKkkRf6/uoiCZCwJFRIaFW/Lyq1kmfxFVT
-    Dj5rZ4julxPisNcSrr7a1FB69nXARKFMzEoYOVtdVRygW0ygKMKqaGf6Ii44+XPjd1Wtbv
-    h7YK2PaNBnjz+38pG9GAhHkcEapgTN90HCMd9cSPKiyZAJPOnDrMiGF6a46Hh4TVrCuHdF
-    y/V1T5KBu0nUPfUsOvOjWJImCna0D5tPL7nFx2kIpoKDkGoMP1DFgxajg7mQ
-X-ME-Proxy: <xmx:n7BoakELqJzeWCpz6R3FdPOJkJfjpd-MYUvDW5g-qfUNU6ahXYBsRw>
-    <xmx:n7BoaohulDt9hqcXQp33BoFWK3G4rqCFQUVPO2wlnAZggfQmGz7nIw>
-    <xmx:n7Boah--GcvUslkgivT0bKT_OV50iJLLtUa_-kSYcLFXbpJa8uqW_Q>
-    <xmx:n7BoagbTBqDpvrWbSv1nVVbG05_xjfgJlCBVyS7-Md_7p-ZUkESzUg>
-    <xmx:n7BoargKTOMvz9_2RKaoEH_EBK1_ZOysRv109MFGfet0lwNs9SZs4E2m>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 28 Jul 2026 09:37:34 -0400 (EDT)
-Date: Tue, 28 Jul 2026 15:37:32 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"DavidS. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="mT/Pa/eu"
+Received: from kero.packetmixer.de (p200300c59717ead808f168c97e5563A8.dip0.t-ipconnect.de [IPv6:2003:c5:9717:ead8:8f1:68c9:7e55:63a8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 105EAFA03F;
+	Tue, 28 Jul 2026 15:39:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1785245963;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2vllbLYv6d8CwbU44HFIDs9FVXkprfgf+3gzh7Lhk1M=;
+	b=mT/Pa/eu49EWPq83xTluHmLlHLS5qxM2SKjd47CFbiN13T+9j3HRc9dXhau54oVFO0h4nA
+	kzUEX3F74wkeIiQhW0UTrIpNErK+aWvxyQ4/p6dVuB5NSgE/1nPUybV8H3JFoSWRozDW+r
+	euUlzatxjw6qXxYbdxO5gK0htMM7cMC/kyh7Ox0wzcwNpo/ZIQHi7CkQQTSEJHAatbRpcN
+	yvZRQaW3rYt7SrL7/dwbaqNsGO9Ic6ZISq9X8O+BvNchg8JcuTEHZk1Owo2C0yjVAcjPhH
+	I8wC4VuroTt3MQzh98Dk9L/tLuJ2XBHoDoWrb050rI7n+4PaaX76rtmTuE7Iwg==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v5 3/3] arm64: dts: renesas: r8a779g0: Add gPTP
- node
-Message-ID: <20260728133732.GA2187218@ragnatech.se>
-References: <20260721132936.1331318-1-niklas.soderlund+renesas@ragnatech.se>
- <20260721132936.1331318-4-niklas.soderlund+renesas@ragnatech.se>
- <1f22ab9b-7951-478e-9271-3d659e991ea5@redhat.com>
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	stable@vger.kernel.org,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net-next 05/15] batman-adv: fix TX priority extraction for BATADV_FORW_MCAST
+Date: Tue, 28 Jul 2026 15:39:08 +0200
+Message-ID: <20260728133918.643267-6-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260728133918.643267-1-sw@simonwunderlich.de>
+References: <20260728133918.643267-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1f22ab9b-7951-478e-9271-3d659e991ea5@redhat.com>
 
-Hi Paolo,
+From: Sven Eckelmann <sven@narfation.org>
 
-On 2026-07-28 13:12:53 +0200, Paolo Abeni wrote:
-> On 7/21/26 3:29 PM, Niklas Söderlund wrote:
-> > The gPTP module is shared between the RAVB and RTSN Ethernet devices on
-> > the SoC.
-> > 
-> > Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-> This deserves an explicit ack from Geert, I think.
+batadv_mcast_forw_mode_by_count() pushs the skb->data for BATADV_FORW_MCAST
+forwarding via batadv_mcast_forw_mcsend(). But the
+batadv_skb_set_priority() expects the ethernet header directly before
+(skb->data + offset). With the moved skb->data, just some random data would
+be accessed to get the priority data.
 
-Yes, this patch needs an ack from Geert.
+Move the batadv_skb_set_priority() before the decision about the handling
+multicast packets and potential header modifications.
 
-> 
-> /P
-> 
+Cc: stable@vger.kernel.org
+Fixes: 90039133221e ("batman-adv: mcast: implement multicast packet generation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/mesh-interface.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
+diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
+index 1dc6cfae9e9ae..48bbb28d4576f 100644
+--- a/net/batman-adv/mesh-interface.c
++++ b/net/batman-adv/mesh-interface.c
+@@ -260,6 +260,8 @@ static netdev_tx_t batadv_interface_tx(struct sk_buff *skb,
+ 	if (batadv_compare_eth(ethhdr->h_dest, ectp_addr))
+ 		goto dropped;
+ 
++	batadv_skb_set_priority(skb, 0);
++
+ 	gw_mode = READ_ONCE(bat_priv->gw.mode);
+ 	if (is_multicast_ether_addr(ethhdr->h_dest)) {
+ 		/* if gw mode is off, broadcast every packet */
+@@ -293,6 +295,9 @@ static netdev_tx_t batadv_interface_tx(struct sk_buff *skb,
+ 
+ send:
+ 		if (do_bcast && !is_broadcast_ether_addr(ethhdr->h_dest)) {
++			/* WARNING batadv_mcast_forw_mode might add more headers
++			 * in front of the skb. and might even reallocate the skb
++			 */
+ 			forw_mode = batadv_mcast_forw_mode(bat_priv, skb, vid,
+ 							   &mcast_is_routable);
+ 			switch (forw_mode) {
+@@ -310,8 +315,6 @@ static netdev_tx_t batadv_interface_tx(struct sk_buff *skb,
+ 		}
+ 	}
+ 
+-	batadv_skb_set_priority(skb, 0);
+-
+ 	/* ethernet packet should be broadcasted */
+ 	if (do_bcast) {
+ 		primary_if = batadv_primary_if_get_selected(bat_priv);
 -- 
-Kind Regards,
-Niklas Söderlund
+2.47.3
+
