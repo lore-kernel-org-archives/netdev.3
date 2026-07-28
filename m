@@ -1,173 +1,187 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC94C344DB9
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 03:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785210483; cv=none; b=RbaqO71loHO3nW+e60KTEDo2ituMMRxyLPcfbXbBG5U5kH4WHqxB6OqTF7QIxaoRbiPIqGDmis6xat3MvgaBBx/4WxffkE3iT+ckDnGDqG/j138SP40ABCcJ3IFouO4kf0k2Mdq2AB3E2RB7+/AbKSlK/Rev1Ayg3Aq3zk6kDrA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785210483; c=relaxed/simple;
-	bh=TDoW7r7MUYw6M1kK295xVexoSXle4XvSVWMlNn4MZQA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ByMdv1Qbzm8CDvTOXA2unR5ttY5UV/3/zZvwGYeZtvWB94Wfa43k5E8o3AI5Ghh9WDtXS3jgWox6mGzZvNNZ9C3L/9L/W42x4E2TNL0IKBTog2WicX6GDyeHBhe1Ciqs2jWjtc+Y3T+E5bVRv7N38720vTkuZW1FY8H5KaMsqE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=YXLl+ErL; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654762BE053
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 04:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785212225; cv=pass; b=NzgB4eMyuvdObeJgWBgvh8d93mtdWZkcQHfLH5f5XiIB3RmWViwg5qe/kz17r97dSaTsXV2hsXcRf+oM0tUL1+jhMK4SEypRvGfWDpQUXytJc04jBPMJq6s5A5qDk+Ats5YowpuV25hIJmHlGPTlZLFOZaTCbcRi/nM/GgBIAm0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785212225; c=relaxed/simple;
+	bh=wAZbP+y9skYRzd21PZ20bFTOlfTVjYcnyFYkqToUktA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PmGjH7Rv7UN1IqT7pQllpXpk72u1pRfCkez9ay3vXwTCRzQYB9LieSTTmSmLMk4ypODngSUonx/1rsBjrD6xFeAHZLRpWYxcDE7EjfGjWoxUsOtbQmwPAw9R0joxWJ1YTBn50+yqr35S1r/OzIXuB/aV6l4s9j1MXaKvxsvsC6k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c8a12Y1r; arc=pass smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="YXLl+ErL"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66S3ZC4U657615;
-	Mon, 27 Jul 2026 20:47:32 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=T
-	DoW7r7MUYw6M1kK295xVexoSXle4XvSVWMlNn4MZQA=; b=YXLl+ErLHW3SR+pCp
-	yjP81h34vDbCL45hDdWXhqThCHhHEMGOzKhJM4ZuVSD9S3qL7MX2qA7e8qAy2kfD
-	TOYP8SH6UnLJnL6gfrsIu+DuCdZtjURzEp7nC3PiPH1vNg7oGlpfA/N2RGJpE48E
-	oiupMRdSJXJsJp6VFFHVcUDs+KC0b6gqXdjM3OjUQwJYJ/LNCU0unFlcrw3lzW2U
-	EvkVL+xJanjZv/OCcf4B8yii2iVpfYpkGq2yrHSumJaDviWHswNoBDQwltUDyQ8D
-	aMJmSHK4GR/Siit48/I3YexCdcyaP7j2GudQ00eKkRh/Sgxqg7Q9OkXkHO3z40Ky
-	CXyZA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fph1arkkq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 20:47:31 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 27 Jul 2026 20:47:30 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 27 Jul 2026 20:47:30 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 42AAA5B692D;
-	Mon, 27 Jul 2026 20:47:27 -0700 (PDT)
-Date: Tue, 28 Jul 2026 09:17:26 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: "Sergey V. Frolov" <Sergey.V.Frolov@kaspersky.com>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-        "sbhatta@marvell.com"
-	<sbhatta@marvell.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "bbhushan2@marvell.com" <bbhushan2@marvell.com>,
-        "gakula@marvell.com"
-	<gakula@marvell.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "sgoutham@marvell.com" <sgoutham@marvell.com>,
-        "edumazet@google.com"
-	<edumazet@google.com>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net] net: octeontx2-pf: Fix UB in shift operation
-Message-ID: <amgmTvxY7_Z_u7tq@rkannoth-OptiPlex-7090>
-References: <20260724121941.2637908-1-Sergey.V.Frolov@kaspersky.com>
- <ambQOBLp5yYDbRSr@rkannoth-OptiPlex-7090>
- <159a6806dd1ea12bbd559f664ce30d306cdf1178.camel@kaspersky.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c8a12Y1r"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-51c04bf4711so33434111cf.2
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 21:16:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785212216; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Jrgq4lkK+P4uOAZ8l9oHckjJPE/cK4DH5hOo6dqODnd+rqNjBQH6ZJlGR4DNlVVK3p
+         Ezfnta5gkxCrQBfMZ9Fhyedjy4NBZBEteRIZuJilPNrIjJ86oMdIYBaJhNyNPx5l4++t
+         obcd0rdraQVFTPJlC/H6MRrrC2q9At1JD013b6rcQ2xC9NqWLkcXxgcqkOZge5yzMXnc
+         iELEMqp79ejoaP5LKX4rqOrGsLD7MFrsqne7we4dcM4N6ArLWXGIVBlgZXyt/oK2svU1
+         8Wfx2XzUZgHi0dpqMqlF3ekBZbZ2VXADv0Lh4efftnrmmTIMvJRN1uEe+9Peym3thesI
+         S2BA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XekGCxojJEhXUWFTpUiFdg5xCcY4H+jCxAJHqYvFYqw=;
+        fh=ceMpJpXAAy8VIX2MknDmZ5nfyEWVY1hKrr58Uq5Gglk=;
+        b=CqTk9oI/4qlA4pKrcD1936fc7/GUJrAvDl9RtrMTVnjtYVSqQFn8EDzc75KmVngugt
+         ustwdC0WLxXIDGPnrrvfEIzaw5heh4pdMI4vl4QQN4ljn9tquFplJL8pd/pUawP6E60E
+         LrykOS1G0+B035eCnm8tK+Ryay1An7luqkX+5V4UkjbnWdau6kMCifO9Rvr/gwEwEl5C
+         7/9lsLWf8F2IjRTSA2t4+5lWenLDazNAPe18vIFtXUPS9V1NSPIXq14Abx9GD2sJqd+N
+         8OpM2kZHAovTqzxpocEhw2WyhiqyMXp8O7E/LXA5h++6O+B1s2eiDNvIxLc1SKqV0+c+
+         lexg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785212216; x=1785817016; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XekGCxojJEhXUWFTpUiFdg5xCcY4H+jCxAJHqYvFYqw=;
+        b=c8a12Y1rQuX8aVQ00h7GeI0tpKk8/IWkbmNZPOkogS9IhD0/XBKRW8QgFoTAiG3ySS
+         xXvSFOByPNAVdzljpEP8HMW8JExWsvE35QLIYGBL5Sxnrfb6+7TmfYYt1Zq/C3ucMMz1
+         hwNcYblpGxoNClbPaw5HCT3rFPN8O8AJvS3mla0BY4ipqh135ZimKShNGjXgIE/RYXfv
+         nArMRi1Pgeyx53cVgexU9esz/j7oNyAdsYW6zbqU2kExFEPhvz6kHu/GsW/6/Ef7zVYL
+         DRPl2Kj/bkALPKc9pr1aiv/qZPLgZpxwUgi9p95B1V5GgMLZCn4ZKnRcScJ9xJUKgjB1
+         I5Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785212216; x=1785817016;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XekGCxojJEhXUWFTpUiFdg5xCcY4H+jCxAJHqYvFYqw=;
+        b=KECHuwyjaP1JCH/DEUn9HMd4vPc1QwSgK+6/Y+7cmhSY1PtVplarNM+W86oTG9TS+Z
+         0pZSj3Bsl/f/xSon9MP4A0nMjPCIRvEjzLYY0IV/zf9ar7Sup/v8NoSACY/mEJU1KMHt
+         7q5wDyMQVbBJBRosUqNI/SMqwS4QkO28B5YJrBkwpl8NpkvwL1vZv/T2mFULphFVeN2D
+         3w46SbeXceSl5OA9lfuPOciK7atYjLbfGI7wVrnaN9uAhlmzQMFeOsY9zFr7hqmatQT6
+         udTSB/udBOcPWntIltne/d0r+5qM0CkzLQNcCXsKAofb2uRlfvf9uuC+4X0pzXVqtKYG
+         xrqA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr1YREvlpv8k1FG8ykTp8bhnkFGsM4styMgYZCEsAOiZcLjsZJAuFHm5zlgPLa5zICPlgnrjCk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjcD7Xzk2hMg0Y45TrI0fx15SGwYa7asWcy8N5xJ/wj5ko7tEo
+	4LCrfH5Df892vwzqgwNpccFGN9nHBrdmwbk9ucktOrvkmOV2eIJZ0T9kLmRBLa+e8nE7iHTwJ6D
+	txPJiuNUKpfIU1Qm5APOdtABPClyCxhw=
+X-Gm-Gg: AR+sD13lIJX9xLlGvnlMAA+6dZO7ca2Ee6iz0aDaTR7OnpjTHrYNIezC+6Kh9GCx0F+
+	bhGqZCBNmDYIS+P9RhNThqldc+7i98Hf6I3LdQ+uyLlATix9crqoPjb7+ggDF3wJISXLMZuVylZ
+	i2+h4P7+PdiDx8u15txP/7Sx7JlR5IQVcISc7B4r4Kv97RR5E5jvE35E4qjgWbWnXG4YRKuzuZH
+	m0PXWktUCNzF2Pe28lSB9EokIQ2bQm9FkS5/r0AMqOW14VJHGyEs3H0FiaMNEBf9aa/aGmd4uqn
+	X0E6VQMCbzhW0YobOA==
+X-Received: by 2002:a05:622a:6097:b0:51c:7b12:5fdc with SMTP id
+ d75a77b69052e-529d71a5fd5mr4771651cf.88.1785212216269; Mon, 27 Jul 2026
+ 21:16:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <159a6806dd1ea12bbd559f664ce30d306cdf1178.camel@kaspersky.com>
-X-Proofpoint-GUID: 0RRJb56RZLfuZMXFx_IYXqcJj6wrHI7e
-X-Proofpoint-ORIG-GUID: 0RRJb56RZLfuZMXFx_IYXqcJj6wrHI7e
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDAzMSBTYWx0ZWRfX13l1RvxZ4gvd
- 95ImeS/Zh/ZkotwC9fy456Vk1nVXmvbXa/F4NLZC9TjfTgjaixQjQIT6NtEfkRq3QyYdvj1MHU2
- UJVLBmlrjfR7mqqoiuj7D19LuUh1TSU=
-X-Authority-Analysis: v=2.4 cv=KKBqylFo c=1 sm=1 tr=0 ts=6a682653 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=ACEZY41XAAAA:8
- a=lkOzXEJ-8v_wGRag_xEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDAzMSBTYWx0ZWRfX9ecKyqJpVs4S
- gsNPXC+u01dtkDOIm9iyZYnVM0xw5u5gtCf7WMO1SP/rpWVLQ00JOVkPBCBb9iavaMerT7cz5Fq
- /cVfBsma7bVAn8tJPslW1HxWLfi0pdM4UAjz6t6B+zSmCJin6Ygv1v3p1spQs330PHM+ltk+4u5
- DNUlqModXwLhvln9PalbOqvPUf8OIGyV9N8rTQyKagB9RkeYwvM12cos2wvwr85/y75INRknc0e
- XibGxaqZMqL4A4qFEheQLK/DuYTezYYc2DDzUPjudTfpz/I1X8IljEAY0Ll/K54Zyeo8K5fbz6E
- oylY2i8bqnnvRKrO8E/LG95B7+m81xAyUlCVDLDbPovU5r+CSCQlFJMAvijiTAb4ahHqtkVb6tp
- u2acR1tanHwgjG5Xbvd+CNHqDEd87mT1QJgWDZbp84CRe2/2vaUIs+jTDXtbIo65JG/lUlkofvg
- RGQh09nXbUAox2MclVA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-28_01,2026-07-27_01,2025-10-01_01
+References: <20260727205602.1188008-1-gahing@gahingwoo.com>
+In-Reply-To: <20260727205602.1188008-1-gahing@gahingwoo.com>
+From: Alexey Charkov <alchark@gmail.com>
+Date: Tue, 28 Jul 2026 08:16:44 +0400
+X-Gm-Features: AUfX_myvNtJnega2iP3q9qJFtpLJlEuxkzgJa22nNvHcCMG6lVTQm6OH8bQ5w7Y
+Message-ID: <CABjd4YwmznLERMx_DgfTeqXmOEZh=pcOjf+NYfkV069mETe-uQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] net: phy: motorcomm: enable the reference
+ clock for YT8521 and YT8531
+To: Jiaxing Hu <gahing@gahingwoo.com>
+Cc: Frank.Sae@motor-comm.com, andrew@lunn.ch, hkallweit1@gmail.com, 
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, maxime.chevallier@bootlin.com, heiko@sntech.de, 
+	linux-rockchip@lists.infradead.org, attinagaoxu@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-07-27 at 17:16:24, Sergey V. Frolov (Sergey.V.Frolov@kaspersky.com) wrote:
-> On Mon, 2026-07-27 at 08:57 +0530, Ratheesh Kannoth wrote:
-> >
-> > >
-> > > Signed-off-by: Sergey.V.Frolov <Sergey.V.Frolov@kaspersky.com>
-> > > ---
-> > >  drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c | 11
-> > > ++++++++---
-> > >  1 file changed, 8 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-> > > b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-> > > index 40162b08014d..39bd73a214af 100644
-> > > --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-> > > +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-> > > @@ -53,10 +53,15 @@ static void otx2_get_egress_burst_cfg(struct
-> > > otx2_nic *nic, u32 burst,
-> > >       if (burst) {
-> > >               *burst_exp = ilog2(burst) ? ilog2(burst) - 1 : 0;
-> > >               tmp = burst - rounddown_pow_of_two(burst);
-> > > -             if (burst < max_mantissa)
-> > > +             if (burst <= max_mantissa) {
-> >
-> > Thanks.
-> > can we handle 255 case with <= ? it looks simple to me.
+Hi Jaxing,
+
+On Tue, Jul 28, 2026 at 1:04=E2=80=AFAM Jiaxing Hu <gahing@gahingwoo.com> w=
+rote:
 >
-> Thank you for reviewing the patch. I see that your simplification works
-> with the current value of max_mantissa (which is 255).
+> These PHYs need a 25 MHz reference. On boards without a local crystal
+> it is fed from the SoC and described as a clock on the PHY node. Get and
+> enable it in probe, via a small helper called from both yt8521_probe and
+> yt8531_probe, so the PHY is clocked before its registers are accessed.
+> The clock is optional, so crystal-clocked boards are unaffected.
 >
-> However, my concern is that this approach introduces an implicit
-> dependency on the fact that max_mantissa never being changed. If in the
-> future someone updates this constant (e.g. to support new hardware),
-> the shift operation could become invalid again, and the UB would
-> return. if max_mantissa becomes 127, then UB would reappear for burst
-> values in the range 128-255 (where burst_exp would be 6, making
-> *burst_exp - 7 = -1).
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: Jiaxing Hu <gahing@gahingwoo.com>
+> ---
 >
-> My original patch explicitly handles both cases (*burst_exp >= 7 and <
-> 7), so it's robust regardless of max_mantissa value. I'd prefer to keep
-> the explicit check to avoid introducing a hidden dependency that might
-> affect future maintainability.
+> Changes in v2:
+> - Factor the clock enable into ytphy_get_and_enable_refclk() and call it
+>   from yt8521_probe as well, so the YT8521 is covered too, not only the
+>   YT8531. v1 only touched yt8531_probe.
+> - Carried Andrew's Reviewed-by; the enable itself is unchanged, only
+>   moved into the helper.
 >
-> What do you think?
+> v1: https://lore.kernel.org/all/20260719034555.3623003-1-gahing@gahingwoo=
+.com/
+>
+> A second crystal-less RK3576 board with a YT8521 needs the same handling
+> (see the RK3576 GMAC 25M refout thread [1]), so v2 covers both PHYs. This
+> supersedes the withdrawn dwmac-rk MAC-side series. The DTS that consumes
+> the clock (rk3576-armsom-cm5) goes to the rockchip tree separately; the
+> clock is optional so this patch stands alone. The YT8531 path is tested
+> on an ArmSoM CM5-IO (links at 1000 Mbit/s).
+>
+> [1] https://lore.kernel.org/all/20260727021048.3375444-1-attinagaoxu@gmai=
+l.com/
+>
+>  drivers/net/phy/motorcomm.c | 33 +++++++++++++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
+>
+> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+> index 708491bc1..32eb5ce93 100644
+> --- a/drivers/net/phy/motorcomm.c
+> +++ b/drivers/net/phy/motorcomm.c
+> @@ -6,6 +6,7 @@
+>   * Author: Frank <Frank.Sae@motor-comm.com>
+>   */
+>
+> +#include <linux/clk.h>
+>  #include <linux/etherdevice.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> @@ -1043,6 +1044,29 @@ static int yt8531_set_ds(struct phy_device *phydev=
+)
+>         return 0;
+>  }
+>
+> +/**
+> + * ytphy_get_and_enable_refclk() - get and enable the PHY reference cloc=
+k
+> + * @phydev: a pointer to a &struct phy_device
+> + *
+> + * A crystal-less YT8521/YT8531 takes its 25 MHz reference from the SoC.=
+ When
+> + * that reference is described as a clock, enable it for the life of the
+> + * device. It is optional, so crystal-clocked boards are unaffected.
+> + *
+> + * returns 0 or negative errno code
+> + */
+> +static int ytphy_get_and_enable_refclk(struct phy_device *phydev)
+> +{
+> +       struct device *dev =3D &phydev->mdio.dev;
+> +       struct clk *clk;
+> +
+> +       clk =3D devm_clk_get_optional_enabled(dev, NULL);
+> +       if (IS_ERR(clk))
+> +               return dev_err_probe(dev, PTR_ERR(clk),
+> +                                    "failed to get and enable the refere=
+nce clock\n");
 
-Thank you for the clarification.
+A helper for a single-line function call looks like an overkill, and
+requires scrolling to understand what is going on where an open-coded
+version would be self-explanatory at the first glance.
 
-I appreciate the robustness argument, but I'd like to provide some
-hardware context that I think is relevant here.
+Maybe fold it into the two caller functions instead?
 
-On newer platforms (CN10K/CN20K), max_mantissa is 32767 — significantly
-larger than the current OTX2/98xx value of 255. Given this trend, a
-future reduction of max_mantissa below 256 would represent a major
-architectural regression and is, in practice, highly unlikely.
-
-It is also worth noting that in the proposed patch, the new else branch:
-
-*burst_mantissa = tmp * (1ULL << (7 - *burst_exp));
-is entirely unreachable dead code on CN10K/CN20K.
-
-Rather than carrying dead code to guard against a hypothetical future
-scenario, Could you consider following minimal approach:
-
-1) Fix the off-by-one boundary condition by changing:
-if (burst < max_mantissa)
-to
-if (burst <= max_mantissa)
-
-2) Add a WARN_ON(*burst_exp < 7) before the else branch as an
-explicit safeguard. This ensures that if max_mantissa ever changes
-in a way that reintroduces this condition, it will be immediately
-caught at runtime rather than silently triggering UB.
-
-This keeps the fix minimal and correct for all current platforms, while
-still providing a clear safety net against future regressions — without
-adding unreachable code paths.
+Best regards,
+Alexey
