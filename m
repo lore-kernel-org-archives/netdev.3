@@ -1,62 +1,62 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E43736A34F
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 16:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2563CB91F
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 16:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785255003; cv=none; b=nR8FmtlQmpsY5rvkeB7r8K6Qp7NWPcWSSrN/w7BlXNqNkbbb5pckK6xxlZdi0h34M+6TjHktzgEszFCDgmla7U7vwPV/7DecRINX/RqMf35apvEEA2OxVSqqkLPiDRS1lstV4wz3qslmkeagxswsA6yCMobb2jpsXnvwG+lX29c=
+	t=1785255006; cv=none; b=EMXquQexESiwkcLibf6YIZEYGXvfWPevt1S0hvm7w/uawOe+y1A9hqCn4Yaeo2+gHTOtbR6tBBv9T/7aFeK/kvYzElPkP2CYrZeQpwjLMNAN97hiOKBLSTYtTIpiUem0L1ccEZK227vHbFXfpNURFQvOfddwsSXhAy83aSrE3Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785255003; c=relaxed/simple;
-	bh=UYlqUNEm0YyG3FPPau/Ebm32GWInJ+TUqYC8ieCIhbU=;
+	s=arc-20240116; t=1785255006; c=relaxed/simple;
+	bh=N0wg7mFoykZMR+qCLMWcv1TjeWrSykKHKXS77ThXo9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YOqvJlMOJXULEt3WW56zakplYSwPrQ2BovotYwQ0SE3nxEMdRDzlrz6vz0523BTFCXRlYqDvzYmsNdWFZlvjQos1ZdMFaSdFOT46v9LyQ2CAh8yR3LVW9EDQRCT2vji4xq66WCjT4xiaHL8+vxDT2lNSErsEGSoJt0fyJcXghtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=eKveRZzf; arc=none smtp.client-ip=209.85.210.180
+	 MIME-Version; b=oSn4tjT8v57S3wj7l21yj1pChXdhhBs3gGtjE9cKnZV8rbZXl3VMwjNKzBJniflu9sQ7lqC4evaenxX/QZoujzQrBC0LbceVV53sE5z0TGrA5Ct2wg9dblj38o363Q24yDtK6NP2UqGSyic7zeEIc0dohDlULcVCRprbg21GIPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=vN4XM+wT; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="eKveRZzf"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-84862b0d5f8so3330327b3a.3
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 09:10:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="vN4XM+wT"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cc73e322dbso694695ad.1
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 09:10:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1785255000; x=1785859800; darn=vger.kernel.org;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1785255003; x=1785859803; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vUfz/Uk5z02XF6bLGMzCGPFjLe2D8UKrXP08L9Xjsvw=;
-        b=eKveRZzfM0dPMwK89rx2SKxQQRLTteG3pbaXcH1EU2EbTaX7q3x2KpJ2cHAoFt3Hm8
-         Ml3/ep3WJ+Bamd8KKysorOj34QwzvaN7IlV/RceUKcxaYXZlFKM7Rg49QB1c6uowV0R3
-         UGKdx/exCBTkbRj30pm6w6YkFsFvkt0SYd0/1IeqZXrmfxMRq/tN/lfH2HHVQr1c/w66
-         jpOhaIh/DqDYcqnUZUVE4SMEM1NZUxHv5R7TWmF9+UmMkUtocJ3m6xuo9VlQ5TacKu7e
-         OkMI+cqRLEfQTFG0FV0LkysVJGhuWL0xdwkm9nqusg0i+DYYQAH+sBJrhzuNdCGUTiW7
-         6RHA==
+        bh=2c1LdkzfayYKy1So3RR2qY5zFyV6+EB1Mt91oezqd3g=;
+        b=vN4XM+wTgiA3NatFvXAWZljos3C/CaJWKPXIw8v+yTCtwhclDTMDrANJFnlUrhVBfH
+         8ZQvDDvVw0lUhBi6deySAZVvRn6gonParu+M9Gh29PHTY8wJbK5g2V+KlNXh4baHZ/7u
+         vckolR9PrWGRrCY9wg5NDV9Qgn6nwgocGQNZrz9N4vAL+kEaFKbqyYFdnQLR6ZXieLQf
+         aN+zeKEzaEd82oGnSZhEyh7bujG49Bezo/sDRtO5L6cbXwfQPCmYAhjfASIoKzMTs1v3
+         Fep/lHR2769k0UzOjkTcPDNdK2+rSpcG8b5P7jCskL/LKahbX8CWr5sO8VpzRZsK39Kr
+         YNqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785255000; x=1785859800;
+        d=1e100.net; s=20251104; t=1785255003; x=1785859803;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vUfz/Uk5z02XF6bLGMzCGPFjLe2D8UKrXP08L9Xjsvw=;
-        b=GuWx+HhIpm2T54QkINlf47KfF9kjm/qMaoHTYpPq65whWntHOa8gIXlZW/L3zKOYTO
-         tjQWQrxRTD7JIeXhvgunn9iK/RLwww41UDlQiyD70FzKjDQ/kuVSPkxBHHLPzbEjReq8
-         NXECtbZJv/Hg+y6e4XTKT3wh8R79dYnrZekn5Kwy8pFhVmZj2JhPozD1ZNR9Aax+7Nsx
-         jUuBsfxKkWt2a1g0wJQodk6pBnaOCEuhu/ZTR797KNKPIfwocjH5u1ByKpWveveVvL/B
-         Vym0HRMFYrclZa9imn8Yhq51STW1CnJ+BoaWaRprqqmrHyi8H89fqcUE7REr11JlskMa
-         g4hw==
-X-Gm-Message-State: AOJu0YxVrgGhOOEQWHDL8JSkxptWBwXiaAUu+N/p2Pnqq6ukSqY6DAb2
-	KSwxCqLXTylbN7tJXvHHxouP37pdeXUbWhKR6ofeSoKG/QPz549GrP5Vwz/VCQ0rKfcHoiaJEbP
-	sGvKVxxnTPxfA
-X-Gm-Gg: AR+sD12h0l3Kt45bJO34GwR8pwxIcds+aOIcT+xfjF4YQuauNsVnVW1km62Gcfw6DuI
-	umdp11ZgpnQM43/5z6JA8R3cB8XZwnQP9d2JzjweliCvLa+c9cdstURiuppvXsHO91tSHX/s9Nd
-	Br6WPEmg0Md/MMllSjhTzVsYzi2dJlSNuZn08heDO7k8DVJxPuTcLMAik9Eg9UwpvlFj+ispIQw
-	vHvyswasTapGmKpimjJ4KuPh2Iev5z+Gk9svHNC4K7EGBKO7cpySuHNUa4WITAXdek6jWHcM4X2
-	DnqG3DROAChVNU96lMzbCI04jV9bq/gmzeJXlCK8Zw/4nAo+jLFkrWJhvKFgnHPTHx9TregwNz4
-	OAEZ5uYSj5YTaxqvd1vZHO+fbKe9eYxHbnrZf2t/G5if3RV5V+opMM8Z+W4QRbU88zxV/og==
-X-Received: by 2002:a05:6a00:ac89:b0:848:2eac:bfb2 with SMTP id d2e1a72fcca58-84e93107604mr3275386b3a.13.1785255000349;
-        Tue, 28 Jul 2026 09:10:00 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:46::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea0054afesm170583b3a.17.2026.07.28.09.09.59
+        bh=2c1LdkzfayYKy1So3RR2qY5zFyV6+EB1Mt91oezqd3g=;
+        b=rc1CJfEU9KVHeXcMQwdw1dRhPGdUMtKYJNjVEXSJz2hG0bopm1Myj3oKRvKGIyM5CD
+         yMA8dT5tpUDzwx8nVMnWoP7rbi/UnZ8v5OZEVBHVsN2NXFw0X2ZVC0E1f9Ekil73+LFx
+         IbPSybOVVRero5o9vu9NN4VMwZIlkSh6oj/U1nTnoNJ5TmqwDozQ0Ey4vaXQfCMRhCiK
+         pJKCK6EEj2kGFqCrp8oZ/TxhAIbuQ1+8kxPIeHQ0VAdfywtGj5FASzWc4BbN4lfHkM9X
+         NjQAHfcFAXd3m3LLCAS5ZTEWW1tQKRGwXrQ5Wc/jx8DRvBqAPQPktKPeH+Oqwp9Q49yU
+         dstA==
+X-Gm-Message-State: AOJu0YysOmLUokaTV5QiwKZ9PeuaET00q7oOqqvLObdml+aLz85stj2b
+	jH+Pnkj+ROk8SaV7iggH5aJKhcE3uvaJN2SE0dspqi/t/ZL2FPhHxDg7dzLwrRoMbMXtKoTaPMp
+	48kCTw05uuIDg
+X-Gm-Gg: AR+sD10PSVZJ2WppByeEfUuB1NvSNpv6kn6Yh6V9qrxG6Eusp7w6kHTNK2C2EG1m6IF
+	7+adbHptt43GLCoYt/6mrE1TLciJilK89XjqWgZE+kSJDUZByduDZfBh3G8T6OXtAgDiBqsGL3N
+	hN2yj8Kl7Sh060/p+COBEbLz3neB6+Aa0lolqvnfpaOKpyFaDQbgGmcnREUzGLC/1RAKsHNFYAU
+	vk2Pglnw2qAnGf3mod6lUi193kHL/Zw+3Lx4nXbWG5g+EX43oHZbvctSSSvmH09VofmjqQhh4z4
+	Z5c7vEcZqIoh0aZ6JmYBUNdRnSAZHUp4Lj4Dh4a3ZYSMnKZBwLQHphWnm+9Aq/k+bm1Dui+Hg8a
+	81TMTLHXsNgDXNzkPKcOQRtA6/OkPK44FVusVYV7enuBrcI8qtHzcYzkkg43HT8BJaHhs
+X-Received: by 2002:a17:903:1b2e:b0:2ca:cbfd:7311 with SMTP id d9443c01a7336-2d015ed91efmr34673335ad.46.1785255002564;
+        Tue, 28 Jul 2026 09:10:02 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:8::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde7f4420sm54470355ad.66.2026.07.28.09.10.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 09:09:59 -0700 (PDT)
+        Tue, 28 Jul 2026 09:10:01 -0700 (PDT)
 From: Joe Damato <joe@dama.to>
 To: netdev@vger.kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
@@ -70,9 +70,9 @@ Cc: andrew+netdev@lunn.ch,
 	linux-kselftest@vger.kernel.org,
 	Joe Damato <joe@dama.to>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 3/5] selftests/net: psock_snd: unify on recvmsg()
-Date: Tue, 28 Jul 2026 09:09:28 -0700
-Message-ID: <20260728160935.4128982-4-joe@dama.to>
+Subject: [PATCH net-next 4/5] selftests/net: psock_snd: Verify sll_pkttype
+Date: Tue, 28 Jul 2026 09:09:29 -0700
+Message-ID: <20260728160935.4128982-5-joe@dama.to>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260728160935.4128982-1-joe@dama.to>
 References: <20260728160935.4128982-1-joe@dama.to>
@@ -84,69 +84,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Don't maintain two RX paths in do_rx(). Unify on recvmsg() and pass aux
-data only when needed.
-
-No functional change.
+Extend do_rx() to take an expected packet type. Existing callers pass -1
+to skip the check.
 
 Signed-off-by: Joe Damato <joe@dama.to>
 ---
- tools/testing/selftests/net/psock_snd.c | 28 ++++++++++---------------
- 1 file changed, 11 insertions(+), 17 deletions(-)
+ tools/testing/selftests/net/psock_snd.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
 diff --git a/tools/testing/selftests/net/psock_snd.c b/tools/testing/selftests/net/psock_snd.c
-index d506ea19491b..b2593daca603 100644
+index b2593daca603..f23877942ea3 100644
 --- a/tools/testing/selftests/net/psock_snd.c
 +++ b/tools/testing/selftests/net/psock_snd.c
-@@ -314,25 +314,22 @@ static void do_rx(int fd, int expected_len, char *expected, bool is_psock)
+@@ -310,10 +310,13 @@ static void check_aux_data(struct cmsghdr *cmsg, int expected_len)
+ 		error(1, 0, "cmsg tp_snaplen != %u", expected_len);
+ }
+ 
+-static void do_rx(int fd, int expected_len, char *expected, bool is_psock)
++/* expected_pkttype < 0 skips the sll_pkttype check. */
++static void do_rx(int fd, int expected_len, char *expected, bool is_psock,
++		  int expected_pkttype)
  {
  	char cmsg_buf[1024] __attribute__((aligned(8))) = {};
  	bool aux = is_psock && cfg_aux_data;
--	struct msghdr msg = {};
--	struct iovec iov[1];
-+	struct iovec iov = {
-+		.iov_base = rbuf,
-+		.iov_len = sizeof(rbuf),
-+	};
-+	struct msghdr msg = {
-+		.msg_iov = &iov,
-+		.msg_iovlen = 1,
-+	};
- 	int ret;
- 
- 	if (aux) {
--		iov[0].iov_base = rbuf;
--		iov[0].iov_len = sizeof(rbuf);
--
--		msg.msg_iov = iov;
--		msg.msg_iovlen = 1;
--
++	struct sockaddr_ll saddr = {};
+ 	struct iovec iov = {
+ 		.iov_base = rbuf,
+ 		.iov_len = sizeof(rbuf),
+@@ -328,6 +331,10 @@ static void do_rx(int fd, int expected_len, char *expected, bool is_psock)
  		msg.msg_control = cmsg_buf;
  		msg.msg_controllen = sizeof(cmsg_buf);
--
--		ret = recvmsg(fd, &msg, 0);
--	} else {
--		ret = recv(fd, rbuf, sizeof(rbuf), 0);
  	}
++	if (is_psock) {
++		msg.msg_name = &saddr;
++		msg.msg_namelen = sizeof(saddr);
++	}
  
-+	ret = recvmsg(fd, &msg, 0);
+ 	ret = recvmsg(fd, &msg, 0);
  	if (ret == -1)
- 		error(1, errno, "recv");
- 	if (ret != expected_len)
-@@ -341,11 +338,8 @@ static void do_rx(int fd, int expected_len, char *expected, bool is_psock)
- 	if (memcmp(rbuf, expected, ret))
- 		error(1, 0, "recv: data mismatch");
+@@ -341,6 +348,10 @@ static void do_rx(int fd, int expected_len, char *expected, bool is_psock)
+ 	if (aux)
+ 		check_aux_data(CMSG_FIRSTHDR(&msg), expected_len);
  
--	if (aux) {
--		struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
--
--		check_aux_data(cmsg, expected_len);
--	}
-+	if (aux)
-+		check_aux_data(CMSG_FIRSTHDR(&msg), expected_len);
- 
++	if (expected_pkttype >= 0 && saddr.sll_pkttype != expected_pkttype)
++		error(1, 0, "recv: sll_pkttype %d != %d",
++		      saddr.sll_pkttype, expected_pkttype);
++
  	fprintf(stderr, "rx: %u\n", ret);
  }
+ 
+@@ -492,11 +503,11 @@ static void run_test(void)
+ 	/* BPF filter accepts only this length, vlan changes MAC */
+ 	if (cfg_payload_len == DATA_LEN && !cfg_use_vlan) {
+ 		do_rx(fds, total_len - sizeof(struct virtio_net_hdr),
+-		      tbuf + sizeof(struct virtio_net_hdr), true);
++		      tbuf + sizeof(struct virtio_net_hdr), true, -1);
+ 		check_packet_stats(fds, 1);
+ 	}
+ 
+-	do_rx(fdr, cfg_payload_len, tbuf + total_len - cfg_payload_len, false);
++	do_rx(fdr, cfg_payload_len, tbuf + total_len - cfg_payload_len, false, -1);
+ 
+ out:
+ 	if (close(fds))
 -- 
 2.53.0-Meta
 
