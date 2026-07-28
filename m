@@ -1,289 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6221F38F92D;
-	Tue, 28 Jul 2026 16:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3836E390228
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 16:54:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785257574; cv=none; b=UcgQYZZWJvo5uIWtkJQJVdIGfREH4hC5Oc9m1eYGsBHQFNJF3Aa3G0a2fY7MdRHCyar27OkMn8XUMm5zEBo4V16G3GBmJ5QFUYRfanV0A0Eeprbm+XfwLMJ9sCT6/rVySiF0zZ4jDQtYaz0sT2nYRIRwsxJI8I8Ud2BJ4RVyeHA=
+	t=1785257664; cv=none; b=o66e+N5al6w/ttHZ4rJbZpM9ERt/Z5RgXwcHZ6joTI9j/xoEaiK0jU+gJ2iIJloDDBHlEEmKKTCUyLC3dFc6+zZnlqg24UascPSjyXB2eMTlj6Ui67aNQqjabnio6bzJTJxUufPCYBZ1EJmJpwkoPlp/UwhLtDfswK7SYIfrVWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785257574; c=relaxed/simple;
-	bh=vJqqefbyWSqt2P9trmIyhVESgMTG5+8O9OXr9a2a9Ac=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=IFesJ1O47o5gj2aeJPvNO2RO/khngJoy/cOUKL9gms0jSRcJ07Clmb0WbavlaBJpQ12CKJ1hLm/0XUqWmLrzsln/40icoE5r9XAhyeU5kVo704GnBL0YPtwvTyLT7s+S/2aUwUlMJXlzQ5gRw5TRtkSisdbbLMU2jFv9IXuP/0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEeCRqej; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1785257664; c=relaxed/simple;
+	bh=DgeI2h/ZSOYagFlI4r0DuGkMAsNDlGKXaY2BuZSJ728=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eC8k524g2KcrmnhR3qp9Mb9VWgQN/P3P6xztzTQVqqnfZ2GpqzoxE8wNy3AKNF7v70JB7+aHryxtPxsA+yX23F59cQdzG4viGVwpXV+oEzyjV8T/VQ6/AxvmLUyKVM5TWaQZnoubAmyecHdZQrdP4K5O+Q+3PGYQXGNfeIpnIuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MgRaCrlC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEeCRqej"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 24DB9C2BCC6;
-	Tue, 28 Jul 2026 16:52:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785257574;
-	bh=vJqqefbyWSqt2P9trmIyhVESgMTG5+8O9OXr9a2a9Ac=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=QEeCRqejuoI53J0cfuKZKNOdnAIcqsPN6T6RJzn5I6cW+7ZEwJI9+JpvrY1gcV/7c
-	 xnNHCzyj8QTUACls3Tjz7Apt8Lb+FAq5VedqlJL3uDUYVvUNRp+yfBiVkeWkWJLc0l
-	 JyAliuxFAksdmHry6Yw1TgZ+QygR5PWJRoA6pk+Vkajehts9AtWSSOOFSYX7vq0823
-	 Ote87pVhrRaG17fRxgFC/nS4iQiQ/18F5D22ceTIEp1fJ9KhjG51RlYe8sUxMlYLG5
-	 8y3+crCn/V1UNnsWb4dp3G/aDYKnzon1zscM+R9uudUFH4Lf4YV5Ogl7HpmPi3+Vac
-	 FXt/jEbXYtehQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00819C54F54;
-	Tue, 28 Jul 2026 16:52:54 +0000 (UTC)
-From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
-Date: Tue, 28 Jul 2026 11:52:53 -0500
-Subject: [PATCH net v4] net/smc: order the CDC receive path against buffer
- publication
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MgRaCrlC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4701F000E9;
+	Tue, 28 Jul 2026 16:54:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785257662;
+	bh=5scje4qRsS/fgUOyF57aWDOkAz+7gsQTlck6sOxR48g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MgRaCrlCzeJtH+zKDVok4H4rWbJkXhjjiRpJjAIaCMLRC4HnL19G7NQmLRMPN1/Hx
+	 KzZBj6nr4Vy4dh3C3FEVYV09DDx6ZOHaxom0v102VxynbvtEUJosbhNYBnY7otSSxL
+	 /E3JBrZyJRPAj2pdwnjHcjCxU1kiQSpKo5rAiARtRqoUwS4XI6QiQxfgfOwqjf0fzE
+	 JYqKD5B/CUo8ZJDVKjcw2hyoSR3rHrRyiVMS390UY0Lo1mFDbCTmIGQdmYLzx7hDQn
+	 rAwRhN8ZJ368r+fxhCwma4jFV+JAEYuNh9DINnrMNeUVC8R4kw4Cs5Wm0zpXAQJxvu
+	 TcvS+xf+2CgXw==
+Date: Tue, 28 Jul 2026 17:54:19 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH net] net: libwx: fix FDIR ATR queue mismatch for software
+ VLAN packets
+Message-ID: <20260728165419.GV418547@horms.kernel.org>
+References: <0879DA38A8E32701+20260724074657.10773-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-b4-disp-52ee4e7d-v4-1-0dda94b0f397@proton.me>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMMQ6CQBBG4auQqZkE1sEFrkIshP3RoQCyA8aEc
- HdXLb/ivYMMUWHUZgdFvNR0mRMkz2h43ucHWEMyucJdC+9q7oWD2sqVAwQ+8EVqX8mIpkSglK0
- Ro75/y+72t+39hGH7fug8P1dKY+l0AAAA
-X-Change-ID: 20260728-b4-disp-52ee4e7d-348754fe91ed
-To: Tony Lu <tonylu@linux.alibaba.com>, Paolo Abeni <pabeni@redhat.com>, 
- Eric Dumazet <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>, 
- "D. Wythe" <alibuda@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, 
- Sidraya Jayagond <sidraya@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, 
- Mahanta Jambigi <mjambigi@linux.ibm.com>, 
- Dust Li <dust.li@linux.alibaba.com>
-Cc: Hans Wippel <hwippel@linux.ibm.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
- Wenjia Zhang <wenjia@linux.ibm.com>, linux-rdma@vger.kernel.org, 
- Ursula Braun <ubraun@linux.ibm.com>, Simon Horman <horms@kernel.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785257572; l=10163;
- i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
- bh=Vts1TiiPbGpD3Qv/nKiQnSpqKQKxXy38+nvWx/7Gr0s=;
- b=Fd8GQGB24INiIZa3WpnsGbRwVJbGzz5vUjvCCb5AUxxJTvnAWEpIDFlAZNPCoM3UgqT48stXc
- JEitAt5kWyVAbMCGZDgXM/lJs23TeD1KfDyOji6gXywl102Z39zyf7a
-X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
- pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
-X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
- auth_id=893
-X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
-Reply-To: hexlabsecurity@proton.me
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0879DA38A8E32701+20260724074657.10773-1-jiawenwu@trustnetic.com>
 
-From: Bryam Vargas <hexlabsecurity@proton.me>
+On Fri, Jul 24, 2026 at 03:46:57PM +0800, Jiawen Wu wrote:
+> When TX VLAN hardware offload is disabled, VLAN tags are embedded in
+> the packet payload (software VLAN). Previously, the driver failed to
+> set the WX_TX_FLAGS_SW_VLAN flag for these packets during transmission.
+> 
+> This missing flag caused the txgbe FDIR ATR logic to fall through to the
+> default hash calculation path. This resulted in asymmetric hash values
+> for Tx and Rx flows, preventing return packets from being steered to the
+> same queue as the transmit packets.
+> 
+> Fix this by detecting software VLANs via eth_type_vlan(skb->protocol)
+> and setting WX_TX_FLAGS_SW_VLAN. This ensures the ATR feature selects
+> the correct hashing algorithm to maintain Tx/Rx queue symmetry.
+> 
+> Fixes: b501d261a5b3 ("net: txgbe: add FDIR ATR support")
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 
-The SMC CDC receive handlers dereference conn->rmb_desc, and on the
-SMC-D DMB-nocopy path conn->sndbuf_desc, but both are published after the
-connection is already reachable to a peer: rmb_desc once the connection
-is in the link group's token tree, the nocopy ghost sndbuf_desc later
-still, in smcd_buf_attach() after the ISM receive tasklet is armed. A CDC
-in that window hits a handler with the buffer unset -- a NULL dereference
-and host DoS -- or, on a weakly ordered CPU, non-NULL but not yet
-initialised. Both are also published before the receive state
-(bytes_to_rcv, sndbuf_space), so an early CDC's accounting can be
-overwritten by setup.
-
-Initialise the receive state first and publish both buffers last with
-smp_store_release(), consuming them with smp_load_acquire() and bailing
-while unset, as the handlers already do for a killed connection. Gate the
-whole sndbuf consumer trigger on the send buffer, not just the nocopy
-accounting: smc_tx_prepared_sends() and smc_tx_pending() dereference it
-too. Conforming peers are unaffected.
-
-Fixes: 69cb7dc0218b ("net/smc: add common buffer size in send and receive buffer descriptors")
-Closes: https://sashiko.dev/#/patchset/20260714-b4-disp-835288a6-v2-1-581555ef2145@proton.me?part=1
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
----
-v4: Add the Fixes: tag Jakub asked for. 69cb7dc0218b is where the CDC path
- started reading the buffer length through a descriptor pointer -- it replaced
- conn->rmbe_size and conn->sndbuf_size with conn->rmb_desc->len and
- conn->sndbuf_desc->len -- so it is the first commit where an unpublished
- buffer can be dereferenced here. The token lookup itself is older
- (5f08318f617b, 2017), but it read a scalar, so there was nothing to
- dereference. The SMC-D DMB-nocopy hunks cover the ghost sndbuf_desc, added
- by ae2be35cbed2; a tree without that commit needs only the rmb_desc part.
-v3: https://lore.kernel.org/all/20260716-b4-disp-aa52955a-v3-1-03a4411a7549@proton.me/
- - Publish rmb_desc and the ghost sndbuf_desc after the receive state is
-   initialised, not before. The earlier revision released the pointer first,
-   which let an early CDC's accounting be overwritten by setup.
- - Gate the whole sndbuf consumer trigger on sndbuf_desc, not only the nocopy
-   accounting: smc_tx_prepared_sends() and smc_tx_pending() dereference it too.
- The v2 review raised both.
-v2: https://lore.kernel.org/all/20260714-b4-disp-835288a6-v2-1-581555ef2145@proton.me/
-v1: https://lore.kernel.org/all/20260711-b4-disp-c36a9798-v1-1-340b0c6053fb@proton.me/
-
-herd7 models both orderings. Plain accesses allow the "pointer published, buffer
-stale" outcome and flag a data race; release/acquire forbid it. A publish-order
-litmus shows the lost update is allowed with the store released first and never
-with it released last. af_smc runs over an RDMA fabric or an ISM device, so the
-weak-memory arm is model-level; litmus tests and reproducer on request.
-
-Happy to split rmb/sndbuf for a cleaner stable backport.
----
- net/smc/smc_cdc.c  | 50 +++++++++++++++++++++++++++++++++++++++++---------
- net/smc/smc_core.c | 26 ++++++++++++++++++++++----
- 2 files changed, 63 insertions(+), 13 deletions(-)
-
-diff --git a/net/smc/smc_cdc.c b/net/smc/smc_cdc.c
-index 32d6d03df321..ea61b1e75c72 100644
---- a/net/smc/smc_cdc.c
-+++ b/net/smc/smc_cdc.c
-@@ -332,8 +332,20 @@ static void smc_cdc_msg_recv_action(struct smc_sock *smc,
- {
- 	union smc_host_cursor cons_old, prod_old;
- 	struct smc_connection *conn = &smc->conn;
-+	struct smc_buf_desc *sndbuf_desc;
- 	int diff_cons, diff_prod, diff_tx;
- 
-+	/* Acquire the send buffer once, pairing with the smp_store_release() in
-+	 * __smc_buf_create()/smcd_buf_attach().  On the SMC-D DMB-nocopy path
-+	 * the ghost sndbuf_desc is attached only after the connection is already
-+	 * reachable to the ISM device, so it can still be unset here; every
-+	 * sndbuf_desc consumer below (the nocopy accounting and the sndbuf
-+	 * consumer trigger, which dereferences it via smc_tx_prepared_sends())
-+	 * is skipped while it is NULL to avoid a NULL deref and a load of an
-+	 * uninitialised buffer.
-+	 */
-+	sndbuf_desc = smp_load_acquire(&conn->sndbuf_desc);
-+
- 	smc_curs_copy(&prod_old, &conn->local_rx_ctrl.prod, conn);
- 	smc_curs_copy(&cons_old, &conn->local_rx_ctrl.cons, conn);
- 	smc_cdc_msg_to_host(&conn->local_rx_ctrl, cdc, conn);
-@@ -351,14 +363,17 @@ static void smc_cdc_msg_recv_action(struct smc_sock *smc,
- 
- 		/* if local sndbuf shares the same memory region with
- 		 * peer RMB, then update tx_curs_fin and sndbuf_space
--		 * here since peer has already consumed the data.
-+		 * here since peer has already consumed the data.  The ghost
-+		 * sndbuf_desc (acquired above) may still be unset in the SMC-D
-+		 * DMB-nocopy setup window, so skip the update while it is NULL.
- 		 */
- 		if (conn->lgr->is_smcd &&
--		    smc_ism_support_dmb_nocopy(conn->lgr->smcd)) {
-+		    smc_ism_support_dmb_nocopy(conn->lgr->smcd) &&
-+		    sndbuf_desc) {
- 			/* Calculate consumed data and
- 			 * increment free send buffer space.
- 			 */
--			diff_tx = smc_curs_diff(conn->sndbuf_desc->len,
-+			diff_tx = smc_curs_diff(sndbuf_desc->len,
- 						&conn->tx_curs_fin,
- 						&conn->local_rx_ctrl.cons);
- 			/* increase local sndbuf space and fin_curs */
-@@ -391,10 +406,15 @@ static void smc_cdc_msg_recv_action(struct smc_sock *smc,
- 			conn->urg_state = SMC_URG_NOTYET;
- 	}
- 
--	/* trigger sndbuf consumer: RDMA write into peer RMBE and CDC */
--	if ((diff_cons && smc_tx_prepared_sends(conn)) ||
--	    conn->local_rx_ctrl.prod_flags.cons_curs_upd_req ||
--	    conn->local_rx_ctrl.prod_flags.urg_data_pending) {
-+	/* trigger sndbuf consumer: RDMA write into peer RMBE and CDC.
-+	 * smc_tx_prepared_sends() and smc_tx_pending() dereference sndbuf_desc,
-+	 * so skip the whole trigger while it is unset (the SMC-D DMB-nocopy
-+	 * setup window): there is nothing to send without a send buffer.
-+	 */
-+	if (sndbuf_desc &&
-+	    ((diff_cons && smc_tx_prepared_sends(conn)) ||
-+	     conn->local_rx_ctrl.prod_flags.cons_curs_upd_req ||
-+	     conn->local_rx_ctrl.prod_flags.urg_data_pending)) {
- 		if (!sock_owned_by_user(&smc->sk))
- 			smc_tx_pending(conn);
- 		else
-@@ -443,13 +463,21 @@ static void smcd_cdc_rx_tsklet(struct tasklet_struct *t)
- {
- 	struct smc_connection *conn = from_tasklet(conn, t, rx_tsklet);
- 	struct smcd_cdc_msg *data_cdc;
-+	struct smc_buf_desc *rmb_desc;
- 	struct smcd_cdc_msg cdc;
- 	struct smc_sock *smc;
- 
- 	if (!conn || conn->killed)
- 		return;
-+	/* Pair with smp_store_release() in __smc_buf_create(): the connection
-+	 * is published before its RMB is allocated, so bail while rmb_desc is
-+	 * unset to avoid a NULL deref and a load of an uninitialised buffer.
-+	 */
-+	rmb_desc = smp_load_acquire(&conn->rmb_desc);
-+	if (!rmb_desc)
-+		return;
- 
--	data_cdc = (struct smcd_cdc_msg *)conn->rmb_desc->cpu_addr;
-+	data_cdc = (struct smcd_cdc_msg *)rmb_desc->cpu_addr;
- 	smcd_curs_copy(&cdc.prod, &data_cdc->prod, conn);
- 	smcd_curs_copy(&cdc.cons, &data_cdc->cons, conn);
- 	smc = container_of(conn, struct smc_sock, conn);
-@@ -483,7 +511,11 @@ static void smc_cdc_rx_handler(struct ib_wc *wc, void *buf)
- 	lgr = smc_get_lgr(link);
- 	read_lock_bh(&lgr->conns_lock);
- 	conn = smc_lgr_find_conn(ntohl(cdc->token), lgr);
--	if (!conn || conn->out_of_sync) {
-+	/* Pair with smp_store_release() in __smc_buf_create(): bail while the
-+	 * RMB is unset (smc_cdc_msg_recv_action() dereferences it) to avoid a
-+	 * NULL deref and a stale-buffer read in the connection setup window.
-+	 */
-+	if (!conn || conn->out_of_sync || !smp_load_acquire(&conn->rmb_desc)) {
- 		read_unlock_bh(&lgr->conns_lock);
- 		return;
- 	}
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index b4208cb186c5..33bf9cc979ef 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -2499,15 +2499,26 @@ static int __smc_buf_create(struct smc_sock *smc, bool is_smcd, bool is_rmb)
- 	}
- 
- 	if (is_rmb) {
--		conn->rmb_desc = buf_desc;
- 		conn->rmbe_size_comp = bufsize_comp;
- 		smc->sk.sk_rcvbuf = bufsize * 2;
- 		atomic_set(&conn->bytes_to_rcv, 0);
- 		conn->rmbe_update_limit =
- 			smc_rmb_wnd_update_limit(buf_desc->len);
-+		/* Publish the receive buffer last, with release semantics: the
-+		 * connection is already in the link group's token tree, so a
-+		 * concurrent CDC receive handler must observe the fully
-+		 * initialised receive state above (and the buffer) once it sees
-+		 * a non-NULL rmb_desc.  Pairs with the smp_load_acquire() in the
-+		 * CDC receive path.
-+		 */
-+		smp_store_release(&conn->rmb_desc, buf_desc);
- 		if (is_smcd)
- 			smc_ism_set_conn(conn); /* map RMB/smcd_dev to conn */
- 	} else {
-+		/* Plain store: this send-buffer pass runs before the RMB pass,
-+		 * whose smp_store_release(&conn->rmb_desc) then publishes this
-+		 * store too, and the CDC receive path is gated on rmb_desc.
-+		 */
- 		conn->sndbuf_desc = buf_desc;
- 		smc->sk.sk_sndbuf = bufsize * 2;
- 		atomic_set(&conn->sndbuf_space, bufsize);
-@@ -2599,9 +2610,16 @@ int smcd_buf_attach(struct smc_sock *smc)
- 	buf_desc->cpu_addr =
- 		(u8 *)buf_desc->cpu_addr + sizeof(struct smcd_cdc_msg);
- 	buf_desc->len -= sizeof(struct smcd_cdc_msg);
--	conn->sndbuf_desc = buf_desc;
--	conn->sndbuf_desc->used = 1;
--	atomic_set(&conn->sndbuf_space, conn->sndbuf_desc->len);
-+	buf_desc->used = 1;
-+	atomic_set(&conn->sndbuf_space, buf_desc->len);
-+	/* Publish the ghost send buffer last, with release semantics: the
-+	 * connection is already reachable to the ISM device (smc_ism_set_conn()
-+	 * ran in __smc_buf_create()), so the CDC receive tasklet must observe
-+	 * the fully initialised ghost buffer once it sees a non-NULL
-+	 * sndbuf_desc.  Pairs with smp_load_acquire() in
-+	 * smc_cdc_msg_recv_action().
-+	 */
-+	smp_store_release(&conn->sndbuf_desc, buf_desc);
- 	return 0;
- 
- free:
-
----
-base-commit: e095f249e2209674f6366f6db0383a2b96e19239
-change-id: 20260728-b4-disp-52ee4e7d-348754fe91ed
-
-Best regards,
---  
-Bryam Vargas <hexlabsecurity@proton.me>
-
+Reviewed-by: Simon Horman <horms@kernel.org>
 
