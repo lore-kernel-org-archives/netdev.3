@@ -1,248 +1,170 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE4E3B895F
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 11:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785238421; cv=fail; b=SujT6Bgh1AcJ3Liz4VfN54b6G0vDBHjpbEG0crjvCFvv6+V9KPhrIBRzH+blhkpSO2fXUcCgiHX1WkVSSwMZJUOKdSnI9VO7zeuIq7QNtnHnvqHB3Ika5/riTIxbpnNGYIdZrlm61GuCu5vwWRpL8au9ojBT60l9hEiN2t1bQZ4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785238421; c=relaxed/simple;
-	bh=dRBZl/1dJEw9v/Blj3mVo9zlXEEglsxMHa7m+gDqdWk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=g7Hnc9bBfEINGEBF1XkWAfRWZOD5Ciwy+Mq3v66A3Hn/DUhFByy5ofK0zO81Dn+4vrKXVdcafaDoj5Mk7y5yji7SL/PuzlrD5tvndgrmAzHvJ/Gx9wa6TJRdqdQk41zTeKYY9kKAC/0fONAcYUgwjz3GUIrs9c+jB62/L6JLyYE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jcly6GZf; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26553D75B1;
+	Tue, 28 Jul 2026 11:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785238499; cv=none; b=AJy/oZFVBMKG+YniH9RZuEtI3sjC7qKLAqkfUlsIICKZUEbT7WIl4ji8ntMm2gdvptuiPNAjuMdlHILHFps90BG+euk8tImX8LspzJ1wWva/ztXSSjgjBcoSg3U+PvqtCZKeBdu/Tm4loyIjziNO5L0SRcg2YpUGs8aiRsQBSh0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785238499; c=relaxed/simple;
+	bh=6vy5au28jtD8HxoeaBv8y2hyotQQWJxm6KFpOHgDnNw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZClxzDHyIjpETVIWhVAJQ7PmFs1pyQkwF+rTa0NfZWnzehHkXIm1MSfZTj3PymJ2swXPoSxm+hVwlh0o/57/Pgupph9srZFx9vmdXePBZ4tA+Gp7+wqqSvc6qKCXHIQGJVthG67dx6wFSpNaWvQtV00NOcVBIC0NtjEjsx1Lxzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wuWJbsIC; arc=none smtp.client-ip=115.124.30.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jcly6GZf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785238419; x=1816774419;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=dRBZl/1dJEw9v/Blj3mVo9zlXEEglsxMHa7m+gDqdWk=;
-  b=jcly6GZfKg/OaCmTXg6H/86yu/BCjqLhTPCLDJneRHpxToHxaGUhWhN+
-   BUbQU++75nZ6geN69Bgi5PLJk+VdcWawWobYxXAT+/qg8N6hOweeG3qGX
-   vd7o9xdkcCWZlHFHJMzIgxupGaMm1iRNghR1jVPNHBUNPGYq0tEySn0Ab
-   yYxrwmsWJsSNmLeS+x4no/1Np+FREPdMi73EyUX0ZZe4Dtp6wfrGXqtmK
-   gJgvz8eFr1nflFJFyRN2rYnpkoNOfS0bLbN4Jdg4+i62dTSCOFdpsivCl
-   UArIxottm3LlQbBlGqq1wNO2FKpb7ZGIRlqNGsOecR0JoyhRwRgBDIrDS
-   g==;
-X-CSE-ConnectionGUID: A/Nwt/DtRpupx4d//WGAiA==
-X-CSE-MsgGUID: sk8vCozrQ4qPpMefkoh6tw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="89489146"
-X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; 
-   d="scan'208";a="89489146"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 04:33:39 -0700
-X-CSE-ConnectionGUID: VEN/RXmLRjOcKrID26fg8Q==
-X-CSE-MsgGUID: G/x3g9EQSQS9hg8OueISPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; 
-   d="scan'208";a="255744644"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 04:33:38 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 28 Jul 2026 04:33:37 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Tue, 28 Jul 2026 04:33:37 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.57)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 28 Jul 2026 04:33:37 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G9urrI6q7IBl0JpzfvOGJBjUnNaSmwe/8mVNLzuA62vH38M/F/LBFMkNLFKEy8fXRi72um0t5jZuoXA81Pz6XrGizdOmyOQZTCKYVL4ZDu+vwbWjI4mXV0Fpwlyxsdfh0TkwlFlDUgSwrVIVmY1qF+Pm0BaM0uxTwifbfRLEQHMpIDK2CaMNvlxGBeDPvZVGqpv/vGrtZWXQBwNsM91OE5lR4fHRljdf5/7AyXfR8IohQeYv8t9E8jR+/fIQ43b5yq+wqxAlqniZXwshJMfQKuguBVZTqJ42BOhGlx7LerHa6p7LfX7Rzz2pXt8KvDMNPv6qbstGsCPYGA0k8ABobQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JT+lQJdIUtqxhXDZ//+5T7t8jxz34IvLjai9YtTMc+w=;
- b=f6qDElKnz5E5JcQlH7o92fm/tw6CrxWIfks7j1psBIkFne3vEB3xSHhyc90kloLPzNJ9wPKcp3M9lKEqjutsS7rTuyPwejeHjo1JinUEM6/uxmZBhsnomx/LdJYsEvmEBgrv6XRaUjgx7N/tEWcwcW74E8IW/cro2Mcm5oJwu7yJhs8sfFN/Mz3P3lRI70Z0VV5sjWQynDHTMQAZnjb75kUX6vACaJmDGGKHCwANEQgGGAupPD0SxGsE+KdYTjQU0HypN1Qq4OlKNTCXv6K+SLUJPU6qdLiiCvoUIiOQM6iqtBrIoBbumaq3YEGlnFgKhvSlIHFLS1XiNXCQzwFUMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by IA1PR11MB6219.namprd11.prod.outlook.com (2603:10b6:208:3e9::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
- 2026 11:33:35 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
- 11:33:35 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Marcin Szycik <marcin.szycik@linux.intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-next] ice: detect duplicates in ACL
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-next] ice: detect duplicates in ACL
-Thread-Index: AQHdG1md/GJYyfvzxUKn52aAErkXe7aCzztQ
-Date: Tue, 28 Jul 2026 11:33:35 +0000
-Message-ID: <IA3PR11MB8986A764DBAB961509FAD3EAE5CB2@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20260724094454.16079-1-marcin.szycik@linux.intel.com>
-In-Reply-To: <20260724094454.16079-1-marcin.szycik@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|IA1PR11MB6219:EE_
-x-ms-office365-filtering-correlation-id: c32e8fa9-76e4-4066-ea43-08deec9c0fbf
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|23010399003|38070700021|56012099006|10067099003|11063799006|22082099003|18002099003;
-x-microsoft-antispam-message-info: qyO0IJHDeJ3laTM2EebxEfrzmg8aTy6j5eyOgbQdzEMGcSwfch59/JJbqYz7wqrEZPDIL/kD1INjmyB9BOVTVoU4mqeP47NCOk8L7ejisqUUIa/Xq6sF0iw8Kmx30nq7krQYfIz3EjrPNFVcR+s917l2D8dQToICslBt98QW+SbwfTDiWgWEx/ybNvfqyqO0FmAon3K2FeqvLqW6kRY63tOwxNeKmXupHMG5ua4/tJnoOj7GjXm24etBS8QWWmxpnJoM3Lg+iSdGM8rQoOQHhhVHD8+zegw0wGp3p1ftbYU9Z5CESCDWKs8Ulgw+BLrxHqbu7Jp1U4kUVzuZ8PpZsRXIP3KGfBLiTZ8DijfKIdg2jZpOdrubVyTThza/5tTf12NgRDmc0DvZOvvFIX/kMjCjUp629GCPzmGvZS2uIFmRm7JKc/3lHLXRl//bMZtWiX5RVB48PYjGcxlnUk3pF0Q9T4ULEMDssmERzlVSfeWRNrxsBRTjIfrIGXJn6QvzXDjS1e0XMK9UMSHKU0AUcvAOJsecvARGSuKGtE3y3c4PNvGDUGAlnP668uzZEu6KEGEm4eqqslYljIU04YnDOX8nQP9UVvwa+uEIOXvAunuh2cml9qpPiy5o6drOM+3t+/k4qAsxRClB969aTeuVdOm8yN2LD23ydhkP/AVAKsNzpVQVRPzplymA7/ma5jFLOCpg6HjaR3bJPtKSCy1hajyi6d3wqT7A0HF81PrOX8A=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(38070700021)(56012099006)(10067099003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?O2UyPJTYZbNMqGKLtsdH/lHlsFTRbWjPSAihMAKRPa6lBl2zNqh/4DobToh+?=
- =?us-ascii?Q?GBwzD6E3KemlksT2+YqsS4pboB4szTwJPxKkrH6khADWRsyuwUcKNDWvl5Ms?=
- =?us-ascii?Q?SjNxNjiwB1a0nsaLas9io6Hcz1nLhfS3G8RrufGYOjBJe0PU/PEJvMO14/my?=
- =?us-ascii?Q?t3MhCRjL0b5BE0GcC3TyUH4EoTb4JJWHH3Z5YKZLpLFtkqvrdfT72NTZsJw5?=
- =?us-ascii?Q?B4ZfCI3YcPdgjxhCEoOI/L2F5Ods8Gy0I+Tik/r4H+gBA2jCccBPpE1XW1zc?=
- =?us-ascii?Q?fNIt9HRKmsP+kfrAb9PFxApXWJloiuRF71QWMvkhKywpLO1XaV21d459Kj6N?=
- =?us-ascii?Q?J+365rEuZCDvKts0Qh1VGx3vWQ4nOhMXT+QdvrdFvDoVrs1H8dYIjvFjAH/7?=
- =?us-ascii?Q?ykj7EK8zAPUGVyyTGDJSAIoWG/tf2ZywNOdJSdZ4OI0CbXXzboWShyZ19qG4?=
- =?us-ascii?Q?1XXniSnx7npBfVkh2HqE0/fEAHpZFWa23XlwioAFHyI4x5GtDrQZVwI1m/cd?=
- =?us-ascii?Q?tNA6QH5RG/AXsugqCTGxBhXtix+DvemPcrlEGprcfbv76LNkjdN6TXHifwyC?=
- =?us-ascii?Q?JDvZMdmYHTt6KMSU93OOaOPeI+EC/EM8ms8ZgIBK7QfXweicIpYNIg0hU8t9?=
- =?us-ascii?Q?DR5MWJTxjuBZFkNy3dRDJf0cPYs00NlWn0ZZplOAOJxPVF8yCBB4PmAzRWdq?=
- =?us-ascii?Q?fsVmncDQq0A0I2/dMRD43iCEbJvKXuQijZunXJ2V04Frre54HvxRui8ZfKMC?=
- =?us-ascii?Q?sncQrUWTl2MU5VWm6z7Mz9DAlkxGUD/lEUctYkJURGAQs80rAKXT/g6FVAeu?=
- =?us-ascii?Q?31AbvY5lpQFWNn3SxukAP2LusXNBrIDs14K91KxBgUbTTtwT2wpbx+keW92W?=
- =?us-ascii?Q?0kVV1DnKzY02wkQgREvJHKV6WlqCxAnFYYNWjHe4L7THDY1OsCj4uim+dvbF?=
- =?us-ascii?Q?2A4kiftkWJkSCtP0ShN/TPITeVS3CAgeVNnZUJ2NzBPeA4waywYFEam2aYnV?=
- =?us-ascii?Q?3BiVHUYTEjm5qWwfh7TpvPaQvRs3DiogYrtpqI6oGyxacjLIOMktCB4IB7fs?=
- =?us-ascii?Q?6FPgWbw/eY6YhLNHUM7RV96CJm3//8uSttMOAAZL0MGf6+kNMJRRT5BiqhqD?=
- =?us-ascii?Q?WI5NI7Pd+1g6IbEBAV3FYzxDLpkWXk5NGLbI+gtz545A42099drAKdiQH5Y4?=
- =?us-ascii?Q?GaDbEO7NnGEUGU6ny/yg9Ch6tWTFwAqpHI4pb7cCPWhsVDpYnSBoiUdh/TSb?=
- =?us-ascii?Q?HHS4RVSjC+3GCshuZB6hruQ+l5YI9miok5C57TG0EVg5ZIO9cvjW+Oy5kSIX?=
- =?us-ascii?Q?RURm+GhUX+shpQGCedFLK2zOHxxIzgc0z0yPBTK5ZmcfibtyfwR39jbA3fnf?=
- =?us-ascii?Q?QaHq33rte2NybTCKx5gnUlZc7Hj9qKVMT5P4o85JCdRZxIQ1yuy3CCBmtaKK?=
- =?us-ascii?Q?MbJyRpKhkGGpV8JpJbDu2ARM+AH3k/YbbJhnXPMx40hDEdNB2anfld4EIsmU?=
- =?us-ascii?Q?MGcYfAlHsMIJdlwcIoZXYWZ4evfxNGMp6HQSoegR0LU5i0oaj+ZYyUk4YpCG?=
- =?us-ascii?Q?a6L4RFnddMAhzUUuneGrVgMqK9tSP5Use97rM41eKydKoA0hlaRRuzsWl0CS?=
- =?us-ascii?Q?zhyXcl9Z3jXdkszNq692k/bHUbRsmSt1YBKj6W1SO5k7NEf9nM6+rzbFTYnP?=
- =?us-ascii?Q?CRwXpzsazrpEPVNKHHg/BTeusZfAYXCs4Crq8qAFDy4BO8wEFfhLH+AnLviG?=
- =?us-ascii?Q?2lP2zyjMazUT4J4G7Ma/6fdX4wnVt7o=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wuWJbsIC"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1785238485; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=pC3JYw/mzT2qWxAHaOZMxCgpZOFRIe5y355Ny0X5Ot8=;
+	b=wuWJbsICB4Le7+DwQ7CFhrwmMC8Z2aElQH8rtMzPojA+dMVZwOUdyT4jzDueyAo5izOYQerhXrpcuUZQc7sAgxL2kFFvJfE4AS6HfIVrf/9ho4QZWQm4eq0hNnSYXgdnoSLnBxJtqO8CDXZ3l3/VbDNVjObX6GWM0ZldK9BC5Yw=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R571e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=alibuda@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X8-g6WU_1785238484;
+Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0X8-g6WU_1785238484 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 28 Jul 2026 19:34:44 +0800
+Date: Tue, 28 Jul 2026 19:34:44 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com    >
+To: Ibrahim Hashimov <security@auditcode.ai>
+Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
+	wenjia@linux.ibm.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com, horms@kernel.org,
+	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net/smc: validate peer CDC cursor against RMBE
+ size before accepting it
+Message-ID: <20260728113444.GA12703@j66a10360.sqa.eu95>
+References: <20260722101758.37817-1-security@auditcode.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: Je6YRBljEhOOpCPldZf+xh/vjjr+YxHpJ/Qad2yNqFpM4+IXbQBqHsIs093x1RgYx966FJzwd2ovLTCLgqaPDsB8zi94am4IYSKC3uOmLterIGsLhTTw4w5hkY4oYbRqzCvL3Nhg1Ik0QRqf2L6DM0VRhGBs6R4qkimiUtqJu528HKGO4pp/hdqWcY+ODhNMK4cEziK6kOcEA7Gq+h5jYlao8LTCEiYcJlPebmcckD1lb7a/fS42c6rV6DQLKRFpESwoSQnLzNdb/vXD7owrO03ojByhtWvlzvBCIkWXzxUcM8/b+rdYPruG7w3gExr9BX5817xLvgBbb+8JHjknrA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c32e8fa9-76e4-4066-ea43-08deec9c0fbf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Jul 2026 11:33:35.5888
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JFjpJQIiNbaLj83/wV8ryo3hgmbuMnBD+HaNszkr+Net0w2peKd0m4XcSIWA57QPNBZR6TqJUGWq2je79OfqXresnnuWO3Mzt1103C4ju8o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6219
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260722101758.37817-1-security@auditcode.ai>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-
-
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> Of Marcin Szycik
-> Sent: Friday, July 24, 2026 11:45 AM
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>; Marcin Szycik
-> <marcin.szycik@linux.intel.com>
-> Subject: [Intel-wired-lan] [PATCH iwl-next] ice: detect duplicates in
-> ACL
->=20
-> Prevent duplicate rules from being added to ACL.
-> Also skip checking ACL rules in ice_fdir_is_dup_fltr(), as it's only
-> used for fdir.
->=20
-Please add test info: HW/ASIC + PF/VF/SR-IOV, kernel version/branch, exact =
-repro steps, before/after results (expected vs. observed).
-
-> Fixes: fe9b91ade50e ("ice: create ACL entry")
-> Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+On Wed, Jul 22, 2026 at 12:17:58PM +0200, Ibrahim Hashimov wrote:
+> smc_cdc_cursor_to_host() converts the wire-format producer/consumer
+> cursor of an incoming CDC message into a host smc_host_cursor. It rejects
+> a cursor that goes backwards, but never checks that the cursor stays
+> inside the buffer it indexes. Per smc_host_cursor ("an offset in an
+> RMBE") and the invariant smc_curs_add() enforces for every local advance
+> (0 <= count < size), a valid cursor count must be < size and a single
+> advance can be at most one bufferful; the wire cursor is peer-controlled
+> and was never checked against either.
+> 
+> smcr_cdc_msg_to_host() accepts the producer and consumer cursors, and the
+> unbounded value feeds smc_curs_diff() in smc_cdc_msg_recv_action(), which
+> computes the advance without clamping against size. A peer can inflate it
+> two ways: an out-of-range prod.count (e.g. 0x7fffffff), or -- since on a
+> wrap increment smc_curs_diff() returns (size - old.count) + new.count --
+> a cursor with a bumped wrap and new.count above old.count. Either drives
+> bytes_to_rcv far past rmb_desc->len, the very invariant the comment above
+> the atomic_add() claims but does not enforce.
+> 
+> smc_rx_recvmsg() then trusts bytes_to_rcv as the amount of valid RMB
+> data. Its first copy chunk is safely bounded by rmb_desc->len -
+> cons.count, but the second chunk copies (copylen - chunk_len) bytes from
+> offset 0, and copylen came from the inflated readable -- an out-of-bounds
+> read of the RMB's backing (v)malloc allocation, copied straight to the
+> receiving process via _copy_to_iter(). This is a remote kernel-memory
+> disclosure driven by a malicious SMC-R peer, needing no local privilege
+> on the victim. The same unbounded count also reaches
+> smc_cdc_handle_urg_data_arrival() (base + urg_curs.count - 1) -- a
+> second, narrower OOB read.
+> 
+> Reject the bad cursor at ingress, mirroring the cursor-sanity idiom two
+> lines above: drop any incoming cursor whose count is outside the buffer
+> (>= size), and any whose advance from the last accepted cursor exceeds
+> one bufferful (smc_curs_diff() > size), which catches the wrap case.
+> smc_cdc_cursor_to_host() gains a size parameter; smcr_cdc_msg_to_host()
+> passes conn->rmb_desc->len for the producer cursor and
+> conn->peer_rmbe_size for the consumer cursor, bounding it at its single
+> origin instead of patching every downstream consumer. SMC-D
+> (smcd_cdc_msg_to_host()) does not use this helper and is a separate,
+> out-of-scope gap.
+> 
+> Reproduced on a v6.19 KASAN kernel (SMC-Rv2 over soft-RoCE): a peer
+> emitting prod.count=0x7fffffff triggers a vmalloc-out-of-bounds read in
+> _copy_to_iter() via smc_rx_recvmsg(), returning ~960 KB of RMB-adjacent
+> kernel heap to userspace; an in-range cursor transfers cleanly. With the
+> fix the out-of-range cursor is dropped before it reaches
+> conn->local_rx_ctrl.prod, and the reproducer returns rc=0 with no report.
+> 
+> Fixes: 5f08318f617b ("smc: connection data control (CDC)")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
+> Assisted-by: AuditCode-AI:2026.07
 > ---
-> Not sending to net because the fixed code is on dev-queue.
-> Tony, please squash this with the offending commit.
-> ---
->  drivers/net/ethernet/intel/ice/ice_acl_main.c | 87
-> +++++++++++++++++++
->  drivers/net/ethernet/intel/ice/ice_fdir.c     |  3 +
->  2 files changed, 90 insertions(+)
->=20
-> diff --git a/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> b/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> index 7c566077d55a..473b329b37bb 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> @@ -283,6 +283,85 @@ void ice_acl_replay_fltrs(struct ice_pf *pf)
->  	}
+> v2: also bound the cursor *advance* (smc_curs_diff() <= size), not just
+>     the count. A wrap increment with new.count above old.count passes the
+>     count check yet still inflates bytes_to_rcv past the buffer -- thanks
+>     to sashiko-bot for spotting the count-only gap. Resent standalone.
+> 
+>  net/smc/smc_cdc.h | 22 ++++++++++++++++++++--
+>  1 file changed, 20 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/smc/smc_cdc.h b/net/smc/smc_cdc.h
+> index 696cc11f2303..b0ae4d43b017 100644
+> --- a/net/smc/smc_cdc.h
+> +++ b/net/smc/smc_cdc.h
+> @@ -221,6 +221,7 @@ static inline void smc_host_msg_to_cdc(struct smc_cdc_msg *peer,
+>  
+>  static inline void smc_cdc_cursor_to_host(union smc_host_cursor *local,
+>  					  union smc_cdc_cursor *peer,
+> +					  unsigned int size,
+>  					  struct smc_connection *conn)
+>  {
+>  	union smc_host_cursor temp, old;
+> @@ -235,6 +236,21 @@ static inline void smc_cdc_cursor_to_host(union smc_host_cursor *local,
+>  	if ((old.wrap == temp.wrap) &&
+>  	    (old.count > temp.count))
+>  		return;
+> +	/* count is an offset into the RMBE and must always stay inside
+> +	 * it (see smc_curs_add()); the peer is untrusted, so reject an
+> +	 * out-of-range wire cursor the same way an out-of-order one is
+> +	 * already rejected above, instead of letting it drive
+> +	 * bytes_to_rcv / the urgent-byte offset past the buffer end
+> +	 */
+> +	if (temp.count >= size)
+> +		return;
+> +	/* Bound the advance too: a wrap increment with temp.count above
+> +	 * old.count makes smc_curs_diff() report more than one bufferful,
+> +	 * which would inflate bytes_to_rcv / peer_rmbe_space past the buffer
+> +	 * in smc_cdc_msg_recv_action(). Reject such a cursor.
+> +	 */
+> +	if (smc_curs_diff(size, &old, &temp) > size)
+> +		return;
+
+
+At minimum there should be a rate-limited log indicating something
+unusual happened. Ideally the connection should be actively aborted,
+a peer sending an out-of-range cursor is either malicious, buggy, or the
+data is corrupted, and silently continuing is pointless.
+
+
+>  	smc_curs_copy(local, &temp, conn);
 >  }
->=20
-
-...
-
-> +/**
-> + * ice_acl_is_dup_fltr - test if an ACL filter is already in the list
-> + * @hw: hardware data structure
-> + * @input: ACL filter to check
-> + *
-> + * Return: true if an identical filter (same flow type, values, and
-> +masks)
-> + * already exists at a different location  */ static bool
-> +ice_acl_is_dup_fltr(struct ice_hw *hw, struct ice_ntuple_fltr *input)
-> {
-> +	struct ice_ntuple_fltr *rule;
-> +
-> +	list_for_each_entry(rule, &hw->fdir_list_head, fltr_node) {
-> +		if (!rule->acl_fltr)
-> +			continue;
-> +
-> +		if (!ice_acl_comp_rules(rule, input))
-> +			continue;
-> +
-> +		/* At this point rule and input have same match
-> criteria.
-> +		 * Different location is a duplicate.
-> +		 * Same location with a different queue is an update
-> (not a
-> +		 * duplicate).
-> +		 */
-> +		if (rule->fltr_id =3D=3D input->fltr_id &&
-> +		    rule->q_index !=3D input->q_index)
-> +			continue;
-ice_acl_is_dup_fltr() documents that it returns true for an identical filte=
-r at a different location,
-but the implementation also returns true when the existing rule has the sam=
-e fltr_id and the same q_index.
-Documentation or implementation should be updated.
-
-> +
-> +		return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
-
-...
-
->  		if (rule->flow_type !=3D input->flow_type)
->  			continue;
->=20
-> --
-> 2.49.0
-
+>  
+> @@ -246,8 +262,10 @@ static inline void smcr_cdc_msg_to_host(struct smc_host_cdc_msg *local,
+>  	local->len = peer->len;
+>  	local->seqno = ntohs(peer->seqno);
+>  	local->token = ntohl(peer->token);
+> -	smc_cdc_cursor_to_host(&local->prod, &peer->prod, conn);
+> -	smc_cdc_cursor_to_host(&local->cons, &peer->cons, conn);
+> +	smc_cdc_cursor_to_host(&local->prod, &peer->prod,
+> +			       conn->rmb_desc->len, conn);
+> +	smc_cdc_cursor_to_host(&local->cons, &peer->cons,
+> +			       conn->peer_rmbe_size, conn);
+>  	local->prod_flags = peer->prod_flags;
+>  	local->conn_state_flags = peer->conn_state_flags;
+>  }
+> -- 
+> 2.50.1 (Apple Git-155)
