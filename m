@@ -1,246 +1,79 @@
-Received: from mail-wr2-f0.google.com (mail-wr2-f0.google.com [74.125.225.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB114477F3
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 14:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385A444781D
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 14:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785247220; cv=none; b=Feozl8o9i2EugcJZ342plq0Xs3keLy8H3o+Yf/J0sFHuoEjclDiT62ro0CB0azEWd5OrHW7WQOVL5M14hYczNLNjNGUIzcR0J+nVvTpkyOK8dFLSE9Dkl/nmAkQZrOZx4LZfwmzpSDZG/noomDUKrkoPk4tcTIG1g6ibQJ4xLVQ=
+	t=1785247242; cv=none; b=cUJKI9T9B8avG3A9B25GMVS4RyNgwfMLofb5Mui1Zmh1Hh+mdEMWerND4Yxdyx9K0mrEklZy8gKAW2nV9yi3lnjLRjCI6wCVkg3qgVpe0UolRKwetHv78kQkI3vikqp77Q4iLKYfpSwwmCSHWJf0F17gil4RlpkJ5tNgS+JXOIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785247220; c=relaxed/simple;
-	bh=MCaU380UPE7nQtq09uXRpZ0GQ9Q6ljKGhpe97Uor4Cc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ujylh+ehswsObf+C6UwQHsSeSvPMti0zXg5A6LSeI6ZyQCkb3tiEiTmZPsoReOxCS6vjg0d+laYL4J9LDgixoVxsylr8IR7CJclRTIK7blUux3lBKTOlIvHfHMZPiXvZuECjUkb7ELAMo6oBAd7aApTdLrFZ5fIxJv/ooXnakJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr2-f0.google.com with SMTP id ffacd0b85a97d-46cbf263216so1967567f8f.1
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 07:00:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785247217; x=1785852017;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HD3DupRm0WkCzpl7UkTaAYfO5WC3MKQSDvdPYI0GL7s=;
-        b=ZOtLZK4jNUjIv1JQgDHSTbguaXXUfy2EWT2wFnKNcCDLve+yGZThF1uyzSCnpr084l
-         Uo+UwdMuXiuEwX0BFucN9iYD4b966nQnMQkpQ8OeV+9CMZRgglmIoh9DPPfA6+89U4j5
-         Ht0HcySZ7e1moy6vo50enDRx4/JzpRKP9p2uJV4u1MR8W305bp7znj1Cm2zGobpDDT+Y
-         ea4fuJneqJIH7RllAmy0E3MLutOqjqkmoqQ1w/4VlcwQ/kZgIwx+7IY8NbCugn/ufIuL
-         Ac0gKoSDukBUnEPy9B8tdvn5h2wMSXP5rpKaVl6srRlZMirW8zVHJdSD95/ZMiwxhUkE
-         +ARw==
-X-Gm-Message-State: AOJu0Yx60guvl5JMcbTK8oEpprRSjRQJmt6cQiLfxCk5+3myD2B42S5P
-	QRkx7d2qcnhXnl9dnX4/JqLDGgzdGN6ZLYTrMSiwdHQk1bZYI5VOIG/sSgOuYNaM
-X-Gm-Gg: AR+sD114CP2xRT7Fc2TdSC4OWxkEnwIZSuTnyb5uh89ci2DmpVXpbFw7GzFrYp8epSl
-	Ba1vScmp9xGFUyF72Zf0ZruBH1mbGXp9Ye3G2pR6fNOpZ4Iwu9sU1ELQRO6Svl+S+JTlMT9XTHI
-	fFDfrYV4wparDW096K8u05gntc7dHayALSq6jSZJY6bdg60Ct7HV5gpsopWb5prvl64lKSgcis5
-	vBslWPG5tIIEqE8HHvn8dSJHEknmFnxuDx+RjdzOhKfFqYvHEY53NbbLcBOnsMR09hwNpbhJ3uF
-	fi7viv2ZTPaXsZJKPODI7W+iJy839LlB4aMVaaHQSjL9oxYEi5CTabgEo6X04TC2vbEuWvyj1VY
-	whbsEEJJ0zfTcvBHBck7t5LGrcA9uLvOagLYMbHyKcuBmghYe9Sg1ySA+hNQ1kGiAwfJWO/qnCz
-	kTmbc0m0Ax6fNupwWDPgpsAhGhKQRVDOv2f0KJnvKM1edsrpn2Nw==
-X-Received: by 2002:a05:6000:5c2:b0:47f:9760:4d2e with SMTP id ffacd0b85a97d-47fb1edfdf1mr3152644f8f.24.1785247216503;
-        Tue, 28 Jul 2026 07:00:16 -0700 (PDT)
-Received: from [192.168.88.241] (78-80-108-129.customers.tmcz.cz. [78.80.108.129])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85b9a5d9sm56682015f8f.5.2026.07.28.07.00.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jul 2026 07:00:15 -0700 (PDT)
-Message-ID: <fe4ea840-d140-45c9-85c6-eb23e04c6a7e@ovn.org>
-Date: Tue, 28 Jul 2026 16:00:13 +0200
+	s=arc-20240116; t=1785247242; c=relaxed/simple;
+	bh=yQ+T5Ig2umy2X6QmQLO7nNL1YJXLL5K5uevADyKtPQc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Bmj3BVKKnv5DNq/jrpk+Ja7C5HG9EefVZi03qAduRSUXR46rP3EItmVVFWBR2XPLtXGdo0oYvx0LvGsL/loCCOHtC7cQpyxLhUleW10Q5LLqafidQysxRjqTdJJHq8C6UcsEEuElk5CXkJeH6kLkH/liQqbOh28q43pO0/rVuP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kqQDcazg; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kqQDcazg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035E01F00AC4;
+	Tue, 28 Jul 2026 14:00:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785247241;
+	bh=G/GSzkl2Nxca7CIyFcabK5xtVIYKYECe6sj5eIIHwJQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=kqQDcazgaOOLR3VEAlLG6nz1zlIXJFUOB62R84OLjHT7shjH0WrTnmPu7DHksgWNx
+	 MF6PjYpFXs4wOh79whWUo1YWkKchRiEuVTorf4AlaYDI2g2ZWnH6mxhWO+us3Ciqcc
+	 WvRyLKDcSx/nrR56QnnQBPXbpTMaxB+rSeABuTlps2kscITGLALDAenzhIX/mTyiAi
+	 GCJ6I1KMo3RIbGdWQBDpJmWq3UYmEOiYVt3MZKjrhxa0zUQyglrGEGuSbrXlSK2MSE
+	 F1AFSvXQM5DUZ7mZVXSEzJugTnk5hWYDnFeYpl63BtQljFGO5Eq6iPSzmh1zRz17b6
+	 e8uGgfHqXZtjg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197DC380DBDD;
+	Tue, 28 Jul 2026 14:00:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: openvswitch: fix potential UAF on meter attach
- failure
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Tonghao Zhang <xiangxia.m.yue@gmail.com>,
- Ilya Maximets <i.maximets@ovn.org>, Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>, dev@openvswitch.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260727121022.198461-1-i.maximets@ovn.org>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20260727121022.198461-1-i.maximets@ovn.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: ethernet: mtk_eth_soc: pass eth to
+ mtk_handle_irq_rx in poll_controller
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178524720564.1742182.12718299327810762541.git-patchwork-notify@kernel.org>
+Date: Tue, 28 Jul 2026 14:00:05 +0000
+References: <20260723055735.885112-1-chenguang.zhao@linux.dev>
+In-Reply-To: <20260723055735.885112-1-chenguang.zhao@linux.dev>
+To: Chenguang Zhao <chenguang.zhao@linux.dev>
+Cc: nbd@nbd.name, lorenzo@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ netdev@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, zhaochenguang@kylinos.cn
 
-On 7/27/26 2:10 PM, Ilya Maximets wrote:
-> While attaching a newly created meter attach_meter() function makes
-> the new meter visible to other CPUs but can still fail afterwards.
-> On failure, it detaches the meter back and returns an error.
-> 
-> However, this is an unexpected behavior for the ovs_meter_cmd_set()
-> that uses a plain kfree(meter) on attach failure without waiting for
-> RCU readers to stop using it, assuming it was never visible.
-> 
-> This is never a problem for ovs-vswitchd as it always creates meters
-> before creating any flows that use them.  But the UAF can be triggered
-> with a custom application using uAPI:
-> 
->  BUG: KASAN: slab-use-after-free in ovs_meter_execute (net/openvswitch/meter.c:653)
->  Read of size 8 at addr ffff88810d152650 by task meter/2508
-> 
->  Call Trace:
->   ovs_meter_execute (net/openvswitch/meter.c:653)
->   do_execute_actions (net/openvswitch/actions.c:1407)
->   ovs_execute_actions (net/openvswitch/actions.c:1584)
->   ovs_packet_cmd_execute (net/openvswitch/datapath.c:703)
->   ...
->   netlink_sendmsg (af_netlink.c:1900)
-> 
->  Allocated by task 2519:
->   __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
->   ovs_meter_cmd_set (net/openvswitch/meter.c:422)
->   ...
->   netlink_sendmsg (af_netlink.c:1900)
-> 
->  Freed by task 2519:
->   kfree (mm/slub.c:2705 mm/slub.c:6405 mm/slub.c:6720)
->   ovs_meter_cmd_set (net/openvswitch/meter.c:479)
->   ...
->   netlink_sendmsg (af_netlink.c:1900)
-> 
-> Fix that by making sure attach_meter() doesn't make the meter visible
-> until all the checks are done and the function can't fail anymore.
-> 
-> This also makes sure the "hash" value is calculated after the potential
-> re-sizing of the table.
-> 
-> Reported by Trend Micro's Zero Day Initiative as ZDI-CAN-31642.
-> 
-> Fixes: c7c4c44c9a95 ("net: openvswitch: expand the meters supported number")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-> ---
+Hello:
 
-Just addressing some sashiko comments below.  They are either insignificant
-or for other pre-existing issues:
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
->  net/openvswitch/meter.c | 33 +++++++++++++++++++--------------
->  1 file changed, 19 insertions(+), 14 deletions(-)
+On Thu, 23 Jul 2026 13:57:35 +0800 you wrote:
+> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 > 
-> diff --git a/net/openvswitch/meter.c b/net/openvswitch/meter.c
-> index a02c47277337..4aaeeae3af5b 100644
-> --- a/net/openvswitch/meter.c
-> +++ b/net/openvswitch/meter.c
-> @@ -133,18 +133,10 @@ static void dp_meter_instance_remove(struct dp_meter_instance *ti,
->  
->  static int attach_meter(struct dp_meter_table *tbl, struct dp_meter *meter)
->  {
-> -	struct dp_meter_instance *ti = rcu_dereference_ovsl(tbl->ti);
-> -	u32 hash = meter_hash(ti, meter->id);
-> +	struct dp_meter_instance *ti;
-> +	u32 hash;
->  	int err;
->  
-> -	/* In generally, slots selected should be empty, because
-> -	 * OvS uses id-pool to fetch a available id.
-> -	 */
-> -	if (unlikely(rcu_dereference_ovsl(ti->dp_meters[hash])))
-> -		return -EBUSY;
-> -
-> -	dp_meter_instance_insert(ti, meter);
-> -
->  	/* That function is thread-safe. */
->  	tbl->count++;
+> mtk_handle_irq_rx expects a struct mtk_eth * (matching the request_irq
+> cookie), but mtk_poll_controller incorrectly passed the net_device *.
+> Calling ndo_poll_controller with CONFIG_NET_POLL_CONTROLLER enabled
+> would then crash.
+> 
+> [...]
 
-Sashiko complains about the comment, but it is fine.  It is pointing out
-that it's safe to increment the count, which is still the case.
+Here is the summary with links:
+  - [net,v2] net: ethernet: mtk_eth_soc: pass eth to mtk_handle_irq_rx in poll_controller
+    https://git.kernel.org/netdev/net/c/e095f249e220
 
->  	if (tbl->count >= tbl->max_meters_allowed) {
-> @@ -152,16 +144,29 @@ static int attach_meter(struct dp_meter_table *tbl, struct dp_meter *meter)
->  		goto attach_err;
->  	}
->  
-> -	if (tbl->count >= ti->n_meters &&
-> -	    dp_meter_instance_realloc(tbl, ti->n_meters * 2)) {
-> -		err = -ENOMEM;
-> +	ti = rcu_dereference_ovsl(tbl->ti);
-> +	if (tbl->count >= ti->n_meters) {
-> +		err = dp_meter_instance_realloc(tbl, ti->n_meters * 2);
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Both sashiko instances point out that realloc doesn't reshash the entries,
-which is a known behavior of the meter table.  It expects meters to be added
-sequentially and not with the random ids, as that is how ovs-vswitchd
-operates.  This is not a good assumption to have and the table should be
-replaced by a real hash table, but it is a separate work item.
-
-> +		if (err)
-> +			goto attach_err;
-> +
-> +		ti = rcu_dereference_ovsl(tbl->ti);
-> +	}
-> +
-> +	hash = meter_hash(ti, meter->id);
-> +
-> +	/* In general, selected slots should be empty, because
-> +	 * OvS uses id-pool to fetch available ids.
-> +	 */
-> +	if (unlikely(rcu_dereference_ovsl(ti->dp_meters[hash]))) {
-> +		err = -EBUSY;
->  		goto attach_err;
->  	}
->  
-> +	dp_meter_instance_insert(ti, meter);
-
-It also complains that the caller relies on the fact that attach_meter()
-doesn't make the pointer visible.  However, IMO, this is the expected
-behavior from this function and doesn't require extra comments.  The
-opposite behavior would warrant a comment.
-
->  	return 0;
->  
->  attach_err:
-> -	dp_meter_instance_remove(ti, meter);
->  	tbl->count--;
->  	return err;
->  }
 
