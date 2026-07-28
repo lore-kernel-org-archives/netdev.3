@@ -1,52 +1,52 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677FE3E0C4A;
-	Tue, 28 Jul 2026 07:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8933D3D11
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 07:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785224135; cv=none; b=LSaKKAM9goHHKI6eGRAtaEUcwzoDANN1KW8pl8shvNmrqFvv30N2i3msNtSEzARUgwiDhquZ9CtyveUIK7AVb6uqKaui6mJEMSSa6RMgppUZoi2f8E4BT2RCw8FY31Ud9CAX+GGmZEjpzJAmittzOmGPo5YmhSVWzQ/4Z17hvQI=
+	t=1785225166; cv=none; b=LkMdHkPmtXH5mFog+uIgs5BipDTW0uwtKbf6L5eGdnX1AskDBILi2ZrU6bSBeNJZA9rdK2LUDAQ9xNqLrA3aTcBY+fbUXAlNaE8ZmQRDDCfXMfRfxU6ojkT5JSudQomgGwC1+te669WlP56ZWuBh9qXgtiGy+rK2AwFb4J3OC8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785224135; c=relaxed/simple;
-	bh=88oMKijMS5flfz6PnFMsJGC7BOZ5lot/+gvxNg3Hjm4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J8hOLlECYOfVAA7HXqVwmHNrj0WCjBETlrL11Tt+z4TDchlTtcKg534lPxHHy8F3ED0c9ELMt24FKJGUSplnjOcPOpJvV1b3BTvH+s8uxbX/lRb53sOLKQRaBfJbZO5E6CfuCGFc60ERUc3umnXx2XOYqM4rBPljeabRmvCtlvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=lm0UGZkL; arc=none smtp.client-ip=207.46.229.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1785225166; c=relaxed/simple;
+	bh=iIOnEnT2ZKL4CzLPIlXd97q4tIZypmBFREgU+JmhlzQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VY6OLDO0XiocvPxS1IvR6pjsir+J+KLThTZKg7rYObtCHYxeHW3Oh38X0G4f1Oci2GstkHP+cg4kb4ULKlOfVN0H8kimK268LyblaHtHV/mZijuOHvEp7FObL5Wo0+jloUE4HssYcnaSoiWgKKlct6pr9tx1sgHfaxPrwHVItbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=n8mR6XoJ; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="lm0UGZkL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=hdHcj
-	0vOw7H2iiEIlvqDJr0IzX3wk+uoZPxeYcgWfdE=; b=lm0UGZkLp+AvF08b55Fwu
-	tN+ODNmjr6NKMBErPZ4zDrBL9avvgbCGYvhlmf7XJhfkw4JrNICA/pDDKBQvmChh
-	DRi090UnsHDshd7BQFvGqVQa8cs2qHJOzhKdVOqBL4R/u/m2n97TsROh/kyWQRtE
-	zIJdX5IbQw6sbr/6m9XSeU=
-Received: from localhost.localdomain (unknown [121.225.135.236])
-	by web1 (Coremail) with SMTP id yAQGZQBnCcmwW2hqJim1AA--.58324S2;
-	Tue, 28 Jul 2026 15:35:13 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: netfilter-devel@vger.kernel.org
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="n8mR6XoJ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id B25DE1A12B7;
+	Tue, 28 Jul 2026 07:52:33 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 85AD4601BF;
+	Tue, 28 Jul 2026 07:52:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7944711C13E11;
+	Tue, 28 Jul 2026 09:52:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785225148; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=WhrMs3YJTGjtXLnrUcTBPwPUQDPxpjXzMNEW4YqDM14=;
+	b=n8mR6XoJEtJNyc7xhGtW7m/dVxie1qzbp9I5EHyz4cfhCW8edA/cEnQCd161qJdLoCFjki
+	J6AiL1ceQ8r0CjK+Sguk4Ks5Idfzwa1OYbYQ8ulLGh3eH3DHWewZMPRfbWRdaMNzaxlnWZ
+	QjQwQad6OZV7RwvEq/RGXZSUsOyfCM7PJ/WxGZbD3lsWK47Fuy0AByewwrK0WncW+cSAQh
+	guPdLhX2JV2q+f4lUS3VUQDaV/o0+DJalCvG0KUid1D9Tk9bRQWWbTQoIiX6yFtNNyP/6Y
+	zjDoa9wAn2n9nRlCm8Hgx5N4sspr2euUk8F56ARfyn5XxmYYLHAPS+Tb3R/UGg==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	coreteam@netfilter.org,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>
-Subject: [PATCH nf] netfilter: conntrack: sctp: verify vtag before state changes
-Date: Tue, 28 Jul 2026 15:35:06 +0800
-Message-ID: <20260728073507.30635-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.46.2
+	thomas.petazzoni@bootlin.com
+Subject: [PATCH net-next] net: phy: micrel: Add loopback support for ksz9131
+Date: Tue, 28 Jul 2026 09:52:20 +0200
+Message-ID: <20260728075222.956780-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,80 +54,114 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yAQGZQBnCcmwW2hqJim1AA--.58324S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxZrykWrWrWFyfuFy7Zr4UCFg_yoW5GFy8pa
-	yFkryakFyxGr4ay3Z3Kw1vyF4DGrs3C3yakryUAFyvkwn8JF1F9a13K3yxuwn8XFnrKry3
-	AFWqqr4YyF1DCrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9m1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl
-	84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcx
-	kEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VW8
-	Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6I
-	AqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wrylc2xS
-	Y4AK67AK6r4xMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCFx2
-	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
-	6r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
-	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
-	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
-	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUtKsbUUUUU=
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgICAWpn2yG07gAAsu
+X-Last-TLS-Session-Version: TLSv1.3
 
-The packet-wide vtag check in nf_conntrack_sctp_packet() is skipped when
-the bundle map contains any chunk type with special vtag handling.  The
-per-chunk path re-checks INIT, ABORT, SHUTDOWN_COMPLETE, and
-COOKIE_ECHO, but other state-changing chunks still fall through to
-sctp_new_state() without validating sh->vtag.
+ksz9131 is configured for local loopback in a similar fashion as the
+ksz9031, with a need for full-duplex operation, but with some extra
+steps to take as specified in section 4.13.1 :
 
-This lets a wrong-vtag packet bundle HEARTBEAT with COOKIE_ACK, ERROR,
-SHUTDOWN, or SHUTDOWN_ACK and still advance conntrack state.  That can
-desynchronize conntrack from the real SCTP association and cause denial
-of service for SCTP traffic behind a stateful firewall.
+1. Configure the following registers:
+- MMD 1C, Register 15 = EEEE
+- MMD 1C, Register 16 = EEEE
+- MMD 1C, Register 18 = EEEE
+- MMD 1C, Register 1B = EEEE
 
-Check sh->vtag before processing those chunks when conntrack already
-knows the expected direction vtag.  This keeps the existing
-HEARTBEAT/HEARTBEAT_ACK learning and connection-reuse behavior for the
-`vtag == 0` cases.
+These 4 registers are marked as "Reserved" in the register map.
 
-Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
-Cc: stable@vger.kernel.org
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: Claude-Code:GLM-5.2
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+When setting loopback up without configuring these 4 registers, the PHY
+appears to shut its RXC down, which can trigger failures on MACs that
+require it, such as stmmac.
+
+The datasheet does not specify to which state the registers must be
+reset when disabling loopback, so let's restore them to their measured
+initial values.
+
+This was discovered when trying to use stmmac selftests on imx8mp with a
+ksz9131 connected in RGMII.
+
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- net/netfilter/nf_conntrack_proto_sctp.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/net/phy/micrel.c | 60 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-index 7e10fa65cbdd..9978ecd05b1e 100644
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -407,9 +407,17 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
- 			/* (D) vtag must be same as init_vtag as found in INIT_ACK */
- 			if (sh->vtag != ct->proto.sctp.vtag[dir])
- 				goto out_unlock;
--		} else if (sch->type == SCTP_CID_COOKIE_ACK) {
--			ct->proto.sctp.init[dir] = 0;
--			ct->proto.sctp.init[!dir] = 0;
-+		} else if (sch->type == SCTP_CID_COOKIE_ACK ||
-+			   sch->type == SCTP_CID_ERROR ||
-+			   sch->type == SCTP_CID_SHUTDOWN ||
-+			   sch->type == SCTP_CID_SHUTDOWN_ACK) {
-+			if (ct->proto.sctp.vtag[dir] &&
-+			    sh->vtag != ct->proto.sctp.vtag[dir])
-+				goto out_unlock;
-+			if (sch->type == SCTP_CID_COOKIE_ACK) {
-+				ct->proto.sctp.init[dir] = 0;
-+				ct->proto.sctp.init[!dir] = 0;
-+			}
- 		} else if (sch->type == SCTP_CID_HEARTBEAT) {
- 			if (ct->proto.sctp.vtag[dir] == 0) {
- 				pr_debug("Setting %d vtag %x for dir %d\n", sch->type, sh->vtag, dir);
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 55df5efcfc86..ae830781824b 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -1161,6 +1161,65 @@ static int ksz9031_set_loopback(struct phy_device *phydev, bool enable,
+ 				     5000, 500000, true);
+ }
+ 
++/* KSZ9131-specific sequence to enable loopback, registers are undocumented
++ * in the datasheet but mentionned in the local loopback mode configuration
++ * steps.
++ *
++ * Without taking these steps, the PHY appears to disable its RXC while in
++ * loopback mode, which may be needed by some MACs such as stmmac.
++ */
++static int ksz9131_loopback_enable(struct phy_device *phydev)
++{
++	int ret;
++
++	ret = phy_write_mmd(phydev, 0x1c, 0x15, 0xeeee);
++	if (ret)
++		return ret;
++
++	ret = phy_write_mmd(phydev, 0x1c, 0x16, 0xeeee);
++	if (ret)
++		return ret;
++
++	ret = phy_write_mmd(phydev, 0x1c, 0x18, 0xeeee);
++	if (ret)
++		return ret;
++
++	return phy_write_mmd(phydev, 0x1c, 0x1b, 0xeeee);
++}
++
++/* KSZ9131 datasheet doesn't state how to deal with the MMD 0x1c registers
++ * when disabling loopback.
++ *
++ * Set them back to their measured initial state when disabling loopback, and
++ * ignore errors while doing so.
++ */
++static void ksz9131_loopback_disable(struct phy_device *phydev)
++{
++	phy_write_mmd(phydev, 0x1c, 0x15, 0x6eff);
++	phy_write_mmd(phydev, 0x1c, 0x16, 0xe6ff);
++	phy_write_mmd(phydev, 0x1c, 0x18, 0x43ff);
++	phy_write_mmd(phydev, 0x1c, 0x1b, 0x07ff);
++}
++
++static int ksz9131_set_loopback(struct phy_device *phydev, bool enable,
++				int speed)
++{
++	int ret;
++
++	if (enable) {
++		ret = ksz9131_loopback_enable(phydev);
++		if (ret)
++			return ret;
++	}
++
++	ret = ksz9031_set_loopback(phydev, enable, speed);
++
++	if (ret || !enable)
++		ksz9131_loopback_disable(phydev);
++
++	return ret;
++}
++
+ static int ksz9031_of_load_skew_values(struct phy_device *phydev,
+ 				       const struct device_node *of_node,
+ 				       u16 reg, size_t field_sz,
+@@ -6993,6 +7052,7 @@ static struct phy_driver ksphy_driver[] = {
+ 	.cable_test_start	= ksz9x31_cable_test_start,
+ 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
+ 	.get_features	= ksz9477_get_features,
++	.set_loopback	= ksz9131_set_loopback,
+ }, {
+ 	PHY_ID_MATCH_MODEL(PHY_ID_KSZ8873MLL),
+ 	.name		= "Micrel KSZ8873MLL Switch",
 -- 
-2.47.3
+2.55.0
 
