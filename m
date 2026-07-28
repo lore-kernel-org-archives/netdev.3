@@ -1,121 +1,172 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011005.outbound.protection.outlook.com [52.101.52.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F72244692
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785218800; cv=none; b=OADaANfQDg98sBFmicrnfMsTN4DyST2c3duDUpxFZIpa+5hGbV53SPXoOUqWsN0v5WQSlaknYiNAx+CqPM6Ng32+Hx2qJdjQtEdrJXU4gR4sIN447Sd9CXh4vt3udGPNN/9vHgkqn7MnT1xfK5/JRQdaLbok6UDzUBbWH3IZv0o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785218800; c=relaxed/simple;
-	bh=vS/Tk6YpGekQKr8chq3CSmBoOnMad3lcIKGt7G3xI6o=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=tNgfoBBp8s5MQXZtkFuKL/VJjddTCViqK5H97Ntmc8Pcla0azgwUVcZafnbx1ZX96T0Nj36ywShwBU7ICo1cBMncctcoty7pbp15OrIp6t+jiuxHLeylAUDzjte4b8L+TBE1HrqekyaMlOWqXYyFxij/sOfPw1hZecgxcTR0mKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=NlaOT2PT; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F86513A258
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:09:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785218951; cv=fail; b=u8fq/0chaH1QAjEFlK4tTFUTsT7rrqGdDY1ehUV6DRfvDs2k3x2mTp3xWdmGdTGyuQWE01Qoic6m8IXEtZJ9HVH7vk/PTRoe8F3l7XjOt2bxwuP5ZZXsqCLy5CE8pp2geh4lzWnq/hTqOTJTW3RH0HCHUwIGFjUqlb1mVyBnjTE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785218951; c=relaxed/simple;
+	bh=7iHTyKdSATHAjH6J5GnlijEUtvDxHn5gTxiyAKz35x4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=IZRSFxY6ajSCqoQxuSgudAncZc9OI/h3mRdOLrZeadGoKtre5pRxAKCckk0wcDZ3ON1BEeVxow1RPVvH85cCo70GP5UiHORuza/zNm25ymF6waHO7eAGOnhEYXdCytXDxSOrPWx2RMVhJCXLyqOAtdpjBLNC5/BOAHPCQUM+vII=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=Hs7rEnH9; arc=fail smtp.client-ip=52.101.52.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="NlaOT2PT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Content-Type:MIME-Version:Subject:From:To:Date:
-	Message-ID; bh=vS/Tk6YpGekQKr8chq3CSmBoOnMad3lcIKGt7G3xI6o=; b=N
-	laOT2PT8JoN/fQoB1xuLcrKY4TtHm14hzKFt0JzRFfVOCkKS627SggkLogEW2xle
-	iIqTH6LKlhN6tioGFjFWvKNzHE/H+VP+GWqk4hELfKwkPOUR3xihtaAf55ydxpmp
-	veeyxKOx3+a5uvZ2xIrWKTtBmK1OsiBzA9LqwrZ/9k=
-Received: from [127.0.1.1] (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wA3sEvFRmhqt+6MMQ--.7825S2;
-	Tue, 28 Jul 2026 14:06:00 +0800 (CST)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="Hs7rEnH9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lZU2tBjYiMZZI20sOe6XaYhC7uclWWUO36axnqh0rqAoU6PrBI57f+0aiD1aVMJLNbGvhbuB+CxTbfW+RPdZjnK/lpEiqjmvWDG/cQveUs9wIES6omFUdqm1KdTPoc/kDv4U6fdjaeDMf8mytWu4vq0CLl/59La4wmurhQpdiuA6wPX4+ZXYctKLy/c9BMAfOUVyF1jEit4ymYf0hz6p/Mon0OmaaFDR9JE4KXYngy2DRMP+Vglr77+BO9Wgr58GlHfU8LFKbxnzmJLzTsK3XX8q5n1zLO0l45r0rGKTwcnMyN1WuYWO7DJ1oErU4kDEKvjaGuVAW8KePSLTKbCAXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1Zg67UvBHAxJ0vmJ4ktMbJqwx6eTZ4SBU6O8qA220gk=;
+ b=j5Iv5x2eCOfs2iaDH8HNtvK7qePjGSAxubBeYW4j77D6FmC0Xfh0kI+zORcP/Aa5B1YN5vGYVII6IjErfsAwlaXWEyhwK4rKqVaESMJkRCge9J2RuToxrqG6MRp8iKywMQurQ89AKLjzJ680hDYQ0xFmEw0GzW/dsvBbKmNCMU/1JrCsQkrXJZCRpYLaRju/Ht2eYnTuug0z93hQ0zyQO8I512NjFImySuBjUxkuHdoiJW8dcfW3tXgvTDagBt/GiEMKxbcpsec6dKJd7oeRB14+NDiI10hYRrf5htTwekBDXYGvhHu342ztGuuzZzfjfzy9I7BQDfjJ/2NbK5zm5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
+ dkim=pass header.d=altera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1Zg67UvBHAxJ0vmJ4ktMbJqwx6eTZ4SBU6O8qA220gk=;
+ b=Hs7rEnH9FLfL3ey2GONScX5mID20lOX7EmbBTmvLeK1m574GRWZ7FbLCdhBWgb854nX2Gy2WcYhXK9Pmja2K52HnCsyL7xfnTCQPu4XZtLWQul0PQrOvBR+bCrJ5g1qwQsultxWJq+K7H1ECBYsqlVjyVFMVUg3dYJVP0ZuIYNaYZkG+61tuxsyt+RIvmi0iCB98XT7Y6cRKDQuo3ZAkT+6JjDtlgmll4dYJVaCVyaSERHUCqdi0XlJrJdVDS/UEAySsJfaVmEIBR+1JCDVDG6NtIpS9hhGF2OaS+G4hRVvaBdN2C7UhLeFfAHbVTZ2FIfzi3jID2u93aeDDBigIwQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=altera.com;
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
+ by DM6PR03MB5273.namprd03.prod.outlook.com (2603:10b6:5:240::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Tue, 28 Jul
+ 2026 06:09:06 +0000
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775%4]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
+ 06:09:06 +0000
+From: muhammad.nazim.amirul.nazle.asmade@altera.com
+To: netdev@vger.kernel.org
+Cc: rohan.g.thomas@altera.com,
+	pabeni@redhat.com,
+	rmk+kernel@armlinux.org.uk,
+	richardcochran@gmail.com
+Subject: [PATCH net v2] net: stmmac: Fix E2E delay mechanism
+Date: Mon, 27 Jul 2026 23:09:04 -0700
+Message-ID: <20260728060904.31993-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+X-Mailer: git-send-email 2.43.7
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ2P221CA0003.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:a03:5db::10) To SJ0PR03MB6964.namprd03.prod.outlook.com
+ (2603:10b6:a03:432::18)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Subject: [PATCH net] net: openvswitch: fix stack exhaustion from unaccounted clone_execute() recursion
-From: yang zhuorao <alexyoung0@163.com>
-To: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org
-Cc: security@kernel.org, dev@openvswitch.org, netdev@vger.kernel.org
-Date: Tue, 28 Jul 2026 14:05:57 +0800
-Message-ID: <178521875706.803907.3226960398667307795@163.com>
-X-CM-TRANSID:_____wA3sEvFRmhqt+6MMQ--.7825S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAFWfGF1ftF18KF18Zw43Jrb_yoWrCr45pa
-	yrCw1qyrZ8Jw1I93ykAa18WFy5ua1UGrW5GFs8Aw1rJa45Kw1SvrZ0gFy2vF17CF1kAay7
-	XrWDZF1a9Fs7ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07b8GYJUUUUU=
-X-CM-SenderInfo: xdoh55prxqwii6rwjhhfrp/xtbC-wh4d2poRsihkAAA3F
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR03MB6964:EE_|DM6PR03MB5273:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f4e1559-9a81-4186-df2b-08deec6ebaa3
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|10067099003|56012099006|11063799006|55112099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	O1XaIYMF0Qx9DjJhAZUefFPHg81/9IX63RujNxo8aOdWcDtNAral4EdsaxxQbXrk0H1tnpyg40CDMpq0eDLKXqQgxsclyiXvRti8bmuSO3owunca5WqyyzCAXVYI9+5Bb0w3yj9Fsa8fGSDCwZY7EirG2ZOb30o7MYUt3kJUptHEaf/3qjOqZMHUL3rHybR06XV84ROjJqewWk+/PryCHqcLgm5NAzm56Or/hwsu++6NyeG7QOaWSbydu9QFwF+3GzdPS2ROiVSj4WYSlAzEbfUHPXUbsifeYPNfxgfBrUYdd3eUracKA80bF0z87SYmU/cXP/43E6JtPwyGiXCBDoCmkRJ4rsuLJz/28caVmYw3Y9HB3123pkKTzWcVVMvOyQWIzYvq4qO4fCi5n9eexH0sos0inU+5odH/J2B6BxJaBzYt9zkWn7K7/ZCfr7NNSmWMksZQwkZF9sdRI6o/METPMzLqV1iZp10Sdc7a1LhXIlIKjfwNvuUKVavYyGlOnw0dgWW9vq3Hsl4iXGx21tpE3NGGPDXNn0e3G6vyqSXR9+bZapKOz9OKAEHFkDjnr9MJYwktwYnIRUjr7V2LIZIFOQkgLJUFASifqEeDpBD4TxdJYCCjCoYU3gIvFednk71PGbBjX3Y2dmfQmSTcLpL4cMZ8h6wKjdG5kvQge6A=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(10067099003)(56012099006)(11063799006)(55112099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?j9/+6aPlZ8ApjtlWZNFpQ/IwAWzJmDJj1NYkD4B8Twu6vp9vOAK8s3uazSsa?=
+ =?us-ascii?Q?rVnr4udSW2h15LyaF+R6+jJTMax5+K71iyXODHfNFJ0VZnGpqhslPrHKv+hC?=
+ =?us-ascii?Q?U40EHnw1TTgPYQuAjvWgT15DCIy7l1Ks4LCEY/upPMirDlxdu05uqqvSqxfi?=
+ =?us-ascii?Q?rOPxt7pL/55VucKSdR01Zu1GzyI7S6AbFXAOydkb9KQlL7SAlPG9njjt6KfU?=
+ =?us-ascii?Q?ue1nOHn+qKTgbzSX2UrLqI0wxrZHftnplmcLx6jOvNFEu4hQ9oESEd+IhSQN?=
+ =?us-ascii?Q?M9GtCguAropLa2+RCQOWzMd9fq/Kpwy8MtOjuP7/fLT56l7vBmACZthecSns?=
+ =?us-ascii?Q?peqNtiN90NSDO2jnh+LlZ4EY0/BBX1c6HtKfpEu6vpONwtWvcAzQfGbjq8qa?=
+ =?us-ascii?Q?WVRPyg8k4dI1L6gl4xl6zSey7MgMIymda0zFXSTiRwhEPzwH6TbdN1WJA48/?=
+ =?us-ascii?Q?v3mwQxe82kmsYBpbW/Jm/4MN+WZHF7XQT2TbOgwSQl6SfZ7hH4i94dCQSzFS?=
+ =?us-ascii?Q?Gww6SA32Rd4gvrBWG1rneUq3zbDedbEXdNLWUnqM6pQ8l/a4JJeu3JK8FNcj?=
+ =?us-ascii?Q?S3xWjQtrZyk6/zhpzO/tbzIkZMrAo12JuLtWrmCoCNO8D2+R2U1tby2XOocS?=
+ =?us-ascii?Q?R3SuguB0v/744Y/Xlg2pAkBJ8ojQRfOHkPd1KilFBDr4sx0Gers0DZEeCEmK?=
+ =?us-ascii?Q?M4IxCHwq/EbnEnR2Ffn/l8GtXyXlJZViOD/x8WDWbj0KkqpOAIQRYg6a+hI1?=
+ =?us-ascii?Q?SUWqzl6uix3kE/uvslQd1ljjtLF9cgJFTvI+qf1aJO421DQ0s2xkR3lahNJV?=
+ =?us-ascii?Q?7RRC7uVBTUVoVjzvbAP6g/09hm9m/CG8qSi0vCFJyYUbQ1wwpx8H6xNjNRXI?=
+ =?us-ascii?Q?aIJ9B8UnWot9DfrqXkUOmkiFJ9YDlJCqCRkPoWs7and39XKGKR0NpxN54ii9?=
+ =?us-ascii?Q?NsEmzpYZgGDXd5wu6D/bo7Bu2yyYmEFoaNrjHQn7unA+NODNX0CmfdYP/rjZ?=
+ =?us-ascii?Q?1dovs5cs04HAVNDbdk7Ac4nLe+3Q5opnZlRSgkDd0XoWM2IxbHrTypLgV2Jr?=
+ =?us-ascii?Q?dNI91m5AKpZ+UYNFptSVOYu24PRJ/VGGAE6a0nrSo5AWse+XxV2mBDTDCa38?=
+ =?us-ascii?Q?Yix3QaD7+k5arQBV23P+IPmHhuy38/JH/jmoz6ARFv+JI5I1/KQD0Z28mfvZ?=
+ =?us-ascii?Q?QevLaaG/S8Mxpxazv6RqQxfTfv/fd256a1YjNwbgyvRhshUXB+4iAZrLwNc9?=
+ =?us-ascii?Q?ycr2y8/n1DCIbc2lc3D1uDClKktYofaIuY0pJC8i6AnXYmsVibFVYf30db66?=
+ =?us-ascii?Q?0QLjQusR2XRR3dyHKPkwLTH8A3tL8HmoUyQ0YYbetWfOrVCVWscpHFtxxcMw?=
+ =?us-ascii?Q?juijgo6EUghpg9361EW+3ia9+kUX27+xooyY7aczyORzLBGLNqGmixw7mt4B?=
+ =?us-ascii?Q?G75DjFE/zGCoxtA5OcsIh/UqBcUNW8yCOCC7RzHZLpAfnULg2I/TGpwR459J?=
+ =?us-ascii?Q?OC8D9JXORYAx0rEBAO9ZpbuKAmAEgIWXvXAvHoHCQLVGzuf2YagnwUF88lbG?=
+ =?us-ascii?Q?BMZ+JAXma1FkiI42TYl6Min3pVqhXnFWr48i9sQ9Bu3jui3syis7RUxg1vJU?=
+ =?us-ascii?Q?KaZdgO6/aBr7tw/auP9n2AYQIeNpAQyymq3bcmHd6Y2tvfuqID5DpMJMqydj?=
+ =?us-ascii?Q?7onCNtybzlo+naXJ9vaEIVpQqQEUHNe49dGxP0ongrW3ZWQ9AlEmLqeZmF2Z?=
+ =?us-ascii?Q?Y8def9lmGU7V1zGI/OnJ/9Sp2IfQr3MPnV6RW0ST+DPAqyqC8OnGNrRngbl6?=
+X-MS-Exchange-AntiSpam-MessageData-1: muOrwwSlRvyrTQ==
+X-OriginatorOrg: altera.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f4e1559-9a81-4186-df2b-08deec6ebaa3
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 06:09:06.1287
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dVT/JcE4ngRT+5CKw/ujq0cj8AT/E10l4zos1UveTgr3PtzRxztS9ODbJwRw+4GZM9SQvwitloQXbfn2rRIw5SIWC2FAWu0tYXHwb/sZNxeOmDmd8y1/WXmTmihXHNf10XvoxMw9/pIx/WJkltiF8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB5273
 
-Y2xvbmVfZXhlY3V0ZSgpIG9ubHkgaW5jcmVtZW50cyBhbmQgZGVjcmVtZW50cyBleGVjX2xldmVs
-IHdoZW4KY2xvbmVfZmxvd19rZXkgaXMgdHJ1ZS4gIFdoZW4gY2xvbmVfZmxvd19rZXkgaXMgZmFs
-c2UgdGhlIG9wdGltaXplZApwYXRoIHJldXNlcyB0aGUgb3JpZ2luYWwgZmxvdyBrZXkgYW5kIGNh
-bGxzIGRvX2V4ZWN1dGVfYWN0aW9ucygpCmRpcmVjdGx5IHdpdGhvdXQgdXBkYXRpbmcgdGhlIHJl
-Y3Vyc2lvbiBjb3VudGVyLCBtYWtpbmcgdGhvc2UgbGF5ZXJzCmludmlzaWJsZSB0byB0aGUgT1ZT
-X1JFQ1VSU0lPTl9MSU1JVCBjaGVjayBpbiBvdnNfZXhlY3V0ZV9hY3Rpb25zKCkuCgpBIHNpbmds
-ZSBhY3Rpb24gdHJlZSBhbGxvd3MgdXAgdG8gT1ZTX0NPUFlfQUNUSU9OU19NQVhfREVQVEggKDE2
-KQpuZXN0ZWQgY2xvbmUgYWN0aW9ucy4gIFdoZW4gdGhlIGlubmVybW9zdCBjbG9uZSBjb250YWlu
-cyBhIFJFQ0lSQwp0aGF0IHNlbGVjdHMgYW5vdGhlciBmbG93IHdpdGggaXRzIG93biAxNi1sYXll
-ciB2YWxpZGF0aW9uIGJ1ZGdldCwKbXVsdGlwbGUgdHJlZXMgb2YgdW5hY2NvdW50ZWQgcmVjdXJz
-aW9uIGNhbiBiZSBzdGFja2VkLiAgVGhlIGRlZmVycmVkCmFjdGlvbiB0aHJlc2hvbGQgKE9WU19E
-RUZFUlJFRF9BQ1RJT05fVEhSRVNIT0xEID0KT1ZTX1JFQ1VSU0lPTl9MSU1JVCAtIDIgPSAzKSBh
-bGxvd3MgdGhyZWUgc3luY2hyb25vdXMgcmVjaXJjIGxldmVscwpiZWZvcmUgY2xvbmVfa2V5KCkg
-Zm9yY2VzIGRlZmVycmFsLCB5aWVsZGluZyAzIHggMTYgPSA0OCBsYXllcnMgb2YKc3luY2hyb25v
-dXMsIHVuYWNjb3VudGVkIGNsb25lIHJlY3Vyc2lvbi4KClBlci1sYXllciBzdGFjayB1c2FnZSBp
-cyBhcHByb3hpbWF0ZWx5IDI5NiBieXRlcyAoZnJvbSBkaXNhc3NlbWJseToKZG9fZXhlY3V0ZV9h
-Y3Rpb25zKCkgYWxsb2NhdGVzIDB4OTggYnl0ZXMsIGNsb25lX2V4ZWN1dGUoKSBhbGxvY2F0ZXMK
-MHgyMCBieXRlcywgcGx1cyBzYXZlZCByZWdpc3RlcnMgYW5kIHJldHVybiBhZGRyZXNzKS4gIDQ4
-IGxheWVycwpjb25zdW1lIH4xNCwyMDggYnl0ZXMgYmVmb3JlIHJlY2lyYywgZmxvdyBsb29rdXAs
-IE5ldGxpbmssIGFuZCBiYXNlCmNhbGwgZnJhbWVzLCBleGNlZWRpbmcgdGhlIDE2IEtpQiB4ODZf
-NjQgdGFzayBzdGFjayBhbmQgaGl0dGluZyB0aGUKZ3VhcmQgcGFnZS4KCkFuIHVucHJpdmlsZWdl
-ZCB1c2VyIGNhbiB0cmlnZ2VyIHRoaXMgZnJvbSBhIHByaXZhdGUgdXNlci9uZXQKbmFtZXNwYWNl
-IChjbG9uZShDTE9ORV9ORVdVU0VSIHwgQ0xPTkVfTkVXTkVUKSkgYnkgaW5zdGFsbGluZyB0aHJl
-ZQpmbG93IHJ1bGVzIGVhY2ggd2l0aCAxNiBuZXN0ZWQgY2xvbmUgYWN0aW9ucyBsaW5rZWQgYnkg
-UkVDSVJDLCB0aGVuCmluamVjdGluZyBhIHNpbmdsZSBwYWNrZXQgdmlhIE9WU19QQUNLRVRfQ01E
-X0VYRUNVVEUuICBUaGUgcmVzdWx0IGlzCmEga2VybmVsIHBhbmljOgoKICAgIEJVRzogVEFTSyBz
-dGFjayBndWFyZCBwYWdlIHdhcyBoaXQgLi4uCiAgICBDUFU6IDAgVUlEOiAxMDAwIFBJRDogODUg
-Li4uIDcuMi4wLXJjNSsKICAgIFJJUDogMDAxMDpjbG9uZV9leGVjdXRlKzB4NWEvMHgyYzAgW29w
-ZW52c3dpdGNoXQogICAgW2RvX2V4ZWN1dGVfYWN0aW9ucyAvIGNsb25lX2V4ZWN1dGUgYWx0ZXJu
-YXRpbmcgcmVwZWF0ZWRseV0KICAgIEtlcm5lbCBwYW5pYyAtIG5vdCBzeW5jaW5nOiBGYXRhbCBl
-eGNlcHRpb24gaW4gaW50ZXJydXB0CgpGaXggdGhpcyBieSB1bmNvbmRpdGlvbmFsbHkgaW5jcmVt
-ZW50aW5nIGV4ZWNfbGV2ZWwgZm9yIGFsbApzeW5jaHJvbm91cyBjbG9uZSByZWN1cnNpb24gZWRn
-ZXMgYW5kIGNoZWNraW5nIE9WU19SRUNVUlNJT05fTElNSVQKYmVmb3JlIGNhbGxpbmcgZG9fZXhl
-Y3V0ZV9hY3Rpb25zKCkuICBXaGVuIHRoZSBsaW1pdCBpcyBleGNlZWRlZCB0aGUKcGFja2V0IGlz
-IGRyb3BwZWQgYW5kIC1FTkVURE9XTiBpcyByZXR1cm5lZCwgY29uc2lzdGVudCB3aXRoIHRoZQpl
-eGlzdGluZyBoYW5kbGluZyBpbiBvdnNfZXhlY3V0ZV9hY3Rpb25zKCkuCgpUZXN0ZWQgb24gTGlu
-dXggNy4yLjAtcmM1KyAobWFpbmxpbmUgSEVBRCA2MmNjOTAyNDE1NDgpLCB4ODZfNjQsCkNPTkZJ
-R19WTUFQX1NUQUNLPXksIENPTkZJR19PUEVOVlNXSVRDSD1tLCBpc29sYXRlZCBRRU1VIGd1ZXN0
-LgpDb25maXJtZWQgdGhhdCB0aGUgUG9DICguL3BvY19jbG9uZV9vdmVyZmxvdyAyIDE2IDMsIHJ1
-biBhcyBVSUQgMTAwMCkKbm8gbG9uZ2VyIHRyaWdnZXJzIGEgcGFuaWMgd2l0aCB0aGlzIHBhdGNo
-IGFwcGxpZWQuCgpGaXhlczogYjIzMzUwNDAzM2RiICgib3BlbnZzd2l0Y2g6IGtlcm5lbCBkYXRh
-cGF0aCBjbG9uZSBhY3Rpb24iKQpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZwpSZXBvcnRlZC1i
-eTogeWFuZyB6aHVvcmFvIDxhbGV4eW91bmcwQDE2My5jb20+ClNpZ25lZC1vZmYtYnk6IHlhbmcg
-emh1b3JhbyA8YWxleHlvdW5nMEAxNjMuY29tPgotLS0KUmVwcm9kdWNlciAoQywgc2luZ2xlIGZp
-bGUsIGF2YWlsYWJsZSB1cG9uIHJlcXVlc3QpOgoKICAgIGdjYyAtTzIgLVdhbGwgLW8gcG9jX2Ns
-b25lX292ZXJmbG93IHBvY19jbG9uZV9vdmVyZmxvdy5jCiAgICAuL3BvY19jbG9uZV9vdmVyZmxv
-dyAyIDE2IDMgICAjIGFzIHVucHJpdmlsZWdlZCB1c2VyCgpUaGUgUG9DIGNyZWF0ZXMgYSBwcml2
-YXRlIHVzZXIvbmV0IG5hbWVzcGFjZSwgaW5zdGFsbHMgdGhyZWUgZmxvd3MKZWFjaCB3aXRoIDE2
-IG5lc3RlZCBjbG9uZSBhY3Rpb25zIGxpbmtlZCBieSBSRUNJUkMsIGFuZCBpbmplY3RzIGEKdHJp
-Z2dlcmluZyBwYWNrZXQuICBQcmVyZXF1aXNpdGVzOiBDT05GSUdfT1BFTlZTV0lUQ0g9bS95IGxv
-YWRlZCwKdW5wcml2aWxlZ2VkIHVzZXIgbmFtZXNwYWNlIGNyZWF0aW9uIGFsbG93ZWQuCgpWZXJp
-ZmllZCB1bmZpeGVkIGluIExpbnVzIG1haW5saW5lICg2MmNjOTAyNDE1NDgpLCBuZXQgKDk3YWMw
-ODU2MGQyMyksCmFuZCBuZXQtbmV4dCAoYTUwZWJhMWU3NzhhKSBhcyBvZiAyMDI2LTA3LTI3LgoK
-IG5ldC9vcGVudnN3aXRjaC9hY3Rpb25zLmMgfCAxMyArKysrKysrKystLS0tCiAxIGZpbGUgY2hh
-bmdlZCwgOSBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL25ldC9v
-cGVudnN3aXRjaC9hY3Rpb25zLmMgYi9uZXQvb3BlbnZzd2l0Y2gvYWN0aW9ucy5jCmluZGV4IDUx
-M2ZjYTZhOGU4YS4uMDVmYmY1YzA3MjAwIDEwMDY0NAotLS0gYS9uZXQvb3BlbnZzd2l0Y2gvYWN0
-aW9ucy5jCisrKyBiL25ldC9vcGVudnN3aXRjaC9hY3Rpb25zLmMKQEAgLTE0OTcsMTQgKzE0OTcs
-MTkgQEAgc3RhdGljIGludCBjbG9uZV9leGVjdXRlKHN0cnVjdCBkYXRhcGF0aCAqZHAsIHN0cnVj
-dCBza19idWZmICpza2IsCiAJaWYgKGNsb25lKSB7CiAJCWludCBlcnIgPSAwOwogCQlpZiAoYWN0
-aW9ucykgeyAvKiBTYW1wbGUgYWN0aW9uICovCi0JCQlpZiAoY2xvbmVfZmxvd19rZXkpCi0JCQkJ
-X190aGlzX2NwdV9pbmMob3ZzX3BjcHVfc3RvcmFnZS0+ZXhlY19sZXZlbCk7CisJCQlfX3RoaXNf
-Y3B1X2luYyhvdnNfcGNwdV9zdG9yYWdlLT5leGVjX2xldmVsKTsKKworCQkJaWYgKHVubGlrZWx5
-KF9fdGhpc19jcHVfcmVhZChvdnNfcGNwdV9zdG9yYWdlLT5leGVjX2xldmVsKSA+CisJCQkJICAg
-ICBPVlNfUkVDVVJTSU9OX0xJTUlUKSkgeworCQkJCV9fdGhpc19jcHVfZGVjKG92c19wY3B1X3N0
-b3JhZ2UtPmV4ZWNfbGV2ZWwpOworCQkJCW92c19rZnJlZV9za2JfcmVhc29uKHNrYiwgT1ZTX0RS
-T1BfUkVDVVJTSU9OX0xJTUlUKTsKKwkJCQlyZXR1cm4gLUVORVRET1dOOworCQkJfQoKIAkJCWVy
-ciA9IGRvX2V4ZWN1dGVfYWN0aW9ucyhkcCwgc2tiLCBjbG9uZSwKIAkJCQkJCSBhY3Rpb25zLCBs
-ZW4pOwoKLQkJCWlmIChjbG9uZV9mbG93X2tleSkKLQkJCQlfX3RoaXNfY3B1X2RlYyhvdnNfcGNw
-dV9zdG9yYWdlLT5leGVjX2xldmVsKTsKKwkJCV9fdGhpc19jcHVfZGVjKG92c19wY3B1X3N0b3Jh
-Z2UtPmV4ZWNfbGV2ZWwpOwogCQl9IGVsc2UgeyAvKiBSZWNpcmMgYWN0aW9uICovCiAJCQljbG9u
-ZS0+cmVjaXJjX2lkID0gcmVjaXJjX2lkOwogCQkJb3ZzX2RwX3Byb2Nlc3NfcGFja2V0KHNrYiwg
-Y2xvbmUpOwotLQoyLjQzLjAK
+From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+
+For E2E delay mechanism, "received DELAY_REQ without timestamp" error
+messages show up for dwmac v3.70+ and dwxgmac IPs.
+
+This issue affects socfpga platforms, Agilex7 (dwmac 3.70) and
+Agilex5 (dwxgmac). According to the databook, to enable timestamping
+for all events, the SNAPTYPSEL bits in the MAC_Timestamp_Control
+register must be set to 2'b01, and the TSEVNTENA bit must be cleared
+to 0'b0.
+
+Commit 3cb958027cb8 ("net: stmmac: Fix E2E delay mechanism") already
+addresses this problem for all dwmacs above version v4.10. However,
+same holds true for v3.70 and above, as well as for dwxgmac. Updates
+the check accordingly.
+
+Fixes: 14f347334bf2 ("net: stmmac: Correctly take timestamp for PTPv2")
+Fixes: f2fb6b6275eb ("net: stmmac: enable timestamp snapshot for required PTP packets in dwmac v5.10a")
+Fixes: 3cb958027cb8 ("net: stmmac: Fix E2E delay mechanism")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+---
+This is a resend of a fix originally submitted by Rohan G Thomas. The
+previous submission (v2) went silent without being picked up:
+https://lkml.org/lkml/2025/11/29/71
+
+Changes in v2:
+- Replace !priv->plat->has_xgmac with priv->plat->core_type != DWMAC_CORE_XGMAC
+  since has_xgmac was removed in 26ab9830beab (Jakub Raczynski)
+
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 2a0d7eff88d3..2cd95fb8bc71 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -755,7 +755,8 @@ static int stmmac_hwtstamp_set(struct net_device *dev,
+ 			config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+ 			ptp_v2 = PTP_TCR_TSVER2ENA;
+ 			snap_type_sel = PTP_TCR_SNAPTYPSEL_1;
+-			if (priv->synopsys_id < DWMAC_CORE_4_10)
++			if (priv->synopsys_id < DWMAC_CORE_3_70 &&
++			    priv->plat->core_type != DWMAC_CORE_XGMAC)
+ 				ts_event_en = PTP_TCR_TSEVNTENA;
+ 			ptp_over_ipv4_udp = PTP_TCR_TSIPV4ENA;
+ 			ptp_over_ipv6_udp = PTP_TCR_TSIPV6ENA;
+-- 
+2.43.7
 
