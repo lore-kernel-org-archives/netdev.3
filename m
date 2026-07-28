@@ -1,83 +1,81 @@
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF2C3D1A8F;
-	Tue, 28 Jul 2026 07:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990DD3F328F;
+	Tue, 28 Jul 2026 07:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785223907; cv=none; b=T/RtBp/XvW9OQVFmNYSq+1nY+aRLzfmM3NyZivCfDTxuM9AH+tdOjBpkJhvmoEzpHeEz+IvfhRNJ9UQ5jcNoBD/junuTajM7YksSyyRIfg1ZqD+yywc7DnCEH50MQgpf+mNQfZlGJ0hUP0BhHnLp2DFYKujvztFLqDQR6tEzSOs=
+	t=1785223920; cv=none; b=lAkOz3undrYjyERdd/7bQ80lA59oQjOd5MsC7gEQSj7+5XPl06kygOVvH2OIL78wLZf++K66fKTls/JkANqDg9KbLG5CPxy+1MKpHR++ZwoPS2ckueFEAAgQk5OqC3MYp/EjCQIguUWQyKtMSlGRLAnRbnya1X8tJKujRu67lb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785223907; c=relaxed/simple;
-	bh=mkSHfLfTlSe07poYKCbFaI2FI7uVAwYI6N4CyEz9XMI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=D+jIHh4QIOV2seDAEw3gDDAlcYuEzwkQzR//emmSXz3Ts7NxeUT+wYC9EbbjHgZkC+lyeajLcSVD/H4fIWKTt11EU+i+eeF4TrJRiRpJ9uk6jlMEVV66mz+LsK244XjIlbTxePKg/9XdfULu/cji7SZdG1b4MscYt1MYUJhIH4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=ppxDI68+; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1785223920; c=relaxed/simple;
+	bh=8ROPugeQIxJAkhQWU+rI2R0qwrCbPe/o6bAacSI3V4M=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=p66k1VO+OL1ZuY2WOwXQjhm044iACC3yiW7J2gBIIcL2YCyHsrPYgVQS27B9gDV6uofz3KVmXW7n/d5TZcYQnNEpek/3QtzyCLFlCo8XO3HLy9K9byDSqsYz24OveS52Ce0x84jXW7KV5I67+oMEG1xdX/jtjtzfw40TuP/bV0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=nneM6h8u; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="ppxDI68+"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66S7UNMQ03680748, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="nneM6h8u"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66S7V8tsC3681099, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1785223824;
-	bh=mkSHfLfTlSe07poYKCbFaI2FI7uVAwYI6N4CyEz9XMI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ppxDI68+ZYz6JimC2MSCBvGg+2PRa17ISSJJYbVnJEwYDy2Wc5cXT4LO6Qku1USxx
-	 zv577g/rwBgwXbGepAf3VQGGLVw1TpbV7zwyDy42WWDDj+ZVb2mVIBYGb/bHQFM/Ij
-	 zGtMOaI5veTMaSLiLZ/bx/+tVUP78pC27S3XEUPkdy3Tb9blQN2oXhzcKKKkgcwqGw
-	 xBjkNtTqD0dnwuwezkD1oTh7Fsv/xr7hIMT0doizKy+3wfNyU+S7HYWhMKElb7NKR7
-	 Abbh9+pLsOkpkq4KjdeSp5U9Jzn7xE3++95PITWdkRy6g0i+kC2bGoBG0n4c3Ald+f
-	 UcTD7xbtyjh+w==
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66S7UNMQ03680748
+	s=dkim; t=1785223868;
+	bh=hXtUSmPeTkKfmE0Aucw2E0uvY+m51XuaFs/QLa6v/UI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=nneM6h8uGuxsslkB5nuvfeQn7L23BHDFiVpuvXXH81DEsrbiHjsHb7MQnSIf7+fRm
+	 qcPundL9PGSccfo6Ypcyb9p1q83h77iRHhuxsAVPxxe2MXwumqoHvnoKm/hFMJyskB
+	 QIxHrUyKC4NFV+XOhnLKk4QgbaYeLNNaJceOiNastef4paYHNjqvUNSb34s/XNiijS
+	 DL9LoSOWSuE8YYb0WClrkU0GVz8JDAFu3geKBr+eaOp+bPRpVIeudnm889qM2qxQbK
+	 TxuWkLHCRX5MwvaAw7zedzXMBIZM3/0edGY6G4zbMhEkXmGXBnppEGyiuKCjGUaG71
+	 2NlOBMLYPAnTg==
+Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66S7V8tsC3681099
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 28 Jul 2026 15:30:24 +0800
-Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
- RS-EX-MBS3.realsil.com.cn (172.29.17.103) with Microsoft SMTP Server
+	Tue, 28 Jul 2026 15:31:08 +0800
+Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
+ RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 28 Jul 2026 15:30:24 +0800
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
- RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.043; Tue,
- 28 Jul 2026 15:30:24 +0800
-From: Javen <javen_xu@realsil.com.cn>
-To: Chukun Pan <amadeus@jmu.edu.cn>
-CC: "andrew@lunn.ch" <andrew@lunn.ch>, "daniel@makrotopia.org"
-	<daniel@makrotopia.org>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, =?utf-8?B?6aG+5pmT5Yab?=
-	<freddy_gu@realsil.com.cn>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux@armlinux.org.uk"
-	<linux@armlinux.org.uk>, "maxime.chevallier@bootlin.com"
-	<maxime.chevallier@bootlin.com>, "nb@tipi-net.de" <nb@tipi-net.de>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "pabeni@redhat.com"
-	<pabeni@redhat.com>, "vladimir.oltean@nxp.com" <vladimir.oltean@nxp.com>
-Subject: RE: [PATCH net-next v10 5/5] net: phy: realtek: add support for
- RTL8261D
-Thread-Topic: [PATCH net-next v10 5/5] net: phy: realtek: add support for
- RTL8261D
-Thread-Index: AQHdGLgFnWqKo3yoJ026TnnGe+U6QrZ48LqAgAeu6XCAAWNwgIAAkP7w
-Date: Tue, 28 Jul 2026 07:30:24 +0000
-Message-ID: <01571a1acbed47d69cdc97437f106fb5@realsil.com.cn>
-References: <bb782164800a421397c2085f7e58aff4@realsil.com.cn>
- <20260728065001.1487282-1-amadeus@jmu.edu.cn>
-In-Reply-To: <20260728065001.1487282-1-amadeus@jmu.edu.cn>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 15.2.2562.43; Tue, 28 Jul 2026 15:31:08 +0800
+Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS1.realsil.com.cn
+ (172.29.17.101) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Tue, 28 Jul 2026 15:31:08 +0800
+From: javen <javen_xu@realsil.com.cn>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <freddy_gu@realsil.com.cn>, <nb@tipi-net.de>,
+	<maxime.chevallier@bootlin.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<daniel@makrotopia.org>, <vladimir.oltean@nxp.com>, Javen Xu
+	<javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v11 0/5] Add support for RTL8261C/D
+Date: Tue, 28 Jul 2026 15:31:01 +0800
+Message-ID: <20260728073106.1515-1-javen_xu@realsil.com.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Pg0KPkhpLA0KPg0KPj4gVGhlIHJlYXNvbiBmb3IgdGhpcyBjaGFuZ2UgaXMgdGhhdCBSVEw4MjYx
-IDEwR2JwcyBQSFkgc2hhcmUgdGhlIHNhbWUNCj4+IHBoeSBpZC4gVGhlIHNwZWNpZmljIGhhcmR3
-YXJlIHZlcnNpb25zIGFyZSBkaXN0aW5ndWlzaGVkIGJ5IGEgc3ViLXBoeQ0KPj4gaWQgaW5zdGVh
-ZC4gQW5kIGluIHByb2JlIGZ1bmN0aW9uLCB3ZSB3aWxsIHByaW50IG91dCB0aGUgZXhhY3QNCj4+
-IGhhcmR3YXJlIHZlcnNpb24gZXhwbGljaXRseS4NCj4NCj5UaGlzIGlzIG9ubHkgcHJpbnRlZCBk
-dXJpbmcgcHJvYmUuIElmIEknbSBub3QgbWlzdGFrZW4sIHRoZSBQSFkgSURzIG9mIFJUTDgyNjFO
-DQo+YW5kIFJUTDgyNjFDIGFyZSBub3QgdGhlIHNhbWUuIFBlcmhhcHMgeW91IGNvdWxkIG5hbWUg
-aXQgc29tZXRoaW5nIGxpa2UNCj5SVEw4MjYxQy9EIGhlcmU/DQoNClRoaXMgY2hhbmdlIHdpbGwg
-YmUgYWRkZWQgaW50byAgbmV3IHBhdGNoLg0KDQpUaGFua3MsDQpKYXZlbg0K
+From: Javen Xu <javen_xu@realsil.com.cn>
+
+Add support for RTL8261C/D and add support for loading firmware.
+
+Javen Xu (5):
+  net: phy: c45: add genphy_c45_pma_soft_reset()
+  net: phy: c45: add setup and read master/slave helpers
+  net: phy: realtek: add support for RTL8261C_CG
+  net: phy: realtek: load firmware for RTL8261C_CG
+  net: phy: realtek: add support for RTL8261D
+
+ drivers/net/phy/phy-c45.c              | 125 ++++++++
+ drivers/net/phy/realtek/realtek_main.c | 411 +++++++++++++++++++++++++
+ include/linux/phy.h                    |   1 +
+ include/uapi/linux/mdio.h              |   5 +
+ 4 files changed, 542 insertions(+)
+
+-- 
+2.43.0
+
