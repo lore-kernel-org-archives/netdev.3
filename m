@@ -1,39 +1,39 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6242C3ACA74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623433AB291
 	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 13:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785245974; cv=none; b=IR9n9jUY1O8L6dPIe2aEmCWndIpnLgjEEU2X2iEXH0VhK4oMTkyi9hos8s7VheNsBPGqfkfnphSTy2EX+MklSKk3KEX5LKtDIep4TyRziBHJe/6wbua/hKXw9xu03/zy/jkNyDFPOYJAzRNxr9y6wYU8P4cCIGCnHVfU7VAHjSo=
+	t=1785245975; cv=none; b=MJJH6MoQJLSQHhpBl9TJgHK/JffItx3xKv4N5XzAtpele+YsPUy4tzveS5+hi6B0a9dF3uGGU+Cu1WrOZW+fHUHX60e1wu9n9VafncTsKkwLB+Lc5JgN9nfamdb/hNXEmzxVSEWYtab9Y1wKOaGrb9O8C9PZSjn/mZN+4ArP+l8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785245974; c=relaxed/simple;
-	bh=GkGNsAHO8AU/JAIYYjMgbRk6vP4PwNJjz5LXQp+a5og=;
+	s=arc-20240116; t=1785245975; c=relaxed/simple;
+	bh=B14+rJi/3317g6EGvhpNfaWIawdEaODZJ2BWSqoWj+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+sXNCKnS4b1bMjDOLxq2NwbLMPdEgxAcLBjFwgykPApbKqNwNrF7Ssez4/+8X6wOgM8oxAEzYYzCYtCCiP7dFTq+noibJdkNW4uNs5Z+bWDcelDK02ZlHh08I+/G2bo8dSkVHMZsn8ZdfbzhwFM4ZLDDBRn1Jkf4wsIq7z49wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=FsyUG+Cf; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=ixpoBm4LkOuRcSd5fMBkKaJfrfIF5xT3G066ZXpvRtO1cWqvo+Sq8bkOHj3Li2KGMWZj61+kd88RkzHEmz5gZfFiyuVVWt7129X9noAyXWZJkFoHtm8xoNM3spb6DvKMJHZZkLtNeTLdM8bzuMgFnS00UR2yZ/073oMBxE3rCes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=cTbqmKNJ; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="FsyUG+Cf"
-Received: from kero.packetmixer.de (p200300c59717eaD808F168C97E5563A8.dip0.t-ipconnect.de [IPv6:2003:c5:9717:ead8:8f1:68c9:7e55:63a8])
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="cTbqmKNJ"
+Received: from kero.packetmixer.de (p200300C59717eAd808f168C97E5563A8.dip0.t-ipconnect.de [IPv6:2003:c5:9717:ead8:8f1:68c9:7e55:63a8])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 1E598FA154;
-	Tue, 28 Jul 2026 15:39:28 +0200 (CEST)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 0040AFA130;
+	Tue, 28 Jul 2026 15:39:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1785245968;
+	s=09092022; t=1785245966;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ztq8SRtvcEFRCMYTiSYKI//vQUA+bsO51pzL1p9wrjE=;
-	b=FsyUG+CfugACpsrtZVbr/C+I0h7+4oFghie0Rma5nQvdoD8SIMAtVdvVsAsecojj/kb8Xa
-	ql2Pk5KkE1ioGyd5RqWoAjnkbSaQhfCB8aR0BV9iGlJ4HpchIURZz3Wv11+wxeGnA7SG8u
-	KMKxGhwn22lLO9+oHrodlWHseQeWQKXR/ZnKw16RsEAc42xkxdffTmV+KLkCMEoEfv0S4W
-	mcPY2mDYWN3LDB0HOo2ZVgKAE46JNBZIbHLVEiU6xf2iDTIv3kFjKgV6y/GnJd2FOkiq+a
-	R9vLDHDQJGizNE43uBdT02gosZyygb2Nn1I/G/VlAh6dEC2d8vUCQTWf0deU6g==
+	bh=pTpsM0dX3FAlpZ45l6crbik8ZM6OKMNbOFNj7pZmpts=;
+	b=cTbqmKNJPTeM/gEXLtSXeDFEyktqRgRujqOhqG8m4K736dQ/HHQmVg4Zqsfqpej7evuTW4
+	4b3oP/fwzHFejYs5pqHU8Rsm4ugDCcwqFBICVEj0HTHpC5hTWm540WlAjEGCE88qUvoWnK
+	eD+HAWCzIvrK/cNo2v9AWa0fGz0sEQayZRHTWI2S3nSpUaR9BxFApa1Mo0VuA6krXEuEFd
+	x7qG8p7rY9BbMgfyQ+q+ssYi6kvY14uRkRaNg4r+dJENG4vtQD1V/ijP7ITXUhuy5MaeoB
+	ujLuemsOSFSWIibVm4IOqDKD6l9Oq3JpP9agPU/J/D+kZeKC11E4T5lkLSDTKA==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -44,9 +44,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 12/15] batman-adv: split multiple declarations per line
-Date: Tue, 28 Jul 2026 15:39:15 +0200
-Message-ID: <20260728133918.643267-13-sw@simonwunderlich.de>
+Subject: [PATCH net-next 09/15] batman-adv: add missing kernel-doc comments
+Date: Tue, 28 Jul 2026 15:39:12 +0200
+Message-ID: <20260728133918.643267-10-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260728133918.643267-1-sw@simonwunderlich.de>
 References: <20260728133918.643267-1-sw@simonwunderlich.de>
@@ -60,1334 +60,1461 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-The Linux coding style suggests to use single variable declarations per
-line. This suggestion turned out to make reviewing patches easier when
-single variable declarations are modified. Instead of having to search for
-the modified variable, it is directly visible as a line change in the diff.
+batman-adv requires kernel-doc for all functions and data types visible
+outside their own translation unit. Promoting a function from static to
+module-wide visibility currently requires adding documentation from
+scratch. However, this burden falls on whoever promotes a function from
+static to module-wide visibility, rather than its original implementer.
 
-Most functions are already using this style. The remaining ones are just
-adjusted by splitting the lines without ensuring the reverse x-mas tree
-order because this makes it easier to check the modification.
+Add the missing kernel-doc comments for the remaining undocumented
+functions and data types to reduce the complexity for new contributions.
 
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/bat_algo.c              |  3 +-
- net/batman-adv/bat_iv_ogm.c            | 38 ++++++++----
- net/batman-adv/bat_v.c                 | 19 ++++--
- net/batman-adv/bat_v_elp.c             |  3 +-
- net/batman-adv/bat_v_ogm.c             | 13 +++--
- net/batman-adv/bridge_loop_avoidance.c | 30 ++++++----
- net/batman-adv/distributed-arp-table.c | 55 ++++++++++++------
- net/batman-adv/fragmentation.c         | 12 ++--
- net/batman-adv/gateway_client.c        |  9 ++-
- net/batman-adv/gateway_common.c        |  6 +-
- net/batman-adv/main.c                  | 12 ++--
- net/batman-adv/mesh-interface.c        | 15 +++--
- net/batman-adv/multicast.c             | 15 +++--
- net/batman-adv/multicast_forw.c        |  9 ++-
- net/batman-adv/originator.c            | 31 ++++++----
- net/batman-adv/routing.c               | 37 ++++++++----
- net/batman-adv/send.c                  |  3 +-
- net/batman-adv/tp_meter.c              | 24 +++++---
- net/batman-adv/translation-table.c     | 80 ++++++++++++++++++--------
- net/batman-adv/tvlv.c                  | 12 ++--
- 20 files changed, 288 insertions(+), 138 deletions(-)
+ include/uapi/linux/batadv_packet.h     |  16 ++-
+ net/batman-adv/bat_algo.c              |  10 ++
+ net/batman-adv/bat_iv_ogm.c            | 166 ++++++++++++++++++++++-
+ net/batman-adv/bat_v.c                 |  52 ++++++++
+ net/batman-adv/bitarray.c              |   9 +-
+ net/batman-adv/distributed-arp-table.c |  38 ++++++
+ net/batman-adv/gateway_client.c        |   8 ++
+ net/batman-adv/hard-interface.c        |  82 ++++++++++++
+ net/batman-adv/hash.c                  |   5 +-
+ net/batman-adv/hash.h                  |  34 +++--
+ net/batman-adv/main.c                  |  36 ++++-
+ net/batman-adv/mesh-interface.c        |  63 +++++++++
+ net/batman-adv/netlink.c               |   8 +-
+ net/batman-adv/originator.c            |   7 +
+ net/batman-adv/routing.c               |  31 +++++
+ net/batman-adv/translation-table.c     | 177 ++++++++++++++++++++++++-
+ net/batman-adv/types.h                 |   4 +-
+ 17 files changed, 711 insertions(+), 35 deletions(-)
 
+diff --git a/include/uapi/linux/batadv_packet.h b/include/uapi/linux/batadv_packet.h
+index 1241285b866cd..32436560ecc8b 100644
+--- a/include/uapi/linux/batadv_packet.h
++++ b/include/uapi/linux/batadv_packet.h
+@@ -192,13 +192,19 @@ enum batadv_tvlv_type {
+ };
+ 
+ #pragma pack(2)
+-/* the destination hardware field in the ARP frame is used to
+- * transport the claim type and the group id
++/**
++ * struct batadv_bla_claim_dst - layout of the destination MAC of a BLA claim
++ *  frame
++ * @magic: fixed magic prefix (FF:43:05) identifying claim frames
++ * @type: claim frame type, see &enum batadv_bla_claimframe
++ * @group: group identifier of the announcing backbone gateway
++ *
++ * used in the destination hardware field of the ARP frame
+  */
+ struct batadv_bla_claim_dst {
+-	__u8   magic[3];	/* FF:43:05 */
+-	__u8   type;		/* bla_claimframe */
+-	__be16 group;		/* group id */
++	__u8   magic[3];
++	__u8   type;
++	__be16 group;
+ };
+ 
+ /**
 diff --git a/net/batman-adv/bat_algo.c b/net/batman-adv/bat_algo.c
-index a040141cdf1a4..bd094bc793e30 100644
+index 49e5861b58ec2..a040141cdf1a4 100644
 --- a/net/batman-adv/bat_algo.c
 +++ b/net/batman-adv/bat_algo.c
-@@ -42,7 +42,8 @@ void batadv_algo_init(void)
-  */
- struct batadv_algo_ops *batadv_algo_get(const char *name)
- {
--	struct batadv_algo_ops *bat_algo_ops = NULL, *bat_algo_ops_tmp;
-+	struct batadv_algo_ops *bat_algo_ops = NULL;
-+	struct batadv_algo_ops *bat_algo_ops_tmp;
+@@ -116,6 +116,16 @@ int batadv_algo_select(struct batadv_priv *bat_priv, const char *name)
+ 	return 0;
+ }
  
- 	hlist_for_each_entry(bat_algo_ops_tmp, &batadv_algo_list, list) {
- 		if (strcmp(bat_algo_ops_tmp->name, name) != 0)
++/**
++ * batadv_param_set_ra() - Validate and store routing_algo module parameter
++ * @val: new value for the routing_algo module parameter
++ * @kp: kernel parameter description used to store the value
++ *
++ * Check that the requested algorithm is known to batman-adv and then store
++ * the name as the new default routing algorithm.
++ *
++ * Return: 0 on success or negative error number in case of failure
++ */
+ static int batadv_param_set_ra(const char *val, const struct kernel_param *kp)
+ {
+ 	struct batadv_algo_ops *bat_algo_ops;
 diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
-index a9e80330fcb63..337e8e3554bb7 100644
+index 22622283f59b0..a9e80330fcb63 100644
 --- a/net/batman-adv/bat_iv_ogm.c
 +++ b/net/batman-adv/bat_iv_ogm.c
-@@ -896,7 +896,8 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
- 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
- 	struct batadv_ogm_buf *ogm_buff = &hard_iface->bat_iv.ogm_buff;
+@@ -171,6 +171,14 @@ batadv_iv_ogm_orig_get(struct batadv_priv *bat_priv, const u8 *addr)
+ 	return NULL;
+ }
+ 
++/**
++ * batadv_iv_ogm_neigh_new() - retrieve or create a B.A.T.M.A.N. IV neighbour
++ * @hard_iface: the interface where the neighbour is connected to
++ * @neigh_addr: the mac address of the neighbour
++ * @orig_node: originator object representing the neighbour
++ *
++ * Return: pointer to the neigh_node or NULL in case of failure
++ */
+ static struct batadv_neigh_node *
+ batadv_iv_ogm_neigh_new(struct batadv_hard_iface *hard_iface,
+ 			const u8 *neigh_addr,
+@@ -183,6 +191,14 @@ batadv_iv_ogm_neigh_new(struct batadv_hard_iface *hard_iface,
+ 	return neigh_node;
+ }
+ 
++/**
++ * batadv_iv_ogm_iface_enable() - prepare an interface for B.A.T.M.A.N. IV
++ * @hard_iface: the interface to prepare
++ *
++ * Allocate and prepare the per-interface OGM buffer
++ *
++ * Return: 0 on success or negative error number in case of failure
++ */
+ static int batadv_iv_ogm_iface_enable(struct batadv_hard_iface *hard_iface)
+ {
  	struct batadv_ogm_packet *batadv_ogm_packet;
--	struct batadv_hard_iface *primary_if, *tmp_hard_iface;
-+	struct batadv_hard_iface *primary_if;
-+	struct batadv_hard_iface *tmp_hard_iface;
- 	struct list_head *iter;
- 	u32 seqno;
- 	u16 tvlv_len = 0;
-@@ -1109,7 +1110,8 @@ batadv_iv_ogm_orig_update(struct batadv_priv *bat_priv,
- 	struct batadv_neigh_node *neigh_node = NULL;
- 	struct batadv_neigh_node *tmp_neigh_node = NULL;
- 	struct batadv_neigh_node *router = NULL;
--	u8 sum_orig, sum_neigh;
-+	u8 sum_orig;
-+	u8 sum_neigh;
- 	u8 *neigh_addr;
- 	u8 tq_avg;
+@@ -220,6 +236,14 @@ static int batadv_iv_ogm_iface_enable(struct batadv_hard_iface *hard_iface)
+ 	return 0;
+ }
  
-@@ -1241,13 +1243,19 @@ static bool batadv_iv_ogm_calc_tq(struct batadv_orig_node *orig_node,
- 				  struct batadv_hard_iface *if_outgoing)
++/**
++ * batadv_iv_ogm_iface_disable() - release B.A.T.M.A.N. IV resources of an
++ *  interface
++ * @hard_iface: the interface which is shutting down
++ *
++ * Free the per-interface OGM buffer and cancel a possibly pending OGM
++ * rescheduling work.
++ */
+ static void batadv_iv_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
  {
- 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->mesh_iface);
--	struct batadv_neigh_node *neigh_node = NULL, *tmp_neigh_node;
-+	struct batadv_neigh_node *neigh_node = NULL;
-+	struct batadv_neigh_node *tmp_neigh_node;
- 	struct batadv_neigh_ifinfo *neigh_ifinfo;
- 	u8 total_count;
--	u8 orig_eq_count, neigh_rq_count, neigh_rq_inv, tq_own;
-+	u8 orig_eq_count;
-+	u8 neigh_rq_count;
-+	u8 neigh_rq_inv;
-+	u8 tq_own;
- 	unsigned int tq_iface_hop_penalty = BATADV_TQ_MAX_VALUE;
--	unsigned int neigh_rq_inv_cube, neigh_rq_max_cube;
--	unsigned int tq_asym_penalty, inv_asym_penalty;
-+	unsigned int neigh_rq_inv_cube;
-+	unsigned int neigh_rq_max_cube;
-+	unsigned int tq_asym_penalty;
-+	unsigned int inv_asym_penalty;
- 	unsigned int combined_tq;
- 	bool ret = false;
+ 	mutex_lock(&hard_iface->bat_iv.ogm_buff_mutex);
+@@ -233,6 +257,11 @@ static void batadv_iv_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
+ 	disable_delayed_work_sync(&hard_iface->bat_iv.reschedule_work);
+ }
  
-@@ -1521,7 +1529,8 @@ batadv_iv_ogm_process_per_outif(const struct sk_buff *skb, int ogm_offset,
- 	enum batadv_dup_status dup_status;
- 	bool is_from_best_next_hop = false;
- 	bool is_single_hop_neigh = false;
--	bool sameseq, similar_ttl;
-+	bool sameseq;
-+	bool similar_ttl;
- 	struct sk_buff *skb_priv;
- 	struct ethhdr *ethhdr;
- 	u8 *prev_sender;
-@@ -1747,7 +1756,8 @@ static void batadv_iv_ogm_process(const struct sk_buff *skb, int ogm_offset,
- 				  struct batadv_hard_iface *if_incoming)
++/**
++ * batadv_iv_ogm_iface_update_mac() - update the originator MAC stored in the
++ *  per-interface OGM buffer
++ * @hard_iface: the interface for which the OGM buffer should be updated
++ */
+ static void batadv_iv_ogm_iface_update_mac(struct batadv_hard_iface *hard_iface)
  {
- 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->mesh_iface);
--	struct batadv_orig_node *orig_neigh_node, *orig_node;
-+	struct batadv_orig_node *orig_neigh_node;
-+	struct batadv_orig_node *orig_node;
- 	struct batadv_hard_iface *hard_iface;
- 	struct batadv_ogm_packet *ogm_packet;
- 	u32 if_incoming_seqno;
-@@ -2230,8 +2240,10 @@ static bool batadv_iv_ogm_neigh_diff(struct batadv_neigh_node *neigh1,
- 				     struct batadv_hard_iface *if_outgoing2,
- 				     int *diff)
- {
--	struct batadv_neigh_ifinfo *neigh1_ifinfo, *neigh2_ifinfo;
--	u8 tq1, tq2;
-+	struct batadv_neigh_ifinfo *neigh1_ifinfo;
-+	struct batadv_neigh_ifinfo *neigh2_ifinfo;
-+	u8 tq1;
-+	u8 tq2;
- 	bool ret = true;
+ 	struct batadv_ogm_packet *batadv_ogm_packet;
+@@ -254,6 +283,14 @@ static void batadv_iv_ogm_iface_update_mac(struct batadv_hard_iface *hard_iface)
+ 	mutex_unlock(&hard_iface->bat_iv.ogm_buff_mutex);
+ }
  
- 	neigh1_ifinfo = batadv_neigh_ifinfo_get(neigh1, if_outgoing1);
-@@ -2474,7 +2486,8 @@ batadv_iv_gw_get_best_gw_node(struct batadv_priv *bat_priv)
++/**
++ * batadv_iv_ogm_primary_iface_set() - apply primary interface state to
++ *  a batadv_hard_iface
++ * @hard_iface: interface which just became the primary
++ *
++ * The primary interface uses the full TTL for its own OGMs, so adjust the TTL
++ * stored in the OGM template buffer accordingly.
++ */
+ static void
+ batadv_iv_ogm_primary_iface_set(struct batadv_hard_iface *hard_iface)
  {
- 	struct batadv_neigh_node *router;
- 	struct batadv_neigh_ifinfo *router_ifinfo;
--	struct batadv_gw_node *gw_node, *curr_gw = NULL;
-+	struct batadv_gw_node *gw_node;
-+	struct batadv_gw_node *curr_gw = NULL;
- 	u64 max_gw_factor = 0;
- 	u64 tmp_gw_factor = 0;
- 	u8 max_tq = 0;
-@@ -2568,7 +2581,8 @@ static bool batadv_iv_gw_is_eligible(struct batadv_priv *bat_priv,
- 	u32 sel_class = READ_ONCE(bat_priv->gw.sel_class);
- 	struct batadv_neigh_node *router_gw = NULL;
- 	struct batadv_neigh_node *router_orig = NULL;
--	u8 gw_tq_avg, orig_tq_avg;
-+	u8 gw_tq_avg;
-+	u8 orig_tq_avg;
- 	bool ret = false;
+@@ -273,7 +310,17 @@ batadv_iv_ogm_primary_iface_set(struct batadv_hard_iface *hard_iface)
+ 	mutex_unlock(&hard_iface->bat_iv.ogm_buff_mutex);
+ }
  
- 	/* dynamic re-election is performed only on fast or late switch */
+-/* when do we schedule our own ogm to be sent */
++/**
++ * batadv_iv_ogm_emit_send_time() - calculate the jiffies when an own OGM
++ *  should be sent next
++ * @bat_priv: the bat priv with all the mesh interface information
++ *
++ * The next emission point is the configured orig_interval randomised by
++ * +/- BATADV_JITTER milliseconds to reduce chance of potential collisions
++ * between neighbours.
++ *
++ * Return: jiffies value when the next OGM should be transmitted
++ */
+ static unsigned long
+ batadv_iv_ogm_emit_send_time(const struct batadv_priv *bat_priv)
+ {
+@@ -285,13 +332,24 @@ batadv_iv_ogm_emit_send_time(const struct batadv_priv *bat_priv)
+ 	return jiffies + msecs_to_jiffies(msecs);
+ }
+ 
+-/* when do we schedule a ogm packet to be sent */
++/**
++ * batadv_iv_ogm_fwd_send_time() - calculate the jiffies when a forwarded OGM
++ *  should be sent next
++ *
++ * Return: jiffies value at which a forwarded OGM should be transmitted
++ */
+ static unsigned long batadv_iv_ogm_fwd_send_time(void)
+ {
+ 	return jiffies + msecs_to_jiffies(get_random_u32_below(BATADV_JITTER / 2));
+ }
+ 
+-/* apply hop penalty for a normal link */
++/**
++ * batadv_hop_penalty() - apply the configured hop penalty to a TQ value
++ * @tq: input TQ value to be reduced
++ * @bat_priv: the bat priv with all the mesh interface information
++ *
++ * Return: the TQ value after the hop penalty has been applied
++ */
+ static u8 batadv_hop_penalty(u8 tq, const struct batadv_priv *bat_priv)
+ {
+ 	int hop_penalty = READ_ONCE(bat_priv->hop_penalty);
+@@ -337,7 +395,15 @@ batadv_iv_ogm_aggr_packet(int buff_pos, int packet_len,
+ 	return next_buff_pos <= packet_len;
+ }
+ 
+-/* send a batman ogm to a given interface */
++/**
++ * batadv_iv_ogm_send_to_if() - send a batman OGM to a given interface
++ * @forw_packet: forward packet containing the OGM(s) to be transmitted
++ * @hard_iface: interface to send the OGM out on
++ *
++ * Update the direct link flags of each aggregated OGM for the outgoing
++ * interface, log the transmission and finally hand a clone of the skb to the
++ * lower layer for broadcast.
++ */
+ static void batadv_iv_ogm_send_to_if(struct batadv_forw_packet *forw_packet,
+ 				     struct batadv_hard_iface *hard_iface)
+ {
+@@ -401,7 +467,13 @@ static void batadv_iv_ogm_send_to_if(struct batadv_forw_packet *forw_packet,
+ 	}
+ }
+ 
+-/* send a batman ogm packet */
++/**
++ * batadv_iv_ogm_emit() - emit an (aggregated) OGM packet
++ * @forw_packet: forward packet which should be emitted
++ *
++ * The @forw_packet will be emitted but not consumed. When the interface is
++ * no longer active, the transmission will be skipped.
++ */
+ static void batadv_iv_ogm_emit(struct batadv_forw_packet *forw_packet)
+ {
+ 	if (!forw_packet->if_incoming) {
+@@ -603,7 +675,14 @@ static bool batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
+ 	return true;
+ }
+ 
+-/* aggregate a new packet into the existing ogm packet */
++/**
++ * batadv_iv_ogm_aggregate() - append an OGM to an existing aggregated forward
++ *  packet
++ * @forw_packet_aggr: aggregated forward packet to extend
++ * @packet_buff: pointer to the OGM to append
++ * @packet_len: length of the OGM to append
++ * @direct_link: true if @packet_buff was received as a direct link OGM
++ */
+ static void batadv_iv_ogm_aggregate(struct batadv_forw_packet *forw_packet_aggr,
+ 				    const unsigned char *packet_buff,
+ 				    int packet_len, bool direct_link)
+@@ -699,6 +778,21 @@ static bool batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
+ 	}
+ }
+ 
++/**
++ * batadv_iv_ogm_forward() - rebroadcast a received OGM
++ * @orig_node: originator that sent the OGM
++ * @ethhdr: ethernet header of the OGM packet
++ * @batadv_ogm_packet: OGM packet to be forwarded
++ * @is_single_hop_neigh: true if the OGM was received via a one-hop neighbour
++ * @is_from_best_next_hop: true if the sender is the currently selected best
++ *  next hop towards @orig_node
++ * @if_incoming: interface where the packet was received
++ * @if_outgoing: interface for which the retransmission should be considered
++ *
++ * Decrement the TTL, apply the hop penalty and queue the OGM for
++ * retransmission. OGMs that do not arrive over the best next hop are only
++ * forwarded for link-quality measurement reasons (and marked accordingly).
++ */
+ static void batadv_iv_ogm_forward(struct batadv_orig_node *orig_node,
+ 				  const struct ethhdr *ethhdr,
+ 				  struct batadv_ogm_packet *batadv_ogm_packet,
+@@ -899,6 +993,13 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 	batadv_hardif_put(primary_if);
+ }
+ 
++/**
++ * batadv_iv_ogm_schedule() - schedule the next OGM transmission on an
++ *  interface
++ * @hard_iface: interface for which the next OGM should be scheduled
++ *
++ * Take the OGM buffer mutex and prepare the next OGM for transmission.
++ */
+ static void batadv_iv_ogm_schedule(struct batadv_hard_iface *hard_iface)
+ {
+ 	if (hard_iface->if_status == BATADV_IF_TO_BE_REMOVED)
+@@ -909,6 +1010,13 @@ static void batadv_iv_ogm_schedule(struct batadv_hard_iface *hard_iface)
+ 	mutex_unlock(&hard_iface->bat_iv.ogm_buff_mutex);
+ }
+ 
++/**
++ * batadv_iv_ogm_reschedule() - work-queue helper to rerun batadv_iv_ogm_schedule()
++ * @work: work item embedded in the hard interface
++ *
++ * Invoked from the per-interface reschedule_work delayed work when the
++ * previous attempt to enqueue the own OGM failed.
++ */
+ static void batadv_iv_ogm_reschedule(struct work_struct *work)
+ {
+ 	struct delayed_work *delayed_work = to_delayed_work(work);
+@@ -1765,6 +1873,14 @@ static void batadv_iv_ogm_process(const struct sk_buff *skb, int ogm_offset,
+ 	batadv_orig_node_put(orig_node);
+ }
+ 
++/**
++ * batadv_iv_send_outstanding_bat_ogm_packet() - work-queue helper to emit a
++ *  queued forward packet
++ * @work: work item embedded in the forward packet
++ *
++ * Emit the queued OGM forward packet and, for own primary-interface packets,
++ * schedule the next periodic OGM. The forward packet is freed afterwards.
++ */
+ static void batadv_iv_send_outstanding_bat_ogm_packet(struct work_struct *work)
+ {
+ 	struct delayed_work *delayed_work;
+@@ -1803,6 +1919,17 @@ static void batadv_iv_send_outstanding_bat_ogm_packet(struct work_struct *work)
+ 		batadv_forw_packet_free(forw_packet, dropped);
+ }
+ 
++/**
++ * batadv_iv_ogm_receive() - receive a B.A.T.M.A.N. IV OGM packet
++ * @skb: skb containing the OGM packet
++ * @if_incoming: interface where the packet was received
++ *
++ * Validate the packet, then split the aggregated OGM packet into individual
++ * OGMs and hand each of them to batadv_iv_ogm_process(). Ownership of @skb is
++ * always taken over by this function.
++ *
++ * Return: NET_RX_SUCCESS or NET_RX_DROP
++ */
+ static int batadv_iv_ogm_receive(struct sk_buff *skb,
+ 				 struct batadv_hard_iface *if_incoming)
+ {
+@@ -2310,6 +2437,12 @@ batadv_iv_ogm_neigh_is_sob(struct batadv_neigh_node *neigh1,
+ 	return ret;
+ }
+ 
++/**
++ * batadv_iv_iface_enabled() - notification handler for activated interfaces
++ * @hard_iface: interface that was just activated
++ *
++ * Set up the per-interface reschedule work and start sending periodic OGMs.
++ */
+ static void batadv_iv_iface_enabled(struct batadv_hard_iface *hard_iface)
+ {
+ 	INIT_DELAYED_WORK(&hard_iface->bat_iv.reschedule_work, batadv_iv_ogm_reschedule);
+@@ -2328,6 +2461,14 @@ static void batadv_iv_init_sel_class(struct batadv_priv *bat_priv)
+ 	WRITE_ONCE(bat_priv->gw.sel_class, 20);
+ }
+ 
++/**
++ * batadv_iv_gw_get_best_gw_node() - retrieve the best gateway node based on
++ *  the B.A.T.M.A.N. IV metric and the configured GW selection class
++ * @bat_priv: the bat priv with all the mesh interface information
++ *
++ * Return: gateway node with the highest score for the current selection class,
++ *  or NULL if no eligible gateway exists.
++ */
+ static struct batadv_gw_node *
+ batadv_iv_gw_get_best_gw_node(struct batadv_priv *bat_priv)
+ {
+@@ -2405,6 +2546,19 @@ batadv_iv_gw_get_best_gw_node(struct batadv_priv *bat_priv)
+ 	return curr_gw;
+ }
+ 
++/**
++ * batadv_iv_gw_is_eligible() - check whether a new gateway should replace the
++ *  currently selected one
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @curr_gw_orig: originator of the currently selected gateway
++ * @orig_node: originator of the gateway candidate
++ *
++ * Compare the TQ values of @curr_gw_orig and @orig_node, taking the configured
++ * gateway selection class into account.
++ *
++ * Return: true if @orig_node should take over as the active gateway, false
++ *  otherwise
++ */
+ static bool batadv_iv_gw_is_eligible(struct batadv_priv *bat_priv,
+ 				     struct batadv_orig_node *curr_gw_orig,
+ 				     struct batadv_orig_node *orig_node)
 diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
-index 0068f0e238da6..be28875c201d7 100644
+index db6f5bdcaa985..0068f0e238da6 100644
 --- a/net/batman-adv/bat_v.c
 +++ b/net/batman-adv/bat_v.c
-@@ -490,7 +490,8 @@ static int batadv_v_neigh_cmp(struct batadv_neigh_node *neigh1,
- 			      struct batadv_neigh_node *neigh2,
- 			      struct batadv_hard_iface *if_outgoing2)
- {
--	struct batadv_neigh_ifinfo *ifinfo1, *ifinfo2;
-+	struct batadv_neigh_ifinfo *ifinfo1;
-+	struct batadv_neigh_ifinfo *ifinfo2;
- 	int ret = 0;
+@@ -41,6 +41,13 @@
+ #include "netlink.h"
+ #include "originator.h"
  
- 	ifinfo1 = batadv_neigh_ifinfo_get(neigh1, if_outgoing1);
-@@ -526,7 +527,8 @@ static bool batadv_v_neigh_is_sob(struct batadv_neigh_node *neigh1,
- 				  struct batadv_neigh_node *neigh2,
- 				  struct batadv_hard_iface *if_outgoing2)
++/**
++ * batadv_v_iface_activate() - finalise the activation of a hard interface
++ * @hard_iface: interface to activate
++ *
++ * Reuse the currently selected primary interface to seed the ELP packet.
++ * Immediately activate the interface.
++ */
+ static void batadv_v_iface_activate(struct batadv_hard_iface *hard_iface)
  {
--	struct batadv_neigh_ifinfo *ifinfo1, *ifinfo2;
-+	struct batadv_neigh_ifinfo *ifinfo1;
-+	struct batadv_neigh_ifinfo *ifinfo2;
- 	u32 threshold;
- 	bool ret = false;
- 
-@@ -610,8 +612,10 @@ static int batadv_v_gw_throughput_get(struct batadv_gw_node *gw_node, u32 *bw)
- static struct batadv_gw_node *
- batadv_v_gw_get_best_gw_node(struct batadv_priv *bat_priv)
- {
--	struct batadv_gw_node *gw_node, *curr_gw = NULL;
--	u32 max_bw = 0, bw;
-+	struct batadv_gw_node *gw_node;
-+	struct batadv_gw_node *curr_gw = NULL;
-+	u32 max_bw = 0;
-+	u32 bw;
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(gw_node, &bat_priv->gw.gateway_list, list) {
-@@ -650,8 +654,11 @@ static bool batadv_v_gw_is_eligible(struct batadv_priv *bat_priv,
- 				    struct batadv_orig_node *curr_gw_orig,
- 				    struct batadv_orig_node *orig_node)
- {
--	struct batadv_gw_node *curr_gw, *orig_gw = NULL;
--	u32 gw_throughput, orig_throughput, threshold;
-+	struct batadv_gw_node *curr_gw;
-+	struct batadv_gw_node *orig_gw = NULL;
-+	u32 gw_throughput;
-+	u32 orig_throughput;
-+	u32 threshold;
- 	bool ret = false;
- 
- 	threshold = READ_ONCE(bat_priv->gw.sel_class);
-diff --git a/net/batman-adv/bat_v_elp.c b/net/batman-adv/bat_v_elp.c
-index 262e40040007c..eb7fb8c14ef30 100644
---- a/net/batman-adv/bat_v_elp.c
-+++ b/net/batman-adv/bat_v_elp.c
-@@ -233,7 +233,8 @@ batadv_v_elp_wifi_neigh_probe(struct batadv_hardif_neigh_node *neigh)
  	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
- 	unsigned long last_tx_diff;
- 	struct sk_buff *skb;
--	int probe_len, i;
-+	int probe_len;
-+	int i;
- 	int elp_skb_len;
+@@ -61,6 +68,16 @@ static void batadv_v_iface_activate(struct batadv_hard_iface *hard_iface)
+ 		hard_iface->if_status = BATADV_IF_ACTIVE;
+ }
  
- 	/* this probing routine is for Wifi neighbours only */
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index e921d49f7eced..d4527663f76d9 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -271,7 +271,8 @@ static void batadv_v_ogm_send_meshif(struct batadv_priv *bat_priv)
- 	struct batadv_hard_iface *hard_iface;
- 	struct batadv_ogm2_packet *ogm_packet;
- 	struct batadv_ogm_buf *ogm_buff;
--	struct sk_buff *skb, *skb_tmp;
-+	struct sk_buff *skb;
-+	struct sk_buff *skb_tmp;
- 	struct list_head *iter;
- 	u16 tvlv_len;
++/**
++ * batadv_v_iface_enable() - enable the B.A.T.M.A.N. V protocol on an
++ *  interface
++ * @hard_iface: interface to enable
++ *
++ * Enable the ELP and OGM components for @hard_iface. On error, the partially
++ * enabled state is rolled back before returning.
++ *
++ * Return: 0 on success or negative error number in case of failure
++ */
+ static int batadv_v_iface_enable(struct batadv_hard_iface *hard_iface)
+ {
  	int ret;
-@@ -706,8 +707,10 @@ static bool batadv_v_ogm_route_update(struct batadv_priv *bat_priv,
- 	struct batadv_neigh_node *router = NULL;
- 	struct batadv_orig_node *orig_neigh_node;
- 	struct batadv_neigh_node *orig_neigh_router = NULL;
--	struct batadv_neigh_ifinfo *router_ifinfo = NULL, *neigh_ifinfo = NULL;
--	u32 router_throughput, neigh_throughput;
-+	struct batadv_neigh_ifinfo *router_ifinfo = NULL;
-+	struct batadv_neigh_ifinfo *neigh_ifinfo = NULL;
-+	u32 router_throughput;
-+	u32 neigh_throughput;
- 	u32 router_last_seqno;
- 	u32 neigh_last_seqno;
- 	s32 neigh_seq_diff;
-@@ -877,7 +880,9 @@ static void batadv_v_ogm_process(const struct sk_buff *skb, int ogm_offset,
- 	struct batadv_neigh_node *neigh_node = NULL;
- 	struct batadv_hard_iface *hard_iface;
- 	struct batadv_ogm2_packet *ogm_packet;
--	u32 ogm_throughput, link_throughput, path_throughput;
-+	u32 ogm_throughput;
-+	u32 link_throughput;
-+	u32 path_throughput;
- 	struct list_head *iter;
- 	int ret;
+@@ -76,12 +93,21 @@ static int batadv_v_iface_enable(struct batadv_hard_iface *hard_iface)
+ 	return ret;
+ }
  
-diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
-index 18eafbeeccfdd..363d1819f521c 100644
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -261,7 +261,8 @@ batadv_backbone_hash_find(struct batadv_priv *bat_priv, const u8 *addr,
++/**
++ * batadv_v_iface_disable() - disable the B.A.T.M.A.N. V protocol on an
++ *  interface
++ * @hard_iface: interface to disable
++ */
+ static void batadv_v_iface_disable(struct batadv_hard_iface *hard_iface)
  {
- 	struct batadv_hashtable *hash = bat_priv->bla.backbone_hash;
- 	struct hlist_head *head;
--	struct batadv_bla_backbone_gw search_entry, *backbone_gw;
-+	struct batadv_bla_backbone_gw search_entry;
-+	struct batadv_bla_backbone_gw *backbone_gw;
- 	struct batadv_bla_backbone_gw *backbone_gw_tmp = NULL;
- 	int index;
+ 	batadv_v_ogm_iface_disable(hard_iface);
+ 	batadv_v_elp_iface_disable(hard_iface);
+ }
  
-@@ -809,7 +810,8 @@ batadv_bla_claim_get_backbone_gw(struct batadv_bla_claim *claim)
- static void batadv_bla_del_claim(struct batadv_priv *bat_priv,
- 				 const u8 *mac, const unsigned short vid)
++/**
++ * batadv_v_primary_iface_set() - apply primary interface state
++ * @hard_iface: interface which just became the primary
++ */
+ static void batadv_v_primary_iface_set(struct batadv_hard_iface *hard_iface)
  {
--	struct batadv_bla_claim search_claim, *claim;
-+	struct batadv_bla_claim search_claim;
-+	struct batadv_bla_claim *claim;
- 	struct batadv_bla_claim *claim_removed_entry;
- 	struct hlist_node *claim_removed_node;
+ 	batadv_v_elp_primary_iface_set(hard_iface);
+@@ -109,6 +135,11 @@ static void batadv_v_iface_update_mac(struct batadv_hard_iface *hard_iface)
+ 	batadv_hardif_put(primary_if);
+ }
  
-@@ -851,7 +853,8 @@ static bool batadv_handle_announce(struct batadv_priv *bat_priv, u8 *an_addr,
- 				   u8 *backbone_addr, unsigned short vid)
++/**
++ * batadv_v_hardif_neigh_init() - initialise the B.A.T.M.A.N. V state of a
++ *  hard interface neighbour
++ * @hardif_neigh: hard interface neighbour to initialise
++ */
+ static void
+ batadv_v_hardif_neigh_init(struct batadv_hardif_neigh_node *hardif_neigh)
  {
- 	struct batadv_bla_backbone_gw *backbone_gw;
--	u16 backbone_crc, crc;
-+	u16 backbone_crc;
-+	u16 crc;
+@@ -444,6 +475,16 @@ batadv_v_orig_dump(struct sk_buff *msg, struct netlink_callback *cb,
+ 	cb->args[2] = sub;
+ }
  
- 	if (memcmp(an_addr, batadv_announce_mac, 4) != 0)
- 		return false;
-@@ -1030,7 +1033,8 @@ static int batadv_check_claim_group(struct batadv_priv *bat_priv,
- {
- 	u8 *backbone_addr;
- 	struct batadv_orig_node *orig_node;
--	struct batadv_bla_claim_dst *bla_dst, *bla_dst_own;
-+	struct batadv_bla_claim_dst *bla_dst;
-+	struct batadv_bla_claim_dst *bla_dst_own;
++/**
++ * batadv_v_neigh_cmp() - compare two B.A.T.M.A.N. V neighbours by throughput
++ * @neigh1: first neighbour to compare
++ * @if_outgoing1: outgoing interface to use for @neigh1
++ * @neigh2: second neighbour to compare
++ * @if_outgoing2: outgoing interface to use for @neigh2
++ *
++ * Return: a positive value if @neigh1 is better, a negative value if @neigh2
++ *  is better and 0 if both have equal throughput
++ */
+ static int batadv_v_neigh_cmp(struct batadv_neigh_node *neigh1,
+ 			      struct batadv_hard_iface *if_outgoing1,
+ 			      struct batadv_neigh_node *neigh2,
+@@ -469,6 +510,17 @@ static int batadv_v_neigh_cmp(struct batadv_neigh_node *neigh1,
+ 	return ret;
+ }
  
- 	bla_dst = (struct batadv_bla_claim_dst *)hw_dst;
- 	bla_dst_own = &bat_priv->bla.claim_dest;
-@@ -1099,9 +1103,12 @@ static bool batadv_bla_process_claim(struct batadv_priv *bat_priv,
- 				     struct batadv_hard_iface *primary_if,
- 				     struct sk_buff *skb)
- {
--	struct batadv_bla_claim_dst *bla_dst, *bla_dst_own;
--	u8 *hw_src, *hw_dst;
--	struct vlan_hdr *vhdr, vhdr_buf;
-+	struct batadv_bla_claim_dst *bla_dst;
-+	struct batadv_bla_claim_dst *bla_dst_own;
-+	u8 *hw_src;
-+	u8 *hw_dst;
-+	struct vlan_hdr *vhdr;
-+	struct vlan_hdr vhdr_buf;
- 	struct ethhdr *ethhdr;
- 	struct arphdr *arphdr;
- 	unsigned short vid;
-@@ -1665,7 +1672,8 @@ static bool batadv_bla_check_duplist(struct batadv_priv *bat_priv,
- 	struct batadv_bcast_duplist_entry *entry;
- 	bool ret = false;
- 	int payload_len;
--	int i, curr;
-+	int i;
-+	int curr;
- 	u32 crc;
++/**
++ * batadv_v_neigh_is_sob() - check whether two B.A.T.M.A.N. V neighbours have
++ *  a similar or better throughput
++ * @neigh1: first neighbour to compare
++ * @if_outgoing1: outgoing interface to use for @neigh1
++ * @neigh2: second neighbour to compare
++ * @if_outgoing2: outgoing interface to use for @neigh2
++ *
++ * Return: true if the throughput of @neigh2 is at least 3/4 of the
++ *  @neigh1 throughput
++ */
+ static bool batadv_v_neigh_is_sob(struct batadv_neigh_node *neigh1,
+ 				  struct batadv_hard_iface *if_outgoing1,
+ 				  struct batadv_neigh_node *neigh2,
+diff --git a/net/batman-adv/bitarray.c b/net/batman-adv/bitarray.c
+index 67cb356332bf1..f814756d9533f 100644
+--- a/net/batman-adv/bitarray.c
++++ b/net/batman-adv/bitarray.c
+@@ -11,7 +11,14 @@
  
- 	/* calculate the crc ... */
-@@ -1956,7 +1964,8 @@ bool batadv_bla_rx(struct batadv_priv *bat_priv, struct sk_buff *skb,
+ #include "log.h"
+ 
+-/* shift the packet array by n places. */
++/**
++ * batadv_bitmap_shift_left() - shift the sequence number bitmap left
++ * @seq_bits: the sequence number bitmap to shift
++ * @n: number of positions to shift left
++ *
++ * Shift @seq_bits by @n positions. No-op if @n is not within the bounds of
++ * the bitmap.
++ */
+ static void batadv_bitmap_shift_left(unsigned long *seq_bits, s32 n)
  {
- 	struct batadv_bla_backbone_gw *backbone_gw;
- 	struct ethhdr *ethhdr;
--	struct batadv_bla_claim search_claim, *claim = NULL;
-+	struct batadv_bla_claim search_claim;
-+	struct batadv_bla_claim *claim = NULL;
- 	struct batadv_hard_iface *primary_if;
- 	bool own_claim;
- 	bool ret;
-@@ -2089,7 +2098,8 @@ bool batadv_bla_tx(struct batadv_priv *bat_priv, struct sk_buff *skb,
- 		   unsigned short vid)
- {
- 	struct ethhdr *ethhdr;
--	struct batadv_bla_claim search_claim, *claim = NULL;
-+	struct batadv_bla_claim search_claim;
-+	struct batadv_bla_claim *claim = NULL;
- 	struct batadv_bla_backbone_gw *backbone_gw;
- 	struct batadv_hard_iface *primary_if;
- 	bool client_roamed;
+ 	if (n <= 0 || n >= BATADV_TQ_LOCAL_WINDOW_SIZE)
 diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
-index e9cc4690068eb..0ba3ba6a2e382 100644
+index 180f654d5e515..0251cdf5542bb 100644
 --- a/net/batman-adv/distributed-arp-table.c
 +++ b/net/batman-adv/distributed-arp-table.c
-@@ -372,7 +372,9 @@ batadv_dat_entry_hash_find(struct batadv_priv *bat_priv, __be32 ip,
- 			   unsigned short vid)
- {
- 	struct hlist_head *head;
--	struct batadv_dat_entry to_find, *dat_entry, *dat_entry_tmp = NULL;
-+	struct batadv_dat_entry to_find;
-+	struct batadv_dat_entry *dat_entry;
-+	struct batadv_dat_entry *dat_entry_tmp = NULL;
- 	struct batadv_hashtable *hash = bat_priv->dat.hash;
- 	u32 index;
+@@ -50,27 +50,65 @@
+ #include "translation-table.h"
+ #include "tvlv.h"
  
-@@ -475,7 +477,8 @@ static void batadv_dbg_arp(struct batadv_priv *bat_priv, struct sk_buff *skb,
- 	struct batadv_unicast_4addr_packet *unicast_4addr_packet;
- 	struct batadv_bcast_packet *bcast_pkt;
- 	u8 *orig_addr;
--	__be32 ip_src, ip_dst;
-+	__be32 ip_src;
-+	__be32 ip_dst;
++/**
++ * enum batadv_bootpop - BOOTP/DHCP message op codes
++ */
+ enum batadv_bootpop {
++	/** @BATADV_BOOTREPLY: server-to-client reply */
+ 	BATADV_BOOTREPLY	= 2,
+ };
  
- 	if (msg)
- 		batadv_dbg(BATADV_DBG_DAT, bat_priv, "%s\n", msg);
-@@ -612,7 +615,8 @@ static void batadv_choose_next_candidate(struct batadv_priv *bat_priv,
- {
- 	batadv_dat_addr_t max = 0;
- 	batadv_dat_addr_t tmp_max = 0;
--	struct batadv_orig_node *orig_node, *max_orig_node = NULL;
-+	struct batadv_orig_node *orig_node;
-+	struct batadv_orig_node *max_orig_node = NULL;
- 	struct batadv_hashtable *hash = bat_priv->orig_hash;
- 	struct hlist_head *head;
- 	int i;
-@@ -678,7 +682,8 @@ batadv_dat_select_candidates(struct batadv_priv *bat_priv, __be32 ip_dst,
- 			     unsigned short vid)
- {
- 	int select;
--	batadv_dat_addr_t last_max = BATADV_DAT_ADDR_MAX, ip_key;
-+	batadv_dat_addr_t last_max = BATADV_DAT_ADDR_MAX;
-+	batadv_dat_addr_t ip_key;
- 	struct batadv_dat_candidate *res;
- 	struct batadv_dat_entry dat;
++/**
++ * enum batadv_boothtype - BOOTP/DHCP hardware address types
++ */
+ enum batadv_boothtype {
++	/** @BATADV_HTYPE_ETHERNET: Ethernet (10Mb) */
+ 	BATADV_HTYPE_ETHERNET	= 1,
+ };
  
-@@ -1051,8 +1056,10 @@ static u16 batadv_arp_get_type(struct batadv_priv *bat_priv,
- {
- 	struct arphdr *arphdr;
- 	struct ethhdr *ethhdr;
--	__be32 ip_src, ip_dst;
--	u8 *hw_src, *hw_dst;
-+	__be32 ip_src;
-+	__be32 ip_dst;
-+	u8 *hw_src;
-+	u8 *hw_dst;
- 	u16 type = 0;
++/**
++ * enum batadv_dhcpoptioncode - DHCP option codes relevant for batman-adv DAT
++ */
+ enum batadv_dhcpoptioncode {
++	/** @BATADV_DHCP_OPT_PAD: pad option */
+ 	BATADV_DHCP_OPT_PAD		= 0,
++
++	/** @BATADV_DHCP_OPT_MSG_TYPE: DHCP message type option */
+ 	BATADV_DHCP_OPT_MSG_TYPE	= 53,
++
++	/** @BATADV_DHCP_OPT_END: end of options marker */
+ 	BATADV_DHCP_OPT_END		= 255,
+ };
  
- 	/* pull the ethernet header */
-@@ -1200,7 +1207,8 @@ bool batadv_dat_snoop_outgoing_arp_request(struct batadv_priv *bat_priv,
- 					   struct sk_buff *skb)
- {
- 	u16 type = 0;
--	__be32 ip_dst, ip_src;
-+	__be32 ip_dst;
-+	__be32 ip_src;
- 	u8 *hw_src;
- 	bool ret = false;
- 	struct batadv_dat_entry *dat_entry = NULL;
-@@ -1308,7 +1316,8 @@ bool batadv_dat_snoop_incoming_arp_request(struct batadv_priv *bat_priv,
- 					   struct sk_buff *skb, int hdr_size)
- {
- 	u16 type;
--	__be32 ip_src, ip_dst;
-+	__be32 ip_src;
-+	__be32 ip_dst;
- 	u8 *hw_src;
- 	struct sk_buff *skb_new;
- 	struct batadv_dat_entry *dat_entry = NULL;
-@@ -1379,8 +1388,10 @@ void batadv_dat_snoop_outgoing_arp_reply(struct batadv_priv *bat_priv,
- 					 struct sk_buff *skb)
- {
- 	u16 type;
--	__be32 ip_src, ip_dst;
--	u8 *hw_src, *hw_dst;
-+	__be32 ip_src;
-+	__be32 ip_dst;
-+	u8 *hw_src;
-+	u8 *hw_dst;
- 	int hdr_size = 0;
- 	unsigned short vid;
++/**
++ * enum batadv_dhcptype - DHCP message types relevant for batman-adv DAT
++ */
+ enum batadv_dhcptype {
++	/** @BATADV_DHCPACK: DHCPACK message */
+ 	BATADV_DHCPACK		= 5,
+ };
  
-@@ -1436,8 +1447,10 @@ bool batadv_dat_snoop_incoming_arp_reply(struct batadv_priv *bat_priv,
- {
- 	struct batadv_dat_entry *dat_entry = NULL;
- 	u16 type;
--	__be32 ip_src, ip_dst;
--	u8 *hw_src, *hw_dst;
-+	__be32 ip_src;
-+	__be32 ip_dst;
-+	u8 *hw_src;
-+	u8 *hw_dst;
- 	bool dropped = false;
- 	unsigned short vid;
- 	u8 mac[ETH_ALEN];
-@@ -1538,8 +1551,10 @@ static bool
- batadv_dat_check_dhcp_ipudp(struct sk_buff *skb, __be32 *ip_src)
- {
- 	unsigned int offset = skb_network_offset(skb);
--	struct udphdr *udphdr, _udphdr;
--	struct iphdr *iphdr, _iphdr;
-+	struct udphdr *udphdr;
-+	struct udphdr _udphdr;
-+	struct iphdr *iphdr;
-+	struct iphdr _iphdr;
+ /* { 99, 130, 83, 99 } */
+ #define BATADV_DHCP_MAGIC 1669485411
  
- 	iphdr = skb_header_pointer(skb, offset, sizeof(_iphdr), &_iphdr);
- 	if (!iphdr || iphdr->version != 4 || iphdr->ihl * 4 < sizeof(_iphdr))
-@@ -1577,7 +1592,8 @@ batadv_dat_check_dhcp_ipudp(struct sk_buff *skb, __be32 *ip_src)
- static int
- batadv_dat_check_dhcp(struct sk_buff *skb, __be16 proto, __be32 *ip_src)
- {
--	__be32 *magic, _magic;
-+	__be32 *magic;
-+	__be32 _magic;
- 	unsigned int offset;
- 	struct {
- 		__u8 op;
-@@ -1625,7 +1641,8 @@ batadv_dat_check_dhcp(struct sk_buff *skb, __be16 proto, __be32 *ip_src)
- static int batadv_dat_get_dhcp_message_type(struct sk_buff *skb)
- {
- 	unsigned int offset = skb_transport_offset(skb) + sizeof(struct udphdr);
--	u8 *type, _type;
-+	u8 *type;
-+	u8 _type;
- 	struct {
- 		u8 type;
- 		u8 len;
-@@ -1821,7 +1838,8 @@ void batadv_dat_snoop_outgoing_dhcp_ack(struct batadv_priv *bat_priv,
- 					unsigned short vid)
- {
- 	u8 chaddr[BATADV_DHCP_CHADDR_LEN];
--	__be32 ip_src, yiaddr;
-+	__be32 ip_src;
-+	__be32 yiaddr;
- 
- 	if (!READ_ONCE(bat_priv->distributed_arp_table))
- 		return;
-@@ -1853,7 +1871,8 @@ void batadv_dat_snoop_incoming_dhcp_ack(struct batadv_priv *bat_priv,
- {
- 	u8 chaddr[BATADV_DHCP_CHADDR_LEN];
- 	struct ethhdr *ethhdr;
--	__be32 ip_src, yiaddr;
-+	__be32 ip_src;
-+	__be32 yiaddr;
- 	unsigned short vid;
- 	int hdr_size_tmp;
- 	__be16 proto;
-diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
-index 2e20a2cb64cbf..f382af8588b56 100644
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -140,11 +140,13 @@ static bool batadv_frag_insert_packet(struct batadv_orig_node *orig_node,
- 				      struct hlist_head *chain_out)
- {
- 	struct batadv_frag_table_entry *chain;
--	struct batadv_frag_list_entry *frag_entry_new = NULL, *frag_entry_curr;
-+	struct batadv_frag_list_entry *frag_entry_new = NULL;
-+	struct batadv_frag_list_entry *frag_entry_curr;
- 	struct batadv_frag_list_entry *frag_entry_last = NULL;
- 	struct batadv_frag_packet *frag_packet;
- 	u8 bucket;
--	u16 seqno, hdr_size = sizeof(struct batadv_frag_packet);
-+	u16 seqno;
-+	u16 hdr_size = sizeof(struct batadv_frag_packet);
- 	bool overflow = false;
- 	bool ret = false;
- 	size_t data_len;
-@@ -261,7 +263,8 @@ batadv_frag_merge_packets(struct hlist_head *chain)
- 	struct batadv_frag_packet *packet;
- 	struct batadv_frag_list_entry *entry;
- 	struct sk_buff *skb_out;
--	int size, hdr_size = sizeof(struct batadv_frag_packet);
-+	int size;
-+	int hdr_size = sizeof(struct batadv_frag_packet);
- 	bool dropped = false;
- 
- 	/* Remove first entry, as this is the destination for the rest of the
-@@ -509,7 +512,8 @@ int batadv_frag_send_packet(struct sk_buff *skb,
- 	struct sk_buff *skb_fragment;
- 	unsigned int mtu = net_dev->mtu;
- 	unsigned int header_size = sizeof(frag_header);
--	unsigned int max_fragment_size, num_fragments;
-+	unsigned int max_fragment_size;
-+	unsigned int num_fragments;
- 	int ret;
- 
- 	/* To avoid merge and refragmentation at next-hops we never send
++/**
++ * struct batadv_dhcp_packet - BOOTP/DHCP packet header
++ * @op: message op code / message type
++ * @htype: hardware address type
++ * @hlen: hardware address length
++ * @hops: number of relay hops
++ * @xid: transaction identifier
++ * @secs: seconds elapsed since client started trying to boot
++ * @flags: BOOTP/DHCP flags
++ * @ciaddr: client IP address
++ * @yiaddr: "your" (client) IP address as assigned by the server
++ * @siaddr: IP address of next server to use in bootstrap
++ * @giaddr: relay agent IP address
++ * @chaddr: client hardware address
++ * @sname: optional server host name
++ * @file: boot file name
++ * @magic: BOOTP/DHCP magic cookie identifying the start of options
++ */
+ struct batadv_dhcp_packet {
+ 	__u8 op;
+ 	__u8 htype;
 diff --git a/net/batman-adv/gateway_client.c b/net/batman-adv/gateway_client.c
-index f4d53d9ea3b31..b1a5b9ca31888 100644
+index a5ac82eabd250..48fc711b8fd62 100644
 --- a/net/batman-adv/gateway_client.c
 +++ b/net/batman-adv/gateway_client.c
-@@ -378,7 +378,8 @@ static void batadv_gw_node_add(struct batadv_priv *bat_priv,
- struct batadv_gw_node *batadv_gw_node_get(struct batadv_priv *bat_priv,
- 					  struct batadv_orig_node *orig_node)
+@@ -125,6 +125,14 @@ batadv_gw_get_selected_orig(struct batadv_priv *bat_priv)
+ 	return orig_node;
+ }
+ 
++/**
++ * batadv_gw_select() - select a new currently active gateway
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @new_gw_node: gateway node to be set as the current gateway, may be NULL
++ *
++ * Atomically replace the currently active gateway with @new_gw_node and drop
++ * the reference to the previous one.
++ */
+ static void batadv_gw_select(struct batadv_priv *bat_priv,
+ 			     struct batadv_gw_node *new_gw_node)
  {
--	struct batadv_gw_node *gw_node_tmp, *gw_node = NULL;
-+	struct batadv_gw_node *gw_node_tmp;
-+	struct batadv_gw_node *gw_node = NULL;
+diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
+index b6867576bbafa..1950b8809d99f 100644
+--- a/net/batman-adv/hard-interface.c
++++ b/net/batman-adv/hard-interface.c
+@@ -197,6 +197,17 @@ static bool batadv_is_on_batman_iface(const struct net_device *net_dev)
+ 	return ret;
+ }
  
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(gw_node_tmp, &bat_priv->gw.gateway_list,
-@@ -408,7 +409,8 @@ void batadv_gw_node_update(struct batadv_priv *bat_priv,
- 			   struct batadv_orig_node *orig_node,
- 			   struct batadv_tvlv_gateway_data *gateway)
++/**
++ * batadv_is_valid_iface() - check whether a net_device can be used as a hard
++ *  interface
++ * @net_dev: the net_device to check
++ *
++ * Refuse loopback devices, non-Ethernet devices, devices with a non-Ethernet
++ * address length and any device that is already part of a batman-adv mesh
++ * interface stack.
++ *
++ * Return: true if @net_dev can be used as a hard interface, false otherwise
++ */
+ static bool batadv_is_valid_iface(const struct net_device *net_dev)
  {
--	struct batadv_gw_node *gw_node, *curr_gw = NULL;
-+	struct batadv_gw_node *gw_node;
-+	struct batadv_gw_node *curr_gw = NULL;
+ 	if (net_dev->flags & IFF_LOOPBACK)
+@@ -467,6 +478,14 @@ int batadv_hardif_no_broadcast(struct batadv_hard_iface *if_outgoing,
+ 	return ret;
+ }
  
- 	spin_lock_bh(&bat_priv->gw.list_lock);
- 	gw_node = batadv_gw_node_get(bat_priv, orig_node);
-@@ -695,7 +697,8 @@ bool batadv_gw_out_of_range(struct batadv_priv *bat_priv,
- 	struct batadv_orig_node *orig_dst_node = NULL;
- 	struct batadv_gw_node *gw_node = NULL;
- 	struct batadv_gw_node *curr_gw = NULL;
--	struct batadv_neigh_ifinfo *curr_ifinfo, *old_ifinfo;
-+	struct batadv_neigh_ifinfo *curr_ifinfo;
-+	struct batadv_neigh_ifinfo *old_ifinfo;
- 	struct ethhdr *ethhdr;
- 	bool out_of_range = false;
- 	u8 curr_tq_avg;
-diff --git a/net/batman-adv/gateway_common.c b/net/batman-adv/gateway_common.c
-index 675ebf098d4ec..b5ebe837bfdd1 100644
---- a/net/batman-adv/gateway_common.c
-+++ b/net/batman-adv/gateway_common.c
-@@ -26,7 +26,8 @@ void batadv_gw_tvlv_container_update(struct batadv_priv *bat_priv)
++/**
++ * batadv_hardif_get_active() - retrieve an active hard interface for a mesh
++ *  interface
++ * @mesh_iface: mesh interface to search
++ *
++ * Return: first hard interface in BATADV_IF_ACTIVE state attached to
++ *  @mesh_iface, or NULL if none is active.
++ */
+ static struct batadv_hard_iface *
+ batadv_hardif_get_active(struct net_device *mesh_iface)
  {
- 	struct batadv_tvlv_gateway_data gw;
- 	enum batadv_gw_modes gw_mode;
--	u32 down, up;
-+	u32 down;
-+	u32 up;
+@@ -487,6 +506,15 @@ batadv_hardif_get_active(struct net_device *mesh_iface)
+ 	return hard_iface;
+ }
  
- 	gw_mode = READ_ONCE(bat_priv->gw.mode);
- 
-@@ -59,7 +60,8 @@ static void batadv_gw_tvlv_ogm_handler_v1(struct batadv_priv *bat_priv,
- 					  u8 flags,
- 					  void *tvlv_value, u16 tvlv_value_len)
++/**
++ * batadv_primary_if_update_addr() - propagate the new primary interface MAC
++ *  address to all dependent components
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @oldif: previously used primary interface, or NULL if none
++ *
++ * Inform DAT and BLA that the originator address has changed so they can
++ * adjust their state accordingly.
++ */
+ static void batadv_primary_if_update_addr(struct batadv_priv *bat_priv,
+ 					  struct batadv_hard_iface *oldif)
  {
--	struct batadv_tvlv_gateway_data gateway, *gateway_ptr;
-+	struct batadv_tvlv_gateway_data gateway;
-+	struct batadv_tvlv_gateway_data *gateway_ptr;
+@@ -502,6 +530,15 @@ static void batadv_primary_if_update_addr(struct batadv_priv *bat_priv,
+ 	batadv_hardif_put(primary_if);
+ }
  
- 	/* only fetch the tvlv value if the handler wasn't called via the
- 	 * CIFNOTFND flag and if there is data to fetch
++/**
++ * batadv_primary_if_select() - select the new primary interface
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @new_hard_iface: new primary interface, may be NULL
++ *
++ * Replace the currently selected primary interface with @new_hard_iface,
++ * invoke the algorithm-specific primary_set hook and update the originator
++ * MAC address.
++ */
+ static void batadv_primary_if_select(struct batadv_priv *bat_priv,
+ 				     struct batadv_hard_iface *new_hard_iface)
+ {
+@@ -525,6 +562,13 @@ static void batadv_primary_if_select(struct batadv_priv *bat_priv,
+ 	batadv_hardif_put(curr_hard_iface);
+ }
+ 
++/**
++ * batadv_hardif_is_iface_up() - check whether the underlying net_device of a
++ *  hard interface is up
++ * @hard_iface: the hard interface to check
++ *
++ * Return: true if the underlying net_device has the IFF_UP flag set
++ */
+ static bool
+ batadv_hardif_is_iface_up(const struct batadv_hard_iface *hard_iface)
+ {
+@@ -534,6 +578,15 @@ batadv_hardif_is_iface_up(const struct batadv_hard_iface *hard_iface)
+ 	return false;
+ }
+ 
++/**
++ * batadv_check_known_mac_addr() - warn about duplicate hard interface MAC
++ *  addresses
++ * @hard_iface: hard interface that was just added or had its MAC changed
++ *
++ * Iterate over all hard interfaces of the same mesh interface and emit a
++ * warning if another in-use interface shares the same MAC address as
++ * @hard_iface.
++ */
+ static void batadv_check_known_mac_addr(const struct batadv_hard_iface *hard_iface)
+ {
+ 	struct net_device *mesh_iface = hard_iface->mesh_iface;
+@@ -666,6 +719,15 @@ void batadv_update_min_mtu(struct net_device *mesh_iface)
+ 	batadv_tt_local_resize_to_mtu(mesh_iface);
+ }
+ 
++/**
++ * batadv_hardif_activate_interface() - move a hard interface to the active
++ *  state
++ * @hard_iface: the interface that has come up
++ *
++ * Activate an interface, select it as the primary interface if no
++ * primary is currently active and invoke the algorithm-specific
++ * activate hook.
++ */
+ static void
+ batadv_hardif_activate_interface(struct batadv_hard_iface *hard_iface)
+ {
+@@ -699,6 +761,14 @@ batadv_hardif_activate_interface(struct batadv_hard_iface *hard_iface)
+ 	batadv_hardif_put(primary_if);
+ }
+ 
++/**
++ * batadv_hardif_deactivate_interface() - move a hard interface to the
++ *  inactive state
++ * @hard_iface: the interface that went down
++ *
++ * Demote @hard_iface to BATADV_IF_INACTIVE and recalculate the mesh minimum
++ * MTU based on the remaining active interfaces.
++ */
+ static void
+ batadv_hardif_deactivate_interface(struct batadv_hard_iface *hard_iface)
+ {
+@@ -1020,6 +1090,18 @@ static void batadv_wifi_net_device_event(unsigned long event,
+ 	}
+ }
+ 
++/**
++ * batadv_hard_if_event() - netdevice notifier callback for hard interfaces
++ * @this: notifier block (unused)
++ * @event: the NETDEV_* event to handle
++ * @ptr: notifier info pointing to the affected net_device
++ *
++ * Dispatch netdevice events that affect potential or existing hard
++ * interfaces. Mesh interfaces are handled separately by
++ * batadv_hard_if_event_meshif().
++ *
++ * Return: NOTIFY_DONE
++ */
+ static int batadv_hard_if_event(struct notifier_block *this,
+ 				unsigned long event, void *ptr)
+ {
+diff --git a/net/batman-adv/hash.c b/net/batman-adv/hash.c
+index 759fa29176db5..b9a652bd523b1 100644
+--- a/net/batman-adv/hash.c
++++ b/net/batman-adv/hash.c
+@@ -11,7 +11,10 @@
+ #include <linux/lockdep.h>
+ #include <linux/slab.h>
+ 
+-/* clears the hash */
++/**
++ * batadv_hash_init() - clear all buckets of a hashtable
++ * @hash: hashtable to clear
++ */
+ static void batadv_hash_init(struct batadv_hashtable *hash)
+ {
+ 	u32 i;
+diff --git a/net/batman-adv/hash.h b/net/batman-adv/hash.h
+index 86a2c20000dcf..debbbc936cf74 100644
+--- a/net/batman-adv/hash.h
++++ b/net/batman-adv/hash.h
+@@ -18,21 +18,35 @@
+ #include <linux/stddef.h>
+ #include <linux/types.h>
+ 
+-/* callback to a compare function.  should compare 2 element data for their
+- * keys
++/**
++ * typedef batadv_hashdata_compare_cb - hash element comparison callback
++ * @node: hlist node of the element currently stored in the bucket
++ * @key: opaque payload to compare @node's key against
++ *
++ * Compare hash element by its keys.
+  *
+- * Return: true if same and false if not same
++ * Return: true if both elements are considered equal, false otherwise.
+  */
+-typedef bool (*batadv_hashdata_compare_cb)(const struct hlist_node *,
+-					   const void *);
++typedef bool (*batadv_hashdata_compare_cb)(const struct hlist_node *node,
++					   const void *key);
+ 
+-/* the hashfunction
++/**
++ * typedef batadv_hashdata_choose_cb - hash bucket selection callback
++ * @key: opaque payload whose key selects the bucket
++ * @size: number of buckets in the hash table
++ *
++ * Return: bucket index derived from the key in @data and the table @size.
++ */
++typedef u32 (*batadv_hashdata_choose_cb)(const void *key, u32 size);
++
++/**
++ * typedef batadv_hashdata_free_cb - hash element free callback
++ * @node: hlist node of the element being removed
++ * @arg: opaque caller-supplied argument forwarded from the caller
+  *
+- * Return: an index based on the key in the data of the first argument and the
+- * size the second
++ * Release a previously inserted hash element.
+  */
+-typedef u32 (*batadv_hashdata_choose_cb)(const void *, u32);
+-typedef void (*batadv_hashdata_free_cb)(struct hlist_node *, void *);
++typedef void (*batadv_hashdata_free_cb)(struct hlist_node *node, void *arg);
+ 
+ /**
+  * struct batadv_hashtable - Wrapper of simple hlist based hashtable
 diff --git a/net/batman-adv/main.c b/net/batman-adv/main.c
-index fa82ffb706b3f..d8e9d20add898 100644
+index 73becb0549488..c5f4e9f8728c0 100644
 --- a/net/batman-adv/main.c
 +++ b/net/batman-adv/main.c
-@@ -368,10 +368,14 @@ int batadv_max_header_len(void)
-  */
- void batadv_skb_set_priority(struct sk_buff *skb, int offset)
- {
--	struct iphdr ip_hdr_tmp, *ip_hdr;
--	struct ipv6hdr ip6_hdr_tmp, *ip6_hdr;
--	struct ethhdr ethhdr_tmp, *ethhdr;
--	struct vlan_ethhdr *vhdr, vhdr_tmp;
-+	struct iphdr ip_hdr_tmp;
-+	struct iphdr *ip_hdr;
-+	struct ipv6hdr ip6_hdr_tmp;
-+	struct ipv6hdr *ip6_hdr;
-+	struct ethhdr ethhdr_tmp;
-+	struct ethhdr *ethhdr;
-+	struct vlan_ethhdr *vhdr;
-+	struct vlan_ethhdr vhdr_tmp;
- 	u32 prio;
+@@ -82,6 +82,14 @@ static char *batadv_uev_type_str[] = {
+ 	"bla",
+ };
  
- 	/* already set, do nothing */
++/**
++ * batadv_init() - batman-adv module init function
++ *
++ * Initialise the global state used by all mesh interfaces, register the
++ * netdevice notifier and the netlink/rtnl family.
++ *
++ * Return: 0 on success or negative error number in case of failure
++ */
+ static int __init batadv_init(void)
+ {
+ 	int ret;
+@@ -128,6 +136,12 @@ static int __init batadv_init(void)
+ 	return ret;
+ }
+ 
++/**
++ * batadv_exit() - batman-adv module exit function
++ *
++ * Unregister the netdevice notifier and tear down all global state allocated
++ * by batadv_init().
++ */
+ static void __exit batadv_exit(void)
+ {
+ 	batadv_netlink_unregister();
+@@ -398,6 +412,17 @@ void batadv_skb_set_priority(struct sk_buff *skb, int offset)
+ 	skb->priority = prio + 256;
+ }
+ 
++/**
++ * batadv_recv_unhandled_packet() - default RX handler for unsupported packet
++ *  types
++ * @skb: incoming packet
++ * @recv_if: interface on which the packet was received (unused)
++ *
++ * Drop incoming packets whose packet_type has no dedicated RX handler
++ * registered.
++ *
++ * Return: NET_RX_DROP
++ */
+ static int batadv_recv_unhandled_packet(struct sk_buff *skb,
+ 					struct batadv_hard_iface *recv_if)
+ {
+@@ -406,10 +431,6 @@ static int batadv_recv_unhandled_packet(struct sk_buff *skb,
+ 	return NET_RX_DROP;
+ }
+ 
+-/* incoming packets with the batman ethertype received on any active hard
+- * interface
+- */
+-
+ /**
+  * batadv_batman_skb_recv() - Handle incoming message from an hard interface
+  * @skb: the received packet
+@@ -492,6 +513,13 @@ int batadv_batman_skb_recv(struct sk_buff *skb, struct net_device *dev,
+ 	return NET_RX_DROP;
+ }
+ 
++/**
++ * batadv_recv_handler_init() - initialise the RX handler dispatch table
++ *
++ * Initialise all entries of the RX handler table (+ unused to the
++ * default drop handler) and perform compile-time size sanity checks on
++ * all on-wire packet structs.
++ */
+ static void batadv_recv_handler_init(void)
+ {
+ 	int i;
 diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
-index 982de90906b59..534e96eb96953 100644
+index 48bbb28d4576f..667ea5704fbdb 100644
 --- a/net/batman-adv/mesh-interface.c
 +++ b/net/batman-adv/mesh-interface.c
-@@ -92,7 +92,8 @@ int batadv_skb_head_push(struct sk_buff *skb, unsigned int len)
-  */
- static u64 batadv_sum_counter(struct batadv_priv *bat_priv,  size_t idx)
- {
--	u64 *counters, sum = 0;
-+	u64 *counters;
-+	u64 sum = 0;
- 	int cpu;
+@@ -98,6 +98,15 @@ static u64 batadv_sum_counter(struct batadv_priv *bat_priv,  size_t idx)
+ 	return sum;
+ }
  
- 	for_each_possible_cpu(cpu) {
-@@ -221,12 +222,15 @@ static netdev_tx_t batadv_interface_tx(struct sk_buff *skb,
- 	static const u8 ectp_addr[ETH_ALEN] = {0xCF, 0x00, 0x00, 0x00,
- 					       0x00, 0x00};
- 	enum batadv_dhcp_recipient dhcp_rcp = BATADV_DHCP_NO;
--	u8 *dst_hint = NULL, chaddr[ETH_ALEN];
-+	u8 *dst_hint = NULL;
-+	u8 chaddr[ETH_ALEN];
- 	struct vlan_ethhdr *vhdr;
- 	unsigned int header_len = 0;
--	int data_len = skb->len, ret;
-+	int data_len = skb->len;
-+	int ret;
- 	unsigned long brd_delay = 0;
--	bool do_bcast = false, client_added;
-+	bool do_bcast = false;
-+	bool client_added;
- 	unsigned short vid;
- 	u32 seqno;
- 	int gw_mode;
-@@ -569,7 +573,8 @@ void batadv_meshif_vlan_release(struct kref *ref)
- struct batadv_meshif_vlan *batadv_meshif_vlan_get(struct batadv_priv *bat_priv,
- 						  unsigned short vid)
++/**
++ * batadv_interface_stats() - return netdev stats for a mesh interface
++ * @dev: the mesh interface to query
++ *
++ * Aggregate the per-CPU traffic counters into the standard netdev stats
++ * structure.
++ *
++ * Return: pointer to the populated net_device_stats structure
++ */
+ static struct net_device_stats *batadv_interface_stats(struct net_device *dev)
  {
--	struct batadv_meshif_vlan *vlan_tmp, *vlan = NULL;
-+	struct batadv_meshif_vlan *vlan_tmp;
-+	struct batadv_meshif_vlan *vlan = NULL;
+ 	struct batadv_priv *bat_priv = netdev_priv(dev);
+@@ -111,6 +120,18 @@ static struct net_device_stats *batadv_interface_stats(struct net_device *dev)
+ 	return stats;
+ }
  
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(vlan_tmp, &bat_priv->meshif_vlan_list, list) {
-diff --git a/net/batman-adv/multicast.c b/net/batman-adv/multicast.c
-index 1c5315e55c046..5b9e2168a0467 100644
---- a/net/batman-adv/multicast.c
-+++ b/net/batman-adv/multicast.c
-@@ -274,7 +274,8 @@ static struct batadv_mcast_mla_flags
- batadv_mcast_mla_flags_get(struct batadv_priv *bat_priv)
++/**
++ * batadv_interface_set_mac_addr() - change the MAC address of a mesh
++ *  interface
++ * @dev: the mesh interface to modify
++ * @p: pointer to a struct sockaddr holding the new MAC address
++ *
++ * Replace the MAC address of the mesh interface. If the mesh is already
++ * active, also update the local translation table entries for all configured
++ * VLANs so that the new MAC is announced and the old one is removed.
++ *
++ * Return: 0 on success or negative error number in case of failure
++ */
+ static int batadv_interface_set_mac_addr(struct net_device *dev, void *p)
  {
- 	struct net_device *dev = bat_priv->mesh_iface;
--	struct batadv_mcast_querier_state *qr4, *qr6;
-+	struct batadv_mcast_querier_state *qr4;
-+	struct batadv_mcast_querier_state *qr6;
- 	struct batadv_mcast_mla_flags mla_flags;
- 	struct net_device *bridge;
+ 	struct batadv_priv *bat_priv = netdev_priv(dev);
+@@ -140,6 +161,16 @@ static int batadv_interface_set_mac_addr(struct net_device *dev, void *p)
+ 	return 0;
+ }
  
-@@ -521,7 +522,8 @@ batadv_mcast_mla_meshif_get(struct net_device *dev,
- 			    struct batadv_mcast_mla_flags *flags)
++/**
++ * batadv_interface_change_mtu() - change the MTU of a mesh interface
++ * @dev: the mesh interface to modify
++ * @new_mtu: requested new MTU value
++ *
++ * Validate that @new_mtu fits within the range supported by the configured
++ * hard interfaces and remember it as the user-configured MTU.
++ *
++ * Return: 0 on success or -EINVAL if @new_mtu is out of range
++ */
+ static int batadv_interface_change_mtu(struct net_device *dev, int new_mtu)
  {
- 	struct net_device *bridge = batadv_mcast_get_bridge(dev);
--	int ret4, ret6 = 0;
-+	int ret4;
-+	int ret6 = 0;
+ 	struct batadv_priv *bat_priv = netdev_priv(dev);
+@@ -166,6 +197,13 @@ static void batadv_interface_set_rx_mode(struct net_device *dev)
+ {
+ }
  
- 	if (bridge)
- 		dev = bridge;
-@@ -585,7 +587,8 @@ static int batadv_mcast_mla_bridge_get(struct net_device *dev,
- 				       struct batadv_mcast_mla_flags *flags)
++/**
++ * batadv_interface_tx() - transmit a frame on a mesh interface
++ * @skb: the frame to send
++ * @mesh_iface: the mesh interface the frame was queued on
++ *
++ * Return: NETDEV_TX_OK on success
++ */
+ static netdev_tx_t batadv_interface_tx(struct sk_buff *skb,
+ 				       struct net_device *mesh_iface)
  {
- 	struct list_head bridge_mcast_list = LIST_HEAD_INIT(bridge_mcast_list);
--	struct br_ip_list *br_ip_entry, *tmp;
-+	struct br_ip_list *br_ip_entry;
-+	struct br_ip_list *tmp;
- 	u8 tvlv_flags = flags->tvlv_flags;
- 	struct batadv_hw_addr *new;
- 	u8 mcast_addr[ETH_ALEN];
-@@ -1223,7 +1226,11 @@ enum batadv_forw_mode
- batadv_mcast_forw_mode(struct batadv_priv *bat_priv, struct sk_buff *skb,
- 		       unsigned short vid, int *is_routable)
- {
--	int ret, tt_count, ip_count, unsnoop_count, total_count;
-+	int ret;
-+	int tt_count;
-+	int ip_count;
-+	int unsnoop_count;
-+	int total_count;
- 	bool is_unsnoopable = false;
- 	struct ethhdr *ethhdr;
- 	int rtr_count = 0;
-diff --git a/net/batman-adv/multicast_forw.c b/net/batman-adv/multicast_forw.c
-index 75a3a4567b08b..6dcac586b1d95 100644
---- a/net/batman-adv/multicast_forw.c
-+++ b/net/batman-adv/multicast_forw.c
-@@ -368,7 +368,8 @@ static void batadv_mcast_forw_scrape(struct sk_buff *skb,
- 				     unsigned short offset,
- 				     unsigned short len)
- {
--	char *to, *from;
-+	char *to;
-+	char *from;
+@@ -886,6 +924,11 @@ static const struct net_device_ops batadv_netdev_ops = {
+ 	.ndo_del_slave = batadv_meshif_slave_del,
+ };
  
- 	SKB_LINEAR_ASSERT(skb);
- 
-@@ -411,7 +412,8 @@ static bool batadv_mcast_forw_push_insert_padding(struct sk_buff *skb,
- 						  unsigned short *tvlv_len)
++/**
++ * batadv_get_drvinfo() - ethtool driver info handler for mesh interfaces
++ * @dev: the mesh interface (unused)
++ * @info: ethtool_drvinfo struct to populate
++ */
+ static void batadv_get_drvinfo(struct net_device *dev,
+ 			       struct ethtool_drvinfo *info)
  {
- 	unsigned short offset =	*tvlv_len;
--	char *to, *from = skb->data;
-+	char *to;
-+	char *from = skb->data;
+@@ -946,6 +989,12 @@ static const struct {
+ #endif
+ };
  
- 	to = batadv_mcast_forw_push_padding(skb, tvlv_len);
- 	if (!to)
-@@ -933,7 +935,8 @@ static int batadv_mcast_forw_packet(struct batadv_priv *bat_priv,
- 	unsigned int tvlv_len;
- 	unsigned long offset;
- 	bool xmitted = false;
--	u8 *dest, *next_dest;
-+	u8 *dest;
-+	u8 *next_dest;
- 	u16 num_dests;
- 	int ret;
++/**
++ * batadv_get_strings() - ethtool string handler for mesh interfaces
++ * @dev: the mesh interface (unused)
++ * @stringset: ethtool string set to retrieve
++ * @data: buffer to copy the requested string set into
++ */
+ static void batadv_get_strings(struct net_device *dev, u32 stringset, u8 *data)
+ {
+ 	if (stringset == ETH_SS_STATS)
+@@ -953,6 +1002,12 @@ static void batadv_get_strings(struct net_device *dev, u32 stringset, u8 *data)
+ 		       sizeof(batadv_counters_strings));
+ }
+ 
++/**
++ * batadv_get_ethtool_stats() - ethtool stats handler for mesh interfaces
++ * @dev: the mesh interface to query
++ * @stats: ethtool_stats struct (unused)
++ * @data: destination array for the gathered counter values
++ */
+ static void batadv_get_ethtool_stats(struct net_device *dev,
+ 				     struct ethtool_stats *stats, u64 *data)
+ {
+@@ -963,6 +1018,14 @@ static void batadv_get_ethtool_stats(struct net_device *dev,
+ 		data[i] = batadv_sum_counter(bat_priv, i);
+ }
+ 
++/**
++ * batadv_get_sset_count() - ethtool stringset size handler for mesh interfaces
++ * @dev: the mesh interface (unused)
++ * @stringset: ethtool string set to query
++ *
++ * Return: number of entries in @stringset or -EOPNOTSUPP if @stringset is not
++ *  supported
++ */
+ static int batadv_get_sset_count(struct net_device *dev, int stringset)
+ {
+ 	if (stringset == ETH_SS_STATS)
+diff --git a/net/batman-adv/netlink.c b/net/batman-adv/netlink.c
+index d2bc48c707143..f4aa7d2055107 100644
+--- a/net/batman-adv/netlink.c
++++ b/net/batman-adv/netlink.c
+@@ -52,9 +52,15 @@
+ 
+ struct genl_family batadv_netlink_family;
+ 
+-/* multicast groups */
++/**
++ * enum batadv_netlink_multicast_groups - batman-adv generic netlink multicast
++ *  groups
++ */
+ enum batadv_netlink_multicast_groups {
++	/** @BATADV_NL_MCGRP_CONFIG: configuration change notifications */
+ 	BATADV_NL_MCGRP_CONFIG,
++
++	/** @BATADV_NL_MCGRP_TPMETER: throughput meter result notifications */
+ 	BATADV_NL_MCGRP_TPMETER,
+ };
  
 diff --git a/net/batman-adv/originator.c b/net/batman-adv/originator.c
-index bab1eb61d9ef2..57bb4a0131b0e 100644
+index 48f837cf665a2..bab1eb61d9ef2 100644
 --- a/net/batman-adv/originator.c
 +++ b/net/batman-adv/originator.c
-@@ -54,7 +54,8 @@ batadv_orig_hash_find(struct batadv_priv *bat_priv, const void *data)
- {
- 	struct batadv_hashtable *hash = bat_priv->orig_hash;
- 	struct hlist_head *head;
--	struct batadv_orig_node *orig_node, *orig_node_tmp = NULL;
-+	struct batadv_orig_node *orig_node;
-+	struct batadv_orig_node *orig_node_tmp = NULL;
- 	int index;
+@@ -1295,6 +1295,13 @@ void batadv_purge_orig_ref(struct batadv_priv *bat_priv)
+ 	batadv_gw_election(bat_priv);
+ }
  
- 	if (!hash)
-@@ -108,7 +109,8 @@ struct batadv_orig_node_vlan *
- batadv_orig_node_vlan_get(struct batadv_orig_node *orig_node,
- 			  unsigned short vid)
++/**
++ * batadv_purge_orig() - periodic worker to purge stale originator entries
++ * @work: delayed work embedded in the bat_priv
++ *
++ * Invoke batadv_purge_orig_ref() to drop stale originators and reschedule the
++ * next run after BATADV_ORIG_WORK_PERIOD milliseconds.
++ */
+ static void batadv_purge_orig(struct work_struct *work)
  {
--	struct batadv_orig_node_vlan *vlan = NULL, *tmp;
-+	struct batadv_orig_node_vlan *vlan = NULL;
-+	struct batadv_orig_node_vlan *tmp;
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(tmp, &orig_node->vlan_list, list) {
-@@ -373,7 +375,8 @@ struct batadv_orig_ifinfo *
- batadv_orig_ifinfo_get(struct batadv_orig_node *orig_node,
- 		       struct batadv_hard_iface *if_outgoing)
- {
--	struct batadv_orig_ifinfo *tmp, *orig_ifinfo = NULL;
-+	struct batadv_orig_ifinfo *tmp;
-+	struct batadv_orig_ifinfo *orig_ifinfo = NULL;
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(tmp, &orig_node->ifinfo_list,
-@@ -451,8 +454,8 @@ struct batadv_neigh_ifinfo *
- batadv_neigh_ifinfo_get(struct batadv_neigh_node *neigh,
- 			struct batadv_hard_iface *if_outgoing)
- {
--	struct batadv_neigh_ifinfo *neigh_ifinfo = NULL,
--				   *tmp_neigh_ifinfo;
-+	struct batadv_neigh_ifinfo *neigh_ifinfo = NULL;
-+	struct batadv_neigh_ifinfo *tmp_neigh_ifinfo;
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(tmp_neigh_ifinfo, &neigh->ifinfo_list,
-@@ -530,7 +533,8 @@ batadv_neigh_node_get(const struct batadv_orig_node *orig_node,
- 		      const struct batadv_hard_iface *hard_iface,
- 		      const u8 *addr)
- {
--	struct batadv_neigh_node *tmp_neigh_node, *res = NULL;
-+	struct batadv_neigh_node *tmp_neigh_node;
-+	struct batadv_neigh_node *res = NULL;
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(tmp_neigh_node, &orig_node->neigh_list, list) {
-@@ -634,7 +638,8 @@ struct batadv_hardif_neigh_node *
- batadv_hardif_neigh_get(const struct batadv_hard_iface *hard_iface,
- 			const u8 *neigh_addr)
- {
--	struct batadv_hardif_neigh_node *tmp_hardif_neigh, *hardif_neigh = NULL;
-+	struct batadv_hardif_neigh_node *tmp_hardif_neigh;
-+	struct batadv_hardif_neigh_node *hardif_neigh = NULL;
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(tmp_hardif_neigh,
-@@ -753,7 +758,8 @@ batadv_neigh_node_get_or_create(struct batadv_orig_node *orig_node,
-  */
- int batadv_hardif_neigh_dump(struct sk_buff *msg, struct netlink_callback *cb)
- {
--	struct batadv_hard_iface *primary_if, *hard_iface;
-+	struct batadv_hard_iface *primary_if;
-+	struct batadv_hard_iface *hard_iface;
- 	struct net_device *mesh_iface;
- 	struct batadv_priv *bat_priv;
- 	int ret;
-@@ -1167,7 +1173,8 @@ batadv_find_best_neighbor(struct batadv_priv *bat_priv,
- 			  struct batadv_orig_node *orig_node,
- 			  struct batadv_hard_iface *if_outgoing)
- {
--	struct batadv_neigh_node *best = NULL, *neigh;
-+	struct batadv_neigh_node *best = NULL;
-+	struct batadv_neigh_node *neigh;
- 	struct batadv_algo_ops *bao = bat_priv->algo_ops;
- 
- 	rcu_read_lock();
-@@ -1203,7 +1210,8 @@ static bool batadv_purge_orig_node(struct batadv_priv *bat_priv,
- {
- 	struct batadv_neigh_node *best_neigh_node;
- 	struct batadv_hard_iface *hard_iface;
--	bool changed_ifinfo, changed_neigh;
-+	bool changed_ifinfo;
-+	bool changed_neigh;
- 	struct list_head *iter;
- 
- 	if (batadv_has_timed_out(orig_node->last_seen,
-@@ -1325,7 +1333,8 @@ static void batadv_purge_orig(struct work_struct *work)
-  */
- int batadv_orig_dump(struct sk_buff *msg, struct netlink_callback *cb)
- {
--	struct batadv_hard_iface *primary_if, *hard_iface;
-+	struct batadv_hard_iface *primary_if;
-+	struct batadv_hard_iface *hard_iface;
- 	struct net_device *mesh_iface;
- 	struct batadv_priv *bat_priv;
- 	int ret;
+ 	struct delayed_work *delayed_work;
 diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index 770037b8ca4e4..b4c6e13877c12 100644
+index bbd40fe3a8e59..b0b6c5ca210a2 100644
 --- a/net/batman-adv/routing.c
 +++ b/net/batman-adv/routing.c
-@@ -276,7 +276,8 @@ static int batadv_recv_my_icmp_packet(struct batadv_priv *bat_priv,
- 	struct batadv_hard_iface *primary_if = NULL;
- 	struct batadv_orig_node *orig_node = NULL;
- 	struct batadv_icmp_header *icmph;
--	int res, ret = NET_RX_DROP;
-+	int res;
-+	int ret = NET_RX_DROP;
+@@ -328,6 +328,16 @@ static int batadv_recv_my_icmp_packet(struct batadv_priv *bat_priv,
+ 	return ret;
+ }
  
- 	icmph = (struct batadv_icmp_header *)skb->data;
- 
-@@ -348,7 +349,8 @@ static int batadv_recv_icmp_ttl_exceeded(struct batadv_priv *bat_priv,
- 	struct batadv_hard_iface *primary_if = NULL;
- 	struct batadv_orig_node *orig_node = NULL;
- 	struct batadv_icmp_packet *icmp_packet;
--	int res, ret = NET_RX_DROP;
-+	int res;
-+	int ret = NET_RX_DROP;
- 
- 	icmp_packet = (struct batadv_icmp_packet *)skb->data;
- 
-@@ -411,7 +413,8 @@ int batadv_recv_icmp_packet(struct sk_buff *skb,
- 	struct ethhdr *ethhdr;
- 	struct batadv_orig_node *orig_node = NULL;
- 	int hdr_size = sizeof(struct batadv_icmp_header);
--	int res, ret = NET_RX_DROP;
-+	int res;
-+	int ret = NET_RX_DROP;
- 
- 	/* drop packet if it has not necessary minimum size */
- 	if (unlikely(!pskb_may_pull(skb, hdr_size)))
-@@ -593,9 +596,11 @@ batadv_find_router(struct batadv_priv *bat_priv,
- 	struct batadv_algo_ops *bao = bat_priv->algo_ops;
- 	struct batadv_neigh_node *first_candidate_router = NULL;
- 	struct batadv_neigh_node *next_candidate_router = NULL;
--	struct batadv_neigh_node *router, *cand_router = NULL;
-+	struct batadv_neigh_node *router;
-+	struct batadv_neigh_node *cand_router = NULL;
- 	struct batadv_neigh_node *last_cand_router = NULL;
--	struct batadv_orig_ifinfo *cand, *first_candidate = NULL;
-+	struct batadv_orig_ifinfo *cand;
-+	struct batadv_orig_ifinfo *first_candidate = NULL;
- 	struct batadv_orig_ifinfo *next_candidate = NULL;
- 	struct batadv_orig_ifinfo *last_candidate;
- 	bool last_candidate_found = false;
-@@ -739,7 +744,9 @@ static int batadv_route_unicast_packet(struct sk_buff *skb,
- 	struct batadv_orig_node *orig_node = NULL;
- 	struct batadv_unicast_packet *unicast_packet;
- 	struct ethhdr *ethhdr = eth_hdr(skb);
--	int res, hdr_len, ret = NET_RX_DROP;
-+	int res;
-+	int hdr_len;
-+	int ret = NET_RX_DROP;
- 	unsigned int len;
- 
- 	unicast_packet = (struct batadv_unicast_packet *)skb->data;
-@@ -882,7 +889,8 @@ static bool batadv_check_unicast_ttvn(struct batadv_priv *bat_priv,
- 	struct batadv_unicast_packet *unicast_packet;
- 	struct batadv_hard_iface *primary_if;
- 	struct batadv_orig_node *orig_node;
--	u8 curr_ttvn, old_ttvn;
-+	u8 curr_ttvn;
-+	u8 old_ttvn;
- 	struct ethhdr *ethhdr;
- 	unsigned short vid;
- 	int is_old_ttvn;
-@@ -1002,7 +1010,8 @@ int batadv_recv_unhandled_unicast_packet(struct sk_buff *skb,
++/**
++ * batadv_recv_icmp_ttl_exceeded() - handle an ICMP packet that hit TTL 0
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @skb: ICMP packet whose TTL has expired
++ *
++ * For traceroute-style ICMP echo requests, send a TTL exceeded reply back to
++ * the source. Other ICMP types are simply dropped.
++ *
++ * Return: NET_XMIT_SUCCESS if the reply was queued, NET_RX_DROP otherwise
++ */
+ static int batadv_recv_icmp_ttl_exceeded(struct batadv_priv *bat_priv,
+ 					 struct sk_buff *skb)
  {
- 	struct batadv_unicast_packet *unicast_packet;
- 	struct batadv_priv *bat_priv = netdev_priv(recv_if->mesh_iface);
--	int check, hdr_size = sizeof(*unicast_packet);
-+	int check;
-+	int hdr_size = sizeof(*unicast_packet);
+@@ -706,6 +716,18 @@ batadv_find_router(struct batadv_priv *bat_priv,
+ 	return router;
+ }
  
- 	check = batadv_check_unicast_packet(bat_priv, skb, hdr_size);
- 	if (check < 0)
-@@ -1033,12 +1042,16 @@ int batadv_recv_unicast_packet(struct sk_buff *skb,
- 	struct batadv_priv *bat_priv = netdev_priv(recv_if->mesh_iface);
- 	struct batadv_unicast_packet *unicast_packet;
- 	struct batadv_unicast_4addr_packet *unicast_4addr_packet;
--	u8 *orig_addr, *orig_addr_gw;
--	struct batadv_orig_node *orig_node = NULL, *orig_node_gw = NULL;
--	int check, hdr_size = sizeof(*unicast_packet);
-+	u8 *orig_addr;
-+	u8 *orig_addr_gw;
-+	struct batadv_orig_node *orig_node = NULL;
-+	struct batadv_orig_node *orig_node_gw = NULL;
-+	int check;
-+	int hdr_size = sizeof(*unicast_packet);
- 	enum batadv_subtype subtype;
- 	int ret = NET_RX_DROP;
--	bool is4addr, is_gw;
-+	bool is4addr;
-+	bool is_gw;
- 
- 	unicast_packet = (struct batadv_unicast_packet *)skb->data;
- 	is4addr = unicast_packet->packet_type == BATADV_UNICAST_4ADDR;
-diff --git a/net/batman-adv/send.c b/net/batman-adv/send.c
-index 7f449338a4909..29f2cbc61285d 100644
---- a/net/batman-adv/send.c
-+++ b/net/batman-adv/send.c
-@@ -394,7 +394,8 @@ int batadv_send_skb_via_tt_generic(struct batadv_priv *bat_priv,
++/**
++ * batadv_route_unicast_packet() - forward a unicast packet towards its
++ *  destination originator
++ * @skb: the received unicast packet
++ * @recv_if: interface on which the packet was received
++ *
++ * Decrement the TTL, look up the originator for the destination address and
++ * hand the packet over to batadv_send_skb_to_orig() for transmission. Drop
++ * the packet when the TTL is exhausted or no route exists.
++ *
++ * Return: NET_RX_SUCCESS if the packet was forwarded, NET_RX_DROP otherwise
++ */
+ static int batadv_route_unicast_packet(struct sk_buff *skb,
+ 				       struct batadv_hard_iface *recv_if)
  {
- 	struct ethhdr *ethhdr = (struct ethhdr *)skb->data;
- 	struct batadv_orig_node *orig_node;
--	u8 *src, *dst;
-+	u8 *src;
-+	u8 *dst;
- 	int ret;
+@@ -836,6 +858,15 @@ batadv_reroute_unicast_packet(struct batadv_priv *bat_priv, struct sk_buff *skb,
+ 	return ret;
+ }
  
- 	src = ethhdr->h_source;
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 00467aa79de9d..b957a59dcf262 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -267,7 +267,8 @@ static void batadv_tp_batctl_error_notify(enum batadv_tp_meter_reason reason,
- static struct batadv_tp_sender *
- batadv_tp_list_find_sender(struct batadv_priv *bat_priv, const u8 *dst)
++/**
++ * batadv_check_unicast_ttvn() - check and adjust the TTVN of a unicast packet
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @skb: the unicast packet to check
++ * @hdr_len: length of the unicast header preceding the payload
++ *
++ * Return: true if the packet may be processed further, false if it has been
++ *  consumed or has to be dropped by the caller
++ */
+ static bool batadv_check_unicast_ttvn(struct batadv_priv *bat_priv,
+ 				      struct sk_buff *skb, int hdr_len)
  {
--	struct batadv_tp_sender *pos, *tp_vars = NULL;
-+	struct batadv_tp_sender *pos;
-+	struct batadv_tp_sender *tp_vars = NULL;
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(pos, &bat_priv->tp_sender_list, common.list) {
-@@ -332,7 +333,8 @@ static struct batadv_tp_sender *
- batadv_tp_list_find_sender_session(struct batadv_priv *bat_priv, const u8 *dst,
- 				   const u8 *session)
- {
--	struct batadv_tp_sender *pos, *tp_vars = NULL;
-+	struct batadv_tp_sender *pos;
-+	struct batadv_tp_sender *tp_vars = NULL;
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(pos, &bat_priv->tp_sender_list, common.list) {
-@@ -864,7 +866,8 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
- static bool batadv_tp_avail(struct batadv_tp_sender *tp_vars,
- 			    size_t payload_len)
- {
--	u32 win_left, win_limit;
-+	u32 win_left;
-+	u32 win_limit;
- 
- 	spin_lock_bh(&tp_vars->cc_lock);
- 
-@@ -914,7 +917,8 @@ static int batadv_tp_send(void *arg)
- 	struct batadv_priv *bat_priv = tp_vars->common.bat_priv;
- 	struct batadv_hard_iface *primary_if = NULL;
- 	struct batadv_orig_node *orig_node = NULL;
--	size_t payload_len, packet_len;
-+	size_t payload_len;
-+	size_t packet_len;
- 	u32 last_sent;
- 	int err = 0;
- 
-@@ -1211,7 +1215,8 @@ static struct batadv_tp_receiver *
- batadv_tp_list_find_receiver_session(struct batadv_priv *bat_priv, const u8 *dst,
- 				     const u8 *session)
- {
--	struct batadv_tp_receiver *pos, *tp_vars = NULL;
-+	struct batadv_tp_receiver *pos;
-+	struct batadv_tp_receiver *tp_vars = NULL;
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(pos, &bat_priv->tp_receiver_list, common.list) {
-@@ -1296,7 +1301,8 @@ static void batadv_tp_reset_receiver_timer(struct batadv_tp_receiver *tp_vars)
- static void batadv_tp_receiver_shutdown(struct timer_list *t)
- {
- 	struct batadv_tp_receiver *tp_vars = timer_container_of(tp_vars, t, common.timer);
--	struct batadv_tp_unacked *un, *safe;
-+	struct batadv_tp_unacked *un;
-+	struct batadv_tp_unacked *safe;
- 	struct batadv_priv *bat_priv;
- 
- 	bat_priv = tp_vars->common.bat_priv;
-@@ -1351,7 +1357,8 @@ static int batadv_tp_send_ack(struct batadv_priv *bat_priv, const u8 *dst,
- 	struct batadv_orig_node *orig_node;
- 	struct batadv_icmp_tp_packet *icmp;
- 	struct sk_buff *skb;
--	int r, ret;
-+	int r;
-+	int ret;
- 
- 	orig_node = batadv_orig_hash_find(bat_priv, dst);
- 	if (unlikely(!orig_node)) {
-@@ -1528,7 +1535,8 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_receiver *tp_vars,
- static void batadv_tp_ack_unordered(struct batadv_tp_receiver *tp_vars)
- 	__must_hold(&tp_vars->ack_seqno_lock)
- {
--	struct batadv_tp_unacked *un, *safe;
-+	struct batadv_tp_unacked *un;
-+	struct batadv_tp_unacked *safe;
- 	u32 to_ack;
- 
- 	/* go through the unacked packet list and possibly ACK them as
 diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 47e20b440dea2..4fe09f6da7cc5 100644
+index dae5e1d8c0385..47e20b440dea2 100644
 --- a/net/batman-adv/translation-table.c
 +++ b/net/batman-adv/translation-table.c
-@@ -129,7 +129,9 @@ batadv_tt_hash_find(struct batadv_hashtable *hash, const u8 *addr,
- 		    unsigned short vid)
- {
- 	struct hlist_head *head;
--	struct batadv_tt_common_entry to_search, *tt, *tt_tmp = NULL;
-+	struct batadv_tt_common_entry to_search;
-+	struct batadv_tt_common_entry *tt;
-+	struct batadv_tt_common_entry *tt_tmp = NULL;
- 	u32 index;
+@@ -535,6 +535,12 @@ static int batadv_tt_local_table_transmit_size(struct batadv_priv *bat_priv)
+ 	return hdr_size + batadv_tt_len(tt_local_entries);
+ }
  
- 	if (!hash)
-@@ -421,10 +423,13 @@ static void batadv_tt_local_event(struct batadv_priv *bat_priv,
- 				  struct batadv_tt_local_entry *tt_local_entry,
- 				  u8 event_flags)
++/**
++ * batadv_tt_local_init() - allocate and initialise the local translation table
++ * @bat_priv: the bat priv with all the mesh interface information
++ *
++ * Return: 0 on success or -ENOMEM in case of allocation failure
++ */
+ static int batadv_tt_local_init(struct batadv_priv *bat_priv)
  {
--	struct batadv_tt_change_node *tt_change_node, *entry, *safe;
-+	struct batadv_tt_change_node *tt_change_node;
-+	struct batadv_tt_change_node *entry;
-+	struct batadv_tt_change_node *safe;
- 	struct batadv_tt_common_entry *common = &tt_local_entry->common;
- 	u8 flags = common->flags | event_flags;
--	bool del_op_requested, del_op_entry;
-+	bool del_op_requested;
-+	bool del_op_entry;
- 	size_t changes;
+ 	if (bat_priv->tt.local_hash)
+@@ -551,6 +557,15 @@ static int batadv_tt_local_init(struct batadv_priv *bat_priv)
+ 	return 0;
+ }
  
- 	tt_change_node = kmem_cache_alloc(batadv_tt_change_cache, GFP_ATOMIC);
-@@ -616,7 +621,9 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
- 	struct net_device *in_dev = NULL;
- 	struct hlist_head *head;
- 	struct batadv_tt_orig_list_entry *orig_entry;
--	int hash_added, table_size, packet_size_max;
-+	int hash_added;
-+	int table_size;
-+	int packet_size_max;
- 	bool ret = false;
- 	bool roamed_back = false;
- 	bool iif_is_wifi = false;
-@@ -1002,10 +1009,12 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
-  */
- static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
- {
--	struct batadv_tt_change_node *entry, *safe;
-+	struct batadv_tt_change_node *entry;
-+	struct batadv_tt_change_node *safe;
- 	struct batadv_tvlv_tt_data *tt_data;
- 	struct batadv_tvlv_tt_change *tt_change;
--	int tt_diff_len, tt_change_len = 0;
-+	int tt_diff_len;
-+	int tt_change_len = 0;
- 	int tt_diff_entries_num = 0;
- 	int tt_diff_entries_count = 0;
- 	bool drop_changes = false;
-@@ -1285,7 +1294,8 @@ u16 batadv_tt_local_remove(struct batadv_priv *bat_priv, const u8 *addr,
- {
- 	struct batadv_tt_local_entry *tt_removed_entry;
- 	struct batadv_tt_local_entry *tt_local_entry;
--	u16 flags, curr_flags = BATADV_NO_FLAGS;
-+	u16 flags;
-+	u16 curr_flags = BATADV_NO_FLAGS;
- 	struct hlist_node *tt_removed_node;
++/**
++ * batadv_tt_global_free() - drop a global translation table entry
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @tt_global: the global TT entry to remove
++ * @message: debug message explaining why the entry is being removed
++ *
++ * Remove @tt_global from the global TT hash and drop the reference held by
++ * the hash.
++ */
+ static void batadv_tt_global_free(struct batadv_priv *bat_priv,
+ 				  struct batadv_tt_global_entry *tt_global,
+ 				  const char *message)
+@@ -1224,6 +1239,17 @@ int batadv_tt_local_dump(struct sk_buff *msg, struct netlink_callback *cb)
+ 	return ret;
+ }
  
- 	tt_local_entry = batadv_tt_local_hash_find(bat_priv, addr, vid);
-@@ -1468,7 +1478,8 @@ static int batadv_tt_global_init(struct batadv_priv *bat_priv)
-  */
++/**
++ * batadv_tt_local_set_pending() - mark a local TT entry as pending removal
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @tt_local_entry: local TT entry to mark
++ * @flags: TT change flags to announce together with the pending removal
++ * @message: debug message describing the reason for the change
++ *
++ * Schedule the TT change announcement and set BATADV_TT_CLIENT_PENDING on the
++ * entry. The entry is kept in the local table until the next TTVN increment
++ * so that a consistency-check response can still be answered.
++ */
+ static void
+ batadv_tt_local_set_pending(struct batadv_priv *bat_priv,
+ 			    struct batadv_tt_local_entry *tt_local_entry,
+@@ -1367,6 +1393,13 @@ static void batadv_tt_local_purge(struct batadv_priv *bat_priv,
+ 	}
+ }
+ 
++/**
++ * batadv_tt_local_table_free() - release the local translation table
++ * @bat_priv: the bat priv with all the mesh interface information
++ *
++ * Drop every entry of the local TT hash, free their references and finally
++ * release the hashtable itself.
++ */
+ static void batadv_tt_local_table_free(struct batadv_priv *bat_priv)
+ {
+ 	struct batadv_hashtable *hash;
+@@ -1404,6 +1437,13 @@ static void batadv_tt_local_table_free(struct batadv_priv *bat_priv)
+ 	bat_priv->tt.local_hash = NULL;
+ }
+ 
++/**
++ * batadv_tt_global_init() - allocate and initialise the global translation
++ *  table
++ * @bat_priv: the bat priv with all the mesh interface information
++ *
++ * Return: 0 on success or -ENOMEM in case of allocation failure
++ */
+ static int batadv_tt_global_init(struct batadv_priv *bat_priv)
+ {
+ 	if (bat_priv->tt.global_hash)
+@@ -1420,6 +1460,12 @@ static int batadv_tt_global_init(struct batadv_priv *bat_priv)
+ 	return 0;
+ }
+ 
++/**
++ * batadv_tt_changes_list_free() - drop all pending local TT changes
++ * @bat_priv: the bat priv with all the mesh interface information
++ *
++ * Discard every queued local TT change and reset the pending change counter.
++ */
  static void batadv_tt_changes_list_free(struct batadv_priv *bat_priv)
  {
--	struct batadv_tt_change_node *entry, *safe;
-+	struct batadv_tt_change_node *entry;
-+	struct batadv_tt_change_node *safe;
+ 	struct batadv_tt_change_node *entry, *safe;
+@@ -2024,7 +2070,11 @@ _batadv_tt_global_del_orig_entry(struct batadv_tt_global_entry *tt_global_entry,
+ 	batadv_tt_orig_list_entry_put(orig_entry);
+ }
  
- 	spin_lock_bh(&bat_priv->tt.changes_list_lock);
- 
-@@ -1497,7 +1508,8 @@ static struct batadv_tt_orig_list_entry *
- batadv_tt_global_orig_entry_find(const struct batadv_tt_global_entry *entry,
- 				 const struct batadv_orig_node *orig_node)
+-/* deletes the orig list of a tt_global_entry */
++/**
++ * batadv_tt_global_del_orig_list() - drop every orig_list_entry of a global
++ *  TT entry
++ * @tt_global_entry: the global TT entry to clear
++ */
+ static void
+ batadv_tt_global_del_orig_list(struct batadv_tt_global_entry *tt_global_entry)
  {
--	struct batadv_tt_orig_list_entry *tmp_orig_entry, *orig_entry = NULL;
-+	struct batadv_tt_orig_list_entry *tmp_orig_entry;
-+	struct batadv_tt_orig_list_entry *orig_entry = NULL;
- 	const struct hlist_head *head;
+@@ -2077,9 +2127,17 @@ batadv_tt_global_del_orig_node(struct batadv_priv *bat_priv,
+ 	spin_unlock_bh(&tt_global_entry->list_lock);
+ }
  
- 	rcu_read_lock();
-@@ -1809,10 +1821,12 @@ static struct batadv_tt_orig_list_entry *
- batadv_transtable_best_orig(struct batadv_priv *bat_priv,
- 			    struct batadv_tt_global_entry *tt_global_entry)
- {
--	struct batadv_neigh_node *router, *best_router = NULL;
-+	struct batadv_neigh_node *router;
-+	struct batadv_neigh_node *best_router = NULL;
- 	struct batadv_algo_ops *bao = bat_priv->algo_ops;
- 	struct hlist_head *head;
--	struct batadv_tt_orig_list_entry *orig_entry, *best_entry = NULL;
-+	struct batadv_tt_orig_list_entry *orig_entry;
-+	struct batadv_tt_orig_list_entry *best_entry = NULL;
- 
- 	head = &tt_global_entry->orig_list;
- 	hlist_for_each_entry_rcu(orig_entry, head, list) {
-@@ -1919,7 +1933,8 @@ batadv_tt_global_dump_entry(struct sk_buff *msg, u32 portid, u32 seq,
- 			    struct batadv_priv *bat_priv,
- 			    struct batadv_tt_common_entry *common, int *sub_s)
- {
--	struct batadv_tt_orig_list_entry *orig_entry, *best_entry;
-+	struct batadv_tt_orig_list_entry *orig_entry;
-+	struct batadv_tt_orig_list_entry *best_entry;
- 	struct batadv_tt_global_entry *global;
- 	struct hlist_head *head;
- 	int sub = 0;
-@@ -2536,7 +2551,9 @@ static u32 batadv_tt_global_crc(struct batadv_priv *bat_priv,
- 	struct batadv_tt_common_entry *tt_common;
- 	struct batadv_tt_global_entry *tt_global;
- 	struct hlist_head *head;
--	u32 i, crc_tmp, crc = 0;
-+	u32 i;
-+	u32 crc_tmp;
-+	u32 crc = 0;
- 	u8 flags;
- 	__be16 tmp_vid;
- 
-@@ -2614,7 +2631,9 @@ static u32 batadv_tt_local_crc(struct batadv_priv *bat_priv,
- 	struct batadv_hashtable *hash = bat_priv->tt.local_hash;
- 	struct batadv_tt_common_entry *tt_common;
- 	struct hlist_head *head;
--	u32 i, crc_tmp, crc = 0;
-+	u32 i;
-+	u32 crc_tmp;
-+	u32 crc = 0;
- 	u8 flags;
- 	__be16 tmp_vid;
- 
-@@ -2765,7 +2784,8 @@ static struct batadv_tt_req_node *
- batadv_tt_req_node_new(struct batadv_priv *bat_priv,
- 		       struct batadv_orig_node *orig_node)
- {
--	struct batadv_tt_req_node *tt_req_node_tmp, *tt_req_node = NULL;
-+	struct batadv_tt_req_node *tt_req_node_tmp;
-+	struct batadv_tt_req_node *tt_req_node = NULL;
- 
- 	spin_lock_bh(&bat_priv->tt.req_list_lock);
- 	hlist_for_each_entry(tt_req_node_tmp, &bat_priv->tt.req_list, list) {
-@@ -2874,7 +2894,8 @@ static u16 batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
- 	struct batadv_tt_common_entry *tt_common_entry;
- 	struct batadv_tvlv_tt_change *tt_change;
- 	struct hlist_head *head;
--	u16 tt_tot, tt_num_entries = 0;
-+	u16 tt_tot;
-+	u16 tt_num_entries = 0;
- 	u8 flags;
- 	bool ret;
- 	u32 i;
-@@ -2928,7 +2949,8 @@ static bool batadv_tt_global_check_crc(struct batadv_orig_node *orig_node,
- {
- 	struct batadv_tvlv_tt_vlan_data *tt_vlan_tmp;
- 	struct batadv_orig_node_vlan *vlan;
--	int i, orig_num_vlan;
-+	int i;
-+	int orig_num_vlan;
- 	u32 crc;
- 
- 	/* check if each received CRC matches the locally stored one */
-@@ -3035,7 +3057,8 @@ static bool batadv_send_tt_request(struct batadv_priv *bat_priv,
- 	struct batadv_tt_req_node *tt_req_node = NULL;
- 	struct batadv_hard_iface *primary_if;
- 	bool ret = false;
--	int i, size;
-+	int i;
-+	int size;
- 
- 	primary_if = batadv_primary_if_get_selected(bat_priv);
- 	if (!primary_if)
-@@ -3115,8 +3138,10 @@ static bool batadv_send_other_tt_response(struct batadv_priv *bat_priv,
- 	struct batadv_orig_node *res_dst_orig_node = NULL;
- 	struct batadv_tvlv_tt_change *tt_change;
- 	struct batadv_tvlv_tt_data *tvlv_tt_data = NULL;
--	bool ret = false, full_table;
--	u8 orig_ttvn, req_ttvn;
-+	bool ret = false;
-+	bool full_table;
-+	u8 orig_ttvn;
-+	u8 req_ttvn;
- 	u16 tvlv_len;
- 	s32 tt_len;
- 
-@@ -3244,7 +3269,8 @@ static bool batadv_send_my_tt_response(struct batadv_priv *bat_priv,
- 	struct batadv_hard_iface *primary_if = NULL;
- 	struct batadv_tvlv_tt_change *tt_change;
- 	struct batadv_orig_node *orig_node;
--	u8 my_ttvn, req_ttvn;
-+	u8 my_ttvn;
-+	u8 req_ttvn;
- 	u16 tvlv_len;
- 	bool full_table;
- 	s32 tt_len;
-@@ -3566,7 +3592,8 @@ static void batadv_handle_tt_response(struct batadv_priv *bat_priv,
+-/* If the client is to be deleted, we check if it is the last origantor entry
+- * within tt_global entry. If yes, we set the BATADV_TT_CLIENT_ROAM flag and the
+- * timer, otherwise we simply remove the originator scheduled for deletion.
++/**
++ * batadv_tt_global_del_roaming() - remove a roaming client from a global TT
++ *  entry
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @tt_global_entry: the global TT entry of the roaming client
++ * @orig_node: the originator that the client has roamed away from
++ * @message: debug message describing the reason for the change
++ *
++ * If @orig_node was the last announced source for the client, mark the entry
++ * for roaming so it can be cleaned up after the roaming timer expires.
++ * Otherwise simply remove the orig_node entry from the announcer list.
   */
+ static void
+ batadv_tt_global_del_roaming(struct batadv_priv *bat_priv,
+@@ -2241,6 +2299,15 @@ void batadv_tt_global_del_orig(struct batadv_priv *bat_priv,
+ 	clear_bit(BATADV_ORIG_CAPA_HAS_TT, &orig_node->capa_initialized);
+ }
+ 
++/**
++ * batadv_tt_global_to_purge() - check whether a global TT entry has to be
++ *  purged
++ * @tt_global: global TT entry under consideration
++ * @msg: storage for a pointer to a human readable reason on return
++ *
++ * Return: true if the entry should be purged because its roaming or temporary
++ *  timer has elapsed; false otherwise
++ */
+ static bool batadv_tt_global_to_purge(struct batadv_tt_global_entry *tt_global,
+ 				      char **msg)
+ {
+@@ -2263,6 +2330,13 @@ static bool batadv_tt_global_to_purge(struct batadv_tt_global_entry *tt_global,
+ 	return purge;
+ }
+ 
++/**
++ * batadv_tt_global_purge() - purge expired global translation table entries
++ * @bat_priv: the bat priv with all the mesh interface information
++ *
++ * Iterate over the global translation table and drop every entry that the
++ * roaming or temporary timer has expired for.
++ */
+ static void batadv_tt_global_purge(struct batadv_priv *bat_priv)
+ {
+ 	struct batadv_hashtable *hash = bat_priv->tt.global_hash;
+@@ -2302,6 +2376,13 @@ static void batadv_tt_global_purge(struct batadv_priv *bat_priv)
+ 	}
+ }
+ 
++/**
++ * batadv_tt_global_table_free() - release the global translation table
++ * @bat_priv: the bat priv with all the mesh interface information
++ *
++ * Drop every entry of the global TT hash, free their references and finally
++ * release the hashtable itself.
++ */
+ static void batadv_tt_global_table_free(struct batadv_priv *bat_priv)
+ {
+ 	struct batadv_hashtable *hash;
+@@ -2338,6 +2419,16 @@ static void batadv_tt_global_table_free(struct batadv_priv *bat_priv)
+ 	bat_priv->tt.global_hash = NULL;
+ }
+ 
++/**
++ * _batadv_is_ap_isolated() - check whether two clients are AP-isolated from
++ *  each other
++ * @tt_local_entry: local TT entry of the sending client
++ * @tt_global_entry: global TT entry of the destination client
++ *
++ * Return: true if traffic between the two clients should be dropped because
++ *  either both are WiFi clients or both carry the ISOLATION flag; false
++ *  otherwise
++ */
+ static bool
+ _batadv_is_ap_isolated(struct batadv_tt_local_entry *tt_local_entry,
+ 		       struct batadv_tt_global_entry *tt_global_entry)
+@@ -2590,6 +2681,10 @@ static void batadv_tt_req_node_put(struct batadv_tt_req_node *tt_req_node)
+ 	kref_put(&tt_req_node->refcount, batadv_tt_req_node_release);
+ }
+ 
++/**
++ * batadv_tt_req_list_free() - drop all pending TT requests
++ * @bat_priv: the bat priv with all the mesh interface information
++ */
+ static void batadv_tt_req_list_free(struct batadv_priv *bat_priv)
+ {
+ 	struct batadv_tt_req_node *node;
+@@ -2605,6 +2700,18 @@ static void batadv_tt_req_list_free(struct batadv_priv *bat_priv)
+ 	spin_unlock_bh(&bat_priv->tt.req_list_lock);
+ }
+ 
++/**
++ * batadv_tt_save_orig_buffer() - cache the latest TT TVLV payload of an
++ *  originator
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @orig_node: originator for which the buffer should be created
++ * @tt_buff: pointer to the TT TVLV payload to cache
++ * @tt_buff_len: length of @tt_buff in bytes
++ *
++ * Replace the previously cached TT payload of @orig_node with a copy of
++ * @tt_buff. The buffer is left untouched when @tt_buff_len is 0 so that
++ * empty OGM updates do not discard the previously cached data.
++ */
+ static void batadv_tt_save_orig_buffer(struct batadv_priv *bat_priv,
+ 				       struct batadv_orig_node *orig_node,
+ 				       const void *tt_buff,
+@@ -2626,6 +2733,10 @@ static void batadv_tt_save_orig_buffer(struct batadv_priv *bat_priv,
+ 	spin_unlock_bh(&orig_node->tt_buff_lock);
+ }
+ 
++/**
++ * batadv_tt_req_purge() - drop timed-out TT requests
++ * @bat_priv: the bat priv with all the mesh interface information
++ */
+ static void batadv_tt_req_purge(struct batadv_priv *bat_priv)
+ {
+ 	struct batadv_tt_req_node *node;
+@@ -3253,6 +3364,18 @@ static bool batadv_send_tt_response(struct batadv_priv *bat_priv,
+ 					     req_dst);
+ }
+ 
++/**
++ * _batadv_tt_update_changes() - apply a list of TT changes to the global TT
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @orig_node: originator announcing the changes
++ * @tt_change: array of TT change entries to apply
++ * @tt_num_changes: number of entries in @tt_change
++ * @ttvn: TTVN of @orig_node corresponding to @tt_change
++ *
++ * Walk @tt_change and add/remove the announced clients in the global TT.
++ * Abort early without marking the TTVN as up to date if adding an entry
++ * fails, so that the next TT request can re-sync the full table.
++ */
+ static void _batadv_tt_update_changes(struct batadv_priv *bat_priv,
+ 				      struct batadv_orig_node *orig_node,
+ 				      struct batadv_tvlv_tt_change *tt_change,
+@@ -3286,6 +3409,18 @@ static void _batadv_tt_update_changes(struct batadv_priv *bat_priv,
+ 	set_bit(BATADV_ORIG_CAPA_HAS_TT, &orig_node->capa_initialized);
+ }
+ 
++/**
++ * batadv_tt_fill_gtable() - replace the cached TT of an originator with a
++ *  full table response
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @tt_change: array of TT change entries describing the full table
++ * @ttvn: TTVN announced together with the full table
++ * @resp_src: MAC address of the responder
++ * @num_entries: number of entries in @tt_change
++ *
++ * Drop the previously known global TT entries of @resp_src and replace them
++ * with the entries from a freshly received full TT response.
++ */
+ static void batadv_tt_fill_gtable(struct batadv_priv *bat_priv,
+ 				  struct batadv_tvlv_tt_change *tt_change,
+ 				  u8 ttvn, u8 *resp_src,
+@@ -3316,6 +3451,15 @@ static void batadv_tt_fill_gtable(struct batadv_priv *bat_priv,
+ 	batadv_orig_node_put(orig_node);
+ }
+ 
++/**
++ * batadv_tt_update_changes() - apply an incremental TT changeset to the
++ *  global TT
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @orig_node: originator announcing the changes
++ * @tt_num_changes: number of entries in @tt_change
++ * @ttvn: TTVN of @orig_node corresponding to @tt_change
++ * @tt_change: array of TT change entries to apply
++ */
+ static void batadv_tt_update_changes(struct batadv_priv *bat_priv,
+ 				     struct batadv_orig_node *orig_node,
+ 				     u16 tt_num_changes, u8 ttvn,
+@@ -3416,6 +3560,10 @@ static void batadv_handle_tt_response(struct batadv_priv *bat_priv,
+ 	batadv_orig_node_put(orig_node);
+ }
+ 
++/**
++ * batadv_tt_roam_list_free() - drop all entries from the roaming clients list
++ * @bat_priv: the bat priv with all the mesh interface information
++ */
  static void batadv_tt_roam_list_free(struct batadv_priv *bat_priv)
  {
--	struct batadv_tt_roam_node *node, *safe;
-+	struct batadv_tt_roam_node *node;
-+	struct batadv_tt_roam_node *safe;
+ 	struct batadv_tt_roam_node *node, *safe;
+@@ -3430,6 +3578,10 @@ static void batadv_tt_roam_list_free(struct batadv_priv *bat_priv)
+ 	spin_unlock_bh(&bat_priv->tt.roam_list_lock);
+ }
  
- 	spin_lock_bh(&bat_priv->tt.roam_list_lock);
- 
-@@ -3584,7 +3611,8 @@ static void batadv_tt_roam_list_free(struct batadv_priv *bat_priv)
-  */
++/**
++ * batadv_tt_roam_purge() - drop timed-out roaming clients
++ * @bat_priv: the bat priv with all the mesh interface information
++ */
  static void batadv_tt_roam_purge(struct batadv_priv *bat_priv)
  {
--	struct batadv_tt_roam_node *node, *safe;
-+	struct batadv_tt_roam_node *node;
-+	struct batadv_tt_roam_node *safe;
+ 	struct batadv_tt_roam_node *node, *safe;
+@@ -3552,6 +3704,14 @@ static void batadv_send_roam_adv(struct batadv_priv *bat_priv, u8 *client,
+ 	batadv_hardif_put(primary_if);
+ }
  
- 	spin_lock_bh(&bat_priv->tt.roam_list_lock);
- 	list_for_each_entry_safe(node, safe, &bat_priv->tt.roam_list, list) {
-@@ -4115,7 +4143,8 @@ void batadv_tt_local_resize_to_mtu(struct net_device *mesh_iface)
++/**
++ * batadv_tt_purge() - periodic worker to maintain the translation table
++ * @work: delayed work embedded in the per-mesh-interface TT state
++ *
++ * Purge timed-out entries from the local and global TT, drop stale TT
++ * requests and roaming clients, and reschedule the next run after
++ * BATADV_TT_WORK_PERIOD milliseconds.
++ */
+ static void batadv_tt_purge(struct work_struct *work)
  {
- 	struct batadv_priv *bat_priv = netdev_priv(mesh_iface);
- 	int packet_size_max = READ_ONCE(bat_priv->packet_size_max);
--	int table_size, timeout = BATADV_TT_LOCAL_TIMEOUT / 2;
-+	int table_size;
-+	int timeout = BATADV_TT_LOCAL_TIMEOUT / 2;
- 	bool reduced = false;
+ 	struct delayed_work *delayed_work;
+@@ -3638,7 +3798,14 @@ static void batadv_tt_local_set_flags(struct batadv_priv *bat_priv, u16 flags,
+ 	}
+ }
  
- 	spin_lock_bh(&bat_priv->tt.commit_lock);
-@@ -4159,7 +4188,8 @@ static void batadv_tt_tvlv_ogm_handler_v1(struct batadv_priv *bat_priv,
+-/* Purge out all the tt local entries marked with BATADV_TT_CLIENT_PENDING */
++/**
++ * batadv_tt_local_purge_pending_clients() - finalise removal of pending local
++ *  clients
++ * @bat_priv: the bat priv with all the mesh interface information
++ *
++ * Iterate over the local TT and physically remove every entry that has been
++ * marked as BATADV_TT_CLIENT_PENDING.
++ */
+ static void batadv_tt_local_purge_pending_clients(struct batadv_priv *bat_priv)
  {
- 	struct batadv_tvlv_tt_change *tt_change;
- 	struct batadv_tvlv_tt_data *tt_data;
--	u16 num_entries, num_vlan;
-+	u16 num_entries;
-+	u16 num_vlan;
- 	size_t tt_data_sz;
+ 	struct batadv_hashtable *hash = bat_priv->tt.local_hash;
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index 992de87632954..9bdc5a3e799e2 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -1827,10 +1827,10 @@ struct batadv_bla_claim {
+ 	/** @hash_entry: hlist node for &batadv_priv_bla.claim_hash */
+ 	struct hlist_node hash_entry;
  
- 	if (tvlv_value_len < sizeof(*tt_data))
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index 49bf2ed9ecdc3..066468acf20d7 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -72,7 +72,8 @@ static void batadv_tvlv_handler_put(struct batadv_tvlv_handler *tvlv_handler)
- static struct batadv_tvlv_handler *
- batadv_tvlv_handler_get(struct batadv_priv *bat_priv, u8 type, u8 version)
- {
--	struct batadv_tvlv_handler *tvlv_handler_tmp, *tvlv_handler = NULL;
-+	struct batadv_tvlv_handler *tvlv_handler_tmp;
-+	struct batadv_tvlv_handler *tvlv_handler = NULL;
+-	/** @refcount: number of contexts the object is used */
++	/** @rcu: struct used for freeing in an RCU-safe manner */
+ 	struct rcu_head rcu;
  
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(tvlv_handler_tmp,
-@@ -134,7 +135,8 @@ static void batadv_tvlv_container_put(struct batadv_tvlv_container *tvlv)
- static struct batadv_tvlv_container *
- batadv_tvlv_container_get(struct batadv_priv *bat_priv, u8 type, u8 version)
- {
--	struct batadv_tvlv_container *tvlv_tmp, *tvlv = NULL;
-+	struct batadv_tvlv_container *tvlv_tmp;
-+	struct batadv_tvlv_container *tvlv = NULL;
- 
- 	lockdep_assert_held(&bat_priv->tvlv.container_list_lock);
- 
-@@ -236,7 +238,8 @@ void batadv_tvlv_container_register(struct batadv_priv *bat_priv,
- 				    u8 type, u8 version,
- 				    void *tvlv_value, u16 tvlv_value_len)
- {
--	struct batadv_tvlv_container *tvlv_old, *tvlv_new;
-+	struct batadv_tvlv_container *tvlv_old;
-+	struct batadv_tvlv_container *tvlv_new;
- 
- 	if (!tvlv_value)
- 		tvlv_value_len = 0;
-@@ -394,7 +397,8 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
- 				    u16 tvlv_value_len)
- {
- 	unsigned int tvlv_offset;
--	u8 *src, *dst;
-+	u8 *src;
-+	u8 *dst;
- 
- 	if (!tvlv_handler)
- 		return NET_RX_SUCCESS;
+-	/** @rcu: struct used for freeing in an RCU-safe manner */
++	/** @refcount: number of contexts the object is used */
+ 	struct kref refcount;
+ };
+ #endif
 -- 
 2.47.3
 
