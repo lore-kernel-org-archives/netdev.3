@@ -1,99 +1,344 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF3C40EB91
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 08:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85CA370ACA
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 08:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785228089; cv=none; b=mkjRdZ8dIli8Mj7e4qXVmqgQJ6FHB/a4YjTI2EzdfgxNrdyToY+mvIkmDHiUf5KLOzxAkyqW/wHtRMXwrof7VPhvNiVUzP7zGRiy8XP6iylmKUh+3YYYNVSuivKemyne6fGiLpoPXdG0tWaJyvzy+ygNi5XUyektiYWVsFfptDg=
+	t=1785228208; cv=none; b=meWvr/3HXH9mbSc0S6mKSpM+1vGpb/0lppstmfkKz844bZJAGM1dBSLmT3ays2aaDKgVvpbBA3O/r0GpNdKYAGw5kdL0szKQpDSpADEb1Le37H9/rJZp8egBq/7il5lROymUvqK/NID1oLBJeL3GWztN++dfVgZAaWym2Z5jI+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785228089; c=relaxed/simple;
-	bh=q63MzO2+9QcsW/0wiHj208E8TUZp2Z/r75aPWU+SvCk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SwlSQBrhriOwc8QIvNM11ZiHJG0eljvZpMy/C9xS9Ai5GAIrtJ5Ha8WU0t5aj8nVbeXHaTJI0dMQN5awmVKKgXDh2Hp34ZA8QwaWO09m1tW3SnBEXrCk2mShiSdk9MrvtvGHeQITS5DK3itQ8ORVZTUKUfQ5HPsWWLg6n2aH8mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AinXWGwX; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785228208; c=relaxed/simple;
+	bh=Rqs2Ng0C3vJCPUON6AR2KbTIIceO/XD+W1qiQqHoo88=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OJN3o5rw5A7Vk2uXJki9eiT/Sfo13GltWvyumNwjkTGtEb6VLpez490ZQocQxScrAIXPF12vTEjy701YcPJXXX3Ak1kVzQNGcupS8JQ0eWgOrzLpadyMOr9vGg7D/ukdewcfCdijyTLzPD+qZaMwHyT3WMnXZICMvq4oJcblyFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CniWMoUS; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AinXWGwX"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id BBA771A12C3;
-	Tue, 28 Jul 2026 08:41:24 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8748E601BF;
-	Tue, 28 Jul 2026 08:41:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0336911C13E89;
-	Tue, 28 Jul 2026 10:41:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785228079; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=gUsBndRwmc1hZjQd9pJ5nwb3nA74hWaZOuUDifXoGHE=;
-	b=AinXWGwXvCvlk7dT15nWX8YgneTLXKLjZjEV2bU1lfxDG3N0XQ+MyhZWbHXhEoEiWGAQ8e
-	qUXn/Un1nSldg5d3R2zqAkQgQPweFDwYufgzSzf4xOm8k0wOElY4rALF1xe8+NJYMBxRD6
-	egn0JjwaKx7aQmfTIUkMAQmPpo2c7OECHsbOGjwrVTApnmQNURvxIZxaJojDI7qyLLGmlP
-	+cy6/avrJNJq+1GN3EKdXoWQvPztjm3rTX+2mcbbTU4MKl2sZGN2AEDcI2eCVETPOEQ77S
-	QkeGO3D3tuW9L69oTKbZqEbdTW/Nduxls3xjHYhiuQpVib3goOnbrmo5WeQMgA==
-Message-ID: <2c0c6864-99ea-48d6-a889-c886bb91c351@bootlin.com>
-Date: Tue, 28 Jul 2026 10:41:12 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CniWMoUS"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-496bb7cdf51so20192945e9.2
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 01:43:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785228205; x=1785833005; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YZrmeHnUsmaHWeuqwQJraQn03YaBA2ryv2IzzzN9LRU=;
+        b=CniWMoUSHioZTKO5/D7ZZl09KaW0RsB9z+O98ZtLwjhYsRod8uLn/Q7VaXKYUlISu0
+         LvK/RyRok68yQA5+ALi0DrWOL293m2/It6K9DXunPpx047xNJ6yaQD8gmlLo9GtaX3Ks
+         XguWXpQyUSH78urtmApCk5nKIytF2b0NLXsiyURUA0ezlumwXr5QZMM4/gL9It72jYWZ
+         ybv6WNg+e/B4CJNZmqGWThZQ9wWRmTepKLqvBiLaDaC5rsYyCgqHbkMNpQGHttPDh/6P
+         vvhMAAXzIjyfjqVo84uiDYY5NOttojL6Ss2TkN6ym32tCxBV44yCESEr8wV7Qy0QyZiV
+         3tKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785228205; x=1785833005;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=YZrmeHnUsmaHWeuqwQJraQn03YaBA2ryv2IzzzN9LRU=;
+        b=gPWBmRREK5gE5IOTFMiJVxU3X9Q9mAlatisMNPcQR9/YZ5qR+LfCumT94wfTQGg6BJ
+         F+srj2vnz5yVQjHEMhWytghQHxTG0UDy73RrGFsK0UJc3bVa2gCShaVs6cAoOVZ4ywsO
+         MY8AFbiF8RBhxNKaPbHBTssl0l65NXouS4SE82gZq5+1nqFItpatQM/h5F3Pj8vX+rXY
+         cyCJjn44CEMnDFW0Kouj0Q+vCZAsmhGj6mvVpt2lgQIORINgmku9jz8MxwhAeHpB58mC
+         BHMVJ4w4UF85/QKFtkIh3330/d9g1DIRw3MbHmYlREznUhOjgR9stBc90ANH8H8vuCux
+         fg1Q==
+X-Gm-Message-State: AOJu0YzLVOCeAurlTxhNeJq/ic2hwpRm7aPydX3IJACffQ0qI6ynOL3a
+	N/4dyWyoMHKhKMqpuOyNzHLSMz2nbZf/E/JvxgsnbXD+ndZqSpXYAliR
+X-Gm-Gg: AR+sD12YKjoJxW178Wdl7W7v69FlYPQRCy6H+RmhnKRr4tJ7Qpq7j0V4GEgiZuw0XUR
+	EWS9srnujCkVouZZLQKcQyNJqdlpf8TDCuvHsqgDDHdxmW62OoE/6Jjjlco4tgx8Eg9T8xZ1WFu
+	aL6FS37uiKqAIsRESzCCwxo3MUHadJl2hOH8kqn4peI4NrMmpfNk1s2yi/Pxvnev3ZzTEILlEAh
+	+gEuZAk0iDXisEyRouGOTAa/yIPSkP/fuj/bfZJ10gjtM4w1AmOhlO+7UFwCzAsScPtJgBK/hK3
+	76U7UcmVRw3C68pfdAazIz6JnkE+ykPn53gI29XpSZ2g/awf4e1ShxQpM8hV5guc7FiD2B/ECAz
+	OA4FmLshnixMH71HJQbSeKe99ZC0smL2jWGeeJfHzsJ7rgkNSoI3mPASBstGYm0YchwldASpW5H
+	+wv6fk
+X-Received: by 2002:a05:600c:4eca:b0:495:64c6:84e9 with SMTP id 5b1f17b1804b1-496c60bce8cmr15359875e9.0.1785228204146;
+        Tue, 28 Jul 2026 01:43:24 -0700 (PDT)
+Received: from builder ([2001:9e8:f139:f416:be24:11ff:fe30:5d85])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c444304esm57730845e9.0.2026.07.28.01.43.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2026 01:43:23 -0700 (PDT)
+From: Jonas Jelonek <jelonek.jonas@gmail.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Daniel Golle <daniel@makrotopia.org>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Jonas Jelonek <jelonek.jonas@gmail.com>
+Subject: [PATCH net-next v10 0/4] net: pse-pd: add Realtek PSE MCU support
+Date: Tue, 28 Jul 2026 08:43:02 +0000
+Message-ID: <20260728084307.2129515-1-jelonek.jonas@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2] net: phylink: add phylink_pcs_loopback()
- method for PCS loopback support
-To: Zxyan Zhu <zxyan0222@gmail.com>, andrew+netdev@lunn.ch,
- rmk+kernel@armlinux.org.uk, alexandre.torgue@foss.st.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, hkallweit1@gmail.com, mcoquelin.stm32@gmail.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Oleksij Rempel <o.rempel@pengutronix.de>
-References: <20260727120704.2319467-1-zxyan0222@gmail.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260727120704.2319467-1-zxyan0222@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi,
+This series adds a PSE-PD driver for the microcontroller (MCU) that
+fronts the PSE silicon on a range of managed switches, together with its
+DT binding.
 
-On 7/27/26 14:07, Zxyan Zhu wrote:
-> Some Ethernet MAC drivers (such as stmmac) need to perform PCS-level
-> loopback for selftest purposes when no external PHY is present. Add a
-> new phylink_pcs_loopback() method that allows MAC drivers to request
-> PCS loopback mode through the phylink framework.
-> 
-> Implement the pcs_loopback callback in the stmmac integrated PCS
-> using the GMAC_AN_CTRL_ELE register bit. Add a helper function
-> stmmac_selftest_get_pcs() in stmmac selftests to unify PCS lookup
-> across glue driver PCS and integrated PCS. Update the selftest
-> enable/disable paths to use the new helper.
-> 
-> Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
+Hardware model
+==============
 
-I'm actually seriously wondering if we shouldn't just stick to MAC loopback only
-for stmmac selftests. I even have a patch ready to send for that, as I've
-been struggling with selftests in the past days because some PHYs will
-either stop their RXC while in loopback, or bring the carrier down which
-makes the dev_xmit drop the packets we're sending to ourselves.
+These boards do not expose the PSE chips to the host directly. A small
+microcontroller sits on an I2C/SMBus or UART bus and manages one or more
+PSE chips behind it; the host CPU only ever talks to that MCU, using a
+fixed 12-byte request/response protocol with a trailing checksum. The
+PSE silicon never appears on the bus.
 
-Using an external loopnback (in PCS, in PHY, somewhere else...) doesn't
-bring anything to the table given what we are testing today, which is
-internal stmmac behaviour. The MAC loopback (on dwmac1000 and dwmac4 at
-least) happends at the GMII level, so everything we are currently testing
-happens before that.
+Two generations of the protocol exist, both Realtek's: an older one on
+boards with Broadcom PSE silicon (BCM59111, BCM59121) and a newer one
+used with Realtek's own PSE silicon (RTL8238B, RTL8239, RTL8239C). They
+diverge in opcode numbering and a few response layouts; the driver
+abstracts that behind a per-dialect opcode table and parser hooks,
+selected by the compatible. The specific PSE chip behind the MCU is
+detected at runtime and only influences per-chip constants (power scaling
+and the per-port cap).
 
-If the goal is to validate what comes after (RGMII, PCS behaviour and so on),
-I think we should instead add some other, more generic selftests that aren't
-stmmac specific, that we could run on any netdev, such as the ones Oleksij
-has added in:
+The compatibles
+===============
 
-  3e1e58d64c3d net: add generic selftest support
+The protocol compatibles name two generations of the Realtek protocol,
+with the I2C framing folded in:
 
-Maxime
+  realtek,pse-mcu-gen1        gen1, UART
+  realtek,pse-mcu-gen1-smbus  gen1, I2C/SMBus
+  realtek,pse-mcu-gen2        gen2, UART
+  realtek,pse-mcu-gen2-smbus  gen2, I2C/SMBus
+  realtek,pse-mcu-gen2-i2c    gen2, raw I2C
 
+and each board carries a device-specific compatible that falls back to one
+of these, e.g.
+
+  compatible = "zyxel,xs1930-12hp-pse", "realtek,pse-mcu-gen2-smbus";
+
+The naming is the part most likely to raise questions, so the reasoning up
+front (the binding documents it too):
+
+  - The node describes the MCU together with its Realtek firmware, not a
+    PSE chip and not the microcontroller silicon. The PSE chips sit behind
+    the MCU, never appear on the bus, and are reported by the MCU and
+    detected at runtime; the microcontroller itself is a general-purpose
+    part (GigaDevice, Nuvoton, ...) that varies across boards. What is
+    fixed and Realtek's is the firmware and its host protocol - hence the
+    'realtek' prefix.
+
+  - gen1 and gen2 are two generations of that protocol, both Realtek's:
+    gen1 on older boards fronting Broadcom PSE silicon, gen2 the altered
+    protocol used once Realtek shipped their own PSE silicon. The
+    generation is fixed per board and is all the driver needs at DT-parse
+    time, so the compatible encodes it.
+
+  - On I2C the MCU firmware expects one of two framings - SMBus or raw
+    I2C - which is a genuine programming-model difference, so it is part
+    of the compatible ('-smbus' / '-i2c'). A UART attachment carries no
+    framing suffix; the transport is given structurally by the parent
+    'serial' node.
+
+  - Each board additionally carries a device-specific compatible that
+    falls back to the protocol one. The driver only ever binds on the
+    protocol compatible; the device-specific string keeps the binding
+    specific and reserves a place for a future per-board quirk without
+    having to retrofit device trees already deployed in the field.
+
+Testing
+=======
+
+ - Linksys LGS328MPCv2     (RTL8238B, I2C)
+ - Zyxel GS1900-10HP A1    (BCM59121, UART)
+ - Zyxel GS1900-10HP B1    (RTL8238B, UART)
+ - Zyxel GS1920-24HPv2     (BCM59121, SMBus)
+ - Zyxel XMG1915-10EP      (RTL8239C, UART)
+ - Zyxel XS1930-12HP       (RTL8239, SMBus)
+
+---
+v9 -> v10:
+ - patch 2: fixed ordering in MAINTAINERS
+ - core: dropped unused fields, can be re-added later when actually
+   needed (Sashiko)
+ - core: harden frame desync for I2C by including seq_num in _is_final
+   helper (Sashiko)
+ - core: return constant voltage when MCU reports zero, in case the
+   port is not delivering. This avoids "Voltage null" errors in case a
+   power limit is set while port is not delivering (Sashiko)
+ - core: set_pw_limit: round up to avoid setting 0 in case the requested
+   limit is below 1 LSB (Sashiko)
+ - core: de-assert global port disable after MCU was discovered
+   successfully (Sashiko)
+ - core: fix and make more precise several comments (Sashiko)
+v9: https://lore.kernel.org/all/20260726112223.1286074-1-jelonek.jonas@gmail.com/
+Sashiko review: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260726112223.1286074-1-jelonek.jonas%40gmail.com
+
+v8 -> v9:
+ - dt-bindings: renamed enable-gpios -> reset-gpios, verified on boards
+   that the GPIO which is used with this is connected to the MCU's
+   nRESET.
+ - dt-bindings: added disable-ports-gpios for GPIO that gates all ports
+   (previously incorrectly assumed to be a rail gate, thus being wired
+   via 'power-supply')
+ - dt-bindings: dropped 'power-supply', not used anymore and confusing,
+   easy to confuse with PI's vpwr-supply (Sander)
+ - core: adjusted to match bindings, handling reset/disable-ports-gpio
+   correctly and dropping 'power-supply' regulator stuff
+ - patch 1,2: dropped Reviewed-by/Acked-by tags due to changes.
+ - patch 3,4: added Reviewed-by from Kory
+v8: https://lore.kernel.org/all/20260715075530.2491534-1-jelonek.jonas@gmail.com/
+
+v7 -> v8:
+ - dt-bindings: added Reviewed-by of Oleksij
+ - uart: check and warn-on-error for serdev_* operations (Oleksij)
+ - core, i2c, uart: added Acked-by of Oleksij
+v7: https://lore.kernel.org/netdev/20260712192251.1413279-1-jelonek.jonas@gmail.com/
+
+v6 -> v7:
+ - dt-bindings: rename file to 'realtek,pse-mcu-gen1.yml', using
+   specific compatible as file name (Conor)
+ - dt-bindings: added Conor's Reviewed-by
+ - core: replaced some leftover 'BCM/RTK' dialect framing in comments
+ - core: use rolling sequence number instead of always hardcoded 0xff,
+   adressing the issue that stale data might be accepted for new
+   requests (Sashiko)
+ - core: reordered MODULE_ calls to keep consistent across all driver
+   parts
+ - i2c: replaced some leftover 'BCM/RTK' dialect framing in comments
+ - slight commit message adjustments
+v6: https://lore.kernel.org/netdev/20260709194125.2784507-1-jelonek.jonas@gmail.com/
+
+v5 -> v6:
+ - dt-bindings: reworked the compatibles per DT-maintainer feedback
+    - name the two protocol generations -gen1 / -gen2 (both Realtek's)
+      instead of the -rtk / -brcm dialect suffix (Conor)
+    - encode the I2C framing in the compatible (-smbus / raw -i2c) and
+      drop the realtek,i2c-protocol property (Rob)
+    - add device-specific (switch) compatibles that fall back to the
+      protocol compatibles, with the board↔protocol pairing enforced in
+      the schema (Conor)
+    - rewrite the description accordingly
+ - driver: track the binding rework
+    - match on realtek,pse-mcu-gen{1,2}[-smbus|-i2c]; the I2C transport
+      selects SMBus-vs-raw framing from a native_i2c match-data flag
+      instead of reading the property (drops rtpse_mcu_needs_i2c_proto)
+    - rename the internal dialect and parser symbols rtk/brcm → gen1/gen2
+      (chip identifiers like RTL8238B/BCM59121 kept)
+ - i2c: DMA-safe raw-I2C path — bounce each frame through a heap buffer,
+   since i2c_master_send()/i2c_master_recv() may DMA and the core's
+   frame buffers are on the stack (SMBus and UART paths unaffected)
+   (sashiko-nipa)
+ - includes: drop unused linux/mod_devicetable.h (core) (Uwe)
+ - includes: drop unused linux/delay.h (uart); add
+   linux/regulator/consumer.h (core) and linux/slab.h + linux/string.h
+   (i2c)
+ - commit messages — update the binding, core, and I2C messages to
+   match (generations, framing-in-compatible, DMA note)
+v5: https://lore.kernel.org/netdev/20260706112425.3149226-1-jelonek.jonas@gmail.com/
+
+v4 -> v5:
+ - split the single driver patch into three — core / I2C transport / UART
+   transport. Binding stays patch 1, unchanged in shape. (Paolo)
+   Please give guidance on how to if I should split more.
+ - core: set_pw_limit: guard divide-by-zero on pw_set_lsb_mW; cap the
+   programmed value with U8_MAX instead of a bare 0xff; prg_val is now u8.
+   (Oleksij, Sashiko)
+ - core: discover: also retry transient boot-time frames (-EBADMSG / -EBADE)
+   within the bounded window, not just silence/NAK/not-ready (Sashiko).
+ - core: pw_status: report Broadcom 0x3 → TEST and 0x5 → OTHERFAULT
+   (new STS_TEST/STS_OTHER_FAULT); pw_class comment corrected (0x3/0x5
+   aren't "other fault" on RTL; class-0-vs-fault note). (Sashiko)
+ - core: dropped unused decoded fields — function_mode, cls_type,
+   disconnect_type, pair_type, inrush_mode, limit_type, chip_addr,
+   channel. (Oleksij)
+ - core: removed forward declarations by moving the response structs above
+   the dialect struct. (Oleksij)
+ - core: get_pw_limit_ranges: reverse-Christmas-tree local ordering.
+   (Oleksij)
+ - core: dialect comment clarified (only divergent responses are hooked);
+   commit message "parser hooks" tightened to "…for the responses that
+   differ." (Sashiko)
+ - core: made parse_system_info hook void, both implementations return
+   hardcoded 0. (Paolo)
+ - core: dropped GFP_KERNEL from kzalloc_obj. (Paolo)
+ - core: dropped unneeded u32 cast
+ - kept probe dev_info() for now deliberately, due to different opinions
+   on whether a probe might print or not
+ - NOT included Acked-by from Oleksij, due to several changes
+v4: https://lore.kernel.org/netdev/20260630105651.756058-1-jelonek.jonas@gmail.com/
+
+v3 -> v4:
+ - move owner setting from core to transport, mitigating possible
+   use-after-free (Sashiko)
+ - resend because net-next was still closed
+v3: https://lore.kernel.org/netdev/20260628222705.4052815-1-jelonek.jonas@gmail.com/
+
+v2 -> v3:
+ - dt-bindings: using brcm instead of bcm for Broadcom
+ - rename the driver files and Kconfig symbols to realtek-pse-mcu-* /
+   PSE_REALTEK_MCU* for consistency with the realtek,pse-mcu-* compatibles
+ - rename driver-internal prefix from 'rtpse_' to 'rtpse_mcu' to
+   emphasize this targets the MCU-centric setup (and leaves room open
+   for eventual directly addressable PSE chips)
+ - rework the vendor-prefix rationale (binding + commit message): the
+   prefix names the protocol/firmware owner (Realtek documents the protocol
+   and supplies the firmware), and -rtk/-brcm select the Realtek or Broadcom
+   protocol dialect
+ - core: reject zeroed/echo-mismatched responses via the echoed seq_num
+   (a BCM PORT_ENABLE on port 0 was otherwise accepted from an all-zero
+   frame)
+ - core: enable the PoE supply before global-enabling the MCU, and roll
+   back the global enable on probe failure or driver removal
+ - core: drop inline from helpers (flagged by automated check)
+ - uart: update the completion under rx_lock too, so a late frame can no
+   longer make the next transaction fail spuriously with -EIO
+v2: https://lore.kernel.org/netdev/20260612132944.460646-1-jelonek.jonas@gmail.com/
+
+v1 -> v2:
+ - all points flagged by Sashiko addressed:
+ - uart: drop frame overflow (return count, not the stored length) so
+   serdev retains no leftover bytes that would misalign the next response
+ - uart: guard rx_buf/rx_len with a spinlock to close a data race between
+   the async receive_buf callback and send/recv
+ - i2c: return terminal MCU error opcodes (0xfd/0xfe) to the core
+   immediately instead of polling to the 1 s timeout
+ - core: cap BCM59121 at 30 W (802.3at) — the basic 8-bit set command
+   can't program the advertised 60 W (it silently clamped to 51 W)
+v1: https://lore.kernel.org/netdev/20260608205758.1830521-1-jelonek.jonas@gmail.com/
+
+---
+Jonas Jelonek (4):
+  dt-bindings: net: pse-pd: add bindings for Realtek PSE MCU
+  net: pse-pd: add Realtek PSE MCU core
+  net: pse-pd: realtek-pse-mcu: add I2C transport
+  net: pse-pd: realtek-pse-mcu: add UART transport
+
+ .../net/pse-pd/realtek,pse-mcu-gen1.yaml      | 180 ++++
+ MAINTAINERS                                   |   7 +
+ drivers/net/pse-pd/Kconfig                    |  28 +
+ drivers/net/pse-pd/Makefile                   |   3 +
+ drivers/net/pse-pd/realtek-pse-mcu-core.c     | 988 ++++++++++++++++++
+ drivers/net/pse-pd/realtek-pse-mcu-i2c.c      | 170 +++
+ drivers/net/pse-pd/realtek-pse-mcu-uart.c     | 164 +++
+ drivers/net/pse-pd/realtek-pse-mcu.h          |  93 ++
+ 8 files changed, 1633 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
+ create mode 100644 drivers/net/pse-pd/realtek-pse-mcu-core.c
+ create mode 100644 drivers/net/pse-pd/realtek-pse-mcu-i2c.c
+ create mode 100644 drivers/net/pse-pd/realtek-pse-mcu-uart.c
+ create mode 100644 drivers/net/pse-pd/realtek-pse-mcu.h
+
+
+base-commit: a50eba1e778ad4da5b6f9ddbbf57dabbea59bc05
+-- 
+2.53.0
 
