@@ -1,223 +1,161 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010003.outbound.protection.outlook.com [52.101.69.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D282D46A1
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 02:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D943B1B3;
+	Tue, 28 Jul 2026 02:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.3
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785204872; cv=pass; b=Bm21YROsRj2gCgNkMAxKZTBJvNL8Zm71Y8x4pSeAyH2r7JiFIeq+VnqgNoKrP31ahcEUxHuHR5ZoB9mWQtHHbf4IB4ANMoGVBmSa+7GckLUTHlUggHjlxj5aRdYoLReiKMjEQGCkAFKDv+h+g/cB1Cl9xCGYttEMP48N0YYQMGA=
+	t=1785205742; cv=fail; b=ndKEFQvUWh5I3KMVn2FGTwO45H8HqdEUSqkqRoVhbC98fffhbZQuvhbdG3CZCeFggYVziug+PXW64PrXivq6q8TFemXUVIWDV+q0nD7VDS+YXSlfLXfFVoTITI4lB8a44kqFlmF3vkHTOGrGEpTocxXMFS6XAE+pTfodZqi5HNI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785204872; c=relaxed/simple;
-	bh=eny3RK02S4/Mh/D9RLG3tWEsx3zPf7uXemh3o5mnl54=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z+ALjbO2xT+PbMhExfyDm24j/0YO0p3vSnSbZeRykGltM5amnxDIsPD+rNyrrScy8Tm4urcZ2m2QcpzNDFEwyqSURe2A4YVpKPidz5owu+4ydcy4NOonGux5nCxL6IhYE4AGPehXoF90ld6i+MLQjCb8/CxoV2DK7CpCLM+1+FY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kb4hvn+N; arc=pass smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785205742; c=relaxed/simple;
+	bh=7ku7vDCOqIbxnfgkambBt9gqYyWmd837y16Q/gD1aLI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=KJsCVE75M4QnoGu4eJ6Q/eXcb/rnpjKj6jDP+oZdKFgfODS4ORxkWYxXi6UsTvEqWGqJxOVBXKXBkSWfcjawFEEgPVJbmVqcXQCK9PvZWbPnA2shHRtPXA7wx3HCNXYzvPqWIPNEHft5Ypr0r8rSwhO/FZRavRfC+UmZQeMF0m4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=rsuMul14; arc=fail smtp.client-ip=52.101.69.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kb4hvn+N"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-81f3b227a4aso42724087b3.1
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 19:14:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785204870; cv=none;
-        d=google.com; s=arc-20260327;
-        b=boz3C0vf+iBV6A+4xBMkPFINzM+QtOWddA5q8SCDxPWpbCn6wDhblzHfVVdKKfrhgu
-         JmrwYz8IKPYx8V5Syy4Y9aqMG0IuK1c3LOK/wEKXbpBM1Oj+WKQofE7opjPx7aOBCHV7
-         KNqXA5OtVucM8CiURVJrxXetAKMHGTZjlUektqsQsPeu4/50nadfkKc1FxXjvorMcKiR
-         /RCb3yxuyDfCjtXiY3leXxqXDwKAJAWkmkpRjAa/A3f+0MEIjL3DTM4BuL+CbaxZB4Ys
-         BsGTzjIkZBuKGHvw5tbEFmFATuHgvu8cAVEEeJzxFcK5n+g4BwT8O7wizzsFxGDaSyOX
-         eZNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=s66f5dxTpDYOfgWlIibSDtZoO/MusvgYxmCX/XIHZDg=;
-        fh=wWBXkg/SJkRGmDgV4r6eOfMp1L6N9FENRNKt2BnN7IQ=;
-        b=jvuNnx5gqBn4KaMSwoVzdaJ7EOUn+2D+FObKuy7H0CK+pGyZUESDmsB+S/fbyoYUYE
-         F3N+rJky2TVdFjbPOhjT9VnT7LxX8vpp0swD/t+EuBu8N25lTymkdzU3owaN/YZASJu6
-         rJhZGFOh6Z/1/jgvFmH1XQaCiVPMs+xm2ehLoJ7k7RntESFi7WroQizzugNBU0LaQPbA
-         uAFluLNnTUn8B399DoaWohyEJdr3/E0ruWiSR3UvYv+W4Z8uwTRw644niJmnXFrOSrA5
-         cQhu8Q1K+1zxhmp9AzMz0q+LG2oj8OS7/ZlJWB05R+GKT9EMyeXZeeLRIpBZC8NPwZ+w
-         Y3FA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785204870; x=1785809670; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=s66f5dxTpDYOfgWlIibSDtZoO/MusvgYxmCX/XIHZDg=;
-        b=Kb4hvn+NVdKrIN2J0repdB4lLuu8z30Ror/YLHOFG/xY0FzE/FTn/qUCSTWVX3ujvd
-         oCAOcF18WPIDgqWKVfj/V24AVGzJSxgnbqUCayBQD+2Or1zraWKm129IL5X6ekY8Koeh
-         REkLuYWnM4FPaKugc0GtfG+Wkliii/YsCaNHJOQQRdhW9dH16Yb+zuGOw/QckVi1Q7Mr
-         rwmTZ0TveqtJEA22zAe9OLcTdRwL/K6EPiLupRsz5zkTtsmb1BN78nVMOsnm4ItU9IpB
-         trcXLl1nxWNMvQFFcUwQYaHOMQL50jmaXiNWHt0AmTY404VYmtjJ4ncI7cQe0ii+9V7w
-         RjXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785204870; x=1785809670;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=s66f5dxTpDYOfgWlIibSDtZoO/MusvgYxmCX/XIHZDg=;
-        b=Fy++MjaaGjZMX31Y9oYSG3hgkR+EoEBwD5ICNAELzsKxcG+Jd5pqxwaE01VYMLFN7H
-         pPWYJ+1Z5Orv0NOXf3cDn1bKVXlhUgbXrg7yGTX/9Wu+tfztAjEI2z1YzcaR092xZGiS
-         RqU5p4W/7wpK8xU9P+NdlXrMLi34Joxq+PNJmVvdCsB2zS2OUn6dhJvPLvXMwWycCsgJ
-         9JOr38S1oA136vQL+ZJXAssQD6XdJn2kIgZMIoW98hK8uwFZCiQ6Au6fv8cFR7ZHYEBc
-         piu21aFSVSxwokuiVqC3VXFF6OYfzYJRKUEGYGL2WWDxEyncAGL/0XN2cUkrAWzlYqL9
-         BwVQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrTQiXIAHBFmDvfint7Ve43izvIiZaszIR9TecBEIUL9+lk1t2L1cgXzJK1XMFtfWb0bM0COTk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+27yFU/oGTEmya1JT/P6AbwEo4ypGkHQPH9zyjqD8NKAizQgz
-	p72OdutCJ6vgyeV6pILLugff2KDst3ioh90QTcuBbfIVzQo+Falngw9CS9gt4Ql5geN/4/Sk9tD
-	ozLavkMwAC05HlGxNlDM2Oi2nK4EC3FU=
-X-Gm-Gg: AR+sD122ApqmCxqcMkteqXUqcp6tVBdvTvlGNkltxfzDS8uw8RRW/9sBtmjtzAvyAyj
-	6nP9yX0WOYfSDKhLoj0bA/pZC6aNbuW/F2Ma/pUaTJZVe3bndozQithJtdTJ5/aB4V1AD0+ahe2
-	XuOki99t0QIZUn/HnMQQ1hGkfRPy3Orju0H+jHOTcxMFVj97ods64lusHc7a8KU82ILzqcmm/3P
-	tr2Fmfb4wjHOHZjj1INXN7h7c8XIESZMRXAF2CnSqiIBmNx87PUCPVZ8WtZdg==
-X-Received: by 2002:a05:690c:6804:b0:80c:f6bb:565d with SMTP id
- 00721157ae682-81f9921c3bcmr1821787b3.19.1785204870332; Mon, 27 Jul 2026
- 19:14:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="rsuMul14"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qomJIJBF4Jj1kzunC4R3hEPM6PQ4cYdIceaedfI0R4oQKXU1ziZolF2RnaeRX5wX8Ybwueexom0rkFD6INxqIdn56s3VEbSs6K2pNuTKSbG8dHlPZBqyorfxXWHNe1+IPmKaVGHQKyCJQoFhDhpRZHgytnDSfia4wJhOHSE4rbZMfA3eazlBgw2oxFiQCIbaGiefsKh30Bd3DdiQRGbooAD/sZEXoG5//5dS3eUg/SFz6Q5LqG7DssOsC8k/q+PKGygd2BI1JiOFdbsWDO1zN1tlLkNH8O+8h/h18984LU7ThyNf+tj1hK4hkSknLslh3PNxioNktSVxle4RFIpMeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MmJXskdMWkIPMimpTmxRxToUlOeUzXC2emAYUCrDmDM=;
+ b=sEc72bJPYpUXPdP3f9MS0ilRecmC+1bkgwyjRN2jOtIXO0x/599VGBy6T+roEoIqeLlu0p6wFpcWAHOTM0bP8tl8YGUqNtA0gZH97zT6gsJPosREq0yc0CtuuWY2+YkjUsJOw08o3NjKQbhzS3DaMVS0Me0VoG/PkNaVjvx6XDLZHorTs9+RhFLnOigVVZ5JwtZi5bftMrUd6HI5a7bAKYos6jY7LcOoM+y78UKzSeE3BUnV+lBKTMo4KsqEtulf1mzlaDPR/LyuxgelPthTQO0jtbFupApXOHsgEOG0teWrZkwdJKJ1/5+vuaDEUd34MesxqdDnkjBMp8eckOVhpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MmJXskdMWkIPMimpTmxRxToUlOeUzXC2emAYUCrDmDM=;
+ b=rsuMul14bxuvDfoGxeln8pDF4Oy5P4RzvTf/D05XZ3K7WLM9WITIVSIBrtS4bHDAFYxb3OXpE+G91z5xSf1Uw08aaWYFFxiCiovShAouo82SafIYiSOfNg8J57iUmbillmaQmybLzdzTQCnLOjJ7bOAlod0ID3e0FZz0uagDNKbmD0gra9A38JxMdlYYkrqOeJcAxtbqL4B7AKXmXBKBWqQs4Db3hma/l2rlk7cgPZexC8EbdTPFKVS4n2+KUxCQ8R8q9gRS3KHDgFqD/cUFNmBuC1PjHA9nsB5xU1HXDUO2v0/qCiL1/LdLO7wVOCZXO2qNMe7ZKrKREqrKqVGL4w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by VI0PR04MB12186.eurprd04.prod.outlook.com (2603:10a6:800:331::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
+ 2026 02:28:56 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0245.012; Tue, 28 Jul 2026
+ 02:28:56 +0000
+From: wei.fang@oss.nxp.com
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Frank.Li@nxp.com
+Cc: wei.fang@nxp.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/2] net: enetc: restore RX ring congestion mode after ring reconfiguration
+Date: Tue, 28 Jul 2026 10:32:15 +0800
+Message-Id: <20260728023217.2499420-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0029.apcprd02.prod.outlook.com
+ (2603:1096:4:195::6) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260727205602.1188008-1-gahing@gahingwoo.com>
-In-Reply-To: <20260727205602.1188008-1-gahing@gahingwoo.com>
-From: Gavin Gao <attinagaoxu@gmail.com>
-Date: Tue, 28 Jul 2026 10:14:17 +0800
-X-Gm-Features: AUfX_mwPthmXiJzhXc55bA8wYRZBnevQc-idOB6263_HLyZuhE8x_4eJln52qSQ
-Message-ID: <CAK2JjQU28+Q5ZU1atm09tuMp=P0gd63L7xY-8dX3G5weS9Heeg@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] net: phy: motorcomm: enable the reference
- clock for YT8521 and YT8531
-To: Jiaxing Hu <gahing@gahingwoo.com>
-Cc: Frank.Sae@motor-comm.com, andrew@lunn.ch, hkallweit1@gmail.com, 
-	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, maxime.chevallier@bootlin.com, heiko@sntech.de, 
-	linux-rockchip@lists.infradead.org, alchark@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|VI0PR04MB12186:EE_
+X-MS-Office365-Filtering-Correlation-Id: 731d3ddc-0308-407f-c30a-08deec4ff8d7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|19092799006|18002099003|56012099006|10067099003|5023799004|11063799006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	fodI6+0LC+IWF6pQBIszTQ65QJU+RXN8XFba3S4QmP7f2yfPeYT76MlnbyVN3ICFsX2UJGsrtSeBfq4JH2BFkSUhYBHjkf4pKGUC53qtWIV0BiaZJbJH28dPKOiwKtvx1Y7Rlfv/3EMkNNkKiwNFLQxCNaqOPxqtN0tBurHEBU2NgR8pvijad2ceKEKYd4chlbz5akvP19LgVI3FZ8/Ze6PK9l8khdo+wNFmpm3ETyEVYqZwrJLfDIBfGfOndR0NcSV4Ambtf/BuMnRolMf5g7zefEShRYhBuxHIXB78iQYtQphiWpwXgLuIPTjxmOloKbwIuE0MX3QwOYlAq1+ge5yjpy17NFEj8HoFDKCeFsi0tdlBLnImIpXwze8vS1ePFpjhm4UIg1KiOwpZHmzzLLSqTlaPkP/H8QOcgvexwh09St6675/UCEpVArFQxETnD5U9UxIX8mVatMx5kXLa3uCyuA9KhG1RB7qGZ7gF9LTixdo0FceF1foMP9KXMsEwD9o906kRYjJMSzbU97wnavxQcDWSsnv89134xBSw0g8bJxaPBGAbUrgxTsgVp+IaKtfClw6YXJhIb2z7k5CkjlZnogyXIInjH3BAMpRLLnS1GqWH39sQfwJEh/S7mBNySKvYJrZGvH0V4IN2B7r72g==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(19092799006)(18002099003)(56012099006)(10067099003)(5023799004)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?PaWs+L3N3/WMF7xw7+JbOCE4AZMRYyGP+s3OiW0kbRUe8DZySCNYAkycBtLI?=
+ =?us-ascii?Q?89u3r9FxLkvn0tLtm7bAEyJ1kufGC4ZIJfGd84VHIk8TyNqYkDrIzqRsyJUI?=
+ =?us-ascii?Q?PqAwqB4EnXvK72b6KSDyGNr9xTdreyg5LRMRT267gwlsyk+CAVnxQ3C+1R5V?=
+ =?us-ascii?Q?nWfCfWPiWnGSdGLN8BPJ/uomzvCVgkbZ3Tgjum0++ANjg648NQKm9JQ353+C?=
+ =?us-ascii?Q?XK/nbTDE4FsjGeGiDgtMRfVqPygrWNeWQ1piDeGVsQ3o3uSxZYk0BYuVvoT/?=
+ =?us-ascii?Q?et6PZjEUMjIEt9w+JobX3kr8qITsPPqKN9s5VuqNRXuuRCCnNgTbqmDy9Cuq?=
+ =?us-ascii?Q?quARaBgNVf4uyEJioTny7rsgltxeE/ENMOBC0T8c+GC0Xy9/NyYD/zm6h/I0?=
+ =?us-ascii?Q?TdCt6TJXxSDOJdM5n5NwiAYAsJdWHJsHRloOp6GgMR3dKajUq9ZpJnIkqyNm?=
+ =?us-ascii?Q?56aH5pa3ayeBN9ob1qdN+fI3SvIOdfwM4ESdElx8QDC9D1DfpHABzjKWE/+2?=
+ =?us-ascii?Q?TftCUzP/R3hnrd9+owlsDy2GQZ04LRwekwrosSCnlTEEJyIP8O9wzUX/4BeO?=
+ =?us-ascii?Q?XXM2uYRBtDNlAPmWXWgYadUjAKmrnof2RdQE9Mo2Ru1/LxwXWdN+0ZwTpR+M?=
+ =?us-ascii?Q?/dqH69GQfoBYBhJkQoRvhdg+TKwQLRi38e27Chy7Se95lFJ6PStZPZa2jrlI?=
+ =?us-ascii?Q?j3RNyGPwnz7QEaSG6buEpeO8o+LamXAhjQXVdqRQSMINfajGxtLr/XwV/S/T?=
+ =?us-ascii?Q?jeir8q1LNU5fAh3v8CnRLSW9+DnrCnoIPV/PzwAWYLrj12cXZc9qUWkz+I1h?=
+ =?us-ascii?Q?2KbU4AXw/hK5k4/r6PKl0Kt0GkYNilG5NnCc8D6P8ZH+29EdXZLj1o6kPKCb?=
+ =?us-ascii?Q?ygohVkz7Asr7LTw+L+NIpWh3Bph1dSMprhFt/Z1mZnhCugmJezGeJ+9Ay9mE?=
+ =?us-ascii?Q?68e7d/bbrJLGnfi26+altL3ndokQsDYN3N+VMiikh+J67dNakTMXV3EPxJc3?=
+ =?us-ascii?Q?CPY19kFiCKOfs4RC8OKUr0CIO0sLTkrZ4wGhYyIKLVV8oYWFKecK7cpRMJEP?=
+ =?us-ascii?Q?XWweXxaWFPUoNa4TUndPzyr44rN6IYRIYm6oI0VVSSysCVhSWZH2h98SnTcd?=
+ =?us-ascii?Q?kL1mbwaQzLtlncShEBgPYFnqcRYVj9F+wEkm+xuwxbAUfyyTpV12TKSH4Wgt?=
+ =?us-ascii?Q?g6L9o3uwv+FB5PSBq1pw/0ASog5TRGnCZgl90r8qKpC0e1YuvnYHaGs70NC4?=
+ =?us-ascii?Q?ZtO7pbSAQHRj9JrYR9U2oG6K7mb9x/HpuP3kjHqZG2+wRr06PXxgbUyqvi75?=
+ =?us-ascii?Q?19rPXo1gJlijJOtuwhQx76qhX+h6PvNqzDikNYwP0AtLCz1FtO05HEvF+1Kl?=
+ =?us-ascii?Q?MdY3MSkHqM6IYGr9lfbVa25RKSfXAo73AIYRybKTb51LnRGMKCiRfIWVubPV?=
+ =?us-ascii?Q?T13rBQOwmt9A/dLmWrdgrZPKslb5BShKLZASNKmvsETpkW80r7grnoP4KrRZ?=
+ =?us-ascii?Q?KDHKICFSwnjPVFSbvAporQrtgrDrWcrYzfO8lP5coXzO9j7DwpLpIB18N68q?=
+ =?us-ascii?Q?vC+BaOu6x124hZQKLjudTMbKiljbs1mziJeuiWLss24u7h4POELY7p8TXRul?=
+ =?us-ascii?Q?HRYytkd8CQ3+y7Wf2QbZ1zv6CYOxr66m3uqMfhKLGwwEsgm2CfyXfH40VnF9?=
+ =?us-ascii?Q?JGy+0UEggitqMlkK6UcKG9azxM6iU8muzAJ6uaHousC3+qtCg+9UITs4h5oo?=
+ =?us-ascii?Q?QzkRATwq/D7rYLNCcz/yFNG4tvrtwHUbdIRVT7pCFXLHZKCTgbIE?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 731d3ddc-0308-407f-c30a-08deec4ff8d7
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 02:28:55.9102
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rDKqvmorfqVU4edI1EHtkCxzBwT3x78b4AKAdxpkPsWFX9mDmwVSoNTUtYTcluSscULgcGATcV/nLUyrIHlxuSb5abiDIJRi86abgdSjqvRyfEwri5+9s6mqpTGmms24
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB12186
 
-Hi Jiaxing,
+From: Wei Fang <wei.fang@nxp.com>
 
-Thanks for folding in YT8521 support.
+The RX BD ring congestion mode (CM) enables the ENETC MAC to generate
+PAUSE frames when ingress congestion occurs. It is configured only in
+the phylink .mac_link_up() callback, which is invoked when the link
+status changes.
 
-I tested this on a PicoCOM RK3576 ACP board with a Motorcomm YT8521 PHY.
-The 25 MHz reference clock from RK3576 REFCLKO25M_GMACx_OUT stays active,
-and Ethernet works.
+However, enetc_reconfigure() tears down and re-creates the RX BD rings
+at runtime without any link status change, for example when enabling or
+disabling PTP RX hardware timestamping. enetc_setup_rxbdr() rebuilds the
+RBMR register from zero, which clears the CM bit, and since the link
+status does not change, .mac_link_up() is not called again to restore
+it. As a result, flow control silently stops working after such a
+reconfiguration.
 
-Tested-by: Gavin Gao <attinagaoxu@gmail.com>
+To solve this issue, track the desired CM state in a software flag
+ENETC_RXBDR_CM, which is maintained by the .mac_link_up() /
+.mac_link_down() callbacks and consulted by enetc_setup_rxbdr() when the
+RX BD rings are (re)configured. Both ENETC v1 and ENETC v4 are affected
+and are fixed in the same way.
 
-Thanks,
-Gavin
+Wei Fang (2):
+  net: enetc: restore RX ring congestion mode after ring reconfiguration
+  net: enetc: restore RX ring congestion mode for ENETC v4
 
-On Tue, Jul 28, 2026 at 5:04=E2=80=AFAM Jiaxing Hu <gahing@gahingwoo.com> w=
-rote:
->
-> These PHYs need a 25 MHz reference. On boards without a local crystal
-> it is fed from the SoC and described as a clock on the PHY node. Get and
-> enable it in probe, via a small helper called from both yt8521_probe and
-> yt8531_probe, so the PHY is clocked before its registers are accessed.
-> The clock is optional, so crystal-clocked boards are unaffected.
->
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Signed-off-by: Jiaxing Hu <gahing@gahingwoo.com>
-> ---
->
-> Changes in v2:
-> - Factor the clock enable into ytphy_get_and_enable_refclk() and call it
->   from yt8521_probe as well, so the YT8521 is covered too, not only the
->   YT8531. v1 only touched yt8531_probe.
-> - Carried Andrew's Reviewed-by; the enable itself is unchanged, only
->   moved into the helper.
->
-> v1: https://lore.kernel.org/all/20260719034555.3623003-1-gahing@gahingwoo=
-.com/
->
-> A second crystal-less RK3576 board with a YT8521 needs the same handling
-> (see the RK3576 GMAC 25M refout thread [1]), so v2 covers both PHYs. This
-> supersedes the withdrawn dwmac-rk MAC-side series. The DTS that consumes
-> the clock (rk3576-armsom-cm5) goes to the rockchip tree separately; the
-> clock is optional so this patch stands alone. The YT8531 path is tested
-> on an ArmSoM CM5-IO (links at 1000 Mbit/s).
->
-> [1] https://lore.kernel.org/all/20260727021048.3375444-1-attinagaoxu@gmai=
-l.com/
->
->  drivers/net/phy/motorcomm.c | 33 +++++++++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
->
-> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-> index 708491bc1..32eb5ce93 100644
-> --- a/drivers/net/phy/motorcomm.c
-> +++ b/drivers/net/phy/motorcomm.c
-> @@ -6,6 +6,7 @@
->   * Author: Frank <Frank.Sae@motor-comm.com>
->   */
->
-> +#include <linux/clk.h>
->  #include <linux/etherdevice.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> @@ -1043,6 +1044,29 @@ static int yt8531_set_ds(struct phy_device *phydev=
-)
->         return 0;
->  }
->
-> +/**
-> + * ytphy_get_and_enable_refclk() - get and enable the PHY reference cloc=
-k
-> + * @phydev: a pointer to a &struct phy_device
-> + *
-> + * A crystal-less YT8521/YT8531 takes its 25 MHz reference from the SoC.=
- When
-> + * that reference is described as a clock, enable it for the life of the
-> + * device. It is optional, so crystal-clocked boards are unaffected.
-> + *
-> + * returns 0 or negative errno code
-> + */
-> +static int ytphy_get_and_enable_refclk(struct phy_device *phydev)
-> +{
-> +       struct device *dev =3D &phydev->mdio.dev;
-> +       struct clk *clk;
-> +
-> +       clk =3D devm_clk_get_optional_enabled(dev, NULL);
-> +       if (IS_ERR(clk))
-> +               return dev_err_probe(dev, PTR_ERR(clk),
-> +                                    "failed to get and enable the refere=
-nce clock\n");
-> +
-> +       return 0;
-> +}
-> +
->  /**
->   * yt8521_probe() - read chip config then set suitable polling_mode
->   * @phydev: a pointer to a &struct phy_device
-> @@ -1064,6 +1088,10 @@ static int yt8521_probe(struct phy_device *phydev)
->
->         phydev->priv =3D priv;
->
-> +       ret =3D ytphy_get_and_enable_refclk(phydev);
-> +       if (ret)
-> +               return ret;
-> +
->         chip_config =3D ytphy_read_ext_with_lock(phydev, YT8521_CHIP_CONF=
-IG_REG);
->         if (chip_config < 0)
->                 return chip_config;
-> @@ -1171,6 +1199,11 @@ static int yt8531_probe(struct phy_device *phydev)
->         struct device *dev =3D &phydev->mdio.dev;
->         u16 mask, val;
->         u32 freq;
-> +       int ret;
-> +
-> +       ret =3D ytphy_get_and_enable_refclk(phydev);
-> +       if (ret)
-> +               return ret;
->
->         if (device_property_read_u32(dev, "motorcomm,clk-out-frequency-hz=
-", &freq))
->                 freq =3D YTPHY_DTS_OUTPUT_CLK_DIS;
-> --
-> 2.43.0
->
+ drivers/net/ethernet/freescale/enetc/enetc.c     | 4 ++++
+ drivers/net/ethernet/freescale/enetc/enetc.h     | 1 +
+ drivers/net/ethernet/freescale/enetc/enetc4_pf.c | 8 ++++++++
+ drivers/net/ethernet/freescale/enetc/enetc_pf.c  | 5 +++++
+ 4 files changed, 18 insertions(+)
+
+-- 
+2.34.1
+
