@@ -1,143 +1,158 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC7941E6A6
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 14:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F175644E03B
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 14:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785248421; cv=none; b=EZ1sRuMLS3rB346tvR9r1UolVqMCXTCw3PFBu7XIi+Tv5CwkvxI8/sXGXgPuBJlmMbJRf0WHcLdDGcxqF9895X4F8mfw7tfXW/G8keFKy3fVStao/Tpinom0oFES+YuVC3q/C49XtVW40B9mV1+hpO2s7mu3nVMm2nrYAqojYHo=
+	t=1785249374; cv=none; b=XlP/THMMr2EukVUnnb5hxNYAtIQ2jktkVcTw+cR6Kf+A7U92nPy08Me4O3WohcLcdp4NzSTilSN4xcE3ZLnKq8WMS4N4sRbVV5Je1Eg9xZfgALTJIs6d/h7qQpFylaRpzO6UDMGsPiCNybsZEPAFVYn02KLuLf8XWGOHUpDFHc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785248421; c=relaxed/simple;
-	bh=0wKP7dKJQpfcvBrKKBSUdE4NqItsaqmzqBSpzCWhYYE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U4IdGfHOIW0XX+F/mVZGMhQm5WBeXmoxNwUlHJ8i6yO3cpQZg2RkH9u3NoaI7SlnWG4KcLzh1MDtapntHnhd86toYKQ7yCOl0du1CUhMSyTUi0Z5jnhbdp/LQnwFhyz7tYlXd13aIuaAirtBOs/ajrxWxcc885044oZUUqZ1MvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=T5al6rMg; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785249374; c=relaxed/simple;
+	bh=lMvHwdjXU/tguKBCDnl57L4KlTAZg6CmyfTitAknuRQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p3ytXhpX+XXIpSOqBnGDFmsx68WcCx7jU0rpBJKXACJJf9bN9SveXH+VptsL7keDZr0YJuSqHZkW6DPvc6ah1d/XHpeAR4CfnoLIMaETk7QKDRtgOdy4k5ugySLhMgOL37nCVX0I37ZdjA0mVpdH2ej7UDRaxZ9bLTittCMUMCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qhLuSrJr; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="T5al6rMg"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0c+qpm6b01v/cobRhYFLSHeK8Zdkv1FJKhFfWarwq04=; b=T5al6rMgjwL9T3wpVMJ7ZkqwUG
-	VHh5ihnhHgGwZHMnUUi0p+sDuNiW4SoXqg7c6QLCPr/xG/LbWwp7AbBkubA0J2ivpSnRmQziJciMZ
-	hrb+NYkOBCqKMtXWTsarRvMOohChSIMVGEh3y19NUH6ZSkGfz5AvT9hPIxh66EZZiY1U=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1woif8-00EdpG-AM; Tue, 28 Jul 2026 16:20:06 +0200
-Date: Tue, 28 Jul 2026 16:20:06 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Simon Dietz <simon.dietz@plantwatch.de>
-Cc: andrew+netdev@lunn.ch, dietz23838@hs-ansbach.de, netdev@vger.kernel.org
-Subject: Re: [RFC PATCH net-next v0.1 1/1] net: add GeoNetworking protocol
-Message-ID: <f837b9c2-b2e4-44b5-8e05-6191505fea8c@lunn.ch>
-References: <baa3f76d-ef8d-43bd-b72d-d9b67e33a738@lunn.ch>
- <20260728124146.1554385-1-simon.dietz@plantwatch.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qhLuSrJr"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-495522bc0e2so530445e9.2
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 07:36:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785249367; x=1785854167; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gV+baTkVnmeIvpucnWX4cYoPM8VqelkCbFJAKxVz2bc=;
+        b=qhLuSrJrB0NRb5qbPWM08Mm2ZLmErhg1wPYwMOsamGMR3uk3pG2plkPotTY8ygDsgb
+         p6Fx952FDjoVUVsouOVtm9Ens2Fue3bKcQr6O8nkjn+8ZRS1dCA3TBGxaAyfq4NhSOD+
+         /H+9LBIvg16YE83f3aTQBJ2gyEGsQKsVoS0h5S9E6C+HcI9Tj15MF05tiWqDii8rEGOb
+         pl7KxQoLsJ0y9bO/6JBPzfASNLVWBXRjSFxa5gxTWKsCfr1FBLJlx7WggTvede0d7h+Z
+         ppUUGptz4A7ws0gdYzR0qglRKXo4mjSou0vPGSuMj+Hq2zt8f+WCWvKv+NE1s40K1p68
+         iYBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785249367; x=1785854167;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gV+baTkVnmeIvpucnWX4cYoPM8VqelkCbFJAKxVz2bc=;
+        b=BL5YvBjYE9K3p49sY+laKqiKqEZdJoHRTlWGLGz/kk+QfyvrQhNP3G7PNrYEV+7d13
+         MhBzCrlOIslPP+V3QEkUqw71VbLOIPMQZDXzIHpEZvZ25OK20D7/GOOhK7/0iEfOPrPO
+         VJx72i32Gxg4yRjngIiNPG5M2l2Z8tFqg5VCfE3VrNLveg+0yq4MB+z9HlZz5AF/RGUo
+         beHUYPTWGpLFb+vTAAkmvr1a+3DxW2QtWny1w17kSMhEPBwRDQsGi3uX4Jb5klFXTbu7
+         TVexJIOgHKZ9rfz05vMKJQoACEgILI1NbZI1uSLQiJO71c0/6Ckc8EWwB0k9jdyyeAe3
+         Wa+g==
+X-Forwarded-Encrypted: i=1; AHgh+RomSmtniKIUsawVEnn/pZLJcH+HB/8uRpOeMPBfuVi+/VN441VwMZNRv0u2ER9g1QxpmI2oJHw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz81I0yM0VB5Q3K912zoCgTuK2FpYFrwaae1le4Q7vdTYNnkSd+
+	ycQLrOUG9vKg+y6hw49gbsRonvGKyjO4FxprHaE6fe80w8DrqWwh4H0U
+X-Gm-Gg: AR+sD12sBpr2+PK/1lu+N6ohKuJT8HWwNkjiM7XyWSrULA0+Pp2VXSET4D9/l8Yn1kM
+	OKUvtHM9JYobf5xmGkiGoQRp87DsTgNuqzlWA3uXYorUqZFUBDxKtSxp3klwTz5UKSH3Lv2ihXM
+	2OIKbmUjv8301lB9ZJuw0ZQK7al3c2I1z2qczMpdEdiwvEb3F6AKyoeJt6gVjFJpTJOC2yVsZqQ
+	z03UuarCtfPeL5g2w4tlF3PNw14jsZ7QX6tVGTgns6APIfT884fZR3tifXlv8Q+XWfsJ1xCYUMl
+	KsyBULZPl8zfL8X67ZF2ckHsSAgQOemie4DxJW9xMgJ61AgBXWqu2tovpVY9I9svkiC6sSHLMLp
+	rXgbTu5k3EI9AQQeBlebQfJroX4e27HbCP9LhdlurbAY3Tn5t5vWf5sQbzA7hr01gjeeJn5T0WZ
+	Tw2Hvqj/ZJn26hWuQ7nehGsKo+MUgZJd7/Ypy8REfL9YMgmj5n78jI+T6yUeY/2+oqXzMV75RKm
+	VUV84blfHWFyycgHlcS/LCERXPryzHcnugqKsM=
+X-Received: by 2002:a05:600c:1d0c:b0:495:6e5f:3961 with SMTP id 5b1f17b1804b1-496c9da4de7mr12963385e9.1.1785249366551;
+        Tue, 28 Jul 2026 07:36:06 -0700 (PDT)
+Received: from L-022584.energy.envision.com (dynamic-077-179-168-074.77.179.pool.telefonica.de. [77.179.168.74])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957bfe07e1sm303390105e9.3.2026.07.28.07.36.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2026 07:36:06 -0700 (PDT)
+From: Xin Xie <xiexinet@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: edumazet@google.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	lukma@denx.de,
+	m-karicheri2@ti.com,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Xin Xie <xiexinet@gmail.com>
+Subject: [PATCH net 0/3] net: hsr: fix shared-skb mutations in the forwarding path
+Date: Tue, 28 Jul 2026 16:36:01 +0200
+Message-ID: <20260728143604.26-1-xiexinet@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260728124146.1554385-1-simon.dietz@plantwatch.de>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 28, 2026 at 02:41:46PM +0200, Simon Dietz wrote:
-> > Or a GSM link, or even GSM-R, etc.
-> 
-> > At minimum, the architecture work being done now should consider
-> > it. I'm not saying we need to implement it, but we should have an
-> > idea how it would be implemented, and ensure what is implemented now
-> > will not block it, but make a good building block for multi interface
-> > heterogeneous router node.
-> 
-> So you mean that two nodes could be connected, e.g. by GSM, ethernet,
-> GSM-R or other means and exchange GeoNetworking relevant information
-> over this other channel? Or even tunnel gn packets over that other
-> channel?
+During the review of the PRP RedBox v4 series (Simon Horman forwarding
+the sashiko AI review), shared-skb-data mutation issues in the
+existing HSR/PRP forwarding code were raised. They concern
+pre-existing code, and we promised independent fixes for net. An
+independent source audit then confirmed two distinct defect classes.
+This series fixes both.
 
-So wording is important. Let frame this in IP/Ethernet/802.11 words,
-where applicable, since they are better understood by everyone.
+Patch 1/3 (interlink address mutations): on an HSR RedBox, frames
+forwarded to the interlink arrive in hsr_xmit() as clones of a shared
+skb. A tagged multicast or broadcast from a slave is also delivered
+to the master through another clone of the same buffer, so the node
+MAC written by hsr_deliver_master() and the RedBox MAC written by
+hsr_xmit() land in the same six bytes; the local stack receives the
+RedBox MAC instead of the originating node's. Master-originated
+frames alias the original TX skb (taps may hold it), so the
+master-origin substitutions and the RedBox rewrite would share data
+too. The interlink-bound skb is now privatized with skb_cow() before
+any address mutation: for all master-originated frames, and for ring
+frames the master also consumes. On the hardware tag-insertion path,
+the selected master-originated and locally consumed ring frames are
+now isolated before the interlink address write. Ring frames the
+master does not consume retain their existing zero-copy behavior and
+pre-existing aliases; the pre-existing slave-side packet-tap alias is
+explicitly not addressed here.
 
-We have GN native flood mechanism, where it receives a broadcast on an
-interface, and it rebroadcasts it, because it can see nodes the
-original sender cannot. That is not a concept we have in traditional
-IP/802.11 networks, because everything goes via the access point which
-is in the middle of the network. When a hop happens, the TTL is
-decremented, but the packet is otherwise unmodified, it keeps the same
-L2 source and destination addresses. I would call this flooding an L2
-mechanism.
+Patch 2/3 (path/LAN ID alias): hsr_create_tagged_frame() and
+prp_create_tagged_frame() wrote the path/LAN ID into the received
+skb's shared buffer and then skb_clone()d it per slave, so the
+second slave's ID landed in the first slave's still-queued clone.
+With a 200 ms netem delay, all 200 injected frames left slave A
+carrying slave B's LAN ID. The helpers now clone first, privatize
+with skb_cow(), reacquire the pointer, then write.
 
-For unicast, the flooding mechanism is first used to find a path from
-the source to the destination, adding entries to the routing
-tables. The sender then uses a L2 unicast destination to send it the
-first node in the chain of hops. That node replaces the L2 destination
-address with what it has in its table, decrements the TTL and sends
-the packet on its way, so that eventually it reaches the
-destination. Because this unicast process modifies the packet on every
-hop, i would call this a L2.5 mechanism.
+Patch 3/3 adds a regression selftest covering both classes:
+pre-tagged PRP injection (base: 200/200 wrong-lan; patched:
+isolated) and an HSR RedBox tagged-multicast case (base: the master
+receives the RedBox MAC; patched: the master keeps the node MAC and
+the interlink keeps the RedBox MAC).
 
-From what i have seen so far, the standard only talks about a single
-interface, which probably covers most use cases. 
+Each code patch carries its own independently identified Fixes:
+commit (5055cccfc2d1, RedBox introduction, v6.10; 451d8123f897, PRP
+support, v5.9). The PRP RedBox v4 feature series is unaffected and
+benefits when rebased.
 
-But how do we handle multiple interfaces?
+Relationship with the in-flight GRO v2 series ("net: hsr: fix
+GRO/GSO super-packet handling",
+https://lore.kernel.org/all/20260724161253.79-1-xiexinet@gmail.com/):
+full revised series vs full GRO v2 series verified applying cleanly
+in both orders (selftest Makefile merges identically either way);
+no textual or semantic dependency.
 
-For IP/Ethernet/802.11, we have 802.1 bridging. This takes a packet
-from one interface and bridges it, unmodified, onto another
-interface. Address learning is performed, where the bridge learns what
-L2 destination addresses are on each interface. The basic assumption
-is that an L2 destination address is only in one place because it
-assume cable like semantics.
+Validation (raw logs in the series' evidence archive):
 
-The GN flooding mechanism messes up the cable like semantics. An 802.1
-bridge could see the same L2 destination address on both
-interfaces. An L2 address might ping/pong between interfaces and maybe
-you don't get a $OPTIMAL path, for some definition of optimal. Does an
-802.1 bridge actually break and cause loops? Does STP get itself into
-knots? This is something that needs considering. And the L2 food
-mechanism and the L2.5 unicast mechanism, both need considering, and
-the two might interact with each other?
+- both shared-skb mutation tests: base failed, patched passed
+- all executable HSR/PRP selftests of the base: pass
+- create/delete loop x10: clean
+- checkpatch --strict: 0 errors (one routine new-file MAINTAINERS note)
+- W=1 base-vs-patched: allmodconfig + allyesconfig, 0 new warnings
 
-You mention tunnel. A tunnel is when you take a packet, at the tunnel
-entry point, add an additional outer header, and use that outer header
-to make the packet appear at the other end of the tunnel, where the
-additional header is removed, and you then process the inner packet as
-normal. By normal, i mean you give it to an 802.1 bridge, or you IP
-route it. All of the tunnels i know of in linux make the entry/exit
-points act like interfaces. So you are back to the same basic problem,
-how do you handle multiple interfaces. So i don't think thinking about
-a tunnel actually helps.
+Xin Xie (3):
+  net: hsr: privatize interlink-bound skbs before address mutation
+  net: hsr: clone before updating path and LAN IDs in tagged frames
+  selftests: net: hsr: add shared-mutation regression test
 
-Can the GN native mechanisms be used with multiple interface? For the
-broadcast flooding, i assume there is some packet duplication
-detection, and duplicates get dropped. Can you add on top of
-interfaces a GN bridge, and have hierarchical duplication detection?
-If the interface has seen the packet before it do not rebroadcast, it
-just sends it up to the bridge. If the bridge has seen the packet
-before drops it. Otherwise it floods it down to all other interfaces?
-Does this work? Can it be bolted onto the Linux bridge code? Do we
-need a GN specific bridge implementation, parallel to the Linux bridge
-code? Does an interface which is taking part in GN need to inspect its
-frames and direct them to the correct bridge?
-
-For unicast, so long as the GN flood mechanism works, the path
-discovery should work. But the routing table needs not only have the
-next hop L2 address, but also the egress interface to reach that L2
-address. We already talked about, is the routing table a property of
-the interface or the node, and concluded that since interfaces can be
-in different locations, the table is an interface property. So it
-might require hierarchical tables, and the interface table just says
-pass the frame to the global routing table, and the global routing
-table then decides which egress interface to use?
+ net/hsr/hsr_forward.c                         |  51 ++++-
+ tools/testing/selftests/net/hsr/Makefile      |   1 +
+ .../selftests/net/hsr/hsr_shared_mutation.sh  | 213 ++++++++++++++++++
+ 3 files changed, 260 insertions(+), 5 deletions(-)
+ create mode 100755 tools/testing/selftests/net/hsr/hsr_shared_mutation.sh
 
 
-So lots of questions here. What we need is an architect to sketch out
-complete picture, describe in words and diagrams what a complete Linux
-implementation could look like. We can then implement parts of it,
-enough for a GN node with a single interface, knowing the rest can be
-added later, we are not going down a dead end.
+base-commit: 53658c6f3682967a5e76ed4bc7462c4bdcddaec3
+-- 
+2.43.0
 
-      Andrew
