@@ -1,39 +1,39 @@
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977483F3280;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45B53D9046;
 	Tue, 28 Jul 2026 07:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785223920; cv=none; b=FSMyg9lsNAOCXAtOYhOJ2oxZhDhDUlyJhIziBRSmsf+Ovl0KUTKGRcrwF+AVm21I49/wbM7lZz5BJHr3IbYKikYKxXr0jrI3NCkFrAMUXlnX8v0oORZfPWH/tSG2Czjgt7r3VAx8Gyv+m24AmJzl8AWwC/d9aVpMWa0vOTkWM14=
+	t=1785223920; cv=none; b=BYk4S5e3DwwrzbdmUV9kdHFGy0j8pdIp8Hv7Bgy599arsynSg9k6e83arixYlAWyir0rCEg6iZGC1SWSeCoRSRkOk0j6kKSID50UQ5ewAMDtPHlV+VF03sERiXe1kkoyaoEny9Y6OgDuliZAW19jLR3EbeEsN3+79DAXpPhWBv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785223920; c=relaxed/simple;
-	bh=q194MhLTcwKEQlnDdqs/9cQVFyXHQ/NIed/6dLPrwpk=;
+	bh=ER+5a3QiGqF9xr/1s86zLBNlbJZPKU8joeZXMq0OIqU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=erSu9CWwieU/baRdlkprP1uFhgw0XmzoLGuMlqqAP8GGBEiMS74zXs1rk97yv56kpyS8HM3zvPr6C6/OXFY935qdzU6xaVXmmp6xOZJ2QNIuujStEGUxBQ0PFCILyo59Nq5O5nWOVe/eLAltK+HBKEs2XiIuCDTnP78cXARhWSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=p7pK7gR7; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=t4TNIpln0DbiXjizzdztdFi4gDjFmvjJB0synz+Id1JVfGoHWDb/62H/Uw1rdDu/Win4uMAZIY6JwVgBDww3n4VSMrJXxloqSd/pgDJoC2c4O+DMvUIMHJ7/kzfY8SdfaVN34p6zmM1MYP6LA8GDlGxTymLsF385mafDkpVHAEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=nBxmTdgB; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="p7pK7gR7"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66S7V8JM03681100, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="nBxmTdgB"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66S7V8tuC3681099, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
 	s=dkim; t=1785223869;
-	bh=tCT9NH2wlqBwFS/ugw6uRBABi99MljBaQtzzvnWdwwE=;
+	bh=drfFJkwqawQC+r3oPMEDHuUq8cFyGIMFvdeQDbrWop0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=p7pK7gR716FJn7TeV1qRZfZMomqtOrUn1PX8La1cClSdpck6sRX7qP81pXtn8rVVM
-	 VMqYv+1vCVG61EpP1mbh2TeUdUJfko5voaOjRAc0kkklnVueWTjbEY9fq/GveQMBSY
-	 hD5LnZwIvMbnn6X16T9AZenCPEDHnBuT1ywQ4fT4JfmyZiyTRprAxaOXfHYodPrIAz
-	 K186UYZh6D8rjYlDjO47D7QOlRGh7nupt5Jdn/L6lZ1UHUtNwOLib3nDhd5Eoqy6Sx
-	 vJ2b781acnSeKsTqMlloF8XRRuHV1h+Hi63WIdfpDq8rPpmX5ZSubrZkwNSOtWX9CO
-	 PHAzMHxR50F2w==
-Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66S7V8JM03681100
+	b=nBxmTdgBJQYzPc0B3AzWPofgNpjfw+Xtk79RKERSuN/ENg0Bn+xI2wgqMuXQjzkfh
+	 0aJWuw8SuIrDlIKnklGUtQZ5vNlGZAxMec2KBL0EBJKlY6eXhEZ4k6XQEFIp1Yxgor
+	 mo7WkT+sAvMO2Pk9idR5zK2Ua34Cl+BbR7vxDtgRYXxncIts8h29cwqyqfgnC2pRjK
+	 y8IeWzs1ZcjY9d0qx4xsv0TVmx8JNDwFv9cmfZbqDH3luQJi19EWouSoTEmVHrLm4I
+	 gHdP11k7NmQmss5lhkv9oDtPl7Agmvv89sQ3noc4EaFGyHY0SD+zSZxClziCNtw+xX
+	 3BcsHp9imx9rg==
+Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66S7V8tuC3681099
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 28 Jul 2026 15:31:08 +0800
+	Tue, 28 Jul 2026 15:31:09 +0800
 Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
- RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
+ RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.2562.43; Tue, 28 Jul 2026 15:31:09 +0800
 Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS1.realsil.com.cn
@@ -47,9 +47,9 @@ To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<daniel@makrotopia.org>, <vladimir.oltean@nxp.com>, Javen Xu
 	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v11 1/5] net: phy: c45: add genphy_c45_pma_soft_reset()
-Date: Tue, 28 Jul 2026 15:31:02 +0800
-Message-ID: <20260728073106.1515-2-javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v11 3/5] net: phy: realtek: add support for RTL8261C_CG
+Date: Tue, 28 Jul 2026 15:31:04 +0800
+Message-ID: <20260728073106.1515-4-javen_xu@realsil.com.cn>
 X-Mailer: git-send-email 2.50.1.windows.1
 In-Reply-To: <20260728073106.1515-1-javen_xu@realsil.com.cn>
 References: <20260728073106.1515-1-javen_xu@realsil.com.cn>
@@ -64,11 +64,12 @@ Content-Type: text/plain
 
 From: Javen Xu <javen_xu@realsil.com.cn>
 
-Add a generic Clause 45 software reset helper. The helper sets the reset
-bit in the PMA/PMD control register and waits until the bit is cleared by
-hardware.
+This patch adds support for Realtek phy chip RTL8261C_CG. Its PHY ID is
+0x001cc898.
+This patch introduces a distinct family of handlers (probe, get_features,
+config_aneg, read_status, config_intr, handle_interrupt).
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
 ---
@@ -77,80 +78,270 @@ Changes in v2:
 
 Changes in v3:
  - re-order function according to the order in phy-c45.c
+ - add kernel-doc about return value
+ - add MASTER_SLAVE_CFG_MASTER_PREFERRED,
+   MASTER_SLAVE_CFG_SLAVE_PREFERRED, MASTER_SLAVE_CFG_UNKNOWN,
+   MASTER_SLAVE_CFG_UNSUPPORTED, MASTER_SLAVE_CFG_SLAVE_PREFERRED cfg
 
 Changes in v4:
  - no changes
 
 Changes in v5:
- - no changes
+ - remove genphy_c45_pma_setup_forced() for this is already done when
+   calling genphy_c45_config_aneg()
 
 Changes in v6:
- - increase timeout to 600ms
+ - when PHY_INTERRUPT_DISABLE, clear IMR and ISR
+ - if AUTONEG_DISABLE, nothing need to do in rtl8261x_config_aneg
+ - add rtl8261x_read_status, support 1G speed
 
 Changes in v7:
- - no changes
+ - remove RTL8261X_IMR and RTL8261X_ISR, duplicated definition
+ - modify commit message
+ - continue with default behavior when meet unknown sub_phy_id
+ - change the internal order of rtl8261x_read_status
+ - expand RTL8261X_INT_MASK_DEFAULT
+ - add the handle for ADVERTISE_1000HALF in rtl8261x_config_aneg
 
 Changes in v8:
  - no changes
 
 Changes in v9:
- - rename genphy_c45_soft_reset to genphy_c45_pma_soft_reset
+ - get an status from genphy_c45_aneg_done()
 
 Changes in v10:
- - no changes. Netdev queue overflown. Resend.
+ - no changes. Netdev queue overflow. Resend.
 
 Changes in v11:
  - no changes.
 ---
- drivers/net/phy/phy-c45.c | 22 ++++++++++++++++++++++
- include/linux/phy.h       |  1 +
- 2 files changed, 23 insertions(+)
+ drivers/net/phy/realtek/realtek_main.c | 192 +++++++++++++++++++++++++
+ 1 file changed, 192 insertions(+)
 
-diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-index 126951741428..c1f817a59739 100644
---- a/drivers/net/phy/phy-c45.c
-+++ b/drivers/net/phy/phy-c45.c
-@@ -384,6 +384,28 @@ int genphy_c45_check_and_restart_aneg(struct phy_device *phydev, bool restart)
- }
- EXPORT_SYMBOL_GPL(genphy_c45_check_and_restart_aneg);
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index b65d0f5fa1a0..e09bff76e1dc 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -141,6 +141,10 @@
+ #define RTL8211F_PHYSICAL_ADDR_WORD1		17
+ #define RTL8211F_PHYSICAL_ADDR_WORD2		18
  
-+/**
-+ * genphy_c45_pma_soft_reset - software reset the PHY via Clause 45 PMA/PMD control register
-+ * @phydev: target phy_device struct
-+ *
-+ * Return: 0 on success, negative errno on failure.
-+ */
-+int genphy_c45_pma_soft_reset(struct phy_device *phydev)
-+{
-+	int ret, val;
++#define RTL8261X_EXT_ADDR_REG			0xa436
++#define RTL8261X_EXT_DATA_REG			0xa438
++#define RTL_8261X_SUB_PHY_ID_ADDR		0x801d
 +
-+	ret = phy_set_bits_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_CTRL1,
-+			       MDIO_CTRL1_RESET);
+ #define RTL822X_VND1_SERDES_OPTION			0x697a
+ #define RTL822X_VND1_SERDES_OPTION_MODE_MASK		GENMASK(5, 0)
+ #define RTL822X_VND1_SERDES_OPTION_MODE_2500BASEX_SGMII		0
+@@ -251,6 +255,32 @@
+ #define RTL_8221B_VM_CG				0x001cc84a
+ #define RTL_8251B				0x001cc862
+ #define RTL_8261C				0x001cc890
++#define RTL_8261C_CG				0x001cc898
++
++#define RTL8261C_CE_MODEL		0x00
++#define RTL8261X_INT_AUTONEG_ERROR	BIT(0)
++#define RTL8261X_INT_PAGE_RECV		BIT(2)
++#define RTL8261X_INT_AUTONEG_DONE	BIT(3)
++#define RTL8261X_INT_LINK_CHG		BIT(4)
++#define RTL8261X_INT_PHY_REG_ACCESS	BIT(5)
++#define RTL8261X_INT_PME		BIT(7)
++#define RTL8261X_INT_ALDPS_CHG		BIT(9)
++#define RTL8261X_INT_JABBER		BIT(10)
++
++#define RTL8261X_INT_MASK_DEFAULT	(RTL8261X_INT_AUTONEG_DONE | \
++					 RTL8261X_INT_LINK_CHG | \
++					 RTL8261X_INT_AUTONEG_ERROR | \
++					 RTL8261X_INT_JABBER)
++
++#define RTL8261X_INT_MASK_ALL		(RTL8261X_INT_AUTONEG_ERROR | \
++					 RTL8261X_INT_PAGE_RECV | \
++					 RTL8261X_INT_AUTONEG_DONE | \
++					 RTL8261X_INT_LINK_CHG | \
++					 RTL8261X_INT_PHY_REG_ACCESS | \
++					 RTL8261X_INT_PME | \
++					 RTL8261X_INT_ALDPS_CHG | \
++					 RTL8261X_INT_JABBER)
++
+ 
+ /* RTL8211E and RTL8211F support up to three LEDs */
+ #define RTL8211x_LED_COUNT			3
+@@ -310,6 +340,156 @@ static int rtl821x_modify_ext_page(struct phy_device *phydev, u16 ext_page,
+ 	return phy_restore_page(phydev, oldpage, ret);
+ }
+ 
++static int rtl8261x_probe(struct phy_device *phydev)
++{
++	int sub_phy_id, ret;
++
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, RTL8261X_EXT_ADDR_REG,
++			    RTL_8261X_SUB_PHY_ID_ADDR);
 +	if (ret < 0)
 +		return ret;
 +
-+	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_PMAPMD,
-+					 MDIO_CTRL1, val,
-+					 !(val & MDIO_CTRL1_RESET),
-+					 5000, 600000, true);
-+}
-+EXPORT_SYMBOL_GPL(genphy_c45_pma_soft_reset);
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL8261X_EXT_DATA_REG);
++	if (ret < 0)
++		return ret;
 +
- /**
-  * genphy_c45_aneg_done - return auto-negotiation complete status
-  * @phydev: target phy_device struct
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 11092c3175b3..5f8d65868e0f 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -2317,6 +2317,7 @@ int genphy_c37_read_status(struct phy_device *phydev, bool *changed);
- /* Clause 45 PHY */
- int genphy_c45_restart_aneg(struct phy_device *phydev);
- int genphy_c45_check_and_restart_aneg(struct phy_device *phydev, bool restart);
-+int genphy_c45_pma_soft_reset(struct phy_device *phydev);
- int genphy_c45_aneg_done(struct phy_device *phydev);
- int genphy_c45_read_link(struct phy_device *phydev);
- int genphy_c45_read_lpa(struct phy_device *phydev);
++	sub_phy_id = (ret >> 8) & 0xff;
++
++	switch (sub_phy_id) {
++	case RTL8261C_CE_MODEL:
++		phydev_info(phydev, "RTL8261C detected (sub_id 0x%02x)\n", sub_phy_id);
++		break;
++
++	default:
++		phydev_warn(phydev, "Unknown sub_id 0x%02x, default behavior\n", sub_phy_id);
++		return -ENODEV;
++	}
++
++	return 0;
++}
++
++static int rtl8261x_get_features(struct phy_device *phydev)
++{
++	int ret;
++
++	ret = genphy_c45_pma_read_abilities(phydev);
++	if (ret)
++		return ret;
++	/*
++	 * Supplement Multi-Gig speeds that may not be automatically detected
++	 * RTL8261X supports 2.5G/5G in addition to standard 10G
++	 */
++	linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
++			 phydev->supported);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT,
++			 phydev->supported);
++
++	return 0;
++}
++
++static int rtl8261x_read_status(struct phy_device *phydev)
++{
++	int ret, val = 0;
++
++	if (phydev->autoneg == AUTONEG_ENABLE) {
++		ret = genphy_c45_aneg_done(phydev);
++		if (ret < 0)
++			return ret;
++
++		if (ret) {
++			val = phy_read_mmd(phydev, MDIO_MMD_VEND2,
++					   RTL822X_VND2_C22_REG(MII_STAT1000));
++			if (val < 0)
++				return val;
++		}
++	}
++
++	mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, val);
++
++	ret = genphy_c45_read_status(phydev);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++static int rtl8261x_config_intr(struct phy_device *phydev)
++{
++	int ret;
++
++	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
++		ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL8221B_VND2_INSR);
++		if (ret < 0)
++			return ret;
++
++		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, RTL8221B_VND2_INER,
++				    RTL8261X_INT_MASK_DEFAULT);
++		if (ret < 0)
++			return ret;
++	} else {
++		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, RTL8221B_VND2_INER, 0);
++		if (ret < 0)
++			return ret;
++
++		ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL8221B_VND2_INSR);
++		if (ret < 0)
++			return ret;
++	}
++
++	return 0;
++}
++
++static irqreturn_t rtl8261x_handle_interrupt(struct phy_device *phydev)
++{
++	int irq_status;
++
++	irq_status = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL8221B_VND2_INSR);
++	if (irq_status < 0) {
++		phy_error(phydev);
++		return IRQ_NONE;
++	}
++
++	if (!(irq_status & RTL8261X_INT_MASK_ALL))
++		return IRQ_NONE;
++
++	if (irq_status & (RTL8261X_INT_LINK_CHG | RTL8261X_INT_AUTONEG_DONE |
++	    RTL8261X_INT_AUTONEG_ERROR | RTL8261X_INT_JABBER))
++		phy_trigger_machine(phydev);
++
++	return IRQ_HANDLED;
++}
++
++static int rtl8261x_config_aneg(struct phy_device *phydev)
++{
++	u16 adv_1g = 0;
++	int ret;
++
++	ret = genphy_c45_config_aneg(phydev);
++	if (ret < 0)
++		return ret;
++
++	if (phydev->autoneg == AUTONEG_DISABLE)
++		return 0;
++
++	if (linkmode_test_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
++			      phydev->advertising))
++		adv_1g = ADVERTISE_1000FULL;
++	if (linkmode_test_bit(ETHTOOL_LINK_MODE_1000baseT_Half_BIT,
++			      phydev->advertising))
++		adv_1g |= ADVERTISE_1000HALF;
++
++	ret = phy_modify_mmd_changed(phydev, MDIO_MMD_VEND2,
++				     RTL822X_VND2_C22_REG(MII_CTRL1000),
++				     ADVERTISE_1000FULL | ADVERTISE_1000HALF,
++				     adv_1g);
++	if (ret < 0)
++		return ret;
++	if (ret > 0)
++		return genphy_c45_restart_aneg(phydev);
++
++	return 0;
++}
++
+ static int rtl821x_probe(struct phy_device *phydev)
+ {
+ 	struct device *dev = &phydev->mdio.dev;
+@@ -3002,6 +3182,18 @@ static struct phy_driver realtek_drvs[] = {
+ 		.resume		= genphy_resume,
+ 		.read_mmd	= genphy_read_mmd_unsupported,
+ 		.write_mmd	= genphy_write_mmd_unsupported,
++	}, {
++		PHY_ID_MATCH_EXACT(RTL_8261C_CG),
++		.name			= "Realtek RTL8261C 10Gbps PHY",
++		.probe			= rtl8261x_probe,
++		.get_features		= rtl8261x_get_features,
++		.config_aneg		= rtl8261x_config_aneg,
++		.read_status		= rtl8261x_read_status,
++		.config_intr		= rtl8261x_config_intr,
++		.handle_interrupt	= rtl8261x_handle_interrupt,
++		.soft_reset		= genphy_c45_pma_soft_reset,
++		.suspend		= genphy_c45_pma_suspend,
++		.resume			= genphy_c45_pma_resume,
+ 	},
+ };
+ 
 -- 
 2.43.0
 
