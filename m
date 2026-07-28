@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0990F42047D;
-	Tue, 28 Jul 2026 08:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059E041B36C;
+	Tue, 28 Jul 2026 09:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785228642; cv=none; b=gocoynwh5rNodzeXtOkFww4dGGXgB9395MdwDKIV+TAYwA/d/v7B0DiZZDR+t5R/ILfM1NN9XJO/f2OX0lmFkTiGcny6LDwpcFVKZb5sXA2jmhor6xoKby1q+f56nEAI8QPFbAxgWdQo11D8zdesg2bA/oO7I4Ag41i3868pXXQ=
+	t=1785229842; cv=none; b=uIxOnmqFOvs2dv9ArtJ6oQt0TJdyWcWoKEPzOaNNg3ydeOVWzAsHDVUQ4FEbuYeOe53EITQdeAByI7had+3EcFQesKqOJBC0HwKEcOSxuLSPwozsBwcDGkIGfcmCXnMXOTYOljp6eKCpGGz4TizjD05XZNRBe2Sj2rl4dieFAsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785228642; c=relaxed/simple;
-	bh=pJatyahlmXJqfXfpmHXl01ZPhxffYZHIizsPhUba8nk=;
+	s=arc-20240116; t=1785229842; c=relaxed/simple;
+	bh=c1uEoHVgDUSfk3oO+6IP2fHlCA1oV0ilLaMz2L7nMnY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Gpw+sXMbbw/q1C4h0PgYYOOVlRFcCfWlVTuuQySHgZlq71jORZ79zJuR1fHdcMQvG4287x0PRVsETMSOK12vgrunSfrvcliY8RUFRWPhZ3Fsn+vJm6DM42v1B38WKZ8N6Vc6DWiIfWwHVB98n9NaJUyUlAHD9w2DmDaDrdBxyaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xp8hVRnQ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=bJzbiQfToXzYRBZ3gqNfmJEn0th5lttNCBQU0BUnyYni44q8eRYefvC4shNkz61hN+sXQ/pxvi1Ysqry/J0i06j+MsnnKU99xf2o1IhqaVvJ+bXzDJQFnlT2/f7OlrPAuntbPwUaa/cdA0XfbD4WXuSfaXrMk/Ug6EEzo/oGFg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lFftk4R7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xp8hVRnQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE071F00A3A;
-	Tue, 28 Jul 2026 08:50:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lFftk4R7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F6071F00A3A;
+	Tue, 28 Jul 2026 09:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785228640;
-	bh=EWOAZsU2NagUIop06GmRHouUNneBjBO7FuShGyqy/zs=;
+	s=k20260515; t=1785229840;
+	bh=fb5H+uW5djIuvCZ+RWdaFrKbLl4JcJ9yUIoVFMWH010=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Xp8hVRnQJFg2gWl0kd7la8xgpkHKScyxxevkGEAGkuwMg0XAfsGDRawH/bmmfTerY
-	 XmVVLc7t44h6kkNgdwLqXfv+LFasmLElAlfgMkNahRKossu6d5vh+9ZfNTd2TZXWPO
-	 tasfgxbvP1LGOJYy3mIPzq0LnEQSLyseAuRzefYV7vQbwZ+fp0wR2qu/8VVnBfQs+x
-	 6w7Hu8dyLewYjPRTq2NTnEdokoflhEggacmMw4mAM9vZasGqyvwSA0VviD7p7Ki+1y
-	 KmLOrLzRaF68Vx/WJ/2APAoanQLYH2P400ILdtORgqPUhrm93WYXhZF/OFpo9DllC3
-	 8ts8C/njJakkw==
+	b=lFftk4R7Q8gzEBe3aa8sMRs/Ap6cwqyhzB3RY1w6weWkoXj+qmcKamc7z+HgToPEo
+	 oR09QwtnlknLzxhijxfflvX9flvXtwhB9VwtJTPZncyO3h/V00apLupYY8cDNx8u0q
+	 su1hZYxZQ62f3+VahcLfJ+EL1FOYDd8OfpyayyXtForOjTci3lfdCvZH6M2f3Zx8Ys
+	 o40S/7PHh4VpBsRGbZnRO4p2sSvNBOZlDPV0W953Dmplg/qfxa/H89bQrGdHnVpkqv
+	 onyYp+tYz4dkA9HLhtqPV42V7ZhsgcfluCjrHKhYP2H7PbRRg4M/YY/U+JU70Rtzrz
+	 ufhkjSyBhqNUg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0C9CB380CFE1;
-	Tue, 28 Jul 2026 08:50:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0CB0380CFE4;
+	Tue, 28 Jul 2026 09:10:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v1] fou: Fix use-after-free in fou_create()
+Subject: Re: [PATCH v2 net-next] octeontx2-af: npc: Warn on NPC_IPSEC_SPI key
+ overlap
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178522860595.1625650.5330591908800710686.git-patchwork-notify@kernel.org>
-Date: Tue, 28 Jul 2026 08:50:05 +0000
-References: <20260722083858.182506-1-xuanqiang.luo@linux.dev>
-In-Reply-To: <20260722083858.182506-1-xuanqiang.luo@linux.dev>
-To: luoxuanqiang <xuanqiang.luo@linux.dev>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuniyu@google.com,
- idosch@nvidia.com, therbert@google.com, luoxuanqiang@kylinos.cn,
- stable@vger.kernel.org
+ <178522980539.1632925.12437378828639231868.git-patchwork-notify@kernel.org>
+Date: Tue, 28 Jul 2026 09:10:05 +0000
+References: <20260721070303.986740-1-rkannoth@marvell.com>
+In-Reply-To: <20260721070303.986740-1-rkannoth@marvell.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com, hkelam@marvell.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Wed, 22 Jul 2026 16:38:58 +0800 you wrote:
-> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+On Tue, 21 Jul 2026 12:33:03 +0530 you wrote:
+> From: Hariprasad Kelam <hkelam@marvell.com>
 > 
-> fou_create() publishes struct fou through sk_user_data before adding the
-> new FOU port to the per-netns list.  If fou_add_to_port_list() fails,
-> the error path frees fou while it is still reachable through
-> sk_user_data.  A concurrent receive can then dereference the freed
-> object in fou_from_sock().
+> When scanning the MKEX profile to determine supported NPC features, warn
+> if the SPI extraction field overlaps with other key fields. AH and ESP
+> may legitimately use the same key offset for SPI, so continue to
+> advertise NPC_IPSEC_SPI via npc_is_field_present() instead of treating
+> the overlap as a hard failure.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v1] fou: Fix use-after-free in fou_create()
-    https://git.kernel.org/netdev/net/c/b14361aca635
+  - [v2,net-next] octeontx2-af: npc: Warn on NPC_IPSEC_SPI key overlap
+    https://git.kernel.org/netdev/net-next/c/72207e1b15d4
 
 You are awesome, thank you!
 -- 
