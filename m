@@ -1,163 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC8410F0;
-	Tue, 28 Jul 2026 08:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF3C40EB91
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 08:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785228039; cv=none; b=VK6cA83BTS6gD9w+wUno9UKuEOrpBFGENMsEQrKztyK17+pS84a3Krw6YhkQarwfYcQE24H5Xn52cjLj4ljlqAadPUgE7BUTE3+/H1I5jFJ7F0RCwTAROjCwSmjAy5vqnnYM6DN2ud4WQ0kbDpekcTIHanebKuTiw5ylZmvs6kE=
+	t=1785228089; cv=none; b=mkjRdZ8dIli8Mj7e4qXVmqgQJ6FHB/a4YjTI2EzdfgxNrdyToY+mvIkmDHiUf5KLOzxAkyqW/wHtRMXwrof7VPhvNiVUzP7zGRiy8XP6iylmKUh+3YYYNVSuivKemyne6fGiLpoPXdG0tWaJyvzy+ygNi5XUyektiYWVsFfptDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785228039; c=relaxed/simple;
-	bh=LBXXjkn7763Nc97p5pZMNz9LXdNcJoOu7j9Ki9CEPgQ=;
-	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=U+Ne96+na/mvTbIrYcwTOica7BzVWYlwvwAUfrGGVLZXdD8L3x2FwwFLfTxvcZ8wdU8NBnJV++KvYmPzbjlNYK6tcsCcVElZV+ILDua59aG4ybxOGerEo6EFfoN75AVwl8hi68ikr6dHpkTS3xAX8+8Gk7v+aXCs5UAKkITPSkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hYK+B8k5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785228089; c=relaxed/simple;
+	bh=q63MzO2+9QcsW/0wiHj208E8TUZp2Z/r75aPWU+SvCk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SwlSQBrhriOwc8QIvNM11ZiHJG0eljvZpMy/C9xS9Ai5GAIrtJ5Ha8WU0t5aj8nVbeXHaTJI0dMQN5awmVKKgXDh2Hp34ZA8QwaWO09m1tW3SnBEXrCk2mShiSdk9MrvtvGHeQITS5DK3itQ8ORVZTUKUfQ5HPsWWLg6n2aH8mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AinXWGwX; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hYK+B8k5"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 193EB1F00A3A;
-	Tue, 28 Jul 2026 08:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785228037;
-	bh=1ZNHBDU7tNmenTXtUqnFwX8bnUF9ksreS22rMdmNByw=;
-	h=From:To:Cc:Subject:Date;
-	b=hYK+B8k58tB0/iS/ntbQ2nFLiX6cn7KJEfM2HVKMlRKB7FRrFhNomwRYpo77kKLP5
-	 34e0cKMu8WGLSfbwojI0eJnBpVUmP0gcvNJQ1tjpeXbGqo1tfx41ObG6UbhPMddvG/
-	 B+FflEKLQHY5xUXC6KAXFxQ7deky/93qvVMLLwjSLVVtWxj2wlhUC6elo8wwgpegwU
-	 VOF0K4DRrckaBNqEo9ltxDQxC5Ed2A80vdX2YLcFq4YT9NWXYrm45XftJpIatHthY/
-	 IAXiLUUZQ0fNGP2H4alUsrLh6KqHzgJ2bkS8QXQIXu0CL5Y2BYcg/2GPH9aOmwcBn1
-	 d5ouqe9MKdJqw==
-From: "syzbot" <syzbot@kernel.org>
-To: syzkaller-bugs@googlegroups.com, Krystian Kaniewski <krystianmkaniewski@gmail.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
-Cc: dskr99@gmail.com, kees@kernel.org, linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
-Subject: [PATCH] ipvlan: keep lower device alive until private destruction
-Message-ID: <26b3176e-d9ed-4508-bde7-388deefd970d@mail.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AinXWGwX"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id BBA771A12C3;
+	Tue, 28 Jul 2026 08:41:24 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8748E601BF;
+	Tue, 28 Jul 2026 08:41:24 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0336911C13E89;
+	Tue, 28 Jul 2026 10:41:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785228079; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=gUsBndRwmc1hZjQd9pJ5nwb3nA74hWaZOuUDifXoGHE=;
+	b=AinXWGwXvCvlk7dT15nWX8YgneTLXKLjZjEV2bU1lfxDG3N0XQ+MyhZWbHXhEoEiWGAQ8e
+	qUXn/Un1nSldg5d3R2zqAkQgQPweFDwYufgzSzf4xOm8k0wOElY4rALF1xe8+NJYMBxRD6
+	egn0JjwaKx7aQmfTIUkMAQmPpo2c7OECHsbOGjwrVTApnmQNURvxIZxaJojDI7qyLLGmlP
+	+cy6/avrJNJq+1GN3EKdXoWQvPztjm3rTX+2mcbbTU4MKl2sZGN2AEDcI2eCVETPOEQ77S
+	QkeGO3D3tuW9L69oTKbZqEbdTW/Nduxls3xjHYhiuQpVib3goOnbrmo5WeQMgA==
+Message-ID: <2c0c6864-99ea-48d6-a889-c886bb91c351@bootlin.com>
+Date: Tue, 28 Jul 2026 10:41:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] net: phylink: add phylink_pcs_loopback()
+ method for PCS loopback support
+To: Zxyan Zhu <zxyan0222@gmail.com>, andrew+netdev@lunn.ch,
+ rmk+kernel@armlinux.org.uk, alexandre.torgue@foss.st.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, hkallweit1@gmail.com, mcoquelin.stm32@gmail.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Oleksij Rempel <o.rempel@pengutronix.de>
+References: <20260727120704.2319467-1-zxyan0222@gmail.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260727120704.2319467-1-zxyan0222@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Date: Tue, 28 Jul 2026 08:40:37 +0000 (UTC)
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+Hi,
 
-Commit 40b9d1ab63f5 ("ipvlan: hold lower dev to avoid possible
-use-after-free") added a reference to the lower net_device owned by struct
-ipvl_port. However, this reference is released when the last
-ipvlan_uninit() reduces port->count to zero and calls
-ipvlan_port_destroy(), which can happen before all outstanding external
-references to the ipvlan netdev have drained.
+On 7/27/26 14:07, Zxyan Zhu wrote:
+> Some Ethernet MAC drivers (such as stmmac) need to perform PCS-level
+> loopback for selftest purposes when no external PHY is present. Add a
+> new phylink_pcs_loopback() method that allows MAC drivers to request
+> PCS loopback mode through the phylink framework.
+> 
+> Implement the pcs_loopback callback in the stmmac integrated PCS
+> using the GMAC_AN_CTRL_ELE register bit. Add a helper function
+> stmmac_selftest_get_pcs() in stmmac selftests to unify PCS lookup
+> across glue driver PCS and integrated PCS. Update the selftest
+> enable/disable paths to use the new helper.
+> 
+> Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
 
-Specifically, RXE acts as an asynchronous owner in this scenario. RXE
-queues RDMA device removal on NETDEV_UNREGISTER, meaning it can retain a
-reference to the ipvlan netdev after ndo_uninit has completed. This allows
-a later SMC port query to reach the ipvlan device and access its phy_dev.
+I'm actually seriously wondering if we shouldn't just stick to MAC loopback only
+for stmmac selftests. I even have a patch ready to send for that, as I've
+been struggling with selftests in the past days because some PHYs will
+either stop their RXC while in loopback, or bring the carrier down which
+makes the dev_xmit drop the packets we're sending to ourselves.
 
-This leads to the following sequence:
-1. The shared ipvl_port owns the reference to the lower net_device
-(phy_dev).
-2. The last ipvlan_uninit() drops this reference by calling
-ipvlan_port_destroy() when port->count reaches zero.
-3. RXE retains a reference to the ipvlan netdev, keeping it alive.
-4. The lower net_device's refcount drops to 1 and it is freed by
-netdev_run_todo(), leaving ipvlan->phy_dev as a dangling pointer. A
-subsequent SMC port query accesses this dangling pointer, triggering a
-use-after-free.
-5. A new per-device hold keeps phy_dev alive until ipvlan_dev_free() runs.
+Using an external loopnback (in PCS, in PHY, somewhere else...) doesn't
+bring anything to the table given what we are testing today, which is
+internal stmmac behaviour. The MAC loopback (on dwmac1000 and dwmac4 at
+least) happends at the GMII level, so everything we are currently testing
+happens before that.
 
-The KASAN report illustrates this use-after-free:
+If the goal is to validate what comes after (RGMII, PCS behaviour and so on),
+I think we should instead add some other, more generic selftests that aren't
+stmmac specific, that we could run on any netdev, such as the ones Oleksij
+has added in:
 
-BUG: KASAN: slab-use-after-free in netdev_need_ops_lock
-include/net/netdev_lock.h:30 [inline]
-BUG: KASAN: slab-use-after-free in netdev_lock_ops
-include/net/netdev_lock.h:41 [inline]
-BUG: KASAN: slab-use-after-free in __ethtool_get_link_ksettings+0x230/0x250
-net/ethtool/ioctl.c:463
-Read of size 1 at addr ffff8881988dae09 by task kworker/1:3/1289
+  3e1e58d64c3d net: add generic selftest support
 
-Call Trace:
- <TASK>
-  __ethtool_get_link_ksettings+0x230/0x250 net/ethtool/ioctl.c:463
-  __ethtool_get_link_ksettings+0x11f/0x250 net/ethtool/ioctl.c:464
-  ib_get_eth_speed+0x180/0x7f0 drivers/infiniband/core/verbs.c:2052
-  rxe_query_port+0x93/0x3d0 drivers/infiniband/sw/rxe/rxe_verbs.c:56
-  __ib_query_port drivers/infiniband/core/device.c:2129 [inline]
-  ib_query_port+0x16e/0x830 drivers/infiniband/core/device.c:2161
-  smc_ib_remember_port_attr net/smc/smc_ib.c:364 [inline]
-  smc_ib_port_event_work+0x147/0x920 net/smc/smc_ib.c:388
- </TASK>
-
-Fix this by holding a reference to the lower net_device using a
-netdevice_tracker in struct ipvl_dev. The reference is acquired in
-ipvlan_init() and released in the priv_destructor callback
-(ipvlan_dev_free()). Releasing the reference in ipvlan_dev_free()
-guarantees that the lower net_device is held until outstanding external
-references to the ipvlan netdev have drained and before final private
-teardown and object release. This mirrors the behavior of other stacked
-devices like macvlan and vlan, and safely covers ipvtap devices as well.
-
-Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Assisted-by: Gemini:gemini-3.5-flash Gemini:gemini-3.1-pro-preview syzbot
-Reported-by: syzbot+5fe14f2ff4ccbace9a26@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5fe14f2ff4ccbace9a26
-Link: https://syzkaller.appspot.com/ai_job?id=3e3edd19-4e52-49d3-bfdb-ebdde1bda5c3
-Signed-off-by: Krystian Kaniewski <krystianmkaniewski@gmail.com>
-
----
-diff --git a/drivers/net/ipvlan/ipvlan.h b/drivers/net/ipvlan/ipvlan.h
-index 80f84fc87..13cdad002 100644
---- a/drivers/net/ipvlan/ipvlan.h
-+++ b/drivers/net/ipvlan/ipvlan.h
-@@ -64,6 +64,7 @@ struct ipvl_dev {
- 	struct list_head	pnode;
- 	struct ipvl_port	*port;
- 	struct net_device	*phy_dev;
-+	netdevice_tracker dev_tracker;
- 	struct list_head	addrs;
- 	struct ipvl_pcpu_stats	__percpu *pcpu_stats;
- 	DECLARE_BITMAP(mac_filters, IPVLAN_MAC_FILTER_SIZE);
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index ed46439a9..b1435296a 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -162,6 +162,9 @@ static int ipvlan_init(struct net_device *dev)
- 	}
- 	port = ipvlan_port_get_rtnl(phy_dev);
- 	port->count += 1;
-+
-+	netdev_hold(phy_dev, &ipvlan->dev_tracker, GFP_KERNEL);
-+
- 	return 0;
- }
- 
-@@ -673,6 +676,13 @@ void ipvlan_link_delete(struct net_device *dev, struct list_head *head)
- }
- EXPORT_SYMBOL_GPL(ipvlan_link_delete);
- 
-+static void ipvlan_dev_free(struct net_device *dev)
-+{
-+	struct ipvl_dev *ipvlan = netdev_priv(dev);
-+
-+	netdev_put(ipvlan->phy_dev, &ipvlan->dev_tracker);
-+}
-+
- void ipvlan_link_setup(struct net_device *dev)
- {
- 	ether_setup(dev);
-@@ -682,6 +692,7 @@ void ipvlan_link_setup(struct net_device *dev)
- 	dev->priv_flags |= IFF_UNICAST_FLT | IFF_NO_QUEUE;
- 	dev->netdev_ops = &ipvlan_netdev_ops;
- 	dev->needs_free_netdev = true;
-+	dev->priv_destructor = ipvlan_dev_free;
- 	dev->header_ops = &ipvlan_header_ops;
- 	dev->ethtool_ops = &ipvlan_ethtool_ops;
- }
+Maxime
 
 
-base-commit: 8cdeaa50eae8dad34885515f62559ee83e7e8dda
--- 
-See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
-You can comment on the patch as usual, syzbot will try to address
-the comments and send a new version of the patch if necessary.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
