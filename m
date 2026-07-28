@@ -1,135 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF35329E7E
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 23:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5E34746CE
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 23:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785280102; cv=none; b=eiwWPg7rmJVCFxZvBKrmC7EwXePZX9CiwCbh+emHgc1CRrxKIhdQ35yD/ThsowWGNvJsj4pExP0ndnB2aBkNA0VPTKsD0jc5UzBDuiLYbtLwGyfflZH/7mH2mtjIJvgBN09+4HjIaX/92MUFmkXjjgwaNrfXc3MvGSIusxD5F4I=
+	t=1785280172; cv=none; b=HAwCb13XuqgR02WET7dAjzJpyyihXbDX0PnWG7rck1hues07E22VwyO2aRBe+OcztDKfwtIisvrxidMAOj1K/I4LQge1jq6F4ODO1nuW+tfyogVBrTg5J5TX3+0Wl7kFlYwcM6xj7zNpU7aj5J7OATDvM/r/W9JLgPYaim/5UTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785280102; c=relaxed/simple;
-	bh=ohz8Gxs233ZdSQcMn6bjrp3dH4P1/xS5cNBTyZUvQFg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q8N+4yRUCaKRLptZ8e1kY5OGSbL6+rJba+yZ5Ds/O3WoXKEXzeiPWpFmIjmCGngjNeY8WiTuAaPVLPCp4NP3HVHlM8bU4u/t2qsa2y69im+kNT+IxO3uEuV+C1GzYRoXhc58Q4mHy5FuV7FzijMo4+wI/yhIbpKCMlR3sdXzel0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SRK3GLCk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785280172; c=relaxed/simple;
+	bh=PDXap4cTWcUUbh4fZHgguSD/iJ3sFbCzW4Ib8w2WYZI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tm2Ro+kQBjfRxaNZN3AhJgjtu1m/FrXaGn3M4bvLnUgnQ8WDb7gjJvBMY2/u8fdGLZM5k3TZMkMhNQ6fQA8WQbvSeJJZKYcrChpkH6hO3M+t/ZxP++YPqiWoGgwnhMWCMcoWOBrXZprKsRsTggk9tx2RSybmtOrlnNt92Ng3eCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gahingwoo.com; spf=pass smtp.mailfrom=gahingwoo.com; dkim=pass (2048-bit key) header.d=gahingwoo.com header.i=@gahingwoo.com header.b=suy9UXfR; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VjbgAg+P; arc=none smtp.client-ip=103.168.172.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gahingwoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gahingwoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SRK3GLCk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA701F000E9;
-	Tue, 28 Jul 2026 23:08:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785280100;
-	bh=kBBHdQykkYoYfxT63VOF9CStakFSG38+W//sF1aV1uY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=SRK3GLCkVBxAtU/w16m/3Q53L1wj3UI5O+JK9gsTO6wrOM8kC5ToAmdnI/7pN9FpR
-	 pPIDJbBXauOTFu6VTTzZlx1fmPKjLrjXn/h3sKZi3J7lbfHP19hDE5D1PNp0Iedre/
-	 gNbqLV+cjkbwOenLQSN4ZLt1hfab152FtZ71n2GqfIFlMGnEWj+9p4Uy29xI5Rfa3A
-	 7PmFCUe0FivcY981Do2hqniB4hoIuPsTnx8DJg9pDlasDob3XUfs/Yr9VdJ0kajmHx
-	 upn10xlzQ0gwsO6osrQuFq32LfYKfBTuRtb+VwtBjEolwAHAukIoMLeQzlpuwEtJeI
-	 PX8jR//2oXnNQ==
-Date: Tue, 28 Jul 2026 16:08:20 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Matthieu Baerts <matttbe@kernel.org>, davem@davemloft.net,
- netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org
-Subject: Re: [RFC] docs: netdev: additional info requirements for bug fixes
-Message-ID: <20260728160820.3860b3de@kernel.org>
-In-Reply-To: <amkzn_79gJWAjGEV@krikkit>
-References: <20260727204724.2787038-1-kuba@kernel.org>
-	<20260727152517.312895f3@kernel.org>
-	<amgBCpqbkrEIiCuh@krikkit>
-	<b39fa14e-1bd3-4e02-8d44-648628303197@kernel.org>
-	<amkzn_79gJWAjGEV@krikkit>
+	dkim=pass (2048-bit key) header.d=gahingwoo.com header.i=@gahingwoo.com header.b="suy9UXfR";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VjbgAg+P"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id 8594013803A9;
+	Tue, 28 Jul 2026 19:09:29 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 28 Jul 2026 19:09:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gahingwoo.com;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1785280169; x=
+	1785283769; bh=i/v2RaSJaTvaJyiuYWqiQo6FQ6f004XdRm6DgERiK0U=; b=s
+	uy9UXfR/3JyFv01zvKrXxUxnFjTr5DsaFWSstqYLRpW8FvzCGRqTqLUXOi+WxAxn
+	cq8Ewez1+hWWgbj+l9xdqojZkj/4kBIlGp2m6vnR5CkZY/3Z7yPAl6WYJ8uRw0Us
+	u7W6eW0TMAiSh1I0+ua1Dq/y7rl/1yAZX7JajJdzHNW6b/RVnwHK8+3Uf/tu4Cd/
+	tmd38+60zvASTiB8T2D+ZHzXsUimX8Mu00AfrwvEwxEqT4PTS94F5svLxYZT6Mne
+	qWJvMIQBHTJzQqsQTIS/t5XM3pDXkmxFjOPQrKMJhPXtN1PELVqAoirjjdmbE7mr
+	mMbBnIdPbwRKzwiK0tI2g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm2; t=1785280169; x=1785283769; bh=i
+	/v2RaSJaTvaJyiuYWqiQo6FQ6f004XdRm6DgERiK0U=; b=VjbgAg+PrmoD4z+5W
+	7lrKfJKxA7BdyNG+lphqj1s/UR+VwSaHD/pcnYFAyr8qvLIR8i7qgjHRFcG1sAng
+	3GvgZcsXWbCDqUXUIwjE1jtqh6Vle+xFOV4IYeRDgLv0m6b56mSTFYGzw/HQQa2/
+	aXXBs3s9r2SfHwTrgsFeYoqt7Ju9hX/3LFreO7SmdX4sbniypvhiIg98QUcoFXIt
+	XDq/XopDJK2lbVdWQXCCBtoL3+riC80v9n+KB9wt5HCQWliNkWv6MQCBRGrR3nwm
+	dQAWI1SD2vAZJLCsvFEsu28XI9ilXOkSLdaRMPcIZMw3FA7IXHy/97r2zgleJ8GR
+	TSSMw==
+X-ME-Sender: <xms:qDZpaudfzG7TEW2apUfz_uNWUGMh0olSS85lBb5tznNfrTRD0diWxA>
+    <xme:qDZpanqDiaEkU89bFehZdywYxZeW_oHN0AVHo00WkNnFAebofItWVRVoVnDu_DGT2
+    ME8Z4Bkx5IpLdMW6StmCxM_OFNg5pRHUkOCzrM9_eNp6KPjNbE0Pb4>
+X-ME-Received: <xmr:qDZpagmcT-jOgnDZztvnEmmwimmwUtIouarOBeCa8gQkTuZz_28UZYzARa7j6mw6v0hnwtBfzQHNjN-gZ57bCzEl_zK-huWeqMNgiMdlIP1b>
+X-ME-Proxy-Cause: dmFkZTFBLgUAwYceiAZYCfSZxetME8tYMXEjtYBYwbB1XcaiQ89MQfYVgcMBY+xn3/bB1q
+    SUerqOjLDgkqSL7B9ism0wXKyyMqwwopWkiPj2+J+SnWsGIASckSf5TvBem11b9kw3sx5k
+    F7bqnP76hT1uH/m8fJeD654iuabUyclFF0CspLNz/52P7sM9URF2o0FRtO6Y8lBulPxDs9
+    CglSZ+duGLxl4vyJvpEsY+whzTiuX5XXLPqz7MaYqVR56Nv5er1KhBhNs5UtgdFQ/vdXCS
+    x1vDgco07M7Eke8+zqT/aPlFaeioKboTPDMU9g8CR895vGWc9c0dbRsLtZM8TmOlUoRSRU
+    s6hi3H0E2n7Z4dSP9Q4ZY7t+BuCiiC0yXm7QJc7mQmAFVakfwXORVd8QVhV9iYri6iInUa
+    xkZ0Y2RlxI6d7yFvZCIe1jVOjOn0KuXW2tc98kmTQamxrO6rGt0k5oYd/2kPfjwgGj/Taw
+    NR5eTKa8SWoAwTZEWSqBTSvzWDjVyIh/C1MTd+A6blrhlKqPRKQsiZtF1p7Ux0TFdqedy9
+    G5EqyObI5a7ohJKBUbcIWhIxEwfo3Qt7jUKuXDG2wSMDaqrb4hCz+Xtplp+D5JqAmkIqZj
+    /vDXmssnOqXKmxsZctPi0+iBJyq68vPEVncMJzwV0bw7ryxzj9LPNYeivFCg
+X-ME-Proxy: <xmx:qDZpagT5C0pA60VC9rjRO25ViNuOYn1_CfIjB-TfkVv8nm9cDJzRdA>
+    <xmx:qDZpauYOZrHunHuk7Bj8FfgwsB1B_iHWbnCCM7rVTRWB9TcInsY5Vg>
+    <xmx:qDZpao_LcMD0NtLSHyUxp_j0mABZL37I4lE_AsLTivF3b1uDwe1zcg>
+    <xmx:qDZpaokwaAvQZ34A38auaICDUuEAe0VB86iIJjtFCja-jhr_nI_MpA>
+    <xmx:qTZpaoGWO9yM0Wym9sPd05yvHPsiLJMUUw53lElulDy2G4PjAfpAugfT>
+Feedback-ID: i7a5e4b5f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 28 Jul 2026 19:09:22 -0400 (EDT)
+From: Jiaxing Hu <gahing@gahingwoo.com>
+To: andrew@lunn.ch
+Cc: alchark@gmail.com,
+	attinagaoxu@gmail.com,
+	Frank.Sae@motor-comm.com,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	maxime.chevallier@bootlin.com,
+	heiko@sntech.de,
+	linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH net-next v2] net: phy: motorcomm: enable the reference clock for YT8521 and YT8531
+Date: Wed, 29 Jul 2026 11:09:16 +1200
+Message-ID: <20260728230916.1239080-1-gahing@gahingwoo.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <37c2162d-134d-48c5-92d8-3355306f15ec@lunn.ch>
+References: <37c2162d-134d-48c5-92d8-3355306f15ec@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 29 Jul 2026 00:56:31 +0200 Sabrina Dubroca wrote:
-> 2026-07-28, 18:17:27 +0200, Matthieu Baerts wrote:
-> > > I see what you're trying to do, but making regular contributors append
-> > > 2 paragraphs to their commit messages (or ask their LLM to generate
-> > > them, and also fight for an hour to get a reproducer that actually
-> > > does something) just to check the box seems painful. Reading the git
-> > > log with all this stuff mixed in will be worse.
-> > > 
-> > > As someone who's probably never sent a compliant patch, and who has a
-> > > tendency to forget new rules (especially those that are inconvenient):
-> > > meh. I don't think the commit messages we've been writing all this
-> > > time have been so bad.  
-> > 
-> > Are these rules mostly for new contributors using AI to generate
-> > patches?  
-> 
-> Based on the commit message, I guess yes. Based on Jakub's reply, I
-> would say no.
+> Look around at other drivers. Is it generally put into a tiny helper,
+> or used inline?
+>
+> My gut feeling from reviewing lots of drivers is that it is inline.
 
-Regular contributors sometimes also act on AI reports with no hard
-proof. That said, it's always entirely okay to say "Found by code
-analysis, and fix is untested." For regular contributors the reputation
-will outweigh the testing. For everyone else we will ask them to test.
+Agreed. v3 open-codes the get-and-enable in both yt8521_probe and
+yt8531_probe, with no helper. I had already sent it before this mail:
 
-> > I guess regular contributors are already applying these rules,
-> > either by using a Reported-by tag, pasting a call trace, or describing
-> > how the bug was discovered, no?  
-> 
-> Reported-by doesn't describe how the bug was discovered, just that it
-> was discovered by someone else than the author of the commit. It can
-> just as well be an AI report, CI testing, someone else's manual code
-> inspection, or a "real life" bug.
-> 
-> The call trace could have been produced by adding delays to help
-> trigger a race found by code inspection, or seen in real life but not
-> reproduced by the patch author.
-> 
-> I'm not sure code inspection vs some tool (AI or not) makes much
-> difference, at least when the patch submitter has enough experience to
-> check the output of the tool before writing/sending the patch.
+  https://lore.kernel.org/all/20260728055659.1211459-1-gahing@gahingwoo.com/
 
-Fair, I couldn't think of an intuitive category which would cover both.
+It carries your Reviewed-by and Gavin's Tested-by.
 
-> Without checking git history, I suspect there's been a bunch of fixes
-> for issues found via code inspection or sparse that were not actually
-> triggered/reproduced. The code was obviously wrong, it gets fixed. AI
-> makes reproducers cheap(er), but not free (in both tokens and
-> prompting time).
-> 
-> "Impact to the user" is probably missing in most fixes I've sent (or
-> severely lacking, ie nothing more than UAF/memleak).
-> [a few examples: 52501989c762 cbada1048847 5502bc4746e8]
-> 
-> But I could see an argument for "well we should have started
-> mentioning testing and impact to user ages ago".
-> 
-> > I find this important to understand how the bug was discovered, and ask
-> > for a reproducer or another sort of proof when this is a "potential
-> > issue found by an AI code review agent". Otherwise, that means the
-> > reviewers have to do the validation, which will certainly take them
-> > longer than the author to generate the patch.  
-> 
-> Sure.
-> 
-> > I don't think regular contributors have to change their commit messages, no?  
-
-Not tomorrow, but I'd hope the ask is not too onerous?
-
-> If that's the case, good. But "quote this text at people until they
-> comply" and "get an AI bot looking at all patches coming in" doesn't
-> sound like that to me.
-
-IMO it's really very useful for reviewers to know if the author
-triggered the issue. Also, for downstream backporters it's useful 
-to know in case of conflict whether to invest time in resolving
-or the patch is mostly theoretical and waiting until next major is fine.
-
-I'm also guilty of not adding "impact to the user" info, but that
-requires thinking and theorizing. The ask here is to purely state
-the facts.
-
-FWIW the immediate trigger for me is the people who started sending
-sloppy fixes to drivers that nobody uses. I ask them about the
-discovery process and half of the time they don't even respond.
+Jiaxing
