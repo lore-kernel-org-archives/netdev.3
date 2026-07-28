@@ -1,168 +1,115 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D823C457A
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 18:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D862B470E90
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 19:11:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785264766; cv=none; b=GbFlWPVAEN7WEM9llbyuu6cgABXlyqdgMyb/0hjvOf5+KmtvFfEJn9D7wovWqUMail2f7SSGwTWr+cSOn3PjB28JZvx3LXP4frGpieaafKq+J7YBvFRI50L+g2p3i2q+ddU8kypgyk6oH0jDnboyf1D7VaHOEZ9NHamWwEWPXXY=
+	t=1785265911; cv=none; b=A8Gr//H7zcEiSWAJCf57qz2/24IC2iYybBLkiKxfefHBXmTrZIDQQGwRfIH80K/OkF30O92AemtBESjUw3F218WbIXuP9u5xSLelTODOWUCGrWy2Q6xMlCiMsDdBLIydB/+0vIbMu+acdRREeMUpsucu2BNPbtoAn2jlrm/rQyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785264766; c=relaxed/simple;
-	bh=l2Es26jUxus/pyPxMghMUP1yIXuAWO7tK+rKBlkL2CE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sSqodSjSB3S9TGZ+M+FmP2AK8N7v+vtYn9ZahzXOZ40IztaEUM7axsTjxyI24aueSdiK0mzwgOSGkFeoQiZgsjR/IbV+XpdCC9iIW9khomKDbyVrKSsP3ruhqle6oY8U9hpGGCJY9rfG8j/NrvHCD0XA/KHXSmMzhAdXFws11MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nUxq8Dhq; arc=none smtp.client-ip=209.85.214.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785265911; c=relaxed/simple;
+	bh=2Cq26Os1YYml7ySX7sq0FFrtje2EO3bOEcgDwVVJsrg=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=dUjfy4azJ0UkHlpb7j5g6Si9gOzzVFSI93FMSIBV4rB4dSr1n4lE0vjWJOQeDmANvoii/J/Z0lFtuoGK/CDsVVkD3UpgdCvLJLZ9N39+Lrg+ZEEutjCcUMZQ63gqGoKTIuZqChoY5Mp7KigmgAjs8GvZISW7Jkwaph3lw+bsaVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fudapTEu; arc=none smtp.client-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nUxq8Dhq"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cceabd70f5so5044845ad.1
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 11:52:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fudapTEu"
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7ec58fa3e01so116399a34.1
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 12:11:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785264762; x=1785869562; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EURzVSWhRSOOgqb3RqZuisJ1IP2IjYHX1FhuQfx4G4s=;
-        b=nUxq8DhqIxUAbFbipxgS79prGPpoMB7vH9pEPhKrlJv0iGol0LVoyR/7SbZWKE2qEq
-         U2gpHp0APz8HkhJEpOl6P1gDmcDoUtq/6gJFQKQrJWLBn2wXkcS1tnzWrXp1pBuZ0GOi
-         xV97Z6wGae3ZHgMmFRErLmFpo2h5PxLdUWY09qwPam2C3OTWWQv3Y6b0UyN4kPL4mWXp
-         wkRKwV8EqTGg8CUEFGZN8B3bcOdfx4CQsBJanI4+5sANPCCvGTqlgDQzlqU7eK9FW0E/
-         a/AQOdGnEshSlHR932LUj4GSQsg3wUVrsJC8MttLEf/xsp61wM6A02JCmu3EfKpjMIIa
-         xxHQ==
+        d=gmail.com; s=20251104; t=1785265907; x=1785870707; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KsgU+jaIJSPOtOW4fRT9Ixh2JPmbi7dF3B+OsSALrFE=;
+        b=fudapTEuELG5NCi3gUdTrH9cMbeKXrFsc+5o6yLmD/PVgyVG81BGXT0WWbWCeNpMb0
+         agBHo7YeaCxtZZcgNBPolOcTFknaTdJ8UZQ/op44ZucHowonok4Z34GWr/BR2laEybSR
+         jHs2R7LU9DJlxVGNSfYGm8fvytPyTzSl87FtkFMiH9AYPYR/ytxhdzLVi2NoBwDgbG48
+         ogBKSqFoTP9KeY9Q9eTG/ztdNjPn8e/zsjBAktHTNp1TveCXrJTWWGYmfkd0bSCDORp2
+         V6AiC83zbV3hUYf3c3uTvEMldaHyeHnroicbCTObXX12fSRHfHreLpx+dRQtBcG7CbFy
+         pRdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785264762; x=1785869562;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EURzVSWhRSOOgqb3RqZuisJ1IP2IjYHX1FhuQfx4G4s=;
-        b=BJodQafbn/bQF8wWp2QLSQxEpz/RrDhcrS60BMksfvtIwQHAq6CF5KAu84pSnEVBOI
-         cumRP40ZTm2Z8Rneb8jQ+DddIxJH/FkdJ29GVKVztlEauUFmIEDAHSuk/NqTX8WuzQQ0
-         Hxnh4lQ1vYBfBi4PmdYG/HRHZGPHRA07T3gqvacu86iXVfEJFhuTaXz4hIEH05rX3btU
-         LEWoA5yrDUvQb/cD9yWjMceZMDJRGZSNfMm3nvXwCmnoZHx4gaZYn8IvTpcYbqTfc5Av
-         tHguoWTsri/oS1Pnc0B3+mr0Dh5hpJyjn4Vd8WhoXwY537N59kQLm8oZim5nQL5wuqyb
-         xc0w==
-X-Forwarded-Encrypted: i=1; AHgh+Rq2LSdqv8JlW1IOiB7K/ptu50Dn+Lxth5GNX1tpNf01eaTFGuzfUO5t1GRNMBqHEjCNbvH7SzI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLfrY2CxTzeRXnD8UCXU263GVObDtHPMvpVcgd2FZL2yCIVa5p
-	0ACgVvTty+8bfrJwPZBBiw2z1KCfy/5FpaJBrjlRJytL7NIH/nf2M3BMcKpic+W8QP6VqjJkNxe
-	vY4xWow==
-X-Received: from plec7.prod.google.com ([2002:a17:902:f307:b0:2c7:f19d:bb15])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f710:b0:2ca:a03a:29b2
- with SMTP id d9443c01a7336-2d015c9c0c4mr48784125ad.8.1785264762144; Tue, 28
- Jul 2026 11:52:42 -0700 (PDT)
-Date: Tue, 28 Jul 2026 11:52:41 -0700
-In-Reply-To: <ajvUp_kPJBRZ7k_p@google.com>
+        d=1e100.net; s=20251104; t=1785265907; x=1785870707;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=KsgU+jaIJSPOtOW4fRT9Ixh2JPmbi7dF3B+OsSALrFE=;
+        b=MvVcIbNeGBzmqoMf4vXgjzuFc0bEgdewWFG8tEy8AmNbM0D5MDlTGoLx+sp23YJ1jS
+         /GQDBPE0P3NHrEEjF6ssviXFvw+raS1YIURc3TzIl8xmUSYrok5w+UxIXBGMOTV1iOUM
+         IiwwUjg34yStB+ILtFIohaUE2WeCZcClRSCJVKH5jPDY2RfhG1XZAqeojS8/lOqU0ms6
+         RnfMc01mAIZYbqemhJig5tx1Z71GRX6HmCaXfektFnNwVY3yYFi456AP/CqHE59mwYcg
+         tTlhJa+CxBb9ivpik7ivAtatp4W790t8j+xnrw7+II4ahCjSEkKZkj2YYu3uphMitN3B
+         mfKg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3N+C+YYHoBJizMmkVJ/b/kirDv+p5TO54ItadIdtXmOas8j+Tu7gqM9CTthRexmJssW2pekk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxJz5ZDyC8olt6Kmr0lGdXj/ie8QCLs1J+yIyXQRaf6N+AMiIB
+	JX06iR7xCiohIGBTqG4IwqQgJ+chjCelDMTZi8d1Lp6yfAX1/kY+NdNsP4jzLgegGfs=
+X-Gm-Gg: AR+sD12baJVop0RcK93Hd/WOORd2GP/Ct8uOplFMOCQyPFvx8vcLOgpUnldSEAf5bJn
+	4YQrXKF1cIwSxyRiceVWTa8Ln2BoBpEvYPKu/k1rMuiS/wstMnNlHXLy0xAJxGV0hDPQtot+c+N
+	L7kC44x32APeDaXkcf2qqT+jfFcKdLngTNHPfyil/kkjKVGzqKal/hwBtvt6fw8nHxo02JE5KNE
+	a7Nm3bdzuTF1D6io0OqYCf/oNfMc2meExUxUtZMCnJkKV6nCipksvyCfLEim4UQJzyeL6IANLnF
+	oInPbI80k1iSSTzR2fqqZdwYlugJwJAyGmplPkNG4RGonklQ7CgdxDpYJpi7PQn2fe0oWwQpD//
+	gWWLeI8N2UAcVXStQOLdxesfEn1BjlmeCCe1f7DH9tbdqSEOCVYVIvkdvOOvFSRb9IKLuE0Eqgc
+	kk3u3TA9GGYg==
+X-Received: by 2002:a05:6830:6102:b0:7df:5fc:3fd8 with SMTP id 46e09a7af769-7effeebf16bmr2243434a34.1.1785265907477;
+        Tue, 28 Jul 2026 12:11:47 -0700 (PDT)
+Received: from localhost ([2a03:2880:12ff:2::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f00d5f3aebsm473712a34.9.2026.07.28.12.11.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2026 12:11:47 -0700 (PDT)
+From: Will Chen <will.chen.tty@gmail.com>
+To: Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	David Wei <dw@davidwei.uk>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] bnxt: fix memory leak in bnxt_queue_mem_alloc error cases
+Date: Tue, 28 Jul 2026 12:11:45 -0700
+Message-ID: <20260728191146.1744825-1-will.chen.tty@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260622-vmscape-bhb-v12-0-76cbda0ae3e5@linux.intel.com>
- <20260622-vmscape-bhb-v12-7-76cbda0ae3e5@linux.intel.com> <ajvUp_kPJBRZ7k_p@google.com>
-Message-ID: <amj6eYOs70WUPGDG@google.com>
-Subject: Re: [PATCH v12 07/12] static_call: Define EXPORT_STATIC_CALL_FOR_MODULES()
-From: Sean Christopherson <seanjc@google.com>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, 
-	Jiri Olsa <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	David Laight <david.laight.linux@gmail.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, David Ahern <dsahern@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Jason Baron <jbaron@akamai.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ard Biesheuvel <ardb@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>, 
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 24, 2026, Sean Christopherson wrote:
-> On Tue, Jun 23, 2026, Pawan Gupta wrote:
-> > There is EXPORT_STATIC_CALL_TRAMP() that hides the static key from all
-> > modules. But there is no equivalent of EXPORT_SYMBOL_FOR_MODULES() to
-> > restrict symbol visibility to only certain modules.
-> > 
-> > Add EXPORT_STATIC_CALL_FOR_MODULES(name, mods) that wraps both the key and
-> > the trampoline with EXPORT_SYMBOL_FOR_MODULES(), allowing only a limited
-> > set of modules to see and update the static key.
-> > 
-> > The immediate user is KVM, in the following commit.
-> > 
-> > checkpatch reported below warnings with this change that I believe don't
-> > apply in this case:
-> > 
-> >   include/linux/static_call.h:219: WARNING: Non-declarative macros with multiple statements should be enclosed in a do - while loop
-> >   include/linux/static_call.h:220: WARNING: EXPORT_SYMBOL(foo); should immediately follow its function/variable
-> > 
-> > Suggested-by: Peter Zijlstra <peterz@infradead.org>
-> > Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-> > ---
-> >  include/linux/static_call.h | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> > 
-> > diff --git a/include/linux/static_call.h b/include/linux/static_call.h
-> > index 78a77a4ae0ea..b610afd1ed55 100644
-> > --- a/include/linux/static_call.h
-> > +++ b/include/linux/static_call.h
-> > @@ -216,6 +216,9 @@ extern long __static_call_return0(void);
-> >  #define EXPORT_STATIC_CALL_GPL(name)					\
-> >  	EXPORT_SYMBOL_GPL(STATIC_CALL_KEY(name));			\
-> >  	EXPORT_SYMBOL_GPL(STATIC_CALL_TRAMP(name))
-> > +#define EXPORT_STATIC_CALL_FOR_MODULES(name, mods)			\
-> > +	EXPORT_SYMBOL_FOR_MODULES(STATIC_CALL_KEY(name), mods);		\
-> > +	EXPORT_SYMBOL_FOR_MODULES(STATIC_CALL_TRAMP(name), mods)
-> >  
-> >  /* Leave the key unexported, so modules can't change static call targets: */
-> >  #define EXPORT_STATIC_CALL_TRAMP(name)					\
-> > @@ -276,6 +279,9 @@ extern long __static_call_return0(void);
-> >  #define EXPORT_STATIC_CALL_GPL(name)					\
-> >  	EXPORT_SYMBOL_GPL(STATIC_CALL_KEY(name));			\
-> >  	EXPORT_SYMBOL_GPL(STATIC_CALL_TRAMP(name))
-> > +#define EXPORT_STATIC_CALL_FOR_MODULES(name, mods)			\
-> > +	EXPORT_SYMBOL_FOR_MODULES(STATIC_CALL_KEY(name), mods);		\
-> > +	EXPORT_SYMBOL_FOR_MODULES(STATIC_CALL_TRAMP(name), mods)
-> >  
-> >  /* Leave the key unexported, so modules can't change static call targets: */
-> >  #define EXPORT_STATIC_CALL_TRAMP(name)					\
-> > @@ -346,6 +352,8 @@ static inline int static_call_text_reserved(void *start, void *end)
-> >  
-> >  #define EXPORT_STATIC_CALL(name)	EXPORT_SYMBOL(STATIC_CALL_KEY(name))
-> >  #define EXPORT_STATIC_CALL_GPL(name)	EXPORT_SYMBOL_GPL(STATIC_CALL_KEY(name))
-> > +#define EXPORT_STATIC_CALL_FOR_MODULES(name, mods)			\
-> > +	EXPORT_SYMBOL_FOR_MODULES(STATIC_CALL_KEY(name), mods)
-> >  
-> >  #endif /* CONFIG_HAVE_STATIC_CALL */
-> 
-> Drat, I forgot about this.  Exporting static call trampolines for KVM came up in
-> another conversation[*].  I had already put together patches to effectively default
-> to exporting only the trampoline, and also to deduplicate this code so that the
-> CONFIG_HAVE_STATIC_CALL_INLINE=y / CONFIG_HAVE_STATIC_CALL=y / CONFIG_HAVE_STATIC_CALL=n
-> implementations don't need to copy+paste the same lines of code.
-> 
-> The attached patches touch a lot more code, and will conflict mightily with KVM
-> changes I want to land in 7.3 (more use of a static_call in KVM).  But if we get
-> them applied (to tip tree) shortly after 7.2-rc1 and provide a topic branch/tag,
-> then there shouldn't be too much juggling needed?
-> 
-> If we want to go with the more aggressive cleanup, I'll formally post the patches.
+There is a small memory leak in bnxt_queue_mem_alloc:
+when bnxt_alloc_rx_agg_bmap() succeeds
+but bnxt_alloc_one_tpa_info() later fails,
+the rx_agg_bmap allocated by bnxt_alloc_rx_agg_bmap()
+is not freed in the fallthrough cleanup cases.
 
-*sigh*
+Simply free the rx_agg_bmap in the err_free_tpa_info case,
+as this is the only remaining error path where
+rx_agg_bmap is allocated and needs to be freed.
 
-So the patches build, but they aren't fully functional.  If kvm.ko is built as a
-module, trying to load a vendor module will fail due to the trampoline => key table
-only tracking built-in symbols.
+Fixes: bd649c5cc958 ("bnxt_en: handle tpa_info in queue API implementation")
+Signed-off-by: Will Chen <will.chen.tty@gmail.com>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Given that all of this is KVM, and that it's far easier to export the static calls
-if and only if there are vendor modules, and only for those vendor modules, I'm
-going to drop the aggressive cleanup and abandon converting KVM's exports to only
-export trampolines, at least until someone else works up the motivation to add
-support for modules.
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 7513618793da..c30507dd824e 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -16267,6 +16267,8 @@ static int bnxt_queue_mem_alloc(struct net_device *dev,
+ 
+ err_free_tpa_info:
+ 	bnxt_free_one_tpa_info(bp, clone);
++	kfree(clone->rx_agg_bmap);
++	clone->rx_agg_bmap = NULL;
+ err_free_rx_agg_ring:
+ 	bnxt_free_ring(bp, &clone->rx_agg_ring_struct.ring_mem);
+ err_free_rx_ring:
 
-> [*] https://lore.kernel.org/all/ahhoDGUz39KSGZ6o@google.com
+base-commit: 3f1f755366687d051174739fb99f7d560202f60b
+-- 
+2.53.0-Meta
+
