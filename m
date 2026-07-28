@@ -1,136 +1,289 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F317438F659
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 16:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785257499; cv=pass; b=JeZjo1YeX5gmCgeSFMCD3FhFQ6tanFQeFL5eIJ80ZT8pJ39ep0SFhMUFkepnpwg2wz739Afm3PfptZLuZzh0t0ZYG/SApi5NURHhirykG3+/F3kdELwxuEfkwyw0VvDRr20Dctm7vDsVnrGDV6Ftp7sPYR2Z21tWCHhPyxnoyL0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785257499; c=relaxed/simple;
-	bh=vlD0TW0KXHEjUkZjxNFErtOjxLeUd4BbAcVOw+5MSDc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H50YiWeXwV4/omwQjdlKvmSEQT7k5DSh+fiz5rptopaCDyLcAh2nyezYSWILrkOsM03y8COk3nn60DlLwTBcfpWgKc6pASBwS6XnzgKBgYJTatBWaVucEpYDk+10OhME1MNFvhX48vpNMylS1dBctC9ilP4L16wiY6BWwsjmCIk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=tq9myjKe; arc=pass smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6221F38F92D;
+	Tue, 28 Jul 2026 16:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785257574; cv=none; b=UcgQYZZWJvo5uIWtkJQJVdIGfREH4hC5Oc9m1eYGsBHQFNJF3Aa3G0a2fY7MdRHCyar27OkMn8XUMm5zEBo4V16G3GBmJ5QFUYRfanV0A0Eeprbm+XfwLMJ9sCT6/rVySiF0zZ4jDQtYaz0sT2nYRIRwsxJI8I8Ud2BJ4RVyeHA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785257574; c=relaxed/simple;
+	bh=vJqqefbyWSqt2P9trmIyhVESgMTG5+8O9OXr9a2a9Ac=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=IFesJ1O47o5gj2aeJPvNO2RO/khngJoy/cOUKL9gms0jSRcJ07Clmb0WbavlaBJpQ12CKJ1hLm/0XUqWmLrzsln/40icoE5r9XAhyeU5kVo704GnBL0YPtwvTyLT7s+S/2aUwUlMJXlzQ5gRw5TRtkSisdbbLMU2jFv9IXuP/0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEeCRqej; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="tq9myjKe"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-84a4d8fd6ecso59620b3a.1
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 09:51:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785257497; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FKKmsEpdlSmlr0TQmxDZuSTJU3J3nkLqrjXzklMq/3aGQbniek7dfq1XufGBJzvM/m
-         /bXQd8uZij8b2yLs0brvGtJC+o9HQ2PA0cQyJeGbHw5KJBWVF9pKrLzGbird+PElzeoT
-         K3l08MDuiG93xTHy9zeWK6kEBczj67TKp9aBZ4YpB2Fimdp1gWlxZX762WsuAR1JczlF
-         MNfYtLasIsM15Srik3K7w+8fsSISFSNRVuyw8J2nctBqo5pK/tIF7UloeHUfx2bnNb2V
-         XwG2AxWcK8u/dFjw5h3tVxI4SC7ESJziSDrCnV4NBPVf2eeT3+v3ku9zUHHBQZ/U/lB+
-         VAFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=c4gjizotrYOWGcATMUoxDzqOSa24S+nV0QnHF/CgOH8=;
-        fh=MCdzM/P1A3sh8JRbWRNuPeT0hq5akmgQuSs/4CQo9gs=;
-        b=Q+Nrct7Ax6xas1yBNFOOYOCoUMgwqPi0jf7f2mGDNr8iXdVDci4Aed5qbzNs76G8vq
-         26tb2aaRaWE7ERu6yG1mbh7mVc1BrrQ93w/d87HdSeo0+1FxA8UpI9c1i2RTVUWMuPbJ
-         Ae5hsMwYDHcxwSspUei79YA911IfbrvFVuO7p3bWK3uwva4aZ1P5M3BjiJnK9M4DvC4C
-         UPT1JiUMlAl9seShGM5gEXNsdCuIe40Syp82LC413VbnNzq0yV8q+UZ/53bTQt78L8n/
-         i5ZpzYEtciyY7DRLoc6OnvaA2XqrEy3TRE1aM4SBPf3Nrx+tTu2cALv+SYTW9BS1VlmE
-         f0wQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1785257497; x=1785862297; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=c4gjizotrYOWGcATMUoxDzqOSa24S+nV0QnHF/CgOH8=;
-        b=tq9myjKec0FjmGjHXgEC+vXKu+KEZlzWYOdZm/ljvBInYotcov7trSwA2ceH/hqV1w
-         Xi1A3iS6/NwJoXTLeeXkN5NrXApkAO6ymTLA5cxcwRB3M/bKipmCBesSkJvrPx/kvHHM
-         FvMfhFyu6fcBOtYwqGVpJelC3UMuHCHqZwUPE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785257497; x=1785862297;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c4gjizotrYOWGcATMUoxDzqOSa24S+nV0QnHF/CgOH8=;
-        b=h5eGAxZ7AEmpspuPv+KhMbEXh5HX7dlYdTMFee5MJvX8cWTY4h6xHT0LjxGCzQyedV
-         w3neBh1ticOAVkSPBr3SvRHg4cehai09cg5gfyTtYCBhn23mkQnghQ+VftVKaqypxgwS
-         TtjAay9fTWa+xMaNX5680wIK8QFTh6/iBTPXGkoE4HlAfL42btV8crUwcee5y7yg8O/l
-         +/IdbDwVwoJ7T89b9Tj/zosKTLPm2CMo69jAVoX1WA+4W27dat83eAgqhPrSOg9DFPC8
-         dNTsgJeacaltLSHAmZOsrlDE0gksy01ULppdDRoN3/iK4RvF/o8d8DYn+Sn5svGF97d9
-         e1KA==
-X-Gm-Message-State: AOJu0YyuQNEqMghx4daqb08Emu5HZj/73wppD0V/kJs4Bac2hBDYT7tT
-	gTRFmCyeArsdcN20o+wCo3ZNeu5Sfsb3O/jQhLOO6ihLw8UNKi9zav+6AFyjlayfwr1VlB2i9Xe
-	SEbcDJWQYl6KvYUIxN03qX7U/1LpFH12H3akNd5fX
-X-Gm-Gg: AR+sD13bEA46JkTtKRDYNWJqromANgYPRD/2uNXZYE65UHPR5Ndt9KuxKi3CfJOJBTY
-	csZ2Se78QxDhhMP8nQoG30ekkLElF53QfiaFPWPL6NvyrNGPTNue+vcLo/wy4N7PPvMxpQdKHe5
-	qt/g9HPnRwvYdnw0K1TIwKM2dfFL85co98hyV6lu7TpbzkmHsSdeOCq+osqmT25EJrz1FudJd30
-	TH65of/jvYaEkEvv0XUGaier182PSJUsK1x0IX+DIGq5DmYFqdOFm2Cp0A804w=
-X-Received: by 2002:a05:6a00:4fcc:b0:848:88e6:95d3 with SMTP id
- d2e1a72fcca58-84e933518f4mr3777982b3a.72.1785257497186; Tue, 28 Jul 2026
- 09:51:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEeCRqej"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 24DB9C2BCC6;
+	Tue, 28 Jul 2026 16:52:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785257574;
+	bh=vJqqefbyWSqt2P9trmIyhVESgMTG5+8O9OXr9a2a9Ac=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=QEeCRqejuoI53J0cfuKZKNOdnAIcqsPN6T6RJzn5I6cW+7ZEwJI9+JpvrY1gcV/7c
+	 xnNHCzyj8QTUACls3Tjz7Apt8Lb+FAq5VedqlJL3uDUYVvUNRp+yfBiVkeWkWJLc0l
+	 JyAliuxFAksdmHry6Yw1TgZ+QygR5PWJRoA6pk+Vkajehts9AtWSSOOFSYX7vq0823
+	 Ote87pVhrRaG17fRxgFC/nS4iQiQ/18F5D22ceTIEp1fJ9KhjG51RlYe8sUxMlYLG5
+	 8y3+crCn/V1UNnsWb4dp3G/aDYKnzon1zscM+R9uudUFH4Lf4YV5Ogl7HpmPi3+Vac
+	 FXt/jEbXYtehQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00819C54F54;
+	Tue, 28 Jul 2026 16:52:54 +0000 (UTC)
+From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
+Date: Tue, 28 Jul 2026 11:52:53 -0500
+Subject: [PATCH net v4] net/smc: order the CDC receive path against buffer
+ publication
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260723105210.817079-1-jhs@mojatatu.com> <3914dd5c-77c8-4f96-8bfc-986f0a00f722@redhat.com>
- <CAM0EoMn6sLJ_OMXY8-B4RE3r9XunFB=OkHbYJ-c-VBpADyO29Q@mail.gmail.com>
- <da0313c5-1060-49fb-a1a3-72197eda4d8e@redhat.com> <CAM0EoMkRMOBmrGW3fAcxxhTxcLaP44zr4m5Ds8G2VFT1CissNA@mail.gmail.com>
- <a4bda84e-3041-49b7-8863-e09862b2739e@redhat.com>
-In-Reply-To: <a4bda84e-3041-49b7-8863-e09862b2739e@redhat.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 28 Jul 2026 12:51:25 -0400
-X-Gm-Features: AUfX_mx0A7dQcsiQj4fXgfq4gfSwDd_OPj-5fXEqK1RqmLfIYeYu_SXvtZ6RBvw
-Message-ID: <CAM0EoMntwBbw7ADoaX+KibvPHqmsPgt2yQpQpNzSMR4JzA7D-g@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] net/sched: cls_route: fix fastmap use-after-free
- on filter
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, horms@kernel.org, john.fastabend@gmail.com, 
-	jiri@resnulli.us, zdi-disclosures@trendmicro.com, victor@mojatatu.com, 
-	security@kernel.org, stable@vger.kernel.org, 
-	Santosh Kalluri <santosh.kalluri129@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260728-b4-disp-52ee4e7d-v4-1-0dda94b0f397@proton.me>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMMQ6CQBBG4auQqZkE1sEFrkIshP3RoQCyA8aEc
+ HdXLb/ivYMMUWHUZgdFvNR0mRMkz2h43ucHWEMyucJdC+9q7oWD2sqVAwQ+8EVqX8mIpkSglK0
+ Ro75/y+72t+39hGH7fug8P1dKY+l0AAAA
+X-Change-ID: 20260728-b4-disp-52ee4e7d-348754fe91ed
+To: Tony Lu <tonylu@linux.alibaba.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Eric Dumazet <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>, 
+ "D. Wythe" <alibuda@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, 
+ Sidraya Jayagond <sidraya@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Mahanta Jambigi <mjambigi@linux.ibm.com>, 
+ Dust Li <dust.li@linux.alibaba.com>
+Cc: Hans Wippel <hwippel@linux.ibm.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
+ Wenjia Zhang <wenjia@linux.ibm.com>, linux-rdma@vger.kernel.org, 
+ Ursula Braun <ubraun@linux.ibm.com>, Simon Horman <horms@kernel.org>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785257572; l=10163;
+ i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
+ bh=Vts1TiiPbGpD3Qv/nKiQnSpqKQKxXy38+nvWx/7Gr0s=;
+ b=Fd8GQGB24INiIZa3WpnsGbRwVJbGzz5vUjvCCb5AUxxJTvnAWEpIDFlAZNPCoM3UgqT48stXc
+ JEitAt5kWyVAbMCGZDgXM/lJs23TeD1KfDyOji6gXywl102Z39zyf7a
+X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
+ pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
+X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
+ auth_id=893
+X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
+Reply-To: hexlabsecurity@proton.me
 
-On Tue, Jul 28, 2026 at 10:03=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wr=
-ote:
->
-> On 7/28/26 3:12 PM, Jamal Hadi Salim wrote:
-> > On Tue, Jul 28, 2026 at 9:05=E2=80=AFAM Paolo Abeni <pabeni@redhat.com>=
- wrote:
-> >> On 7/28/26 2:37 PM, Jamal Hadi Salim wrote:
-> >>> On Tue, Jul 28, 2026 at 6:34=E2=80=AFAM Paolo Abeni <pabeni@redhat.co=
-m> wrote:
-> >>>> Since there is already a
-> >>>> synchronization point for both reader and write while acquiring the
-> >>>> fastmap_lock, I'm wondering if something alike the following could w=
-ork ?!?
-> >>>> (completely untested!!!):
-> >>>
-> >>> Your approach has some holes, example misses the most dangerous part =
--
-> >>> destroy(), etc
-> >>> I will mull over it and see if it can be fixed to handle all the
-> >>> issues. I think it's possible i just need to put time to
-> >>> validate/test.
-> >> I would appreciate that, thanks!
-> >
-> > See attached. Untested (compiles) -  addresses my destroy() concern
-> > eaerlier _i think_ (unless something pops up in testing)
->
-> FWIW, the changes LGTM, thanks!
+From: Bryam Vargas <hexlabsecurity@proton.me>
 
-Tests on all PoCs worked.
-I will give Santosh and Victor a chance to test and will post the
-patch tomorrow.
+The SMC CDC receive handlers dereference conn->rmb_desc, and on the
+SMC-D DMB-nocopy path conn->sndbuf_desc, but both are published after the
+connection is already reachable to a peer: rmb_desc once the connection
+is in the link group's token tree, the nocopy ghost sndbuf_desc later
+still, in smcd_buf_attach() after the ISM receive tasklet is armed. A CDC
+in that window hits a handler with the buffer unset -- a NULL dereference
+and host DoS -- or, on a weakly ordered CPU, non-NULL but not yet
+initialised. Both are also published before the receive state
+(bytes_to_rcv, sndbuf_space), so an early CDC's accounting can be
+overwritten by setup.
 
-cheers,
-jamal
+Initialise the receive state first and publish both buffers last with
+smp_store_release(), consuming them with smp_load_acquire() and bailing
+while unset, as the handlers already do for a killed connection. Gate the
+whole sndbuf consumer trigger on the send buffer, not just the nocopy
+accounting: smc_tx_prepared_sends() and smc_tx_pending() dereference it
+too. Conforming peers are unaffected.
 
-> Paolo
->
+Fixes: 69cb7dc0218b ("net/smc: add common buffer size in send and receive buffer descriptors")
+Closes: https://sashiko.dev/#/patchset/20260714-b4-disp-835288a6-v2-1-581555ef2145@proton.me?part=1
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+---
+v4: Add the Fixes: tag Jakub asked for. 69cb7dc0218b is where the CDC path
+ started reading the buffer length through a descriptor pointer -- it replaced
+ conn->rmbe_size and conn->sndbuf_size with conn->rmb_desc->len and
+ conn->sndbuf_desc->len -- so it is the first commit where an unpublished
+ buffer can be dereferenced here. The token lookup itself is older
+ (5f08318f617b, 2017), but it read a scalar, so there was nothing to
+ dereference. The SMC-D DMB-nocopy hunks cover the ghost sndbuf_desc, added
+ by ae2be35cbed2; a tree without that commit needs only the rmb_desc part.
+v3: https://lore.kernel.org/all/20260716-b4-disp-aa52955a-v3-1-03a4411a7549@proton.me/
+ - Publish rmb_desc and the ghost sndbuf_desc after the receive state is
+   initialised, not before. The earlier revision released the pointer first,
+   which let an early CDC's accounting be overwritten by setup.
+ - Gate the whole sndbuf consumer trigger on sndbuf_desc, not only the nocopy
+   accounting: smc_tx_prepared_sends() and smc_tx_pending() dereference it too.
+ The v2 review raised both.
+v2: https://lore.kernel.org/all/20260714-b4-disp-835288a6-v2-1-581555ef2145@proton.me/
+v1: https://lore.kernel.org/all/20260711-b4-disp-c36a9798-v1-1-340b0c6053fb@proton.me/
+
+herd7 models both orderings. Plain accesses allow the "pointer published, buffer
+stale" outcome and flag a data race; release/acquire forbid it. A publish-order
+litmus shows the lost update is allowed with the store released first and never
+with it released last. af_smc runs over an RDMA fabric or an ISM device, so the
+weak-memory arm is model-level; litmus tests and reproducer on request.
+
+Happy to split rmb/sndbuf for a cleaner stable backport.
+---
+ net/smc/smc_cdc.c  | 50 +++++++++++++++++++++++++++++++++++++++++---------
+ net/smc/smc_core.c | 26 ++++++++++++++++++++++----
+ 2 files changed, 63 insertions(+), 13 deletions(-)
+
+diff --git a/net/smc/smc_cdc.c b/net/smc/smc_cdc.c
+index 32d6d03df321..ea61b1e75c72 100644
+--- a/net/smc/smc_cdc.c
++++ b/net/smc/smc_cdc.c
+@@ -332,8 +332,20 @@ static void smc_cdc_msg_recv_action(struct smc_sock *smc,
+ {
+ 	union smc_host_cursor cons_old, prod_old;
+ 	struct smc_connection *conn = &smc->conn;
++	struct smc_buf_desc *sndbuf_desc;
+ 	int diff_cons, diff_prod, diff_tx;
+ 
++	/* Acquire the send buffer once, pairing with the smp_store_release() in
++	 * __smc_buf_create()/smcd_buf_attach().  On the SMC-D DMB-nocopy path
++	 * the ghost sndbuf_desc is attached only after the connection is already
++	 * reachable to the ISM device, so it can still be unset here; every
++	 * sndbuf_desc consumer below (the nocopy accounting and the sndbuf
++	 * consumer trigger, which dereferences it via smc_tx_prepared_sends())
++	 * is skipped while it is NULL to avoid a NULL deref and a load of an
++	 * uninitialised buffer.
++	 */
++	sndbuf_desc = smp_load_acquire(&conn->sndbuf_desc);
++
+ 	smc_curs_copy(&prod_old, &conn->local_rx_ctrl.prod, conn);
+ 	smc_curs_copy(&cons_old, &conn->local_rx_ctrl.cons, conn);
+ 	smc_cdc_msg_to_host(&conn->local_rx_ctrl, cdc, conn);
+@@ -351,14 +363,17 @@ static void smc_cdc_msg_recv_action(struct smc_sock *smc,
+ 
+ 		/* if local sndbuf shares the same memory region with
+ 		 * peer RMB, then update tx_curs_fin and sndbuf_space
+-		 * here since peer has already consumed the data.
++		 * here since peer has already consumed the data.  The ghost
++		 * sndbuf_desc (acquired above) may still be unset in the SMC-D
++		 * DMB-nocopy setup window, so skip the update while it is NULL.
+ 		 */
+ 		if (conn->lgr->is_smcd &&
+-		    smc_ism_support_dmb_nocopy(conn->lgr->smcd)) {
++		    smc_ism_support_dmb_nocopy(conn->lgr->smcd) &&
++		    sndbuf_desc) {
+ 			/* Calculate consumed data and
+ 			 * increment free send buffer space.
+ 			 */
+-			diff_tx = smc_curs_diff(conn->sndbuf_desc->len,
++			diff_tx = smc_curs_diff(sndbuf_desc->len,
+ 						&conn->tx_curs_fin,
+ 						&conn->local_rx_ctrl.cons);
+ 			/* increase local sndbuf space and fin_curs */
+@@ -391,10 +406,15 @@ static void smc_cdc_msg_recv_action(struct smc_sock *smc,
+ 			conn->urg_state = SMC_URG_NOTYET;
+ 	}
+ 
+-	/* trigger sndbuf consumer: RDMA write into peer RMBE and CDC */
+-	if ((diff_cons && smc_tx_prepared_sends(conn)) ||
+-	    conn->local_rx_ctrl.prod_flags.cons_curs_upd_req ||
+-	    conn->local_rx_ctrl.prod_flags.urg_data_pending) {
++	/* trigger sndbuf consumer: RDMA write into peer RMBE and CDC.
++	 * smc_tx_prepared_sends() and smc_tx_pending() dereference sndbuf_desc,
++	 * so skip the whole trigger while it is unset (the SMC-D DMB-nocopy
++	 * setup window): there is nothing to send without a send buffer.
++	 */
++	if (sndbuf_desc &&
++	    ((diff_cons && smc_tx_prepared_sends(conn)) ||
++	     conn->local_rx_ctrl.prod_flags.cons_curs_upd_req ||
++	     conn->local_rx_ctrl.prod_flags.urg_data_pending)) {
+ 		if (!sock_owned_by_user(&smc->sk))
+ 			smc_tx_pending(conn);
+ 		else
+@@ -443,13 +463,21 @@ static void smcd_cdc_rx_tsklet(struct tasklet_struct *t)
+ {
+ 	struct smc_connection *conn = from_tasklet(conn, t, rx_tsklet);
+ 	struct smcd_cdc_msg *data_cdc;
++	struct smc_buf_desc *rmb_desc;
+ 	struct smcd_cdc_msg cdc;
+ 	struct smc_sock *smc;
+ 
+ 	if (!conn || conn->killed)
+ 		return;
++	/* Pair with smp_store_release() in __smc_buf_create(): the connection
++	 * is published before its RMB is allocated, so bail while rmb_desc is
++	 * unset to avoid a NULL deref and a load of an uninitialised buffer.
++	 */
++	rmb_desc = smp_load_acquire(&conn->rmb_desc);
++	if (!rmb_desc)
++		return;
+ 
+-	data_cdc = (struct smcd_cdc_msg *)conn->rmb_desc->cpu_addr;
++	data_cdc = (struct smcd_cdc_msg *)rmb_desc->cpu_addr;
+ 	smcd_curs_copy(&cdc.prod, &data_cdc->prod, conn);
+ 	smcd_curs_copy(&cdc.cons, &data_cdc->cons, conn);
+ 	smc = container_of(conn, struct smc_sock, conn);
+@@ -483,7 +511,11 @@ static void smc_cdc_rx_handler(struct ib_wc *wc, void *buf)
+ 	lgr = smc_get_lgr(link);
+ 	read_lock_bh(&lgr->conns_lock);
+ 	conn = smc_lgr_find_conn(ntohl(cdc->token), lgr);
+-	if (!conn || conn->out_of_sync) {
++	/* Pair with smp_store_release() in __smc_buf_create(): bail while the
++	 * RMB is unset (smc_cdc_msg_recv_action() dereferences it) to avoid a
++	 * NULL deref and a stale-buffer read in the connection setup window.
++	 */
++	if (!conn || conn->out_of_sync || !smp_load_acquire(&conn->rmb_desc)) {
+ 		read_unlock_bh(&lgr->conns_lock);
+ 		return;
+ 	}
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index b4208cb186c5..33bf9cc979ef 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -2499,15 +2499,26 @@ static int __smc_buf_create(struct smc_sock *smc, bool is_smcd, bool is_rmb)
+ 	}
+ 
+ 	if (is_rmb) {
+-		conn->rmb_desc = buf_desc;
+ 		conn->rmbe_size_comp = bufsize_comp;
+ 		smc->sk.sk_rcvbuf = bufsize * 2;
+ 		atomic_set(&conn->bytes_to_rcv, 0);
+ 		conn->rmbe_update_limit =
+ 			smc_rmb_wnd_update_limit(buf_desc->len);
++		/* Publish the receive buffer last, with release semantics: the
++		 * connection is already in the link group's token tree, so a
++		 * concurrent CDC receive handler must observe the fully
++		 * initialised receive state above (and the buffer) once it sees
++		 * a non-NULL rmb_desc.  Pairs with the smp_load_acquire() in the
++		 * CDC receive path.
++		 */
++		smp_store_release(&conn->rmb_desc, buf_desc);
+ 		if (is_smcd)
+ 			smc_ism_set_conn(conn); /* map RMB/smcd_dev to conn */
+ 	} else {
++		/* Plain store: this send-buffer pass runs before the RMB pass,
++		 * whose smp_store_release(&conn->rmb_desc) then publishes this
++		 * store too, and the CDC receive path is gated on rmb_desc.
++		 */
+ 		conn->sndbuf_desc = buf_desc;
+ 		smc->sk.sk_sndbuf = bufsize * 2;
+ 		atomic_set(&conn->sndbuf_space, bufsize);
+@@ -2599,9 +2610,16 @@ int smcd_buf_attach(struct smc_sock *smc)
+ 	buf_desc->cpu_addr =
+ 		(u8 *)buf_desc->cpu_addr + sizeof(struct smcd_cdc_msg);
+ 	buf_desc->len -= sizeof(struct smcd_cdc_msg);
+-	conn->sndbuf_desc = buf_desc;
+-	conn->sndbuf_desc->used = 1;
+-	atomic_set(&conn->sndbuf_space, conn->sndbuf_desc->len);
++	buf_desc->used = 1;
++	atomic_set(&conn->sndbuf_space, buf_desc->len);
++	/* Publish the ghost send buffer last, with release semantics: the
++	 * connection is already reachable to the ISM device (smc_ism_set_conn()
++	 * ran in __smc_buf_create()), so the CDC receive tasklet must observe
++	 * the fully initialised ghost buffer once it sees a non-NULL
++	 * sndbuf_desc.  Pairs with smp_load_acquire() in
++	 * smc_cdc_msg_recv_action().
++	 */
++	smp_store_release(&conn->sndbuf_desc, buf_desc);
+ 	return 0;
+ 
+ free:
+
+---
+base-commit: e095f249e2209674f6366f6db0383a2b96e19239
+change-id: 20260728-b4-disp-52ee4e7d-348754fe91ed
+
+Best regards,
+--  
+Bryam Vargas <hexlabsecurity@proton.me>
+
+
