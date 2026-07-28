@@ -1,190 +1,300 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A6C306741
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 15:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24F51A6822
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 15:18:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785251849; cv=none; b=BC6p8L46UUyd8AKiMw4NKn8JQVDQnYQxgw2LNWxcuulJHFxznh0YRd92gAdMUhG/h1MCX8hskFaSRg5y4fOhodwfBZOhIirez2Z8B+3GZRNoGb9Hx0YbXWtVbRfrO6pw8Rt/029C4BReUPcVtkH4yyNYSB3oNaipepYc8XU3Z34=
+	t=1785251906; cv=none; b=gCs8lY1gxsuUOLIp2G86cy+AQO1c6Gp6vZmi/cSkddoqMvqf8mp/jhRHjnFGMDTlMnJHAAjW5S1r55Lmb0ZdrtlymythhX7eirsxldU3cyxT1F5TheOtGxYVi6wb29wJcHiXqg1k0MCUux4PczfgDDx6wjA4O+QTEfQTvQyKN9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785251849; c=relaxed/simple;
-	bh=MMsOZFIxWKjNuDBxeb/TAy1uux7B5rY9HbWxz2tgKwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MFt3ydfffnVe0Mte9yXEnNgFSyGFLjhhWxRKGhnim4iRT0gJaOUe2ZSEmvUWDTH331LyT7N11azAbLcOABxHS8X1Bt22i2R9K7VVCrKqqkGJSAta5CRBWWiEZN1lBeCovYIDj53N40sze5K3/nPhYfsY0bDcEMrOn+WzXN0TUlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lXTNIL+A; arc=none smtp.client-ip=209.85.160.175
+	s=arc-20240116; t=1785251906; c=relaxed/simple;
+	bh=yKCqKsiSuSFj1x70RgwoIK4Wiot4BSjCJPoY+pqsf2M=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=QVKVdSRahE4L/994dPcHtmt+1vb55JlqBGkYZVJTKp5aOVRnAq7vQ1tHnElMU5wr/h8BWM0+YRiFI7m96MPqKLx63jMxORHOv10T9fCfCeI3wwcoJy1/hhbT0KDxvTufpfFFBMXAfoigbaQ/k2BiSZt10e7TX9uNyuXMchQiRz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DrZVQiC1; arc=none smtp.client-ip=209.85.128.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lXTNIL+A"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c01089e8aso26407331cf.2
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 08:17:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DrZVQiC1"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-81e86df8987so49599697b3.3
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 08:18:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785251847; x=1785856647; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9R+FdXxpAje7XBicpqzP2cTrP3yux9QZLouIguYRjGI=;
-        b=lXTNIL+AuEkNjSZObCP9StszSboVyB/QFTaaNU2PbjsrsaiNs08vywjc2JAZ352AQf
-         WvRXrhFndASWOTS+6zjXlF8DQ+KpSzhrXMy6Nxg3fhylsSfZwNexsNlWN9Mw+YIbli4r
-         HbogJDbhqaTZ9CbbOY8YJFpgjzofEL9o9joIKGuFBA6NuGdmPyvd/JJw+eK9pwe7+S5n
-         XtCjZOta9neyffnv/kiXM19el6muYV0LBFoJuf/2OTpaKbFqemniJZCWejL9BxawfVPP
-         cWmjAdSLBky4N0qPmwnVrHPMfRcd+9BY84jphfSrDnnmXQ1YiTWsVMzPiSyJebv2NmHQ
-         a03g==
+        d=gmail.com; s=20251104; t=1785251903; x=1785856703; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=CLpOWH7GTS7NCFz/hO8LkdLrPSWhyKCNToq1mREBO9E=;
+        b=DrZVQiC14sLXYNRG0bwICAIRrWfhxCCmVt59uDrYq5uySYx84S0+Rqa54lkO6LJ50j
+         6DjByS9b25QrsLRMikWg8BrNJdSNq+c7OBbSFuljlbe/SUqt+YO1Sj46AewKhZcgk132
+         pwJoJ32SPMEKPk3IV/ZssaNJsZW0ReAuUaIgwWJeUz+glPLjoQHD/vHtuwx5Vxe1rDNC
+         LixAruATMDRVgRbP9St5Tm4SSstCctflslZux1HfWzdKumPnA5CRlit8qaEMVneigGgh
+         TF8j70w3R0X+49i0wiD35o9n9/XLQpFfRolGQ4L9GvS6Y2ZrkjOc4ofnqYvL9LETTu0R
+         gcSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785251847; x=1785856647;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9R+FdXxpAje7XBicpqzP2cTrP3yux9QZLouIguYRjGI=;
-        b=OZf1jHBkXPHr3CQ3DioexhRi4ZatwM5JEJIREomLZz0drmNVace9h/9xW1bjIKy/rZ
-         0/Pzj+HfpV9VluRir0LEPVeSQnINrMFqYVkPm5XCsC1S4RN8a6uT+tOapdONDO0PYgA+
-         mKXgEa5ZdV/AyYqBWyESkHV5/n/pIbFRgpbKShQISbA3PqSgcSRZiRSzCzbcefhYCaJL
-         zkAbqj6Np1pT3t+kNkEEm8zqbHQgOh/R7qPdPkFAcBS/YXOOe8bWL9iR0362Mp0k4n0X
-         QRnajryU90Je3iHNzsysOKEdwMvH+qlmLNkaKVZRk4YjYLzeCWTMOyPl2DOXlsv/0qp8
-         1S5A==
-X-Gm-Message-State: AOJu0YwRtOMScXoGu8uo7vMZaMvlh48P3FwCIXl/M6WUfrlr/5vndObS
-	GxavZLVUW4lMcVCe8cWDUNJRCEcrQkbbjwbe8nw8stCdYRUMDsGQAeCWBcYneGGlvkJ1Og==
-X-Gm-Gg: AR+sD13EccjEWl5vOEtIT39jxrcKDunij7QOcy8kw8oJ4gyCK33RdZmYv9pIU/40Gg3
-	q8uHZBhYJGogLNM7kyBbSWOblxxwCjkpiOV+AM3L1226quvBWQhz6gAqnNHKRKMGSt9PtLAnIgv
-	ECJJX/Wyt0WqRdOlWEH04vNEo9tORWZz0eqHasxsDsXRTrdo8hCsCp8RMLvd2JQvkfA7pAkVvYI
-	/iReuERwXe6BivRrfZ5YM+beT7maC42sJhDdYgF0Wg4uf8cDW3e5QZ7HRrOmXXTeX0MONfoRdq1
-	QCPDQeDdyGFz4PyRgofCmEHnfWDRPkVrzMiRPNXnfWUbso2kT6ZVv96UdXtqWALYWJ4WquAQDYL
-	sigF9vN+GFyIMhYtj1kfHwUktCmIUSFsmn9WYtezmyLL9Z3xa92y1D/aJwBj4RX77I5T+TVuljP
-	EROEbhe5OWt0FGmyMt99sZ65pUCDZR2Ob7oBRF3L+bmG3HzNUXqmkmEOpekxfTYMFHkJ3aAXOuS
-	Kk0
-X-Received: by 2002:ac8:7f04:0:b0:528:38b1:b54c with SMTP id d75a77b69052e-529d70bc715mr24272691cf.2.1785251846971;
-        Tue, 28 Jul 2026 08:17:26 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([165.232.167.5])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-529a29f92bbsm76755461cf.23.2026.07.28.08.17.21
+        d=1e100.net; s=20251104; t=1785251903; x=1785856703;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CLpOWH7GTS7NCFz/hO8LkdLrPSWhyKCNToq1mREBO9E=;
+        b=mKvcfcjGLI1oiEuJ+nylcV6tmwU4js5cD7zwyvxWiX8pLl4x3HKe0bIlM3i+j53miD
+         pJxCPR9rXFZU0VkwhLrDvKg2ymSHgRaogPG4t8Rx2wowccULsyqAEX9BD8vwohxBsYiB
+         +2xuNQ4h0ZB0IEe3bXPaSSrYHyty0qmXW0ukZmvzJwlNzMagJ+yGGhQ8yub5j/JTG0su
+         DCiFgw2+WVvVGCxuejtWsElROcKMJjIG3E19MH+/R2O/YYXvwUZfpcAYBy0W8mxMb3d9
+         DfUfAZUY/INNxrcEijmJqjIiS0Lub8PP5aIXX7oSrpSsvUGIgQEzgHZpiArZslFT7EC8
+         pxFA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp1QXXmYVMe3yHPYvGrJUeVlJVjU6dtj+meqhn8+QrkJMwBqj8BpCPQT5I7idDfctdjsufVFPE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxE2arUBCVL1VdCLALSmCpeGH03CAratQGnFfXugA1e05sqMjRM
+	X0JBr0tCMVQGmdJhLaNzvstXtGeAQgXXJLz9DxofoyLeRjo3s1Iikgpu
+X-Gm-Gg: AR+sD13J69t5o+xzS2userPaJZw/iUEyjFgyzN/oYfL8enQYj/yq0LaZMqL8e7hTrRk
+	DlJy9GyCWPdKvRmaCOW5vu4Ej2vim5pYuA7JRN/yqyEFSeqEdkrtzAGd2hWfNuIB+rxVBozVyG3
+	DINewTo9luXouKeF5k4Eh/lfW1uMVvPF2rQhgCWbeTyHAFQY4UBl//d0c+MWO/pF/UvIFvt3X1X
+	n99ZdPOYBkRn19wQMnBBKNh1y2EGQ7kn2MtayiQTUqox2DC7pZaymfj/yX0njlyt9yrlH5olw6f
+	b0Vteg7yuO3zkvqYyet/p30WqN7uFx7qeee7zo/xhypnEPbFLqM4degX/EkiXadQjlxrbgL9B5Z
+	ZeEr2TcTOTVpU9bL9bmFyROHuAu8sRtkG8No5cR31TMUDfM9W1W2lwlbB7rwoGiPVfgbb9WNxcv
+	/VHUh7yDlfRUTVE7Zqq9cEC/Ep5T9gkWNRK5LMw4ZTKSRQ/qq8Yg==
+X-Received: by 2002:a05:690c:6f10:b0:81d:6af3:b9cd with SMTP id 00721157ae682-81f99364371mr11834227b3.40.1785251903357;
+        Tue, 28 Jul 2026 08:18:23 -0700 (PDT)
+Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fa27568a5sm1260737b3.7.2026.07.28.08.18.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 08:17:26 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	tom@herbertland.com,
-	vega@nebusec.ai,
-	petalzu987@gmail.com,
-	enjou1224z@gmail.com
-Subject: [PATCH net 1/1] ip6_tunnel: avoid racing encap setup in changelink
-Date: Tue, 28 Jul 2026 23:17:13 +0800
-Message-ID: <f4a1f215a63268d5b1028521537e8f292d5f41a6.1785221754.git.petalzu987@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1785221754.git.petalzu987@gmail.com>
-References: <cover.1785221754.git.petalzu987@gmail.com>
+        Tue, 28 Jul 2026 08:18:22 -0700 (PDT)
+Date: Tue, 28 Jul 2026 11:18:21 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: zihan xi <zihanx@nebusec.ai>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Ren Wei <enjou1224z@gmail.com>, 
+ netdev@vger.kernel.org, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ vega@nebusec.ai
+Message-ID: <willemdebruijn.kernel.37df21eabf6b8@gmail.com>
+In-Reply-To: <CAANe3eRGYdDWvYK42WHdDzt80Z3G7gt-21C7dep+LNGKJR3Auw@mail.gmail.com>
+References: <f1cd534481c2397a36850ad039dcbfd38c3233ce.1784551898.git.zihanx@nebusec.ai>
+ <willemdebruijn.kernel.e559328910e@gmail.com>
+ <CAANe3eSvdBrwNo7xzH677yPOr8Zm6dvdTF7nNAe_NrWxomy0GQ@mail.gmail.com>
+ <willemdebruijn.kernel.37fb8a457aee2@gmail.com>
+ <CAANe3eRGYdDWvYK42WHdDzt80Z3G7gt-21C7dep+LNGKJR3Auw@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/1] packet: synchronize pressure clearing with
+ ring reconfiguration
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Chai Zixuan <petalzu987@gmail.com>
+zihan xi wrote:
+> On Tue, Jul 28, 2026 at 9:31=E2=80=AFPM Willem de Bruijn
+> <willemdebruijn.kernel@gmail.com> wrote:
+> >
+> > zihan xi wrote:
+> > > On Tue, Jul 28, 2026 at 7:44=E2=80=AFPM Willem de Bruijn
+> > > <willemdebruijn.kernel@gmail.com> wrote:
+> > > >
+> > > > Ren Wei wrote:
+> > > > > From: Zihan Xi <zihanx@nebusec.ai>
+> > > > >
+> > > > > packet_set_ring() updates the RX ring state under sk_receive_qu=
+eue.lock,
+> > > > > but publishes the tpacket receive mode through po->prot_hook.fu=
+nc after
+> > > > > releasing that lock. packet_poll() and packet_recvmsg() can the=
+refore run
+> > > > > the pressure clearing path after the ring has been cleared whil=
+e still
+> > > > > seeing tpacket_rcv, causing __packet_rcv_has_room() to derefere=
+nce stale
+> > > > > or NULL ring storage.
+> > > > >
+> > > > > Serialize pressure clearing with RX ring reconfiguration and up=
+date the
+> > > > > receive hook while holding the same queue lock when changing th=
+e RX ring.
+> > > > > Keep packet_poll() on the unlocked helper,
+> > > >
+> > > > Because it already holds the lock.
+> > > >
+> > > > > and let packet_recvmsg()
+> > > > > take the queue lock only when PACKET_SOCK_PRESSURE is already s=
+et
+> > > >
+> > > > which is sufficient, because if the socket moves from tpacket_rcv=
+ to
+> > > > packet_rcv, the socket is detached and a synchronize_net has pass=
+ed,
+> > > > so no new packets could arrive to set PACKET_SOCK_PRESSURE if it =
+was
+> > > > unset.
+> > > >
+> > > > > so the
+> > > > > fix avoids an unconditional extra lock acquisition on the norma=
+l recv
+> > > > > path.
+> > > > >
+> > > > > Fixes: 2ccdbaa6d55b ("packet: rollover lock contention avoidanc=
+e")
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Reported-by: Vega <vega@nebusec.ai>
+> > > > > Assisted-by: Codex:gpt-5.4
+> > > > > Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+> > > > > Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+> > > > > ---
+> > > > > changes in v2:
+> > > > >   - only take sk_receive_queue.lock in packet_recvmsg() when
+> > > > >     PACKET_SOCK_PRESSURE is already set
+> > > > >   - keep packet_poll() on the unlocked helper under its existin=
+g queue lock
+> > > > >   - v1 Link: https://lore.kernel.org/all/24f7311aed0c9ff06b8ea9=
+82647b82bf543ec369.1784454542.git.xizh2024@lzu.edu.cn/
+> > > > >
+> > > > >  net/packet/af_packet.c | 21 +++++++++++++++++----
+> > > > >  1 file changed, 17 insertions(+), 4 deletions(-)
+> > > > >
+> > > > > diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> > > > > index 8e6f3a734ba0..0107e55de6ff 100644
+> > > > > --- a/net/packet/af_packet.c
+> > > > > +++ b/net/packet/af_packet.c
+> > > > > @@ -1315,13 +1315,25 @@ static int packet_rcv_has_room(struct p=
+acket_sock *po, struct sk_buff *skb)
+> > > > >       return ret;
+> > > > >  }
+> > > > >
+> > > > > -static void packet_rcv_try_clear_pressure(struct packet_sock *=
+po)
+> > > > > +static void __packet_rcv_try_clear_pressure(struct packet_sock=
+ *po)
+> > > > >  {
+> > > > >       if (packet_sock_flag(po, PACKET_SOCK_PRESSURE) &&
+> > > > >           __packet_rcv_has_room(po, NULL) =3D=3D ROOM_NORMAL)
+> > > > >               packet_sock_flag_set(po, PACKET_SOCK_PRESSURE, fa=
+lse);
+> > > > >  }
+> > > > >
+> > > > > +static void packet_rcv_try_clear_pressure(struct packet_sock *=
+po)
+> > > > > +{
+> > > > > +     struct sock *sk =3D &po->sk;
+> > > > > +
+> > > > > +     if (!packet_sock_flag(po, PACKET_SOCK_PRESSURE))
+> > > > > +             return;
+> > > > > +
+> > > > > +     spin_lock_bh(&sk->sk_receive_queue.lock);
+> > > > > +     __packet_rcv_try_clear_pressure(po);
+> > > > > +     spin_unlock_bh(&sk->sk_receive_queue.lock);
+> > > > > +}
+> > > > > +
+> > > > >  static void packet_sock_destruct(struct sock *sk)
+> > > > >  {
+> > > > >       skb_queue_purge(&sk->sk_error_queue);
+> > > > > @@ -4304,7 +4316,7 @@ static __poll_t packet_poll(struct file *=
+file, struct socket *sock,
+> > > > >                       TP_STATUS_KERNEL))
+> > > > >                       mask |=3D EPOLLIN | EPOLLRDNORM;
+> > > > >       }
+> > > > > -     packet_rcv_try_clear_pressure(po);
+> > > > > +     __packet_rcv_try_clear_pressure(po);
+> > > > >       spin_unlock_bh(&sk->sk_receive_queue.lock);
+> > > > >       spin_lock_bh(&sk->sk_write_queue.lock);
+> > > > >       if (po->tx_ring.pg_vec) {
+> > > > > @@ -4544,14 +4556,15 @@ static int packet_set_ring(struct sock =
+*sk, union tpacket_req_u *req_u,
+> > > > >               rb->frame_max =3D (req->tp_frame_nr - 1);
+> > > > >               rb->head =3D 0;
+> > > > >               rb->frame_size =3D req->tp_frame_size;
+> > > > > +             if (!tx_ring)
+> > > > > +                     po->prot_hook.func =3D po->rx_ring.pg_vec=
+ ?
+> > > > > +                                             tpacket_rcv : pac=
+ket_rcv;
+> > > >
+> > > > Same question: why this new condition on !tx_ring here, that is
+> > > > missing below. It looks benign to me, but especially for fixes on=
+ly
+> > > > make necessary changes.
+> > > >
+> > > > >               spin_unlock_bh(&rb_queue->lock);
+> > > > >
+> > > > >               swap(rb->pg_vec_order, order);
+> > > > >               swap(rb->pg_vec_len, req->tp_block_nr);
+> > > > >
+> > > > >               rb->pg_vec_pages =3D req->tp_block_size/PAGE_SIZE=
+;
+> > > > > -             po->prot_hook.func =3D (po->rx_ring.pg_vec) ?
+> > > > > -                                             tpacket_rcv : pac=
+ket_rcv;
+> > > > >               skb_queue_purge(rb_queue);
+> > > > >               if (atomic_long_read(&po->mapped))
+> > > > >                       pr_err("packet_mmap: vma is busy: %ld\n",=
 
-ip6_tnl_changelink() can change encapsulation parameters while the
-tunnel device is still accepting transmitters. A transmitter can
-reserve headroom using the old encapsulation header length and then
-build the packet after the live encapsulation state has changed. This
-can cause skb_push() to underflow the skb head.
+> > > > > --
+> > > > > 2.43.0
+> > > >
+> > > >
+> > > Hi Willem,
+> > >
+> > > Thanks. Yes, that is the intended reasoning for the packet_recvmsg(=
+)
+> > > fast path.
+> > >
+> > > If PACKET_SOCK_PRESSURE is already clear when packet_recvmsg() reac=
+hes
+> > > the pressure-clearing path, then after the RX hook switches away fr=
+om
+> > > tpacket_rcv the socket has already been detached and synchronize_ne=
+t()
+> > > has completed, so no new packet input can arrive and set the flag
+> > > again. In that case skipping the extra lock acquisition is sufficie=
+nt.
+> >
+> > Thanks. Please add this context to the commit message. It's not
+> > entirely obvious. Will be helpful next time someone does a git blame.=
 
-Validate new encapsulation parameters on a temporary tunnel object
-first. During live updates on running tunnel devices, stop the TX
-queues before waiting for existing transmitters with synchronize_net().
-Then apply the new encapsulation state and tunnel parameters before
-waking the queues again. This prevents both rejected changelink
-requests from mutating the live tunnel and new transmitters from
-entering after the synchronization point with mismatched state, without
-leaving stopped TX queues on down devices.
+> >
+> > > For the !tx_ring condition: po->prot_hook.func is RX-side state, an=
+d
+> > > this fix is meant to publish it under the same sk_receive_queue.loc=
+k
+> > > domain that protects RX ring reconfiguration.
+> > >
+> > > A TX ring reconfiguration does not change po->rx_ring.pg_vec, so it=
 
-Fixes: b3a27b519b22 ("ip6_tunnel: Add support for fou/gue encapsulation")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Chai Zixuan <petalzu987@gmail.com>
-Signed-off-by: Ren Wei <enjou1224z@gmail.com>
----
- net/ipv6/ip6_tunnel.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+> > > does not need to rewrite po->prot_hook.func. Keeping the assignment=
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index bf8e40af60b0..429f8151fe99 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1562,15 +1562,26 @@ ip6_tnl_change(struct ip6_tnl *t, const struct __ip6_tnl_parm *p)
- 	ip6_tnl_link_config(t);
- }
- 
--static void ip6_tnl_update(struct ip6_tnl *t, struct __ip6_tnl_parm *p)
-+static void ip6_tnl_update(struct ip6_tnl *t, struct __ip6_tnl_parm *p,
-+			   const struct ip6_tnl *encap_tnl)
- {
- 	struct net *net = t->net;
- 	struct ip6_tnl_net *ip6n = net_generic(net, ip6_tnl_net_id);
-+	bool running = netif_running(t->dev);
- 
-+	if (running)
-+		netif_tx_disable(t->dev);
- 	ip6_tnl_unlink(ip6n, t);
- 	synchronize_net();
-+	if (encap_tnl) {
-+		t->encap = encap_tnl->encap;
-+		t->encap_hlen = encap_tnl->encap_hlen;
-+		t->hlen = t->encap_hlen + t->tun_hlen;
-+	}
- 	ip6_tnl_change(t, p);
- 	ip6_tnl_link(ip6n, t);
-+	if (running)
-+		netif_tx_wake_all_queues(t->dev);
- 	netdev_state_change(t->dev);
- }
- 
-@@ -1705,7 +1716,7 @@ ip6_tnl_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
- 			if (dev == ip6n->fb_tnl_dev)
- 				ip6_tnl0_update(t, &p1, false);
- 			else
--				ip6_tnl_update(t, &p1);
-+				ip6_tnl_update(t, &p1, NULL);
- 		}
- 		if (!IS_ERR(t)) {
- 			err = 0;
-@@ -2105,9 +2116,11 @@ static int ip6_tnl_changelink(struct net_device *dev, struct nlattr *tb[],
- 			      struct netlink_ext_ack *extack)
- {
- 	struct ip6_tnl *t = netdev_priv(dev);
-+	struct ip6_tnl nt = {};
- 	struct __ip6_tnl_parm p;
- 	struct net *net = t->net;
- 	struct ip6_tnl_net *ip6n = net_generic(net, ip6_tnl_net_id);
-+	struct ip6_tnl *encap_tnl = NULL;
- 	struct ip_tunnel_encap ipencap;
- 
- 	if (!rtnl_dev_link_net_capable(dev, net))
-@@ -2137,10 +2150,11 @@ static int ip6_tnl_changelink(struct net_device *dev, struct nlattr *tb[],
- 	}
- 
- 	if (ip_tunnel_netlink_encap_parms(data, &ipencap)) {
--		int err = ip6_tnl_encap_setup(t, &ipencap);
-+		int err = ip6_tnl_encap_setup(&nt, &ipencap);
- 
- 		if (err < 0)
- 			return err;
-+		encap_tnl = &nt;
- 	}
- 	ip6_tnl_netlink_parms(data, &p);
- 	if (p.collect_md)
-@@ -2153,7 +2167,7 @@ static int ip6_tnl_changelink(struct net_device *dev, struct nlattr *tb[],
- 	} else
- 		t = netdev_priv(dev);
- 
--	ip6_tnl_update(t, &p);
-+	ip6_tnl_update(t, &p, encap_tnl);
- 	return 0;
- }
- 
--- 
-2.34.1
+> > > under !tx_ring avoids an unnecessary write on a TX-only path and ke=
+eps
+> > > the moved publication strictly tied to the RX ring transition that
+> > > actually needs serialization.
+> >
+> > Still, this is a change that is not strictly required for the fix. It=
+
+> > may be relatively easy to reason that it has no unintentional side
+> > effects. But it is even easier to do so by avoiding such unnecessary
+> > changes altogether. It would not be the first NOOP that proves to not=
+
+> > be entirely NOOP. I suggest moving the original code as is, instead.
+> =
+
+> Thanks, agreed.
+> =
+
+> I'll make this change in v3: keep the receive hook assignment otherwise=
+
+> unchanged and only move the existing assignment into the
+> sk_receive_queue.lock section. That avoids the extra !tx_ring behavior
+> change while still keeping the hook publication serialized with the rin=
+g
+> state update.
+> =
+
+> I'll also add the packet_recvmsg() fast-path reasoning to the v3 commit=
+
+> message.
+
+Great, thanks.
+
