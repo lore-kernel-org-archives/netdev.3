@@ -1,102 +1,183 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A8F3793A8
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 16:21:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785255696; cv=none; b=VjrIvr9HbQ5tfgo+PIS0a4EB4W2XSHUAa+uP4f6+oxYlfQOMga4JGVg76kixswT/tjCwbfK/LriXIY37V04RTa3mUYjSl5GGjAv0GS63mp7keRSSzJsoAJF5mJSAitIDAmLzMYdvwnk2Crlnzp5iiQryKcVEmJOrM3uq4nL6QgY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785255696; c=relaxed/simple;
-	bh=aFGt4eGpVUUJsFfYj9VdELzPH4A1+vp97yG8fzI6llw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rim0D5aW3jzO2L6paW39hOV20qBWDwvcfnet5RuMmPE7eiV6fA4iDBQAmrGNKmoC5zeAcYXWhWS8s1ZP+2rTkXgEVBuRlmHAV9jbsqQqOLYvW/lL5XJsqSZTXPdOXfqfhtHHkO7xw8SM34JfX387dVK9BCHwnYkY2Sqf8X8DnqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=YR+dzJ/U; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6275A34041B
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 16:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785255709; cv=pass; b=grn841oF+ItgJ+4cYs44558vOLEflPzomwUrQVftg91DUCxclCB7TRfqDADJMq9Wvju3jLF8ip6laO1l242NCPY09e4MyEtK8FtFQEGVkF6XJsd7CjwruwMJao/mXKvXB9tVqGHNqlbwj4j6k82km6HDFPZ9MOZwljO8eL32zY4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785255709; c=relaxed/simple;
+	bh=Jk+DuIcPI1GcugEemQ5xJBOfl2qmWql3hYohtyA2IEA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=R+c1AgqwYaTIksXqSIPj1RyjGg0vVqmp40BeP7cmE32fV9A6fTQfwO58MIShPFwQgJB80bbMSrsiYIGRay9U3vH0X10w439Zw4Vc+OfKOOZamyB/9VtlhZVz8C3+X8QuQOeNDRZfFup/MfXGTsbM3+rTf3C8sbqXu2DQpx4v2fg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XnGBmWJz; arc=pass smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="YR+dzJ/U"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84867f07d63so7304b3a.2
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 09:21:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XnGBmWJz"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c15ca7a7ca9so2874066b.0
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 09:21:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785255706; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iF9zpJFJuD6XtSEIfYn3E8Hxec1RCG4sFMddmeU5J4dCXXNrb9GO6O2sSbmpVC9t/8
+         iYUogJonK6kxCP8h/XmeTdwnoxYpTow8dajckt3fP7Befz6FxQNIReYamuHheCd54MPP
+         M35gaty4wc0Ky8nwGE7s8RNoOQRrLNC/h5lscUNQ/+/kGTRp/amkTvETevBjch6cTR9h
+         2Y+m4392jpEQPeTwCJFtCmE6p3NUkWu1ZL9FnSih8gf3whPK5ko3jKb01DNcv5mIB5+W
+         l0t7hEm/PM+bhZ5aoD3yQieh2xvNldMgu5HxQecuYsOH891EAAx6aaVmts+zmEUnY9kb
+         fNeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=aSACA+rojs2I/ZtJErAjFTUM8LM1UmDZ8O99mcrYQi8=;
+        fh=Xe8tMI3VjrhyVGPgSH69FhXgIYgezvIHFtF2DWDiJMk=;
+        b=OYFCfpl5yh4w7G8xusUeSJZnfVn4n68IXFHFtwY5cCqMPyWdBkqfYyHXHEbp/TIfs4
+         hOrQAKaVGa8Vff8ejFbIMVaHf4pWGTy+QaQqlm+nGYzvYr6D0DrQvNsdCTGW2+exOX9e
+         89fYZ9/a+N6++jR/kcU/qW4YPwcTzNq92gFZyj9gGSvreIoxdd5jq1bTehgjxwPkLjrj
+         wxoD32qJ8P+zkpEZrY0170WEwxrGV946eeTeA9XG7iC42zJA1ETSonTWVciwj3K871GN
+         8Oyda/wrnrAkqPm2XNCZHVtuqq6xtVdRlKq4BSBt7uu1sqOIfiCS1dE8gF74hDeUqZPe
+         E3Hg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1785255694; x=1785860494; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+        d=gmail.com; s=20251104; t=1785255706; x=1785860506; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=T9YfnxvbCr50Teby0V6rb2WP5ZtOhfF45gbSFID9AZs=;
-        b=YR+dzJ/Uuy2Cadh8m82hPmVoSpCmfYJXFqXGhYZLtSvLNfAi7oP/IVzjI8ZfEH/qAn
-         8mJnfeBoIoAfUqefg1XBQ+q1OPKtxlwNfYO+/ENhcUhIyH9uZ/ggLfDDlNkSTfifGu5r
-         lGV1PtOv3lGy69DbSfj9ioeX9GDqvmyYlApQEmyTNWcG+ZafMjvTcvgTH+0WYFmyo2aM
-         jRrFju2vIDGekBsD/q+OK6YiiSRJMrBx4MexCTHB1dGS2pNn5USNhKSnYlPrGP2U5kYf
-         iWjpb2AJk1BdDm8BFej85m52upG67hnhgQ4iFoGeF+HdcH0tIfPd3MouegSVcvPHY2Fc
-         VKIw==
+        bh=aSACA+rojs2I/ZtJErAjFTUM8LM1UmDZ8O99mcrYQi8=;
+        b=XnGBmWJz/8Aa9KTlEN0HM1jLVTFeHvCxnW635KhZU0X+Raz/OQYqKl+plH0LsboXeB
+         cutTNTlWPGNBWNefdLxrrSbc9bhEkLAxsCrRL956IDMY8tgPmglm2weKQNAS91LMmyNW
+         uDN7Ia1N/+aW7bTSUwnaPa/hv7Wkz7xYy30EkrPixqTesgKAuvQVerkXbrSd/sKuS6nK
+         2AObn9o1qe1365gIXZPOLVWoDgxJUfw2f/vfYmfAvV9ygYLODYPeFk6NoeJQDg70LHw5
+         vPEykkWxf+0X0JQ7gcDpCRCowBDq+1Aqo1A+QXgzV1U00rJkpTTbZ3Au5MWQ4ubDr1z7
+         0ngA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785255694; x=1785860494;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20251104; t=1785255706; x=1785860506;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=T9YfnxvbCr50Teby0V6rb2WP5ZtOhfF45gbSFID9AZs=;
-        b=XFyn5maq0H9d3Zn30eB7oysmp1vbHJXMHmm8nc7TH4yfMwW4YIRbycIeDHp9ALkHZF
-         ehvRZlBOLdj9PoChc9nRJs5RQDEcSNSQF6G+4pWS/01NSi3BvqMy1LFV/X7MJ0gOC3O/
-         Z7VX5pO0M1CCflhDDKAh9LXjuVL0oex+G9TharEKS/aVGE6RTz4z6N3ReKjVJuJ1btrG
-         EvSPl5Qe5UEuQoVFT6rQdaS7ZASRHPEpPdWzyOoZZeBvSxrX7tok9d67IG+golEFxKT0
-         5NEPcmBb3l2iRyHxThWCHyP4dh7ZejtajMAraBHeZrqUwaXsdvy/luuIFMO/+n4GF6CC
-         NTzg==
-X-Forwarded-Encrypted: i=1; AHgh+RqnFsAB6hf0sCzuxhUBOdbct2vG1aE0lw9SLuZRH3CdA7NOLCrcP/LrFSrOTtPOaadLYXuyYJY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx65/5XGURpKLRjVFyh5mYccWjyhsqP3/0bz0WZBPX78OhUErBH
-	pP+AU46nafpXtNrDZREWTS1q7P5l3WsFbnu/EaWPYi/DBgsdrfWhLfxJ3Xmtf7O0IEo=
-X-Gm-Gg: AR+sD13TzMEGnXH3R2kJH7w+AGqStxFeME/Oe3Ubq0EHhJUyfx8ZpwVPQNq/z/oa0Zr
-	/kwS2Lez0QDvqYjKvTUlo0S78C3q6kT6T+wz/X5n6hwF5nFeoLNxfPPI0PDwO9FlocyjJPo7hdM
-	S5DcXcJ1/U6yWtsv9ljh9ZeMQg0KPzvPkHMyntfIJ4joj6dkwX5/NO9SD1S/VPDuRmXUvcF5/Ca
-	G/OmZeyzGz/Tu6BiWaPSdbtrVWME6MJdYgIhzRnqdFvS0NW7AG7A0QQsdpqg4AIB3iNUl+YtfVc
-	yQmMztGDIdZ3FhN7P1XohxXBRz4/1xBxKBxEvDcqKtXcqrmZSfK7p4F4pRn1IzL6KQ1FaOTwC0w
-	nU3NAi/aGewuHRMAqMJrfwMnyZ5bwihKpBGCkL4cslW0Y/ejGR1W7m6215Q==
-X-Received: by 2002:aa7:888f:0:b0:848:44d2:72a2 with SMTP id d2e1a72fcca58-84e932f43c8mr3258665b3a.27.1785255693663;
-        Tue, 28 Jul 2026 09:21:33 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:5::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea03767bbsm169007b3a.47.2026.07.28.09.21.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 09:21:33 -0700 (PDT)
-Date: Tue, 28 Jul 2026 09:21:31 -0700
-From: Joe Damato <joe@dama.to>
-To: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] netlink: specs: nl80211: fix TOOD -> TODO
-Message-ID: <amjXCx9R/GCiP4nE@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Shaikh Kamaluddin <shaikhkamal2012@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260728154142.12133-1-shaikhkamal2012@gmail.com>
+        bh=aSACA+rojs2I/ZtJErAjFTUM8LM1UmDZ8O99mcrYQi8=;
+        b=NbJB9W504zP51xcUxK+S/IWrOpA/6DiKI5Fv3BUy4Kqrse5K7t8SN7rKTTqUMFtikn
+         uAUjiqSriSHUxXrNOYLnOKfPZRpVc4gcJHyyYhQie3y5wimGCBeGDe8GzPSOHtwqZGyq
+         qRbM7e6ZBsbI/e57UDkuvZYrrKhMuCtV0HD1j/DKrm4oa6eILhK9pT8QypvQ/wYR272V
+         CWO/AovMx1todw1U1bM9HBMjwhbXWu9HYcYB8AJZD81L37x1cueB7wWM1CiTaBzrVRZx
+         aSeNy+RolK7+H7D7/JEAS2F41uWStiHuhtalXv5pH5ZztPsdxug2gI6YZ1yUomc+Fj+S
+         Owug==
+X-Gm-Message-State: AOJu0YxKSw+WSQfqFub1dSwFeesXg+456v67DJNMDJygZ42mqXxw/j8r
+	gbbG/rabRv3cT27lthfbP6wJMFuSLoOji34vv1HvQtHdRaqQRvyq8D7hMvfrhO7pADoxRm5Ixg7
+	LxJhGKPeJ+JfyMZboF4te8BQ69zWwLD49auprTFw=
+X-Gm-Gg: AR+sD13Ec4Mvzqo9QWtvvyVmwzsQ38DMveQZJkdrVj6PxO0aTFXXfhYvHGMH3+7WKC5
+	xB4mF7wa4Mu/zP38zfFXPL86UPXUgyfVqPC5yjoHLHdMU2H7xiHYma0pXmdDjQlE9nwdV0Le9he
+	1juDd2Tq7QpgHRRXG6AY1jeJpgizwycEfq4wcDktl+kdHDYnAdABzbUsalklvePtI5Jw8zVZAdS
+	KuPznzrDrkUTpRobqkm54qC8M9Jx3vYZIwv27kSIvgz8DU56MgZ+kqrbvlnRz/4j1ZL0F8eIuzw
+	HcqtyeyKTO/lDwwn16ZXdRysFDRDtQvjlddg7IBHpE4RbQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260728154142.12133-1-shaikhkamal2012@gmail.com>
+X-Received: by 2002:a17:907:6090:b0:c15:b4f3:6d25 with SMTP id
+ a640c23a62f3a-c1f721bd9d3mr164216566b.19.1785255706278; Tue, 28 Jul 2026
+ 09:21:46 -0700 (PDT)
+Received: from 1051196574424 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 28 Jul 2026 09:21:45 -0700
+Received: from 1051196574424 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 28 Jul 2026 09:21:45 -0700
+From: Muhammad Bilal <meatuni001@gmail.com>
+Date: Tue, 28 Jul 2026 09:21:45 -0700
+X-Gm-Features: AUfX_mx8DJLaXoWOlAavAXFn13zlzy4RvDxvrl6Do2e2q2ZD5lpazoYqqv17suQ
+Message-ID: <CADqcGBkVewfYCirbeusDW1xbs+mFs9ditaBX7KzG6NcM=xpm9w@mail.gmail.com>
+Subject: [PATCH v1] af_unix: fix use-after-free in unix_stream_recv_urg()
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: kuniyu@google.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jul 28, 2026 at 09:11:42PM +0530, Shaikh Kamaluddin wrote:
-> Fix spelling error reported by codespell in description strings:
-> TOOD -> TODO. Attribute names are untouched. No functional change.
-> 
-> Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-> ---
->  Documentation/netlink/specs/nl80211.yaml | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+unix_stream_recv_urg() reads out-of-band (MSG_OOB) data from
+unix_sk(sk)->oob_skb.
+It saves a pointer to oob_skb under sk_receive_queue.lock and state_lock,
+and then drops both locks before invoking state->recv_actor(oob_skb, ...)
+and incrementing UNIXCB(oob_skb).consumed.
 
-Reviewed-by: Joe Damato <joe@dama.to>
+Prior to commit 8594d9b85c07 ("af_unix: Don't call skb_get() for OOB skb."),
+the OOB sk_buff held an additional reference count. When that extra refcount
+was removed, oob_skb became a bare pointer into the socket's receive queue
+without any lifetime protection once the receive queue lock is released.
+
+Because unix_release_sock() does not acquire u->iolock during socket close,
+a concurrent close() on the socket races with unix_stream_recv_urg() as follows:
+
+  Thread A (recvmsg MSG_OOB)            Thread B (close)
+  --------------------------            ----------------
+  Acquires iolock & queue lock
+  Saves oob_skb = u->oob_skb
+  Drops queue lock & state lock
+                                        Acquires state_lock, sets TCP_CLOSE
+                                        Sets u->oob_skb = NULL (locklessly)
+                                        skb_dequeue() & kfree_skb()
+frees oob_skb
+  recv_actor(oob_skb, ...) -> UAF read
+  UNIXCB(oob_skb).consumed++ -> UAF write
+
+Additionally, unix_release_sock() cleared u->oob_skb with a lockless plain
+assignment. This creates a KCSAN-visible data race against READ_ONCE(u->oob_skb)
+in manage_oob() and unix_stream_poll(), both of which rely on all
+writers updating
+u->oob_skb with WRITE_ONCE() under sk_receive_queue.lock.
+
+Fix the use-after-free by taking an explicit reference via skb_get(oob_skb)
+while holding sk_receive_queue.lock in unix_stream_recv_urg(), and releasing it
+with consume_skb(oob_skb) after the data copy and consumed counter
+update complete.
+This guarantees the sk_buff remains valid even if a concurrent close() dequeues
+and drops the queue's reference.
+
+Fix the data race in unix_release_sock() by wrapping the u->oob_skb clear in
+sk_receive_queue.lock and using WRITE_ONCE(), matching the locking contract used
+by all other oob_skb update paths in af_unix.c.
+
+Found by code review of AF_UNIX OOB lifetime management after commit
+8594d9b85c07,
+and verified with a clean build.
+
+Fixes: 8594d9b85c07 ("af_unix: Don't call skb_get() for OOB skb.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+---
+ net/unix/af_unix.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index f7a9d55eee8a..011ea88d57c2 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -689,7 +689,9 @@ static void unix_release_sock(struct sock *sk, int embrion)
+ 	unix_state_unlock(sk);
+
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+-	u->oob_skb = NULL;
++	spin_lock(&sk->sk_receive_queue.lock);
++	WRITE_ONCE(u->oob_skb, NULL);
++	spin_unlock(&sk->sk_receive_queue.lock);
+ #endif
+
+ 	wake_up_interruptible_all(&u->peer_wait);
+@@ -2773,6 +2775,7 @@ static int unix_stream_recv_urg(struct
+unix_stream_read_state *state)
+ 	}
+
+ 	oob_skb = u->oob_skb;
++	skb_get(oob_skb);
+
+ 	if (!(state->flags & MSG_PEEK)) {
+ 		WRITE_ONCE(u->oob_skb, NULL);
+@@ -2793,6 +2796,8 @@ static int unix_stream_recv_urg(struct
+unix_stream_read_state *state)
+ 	if (!(state->flags & MSG_PEEK))
+ 		UNIXCB(oob_skb).consumed += 1;
+
++	consume_skb(oob_skb);
++
+ 	mutex_unlock(&u->iolock);
+
+ 	consume_skb(read_skb);
+-- 
+2.55.0
