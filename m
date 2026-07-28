@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACF83C3C10;
-	Tue, 28 Jul 2026 20:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1CD53FFAC6;
+	Tue, 28 Jul 2026 20:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785272256; cv=none; b=ha4qaTUHcHaSk6aUo5mg839jOP8PfoZtmCeCkDcDBreaHVUrEHCV+OR3bS3l5h7KLGcvPWzLVGgTtX/gBibhfkF8Fo49J2+bGmj6R41U1Ob0LY9qwIA3+CjIAVCsRhVLdCMNUMqTH/EwTwEYCoxQUD/SSmEquw0pO8tygTWIqKk=
+	t=1785272376; cv=none; b=A1zF/Lh71uX/748nRzdsx2MaksJZQtPbc4/FMKBMlDscjNdMLyylFYNcX2FV5+YSOrP8U9qbfswROCCJbRErRfyLrUzZUKIF0MTSHljv3RPj6F8M60JQuoFV7joTMD/1USEXFhzVo4dKTF7U9WZRpEIQI7y4H+WOiOt4GMBABL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785272256; c=relaxed/simple;
-	bh=lg7FNxlYuK1FJK0igUpTsKSb59kQBrVYWJDr7HQ9XHA=;
+	s=arc-20240116; t=1785272376; c=relaxed/simple;
+	bh=qJtQtq20/6GX5dweJZe+nfqgesGBGUtTQL1fChdNrRE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lQ4tD6W9ULLbCUtb/Kj6SMNCDkjXxDmQ0ZQoTVWdz34EyT4I1vkjV5TLp8+lUyN/Pbdv77xwx1ZSYEJaRbqlyY/3X1a6d/NAjgbBG6K3I3IalKTviutduApmEr4z7DtsGfOcjadvq3rPwRmjXmtSzlXZgSto1r06VgWGrXlvAIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=pl+pnjYY; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=TxHljsieO5EY8ax07qqtmJMkcxSdnEupx94uL4qA6SwZL6ovgsUcvLj0jTJegeWwDOzrf0lYRAlGzo8YtIKMH+0JI0Lm595jA0lJ2vmV2Fzor0pn7yeR6g3pbqTDgXue8epTIcPQ3n4vtUUWj92HsYEyNP88UagfttBzMk5axLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=J4rTOcH7; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="pl+pnjYY"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="J4rTOcH7"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=7pPCJpmxouqYb2+iO4LLS66Umd/QQeZr0uempkZHs5Y=; b=pl+pnjYYiKYC++aDrkiufkaS/F
-	USyFANcNKazsHm1WMrEYn5mO7oKjGKBcNjVRUqNhd+SwqLrchSAaulh1Uibhbz9O8qAobeCdiZE2l
-	vQLAmQ831jly0vEkuK+ZkOV8MBPHKluBiOJqT59AUYcEGhpPQPk4QxeiewK7jqG1Rpak=;
+	bh=yqFpRE1TaLcYQTYUmiej5bLJgJn3ouN/OqeUA5dEOaw=; b=J4rTOcH7idYaNPYf9IxBN9iBK1
+	+pgSZX/JVqtfpxFdxcrnlkdTajLxcpWhUJTqpSdas8gQukLcT1Fh6EY8YRpiSEvXYz91uFzXI7DX1
+	93tHrRWfSU80vrl/md7l3WXvPqVHeZUQBaydmyLI9tyBSsI6v46mNngkXDaDaBjX1c2E=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1woorP-00EhKZ-F9; Tue, 28 Jul 2026 22:57:11 +0200
-Date: Tue, 28 Jul 2026 22:57:11 +0200
+	id 1wootT-00EhMm-LT; Tue, 28 Jul 2026 22:59:19 +0200
+Date: Tue, 28 Jul 2026 22:59:19 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Daniel Golle <daniel@makrotopia.org>
 Cc: "Chester A. Unal" <chester.a.unal@arinc9.com>,
@@ -42,11 +42,11 @@ Cc: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Sean Wang <sean.wang@mediatek.com>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net 1/3] net: dsa: mt7530: check bus->read() errors in
- the MDIO regmap backend
-Message-ID: <c2ad091c-e594-436d-a245-9b3abf17de94@lunn.ch>
+Subject: Re: [PATCH net 2/3] net: dsa: mt7530: error out on failed reads in
+ ATC/VTCR command polling
+Message-ID: <0c740a09-fd5f-4ca3-b940-9e034519304c@lunn.ch>
 References: <cover.1785213071.git.daniel@makrotopia.org>
- <3c628e48276c2e5522c8795a6be60d11c7a76a7d.1785213071.git.daniel@makrotopia.org>
+ <eea1d8f15c54375b3770c23e09fb3217df487169.1785213071.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,19 +55,22 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3c628e48276c2e5522c8795a6be60d11c7a76a7d.1785213071.git.daniel@makrotopia.org>
+In-Reply-To: <eea1d8f15c54375b3770c23e09fb3217df487169.1785213071.git.daniel@makrotopia.org>
 
-On Tue, Jul 28, 2026 at 05:52:14AM +0100, Daniel Golle wrote:
-> bus->read() returns a negative errno on failure, but
-> mt7530_regmap_read() assigns it to a u16, truncating e.g. -ETIMEDOUT
-> into 0xff92, and returns success. The garbage word is then consumed as
-> register data, and read-modify-write cycles write it back to the
-> switch. Check both reads and propagate their errors.
+On Tue, Jul 28, 2026 at 05:52:21AM +0100, Daniel Golle wrote:
+> mt7530_fdb_cmd() and mt7530_vlan_cmd() poll the command register
+> through a helper which returns 0 when the underlying read fails. A
+> failed bus transaction thus clears ATC_BUSY/VTCR_BUSY and is treated
+> as successful command completion, and the subsequent ATC_INVALID and
+> VTCR_INVALID checks are defeated the same way.
 > 
-> The same defect existed in mt7530_mii_read() since the driver was
-> introduced and moved into the regmap backend unchanged.
+> Poll using regmap_read_poll_timeout(), which stops on read errors and
+> propagates them, and check the completion status read as well. Take
+> the MDIO bus lock across the sequence as the switch regmap is set up
+> with locking disabled.
 > 
 > Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
+> Fixes: 83163f7dca56 ("net: dsa: mediatek: add VLAN support for MT7530")
 > Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
