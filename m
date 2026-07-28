@@ -1,135 +1,131 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from rcdn-iport-4.cisco.com (rcdn-iport-4.cisco.com [173.37.86.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E323244692;
-	Tue, 28 Jul 2026 06:19:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3513AFAE7;
+	Tue, 28 Jul 2026 06:29:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785219592; cv=none; b=NLcEJ7LQgeynnPXHG0ZnlRUuypP3kllo7kw1n4QVX8yGTCxtE4aVKuTuOXfiRW74C6w3/OVTvnuKIM5qsx94SCz1xlkmbQD6+yoYRcM2donfPBHW3b+YluYuMFuhGNz//NDoV71X28U2wGuxpfd06ajwtNhpCUD2p02yam4xubE=
+	t=1785220156; cv=none; b=ePS0fEsMK9bC7n9ncZVX3RetNZrtDoSu28TuqL1xTG4mIMRBF4cB+89UaUSXF38nA3XH47cv7BrhP1CJjY/FwiepslvDVkZU6o/w3P+9rfRh+GOA+XW9DAbGr2gqP0MZR2oivjhYs5CN4f0xjruaWIjHaOMbsrStPqn9Ejh+8uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785219592; c=relaxed/simple;
-	bh=rm0dntThz0DwmcNzLNO300rGwZiw4vacrmFC8RxjhT8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=fhnXdXMrMs6l7urKjw6u8qSN42wmgtcUgFpm0kkBMf83qOSU+RDMW8t+PXesx6BSzuS59YZkRD+glhUc9LfJws2BPX/PnG+pzZZH00+2oIDm8myBh0133Qq8uUZftGAoC/jyA8sXyA1TQm/46dKUTcl9P617IlS6pKfi3mLuAxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=pAy9edPx; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1785220156; c=relaxed/simple;
+	bh=8VVI3zu/IljiNrmKFcDO5Rs9cgIGakJMClOGhZzqyZE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MKBCzW4j03JSdhSfvjx+LEWEKo8yugr/lwWnph+HbE7e7DVh3U2o1izMkj9tTPu1B+yVGz3OpNswE5cFZrI8+zKTh459Ot0zoUcxDvSBLad7BWwt5Q2ZBkRKj8WlW3x8nh41Ep3ciWQ+YIlHURTM9P5Rj5LX5jwvKIIfDKVF7Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=W9QV8dcv; arc=none smtp.client-ip=173.37.86.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="pAy9edPx"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66S6IMMK03651401, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1785219502;
-	bh=zytL0UhueysO2+dNdXO7unTI6+xqk/WT8m3TOBPUIBc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=pAy9edPxAn0hpZfyxMoH3ZaPio9y/mpwfvOBBRIPTWq215xwo6mqWUMU0XxxQHNIH
-	 xK3/UVE3k+qaqFBQm5wqYRHshfDFzUwDFRRDkiIJpW4nL5vZIdEDiCbYZlBeMd+30A
-	 1DKKajeECOmx6qp+dr3glMAY+pIkc8IAf4ttAf2P+dnPVdXt6MX9jIoYufjXmsjXb2
-	 2jKXAFAyAAevQ3rFi/CXnfaxJNGZFfsbXkx9UExdk2lZOgeb+dHfC6zBZHPrq0FAu+
-	 tXYV/MkmBJqD3MsLYG5d7B3zSe9hpQgmyHsAXFlBZbKHAk5e3pEbiu7J6rrcj9HJk+
-	 VqN2IrUTFm/iQ==
-Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66S6IMMK03651401
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 28 Jul 2026 14:18:22 +0800
-Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
- RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 28 Jul 2026 14:18:22 +0800
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
- RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.043; Tue,
- 28 Jul 2026 14:18:22 +0800
-From: Javen <javen_xu@realsil.com.cn>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "nic_swsd@realtek.com"
-	<nic_swsd@realtek.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "maxime.chevallier@bootlin.com"
-	<maxime.chevallier@bootlin.com>, "horms@kernel.org" <horms@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"daniel@makrotopia.org" <daniel@makrotopia.org>, "linux@armlinux.org.uk"
-	<linux@armlinux.org.uk>, "enelsonmoore@gmail.com" <enelsonmoore@gmail.com>,
-	"daniel@thingy.jp" <daniel@thingy.jp>
-Subject: RE: [PATCH net-next v7 4/7] r8169: add support for RTL8116af
-Thread-Topic: [PATCH net-next v7 4/7] r8169: add support for RTL8116af
-Thread-Index: AQHdGYHgECGgdwHRfk+In15lMVg2/7Z5x7IAgAClguCAAB6GgIAH8VTQ
-Date: Tue, 28 Jul 2026 06:18:22 +0000
-Message-ID: <d8fa2337e3894a178616a0b1f2786a1f@realsil.com.cn>
-References: <20260722022906.271-1-javen_xu@realsil.com.cn>
- <20260722022906.271-5-javen_xu@realsil.com.cn>
- <ff90f295-31df-490b-aad3-1bba6ef0ab5d@lunn.ch>
- <90aea677b62e44f3a705caa900b3af95@realsil.com.cn>
- <b01e69e8-3c8a-4af5-9de2-19d73713cff3@lunn.ch>
-In-Reply-To: <b01e69e8-3c8a-4af5-9de2-19d73713cff3@lunn.ch>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="W9QV8dcv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=1590; q=dns/txt;
+  s=iport01; t=1785220154; x=1786429754;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=o8nLSGsR1/3zpU+mwlYc0ZXixuk2P7beClYxIA9xeTU=;
+  b=W9QV8dcvYnnuRI2BqbLNrBlLtT0GSMHX3JNJ/UnsRvEM5bWjKV0M0Zdf
+   5jgUiFus4UiDO4Oz/YmDJ+199O+VJtP5Uq/xpHzuj6bKYhrsMQXQGuwef
+   SWDGlAQ1Vtwz6bwRZ3fuFwNcFMzbn2rbAS/lGz/U9CkWMP+pE+nmPHM8P
+   o6jLE7KnQcz7ZtS1rt9Sko9CYAVLYGGoiZlHbzhBz5BfPylQP+zdgewAd
+   B+nph+j3yKuVYEN4q+WGuyOLdasal9ejv754drqQTjraCBk/Sa2F3Wwa7
+   /NYUIhvEkMkRwlkvsatXQ98snaeKywvy2HqhZaF4p2CAv+XjQMSMXafPS
+   w==;
+X-CSE-ConnectionGUID: jyHkesg8TBq7a/SQMFyedw==
+X-CSE-MsgGUID: fGk17n3LQsCHdJObcsxPug==
+X-IPAS-Result: =?us-ascii?q?A0A/AgAZH2hq/4z/Ja1aHgEBCxIMggULgleBUkNJlkqeH?=
+ =?us-ascii?q?hSBag8BAQEPUQQBAYUFjWUCJjQJDgECBAMCAwEBAQEBAQEBAQEBCwEBBQEBA?=
+ =?us-ascii?q?QIBBwWBDhOGXIZdKwsBRoE9ARKDAoJ1A8BSgXkzgQHeRYFmAQsUAYE4hXGHb?=
+ =?us-ascii?q?oVxJxuBSUSEfoQpAYZeBIMukkJIgR4DWSwBVRMNCgsHBYEzMwMgCgsSEhgVA?=
+ =?us-ascii?q?hQvDwQWMh1wDCcSLBeBDBsHBYEdfy1hhFgjGTl/gTF1SnctaQESF4EagzwCg?=
+ =?us-ascii?q?hUDCxgNSBEsNwYOGQQ+bgeNdSKCLQkHDoEAFIEbgXICpSuhD4QngWafdRozq?=
+ =?us-ascii?q?mwuh10Jj3l7I6Q3hGmBaDyBWTMaCBsVgyJTGQ+OLRbRJScyPQIHAgcOAwuRa?=
+ =?us-ascii?q?ASBegEB?=
+IronPort-Data: A9a23:vrreM68PMTobvwybEju4DrUDQH+TJUtcMsCJ2f8bNWPcYEJGY0x3z
+ TcYXT/TPfeDa2v8KNp3bd/k/BlQusSAx4NjTFBvrH9EQiMRo6IpJzg2wmQcns+2BpeeJK6yx
+ 5xGMrEsFOhtEDmE4EzrauS9xZVF/fngbqLmD+LZMTxGSwZhSSMw4TpugOdRbrRA2bBVOCvT/
+ 4mvyyHjEAX9gWAsbThLs/jrRC5H5ZwehhtJ5jTSWtgT1LPuvyF9JI4SI6i3M0z5TuF8dsamR
+ /zOxa2O5WjQ+REgELuNyt4XpWVTH9Y+lSDX4pZnc/DKbipq/0Te4Y5nXBYoUnq7vh3S9zxHJ
+ HqhgrTrIeshFvWkdO3wyHC0GQkmVUFN0OevzXRSLaV/wmWeG0YAzcmCA2k0LK0b9/14UV1k7
+ KMRbws0Sz6Siu6plefTpulE3qzPLeHxN48Z/3UlxjbDALN+GtbIQr7B4plT2zJYasJmRKmFI
+ ZFGL2AyMVKZP0Un1lQ/UPrSmM+zj2X+aD1bqHqepLE85C7YywkZPL3FbYOIK4PaGJoI9qqej
+ mzp/D2mBEo+Dce06Tan1Xinnf/3gCyuDer+E5X9rJaGmma7ymUNBRg+WVKlrPy9jUCiHdRSN
+ yQ89yYzqKEg+VCDQd76UBm15nWDu3Y0WMdaGsU55RuLx66S5ByWbkANSDJbZcNlssIqSTE0/
+ luUmdWvDjwHmKWcQ3+b95+OoD+yMDRTJmgHDQcATA0Y85zgrZs1gxbnUNluCui2g8fzFDW2x
+ CqFxAA4iqkfgNAjyaq25xbEjiiqq5yPSRQ6jjg7RUq/5Q9/IYrgbIuy5B2DtrBLLZ2SSR+Ku
+ 31sd9Wi0d3ixKqlzESlKNjh1pnwjxpZGFUwWWJSIqQ=
+IronPort-HdrOrdr: A9a23:1Im2/axPPB2rPXFWHuyKKrPwGL1zdoMgy1knxilNoNJuHvBw8P
+ re/sjzuiWbtN98YhsdcLO7Scq9qBHnlKKdiLN5VdyftWLd11dAQrsO0WKb+V3dMhy70PJB3q
+ F9dKU7ItjxAV9myfve2mCDYrMdKB3tytHOuQ8YpE0dKT1XVw==
+X-Talos-CUID: 9a23:xnNQsGMSzDJDUO5DWjhH90MPFZAZWGSCxTDrGmqWGGtlV+jA
+X-Talos-MUID: 9a23:b4QXWwiS/BOM+vuqgP8HecMpOuhruvuoU2Q0ir4mt+ujPydrKw+Ag2Hi
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.25,189,1779148800"; 
+   d="scan'208";a="515978575"
+Received: from rcdn-l-core-03.cisco.com ([173.37.255.140])
+  by rcdn-iport-4.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 28 Jul 2026 06:28:04 +0000
+Received: from satishkh-l-mj0bbv6x.cisco.com (unknown [10.25.130.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by rcdn-l-core-03.cisco.com (Postfix) with ESMTPS id F24C018000593;
+	Tue, 28 Jul 2026 06:28:03 +0000 (GMT)
+From: Satish Kharat <satishkh@cisco.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Sesidhar Baddela <sebaddel@cisco.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Satish Kharat <satishkh@cisco.com>
+Subject: [PATCH net] enic: fix tx_hang_reset use-after-free on device removal
+Date: Mon, 27 Jul 2026 23:26:30 -0700
+Message-ID: <20260728062730.2394873-1-satishkh@cisco.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.130.254];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.25.130.254, [10.25.130.254]
+X-Outbound-Node: rcdn-l-core-03.cisco.com
 
-Hi Andrew,
->
->On Thu, Jul 23, 2026 at 03:21:26AM +0000, Javen wrote:
->> >
->> >>  static void rtl8169_init_phy(struct rtl8169_private *tp)  {
->> >> +     phy_init_hw(tp->phydev);
->> >> +     phy_resume(tp->phydev);
->> >>       r8169_hw_phy_config(tp, tp->phydev, tp->mac_version);
->> >>
->> >>       if (tp->mac_version <=3D RTL_GIGA_MAC_VER_06) { @@ -2562,7
->> >> +2607,7 @@ static void rtl8169_init_phy(struct rtl8169_private *tp)
->> >>           tp->pci_dev->subsystem_device =3D=3D 0xe000)
->> >>               phy_write_paged(tp->phydev, 0x0001, 0x10, 0xf01b);
->> >>
->> >> -     if (tp->sfp_mode)
->> >> +     if (tp->sfp_mode =3D=3D RTL_SFP_8127_ATF)
->> >>               rtl_sfp_init(tp);
->> >
->> >This could be diff getting me confused....
->> >
->> >You unconditionally call phy_init_hw() and phy_resume(). And then if
->> >this device should have an SFP you do something else. How can a
->> >device with an SFP also have a PHY?
->>
->> I totally agree that the SFP initialization logic does not belong in a f=
-unction
->meant for PHYs. But rtl_sfp_init() call was already located inside
->rtl8169_init_phy() before my series. And it works well. This mainly becaus=
-e the
->patch which add support for RTL8127atf(commit id: fef0f545511f72223)
->assume that RTL8127atf has a dummy phy. So tp->phydev will not be NULL.
->
->[Goes and looks at what rtl_sfp_init() actually does]
->
->So it does not touch phydev making this function at least safe.
->
->> And in patch 5/7 of this series which add phylink support for RTL8127atf=
-, I
->remove it.
->
->Yes, i did notice the dummy PHY getting deleted. I will look at that patch=
- in
->more detail.
->
->      Thanks
->        Andrew
+enic_remove() cancels the reset and change_mtu_work items but does not
+cancel tx_hang_reset. A TX timeout that fires while the device is being
+removed can schedule enic_tx_hang_reset() so that it runs after
+free_netdev(), resulting in a use-after-free.
 
-Just a gentle ping on this thread.
+cancel_work_sync() alone is not sufficient here: the still-live watchdog
+and notify paths can re-schedule these work items in the window between
+the cancel and unregister_netdev(). Use disable_work_sync(), which
+cancels the work and blocks any subsequent schedule_work() from
+requeuing it, and apply it to the reset and change_mtu_work items as
+well so the same requeue race is closed for all teardown work.
 
-I am currently preparing for the next version. However, since you mentioned=
- earlier that you were planning to look at patch 5/7 in more detail, I want=
- to ask if you prefer me to send the next version or should I hold off and =
-wait for your feedback on patch 5/7 so I can address everything in next pat=
-ch.
+Fixes: 937317c7c109 ("enic: do hang reset only in case of tx timeout")
+Signed-off-by: Satish Kharat <satishkh@cisco.com>
+---
+ drivers/net/ethernet/cisco/enic/enic_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Thanks,
-Javen
-
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index e839081f9ee4..3f384b481ff0 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -2956,8 +2956,9 @@ static void enic_remove(struct pci_dev *pdev)
+ 	if (netdev) {
+ 		struct enic *enic = netdev_priv(netdev);
+ 
+-		cancel_work_sync(&enic->reset);
+-		cancel_work_sync(&enic->change_mtu_work);
++		disable_work_sync(&enic->reset);
++		disable_work_sync(&enic->tx_hang_reset);
++		disable_work_sync(&enic->change_mtu_work);
+ 		unregister_netdev(netdev);
+ 		enic_dev_deinit(enic);
+ 		vnic_dev_close(enic->vdev);
+-- 
+2.43.0
 
