@@ -1,389 +1,371 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2883A425B;
-	Tue, 28 Jul 2026 12:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED5E81AA8
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 12:57:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785243185; cv=none; b=KEfgTGBb9FfU7tPxUmiEXN/nnwDzMKyt4u5MXCLkgGVjLNas36QaN3WJuWRi5Q5jvUhcelmw00SqNq6cvgIZUVPiyWwg1ucBRyEhaziO3PBeXHah66WKn5b/bOdp1gxWmg9wt50ZWNPV2lexww/fc301+uPwpALQJ2vtcyV/WY8=
+	t=1785243447; cv=none; b=kGBChICO9w0PhH4u5s1MJzUB+EN64q260tvkoMFDUZw+ueDbp1uFbL/m2OTH3G1LdjldvxYksMePXJmUxXM2Lz59O9vqdBuVRaNK5aj2Q52PFed9n2dwgKZzmxOVc9j/UNu2oo6ayKNIo0tKSUNwM8C/Ykc04tCdI7FWUxTCW0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785243185; c=relaxed/simple;
-	bh=aoguRqU/W43LVSgVROl4d7/Cid8MRZiVzC9h+uevftA=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=X6mnOiff6u1GIiRFnfLyFAGwicu0oS5/hJ1dLFuhRgUdCuyGOKPusKeYtswXhT0ztnr5OitX5Q1Mfj+d3ffPONaVMDXlIAxI8mG1pkknyaLkRBp6KNAPyRwKAYv52Er3wXWu6zc74n5qm3tRrrNo8F5062U9/qs7oAhg0m4W2G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=A3NNgX+W; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785243447; c=relaxed/simple;
+	bh=7deuUMVh1aMlBqo6OXc1g9ZGuRgIW1kIa//npv8UgHY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=olGT4i82j42JVNwfPR0nMG2ApNZ9g4XVT3ggrFM4PSJO16iA/zGuGvFiA1yJ+6cau7e/uQ3/e10BwLG4JiWSozhYIF8SeRkN+ff+jT0wU6bPxqr53vFRWeC0ppyCo0kR97ZL9OsPjPy0Iu0dqtjZyqW8CPQvjoAa6t6rHL0V6CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VlipYgjG; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="A3NNgX+W"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SBIKum854461;
-	Tue, 28 Jul 2026 12:52:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ULq/Cq
-	sOTHVPikZVxAbwv0/643Iq5ZunQDKSKA6VhAo=; b=A3NNgX+WQz54bMDU/m/tHb
-	hxEaIixqMiH4YImSKKW5toP5W06ZXxvsPhfQyrEIswpWXp0SiXpOX7Q5CSPaK9EZ
-	9lwX3WuY+ApYqap/t5eiM6H1l9KGscCN1CHdQ3gYATruuE2CabcX4ixREqv4pL1/
-	vrz/utDJucSmce8gcZnNuvWeBUBGsNFGUOJNIBWEMvLkVl7hbrThe4aFBDpF/SCR
-	UHjSQWX8Dp8yiIFqYzug1YpceziCEG4EHELcjZ2+wDjLKDwibJ+iqGVhX8EGSXCf
-	TDAW2IKPtykMgf+vk2UVyc5QRKQzny67Q+qe2GMbf5vFUKO/Bb+ciOrk8rDzmzWg
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0nmk56-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 12:52:48 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66SCfFp8003011;
-	Tue, 28 Jul 2026 12:52:47 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fna5y1hsn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 12:52:47 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66SCqh3726607978
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Jul 2026 12:52:43 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C7DA2004E;
-	Tue, 28 Jul 2026 12:52:43 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C5B22004D;
-	Tue, 28 Jul 2026 12:52:43 +0000 (GMT)
-Received: from [9.224.94.95] (unknown [9.224.94.95])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Jul 2026 12:52:43 +0000 (GMT)
-Message-ID: <f74b9587-c09c-4fce-9415-e2d3b49d0247@linux.ibm.com>
-Date: Tue, 28 Jul 2026 14:52:42 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VlipYgjG"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-381c51fde6bso4217541a91.2
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 05:57:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785243445; x=1785848245; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nmciCI6ko73l+Y1QMQ7nkizxEhpgGLgl4bI21gyzvOU=;
+        b=VlipYgjGNZyIvLN9mV9TmlTxTiL5MH5SReOZzzm1WSICU+il8+oZPqriPk7j0yfxk1
+         9zMd4gZMU7Fr3v6ZPA43Zd1vE3EJ4TrVOGUcSsIbXSm4Qrb4IiapdZMomDSebQnsnMbC
+         kVX1uSFfiihzv567OS8XOx9nyZ3tUDoGZDaKDWFiWTimwWHJTtRrbZyJSfJjYFpdd+1r
+         5Den/LwsxMNiTWYZ8bTsllEzia0RiWCGhUK/6fT1dasZ258B61IFFwLkROVlhZwWJ4AW
+         4fpRl/mz1BscccXBdO4wGJJBZy+RnSJgVxd/OCPhzoUeSmRp6cYo1WbSVKMA7gMx4iVh
+         J5+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785243445; x=1785848245;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nmciCI6ko73l+Y1QMQ7nkizxEhpgGLgl4bI21gyzvOU=;
+        b=Zx6Da2SDhBI/yXWktRGLAaCd2EsHVInbE3u/zoaCtjEvLgOMnka/HxzkLELgwwAcEn
+         fAYKnAIyhjH9FaqUNhrc5SnSOnoPT8J8KO6buCIvVXl54+sv3trexL5R+RU4NeFJpCsT
+         mWFtEKl4fPchR+idltXPaYN0YXSOIAiZa9GGZvYvIHq8dX2p+e+WxrMN3AFy5KTr2wHE
+         vY01dmqHiGLzCTUVMFvb8oqlj+LgWS52Ua86vJy/W61EGVvTmAcJLoFgtMjEF8Rg6MP/
+         qlMQl+TSityJ3fFOW4TbX28PYU10EwBmu/ekjEb2Dnbmw2ZjMO3NuBQeoetUQoYVu284
+         HzdQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoyqAKELhiyWLiO2DS7fmtttJpnRF7UN09Zm/9e7vzGbPZJkNidQp6fKG66jf1spIH4SkwWhHk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqYEKjo9Qws9fEcJQPS6GjxGApyUM9ZDmwKfI/HAbeEbUPt9Ps
+	2YzDsDGjSNSvderFAHw+fpvrRZlppcxLKwpAlve1p3Le1DdybqE0ovb8f6rInaA/
+X-Gm-Gg: AR+sD13MmHpyfnWafWv8SPGPJlLxaHq9hzLZAXGrNEZAzt3pticr7WJ5Ule4GdcG3Bk
+	gRKGOv5tez2y1TQ407Eg6+bnoPITcLU+E8qcd0UNMVwKYUuDvODt8mVde5ky5ucWo62GBo47G5X
+	8BT0wXQ8UH9PLS9A4Oh6gwZpAwt51sQFk5rt/O9PcXxJdktjH0cSg+NVaR5TmmW5O/JNgwYEgUC
+	4jY1R4HpV5eVtjkDXGz5qUk/P/UN27xzNjqsoiEL86rxRSvhKRVdGksDGVCk4876VylGG0nAi7J
+	G9TvnfrUQ0SAML1k25FtvTvJmMWe9GbcRV8UL8N6ZygF7hIX8LNlbj9qrmjDK/8yHXXJrPIohYf
+	XRvdej0A9EEYUqG7r6Y3QIDqbxUTY9aHNRFjhoNV1UiEe53jeqzVyIeC0DrHA53esJXbQnfk1+d
+	UCIIkmsng=
+X-Received: by 2002:a17:90b:558c:b0:38c:e9e9:e7ce with SMTP id 98e67ed59e1d1-38f6a4266f3mr2496383a91.3.1785243444467;
+        Tue, 28 Jul 2026 05:57:24 -0700 (PDT)
+Received: from Default ([2409:40f4:1009:9316:7b5b:3bfc:9f0c:ead5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f090619f4sm3685636a91.3.2026.07.28.05.57.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2026 05:57:24 -0700 (PDT)
+From: Jeffin Philip <jeffinphilip14@gmail.com>
+To: syzbot+44efda9647c52be29d9c@syzkaller.appspotmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	syzkaller-bugs@googlegroups.com,
+	Jeffin Philip <jeffinphilip14@gmail.com>
+Subject: Re: [syzbot] [net?] KASAN: slab-use-after-free Read in llc_conn_ac_send_sabme_cmd_p_set_x
+Date: Tue, 28 Jul 2026 18:26:41 +0530
+Message-ID: <20260728125641.10056-1-jeffinphilip14@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <6a57ad78.9d83364e.246513.0004.GAE@google.com>
+References: <6a57ad78.9d83364e.246513.0004.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Alexandra Winter <wintera@linux.ibm.com>
-Subject: Re: [RFC] net/iucv: af_iucv socket locking - accounting, and a staged
- plan
-To: Bryam Vargas <hexlabsecurity@proton.me>,
-        Thorsten Winkler <twinkler@linux.ibm.com>
-Cc: Hidayath Khan <hidayath@linux.ibm.com>,
-        Heiko Carstens
- <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260724222917.134769-1-hexlabsecurity@proton.me>
-Content-Language: en-US
-In-Reply-To: <20260724222917.134769-1-hexlabsecurity@proton.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDExMyBTYWx0ZWRfXynD/Ea+J4pKf
- bFBaXDkK/qzKZlQcY9cvgUX9aE+7yCsl25juHOJEWjadmnPSNF3BpWFZ/dPvUIjT8O782eBkVTc
- bqjveiRGhocP+lVFlz2BGIDkKjygB6c=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDExMyBTYWx0ZWRfX5tLfLZAyh4xV
- 9F+l8utVCAoBVGe8J8M3l3HvlAt30+E1BT/WQmFIOAXGCfixCBKi7sP3WNIwGUoxbJl4rlHN/wa
- GF2zuWLCJh3CY1ZThjWKGrQuRqUsK2j3+iIRhiVe/T6QjGwfBGftrxvoWN17QjqLHIFzS4qDyWn
- LFqJTwgRyFn7fx2SycTJDTuWGiOAICZL1GdhrnkiaNkyiHreqpf2DehDNMPqu/t8Ens8yYmUJbo
- 5p0X67UMygp/8uyLmUn7HR89pVPz3fWzMCc85lp9bL2/z8iOEAPACpp4fBqjazP+sBALI3efoXu
- p2MCHwNOoFbqWWYce/J3GFiwoaLKR+NccY0/xOW5AgKS7i8z5QQ0iVfKKHXJ2jG7lZU/Q20RJ1J
- bfwuEVvtH8larp28cm37K1woWl/cdpMVPGcjcBXxsOSkfPuy9If4NDMWMJRdMVSLzsW3A9Am+BT
- kPUZfV3D1csXaTUjizQ==
-X-Authority-Analysis: v=2.4 cv=b5WCJNGx c=1 sm=1 tr=0 ts=6a68a621 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=W0VcUO3syMzNjx1VzW4A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: RqaifrFuzxR80XCrY7M8exlXJ8TZU6_u
-X-Proofpoint-ORIG-GUID: 7Tc7LrD9p87EvSy1JGuoIkjjYp_oK7mR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-28_03,2026-07-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0 impostorscore=0
- bulkscore=0 phishscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607280113
+Content-Transfer-Encoding: 8bit
 
+Hi,
 
+In syzbot report, syzbot wrote:
+>Hello,
+>
+>syzbot found the following issue on:
+>
+>HEAD commit:    a13c140cc289 Linux 7.2-rc3
+>git tree:       upstream
+>console output: https://syzkaller.appspot.com/x/log.txt?x=144c3b89580000
+>kernel config:  https://syzkaller.appspot.com/x/.config?x=d69870d5e052935f
+>dashboard link: https://syzkaller.appspot.com/bug?extid=44efda9647c52be29d9c
+>compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+>
+>Unfortunately, I don't have any reproducer for this issue yet.
+>
+>Downloadable assets:
+>disk image: https://storage.googleapis.com/syzbot-assets/2052a80016f0/disk-a13c140c.raw.xz
+>vmlinux: https://storage.googleapis.com/syzbot-assets/0d06ec9d98a4/vmlinux-a13c140c.xz
+>kernel image: https://storage.googleapis.com/syzbot-assets/8cfe7c92eaf6/bzImage-a13c140c.xz
+>
+>IMPORTANT: if you fix the issue, please add the following tag to the commit:
+>Reported-by: syzbot+44efda9647c52be29d9c@syzkaller.appspotmail.com
+>
+>==================================================================
+>BUG: KASAN: slab-use-after-free in llc_conn_ac_send_sabme_cmd_p_set_x+0x442/0x470 net/llc/llc_c_ac.c:782
+>Read of size 1 at addr ffff8880370c8010 by task kworker/u8:0/11804
+>
+>CPU: 0 UID: 0 PID: 11804 Comm: kworker/u8:0 Not tainted syzkaller >0 PREEMPT(full) 
+>Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/10/2026
+>Workqueue: events_unbound toggle_allocation_gate
+>Call Trace:
+> <IRQ>
+> __dump_stack lib/dump_stack.c:94 [inline]
+> dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+> print_address_description mm/kasan/report.c:378 [inline]
+> print_report+0x13d/0x4b0 mm/kasan/report.c:482
+> kasan_report+0xdf/0x1c0 mm/kasan/report.c:595
+> llc_conn_ac_send_sabme_cmd_p_set_x+0x442/0x470 net/llc/llc_c_ac.c:782
+> llc_exec_conn_trans_actions net/llc/llc_conn.c:437 [inline]
+> llc_conn_service net/llc/llc_conn.c:362 [inline]
+> llc_conn_state_process+0x3ec/0x1480 net/llc/llc_conn.c:66
+> llc_process_tmr_ev net/llc/llc_c_ac.c:1442 [inline]
+> llc_conn_tmr_common_cb+0x2d4/0x880 net/llc/llc_c_ac.c:1325
+> call_timer_fn+0x19a/0x610 kernel/time/timer.c:1748
+> expire_timers kernel/time/timer.c:1799 [inline]
+> __run_timers+0x757/0xb00 kernel/time/timer.c:2374
+> __run_timer_base kernel/time/timer.c:2386 [inline]
+> __run_timer_base kernel/time/timer.c:2378 [inline]
+> run_timer_base+0x114/0x190 kernel/time/timer.c:2395
+> run_timer_softirq+0x1a/0x50 kernel/time/timer.c:2405
+> handle_softirqs+0x1ea/0x9b0 kernel/softirq.c:622
+> __do_softirq kernel/softirq.c:656 [inline]
+> invoke_softirq kernel/softirq.c:496 [inline]
+> __irq_exit_rcu+0x162/0x210 kernel/softirq.c:735
+> irq_exit_rcu+0x9/0x30 kernel/softirq.c:752
+> instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
+> sysvec_apic_timer_interrupt+0xa3/0xc0 arch/x86/kernel/apic/apic.c:1062
+> </IRQ>
+> <TASK>
+> asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
+>RIP: 0010:finish_task_switch.isra.0+0x2cd/0x10c0 kernel/sched/core.c:5361
+>Code: ab 0a 00 00 41 c7 87 20 0e 00 00 00 00 00 00 e9 47 04 00 00 49 8d 7f 48 e8 30 b4 e6 09 e8 1b a9 3c 00 fb 48 8d bb f8 16 00 00 <48> b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 0f b6 04 02 84
+>RSP: 0018:ffffc90005097578 EFLAGS: 00000202
+>RAX: 0000000000056db3 RBX: ffff8880741c8000 RCX: 0000000000000040
+>RDX: 0000000000000000 RSI: ffffffff8e1a3c59 RDI: ffff8880741c96f8
+>RBP: ffffc900050975d0 R08: 0000000000000001 R09: 0000000000000000
+>R10: 0000000000000001 R11: 0000000000000000 R12: ffffffff8e891480
+>R13: 0000000000000001 R14: ffffffff91227064 R15: ffff8880b843b4c0
+> context_switch kernel/sched/core.c:5513 [inline]
+> __schedule+0x1264/0x6730 kernel/sched/core.c:7234
+> preempt_schedule_irq+0x50/0x90 kernel/sched/core.c:7556
+> irqentry_exit_to_kernel_mode_preempt include/linux/irq-entry-common.h:468 [inline]
+> irqentry_exit_to_kernel_mode include/linux/irq-entry-common.h:539 [inline]
+> irqentry_exit+0x205/0xa00 kernel/entry/common.c:167
+> asm_sysvec_reschedule_ipi+0x1a/0x20 arch/x86/include/asm/idtentry.h:679
+>RIP: 0010:__sanitizer_cov_trace_pc+0x0/0x70 kernel/kcov.c:210
+>Code: 56 e1 5e 00 48 89 df 5b e9 9d 5c 64 00 be 03 00 00 00 5b e9 32 5a 13 03 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 <f3> 0f 1e fa 65 8b 05 85 a3 59 12 48 8b 34 24 65 48 8b 15 61 a3 59
+>RSP: 0018:ffffc90005097850 EFLAGS: 00000206
+>RAX: 0000000000000000 RBX: ffffc900050979b0 RCX: ffffffff8bb86f00
+>RDX: 0000000000008000 RSI: 0000000000000000 RDI: ffff8880741c8000
+>RBP: ffffc900050979d4 R08: 0000000000000005 R09: 0000000000000000
+>R10: 0000000000008000 R11: 0000000000000000 R12: ffffc900050979fc
+>R13: 0000000000008000 R14: 0000000000008000 R15: 0000000000000ffa
+> insn_get_modrm+0xee/0x790 arch/x86/lib/insn.c:396
+> insn_get_sib arch/x86/lib/insn.c:466 [inline]
+> insn_get_displacement+0x2f9/0x960 arch/x86/lib/insn.c:507
+> insn_get_immediate+0x84/0x1e00 arch/x86/lib/insn.c:673
+> insn_get_length arch/x86/lib/insn.c:745 [inline]
+> insn_decode+0x21d/0x320 arch/x86/lib/insn.c:784
+> __smp_text_poke_batch_add+0x174/0x790 arch/x86/kernel/alternative.c:3103
+> arch_jump_label_transform_queue+0xaf/0x120 arch/x86/kernel/jump_label.c:138
+> __jump_label_update+0xd7/0x380 kernel/jump_label.c:513
+> jump_label_update+0x37a/0x550 kernel/jump_label.c:910
+> static_key_disable_cpuslocked+0x162/0x1c0 kernel/jump_label.c:240
+> static_key_disable+0x1a/0x20 kernel/jump_label.c:248
+> toggle_allocation_gate mm/kfence/core.c:918 [inline]
+> toggle_allocation_gate+0x149/0x2d0 mm/kfence/core.c:903
+> process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
+> process_scheduled_works kernel/workqueue.c:3405 [inline]
+> worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
+> kthread+0x370/0x450 kernel/kthread.c:436
+> ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+> ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+> </TASK>
+>
+>Allocated by task 12543:
+> kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
+> kasan_save_track+0x14/0x30 mm/kasan/common.c:78
+> poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
+> __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:415
+> kasan_kmalloc include/linux/kasan.h:263 [inline]
+> __kmalloc_cache_noprof+0x2e5/0x6c0 mm/slub.c:5515
+> _kmalloc_noprof include/linux/slab.h:969 [inline]
+> _kzalloc_noprof include/linux/slab.h:1290 [inline]
+> llc_sap_alloc net/llc/llc_core.c:29 [inline]
+> llc_sap_open+0x120/0x3b0 net/llc/llc_core.c:96
+> llc_ui_autobind.isra.0+0x2ae/0x580 net/llc/af_llc.c:301
+> llc_ui_connect+0x582/0xdb0 net/llc/af_llc.c:498
+> __sys_connect_file+0x141/0x1a0 net/socket.c:2135
+> __sys_connect+0x141/0x170 net/socket.c:2154
+> __do_sys_connect net/socket.c:2160 [inline]
+> __se_sys_connect net/socket.c:2157 [inline]
+> __x64_sys_connect+0x72/0xb0 net/socket.c:2157
+> do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
+> entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>
+>Freed by task 0:
+> kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
+> kasan_save_track+0x14/0x30 mm/kasan/common.c:78
+> kasan_save_free_info+0x3b/0x70 mm/kasan/generic.c:584
+> poison_slab_object mm/kasan/common.c:253 [inline]
+> __kasan_slab_free+0x5f/0x80 mm/kasan/common.c:285
+> kasan_slab_free include/linux/kasan.h:235 [inline]
+> slab_free_hook mm/slub.c:2705 [inline]
+> __rcu_free_sheaf_prepare+0x5d/0x2f0 mm/slub.c:2956
+> rcu_free_sheaf+0x1a/0xe0 mm/slub.c:6004
+> rcu_do_batch kernel/rcu/tree.c:2645 [inline]
+> rcu_core+0x5a2/0x10d0 kernel/rcu/tree.c:2897
+> handle_softirqs+0x1ea/0x9b0 kernel/softirq.c:622
+> __do_softirq kernel/softirq.c:656 [inline]
+> invoke_softirq kernel/softirq.c:496 [inline]
+> __irq_exit_rcu+0x162/0x210 kernel/softirq.c:735
+> irq_exit_rcu+0x9/0x30 kernel/softirq.c:752
+> instr_sysvec_call_function_single arch/x86/kernel/smp.c:267 [inline]
+> sysvec_call_function_single+0xa3/0xc0 arch/x86/kernel/smp.c:267
+> asm_sysvec_call_function_single+0x1a/0x20 arch/x86/include/asm/idtentry.h:681
+>
+>The buggy address belongs to the object at ffff8880370c8000
+> which belongs to the cache kmalloc-2k of size 2048
+>The buggy address is located 16 bytes inside of
+> freed 2048-byte region [ffff8880370c8000, ffff8880370c8800)
+>
+>The buggy address belongs to the physical page:
+>page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff8880370cd000 pfn:0x370c8
+>head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+>flags: 0xfff00000000240(workingset|head|node=0|zone=1|lastcpupid=0x7ff)
+>page_type: f5(slab)
+>raw: 00fff00000000240 ffff88813fe22000 ffffea0000c73e10 ffffea0000a2e810
+>raw: ffff8880370cd000 0000000800080007 00000000f5000000 0000000000000000
+>head: 00fff00000000240 ffff88813fe22000 ffffea0000c73e10 ffffea0000a2e810
+>head: ffff8880370cd000 0000000800080007 00000000f5000000 0000000000000000
+>head: 00fff00000000003 fffffffffffffe01 00000000ffffffff 00000000ffffffff
+>head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+>page dumped because: kasan: bad access detected
+>page_owner tracks the page as allocated
+>page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd2820(GFP_ATOMIC|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5615, tgid 5615 (syz-executor), ts 66637688496, free_ts 48968356257
+> set_page_owner include/linux/page_owner.h:32 [inline]
+> post_alloc_hook+0xfd/0x120 mm/page_alloc.c:1859
+> prep_new_page mm/page_alloc.c:1867 [inline]
+> get_page_from_freelist+0xf48/0x3530 mm/page_alloc.c:3946
+> __alloc_frozen_pages_noprof+0x299/0x2dc0 mm/page_alloc.c:5304
+> alloc_slab_page mm/slub.c:3294 [inline]
+> allocate_slab mm/slub.c:3408 [inline]
+> new_slab+0xa2/0x650 mm/slub.c:3454
+> refill_objects+0xe3/0x410 mm/slub.c:7338
+> refill_sheaf mm/slub.c:2832 [inline]
+> __pcs_replace_empty_main+0x376/0x680 mm/slub.c:4703
+> alloc_from_pcs mm/slub.c:4801 [inline]
+> slab_alloc_node mm/slub.c:4933 [inline]
+> __do_kmalloc_node mm/slub.c:5361 [inline]
+> __kmalloc_node_track_caller_noprof+0x679/0x830 mm/slub.c:5497
+> kmalloc_reserve+0xe8/0x350 net/core/skbuff.c:637
+> pskb_expand_head+0x249/0x10e0 net/core/skbuff.c:2306
+> netlink_trim+0x22d/0x2f0 net/netlink/af_netlink.c:1300
+> netlink_broadcast_filtered+0x6d/0xf20 net/netlink/af_netlink.c:1518
+> nlmsg_multicast_filtered include/net/netlink.h:1165 [inline]
+> nlmsg_multicast include/net/netlink.h:1184 [inline]
+> nlmsg_notify+0xb1/0x290 net/netlink/af_netlink.c:2599
+> rtnl_notify net/core/rtnetlink.c:963 [inline]
+> rtmsg_ifinfo_send net/core/rtnetlink.c:4553 [inline]
+> rtmsg_ifinfo_event net/core/rtnetlink.c:4569 [inline]
+> rtmsg_ifinfo_event net/core/rtnetlink.c:4556 [inline]
+> rtmsg_ifinfo+0x177/0x1b0 net/core/rtnetlink.c:4575
+> __dev_notify_flags+0x24c/0x2e0 net/core/dev.c:9789
+> rtnl_configure_link+0x1b5/0x280 net/core/rtnetlink.c:3679
+> rtnl_newlink_create net/core/rtnetlink.c:3923 [inline]
+> __rtnl_newlink net/core/rtnetlink.c:4044 [inline]
+> rtnl_newlink+0x153b/0x2380 net/core/rtnetlink.c:4159
+>page last free pid 5271 tgid 5271 stack trace:
+> reset_page_owner include/linux/page_owner.h:25 [inline]
+> __free_pages_prepare mm/page_alloc.c:1406 [inline]
+> __free_frozen_pages+0x79f/0x1090 mm/page_alloc.c:2950
+> qlink_free mm/kasan/quarantine.c:163 [inline]
+> qlist_free_all+0x47/0xf0 mm/kasan/quarantine.c:179
+> kasan_quarantine_reduce+0x1a0/0x1f0 mm/kasan/quarantine.c:286
+> __kasan_slab_alloc+0x69/0x90 mm/kasan/common.c:350
+> kasan_slab_alloc include/linux/kasan.h:253 [inline]
+> slab_post_alloc_hook mm/slub.c:4612 [inline]
+> slab_alloc_node mm/slub.c:4945 [inline]
+> kmem_cache_alloc_node_noprof+0x27d/0x6b0 mm/slub.c:5017
+> __alloc_skb+0x140/0x710 net/core/skbuff.c:704
+> alloc_skb include/linux/skbuff.h:1384 [inline]
+> alloc_skb_with_frags+0xdd/0x760 net/core/skbuff.c:6769
+> sock_alloc_send_pskb+0x801/0x980 net/core/sock.c:3010
+> unix_dgram_sendmsg+0x3c7/0x1810 net/unix/af_unix.c:2136
+> unix_seqpacket_sendmsg+0x12a/0x1d0 net/unix/af_unix.c:2537
+> sock_sendmsg_nosec net/socket.c:775 [inline]
+> __sock_sendmsg net/socket.c:790 [inline]
+> sock_write_iter+0x53a/0x5b0 net/socket.c:1241
+> do_iter_readv_writev+0x6f7/0x930 fs/read_write.c:828
+> vfs_writev+0x360/0xdd0 fs/read_write.c:1058
+> do_writev+0x28a/0x340 fs/read_write.c:1104
+> do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
+> entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>
+>Memory state around the buggy address:
+> ffff8880370c7f00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+> ffff8880370c7f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+>>ffff8880370c8000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>                         ^
+> ffff8880370c8080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> ffff8880370c8100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>==================================================================
+>----------------
+>Code disassembly (best guess), 2 bytes skipped:
+>   0:	00 00                	add    %al,(%rax)
+>   2:	41 c7 87 20 0e 00 00 	movl   $0x0,0xe20(%r15)
+>   9:	00 00 00 00
+>   d:	e9 47 04 00 00       	jmp    0x459
+>  12:	49 8d 7f 48          	lea    0x48(%r15),%rdi
+>  16:	e8 30 b4 e6 09       	call   0x9e6b44b
+>  1b:	e8 1b a9 3c 00       	call   0x3ca93b
+>  20:	fb                   	sti
+>  21:	48 8d bb f8 16 00 00 	lea    0x16f8(%rbx),%rdi
+>* 28:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax <-- trapping instruction
+>  2f:	fc ff df
+>  32:	48 89 fa             	mov    %rdi,%rdx
+>  35:	48 c1 ea 03          	shr    $0x3,%rdx
+>  39:	0f b6 04 02          	movzbl (%rdx,%rax,1),%eax
+>  3d:	84                   	.byte 0x84
+>
+>
+>---
 
-On 25.07.26 00:29, Bryam Vargas wrote:
-> Alexandra,
-> 
-> Here is the socket-locking RFC I promised. No patches yet, on purpose: the
-> accounting turned up one result that changes which fix is right, and I'd
-> rather agree the direction with you than post a series you have to redirect.
-> 
-> All line numbers are against net-next 0c452fbdf413.
-> 
+Before I go further, I would like to say that I am relatively new to this subsystem and anything I
+say must be taken with a grain of salt. If possible, I would like you to educate me further
+on this topic.
 
-Bryam,
-thank you very much for this structured approach at this pile of work.
+I have analyzed this issue and with the limited knowledge I have, I have reached a potential
+conclusion. Looking at all possible state transitions, nearly every state starts with our 
+function at fault(llc_conn_ac_send_sabme_cmd_p_set_x()). Timers are deleted further back in the 
+state transitions(llc_conn_ac_stop_other_timers()). 
 
-> 
-> What's there today
-> ------------------
-> 
-> sk->sk_state has 20 assignment sites. One (iucv_sock_alloc:504) runs before the
-> socket is published on iucv_sk_list at :506, and two set a child socket under
-> the parent's lock (below). The other 17 are spread across five contexts:
-> 
->   process, under lock_sock():
->     iucv_sock_bind:633,647   iucv_sock_listen:806   iucv_sock_close:411,417,432
->     iucv_sock_cleanup_listen:306
->   process, under no lock:
->     iucv_sock_recvmsg:1338
->   iucv tasklet, under bh_lock_sock():
->     iucv_callback_txdone:1793   iucv_callback_connrej:1810
->   iucv tasklet, under no lock:
->     iucv_callback_connack:1708
->   NET_RX softirq, under bh_lock_sock():
->     afiucv_hs_callback_synack:1941   afiucv_hs_callback_synfin:1961
->     afiucv_hs_callback_fin:1983
->   qeth TX completion, under no lock:
->     afiucv_hs_callback_txnotify:2190,2197
->   netdev notifier, under no lock:
->     afiucv_netdev_event:2222
-> 
-> Two counts sum it up: sock_owned_by_user() appears zero times in the file, and
-> there is no socket backlog at all - no .backlog_rcv in iucv_proto, no
-> sk_add_backlog() anywhere. iucv->backlog_skb_q is a private data queue, not the
-> socket layer backlog. So the machinery your option A refers to isn't being
-> mis-used here, it's absent.
-> 
+	static const llc_conn_action_t llc_common_actions_2[] = {
+	       *[0] = llc_conn_ac_send_sabme_cmd_p_set_x,
+		[1] = llc_conn_ac_start_ack_timer,
+	       *[2] = llc_conn_ac_stop_other_timers,
+		[3] = llc_conn_ac_set_retry_cnt_0,
+		[4] = llc_conn_ac_set_cause_flag_1,
+		[5] = NULL,
+	};
 
-Yes, I was aware of that :-/
+That leaves one plausible explanation: There is a potential race condition occurring between
+2 or more CPUs. State transitions that use llc_conn_ac_stop_other_timers() use timer_delete() for all
+timers except the ack_timer. Since timer_delete() does not synchronize the callbacks, if a second CPU
+attempts a callback concurrently right as the first CPU executed the timer_delete() or before it moves to
+LLC_CONN_STATE_RESET, it could cause a UAF(or am I mistaken?)
 
-> Child sockets get their state set under the parent's lock: connreq:1696 and
-> hs_callback_syn:1917 both set nsk->sk_state while holding bh_lock_sock on the
-> parent, and iucv_sock_alloc:506 already published the child on iucv_sk_list
-> before its state was set.
-> 
-> 
-> Three gaps, each with a herd7 witness
-> -------------------------------------
-> 
-> I modelled the locking discipline in LKMM rather than argue it in prose. Six
-> litmus tests, herd7 7.58. Each RED has a GREEN whose only delta is the lock or
-> the check, plus a CONTROL so the harness is shown to discriminate:
-> 
->   RED     bh_lock_sock vs lock_sock, no owner check     Flag data-race
->   GREEN   ... same, with sock_owned_by_user() + defer   clean
->   RED     recvmsg unlocked, softirq HAS the owner check Flag data-race
->   GREEN   ... same, with recvmsg under lock_sock        clean
->   RED     a writer holding no lock at all               Flag data-race
->   CONTROL two bh_lock_sock writers                      clean
-> 
-> The first pair is your sentence from f558120cd709 ("bh_lock_sock() is not
-> serializing the tasklet context against process context") as a model verdict.
-> lock_sock() releases sk_lock.slock before its critical section and leaves only
-> sk_lock.owned set; bh_lock_sock() holds slock through its critical section. The
-> two critical sections share no lock, so only an explicit sock_owned_by_user()
-> check can order them.
-> 
-> The third row is the one the plan turns on, so it's spelled out below. The rest
-> inline or in a follow-up, whichever you prefer.
-> 
-> 
-> The result that changes the plan
-> --------------------------------
-> 
-> Option A as written in f558120cd709 doesn't reach the receive path.
-> 
-> iucv_sock_recvmsg (1237-1362) takes no socket lock - not lock_sock, not
-> bh_lock_sock - and it writes sk->sk_state at :1338. Since it never sets
-> sk_lock.owned, a sock_owned_by_user() check added in the softirq always reads
-> zero and always takes the "process now" branch. The deferral branch is dead
-> code against recvmsg. That's the third litmus above; since it's the one the
-> plan turns on, here it is rather than on request. P1 already has the option-A
-> fix applied:
-> 
->   C iucv-recvmsg-vs-hs-callback
->   {}
-> 
->   P0(int *sk_state)
->   {
->         *sk_state = 5;                  /* recvmsg:1338 -- no socket lock held */
->   }
-> 
->   P1(spinlock_t *slock, int *owned, int *sk_state, int *backlog)
->   {
->         int r0;
-> 
->         spin_lock(slock);               /* bh_lock_sock */
->         r0 = READ_ONCE(*owned);         /* sock_owned_by_user() */
->         if (r0 == 0)
->                 *sk_state = 2;          /* always taken: recvmsg never sets owned */
->         else
->                 WRITE_ONCE(*backlog, 1);        /* the branch that never runs */
->         spin_unlock(slock);
->   }
-> 
->   exists (sk_state=2)
-> 
->   $ cd tools/memory-model && herd7 -conf linux-kernel.cfg iucv-recvmsg.litmus
->   Flag data-race
-> 
-> Give P0 the lock_sock() handshake (set owned under slock, write sk_state, clear
-> it) and the flag goes away, with nothing else changed.
-> 
-> So the owner check plus re-enqueue fixes the state machine against
-> close/bind/listen/shutdown, but not against the reader -- and the reader is the
-> path you asked about.
+If possible, I would like to know if this is the correct cause for the UAF or if I am looking in the 
+wrong place entirely?
 
-
-Yes, as discussed in your initial patch, I am aware that iucv_sock_recvmsg is
-currently not protected.
-
-
-> 
-> Putting recvmsg under lock_sock isn't a one-liner either. Two things in the
-> way, both of which I'd rather you ruled on:
-> 
->   a) recvmsg:1313 calls iucv_sock_close(), which takes lock_sock:401. Taking
->      the lock in recvmsg self-deadlocks there unless the close is split into a
->      __iucv_sock_close() that assumes the lock.
-
-
-I understand. Yes, that would be the way to go.
-
-
-> 
->      That exact call already cost a CVE: 3589d20a666c ("net/iucv: fix locking
->      in .getsockopt", CVE-2026-64004), which you reviewed and tested, fixed a
->      NULL deref from getsockopt(SO_MSGSIZE) racing the iucv_sock_close() that
->      recvmsg invokes at :1313. Locking getsockopt closed it because
->      iucv_sock_close() takes the socket lock itself - which is also exactly why
->      recvmsg cannot simply take it too.
-> 
->   b) skb_recv_datagram() doesn't release the socket lock while it waits, so a
->      blocking recv would hold it across the sleep and stall backlog processing
->      for the duration. __iucv_sock_wait already has the right shape for this
->      (release_sock / schedule_timeout / lock_sock), but it changes recvmsg's
->      blocking behaviour.
-
-
-I understand. I'm not sure I can judge all the implications, but your proposal makes
-sense to me.
-
-I wonder, if there is more required than taking and releasing the socket lock.
-e.g. I think recvmsg needs to check (sk->sk_state == IUCV_CONNECTED) before
-iucv_send_ctrl(sk, AF_IUCV_FLAG_WIN).
-But let's take it one by one.
-
-
-> 
-> 
-> Staged plan
-> -----------
-> 
-> Why split rather than send one rework: your caveat in f558120cd709 about return
-> values and "changes to all users of iucv" applies to the tasklet path, because
-> those handlers run from iucv_tasklet_fn while holding iucv_table_lock and
-> iucv_handler is shared with monreader, vmlogrdr, smsgiucv and hvc_iucv. It
-> doesn't apply to the HiperSockets path: afiucv_hs_rcv is a packet_type handler
-> in NET_RX softirq that owns the skb, so it can defer to the socket backlog with
-> no core change and no other driver touched.
-> 
-> Stage 1, HiperSockets receive path. Add iucv_proto.backlog_rcv, hoist
-> bh_lock_sock from the individual afiucv_hs_callback_* into afiucv_hs_rcv, and
-> defer via sk_add_backlog() when the socket is owned. Put recvmsg under
-> lock_sock, with the two items above. Entirely inside af_iucv.c, and it's the
-> part you named.
-
-
-Sounds good to me
-
-> 
-> Stage 2, iucv tasklet path. This is where option A vs option B actually has to> be answered, and where the core and the four other iucv users are affected.
-> Option B subsumes it but needs iucv_tasklet_fn to stop holding iucv_table_lock
-> across handler dispatch, or dispatch moved to the existing iucv_work_fn.
-> 
-> Stage 3, the writers holding no lock. No amount of owner-check discipline at
-> the other sites reaches these; they need a lock first. iucv_callback_connack is
-> unambiguous - same tasklet as connrej and shutdown, which already take
-> bh_lock_sock - so it can just do the same. I have that one ready as a
-> standalone patch if you want it independently.
-> 
-
-That would be great, we are also working on several small fixes. Let's get them out of the way.
-
-> 
-> Questions
-> ---------
-> 
-> Q1. For stage 1, is putting iucv_sock_recvmsg under lock_sock acceptable to
->     you, given (b) changes its blocking behaviour? The alternative is to
->     promote message_q.lock to the receive-path lock and move sk_state under it,
->     which leaves recvmsg's sleep alone but makes message_q.lock cover something
->     it doesn't cover today.
-
-No, I don't like that. message_q is a concept for iucv not HS - I see message_q.lock
-is already used in both paths, but I don't want to stretch it further.
-I prefer your proposal above and would like to test it with KASAN etc.
-
-> 
-> Q2. For stage 2, option A or option B? B is more invasive in net/iucv/iucv.c
->     but makes Q1 and stage 3 moot. If you and Hidayath would rather own the
->     core change, I'll do stage 1 and hand you the analysis for the rest.
-
-
-I would prefer option A: keep the tasklet and use bh_lock_sock(). You seem to
-think that is doable?
-Less invasive is attractive.
-
-
-> 
-> Q3. afiucv_hs_callback_txnotify runs in two contexts, which is why I didn't
->     just add a lock to it: qeth_tx_poll (NAPI, softirq) and
->     qeth_drain_output_queue (process, teardown) both reach it through
->     qeth_notify_skbs. Which one should the locking be written for?
-> 
-
-This is a tough one. Maybe we need to add a context parameter to qeth_notify_skbs() ?
-
-
-
-> 
-> Caveats
-> -------
-> 
-> I have no IBM Z, so none of this is validated on real HiperSockets. herd7
-> proves the accesses race under LKMM; it says nothing about memory-safety
-> impact, which would need a KASAN run on hardware. Treat the model results as an
-> argument about which lock covers which write, not as a reproduction. I'd rely
-> on you or Hidayath to validate each revision on real HW before anything lands.
-
-
-Yes, we will validate any revision.
-
-
-> 
-> One coordination note: Hidayath's "net/af_iucv: fix use-after-free of listen
-> sock in iucv_callback_connreq()" is still open, and I'm deliberately not
-> touching that function. The staged plan resolves connreq as a consequence of
-> the general direction rather than competing with his patch.
-> 
-> Prior discussion, for anyone picking this up cold:
-> https://lore.kernel.org/all/20260705-b4-disp-fc79c0dc-v1-1-d2cdcb57afa9@proton.me/
-> https://lore.kernel.org/all/20260707-b4-disp-783fedbb-v1-1-463b9dbda2ea@proton.me/
-> https://lore.kernel.org/all/20260706084825.6231-1-hidayath@linux.ibm.com/
-> 
-> Thanks,
-> Bryam
-> 
-> 
-
-Thanks again for working on this. You identified several workitems, are there any
-where you would prefer me or Hidayath to work on?
-Otherwise we will continue with issues that are not on this list and work on
-running and improving our testcases.
-
-
-
-
+Thanks,
+Jeffin.
