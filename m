@@ -1,210 +1,246 @@
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+Received: from mail-wr2-f0.google.com (mail-wr2-f0.google.com [74.125.225.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8C63AC0ED
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 13:57:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785247067; cv=pass; b=I8ADp40a0jhvLYa8Zx52N26gd9zSmByQOyIbHUeWidmg/Na6OBUwB+7MO9wSfI4XPxidV0sIPTdvpwWYHTwPqjNwqqbhw/ybwAYZeu/0nKFT8ORq2alzvbaWBzd7SeLBe/eiEobNJ+ZmP9VIJoZEMQ6O2AJf8Ew04hrp9JqrzsA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785247067; c=relaxed/simple;
-	bh=ojGfcJdBRqcfiZ4iHWIC3vFPG+TI1J10TfOqynK1Kjo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=krSKZVs2nwmoVxKd4tJe95ClWghh8CHqv9PLGOpg4Y34fA0VSPSkQCI83dUCon5TFVkOhssQTaPtsTmCaYk2uB+V+a/uPl7tx95SY5rl+lW/nZt+espyWd0LZ4Dgri0pORgELuUyUs2AY+wK8CcCehqsYmzpv3wbVCScUp/1grE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PIPEVdxL; arc=pass smtp.client-ip=74.125.224.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB114477F3
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 14:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785247220; cv=none; b=Feozl8o9i2EugcJZ342plq0Xs3keLy8H3o+Yf/J0sFHuoEjclDiT62ro0CB0azEWd5OrHW7WQOVL5M14hYczNLNjNGUIzcR0J+nVvTpkyOK8dFLSE9Dkl/nmAkQZrOZx4LZfwmzpSDZG/noomDUKrkoPk4tcTIG1g6ibQJ4xLVQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785247220; c=relaxed/simple;
+	bh=MCaU380UPE7nQtq09uXRpZ0GQ9Q6ljKGhpe97Uor4Cc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ujylh+ehswsObf+C6UwQHsSeSvPMti0zXg5A6LSeI6ZyQCkb3tiEiTmZPsoReOxCS6vjg0d+laYL4J9LDgixoVxsylr8IR7CJclRTIK7blUux3lBKTOlIvHfHMZPiXvZuECjUkb7ELAMo6oBAd7aApTdLrFZ5fIxJv/ooXnakJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PIPEVdxL"
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-667f1390f58so4179824d50.1
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:57:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785247064; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qIOGihihTxAh8UGzhxDg6qbPf+NdajRhP+7ziZUOss31beBunRE8uuTaEMkWzSAJph
-         rHgkMIUXFT0o9HUxvpXu2W0Ah7reff2RtioixdYhMNUCw40peKFZXevhTL5MCm2vjqW1
-         fde4A9kbWdVgHWFC1ohQYPQagHV3NHhdaOVQlBvjQJc7/t3C8x8na3PFHrWlVk7e31jW
-         5RJqjpC9E0DHN01vLmHpy1NWWglnAAqqqKbingyWmt7/eD8yKmXC7RCiCaConvTrQYBX
-         N+PmDn4E4zg26PLQ67hqbZ4xEngkdFk0zFGn0jvmZh5QJMNNvyVy6RIwWBa7jt+Nd9j3
-         DtXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9/O6ksK3AB9LZHWSiL+7EQIVBSyOjmgRfjqILkXUwuQ=;
-        fh=wkl9grsE15hzVJpvDUhnIss5o6lL9tS1JVV5v734ktA=;
-        b=m8D60m9q3BK7lc76YfcrTCXosPDZ0F7ZS3oQu6MC+RZEOsfkwTM9J1+5JGaILYLXyn
-         lMeBqo0vA1HtN65rUFVahmMAufHHVWG9bZuyq2UlKl54v6EvUyfC6jL29hXGnqq+RYua
-         2XCibplH+MjvklTNaGDA1HQdDH8zFbkwyXw1M3FGPSqyn4HgSRzw+1w52kUjDQyM/2tu
-         dNsQh/FoHJ85BOoEdF2NUVZLCDNY3jFdBDndZ95nGr3AY535RFiXQUYaF3k24stL+QyN
-         ZDkh6Q6fmA4fnpSqXgzHEyXff0IccjV2EfePFKj9K7DzzR1yjT3AFK0xHeUftK1CvegC
-         TX0Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785247064; x=1785851864; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9/O6ksK3AB9LZHWSiL+7EQIVBSyOjmgRfjqILkXUwuQ=;
-        b=PIPEVdxLuncXgfjoINpwtUXJ9UfvRwInyYZ/wCG9W+0HD/m3O2qH8OjPGZOmKpOjul
-         /YGV5W2WcWcVsuQ7Ay0pTXSq+e1CW69n4F2G6YS5KhxDFkSk0JJVUPPSQ7cIoyYZXAia
-         DJQamsmFp948avlIDxPcq/6Z4BjIdixwQGiYzLEtWSaIGSKvRgXJKEVFUBfhBRkawOUG
-         t40t2+GhoC4aUirLkkwlQsUgzqZq/9GqPllLtt0j6xdTxZB0fB3gVa0cihKLOHwcPOod
-         5DldA/kj+qxD1ocZVe38XUsuuD6FlE6eCSsk9kB740N1FcPZgggnRPOHazdLdcXhSKXM
-         CgEw==
+Received: by mail-wr2-f0.google.com with SMTP id ffacd0b85a97d-46cbf263216so1967567f8f.1
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 07:00:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785247064; x=1785851864;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9/O6ksK3AB9LZHWSiL+7EQIVBSyOjmgRfjqILkXUwuQ=;
-        b=iuLs/+E43IhVTJxFaLBdM5xFK5iqNv9xMLBs29nPoX7fo4K5+1Hmiwj+aYN7VqyEu7
-         pb+0JOs/zXpQxlCYRnfzLkeLyWtVuXcPCoOhcXsuqX7Q1CwLWxjHC4cjmtKqT/9+wqei
-         pO668EvVgXmFpZa/VRCr07F9H6HNANqCfCgpMdPFX+zlEdbdECpI+t43lrEn4VNpSXvD
-         XTGeTpuenL1xqPiZl4rqvnJPChXgkq1sShxDHfv2lR5Ir10OAkR/zQj3aTaiaTmMGXcD
-         0/TaZ9aF10qHxlzpt16bcwGE4Ud2DUnpBU750VO7bIWlM0GzoLnkR30rmYtG87wLl/5D
-         sugg==
-X-Forwarded-Encrypted: i=1; AHgh+RqncItc9eTA7N8CQldi4UP3xOVGhVv4YVncgmWmAIS7cwolhVjKQfPBrbOx8KBk29NWf5jdivM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhVPyo7pqpwmCOkOWo7ox0wkrmqu8nCOMYeP7AvymSWxrrzSNj
-	J2Vr1B740T+SmOTi562QZt5L0LMXA5RosKoK74TrjHH2nIFINTjZq+JB2kokFVABBe2vMwjCKJz
-	9KDWjFP7ooDV32BQx2rCbKSgjTaQvn3A=
-X-Gm-Gg: AR+sD12WlmdvfZTwaoTYhEE+UHuDA1p5IuIDNu7/w0r+dna2ZPAiGYquFYSOHPx3jtm
-	ziUGqO+dp/FPDO03YIl6PdsCnR8wMNq2ti8XaThkXu5Vq3KmB5m1XXcTguaH6lNztLv1a6mWiUq
-	cDozGOmATwNM66+FaWuG1fcxROgHSwLDgMoQ6pv332rj91A1hjkvCgSF1trtqDADavjzyLwNU0S
-	27nVWrtKAbpPyWNJQBg9kw4RUHV+w0CLhlH6fBKtMXepqEz1feCngQ8Zxf2vj2PB0dgDzL35f7+
-	p5liQkGNhlUAk788gdA/8xrIZ7fzvwZmyUbWu4x3wk+r
-X-Received: by 2002:a05:690e:482:b0:667:a285:7625 with SMTP id
- 956f58d0204a3-6690582d16dmr580446d50.88.1785247064468; Tue, 28 Jul 2026
- 06:57:44 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785247217; x=1785852017;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HD3DupRm0WkCzpl7UkTaAYfO5WC3MKQSDvdPYI0GL7s=;
+        b=ZOtLZK4jNUjIv1JQgDHSTbguaXXUfy2EWT2wFnKNcCDLve+yGZThF1uyzSCnpr084l
+         Uo+UwdMuXiuEwX0BFucN9iYD4b966nQnMQkpQ8OeV+9CMZRgglmIoh9DPPfA6+89U4j5
+         Ht0HcySZ7e1moy6vo50enDRx4/JzpRKP9p2uJV4u1MR8W305bp7znj1Cm2zGobpDDT+Y
+         ea4fuJneqJIH7RllAmy0E3MLutOqjqkmoqQ1w/4VlcwQ/kZgIwx+7IY8NbCugn/ufIuL
+         Ac0gKoSDukBUnEPy9B8tdvn5h2wMSXP5rpKaVl6srRlZMirW8zVHJdSD95/ZMiwxhUkE
+         +ARw==
+X-Gm-Message-State: AOJu0Yx60guvl5JMcbTK8oEpprRSjRQJmt6cQiLfxCk5+3myD2B42S5P
+	QRkx7d2qcnhXnl9dnX4/JqLDGgzdGN6ZLYTrMSiwdHQk1bZYI5VOIG/sSgOuYNaM
+X-Gm-Gg: AR+sD114CP2xRT7Fc2TdSC4OWxkEnwIZSuTnyb5uh89ci2DmpVXpbFw7GzFrYp8epSl
+	Ba1vScmp9xGFUyF72Zf0ZruBH1mbGXp9Ye3G2pR6fNOpZ4Iwu9sU1ELQRO6Svl+S+JTlMT9XTHI
+	fFDfrYV4wparDW096K8u05gntc7dHayALSq6jSZJY6bdg60Ct7HV5gpsopWb5prvl64lKSgcis5
+	vBslWPG5tIIEqE8HHvn8dSJHEknmFnxuDx+RjdzOhKfFqYvHEY53NbbLcBOnsMR09hwNpbhJ3uF
+	fi7viv2ZTPaXsZJKPODI7W+iJy839LlB4aMVaaHQSjL9oxYEi5CTabgEo6X04TC2vbEuWvyj1VY
+	whbsEEJJ0zfTcvBHBck7t5LGrcA9uLvOagLYMbHyKcuBmghYe9Sg1ySA+hNQ1kGiAwfJWO/qnCz
+	kTmbc0m0Ax6fNupwWDPgpsAhGhKQRVDOv2f0KJnvKM1edsrpn2Nw==
+X-Received: by 2002:a05:6000:5c2:b0:47f:9760:4d2e with SMTP id ffacd0b85a97d-47fb1edfdf1mr3152644f8f.24.1785247216503;
+        Tue, 28 Jul 2026 07:00:16 -0700 (PDT)
+Received: from [192.168.88.241] (78-80-108-129.customers.tmcz.cz. [78.80.108.129])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85b9a5d9sm56682015f8f.5.2026.07.28.07.00.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Jul 2026 07:00:15 -0700 (PDT)
+Message-ID: <fe4ea840-d140-45c9-85c6-eb23e04c6a7e@ovn.org>
+Date: Tue, 28 Jul 2026 16:00:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260727205602.1188008-1-gahing@gahingwoo.com> <CABjd4YwmznLERMx_DgfTeqXmOEZh=pcOjf+NYfkV069mETe-uQ@mail.gmail.com>
-In-Reply-To: <CABjd4YwmznLERMx_DgfTeqXmOEZh=pcOjf+NYfkV069mETe-uQ@mail.gmail.com>
-From: Gavin Gao <attinagaoxu@gmail.com>
-Date: Tue, 28 Jul 2026 21:57:32 +0800
-X-Gm-Features: AUfX_mxzpovyIRUTrYGKBrXRurd9JRDsVacqu2CDyv0oSDWGubwak2MApr2KfoU
-Message-ID: <CAK2JjQVsJbC5wuLs1wFvose0S9ho6FDNPbhteveWOttE0prjeA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] net: phy: motorcomm: enable the reference
- clock for YT8521 and YT8531
-To: Alexey Charkov <alchark@gmail.com>
-Cc: Jiaxing Hu <gahing@gahingwoo.com>, Frank.Sae@motor-comm.com, andrew@lunn.ch, 
-	hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	maxime.chevallier@bootlin.com, heiko@sntech.de, 
-	linux-rockchip@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: openvswitch: fix potential UAF on meter attach
+ failure
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Tonghao Zhang <xiangxia.m.yue@gmail.com>,
+ Ilya Maximets <i.maximets@ovn.org>, Aaron Conole <aconole@redhat.com>,
+ Eelco Chaudron <echaudro@redhat.com>, dev@openvswitch.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260727121022.198461-1-i.maximets@ovn.org>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <20260727121022.198461-1-i.maximets@ovn.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Alexey,
+On 7/27/26 2:10 PM, Ilya Maximets wrote:
+> While attaching a newly created meter attach_meter() function makes
+> the new meter visible to other CPUs but can still fail afterwards.
+> On failure, it detaches the meter back and returns an error.
+> 
+> However, this is an unexpected behavior for the ovs_meter_cmd_set()
+> that uses a plain kfree(meter) on attach failure without waiting for
+> RCU readers to stop using it, assuming it was never visible.
+> 
+> This is never a problem for ovs-vswitchd as it always creates meters
+> before creating any flows that use them.  But the UAF can be triggered
+> with a custom application using uAPI:
+> 
+>  BUG: KASAN: slab-use-after-free in ovs_meter_execute (net/openvswitch/meter.c:653)
+>  Read of size 8 at addr ffff88810d152650 by task meter/2508
+> 
+>  Call Trace:
+>   ovs_meter_execute (net/openvswitch/meter.c:653)
+>   do_execute_actions (net/openvswitch/actions.c:1407)
+>   ovs_execute_actions (net/openvswitch/actions.c:1584)
+>   ovs_packet_cmd_execute (net/openvswitch/datapath.c:703)
+>   ...
+>   netlink_sendmsg (af_netlink.c:1900)
+> 
+>  Allocated by task 2519:
+>   __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
+>   ovs_meter_cmd_set (net/openvswitch/meter.c:422)
+>   ...
+>   netlink_sendmsg (af_netlink.c:1900)
+> 
+>  Freed by task 2519:
+>   kfree (mm/slub.c:2705 mm/slub.c:6405 mm/slub.c:6720)
+>   ovs_meter_cmd_set (net/openvswitch/meter.c:479)
+>   ...
+>   netlink_sendmsg (af_netlink.c:1900)
+> 
+> Fix that by making sure attach_meter() doesn't make the meter visible
+> until all the checks are done and the function can't fail anymore.
+> 
+> This also makes sure the "hash" value is calculated after the potential
+> re-sizing of the table.
+> 
+> Reported by Trend Micro's Zero Day Initiative as ZDI-CAN-31642.
+> 
+> Fixes: c7c4c44c9a95 ("net: openvswitch: expand the meters supported number")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+> ---
 
-I slightly prefer keeping the helper.
+Just addressing some sashiko comments below.  They are either insignificant
+or for other pre-existing issues:
 
-This looks like a common pattern for the Motorcomm family rather than a
-YT8521/YT8531-specific detail. Other PHYs in the same series may need the
-same optional reference clock handling later, and a small helper keeps
-that path easy to reuse without duplicating the same code.
+>  net/openvswitch/meter.c | 33 +++++++++++++++++++--------------
+>  1 file changed, 19 insertions(+), 14 deletions(-)
+> 
+> diff --git a/net/openvswitch/meter.c b/net/openvswitch/meter.c
+> index a02c47277337..4aaeeae3af5b 100644
+> --- a/net/openvswitch/meter.c
+> +++ b/net/openvswitch/meter.c
+> @@ -133,18 +133,10 @@ static void dp_meter_instance_remove(struct dp_meter_instance *ti,
+>  
+>  static int attach_meter(struct dp_meter_table *tbl, struct dp_meter *meter)
+>  {
+> -	struct dp_meter_instance *ti = rcu_dereference_ovsl(tbl->ti);
+> -	u32 hash = meter_hash(ti, meter->id);
+> +	struct dp_meter_instance *ti;
+> +	u32 hash;
+>  	int err;
+>  
+> -	/* In generally, slots selected should be empty, because
+> -	 * OvS uses id-pool to fetch a available id.
+> -	 */
+> -	if (unlikely(rcu_dereference_ovsl(ti->dp_meters[hash])))
+> -		return -EBUSY;
+> -
+> -	dp_meter_instance_insert(ti, meter);
+> -
+>  	/* That function is thread-safe. */
+>  	tbl->count++;
 
-Best Regards,
-Gavin Gao
+Sashiko complains about the comment, but it is fine.  It is pointing out
+that it's safe to increment the count, which is still the case.
 
-On Tue, Jul 28, 2026 at 12:16=E2=80=AFPM Alexey Charkov <alchark@gmail.com>=
- wrote:
->
-> Hi Jaxing,
->
-> On Tue, Jul 28, 2026 at 1:04=E2=80=AFAM Jiaxing Hu <gahing@gahingwoo.com>=
- wrote:
-> >
-> > These PHYs need a 25 MHz reference. On boards without a local crystal
-> > it is fed from the SoC and described as a clock on the PHY node. Get an=
-d
-> > enable it in probe, via a small helper called from both yt8521_probe an=
-d
-> > yt8531_probe, so the PHY is clocked before its registers are accessed.
-> > The clock is optional, so crystal-clocked boards are unaffected.
-> >
-> > Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> > Signed-off-by: Jiaxing Hu <gahing@gahingwoo.com>
-> > ---
-> >
-> > Changes in v2:
-> > - Factor the clock enable into ytphy_get_and_enable_refclk() and call i=
-t
-> >   from yt8521_probe as well, so the YT8521 is covered too, not only the
-> >   YT8531. v1 only touched yt8531_probe.
-> > - Carried Andrew's Reviewed-by; the enable itself is unchanged, only
-> >   moved into the helper.
-> >
-> > v1: https://lore.kernel.org/all/20260719034555.3623003-1-gahing@gahingw=
-oo.com/
-> >
-> > A second crystal-less RK3576 board with a YT8521 needs the same handlin=
-g
-> > (see the RK3576 GMAC 25M refout thread [1]), so v2 covers both PHYs. Th=
-is
-> > supersedes the withdrawn dwmac-rk MAC-side series. The DTS that consume=
-s
-> > the clock (rk3576-armsom-cm5) goes to the rockchip tree separately; the
-> > clock is optional so this patch stands alone. The YT8531 path is tested
-> > on an ArmSoM CM5-IO (links at 1000 Mbit/s).
-> >
-> > [1] https://lore.kernel.org/all/20260727021048.3375444-1-attinagaoxu@gm=
-ail.com/
-> >
-> >  drivers/net/phy/motorcomm.c | 33 +++++++++++++++++++++++++++++++++
-> >  1 file changed, 33 insertions(+)
-> >
-> > diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-> > index 708491bc1..32eb5ce93 100644
-> > --- a/drivers/net/phy/motorcomm.c
-> > +++ b/drivers/net/phy/motorcomm.c
-> > @@ -6,6 +6,7 @@
-> >   * Author: Frank <Frank.Sae@motor-comm.com>
-> >   */
-> >
-> > +#include <linux/clk.h>
-> >  #include <linux/etherdevice.h>
-> >  #include <linux/kernel.h>
-> >  #include <linux/module.h>
-> > @@ -1043,6 +1044,29 @@ static int yt8531_set_ds(struct phy_device *phyd=
-ev)
-> >         return 0;
-> >  }
-> >
-> > +/**
-> > + * ytphy_get_and_enable_refclk() - get and enable the PHY reference cl=
-ock
-> > + * @phydev: a pointer to a &struct phy_device
-> > + *
-> > + * A crystal-less YT8521/YT8531 takes its 25 MHz reference from the So=
-C. When
-> > + * that reference is described as a clock, enable it for the life of t=
-he
-> > + * device. It is optional, so crystal-clocked boards are unaffected.
-> > + *
-> > + * returns 0 or negative errno code
-> > + */
-> > +static int ytphy_get_and_enable_refclk(struct phy_device *phydev)
-> > +{
-> > +       struct device *dev =3D &phydev->mdio.dev;
-> > +       struct clk *clk;
-> > +
-> > +       clk =3D devm_clk_get_optional_enabled(dev, NULL);
-> > +       if (IS_ERR(clk))
-> > +               return dev_err_probe(dev, PTR_ERR(clk),
-> > +                                    "failed to get and enable the refe=
-rence clock\n");
->
-> A helper for a single-line function call looks like an overkill, and
-> requires scrolling to understand what is going on where an open-coded
-> version would be self-explanatory at the first glance.
->
-> Maybe fold it into the two caller functions instead?
->
-> Best regards,
-> Alexey
+>  	if (tbl->count >= tbl->max_meters_allowed) {
+> @@ -152,16 +144,29 @@ static int attach_meter(struct dp_meter_table *tbl, struct dp_meter *meter)
+>  		goto attach_err;
+>  	}
+>  
+> -	if (tbl->count >= ti->n_meters &&
+> -	    dp_meter_instance_realloc(tbl, ti->n_meters * 2)) {
+> -		err = -ENOMEM;
+> +	ti = rcu_dereference_ovsl(tbl->ti);
+> +	if (tbl->count >= ti->n_meters) {
+> +		err = dp_meter_instance_realloc(tbl, ti->n_meters * 2);
+
+Both sashiko instances point out that realloc doesn't reshash the entries,
+which is a known behavior of the meter table.  It expects meters to be added
+sequentially and not with the random ids, as that is how ovs-vswitchd
+operates.  This is not a good assumption to have and the table should be
+replaced by a real hash table, but it is a separate work item.
+
+> +		if (err)
+> +			goto attach_err;
+> +
+> +		ti = rcu_dereference_ovsl(tbl->ti);
+> +	}
+> +
+> +	hash = meter_hash(ti, meter->id);
+> +
+> +	/* In general, selected slots should be empty, because
+> +	 * OvS uses id-pool to fetch available ids.
+> +	 */
+> +	if (unlikely(rcu_dereference_ovsl(ti->dp_meters[hash]))) {
+> +		err = -EBUSY;
+>  		goto attach_err;
+>  	}
+>  
+> +	dp_meter_instance_insert(ti, meter);
+
+It also complains that the caller relies on the fact that attach_meter()
+doesn't make the pointer visible.  However, IMO, this is the expected
+behavior from this function and doesn't require extra comments.  The
+opposite behavior would warrant a comment.
+
+>  	return 0;
+>  
+>  attach_err:
+> -	dp_meter_instance_remove(ti, meter);
+>  	tbl->count--;
+>  	return err;
+>  }
+
