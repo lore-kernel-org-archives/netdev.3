@@ -1,58 +1,52 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A9A3F7873;
-	Tue, 28 Jul 2026 07:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677FE3E0C4A;
+	Tue, 28 Jul 2026 07:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785223922; cv=none; b=ble+VvoVzoymMgwFglET4jBlZTnXYuPElEPDsUT5Mhjr+H5SKYTrYc8t3M0+fa1NPG9uXYvkkUtmODiQ+ycBkdsJuZgFQTRX6Co4dEbM/aLkeFCbFE+Que1szO0FJ/E1mhODJI77B8rPPysXWwt1/VaFKDrdOZt2vA67MokqMgo=
+	t=1785224135; cv=none; b=LSaKKAM9goHHKI6eGRAtaEUcwzoDANN1KW8pl8shvNmrqFvv30N2i3msNtSEzARUgwiDhquZ9CtyveUIK7AVb6uqKaui6mJEMSSa6RMgppUZoi2f8E4BT2RCw8FY31Ud9CAX+GGmZEjpzJAmittzOmGPo5YmhSVWzQ/4Z17hvQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785223922; c=relaxed/simple;
-	bh=GPhzaoJ4ji20qODLxRNF/x1ldJTYgSXtuQAZW2+Pi7M=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I0ET1ebXSOCyT5yrXcv7Jfx36Y8Nz3JoLt1kV2EsntBctztELumCdZ4ywqbfmnJT8ojyA/gqJVfv6hMc5jmHUDABrFYcD28VWpKr8qrAJBf0MTMoVnGTuKYQCntSDBhAgWfw8wvazohZnfx9wWfcB4y2J/9m2sQb/CSab9LZFNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=hz3qBVDt; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1785224135; c=relaxed/simple;
+	bh=88oMKijMS5flfz6PnFMsJGC7BOZ5lot/+gvxNg3Hjm4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J8hOLlECYOfVAA7HXqVwmHNrj0WCjBETlrL11Tt+z4TDchlTtcKg534lPxHHy8F3ED0c9ELMt24FKJGUSplnjOcPOpJvV1b3BTvH+s8uxbX/lRb53sOLKQRaBfJbZO5E6CfuCGFc60ERUc3umnXx2XOYqM4rBPljeabRmvCtlvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=lm0UGZkL; arc=none smtp.client-ip=207.46.229.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="hz3qBVDt"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66S7V9JM03681100, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1785223869;
-	bh=80xx3qN3TQ74ZZlyNMWZOAwL5ROobjqFI8+uPs2sNQY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=hz3qBVDtnZFde1SKl3YBXl947VBCfZzD7tbo4dpNOKi33CF2CAtFYE+PIblNWiacV
-	 77wMmoLXaaFV7yXqFdeao7KKaiEBSocUMoqql2xFnFmZ96I4JEvpljD/R1d3Na/BDi
-	 bHQdWTUc/pBFAZLdzMlRImEZJZhiBV5t35FAS979VjyKmEXI5Rml/eIZZAVUyVy4DM
-	 B9P4z4jKp9T9SyPUGk74AaZU/qz8NPU0/DV5urU9PLINj+4aU0ox6uhRbMoGQwd3AF
-	 /wxTZw0yWgW8SV8QFDSDcMBDqlntm+4LCmgxa/4oI3Wa5Riz4QQBPTfY65y4miJo1v
-	 JRVFO6M2vJJvg==
-Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66S7V9JM03681100
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 28 Jul 2026 15:31:09 +0800
-Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
- RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 28 Jul 2026 15:31:09 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS1.realsil.com.cn
- (172.29.17.101) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Tue, 28 Jul 2026 15:31:09 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <freddy_gu@realsil.com.cn>, <nb@tipi-net.de>,
-	<maxime.chevallier@bootlin.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<daniel@makrotopia.org>, <vladimir.oltean@nxp.com>, Javen Xu
-	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v11 2/5] net: phy: c45: add setup and read master/slave helpers
-Date: Tue, 28 Jul 2026 15:31:03 +0800
-Message-ID: <20260728073106.1515-3-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20260728073106.1515-1-javen_xu@realsil.com.cn>
-References: <20260728073106.1515-1-javen_xu@realsil.com.cn>
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="lm0UGZkL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=hdHcj
+	0vOw7H2iiEIlvqDJr0IzX3wk+uoZPxeYcgWfdE=; b=lm0UGZkLp+AvF08b55Fwu
+	tN+ODNmjr6NKMBErPZ4zDrBL9avvgbCGYvhlmf7XJhfkw4JrNICA/pDDKBQvmChh
+	DRi090UnsHDshd7BQFvGqVQa8cs2qHJOzhKdVOqBL4R/u/m2n97TsROh/kyWQRtE
+	zIJdX5IbQw6sbr/6m9XSeU=
+Received: from localhost.localdomain (unknown [121.225.135.236])
+	by web1 (Coremail) with SMTP id yAQGZQBnCcmwW2hqJim1AA--.58324S2;
+	Tue, 28 Jul 2026 15:35:13 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: netfilter-devel@vger.kernel.org
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>
+Subject: [PATCH nf] netfilter: conntrack: sctp: verify vtag before state changes
+Date: Tue, 28 Jul 2026 15:35:06 +0800
+Message-ID: <20260728073507.30635-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,207 +54,80 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-CM-TRANSID:yAQGZQBnCcmwW2hqJim1AA--.58324S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZrykWrWrWFyfuFy7Zr4UCFg_yoW5GFy8pa
+	yFkryakFyxGr4ay3Z3Kw1vyF4DGrs3C3yakryUAFyvkwn8JF1F9a13K3yxuwn8XFnrKry3
+	AFWqqr4YyF1DCrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9m1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
+	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
+	x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl
+	84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcx
+	kEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VW8
+	Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6I
+	AqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wrylc2xS
+	Y4AK67AK6r4xMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCFx2
+	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
+	6r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
+	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
+	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
+	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUtKsbUUUUU=
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgICAWpn2yG07gAAsu
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+The packet-wide vtag check in nf_conntrack_sctp_packet() is skipped when
+the bundle map contains any chunk type with special vtag handling.  The
+per-chunk path re-checks INIT, ABORT, SHUTDOWN_COMPLETE, and
+COOKIE_ECHO, but other state-changing chunks still fall through to
+sctp_new_state() without validating sh->vtag.
 
-This patch adds two static helpers in drivers/net/phy/phy-c45.c to
-configure and read back master-slave roles for non BASE-T1 Clause 45
-PHYs via the 10GBASE-T AN control/status registers.
-These helpers are wired into genphy_c45_config_aneg() and
-genphy_c45_read_status(). This changes the observable ethtool output
-for drivers using the generic c45 read path.
+This lets a wrong-vtag packet bundle HEARTBEAT with COOKIE_ACK, ERROR,
+SHUTDOWN, or SHUTDOWN_ACK and still advance conntrack state.  That can
+desynchronize conntrack from the real SCTP association and cause denial
+of service for SCTP traffic behind a stateful firewall.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+Check sh->vtag before processing those chunks when conntrack already
+knows the expected direction vtag.  This keeps the existing
+HEARTBEAT/HEARTBEAT_ACK learning and connection-reuse behavior for the
+`vtag == 0` cases.
+
+Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
+Cc: stable@vger.kernel.org
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Assisted-by: Claude-Code:GLM-5.2
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 ---
-Changes in v2:
- - no changes, new file
+ net/netfilter/nf_conntrack_proto_sctp.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-Changes in v3:
- - re-order function according to the order in phy-c45.c
- - add kernel-doc about return value
- - add MASTER_SLAVE_CFG_MASTER_PREFERRED,
-   MASTER_SLAVE_CFG_SLAVE_PREFERRED, MASTER_SLAVE_CFG_UNKNOWN,
-   MASTER_SLAVE_CFG_UNSUPPORTED, MASTER_SLAVE_CFG_SLAVE_PREFERRED cfg
-
-Changes in v4:
- - no changes
-
-Changes in v5:
- - move genphy_c45_an_setup_master_slave() to genphy_c45_config_aneg(),
-   as that C22 does.
-
-Changes in v6:
- - add colon in the function description
- - add genphy_c45_read_master_slave in read function
-
-Changes in v7:
- - when phydev->link is down, just return UNKNOWN
- - modify commit message
-
-Changes in v8:
- - no changes
-
-Changes in v9:
- - no changes
-
-Changes in v10:
- - no changes. Netdev queue overflow. Resend.
-
-Changes in v11:
- - no changes.
----
- drivers/net/phy/phy-c45.c | 103 ++++++++++++++++++++++++++++++++++++++
- include/uapi/linux/mdio.h |   5 ++
- 2 files changed, 108 insertions(+)
-
-diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-index c1f817a59739..870920311f9a 100644
---- a/drivers/net/phy/phy-c45.c
-+++ b/drivers/net/phy/phy-c45.c
-@@ -406,6 +406,97 @@ int genphy_c45_pma_soft_reset(struct phy_device *phydev)
- }
- EXPORT_SYMBOL_GPL(genphy_c45_pma_soft_reset);
- 
-+/**
-+ * genphy_c45_an_setup_master_slave - Configure Master/Slave setting for C45 PHYs
-+ * @phydev: target phy_device struct
-+ *
-+ * Description: Configure the forced or preferred Master/Slave role
-+ * 10GBASE-T control register (MMD 7, Register 0x0020) according to
-+ * IEEE 802.3 standards.
-+ *
-+ * Return: negative errno code on failure, 0 if Master/Slave didn't change,
-+ * or 1 if Master/Slave modes changed.
-+ */
-+static int genphy_c45_an_setup_master_slave(struct phy_device *phydev)
-+{
-+	u16 ctl = 0;
-+
-+	switch (phydev->master_slave_set) {
-+	case MASTER_SLAVE_CFG_MASTER_PREFERRED:
-+		ctl = MDIO_AN_10GBT_CTRL_MS_PORT_TYPE;
-+		break;
-+	case MASTER_SLAVE_CFG_SLAVE_PREFERRED:
-+		break;
-+	case MASTER_SLAVE_CFG_MASTER_FORCE:
-+		ctl = MDIO_AN_10GBT_CTRL_MS_ENABLE | MDIO_AN_10GBT_CTRL_MS_VALUE;
-+		break;
-+	case MASTER_SLAVE_CFG_SLAVE_FORCE:
-+		ctl = MDIO_AN_10GBT_CTRL_MS_ENABLE;
-+		break;
-+	case MASTER_SLAVE_CFG_UNKNOWN:
-+	case MASTER_SLAVE_CFG_UNSUPPORTED:
-+		return 0;
-+	default:
-+		phydev_warn(phydev, "Unsupported Master/Slave mode\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	return phy_modify_mmd_changed(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_CTRL,
-+				      MDIO_AN_10GBT_CTRL_MS_ENABLE |
-+				      MDIO_AN_10GBT_CTRL_MS_VALUE |
-+				      MDIO_AN_10GBT_CTRL_MS_PORT_TYPE, ctl);
-+}
-+
-+/**
-+ * genphy_c45_read_master_slave - read master/slave status
-+ * @phydev: target phy_device struct
-+ *
-+ * Description: Read the Master/Slave configuration and status
-+ * from 10GBASE-T control/status registers (MMD 7, Reg 0x0020 and 0x0021).
-+ *
-+ * Return: 0 on success, or a negative error code on failure.
-+ */
-+static int genphy_c45_read_master_slave(struct phy_device *phydev)
-+{
-+	int val;
-+
-+	phydev->master_slave_get = MASTER_SLAVE_CFG_UNKNOWN;
-+	phydev->master_slave_state = MASTER_SLAVE_STATE_UNKNOWN;
-+
-+	val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_CTRL);
-+	if (val < 0)
-+		return val;
-+
-+	if (val & MDIO_AN_10GBT_CTRL_MS_ENABLE) {
-+		if (val & MDIO_AN_10GBT_CTRL_MS_VALUE)
-+			phydev->master_slave_get = MASTER_SLAVE_CFG_MASTER_FORCE;
-+		else
-+			phydev->master_slave_get = MASTER_SLAVE_CFG_SLAVE_FORCE;
-+	} else {
-+		if (val & MDIO_AN_10GBT_CTRL_MS_PORT_TYPE)
-+			phydev->master_slave_get = MASTER_SLAVE_CFG_MASTER_PREFERRED;
-+		else
-+			phydev->master_slave_get = MASTER_SLAVE_CFG_SLAVE_PREFERRED;
-+	}
-+
-+	val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_STAT);
-+	if (val < 0)
-+		return val;
-+
-+	if (val & MDIO_AN_10GBT_STAT_MS_FAULT) {
-+		phydev->master_slave_state = MASTER_SLAVE_STATE_ERR;
-+	} else if (phydev->link) {
-+		if (val & MDIO_AN_10GBT_STAT_MS_RES)
-+			phydev->master_slave_state = MASTER_SLAVE_STATE_MASTER;
-+		else
-+			phydev->master_slave_state = MASTER_SLAVE_STATE_SLAVE;
-+	} else {
-+		phydev->master_slave_state = MASTER_SLAVE_STATE_UNKNOWN;
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * genphy_c45_aneg_done - return auto-negotiation complete status
-  * @phydev: target phy_device struct
-@@ -1214,6 +1305,10 @@ int genphy_c45_read_status(struct phy_device *phydev)
- 			ret = genphy_c45_baset1_read_status(phydev);
- 			if (ret < 0)
- 				return ret;
-+		} else {
-+			ret = genphy_c45_read_master_slave(phydev);
-+			if (ret < 0)
-+				return ret;
- 		}
- 
- 		phy_resolve_aneg_linkmode(phydev);
-@@ -1247,6 +1342,14 @@ int genphy_c45_config_aneg(struct phy_device *phydev)
- 	if (ret > 0)
- 		changed = true;
- 
-+	if (!genphy_c45_baset1_able(phydev)) {
-+		ret = genphy_c45_an_setup_master_slave(phydev);
-+		if (ret < 0)
-+			return ret;
-+		if (ret > 0)
-+			changed = true;
-+	}
-+
- 	return genphy_c45_check_and_restart_aneg(phydev, changed);
- }
- EXPORT_SYMBOL_GPL(genphy_c45_config_aneg);
-diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
-index b2541c948fc1..06f4bc3c20c7 100644
---- a/include/uapi/linux/mdio.h
-+++ b/include/uapi/linux/mdio.h
-@@ -332,8 +332,13 @@
- #define MDIO_AN_10GBT_CTRL_ADV2_5G	0x0080	/* Advertise 2.5GBASE-T */
- #define MDIO_AN_10GBT_CTRL_ADV5G	0x0100	/* Advertise 5GBASE-T */
- #define MDIO_AN_10GBT_CTRL_ADV10G	0x1000	/* Advertise 10GBASE-T */
-+#define MDIO_AN_10GBT_CTRL_MS_ENABLE	0x8000	/* Master/slave manual config enable */
-+#define MDIO_AN_10GBT_CTRL_MS_VALUE	0x4000	/* Master/slave config value (1=Master) */
-+#define MDIO_AN_10GBT_CTRL_MS_PORT_TYPE	0x2000	/* Master Preferred Type */
- 
- /* AN 10GBASE-T status register. */
-+#define MDIO_AN_10GBT_STAT_MS_FAULT	0x8000	/* Master/slave fault */
-+#define MDIO_AN_10GBT_STAT_MS_RES	0x4000	/* Master/slave resolution (1=Master) */
- #define MDIO_AN_10GBT_STAT_LP2_5G	0x0020  /* LP is 2.5GBT capable */
- #define MDIO_AN_10GBT_STAT_LP5G		0x0040  /* LP is 5GBT capable */
- #define MDIO_AN_10GBT_STAT_LPTRR	0x0200	/* LP training reset req. */
+diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
+index 7e10fa65cbdd..9978ecd05b1e 100644
+--- a/net/netfilter/nf_conntrack_proto_sctp.c
++++ b/net/netfilter/nf_conntrack_proto_sctp.c
+@@ -407,9 +407,17 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
+ 			/* (D) vtag must be same as init_vtag as found in INIT_ACK */
+ 			if (sh->vtag != ct->proto.sctp.vtag[dir])
+ 				goto out_unlock;
+-		} else if (sch->type == SCTP_CID_COOKIE_ACK) {
+-			ct->proto.sctp.init[dir] = 0;
+-			ct->proto.sctp.init[!dir] = 0;
++		} else if (sch->type == SCTP_CID_COOKIE_ACK ||
++			   sch->type == SCTP_CID_ERROR ||
++			   sch->type == SCTP_CID_SHUTDOWN ||
++			   sch->type == SCTP_CID_SHUTDOWN_ACK) {
++			if (ct->proto.sctp.vtag[dir] &&
++			    sh->vtag != ct->proto.sctp.vtag[dir])
++				goto out_unlock;
++			if (sch->type == SCTP_CID_COOKIE_ACK) {
++				ct->proto.sctp.init[dir] = 0;
++				ct->proto.sctp.init[!dir] = 0;
++			}
+ 		} else if (sch->type == SCTP_CID_HEARTBEAT) {
+ 			if (ct->proto.sctp.vtag[dir] == 0) {
+ 				pr_debug("Setting %d vtag %x for dir %d\n", sch->type, sh->vtag, dir);
 -- 
-2.43.0
+2.47.3
 
