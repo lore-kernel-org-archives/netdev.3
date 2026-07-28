@@ -1,167 +1,121 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [4.193.249.245])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED3E3A6B8A;
-	Tue, 28 Jul 2026 06:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.193.249.245
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F72244692
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785218513; cv=none; b=WEBUxlDMLQe+PDtregRjGQj0gcfhNR58XcL1BEbxDYTui/IalkYfSTwalK88/9di4/q0MN9R9HUZq1YPzV20Y7r8DvcakGGOVNYYYbsCENmeg+yt8x+2aOL/nBT1LfIjpbc1lcUTRzSzat+fS4A910OCwRRxWoVa166DjybHCvs=
+	t=1785218800; cv=none; b=OADaANfQDg98sBFmicrnfMsTN4DyST2c3duDUpxFZIpa+5hGbV53SPXoOUqWsN0v5WQSlaknYiNAx+CqPM6Ng32+Hx2qJdjQtEdrJXU4gR4sIN447Sd9CXh4vt3udGPNN/9vHgkqn7MnT1xfK5/JRQdaLbok6UDzUBbWH3IZv0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785218513; c=relaxed/simple;
-	bh=SzxEyo/hYfX4/AUIHToFD3ppS8fz80XoVfp4+P0Fylw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GRXt7vSjc9mUS9Gm+8GbYDcInxoneR5m7xqCkoCfq0N3ZpmxhJdwyZT31MwPxAw8TyHaTle1A82micRmxAogqGzuwe9yt7JGd6CNpI9c+Lc4meio7eknK7CIG606pK9BpgcfkdzQE77jVwhdqciYNt+gsJZGOilDVBEO9plGrP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=hHEm5IPE; arc=none smtp.client-ip=4.193.249.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1785218800; c=relaxed/simple;
+	bh=vS/Tk6YpGekQKr8chq3CSmBoOnMad3lcIKGt7G3xI6o=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=tNgfoBBp8s5MQXZtkFuKL/VJjddTCViqK5H97Ntmc8Pcla0azgwUVcZafnbx1ZX96T0Nj36ywShwBU7ICo1cBMncctcoty7pbp15OrIp6t+jiuxHLeylAUDzjte4b8L+TBE1HrqekyaMlOWqXYyFxij/sOfPw1hZecgxcTR0mKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=NlaOT2PT; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="hHEm5IPE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=x5Iau
-	e0edy3YpK0ZIF+qvdQ8Y8pltM+AfCI526ouugQ=; b=hHEm5IPENXuyT9AMzk5xJ
-	BipJc6b02PqwzT2jLRfVCKKt30fhYLqGs9c+ZrrUf9fzzeDHIGJl3A4GQiSj8jUF
-	I+Ie59acw343Ae8nrd/m83Y7jsS6J89ecivsL/0Ugc8M6dssPARK9aSmHwukIQ8B
-	rlvZs++KKfHFK+5ZD9AqVg=
-Received: from localhost.localdomain (unknown [121.225.135.236])
-	by web3 (Coremail) with SMTP id ygQGZQBHGBexRWhqwyVEAA--.33059S2;
-	Tue, 28 Jul 2026 14:01:23 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net] nexthop: account nexthop allocations to memcg
-Date: Tue, 28 Jul 2026 14:01:11 +0800
-Message-ID: <20260728060112.30367-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.46.2
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="NlaOT2PT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Content-Type:MIME-Version:Subject:From:To:Date:
+	Message-ID; bh=vS/Tk6YpGekQKr8chq3CSmBoOnMad3lcIKGt7G3xI6o=; b=N
+	laOT2PT8JoN/fQoB1xuLcrKY4TtHm14hzKFt0JzRFfVOCkKS627SggkLogEW2xle
+	iIqTH6LKlhN6tioGFjFWvKNzHE/H+VP+GWqk4hELfKwkPOUR3xihtaAf55ydxpmp
+	veeyxKOx3+a5uvZ2xIrWKTtBmK1OsiBzA9LqwrZ/9k=
+Received: from [127.0.1.1] (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wA3sEvFRmhqt+6MMQ--.7825S2;
+	Tue, 28 Jul 2026 14:06:00 +0800 (CST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygQGZQBHGBexRWhqwyVEAA--.33059S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAFy8Ww4fAry5CFyUZw4Dtwb_yoWrJFWxpF
-	WrA34kJFW3Jwn5uFsYyr4j9a1akw4vkry7CF1aka40vwnxKr1rAasrta4Yvan5uFy8GF1F
-	qFWqkw15t3yjyrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9m1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2
-	z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcx
-	kEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VW8
-	Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6I
-	AqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xS
-	Y4AK67AK6r47MxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCFx2
-	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
-	6r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
-	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
-	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
-	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0Jj7VysUUUUU=
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQECAWpn2jQ2FAABsD
+Content-Transfer-Encoding: base64
+Subject: [PATCH net] net: openvswitch: fix stack exhaustion from unaccounted clone_execute() recursion
+From: yang zhuorao <alexyoung0@163.com>
+To: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org
+Cc: security@kernel.org, dev@openvswitch.org, netdev@vger.kernel.org
+Date: Tue, 28 Jul 2026 14:05:57 +0800
+Message-ID: <178521875706.803907.3226960398667307795@163.com>
+X-CM-TRANSID:_____wA3sEvFRmhqt+6MMQ--.7825S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAFWfGF1ftF18KF18Zw43Jrb_yoWrCr45pa
+	yrCw1qyrZ8Jw1I93ykAa18WFy5ua1UGrW5GFs8Aw1rJa45Kw1SvrZ0gFy2vF17CF1kAay7
+	XrWDZF1a9Fs7ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07b8GYJUUUUU=
+X-CM-SenderInfo: xdoh55prxqwii6rwjhhfrp/xtbC-wh4d2poRsihkAAA3F
 
-The nexthop creation path allocates struct nexthop, struct nh_info,
-group storage, resilient bucket tables, transient notifier tables and
-per-group stats without memcg accounting. As a result, a task with
-CAP_NET_ADMIN can create nexthops and resilient groups whose kernel
-memory is not charged to the task's memory cgroup, so memory.max does
-not constrain this part of the workload.
-
-A QEMU reproduction with Docker confirmed the problem. A container
-granted CAP_NET_ADMIN and limited to memory.max=128M could repeatedly
-create resilient nexthops while memory.current stayed at 589824 and host
-VmallocUsed rose from 67044 kB to 231860 kB.
-
-Fix this by charging the nexthop creation-path allocations to the
-caller's memcg with GFP_KERNEL_ACCOUNT / __GFP_ACCOUNT, including the
-per-group stats allocation added later. With this change, the same
-workload hits memcg OOM with GFP_KERNEL_ACCOUNT in the allocation path
-and host VmallocUsed stays flat at 67044 kB, so memory.max constrains
-the workload again.
-
-Fixes: ab84be7e54fc ("net: Initial nexthop code")
-Fixes: f4676ea74b85 ("net: nexthop: Add nexthop group entry stats")
-Cc: stable@vger.kernel.org
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: Claude-Code:GLM-5.2
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
----
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 44fe75004cac..c8685c583579 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -169,7 +169,7 @@ static int nh_notifier_res_table_info_init(struct nh_notifier_info *info,
- 	info->type = NH_NOTIFIER_INFO_TYPE_RES_TABLE;
- 	size = struct_size(info->nh_res_table, nhs, num_nh_buckets);
- 	info->nh_res_table = __vmalloc(size, GFP_KERNEL | __GFP_ZERO |
--				       __GFP_NOWARN);
-+				       __GFP_NOWARN | __GFP_ACCOUNT);
- 	if (!info->nh_res_table)
- 		return -ENOMEM;
- 
-@@ -533,7 +533,7 @@ static struct nexthop *nexthop_alloc(void)
- {
- 	struct nexthop *nh;
- 
--	nh = kzalloc_obj(struct nexthop);
-+	nh = kzalloc_obj(struct nexthop, GFP_KERNEL_ACCOUNT);
- 	if (nh) {
- 		INIT_LIST_HEAD(&nh->fi_list);
- 		INIT_LIST_HEAD(&nh->f6i_list);
-@@ -548,7 +548,7 @@ static struct nh_group *nexthop_grp_alloc(u16 num_nh)
- {
- 	struct nh_group *nhg;
- 
--	nhg = kzalloc_flex(*nhg, nh_entries, num_nh);
-+	nhg = kzalloc_flex(*nhg, nh_entries, num_nh, GFP_KERNEL_ACCOUNT);
- 	if (nhg)
- 		nhg->num_nh = num_nh;
- 
-@@ -565,7 +565,8 @@ nexthop_res_table_alloc(struct net *net, u32 nhg_id, struct nh_config *cfg)
- 	unsigned long size;
- 
- 	size = struct_size(res_table, nh_buckets, num_nh_buckets);
--	res_table = __vmalloc(size, GFP_KERNEL | __GFP_ZERO | __GFP_NOWARN);
-+	res_table = __vmalloc(size, GFP_KERNEL | __GFP_ZERO | __GFP_NOWARN |
-+			      __GFP_ACCOUNT);
- 	if (!res_table)
- 		return NULL;
- 
-@@ -2799,7 +2800,8 @@ static struct nexthop *nexthop_create_group(struct net *net,
- 			nhg->has_v4 = true;
- 
- 		nhg->nh_entries[i].stats =
--			netdev_alloc_pcpu_stats(struct nh_grp_entry_stats);
-+			__netdev_alloc_pcpu_stats(struct nh_grp_entry_stats,
-+						  GFP_KERNEL_ACCOUNT);
- 		if (!nhg->nh_entries[i].stats) {
- 			err = -ENOMEM;
- 			nexthop_put(nhe);
-@@ -2943,7 +2945,7 @@ static struct nexthop *nexthop_create(struct net *net, struct nh_config *cfg,
- 	if (!nh)
- 		return ERR_PTR(-ENOMEM);
- 
--	nhi = kzalloc_obj(*nhi);
-+	nhi = kzalloc_obj(*nhi, GFP_KERNEL_ACCOUNT);
- 	if (!nhi) {
- 		kfree(nh);
- 		return ERR_PTR(-ENOMEM);
-
---
-2.47.3
+Y2xvbmVfZXhlY3V0ZSgpIG9ubHkgaW5jcmVtZW50cyBhbmQgZGVjcmVtZW50cyBleGVjX2xldmVs
+IHdoZW4KY2xvbmVfZmxvd19rZXkgaXMgdHJ1ZS4gIFdoZW4gY2xvbmVfZmxvd19rZXkgaXMgZmFs
+c2UgdGhlIG9wdGltaXplZApwYXRoIHJldXNlcyB0aGUgb3JpZ2luYWwgZmxvdyBrZXkgYW5kIGNh
+bGxzIGRvX2V4ZWN1dGVfYWN0aW9ucygpCmRpcmVjdGx5IHdpdGhvdXQgdXBkYXRpbmcgdGhlIHJl
+Y3Vyc2lvbiBjb3VudGVyLCBtYWtpbmcgdGhvc2UgbGF5ZXJzCmludmlzaWJsZSB0byB0aGUgT1ZT
+X1JFQ1VSU0lPTl9MSU1JVCBjaGVjayBpbiBvdnNfZXhlY3V0ZV9hY3Rpb25zKCkuCgpBIHNpbmds
+ZSBhY3Rpb24gdHJlZSBhbGxvd3MgdXAgdG8gT1ZTX0NPUFlfQUNUSU9OU19NQVhfREVQVEggKDE2
+KQpuZXN0ZWQgY2xvbmUgYWN0aW9ucy4gIFdoZW4gdGhlIGlubmVybW9zdCBjbG9uZSBjb250YWlu
+cyBhIFJFQ0lSQwp0aGF0IHNlbGVjdHMgYW5vdGhlciBmbG93IHdpdGggaXRzIG93biAxNi1sYXll
+ciB2YWxpZGF0aW9uIGJ1ZGdldCwKbXVsdGlwbGUgdHJlZXMgb2YgdW5hY2NvdW50ZWQgcmVjdXJz
+aW9uIGNhbiBiZSBzdGFja2VkLiAgVGhlIGRlZmVycmVkCmFjdGlvbiB0aHJlc2hvbGQgKE9WU19E
+RUZFUlJFRF9BQ1RJT05fVEhSRVNIT0xEID0KT1ZTX1JFQ1VSU0lPTl9MSU1JVCAtIDIgPSAzKSBh
+bGxvd3MgdGhyZWUgc3luY2hyb25vdXMgcmVjaXJjIGxldmVscwpiZWZvcmUgY2xvbmVfa2V5KCkg
+Zm9yY2VzIGRlZmVycmFsLCB5aWVsZGluZyAzIHggMTYgPSA0OCBsYXllcnMgb2YKc3luY2hyb25v
+dXMsIHVuYWNjb3VudGVkIGNsb25lIHJlY3Vyc2lvbi4KClBlci1sYXllciBzdGFjayB1c2FnZSBp
+cyBhcHByb3hpbWF0ZWx5IDI5NiBieXRlcyAoZnJvbSBkaXNhc3NlbWJseToKZG9fZXhlY3V0ZV9h
+Y3Rpb25zKCkgYWxsb2NhdGVzIDB4OTggYnl0ZXMsIGNsb25lX2V4ZWN1dGUoKSBhbGxvY2F0ZXMK
+MHgyMCBieXRlcywgcGx1cyBzYXZlZCByZWdpc3RlcnMgYW5kIHJldHVybiBhZGRyZXNzKS4gIDQ4
+IGxheWVycwpjb25zdW1lIH4xNCwyMDggYnl0ZXMgYmVmb3JlIHJlY2lyYywgZmxvdyBsb29rdXAs
+IE5ldGxpbmssIGFuZCBiYXNlCmNhbGwgZnJhbWVzLCBleGNlZWRpbmcgdGhlIDE2IEtpQiB4ODZf
+NjQgdGFzayBzdGFjayBhbmQgaGl0dGluZyB0aGUKZ3VhcmQgcGFnZS4KCkFuIHVucHJpdmlsZWdl
+ZCB1c2VyIGNhbiB0cmlnZ2VyIHRoaXMgZnJvbSBhIHByaXZhdGUgdXNlci9uZXQKbmFtZXNwYWNl
+IChjbG9uZShDTE9ORV9ORVdVU0VSIHwgQ0xPTkVfTkVXTkVUKSkgYnkgaW5zdGFsbGluZyB0aHJl
+ZQpmbG93IHJ1bGVzIGVhY2ggd2l0aCAxNiBuZXN0ZWQgY2xvbmUgYWN0aW9ucyBsaW5rZWQgYnkg
+UkVDSVJDLCB0aGVuCmluamVjdGluZyBhIHNpbmdsZSBwYWNrZXQgdmlhIE9WU19QQUNLRVRfQ01E
+X0VYRUNVVEUuICBUaGUgcmVzdWx0IGlzCmEga2VybmVsIHBhbmljOgoKICAgIEJVRzogVEFTSyBz
+dGFjayBndWFyZCBwYWdlIHdhcyBoaXQgLi4uCiAgICBDUFU6IDAgVUlEOiAxMDAwIFBJRDogODUg
+Li4uIDcuMi4wLXJjNSsKICAgIFJJUDogMDAxMDpjbG9uZV9leGVjdXRlKzB4NWEvMHgyYzAgW29w
+ZW52c3dpdGNoXQogICAgW2RvX2V4ZWN1dGVfYWN0aW9ucyAvIGNsb25lX2V4ZWN1dGUgYWx0ZXJu
+YXRpbmcgcmVwZWF0ZWRseV0KICAgIEtlcm5lbCBwYW5pYyAtIG5vdCBzeW5jaW5nOiBGYXRhbCBl
+eGNlcHRpb24gaW4gaW50ZXJydXB0CgpGaXggdGhpcyBieSB1bmNvbmRpdGlvbmFsbHkgaW5jcmVt
+ZW50aW5nIGV4ZWNfbGV2ZWwgZm9yIGFsbApzeW5jaHJvbm91cyBjbG9uZSByZWN1cnNpb24gZWRn
+ZXMgYW5kIGNoZWNraW5nIE9WU19SRUNVUlNJT05fTElNSVQKYmVmb3JlIGNhbGxpbmcgZG9fZXhl
+Y3V0ZV9hY3Rpb25zKCkuICBXaGVuIHRoZSBsaW1pdCBpcyBleGNlZWRlZCB0aGUKcGFja2V0IGlz
+IGRyb3BwZWQgYW5kIC1FTkVURE9XTiBpcyByZXR1cm5lZCwgY29uc2lzdGVudCB3aXRoIHRoZQpl
+eGlzdGluZyBoYW5kbGluZyBpbiBvdnNfZXhlY3V0ZV9hY3Rpb25zKCkuCgpUZXN0ZWQgb24gTGlu
+dXggNy4yLjAtcmM1KyAobWFpbmxpbmUgSEVBRCA2MmNjOTAyNDE1NDgpLCB4ODZfNjQsCkNPTkZJ
+R19WTUFQX1NUQUNLPXksIENPTkZJR19PUEVOVlNXSVRDSD1tLCBpc29sYXRlZCBRRU1VIGd1ZXN0
+LgpDb25maXJtZWQgdGhhdCB0aGUgUG9DICguL3BvY19jbG9uZV9vdmVyZmxvdyAyIDE2IDMsIHJ1
+biBhcyBVSUQgMTAwMCkKbm8gbG9uZ2VyIHRyaWdnZXJzIGEgcGFuaWMgd2l0aCB0aGlzIHBhdGNo
+IGFwcGxpZWQuCgpGaXhlczogYjIzMzUwNDAzM2RiICgib3BlbnZzd2l0Y2g6IGtlcm5lbCBkYXRh
+cGF0aCBjbG9uZSBhY3Rpb24iKQpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZwpSZXBvcnRlZC1i
+eTogeWFuZyB6aHVvcmFvIDxhbGV4eW91bmcwQDE2My5jb20+ClNpZ25lZC1vZmYtYnk6IHlhbmcg
+emh1b3JhbyA8YWxleHlvdW5nMEAxNjMuY29tPgotLS0KUmVwcm9kdWNlciAoQywgc2luZ2xlIGZp
+bGUsIGF2YWlsYWJsZSB1cG9uIHJlcXVlc3QpOgoKICAgIGdjYyAtTzIgLVdhbGwgLW8gcG9jX2Ns
+b25lX292ZXJmbG93IHBvY19jbG9uZV9vdmVyZmxvdy5jCiAgICAuL3BvY19jbG9uZV9vdmVyZmxv
+dyAyIDE2IDMgICAjIGFzIHVucHJpdmlsZWdlZCB1c2VyCgpUaGUgUG9DIGNyZWF0ZXMgYSBwcml2
+YXRlIHVzZXIvbmV0IG5hbWVzcGFjZSwgaW5zdGFsbHMgdGhyZWUgZmxvd3MKZWFjaCB3aXRoIDE2
+IG5lc3RlZCBjbG9uZSBhY3Rpb25zIGxpbmtlZCBieSBSRUNJUkMsIGFuZCBpbmplY3RzIGEKdHJp
+Z2dlcmluZyBwYWNrZXQuICBQcmVyZXF1aXNpdGVzOiBDT05GSUdfT1BFTlZTV0lUQ0g9bS95IGxv
+YWRlZCwKdW5wcml2aWxlZ2VkIHVzZXIgbmFtZXNwYWNlIGNyZWF0aW9uIGFsbG93ZWQuCgpWZXJp
+ZmllZCB1bmZpeGVkIGluIExpbnVzIG1haW5saW5lICg2MmNjOTAyNDE1NDgpLCBuZXQgKDk3YWMw
+ODU2MGQyMyksCmFuZCBuZXQtbmV4dCAoYTUwZWJhMWU3NzhhKSBhcyBvZiAyMDI2LTA3LTI3LgoK
+IG5ldC9vcGVudnN3aXRjaC9hY3Rpb25zLmMgfCAxMyArKysrKysrKystLS0tCiAxIGZpbGUgY2hh
+bmdlZCwgOSBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL25ldC9v
+cGVudnN3aXRjaC9hY3Rpb25zLmMgYi9uZXQvb3BlbnZzd2l0Y2gvYWN0aW9ucy5jCmluZGV4IDUx
+M2ZjYTZhOGU4YS4uMDVmYmY1YzA3MjAwIDEwMDY0NAotLS0gYS9uZXQvb3BlbnZzd2l0Y2gvYWN0
+aW9ucy5jCisrKyBiL25ldC9vcGVudnN3aXRjaC9hY3Rpb25zLmMKQEAgLTE0OTcsMTQgKzE0OTcs
+MTkgQEAgc3RhdGljIGludCBjbG9uZV9leGVjdXRlKHN0cnVjdCBkYXRhcGF0aCAqZHAsIHN0cnVj
+dCBza19idWZmICpza2IsCiAJaWYgKGNsb25lKSB7CiAJCWludCBlcnIgPSAwOwogCQlpZiAoYWN0
+aW9ucykgeyAvKiBTYW1wbGUgYWN0aW9uICovCi0JCQlpZiAoY2xvbmVfZmxvd19rZXkpCi0JCQkJ
+X190aGlzX2NwdV9pbmMob3ZzX3BjcHVfc3RvcmFnZS0+ZXhlY19sZXZlbCk7CisJCQlfX3RoaXNf
+Y3B1X2luYyhvdnNfcGNwdV9zdG9yYWdlLT5leGVjX2xldmVsKTsKKworCQkJaWYgKHVubGlrZWx5
+KF9fdGhpc19jcHVfcmVhZChvdnNfcGNwdV9zdG9yYWdlLT5leGVjX2xldmVsKSA+CisJCQkJICAg
+ICBPVlNfUkVDVVJTSU9OX0xJTUlUKSkgeworCQkJCV9fdGhpc19jcHVfZGVjKG92c19wY3B1X3N0
+b3JhZ2UtPmV4ZWNfbGV2ZWwpOworCQkJCW92c19rZnJlZV9za2JfcmVhc29uKHNrYiwgT1ZTX0RS
+T1BfUkVDVVJTSU9OX0xJTUlUKTsKKwkJCQlyZXR1cm4gLUVORVRET1dOOworCQkJfQoKIAkJCWVy
+ciA9IGRvX2V4ZWN1dGVfYWN0aW9ucyhkcCwgc2tiLCBjbG9uZSwKIAkJCQkJCSBhY3Rpb25zLCBs
+ZW4pOwoKLQkJCWlmIChjbG9uZV9mbG93X2tleSkKLQkJCQlfX3RoaXNfY3B1X2RlYyhvdnNfcGNw
+dV9zdG9yYWdlLT5leGVjX2xldmVsKTsKKwkJCV9fdGhpc19jcHVfZGVjKG92c19wY3B1X3N0b3Jh
+Z2UtPmV4ZWNfbGV2ZWwpOwogCQl9IGVsc2UgeyAvKiBSZWNpcmMgYWN0aW9uICovCiAJCQljbG9u
+ZS0+cmVjaXJjX2lkID0gcmVjaXJjX2lkOwogCQkJb3ZzX2RwX3Byb2Nlc3NfcGFja2V0KHNrYiwg
+Y2xvbmUpOwotLQoyLjQzLjAK
 
