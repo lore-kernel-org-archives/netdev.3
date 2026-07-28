@@ -1,39 +1,39 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623433AB291
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 13:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ED93B4EB0
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 13:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785245975; cv=none; b=MJJH6MoQJLSQHhpBl9TJgHK/JffItx3xKv4N5XzAtpele+YsPUy4tzveS5+hi6B0a9dF3uGGU+Cu1WrOZW+fHUHX60e1wu9n9VafncTsKkwLB+Lc5JgN9nfamdb/hNXEmzxVSEWYtab9Y1wKOaGrb9O8C9PZSjn/mZN+4ArP+l8=
+	t=1785245976; cv=none; b=kWO/RiEY5oqYQ5jq5cwGBglMJ3Ma5FiVpgULndmTyvHaw5HhKyUwdP36iPbvJh5Vf4ekP1III6dYzykpcmJOlkCT9By/A8Plha1H6a0SmhkRpBRgN6C/+oEhFKID5/tvOK1gvxjxQ79uNGuk6K7NwKIgorH6qGtjmkYBSAToF6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785245975; c=relaxed/simple;
-	bh=B14+rJi/3317g6EGvhpNfaWIawdEaODZJ2BWSqoWj+o=;
+	s=arc-20240116; t=1785245976; c=relaxed/simple;
+	bh=1eQd28LF0tbtTD54sEDibpLvlAGLDS9y7zSfJIh+So4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ixpoBm4LkOuRcSd5fMBkKaJfrfIF5xT3G066ZXpvRtO1cWqvo+Sq8bkOHj3Li2KGMWZj61+kd88RkzHEmz5gZfFiyuVVWt7129X9noAyXWZJkFoHtm8xoNM3spb6DvKMJHZZkLtNeTLdM8bzuMgFnS00UR2yZ/073oMBxE3rCes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=cTbqmKNJ; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=kOPQRyVCHGVUuFIX6NktZ1giE+liNP1gHj7UiTPEinTAowEehja5LV4lwZ30Z8IqOLpjdEShhXZIAVbMYF6GaWdndwqjv0TnJyyaKdCcEJFuuL+LTK5jGBlg5yV1MCbUW4hB/HZLfeJaNGPm+nIW7NB4njbXkLB98qjDbHaWo4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=oqyMGWs5; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="cTbqmKNJ"
-Received: from kero.packetmixer.de (p200300C59717eAd808f168C97E5563A8.dip0.t-ipconnect.de [IPv6:2003:c5:9717:ead8:8f1:68c9:7e55:63a8])
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="oqyMGWs5"
+Received: from kero.packetmixer.de (p200300C59717EAd808F168c97E5563A8.dip0.t-ipconnect.de [IPv6:2003:c5:9717:ead8:8f1:68c9:7e55:63a8])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 0040AFA130;
-	Tue, 28 Jul 2026 15:39:25 +0200 (CEST)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 3167AFA15C;
+	Tue, 28 Jul 2026 15:39:29 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1785245966;
+	s=09092022; t=1785245969;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pTpsM0dX3FAlpZ45l6crbik8ZM6OKMNbOFNj7pZmpts=;
-	b=cTbqmKNJPTeM/gEXLtSXeDFEyktqRgRujqOhqG8m4K736dQ/HHQmVg4Zqsfqpej7evuTW4
-	4b3oP/fwzHFejYs5pqHU8Rsm4ugDCcwqFBICVEj0HTHpC5hTWm540WlAjEGCE88qUvoWnK
-	eD+HAWCzIvrK/cNo2v9AWa0fGz0sEQayZRHTWI2S3nSpUaR9BxFApa1Mo0VuA6krXEuEFd
-	x7qG8p7rY9BbMgfyQ+q+ssYi6kvY14uRkRaNg4r+dJENG4vtQD1V/ijP7ITXUhuy5MaeoB
-	ujLuemsOSFSWIibVm4IOqDKD6l9Oq3JpP9agPU/J/D+kZeKC11E4T5lkLSDTKA==
+	bh=2scb0MMEjb4q0hgIfzPuocbsXIa3fBhKJBpVoVGupFs=;
+	b=oqyMGWs5eqMClP6V+sHD2rnFj8gx40RJFaF72Vj58ykQA0vSBQJKX3XB81bjKM4XHXOf6u
+	YRjc9YoIQ6XUEZynXNwN/Gt2pWunaa0NqpErUZ8voSyCcR9C7rEtrPjp+3zTpRD/Rb4DYz
+	HQpBbl3CRh6VWJv/M1ckhBts/AhobTS9fm8BYS0KVOJcpagroxo51KZQ2dR/s2dtKPFPIX
+	i/VSy06LiwsYytlBanZMYLt5QwSAnjga66E2yqMzVIIUTQI9+1efYGaDnCxtzKOpfWZNpu
+	CvWYUKEag1fxX8w4Uq1mFY/GfLVmti+IW/M+cm57ugRsg7myP0rsJ5cG/MiOZA==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -44,9 +44,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 09/15] batman-adv: add missing kernel-doc comments
-Date: Tue, 28 Jul 2026 15:39:12 +0200
-Message-ID: <20260728133918.643267-10-sw@simonwunderlich.de>
+Subject: [PATCH net-next 14/15] batman-adv: tt: use atomic flag modifications
+Date: Tue, 28 Jul 2026 15:39:17 +0200
+Message-ID: <20260728133918.643267-15-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260728133918.643267-1-sw@simonwunderlich.de>
 References: <20260728133918.643267-1-sw@simonwunderlich.de>
@@ -60,1461 +60,719 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-batman-adv requires kernel-doc for all functions and data types visible
-outside their own translation unit. Promoting a function from static to
-module-wide visibility currently requires adding documentation from
-scratch. However, this burden falls on whoever promotes a function from
-static to module-wide visibility, rather than its original implementer.
+The flags of translation table entries are modified in various places using
+RMW operations like:
 
-Add the missing kernel-doc comments for the remaining undocumented
-functions and data types to reduce the complexity for new contributions.
+* read flags + add flag + store
+* read flags + remove flag + store
+
+These were done without making sure that no other context is doing a
+similar operation at the same time. If another context does modify the
+flags then it could happen that a store of the flag modifications is simply
+lost. This problem can usually be fixed at a later point when the flags are
+tried to be adjusted again.
+
+To reduce the time the wrong flags are used, it is better to change the u16
+flags type to use an atomic_t with its atomic helper to perform these
+adjustments.
 
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- include/uapi/linux/batadv_packet.h     |  16 ++-
- net/batman-adv/bat_algo.c              |  10 ++
- net/batman-adv/bat_iv_ogm.c            | 166 ++++++++++++++++++++++-
- net/batman-adv/bat_v.c                 |  52 ++++++++
- net/batman-adv/bitarray.c              |   9 +-
- net/batman-adv/distributed-arp-table.c |  38 ++++++
- net/batman-adv/gateway_client.c        |   8 ++
- net/batman-adv/hard-interface.c        |  82 ++++++++++++
- net/batman-adv/hash.c                  |   5 +-
- net/batman-adv/hash.h                  |  34 +++--
- net/batman-adv/main.c                  |  36 ++++-
- net/batman-adv/mesh-interface.c        |  63 +++++++++
- net/batman-adv/netlink.c               |   8 +-
- net/batman-adv/originator.c            |   7 +
- net/batman-adv/routing.c               |  31 +++++
- net/batman-adv/translation-table.c     | 177 ++++++++++++++++++++++++-
- net/batman-adv/types.h                 |   4 +-
- 17 files changed, 711 insertions(+), 35 deletions(-)
+ net/batman-adv/translation-table.c | 246 +++++++++++++++++++----------
+ net/batman-adv/types.h             |   2 +-
+ 2 files changed, 167 insertions(+), 81 deletions(-)
 
-diff --git a/include/uapi/linux/batadv_packet.h b/include/uapi/linux/batadv_packet.h
-index 1241285b866cd..32436560ecc8b 100644
---- a/include/uapi/linux/batadv_packet.h
-+++ b/include/uapi/linux/batadv_packet.h
-@@ -192,13 +192,19 @@ enum batadv_tvlv_type {
- };
- 
- #pragma pack(2)
--/* the destination hardware field in the ARP frame is used to
-- * transport the claim type and the group id
-+/**
-+ * struct batadv_bla_claim_dst - layout of the destination MAC of a BLA claim
-+ *  frame
-+ * @magic: fixed magic prefix (FF:43:05) identifying claim frames
-+ * @type: claim frame type, see &enum batadv_bla_claimframe
-+ * @group: group identifier of the announcing backbone gateway
-+ *
-+ * used in the destination hardware field of the ARP frame
-  */
- struct batadv_bla_claim_dst {
--	__u8   magic[3];	/* FF:43:05 */
--	__u8   type;		/* bla_claimframe */
--	__be16 group;		/* group id */
-+	__u8   magic[3];
-+	__u8   type;
-+	__be16 group;
- };
- 
- /**
-diff --git a/net/batman-adv/bat_algo.c b/net/batman-adv/bat_algo.c
-index 49e5861b58ec2..a040141cdf1a4 100644
---- a/net/batman-adv/bat_algo.c
-+++ b/net/batman-adv/bat_algo.c
-@@ -116,6 +116,16 @@ int batadv_algo_select(struct batadv_priv *bat_priv, const char *name)
- 	return 0;
- }
- 
-+/**
-+ * batadv_param_set_ra() - Validate and store routing_algo module parameter
-+ * @val: new value for the routing_algo module parameter
-+ * @kp: kernel parameter description used to store the value
-+ *
-+ * Check that the requested algorithm is known to batman-adv and then store
-+ * the name as the new default routing algorithm.
-+ *
-+ * Return: 0 on success or negative error number in case of failure
-+ */
- static int batadv_param_set_ra(const char *val, const struct kernel_param *kp)
- {
- 	struct batadv_algo_ops *bat_algo_ops;
-diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
-index 22622283f59b0..a9e80330fcb63 100644
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -171,6 +171,14 @@ batadv_iv_ogm_orig_get(struct batadv_priv *bat_priv, const u8 *addr)
- 	return NULL;
- }
- 
-+/**
-+ * batadv_iv_ogm_neigh_new() - retrieve or create a B.A.T.M.A.N. IV neighbour
-+ * @hard_iface: the interface where the neighbour is connected to
-+ * @neigh_addr: the mac address of the neighbour
-+ * @orig_node: originator object representing the neighbour
-+ *
-+ * Return: pointer to the neigh_node or NULL in case of failure
-+ */
- static struct batadv_neigh_node *
- batadv_iv_ogm_neigh_new(struct batadv_hard_iface *hard_iface,
- 			const u8 *neigh_addr,
-@@ -183,6 +191,14 @@ batadv_iv_ogm_neigh_new(struct batadv_hard_iface *hard_iface,
- 	return neigh_node;
- }
- 
-+/**
-+ * batadv_iv_ogm_iface_enable() - prepare an interface for B.A.T.M.A.N. IV
-+ * @hard_iface: the interface to prepare
-+ *
-+ * Allocate and prepare the per-interface OGM buffer
-+ *
-+ * Return: 0 on success or negative error number in case of failure
-+ */
- static int batadv_iv_ogm_iface_enable(struct batadv_hard_iface *hard_iface)
- {
- 	struct batadv_ogm_packet *batadv_ogm_packet;
-@@ -220,6 +236,14 @@ static int batadv_iv_ogm_iface_enable(struct batadv_hard_iface *hard_iface)
- 	return 0;
- }
- 
-+/**
-+ * batadv_iv_ogm_iface_disable() - release B.A.T.M.A.N. IV resources of an
-+ *  interface
-+ * @hard_iface: the interface which is shutting down
-+ *
-+ * Free the per-interface OGM buffer and cancel a possibly pending OGM
-+ * rescheduling work.
-+ */
- static void batadv_iv_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
- {
- 	mutex_lock(&hard_iface->bat_iv.ogm_buff_mutex);
-@@ -233,6 +257,11 @@ static void batadv_iv_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
- 	disable_delayed_work_sync(&hard_iface->bat_iv.reschedule_work);
- }
- 
-+/**
-+ * batadv_iv_ogm_iface_update_mac() - update the originator MAC stored in the
-+ *  per-interface OGM buffer
-+ * @hard_iface: the interface for which the OGM buffer should be updated
-+ */
- static void batadv_iv_ogm_iface_update_mac(struct batadv_hard_iface *hard_iface)
- {
- 	struct batadv_ogm_packet *batadv_ogm_packet;
-@@ -254,6 +283,14 @@ static void batadv_iv_ogm_iface_update_mac(struct batadv_hard_iface *hard_iface)
- 	mutex_unlock(&hard_iface->bat_iv.ogm_buff_mutex);
- }
- 
-+/**
-+ * batadv_iv_ogm_primary_iface_set() - apply primary interface state to
-+ *  a batadv_hard_iface
-+ * @hard_iface: interface which just became the primary
-+ *
-+ * The primary interface uses the full TTL for its own OGMs, so adjust the TTL
-+ * stored in the OGM template buffer accordingly.
-+ */
- static void
- batadv_iv_ogm_primary_iface_set(struct batadv_hard_iface *hard_iface)
- {
-@@ -273,7 +310,17 @@ batadv_iv_ogm_primary_iface_set(struct batadv_hard_iface *hard_iface)
- 	mutex_unlock(&hard_iface->bat_iv.ogm_buff_mutex);
- }
- 
--/* when do we schedule our own ogm to be sent */
-+/**
-+ * batadv_iv_ogm_emit_send_time() - calculate the jiffies when an own OGM
-+ *  should be sent next
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ *
-+ * The next emission point is the configured orig_interval randomised by
-+ * +/- BATADV_JITTER milliseconds to reduce chance of potential collisions
-+ * between neighbours.
-+ *
-+ * Return: jiffies value when the next OGM should be transmitted
-+ */
- static unsigned long
- batadv_iv_ogm_emit_send_time(const struct batadv_priv *bat_priv)
- {
-@@ -285,13 +332,24 @@ batadv_iv_ogm_emit_send_time(const struct batadv_priv *bat_priv)
- 	return jiffies + msecs_to_jiffies(msecs);
- }
- 
--/* when do we schedule a ogm packet to be sent */
-+/**
-+ * batadv_iv_ogm_fwd_send_time() - calculate the jiffies when a forwarded OGM
-+ *  should be sent next
-+ *
-+ * Return: jiffies value at which a forwarded OGM should be transmitted
-+ */
- static unsigned long batadv_iv_ogm_fwd_send_time(void)
- {
- 	return jiffies + msecs_to_jiffies(get_random_u32_below(BATADV_JITTER / 2));
- }
- 
--/* apply hop penalty for a normal link */
-+/**
-+ * batadv_hop_penalty() - apply the configured hop penalty to a TQ value
-+ * @tq: input TQ value to be reduced
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ *
-+ * Return: the TQ value after the hop penalty has been applied
-+ */
- static u8 batadv_hop_penalty(u8 tq, const struct batadv_priv *bat_priv)
- {
- 	int hop_penalty = READ_ONCE(bat_priv->hop_penalty);
-@@ -337,7 +395,15 @@ batadv_iv_ogm_aggr_packet(int buff_pos, int packet_len,
- 	return next_buff_pos <= packet_len;
- }
- 
--/* send a batman ogm to a given interface */
-+/**
-+ * batadv_iv_ogm_send_to_if() - send a batman OGM to a given interface
-+ * @forw_packet: forward packet containing the OGM(s) to be transmitted
-+ * @hard_iface: interface to send the OGM out on
-+ *
-+ * Update the direct link flags of each aggregated OGM for the outgoing
-+ * interface, log the transmission and finally hand a clone of the skb to the
-+ * lower layer for broadcast.
-+ */
- static void batadv_iv_ogm_send_to_if(struct batadv_forw_packet *forw_packet,
- 				     struct batadv_hard_iface *hard_iface)
- {
-@@ -401,7 +467,13 @@ static void batadv_iv_ogm_send_to_if(struct batadv_forw_packet *forw_packet,
- 	}
- }
- 
--/* send a batman ogm packet */
-+/**
-+ * batadv_iv_ogm_emit() - emit an (aggregated) OGM packet
-+ * @forw_packet: forward packet which should be emitted
-+ *
-+ * The @forw_packet will be emitted but not consumed. When the interface is
-+ * no longer active, the transmission will be skipped.
-+ */
- static void batadv_iv_ogm_emit(struct batadv_forw_packet *forw_packet)
- {
- 	if (!forw_packet->if_incoming) {
-@@ -603,7 +675,14 @@ static bool batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
- 	return true;
- }
- 
--/* aggregate a new packet into the existing ogm packet */
-+/**
-+ * batadv_iv_ogm_aggregate() - append an OGM to an existing aggregated forward
-+ *  packet
-+ * @forw_packet_aggr: aggregated forward packet to extend
-+ * @packet_buff: pointer to the OGM to append
-+ * @packet_len: length of the OGM to append
-+ * @direct_link: true if @packet_buff was received as a direct link OGM
-+ */
- static void batadv_iv_ogm_aggregate(struct batadv_forw_packet *forw_packet_aggr,
- 				    const unsigned char *packet_buff,
- 				    int packet_len, bool direct_link)
-@@ -699,6 +778,21 @@ static bool batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
- 	}
- }
- 
-+/**
-+ * batadv_iv_ogm_forward() - rebroadcast a received OGM
-+ * @orig_node: originator that sent the OGM
-+ * @ethhdr: ethernet header of the OGM packet
-+ * @batadv_ogm_packet: OGM packet to be forwarded
-+ * @is_single_hop_neigh: true if the OGM was received via a one-hop neighbour
-+ * @is_from_best_next_hop: true if the sender is the currently selected best
-+ *  next hop towards @orig_node
-+ * @if_incoming: interface where the packet was received
-+ * @if_outgoing: interface for which the retransmission should be considered
-+ *
-+ * Decrement the TTL, apply the hop penalty and queue the OGM for
-+ * retransmission. OGMs that do not arrive over the best next hop are only
-+ * forwarded for link-quality measurement reasons (and marked accordingly).
-+ */
- static void batadv_iv_ogm_forward(struct batadv_orig_node *orig_node,
- 				  const struct ethhdr *ethhdr,
- 				  struct batadv_ogm_packet *batadv_ogm_packet,
-@@ -899,6 +993,13 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
- 	batadv_hardif_put(primary_if);
- }
- 
-+/**
-+ * batadv_iv_ogm_schedule() - schedule the next OGM transmission on an
-+ *  interface
-+ * @hard_iface: interface for which the next OGM should be scheduled
-+ *
-+ * Take the OGM buffer mutex and prepare the next OGM for transmission.
-+ */
- static void batadv_iv_ogm_schedule(struct batadv_hard_iface *hard_iface)
- {
- 	if (hard_iface->if_status == BATADV_IF_TO_BE_REMOVED)
-@@ -909,6 +1010,13 @@ static void batadv_iv_ogm_schedule(struct batadv_hard_iface *hard_iface)
- 	mutex_unlock(&hard_iface->bat_iv.ogm_buff_mutex);
- }
- 
-+/**
-+ * batadv_iv_ogm_reschedule() - work-queue helper to rerun batadv_iv_ogm_schedule()
-+ * @work: work item embedded in the hard interface
-+ *
-+ * Invoked from the per-interface reschedule_work delayed work when the
-+ * previous attempt to enqueue the own OGM failed.
-+ */
- static void batadv_iv_ogm_reschedule(struct work_struct *work)
- {
- 	struct delayed_work *delayed_work = to_delayed_work(work);
-@@ -1765,6 +1873,14 @@ static void batadv_iv_ogm_process(const struct sk_buff *skb, int ogm_offset,
- 	batadv_orig_node_put(orig_node);
- }
- 
-+/**
-+ * batadv_iv_send_outstanding_bat_ogm_packet() - work-queue helper to emit a
-+ *  queued forward packet
-+ * @work: work item embedded in the forward packet
-+ *
-+ * Emit the queued OGM forward packet and, for own primary-interface packets,
-+ * schedule the next periodic OGM. The forward packet is freed afterwards.
-+ */
- static void batadv_iv_send_outstanding_bat_ogm_packet(struct work_struct *work)
- {
- 	struct delayed_work *delayed_work;
-@@ -1803,6 +1919,17 @@ static void batadv_iv_send_outstanding_bat_ogm_packet(struct work_struct *work)
- 		batadv_forw_packet_free(forw_packet, dropped);
- }
- 
-+/**
-+ * batadv_iv_ogm_receive() - receive a B.A.T.M.A.N. IV OGM packet
-+ * @skb: skb containing the OGM packet
-+ * @if_incoming: interface where the packet was received
-+ *
-+ * Validate the packet, then split the aggregated OGM packet into individual
-+ * OGMs and hand each of them to batadv_iv_ogm_process(). Ownership of @skb is
-+ * always taken over by this function.
-+ *
-+ * Return: NET_RX_SUCCESS or NET_RX_DROP
-+ */
- static int batadv_iv_ogm_receive(struct sk_buff *skb,
- 				 struct batadv_hard_iface *if_incoming)
- {
-@@ -2310,6 +2437,12 @@ batadv_iv_ogm_neigh_is_sob(struct batadv_neigh_node *neigh1,
- 	return ret;
- }
- 
-+/**
-+ * batadv_iv_iface_enabled() - notification handler for activated interfaces
-+ * @hard_iface: interface that was just activated
-+ *
-+ * Set up the per-interface reschedule work and start sending periodic OGMs.
-+ */
- static void batadv_iv_iface_enabled(struct batadv_hard_iface *hard_iface)
- {
- 	INIT_DELAYED_WORK(&hard_iface->bat_iv.reschedule_work, batadv_iv_ogm_reschedule);
-@@ -2328,6 +2461,14 @@ static void batadv_iv_init_sel_class(struct batadv_priv *bat_priv)
- 	WRITE_ONCE(bat_priv->gw.sel_class, 20);
- }
- 
-+/**
-+ * batadv_iv_gw_get_best_gw_node() - retrieve the best gateway node based on
-+ *  the B.A.T.M.A.N. IV metric and the configured GW selection class
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ *
-+ * Return: gateway node with the highest score for the current selection class,
-+ *  or NULL if no eligible gateway exists.
-+ */
- static struct batadv_gw_node *
- batadv_iv_gw_get_best_gw_node(struct batadv_priv *bat_priv)
- {
-@@ -2405,6 +2546,19 @@ batadv_iv_gw_get_best_gw_node(struct batadv_priv *bat_priv)
- 	return curr_gw;
- }
- 
-+/**
-+ * batadv_iv_gw_is_eligible() - check whether a new gateway should replace the
-+ *  currently selected one
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @curr_gw_orig: originator of the currently selected gateway
-+ * @orig_node: originator of the gateway candidate
-+ *
-+ * Compare the TQ values of @curr_gw_orig and @orig_node, taking the configured
-+ * gateway selection class into account.
-+ *
-+ * Return: true if @orig_node should take over as the active gateway, false
-+ *  otherwise
-+ */
- static bool batadv_iv_gw_is_eligible(struct batadv_priv *bat_priv,
- 				     struct batadv_orig_node *curr_gw_orig,
- 				     struct batadv_orig_node *orig_node)
-diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
-index db6f5bdcaa985..0068f0e238da6 100644
---- a/net/batman-adv/bat_v.c
-+++ b/net/batman-adv/bat_v.c
-@@ -41,6 +41,13 @@
- #include "netlink.h"
- #include "originator.h"
- 
-+/**
-+ * batadv_v_iface_activate() - finalise the activation of a hard interface
-+ * @hard_iface: interface to activate
-+ *
-+ * Reuse the currently selected primary interface to seed the ELP packet.
-+ * Immediately activate the interface.
-+ */
- static void batadv_v_iface_activate(struct batadv_hard_iface *hard_iface)
- {
- 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
-@@ -61,6 +68,16 @@ static void batadv_v_iface_activate(struct batadv_hard_iface *hard_iface)
- 		hard_iface->if_status = BATADV_IF_ACTIVE;
- }
- 
-+/**
-+ * batadv_v_iface_enable() - enable the B.A.T.M.A.N. V protocol on an
-+ *  interface
-+ * @hard_iface: interface to enable
-+ *
-+ * Enable the ELP and OGM components for @hard_iface. On error, the partially
-+ * enabled state is rolled back before returning.
-+ *
-+ * Return: 0 on success or negative error number in case of failure
-+ */
- static int batadv_v_iface_enable(struct batadv_hard_iface *hard_iface)
- {
- 	int ret;
-@@ -76,12 +93,21 @@ static int batadv_v_iface_enable(struct batadv_hard_iface *hard_iface)
- 	return ret;
- }
- 
-+/**
-+ * batadv_v_iface_disable() - disable the B.A.T.M.A.N. V protocol on an
-+ *  interface
-+ * @hard_iface: interface to disable
-+ */
- static void batadv_v_iface_disable(struct batadv_hard_iface *hard_iface)
- {
- 	batadv_v_ogm_iface_disable(hard_iface);
- 	batadv_v_elp_iface_disable(hard_iface);
- }
- 
-+/**
-+ * batadv_v_primary_iface_set() - apply primary interface state
-+ * @hard_iface: interface which just became the primary
-+ */
- static void batadv_v_primary_iface_set(struct batadv_hard_iface *hard_iface)
- {
- 	batadv_v_elp_primary_iface_set(hard_iface);
-@@ -109,6 +135,11 @@ static void batadv_v_iface_update_mac(struct batadv_hard_iface *hard_iface)
- 	batadv_hardif_put(primary_if);
- }
- 
-+/**
-+ * batadv_v_hardif_neigh_init() - initialise the B.A.T.M.A.N. V state of a
-+ *  hard interface neighbour
-+ * @hardif_neigh: hard interface neighbour to initialise
-+ */
- static void
- batadv_v_hardif_neigh_init(struct batadv_hardif_neigh_node *hardif_neigh)
- {
-@@ -444,6 +475,16 @@ batadv_v_orig_dump(struct sk_buff *msg, struct netlink_callback *cb,
- 	cb->args[2] = sub;
- }
- 
-+/**
-+ * batadv_v_neigh_cmp() - compare two B.A.T.M.A.N. V neighbours by throughput
-+ * @neigh1: first neighbour to compare
-+ * @if_outgoing1: outgoing interface to use for @neigh1
-+ * @neigh2: second neighbour to compare
-+ * @if_outgoing2: outgoing interface to use for @neigh2
-+ *
-+ * Return: a positive value if @neigh1 is better, a negative value if @neigh2
-+ *  is better and 0 if both have equal throughput
-+ */
- static int batadv_v_neigh_cmp(struct batadv_neigh_node *neigh1,
- 			      struct batadv_hard_iface *if_outgoing1,
- 			      struct batadv_neigh_node *neigh2,
-@@ -469,6 +510,17 @@ static int batadv_v_neigh_cmp(struct batadv_neigh_node *neigh1,
- 	return ret;
- }
- 
-+/**
-+ * batadv_v_neigh_is_sob() - check whether two B.A.T.M.A.N. V neighbours have
-+ *  a similar or better throughput
-+ * @neigh1: first neighbour to compare
-+ * @if_outgoing1: outgoing interface to use for @neigh1
-+ * @neigh2: second neighbour to compare
-+ * @if_outgoing2: outgoing interface to use for @neigh2
-+ *
-+ * Return: true if the throughput of @neigh2 is at least 3/4 of the
-+ *  @neigh1 throughput
-+ */
- static bool batadv_v_neigh_is_sob(struct batadv_neigh_node *neigh1,
- 				  struct batadv_hard_iface *if_outgoing1,
- 				  struct batadv_neigh_node *neigh2,
-diff --git a/net/batman-adv/bitarray.c b/net/batman-adv/bitarray.c
-index 67cb356332bf1..f814756d9533f 100644
---- a/net/batman-adv/bitarray.c
-+++ b/net/batman-adv/bitarray.c
-@@ -11,7 +11,14 @@
- 
- #include "log.h"
- 
--/* shift the packet array by n places. */
-+/**
-+ * batadv_bitmap_shift_left() - shift the sequence number bitmap left
-+ * @seq_bits: the sequence number bitmap to shift
-+ * @n: number of positions to shift left
-+ *
-+ * Shift @seq_bits by @n positions. No-op if @n is not within the bounds of
-+ * the bitmap.
-+ */
- static void batadv_bitmap_shift_left(unsigned long *seq_bits, s32 n)
- {
- 	if (n <= 0 || n >= BATADV_TQ_LOCAL_WINDOW_SIZE)
-diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
-index 180f654d5e515..0251cdf5542bb 100644
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -50,27 +50,65 @@
- #include "translation-table.h"
- #include "tvlv.h"
- 
-+/**
-+ * enum batadv_bootpop - BOOTP/DHCP message op codes
-+ */
- enum batadv_bootpop {
-+	/** @BATADV_BOOTREPLY: server-to-client reply */
- 	BATADV_BOOTREPLY	= 2,
- };
- 
-+/**
-+ * enum batadv_boothtype - BOOTP/DHCP hardware address types
-+ */
- enum batadv_boothtype {
-+	/** @BATADV_HTYPE_ETHERNET: Ethernet (10Mb) */
- 	BATADV_HTYPE_ETHERNET	= 1,
- };
- 
-+/**
-+ * enum batadv_dhcpoptioncode - DHCP option codes relevant for batman-adv DAT
-+ */
- enum batadv_dhcpoptioncode {
-+	/** @BATADV_DHCP_OPT_PAD: pad option */
- 	BATADV_DHCP_OPT_PAD		= 0,
-+
-+	/** @BATADV_DHCP_OPT_MSG_TYPE: DHCP message type option */
- 	BATADV_DHCP_OPT_MSG_TYPE	= 53,
-+
-+	/** @BATADV_DHCP_OPT_END: end of options marker */
- 	BATADV_DHCP_OPT_END		= 255,
- };
- 
-+/**
-+ * enum batadv_dhcptype - DHCP message types relevant for batman-adv DAT
-+ */
- enum batadv_dhcptype {
-+	/** @BATADV_DHCPACK: DHCPACK message */
- 	BATADV_DHCPACK		= 5,
- };
- 
- /* { 99, 130, 83, 99 } */
- #define BATADV_DHCP_MAGIC 1669485411
- 
-+/**
-+ * struct batadv_dhcp_packet - BOOTP/DHCP packet header
-+ * @op: message op code / message type
-+ * @htype: hardware address type
-+ * @hlen: hardware address length
-+ * @hops: number of relay hops
-+ * @xid: transaction identifier
-+ * @secs: seconds elapsed since client started trying to boot
-+ * @flags: BOOTP/DHCP flags
-+ * @ciaddr: client IP address
-+ * @yiaddr: "your" (client) IP address as assigned by the server
-+ * @siaddr: IP address of next server to use in bootstrap
-+ * @giaddr: relay agent IP address
-+ * @chaddr: client hardware address
-+ * @sname: optional server host name
-+ * @file: boot file name
-+ * @magic: BOOTP/DHCP magic cookie identifying the start of options
-+ */
- struct batadv_dhcp_packet {
- 	__u8 op;
- 	__u8 htype;
-diff --git a/net/batman-adv/gateway_client.c b/net/batman-adv/gateway_client.c
-index a5ac82eabd250..48fc711b8fd62 100644
---- a/net/batman-adv/gateway_client.c
-+++ b/net/batman-adv/gateway_client.c
-@@ -125,6 +125,14 @@ batadv_gw_get_selected_orig(struct batadv_priv *bat_priv)
- 	return orig_node;
- }
- 
-+/**
-+ * batadv_gw_select() - select a new currently active gateway
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @new_gw_node: gateway node to be set as the current gateway, may be NULL
-+ *
-+ * Atomically replace the currently active gateway with @new_gw_node and drop
-+ * the reference to the previous one.
-+ */
- static void batadv_gw_select(struct batadv_priv *bat_priv,
- 			     struct batadv_gw_node *new_gw_node)
- {
-diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
-index b6867576bbafa..1950b8809d99f 100644
---- a/net/batman-adv/hard-interface.c
-+++ b/net/batman-adv/hard-interface.c
-@@ -197,6 +197,17 @@ static bool batadv_is_on_batman_iface(const struct net_device *net_dev)
- 	return ret;
- }
- 
-+/**
-+ * batadv_is_valid_iface() - check whether a net_device can be used as a hard
-+ *  interface
-+ * @net_dev: the net_device to check
-+ *
-+ * Refuse loopback devices, non-Ethernet devices, devices with a non-Ethernet
-+ * address length and any device that is already part of a batman-adv mesh
-+ * interface stack.
-+ *
-+ * Return: true if @net_dev can be used as a hard interface, false otherwise
-+ */
- static bool batadv_is_valid_iface(const struct net_device *net_dev)
- {
- 	if (net_dev->flags & IFF_LOOPBACK)
-@@ -467,6 +478,14 @@ int batadv_hardif_no_broadcast(struct batadv_hard_iface *if_outgoing,
- 	return ret;
- }
- 
-+/**
-+ * batadv_hardif_get_active() - retrieve an active hard interface for a mesh
-+ *  interface
-+ * @mesh_iface: mesh interface to search
-+ *
-+ * Return: first hard interface in BATADV_IF_ACTIVE state attached to
-+ *  @mesh_iface, or NULL if none is active.
-+ */
- static struct batadv_hard_iface *
- batadv_hardif_get_active(struct net_device *mesh_iface)
- {
-@@ -487,6 +506,15 @@ batadv_hardif_get_active(struct net_device *mesh_iface)
- 	return hard_iface;
- }
- 
-+/**
-+ * batadv_primary_if_update_addr() - propagate the new primary interface MAC
-+ *  address to all dependent components
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @oldif: previously used primary interface, or NULL if none
-+ *
-+ * Inform DAT and BLA that the originator address has changed so they can
-+ * adjust their state accordingly.
-+ */
- static void batadv_primary_if_update_addr(struct batadv_priv *bat_priv,
- 					  struct batadv_hard_iface *oldif)
- {
-@@ -502,6 +530,15 @@ static void batadv_primary_if_update_addr(struct batadv_priv *bat_priv,
- 	batadv_hardif_put(primary_if);
- }
- 
-+/**
-+ * batadv_primary_if_select() - select the new primary interface
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @new_hard_iface: new primary interface, may be NULL
-+ *
-+ * Replace the currently selected primary interface with @new_hard_iface,
-+ * invoke the algorithm-specific primary_set hook and update the originator
-+ * MAC address.
-+ */
- static void batadv_primary_if_select(struct batadv_priv *bat_priv,
- 				     struct batadv_hard_iface *new_hard_iface)
- {
-@@ -525,6 +562,13 @@ static void batadv_primary_if_select(struct batadv_priv *bat_priv,
- 	batadv_hardif_put(curr_hard_iface);
- }
- 
-+/**
-+ * batadv_hardif_is_iface_up() - check whether the underlying net_device of a
-+ *  hard interface is up
-+ * @hard_iface: the hard interface to check
-+ *
-+ * Return: true if the underlying net_device has the IFF_UP flag set
-+ */
- static bool
- batadv_hardif_is_iface_up(const struct batadv_hard_iface *hard_iface)
- {
-@@ -534,6 +578,15 @@ batadv_hardif_is_iface_up(const struct batadv_hard_iface *hard_iface)
- 	return false;
- }
- 
-+/**
-+ * batadv_check_known_mac_addr() - warn about duplicate hard interface MAC
-+ *  addresses
-+ * @hard_iface: hard interface that was just added or had its MAC changed
-+ *
-+ * Iterate over all hard interfaces of the same mesh interface and emit a
-+ * warning if another in-use interface shares the same MAC address as
-+ * @hard_iface.
-+ */
- static void batadv_check_known_mac_addr(const struct batadv_hard_iface *hard_iface)
- {
- 	struct net_device *mesh_iface = hard_iface->mesh_iface;
-@@ -666,6 +719,15 @@ void batadv_update_min_mtu(struct net_device *mesh_iface)
- 	batadv_tt_local_resize_to_mtu(mesh_iface);
- }
- 
-+/**
-+ * batadv_hardif_activate_interface() - move a hard interface to the active
-+ *  state
-+ * @hard_iface: the interface that has come up
-+ *
-+ * Activate an interface, select it as the primary interface if no
-+ * primary is currently active and invoke the algorithm-specific
-+ * activate hook.
-+ */
- static void
- batadv_hardif_activate_interface(struct batadv_hard_iface *hard_iface)
- {
-@@ -699,6 +761,14 @@ batadv_hardif_activate_interface(struct batadv_hard_iface *hard_iface)
- 	batadv_hardif_put(primary_if);
- }
- 
-+/**
-+ * batadv_hardif_deactivate_interface() - move a hard interface to the
-+ *  inactive state
-+ * @hard_iface: the interface that went down
-+ *
-+ * Demote @hard_iface to BATADV_IF_INACTIVE and recalculate the mesh minimum
-+ * MTU based on the remaining active interfaces.
-+ */
- static void
- batadv_hardif_deactivate_interface(struct batadv_hard_iface *hard_iface)
- {
-@@ -1020,6 +1090,18 @@ static void batadv_wifi_net_device_event(unsigned long event,
- 	}
- }
- 
-+/**
-+ * batadv_hard_if_event() - netdevice notifier callback for hard interfaces
-+ * @this: notifier block (unused)
-+ * @event: the NETDEV_* event to handle
-+ * @ptr: notifier info pointing to the affected net_device
-+ *
-+ * Dispatch netdevice events that affect potential or existing hard
-+ * interfaces. Mesh interfaces are handled separately by
-+ * batadv_hard_if_event_meshif().
-+ *
-+ * Return: NOTIFY_DONE
-+ */
- static int batadv_hard_if_event(struct notifier_block *this,
- 				unsigned long event, void *ptr)
- {
-diff --git a/net/batman-adv/hash.c b/net/batman-adv/hash.c
-index 759fa29176db5..b9a652bd523b1 100644
---- a/net/batman-adv/hash.c
-+++ b/net/batman-adv/hash.c
-@@ -11,7 +11,10 @@
- #include <linux/lockdep.h>
- #include <linux/slab.h>
- 
--/* clears the hash */
-+/**
-+ * batadv_hash_init() - clear all buckets of a hashtable
-+ * @hash: hashtable to clear
-+ */
- static void batadv_hash_init(struct batadv_hashtable *hash)
- {
- 	u32 i;
-diff --git a/net/batman-adv/hash.h b/net/batman-adv/hash.h
-index 86a2c20000dcf..debbbc936cf74 100644
---- a/net/batman-adv/hash.h
-+++ b/net/batman-adv/hash.h
-@@ -18,21 +18,35 @@
- #include <linux/stddef.h>
- #include <linux/types.h>
- 
--/* callback to a compare function.  should compare 2 element data for their
-- * keys
-+/**
-+ * typedef batadv_hashdata_compare_cb - hash element comparison callback
-+ * @node: hlist node of the element currently stored in the bucket
-+ * @key: opaque payload to compare @node's key against
-+ *
-+ * Compare hash element by its keys.
-  *
-- * Return: true if same and false if not same
-+ * Return: true if both elements are considered equal, false otherwise.
-  */
--typedef bool (*batadv_hashdata_compare_cb)(const struct hlist_node *,
--					   const void *);
-+typedef bool (*batadv_hashdata_compare_cb)(const struct hlist_node *node,
-+					   const void *key);
- 
--/* the hashfunction
-+/**
-+ * typedef batadv_hashdata_choose_cb - hash bucket selection callback
-+ * @key: opaque payload whose key selects the bucket
-+ * @size: number of buckets in the hash table
-+ *
-+ * Return: bucket index derived from the key in @data and the table @size.
-+ */
-+typedef u32 (*batadv_hashdata_choose_cb)(const void *key, u32 size);
-+
-+/**
-+ * typedef batadv_hashdata_free_cb - hash element free callback
-+ * @node: hlist node of the element being removed
-+ * @arg: opaque caller-supplied argument forwarded from the caller
-  *
-- * Return: an index based on the key in the data of the first argument and the
-- * size the second
-+ * Release a previously inserted hash element.
-  */
--typedef u32 (*batadv_hashdata_choose_cb)(const void *, u32);
--typedef void (*batadv_hashdata_free_cb)(struct hlist_node *, void *);
-+typedef void (*batadv_hashdata_free_cb)(struct hlist_node *node, void *arg);
- 
- /**
-  * struct batadv_hashtable - Wrapper of simple hlist based hashtable
-diff --git a/net/batman-adv/main.c b/net/batman-adv/main.c
-index 73becb0549488..c5f4e9f8728c0 100644
---- a/net/batman-adv/main.c
-+++ b/net/batman-adv/main.c
-@@ -82,6 +82,14 @@ static char *batadv_uev_type_str[] = {
- 	"bla",
- };
- 
-+/**
-+ * batadv_init() - batman-adv module init function
-+ *
-+ * Initialise the global state used by all mesh interfaces, register the
-+ * netdevice notifier and the netlink/rtnl family.
-+ *
-+ * Return: 0 on success or negative error number in case of failure
-+ */
- static int __init batadv_init(void)
- {
- 	int ret;
-@@ -128,6 +136,12 @@ static int __init batadv_init(void)
- 	return ret;
- }
- 
-+/**
-+ * batadv_exit() - batman-adv module exit function
-+ *
-+ * Unregister the netdevice notifier and tear down all global state allocated
-+ * by batadv_init().
-+ */
- static void __exit batadv_exit(void)
- {
- 	batadv_netlink_unregister();
-@@ -398,6 +412,17 @@ void batadv_skb_set_priority(struct sk_buff *skb, int offset)
- 	skb->priority = prio + 256;
- }
- 
-+/**
-+ * batadv_recv_unhandled_packet() - default RX handler for unsupported packet
-+ *  types
-+ * @skb: incoming packet
-+ * @recv_if: interface on which the packet was received (unused)
-+ *
-+ * Drop incoming packets whose packet_type has no dedicated RX handler
-+ * registered.
-+ *
-+ * Return: NET_RX_DROP
-+ */
- static int batadv_recv_unhandled_packet(struct sk_buff *skb,
- 					struct batadv_hard_iface *recv_if)
- {
-@@ -406,10 +431,6 @@ static int batadv_recv_unhandled_packet(struct sk_buff *skb,
- 	return NET_RX_DROP;
- }
- 
--/* incoming packets with the batman ethertype received on any active hard
-- * interface
-- */
--
- /**
-  * batadv_batman_skb_recv() - Handle incoming message from an hard interface
-  * @skb: the received packet
-@@ -492,6 +513,13 @@ int batadv_batman_skb_recv(struct sk_buff *skb, struct net_device *dev,
- 	return NET_RX_DROP;
- }
- 
-+/**
-+ * batadv_recv_handler_init() - initialise the RX handler dispatch table
-+ *
-+ * Initialise all entries of the RX handler table (+ unused to the
-+ * default drop handler) and perform compile-time size sanity checks on
-+ * all on-wire packet structs.
-+ */
- static void batadv_recv_handler_init(void)
- {
- 	int i;
-diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
-index 48bbb28d4576f..667ea5704fbdb 100644
---- a/net/batman-adv/mesh-interface.c
-+++ b/net/batman-adv/mesh-interface.c
-@@ -98,6 +98,15 @@ static u64 batadv_sum_counter(struct batadv_priv *bat_priv,  size_t idx)
- 	return sum;
- }
- 
-+/**
-+ * batadv_interface_stats() - return netdev stats for a mesh interface
-+ * @dev: the mesh interface to query
-+ *
-+ * Aggregate the per-CPU traffic counters into the standard netdev stats
-+ * structure.
-+ *
-+ * Return: pointer to the populated net_device_stats structure
-+ */
- static struct net_device_stats *batadv_interface_stats(struct net_device *dev)
- {
- 	struct batadv_priv *bat_priv = netdev_priv(dev);
-@@ -111,6 +120,18 @@ static struct net_device_stats *batadv_interface_stats(struct net_device *dev)
- 	return stats;
- }
- 
-+/**
-+ * batadv_interface_set_mac_addr() - change the MAC address of a mesh
-+ *  interface
-+ * @dev: the mesh interface to modify
-+ * @p: pointer to a struct sockaddr holding the new MAC address
-+ *
-+ * Replace the MAC address of the mesh interface. If the mesh is already
-+ * active, also update the local translation table entries for all configured
-+ * VLANs so that the new MAC is announced and the old one is removed.
-+ *
-+ * Return: 0 on success or negative error number in case of failure
-+ */
- static int batadv_interface_set_mac_addr(struct net_device *dev, void *p)
- {
- 	struct batadv_priv *bat_priv = netdev_priv(dev);
-@@ -140,6 +161,16 @@ static int batadv_interface_set_mac_addr(struct net_device *dev, void *p)
- 	return 0;
- }
- 
-+/**
-+ * batadv_interface_change_mtu() - change the MTU of a mesh interface
-+ * @dev: the mesh interface to modify
-+ * @new_mtu: requested new MTU value
-+ *
-+ * Validate that @new_mtu fits within the range supported by the configured
-+ * hard interfaces and remember it as the user-configured MTU.
-+ *
-+ * Return: 0 on success or -EINVAL if @new_mtu is out of range
-+ */
- static int batadv_interface_change_mtu(struct net_device *dev, int new_mtu)
- {
- 	struct batadv_priv *bat_priv = netdev_priv(dev);
-@@ -166,6 +197,13 @@ static void batadv_interface_set_rx_mode(struct net_device *dev)
- {
- }
- 
-+/**
-+ * batadv_interface_tx() - transmit a frame on a mesh interface
-+ * @skb: the frame to send
-+ * @mesh_iface: the mesh interface the frame was queued on
-+ *
-+ * Return: NETDEV_TX_OK on success
-+ */
- static netdev_tx_t batadv_interface_tx(struct sk_buff *skb,
- 				       struct net_device *mesh_iface)
- {
-@@ -886,6 +924,11 @@ static const struct net_device_ops batadv_netdev_ops = {
- 	.ndo_del_slave = batadv_meshif_slave_del,
- };
- 
-+/**
-+ * batadv_get_drvinfo() - ethtool driver info handler for mesh interfaces
-+ * @dev: the mesh interface (unused)
-+ * @info: ethtool_drvinfo struct to populate
-+ */
- static void batadv_get_drvinfo(struct net_device *dev,
- 			       struct ethtool_drvinfo *info)
- {
-@@ -946,6 +989,12 @@ static const struct {
- #endif
- };
- 
-+/**
-+ * batadv_get_strings() - ethtool string handler for mesh interfaces
-+ * @dev: the mesh interface (unused)
-+ * @stringset: ethtool string set to retrieve
-+ * @data: buffer to copy the requested string set into
-+ */
- static void batadv_get_strings(struct net_device *dev, u32 stringset, u8 *data)
- {
- 	if (stringset == ETH_SS_STATS)
-@@ -953,6 +1002,12 @@ static void batadv_get_strings(struct net_device *dev, u32 stringset, u8 *data)
- 		       sizeof(batadv_counters_strings));
- }
- 
-+/**
-+ * batadv_get_ethtool_stats() - ethtool stats handler for mesh interfaces
-+ * @dev: the mesh interface to query
-+ * @stats: ethtool_stats struct (unused)
-+ * @data: destination array for the gathered counter values
-+ */
- static void batadv_get_ethtool_stats(struct net_device *dev,
- 				     struct ethtool_stats *stats, u64 *data)
- {
-@@ -963,6 +1018,14 @@ static void batadv_get_ethtool_stats(struct net_device *dev,
- 		data[i] = batadv_sum_counter(bat_priv, i);
- }
- 
-+/**
-+ * batadv_get_sset_count() - ethtool stringset size handler for mesh interfaces
-+ * @dev: the mesh interface (unused)
-+ * @stringset: ethtool string set to query
-+ *
-+ * Return: number of entries in @stringset or -EOPNOTSUPP if @stringset is not
-+ *  supported
-+ */
- static int batadv_get_sset_count(struct net_device *dev, int stringset)
- {
- 	if (stringset == ETH_SS_STATS)
-diff --git a/net/batman-adv/netlink.c b/net/batman-adv/netlink.c
-index d2bc48c707143..f4aa7d2055107 100644
---- a/net/batman-adv/netlink.c
-+++ b/net/batman-adv/netlink.c
-@@ -52,9 +52,15 @@
- 
- struct genl_family batadv_netlink_family;
- 
--/* multicast groups */
-+/**
-+ * enum batadv_netlink_multicast_groups - batman-adv generic netlink multicast
-+ *  groups
-+ */
- enum batadv_netlink_multicast_groups {
-+	/** @BATADV_NL_MCGRP_CONFIG: configuration change notifications */
- 	BATADV_NL_MCGRP_CONFIG,
-+
-+	/** @BATADV_NL_MCGRP_TPMETER: throughput meter result notifications */
- 	BATADV_NL_MCGRP_TPMETER,
- };
- 
-diff --git a/net/batman-adv/originator.c b/net/batman-adv/originator.c
-index 48f837cf665a2..bab1eb61d9ef2 100644
---- a/net/batman-adv/originator.c
-+++ b/net/batman-adv/originator.c
-@@ -1295,6 +1295,13 @@ void batadv_purge_orig_ref(struct batadv_priv *bat_priv)
- 	batadv_gw_election(bat_priv);
- }
- 
-+/**
-+ * batadv_purge_orig() - periodic worker to purge stale originator entries
-+ * @work: delayed work embedded in the bat_priv
-+ *
-+ * Invoke batadv_purge_orig_ref() to drop stale originators and reschedule the
-+ * next run after BATADV_ORIG_WORK_PERIOD milliseconds.
-+ */
- static void batadv_purge_orig(struct work_struct *work)
- {
- 	struct delayed_work *delayed_work;
-diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index bbd40fe3a8e59..b0b6c5ca210a2 100644
---- a/net/batman-adv/routing.c
-+++ b/net/batman-adv/routing.c
-@@ -328,6 +328,16 @@ static int batadv_recv_my_icmp_packet(struct batadv_priv *bat_priv,
- 	return ret;
- }
- 
-+/**
-+ * batadv_recv_icmp_ttl_exceeded() - handle an ICMP packet that hit TTL 0
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @skb: ICMP packet whose TTL has expired
-+ *
-+ * For traceroute-style ICMP echo requests, send a TTL exceeded reply back to
-+ * the source. Other ICMP types are simply dropped.
-+ *
-+ * Return: NET_XMIT_SUCCESS if the reply was queued, NET_RX_DROP otherwise
-+ */
- static int batadv_recv_icmp_ttl_exceeded(struct batadv_priv *bat_priv,
- 					 struct sk_buff *skb)
- {
-@@ -706,6 +716,18 @@ batadv_find_router(struct batadv_priv *bat_priv,
- 	return router;
- }
- 
-+/**
-+ * batadv_route_unicast_packet() - forward a unicast packet towards its
-+ *  destination originator
-+ * @skb: the received unicast packet
-+ * @recv_if: interface on which the packet was received
-+ *
-+ * Decrement the TTL, look up the originator for the destination address and
-+ * hand the packet over to batadv_send_skb_to_orig() for transmission. Drop
-+ * the packet when the TTL is exhausted or no route exists.
-+ *
-+ * Return: NET_RX_SUCCESS if the packet was forwarded, NET_RX_DROP otherwise
-+ */
- static int batadv_route_unicast_packet(struct sk_buff *skb,
- 				       struct batadv_hard_iface *recv_if)
- {
-@@ -836,6 +858,15 @@ batadv_reroute_unicast_packet(struct batadv_priv *bat_priv, struct sk_buff *skb,
- 	return ret;
- }
- 
-+/**
-+ * batadv_check_unicast_ttvn() - check and adjust the TTVN of a unicast packet
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @skb: the unicast packet to check
-+ * @hdr_len: length of the unicast header preceding the payload
-+ *
-+ * Return: true if the packet may be processed further, false if it has been
-+ *  consumed or has to be dropped by the caller
-+ */
- static bool batadv_check_unicast_ttvn(struct batadv_priv *bat_priv,
- 				      struct sk_buff *skb, int hdr_len)
- {
 diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index dae5e1d8c0385..47e20b440dea2 100644
+index 96bfd5f303c1e..5295e3a59906f 100644
 --- a/net/batman-adv/translation-table.c
 +++ b/net/batman-adv/translation-table.c
-@@ -535,6 +535,12 @@ static int batadv_tt_local_table_transmit_size(struct batadv_priv *bat_priv)
- 	return hdr_size + batadv_tt_len(tt_local_entries);
- }
- 
-+/**
-+ * batadv_tt_local_init() - allocate and initialise the local translation table
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ *
-+ * Return: 0 on success or -ENOMEM in case of allocation failure
-+ */
- static int batadv_tt_local_init(struct batadv_priv *bat_priv)
+@@ -424,8 +424,8 @@ static void batadv_tt_local_event(struct batadv_priv *bat_priv,
+ 				  u8 event_flags)
  {
- 	if (bat_priv->tt.local_hash)
-@@ -551,6 +557,15 @@ static int batadv_tt_local_init(struct batadv_priv *bat_priv)
- 	return 0;
- }
+ 	struct batadv_tt_common_entry *common = &tt_local_entry->common;
++	u8 flags = atomic_read(&common->flags) | event_flags;
+ 	struct batadv_tt_change_node *tt_change_node;
+-	u8 flags = common->flags | event_flags;
+ 	struct batadv_tt_change_node *entry;
+ 	struct batadv_tt_change_node *safe;
+ 	bool del_op_requested;
+@@ -624,11 +624,16 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
+ 	bool iif_is_wifi = false;
+ 	struct hlist_head *head;
+ 	int packet_size_max;
++	u8 new_remote_flags;
+ 	bool ret = false;
+ 	u8 remote_flags;
+ 	int hash_added;
+ 	int table_size;
+ 	u32 match_mark;
++	u8 clear_flags;
++	u16 old_flags;
++	u8 set_flags;
++	u16 flags;
  
-+/**
-+ * batadv_tt_global_free() - drop a global translation table entry
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @tt_global: the global TT entry to remove
-+ * @message: debug message explaining why the entry is being removed
-+ *
-+ * Remove @tt_global from the global TT hash and drop the reference held by
-+ * the hash.
-+ */
- static void batadv_tt_global_free(struct batadv_priv *bat_priv,
- 				  struct batadv_tt_global_entry *tt_global,
- 				  const char *message)
-@@ -1224,6 +1239,17 @@ int batadv_tt_local_dump(struct sk_buff *msg, struct netlink_callback *cb)
- 	return ret;
- }
+ 	if (ifindex != BATADV_NULL_IFINDEX)
+ 		in_dev = dev_get_by_index(net, ifindex);
+@@ -646,7 +651,9 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
  
-+/**
-+ * batadv_tt_local_set_pending() - mark a local TT entry as pending removal
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @tt_local_entry: local TT entry to mark
-+ * @flags: TT change flags to announce together with the pending removal
-+ * @message: debug message describing the reason for the change
-+ *
-+ * Schedule the TT change announcement and set BATADV_TT_CLIENT_PENDING on the
-+ * entry. The entry is kept in the local table until the next TTVN increment
-+ * so that a consistency-check response can still be answered.
-+ */
- static void
- batadv_tt_local_set_pending(struct batadv_priv *bat_priv,
- 			    struct batadv_tt_local_entry *tt_local_entry,
-@@ -1367,6 +1393,13 @@ static void batadv_tt_local_purge(struct batadv_priv *bat_priv,
+ 	if (tt_local) {
+ 		tt_local->last_seen = jiffies;
+-		if (tt_local->common.flags & BATADV_TT_CLIENT_PENDING) {
++
++		flags = atomic_read(&tt_local->common.flags);
++		if (flags & BATADV_TT_CLIENT_PENDING) {
+ 			batadv_dbg(BATADV_DBG_TT, bat_priv,
+ 				   "Re-adding pending client %pM (vid: %d)\n",
+ 				   addr, batadv_print_vid(vid));
+@@ -655,11 +662,11 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
+ 			 * this orig_interval. Since it popped up again, the
+ 			 * flag can be reset like it was never enqueued
+ 			 */
+-			tt_local->common.flags &= ~BATADV_TT_CLIENT_PENDING;
++			atomic_andnot(BATADV_TT_CLIENT_PENDING, &tt_local->common.flags);
+ 			goto add_event;
+ 		}
+ 
+-		if (tt_local->common.flags & BATADV_TT_CLIENT_ROAM) {
++		if (flags & BATADV_TT_CLIENT_ROAM) {
+ 			batadv_dbg(BATADV_DBG_TT, bat_priv,
+ 				   "Roaming client %pM (vid: %d) came back to its original location\n",
+ 				   addr, batadv_print_vid(vid));
+@@ -668,7 +675,7 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
+ 			 * that the client popped up again at its original
+ 			 * location such flag can be unset
+ 			 */
+-			tt_local->common.flags &= ~BATADV_TT_CLIENT_ROAM;
++			atomic_andnot(BATADV_TT_CLIENT_ROAM, &tt_local->common.flags);
+ 			roamed_back = true;
+ 		}
+ 		goto check_roaming;
+@@ -705,26 +712,29 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
+ 		   addr, batadv_print_vid(vid),
+ 		   (u8)atomic_read(&bat_priv->tt.vn));
+ 
++	tt_local->common.vid = vid;
++	kref_init(&tt_local->common.refcount);
++	tt_local->last_seen = jiffies;
++	tt_local->common.added_at = tt_local->last_seen;
++	tt_local->vlan = vlan;
++
+ 	ether_addr_copy(tt_local->common.addr, addr);
+ 	/* The local entry has to be marked as NEW to avoid to send it in
+ 	 * a full table response going out before the next ttvn increment
+ 	 * (consistency check)
+ 	 */
+-	tt_local->common.flags = BATADV_TT_CLIENT_NEW;
+-	tt_local->common.vid = vid;
++	flags = BATADV_TT_CLIENT_NEW;
+ 	if (iif_is_wifi)
+-		tt_local->common.flags |= BATADV_TT_CLIENT_WIFI;
+-	kref_init(&tt_local->common.refcount);
+-	tt_local->last_seen = jiffies;
+-	tt_local->common.added_at = tt_local->last_seen;
+-	tt_local->vlan = vlan;
++		flags |= BATADV_TT_CLIENT_WIFI;
+ 
+ 	/* the batman interface mac and multicast addresses should never be
+ 	 * purged
+ 	 */
+ 	if (batadv_compare_eth(addr, mesh_iface->dev_addr) ||
+ 	    is_multicast_ether_addr(addr))
+-		tt_local->common.flags |= BATADV_TT_CLIENT_NOPURGE;
++		flags |= BATADV_TT_CLIENT_NOPURGE;
++
++	atomic_set(&tt_local->common.flags, flags);
+ 
+ 	kref_get(&tt_local->common.refcount);
+ 	hash_added = batadv_hash_add(bat_priv->tt.local_hash, batadv_compare_tt,
+@@ -742,9 +752,17 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
+ 
+ check_roaming:
+ 	/* Check whether it is a roaming, but don't do anything if the roaming
+-	 * process has already been handled
++	 * process has already been handled. The ROAM flag is claimed via an
++	 * atomic test-and-set to make sure that only a single context handles
++	 * the advertisement for a client
+ 	 */
+-	if (tt_global && !(tt_global->common.flags & BATADV_TT_CLIENT_ROAM)) {
++	old_flags = BATADV_TT_CLIENT_ROAM;
++	if (tt_global &&
++	    !(atomic_read(&tt_global->common.flags) & BATADV_TT_CLIENT_ROAM))
++		old_flags = atomic_fetch_or(BATADV_TT_CLIENT_ROAM,
++					    &tt_global->common.flags);
++
++	if (tt_global && !(old_flags & BATADV_TT_CLIENT_ROAM)) {
+ 		/* These node are probably going to update their tt table */
+ 		head = &tt_global->orig_list;
+ 		rcu_read_lock();
+@@ -754,27 +772,30 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
+ 					     orig_entry->orig_node);
+ 		}
+ 		rcu_read_unlock();
+-		if (roamed_back) {
+-			batadv_tt_global_free(bat_priv, tt_global,
+-					      "Roaming canceled");
+-		} else {
+-			/* The global entry has to be marked as ROAMING and
++
++		if (!roamed_back) {
++			/* The global entry was marked as ROAMING and
+ 			 * has to be kept for consistency purpose
+ 			 */
+-			tt_global->common.flags |= BATADV_TT_CLIENT_ROAM;
+ 			tt_global->roam_at = jiffies;
+ 		}
  	}
- }
  
-+/**
-+ * batadv_tt_local_table_free() - release the local translation table
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ *
-+ * Drop every entry of the local TT hash, free their references and finally
-+ * release the hashtable itself.
-+ */
- static void batadv_tt_local_table_free(struct batadv_priv *bat_priv)
- {
- 	struct batadv_hashtable *hash;
-@@ -1404,6 +1437,13 @@ static void batadv_tt_local_table_free(struct batadv_priv *bat_priv)
- 	bat_priv->tt.local_hash = NULL;
- }
++	/* clean up independent of the roaming advertisement handler */
++	if (tt_global && roamed_back)
++		batadv_tt_global_free(bat_priv, tt_global, "Roaming canceled");
++
+ 	/* store the current remote flags before altering them. This helps
+ 	 * understanding is flags are changing or not
+ 	 */
+-	remote_flags = tt_local->common.flags & BATADV_TT_REMOTE_MASK;
++	remote_flags = atomic_read(&tt_local->common.flags) & BATADV_TT_REMOTE_MASK;
++
++	new_remote_flags = remote_flags;
  
-+/**
-+ * batadv_tt_global_init() - allocate and initialise the global translation
-+ *  table
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ *
-+ * Return: 0 on success or -ENOMEM in case of allocation failure
-+ */
- static int batadv_tt_global_init(struct batadv_priv *bat_priv)
- {
- 	if (bat_priv->tt.global_hash)
-@@ -1420,6 +1460,12 @@ static int batadv_tt_global_init(struct batadv_priv *bat_priv)
- 	return 0;
- }
+ 	if (iif_is_wifi)
+-		tt_local->common.flags |= BATADV_TT_CLIENT_WIFI;
++		new_remote_flags |= BATADV_TT_CLIENT_WIFI;
+ 	else
+-		tt_local->common.flags &= ~BATADV_TT_CLIENT_WIFI;
++		new_remote_flags &= ~BATADV_TT_CLIENT_WIFI;
  
-+/**
-+ * batadv_tt_changes_list_free() - drop all pending local TT changes
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ *
-+ * Discard every queued local TT change and reset the pending change counter.
-+ */
- static void batadv_tt_changes_list_free(struct batadv_priv *bat_priv)
- {
- 	struct batadv_tt_change_node *entry, *safe;
-@@ -2024,7 +2070,11 @@ _batadv_tt_global_del_orig_entry(struct batadv_tt_global_entry *tt_global_entry,
- 	batadv_tt_orig_list_entry_put(orig_entry);
- }
+ 	/* check the mark in the skb: if it's equal to the configured
+ 	 * isolation_mark, it means the packet is coming from an isolated
+@@ -783,14 +804,22 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
+ 	match_mark = (mark & bat_priv->isolation_mark_mask);
+ 	if (bat_priv->isolation_mark_mask &&
+ 	    match_mark == bat_priv->isolation_mark)
+-		tt_local->common.flags |= BATADV_TT_CLIENT_ISOLA;
++		new_remote_flags |= BATADV_TT_CLIENT_ISOLA;
+ 	else
+-		tt_local->common.flags &= ~BATADV_TT_CLIENT_ISOLA;
++		new_remote_flags &= ~BATADV_TT_CLIENT_ISOLA;
++
++	set_flags = new_remote_flags & ~remote_flags;
++	if (set_flags)
++		atomic_or(set_flags, &tt_local->common.flags);
++
++	clear_flags = remote_flags & ~new_remote_flags;
++	if (clear_flags)
++		atomic_andnot(clear_flags, &tt_local->common.flags);
  
--/* deletes the orig list of a tt_global_entry */
-+/**
-+ * batadv_tt_global_del_orig_list() - drop every orig_list_entry of a global
-+ *  TT entry
-+ * @tt_global_entry: the global TT entry to clear
-+ */
- static void
- batadv_tt_global_del_orig_list(struct batadv_tt_global_entry *tt_global_entry)
- {
-@@ -2077,9 +2127,17 @@ batadv_tt_global_del_orig_node(struct batadv_priv *bat_priv,
- 	spin_unlock_bh(&tt_global_entry->list_lock);
- }
+ 	/* if any "dynamic" flag has been modified, resend an ADD event for this
+ 	 * entry so that all the nodes can get the new flags
+ 	 */
+-	if (remote_flags ^ (tt_local->common.flags & BATADV_TT_REMOTE_MASK))
++	if (set_flags || clear_flags)
+ 		batadv_tt_local_event(bat_priv, tt_local, BATADV_NO_FLAGS);
  
--/* If the client is to be deleted, we check if it is the last origantor entry
-- * within tt_global entry. If yes, we set the BATADV_TT_CLIENT_ROAM flag and the
-- * timer, otherwise we simply remove the originator scheduled for deletion.
-+/**
-+ * batadv_tt_global_del_roaming() - remove a roaming client from a global TT
-+ *  entry
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @tt_global_entry: the global TT entry of the roaming client
-+ * @orig_node: the originator that the client has roamed away from
-+ * @message: debug message describing the reason for the change
-+ *
-+ * If @orig_node was the last announced source for the client, mark the entry
-+ * for roaming so it can be cleaned up after the roaming timer expires.
-+ * Otherwise simply remove the orig_node entry from the announcer list.
-  */
- static void
- batadv_tt_global_del_roaming(struct batadv_priv *bat_priv,
-@@ -2241,6 +2299,15 @@ void batadv_tt_global_del_orig(struct batadv_priv *bat_priv,
- 	clear_bit(BATADV_ORIG_CAPA_HAS_TT, &orig_node->capa_initialized);
- }
+ 	ret = true;
+@@ -1115,10 +1144,12 @@ batadv_tt_local_dump_entry(struct sk_buff *msg, u32 portid,
+ 	struct batadv_meshif_vlan *vlan;
+ 	unsigned int last_seen_msecs;
+ 	void *hdr;
++	u16 flags;
+ 	u32 crc;
  
-+/**
-+ * batadv_tt_global_to_purge() - check whether a global TT entry has to be
-+ *  purged
-+ * @tt_global: global TT entry under consideration
-+ * @msg: storage for a pointer to a human readable reason on return
-+ *
-+ * Return: true if the entry should be purged because its roaming or temporary
-+ *  timer has elapsed; false otherwise
-+ */
- static bool batadv_tt_global_to_purge(struct batadv_tt_global_entry *tt_global,
- 				      char **msg)
- {
-@@ -2263,6 +2330,13 @@ static bool batadv_tt_global_to_purge(struct batadv_tt_global_entry *tt_global,
- 	return purge;
- }
+ 	local = container_of(common, struct batadv_tt_local_entry, common);
+ 	last_seen_msecs = jiffies_to_msecs(jiffies - local->last_seen);
++	flags = atomic_read(&common->flags);
  
-+/**
-+ * batadv_tt_global_purge() - purge expired global translation table entries
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ *
-+ * Iterate over the global translation table and drop every entry that the
-+ * roaming or temporary timer has expired for.
-+ */
- static void batadv_tt_global_purge(struct batadv_priv *bat_priv)
- {
- 	struct batadv_hashtable *hash = bat_priv->tt.global_hash;
-@@ -2302,6 +2376,13 @@ static void batadv_tt_global_purge(struct batadv_priv *bat_priv)
+ 	vlan = batadv_meshif_vlan_get(bat_priv, common->vid);
+ 	if (!vlan)
+@@ -1139,10 +1170,10 @@ batadv_tt_local_dump_entry(struct sk_buff *msg, u32 portid,
+ 	if (nla_put(msg, BATADV_ATTR_TT_ADDRESS, ETH_ALEN, common->addr) ||
+ 	    nla_put_u32(msg, BATADV_ATTR_TT_CRC32, crc) ||
+ 	    nla_put_u16(msg, BATADV_ATTR_TT_VID, common->vid) ||
+-	    nla_put_u32(msg, BATADV_ATTR_TT_FLAGS, common->flags))
++	    nla_put_u32(msg, BATADV_ATTR_TT_FLAGS, flags))
+ 		goto nla_put_failure;
+ 
+-	if (!(common->flags & BATADV_TT_CLIENT_NOPURGE) &&
++	if (!(flags & BATADV_TT_CLIENT_NOPURGE) &&
+ 	    nla_put_u32(msg, BATADV_ATTR_LAST_SEEN_MSECS, last_seen_msecs))
+ 		goto nla_put_failure;
+ 
+@@ -1270,7 +1301,7 @@ batadv_tt_local_set_pending(struct batadv_priv *bat_priv,
+ 	 * to be kept in the table in order to send it in a full table
+ 	 * response issued before the net ttvn increment (consistency check)
+ 	 */
+-	tt_local_entry->common.flags |= BATADV_TT_CLIENT_PENDING;
++	atomic_or(BATADV_TT_CLIENT_PENDING, &tt_local_entry->common.flags);
+ 
+ 	batadv_dbg(BATADV_DBG_TT, bat_priv,
+ 		   "Local tt entry (%pM, vid: %d) pending to be removed: %s\n",
+@@ -1296,13 +1327,14 @@ u16 batadv_tt_local_remove(struct batadv_priv *bat_priv, const u8 *addr,
+ 	struct batadv_tt_local_entry *tt_local_entry;
+ 	struct hlist_node *tt_removed_node;
+ 	u16 curr_flags = BATADV_NO_FLAGS;
++	u16 old_flags;
+ 	u16 flags;
+ 
+ 	tt_local_entry = batadv_tt_local_hash_find(bat_priv, addr, vid);
+ 	if (!tt_local_entry)
+ 		goto out;
+ 
+-	curr_flags = tt_local_entry->common.flags;
++	curr_flags = atomic_read(&tt_local_entry->common.flags);
+ 
+ 	flags = BATADV_TT_CLIENT_DEL;
+ 	/* if this global entry addition is due to a roaming, the node has to
+@@ -1312,10 +1344,12 @@ u16 batadv_tt_local_remove(struct batadv_priv *bat_priv, const u8 *addr,
+ 	if (roaming) {
+ 		flags |= BATADV_TT_CLIENT_ROAM;
+ 		/* mark the local client as ROAMed */
+-		tt_local_entry->common.flags |= BATADV_TT_CLIENT_ROAM;
++		atomic_or(BATADV_TT_CLIENT_ROAM, &tt_local_entry->common.flags);
  	}
+ 
+-	if (!(tt_local_entry->common.flags & BATADV_TT_CLIENT_NEW)) {
++	old_flags = atomic_fetch_andnot(BATADV_TT_CLIENT_NEW,
++					&tt_local_entry->common.flags);
++	if (!(old_flags & BATADV_TT_CLIENT_NEW)) {
+ 		batadv_tt_local_set_pending(bat_priv, tt_local_entry, flags,
+ 					    message);
+ 		goto out;
+@@ -1358,17 +1392,21 @@ static void batadv_tt_local_purge_list(struct batadv_priv *bat_priv,
+ 	struct batadv_tt_common_entry *tt_common_entry;
+ 	struct batadv_tt_local_entry *tt_local_entry;
+ 	struct hlist_node *node_tmp;
++	u16 flags;
+ 
+ 	hlist_for_each_entry_safe(tt_common_entry, node_tmp, head,
+ 				  hash_entry) {
+ 		tt_local_entry = container_of(tt_common_entry,
+ 					      struct batadv_tt_local_entry,
+ 					      common);
+-		if (tt_local_entry->common.flags & BATADV_TT_CLIENT_NOPURGE)
++
++		flags = atomic_read(&tt_local_entry->common.flags);
++
++		if (flags & BATADV_TT_CLIENT_NOPURGE)
+ 			continue;
+ 
+ 		/* entry already marked for deletion */
+-		if (tt_local_entry->common.flags & BATADV_TT_CLIENT_PENDING)
++		if (flags & BATADV_TT_CLIENT_PENDING)
+ 			continue;
+ 
+ 		if (!batadv_has_timed_out(tt_local_entry->last_seen, timeout))
+@@ -1574,6 +1612,8 @@ batadv_tt_global_sync_flags(struct batadv_tt_global_entry *tt_global)
+ 	struct batadv_tt_orig_list_entry *orig_entry;
+ 	const struct hlist_head *head;
+ 	u16 flags = BATADV_NO_FLAGS;
++	int new_flags;
++	int old_flags;
+ 
+ 	rcu_read_lock();
+ 	head = &tt_global->orig_list;
+@@ -1581,8 +1621,15 @@ batadv_tt_global_sync_flags(struct batadv_tt_global_entry *tt_global)
+ 		flags |= orig_entry->flags;
+ 	rcu_read_unlock();
+ 
+-	flags |= tt_global->common.flags & (~BATADV_TT_SYNC_MASK);
+-	tt_global->common.flags = flags;
++	/* replace the sync flags without dropping concurrent modifications of
++	 * the non-sync flags
++	 */
++	old_flags = atomic_read(&tt_global->common.flags);
++	do {
++		new_flags = (old_flags & ~BATADV_TT_SYNC_MASK) | flags;
++		if (new_flags == old_flags)
++			break;
++	} while (!atomic_try_cmpxchg(&tt_global->common.flags, &old_flags, new_flags));
  }
  
-+/**
-+ * batadv_tt_global_table_free() - release the global translation table
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ *
-+ * Drop every entry of the global TT hash, free their references and finally
-+ * release the hashtable itself.
-+ */
- static void batadv_tt_global_table_free(struct batadv_priv *bat_priv)
+ /**
+@@ -1665,7 +1712,9 @@ static bool batadv_tt_global_add(struct batadv_priv *bat_priv,
+ 	struct batadv_tt_common_entry *common;
+ 	bool ret = false;
+ 	u16 local_flags;
++	u16 clear_flags;
+ 	int hash_added;
++	u16 old_flags;
+ 
+ 	/* ignore global entries from backbone nodes */
+ 	if (batadv_bla_is_backbone_gw_orig(bat_priv, orig_node->orig, vid))
+@@ -1679,7 +1728,7 @@ static bool batadv_tt_global_add(struct batadv_priv *bat_priv,
+ 	 * table
+ 	 */
+ 	if ((flags & BATADV_TT_CLIENT_TEMP) && tt_local_entry &&
+-	    !(tt_local_entry->common.flags & BATADV_TT_CLIENT_NEW))
++	    !(atomic_read(&tt_local_entry->common.flags) & BATADV_TT_CLIENT_NEW))
+ 		goto out;
+ 
+ 	if (!tt_global_entry) {
+@@ -1693,7 +1742,7 @@ static bool batadv_tt_global_add(struct batadv_priv *bat_priv,
+ 		common->vid = vid;
+ 
+ 		if (!is_multicast_ether_addr(common->addr))
+-			common->flags = flags & (~BATADV_TT_SYNC_MASK);
++			atomic_set(&common->flags, flags & (~BATADV_TT_SYNC_MASK));
+ 
+ 		tt_global_entry->roam_at = 0;
+ 		/* node must store current time in case of roaming. This is
+@@ -1722,6 +1771,8 @@ static bool batadv_tt_global_add(struct batadv_priv *bat_priv,
+ 		}
+ 	} else {
+ 		common = &tt_global_entry->common;
++		clear_flags = 0;
++
+ 		/* If there is already a global entry, we can use this one for
+ 		 * our processing.
+ 		 * But if we are trying to add a temporary client then here are
+@@ -1733,7 +1784,7 @@ static bool batadv_tt_global_add(struct batadv_priv *bat_priv,
+ 		 *    originator list and add the new one orig_entry
+ 		 */
+ 		if (flags & BATADV_TT_CLIENT_TEMP) {
+-			if (!(common->flags & BATADV_TT_CLIENT_TEMP))
++			if (!(atomic_read(&common->flags) & BATADV_TT_CLIENT_TEMP))
+ 				goto out;
+ 			if (batadv_tt_global_entry_has_orig(tt_global_entry,
+ 							    orig_node, NULL))
+@@ -1742,24 +1793,26 @@ static bool batadv_tt_global_add(struct batadv_priv *bat_priv,
+ 			goto add_orig_entry;
+ 		}
+ 
++		/* the change can carry possible "attribute" flags like the
++		 * TT_CLIENT_TEMP, therefore they have to be copied in the
++		 * client entry
++		 */
++		if (!is_multicast_ether_addr(common->addr))
++			atomic_or(flags & (~BATADV_TT_SYNC_MASK), &common->flags);
++
++		old_flags = atomic_read(&common->flags);
++
+ 		/* if the client was temporary added before receiving the first
+ 		 * OGM announcing it, we have to clear the TEMP flag. Also,
+ 		 * remove the previous temporary orig node and re-add it
+ 		 * if required. If the orig entry changed, the new one which
+ 		 * is a non-temporary entry is preferred.
+ 		 */
+-		if (common->flags & BATADV_TT_CLIENT_TEMP) {
++		if (old_flags & BATADV_TT_CLIENT_TEMP) {
+ 			batadv_tt_global_del_orig_list(tt_global_entry);
+-			common->flags &= ~BATADV_TT_CLIENT_TEMP;
++			clear_flags |= BATADV_TT_CLIENT_TEMP;
+ 		}
+ 
+-		/* the change can carry possible "attribute" flags like the
+-		 * TT_CLIENT_TEMP, therefore they have to be copied in the
+-		 * client entry
+-		 */
+-		if (!is_multicast_ether_addr(common->addr))
+-			common->flags |= flags & (~BATADV_TT_SYNC_MASK);
+-
+ 		/* If there is the BATADV_TT_CLIENT_ROAM flag set, there is only
+ 		 * one originator left in the list and we previously received a
+ 		 * delete + roaming change for this originator.
+@@ -1767,11 +1820,14 @@ static bool batadv_tt_global_add(struct batadv_priv *bat_priv,
+ 		 * We should first delete the old originator before adding the
+ 		 * new one.
+ 		 */
+-		if (common->flags & BATADV_TT_CLIENT_ROAM) {
++		if (old_flags & BATADV_TT_CLIENT_ROAM) {
+ 			batadv_tt_global_del_orig_list(tt_global_entry);
+-			common->flags &= ~BATADV_TT_CLIENT_ROAM;
++			clear_flags |= BATADV_TT_CLIENT_ROAM;
+ 			tt_global_entry->roam_at = 0;
+ 		}
++
++		if (clear_flags)
++			atomic_andnot(clear_flags, &common->flags);
+ 	}
+ add_orig_entry:
+ 	/* add the new orig_entry (if needed) or update it */
+@@ -1795,13 +1851,15 @@ static bool batadv_tt_global_add(struct batadv_priv *bat_priv,
+ 	local_flags = batadv_tt_local_remove(bat_priv, tt_addr, vid,
+ 					     "global tt received",
+ 					     flags & BATADV_TT_CLIENT_ROAM);
+-	tt_global_entry->common.flags |= local_flags & BATADV_TT_CLIENT_WIFI;
++	if (local_flags & BATADV_TT_CLIENT_WIFI)
++		atomic_or(local_flags & BATADV_TT_CLIENT_WIFI,
++			  &tt_global_entry->common.flags);
+ 
+ 	if (!(flags & BATADV_TT_CLIENT_ROAM))
+ 		/* this is a normal global add. Therefore the client is not in a
+ 		 * roaming state anymore.
+ 		 */
+-		tt_global_entry->common.flags &= ~BATADV_TT_CLIENT_ROAM;
++		atomic_andnot(BATADV_TT_CLIENT_ROAM, &tt_global_entry->common.flags);
+ 
+ out:
+ 	batadv_tt_global_entry_put(tt_global_entry);
+@@ -1871,7 +1929,7 @@ batadv_tt_global_dump_subentry(struct sk_buff *msg, u32 portid, u32 seq,
+ 			       struct batadv_tt_orig_list_entry *orig,
+ 			       bool best)
  {
- 	struct batadv_hashtable *hash;
-@@ -2338,6 +2419,16 @@ static void batadv_tt_global_table_free(struct batadv_priv *bat_priv)
- 	bat_priv->tt.global_hash = NULL;
- }
+-	u16 flags = (common->flags & (~BATADV_TT_SYNC_MASK)) | orig->flags;
++	u16 flags = (atomic_read(&common->flags) & (~BATADV_TT_SYNC_MASK)) | orig->flags;
+ 	struct batadv_orig_node_vlan *vlan;
+ 	u8 last_ttvn;
+ 	void *hdr;
+@@ -2180,7 +2238,7 @@ batadv_tt_global_del_roaming(struct batadv_priv *bat_priv,
  
-+/**
-+ * _batadv_is_ap_isolated() - check whether two clients are AP-isolated from
-+ *  each other
-+ * @tt_local_entry: local TT entry of the sending client
-+ * @tt_global_entry: global TT entry of the destination client
-+ *
-+ * Return: true if traffic between the two clients should be dropped because
-+ *  either both are WiFi clients or both carry the ISOLATION flag; false
-+ *  otherwise
-+ */
- static bool
+ 	if (last_entry) {
+ 		/* its the last one, mark for roaming. */
+-		tt_global_entry->common.flags |= BATADV_TT_CLIENT_ROAM;
++		atomic_or(BATADV_TT_CLIENT_ROAM, &tt_global_entry->common.flags);
+ 		tt_global_entry->roam_at = jiffies;
+ 	} else {
+ 		/* there is another entry, we can simply delete this
+@@ -2328,15 +2386,16 @@ static bool batadv_tt_global_to_purge(struct batadv_tt_global_entry *tt_global,
+ {
+ 	unsigned long roam_timeout = BATADV_TT_CLIENT_ROAM_TIMEOUT;
+ 	unsigned long temp_timeout = BATADV_TT_CLIENT_TEMP_TIMEOUT;
++	u16 flags = atomic_read(&tt_global->common.flags);
+ 	bool purge = false;
+ 
+-	if ((tt_global->common.flags & BATADV_TT_CLIENT_ROAM) &&
++	if ((flags & BATADV_TT_CLIENT_ROAM) &&
+ 	    batadv_has_timed_out(tt_global->roam_at, roam_timeout)) {
+ 		purge = true;
+ 		*msg = "Roaming timeout\n";
+ 	}
+ 
+-	if ((tt_global->common.flags & BATADV_TT_CLIENT_TEMP) &&
++	if ((flags & BATADV_TT_CLIENT_TEMP) &&
+ 	    batadv_has_timed_out(tt_global->common.added_at, temp_timeout)) {
+ 		purge = true;
+ 		*msg = "Temporary client timeout\n";
+@@ -2448,13 +2507,16 @@ static bool
  _batadv_is_ap_isolated(struct batadv_tt_local_entry *tt_local_entry,
  		       struct batadv_tt_global_entry *tt_global_entry)
-@@ -2590,6 +2681,10 @@ static void batadv_tt_req_node_put(struct batadv_tt_req_node *tt_req_node)
- 	kref_put(&tt_req_node->refcount, batadv_tt_req_node_release);
- }
- 
-+/**
-+ * batadv_tt_req_list_free() - drop all pending TT requests
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ */
- static void batadv_tt_req_list_free(struct batadv_priv *bat_priv)
  {
- 	struct batadv_tt_req_node *node;
-@@ -2605,6 +2700,18 @@ static void batadv_tt_req_list_free(struct batadv_priv *bat_priv)
- 	spin_unlock_bh(&bat_priv->tt.req_list_lock);
- }
+-	if (tt_local_entry->common.flags & BATADV_TT_CLIENT_WIFI &&
+-	    tt_global_entry->common.flags & BATADV_TT_CLIENT_WIFI)
++	u16 global_flags = atomic_read(&tt_global_entry->common.flags);
++	u16 local_flags = atomic_read(&tt_local_entry->common.flags);
++
++	if (local_flags & BATADV_TT_CLIENT_WIFI &&
++	    global_flags & BATADV_TT_CLIENT_WIFI)
+ 		return true;
  
-+/**
-+ * batadv_tt_save_orig_buffer() - cache the latest TT TVLV payload of an
-+ *  originator
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @orig_node: originator for which the buffer should be created
-+ * @tt_buff: pointer to the TT TVLV payload to cache
-+ * @tt_buff_len: length of @tt_buff in bytes
-+ *
-+ * Replace the previously cached TT payload of @orig_node with a copy of
-+ * @tt_buff. The buffer is left untouched when @tt_buff_len is 0 so that
-+ * empty OGM updates do not discard the previously cached data.
-+ */
- static void batadv_tt_save_orig_buffer(struct batadv_priv *bat_priv,
- 				       struct batadv_orig_node *orig_node,
- 				       const void *tt_buff,
-@@ -2626,6 +2733,10 @@ static void batadv_tt_save_orig_buffer(struct batadv_priv *bat_priv,
- 	spin_unlock_bh(&orig_node->tt_buff_lock);
- }
+ 	/* check if the two clients are marked as isolated */
+-	if (tt_local_entry->common.flags & BATADV_TT_CLIENT_ISOLA &&
+-	    tt_global_entry->common.flags & BATADV_TT_CLIENT_ISOLA)
++	if (local_flags & BATADV_TT_CLIENT_ISOLA &&
++	    global_flags & BATADV_TT_CLIENT_ISOLA)
+ 		return true;
  
-+/**
-+ * batadv_tt_req_purge() - drop timed-out TT requests
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ */
- static void batadv_tt_req_purge(struct batadv_priv *bat_priv)
- {
- 	struct batadv_tt_req_node *node;
-@@ -3253,6 +3364,18 @@ static bool batadv_send_tt_response(struct batadv_priv *bat_priv,
- 					     req_dst);
- }
- 
-+/**
-+ * _batadv_tt_update_changes() - apply a list of TT changes to the global TT
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @orig_node: originator announcing the changes
-+ * @tt_change: array of TT change entries to apply
-+ * @tt_num_changes: number of entries in @tt_change
-+ * @ttvn: TTVN of @orig_node corresponding to @tt_change
-+ *
-+ * Walk @tt_change and add/remove the announced clients in the global TT.
-+ * Abort early without marking the TTVN as up to date if adding an entry
-+ * fails, so that the next TT request can re-sync the full table.
-+ */
- static void _batadv_tt_update_changes(struct batadv_priv *bat_priv,
- 				      struct batadv_orig_node *orig_node,
- 				      struct batadv_tvlv_tt_change *tt_change,
-@@ -3286,6 +3409,18 @@ static void _batadv_tt_update_changes(struct batadv_priv *bat_priv,
- 	set_bit(BATADV_ORIG_CAPA_HAS_TT, &orig_node->capa_initialized);
- }
- 
-+/**
-+ * batadv_tt_fill_gtable() - replace the cached TT of an originator with a
-+ *  full table response
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @tt_change: array of TT change entries describing the full table
-+ * @ttvn: TTVN announced together with the full table
-+ * @resp_src: MAC address of the responder
-+ * @num_entries: number of entries in @tt_change
-+ *
-+ * Drop the previously known global TT entries of @resp_src and replace them
-+ * with the entries from a freshly received full TT response.
-+ */
- static void batadv_tt_fill_gtable(struct batadv_priv *bat_priv,
- 				  struct batadv_tvlv_tt_change *tt_change,
- 				  u8 ttvn, u8 *resp_src,
-@@ -3316,6 +3451,15 @@ static void batadv_tt_fill_gtable(struct batadv_priv *bat_priv,
- 	batadv_orig_node_put(orig_node);
- }
- 
-+/**
-+ * batadv_tt_update_changes() - apply an incremental TT changeset to the
-+ *  global TT
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @orig_node: originator announcing the changes
-+ * @tt_num_changes: number of entries in @tt_change
-+ * @ttvn: TTVN of @orig_node corresponding to @tt_change
-+ * @tt_change: array of TT change entries to apply
-+ */
- static void batadv_tt_update_changes(struct batadv_priv *bat_priv,
- 				     struct batadv_orig_node *orig_node,
- 				     u16 tt_num_changes, u8 ttvn,
-@@ -3416,6 +3560,10 @@ static void batadv_handle_tt_response(struct batadv_priv *bat_priv,
- 	batadv_orig_node_put(orig_node);
- }
- 
-+/**
-+ * batadv_tt_roam_list_free() - drop all entries from the roaming clients list
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ */
- static void batadv_tt_roam_list_free(struct batadv_priv *bat_priv)
- {
- 	struct batadv_tt_roam_node *node, *safe;
-@@ -3430,6 +3578,10 @@ static void batadv_tt_roam_list_free(struct batadv_priv *bat_priv)
- 	spin_unlock_bh(&bat_priv->tt.roam_list_lock);
- }
- 
-+/**
-+ * batadv_tt_roam_purge() - drop timed-out roaming clients
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ */
- static void batadv_tt_roam_purge(struct batadv_priv *bat_priv)
- {
- 	struct batadv_tt_roam_node *node, *safe;
-@@ -3552,6 +3704,14 @@ static void batadv_send_roam_adv(struct batadv_priv *bat_priv, u8 *client,
- 	batadv_hardif_put(primary_if);
- }
- 
-+/**
-+ * batadv_tt_purge() - periodic worker to maintain the translation table
-+ * @work: delayed work embedded in the per-mesh-interface TT state
-+ *
-+ * Purge timed-out entries from the local and global TT, drop stale TT
-+ * requests and roaming clients, and reschedule the next run after
-+ * BATADV_TT_WORK_PERIOD milliseconds.
-+ */
- static void batadv_tt_purge(struct work_struct *work)
- {
- 	struct delayed_work *delayed_work;
-@@ -3638,7 +3798,14 @@ static void batadv_tt_local_set_flags(struct batadv_priv *bat_priv, u16 flags,
+ 	return false;
+@@ -2487,7 +2549,7 @@ struct batadv_orig_node *batadv_transtable_search(struct batadv_priv *bat_priv,
+ 	if (src && batadv_vlan_ap_isola_get(bat_priv, vid)) {
+ 		tt_local_entry = batadv_tt_local_hash_find(bat_priv, src, vid);
+ 		if (!tt_local_entry ||
+-		    (tt_local_entry->common.flags & BATADV_TT_CLIENT_PENDING))
++		    (atomic_read(&tt_local_entry->common.flags) & BATADV_TT_CLIENT_PENDING))
+ 			goto out;
  	}
- }
  
--/* Purge out all the tt local entries marked with BATADV_TT_CLIENT_PENDING */
-+/**
-+ * batadv_tt_local_purge_pending_clients() - finalise removal of pending local
-+ *  clients
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ *
-+ * Iterate over the local TT and physically remove every entry that has been
-+ * marked as BATADV_TT_CLIENT_PENDING.
-+ */
- static void batadv_tt_local_purge_pending_clients(struct batadv_priv *bat_priv)
- {
+@@ -2551,6 +2613,7 @@ static u32 batadv_tt_global_crc(struct batadv_priv *bat_priv,
+ 	struct batadv_tt_common_entry *tt_common;
+ 	struct batadv_tt_global_entry *tt_global;
+ 	struct hlist_head *head;
++	u16 entry_flags;
+ 	__be16 tmp_vid;
+ 	u32 crc_tmp;
+ 	u32 crc = 0;
+@@ -2571,18 +2634,20 @@ static u32 batadv_tt_global_crc(struct batadv_priv *bat_priv,
+ 			if (tt_common->vid != vid)
+ 				continue;
+ 
++			entry_flags = atomic_read(&tt_common->flags);
++
+ 			/* Roaming clients are in the global table for
+ 			 * consistency only. They don't have to be
+ 			 * taken into account while computing the
+ 			 * global crc
+ 			 */
+-			if (tt_common->flags & BATADV_TT_CLIENT_ROAM)
++			if (entry_flags & BATADV_TT_CLIENT_ROAM)
+ 				continue;
+ 			/* Temporary clients have not been announced yet, so
+ 			 * they have to be skipped while computing the global
+ 			 * crc
+ 			 */
+-			if (tt_common->flags & BATADV_TT_CLIENT_TEMP)
++			if (entry_flags & BATADV_TT_CLIENT_TEMP)
+ 				continue;
+ 
+ 			/* find out if this global entry is announced by this
+@@ -2631,6 +2696,7 @@ static u32 batadv_tt_local_crc(struct batadv_priv *bat_priv,
  	struct batadv_hashtable *hash = bat_priv->tt.local_hash;
+ 	struct batadv_tt_common_entry *tt_common;
+ 	struct hlist_head *head;
++	u16 entry_flags;
+ 	__be16 tmp_vid;
+ 	u32 crc_tmp;
+ 	u32 crc = 0;
+@@ -2648,10 +2714,12 @@ static u32 batadv_tt_local_crc(struct batadv_priv *bat_priv,
+ 			if (tt_common->vid != vid)
+ 				continue;
+ 
++			entry_flags = atomic_read(&tt_common->flags);
++
+ 			/* not yet committed clients have not to be taken into
+ 			 * account while computing the CRC
+ 			 */
+-			if (tt_common->flags & BATADV_TT_CLIENT_NEW)
++			if (entry_flags & BATADV_TT_CLIENT_NEW)
+ 				continue;
+ 
+ 			/* use network order to read the VID: this ensures that
+@@ -2663,7 +2731,7 @@ static u32 batadv_tt_local_crc(struct batadv_priv *bat_priv,
+ 			/* compute the CRC on flags that have to be kept in sync
+ 			 * among nodes
+ 			 */
+-			flags = tt_common->flags & BATADV_TT_SYNC_MASK;
++			flags = entry_flags & BATADV_TT_SYNC_MASK;
+ 			crc_tmp = crc32c(crc_tmp, &flags, sizeof(flags));
+ 
+ 			crc ^= crc32c(crc_tmp, tt_common->addr, ETH_ALEN);
+@@ -2826,12 +2894,13 @@ static bool batadv_tt_local_valid(const void *entry_ptr,
+ 				  u8 *flags)
+ {
+ 	const struct batadv_tt_common_entry *tt_common_entry = entry_ptr;
++	u16 entry_flags = atomic_read(&tt_common_entry->flags);
+ 
+-	if (tt_common_entry->flags & BATADV_TT_CLIENT_NEW)
++	if (entry_flags & BATADV_TT_CLIENT_NEW)
+ 		return false;
+ 
+ 	if (flags)
+-		*flags = tt_common_entry->flags;
++		*flags = entry_flags;
+ 
+ 	return true;
+ }
+@@ -2855,9 +2924,10 @@ static bool batadv_tt_global_valid(const void *entry_ptr,
+ 	const struct batadv_tt_common_entry *tt_common_entry = entry_ptr;
+ 	const struct batadv_tt_global_entry *tt_global_entry;
+ 	const struct batadv_orig_node *orig_node = data_ptr;
++	u16 entry_flags;
+ 
+-	if (tt_common_entry->flags & BATADV_TT_CLIENT_ROAM ||
+-	    tt_common_entry->flags & BATADV_TT_CLIENT_TEMP)
++	entry_flags = atomic_read(&tt_common_entry->flags);
++	if (entry_flags & (BATADV_TT_CLIENT_ROAM | BATADV_TT_CLIENT_TEMP))
+ 		return false;
+ 
+ 	tt_global_entry = container_of(tt_common_entry,
+@@ -3512,6 +3582,7 @@ bool batadv_is_my_client(struct batadv_priv *bat_priv, const u8 *addr,
+ {
+ 	struct batadv_tt_local_entry *tt_local_entry;
+ 	bool ret = false;
++	u16 entry_flags;
+ 
+ 	tt_local_entry = batadv_tt_local_hash_find(bat_priv, addr, vid);
+ 	if (!tt_local_entry)
+@@ -3519,8 +3590,8 @@ bool batadv_is_my_client(struct batadv_priv *bat_priv, const u8 *addr,
+ 	/* Check if the client has been logically deleted (but is kept for
+ 	 * consistency purpose)
+ 	 */
+-	if ((tt_local_entry->common.flags & BATADV_TT_CLIENT_PENDING) ||
+-	    (tt_local_entry->common.flags & BATADV_TT_CLIENT_ROAM))
++	entry_flags = atomic_read(&tt_local_entry->common.flags);
++	if (entry_flags & (BATADV_TT_CLIENT_PENDING | BATADV_TT_CLIENT_ROAM))
+ 		goto out;
+ 	ret = true;
+ out:
+@@ -3795,6 +3866,8 @@ static void batadv_tt_local_set_flags(struct batadv_priv *bat_priv, u16 flags,
+ 	struct batadv_hashtable *hash = bat_priv->tt.local_hash;
+ 	struct batadv_tt_common_entry *tt_common_entry;
+ 	struct hlist_head *head;
++	atomic_t *entry_flags;
++	u16 old_flags;
+ 	u32 i;
+ 
+ 	if (!hash)
+@@ -3806,14 +3879,27 @@ static void batadv_tt_local_set_flags(struct batadv_priv *bat_priv, u16 flags,
+ 		rcu_read_lock();
+ 		hlist_for_each_entry_rcu(tt_common_entry,
+ 					 head, hash_entry) {
++			entry_flags = &tt_common_entry->flags;
++			old_flags = atomic_read(entry_flags);
++
++			/* the old_flags value of the atomic test-and-
++			 * set/clear decides whether this entry counts as
++			 * changed.
++			 */
+ 			if (enable) {
+-				if ((tt_common_entry->flags & flags) == flags)
++				if ((old_flags & flags) == flags)
++					continue;
++
++				old_flags = atomic_fetch_or(flags, entry_flags);
++				if ((old_flags & flags) == flags)
+ 					continue;
+-				tt_common_entry->flags |= flags;
+ 			} else {
+-				if (!(tt_common_entry->flags & flags))
++				if (!(old_flags & flags))
++					continue;
++
++				old_flags = atomic_fetch_andnot(flags, entry_flags);
++				if (!(old_flags & flags))
+ 					continue;
+-				tt_common_entry->flags &= ~flags;
+ 			}
+ 
+ 			if (!count)
+@@ -3854,7 +3940,7 @@ static void batadv_tt_local_purge_pending_clients(struct batadv_priv *bat_priv)
+ 		spin_lock_bh(list_lock);
+ 		hlist_for_each_entry_safe(tt_common, node_tmp, head,
+ 					  hash_entry) {
+-			if (!(tt_common->flags & BATADV_TT_CLIENT_PENDING))
++			if (!(atomic_read(&tt_common->flags) & BATADV_TT_CLIENT_PENDING))
+ 				continue;
+ 
+ 			batadv_dbg(BATADV_DBG_TT, bat_priv,
+@@ -4067,7 +4153,7 @@ bool batadv_tt_global_client_is_roaming(struct batadv_priv *bat_priv,
+ 	if (!tt_global_entry)
+ 		goto out;
+ 
+-	ret = tt_global_entry->common.flags & BATADV_TT_CLIENT_ROAM;
++	ret = atomic_read(&tt_global_entry->common.flags) & BATADV_TT_CLIENT_ROAM;
+ 	batadv_tt_global_entry_put(tt_global_entry);
+ out:
+ 	return ret;
+@@ -4093,7 +4179,7 @@ bool batadv_tt_local_client_is_roaming(struct batadv_priv *bat_priv,
+ 	if (!tt_local_entry)
+ 		goto out;
+ 
+-	ret = tt_local_entry->common.flags & BATADV_TT_CLIENT_ROAM;
++	ret = atomic_read(&tt_local_entry->common.flags) & BATADV_TT_CLIENT_ROAM;
+ 	batadv_tt_local_entry_put(tt_local_entry);
+ out:
+ 	return ret;
+@@ -4403,7 +4489,7 @@ bool batadv_tt_global_is_isolated(struct batadv_priv *bat_priv,
+ 	if (!tt)
+ 		return false;
+ 
+-	ret = tt->common.flags & BATADV_TT_CLIENT_ISOLA;
++	ret = atomic_read(&tt->common.flags) & BATADV_TT_CLIENT_ISOLA;
+ 
+ 	batadv_tt_global_entry_put(tt);
+ 
 diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 992de87632954..9bdc5a3e799e2 100644
+index 9bdc5a3e799e2..d6e15d467a8f7 100644
 --- a/net/batman-adv/types.h
 +++ b/net/batman-adv/types.h
-@@ -1827,10 +1827,10 @@ struct batadv_bla_claim {
- 	/** @hash_entry: hlist node for &batadv_priv_bla.claim_hash */
+@@ -1852,7 +1852,7 @@ struct batadv_tt_common_entry {
  	struct hlist_node hash_entry;
  
--	/** @refcount: number of contexts the object is used */
-+	/** @rcu: struct used for freeing in an RCU-safe manner */
- 	struct rcu_head rcu;
+ 	/** @flags: various state handling flags (see batadv_tt_client_flags) */
+-	u16 flags;
++	atomic_t flags;
  
--	/** @rcu: struct used for freeing in an RCU-safe manner */
-+	/** @refcount: number of contexts the object is used */
- 	struct kref refcount;
- };
- #endif
+ 	/** @added_at: timestamp used for purging stale tt common entries */
+ 	unsigned long added_at;
 -- 
 2.47.3
 
