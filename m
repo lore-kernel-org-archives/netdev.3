@@ -1,41 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357E317C211
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 00:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204021A0B0E;
+	Tue, 28 Jul 2026 00:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785200002; cv=none; b=dUMfzqqR4IEFrhsPR+GtkvcsMUmRh/y8mBOJYsdnEn4oMvNMV5HfrfeOWpn2/SuQ2K1I8AfEg0pG6Z/9LSOTqDJQSeA0NgJGs6g8qe8XBFbUp7C46/1J01YzVNxUaWj61Gd4GgWswoQoUkBdq3Jt09JixVosaclUNU07tgSC+TA=
+	t=1785200306; cv=none; b=BfWlCS7yepPywALT+pFmg+Gqzg4apt+BIoQXV07HeBHjK8jdHsU6SR5LxbDcLjN35ZBamftPduh6xL/S7mlgDX98vEedeQYjBVU2yUcQXLxj2PmGx6hEiy5/9YGfF34zKpwlLGc99BGmuhvi2H2UdNbe1cPUAYLYUkxaBC/gndo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785200002; c=relaxed/simple;
-	bh=Id/E25Gk232lnfenBZM3BGgzILrnZQ0CvF2I6c8w2Gg=;
+	s=arc-20240116; t=1785200306; c=relaxed/simple;
+	bh=QlvgR6btvYMGCFBIT2E/9iJyObDLIDMg3zfBCqqyZ2I=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aNTu9+etVUqey7msLLEx8TsdGalMIAuUUaYdi8d3xxrpKuXDEvD5561PAvDyaWcggp2Icgxr0lO9OYoqhmz6GUs28MegE2/sZsQhqMy4sa0mcPAJdyyeZ2sXUx1XAEWrqApvEOti8cOlqhg/6imwydrpksVQX8VKqZ7ibrKKbMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gMF0ozLg; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=hd+TjvxGH4xGgdghDO0JB+WiY7U3uWK1REBrcqgB2+KlAtEoY22RVM8YRxFRxHoSBxzij1LlJX0SSPlzMRh55sKcvPcCRURJSOxwSx0QfecH8QjAsnXBoglu0z2bRzJ7nLs+B+yWiV+T218j0nyrPQT0sbnjimsyQE6+cHMeckg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pouu+FlP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gMF0ozLg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BF01F000E9;
-	Tue, 28 Jul 2026 00:53:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pouu+FlP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401871F000E9;
+	Tue, 28 Jul 2026 00:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785200000;
-	bh=v7GXU+58Fudh3sWhmJjPf7rh359o2P/xpjRbIPs0NeQ=;
+	s=k20260515; t=1785200301;
+	bh=LvQEGgTDD9zI2eow9G1FANAvHL4JRiS9eNFRAsxZZU0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=gMF0ozLg7Q6ZdJC+XoAHSG4TYH25hJE1idUuvKnp24e1q6Gz1Cmk1UuogFE1tZbc6
-	 mCE7lmWYFiR7A8LuT15MGITXQQO/OgVP1+IN/a56dqc+eZqlrYEwEE34hsY3ViczRV
-	 0Sh9XwF7JgTVDM9AqX6ObDQ9UFkL3Kpc/9r9gR/6aZTcg2Qc+6jrM8Zpwp4uXN+3B6
-	 d+B3bJgiuR0B0+bjNSg7witMzvgeJyo4uW3e2mq+RYKa5mKZUO5K3v1kmreECkhzj0
-	 e1S9PFdvTUIRNjUMwQrjsgdyI1WJeDftB5YZtvHHVWklCfKH2OLNF/ciHdXVP8CF5z
-	 VF6YfkGCzB9dA==
-Date: Mon, 27 Jul 2026 17:53:19 -0700
+	b=Pouu+FlPLsHp4mTMb5WKPwLXGiOsG1wJBMe77E1OsIJxyts4heqdyPoPiK4/5YePy
+	 j3sGX9t2ue4GDIeSsVfUKGcHssUNjDvN9jGTEyaVuqUNUDbfLjaaLpj+kYdRSfEefq
+	 UbTuzLMVlIa3o2d3mTDKmXntsWABu9uh1ta+t2SoTvlX5YCJNtbwePNmkC0almHHbv
+	 5a8uVz4CwSEEc+3TKmWy2VsJ7esiJzl4f83SBkJhIIqk0olVfCFYP2ngIGrrHUgLAe
+	 z+w+9OSy+erfEeEKwuXlrXMTs75RugvDcHNXF7N4ugZvq5szZGfXVRqcxnY3rs4Cws
+	 HORl6npyl73kg==
+Date: Mon, 27 Jul 2026 17:58:20 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Chenguang Zhao <chenguang.zhao@linux.dev>
-Cc: rain.1986.08.12@gmail.com, zyjzyj2000@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- netdev@vger.kernel.org, Chenguang Zhao <zhaochenguang@kylinos.cn>
-Subject: Re: [PATCH net] forcedeth: fix UAF of txrx_stats in nv_remove
-Message-ID: <20260727175319.2cc087c4@kernel.org>
-In-Reply-To: <20260723092637.2135095-1-chenguang.zhao@linux.dev>
-References: <20260723092637.2135095-1-chenguang.zhao@linux.dev>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Gang Yan <yangang@kylinos.cn>
+Subject: Re: [PATCH net-next 0/5] mptcp: out-of-order queue pruning
+Message-ID: <20260727175820.593c039e@kernel.org>
+In-Reply-To: <20260724-net-next-mptcp-oooq-pruning-v1-0-5dd4dec63a54@kernel.org>
+References: <20260724-net-next-mptcp-oooq-pruning-v1-0-5dd4dec63a54@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,42 +47,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 23 Jul 2026 17:26:37 +0800 Chenguang Zhao wrote:
-> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+On Fri, 24 Jul 2026 16:02:12 +0200 Matthieu Baerts (NGI0) wrote:
+> Under memory pressure, a pruning of the MPTCP-level OoO queue might be
+> required as last resort, to avoid too long recoveries, or even stalls.
+> Geliang and Gang managed to reproduce this behaviour, and Paolo
+> improved the situation thanks to the following patches:
 > 
-> nv_remove() frees the per-CPU txrx_stats before unregister_netdev().
-> Until unregister completes, ndo_get_stats64, the NAPI/xmit data path,
-> and nv_close()/drain may still access txrx_stats, leading to a
-> use-after-free.
+> - Patches 1-2: improve the MPTCP-level retransmission schema to make
+>   recoveries from memory pressure/after MPTCP-level drop significantly
+>   faster.
 > 
-> Free the stats only after unregister_netdev().
+> - Patches 2-3: make the admission check way stricter for incoming
+>   packets exceeding the memory limits, with some exceptions for fallback
+>   sockets.
 > 
-> Fixes: f4b633b911fd ("forcedeth: use per cpu to collect xmit/recv statistics")
-> Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
-> ---
->  drivers/net/ethernet/nvidia/forcedeth.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/nvidia/forcedeth.c b/drivers/net/ethernet/nvidia/forcedeth.c
-> index 5b0435d7bc39..106885bd0f6b 100644
-> --- a/drivers/net/ethernet/nvidia/forcedeth.c
-> +++ b/drivers/net/ethernet/nvidia/forcedeth.c
-> @@ -6187,9 +6187,11 @@ static void nv_remove(struct pci_dev *pci_dev)
->  	struct net_device *dev = pci_get_drvdata(pci_dev);
->  	struct fe_priv *np = netdev_priv(dev);
->  
-> -	free_percpu(np->txrx_stats);
-> -
-> +	/* txrx_stats is used by ndo_get_stats64 and the data path until
-> +	 * unregister_netdevice() has completed.
-> +	 */
+> - Patch 5: implement OoO queue pruning for MPTCP.
 
-Applied, but without this stupid comment and preserving the original
-spacing.
-
->  	unregister_netdev(dev);
-> +	free_percpu(np->txrx_stats);
->  
->  	nv_restore_mac_addr(pci_dev);
->  
-
+Clashiko complains about a typo and has some suggestions which are
+marked as Low but potentially worth addressing (stats naming?)
+Please LMK if you completely disagree
+-- 
+pw-bot: cr
