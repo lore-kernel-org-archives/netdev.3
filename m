@@ -1,46 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096FD1C862F;
-	Tue, 28 Jul 2026 00:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E9C223DCE;
+	Tue, 28 Jul 2026 00:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785198040; cv=none; b=FFIpT+gwrXjnZqPtig+i+699pWuk2SWjnZY8y963qXqMjHvObGp7H7yv46N27lB7HUiFO9nWVcKGwuFk5jtOs9axOtwMU6hWosnp+Cq01yprdBVIKWCfrshfjjeG9hYywUbGNslZxD1dgIhV/Icu2iz0zF6i20qsrAR558U6xZM=
+	t=1785199064; cv=none; b=QjkNXovGUlBaL+ATGu87hBR2vBUce/MJRGrrrCQjEBw4KoOot55IbaTFXM6G6IFiSn8NC7Uk/RD5uy00EZuUIF0W7GOSMXYUq2+w4+wOkO71yBYUcjBcqC6lXyHB591nxtu1845UgkSIJuBWdAPKq1fTq+6EyBYyflLxmFVnuUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785198040; c=relaxed/simple;
-	bh=ktsU+n3fOViemRmTHevVxgr7kLGlzgY14tTACK8KfwA=;
+	s=arc-20240116; t=1785199064; c=relaxed/simple;
+	bh=uSzy5xFzv74Oktuq45/FOzv/uGKeDEnFiXt3gb4ZHzM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AkJFAZE7jeaJMwDfR0UgCOQRP6vGPq1Oqki/+MOn2or5NA+WGSKgNTI6nhpQIKTTAk5nUnuqsAtjdzCRMtH63OOo40W54KhRWzcn51DKOmVmE8QeuPwloBHObmMIvBi2Jw590NS93FLNyqbobD7PbgTBj8qBPoWgV429P+0tJ04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HRwXEFSU; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=AraEIVZaTdVdHtjKJWObFzVBdOGuqUqd0QEfxfQ8B//vpCckd2J/hXCqcTFf7k1Sa0Yaur6YkuNMeGVLie7CIsFw+L1OzOYgmmrzkHzig7jdIcPKnodVc7/XEVH8iSdcT/WMfzlC2yk6Lj8lcUE154z16taktqzt6CRffqu9iHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QDn9STuf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HRwXEFSU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F651F000E9;
-	Tue, 28 Jul 2026 00:20:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QDn9STuf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67AC1F000E9;
+	Tue, 28 Jul 2026 00:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785198038;
-	bh=FzpNV/JEx7TsCU6aVqAeO006KaafMwQwuIr2uFT9/2I=;
+	s=k20260515; t=1785199063;
+	bh=lKKb7VfZJbLtj2rAMK2jN4Y0F3kXYnRQ9+Wtxnk5Rzw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HRwXEFSUj2toQ0AM72Pmq/TUDXrWHcLZqC+6Kx2l8Tu5q9M15V4HfweQqE78Dm5aI
-	 twS2eiCQjLcTEfgh+kCHOpWkEo6ADFVWl40bUugMEw1h0DFhVTNuFcMMrVezUfitlQ
-	 KN7ln4E1CsAzagPpisQP9MRx8e84WBIiZGghidHVjfEhACNIjM5ST+UxmosGIGcalT
-	 l/fFm5o6dbKHPx+WD9a9R+MRxeYQg3N5jR16f/JsUa06IHkFW+uTlKStQkQ0XvN3te
-	 A+ZV50Kiwrpy7oMRqWgKe/hrsLuF+l3q8xPG4ip3sKcKBypPOodxq1pOnNnG7QfHh4
-	 OT9Z8zfgpB0FQ==
-Date: Mon, 27 Jul 2026 17:20:37 -0700
+	b=QDn9STufZ6eURf1azGajbOL1++q2i/aahiJUAA7P6t4Cg6WVNekxJbXWMRd/V6U8y
+	 QGbpbgDeRCebzu2xkAkECxEUT+ZH7ZOaznc2BeMpHROvMwOhWlFnelXCVOSIxjj72h
+	 cfja/w549S5dN5VmTq5HAtoMuvY61QGSthRus57NWqyQ9uErWgdtkDPp2rC5LJzIdl
+	 lXstzed6Xnr5cjTHwqp38cB98Rrx6Xb6X98oRynlq6plhVJrrFtegsD33TaItKWm3u
+	 DyhiN8z70OamifHdslpc4XotktuY9Srg+cBYJHpBpdUpACTEf8J7L/hYwTNKJMpa3A
+	 21nuzvSMkdWsw==
+Date: Mon, 27 Jul 2026 17:37:41 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Zinc Lim <limzhineng2@gmail.com>
-Cc: Alexander Duyck <alexanderduyck@fb.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Guenter
- Roeck <linux@roeck-us.net>, Simon Horman <horms@kernel.org>, Mohsin Bashir
- <mohsin.bashr@gmail.com>, kernel-team@meta.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, zinclim@meta.com
-Subject: Re: [PATCH net-next 6/6] eth: fbnic: firmware notifies hwmon on
- sensor threshold events
-Message-ID: <20260727172037.2ea238a9@kernel.org>
-In-Reply-To: <20260721221540.648272-7-limzhineng2@gmail.com>
-References: <20260721221540.648272-1-limzhineng2@gmail.com>
-	<20260721221540.648272-7-limzhineng2@gmail.com>
+To: Satish Kharat <satishkh@cisco.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Breno Leitao <leitao@debian.org>, Sesidhar Baddela <sebaddel@cisco.com>
+Subject: Re: [PATCH net-next v12 01/12] enic: cancel tx_hang_reset work on
+ device removal
+Message-ID: <20260727173741.67147e9f@kernel.org>
+In-Reply-To: <20260719-enic-sriov-v2-admin-channel-v2-v12-1-6ff2c617001d@cisco.com>
+References: <20260719-enic-sriov-v2-admin-channel-v2-v12-0-6ff2c617001d@cisco.com>
+	<20260719-enic-sriov-v2-admin-channel-v2-v12-1-6ff2c617001d@cisco.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,54 +48,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 21 Jul 2026 15:15:40 -0700 Zinc Lim wrote:
-> +void fbnic_hwmon_notify_event(struct fbnic_dev *fbd, int id, long val)
-> +{
-> +	enum hwmon_sensor_types type;
-> +	struct device *hwmon;
-> +	s32 attr = -1;
-> +
-> +	switch (id) {
-> +	case FBNIC_SENSOR_TEMP:
-> +		type = hwmon_temp;
-> +
-> +		if (val <= fbd->fw_cap.temp.min)
-> +			attr = hwmon_temp_min_alarm;
-> +		else if (val >= fbd->fw_cap.temp.crit)
-> +			attr = hwmon_temp_crit_alarm;
-> +		else if (val >= fbd->fw_cap.temp.max)
-> +			attr = hwmon_temp_max_alarm;
-> +
-> +		break;
-> +	case FBNIC_SENSOR_VOLTAGE:
-> +		type = hwmon_in;
-> +
-> +		if (val <= fbd->fw_cap.volt.min)
-> +			attr = hwmon_in_min_alarm;
-> +		else if (val >= fbd->fw_cap.volt.max)
-> +			attr = hwmon_in_max_alarm;
-> +
-> +		break;
-> +	default:
-> +		return;
-> +	}
-> +
-> +	/* Pair with WRITE_ONCE() in fbnic_hwmon_unregister(). Skip the
-> +	 * notification if hwmon failed to register or has already been torn
-> +	 * down.
-> +	 */
-> +	hwmon = READ_ONCE(fbd->hwmon);
-> +	if (attr >= 0 && hwmon)
-> +		hwmon_notify_event(hwmon, type, attr, 0);
->  }
+On Sun, 19 Jul 2026 01:41:45 -0700 Satish Kharat wrote:
+> enic_remove() cancels the reset and change_mtu_work items but does not
+> cancel tx_hang_reset.  A TX timeout that fires while the device is being
+> removed can schedule enic_tx_hang_reset() so that it runs after
+> free_netdev(), resulting in a use-after-free.
+> 
+> Cancel tx_hang_reset alongside the other work items before
+> unregister_netdev().
+> 
+> This is a pre-existing issue, not introduced by the SR-IOV V2 series;
+> it is included here as an independent fix.
+> 
+> Fixes: 937317c7c109 ("enic: do hang reset only in case of tx timeout")
+> Signed-off-by: Satish Kharat <satishkh@cisco.com>
 
-We need a 
+Since this is a fix it should go separately to the net tree.
+If there is a conflict the net-next submission will have to wait for
+the fix to propagate there.
 
-	if (!IS_REACHABLE(CONFIG_HWMON))
-		return;
+> diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+> index e7125b818087..b65796d96efc 100644
+> --- a/drivers/net/ethernet/cisco/enic/enic_main.c
+> +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+> @@ -3012,6 +3012,7 @@ static void enic_remove(struct pci_dev *pdev)
+>  		struct enic *enic = netdev_priv(netdev);
+>  
+>  		cancel_work_sync(&enic->reset);
+> +		cancel_work_sync(&enic->tx_hang_reset);
 
-in this function, so that compiler can eliminate the
-hwmon_notify_event() call _completely_ if HWMON is a module
-and the driver is built into the main kernel image.
+Is this enough? The work may get scheduled between the cancel and 
+the unregister, right? disable_work_sync() is probably the answer.
+
+>  		cancel_work_sync(&enic->change_mtu_work);
+>  		unregister_netdev(netdev);
+>  		enic_dev_deinit(enic);
 -- 
 pw-bot: cr
