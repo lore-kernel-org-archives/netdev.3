@@ -1,45 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA43478846;
-	Tue, 28 Jul 2026 22:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740E73E5ED1
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 22:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785276663; cv=none; b=OMBfTWUw4RO3kBwAvFus296sYF2NFvq0qNtSWoTpAW5bW8+F7x1udNqC+JxDutmCeE3xaIvzH3qWpf7h1GQ+vJqcaqrehloBRFHUL/mtOQEmAKvv9igCQVptQVN4Zg9W71WIBJchtXC1/SOms1yVWpmbk3T+WvbDpTmwR1Ha744=
+	t=1785276815; cv=none; b=c6a5sJIESTph4S3fwEM+K3x9JRrtsxHrVqrzFsLE2G5/v6FDsgSw4qd+a1wF4vA0Qb4SCPqRewudxBo4wFxE0uKs2ilPhsSlApI33tLTxQarrk3AGuL/TGVEQeLTXhL4PtjekyWWAswLa6oUIzfKtyTbGZXP6rSAWBHyvnjF7/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785276663; c=relaxed/simple;
-	bh=DSU11HJ0gEj2T7WYZIFYs9cZxzDTOZBiQdddxtCYqtQ=;
+	s=arc-20240116; t=1785276815; c=relaxed/simple;
+	bh=g4CHU5iAJvnza+psD0M59zfnV5uD3RKym/uwa2ESE1c=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EIfGl3jhYDuXdG7Z9Sg7Fqh7C6qsqzWLcjB6VxvyPP0jliZvMUAlxnFMdNyBhFvf7GywamQfumU3ZD7qJXsFYkqVD7XMiEhXOzivsXvcwiyG9lmjL0Ltbdtn+42mb8hHE42Nq5isuJhLUhRmqUQePn6UeWEjG4LQexa/zodoGTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N67ZWvtC; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=bgDLdQ5iKUUszKo1g+qgpDeuzlZKJGxH6F0nitQTTu2evEuTU83hfxD6sUp5NH00dHay6wKKotS2MaL4K4jVArua52sznzAO0Aq0YDoxRkgIsHELbkijdQFkLznhy2fiE87pNulxftzQ1m06fF2t8h2qhjbXHWvlyP2mStYDeSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2WVKZ94; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N67ZWvtC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42D51F000E9;
-	Tue, 28 Jul 2026 22:10:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2WVKZ94"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46861F000E9;
+	Tue, 28 Jul 2026 22:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785276659;
-	bh=nIzR7Ng57hdq+Zk9fctd1mnE9XJG3J564Q1if55yDP4=;
+	s=k20260515; t=1785276814;
+	bh=g4CHU5iAJvnza+psD0M59zfnV5uD3RKym/uwa2ESE1c=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=N67ZWvtC8BgzVctaomn+jSqVPrqHBHSvI6hrwyiGuOR1NJ5Vk6mthbkw6TkC/g90O
-	 4FsXuXK3IwudXgSywg4r+0f+T99qzDiK0MkR8QTRs8oQ9Ylx2R5XhRSeScui8wTikF
-	 qpbvvctwyf7TJbLpPSXq3Y7Gj3iNa6yioIh2IgFPJFVaFm6DL6RyWQveAkzQG/aKfZ
-	 lL0xmUABz9KeZ0tfNwPqfoXmCP+KhVnH7PnXe3qehUCsF0JrAku3uo7GG5ZpDo9p+k
-	 2EJM2hnp69qLY1QXmNxR+6rPeGzZSXxCa5RvsPCSAa6nLvQ3KKjKZidEBqR9f1sxMa
-	 pM/nDLDo9dYWw==
-Date: Tue, 28 Jul 2026 15:10:58 -0700
+	b=Q2WVKZ94HPHBGY1q1RnaWArkEzKTzulULZcukAVkOsmwxwmsyelfFkAs5Uzq6d5Mc
+	 FC05QizL0Wef+PbQ2UIfDyolDNKP4ElSuSw9z/S7l/jSGWk56XP0Sr10cGwd9wDIrS
+	 5axyHTbgCOoflSmzyucXQVnrr0Dte2ONV4xpr7r7U/RvyfNTl5fDOawoIMMRprnQNT
+	 IvwzEM9usJwd9d+OawM1KMsUJzYQ103qW5rPJndWY0fsHrY3W5/QTyXBuvk8/8G5Bq
+	 NlD/iSKPFa0OqcJI89BcjZJS6naPfEf4YH89ar8lLodZmAMnqxGRclj27l65X+VPX/
+	 VMSFl7ff+j42g==
+Date: Tue, 28 Jul 2026 15:13:33 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Abhijit Gangurde <abhijit.gangurde@amd.com>
-Cc: jgg@ziepe.ca, leon@kernel.org, brett.creeley@amd.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, allen.hubbe@amd.com, nikhil.agarwal@amd.com,
- linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [for-next v4 0/2] Add Reorder Completion Queue (RCQ) support
-Message-ID: <20260728151058.17f8fc94@kernel.org>
-In-Reply-To: <18c6130a-c8e0-8e58-ad1c-f1578e1c5f46@amd.com>
-References: <20260721121034.1616562-1-abhijit.gangurde@amd.com>
-	<20260727182825.7b9bdffe@kernel.org>
-	<18c6130a-c8e0-8e58-ad1c-f1578e1c5f46@amd.com>
+To: Sheena Mohan <sheenamo@google.com>
+Cc: Harshitha Ramamurthy <hramamurthy@google.com>, netdev@vger.kernel.org,
+ Willem de Bruijn <willemb@google.com>
+Subject: Re: [TEST] google runner needs nested cases
+Message-ID: <20260728151333.2d778f4f@kernel.org>
+In-Reply-To: <CADWJPTs6G7zy+9aLxz9QD9Fk1szZK0b-vEFUm2jxTMtxt+t1uQ@mail.gmail.com>
+References: <20260721063829.7d9e6c7f@kernel.org>
+	<CADWJPTsP=2=JFE9Oh5ym_wz4vROEFOCqa+dyCLRymyYLRB1BSg@mail.gmail.com>
+	<20260723103607.55debff2@kernel.org>
+	<CADWJPTs6G7zy+9aLxz9QD9Fk1szZK0b-vEFUm2jxTMtxt+t1uQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,12 +47,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 28 Jul 2026 16:48:25 +0530 Abhijit Gangurde wrote:
-> For the earlier PHC series [1] Leon picked up both the net/ionic and 
-> RDMA changes through the rdma tree. Would you be okay with the same 
-> approach for this series or would you still prefer a shared branch with 
-> a PR?
-> 
-> If you'd still prefer a separate PR, I can set that up.
+On Tue, 28 Jul 2026 10:07:15 -0700 Sheena Mohan wrote:
+> The recent updates have been merged, and the tests should now report
+> sub-case results.
+> Please let us know if any further improvements are needed.
 
-Send the PR for shared parts, please, that's the normal process.
+Looks good, thanks!
+
+I'm still waiting on the device node, but I assume we're stacking that
+separately.
