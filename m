@@ -1,114 +1,73 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F195341F35C
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 22:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785278351; cv=pass; b=s2DqH1LmmLWP6VcwCnq/eGh5/qbMRDi37BTdY4UNCk00Jwki6PA6Vxiwmb+HPNK68kakClCUzPF+almUPi9hZa+9CNQMGAmSDahhTsNiLaD5QAbXOJceFEBCcKnwaawW0YjTrjZYIJG7uACdOp5T9SRVIA1gDQVpO4ie3KzFqww=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785278351; c=relaxed/simple;
-	bh=EAyi6L9No5/fx0fdOcqHn+474sy3i+zfCZSL00W43ck=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GzEPe7JIk2tkqMCGf71nXJZA72SVf7vufHE5zyC81sIGbvj1Q5La4xQejZyAtgUhbNRY+Yz9/4c9X7YPxSW6cYCW1QNJC0nVNMRKJOHqtsB/7GgYg/90E7pOUtoffB+zxT8ffsVrcD9IP0H4GULM2ddlWr5cHoPZv82w7UnoMjI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YWoclopz; arc=pass smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE552D63E5
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 22:51:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785279074; cv=none; b=pOfF6E2S35s4kl2cJ0Z01pgM+JhQb6eYofbMH+2zsdO2OhmG6gDiIh+iXRR3zqDKNqE+biu/RtybTG0eXbk9mXnr89rY8GGaxW7TVA9NYkbHygvxY1YcCPArTzI6la+97sPZknxzJBZv+DbV1s5HU1p6NWwPQlp0YBdrsl8NahY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785279074; c=relaxed/simple;
+	bh=CZ0KRWqMI03pyEwTO5s36gWT9C8Ll9NZtTC3eQ17wbk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=P2aJZ89e4rC5/41OZVu8xD4DzXDFl1Kv4UlPS/PCl0K+xpW/5KPOgFAZDYfz5V98csGmCYrpj+tHDMmSLcLW/+UigAXY/OSQP+6JL7Z8G4iVHOgbhsKm/C1ql5ejdKloi1Zh03eVwILrOwm6IAOSO5p/vIcAN0g5+3zreBpz/ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ASikToQH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YWoclopz"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so2174605e9.0
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 15:39:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785278348; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QdxwaMWNYs7sSCPrJAJv5NwppYwUbQ5p0YxnTglVfW7cnSdJtFrpk0yWSowfPS10tr
-         j41eK3sQuRChcLnA8YW8OOxcF45WkINUOZHURGEYZtDjv2BdoDgcu3PdvrB8ADdOCLqO
-         CH9H4K5kbdYH6gxZbAQcgx90C5z1lwMlh5Zj0BfKm0NbNobyOAeZX5KENmsfUvoq5ix+
-         jgVjzBNYcROL33FbIIoKqR3Vor7FcaXG/g0Gh8oGY+APWFDJTjRjkmpX1+r9/mywJoPY
-         UjmowdIZkXqVrEx6TvX+2e+hTU8hndPfZjwclvmp/j3GHqa5rGrBv5f1EPV4AW5/aNPt
-         5ZzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EAyi6L9No5/fx0fdOcqHn+474sy3i+zfCZSL00W43ck=;
-        fh=EjUXosBcrb6cNKPGy3ucMgZoiBeDyBi9JRwUWK7N5Sw=;
-        b=AwzNw7jpFB9Dg6WHHwiRG9NZ/9/tllUYiVyCCjuhSb6stZJnnNBGsF6lGlAmgm8bXa
-         RV/+Mztbgka5vhzvVr4aWbq0oJhlgc+5DJmggC0/cA1+q2nXcuTCnI+lj+CYHRnwaL/A
-         gNc+aZNklF+cS21S9Et+dRuuXWd8c1d2tQCaf4b11vAkTjajz6w3DWhDs3cuWI2h9CQ2
-         h1/bK8FUvTqn5ak3h8hSiJW2oEKAQh0QH7IFwtxob9UktoCE0t0fBUO2ibYeD4mcMjpf
-         Ysn+jpbV3VIgZuS8lbGByk9gGIrDDHMHhhxCl85Kq+F3p/n2fM+AL973Lo2+BVWlDowD
-         r9DQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785278348; x=1785883148; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EAyi6L9No5/fx0fdOcqHn+474sy3i+zfCZSL00W43ck=;
-        b=YWoclopzcAsui40AKEhHWylyr8b48nO3U5NCZ88fRc5D/4rKqBUppuDIx/ML2bfyAu
-         auE7QGhTCVOC6kWqHlN3b4xGBG992yh8W1rXFRAMHcRqYFOvsy7LlWQkEak6Djmk0Hbh
-         32HM3Dz08fbBPKdoAYmOWlWwMDoGJaZXlQ1Q3AtcGXzJ8F0fWV5qizKWwvna4Up+fdTz
-         kq7RH9lmFFvWCwZavd6IqghjcU9OP9bBpmiTXl1BzXhRIAvg/s+nGkisRCeuljcEODUs
-         EpH0JXMFonib4x3R+x7QuDaZsjXN+XtAVySm+dusw3/IAqjhrIqgfujiE7tzVpi+C4Bb
-         yeVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785278348; x=1785883148;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EAyi6L9No5/fx0fdOcqHn+474sy3i+zfCZSL00W43ck=;
-        b=Ay1jTxZcl1jie84ZdyQpnvEPk/YA+p2G1J/xDbM9Z81L7cLCUhnL+uMQ4efYmLc1yy
-         cu63Pp8w/ainIyLAUb3wUrOk9KXuydhvUADzpmdPXo0rhKmNkNXazM+GJ/l/NcHUahWV
-         Z7xxMnNKV9g4nTFaggk/wHvkeALwQ/X79B/UcqM6kyF8ceUxmaAbYBVbZSEXkUcgzQBu
-         rAPqexkeD4AxU7pjVhXmBj44YYd9mlNKa3n98PPZPL4WWUxeX79JyqP+aB8atwEXUcD1
-         9AsITEvC9Y8AmcdQ/GUUE37kMY7kvDzFT8otYBtdgY5HHMbksBR5EcfeNanVp754AC8e
-         /gEQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpCfWfBU1tu3vxo9nJ5qTeVM3KFszFz4hjgyLE3FhjJYLVa1fm0L9J/Xc1wzH5cMw3TQhSn7Mc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWu1fKu3Iavd6r1yb+YSrGYVqIvvGb7C+uJDoDnfxvSb3rgv4B
-	BblkIP/jxtVAH4cuSwylWux7vZWuDKPZ1+cTJrUjNGPYpZxfK1mB7bUxh6+tlmTWqX+lrp+fnZT
-	QfdLeGqvMKlEAhpu4+jNcjnm2QL/7fB5nBesdExr3
-X-Gm-Gg: AR+sD11etZzWcZh6OmTPP8LOYMf9YZGmcPHbhiDANpmWbPZFA5WDxlgyGB1zYmEG3DE
-	5+Vz3zDeI5BmYygZBe/TZEVSYWNgPYqFPVc4CN2BWzqhFYTZQSKDj31NWyXTShsngW9dbPC7o5c
-	9XG73mQylmm9QvX2w8g0RyTFRSWzYkRVIH0n7KrzwuBzWC/9o/nvllTTDjLfWYnno4G+D3XsBFq
-	pUGZDrH2nXBgkY/jZ0xsfUUbfOx7GbenyQxecSSwG0LKMML7UoEsN2rPGeCX+pcb4XSBBRiPb2p
-	fsY98D22CvMfAR/bHaCxDocNGsLPPLnGdUegSS18c2PxoE1nHSw2KuamiDlVuZIrU5fvX/zYnTc
-	=
-X-Received: by 2002:a05:600c:1d08:b0:493:e451:a9e1 with SMTP id
- 5b1f17b1804b1-496c642d97bmr45881735e9.2.1785278347546; Tue, 28 Jul 2026
- 15:39:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ASikToQH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7808C1F000E9;
+	Tue, 28 Jul 2026 22:51:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785279072;
+	bh=CZ0KRWqMI03pyEwTO5s36gWT9C8Ll9NZtTC3eQ17wbk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ASikToQHro7rHTB4zeIWRMHmeJ8DLQS0kMVIMkvL15Q8+OLSDc0GmNOg96nPKI2vq
+	 d7Pp/q5nv9p2heikrvHRipT2S0LnfDgaKkAbrk57QyXl/QsF/qelOnyQo6wwkmliJi
+	 z8nwvezgaxJs2U+WgjkdXPeLxTjdh/HdWsX+zu5oXu8nZubqMFlXa5fhLZcfy4N3b0
+	 Fe4xq9SaDqgyQhkYfOFrb+Qo21YVZGWWGU2cIBSa9/+jnSGNgf20aOVTxMpMzmHi+/
+	 yAyEyO6PbEqrX9CMvqTaKWT9s6k/GmLlwPzIRjc8HArLegcL3IIzSx/bOkmYBaDByl
+	 JoczH4hgmILAw==
+Date: Tue, 28 Jul 2026 15:51:11 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@toke.dk>
+Cc: Ren Wei <enjou1224z@gmail.com>, cake@lists.bufferbloat.net,
+ netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, vega@nebusec.ai, zhilinz@nebusec.ai
+Subject: Re: [PATCH net 1/1] net/sched: sch_cake: validate 6in4 inner
+ headers
+Message-ID: <20260728155111.3463ac49@kernel.org>
+In-Reply-To: <875x1zwfzz.fsf@toke.dk>
+References: <cover.1784855599.git.zhilinz@nebusec.ai>
+	<502a543e7f04d14a15a0f6cecab30dbdf77033d1.1784855599.git.zhilinz@nebusec.ai>
+	<875x1zwfzz.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260721063829.7d9e6c7f@kernel.org> <CADWJPTsP=2=JFE9Oh5ym_wz4vROEFOCqa+dyCLRymyYLRB1BSg@mail.gmail.com>
- <20260723103607.55debff2@kernel.org> <CADWJPTs6G7zy+9aLxz9QD9Fk1szZK0b-vEFUm2jxTMtxt+t1uQ@mail.gmail.com>
- <20260728151333.2d778f4f@kernel.org>
-In-Reply-To: <20260728151333.2d778f4f@kernel.org>
-From: Sheena Mohan <sheenamo@google.com>
-Date: Tue, 28 Jul 2026 15:38:56 -0700
-X-Gm-Features: AUfX_mypnR9XDPD5VfFl6ymyQ_3c5rLa7uWI_FIQZfdNYSp0opolYbPHEQqxq38
-Message-ID: <CADWJPTuet6HTd7V104+MmgaS0EO=ZcLu=FiZs_c_CtX231w1cQ@mail.gmail.com>
-Subject: Re: [TEST] google runner needs nested cases
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Harshitha Ramamurthy <hramamurthy@google.com>, netdev@vger.kernel.org, 
-	Willem de Bruijn <willemb@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 28, 2026 at 3:13=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Tue, 28 Jul 2026 10:07:15 -0700 Sheena Mohan wrote:
-> > The recent updates have been merged, and the tests should now report
-> > sub-case results.
-> > Please let us know if any further improvements are needed.
->
-> Looks good, thanks!
->
-> I'm still waiting on the device node, but I assume we're stacking that
-> separately.
-Yes, we are tracking that separately. I will share an update on
-devlink support once the patches are submitted for upstream review.
+On Tue, 28 Jul 2026 12:44:16 +0200 Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+> > A malformed packet can therefore use an inner header with a non-IPv6
+> > version while still setting the byte used as nexthdr to TCP. When two
+> > packets from the same queued flow reach cake_ack_filter(), the version
+> > dispatch can fall through to WARN_ON(1), which becomes a denial of
+> > service on kernels with panic_on_warn enabled. =20
+>=20
+> Hmm, I seem to recall a policy that says we don't care about
+> panic_on_warn-induced crashes? What say the maintainers?
+
+Maybe in cases were it's triggered by root doing something stupid.
+But packet triggered WARN will definitely cause eyebrows to shift
+upwards.
+
+> That being said, I am not sure an unconditional WARN_ON really serves
+> any purpose here? As you've shown, this will most likely just be caused
+> by malformed packets.
+>=20
+> So rather than add all these new checks, how about we just get rid of
+> the WARN_ON?
+
+=F0=9F=91=8D=EF=B8=8F
