@@ -1,210 +1,355 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED0D329E44
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 21:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785273498; cv=pass; b=IshIFyPB1ERb5paCg6oPvxFWeo0B7Dfk+1Ojpnbc4r6PCXVQtYE/xSvAGrzKXKC7CtkE5rZER/+kKrdxXyss7soJ7CNE7zR9RXJaa4QA3qJpe/mHieb5h1zZs3PYxM+EVrDaKdqQqzwvzBCq9bD2oOdcuUdkqi73o8kJ53944oI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785273498; c=relaxed/simple;
-	bh=xJrssxJkw7QPt7xiDw39o+/VbJYqf65Ck8phfNmCI2M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iOZKlaEcXFt2DAcHsjXIGmgH+GEIZvw87ZHKr89e3Z6NlmdRDOCjGg+en84Fwgs0BK8fFPbm45icWpNSt8/4SWKzHWLCnLknsgTRAbSV1Kduc3vtn23yRsSw1Nmz/6ImEU5mjFGV2iQmOQjQp/coKKDwLMLLou7e0BBuf8s+6Ao=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=ISoqdTCH; arc=pass smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3B641A572;
+	Tue, 28 Jul 2026 21:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.12.53.23
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785273675; cv=none; b=bfUjY/9DLQ4t4gL5Ic0qHaOxCTYrpprqi/LRgMsdqZWD7NG/aNN+mxEXW5I/lAQ/EO0E+FppExoSCuIi74ieeHULMHy1qIPcm1BHr3HWM1yNRwwYeZKxwZqJqhyQAOvb8QOVOTa7DsaxIKbKEfWz4yRffRMLejC/MNKWyIUAsPQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785273675; c=relaxed/simple;
+	bh=9/wxeppqmmFI/ymEcuC5n7RNZxHuB4r5mUvWB58BLOE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mG4m9yYNGNMO0q1TVQZIFJ1KaWGdI33rGVE7dfc9nP7d5EWeWiPnReh+7rswlZnir6yTKPC+wbZaH2Zgf3h6mLEdPpLSCe+0INACkjKg6CO7e20pNoymNjhC6IH0uoVQqljP0bxkebiyhlAxNvSCQER0V1oTWU1o2f2E6yYJwoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=VJYc2Hae; arc=none smtp.client-ip=52.12.53.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="ISoqdTCH"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso3332665ad.3
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 14:18:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785273496; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bmWER+kYJwALO4A3ITE93eApsFNPlpm8g4n4EWC7YpwjnRnBXn3auliv829NxqCsM7
-         7VzrB8a13xPFIInfDeZIWOkB8iEX5O8s1erPRDmW6BUWxoIP0aHS2Qaxiir05wBrJTle
-         IBxvfJWFQm+UswVnOKWrnl4BLVobnGFezxJp71p56y431zPIVohEGNertZ5k+tSyBSCn
-         /H6/KQUBK+f9j4maIml5HX/fYwWWpXwbxP2nh9SUBPCvkwl7dgx/YC+FIrwuXnS6Bsga
-         5Mzz7iqYJboJYZyqpj/sY6PzKMXuzIcZUnZr8mQks/YCucWKxIdflUbQLeU7BhZjXDTK
-         LI2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7kLhEXM7LzS9viQAgL4Z/X3Om72VS3L3ol28O3eIfUM=;
-        fh=4qZ280xUwfL9bu9hVhF19yqGPnvPvCY9nwkXHc6uEPk=;
-        b=qaIbK2yjbqimghajm2cnC47q3cmYEnlP31DAvoh7FH2rfePxmnOgXQIkhkUbSXPq/v
-         jE0FOX9owenIgEeLUibEL0mVqoKMHB/qxmBtyZdNfeQnHNSKwCkxx/7OAfj16V0diMd0
-         bVGbLJxfSE4jqnhmEDAQEMWInomqCa1sWL2GCRsVNnixZSkgW5UXdTeuVTqrzpbJm6Fj
-         QlQMQtPNV+Myjmv1ltq1dz4+tllftOyOJIQouf8tvcKsw4B5OffHGHTr6RJeR93lTxai
-         ClL3TSIxLnhXoJvngEtYOmVD1+NIHqJG40GucVCdq9MRu/+RALITg8sYOidf8Py938gT
-         nbXA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="VJYc2Hae"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1785273496; x=1785878296; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7kLhEXM7LzS9viQAgL4Z/X3Om72VS3L3ol28O3eIfUM=;
-        b=ISoqdTCHrer5lHUsCWZkJGWw2d/7PEyWMMsxIYsqcMWhgtgXOpnsIBiK+t0M2G8UBG
-         z4fGSGzld0bXD8Xy5yYWQ16EBT+K2nGbewyFTLvbhTrlIQa6/yyAo/dQ7b+sWqKHIEXS
-         lLyzADAfIbBJ+QMIxNAgDJywhTxw2l8l+w7FZTlQRiGl9qb5r4UhLW1FCh8n3JkEyOwp
-         SDlgG/gDrKk5zBb13DWlfa+90hKAJfrOQHCeVbkeIKnvrESfwtdJWLrTjsWxwtw3toIZ
-         E37/OzhVlVW6zku7C3hvibfBU95W15tsMoN4Z5oVdNm3grTMLHBA0U4RMF8SPd38heU8
-         8TEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785273496; x=1785878296;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7kLhEXM7LzS9viQAgL4Z/X3Om72VS3L3ol28O3eIfUM=;
-        b=NBWco8X4IOT/YNMpMHl+6SruRpHzbJwjdRFc5GyTOqq+TfxoKQdf/lGdhWCm2e6Xe3
-         MBkI/3Mprb40sITFfuHVJmZb3rw8/37FQcTL9aN6OhTYA3OWVDjvLZY3bEvOSLam48ky
-         SR8qO2PWoGGlgFgOWTnVKej0jZpAUFq9FEwApMZzLF76WO+R0uRxGBo8uX3vYWIWgkF7
-         XbSctBMzwYPAeNmLUJ/FKh9XNjRvVcszDv1JuTN/O2mcIBuR9KyQkpSB7oqXc1ZOepcZ
-         UIOcmxOS7Jr7wnpTgfU36DtKDs8i7TJTp4tjG2rkhybI8MoJs6dSme/PgsiJdNk3xvyM
-         9dBQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqdFH3Mm44/rWFBIZJShGkINEhCoqA43gkijIYPFJnAvCIccW+whkmrfimSeK/ahO7W4DVCnag=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+Ps5wG5tUmlOepOrK3xAyOUK9qcsKnlguNnwh3rEP5KGI2veT
-	Sq+jFc82gIIehL3BQbMu8KZFs2TPZTKFHTE8i7ZxWF85P4gnfIXDFMPAM0CLZfb8vpgG/RFwHHZ
-	UMDB+lm/If+qUphLoeqQFvh+6vfMC7cCYVPui1OIUGGdwN8zo/QiTkhdP
-X-Gm-Gg: AR+sD11d2OIKsYu+8ZtrJ3ytJcWbG8ump0hPmh8EhLWPcEfYkpcoaC9X93nzDnComLe
-	unqrX/1vCnvDWulJZnMaEEkdWm6HRbaSayMeSih0A2LSkUzeQGoKENLDdRfBM2japiLDeQriNxQ
-	/SZd9G3VegiMx7hlCp5S+7cAHVwkHhn5y05qx3r016vG7imYQdWnDdGU3RIyPXhs6LVHmTLd79Z
-	VsSfJ/5Dg/OmEjrwJwLKD/xaY2d/Eoq+vEiVxFONoVjb2kDhdVho3HTIflt0Z7VIyuqdwzoR1MP
-	xPo4BbawJoH1T5o2ALT8MksJc7fcMkHFCO8dzghkVWZmUAS0QuOlwO5ZDNEHMZEeMqCMNFtrD1C
-	6
-X-Received: by 2002:a17:903:2f47:b0:2ca:ed57:8586 with SMTP id
- d9443c01a7336-2d015cfb53fmr47675205ad.23.1785273495964; Tue, 28 Jul 2026
- 14:18:15 -0700 (PDT)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1785273673; x=1816809673;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Rph2h3dE8sb+UJdXEnVycWrs9s4Lm7LfpmQXzCBdBQc=;
+  b=VJYc2Haem/KKzB6KX7/RAS768dT5R/GNBAY3sOM/gngxm53Vka8yAAAz
+   flLtnIg2SqSDcKKHwzePIwUrCuj6AlfpHjdfOrmmsPnsIgNbPH6Pw/sYZ
+   xjmp400J3hJadwrHgSAV8bbeRb1FqkZ6g4mIPIwOKFlpuW4c4xKvJenE4
+   T1BHc+mC1Ja4nBNoRJeb87w7NesdRsEfNenQsDkwGS6RSzNiirGZWzeKH
+   XXDzDvMGb3Tb1fdXyNf8o8sZDOGqi3M6B25nW9G08+j3Z/v71U804Z0st
+   1U092pN4CGihCOJSkIOqyx63X9ohLTjbaz6bjT9+5XERB4uzrORvCppZa
+   w==;
+X-CSE-ConnectionGUID: idheG03mRY+LhvN+EIAPfg==
+X-CSE-MsgGUID: 14Rk5fhGQ6mwrdt3wJZ5jQ==
+X-IronPort-AV: E=Sophos;i="6.25,191,1779148800"; 
+   d="scan'208";a="24401549"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 21:21:13 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:6950]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.32.26:2525] with esmtp (Farcaster)
+ id a466488d-2184-44ba-833f-c4bd70da0407; Tue, 28 Jul 2026 21:21:13 +0000 (UTC)
+X-Farcaster-Flow-ID: a466488d-2184-44ba-833f-c4bd70da0407
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
+ Tue, 28 Jul 2026 21:21:12 +0000
+Received: from dev-dsk-wanjay-2c-d25651b4.us-west-2.amazon.com (172.19.198.4)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
+ Tue, 28 Jul 2026 21:21:12 +0000
+From: Jay Wang <wanjay@amazon.com>
+To: <stable@vger.kernel.org>
+CC: <gregkh@linuxfoundation.org>, <sashal@kernel.org>,
+	<jacob.e.keller@intel.com>, <anthony.l.nguyen@intel.com>,
+	<intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>, Kunwu Chan
+	<chentao@kylinos.cn>, Wang Haoran <haoranwangsec@gmail.com>, "Amir Mohammad
+ Jahangirzad" <a.jahangirzad@gmail.com>, Dawid Osuchowski
+	<dawid.osuchowski@linux.intel.com>, Aleksandr Loktionov
+	<aleksandr.loktionov@intel.com>, Simon Horman <horms@kernel.org>, Kunwu Chan
+	<kunwu.chan@linux.dev>, Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.1.y] i40e: remove read access to debugfs files
+Date: Tue, 28 Jul 2026 21:21:11 +0000
+Message-ID: <20260728212111.30972-1-wanjay@amazon.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260720204430.1886091-1-xmei5@asu.edu> <amJN67Vtl0atkj7H@chamomile>
-In-Reply-To: <amJN67Vtl0atkj7H@chamomile>
-From: Xiang Mei <xmei5@asu.edu>
-Date: Tue, 28 Jul 2026 14:18:05 -0700
-X-Gm-Features: AUfX_mzhtSPiNGlqR0fbcyX7IYMNBYn4RAbiTl1aN4ldNhEeSyBDMIEwPCkj2GI
-Message-ID: <CAPpSM+QoNMARuy+Lr_=oexFf8+V2Dfe51V51i6+QBUtL6eO7Hw@mail.gmail.com>
-Subject: Re: [PATCH net] seg6: fix NULL deref in input_action_end_dx{4,6}_finish()
- after nf hook
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Andrea Mayer <andrea.mayer@uniroma2.it>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ryoga Saito <contact@proelbtn.com>, AutonomousCodeSecurity@microsoft.com, 
-	tgopinath@linux.microsoft.com, kys@microsoft.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D046UWB002.ant.amazon.com (10.13.139.181) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Thu, Jul 23, 2026 at 10:22=E2=80=AFAM Pablo Neira Ayuso <pablo@netfilter=
-.org> wrote:
->
-> On Mon, Jul 20, 2026 at 08:44:29PM +0000, Xiang Mei (Microsoft) wrote:
-> > When nf_hooks_lwtunnel is enabled, the End.DX4/End.DX6 actions dispatch
-> > the decapsulated inner packet through the NF_INET_PRE_ROUTING hook chai=
-n
-> > with input_action_end_dx{4,6}_finish() as the okfn. Both functions read
-> > the lwtunnel state via orig_dst =3D skb_dst(skb) and dereference
-> > orig_dst->lwtstate.
-> >
-> > A hook in that chain can legitimately drop the dst: nf_nat_ipv{4,6}_in(=
-)
-> > calls skb_dst_drop(skb) when a DNAT rule rewrites the destination
-> > address, leaving skb_dst(skb) NULL. The okfn then dereferences a NULL
-> > orig_dst, causing a general protection fault and a panic (the fault
-> > happens in softirq NAPI receive context).
-> >
-> > Free the skb and bail out when the dst was dropped, instead of
-> > proceeding with a lost lwtunnel state.
-> >
-> >   Oops: general protection fault, probably for non-canonical address...
-> >   KASAN: null-ptr-deref in range [0x0000000000000080-0x0000000000000087=
-]
-> >   RIP: 0010:input_action_end_dx6_finish (net/ipv6/seg6_local.c:912)
-> >   Call Trace:
-> >    input_action_end_dx6 (net/ipv6/seg6_local.c:946)
-> >    seg6_local_input_core (net/ipv6/seg6_local.c:1621)
-> >    seg6_local_input (net/ipv6/seg6_local.c:1643)
-> >    lwtunnel_input (net/core/lwtunnel.c:465)
-> >    ipv6_rcv (net/ipv6/ip6_input.c:351)
-> >    __netif_receive_skb_core.constprop.0 (net/core/dev.c:6165)
-> >   Kernel panic - not syncing: Fatal exception in interrupt
-> >
-> > Fixes: 7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane=
-")
-> > Reported-by: AutonomousCodeSecurity@microsoft.com
-> > Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-> > ---
-> >  net/ipv6/seg6_local.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-> > index 2b41e4c0dddd..45e66ba306ca 100644
-> > --- a/net/ipv6/seg6_local.c
-> > +++ b/net/ipv6/seg6_local.c
-> > @@ -909,6 +909,11 @@ static int input_action_end_dx6_finish(struct net =
-*net, struct sock *sk,
-> >       struct in6_addr *nhaddr =3D NULL;
-> >       struct seg6_local_lwt *slwt;
-> >
-> > +     if (!orig_dst) {
->
-> This should be:
->
->         if (!skb_valid_dst(orig_dst)) {
->
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-That's correct, thanks. v2 gonna use it. Two small notes.
+[ Upstream commit 9fcdb1c3c4ba134434694c001dbff343f1ffa319 ]
 
-skb_valid_dst() takes the skb, not the dst.
+The 'command' and 'netdev_ops' debugfs files are a legacy debugging
+interface supported by the i40e driver since its early days by commit
+02e9c290814c ("i40e: debugfs interface").
 
-The lwtstate NULL test is still needed on top. A hook can leave a valid
-route that has no lwtunnel state, and seg6_local_lwtunnel() would then
-read lwt->data off NULL.
+Both of these debugfs files provide a read handler which is mostly useless,
+and which is implemented with questionable logic. They both use a static
+256 byte buffer which is initialized to the empty string. In the case of
+the 'command' file this buffer is literally never used and simply wastes
+space. In the case of the 'netdev_ops' file, the last command written is
+saved here.
 
-So v2 has:
+On read, the files contents are presented as the name of the device
+followed by a colon and then the contents of their respective static
+buffer. For 'command' this will always be "<device>: ". For 'netdev_ops',
+this will be "<device>: <last command written>". But note the buffer is
+shared between all devices operated by this module. At best, it is mostly
+meaningless information, and at worse it could be accessed simultaneously
+as there doesn't appear to be any locking mechanism.
 
-  static struct seg6_local_lwt *seg6_local_lwt_from_skb(struct sk_buff *skb=
-)
-  {
-        struct dst_entry *dst =3D skb_dst(skb);
+We have also recently received multiple reports for both read functions
+about their use of snprintf and potential overflow that could result in
+reading arbitrary kernel memory. For the 'command' file, this is
+definitely impossible, since the static buffer is always zero and never
+written to. For the 'netdev_ops' file, it does appear to be possible, if
+the user carefully crafts the command input, it will be copied into the
+buffer, which could be large enough to cause snprintf to truncate, which
+then causes the copy_to_user to read beyond the length of the buffer
+allocated by kzalloc.
 
-        if (!skb_valid_dst(skb) || !dst->lwtstate ||
-            dst->lwtstate->type !=3D LWTUNNEL_ENCAP_SEG6_LOCAL)
-                return NULL;
+A minimal fix would be to replace snprintf() with scnprintf() which would
+cap the return to the number of bytes written, preventing an overflow. A
+more involved fix would be to drop the mostly useless static buffers,
+saving 512 bytes and modifying the read functions to stop needing those as
+input.
 
-        return seg6_local_lwtunnel(dst->lwtstate);
-  }
+Instead, lets just completely drop the read access to these files. These
+are debug interfaces exposed as part of debugfs, and I don't believe that
+dropping read access will break any script, as the provided output is
+pretty useless. You can find the netdev name through other more standard
+interfaces, and the 'netdev_ops' interface can easily result in garbage if
+you issue simultaneous writes to multiple devices at once.
 
-Xiang
+In order to properly remove the i40e_dbg_netdev_ops_buf, we need to
+refactor its write function to avoid using the static buffer. Instead, use
+the same logic as the i40e_dbg_command_write, with an allocated buffer.
+Update the code to use this instead of the static buffer, and ensure we
+free the buffer on exit. This fixes simultaneous writes to 'netdev_ops' on
+multiple devices, and allows us to remove the now unused static buffer
+along with removing the read access.
 
-> > +             kfree_skb(skb);
-> > +             return -EINVAL;
-> > +     }
-> > +
-> >       slwt =3D seg6_local_lwtunnel(orig_dst->lwtstate);
-> >
-> >       /* The inner packet is not associated to any local interface,
-> > @@ -962,6 +967,11 @@ static int input_action_end_dx4_finish(struct net =
-*net, struct sock *sk,
-> >       struct iphdr *iph;
-> >       __be32 nhaddr;
-> >
-> > +     if (!orig_dst) {
->
-> Same here.
->
-> > +             kfree_skb(skb);
-> > +             return -EINVAL;
-> > +     }
-> > +
-> >       slwt =3D seg6_local_lwtunnel(orig_dst->lwtstate);
-> >
-> >       iph =3D ip_hdr(skb);
-> > --
-> > 2.43.0
-> >
+Fixes: 02e9c290814c ("i40e: debugfs interface")
+Reported-by: Kunwu Chan <chentao@kylinos.cn>
+Closes: https://lore.kernel.org/intel-wired-lan/20231208031950.47410-1-chentao@kylinos.cn/
+Reported-by: Wang Haoran <haoranwangsec@gmail.com>
+Closes: https://lore.kernel.org/all/CANZ3JQRRiOdtfQJoP9QM=6LS1Jto8PGBGw6y7-TL=BcnzHQn1Q@mail.gmail.com/
+Reported-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+Closes: https://lore.kernel.org/all/20250722115017.206969-1-a.jahangirzad@gmail.com/
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Kunwu Chan <kunwu.chan@linux.dev>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+[Adapted to 6.1: context conflict due to 6.1 using pf->vsi[pf->lan_vsi]
+ vs i40e_pf_get_main_vsi(pf) in the removed read functions; resolution
+ is simply to delete the 6.1 version of those functions.]
+Signed-off-by: Jay Wang <wanjay@amazon.com>
+---
+ .../net/ethernet/intel/i40e/i40e_debugfs.c    | 121 +++---------------
+ 1 file changed, 19 insertions(+), 102 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
+index b438cf846c41b..5b59db6a5439c 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
+@@ -57,47 +57,6 @@ static struct i40e_veb *i40e_dbg_find_veb(struct i40e_pf *pf, int seid)
+  * setup, adding or removing filters, or other things.  Many of
+  * these will be useful for some forms of unit testing.
+  **************************************************************/
+-static char i40e_dbg_command_buf[256] = "";
+-
+-/**
+- * i40e_dbg_command_read - read for command datum
+- * @filp: the opened file
+- * @buffer: where to write the data for the user to read
+- * @count: the size of the user's buffer
+- * @ppos: file position offset
+- **/
+-static ssize_t i40e_dbg_command_read(struct file *filp, char __user *buffer,
+-				     size_t count, loff_t *ppos)
+-{
+-	struct i40e_pf *pf = filp->private_data;
+-	int bytes_not_copied;
+-	int buf_size = 256;
+-	char *buf;
+-	int len;
+-
+-	/* don't allow partial reads */
+-	if (*ppos != 0)
+-		return 0;
+-	if (count < buf_size)
+-		return -ENOSPC;
+-
+-	buf = kzalloc(buf_size, GFP_KERNEL);
+-	if (!buf)
+-		return -ENOSPC;
+-
+-	len = snprintf(buf, buf_size, "%s: %s\n",
+-		       pf->vsi[pf->lan_vsi]->netdev->name,
+-		       i40e_dbg_command_buf);
+-
+-	bytes_not_copied = copy_to_user(buffer, buf, len);
+-	kfree(buf);
+-
+-	if (bytes_not_copied)
+-		return -EFAULT;
+-
+-	*ppos = len;
+-	return len;
+-}
+ 
+ static char *i40e_filter_state_string[] = {
+ 	"INVALID",
+@@ -1636,7 +1595,6 @@ static ssize_t i40e_dbg_command_write(struct file *filp,
+ static const struct file_operations i40e_dbg_command_fops = {
+ 	.owner = THIS_MODULE,
+ 	.open =  simple_open,
+-	.read =  i40e_dbg_command_read,
+ 	.write = i40e_dbg_command_write,
+ };
+ 
+@@ -1645,47 +1603,6 @@ static const struct file_operations i40e_dbg_command_fops = {
+  * The netdev_ops entry in debugfs is for giving the driver commands
+  * to be executed from the netdev operations.
+  **************************************************************/
+-static char i40e_dbg_netdev_ops_buf[256] = "";
+-
+-/**
+- * i40e_dbg_netdev_ops_read - read for netdev_ops datum
+- * @filp: the opened file
+- * @buffer: where to write the data for the user to read
+- * @count: the size of the user's buffer
+- * @ppos: file position offset
+- **/
+-static ssize_t i40e_dbg_netdev_ops_read(struct file *filp, char __user *buffer,
+-					size_t count, loff_t *ppos)
+-{
+-	struct i40e_pf *pf = filp->private_data;
+-	int bytes_not_copied;
+-	int buf_size = 256;
+-	char *buf;
+-	int len;
+-
+-	/* don't allow partal reads */
+-	if (*ppos != 0)
+-		return 0;
+-	if (count < buf_size)
+-		return -ENOSPC;
+-
+-	buf = kzalloc(buf_size, GFP_KERNEL);
+-	if (!buf)
+-		return -ENOSPC;
+-
+-	len = snprintf(buf, buf_size, "%s: %s\n",
+-		       pf->vsi[pf->lan_vsi]->netdev->name,
+-		       i40e_dbg_netdev_ops_buf);
+-
+-	bytes_not_copied = copy_to_user(buffer, buf, len);
+-	kfree(buf);
+-
+-	if (bytes_not_copied)
+-		return -EFAULT;
+-
+-	*ppos = len;
+-	return len;
+-}
+ 
+ /**
+  * i40e_dbg_netdev_ops_write - write into netdev_ops datum
+@@ -1699,35 +1616,36 @@ static ssize_t i40e_dbg_netdev_ops_write(struct file *filp,
+ 					 size_t count, loff_t *ppos)
+ {
+ 	struct i40e_pf *pf = filp->private_data;
++	char *cmd_buf, *buf_tmp;
+ 	int bytes_not_copied;
+ 	struct i40e_vsi *vsi;
+-	char *buf_tmp;
+ 	int vsi_seid;
+ 	int i, cnt;
+ 
+ 	/* don't allow partial writes */
+ 	if (*ppos != 0)
+ 		return 0;
+-	if (count >= sizeof(i40e_dbg_netdev_ops_buf))
+-		return -ENOSPC;
+ 
+-	memset(i40e_dbg_netdev_ops_buf, 0, sizeof(i40e_dbg_netdev_ops_buf));
+-	bytes_not_copied = copy_from_user(i40e_dbg_netdev_ops_buf,
+-					  buffer, count);
+-	if (bytes_not_copied)
++	cmd_buf = kzalloc(count + 1, GFP_KERNEL);
++	if (!cmd_buf)
++		return count;
++	bytes_not_copied = copy_from_user(cmd_buf, buffer, count);
++	if (bytes_not_copied) {
++		kfree(cmd_buf);
+ 		return -EFAULT;
+-	i40e_dbg_netdev_ops_buf[count] = '\0';
++	}
++	cmd_buf[count] = '\0';
+ 
+-	buf_tmp = strchr(i40e_dbg_netdev_ops_buf, '\n');
++	buf_tmp = strchr(cmd_buf, '\n');
+ 	if (buf_tmp) {
+ 		*buf_tmp = '\0';
+-		count = buf_tmp - i40e_dbg_netdev_ops_buf + 1;
++		count = buf_tmp - cmd_buf + 1;
+ 	}
+ 
+-	if (strncmp(i40e_dbg_netdev_ops_buf, "change_mtu", 10) == 0) {
++	if (strncmp(cmd_buf, "change_mtu", 10) == 0) {
+ 		int mtu;
+ 
+-		cnt = sscanf(&i40e_dbg_netdev_ops_buf[11], "%i %i",
++		cnt = sscanf(&cmd_buf[11], "%i %i",
+ 			     &vsi_seid, &mtu);
+ 		if (cnt != 2) {
+ 			dev_info(&pf->pdev->dev, "change_mtu <vsi_seid> <mtu>\n");
+@@ -1749,8 +1667,8 @@ static ssize_t i40e_dbg_netdev_ops_write(struct file *filp,
+ 			dev_info(&pf->pdev->dev, "Could not acquire RTNL - please try again\n");
+ 		}
+ 
+-	} else if (strncmp(i40e_dbg_netdev_ops_buf, "set_rx_mode", 11) == 0) {
+-		cnt = sscanf(&i40e_dbg_netdev_ops_buf[11], "%i", &vsi_seid);
++	} else if (strncmp(cmd_buf, "set_rx_mode", 11) == 0) {
++		cnt = sscanf(&cmd_buf[11], "%i", &vsi_seid);
+ 		if (cnt != 1) {
+ 			dev_info(&pf->pdev->dev, "set_rx_mode <vsi_seid>\n");
+ 			goto netdev_ops_write_done;
+@@ -1770,8 +1688,8 @@ static ssize_t i40e_dbg_netdev_ops_write(struct file *filp,
+ 			dev_info(&pf->pdev->dev, "Could not acquire RTNL - please try again\n");
+ 		}
+ 
+-	} else if (strncmp(i40e_dbg_netdev_ops_buf, "napi", 4) == 0) {
+-		cnt = sscanf(&i40e_dbg_netdev_ops_buf[4], "%i", &vsi_seid);
++	} else if (strncmp(cmd_buf, "napi", 4) == 0) {
++		cnt = sscanf(&cmd_buf[4], "%i", &vsi_seid);
+ 		if (cnt != 1) {
+ 			dev_info(&pf->pdev->dev, "napi <vsi_seid>\n");
+ 			goto netdev_ops_write_done;
+@@ -1789,21 +1707,20 @@ static ssize_t i40e_dbg_netdev_ops_write(struct file *filp,
+ 			dev_info(&pf->pdev->dev, "napi called\n");
+ 		}
+ 	} else {
+-		dev_info(&pf->pdev->dev, "unknown command '%s'\n",
+-			 i40e_dbg_netdev_ops_buf);
++		dev_info(&pf->pdev->dev, "unknown command '%s'\n", cmd_buf);
+ 		dev_info(&pf->pdev->dev, "available commands\n");
+ 		dev_info(&pf->pdev->dev, "  change_mtu <vsi_seid> <mtu>\n");
+ 		dev_info(&pf->pdev->dev, "  set_rx_mode <vsi_seid>\n");
+ 		dev_info(&pf->pdev->dev, "  napi <vsi_seid>\n");
+ 	}
+ netdev_ops_write_done:
++	kfree(cmd_buf);
+ 	return count;
+ }
+ 
+ static const struct file_operations i40e_dbg_netdev_ops_fops = {
+ 	.owner = THIS_MODULE,
+ 	.open = simple_open,
+-	.read = i40e_dbg_netdev_ops_read,
+ 	.write = i40e_dbg_netdev_ops_write,
+ };
+ 
+-- 
+2.47.3
+
