@@ -1,84 +1,77 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C2E3B14D9
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 13:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BF9435509
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 13:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785244958; cv=none; b=ZKtUcd3usFjB1AoF8JrAu4dCJJ7Yz1bsxF8xdgHD+NsCnmCjn0vgxLF5A5gn52Haas0kdi6bbdUar/Vcj4d6rQ1Jr/5YBlAxbKRXhNJAKj/EC2iPGaY0wNV/6kXmEZVO13K+CVR0zG+u07LbUw/oBpl4/kaggC2Lt9la3Cx1OXA=
+	t=1785245329; cv=none; b=hsaR+6W1neyy3q1h8fMqv2w9J87NMKyTlZRl8O17+PUS3XVCrH9PE4DkVWeQFNT9qx5TUB7C9Cpdzw5RSc4iCc4WukpfxS/I132WAKk5wFIsgIyQc9omOq8iQ9WDltAb/j4GrqPnoLv1M8QsptC/BlczbXjuTNO/rVeWcj12HT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785244958; c=relaxed/simple;
-	bh=oobXFTHfdzXdPL+8ib1BEuopmYTDo8gYa71Yim7An58=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FXGIZ5BlI3H0rhmlScJzaUMLBusLZ2WDapsKmT3cov6lw8zKx9yf9jG6Osm6O1v4eqMk/kB2HVnqDEOIeg4tOS/uFv38o+E809M5BuorVBxExAzWzeukRn5PihO036JX8xHNHtURe6pUmW+0bpwB2v50tiu81lbNHfJsa3G5lKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AVSD4ybk; arc=none smtp.client-ip=209.85.216.48
+	s=arc-20240116; t=1785245329; c=relaxed/simple;
+	bh=OAPZdRWyQy4q2zNyz4kGEhF+go9N3BGWG6beizQuBmk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A5BpmkLO6EfpsN/isELxeLf0DXGiAOIyWLJQ+fhKJdEzDXH6T8FF2TeAHPNTJN9IvQ9lCI7fZruCa+W/pb5UAbAgytC3J2gniLcPdAkmj25TnWx46IG9wdvHlr+vLEjBvnyIP88udS9+TgVfMT7aPsGJvBMr48nY9+q6KbbqZ0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q2M5XMVD; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AVSD4ybk"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38dfe7eb825so3031130a91.0
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:22:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q2M5XMVD"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47f97d310caso2752119f8f.2
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:28:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785244956; x=1785849756; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oobXFTHfdzXdPL+8ib1BEuopmYTDo8gYa71Yim7An58=;
-        b=AVSD4ybkB6cPOoh0us3loHO1zIhMPudA7qJjFAdmJE/zxenTvK9EL61gh4Idr1PMtY
-         aEBlexwek5y1cDLgKWyfNCAFTkvkPB+raKe7xakfTRHVpzGhACpsd0DMj1hsWS0V4rhw
-         WY2NFF0MiKmmBwcukrz/be4+Yb8/l3347K8IUiQy4OOz7hg5b3cSo/NF3omezGXoTD7Q
-         ACIsNP6zFG0D+mgBl3d+kfCpmeiB9wfPkfvXniaqYOI3RmimRizntdHN3CzJOTb0rb+6
-         lAraQFKUJc276p29k9Ma7v8gubD5OwUrhDtqfwfvHugyxn8xCRmiXmajLGetwOXr2n7+
-         E/Xg==
+        d=gmail.com; s=20251104; t=1785245326; x=1785850126; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jpQekUlMBXKHH4ypTl4Zdo+4HRaR5MNGsxg/blhT7gI=;
+        b=Q2M5XMVDuL//EMCoFPxRYH7zYAMuOHm9N0wNFFocdrR9KVMiTxGZkJ4pDORnxsPlJK
+         bok1OSMOUi3SDqM+ETPqAYCISgEcjhg25MhYaOKJcvgQ/ON/NrciynJx9bdK1arcbS6M
+         4lxJTztypHC1HtV6K4QYwP247p+a9VzbEqezgi7ocb84vXPS8iYidIZiAeuzBhGzRGqr
+         78mFuJdeclGXdDAssu5V+McUXqOn82XjGvMaJRojnOobJLKEls6OLNifuj3BFCHY2Im9
+         3QAfatBHtKC6wpOZRjtU1f33ow48pepxz5OjXF9s8oNVdJofvfvN6fEk1OijDLKFGTGH
+         CpNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785244956; x=1785849756;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oobXFTHfdzXdPL+8ib1BEuopmYTDo8gYa71Yim7An58=;
-        b=Dvru9sqMVO76umDCxMRNjnDsEq0iFUU4Q3SH4PrlhaGoLe+eCdglBNejtqLxlMnJb3
-         0QKybh9UxRc82HvWedBn2I/3ODQDTwbL6GhR3xLVQ/9+YGb2FS2ir08sg6px1AG+xG8v
-         YzJ7aqOLIQaWsxVfzjqBzHJFbu5LV8d5j/8Wc4gtRWr+yfy1pxlkX358jEQ+VfjUhct7
-         sDaqFt6VmYmv0YtnUZ2afFWWIeNpkij6KR9ImzF5H+H2x+j42YkivCAV1j1lyp7iehdg
-         Eg2sX7Fpzq1rXtQlSlMAxe23eWNUZu/EmsiPr28RILLoMSC6iub4VtjRVV9ZvvfkQf26
-         /BFQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoUpUt3CPBKllS0/IoRrDTIszrwl0hqZwV4HmMTJtrUA40MrMSDeJvCFhwp8LqfUilwNlWvdaM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwF0Nx6hNss8pRA+ZY1bbftW4sNZPImf2X+naa2DyV5nW4YNnaE
-	NHD8NLgvOIFTklpxMhefnHyFd1I7T+Q8VLmuw3bKSIXBITJPEuaOFIOW
-X-Gm-Gg: AR+sD11VcuLA304eu/W5kZq51nDN9iTdzPrcdAcs7c4ECReCxvujoLa89M5sR822D//
-	OF77yZ+ract6DG3nvrZk/YBQl0121Dc/CluojjInsm6dGuJAp5jEpkZPkSONg+SQ57cGGfckVJH
-	CvDyuBhlkOjP0kGhsymXf/tCFsMnUxfNfTaaq9p3ZObJLiS09Y0epUUF/UJT++sX7KBBdHRrFq3
-	6HOPLxS8kO2RJ6spar+E4c2GCXoTW9a7bl2F/7bjuXfdDcHWE04ZD4tcIhWDL7Z/NmMLAjZG60X
-	O8acQHGVkOC6NPWc9EtZMCMDZhw7isgFO1CFesHPdO3NEw+sjmA33gkNA//6c6kd+/vSEyLRQdx
-	XgfMfaJgz/7Wj0tAe1cV6jO/WUNeWmVraLeWLeWjpL8VkZhbjO4C5hFSp1JqP8cRSinKWtmC1CV
-	Mq
-X-Received: by 2002:a17:90b:3a4d:b0:38e:7239:b93b with SMTP id 98e67ed59e1d1-38f6a580748mr2307986a91.30.1785244956532;
-        Tue, 28 Jul 2026 06:22:36 -0700 (PDT)
-Received: from server227.. ([39.170.101.209])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f6413fe85sm1376399a91.12.2026.07.28.06.22.31
+        d=1e100.net; s=20251104; t=1785245326; x=1785850126;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jpQekUlMBXKHH4ypTl4Zdo+4HRaR5MNGsxg/blhT7gI=;
+        b=RGsmzbyayBISEfd2hesJZEwNRtVM4qfkBz1ljAQfxG8YOaLfv2EgTLCsb4g/hLfy44
+         M1Y8AEfA3rb6VPRxuKXEI8lD9qYNR3XkgqGunK48Rl/OsmZKbMKhyYdlET1lFUttvpev
+         vaOIfFaoAQFcHBRwBaBo2eVaTiluLrI5zTUU7TLsuVkCvCBZuxJXdAFZYmV3bzp57c0Y
+         XVredp8O+S53O17pgxjKi9UtR77WUx1+9YYabk/2BNvnlVMSEY0PyFIvWF4B+EuBTpss
+         vkGzk775StOagkowftIC3+U3HA5IQQ+1vFbMCi28/7W4/JMR8DG+F1d23QVWAYidSYcx
+         fBPA==
+X-Forwarded-Encrypted: i=1; AHgh+RrdG+P6Ydax4clThEhKVYmbvabwu5JiYWT4RRgs/ZzoZmzeywn6VKg7qlowPI9HkTAR7pkpd/k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYW7QAXAQq5ZYxOpXFnAJ3gJSr1LdQ6BvsMt+xMFulATpQbWzj
+	wMX5q4pvwbDuBGQ7Gh93iKpWofyE8CmQU4uD8LZ27LDfrkOrAFdTihzJ
+X-Gm-Gg: AR+sD13FZXFwj6ShWhrQVQjCF52OHeSL8CnHsqCdJJNZGvhXvfCRouPCv8MEuhGhMgr
+	OcAAiboRgm15WxVjKcueS05kIQ3PYdSYHdBuYcwKieyD9GXTurubBo+/32dPriJd+eBFs1c/OlW
+	1fmECZRVwjf8qYKCiTuOsa5ul/POwjNo2OCKS6vNm6wzb/njFq1k+bIKVrmtIJEixYRKMfCjl77
+	eROPoT0PY+b4OE7yyazrJ614ceNPaA/4vaVKb0ht4fAbUfey39LvWvCphRvkJb+JNMLwO6mp/SL
+	oYos8q7cQHHa4JQA86vYkD1fCgOxF67bKsfEmkJ188FaNhQAxrcfIvsZL2zrc8z7VzmwcTtX567
+	vL2Hqh/k79+rk4f97EtG+yHo9oRPNfZ3gFPE+N1WH/lWHKK3rBxpRSx246UmH3Ox0QRuO4RL33p
+	AM/Hbjlk8PbgDciW2FJsVISCkbP1cbFj16BvmYX//QRxfWJi5/jB1pyfU=
+X-Received: by 2002:a05:600c:19c8:b0:495:4b00:1bab with SMTP id 5b1f17b1804b1-496c6565e12mr28399355e9.21.1785245326303;
+        Tue, 28 Jul 2026 06:28:46 -0700 (PDT)
+Received: from fedora ([202.47.63.86])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957f9b8b67sm359163395e9.4.2026.07.28.06.28.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 06:22:35 -0700 (PDT)
-From: Zxyan Zhu <zxyan0222@gmail.com>
-To: maxime.chevallier@bootlin.com
-Cc: andrew+netdev@lunn.ch,
-	rmk+kernel@armlinux.org.uk,
-	alexandre.torgue@foss.st.com,
-	davem@davemloft.net,
+        Tue, 28 Jul 2026 06:28:45 -0700 (PDT)
+From: Muhammad Bilal <meatuni001@gmail.com>
+To: david@ixit.cz,
+	netdev@vger.kernel.org
+Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	hkallweit1@gmail.com,
-	mcoquelin.stm32@gmail.com,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] net: phylink: add phylink_pcs_loopback() method for PCS loopback support
-Date: Tue, 28 Jul 2026 21:22:27 +0800
-Message-Id: <20260728132227.4051026-1-zxyan0222@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2c0c6864-99ea-48d6-a889-c886bb91c351@bootlin.com>
-References: <2c0c6864-99ea-48d6-a889-c886bb91c351@bootlin.com>
+	horms@kernel.org,
+	oe-linux-nfc@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Muhammad Bilal <meatuni001@gmail.com>
+Subject: [PATCH net v3] nfc: nci: fix use of uninitialized memory in NFC-DEP general bytes
+Date: Tue, 28 Jul 2026 18:28:36 +0500
+Message-ID: <20260728132836.41868-1-meatuni001@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,21 +80,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 28, 2026 at 10:41:12AM +0200, Maxime Chevallier wrote:
-> I'm actually seriously wondering if we shouldn't just stick to MAC
-> loopback only for stmmac selftests. [...]
-> Using an external loopback (in PCS, in PHY, somewhere else...) doesn't
-> bring anything to the table given what we are testing today, which is
-> internal stmmac behaviour. The MAC loopback happens at the GMII level,
-> so everything we are currently testing happens before that.
+nci_store_general_bytes_nfc_dep() derives the length of the NFC-DEP
+general bytes by subtracting the fixed general-bytes offset from the ATR
+length:
 
-You're right. MAC loopback at the GMII level already covers everything
-stmmac selftests actually test (DMA, filtering, VLAN, checksum offload,
-etc.). PCS acts only as external transceivers beyond the MAC boundary
-and do not bring additional test coverage.
+  atr_res_len - NFC_ATR_RES_GT_OFFSET   (poll, offset 15)
+  atr_req_len - NFC_ATR_REQ_GT_OFFSET   (listen, offset 14)
 
-Given that, I will drop this PCS loopback patch series.
+It never checks that the ATR is at least that long. When a
+RF_INTF_ACTIVATED_NTF reports an ATR shorter than the offset the
+subtraction is negative; because min_t() casts its arguments to __u8 the
+negative value becomes large and is then capped at
+NFC_ATR_RES_GB_MAXSIZE / NFC_ATR_REQ_GB_MAXSIZE. remote_gb_len is thus
+set to up to 47/48 even though only atr_res_len/atr_req_len bytes of the
+on-stack atr_res/atr_req buffer were copied from the packet, and the
+following memcpy() reads the uninitialized remainder into
+ndev->remote_gb.
 
-Thanks for the explanation!
+Skip storing the general bytes when the ATR is shorter than the
+general-bytes offset. remote_gb_len is already zeroed unconditionally
+at the top of the function by commit 9c328f54741b ("net: nfc: nci: Add
+parameter validation for packet data"), so the short-ATR case needs no
+separate zeroing here anymore, unlike in the v2 posted upstream.
 
-Zxyan
+Fixes: a99903ec4566 ("NFC: NCI: Handle Target mode activation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+---
+v3: Rebased onto current net.git for-next, requested by David
+    Heidelberg. The function moved and gained an unconditional
+    "remote_gb_len = 0" at entry (from commit 9c328f54741b, landed
+    after v2 was posted), which made v2's explicit zeroing inside the
+    short-ATR branch redundant, so this version drops it and only adds
+    the missing length checks.
+v2: Also zero remote_gb_len explicitly in the short-ATR branch so a
+    stale value from a previous activation doesn't survive into the
+    new session.
+
+ net/nfc/nci/ntf.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
+index c96512bb8653..e0555c90d657 100644
+--- a/net/nfc/nci/ntf.c
++++ b/net/nfc/nci/ntf.c
+@@ -631,6 +631,9 @@ static int nci_store_general_bytes_nfc_dep(struct nci_dev *ndev,
+ 	switch (ntf->activation_rf_tech_and_mode) {
+ 	case NCI_NFC_A_PASSIVE_POLL_MODE:
+ 	case NCI_NFC_F_PASSIVE_POLL_MODE:
++		if (ntf->activation_params.poll_nfc_dep.atr_res_len <
++		    NFC_ATR_RES_GT_OFFSET)
++			break;
+ 		ndev->remote_gb_len = min_t(__u8,
+ 			(ntf->activation_params.poll_nfc_dep.atr_res_len
+ 						- NFC_ATR_RES_GT_OFFSET),
+@@ -643,6 +646,9 @@ static int nci_store_general_bytes_nfc_dep(struct nci_dev *ndev,
+ 
+ 	case NCI_NFC_A_PASSIVE_LISTEN_MODE:
+ 	case NCI_NFC_F_PASSIVE_LISTEN_MODE:
++		if (ntf->activation_params.listen_nfc_dep.atr_req_len <
++		    NFC_ATR_REQ_GT_OFFSET)
++			break;
+ 		ndev->remote_gb_len = min_t(__u8,
+ 			(ntf->activation_params.listen_nfc_dep.atr_req_len
+ 						- NFC_ATR_REQ_GT_OFFSET),
+-- 
+2.55.0
+
