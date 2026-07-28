@@ -1,300 +1,348 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012035.outbound.protection.outlook.com [52.101.66.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24F51A6822
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 15:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785251906; cv=none; b=gCs8lY1gxsuUOLIp2G86cy+AQO1c6Gp6vZmi/cSkddoqMvqf8mp/jhRHjnFGMDTlMnJHAAjW5S1r55Lmb0ZdrtlymythhX7eirsxldU3cyxT1F5TheOtGxYVi6wb29wJcHiXqg1k0MCUux4PczfgDDx6wjA4O+QTEfQTvQyKN9g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785251906; c=relaxed/simple;
-	bh=yKCqKsiSuSFj1x70RgwoIK4Wiot4BSjCJPoY+pqsf2M=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=QVKVdSRahE4L/994dPcHtmt+1vb55JlqBGkYZVJTKp5aOVRnAq7vQ1tHnElMU5wr/h8BWM0+YRiFI7m96MPqKLx63jMxORHOv10T9fCfCeI3wwcoJy1/hhbT0KDxvTufpfFFBMXAfoigbaQ/k2BiSZt10e7TX9uNyuXMchQiRz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DrZVQiC1; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BA32EC0A2;
+	Tue, 28 Jul 2026 15:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785252298; cv=fail; b=B16Xhohp5B2eUx9k9QFX/UBnT7yw7NYWwBt3JdhEafkzQGWQ8kF5eb3Iu854WjSGjEA0gZGtG1so6QRLIHNqRt4FTm6qNjMBqeTJ+fH17SVqQBApKYUXPv+cyvbBCFmttCMRAgSv7jsSrD79zd3WETibfDc7kDGVIa83XH2RJeM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785252298; c=relaxed/simple;
+	bh=+yH3764ucBPyjZjjfAB2r7tkwq/ki3bV7C2QakeoL68=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=qbsbFWorT2rIJ+s5FNTn046HSJ6TTva/IzKL+7xJc0gsqSZ9yQvfzQQvgBgnnLFeCJgU5TDvhs+kZJvpvSlNAEfpgy0i7MXF9Dzwn5yyy7Y4i7LXq9WDEKVVcThF1bOFRLzB+hMnWXeNgFL5YOyaC9SxEUVV8VziPeexNwdhGoA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=JHOyt3rP; arc=fail smtp.client-ip=52.101.66.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DrZVQiC1"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-81e86df8987so49599697b3.3
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 08:18:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785251903; x=1785856703; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=CLpOWH7GTS7NCFz/hO8LkdLrPSWhyKCNToq1mREBO9E=;
-        b=DrZVQiC14sLXYNRG0bwICAIRrWfhxCCmVt59uDrYq5uySYx84S0+Rqa54lkO6LJ50j
-         6DjByS9b25QrsLRMikWg8BrNJdSNq+c7OBbSFuljlbe/SUqt+YO1Sj46AewKhZcgk132
-         pwJoJ32SPMEKPk3IV/ZssaNJsZW0ReAuUaIgwWJeUz+glPLjoQHD/vHtuwx5Vxe1rDNC
-         LixAruATMDRVgRbP9St5Tm4SSstCctflslZux1HfWzdKumPnA5CRlit8qaEMVneigGgh
-         TF8j70w3R0X+49i0wiD35o9n9/XLQpFfRolGQ4L9GvS6Y2ZrkjOc4ofnqYvL9LETTu0R
-         gcSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785251903; x=1785856703;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CLpOWH7GTS7NCFz/hO8LkdLrPSWhyKCNToq1mREBO9E=;
-        b=mKvcfcjGLI1oiEuJ+nylcV6tmwU4js5cD7zwyvxWiX8pLl4x3HKe0bIlM3i+j53miD
-         pJxCPR9rXFZU0VkwhLrDvKg2ymSHgRaogPG4t8Rx2wowccULsyqAEX9BD8vwohxBsYiB
-         +2xuNQ4h0ZB0IEe3bXPaSSrYHyty0qmXW0ukZmvzJwlNzMagJ+yGGhQ8yub5j/JTG0su
-         DCiFgw2+WVvVGCxuejtWsElROcKMJjIG3E19MH+/R2O/YYXvwUZfpcAYBy0W8mxMb3d9
-         DfUfAZUY/INNxrcEijmJqjIiS0Lub8PP5aIXX7oSrpSsvUGIgQEzgHZpiArZslFT7EC8
-         pxFA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp1QXXmYVMe3yHPYvGrJUeVlJVjU6dtj+meqhn8+QrkJMwBqj8BpCPQT5I7idDfctdjsufVFPE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxE2arUBCVL1VdCLALSmCpeGH03CAratQGnFfXugA1e05sqMjRM
-	X0JBr0tCMVQGmdJhLaNzvstXtGeAQgXXJLz9DxofoyLeRjo3s1Iikgpu
-X-Gm-Gg: AR+sD13J69t5o+xzS2userPaJZw/iUEyjFgyzN/oYfL8enQYj/yq0LaZMqL8e7hTrRk
-	DlJy9GyCWPdKvRmaCOW5vu4Ej2vim5pYuA7JRN/yqyEFSeqEdkrtzAGd2hWfNuIB+rxVBozVyG3
-	DINewTo9luXouKeF5k4Eh/lfW1uMVvPF2rQhgCWbeTyHAFQY4UBl//d0c+MWO/pF/UvIFvt3X1X
-	n99ZdPOYBkRn19wQMnBBKNh1y2EGQ7kn2MtayiQTUqox2DC7pZaymfj/yX0njlyt9yrlH5olw6f
-	b0Vteg7yuO3zkvqYyet/p30WqN7uFx7qeee7zo/xhypnEPbFLqM4degX/EkiXadQjlxrbgL9B5Z
-	ZeEr2TcTOTVpU9bL9bmFyROHuAu8sRtkG8No5cR31TMUDfM9W1W2lwlbB7rwoGiPVfgbb9WNxcv
-	/VHUh7yDlfRUTVE7Zqq9cEC/Ep5T9gkWNRK5LMw4ZTKSRQ/qq8Yg==
-X-Received: by 2002:a05:690c:6f10:b0:81d:6af3:b9cd with SMTP id 00721157ae682-81f99364371mr11834227b3.40.1785251903357;
-        Tue, 28 Jul 2026 08:18:23 -0700 (PDT)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fa27568a5sm1260737b3.7.2026.07.28.08.18.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 08:18:22 -0700 (PDT)
-Date: Tue, 28 Jul 2026 11:18:21 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: zihan xi <zihanx@nebusec.ai>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Ren Wei <enjou1224z@gmail.com>, 
- netdev@vger.kernel.org, 
- davem@davemloft.net, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- vega@nebusec.ai
-Message-ID: <willemdebruijn.kernel.37df21eabf6b8@gmail.com>
-In-Reply-To: <CAANe3eRGYdDWvYK42WHdDzt80Z3G7gt-21C7dep+LNGKJR3Auw@mail.gmail.com>
-References: <f1cd534481c2397a36850ad039dcbfd38c3233ce.1784551898.git.zihanx@nebusec.ai>
- <willemdebruijn.kernel.e559328910e@gmail.com>
- <CAANe3eSvdBrwNo7xzH677yPOr8Zm6dvdTF7nNAe_NrWxomy0GQ@mail.gmail.com>
- <willemdebruijn.kernel.37fb8a457aee2@gmail.com>
- <CAANe3eRGYdDWvYK42WHdDzt80Z3G7gt-21C7dep+LNGKJR3Auw@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/1] packet: synchronize pressure clearing with
- ring reconfiguration
+	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="JHOyt3rP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kpzR1u1BGr8CO4+tuQHz6JeCKHLM2hHi5saJOaHeGkHF+3zC9R2iKVRl7FaUgR7f9QEIltW8F1/na3Oxi6SmP00wJcZM/x2IMMhQlQjQxZuth42j/DBA6F5HQ/eYXyUYG1COBwusKnAwrzZ5+pIrg+8UUICeayVfC8+fN9FVHBPortUSfNc5pn0mVmjbmRIW2o/4/u1gwNUE/AQeqT75OqXUeLNb+o+lGkwHOf4CYvVPT/k9DhB/qNOWVbl4XHi9ZYoaeQQoc8G9AEzVRsloeZglu4DfJ7aZe8IkAS8cgI12/C/yoN46/hQKkCoDNd6JurL3VXq7qLgGrcdY5S0XXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7yokbjOEQnGAim1a9xTZ5+Fx5GBw8lyA0w+DiAbwKa8=;
+ b=cSczhHthWEu8/+shXslAELiKx9iGADyDJfaDzVcC3QLf6jZoWGoEOmrNQO/X5jfOzGN0T+EhTUd1nYfpXmYwXY48Ilv3JwIFVKuoox+vNQa5Zp0egckONftAWiVx3B4M5vD7WMiVjBpxbKwPP69GuYkN7GIP8CMiYAYmR68eAPvVt2Srg7nXY1tfEWQzXbQW5Bo14372/S2UTUEH5v3+nxiQcEiszXHI65LKzEyJQCoUDtAwdG/LLmrjpYctZXb2k+mY9+krqyUg9Ahej2ylKVcPS3TtWREcAlH0HuhU6qof+IaydH6LvJPddRZ2XSp9gJiVLitoJYRFfW2iTiqsAQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 131.228.2.240) smtp.rcpttodomain=apple.com smtp.mailfrom=nokia-bell-labs.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nokia-bell-labs.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7yokbjOEQnGAim1a9xTZ5+Fx5GBw8lyA0w+DiAbwKa8=;
+ b=JHOyt3rPZH8dyDBfsipc+iwm0DCvLGJJuQSv0QKBW80LnlcSM5ATY+2CvsR1Ndhm/eOg0L0HYKcyJNz4UZhWzpVHgjvN41m3PqVD4ah9m18Ce9J5rUnwN/DuOGhiEpvYnIAbbjQrD3q4A9R/UuLKO8TXO4wgdUSifdTXBTw6MiTL3ORt5Zxo1iel31vOyL6QhV5Z9btarb2M1nwjxcE7l63K9ayUzCGn7TpotopC3Rvr3UfkEjMAsaUHHZ1jLRHYHCkrJC1eubgnR+bcx2vien7od/sP8wlxk0x1vr/rA8smF/ONsiN4s4lspH3r1SpOP/tXejcUMufSR33z4YIR3Q==
+Received: from DUZP191CA0052.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:4fa::15)
+ by PA1PR07MB10879.eurprd07.prod.outlook.com (2603:10a6:102:4fc::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Tue, 28 Jul
+ 2026 15:24:51 +0000
+Received: from DB5PEPF00014B92.eurprd02.prod.outlook.com
+ (2603:10a6:10:4fa:cafe::9d) by DUZP191CA0052.outlook.office365.com
+ (2603:10a6:10:4fa::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.13 via Frontend Transport; Tue,
+ 28 Jul 2026 15:24:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.2.240)
+ smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
+Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
+ designates 131.228.2.240 as permitted sender)
+ receiver=protection.outlook.com; client-ip=131.228.2.240;
+ helo=fihe3nok0735.emea.nsn-net.net; pr=C
+Received: from fihe3nok0735.emea.nsn-net.net (131.228.2.240) by
+ DB5PEPF00014B92.mail.protection.outlook.com (10.167.8.230) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.5
+ via Frontend Transport; Tue, 28 Jul 2026 15:24:50 +0000
+Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
+	by fihe3nok0735.emea.nsn-net.net (Postfix) with ESMTP id 95ABF236C0;
+	Tue, 28 Jul 2026 18:24:48 +0300 (EEST)
+From: chia-yu.chang@nokia-bell-labs.com
+To: emil@etsalapatis.com,
+	jolsa@kernel.org,
+	yonghong.song@linux.dev,
+	song@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	memxor@gmail.com,
+	shuah@kernel.org,
+	martin.lau@linux.dev,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	jhs@mojatatu.com,
+	kuba@kernel.org,
+	stephen@networkplumber.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	donald.hunter@gmail.com,
+	kuniyu@google.com,
+	ij@kernel.org,
+	ncardwell@google.com,
+	koen.de_schepper@nokia-bell-labs.com,
+	g.white@cablelabs.com,
+	ingemar.s.johansson@ericsson.com,
+	mirja.kuehlewind@ericsson.com,
+	cheshire@apple.com,
+	rs.ietf@gmx.at,
+	Jason_Livingood@comcast.com,
+	vidhi_goel@apple.com
+Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Subject: [PATCH v5 net-next 1/1] tcp: Replace min_tso_segs() with tso_segs() CC callback
+Date: Tue, 28 Jul 2026 17:24:25 +0200
+Message-Id: <20260728152425.649600-1-chia-yu.chang@nokia-bell-labs.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB5PEPF00014B92:EE_|PA1PR07MB10879:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf82d1b4-ba72-4d63-843f-08deecbc5dbb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|82310400026|36860700016|376014|7416014|921020|3023799007|11063799006|56012099006|10067099003|6133799003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	yZOyfyRHY0Zpmorb0xqb8U3AS5JxGI7NnrOCQwqMHtaGSTxXNbEzuisfZR/MxqcUphTj9ke13JkzxOQo5peF79ofrp2IaDD3s7uwlSiZ4ZKtWum63Q2Hl1IB7QCaqZ3k63fudgGfu2UTUIU8W0nLZ1mLFb9T3P0GQfEYdcfsup5pg5W4kXfYv5OkPPG0G4gLyoZQKkdWvLJjmicgIuXCgt25OiySyTTb79RULNbHWREMIOc0KvAVuUQZ+K4AMP5RWbtEYxWwsc92tSm3FaATECqCMgMi5ztfaVk6bfwH6wNZUZt+WOH8XimK3oNHx7GK6OSl+2LTGt6wSqO+KX8dUbdVTODnDWmuASoZJXcWR5P7yt9F9sZsBJTc28NAGnanCY1vCg/RBPvHSFBGCUeQW9HP667yzbKe+QmJQq0NaBohnqFleWebS25s+SldNsLh6F6IiWb4b2DYrXH20Ok8HN+o2N7A52NCDbiFp0MA0ej7NxSpQnYOAZecmD8yGbSyiDHd0YYysuA9Fx7a3k6SUY4pEv2X1MG0RacDVL1wrMfdIslhBUNVvyjAWK+K/LlWA64KR+WTY0b2unLCd+B5+8Sfncnr6VrnbRe+hTiitG9M7xSVKOlpQmO9VXYzvmekeU/AQYB0SepzVa4twiNreRjcQmGQnCOgpogBFCTyr07wBjL/+Wu3ZMdLPKE+g4L5hMEMClokJLMzokQShgFLAtHmoTUxzNjL47VMMsLlREpqkUaLfl++Q+WCBWh/eW0t
+X-Forefront-Antispam-Report:
+	CIP:131.228.2.240;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe3nok0735.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(82310400026)(36860700016)(376014)(7416014)(921020)(3023799007)(11063799006)(56012099006)(10067099003)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	JgWYDFWlYLSk5+nFCK7aePOP5a6vXCPr/zHVIbyQ/QNxMGYpcjQZCgo02nGAW7Sc0eblFi0epk6+aTrwhLRb+JkBtCnE8QGS4nuJDd+W1Ot5vbdH9XRZXjQMtovKABwGpYddaF4HBlXytS9BjuBJypFY1nz3MZSmdoLw8ID8wu6Rls5B/RRQaNGkQuFppBw0uzyb/cqLYLCzJRGk1NwI23bzJ8gD5XWFaF2ZzpDCbM3+bLQeGEEDw8acA6025blZ9axqTOhuWk5XSucyRkW7pQAW4kaRloch01NFZZdm6SL90uvHNU8H/KjVKXiiAzd6/3dMFDSbLYWoKTuMek1wruzd02YkN89mVgSfGzqAyROroXZXbdk9B1qKU/mSCOS1n/kpCbHmwyvfjiXSj0ihcy5Q2ERv4DVeV/RKKc0LZ0Z0ngeu5B6jJjzWHtV5nwHK
+X-OriginatorOrg: nokia-bell-labs.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 15:24:50.2752
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf82d1b4-ba72-4d63-843f-08deecbc5dbb
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.240];Helo=[fihe3nok0735.emea.nsn-net.net]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-DB5PEPF00014B92.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR07MB10879
 
-zihan xi wrote:
-> On Tue, Jul 28, 2026 at 9:31=E2=80=AFPM Willem de Bruijn
-> <willemdebruijn.kernel@gmail.com> wrote:
-> >
-> > zihan xi wrote:
-> > > On Tue, Jul 28, 2026 at 7:44=E2=80=AFPM Willem de Bruijn
-> > > <willemdebruijn.kernel@gmail.com> wrote:
-> > > >
-> > > > Ren Wei wrote:
-> > > > > From: Zihan Xi <zihanx@nebusec.ai>
-> > > > >
-> > > > > packet_set_ring() updates the RX ring state under sk_receive_qu=
-eue.lock,
-> > > > > but publishes the tpacket receive mode through po->prot_hook.fu=
-nc after
-> > > > > releasing that lock. packet_poll() and packet_recvmsg() can the=
-refore run
-> > > > > the pressure clearing path after the ring has been cleared whil=
-e still
-> > > > > seeing tpacket_rcv, causing __packet_rcv_has_room() to derefere=
-nce stale
-> > > > > or NULL ring storage.
-> > > > >
-> > > > > Serialize pressure clearing with RX ring reconfiguration and up=
-date the
-> > > > > receive hook while holding the same queue lock when changing th=
-e RX ring.
-> > > > > Keep packet_poll() on the unlocked helper,
-> > > >
-> > > > Because it already holds the lock.
-> > > >
-> > > > > and let packet_recvmsg()
-> > > > > take the queue lock only when PACKET_SOCK_PRESSURE is already s=
-et
-> > > >
-> > > > which is sufficient, because if the socket moves from tpacket_rcv=
- to
-> > > > packet_rcv, the socket is detached and a synchronize_net has pass=
-ed,
-> > > > so no new packets could arrive to set PACKET_SOCK_PRESSURE if it =
-was
-> > > > unset.
-> > > >
-> > > > > so the
-> > > > > fix avoids an unconditional extra lock acquisition on the norma=
-l recv
-> > > > > path.
-> > > > >
-> > > > > Fixes: 2ccdbaa6d55b ("packet: rollover lock contention avoidanc=
-e")
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Reported-by: Vega <vega@nebusec.ai>
-> > > > > Assisted-by: Codex:gpt-5.4
-> > > > > Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
-> > > > > Signed-off-by: Ren Wei <enjou1224z@gmail.com>
-> > > > > ---
-> > > > > changes in v2:
-> > > > >   - only take sk_receive_queue.lock in packet_recvmsg() when
-> > > > >     PACKET_SOCK_PRESSURE is already set
-> > > > >   - keep packet_poll() on the unlocked helper under its existin=
-g queue lock
-> > > > >   - v1 Link: https://lore.kernel.org/all/24f7311aed0c9ff06b8ea9=
-82647b82bf543ec369.1784454542.git.xizh2024@lzu.edu.cn/
-> > > > >
-> > > > >  net/packet/af_packet.c | 21 +++++++++++++++++----
-> > > > >  1 file changed, 17 insertions(+), 4 deletions(-)
-> > > > >
-> > > > > diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> > > > > index 8e6f3a734ba0..0107e55de6ff 100644
-> > > > > --- a/net/packet/af_packet.c
-> > > > > +++ b/net/packet/af_packet.c
-> > > > > @@ -1315,13 +1315,25 @@ static int packet_rcv_has_room(struct p=
-acket_sock *po, struct sk_buff *skb)
-> > > > >       return ret;
-> > > > >  }
-> > > > >
-> > > > > -static void packet_rcv_try_clear_pressure(struct packet_sock *=
-po)
-> > > > > +static void __packet_rcv_try_clear_pressure(struct packet_sock=
- *po)
-> > > > >  {
-> > > > >       if (packet_sock_flag(po, PACKET_SOCK_PRESSURE) &&
-> > > > >           __packet_rcv_has_room(po, NULL) =3D=3D ROOM_NORMAL)
-> > > > >               packet_sock_flag_set(po, PACKET_SOCK_PRESSURE, fa=
-lse);
-> > > > >  }
-> > > > >
-> > > > > +static void packet_rcv_try_clear_pressure(struct packet_sock *=
-po)
-> > > > > +{
-> > > > > +     struct sock *sk =3D &po->sk;
-> > > > > +
-> > > > > +     if (!packet_sock_flag(po, PACKET_SOCK_PRESSURE))
-> > > > > +             return;
-> > > > > +
-> > > > > +     spin_lock_bh(&sk->sk_receive_queue.lock);
-> > > > > +     __packet_rcv_try_clear_pressure(po);
-> > > > > +     spin_unlock_bh(&sk->sk_receive_queue.lock);
-> > > > > +}
-> > > > > +
-> > > > >  static void packet_sock_destruct(struct sock *sk)
-> > > > >  {
-> > > > >       skb_queue_purge(&sk->sk_error_queue);
-> > > > > @@ -4304,7 +4316,7 @@ static __poll_t packet_poll(struct file *=
-file, struct socket *sock,
-> > > > >                       TP_STATUS_KERNEL))
-> > > > >                       mask |=3D EPOLLIN | EPOLLRDNORM;
-> > > > >       }
-> > > > > -     packet_rcv_try_clear_pressure(po);
-> > > > > +     __packet_rcv_try_clear_pressure(po);
-> > > > >       spin_unlock_bh(&sk->sk_receive_queue.lock);
-> > > > >       spin_lock_bh(&sk->sk_write_queue.lock);
-> > > > >       if (po->tx_ring.pg_vec) {
-> > > > > @@ -4544,14 +4556,15 @@ static int packet_set_ring(struct sock =
-*sk, union tpacket_req_u *req_u,
-> > > > >               rb->frame_max =3D (req->tp_frame_nr - 1);
-> > > > >               rb->head =3D 0;
-> > > > >               rb->frame_size =3D req->tp_frame_size;
-> > > > > +             if (!tx_ring)
-> > > > > +                     po->prot_hook.func =3D po->rx_ring.pg_vec=
- ?
-> > > > > +                                             tpacket_rcv : pac=
-ket_rcv;
-> > > >
-> > > > Same question: why this new condition on !tx_ring here, that is
-> > > > missing below. It looks benign to me, but especially for fixes on=
-ly
-> > > > make necessary changes.
-> > > >
-> > > > >               spin_unlock_bh(&rb_queue->lock);
-> > > > >
-> > > > >               swap(rb->pg_vec_order, order);
-> > > > >               swap(rb->pg_vec_len, req->tp_block_nr);
-> > > > >
-> > > > >               rb->pg_vec_pages =3D req->tp_block_size/PAGE_SIZE=
-;
-> > > > > -             po->prot_hook.func =3D (po->rx_ring.pg_vec) ?
-> > > > > -                                             tpacket_rcv : pac=
-ket_rcv;
-> > > > >               skb_queue_purge(rb_queue);
-> > > > >               if (atomic_long_read(&po->mapped))
-> > > > >                       pr_err("packet_mmap: vma is busy: %ld\n",=
+From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 
-> > > > > --
-> > > > > 2.43.0
-> > > >
-> > > >
-> > > Hi Willem,
-> > >
-> > > Thanks. Yes, that is the intended reasoning for the packet_recvmsg(=
-)
-> > > fast path.
-> > >
-> > > If PACKET_SOCK_PRESSURE is already clear when packet_recvmsg() reac=
-hes
-> > > the pressure-clearing path, then after the RX hook switches away fr=
-om
-> > > tpacket_rcv the socket has already been detached and synchronize_ne=
-t()
-> > > has completed, so no new packet input can arrive and set the flag
-> > > again. In that case skipping the extra lock acquisition is sufficie=
-nt.
-> >
-> > Thanks. Please add this context to the commit message. It's not
-> > entirely obvious. Will be helpful next time someone does a git blame.=
+This patch replaces existing min_tso_segs() with tso_segs() CC callback
+for CC algorithm to provide explicit tso segment number of each data
+burst and overrides tcp_tso_autosize().
 
-> >
-> > > For the !tx_ring condition: po->prot_hook.func is RX-side state, an=
-d
-> > > this fix is meant to publish it under the same sk_receive_queue.loc=
-k
-> > > domain that protects RX ring reconfiguration.
-> > >
-> > > A TX ring reconfiguration does not change po->rx_ring.pg_vec, so it=
+This change provides below impacts on BPF struct_ops users:
+- The callback is renamed from min_tso_segs to tso_segs
+- The signature gains an extra u32 mss_now argument
+- The return value semantics is changed from "floor value passed into
+  tcp_tso_autosize()" to "final tso_segs value", bypassing autosizing
 
-> > > does not need to rewrite po->prot_hook.func. Keeping the assignment=
+As a result, BPF programs shall be updated, because retuning a small
+constan will now directly limit tso_segs instead of the minimum.
 
-> > > under !tx_ring avoids an unnecessary write on a TX-only path and ke=
-eps
-> > > the moved publication strictly tied to the RX ring transition that
-> > > actually needs serialization.
-> >
-> > Still, this is a change that is not strictly required for the fix. It=
+Signed-off-by: Ilpo Järvinen <ij@kernel.org>
+Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
 
-> > may be relatively easy to reason that it has no unintentional side
-> > effects. But it is even easier to do so by avoiding such unnecessary
-> > changes altogether. It would not be the first NOOP that proves to not=
+---
+v5:
+- Revert back to v3 and add Reviewed-by tag
 
-> > be entirely NOOP. I suggest moving the original code as is, instead.
-> =
+v4:
+- Use union for both min_tso_segs() and tso_segs() and a
 
-> Thanks, agreed.
-> =
+v3:
+- Update bpf_tcp_ca_tso_segs() to use tcp_tso_autosize()
+- Add divide by 0 protection in case of mss_now=0
 
-> I'll make this change in v3: keep the receive hook assignment otherwise=
+v2:
+- Export tcp_tso_autosize()
+---
+ include/net/tcp.h                                | 12 ++++++++++--
+ net/ipv4/bpf_tcp_ca.c                            |  9 ++++++---
+ net/ipv4/tcp_bbr.c                               | 13 ++++++++++---
+ net/ipv4/tcp_output.c                            | 13 +++++++------
+ tools/testing/selftests/bpf/progs/tcp_ca_kfunc.c |  8 ++++----
+ 5 files changed, 37 insertions(+), 18 deletions(-)
 
-> unchanged and only move the existing assignment into the
-> sk_receive_queue.lock section. That avoids the extra !tx_ring behavior
-> change while still keeping the hook publication serialized with the rin=
-g
-> state update.
-> =
-
-> I'll also add the packet_recvmsg() fast-path reasoning to the v3 commit=
-
-> message.
-
-Great, thanks.
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 2c5b889530b5..ef9975112f15 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -824,6 +824,9 @@ unsigned int tcp_sync_mss(struct sock *sk, u32 pmtu);
+ unsigned int tcp_current_mss(struct sock *sk);
+ u32 tcp_clamp_probe0_to_user_timeout(const struct sock *sk, u32 when);
+ 
++u32 tcp_tso_autosize(const struct sock *sk, unsigned int mss_now,
++		     int min_tso_segs);
++
+ /* Bound MSS / TSO packet size with the half of the window */
+ static inline int tcp_bound_to_half_wnd(struct tcp_sock *tp, int pktsize)
+ {
+@@ -1361,8 +1364,13 @@ struct tcp_congestion_ops {
+ 	/* hook for packet ack accounting (optional) */
+ 	void (*pkts_acked)(struct sock *sk, const struct ack_sample *sample);
+ 
+-	/* override sysctl_tcp_min_tso_segs (optional) */
+-	u32 (*min_tso_segs)(struct sock *sk);
++	/* Override tcp_tso_autosize (optional)
++	 *
++	 * If provided, this callback returns the final TSO segment number
++	 * and will bypass tcp_tso_autosize() entirely. The implementation
++	 * must derive an appropriate value and ensure the result is valid.
++	 */
++	u32 (*tso_segs)(struct sock *sk, u32 mss_now);
+ 
+ 	/* new value of cwnd after loss (required) */
+ 	u32  (*undo_cwnd)(struct sock *sk);
+diff --git a/net/ipv4/bpf_tcp_ca.c b/net/ipv4/bpf_tcp_ca.c
+index 791e15063237..e5faa38bdd25 100644
+--- a/net/ipv4/bpf_tcp_ca.c
++++ b/net/ipv4/bpf_tcp_ca.c
+@@ -284,9 +284,12 @@ static void bpf_tcp_ca_pkts_acked(struct sock *sk, const struct ack_sample *samp
+ {
+ }
+ 
+-static u32 bpf_tcp_ca_min_tso_segs(struct sock *sk)
++static u32 bpf_tcp_ca_tso_segs(struct sock *sk, u32 mss_now)
+ {
+-	return 0;
++	if (unlikely(!mss_now))
++		/* No TSO sizing decision. Let caller apply its limits. */
++		return U32_MAX;
++	return tcp_tso_autosize(sk, mss_now, 0);
+ }
+ 
+ static void bpf_tcp_ca_cong_control(struct sock *sk, u32 ack, int flag,
+@@ -320,7 +323,7 @@ static struct tcp_congestion_ops __bpf_ops_tcp_congestion_ops = {
+ 	.cwnd_event_tx_start = bpf_tcp_ca_cwnd_event_tx_start,
+ 	.in_ack_event = bpf_tcp_ca_in_ack_event,
+ 	.pkts_acked = bpf_tcp_ca_pkts_acked,
+-	.min_tso_segs = bpf_tcp_ca_min_tso_segs,
++	.tso_segs = bpf_tcp_ca_tso_segs,
+ 	.cong_control = bpf_tcp_ca_cong_control,
+ 	.undo_cwnd = bpf_tcp_ca_undo_cwnd,
+ 	.sndbuf_expand = bpf_tcp_ca_sndbuf_expand,
+diff --git a/net/ipv4/tcp_bbr.c b/net/ipv4/tcp_bbr.c
+index 82378a2bfd1e..ecf11be46f38 100644
+--- a/net/ipv4/tcp_bbr.c
++++ b/net/ipv4/tcp_bbr.c
+@@ -297,11 +297,18 @@ static void bbr_set_pacing_rate(struct sock *sk, u32 bw, int gain)
+ }
+ 
+ /* override sysctl_tcp_min_tso_segs */
+-__bpf_kfunc static u32 bbr_min_tso_segs(struct sock *sk)
++static u32 bbr_min_tso_segs(struct sock *sk)
+ {
+ 	return READ_ONCE(sk->sk_pacing_rate) < (bbr_min_tso_rate >> 3) ? 1 : 2;
+ }
+ 
++__bpf_kfunc static u32 bbr_tso_segs(struct sock *sk, u32 mss_now)
++{
++	if (unlikely(!mss_now))
++		return bbr_min_tso_segs(sk);
++	return tcp_tso_autosize(sk, mss_now, bbr_min_tso_segs(sk));
++}
++
+ static u32 bbr_tso_segs_goal(struct sock *sk)
+ {
+ 	struct tcp_sock *tp = tcp_sk(sk);
+@@ -1151,7 +1158,7 @@ static struct tcp_congestion_ops tcp_bbr_cong_ops __read_mostly = {
+ 	.undo_cwnd	= bbr_undo_cwnd,
+ 	.cwnd_event_tx_start	= bbr_cwnd_event_tx_start,
+ 	.ssthresh	= bbr_ssthresh,
+-	.min_tso_segs	= bbr_min_tso_segs,
++	.tso_segs	= bbr_tso_segs,
+ 	.get_info	= bbr_get_info,
+ 	.set_state	= bbr_set_state,
+ };
+@@ -1163,7 +1170,7 @@ BTF_ID_FLAGS(func, bbr_sndbuf_expand)
+ BTF_ID_FLAGS(func, bbr_undo_cwnd)
+ BTF_ID_FLAGS(func, bbr_cwnd_event_tx_start)
+ BTF_ID_FLAGS(func, bbr_ssthresh)
+-BTF_ID_FLAGS(func, bbr_min_tso_segs)
++BTF_ID_FLAGS(func, bbr_tso_segs)
+ BTF_ID_FLAGS(func, bbr_set_state)
+ BTF_KFUNCS_END(tcp_bbr_check_kfunc_ids)
+ 
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index d7c1444b5e30..101ca765a7a9 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -2253,8 +2253,8 @@ static bool tcp_nagle_check(bool partial, const struct tcp_sock *tp,
+  * for every 2^9 usec (aka 512 us) of RTT, so that the RTT-based allowance
+  * is below 1500 bytes after 6 * ~500 usec = 3ms.
+  */
+-static u32 tcp_tso_autosize(const struct sock *sk, unsigned int mss_now,
+-			    int min_tso_segs)
++u32 tcp_tso_autosize(const struct sock *sk, unsigned int mss_now,
++		     int min_tso_segs)
+ {
+ 	unsigned long bytes;
+ 	u32 r;
+@@ -2269,6 +2269,7 @@ static u32 tcp_tso_autosize(const struct sock *sk, unsigned int mss_now,
+ 
+ 	return max_t(u32, bytes / mss_now, min_tso_segs);
+ }
++EXPORT_SYMBOL(tcp_tso_autosize);
+ 
+ /* Return the number of segments we want in the skb we are transmitting.
+  * See if congestion control module wants to decide; otherwise, autosize.
+@@ -2278,11 +2279,11 @@ static u32 tcp_tso_segs(struct sock *sk, unsigned int mss_now)
+ 	const struct tcp_congestion_ops *ca_ops = inet_csk(sk)->icsk_ca_ops;
+ 	u32 min_tso, tso_segs;
+ 
+-	min_tso = ca_ops->min_tso_segs ?
+-			ca_ops->min_tso_segs(sk) :
+-			READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_min_tso_segs);
++	min_tso = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_min_tso_segs);
+ 
+-	tso_segs = tcp_tso_autosize(sk, mss_now, min_tso);
++	tso_segs = ca_ops->tso_segs ?
++			ca_ops->tso_segs(sk, mss_now) :
++			tcp_tso_autosize(sk, mss_now, min_tso);
+ 	return min_t(u32, tso_segs, sk->sk_gso_max_segs);
+ }
+ 
+diff --git a/tools/testing/selftests/bpf/progs/tcp_ca_kfunc.c b/tools/testing/selftests/bpf/progs/tcp_ca_kfunc.c
+index 0a3e9d35bf6f..58262e490336 100644
+--- a/tools/testing/selftests/bpf/progs/tcp_ca_kfunc.c
++++ b/tools/testing/selftests/bpf/progs/tcp_ca_kfunc.c
+@@ -10,7 +10,7 @@ extern u32 bbr_sndbuf_expand(struct sock *sk) __ksym;
+ extern u32 bbr_undo_cwnd(struct sock *sk) __ksym;
+ extern void bbr_cwnd_event_tx_start(struct sock *sk) __ksym;
+ extern u32 bbr_ssthresh(struct sock *sk) __ksym;
+-extern u32 bbr_min_tso_segs(struct sock *sk) __ksym;
++extern u32 bbr_tso_segs(struct sock *sk, u32 mss_now) __ksym;
+ extern void bbr_set_state(struct sock *sk, u8 new_state) __ksym;
+ 
+ extern void dctcp_init(struct sock *sk) __ksym;
+@@ -90,9 +90,9 @@ u32 BPF_PROG(ssthresh, struct sock *sk)
+ }
+ 
+ SEC("struct_ops")
+-u32 BPF_PROG(min_tso_segs, struct sock *sk)
++u32 BPF_PROG(tso_segs, struct sock *sk, u32 mss_now)
+ {
+-	return bbr_min_tso_segs(sk);
++	return bbr_tso_segs(sk, mss_now);
+ }
+ 
+ SEC("struct_ops")
+@@ -120,7 +120,7 @@ struct tcp_congestion_ops tcp_ca_kfunc = {
+ 	.cwnd_event	= (void *)cwnd_event,
+ 	.cwnd_event_tx_start = (void *)cwnd_event_tx_start,
+ 	.ssthresh	= (void *)ssthresh,
+-	.min_tso_segs	= (void *)min_tso_segs,
++	.tso_segs	= (void *)tso_segs,
+ 	.set_state	= (void *)set_state,
+ 	.pkts_acked     = (void *)pkts_acked,
+ 	.name		= "tcp_ca_kfunc",
+-- 
+2.34.1
 
