@@ -1,135 +1,207 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B386842BE9E;
-	Tue, 28 Jul 2026 12:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E5442BEB9
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 12:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785240674; cv=none; b=Jdv6z3aDyj7yJpHYQkKv596y0G07b8H/Mw4PgQc1jh73nDhiRY3yOMQQ3WdHLWgi8rVmbrjxrND8IWoMklZqaMJywy7WeTANo7iXvON7gH288IksBb+uHiWlzqm0eoSpsI/9Mw2k7cUteh+jte0vDNgBbUyTY/gNewEUK7MX02k=
+	t=1785241565; cv=none; b=obhK/qcv5vMmBcd5X0f+JfN/7maWTOomMfcnlSNv9ZOEJaBJFK3g6VwGjdlquRBATazIfvmHT/Ij9JuVrpailjuTHUoHeSRHsaUaaqLuVz1U1KbaYKPfFnmvv1EGulTE3xAv28YWZb/ooAAsvXLsHgt1D1helZz1/NhPW2iQDNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785240674; c=relaxed/simple;
-	bh=RdRbcYo4YQw8o2tm290WjpQUsK+BVcHblmsguTxjyj4=;
+	s=arc-20240116; t=1785241565; c=relaxed/simple;
+	bh=1HyV25WAh144h2RcA8Q/ogDHhrNzrEB972OiZUhndPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m8k0a6uIjwOV3KNwQcs+jdfdlrEJ2TSMh1bRuE/UJ2i7QB+s7zr0wSmHTbhaTeIMGH7glk5bx+zQLwgZ/3Hd4QA7lfU4UKmdePH1HFiAF5LSZAvq28jUAR+c+Lloa7Kj5c4qgRVKunAPngmy9BpqhObx6yay1UXt+xfyKrp2D2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GLrFWXCB; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=cP9pAvMqpeOldprea/cvWMM71zmuOnDZovb3qEDbsyDT/koksd1XbjVPyPLCc7ZFoFOWiVBnovcl28dVOl8szGRUbmGJPlNY7dh38iC2fg0SIfbWZRw1FGADMcoPLeeRNMNi3bo1+WU0XVB7n+6ZmYxHsd2bMgS6OjOt2CpFaa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S2/oeJh4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GLrFWXCB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D8C1F000E9;
-	Tue, 28 Jul 2026 12:11:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S2/oeJh4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216E01F000E9;
+	Tue, 28 Jul 2026 12:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785240673;
-	bh=buB0X43QUK9P3Fy3/obDOOcqSvxEKw3BsEa0Y+/pzxU=;
+	s=k20260515; t=1785241563;
+	bh=fZN/+KHGC66DLLnPGV5lsj9Fqr2bAVnATdrZpKLj68U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GLrFWXCB8m434h7EWqtxQubxsFveucC9g0WzH6IkgkOvZR3/BUqyHCMaef2E3Flys
-	 ywA5NaxZzNlEEi1WyU81zNgbqoKYw/8iMznnOZ+4t63PFncorqPIKDV/y6zZt91W3b
-	 EMDUabgfIyMdqzJSlS5+c0l8d+uflUYnvRMuutsSOm/drd3jHkp3xRysfLJv22NIH6
-	 skQewYPhZ5BJf6TdPsSoT3jvchScvXkDs+RFo9YDw0WovmAT5Yjrl5ZdUWeKbRGrQy
-	 T4gdRREhrkf5rpcdzsvNsUFNBVEZms6u/mCz52iyoz4YsVuRhXuF/5AILk/kVQVGwk
-	 ocDwRUOzmbb3A==
+	b=S2/oeJh441qRUfd41s4Hxd4/+Dg5ItYop4SgSYz9LklXb7/IdEiYUcB/NY7dPhxpC
+	 Brgoapan1eOx/NMZJtG1LovN8i4tfgF2N06nrxi1kDBNi0xSpxQLyVlpSzFBRSW+B6
+	 pPd0Aq0JuXB62aY6MKTABlY75PW0kE4ml+d77HQfs9A3I91hXriaFzgXnO/Q3nHkiS
+	 PyzuWbDBhW/ncc4zb3bd++g2VYFVDLTkeKxaFEE28IAviJWXsxX3JzXZUwSLcndHXn
+	 MPm11nB3scxoUSpME6DGLirl0fqSYHm8dLNcxW2hQWpLZ5fPtvzp7Jav2A+Sq8Q/Pb
+	 QblL1ve4qXd2g==
 From: Simon Horman <horms@kernel.org>
-To: bestswngs@gmail.com
+To: enjou1224z@gmail.com
 Cc: Simon Horman <horms@kernel.org>,
-	david@ixit.cz,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
+	dhowells@redhat.com,
+	marc.dionne@auristor.com,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	xmei5@asu.edu
-Subject: Re: [PATCH net v2] nfc: digital: fix use-after-free in nfc_digital_unregister_device()
-Date: Tue, 28 Jul 2026 13:10:43 +0100
-Message-ID: <20260728121043.896478-1-horms@kernel.org>
+	vega@nebusec.ai,
+	zihanx@nebusec.ai
+Subject: Re: [PATCH net 1/1] rxrpc: fix encap_rcv skb accounting exhaustion
+Date: Tue, 28 Jul 2026 13:24:49 +0100
+Message-ID: <20260728122451.899477-2-horms@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260723174450.1015153-2-bestswngs@gmail.com>
-References: <20260723174450.1015153-2-bestswngs@gmail.com>
+In-Reply-To: <b640f1b3e27afeb9f397b2bab9ce23f4f2f864a7.1784742007.git.zihanx@nebusec.ai>
+References: <b640f1b3e27afeb9f397b2bab9ce23f4f2f864a7.1784742007.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260723174450.1015153-2-bestswngs@gmail.com?part=1
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/b640f1b3e27afeb9f397b2bab9ce23f4f2f864a7.1784742007.git.zihanx@nebusec.ai?part=1
 ---
-Subject: nfc: digital: fix use-after-free in nfc_digital_unregister_device()
+rxrpc: fix encap_rcv skb accounting exhaustion
 
-This patch replaces cancel_work_sync() with disable_work_sync() on
-cmd_work and cmd_complete_work in nfc_digital_unregister_device() so
-that re-arming schedule_work() calls become no-ops before the cmd_queue
-is freed.
+This patch adds UDP rcvbuf accounting to rxrpc_encap_rcv() so that an
+AF_RXRPC service such as the AFS callback listener cannot be flooded
+until local queue memory grows unbounded. It also switches
+rxrpc_destroy_local() to clear sk_user_data via RCU and defers
+sock_release() until after the local rx queues are purged.
 
-> diff --git a/net/nfc/digital_core.c b/net/nfc/digital_core.c
-> index 7cb1e6aaae90..6def5132a4a6 100644
-> --- a/net/nfc/digital_core.c
-> +++ b/net/nfc/digital_core.c
-> @@ -843,8 +843,8 @@ void nfc_digital_unregister_device(struct nfc_digital_dev *ddev)
->  	mutex_unlock(&ddev->poll_lock);
->  
->  	cancel_delayed_work_sync(&ddev->poll_work);
-> -	cancel_work_sync(&ddev->cmd_work);
-> -	cancel_work_sync(&ddev->cmd_complete_work);
-> +	disable_work_sync(&ddev->cmd_work);
-> +	disable_work_sync(&ddev->cmd_complete_work);
+> diff --git a/net/rxrpc/io_thread.c b/net/rxrpc/io_thread.c
+> index dc5184a2fa9d..85411a2d8428 100644
+> --- a/net/rxrpc/io_thread.c
+> +++ b/net/rxrpc/io_thread.c
+> @@ -41,8 +41,6 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
+>  	if (skb->tstamp == 0)
+>  		skb->tstamp = ktime_get_real();
+>
+> -	skb->mark = RXRPC_SKB_MARK_PACKET;
+> -	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
+>  	rx_queue = &local->rx_queue;
+>  #ifdef CONFIG_AF_RXRPC_INJECT_RX_DELAY
+>  	if (rxrpc_inject_rx_delay ||
+> @@ -52,6 +50,19 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
+>  	}
+>  #endif
+>
+> +	if (atomic_read(&udp_sk->sk_rmem_alloc) >= READ_ONCE(udp_sk->sk_rcvbuf) ||
+> +	    !sk_rmem_schedule(udp_sk, skb, skb->truesize)) {
+> +		atomic_inc(&udp_sk->sk_drops);
+> +		kfree_skb(skb);
+
+[Low]
+Should the drop reason here be SKB_DROP_REASON_SOCKET_RCVBUFF rather
+than the default SKB_DROP_REASON_NOT_SPECIFIED that kfree_skb() maps
+to?
+
+The regular UDP receive path in __udp_enqueue_schedule_skb() uses
+kfree_skb_reason(skb, SKB_DROP_REASON_SOCKET_RCVBUFF) so that
+drop_monitor / drop-reason tracepoints classify rcvbuf-full drops. As
+written, rxrpc's rcvbuf-full drops will show up as unspecified.
+
+> +		return 0;
+> +	}
+> +
+> +	skb->dev = NULL;
+> +	skb_set_owner_r(skb, udp_sk);
+
+[Critical]
+Once skb_set_owner_r(skb, udp_sk) installs sock_rfree() as the
+destructor, skb->sk / skb->destructor are bound to udp_sk for the
+lifetime of the skb.
+
+The io_thread then hands these skbs off to further queues without
+re-orphaning, for example:
+
+net/rxrpc/ar-internal.h:rxrpc_queue_rx_call_packet()
+    __skb_queue_tail(&call->rx_queue, skb);
+
+net/rxrpc/conn_event.c:rxrpc_post_packet_to_conn()
+    skb_queue_tail(&conn->rx_queue, skb);
+
+net/rxrpc/oob.c:rxrpc_notify_socket_oob()
+    skb_queue_tail(&rx->recvmsg_oobq, skb);
+
+None of these paths call skb_orphan() or re-run skb_set_owner_r() with
+a different sk, so skb->sk stays pointing at udp_sk and the destructor
+stays sock_rfree.
+
+rxrpc_destroy_local() only purges local->rx_queue and
+local->rx_delay_queue before sock_release(socket):
+
+    rxrpc_purge_queue(&local->rx_delay_queue);
+    rxrpc_purge_queue(&local->rx_queue);
+
+    if (socket)
+        sock_release(socket);
+
+Meanwhile rxrpc_put_connection() can defer rxrpc_clean_up_connection()
+to a workqueue when called from softirq or when the processor work /
+timer is busy, and rxrpc_destroy_local() does not flush_work() /
+cancel_work_sync() those destructor workers.
+
+If the deferred cleanup runs after sock_release() has freed udp_sk,
+rxrpc_clean_up_connection() -> rxrpc_purge_queue(&conn->rx_queue) will
+invoke sock_rfree() on each skb, which does atomic_sub(len,
+&sk->sk_rmem_alloc) and sk_mem_uncharge() on freed memory.
+
+Can this produce a remotely triggerable use-after-free on the UDP
+sock, since any peer can drive rxrpc_post_packet_to_conn() or
+rxrpc_queue_rx_call_packet()?
 
 [High]
-Does this fully close the use-after-free window, or only the workqueue
-re-arm portion of it?
+Is any lock held on udp_sk when sk_rmem_schedule() and
+skb_set_owner_r() run here?
 
-Once digital_wq_cmd() has handed a command to the driver via
-ops->in_send_cmd(..., digital_send_cmd_complete, cmd), the driver
-retains a raw pointer to that digital_cmd in its own async machinery
-(for nfcsim this is dev->recv_work / dev->arg, for real drivers it is
-URB completions, timers, etc.).
+Both paths do a non-atomic RMW on sk_forward_alloc via
+sk_forward_alloc_add(), which is only WRITE_ONCE(sk->sk_forward_alloc,
+sk->sk_forward_alloc + val).
 
-disable_work_sync() on cmd_work and cmd_complete_work waits only for
-those two work items; it does not synchronize the driver's async
-completion path.  When that completion later fires it calls back into
-digital_send_cmd_complete():
+The comment above rxrpc_encap_rcv() states the socket is not held
+locked by the caller and this runs under RCU only. The regular UDP
+path in __udp_enqueue_schedule_skb() takes spin_lock(&list->lock) on
+sk_receive_queue before udp_rmem_schedule() and sk_forward_alloc_add()
+precisely to serialise this counter.
 
-    static void digital_send_cmd_complete(struct nfc_digital_dev *ddev,
-                                          void *arg, struct sk_buff *resp)
-    {
-            struct digital_cmd *cmd = arg;
+With concurrent softirqs on multiple CPUs delivering to the same UDP
+socket, and sock_rfree() destructors firing asynchronously from the
+io_thread purge and deferred conn/call cleanup, can updates to
+sk_forward_alloc be lost, allowing the rcvbuf ceiling this patch is
+meant to enforce to drift?
 
-            cmd->resp = resp;
+[Medium]
+Is the sequence
 
-            schedule_work(&ddev->cmd_complete_work);
+    if (atomic_read(&udp_sk->sk_rmem_alloc) >= READ_ONCE(udp_sk->sk_rcvbuf) ||
+        !sk_rmem_schedule(udp_sk, skb, skb->truesize)) {
+        ...
     }
 
-The subsequent schedule_work() is correctly a no-op after
-disable_work_sync(), but the cmd->resp = resp store happens first, on
-a digital_cmd that the cleanup loop in nfc_digital_unregister_device()
-may already have kfree()'d.
+    skb_set_owner_r(skb, udp_sk);
 
-The same reproducer described in the commit message applies: in
-nfcsim_device_free(), nfc_digital_unregister_device() runs before
-cancel_work_sync(&dev->recv_work) and before dev->up = false, so a
-pending dev->recv_work blocked in wait_event can wake up after the
-queue has been freed and call dev->cb(ddev, dev->arg, skb) with
-dev->arg pointing at a freed digital_cmd.
+racy across CPUs?
 
-Elsewhere in this file the pattern for stopping in-flight commands
-before touching the queue calls digital_abort_cmd(ddev) (see
-digital_stop_poll(), digital_dep_link_down(), and
-digital_deactivate_target()), which asks the driver to abort its
-outstanding commands.  Would an equivalent digital_abort_cmd(ddev) in
-nfc_digital_unregister_device(), before the list_for_each_entry_safe()
-kfree loop, be needed here as well?
+N concurrent softirqs can each observe rmem_alloc < rcvbuf and then
+each add skb->truesize in skb_set_owner_r() -> atomic_add(...,
+&sk->sk_rmem_alloc), so the effective cap becomes rcvbuf + O(NCPU *
+truesize) rather than a strict bound. The commit message states the
+patch will "drop packets once the socket rcvbuf limit is reached" —
+should that be qualified given this overshoot?
 
-The commit message states:
+> +	skb_dst_force(skb);
+> +
+> +	skb->mark = RXRPC_SKB_MARK_PACKET;
+> +	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
+>  	skb_queue_tail(rx_queue, skb);
+>  	wake_up_process(io_thread);
+>  	return 0;
 
-    Once both works are disabled no work can run, and the cleanup
-    loop frees the queue with no work able to reach a freed command.
+[Low]
+rxrpc's UDP endpoint is opened by kernel code via udp_sock_create() in
+rxrpc_open_socket() and is not exposed to userspace, so there is no
+SO_RCVBUF path to tune sk_rcvbuf per endpoint. After this change,
+net.core.rmem_default (typically ~200 KB) becomes the effective drop
+threshold for all AF_RXRPC / AFS traffic on the host, with no
+per-endpoint or rxrpc-specific knob to raise it.
 
-Is that description accurate given that the driver's completion
-callback reaches the digital_cmd directly through the arg pointer
-rather than through cmd_work or cmd_complete_work?
-
-This residual issue is pre-existing rather than introduced by the
-patch, but it seems relevant to the completeness of the fix as
-described.
+Was this tradeoff considered, and should the commit message note it?
+On busy AFS deployments this could drop legitimate traffic that is
+only tunable via a global sysctl affecting every socket on the system.
