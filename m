@@ -1,167 +1,127 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541F44248B1
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 10:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D443AEF4F;
+	Tue, 28 Jul 2026 10:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785235741; cv=none; b=lKZJQGAKYW9rXFYP723kCaGeJ9lnqbMvC82oIXTpNjie9QRdNs7orLfGKfS6isxnq+byjy7R8LEQfNweJM0ebF+SPNIv5YriisjN/2hgJdLF549Y71yRqfwhtlDSbFkS6dJb/A5ysvLy4J8qp2GuPyXdkJamNy3eFd1pEBp3sR4=
+	t=1785235837; cv=none; b=Zf3qC300dK2in1GRI+c49z4JA3/mpKPKc+qFjv8EHVdekIpxz6DBWAKxMi6YWAtQd1XvMqWRLiNOYrr5pGeld9138ihyKACdEnZpKWys8WsgD/ySz6GF6ZiqENLLLfLGX1jeZJB2Va/ldCdFukXxzMbo7wMW4yEPA8ArVBhERxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785235741; c=relaxed/simple;
-	bh=R7pbg4BbOsUrkcuUhcT8PFMmCBGVLrpb/aQF+NHcs/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q9C9sfdZ9uzPT1S+bb1myBSDMLqficHIaYlk/xP9GYp93QlxRRH4MFJSWqKpOjiwoh3i7iwP/cL9a56k7AJCqlIDJZw256GhbB6prnd3zSalGh5Nj3jqHlpROW7M87X9njEOE3LRwMvChQqN/BpQshRnZICXOAfHOHNjFpmBG3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OwBdPrEs; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LkDwfrrU; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785235837; c=relaxed/simple;
+	bh=pHODENAMAwfnGyLkSo/HZZl7Pu/8FmPJmTJlj4vSCsw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QN7r5GaqAL7xg5tp9MBkLkXtLc2slKXgBvtyp4tEQl7PXHUxwQk/86YT4S57SDWgLyO5+SXYT5pjAkhmcXLBej0SD5v5kgL9JbaVMED3VOsNgjmz+tqRRhbhmhtslKtvIcertQfE+BJmLE7FHDi8UhCxj4CDwrOYR3J1Q7qOLpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=py5KqViM; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OwBdPrEs";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LkDwfrrU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785235732;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dfaxk2NaR48Hu7efMAKkLqR/JuqGfWptwGyvHlDsSCI=;
-	b=OwBdPrEsFNULeADd6ZT66JbkbROrLNz/rUZmRNskv+vzNOHkmFfm6fHXTVryZnK2mqAlud
-	ZrMwf21S1qTaPgw6ub/oiLtQKXiRf+tjMXAGaL0Olys2NuW7NkxbFpzJdODuV07KykkTHb
-	W9M6SqIuMEv2v5P6DmYiV45obtzqPnQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-252-5kJgmnvkO4SmQKQetlAY6Q-1; Tue, 28 Jul 2026 06:48:51 -0400
-X-MC-Unique: 5kJgmnvkO4SmQKQetlAY6Q-1
-X-Mimecast-MFC-AGG-ID: 5kJgmnvkO4SmQKQetlAY6Q_1785235730
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4954b1c6310so33721035e9.0
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 03:48:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785235730; x=1785840530; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dfaxk2NaR48Hu7efMAKkLqR/JuqGfWptwGyvHlDsSCI=;
-        b=LkDwfrrU0VXY5i+NwGcwWmYQXtAg5nsv5Up+m3j6S599tbihRbwCBRHwLHiEw9TLg5
-         fwyWyaTWzMHncobu1V3XzmwrprZo3HopBI9/WjJf6A598ewQg043Ipu3bnqDKhIsxwua
-         A+VeSYlfPP1309yv7GrJDIqtQ5ps5xVtUdEvqlhJ1U/EhvakH9eebPwQwt/RhgIsLvtR
-         trRCidNeLNY2v007wVH8mRRlOfAEBn+ouy2fElwtZNOK9kji2ATAndXdClfnUl5XRMfb
-         U5paJx6y/uDJ6e/dzaDwl4hNFiINT4oLXuSc13TGjc8UFvNcqylfRhKB7/zRZfMVjsuk
-         e1tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785235730; x=1785840530;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=dfaxk2NaR48Hu7efMAKkLqR/JuqGfWptwGyvHlDsSCI=;
-        b=n18kkCKYGT1vGWoZi3bpvhXz/yiNvpTfOlDmQ1qz6flw4B8r84VvQXaGI3rlOVWMeA
-         G706tRxbJu9NBeT2hhDWgM5o92TZ3mPeGiLX8nIjJ9OWorN+HEqnY79DiUoTa3BFWG2u
-         macS8C1Ym5ClrZipwS4jYtK8OKogTpq3Dhx5wIPeeFelh2bbnG9JiPdH4Wd32i7r9zlo
-         p+uiOyHs2RLANLepblpJcTEyKI7q0Ip98ScmDbcIqvjJ/64s6KraRu0CDJjtmk7Ud6c7
-         IeTdiRrrvNLmMouhe8rp8b4kJJ5g5+dNnawxPqEnUzEhUXKOWt7DnnSW3YGfje+E4Ebx
-         vMPQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp5GOXBmpMN5aeCtZxLxMGC5q8OCcoOwXXlPqZmXX5YecWqupMAEK+U1GlHWGhiwvJdF56a6Ao=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnROFhsuNZhYm3EJ/+Kzh49OhVV6yGXsJ2VKrjZPLWHDA32D7W
-	QxWMsOSgulh51L8YDsZ48umlg8YVVdhIsoyR/wrsNO/WFxFCE9ieRkWoVfEDZ4vC6BnWPItzI8z
-	NB10MlgLNu6FwsHxsKM4l4TfYWYEAq6DuuEFdvxelngpjqDNUgvLNixuDkA==
-X-Gm-Gg: AR+sD13Pa0VwdUtdbVZLZAU2hVTVNz542pQoW/wuuxFbAPgeDCUkt2uySXduPLCFQ3x
-	XO+dixhGKoanV6Ls6OejTDQw0M6DV46wSX1EhD6Il8lmnYpHcgqPiskpCK7UNAHfN/46tH8fkSl
-	7ykFVEwSYgtRZhFn7b8YIVUvD8wSz+C4eZx+QcKSJfr/WMOpNLVFpcm10Aow2STyejAh0Jzt+XG
-	PKb/WbdE1CP9bUfv5grbMnjRGK6D/tRTfXRZUnTMfDtLWYn7xDgwD0jyU+Wn2WfZBXV1ALBWawO
-	wP0JG2FtuLDIh0mBtK21XHV/Hh2z0VGwBzwForBR2LmX5Oj0b71c9/NB0gtuYN4=
-X-Received: by 2002:a05:600c:8b5b:b0:493:df1d:7488 with SMTP id 5b1f17b1804b1-496c6444888mr20258345e9.16.1785235730304;
-        Tue, 28 Jul 2026 03:48:50 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b5b:b0:493:df1d:7488 with SMTP id 5b1f17b1804b1-496c6444888mr20258075e9.16.1785235729814;
-        Tue, 28 Jul 2026 03:48:49 -0700 (PDT)
-Received: from debian ([2001:4649:f075:0:a45e:6b9:73fc:f9aa])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c46240c4sm67760345e9.12.2026.07.28.03.48.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 03:48:49 -0700 (PDT)
-Date: Tue, 28 Jul 2026 12:48:41 +0200
-From: Guillaume Nault <gnault@redhat.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Ren Wei <enjou1224z@gmail.com>, netdev@vger.kernel.org,
-	jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai,
-	bronzed_45_vested@icloud.com
-Subject: Re: [PATCH net v2 0/2] net/sched: act_vlan: pop_eth can strip
- non-Ethernet skbs and panic loopback
-Message-ID: <amiJCTagBrAHsTZ_@debian>
-References: <cover.1784709375.git.bronzed_45_vested@icloud.com>
- <CAM0EoMm8HGCcmGB5btFfWKA7-7sGQyhYB_FvxQu7POhZ+W=dsw@mail.gmail.com>
- <CAM0EoMkTr8y1KBXTqU6MyJOVezGknZg5u6BYE7WBzdVyqaPm6g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="py5KqViM"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SAlm47896814;
+	Tue, 28 Jul 2026 10:50:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=/zZCOp
+	bkYB37Wb7dao3TlYIKTkOEgSemVSQDkHXwdoM=; b=py5KqViM8w/N2HfQS5bTed
+	PUslNNQF91+aFMFCQbDqSlJThm2+eMEkVBrKE/UixhCPZC/TeDomGm/JeLzeIDqY
+	6U3fOUmfehurCdBqCxq7ExB2OpSM6bskckMwRvhuRngNMkL2d/KUEvnFfFpoCrm3
+	bKMJ0JAVCB1F8GaAQOAoCaYupPhYoyt0w1oMbyqmTaN57WkwyasxSMu1S7AZW+Ep
+	Qi4IBWsBLlk4L2mMQYXvPfDIhQCZFWYJCmHkH09r60qC4miBwt/soZ2odyDhK6/4
+	8txcbJdzSx/awOMecjm/2xYJEkWt6T0sawdJWqS62rmev9av7cP+8Q0jlRzk5kpw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuwcv6dp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jul 2026 10:50:17 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66SAfhgp021761;
+	Tue, 28 Jul 2026 10:50:17 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn7uw1jhu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jul 2026 10:50:16 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66SAoCs127918818
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Jul 2026 10:50:12 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C03842004B;
+	Tue, 28 Jul 2026 10:50:12 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A0A6220043;
+	Tue, 28 Jul 2026 10:50:07 +0000 (GMT)
+Received: from [9.124.208.66] (unknown [9.124.208.66])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 28 Jul 2026 10:50:07 +0000 (GMT)
+Message-ID: <366c7f5b-3261-4786-8a10-1323597af43f@linux.ibm.com>
+Date: Tue, 28 Jul 2026 16:20:05 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAM0EoMkTr8y1KBXTqU6MyJOVezGknZg5u6BYE7WBzdVyqaPm6g@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] s390/qeth: Check CAP_NET_ADMIN for private ioctls
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: David Miller <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Alexandra Winter <wintera@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>,
+        arnd@arndb.de, stable@vger.kernel.org
+References: <20260723140050.762991-1-aswin@linux.ibm.com>
+ <20260727180644.0e97582b@kernel.org>
+Content-Language: en-US
+From: Aswin Karuvally <aswin@linux.ibm.com>
+In-Reply-To: <20260727180644.0e97582b@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: EmAYogU9qUEZJKZYlswdILgdhV7egqH_
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDA5NSBTYWx0ZWRfX808sFjD/Ao0f
+ Ij9jRkwtpua9EnVVpUL+XN3DYfLUCAi4HO80jMjz9vKRrIScN6ixWoEAWslJIUMCOqIVbEZpNp3
+ T4EkZmgOpbFMtlXPIgyZ9RR+e/JPmZA=
+X-Authority-Analysis: v=2.4 cv=E/z9Y6dl c=1 sm=1 tr=0 ts=6a68896a cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=GhjaPdZqsfwpqAw5TiUA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDA5NSBTYWx0ZWRfXzl+QhZjIGvpX
+ s7xDipQCVoJW4ceY8rkNLb7Fk8lLxU8oew1tcKLrKvKubkXx0HJ3ZNpB7jAY4Bh5PDCO29v6HTg
+ keDJlRsrnywHcH7ZCREfi41sYUmvG0h8pZNMzpXCVUWhvHeaSQOdOJOfaHJIjYSEbK3Grwgjw/7
+ /f1FInn/x/epYgC4AFL3KK7rKUBufITi+8jfe+2j1tlYE/SpwvdktegHVd4EGKDGygcHn9pS5BW
+ 1pIaJVimUJ+mEyFwzas5fpcBrEixIW0VzLPsedxmI5Oo/V7tBD/wnuNDhEUJuGDji0c783LG6vX
+ sffOfYB3G75xiYrU+1Hcf93QTQD56hivIqAbBuVApoLJCuJEuirPDlZQiUvrw2mejX3UK3uERQz
+ UXTmjxzrfij5l4okUqHUj/1JrjO75MnHdf/lKjrTo32RFuFOy/nDrXJ85vVrJ7b45S4rcBWFIjA
+ f6M/NJV3JDLIa/fQagw==
+X-Proofpoint-GUID: ykyNVfwhXSE1VLdz3q0fysdLIgzp5SXc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-28_02,2026-07-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 spamscore=0 clxscore=1011 phishscore=0
+ lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607280095
 
-On Sat, Jul 25, 2026 at 08:21:52AM -0400, Jamal Hadi Salim wrote:
-> On Sat, Jul 25, 2026 at 6:46 AM Jamal Hadi Salim <jhs@mojatatu.com> wrote:
-> >
-> > On Thu, Jul 23, 2026 at 1:54 PM Ren Wei <enjou1224z@gmail.com> wrote:
-> > >
-> > > From: Wyatt Feng <bronzed_45_vested@icloud.com>
-> > >
-> > > Hi Linux kernel maintainers,
-> > >
-> > > We found an issue in net/sched/act_vlan.c.
-> > > The bug is reachable by an unprivileged user using private user and network namespaces.
-> > > The relevant details are provided below.
-> > >
-> >
-> > Please remove bouncing @bytedance emails from the CC list.
-> >
-> > You did not address the discussion we had earlier, which is a very
-> > good example of an issue Yuan brought up at the bof - "fixing the root
-> > cause".
-> > Attaching the last email from Guillaume since this was not on a public list.
-> > I had argued you only need patch 2 (and to be safe handle both pop and
-> > push) and Guillaume argued that would not fix the root cause and there
-> > is potential the bug could still happen and patch 1 would be needed.
-> > His exact wording is:
-> > "
-> > So, if patch 1 isn't needed, that means we must guarantee all skbs
-> > reaching an ARPHRD_ETHER device to have at least ETH_HLEN bytes of
-> > headroom.
-> > "
-> > after some back and forth we steered into drivers and pskb_may_pull()
-> > invocation.
-> >
-> > In any case it would be a good idea for you to review and consider the
-> > discussion and infact test with suggested vrf device (which doesnt
-> > pskb_may_pull())
-> >
+On 28/07/26 06:36, Jakub Kicinski wrote:
+> On Thu, 23 Jul 2026 16:00:50 +0200 Aswin Karuvally wrote:
+>> Gate the SIOCDEVPRIVATE ioctl commands SIOC_QETH_ADP_SET_SNMP_CONTROL,
+>> SIOC_QETH_GET_CARD_TYPE and SIOC_QETH_QUERY_OAT with CAP_NET_ADMIN
+>> capable check to ensure unprivileged users cannot invoke them.
 > 
-> After some coffee, _my view_:
-> The root cause is the missing pskb_may_pull(skb, ETH_HLEN) in
-> loopback_xmit() and vrf_local_xmit() (thats why i was asking to repro
-> with vrf).
+> No need to make this netns-aware, I assume?
 
-vrf_local_xmit() is only invoked from vrf_process_v6_outbound() and
-vrf_process_v4_outbound(), which both start with a pskb_may_pull()
-call since commit 107e47cc80ec ("vrf: make sure skb->data contains ip
-header to make routing"). So the problem shouldn't be reproducible with
-VRF.
+Hi Jakub,
+Thank you for accepting the patch!
 
-I also think that the problem should be fixed by adding pskb_may_pull()
-to loopback_xmit().
-
-> The proper fix belongs in those drivers, not in the tc action.
-> Guillaume's point is valid: limiting POP_ETH to ARPHRD_ETHER devices
-> doesn't fix the  problem, it just makes the existing reproducer stop
-> crashing while leaving the underlying  driver defect exploitable
-> through other paths.
-> 
-> That said, another stack or code path might lead to vlan/skbmod so
-> fixing the actions might make sense as a follow-up.
-> 
-> cheers,
-> jamal
-> 
-
+It was concluded that the tools that make use of these calls are
+strictly meant for IBM OSA cards on an LPAR, which find very limited use
+within environments that make use of network namespaces, eg. containers.
+Thus stuck with capable().
