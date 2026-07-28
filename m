@@ -1,62 +1,63 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B380040F8C3
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 08:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DD33D966A
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 08:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785228212; cv=none; b=Op9QHoFY+OVmhJo5tF8qISYgQ1kP06RTHfZMD53aVL+Hb2B4bi0Al1sU/YjMu0H9P50u9oueeuH+k4Dezc5LFAPKmfoOuB6oixpq5ccmnxFJy9hOfNNhaEV6CJGCOiI/msM7bMOwB/XMLTxVnnSZ3kHrmvUUqmd1GCYfWy27uV4=
+	t=1785228212; cv=none; b=nCBXhLN8RJuQTLmgw2huQ1sJCCKXYNqywEMuVX+KluhCeeT7FKvh9cSCdraeMFPMxbZIfJWZiHvPNB/aYskWXqGBWAntBMb7vGMi2AhPvFUVg7n7XiJ6n9AxBfoHeImIe8Qfsed2OXE4jNfbnmFlxvApAmRTs+0B1IEX7ySColA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785228212; c=relaxed/simple;
-	bh=VL/g5CE7FJkYOSTy1f0FYtYFN2GRLoeQlOHWa07DRrQ=;
+	bh=FYaUmL6H+EAliRvCLFUhHcot77RHeduBDPDlqed6EzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=srDnDhy3r0yFRwYRbbtoirrmupeNH3i5boMR6VEk4KyWFjLgyYBHbyKg/c6RiMxG+4nXYzS0JB47Fj74L+/Haf5dqkakQ5B1FsnlCH5xVDJ3bCJb7TypamDYncWEBcUlI+cyVyYoGB+1JB0TvSE1aHw3H0E3IEMqSELgZiuZPyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bIO3en2a; arc=none smtp.client-ip=209.85.128.54
+	 MIME-Version:Content-Type; b=aoKmavIK0zXRpkPQuUcJTjxK7AKrLL5IKauL+/dxh9b8qMi6hRsA9nIJVrH3Uq7Q44AfiRySI9AV9SWPvpiX0uqsDct45k8DAOytotbZIEVDEqL99fe/lVlSKoudZqQNNaWV9tfWV1k20MkwPHyKeUugph98TmdPmd7dIa1PC/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FYahtxPI; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bIO3en2a"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4954a2e73a9so18881315e9.3
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 01:43:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FYahtxPI"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-496b7622a83so18024815e9.2
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 01:43:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785228208; x=1785833008; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o7OnQKbzL42miSqebEG03z3AI3kA2cenK1gpZlkwILo=;
-        b=bIO3en2a6xcsfJAg76x7lGmOTwNgONUqUW/a8qW8t3NkRcHsQ/P3t/GeCM7ZxmxjK4
-         maX+Qx+/HV9w1HWjg1uh1l0P685xJQrKSSn0VqsW65Ui5ATOoyVqZiSxlg/c+ZmVBaAn
-         8DeuGPhGn1S5mltIGcOK1S85N1h3XKEe/phHTfUkwWGxp+XSshe6wr0n+/zWisgrnq/X
-         rCpPnFoz35+uBtYcjwOZgBF+mRRO2vHSglHBls0tyQiy0uJ5Dgz+9mkrMP19zc7/CsGr
-         IBOM0eRSnMo6R2e/bpKkM+WW66yNiVotDud/ELpBmp5SUzO83F/hVmpU++a/sSWqrIlw
-         w6sw==
+        d=gmail.com; s=20251104; t=1785228206; x=1785833006; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VHpx3O66zQ9UtZhb1H5WPKtW1SqqLo1+U0Up3Cpa9z8=;
+        b=FYahtxPIpsy9ChuVfh86jDr1STqb4KcpgQd1H6s8mzqY3PADMQJW8M+ypz1NzRsdpN
+         ENrOsU/YFMVxSBZ25ZNvFCljoL+x4DeNXYzkkywAzZZl1/1W0L3vIwNzdydkzIuqxWPm
+         lHw3oey99rBHwI0mJ/0vb1XWHTxD6OvEu9X63FI2Q401QjiwDFPTsTPOtuvxnqhYdnU6
+         VcrUn77GbJFby1JigoljJOecyig4y+9aur16LStdFzBKMn/m5upYZ5e8LGDJG+ODkOMU
+         EVlu6E5M6+y2lfZbQ9zz3lDlWBfD4c8EAjigM6nSZ0d6EC6iTYQKxNRjxZ9+kGJFbPg8
+         ZO+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785228208; x=1785833008;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=o7OnQKbzL42miSqebEG03z3AI3kA2cenK1gpZlkwILo=;
-        b=Fhxp/1vCVnKokX/YcGIyksK6qvefTkHTKsrV1ZGQ+onzIUH7oNFllB4jjqfLSW1ACj
-         3mKxe7Qc8qfAzurTednE2OlRVBKmwHztlfLQp6xX2FQ9iJJJ3ndqaiEDGnCdonQ4fKNu
-         95n6QoaSoTBK12pLRtdJ+JeAK8rPYw8rcxg7xFxDu9zxb8LC16voMrNMfHlMVicDRwBA
-         wKPmWjrOgdEhzy8jYAuOWOt7mjiPdt9Xw0rlTGX0LQAC9TT08wKUtM87wFoDKNaAkFBR
-         nXukMl94Sk5GhYnKku4kK/5HCA5QWHzbaNWaUt9cEUx4gd4xB/RQJJvOpEJ449SV4+ld
-         K4Vg==
-X-Gm-Message-State: AOJu0YxZeFgE3tzx+ENN8C3ITYCNcsNizw00MrJihPgjAE04TGhxSRVZ
-	caQyMoj7nut0t9coCU5Po639AmTzG1a9kh8+uHvT3jR9P78gpHga27a+
-X-Gm-Gg: AR+sD13x0lOP/TTHHhkPtDWEbWMkE+HTXWBVRUsUP8lKNaEFhF+JvRKAHX52i//1zOq
-	gnLX/g/bB3zALUy0gM7ht7ociIqJ9T1qUqFQn9rOdlF6sAzbbfC0ej/9qKNh0oxopY7xvWzj1Ms
-	d9Q2d6l8bHP85xKvDDaKAmNGa/FERkEX87KL3pY+feY84ppw7kWc1KRiUjVB1wCIUTLCwNwNNkp
-	ci7hwBdMjP6rRBnJX2QJBgrMeDFPeQteWN+/7A5EXTabyJ8i0Jc+gtvTedxVFpOM7omNb4bmHxC
-	tpDn/+5XbiTbljqy5c2qGdlsAt/+sxEB4vMWZdYco5+uvSzxgMV4+TLUyXLBJ+Dq8e+aGkmcbS6
-	FZiVO6Y9B+veqOVMxQ4Emql5QHxkfTpwgA797uCyJVwy76a8NFR9ASu9gTJZNqRyAk0ApkX0wiW
-	1xjVH3oCx4HKOMV8M=
-X-Received: by 2002:a05:600c:548a:b0:495:6060:d6de with SMTP id 5b1f17b1804b1-496c6581719mr13675655e9.31.1785228207878;
-        Tue, 28 Jul 2026 01:43:27 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785228206; x=1785833006;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VHpx3O66zQ9UtZhb1H5WPKtW1SqqLo1+U0Up3Cpa9z8=;
+        b=BQ+SkYyaasvRuEGd6LSQp4x/swyZNF1R4c0kGZIAIiFv9mG/A8jR04r4cxHADR+/8j
+         pcBnr+dsXw/zgvcMjeClz8Z+VBbvhq1AiDUCXVuO11CFVO1gSum+/BHXw7yrPFrnJzlK
+         /or8OF2YetJqGi96aXWC2S5SnkUWJljGaipxdijg0SSBVBInvxoyvAVuVgrXpSLpowge
+         PeGC0vVqME5JCLNgrsuOea1B8mh2dJrDnMFeVSVvcSiMvGxJhhU/BQfy3UPK0LJVC39+
+         +tvCMdBeM5vh3gAM/uJlXigikM0WhQmJrQRUPfKOUmo7Ow3fFiR6QflEOtPIZMWq0O5R
+         Zs2w==
+X-Gm-Message-State: AOJu0Yz6hnazDYxUhaE7LTPmEa8mizgV58LHwPSmibvInxQo9pKVu0n6
+	TDhjEcYtuHb+wfr3CMjuF4PtnOR3WeADuvUlaCS8q1Kqiv2ubMxRalTg
+X-Gm-Gg: AR+sD13kilVxQdJ5o/0MvqObfWaggyYeJKD00OOM8jMMTvh231RqQ0x/bM0hGXG0a5J
+	GN1pyKvaePE+GAaY79fiNNpumwAYpJqiVV2Fr+9sKsi0eYQydSzUmIXreKVmZqbLx61Q7V5cN71
+	qctI3rVoqDIM2/hMtkXeq3VwDEnVTTnakA9NcSQVq7+SX4nJA2UM5SQQWluyHAP4YxMphx8DwrL
+	t+u3cU4P+gmuvTy8swnqzBce2jtO/PE9iBqjUOGA+vnsUBR/RCRnrb7ndpsTvQKqCryz15NKhGM
+	gyKXesqc7f302CzbH1RXdwqQfzq9g06AvoG9RTAzBX1zNbR0vZl8pV/j3lw7VcYwc9FP9JbUwgh
+	Wa06CVc/MsLthOmEu1bQhqj3pGiotWqWiTGHnXZ9kiCZfcHNYynX1sv2I/ezA2plyvkREgGB0n8
+	zAV63D
+X-Received: by 2002:a05:600c:1391:b0:495:7888:281c with SMTP id 5b1f17b1804b1-496c60c1c42mr14382955e9.0.1785228206104;
+        Tue, 28 Jul 2026 01:43:26 -0700 (PDT)
 Received: from builder ([2001:9e8:f139:f416:be24:11ff:fe30:5d85])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c444304esm57730845e9.0.2026.07.28.01.43.27
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c444304esm57730845e9.0.2026.07.28.01.43.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 01:43:27 -0700 (PDT)
+        Tue, 28 Jul 2026 01:43:25 -0700 (PDT)
 From: Jonas Jelonek <jelonek.jonas@gmail.com>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -74,9 +75,9 @@ Cc: netdev@vger.kernel.org,
 	Daniel Golle <daniel@makrotopia.org>,
 	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
 	Jonas Jelonek <jelonek.jonas@gmail.com>
-Subject: [PATCH net-next v10 4/4] net: pse-pd: realtek-pse-mcu: add UART transport
-Date: Tue, 28 Jul 2026 08:43:06 +0000
-Message-ID: <20260728084307.2129515-5-jelonek.jonas@gmail.com>
+Subject: [PATCH net-next v10 2/4] net: pse-pd: add Realtek PSE MCU core
+Date: Tue, 28 Jul 2026 08:43:04 +0000
+Message-ID: <20260728084307.2129515-3-jelonek.jonas@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260728084307.2129515-1-jelonek.jonas@gmail.com>
 References: <20260728084307.2129515-1-jelonek.jonas@gmail.com>
@@ -86,230 +87,1186 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add the serdev (UART) transport for the Realtek PSE MCU core. It registers
-the MCU as a serdev device and provides the send/recv callbacks the core
-uses to exchange the 12-byte frames, receiving asynchronously via the
-serdev receive_buf callback.
+A range of managed Realtek-based PoE switches use a small microcontroller
+on the PCB to front the actual PSE silicon. The host CPU talks to that
+MCU over I2C/SMBus or UART using a fixed 12-byte request/response
+protocol with a trailing checksum; the PSE chips are managed by the MCU
+and are not accessed directly. Two generations of the protocol exist -
+both Realtek's - diverging in opcode numbering and a few response
+layouts; the driver handles this with a per-dialect opcode table and
+parser hooks for the responses that differ, selected by the compatible.
+The specific PSE chip behind the MCU is detected at runtime and only
+influences per-chip constants (power scaling and the per-port cap).
 
-The baud rate defaults to 19200 and can be overridden per board with the
-"current-speed" property.
+This core module implements the protocol, message framing, the dialect
+machinery and the pse_controller_ops glue, and exports a registration
+helper for transport modules. The I2C and UART transports that drive it
+follow in the next patches; the core (PSE_REALTEK_MCU) is selected
+automatically by those transports and is not user-selectable on its own.
+
+The realtek-pse-mcu-* files and PSE_REALTEK_MCU* symbols match the
+realtek,pse-mcu-* compatibles (see the binding for the naming rationale).
+The two protocol generations - gen1 on older Broadcom-PSE boards, gen2 on
+Realtek's own PSE silicon - are both Realtek's, handled by the same shared
+core, each selecting its dialect via the compatible.
+
+Power budgeting is left to the MCU firmware; the driver advertises
+PSE_BUDGET_EVAL_STRAT_DYNAMIC accordingly.
 
 Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
- drivers/net/pse-pd/Kconfig                |  11 ++
+ MAINTAINERS                               |   7 +
+ drivers/net/pse-pd/Kconfig                |   6 +
  drivers/net/pse-pd/Makefile               |   1 +
- drivers/net/pse-pd/realtek-pse-mcu-uart.c | 164 ++++++++++++++++++++++
- 3 files changed, 176 insertions(+)
- create mode 100644 drivers/net/pse-pd/realtek-pse-mcu-uart.c
+ drivers/net/pse-pd/realtek-pse-mcu-core.c | 988 ++++++++++++++++++++++
+ drivers/net/pse-pd/realtek-pse-mcu.h      |  93 ++
+ 5 files changed, 1095 insertions(+)
+ create mode 100644 drivers/net/pse-pd/realtek-pse-mcu-core.c
+ create mode 100644 drivers/net/pse-pd/realtek-pse-mcu.h
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2d420d40782e..4334c2453052 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -22767,6 +22767,13 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/watchdog/realtek,otto-wdt.yaml
+ F:	drivers/watchdog/realtek_otto_wdt.c
+ 
++REALTEK PSE MCU DRIVER
++M:	Jonas Jelonek <jelonek.jonas@gmail.com>
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
++F:	drivers/net/pse-pd/realtek-pse-mcu*
++
+ REALTEK RTL83xx SMI DSA ROUTER CHIPS
+ M:	Linus Walleij <linusw@kernel.org>
+ M:	Alvin Šipraga <alsi@bang-olufsen.dk>
 diff --git a/drivers/net/pse-pd/Kconfig b/drivers/net/pse-pd/Kconfig
-index 6d14c8832e8b..a0f2ae668c67 100644
+index 7ef29657ee5d..3b0c245a2bc7 100644
 --- a/drivers/net/pse-pd/Kconfig
 +++ b/drivers/net/pse-pd/Kconfig
-@@ -30,6 +30,17 @@ config PSE_REALTEK_MCU_I2C
- 	  PSE silicon is not accessed directly. To compile this driver as a
- 	  module, choose M here: the module will be called realtek-pse-mcu-i2c.
+@@ -13,6 +13,12 @@ menuconfig PSE_CONTROLLER
  
-+config PSE_REALTEK_MCU_UART
-+	tristate "Realtek PSE MCU driver (UART transport)"
-+	depends on SERIAL_DEV_BUS
-+	select PSE_REALTEK_MCU
+ if PSE_CONTROLLER
+ 
++config PSE_REALTEK_MCU
++	tristate
 +	help
-+	  Driver for the microcontroller (MCU) that fronts the PSE
-+	  hardware on various Realtek-based managed switches, attached
-+	  via UART. The MCU exposes a message-based protocol; the actual PSE
-+	  silicon is not accessed directly. To compile this driver as a
-+	  module, choose M here: the module will be called realtek-pse-mcu-uart.
++	  Shared core for the Realtek PSE MCU driver. This is selected
++	  automatically by the transport options below.
 +
  config PSE_REGULATOR
  	tristate "Regulator based PSE controller"
  	help
 diff --git a/drivers/net/pse-pd/Makefile b/drivers/net/pse-pd/Makefile
-index ef869bba5ed9..9cca5900fe34 100644
+index cc78f7ea7f5f..bf35e2a5b110 100644
 --- a/drivers/net/pse-pd/Makefile
 +++ b/drivers/net/pse-pd/Makefile
-@@ -5,6 +5,7 @@ obj-$(CONFIG_PSE_CONTROLLER) += pse_core.o
+@@ -3,6 +3,7 @@
  
- obj-$(CONFIG_PSE_REALTEK_MCU) += realtek-pse-mcu-core.o
- obj-$(CONFIG_PSE_REALTEK_MCU_I2C) += realtek-pse-mcu-i2c.o
-+obj-$(CONFIG_PSE_REALTEK_MCU_UART) += realtek-pse-mcu-uart.o
+ obj-$(CONFIG_PSE_CONTROLLER) += pse_core.o
+ 
++obj-$(CONFIG_PSE_REALTEK_MCU) += realtek-pse-mcu-core.o
  obj-$(CONFIG_PSE_REGULATOR) += pse_regulator.o
  obj-$(CONFIG_PSE_PD692X0) += pd692x0.o
  obj-$(CONFIG_PSE_SI3474) += si3474.o
-diff --git a/drivers/net/pse-pd/realtek-pse-mcu-uart.c b/drivers/net/pse-pd/realtek-pse-mcu-uart.c
+diff --git a/drivers/net/pse-pd/realtek-pse-mcu-core.c b/drivers/net/pse-pd/realtek-pse-mcu-core.c
 new file mode 100644
-index 000000000000..9baa17d8d31f
+index 000000000000..ed3b743470db
 --- /dev/null
-+++ b/drivers/net/pse-pd/realtek-pse-mcu-uart.c
-@@ -0,0 +1,164 @@
++++ b/drivers/net/pse-pd/realtek-pse-mcu-core.c
+@@ -0,0 +1,988 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Driver for the microcontroller (MCU) fronting PSE silicon on various
++ * Realtek-based managed switches. The MCU speaks a 12-byte fixed-frame
++ * management protocol; this driver covers two generations of the
++ * protocol via a per-dialect opcode table and response parsers.
++ *
++ * Many PoE switch designs put a dedicated microcontroller in front of the
++ * actual PSE silicon: the host CPU talks to the MCU over I2C/SMBus or
++ * UART, and the MCU in turn manages the PSE chips on the board. The MCU
++ * speaks a small message-based protocol. The PSE chips themselves are not
++ * accessed directly; everything goes through MCU commands.
++ *
++ * This driver targets that architecture for the Realtek-family protocol.
++ * Two generations are supported: Gen1 being used on older switches where
++ * the MCU fronts and manages Broadcom PSE silicon; Gen2 being used with
++ * Realtek PSE silicon. The two share frame format and a sum-mod-256
++ * checksum but diverge on opcode numbers and on a few response layouts;
++ * this is handled by the per-dialect opcode table and parser hooks.
++ *
++ * Out of scope: PSE chips that are interfaced directly from the host
++ * without a management MCU, MCU designs that speak an unrelated protocol
++ * family, and "dumb PSE" modes where no host control is wired up at all.
++ *
++ * This core module implements the protocol, decoding/encoding of MCU
++ * responses, and the pse_controller_ops integration. Transport modules
++ * (realtek-pse-mcu-i2c, realtek-pse-mcu-uart) provide the send/recv
++ * callbacks.
++ */
 +
++#include <linux/bitfield.h>
 +#include <linux/cleanup.h>
-+#include <linux/completion.h>
++#include <linux/container_of.h>
++#include <linux/delay.h>
++#include <linux/gpio/consumer.h>
++#include <linux/jiffies.h>
++#include <linux/minmax.h>
 +#include <linux/module.h>
-+#include <linux/of.h>
++#include <linux/property.h>
 +#include <linux/pse-pd/pse.h>
-+#include <linux/serdev.h>
-+#include <linux/spinlock.h>
-+#include <linux/string.h>
++#include <linux/unaligned.h>
 +
 +#include "realtek-pse-mcu.h"
 +
-+#define RTPSE_MCU_UART_BAUD_DEFAULT	19200
-+#define RTPSE_MCU_UART_TX_TIMEOUT	msecs_to_jiffies(100)
-+#define RTPSE_MCU_UART_RX_TIMEOUT	msecs_to_jiffies(RTPSE_MCU_RESPONSE_MAX_MS)
++#define RTPSE_MCU_DEVICE_ID_RTL8238B		0x0138
++#define RTPSE_MCU_DEVICE_ID_RTL8239		0x0039
++#define RTPSE_MCU_DEVICE_ID_RTL8239C		0x0139
++#define RTPSE_MCU_DEVICE_ID_BCM59111		0xe111
++#define RTPSE_MCU_DEVICE_ID_BCM59121		0xe121
 +
-+struct rtpse_mcu_uart {
-+	struct rtpse_mcu_ctrl pse;
-+	struct serdev_device *serdev;
-+	struct completion rx_done;
-+	spinlock_t rx_lock;		/* protects rx_buf and rx_len */
-+	size_t rx_len;
-+	u8 rx_buf[RTPSE_MCU_MSG_SIZE];
++#define RTPSE_MCU_PORT_STS_DISABLED		0x00
++#define RTPSE_MCU_PORT_STS_SEARCHING		0x01
++#define RTPSE_MCU_PORT_STS_DELIVERING		0x02
++#define RTPSE_MCU_PORT_STS_TEST			0x03	/* Gen1-only; reserved on Gen2 */
++#define RTPSE_MCU_PORT_STS_FAULT		0x04
++#define RTPSE_MCU_PORT_STS_OTHER_FAULT		0x05	/* Gen1-only; reserved on Gen2 */
++#define RTPSE_MCU_PORT_STS_REQUESTING		0x06
++
++/* RTPSE_MCU_PORT_SET_POWER_LIMIT_TYPE values */
++#define RTPSE_MCU_PORT_PW_LIMIT_TYPE_USER	0x02
++
++#define RTPSE_MCU_MAX_PORTS			48
++#define RTPSE_MCU_PORT_MAX_PRIORITY		3
++
++/* Nominal PSE rail; 802.3at/bt operating range. */
++#define RTPSE_MCU_PSE_VOLTAGE_UV		54000000
++
++enum rtpse_mcu_cmd {
++	RTPSE_MCU_CMD_SET_GLOBAL_STATE,
++	RTPSE_MCU_CMD_GET_SYSTEM_INFO,
++	RTPSE_MCU_CMD_GET_EXT_CONFIG,
++
++	RTPSE_MCU_CMD_PORT_ENABLE,
++	RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT_TYPE,
++	RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT,
++	RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT_EXT,
++	RTPSE_MCU_CMD_PORT_SET_PRIORITY,
++	RTPSE_MCU_CMD_PORT_GET_STATUS,
++	RTPSE_MCU_CMD_PORT_GET_POWER_STATS,
++	RTPSE_MCU_CMD_PORT_GET_CONFIG,
++	RTPSE_MCU_CMD_PORT_GET_EXT_CONFIG,
++
++	RTPSE_MCU_NUM_CMDS,
 +};
 +
-+#define to_rtpse_mcu_uart(p)  container_of(p, struct rtpse_mcu_uart, pse)
++struct rtpse_mcu_opcode {
++	u8 op;
++	bool valid;
++};
 +
-+/*
-+ * No framing is done here: a glitched frame costs one transaction, then
-+ * the next _send re-frames from rx_len 0. Resync works by returning count
-+ * (not take), dropping any overflow so serdev keeps no leftover to bleed
-+ * into the next frame.
-+ */
-+static size_t rtpse_mcu_uart_receive(struct serdev_device *serdev,
-+				     const u8 *buf, size_t count)
++/* Shorthand for the designated-initializer entries in dialect opcode tables. */
++#define RTPSE_MCU_OP(opc)	{ .op = (opc), .valid = true }
++
++/* Parsed MCU response structures (decoded from rtpse_mcu_msg replies) */
++
++struct rtpse_mcu_info {
++	u8 max_ports;
++	bool system_enable;
++	u16 device_id;
++	u8 mcu_type;
++};
++
++struct rtpse_mcu_ext_config {
++	u8 num_of_pses;
++};
++
++struct rtpse_mcu_port_status {
++	u8 sts1;
++	u8 sts2;
++	u8 sts3;
++};
++
++struct rtpse_mcu_port_measurement {
++	u16 voltage_raw;	/* 64.45mV/LSB */
++	u16 current_raw;	/* 1mA/LSB */
++	u16 temperature_raw;	/* T(mC) = 1250 * (220 - raw) */
++	u16 power_raw;		/* 100mW/LSB */
++};
++
++struct rtpse_mcu_port_config {
++	bool enable;
++};
++
++struct rtpse_mcu_port_ext_config {
++	u8 max_power;
++	u8 priority;
++};
++
++struct rtpse_mcu_dialect {
++	struct rtpse_mcu_opcode opcode[RTPSE_MCU_NUM_CMDS];
++
++	/*
++	 * Response parsers for the fields that differ between dialects; each
++	 * dialect supplies its own. Other responses share one layout and are
++	 * decoded directly - a dialect that diverges there must add a hook,
++	 * as a mismatched layout cannot be detected (the checksum still passes).
++	 */
++	void (*parse_system_info)(const u8 *payload, struct rtpse_mcu_info *info);
++	int (*parse_port_class)(const struct rtpse_mcu_port_status *status);
++	const char *(*mcu_type_str)(unsigned int mcu_type);
++};
++
++struct rtpse_mcu_chip_info {
++	const char *name;
++	u32 max_mW_per_port;
++	enum rtpse_mcu_cmd pw_set_cmd;	/* command used by set_pw_limit */
++	u32 pw_set_lsb_mW;		/* LSB of pw_set_cmd value, in mW */
++	u32 pw_read_lsb_mW;		/* LSB of ext_config.max_power read-back, in mW */
++};
++
++static const struct rtpse_mcu_chip_info rtl8238b_info = {
++	.max_mW_per_port = 30000,
++	.name = "RTL8238B",
++	.pw_read_lsb_mW = 200,
++	.pw_set_cmd = RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT,
++	.pw_set_lsb_mW = 200,
++};
++
++static const struct rtpse_mcu_chip_info rtl8239_info = {
++	.max_mW_per_port = 90000,
++	.name = "RTL8239",
++	.pw_read_lsb_mW = 400,
++	.pw_set_cmd = RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT_EXT,
++	.pw_set_lsb_mW = 400,
++};
++
++static const struct rtpse_mcu_chip_info rtl8239c_info = {
++	.max_mW_per_port = 90000,
++	.name = "RTL8239C",
++	.pw_read_lsb_mW = 400,
++	.pw_set_cmd = RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT_EXT,
++	.pw_set_lsb_mW = 400,
++};
++
++static const struct rtpse_mcu_chip_info bcm59111_info = {
++	.max_mW_per_port = 30000,
++	.name = "BCM59111",
++	.pw_read_lsb_mW = 200,
++	.pw_set_cmd = RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT,
++	.pw_set_lsb_mW = 200,
++};
++
++static const struct rtpse_mcu_chip_info bcm59121_info = {
++	/*
++	 * BCM59121 is a 60W Type-3 part, but known boards run it at 802.3at
++	 * and the Gen1 dialect has only the 8-bit/0.2W set command (<=51W);
++	 * cap at the 30W the hardware actually offers.
++	 */
++	.max_mW_per_port = 30000,
++	.name = "BCM59121",
++	.pw_read_lsb_mW = 200,
++	.pw_set_cmd = RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT,
++	.pw_set_lsb_mW = 200,
++};
++
++/* Helpers and basic functions */
++
++static struct rtpse_mcu_ctrl *to_rtpse_mcu_ctrl(struct pse_controller_dev *pcdev)
 +{
-+	struct rtpse_mcu_uart *ctx = serdev_device_get_drvdata(serdev);
-+	size_t take;
-+
-+	scoped_guard(spinlock_irqsave, &ctx->rx_lock) {
-+		take = min(count, sizeof(ctx->rx_buf) - ctx->rx_len);
-+		if (take) {
-+			memcpy(ctx->rx_buf + ctx->rx_len, buf, take);
-+			ctx->rx_len += take;
-+			if (ctx->rx_len == sizeof(ctx->rx_buf))
-+				complete(&ctx->rx_done);
-+		}
-+	}
-+
-+	/* consume all to avoid desync/misalignment */
-+	return count;
++	return container_of(pcdev, struct rtpse_mcu_ctrl, pcdev);
 +}
 +
-+static const struct serdev_device_ops rtpse_mcu_uart_serdev_ops = {
-+	.receive_buf = rtpse_mcu_uart_receive,
-+	.write_wakeup = serdev_device_write_wakeup,
-+};
-+
-+static int rtpse_mcu_uart_send(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req)
++static void rtpse_mcu_msg_init(struct rtpse_mcu_msg *msg, u8 opcode)
 +{
-+	struct rtpse_mcu_uart *ctx = to_rtpse_mcu_uart(pse);
-+	int written;
++	memset(msg, 0xff, sizeof(*msg));
++	msg->opcode = opcode;
++}
 +
-+	/* clear any leftover rx state before transmitting */
-+	scoped_guard(spinlock_irqsave, &ctx->rx_lock) {
-+		reinit_completion(&ctx->rx_done);
-+		ctx->rx_len = 0;
++static u8 rtpse_mcu_checksum(const u8 *buf, size_t len)
++{
++	u8 sum = 0;
++
++	while (len--)
++		sum += *buf++;
++	return sum;
++}
++
++static int rtpse_mcu_do_xfer(struct rtpse_mcu_ctrl *pse, struct rtpse_mcu_msg *req,
++			     struct rtpse_mcu_msg *resp)
++{
++	int ret;
++
++	scoped_guard(mutex, &pse->mutex) {
++		/* Rolling seq_num so a late reply can't pass as a later one. */
++		req->seq_num = pse->seq++;
++		req->checksum = rtpse_mcu_checksum((u8 *)req, RTPSE_MCU_MSG_SIZE - 1);
++
++		ret = pse->transport->send(pse, req);
++		if (ret)
++			return ret;
++
++		/*
++		 * The MCU needs a fixed base time between accepting a request and
++		 * having a reply ready, independent of transport. Pace that here; the
++		 * transport then finishes recv in its own model - a bounded poll of
++		 * the response register (I2C) or one wait on a pushed frame (UART) -
++		 * so the retry belongs in the transport, not here.
++		 */
++		msleep(RTPSE_MCU_RESPONSE_MS);
++
++		memset(resp, 0, sizeof(*resp));
++		ret = pse->transport->recv(pse, req, resp);
++		if (ret)
++			return ret;
 +	}
 +
-+	written = serdev_device_write(ctx->serdev, (const u8 *)req, sizeof(*req),
-+				      RTPSE_MCU_UART_TX_TIMEOUT);
-+	if (written < 0)
-+		return written;
-+	if (written != sizeof(*req))
++	/*
++	 * Explicit MCU error opcodes (observed on the Gen1 dialect; harmless
++	 * to check for Gen2 too). Catch these before the generic opcode/CRC
++	 * mismatch path so callers see a meaningful errno.
++	 */
++	switch (resp->opcode) {
++	case RTPSE_MCU_OPCODE_INCOMPLETE:
++		return -EBADE;
++	case RTPSE_MCU_OPCODE_BAD_CSUM:
++		return -EBADMSG;
++	case RTPSE_MCU_OPCODE_NOT_READY:
++		return -EAGAIN;
++	}
++
++	if (resp->opcode != req->opcode ||
++	    resp->seq_num != req->seq_num ||
++	    resp->checksum != rtpse_mcu_checksum((u8 *)resp, RTPSE_MCU_MSG_SIZE - 1))
++		return -EBADMSG;
++
++	return 0;
++}
++
++static int rtpse_mcu_port_query(struct rtpse_mcu_ctrl *pse, unsigned int port, u8 opcode,
++				struct rtpse_mcu_msg *resp)
++{
++	struct rtpse_mcu_msg req;
++	int ret;
++
++	rtpse_mcu_msg_init(&req, opcode);
++	req.payload[0] = port;
++
++	ret = rtpse_mcu_do_xfer(pse, &req, resp);
++	if (ret)
++		return ret;
++
++	if (resp->payload[0] != port)
 +		return -EIO;
 +
 +	return 0;
 +}
 +
-+static int rtpse_mcu_uart_recv(struct rtpse_mcu_ctrl *pse,
-+			       const struct rtpse_mcu_msg *req,
-+			       struct rtpse_mcu_msg *resp)
++static int rtpse_mcu_port_cmd(struct rtpse_mcu_ctrl *pse, unsigned int port, u8 opcode, u8 arg)
 +{
-+	struct rtpse_mcu_uart *ctx = to_rtpse_mcu_uart(pse);
++	struct rtpse_mcu_msg req, resp;
++	int ret;
 +
-+	if (!wait_for_completion_timeout(&ctx->rx_done, RTPSE_MCU_UART_RX_TIMEOUT))
-+		return -ETIMEDOUT;
++	rtpse_mcu_msg_init(&req, opcode);
++	req.payload[0] = port;
++	req.payload[1] = arg;
 +
-+	scoped_guard(spinlock_irqsave, &ctx->rx_lock) {
-+		if (ctx->rx_len != sizeof(*resp))
-+			return -EIO;
++	ret = rtpse_mcu_do_xfer(pse, &req, &resp);
++	if (ret)
++		return ret;
 +
-+		memcpy(resp, ctx->rx_buf, sizeof(*resp));
-+	}
++	if (resp.payload[0] != port || resp.payload[1] != 0)
++		return -EIO;
++
 +	return 0;
 +}
 +
-+static const struct rtpse_mcu_transport_ops rtpse_mcu_uart_transport_ops = {
-+	.send = rtpse_mcu_uart_send,
-+	.recv = rtpse_mcu_uart_recv,
-+};
++/* Global operations */
 +
-+static int rtpse_mcu_uart_probe(struct serdev_device *serdev)
++static int rtpse_mcu_get_info(struct rtpse_mcu_ctrl *pse, struct rtpse_mcu_info *info)
 +{
-+	u32 speed = RTPSE_MCU_UART_BAUD_DEFAULT;
-+	struct device *dev = &serdev->dev;
-+	struct rtpse_mcu_uart *ctx;
-+	unsigned int baud;
++	struct rtpse_mcu_msg req, resp;
++	const struct rtpse_mcu_opcode *opc;
 +	int ret;
 +
-+	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx)
-+		return -ENOMEM;
++	opc = &pse->dialect->opcode[RTPSE_MCU_CMD_GET_SYSTEM_INFO];
++	if (!opc->valid)
++		return -EOPNOTSUPP;
 +
-+	ctx->serdev = serdev;
-+	ctx->pse.dev = dev;
-+	ctx->pse.pcdev.owner = THIS_MODULE;
-+	ctx->pse.transport = &rtpse_mcu_uart_transport_ops;
-+	init_completion(&ctx->rx_done);
-+	spin_lock_init(&ctx->rx_lock);
-+
-+	serdev_device_set_drvdata(serdev, ctx);
-+	serdev_device_set_client_ops(serdev, &rtpse_mcu_uart_serdev_ops);
-+
-+	ret = devm_serdev_device_open(dev, serdev);
++	rtpse_mcu_msg_init(&req, opc->op);
++	ret = rtpse_mcu_do_xfer(pse, &req, &resp);
 +	if (ret)
-+		return dev_err_probe(dev, ret, "failed to open serdev\n");
++		return ret;
 +
-+	fwnode_property_read_u32(dev_fwnode(dev), "current-speed", &speed);
-+
-+	baud = serdev_device_set_baudrate(serdev, speed);
-+	if (baud != speed)
-+		dev_warn(dev, "could not set baudrate %u, controller uses %u\n",
-+			 speed, baud);
-+
-+	serdev_device_set_flow_control(serdev, false);
-+
-+	ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
-+	if (ret)
-+		dev_warn(dev, "could not set parity to none: %d\n", ret);
-+
-+	return rtpse_mcu_register(&ctx->pse);
++	pse->dialect->parse_system_info(resp.payload, info);
++	return 0;
 +}
 +
-+static const struct of_device_id rtpse_mcu_uart_of_match[] = {
-+	{ .compatible = "realtek,pse-mcu-gen1", .data = &rtpse_mcu_gen1_data },
-+	{ .compatible = "realtek,pse-mcu-gen2", .data = &rtpse_mcu_gen2_data },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, rtpse_mcu_uart_of_match);
++static int rtpse_mcu_get_ext_config(struct rtpse_mcu_ctrl *pse, struct rtpse_mcu_ext_config *config)
++{
++	struct rtpse_mcu_msg req, resp;
++	const struct rtpse_mcu_opcode *opc;
++	int ret;
 +
-+static struct serdev_device_driver rtpse_mcu_uart_driver = {
-+	.driver = {
-+		.name = "realtek-pse-mcu-uart",
-+		.of_match_table = rtpse_mcu_uart_of_match,
-+	},
-+	.probe  = rtpse_mcu_uart_probe,
++	opc = &pse->dialect->opcode[RTPSE_MCU_CMD_GET_EXT_CONFIG];
++	if (!opc->valid)
++		return -EOPNOTSUPP;
++
++	rtpse_mcu_msg_init(&req, opc->op);
++	ret = rtpse_mcu_do_xfer(pse, &req, &resp);
++	if (ret)
++		return ret;
++
++	config->num_of_pses = resp.payload[6];
++
++	return 0;
++}
++
++static int rtpse_mcu_set_global_state(struct rtpse_mcu_ctrl *pse, bool enable)
++{
++	struct rtpse_mcu_msg req, resp;
++	const struct rtpse_mcu_opcode *opc;
++	int ret;
++
++	opc = &pse->dialect->opcode[RTPSE_MCU_CMD_SET_GLOBAL_STATE];
++	if (!opc->valid)
++		return -EOPNOTSUPP;
++
++	rtpse_mcu_msg_init(&req, opc->op);
++	req.payload[0] = enable ? 0x1 : 0x0;
++
++	ret = rtpse_mcu_do_xfer(pse, &req, &resp);
++	if (ret)
++		return ret;
++
++	return (resp.payload[0] == 0x0) ? 0 : -EIO;
++}
++
++/* Port operations */
++
++static int rtpse_mcu_port_get_status(struct rtpse_mcu_ctrl *pse, unsigned int port,
++				     struct rtpse_mcu_port_status *status)
++{
++	const struct rtpse_mcu_opcode *opc;
++	struct rtpse_mcu_msg resp;
++	int ret;
++
++	opc = &pse->dialect->opcode[RTPSE_MCU_CMD_PORT_GET_STATUS];
++	if (!opc->valid)
++		return -EOPNOTSUPP;
++
++	ret = rtpse_mcu_port_query(pse, port, opc->op, &resp);
++	if (ret)
++		return ret;
++
++	status->sts1 = resp.payload[1];
++	status->sts2 = resp.payload[2];
++	status->sts3 = resp.payload[3];
++
++	return 0;
++}
++
++static int rtpse_mcu_port_get_measurement(struct rtpse_mcu_ctrl *pse, unsigned int port,
++					  struct rtpse_mcu_port_measurement *measurement)
++{
++	const struct rtpse_mcu_opcode *opc;
++	struct rtpse_mcu_msg resp;
++	int ret;
++
++	opc = &pse->dialect->opcode[RTPSE_MCU_CMD_PORT_GET_POWER_STATS];
++	if (!opc->valid)
++		return -EOPNOTSUPP;
++
++	ret = rtpse_mcu_port_query(pse, port, opc->op, &resp);
++	if (ret)
++		return ret;
++
++	measurement->voltage_raw = get_unaligned_be16(&resp.payload[1]);
++	measurement->current_raw = get_unaligned_be16(&resp.payload[3]);
++	measurement->temperature_raw = get_unaligned_be16(&resp.payload[5]);
++	measurement->power_raw = get_unaligned_be16(&resp.payload[7]);
++
++	return 0;
++}
++
++static int rtpse_mcu_port_get_config(struct rtpse_mcu_ctrl *pse, unsigned int port,
++				     struct rtpse_mcu_port_config *config)
++{
++	const struct rtpse_mcu_opcode *opc;
++	struct rtpse_mcu_msg resp;
++	int ret;
++
++	opc = &pse->dialect->opcode[RTPSE_MCU_CMD_PORT_GET_CONFIG];
++	if (!opc->valid)
++		return -EOPNOTSUPP;
++
++	ret = rtpse_mcu_port_query(pse, port, opc->op, &resp);
++	if (ret)
++		return ret;
++
++	config->enable = (resp.payload[1] == 1);
++
++	return 0;
++}
++
++static int rtpse_mcu_port_get_ext_config(struct rtpse_mcu_ctrl *pse, unsigned int port,
++					 struct rtpse_mcu_port_ext_config *config)
++{
++	const struct rtpse_mcu_opcode *opc;
++	struct rtpse_mcu_msg resp;
++	int ret;
++
++	opc = &pse->dialect->opcode[RTPSE_MCU_CMD_PORT_GET_EXT_CONFIG];
++	if (!opc->valid)
++		return -EOPNOTSUPP;
++
++	ret = rtpse_mcu_port_query(pse, port, opc->op, &resp);
++	if (ret)
++		return ret;
++
++	config->max_power = resp.payload[3];
++	config->priority = resp.payload[4];
++
++	return 0;
++}
++
++static int rtpse_mcu_port_set_state(struct rtpse_mcu_ctrl *pse, unsigned int port, bool enable)
++{
++	const struct rtpse_mcu_opcode *opc;
++
++	opc = &pse->dialect->opcode[RTPSE_MCU_CMD_PORT_ENABLE];
++	if (!opc->valid)
++		return -EOPNOTSUPP;
++
++	return rtpse_mcu_port_cmd(pse, port, opc->op, enable ? 0x1 : 0x0);
++}
++
++/* PSE controller ops */
++
++static int rtpse_mcu_port_get_admin_state(struct pse_controller_dev *pcdev, int id,
++					  struct pse_admin_state *admin_state)
++{
++	struct rtpse_mcu_ctrl *pse = to_rtpse_mcu_ctrl(pcdev);
++	struct rtpse_mcu_port_config config;
++	int ret;
++
++	ret = rtpse_mcu_port_get_config(pse, id, &config);
++	if (ret)
++		return ret;
++
++	admin_state->c33_admin_state = config.enable ? ETHTOOL_C33_PSE_ADMIN_STATE_ENABLED :
++						       ETHTOOL_C33_PSE_ADMIN_STATE_DISABLED;
++	return 0;
++}
++
++static int rtpse_mcu_port_get_pw_status(struct pse_controller_dev *pcdev, int id,
++					struct pse_pw_status *pw_status)
++{
++	struct rtpse_mcu_ctrl *pse = to_rtpse_mcu_ctrl(pcdev);
++	struct rtpse_mcu_port_status status;
++	int ret;
++
++	ret = rtpse_mcu_port_get_status(pse, id, &status);
++	if (ret)
++		return ret;
++
++	switch (status.sts1) {
++	case RTPSE_MCU_PORT_STS_DISABLED:
++		pw_status->c33_pw_status = ETHTOOL_C33_PSE_PW_D_STATUS_DISABLED;
++		break;
++	case RTPSE_MCU_PORT_STS_SEARCHING:
++	case RTPSE_MCU_PORT_STS_REQUESTING:
++		pw_status->c33_pw_status = ETHTOOL_C33_PSE_PW_D_STATUS_SEARCHING;
++		break;
++	case RTPSE_MCU_PORT_STS_DELIVERING:
++		pw_status->c33_pw_status = ETHTOOL_C33_PSE_PW_D_STATUS_DELIVERING;
++		break;
++	case RTPSE_MCU_PORT_STS_TEST:
++		pw_status->c33_pw_status = ETHTOOL_C33_PSE_PW_D_STATUS_TEST;
++		break;
++	case RTPSE_MCU_PORT_STS_FAULT:
++		pw_status->c33_pw_status = ETHTOOL_C33_PSE_PW_D_STATUS_FAULT;
++		break;
++	case RTPSE_MCU_PORT_STS_OTHER_FAULT:
++		pw_status->c33_pw_status = ETHTOOL_C33_PSE_PW_D_STATUS_OTHERFAULT;
++		break;
++	default:
++		pw_status->c33_pw_status = ETHTOOL_C33_PSE_PW_D_STATUS_UNKNOWN;
++		break;
++	}
++
++	return 0;
++}
++
++static int rtpse_mcu_port_get_pw_class(struct pse_controller_dev *pcdev, int id)
++{
++	struct rtpse_mcu_ctrl *pse = to_rtpse_mcu_ctrl(pcdev);
++	struct rtpse_mcu_port_status status;
++	int ret;
++
++	ret = rtpse_mcu_port_get_status(pse, id, &status);
++	if (ret)
++		return ret;
++
++	/*
++	 * As per datasheet, the classification result is only valid when in
++	 * one of those operational modes, otherwise not.
++	 */
++	switch (status.sts1) {
++	case RTPSE_MCU_PORT_STS_DISABLED:
++	case RTPSE_MCU_PORT_STS_SEARCHING:
++	case RTPSE_MCU_PORT_STS_DELIVERING:
++	case RTPSE_MCU_PORT_STS_REQUESTING:
++		return pse->dialect->parse_port_class(&status);
++	default:
++		/*
++		 * No class to report, return 0 instead. This is indistinguishable
++		 * from a real class-0 PD but userspace disambiguates via the
++		 * power status.
++		 */
++		return 0;
++	}
++}
++
++static int rtpse_mcu_port_get_actual_pw(struct pse_controller_dev *pcdev, int id)
++{
++	struct rtpse_mcu_ctrl *pse = to_rtpse_mcu_ctrl(pcdev);
++	struct rtpse_mcu_port_measurement measurement;
++	int ret;
++
++	ret = rtpse_mcu_port_get_measurement(pse, id, &measurement);
++	if (ret)
++		return ret;
++
++	/* 100mW per LSB */
++	return measurement.power_raw * 100U;
++}
++
++static int rtpse_mcu_port_get_voltage(struct pse_controller_dev *pcdev, int id)
++{
++	struct rtpse_mcu_ctrl *pse = to_rtpse_mcu_ctrl(pcdev);
++	struct rtpse_mcu_port_measurement measurement;
++	int ret;
++	u32 uV;
++
++	ret = rtpse_mcu_port_get_measurement(pse, id, &measurement);
++	if (ret)
++		return ret;
++
++	/* 64.45mV per LSB */
++	uV = measurement.voltage_raw * 64450U;
++
++	/*
++	 * Idle ports measure 0V, which the core rejects when turning a power
++	 * limit into a current limit. Fall back to the nominal rail so a limit
++	 * can be set before a PD is attached.
++	 */
++	if (!uV)
++		return RTPSE_MCU_PSE_VOLTAGE_UV;
++
++	return min_t(u32, uV, INT_MAX);
++}
++
++static int rtpse_mcu_port_enable(struct pse_controller_dev *pcdev, int id)
++{
++	return rtpse_mcu_port_set_state(to_rtpse_mcu_ctrl(pcdev), id, true);
++}
++
++static int rtpse_mcu_port_disable(struct pse_controller_dev *pcdev, int id)
++{
++	return rtpse_mcu_port_set_state(to_rtpse_mcu_ctrl(pcdev), id, false);
++}
++
++static int rtpse_mcu_port_get_pw_limit(struct pse_controller_dev *pcdev, int id)
++{
++	struct rtpse_mcu_ctrl *pse = to_rtpse_mcu_ctrl(pcdev);
++	struct rtpse_mcu_port_ext_config config;
++	int ret;
++
++	ret = rtpse_mcu_port_get_ext_config(pse, id, &config);
++	if (ret)
++		return ret;
++
++	return config.max_power * pse->chip->pw_read_lsb_mW;
++}
++
++static int rtpse_mcu_port_set_pw_limit(struct pse_controller_dev *pcdev, int id, int max_mW)
++{
++	const struct rtpse_mcu_opcode *type_opc, *val_opc;
++	struct rtpse_mcu_ctrl *pse = to_rtpse_mcu_ctrl(pcdev);
++	const struct rtpse_mcu_chip_info *chip = pse->chip;
++	u8 prg_val;
++	int ret;
++
++	if (max_mW < 0 || max_mW > chip->max_mW_per_port)
++		return -ERANGE;
++
++	type_opc = &pse->dialect->opcode[RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT_TYPE];
++	val_opc = &pse->dialect->opcode[chip->pw_set_cmd];
++	/* pw_set_lsb_mW is the divisor below; reject a chip that lacks it. */
++	if (!type_opc->valid || !val_opc->valid || !chip->pw_set_lsb_mW)
++		return -EOPNOTSUPP;
++
++	/*
++	 * Switch the port to user-defined limit mode first, then program the
++	 * limit value. If the second cmd fails, the port is left in
++	 * user-defined mode but with the previous limit value; the next
++	 * successful set_pw_limit call recovers it.
++	 */
++	ret = rtpse_mcu_port_cmd(pse, id, type_opc->op, RTPSE_MCU_PORT_PW_LIMIT_TYPE_USER);
++	if (ret)
++		return ret;
++
++	/*
++	 * Round up so a sub-LSB request maps to one LSB, not silently to 0;
++	 * an explicit 0 still yields 0, and LSB-aligned maxima can't overshoot.
++	 */
++	prg_val = min_t(unsigned int, DIV_ROUND_UP(max_mW, chip->pw_set_lsb_mW), U8_MAX);
++
++	return rtpse_mcu_port_cmd(pse, id, val_opc->op, prg_val);
++}
++
++static int rtpse_mcu_port_get_pw_limit_ranges(struct pse_controller_dev *pcdev, int id,
++					      struct pse_pw_limit_ranges *out)
++{
++	struct rtpse_mcu_ctrl *pse = to_rtpse_mcu_ctrl(pcdev);
++	struct ethtool_c33_pse_pw_limit_range *range;
++
++	range = kzalloc_obj(*range);
++	if (!range)
++		return -ENOMEM;
++
++	range[0].min = 0;
++	range[0].max = pse->chip->max_mW_per_port;
++
++	out->c33_pw_limit_ranges = range;
++	return 1;
++}
++
++static int rtpse_mcu_port_get_prio(struct pse_controller_dev *pcdev, int id)
++{
++	struct rtpse_mcu_ctrl *pse = to_rtpse_mcu_ctrl(pcdev);
++	struct rtpse_mcu_port_ext_config config;
++	int ret;
++
++	ret = rtpse_mcu_port_get_ext_config(pse, id, &config);
++	if (ret)
++		return ret;
++
++	return config.priority;
++}
++
++static int rtpse_mcu_port_set_prio(struct pse_controller_dev *pcdev, int id, unsigned int prio)
++{
++	struct rtpse_mcu_ctrl *pse = to_rtpse_mcu_ctrl(pcdev);
++	const struct rtpse_mcu_opcode *opc;
++
++	if (prio > RTPSE_MCU_PORT_MAX_PRIORITY)
++		return -ERANGE;
++
++	opc = &pse->dialect->opcode[RTPSE_MCU_CMD_PORT_SET_PRIORITY];
++	if (!opc->valid)
++		return -EOPNOTSUPP;
++
++	return rtpse_mcu_port_cmd(pse, id, opc->op, prio);
++}
++
++static const struct pse_controller_ops rtpse_mcu_ops = {
++	.pi_get_admin_state = rtpse_mcu_port_get_admin_state,
++	.pi_get_pw_status = rtpse_mcu_port_get_pw_status,
++	.pi_get_pw_class = rtpse_mcu_port_get_pw_class,
++	.pi_get_actual_pw = rtpse_mcu_port_get_actual_pw,
++	.pi_enable = rtpse_mcu_port_enable,
++	.pi_disable = rtpse_mcu_port_disable,
++	.pi_get_voltage = rtpse_mcu_port_get_voltage,
++	.pi_get_pw_limit = rtpse_mcu_port_get_pw_limit,
++	.pi_set_pw_limit = rtpse_mcu_port_set_pw_limit,
++	.pi_get_pw_limit_ranges = rtpse_mcu_port_get_pw_limit_ranges,
++	.pi_get_prio = rtpse_mcu_port_get_prio,
++	.pi_set_prio = rtpse_mcu_port_set_prio,
 +};
-+module_serdev_device_driver(rtpse_mcu_uart_driver);
++
++static int rtpse_mcu_discover(struct rtpse_mcu_ctrl *pse, struct rtpse_mcu_info *info)
++{
++	struct rtpse_mcu_ext_config ext_config;
++	unsigned long deadline;
++	int ret;
++
++	/*
++	 * A booting MCU may stay silent (-ETIMEDOUT), not ACK its address
++	 * (-ENXIO / -EREMOTEIO), report not-ready (-EAGAIN), or emit a
++	 * corrupt/partial frame (-EBADMSG / -EBADE). Retry those within a
++	 * bounded window; other errors (e.g. -EOPNOTSUPP) are fatal and fail
++	 * immediately.
++	 */
++	deadline = jiffies + msecs_to_jiffies(RTPSE_MCU_BOOT_TIMEOUT_MS);
++	do {
++		ret = rtpse_mcu_get_info(pse, info);
++		if (ret != -ETIMEDOUT && ret != -ENXIO && ret != -EREMOTEIO &&
++		    ret != -EAGAIN && ret != -EBADMSG && ret != -EBADE)
++			break;
++		msleep(RTPSE_MCU_BOOT_RETRY_MS);
++	} while (time_before(jiffies, deadline));
++	if (ret)
++		return dev_err_probe(pse->dev, ret, "failed to read MCU info\n");
++
++	switch (info->device_id) {
++	case RTPSE_MCU_DEVICE_ID_RTL8238B:
++		pse->chip = &rtl8238b_info;
++		break;
++	case RTPSE_MCU_DEVICE_ID_RTL8239:
++		pse->chip = &rtl8239_info;
++		break;
++	case RTPSE_MCU_DEVICE_ID_RTL8239C:
++		pse->chip = &rtl8239c_info;
++		break;
++	case RTPSE_MCU_DEVICE_ID_BCM59111:
++		pse->chip = &bcm59111_info;
++		break;
++	case RTPSE_MCU_DEVICE_ID_BCM59121:
++		pse->chip = &bcm59121_info;
++		break;
++	default:
++		return dev_err_probe(pse->dev, -EINVAL, "unknown PSE id 0x%x\n",
++				     info->device_id);
++	}
++
++	if (!info->max_ports || info->max_ports > RTPSE_MCU_MAX_PORTS)
++		return dev_err_probe(pse->dev, -EINVAL,
++				     "MCU reports invalid port count %u\n", info->max_ports);
++
++	ret = rtpse_mcu_get_ext_config(pse, &ext_config);
++	if (ret)
++		return dev_err_probe(pse->dev, ret, "failed to read MCU ext config\n");
++
++	dev_info(pse->dev, "%s MCU, %s (id 0x%04x), %u ports across %u PSE chip(s)\n",
++		 pse->dialect->mcu_type_str(info->mcu_type), pse->chip->name,
++		 info->device_id, info->max_ports, ext_config.num_of_pses);
++	return 0;
++}
++
++static void rtpse_mcu_global_disable(void *data)
++{
++	struct rtpse_mcu_ctrl *pse = data;
++
++	rtpse_mcu_set_global_state(pse, false);
++}
++
++int rtpse_mcu_register(struct rtpse_mcu_ctrl *pse)
++{
++	const struct rtpse_mcu_match_data *match;
++	struct rtpse_mcu_info info;
++	struct gpio_desc *gpiod;
++	int ret;
++
++	BUILD_BUG_ON(sizeof(struct rtpse_mcu_msg) != RTPSE_MCU_MSG_SIZE);
++
++	ret = devm_mutex_init(pse->dev, &pse->mutex);
++	if (ret)
++		return ret;
++
++	match = device_get_match_data(pse->dev);
++	if (!match)
++		return dev_err_probe(pse->dev, -ENODEV, "missing match data\n");
++	pse->dialect = match->dialect;
++
++	/*
++	 * Catch a dialect that forgot to set one of the required hooks at
++	 * probe time, rather than NULL-deref'ing later from a fast path.
++	 */
++	if (!pse->dialect ||
++	    !pse->dialect->parse_system_info ||
++	    !pse->dialect->parse_port_class ||
++	    !pse->dialect->mcu_type_str)
++		return dev_err_probe(pse->dev, -EINVAL,
++				     "dialect for chip is incomplete\n");
++
++	/*
++	 * Release the MCU from reset before the first transaction; the
++	 * boot-retry loop in discover() waits for it to answer.
++	 */
++	gpiod = devm_gpiod_get_optional(pse->dev, "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(gpiod))
++		return dev_err_probe(pse->dev, PTR_ERR(gpiod),
++				     "failed to get reset gpio\n");
++
++	ret = rtpse_mcu_discover(pse, &info);
++	if (ret)
++		return ret;
++
++	/*
++	 * Some boards gate all ports through a hardware line; deassert it only
++	 * once the MCU is confirmed present, so a failed probe leaves the ports
++	 * gated. From here the MCU protocol governs per-port admin state.
++	 */
++	gpiod = devm_gpiod_get_optional(pse->dev, "disable-ports", GPIOD_OUT_LOW);
++	if (IS_ERR(gpiod))
++		return dev_err_probe(pse->dev, PTR_ERR(gpiod),
++				     "failed to get disable-ports gpio\n");
++
++	if (!info.system_enable) {
++		ret = rtpse_mcu_set_global_state(pse, true);
++		/* Dialects without a global-state concept (e.g. Gen1) return
++		 * -EOPNOTSUPP; treat that as "no separate enable required".
++		 */
++		if (ret && ret != -EOPNOTSUPP)
++			return dev_err_probe(pse->dev, ret,
++					     "failed to enable PSE system\n");
++		if (!ret) {
++			ret = devm_add_action_or_reset(pse->dev,
++						       rtpse_mcu_global_disable, pse);
++			if (ret)
++				return ret;
++		}
++	}
++
++	/*
++	 * Depending on the MCU firmware configuration (which might be different
++	 * for every board), it isn't known whether the PoE subsystem is active or
++	 * inactive by default. At this stage, the PSE chips might already deliver
++	 * power to PDs without any explicit enable.
++	 */
++
++	/* pcdev.owner is set by the transport, so the registered controller
++	 * pins the transport module that owns the live device, not the core.
++	 */
++	pse->pcdev.ops      = &rtpse_mcu_ops;
++	pse->pcdev.dev      = pse->dev;
++	pse->pcdev.types    = ETHTOOL_PSE_C33;
++	pse->pcdev.nr_lines = info.max_ports;
++	pse->pcdev.pis_prio_max = RTPSE_MCU_PORT_MAX_PRIORITY;
++	pse->pcdev.supp_budget_eval_strategies = PSE_BUDGET_EVAL_STRAT_DYNAMIC;
++
++	return devm_pse_controller_register(pse->dev, &pse->pcdev);
++}
++EXPORT_SYMBOL_GPL(rtpse_mcu_register);
++
++static void rtpse_mcu_gen2_parse_system_info(const u8 *payload, struct rtpse_mcu_info *info)
++{
++	info->max_ports = payload[1];
++	info->system_enable = (payload[2] == 0x1);
++	info->device_id = get_unaligned_be16(&payload[3]);
++	info->mcu_type = payload[6];
++}
++
++static int rtpse_mcu_gen2_parse_port_class(const struct rtpse_mcu_port_status *status)
++{
++	/* Class lives in the upper nibble of sts2. */
++	return FIELD_GET(GENMASK(7, 4), status->sts2);
++}
++
++static const char *rtpse_mcu_gen2_mcu_type_str(unsigned int mcu_type)
++{
++	switch (mcu_type) {
++	case 0x00:	return "GigaDevice GD32F310";
++	case 0x01:	return "GigaDevice GD32F230";
++	case 0x02:	return "GigaDevice GD32F303";
++	case 0x03:	return "GigaDevice GD32F103";
++	case 0x04:	return "GigaDevice GD32E103";
++	case 0x10:	return "Nuvoton M0516";
++	case 0x11:	return "Nuvoton M0564";
++	case 0x12:	return "Nuvoton NUC029";
++	default:	return "unknown";
++	}
++}
++
++static void rtpse_mcu_gen1_parse_system_info(const u8 *payload, struct rtpse_mcu_info *info)
++{
++	info->max_ports = payload[1];
++	/* Gen1 has no explicit system_enable byte; the closest analog is the
++	 * "remote enable" bit in the system-status flags at payload[7].
++	 */
++	info->system_enable = !!(payload[7] & BIT(2));
++	info->device_id = get_unaligned_be16(&payload[3]);
++	info->mcu_type = payload[6];
++}
++
++static int rtpse_mcu_gen1_parse_port_class(const struct rtpse_mcu_port_status *status)
++{
++	/* Gen1 puts the detected class in payload[3] (== sts3) directly.
++	 * Mask to the low nibble; class is 0..8 and any high bits would be
++	 * noise.
++	 */
++	return status->sts3 & 0x0f;
++}
++
++static const char *rtpse_mcu_gen1_mcu_type_str(unsigned int mcu_type)
++{
++	switch (mcu_type) {
++	case 0x00:	return "ST Micro ST32F100";
++	case 0x01:	return "Nuvoton M05xx LAN";
++	case 0x02:	return "ST Micro STF030C8";
++	case 0x03:	return "Nuvoton M058SAN";
++	case 0x04:	return "Nuvoton NUC122";
++	default:	return "unknown";
++	}
++}
++
++/* Map each logical command the core issues to its per-dialect opcode. */
++static const struct rtpse_mcu_dialect rtpse_mcu_dialect_gen2 = {
++	.parse_system_info = rtpse_mcu_gen2_parse_system_info,
++	.parse_port_class  = rtpse_mcu_gen2_parse_port_class,
++	.mcu_type_str      = rtpse_mcu_gen2_mcu_type_str,
++	.opcode = {
++		[RTPSE_MCU_CMD_SET_GLOBAL_STATE]	= RTPSE_MCU_OP(0x00),
++		[RTPSE_MCU_CMD_GET_SYSTEM_INFO]		= RTPSE_MCU_OP(0x40),
++		[RTPSE_MCU_CMD_GET_EXT_CONFIG]		= RTPSE_MCU_OP(0x4a),
++
++		[RTPSE_MCU_CMD_PORT_ENABLE]		= RTPSE_MCU_OP(0x01),
++		[RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT_TYPE] = RTPSE_MCU_OP(0x12),
++		[RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT]	= RTPSE_MCU_OP(0x13),
++		[RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT_EXT] = RTPSE_MCU_OP(0x14),
++		[RTPSE_MCU_CMD_PORT_SET_PRIORITY]	= RTPSE_MCU_OP(0x15),
++		[RTPSE_MCU_CMD_PORT_GET_STATUS]		= RTPSE_MCU_OP(0x42),
++		[RTPSE_MCU_CMD_PORT_GET_POWER_STATS]	= RTPSE_MCU_OP(0x44),
++		[RTPSE_MCU_CMD_PORT_GET_CONFIG]		= RTPSE_MCU_OP(0x48),
++		[RTPSE_MCU_CMD_PORT_GET_EXT_CONFIG]	= RTPSE_MCU_OP(0x49),
++	},
++};
++
++static const struct rtpse_mcu_dialect rtpse_mcu_dialect_gen1 = {
++	.parse_system_info = rtpse_mcu_gen1_parse_system_info,
++	.parse_port_class  = rtpse_mcu_gen1_parse_port_class,
++	.mcu_type_str      = rtpse_mcu_gen1_mcu_type_str,
++	.opcode = {
++		[RTPSE_MCU_CMD_GET_SYSTEM_INFO]		= RTPSE_MCU_OP(0x20),
++		[RTPSE_MCU_CMD_GET_EXT_CONFIG]		= RTPSE_MCU_OP(0x2b),
++
++		[RTPSE_MCU_CMD_PORT_ENABLE]		= RTPSE_MCU_OP(0x00),
++		[RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT_TYPE] = RTPSE_MCU_OP(0x15),
++		[RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT]	= RTPSE_MCU_OP(0x16),
++		[RTPSE_MCU_CMD_PORT_SET_PRIORITY]	= RTPSE_MCU_OP(0x1a),
++		[RTPSE_MCU_CMD_PORT_GET_STATUS]		= RTPSE_MCU_OP(0x21),
++		[RTPSE_MCU_CMD_PORT_GET_POWER_STATS]	= RTPSE_MCU_OP(0x30),
++		[RTPSE_MCU_CMD_PORT_GET_CONFIG]		= RTPSE_MCU_OP(0x25),
++		[RTPSE_MCU_CMD_PORT_GET_EXT_CONFIG]	= RTPSE_MCU_OP(0x26),
++	},
++};
++
++const struct rtpse_mcu_match_data rtpse_mcu_gen1_data = {
++	.dialect = &rtpse_mcu_dialect_gen1,
++};
++EXPORT_SYMBOL_GPL(rtpse_mcu_gen1_data);
++
++const struct rtpse_mcu_match_data rtpse_mcu_gen2_data = {
++	.dialect = &rtpse_mcu_dialect_gen2,
++};
++EXPORT_SYMBOL_GPL(rtpse_mcu_gen2_data);
++
++/* Same dialect as gen2, but the MCU expects raw-I2C framing. */
++const struct rtpse_mcu_match_data rtpse_mcu_gen2_i2c_data = {
++	.dialect = &rtpse_mcu_dialect_gen2,
++	.native_i2c = true,
++};
++EXPORT_SYMBOL_GPL(rtpse_mcu_gen2_i2c_data);
 +
 +MODULE_AUTHOR("Jonas Jelonek <jelonek.jonas@gmail.com>");
-+MODULE_DESCRIPTION("Realtek PSE MCU driver (UART transport)");
++MODULE_DESCRIPTION("Realtek PSE MCU driver (core)");
 +MODULE_LICENSE("GPL");
+diff --git a/drivers/net/pse-pd/realtek-pse-mcu.h b/drivers/net/pse-pd/realtek-pse-mcu.h
+new file mode 100644
+index 000000000000..52f9442d7117
+--- /dev/null
++++ b/drivers/net/pse-pd/realtek-pse-mcu.h
+@@ -0,0 +1,93 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#ifndef _REALTEK_PSE_MCU_H
++#define _REALTEK_PSE_MCU_H
++
++#include <linux/mutex.h>
++#include <linux/pse-pd/pse.h>
++#include <linux/types.h>
++
++/*
++ * Time the MCU itself needs between accepting a request and having a
++ * response ready. These are properties of the MCU firmware, not of the
++ * underlying transport: the core paces transactions by RTPSE_MCU_RESPONSE_MS
++ * and both transports size their per-transaction recv ceiling from
++ * RTPSE_MCU_RESPONSE_MAX_MS, since some commands are documented as
++ * needing up to ~1s to produce a reply.
++ */
++#define RTPSE_MCU_RESPONSE_MS			25
++#define RTPSE_MCU_RESPONSE_MAX_MS		1000
++
++/*
++ * Total time to keep retrying the first MCU read at probe, and the pause
++ * between attempts. Right after reset-gpios is deasserted the MCU may not
++ * answer on the bus yet; give it a bounded window to come up before
++ * declaring the probe failed.
++ */
++#define RTPSE_MCU_BOOT_TIMEOUT_MS		3000
++#define RTPSE_MCU_BOOT_RETRY_MS			100
++
++#define RTPSE_MCU_MSG_SIZE			12
++
++struct rtpse_mcu_msg {
++	u8 opcode;
++	u8 seq_num;
++	u8 payload[9];
++	u8 checksum;
++} __packed;
++
++/*
++ * MCU status opcodes (seen on the Gen1 dialect; Gen2 never emits them).
++ * INCOMPLETE/BAD_CSUM are terminal; NOT_READY is transient.
++ */
++#define RTPSE_MCU_OPCODE_INCOMPLETE		0xfd	/* -EBADE   */
++#define RTPSE_MCU_OPCODE_BAD_CSUM		0xfe	/* -EBADMSG */
++#define RTPSE_MCU_OPCODE_NOT_READY		0xff	/* -EAGAIN  */
++
++/*
++ * A polling transport can stop here: the reply to this request (opcode and
++ * seq_num), or a terminal error. The seq_num rejects a stale reply left by an
++ * abandoned transaction, instead of desyncing by one frame.
++ */
++static inline bool rtpse_mcu_resp_is_final(const struct rtpse_mcu_msg *req,
++					   const struct rtpse_mcu_msg *resp)
++{
++	return (resp->opcode == req->opcode && resp->seq_num == req->seq_num) ||
++	       resp->opcode == RTPSE_MCU_OPCODE_INCOMPLETE ||
++	       resp->opcode == RTPSE_MCU_OPCODE_BAD_CSUM;
++}
++
++/* Opaque to transports; defined in realtek-pse-mcu-core.c. */
++struct rtpse_mcu_dialect;
++struct rtpse_mcu_chip_info;
++struct rtpse_mcu_ctrl;
++
++/* Per-compatible match data (the of_match .data). */
++struct rtpse_mcu_match_data {
++	const struct rtpse_mcu_dialect *dialect;
++	bool native_i2c;	/* raw-I2C framing (vs SMBus); I2C transport only */
++};
++
++struct rtpse_mcu_transport_ops {
++	int (*send)(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req);
++	int (*recv)(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req,
++		    struct rtpse_mcu_msg *resp);
++};
++
++struct rtpse_mcu_ctrl {
++	struct device *dev;
++	struct pse_controller_dev pcdev;
++	struct mutex mutex;	/* serializes MCU request/response transactions */
++	const struct rtpse_mcu_dialect *dialect;
++	const struct rtpse_mcu_chip_info *chip;
++	const struct rtpse_mcu_transport_ops *transport;
++	u8 seq;			/* rolling request seq_num, echoed by the MCU */
++};
++
++int rtpse_mcu_register(struct rtpse_mcu_ctrl *pse);
++
++extern const struct rtpse_mcu_match_data rtpse_mcu_gen1_data;
++extern const struct rtpse_mcu_match_data rtpse_mcu_gen2_data;
++extern const struct rtpse_mcu_match_data rtpse_mcu_gen2_i2c_data;
++
++#endif
 -- 
 2.53.0
 
