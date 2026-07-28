@@ -1,116 +1,117 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F023A1E7B
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 17:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785258450; cv=pass; b=XJKlnlEh5AlEx8s8LVuE5d5KST85TPnHrPPgpDaJu728fbwYZv3C4+8OxwaZb/NbAGd9K7Ua14VTq3PepwT9D/398EhbbkprJFyJ3K8nzmffPR/UMq4AzMJUwshCc7FuoGHCv9YpgRB3MAr/4JZvVodMRfPljOKb3E9Ut716JBg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785258450; c=relaxed/simple;
-	bh=OpvGMPPdpwakZE/P0kGvTKMXnb6F+tK5SIa7Y8guqiQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U6vu8JSWnaWHVeBHThanDkrK022ORKcZtoyF92Ie2tJgCsQdfDE382igXJNg9H5Fe0ABC2kHGUIlgDlSx+QxOZTvo702uLIykR+VKdqiu31RES0o1txSgsV4kNuO6biYcYbOGfvEPr5LvZlMY7IYiSIcuGuFXTcdsMhudW2UQWY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GpqMNJen; arc=pass smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC22391E60;
+	Tue, 28 Jul 2026 17:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785258741; cv=none; b=T77I4nU3HQrVhh+wjUsk+mDedN43+taQU+0iaB9S1kM2CODv0Qd6O9zHLXpUW0U6Yo3c6/xD4DS4fLm8W0tocQRA1UaUkRflQPHHOtT4iMdWBHe001cpu/C35a7U5FhVfpBgNF6NCy6O+wxEe/MzAXiPe1GGsLA6FmOT1n8aCTk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785258741; c=relaxed/simple;
+	bh=39SJI6nbfPCq6jazkdh+Ef0zaW/4Ir6aLgzCnpxisZw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tv6xSbb8Id/mc/QSUdmPNYaBgc59zlUchcHD726x6dgvBRYwqrPSa2QPXw1SO44xkfosgalD1w4JVSUr9NLTavS8fXAPe5dJXQoC/niyuncZjyTLIi4llzQnEHNRUDhvk6un0WeHIjzjJK17dKzbC6LwqExatt8bAKVnhO2H55Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wg7eJA+2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GpqMNJen"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so674215e9.2
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 10:07:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785258447; cv=none;
-        d=google.com; s=arc-20260327;
-        b=opPigRQjjOF1cmZh+OGgmLFrkpihYNXPYKoCNRDSvCD+uW/AX1Ei8j+Fpj80VeteRm
-         nVuA7unQG6kd/6DX2j2cKXzeiZVLgf+DUz6dV7smvQR9oCcXTSUic1JR5TWZjBclAdeD
-         whs0T97Uk4YWZMeR7sMyQ6EYsCzRtFsEr+8od1nOCCCBfvtJOsbaXPWpVpF7CPg6yLqo
-         B2rLTZBr8c1/o8omDJ79jyUnbDFZ/SIFqmsCH8sn+HgeufAxGgvLrvLIL79d//MISldX
-         fJxvxwRqn3nGW/hBPpeId+6uAK5xtl6XinItEIZS3Wbma7vkag5ns1e7Ccz1ilbTcAqP
-         +1Vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OpvGMPPdpwakZE/P0kGvTKMXnb6F+tK5SIa7Y8guqiQ=;
-        fh=fiSwMcQhW8OnhVlM1sgNPUVTT03ld93tut4bDj46WPw=;
-        b=A5np1Nv6DggaAd9FBTUAm/qp1YRyw/y5qQPon87hAZG5Fk7xWHUqD59SfYMS1zwMWm
-         VR+z2e35u9UFkNUVqrSfmahvDWKt8x8WSFPz8RdB1mMjN3snxkVOiOXvFwVY7gYHom6Z
-         7ufn1WX45ENEtO4+84Obmh+4tw6lOf0AP2+uRZnkMgOpqCyI1N/vSqbQG9SQhJhnvlYl
-         H+BihVq/SfOP/Xph9q19s+ikR1GUdhjV9CCJAMXeiBaGXgrNBNcMX8I29jUXaeA28T7w
-         OIr73IRrjLeQYK2UcfzqzoNON2A1EF5VkKa+mX0MwzYokmZnHIMBjyAuA26cECYUS7tO
-         d7OA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785258447; x=1785863247; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OpvGMPPdpwakZE/P0kGvTKMXnb6F+tK5SIa7Y8guqiQ=;
-        b=GpqMNJenHNhDpZKnd/XNfFc8dy2YDkweio44AYGXEZ+jeZvUVQmakH53MtHnIYvoXd
-         4D908KDph+RZsiMFqx+fNtKIo2QhzmP/h1KyXSYE1j4VA9ozFL/z5pj6F0ypRNi7Urhj
-         2w39t2WDDFBacIfC+QNUyr7KuL78AMuZ7v1lb9bbJyROvMdQApiW+GmXwhzPuEXATmXB
-         F8oXs/RXMxaV8wN8p+z3Jz+JKYJ6ZKk5UXXGbUXiEO4+a3wzRT/u8mNRGcbu+uQNpNVg
-         kpZFgmSX0WjA8lf7WA5lnhnFAgu5xNa+IgDwh34xx2vebCz96ANSRigG9+5e69lYd6FP
-         SVgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785258447; x=1785863247;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OpvGMPPdpwakZE/P0kGvTKMXnb6F+tK5SIa7Y8guqiQ=;
-        b=diXRSiDnxrvEkbbhziW9VaMNq534/GmA5D3VhIddlIvPOkGRgC7GS/c4YyoFNT/wT4
-         TUJ/xSaVffIc+DBWt7RyUq0XMnQGaY8nhhPWMPGIee6QjLB8oYUqL/ThCW/7Nk7bdx+g
-         YHhumc4p85VavQt38UZhL9CZaz8Q44oGXtcGoLXByksb69WNUyJuXMaLVoB7DwYbgHbN
-         1XjG51wSRlDOi2/qP0r5cfsuS9h/dmeHRig0eLGBAPexzk7OPtcyDODwdhJ3xhF0wDpD
-         L1JwALXWxEksyCP+z0bSX/nub7APp9on8Mtt9072+RmHJ3tQoRyQYuuQFrkZ+saBaOfE
-         /Hxw==
-X-Forwarded-Encrypted: i=1; AHgh+RoRmqnD7FkQ6JxQg/BBwa+Zy76mnlARHdsasx5KeaWl78FWEgzIm0hFasG0Sy6Bt8Y+NnUJ7xk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyX3c8vXgQlbnPlYit3zefKdIjpE2mc1LmlveIIO/Ano2DZVmmw
-	HR9sDZU1+KSg7GFMN4oO4IKFPOI1Yc8FybrUF6DqhRukRpGwKZWHsvQMwGKScJ01wEtSf3Vlp2k
-	FH6s1/kLQhGCoKWj3kpEX1xHobSbiNp/eWl/5TwM7
-X-Gm-Gg: AR+sD10ORfykDcjs3zUC1xz6HobbA34PcuiD3nlyE6aH09posUVT9NzNrIu7gdeJtpQ
-	JGpaiCC/xoMKpbECrqSZFtwD0ADnNjopTRiCoH4vyMNTe3GI0RkdD3oeLEjcfAbmgVcyvVDpe+G
-	DXS/zK06YcYr9oKc4Y9qy/HqeUFV8HZ98p6RrbUJlO68XXk20GVa8Qo1rbAjAQQNS5Hk7VptZIk
-	K35EQFSOIdLnPop9N0zXbwbr4jmSbTvrcu36l2H+x3K4d2lNRsJD4eqH4hNaTUDygY1WFshwDHC
-	ZHObN2sdPVebdaBX
-X-Received: by 2002:a05:600c:548f:b0:496:ca1f:a428 with SMTP id
- 5b1f17b1804b1-496ca1fa4b4mr14861095e9.19.1785258446141; Tue, 28 Jul 2026
- 10:07:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wg7eJA+2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5DA1F000E9;
+	Tue, 28 Jul 2026 17:12:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785258740;
+	bh=t8Ck7QsvjL1lYC+thT3eYL6lWrgVxJ3UpquI7048FSM=;
+	h=From:Subject:Date:To:Cc;
+	b=Wg7eJA+2nsL8ecYpJPu3VXVei/OPRMI75/mTLo3f8Yq4sr62o7xWkn1Lcvofqo3xL
+	 ICDlCPS9BuFpsHj7ei4ZvREgs/LSSRqneCKfT8HvEOEmexsXGrE6jwhWpouuVO2GRz
+	 qOVouPK/DDIpHJ17SGoe9pY2uVrCdOa0i64nfDTmko4VGaNA1enNBuAoT0iq031yA2
+	 ZKM6zOuXz3fugVQPTYGgUY0RNjhgObN6eIUCWRC52Hdq2JQhhszHBqpfr8GPjFq8gI
+	 GwAgKJ4jpc6neaV4mvu6u62nv3SoamdltYu+x9GxVmOVY9bYjSGg/UPi+zQoHXoYQ8
+	 ddNsqRibLbbuQ==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/5] mptcp: misc fixes for v7.2-rc6
+Date: Tue, 28 Jul 2026 19:11:56 +0200
+Message-Id: <20260728-net-mptcp-misc-fixes-7-2-rc6-v1-0-f7e2d229159d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260721063829.7d9e6c7f@kernel.org> <CADWJPTsP=2=JFE9Oh5ym_wz4vROEFOCqa+dyCLRymyYLRB1BSg@mail.gmail.com>
- <20260723103607.55debff2@kernel.org>
-In-Reply-To: <20260723103607.55debff2@kernel.org>
-From: Sheena Mohan <sheenamo@google.com>
-Date: Tue, 28 Jul 2026 10:07:15 -0700
-X-Gm-Features: AUfX_mw0FxqWxVhC3oN6qw1VF4156a1CWTm0Pt3PrcByvw28u1eYcCSyExYnkrw
-Message-ID: <CADWJPTs6G7zy+9aLxz9QD9Fk1szZK0b-vEFUm2jxTMtxt+t1uQ@mail.gmail.com>
-Subject: Re: [TEST] google runner needs nested cases
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Harshitha Ramamurthy <hramamurthy@google.com>, netdev@vger.kernel.org, 
-	Willem de Bruijn <willemb@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQrCQAxFr1KyNtBGnCleRVzUmGoKHYfJtAild
+ zfq8n3+exuYFBWDc7NBkVVNX8mhOzTAzyE9BPXuDNRSaCP1mKTinCtnnNUYR32LYUTCwgGJqDt
+ yCDLGE3giF/kdvHABN+H6H225TcL1G4Z9/wBver0thQAAAA==
+X-Change-ID: 20260728-net-mptcp-misc-fixes-7-2-rc6-22213c66ef75
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ stable@vger.kernel.org, Florian Westphal <fw@strlen.de>, 
+ Davide Caratti <dcaratti@redhat.com>, Christoph Paasch <cpaasch@openai.com>, 
+ Qing Luo <luoqing@kylinos.cn>, Gang Yan <yangang@kylinos.cn>, 
+ Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
+ Wyatt Feng <bronzed_45_vested@icloud.com>, Yuan Tan <yuantan098@gmail.com>, 
+ Yifan Wu <yifanwucs@gmail.com>, Juefei Pu <tomapufckgml@gmail.com>, 
+ Zhengchuan Liang <zcliangcn@gmail.com>, Xin Liu <bird@lzu.edu.cn>, 
+ Ren Wei <n05ec@lzu.edu.cn>, Dmytro Shytyi <dmytro@shytyi.net>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1691; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=39SJI6nbfPCq6jazkdh+Ef0zaW/4Ir6aLgzCnpxisZw=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLIyHr2er8Ho9fL4MoGTbFWPPBpnvlDif+OwYVminueib
+ 8aN3lOmd5SyMIhxMciKKbJIt0Xmz3xexVvi5WcBM4eVCWQIAxenAEyEuZfhn9WavYkLj2b6vkvN
+ SOQ9/CDlT4b+Vk2mGROOMMeLOM3/U8vwvzyOa3d0/TklgYuRHEZLxRKSVtd+XqSg6DhVPqVqrng
+ xGwA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-Hello Jakub,
+Here are various unrelated fixes:
 
-The recent updates have been merged, and the tests should now report
-sub-case results.
-Please let us know if any further improvements are needed.
+- Patch 1: harden incoming MPTCP suboptions parsing by rejecting
+  non-combinable ones. A fix for v5.6.
 
-Thanks,
-Sheena
+- Patch 2: fix a data race in the ADD_ADDR timer callback. A fix for
+  v5.13.
 
-On Thu, Jul 23, 2026 at 10:36=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
-rote:
->
-> On Thu, 23 Jul 2026 10:14:20 -0700 Sheena Mohan wrote:
-> > Thanks, Jakub. We plan to merge the changes to support nested arrays
-> > for sub-test results by next week.
->
-> SG, please ping again when you do, so I can check and close the request
-> on my side.
+- Patch 3: correctly catch data corruption during the MPTCP join
+  selftest by marking tests as failed, instead of only printing a
+  warning. A fix for v5.18.
+
+- Patch 4: deal with MPTFO with a valid token, but no data in the SYN. A
+  fix for v6.2.
+
+- Patch 5: reclaim forward-allocated memory in case of error on the
+  receive side. A fix for v6.19.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Gang Yan (1):
+      selftests: mptcp: join: mark tests with data corruption as failed
+
+Matthieu Baerts (NGI0) (1):
+      mptcp: avoid combining some incoming suboptions
+
+Paolo Abeni (1):
+      mptcp: reclaim forward-allocated memory on RX path errors
+
+Qing Luo (1):
+      mptcp: pm: fix data race in add_addr timer callback
+
+Wyatt Feng (1):
+      mptcp: fastopen: only mark MPTFO subflows with SYN data
+
+ net/mptcp/fastopen.c                            |  7 ++--
+ net/mptcp/options.c                             | 55 +++++++++++++++++++++++++
+ net/mptcp/pm.c                                  |  6 ++-
+ net/mptcp/protocol.c                            |  7 ++++
+ net/mptcp/protocol.h                            |  1 +
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |  4 +-
+ 6 files changed, 73 insertions(+), 7 deletions(-)
+---
+base-commit: 78f75d632f74b8de0f081a128588f7c37d0d1164
+change-id: 20260728-net-mptcp-misc-fixes-7-2-rc6-22213c66ef75
+
+Best regards,
+--  
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
