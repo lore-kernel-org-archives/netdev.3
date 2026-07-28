@@ -1,176 +1,195 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012018.outbound.protection.outlook.com [52.101.48.18])
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D0F339B3D
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 22:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785279183; cv=fail; b=dwrtIctYFgj2AwSf9DACUCC8it3BSmw9Ziz44ZTTmMDJbFnxI+a1noQDU7zKEIuUd0ocgWCguM/Eoyj8YAX33IhHnMCvQcsbXLo+PnYdkIbf4cRigJOCYn91HYqZHl/5Jiu78Z5PJt4Fpo9CvU3b/2fo3yaenPwdq2JN0CIegJ8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785279183; c=relaxed/simple;
-	bh=Ilq8M8WxbU0kX0uSHUd/a6ZfiFG98Pn9nR6h/gqAS0A=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=XFyJO2EZExacoMQE6SBHuv0WkEYdubHqdcUwbRmCXtyXeS/FE2+y+zG4O88B1oiFlixbAc6rVpNNejTStrif0oycrAmAVXGboV2/lLTCeNXa/mPn58itpDCWWyzxGJiB/iVN2A+x/3C8JW2ihLBDh8ODvvMKDCL69Olrk63N/Oc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QFeNhso8; arc=fail smtp.client-ip=52.101.48.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3683AFB19
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 22:56:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785279399; cv=none; b=hjVqs+9hYQ4JsLZggkFhTo3raNHeP59TAEFe6q6QBl2mp62pEYColX+UsctlpT+ZBBh2DFFoVAWchdZchf5S2ctmWJZwjs0ZvU7iRGzxHmJoPwF0LYv3jmXfVrHNyR5A2diGClx59aCbWobN1LxUxqXWWid9vOKW96tz7HXIf5U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785279399; c=relaxed/simple;
+	bh=nc7HdALFJqmmRLqfZYJDc+Gmo/XgwMSvXOi3WQTsETU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KlAeJBWIFEbQo2ELDdd1WLRuH1yKahQ3doRPCFrnnS23IPNy8jh/b7tl2AhYhp46eGxCj6NUqfd86yQqItmJxdnU4dJbFvQj3ezZfV0NqUg8yN0uxwx5QMsG6z6G7JcNeopJCo1+Oig5J7h/3lrlPQpS1tptJT+JmQ7ycCfAFuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=rKOtkw9n; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EoqFTZct; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QFeNhso8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t5x/O0z8nMrVJIBIgbNw+Pg57CIAkqrISwMae29pTxDS9C5MaawjdhK7PWYBTG5c7QynxUgOPt9/+/6cIoiS8SqDb3aIsUt//t1k76OThNpzFvcjYV+wlLHUVhsOubYmMm/R4yfgHRZ8GFTvXZ4gGVnMaUXvmRKF+cT0I3RlBCLtUiQqf/BBIvSjuVknN0MoXwswQw2+GYuu6ezYAL+zD05MY6XIRgS9UwWNHQuQ3EG9wpscqWkqcThSK29FFpTu6K10Qvpzu/jMUAE+Zkf1NdfVxHAj3A5kKuUctbKy1D6vTfnZ2ubyYjGFa79+wfANt9A90s4Ayg903cVGhyVDIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x85qCk0Ugo7cy1oXXhfFXNwp+V3xvb65dxWZa97QnWk=;
- b=nkmj0EHdb9O++RkkQUG8oqyptLB0JMDD50l28hn8vbZoCEpZ1vMxdNzZWn3vrEDjxwN18FWFc3/IYPUmXOce/zYiom3IhUfJQXGzeK0u6OaprqW8KF9LTTOAOPC62l0NiZqGWXlCyeClUVvgkGUa/EEOEc/u7rBbApIxv7fkUqsKUOEnciGWNwTEF15gKPESqNkk8eRHz0mmUmiLmIs+9Bk3sa8YhlyB5i+R36HYzGZDOfmqp+H9aHUkT3UiUMivBTOpiXMHtZaymlbBrz9h0wqrnlAEvPqjJVS7r/xZRdwwuyMejQGnj0qlwozBu1Q382OGr7ydpkuJs37fZbRUKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x85qCk0Ugo7cy1oXXhfFXNwp+V3xvb65dxWZa97QnWk=;
- b=QFeNhso8fmgNnS4UrfVH9Qf0eaVQRxFscvOc7E29q+doAXldYh2fm3c7+7mSRUABQmvtIwXS1SYiSdVnghPN5uqEnTf2pLvUMJg2mrK2L5+y7pagjFG6M1PrOzDFMaoaFCeUoNnfQEWYNlFYN6zVbj2MW3adhCbnaB8GKQSFpBc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN2PR12MB3485.namprd12.prod.outlook.com (2603:10b6:208:c9::22)
- by SA1PR12MB7246.namprd12.prod.outlook.com (2603:10b6:806:2bc::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Tue, 28 Jul
- 2026 22:52:58 +0000
-Received: from MN2PR12MB3485.namprd12.prod.outlook.com
- ([fe80::7ac:5acc:f8b7:65c9]) by MN2PR12MB3485.namprd12.prod.outlook.com
- ([fe80::7ac:5acc:f8b7:65c9%4]) with mapi id 15.21.0245.012; Tue, 28 Jul 2026
- 22:52:58 +0000
-Message-ID: <50a63b4b-ba5e-4acf-bda8-5aa488c81794@amd.com>
-Date: Tue, 28 Jul 2026 15:52:55 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 0/6] pds_core: Add PLDM firmware update and
- host backed memory support
-To: netdev@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>, Brett Creeley <brett.creeley@amd.com>,
- Eric Joyner <eric.joyner@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Jacob Keller <jacob.e.keller@intel.com>,
- Simon Horman <horms@kernel.org>, Vamsi Atluri <Vamsi.Atluri@amd.com>,
- "Nikhil P. Rao" <nikhil.rao@amd.com>
-References: <20260728-upstream_v8-v10-0-46dafbd74571@amd.com>
-Content-Language: en-US
-From: "Rao, Nikhil" <nikhirao@amd.com>
-In-Reply-To: <20260728-upstream_v8-v10-0-46dafbd74571@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY3PR05CA0017.namprd05.prod.outlook.com
- (2603:10b6:a03:254::22) To MN2PR12MB3485.namprd12.prod.outlook.com
- (2603:10b6:208:c9::22)
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="rKOtkw9n";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EoqFTZct"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 7E8C6EC01A2;
+	Tue, 28 Jul 2026 18:56:34 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 28 Jul 2026 18:56:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1785279394; x=
+	1785365794; bh=oC1I91TKDEvENrCiidHN/0hBndbGLK4lNZmiBybzC9E=; b=r
+	KOtkw9n4uNDAEmAHm41D4J8qe8vuJHPgVqNn0nRfH6rXjsKlJeYBBIln1Dw3gGz1
+	zz1Wxb7bPoJNWWVFpBK65alazVqrWb30qtz8xjSmzdcujD8IdT/dE9+faujwC24N
+	vr3lagvh1083Qc3QuiM+sgvmbmbAY2wkSUtnEVFjkYQ1Q+PAggXcNuszbVHZ5qD1
+	d5yOlOoJocrEyHE3IyY9Q/sPsBEz/etraIKQO9hRxREs9yPaZwwzbpkkMha7MJFU
+	/S0aPsrFdopllUuKxmoq1+PZjIPBAs9CawBSai0y2XCJG+AHTDtHowIoWG3Rxqqr
+	Q5gtXgkZ6y9hqGZCyRiTw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1785279394; x=1785365794; bh=oC1I91TKDEvENrCiidHN/0hBndbGLK4lNZm
+	iBybzC9E=; b=EoqFTZctRz7So2S5G83C3nDR6bGSg6dPys+vnH5ii2dkKQ4Tvtk
+	QpSmlYbsVPieQcs11R5yyb43Jh2vX7muoAlNv2xMvQpX0gJDnGnHgBop4FSoGLib
+	RKjHmNZbHnakYsKjxTt1U8szcV5DkSGwOco0KZGwBZ6P0FTWStMVPNllNTZC+Lmj
+	KN5xAUULAwHhFJ1jtnQaeV83CfXOgPC4fgulSGnSA2OirnsvBFgU+v5i4bAZZHm9
+	ZKGChguiScaSQ3Wnj+8ZBwqz/xVsblBRxnmfZtBJmd69OYH+NJ0CJzMNDJZbQk6O
+	7VFm/P4BE/qB+h9jxCbxHcwKflVYxALBX+w==
+X-ME-Sender: <xms:ojNpamd_DA45fJIKTMqjHfpgz3su5Cuzwn04U8yPb18c21W7R8-m-A>
+    <xme:ojNpaqPmpW9nVGNMuil9_DC0mn47Duot_uNQtkzepqPQXhgtweG8j3D_SEhfDW1aR
+    a2GC37HVPLim92lLFK_tiNrSgfLKK3C_OL5pu3srCV4bqPq2gRV_Ryb>
+X-ME-Received: <xmr:ojNpauIzXLeCW9SdD_LgBGG3EKw3sSro7a9tzi5OMFsoUfz6aXec2dgYNX0>
+X-ME-Proxy-Cause: dmFkZTETz5PhtS5SW3P1uvVEWjqjMuaTfragFDxCRCunXy6w7DaxfzXWBL3nt181YfdBpe
+    OGw8PQGHT4TgQ6rHqbhnnjwXpf1eZxUS/5IG0hicX4S/PooCQpqFUBSr3qRhDrFMKXL+7p
+    dy+CoOmlyW/zxeVofgdKvH2evdHyenHwkGQ2SDyFKk8UfNpeLYt2BXq9PY4R6MGhJLiAN3
+    jsu0hdKiETn/WX2uDNrfVYp6Ll7xyPVEtzDvGvml2bQX13LIlna6hbqGzIv3dYrY/DRlbL
+    Z97DkzOSL4auoKlVGuzrtFwU5KdkJVSm5ilE40WdO58PYfSd9v/NeOSSfVAm572bHSbKQm
+    CRyLlbG06eVO7xBn00MLIHDM8zkX2Oh5UuDrx6E/Sizgu7cRjp5MsWuCbxEEIyXVhdo56K
+    YGyWT1AAL+Z9zDaIxYL1Qcb9lWtE2wqJ4x+0Lw2WMOhhPUR7eomdT6WlyWosO9mDCB+j8l
+    uTaZ931ujtSKQOrXB5gjiHCboH+HfChT280gpDRAkmNE7VK3NE4LccvZxX1w7wTK8b3fHZ
+    LosCmOVKxT2e3Vw5LBreWcvWxkRqrxmGzYx1FMFp4X9jgt20ibO2be3oDky7dw4Nw77SlZ
+    ZWbK6domVLoskkAfQLhheCBAS6EK2H4LmfBcCFn2cXGoqDpYVCkX2VZIxGiw
+X-ME-Proxy: <xmx:ojNpaiIh75lRatXx4wSbtV8B4QvYdRHYK5K_2WcUot7tD1y6lnxoRg>
+    <xmx:ojNpag74sOw68bLQw4UA726tKYi_SLHPiQaWDzs0mzgt1nHdn1q8fQ>
+    <xmx:ojNpakcS0slcoxtgr92g_1uwmvdeLdrHGFOl5zCh8oZzuaoR-Pdd2Q>
+    <xmx:ojNpajFnb50B4LvDfRwHgX182LdamI9wf8a4dx0zanM1-0tlW9K6Sg>
+    <xmx:ojNpaiyUwLs6M-FlYaPTbbiEphLL0Uo6VIqM1afl62MumVIP2J-JOcMb>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 28 Jul 2026 18:56:33 -0400 (EDT)
+Date: Wed, 29 Jul 2026 00:56:31 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org
+Subject: Re: [RFC] docs: netdev: additional info requirements for bug fixes
+Message-ID: <amkzn_79gJWAjGEV@krikkit>
+References: <20260727204724.2787038-1-kuba@kernel.org>
+ <20260727152517.312895f3@kernel.org>
+ <amgBCpqbkrEIiCuh@krikkit>
+ <b39fa14e-1bd3-4e02-8d44-648628303197@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3485:EE_|SA1PR12MB7246:EE_
-X-MS-Office365-Filtering-Correlation-Id: 336a511f-5eb6-4e4e-3903-08deecfaf817
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|10067099003|5023799004|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Kij7czM217tKjePUfHIoa8zASNTVq2JdfBZR0YsuXEATCtaoW6bdjOXFjw0iYXK2+vTW4+d8uo978pwYxjLyC8/1zUXcZM2jZUWP6EUt+/Ioc/apZ0a0DmGErVW7cnUm9zNiH8Zfq8K3zddZ+wE5sWQPsHNy+UeaWL5hzV79hvC/vo8JzUx/Az+BECJPXBwktWuZHyJpKzM5p4iTKbvrqU2u22N9644PlPrqMbmhbl+Zj95rZU9OrriPj0V0DMlnr4Bh/5hi8mmwVKvhD6DxhBALdmELrdYMFPHnEZDTxpG3T7brorvmFE93wwnE4lPMU825yK5JlYk5qSivb4Rq15i/fdBWaWdmzaXH8Mg1/HZUcmCJsRS2fbB2dQycCmSq+9bP7FCM9b2nkmnllkBZWnqCD5SPplsLH4GGnEzl1fM70gkzfZRsFNW/PfDrPQb8AzJnVYxTrHEX1hEHQXyxL7bqbGQaXnZ19P4B4T0EcDEeYLA/qXEJeHNn6GYH7mJ6LO2k2aXiCCseTM+CYKHIqm7bhDToKM7Elxr67HXn1x/KndNoTCXFzYb+bjv3ZNoaQgx2NRzfNJW/xlm4vdsMntLEOcUlrk66EPZtKiN4RHo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3485.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(10067099003)(5023799004)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?V1NESlBJekJtZGpQbEFSRWY0Rmdhb2lFTmlYRWd5Rk5aR01kTVpweks4TklR?=
- =?utf-8?B?SlR2S2lmbXJobjdqTTN2R214bkxUTkNGeFVCRVEvSTNGL1hsZXk3ZkRNYmM3?=
- =?utf-8?B?Sk00VUhKeDZrSHJUbGdCSFZmU0plbEN1ZFhHckhEUmVORFFMRFl5UmhyLzZk?=
- =?utf-8?B?anlPaTZvNFl1TUZuZmhLSkJja3UyK005TytQVFlhRlhxeDllM3Rkajk0bUtn?=
- =?utf-8?B?dXdteDNKSXNNYng1QnBHOFlEbytGYzZEUFE2UXNRUnRQekU2Ry9WSFJFcTZW?=
- =?utf-8?B?VUswL3BWMms1aEZ4V2E1dTNLWERmeFNGQUFBblJlVElMaEc0QkpSTytuQ2Ex?=
- =?utf-8?B?RUFrU2dGRGFyQ2h1M01rTU1NTUdyOGVxTnVxQkpPb1REV3JhdWpvdTZsUmYw?=
- =?utf-8?B?YUs5Zlk0WjBpZ2ExUHM0UEcxeXdvTmhNRFNYQVhoVWEvMHF5Q05waktSR1A3?=
- =?utf-8?B?T1dNTGtmK3hFL0UrWlR5citSOTE4dnFaQjhoSEVLQnM4enBsdjlFZHhSQzho?=
- =?utf-8?B?L3p1SnZpZzJnVXFrVVVybW1ERHBZbktsb2FyV2phT2Y4RVVBR0VXelFSNDBQ?=
- =?utf-8?B?NUdBZWFjTHN3a0laRDJjanhVV2ZvOGNUM0FoSmUySlRSUTZaUjFwNDIxL3Yw?=
- =?utf-8?B?WGdXa0FtUmVybDJPMzNWSDQ2SVRnbEJ3eHAzNEt1MHBhVUNPbTNNbUE3Vkc5?=
- =?utf-8?B?bnpteTZ1V0l5bmMxTnF1ZUhJVVkwVHEwWm9SbEZBSGtkSjZjamsrUGdrUVFi?=
- =?utf-8?B?dHlTWGo3dG1pMm9iS0srV0t0aFJVVE1PUkZUQVdVNFlvbkdEeXBqUFVLeXZ6?=
- =?utf-8?B?aGhScll3VEZpUk93Znk0K09QY3U3VUFJQ3VJV1VqZW1ESW9lVUhkeVlxZmxG?=
- =?utf-8?B?Vnk1MGN1ZlpMSkFpYmFZTzFjcGlBN1Q2MWhVd3phZVNRUkxuekVaTTlSeUx2?=
- =?utf-8?B?eGpyQXBrTUlscE5zUE9PL0MvaTFVS3NVT2FSYzMxN3p5a25BN1VRckxJSjdC?=
- =?utf-8?B?dmNqcitiNjlWeG5ndGphTGZwdlp2UE5vRloveWV5OXoxUGh0bi84SHdFeGxh?=
- =?utf-8?B?ZzRUT3ZnTWRieEMxUHNPSnVscGRXNkU2TkFYaUZyT1VWdnJsdkhWMGpTSGVj?=
- =?utf-8?B?TWJuVjl6U1hGVGJKbysrTExDZkpvMU9paUdWbzlsLzE2U1pwQW5mU05TOHlT?=
- =?utf-8?B?V3FWdGZyU0tVNWk1VVJFYnFLaDR5VVZOOGtBcUdmTUFSeHFWdVJ1SDliTXpw?=
- =?utf-8?B?VzUrZXUzQlRhSmcyOG5yb0hvY05KL3FDUExKaHZKNHlraVdScnRMY2V1UTRH?=
- =?utf-8?B?T0dtWFZpZWlEYUMvb3Q5ZjFoUFFXQ21WYXZtak9FZVYvb1REVVUrYXJyanN3?=
- =?utf-8?B?SlduVmUrM3oxd1dZQjA5M3RyaVBUbmdwdUErcmt2Tk1RM3RQL1IxZ2p5ekxZ?=
- =?utf-8?B?eStGV0x5UmhTeEJYZ2RieHk2QXFHM0xGNjg4d1g5Ujc5dmxBa1FZYitBb2Er?=
- =?utf-8?B?cUt2c2NZQjQzcmQ5cUVSZnU4V2tnb0NmMmtqS2V1VFBoc2tXZEcvTzFzYzdi?=
- =?utf-8?B?cmdTTWdCUUpZN0dvQmI3Yi9uY2t6bE5YYStiTmJzVmJsUGFlZEZGVG9qSmsw?=
- =?utf-8?B?bTJQQjZKSFdrMUMzZW9Jd2RMVFNBY3ZlT3ZjQk85eVhMWFVYeUI0TVk1QnJN?=
- =?utf-8?B?MjFUamxJbDdoSGVOWURCUG9OZE4zSlZyNTl5NlRod2xGWFBVUXlZcHdvQWFK?=
- =?utf-8?B?Mk16bUxkd0F6R2YvenlMaGsrWHoydHpnQlRhVmRDczhXRHJoeU1LeUx1ME9o?=
- =?utf-8?B?K1ZWeEVMc2Fjdkdac21KRzFSTHpuVkxBZUt4bzJXSGFERWJoOExpc3p5MVZY?=
- =?utf-8?B?SUJrVGhLVVJvY2hMcHp5dlVCc0tKeGdqZ0tZK1g0ODRIMkJqMW1rV2NmdVhN?=
- =?utf-8?B?MjhSTk9QbUUzclkvUXl2WWZKOEZSWHhGdmhBdGdwRVIzaXlQbFlVT1hhaGlD?=
- =?utf-8?B?MFpGYjVScXplUmkwUVhabjNaL3VUUmYvUy91OG4zTTNlSkVBdVNkeE8vbUMv?=
- =?utf-8?B?Z0ZVeHNnT2k2QWVqWE0yOU1ObjJ5KzA5dnBIY2JNOGRLOUF4TzVWRExVbUNG?=
- =?utf-8?B?b3Vxcml4V3pDRHlNa0RmL2xlODNsZUR5MEJZTnJ4K2c0aVdGUzhUUDQvUnlr?=
- =?utf-8?B?Uk53Wi9RNnZYcngwQWdES2k4dW1lMVBnZ25kaHU0dE1QUkp3V3M5RVJUbmV1?=
- =?utf-8?B?Szd2bllLT3UycDZOOXlaQUw5bWszdEtFQnZtMUd2SHVHc2lBclNZcnE5RHg1?=
- =?utf-8?B?ZGZqSFVWVGNnTlFWeHJtSXl6QkJOdUpKaCt5QnhkckxwRnNJS3R4UT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 336a511f-5eb6-4e4e-3903-08deecfaf817
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3485.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 22:52:58.4035
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i7qOC720/jZgpEiTmL5cOstOzLZt4YtUjFBVlwaLmAop+tLWIT/RwuR8UA1rr3ZG8MY9Hppz2OvmrFYzM5GI2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7246
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <b39fa14e-1bd3-4e02-8d44-648628303197@kernel.org>
 
-On 7/28/2026 2:09 PM, Nikhil P. Rao wrote:
-> This series adds PLDM-based firmware update support to the pds_core
-> driver. PLDM (Platform Level Data Model) is a DMTF standard for firmware
-> management that provides a vendor-neutral interface for firmware updates.
+2026-07-28, 18:17:27 +0200, Matthieu Baerts wrote:
+> Hi Sabrina, Jakub,
 > 
-> The implementation uses the kernel's pldmfw library for package parsing
-> and component matching. Users can update entire firmware packages or
-> individual components via devlink flash. Component information is
-> displayed via devlink info, showing firmware versions and update status
-> for each component.
+> Thank you for the patch and the review!
 > 
-> The series also adds host backed memory support, allowing firmware to
-> request memory pages from the host for its operations.
+> On 28/07/2026 03:08, Sabrina Dubroca wrote:
+> > 2026-07-27, 15:25:17 -0700, Jakub Kicinski wrote:
+> >> On Mon, 27 Jul 2026 13:47:24 -0700 Jakub Kicinski wrote:
+> >>> +All bug fixes must clearly state how the issue was discovered and validated,
+> >>> +and how the fix was tested. This should be done in plain English, not with
+> >>> +special tags or annotations.
+> >>> +
+> >>> +Example statements describing discovery:
+> >>> +
+> >>> +- discovered by a non-AI static analysis tool.
+> >>> +- discovered by an AI code review agent.
+> >>> +- discovered by manual code inspection.
+> >>> +- triggered during code development.
+> >>> +- triggered in CI testing.
+> >>> +- observed on a machine in real use.
+> >>> +
+> >>> +If the issue was not observed in reality (e.g. it was caught by an AI tool
+> >>> +or manual code inspection), the next sentence should describe the
+> >>> +reproduction. The reproduction should state whether kernel modifications
+> >>> +were necessary (e.g. inserting a delay to widen the race). The commit message
+> >>> +must disclose if error injection or loading a special kernel module was used
+> >>> +to trigger the issue. The reproduction steps should be included in the commit
+> >>> +message if they are short (roughly 10 lines or fewer); longer reproducers can
+> >>> +be posted online with a link included.
+> >>> +
+> >>> +The testing statement should explain whether the fix was tested against the
+> >>> +reproducer and against kernel selftests.
+> >>
+> >> We should probably also add that the commit message of a fix must
+> >> describe the impact to the user.
+> >>
+> >> FWIW the intention is that we'd either quote this text at people
+> >> until they comply or even get an AI bot looking at all patches coming
+> >> in and deciding if commit message is good enough. With some tuning
+> >> LLM should be able to check that the 4 items are covered.
+> > 
+> > I see what you're trying to do, but making regular contributors append
+> > 2 paragraphs to their commit messages (or ask their LLM to generate
+> > them, and also fight for an hour to get a reproducer that actually
+> > does something) just to check the box seems painful. Reading the git
+> > log with all this stuff mixed in will be worse.
+> > 
+> > As someone who's probably never sent a compliant patch, and who has a
+> > tendency to forget new rules (especially those that are inconvenient):
+> > meh. I don't think the commit messages we've been writing all this
+> > time have been so bad.
 > 
-> Changes since v9:
-> - Patch 3 (PLDM firmware update):
->    - Fix a v9 rebase error that reintroduced an -EOPNOTSUPP guard in
->      pdsc_dl_flash_update(), which rejected all per-component flash
->      requests and made per-component update unreachable.
->    - Implement per-component update using the pldmfw
->      PLDMFW_UPDATE_MODE_SINGLE_COMPONENT mode and component_identifier
->      instead of a driver-side component-name filter. The name filter
->      silently reported success when the requested component was absent
->      from the package (nothing was flashed); the framework mode rejects
->      that case instead.
-> - Link to v9: https://patch.msgid.link/20260724-upstream_v8-v9-0-8425762b8b7f@amd.com
-> 
-Self-NAK for v10 -- per-component update is broken.
+> Are these rules mostly for new contributors using AI to generate
+> patches?
 
-Patch 3 filters the package by a single device-side identifier
-(PLDMFW_UPDATE_MODE_SINGLE_COMPONENT), but the same component type can
-have different identifiers in the standard vs gold firmware packages, so
-that identifier may be absent from the package and the update fails with
--ENOENT.
+Based on the commit message, I guess yes. Based on Jakub's reply, I
+would say no.
 
-I will send a v11 that matches by component type against the
-package contents, as in earlier versions.
+> I guess regular contributors are already applying these rules,
+> either by using a Reported-by tag, pasting a call trace, or describing
+> how the bug was discovered, no?
 
-Apologies for the churn.
+Reported-by doesn't describe how the bug was discovered, just that it
+was discovered by someone else than the author of the commit. It can
+just as well be an AI report, CI testing, someone else's manual code
+inspection, or a "real life" bug.
 
-Nikhil
+The call trace could have been produced by adding delays to help
+trigger a race found by code inspection, or seen in real life but not
+reproduced by the patch author.
 
+I'm not sure code inspection vs some tool (AI or not) makes much
+difference, at least when the patch submitter has enough experience to
+check the output of the tool before writing/sending the patch.
+
+Without checking git history, I suspect there's been a bunch of fixes
+for issues found via code inspection or sparse that were not actually
+triggered/reproduced. The code was obviously wrong, it gets fixed. AI
+makes reproducers cheap(er), but not free (in both tokens and
+prompting time).
+
+"Impact to the user" is probably missing in most fixes I've sent (or
+severely lacking, ie nothing more than UAF/memleak).
+[a few examples: 52501989c762 cbada1048847 5502bc4746e8]
+
+But I could see an argument for "well we should have started
+mentioning testing and impact to user ages ago".
+
+> I find this important to understand how the bug was discovered, and ask
+> for a reproducer or another sort of proof when this is a "potential
+> issue found by an AI code review agent". Otherwise, that means the
+> reviewers have to do the validation, which will certainly take them
+> longer than the author to generate the patch.
+
+Sure.
+
+> I don't think regular contributors have to change their commit messages, no?
+
+If that's the case, good. But "quote this text at people until they
+comply" and "get an AI bot looking at all patches coming in" doesn't
+sound like that to me.
+
+-- 
+Sabrina
