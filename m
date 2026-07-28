@@ -1,188 +1,170 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39E81C84DC
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 14:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785250308; cv=none; b=oLwW+Ul6dhwQLbWVTVl/a9sbNCJotl4G+imupY6SnEHDXB2YrXRAlL3DgnVUtyPIlLpOZAXgEY45d9IiU+Y8CcbGthBNF5JPSr1GIhbGVEleLLPN34F2hCkEzGwt9PMkn5gHTNAXorOgl1oxOLXafiuYSEpcKV6XQqwZK3hb5sQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785250308; c=relaxed/simple;
-	bh=v04CGbLKLwuYUscXUu0EZuQfSDN/XtVTpSlIeFD528A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=exUxKrSsUyDZny1Sx9LfWFKM4Pdan/PLvRPhyQ6W6MPl9tEOVyXE2dc5Y9pPUd00qMN5/rRoeK9RW4qMz0BpyT5IvPsfdOULSN6lYpYAqvyrQfxzyM7+p4kbhFMd25bFUR4kdUO4mnTux0I21c+t5eg+WsZo7Z3YB8wi6dvtcfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JuRCvKSJ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D5B456DE8
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 14:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785250507; cv=pass; b=C6nClxDjruax58AQr9zV8Fbn0/XmvqkL0ZWdUCVwki59XwNAkn/foC1bxQL9puWBqy/rJZeDf7mJiWHR3ew4UhVMnEZYC1al7wj2awo0/WDr4wJR09gxw7/Q+ScqcoeNvDtsPjSgl3kQHhWj7s5HPJRwJyVtRRNqtnD3DUFHpLI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785250507; c=relaxed/simple;
+	bh=p4ZS2QnTFpdtxEy/xf7l2zuepNnHiLZl9CMn7GOvXPo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a92cqy7421Wjo/JWUCOu5Vk5He78okabOAJBrhZ8wICnwmbSSDgVlGm1zZvdQBaRe9QbazZZbv7GhNiWHSW6SKnXG/+yCwq36+dDRivmYIJc6xyUQMQkdqUJIPCqoxhjW4cYj/YBVXZMHOxL8D9rfBQ+bSpJgfDQChwAGlg3I+w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TSRnyLjZ; arc=pass smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JuRCvKSJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785250305;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UTKNj2v00LQZeKS0M1n4cAi6ueVd94ATqtoaPg877Uc=;
-	b=JuRCvKSJCBjjE0DamsY+cvfaYMNTVTppS0XulLU3t7aRFKT88At4resreabBwP8H72uEWi
-	mzqQGkvLwwnafywzNVrqhmgPhOk0YFE35XsK/GflMeWK6a5LdOfBaY0afxg6JzSTxpu4tA
-	eSrWbXWzTv4eLQQvCb8G1Vx1pN1ARcg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-hOf5FVcdO_SJaoohBtedwQ-1; Tue,
- 28 Jul 2026 10:51:41 -0400
-X-MC-Unique: hOf5FVcdO_SJaoohBtedwQ-1
-X-Mimecast-MFC-AGG-ID: hOf5FVcdO_SJaoohBtedwQ_1785250298
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4B77F195604A;
-	Tue, 28 Jul 2026 14:51:38 +0000 (UTC)
-Received: from RHTRH0061144 (unknown [10.22.81.35])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9146742A;
-	Tue, 28 Jul 2026 14:51:36 +0000 (UTC)
-From: Aaron Conole <aconole@redhat.com>
-To: alexyoung0@163.com
-Cc: echaudro@redhat.com, i.maximets@ovn.org, security@kernel.org,
- dev@openvswitch.org, netdev@vger.kernel.org, pabeni@redhat.com,
- kuba@kernel.org, horms@kernel.org, edumazet@google.com,
- davem@davemloft.net
-Subject: Re: [net] net: openvswitch: fix stack exhaustion from unaccounted
- clone_execute() recursion
-In-Reply-To: <178521875706.803907.3226960398667307795@163.com>
-References: <178521875706.803907.3226960398667307795@163.com>
-Date: Tue, 28 Jul 2026 10:51:35 -0400
-Message-ID: <f7twlufw4js.fsf@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TSRnyLjZ"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso1053306b3a.1
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 07:55:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785250505; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Cw06EBw4F4t3zCFNOh3KMHpvs8X38Dwrc0HWyOokAb+A7VwcFoINvb/ItDA5+XkgGh
+         AJRV9AWS5jtQzdC03sFqrjMd4XAYw0Q398rdRjQCt/qnquHP1betT7Su8WtwvWSS1jDG
+         72xFz9aGjQVHRPLBRsCOkyJIhPJqM1XrabZqTrbEo+lE2nUrf8nRYvLIGbixuVjH3wkv
+         bUJTY0EJSUC2Ias4wnvYNbG0iWl+pmGy/1nzALqKOurluKqQf+KopPfFAlzOjxV6/D3y
+         zgVN5casRtGdKUs51Y3JVNb0Bw4ltRWFz4Wzu9kIka52c0cDD6goG3RcN9g4A+5M6UuL
+         VJtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wnZiRzYZKi9FGvHEmv0/yAIIifQ5Iqwvf7aqNKU+WYI=;
+        fh=SF1YoGz+AHyC12fqPSyIPt0EznDmYItANgf+cXlOVAQ=;
+        b=cTlD9EJxgnXFs6og2szvfxrwEipEyKB6BMqnJ5lELSCbXmIUCepilXcOXey2WTNN/b
+         PaXGlLos++3dhpXKL53AuQ7l732nMGop0AaYu2zjmFGtiJ13L7Eb1zrmfRJ+CJVncJy6
+         lRwPA9dRuL9fWQXRoLuvHXzQpQe2pgQq0frRtlMSHBEdaGT/kUf5vk4E0hcnDkCq74+G
+         t9+YPJN636mjcUiX8LtJl2amYbdtOv3/JHPbTPvQp07k7lFsH1UoSy5ME64DWE8AOJOK
+         0mhcl2xd/y3gpZgHP65VrhDHyGfCOowvOXJSekwl2WY84ZsQUd2p6fsnYwfaX6lf+OWD
+         768w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785250505; x=1785855305; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wnZiRzYZKi9FGvHEmv0/yAIIifQ5Iqwvf7aqNKU+WYI=;
+        b=TSRnyLjZ+xYBoBMy+KO6VVj7+iu27i3jsCc2jsDijMSzbv4440IgWHIYQj1rpFkSMP
+         pNXxYrUsg8n+6eKjg72pqcJcLs6NMyebu9PlaRH8VOw4h5E/DhehUFrkYwscysSwwOeV
+         l+JsjoTjGc0oLHsiExjKxqi5vCwKhFwb8zDh+y/r5Uy0wuFdHUBvGdRROeFXqCuLixP6
+         Xt9JjRsnq4gkIddnSD/GI/CVcdul0LsAXcgl+WNic4hMME5nIdxS41rpdk/N9tyH5J04
+         kzn1E4IIqrxQO5WYKpRSMmcUKcyzY9qudDAS+rm4LerICHNxjSCB35FtF4Hm1di2Usft
+         uXgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785250505; x=1785855305;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wnZiRzYZKi9FGvHEmv0/yAIIifQ5Iqwvf7aqNKU+WYI=;
+        b=ffj8p6LVWRI+aOtwKbzRPPl1qWSgzZVure7aKJKNzflHZJ6Xd2I30uuPHOqheFo01z
+         KuwZUzd10QAUkwCOiYmwhzFB/TAS9GVKkip1hR6DhZpyCd3eALoHHZwrU/k4c0/zYadD
+         ibmy9/Zs1Pu+0s34woPAGvG4du/VA8LQzAR3R2OToS42WLcNOf3a2NuklO/NjaP5SIrN
+         qLNeY6TTVzrtJ6ZCYh3SOI5wfJ9ZrW00O5ygaR9TTdKpfnH8xvRKck+2PNQ2FLMidk37
+         fr8MQt63a4lwFZiAsqmLyF0o7y2ur0kRlgqhtpKhFzt2fQr4vCzZ5St27gMws3un5K9V
+         24Vw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3HSVWdJwfN3iEr2T4WCLISIldgomFI2SxhAeyYimb+j75I41KyMDTyxyH4pAi+ExEJI/9OvY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6ZyrmO8LUYAZN2dw2tU4p+m73KXfGm2zEGP5wDBdUaMqn17Kk
+	Fr6JHVSkwOW8vgt5616GXGwFAR7X4TOY7jJ1MjaBh1eaeHYfUyP80vyx5hHoGX5iQti81+Ojnr3
+	LrcHTGKy14l4G5CMejVTy+OZWkbp1iUw=
+X-Gm-Gg: AR+sD11uOVRkVZeLglBWYuk0ioKdyaYE9bNzligGGbXVt7Gwy+hVNjdVPpS8YVG9N9V
+	VSzwPT4iIq6FtP/9y5ZB3evfwwY3490Ar4KsGES/CmC3xofDnwlG5Gd2S7hTHWXKCuIyf0GOLcr
+	Yw1Dd6J2LlXAlltYLSnK+3RVq+OOgspz4O7Z5BLVBDsPZW1O8NJAU7Cn4QfpLbrwNbOBJyZDJid
+	GRXd4KRpAMjQT/hDckFBWICCZroL3gztP41sXqqca7HFrNNU/yf+9SOlnRoWYioK6zxFhmL+B/C
+	tFaO3HVIaLYNkit89cjgQqfYr4gTtbSScAVq/sTP29TUB6gHachayIdWcjSf64oVFtrxJGKXesw
+	pgkhF1WR2KpLweBcAIw==
+X-Received: by 2002:a05:6a00:27a5:b0:848:2f58:e1e9 with SMTP id
+ d2e1a72fcca58-84e9329c546mr2926596b3a.36.1785250504812; Tue, 28 Jul 2026
+ 07:55:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+References: <20260727-sctp-adaptation-length-v1-1-0ab58b2810a5@gmail.com>
+In-Reply-To: <20260727-sctp-adaptation-length-v1-1-0ab58b2810a5@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Tue, 28 Jul 2026 10:54:51 -0400
+X-Gm-Features: AUfX_mw0BwbrM7UVJQNAz32ePThYFDRt2stVo7wKa45Plugisja7X07u24HlGCs
+Message-ID: <CADvbK_esmVbc9hf5ihxkXOGrh=b7=wN2dVKzbnbp2KNH6CGC0w@mail.gmail.com>
+Subject: Re: [PATCH net] sctp: validate Adaptation Indication parameter length
+To: trilobyte777@gmail.com
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Yang,
-
-yang zhuorao <alexyoung0@163.com> writes:
-
-> clone_execute() only increments and decrements exec_level when
-> clone_flow_key is true.  When clone_flow_key is false the optimized
-> path reuses the original flow key and calls do_execute_actions()
-> directly without updating the recursion counter, making those layers
-> invisible to the OVS_RECURSION_LIMIT check in ovs_execute_actions().
-> 
-> A single action tree allows up to OVS_COPY_ACTIONS_MAX_DEPTH (16)
-> nested clone actions.  When the innermost clone contains a RECIRC
-> that selects another flow with its own 16-layer validation budget,
-> multiple trees of unaccounted recursion can be stacked.  The deferred
-> action threshold (OVS_DEFERRED_ACTION_THRESHOLD =
-> OVS_RECURSION_LIMIT - 2 = 3) allows three synchronous recirc levels
-> before clone_key() forces deferral, yielding 3 x 16 = 48 layers of
-> synchronous, unaccounted clone recursion.
-> 
-> Per-layer stack usage is approximately 296 bytes (from disassembly:
-> do_execute_actions() allocates 0x98 bytes, clone_execute() allocates
-> 0x20 bytes, plus saved registers and return address).  48 layers
-> consume ~14,208 bytes before recirc, flow lookup, Netlink, and base
-> call frames, exceeding the 16 KiB x86_64 task stack and hitting the
-> guard page.
-> 
-> An unprivileged user can trigger this from a private user/net
-> namespace (clone(CLONE_NEWUSER | CLONE_NEWNET)) by installing three
-> flow rules each with 16 nested clone actions linked by RECIRC, then
-> injecting a single packet via OVS_PACKET_CMD_EXECUTE.  The result is
-> a kernel panic:
-> 
->     BUG: TASK stack guard page was hit ...
->     CPU: 0 UID: 1000 PID: 85 ... 7.2.0-rc5+
->     RIP: 0010:clone_execute+0x5a/0x2c0 [openvswitch]
->     [do_execute_actions / clone_execute alternating repeatedly]
->     Kernel panic - not syncing: Fatal exception in interrupt
-> 
-> Fix this by unconditionally incrementing exec_level for all
-> synchronous clone recursion edges and checking OVS_RECURSION_LIMIT
-> before calling do_execute_actions().  When the limit is exceeded the
-> packet is dropped and -ENETDOWN is returned, consistent with the
-> existing handling in ovs_execute_actions().
-> 
-> Tested on Linux 7.2.0-rc5+ (mainline HEAD 62cc90241548), x86_64,
-> CONFIG_VMAP_STACK=y, CONFIG_OPENVSWITCH=m, isolated QEMU guest.
-> Confirmed that the PoC (./poc_clone_overflow 2 16 3, run as UID 1000)
-> no longer triggers a panic with this patch applied.
-> 
-> Fixes: b233504033db ("openvswitch: kernel datapath clone action")
+On Mon, Jul 27, 2026 at 7:18=E2=80=AFPM Charles Vosburgh via B4 Relay
+<devnull+trilobyte777.gmail.com@kernel.org> wrote:
+>
+> From: Charles Vosburgh <trilobyte777@gmail.com>
+>
+> The Adaptation Layer Indication parameter contains a fixed 32-bit
+> Adaptation Code Point after its parameter header. However,
+> sctp_verify_param() accepts a header-only parameter because the generic
+> parameter walker only requires the header to be present.
+>
+> sctp_process_param() then reads adaptation_ind beyond the declared
+> parameter. When the malformed parameter is last in an INIT, the read
+> starts at the receive skb tail, and the value is copied into the state
+> cookie returned in the INIT ACK. This may disclose four receive-buffer
+> tail bytes.
+>
+> Require the declared parameter length to match the fixed structure size
+> and abort the association through the existing invalid parameter length
+> path otherwise.
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 > Cc: stable@vger.kernel.org
-> Reported-by: yang zhuorao <alexyoung0@163.com>
-> Signed-off-by: yang zhuorao <alexyoung0@163.com>
+> Signed-off-by: Charles Vosburgh <trilobyte777@gmail.com>
 > ---
-> Reproducer (C, single file, available upon request):
-> 
->     gcc -O2 -Wall -o poc_clone_overflow poc_clone_overflow.c
->     ./poc_clone_overflow 2 16 3   # as unprivileged user
-> 
-> The PoC creates a private user/net namespace, installs three flows
-> each with 16 nested clone actions linked by RECIRC, and injects a
-> triggering packet.  Prerequisites: CONFIG_OPENVSWITCH=m/y loaded,
-> unprivileged user namespace creation allowed.
-> 
-> Verified unfixed in Linus mainline (62cc90241548), net (97ac08560d23),
-> and net-next (a50eba1e778a) as of 2026-07-27.
-> 
->  net/openvswitch/actions.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
+> Runtime-tested against net.git base 53658c6f3682.
+>
+> The patch passes checkpatch, builds net/sctp/sm_make_chunk.o, completes
+> a full x86-64 bzImage build, and rejects the malformed header-only
+> Adaptation Indication while preserving the baseline and valid
+> eight-byte controls.
+> ---
+>  net/sctp/sm_make_chunk.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+> index c02809264075..1f7a097802b4 100644
+> --- a/net/sctp/sm_make_chunk.c
+> +++ b/net/sctp/sm_make_chunk.c
+> @@ -2168,7 +2168,13 @@ static enum sctp_ierror sctp_verify_param(struct n=
+et *net,
+>         case SCTP_PARAM_HEARTBEAT_INFO:
+>         case SCTP_PARAM_UNRECOGNIZED_PARAMETERS:
+>         case SCTP_PARAM_ECN_CAPABLE:
+> +               break;
+>         case SCTP_PARAM_ADAPTATION_LAYER_IND:
+> +               if (ntohs(param.p->length) !=3D sizeof(*param.aind)) {
+> +                       sctp_process_inv_paramlength(asoc, param.p,
+> +                                                    chunk, err_chunk);
+> +                       retval =3D SCTP_IERROR_ABORT;
+> +               }
+>                 break;
+>
+>         case SCTP_PARAM_SUPPORTED_EXT:
+>
+> ---
+> base-commit: 53658c6f3682967a5e76ed4bc7462c4bdcddaec3
+> change-id: 20260727-sctp-adaptation-length-aa16536552d0
+>
+> Best regards,
 > --
+> Charles Vosburgh <trilobyte777@gmail.com>
+>
+>
 
-General - please remember to CC the netdev maintainers as well.
+Acked-by: Xin Long <lucien.xin@gmail.com>
 
-[...]
+Note: case SCTP_PARAM_COOKIE_PRESERVATIVE may have the same problem,
+it will be nice if you can confirm it and fix it in another patch.
 
-> @@ -1497,14 +1497,19 @@ static int clone_execute(struct datapath *dp, struct sk_buff *skb,
->  	if (clone) {
->  		int err = 0;
->  		if (actions) { /* Sample action */
-> -			if (clone_flow_key)
-> -				__this_cpu_inc(ovs_pcpu_storage->exec_level);
-> +			__this_cpu_inc(ovs_pcpu_storage->exec_level);
-> +
-> +			if (unlikely(__this_cpu_read(ovs_pcpu_storage->exec_level) >
-> +				     OVS_RECURSION_LIMIT)) {
-> +				__this_cpu_dec(ovs_pcpu_storage->exec_level);
-> +				ovs_kfree_skb_reason(skb, OVS_DROP_RECURSION_LIMIT);
-> +				return -ENETDOWN;
-> +			}
-
-There is an existing check for recursion in ovs_execute_actions() and in
-there we have a log before dropping:
-
-	net_crit_ratelimited("ovs: recursion limit reached on datapath %s, probable configuration error\n",
-			     ovs_dp_name(dp));
-
-We should have a similar log here so we're not silently dropping.  But,
-since we now have two places where this check occurs (and it's
-complicated because of how deferred actions is processed), maybe it's
-better to have a function that does the management:
-
-  static int ovs_exec_level_enter(struct datapath *dp, struct sk_buff *skb) {
-  	int level;
-
-  	level = __this_cpu_inc_return(ovs_pcpu_storage->exec_level);
-  	if (unlikely(level > OVS_RECURSION_LIMIT)) {
-  		net_crit_ratelimited("ovs: recursion limit reached on datapath %s, probable configuration error\n",
-  				     ovs_dp_name(dp));
-  		ovs_kfree_skb_reason(skb, OVS_DROP_RECURSION_LIMIT);
-  		return -ENETDOWN;
-  	}
-  	return 0;
-  }
-
-  static void ovs_exec_level_exit(void) {
-  	__this_cpu_dec(ovs_pcpu_storage->exec_level);
-  }
-
-Then just put the enter/exit calls in the clone_execute() and
-ovs_execute_actions() spaces.  That way if we need to adjust this limit
-in the future, it's consolidated to just one place.
-
+Thanks.
