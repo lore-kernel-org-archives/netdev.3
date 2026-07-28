@@ -1,179 +1,199 @@
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDF62E7391;
-	Tue, 28 Jul 2026 11:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=103.117.158.91
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785238990; cv=pass; b=okJtz4odr3/Ve6JmTwDIKiKZRA9Pa1qIIhfEKfx1ca6uW6ES5rA5NwdDyCfr20wj6lHEBGig87+HjmgHO/r6to7NEIn8YfrLxWjXfkFs0BHjl55RVVhhKZIR+5VzJiAP9LENuA3PJKUIJd3As2Elsxg22vx0qwsyKDQ+8YCh5og=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785238990; c=relaxed/simple;
-	bh=quLaKwiZfERaWmTHxo/ODJ7B/dHApi50Jsm8H15vZak=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:Subject:MIME-Version:
-	 Content-Type; b=B1FrO8yOKSwGka5G1m1mh4ioVjWuNgwjajpDh+7RqvY+Wa2c3uUh/uQbyQvi5i5w1+M3GZtc7k9uXQGvOXw4mm5SreakZ+jx5h1fECr5+fuTgNuOUnmeOXuKT+PLxlKsdLpRb/AWJwhXbaiHzAhWBCXPpF35fi/L7fItpVQAfuk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in; spf=pass smtp.mailfrom=zohomail.in; dkim=pass (1024-bit key) header.d=zohomail.in header.i=linuxuser509@zohomail.in header.b=VTmYHSWe; arc=pass smtp.client-ip=103.117.158.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.in
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7AD426437
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 11:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785239066; cv=none; b=BkXcLuJD0VpuL8PH0OKPvw1bGlh0c8smiE3XwME8GRGqQ+dS1UPdcnxVm5/Bc+WAsjk1egSgD0bgLDopiMQoAttcQ0US22BsZWBu1qGSIRqvWtBLo/9m8hlaA741W9NUCChP0KGAjGpzi0WjSae+iKBs0n5E0GCHm/hzITvmkSI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785239066; c=relaxed/simple;
+	bh=7/Xkc7+zUrOjnz4rh3XsfvgPoLEKdqQVaFMOU8hvkfs=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=Jonk49bJelnCZkHVFM6UBija3p8/7IlsDVPxuyum4aMTT2H+0fZhxKF/6+HW+Eqsm+LvsfpyG1PTvIRAS1yB9t/WCOw14meBBC5k13PkkkMdLCYQ7BVPnKBvVPoVvbKqU5JE/u9IJpPCzeDuMW2jwKQMIZX845IKvSc46AaZBJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JKox616i; arc=none smtp.client-ip=74.125.224.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.in header.i=linuxuser509@zohomail.in header.b="VTmYHSWe"
-ARC-Seal: i=1; a=rsa-sha256; t=1785238977; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=M3AOSfxVr90KH7f9ZcmegXqhH2qOd+zcrY9JfH9Gbt/q/gxRJ418VQ/tv5n+dU1F5MQU1rQNKNA4IyvmLyt019rTtxjkX0xZKXfJaJZARdc9Pw9uN+jEJ48SnIm5YYZc+FKcewJX6VPSRccWKDLWYUBQ7l2Acb4Ijkr0nRMgEdI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1785238977; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=jbI4sr8shz54J9JAmbVVdipbhmm0tldvXywKbn7tmAo=; 
-	b=bvNhw6WBfYlnIuMvLT6Brg81J/2JmtTzXqNQZJUEmK1MDyV0hkSyZ6OoDVyYZytBl/P7Jp8zjiH0N0TZvyjv/RyCq1Yq3Pl3evB1OrgbAMq6v614f0g+1UPZdHDTyk39+tXX4GsxjNSJKJhBTUu9Hrs/8uZUIXvFpbLBROphyaM=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=linuxuser509@zohomail.in;
-	dmarc=pass header.from=<linuxuser509@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785238977;
-	s=zoho; d=zohomail.in; i=linuxuser509@zohomail.in;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=jbI4sr8shz54J9JAmbVVdipbhmm0tldvXywKbn7tmAo=;
-	b=VTmYHSWex1uaRSMEgxUcHbdr8DENvH+5JHMVW4OYMxlrC5yvCJgYfdpghPHOHXD6
-	3DyDUNaNr/eOilCU8oFG/uELAb/e+4/6rb1qzjIisSldspQpqzEP3DsVh38lrbhJvLl
-	vA75MDwKGhGRleXR3OBv17yRo6ek4sGh97yp9U4Q=
-Received: from mail.zoho.in by mx.zoho.in
-	with SMTP id 1785238970449474.1843863188993; Tue, 28 Jul 2026 17:12:50 +0530 (IST)
-Received: from  [152.59.198.117] by mail.zoho.in
-	with HTTP;Tue, 28 Jul 2026 17:12:50 +0530 (IST)
-Date: Tue, 28 Jul 2026 17:12:50 +0530
-From: Ashwin Gundarapu <linuxuser509@zohomail.in>
-To: "netdev" <netdev@vger.kernel.org>
-Cc: "linux-usb" <linux-usb@vger.kernel.org>,
-	"linux-kernel" <linux-kernel@vger.kernel.org>,
-	"andrew" <andrew@lunn.ch>
-Message-ID: <19fa888e049.512e8c5e24030.7986824281565553606@zohomail.in>
-In-Reply-To: 
-Subject: [PATCH v2] net: usb: net1080: add error handling to
- nc_vendor_write()
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JKox616i"
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-66893db7bccso4985376d50.1
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 04:44:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785239064; x=1785843864; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=tzjEklbPNeeizwk68Nr0fI2IZmujivrnCXR+SQTLNW4=;
+        b=JKox616ieHrXL9kU6i1SEoVf7KG7qfRP7R0MO5hf9rO75kxM37xrFOHE3FbIo3BtjA
+         WIntWDmcmXlaejI2bCrAg8IlmIibraMnVRyruM+ivZ7mYLFTsSCjXQYZLoPagGRiZOJS
+         FezWYK3QzPMAHQPfrF3JFjGIkgHD6i21JmmsdpVA2EXCstchhbw+TGkOcBQdBQydKAMr
+         i+ekwWhSG0J/6l8gRRWlXi0SmK0FwzB7imJ6QPlc6lf4EHMWIfF2VoUzyhxiLFvm98NJ
+         +B1agqYMXszx/hQvD5r2hehEFCZB9cJ0UHHoH0/MkXeWyHtpid6F2JH5Ww02spsc21XE
+         7zdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785239064; x=1785843864;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tzjEklbPNeeizwk68Nr0fI2IZmujivrnCXR+SQTLNW4=;
+        b=gZ7OBQwFv3t/ECYzZ2pWEjAkk189rWtVfKfmyPF0GxVvJLPCT0GQpYi6ggsHNDH2Iu
+         w7ev5i6pGCaVH8Tg9gwZY4mRz/e8skr4CC2UL46sj9lvooDBGPF5IPhwUcpZgF9LTZ2E
+         mEkRkrG6cScGtvG9HTIR96ZxftwXkLcFQ9vNcGy7I/zypnTfk2twnuv8fy7ybG2bjSS8
+         dt4JiQXNFbX+uJNUD91ijS3lIlODagmKEelmwGDXfYeJhcCn41I2MtMwPgAiR5IAvIMQ
+         0E/otcrNZbFrqTPfXdrweywaFLdlsywRvCT/wyXNV6h0nqGmPzUNcKEYqkt4Lz4IoEQK
+         7Ztg==
+X-Forwarded-Encrypted: i=1; AHgh+Rpf7eozpHbht9ZxNaXMsW+yOCV48pgBGONTxC0qVSbu/OXG5GTw3e10F3xhiIlGa14WPJPX1c0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNzNjj8qXiLEZ0YR3IJMiodEYgT+B3I8Kc8jHHCeWs/W1ryP3J
+	dqh0paI/3aDWIMR52mkuaVJW9y9Z2eOc1VTIfkM/kViaMu+CuxlivxV8
+X-Gm-Gg: AR+sD10CwQUWHjISOKr/o2+hX3RDN3mz/t+lfcTkZ6pl0/LfKKF7vxU4vlkui2ZfAe7
+	/xpHkgw7AFKhOElUY6aCOkIgO5WXLW66QIeYnEjHTVnuS/1KrTb+oMaRUiTZXPNCsnt6UdD2yFM
+	qU6Ec7xe2NGXVy0lib+eK9+z+ifoOvDl0N/d0UJnOZLU3C/BcgphLAfGWsN8vh7UHL9QT4uskPY
+	B0ZFrjyi/Klmy8iNc1noQOS8vbdY3+jEwVuWKbWrIBrC3DDfRKjP1IEBkw+o109TQASCO8UfnCf
+	EyARbG02GvSw6DvwnF9FHTBTfXatoi8l2Ll3a3kpE0/TP7zlYntS0ghihfCAxEfheOSWj/ZoGNb
+	qLBp2rcm61sZeAJd2zwdI5zK3aLIPcGpPzNIsPG25i1b/3He3fJBDnXViYsrmgWs3a3I/uuq/Ax
+	wtIinLgRuYwUK//sJS0ltn4urfx2lbSL8xpEgfqdzpscSg9NvjMQ==
+X-Received: by 2002:a05:690e:4551:20b0:668:16e9:c43f with SMTP id 956f58d0204a3-669058051dcmr521358d50.76.1785239063931;
+        Tue, 28 Jul 2026 04:44:23 -0700 (PDT)
+Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-668c6dd722esm4844382d50.9.2026.07.28.04.44.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2026 04:44:23 -0700 (PDT)
+Date: Tue, 28 Jul 2026 07:44:23 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Ren Wei <enjou1224z@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ vega@nebusec.ai, 
+ zihanx@nebusec.ai, 
+ enjou1224z@gmail.com
+Message-ID: <willemdebruijn.kernel.e559328910e@gmail.com>
+In-Reply-To: <f1cd534481c2397a36850ad039dcbfd38c3233ce.1784551898.git.zihanx@nebusec.ai>
+References: <f1cd534481c2397a36850ad039dcbfd38c3233ce.1784551898.git.zihanx@nebusec.ai>
+Subject: Re: [PATCH net v2 1/1] packet: synchronize pressure clearing with
+ ring reconfiguration
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
 
-From 8c6ffd0b1a5ac33fb6a81cfd4d7d2c54462233bc Mon Sep 17 00:00:00 2001
-From: Ashwin Gundarapu <linuxuser509@zohomail.in>
-Date: Mon, 27 Jul 2026 19:34:16 +0530
-Subject: [PATCH] net: usb: net1080: add error handling to nc_vendor_write()
+Ren Wei wrote:
+> From: Zihan Xi <zihanx@nebusec.ai>
+> 
+> packet_set_ring() updates the RX ring state under sk_receive_queue.lock,
+> but publishes the tpacket receive mode through po->prot_hook.func after
+> releasing that lock. packet_poll() and packet_recvmsg() can therefore run
+> the pressure clearing path after the ring has been cleared while still
+> seeing tpacket_rcv, causing __packet_rcv_has_room() to dereference stale
+> or NULL ring storage.
+> 
+> Serialize pressure clearing with RX ring reconfiguration and update the
+> receive hook while holding the same queue lock when changing the RX ring.
+> Keep packet_poll() on the unlocked helper, 
 
-The nc_vendor_write() function currently ignores the return value of
-usbnet_write_cmd(). This can lead to silent failures when USB
-communication fails.
+Because it already holds the lock.
 
-Change nc_vendor_write() and nc_register_write() to return int
-instead of void, and propagate the error from usbnet_write_cmd()
-back to the caller.
+> and let packet_recvmsg()
+> take the queue lock only when PACKET_SOCK_PRESSURE is already set 
 
-Also fix the callers in net1080_reset() to check the return value
-and handle errors appropriately. Remove an unused #if 0 block while
-at it.
+which is sufficient, because if the socket moves from tpacket_rcv to
+packet_rcv, the socket is detached and a synchronize_net has passed,
+so no new packets could arrive to set PACKET_SOCK_PRESSURE if it was
+unset.
 
-Signed-off-by: Ashwin Gundarapu <linuxuser509@zohomail.in>
----
- drivers/net/usb/net1080.c | 55 +++++++++++++--------------------------
- 1 file changed, 18 insertions(+), 37 deletions(-)
+> so the
+> fix avoids an unconditional extra lock acquisition on the normal recv
+> path.
+> 
+> Fixes: 2ccdbaa6d55b ("packet: rollover lock contention avoidance")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: Codex:gpt-5.4
+> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+> Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+> ---
+> changes in v2:
+>   - only take sk_receive_queue.lock in packet_recvmsg() when
+>     PACKET_SOCK_PRESSURE is already set
+>   - keep packet_poll() on the unlocked helper under its existing queue lock
+>   - v1 Link: https://lore.kernel.org/all/24f7311aed0c9ff06b8ea982647b82bf543ec369.1784454542.git.xizh2024@lzu.edu.cn/
+> 
+>  net/packet/af_packet.c | 21 +++++++++++++++++----
+>  1 file changed, 17 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> index 8e6f3a734ba0..0107e55de6ff 100644
+> --- a/net/packet/af_packet.c
+> +++ b/net/packet/af_packet.c
+> @@ -1315,13 +1315,25 @@ static int packet_rcv_has_room(struct packet_sock *po, struct sk_buff *skb)
+>  	return ret;
+>  }
+>  
+> -static void packet_rcv_try_clear_pressure(struct packet_sock *po)
+> +static void __packet_rcv_try_clear_pressure(struct packet_sock *po)
+>  {
+>  	if (packet_sock_flag(po, PACKET_SOCK_PRESSURE) &&
+>  	    __packet_rcv_has_room(po, NULL) == ROOM_NORMAL)
+>  		packet_sock_flag_set(po, PACKET_SOCK_PRESSURE, false);
+>  }
+>  
+> +static void packet_rcv_try_clear_pressure(struct packet_sock *po)
+> +{
+> +	struct sock *sk = &po->sk;
+> +
+> +	if (!packet_sock_flag(po, PACKET_SOCK_PRESSURE))
+> +		return;
+> +
+> +	spin_lock_bh(&sk->sk_receive_queue.lock);
+> +	__packet_rcv_try_clear_pressure(po);
+> +	spin_unlock_bh(&sk->sk_receive_queue.lock);
+> +}
+> +
+>  static void packet_sock_destruct(struct sock *sk)
+>  {
+>  	skb_queue_purge(&sk->sk_error_queue);
+> @@ -4304,7 +4316,7 @@ static __poll_t packet_poll(struct file *file, struct socket *sock,
+>  			TP_STATUS_KERNEL))
+>  			mask |= EPOLLIN | EPOLLRDNORM;
+>  	}
+> -	packet_rcv_try_clear_pressure(po);
+> +	__packet_rcv_try_clear_pressure(po);
+>  	spin_unlock_bh(&sk->sk_receive_queue.lock);
+>  	spin_lock_bh(&sk->sk_write_queue.lock);
+>  	if (po->tx_ring.pg_vec) {
+> @@ -4544,14 +4556,15 @@ static int packet_set_ring(struct sock *sk, union tpacket_req_u *req_u,
+>  		rb->frame_max = (req->tp_frame_nr - 1);
+>  		rb->head = 0;
+>  		rb->frame_size = req->tp_frame_size;
+> +		if (!tx_ring)
+> +			po->prot_hook.func = po->rx_ring.pg_vec ?
+> +						tpacket_rcv : packet_rcv;
 
-diff --git a/drivers/net/usb/net1080.c b/drivers/net/usb/net1080.c
-index 19f6e1222d93..87848f6e8e01 100644
---- a/drivers/net/usb/net1080.c
-+++ b/drivers/net/usb/net1080.c
-@@ -113,49 +113,22 @@ nc_register_read(struct usbnet *dev, u8 regnum, u16 *retval_ptr)
- 	return nc_vendor_read(dev, REQUEST_REGISTER, regnum, retval_ptr);
- }
- 
--static void
-+static int
- nc_vendor_write(struct usbnet *dev, u8 req, u8 regnum, u16 value)
- {
--	usbnet_write_cmd(dev, req,
--			 USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
--			 value, regnum, NULL, 0);
-+	return usbnet_write_cmd(dev, req,
-+				USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
-+				value, regnum, NULL, 0);
- }
- 
--static inline void
-+static inline int
- nc_register_write(struct usbnet *dev, u8 regnum, u16 value)
- {
--	nc_vendor_write(dev, REQUEST_REGISTER, regnum, value);
-+	return nc_vendor_write(dev, REQUEST_REGISTER, regnum, value);
- }
- 
- 
--#if 0
--static void nc_dump_registers(struct usbnet *dev)
--{
--	u8	reg;
--	u16	*vp = kmalloc(sizeof (u16));
--
--	if (!vp)
--		return;
- 
--	netdev_dbg(dev->net, "registers:\n");
--	for (reg = 0; reg < 0x20; reg++) {
--		int retval;
--
--		// reading some registers is trouble
--		if (reg >= 0x08 && reg <= 0xf)
--			continue;
--		if (reg >= 0x12 && reg <= 0x1e)
--			continue;
--
--		retval = nc_register_read(dev, reg, vp);
--		if (retval < 0)
--			netdev_dbg(dev->net, "reg [0x%x] ==> error %d\n",
--				   reg, retval);
--		else
--			netdev_dbg(dev->net, "reg [0x%x] = 0x%x\n", reg, *vp);
--	}
--	kfree(vp);
--}
- #endif
- 
- 
-@@ -279,8 +252,12 @@ static int net1080_reset(struct usbnet *dev)
- 	usbctl = vp;
- 	nc_dump_usbctl(dev, usbctl);
- 
--	nc_register_write(dev, REG_USBCTL,
--			USBCTL_FLUSH_THIS | USBCTL_FLUSH_OTHER);
-+	retval = nc_register_write(dev, REG_USBCTL,
-+				   USBCTL_FLUSH_THIS | USBCTL_FLUSH_OTHER);
-+	if (retval < 0) {
-+		netdev_dbg(dev->net, "can't write USBCTL: %d\n", retval);
-+		goto done;
-+	}
- 
- 	if ((retval = nc_register_read(dev, REG_TTL, &vp)) < 0) {
- 		netdev_dbg(dev->net, "can't read TTL, %d\n", retval);
-@@ -288,8 +265,12 @@ static int net1080_reset(struct usbnet *dev)
- 	}
- 	ttl = vp;
- 
--	nc_register_write(dev, REG_TTL,
--			MK_TTL(NC_READ_TTL_MS, TTL_OTHER(ttl)) );
-+	retval = nc_register_write(dev, REG_TTL,
-+				   MK_TTL(NC_READ_TTL_MS, TTL_OTHER(ttl)));
-+	if (retval < 0) {
-+		netdev_dbg(dev->net, "can't write TTL: %d\n", retval);
-+		goto done;
-+	}
- 	netdev_dbg(dev->net, "assigned TTL, %d ms\n", NC_READ_TTL_MS);
- 
- 	netif_info(dev, link, dev->net, "port %c, peer %sconnected\n",
--- 
-2.53.0
+Same question: why this new condition on !tx_ring here, that is
+missing below. It looks benign to me, but especially for fixes only
+make necessary changes.
 
+>  		spin_unlock_bh(&rb_queue->lock);
+>  
+>  		swap(rb->pg_vec_order, order);
+>  		swap(rb->pg_vec_len, req->tp_block_nr);
+>  
+>  		rb->pg_vec_pages = req->tp_block_size/PAGE_SIZE;
+> -		po->prot_hook.func = (po->rx_ring.pg_vec) ?
+> -						tpacket_rcv : packet_rcv;
+>  		skb_queue_purge(rb_queue);
+>  		if (atomic_long_read(&po->mapped))
+>  			pr_err("packet_mmap: vma is busy: %ld\n",
+> -- 
+> 2.43.0
 
 
