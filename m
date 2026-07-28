@@ -1,130 +1,144 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D353A2551;
-	Tue, 28 Jul 2026 06:09:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785218982; cv=none; b=FqP0oe7K4zf1qEdbjKoaoFHeg8GlWDMCoO3MHgj/yEKxRuC457Fw+8yzqM1EsxTWaPAjf8CoTMjYy4uDx0To0h6W3AM6hrSjHpNKsoMP7Y5287WzvNERibGb/rLjFWTim1nEDLQ1BkeuQ/QN5WMWi50bR7HuanjTMYsV+RKTPFU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785218982; c=relaxed/simple;
-	bh=ue0Ss3++MOkygxbDEiaNhKUsfPTMdDfTvduvWjVo6TU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QdNOhfqT58Sl0cRwUH7qINvMgJKouUr0WN11nQU8JfUwrek1AUDRcIyW1cXFG0NwlPaPeULWk8UJl7AGfzWqVaC4PxHmNA7ADT0V/fh72/n1Kwmy+OFmHjrHBAxo2am78J5c9eKGI7ZvF9R/XJyF3vmLaVd8tkVNB8I1iv3xzkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eswpGkBG; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269C5367B70
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785219003; cv=pass; b=rl+3EL/gV9TlBHUKiaV+tpfYN2s0xtvon6vxJK/EoazH1UdghK2iPUSPlbTL/W1z03waDHRoQw0tmW5GrT19w5WqW5DQacJg8YLWABsHXIb7PN4WaoUUuRuNjarIa360vxJ7GkuTvQ//LDPSnsi5FUcz4uDKSprZABqfWOmHl7M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785219003; c=relaxed/simple;
+	bh=QO9q8hGMb6wDMhpK8mlOmRixW52ZyX0W9RelPfDdfsQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ExtXqGH1baF06zuhOrOL+IDHUfWBGX18DFO24t1v0GX9swoyiI3ZEzwe1NdcIV5OZ5AgsqkpJ29Gl+JsZoCmY2zJ/kFq0v6tp3wKF3HWVR8KViz55VOSUH/hVUExtvGouAD4WJKRt0KROuVSbyzj5y/GLSWM/WB5zjaGdlBpKj8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K/28D55b; arc=pass smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eswpGkBG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785218980; x=1816754980;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ue0Ss3++MOkygxbDEiaNhKUsfPTMdDfTvduvWjVo6TU=;
-  b=eswpGkBGfT8EWBS/SSznK45QcltXF0fcxrKIbmIwN4RoASC2ra7W2Y0g
-   4M/26kfDgWhxbklpQufYe2NUEkNrLL3FVS7rxsUH6oESyhunbVu4BU/dE
-   dfn9v8kjHiTno0dZlJVx27031oM09+Lk4KzOBCv281cI1ASqwsxQv2VHE
-   cefLVpq28ZzjmcqytdPMecLzKPT6eg7UTPJqcb/t8Z+uCBxmaKkLV6wmx
-   1+zJLD/cTT3yaKsFLvdgJhfMQ+GtPuxQr0tc4k9D05suNzVJ9KhVW7895
-   0h2t8GLmoh5YVaSiZpB7ocb41gSh7kOLJJtcRvznu9edW/6m3tqYs2wCo
-   A==;
-X-CSE-ConnectionGUID: SGUAn9kATlu31S9iuvlGVA==
-X-CSE-MsgGUID: 6BcEXaj5QfCfH07SoVAa8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="97171050"
-X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
-   d="scan'208";a="97171050"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 23:09:39 -0700
-X-CSE-ConnectionGUID: LuYNrYPETQqI7vP027Uzmg==
-X-CSE-MsgGUID: PMt7PumiTjCc3pcubCpFxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
-   d="scan'208";a="258343502"
-Received: from unknown (HELO brc05..) ([10.190.162.60])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 23:09:35 -0700
-From: Tushar Vyavahare <tushar.vyavahare@intel.com>
-To: netdev@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	stfomichev@gmail.com,
-	kernelxing@tencent.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	tirthendu.sarkar@intel.com,
-	tushar.vyavahare@intel.com,
-	andrii.nakryiko@gmail.com
-Cc: bpf@vger.kernel.org
-Subject: [PATCH net-next v2] selftests/xsk: decouple xskxceiver and xdp apps from test_progs objects
-Date: Tue, 28 Jul 2026 06:07:58 +0000
-Message-ID: <20260728060758.1970618-1-tushar.vyavahare@intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K/28D55b"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-39ca300db70so30618141fa.2
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 23:10:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785219000; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fXC+No4ejJvK2yQy0GeXkQyxUAzvQyibXZKoD9iWel77pI4juPgh7HNhzYTrP+81Vl
+         UcuZcIeWtcbHFzJKnzYSV78uZWt2Araa07hSbXWTcedFerefeyClQtEU0ARbq33t1y6j
+         Im5FDwwH5KlxH4YBmVUmxl3pkGG+BvlUABFULNIGP7IKEG/x9oQiKd8WpJO1U9KuJa8h
+         l33RvlAo+RAKnrvnViw2u4bA919aUVRyV3iaoua96nE1IMdSBfbcbbXsfP/SxZJcvRbq
+         xO78l52V7BPcZcBJq52cAlFuWMTvcIuxgQqv4g0cO1328lHYImmEch/ZFLqcMZqJoImO
+         qY0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QO9q8hGMb6wDMhpK8mlOmRixW52ZyX0W9RelPfDdfsQ=;
+        fh=QqPYftU9nZEqJBlanC+unMSpwhnH5mIKTRsimbl0M3o=;
+        b=MsIGZCMEng3z6WwE9l0TfoILCPdvC1gkKv53/ARLdbVXZ5LwVyP1IuANIcfyyXFw8l
+         Jr1UPpriZUrIfTdWhEtBQfYvzqZhbJupnk0CKckKJ2w+djzTkebDBZVwaD4jnO6l6zqt
+         7BCglGpac0JPkRxZBeBdzO8RIlCoNbvG3YXQCdejTxlMhULmVNSZyCh2tIYXTQjrurb5
+         y1XxWjPgNzl6/Pvmtx2bPxERc2UnNgdGJgOzoxpo3PQ4nz4kab7uF9H3xzcrL06MrNIx
+         BpnkwZTn8hG1bfYRX1Sm7CMkyJLKT4VtwFkYCq0nS6O3mdlJgoBd0TH7ih0Ahp85xLKp
+         p5lg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785219000; x=1785823800; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QO9q8hGMb6wDMhpK8mlOmRixW52ZyX0W9RelPfDdfsQ=;
+        b=K/28D55bSqiQyJHd/eaIGAlCuBvzw6PTnr3GyVEgTWwAxtaBwxBrbeo9IJT1i977zh
+         Wa5nkTlz1dAgxmnS/xGEPsakMUIp+OqcYlO8Qs9INpqw0f00sSXYbb+cKrvKHHHe8eKC
+         wOTpv5ZH8FCU+4zLSZTRfoa+K3mdUyuvpRsQkLGEQZtoNMDx0iRwluDXMS8WkAJIu74B
+         uWsU/y0krI+pv4mP+TL/XPwTGwYjpAXzU9Kz2Lz3elm74aWRsZs/X+RQJ7ukIapGsb8p
+         ZB/7Yrbk9pgrBFDU5E4270CdsnolXRl8n5L29fzWGAHdO180Xwp1T2PBHejznlRSlcA9
+         E17g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785219000; x=1785823800;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QO9q8hGMb6wDMhpK8mlOmRixW52ZyX0W9RelPfDdfsQ=;
+        b=W0a0ZVQ1WArBMPXgIfgVELe/UoYfTC6d0+BlVNjGl5G6T/WPWqdWs1lNnCtVyHu1tq
+         iy1a4D26Qbdg7EBc/BP2tWHUaQz204/QfALACsuXMqJC8momwy/gy+rZpMqX27iHj03l
+         N+PT8EjqauIjketjUZRF6lvtVf997Kn19ZUOhscHwOiJEqw3hAQW+eclZOertT+mgUwR
+         +eEicsul9i3J1xY7CqDacZGwvSHexmNkQO0q2pPlnAmCnulbrvkV1PgjW46OzERwLAjM
+         dMWjKKtWihRqbrOGWSsRx3qkR6CO4YWnaxyK0+KeNU+hJJCiEMEtbI3Z4x0IPuY8lypo
+         LSMQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrFPVpwV3Y3MGmCqcL2xzkssJEqjun8JzMK6mrsXksphJlVnqSjhoaFEb7XhCJBoKaIOZjILEc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwscMp8S/+/RHYgG60n3V8SGpcgB+Dc58e9h+45fDh26pBCSJve
+	HxnepwrhOia+4iXAr/PkiVho2/p/AvmFKM2YaPolvgVvG3KqwqMAEsv6n0hM4RfZtYi6Nx5m/4e
+	AR4LdjX+c1tTbdYvc7G3K6CMrR3Ns6qE=
+X-Gm-Gg: AR+sD13Qi+bRodjmPjoiPlK4Z5lqiAqJ41ZUSO249+ecpvIxvRY9fhNOj0m+x2BakuP
+	sZFyiu/Rn1jSES7WpeBZnEQ7W0ASvtI1s0zOE8VXksJoCWooTKgZ5g33j8zFJ/aVmu/CEBjs5Ji
+	iQtmLh0aW8R+TF1U/5gL/uxDBEa7VF1qu/Ot7JDTVeVFv7H1tpOH0n5djCH95p8c+Q6lgru83El
+	fi0z3sKYKMSSWLoJdWO8AFC/zkiSWp3cWY4rZZ3lphPMlb+rVY9WxwtvrWE
+X-Received: by 2002:a2e:bc89:0:b0:39c:9aa0:799f with SMTP id
+ 38308e7fff4ca-39f51eb3a29mr1809001fa.33.1785218999991; Mon, 27 Jul 2026
+ 23:09:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260723143908.4019-1-maimon.sagi@gmail.com> <118da808-b9e0-4e5a-9094-9c6dc3740ff4@linux.dev>
+ <20260727140320.54185eb8@kernel.org>
+In-Reply-To: <20260727140320.54185eb8@kernel.org>
+From: Sagi Maimon <maimon.sagi@gmail.com>
+Date: Tue, 28 Jul 2026 09:09:33 +0300
+X-Gm-Features: AUfX_mzwOmtm11WByCwb-riod8IH7BnzyeHpAMIpDdotpH_ZpdzxrofTgYxGi0c
+Message-ID: <CAMuE1bHMe3BHz6YoAgXXtP+TpBEos6jaHFpBNPYjFHXKVxd4_g@mail.gmail.com>
+Subject: Re: [PATCH v6] ptp: ocp: add CPLD ISP support for ADVA TimeCard X1
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>, jonathan.lemon@gmail.com, 
+	richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, pabeni@redhat.com, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Build xskxceiver, xdp_hw_metadata, and xdp_features from explicit source
-lists instead of reusing helper objects produced by test_progs rules.
+Thanks for the feedback.
 
-Reusing shared objects such as network_helpers.o and xsk.o can pull in
-test_progs-only dependency chains and trigger unrelated libarena builds
-when invoking a single target.
+My initial implementation actually exposed a real I2C bus to user
+space. However, following Vadim Fedorenko's review comments:
 
-Keep these standalone binaries self-contained so each target builds only
-its own required sources and BPF skeleton dependencies.
+https://lore.kernel.org/all/c6aff5f7-e087-4bd9-b159-7adeb82e19f4@linux.dev/
 
----
-v2:
-- Inline dependency lists in tools/testing/selftests/bpf/Makefile.
-- Drop *_SRC helper variables per review feedback.
+I changed the design and switched to a sysfs-based interface for the
+ADVA device only.
 
-Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
----
- tools/testing/selftests/bpf/Makefile | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+From your comment, it sounds like neither of these approaches is
+acceptable in its current form. Could you please clarify what
+implementation you would consider appropriate for this use case?
 
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index b642ee489ea6..f4e78bf8ec80 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -934,17 +934,26 @@ $(OUTPUT)/test_verifier: test_verifier.c verifier/tests.h $(BPFOBJ) | $(OUTPUT)
- 	$(call msg,BINARY,,$@)
- 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
- 
--# Include find_bit.c to compile xskxceiver.
--EXTRA_SRC := $(TOOLSDIR)/lib/find_bit.c prog_tests/test_xsk.c prog_tests/test_xsk.h
--$(OUTPUT)/xskxceiver: $(EXTRA_SRC) xskxceiver.c xskxceiver.h $(OUTPUT)/network_helpers.o $(OUTPUT)/xsk.o $(OUTPUT)/xsk_xdp_progs.skel.h $(BPFOBJ) | $(OUTPUT)
-+# Keep xskxceiver independent from test_progs object dependencies.
-+$(OUTPUT)/xskxceiver: xskxceiver.c xsk.c network_helpers.c \
-+			   $(TOOLSDIR)/lib/find_bit.c prog_tests/test_xsk.c \
-+			   xskxceiver.h xsk.h network_helpers.h \
-+			   prog_tests/test_xsk.h test_progs.h bpf_util.h \
-+			   $(OUTPUT)/xsk_xdp_progs.skel.h $(BPFOBJ) | $(OUTPUT)
- 	$(call msg,BINARY,,$@)
- 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
- 
--$(OUTPUT)/xdp_hw_metadata: xdp_hw_metadata.c $(OUTPUT)/network_helpers.o $(OUTPUT)/xsk.o $(OUTPUT)/xdp_hw_metadata.skel.h | $(OUTPUT)
-+$(OUTPUT)/xdp_hw_metadata: xdp_hw_metadata.c xsk.c network_helpers.c \
-+			   $(TOOLSDIR)/lib/find_bit.c xdp_metadata.h \
-+			   xsk.h network_helpers.h test_progs.h bpf_util.h \
-+			   $(OUTPUT)/xdp_hw_metadata.skel.h $(BPFOBJ) | $(OUTPUT)
- 	$(call msg,BINARY,,$@)
- 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
- 
--$(OUTPUT)/xdp_features: xdp_features.c $(OUTPUT)/network_helpers.o $(OUTPUT)/xdp_features.skel.h | $(OUTPUT)
-+$(OUTPUT)/xdp_features: xdp_features.c network_helpers.c xdp_features.h \
-+			   network_helpers.h \
-+			   test_progs.h bpf_util.h $(OUTPUT)/xdp_features.skel.h \
-+			   $(BPFOBJ) | $(OUTPUT)
- 	$(call msg,BINARY,,$@)
- 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
- 
--- 
-2.43.0
+Specifically, would you prefer:
 
+exposing a proper I2C adapter/bus to user space, or
+implementing the required device operations directly in the driver and
+exposing only higher-level controls?
+
+I'd like to understand the expected direction before respinning the patch.
+
+On Tue, Jul 28, 2026 at 12:03=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+>
+> On Mon, 27 Jul 2026 12:02:53 +0100 Vadim Fedorenko wrote:
+> > I don't like the idea of having a buffer in a global structure. And it
+> > doesn't look like you can actually serialize access. Imaging 2 processe=
+s
+> > manipulating this i2c bus. I can be that mutex will put them like:
+> >
+> > 1. process1 -> write cmd
+> > 2. process2 -> write cmd
+> > 3. process1 -> read result
+> >
+> > That means the data will be a mess.
+> >
+> > That's why it is a really bad thing to allow direct access from the use=
+r
+> > space. Is it possible to add a property per command?
+>
+> At a glance - adding I2C support via 2 magic files in sysfs is rather
+> odd. Either expose a real i2c bus or make the driver sends the
+> appropriate commands. We are opposed to raw device write interfaces in
+> netdev.
