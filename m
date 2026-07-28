@@ -1,36 +1,50 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CDD2DCF57;
-	Tue, 28 Jul 2026 03:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E74D30E82E;
+	Tue, 28 Jul 2026 03:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785208106; cv=none; b=XHFKq7giAaskn0NLu6eEHT+ehScAA3JoEA6JeDZokv8Q5/aoO3oISOEZ47wPoZWvE3BnjTqTAxqJgfT4w/wyQZyk6xxlMa5A/sDUG+buLav6x6MF1Qn3CBBjpaxlfvDnp0qbU51Up5vYIn3q6745IQX1pe3QJDsPRlf4DF3EuZw=
+	t=1785208248; cv=none; b=KI6L8bB4Iqoh4X2N3EnUWtZNcnC1P/DWY7F1Q8fePAfmStg76fkLnmWMeJbCMS9v2O/LdPnK4WZmuEiGIKF34m69on+mWJF88HZ3IMkV+XWcBoDWEy1t7ls3uoAqCUx3Y5jT+Yvvv6ntb5meVx4s5kbNAV1VGVib7Bg2MUkb9+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785208106; c=relaxed/simple;
-	bh=aHCzfYpYUEmHit4qAlCqfvyFpxy6UxEiGDc6f2IaHbo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J+cVa2vzRWfB8g+QN2xUmaP/8XZ1MBZR68A7bW5zKvnhqv1yO7Ex97tC0s90rsdTwYvisvv9bPdN5oOZuFnicLLNCXxURZ2qRDflv61DO6X0KL6lSABjDhVE357HD5xT2vxDQTHqVup+Ip64pVou0AiyKaIzcTFCpQd7xn0C/cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=207.46.229.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wDX3y8cHWhqT2JGAA--.2335S3;
-	Tue, 28 Jul 2026 11:08:12 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app2 (Coremail) with SMTP id zC_KCgAnl8wcHWhqDy5HAw--.57582S2;
-	Tue, 28 Jul 2026 11:08:12 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	david@ixit.cz,
-	mgreer@animalcreek.com,
-	oe-linux-nfc@lists.linux.dev,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Fan Wu <fanwu01@zju.edu.cn>
-Subject: [PATCH net v2] nfc: trf7970a: drain timeout_work and keep trf->lock valid across teardown
-Date: Tue, 28 Jul 2026 03:07:16 +0000
-Message-Id: <20260728030716.230626-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1785208248; c=relaxed/simple;
+	bh=w0AkUZbmPzZthixNL/8ll/amym2kaWjn6bjJ3JC7k34=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R+qK0Uhjfk51rGGGrk+Xd6klpVYBCa6cwu4SPP/L5yFMO/SWHMyrtFKPBx5dRbvZ+tVKpYsVnaWgxvmLilH173ZFyi9ePodiXaoAWXLifYcTZug5RbZMpBEIXmn4yHgPuigyTYHSceDQXMOXlJ3iDCcaMSoeu+f1gYzEZFI8c/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: e863de128a3111f1aa26b74ffac11d73-20260728
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:01cd3472-8ee2-4cf8-adcf-44ff07197baf,IP:0,U
+	RL:0,TC:0,Content:0,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:e7bac3a,CLOUDID:561533203ae85b9c0abaa7cc9a2adaf8,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|850|865|898,TC:nil,Content:0|15|
+	50,EDM:2,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,
+	OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: e863de128a3111f1aa26b74ffac11d73-20260728
+X-User: heminhong@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <heminhong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 562120143; Tue, 28 Jul 2026 11:10:38 +0800
+From: Minhong He <heminhong@kylinos.cn>
+To: Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: failover: check register_netdevice_notifier() error in failover_init()
+Date: Tue, 28 Jul 2026 11:10:33 +0800
+Message-Id: <20260728031033.76431-1-heminhong@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,113 +52,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zC_KCgAnl8wcHWhqDy5HAw--.57582S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?ZYHA/QXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfncGSG+szpQCInt5Y8rbJUI0ehKhht0Ab00um4zGWfdpP9ED8i3dNWVazX1emWYn8OxNI
-	7Bz3XDcm+0nSxBmFi8Op9E6mavGmQbzmcFsnzP86
-X-Coremail-Antispam: 1Uk129KBj93XoWxAr1UuFykuFy5Wr1rWF4Utrc_yoWrJFW7pr
-	sxWFyq9rW8CrWjyFsrZF4IqFWrAa18J3y8C34qga4fJan8JFyxJry8Ja4Y9Fy8CrWkZ3ZF
-	vrW5ZayfuF4FyFcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Cr1j6rxdM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6x
-	kI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v2
-	6r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2
-	Ij64vIr41lF7xvr2IYc2Ij64vIr40E4x8a64kEw24l42xK82IYc2Ij64vIr41l4I8I3I0E
-	4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGV
-	WUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_
-	Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rV
-	WUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4U
-	JbIYCTnIWIevJa73UjIFyTuYvjxU7rcfUUUUU
 
-The driver never drains trf->timeout_work with a blocking primitive:
-every cancel_delayed_work() in the driver is the non-blocking variant,
-kept that way on purpose so the timeout handler can consume its return
-value for the ignore_timeout protocol. A timeout handler that is already
-running and blocked on trf->lock during trf7970a_remove() therefore
-survives past the teardown, then acquires the lock and dereferences trf
--- a use-after-free.
+failover_init() ignores register_netdevice_notifier() errors and always
+returns success, which can leave the failover module loaded without its
+netdev notifier registered.
 
-trf7970a_remove() also calls mutex_destroy(&trf->lock) before the devm
-chain frees trf, while the threaded IRQ handler trf7970a_irq() takes the
-same lock at entry and is only synchronised by the devm_free_irq() that
-runs after .remove() returns; it can thus observe the destroyed lock.
+Check the error and fail module initialization early.
 
-Fix both by draining timeout_work with cancel_delayed_work_sync() and by
-dropping the premature mutex_destroy():
-
-In trf7970a_remove(), cancel timeout_work between
-nfc_digital_unregister_device() and nfc_digital_free_device().
-nfc_digital_unregister_device() flushes the digital core's cmd_work,
-which invokes the driver's in_send_cmd/tg_send_cmd/tg_listen entry points
-and arms timeout_work; cancelling timeout_work before unregistering could
-let a final in-flight command re-arm it after the drain. The handler also
-dereferences trf->ddev, so the drain must precede freeing the digital
-device. On the probe-error path the device was never registered, so the
-cancel runs directly before nfc_digital_free_device().
-
-Drop mutex_destroy(&trf->lock) from trf7970a_remove() and from the
-err_destroy_lock probe-error label. trf is devm_kzalloc()'d and
-devm_request_threaded_irq() is registered after it, so devm reverse-order
-cleanup runs devm_free_irq() (synchronising the threaded IRQ handler)
-before freeing trf. The mutex is embedded in trf, so leaving it valid
-until then lets the IRQ handler be drained before the lock goes away.
-
-This issue was found by an in-house static analysis tool.
-
-Fixes: 165063f1dac4 ("NFC: trf7970a: Add driver with ISO/IEC 14443 Type 2 Tag Support")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.6
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
 ---
-Changes in v2:
-  - Move the cancel_delayed_work_sync(&trf->timeout_work) in
-    trf7970a_remove() to after nfc_digital_unregister_device() and
-    before nfc_digital_free_device(), so the drain runs after the
-    digital core flushes its cmd_work instead of racing it. The
-    probe-error-path cancel and the mutex_destroy() removals are
-    unchanged.
+ net/core/failover.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
- drivers/nfc/trf7970a.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-index f22e091..9dc6931 100644
---- a/drivers/nfc/trf7970a.c
-+++ b/drivers/nfc/trf7970a.c
-@@ -2207,13 +2207,13 @@ static int trf7970a_probe(struct spi_device *spi)
- err_shutdown:
- 	trf7970a_shutdown(trf);
- err_free_ddev:
-+	cancel_delayed_work_sync(&trf->timeout_work);
- 	nfc_digital_free_device(trf->ddev);
- err_disable_vddio_regulator:
- 	regulator_disable(trf->vddio_regulator);
- err_disable_vin_regulator:
- 	regulator_disable(trf->vin_regulator);
- err_destroy_lock:
--	mutex_destroy(&trf->lock);
- 	return ret;
+diff --git a/net/core/failover.c b/net/core/failover.c
+index e43c59cd6868..b28cc6f77204 100644
+--- a/net/core/failover.c
++++ b/net/core/failover.c
+@@ -302,7 +302,11 @@ EXPORT_SYMBOL_GPL(failover_unregister);
+ static __init int
+ failover_init(void)
+ {
+-	register_netdevice_notifier(&failover_notifier);
++	int err;
++
++	err = register_netdevice_notifier(&failover_notifier);
++	if (err)
++		return err;
+ 
+ 	return 0;
  }
- 
-@@ -2228,12 +2228,11 @@ static void trf7970a_remove(struct spi_device *spi)
- 	mutex_unlock(&trf->lock);
- 
- 	nfc_digital_unregister_device(trf->ddev);
-+	cancel_delayed_work_sync(&trf->timeout_work);
- 	nfc_digital_free_device(trf->ddev);
- 
- 	regulator_disable(trf->vddio_regulator);
- 	regulator_disable(trf->vin_regulator);
--
--	mutex_destroy(&trf->lock);
- }
- 
- #ifdef CONFIG_PM_SLEEP
 -- 
-2.34.1
+2.25.1
 
