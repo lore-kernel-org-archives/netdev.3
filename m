@@ -1,51 +1,79 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFDB30E82E;
-	Tue, 28 Jul 2026 03:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDD831E82E
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 03:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785208267; cv=none; b=S4ZiqWc/1/wthjVfIPcDYcC3qjLhonTD5p6UbQpQ5zx8/4RQSaqKZgU9FXRhSs+CowcED5UoJ77Mnav7+gaTK6wLg9PPSgNUtQiCZB5EqogptDiIzCk21T6gF53+Y2HYEX3ZLZaqYHoXnGRnemnx1KCmbc+ICSvaJjKxURmZ+JY=
+	t=1785208269; cv=none; b=sFZKqg5xfqdjYq5Dl2oW0XsKyrXmBxlIzaBcpGbesQZaALE4eWacmnKN47MvJK9tvA+kjtUNARf1fLCZeRB72GBK8YJ4/Z2D590AW0j3EB8ZjUHDyk8OQ2WiQtIZFCE5cwbT3aJNEFyqjURQUdQfVAPvmXED43QZ42JFF75XCdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785208267; c=relaxed/simple;
-	bh=zbzDIac7wN/UD0dBkaiHYxWyG4nv6KeKwKJqNQU5nq0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R8rI3PqyQraLWuHY3lC/1MA0byXTv78y3HN27zvprCVbTMTjY5SxdIFHEROXvkS1w1b4D7foyhXh1AWLxLmsX4SjkGUwYzHVwcbQOqu9xIxkO6e4lSXW/mwnzgEAc9Uh7f9vmTYxN1s+7RYHIC3w1ocTCXYnn5UGOuIDza1ItuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: f599b5c08a3111f1aa26b74ffac11d73-20260728
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:c6b318ce-08cd-4ace-9b83-857df5e0ee1d,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-30
-X-CID-META: VersionHash:e7bac3a,CLOUDID:991b81fab16968a64d22acced820850e,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|850|865|898,TC:nil,Content:0|15|
-	50,EDM:2,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,
-	OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f599b5c08a3111f1aa26b74ffac11d73-20260728
-X-User: heminhong@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <heminhong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1370908918; Tue, 28 Jul 2026 11:11:00 +0800
-From: Minhong He <heminhong@kylinos.cn>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Subject: [PATCH net] ipv4: nexthop: handle errors in nexthop_init()
-Date: Tue, 28 Jul 2026 11:10:55 +0800
-Message-Id: <20260728031055.76708-1-heminhong@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1785208269; c=relaxed/simple;
+	bh=v7oBAjJMIhVfdijcfMPA9HrTDSWEC2QWu+BjAmEIkd4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WwAxz7zRMGIoyULGUEjaUzjznwKI8FsgjvXqdxrVT9M8MNEmnRrd8hOqawvKMY93YN/ZPPNCkgpLRGPWVrDjTW1axU6e6fXWM1mDy7dW5uEWp0FCfObDXy59BXynKdo/d5OcNoH5DjoHF8LHpmhNZC3ZCl2bwJQt7oLi0trxRCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cxhU7aSB; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cxhU7aSB"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-848c995c29dso166799b3a.3
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 20:11:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785208267; x=1785813067; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ts5/Y1TVWAmyd7a1WEfthTQKByaZz802Qr0m4Iw99Us=;
+        b=cxhU7aSBNN+wxB3L5ZBNnm2fTXbC2E557Nc9xgSUMjcyabWrxAPWFgptQGOaD1CWQG
+         cP2EwNbo8+O5olnpSVL23H1zmZuCgu4j+7oB5J3tU+XMV7x4Z0mU+bvRvXEloMi52NRE
+         k7u5mHIyHkJE5dqQWjW9Kw1K0OqBeOsWtTnSjX+QDl6obMl7WaVofX/HZaPvMvXTtC7A
+         +x0rNXZMDcXuhnuIdHrOO8EYSUna8hBWgd0jCPixb3iRd3s8VjzXkFf+naxslr5gfqQ3
+         Xz122+/IHJMlw9B9Wfo/MQkJ1r4BKxIxzA2xgrGcGL6xE+wrzddESM93An2AolfIq7Nz
+         lAtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785208267; x=1785813067;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ts5/Y1TVWAmyd7a1WEfthTQKByaZz802Qr0m4Iw99Us=;
+        b=mQJGeJ5iahTNGBwwsLmEt/fbj3xuv3AeDo6khxcnSHRy2c8HGgYzRD8QmEqj3RbIK4
+         R9mMBN+Of8TUvcRu7+jOrX7UvVDcxnejzILctzo7bXomYnOMZtOxojVK+R4Sub/YM6wd
+         mhl4OrmLMhdlZkE4vdvT8bBMvDjRQmNHgrMiFZqMgeKwhxR6J/wJV0Qtf+fDw4oU0vfe
+         ZycIIGPgtblgVbNiwkN4411vgiopC5cD8p/EIt4NCUN/NZ/KxClGpe01YTG/jlj0ZQBu
+         PDV0Bfp4AKY/6Z0gG0JK5zs72j53qWm1utTyUPu4Y2/4ciMvFRJEDBBv+uW4FqhX4MVt
+         5zLg==
+X-Gm-Message-State: AOJu0Yyi/vbu44G776+et9xAfRLwUnaW9C7l+HS7g084aZuTl8L3/IiW
+	n8Tqv0eSDBZ9Tdn64KNjyudkZBHUYuaSffy2ipo4wKsXxt5P6M88nuPXbmgLIMuX
+X-Gm-Gg: AR+sD11nJ8djPSQc28YE9tWe5zPT9PhRxJokgjpdufX0Bn8+C6FRsv3I9TPXRZG/GdB
+	FGc5zedVxkbOmJ8HaT6iEA6dT5am+eiUCbswkRRVRL/Nr7e1m19F6rmVRxXWxlHRQSnEDXmpDJW
+	iKOwfYigLC8rykZnbZMSTULpf4ZI2jqIqscyZEBoOcNEoh/TZARuKSBE1CqqoBy/z3EtNqF9U8M
+	h0PjSKmGl81YFG1BF3reuzoIbCxbdF5DJpQxWzZ5kJPbGGBzqRPCK4nHjt5sMyMiIFkpb2tPrS/
+	Mt5/Xpoep4IKRnEQl15JsOF1rIdyxaKYO7U8jwvoR6UBRnku1zqWIRzaFA8ni0sgrqDabG0jUKO
+	31J2F2Bu9ngr9eKPoQEZSOY/UzC4hBkXsc03RoWRSLPeA3RCUSXmkFToNVMOOiixu3mql6/rScw
+	vTEknnkKemT/zlLpjTxuzpVkcSoLzJgq7LD8vOr0DjmrbwKNL+o2MlyY7raYV8PJRs
+X-Received: by 2002:a05:6a00:2302:b0:847:8971:87d8 with SMTP id d2e1a72fcca58-84e9335ee6dmr364413b3a.6.1785208267429;
+        Mon, 27 Jul 2026 20:11:07 -0700 (PDT)
+Received: from localhost.localdomain ([139.159.170.93])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e53470a92sm3709432b3a.60.2026.07.27.20.11.03
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 27 Jul 2026 20:11:06 -0700 (PDT)
+From: Qihang <q.h.hack.winter@gmail.com>
+To: netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
+	daniel.zahka@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	Qihang <q.h.hack.winter@gmail.com>
+Subject: [PATCH net v3 0/2] packet: use consistent hard_header_len in send paths
+Date: Tue, 28 Jul 2026 11:10:53 +0800
+Message-ID: <20260728031055.49375-1-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260726092110.80185-1-q.h.hack.winter@gmail.com>
+References: <20260726092110.80185-1-q.h.hack.winter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,51 +82,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-nexthop_init() ignores errors from register_pernet_subsys(),
-register_netdevice_notifier() and rtnl_register_many(), so a partial
-initialization can appear successful.
+AF_PACKET send paths read dev->hard_header_len at several stages of skb
+allocation and construction. Concurrent netdevice reconfiguration can
+make those reads inconsistent and cause skb headroom underflow.
 
-Check each step and unwind the registrations that already succeeded.
+Split the regular and TX_RING paths so each patch has one Fixes tag.
+The separate SOCK_DGRAM consistency issue between hard_header_len and
+header_ops->create remains outside this series.
 
-Signed-off-by: Minhong He <heminhong@kylinos.cn>
----
- net/ipv4/nexthop.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+Changes in v3:
+- Split into two patches, one Fixes tag each.
+- Add LL_RESERVED_SPACE_EX() for calculations using a saved length.
+- Use int consistently for saved header lengths.
+- Drop unnecessary READ_ONCE(header_ops).
+- Snapshot hard_header_len per-frame in the TX_RING path.
+- Reset copylen for each frame.
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 6205bd57aa85..0ad40d93e3b5 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -4192,12 +4192,26 @@ static const struct rtnl_msg_handler nexthop_rtnl_msg_handlers[] __initconst = {
- 
- static int __init nexthop_init(void)
- {
--	register_pernet_subsys(&nexthop_net_ops);
-+	int err;
-+
-+	err = register_pernet_subsys(&nexthop_net_ops);
-+	if (err)
-+		return err;
- 
--	register_netdevice_notifier(&nh_netdev_notifier);
-+	err = register_netdevice_notifier(&nh_netdev_notifier);
-+	if (err)
-+		goto err_unregister_pernet;
- 
--	rtnl_register_many(nexthop_rtnl_msg_handlers);
-+	err = rtnl_register_many(nexthop_rtnl_msg_handlers);
-+	if (err)
-+		goto err_unregister_notifier;
- 
- 	return 0;
-+
-+err_unregister_notifier:
-+	unregister_netdevice_notifier(&nh_netdev_notifier);
-+err_unregister_pernet:
-+	unregister_pernet_subsys(&nexthop_net_ops);
-+	return err;
- }
- subsys_initcall(nexthop_init);
+Link to v2: https://lore.kernel.org/netdev/20260726092110.80185-1-q.h.hack.winter@gmail.com/
+
+Qihang (2):
+  packet: use consistent hard_header_len in non-ring send paths
+  packet: use consistent hard_header_len in TX_RING send path
+
+ include/linux/netdevice.h |  6 +++--
+ net/packet/af_packet.c    | 47 ++++++++++++++++++++++++---------------
+ 2 files changed, 33 insertions(+), 20 deletions(-)
+
 -- 
-2.25.1
+2.50.1 (Apple Git-155)
 
