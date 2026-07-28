@@ -1,183 +1,119 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6275A34041B
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 16:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785255709; cv=pass; b=grn841oF+ItgJ+4cYs44558vOLEflPzomwUrQVftg91DUCxclCB7TRfqDADJMq9Wvju3jLF8ip6laO1l242NCPY09e4MyEtK8FtFQEGVkF6XJsd7CjwruwMJao/mXKvXB9tVqGHNqlbwj4j6k82km6HDFPZ9MOZwljO8eL32zY4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785255709; c=relaxed/simple;
-	bh=Jk+DuIcPI1GcugEemQ5xJBOfl2qmWql3hYohtyA2IEA=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=R+c1AgqwYaTIksXqSIPj1RyjGg0vVqmp40BeP7cmE32fV9A6fTQfwO58MIShPFwQgJB80bbMSrsiYIGRay9U3vH0X10w439Zw4Vc+OfKOOZamyB/9VtlhZVz8C3+X8QuQOeNDRZfFup/MfXGTsbM3+rTf3C8sbqXu2DQpx4v2fg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XnGBmWJz; arc=pass smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BED377555;
+	Tue, 28 Jul 2026 16:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785255878; cv=none; b=ILL+O56L8ai0ClpheL2po3YfYdSSeZb7kt8i2aX04UDjqRif1BzcOrA5x6CQ9c5BLcXR3KDuf4IDZdCnTKw4ijDnS1Lc1UjS3lCM8QesfKlfODSdw46uCIOtaS/vgityyreRVqfSydFfBCv0KK2oZm9rAr6GVyh7BXMwLnQHMxc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785255878; c=relaxed/simple;
+	bh=vWMKSzzpBTfatsYmHFgZj4EoC9MVBYwvfVkGM/cJjIo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Dq9YqDhWBHw3zpiHujSZQPw4DzXPOhbFsP0dVsmuvGi60syO761ruBYLs+/bCnRh7cJbjV3IoPFHBtFcXDn1cbSKPZl6fUFGnJCUg+k+tDnGH5njklb+sOCimU4PYWGfR05kdSWEgyrVoqtXUHHeisSq6U6FevJpYEnq+u8s7xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZDl/Eg/5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XnGBmWJz"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c15ca7a7ca9so2874066b.0
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 09:21:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785255706; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iF9zpJFJuD6XtSEIfYn3E8Hxec1RCG4sFMddmeU5J4dCXXNrb9GO6O2sSbmpVC9t/8
-         iYUogJonK6kxCP8h/XmeTdwnoxYpTow8dajckt3fP7Befz6FxQNIReYamuHheCd54MPP
-         M35gaty4wc0Ky8nwGE7s8RNoOQRrLNC/h5lscUNQ/+/kGTRp/amkTvETevBjch6cTR9h
-         2Y+m4392jpEQPeTwCJFtCmE6p3NUkWu1ZL9FnSih8gf3whPK5ko3jKb01DNcv5mIB5+W
-         l0t7hEm/PM+bhZ5aoD3yQieh2xvNldMgu5HxQecuYsOH891EAAx6aaVmts+zmEUnY9kb
-         fNeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=aSACA+rojs2I/ZtJErAjFTUM8LM1UmDZ8O99mcrYQi8=;
-        fh=Xe8tMI3VjrhyVGPgSH69FhXgIYgezvIHFtF2DWDiJMk=;
-        b=OYFCfpl5yh4w7G8xusUeSJZnfVn4n68IXFHFtwY5cCqMPyWdBkqfYyHXHEbp/TIfs4
-         hOrQAKaVGa8Vff8ejFbIMVaHf4pWGTy+QaQqlm+nGYzvYr6D0DrQvNsdCTGW2+exOX9e
-         89fYZ9/a+N6++jR/kcU/qW4YPwcTzNq92gFZyj9gGSvreIoxdd5jq1bTehgjxwPkLjrj
-         wxoD32qJ8P+zkpEZrY0170WEwxrGV946eeTeA9XG7iC42zJA1ETSonTWVciwj3K871GN
-         8Oyda/wrnrAkqPm2XNCZHVtuqq6xtVdRlKq4BSBt7uu1sqOIfiCS1dE8gF74hDeUqZPe
-         E3Hg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785255706; x=1785860506; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aSACA+rojs2I/ZtJErAjFTUM8LM1UmDZ8O99mcrYQi8=;
-        b=XnGBmWJz/8Aa9KTlEN0HM1jLVTFeHvCxnW635KhZU0X+Raz/OQYqKl+plH0LsboXeB
-         cutTNTlWPGNBWNefdLxrrSbc9bhEkLAxsCrRL956IDMY8tgPmglm2weKQNAS91LMmyNW
-         uDN7Ia1N/+aW7bTSUwnaPa/hv7Wkz7xYy30EkrPixqTesgKAuvQVerkXbrSd/sKuS6nK
-         2AObn9o1qe1365gIXZPOLVWoDgxJUfw2f/vfYmfAvV9ygYLODYPeFk6NoeJQDg70LHw5
-         vPEykkWxf+0X0JQ7gcDpCRCowBDq+1Aqo1A+QXgzV1U00rJkpTTbZ3Au5MWQ4ubDr1z7
-         0ngA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785255706; x=1785860506;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=aSACA+rojs2I/ZtJErAjFTUM8LM1UmDZ8O99mcrYQi8=;
-        b=NbJB9W504zP51xcUxK+S/IWrOpA/6DiKI5Fv3BUy4Kqrse5K7t8SN7rKTTqUMFtikn
-         uAUjiqSriSHUxXrNOYLnOKfPZRpVc4gcJHyyYhQie3y5wimGCBeGDe8GzPSOHtwqZGyq
-         qRbM7e6ZBsbI/e57UDkuvZYrrKhMuCtV0HD1j/DKrm4oa6eILhK9pT8QypvQ/wYR272V
-         CWO/AovMx1todw1U1bM9HBMjwhbXWu9HYcYB8AJZD81L37x1cueB7wWM1CiTaBzrVRZx
-         aSeNy+RolK7+H7D7/JEAS2F41uWStiHuhtalXv5pH5ZztPsdxug2gI6YZ1yUomc+Fj+S
-         Owug==
-X-Gm-Message-State: AOJu0YxKSw+WSQfqFub1dSwFeesXg+456v67DJNMDJygZ42mqXxw/j8r
-	gbbG/rabRv3cT27lthfbP6wJMFuSLoOji34vv1HvQtHdRaqQRvyq8D7hMvfrhO7pADoxRm5Ixg7
-	LxJhGKPeJ+JfyMZboF4te8BQ69zWwLD49auprTFw=
-X-Gm-Gg: AR+sD13Ec4Mvzqo9QWtvvyVmwzsQ38DMveQZJkdrVj6PxO0aTFXXfhYvHGMH3+7WKC5
-	xB4mF7wa4Mu/zP38zfFXPL86UPXUgyfVqPC5yjoHLHdMU2H7xiHYma0pXmdDjQlE9nwdV0Le9he
-	1juDd2Tq7QpgHRRXG6AY1jeJpgizwycEfq4wcDktl+kdHDYnAdABzbUsalklvePtI5Jw8zVZAdS
-	KuPznzrDrkUTpRobqkm54qC8M9Jx3vYZIwv27kSIvgz8DU56MgZ+kqrbvlnRz/4j1ZL0F8eIuzw
-	HcqtyeyKTO/lDwwn16ZXdRysFDRDtQvjlddg7IBHpE4RbQ==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZDl/Eg/5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E87A1F000E9;
+	Tue, 28 Jul 2026 16:24:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785255874;
+	bh=3fXCTqKDFPeeZSKzhi12ENj/QYFjEH9zdFLqJrbhbl0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=ZDl/Eg/5GYecAKoOepubuSjKK4tQcE2cGvzc6/PoNqMpaF64vYbLgx0hO6rO7EpAO
+	 CR1aeoc0PB9OiKpERm5of50mGf1K7fQRIrPM9+T2vqShuHZR3UKwpz9T6+KFtMivrE
+	 ZmPFWDDEKKF6AcVc+7DYIvAVXdKvJMqtCbW7W1dcBP5gvHAQ03jgr9GNVDKqUfjX4z
+	 CJHbEk3YrTKyBtHGzK5MzBc6M9WzEGs4DNRcZZsXFlKK2MH26/KoDMbrwOLia7ka3a
+	 R8zoj080ZIGAm5/xkJel9vNoQ4KasX5uHhXTPskf4j9HDYePFt6Qn8ATd20RJ9BJXs
+	 Dnw/YrDPq4taw==
+Date: Tue, 28 Jul 2026 11:24:32 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Gary Guo <gary@garyguo.net>, David Airlie <airlied@redhat.com>,
+	Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+	Jens Taprogge <jens.taprogge@taprogge.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	GOTO Masanori <gotom@debian.or.jp>,
+	YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Zhenzhong Duan <zhenzhong.duan@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-pci@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	industrypack-devel@lists.sourceforge.net, netdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v4 7/9] PCI: Make pci_match_one_device() match on ID
+ instead of device
+Message-ID: <20260728162432.GA1322140@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a17:907:6090:b0:c15:b4f3:6d25 with SMTP id
- a640c23a62f3a-c1f721bd9d3mr164216566b.19.1785255706278; Tue, 28 Jul 2026
- 09:21:46 -0700 (PDT)
-Received: from 1051196574424 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 28 Jul 2026 09:21:45 -0700
-Received: from 1051196574424 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 28 Jul 2026 09:21:45 -0700
-From: Muhammad Bilal <meatuni001@gmail.com>
-Date: Tue, 28 Jul 2026 09:21:45 -0700
-X-Gm-Features: AUfX_mx8DJLaXoWOlAavAXFn13zlzy4RvDxvrl6Do2e2q2ZD5lpazoYqqv17suQ
-Message-ID: <CADqcGBkVewfYCirbeusDW1xbs+mFs9ditaBX7KzG6NcM=xpm9w@mail.gmail.com>
-Subject: [PATCH v1] af_unix: fix use-after-free in unix_stream_recv_urg()
-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: kuniyu@google.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DK7N9IZPWPIT.2AKSZR5CU1H9L@garyguo.net>
 
-unix_stream_recv_urg() reads out-of-band (MSG_OOB) data from
-unix_sk(sk)->oob_skb.
-It saves a pointer to oob_skb under sk_receive_queue.lock and state_lock,
-and then drops both locks before invoking state->recv_actor(oob_skb, ...)
-and incrementing UNIXCB(oob_skb).consumed.
+[cc->to: Dave, Vaibhav, Jens, Greg, GOTO, YOKOTA: possible acks?
+series: https://lore.kernel.org/all/20260723-pci_id_fix-v4-0-3580726844e1@garyguo.net]
 
-Prior to commit 8594d9b85c07 ("af_unix: Don't call skb_get() for OOB skb."),
-the OOB sk_buff held an additional reference count. When that extra refcount
-was removed, oob_skb became a bare pointer into the socket's receive queue
-without any lifetime protection once the receive queue lock is released.
+On Sat, Jul 25, 2026 at 01:17:50PM +0100, Gary Guo wrote:
+> On Fri Jul 24, 2026 at 11:29 PM BST, Bjorn Helgaas wrote:
+> > On Thu, Jul 23, 2026 at 11:00:46PM +0100, Gary Guo wrote:
+> >> PCI dynamic ID needs to match IDs against a new ID to see if it already
+> >> exists. Existing APIs can only match IDs against devices, causing the
+> >> dynamic ID insertion code to create a temporary device only for matching
+> >> purpose. Rename pci_match_one_device() to pci_match_one_id() so it can be
+> >> used for this purpose instead; add a pci_id_from_device() helper to make it
+> >> easy to convert users.
+> >
+> > s/causing the ... code to create/so the ... code creates/
+> > s/purpose/purposes/
+> >
+> >> Similarly, convert pci_match_id() to do_pci_match_id(). But keep the
+> >> existing API because there are many users.
+> >> 
+> >> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> >> Signed-off-by: Gary Guo <gary@garyguo.net>
+> >
+> > Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+> > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> >
+> > What's the merge strategy?  If these all need to be merged
+> > together, feel free to include the PCI patches whereever you merge
+> > the series.
+> 
+> I think the series should be merged together, as I consider the
+> driver changes included in this series being "fixing the users".
+> 
+> The series should probably be taken via the PCI tree. I suppose one
+> can also argue that the lifetime issue with device IDs isn't unique
+> to PCI bus so this can also be considered driver-core material, but
+> given that Greg has already taken the USB fixes via the USB tree the
+> only unfixed bus left is PCI.
+> 
+> So unless Danilo thinks otherwise I'd suggest the series be taken as
+> a whole via PCI.
 
-Because unix_release_sock() does not acquire u->iolock during socket close,
-a concurrent close() on the socket races with unix_stream_recv_urg() as follows:
+I'm happy to take via PCI.  It would be great to have acks/reviewed-by
+from the non-PCI maintainers:
 
-  Thread A (recvmsg MSG_OOB)            Thread B (close)
-  --------------------------            ----------------
-  Acquires iolock & queue lock
-  Saves oob_skb = u->oob_skb
-  Drops queue lock & state lock
-                                        Acquires state_lock, sets TCP_CLOSE
-                                        Sets u->oob_skb = NULL (locklessly)
-                                        skb_dequeue() & kfree_skb()
-frees oob_skb
-  recv_actor(oob_skb, ...) -> UAF read
-  UNIXCB(oob_skb).consumed++ -> UAF write
+  David Airlie <airlied@redhat.com> (agp)
 
-Additionally, unix_release_sock() cleared u->oob_skb with a lockless plain
-assignment. This creates a KCSAN-visible data race against READ_ONCE(u->oob_skb)
-in manage_oob() and unix_stream_poll(), both of which rely on all
-writers updating
-u->oob_skb with WRITE_ONCE() under sk_receive_queue.lock.
+  Vaibhav Gupta <vaibhavgupta40@gmail.com> (tpci200)
+  Jens Taprogge <jens.taprogge@taprogge.org> (tpci200)
+  Greg Kroah-Hartman <gregkh@linuxfoundation.org> (tpci200)
 
-Fix the use-after-free by taking an explicit reference via skb_get(oob_skb)
-while holding sk_receive_queue.lock in unix_stream_recv_urg(), and releasing it
-with consume_skb(oob_skb) after the data copy and consumed counter
-update complete.
-This guarantees the sk_buff remains valid even if a concurrent close() dequeues
-and drops the queue's reference.
-
-Fix the data race in unix_release_sock() by wrapping the u->oob_skb clear in
-sk_receive_queue.lock and using WRITE_ONCE(), matching the locking contract used
-by all other oob_skb update paths in af_unix.c.
-
-Found by code review of AF_UNIX OOB lifetime management after commit
-8594d9b85c07,
-and verified with a clean build.
-
-Fixes: 8594d9b85c07 ("af_unix: Don't call skb_get() for OOB skb.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
----
- net/unix/af_unix.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index f7a9d55eee8a..011ea88d57c2 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -689,7 +689,9 @@ static void unix_release_sock(struct sock *sk, int embrion)
- 	unix_state_unlock(sk);
-
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
--	u->oob_skb = NULL;
-+	spin_lock(&sk->sk_receive_queue.lock);
-+	WRITE_ONCE(u->oob_skb, NULL);
-+	spin_unlock(&sk->sk_receive_queue.lock);
- #endif
-
- 	wake_up_interruptible_all(&u->peer_wait);
-@@ -2773,6 +2775,7 @@ static int unix_stream_recv_urg(struct
-unix_stream_read_state *state)
- 	}
-
- 	oob_skb = u->oob_skb;
-+	skb_get(oob_skb);
-
- 	if (!(state->flags & MSG_PEEK)) {
- 		WRITE_ONCE(u->oob_skb, NULL);
-@@ -2793,6 +2796,8 @@ static int unix_stream_recv_urg(struct
-unix_stream_read_state *state)
- 	if (!(state->flags & MSG_PEEK))
- 		UNIXCB(oob_skb).consumed += 1;
-
-+	consume_skb(oob_skb);
-+
- 	mutex_unlock(&u->iolock);
-
- 	consume_skb(read_skb);
--- 
-2.55.0
+  GOTO Masanori <gotom@debian.or.jp> (nsp32)
+  YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp> (nsp32)
