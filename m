@@ -1,67 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5CB15FA81;
-	Tue, 28 Jul 2026 01:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAE325B095
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 01:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785201540; cv=none; b=CYG9lM17wEGu6Bz2DIm6xB65kxUgHhKx8ivU/tWRmcCAVLPgOpwC2yBhh7KUAFKU5/yeGjII70B+bezIn/PXJA+6eHKWe9+SaGrFZsnQ8a0pDpu3Q/t2VuBcHWGLoK/cN25fuzTwrb1fMNK08QtbK86SiWgmt1HyFa+Twt5bKzc=
+	t=1785201641; cv=none; b=krZxwa3kAnaFFDYd78JK7eIZgs3lHw/Xun1p7gJ5MMkDBzlNUsKmWqB7uRsXKCTjjta2RC5XwoABFXAZ/VffALWv33FQPWBxk59IYHTpSKMcGzjANGMxzz+iECglv4jk0WciNTSdmJmHl1T90UrlTvwrp9gwD3kW9bwON/Dp0ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785201540; c=relaxed/simple;
-	bh=nJj6HVm54usLAtb+iHNJ68vu+QRYTYu0hBNI41xtLcA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UOY8YE2MulBqTMS5PKiRUskJRjCf7pUvFHKxwiNLmTe7Y+n7/q/M5l+GheijV1ATyrA5pYv9iInrsITN1xNjTZy8dg6b/lXp8w6+v/QyMxvgBzhQErcXBi5HSb79dQ38UeI4lll9G8XDKKHYY11xMd+SiOB/gqLRuPzyc4jGxFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QBFKMw+x; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785201641; c=relaxed/simple;
+	bh=pYZK3I+YghE0JVpZlD7O5C5mJQY6mVr4PQlO6YVYc+c=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=sDPYw9owYebFvuRVxotjKfPzzWqGNtwzvFfelhsnVkVo8QaxbaBXBDAeUcbXvbXZXLwWV4cQCGxe0Lv90r7QonaUPWP774fQaj5KGYtKoSK0MhrHmooIl8JBdhJmbx7ss+PBzuV0oqB/MfXGTmkFq3VvmcxEQNExwpN4AopUyLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Occawr3e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QBFKMw+x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5731F000E9;
-	Tue, 28 Jul 2026 01:18:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Occawr3e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6321F000E9;
+	Tue, 28 Jul 2026 01:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785201539;
-	bh=hKBRute5puBoz2A5NuiuSr45HQgM6N92M8ZdSrBZi84=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=QBFKMw+xgjGwNLaAf6g/xA7bja3Ue9Yk1zAend7yIwbq5WJijvuW7GdZZ2VPPtT7/
-	 yMPFxwMEnFDRkc5Nu38Bcz+jGMDEWoalMpKYOwJiGmhxqM+OVbkSnUR7saUf0U/Op9
-	 bDEmMKmSWJJ2OkP8ceGfxA5lBxX7KqZBEqiNXdde+qsJni+X8mAPIeFOqo9gNEL7Oa
-	 t3s58MlE1LVQS+GMqnj3s5G9kEy71r58D0VOZLX/TQRZuu9i0GdQsYybj5ihDgU0a2
-	 Lg04Uq9bV7DX1OdneyOjufPYYvfqabNgf5feWrMVxp8CkbxnYUJIFJXzmwoBuat1sz
-	 3qe8UrVxkZPZw==
-Date: Mon, 27 Jul 2026 18:18:57 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>, Akiva Goldberger
- <agoldberger@nvidia.com>, Alexei Lazar <alazar@nvidia.com>, Alex Vesker
- <valex@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>, Dragos Tatulea
- <dtatulea@nvidia.com>, Erez Shitrit <erezsh@nvidia.com>, Feng Liu
- <feliu@nvidia.com>, Gal Pressman <gal@nvidia.com>, Kees Cook
- <kees@kernel.org>, Leon Romanovsky <leon@kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Mark Bloch
- <mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Parav Pandit
- <parav@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Simon Horman
- <horms@kernel.org>, Vlad Dogaru <vdogaru@nvidia.com>, Yevgeny Kliteynik
- <kliteyn@nvidia.com>
-Subject: Re: [PATCH net-next 0/5] net/mlx5: HWS misc enhancements
-Message-ID: <20260727181857.70ddf786@kernel.org>
-In-Reply-To: <20260723095349.1890983-1-tariqt@nvidia.com>
-References: <20260723095349.1890983-1-tariqt@nvidia.com>
+	s=k20260515; t=1785201640;
+	bh=72TtMrxmAimG2WpG/zlvlXUmkDIIk2Do/oT4fPFFg4I=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Occawr3eAgT1LQA27jGQgmTvYA1cvWVuqx+myaj29tSZbfl3X2hDouR2MlyTGZa/8
+	 RyXblJx9cc2oEN5XiK4ZuYHxwMTaRAYx7iRLmWqWL2/y7bQhuLRUNyh5gZcyO3/vBq
+	 eTxUe34zf/GTIeKd+cMxbuBxjayz64UJhefWb8QAmtwzuAz8FlOcV4/KHyiaN/NMZ3
+	 azd3AyMazuuEJuDyX4HlIonY0/Jtp96/TyJBLzR9fpZmE9FA6m6y3X9CXErC/SjkyT
+	 HftkangqEccjevesqUnSNBnntXdlhGdNzKdGv7pizhZWhlN24aOpYP+W/WdhbH+y+N
+	 xGcr/+lKMl5xQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D08DD380CED9;
+	Tue, 28 Jul 2026 01:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] rtase: fix double free of multi-frag skb on DMA map
+ failure
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178520160564.1489434.12071644807967111296.git-patchwork-notify@kernel.org>
+Date: Tue, 28 Jul 2026 01:20:05 +0000
+References: <20260721023836.6691-1-luyun_611@163.com>
+In-Reply-To: <20260721023836.6691-1-luyun_611@163.com>
+To: luyun <luyun_611@163.com>
+Cc: justinlai0215@realtek.com, larry.chiu@realtek.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org
 
-On Thu, 23 Jul 2026 12:53:44 +0300 Tariq Toukan wrote:
-> This series by Yevgeny brings several misc improvements to the mlx5 HWS
-> driver.
+Hello:
 
-Looks like this conflicted with some patch in net at the time of
-posting, because the build tests against net-next/main worked
-but it never gotten into the selftest stage.
-And now it doesn't apply even to net-next.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 21 Jul 2026 10:38:36 +0800 you wrote:
+> From: Yun Lu <luyun@kylinos.cn>
+> 
+> In rtase_start_xmit(), when the head buffer DMA mapping fails after
+> rtase_xmit_frags() has mapped all fragments, the error path clears
+> the fragment descriptors with rtase_tx_clear_range(), which frees
+> the skb through the last-frag slot and accounts tx_dropped. Control
+> then falls through to the common error label, which frees the same
+> skb a second time and counts it again.
+> 
+> [...]
+
+Here is the summary with links:
+  - rtase: fix double free of multi-frag skb on DMA map failure
+    https://git.kernel.org/netdev/net/c/6fb7b769d6ed
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
