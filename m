@@ -1,63 +1,62 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7307033D503
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 16:09:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2AA3C9EC2
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 16:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785254998; cv=none; b=rxRXjn9FTZnXslnf51JOjt+GYNt7W+Y7IKe39dlqi0zxW2hNAXuj0o+NnWOlyGGjVO/qQIPUFnDEVpUxRXvBSlvlOU0T5noQSKuYxiTWWcfUsdDIPIU/2dks28PXuWelCfHqQq3RAuRqEoWjS8hId7GTSWJQz8OXMsXskLEDmOQ=
+	t=1785255000; cv=none; b=tIFS8zpywu91Nw2Xynw3KrK6KpoYifCzb0n8n8db8izi4j8dqUrUTXXfWgnxchLnAsx4+HTY7HST7rhsNtPmm2eze9Sg+Y9Gr34pQOWtxmHfwUf+kfefCCvlsTopMW5okYQHy3VzpCs67MP/q1+DTPcb7Y2WrJGzNz5n0O9F9Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785254998; c=relaxed/simple;
-	bh=dCROJAzjbJ0VyYGg4LuwxJRd4UiBiVpUWkEdKbWJWQQ=;
+	s=arc-20240116; t=1785255000; c=relaxed/simple;
+	bh=iWLgtboLR6eeifTFbpbNZJsQSIo8hfAjxNxNyjdyod4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wt+moe21PGQN/gf3YXnOw71u5TFLLJzA2eUZad9n4bHaLPhKI7MIY6a2U2EGJHOfL+6aE8pAi78LBPCBamDzdRTUaZNSE2wykvnMKYirjPDHA/mMjb+70yaez9qXoROWXlWBRZUn0uoprJ5XqASxA+TplIh1+zdtULyatnHy/uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=s4JDgoLB; arc=none smtp.client-ip=209.85.216.45
+	 MIME-Version; b=X2rd9KlM4OCzHNx6E6qWR+ezCpNwvG2C9sM9eOGJL6uFKbCJYvpWicCGwN4k9GZmKASnSfeHuNjAx6GejKKfmwkEUz0TTD09QxQnsmat1ThyIi2RNjd125tKhhK0opwuymb1IbIvg3zmN3ftcNgET/FzsUuK5j2uOaIG/dOIzDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=oKTmZtr0; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="s4JDgoLB"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38e08baf860so4247049a91.2
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 09:09:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="oKTmZtr0"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8485ef63b68so4164819b3a.1
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 09:09:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1785254996; x=1785859796; darn=vger.kernel.org;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1785254998; x=1785859798; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=5LknHu9GV0qQrEEql1FWoKl28Cq0/YJtBdNrVp7I+OY=;
-        b=s4JDgoLBEYdSLOfOsbweVAdCcXp8V4YZZTeoCTuOx/McPrR0nel5/6bawaChbL3toX
-         n4T0jBN2YbHAimfDqgBjqiSKNwSzBR8NF9rY0Gt/0cgu1RozlOxAHniwksK9zGigcwE/
-         Hf8lsMxjgC7KyM+TAyjCd3Pmtx9G7MMofyu/Y7SK4LzOhUQ34ADU89MS9LT1sC7tOBHR
-         QfZiWs7cDDDyJQBYn0l3MhhkRv9SL5A8m/5aBVz8OSFV61AFXK/AYgYlRPStSUk6jnLQ
-         6NozxX7u8xi4fNOOctf0WKXrVDpRFpiBi3/zAI62Hm0GgbbWWpxG/tSAI1x+2StxI6l2
-         PYJA==
+        bh=vzLDqf3qkwmQV9Ac/krT+sjK+vy4k3H4FUkJylvYXqc=;
+        b=oKTmZtr09dhmp41pgfxf4oEI8K1H+hq0qJ6h4k9yvfrNj62OlgQ8rc6F2qIlOxEpiP
+         yS3uWJf4bBKC5/6nY7F8TAVdn4hGFgETN33qf50MQA8PzO3AF606A4/UKphq855uaDQp
+         OLiGBWzx3GHnaBR2/gO/YORbXpk35NZt+zsyaNIMHZ+G3kENPxPS2k5VN425xIQmH+w8
+         b5rkSz0QZOQN9JAteYaWx4O9fWfgBDpdQUWFx/C+R2ABwkgal2vQ1dDmXGMa79RrtWQh
+         0sMM46nCQ4tKG/CIlj/xyQVEwJH0DgqCUos3Fx+CPPBk28vOqSNoXui0QuhO2b2nkYsV
+         b5EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785254996; x=1785859796;
+        d=1e100.net; s=20251104; t=1785254998; x=1785859798;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5LknHu9GV0qQrEEql1FWoKl28Cq0/YJtBdNrVp7I+OY=;
-        b=czMVuxHHHQklm1HB3DPTdwOSNjNKvQM8Zw6gPG++rKRCun/PVtX2DkD3Mz4zAoRd2I
-         FH0d3l2JZZhV9KG8i5BFHzSrUEUFrzWxyHQPLEHaSwf3K3XF+CBvRGuwvXhEE2Pccu3p
-         UNiwZGDv6DmkNru/h7RRPSfTM4AlRmNI94xDaj0DmYs6ZbzVVMjnQYvaCxLzzIELUN1b
-         4Lx2ijd71n+TXHTGpn+A4FiY+pd2IZ6szNTSLiwMaXmoGhvZI77QeGLJOTbKq84tBqGv
-         yniOJmTyfrBZ0avpGe8ReIg9I6mZRILYCLCdZ2YDM0ldEKeJoMHtPAMoHkUpnMGYbOHs
-         C6wQ==
-X-Gm-Message-State: AOJu0YzJ+FbihopncaZxZRKK2L/U4ODW5hOPwG0TXl+DJmPFpB3NaU/7
-	y7SStQiHpenb439iQt6WPYjg4ZZgH8HRE8BfwPZK1IFA4sT4rm1IAWA+ZQCLlxKnuU/B5W6eLxw
-	p9oAp3NRBbgW9
-X-Gm-Gg: AR+sD11Y05fWn04yD8YSTn961sUvhBdjOHqRFgBK4pJ5JUSHrGEhtC7UQHxuvkhORwR
-	bJNdOsFMwwudXGk9ZfSyqCTj7uige0Qc02zYxHHI7AvRkds4aD1EthXWAK9saqQDo8fjL9N9Mz/
-	kTPIg8WobhXCKyvX5iZaPujhL2ZvAHsB7pF66yE0lfWYobXYN8fZy7OyAZ3EgEw7J47NYBHMLJR
-	SsACQ7bG2q9WLeGyJW1gxQ6NmhWmE6tHfjY5ohSOidGNor7DjcRRxaDTsAFy1Bt742VpN7RaWqp
-	RpbwP9ecIYy8p9Ii1CgJX0lIWn9o68Sa4XNbQISc0FrCYvPrJM6o2lwOjrnQrA+Ot4OwfbQRc2A
-	gaGxizjCxRJFHlV+75W/ARx3bJ2MQQMX1v/Zq/svx6lGtKDr5R5/PEqbHWWKesSGYK5ixXHOZIE
-	oCboKRbVmz9WU8iTunMwGbio92zQ5laZMU4bUs9BFo6Q==
-X-Received: by 2002:a17:90b:4490:b0:38e:447c:9a15 with SMTP id 98e67ed59e1d1-38f6a55f949mr3146313a91.36.1785254996618;
-        Tue, 28 Jul 2026 09:09:56 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:74::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f12ddcesm172913a91.7.2026.07.28.09.09.55
+        bh=vzLDqf3qkwmQV9Ac/krT+sjK+vy4k3H4FUkJylvYXqc=;
+        b=B2T4Q/2TJFS6MunMiV678iVkAjumRHI6n2vAR3AQUS3dNLbNB0DoXcf6UD406GQaAw
+         OiKAGoe+E2hp6ISKzyCa99lTDifge1IK9LyDIGA08ZTaS7KI6Hjr9gtnmCY688vyJIv+
+         cu1tqcCsXnwqbjw5o50Z62g36snZ46EXwtvsMg2CdAmOfUfOPrau/YRKat8Ib3/DsUXq
+         EfyS0aZYggwcWRwmfh6NJmqCLoqXlmutVsYmwv06f7QeFLqaQdD/uL6PlFZlo6w5tD/d
+         htOmZzIYp+hCfkdQLDnl/oEM2LVaYFnTNAa1vPMzaVAvi8AYF88ZMCnuOoOFP8Z4ALYU
+         RlCw==
+X-Gm-Message-State: AOJu0YzRkJmtjhONpYXfrKmtoh3jN/xD3pt/jICnBHRS4SdXwQNznhOx
+	B3q6almnRwo8EAsAXkH91OOtBuKotzJku5GtYaWEywv4bKgqTjd8dHHJvDgePp8woHrWAwgbEBf
+	JfUx1Lsut5fyC
+X-Gm-Gg: AR+sD115C8WmSZGgC6kEOy9SjEtF4pG4cENsl18S7bmTwahRMryT0dPCJEU8mErKnlT
+	zU9V+aUHiOIzNScXQrLd1tsdriOx4WtKrFcnLaXAhrSWakhfEnfB9IWpD4HGLMO8Xapuxv4wYP3
+	pUQTckxG3m1ZkAPPVz21LdaHr6mp++FsEGdLtG8QrIOjlEzb5dRCm72yskGdTr/+kpMGbQ9/SMG
+	Us0yax6cS539xHE24BFXOjoza4QhuCwg57XudmHQb84/u34VJS3TFCqeYU0xZEMoivHQA/XYk54
+	lkAV5HDGt2bjos20WItW0nGFKk2hOVb+CqsaJtzgre3ebzyA0Co+i/h8DNGR74323NmZF8UWLnT
+	HqsVqViNesyonNdq2DrU9Sh6sGFmRmOh9cMqTwj7okhKftsVZOU6dH03q2F0=
+X-Received: by 2002:a05:6a00:234a:b0:848:2f6e:e52d with SMTP id d2e1a72fcca58-84e9337e95fmr3283360b3a.65.1785254998467;
+        Tue, 28 Jul 2026 09:09:58 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:56::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea03767bbsm151521b3a.47.2026.07.28.09.09.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 09:09:56 -0700 (PDT)
+        Tue, 28 Jul 2026 09:09:57 -0700 (PDT)
 From: Joe Damato <joe@dama.to>
 To: netdev@vger.kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
@@ -71,9 +70,9 @@ Cc: andrew+netdev@lunn.ch,
 	linux-kselftest@vger.kernel.org,
 	Joe Damato <joe@dama.to>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 1/5] selftests/net: psock: Generalize psock bind
-Date: Tue, 28 Jul 2026 09:09:26 -0700
-Message-ID: <20260728160935.4128982-2-joe@dama.to>
+Subject: [PATCH net-next 2/5] selftests/net: psock: Generalize stats check
+Date: Tue, 28 Jul 2026 09:09:27 -0700
+Message-ID: <20260728160935.4128982-3-joe@dama.to>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260728160935.4128982-1-joe@dama.to>
 References: <20260728160935.4128982-1-joe@dama.to>
@@ -85,45 +84,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Generalize packet socket binding so that types other than ETH_P_IP can
-be used.
+Generalize stats check code so that callers can specify the expected
+packets.
 
 Signed-off-by: Joe Damato <joe@dama.to>
 ---
- tools/testing/selftests/net/psock_snd.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/psock_snd.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/tools/testing/selftests/net/psock_snd.c b/tools/testing/selftests/net/psock_snd.c
-index 3313a15e0ca1..bb9a9cfdbe95 100644
+index bb9a9cfdbe95..d506ea19491b 100644
 --- a/tools/testing/selftests/net/psock_snd.c
 +++ b/tools/testing/selftests/net/psock_snd.c
-@@ -171,12 +171,12 @@ static int build_packet(int payload_len)
- 	return off + payload_len;
+@@ -440,7 +440,7 @@ static void parse_opts(int argc, char **argv)
+ 		error(1, 0, "option aux data (-a) conflicts with drop (-D)");
  }
  
--static void do_bind(int fd)
-+static void do_bind_proto(int fd, uint16_t proto)
+-static void check_packet_stats(int fd)
++static void check_packet_stats(int fd, unsigned int expected_packets)
  {
- 	struct sockaddr_ll laddr = {0};
+ 	struct tpacket_stats st = {};
+ 	socklen_t len = sizeof(st);
+@@ -459,8 +459,9 @@ static void check_packet_stats(int fd)
+ 		if (st.tp_drops == 0)
+ 			error(1, 0, "stats: expected drops but tp_drops == 0");
+ 	} else {
+-		if (st.tp_packets != 1)
+-			error(1, 0, "stats: tp_packets %u != 1", st.tp_packets);
++		if (st.tp_packets != expected_packets)
++			error(1, 0, "stats: tp_packets %u != %u",
++			      st.tp_packets, expected_packets);
  
- 	laddr.sll_family = AF_PACKET;
--	laddr.sll_protocol = htons(ETH_P_IP);
-+	laddr.sll_protocol = htons(proto);
- 	laddr.sll_ifindex = if_nametoindex(cfg_ifname);
- 	if (!laddr.sll_ifindex)
- 		error(1, errno, "if_nametoindex");
-@@ -185,6 +185,11 @@ static void do_bind(int fd)
- 		error(1, errno, "bind");
- }
+ 		if (st.tp_drops != 0)
+ 			error(1, 0, "stats: tp_drops %u != 0", st.tp_drops);
+@@ -490,7 +491,7 @@ static void run_test(void)
+ 	total_len = do_tx();
  
-+static void do_bind(int fd)
-+{
-+	do_bind_proto(fd, ETH_P_IP);
-+}
-+
- static void do_send(int fd, char *buf, int len)
- {
- 	int ret;
+ 	if (cfg_drop) {
+-		check_packet_stats(fds);
++		check_packet_stats(fds, 0);
+ 		goto out;
+ 	}
+ 
+@@ -498,7 +499,7 @@ static void run_test(void)
+ 	if (cfg_payload_len == DATA_LEN && !cfg_use_vlan) {
+ 		do_rx(fds, total_len - sizeof(struct virtio_net_hdr),
+ 		      tbuf + sizeof(struct virtio_net_hdr), true);
+-		check_packet_stats(fds);
++		check_packet_stats(fds, 1);
+ 	}
+ 
+ 	do_rx(fdr, cfg_payload_len, tbuf + total_len - cfg_payload_len, false);
 -- 
 2.53.0-Meta
 
