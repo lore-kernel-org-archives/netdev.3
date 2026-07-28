@@ -1,253 +1,121 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BA943F4AC
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 13:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E484943A7F5;
+	Tue, 28 Jul 2026 13:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785245514; cv=none; b=t+s9D+sqp5lR/BW9YTjtpe1N+F5HvLXfDgz72bdvTQcyKni0mLW7mBqYkT4KRMfEjuJhPP9fv0IF4K2ERsijicb/VLGonb7CZFIbu55bCAxrE9bw4U1wmFRQBxnCtjPUwZYW3AGJLqj7Tdc673f63JwkryfPS1YcxX0geUXifOQ=
+	t=1785245862; cv=none; b=EJEzCK5xMqq6dEpxnEqoTL6j68UxTUMUFCKOwxRi41lxxsIbNApBf21Q5f9nG7+XT5JQXgtzBuwy5yPGN7oCdyAbLH0X41QkO0N77JMZv5naTTQVl6BWeed5VMxG1mTeJxynKJAjN1YYDdVtWRlITNMUli5L0f3T6ZcsYCJA62o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785245514; c=relaxed/simple;
-	bh=cjRBEYK0BHlkm5SM06tjEjn1zXseAD0gpuxZHmQ5//4=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=MkK1/nYC9lsAlJCZFOZWX/8CmXU4T94ShK38LD4Ao1Q6tU5qD5skFoKJtDJnRq8le6EM6TSSER2BWzoCZT8pekM5yLss7eCY+2C3bMMZm1qYWUMc+ShNLy29W35acaqNgo9KyPohqDYL0XkdAPSHvvN2nSH7UKeit9c75/3eeWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nSrZxp1a; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785245862; c=relaxed/simple;
+	bh=sgTsdDlDtly0xWZbITV5hfRbMCJc89OxwyuGM3l6jKU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nxgST2iS9XdigFvqjnNZmsda572JdczmYhI4n4/g0R0JBRULMv5mcFFADLik0Og2IMiNNrjq6G62KaKiBLAqXilgQAFuWVg+bNispNxMDPBJIZ/wnkQ7UIsroBpOUch3Z7BFlWDpAScv0lq1FGnxvMbERg1Zs4Uf3p+LEx8z++0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=Ose2vTHb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=UF3GcCme; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nSrZxp1a"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-80814edb536so50078817b3.2
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:31:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785245504; x=1785850304; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=+mWZyh0TSq1ET7+dcnWeB2pQu2sGsI0TV8FkbfiaGds=;
-        b=nSrZxp1aUDqMTwliN+WK5aV/kXt5f70fIeKLrKWsh/GMUQu3qyDZpejFC/QoiQQAa7
-         8M8J8qL1MfzmlOVYr2afID4Z37703Ji9b73wqLcqbDJMRlPTFLY4TVHuP9m3Eve/cQ7Q
-         EFHNCWOPBpOt1Rj0fAFia383CWREbU0UVtC08Gge4ENaM4iVFIqCwzokDkQVbOrhqNI8
-         sZ6ByXN3u7UCV28FOJbMO5FQrgG9YlvC13kql8UgSf+XBxJRj8+h6+byh5RwpgswNZ7u
-         HNzzaTyrAmTMkjZW4vDraegcKVusqUQFHBioVfw9wSO7BGwZATRqKUxgGEE3DiDVO0/b
-         OMyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785245504; x=1785850304;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+mWZyh0TSq1ET7+dcnWeB2pQu2sGsI0TV8FkbfiaGds=;
-        b=ZAd5tfOO+htDvI5yXUEx4wlKyCGTQJhYJnnPrYZPkMWnNx7bDDT8NGyiuNx+4wVVyW
-         hhKaEzSL2pJ8JD5g7H/n/GK79JWb8EA3XYcnS5NErWkz1ii6ADYJaE6FUzpu6AhT8DWt
-         FTVBXxYsUxZ8dtGdjqM4hMnKcYz21aUGUCdW9GTC2lhuq4v8QibJyL3ZEUT+dEw39PA4
-         howc457LDlT3zNqQtwHlOfPKRnCnwUgwAA44bheASpsX6x01bZ3r0gKq9FC5FHVudL76
-         TDkPje+xiME+RBpISyjRY1mg0TtBrO47AL9uhyQBTK/rmu5Lw30O3IGat1gZQI1FXq0X
-         JwfA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp8RvdjsuV+ZPezd+OtAb+7LFbdRzsCYF0ktsz+oRQVOjNqPgCsKaWlaanmkwhTw2jT7OakBGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyffmeBE6241Gh1Z2dxXrBdPTSDVUcV0N22UMVk64WsjJrt0brK
-	i3xTTEgRBYC68Yz8uhbwhqGPtsmsI9own22UBxgehLB4WMnxv9xAF5y8
-X-Gm-Gg: AR+sD13gh22ex9rQFRDlbHHpuJ7TzqN6zTyeY5Buru393iGfwuo6IvH3ge7KVkI6J7N
-	VaWQa1bNGf04fXVVRnA1QN9JD107lhkYwd7s8RpT1f5m5vjiTYiiYG++3UucA6lyOp6thmdmliX
-	BJg7vXADhWpa0pu3xFRaz2u8JOyakj88OZ+jarw9D/qG5oRPnSl903ejrgI5nfE4X4dSad9Z/jl
-	TYy/vDhyPAOLvIdVOkVdd/ymOybnUPQAtCEBsjekv7ymF5z//peQhdSbTpwdkLSMM4rHOD7JQAl
-	7a0Wa2aHe9QYTNv4jZexwvok6KGzcep9S4cl7wQXQUgM/DflJ75Eomu1KVhust7yn44aQUkiPyW
-	eD/9eQh7LwnHDdZiPei+22Lu8+Si4tB7ycW8kwZ5dQ7DnCCOxBUrHI6xtOpf4gKbD/zFM/f4Iky
-	FqVrUQnFoOONftPywNZ+UBzRbK1TL/m5pr843rXV15oW4f86yhPg==
-X-Received: by 2002:a05:690c:d06:b0:81f:6503:701a with SMTP id 00721157ae682-81f991e8564mr9231707b3.9.1785245504065;
-        Tue, 28 Jul 2026 06:31:44 -0700 (PDT)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f6577004esm46896417b3.8.2026.07.28.06.31.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 06:31:42 -0700 (PDT)
-Date: Tue, 28 Jul 2026 09:31:41 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: zihan xi <zihanx@nebusec.ai>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Ren Wei <enjou1224z@gmail.com>, 
- netdev@vger.kernel.org, 
- davem@davemloft.net, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- vega@nebusec.ai
-Message-ID: <willemdebruijn.kernel.37fb8a457aee2@gmail.com>
-In-Reply-To: <CAANe3eSvdBrwNo7xzH677yPOr8Zm6dvdTF7nNAe_NrWxomy0GQ@mail.gmail.com>
-References: <f1cd534481c2397a36850ad039dcbfd38c3233ce.1784551898.git.zihanx@nebusec.ai>
- <willemdebruijn.kernel.e559328910e@gmail.com>
- <CAANe3eSvdBrwNo7xzH677yPOr8Zm6dvdTF7nNAe_NrWxomy0GQ@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/1] packet: synchronize pressure clearing with
- ring reconfiguration
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="Ose2vTHb";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="UF3GcCme"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id D7F2C1400120;
+	Tue, 28 Jul 2026 09:37:35 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Tue, 28 Jul 2026 09:37:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1785245855;
+	 x=1785332255; bh=z3f2OgbFkTa0yiSQNdRvT4FZULvSq630d80q9uArK0M=; b=
+	Ose2vTHbM8TLg/Gj1loNczvnocumSA1kx1n247d4DElL/fuHf8Yd5e3GZEwUQ5sN
+	r27vKROpoCSerOxCO0AnsWvCvsp+l1NDcdwipGOtWRJhFFzjUtQ28PvWd8aCEWnZ
+	J7wrwWgcWXPs4xFbyuuvLfqJVIcIZz00SNTdhpuXe4W9Joz/6dol4h5F2tkuF8E6
+	bK85tuLuPavGpup8Y1cvU5c0zH8QNxyWC2an1CMQ++FDeUXzJmTn7n96XUNSabrT
+	sd92/l/ufThls6Do7uTXUBhh2qoy3JCb0WNTc3jZgwzuK7o79qPL/ZWpqo19DFXD
+	L3kYP9mvUmkAs3DjlO+ZQA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785245855; x=
+	1785332255; bh=z3f2OgbFkTa0yiSQNdRvT4FZULvSq630d80q9uArK0M=; b=U
+	F3GcCmeeAraaSMGdpVUnB0xyCMkywHgJsk9oWk7i01nH3gkCqn00a81uLTEYlAHo
+	cyhQB+hADUn6zgLcogrFMfFjGN0cS2s08hITbZEe3catB5TkqTdxAhXQ8ocy2MA9
+	YnlAjYypC+31H4BtxIWmcA13Mvn86MaX2k68PcPHkoGGvpjC2wu1WB+74aAri6+a
+	HPHRB5DVCAYUZVFKZOl5DMC7cUj0FrdIGNkgcCPhV4kxtr/PHzjMsXgL6KU/z2z2
+	01tG/PcGBiDOVspM1MYgDi9IsBcx3c+V7VuIV3pDgLC8hLoocpH7OqjmSq7HZ9t3
+	tzv+KOew4OAehdTI4lATA==
+X-ME-Sender: <xms:n7BoaqHbG5GgC2n4u91xxqdahXIh2UrPX_7ErzdpsVzJcsjPxwi19A>
+    <xme:n7Boap1nIcblkuRlSr6_mfe3A9aeAIJvwhbYUrubbJaQ42OfMWGYVQjl_Yv8iBnQ0
+    oz6hn5MNRwYLS1AbtOyb3TyTRed5m0dRjUfUrjWipnOz4LLdLyIUDMM>
+X-ME-Received: <xmr:n7Boaq9HCIBtu2tC-mPXQzlHHVw-fpKduFvDc7IUIasn9l5CS7p6kr0Viz4afyuX3SfXADPUj-DtepQhrneIN0kD9L6KERw>
+X-ME-Proxy-Cause: dmFkZTEBljVdT5JYx+4e7s2/xtHk4InHzmN6oAJ7bZDMZDH9QSGzEF5FdkyK9S7wHN+95u
+    ERnlPpE5MLjq5y0HPjFD8+WkObZUdbjsHndhQGgpMVpyBJ/5v8jR3LOoApedAqQG06UBL6
+    Y+53H+fDGSyy1kJ9Nkw1s1IH2H8LFgfoz09CI4aM7p95q6y8MGGXjEB/v5TueW/yQl8+zj
+    k+VCI9zPSCOh/v9QncVFBIL5YY0AkvzAPpbT1pdraNmeQzo1+xY60rvtk1eWOJwmyMCVmC
+    5DIX5aCOYsC3XA/TRSnTaaKxLAjNp1axUTOpfg/PODao+7Xw1nJ/D/HWk3F+19AXsT/YZk
+    rFGp1AdGof1S3HnG2yHcGxLYVKyXrUtOe+36eDa7y7EjcRSVSX4nV43oiJ6yVDnzrzJqoH
+    o3kYKNMQwtj69tVp19JOP9Ixc7X2eCgGImz2mKkkRf6/uoiCZCwJFRIaFW/Lyq1kmfxFVT
+    Dj5rZ4julxPisNcSrr7a1FB69nXARKFMzEoYOVtdVRygW0ygKMKqaGf6Ii44+XPjd1Wtbv
+    h7YK2PaNBnjz+38pG9GAhHkcEapgTN90HCMd9cSPKiyZAJPOnDrMiGF6a46Hh4TVrCuHdF
+    y/V1T5KBu0nUPfUsOvOjWJImCna0D5tPL7nFx2kIpoKDkGoMP1DFgxajg7mQ
+X-ME-Proxy: <xmx:n7BoakELqJzeWCpz6R3FdPOJkJfjpd-MYUvDW5g-qfUNU6ahXYBsRw>
+    <xmx:n7BoaohulDt9hqcXQp33BoFWK3G4rqCFQUVPO2wlnAZggfQmGz7nIw>
+    <xmx:n7Boah--GcvUslkgivT0bKT_OV50iJLLtUa_-kSYcLFXbpJa8uqW_Q>
+    <xmx:n7BoagbTBqDpvrWbSv1nVVbG05_xjfgJlCBVyS7-Md_7p-ZUkESzUg>
+    <xmx:n7BoargKTOMvz9_2RKaoEH_EBK1_ZOysRv109MFGfet0lwNs9SZs4E2m>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 28 Jul 2026 09:37:34 -0400 (EDT)
+Date: Tue, 28 Jul 2026 15:37:32 +0200
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"DavidS. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v5 3/3] arm64: dts: renesas: r8a779g0: Add gPTP
+ node
+Message-ID: <20260728133732.GA2187218@ragnatech.se>
+References: <20260721132936.1331318-1-niklas.soderlund+renesas@ragnatech.se>
+ <20260721132936.1331318-4-niklas.soderlund+renesas@ragnatech.se>
+ <1f22ab9b-7951-478e-9271-3d659e991ea5@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1f22ab9b-7951-478e-9271-3d659e991ea5@redhat.com>
 
-zihan xi wrote:
-> On Tue, Jul 28, 2026 at 7:44=E2=80=AFPM Willem de Bruijn
-> <willemdebruijn.kernel@gmail.com> wrote:
-> >
-> > Ren Wei wrote:
-> > > From: Zihan Xi <zihanx@nebusec.ai>
-> > >
-> > > packet_set_ring() updates the RX ring state under sk_receive_queue.=
-lock,
-> > > but publishes the tpacket receive mode through po->prot_hook.func a=
-fter
-> > > releasing that lock. packet_poll() and packet_recvmsg() can therefo=
-re run
-> > > the pressure clearing path after the ring has been cleared while st=
-ill
-> > > seeing tpacket_rcv, causing __packet_rcv_has_room() to dereference =
-stale
-> > > or NULL ring storage.
-> > >
-> > > Serialize pressure clearing with RX ring reconfiguration and update=
- the
-> > > receive hook while holding the same queue lock when changing the RX=
- ring.
-> > > Keep packet_poll() on the unlocked helper,
-> >
-> > Because it already holds the lock.
-> >
-> > > and let packet_recvmsg()
-> > > take the queue lock only when PACKET_SOCK_PRESSURE is already set
-> >
-> > which is sufficient, because if the socket moves from tpacket_rcv to
-> > packet_rcv, the socket is detached and a synchronize_net has passed,
-> > so no new packets could arrive to set PACKET_SOCK_PRESSURE if it was
-> > unset.
-> >
-> > > so the
-> > > fix avoids an unconditional extra lock acquisition on the normal re=
-cv
-> > > path.
-> > >
-> > > Fixes: 2ccdbaa6d55b ("packet: rollover lock contention avoidance")
-> > > Cc: stable@vger.kernel.org
-> > > Reported-by: Vega <vega@nebusec.ai>
-> > > Assisted-by: Codex:gpt-5.4
-> > > Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
-> > > Signed-off-by: Ren Wei <enjou1224z@gmail.com>
-> > > ---
-> > > changes in v2:
-> > >   - only take sk_receive_queue.lock in packet_recvmsg() when
-> > >     PACKET_SOCK_PRESSURE is already set
-> > >   - keep packet_poll() on the unlocked helper under its existing qu=
-eue lock
-> > >   - v1 Link: https://lore.kernel.org/all/24f7311aed0c9ff06b8ea98264=
-7b82bf543ec369.1784454542.git.xizh2024@lzu.edu.cn/
-> > >
-> > >  net/packet/af_packet.c | 21 +++++++++++++++++----
-> > >  1 file changed, 17 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> > > index 8e6f3a734ba0..0107e55de6ff 100644
-> > > --- a/net/packet/af_packet.c
-> > > +++ b/net/packet/af_packet.c
-> > > @@ -1315,13 +1315,25 @@ static int packet_rcv_has_room(struct packe=
-t_sock *po, struct sk_buff *skb)
-> > >       return ret;
-> > >  }
-> > >
-> > > -static void packet_rcv_try_clear_pressure(struct packet_sock *po)
-> > > +static void __packet_rcv_try_clear_pressure(struct packet_sock *po=
-)
-> > >  {
-> > >       if (packet_sock_flag(po, PACKET_SOCK_PRESSURE) &&
-> > >           __packet_rcv_has_room(po, NULL) =3D=3D ROOM_NORMAL)
-> > >               packet_sock_flag_set(po, PACKET_SOCK_PRESSURE, false)=
-;
-> > >  }
-> > >
-> > > +static void packet_rcv_try_clear_pressure(struct packet_sock *po)
-> > > +{
-> > > +     struct sock *sk =3D &po->sk;
-> > > +
-> > > +     if (!packet_sock_flag(po, PACKET_SOCK_PRESSURE))
-> > > +             return;
-> > > +
-> > > +     spin_lock_bh(&sk->sk_receive_queue.lock);
-> > > +     __packet_rcv_try_clear_pressure(po);
-> > > +     spin_unlock_bh(&sk->sk_receive_queue.lock);
-> > > +}
-> > > +
-> > >  static void packet_sock_destruct(struct sock *sk)
-> > >  {
-> > >       skb_queue_purge(&sk->sk_error_queue);
-> > > @@ -4304,7 +4316,7 @@ static __poll_t packet_poll(struct file *file=
-, struct socket *sock,
-> > >                       TP_STATUS_KERNEL))
-> > >                       mask |=3D EPOLLIN | EPOLLRDNORM;
-> > >       }
-> > > -     packet_rcv_try_clear_pressure(po);
-> > > +     __packet_rcv_try_clear_pressure(po);
-> > >       spin_unlock_bh(&sk->sk_receive_queue.lock);
-> > >       spin_lock_bh(&sk->sk_write_queue.lock);
-> > >       if (po->tx_ring.pg_vec) {
-> > > @@ -4544,14 +4556,15 @@ static int packet_set_ring(struct sock *sk,=
- union tpacket_req_u *req_u,
-> > >               rb->frame_max =3D (req->tp_frame_nr - 1);
-> > >               rb->head =3D 0;
-> > >               rb->frame_size =3D req->tp_frame_size;
-> > > +             if (!tx_ring)
-> > > +                     po->prot_hook.func =3D po->rx_ring.pg_vec ?
-> > > +                                             tpacket_rcv : packet_=
-rcv;
-> >
-> > Same question: why this new condition on !tx_ring here, that is
-> > missing below. It looks benign to me, but especially for fixes only
-> > make necessary changes.
-> >
-> > >               spin_unlock_bh(&rb_queue->lock);
-> > >
-> > >               swap(rb->pg_vec_order, order);
-> > >               swap(rb->pg_vec_len, req->tp_block_nr);
-> > >
-> > >               rb->pg_vec_pages =3D req->tp_block_size/PAGE_SIZE;
-> > > -             po->prot_hook.func =3D (po->rx_ring.pg_vec) ?
-> > > -                                             tpacket_rcv : packet_=
-rcv;
-> > >               skb_queue_purge(rb_queue);
-> > >               if (atomic_long_read(&po->mapped))
-> > >                       pr_err("packet_mmap: vma is busy: %ld\n",
-> > > --
-> > > 2.43.0
-> >
-> >
-> Hi Willem,
-> =
+Hi Paolo,
 
-> Thanks. Yes, that is the intended reasoning for the packet_recvmsg()
-> fast path.
-> =
+On 2026-07-28 13:12:53 +0200, Paolo Abeni wrote:
+> On 7/21/26 3:29 PM, Niklas Söderlund wrote:
+> > The gPTP module is shared between the RAVB and RTSN Ethernet devices on
+> > the SoC.
+> > 
+> > Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+> This deserves an explicit ack from Geert, I think.
 
-> If PACKET_SOCK_PRESSURE is already clear when packet_recvmsg() reaches
-> the pressure-clearing path, then after the RX hook switches away from
-> tpacket_rcv the socket has already been detached and synchronize_net()
-> has completed, so no new packet input can arrive and set the flag
-> again. In that case skipping the extra lock acquisition is sufficient.
+Yes, this patch needs an ack from Geert.
 
-Thanks. Please add this context to the commit message. It's not
-entirely obvious. Will be helpful next time someone does a git blame.
+> 
+> /P
+> 
 
-> For the !tx_ring condition: po->prot_hook.func is RX-side state, and
-> this fix is meant to publish it under the same sk_receive_queue.lock
-> domain that protects RX ring reconfiguration.
-> =
-
-> A TX ring reconfiguration does not change po->rx_ring.pg_vec, so it
-> does not need to rewrite po->prot_hook.func. Keeping the assignment
-> under !tx_ring avoids an unnecessary write on a TX-only path and keeps
-> the moved publication strictly tied to the RX ring transition that
-> actually needs serialization.
-
-Still, this is a change that is not strictly required for the fix. It
-may be relatively easy to reason that it has no unintentional side
-effects. But it is even easier to do so by avoiding such unnecessary
-changes altogether. It would not be the first NOOP that proves to not
-be entirely NOOP. I suggest moving the original code as is, instead.
+-- 
+Kind Regards,
+Niklas Söderlund
