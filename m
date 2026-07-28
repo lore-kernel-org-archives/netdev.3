@@ -1,39 +1,37 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BCA3B5DE9;
-	Tue, 28 Jul 2026 13:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EEE3ACF1B
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 13:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785246279; cv=none; b=KtRGwVk6MLBFeE6dR7fCiYOfpCJ2LowPi9vPkJJqix8Ep1Gon/or63Uo8gTwzZbMc4WFg+Otv0+/AYgkv5mqd8RMmWPjRtUXk7zqx0HwPwV3yUxkjgX0l7c+7W6DVv4nD8fjcD/hfvoHCZPJyI58sEt8gVGfy9mW22aYuUJjsoI=
+	t=1785246279; cv=none; b=bo3uJXnZxurj9QOa6rt81Mat7jCkFue4cZ945US6kRSs05zs9nClZSW+QCOHr4CUSG7zdvbfkp3UktU0QznhqN8Fi9UMhR/pUAXjX1blwgAE3Qb0eq0LgQEDPtC/7kLXYPaTUKdIUogPD4dThIIj3MtnRe05l+2JsN17Lv+Mph8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785246279; c=relaxed/simple;
-	bh=vajgbPW236CCVYCsKN69N3TnRG9pznHn99LIc8Ci4UE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZvXMHcLaTi2by1Q6eahYN0gbjRbSPM9U0E1N+Ev4sq3IELx3MAoaBTuJnUhcjmiZhYeV5uzCU1PdzMr2zifePk/HUL1Io2kCCTzdZUNnmtTYMm7PM2kkr1cwjssdS8gXxWf2CBGzpg7RF/dpzbbxWR6IL8N04AjK7aacoBnABH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=SEfpthIV; arc=none smtp.client-ip=23.88.38.48
+	bh=gosP6giJKz2I6FCp6rSU3RU8k4gdkYvMcu+8kudSUJ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JjjncB39/nL0ZEbF5ZngJzr/k7MWqlTQZt/c6P7QDbmdUYbcklXuzy9mqbigwye5538W1LR2chmoIeRxLVKJrVUCoSvVRCR2wCs/FsEjh+8AToAlhQshy2bSp1Wz8SPbnITeJsejydf20YreHbwbcs3Z2rMo/kE2qtiUU0a/fBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=nj5ChFge; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="SEfpthIV"
-Received: from kero.packetmixer.de (p200300C59717eAD808f168C97e5563A8.dip0.t-ipconnect.de [IPv6:2003:c5:9717:ead8:8f1:68c9:7e55:63a8])
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="nj5ChFge"
+Received: from kero.packetmixer.de (p200300c59717ead808f168C97E5563A8.dip0.t-ipconnect.de [IPv6:2003:c5:9717:ead8:8f1:68c9:7e55:63a8])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id F15D9FA03B;
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 2E678FA006;
 	Tue, 28 Jul 2026 15:39:19 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1785245960;
+	s=09092022; t=1785245959;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oJDXgd+OAnSvM13MpPqY2dqaxiMAmG5IYzqgSDXZG30=;
-	b=SEfpthIVua/3TY7Sm1fE1WQoPzjoH/kgIavyJIBpx9LGh5gIjixXZLujisliRbfCHUYQic
-	7V1HVebUJoFsl6Yaj/wMs3s3BbnOZCDNX4z1Rpof26qVA4WuiZT2ZXEDnn5uCT89J9tOg3
-	UDlJ2qPWqVQiJfuPaByGlbcelGQQfv7MQBohWJeSqjP3jF5FCGLTVnDHSFu8PRB+lQf19D
-	50BYy5GNQt/kxII6W9vMdVXEOAK9EJAny1t+dkRuMUJlLSfCOG8OL2MUU2F4GlbhUhpWot
-	2bY8uwLmLGge0sAfY6FJewPAazPXyDsTrmdx4ZAZdStJ304D4VGkdoFkkWMwXg==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qqEllnaONuEr6tIT/DHGIGAHgfo9X/1/a0Y4WPVoQWw=;
+	b=nj5ChFgeo3TeTrBlDF04WUCh3MTpeneBBtLsb14gpsUSabPToEvjLUTkPoLAGaxcLtyEGk
+	y1Kw1kJGiM/8PlVuqjy8HIKvvPtgqhKfap0CMsqxRIeoUmjoN76KcW7YwL6it8QUPq5Umd
+	/vt5uiuCZaWDs/c5uo7t/OSn6oVNsk0h7vlNDbq5xgNKBtQHYWut4TdELNcU+2iZyMaeZ1
+	6RwJumtv2KDTFSZD/hrhh1MyTYvKC2UHQK1xeMwYvh6xcBKUZOUbw45lEVeS4fQxqL+ZQF
+	Y9bVCSsN4fVTQG4JWGM03GsfWCA/ns2T8xSIj75+PMzR1UkG+s93sByk84cHvg==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -42,16 +40,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	stable@vger.kernel.org,
-	Sashiko <sashiko-bot@kernel.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 01/15] batman-adv: bla: avoid CRC corruption due to parallel claim add
-Date: Tue, 28 Jul 2026 15:39:04 +0200
-Message-ID: <20260728133918.643267-2-sw@simonwunderlich.de>
+Subject: [PATCH net-next 00/15] pull request for net-next: batman-adv 2026-07-28
+Date: Tue, 28 Jul 2026 15:39:03 +0200
+Message-ID: <20260728133918.643267-1-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260728133918.643267-1-sw@simonwunderlich.de>
-References: <20260728133918.643267-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,157 +53,95 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sven Eckelmann <sven@narfation.org>
+Dear net maintainers,
 
-batadv_bla_add_claim() is used to add claims and modify the backbone of
-claims for CLAIM frames from remote backbones and local packets. When it
-handles a claim, it needs to either
+here is a minor bugfix/cleanup pull request of batman-adv to go into net-next.
 
-* add the new claim's CRC to the backbone CRC
-* remove the already existing claim's CRC from the old backbone and add it
-  to the new backbone
+Please pull or let me know of any problem!
 
-But when the "new" claim code was running in parallel to the "change
-backbone" code, it can happen that the CRC was invalid because the
-backbone_gw of the claim was changed twice in the "new" claim code path:
+Thank you,
+      Simon
 
-* CPU0 creates the claim for gateway A and publishes it in the claim
-  hash. The crc16 of the address has not yet been added to A's crc at
-  this point.
+The following changes since commit b470fde8f77b56ff273c5527484b99499b894e16:
 
-* CPU1 processes a claim frame of gateway B for the same client, finds
-  the just published claim, and performs the ownership change: it
-  switches the pointer to B, removes the crc16 from A's crc - which
-  never contained it - and adds it to B's crc.
+  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-07-10 10:20:05 +0200)
 
-* CPU0 continues behind the creation branch, unconditionally switches
-  the pointer back to A without compensating B's crc (its remove_crc
-  is false for the creation path), and finally adds the crc16 to A's
-  crc
+are available in the Git repository at:
 
-The CRC is then wrong for both:
+  https://git.open-mesh.org/batadv.git tags/batadv-next-pullrequest-20260728
 
-* claim belongs to A: but CRC is not part of backbone A's CRC
-* claim doesn't belong to B: CRC is still part of backbone B's CRC
+for you to fetch changes up to 6af11807a9e1e9117bfe4865cc9b30935c339cf2:
 
-This wrong CRC is never recomputated from the stored claims. For local
-backbone claims, this can also not recovered using syncs.
+  batman-adv: tt: simplify NEW flag transition code (2026-07-10 22:35:45 +0200)
 
-To avoid this, split the functionality in clear separate parts:
+----------------------------------------------------------------
+This minor bugfix/cleanup patchset includes the following patches (all by Sven Eckelmann):
 
-* new claim which always adds claim CRC to the backbone CRC (but never
-  changes the already set backbone_gw of the claim back)
+7 minor bugfix patches:
 
-* update of existing claim which automatically changes the backbone_gw
-  entry and only updates both backbone CRCs when there was an actual change
+ - bla: fix potential CRC corruptions (2 patches)
 
-Cc: stable@vger.kernel.org
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/bridge_loop_avoidance.c | 60 ++++++++++++++++----------
- 1 file changed, 37 insertions(+), 23 deletions(-)
+ - dat: avoid unaligned fault in IP extraction
 
-diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
-index f9a1fadf8de9e..79c482d24d9e3 100644
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -694,12 +694,14 @@ static void batadv_bla_add_claim(struct batadv_priv *bat_priv,
- 	struct batadv_bla_backbone_gw *old_backbone_gw;
- 	struct batadv_bla_claim *claim;
- 	struct batadv_bla_claim search_claim;
--	bool remove_crc = false;
- 	int hash_added;
-+	u16 claim_crc;
-+	bool changed;
- 
- 	ether_addr_copy(search_claim.addr, mac);
- 	search_claim.vid = vid;
- 	claim = batadv_claim_hash_find(bat_priv, &search_claim);
-+	claim_crc = crc16(0, mac, ETH_ALEN);
- 
- 	/* create a new claim entry if it does not exist yet. */
- 	if (!claim) {
-@@ -731,43 +733,55 @@ static void batadv_bla_add_claim(struct batadv_priv *bat_priv,
- 			kfree(claim);
- 			return;
- 		}
-+
-+		spin_lock_bh(&backbone_gw->crc_lock);
-+		backbone_gw->crc ^= claim_crc;
-+		spin_unlock_bh(&backbone_gw->crc_lock);
-+
-+		WRITE_ONCE(backbone_gw->lasttime, jiffies);
-+
-+		batadv_claim_put(claim);
-+		return;
-+	}
-+
-+	WRITE_ONCE(claim->lasttime, jiffies);
-+
-+	/* replace backbone_gw atomically and adjust reference counters */
-+	spin_lock_bh(&claim->backbone_lock);
-+	if (claim->backbone_gw != backbone_gw) {
-+		changed = true;
-+
-+		old_backbone_gw = claim->backbone_gw;
-+		kref_get(&backbone_gw->refcount);
-+		claim->backbone_gw = backbone_gw;
- 	} else {
--		WRITE_ONCE(claim->lasttime, jiffies);
--		if (claim->backbone_gw == backbone_gw)
--			/* no need to register a new backbone */
--			goto claim_free_ref;
-+		old_backbone_gw = NULL;
-+		changed = false;
-+	}
-+	spin_unlock_bh(&claim->backbone_lock);
- 
-+	if (changed) {
- 		batadv_dbg(BATADV_DBG_BLA, bat_priv,
- 			   "%s(): changing ownership for %pM, vid %d to gw %pM\n",
- 			   __func__, mac, batadv_print_vid(vid),
- 			   backbone_gw->orig);
- 
--		remove_crc = true;
-+		/* add claim address to new backbone_gw */
-+		spin_lock_bh(&backbone_gw->crc_lock);
-+		backbone_gw->crc ^= claim_crc;
-+		spin_unlock_bh(&backbone_gw->crc_lock);
- 	}
- 
--	/* replace backbone_gw atomically and adjust reference counters */
--	spin_lock_bh(&claim->backbone_lock);
--	old_backbone_gw = claim->backbone_gw;
--	kref_get(&backbone_gw->refcount);
--	claim->backbone_gw = backbone_gw;
--	spin_unlock_bh(&claim->backbone_lock);
--
--	if (remove_crc) {
-+	if (old_backbone_gw) {
- 		/* remove claim address from old backbone_gw */
- 		spin_lock_bh(&old_backbone_gw->crc_lock);
--		old_backbone_gw->crc ^= crc16(0, claim->addr, ETH_ALEN);
-+		old_backbone_gw->crc ^= claim_crc;
- 		spin_unlock_bh(&old_backbone_gw->crc_lock);
--	}
- 
--	batadv_backbone_gw_put(old_backbone_gw);
-+		batadv_backbone_gw_put(old_backbone_gw);
-+	}
- 
--	/* add claim address to new backbone_gw */
--	spin_lock_bh(&backbone_gw->crc_lock);
--	backbone_gw->crc ^= crc16(0, claim->addr, ETH_ALEN);
--	spin_unlock_bh(&backbone_gw->crc_lock);
- 	WRITE_ONCE(backbone_gw->lasttime, jiffies);
--
--claim_free_ref:
- 	batadv_claim_put(claim);
- }
- 
--- 
-2.47.3
+ - dat: atomically update mac addresses
 
+ - mcast: ensure linearization, TX prio extraction and unshared skbs
+   (3 patches)
+
+8 cleanup patches:
+
+ - dat: drop non-4addr backwards compatibility
+
+ - improve kernel-doc, add comments and warnings (3 patches)
+
+ - coding style: split declarations, reverse x-mas tree (2 patches)
+
+ - tt: atomic flag modifications, simplify NEW flag transition (2 patches)
+
+----------------------------------------------------------------
+Sven Eckelmann (15):
+      batman-adv: bla: avoid CRC corruption due to parallel claim add
+      batman-adv: bla: prevent CRC corruptions after claim flush
+      batman-adv: dat: avoid unaligned fault in IP extraction
+      batman-adv: dat: atomically update mac addresses
+      batman-adv: fix TX priority extraction for BATADV_FORW_MCAST
+      batman-adv: mcast: ensure unshared skb for multicast packets
+      batman-adv: mcast: linearize skbuff for packet generation
+      batman-adv: dat: drop non-4addr backwards compatibility
+      batman-adv: add missing kernel-doc comments
+      batman-adv: fix kernel-doc for functions holding skb ownership
+      batman-adv: annotate functions which may reallocate the skbuff
+      batman-adv: split multiple declarations per line
+      batman-adv: switch var declarations to reverse x-mas tree order
+      batman-adv: tt: use atomic flag modifications
+      batman-adv: tt: simplify NEW flag transition code
+
+ include/uapi/linux/batadv_packet.h     |  16 +-
+ net/batman-adv/bat_algo.c              |  16 +-
+ net/batman-adv/bat_iv_ogm.c            | 303 ++++++++++++----
+ net/batman-adv/bat_v.c                 |  87 ++++-
+ net/batman-adv/bat_v_elp.c             |  19 +-
+ net/batman-adv/bat_v_ogm.c             |  34 +-
+ net/batman-adv/bitarray.c              |   9 +-
+ net/batman-adv/bridge_loop_avoidance.c | 169 +++++----
+ net/batman-adv/distributed-arp-table.c | 305 +++++++++++-----
+ net/batman-adv/fragmentation.c         |  34 +-
+ net/batman-adv/gateway_client.c        |  41 ++-
+ net/batman-adv/gateway_common.c        |   6 +-
+ net/batman-adv/hard-interface.c        |  94 ++++-
+ net/batman-adv/hash.c                  |   5 +-
+ net/batman-adv/hash.h                  |  42 ++-
+ net/batman-adv/log.h                   |  16 +-
+ net/batman-adv/main.c                  |  59 ++-
+ net/batman-adv/mesh-interface.c        | 116 ++++--
+ net/batman-adv/multicast.c             |  33 +-
+ net/batman-adv/multicast_forw.c        |  33 +-
+ net/batman-adv/netlink.c               |  14 +-
+ net/batman-adv/originator.c            |  64 ++--
+ net/batman-adv/routing.c               | 115 ++++--
+ net/batman-adv/send.c                  |   7 +-
+ net/batman-adv/tp_meter.c              |  41 ++-
+ net/batman-adv/translation-table.c     | 637 +++++++++++++++++++++++----------
+ net/batman-adv/tvlv.c                  |  24 +-
+ net/batman-adv/types.h                 |   8 +-
+ 28 files changed, 1692 insertions(+), 655 deletions(-)
