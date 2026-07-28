@@ -1,170 +1,132 @@
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26553D75B1;
-	Tue, 28 Jul 2026 11:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D570A32ED54
+	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 11:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785238499; cv=none; b=AJy/oZFVBMKG+YniH9RZuEtI3sjC7qKLAqkfUlsIICKZUEbT7WIl4ji8ntMm2gdvptuiPNAjuMdlHILHFps90BG+euk8tImX8LspzJ1wWva/ztXSSjgjBcoSg3U+PvqtCZKeBdu/Tm4loyIjziNO5L0SRcg2YpUGs8aiRsQBSh0=
+	t=1785238507; cv=none; b=RH2Cgw3zkKNr1f0AJYRWcbt8onUNqn2xC/xBta1msmqQ11iEADPF1MptVkobYh0LSCEhiOXAdHuFdU7EaUuCWEvS6kU3TiVK0ykY7KkmAlTOwZGeTdeChVwdsOwH0M+LlAUQgcuoE1HCIAJCLxNIpsIMKSzgH0KC7sJlZ2KLxoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785238499; c=relaxed/simple;
-	bh=6vy5au28jtD8HxoeaBv8y2hyotQQWJxm6KFpOHgDnNw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZClxzDHyIjpETVIWhVAJQ7PmFs1pyQkwF+rTa0NfZWnzehHkXIm1MSfZTj3PymJ2swXPoSxm+hVwlh0o/57/Pgupph9srZFx9vmdXePBZ4tA+Gp7+wqqSvc6qKCXHIQGJVthG67dx6wFSpNaWvQtV00NOcVBIC0NtjEjsx1Lxzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wuWJbsIC; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1785238507; c=relaxed/simple;
+	bh=jvxhuwOrYBEY4K3ZcYzwQnNCIfOk2KZlICMVXxJYMxU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EohM2tB/anfG2GbcfsXderLThjvtiv7xM4VDoLC8N65v9h77rhVnGuZ788zoRobynNCc1Gtyo3sqPfY0QTdIpzau/1QqiKJCjEWQ4071NOXyANoHC0uXjxhG7YFPiebk7eN+3EwaEPDNg6BfMshY71E4BrV9e3IRiOWJ5vJqRvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y5iqabv9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=d1zi5R7e; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wuWJbsIC"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1785238485; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=pC3JYw/mzT2qWxAHaOZMxCgpZOFRIe5y355Ny0X5Ot8=;
-	b=wuWJbsICB4Le7+DwQ7CFhrwmMC8Z2aElQH8rtMzPojA+dMVZwOUdyT4jzDueyAo5izOYQerhXrpcuUZQc7sAgxL2kFFvJfE4AS6HfIVrf/9ho4QZWQm4eq0hNnSYXgdnoSLnBxJtqO8CDXZ3l3/VbDNVjObX6GWM0ZldK9BC5Yw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R571e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=alibuda@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X8-g6WU_1785238484;
-Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0X8-g6WU_1785238484 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 28 Jul 2026 19:34:44 +0800
-Date: Tue, 28 Jul 2026 19:34:44 +0800
-From: "D. Wythe" <alibuda@linux.alibaba.com    >
-To: Ibrahim Hashimov <security@auditcode.ai>
-Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
-	wenjia@linux.ibm.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com, horms@kernel.org,
-	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net/smc: validate peer CDC cursor against RMBE
- size before accepting it
-Message-ID: <20260728113444.GA12703@j66a10360.sqa.eu95>
-References: <20260722101758.37817-1-security@auditcode.ai>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y5iqabv9";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="d1zi5R7e"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785238504;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XKnYIFZNjnev1Dya7FU27V6HTiHGaHJ4k30+zHJNboI=;
+	b=Y5iqabv9uVYIrvuMgoo6V/jF+EXDIybnAjG8vuzv2liocVnCMfaP5iYyD/DPpTa1+SEVm6
+	3C3vfsETHIXzU2ClD0D9abrzLNy83b7h6+f2qx0nmeRPEQIdKLdbvrLPJRnyVfGWUnCXkU
+	d4ULoBt4UgmXZXyuwGKfAyXbwqMaiWk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-675-_vzHPyaxO7CU5ihRp49I0Q-1; Tue, 28 Jul 2026 07:35:03 -0400
+X-MC-Unique: _vzHPyaxO7CU5ihRp49I0Q-1
+X-Mimecast-MFC-AGG-ID: _vzHPyaxO7CU5ihRp49I0Q_1785238502
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-496bbcf7d1eso15705795e9.0
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 04:35:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785238502; x=1785843302; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XKnYIFZNjnev1Dya7FU27V6HTiHGaHJ4k30+zHJNboI=;
+        b=d1zi5R7ewwpB1XXH/tGcvrfXcmkhoWF9iwUqS37YVl9E7RBTWGssTUlBVc7KHlju5o
+         3xyPkb+R+rD0v27YLhEAShLjtJR1049VEhgj1UdhfVwZAd4JW+s3Hcj+K7RqLRTnACb9
+         chhxNT9wu28zYSdMPL6edIIaBK09mp6vwsBvrEoLmXLexlv8XurziQof5UvizIJGt3vL
+         +luI16Wkrr/A80qxhZhTmVVCA98PG01hv9gmk4YAGvSumEAYRVuNDhh/6ucv4cnaBN/J
+         2X+5zy18ezjmLkVlBMUS+yemDVe5ybW1Tx8zEYU7dVyOHqZL8xwCdTN6bCaaArc6zE4V
+         DJaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785238502; x=1785843302;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XKnYIFZNjnev1Dya7FU27V6HTiHGaHJ4k30+zHJNboI=;
+        b=RsONf5xczLdYMSiQbP82zKyweTpmkX+oC1IFiiJNsebnMZ6lh4ZATgdRBXUBfv/gHY
+         dIagViNK43LQfB6/zjfUNwakDry6kRQc8zAjZwvREEQDeZWLboRU8ffQTkmY0ETLOWh/
+         kycZqC617zuHVWlJhnX68m2gOBXS7QSr1pDwtJ0yxwR/UpcELGR4isB8MhI+Swsw3/qt
+         TnU3HJCIyzNin/RLOEtr77npP4fEfKiVwWRYSN/COlJf/HcDH6vJ/OPKT/m1SOpT6q5N
+         R+jjcAJWWoMEeuxU/CWD4SS66waocgBh4CHZhqL1TNgxCYG9kRdVHnZM7hNyw2TAbWsR
+         PTWg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq2A26cXYTEDDYTHnOaJ4EiPaSz4bOnsATsabwdCRf44CIcQNlvPYQZsYpcvsEhwGkxvs3M3kQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0Psw406oCa51nRqqi69uuu6VHHerSxKFamxpyXsl/rD7+3LTm
+	lLijjBqG5z7Xe870xcqMZUYFPlClNB8iJH4tiDwTx48FSj1uXVpqwj668oqB89YRR8QBjSXIDCc
+	m4PX4p5c/+063rTS3LJAJQCdCYMiwklge1ArOOv5QId/uAjyXUu64tA3tog==
+X-Gm-Gg: AR+sD10DlQk4ob0KAx/o0PK2LEjiskJzi3Fe5LK3REqOBKpqVIvRwwntMaC+0FSMFPK
+	VCUdDWYR6PoKCPUoFZUM5K2ws1StytTA5FlLyOWxIouXP2P8Vl+YoYSCjG2rsLkwH/ypB6nj6Re
+	u4XJV6S09/VS78rG15punh0t0s8kSb1HqLugsUBDGHydLkPqOkh5vwH7vSVWhWq9NSPwFpsNDrq
+	TBrOhMmtQRpxs/m0cgzoIPbDdI+EkSGeUarnmhi2fz/97HwY/ubF865jx7/sO6yuborQjniL59X
+	xGqVhFQnfwPDNp+BEtUTr4fDSn8+ONK8lzRzciPaK6QPCxeSGOfKjFgi7vWSgG+nX/lFE8NIlHg
+	mu4Eg1mDHyki5Td+/QAKe4rxwZp6Vk3H6Ki2mbg0YoBfTzymTTnSZTchEKzH3EuFkejsXqZl9fp
+	Lewg==
+X-Received: by 2002:a05:600c:c493:b0:495:4d88:e630 with SMTP id 5b1f17b1804b1-496c6545a58mr20821685e9.10.1785238501797;
+        Tue, 28 Jul 2026 04:35:01 -0700 (PDT)
+X-Received: by 2002:a05:600c:c493:b0:495:4d88:e630 with SMTP id 5b1f17b1804b1-496c6545a58mr20821275e9.10.1785238501303;
+        Tue, 28 Jul 2026 04:35:01 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c45b0535sm69241275e9.4.2026.07.28.04.34.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Jul 2026 04:35:00 -0700 (PDT)
+Message-ID: <cf80c0ea-b33e-4533-b9fa-12f00d62bedc@redhat.com>
+Date: Tue, 28 Jul 2026 13:34:59 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260722101758.37817-1-security@auditcode.ai>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: udp_tunnel: fix memory leak in
+ udp_tunnel_nic_unregister()
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, syzbot+eca845fb8c18dd6b44c1@syzkaller.appspotmail.com
+References: <20260724091137.1792543-1-edumazet@google.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260724091137.1792543-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 22, 2026 at 12:17:58PM +0200, Ibrahim Hashimov wrote:
-> smc_cdc_cursor_to_host() converts the wire-format producer/consumer
-> cursor of an incoming CDC message into a host smc_host_cursor. It rejects
-> a cursor that goes backwards, but never checks that the cursor stays
-> inside the buffer it indexes. Per smc_host_cursor ("an offset in an
-> RMBE") and the invariant smc_curs_add() enforces for every local advance
-> (0 <= count < size), a valid cursor count must be < size and a single
-> advance can be at most one bufferful; the wire cursor is peer-controlled
-> and was never checked against either.
+On 7/24/26 11:11 AM, Eric Dumazet wrote:
+> syzbot reported a memory leak [1] in the UDP tunnel NIC offload code.
 > 
-> smcr_cdc_msg_to_host() accepts the producer and consumer cursors, and the
-> unbounded value feeds smc_curs_diff() in smc_cdc_msg_recv_action(), which
-> computes the advance without clamping against size. A peer can inflate it
-> two ways: an out-of-range prod.count (e.g. 0x7fffffff), or -- since on a
-> wrap increment smc_curs_diff() returns (size - old.count) + new.count --
-> a cursor with a bumped wrap and new.count above old.count. Either drives
-> bytes_to_rcv far past rmb_desc->len, the very invariant the comment above
-> the atomic_add() claims but does not enforce.
+> When device registration fails (e.g. in register_netdevice()), netdev core
+> unwinds by sending a single NETDEV_UNREGISTER notification. If work was queued
+> during NETDEV_REGISTER (utn->work_pending is set), udp_tunnel_nic_unregister()
+> returns early:
 > 
-> smc_rx_recvmsg() then trusts bytes_to_rcv as the amount of valid RMB
-> data. Its first copy chunk is safely bounded by rmb_desc->len -
-> cons.count, but the second chunk copies (copylen - chunk_len) bytes from
-> offset 0, and copylen came from the inflated readable -- an out-of-bounds
-> read of the RMB's backing (v)malloc allocation, copied straight to the
-> receiving process via _copy_to_iter(). This is a remote kernel-memory
-> disclosure driven by a malicious SMC-R peer, needing no local privilege
-> on the victim. The same unbounded count also reaches
-> smc_cdc_handle_urg_data_arrival() (base + urg_curs.count - 1) -- a
-> second, narrower OOB read.
+> 	if (utn->work_pending)
+> 		return;
 > 
-> Reject the bad cursor at ingress, mirroring the cursor-sanity idiom two
-> lines above: drop any incoming cursor whose count is outside the buffer
-> (>= size), and any whose advance from the last accepted cursor exceeds
-> one bufferful (smc_curs_diff() > size), which catches the wrap case.
-> smc_cdc_cursor_to_host() gains a size parameter; smcr_cdc_msg_to_host()
-> passes conn->rmb_desc->len for the producer cursor and
-> conn->peer_rmbe_size for the consumer cursor, bounding it at its single
-> origin instead of patching every downstream consumer. SMC-D
-> (smcd_cdc_msg_to_host()) does not use this helper and is a separate,
-> out-of-scope gap.
+> Because failed registrations do not enter netdev_wait_allrefs_any(), no
+> subsequent NETDEV_UNREGISTER rebroadcast will ever occur. As a result, the
+> struct udp_tunnel_nic allocated in udp_tunnel_nic_alloc() is leaked
+> permanently.
 > 
-> Reproduced on a v6.19 KASAN kernel (SMC-Rv2 over soft-RoCE): a peer
-> emitting prod.count=0x7fffffff triggers a vmalloc-out-of-bounds read in
-> _copy_to_iter() via smc_rx_recvmsg(), returning ~960 KB of RMB-adjacent
-> kernel heap to userspace; an in-range cursor transfers cleanly. With the
-> fix the out-of-range cursor is dropped before it reaches
-> conn->local_rx_ctrl.prod, and the reproducer returns rc=0 with no report.
+> Fix this by removing the early return. Instead, synchronously cancel any
+> pending work with cancel_delayed_work_sync() before freeing @utn.
 > 
-> Fixes: 5f08318f617b ("smc: connection data control (CDC)")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
-> Assisted-by: AuditCode-AI:2026.07
-> ---
-> v2: also bound the cursor *advance* (smc_curs_diff() <= size), not just
->     the count. A wrap increment with new.count above old.count passes the
->     count check yet still inflates bytes_to_rcv past the buffer -- thanks
->     to sashiko-bot for spotting the count-only gap. Resent standalone.
-> 
->  net/smc/smc_cdc.h | 22 ++++++++++++++++++++--
->  1 file changed, 20 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/smc/smc_cdc.h b/net/smc/smc_cdc.h
-> index 696cc11f2303..b0ae4d43b017 100644
-> --- a/net/smc/smc_cdc.h
-> +++ b/net/smc/smc_cdc.h
-> @@ -221,6 +221,7 @@ static inline void smc_host_msg_to_cdc(struct smc_cdc_msg *peer,
->  
->  static inline void smc_cdc_cursor_to_host(union smc_host_cursor *local,
->  					  union smc_cdc_cursor *peer,
-> +					  unsigned int size,
->  					  struct smc_connection *conn)
->  {
->  	union smc_host_cursor temp, old;
-> @@ -235,6 +236,21 @@ static inline void smc_cdc_cursor_to_host(union smc_host_cursor *local,
->  	if ((old.wrap == temp.wrap) &&
->  	    (old.count > temp.count))
->  		return;
-> +	/* count is an offset into the RMBE and must always stay inside
-> +	 * it (see smc_curs_add()); the peer is untrusted, so reject an
-> +	 * out-of-range wire cursor the same way an out-of-order one is
-> +	 * already rejected above, instead of letting it drive
-> +	 * bytes_to_rcv / the urgent-byte offset past the buffer end
-> +	 */
-> +	if (temp.count >= size)
-> +		return;
-> +	/* Bound the advance too: a wrap increment with temp.count above
-> +	 * old.count makes smc_curs_diff() report more than one bufferful,
-> +	 * which would inflate bytes_to_rcv / peer_rmbe_space past the buffer
-> +	 * in smc_cdc_msg_recv_action(). Reject such a cursor.
-> +	 */
-> +	if (smc_curs_diff(size, &old, &temp) > size)
-> +		return;
+> To be able to call cancel_delayed_work_sync() while holding RTNL (the work also
+> needs RTNL), switch udp_tunnel_nic_device_sync_work() to rtnl_trylock(). If RTNL
+> is contended, requeue the work with a 1 jiffy delay (via queue_delayed_work())
+> to prevent high CPU contention while waiting for RTNL lock.
 
+Side note: I'm wondering if long term we could remove RTNL here (and
+relay on udp_tunnel_nic->lock and possibly dev->lock).
 
-At minimum there should be a rate-limited log indicating something
-unusual happened. Ideally the connection should be actively aborted,
-a peer sending an out-of-range cursor is either malicious, buggy, or the
-data is corrupted, and silently continuing is pointless.
+/P
 
-
->  	smc_curs_copy(local, &temp, conn);
->  }
->  
-> @@ -246,8 +262,10 @@ static inline void smcr_cdc_msg_to_host(struct smc_host_cdc_msg *local,
->  	local->len = peer->len;
->  	local->seqno = ntohs(peer->seqno);
->  	local->token = ntohl(peer->token);
-> -	smc_cdc_cursor_to_host(&local->prod, &peer->prod, conn);
-> -	smc_cdc_cursor_to_host(&local->cons, &peer->cons, conn);
-> +	smc_cdc_cursor_to_host(&local->prod, &peer->prod,
-> +			       conn->rmb_desc->len, conn);
-> +	smc_cdc_cursor_to_host(&local->cons, &peer->cons,
-> +			       conn->peer_rmbe_size, conn);
->  	local->prod_flags = peer->prod_flags;
->  	local->conn_state_flags = peer->conn_state_flags;
->  }
-> -- 
-> 2.50.1 (Apple Git-155)
