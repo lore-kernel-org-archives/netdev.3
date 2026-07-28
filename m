@@ -1,144 +1,135 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269C5367B70
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 06:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785219003; cv=pass; b=rl+3EL/gV9TlBHUKiaV+tpfYN2s0xtvon6vxJK/EoazH1UdghK2iPUSPlbTL/W1z03waDHRoQw0tmW5GrT19w5WqW5DQacJg8YLWABsHXIb7PN4WaoUUuRuNjarIa360vxJ7GkuTvQ//LDPSnsi5FUcz4uDKSprZABqfWOmHl7M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785219003; c=relaxed/simple;
-	bh=QO9q8hGMb6wDMhpK8mlOmRixW52ZyX0W9RelPfDdfsQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ExtXqGH1baF06zuhOrOL+IDHUfWBGX18DFO24t1v0GX9swoyiI3ZEzwe1NdcIV5OZ5AgsqkpJ29Gl+JsZoCmY2zJ/kFq0v6tp3wKF3HWVR8KViz55VOSUH/hVUExtvGouAD4WJKRt0KROuVSbyzj5y/GLSWM/WB5zjaGdlBpKj8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K/28D55b; arc=pass smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E323244692;
+	Tue, 28 Jul 2026 06:19:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785219592; cv=none; b=NLcEJ7LQgeynnPXHG0ZnlRUuypP3kllo7kw1n4QVX8yGTCxtE4aVKuTuOXfiRW74C6w3/OVTvnuKIM5qsx94SCz1xlkmbQD6+yoYRcM2donfPBHW3b+YluYuMFuhGNz//NDoV71X28U2wGuxpfd06ajwtNhpCUD2p02yam4xubE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785219592; c=relaxed/simple;
+	bh=rm0dntThz0DwmcNzLNO300rGwZiw4vacrmFC8RxjhT8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fhnXdXMrMs6l7urKjw6u8qSN42wmgtcUgFpm0kkBMf83qOSU+RDMW8t+PXesx6BSzuS59YZkRD+glhUc9LfJws2BPX/PnG+pzZZH00+2oIDm8myBh0133Qq8uUZftGAoC/jyA8sXyA1TQm/46dKUTcl9P617IlS6pKfi3mLuAxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=pAy9edPx; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K/28D55b"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-39ca300db70so30618141fa.2
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 23:10:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785219000; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fXC+No4ejJvK2yQy0GeXkQyxUAzvQyibXZKoD9iWel77pI4juPgh7HNhzYTrP+81Vl
-         UcuZcIeWtcbHFzJKnzYSV78uZWt2Araa07hSbXWTcedFerefeyClQtEU0ARbq33t1y6j
-         Im5FDwwH5KlxH4YBmVUmxl3pkGG+BvlUABFULNIGP7IKEG/x9oQiKd8WpJO1U9KuJa8h
-         l33RvlAo+RAKnrvnViw2u4bA919aUVRyV3iaoua96nE1IMdSBfbcbbXsfP/SxZJcvRbq
-         xO78l52V7BPcZcBJq52cAlFuWMTvcIuxgQqv4g0cO1328lHYImmEch/ZFLqcMZqJoImO
-         qY0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QO9q8hGMb6wDMhpK8mlOmRixW52ZyX0W9RelPfDdfsQ=;
-        fh=QqPYftU9nZEqJBlanC+unMSpwhnH5mIKTRsimbl0M3o=;
-        b=MsIGZCMEng3z6WwE9l0TfoILCPdvC1gkKv53/ARLdbVXZ5LwVyP1IuANIcfyyXFw8l
-         Jr1UPpriZUrIfTdWhEtBQfYvzqZhbJupnk0CKckKJ2w+djzTkebDBZVwaD4jnO6l6zqt
-         7BCglGpac0JPkRxZBeBdzO8RIlCoNbvG3YXQCdejTxlMhULmVNSZyCh2tIYXTQjrurb5
-         y1XxWjPgNzl6/Pvmtx2bPxERc2UnNgdGJgOzoxpo3PQ4nz4kab7uF9H3xzcrL06MrNIx
-         BpnkwZTn8hG1bfYRX1Sm7CMkyJLKT4VtwFkYCq0nS6O3mdlJgoBd0TH7ih0Ahp85xLKp
-         p5lg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785219000; x=1785823800; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QO9q8hGMb6wDMhpK8mlOmRixW52ZyX0W9RelPfDdfsQ=;
-        b=K/28D55bSqiQyJHd/eaIGAlCuBvzw6PTnr3GyVEgTWwAxtaBwxBrbeo9IJT1i977zh
-         Wa5nkTlz1dAgxmnS/xGEPsakMUIp+OqcYlO8Qs9INpqw0f00sSXYbb+cKrvKHHHe8eKC
-         wOTpv5ZH8FCU+4zLSZTRfoa+K3mdUyuvpRsQkLGEQZtoNMDx0iRwluDXMS8WkAJIu74B
-         uWsU/y0krI+pv4mP+TL/XPwTGwYjpAXzU9Kz2Lz3elm74aWRsZs/X+RQJ7ukIapGsb8p
-         ZB/7Yrbk9pgrBFDU5E4270CdsnolXRl8n5L29fzWGAHdO180Xwp1T2PBHejznlRSlcA9
-         E17g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785219000; x=1785823800;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QO9q8hGMb6wDMhpK8mlOmRixW52ZyX0W9RelPfDdfsQ=;
-        b=W0a0ZVQ1WArBMPXgIfgVELe/UoYfTC6d0+BlVNjGl5G6T/WPWqdWs1lNnCtVyHu1tq
-         iy1a4D26Qbdg7EBc/BP2tWHUaQz204/QfALACsuXMqJC8momwy/gy+rZpMqX27iHj03l
-         N+PT8EjqauIjketjUZRF6lvtVf997Kn19ZUOhscHwOiJEqw3hAQW+eclZOertT+mgUwR
-         +eEicsul9i3J1xY7CqDacZGwvSHexmNkQO0q2pPlnAmCnulbrvkV1PgjW46OzERwLAjM
-         dMWjKKtWihRqbrOGWSsRx3qkR6CO4YWnaxyK0+KeNU+hJJCiEMEtbI3Z4x0IPuY8lypo
-         LSMQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrFPVpwV3Y3MGmCqcL2xzkssJEqjun8JzMK6mrsXksphJlVnqSjhoaFEb7XhCJBoKaIOZjILEc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwscMp8S/+/RHYgG60n3V8SGpcgB+Dc58e9h+45fDh26pBCSJve
-	HxnepwrhOia+4iXAr/PkiVho2/p/AvmFKM2YaPolvgVvG3KqwqMAEsv6n0hM4RfZtYi6Nx5m/4e
-	AR4LdjX+c1tTbdYvc7G3K6CMrR3Ns6qE=
-X-Gm-Gg: AR+sD13Qi+bRodjmPjoiPlK4Z5lqiAqJ41ZUSO249+ecpvIxvRY9fhNOj0m+x2BakuP
-	sZFyiu/Rn1jSES7WpeBZnEQ7W0ASvtI1s0zOE8VXksJoCWooTKgZ5g33j8zFJ/aVmu/CEBjs5Ji
-	iQtmLh0aW8R+TF1U/5gL/uxDBEa7VF1qu/Ot7JDTVeVFv7H1tpOH0n5djCH95p8c+Q6lgru83El
-	fi0z3sKYKMSSWLoJdWO8AFC/zkiSWp3cWY4rZZ3lphPMlb+rVY9WxwtvrWE
-X-Received: by 2002:a2e:bc89:0:b0:39c:9aa0:799f with SMTP id
- 38308e7fff4ca-39f51eb3a29mr1809001fa.33.1785218999991; Mon, 27 Jul 2026
- 23:09:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="pAy9edPx"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66S6IMMK03651401, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1785219502;
+	bh=zytL0UhueysO2+dNdXO7unTI6+xqk/WT8m3TOBPUIBc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=pAy9edPxAn0hpZfyxMoH3ZaPio9y/mpwfvOBBRIPTWq215xwo6mqWUMU0XxxQHNIH
+	 xK3/UVE3k+qaqFBQm5wqYRHshfDFzUwDFRRDkiIJpW4nL5vZIdEDiCbYZlBeMd+30A
+	 1DKKajeECOmx6qp+dr3glMAY+pIkc8IAf4ttAf2P+dnPVdXt6MX9jIoYufjXmsjXb2
+	 2jKXAFAyAAevQ3rFi/CXnfaxJNGZFfsbXkx9UExdk2lZOgeb+dHfC6zBZHPrq0FAu+
+	 tXYV/MkmBJqD3MsLYG5d7B3zSe9hpQgmyHsAXFlBZbKHAk5e3pEbiu7J6rrcj9HJk+
+	 VqN2IrUTFm/iQ==
+Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66S6IMMK03651401
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 28 Jul 2026 14:18:22 +0800
+Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
+ RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 28 Jul 2026 14:18:22 +0800
+Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
+ RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.043; Tue,
+ 28 Jul 2026 14:18:22 +0800
+From: Javen <javen_xu@realsil.com.cn>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "nic_swsd@realtek.com"
+	<nic_swsd@realtek.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "maxime.chevallier@bootlin.com"
+	<maxime.chevallier@bootlin.com>, "horms@kernel.org" <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"daniel@makrotopia.org" <daniel@makrotopia.org>, "linux@armlinux.org.uk"
+	<linux@armlinux.org.uk>, "enelsonmoore@gmail.com" <enelsonmoore@gmail.com>,
+	"daniel@thingy.jp" <daniel@thingy.jp>
+Subject: RE: [PATCH net-next v7 4/7] r8169: add support for RTL8116af
+Thread-Topic: [PATCH net-next v7 4/7] r8169: add support for RTL8116af
+Thread-Index: AQHdGYHgECGgdwHRfk+In15lMVg2/7Z5x7IAgAClguCAAB6GgIAH8VTQ
+Date: Tue, 28 Jul 2026 06:18:22 +0000
+Message-ID: <d8fa2337e3894a178616a0b1f2786a1f@realsil.com.cn>
+References: <20260722022906.271-1-javen_xu@realsil.com.cn>
+ <20260722022906.271-5-javen_xu@realsil.com.cn>
+ <ff90f295-31df-490b-aad3-1bba6ef0ab5d@lunn.ch>
+ <90aea677b62e44f3a705caa900b3af95@realsil.com.cn>
+ <b01e69e8-3c8a-4af5-9de2-19d73713cff3@lunn.ch>
+In-Reply-To: <b01e69e8-3c8a-4af5-9de2-19d73713cff3@lunn.ch>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260723143908.4019-1-maimon.sagi@gmail.com> <118da808-b9e0-4e5a-9094-9c6dc3740ff4@linux.dev>
- <20260727140320.54185eb8@kernel.org>
-In-Reply-To: <20260727140320.54185eb8@kernel.org>
-From: Sagi Maimon <maimon.sagi@gmail.com>
-Date: Tue, 28 Jul 2026 09:09:33 +0300
-X-Gm-Features: AUfX_mzwOmtm11WByCwb-riod8IH7BnzyeHpAMIpDdotpH_ZpdzxrofTgYxGi0c
-Message-ID: <CAMuE1bHMe3BHz6YoAgXXtP+TpBEos6jaHFpBNPYjFHXKVxd4_g@mail.gmail.com>
-Subject: Re: [PATCH v6] ptp: ocp: add CPLD ISP support for ADVA TimeCard X1
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>, jonathan.lemon@gmail.com, 
-	richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Thanks for the feedback.
-
-My initial implementation actually exposed a real I2C bus to user
-space. However, following Vadim Fedorenko's review comments:
-
-https://lore.kernel.org/all/c6aff5f7-e087-4bd9-b159-7adeb82e19f4@linux.dev/
-
-I changed the design and switched to a sysfs-based interface for the
-ADVA device only.
-
-From your comment, it sounds like neither of these approaches is
-acceptable in its current form. Could you please clarify what
-implementation you would consider appropriate for this use case?
-
-Specifically, would you prefer:
-
-exposing a proper I2C adapter/bus to user space, or
-implementing the required device operations directly in the driver and
-exposing only higher-level controls?
-
-I'd like to understand the expected direction before respinning the patch.
-
-On Tue, Jul 28, 2026 at 12:03=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
-rote:
+Hi Andrew,
 >
-> On Mon, 27 Jul 2026 12:02:53 +0100 Vadim Fedorenko wrote:
-> > I don't like the idea of having a buffer in a global structure. And it
-> > doesn't look like you can actually serialize access. Imaging 2 processe=
-s
-> > manipulating this i2c bus. I can be that mutex will put them like:
-> >
-> > 1. process1 -> write cmd
-> > 2. process2 -> write cmd
-> > 3. process1 -> read result
-> >
-> > That means the data will be a mess.
-> >
-> > That's why it is a really bad thing to allow direct access from the use=
-r
-> > space. Is it possible to add a property per command?
+>On Thu, Jul 23, 2026 at 03:21:26AM +0000, Javen wrote:
+>> >
+>> >>  static void rtl8169_init_phy(struct rtl8169_private *tp)  {
+>> >> +     phy_init_hw(tp->phydev);
+>> >> +     phy_resume(tp->phydev);
+>> >>       r8169_hw_phy_config(tp, tp->phydev, tp->mac_version);
+>> >>
+>> >>       if (tp->mac_version <=3D RTL_GIGA_MAC_VER_06) { @@ -2562,7
+>> >> +2607,7 @@ static void rtl8169_init_phy(struct rtl8169_private *tp)
+>> >>           tp->pci_dev->subsystem_device =3D=3D 0xe000)
+>> >>               phy_write_paged(tp->phydev, 0x0001, 0x10, 0xf01b);
+>> >>
+>> >> -     if (tp->sfp_mode)
+>> >> +     if (tp->sfp_mode =3D=3D RTL_SFP_8127_ATF)
+>> >>               rtl_sfp_init(tp);
+>> >
+>> >This could be diff getting me confused....
+>> >
+>> >You unconditionally call phy_init_hw() and phy_resume(). And then if
+>> >this device should have an SFP you do something else. How can a
+>> >device with an SFP also have a PHY?
+>>
+>> I totally agree that the SFP initialization logic does not belong in a f=
+unction
+>meant for PHYs. But rtl_sfp_init() call was already located inside
+>rtl8169_init_phy() before my series. And it works well. This mainly becaus=
+e the
+>patch which add support for RTL8127atf(commit id: fef0f545511f72223)
+>assume that RTL8127atf has a dummy phy. So tp->phydev will not be NULL.
 >
-> At a glance - adding I2C support via 2 magic files in sysfs is rather
-> odd. Either expose a real i2c bus or make the driver sends the
-> appropriate commands. We are opposed to raw device write interfaces in
-> netdev.
+>[Goes and looks at what rtl_sfp_init() actually does]
+>
+>So it does not touch phydev making this function at least safe.
+>
+>> And in patch 5/7 of this series which add phylink support for RTL8127atf=
+, I
+>remove it.
+>
+>Yes, i did notice the dummy PHY getting deleted. I will look at that patch=
+ in
+>more detail.
+>
+>      Thanks
+>        Andrew
+
+Just a gentle ping on this thread.
+
+I am currently preparing for the next version. However, since you mentioned=
+ earlier that you were planning to look at patch 5/7 in more detail, I want=
+ to ask if you prefer me to send the next version or should I hold off and =
+wait for your feedback on patch 5/7 so I can address everything in next pat=
+ch.
+
+Thanks,
+Javen
+
+
