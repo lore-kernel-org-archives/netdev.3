@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D8A25A2C6;
-	Tue, 28 Jul 2026 01:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304642641FC;
+	Tue, 28 Jul 2026 01:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785201061; cv=none; b=pMgWnhK6VrWLE9OMHc/rEXiBeFnIfQF+a9RAwBx1iQZXFKdE3/Rm6yZ3Y+ZlAlISCTMNUzRXWwRbzbNcY8CB293dvdCeCeQ0sp8bapUtoSnQHjJIriGlU9LeUHUQoBItgbfYRj8+vjVGf7STehHIKytlRqXDWccJIazveQ+mh1A=
+	t=1785201063; cv=none; b=Lhsh5M4CvwD2ngvOOypKi7L9gcl+AZpF3P4ysFlUatbobF69pJfvczmL6Gjv/c2FJUwu+RqjZLG86WRyKAeRqiMZJjZ6NeWPgNRlIFxrT9T++FvNjDVjqfoibjivr/QR6a0BAsvdpNJYAsZk6rUoJHidURiX3RtXTper/fNR7XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785201061; c=relaxed/simple;
-	bh=EWJK+275d8Y5kpFRVaoYI2leK32Gy34KpJfpAzoBDfc=;
+	s=arc-20240116; t=1785201063; c=relaxed/simple;
+	bh=QcTNW/xl76b51zbatSHVNa2jP7l1csY3QI0mJIV3xUA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qxEz1HwBJkzmxwekn/+kTkIGRGbCa82ffMFYA86rarmh3rJ++ZWQuy0nwIMF2dCnSXJOyprntdy2IrFnOCzJw1srG8dDz1jPmnX0sa2XJlCq8G0I+pNj2AfFpT5hVvksHf34OR+ceLRgyfwnUgsiOG3d9LNt8S9H5GMYzDM1mdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQEBwGrG; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=kyMZHq0tcrU9mJ1HD9hX6t8giU/Q9QZsHw6zu/dlEtlDfkntKsRe+syG+xGh3tP2HXswnpS3wFXxFTIfbbF4nWs7gBjAO5zsGGLIqRlvI/CcEwo12LA+z6otYEZ2kBrud9psRIvN0LSR3QuCSsAeE0WJ+zRYJur/R8Nze0jnMRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6IdMCTP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQEBwGrG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5105B1F000E9;
-	Tue, 28 Jul 2026 01:11:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6IdMCTP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F451F000E9;
+	Tue, 28 Jul 2026 01:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785201060;
-	bh=KWMwkd3AYgLH0LsXP9ZSVJIRIcnL5ymGE7gN22MWAF0=;
+	s=k20260515; t=1785201061;
+	bh=XpGz++o1hIG6hggRhPu8aPVTpDuVu7JWAALkS9dQhzs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PQEBwGrGHIZ/Wpc6jZu9pXCZ/Csrii5UA8lN4pvsE7fKkOvGWBC0FPJKJOfJwmX7Q
-	 OUXEdDgL2DKwccaZtDSwj9G9+AdjA8JQ/kHDCvWC5IHVLZ9GFMWZPto5ta72FH7O6w
-	 VKVAoV0qNe3BTeTFBAamh3N4Nn6YXmvcTnvAY7bTlQKOquCabrxSz6DuBxrPQRMgi9
-	 TF91njlSdD3obEb3AgS7E1OvtbGg1VX3BpLajuDRo22RseNVIAJJhASh4ollZgTxhM
-	 /zaURnDOvjM03mfl01q4UXuFAXELPxa3Fdr+MJ7jwq/0l4ki/v1paYr9kZdNz14GYV
-	 MBDyYbTVD+uPQ==
+	b=Q6IdMCTPLhyZnf9mMjOx/v9EaS5oCGR2Yd0HZjrSK0/BAkCFayFnq6v+Q6Psr6R+w
+	 D16J/3NaeL6MwxBX40J/ALShOr4DcIjWHp+rqEXFODITxJ0jpdj3b/U8sygdlmBGUc
+	 lyjmdRgs5qtoiMbmoLZp+cjSTKMZaiWtFBVrFfM5UeFOOXbfUSwfnN2Ckl/G5p/N8i
+	 4dwpe1yznvDhWzhpHWrt42hjBnlhZ28aab2CX0Ep8RvFUtuHjoKa/oS1yam6BIrycF
+	 Cbip5JA+t7WhJojox7/i1VunheyrRYnG4S+FDiZQcvMVlJauy6aTmVy61wUDHSw7ZA
+	 NlaE3ciYYbYQw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93B6E380CED8;
-	Tue, 28 Jul 2026 01:10:26 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19B97380CED8;
+	Tue, 28 Jul 2026 01:10:28 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,51 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 1/7] ipvs: Move defense_work and est_reload_work
- to
- system_dfl_long_wq
+Subject: Re: [PATCH net-next] selftests: net: Add a missing config option
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178520102513.1486027.6830944309347265032.git-patchwork-notify@kernel.org>
-Date: Tue, 28 Jul 2026 01:10:25 +0000
-References: <20260724104932.437729-2-pablo@netfilter.org>
-In-Reply-To: <20260724104932.437729-2-pablo@netfilter.org>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
- netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, fw@strlen.de, horms@kernel.org
+ <178520102663.1486027.17250560117614369813.git-patchwork-notify@kernel.org>
+Date: Tue, 28 Jul 2026 01:10:26 +0000
+References: <20260723140241.132120-1-alice.kernel@fastmail.im>
+In-Reply-To: <20260723140241.132120-1-alice.kernel@fastmail.im>
+To: Alice Mikityanska <alice.kernel@fastmail.im>
+Cc: kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, alice@isovalent.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
-by Pablo Neira Ayuso <pablo@netfilter.org>:
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 24 Jul 2026 12:49:26 +0200 you wrote:
-> From: Ismael Luceno <iluceno@suse.de>
+On Thu, 23 Jul 2026 17:02:41 +0300 you wrote:
+> From: Alice Mikityanska <alice@isovalent.com>
 > 
-> Under synflood conditions binding these handlers to system_long_wq may
-> pin them to a saturated CPU.
+> Commit 5cb53743e1ff ("selftests: net: Add a test for BIG TCP in UDP
+> tunnels") used iptables match comment, which was missed from the CI
+> kernel config. Add the missing config option.
 > 
-> We've observed improved throughtput on a DPDK/VPP application with this
-> change, which we attribute to the reduced context switching.
+> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,1/7] ipvs: Move defense_work and est_reload_work to system_dfl_long_wq
-    https://git.kernel.org/netdev/net-next/c/0a33bdce34c6
-  - [net-next,2/7] netfilter: xt_tcpmss: extend checkentry to ipv6
-    https://git.kernel.org/netdev/net-next/c/4172fd3697b0
-  - [net-next,3/7] netfilter: nf_nat_sip: rewind offset when NAT shrinks the packet
-    https://git.kernel.org/netdev/net-next/c/16aecbe3036f
-  - [net-next,4/7] netfilter: flowtable: tear down flow entries with stale dst from GC
-    https://git.kernel.org/netdev/net-next/c/edd51a233438
-  - [net-next,5/7] netfilter: conntrack_helper: pass master conntrack to helper functions
-    https://git.kernel.org/netdev/net-next/c/1c66ad76ddd4
-  - [net-next,6/7] netfilter: nf_conntrack_expect: store event cache in expectation
-    https://git.kernel.org/netdev/net-next/c/874f455c3a29
-  - [net-next,7/7] ipvs: use type-safe allocation helpers in ip_vs_rht_alloc
-    https://git.kernel.org/netdev/net-next/c/cca2780b6194
+  - [net-next] selftests: net: Add a missing config option
+    https://git.kernel.org/netdev/net-next/c/8fe79aa2f1d6
 
 You are awesome, thank you!
 -- 
