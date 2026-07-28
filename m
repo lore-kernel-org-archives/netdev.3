@@ -1,104 +1,135 @@
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92ABA42BEB9
-	for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 11:50:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F8F42D74E;
+	Tue, 28 Jul 2026 11:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785239402; cv=none; b=nVbO6vochWl3Bs5US2PGJZqMDr3XIT99xJ3onxrApyJL2zZCR0si7LWD070ny767RoVLbkUABcR8lkJzMUbs8GQDZXLDO+8kQ3+fAX6pMFCZLvUXpFT4ZAOqMbr1SN07EGLf50oRcUN8vRSgjleMP6g3+jcWe8Pd3Vx2AacKQIk=
+	t=1785239542; cv=none; b=LT/NvEYFzBdESP31v++pk7YAO1tVwQVfEVvCxvh1govVeXiA1Rey956RFVyQ+S87Vj5/1wFycqTpCz6fNw3BV9J1rRjvSwSfd2ahG+EYQKKjZ+ZiVVPcST/pmFpQ8Xa9xZWBDH/wl8573PXEZY2IjHGhSX1FgvbRRhsqdiY6RrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785239402; c=relaxed/simple;
-	bh=KKs5TgK/bdlPiZvZbPNSN/Eut1iksMlXVZG6VkZEE/c=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=LRJNmYKTwV8sXzQWF0BcjYGyrGxDpgmJVtxnHUi16yDnQa2i0E6wb4dEDFh3ShF+SVdUGKtGCk7nts9ptBMIiGfeRjzLgnpN0+yPyhS3zlfGsNjLz3w+Lqf+B793bkh/xa/MFmXxHcXFoR6MCWTU6/pcsUcYTcso4Wx6OWesbkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O9aKCqSi; arc=none smtp.client-ip=74.125.224.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785239542; c=relaxed/simple;
+	bh=FnZZxgfwWPXT4LRpIEflOOdV/AhleSjd6WDy4TDk2xM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fhNI3B2IVYKZzaanLitG5BG5mJbmHfkgnQ62hevnDc70R/6BlSCqniwqomkyklMG5rfvh5vIkWKeF2YHEvGF/DhBDbjy5NIFp7CLfKpy2aF/IUhgFX8caxzO2QwAhaoE3BxKDnNUcLA9sMzfOcLdBtSrUDQpbwLKh3IuYvaKko0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fb2d64e1; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O9aKCqSi"
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6685001353fso3245815d50.1
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 04:50:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785239400; x=1785844200; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=BQuuwn2iW62IMV+e3sEJt/en3p/kQMHMyeRZJNi261o=;
-        b=O9aKCqSifOk41G2FMobPAUyHz6gVdkO0lluRpLbJhjbuDLpKBpsuJygeNkYBYwjEcz
-         /jfhFOWtk50mThzkFwmwnp3NttyC2xLWEUa/FG2ghyhewlXboVEJEMQRvdOcP7kkQe3z
-         SESQpa9Fb3AboDNxMyq50c556pgZaXsXX5TzhUsRvzTnZa70BWZwbIJGJ7zqu/3KPBsd
-         nkNMHshYHLnRkk/L8HEvmR6JASgCCzd+NW5yYsy+fXWeVJO4+5jJ0TaYMSleGCDH3H5+
-         IDizh5w2jgcDzcS6Lso2g87eNDYrxwLSQt8M3b7FrDLWk7fiqjQfNDBNtGxUZODOqudb
-         L43A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785239400; x=1785844200;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BQuuwn2iW62IMV+e3sEJt/en3p/kQMHMyeRZJNi261o=;
-        b=bCOKnHVAmMwfF2IMB4M0iPRibfNE6i29g4Xe1TghQGPeabETJDBKwGm5JU+BnmVftz
-         nPCmJYibsLVD2CNZP73t7zDd7RMB6klVMQrhIHD35rEuBt4FSZrZLXiZn5SC/L2W43XQ
-         JsslQ463UUGPzVmg8nlsm5oUaxf0qvp02S6zyRZWME4lf+AyKe8yiR/lZlF7ZboLV27H
-         gAhYkE77gkQjH4aHzU4Hlrc1oRvCEBJCk6/wcyf29I9g+d1xRLAUBCWo1/8otWmsNgPN
-         G9o4ntiXpL6+AfqHoj7tqRmxyxVgFRuoUPT//AoIbRavV7uRooTTP7HFBZQZwqr4Lxmm
-         On/g==
-X-Gm-Message-State: AOJu0YzGdnZDf5HrZtJRQSEnJnaas1aN9MpbbcnuVYM9D1G5cMS3YlXx
-	MUJ/r9/odUCfDQ+mX4qikuBn/Lh1mb0ib66fdyN17zqlL3dwcAfThvL4
-X-Gm-Gg: AR+sD13xSutLKby3U3Z0+z5YTDjPmc+i/BDGKKRvpX8D9tRahSzHt0DFGxHYZLREWIp
-	f9QkRiVdtFfUXr9tHdNJAahKMtURr8sR5keI/MkuCkOB35xtXpRTjYZkJpGxqJrkVFmoJRYUEaT
-	giA/KWw5rPPVnYOsmLyIhuHL77BzHh1WnR5WBXAtNg/pg5M+xxJMNyvMw3mWBh8d4i4NEjYJXnr
-	5vgOGuPQtx9mRQjc6dKlbCLCGqcRTzIjJGfEYibOw6GCoExQwUL7BvIxScQyV8wEBOIBvFfyjL0
-	ZjHofxYtz5X60J2sQJTLOAw9/Q89HN7iobRfcenhErzuoTj5tyiysgg04mfxhvBqVgocSdZOZbt
-	k0VaMWo38cvzVBdSjlpvrBsEJw0RUAiPNFPip69ABcz/4l3NzsXYnQn/2lpgGgW8DzLkqTUIDAh
-	Q8BvJxm4gWoEeNLBAMGwB0fACr56DsiK90XwsLmK7dZnRSpmCMvw==
-X-Received: by 2002:a05:690e:454e:10b0:666:515c:5222 with SMTP id 956f58d0204a3-669056b89c4mr458055d50.29.1785239400551;
-        Tue, 28 Jul 2026 04:50:00 -0700 (PDT)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-668c6fab2d0sm4847571d50.14.2026.07.28.04.50.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 04:50:00 -0700 (PDT)
-Date: Tue, 28 Jul 2026 07:49:59 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, 
- davem@davemloft.net, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- andrew@lunn.ch, 
- mohsin.bashr@gmail.com, 
- Willem de Bruijn <willemb@google.com>, 
- Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Joshua A Hay <joshua.a.hay@intel.com>
-Message-ID: <willemdebruijn.kernel.28d1bc6099571@gmail.com>
-In-Reply-To: <20260727165403.268e6e4f@kernel.org>
-References: <20260726202902.760552-1-willemdebruijn.kernel@gmail.com>
- <20260726202902.760552-4-willemdebruijn.kernel@gmail.com>
- <20260727165403.268e6e4f@kernel.org>
-Subject: Re: [PATCH net-next v3 3/7] idpf: support pacing offload
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fb2d64e1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785239540; x=1816775540;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=FnZZxgfwWPXT4LRpIEflOOdV/AhleSjd6WDy4TDk2xM=;
+  b=fb2d64e1zdsOwDzAAyuj2vw3WhcqXQCRsvfGd95WShPqDAnsmpY0k4iI
+   hnbXprDJbWJdm8jCIdvohWo9QP5b0CayC252ZsUeS2WI4qQDoROWx8yn9
+   WdpOsUqiSDpXf+Hcgzdej0qTSCcDYy11yVKlLrxx+cGFWWiKUNDWnS3al
+   YYs+6RFe8BROoA7ircLFjgVloNhnsEVquTaOacmkWxkeGA2GqPaAIqwCR
+   iOl8f2cLfkjHA6j6+lm3mzcDu85L+OsXWjNR0hshJCNT3dh03GByf7aRp
+   7iW2s/pkmZMrRoGxZWfzd1XU+VpVmq1AUb3hIKEV35tNJsIsjbfQ/1uzM
+   g==;
+X-CSE-ConnectionGUID: GkJeu4y0TPKE5x4LO0XlqA==
+X-CSE-MsgGUID: Rt1N81xXRte5wEJndBtp8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="108619216"
+X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; 
+   d="scan'208";a="108619216"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 04:52:18 -0700
+X-CSE-ConnectionGUID: EJ3Yf+pDTseruPKpbG6Txw==
+X-CSE-MsgGUID: NsQsz2X8T1io3XbhNsWz2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; 
+   d="scan'208";a="284224186"
+Received: from unknown (HELO brc05..) ([10.190.162.60])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 04:52:15 -0700
+From: Tushar Vyavahare <tushar.vyavahare@intel.com>
+To: netdev@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	stfomichev@gmail.com,
+	kernelxing@tencent.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	tirthendu.sarkar@intel.com,
+	tushar.vyavahare@intel.com,
+	andrii.nakryiko@gmail.com
+Cc: bpf@vger.kernel.org
+Subject: [PATCH net-next v3] selftests/xsk: decouple xskxceiver and xdp apps from test_progs objects
+Date: Tue, 28 Jul 2026 11:50:36 +0000
+Message-ID: <20260728115036.2049536-1-tushar.vyavahare@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Jakub Kicinski wrote:
-> On Sun, 26 Jul 2026 16:28:47 -0400 Willem de Bruijn wrote:
-> > If skb->tstamp is in the future, program this future delivery txtime
-> > in the transmit descriptor.
-> > 
-> > TCP pacing offload is only offloaded if SK_PACING_FQ is negotiated and
-> > the FQ offload_horizon is configured.
-> 
-> Hm, you're not even acting on the activation of the feature via ethtool.
-> What am I missing...
+Build xskxceiver, xdp_hw_metadata, and xdp_features from explicit source
+lists instead of reusing helper objects produced by test_progs rules.
 
-Activation is only picked up on qdisc add/change.
+Reusing shared objects such as network_helpers.o and xsk.o can pull in
+test_progs-only dependency chains and trigger unrelated libarena builds
+when invoking a single target.
 
-In those lines you pointed out as less than elegant.
+Keep these standalone binaries self-contained so each target builds only
+its own required sources and BPF skeleton dependencies.
+
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
+---
+v3:
+- Fix SoB line
+- Add tags from Maciej
+
+v2:
+- Inline dependency lists in tools/testing/selftests/bpf/Makefile.
+- Drop *_SRC helper variables per review feedback.
+---
+ tools/testing/selftests/bpf/Makefile | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+index b642ee489ea6..f4e78bf8ec80 100644
+--- a/tools/testing/selftests/bpf/Makefile
++++ b/tools/testing/selftests/bpf/Makefile
+@@ -934,17 +934,26 @@ $(OUTPUT)/test_verifier: test_verifier.c verifier/tests.h $(BPFOBJ) | $(OUTPUT)
+ 	$(call msg,BINARY,,$@)
+ 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
+ 
+-# Include find_bit.c to compile xskxceiver.
+-EXTRA_SRC := $(TOOLSDIR)/lib/find_bit.c prog_tests/test_xsk.c prog_tests/test_xsk.h
+-$(OUTPUT)/xskxceiver: $(EXTRA_SRC) xskxceiver.c xskxceiver.h $(OUTPUT)/network_helpers.o $(OUTPUT)/xsk.o $(OUTPUT)/xsk_xdp_progs.skel.h $(BPFOBJ) | $(OUTPUT)
++# Keep xskxceiver independent from test_progs object dependencies.
++$(OUTPUT)/xskxceiver: xskxceiver.c xsk.c network_helpers.c \
++			   $(TOOLSDIR)/lib/find_bit.c prog_tests/test_xsk.c \
++			   xskxceiver.h xsk.h network_helpers.h \
++			   prog_tests/test_xsk.h test_progs.h bpf_util.h \
++			   $(OUTPUT)/xsk_xdp_progs.skel.h $(BPFOBJ) | $(OUTPUT)
+ 	$(call msg,BINARY,,$@)
+ 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
+ 
+-$(OUTPUT)/xdp_hw_metadata: xdp_hw_metadata.c $(OUTPUT)/network_helpers.o $(OUTPUT)/xsk.o $(OUTPUT)/xdp_hw_metadata.skel.h | $(OUTPUT)
++$(OUTPUT)/xdp_hw_metadata: xdp_hw_metadata.c xsk.c network_helpers.c \
++			   $(TOOLSDIR)/lib/find_bit.c xdp_metadata.h \
++			   xsk.h network_helpers.h test_progs.h bpf_util.h \
++			   $(OUTPUT)/xdp_hw_metadata.skel.h $(BPFOBJ) | $(OUTPUT)
+ 	$(call msg,BINARY,,$@)
+ 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
+ 
+-$(OUTPUT)/xdp_features: xdp_features.c $(OUTPUT)/network_helpers.o $(OUTPUT)/xdp_features.skel.h | $(OUTPUT)
++$(OUTPUT)/xdp_features: xdp_features.c network_helpers.c xdp_features.h \
++			   network_helpers.h \
++			   test_progs.h bpf_util.h $(OUTPUT)/xdp_features.skel.h \
++			   $(BPFOBJ) | $(OUTPUT)
+ 	$(call msg,BINARY,,$@)
+ 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
+ 
+-- 
+2.43.0
+
