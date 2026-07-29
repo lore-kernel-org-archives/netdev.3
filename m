@@ -1,136 +1,150 @@
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959E045C6F1
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 16:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785341028; cv=pass; b=eHrJKs+h6Mg+FuPIJSx+HAoLdWoJLRAMtl7koi/F1EsJdl2/ftp082RGTHHR0vfJPhw3qUuLm5jVkF5apo+wDLn925T85ltHUKq7+bI5oiQBcYWGdQyz8R9irt5E+GtYwneXO4svtez3Ty8lUz2lf/z6Tk1AxhRUaNhP+OHPbOs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785341028; c=relaxed/simple;
-	bh=9jvHZveWtXHHlQ1jzadPI9gN3vbZDtiixL2Ia/KB0jk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oswONLn1gAUqZTiQpH99VgrPVDOz1C9xvzeA4YidXY8chLFhvCCCU75116IHFOU0kp+gf+hEeXkPJ7a1DNhojYapWmir18yve/iDEVCX+HQlp8SYDCZxZTGSqKUG6NFkx2iLTMPjddC0Q/nLyNuQbDX/QgVr/RNoZEc18a4yTTY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ud85PurI; arc=pass smtp.client-ip=209.85.217.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D9B48D887
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 16:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785341332; cv=none; b=ma00Fpfb1t/ilbWkJg3eupm2IZsE52IstDWrMZ/0Au4CfeLhb2lAURw3aFdJHvGRKu8PMkQ7fQDaaTsrI8Ppbit6YzOez7KI1GJzFlC+zEnCjlsjasGvQv+UkFEqfCtr8CddOwjN+1t/jl15+ygjfi4IfTzaRQ9IkCBmhmvch+8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785341332; c=relaxed/simple;
+	bh=kYKzQHXQeWZGyowPRp9EDzR3wb05wPIoipTHdRklPhs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aNmPcXbAr2PIlRV7wRYelPpmx/OE5TjeR6fMNz03xnQ8F6J/f7dDgoqIzVDi2dMttQVwibwG5/V5NhFl7OhFZTilKDlCBNnmP7apSwCg2fKHHcl/idpEjWCgQgELyXwxf7PMEH6v9GrKb7JUG6R0Tec361v8MdzfPzcXFBOtKO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TvG3LmId; arc=none smtp.client-ip=74.125.227.129
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ud85PurI"
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-7466771f1caso424419137.0
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:03:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785341026; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qRnebU3XmDF5XMw53Z/cZB2bxvs9r63sg8EiplC8gKC3x7sjr4O2BRXEALgGHEMgbd
-         XhEiiqjqlKxGgx8/20mCNOQBo6EG4YJLMzVqTbE4oWWPth10/K0BAG7N/9mE5QKaZNh9
-         7Eqawtb21F+4+PmJHLDHxrX/77pE0ZrS+ZlxU5LOg484fzhhuH+a8LuvEYAOHJm8Ixij
-         2HQ6TNuarGGqMtKuS0RKVBDZ5b5lyqijK3iCnBtxiKdHOXwBlhIAWx2pOzL2VhByVknf
-         X7IHytjKhOEy3EZOv68z/64+MPJjgz4ZJoJbyevRWaT+D2VKNnG1YiRhHA+oPJxnLja/
-         zttQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9jvHZveWtXHHlQ1jzadPI9gN3vbZDtiixL2Ia/KB0jk=;
-        fh=PlveywlMV/nNCQx/b1XlJY8tJU8jAHqKXcEklO/u0kg=;
-        b=OV25g17Z7OT8BXXvYTQoV8SFVIM6xjaMT2YuJmS4403nBDMd5fietoOOPJUDAJ8QjJ
-         OVL9FsUweV14tjpCQWKX8HkJe9TGIELDEe5lSuJWwLYetz0lTmHP0PZv+0Q5pVMVMtC6
-         sYMPZEILlhTSC4dcgInj0t2O02bgNT1u7VKl2RQ/P8xgIIc4kGOpdjTJvHs+CALYhffy
-         gwVsFSH5Xdbq8IR0EX6uC45rz6RbvK21pVIOyNfhHMQq31il3CPQYA1nVun37S3axzle
-         xTwAOARx5DSurAOkNakEXWuoWt3kjqjbeXAJ9CWnJB1TB21rHMIGThuOnXAJnZJJwUwx
-         EK4g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TvG3LmId"
+Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-381c69ad0d9so587539a91.0
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:08:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785341026; x=1785945826; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1785341323; x=1785946123; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=9jvHZveWtXHHlQ1jzadPI9gN3vbZDtiixL2Ia/KB0jk=;
-        b=Ud85PurItnY05UmeYWhIPTecYmwfTb7TyqvIQ7cDAgirJ2COQ3Zxa32vaKJaOAChcj
-         xO1ck3iTyCEBtW5nrfCyiIKH2uM5SbnIp6AQgNuRiq12luAWYCaCIKMRGdZBXFOUJ+eV
-         3f0VYfPeVOfnjcbh7aNsw/RTNPl+um2U02/L4v3jBljpKfSIMQr0K8W52ZqUeQjXPR25
-         ABwddyjYXSch0ki0dknqxOIqX9lIpA9tpjio3oHPZDVJ/R0eH1m++uwsFheBZstBSq3p
-         M1VH4Jp00D+bzULCyDrZewgmWxfaRno7yzi4wbm1rKpehCLrd2p2ZqrhvH02rzdJtCZK
-         g22g==
+        bh=xpR48eIXR1Ci0/Y8C1oaWZVWu8i3+nXBnNEaQ1vsjLQ=;
+        b=TvG3LmIdzClsKDp/nJ1EugEL/z6n6qt34GCO2G4lA8h2EUB5j6OMxvzOChUldO/n4J
+         WjmwP3M+9VuchMpBckNrSS98ulOMwEnbuUIXXoXNWDeZKjbYtbKsN8Nz9HjVFj2s0SRd
+         22LheU5D5wyu4A0v1rsgpJi3L8bBLSlgDYIoxCy9k2zcwEcw1VzULoVCIa1SzxsgJxuh
+         muQUFOlsGdk+mRPgk/S+YvqG56CW3Whjxi3Or4eApUIOUxEExgtqruey1DNeg3GGOY1E
+         sS/uwHkYGS0Z2rs+l3wgChSn5cM89WykexAIi4UVIf6rlXAcovc3prlM16xQdi4YpKjz
+         wiDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785341026; x=1785945826;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1785341323; x=1785946123;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=9jvHZveWtXHHlQ1jzadPI9gN3vbZDtiixL2Ia/KB0jk=;
-        b=kgIkzKxYDO4ZYPNUZsPmMpuvMlzY+uDV6rM02HDteixt1zGsSZqGCuMzxbgd3HaxRi
-         0XKDwUPqXt0ki0IIRMiDqUhrCennkYPy3rl3uPCzBhvuoIVr4a0RHuXuYsKpbMFSyGr+
-         /w83hX7KqLmq+d6dMhFegl9LN57YMImozPLr0E5xzW78v8IsqygOFsCuS4xXtU97yA2D
-         uaESCvZxjGl9ZzRlX0BJppeitT12svxf7bCrkviHY4z6CiARZfaxlZTUjvlWhrpnXRex
-         YuilbNDrOjTtsN2rWkWsPa3xhipYS1dkk8PQKVhNl7A/6vBOc2v4+i7BbsDouDcMZevx
-         vXUQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrQLNrjPuSrpyfHx0FmJLF+C/Eo15ZHT68SqkwASuuKYO0wO5w2MygsrDsl0x3mJGRGLeGa7sM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRXAS7n7UGUMG3OvZVmgT2og/RVmxzscQtEjH+2bE9b9LMnWsl
-	JWYpU369TX7SI2ahP2umBl0OpmSsuvDVBmDM3tbAFLKOnpnj9p238T1WETNEzuG7RPlpqF48OUh
-	cCd9Tj1jRlN1qzktH1+OPKSCVZDQnxEg=
-X-Gm-Gg: AR+sD127mekwAiFTyObMpOubANhrjc9FemMqp0PZjhbDqMxsAqiFHEbnVH2y1VzHaBZ
-	Flm5ITJSoC3EUCEYb+gBje9GYvkxNKO4ex72xlq6gDPD8/mIyEI92qFsPxS59BWPWs8ASIAZ4k8
-	By0I35HUtjsn1tEXI1wmE4O+VVOmWHkN4imXxf6EjRt1bbLoBu5XJM3Q/4Sn4YlKCaGsRxY/HIZ
-	Ed74llkknHTXsZb0GmCw+nVr1s/HUxPpT1ilP6H7jazd7U+U8rdcyA8WovSwwAHgwn+lanVu+dH
-	7G0nbwYwDPGI9wEV2DxBjrTJ8k44QJQNlYVU6vYfNVFWvAl6ay+2BqkXzt0pC4ULaT4xcUb/gzC
-	5CfR2KF4LJ2XYxjZ8ScPVOD9tJvfy6+IN4OT1BHSkCmo=
-X-Received: by 2002:a05:6102:3e87:b0:738:ecd7:1984 with SMTP id
- ada2fe7eead31-7549f147633mr3169780137.3.1785341026373; Wed, 29 Jul 2026
- 09:03:46 -0700 (PDT)
+        bh=xpR48eIXR1Ci0/Y8C1oaWZVWu8i3+nXBnNEaQ1vsjLQ=;
+        b=boK2aSWZ4Lhqg/PDAs1uCmYIQCesssOYrBiPujDn+c3U77ABDrJYj0Z7qF9xiawCX2
+         oZXkuyq2S+98RW8nz7pSQrk29TNPDAOW4sXIZVG34eCok8R+1PxCsKJAU6Ryl699qxaA
+         tRbMm+FE7wcxZL9Iz795HxW5ncyz5qr4HuKrhZrfMMKLilJWAkOVZs+K/Nv75c3NpQnz
+         L/u1ww3bafOn4mLTWGYKM+MhPa69MSmDMLid7l4/ahVHb8xmqPOKsZW0RUcX1bJomTfX
+         o5fhy0bXCT/N/f8nr/cqzNKoT/l8fJObL8C8lxNBfxuM+mu+2aLaIZ3M5Zdo3FTS2z/O
+         vu1A==
+X-Gm-Message-State: AOJu0Yw17SjFbkC5+FkvzPIDaUSf3Y4+ttCnlE9cFrZg30SM+VeOPx5B
+	glXhW9T7eTGNSGYkzNEqoRJOlo3De2eUw1u1logVvF/oKh6/a22WmZAe
+X-Gm-Gg: AR+sD11jAkzCEBsaXslIyElfFgrCjLD4SYvpCgAVYw7PFBT8MauMlVu2NOfz//QgCWL
+	2ZnGIBzrkkYLkDWQD2h7T5Ct/ZV4fAgK06o12mU1eec6oy+dd5MkvtccuiVW3asfx1lschvL9JG
+	Lj0b+gf465ejIBYrA5UGl4ymXe4uNvcy12wi+hd83u+KJRzLSLEyNy/Uy4F2e4EM3JhAUQcbLGd
+	+njaRPGk/do4djERr0tonYiknFF41+aQBrcq5gThqN3VeRTnBhMzrZTleNzIz9bYiclpZQ5Jfyz
+	RMY/zisEx9Zr9F2nNaEutq/JqRzLO75WBo7tNMDg1elkuPtUjBYB8o1I1dCUZB41foGvfJ1CI79
+	THHHlzeugIhKOtb8tSBjrfhvI+X5Bc9SPl+0jZgLhguzalxUvWoNyxNuXlZNy+mJNJHpFdm4o4M
+	cd1hrrildEOrOGImM7VXRLXn88ej6kte/ks2ND1T2nH1QSZ/Dxur5CSA==
+X-Received: by 2002:a17:90b:4ed0:b0:37f:fb1d:63fa with SMTP id 98e67ed59e1d1-38f6a373a5amr7799688a91.15.1785341323530;
+        Wed, 29 Jul 2026 09:08:43 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:41::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f64111008sm2958119a91.2.2026.07.29.09.08.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 09:08:42 -0700 (PDT)
+Date: Wed, 29 Jul 2026 09:08:27 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com, 
+	przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, saeedm@nvidia.com, tariqt@nvidia.com, 
+	mbloch@nvidia.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
+	john.fastabend@gmail.com, sdf@fomichev.me, maxime.chevallier@bootlin.com, 
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, aleksander.lobakin@intel.com, 
+	horms@kernel.org, magnus.karlsson@intel.com, witu@nvidia.com, 
+	alice.kernel@fastmail.im, dtatulea@nvidia.com, yoong.siang.song@intel.com, 
+	martin.lau@kernel.org, intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, leon@kernel.org, AutonomousCodeSecurity@microsoft.com, 
+	"Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+Subject: Re: [PATCH net 0/6] xsk: harden TX metadata validation against races
+Message-ID: <amolBkuwEasuthzu@devvm7509.cco0.facebook.com>
+References: <20260727161959.885642-1-sdf@fomichev.me>
+ <amnKVlHTITILY8H8@boxer>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260723071818.459034-1-l1138897701@163.com> <20260728182431.3291b917@kernel.org>
-In-Reply-To: <20260728182431.3291b917@kernel.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Wed, 29 Jul 2026 12:03:33 -0400
-X-Gm-Features: AUfX_mxSOAibwdWHo3uMOeOrFHcxPhaZyGA2yz3_5W-NC3DfmXI2lIJDX9QqLXU
-Message-ID: <CADvbK_dhcAwiaK6htMA3kkW797-qchajjFsJhFyi6KMEbkEm4g@mail.gmail.com>
-Subject: Re: [PATCH net] sctp: fix addip_serial increment on ASCONF_ACK
- allocation failure
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: luoqing <l1138897701@163.com>, marcelo.leitner@gmail.com, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <amnKVlHTITILY8H8@boxer>
 
-On Tue, Jul 28, 2026 at 9:24=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Thu, 23 Jul 2026 15:18:18 +0800 luoqing wrote:
-> > From: Qing Luo <luoqing@kylinos.cn>
-> >
-> > In sctp_process_asconf(), when sctp_make_asconf_ack() fails to allocate
-> > the ASCONF_ACK chunk due to memory pressure, the code jumps to the
-> > done label where asoc->peer.addip_serial is unconditionally incremented=
-.
-> >
-> > This leaves the peer's ASCONF (serial N) unacknowledged while the local
-> > endpoint now expects serial N+1. When the peer retransmits serial N, it
-> > falls into the serial < addip_serial + 1 branch ,
-> > which attempts to look up a cached ACK for serial N. No cached ACK
-> > exists since the allocation failed, so the retransmission is silently
-> > discarded. The peer eventually times out and ABORTs the association.
-> >
-> > Move the addip_serial increment inside the if (asconf_ack) block so tha=
-t
-> > the serial number is only advanced when the ASCONF_ACK is successfully
-> > created and cached. This way, on allocation failure, the serial number
-> > is unchanged and the peer's retransmitted ASCONF will be correctly
-> > re-processed.
-> >
-> > Fixes: 1da177e4c3f4 (Linux-2.6.12-rc2)
->
-> nit: missing quotation marks around the subject
-> --
-> pw-bot: cr
+On 07/29, Maciej Fijalkowski wrote:
+> On Mon, Jul 27, 2026 at 09:19:53AM -0700, Stanislav Fomichev wrote:
+> > Cen Zhang reported a KASAN out-of-bounds read when AF_XDP is configured
+> > with a TX metadata area smaller than struct xsk_tx_metadata. The metadata
+> > is also shared with user space, so reading its flags more than once can
+> > produce inconsistent validation and processing decisions.
+> > 
+> > Require enough space for the flags and one request field, validate the
+> > launch-time field against the configured metadata length, and use one
+> > snapshot of the flags while processing each request. Carry the validated
+> > decision through completion handling so later user-space changes cannot
+> > enable an unrequested completion timestamp.
+> 
+> Stan,
+> 
+> I'm taking week off and I see one sashiko-reported issue which is not a
+> pre-existing one. Hope you could clarify it and unless no one picks the
+> review of this set i'll get back at it next week.
 
-Somehow I missed this patch.
+Went through the issues, I don't think it found anything interesting.
+Everything is pre-existing, but still worth addressing, will send
+those fixes separately.
 
-LGTM, except the nit Jakub pointed out.
+> >  static inline struct xsk_tx_metadata *
+> >  __xsk_buff_get_metadata(const struct xsk_buff_pool *pool, void *data)
+> >  {
+> >  	struct xsk_tx_metadata *meta;
+> > +	u64 flags;
+> >  
+> >  	if (!pool->tx_metadata_len)
+> >  		return NULL;
+> >  
+> >  	meta = data - pool->tx_metadata_len;
+> > -	if (unlikely(!xsk_buff_valid_tx_metadata(meta)))
+> > +	if (unlikely(!xsk_buff_valid_tx_metadata(pool, meta, &flags)))
+> >  		return NULL; /* no way to signal the error to the user */
+> >  
+> >  	return meta;
+> The snapshotted flags are validated for size compliance in
+> xsk_buff_valid_tx_metadata() but then discarded, returning the
+> un-snapshotted user memory pointer (meta) to the driver.
+> Later in the zero-copy driver path, xsk_tx_metadata_request() re-reads
+> meta->flags directly from user memory:
+> include/net/xdp_sock.h:xsk_tx_metadata_request() {
+>     ...
+>     if (meta->flags & XDP_TXMD_FLAGS_LAUNCH_TIME)
+>         ops->tmo_request_launch_time(meta->request.launch_time, priv);
+>     ...
+> }
+> Does this create a Time-of-Check to Time-of-Use (TOCTOU) race condition in
+> the zero-copy TX metadata validation where userspace can concurrently enable
+> launch time after the size validation?
 
-Thanks.
+For this, yes, it is explained in the commit message:
+
+  Note that only xsk_skb_metadata is properly using the flags,
+  __xsk_buff_get_metadata ignores them. Next commits address that.
+
+And eventually addressed in "[PATCH net 6/6] xsk: validate metadata when
+processing requests". Couldn't find a less confusing way to split the
+patches..
