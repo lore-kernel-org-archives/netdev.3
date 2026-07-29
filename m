@@ -1,365 +1,100 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944D847CC78
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 12:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B04247A0BE;
+	Wed, 29 Jul 2026 12:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785326922; cv=none; b=OfyRHqXwG3Cp21gMqiwII6A6KQgrBmPAoWeZG8ksImrc/H6tb+xEQnRLmfU7wYLb2dzKYwST8mWSXtJn1SmziJqMQGbWm7yhb8wFHGXy51oV4pl5Zf4YbUeIAfMvj0NX3TyCYBFrCynHCSVjoTeb0gQYQiLvKhGEOdvjNr2L0oQ=
+	t=1785327168; cv=none; b=cCzZ8E/I1XFk4FnkOhMgAH4Oz9KKKBu9epVyD2zv44d0yKdle48ZT5RFK4zEV9Qjiu3g4fpEN1mD1hj/JBN/MsesLslaXdEf9INAoWF2mKL1hMJm57qD9UYC+3zvDiDppve904oBC077Xe7pg7W+G4iO3yG2o7qVuKcHF3R5cZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785326922; c=relaxed/simple;
-	bh=O1CQFr8gL/tx0nZELxNaajoTVr4qy8kYNkp4eOn+3D8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=naZpNcYsLGGGvZj4sV/ZkQtKwh/ELwirZ7bcODbfyW1HAlAA+VO2w7aDlMTpdYkQvj618pfT31dJO4+/ohshBCuAxIF+AiC5EDycU6pqd6L9P/o72Qv/HS1+G2b86zeY13n5SwlOqmHUSL9HcnDQj2X9ptbZa0mv2XUD8qIjNvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hsV8T/68; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785327168; c=relaxed/simple;
+	bh=Q9NEvUPIlGEUbUf/np0VoJCi/NWhh6U47Omu/wHP1Zk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=ai/S3yvxjrogBo+oa3txICapQpy2cZFQDmWlMvLJqmxoDbu8zAxQIoaGME0h/l26ECJFt0CpDuQx2HdedgpuS4xY/S6FkaEPnoKrMIrOqX56s2bvnjCBNG7zMG9MGBZNd7ZRJfK4WeFETzFt/YhSmoKCgtEeeo6bHtzW9HRYWJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=b1pQrtr3; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hsV8T/68"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8487214ad2bso1271595b3a.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 05:08:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785326920; x=1785931720; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IfEzsYijpMni+dHKVnbyAeGeNkrEFny9SRjpkXNKFps=;
-        b=hsV8T/68ZQ/8w+IWBJaSWwWSlu74JrEca/alcV9AtgRr7jkBIXMa+5Wj4BlQLT03pN
-         P1HrGhTLqbJqB8/3SApZVu6k21zXSY/Hgvayql7zQqfTHkzIwYEp+3jsmbi3qRSOe8ue
-         kA4ANYRr24RD4d8PYmBGl4M46vA9eBrhO0IGql3G4eQJY03ngPeK/WSk//chNxsvEmwo
-         lEeAi2kd3AZVOId7LK/ol+gBPWxd9R13ZzYhG3Ys74XBwS1IJ5bVV36G16lnWJWxpJgM
-         fADZkmPOsTM63DOLIIqjZHgYyX0BSjye5fZlYxvcD+aBiMqlUOsKmeRex6IGhLU6AKXE
-         3jpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785326920; x=1785931720;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IfEzsYijpMni+dHKVnbyAeGeNkrEFny9SRjpkXNKFps=;
-        b=cZ4yZb91scxvSxAQmZk5Uwdn11IA4mgu3MExgxUwc8vKKy6K7iEFUnBE/X2g6Hursi
-         Kwamdv+Q2IaeMC6DyqxQYi/u/GX0NlL7GDCuQK8U+Iaapd7fuqdt2YEg9+7+TiebT5rX
-         rtE0UX6jaRIk/qGphA4FPOotxdzTFJkFI2qleq+EC9h5kSzelbJcszuiOzxEuDPzlgEI
-         6ilf9dv6+gzP1g8L21XfXFgaYTO/Vy0zwocRewwzzd+obGPeBsnwGY8QAGNxeJ2sYnF4
-         6WEE/xpRThSDfNv7sI1RWNpr0b5EOYAu60jn0kKbcfOLOE8rI3DCjcOLK35iyFFuPDXL
-         CsuA==
-X-Forwarded-Encrypted: i=1; AHgh+RrLZtnKyfjHDQi96ET/aGkOREH2BgLSuJufLAO/jSkAz9ocpoiq4qOmlq8Rfskm9Agxv+wL9Ak=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaeNg1DnjjeoA8IGZNjSR6DPZsCxapvw8uupciCfILOfVzuv5t
-	dcoYmTyRu6LoVP/BZJzNGQOJ5v8zCByM8Lg2gpcJID19oKRChBXvvMR0
-X-Gm-Gg: AR+sD12zSGSgS4li27RSUm6FdBpFZI1zbQKW4PRaSCJei+O4yBk/q33nJ9mvMKOYhQZ
-	tayvONfYfR92m7olLTt2jmn7zy9aA3tBwsshpHity32nNbkH/sjEHuObVxGYWbabp3yFfariRYJ
-	lQfP9e/T7LJH86iv32KzAihV/PtWv0CtWzSSEQf0K2ZtqWp3vvP6HDqeYgx/89+KIvX7R82nTot
-	7vOP7ertfeVgZSPFKux4OMysTk1lQ2fQbaAOQyZAqswXNJJFrtYajX4iOqQqGI6tbhpLKGVvytK
-	/X9e7mdcfEBXYbyAh7Pl0B13g7Oosf1kEo+5jBvUID50lk7M21cm5oxiE8x+xbAf9KG/61kui+H
-	APdR5kyBC6YxKgkEwEE3x8LgL0hpTBXrSbnSNqfjn7bv5UpHRg19CvESX/3Y65Us4LueGKnKIRc
-	Mjp8zMEzspF6NzQ8o5OsaKkrDhYZWFz8YA9oEnoxyujcAR7t6Us6TgfR21/s2WCgpQf38rS+15z
-	nhuKjMYC1w/sTvXvLgq60ZBsxB+7ZBsumk5L71JhcTxrW92
-X-Received: by 2002:a05:6a00:3021:b0:847:76d8:8d72 with SMTP id d2e1a72fcca58-84e93201eb3mr6817789b3a.23.1785326919770;
-        Wed, 29 Jul 2026 05:08:39 -0700 (PDT)
-Received: from m-upc-A520M-HDV.lan ([2400:2410:3f60:500:c705:d3b3:a6d9:8512])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea0300ac2sm1263482b3a.35.2026.07.29.05.08.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 05:08:37 -0700 (PDT)
-Sender: Yuyang Huang <uyoko90@gmail.com>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Chris J Arges <carges@cloudflare.com>,
-	David Ahern <dsahern@kernel.org>,
-	David Wei <dw@davidwei.uk>,
-	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Willem de Bruijn <willemb@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v4 10/10] selftests: net: verify RTA_DEL_REASON on route deletion
-Date: Wed, 29 Jul 2026 21:07:39 +0900
-Message-ID: <20260729120739.47880-11-sigefriedhyy@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260729120739.47880-1-sigefriedhyy@gmail.com>
-References: <20260729120739.47880-1-sigefriedhyy@gmail.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="b1pQrtr3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=Q9NEvUPIlGEUbUf/np0VoJCi/NWhh6U47Omu/wHP1Zk=; b=b
+	1pQrtr3JKqIKUGkHA+TGmmeUTkiHaVUoGnw78noiMKb/78TFQjEAz07WNpC1hw/T
+	Ay+WCExnpNImSolykp8Kntq9fNHBvl647GrlwYZzGB7k3BDxHS9mrASi7NZ/JclZ
+	/eOhSnm03h+qXP1V3NUNzRddlah2aYBdJo9tYay1bs=
+Received: from 19888972804$163.com ( [111.19.71.39] ) by
+ ajax-webmail-wmsvr-40-139 (Coremail) ; Wed, 29 Jul 2026 20:11:55 +0800
+ (CST)
+Date: Wed, 29 Jul 2026 20:11:55 +0800 (CST)
+From: "jiale yao" <19888972804@163.com>
+To: "Jiri Pirko" <jiri@resnulli.us>
+Cc: "Andrew Lunn" <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Eric Dumazet" <edumazet@google.com>,
+	"Jakub Kicinski" <kuba@kernel.org>,
+	"Paolo Abeni" <pabeni@redhat.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re:Re: [PATCH v2] team: reject CAN and IEEE 802.15.4 devices in
+ team_port_add
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
+In-Reply-To: <amnESUrOtl0dXaXk@FV6GYCPJ69>
+References: <20260728151240.89434-1-yaojiale02@163.com>
+ <amnESUrOtl0dXaXk@FV6GYCPJ69>
+X-NTES-SC: AL_Qu2TB/+ZuEkq4ymcY+kdmkcah+Y8XMu2vfQl24RWc9AFiSvg3zIeclVdMlHR7uKLLT6xtji2SAZ36MBKeKdGGKKFhNdGyXHK/tBYL7s3Aw==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <4d056e9f.8019.19fadc9deb5.Coremail.19888972804@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:iygvCgD31_YN7mlqg64nAA--.8092W
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzgyz7Wpp7gx2ZgAA3t
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-Extend rtnetlink.py to check the reason reported in RTM_DELROUTE:
-
-- expired: route with a 2s lifetime collected by the fib6 GC
-  (gc_interval lowered like fib_tests.sh fib6_gc_test does);
-- ra-withdrawn: a single RA advertises a default route (router
-  lifetime), an on-link prefix route (RFC 4861 prefix information
-  option) and a route information option route (RFC 4191), then a
-  second RA withdraws all three with zero lifetimes; the RAs are
-  crafted over a raw ICMPv6 socket so the test does not depend on an
-  external RA tool;
-- absence: a userspace deletion request records no cause and must not
-  carry the attribute at all.
-
-Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
----
- .../testing/selftests/net/lib/py/__init__.py  |   4 +-
- tools/testing/selftests/net/lib/py/ynl.py     |   7 +-
- tools/testing/selftests/net/rtnetlink.py      | 181 +++++++++++++++++-
- 3 files changed, 187 insertions(+), 5 deletions(-)
-
-diff --git a/tools/testing/selftests/net/lib/py/__init__.py b/tools/testing/selftests/net/lib/py/__init__.py
-index e58bdbdc58ee..34935886b6ad 100644
---- a/tools/testing/selftests/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/net/lib/py/__init__.py
-@@ -17,7 +17,7 @@ from .utils import CmdExitFailure, fd_read_timeout, cmd, bkg, defer, \
-     wait_file, tool, tc
- from .bpf import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
- from .ynl import NlError, NlctrlFamily, YnlFamily, \
--    EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily
-+    EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily, RtnlRouteFamily
- from .ynl import NetshaperFamily, DevlinkFamily, PSPFamily, Netlink
- 
- __all__ = ["KSRC",
-@@ -34,4 +34,4 @@ __all__ = ["KSRC",
-            "NetdevSim", "NetdevSimDev",
-            "NetshaperFamily", "DevlinkFamily", "PSPFamily", "NlError",
-            "YnlFamily", "EthtoolFamily", "NetdevFamily", "RtnlFamily",
--           "NlctrlFamily", "RtnlAddrFamily", "Netlink"]
-+           "NlctrlFamily", "RtnlAddrFamily", "RtnlRouteFamily", "Netlink"]
-diff --git a/tools/testing/selftests/net/lib/py/ynl.py b/tools/testing/selftests/net/lib/py/ynl.py
-index 2e567062aa6c..08deff756f29 100644
---- a/tools/testing/selftests/net/lib/py/ynl.py
-+++ b/tools/testing/selftests/net/lib/py/ynl.py
-@@ -29,7 +29,7 @@ except ModuleNotFoundError as e:
- 
- __all__ = [
-     "NlError", "NlPolicy", "Netlink", "YnlFamily", "SPEC_PATH",
--    "EthtoolFamily", "RtnlFamily", "RtnlAddrFamily",
-+    "EthtoolFamily", "RtnlFamily", "RtnlAddrFamily", "RtnlRouteFamily",
-     "NetdevFamily", "NetshaperFamily", "NlctrlFamily", "DevlinkFamily",
-     "PSPFamily",
- ]
-@@ -54,6 +54,11 @@ class RtnlAddrFamily(YnlFamily):
-         super().__init__((SPEC_PATH / Path('rt-addr.yaml')).as_posix(),
-                          schema='', recv_size=recv_size)
- 
-+class RtnlRouteFamily(YnlFamily):
-+    def __init__(self, recv_size=0):
-+        super().__init__((SPEC_PATH / Path('rt-route.yaml')).as_posix(),
-+                         schema='', recv_size=recv_size)
-+
- class NetdevFamily(YnlFamily):
-     def __init__(self, recv_size=0):
-         super().__init__((SPEC_PATH / Path('netdev.yaml')).as_posix(),
-diff --git a/tools/testing/selftests/net/rtnetlink.py b/tools/testing/selftests/net/rtnetlink.py
-index 0c67c7c00d84..f74ccd5c2d13 100755
---- a/tools/testing/selftests/net/rtnetlink.py
-+++ b/tools/testing/selftests/net/rtnetlink.py
-@@ -5,7 +5,8 @@ import socket
- import struct
- import time
- from lib.py import bkg, ip, ksft_exit, ksft_run, ksft_eq, ksft_ge, ksft_true, KsftSkipEx
--from lib.py import CmdExitFailure, NetNS, NetNSEnter, RtnlAddrFamily
-+from lib.py import ksft_not_in, ksft_not_none
-+from lib.py import CmdExitFailure, NetNS, NetNSEnter, RtnlAddrFamily, RtnlRouteFamily
- 
- IPV4_ALL_HOSTS_MULTICAST = b'\xe0\x00\x00\x01'
- IPV4_TEST_MULTICAST = b'\xef\x01\x01\x01'
-@@ -134,8 +135,184 @@ def ipv4_devconf_notify() -> None:
-     ksft_true(f"inet {ifname} forwarding on" in cmd_obj.stdout,
-               f"No 'forwarding on' notificiation found for interface {ifname}")
- 
-+def _rtnl_route_subscribe(ns):
-+    with NetNSEnter(str(ns)):
-+        rtnl = RtnlRouteFamily()
-+    rtnl.ntf_subscribe("rtnlgrp-ipv6-route")
-+    return rtnl
-+
-+
-+def _wait_route_ntf(rtnl, name, dst_len, dst=None, deadline=10):
-+    """Return the attrs of the first matching notification, None on timeout."""
-+
-+    for msg in rtnl.poll_ntf(duration=deadline):
-+        if msg['name'] != name:
-+            continue
-+        attrs = msg['msg']
-+        if attrs['rtm-dst-len'] != dst_len:
-+            continue
-+        if dst is not None and attrs.get('dst') != dst:
-+            continue
-+        return attrs
-+    return None
-+
-+
-+def _collect_route_ntfs(rtnl, name, want, deadline=10):
-+    """Gather attrs of matching notifications, keyed by (dst_len, dst)."""
-+
-+    seen = {}
-+    for msg in rtnl.poll_ntf(duration=deadline):
-+        if msg['name'] != name:
-+            continue
-+        attrs = msg['msg']
-+        key = (attrs['rtm-dst-len'], attrs.get('dst'))
-+        if key in want:
-+            seen[key] = attrs
-+            if len(seen) == len(want):
-+                break
-+    return seen
-+
-+
-+def _write_ipv6_sysctl(name, value):
-+    with open(f"/proc/sys/net/ipv6/{name}", "w") as f:
-+        f.write(f"{value}\n")
-+
-+
-+def ipv6_route_del_reason_expired() -> None:
-+    """An expired route reports RTA_DEL_REASON == expired."""
-+
-+    with NetNS() as ns:
-+        rtnl = _rtnl_route_subscribe(ns)
-+        with NetNSEnter(str(ns)):
-+            _write_ipv6_sysctl("route/gc_interval", 2)
-+        ip("link add name dummy1 type dummy", ns=str(ns))
-+        ip("link set dev dummy1 up", ns=str(ns))
-+        ip("-6 route add 2001:db8:2::/64 dev dummy1 expires 2", ns=str(ns))
-+
-+        attrs = _wait_route_ntf(rtnl, 'delroute-ntf', 64, '2001:db8:2::',
-+                                deadline=15)
-+        ksft_not_none(attrs, "no RTM_DELROUTE for the expired route")
-+        if attrs is not None:
-+            ksft_eq(attrs.get('del-reason'), 'expired')
-+
-+
-+def _send_ra(sock, ifindex, lifetime, rio=None, pio=None):
-+    """The kernel fills in the ICMPv6 checksum on raw ICMPv6 sockets."""
-+
-+    # type, code, cksum, hop limit, flags, router lifetime,
-+    # reachable time, retrans timer
-+    ra = struct.pack('!BBHBBHII', 134, 0, 0, 64, 0, lifetime, 0, 0)
-+    if rio is not None:
-+        prefix, plen, rio_lifetime = rio
-+        # RFC 4191 route information option, /64 prefix (8 bytes)
-+        ra += struct.pack('!BBBBI', 24, 2, plen, 0, rio_lifetime)
-+        ra += socket.inet_pton(socket.AF_INET6, prefix)[:8]
-+    if pio is not None:
-+        prefix, plen, valid_lft = pio
-+        # RFC 4861 prefix information option, on-link only (L set, A clear)
-+        ra += struct.pack('!BBBBIII', 3, 4, plen, 0x80, valid_lft, 0, 0)
-+        ra += socket.inet_pton(socket.AF_INET6, prefix)
-+    sock.sendto(ra, ('ff02::1', 0, 0, ifindex))
-+
-+
-+def _ra_router_sock(ns_r, ifname):
-+    with NetNSEnter(str(ns_r)):
-+        sock = socket.socket(socket.AF_INET6, socket.SOCK_RAW,
-+                             socket.IPPROTO_ICMPV6)
-+        sock.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_MULTICAST_HOPS, 255)
-+        return sock, socket.if_nametoindex(ifname)
-+
-+
-+def _ra_advertise_routes(rtnl, sock, ifindex, want, **ra_opts):
-+    """
-+    Sending fails with EADDRNOTAVAIL until the router's link-local
-+    address passes DAD, so retry.
-+    """
-+
-+    seen = {}
-+    for _ in range(10):
-+        try:
-+            _send_ra(sock, ifindex, **ra_opts)
-+        except OSError:
-+            time.sleep(0.2)
-+            continue
-+        seen.update(_collect_route_ntfs(rtnl, 'newroute-ntf',
-+                                        want - set(seen.keys()), deadline=2))
-+        if len(seen) == len(want):
-+            break
-+    return seen
-+
-+
-+def ipv6_route_del_reason_ra_withdrawn() -> None:
-+    """
-+    Routes withdrawn by a zero-lifetime RA (router lifetime, RFC 4861
-+    PIO, RFC 4191 RIO) report RTA_DEL_REASON == ra-withdrawn.
-+    """
-+
-+    # (rtm-dst-len, dst); the default route carries no RTA_DST
-+    routes = {(0, None), (64, '2001:db8:6::'), (64, '2001:db8:5::')}
-+
-+    with NetNS() as ns_h, NetNS() as ns_r:
-+        ip(f"link add veth0 netns {ns_h} type veth peer name veth1 netns {ns_r}")
-+        with NetNSEnter(str(ns_h)):
-+            _write_ipv6_sysctl("conf/veth0/accept_ra", 2)
-+            _write_ipv6_sysctl("conf/veth0/forwarding", 0)
-+            try:
-+                _write_ipv6_sysctl("conf/veth0/accept_ra_rt_info_max_plen", 64)
-+            except FileNotFoundError:
-+                raise KsftSkipEx("no CONFIG_IPV6_ROUTE_INFO")
-+        with NetNSEnter(str(ns_r)):
-+            # skip DAD so the router's link-local source is usable right away
-+            _write_ipv6_sysctl("conf/veth1/accept_dad", 0)
-+        ip("link set dev veth0 up", ns=str(ns_h))
-+        ip("link set dev veth1 up", ns=str(ns_r))
-+
-+        rtnl = _rtnl_route_subscribe(ns_h)
-+        sock, ifindex = _ra_router_sock(ns_r, "veth1")
-+
-+        seen = _ra_advertise_routes(rtnl, sock, ifindex, routes,
-+                                    lifetime=1800,
-+                                    rio=('2001:db8:5::', 64, 600),
-+                                    pio=('2001:db8:6::', 64, 600))
-+        ksft_eq(set(seen), routes, "not all RA routes were installed")
-+        if set(seen) != routes:
-+            return
-+
-+        _send_ra(sock, ifindex, 0, rio=('2001:db8:5::', 64, 0),
-+                 pio=('2001:db8:6::', 64, 0))
-+        seen = _collect_route_ntfs(rtnl, 'delroute-ntf', routes)
-+        for key in routes:
-+            attrs = seen.get(key)
-+            ksft_not_none(attrs, f"no RTM_DELROUTE for {key}")
-+            if attrs is not None:
-+                ksft_eq(attrs.get('del-reason'), 'ra-withdrawn')
-+
-+
-+def ipv6_route_del_reason_absent() -> None:
-+    """
-+    A deletion path that records no cause (here a userspace request)
-+    must not carry RTA_DEL_REASON at all.
-+    """
-+
-+    with NetNS() as ns:
-+        rtnl = _rtnl_route_subscribe(ns)
-+        ip("link add name dummy1 type dummy", ns=str(ns))
-+        ip("link set dev dummy1 up", ns=str(ns))
-+        ip("-6 route add 2001:db8:1::/64 dev dummy1", ns=str(ns))
-+        ip("-6 route del 2001:db8:1::/64 dev dummy1", ns=str(ns))
-+
-+        attrs = _wait_route_ntf(rtnl, 'delroute-ntf', 64, '2001:db8:1::')
-+        ksft_not_none(attrs, "no RTM_DELROUTE for 2001:db8:1::/64")
-+        if attrs is not None:
-+            ksft_not_in('del-reason', attrs,
-+                        "user deletion must not carry del-reason")
-+
-+
- def main() -> None:
--    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, ipv4_devconf_notify])
-+    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, ipv4_devconf_notify,
-+              ipv6_route_del_reason_expired,
-+              ipv6_route_del_reason_ra_withdrawn,
-+              ipv6_route_del_reason_absent])
-     ksft_exit()
- 
- if __name__ == "__main__":
--- 
-2.43.0
-
+SG93IGFib3V0IGFkZGluZyBhIGhlbHBlciBpbiBpbmNsdWRlL2xpbnV4L2lmX2FycC5oLCBzaW1p
+bGFyIHRvIGRldl9pc19tYWNfaGVhZGVyX3htaXQoKT8gUGVyaGFwcwpzb21ldGhpbmcgbGlrZSBk
+ZXZfaXNfY2FuX29yX2llZWU4MDIxNTQoKT8KCgpBdCAyMDI2LTA3LTI5IDE3OjE1OjA2LCAiSmly
+aSBQaXJrbyIgPGppcmlAcmVzbnVsbGkudXM+IHdyb3RlOgo+VHVlLCBKdWwgMjgsIDIwMjYgYXQg
+MDU6MTI6NDBQTSArMDIwMCwgeWFvamlhbGUwMkAxNjMuY29tIHdyb3RlOgo+PkVuc2xhdmluZyBh
+IENBTiBvciBJRUVFIDgwMi4xNS40IGRldmljZSAoZS5nLiB2eGNhbiwgd3BhbjApIHRvIGEKPj50
+ZWFtIG1hc3RlciB0cmlnZ2VycyBhIE5VTEwgcG9pbnRlciBkZXJlZmVyZW5jZSBiZWNhdXNlIHRo
+ZXNlCj4+ZGV2aWNlIHR5cGVzIHVzZSBkaWZmZXJlbnQgTGF5ZXIgMiBhcmNoaXRlY3R1cmVzIGZy
+b20gRXRoZXJuZXQgYW5kCj4+dGhlIHRlYW0gZHJpdmVyIG5ldmVyIGluaXRpYWxpemVzIHRoZWly
+IHByaXZhdGUgbWlkLWxheWVyIGRhdGEKPj5zdHJ1Y3R1cmVzLgo+Pgo+PlJlamVjdCBBUlBIUkRf
+Q0FOLCBBUlBIUkRfSUVFRTgwMjE1NCwgYW5kIEFSUEhSRF9JRUVFODAyMTU0X01PTklUT1IKPj5k
+ZXZpY2VzIGluIHRlYW1fcG9ydF9hZGQoKSwgbWlycm9yaW5nIHRoZSBleGlzdGluZyBDQU4gY2hl
+Y2sgYWxyZWFkeQo+PnByZXNlbnQgaW4gdGhlIGJvbmRpbmcgZHJpdmVyIHNpbmNlIGNvbW1pdCA4
+YmE2ODQ2NGU0NzggKCJib25kaW5nOgo+PnJlZnVzZSB0byBlbnNsYXZlIENBTiBkZXZpY2VzIiku
+Cj4KPkNhbiB3ZSBwZXJoYXBzIGhhdmUgYSB1bmlmaWVkIGhlbHBlciBmb3IgdGhlIGNoZWNrPwo+
+Cj4KPj4KPj5MaW5rOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvYjU4ZDk4ZTAtOGZlMy00
+ZTRlLWI4YTUtYzFjN2U2NDdjY2NhQGhhcnRrb3BwLm5ldC8KPj5GaXhlczogMWQ3NmVmZTE1Nzdi
+ICgidGVhbTogYWRkIHN1cHBvcnQgZm9yIG5vbi1ldGhlcm5ldCBkZXZpY2VzIikKPj5Bc3Npc3Rl
+ZC1ieTogQ2xhdWRlOmRlZXBzZWVrLXY0LXBybwo+Cj5Mb29rcyB5b3VyIGFpIGdvbmUgYSBiaXQg
+d2lsZCBoZXJlLi4uCj4KPgo+PlNpZ25lZC1vZmYtYnk6IEppYWxlIFlhbyA8eWFvamlhbGUwMkAx
+NjMuY29tPgo+Pi0tLQo+PlYxIC0+IFYyOiBFeHRlbmRlZCBjaGVjayB0byBhbHNvIHJlamVjdCBB
+UlBIUkRfSUVFRTgwMjE1NCBhbmQKPj4gIEFSUEhSRF9JRUVFODAyMTU0X01PTklUT1IgZGV2aWNl
+cyBwZXIgcmV2aWV3IGZlZWRiYWNrCj4+LS0tCj4+IGRyaXZlcnMvbmV0L3RlYW0vdGVhbV9jb3Jl
+LmMgfCAxMSArKysrKysrKysrKwo+PiAxIGZpbGUgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKQo+
+Pgo+PmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC90ZWFtL3RlYW1fY29yZS5jIGIvZHJpdmVycy9u
+ZXQvdGVhbS90ZWFtX2NvcmUuYwo+PmluZGV4IGZlYWE3NWZiZjhmYy4uZDhjNDYxMDVmYzhiIDEw
+MDY0NAo+Pi0tLSBhL2RyaXZlcnMvbmV0L3RlYW0vdGVhbV9jb3JlLmMKPj4rKysgYi9kcml2ZXJz
+L25ldC90ZWFtL3RlYW1fY29yZS5jCj4+QEAgLTEyMjQsNiArMTIyNCwxNyBAQCBzdGF0aWMgaW50
+IHRlYW1fcG9ydF9hZGQoc3RydWN0IHRlYW0gKnRlYW0sIHN0cnVjdCBuZXRfZGV2aWNlICpwb3J0
+X2RldiwKPj4gCQlyZXR1cm4gLUVJTlZBTDsKPj4gCX0KPj4gCj4+KwkJaWYgKHBvcnRfZGV2LT50
+eXBlID09IEFSUEhSRF9DQU4gfHwKPj4rCQkgICAgcG9ydF9kZXYtPnR5cGUgPT0gQVJQSFJEX0lF
+RUU4MDIxNTQgfHwKPj4rCQkgICAgcG9ydF9kZXYtPnR5cGUgPT0gQVJQSFJEX0lFRUU4MDIxNTRf
+TU9OSVRPUikgewo+PisJCQlOTF9TRVRfRVJSX01TRyhleHRhY2ssCj4+KwkJCQkgICAgICAgIkNB
+TiBhbmQgSUVFRSA4MDIuMTUuNCBkZXZpY2VzIGNhbid0IGJlIGFkZGVkIGFzIGEgdGVhbSBwb3J0
+Iik7Cj4+KwkJCW5ldGRldl9lcnIoZGV2LCAiRGV2aWNlICVzIGlzIENBTiBvciBJRUVFIDgwMi4x
+NS40LiBUaGVzZSBkZXZpY2UgdHlwZXMgY2FuJ3QgYmUgYWRkZWQgYXMgYSB0ZWFtIHBvcnRcbiIs
+Cj4+KwkJCQkgICBwb3J0bmFtZSk7Cj4+KwkJCXJldHVybiAtRUlOVkFMOwo+PisJCX0KPj4rCX0K
+Pj4rCj4+IAlpZiAobmV0aWZfaXNfdGVhbV9wb3J0KHBvcnRfZGV2KSkgewo+PiAJCU5MX1NFVF9F
+UlJfTVNHKGV4dGFjaywgIkRldmljZSBpcyBhbHJlYWR5IGEgcG9ydCBvZiBhIHRlYW0gZGV2aWNl
+Iik7Cj4+IAkJbmV0ZGV2X2VycihkZXYsICJEZXZpY2UgJXMgaXMgYWxyZWFkeSBhIHBvcnQgIgo+
+Pi0tIAo+PjIuMzQuMQo+Pgo=
