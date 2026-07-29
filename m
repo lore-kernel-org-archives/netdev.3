@@ -1,187 +1,109 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7B33542F6;
-	Wed, 29 Jul 2026 11:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE2841378A;
+	Wed, 29 Jul 2026 11:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785323008; cv=none; b=Lsv8Rlw7DXHjqGkBaVHEiGC7UjCNbWgXeSSpOgFinYYpZHMoEI7IK5miI3I9BpyGJxDqrZGc85EP+GK5LnjTNB87Q46URcqPZP2wvLlxJrhL2li0BtMYDctpu7+Hdz8KVhN8OBozXpzUpYoRII9c+QxJFTaHESDxDdJHjBk2jPw=
+	t=1785323016; cv=none; b=QwQjP0LIs4oVYsoh0ApLpHCpNQ8YGLOhe+Xy+3YNvfVaqQ0Hyktyo86TY9lXFnqMi2MtnPXJEfU/im202bOvJauXIZFx1JZB3h9lFllSN/7v1KxJCvtbA/xN6hm2mcoj8Fks+ygc+rUmvuvcC0Xlo1iGELxZwtIHPfuNsIP4jFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785323008; c=relaxed/simple;
-	bh=Rt3ezGDOBlLSUsS+6ibqaXgdJ7z4xEy7osFMIs1rthM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aRMuoReIYES5ldKpsKl0/Q6jz31QUzb/b2bqgeLTNf9SGFNP62U8jrbWwcsQTmTeQF+X2JTsyOcXy0k+X/lApB2rSSr3DJ3d5Q4hpMcskFMatqdyYafKoBQB03Fp2dgZ/CQuJoRBptpLh1uRRJcPfvlOuJyA1d8IEp5xy5PNePc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=BRMYbiGj; arc=none smtp.client-ip=113.46.200.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1785323016; c=relaxed/simple;
+	bh=A537bd/0KixpX+7fjlPVBDhsbTsdueLdc0Q+9BWm5qw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U3RNBcS0y3SmDAAlgt1Osb2iIplwS5G5sJ6Oledo+zVRgb6pZgfIawpCuS8KIi1xOXSpvkYu7DnQ4J4ssDMeUQxBi6laNsoyrT3s6QoM7hwdcs0Dy/8Rtvdqlg8uDjTlrHiAbj1xG2R0iNbopUSWLGTsLYKjWPWZWAum91Z2QNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jDrhp9NC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="BRMYbiGj"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=emcos6P6WLr6/6ENLqPExL3/ApJpTtn6sqMRB4UGTfU=;
-	b=BRMYbiGjPMOLkXVNN/K+dSaMHASGI5u4xWQu8KhZWdqswSOmN2ri+kFcJlvB0KQ3FgLIMnljk
-	5eYP3ha6/H89EmOh8H7FcRWSeE9ZD9nour1gtavRXfqiRFgBi0n3SYP5gbO7zIlywTXKp4YAuw1
-	0GwHxK1IOfj+Ib6bLPMHI9k=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4h98Mc1nQSzmV91;
-	Wed, 29 Jul 2026 18:53:48 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7591840586;
-	Wed, 29 Jul 2026 19:03:15 +0800 (CST)
-Received: from localhost.huawei.com (10.90.31.46) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 29 Jul 2026 19:03:14 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<hawk@kernel.org>, <ilias.apalodimas@linaro.org>, <almasrymina@google.com>,
-	<toke@redhat.com>
-CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <yangshuaisong@h-partners.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<shaojijie@huawei.com>
-Subject: [PATCH v3 net] net: page_pool: fix UAF in __page_pool_release_netmem_dma on xa_cmpxchg race
-Date: Wed, 29 Jul 2026 19:02:49 +0800
-Message-ID: <20260729110249.2824835-1-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.33.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jDrhp9NC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650A31F00A3A;
+	Wed, 29 Jul 2026 11:03:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785323015;
+	bh=N7RiY82551cvd68hZZYA1yRSe2CYV2J4qaqo0HGIN5Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jDrhp9NCXYL7RLKXn53b+3FwH8obdIciv5D6lTlGTbPl3C4BuzCwWIj/Z6uKzjkKX
+	 sdZDOCa4PSufo0mNB2rnKs0HCASYHuYe+ikc8Jy8hV5pHP6TVFqIU5mQqPlMH92NzY
+	 pAp73/kJUfLwg+Jl1xnO5fKehukLoDs3CW215/6zSGI7WI4UEQYLKc9p5j8R0pjpWw
+	 2IqH12b17O8LyxOmSlEakqhusDKp9IHmYeDqFde9g+8KWdJkNH1dWGBA6RVkgIiVMk
+	 J/XyQLpNkkpFbVeoOprOaYAroyZDOX1fsjmRmo32T1sqlj7w6eMRsGfNZZxkZhcFk+
+	 c2ShY1WA3E79Q==
+Date: Wed, 29 Jul 2026 12:03:28 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jijie Shao <shaojijie@huawei.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, shenjian15@huawei.com,
+	liuyonglong@huawei.com, chenhao418@huawei.com,
+	yangshuaisong@h-partners.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 net] net: hns3: fix speed configuration residue after
+ driver reload
+Message-ID: <20260729110240.GA76598@horms.kernel.org>
+References: <20260724093036.426631-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemo500018.china.huawei.com (7.202.195.199)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260724093036.426631-1-shaojijie@huawei.com>
 
-page_pool_scrub() iterates pool->dma_mapped via xa_for_each() with no
-page ref held. __page_pool_release_netmem_dma() currently reads and
-writes netmem fields (dma_addr, DMA index bits in pp_magic) after
-xa_cmpxchg() returns. The unref path calls put_page() unconditionally
-regardless of the cmpxchg outcome; when it loses the cmpxchg, it still
-frees the page before the scrub winner finishes these netmem accesses,
-so scrub touches a freed page -- a Use-After-Free.
+On Fri, Jul 24, 2026 at 05:30:36PM +0800, Jijie Shao wrote:
+> After setting a 100G optical port to 40G via ethtool and reloading
+> the driver, the port remains at 40G instead of reverting to the
+> firmware default speed of 100G.
+> 
+> The commit referenced in Fixes: added two overwrites in
+> hclge_init_ae_dev() for non-copper media, so that optical ports
+> connected to forced-mode remotes inherit the firmware-preset
+> autoneg and speed instead of the hardcoded defaults:
+> 
+>   req_autoneg = mac.autoneg
+>   req_speed   = mac.speed         (when autoneg disabled)
+> 
+> The autoneg overwrite keeps existing behavior:
+> hclge_set_autoneg_speed_dup() already uses mac.autoneg (not
+> req_autoneg) since it was introduced, so autoneg inheritance from
+> firmware was already in place. This part is kept.
 
-Fix this by:
+The AI-generated review on netdev-ai [1] flags that this isn't strictly
+true as req_autoneg does appear to be used in hclge_set_autoneg_speed_dup().
+I don't want to nitpick, but perhaps this is worth clarifying.
 
-1. Cache dma_addr to a local variable before xa_cmpxchg() in
-   __page_pool_release_netmem_dma(), so the scrub winner uses the
-   cached address for dma_unmap and never touches netmem fields after
-   the cmpxchg.
+[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260724093036.426631-1-shaojijie%40huawei.com
 
-2. Rename page_pool_release_dma_index() to page_pool_remove_dma_mapping()
-   and strip it down to a pure cmpxchg wrapper; it no longer clears DMA
-   index bits.
+> The speed overwrite, however, introduces the residue: mac.speed
+> reflects whatever was last programmed into the MAC, and after unload
+> firmware does not restore the MAC speed to the flash default. So if
+> the user changed speed via ethtool in a prior load, mac.speed still
+> carries that value on reload and req_speed inherits it.
+> 
+> Fix by dropping the req_speed overwrite only. req_speed keeps the
+> firmware default value set in hclge_configure() (cfg.default_speed),
+> so a reload reverts the speed to default, matching the expectation
+> that a driver reload resets link configuration.
+> 
+> Trade-off: on optical ports whose firmware default speed does not
+> match a forced-mode remote, reload now drops the link and the user
+> must re-apply ethtool configuration. This is acceptable: a driver
+> reload is expected to reset link configuration, not to inherit
+> runtime state from before unload. The autoneg inheritance is left
+> in place as established behavior; changing it is out of scope for
+> this patch and would itself be a user-perceivable behavior change.
+> 
+> Fixes: d9d349c4e8a0 ("net: hns3: differentiate autoneg default values between copper and fiber")
+> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+> ---
+> v3:
+>  - Expand commit message to explain the two overwrites added by the
+>    Fixes commit: req_autoneg inheritance is kept because it matches
+>    existing behavior of hclge_set_autoneg_speed_dup(); req_speed
+>    sync is dropped because it introduces the reported residue.
+>  - State explicitly that link loss on forced-mode optical ports after
+>    reload is acceptable, since a driver reload is expected to reset
+>    link configuration rather than inherit runtime state.
+>  - Explain why autoneg inheritance is left unchanged: it is
+>    established behavior, and changing it is out of scope and would
+>    be user-perceivable.
 
-3. Move dma_addr and DMA index cleanup to page_pool_return_netmem(),
-   which holds a page ref and can safely write netmem fields regardless
-   of the cmpxchg outcome.
-
-The scrub path (no ref) only does cmpxchg + dma_unmap on the cached
-address; the unref path (holds ref) clears dma_addr and DMA index bits
-unconditionally before put_page().
-
-Suggested-by: Mina Almasry <almasrymina@google.com>
-Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when destroying the pool")
-Assisted-by: OhMyOpenCode:GLM-5.2
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
----
-Changes in v3:
-- Fix unlikely() to likely() for PP_DMA_INDEX_BITS to match
-  file convention.
-Link to v2: https://lore.kernel.org/r/20260727132612.3277927-1-shaojijie@huawei.com
-
-Changes in v2:
-- Redesign the fix per Mina's review: v1's unconditional
-  netmem_set_dma_index() introduced a UAF when the scrub path
-  (no page ref) writes to a page freed by the unref path.
-- Cache dma_addr before xa_cmpxchg; move dma_addr/DMA index
-  cleanup to page_pool_return_netmem() which holds a page ref.
-- Rename page_pool_release_dma_index() to
-  page_pool_remove_dma_mapping() to reflect its new role as a
-  pure cmpxchg wrapper.
-- Link to v1: https://lore.kernel.org/r/20260724092135.414699-1-shaojijie@huawei.com
----
- net/core/page_pool.c | 33 +++++++++++++++++++--------------
- 1 file changed, 19 insertions(+), 14 deletions(-)
-
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 21dc4a9c8714..b7f5cdb6c1c4 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -500,8 +500,8 @@ static int page_pool_register_dma_index(struct page_pool *pool,
- 	return err;
- }
- 
--static int page_pool_release_dma_index(struct page_pool *pool,
--				       netmem_ref netmem)
-+static int page_pool_remove_dma_mapping(struct page_pool *pool,
-+					netmem_ref netmem)
- {
- 	struct page *old, *page = netmem_to_page(netmem);
- 	unsigned long id;
-@@ -517,12 +517,7 @@ static int page_pool_release_dma_index(struct page_pool *pool,
- 		old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
- 	else
- 		old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
--	if (old != page)
--		return -1;
--
--	netmem_set_dma_index(netmem, 0);
--
--	return 0;
-+	return (old == page) ? 0 : -1;
- }
- 
- static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t gfp)
-@@ -736,16 +731,19 @@ static __always_inline void __page_pool_release_netmem_dma(struct page_pool *poo
- 		 */
- 		return;
- 
--	if (page_pool_release_dma_index(pool, netmem))
--		return;
--
-+	/* Cache dma_addr before xa_cmpxchg. The scrub path holds no page ref;
-+	 * the unref path calls put_page() regardless of cmpxchg outcome, so
-+	 * after the cmpxchg we cannot safely touch netmem fields.
-+	 */
- 	dma = page_pool_get_dma_addr_netmem(netmem);
- 
-+	if (page_pool_remove_dma_mapping(pool, netmem))
-+		return;
-+
- 	/* When page is unmapped, it cannot be returned to our pool */
- 	dma_unmap_page_attrs(pool->p.dev, dma,
- 			     PAGE_SIZE << pool->p.order, pool->p.dma_dir,
- 			     DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
--	page_pool_set_dma_addr_netmem(netmem, 0);
- }
- 
- /* Disconnects a page (from a page_pool).  API users can have a need
-@@ -759,10 +757,17 @@ static void page_pool_return_netmem(struct page_pool *pool, netmem_ref netmem)
- 	bool put;
- 
- 	put = true;
--	if (static_branch_unlikely(&page_pool_mem_providers) && pool->mp_ops)
-+	if (static_branch_unlikely(&page_pool_mem_providers) && pool->mp_ops) {
- 		put = pool->mp_ops->release_netmem(pool, netmem);
--	else
-+	} else {
- 		__page_pool_release_netmem_dma(pool, netmem);
-+		/* clear dma_addr/DMA index; safe because we hold a ref */
-+		if (pool->dma_map) {
-+			page_pool_set_dma_addr_netmem(netmem, 0);
-+			if (likely(PP_DMA_INDEX_BITS))
-+				netmem_set_dma_index(netmem, 0);
-+		}
-+	}
- 
- 	/* This may be the last page returned, releasing the pool, so
- 	 * it is not safe to reference pool afterwards.
-
-base-commit: 51b093a7ba27476e1f639455f005e8d2e75390e4
--- 
-2.33.0
-
+...
