@@ -1,76 +1,69 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4663BB48;
-	Wed, 29 Jul 2026 02:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA1D54774;
+	Wed, 29 Jul 2026 02:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785291643; cv=none; b=MKHbrs/4AxliGGrmyFCCozgjDg3/WGEEIpLL4RQwgEmTGnAylAjCFZKoe9c/El41kNdTnzJdDK9hcYE7j+RzgbaRaNL2ogBs6y3UiB1Q3NWXiO+hqHc+FIZlebYVWZMzz6KPtNfDqiKS6/O2s2HihSoMc8/i8fV0AP6jcNoiYq4=
+	t=1785291853; cv=none; b=eDS7UI7VpkeNRRUrXCzl74EAS/RdmfFLb9RBqq9JqRk0t+C+WW39UTUptZSb5QbfH8PzGIFWi6I1R07gnK58qHSp+LWMS1TZxe3VXvvzCqI2mITSeLu1PmxQc1j0XJCe7wdKPKp4HHxaTq2dkb6PiPRNr0ECmNXsC2AAllCkQw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785291643; c=relaxed/simple;
-	bh=BfdzX9mlI8Xf0tm2ki0kSvtcNq/Cz/D9SN+HIVIKHGY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qhZqLhC4Q4qBLV+/5r9FA0tFC8WNbCrIlNjnoIwlufxj18QHoJmsVflk63zTYM/IPd//dks0igdTjXZNHFcBdj1JBum2pjNzmdtnToEcGsTtrJyknDbKgCX+kRrHgv/rfwV+xwfnI3RK/JheP07UBIgcNDo212VK101gpEaQB3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bw9M8cNG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785291853; c=relaxed/simple;
+	bh=XUIq8aOF6Tno9b9c/9ogAX6wHIo8g5YZZD9TCEDWNDU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JxvHrXnwHKOs1Sak2Qe37Yp9/WAiV8qyGcYIUpCGLoK/mf+DFehT17TTz48ye4OKeQMIJgtDeIKWwRdHeCx5qeIH6Ers0o/aF8icGdaKqsNQimnFa9G3Ip/jecn4+GiITsaKGtutgjHgPAFw/BnN1FgGcL6YbmrbMtK3C4zao9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVO3SV30; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bw9M8cNG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E231F000E9;
-	Wed, 29 Jul 2026 02:20:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVO3SV30"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942EB1F000E9;
+	Wed, 29 Jul 2026 02:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785291641;
-	bh=LUXXZsA5zVRiWTELbcRwZR8rtebE8hosTMLXeFvFHq0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Bw9M8cNGcK9rf4k3D07NDGJSWX5bLThD02LmpnoS9s3O21ZcJYg04QVU2WZASpo51
-	 IFmOHrftm1abrNskU50RXMSQP8lh8G6SCg/3mcx2QnKSTUxvYP4QRmU3awQsmFI/GD
-	 2xTTyAbwx1SoMxGm9OOEtYIxIJGsSH+43nHaSjtuXDJjIkXj8qgSCzBbrsSbuvtC5v
-	 0o54dQBIS2CvdSyUxkGwEculBt45p361nYk+4Ij0n2qxlsQGm0EvmiUeDL4R6yxsl8
-	 s7A8BPdK1Zw4/HkTHm9jo/i3NIS5cDMfetOj6nE0+U4EErAXu0P/WNqbn8fdSOcSVo
-	 SeHB2DWd12DfQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938B63924A61;
-	Wed, 29 Jul 2026 02:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1785291852;
+	bh=G4+RfJBCvWya/zp6SvMmWI5PU/fVYmvHM22tHQWDbP0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=WVO3SV30SUf5ppjM0jI7Ss+SBlU0MD+uyVB16M/n1YvniigqIkvQPJN7j6T8seqDE
+	 PPtGEsibpQXOv8SIzBPv2hPAqhH0g0xjMC0HjSM+FjVNEwIME/tPwuGwP24sbckVXI
+	 v8RXYsEGD2pKqXrqgNP6RVANi11bWwFKKkY9dmstjVSldROxlhhmuQdq5nLCP7QADM
+	 wpUHi0l31tcS6+cGbywxh13xEOCw8AFOkfDskSZHgmQF/b6ccxWPhpS6GRLnbIUgvl
+	 PdjzdPiocEI0XNYWVeX92Rq0Vo1HDgYEUYHQWNLYSgn2W8m6FhcM691et+0Yi330m2
+	 lGmebLQ9cf9ow==
+Date: Tue, 28 Jul 2026 19:24:10 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Chuck Lever" <cel@kernel.org>
+Cc: "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ "John Fastabend" <john.fastabend@gmail.com>, "Sabrina Dubroca"
+ <sd@queasysnail.net>, "Shuah Khan" <shuah@kernel.org>, "Jeff Layton"
+ <jlayton@kernel.org>, NeilBrown <neil@brown.name>, "Olga Kornievskaia"
+ <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey"
+ <tom@talpey.com>, netdev@vger.kernel.org,
+ kernel-tls-handshake@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ linux-nfs@vger.kernel.org
+Subject: Re: [PATCH net-next v2 0/6] Deliver TLS control records to kernel
+ read_sock consumers
+Message-ID: <20260728192410.75212c03@kernel.org>
+In-Reply-To: <0e1f1b09-fa91-4a6b-b60c-39bae6e287a6@app.fastmail.com>
+References: <20260720-tcp-read-sock-v2-0-29545d034f3c@kernel.org>
+	<20260728184312.20b21582@kernel.org>
+	<97b61f5f-57df-4a29-85a0-613f7b7e75eb@app.fastmail.com>
+	<20260728185525.27b443a9@kernel.org>
+	<0e1f1b09-fa91-4a6b-b60c-39bae6e287a6@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] ppp: convert chan_sem to a mutex
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178529160639.2412604.7477768336250808136.git-patchwork-notify@kernel.org>
-Date: Wed, 29 Jul 2026 02:20:06 +0000
-References: <20260727032802.4090-1-qingfang.deng@linux.dev>
-In-Reply-To: <20260727032802.4090-1-qingfang.deng@linux.dev>
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, kees@kernel.org, hataegu0826@gmail.com,
- linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 27 Jul 2026 11:28:00 +0800 you wrote:
-> chan_sem's read-side lock is taken under another mutex, so there is no
-> benefit in keeping it as an rwsem. Replace the rwsem with a mutex.
+On Tue, 28 Jul 2026 22:16:22 -0400 Chuck Lever wrote:
+> >> It makes sense to me. Which terms do you have trouble with?
+> >> 
+> >> Patch 1 is moving to a pre-requisite series, so this can be dropped
+> >> from the cover letter.  
+> >
+> > Did you write this? If not what model did you use?  
 > 
-> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
-> ---
->  drivers/net/ppp/ppp_generic.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+> I did not write this text. It was written with Opus 5 and reviewed by
+> gpt-5.6, sashiko (gemini), and myself, repeatedly.
 
-Here is the summary with links:
-  - [net-next] ppp: convert chan_sem to a mutex
-    https://git.kernel.org/netdev/net-next/c/2bb54b49e9d5
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+I was just curious. I find gpt-5.6 output largely incomprehensible.
