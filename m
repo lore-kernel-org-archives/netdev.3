@@ -1,255 +1,178 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599564ADDA9
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:21:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785334881; cv=pass; b=s0bV3m+PZEeQC/VwPDqtYBE/ZqoA7P/tMR5S2R+uWaynhnqjzPPxShcJO8Y46/H3p2CmKBkFwKgZRpFdmtFRjm4yAUfi+AKAGjXDt/MpJMlbNcpeyHNjlVq45+4w0YZnQGu72ijgJJFFzWwuoXrbyaKdQZ1gONPQ4veNjE7Alck=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785334881; c=relaxed/simple;
-	bh=V3TtLAGmQlfcCnbugVYuYAwlhDcUkcB452p4EfYMSG4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sspq8Kbo57UwuNWgu8P9yxkEQbmvLTEg9+oLq142S556LFNeU1h6G+r/vbz7qZsF/Kgv6lh7ogtjmlss3tmBHdLKOge0YZRAzse3asYqFm0/F5hv4hQaL8O4le01bGv2lSgJK6YZzzsDx6S5Dn2ONa1JByFiqy+qqGa783ux1vA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=IGUwOkGY; arc=pass smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03914A33FA
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785335244; cv=none; b=gyUD7XX0MczLLwYooSz8CfcFvgn3b7f716aSqeJx0MqV9j689OH0jwvpNALE7rvmdNQMo8XT6/oWHrExrm6mUzoA1cuGf0AZkEo3ZuOwPSpMJWeskVt3AY1sqXGqXsnMohLuNip+jwiOH5EMF9aAbXl27Qi3TAyVoC8R6qpvXUc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785335244; c=relaxed/simple;
+	bh=cSK35UhxS7x2Pk7Yv73KpzJYQwmuRBZT31oI2qSxdOY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rwStewzvC5sp02EDNGLUhQ7ZEISuzpxmiv8abArp+f1e5LwRuMLEj1Sehey2x5YwfNlrtu3iTJcZUTYSl+MJINvT/KhjNzPsPoItyeS2GpS+VmKJUhVLkJx49y1/jRc8xgfOpzGZWyhtqAFHR5YrxRRfWSUxbG0dHWwTVl0xgi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hR9bu6Yk; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="IGUwOkGY"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-39c94d4fdb9so10065881fa.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:21:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785334877; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZGoP3SrB1glsa0dVRsQR2UfEApxgiLT6YIZKyRTmBQWp6BHCqNTyG0CE8MAwfORc1m
-         Atb1i1M5jQ+WplkTr3rH6MysYH8uz8IlxuicKi7gKW8lJQ+qLgnNUsFRYj64GZs3c3cm
-         FXBWmW4UF6bRKC9VXvj2dC0BjUoCtLTLvTYWWiM+XguVYfk1VToCP6MYFIXuxeP8WzQ+
-         STQbqBhjBypqSWknYCjiKEokbWoh19gh8/+suus7CuGE2OkwOodzaeFeWM0MTVFVzUWQ
-         cVCOh6iR7J2MhOukNYiNLsqJJd+UdqW/w8/2bEB0b+VY/ntxAEBkwre6SNWnvabAq8kG
-         YbBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9U+yBXZNydRZ4aLB5sQnQ5jKVySq/ApFlqzcSLrMp4Y=;
-        fh=OJeZOLTg01C9jl/T+BMOKVsqqLKXRQFZfgG6l1IOHj8=;
-        b=FbDERv5LwZUNRDTDVk3cj8UwA+uLvMgqEQx9TSthlUvz8G6MSVntE6BMXMakLrnDFW
-         j8tqze/sC3g/dCtHws/314s6+xaO9Ge26mcy4jbJcMpMVN1/ihFy1cj6L0TK2yyXqgve
-         8IUOUD72/yesxLv8iiC01o0Evge+/Egu6QmKOWh67TT4kgoabRY2mPV2jL5cFwNOXpc3
-         cm5RLGeUXXE2ciU/23m9RH+QMhCQm+ht2+VfHiGc30U2Eeoqh47U1DykBA8I9wlvC9C8
-         NV6CTVoUMdcs9KKqYL+b0O/GjkifUU/14WkR00+v6zlW9yO4JoAmiPH5Wm68ZgfDy6st
-         BI1Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hR9bu6Yk"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c9aea40d799so559230a12.0
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:27:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785334877; x=1785939677; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9U+yBXZNydRZ4aLB5sQnQ5jKVySq/ApFlqzcSLrMp4Y=;
-        b=IGUwOkGYNt+c453SRfV2EOZZgtIoHmG+P5m8iP9L4hOmgkvxW6OWMcZ0j7HqHRb1tz
-         0Xtlj4lLO9khzjJJfznKrQYnKomA0KnXLHLLB4Xfb7jXWm3JFmmfogKLGtuW55qhE9Cd
-         tiXI2Z2M1vpc2P08xkik/4XcrOp9Ab+NlPl3iivrib+cWXG+3iaQ43JADUVf2L+BFinh
-         cb3PVhN0dbqAQw2Fub4ENOA4Agm5lX5BAsUGVfYtOxiSbE0A/9J4WtbXDJWnH8HzFumi
-         1ykXIVchb3sIiF/7VXcw2lO1+mtoH4kkig67x9AVenaAhTbT3I799ybNnoNgDN2BlGkB
-         dnDQ==
+        d=gmail.com; s=20251104; t=1785335242; x=1785940042; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=q6TvvO09U4zGaQilxr2NjN4uQvkcCnEQhswilI8Rgyw=;
+        b=hR9bu6YkOs2POj9OD+w8IgvI7z2zyItta7j1vHJpRuwgOdyDNjmkaG2WURuspgumYf
+         72SKDTsmhQdnzIQR1BQnuNNT+sCx8++Fkx+uIqQORZzOIkYstI9TGrIuLFFpcSDyKg7/
+         IiTdfnTZ8lYGKBzsYxNo7sHaTgBSw1LqX7DY57l8ODx8SDqbQZS9usxTQfBBLWR8+cM0
+         w80z5e0IwpBpi4oLbkdkkL5bYwol6MG236SztZSTG8UFOPd4f3PUF9m12tebOw43crxg
+         yQuz0DU3U1QLtMCKwyEijDuyzJhTDM7faSOTkt5Ovk31UHQsilRIwKdWbCxFnr87qlBW
+         O6Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785334877; x=1785939677;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9U+yBXZNydRZ4aLB5sQnQ5jKVySq/ApFlqzcSLrMp4Y=;
-        b=YzB8DDLrCl+E5FqoARFCNcxXmXnFymly2uiGAbM0WY9dm0/JbbB8d7WhVhnzAlvsmc
-         r3ippRtjxEhOqoss49r+m3xH31ToN1JKUrf+D9kP9h36Y+BQvloetpbPRuz/aT4so1iu
-         lIi7JL7896o1/pYRkcINHb5uig+eCDStTWHtDYWOajKcj7exa8AbIKpcgUYG3lsOmQ22
-         JbAYGpXSJ12TTVXAfcY+Qx86Yl51aH6SlpLr2LmXSMfG8lcsRfutJusomcqovh047i8E
-         7OggApD3U2JQ0aXO1cjcvqmeWXugUg18smayOBjYh6wRsggxshG7YSuqLLJUrfOb11Y/
-         cS6Q==
-X-Gm-Message-State: AOJu0Yw0odqypagEu0T5HT8HqpUiShV27uz5TUqwBWOAOCXdO+aKo5qR
-	VqvbI2NMw6l6lZedMp4iS9fu7GlJI2CucFtWWJINi5birQ0KdqVKsRxYXMlh6q9MpgrVOIE/Mz0
-	LI8XP2Uyjgc85jYYaAbDdlXjcErCo2s2vg/xTP8PtxKY=
-X-Gm-Gg: AR+sD11mR9roJh5db6HkkbR7mWrWHpYPbF/Ptc7TiUiqrd0Zel9sN9pz+o/8lhWG2Jj
-	zJ1KkLAFHRrsndt8cin93vz3mefKu9gr4JJ4O6tBnQxeLyLfYdUpP7GtVX2Hd/fzrArrQtoG7FO
-	qTPuy3KR5zOqz/funPeeMzGUlAjn3HLnYSeZV1G4u5uCpuL8iF7foznfiqxxOStzIEVUq5JbxPT
-	1AD9if4unoj2fELyDg2b2sHc2/5sLxd93/9FDNGY+CfDP4Vug2sdxJpbbfrc36vX1JE7kA1Et8W
-	BdO4sKO+E5Vu8rRKJTNQITdmCkC2MwlqOoxR9o/vkW4=
-X-Received: by 2002:a2e:bc12:0:b0:39c:956e:77de with SMTP id
- 38308e7fff4ca-39f605be8ddmr6515871fa.6.1785334877102; Wed, 29 Jul 2026
- 07:21:17 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785335242; x=1785940042;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=q6TvvO09U4zGaQilxr2NjN4uQvkcCnEQhswilI8Rgyw=;
+        b=DltuBbKEpoEL9PP+Him2ES3GicabgvZ8123psV6YwWTu0XqM5wiiEyqEdTzG6+9xVm
+         x53J/YaHw3Yfsgc03AFBxeQeFRLdPGTafC7ZKeXIm3/BWSgqMPOr53lCUGkuAsfPbdw9
+         6G31BYEcu/c/vUIzK5fIxIFR7WCC5KHXWUftXiPDUtME72AyoQUIFjgzeMTXU8BnVa3g
+         sOkxDQvF1pJLVxNgynWCRy7BizdV3Kl16iE4xeNcO8zXl2vh3ggAPGyfNNxFKT51P/vR
+         bgoKXGEzSBI6E/M9d2WoQOIetm1qAlrxQD2Nk6E/pLzgUcqsjupA/sMg+tGeW5AnRl7F
+         bqrg==
+X-Forwarded-Encrypted: i=1; AHgh+RqGYdixpNnT0GEhCAsKA3b4H6B76zXQepi67j5um7+Q792y5R1hlCc4GTa9X575Bs5x3HyzAzI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUCXGDom4+bWBxrNvl4G9jnc3y751ETCrGwz06Asr2PR2v31CW
+	XeRIwbIKKCceUnEUTEW0ZEZ0iprQJr4JpBWH3rpKqERl/2Pf4LhzoQ0f
+X-Gm-Gg: AR+sD12w/4ASa8UVUngMkIHz6wdhgb1gya35zGhVYE5aEyUEL0kaFhDitsqboNiRphS
+	HRLeAEhTdVWtO3wSfJKjN8O2ZVC4va6EliK+tder7jvwuYhd2k+oF43m9k52oxzPfo+2uIZpbec
+	uu5jlJd2qeAS/y2HyQlt1h7YgPrYsToRH+RikSqKifUI8gCA6HiyWmtaUH7u1SqMhojsFMu4KLA
+	AOiqfYhhC7QbJpxXRe+UP/rpXQF5EHbIlqKfISZ7//BAzLGq/jqN5bq3xyxHYu+xTOBeLhaq9Q+
+	N9Q0IhN26AcV1tXC4yEdLcidGTRwF0Bxf8fzsnuozb0jjcyPhEyyOOdT5zRKsqdJxg+yp5z6QS+
+	gC039+mhQyxc23MnR96M//01AP36oWzdh1cZdKSBnv9i1J4jJ8H9Ngiihiuatsw+QeABVPVO/4Y
+	lIigi4qlMbUInVS2AkX0AEIpBon2HGGxQZgVO/qD1HdpfK1A==
+X-Received: by 2002:a05:6a21:490:b0:3bf:e66f:266a with SMTP id adf61e73a8af0-3c8ba61c214mr8223820637.59.1785335241938;
+        Wed, 29 Jul 2026 07:27:21 -0700 (PDT)
+Received: from ubuntu.. ([2a09:bac1:76a0:1a98::48c:10])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31504cc63f3sm9690326eec.16.2026.07.29.07.27.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 07:27:21 -0700 (PDT)
+From: Jing Wu <realwujing@gmail.com>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Qiliang Yuan <realwujing@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v11] mm/page_alloc: boost watermarks on atomic allocation failure
+Date: Wed, 29 Jul 2026 22:27:12 +0800
+Message-ID: <20260729142712.1568604-1-realwujing@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <6ddc5919-f001-43ad-8101-d118ad70593f@kernel.org>
+References: <20260720-feat-mm-page_alloc-v11-v11-1-7376b02c27b3@gmail.com> <20260720163719.cf37f6be63bfd88a06965761@linux-foundation.org> <90ac10ff-55f8-4f07-8e1d-bb9f3a8cc546@kernel.org> <20260729131701.3354724-1-realwujing@gmail.com> <6ddc5919-f001-43ad-8101-d118ad70593f@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1785307984.git.zihanx@nebusec.ai> <3b55d602-f9ce-464a-896c-8d89af572f6a@linux.dev>
-In-Reply-To: <3b55d602-f9ce-464a-896c-8d89af572f6a@linux.dev>
-From: zihan xi <zihanx@nebusec.ai>
-Date: Wed, 29 Jul 2026 22:21:02 +0800
-X-Gm-Features: AUfX_mzGUlyZYlslhjWe0i5zHKVZnSYHoT6z4HjQyhgwd_5SBNN0jtS3a72-a0Q
-Message-ID: <CAANe3eSDxw=r4OYo5Ch-2+u24wbC7tKyML-arrSd5VfV7zgiUw@mail.gmail.com>
-Subject: Re: [PATCH net 0/2] tcp: diag: fix unbounded bucket lock hold in diag
- dump paths
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
-	ncardwell@google.com, kuniyu@google.com, dsahern@kernel.org, kees@kernel.org, 
-	matttbe@kernel.org, martineau@kernel.org, geliang@kernel.org, fw@strlen.de, 
-	vega@nebusec.ai
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 29, 2026 at 9:55=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.de=
-v> wrote:
->
->
-> On 7/29/26 7:28 PM, Zihan Xi wrote:
-> > Hi Linux kernel maintainers,
-> >
-> > We found and validated a issue in net/ipv4/tcp_diag.c and
-> > net/mptcp/mptcp_diag.c. The bug is reachable by a
-> > non-root user via user and net namespace.
-> > We've tested it, and it should not affect any other functionality.
-> >
-> > We will provide detailed information about the bug
-> > in this email, along with a PoC to trigger it.
-> >
-> > ---- details below ----
-> >
-> > Bug details:
-> >
-> > inet_diag TCP dumps currently execute attacker-controlled
-> > INET_DIAG_REQ_BYTECODE programs while still holding the listener,
-> > bind, or ehash bucket locks in tcp_diag_dump(). If the bucket is
-> > heavily populated and the bytecode is a large reject-all filter, the
-> > dump path can spend an unbounded amount of time under the same bucket
-> > lock while walking attacker-arranged sockets.
-> >
-> > The reproduced listener case places 131072 SO_REUSEPORT listeners onto
-> > one colliding listener bucket and then issues a NETLINK_SOCK_DIAG dump
-> > request with 16380 INET_DIAG_BC_NOP instructions followed by a failing
-> > INET_DIAG_BC_D_EQ test. Because every socket runs the full bytecode and
-> > none reaches the reply fill path, skb backpressure does not terminate t=
-he
-> > walk early. On the unfixed kernel this triggers a watchdog soft lockup
-> > and then a panic in inet_diag_bc_sk().
-> >
-> > The earlier batching fix direction was still too narrow: it only counte=
-d
-> > sockets that survived the cheap prefilters and reached the expensive du=
-mp
-> > path. An attacker can therefore populate one bucket with many sockets o=
-r
-> > listeners that fail the netns/family/port or MPTCP-specific prefilters,
-> > causing the same bucket lock to be scanned far past the 16-entry batch
-> > threshold before control is returned.
-> >
-> > The same root cause also exists in MPTCP listener dumping. The
-> > MPTCP-specific mptcp_diag_dump_listeners() path reuses sk_diag_dump(),
-> > which runs inet_diag_bc_sk() before filling the netlink reply, while th=
-e
-> > listener bucket lock is still held.
-> >
-> > We additionally profiled the MPTCP-specific path locally with a
-> > separate debugging artifact. Because struct inet_diag_req_v2 stores
-> > sdiag_protocol in an __u8 field, that request must keep
-> > sdiag_protocol =3D IPPROTO_TCP and pass INET_DIAG_REQ_PROTOCOL =3D
-> > u32(IPPROTO_MPTCP), otherwise 262 truncates back to TCP and never reach=
-es
-> > the MPTCP handler. With that corrected request, a 1-group run with 3276=
-8
-> > listeners and 16380 NOP bytecode steps took 2082.608 ms on the fixed
-> > kernel versus 8.601 ms on the unfixed kernel, and kprobe profiling show=
-ed
-> > inet_diag_bc_sk() executing 32768 times on the fixed kernel but only 25=
-6
-> > times on the unfixed one. That 256-count is not a missed path: the
-> > unfixed mptcp_diag_dump_listeners() reuses one counter both as the
-> > in-bucket index and as the resume cursor, so each dump restart advances
-> > in a triangular skip pattern and stops after approximately sqrt(2N)
-> > bytecode executions. The inline reproducer and decoded crash log below
-> > cover the TCP panic path; the MPTCP results above are included only as
-> > supporting local validation for the second patch.
-> >
-> > This series fixes both sites by keeping bucket-locked sections limited =
-to
-> > raw socket collection and lifetime pinning, and moving all filtering,
-> > inet_diag_bc_sk(), and socket filling work out of the locked regions so
-> > the batch limit applies to raw bucket traversal itself. For TCP listene=
-r,
-> > bind, and ehash buckets, and for the MPTCP listener bucket, restarts no=
-w
-> > keep a referenced dump cursor so the next batch resumes after the
-> > previous socket instead of rescanning the bucket head under the same
-> > lock.
-> >
-> > For the TCP patch, the underlying root cause predates modern git histor=
-y.
-> > The Fixes tag therefore uses commit 1da177e4c3f4
-> > ("Linux-2.6.12-rc2") as the earliest git-import boundary that still
-> > anchors the pre-git bug in the current repository, rather than
-> > incorrectly attributing it to a later helper or refactor commit. The
-> > MPTCP patch uses the real introduction boundary, commit 4fa39b701ce9
-> > ("mptcp: listen diag dump support").
-> >
-> > Reproducer:
-> >
-> >      gcc -O2 -static -o poc poc.c
-> >      unshare -Urn ./poc
-> >
-> > For the reproduced panic log below, we enabled
-> > softlockup panic sysctls and ran the local helper that executes:
-> >
-> >      ./poc --listen --groups 4 --stride 2048 --count 32768 --nops 16380
-> >
-> > We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
-> >
-> > ------BEGIN poc.c------
-> > #define _GNU_SOURCE
-> >
-> > #
-> [...]
-> > static size_t build_request(void *buf, bool listen_mode, bool with_atta=
-ck,
-> >                           unsigned int nops)
-> > {
-> >       size_t msg_len =3D NLMSG_SPACE(sizeof(struct inet_diag_req_v2));
-> >       struct nlmsghdr *nlh =3D buf;
-> >       struct inet_diag_req_v2 *req;
-> >
-> >       memset(buf, 0, msg_len);
-> >       nlh->nlmsg_len =3D msg_len;
-> >       nlh->nlmsg_type =3D SOCK_DIAG_BY_FAMILY;
-> >       nlh->nlmsg_flags =3D NLM_F_REQUEST | NLM_F_DUMP;
-> >       nlh->nlmsg_seq =3D 1;
-> >
-> >       req =3D NLMSG_DATA(nlh);
-> >       req->sdiag_family =3D AF_INET;
-> >       req->sdiag_protocol =3D IPPROTO_TCP;
-> >       req->idiag_states =3D listen_mode ? TCPF_LISTEN : (1U << 12);
->
-> 1U << 12
->
-> 12 is TCP_NEW_SYN_RECV. Is TCP_BOUND_INACTIVE what you expected ?
->
-Hi,
+From: Qiliang Yuan <realwujing@gmail.com>
 
-You're right, `1U << 12` is `TCP_NEW_SYN_RECV`, not
-`TCP_BOUND_INACTIVE`.
+On 7/29/26 16:00, Vlastimil Babka (SUSE) wrote:
+> GFP_KERNEL can't really come up short in practice, at least for non-costly
+> orders, which are considered "too small to fail". I don't see immediately
+> what order is being allocated there.
+> It might perhaps be looping inside the allocator without success if it has
+> trouble reclaiming. Which usually means the userspace workload is
+> overloading the system.
 
-The inline crash reproducer only exercised the `--listen` path, so this did
-not affect the reproduced panic there, but the non-listener branch in the
-PoC is indeed wrong.
+Good catch, and it made me go check: the mergeable-buffer path allocates
+through get_a_page() -> alloc_page(gfp_mask), so it's order-0. You're
+right that this shouldn't return outright failure - "still_empty" from
+try_fill_recv(GFP_KERNEL) looping via HZ/2 reschedules was my framing,
+not something I've confirmed against an actual trace. What we have is
+an outcome-level observation: buffers run short and incoming packets
+have nowhere to land during that window. I don't have instrumentation
+that distinguishes "GFP_KERNEL returned failure" from "GFP_KERNEL took
+a long time looping in reclaim before succeeding" - I shouldn't have
+implied the former without checking, and I'll stop describing it that
+way.
 
-The intended state there is:
+> So is it looping in the page allocator or returning failures with
+> GFP_KERNEL? I guess the former otherwise there would be allocation warnings.
+> Note that why this happens can be also 4.19-specific and not applicable
+> today.
 
-    req->idiag_states =3D listen_mode ? TCPF_LISTEN : TCPF_BOUND_INACTIVE;
+Agreed it's probably the former, for the reason you gave.
 
-I'll include this PoC/cover-letter fix in the next reroll.
+> If kswapd can save the day by being woken up earlier, then it doesn't
+> sound like there's nothing to reclaim. But then it's puzzling me why the
+> GFP_KERNEL attempts wouldn't work smoothly enough too.
 
-Thanks for catching this.
+I think this is right that kswapd isn't reclaiming anything a direct
+reclaimer couldn't also reach - it's the same underlying mechanism, not
+a separate capability. What the patch changes is timing: kswapd, once
+boosted and woken, keeps working toward a higher target continuously in
+the background, instead of each CPU handling its own RX queue only
+doing reclaim reactively, synchronously, at the moment its own
+allocation needs it. Under concurrent pressure across multiple queues
+(which is the case in what we've seen - several CPUs hitting this at
+once), that front-loaded, single-threaded reclaim may finish work that
+would otherwise be duplicated or contended across multiple simultaneous
+direct reclaimers. I'll say plainly this is a hypothesis about why the
+timing helps, not something I've measured directly yet.
 
-Best regards,
-Zihan
->
-> >       req->id.idiag_cookie[0] =3D INET_DIAG_NOCOOKIE;
-> >       req->id.idiag_cookie[1] =3D INET_DIAG_NOCOOKIE;
+> Great, especially with a realistic workload. However I'd still worry that
+> we're working around some old and long time fixed allocator deficiency
+> from 4.19, unless it's demonstrated on mainline.
+
+That's a fair worry, and it made me go check exactly what our 4.19 host
+does and doesn't have, rather than treat it as a monolithic 2018
+allocator. Two relevant mm fixes landed upstream since:
+
+- c89cca307b20 ("net: skbuff: sprinkle more __GFP_NOWARN on ingress
+  allocs", 2024-08) - suppresses the warn_alloc() print for this exact
+  path. Our host does NOT have this backported, which is exactly why
+  the 144 failures showed up as log lines at all.
+
+- 281dd25c1a018 ("mm/page_alloc: let GFP_ATOMIC order-0 allocs access
+  highatomic reserves", 2024-10) - lets ALLOC_NON_BLOCK (i.e. GFP_ATOMIC)
+  order-0 requests fall back to the MIGRATE_HIGHATOMIC reserve, the same
+  way ALLOC_OOM already could. This one you suggested and reviewed
+  yourself. Our host DOES have this one backported.
+
+So the 144 failures we cited were logged on a kernel that already had
+your highatomic fallback fix in place - it's not the "already fixed
+elsewhere" case for that specific mechanism. What it demonstrates is
+that under sustained pressure, the (small, bounded) highatomic reserve
+itself can still run out, at which point GFP_ATOMIC order-0 has nowhere
+left to fall back to on the current attempt - which is exactly the
+point where this patch's proactive kswapd boost would matter, since it
+only ever helps subsequent attempts, never the one that's already
+failing.
+
+I can't make the same claim about the rest of page_alloc.c/reclaim -
+there have been ~900 commits to that file since v4.19, and I'm not
+going to pretend our host tracks all of them. But for the two fixes
+that are specifically relevant to this failure mode, I now know
+exactly which one we have and which one we don't, instead of guessing.
+I'll still go reproduce this on current mainline rather than rest the
+case on that host alone.
+
+Qiliang
