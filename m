@@ -1,178 +1,272 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05382E737C
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 05:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D7A1C84A0
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 05:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785303952; cv=none; b=iV8IAtZHrpzeoDxPdk1/KGlEH4btYEt/3vFZUkmxVEEeF9UdOMbMKT9oVEjIO1VBa1SkcYEZSzTOCnJuMlx7baZFj3xIxmLFyJK7epFY2Av5Zu21+dA+PWDxGM9X9RpT5ZauHUsqHDP4ImI59d4BkagFk9JOs9bSQGSQ3UTqyk4=
+	t=1785304238; cv=none; b=fgB0SirBcMjIglv5gbAIhPX7xy4GkG1Mx1axD+1UlL7RkQemNf9yXVUoavU9Zj1K4KZQcHsYqM5Zli/ClIpQxeMp/W8o5l0uebP6svSA+2qp0E/QKFYi9XjHKZOxuS8jtj48k/Lc7n4t9TBuVcai7jyg+jz6U3SixQwLcCtOJn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785303952; c=relaxed/simple;
-	bh=4Nrwj8V7kFFv4LKN1AV12PUOMiDIUX0q5YXokCtB84k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=K346dDYoCB91NJFyjcq/vv7KmO0EvKCdn/hy+vMRQTO00OofFs+WNnl2qCz7pmjCJPHtsHNbk0+najEXYbf0k6GCo5QVvJ+5vOY26EppbGt3APLgeJXoNHik85OW/pSEUwbKXcZpWMkvCJnOHlLqSIizlQK4y32ea9v2V1RGMcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=xgfJKfSL; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	s=arc-20240116; t=1785304238; c=relaxed/simple;
+	bh=C7HJEtIxx6ObS3jlAgLuXW6J/tMd5vqxMb4ADjenThA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KE4hKB2SlTIzTmyCBFJe+H9CTDcj4g3SgXTkaGREgBu8cpwA58dfYEra3uPnG/UB+vkAJJ2JOv9vB7z97Ka5Vm5LOdJRq4mPKqmS/A0ij7puY2rJ6qO5uX5iS//lsxbcPGgdlyqs3h8gs5M6PtHq0dCdFiF/kLtMl5LzQfQrKZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RIfHixTp; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="xgfJKfSL"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-848d21bbaffso603469b3a.0
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 22:45:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1785303946; x=1785908746; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=h4j8/bcJx2sqaNy1FkkD1tKrJ77EePT5Y3UEZ3HBUKo=;
-        b=xgfJKfSLWn+8ol107LlGs4YbMA6idVfWeJGe9C30EOEbiUI1xhcXbaxtH/2DfSVR+H
-         4i0N1LsL/3SSPvGYfLB30HY9kDJU7By6GOomuSztIttVikTZ1DnK4xgQH3RIXCxeqFzA
-         xgpgOTFjYJbMiHaiea/gBh4tHJ7vK8A42IsXgY8u1jziO5amafraZ95Po+FcxLO/ZTW5
-         smfEh05pFJFBVjiYUmjdfxOh7Ev4Vlr4uZxyYAKlBb0NahyGnY0yD8gOynd4RPMIVrvd
-         GkDIVkst/xrIWc2jg7lPz+/V4/nZBlT3yG4rbtLDfm9GQZ2fk1YWZfgi8aunUx5FZ3Q2
-         EaTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785303946; x=1785908746;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=h4j8/bcJx2sqaNy1FkkD1tKrJ77EePT5Y3UEZ3HBUKo=;
-        b=tTQvxeNjQQPS6/m93S+JVN0Q0PglUAR8LD/h00cyHY9bS39XlFA8o4T4MZBE44dZf5
-         guwQlBgKa+0f6BwDB+zS/vihMT4hceIqNDCnH+9wJLhbVh/AeDEnj8/b8cVQo2PgrQ6n
-         qi1p3mIhWSugwogfhipmO+4CHeEHLku+JOeSnAOkrqmVNLPghiYhak6dwA7CscKvgcVV
-         AzZwGG3johOqVM4/6DnNigZZOHUPBRYThTEYHASLDbTBexQSm+tALsIMFjYokqqAE1gv
-         VDaw+7CFbS8COh+TVU8if91qswH6HZ3a881Te/d6GGMfMf09wmG2fu5Qp1vpggnp6zOg
-         vSmA==
-X-Gm-Message-State: AOJu0YxFCyoSMlJGMnYRa/i0itB9VA4rGd3BHaJpSRykuM8sWI8NCyMs
-	RZ6cgZ3Mj7YAvR3gA2nAyCVGpD8gkpnnheT+uL/SUKwlVcdTwYIfYxXD6NbkKN8+qAQ=
-X-Gm-Gg: AR+sD12O5eNBU0oKqC+IcnuLH+wzvUF/u8g5aPYYbu7zr6UtlC72BVK2MDtGvdtIwfV
-	aJ4mOA6jn0vcv9qRey+u2vOzuEQnEkiWSi5V9dypqEz2//eoYovGbcSOxFt+d7q4+D7xbxLio/r
-	qIygQT+GXsczEGB69+XBXeTMLp9SmyFRYfFUrrR7tjdDb/b7EwiyIeS+pOiMIcA3csOU/kLyCeV
-	QA+CQmUnW5viw+nwCbaRDIzFRB69M6RiWs2Lvi9M9DXOdsoc39K6qNn1Mz/wx0Gr//iNJ1Njvhk
-	TpRPbHWvfOTFREukyV/7KO61r+20HhIa2PeFZ3DuvwDjrRlLYp5dRMjgDz6K6ddne81uLz4haEO
-	yP0zblZ0cGWMJ0JOeAhfifM+ntU6akqQqYZVVKBxrEmjvuuovfqnAeALqQLwVWOigD//D4UsV7u
-	dZttkHJ1PK+bJRLB2Vna+XFLjVGPoMbmCU6rnArKmBfwcisAficEKeMX4SglMU9s1zsoBCoBKcv
-	GOBasIIObs823vL/g==
-X-Received: by 2002:a05:6a00:2d84:b0:845:3fea:96c with SMTP id d2e1a72fcca58-84e9315a58cmr5454901b3a.21.1785303946026;
-        Tue, 28 Jul 2026 22:45:46 -0700 (PDT)
-Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea03cbd1csm792779b3a.53.2026.07.28.22.45.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jul 2026 22:45:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RIfHixTp"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785304233;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0bZ169YdbqXKNleo9UtpL+ygZkIM/xnq5Ot5tib0OmI=;
+	b=RIfHixTpVWQn/Rq6tIx31VvRQXojsHnwHU3Z113+j83zuqBLMvxLjnISJurZXgImARBZyD
+	4FUNqnDsmajM/OLAhC2gD1Cg5zNC2FeFNaO/eKohM+04BjGxPw1p8KpjFheXlb9lxInad/
+	TAErrd6yn7c6AKl1Av5iDNAneZKMwoc=
+From: Chenguang Zhao <chenguang.zhao@linux.dev>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	chenguang.zhao@linux.dev,
+	kerneljasonxing@gmail.com,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>
+Subject: [PATCH net-next v2] i40e: xsk: use xdp_build_skb_from_zc() for XDP_PASS
+Date: Wed, 29 Jul 2026 13:49:16 +0800
+Message-Id: <20260729054916.720750-1-chenguang.zhao@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Jul 2026 01:45:44 -0400
-Message-Id: <DKATFHMTL31E.272MMJP3JGDGG@etsalapatis.com>
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH] bpf, sockmap: Fix sk_redir use-after-free in send
- verdict
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Chengfeng Ye" <nicoyip.dev@gmail.com>, "Eric Dumazet"
- <edumazet@google.com>, "Neal Cardwell" <ncardwell@google.com>, "Kuniyuki
- Iwashima" <kuniyu@google.com>, "John Fastabend" <john.fastabend@gmail.com>,
- "Jakub Sitnicki" <jakub@cloudflare.com>, "Jiayuan Chen"
- <jiayuan.chen@linux.dev>, "David S. Miller" <davem@davemloft.net>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
- "Alexei Starovoitov" <ast@kernel.org>, "open list:BPF [L7 FRAMEWORK]
- (sockmap)" <bpf@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260719152207.2892156-1-nicoyip.dev@gmail.com>
-In-Reply-To: <20260719152207.2892156-1-nicoyip.dev@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Sun Jul 19, 2026 at 11:22 AM EDT, Chengfeng Ye wrote:
-> sk_psock_msg_verdict() takes a socket reference for psock->sk_redir.
-> tcp_bpf_send_verdict() copies that pointer while holding the source socke=
-t
-> lock, but does not take a reference for the local copy before dropping th=
-e
-> lock around tcp_bpf_sendmsg_redir().
->
-> When apply_bytes keeps the cached verdict active, another sendmsg() on th=
-e
-> same source socket can consume the remaining bytes and release the cached
-> reference while the first thread still holds only the raw local pointer:
->
->   CPU 0                                  CPU 1
->   sk_redir =3D psock->sk_redir
->   apply_bytes remains nonzero
->   release_sock(sk)
->                                          lock_sock(sk)
->                                          apply_bytes reaches zero
->                                          psock->sk_redir =3D NULL
->                                          release_sock(sk)
->                                          tcp_bpf_sendmsg_redir(sk_redir)
->                                          sock_put(sk_redir)
->   tcp_bpf_sendmsg_redir(sk_redir)
->
-> The final sock_put() can free sk_redir before CPU 0 dereferences it.
->
-> KASAN reported:
->
->   BUG: KASAN: slab-use-after-free in tcp_bpf_sendmsg_redir+0xf39/0x1020
->   Read of size 8 at addr ffff888108537090 by task poc/87
->   Call Trace:
->    tcp_bpf_sendmsg_redir+0xf39/0x1020
->    tcp_bpf_sendmsg+0x977/0x1a50
->    __sys_sendto+0x32c/0x3a0
->    __x64_sys_sendto+0xdb/0x1b0
->   Allocated by task 85:
->    sk_prot_alloc+0x56/0x210
->    sk_clone+0x6f/0x14b0
->    inet_csk_clone_lock+0x24/0x740
->    tcp_create_openreq_child+0x25/0x2710
->    tcp_v4_syn_recv_sock+0x10a/0xe00
->   Freed by task 0:
->    __kasan_slab_free+0x43/0x70
->    slab_free_after_rcu_debug+0xa6/0x1e0
->    rcu_core+0x50a/0x1850
->   Last potentially related work creation:
->    __sk_destruct+0x3da/0x540
->    sk_psock_destroy+0x81e/0xab0
->    process_one_work+0x63a/0x1070
->
-> Take a temporary socket reference while the source socket lock still
-> protects psock->sk_redir, and drop it after tcp_bpf_sendmsg_redir()
-> returns.  This keeps each unlocked use independent of cached-verdict
-> ownership.
->
-> Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Replace the driver-local i40e_construct_skb_zc() with the common
+helper xdp_build_skb_from_zc(). On failure, free the xdp buff in
+the caller.
 
-> ---
->  net/ipv4/tcp_bpf.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-> index 8e905b50dead..69cc8bc33bcd 100644
-> --- a/net/ipv4/tcp_bpf.c
-> +++ b/net/ipv4/tcp_bpf.c
-> @@ -469,6 +469,7 @@ static int tcp_bpf_send_verdict(struct sock *sk, stru=
-ct sk_psock *psock,
->  	case __SK_REDIRECT:
->  		redir_ingress =3D psock->redir_ingress;
->  		sk_redir =3D psock->sk_redir;
-> +		sock_hold(sk_redir);
->  		sk_msg_apply_bytes(psock, tosend);
->  		if (!psock->apply_bytes) {
->  			/* Clean up before releasing the sock lock. */
-> @@ -489,6 +490,7 @@ static int tcp_bpf_send_verdict(struct sock *sk, stru=
-ct sk_psock *psock,
-> =20
->  		if (eval =3D=3D __SK_REDIRECT)
->  			sock_put(sk_redir);
-> +		sock_put(sk_redir);
-> =20
->  		lock_sock(sk);
->  		sk_mem_uncharge(sk, sent);
+xdp_build_skb_from_zc() already calls skb_record_rx_queue() and
+eth_type_trans(), so pull the remaining descriptor field setup into
+__i40e_process_skb_fields() and use that on the XDP_PASS path.
+Briefly restore the Ethernet header around eth_skb_pad() so padding
+sees the full L2 frame length.
+
+Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+---
+v2:
+- Extract descriptor field setup into __i40e_process_skb_fields() and
+  use it on the XDP_PASS path, so skb_record_rx_queue()/eth_type_trans()
+  are not repeated after xdp_build_skb_from_zc().
+- Keep a brief __skb_push()/__skb_pull() around eth_skb_pad() so padding
+  still sees the full L2 frame length.
+
+v1:
+ - https://lore.kernel.org/all/20260724020125.246333-1-chenguang.zhao@linux.dev/
+---
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c   | 32 ++++++--
+ .../ethernet/intel/i40e/i40e_txrx_common.h    |  2 +
+ drivers/net/ethernet/intel/i40e/i40e_xsk.c    | 76 +++----------------
+ 3 files changed, 36 insertions(+), 74 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+index ef5e657816f0..87553b14d34a 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+@@ -1833,17 +1833,17 @@ static inline void i40e_rx_hash(struct i40e_ring *ring,
+ }
+ 
+ /**
+- * i40e_process_skb_fields - Populate skb header fields from Rx descriptor
++ * __i40e_process_skb_fields - Populate skb fields from Rx descriptor
+  * @rx_ring: rx descriptor ring packet is being transacted on
+  * @rx_desc: pointer to the EOP Rx descriptor
+  * @skb: pointer to current skb being populated
+  *
+- * This function checks the ring, descriptor, and packet information in
+- * order to populate the hash, checksum, VLAN, protocol, and
+- * other fields within the skb.
++ * Populate hash, checksum, PTP timestamp and VLAN from @rx_desc. Does not
++ * call skb_record_rx_queue() or eth_type_trans(); callers that already got
++ * those from xdp_build_skb_from_zc() should use this helper.
+  **/
+-void i40e_process_skb_fields(struct i40e_ring *rx_ring,
+-			     union i40e_rx_desc *rx_desc, struct sk_buff *skb)
++void __i40e_process_skb_fields(struct i40e_ring *rx_ring,
++			       union i40e_rx_desc *rx_desc, struct sk_buff *skb)
+ {
+ 	u64 qword = le64_to_cpu(rx_desc->wb.qword1.status_error_len);
+ 	u32 rx_status = FIELD_GET(I40E_RXD_QW1_STATUS_MASK, qword);
+@@ -1858,14 +1858,30 @@ void i40e_process_skb_fields(struct i40e_ring *rx_ring,
+ 
+ 	i40e_rx_checksum(rx_ring->vsi, skb, rx_desc);
+ 
+-	skb_record_rx_queue(skb, rx_ring->queue_index);
+-
+ 	if (qword & BIT(I40E_RX_DESC_STATUS_L2TAG1P_SHIFT)) {
+ 		__le16 vlan_tag = rx_desc->wb.qword0.lo_dword.l2tag1;
+ 
+ 		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q),
+ 				       le16_to_cpu(vlan_tag));
+ 	}
++}
++
++/**
++ * i40e_process_skb_fields - Populate skb header fields from Rx descriptor
++ * @rx_ring: rx descriptor ring packet is being transacted on
++ * @rx_desc: pointer to the EOP Rx descriptor
++ * @skb: pointer to current skb being populated
++ *
++ * This function checks the ring, descriptor, and packet information in
++ * order to populate the hash, checksum, VLAN, protocol, and
++ * other fields within the skb.
++ **/
++void i40e_process_skb_fields(struct i40e_ring *rx_ring,
++			     union i40e_rx_desc *rx_desc, struct sk_buff *skb)
++{
++	__i40e_process_skb_fields(rx_ring, rx_desc, skb);
++
++	skb_record_rx_queue(skb, rx_ring->queue_index);
+ 
+ 	/* modifies the skb - consumes the enet header */
+ 	skb->protocol = eth_type_trans(skb, rx_ring->netdev);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h b/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
+index e26807fd2123..3c52e0e60487 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
+@@ -9,6 +9,8 @@
+ int i40e_xmit_xdp_tx_ring(struct xdp_buff *xdp, struct i40e_ring *xdp_ring);
+ void i40e_clean_programming_status(struct i40e_ring *rx_ring, u64 qword0_raw,
+ 				   u64 qword1);
++void __i40e_process_skb_fields(struct i40e_ring *rx_ring,
++			       union i40e_rx_desc *rx_desc, struct sk_buff *skb);
+ void i40e_process_skb_fields(struct i40e_ring *rx_ring,
+ 			     union i40e_rx_desc *rx_desc, struct sk_buff *skb);
+ void i40e_xdp_ring_update_tail(struct i40e_ring *xdp_ring);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+index 9f47388eaba5..8741dff82bd1 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+@@ -3,6 +3,7 @@
+ 
+ #include <linux/bpf_trace.h>
+ #include <linux/unroll.h>
++#include <net/xdp.h>
+ #include <net/xdp_sock_drv.h>
+ #include "i40e_txrx_common.h"
+ #include "i40e_xsk.h"
+@@ -277,70 +278,6 @@ bool i40e_alloc_rx_buffers_zc(struct i40e_ring *rx_ring, u16 count)
+ 	return count == nb_buffs;
+ }
+ 
+-/**
+- * i40e_construct_skb_zc - Create skbuff from zero-copy Rx buffer
+- * @rx_ring: Rx ring
+- * @xdp: xdp_buff
+- *
+- * This functions allocates a new skb from a zero-copy Rx buffer.
+- *
+- * Returns the skb, or NULL on failure.
+- **/
+-static struct sk_buff *i40e_construct_skb_zc(struct i40e_ring *rx_ring,
+-					     struct xdp_buff *xdp)
+-{
+-	unsigned int totalsize = xdp->data_end - xdp->data_meta;
+-	unsigned int metasize = xdp->data - xdp->data_meta;
+-	struct skb_shared_info *sinfo = NULL;
+-	struct sk_buff *skb;
+-	u32 nr_frags = 0;
+-
+-	if (unlikely(xdp_buff_has_frags(xdp))) {
+-		sinfo = xdp_get_shared_info_from_buff(xdp);
+-		nr_frags = sinfo->nr_frags;
+-	}
+-	net_prefetch(xdp->data_meta);
+-
+-	/* allocate a skb to store the frags */
+-	skb = napi_alloc_skb(&rx_ring->q_vector->napi, totalsize);
+-	if (unlikely(!skb))
+-		goto out;
+-
+-	memcpy(__skb_put(skb, totalsize), xdp->data_meta,
+-	       ALIGN(totalsize, sizeof(long)));
+-
+-	if (metasize) {
+-		skb_metadata_set(skb, metasize);
+-		__skb_pull(skb, metasize);
+-	}
+-
+-	if (likely(!xdp_buff_has_frags(xdp)))
+-		goto out;
+-
+-	for (int i = 0; i < nr_frags; i++) {
+-		struct skb_shared_info *skinfo = skb_shinfo(skb);
+-		skb_frag_t *frag = &sinfo->frags[i];
+-		struct page *page;
+-		void *addr;
+-
+-		page = dev_alloc_page();
+-		if (!page) {
+-			dev_kfree_skb(skb);
+-			return NULL;
+-		}
+-		addr = page_to_virt(page);
+-
+-		memcpy(addr, skb_frag_page(frag), skb_frag_size(frag));
+-
+-		__skb_fill_page_desc_noacc(skinfo, skinfo->nr_frags++,
+-					   addr, 0, skb_frag_size(frag));
+-	}
+-
+-out:
+-	xsk_buff_free(xdp);
+-	return skb;
+-}
+-
+ static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
+ 				      struct xdp_buff *xdp_buff,
+ 				      union i40e_rx_desc *rx_desc,
+@@ -372,21 +309,28 @@ static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
+ 		 * BIT(I40E_RXD_QW1_ERROR_SHIFT). This is due to that
+ 		 * SBP is *not* set in PRT_SBPVSI (default not set).
+ 		 */
+-		skb = i40e_construct_skb_zc(rx_ring, xdp_buff);
++		skb = xdp_build_skb_from_zc(xdp_buff);
+ 		if (!skb) {
++			xsk_buff_free(xdp_buff);
+ 			rx_ring->rx_stats.alloc_buff_failed++;
+ 			*rx_packets = 0;
+ 			*rx_bytes = 0;
+ 			return;
+ 		}
+ 
++		/* xdp_build_skb_from_zc() already ran eth_type_trans() and
++		 * skb_record_rx_queue(). Restore the Ethernet header only for
++		 * eth_skb_pad(), then pull it back.
++		 */
++		__skb_push(skb, ETH_HLEN);
+ 		if (eth_skb_pad(skb)) {
+ 			*rx_packets = 0;
+ 			*rx_bytes = 0;
+ 			return;
+ 		}
++		__skb_pull(skb, ETH_HLEN);
+ 
+-		i40e_process_skb_fields(rx_ring, rx_desc, skb);
++		__i40e_process_skb_fields(rx_ring, rx_desc, skb);
+ 		napi_gro_receive(&rx_ring->q_vector->napi, skb);
+ 		return;
+ 	}
+-- 
+2.25.1
 
