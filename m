@@ -1,44 +1,46 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9114119E6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD9B4A2E0E;
 	Wed, 29 Jul 2026 16:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785343070; cv=none; b=jn4jMZ3RwQQIX6B8gNorUfExR0HiBtWCTmVF81aVCtJwd2rUS9XXjcQSQGi4ZYovvQM6Td63xY7tGZoRNrdyru9jiCgVQrh3REk7DtYFNQplhmC3wbZyIVM95znPpq6wjguYM4HwGRLcn6xLsfBguYlM3mLmH3GCynKyPKYzrZ0=
+	t=1785343071; cv=none; b=nm40faluuLxRbeIT91s2hBCI9eIOGNFhlnzwrCz1DhxJEMqADyP7il/Y9PMLunj9maMDNU46+yQ+w3PcHtv2aDSg2KZIyWSvD72/6iJO1fLvWAQj4Jy+3/ZMYoWbVz2E1zpKZsZoJ+Lbi1wrJOp0bOIJY0T0mRJiocGQ2DYVtbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785343070; c=relaxed/simple;
-	bh=Z1w5WIvbNQo9Zn50jFBwKMQf8kI7lW0aM+16Dh/V7qY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sUkuoSQgQgeAmk80jLHZ/Qkl2fdN9rqWZO8OuZCQxxhk+BQltiyGQQiva4dq+r3OfiO57mnFC6DxG+fMKoo+4fencLoRhIeoiBw7QnwM5TMdVWmicX/Gqq6tg0OJSPSiqv5EdsC+xqxpURo0Cp0PJnt5uvXQ7QSGrrA7RENv8CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Rigbcil8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JWSoiNys; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1785343071; c=relaxed/simple;
+	bh=B3zwFph2l5M3r/gGBodPjEoDhGAHgeuEl4GHxmxpfNs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=NGJRiH6QfoP4I3BAM44qsQJttNblwTBJDUENfOZi+lPKz0P32T/i6omvk/nYDgqyERQ6M4z1wA1H9FZaCMnuQuyO0vINo3idWEvj+FaIJv3V1sEzB9oHPSc1CcTP+WwfkHU9SAmY0Tbo+E506LLN8LBnAj34MctNJ5+2iDe71qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gCiOY+Ob; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MeohaW5L; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Rigbcil8";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JWSoiNys"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gCiOY+Ob";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MeohaW5L"
 From: Vasilij Strassheim <v.strassheim@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1785343064;
+	s=2020; t=1785343065;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LtRaNxgRbpO/FK7lN9MVibch0eWYBHUpJXlU+vO4/rQ=;
-	b=Rigbcil8PytSssH8pyA1XNmp7ZqzLaaYaDjedBFfrRypeDeB39SAGfNSjmlkIEh6ADklE1
-	AxggnuCAxcq5RGJySBZA45hiVIwdzwPL+z1S1bgv8lFc0MXCO/QM5TWGTnwFN/ACd5SBpM
-	gwb79nsu/zlQAGd0c2NqH8SFPw2oCdQiRWIFzKKKVmU2m8ftMrnaPILlxWEM65v9yLiCzG
-	0a46+rjus2TXEM7t3Kr9EAtbt3XS3p5oHkTUp+0nwbRakuKPv9BsfbxwPDO0G9AeQKcaeu
-	ciYpcXKB8h5fcdjAr67q0m1KRxTBm5PGeeCUmj6fwv4Buo57ZxgWebzSlKGF0A==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/TBQqDV43QZ7yFwrzrvovYm71bbTIN8k6liXMuFjFSM=;
+	b=gCiOY+Obj6AFNbToTOcGIFTPHNuzN0TRMWiZpoYT6p58OljQRBlGjfZ1TiM4tajiCXBchD
+	YM8HC3MKKswyUyXhGkhn8tjKhYaEarXTKiLMzUW155ZzSJyvzo+a9iEOpfF9u6WcPJD91G
+	RinubsOXubGgbOPsT154SaMoYhwx5xjMB0AjvDbSAZBKEiAinAPz2azx6Ad9i/xa/MLs6t
+	noAt7e6ZUEA0y7toXAt/uHZglP6fsjra5MjWAyuGeE6cI29Bd5WfI4gYNIha8S1Tsyy/Fn
+	D/i10necrKDV057NoQPbFNLj/seLdWz+2qcC2yj61bghKFOAxn0mr9TDx6bq8A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1785343064;
+	s=2020e; t=1785343065;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LtRaNxgRbpO/FK7lN9MVibch0eWYBHUpJXlU+vO4/rQ=;
-	b=JWSoiNys9q2nq89H6sf17ra8TjUP0dlH2vr1+9ZHbOnj0vZ7gH0ckbe9+aEGRodS5buSQ9
-	a6nIKMvU8jBMZzAw==
-Subject: [PATCH 0/4] net: dsa: Add SoC-e DSA driver
-Date: Wed, 29 Jul 2026 18:36:53 +0200
-Message-Id: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/TBQqDV43QZ7yFwrzrvovYm71bbTIN8k6liXMuFjFSM=;
+	b=MeohaW5LGzIewe9YmZXGx5Ozk2NfEwx8FVLfXZXCzT/t9kTbD7KfC+t0Iplk9LhpPPhZP6
+	6wrsdIW0/4hEJ0BA==
+Date: Wed, 29 Jul 2026 18:36:54 +0200
+Subject: [PATCH 1/4] dt-bindings: vendor-prefixes: Add soce
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,10 +49,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACUsamoC/yXMTQrCMBAG0KuUWTsQI9bqVaSLafJpR/ojmRqE0
- rsbdfk2byVDUhhdqpUSsprOU8F+V1HoZbqDNRaTd752J3/miIyBsy1JzHroyDYHcDThcWDvYi1
- HiV1zaKgcz4Sbvn//tf3bXt0DYfmmtG0fj5iUPoEAAAA=
-X-Change-ID: 20260729-devel-vstrassheim-soce-dsa-ml-20d6a5adb838
+Message-Id: <20260729-devel-vstrassheim-soce-dsa-ml-v1-1-be569dae1b20@linutronix.de>
+References: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+In-Reply-To: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
  Vladimir Oltean <olteanv@gmail.com>, 
@@ -61,55 +62,29 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  netdev@vger.kernel.org, Martin Kaistra <martin.kaistra@linutronix.de>, 
  Vasilij Strassheim <v.strassheim@linutronix.de>
 
-Add initial support for the DSA driver for SoC-e FPGA-based (IP core)
-Ethernet switches.
+Add the soce vendor prefix for System-On-Chip Engineering, S.L.
 
-This first functional driver baseline is kept focused on Managed
-Redundant Switch (MRS) which is also runtime-tested (25.01 IP using
-24.01 layout) on ZynqMP hardware. It includes basic support for
-networking (STP, FDB and Phylink), but not the IEEE 802.1Q VLAN tagging.
-This will likely be added in the future.
-
-This work is based on non-publicly available SoC-e DSA driver code, with
-permission from the company to contribute it under different authorship.
-There are different variants of the SoC-e switch IP, which can be
-additionally configured at runtime with proprietary userspace software.
-All variants share the same DSA features with a few differences in
-register layout. Additional SoC-e switch variants might be introduced
-later in separate patch series. 
+This prefix is used by the new SoC-e Ethernet switch DT bindings.
 
 Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
 ---
-Vasilij Strassheim (4):
-      dt-bindings: vendor-prefixes: Add soce
-      dt-bindings: net: dsa: Add SoC-e switch IP and DSA bindings
-      net: dsa: Add support for SoC-e SDSA tags
-      net: dsa: soce: Add initial driver support for MRS switches
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
- .../bindings/net/dsa/soce,switch-dsa.yaml          | 195 +++++++++++
- .../bindings/net/dsa/soce,switch-ip.yaml           |  54 +++
- .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
- drivers/net/dsa/Kconfig                            |   2 +
- drivers/net/dsa/Makefile                           |   1 +
- drivers/net/dsa/soce/Kconfig                       |  12 +
- drivers/net/dsa/soce/Makefile                      |   6 +
- drivers/net/dsa/soce/soce_common.c                 | 159 +++++++++
- drivers/net/dsa/soce/soce_common.h                 |  36 ++
- drivers/net/dsa/soce/soce_dsa.h                    |  41 +++
- drivers/net/dsa/soce/soce_dsa_core.c               | 354 +++++++++++++++++++
- drivers/net/dsa/soce/soce_mdio.c                   | 381 +++++++++++++++++++++
- drivers/net/dsa/soce/soce_mdio.h                   |  40 +++
- drivers/net/dsa/soce/soce_mrs.h                    |  21 ++
- include/net/dsa.h                                  |   2 +
- net/dsa/Kconfig                                    |   6 +
- net/dsa/Makefile                                   |   1 +
- net/dsa/tag_sdsa.c                                 | 102 ++++++
- 18 files changed, 1415 insertions(+)
----
-base-commit: 9fb3b84c9577707db14e633ea3c57048380bf822
-change-id: 20260729-devel-vstrassheim-soce-dsa-ml-20d6a5adb838
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 396044f368e7..cf7eefff4230 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -1553,6 +1553,8 @@ patternProperties:
+     description: Standard Microsystems Corporation
+   "^snps,.*":
+     description: Synopsys, Inc.
++  "^soce,.*":
++    description: System-On-Chip Engineering, S.L.
+   "^sochip,.*":
+     description: Shenzhen SoChip Technology Co., Ltd.
+   "^socionext,.*":
 
-Best regards,
---  
-Vasilij Strassheim <v.strassheim@linutronix.de>
+-- 
+2.39.5
 
