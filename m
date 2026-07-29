@@ -1,187 +1,176 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358241F2380
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 03:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785295758; cv=none; b=JWmIHDXzP+4w2pdxi2zFnzIoXSQwsugWDhUS+QgaU+ea4DkAy8PbGfBLKuPwUVe6DQWPeRzHJM0KuYrFOoqHJbibdc67R7lmTIkHqbqcM0XWoHrtHabEBWB15aqpJ70IrVthKxSNifjYvPgY1VNiHmQj/FjabqCcciDylBmAI5c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785295758; c=relaxed/simple;
-	bh=0czioHS0PIOcwzTaEcIyg0NWJVoikoTVWTkPTu1Gjpg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KdV5AGmu9yOnhgpWtQBk6le6T+1oIQDcRPtFBQJuv4Lc+KaaDTkdEpTqMN5ZHz4A9ixcWZ+h6bCHcew+FpdcRl7WrUuPo8cRLeqntVJcdxeGla2WI2384Au8sFzGv2t6kug1fMnDnIspcMsBg9wYxm/83ekfPIdY5lQ0rtcYCgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f6HBnNJ6; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE2E22B594
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 03:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785295901; cv=pass; b=W3xgcUqgC7yi3vaJhrJEJ0J7SopK6f0PiFvALs032jn8GXmo/Lydrv/5hT5sP6oZdgCz5nbR9ZlIyxzOX+kz11bNL8KS0hUY0hYgqXrm+pUkK8y3/S06Nyc1PIan7GJUriHbRb3TwakqTAmupR3Fir5lgg/tzjk+Vummgj7X+Oc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785295901; c=relaxed/simple;
+	bh=8INSsvIsr0EcFor0KjhMqLit17i8jgQhYiGlfRY+r1w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=D37plH9KVihgm0YnWJjktZStI+8ieXaoyCj7PhG4/krk0fpC5j7K8ALuFfKqVB2E5RX2g6ZUROqrINaRtJ8HkFmdA9G8jb/L9yqvTMeiOtVRbQMzJogY4GmCPz3MfzhPpmDiLVXs8FcQ7iRFwZ7JkHlgdWIwdpq+4JXE9//bAFo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LZkFzDLJ; arc=pass smtp.client-ip=74.125.224.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f6HBnNJ6"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-381216921aaso447005a91.1
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 20:29:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LZkFzDLJ"
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-66807ba2f0fso544709d50.3
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 20:31:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785295898; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ev9kJ41JDDG+YvOXjvdrKdp10jTmEi+2jWrCza3K9TUF6LATONov8eDEf19W9VN3qc
+         xNM5EuDqOoeCJfR+nnXYHTcTp89RASaX5PXrGUCEyOeVKIVcYeofaPL7dE0zEfbh+1Fp
+         Qm1XSvHqtAIow95MResGZRo6doJmFCCdbFdNvRy8XM0xf9cl7NlG0Kyr1k18vx3aywXH
+         fN00WZV85YUlSEaa9Pnh5TIsJ/+pq1fxSZLfUx9TRARUZmQJsoDyOIcsPsvTUZb3Z4Xe
+         QfHjumbyY7ekIp1lyxatowIWEERhFwAeWqG6nEqg4gc+VgMoXoDM82KEe96UGclQRJkc
+         tajQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pe0CzKtFSobq234+zo2ouN0uSG2sSCPEWeoFaE53a50=;
+        fh=oXfyWvA7cr2GK4senP4JwY8dZOlmtzN+MrACkMYEyBc=;
+        b=GsrGuNGS3S5GLlZU5AY4RhEM0Ob67h38ne7p8RPhCCsBvB+DFTQn1F8csjuNNwz+9l
+         2AAWFt7TvS9GpodnKq/xvcv2T58T2DNCue8cVjk8eENXHUnTu3ddHMCAjVgd1wcnYALe
+         DV5dicylr9eul+ziNq9dXdqCNwVvNvpHKaSGCBHvWDgkFeDFAXY+2nyxs6vYxnKyqKl0
+         pgsVPkLWHnb9WmwJTWi06FaYmzxWLnpzViA5aZ1ZFBNjXKrymqKwHEBPIYXKECX85o7M
+         2lEh/Q1nhNrOZ0GngRcClgj/7qpISfgr2GZP6VqGiVeJIYa4a0SqKc8tHvH9Yy+yYNcT
+         r8kg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785295756; x=1785900556; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RhKbpLX/FII2EUu5sbC4SSY9m0ly4BxD5e88w3AyYnE=;
-        b=f6HBnNJ6LXpDVInTTErHOeStK9kUir1UW0lbXiGZVrtJDW+qP30YPdR6ehEF8I6Rk/
-         P2aUiZVFO0UGjWU7BeirBBLjdfn40cOGsJsP18XLrU5/szQg3oa+KuxE6XUNzDDuldaq
-         7xeZzLVWGoDffGxMMx9GpWLBj2C1PXYWhTU4JVyAoQq9c+lGgKRmfE/JhoaoWuyEkifH
-         aH2EP04v8aXraU06lvr+ZWPdV93/asFb15jO4K1uUYyYlNcLI+KXMBYIJQrMLACYhYiH
-         zmO/ybkPS7ZYneshstXqQPfIm/UjOomxwQPYD3F+6RcciwKq+nbXyaO8IcOiMUHTZhOl
-         tB/g==
+        d=gmail.com; s=20251104; t=1785295898; x=1785900698; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pe0CzKtFSobq234+zo2ouN0uSG2sSCPEWeoFaE53a50=;
+        b=LZkFzDLJYcHyEVQjUK2tiKOjy7g93DUrCPtLUfOlKgu79bnoTMVwilsZVc8hrngfNM
+         ADOlYWZA3nrXD1n+8NY/xS0vkN0Qp63wg23bsn0nvHU0qtDh5avpk6hxEjlc5s3FDXMz
+         oKBYX/GiJW104aKxw32AK6W6TJco/J+A4eBos1lRYZhbJJqP22ZgscRYXYz62TSrzucY
+         ckTDgmyNQ0OFbuYwbGUSsxBxfy3t8vyWZdvECPQ+ET322LT2n7E+kvdIJ5X6+lwAdhRw
+         33VItxbVf1TDbxYqV2P6aplA6tZKMCL0umNJjy9Wi25WpbMsaGxr1xYh+N3cvSfnmpdW
+         vBUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785295756; x=1785900556;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RhKbpLX/FII2EUu5sbC4SSY9m0ly4BxD5e88w3AyYnE=;
-        b=AybDChXNyB8EUSRcoayeKJfPbZ5z7TAe/edVxZMAYDCTmDPh3lIi5qTwCOBgdy1v8d
-         2HnpY6JPIfDOdkLcQRcYBusvdHzHY5V2+zkiIu7V0gwsy9BM8V404+mjuRn+ZxiTEp4n
-         ziND6PtCG5N6XtAoHR6Tehbwfx7dNzcA0SiYohhWkj+HHfLaCi6nesvF78eEYgNtikh0
-         gWvmMfEY7NWuU14BIvVrulUWoRxErStAMMygm7TpznTT0y7K4l7a+wKZ6flXbQzvXlOl
-         Owk5XJPVVz8tecjB7OW0k3416v/XYpRUaQzd3qLNtlsfSJFUF1rB5H62k/WLx5/Out6t
-         6RPg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp8vrZwsuRIEslIrtNE8Fu0lT+Q/cQT4R0FwVo3raJ2w7BkBUTI9sRz7utGhwukSXtQ6ClFpsE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw05tSdhS7tS1ASC4BQTBOud8BBGzjuj/uJyzSJgUWmAyvjJJyl
-	xfjGqlLfI6K9y1yWFALapE9eLsPpQaWRwdcXue5JY38qRix4PZbX4+Km
-X-Gm-Gg: AR+sD10XgiFn+4prbqSkjW8ZPNqpaiyHD4mW9fjHxzn839vCEcvo47aKnxPzZmh1uyC
-	xkxZISAoKxcX0VcFvYRJwjU2gBuRetkO5sRaM3AROBycJLh3N6x0JlI2fuKl0F6vLixRcrEGPm3
-	o8UpjXGR04ls5EoosWuv5/m0JmndB4CtSDIszDKaSnSBK+zzIJN7VshNgrB45xZNvkzFmVY+O/R
-	kKEKtMg3/8FpALH+Ayf5yvwESDGu/2y8mgkVOztr2bO8P+DxeMUiRt5ITbfUfOwFC5C78Fb6hP2
-	am37/O1fcJ6Tnkb/0LvHYjYUjGjWSoZVLXTAQT9y+sb1cMOxz96UZ2S48fqN9pN665sy4sVQRxT
-	MfJ/mF/uE2dt75YQWxf8tta9z01pzJe/Z9FCMQNQcAve4SGMs+b/Yhmt6Btog/gL/N10LCspMVC
-	ETcQfOd6/syBXNWcRd/wsMH9fPKe588JpU5dKLXX19kTWJxD0JK5hbsRzJmQJM1SGe8RPx0k5Qt
-	uEhVm2smfapI6Vu5Bt3
-X-Received: by 2002:a17:90b:3b41:b0:38e:6aa7:68ad with SMTP id 98e67ed59e1d1-38f6a30c840mr5166952a91.5.1785295756488;
-        Tue, 28 Jul 2026 20:29:16 -0700 (PDT)
-Received: from localhost.localdomain ([116.105.227.66])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f64130e0dsm2053547a91.8.2026.07.28.20.29.13
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 28 Jul 2026 20:29:15 -0700 (PDT)
-From: Yuejie Shi <syjcnss@gmail.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S . Miller" <davem@davemloft.net>
-Cc: Eyal Birger <eyal.birger@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH ipsec] xfrm: do not take x->lock under xfrm_state_lock in the NAT keepalive walk
-Date: Wed, 29 Jul 2026 11:28:16 +0800
-Message-ID: <20260729032912.55800-1-syjcnss@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20251104; t=1785295898; x=1785900698;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pe0CzKtFSobq234+zo2ouN0uSG2sSCPEWeoFaE53a50=;
+        b=NqvSo/jaxSByT605LHY/QmiCSZnvnAiZ6YGAVoYkKX4lqjcLNneugUlxiEcAqhfUSG
+         krIjPFEcEOVfBJczk3hMHN5LdZmjKf3i9U/Dwwr+TQ/+JtnFTyg0qOn05btCMC+om6+o
+         kjL9ii8UoS7gKNV1HaR9b77+nTmRlxAHq+m7V0OuSSPpzYFJoQGeklhmdpBLtOkTawlC
+         3NIfQRDikoGOu4xsrCkC18F1hJJB8GQaGDsGIG5153eCVaO1JtZdSD+ap8xatpqi4Udc
+         SwkKKSAk0iCnwA4LANidg8i7Owidt9iSMnpRPK8eTgzCrlJ1oUSId/B/xKKsjFdXIJOE
+         awaw==
+X-Gm-Message-State: AOJu0YyD+Rqj6pGF7Ur9HGcmgcV1Pvt40ZrC+LPKoVzOSydq/yNnDNh8
+	T3JmMk/EtQjPxCL6qJ9iVKy1KLzc3tX1GS3GhmBU/65nFfXG3HB2vgYQHFkDUCtW9VebS+L5sGv
+	iQ88BB0hKbbEybYkuOAavW1wYDNa4amHeccZtz9VzjA==
+X-Gm-Gg: AR+sD1107pH+NKOhw0PY91NJh6tKJh5QVBqSoGKixNTiVgTegHgDDs1M0/WWvQaq/dP
+	NqsaeA5+a65IkDw3cH3XQVoSMz/itHr/+Ba+n/Mj3nw8pYWbw/Q5FX0Yy5WfS1BrhI0ic2jd8WP
+	8IzKBOjfCGpJA89Ce9saMsmldnmahbf5a9GG4uqAWbMd3KLMtcJ0kU5ZGLo0X2SpY9SZMMYy7EH
+	j25xgCioBC+EQ6qNfYjQgbEz+tLG4qDo8nzGQkAQ75xlOWjiIFyR+d0QGoTYd1KUL0t3HBevh+C
+	i1ZgrqmQ7t2yOncV/80/sVzYuWpk9vBIux06gVzDkszn4IdtW8ApNCDZ5GfvgOWJy01XmNz+i9u
+	hvopPUZOEbvu4g+V3vQI=
+X-Received: by 2002:a05:690e:4295:20b0:667:b57b:8697 with SMTP id
+ 956f58d0204a3-669057f5bc3mr1697637d50.61.1785295898162; Tue, 28 Jul 2026
+ 20:31:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260727032535.13469-1-sun.jian.kdev@gmail.com>
+ <20260727032535.13469-3-sun.jian.kdev@gmail.com> <amcIoG59kgi4CJbo@lore-desk>
+In-Reply-To: <amcIoG59kgi4CJbo@lore-desk>
+From: sun jian <sun.jian.kdev@gmail.com>
+Date: Wed, 29 Jul 2026 11:31:28 +0800
+X-Gm-Features: AUfX_mzCCj-Rhe2GnR_T5jwxAsRWw1WjvNw_V50aUcanGkk---NpUHWw-SrR344
+Message-ID: <CABFUUZG+g_g_7N9D477vJW2c141-WhWL2JG8oc-y3OoF9QePdA@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] veth: fix skb length accounting after XDP frag adjustment
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	andrew+netdev@lunn.ch, horms@kernel.org, ast@kernel.org, daniel@iogearbox.net, 
+	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, toke@redhat.com, 
+	maciej.fijalkowski@intel.com, matt@readmodwrite.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-nat_keepalive_work() walks the SA list with xfrm_state_walk(), which
-holds net->xfrm.xfrm_state_lock across the callback, and
-nat_keepalive_work_single() then takes x->lock underneath it.
+On Mon, Jul 27, 2026 at 3:28=E2=80=AFPM Lorenzo Bianconi <lorenzo@kernel.or=
+g> wrote:
+>
+> On Jul 26, Sun Jian wrote:
+> > veth exposes non-linear skb fragments through an xdp_buff. If an XDP
+> > program adjusts the fragment area, veth_xdp_rcv_skb() copies
+> > xdp_frags_size back to skb->data_len but leaves skb->len containing the
+> > old fragment contribution.
+> >
+> > After a fragment shrink, this makes skb_headlen() larger than the actua=
+l
+> > linear area. In the reproduced UDP receive path, __skb_datagram_iter()
+> > copied 1024 bytes past the actual linear tail to userspace, starting at
+> > struct skb_shared_info. The copied bytes included the affected skb's
+> > nr_frags, xdp_frags_size and a kernel pointer from
+> > skb_shinfo(skb)->frags[0]. Real packet data was displaced by the same
+> > amount and truncated at the end.
+> >
+> > Subtract the old data_len before replacing it and add the new data_len
+> > afterwards, keeping skb->len and skb->data_len synchronized.
+> >
+> > A 60000-byte UDP datagram on a veth pair with MTU 64000 was shortened b=
+y
+> > 1024 bytes from its fragment area. Before the fix, all 10 runs produced
+> > corrupted payloads. After the fix, all 10 runs matched the expected
+> > payload exactly.
+> >
+> > Fixes: 718a18a0c8a6 ("veth: Rework veth_xdp_rcv_skb in order to accept =
+non-linear skb")
+> > Cc: stable@vger.kernel.org
+> > Link: https://lore.kernel.org/r/20260720141859.19FF41F000E9@smtp.kernel=
+.org
+> > Link: https://lore.kernel.org/bpf/al9T9Eto%2FhRIzP5W@boxer/
+> > Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
+> > ---
+> >  drivers/net/veth.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+> > index 00e34afd858e..a956498a073b 100644
+> > --- a/drivers/net/veth.c
+> > +++ b/drivers/net/veth.c
+> > @@ -871,12 +871,14 @@ static struct sk_buff *veth_xdp_rcv_skb(struct ve=
+th_rq *rq,
+> >               __skb_put(skb, off); /* positive on grow, negative on shr=
+ink */
+> >
+> >       /* XDP frag metadata (e.g. nr_frags) are updated in eBPF helpers
+> > -      * (e.g. bpf_xdp_adjust_tail), we need to update data_len here.
+> > +      * (e.g. bpf_xdp_adjust_tail), update skb length fields here.
+> >        */
+> > +     skb->len -=3D skb->data_len;
+> >       if (xdp_buff_has_frags(xdp))
+> >               skb->data_len =3D skb_shinfo(skb)->xdp_frags_size;
+> >       else
+> >               skb->data_len =3D 0;
+> > +     skb->len +=3D skb->data_len;
+>
+> nit: same here, you can this one just in the if () branch.
+>
+> Regards,
+> Lorenzo
+>
+> >
+> >       skb->protocol =3D eth_type_trans(skb, rq->dev);
+> >
+> > --
+> > 2.43.0
+> >
+Hi Lorenzo,
 
-The rest of xfrm uses the opposite order.  xfrm_timer_handler() takes
-x->lock and calls __xfrm_state_delete(), which takes xfrm_state_lock,
-and xfrm_state_flush() deliberately drops xfrm_state_lock before calling
-xfrm_state_delete() for that very reason.  The NAT keepalive walk is the
-only place that inverts it.
+Thanks. I will address this in v2.
 
-lockdep reports it as soon as both paths have run, which needs nothing
-more than a few outbound ESP-in-UDP SAs carrying
-XFRMA_NAT_KEEPALIVE_INTERVAL and a hard lifetime -- no traffic and no
-peer are required:
-
-  WARNING: possible circular locking dependency detected
-  swapper/3/0 is trying to acquire lock:
-   (&net->xfrm.xfrm_state_lock){+.-.}, at: __xfrm_state_delete+0x60/0x324
-  but task is already holding lock:
-   (&x->lock){+.-.}, at: xfrm_timer_handler+0x94/0x50c
-
-  -> #1 (&x->lock){+.-.}:
-         _raw_spin_lock+0x48/0x60
-         nat_keepalive_work_single+0x120/0xb60
-         xfrm_state_walk+0x284/0x468
-         nat_keepalive_work+0xc4/0x15c
-         process_one_work+0x450/0xc78
-
-  -> #0 (&net->xfrm.xfrm_state_lock){+.-.}:
-         _raw_spin_lock+0x48/0x60
-         __xfrm_state_delete+0x60/0x324
-         xfrm_timer_handler+0x35c/0x50c
-         __hrtimer_run_queues+0x1c4/0x5b8
-
-   Possible unsafe locking scenario:
-         CPU0                    CPU1
-         ----                    ----
-    lock(&x->lock);
-                                 lock(&net->xfrm.xfrm_state_lock);
-                                 lock(&x->lock);
-    lock(&net->xfrm.xfrm_state_lock);
-
-xfrm_user_rcv_msg() gates every operation on netlink_net_capable(skb,
-CAP_NET_ADMIN), which is CAP_NET_ADMIN over the netns' user namespace,
-so an unprivileged user who unshares a user and network namespace can
-set this up.  When the two orders do collide, both CPUs spin forever --
-one of them inside hrtimer softirq context, which also stops softirq
-processing on that CPU.
-
-x->lock is needed here because the data path updates x->lastused under
-it.  x->nat_keepalive_expiration is only ever touched by this worker,
-which is a per-netns delayed_work and so never runs concurrently with
-itself.
-
-Restructuring the walk so the state list lock can be dropped is not
-worth it for a once-per-second housekeeping pass.  Use spin_trylock()
-instead: it cannot block, so the inversion is gone, and a state whose
-lock happens to be held by the data path at that instant is simply
-revisited on the next run.  Deferring one keepalive by a second is
-harmless -- the configured intervals are in seconds, and next_run is
-recomputed from scratch on every pass.
-
-Fixes: f531d13bdfe3 ("xfrm: support sending NAT keepalives in ESP in UDP states")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuejie Shi <syjcnss@gmail.com>
----
- net/xfrm/xfrm_nat_keepalive.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
-
-diff --git a/net/xfrm/xfrm_nat_keepalive.c b/net/xfrm/xfrm_nat_keepalive.c
-index eb1b6f67739e..7143c7a11c18 100644
---- a/net/xfrm/xfrm_nat_keepalive.c
-+++ b/net/xfrm/xfrm_nat_keepalive.c
-@@ -173,7 +173,19 @@ static int nat_keepalive_work_single(struct xfrm_state *x, int count, void *ptr)
- 	if (!interval)
- 		return 0;
- 
--	spin_lock(&x->lock);
-+	/* This runs from xfrm_state_walk() with net->xfrm.xfrm_state_lock
-+	 * held, while the rest of xfrm takes x->lock first and
-+	 * xfrm_state_lock second (see xfrm_timer_handler() ->
-+	 * __xfrm_state_delete(), and xfrm_state_flush(), which drops
-+	 * xfrm_state_lock before deleting a state).  Blocking on x->lock
-+	 * here would invert that order and deadlock.  A keepalive is
-+	 * housekeeping, so if the state is busy just look at it again on
-+	 * the next run.
-+	 */
-+	if (!spin_trylock(&x->lock)) {
-+		next_run = ctx->now + 1;
-+		goto out;
-+	}
- 
- 	delta = (int)(ctx->now - x->lastused);
- 	if (delta < interval) {
-@@ -192,6 +204,7 @@ static int nat_keepalive_work_single(struct xfrm_state *x, int count, void *ptr)
- 	if (send_keepalive)
- 		nat_keepalive_send(&ka);
- 
-+out:
- 	if (!ctx->next_run || next_run < ctx->next_run)
- 		ctx->next_run = next_run;
- 	return 0;
---
-2.51.0
+Thanks,
+Sun Jian
