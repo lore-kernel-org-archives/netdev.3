@@ -1,168 +1,171 @@
-Received: from mail-pz2-f0.google.com (mail-pz2-f0.google.com [74.125.228.0])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781A348CD41
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:54:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A165470EB6
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785333249; cv=none; b=RvEzIRVy/lwHtKFTydZcT247icDazbp/We2EyFe9DpvTquj14Sbd6gln6900NXAMUhYld4sWriBvYAPL1PWwibuHbVV8s3d7pxqgHRozipTXqk7QnXaTxVx5h+c2nzsi39VTLC9rLERDcCya+vf4cEL8Du1WOAROJCKn1TEkyi8=
+	t=1785333371; cv=none; b=ffgjEgqUOlHJ5+ZZ6tfiTAyzmrTAyRatn/1f5kylWDCuOCHAVntkOkjLyTPOd+DJFJ+4ww6PrHvYyfZIXmov7tA+2q6uGBq2Kbnq4n830NtbEzdw5WKq2PF3SkBRc5RKuwsY3SiRFWbMdpCzt/KBmaIpmaLIPNwmS7Tvehgg7nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785333249; c=relaxed/simple;
-	bh=TODf29AaIVwknUlQebWFDJWUXj02Yjod9p+cVqtrakA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n5qx6QwEMPR+Q4dNOvfuJo+ZHkm1e95wMbH5arjAu0zN9/Ll5f3s3suMeCUXpfiL01IP361R2aO8DRsL8voyyWaiJgiMtS/mSLmFKLLqjwpBpmYeAEi+F1P36S2N0Vy60rkatwn+sL4SwL3++zF/gPNGSwQj9eUbc6xOzznX6Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=qRnLTUwb; arc=none smtp.client-ip=74.125.228.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1785333371; c=relaxed/simple;
+	bh=cN5SoUAZB3Fj1wrqmQAkhuCqywfgc4m2ome2gBndw48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m/XLngZuKOvXLfrZKmcZk9sR07gS2phCUcIcVogk+fMdTVepop0ojAtL8iZFw4V6jUOqwyqeUJv5CYzz4DDioknDOsimM+ZErBgBmRFVhC1BXxyk2cMipWvwqfRhFw3IheGpMWaGVh3WOeh+uVbVVFKxIwkNenXoVoIeRviAg60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gq8r76Ma; arc=none smtp.client-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="qRnLTUwb"
-Received: by mail-pz2-f0.google.com with SMTP id 41be03b00d2f7-ca24d39d8a4so445616a12.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 06:54:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785333242; x=1785938042; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=m3faSqdqlKJRXLA5iPR6MqO+lqM+aEbI0ajSq0lE/8c=;
-        b=qRnLTUwbtn3E6PjuNaJT6VNqObuTT0LhtI5WmIOLNBRCai0bxAfYFsDj6KQQbNdrRj
-         I9eC/m/nm9DZ1Cv9LG+LSNX6Z+03EWNJftCdP8QP68HOiWGSW4pQhlohSktBmzIrbDX/
-         eusGM26ALE7pufe1mVa3dupLW16wo8x27NYEI4Jl8qOltr5DTTYRZ4k/5z4LONbMH09D
-         Mv99AU2/M6lK/GlkgEf27llEn3PQbsANXUAkqH49kNqETq/007QzP86TuMDAsHo9xl2K
-         9R6Hlt5pzI05OL0GpRHX5BOEQsJii16BeWBT73ascXZvhc7SCx9VQl5dh2fsmF+M4PMH
-         IEOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785333242; x=1785938042;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=m3faSqdqlKJRXLA5iPR6MqO+lqM+aEbI0ajSq0lE/8c=;
-        b=cDNdJJPPObLUutzMs1D+VUGmPj1y6WYeywEJeVGkxOHcL+vK9iwVX34MPYvoj/dfBk
-         ovVHUyxlxRY6+NBfDs356KwagXtWQ3HuTbnEGakByopLkpy1TPJ/iE6t2M2LQlt5jpjP
-         mMg8zve1fwd8l5UERoo3gHRPvX4ZiEdJVjqY7Kv33MEi1h/5jhGRF2F7FCgKbLo8ufb1
-         bR64ifM0QVQhmBSg1dvn4HApQ2Qncb726xiNXWsaH1uoh1vS0vX4BE+DvPkJwcQKMvKY
-         zyZmW8232VXppwp0f2Afzt8OfO8uJ2Qj5Gd39HG1IcSHwiBWbgS1briGOxEkoGCYou9K
-         btdg==
-X-Gm-Message-State: AOJu0YxruQNaxRJKDo7CpX5ixaCFg4qCBsevDgmT0XtHQL3tl/H/fARr
-	I4zViL5/BiNrAS26IghjYwjQ97Cq+RzjKI3xMCKVezgHc0HF8TZwboVRHkRZMZ++PBrtR2T0hNF
-	ffj8oCBcInji+mg==
-X-Gm-Gg: AR+sD12v22GO+8N2ZkyfsM2/eTsreVhpqy1gJGW6G8yq96RAFu4ZqoLDWu9SnW2VeWJ
-	fqL046V6Ky4MBq90zcI8KYz4sW7dvMowoYo5yp0GiYOBKSNGYN8+b9G8rVg+mu6IE8C+LJRUJtx
-	XY9TvLDjZK/TLNpW2cWNLZPPIr7qejZqjaeRcZVU2TCr/Y/j2E1UZKMhBJrFq3XP64YrJ1E3PZX
-	FeUNgfbJuQGGt2mryJQtMEe/sr0froYbEciPizmbrsIOe4uDt72L7a+cI2IPn24AiOGHPz4GeIO
-	omilK7yKn5p6luNZu/z3yU+aaRD/sgeCaY9r5hVAdkUiLJYxNGOofFqPH0RMifhdqEWoRHiDHas
-	fhKqBSfQR0lhtk/Yhqg3KrQ/XSAy7ZbIxOvnO8KUEXsbETHW4Y3e3lhAkkV44bRK5MfgOlHLqSF
-	kAS/QXYSIzCG6ocsIjVVsec5vpvSStBlf7p0V/RRR8nlmNCJWO+chhuiRm4Ig6ANHioykIAIO2o
-	iMg
-X-Received: by 2002:a05:6a00:2d0c:b0:848:2f7a:2e5e with SMTP id d2e1a72fcca58-84e93427255mr7103127b3a.77.1785333242275;
-        Wed, 29 Jul 2026 06:54:02 -0700 (PDT)
-Received: from Roxy.localdomain ([203.175.14.54])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea00e7984sm1437643b3a.27.2026.07.29.06.53.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 06:54:01 -0700 (PDT)
-From: Zhiling Zou <zhilinz@nebusec.ai>
-To: netdev@vger.kernel.org,
-	dev@openvswitch.org
-Cc: aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: [PATCH net v3 1/1] net: openvswitch: reallocate update replies for mismatched IDs
-Date: Wed, 29 Jul 2026 21:53:44 +0800
-Message-ID: <c773b2726dda8d90eed6d42b2f9741810a7a46e1.1785288876.git.zhilinz@nebusec.ai>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gq8r76Ma"
+Message-ID: <3b55d602-f9ce-464a-896c-8d89af572f6a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785333353;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Zj9LprAygHcCxjzHNSuG+4nSi2mr2UIXdQuc+A27Ppg=;
+	b=gq8r76Marm0WyfdS4dWamBsbRREUnRDpfZFEfQxcLy50iWRoex4GlaZ4on+3PTNRleOnkR
+	D4v2dMuFjFlUzPJDYKQlcmPRkwLCN/B0dTcPdf08IRxAgjWIK/eUUe8DW/OhDUcRjEjnsw
+	Wk4VDABkAU0kcC7PlpXdsJbJLymbNtY=
+Date: Wed, 29 Jul 2026 21:55:32 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/2] tcp: diag: fix unbounded bucket lock hold in diag
+ dump paths
+To: Zihan Xi <zihanx@nebusec.ai>, netdev@vger.kernel.org,
+ mptcp@lists.linux.dev
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, ncardwell@google.com, kuniyu@google.com,
+ dsahern@kernel.org, kees@kernel.org, matttbe@kernel.org,
+ martineau@kernel.org, geliang@kernel.org, fw@strlen.de, vega@nebusec.ai
+References: <cover.1785307984.git.zihanx@nebusec.ai>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <cover.1785307984.git.zihanx@nebusec.ai>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-ovs_flow_cmd_new() preallocates the optional reply skb before it takes
-ovs_mutex and before it knows which existing flow will be updated.
 
-That is normally fine because the skb is sized from the request flow
-identifier.  That identifier also becomes the inserted flow's identifier.
-For updates, however, a request with a UFID may miss the UFID lookup and
-then fall back to the flow key lookup.  That lookup can legitimately find
-an existing key-identified flow.  UFIDs are optional and the flow key is
-the primary identifier.
+On 7/29/26 7:28 PM, Zihan Xi wrote:
+> Hi Linux kernel maintainers,
+>
+> We found and validated a issue in net/ipv4/tcp_diag.c and
+> net/mptcp/mptcp_diag.c. The bug is reachable by a
+> non-root user via user and net namespace.
+> We've tested it, and it should not affect any other functionality.
+>
+> We will provide detailed information about the bug
+> in this email, along with a PoC to trigger it.
+>
+> ---- details below ----
+>
+> Bug details:
+>
+> inet_diag TCP dumps currently execute attacker-controlled
+> INET_DIAG_REQ_BYTECODE programs while still holding the listener,
+> bind, or ehash bucket locks in tcp_diag_dump(). If the bucket is
+> heavily populated and the bytecode is a large reject-all filter, the
+> dump path can spend an unbounded amount of time under the same bucket
+> lock while walking attacker-arranged sockets.
+>
+> The reproduced listener case places 131072 SO_REUSEPORT listeners onto
+> one colliding listener bucket and then issues a NETLINK_SOCK_DIAG dump
+> request with 16380 INET_DIAG_BC_NOP instructions followed by a failing
+> INET_DIAG_BC_D_EQ test. Because every socket runs the full bytecode and
+> none reaches the reply fill path, skb backpressure does not terminate the
+> walk early. On the unfixed kernel this triggers a watchdog soft lockup
+> and then a panic in inet_diag_bc_sk().
+>
+> The earlier batching fix direction was still too narrow: it only counted
+> sockets that survived the cheap prefilters and reached the expensive dump
+> path. An attacker can therefore populate one bucket with many sockets or
+> listeners that fail the netns/family/port or MPTCP-specific prefilters,
+> causing the same bucket lock to be scanned far past the 16-entry batch
+> threshold before control is returned.
+>
+> The same root cause also exists in MPTCP listener dumping. The
+> MPTCP-specific mptcp_diag_dump_listeners() path reuses sk_diag_dump(),
+> which runs inet_diag_bc_sk() before filling the netlink reply, while the
+> listener bucket lock is still held.
+>
+> We additionally profiled the MPTCP-specific path locally with a
+> separate debugging artifact. Because struct inet_diag_req_v2 stores
+> sdiag_protocol in an __u8 field, that request must keep
+> sdiag_protocol = IPPROTO_TCP and pass INET_DIAG_REQ_PROTOCOL =
+> u32(IPPROTO_MPTCP), otherwise 262 truncates back to TCP and never reaches
+> the MPTCP handler. With that corrected request, a 1-group run with 32768
+> listeners and 16380 NOP bytecode steps took 2082.608 ms on the fixed
+> kernel versus 8.601 ms on the unfixed kernel, and kprobe profiling showed
+> inet_diag_bc_sk() executing 32768 times on the fixed kernel but only 256
+> times on the unfixed one. That 256-count is not a missed path: the
+> unfixed mptcp_diag_dump_listeners() reuses one counter both as the
+> in-bucket index and as the resume cursor, so each dump restart advances
+> in a triangular skip pattern and stops after approximately sqrt(2N)
+> bytecode executions. The inline reproducer and decoded crash log below
+> cover the TCP panic path; the MPTCP results above are included only as
+> supporting local validation for the second patch.
+>
+> This series fixes both sites by keeping bucket-locked sections limited to
+> raw socket collection and lifetime pinning, and moving all filtering,
+> inet_diag_bc_sk(), and socket filling work out of the locked regions so
+> the batch limit applies to raw bucket traversal itself. For TCP listener,
+> bind, and ehash buckets, and for the MPTCP listener bucket, restarts now
+> keep a referenced dump cursor so the next batch resumes after the
+> previous socket instead of rescanning the bucket head under the same
+> lock.
+>
+> For the TCP patch, the underlying root cause predates modern git history.
+> The Fixes tag therefore uses commit 1da177e4c3f4
+> ("Linux-2.6.12-rc2") as the earliest git-import boundary that still
+> anchors the pre-git bug in the current repository, rather than
+> incorrectly attributing it to a later helper or refactor commit. The
+> MPTCP patch uses the real introduction boundary, commit 4fa39b701ce9
+> ("mptcp: listen diag dump support").
+>
+> Reproducer:
+>
+>      gcc -O2 -static -o poc poc.c
+>      unshare -Urn ./poc
+>
+> For the reproduced panic log below, we enabled
+> softlockup panic sysctls and ran the local helper that executes:
+>
+>      ./poc --listen --groups 4 --stride 2048 --count 32768 --nops 16380
+>
+> We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+>
+> ------BEGIN poc.c------
+> #define _GNU_SOURCE
+>
+> #
+[...]
+> static size_t build_request(void *buf, bool listen_mode, bool with_attack,
+> 			    unsigned int nops)
+> {
+> 	size_t msg_len = NLMSG_SPACE(sizeof(struct inet_diag_req_v2));
+> 	struct nlmsghdr *nlh = buf;
+> 	struct inet_diag_req_v2 *req;
+>
+> 	memset(buf, 0, msg_len);
+> 	nlh->nlmsg_len = msg_len;
+> 	nlh->nlmsg_type = SOCK_DIAG_BY_FAMILY;
+> 	nlh->nlmsg_flags = NLM_F_REQUEST | NLM_F_DUMP;
+> 	nlh->nlmsg_seq = 1;
+>
+> 	req = NLMSG_DATA(nlh);
+> 	req->sdiag_family = AF_INET;
+> 	req->sdiag_protocol = IPPROTO_TCP;
+> 	req->idiag_states = listen_mode ? TCPF_LISTEN : (1U << 12);
 
-For echoed replies, ovs_flow_cmd_fill_info() writes the matched flow's
-identifier, not the request identifier used for the preallocation.  A short
-request UFID can therefore leave too little room for the key identifier.
-The fill can then fail with -EMSGSIZE and hit the BUG_ON(error < 0) in the
-update path.
+1U << 12
 
-Once the update target has been resolved, reallocate the reply skb if the
-matched flow needs a larger reply than the request identifier allowed.  Do
-this before replacing the actions so the request can still fail cleanly if
-the rare extra allocation fails.
+12 is TCP_NEW_SYN_RECV. Is TCP_BOUND_INACTIVE what you expected ?
 
-Fixes: 74ed7ab9264c ("openvswitch: Add support for unique flow IDs.")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
----
-changes in v3:
-- Compare computed reply sizes instead of UFID contents.
-- Inline the rare reallocation check and add spacing around the update checks.
-- v2 Link: https://lore.kernel.org/all/71380bcfbf3aed9a6a8a9daeef6592fa5a4fb245.1785211788.git.zhilinz@nebusec.ai/
 
-changes in v2:
-- Preserve valid key/UFID mixed flow updates as requested by Ilya Maximets.
-- Reallocate the echoed reply skb with the matched flow identifier before replacing actions.
-- v1 Link: https://lore.kernel.org/all/fa4f85fe7becb164a8a1849aa77ceeb1c08b078c.1784881178.git.zhilinz@nebusec.ai/
-
- net/openvswitch/datapath.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
-
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index eaf332b156d73..3007d75b42145 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -1113,9 +1113,8 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
- 			error = -EEXIST;
- 			goto err_unlock_ovs;
- 		}
--		/* The flow identifier has to be the same for flow updates.
--		 * Look for any overlapping flow.
--		 */
-+
-+		/* Look for any overlapping flow. */
- 		if (unlikely(!ovs_flow_cmp(flow, &match))) {
- 			if (ovs_identifier_is_key(&flow->id))
- 				flow = ovs_flow_tbl_lookup_exact(&dp->table,
-@@ -1127,6 +1126,25 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
- 				goto err_unlock_ovs;
- 			}
- 		}
-+
-+		if (unlikely(reply &&
-+			     ovs_flow_cmd_msg_size(acts, &new_flow->id,
-+						   ufid_flags) <
-+			     ovs_flow_cmd_msg_size(acts, &flow->id,
-+						   ufid_flags))) {
-+			struct sk_buff *new_reply;
-+
-+			new_reply = ovs_flow_cmd_alloc_info(acts, &flow->id,
-+							    info, false,
-+							    ufid_flags);
-+			if (IS_ERR(new_reply)) {
-+				error = PTR_ERR(new_reply);
-+				goto err_unlock_ovs;
-+			}
-+			kfree_skb(reply);
-+			reply = new_reply;
-+		}
-+
- 		/* Update actions. */
- 		old_acts = ovsl_dereference(flow->sf_acts);
- 		rcu_assign_pointer(flow->sf_acts, acts);
--- 
-2.43.0
-
+> 	req->id.idiag_cookie[0] = INET_DIAG_NOCOOKIE;
+> 	req->id.idiag_cookie[1] = INET_DIAG_NOCOOKIE;
