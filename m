@@ -1,61 +1,63 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C625423E98
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 12:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8E219DF62
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 12:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785327393; cv=none; b=qGI33rK0iVT9OaoeOrEmaqKeAnneZO+2zWm7BwybEdTAA/aW5/vMlkLoIBRgsWD5B/g20zKr+LI8I6YX1zrY2fWj84vh8NIkP86q8MIsAbt4BP/yKMd5SvtVzBxZ7plhFn8MdYuSo8OWPZ6m4QPI12OlD+ODkPkkFW+d8bVAT8A=
+	t=1785327397; cv=none; b=GEKaGuPGOxiH10+Xb/Jgark9hIhYxiVmgg4HRVjRooA6u7a3s2NY+TbBNXIvy/5ogOXqltEml28xilZMSOCG6q6UtHvrpFvo5m/HMBF5YMZddei9Fifk7NM7tdoc0GmeZ9zj3i1yTRG44R8x3nmEIw54IhxDG5gq0ld7l8j21+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785327393; c=relaxed/simple;
-	bh=0E9m9yuxgNDTQrGD/DMWOOxTZX02GSh/wTsje1l9L8c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pbOY8w/KN5pqwwVFSqCzB4QegiUKTK2lu5PpomkcmqLYYWaJ7EOncBSKcAiBivFiGnrA5JAeFC3OPEGfmRIH59bZG23CM4lidmdHPyqQ1rSNfi3xBnr2JUlvHfNI6yU4MVNW5yIF1p4D1yMeUZZgk6/1R3pg1ZMIjOBrNzTW7ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UOeTysH3; arc=none smtp.client-ip=209.85.221.50
+	s=arc-20240116; t=1785327397; c=relaxed/simple;
+	bh=Tbh1UE9kpkjffP3nlKfn8rHcwQE5VDDLBDJVZgKYfLM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mTBRk0biD/X2qNJELtJ3cXlM1JEp0JmisMZQRdtPdHUW6YryaAggHEAfMAVLf1mlTnDhwe69CXEpWlRaOOU2o47rp/lntLEwjV69QCAc7TyD7Ac+A2vL7BFkANo+Uy22UWvtu5hFVWi5QiFtymZuugIGhXe4LWtPAn8wfjsVxxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ql/CDb5r; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UOeTysH3"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47f84023916so867992f8f.3
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 05:16:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ql/CDb5r"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47f92e3c14bso816925f8f.0
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 05:16:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785327389; x=1785932189; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Vih9lgzt1GoIVRjPuBhz9EBsJwtySLMnDilyBJHjRH4=;
-        b=UOeTysH3pMA/yCVrooWg7Y3wi1WK9UF1Ew9CiU510mbkQ5WgxUIIr3kWZhXQ/LJneO
-         cNgLl+KoHtGRNIvmeLwjx1CHBbj15g0ZDkSqjFpCOCGGt3dJwKaVjndb7O5vcBZLBkvP
-         1KRy1BMapo1ITxNuNar6XHWPSxORWhZPIHDbGVj3eWzI9OtZKDNkV11akJ1gIbm8CQ6W
-         3Tcu7VzTzmPlyVr7L9esbmWC8BgbJ0iRlR8jM1NAUodDNMxJXfhrMaBmgrsDAnxEGrcO
-         pdO224QCiKQC0NmUd7WnSWwx/jV9ICpp5dW1RhidDcfO2Ad30p9rFLSQcbIeE1vYL3/k
-         KkFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785327389; x=1785932189;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1785327394; x=1785932194; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Vih9lgzt1GoIVRjPuBhz9EBsJwtySLMnDilyBJHjRH4=;
-        b=Bu2EXwWX+xlDzmoeaB2wzXyIx9SX4rRABKohpF3KPBx2Ai75imH4w372XbB0iD/BGf
-         Nh/n7cQ5NYAsY9Cb072qbgkJ9HYlDyzQlLAG6TIMXtMoUzh1mqyKlM/94fZz7XMhNuOd
-         7gWmDuWdsdexs4t1XBIGWqODDU1k0Fm4600TxjzDgP9ovzXeRWQlsYf76rW58Ll/1rd9
-         pA1q8NkY/kaKFjkGlQqz2ILu9MR7BaycFe8MdkHhnrIkwoAzWs5VBnHj0nDhnE7Fuasd
-         8yAbzh6Frruug8p8gF/TCOk4S17LYB/EwIXtTYPs07L4IjJc6LG0vl/H1tGjLXB0icaJ
-         2emw==
-X-Forwarded-Encrypted: i=1; AHgh+RogyVuTSsvVqPtMCKbpnYejwyjiYVOjMRppLB0Lk/ynsruA0JUwFdaodozX18sEBRNboy+ho0k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzz6QMFrVeAqz/Tq+gd4atV8iJx9BgOckw8GfLZip26al6yuguF
-	VNR0NKKqRsTowEIQ6svn5LUc6DHuPHubpmtJcueqpOyu4FvI7JBykv+gHLcCRlzA
-X-Gm-Gg: AR+sD132T90WgSTdflTL7vsfaTSGdsT9C4A5ZCGZh+W3uO5x4u/1mJgZhpqBvm99K1e
-	7lY3DAK5eMUyP2ss185IPAl+GEI8QG93j3aG+xidEA4IHv97ZMboy9dGgXZ2RuZq8/m59IwoB6w
-	qAGlrjHxJEmzrc9rJ4buLUDMiMOdKqebKNseCrMFBFpBHJ1DJOijEMVH96QkeTrH1UE2UwwOE07
-	CuKEZURTJsi/xL96Fz7PDDFql52fX7+qDQwUdT65+7k+46MZTd/SS96mu2qPpTVc93i2a17IDRW
-	xAjKn0q9xYrTSwN13ePLQqoqB5SWY21ikE1yO8Hfrhay7+JTArpLXmXqRO/Vei6t+hPU0d7lVZ9
-	8idVFNj4b7vZaErzGpSSiBMQikZWdIsfD7raALxaHcMkIk3iAMBTp+dcvVEr0yIRJgA6ooDjxHz
-	GBHU8msu67HfP3RclOfby7NC8hhrysUNiNQjCscEKUI2Z3nSQvzNe63e2cfPHDVXyaaS8=
-X-Received: by 2002:a05:6000:4304:b0:45e:f8d0:d22c with SMTP id ffacd0b85a97d-47fb1edfe39mr7385595f8f.25.1785327389255;
-        Wed, 29 Jul 2026 05:16:29 -0700 (PDT)
+        bh=GwlQi6SKyzVRglpz9ib9XFTpx6TzI5gjwlAfPCOGYx4=;
+        b=ql/CDb5rnbq4vDdqU+KyJEhnQP6ynFHuZ4kdY/FeA8E/jfLSQ6od5LVCUibJQrd1t0
+         v/0FiGJqIAWeSybHGWrO2iFxU/Xd1LvGADYWoFIJ+R54Re3H46b2HclsTZkAiooruca9
+         V+l7/WfxkxZCx9N+i/RuS1u8VgTsDfia0CvFlS2vZK0mhzqYlWP8gY5aIrnBW/527nuf
+         LUKZ8EE8PEUuoeAqKCC64Ze8kJrxA56ZDVGXZ8nHsEsYz/G5Hk/w1TSjKT+ilUiiQryr
+         jz99eGlf8rm5ZFhvqwXMQO2ZcPCBln+WowHKIlNUj93rrBtiReBMDLAh5Pg2l3QFFUns
+         fJDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785327394; x=1785932194;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GwlQi6SKyzVRglpz9ib9XFTpx6TzI5gjwlAfPCOGYx4=;
+        b=W/CVTV8tO/5BTN2gPhD2Z659aiv2/QPsYc4c+wD7qpBayrsgb++7DIT5ioC09G1GJk
+         eAIOTIAgVkU28OqTwXLGRfPWYyfaCWg2UcC9X22zrfgWh/mFd3LjcR/0Oqde35gullj0
+         gdAZoPwD1Q4g2bDGTe84CZTpNdAmyDVts62kC8XhA4z7RDHeemoTo65oUK3QpGvY8+no
+         PKS7S8mHWazF7zrbtgtbSE1tTY9A/pbIjnOLzzH0HWwBdnsFnuqa7cr19zFpXGCrfo/V
+         W1lUJYvgB/2o9MRKRiM5c5yna8zsQKHjMo8Zz4cBuXdUFP8ZM4RjysTRxidqdAwd3YLe
+         m2RQ==
+X-Forwarded-Encrypted: i=1; AHgh+RryK9q4YacebKk5sOLe4jvk7sscUs/bFx+ZIi8kcInYbYcmToSMEKNHbb+Ofpldr2pVRLpXRu0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYfJdoCbOHBLYzosrtEtkxAJvm440A1naulCmGSVDg6J0RoqHJ
+	hd4gIMJs0qiY4RjqKGAXkO90KHOX23AoF/SaxmGbUI2X1AtR9U6wOE6J
+X-Gm-Gg: AR+sD12UCrLPKQr6t+aesPEkE4icx8gOxfK879fXxyfP8piuxzVjEimgM4uGilU4iNw
+	x8K8Rc5n3USP8YFBZEjaHC4WXnOzcbGwu7qCGyRCzPkoOlzXOr7ioeBvztpBGELOx/m4lapnXSD
+	Y6ofr9/HqTdynZU/Vqh50CCnFaBOmPmOgecQTs73MUjgC8qSiQ1guA3K2k6JZL2WpBScfvPl8pM
+	UzZCHKzvNgremsfuUkA0fN49vhXpLhTGAGs1Lq9bgW1zJAjYqtCZ1lSB4Rv/WMpbUkBgDIei82e
+	fXYx0Gtn7gkQZzygeWQjODYOpfm8iTdsth2zlQw2KNxO91lykV5Y6bMoIJbFe6pG+5gtqi6OFVL
+	6RSEj88om+R2AiH29JAVd8cEF48FU0UZkWQjno0XLgex2/ilrJ5GchV+tY1Qq/peq9FZEJ/qzOt
+	PtJX9L6Yoii2Lg6DnnX4rG8KqIx0ROOJYo+h3jHbL9yPm/JuDDfkn8GGoFlEXn/yC9pBE=
+X-Received: by 2002:a05:6000:200e:b0:47f:5a97:2a63 with SMTP id ffacd0b85a97d-47fb1e60052mr7064198f8f.9.1785327393913;
+        Wed, 29 Jul 2026 05:16:33 -0700 (PDT)
 Received: from grower.astralinux.ru ([81.9.21.4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fb6b0ef88sm8473995f8f.23.2026.07.29.05.16.27
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fb6b0ef88sm8473995f8f.23.2026.07.29.05.16.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 05:16:28 -0700 (PDT)
+        Wed, 29 Jul 2026 05:16:33 -0700 (PDT)
 From: Alexander Martyniuk <alexevgmart@gmail.com>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -71,10 +73,12 @@ Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
 	Xiang Mei <xmei5@asu.edu>,
 	Weiming Shi <bestswngs@gmail.com>,
 	Tung Nguyen <tung.quang.nguyen@est.tech>
-Subject: [PATCH 5.10] tipc: fix use-after-free of the discoverer in tipc_disc_rcv()
-Date: Wed, 29 Jul 2026 15:16:02 +0300
-Message-ID: <20260729121605.134642-1-alexevgmart@gmail.com>
+Subject: [PATCH 5.15/6.1] tipc: fix use-after-free of the discoverer in tipc_disc_rcv()
+Date: Wed, 29 Jul 2026 15:16:03 +0300
+Message-ID: <20260729121605.134642-2-alexevgmart@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260729121605.134642-1-alexevgmart@gmail.com>
+References: <20260729121605.134642-1-alexevgmart@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -138,10 +142,10 @@ Backport fix for CVE-2026-64543
  2 files changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/net/tipc/core.c b/net/tipc/core.c
-index 7724499f516e..4f01691aea3a 100644
+index 434e70eabe08..1ddecea1df6e 100644
 --- a/net/tipc/core.c
 +++ b/net/tipc/core.c
-@@ -220,6 +220,11 @@ static void __exit tipc_exit(void)
+@@ -218,6 +218,11 @@ static void __exit tipc_exit(void)
  	unregister_pernet_device(&tipc_net_ops);
  	tipc_unregister_sysctl();
  
@@ -154,7 +158,7 @@ index 7724499f516e..4f01691aea3a 100644
  }
  
 diff --git a/net/tipc/discover.c b/net/tipc/discover.c
-index 2730310249e3..28665de32245 100644
+index e8dcdf267c0c..835ff27f8ea8 100644
 --- a/net/tipc/discover.c
 +++ b/net/tipc/discover.c
 @@ -58,6 +58,7 @@
@@ -173,7 +177,7 @@ index 2730310249e3..28665de32245 100644
  };
  
  /**
-@@ -381,6 +383,15 @@ int tipc_disc_create(struct net *net, struct tipc_bearer *b,
+@@ -382,6 +384,15 @@ int tipc_disc_create(struct net *net, struct tipc_bearer *b,
  	return 0;
  }
  
@@ -188,8 +192,8 @@ index 2730310249e3..28665de32245 100644
 +
  /**
   * tipc_disc_delete - destroy object sending periodic link setup requests
-  * @d: ptr to link duest structure
-@@ -388,8 +399,7 @@ int tipc_disc_create(struct net *net, struct tipc_bearer *b,
+  * @d: ptr to link dest structure
+@@ -389,8 +400,7 @@ int tipc_disc_create(struct net *net, struct tipc_bearer *b,
  void tipc_disc_delete(struct tipc_discoverer *d)
  {
  	del_timer_sync(&d->timer);
