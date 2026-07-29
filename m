@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8681C15B135;
-	Wed, 29 Jul 2026 02:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13CA33123D;
+	Wed, 29 Jul 2026 02:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785290444; cv=none; b=r2qAxX4EAE8k3TPvutsN+RIZUtstY/d/YuBa3/EyNxgNBzc2bfmxm5pDSfN3Lh+XnsJlCEORW14fMjemMsYLL49bYsskXoEn+9I1qewQ3VKEd4lcCJtFokHd1R2W3B2irS8Xdd7YJDDHqzLoHUrCDVkyBCxithjfbdDrlH/fAAk=
+	t=1785290445; cv=none; b=oBB4rwZnFEvuqhanFeIjDj9v37mSWuHh6LnDfXp0c5SmO9U1D991XCMgwZ2kq0fMzIKGRb3+wi59YTNVobo0XbC0BlyQGg+nA2vQyaAaNQr+vE23EGX+YPl0GPBxNid/2+eK+gV4y7cz3RoF/96YY4wcAT5RAclEiD3agOVMUrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785290444; c=relaxed/simple;
-	bh=SjdamARGu/cQsc2GeSn6NGV/RxRAtxqP4QYmM4tBJgw=;
+	s=arc-20240116; t=1785290445; c=relaxed/simple;
+	bh=J6bFhGBxGiH7FmfXzOdH6+Da/GvtqvDGRo5sIMHX5hY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gaGsPyOzmaK/qcodXTBNB52kiMRM9lAUa58ikVuAmMY7vVl1d9IDiBov1dLROn5rDQr9lD4DRRV+jRv606Ee6tepq8p9ARxa+vVY7qjPfnhzOWgoxpRsW3sZFswsrMpuGMC+QXWmzv+HrkIEqaqKTpRy4c5OBUUUHc6yuoQnrOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WUASL0sp; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=ERsX2zYBRss5+ofxKc1Ih5APKnlaJTJRu7sKMEBQe08uaNpIXR/4mxIddVemsNCpXw1taxjZjvcQsCwheRgyUT7CFSzuK9cSdfHNi5uN8CA06u6A6i3qeenF9cwAy3uIjBu72BfHTpOWfyPXQPfJAzzyBhX2ABTfc92fu21Qj/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4qX39qO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WUASL0sp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D781F000E9;
-	Wed, 29 Jul 2026 02:00:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4qX39qO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9023D1F00A3A;
+	Wed, 29 Jul 2026 02:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785290443;
-	bh=YVwKMUybJr3GcOCLUFsK1345VgE1ywZbOV69wu+G+Q0=;
+	s=k20260515; t=1785290444;
+	bh=Ha0OD08wkoWj5BNt1xQa7dD0n2/rEZ7jiraEBW6xa0s=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=WUASL0sp4OTLNLF6GuA6sJr5+duT0zr4HL68r5i9o+ugxL6rYITH6nV4aMVD4wYng
-	 8J6vheoVdNFobdxOVhSkE9BewrIvdMRNUahxqrJpgmP34xX25g0V1UPrDE+rGlEw0y
-	 Wan2hoYICjZlgCceLvGRcsOn0sERTasPcpYfJQReJWdvg/uGWRsVvV36/EVZ+C+8sE
-	 i94RZngrRUxi+nRoyJSrXCvkBWvVSHEuknB0rYpkNnPeOxc1LvCdDzTfaM1wC/VtwP
-	 oHvxQAa5hMHnyklLw9uJ2sBaCwZJU/+dgPTIbQdp4GED8V6DQg86aYAn5PDgZ7RKco
-	 poiuB60noWdlA==
+	b=m4qX39qOF25c/8/KM903U9EXPQzOvOrXouY9qOCq7n2rzOMTeMW1xvNROaC6ZGEXU
+	 Iz232xTdeKjSqCOS92MUhf1dgkSzX11u2Mf9dUIpitTObdc6UfQuliEsNyIFHq92hK
+	 y8iFMG2gjSaWIuLyg4h3vnXFBz1VBlsB9I5QxAk8RpUi9p+XnlokWjodJbzesNjzGL
+	 WZn5v5KG5T9wCoBM3dBIUVECz0HpTJFex1DDmGsLUhkQPObyDWatJ7K77Mqo3vAuys
+	 SxEluNqeAko7ePu8qNPZFNxSaco/SpMl6/qznwUKBsY+WClgLyXvDos6XfNdznCdIs
+	 uU0ACSIAWymNA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09FC3924A60;
-	Wed, 29 Jul 2026 02:00:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56B443924A60;
+	Wed, 29 Jul 2026 02:00:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: phylink: put link_gpio if phylink_create fails
+Subject: Re: [PATCH v5 net] octeontx2-af: Block VFs from clobbering special
+ CGX
+ PKIND state
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178529040738.2407687.1864328411673598959.git-patchwork-notify@kernel.org>
-Date: Wed, 29 Jul 2026 02:00:07 +0000
-References: <20260726150806.2437-1-ansuelsmth@gmail.com>
-In-Reply-To: <20260726150806.2437-1-ansuelsmth@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178529040888.2407687.14816470254096794560.git-patchwork-notify@kernel.org>
+Date: Wed, 29 Jul 2026 02:00:08 +0000
+References: <20260722081229.1653619-1-rkannoth@marvell.com>
+In-Reply-To: <20260722081229.1653619-1-rkannoth@marvell.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: davem@davemloft.net, gakula@marvell.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, sgoutham@marvell.com, andrew+netdev@lunn.ch,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, hkelam@marvell.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 26 Jul 2026 17:08:05 +0200 you wrote:
-> In phylink_create() if phylink_register_sfp() returns an error, link_gpio
-> obtained by phylink_parse_fixedlink() is never released. While this is a
-> very unlikely scenario, it's worth to fix/handle this.
+On Wed, 22 Jul 2026 13:42:29 +0530 you wrote:
+> From: Hariprasad Kelam <hkelam@marvell.com>
 > 
-> This was present from the very first implementation of phylink but got
-> relevant only with the introduction of ce0aa27ff3f6 ("sfp: add sfp-bus to
-> bridge between network devices and sfp cages") where additional function
-> were added after phylink_parse_fixedlink() making the release of link_gpio
-> needed if such additional function errored out.
+> PF and VF NIX LFs that share a CGX LMAC reuse the same hardware PKIND
+> programming. When HiGig2 or EDSA parsing is enabled, a VF NIX LF alloc must
+> not reset the LMAC RX PKIND or default TX parse config over the PF setup.
+> 
+> Add cgx_get_pkind() and rvu_cgx_is_pkind_config_permitted() so VFs skip
+> cgx_set_pkind(), rvu_npc_set_pkind(), and NIX_AF_LFX_TX_PARSE_CFG updates
+> when the LMAC is using NPC_RX_HIGIG_PKIND or NPC_RX_EDSA_PKIND.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: phylink: put link_gpio if phylink_create fails
-    https://git.kernel.org/netdev/net/c/0fe1e3e8f338
+  - [v5,net] octeontx2-af: Block VFs from clobbering special CGX PKIND state
+    https://git.kernel.org/netdev/net/c/3bd438a58e91
 
 You are awesome, thank you!
 -- 
