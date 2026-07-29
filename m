@@ -1,147 +1,184 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A7737C109;
-	Wed, 29 Jul 2026 17:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B5337C11B
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 17:31:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785346307; cv=none; b=PvzFkWUX2fUMIrZQZ3NWTFkTvnzD3uBWevdGBoL2owLPtofN7qA/ZM30EfnPOExB71hUrJrWhUoAePaL+wPmBvxVCcHmzZuIbWDxHfUGk8wkRnw9UjI9KsnAd5hOogtsS4Pd7Ck0bPvUOBL8S1j5nbgg/H5527Gv9v26FhMLy9U=
+	t=1785346315; cv=none; b=V+3iKlGUAKM4ZtnDljngNH6XplHNfWxlvCPvnniHfK9JP6To+IxAkF/VgXB4ErPcSNOm/qNTAG79w+CPeH08kuAuZ5tOXnmqHggXhaL7deUVy0LNMbm6CPr8Kl6+ed9NO0dzNvNGEGHZxREisug3GHpWNC7WDM4J38vxdqv2nkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785346307; c=relaxed/simple;
-	bh=G79NbSvwKI++wZpGYi+45JJW6Wpsaiw6AEejdKZ/wmU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DRWlsKdEsJUMYDzPxo9ROuHNkOFQ/4TRkw9I2RzkftNNXLxThXShuTbalXkQEWpzyZqTrqremApEz73kKs81gSDdNec7uYuL5M4Hc1xkiK31RTBwETPHHC4dmia+RB0fVmVUoiKnqO4M1s6xBeAM8/61wbPzIe3gRE2J8o/rx5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tL3ldWex; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785346315; c=relaxed/simple;
+	bh=Jc7G6StL/c7Ytj+6YqLr8/+Jzh8vDBmz4m0lxtPGPWE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XWAG11h+LIUre+CVe9QGeijhf/cgsAy4Du5gvjTW3qi+1uDErq1F6z43kGVlw9oQ6FxAhbd1obO+Rlmdh6UU7xO9ptnoNRJ3SZIOHKF5ztHfzJhZnEprBB5VBwbCMYjKrmKrQeC4H4iULy+sr5HulpYxtbDAUEs9P+YMwPqa0QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YeHq1R5O; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tL3ldWex"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=m6jv1w2l5pSZTcWzDdhssO8hH6rvY6jkG7tNNwArU5g=; b=tL3ldWexjTh537HWxjnSmN0xK3
-	GCpPSrlATuOcZFawODjIGY05kEtdeImCOJg05ErgeKYg36+cdC0hxyt+aimoUF/bhRIhfIONA4Zma
-	xgY+IqU4zt22AXrdYGOu7mu/ov3QuKIZX+yTB/a6xYDDRwRjk0pB5+eBRbC48H/+IxKg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wp880-00Er08-MC; Wed, 29 Jul 2026 19:31:36 +0200
-Date: Wed, 29 Jul 2026 19:31:36 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vasilij Strassheim <v.strassheim@linutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YeHq1R5O"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3856d4015e0so105910a91.2
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 10:31:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785346312; x=1785951112; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=38ZcQuiK7/9UCGF364MaZa4PYPgvUUkg1FUph1SOAX0=;
+        b=YeHq1R5OqrLek+DRCgOjL0Z6dNhKL+Uzu7y3u/KAZrlL9XJhPFQetMY+JrZ7pxSWFl
+         tG3NChC11B9yXq9ys6CXnqxwYZd8zjXh4QIJUXNIRSZ8JBtAlVV+bHqL50NX044WUxlr
+         9Vmg0T2VUTplLl96doEZ29mFo0MsZOlIL1sGdOjGIqnFp+fNJ0KCuwfvPrat29sK/T5P
+         Zc2Xx/Tk4zYXXVUlhEeXLeWw7AC/hpiyaQLvH9uTsE9OVFCK9ZMzjq/yr7Xr8hvmc+jh
+         IIAy9rTZNNhZdvSxTGNhg9xA7gGF+MUMsXftG3GbLu5rNWTuveFj2gCHBzJBHOsIM9Fv
+         B31Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785346312; x=1785951112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=38ZcQuiK7/9UCGF364MaZa4PYPgvUUkg1FUph1SOAX0=;
+        b=QCtCuGfgcgNL4O6WYHs9+ylCRLUUGj+WybA/79GcCuXGLr1w1vkV+DMMMtXEfr+MdD
+         iE5ppeOirCBE5x1AgsYZJFoZ5ysWXP1siug8P1bXY7Vo3etCF5DY05P6CQI13tKj+n0C
+         SROP+ACp+kmuA0oFXcHmyE15P8KqmsKBqawA5hVLIfa9lEA81E3Wh272jawDk4F7dlMJ
+         T3CuOhkdU+N50xYRgfr7WYaWYnNAsfc4BTgDJ9W9hLt70MP52vJjPXoXW0Kv35HYihb5
+         mifa2g2Q9W0KSGaGHAFo1uRe1YZ+uQyDR/XfASQt4LwyZfokUCL8xqpk/KFeiaNVtJsu
+         ICtw==
+X-Forwarded-Encrypted: i=1; AHgh+RpAnArwYljsfEnYlPUnMMkL9+1JVpZHmT0PTA2IP+d9I8VX51tC9dbKmOdneHM7v3UMDfv8YEc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhrmLpwUfGJAkug1NDrTVcgUYkro2YbOg4BOncWfdENxQihV2g
+	vQRkz2bu+5PiSdXRZ65RoKgOq3hEnpT9kE17Sxyhtx+ezALH+ilQKcvC
+X-Gm-Gg: AR+sD13epNj8EJbiOp+xYZ3rDdLxqYsMbiEJCyuPCpCQj0EIafr4F/6fQ++r5C8AgiL
+	lCHmrlwWdklFoh4AUG4697rkDDjUFP0vjW8rATC26S4VPV+mRzXNhE8r/n/1epE8sio0KV7QDEc
+	1Pyc+6nruC2tU/JrW1ugRdpeSFe+avTDETSIsUaQlIp+1U+eBCqE8jiAWsxkySC50WP4kCAwdYM
+	9JyDiFLeDrBeayHF+9NhY4FCpdGxWBRSOU6E8C1kjNxVqL6uO2ItW3v8mvcVFdWih+1enudpafp
+	qCfXisx1xsFReSIS0uPsHr4fO6CLwSpTBhm00hUdtIXghhrz7SzdPJpEAP58SUSD2IQ9UCA9lPM
+	oFDYtjdR0xSfsBTL8o5ph+eTvi55ZPdqaJoJGWrpbsM4OkexCFIAMCKPbvCP6MSTTK0MayZ8dFk
+	yFxqFQ2U12dio3r7UZT7tUG85/f/yN/qZjxCS55qWbTyjQp+SYNIcTsKObqyIAK/LwWAQ+Yxs+P
+	QOTbCJj0z1zYpUr/g3amqZ33fqBWML3dyexg9HVpwA6u/8Nz6A/8fE=
+X-Received: by 2002:a17:90b:3e44:b0:37f:eda5:516f with SMTP id 98e67ed59e1d1-38f6a1b8dc3mr7154386a91.0.1785346312247;
+        Wed, 29 Jul 2026 10:31:52 -0700 (PDT)
+Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31504d480c5sm19583850eec.25.2026.07.29.10.31.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 10:31:51 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Martin Kaistra <martin.kaistra@linutronix.de>
-Subject: Re: [PATCH 4/4] net: dsa: soce: Add initial driver support for MRS
- switches
-Message-ID: <b45edf4e-3312-4e73-8967-39b9b1e0701b@lunn.ch>
-References: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
- <20260729-devel-vstrassheim-soce-dsa-ml-v1-4-be569dae1b20@linutronix.de>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	bridge@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] netfilter: ebt_nflog: pin the NFLOG backend
+Date: Thu, 30 Jul 2026 01:31:00 +0800
+Message-ID: <20260729173100.216916-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260729-devel-vstrassheim-soce-dsa-ml-v1-4-be569dae1b20@linutronix.de>
+Content-Transfer-Encoding: 8bit
 
-> +static int soce_sw_probe(struct mdio_device *mdiodev)
-> +{
-> +	const struct soce_variant_desc *variant;
-> +	struct device *dev = &mdiodev->dev;
-> +	struct device_node *switch_node;
-> +	struct soce_dsa_local *local;
-> +	const char *soce_compatible;
-> +	struct soce_priv *priv;
-> +	u32 numports;
-> +	int ret;
-> +
-> +	priv = devm_kzalloc(&mdiodev->dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	priv->ds = devm_kzalloc(&mdiodev->dev, sizeof(*priv->ds), GFP_KERNEL);
-> +	if (!priv->ds)
-> +		return -ENOMEM;
-> +
-> +	priv->ds->dev = dev;
-> +	priv->ds->priv = priv;
-> +	local = &priv->local;
-> +
-> +	switch_node = of_parse_phandle(dev->of_node, "soce,switch-ip", 0);
-> +	if (!switch_node) {
-> +		dev_err(dev, "missing or invalid switch IP reference\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = of_property_read_string(switch_node, "compatible",
-> +				      &soce_compatible);
-> +	if (ret) {
-> +		dev_err(dev, "missing compatible property in %pOF\n",
-> +			switch_node);
-> +		of_node_put(switch_node);
-> +		return -EINVAL;
-> +	}
-> +
-> +	variant = soce_match_variant(soce_compatible);
-> +	if (!variant) {
-> +		dev_err(dev, "unsupported compatible '%s' in %pOF\n",
-> +			soce_compatible, switch_node);
-> +		of_node_put(switch_node);
-> +		return -ENODEV;
-> +	}
-> +
-> +	ret = of_property_read_u32(switch_node, "soce,num-ports", &numports);
-> +	if (ret) {
-> +		dev_err(dev, "missing soce,num-ports in %pOF\n", switch_node);
-> +		of_node_put(switch_node);
-> +		return -EINVAL;
-> +	}
-> +	if (numports == 0 || numports > SOCE_MAX_NUM_PORTS) {
-> +		dev_err(dev, "invalid soce,num-ports %u (max %d)\n", numports,
-> +			SOCE_MAX_NUM_PORTS);
-> +		of_node_put(switch_node);
-> +		return -EINVAL;
-> +	}
-> +
-> +	local->base_addr = devm_of_iomap(dev, switch_node, 0, NULL);
-> +	if (IS_ERR(local->base_addr)) {
-> +		dev_err(dev, "failed to map switch register space for %pOF\n",
-> +			switch_node);
-> +		of_node_put(switch_node);
-> +		return PTR_ERR(local->base_addr);
-> +	}
-> +
-> +	priv->ds->ops = &soce_switch_ops;
-> +	local->mdio_ops = variant->mdio_ops;
-> +	local->mdio_master_addr =
-> +		local->base_addr + variant->mdio_master_offset;
-> +	local->layout = variant->layout;
-> +	of_node_put(switch_node);
-> +
-> +	priv->ds->num_ports = numports;
-> +	ret = soce_sw_parse_port_mdio(priv, dev, numports);
-> +	if (ret)
-> +		return ret;
-> +
-> +	dev_set_drvdata(&mdiodev->dev, priv);
-> +
-> +	dev_info(dev, "soce %s SDSA driver probed.\n", soce_compatible);
-> +
-> +	return dsa_register_switch(priv->ds);
-> +}
+nf_log_unregister() runs after the per-net teardown so its final RCU
+grace period also drains readers that obtained the logger from a per-net
+binding.  However, ebt_nflog passes an explicit ULOG log type to
+nf_log_packet() without holding a reference on the selected logger module,
+unlike the xt_NFLOG and nft_log frontends.
 
-Looking at this struct mdio_device *mdiodev is not used, other than
-for ->dev. Is this device actually on an MDIO bus?
+An ebtables nflog rule can therefore remain callable while nfnetlink_log
+is unloaded.  The resulting interleaving is:
 
-	Andrew
+  CPU 0                               CPU 1
+  nfnetlink_log_fini()
+    unregister_pernet_subsys()
+      kfree(nfnl_log_pernet(net))
+                                      ebt_nflog_tg()
+                                        nf_log_packet()
+                                          nfulnl_log_packet()
+                                            instance_lookup_get_rcu()
+
+The global ULOG logger is still registered at this point, so CPU 1
+dereferences the per-net state after CPU 0 has freed it.  KASAN reported:
+
+  BUG: KASAN: slab-use-after-free in instance_lookup_get_rcu
+  Read of size 8 at addr ff110001052e6210 by task poc/92
+  Call Trace:
+   instance_lookup_get_rcu+0x1ce/0x1f0 [nfnetlink_log]
+   nfulnl_log_packet+0x248/0x2fb0 [nfnetlink_log]
+   nf_log_packet+0x204/0x300
+   ebt_nflog_tg+0x351/0x550
+   ebt_do_table+0xedf/0x22b0
+  Allocated by task 90:
+   __kmalloc_noprof+0x186/0x470
+   ops_init+0x6d/0x420
+   register_pernet_operations+0x2f6/0x670
+   register_pernet_subsys+0x23/0x40
+  Freed by task 93:
+   kfree+0x131/0x3c0
+   ops_undo_list+0x3e3/0x700
+   unregister_pernet_operations+0x232/0x490
+   unregister_pernet_subsys+0x1c/0x30
+   nfnetlink_log_fini+0x34/0x450 [nfnetlink_log]
+
+Acquire the ULOG logger module reference when an ebt_nflog rule is
+validated and release it when the rule is destroyed.  Request the NFLOG
+backend for legacy callers when needed, matching xt_NFLOG.  This prevents
+module teardown until all ebt_nflog rules have stopped using the logger.
+
+Fixes: c83fa19603bd ("netfilter: nf_log: don't call synchronize_rcu in nf_log_unset")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+ net/bridge/netfilter/ebt_nflog.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/net/bridge/netfilter/ebt_nflog.c b/net/bridge/netfilter/ebt_nflog.c
+index 61bf8f4465ab..426f8adc912c 100644
+--- a/net/bridge/netfilter/ebt_nflog.c
++++ b/net/bridge/netfilter/ebt_nflog.c
+@@ -41,11 +41,25 @@ ebt_nflog_tg(struct sk_buff *skb, const struct xt_action_param *par)
+ static int ebt_nflog_tg_check(const struct xt_tgchk_param *par)
+ {
+ 	struct ebt_nflog_info *info = par->targinfo;
++	int ret;
+ 
+ 	if (info->flags & ~EBT_NFLOG_MASK)
+ 		return -EINVAL;
+ 	info->prefix[EBT_NFLOG_PREFIX_SIZE - 1] = '\0';
+-	return 0;
++
++	ret = nf_logger_find_get(par->family, NF_LOG_TYPE_ULOG);
++	if (ret != 0 && !par->nft_compat) {
++		request_module("%s", "nfnetlink_log");
++
++		ret = nf_logger_find_get(par->family, NF_LOG_TYPE_ULOG);
++	}
++
++	return ret;
++}
++
++static void ebt_nflog_tg_destroy(const struct xt_tgdtor_param *par)
++{
++	nf_logger_put(par->family, NF_LOG_TYPE_ULOG);
+ }
+ 
+ static struct xt_target ebt_nflog_tg_reg __read_mostly = {
+@@ -54,6 +68,7 @@ static struct xt_target ebt_nflog_tg_reg __read_mostly = {
+ 	.family     = NFPROTO_BRIDGE,
+ 	.target     = ebt_nflog_tg,
+ 	.checkentry = ebt_nflog_tg_check,
++	.destroy    = ebt_nflog_tg_destroy,
+ 	.targetsize = sizeof(struct ebt_nflog_info),
+ 	.me         = THIS_MODULE,
+ };
+-- 
+2.43.0
+
