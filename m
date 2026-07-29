@@ -1,166 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B34248A2A7
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:21:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF8D48A8DC
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785331288; cv=none; b=sYjl7z6CfLWkTs3fUoGFChS75jT/MpquIpKEycf01/YZKa35xzg3lZR5QtzDH6qepOSh6ypsxpOb3doCgSTUzPJw+IxEBgVXeo9zWoEIVgk2rNJPmjEwrz48H4gB7eeGeKshHLXS29J+vUsIJ+hz3XEGzUJ1PyVy/hj1ZL08ly4=
+	t=1785331386; cv=none; b=Ug8B5RXpAYSxOWMH1JmjQ/x2rjUnOQAAt9bPmn7bxiE31ZZONIOgzsnbPMA903xGwXatOMtmw37iBIL1PSU/QYr7tOzGfkexUEOGLCn3NIGcTDLmZcmt5orR1UifhZGj3mLWi3HMQ7AAV736Qzxv1GFeBL+lDO5do5h9LcKU3sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785331288; c=relaxed/simple;
-	bh=ka58tVVi6SsAum83Mc6DSFOiJ7ycJ9uJth8uHFgmOlE=;
+	s=arc-20240116; t=1785331386; c=relaxed/simple;
+	bh=1y0ABlCv/10b5bJ86x6rJlPFrXri6JkLh2ZSQkay5EU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UCG4r4jvOsNBCXErU+Qr4oRfqqtztB64GkyS7R7/AWGJRF/TD1z5LDDa1+Lu2anGAwvDZlGCOjogL0vP1IjiyoSc3I6m23WC2vz+MFr3gILPAAxKQO7JJPNvfGrwoDMoExWxlcfFghdBeBxqFMWTQmLnFiIhvdA8eClHjMRK6cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZVpUsVhB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mbcx8slx; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=TvyLTxshvo7QhQm7cdtAGsfjDWTHVpzW26Z8QFIR8MRFJTGvKywxP2mnCPN5iaw9tB/D6ufE0Sa9pjPqt1YonpQswp+J69IHaIEInv6xaCn3LzT22vwNXqp0lGC/mDbC2/FUJ9aGuqj4aoLBmMDMO1VKri/rBouS1PgiVvD0gYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=YxmX+9dQ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZVpUsVhB";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mbcx8slx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785331285;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u0xXJHq60WPbuKjp5vgLyMqWjsr1ek6nh2vuXCicWE8=;
-	b=ZVpUsVhBzALriJrjtq4yvMQx77yVUwy/Pkkb8VpUPOndBbw02LO4Eb3FNx1DlFqKOEWpdx
-	fi7Vs85gqiDZAFhVxnkZ3r4xAlBLD7olWv1OjrIa5UCNm9DcxrcY5TuJ5awV75lUiqwz2n
-	faamjeeGcjqhbwWC7X9r9V8xqFMuLC4=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-387-gN8iqIfxN9eYgj7fY6N-Qg-1; Wed, 29 Jul 2026 09:21:23 -0400
-X-MC-Unique: gN8iqIfxN9eYgj7fY6N-Qg-1
-X-Mimecast-MFC-AGG-ID: gN8iqIfxN9eYgj7fY6N-Qg_1785331283
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-496b408a5c0so5436265e9.0
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 06:21:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785331282; x=1785936082; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=u0xXJHq60WPbuKjp5vgLyMqWjsr1ek6nh2vuXCicWE8=;
-        b=mbcx8slxFFK6DsriQnwKqa9uRWl1kG0LA01Yp7uysCe0AMgl1IuYq2WZ50JVb39Uq+
-         y3p2nuzCFw5jB3JaNQLbOKsOiEYOOiTBesp8JO2DIF4vm/DgUkaPNrOcWmNraTx7Q+w8
-         5P2qKpIHcXpScunmWoPWpkWesKW5f91o4bfz10oZC42kHV++H557SVx67+Cul7UjGinR
-         nJwmlHceJa+hKAmzvivmEYOk7RtJyxI1/SMk0lOSSdeWMv+d3Nv5S/Nb0UJKIUWn03Lk
-         4PSY0RkdYnPAFHkkd2A4BQWGOlAOOUHyycifvYfKuK5+IfHZF2FgRkO5SkHGqVJ/O+ay
-         TXzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785331282; x=1785936082;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=u0xXJHq60WPbuKjp5vgLyMqWjsr1ek6nh2vuXCicWE8=;
-        b=ZpKckWHEYOhiz8bLE4X8v3LtWW48dc9ZZjvcv+Rm2Zut7WMORmasv2DzQ24WjVbG2j
-         V3er+i4pRcEgOVWEGqySiVBejMHK0RhCjrkguGr8iqmxlJ0Hf7ZIYOgIWBxmdVuflzJH
-         Vj1bmvL++/oTCPNOKW0+tDqQjmL5AnQoubzLINH2IGJbTEcq85if8aToSPlcFciss4hC
-         IhNGQKlAxgChXuvYdaOI+fARP3GhXVkhcgLjn1evzZsSP0Bw9c2CEz4PIDSJK+lu4GnW
-         Jja8pn92VSaNcJCogXYZXtg1IOQUQ+T+d5DJuLPpRereTvgINnXCG2RbbmsWXayMFpRe
-         NtaA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq1crTzgfDgeVjhVYmCR8qlHg6ajWYF+CEPACL/3g3SD2uYweMrgjc9uigWtgN5bJfviQZDNmo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN0C9rloQP09vHOU1oPUlyMCk9KoBHduQ0F5ed5EpzPfzcKI7A
-	DEBpSY4vVV7H8i1akpDiV3gwM+DwK6w5s0ypD3zakeO7Ru7Rq+DeI20/cT4IDo1KZkZPOBVF7OX
-	cIjqyMkBikcVZORLsWKpm33HKzQpKFvms3H4nLQ8oJYkSN400LF8l38+WEQ==
-X-Gm-Gg: AR+sD13H/iXpR/Tr4fw96jcAqeinF3j3RfyD/0lX0nvHEC5QN9yV9XWnGud1lF2Nclx
-	bkCms+acl5hbtWULxVHaPWPkzNWAm9cYVs1v3wOSJkwjaS85yweQiiWUTndMlWkkoVxqmw+QT6B
-	TVRZIESCtTN4t3Qx8Qz7hTSK9zPc1VEbie4jNlIdM3P9z7BwWn4gZSxNdxbSVTbcmVVdQEinWxN
-	rF8PvcG+kWzc64481DHv+IRr3YbWSln+QkCfstbMtYyNNviotyVJ+mSONw7dyeTzn8mGDpk4WBU
-	J8ynEPeJDjWUG2ovO4n3C+8UUiHhprg2Rdo8ZEPl3ExIiUem7JcBz+Xk+zOVMvxW6gEC6zEKZsz
-	qFWNwYToUZWQtiFVALXB1Cgi0hYLcqmwqt+jIaS+crJs=
-X-Received: by 2002:a05:600c:3b86:b0:493:df5d:6ca6 with SMTP id 5b1f17b1804b1-496c658eed1mr81575995e9.25.1785331282482;
-        Wed, 29 Jul 2026 06:21:22 -0700 (PDT)
-X-Received: by 2002:a05:600c:3b86:b0:493:df5d:6ca6 with SMTP id 5b1f17b1804b1-496c658eed1mr81575535e9.25.1785331281888;
-        Wed, 29 Jul 2026 06:21:21 -0700 (PDT)
-Received: from sgarzare-redhat (ip139-137-192-82.pool-bba.aruba.it. [82.192.137.139])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fb6b18a9fsm7167683f8f.32.2026.07.29.06.21.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 06:21:21 -0700 (PDT)
-Date: Wed, 29 Jul 2026 15:21:16 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: mawupeng <mawupeng1@huawei.com>
-Cc: phind.uet@gmail.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, acking@vmware.com, 
-	dtor@vmware.com, georgezhang@vmware.com, 
-	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] vsock: use sock_error() to consume sk_err after a
-Message-ID: <amn9-HWi5L8DlXy5@sgarzare-redhat>
-References: <20260727071305.45826-1-phind.uet@gmail.com>
- <33c73960-a44c-44e4-bfba-c4ebe85b336c@huawei.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="YxmX+9dQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=1ZHUMp+gyidBrBzFAoavntEbN+FGo6iEcMbG99ywxsE=; b=YxmX+9dQ1UiNCPFMFqfE/o4ZQA
+	TsMC9YDwu1JTcew8FwugAEOZnOyYDitDnNQlJgI2nx8528OBjmxJY++EVoz0WqY54qCTSGiGNsUjk
+	Si8hqLJnUsR4nu+Lqoc9v7yFb70UlQQ7elpW0QBF52vTfW3+uTI2izZfSqIfvDtMz+p8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wp4FB-00EpB8-Pj; Wed, 29 Jul 2026 15:22:45 +0200
+Date: Wed, 29 Jul 2026 15:22:45 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: xuanqiang.luo@linux.dev, richardcochran@gmail.com, hkallweit1@gmail.com,
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, maxime.chevallier@bootlin.com,
+	netdev@vger.kernel.org, Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Subject: Re: [PATCH net v1] net: phy: dp83640: fix per-bus clock lifetime
+Message-ID: <07553e2a-3475-45a3-b57d-3d74abea6c95@lunn.ch>
+References: <20260724023532.14583-1-xuanqiang.luo@linux.dev>
+ <20260728190340.780d3f63@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <33c73960-a44c-44e4-bfba-c4ebe85b336c@huawei.com>
+In-Reply-To: <20260728190340.780d3f63@kernel.org>
 
-On Tue, Jul 28, 2026 at 11:14:31AM +0800, mawupeng wrote:
->
->
->On 周一 2026-7-27 15:13, phind.uet@gmail.com wrote:
->> From: Nguyen Dinh Phi <phind.uet@gmail.com>
->>
->> Syzbot report an issue which can be reproduced with these steps:
->>    r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
->>    bind(r0, {VMADDR_CID_ANY, PORT})
->>    connect(r0, {VMADDR_CID_LOCAL, PORT})
->>    listen(r0, backlog)
->>
->>    r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
->>    connect(r1, {VMADDR_CID_LOCAL, PORT})
->>    connect(r0 -> self) -> -1, EPROTO
->>
->>    listen(r0)          -> 0
->>    connect(r1 -> r0)   -> 0
->>    accept(r0)          -> -1, EPROTO
->>
->> Basically, it creates a socket (r0) and triggers a self-connect after
->> binding it. This self-connect fails with EPROTO because it loops back to
->> r0 while the socket is still in the TCP_SYN_SENT state, causing it to be
->> incorrectly dispatched to the connecting-client path. The unexpected
->> packet type encountered there sets sk_err to EPROTO.
->>
->> After that, it invokes a listen() call on the same socket. This listen()
->> call succeeds because the kernel's listening path never inspects or
->> clears sk_err. Then, a new socket (r1) is created as a normal client and
->> connects to r0. However, vsock_accept() rejects this incoming connection
->> because the listener's sk_err still holds the EPROTO error from the
->> earlier failed self-connect.
->>
->> This rejection causes the child socket created for r1's connection to
->> never be freed on virtio or hyperv transports; only the VMCI transport
->> implements pending_work to revisit and clean up a rejected socket
->>
->> Fix the issue by using sock_error() to read the sk_err to prevent the
->> rejection branch from occurring  in this scenario.
->>
->> sock_error() atomically reads and clears sk_err, ensuring the error is
->> consumed when vsock_connect() returns and cannot affect subsequent
->> operations on the same socket. This matches the established pattern
->> used by other protocol connect() implementations in the network
->> stack like __inet_stream_connect(), tipc_wait_for_connect()...
->>
->> Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
->> Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
->> Fixes: d021c344051af ("VSOCK: Introduce VM Sockets")
->> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
->
->Thanks for your patch.
->
->Test-by: Wupeng Ma <mawupeng1@huawei.com>
+On Tue, Jul 28, 2026 at 07:03:40PM -0700, Jakub Kicinski wrote:
+> On Fri, 24 Jul 2026 10:35:32 +0800 xuanqiang.luo@linux.dev wrote:
+> > Commit 42e2a9e11a1d ("net: phy: dp83640: improve phydev and driver
+> > removal handling") moved per-bus clock cleanup from module exit to the
+> > remove path. This leaves two lifetime problems.
+> 
+> Isn't this sort of shared PHY resource problem supposed to be solved
+> using the PHY package API?
 
-Thanks for testing, just a note, the right tag should be Tested-by:
+I don't see anything in the description about it being shared by
+multiple PHYs in one package. PHY Packages are about quad PHYs, where
+the 4 PHYs share some additional registers, either in one of the PHYs
+address space, or in a totally different address space.
 
-Anyway, @Phi can you bring this with the right tag to the v3 if the code 
-will not change?
+Linux clocks are nice in that they are reference counted for enable
+and start operations. So they natural share when there are multiple
+consumers.
 
-Thanks,
-Stefano
+This patch is about something else. It was on my TODO list to take a
+better look because it seemed overly complex to me.
 
+       Andrew
