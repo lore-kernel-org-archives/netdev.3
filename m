@@ -1,80 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF383AFD15
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 08:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951CC43DA49;
+	Wed, 29 Jul 2026 09:06:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785314444; cv=none; b=SJRRL8XWsYL+NxOPIsRvW6pS7/NVhYko4hPfxnMlhmF1t312f+ddfWlqDSSE8UI6j5JrG9ayH3F+pg3iKupcw8gfKvO8DCo944kGxVnZlCHUl4mmIVWgRj4CFabndq9Xfp+CtbC6Q6ppYk6bBe6QYyzELTrrEVH3TtFERjE3MRY=
+	t=1785316007; cv=none; b=KGrbVcNGvvTGKIfl7Jr94pIX88IKqFpF+8gXmKeCnzY58y6A6JCD4MVOZFC1OjnXwnu5Y90rWkBc5UsItqh++soxQO/NgoRuedE7qW1LeqGWpUSYR+SYhgMj5VjfTH8p+dLIdWxxTiMlhVpWEMG6qLKc2KAi7KF0/pdvf3Chpcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785314444; c=relaxed/simple;
-	bh=D6LrDOlIBNAvHcdn2QH5dwc5+JfMBSXsaPIiLQca/GM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=K4oJDHPMFZPd+bqZW8VxOl+fqCngwSbiuQbb8IX/Zdq3Lt+KmSVO0r2GIjbgSduLtYojVf+w41ri7Lux9Cn430OBWjaftETXGWSvxU1JxOs4J8DlvYkk1fPu8VketRXU6xdtM0wn4/OguRozPQxMCnxPuaWejGwb4IC57AF8efY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FjTC4kTs; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FjTC4kTs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2C91F000E9;
-	Wed, 29 Jul 2026 08:40:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785314442;
-	bh=dt8pjjQxDWVZoQHRH9KbpH58W3IsF8eNy7G7yFlW1as=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=FjTC4kTsPLbBqq9O7V+242dVBAhElmZl4XsIgbUmffhBm+GXf/k5hN5KIlyyG07a1
-	 HULI+O6zDnNextt4rvBZO9tyiJ2IfRmbiOvRJixf9VTUap9TZcnzzqvzvptoWsLefT
-	 UwupH0JNdL3ZQv1chiZYnmwAD2m7GVQ8NVOXHI+yZAmBEBavlbK5B7xKx8U1xwZBXS
-	 Xxkusbeqzy4NH7VaAFAdWeU4mmAleRcEw+frF4BbDrYPOW3lHrxydVAlOxW34gUowl
-	 K/lnaIfoUhya61LLY752qKgZxYw4Yfs3y8qhjpxDLwxGS6KOjPgSOl/oasSF2O1w6Y
-	 hhG6B/BLLxHgg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5EFB53924FC0;
-	Wed, 29 Jul 2026 08:40:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1785316007; c=relaxed/simple;
+	bh=00DZ9vWyNOSETeO1x71RqwLCqdL4qftaF8Rs2mDDr9E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V/qdTHDjIObzvzHvcj6Gdf3stvhsQJInyzzl2Cw/OAVgBxCO60x9iDzn6NMnmk4BbvZe/C9ZxszkZY5EEkukya1ftQSD+ezCq0jiW0OUin83yIFlhqxQDgD7HsM2uHbzXiQh06BH90kOTsB4xJeIB5m+TsVxxBCkmqIIpwRbkLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 5688F202ACC;
+	Wed, 29 Jul 2026 11:06:42 +0200 (CEST)
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wp0FO-001rJX-0r;
+	Wed, 29 Jul 2026 11:06:42 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wp0FO-0000000CNm4-0bqH;
+	Wed, 29 Jul 2026 11:06:42 +0200
+Date: Wed, 29 Jul 2026 11:06:42 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Daniel Golle <daniel@makrotopia.org>,
+	=?utf-8?B?QmrDuHJu?= Mork <bjorn@mork.no>
+Subject: Re: [PATCH net-next v10 2/4] net: pse-pd: add Realtek PSE MCU core
+Message-ID: <amnCogCgoLAYgQlM@pengutronix.de>
+References: <20260728084307.2129515-1-jelonek.jonas@gmail.com>
+ <20260728084307.2129515-3-jelonek.jonas@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/2] net: sxgbe: fix descriptor ring allocation
- failure
- handling
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178531440719.2521418.13788561990285994467.git-patchwork-notify@kernel.org>
-Date: Wed, 29 Jul 2026 08:40:07 +0000
-References: <20260723021820.203960-1-chenguang.zhao@linux.dev>
-In-Reply-To: <20260723021820.203960-1-chenguang.zhao@linux.dev>
-To: Chenguang Zhao <chenguang.zhao@linux.dev>
-Cc: bh74.an@samsung.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, zhaochenguang@kylinos.cn
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260728084307.2129515-3-jelonek.jonas@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
-
-On Thu, 23 Jul 2026 10:18:18 +0800 you wrote:
-> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+On Tue, Jul 28, 2026 at 08:43:04AM +0000, Jonas Jelonek wrote:
+> A range of managed Realtek-based PoE switches use a small microcontroller
+> on the PCB to front the actual PSE silicon. The host CPU talks to that
+> MCU over I2C/SMBus or UART using a fixed 12-byte request/response
+> protocol with a trailing checksum; the PSE chips are managed by the MCU
+> and are not accessed directly. Two generations of the protocol exist -
+> both Realtek's - diverging in opcode numbering and a few response
+> layouts; the driver handles this with a per-dialect opcode table and
+> parser hooks for the responses that differ, selected by the compatible.
+> The specific PSE chip behind the MCU is detected at runtime and only
+> influences per-chip constants (power scaling and the per-port cap).
 > 
-> init_dma_desc_rings() leaks already-allocated TX rings
-> when RX allocation fails, and sxgbe_open() ignores its
-> return value and continues with invalid DMA rings. Fix
-> the cleanup path and check the error.
+> This core module implements the protocol, message framing, the dialect
+> machinery and the pse_controller_ops glue, and exports a registration
+> helper for transport modules. The I2C and UART transports that drive it
+> follow in the next patches; the core (PSE_REALTEK_MCU) is selected
+> automatically by those transports and is not user-selectable on its own.
 > 
-> [...]
+> The realtek-pse-mcu-* files and PSE_REALTEK_MCU* symbols match the
+> realtek,pse-mcu-* compatibles (see the binding for the naming rationale).
+> The two protocol generations - gen1 on older Broadcom-PSE boards, gen2 on
+> Realtek's own PSE silicon - are both Realtek's, handled by the same shared
+> core, each selecting its dialect via the compatible.
+> 
+> Power budgeting is left to the MCU firmware; the driver advertises
+> PSE_BUDGET_EVAL_STRAT_DYNAMIC accordingly.
+> 
+> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
 
-Here is the summary with links:
-  - [net,v3,1/2] net: sxgbe: free TX rings on RX allocation failure
-    https://git.kernel.org/netdev/net/c/c870f7e2890b
-  - [net,v3,2/2] net: sxgbe: check descriptor ring allocation failures
-    https://git.kernel.org/netdev/net/c/51b093a7ba27
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
