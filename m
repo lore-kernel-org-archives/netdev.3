@@ -1,115 +1,72 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D79639768D;
-	Wed, 29 Jul 2026 06:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9423A9D9A;
+	Wed, 29 Jul 2026 06:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785306148; cv=none; b=O94TgxyZQy0yGNqCTEAU5yfaKDvBQF9pkJ9LewL4GYg4foEV2AgcfYqoO1OFicJxmRcgXiF4ZWjhTjKNqGcjzwQ4Ja7ItzuXuTcEWbmZS9qvEtGb+yxwXaBrMBs62LPk3P2xx5AvvMrhw2FLiutDD98+v9VfAfhK5BOeDgGLYUc=
+	t=1785306187; cv=none; b=sBVa3QV+kqfhQYhL/3zJ0AOqrqAJMFsOOiRnCG7cIY89hQhjfaKftkpGwJkFJOV4cTTrsmTWXl0QuUfjWrwwD3gXcKRLEuKOwTmXXcVozy3d+fj1a719QCeADpFj0/Lx7/VbI1AqZWAQzWDoG4IMBDi0tXYtlTOckOteL2FGuqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785306148; c=relaxed/simple;
-	bh=15pZePfxoqfH95rdoCZhhvmuo8Nm+GarZpcrCgRlY+E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m/WnLkJQMtW5Le1Cx+qhSSAJX7H8ItwpHuhcFx/B5AbN9k8YM/R4j+x3m9a1TqfryQe1s2DywgpFPmEtsutOZMHkWfEv6umZhKRTS/OfY6YLrtBnbtLt5CA0ca/g18HzuRTrOy1e3lSUM3pQpiaVHSN2hHzoK1VlaBqQ+YPBJsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=aSQ8in+9; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785306187; c=relaxed/simple;
+	bh=m5SWNBxQdtMePzyMDKJ9Fi4VAu3iaNx82enXShg6uMM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L6XQqh8zCVBpyKXKU3Apc5rNXtUFbgSUNN+g8Z96W/h1ma1gsXnmav7EzqoooA3WVnTloRcZk6icMZGi+nYSQL3cMN5LTICiN3Gr/nVZ06aOQTwbxYe5Nm0TwRH3mRn3x/Aj8vZUSwDFRIW57nyY+fPXWfXJojOc/H5ioQZcnNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3AAutlg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="aSQ8in+9"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 2C01C1A12EA;
-	Wed, 29 Jul 2026 06:22:22 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id F0D1A6039A;
-	Wed, 29 Jul 2026 06:22:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EB9C111C14983;
-	Wed, 29 Jul 2026 08:22:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785306137; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=IRgRyy4I/iGOdIRbZQjz7pAYVoSvVDRHQXiU6P9/HMs=;
-	b=aSQ8in+9EDU9HVfsYSYQC1fmPobZUJb6cqpsiKBZ8E/wdwbnywx+joCjZiPsoPr7lCgNfM
-	lydLiKClnNB4459mda2XWXFrHvy8DXx+xon3sqXNHErGU+M5aMzKmZwSGygvblieneZXkN
-	URrtHq6wbuDEBj6g7e9ujbNshdnkqRrNfDOrFWurHXncsqnYT+/SBQFTxZbqmtPNJ2whe0
-	WnOp63er7p7aJgQxw774qppUjZgxmlSFL1Z+ZNvjOL2xFvrOLyrHbqYqvJkJ9uWJqOgS0A
-	8AWRe5rFmJ6muG0A0uZjk3SMRYvg9XzO/lp4GhZco6Q7e9LtxVnBXT19M8Gybw==
-Message-ID: <fb9a8280-4166-43ed-a9e5-b54d7079b222@bootlin.com>
-Date: Wed, 29 Jul 2026 08:22:08 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3AAutlg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3843B1F000E9;
+	Wed, 29 Jul 2026 06:23:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785306185;
+	bh=hA/U9ooyyT4N+H8fqyLDL8P4Nj8V96DYvGvtGFRQdSo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=X3AAutlg1b0d4uaufadLTBrecOm+SBXOXEarl8Ydbk8/Y8BafAFkmwbbjM25ZJy2O
+	 H4nXwNfzmeysu8+jK54ARg1JAbp86xbroWSSRpqx65NmtMsxp1Ht9CZ+F48fN/WGjD
+	 RYmaF4BUDcbOohQa+GReRzqoRS3llCRlf4M3hJTxWtfNztC6WgCFjIgtLShfx7jQHw
+	 UMOP6FGbhqUsFfs6XaBUBUWJlJpFR29Dv/JbusdYGrUjWL6jA1SSjErmIApE69X09G
+	 MiPdBVY97Z90ibrM0phck2sEKDP091Drqqd7rL8hpJcQsvbSNBZg8EjecLQ5YBpmXg
+	 O9LVRVsO94Rug==
+Date: Wed, 29 Jul 2026 08:22:59 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Vladimir Oltean <olteanv@gmail.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, "Chester A. Unal" <chester.a.unal@arinc9.com>, 
+	Daniel Golle <daniel@makrotopia.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Simon Horman <horms@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+	mfd@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v19 01/10] dt-bindings: net: dsa: Document
+ support for Airoha AN8855 DSA Switch
+Message-ID: <20260729-mystic-goat-from-asgard-d6c2d8@quoll>
+References: <20260728154846.1828945-1-ansuelsmth@gmail.com>
+ <20260728154846.1828945-2-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 2/2] net: stmmac: Skip PHY attach if custom
- PCS is in use
-To: Zxyan Zhu <zxyan0222@gmail.com>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Russell King <linux@armlinux.org.uk>,
- Russell King <rmk+kernel@armlinux.org.uk>,
- Serge Semin <fancer.lancer@gmail.com>,
- Romain Gantois <romain.gantois@bootlin.com>,
- Hariprasad Kelam <hkelam@marvell.com>,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260726132618.3580612-1-zxyan0222@gmail.com>
- <20260726132618.3580612-3-zxyan0222@gmail.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260726132618.3580612-3-zxyan0222@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260728154846.1828945-2-ansuelsmth@gmail.com>
 
-Hi,
-
-I think sashiko's are correct that we can err on the safe side and move
-the check inside the "if (addr < 0)" check (even though I don't think we
-have platforms with a PCS but no fwnode-described PHYs, but just to be
-safe).
-
-Also, sashiko reports an issue on patch 1 that this exact patch is solving, so
-you may want to re-send but with patches in the reverse order.
-
-Maxime
-
-On 7/26/26 15:26, Zxyan Zhu wrote:
-> When a platform provides a custom PCS via the pcs_init callback,
-> the MAC's phylink_pcs is already configured. In this case, phylink
-> validates against the PCS's supported interfaces and manages link
-> state through the PCS, so no traditional PHY device is needed.
+On Tue, Jul 28, 2026 at 05:48:28PM +0200, Christian Marangi wrote:
+> Document support for Airoha AN8855 5-port Gigabit Switch.
 > 
-> Without this, stmmac_init_phy() falls through to the no-phy-node
-> path and errors out with "no phy found" when the DT has no
-> phy-handle for such interfaces.
+> It does expose the 5 Internal PHYs on the MDIO bus and each port
+> can access the Switch register space by configuring the PHY page.
 > 
-> Skip the PHY attach when priv->hw->phylink_pcs is already set and no
-> phy-handle is specified in the device tree.
-> 
-> Fixes: f0ef433fc264 ("net: stmmac: introduce pcs_init/pcs_exit stmmac operations")
-> Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 562d20830b94..044ed3b89247 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -1346,6 +1346,10 @@ static int stmmac_init_phy(struct net_device *dev)
->  		int addr = priv->plat->phy_addr;
->  		struct phy_device *phydev;
->  
-> +		/* If a custom PCS is in use, no PHY is needed */
-> +		if (priv->hw->phylink_pcs)
-> +			return 0;
-> +
->  		if (addr < 0) {
->  			netdev_err(priv->dev, "no phy found\n");
->  			return -ENODEV;
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+
+Just one SoB.
+
+Best regards,
+Krzysztof
 
