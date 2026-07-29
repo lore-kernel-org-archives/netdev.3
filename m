@@ -1,270 +1,140 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11020111.outbound.protection.outlook.com [52.101.201.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653EC3B813C
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 19:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BF5450410
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 19:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.111
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785352840; cv=pass; b=EuHZIncDhQBgpEoBAb0LOEAi6/km96SkC/3VNparYtOeXBRefKLBHcfyGek/iT6MLV0Y3GvtGqaYDDJnmk2hmrKK6KjteQ28vesGDWzz/JKlGuIPdx/ig+owqOeBio+ggVwPCh1N0/vcAxMauErC68lHKoijR3tKm04QNvUlC0E=
+	t=1785353295; cv=fail; b=pNhd5DIhCDZs2xEyXIagcOfe64mUKLdeZi9+5Ir6k/LR2VM0bDDW3qAZ5/vblQkZsvERVukwzJH3Bnhkuc+E8fGm00jfkG6G+QFa6iilatNK93JGj7HMBmjcD13dSN+3gZovp2j3exxXkkBNnJG/FnNIrGdYGEhClVYx69JZmtY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785352840; c=relaxed/simple;
-	bh=v39J0NNGbheOQbg9MTs7WdorPz5bwtfU4Pews8O/IIA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mg33E6DjSPgZ8uRFpCj/hXanGGIPbOQQc/QMEH/8++Gp07WDTIOa1T4h8cUMxKAGsTi08i8aWaeDl+tDaU30NTKui2EA7QEQwWLsoylPFxR72ZbdrDZf5ORBlGLyKLlUH6DidBqGONi55rk9Cfx7hYeXOI+rTeTbe0SazSej8Lw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OFOc/fUy; arc=pass smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785353295; c=relaxed/simple;
+	bh=zuJpyIUFRFH9yKzTegi66zVtnARSy00r4wfMKfJXdFA=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=rae1Z0li/20SLFk0seXNSYIsI1+SDxQt4d2SdFQqWkKQQGxvtHGQHozptjAvEw1zg1JhEtUbHyC0HF3NTlOdiuJcIEU0azYTd0bT+HnB7T4rg7smtiOKG8jNkCztxXwHS0fHXCDt2v1yfEcHfpxVXwz5kY0NjaScvDEy3HSfiSE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu; spf=pass smtp.mailfrom=msu.edu; dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b=USYVIiBH; arc=fail smtp.client-ip=52.101.201.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=msu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OFOc/fUy"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-699fbcd23ccso2059711a12.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 12:20:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785352830; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JavSlLc+ulTDiaOuKFF0QFkkbJ7SiaNeKDbEj0/DZUj6VDzjGWIH41ESYzrIOza45b
-         Ej5MfC14KQ4O0RztZSHJi5m8WrNAAbAqIhMvs3g+de23ZbIQkMAKka84wRQe4bLYR1IA
-         CxyJC+Idpg9v07Y4a0UFBaoPU/6xbwQE+ZQpHiJOEWc69QSi2SDBWtmsY+/QA9QR4tlq
-         Z3dx/P4ARYyaU1BDiHiV+vEOe9dXR1tSiJ7ESgkLUEdpW6ftxOeFgsOjWW0+gBQ9cZAp
-         0sS9f9IADABw8L8ocd6rJV7I6RhFH2bb0QFqeggknG979aPAAL20KHI9sEAylnZsMnoQ
-         gLPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NDSAww7eofhNwmhBo8NXZ9YQ6g85WKpVrD6PKX308GA=;
-        fh=etWineGGfmVDm6Z7IoRpDGXIhMis/K8gMVx5Zs5yTko=;
-        b=ETJpQlqrGkrFZC7Fh+LPxNdJzmXAl/RbkRPb3PIRNRHUFXSUhUH2dJaR67r4ocvakB
-         5EXvFszPvQvBo8UwJGk/GYevJGpUA+DBCEfbUzCbwiZQQMQ+5BKTbC7MvkAOUkG2REJr
-         dhL7gfFynZz3cSQwDD5OpDmu1/uesNAljEuwy0X58hzye8J0PAj2mT7ay5vY9rLggVyZ
-         fX4YpbN9uF5ssH9gbTFLyEsX4EKJCo7SosGvjO7Wx4VCddjgOKxWNWII4FIpcmsUnBDI
-         uuXSnJYncXPeMpb4gwyjspVbHTQvcflid+lEKWSl8lqRVrG2mcpFOD+uVjCyoe3ZAy1g
-         KhFw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785352830; x=1785957630; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NDSAww7eofhNwmhBo8NXZ9YQ6g85WKpVrD6PKX308GA=;
-        b=OFOc/fUy8+Ygx08tslxV2T+DSfpMEEd+KgiXe6qCXef4DQwG6ajsHxqMHT1ToZlsq8
-         +UyiIUD1mE03fFJlnkmKkL4ykWo/mPJHO/3SAzKKlWY6xx8C2j8pggj1Yw+PEHbwQso5
-         Hyad8T3vIe0RE1EU4ss/40Gi+iaVnsGsGUM2mJqLDBPaO1y2rcRaVcmPCOaS3IBv6eLb
-         moK30cLkriGGkPT7TeKfhevPQ8oEXLbk4RWGJlts3+W1L9Nq1lgm/UwdmxyWN5tyXfJS
-         6vIRhjZ9qr8lM5EM4E4awjQRgmaFOFFQY0VpDcPJd7/rkMhQken5Z1H5IzXvyuyUvbQ2
-         4NhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785352830; x=1785957630;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NDSAww7eofhNwmhBo8NXZ9YQ6g85WKpVrD6PKX308GA=;
-        b=IJUU/bU8csfCBWtpbFgS9mQvz8WeIaLF9xQZFPIvJ47R7rIsF3B2+zs7X+FXaxL3rO
-         O1gWhyhdQPSnOu8fC5GZKfmJa3ycR9qdZ11PB02gbuQ5as5JN0Hd7A/pmGDXT/PYAjkC
-         dSRBJZvJ0o1Nugbon9mOSQTKY7ZYDHalxwOEKK/BZRFXRVvppali1iU0zafzu5g7phW6
-         ifGNSO+toaBOtYIO8vqMsB6SvMi1SHi1UxlXSOGS9b4/UWpMnFGp4svV5wNMALcqnEav
-         wB0FvK7u137lF7ZO9brfQWWlhHKD/TSebm3hGKNIe3EscS+Cm25jX3R2W25lP6uwEewj
-         wy2w==
-X-Forwarded-Encrypted: i=1; AHgh+Rq+p4kalnaYXqmCeG3X9M9U5UKzvXbIdhBXNlS4twBXrTc2D0hh+vt6F7O85zuJlA9odOwxPiQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQ37BrOtp1VeVPM7N9pR456GlG6nMJvtg+IOOqevPxjvpi49F1
-	J4JeVOFXZQD6Vcta/KhZ0VyQ3Tv6jUZnCqRTq7TRECTXNaH78aQomYwFbssO9LDjpJqg0swyt1T
-	94X5gkmuaCXhKQWHle2iZv0hVBb5NkrQ=
-X-Gm-Gg: AR+sD10E6GbHcNg4zsJkcJx9nS0V/JjHSpURwPcNWVMUkfdoSa84ReB2UPk0hMtFE+o
-	V0KKCpa9bHt0wnX+ZiT6JKKK5Apg6BW5+xGxpp+y0MhHJ/8/Zm+KOvPBgHA3MDEI9dyMzBPN6mZ
-	SbMhMjrd0XiI1hiRfg2obAAdWB2G+jY1c3WuLjRJ9aARUiRQEeczIHcTAQUUA+VQXsiLgYN6lBT
-	juPJ9zwM2MBOn5CNvM8TXgTBi+iPvX4guZubJexfO+bT3LizjXyrHkJmO8vThpHilglOFL3T1Wg
-	4qV+E26pGZXdi6lC7SIHmBloPqXvWBkPnNW1VILUjq4Sy7mrp6/2LCynAikLKOY3nWkmkDfYaHU
-	=
-X-Received: by 2002:a17:906:6a0c:b0:c1f:922d:34c3 with SMTP id
- a640c23a62f3a-c1f922d3b72mr205963066b.14.1785352829519; Wed, 29 Jul 2026
- 12:20:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b="USYVIiBH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pfekehq0ctQGlBHFCJ10UBTqsAwcs1eG3VeMp0WQQ5KD3M9TTP5osV/ufM043yKZko5Tn9O9LGn9kTcWm31L+OFoiSZS0BhaRK2r4Cb9kdAVg5Fn9sGhST7x4bnU1TQ8UnkaMBB7jDt65yirdEH9Jg0/WnOY1Jb0vRiQKRkWOMSwBaYbbD6LSinPWfEriJDAh1lZFXeHFs4ZurJbw65AcXNMi71xZorqeOVSmxAaILp9JhRAeqqu6OATtDACuzpxaWG8lbs+D+lBdc4/YzBShEUkI+Nx5NH/ie/RXocevmO3hEeF1GmGPgebUuhq/7xoi2rIukF2cvnrJcZACql3iA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zuJpyIUFRFH9yKzTegi66zVtnARSy00r4wfMKfJXdFA=;
+ b=YNNOg9tCCDkHDFsQ68pQmfnnbzAXLKoID/8yNAI2fX0n/CxIQSNzE1dxrj0O1M3E4dUtgPSwqtD8DGTY+6HJ0Kb949wx1bMpRZtq/IO6pqx32l2gjsHFJHmKbtPgj5wT+FCWkSs/X6KsDoYlPlM0YCT6XvBBIGYTWbClNwulLRNl9ncJvFwTfGF0vextFUgYRhnkmd49yD7Lynd4Z1PFHQ7lNX3w7dikbMx95PahHlzcSeQvmmQvIzXwlhljKNgT9DPX+dDH7E+TQmPymjY92vN6XI7wDgHWr45EbKP0NFCX8nP1Q9a7bgThEtvnc/1mmyjt/ZB1Mi/ay3BU+V21Fw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=msu.edu; dmarc=pass action=none header.from=pa.msu.edu;
+ dkim=pass header.d=pa.msu.edu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pa.msu.edu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zuJpyIUFRFH9yKzTegi66zVtnARSy00r4wfMKfJXdFA=;
+ b=USYVIiBHY6iO1U7axdvMv92+FFFN1K5I4b4eaLFrxANlW5At7aIpZhIath+WhLhifqCRjohXFhqUpNQ/Qn9TWKnr0+MmZJlzbt/yhXyrlB0mAwzp8N3cm+fxOFf20h9wlCepdioA5SDZrqJz56D7WhVU2PTUWS5wPIRG9YGpTEZ6XszX5rozPZHbm7TQsD8z+QJC2Yjw+S5i/cEu5bwB8qiGX8QuDg+4863zrJe6JubAxPd2YzUBL5UhpYBbYgs97dbEa+HrKKWTj+8Vua8+yosLkGkCBdmfTFu61eGlPAdtJ/SsA+jsb/frvWG8yJ6USSj5NNwYUZcljtgvIyTP2A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=pa.msu.edu;
+Received: from DM6PR12MB4337.namprd12.prod.outlook.com (2603:10b6:5:2a9::12)
+ by DM6PR12MB4385.namprd12.prod.outlook.com (2603:10b6:5:2a6::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.13; Wed, 29 Jul
+ 2026 19:27:59 +0000
+Received: from DM6PR12MB4337.namprd12.prod.outlook.com
+ ([fe80::b412:1b80:dfc:18c5]) by DM6PR12MB4337.namprd12.prod.outlook.com
+ ([fe80::b412:1b80:dfc:18c5%6]) with mapi id 15.21.0245.012; Wed, 29 Jul 2026
+ 19:27:59 +0000
+From: Nathan Whitehorn <nwhitehorn@pa.msu.edu>
+To: netdev@vger.kernel.org
+Cc: theo.lebrun@bootlin.com,
+	conor.dooley@microchip.com,
+	charles.perry@microchip.com,
+	andrew@lunn.ch
+Subject: [PATCH net-next v3 0/2] net: macb: 1000BASE-X on internal PCS
+Date: Wed, 29 Jul 2026 15:21:25 -0400
+Message-ID: <20260729192748.6928-1-nwhitehorn@pa.msu.edu>
+X-Mailer: git-send-email 2.54.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CH0PR03CA0030.namprd03.prod.outlook.com
+ (2603:10b6:610:b0::35) To DM6PR12MB4337.namprd12.prod.outlook.com
+ (2603:10b6:5:2a9::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260727035804.1860862-1-bestswngs@gmail.com> <amjkQ2F+NEK9SPAj@devvm29614.prn0.facebook.com>
- <amoR0pnMO2OQ2E6z@sgarzare-redhat> <CANgPUi2LFBiBG1c7+s_AyzrtDdncXDXQQuphNqmC0uktvBY1dg@mail.gmail.com>
-In-Reply-To: <CANgPUi2LFBiBG1c7+s_AyzrtDdncXDXQQuphNqmC0uktvBY1dg@mail.gmail.com>
-From: Weiming Shi <thebestswings@gmail.com>
-Date: Thu, 30 Jul 2026 03:19:52 +0800
-X-Gm-Features: AUfX_myMxXtcqQ9SsdbccjfyUGE7H8t5bNEP8VjBISktONh9Fw_cte5ZVhUeiaQ
-Message-ID: <CANgPUi3oUVf12GzPAWTX_3G6rEAssf6UwZi6dm7wW_YPjaMzmg@mail.gmail.com>
-Subject: Re: [PATCH] vsock/virtio: prevent workers from using deleted virtqueues
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Bobby Eshleman <bobbyeshleman@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev, kvm@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Xiang Mei <xmei5@asu.edu>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4337:EE_|DM6PR12MB4385:EE_
+X-MS-Office365-Filtering-Correlation-Id: 349eeae2-72ab-4284-eba8-08deeda77fa5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|786006|376014|1800799024|23010399003|366016|18002099003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	XsKSrWg803rV+mmbC9MCtGTLO+MZAGardKrNVJeh5AzTXFwMtkGcpl7I2E+2/WTP4P36ZEYFgU8UHh33hK5ll4xBTrgWo/sG9li+WV2aPNJwa/fRNSQm540k/L6Ynj29CVjzMTNqmlHUdKDpNm/mJzo50ySLZUxC8v+HzhpdcCUI9Hct4zhsVuoa13HaS2govcP4Mha7fk9A5kSe7uxETYmG3yumdG4p7k4i2ahRVmbBbw+u24mStjijPOCIP4/+sln77uTYG/vWCX7x5SiY+2+slwJzIHxVp8M4I+6WumVzmPs8RTMWYU7yzxjDD1/K5e1rT+c6I7Y6ii2uGaLGpq3sQsl4hMWitUJF9Sl5EWa1PA9rrcORyzlQJ+4hBXE4ICQwGvnn5xH2Ul4NGkW1UnJFRh346KORcSNVMzy3lZOIDElYeug1njxcoI8x9Oyj4aKxY3u1HASrVUjiDp/xg2AnmXsFpm8M6Z3MedeAtTvyGcUK0mzTGsGaht82pkV2PAnekDD6A0w+uKf5vjdpMpG8A1uAqBcMKwsaPoBpM+zNZ0uzyuACFFokRxWq7Q2+CGAufyhWurh1K0wjyymvS/qs3Sv9sxiqqCQI+5PovX5ubuU8fT0x3PpgzkdbfYFNKzY3zbI5jghVyWLSJzyCuGbnvLiQOBgClJDFWGDco0U=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4337.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(786006)(376014)(1800799024)(23010399003)(366016)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vv5eUk+R0HIk3gSJVvuJEpcua22x0dP8tAzyeTmLAXw/dLsONJl6erYwFUlx?=
+ =?us-ascii?Q?w1s1uLOuyp4Jhn8c/cWJcqna1R4urJqZjymdUWe0LWagqJ2Y2ALG9ftZeFnG?=
+ =?us-ascii?Q?khQNbo0Q5ZMNi47yoV1k2NGtCfaXrCD7JVK5nBcQN82BpJ/sdWRKkj4OkiYG?=
+ =?us-ascii?Q?HXVSC5R3K5B2Gxlw9wLN8pTkIqf+uYBST7ubOOh83qJxEi/w21jjMX2TiI2x?=
+ =?us-ascii?Q?JB5aUP3RGAylmScyF6Xg/XAnsQdf0+ZlAQ5Z7z4C8fdPJdNRf+n2KHE1Xcq4?=
+ =?us-ascii?Q?PA1GvcaoSYDYO4nC7w0P7n4IPCaSv8bpn9PvX2VKUUDr+6Cgc9lxVxL1WZOA?=
+ =?us-ascii?Q?pjeHgbFsy+Ce3fsxgrxBmWigJ3ukygeCeJ9OK8Rb6c6oNV3BTUYiF0k6LZ4U?=
+ =?us-ascii?Q?qQSEjRzr+fS+GSa4JF2AF1Nyhb59boyPpa7iUV++FGneF9HyYYva/lvWFbIM?=
+ =?us-ascii?Q?cghVED3L/WcDDNdwmMlfHUhL6vRTpHtCKbPsfYIV2mst7GP25jznWtfzWjZR?=
+ =?us-ascii?Q?hXlLqIq+5fotm0r8UHTleH6vhHcQbqhcyBFlHeR0QjDGWOV9LnxpfGNQehJ6?=
+ =?us-ascii?Q?0Wuh4xMJ9io0oyfyoiYDagR34GHGc7Q/mmlRs7vQQVqBTdV2f5BR3uxSLg+/?=
+ =?us-ascii?Q?tGnpJHhUABkChcOL5Ruh+tpEOxnCscCAvSsX64lr3CU/JHCZgTMDJZGVaLCI?=
+ =?us-ascii?Q?aNg5Txk1aH6c5sKHAasR7zMCMUGBzL71+RJllvwRCjacJeAXt/xvoWCexSha?=
+ =?us-ascii?Q?/EJCEHwewol5TiB/TVXIkqAggF0PbIgP9VwhuJgKo15MNGudWa1lI8j68xk5?=
+ =?us-ascii?Q?kOZviKL/n/IdwJoxKANJ8R8reE8n4bk9WrVBoHuNSy/RfrEKRnttP3/mBv8K?=
+ =?us-ascii?Q?NYdgtYQGnJxQZITFsd1oLuN61kCj2+i5Og4QEmKVNWbUpY9gKPyvHmH6gLYY?=
+ =?us-ascii?Q?CyFklTRIctvg/JxxdGrw7zlFMPAfffo7NEYcIB9pGj8+mKbb6jWSFUJQVV97?=
+ =?us-ascii?Q?VvAdf1MN/yawBN6huqAQz8v6gOheeXPawcpkFEgb25nLD2LoRwnTnG8h0NT5?=
+ =?us-ascii?Q?dTTuq2K5GyPR42eY3QbO7FCyFCPtYsiL+CKqZhAnN//Fuhh85ZX90WNTChmr?=
+ =?us-ascii?Q?OGBY4igqJwre8XfoonXnE9IP8mrCPz00gC4V+crhy/lj+AnShfg5uPv+HR2O?=
+ =?us-ascii?Q?RV8qj8Ol0U4VUbZ9/H3s6EnYvTY9ekFvaUTTte1y6Tyx4sbybs7akNrbhzwm?=
+ =?us-ascii?Q?yfZHHIpMECbozSMVtH9kOgUdjyVMvuxqFOnWypm5+/NeoSWMTB71s2b/2GEs?=
+ =?us-ascii?Q?anUjfHRhZjJ75ZTSApwxOD7Oet8B6xqmZTo0C2bU0xeMCaipvUMT+8o2/2FY?=
+ =?us-ascii?Q?AETHTHoxkrSjVBXXvmzPZ23n2goVHmRAgUTd1wNaxmxVOhr7D6MM+5sIKwBV?=
+ =?us-ascii?Q?NbGzf1313c7m1q7k3fqLI+17sPS4J/yfzNRLMWgLnIif7HWZQRZudabqgvPN?=
+ =?us-ascii?Q?inUjlMlB/3qPjf5g/voFzcrsedIEolNXFzjWpkjSjtjUGTqzhNPfS8J4JU3A?=
+ =?us-ascii?Q?7Dhk2Irh18pVKWovhRFoXnuDFb152tS4ZkiG4mC4z0AA8BRdJXVqweDONCUt?=
+ =?us-ascii?Q?lliwh39R/EGfa5dDUDpZ1+hGf4GAh9iRMogVRcpVBN+jvcjMPF1/gZbqVWcC?=
+ =?us-ascii?Q?yp2FT+H6+oGlrRC+K6mEG/FPDxgWhB4N8201PCBBOpSJTOGHPrmQ1vg2Pfjz?=
+ =?us-ascii?Q?pOxkutSagA=3D=3D?=
+X-OriginatorOrg: pa.msu.edu
+X-MS-Exchange-CrossTenant-Network-Message-Id: 349eeae2-72ab-4284-eba8-08deeda77fa5
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4337.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 19:27:59.2317
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 22177130-642f-41d9-9211-74237ad5687d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BEwVxonCi1hdXSkH8r2ugO1/GpJr1ivVHl3468GaFGorbodzi08p2wzDuWn20yBX
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4385
 
-Weiming Shi <thebestswings@gmail.com> =E4=BA=8E2026=E5=B9=B47=E6=9C=8830=E6=
-=97=A5=E5=91=A8=E5=9B=9B 03:05=E5=86=99=E9=81=93=EF=BC=9A
->
-> Stefano Garzarella <sgarzare@redhat.com> =E4=BA=8E2026=E5=B9=B47=E6=9C=88=
-29=E6=97=A5=E5=91=A8=E4=B8=89 22:47=E5=86=99=E9=81=93=EF=BC=9A
-> >
-> > On Tue, Jul 28, 2026 at 10:17:55AM -0700, Bobby Eshleman wrote:
-> > >On Sun, Jul 26, 2026 at 08:58:01PM -0700, Weiming Shi wrote:
-> > >> The RX, TX and event workers read their virtqueue pointers before ta=
-king
-> > >> the mutex that protects the queue and its run flag. A work item dela=
-yed
-> > >> across freeze and restore can therefore retain a pointer deleted by
-> > >> virtio_vsock_vqs_del(), observe the run flag for the replacement que=
-ues,
-> > >> and use the freed pointer.
-> > >>
-> > >> RX has an additional path: when rx_run is clear, the common exit sti=
-ll
-> > >> refills the RX queue. A queued worker can consequently call
-> > >> virtqueue_add_sgs() immediately after freeze deletes the virtqueues.
-> > >>
-> > >> BUG: KASAN: slab-use-after-free in virtqueue_add_sgs
-> > >> Read of size 4 by task kworker/2:1
-> > >> Workqueue: virtio_vsock virtio_transport_rx_work
-> > >> Call Trace:
-> > >>  virtqueue_add_sgs (drivers/virtio/virtio_ring.c:2796)
-> > >>  virtio_vsock_rx_fill (net/vmw_vsock/virtio_transport.c:332)
-> > >>  virtio_transport_rx_work (net/vmw_vsock/virtio_transport.c:701)
-> > >>  process_one_work (kernel/workqueue.c:3314)
-> > >>  worker_thread (kernel/workqueue.c:3478)
-> > >>  kthread (kernel/kthread.c:436)
-> > >>  ret_from_fork (arch/x86/kernel/process.c:158)
-> > >>  ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
-> > >> ...
-> > >> Freed by task 141:
-> > >>  kfree (mm/slub.c:6566)
-> > >>  vp_del_vq (drivers/virtio/virtio_pci_common.c:259)
-> > >>  vp_del_vqs (drivers/virtio/virtio_pci_common.c:285)
-> > >>  virtio_vsock_freeze (net/vmw_vsock/virtio_transport.c:912)
-> > >>  virtio_device_freeze (drivers/virtio/virtio.c:658)
-> > >>  virtio_pci_freeze (drivers/virtio/virtio_pci_common.c:601)
-> > >>  pci_pm_freeze (drivers/pci/pci-driver.c:1098)
-> > >>  device_suspend (drivers/base/power/main.c:1968)
-> > >> Kernel panic - not syncing: KASAN: panic_on_warn set ...
-> > >>
-> > >> Read each worker's virtqueue under its mutex after confirming that t=
-he
-> > >> queue is running, and only refill RX while RX is running.
-> > >>
-> > >> Fixes: b917507e5ad9 ("vsock/virtio: stop workers during the .remove(=
-)")
-> > >> Cc: stable@vger.kernel.org
-> > >> Reported-by: Xiang Mei <xmei5@asu.edu>
-> > >> Assisted-by: OpenAI-Codex:gpt-5
-> > >> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-> > >> ---
-> > >>  net/vmw_vsock/virtio_transport.c | 14 ++++++++------
-> > >>  1 file changed, 8 insertions(+), 6 deletions(-)
-> > >>
-> > >> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio=
-_transport.c
-> > >> index 57f2d6ec3ffc..79cf19f58943 100644
-> > >> --- a/net/vmw_vsock/virtio_transport.c
-> > >> +++ b/net/vmw_vsock/virtio_transport.c
-> > >> @@ -346,12 +346,13 @@ static void virtio_transport_tx_work(struct wo=
-rk_struct *work)
-> > >>      struct virtqueue *vq;
-> > >>      bool added =3D false;
-> > >>
-> > >> -    vq =3D vsock->vqs[VSOCK_VQ_TX];
-> > >>      mutex_lock(&vsock->tx_lock);
-> > >>
-> > >>      if (!vsock->tx_run)
-> > >>              goto out;
-> > >>
-> > >> +    vq =3D vsock->vqs[VSOCK_VQ_TX];
-> > >> +
-> > >>      do {
-> > >>              struct sk_buff *skb;
-> > >>              unsigned int len;
-> > >> @@ -451,13 +452,13 @@ static void virtio_transport_event_work(struct=
- work_struct *work)
-> > >>              container_of(work, struct virtio_vsock, event_work);
-> > >>      struct virtqueue *vq;
-> > >>
-> > >> -    vq =3D vsock->vqs[VSOCK_VQ_EVENT];
-> > >> -
-> > >>      mutex_lock(&vsock->event_lock);
-> > >>
-> > >>      if (!vsock->event_run)
-> > >>              goto out;
-> > >>
-> > >> +    vq =3D vsock->vqs[VSOCK_VQ_EVENT];
-> > >> +
-> > >>      do {
-> > >>              struct virtio_vsock_event *event;
-> > >>              unsigned int len;
-> > >> @@ -634,13 +635,13 @@ static void virtio_transport_rx_work(struct wo=
-rk_struct *work)
-> > >>              container_of(work, struct virtio_vsock, rx_work);
-> > >>      struct virtqueue *vq;
-> > >>
-> > >> -    vq =3D vsock->vqs[VSOCK_VQ_RX];
-> > >> -
-> > >>      mutex_lock(&vsock->rx_lock);
-> > >>
-> > >>      if (!vsock->rx_run)
-> > >>              goto out;
-> > >>
-> > >> +    vq =3D vsock->vqs[VSOCK_VQ_RX];
-> > >> +
-> > >>      do {
-> > >>              virtqueue_disable_cb(vq);
-> > >>              for (;;) {
-> > >> @@ -689,7 +690,8 @@ static void virtio_transport_rx_work(struct work=
-_struct *work)
-> > >>      } while (!virtqueue_enable_cb(vq));
-> > >>
-> > >>  out:
-> > >> -    if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
-> > >> +    if (vsock->rx_run &&
-> > >> +        vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
-> > >>              virtio_vsock_rx_fill(vsock);
-> > >>      mutex_unlock(&vsock->rx_lock);
-> > >>  }
-> > >> --
-> > >> 2.55.0
-> > >
-> > >Not a strong opinion from me, but since this last hunk is the one that
-> > >fixes the bug and the other hunks are moreso hardening, maybe break
-> > >these out into two patches?
-> >
-> > I think also the other hunks fix an issue, but I agree on the split
-> > since IMO we are fixing 2 different commits. Commit b917507e5ad9
-> > ("vsock/virtio: stop workers during the .remove()") was before
-> > freeze/resume added by commit bd50c5dc182b ("vsock/virtio: add support
-> > for device suspend/resume"). Only after that one we can have the false
-> > -> true transition of *_run variables.
-> >
-> > So IMO hunks 1-3 should have Fixes: bd50c5dc182b ... and hunk 4 should
-> > have Fixes: b917507e5ad9 ...
-> >
-> > That said, it's not a strong opinion here too, but if you prefer a
-> > single patch, please add both Fixes.
-> >
-> > Thanks,
-> > Stefano
-> >
-> > >
-> > >Besides, that all looks good to me.
-> > >
-> > >Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> > >
-> >
->
-> Thanks for your review. v2 sent.
->
-> Best,
-> Weiming Shi
+This series adds support for 1000BASE-X autonegotiation to the Cadence macb
+driver when using the MAC-internal PCS. The existing driver code is oriented
+toward the PCS being used with an on-board SGMII PHY, so uses Cisco
+SGMII-style autonegotiation exclusively and does not anticipate e.g. link
+state changes arising from fiber attach/detach events since the SGMII endpoint
+is permanently attached in such cases. The first patch changes the driver
+to monitor the PCS's link; the second extends the existing SGMII
+autonegotiation code to also support 1000BASE-X autonegotiation.
 
-Sorry for the noise; I resent the series as v3 with proper threading
-and no code changes.
+Changelog:
+- v1: Original patch
+- v2: Split into two pieces and clean-up of a few details in anrestart().
+- v3: Fix mistakes in commit message for patch 1 and improve wording.
 
-https://lore.kernel.org/all/cover.1785352330.git.bestswngs@gmail.com/
+Tested on Microchip PolarFire SoC with a variety of SFPs (copper, fiber, GPON)
+attached to the I/O Bank-5 PCS lines.
+
+Thanks to Charles Perry and Andrew Lunn for helpful suggestions on this patch
+series.
+-Nathan
+
