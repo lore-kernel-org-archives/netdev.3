@@ -1,306 +1,163 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F243453A58
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785335796; cv=none; b=PpHn3dPeWfL2LA9RttxwmwmX8Ibq7VcAchCncQ/4jYNmqP379jiioiGdwUwn+LIxBnRXozczTp7KYtzPa09YQOTa3kHjugUPSA+O2xifPcafhks4muExBeZReObs983TPR2UYTgPygdqk9Y2Y/P5sIh7pQBVBg63uk9m2cuKjvQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785335796; c=relaxed/simple;
-	bh=fycSYVa9DMHyEgwRT3MI5Yp7QQJN3GI7CbJQjeefYRY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mt42+1Yzk1L4COYmoESOyKgca/EEvyeOUOjhJVKhefzPV+n3Y4VXBwQFwOZdlSFTrO/NZWb0jiVvikBKA6a7S8EE52IQHKiU3iCVEFGP7t/XUC0F72tx/fWce7Ml41fvIfLfLxmeZoHkU111/AZKEvHxWrWbSg2Kwy/m4afqjbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=cZXmvone; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5627847DFBB
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785336219; cv=pass; b=eE2Ys44h7eseTP7kQjx9yESSOHZmrcwJEHJ3e8ZtdsidLWLgFBNK43xyS+ouImjF/vdUD1vnjsOL/vCzoF4ZTS6zD+BG5phNChGnsJo9q1jF6D0jKSVHf3m/yiOr8oT257pCmEG1bu+YtEsTEDJm1DLUgNr1kQN02DeuecZnWbQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785336219; c=relaxed/simple;
+	bh=bO30GBdigpLpXr8G01gVY3c3cMypTioYacQIgy7BQwE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s2f0eVJ6BYWcg8Hs36pZ8cySdDioZ3jMfyV6cWfvu9rSH6gR96Y3ewhfErWv1HzZmyIEBY7RUjWPowCjSivU6SMvnIAHKLqtmW3EEfP+rRUV0OKPqA2jotSFcqg0Sj3OVqbChYRCyRwgg05MJ5DiydBM0n25Y0MRY3u2huO54h8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fd+nxQIM; arc=pass smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="cZXmvone"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-848479c9bd5so878096b3a.3
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:36:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fd+nxQIM"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8485b358552so1190460b3a.2
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:43:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785336217; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jXz120pB+tC0CyBZDTRATKY+qd+6oKAxURvAytysuVLSSQ+eDd42Dm3e+BE0pgrZxu
+         3oNDK/GDdeXN631eZHkndiMWsOt5piTBkvMyLeY//9LFSdWJ6UPFcdzbkFjbeGWhgD9V
+         TezEKvpmHBfyawouIhPMRiSiJZu87mv9R7QpGKh2h4t9giDjroiwcYleP5AXcOAI+k29
+         5B4lxGbLH7jajChl0dasmCQMIlu1g/8R3vpNX0n8XhguBY0ioxcCKbgYtIl9Z3deY80X
+         UC94lGUTOxYtgxy3iC2cCH6ImoGFq5dzyU18AOc8hwLBcUQLMEHDtolDVtnJVpZ5y4QK
+         EhDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SWVLK5NfeZSfuYOjxWPGReqguFO0C9gVVig1mZn9FwQ=;
+        fh=vGtn6xsSEVAR06kBOlUMJLEO2evHUKIaH9Te+M4elBY=;
+        b=Qz8R8LeNgveqL15EkrbJGhVmb/niSlEHzRVCiJvM+y7dUSckCWcnQqpfjRMeLsntb7
+         zM6dpg2pALgGDDeHkgXsvYiTOOFfxCEknVtydlxNAH22T5cIC6AHSPUCdjQuqukI9w6v
+         NTFLybs2TbbYzw7nirpRB3B8fT+Doru7KRxpVH6/gw8UcLu/UkYm26/KD/u0M8G1MpHl
+         Eu3ikk2/QF2gAkt30CFV8rLcvYFLUxOH3bs4uqQ3ccSb7R7SpVoj4uBV2CvUhBhDCEVb
+         4tpMAtpI3Y/N8uyCtpKxTRXwVLpxCkn2VrsUJ0Bd6oaQ1W5Xhf4/M0mGNu3h2uwWKkow
+         BRFg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785335795; x=1785940595; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LRAIQWJBExocz0PLzX+sgUtteu2dNtbB6CEn0ss5Muk=;
-        b=cZXmvoneTWvlLF3vOwwWvUlHM8KmGJJIRmkUOxPa1bqll2lTmNHWmwis+I5JaVPGaU
-         KEzjb3BcXPEsoCqDiXOcsSd0xelIL2pBuaslU1kvR1pPnyRDAFeUCU7MIBW/jnsjIJQ9
-         daGRkHNuNplyyYO0M6NYOF+cv/VSQKxxq0hfEwxbfbVHY9NwnUE4lSkDdNafk/twe9EP
-         TxE5VrnD5InB8wn2x3KRlVJLX2f3k1CSm/27KfvejEwA4R8ZoVYYGGL1aSCNlOv8VzR/
-         i7TyXJaP2UT0WwaMDM2NRyan3xrKN1wn3ak/6waON9zttcZp4+T3C0TCK2ORTPbdsU39
-         QyCQ==
+        d=gmail.com; s=20251104; t=1785336217; x=1785941017; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SWVLK5NfeZSfuYOjxWPGReqguFO0C9gVVig1mZn9FwQ=;
+        b=Fd+nxQIMcfaNLq2rpnnBLp+39h4colGbDZd3IFfNiCshwi+RIAJdXfiLvwL6loK7RM
+         98Oha7t8j7cD+Dl7LeQdiQGZ4kxxOp6qSDI4MmdAR8+XT/mBrN3e10edvi/wOBFyhE1c
+         dusuE0V48tnTfwOvlHNhHpuTLc3FU7OIJ+9265GJETQoPeigQwQqvvrXn+p7jnvbqZhZ
+         Rj0AqfTPkSX72NxdebG2eDg2SxH1IIjZci254xm38+zjhYsZI79nLOI1HHXuHEHFs/PS
+         oBG/LJxlS/A1F3bNG8mnZn1fqMePx3jkUE4C+ZrpvNMT/T99FvT0YzNMy1SLiybOhL8D
+         ZtMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785335795; x=1785940595;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LRAIQWJBExocz0PLzX+sgUtteu2dNtbB6CEn0ss5Muk=;
-        b=YuDP2eCGB4p9rHr0hvXNUhNQ2yXmPcpqoecyxhCscDWfs5RlR/9xgqZVTxG+5vaLMG
-         95BU/UXHcte/UXfJC54iOY1eDyhIDUO3v2WASe2btU0BQ9QG3e3CBgqh+Fobyi1cyKLT
-         SACeacpnQZy+LcdetpkeDiNJvFl8BMeAw6eRTeXPfNvApDZWxL26HvsroLu/aKr5ZOUk
-         m6GtThgfYAPKSZyCZUL1ygfATH2gLg6A68fBlIYw6Hr9jQV2E8uNsJYn6eo3RKtgNLEU
-         z21ut9Pqv3JAKK6lDwBWQyEOGkfwgFyXgp8B2lha+MzFdmXYrUpbpfj1E7bB8X6edDN7
-         2Chg==
-X-Gm-Message-State: AOJu0YwKv6uJGyWNnzyU2JSHD80L596SrCeObXI6Rf3HYPfQQVr0R/mN
-	TJYQ+WXTG/FyB3s7bG8dsEC9Fc+D0cQBxCvTosG+OGjzy8hboqL0y6c3D89Ps0dkT9nBQcR3OsI
-	8ePefydxC
-X-Gm-Gg: AR+sD13lpZefTHg7C6f78UsLWtButANaeapPs4b1+f9ZHN1LVz+MHSR1v9jg8ZiS7ox
-	IuWjlGwCGyn+tscrvedKDUZSQPSk3FJmTj79i6F6ytNhs6KHcYjkLQVNqZztHya6Wuo6/IZGsYG
-	y/+ET0wMjN/Cd9YYyIB1VUs8vRdDdEDHkzwS6lSes+ECD9hJrY6TBgfREdZ0/V2aLuXZaI3Fgmn
-	8oNzihWHAZGbuaKCLkK9Xh9nvtZWOQ9xfPpTtGJBmHLfmG5Xk4kcbEWVV6qOY3fcbqEXi+QFwwf
-	+mBG9nlwSuKswp7HwU8ChWsH0UJPtQ8xKOYqtwCwLR8C9W5qNX9qVemh8qh2EKxH2itXIf3Sc7J
-	3vPcw5xhJ3KzCPXZJxiuizsNn8nzHicHZ61HlJb11Xl0HBRqHuKG/r4q2wfykrgUcqkZvxj1igS
-	pcUBBZ7yGLGsTdzr5SqfJ2BwflZcUyuGyB+jaRN7d54NXcaeicVrqj+zlP2tcsk61CmjPXabO5J
-	1ZbxGa1yw==
-X-Received: by 2002:a05:6a00:2e24:b0:848:438d:3665 with SMTP id d2e1a72fcca58-84e933e8291mr7432527b3a.41.1785335794544;
-        Wed, 29 Jul 2026 07:36:34 -0700 (PDT)
-Received: from localhost.localdomain ([115.192.250.185])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea02f8473sm1498306b3a.31.2026.07.29.07.36.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 07:36:34 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	sdf@fomichev.me,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	vega@nebusec.ai,
-	zihanx@nebusec.ai
-Subject: [PATCH net 1/1] xsk: charge ring allocations to socket optmem
-Date: Wed, 29 Jul 2026 14:35:56 +0000
-Message-ID: <8bdeff3a669003d9573ef097069c71c26da46e1d.1785313095.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1785313094.git.zihanx@nebusec.ai>
-References: <cover.1785313094.git.zihanx@nebusec.ai>
+        d=1e100.net; s=20251104; t=1785336217; x=1785941017;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SWVLK5NfeZSfuYOjxWPGReqguFO0C9gVVig1mZn9FwQ=;
+        b=AdDbQIyhxvP8yN9fddyDT3nkToHTYIpMD8NDE/ZLQhT8MFi/LGEavs2FLv+gnh0KE8
+         fbKDBt7k9ChaHEDWA7obANcgedo8HzTtnPjjc5hSV3nCpWh4YkFB3C/mMWGMYfLm7Lqx
+         a5ASvoe9Fj0zvcLEkDHaiBkWfD0vLPG6QZcpUdchtMIMvwif5nouBJuvvsGSWag299vp
+         ySzSvVicSZZ/a7gM9lK6NFg+z73a+2U62rsJXLxnogIZ23tI0edhhcHGq/xYCUBubSDH
+         qAAMsDOZsSiIPIXRvntZ5xRr63fpCUPflfwKR+7CIgRNl2KQyAQZDnDI1Dcqayqwjist
+         D8JA==
+X-Forwarded-Encrypted: i=1; AHgh+Romyc6lYt7O387eORlQnRnYOFzMPxFBmmzl1tPkPWmNFkkQaRMwla6bb594Z8NB4cqx/srppKc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcKKg0FijRmbovlkXAA2rrvA7MrfdQBG0u0efAmbKoeVvAhD6C
+	g/9hcp4w2SsKuyZgo/EEnheG+zkbvLzaETgArYr/gi/uKCyaj07lGagrEu0N459WV7OwY+nN54v
+	PPQZW6Jcqfsmk2WgAD45yxNKr0wtMGz0=
+X-Gm-Gg: AR+sD13T6oU2H41lCYLUCepaNNQXx4fyyRoGF1VKAvY26rfKy1tDGOgnyvIF9AlDAAo
+	9KgCCOB/UOgXGAWWzo/NCHjanQvKrMn+e58GilPGPuE5db5sKV3jvydyXorjo9pGX9hfql8z4X1
+	NFCEp6urHa0Vtkvin1eTkHO/b/vrk9Lv1uN6GdUu9+Noa08suKIXLInQF9q7jkp7gcLWBGah8BR
+	dYbDYv9XJh2YirKCrANkMZEL0nprETN+FOTMx1lNz/PCYJ4CPQjJHqFLB6z/30RrTgDipsUvW0r
+	eIXZs5wR/uf9fu6cK6y6uydKoZFxZkqLYGafedCCRs3v2E8kV1U6LdzXokmWV8OuJKrH9/IPWG9
+	mMGFlFXzGsupSrV5Wkt7KSwZv2QzcPbFbm1Qs7njRXUw=
+X-Received: by 2002:a05:6a00:bd09:b0:847:8ccc:d7c6 with SMTP id
+ d2e1a72fcca58-84e931844b0mr7932333b3a.31.1785336217592; Wed, 29 Jul 2026
+ 07:43:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CADvbK_cb8Q=9nv5Z5eR3cf=NLb=5=wSg_HKHrtCtPU_bAN=qvg@mail.gmail.com>
+ <20260723061107.384106-1-l1138897701@163.com> <20260728182359.3cd3acf6@kernel.org>
+In-Reply-To: <20260728182359.3cd3acf6@kernel.org>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Wed, 29 Jul 2026 10:43:26 -0400
+X-Gm-Features: AUfX_myvjigZq3pCCyct8kGwuVqsXaVLLMpSYVzV2Vvf-myxU1YKYy0bIhWF4kQ
+Message-ID: <CADvbK_cAR8qZwA1pAN1Kov+v-Whg_P19VK-Fzpztxc5fiwA+Pg@mail.gmail.com>
+Subject: Re: [PATCH net-next v5] sctp: auth: discard auth_chunk when skb_clone fails
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: luoqing <l1138897701@163.com>, davem@davemloft.net, edumazet@google.com, 
+	horms@kernel.org, linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	marcelo.leitner@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-AF_XDP lets user space create RX, TX, fill and completion rings via
-setsockopt().  xskq_create() validates that the requested number of
-entries is non-zero and a power of two, but the resulting ring size is
-not charged to any socket memory limit before vmalloc_user() is called.
+On Tue, Jul 28, 2026 at 9:24=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Thu, 23 Jul 2026 14:11:07 +0800 luoqing wrote:
+> > From: Qing Luo <luoqing@kylinos.cn>
+> >
+> > When processing AUTH + COOKIE-ECHO packets, if skb_clone() fails
+> > due to memory pressure, chunk->auth_chunk is NULL. The original
+> > code still sets chunk->auth =3D 1 and continues, leaving the
+> > COOKIE-ECHO to be processed without a valid auth_chunk for
+> > deferred verification.
+> >
+> > Discard the AUTH chunk early via pdiscard when skb_clone() fails,
+> > so that the receive loop can continue processing remaining chunks
+> > in the inqueue instead of stalling the entire packet.
+>
+> Hi Xin Long, should we apply this or it's no longer worth it after
+> 8e04823c120b ?
+>
+Apply it to net-next.git.
 
-A process with CAP_NET_RAW in a network namespace can therefore request
-very large rings and pin a large amount of vmalloc memory through an
-AF_XDP socket.  This can exhaust memory before bind or any packet I/O is
-required.
+Acked-by: Xin Long <lucien.xin@gmail.com>
 
-Charge the page-aligned ring size to sk_omem_alloc and bound the charge
-by the namespace optmem limit.  Use an atomic cmpxchg loop so concurrent
-ring allocations cannot race past the limit or overflow the signed
-sk_omem_alloc counter.
+So sending patches with wrong in-reply-to doesn't require repost?
 
-Keep a socket reference with the queue, because UMEM fill and completion
-queues can be moved to the buffer pool and destroyed after socket
-release.  Drop the socket reference to the pool and UMEM from
-xsk_release() before the final socket put, so pool destruction no longer
-depends on the socket destructor and the queue reference does not form a
-release cycle.
-
-Fixes: 423f38329d26 ("xsk: add umem fill queue support and mmap")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
- net/xdp/xsk.c       | 26 +++++++++++++++++++-------
- net/xdp/xsk_queue.c | 35 ++++++++++++++++++++++++++++++++++-
- net/xdp/xsk_queue.h |  7 +++++--
- 3 files changed, 58 insertions(+), 10 deletions(-)
-
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index f906d51b6699..7d6df8b6b43d 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -1446,15 +1446,15 @@ static __poll_t xsk_poll(struct file *file, struct socket *sock,
- 	return mask;
- }
- 
--static int xsk_init_queue(u32 entries, struct xsk_queue **queue,
--			  bool umem_queue)
-+static int xsk_init_queue(struct sock *sk, u32 entries,
-+			  struct xsk_queue **queue, bool umem_queue)
- {
- 	struct xsk_queue *q;
- 
- 	if (entries == 0 || *queue || !is_power_of_2(entries))
- 		return -EINVAL;
- 
--	q = xskq_create(entries, umem_queue);
-+	q = xskq_create(sk, entries, umem_queue);
- 	if (!q)
- 		return -ENOMEM;
- 
-@@ -1498,6 +1498,18 @@ static struct xsk_map *xsk_get_map_list_entry(struct xdp_sock *xs,
- 	return map;
- }
- 
-+static void xsk_put_pool_and_umem(struct xdp_sock *xs)
-+{
-+	struct xsk_buff_pool *pool = xs->pool;
-+	struct xdp_umem *umem = xs->umem;
-+
-+	xs->pool = NULL;
-+	xs->umem = NULL;
-+
-+	if (!xp_put_pool(pool))
-+		xdp_put_umem(umem, !pool);
-+}
-+
- static void xsk_delete_from_maps(struct xdp_sock *xs)
- {
- 	/* This function removes the current XDP socket from all the
-@@ -1553,6 +1565,7 @@ static int xsk_release(struct socket *sock)
- 	xskq_destroy(xs->tx);
- 	xskq_destroy(xs->fq_tmp);
- 	xskq_destroy(xs->cq_tmp);
-+	xsk_put_pool_and_umem(xs);
- 
- 	sock_orphan(sk);
- 	sock->sk = NULL;
-@@ -1810,7 +1823,7 @@ static int xsk_setsockopt(struct socket *sock, int level, int optname,
- 			return -EBUSY;
- 		}
- 		q = (optname == XDP_TX_RING) ? &xs->tx : &xs->rx;
--		err = xsk_init_queue(entries, q, false);
-+		err = xsk_init_queue(sock->sk, entries, q, false);
- 		if (!err && optname == XDP_TX_RING)
- 			/* Tx needs to be explicitly woken up the first time */
- 			xs->tx->ring->flags |= XDP_RING_NEED_WAKEUP;
-@@ -1879,7 +1892,7 @@ static int xsk_setsockopt(struct socket *sock, int level, int optname,
- 
- 		q = (optname == XDP_UMEM_FILL_RING) ? &xs->fq_tmp :
- 			&xs->cq_tmp;
--		err = xsk_init_queue(entries, q, true);
-+		err = xsk_init_queue(sock->sk, entries, q, true);
- 		mutex_unlock(&xs->mutex);
- 		return err;
- 	}
-@@ -2156,8 +2169,7 @@ static void xsk_destruct(struct sock *sk)
- 	if (!sock_flag(sk, SOCK_DEAD))
- 		return;
- 
--	if (!xp_put_pool(xs->pool))
--		xdp_put_umem(xs->umem, !xs->pool);
-+	xsk_put_pool_and_umem(xs);
- }
- 
- static int xsk_create(struct net *net, struct socket *sock, int protocol,
-diff --git a/net/xdp/xsk_queue.c b/net/xdp/xsk_queue.c
-index 4dd01b7d858e..edc2ba97cc0f 100644
---- a/net/xdp/xsk_queue.c
-+++ b/net/xdp/xsk_queue.c
-@@ -7,6 +7,7 @@
- #include <linux/slab.h>
- #include <linux/overflow.h>
- #include <linux/vmalloc.h>
-+#include <net/sock.h>
- #include <net/xdp_sock_drv.h>
- 
- #include "xsk_queue.h"
-@@ -21,7 +22,25 @@ static size_t xskq_get_ring_size(struct xsk_queue *q, bool umem_queue)
- 	return struct_size(rxtx_ring, desc, q->nentries);
- }
- 
--struct xsk_queue *xskq_create(u32 nentries, bool umem_queue)
-+static bool xskq_charge(struct sock *sk, size_t size)
-+{
-+	int optmem_max = READ_ONCE(sock_net(sk)->core.sysctl_optmem_max);
-+	int old, new;
-+
-+	if (optmem_max <= 0 || size > optmem_max)
-+		return false;
-+
-+	do {
-+		old = atomic_read(&sk->sk_omem_alloc);
-+		if (old < 0 || old > optmem_max - (int)size)
-+			return false;
-+		new = old + (int)size;
-+	} while (atomic_cmpxchg(&sk->sk_omem_alloc, old, new) != old);
-+
-+	return true;
-+}
-+
-+struct xsk_queue *xskq_create(struct sock *sk, u32 nentries, bool umem_queue)
- {
- 	struct xsk_queue *q;
- 	size_t size;
-@@ -45,9 +64,18 @@ struct xsk_queue *xskq_create(u32 nentries, bool umem_queue)
- 	}
- 
- 	size = PAGE_ALIGN(size);
-+	if (!xskq_charge(sk, size)) {
-+		kfree(q);
-+		return NULL;
-+	}
-+
-+	sock_hold(sk);
-+	q->sk = sk;
- 
- 	q->ring = vmalloc_user(size);
- 	if (!q->ring) {
-+		atomic_sub((int)size, &sk->sk_omem_alloc);
-+		sock_put(sk);
- 		kfree(q);
- 		return NULL;
- 	}
-@@ -61,6 +89,11 @@ void xskq_destroy(struct xsk_queue *q)
- 	if (!q)
- 		return;
- 
-+	if (q->sk) {
-+		atomic_sub((int)q->ring_vmalloc_size, &q->sk->sk_omem_alloc);
-+		sock_put(q->sk);
-+	}
-+
- 	vfree(q->ring);
- 	kfree(q);
- }
-diff --git a/net/xdp/xsk_queue.h b/net/xdp/xsk_queue.h
-index 1bc42c8902f4..61744e4c1ca2 100644
---- a/net/xdp/xsk_queue.h
-+++ b/net/xdp/xsk_queue.h
-@@ -37,6 +37,8 @@ struct xdp_umem_ring {
- 	u64 desc[] ____cacheline_aligned_in_smp;
- };
- 
-+struct sock;
-+
- struct xsk_queue {
- 	u32 ring_mask;
- 	u32 nentries;
-@@ -46,6 +48,7 @@ struct xsk_queue {
- 	u64 invalid_descs;
- 	u64 queue_empty_descs;
- 	size_t ring_vmalloc_size;
-+	struct sock *sk;
- 	/* Mutual exclusion of the completion ring in the SKB mode.
- 	 * Protect: when sockets share a single cq when the same netdev
- 	 * and queue id is shared.
-@@ -531,7 +534,7 @@ static inline u64 xskq_nb_queue_empty_descs(struct xsk_queue *q)
- 	return q ? q->queue_empty_descs : 0;
- }
- 
--struct xsk_queue *xskq_create(u32 nentries, bool umem_queue);
--void xskq_destroy(struct xsk_queue *q_ops);
-+struct xsk_queue *xskq_create(struct sock *sk, u32 nentries, bool umem_queue);
-+void xskq_destroy(struct xsk_queue *q);
- 
- #endif /* _LINUX_XSK_QUEUE_H */
--- 
-2.43.0
-
+Thanks.
+> > diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+> > index 62d3cc155809..a5f2835dbe0f 100644
+> > --- a/net/sctp/associola.c
+> > +++ b/net/sctp/associola.c
+> > @@ -999,6 +999,10 @@ static void sctp_assoc_bh_rcv(struct work_struct *=
+work)
+> >                       if (next_hdr->type =3D=3D SCTP_CID_COOKIE_ECHO) {
+> >                               chunk->auth_chunk =3D skb_clone(chunk->sk=
+b,
+> >                                                             GFP_ATOMIC)=
+;
+> > +                             if (!chunk->auth_chunk) {
+> > +                                     chunk->pdiscard =3D 1;
+> > +                                     continue;
+> > +                             }
+> >                               chunk->auth =3D 1;
+> >                               continue;
+> >                       }
+> > diff --git a/net/sctp/endpointola.c b/net/sctp/endpointola.c
+> > index dfb1719275db..a15b599b20b7 100644
+> > --- a/net/sctp/endpointola.c
+> > +++ b/net/sctp/endpointola.c
+> > @@ -368,6 +368,10 @@ static void sctp_endpoint_bh_rcv(struct work_struc=
+t *work)
+> >                       if (next_hdr->type =3D=3D SCTP_CID_COOKIE_ECHO) {
+> >                               chunk->auth_chunk =3D skb_clone(chunk->sk=
+b,
+> >                                                               GFP_ATOMI=
+C);
+> > +                             if (!chunk->auth_chunk) {
+> > +                                     chunk->pdiscard =3D 1;
+> > +                                     continue;
+> > +                             }
+> >                               chunk->auth =3D 1;
+> >                               continue;
+> >                       }
+>
