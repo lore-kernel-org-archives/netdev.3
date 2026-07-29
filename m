@@ -1,171 +1,175 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A165470EB6
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84ACE49251F
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785333371; cv=none; b=ffgjEgqUOlHJ5+ZZ6tfiTAyzmrTAyRatn/1f5kylWDCuOCHAVntkOkjLyTPOd+DJFJ+4ww6PrHvYyfZIXmov7tA+2q6uGBq2Kbnq4n830NtbEzdw5WKq2PF3SkBRc5RKuwsY3SiRFWbMdpCzt/KBmaIpmaLIPNwmS7Tvehgg7nk=
+	t=1785333438; cv=none; b=uIsQTaQR79yu28NN3Kk85nbatC2S9ARbNDANITuOABHI5tzRSu2OzxBDYoScU76281mXRy4OePMyytRHuiRR5RYZeb6lpqFAXqChf1TAI7fIlEJjZQ65xunSMnvag4vxvaLDNPUa3FAekiQJLe4JVPrJa91YA/riu/tm4eaId88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785333371; c=relaxed/simple;
-	bh=cN5SoUAZB3Fj1wrqmQAkhuCqywfgc4m2ome2gBndw48=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m/XLngZuKOvXLfrZKmcZk9sR07gS2phCUcIcVogk+fMdTVepop0ojAtL8iZFw4V6jUOqwyqeUJv5CYzz4DDioknDOsimM+ZErBgBmRFVhC1BXxyk2cMipWvwqfRhFw3IheGpMWaGVh3WOeh+uVbVVFKxIwkNenXoVoIeRviAg60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gq8r76Ma; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785333438; c=relaxed/simple;
+	bh=xtv6sDi7m6aeBrIE+wYVnUSxWvDrMu4sjvSBvi8vnO8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gy4X7Vvax0Jt5FS9IntHnDmNB68yjFpn7ooRnzmrZuw+URl8TVacV3/+ivenFQPanF0JbdAvMM01hh2kl7qetPwQ3018dhxv/elVhDJ2mccp/Z7JYBwwfeMCsuiaqlqkaBgI1I6RDVEcjOH5iFPO03YT6kRXKFs6blyBM20LutQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=A+UaiZyV; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gq8r76Ma"
-Message-ID: <3b55d602-f9ce-464a-896c-8d89af572f6a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785333353;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zj9LprAygHcCxjzHNSuG+4nSi2mr2UIXdQuc+A27Ppg=;
-	b=gq8r76Marm0WyfdS4dWamBsbRREUnRDpfZFEfQxcLy50iWRoex4GlaZ4on+3PTNRleOnkR
-	D4v2dMuFjFlUzPJDYKQlcmPRkwLCN/B0dTcPdf08IRxAgjWIK/eUUe8DW/OhDUcRjEjnsw
-	Wk4VDABkAU0kcC7PlpXdsJbJLymbNtY=
-Date: Wed, 29 Jul 2026 21:55:32 +0800
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="A+UaiZyV"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cacb8416a1so10385245ad.1
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 06:57:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1785333430; x=1785938230; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=e9m87LSvmyMwoUxnztNDZ0Cv0nd1knfLpg/zZDbXJaQ=;
+        b=A+UaiZyVAYlQyz/wZNpouRprSioiTJhFV4KfGYKtLIByE3iWhsLJTs8g96OpfvZzUQ
+         YiDJ9mhg7iqmltSc35pnEIUv7gu5onv9yUIorBtlb7I6ga4oWdV3lBitYSougFR/Db7n
+         /GcE2a+DA2lZb2TtI+tXZhK917mWYxjWQ9Q8O1KZnkg+LUuZdyLHLV1slxC/ApCdzjlN
+         NbDgjj3g7Oko83V5a+tzUNqRZxQUUcl9PZfuykzZAIBNq4AZ7GmCkGposEZNpjUU8aRn
+         UqjYT/R2kjfKU+I6RrkhWbZmKAzOIk1o/O0GEiMviqRVOpM0tISYJNL9qFWjpQ7JBkRA
+         /xOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785333430; x=1785938230;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=e9m87LSvmyMwoUxnztNDZ0Cv0nd1knfLpg/zZDbXJaQ=;
+        b=LApyzP69CS2nT1/QHuWhkL1J7EdCXQCgSrw9/gnVtQ8f3K83wxR+u6glvwx5icMe06
+         2Ly2NDJEc8msx5ZUsN50xrPnADPMnbbcmAO0mXzEzhdVDbKE1siPxjosXtUgGlg6m6Hb
+         izelNJbw1gDSW75CgT/Xo2ewow5A+g983sS2R7YdEC1q+vxC7r6w/7jST1T6QZPcghfS
+         xhs1zis33oQWOBe9QiYvAZPw/rNCkJj6y+tuVNcQJFbg6PZXpOV5iF6K+Zr6k95yqCVP
+         fFZYT6nbhlgaH8GX+DPecHi+DjdLcBsMOpseSIlCsDnCXz/B1bcOcWYWh793ftf18PZP
+         QjDA==
+X-Forwarded-Encrypted: i=1; AHgh+RoeVhiUhx+h7sfhRhboBMdprMMKxQL/y/7YoI+dkneUrrbb+2TnXcrkUOc+YbTQ9U4cRUehaSg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzH2tkZjm6aAWUL90mEsPKu1MVWnOctPRBwbJzVAxbDJmPmiKR
+	rNUbgV93tF2yFbyaslUJMPyaF7DpW/Tvw+bDEsr3TA6+ZB7cxomaGdZ9+VsF56+psr2Y
+X-Gm-Gg: AR+sD10HFHJc3N+LuuG6qmp2mAoMgZzFljyuwFpJLUodWSzpTnXDVr90askFA+KwTcR
+	8MbTprTOKYxZ7u2jJgHYGXx1vA7ThS7CSKnD4EV8UOCbADih5I6mcREfp5HrY7yXw1WfVbEH78U
+	bpXU3Ig9naW+B4l/IHqXbZI3RU2P0Epx3QHBkcMuIc/9YczgVRrKX2ynMTSuuqrNoCDp4tOyg/U
+	rk/gtUPvuNP64DcKfu+z7muYAA8L+omE0GcfBSygMQrczxRtn25/HzII2sQo514ZRwRpluylzGm
+	CkVYSrOW5aWm8LYpa0QvN+zp8ghNDjRzgsftpjVQpEa5OB5hmNfN5SQ2F0+tS1vHsfGwPkJu4uR
+	AsMS3q5fYES2eDTj+tzQQwH7jVYXT8ENwVhQSTLZcfPNYiAd9ysdrvH/iLSguZWxXra72HzV2Nh
+	ZvkHojw8aujsnpc/BJx1eyERKVFJamnCjgDC+2HWOm6+L4h6xcNyTHyY1hdojljyCUP81GszSIP
+	eFx
+X-Received: by 2002:a17:902:ce0b:b0:2ca:6d2a:871 with SMTP id d9443c01a7336-2d015d511fdmr79672115ad.37.1785333430367;
+        Wed, 29 Jul 2026 06:57:10 -0700 (PDT)
+Received: from Roxy.localdomain ([203.175.14.54])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022bc5afasm11837285ad.46.2026.07.29.06.57.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 06:57:09 -0700 (PDT)
+From: Zhiling Zou <zhilinz@nebusec.ai>
+To: lvs-devel@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	ja@ssi.bg
+Cc: horms@verge.net.au,
+	pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jwiesner@suse.de,
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: [PATCH nf v3 1/1] ipvs: stop estimator after disabled calc phase
+Date: Wed, 29 Jul 2026 21:56:59 +0800
+Message-ID: <154d1474f8c36c34d9b86c7ca1b33d73f5435241.1785289432.git.zhilinz@nebusec.ai>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net 0/2] tcp: diag: fix unbounded bucket lock hold in diag
- dump paths
-To: Zihan Xi <zihanx@nebusec.ai>, netdev@vger.kernel.org,
- mptcp@lists.linux.dev
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, ncardwell@google.com, kuniyu@google.com,
- dsahern@kernel.org, kees@kernel.org, matttbe@kernel.org,
- martineau@kernel.org, geliang@kernel.org, fw@strlen.de, vega@nebusec.ai
-References: <cover.1785307984.git.zihanx@nebusec.ai>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <cover.1785307984.git.zihanx@nebusec.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
+IPVS estimator kthread 0 starts with zeroed chain and tick limits until
+its initial calculation phase completes. If network namespace teardown
+clears ipvs->enable during that phase, ip_vs_est_calc_phase() can return
+without installing positive limits.
 
-On 7/29/26 7:28 PM, Zihan Xi wrote:
-> Hi Linux kernel maintainers,
->
-> We found and validated a issue in net/ipv4/tcp_diag.c and
-> net/mptcp/mptcp_diag.c. The bug is reachable by a
-> non-root user via user and net namespace.
-> We've tested it, and it should not affect any other functionality.
->
-> We will provide detailed information about the bug
-> in this email, along with a PoC to trigger it.
->
-> ---- details below ----
->
-> Bug details:
->
-> inet_diag TCP dumps currently execute attacker-controlled
-> INET_DIAG_REQ_BYTECODE programs while still holding the listener,
-> bind, or ehash bucket locks in tcp_diag_dump(). If the bucket is
-> heavily populated and the bytecode is a large reject-all filter, the
-> dump path can spend an unbounded amount of time under the same bucket
-> lock while walking attacker-arranged sockets.
->
-> The reproduced listener case places 131072 SO_REUSEPORT listeners onto
-> one colliding listener bucket and then issues a NETLINK_SOCK_DIAG dump
-> request with 16380 INET_DIAG_BC_NOP instructions followed by a failing
-> INET_DIAG_BC_D_EQ test. Because every socket runs the full bytecode and
-> none reaches the reply fill path, skb backpressure does not terminate the
-> walk early. On the unfixed kernel this triggers a watchdog soft lockup
-> and then a panic in inet_diag_bc_sk().
->
-> The earlier batching fix direction was still too narrow: it only counted
-> sockets that survived the cheap prefilters and reached the expensive dump
-> path. An attacker can therefore populate one bucket with many sockets or
-> listeners that fail the netns/family/port or MPTCP-specific prefilters,
-> causing the same bucket lock to be scanned far past the 16-entry batch
-> threshold before control is returned.
->
-> The same root cause also exists in MPTCP listener dumping. The
-> MPTCP-specific mptcp_diag_dump_listeners() path reuses sk_diag_dump(),
-> which runs inet_diag_bc_sk() before filling the netlink reply, while the
-> listener bucket lock is still held.
->
-> We additionally profiled the MPTCP-specific path locally with a
-> separate debugging artifact. Because struct inet_diag_req_v2 stores
-> sdiag_protocol in an __u8 field, that request must keep
-> sdiag_protocol = IPPROTO_TCP and pass INET_DIAG_REQ_PROTOCOL =
-> u32(IPPROTO_MPTCP), otherwise 262 truncates back to TCP and never reaches
-> the MPTCP handler. With that corrected request, a 1-group run with 32768
-> listeners and 16380 NOP bytecode steps took 2082.608 ms on the fixed
-> kernel versus 8.601 ms on the unfixed kernel, and kprobe profiling showed
-> inet_diag_bc_sk() executing 32768 times on the fixed kernel but only 256
-> times on the unfixed one. That 256-count is not a missed path: the
-> unfixed mptcp_diag_dump_listeners() reuses one counter both as the
-> in-bucket index and as the resume cursor, so each dump restart advances
-> in a triangular skip pattern and stops after approximately sqrt(2N)
-> bytecode executions. The inline reproducer and decoded crash log below
-> cover the TCP panic path; the MPTCP results above are included only as
-> supporting local validation for the second patch.
->
-> This series fixes both sites by keeping bucket-locked sections limited to
-> raw socket collection and lifetime pinning, and moving all filtering,
-> inet_diag_bc_sk(), and socket filling work out of the locked regions so
-> the batch limit applies to raw bucket traversal itself. For TCP listener,
-> bind, and ehash buckets, and for the MPTCP listener bucket, restarts now
-> keep a referenced dump cursor so the next batch resumes after the
-> previous socket instead of rescanning the bucket head under the same
-> lock.
->
-> For the TCP patch, the underlying root cause predates modern git history.
-> The Fixes tag therefore uses commit 1da177e4c3f4
-> ("Linux-2.6.12-rc2") as the earliest git-import boundary that still
-> anchors the pre-git bug in the current repository, rather than
-> incorrectly attributing it to a later helper or refactor commit. The
-> MPTCP patch uses the real introduction boundary, commit 4fa39b701ce9
-> ("mptcp: listen diag dump support").
->
-> Reproducer:
->
->      gcc -O2 -static -o poc poc.c
->      unshare -Urn ./poc
->
-> For the reproduced panic log below, we enabled
-> softlockup panic sysctls and ran the local helper that executes:
->
->      ./poc --listen --groups 4 --stride 2048 --count 32768 --nops 16380
->
-> We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
->
-> ------BEGIN poc.c------
-> #define _GNU_SOURCE
->
-> #
-[...]
-> static size_t build_request(void *buf, bool listen_mode, bool with_attack,
-> 			    unsigned int nops)
-> {
-> 	size_t msg_len = NLMSG_SPACE(sizeof(struct inet_diag_req_v2));
-> 	struct nlmsghdr *nlh = buf;
-> 	struct inet_diag_req_v2 *req;
->
-> 	memset(buf, 0, msg_len);
-> 	nlh->nlmsg_len = msg_len;
-> 	nlh->nlmsg_type = SOCK_DIAG_BY_FAMILY;
-> 	nlh->nlmsg_flags = NLM_F_REQUEST | NLM_F_DUMP;
-> 	nlh->nlmsg_seq = 1;
->
-> 	req = NLMSG_DATA(nlh);
-> 	req->sdiag_family = AF_INET;
-> 	req->sdiag_protocol = IPPROTO_TCP;
-> 	req->idiag_states = listen_mode ? TCPF_LISTEN : (1U << 12);
+The kthread can then continue into its main loop and drain
+est_temp_list with zero chain_max, tick_max and est_max_count values.
+Each enqueue consumes one available tick row, but est_count never
+reaches the zero est_max_count value. After all rows are consumed, the
+row lookup returns IPVS_EST_NTICKS and ip_vs_enqueue_estimator() writes
+past the ticks and tick_len arrays.
 
-1U << 12
+Exit kthread 0 after the calculation phase if the kthread is stopping or
+IPVS has been disabled. That keeps temporary estimators from being
+drained after the limits failed to initialize.
 
-12 is TCP_NEW_SYN_RECV. Is TCP_BOUND_INACTIVE what you expected ?
+Estimator kthreads can now self-exit before teardown or reload stops
+kd->task. Keep an extra task reference after creation and release it
+with kthread_stop_put(), so kd->task remains valid until the stop paths
+consume that reference.
 
+Fixes: 705dd3444081 ("ipvs: use kthreads for stats estimation")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+---
+changes in v3:
+- Keep an extra task_struct reference for estimator kthreads and
+  release it with kthread_stop_put(), as suggested by Julian
+  Anastasov, so self-exiting kthreads do not leave kd->task dangling.
+- v2 Link: https://lore.kernel.org/all/03a7ee4873f9dfc51add97df5b67bf0b0d793dbe.1785211268.git.zhilinz@nebusec.ai
 
-> 	req->id.idiag_cookie[0] = INET_DIAG_NOCOOKIE;
-> 	req->id.idiag_cookie[1] = INET_DIAG_NOCOOKIE;
+changes in v2:
+- Exit the estimator kthread after the calculation phase if IPVS
+  has been disabled or the kthread is stopping, as suggested by
+  Julian Anastasov.
+- Drop the later enqueue and drain guards from v1.
+- v1 Link: https://lore.kernel.org/all/6359e0031f0ee7cc969bae3483308de362d3c709.1784878022.git.zhilinz@nebusec.ai
+
+ net/netfilter/ipvs/ip_vs_est.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/net/netfilter/ipvs/ip_vs_est.c b/net/netfilter/ipvs/ip_vs_est.c
+index ab09f51829512..05a216a47b45e 100644
+--- a/net/netfilter/ipvs/ip_vs_est.c
++++ b/net/netfilter/ipvs/ip_vs_est.c
+@@ -191,8 +191,11 @@ static int ip_vs_estimation_kthread(void *data)
+ 		}
+ 
+ 		/* kthread 0 will handle the calc phase */
+-		if (ipvs->est_calc_phase)
++		if (ipvs->est_calc_phase) {
+ 			ip_vs_est_calc_phase(ipvs);
++			if (kthread_should_stop() || !READ_ONCE(ipvs->enable))
++				return 0;
++		}
+ 	}
+ 
+ 	while (1) {
+@@ -270,6 +273,7 @@ int ip_vs_est_kthread_start(struct netns_ipvs *ipvs,
+ 		kd->task = NULL;
+ 		goto out;
+ 	}
++	get_task_struct(kd->task);
+ 
+ 	set_user_nice(kd->task, sysctl_est_nice(ipvs));
+ 	if (sysctl_est_preferred_cpulist(ipvs))
+@@ -286,7 +290,7 @@ void ip_vs_est_kthread_stop(struct ip_vs_est_kt_data *kd)
+ {
+ 	if (kd->task) {
+ 		pr_info("stopping estimator thread %d...\n", kd->id);
+-		kthread_stop(kd->task);
++		kthread_stop_put(kd->task);
+ 		kd->task = NULL;
+ 	}
+ }
+@@ -526,7 +530,7 @@ static void ip_vs_est_kthread_destroy(struct ip_vs_est_kt_data *kd)
+ 	if (kd) {
+ 		if (kd->task) {
+ 			pr_info("stop unused estimator thread %d...\n", kd->id);
+-			kthread_stop(kd->task);
++			kthread_stop_put(kd->task);
+ 		}
+ 		ip_vs_stats_free(kd->calc_stats);
+ 		kfree(kd);
+-- 
+2.43.0
+
