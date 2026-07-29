@@ -1,158 +1,260 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A155463B8F
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 18:59:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785351559; cv=none; b=K52bFDY+iBomVJ7d0as15Zc3sOTLjrgn/rPeyyk5j1kWg7gmHg/selp2KN4Nyw4gJds2XkJP9Bi3dNmQj5EC86GUkhmNGlfQHZkyOSX6pM0nho0Ivx9LagGAy5v7+hvuBpxYE9ls43NDYu7FvB4juRD1sTfPPCXKSxgwZHxGMwc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785351559; c=relaxed/simple;
-	bh=CnZq6n4lbArF4xO3Li8H/zaf5RFPjl2mChGqONYhzMI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AFV8N/yo1swsnzNhPTwZlM1rIfCjTslSde18mpQfa+PJLzPIK1Aog0sQlrORx5XIU5w2SyeG6erKErlFM8nE9ziIL48EkVoG1sCm6E2D4y+OHAJd1m5nUw0n/zn6QH46sHVu3YWKNrsrG3iNLsKlfByoW7bzpo6ystDvgWw3Dpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YsdNTkqN; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3F6463B8E
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 19:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785351995; cv=pass; b=mUPYY9NYkRHvJwnLRHnqpdxPTUiIFfQwKCNqJgqGvIfERknaiKNWQeS/c2DZmhITzN6hSNjvyZpBl/zzyqi9oi+hmWauKGLhAHY/vlTEDdFSUw7NwkCnvgvvTcVWkSfTV2SQWBfBePf0/KiD361vglAYJcXcPRmHwgJ8P6bRHOo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785351995; c=relaxed/simple;
+	bh=6WPhx8PReV46HTsCogkuoq6nCnjySOBHp1E70tMVQgs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TUrfB+9so8dLtsihnkawQMgXnJIhlmAdgJkWKdqC/OqN9GyBpmUmxafWxO+j7IG8VI66ureCf2AwTw0PWA4hWP1ggiipZLeTP7YKPW0iQB1vm48L7jYWozoerZnIeLtpD6B4ZzRLQ40IpRDZVdOCe/T8nebehdAU+PTh03Ujhqo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ORPLAY/l; arc=pass smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YsdNTkqN"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-848479c9bd5so1172648b3a.3
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 11:59:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ORPLAY/l"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a051904222so1405201a12.2
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 12:06:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785351991; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fF1XD8EOGk1/qMNiYAQPMbQt1NlPbgldteDxUlbTp5b/KSw2nUOX7Cy5qGPONTAkDg
+         WkzkYhhdPV0dHe9rSFv2MWquDYqmPQCyHOdl7lwZjt5J85vGZgeomNtAUD2MNlINBzQk
+         wkSkeqvxQ8DK2Qb4FKJemBedokXQRXSHCVvSV//7k26Pz+nlbmfa/NCDlTvoNCwcSTZF
+         1QrjdyHwv2AF3XFEJaRYJ7RBDHHO+4VgCVt98SKZ+DM9NMwwRKuz732e85FsJPJ9t7Rd
+         tTsIZP7OamBjZnMi2N9IMPeBWxgKaBC5N0c09278ifufh9255VgVQoAfWp+lvKVhDptj
+         PqgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xnnMp3bYdgLemtWGnJyzOun3f7Jn2r77yt762F4YIuA=;
+        fh=nnOK7GUUKN3LA5a32TkyT6FxIJDYl81UFarOcaAOFcc=;
+        b=QcUlfrOvs6jy21NKaUxBr29xjgIY9UuWvjo/adYqQ4C+oWJ5+7OVdXrffrB+Ws788o
+         CbCr1aNB2TM04I3xe0a0gNR+pE2Tq57eMLvoTUox6IqNK+QIwiQo/jqgRQe3ZU4QY9vz
+         vllwBzqcEOSwe/O7UTukh3EUup220lUfrWryNjMhXNxNvl+5YHcCBOvNuyAxehjO+BzT
+         ZwokDzyMxQsLbgpyJWcwGBn8TlqN+mx2d3e1HE0Cq6NzlhSBqLTxaaNrED63T3PUk+36
+         Y8aj4vW3masaEhgCVKD0OvpLjhVXj/3w6JGS1QFKIx04efOmwARszct98bOdzMdUPfqc
+         aLWg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785351557; x=1785956357; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aoqhwluyb9WMKHWbPCTqTwB3rnIRyxwcbgywXIfiH+8=;
-        b=YsdNTkqNnFOiDGdIyz63pba8Agphfc8UwSvUvmyFarnMDoGAVoeiPudmfCdY67MN5k
-         5LekO06ixGkBVMX0jpxKZOXBPvI9ts9gCFA/BcQvGFZu/jWWcupeOH+PynOEMKAfJaxb
-         23bz7sAcUBC51Sv2GynRcFhqBZKO5X9dJq8OP5ErLFuQ02Vph7sZh+26FzHlBJyTlMZe
-         2KdeYzlTG4JlU1UjlrYVGSLWseKwf1CXPHhfr7A3GcdQspIWrqctsvQIZgcY/ECVRcDo
-         7lpEi8MvnqR/E3/m7hHm4wYKvHYOF2bobK33BsigqoiHAYPVVTVXZ0wD/F8qaONKHPt4
-         GeQg==
+        d=gmail.com; s=20251104; t=1785351991; x=1785956791; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xnnMp3bYdgLemtWGnJyzOun3f7Jn2r77yt762F4YIuA=;
+        b=ORPLAY/lrOjps4RBgWwNtc3wVlIhc8J41F/qnZEa8/rRqfJLyh0LGQojGRhYVb9dvr
+         fR2SOID+Negk2PCqYP0z3u53BYcU2gaRxLV7cQhRlC8amZSQRvXO7g25z4orkOLCKlS/
+         QiQQZTBHOknFDTq3fwt32ah/NDhRdZwPcwmT8E31NjcRZUYUOOtDEsa7LBc0sh4JNZ7p
+         FoV2O1PL2piJuqwE3VU5KPiwzkDO8TojAzt6yb+LIzxd2A/dpxPGaIUjtpM6B23DBRvN
+         2nMDseuK3VxhrNHNSfLmRR6+Yqgs2gMZ8eBEAsWoAk+0LxyO1yctaEZUvYprHd/90qMv
+         bT8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785351557; x=1785956357;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aoqhwluyb9WMKHWbPCTqTwB3rnIRyxwcbgywXIfiH+8=;
-        b=fbEpFoj65QzdYBO3hIy/OoOLCpdz14embfJDT7BFg+sq/WVgIkSkgVuVsICrkaRuYp
-         V3tliMRxMs1IoWD8gy/q82kzYkuNmduOSdNnGTv4de4BMnFdlxxBkJzTBG+zeyTf0X1G
-         gwWyf+oiyHHVb2riIOsEJkLJkFRqA2pcFWWceydWmdniWvPeFiTJQiQhMqkTKt1p1yl6
-         FkxozXp2BTI0RrbRwyihDPo8xKu3l9jp7AILvSdtwCg64LoIB59u45ko5OgF3cl8KLz0
-         f5hTFi1WGvJt+4y/vIaEPE5ZhJTJRqrNGvwyRhnLQSWLudM99LNWyuuX6OKyNk641W9D
-         JQFA==
-X-Forwarded-Encrypted: i=1; AHgh+RoWvuTcOsrRAFX5N1j8uXTLh3ZnapVdEMkUfEgwiV1jCwnwgc+bAFjPuziO1UXcV9aqpWHRjCE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxI9PdeyiwgBXb8irlQQIyJDw78yTsHQpi/ZzBPfXmxvJv4em/2
-	cqZjd9NXtTKQtIyYGgkxkB3Rx4UcWbB/cqBL6LcopkwmP8lH4emdfTYo
-X-Gm-Gg: AR+sD111zD/dpvSE/KCJbvLxj5ob7kKPkZE0z0CCmWOy5KQHL/WA2PDofdeI7i3ONuU
-	qxg8WLMYC0PyrVZiVgi5h5vlzTFsYSl41WsqiSC6dc+2t2dxmbx+346Y3Seoe1gvpCUGEMyebYP
-	445qHrBdonuSsj7QiMy+J2np6/t9RYHDW/bWkHcEBeVku2UMwQlplFH1lgxEtvwFtald71LfkWW
-	rJ+2aQnryK8imFMysCQ9IIyQiflZ/MfRgfDDyhW8+LV1Tj5y7m1aRcry36vcZTkbBtBDARWRYAp
-	PhkQZqxgNx1OcqeZcTXwUrCP61h75zefpR3LkJsogFnmwlqMU31X1yHW2yAIE7md2Bfdo6cCm7C
-	K4PKHzxpo7yk9KP5zOoZTbAoRT3Oem1PTOSM7w+hCXZj1FfN4TEDtOA4zle24hPUwlYawYSKKVd
-	EIZlxz3YIjB30PTNsJ+7VlWNza1YbqeKf9cTF8ijHHu8b95z//YftnZ9iDznaGs3yEwv1L
-X-Received: by 2002:a05:6a00:2d0c:b0:848:732b:6b25 with SMTP id d2e1a72fcca58-84e93445d37mr8060469b3a.63.1785351557221;
-        Wed, 29 Jul 2026 11:59:17 -0700 (PDT)
-Received: from bogon ([2408:8207:1832:1b44::c6b])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbdba447107sm1237829a12.21.2026.07.29.11.59.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 11:59:16 -0700 (PDT)
-Sender: Weiming Shi <thebestswings@gmail.com>
-From: Weiming Shi <bestswngs@gmail.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: [PATCH v2 2/2] vsock/virtio: avoid refilling the RX queue after teardown
-Date: Wed, 29 Jul 2026 11:58:28 -0700
-Message-ID: <20260729185831.3247971-3-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1785351991; x=1785956791;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xnnMp3bYdgLemtWGnJyzOun3f7Jn2r77yt762F4YIuA=;
+        b=q0SWo5e40wPmfvqfDWHkpveICXllo58ccAVHZ3bqtN2KvNqATVZesS2Sd3eRMCLpAJ
+         TTWr5SFFJG+iv9wSatzHDARbZb5X6D6q2cnOTpSWr5TgLCBok2Tu37MM9ntxNZQCR9tt
+         QIAqz0yShc6TCVbKQgBG3qMp8t6U4xtfLHhuG+fGkO6vUquSuLlxymej/pkSLCJ87D6G
+         TTcRh+7x+MHc6euMUdfo2n8cC9dTUGni9cQUj/UWL6ZUgFGSh61gBlaGXmMRK/mOyrp/
+         rVjj+RndRt6Gp19KyWI9Fy3wDgZm7oXh3TFPuoE2LrO4e1SzxUu5KpkN570o4kSTc8eK
+         OsJg==
+X-Forwarded-Encrypted: i=1; AHgh+RosA0Itg/onqqEynAhh4BZY8XGoGMbcK+aBnqBKJnatE01jyVAz34XdAD7LW2tOnUDuAjFMqhc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZZtFAMEpVQlzqZEGkIY3cRfSSgJngNs1eEsj1N5gLx2+QBAhs
+	fwbmpL2T0X4J6fu8rM2tUWh83/iy5kdSKR4jcyLcxVpx7Ht+1VOOc0MaWUL2ewu8viKNwk5U0AG
+	HxXdf43F+womUl1Ff5OSR73L4BiGRFlU=
+X-Gm-Gg: AR+sD135Ai+ugOlFejf0+k8WIEzsumJX9SsbRRUVs41rxv2yF5/d22pFFCMlomVty3Z
+	Gs0TRwIHjYiNZekb+Pi8Mb7TjkXo4H5dcUbhnq81CDVQYsS6pzrMe8U88L4uewHEuOBmPg3Ridj
+	Bf7HRU7RethUBrKI6it3OTX1lWOzDXkECEJqN7chFimOZjL5UK0PRCJMarZUds2D95Xy8VzEDFd
+	OUJmugXCZEcntsSnCbyGcRpp+QVDcVN2qVn/47VLHUj0+eGpMdD/WQJocYsiq18CJquZT9YBmJs
+	9hvjTvRsDeojwhY3qswvhwQ4bsk5HU3n8Byd4CB92sX5rh/K/XWfUfP58knvt0+dOpFEZBG7KD8
+	=
+X-Received: by 2002:a17:907:9802:b0:c1c:4d19:f733 with SMTP id
+ a640c23a62f3a-c1f720eefe6mr463168666b.40.1785351990816; Wed, 29 Jul 2026
+ 12:06:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260727035804.1860862-1-bestswngs@gmail.com> <amjkQ2F+NEK9SPAj@devvm29614.prn0.facebook.com>
+ <amoR0pnMO2OQ2E6z@sgarzare-redhat>
+In-Reply-To: <amoR0pnMO2OQ2E6z@sgarzare-redhat>
+From: Weiming Shi <thebestswings@gmail.com>
+Date: Thu, 30 Jul 2026 03:05:53 +0800
+X-Gm-Features: AUfX_mz3TgQR8C_4x8K7ZMCwqKKo1i2lXmGLm4XOyvkUGevFYGQ5eIt1hRXQEV0
+Message-ID: <CANgPUi2LFBiBG1c7+s_AyzrtDdncXDXQQuphNqmC0uktvBY1dg@mail.gmail.com>
+Subject: Re: [PATCH] vsock/virtio: prevent workers from using deleted virtqueues
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Bobby Eshleman <bobbyeshleman@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev, kvm@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Xiang Mei <xmei5@asu.edu>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit b917507e5ad9 ("vsock/virtio: stop workers during the .remove()")
-made the RX worker jump to its common exit when rx_run is clear.  That
-exit still refills the RX queue when the buffer count is low, so work
-queued across virtio_vsock_vqs_del() can add buffers after the virtqueues
-have been deleted.
+Stefano Garzarella <sgarzare@redhat.com> =E4=BA=8E2026=E5=B9=B47=E6=9C=8829=
+=E6=97=A5=E5=91=A8=E4=B8=89 22:47=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Tue, Jul 28, 2026 at 10:17:55AM -0700, Bobby Eshleman wrote:
+> >On Sun, Jul 26, 2026 at 08:58:01PM -0700, Weiming Shi wrote:
+> >> The RX, TX and event workers read their virtqueue pointers before taki=
+ng
+> >> the mutex that protects the queue and its run flag. A work item delaye=
+d
+> >> across freeze and restore can therefore retain a pointer deleted by
+> >> virtio_vsock_vqs_del(), observe the run flag for the replacement queue=
+s,
+> >> and use the freed pointer.
+> >>
+> >> RX has an additional path: when rx_run is clear, the common exit still
+> >> refills the RX queue. A queued worker can consequently call
+> >> virtqueue_add_sgs() immediately after freeze deletes the virtqueues.
+> >>
+> >> BUG: KASAN: slab-use-after-free in virtqueue_add_sgs
+> >> Read of size 4 by task kworker/2:1
+> >> Workqueue: virtio_vsock virtio_transport_rx_work
+> >> Call Trace:
+> >>  virtqueue_add_sgs (drivers/virtio/virtio_ring.c:2796)
+> >>  virtio_vsock_rx_fill (net/vmw_vsock/virtio_transport.c:332)
+> >>  virtio_transport_rx_work (net/vmw_vsock/virtio_transport.c:701)
+> >>  process_one_work (kernel/workqueue.c:3314)
+> >>  worker_thread (kernel/workqueue.c:3478)
+> >>  kthread (kernel/kthread.c:436)
+> >>  ret_from_fork (arch/x86/kernel/process.c:158)
+> >>  ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+> >> ...
+> >> Freed by task 141:
+> >>  kfree (mm/slub.c:6566)
+> >>  vp_del_vq (drivers/virtio/virtio_pci_common.c:259)
+> >>  vp_del_vqs (drivers/virtio/virtio_pci_common.c:285)
+> >>  virtio_vsock_freeze (net/vmw_vsock/virtio_transport.c:912)
+> >>  virtio_device_freeze (drivers/virtio/virtio.c:658)
+> >>  virtio_pci_freeze (drivers/virtio/virtio_pci_common.c:601)
+> >>  pci_pm_freeze (drivers/pci/pci-driver.c:1098)
+> >>  device_suspend (drivers/base/power/main.c:1968)
+> >> Kernel panic - not syncing: KASAN: panic_on_warn set ...
+> >>
+> >> Read each worker's virtqueue under its mutex after confirming that the
+> >> queue is running, and only refill RX while RX is running.
+> >>
+> >> Fixes: b917507e5ad9 ("vsock/virtio: stop workers during the .remove()"=
+)
+> >> Cc: stable@vger.kernel.org
+> >> Reported-by: Xiang Mei <xmei5@asu.edu>
+> >> Assisted-by: OpenAI-Codex:gpt-5
+> >> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+> >> ---
+> >>  net/vmw_vsock/virtio_transport.c | 14 ++++++++------
+> >>  1 file changed, 8 insertions(+), 6 deletions(-)
+> >>
+> >> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_t=
+ransport.c
+> >> index 57f2d6ec3ffc..79cf19f58943 100644
+> >> --- a/net/vmw_vsock/virtio_transport.c
+> >> +++ b/net/vmw_vsock/virtio_transport.c
+> >> @@ -346,12 +346,13 @@ static void virtio_transport_tx_work(struct work=
+_struct *work)
+> >>      struct virtqueue *vq;
+> >>      bool added =3D false;
+> >>
+> >> -    vq =3D vsock->vqs[VSOCK_VQ_TX];
+> >>      mutex_lock(&vsock->tx_lock);
+> >>
+> >>      if (!vsock->tx_run)
+> >>              goto out;
+> >>
+> >> +    vq =3D vsock->vqs[VSOCK_VQ_TX];
+> >> +
+> >>      do {
+> >>              struct sk_buff *skb;
+> >>              unsigned int len;
+> >> @@ -451,13 +452,13 @@ static void virtio_transport_event_work(struct w=
+ork_struct *work)
+> >>              container_of(work, struct virtio_vsock, event_work);
+> >>      struct virtqueue *vq;
+> >>
+> >> -    vq =3D vsock->vqs[VSOCK_VQ_EVENT];
+> >> -
+> >>      mutex_lock(&vsock->event_lock);
+> >>
+> >>      if (!vsock->event_run)
+> >>              goto out;
+> >>
+> >> +    vq =3D vsock->vqs[VSOCK_VQ_EVENT];
+> >> +
+> >>      do {
+> >>              struct virtio_vsock_event *event;
+> >>              unsigned int len;
+> >> @@ -634,13 +635,13 @@ static void virtio_transport_rx_work(struct work=
+_struct *work)
+> >>              container_of(work, struct virtio_vsock, rx_work);
+> >>      struct virtqueue *vq;
+> >>
+> >> -    vq =3D vsock->vqs[VSOCK_VQ_RX];
+> >> -
+> >>      mutex_lock(&vsock->rx_lock);
+> >>
+> >>      if (!vsock->rx_run)
+> >>              goto out;
+> >>
+> >> +    vq =3D vsock->vqs[VSOCK_VQ_RX];
+> >> +
+> >>      do {
+> >>              virtqueue_disable_cb(vq);
+> >>              for (;;) {
+> >> @@ -689,7 +690,8 @@ static void virtio_transport_rx_work(struct work_s=
+truct *work)
+> >>      } while (!virtqueue_enable_cb(vq));
+> >>
+> >>  out:
+> >> -    if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
+> >> +    if (vsock->rx_run &&
+> >> +        vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
+> >>              virtio_vsock_rx_fill(vsock);
+> >>      mutex_unlock(&vsock->rx_lock);
+> >>  }
+> >> --
+> >> 2.55.0
+> >
+> >Not a strong opinion from me, but since this last hunk is the one that
+> >fixes the bug and the other hunks are moreso hardening, maybe break
+> >these out into two patches?
+>
+> I think also the other hunks fix an issue, but I agree on the split
+> since IMO we are fixing 2 different commits. Commit b917507e5ad9
+> ("vsock/virtio: stop workers during the .remove()") was before
+> freeze/resume added by commit bd50c5dc182b ("vsock/virtio: add support
+> for device suspend/resume"). Only after that one we can have the false
+> -> true transition of *_run variables.
+>
+> So IMO hunks 1-3 should have Fixes: bd50c5dc182b ... and hunk 4 should
+> have Fixes: b917507e5ad9 ...
+>
+> That said, it's not a strong opinion here too, but if you prefer a
+> single patch, please add both Fixes.
+>
+> Thanks,
+> Stefano
+>
+> >
+> >Besides, that all looks good to me.
+> >
+> >Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> >
+>
 
-BUG: KASAN: slab-use-after-free in virtqueue_add_sgs
-Read of size 4 by task kworker/0:1
-Workqueue: virtio_vsock virtio_transport_rx_work
-Call Trace:
- virtqueue_add_sgs (drivers/virtio/virtio_ring.c:2796)
- virtio_vsock_rx_fill (net/vmw_vsock/virtio_transport.c:332)
- virtio_transport_rx_work (net/vmw_vsock/virtio_transport.c:701)
- process_one_work (kernel/workqueue.c:3314)
- worker_thread (kernel/workqueue.c:3478)
- kthread (kernel/kthread.c:436)
- ret_from_fork (arch/x86/kernel/process.c:158)
- ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
-...
-Freed by task 141:
- kfree (mm/slub.c:6566)
- vp_del_vq (drivers/virtio/virtio_pci_common.c:259)
- vp_del_vqs (drivers/virtio/virtio_pci_common.c:285)
- virtio_vsock_freeze (net/vmw_vsock/virtio_transport.c:912)
- virtio_device_freeze (drivers/virtio/virtio.c:658)
- virtio_pci_freeze (drivers/virtio/virtio_pci_common.c:601)
- pci_pm_freeze (drivers/pci/pci-driver.c:1098)
- device_suspend (drivers/base/power/main.c:1968)
-Kernel panic - not syncing: KASAN: panic_on_warn set ...
+Thanks for your review. v2 sent.
 
-Jump to a no-refill exit when rx_run is clear, leaving the normal exit
-to replenish a running queue.
-
-Fixes: b917507e5ad9 ("vsock/virtio: stop workers during the .remove()")
-Cc: stable@vger.kernel.org
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Link: https://lore.kernel.org/r/20260727035804.1860862-1-bestswngs@gmail.com
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Assisted-by: OpenAI-Codex:gpt-5
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
----
- net/vmw_vsock/virtio_transport.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index a8e1dd95ba8c..96c9fe8d357c 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -638,7 +638,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
- 	mutex_lock(&vsock->rx_lock);
- 
- 	if (!vsock->rx_run)
--		goto out;
-+		goto out_nofill;
- 
- 	vq = vsock->vqs[VSOCK_VQ_RX];
- 
-@@ -692,6 +692,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
- out:
- 	if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
- 		virtio_vsock_rx_fill(vsock);
-+out_nofill:
- 	mutex_unlock(&vsock->rx_lock);
- }
- 
--- 
-2.55.0
-
+Best,
+Weiming Shi
