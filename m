@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BEF30E84E;
-	Wed, 29 Jul 2026 02:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229B431F9B4;
+	Wed, 29 Jul 2026 02:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785290917; cv=none; b=DnI/3Wr8eD7lFVK/n8g1+3i+uzsqRUvY+p9KceLil+PPf7Nar9bRhTVdXpwgCIUFR9zC4e4a4h9q8n1+cBOLzvFd/l8cOrThtJoRmEIMk6VHD1xMHjO8W5XIQ5JORca6kqZeAy15OtEigLe9/V4SsAB0YtYhfw5NnN1JUU4NQVo=
+	t=1785290919; cv=none; b=Je3Qb63/VhDdm9D5lqAmcU9JU4tBpjkni7XTHt0FOY4Y/0c5N7JqTLu8BhU2kWY36IcWuWzaeOHrALMgKlR/ORCIsIBs/Ydns/BBYaDQuZhS4k1hTEWn3oy63qd/cfJ5FB6mIYGSVUU0lme7w5GnUSgDjUkyG+BsNUIzBHvkqiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785290917; c=relaxed/simple;
-	bh=pXcQXwRNANlxZos/pqUpUZ64rJ4H/fmnYGi0VN5pTfI=;
+	s=arc-20240116; t=1785290919; c=relaxed/simple;
+	bh=dmFAwHNDbuTtNzgQiK+co+6Dg8QsK3Gn18ASXDRVOG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cVzH5k6k66G7B1e75mJIr4fG7QYOyQULecMBNKX9AJzuKTtlysnx/Np1g0+4CBUF1TuVnFq3OQmS6BzXiW7IJBeQYS5AxwIDBF6TcI3Gsuu/HGt9JenZd3cSzp2FEKrotuVaEhYDEMGvQKW9r+iEPnepHSwmZYSBUyHA/FFrdPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZR4X4ikV; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=OSN1phFkMcbKDjJNmfd8PyejxpjMDC5EfFaDcmpeITd5jS7Jn0K7e17pYU7paPCo7rggUKGi9IljWZSJP8PcZJca7Vrq8BSCH5rjTSJyDw1QhX0AF12GQV8eDB+s9nE3v8XCvezjU4FtUgCm6m5GVszZCMUA1vFG0GO9RwCE1dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LjkAFax3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZR4X4ikV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DEB1F000E9;
-	Wed, 29 Jul 2026 02:08:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LjkAFax3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FEB1F00A3A;
+	Wed, 29 Jul 2026 02:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785290916;
-	bh=5wYPJQpiVVSHSNVQKJrms3Iwaln0D4ETC3pt6WeWZrs=;
+	s=k20260515; t=1785290917;
+	bh=WsPE83tmT4fxK1BmxFBghnoXCTBkFHfLqN11t3edEy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZR4X4ikVceBmmDLC6mE8F2p0l4YT/lP4ADPypIrfLfZKsj4dFVdrHjlCLRVSZ3a+r
-	 SASoajDOZzv4MKJw2OfznSw/aTr6AM3NqFE7syD+QgtCUQfknLe/z9dEM+LCqfJuiZ
-	 zZhpnn7UklNBv2uCGiQZ60hoJtVPKYHrFBVCMPiGMRO8tL6IlhPJLnvhGFaNj8EZFm
-	 6xylOaSVjyqqKjdtXbfyjpQvI4zRc/SYmmmOk0yqjWRra1aCa0mHCxEi9ZnnyqemmM
-	 SzwIqu1scWhN+7/+4KYh4XEl0mq0VB6rRxdl6myJp5zcfK6RIuCTYuJ5PSyOi8RP96
-	 UV52IrJgndg7w==
+	b=LjkAFax37v4PE0gvbRGfm8KAABk7kITFCs3IYFC8Q5qtL4Obqb/JXnwnzJ5IW51ig
+	 Pdamv4nCfujyXXSkPZysadtOc12eW83HciQOVYaKcyz8vRmJErDXCRmBQOwRioWxfr
+	 y0pNshRazhojXXQBtZKSO/Z9oAO4hbXT377y55gsURVPSUt9LDNBP6LE9/8Ue6Bewx
+	 P9RSooDLYfCYDE8Mzj6jQELN+l3FZl3ur7FpIl5H7+GAKR7KIGKaZ1kj6cKDdvJslp
+	 i0QvvpW6tv87BxHbIH1sGcN4b1HlwKbIERhsJ0Flxt95Z9WL0Vw9sea9SKVGGv+D1A
+	 VdZdUhRQDbLkA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: vikas.gupta@broadcom.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -42,12 +42,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	rajashekar.hudumula@broadcom.com,
 	dharmender.garg@broadcom.com,
 	ajit.khaparde@broadcom.com
-Subject: Re: [PATCH net-next 2/4] bnge: refactor rx mode helpers to accept explicit address lists
-Date: Tue, 28 Jul 2026 19:08:26 -0700
-Message-ID: <20260729020826.3656355-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next 4/4] bnge: send hwrm for interface down/up transitions
+Date: Tue, 28 Jul 2026 19:08:36 -0700
+Message-ID: <20260729020836.3656598-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260724142954.3101980-3-vikas.gupta@broadcom.com>
-References: <20260724142954.3101980-3-vikas.gupta@broadcom.com>
+In-Reply-To: <20260724142954.3101980-5-vikas.gupta@broadcom.com>
+References: <20260724142954.3101980-5-vikas.gupta@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,121 +59,102 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-bnge: refactor rx mode helpers to accept explicit address lists
+bnge: send hwrm for interface down/up transitions
 
-This patch renames bnge_cfg_def_vnic() to bnge_cfg_rx_mode(), threads
-explicit netdev_hw_addr_list pointers through the mc/uc helpers, adds a
-snapshot flag to skip netif_addr_lock_bh(), and treats -EAGAIN from
-bnge_hwrm_set_vnic_filter() on the open path as a scheduled retry
-instead of an open failure.
+This commit adds bnge_hwrm_if_change() and calls it on the open and close
+paths so firmware is notified of interface up/down transitions via
+HWRM_FUNC_DRV_IF_CHANGE.
 
 > diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> index 6f7ef506d4e1..1e3cdaeaa03d 100644
+> index e67536a8c430..220bdcced0db 100644
 > --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
 > +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
 
 [ ... ]
 
-> @@ -2201,7 +2201,8 @@ static bool bnge_promisc_ok(struct bnge_net *bn)
->  	return true;
+> @@ -2861,6 +2862,24 @@ static void bnge_tx_enable(struct bnge_net *bn)
+>  		netif_carrier_on(bn->netdev);
 >  }
->  
-> -static int bnge_cfg_def_vnic(struct bnge_net *bn)
-> +static int bnge_cfg_rx_mode(struct bnge_net *bn, struct netdev_hw_addr_list *uc,
-> +			    bool snapshot)
->  {
-
-[ ... ]
-
-> @@ -2226,22 +2225,28 @@ static int bnge_cfg_def_vnic(struct bnge_net *bn)
-
-[ ... ]
-
->  	for (i = 1, off = 0; i < vnic->uc_filter_count; i++, off += ETH_ALEN) {
->  		rc = bnge_hwrm_set_vnic_filter(bn, 0, i, vnic->uc_list + off);
->  		if (rc) {
-> -			netdev_err(dev, "HWRM vnic filter failure rc: %d\n", rc);
-> +			if (rc == -EAGAIN)
-> +				netdev_warn(dev, "FW busy while setting vnic filter, will retry\n");
-> +			else
-> +				netdev_err(dev, "HWRM vnic filter failure rc: %d\n",
-> +					   rc);
->  			vnic->uc_filter_count = i;
->  			return rc;
->  		}
->  	}
-
-[Low]
-The commit message says the -EAGAIN retry handles the case coming from
-bnge_hwrm_set_vnic_filter(), but bnge_cfg_rx_mode() can also return
--EAGAIN from the trailing bnge_hwrm_cfa_l2_set_rx_mask() calls (via
-HWRM_ERR_CODE_BUSY translated in bnge_map_hwrm_error()).
-
-In that second path the driver still logs:
-
-    netdev_err(dev, "HWRM cfa l2 rx mask failure rc: %d\n", rc);
-
-while the caller in bnge_init_chip() silently converts the same rc to 0
-and schedules a retry.
-
-Is the intent to retry only vnic-filter -EAGAINs, or any -EAGAIN out of
-bnge_cfg_rx_mode()?  If the broader scope is intentional, would it be
-worth aligning the log message (and the commit description) so the
-netdev_err isn't emitted for a case the caller treats as a soft retry?
-
-> @@ -2695,13 +2700,17 @@ static int bnge_init_chip(struct bnge_net *bn)
->  	} else if (bn->netdev->flags & IFF_MULTICAST) {
->  		u32 mask = 0;
->  
-> -		bnge_mc_list_updated(bn, &mask);
-> +		bnge_mc_list_updated(bn, &mask, &bn->netdev->mc);
->  		vnic->rx_mask |= mask;
->  	}
->  
-> -	rc = bnge_cfg_def_vnic(bn);
-> -	if (rc)
-> +	rc = bnge_cfg_rx_mode(bn, &bn->netdev->uc, false);
-> +	if (rc == -EAGAIN) {
-> +		netif_rx_mode_schedule_retry(bn->netdev);
-> +		rc = 0;
-> +	} else if (rc) {
->  		goto err_out;
-> +	}
->  	return 0;
+>
+> +static int bnge_hwrm_if_change(struct bnge_dev *bd, bool up)
+> +{
+> +	struct hwrm_func_drv_if_change_input *req;
+> +	int rc;
+> +
+> +	if (!(bd->fw_cap & BNGE_FW_CAP_IF_CHANGE))
+> +		return 0;
+> +
+> +	rc = bnge_hwrm_req_init(bd, req, HWRM_FUNC_DRV_IF_CHANGE);
+> +	if (rc)
+> +		return rc;
+> +
+> +	if (up)
+> +		req->flags = cpu_to_le32(FUNC_DRV_IF_CHANGE_REQ_FLAGS_UP);
+> +
+> +	return bnge_hwrm_req_send(bd, req);
+> +}
 
 [Medium]
-When bnge_hwrm_set_vnic_filter() returns -EAGAIN, bnge_cfg_rx_mode()
-returns immediately from inside the uc-filter loop:
+The commit message says this HWRM is added "to coordinate resource
+management", but the response from firmware is never inspected here.
 
-    for (i = 1, off = 0; i < vnic->uc_filter_count; i++, off += ETH_ALEN) {
-        rc = bnge_hwrm_set_vnic_filter(bn, 0, i, vnic->uc_list + off);
-        if (rc) {
-            ...
-            vnic->uc_filter_count = i;
-            return rc;
-        }
-    }
+There is no bnge_hwrm_req_hold() around the send, so resp->flags is
+discarded. On the up-path, firmware can set three bits in that response
+(see include/linux/bnxt/hsi.h):
 
-so control never reaches the skip_uc: label and
-bnge_hwrm_cfa_l2_set_rx_mask() is never called.  The vnic->rx_mask bits
-assembled just above (IFF_BROADCAST / IFF_MULTICAST / IFF_PROMISC /
-ALL_MCAST) are therefore not pushed to firmware.
+    FUNC_DRV_IF_CHANGE_RESP_FLAGS_RESC_CHANGE
+    FUNC_DRV_IF_CHANGE_RESP_FLAGS_HOT_FW_RESET_DONE
+    FUNC_DRV_IF_CHANGE_RESP_FLAGS_CAPS_CHANGE
 
-bnge_init_chip() then converts the -EAGAIN to rc = 0 and calls
-netif_rx_mode_schedule_retry(), so the open succeeds and the interface
-comes up IFF_UP.
+For comparison, bnxt_hwrm_if_change() in
+drivers/net/ethernet/broadcom/bnxt/bnxt.c reads the response and, on
+RESC_CHANGE, calls bnxt_cancel_reservations() so that the following ring
+reservation actually re-requests resources from firmware.
 
-The retry timer eventually fires netif_rx_mode_run(), which dispatches
-via ops->ndo_set_rx_mode_async / ops->ndo_set_rx_mode.  At this commit,
-bnge_netdev_ops registers neither callback, so the retry is a no-op and
-the device stays with no broadcast / multicast / promisc filters
-programmed until something else re-triggers rx-mode configuration.
+In bnge, bnge_need_reserve_rings() compares the driver's requested ring
+counts against bd->hw_resc.resv_*. If firmware has re-partitioned the
+function's resources but the driver still holds the old resv_* values,
+that check returns false and bnge_reserve_rings() short-circuits without
+talking to firmware, and bnge_open_core() proceeds through
+bnge_alloc_core() with stale ring counts.
 
-Should this patch either fail the open on -EAGAIN, or be ordered after
-the ndo_set_rx_mode_async wiring so the scheduled retry actually
-re-invokes bnge_cfg_rx_mode()?  The follow-up commit
-"bnge: add ndo_set_rx_mode_async support" (fad0f7d4f3b6) does add
-.ndo_set_rx_mode_async = bnge_set_rx_mode, which closes the gap only
-after this patch lands.
--- 
-pw-bot: cr
+HOT_FW_RESET_DONE and CAPS_CHANGE similarly imply that firmware
+capability caches and health registers need to be re-initialised, and
+none of that handling appears to be added here.
+
+Should the response flags be consumed here to actually coordinate with
+firmware as the commit message describes?
+
+[Low]
+Also, bnxt_hwrm_if_change() retries the request in a loop while firmware
+returns -EAGAIN (with a short sleep between attempts, bounded by a retry
+count). Here the send is issued once, so a transient -EAGAIN from
+firmware during a reset transition would cause bnge_open_core() to fail
+immediately. Is that intentional?
+
+>  static int bnge_open_core(struct bnge_net *bn)
+>  {
+>  	struct bnge_dev *bd = bn->bd;
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
+> index d177919c2e11..a1a939496ebd 100644
+> --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
+> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
+> @@ -275,6 +275,8 @@ enum bnge_net_flag {
+>  	BNGE_FLAG_PORT_STATS_EXT	= BIT(1),
+>  };
+>
+> +#define BNGE_FW_IF_RETRY	10
+> +
+
+[Low]
+BNGE_FW_IF_RETRY does not appear to be referenced anywhere in the tree.
+Given that the sibling bnxt driver uses an identically-named constant to
+bound its -EAGAIN retry loop around HWRM_FUNC_DRV_IF_CHANGE, was a retry
+loop intended to be added here as well?
+
+>  enum bnge_sp_event {
+>  	BNGE_LINK_CHNG_SP_EVENT,
+>  	BNGE_LINK_SPEED_CHNG_SP_EVENT,
