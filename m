@@ -1,235 +1,120 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C367E37A486
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 06:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E46A2F1FDF;
+	Wed, 29 Jul 2026 06:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785305312; cv=none; b=DTNLFEYZ3vhNg2f9tOxKyf6zeS1qua2G4EsvaMIsTxR64oIwjCOqFcoeETwAaz3Zm4aunS1NwY99Ez7nCyU19ep77H4AoxOKk5nGhwV5Vixlr4iAajaSQbi5FKIdUOERiwKb4z2FRX/g7eqAWKNvDK2sGNsWb3wjtd9Ve/rcX4o=
+	t=1785305708; cv=none; b=I0rU9qxq1dC8MJRRsvkYKgxwvJnnmHgvEfu0fw57dF981rzn+OywZ3w5fC40M1e6/pLJZggfu3eNqw3wfPWl/5rc0K+sfp8fDLDTCOAHi8GQTCFUBQ6M8A0zki11Lsu3iBFf6vrlije1T81AcBgIIyDL5wIKxSTfK5BYVSG3kd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785305312; c=relaxed/simple;
-	bh=Nt9jUCfpL9SHefZJ+JX8jYz95zpvBQciVw9B/Vp2MJ4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=A3yy65JoZpJlFBXT1DqLETNJ6aKxD5JP0D49F0lf/Hfo4KNchROZHsnFptwIv5fSXG7QS/a30aq/NM+gCZQp8l7GhzQPKs3mqtm7V2slyTVs0YVrKPkItrKt333E6fxIm2wjKPkAc4TTMpEnHrNioFbcNKmlvsWm/Xix5Fyw47U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=PD6Dwls1; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	s=arc-20240116; t=1785305708; c=relaxed/simple;
+	bh=Dyz6tGY6B3aaF93zhwMg2q7MWVE9jLXxpLiL3NiMJ4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KKHJ9YjH5Vk7giE0lSA29r3PYZd2szlF6n/Nq9bRzqUdI7IJcyaLdzn++hLR7AyjKNjb1ZPdm3R0ESEfinAvptlt4SXRSpavnKQjwEMhP5kES+zNYYmtlC50kOmRB5S5pvbYPJ4Ql2Tm5MCT3NctrABzu8+DYRJqRbwWJmVfyHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=VQVGSqgV; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="PD6Dwls1"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c9eefcf9175so400304a12.3
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 23:08:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1785305309; x=1785910109; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=sK/uHPOHKOSpL2rOWH/430U5Wo4SeZ5sprv1VG2eCss=;
-        b=PD6Dwls1wCezmN6sm8uSN53WJAUFKZ6ifQTrDGx75mXl6qwoXyjH7X3XcX5FQXHxPM
-         sONoVCRp3yGAcj7djnuqOUr3KsJEsKypxqy6LrsEBynHHMRp7yCXSQgZ2FIGvJdtpVbs
-         zK+XfC907jjB7NYInQi8IU/ldmGPiE5BPqwcCu7pXn7Ujj/NZX9ICo/V0dL9yBVm/EA7
-         5cbp+4cn8Nq1I1EmL36y52JlSIS/Yh6L++jQ15u3UIAq8t2o6CBCKE8WF5sj7EIZzot3
-         EuLgUWH6HCsxGkDD7cUYbM4BF7PhCiaGIFLDeVadavpRhCp+HeNcROW1dov1NRf46USi
-         UHqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785305309; x=1785910109;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sK/uHPOHKOSpL2rOWH/430U5Wo4SeZ5sprv1VG2eCss=;
-        b=pMYbcU/DCwlBXG+J0bGuNmC2PDUP+Xaei2B/Q4MFoQeKRrGSX+2GPDMNnHXR9EhKho
-         0msVbztmzSm54MIs+NYdcIdtIjU3oaGlFx7giohwQoI9HVSRsciKQFxeXYEp6ajMCkK/
-         WjI2JSJCei2Zw0ToP9pzaPCVIjps8Js/CEI6ueEpAyR0M/YHKtbkoSnqlQLvbxNBC0On
-         YR2+d6jW2MvMAWA2AY7CF0Afh2Re+VEbTc0VyrkXNPKNWMr+4R39KRkVVSBIlEJJSea4
-         jBy0fiQr7WM6kw71RK6LOZ48Liwf/ZV0fNibgY1GtHidGYdRXltAdMrrRE/4OG1z24Tu
-         TNyw==
-X-Forwarded-Encrypted: i=1; AHgh+RoLsZF4qxFgxEhuC2DI87TjRKBI9HtQiSk5DFtdh9tU/pe7lo398l0bN2d16K1ZjujBYUqb7AE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQ1M2Sm7NoqNhng03ub+f8apfiuWWSWWCN/DBo+MxbC6f5/xiv
-	lb9t5gXQ3Vf7kwA3pqBkCEGPzlsfvGwWTjm9QMosAeDzMkikhXn4JqZ2CoapS1bpmN0=
-X-Gm-Gg: AR+sD13mWLUbvFo7ztaJROMnO8MrFf8uxtWlei3GB2GEbno1Sw6DMwXOeXneswMI4cL
-	tuB2oOmqRHEhrn2KASoneFaxvnkbfrAxUKxfC7s5/AYRDzB8MRpaheZTRljKnhxUNRJyV6DSEcJ
-	/dEkV6t0OPCtUZQ2e6Its12RQAiIf0axcPjF/+2LgOu8MJCLfJqmFVbQdajFLtDhQL1dREGBX2T
-	oTwPgVEdKEcIXG68w+YK9oVrAw6qmLZ4c/Mm8c/fkoHl5IzKY6bDqG/js26kF7YMvEfG8U4Ziua
-	Yhq76MjYpdu/VHnCVs76EWMJOUGxIyoXmlyXEGRpywSSc8SAafhVH45IhEC7QJRpKwqKXJNiEwx
-	vnZ57J9dOTaswY7pYy0FEgn1GnFIDwEUxvCNuHD7p3fGcgy2T24ZORPaAaJLjZqIVQiaBir1k2z
-	tlYwOWNSCSguLqN5+pdTjAHC/SwFbCGcbP4FD18bPhzIavLq919yzpsArdbKwheUbxR+JnfLHem
-	mFhAd5p8nroZCCN2w==
-X-Received: by 2002:a05:6a21:3983:b0:3c4:4555:2c22 with SMTP id adf61e73a8af0-3c8ba5d8955mr6437918637.40.1785305309034;
-        Tue, 28 Jul 2026 23:08:29 -0700 (PDT)
-Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbdb55c5b7bsm408196a12.0.2026.07.28.23.08.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jul 2026 23:08:28 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="VQVGSqgV"
+Received: by linux.microsoft.com (Postfix, from userid 1204)
+	id 99B5C20B7166; Tue, 28 Jul 2026 23:14:45 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 99B5C20B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1785305685;
+	bh=sY/yKp5MJMHtbiEF0TrBRS5ReV7Q7c3RY1ClyW70uQA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VQVGSqgVDvQDpHktoSYuyCgimSHuB5mCg2xyqINx5tjs9hDwXyXCa6hO9GtXKgbDc
+	 Fa6jaWCSnHZ2+jNg5Wwsau42RGAT7sWvj5bTjSW81kxKKuTj8/PzLNckSx5OQO00gW
+	 4MdtUTXVawxuhpVUrGZYXv54Oeu/kFRNuKQSHRlw=
+Date: Tue, 28 Jul 2026 23:14:45 -0700
+From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, leon@kernel.org,
+	longli@microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
+	shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
+	ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
+	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+	stephen@networkplumber.org, jacob.e.keller@intel.com,
+	dipayanroy@microsoft.com, leitao@debian.org, kees@kernel.org,
+	john.fastabend@gmail.com, hawk@kernel.org, bpf@vger.kernel.org,
+	daniel@iogearbox.net, ast@kernel.org, sdf@fomichev.me,
+	yury.norov@gmail.com, pavan.chebbi@broadcom.com,
+	schakrabarti@linux.microsoft.com, gargaditya@linux.microsoft.com
+Subject: Re: [PATCH net-next v12 4/4] net: mana: recover port on attach
+ failure in ethtool operations
+Message-ID: <ammaVReMMz+W22Gy@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260711041415.3008868-1-dipayanroy@linux.microsoft.com>
+ <20260711041415.3008868-5-dipayanroy@linux.microsoft.com>
+ <d2014044-d410-466a-ae66-2a173dbdba82@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Jul 2026 02:08:27 -0400
-Message-Id: <DKATWVU2EXPJ.1QNREP4E46RY3@etsalapatis.com>
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Junseo Lim" <zirajs7@gmail.com>, "John Fastabend"
- <john.fastabend@gmail.com>, "Jakub Sitnicki" <jakub@cloudflare.com>,
- "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Cc: "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
- <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, "Martin KaFai Lau"
- <martin.lau@kernel.org>, <linux-kernel@vger.kernel.org>,
- <bpf@vger.kernel.org>, <netdev@vger.kernel.org>, "Sechang Lim"
- <rhkrqnwk98@gmail.com>
-Subject: Re: [PATCH bpf] bpf, sockmap: fix page_counter underflow in
- strparser SK_PASS
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260723065244.186916-1-zirajs7@gmail.com>
-In-Reply-To: <20260723065244.186916-1-zirajs7@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d2014044-d410-466a-ae66-2a173dbdba82@redhat.com>
 
-On Thu Jul 23, 2026 at 2:52 AM EDT, Junseo Lim wrote:
-> tcp_bpf_strp_read_sock() delays cleanup of SK_PASS bytes by
-> subtracting psock->ingress_bytes from the amount passed to
-> __tcp_cleanup_rbuf(). But when sk_psock_verdict_apply() queues the skb
-> directly through sk_psock_skb_ingress_self(), skb_set_owner_r() is called
-> unconditionally and charges the skb again.
+On Thu, Jul 23, 2026 at 12:18:22PM +0200, Paolo Abeni wrote:
+> On 7/11/26 6:10 AM, Dipayaan Roy wrote:
+> > When mana_attach() fails during ethtool ring size or channel count
+> > changes, the port is left in a broken state with no recovery
+> > mechanism, requiring manual intervention to bring the port back up.
+> > 
+> > On VM SKUs without a netvsc fallback interface, this results in
+> > complete loss of network connectivity to the VM.
+> > 
+> > Fix by scheduling queue_reset_work when mana_attach() fails. The
+> > preceding patch ensures mana_detach() always completes its full
+> > teardown (netif_device_detach + cleanup), so the reset handler's
+> > mana_detach() takes the "already detached" early return, preserving
+> > port_st_save for a successful mana_attach() recovery.
+> > 
+> > When mana_attach() fails, choose retry values that maximize recovery
+> > chances: if the operation was an increase, fall back to the previous
+> > working values; if it was a decrease but still above default, fall
+> > back to defaults; otherwise use the minimum supported values.
+> > 
+> > Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+> > Tested-by: Aditya Garg <gargaditya@linux.microsoft.com>
+> > Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+> sashiko gemini sees quite a bit of problem with the above approach:
+> 
+> https://sashiko.dev/#/patchset/20260711041415.3008868-1-dipayanroy%40linux.microsoft.com
+> 
+> Also, changing user-setting in case of fallback is quite a bad thing to
+> be avoided.
+> 
+> Skimming over the code, it looks like than pre-allocate all the
+> resources and to a replace instead of detach/attach() looks feasible. I
+> suggest investigating such path. I also think that this last patch (and
+> possibly 2/4) could/should be in separate series.
+> 
+> Finally and most relevant thing; AI review comments should be explicitly
+> acknowledged by either debating them or addressing them. In both cases a
+> reply on the ML is expected.
+> 
+> /P
 
-Can you specify in the commit that this is about sk_forward_alloc (AFAICT)?
-The eventual page_counter underflow is a second-order effect even if it's
-what eventually causes the crash.
+Hi Paolo,
 
->
-> The duplicated charge is later released independently and can trigger a
-> page_counter underflow.
->
-> Add a charge_skb argument to sk_psock_skb_ingress_self() and skip
-> skb_set_owner_r() only for the direct strparser SK_PASS path. Keep existi=
-ng
-> accounting for the other self-ingress caller and for non-strparser SK_PAS=
-S.
->
-> Fixes: 36b62df5683c ("bpf: Fix wrong copied_seq calculation")
-> Signed-off-by: Junseo Lim <zirajs7@gmail.com>
-> ---
-> Crash reproduced on Linux tree 94515f3a7d4256a5062176b7d6ed0471938cd51a
-> with KASAN, MEMCG, panic_on_warn=3D1, and oops=3Dpanic.
+Thank you for the review.
 
-Can you make a selftest out of the reproducer?
+Accepting the feedback on 4/4 and working on the
+pre-allocate-and-replace approach you suggested. We are discussing with
+the HW/NIC team and investigating pre-allocating the queue resources from HW
+while a set already exists, as with this patch we are trying to handle
+and recover from failures caused due to HW/NIC resource exhaustion for
+queues.
 
->
-> Reproducer/log/config: https://gist.github.com/ZirAjs/16c95c89972ace73910=
-d9b5ac78a5807
->
-> The reproducer drives the strparser SK_PASS path until teardown reports:
->
->   page_counter underflow
->   Workqueue: events sk_psock_destroy
->   Kernel panic - not syncing: kernel: panic_on_warn set ...
->
->  net/core/skmsg.c | 29 +++++++++++++++++------------
->  1 file changed, 17 insertions(+), 12 deletions(-)
->
-> diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-> index 2521b643fa05..17260681479a 100644
-> --- a/net/core/skmsg.c
-> +++ b/net/core/skmsg.c
-> @@ -586,7 +586,8 @@ static int sk_psock_skb_ingress_enqueue(struct sk_buf=
-f *skb,
->  }
-> =20
->  static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_b=
-uff *skb,
-> -				     u32 off, u32 len, bool take_ref);
-> +				     u32 off, u32 len, bool take_ref,
-> +				     bool charge_skb);
-> =20
->  static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *=
-skb,
->  				u32 off, u32 len)
-> @@ -595,12 +596,9 @@ static int sk_psock_skb_ingress(struct sk_psock *pso=
-ck, struct sk_buff *skb,
->  	struct sk_msg *msg;
->  	int err;
-> =20
-> -	/* If we are receiving on the same sock skb->sk is already assigned,
-> -	 * skip memory accounting and owner transition seeing it already set
-> -	 * correctly.
-> -	 */
->  	if (unlikely(skb->sk =3D=3D sk))
-> -		return sk_psock_skb_ingress_self(psock, skb, off, len, true);
-> +		return sk_psock_skb_ingress_self(psock, skb, off, len, true,
-> +						 true);
->  	msg =3D sk_psock_create_ingress_msg(sk, skb);
->  	if (!msg)
->  		return -EAGAIN;
-> @@ -618,12 +616,14 @@ static int sk_psock_skb_ingress(struct sk_psock *ps=
-ock, struct sk_buff *skb,
->  	return err;
->  }
-> =20
-> -/* Puts an skb on the ingress queue of the socket already assigned to th=
-e
-> - * skb. In this case we do not need to check memory limits or skb_set_ow=
-ner_r
-> - * because the skb is already accounted for here.
-> +/* Puts an skb on the ingress queue for psock->sk.
-> + *
-> + * When charge_skb is false, the direct strparser SK_PASS path keeps the=
- TCP
-> + * receive queue accounting in place and must not call skb_set_owner_r()=
-.
->   */
->  static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_b=
-uff *skb,
-> -				     u32 off, u32 len, bool take_ref)
-> +				     u32 off, u32 len, bool take_ref,
-> +				     bool charge_skb)
->  {
->  	struct sk_msg *msg =3D alloc_sk_msg(GFP_ATOMIC);
->  	struct sock *sk =3D psock->sk;
-> @@ -631,7 +631,8 @@ static int sk_psock_skb_ingress_self(struct sk_psock =
-*psock, struct sk_buff *skb
-> =20
->  	if (unlikely(!msg))
->  		return -EAGAIN;
-> -	skb_set_owner_r(skb, sk);
-> +	if (charge_skb)
-> +		skb_set_owner_r(skb, sk);
-Sashiko's right that skipping this leaves the skb half-configured. Since
-the point is to not double-count sk_forward_alloc but we still have
-to account truesize, can you try something like:
+I will drop 4/4 from this series in v13 and stick to only the ethtool
+private flag changes. Will send out a separate series for the problem
+currently discussed in 4/4 once all the above points are concluded.
 
-if (!skb_charge)
-	sk_rmem_schedule(sk, skb, 0);
+For 2/4 I will send it as a fixes patch to net as it will be common for
+all functions calling mana_detach.
 
-skb_set_owner_r(skb, sk);
-
-to just ajust the sk_forward_alloc?
-
-pw-bot: cr
-> =20
->  	/* This is used in tcp_bpf_recvmsg_parser() to determine whether the
->  	 * data originates from the socket's own protocol stack. No need to
-> @@ -1017,6 +1018,8 @@ static int sk_psock_verdict_apply(struct sk_psock *=
-psock, struct sk_buff *skb,
->  		 * retrying later from workqueue.
->  		 */
->  		if (skb_queue_empty(&psock->ingress_skb)) {
-> +			bool charge_skb =3D true;
-> +
->  			len =3D skb->len;
->  			off =3D 0;
->  			if (skb_bpf_strparser(skb)) {
-> @@ -1024,8 +1027,10 @@ static int sk_psock_verdict_apply(struct sk_psock =
-*psock, struct sk_buff *skb,
-> =20
->  				off =3D stm->offset;
->  				len =3D stm->full_len;
-> +				charge_skb =3D false;
->  			}
-> -			err =3D sk_psock_skb_ingress_self(psock, skb, off, len, false);
-> +			err =3D sk_psock_skb_ingress_self(psock, skb, off, len,
-> +							false, charge_skb);
->  		}
->  		if (err < 0) {
->  			spin_lock_bh(&psock->ingress_lock);
-
+Regards
+Dipayaan Roy
