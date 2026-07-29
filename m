@@ -1,108 +1,132 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B5A453A28
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E7643CE62;
+	Wed, 29 Jul 2026 14:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785336724; cv=none; b=Yq9mMOb3KRAEWzPC5BdM037TH9AwMCpJFmq8bUX/qWQmpc1iQIEe/r9QzhQvVF/9yti7G30e5zdv4JyKmsXr0rk9tvAkY3bpZVQTihaWCoXECK0Tea+bpMQVMDQo4TOVj5YKVOEDTcELC/arC/EAZzWTjpVweROVSsrErmANXUw=
+	t=1785336885; cv=none; b=eNzZo9XciECcafPVZ6czQpPllQBz9fCTKi3Ek1HX62dOB82UtgXXeEc/SnER7kRzUYW9swxP+haqKQS4XU94zo/y7ZEjwKLt29smqxSsOznaJ4dKSWxiciJuVzt+VDR2UQz4FmZqujy3j6We2f80gvjnJVNSIaHfRHDjLXXn5t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785336724; c=relaxed/simple;
-	bh=4A9ljZvg/DonxCLhH0BMsyCR0SqJBPYfHV381hA4JWw=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=nI1jbsHDtEJPYFuGi5q7REkhP7Xa9eARMHSD1fdRc0U4EbzPD2V0kvkLdL7+yshSY7U366UcOORloAWkikgg67h9YF1wXhC6YMm6c/hcWYbBYPaw8OK05uHbVkchSchOON2l2Nyk3Z/8cllaafHjMOG9Fow/UVm0/p7mZwYY/iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=jr7qJAPP; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=snu.ac.kr
+	s=arc-20240116; t=1785336885; c=relaxed/simple;
+	bh=2NJHoro+sLZzogfMZLyqq2JppkenrhoHGxt8PzXFrRM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Akm2NHZfxcOWzPbGTqHBbdnYnb23+hPWuMgmPrMKsgWaKtwPBOCH6JAf5CmYTkt5ZTgjM2CIRgvuz+kQRE84+5nDq1EzcoNxbm/+w4yHwtAVbcf+SL0YkeqP+Vsk9o03GoSOrOq8u2KzM7HO1NJGAt4LrBCcKZq7zQO37CteUCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lnywAbds; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="jr7qJAPP"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8487214ad2bso1568981b3a.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:52:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snu.ac.kr; s=google; t=1785336720; x=1785941520; darn=vger.kernel.org;
-        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
-         :from:content-transfer-encoding:content-type:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4A9ljZvg/DonxCLhH0BMsyCR0SqJBPYfHV381hA4JWw=;
-        b=jr7qJAPPhIbXWbswPVfoSKSAdd0quLmOe2Fyej+xg74/sBFhCeKX65iJVBQ7gWJXf7
-         WSnPIs8MYiDUYozMMvvwhesZaqgkij59ALnA7ZK/BzptFRsY0WzFzfBTn8nqZG2RAqgw
-         4E+1dzZo7Qv81OvtimbydmozTRa+pw8qeBNy4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785336720; x=1785941520;
-        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
-         :from:content-transfer-encoding:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4A9ljZvg/DonxCLhH0BMsyCR0SqJBPYfHV381hA4JWw=;
-        b=KYwUSl5acRyw5W+eaRgeIEzhK5XNZAkTXDu8fuNmr1nM8XnOwScVJXmnUY48Ble+z4
-         Xt4T7q8/ha8FXmJtymo0Oxew6EHCd49n3Bh1sXe/ogq+7CKGRyCiDji9MPY9zVB6zkS5
-         OfxL67NBVsMUvEm6S/bzldEOmFPSQs2NMLEyIwrf5i1gjvt7K8inC6SgvqdihasvR11R
-         CWJB+aRshQkMjWIWichPLsXQEk1Thm6AunxAUoT+F9KkhdQUYKvm33ZAIGuVs/AMaibo
-         iY2II53/pE+DVwCDrcLnoQyCFT52+oTlCLLE4FVucPJRlzVIHHiIO283Jc+pCCwbIzKC
-         vOZg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq/4rGj+X3Q57r19Ot8oFEr84nQ4YtOKiJpWfFcpSyhbC+wB3mpbSxhbwRkOzpQY/8iGIxvjwo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywe8ruWuyLUCDh96dfpoCV/YnOFOKBj/obbFV85LcuVPmJ0Dp4+
-	KxuUKWuhxfr0XOqHGg6GXDndf66JxRqW04NRpi8GbK9D9ReW3kY4tFBR3wRtWJf6CwH42rLj7As
-	GiS9ukdI=
-X-Gm-Gg: AR+sD12GLNVGogSyUfc0tkA6+TuUaEx1Vp2zVMZ5ANTWWhdgw/K+p5MYeolmo2Vk9MM
-	2/h20yZAq2T3CijhuPgM0fKmWwRNWFV7tsMHzjM5vqumg5g2slMLP8X3CF2hL/q8WlRYFT+avRp
-	frLXLDm+lCdFDJlTOoRO1QPwIZfcGmBo0/MPmoNmxec2LfcPpTlzvISS/Y1JBIIgdzRUyAk0rMN
-	Ou+yXOdwGJzutkMblhq1xPSZ00mSbBbiJDXlzsFXzSzuf6O0kaabYlvMTP32DP2MkYamwlsgrsc
-	cBnwU9yQyXkzX5qmJWpkEtVqu44bh21WR7UgfO2S9gKn7jv94XlHhvQAGWml0wgfrzQxWnB3jnj
-	t/yBT+VqOW6aMGFj+EIyDXTwqJcu4RM4DJzCtSBl0VfZlNHOgylczZgRbkt3M8HCU9IKtQkH1af
-	VnTw8FKc05fVNvO+E6r30OOmy7g4yNp6TOQSC3egYojGWT0wWqeP8PQiFrikN/Av7Gs8XlTSlpz
-	NJ1SqD05A==
-X-Received: by 2002:a05:6a00:2e28:b0:848:2f77:e2e2 with SMTP id d2e1a72fcca58-84e933abf71mr7498955b3a.75.1785336719840;
-        Wed, 29 Jul 2026 07:51:59 -0700 (PDT)
-Received: from smtpclient.apple ([2001:e60:11d9:ccc7:1d44:fa02:b04:2b65])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e9fe24e6csm1540056b3a.5.2026.07.29.07.51.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jul 2026 07:51:59 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: =?utf-8?B?wq3tmY3shLHspIA=?= <hsj0512@snu.ac.kr>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lnywAbds"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6A66AC2BCB3;
+	Wed, 29 Jul 2026 14:54:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785336884;
+	bh=2NJHoro+sLZzogfMZLyqq2JppkenrhoHGxt8PzXFrRM=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=lnywAbds53WAn/MxmUSHYVordLwTHK+Kjg53vW3XVEdvXHKhY2E2sSCEo+avsYMcs
+	 WLSjcmj6s4t1YTI+5alspt9IFAy7j++EI+NPIPe5D7quAS/nDFMLe1jX+Nt+AN1KPn
+	 cJjHoTYdNTap30FPN7FG9TUn3PN7aiETGalRM8j7HnJfbgo6zHyLlYRFRfIcREhpyH
+	 DlxjpfSG1DAFfHORhl1t11Yo/Dk+a8DWk/22Bgz4i9Rv7NbZ0bIa+fhQgNaEhcdZ1k
+	 GnED0o2fu3AS0HOUzqFoUQzpdNKWy8NjogMghVUh+DFtzOVAFu+7PhiKECT9ZS4Ybx
+	 skD9y0gdQpz0Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48EA9C53219;
+	Wed, 29 Jul 2026 14:54:44 +0000 (UTC)
+From: Charles Vosburgh via B4 Relay <devnull+trilobyte777.gmail.com@kernel.org>
+Date: Wed, 29 Jul 2026 10:53:41 -0400
+Subject: [PATCH net] sctp: validate Cookie Preservative parameter length
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH] e1000: drop dead switch statements in configure_tx/rx
-Date: Wed, 29 Jul 2026 23:51:47 +0900
-Message-Id: <38144712-66B4-4580-8B9F-708500718E34@snu.ac.kr>
-References: <PH0PR11MB59025D22F4D0A00D5A8671ACF0CA2@PH0PR11MB5902.namprd11.prod.outlook.com>
-Cc: Anthony L Nguyen <anthony.l.nguyen@intel.com>,
- Przemyslaw Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Abeni Paolo <pabeni@redhat.com>, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <PH0PR11MB59025D22F4D0A00D5A8671ACF0CA2@PH0PR11MB5902.namprd11.prod.outlook.com>
-To: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-X-Mailer: iPhone Mail (22H352)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260729-sctp-cookie-preservative-length-v1-1-1ade32e42668@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAPQTamoC/yWNwQrCMBBEf6Xs2YW6FIP+inhI46ZdlaRk0yCU/
+ rurHt8w82YD5SKscOk2KNxEJSeD46GDMPs0McrdGKinU+/ojBrqgiHnpzAuhW3efJXG+OI01Rl
+ j9MPgiBzFEcxinSjv38MVEle4/UNdxweH+nXDvn8A+bGtE4gAAAA=
+X-Change-ID: 20260729-sctp-cookie-preservative-length-ffa4472272fb
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
+ Xin Long <lucien.xin@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Charles Vosburgh <trilobyte777@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785336880; l=2510;
+ i=trilobyte777@gmail.com; s=20260727; h=from:subject:message-id;
+ bh=vg+pRzQHtqmDcldA7wmoJprrLJOFDAz+bHKBOZZASV8=;
+ b=gnu/YmwrNjWnv84AcUmadJFMhxPGwQQcfX/VhEnVwrCu9DRmhwVrpntewjtkIfYj48bQnVhfR
+ lV4nsEAO+eLD9QR6aX2Q+YgC0m1iNFJjo/bpYvIS2kLL+Yw9BUlDJeq
+X-Developer-Key: i=trilobyte777@gmail.com; a=ed25519;
+ pk=kxCwp20gY82hL3ixb5IXlZ2N0X9TDxiKPCpjPcWqN3E=
+X-Endpoint-Received: by B4 Relay for trilobyte777@gmail.com/20260727 with
+ auth_id=899
+X-Original-From: Charles Vosburgh <trilobyte777@gmail.com>
+Reply-To: trilobyte777@gmail.com
 
-Thanks, then let us keep the switch statements.
+From: Charles Vosburgh <trilobyte777@gmail.com>
 
-> On Jul 29, 2026, at 19:07, Jagielski, Jedrzej <jedrzej.jagielski@intel.com=
-> wrote:
->=20
-> =EF=BB=BFFrom: Seongjun Hong <hsj0512@snu.ac.kr>
-> Sent: Wednesday, July 29, 2026 10:01 AM
->=20
->> remove unnecessary branch
->=20
-> Hi Seongjun
->=20
-> First of all commit msg definitely needs to be extended. At least
-> start with capital letter, finish with dot etc
->=20
-> Once sending to netdev please also point target tree in commit title;
-> net-next for this case.
->=20
-> I see the point, but as the code is quite old and its extensive developmen=
-t
-> period passed long time ago, i believe value of such cosmetic patches is
-> rather questionable.
->=20
->=20
+The Cookie Preservative parameter contains a fixed 32-bit Suggested
+Cookie Life-span Increment after its parameter header. However,
+sctp_verify_param() accepts a header-only parameter because the generic
+parameter walker only requires the header to be present.
+
+sctp_process_param() then reads lifespan_increment beyond the declared
+parameter and adds the value to asoc->cookie_life. When the malformed
+parameter is last in an INIT, the read starts at the receive skb tail,
+and the resulting value changes the expiration in the State Cookie
+returned in the INIT ACK.
+
+Require the declared parameter length to match the fixed structure size
+and abort the association through the existing invalid parameter length
+path otherwise.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Xin Long <lucien.xin@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Charles Vosburgh <trilobyte777@gmail.com>
+---
+This follows Xin Long's review of "[PATCH net] sctp: validate Adaptation
+Indication parameter length", which noted that
+SCTP_PARAM_COOKIE_PRESERVATIVE has the same fixed-format validation issue.
+
+Runtime-tested in KVM/QEMU. The unchanged reproducer accepts header-only
+and overlong Cookie Preservative parameters on the unpatched kernel. With
+this patch applied to net.git base 51b093a7ba27, both malformed forms are
+rejected while the baseline and valid eight-byte controls still pass.
+
+The patch passes checkpatch --strict, builds net/sctp/sm_make_chunk.o,
+and completes a full x86-64 bzImage build.
+---
+ net/sctp/sm_make_chunk.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index a1c0334a1038..eb9cff77759b 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -2165,7 +2165,14 @@ static enum sctp_ierror sctp_verify_param(struct net *net,
+ 	switch (param.p->type) {
+ 	case SCTP_PARAM_IPV4_ADDRESS:
+ 	case SCTP_PARAM_IPV6_ADDRESS:
++		break;
+ 	case SCTP_PARAM_COOKIE_PRESERVATIVE:
++		if (ntohs(param.p->length) != sizeof(*param.life)) {
++			sctp_process_inv_paramlength(asoc, param.p,
++						     chunk, err_chunk);
++			retval = SCTP_IERROR_ABORT;
++		}
++		break;
+ 	case SCTP_PARAM_SUPPORTED_ADDRESS_TYPES:
+ 	case SCTP_PARAM_STATE_COOKIE:
+ 	case SCTP_PARAM_HEARTBEAT_INFO:
+
+---
+base-commit: 51b093a7ba27476e1f639455f005e8d2e75390e4
+change-id: 20260729-sctp-cookie-preservative-length-ffa4472272fb
+
+Best regards,
+--  
+Charles Vosburgh <trilobyte777@gmail.com>
+
+
