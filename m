@@ -1,162 +1,133 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D347263B
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 03:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4334908D5;
+	Wed, 29 Jul 2026 03:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785294799; cv=none; b=sKaOzoKWj3GHr9KdrGDaHYqwzgzZATP/PscWJbdzK6S4il8k+bJOJ4yQZm6fKYJ9ggf+uJPsU0zRogG1/cTIsa4BP/bsziFZ8+Pf282Ddc/ua4KeCqx+4xWwissmB4oZPjmtHhxKqUY8J1JDfYIY0N6LI7ffdU9QVvE3K3KJzYA=
+	t=1785295091; cv=none; b=js09trcOExJjcxrQ6KqjHnTUxTMkuToOF0OFX5mcPqmzudQxBJTRIHJmvIgqHQ0HVkMC3nT0qaOgFatHP+u8sh/8p7qw/odevY9SEBPCjStvrDCWgNMylcclWgg5B88mNQ466lwOnMsp6feQ5meUAV0CNmkY2MdSwqRTjdcFgwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785294799; c=relaxed/simple;
-	bh=+nXoE1JWimzLvKI33iYfZhwEL7/w5aGwIMdK9C1RKfs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lj3vSG367fCu4tV9bB08Rkeo58kn6ddv1qJgf2KOHNU9gukaLjZbxHm00okUMlmWXqQqUW1hxM+x5AqHR0s5uvOzwc2rX3I4RlXgY9KSAx99qx/e+20/EPC1a6DgvxZED5aCYu3UWcsb+WVlxsZ8ZpzMf1UKiUr7Q+gdSEN3+4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cxeAV1MQ; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785295091; c=relaxed/simple;
+	bh=iWO8uagfZiFOmjzR1znwWCLgJmMwl8vmRNioWQsB+Nk=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=C1Znd5RoJDfawVM1YVVFO1rG38ps9OdalopMBKrGjef28wtSSr6MYjbB/GhLxj6/HkGMbQK5oY9gt6LWQ0SpiaHZJ2P+ld3VkYoZu3Xg8MHFLsfX9yMgfqwhhQC0zz5/yEYB0EsDqJuu4R4RDfqcdI0d6o3q4B8fznO1aCefD8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K/ZPiqHe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cxeAV1MQ"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8423f236418so369492b3a.1
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 20:13:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785294797; x=1785899597; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=67fzthwbCndyMuuC4hWnqiqs2nS3TAADY1dtDD/lCeQ=;
-        b=cxeAV1MQOkuN73Qvm5DgsYuRuLpc5hymuqmBL+I/UJV/g2z3aUueZuyY3qT9kUj0Ug
-         T61uZl2xrTuBl5rGqVounYcaLNNdZRgmMRcspG/HiZvku5yU5jJw4ZgDUNhr8ERnzCiJ
-         Yw2xuGtjoAzA7XDQc2Kqp1ekZywFKVALAblH0ZOvxiOP6jHreBNCb55IlGdTT1SkB0ey
-         Jlv7FgkJ85NNRnPO0Xf5J76H+roopau5s9CZDXRCWuLRURaPO9/Ri8tgkp8sSwuXvDjw
-         vs9itxlLYJNZ2svZYo3k+GdN2N7Zc9jrx+r+RQQfbVAiR9C2J6y+rTYdGzRdlfLmfQRu
-         MqvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785294797; x=1785899597;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=67fzthwbCndyMuuC4hWnqiqs2nS3TAADY1dtDD/lCeQ=;
-        b=HrfP7P6fDILFC2xIrawdLbb/5g+Vf+CDgoZBCvCXoI++e+xOTlf6QdYfBlreclSNG7
-         uW98jhGCAMP0iySTMArJcMrY4lLt6fCFMk+KxAjpfUgNDRgJGXNVhibYwpbec53yjM22
-         K+JcosnAPuTfHaauXqRd2nRHFz+aXQudei2Mi7lzea5S/EtNPfyyM1WkoZSCe5faMy9A
-         XzdJBmgVVoIdeGGvfKd55xn71TrYwJ4tHYXJbVOBgXpiS7oGGBrZzlWohBzGl0a23+c+
-         PP0eS4R5B1Dethne6aNJE7UosRkXRNxm+F8IJT6ndTprRUOP83txgep0I2QpkeI/lCWo
-         yztw==
-X-Gm-Message-State: AOJu0YyMkjaTIa4EBHJpWbb1lc18HAOO/6Q5OlUfbDk/jh1TkCj0fT+9
-	Xq+c18ufd8vbJXWuSOvm4LbfxrnnLz+dtjTWw1Do5ZYgdxnwI1mNlChV
-X-Gm-Gg: AR+sD13eVFvo+KpjQVYouFcCn91zdXGZAP8Y2HXTkxeKNCfAnMdnt4+hkDIteJahdqL
-	cf0tb8geNnQbxQzkAvpwpHZhtfvS2tVEBL5CQYXBRY56mhOkbqB188+E9gg4+O2qyRAu6ltzZ7N
-	2I88pqdiQn1lMXO57hGl9xz4/mfWdtC7aZR4bsUM4wVy0mlz9wf6NRmtK9th5dugY6cL5BD7hYf
-	CG724JztvV8iT3XrO1/pLUVjOOmMz6drGj25Ur/mjPM6a1/ctBkqQ+GICUVzbeFWNRwzu6M8X8q
-	uhxTPnG4U3mJ4KutdwC2E8OnHiF3QV6YGIRVqzzg+CEpybhv2TW1IpYSxngipGHoqmqqhG3MIQ0
-	cfHM9KOKW3cInFdgHUJ3N1AhtPhUvoV+1XD8s4cUW8LN94XsPM0KvpW9X15N+q9s2XUa6A8wsng
-	b7Gt54RStV8p8lOpaWl3XeXHqjC3Cn6an5rNnMVmeF1Lp0tZNVQfDruPtzWhtEUdSa6dSmHYQv7
-	luLVubsYA==
-X-Received: by 2002:a05:6a00:3992:b0:848:7f8a:8d0e with SMTP id d2e1a72fcca58-84e932c5f3emr4770346b3a.55.1785294796609;
-        Tue, 28 Jul 2026 20:13:16 -0700 (PDT)
-Received: from localhost.localdomain ([116.105.227.66])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e9fe1d07dsm667639b3a.8.2026.07.28.20.13.13
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 28 Jul 2026 20:13:15 -0700 (PDT)
-From: Yuejie Shi <syjcnss@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yuejie Shi <syjcnss@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: pktgen: fix out-of-bounds write in pktgen_finalize_skb()
-Date: Wed, 29 Jul 2026 11:12:52 +0800
-Message-ID: <20260729031252.54476-1-syjcnss@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K/ZPiqHe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B1A1F00A3D;
+	Wed, 29 Jul 2026 03:18:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785295090;
+	bh=iWO8uagfZiFOmjzR1znwWCLgJmMwl8vmRNioWQsB+Nk=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=K/ZPiqHeLEdyPeZ62Pd5wC4pyrN6UXys0075W83rRRhNvcDs8fBsJIDLjf96Ya29z
+	 aR+cDXfqxbVV7d/vhAwowevLFDBzcnaMS2twTUHD3D3e9W9NHqJ6p+8YaK5OHflzyB
+	 sQtD/l3nBBZmuBaDlWY1dpcScbunOrO8PlIKJ4YRZzh4rVl3nTGJISh1yAZenVnUcJ
+	 op9FzGeJASomCxRhcz1zfF1LX/wxjCmPgepR88DdqrnuUOorUupe+o5YGfo+4dpDkE
+	 y/h4kHOA+ifG+304+KVcZ3il6T6Gd79WihbQ/QuXul1kfGTiVEbetkN6swwdRocULD
+	 NQB/KucjkuIdg==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 52775F40071;
+	Tue, 28 Jul 2026 23:18:08 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Tue, 28 Jul 2026 23:18:08 -0400
+X-ME-Sender: <xms:8HBpauiYuSVao1nXz2_A-t9Cd_QHZPiNHL0L6GRDVCXwphPxiOfCjQ>
+    <xme:8HBpap1e1dC04iK1T-82r6Eel7ydz8YYVmEJr_cIe7avR0PT7H8zTkKSi1JcWSf00
+    QaaFtqAxloI6MxKZ7vJflYvDPGk5MZCIITid6AytUdijDsolt8R0MIz>
+X-ME-Proxy-Cause: dmFkZTFlEvRLbxX/R7zrLd/d14ESObNiG04tZzmu3JcUwUgAbZyCOJr8+YmY5DERybfv6K
+    W5yfYcHcBzmUsxNIAdSIB6pC756ZF0kuM5dnDeYA8X5sF3hdMdwHwtULFCh7cflMcQO+Rb
+    ScxOXWKV90IS18VXlSM6uSDQgbUNzy50fIQV6kWuvarSxUw+bMt53ChE/tSgwFgHg79+Wu
+    kVSN6vlAk0s339hLZhaGxl6l3V4LGiiZA+NrR8AnNK2bJ04gXA9AMHQVK72JRiDZEkqHNI
+    Sy9cJ41LHDFGfSc0LSDeArTnITANULnb46kynrYqZatYqqTlF+yCd7H8S6gQDD1VanosAv
+    yydkgk3pcWgdKMnyuLieMVfbe33Evmb4OkTmHmwBnLZejebiq41EZ2vh/Pd49OHMiy5lcQ
+    CYvOzYaXnKotfE5nsxZT6etk0rgWoeu1vwGGA7XfMYelJYmPHOHoD2hrLCDnl9PRMv2uEG
+    XTzutqU6lMVk0UlZQm/Q3ieelBVQc/t7aHSUMU27MiC3CSbHKdkk4EH2CfQ+cmjtw8Ed1m
+    5ucat/a9A4OnvF7du7QTYBcc2LFvHhYW3MApu3t8znlslfqd2Pq4s7Tmdvze0ot1ofqFct
+    eJEQCUrAX6oROh0zXtQgpR5Zf1ipVKoXH9yt+ym81yY/8l4ZzqUl9y3FHNkQ
+X-ME-Proxy: <xmx:8HBpaqba7bbukgISIBNvp-xGSrQlPFrND9bERp5qm4Ul21ZdSxD03Q>
+    <xmx:8HBpak8MUXFXgqcIIvJ06BfvOiocOmXQIfk_iLRe6UB--jmuBc5xlA>
+    <xmx:8HBpaklCEAangC8UjY6YlTAG_tmK5lscrxP2cs4MSO3DVBlyoagTdA>
+    <xmx:8HBpapYueU33O7xT10rSKE741geeL2gH8Ko9qi_LoQzESLvjXAFddA>
+    <xmx:8HBpasMhDfdGuqeDyKEE2Hsw6ybAluEXbZeYdtSWPPn0Lgj2NujAy_Xe>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 305A9780070; Tue, 28 Jul 2026 23:18:08 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Tue, 28 Jul 2026 23:17:48 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Jakub Kicinski" <kuba@kernel.org>
+Cc: "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ "John Fastabend" <john.fastabend@gmail.com>,
+ "Sabrina Dubroca" <sd@queasysnail.net>, "Shuah Khan" <shuah@kernel.org>,
+ "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
+ "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
+ "Tom Talpey" <tom@talpey.com>, netdev@vger.kernel.org,
+ kernel-tls-handshake@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ linux-nfs@vger.kernel.org
+Message-Id: <fdd3e54d-2eb6-468c-9877-adc0809d64b2@app.fastmail.com>
+In-Reply-To: <20260728184712.09cc50f4@kernel.org>
+References: <20260720-tcp-read-sock-v2-0-29545d034f3c@kernel.org>
+ <20260720-tcp-read-sock-v2-1-29545d034f3c@kernel.org>
+ <20260728184712.09cc50f4@kernel.org>
+Subject: Re: [PATCH net-next v2 1/6] net/tls: Bound consecutive no-data records in
+ tls_sw_read_sock()
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-pktgen_finalize_skb() spreads `datalen` bytes over `frags` page
-fragments, but the loop that fills skb_shinfo(skb)->frags[] is bounded
-only by `datalen > 0` -- there is no `i < frags` check.  The
-per-fragment length is computed once with a truncating division:
 
-	frag_len = min_t(int, datalen / frags, PAGE_SIZE);
 
-The code just above has already capped datalen at frags * PAGE_SIZE, so
-a valid partition does exist, but the truncation means the first
-frags - 1 fragments can leave more than PAGE_SIZE behind, and the
-last-fragment branch only consumes min(datalen, PAGE_SIZE).  Writing
-datalen as q * frags + r with q = datalen / frags, the loop overruns
-whenever
+On Tue, Jul 28, 2026, at 9:47 PM, Jakub Kicinski wrote:
+> On Mon, 20 Jul 2026 10:27:55 -0400 Chuck Lever wrote:
+>> A record that delivers no payload -- an empty TLS 1.3 data record
+>> today, a control record once read_sock_rectype() lands -- leaves
+>> tls_sw_read_sock() in its loop without advancing the caller's read
+>> descriptor. A peer that streams such records keeps the receive loop
+>> running, and the socket lock held, for as long as the records
+>> arrive.
+>>=20
+>> Cap the number of consecutive no-data records consumed per call. The
+>> count resets on any record that delivers bytes, so a normal stream
+>> is unaffected; a peer supplying only empty records is bounded to
+>> TLS_RX_NODATA_LIMIT iterations before the call returns 0. read_sock
+>> consumers treat that as "no progress, re-poll" rather than EOF, so
+>> the connection stays up and makes progress once real data arrives.
+>>=20
+>> Only tls_sw_read_sock() needs this cap. Its consumers drive the recei=
+ve
+>> loop from kernel context -- a work item or service thread holding the
+>> socket lock across the whole call with no return to userspace -- so an
+>> unbounded empty-record stream keeps that context and the lock pinned
+>> for as long as the flood lasts. The cap supplies the return boundary
+>> that a system call would otherwise provide. tls_sw_splice_read()
+>> and tls_sw_recvmsg() already have one: they run in the calling task's
+>> context, reschedule while draining the socket backlog (cond_resched()
+>> in __release_sock()), and drop the socket lock when the call returns.=
+ A
+>> flood there costs the caller only its own scheduler time, so the cap
+>> would add nothing.
+>
+> Is this alluding to PREEMPT_NONE (which for practical purposes is=20
+> no longer a thing AFAIU)?
 
-	q + r > PAGE_SIZE
+No. The cond_resched() reference was a bad way to make the point.
 
-because q + r bytes are still outstanding after frags - 1 iterations and
-the final fragment can take only PAGE_SIZE of them.  The loop then runs
-once more, with i == frags, and writes one element past the array.
+What the bound protects is the calling NFSD thread. A client can
+open multiple connections that all send a continuous stream of empty
+TLS records, as a denial of service attack. The mechanism added
+here is an escape hatch for consumers.
 
-frags is clamped to MAX_SKB_FRAGS (17) and frags[] is the last member of
-struct skb_shared_info, which sits at the very end of the skb head
-allocation, so writing frags[17] writes 16 bytes past that allocation.
-With PAGE_SIZE == 4096 every pkt_size in [69675, 69689] hits it
-(datalen = pkt_size - 58, giving q = 4095 and r >= 2):
+This patch has already moved to a prerequisite series, intended for
+=E2=80=9Cnet=E2=80=9D instead of =E2=80=9Cnet-next=E2=80=9D at Sabrina=E2=
+=80=99s request.
 
-  modprobe pktgen
-  echo "add_device dummy0" > /proc/net/pktgen/kpktgend_0
-  echo "frags 17"          > /proc/net/pktgen/dummy0
-  echo "pkt_size 69675"    > /proc/net/pktgen/dummy0
-  echo start               > /proc/net/pktgen/pgctrl
+https://lore.kernel.org/r/20260726-tls-follow-on-v1-0-99bf4cc1c729@kerne=
+l.org
 
-  BUG: KASAN: use-after-free in pktgen_finalize_skb+0x1e8/0x4a4 [pktgen]
-  Write of size 8 at addr ffff0000c6b40000 by task kpktgend_0/97
-   __asan_store8+0xe0/0xe4
-   pktgen_finalize_skb+0x1e8/0x4a4 [pktgen]
-   pktgen_thread_worker+0x1f3c/0x2d50 [pktgen]
-   kthread+0x1c4/0x1e0
-  The buggy address belongs to the physical page:
-  page: refcount:0 mapcount:0 mapping:0000000000000000 pfn:0x106b40
-
-nr_frags ends up at 18 as well, so skb_release_data() later walks one
-entry past the array too.
-
-Compute the fragment length with DIV_ROUND_UP() instead.  datalen is
-still <= frags * PAGE_SIZE so the result cannot exceed PAGE_SIZE, but
-the fragments now cover datalen exactly and the loop always terminates
-on the last one.  As a side effect pktgen stops emitting zero-length
-fragments when datalen < frags.  Bound the loop with `i < frags` as
-well, so that a future arithmetic mistake cannot walk off the array
-again.
-
-Reaching this needs real root: pktgen creates its /proc/net/pktgen
-entries with proc_mkdir()/proc_create_data() at mode 0600 owned by
-global root, so unlike /proc/net itself they are not remapped to the
-owner of a user namespace, and the module has to be loaded first.  It is
-still a plain heap overflow behind a documented interface.
-
-Fixes: 7d36a991e8d3 ("pktgen: create num frags requested")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuejie Shi <syjcnss@gmail.com>
----
- net/core/pktgen.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-index 8e185b318288..2dbb7caacd0d 100644
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -2843,8 +2843,8 @@ static void pktgen_finalize_skb(struct pktgen_dev *pkt_dev, struct sk_buff *skb,
- 		}
- 
- 		i = 0;
--		frag_len = min_t(int, datalen / frags, PAGE_SIZE);
--		while (datalen > 0) {
-+		frag_len = min_t(int, DIV_ROUND_UP(datalen, frags), PAGE_SIZE);
-+		while (datalen > 0 && i < frags) {
- 			if (unlikely(!pkt_dev->page)) {
- 				int node = numa_node_id();
- 
---
-2.51.0
+--=20
+Chuck Lever
