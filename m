@@ -1,46 +1,46 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010012.outbound.protection.outlook.com [52.101.61.12])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012004.outbound.protection.outlook.com [40.93.195.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D742238B124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE23F2147E5
 	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 03:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.12
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.4
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785297174; cv=fail; b=I4ycP3bfFRON1v6onzsmgr7u4bfP8kWzGss7t/iXryC/IsyV4BEUIja9Il2PaNUzao0FEzI1sS6M3zKDHfqNCVksfe/GMhyaoRolsvDV9OtNcfvCDKGGtfcvTulLaExp9+CI8Pcbjk068zCNC5ld7UMZNUHTDXeLv5pXJyYEtQg=
+	t=1785297174; cv=fail; b=Wea3i/IrPVbasJX5Wa8p3qTi3ffBdA1IYNwX409n6WEsCJsoUJ0qNxf9/+PeYSryFhe/0TBFY9U3e/613/jfEQhgBGqyWsmc0AisMc5xwcjxRWZ8PC+mCSsbvBH27l2M2Jc/Xc0Ji9jluKBhN8Hwh3AoyZhSLwnBsbyVPSpF6w0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785297174; c=relaxed/simple;
-	bh=SbmavOW3bG/+5n9HH5ACEcANlGxY6b53kluWSUrmW4k=;
+	bh=9kvkwWAgWl8m3IwazyeDsR7HOY/PkZXhvnKhg81Qxr4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=dB7dmrGBYjJGsphPegRFvcKIoqolWEgH8QIz9aW4sMxnRMH0Dlp7bjU8/tfIkWSYRVl2YniO7SyHU9+48tGTihqIokGLAS9qfM+xeXFwKuzkzgOgrr05rLCKhQ7wvKFgpTdD46m5ZPPiE5aIQ1gm/iU9hBCVQ2CGwydk4cPkhCE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jv7ME55q; arc=fail smtp.client-ip=52.101.61.12
+	 In-Reply-To:To:CC; b=hA2wdX+erFp1LrPTebeJCTplKEiReOK3z9UN0k6JUe/Ag9BuCscaGD/Ly4iIxCKO3f2i4fsA0dhB7kcnHGrTHx/5RACzmcQkyhb55letbqVMiBiDxLlFuiOk/9PnwlzHjdM3y65+S0YdV3JjCTTbr374AjNM7UMLGOhMJGkZ+bY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5mDG+CFZ; arc=fail smtp.client-ip=40.93.195.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jv7ME55q"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5mDG+CFZ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mIIfEj/m2qt/Uw3N+mSinAYt09a/kV6VagqN6shQavtpiE3aX57/SQmR9+qKGNQM/R+Mj+InzNzShhLxYg3oje2jJYeySJGBZX+Ly+HvjPImUN7xluCamFON6FVpls8iqRntV1NS4gt2S3lpWjFp9xL8W4c3qp0njeVzOqhnw6y4hVO8NfEvzOwJZYUnVaMXDT3x7ushSauQmoLsqWN9LxLO349Tyoqga6jm3BNyWN9V7qNTC8FA1Q4cg8w7zynAijkUDck2wfjZhzu+YECBX9++d77ZVqkM+wjbyrO5S8at2x7lJmKDw+dpPnidChQGCe8PkTGCfPFT5XlRqwcZZQ==
+ b=GvhBlJo8QdF7v8zBLlEmM6FH1gS6uQP8W/UyokcV55xrcOkeovRszAlt7okKetb2AgEkyEFZL2qpTVl/SfMn4vayl096SvCFtu0U4yWA8aPPijXNUQWjV44wOyguDq+ZS/3C7r+bqaSEwOXLQJV6BAO7j0LhK1wwChXwEC/Qcvgd/GPX6Z/GBZzhA4G5Pm0F0vuLqb2LfKMM0+823OEUNcMV1XzoAJMXbnK93vyYcssLW0ZSWE1t6juOfS31P1fKV0dMCnkq4aVGmzBPlivIx6Pg9jYc5CFXlBF+PojU5sZ6TuNJ0LXagBzlvv5x9b+oygvRPPOkcqXl1hvZz3EByA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fd29qJSSaguMJZB1VJpjyF/vSs3s8B36uJQKX6To5nA=;
- b=hwFE/eaDeqXIfUlTnR1CGB9wM2WiprAU5VhJ+ZuObH+PE7qe0QRCxuZlLRxuc9YzA2oegUoAqavb5APrc4Q60Av7990JF3/FrWgf9Mk2i7Y9XXvujcSbTObRgMSCEo6sH7yFspLATJ2lAkoelQUVWd4V6TdbkGfe1EfcdIW1bg8JnLYrEVoOQf7GMk6adTaLW01agIuKzcf6vUuP4ajlpDi1TyXM7yAfn882mTWAcZBvjy/fRt1rvVKtZMKcsERIIqAzKUYJdQ8VE8wgN0NyhCi3MgCZonOaL15xc+YwCxe73JQvpfCI5W9MrguKdTNdIhYOTPLJReglleMKkaqbqA==
+ bh=65P14G8MrJ6FxNl2IrmSBJvlbbeTKasggJPClwg7HIg=;
+ b=Jj6ZMz1KJ3HIThfWHcxeuLBVkIC9Qw+uP4Kxqt9FDN8boPnujdBENIrN2HLSrDj0QbIk4PhIWC64k+9zTvyv6kpCm9SF1WErDlJ6kMJP8bugYVIaC8i51ZJBKLBHyym7FlFIHKDfHFjXwU6pCn5Yjix5q5KZgCTdtZz3Pt08z49P3iojZ1Eju5Ld1zVWrULDZHJyN8wjOt9v6XJj2oAnibfu89tYv7WYZWGDL+zA2T/xyDaF8IacjO7+7yGJDYeiPxL6K1qhk3L+jsb/6gdO8G5kfpBA8ArOtY3B0Y6Z9Et8L3gFYEKoqdBdH5xPYn7tTSqrpPTteVc21IOrm8z0iQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=davemloft.net smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fd29qJSSaguMJZB1VJpjyF/vSs3s8B36uJQKX6To5nA=;
- b=jv7ME55qYcXsVEdaVqn1j/bn9RxeFyVeVEUhBHVlitJmf83YBqkBOwbMiab8+pcV8uzmDrnE+pDOx7tzgK9dlh0L0+/12pbdkjqdGo6NjGM9zPe4lTrK53LiT6dOiaBCAs1Z2qbtlG83QbeAfkZ+3PVl8+BEEimvXtv9M8+FEew=
-Received: from CY8PR12CA0030.namprd12.prod.outlook.com (2603:10b6:930:49::8)
- by BL3PR12MB6379.namprd12.prod.outlook.com (2603:10b6:208:3b2::11) with
+ bh=65P14G8MrJ6FxNl2IrmSBJvlbbeTKasggJPClwg7HIg=;
+ b=5mDG+CFZp3W93k6RWYSzCkHQcJEAKD+2LkJzy0cqIA03EY+rDSHEW9lJPLmISnAw7aUcZTHnpq2doYalGDaXoRRtduuwG/3Ebczn9V/HxLvEUXUfKdINZOFpNytR7r4YMJ223tPPTg6R1GnYip7umsjW5bnmSicClY9owvEh4PM=
+Received: from CY8PR12CA0047.namprd12.prod.outlook.com (2603:10b6:930:49::20)
+ by DS7PR12MB6005.namprd12.prod.outlook.com (2603:10b6:8:7c::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
- 2026 03:52:48 +0000
+ 2026 03:52:47 +0000
 Received: from CY4PEPF0000E9D6.namprd05.prod.outlook.com
- (2603:10b6:930:49:cafe::1e) by CY8PR12CA0030.outlook.office365.com
- (2603:10b6:930:49::8) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:930:49:cafe::63) by CY8PR12CA0047.outlook.office365.com
+ (2603:10b6:930:49::20) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.12 via Frontend Transport; Wed,
- 29 Jul 2026 03:52:48 +0000
+ 29 Jul 2026 03:52:47 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,15 +50,14 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  CY4PEPF0000E9D6.mail.protection.outlook.com (10.167.241.69) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Wed, 29 Jul 2026 03:52:48 +0000
+ 15.21.270.5 via Frontend Transport; Wed, 29 Jul 2026 03:52:47 +0000
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 28 Jul
- 2026 22:52:47 -0500
+ 2026 22:52:45 -0500
 From: "Nikhil P. Rao" <nikhil.rao@amd.com>
-Date: Wed, 29 Jul 2026 03:52:01 +0000
-Subject: [PATCH net-next v11 6/6] pds_core: add debugfs support for host
- backed memory
+Date: Wed, 29 Jul 2026 03:51:59 +0000
+Subject: [PATCH net-next v11 4/6] pds_core: add PLDM component info display
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,7 +66,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260729-upstream_v8-v11-6-e4b7d5bb2913@amd.com>
+Message-ID: <20260729-upstream_v8-v11-4-e4b7d5bb2913@amd.com>
 References: <20260729-upstream_v8-v11-0-e4b7d5bb2913@amd.com>
 In-Reply-To: <20260729-upstream_v8-v11-0-e4b7d5bb2913@amd.com>
 To: <netdev@vger.kernel.org>
@@ -75,135 +74,267 @@ CC: Jakub Kicinski <kuba@kernel.org>, Brett Creeley <brett.creeley@amd.com>,
 	Eric Joyner <eric.joyner@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>, Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>, "Nikhil P. Rao" <nikhil.rao@amd.com>, "Vamsi
- Atluri" <Vamsi.Atluri@amd.com>
+	Simon Horman <horms@kernel.org>, "Nikhil P. Rao" <nikhil.rao@amd.com>
 X-Mailer: b4 0.15.2
 X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D6:EE_|BL3PR12MB6379:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a9d9083-b5e2-4ac4-8e11-08deed24db2c
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D6:EE_|DS7PR12MB6005:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf4ed367-a2aa-47f5-bcbe-08deed24da8b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|36860700016|82310400026|376014|10067099003|56012099006|11063799006|6133799003|18002099003|22082099003;
+	BCL:0;ARA:13230040|82310400026|376014|36860700016|23010399003|1800799024|3023799007|10067099003|18002099003|22082099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	9FV9LhqGrEJkiBysBr01eW9Pb4TjiTa4yzV9iTlPXJJ2Ebti023Dwh1oW/G2sWTRYm7tCnkTemde3UL2mN6wQFjX/QB52O1hDqZfZFxiXqp9gxMWd2++voWCItI4VDO6ZvDUQXI50a2/BUEf0vvOExzxcLRTwcEnlhSzyKoTScDd7Qo20BZ43pFdcrZLwL3ht4rWnecCKyDF05ALLWBAoRuHtsV+KiaA4Ov7jxKM1K2EQC3WbBxb6B6Gi3d+TBIO1RfQRrg8ZsTHTv92o9It0uHCnI0fRDxJxIfuFhPS0B8KHJEFyJU7jpxR/+BY8wcLtTN/j5fa7cwQYH9dXa/SQ1uBubwsgUnZN9yLg0c1t3zizAGg7v4z0b8wQdgE3eHjW0ymUnJmcWD8yZJfftPt48McmU0BxEmQmHXhnDiPBFH6CzUApvG+9O+nO37XsPFVa5amIf8b6hr2YuNw1R0SauxVDUIY2Af77o/WTqd+W9Ghpb7NW+7thysmj9lkhU80XBQdTYYSfdwb+BY4TB3g7H89jiZRFY7v1qNvz1CoBpDzlX2VrcLm/7I4KNmedK3SjyupA7vU9A/UFw9hyeqG29rb6YGZR2/hu1q3pDwCjvWOQK3wNg4lXFyfNUscVi+PcOu37rD6ekJ3MSviN5WMTOAKEkJWlveZ1j9eir34x7YOp73KqV3PHIkILvPr4OuwZ7ZHpsNX5sgy6Gxn6D4q9Q==
+	tu/O0g0crWaAOUAHdSWFsU1PBPKVDSeznK8Vg9KFFzYypSbY86kvtSrOSgji681fuUfYXi/zRjXiAdmW3jKD7v+ryyPTyINYbHKpiTKXmb7cHvTewIzCV/PSvqTcBm4ove1oxoqKsybiprrQEL+3/9DwTN56y/epllZBKJwlpgMS0oGpOS5E1kor0tTFc9NxpwTctWYK2cbDRjGQ5T3Q0mXW3xt/6hg+yAVOiBKK7tQ06prbewXn4FrNTARLMDv2l1joHBHFcSnALYR0Up/UYswhMuipkEsY5zuo6qo2yexkDZi7ridUTjPPDtaf+S8PeUlO3O4jSnqdFDadIbE2S/OgBOjIa97FZBoP4rbhtb+mFILj2Bs3GztKnHq1CHrrAuezEm1vzKgWSs/wqQkf13FBqgqB1QiAVEMLu2bjnb00GVRou0/X1Xo3kxV9MmDmjmTr3oAuFdhgjOLZBoJ04fnv5yMTcWGArZe3B047PgLruoftontL86gpdPFMg/6PuIJbwM+K6b3ds5baduwsYgm9KSiIZ88g6JwxjtbfvaYKnkPZiSr8Up1jxDJykHD1zJ8hyeySe7NZwtXqL77BNmTQ/LcFj+lNW0FJb32Vof/kqXoUop+ey1D4UO4bYP2UbCzyS4XVnSMp1arqCM9PDpwjVsOmwpoDsYyGyqh0mEwQwEFsZbvXApnkxCk7ailI4SblPXdmd89zfFAqfvAgYw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(36860700016)(82310400026)(376014)(10067099003)(56012099006)(11063799006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(23010399003)(1800799024)(3023799007)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Lg9oAn4VNYlKHudp5Fky/5jPD5KxiwMh6ojUYodBhx/Hv84uV5hXL4PwHvUVjMp7ghb5lM7vJDljOcJrjCCxPevF+owuA6cu+OIT2RQm6V2uJ4636BL/IazABKzRwWWqgSu1BNtB/hnURcQ34qHLxtO524CprB5gvOxp9n62idAeY2JEHeo7BpOtaQXtlemVns5XAU0M09QB9yVTNrl15MOqbljT+iQk/9vQRluqg/4HivZ0SlBckgqN5F5uO9N+QkxW22wV10VQr2VHaJldv+koOJp877NY180UcqkhSbP7RT3DTJAqz3+o2WsWY3QAKnkHw0Nbw9cjathPW1FDIpCkfaIrz+xWgl1lfuWXlo3GhoGP9S2N9SKa4BK3UOxoz33GyKDs2ydWvb7iBVaGxPufMkspRv6jpBzuB+jd/XxJ8ZWqDELd6ajYQxVa8wSd
+	Ack+qD+uA6AkigPVnbSaylZ1XsmutZUJfRWtyShk1hhjLEAv3PtlSZVlVYusx+6x0siGdQc3mv14iQA9hsvD0kGpoDqnMq5+fewq0Dw9F+KskLsTj5HLFDF+Xcprls3lHnggCll6MFNz00GpIMc6C0Q1mpUH0/DKIj6wVk4d1gln8z6qh0lELWqHNR7OsKeesA7oRYP+IFkmBorH+3Rxv6ZK+JZRUicEZXAYJco3b1F9w03eH0csn/bIfV1vLs6KdcjHEBXzSvHiWYo1jMuvYSBfT/HziTLbJLXlfS3Fnl9jAu4inJagk4upFDKHMK1qvZALxjwh8McLDsPxeJUoloyYIvFqouvAmGxXvHb/F4D9dTHeV0BLrnJwySDYM5DTB863zJB1OBvyqh9km5EEBciKjBeCdVSKLyQ8hDFvze+16J3RhArzmF9jdDvje0Lo
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 03:52:48.4037
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 03:52:47.3507
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a9d9083-b5e2-4ac4-8e11-08deed24db2c
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf4ed367-a2aa-47f5-bcbe-08deed24da8b
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	CY4PEPF0000E9D6.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6379
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6005
 
-Add debugfs entry to dump host backed memory allocations for debug
-purposes.
+From: Brett Creeley <brett.creeley@amd.com>
 
-Assisted-by: Claude:claude-opus-4.6
-Signed-off-by: Vamsi Atluri <Vamsi.Atluri@amd.com>
-Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
+Add detailed component information display via devlink info. This
+allows users to see individual firmware components and their versions.
+Components are reported as fixed, running, or stored based on their
+firmware-provided flags.
+
+Example output:
+  $ devlink dev info pci/0000:00:05.0
+  versions:
+    fixed:
+      asic.id 0x0
+      asic.rev 0x0
+    running:
+      fw.bootloader 1.2.3
+      fw.uboot 1.60.0-73
+      fw 1.60.0-73
+      fw.cpld 3.18
+    stored:
+      fw.bootloader 1.2.3
+      fw.uboot 1.60.0-73
+      fw.uboot.gold 1.50.0-22
+      fw.gold 1.50.0-22
+      fw 1.60.0-73
+      fw.cpld 3.18
+
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
 ---
- drivers/net/ethernet/amd/pds_core/core.c    |  2 ++
- drivers/net/ethernet/amd/pds_core/core.h    |  1 +
- drivers/net/ethernet/amd/pds_core/debugfs.c | 45 +++++++++++++++++++++++++++++
- 3 files changed, 48 insertions(+)
+ drivers/net/ethernet/amd/pds_core/core.c    |   2 +
+ drivers/net/ethernet/amd/pds_core/core.h    |   1 +
+ drivers/net/ethernet/amd/pds_core/devlink.c | 145 +++++++++++++++++++++++++++-
+ 3 files changed, 143 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
-index 26ddcbbfc14c..922e3ec8af1b 100644
+index d13b727dee42..51d21328c73d 100644
 --- a/drivers/net/ethernet/amd/pds_core/core.c
 +++ b/drivers/net/ethernet/amd/pds_core/core.c
-@@ -506,6 +506,7 @@ void pdsc_teardown(struct pdsc *pdsc, bool removing)
- 		pdsc->viftype_status = NULL;
+@@ -596,6 +596,8 @@ void pdsc_fw_up(struct pdsc *pdsc)
+ 		return;
  	}
  
-+	pdsc_debugfs_del_host_mem(pdsc);
- 	pdsc_host_mem_free(pdsc);
- 	pdsc_dev_uninit(pdsc);
- 
-@@ -517,6 +518,7 @@ int pdsc_start(struct pdsc *pdsc)
- 	pds_core_intr_mask(&pdsc->intr_ctrl[pdsc->adminqcq.intx],
- 			   PDS_CORE_INTR_MASK_CLEAR);
- 	pdsc_host_mem_add(pdsc);
-+	pdsc_debugfs_add_host_mem(pdsc);
- 
- 	return 0;
- }
++	pdsc_fw_components_invalidate(pdsc);
++
+ 	err = pdsc_setup(pdsc, PDSC_SETUP_RECOVERY);
+ 	if (err)
+ 		goto err_out;
 diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
-index 085f2e988aa0..791756a50870 100644
+index c686f0bbbaeb..73356c74bb9f 100644
 --- a/drivers/net/ethernet/amd/pds_core/core.h
 +++ b/drivers/net/ethernet/amd/pds_core/core.h
-@@ -306,6 +306,7 @@ void pdsc_debugfs_add_irqs(struct pdsc *pdsc);
- void pdsc_debugfs_add_qcq(struct pdsc *pdsc, struct pdsc_qcq *qcq);
- void pdsc_debugfs_del_qcq(struct pdsc_qcq *qcq);
- void pdsc_debugfs_add_host_mem(struct pdsc *pdsc);
-+void pdsc_debugfs_del_host_mem(struct pdsc *pdsc);
+@@ -340,6 +340,7 @@ int pdsc_firmware_update(struct pdsc *pdsc,
+ 			 struct netlink_ext_ack *extack);
+ int pdsc_get_component_info(struct pdsc *pdsc);
+ const char *pdsc_fw_type_to_name(u8 type);
++void pdsc_fw_components_invalidate(struct pdsc *pdsc);
  
- int pdsc_err_to_errno(enum pds_core_status_code code);
- bool pdsc_is_fw_running(struct pdsc *pdsc);
-diff --git a/drivers/net/ethernet/amd/pds_core/debugfs.c b/drivers/net/ethernet/amd/pds_core/debugfs.c
-index 810a0cd9bcac..ef0a1b7d159b 100644
---- a/drivers/net/ethernet/amd/pds_core/debugfs.c
-+++ b/drivers/net/ethernet/amd/pds_core/debugfs.c
-@@ -178,3 +178,48 @@ void pdsc_debugfs_del_qcq(struct pdsc_qcq *qcq)
- 	debugfs_remove_recursive(qcq->dentry);
- 	qcq->dentry = NULL;
+ void pdsc_fw_down(struct pdsc *pdsc);
+ void pdsc_fw_up(struct pdsc *pdsc);
+diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
+index 3b763ee1715e..63fe45e91f71 100644
+--- a/drivers/net/ethernet/amd/pds_core/devlink.c
++++ b/drivers/net/ethernet/amd/pds_core/devlink.c
+@@ -93,14 +93,120 @@ int pdsc_dl_flash_update(struct devlink *dl,
+ 	return pdsc_firmware_update(pdsc, params, extack);
  }
-+
-+static int host_mem_show(struct seq_file *seq, void *v)
+ 
++static int pdsc_dl_report_component(struct devlink_info_req *req,
++				    struct pds_core_fw_component_info *info)
 +{
-+	struct pdsc *pdsc = seq->private;
-+	struct pdsc_host_mem *hm;
-+	int i;
++	enum devlink_info_version_type ver_type;
++	u16 flags = le16_to_cpu(info->flags);
++	char *ver = info->version;
++	const char *name;
++	char buf[32];
 +
-+	if (!pdsc->host_mem_reqs || pdsc->num_host_mem_reqs == 0) {
-+		seq_puts(seq, "No host memory allocated\n");
-+		return 0;
++	/* Main firmware is reported as generic "fw" */
++	if (info->component_type == PDS_CORE_FW_TYPE_MAIN) {
++		if (info->slot_id == PDS_CORE_FW_SLOT_GOLD)
++			snprintf(buf, sizeof(buf), "fw.gold");
++		else
++			snprintf(buf, sizeof(buf), "fw");
++	} else {
++		name = pdsc_fw_type_to_name(info->component_type);
++		if (!name)
++			return 0;
++
++		if (info->slot_id == PDS_CORE_FW_SLOT_GOLD)
++			snprintf(buf, sizeof(buf), "fw.%s.gold", name);
++		else
++			snprintf(buf, sizeof(buf), "fw.%s", name);
 +	}
 +
-+	seq_printf(seq, "Host memory requests: %u\n\n",
-+		   pdsc->num_host_mem_reqs);
-+	seq_puts(seq, "Tag    Size         Order  PA\n");
-+	seq_puts(seq, "---    ----         -----  --\n");
++	ver_type = DEVLINK_INFO_VERSION_TYPE_NONE;
++	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_UPDATE_BY_NAME)
++		ver_type = DEVLINK_INFO_VERSION_TYPE_COMPONENT;
 +
-+	for (i = 0; i < pdsc->num_host_mem_reqs; i++) {
-+		hm = &pdsc->host_mem_reqs[i];
++	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_FIXED) {
++		int err;
 +
-+		if (!hm->pg)
-+			continue;
++		err = devlink_info_version_fixed_put(req, buf, ver);
++		if (err)
++			return err;
++	}
 +
-+		seq_printf(seq, "%-6u %-12u %-6u %pad\n",
-+			   hm->tag, hm->size, hm->order, &hm->pa);
++	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_RUNNING) {
++		int err;
++
++		err = devlink_info_version_running_put_ext(req, buf,
++							   ver, ver_type);
++		if (err)
++			return err;
++	}
++
++	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_STARTUP) {
++		int err;
++
++		err = devlink_info_version_stored_put_ext(req, buf,
++							  ver, ver_type);
++		if (err)
++			return err;
 +	}
 +
 +	return 0;
 +}
-+DEFINE_SHOW_ATTRIBUTE(host_mem);
 +
-+void pdsc_debugfs_add_host_mem(struct pdsc *pdsc)
++static int pdsc_dl_report_fw_ver(struct devlink_info_req *req, char *fw_ver)
 +{
-+	if (!(pdsc->dev_ident.capabilities &
-+	     cpu_to_le64(PDS_CORE_DEV_CAP_HOST_MEM)))
-+		return;
-+
-+	debugfs_create_file("host_mem", 0400, pdsc->dentry,
-+			    pdsc, &host_mem_fops);
++	return devlink_info_version_running_put(req,
++						DEVLINK_INFO_VERSION_GENERIC_FW,
++						fw_ver);
 +}
 +
-+void pdsc_debugfs_del_host_mem(struct pdsc *pdsc)
++static int pdsc_dl_component_info_get(struct devlink *dl,
++				      struct devlink_info_req *req,
++				      struct netlink_ext_ack *extack)
 +{
-+	debugfs_lookup_and_remove("host_mem", pdsc->dentry);
++	struct pdsc *pdsc = devlink_priv(dl);
++	u8 num_components;
++	int err;
++	int i;
++
++	/* Pairs with WRITE_ONCE in pdsc_fw_components_invalidate().
++	 * Use READ_ONCE to get a consistent snapshot of num_components.
++	 * pdsc_fw_components_invalidate() can zero it concurrently during
++	 * firmware recovery; using the local copy avoids iterating zero
++	 * times when we already decided the cache was valid.
++	 */
++	num_components = READ_ONCE(pdsc->fw_components.num_components);
++	if (!num_components) {
++		err = pdsc_get_component_info(pdsc);
++		if (err)
++			return pdsc_dl_report_fw_ver(req,
++						    pdsc->dev_info.fw_version);
++		num_components = READ_ONCE(pdsc->fw_components.num_components);
++		if (!num_components)
++			return pdsc_dl_report_fw_ver(req,
++						    pdsc->dev_info.fw_version);
++	}
++
++	num_components = min_t(u16, num_components,
++			       le16_to_cpu(pdsc->dev_ident.max_fw_slots));
++	for (i = 0; i < num_components; i++) {
++		err = pdsc_dl_report_component(req,
++					       &pdsc->fw_components.info[i]);
++		if (err)
++			return err;
++	}
++
++	return 0;
 +}
++
+ static char *fw_slotnames[] = {
+ 	"fw.goldfw",
+ 	"fw.mainfwa",
+ 	"fw.mainfwb",
+ };
+ 
+-int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
+-		     struct netlink_ext_ack *extack)
++static int pdsc_dl_fw_list_info_get(struct devlink *dl,
++				    struct devlink_info_req *req,
++				    struct netlink_ext_ack *extack)
+ {
+ 	union pds_core_dev_cmd cmd = {
+ 		.fw_control.opcode = PDS_CORE_CMD_FW_CONTROL,
+@@ -134,12 +240,41 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
+ 			return err;
+ 	}
+ 
+-	err = devlink_info_version_running_put(req,
+-					       DEVLINK_INFO_VERSION_GENERIC_FW,
+-					       pdsc->dev_info.fw_version);
++	return 0;
++}
++
++static int pdsc_dl_info_get_v1(struct devlink *dl,
++			       struct devlink_info_req *req,
++			       struct netlink_ext_ack *extack)
++{
++	struct pdsc *pdsc = devlink_priv(dl);
++	int err;
++
++	err = pdsc_dl_fw_list_info_get(dl, req, extack);
+ 	if (err)
+ 		return err;
+ 
++	/* Version 1: report fw from dev_info (running only) */
++	return pdsc_dl_report_fw_ver(req, pdsc->dev_info.fw_version);
++}
++
++int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
++		     struct netlink_ext_ack *extack)
++{
++	struct pdsc *pdsc = devlink_priv(dl);
++	char buf[32];
++	int err;
++
++	if (pdsc->dev_ident.version >= PDS_CORE_IDENTITY_VERSION_2) {
++		err = pdsc_dl_component_info_get(dl, req, extack);
++		if (err)
++			return err;
++	} else {
++		err = pdsc_dl_info_get_v1(dl, req, extack);
++		if (err)
++			return err;
++	}
++
+ 	snprintf(buf, sizeof(buf), "0x%x", pdsc->dev_info.asic_type);
+ 	err = devlink_info_version_fixed_put(req,
+ 					     DEVLINK_INFO_VERSION_GENERIC_ASIC_ID,
 
 -- 
 2.43.0
