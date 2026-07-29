@@ -1,169 +1,125 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871C643F4B7
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:09:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B3A39EB47
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785316144; cv=none; b=haLiO0kS2baxagj0NZH+H+P9/xrGK8RrQverux707kq4HoY7D0I8PkSfXyfIuK9so+0s7W1g5ONxptoeLSQ/GfeZ1Yh4ObXSNDJriwUKeNMrcr89sniCUQJhO2AzV6aMwdQ/CzpwEIHLIgPb4G6tgGs6I+7sptzbnNar/c/eMoo=
+	t=1785316324; cv=none; b=U4RFZLJ/SPEzLwobKy6xiCaUXuMcImg6cWRl1HOtz2pLaDvn2LvzvrR8yIwykm3jmqf8zoir5fn6XwDNRPa/ItNjvrwlVv/FTQn8tyEU8rrQCnvDzcebSNZnOQFiDrVyiCsQqydjtjDVAapRW5XP5bNUq3cK6ezvBieYUWqlCuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785316144; c=relaxed/simple;
-	bh=1YLiDFtSZF1xPfbk4LclfDsaFH5y15PBohDTcoKaMes=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HerjqCbcXcPgEFfOwVjEgzL6hE4bZvtrCjlODyfiCecvv9IVMrnvEjXpLDq16oJoA2Iu4qlOMFkncy+JUY+1Xd2lgez67GImYFU6M7fv4HHl9UA11Xqt4moI1GXKR90m83BWV2qRtPMzWTBz4/ZhqCghz7HF38Oc8phakas0oPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GCYghacT; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785316324; c=relaxed/simple;
+	bh=1tfKRhaJjdfZy38gZAanLVHmCMS7aHKIqtBx3ftd3W8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rh6QmSrek0Z+NGAdXktLPKb+5g8DJU9eJI+YnzAH2CHVVP+i7eDOHk0P8DpbrluhUqLD1JsbtmYq4lr9147UBzKOIj+vq6Y0wIIBLqw2OZhzUIGlg3A14WDPoWgTxM3ZAifV8ksox/ZmGPAuet8NUJenl6sVoYaBuTrd3u5VTR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=aP37c3S4; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GCYghacT"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-493b966dd74so4276775e9.3
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 02:09:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="aP37c3S4"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-495437bb891so5693705e9.1
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 02:12:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785316141; x=1785920941; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZJH3L/LkkKN9qxK/5ZZMLYwTlfYIlG18ul0LnWqIOCw=;
-        b=GCYghacT8TPory1IcOlkFxw72hpwvGdrxGO9Auu8JRspOR9SE0KM/UVc4jEZ0UxcGp
-         9zgqidopsIEYs2tpw+dP6NtJ4zqqarBuzim2JQspv/0dkCPUkDFV/Car5dMGG2FbPEwF
-         VFv4HrkqwDUHsDBWU13o4adP4FeuXuM8Uq7ORvh74yAuhmnzK3UZVNA6/3ZrHkcRfSpw
-         EL7TP2BjulGTC7W5fvLJQ6yyX0WaigVwqREGeC9qHMdlUbgmSokf38qHqJfr+7VQd9Om
-         ZwwVEMq0yQXKdL7f3O/xgoLKcr7kfY3oShvAzSZrVIqfBcAFLntrGNfJZOmHF8h14gyW
-         c5AA==
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1785316319; x=1785921119; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kqRebawaW+R270ENqi7eByUr8cNF8X3bbKCoC4j9T1s=;
+        b=aP37c3S4N3h61FwTq7ivW7bCrHai+dbbtEKqCspMYLM4evmUpYEKyM02y8RdbspXKe
+         zJJSBaNBf1ssudK/5kqBsvJooW/UCWG32xOhz+xMhCpTFNiIfFInD+SWb5Tmpp/xKcWj
+         OqzcGUj+gXoK3T7TwVFo/6Q07m6idkMh6lpVOg4s6Dt3+WDr2vS3/2eZ1cRlicc3utlL
+         PANg29KTPwzxWAJpkfx4BW8FrByt/FDzhVzTLvzCCjm+HqxliOLhybIba9paqb/iGLxP
+         TgHQHwq39RuUH/PhImKgDU9NxLBtjOkKl7A3uPx1c9o8scih+dDMF3biUuguGuaV1cT9
+         aqcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785316141; x=1785920941;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZJH3L/LkkKN9qxK/5ZZMLYwTlfYIlG18ul0LnWqIOCw=;
-        b=U2gLacUBqKpYmsSka1wAfqHKTXma20Ffxgfl1Tq/aBtRVOP36/YyY3FcWhGHwEANl9
-         ncAQAbdMQvF3gj5HUUqhh1Z7Pp13Wfm57QJMcIwvDEjbjT1hQXca/5Ou+0KnTwxnacFT
-         iuvMAyaDAafFlUglc888ILLzSr6Frxb0GzalRynYUAs320L5gKUrYCrpNvzn8d9WD4qF
-         8VgkApwDGWgFALkPYMB4Xv8Ybyjj3yXZxkqwdnoy1hdY3/hhf+tOwrOLMrMgZXTcg9Zo
-         3jsIY6WNhOhCEKbzP56AHb/s2KqpB27YAPjUetRyFk7BjYKAK8urm6CU0NdecStlopvb
-         vAhw==
-X-Forwarded-Encrypted: i=1; AHgh+RqKQ+bUW72zmzKewNG5Jma5/yemzybfdSci7SMvjdJrR524PwLRCJV5guwpVpIbontqijfu6Z0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzblGkgAwJfMS4ifUpgeOz8ZH+w1bvDpU92fAJtqLWVt/lyWdtW
-	VYl+amzgiNkbX/Ui5WwjesT6Io8GIgbjU6FgGM63+vCjetRSoTyDyAtN
-X-Gm-Gg: AR+sD1158vU/kk4/HBlz1QZikvnPGkmrgma+NSuKPNQwfA0GRO1db+1h1w9UjCdsCog
-	yb1cEkfVQUwqjm3VDe7RJc4npid+VpGttuPmP5uIEFxQ00Ee7Su1wAMhViUb5RkciZByzqeJTti
-	YsfX4QBEyBP6mjB8bNFzLPIpYZDO1xIR4ewo2/VZQGcHSjajH/rczAOcN7zsM1RTnIK7uzT/OZZ
-	Ddehj+i4OAFB9oDPErnTgZ2bPGISRmYNwXXePrQMBn9r6G9Ak5+CfNegxRTVyIghiJlacHkb8rD
-	Aeq9y9jsE7mdEI92/jPWDKxx5npQEIREEMKDnCpUWHt0wSpcWaYR+TDv3tkSjS8fG1MIAuWHdXz
-	fFDzxljlrUK6N99JkCDnjIxRQHpBykkX7W4uqgxJ3s2vDOBWS2ytqZOXq7dGCG3+BWW/bQjpp+9
-	qrGoBtZy0UwVgSylQEP5/aNwyHzWDdnhIQfhCojh9YqE32JB/5TRIXHtM845VTnvGw1mM=
-X-Received: by 2002:a05:600c:630d:b0:495:6134:6d61 with SMTP id 5b1f17b1804b1-496c6568d4bmr72588225e9.19.1785316140544;
-        Wed, 29 Jul 2026 02:09:00 -0700 (PDT)
-Received: from grower.astralinux.ru ([81.9.21.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496e8e15a52sm29802675e9.0.2026.07.29.02.08.59
+        d=1e100.net; s=20251104; t=1785316319; x=1785921119;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kqRebawaW+R270ENqi7eByUr8cNF8X3bbKCoC4j9T1s=;
+        b=qa5swisV9vjWbcO381+Dp+Dv5Rrqwii5emiKQr4X6tF81tFsyoGYsqdRTam+S/QASk
+         SKP7RNCiyEm+SHLDwY0P5LGqfSSeAPbY73UqLSjg2aHhW0ec9YRFiVyFKEIQhccPmhEl
+         9sPmtKITIdKWOFBiX+sJ9EOBzM7zCo2hcGMj0oyD+FYfpCl0XG3/9At7mNnZlo/PMxh5
+         osiKZPEcHy1vH0Pn0K344rFefFF0qjM7uhnoEJGALNuY65L63L1OvJfYzZDRVdNdDkOk
+         S2/on8g8faoRtDnDkQYnR+NGBdP3ycTXyp4bFjKXgRcENXea5jNoUUa3M3g38NTYKvf3
+         1K4g==
+X-Forwarded-Encrypted: i=1; AHgh+RrSrgGjhBLjWBn6TDznH3TtnB3cRKcEMvo2xIC6JzZ8EP1eoPi6aSo7uzuHYUDlL6j0kDhAuJ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNi4GOwlxMkl9/tJDPNdt8ffq38N/Oie6XiTN8buBoLg0IosVf
+	u+eCV2m1iqj1pbNvWF9aBjgVfeA49oemvxZjMgDLfGlJLsQ70tB+8ZWgdZMCSINurq4=
+X-Gm-Gg: AR+sD11fEo5ruSmuu/S569ofXISd0+6M+TuOhCkQ82SzR9c0Wt5J+R2ytG3LCDMij04
+	wOakmO/ibsuEm0yJHpQiuZ9FDkPDY+BogpfSEBPiMx4tFnqcszKUN1lodQPMBxBJzRZlXqSZ448
+	XG0xR9rO6bRs2EAwjfKBatEnRpt0K6Nh/UW6PyebA49ofRFcMQdweKDWceARvh7HqBn4380SD8v
+	N8bFiXwzN0hTWax4nIzuSk7u3UmVzksZsOG8NED5DzOHRp2nT0hgmJWeajNXDSt2qU4NObAdtc+
+	OEy7yPzeVMXx6l0ySnR6H2zn3hM0XhqpM2HTG6wD6y+uarAEbYgxVjPBVBiNfTPQ6zLh2pD+d0R
+	kbILKLtaTR+sFCiG6bAK0stuGWc554w90HvKz4d/9dY67GxZhqh6p+G0FsYXM48vZ9ox1z5xmmm
+	wodPHkP46zVIcNQwaYBuZJL1wq0NzgOY0CmsVmrMkFqaKHTmB+lOR1mO2GdwLQfYfA3QBb2A==
+X-Received: by 2002:a05:600c:8710:b0:492:6f5c:fd8c with SMTP id 5b1f17b1804b1-497fd311860mr15174085e9.15.1785316318462;
+        Wed, 29 Jul 2026 02:11:58 -0700 (PDT)
+Received: from localhost ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4975abdca42sm40097255e9.0.2026.07.29.02.11.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 02:09:00 -0700 (PDT)
-From: Alexander Martyniuk <alexevgmart@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
-	lvc-project@linuxtesting.org,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jaehee Park <jhpark1013@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>
-Subject: [PATCH 6.6] ipv6: ndisc: fix NULL deref in accept_untracked_na()
-Date: Wed, 29 Jul 2026 12:08:56 +0300
-Message-ID: <20260729090857.76269-1-alexevgmart@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Wed, 29 Jul 2026 02:11:57 -0700 (PDT)
+Date: Wed, 29 Jul 2026 11:11:53 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Mark Bloch <mbloch@nvidia.com>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+	Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org, Jiri Pirko <jiri@nvidia.com>
+Subject: Re: [PATCH net-next V7 4/4] devlink: Apply eswitch mode boot defaults
+Message-ID: <amnDfSmMVzpiH2gE@FV6GYCPJ69>
+References: <20260716084852.549909-1-mbloch@nvidia.com>
+ <20260716084852.549909-5-mbloch@nvidia.com>
+ <20260724161111.2ac47089@kernel.org>
+ <c6c0d67c-d832-49a1-b62a-57fa6ee56a47@nvidia.com>
+ <20260727131033.237f70b6@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260727131033.237f70b6@kernel.org>
 
-From: Weiming Shi <bestswngs@gmail.com>
+Mon, Jul 27, 2026 at 10:10:33PM +0200, kuba@kernel.org wrote:
+>On Sat, 25 Jul 2026 09:51:34 +0300 Mark Bloch wrote:
+>> So I think you and Jiri have different views on the basic design
+>> here. It's hard to respin the series when addressing one review
+>> takes it back to something the other reviewer objected to.
+>
+>It'd be great if Jiri, an nVidia employee and a devlink "maintainer",
+>paid attention to at the very least revisions of nvidia's patches
+>touching devlink. We discussed this on a prior revision and he didn't
+>say anything.
+>
+>> How about I drop the driver API from this series and submit it as
+>> a follow-up? This series would only have the generic workqueue
+>> fallback.
+>> 
+>> But where should the work be queued? 
+>> - devl_register()
+>> - devl_unlock()?
+>> 
+>> Can we settle that before I post the next version, so we don't go
+>> in circles again?
+>
+>Maybe a middle ground would be to add a dedicated devl_init_unlock()*
+>were we can stick such init? Slap a WARN_ON(!registered) in the normal
+>unlock? I don't want the normal unlock to grow in complexity like
+>rtnl_unlock ended up growing.
 
-commit d186e942365acece7c56d39da05dd63bf95b280a upstream.
+Yep, that was +- my idea when I suggested this, to have this in a
+separate helper.
 
-accept_untracked_na() re-fetches the inet6_dev with __in6_dev_get(dev)
-and dereferences idev->cnf.accept_untracked_na without a NULL check,
-even though its only caller ndisc_recv_na() already fetched and
-NULL-checked idev for the same device.
+devl_unlock_in_init()
+?
 
-Both reads of dev->ip6_ptr run in the same RCU read-side critical
-section, but a concurrent addrconf_ifdown() can clear dev->ip6_ptr
-between them: lowering the MTU below IPV6_MIN_MTU calls addrconf_ifdown()
-without the synchronize_net() that orders the unregister path, so the
-re-fetch returns NULL and oopses:
-
- BUG: KASAN: null-ptr-deref in ndisc_recv_na (net/ipv6/ndisc.c:974)
- Read of size 4 at addr 0000000000000364
- Call Trace:
-  <IRQ>
-  ndisc_recv_na (net/ipv6/ndisc.c:974)
-  icmpv6_rcv (net/ipv6/icmp.c:1193)
-  ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:479)
-  ip6_input_finish (net/ipv6/ip6_input.c:534)
-  ip6_input (net/ipv6/ip6_input.c:545)
-  ip6_mc_input (net/ipv6/ip6_input.c:635)
-  ipv6_rcv (net/ipv6/ip6_input.c:351)
-  </IRQ>
-
-It is reachable by an unprivileged user via a network namespace.
-
-Pass the caller's already validated idev instead of re-fetching it; the
-idev stays alive for the whole RCU critical section, so it is safe even
-after dev->ip6_ptr has been cleared.
-
-Fixes: aaa5f515b16b ("net: ipv6: new accept_untracked_na option to accept na only if in-network")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260617065512.2529757-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
----
-Backport fix for CVE-2026-64542
- net/ipv6/ndisc.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index ee34831f5621..342e7066f765 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -973,10 +973,8 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
- 	return reason;
- }
- 
--static int accept_untracked_na(struct net_device *dev, struct in6_addr *saddr)
-+static int accept_untracked_na(struct inet6_dev *idev, struct in6_addr *saddr)
- {
--	struct inet6_dev *idev = __in6_dev_get(dev);
--
- 	switch (READ_ONCE(idev->cnf.accept_untracked_na)) {
- 	case 0: /* Don't accept untracked na (absent in neighbor cache) */
- 		return 0;
-@@ -986,7 +984,7 @@ static int accept_untracked_na(struct net_device *dev, struct in6_addr *saddr)
- 		 * same subnet as an address configured on the interface that
- 		 * received the na
- 		 */
--		return !!ipv6_chk_prefix(saddr, dev);
-+		return !!ipv6_chk_prefix(saddr, idev->dev);
- 	default:
- 		return 0;
- 	}
-@@ -1085,7 +1083,7 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
- 	 */
- 	new_state = msg->icmph.icmp6_solicited ? NUD_REACHABLE : NUD_STALE;
- 	if (!neigh && lladdr && idev && idev->cnf.forwarding) {
--		if (accept_untracked_na(dev, saddr)) {
-+		if (accept_untracked_na(idev, saddr)) {
- 			neigh = neigh_create(&nd_tbl, &msg->target, dev);
- 			new_state = NUD_STALE;
- 		}
--- 
-2.43.0
-
+>
+>* better name welcome
+>
+>BTW AI reported that we reset the mode on reinit request. Based on
+>the code this is entirely intentional but would be good to document?
