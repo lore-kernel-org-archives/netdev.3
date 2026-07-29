@@ -1,84 +1,85 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E95941BA75
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E926412294
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785311225; cv=none; b=BcrekDc5Qw7b8THMklz+IA4UrnYVXPcsrtqH757VBvFYtHQaGab2F90wyClNGbPTIwyM8RBLP7tEUfxrHTjS+zQ6pnwhjPCROGk4iDElTzbHnzOYvOSV+PwbXdTr9YDqgPC3X/4NyMW7ri05IzuSa2CR6lhBG2oz+lm8NXhuHAI=
+	t=1785311403; cv=none; b=V+Qvlxxu1GW5Z1U0SsF+xxk1CPYYaIAgie+JYlE906wYh3idX0hNAKRXeb1dUDrUTHUKawA6SSfLZYrBu9BsvVYF7mT2mb1FY0e5TR7XnjfTBsFi2KzVGBdEfP6enGMVeEEHBW4ILVmoxtO2bkIIbS3zvF5OuHhWka0Op/gRE+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785311225; c=relaxed/simple;
-	bh=9kavyCdJQhbZRgOh2msN4/g5t3JYc3aUaW+NIQkmgmA=;
+	s=arc-20240116; t=1785311403; c=relaxed/simple;
+	bh=AvtCVfcWgWbYEWNQXDKLlpw6QKu9G16znCcJfeto8sA=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=qqRkeZbgHA3K1/4BsmmuToqpJTaQKqNH0KtP9OCv/HX9jYaChCx0OcIh64sEAv33ZZOKwKMuoiOVX53008v4prYeDuCGTQutMHPHzqlixAPTerI4VLhFDDO44csMYc0bGzQNeIh2Zv8y3LzBC4MjSg+EQRadTt8ciU6yQTSDn40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H7RoTaWo; arc=none smtp.client-ip=209.85.128.175
+	 Mime-Version:Content-Type; b=j0Ivwra322SFjAdlry5UlVlVGLSFZaN4HaoX4CG4cYCbhN9b5A+M7kB3dCdCUVGp0x2yHhZNwRg2ei8e4ym+TOZW7jmaLFLrzpf725n5y4xHqLWFk9MGB9hvNUo4e9FR3NAxFEb8mwlMMKuaM0pmUirqkLAZKhjlA2IJ9Zgbr2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eTRvS+ks; arc=none smtp.client-ip=74.125.224.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H7RoTaWo"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-81eaf3709b4so10256407b3.0
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 00:46:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eTRvS+ks"
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6682259cae6so550139d50.3
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 00:49:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785311216; x=1785916016; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785311389; x=1785916189; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=Bto1bhcFQyQcgLQ0r2ywHcv9bZxh1rejer77lEyjVdg=;
-        b=H7RoTaWoCjPnU2QnAIS29fx0HsT/fSQO3fdMXoy4Q/WluC+awQEoAp34aWXxuT/8ae
-         Ntf4BLSXcx6yKz2g5r4hKtLzR9AM/HtPmcUPnoiRhlwF3XHneh5OBz37GT1XTc2Nsb2M
-         01Br5AHkPcKyLh6UJmLCgqEV+5a5Rn5+2eQhkkXoi8T14B6d0qp1+9COL7zzDb8Prs7v
-         Zi33qUKvW2Gn6IdD+7MgQ6UzAz2R9d6ICTaTlrdsQsbQSpwDJ3vbDo11VOy35WIsOkhb
-         PISlcD5UY2H7BXr3ClalIPlV5cEJ8gOuMl6PQcRN0jagHZQJ4UZfTKjzW4Mjq2dvxwAM
-         Q6bA==
+        bh=fG9on5R0A/VDaaNskVD5jkrua+u9JPH3I1rvPYIlxxc=;
+        b=eTRvS+ksXEX99Kks3dX8Dy7B2A/05Z+NcOh1OVuwr571TpRDc0UzZp4GYJsslebQVc
+         W0BDn9MJgsrPy3fiFZiPCS6RhTVOmwiKAz9oI5WYfk1qe4e7AwCdaSRIp7TU5oPr+1lZ
+         ojWHw5+vqRs/nLNn+sakwa/e2yzFPhGZt+57Ldv5QgHLGFgJmeVv3dUA8RpoXmHG+p1v
+         S/yM0yIeB3KgsSCGhGDaPjjV7JJKoNHhxoglEYsJmQwNWUyUuAo1DkXGVURAZfqvjxur
+         0kLwwJ7hftzmkJXbhpXlhgKbICakrh3jXFD79LItX6OdxEvTDTGgrdsbxS6aZA5AadKZ
+         C3nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785311216; x=1785916016;
+        d=1e100.net; s=20251104; t=1785311389; x=1785916189;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Bto1bhcFQyQcgLQ0r2ywHcv9bZxh1rejer77lEyjVdg=;
-        b=Gl7CLxTnzJYKWktSlAS6tldqDMvHXwzBQA0KWD9Eux++mWe7dINbynVdyyN+nZiIM7
-         nPkL6cz9HzfexOMJ7v3x6XogMOul5GA3Ut676fzE5yXXmhvDbGbz/RuoDqJo5I8SF1Xi
-         jvMO2/iPZRmIQ/iko5x8sn9AqkLCpTzC7+iiSstK2FTf2s5Lhxhiw+/MUUnykICTl16T
-         4XVNKNPyp5qkx5QwK9rKM0ps9gm/H0m0+0EF8Farf2Is2Mu+g6SZCMqhD5Cc2WXdUCwl
-         LOy4hVSOyNiq5/xL87TlLXn9JP9gV2+uWH0eU10pZYdRM1DMlTeiLjIziM2kYcf+nGQW
-         1PGw==
-X-Forwarded-Encrypted: i=1; AHgh+RpSY8jSKgnDXIQchlj6m1eJxXNC2OWlVsuItidoN4CSemd4qVH5A7USP2wSyybm0Y+yZhQutXQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywg8JwyxyUeEm/Ysv8xPbjoG61DXG92zsn4SlIHB7yMkADQjxN1
-	ZPxQWcZ/HbGr1QiFAz8HKHZt02xrEO5d16VP7A8klZ4Thhqa0DjrWlxn
-X-Gm-Gg: AR+sD10iakS2mqdFvuFDBuCgOTPF4wsWIkggLt54zwgqb8/F156TBW/Hu35u8UScM50
-	MBuZwx/3moPDNLLLyF7RRMuSjA512I4r4MJ22wakG3Q5YyF+BBNh8/HQMEGfu08RxYao2qls9sn
-	UjBLQ3zJTPCNyD+HunGdIxHFuoIH9+SBr+HXtS6/doqJfTQUvIDe+wQbHrp44HRxM/RhShn7BuE
-	gqML2BiJ60ZBrVJhLbxIaAZ0xZCX6PPy41wFFap2EZCcwkjBXQdxZxx0hCpppSkcFfBkNzJAFJf
-	iHUPnIgfwU+cufo9JaOAjYAfjqzRPc+jwKU1sTK9WA0jnpPD4jZQieT8yIrxCt4TCGSpEif3B4K
-	n7bJrzbs1ca61ISO3l/kHwvI/tqW7rEbU4JNLW9G5f6vmPLw4Mim2IS1P559T1a7abP9Qa2p6OO
-	FNNGJajnA6pZbJr/P97DE4We1gn7Za7ZHe0LfzrjtFw+SDn5dT8eSaC2eAiBt+XnoLOv4vRYerV
-	xFgrndwO9xdlnwoZe+8It91FRK2tr+pBBFg
-X-Received: by 2002:a05:690c:304:b0:81e:89b2:8caa with SMTP id 00721157ae682-81f9925966emr29619837b3.29.1785311216072;
-        Wed, 29 Jul 2026 00:46:56 -0700 (PDT)
+        bh=fG9on5R0A/VDaaNskVD5jkrua+u9JPH3I1rvPYIlxxc=;
+        b=pG6kkjRJjAdiUUsoKLjg2FCVwW5iSrCD8Q6hfXrGTceqrNVtSgh6ASmFLI/n0EyGm1
+         4XVBvH63a2nWHof5X/x8vEfz4A4SbPaRbQGOn8qXmMSqF3hoXTjRK8/w6dLhQVBM+eD3
+         AmSAP1rGT9Uwn7mgtnfUDwKRBtGmKzuorufh8/fjEcFGqzDvxOZMQURwmxQROrLCOv5J
+         j2VdXLstnpxFC+OJSjUA3WnCThVisS8Zie8jw5KtS1BGYgnIAA25NzlUl3X2im01FRbn
+         fwX9g9spV+azn91czTr5k5WXVPNy8gbtjHFdA2L3G4HJeT1IN8PgmtxL5kZJDTQyyYbT
+         J0Pw==
+X-Forwarded-Encrypted: i=1; AHgh+RoCTW2CMAs6wBJ4i3Cljolua9Cd6v/RuzCTF4qi/C2zsnEP+jmJJIEY0A6Vnp9pD0byqUWOPf0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkfF/28tlUbPmgTfT5GgZPjYbPSd3ZMZevRp0mlIwb91r1hyXc
+	J1Mjyi+ikUMuePz9NYMEjXIgxmYdpCFZMPq4qWJgIgm+qpZN9doDCzj+
+X-Gm-Gg: AR+sD10B0e326ZMAmr6tUtoACZq8SixkUa2wsT5d+ccWwYmeOQBkIBpPD+L6MOj34RJ
+	c6XwPGdOMMok1CurJYySyUyX1MW99f5cTrOcwgyr7ybczS+fTjhEeujnzCirEhlKydu7DOpQLcb
+	4ZWUnLGar95BEr2CBywUqBRZaqlqOFttZD6vFUzFRx1+FIwqPfXevxC2g9j+hSmifBdPphCyQh7
+	R6UzXmBy4mITstv/lXGMKeyxAy8iJ44n2zrtPf1BHCIqKKRnWpJtBLuCxXcQg90q16PmQEsEUbz
+	ECU0Dg4CtFW/4G+9Hvt2TLD8ji3dgtS2GW/8wurH6gknlPfofjF7TrA6yDmEgCHh6zomQp5BXpZ
+	ylDfz1hm0vYjpCt3BkrWLVByYMq5HyD6KzFSB3tjRGrdFSsVA+sdQAaIUtylSl8mkKNFTm74PV3
+	P8ZUDbcaCwX9TcYM0XsxKj4dQpISifz/4kTQ+6ShMtGOmGDJaW9dt3A7ClUxTJA/NwlY0nDbWJp
+	W/n91AtunyegDBBBZGlgSK7M1L3R7mYNIj6
+X-Received: by 2002:a05:690c:b03:b0:81e:b981:3eb5 with SMTP id 00721157ae682-81f99152f46mr28749767b3.23.1785311388862;
+        Wed, 29 Jul 2026 00:49:48 -0700 (PDT)
 Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fa27985cbsm13921187b3.16.2026.07.29.00.46.55
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fa29b1f9csm13559087b3.46.2026.07.29.00.49.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 00:46:55 -0700 (PDT)
-Date: Wed, 29 Jul 2026 03:46:54 -0400
+        Wed, 29 Jul 2026 00:49:48 -0700 (PDT)
+Date: Wed, 29 Jul 2026 03:49:48 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Qihang <q.h.hack.winter@gmail.com>, 
- netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com, 
- daniel.zahka@gmail.com, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- stable@vger.kernel.org, 
- Qihang <q.h.hack.winter@gmail.com>
-Message-ID: <willemdebruijn.kernel.36b6c7169b6c6@gmail.com>
-In-Reply-To: <20260729030122.21462-3-q.h.hack.winter@gmail.com>
-References: <20260729030122.21462-1-q.h.hack.winter@gmail.com>
- <20260729030122.21462-3-q.h.hack.winter@gmail.com>
-Subject: Re: [PATCH net v4 2/2] packet: use consistent hard_header_len in
- TX_RING send path
+To: Joe Damato <joe@dama.to>, 
+ netdev@vger.kernel.org, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: andrew+netdev@lunn.ch, 
+ willemb@google.com, 
+ linux-kselftest@vger.kernel.org, 
+ Joe Damato <joe@dama.to>, 
+ linux-kernel@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.ab3e673de325@gmail.com>
+In-Reply-To: <20260728160935.4128982-2-joe@dama.to>
+References: <20260728160935.4128982-1-joe@dama.to>
+ <20260728160935.4128982-2-joe@dama.to>
+Subject: Re: [PATCH net-next 1/5] selftests/net: psock: Generalize psock bind
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,83 +90,13 @@ Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-Qihang wrote:
-> tpacket_snd() reads dev->hard_header_len independently for skb
-> allocation and header construction in tpacket_fill_skb(). Concurrent
-> netdevice reconfiguration can therefore make the reserved headroom
-> smaller than the amount later pushed, or make copylen - hard_header_len
-> negative.
+Joe Damato wrote:
+> Generalize packet socket binding so that types other than ETH_P_IP can
+> be used.
 > 
-> Snapshot hard_header_len once before processing ring frames and use it
-> for the frame limit, headroom allocation, copy length, and skb
-> construction. Pass the snapshot to tpacket_fill_skb(). Reset copylen for
-> each frame so a previous frame cannot retain a larger construction
-> length.
-> 
-> The separate SOCK_DGRAM consistency problem between hard_header_len and
-> header_ops->create is not addressed here.
-> 
-> Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
-> ---
->  net/packet/af_packet.c | 20 ++++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
-> 
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index 88674a6e868c..8ee0a80fdcea 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -2574,6 +2574,7 @@ static int packet_snd_vnet_parse(struct msghdr *msg, size_t *len,
->  static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
->  		void *frame, struct net_device *dev, void *data, int tp_len,
->  		__be16 proto, unsigned char *addr, int hlen, int copylen,
-> +		int hard_header_len,
->  		const struct sockcm_cookie *sockc)
->  {
->  	union tpacket_uhdr ph;
-> @@ -2605,8 +2606,8 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
->  	} else if (copylen) {
->  		int hdrlen = min_t(int, copylen, tp_len);
->  
-> -		skb_push(skb, dev->hard_header_len);
-> -		skb_put(skb, copylen - dev->hard_header_len);
-> +		skb_push(skb, hard_header_len);
-> +		skb_put(skb, copylen - hard_header_len);
->  		err = skb_store_bits(skb, 0, data, hdrlen);
->  		if (unlikely(err))
->  			return err;
-> @@ -2737,7 +2738,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
->  	void *data;
->  	int len_sum = 0;
->  	int status = TP_STATUS_AVAILABLE;
-> -	int hlen, tlen, copylen = 0;
-> +	int hard_header_len, hlen, tlen, copylen = 0;
->  	long timeo;
->  
->  	mutex_lock(&po->pg_vec_lock);
-> @@ -2784,8 +2785,9 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
->  			goto out_put;
->  	}
->  
-> +	hard_header_len = READ_ONCE(dev->hard_header_len);
->  	if (po->sk.sk_socket->type == SOCK_RAW)
-> -		reserve = dev->hard_header_len;
-> +		reserve = hard_header_len;
->  	size_max = po->tx_ring.frame_size
->  		- (po->tp_hdrlen - sizeof(struct sockaddr_ll));
->  
-> @@ -2822,8 +2824,9 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
->  			goto tpacket_error;
->  
->  		status = TP_STATUS_SEND_REQUEST;
-> -		hlen = LL_RESERVED_SPACE(dev);
-> +		hlen = LL_RESERVED_SPACE_EX(dev, hard_header_len);
->  		tlen = dev->needed_tailroom;
-> +		copylen = 0;
+> Signed-off-by: Joe Damato <joe@dama.to>
 
-Why is this introduced?
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
->  		if (vnet_hdr_sz) {
->  			data += vnet_hdr_sz;
->  			tp_len -= vnet_hdr_sz;
+I'm generally in favor of splitting out series and subjective, but a
+few of these patches could probably have been squashed.
