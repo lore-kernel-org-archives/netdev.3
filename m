@@ -1,152 +1,203 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D54948876E
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A455B480344
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785331032; cv=none; b=c7YmZiNgsMfQbGKwnDLF92QIQESrmvD+08gTUDfXMDvyv09k5Ksa6a5Xux9ha5gySvDLMT4MwJKO0hgje4+pUutjMjBXc1T8c/53/+SIxWbJF7yYZUzBnL1Xce84Oks8DqjLyX7JBAqOTDN+AmnHtVuMdU3zqlND89Yo5HKkhmQ=
+	t=1785331195; cv=none; b=AtCPQ6NZgTzFtGbllqzwq5TO+03/WS66ZaQqIkIaHepfxGw4VxEgFuELRvOhiB3MXw07I7EXUwVpsYYLl9H2JinFiLYYOYkXvkbJTRFENhE3shkVuVucUkCdb8uayoSUGqquSOgHg705fIh1I/tzO9tmRvXcj2wj4er7Pqk/KOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785331032; c=relaxed/simple;
-	bh=6tP12Y87i05bjXnRUYYPU2Gdo6mBWkEg/IWHRad8HQg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QnmiNDieIn4Nld2hoy+NNz5wJPi2VKQSuTFAaloS6efMf+zZp3B/SWFc8CmDHhA2ni9XgqGR1cTDX/VyocwBucF3b2wG5CrE8t2Z0PFq31xrgniVvSJJybe1eBuEP3o9titNKgWlS0zwob7Pgryu59ZZH4TdbthSJhH1nqZJ6Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WQ5ZvOR9; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785331195; c=relaxed/simple;
+	bh=rr8YEWc3HSMWJ/APxhUFP/anlcCNU5lJQeizD/PJNI0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EwxcgKFLcD9Y6tN975qK1IiBlpxhqsAiK+2HOoLFzg2gtdqdqdwBlxztZGIm868rcWTw2VuIQpVs1e+K11q5SIkhLZsc7Vx8E/6SxljvOsNDUgfKdLOSGNduFZ1/CRNzoODMb+FkzEnh95uTq2prjdnZoH3RkGf5Srx+8IokDFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KzUY+S8e; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=EW5DtgIy; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WQ5ZvOR9"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38e347638adso960145a91.0
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 06:17:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KzUY+S8e";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="EW5DtgIy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785331191;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gG4+OnzKs4OXOyTaKQLNCs0RTVMvrRHDvkvXHi16iz8=;
+	b=KzUY+S8etMrGPWh9aNVEus5Jh4VW7qZt5SB4IaNBdH404gu94WIJWQzXTnJjXulA8VjLMx
+	WnCEEHEr+Y7AuGNYhwanLSikXegJteT7SZMoSEKUqFuLGiBt7FHaax7PUHswt+7Qqm4DvQ
+	COhlnUyR1iTGh8oKdBDecvL0JpiLjXU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-647-UWhL9wKAMe6zKkWWJgvw1A-1; Wed, 29 Jul 2026 09:19:49 -0400
+X-MC-Unique: UWhL9wKAMe6zKkWWJgvw1A-1
+X-Mimecast-MFC-AGG-ID: UWhL9wKAMe6zKkWWJgvw1A_1785331188
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f81362fb1so623548f8f.1
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 06:19:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785331031; x=1785935831; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6tP12Y87i05bjXnRUYYPU2Gdo6mBWkEg/IWHRad8HQg=;
-        b=WQ5ZvOR9t4bHgMDCq4FSb9VS8+XZZ6NDqmc7+2c8oeRLUS7JqnLwb2kV4voRxXsqCf
-         lnuj7iU/kToZmHjT07AoHm6vifA2r2htqleI9jXVQsYXzYJMoygle7YKz7iSxcHxCPFz
-         zZOE2ftvQzy74wDCmJtpcvR6uKr1zHPjOb5JBz6q4j8KUQtSRU5Qmhra27yf4+8Ms0D1
-         ZJGBv8eOCsoAYDzB5W2V2UaCnhoqXT5oegObMymBCvlM7zSlvxbRBAcrlTXcxw7QD2xC
-         JddfQ0GG1df0ZNWX8ICRAtJVCZJ8hf3c374f/ISDeMQyI6JmjQgWHjMeZMOQBppIfDJe
-         BbwQ==
+        d=redhat.com; s=google; t=1785331188; x=1785935988; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gG4+OnzKs4OXOyTaKQLNCs0RTVMvrRHDvkvXHi16iz8=;
+        b=EW5DtgIy8fkYNeUyPdK5SRDLSG8seyqlZU5Wx9klZKjpqddBruhe5XlURBoeNRzV37
+         Sb9UBJiiy3UXMoEXd2SMCpiJj9InF2aG19uuomCL5RU5ZrKrM5x1wsWCB5EEJi4hszFI
+         9SidDxYVMVmqeW/DjYkHh55FlvuT2xANBxglKygnUFjTqh+8AkYSGhcvWMmkee6SBM5y
+         Ty9YulKM+4AXfoe2UhoXghQ3fNbdtwwl7+ZFxnHM/TQierRKL2L3zjhEzTswA5Q1KXis
+         qQgaBfeGv7DsUv1+j8jCBpPvQT4FyLxL03C3fbSYCt0CzJQW3YF5nvR4JL1gDAeDR16O
+         Jylw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785331031; x=1785935831;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6tP12Y87i05bjXnRUYYPU2Gdo6mBWkEg/IWHRad8HQg=;
-        b=JAo2gWywb861b1pO2ldkuUGbMZnBTKOSqEIdRN4/UJJG1iRpiytjpqjnWFnJAPrrSY
-         yQR66F1WnUWyOHKT/Lrfxv3OD69iiWsBrW15AkxQKDnGP90fgmZ6gu88L1EAlWvjKQjK
-         hH4t7gpV0RRLMdqyCuz/8K9HQ0Zz/ZJ11B8F5QWRVEugZzL9vo7KDJS0zFMU5QQBXc/V
-         K7/SNvWGkuca2UpfiElnelQsmdkHdEYryi8Yl6s9jp8RYCHBlt7VUPDiloYvd8M7fRMg
-         F3xJ9dXroyuLgyfd9KR73q1FMkgdvkWEK9lVNCuTJr1K/aA3QUorLD0b+0WgMZMU92S/
-         zmog==
-X-Forwarded-Encrypted: i=1; AHgh+Roz9hKvIt6jwluor5NxlgREtfuydlJ7B74yVNpZUsuB5ftVJMEbXrIfJImZeaXkFODuzdZPWVc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+HN4n4AEI1F0/DtaXSM5xaGWiWyDh6zy7+NRQFayiCAbc2OXA
-	SlT3qujKaHZbCJwtRCBsgPujaVJRM/9E1p4iAbESVPY3pOMetLcvCSSl
-X-Gm-Gg: AR+sD112mtbkCT5PwiO/kPpbt91fb4XXzUfrds4aA7fdxLbMOZ3sWbBNyCNgGOWG/Bd
-	N5Q1URicTixN6ak3sZntKkXAbYTCwyL7lJk/SOz+5wN6VMX40/7HKxAzFhIIhTgRuFihw1LQzaK
-	sguKuhG0IvB8g7HcWnVaRHO1VJBQouai2H3UO/uQ1rrrjxPWx45SwJKrNIUlmB2UYH0hMG1dNkV
-	6zD/udV+7D40tVXF9K27FrMGxvBDyObZKbIt/1CGqFzvZyrnjA9IMT2musc2f8hcegXPyh2g3H2
-	ZmcXG+h+mYTZhyRy7E+TqkeV3mofn1Fwp1blRLTbWcq7i++KcGVy5XKtHr0Yv81UIiDy3fUhQuB
-	rB/5R1klPMPSHMR1an3RfmkNIr+oWSZTVKby/099WQfEkDiah3a7fLzA5Yw0exRkeUdvxb2K0dK
-	UiNIyUXiVRATSaqvwatvEVY4YivpwNohplLhRHrqJKTYf7
-X-Received: by 2002:a17:90b:270d:b0:37f:c22a:c188 with SMTP id 98e67ed59e1d1-38f6a41f233mr6226263a91.4.1785331030512;
-        Wed, 29 Jul 2026 06:17:10 -0700 (PDT)
-Received: from ubuntu.. ([2a09:bac1:7680:1a98::48c:10])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31504927a7bsm11522373eec.0.2026.07.29.06.17.05
+        d=1e100.net; s=20251104; t=1785331188; x=1785935988;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gG4+OnzKs4OXOyTaKQLNCs0RTVMvrRHDvkvXHi16iz8=;
+        b=Pe0nEbkmJIqfRO87xDPGAXFh81iqwB+SiWGHEttyz9c98uj86c9JKdFDmZDMVYBxjL
+         XSp3TEqbLSRcEb75tG1K7RRBL6ksCRey7TeriP8Ri+qdoq6r2X2Ye5MA748uzm3JRPKf
+         ShrCoV6aufvfJI8nUYzQlpUetqZ7hWF7iQdfjILrfVGNCmKIsXrHs3CpixhS3At2dXRP
+         m5whPPPtM2lElcoe/oUK1i1F6MReItl+987NkQeZ3gJ5n4jnj22p4QLOzS9rFLaNxYBi
+         aZu5LmJWDkDx4ObtpySAIPNiBqqKOpyxtgMthFltfVepPKTv08XxSWuTuqwE9hWeXjeU
+         fFvA==
+X-Forwarded-Encrypted: i=1; AHgh+RqmtOfcyi4kDhd3pRsvHvpPZ3oFO9d2OrrRNHzXCdslFaWCXKig+BKDkx2ECe0K55JIlsSel5A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEkg4aznlPipnbybxQ80Dom7kO4w3/PLMv3BUdaPq/HzhxvP7U
+	pbhSqv+P1OSSQSHDMsb5Sagf/lvpTWxRMXA9m7keHUKIktlDUjwlYLPUVyqGQPiT8CKs7lHx/d5
+	xkkypxegGG8hOBtJnnmTvTz+kMN/v9+76bfCuqU8zTkf7iaMf1DQFJX807g==
+X-Gm-Gg: AR+sD1377mxj+xphMSL8iLMnXKwncSvbv5GMhH9SntFuHPIxguu/KO72OxyYvrxqqeD
+	nxr+dcTje1B6hSZgt2a+F0hF0vQUwnLpOYL0mzK8G5SoQnGWZr18v0CK6Y9vuCwlRwusnqh0cgC
+	SqKyo2eobksYNM5xpYbpNidlHCaafETD2+dTysOVhboHp4gidlSC79Yco3COzOuQMPYripZIGy7
+	B5mx3rW3gBpsi1+puNhCt7VyD1+QjJYhldXQEr/Sktvyw2kRmTSdJ7QbNma2Fr6zFHXYugMJ9iU
+	CY1OzkdXC9GYrBBpZMlSiQFy7m6VaECX+oz8TRJ+Ih/+2XaZRPYnkrleFwj8uVz46cnSN6FlrNK
+	4EwGAqZqdsYZZDydaUVJRlsGfeuUGH9z3yZzDZalWILY=
+X-Received: by 2002:a5d:5d03:0:b0:47f:9642:5cb3 with SMTP id ffacd0b85a97d-47fb1f2205cmr8180296f8f.43.1785331188250;
+        Wed, 29 Jul 2026 06:19:48 -0700 (PDT)
+X-Received: by 2002:a5d:5d03:0:b0:47f:9642:5cb3 with SMTP id ffacd0b85a97d-47fb1f2205cmr8180221f8f.43.1785331187616;
+        Wed, 29 Jul 2026 06:19:47 -0700 (PDT)
+Received: from sgarzare-redhat (ip139-137-192-82.pool-bba.aruba.it. [82.192.137.139])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fb6b0ef1asm8208696f8f.19.2026.07.29.06.19.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 06:17:09 -0700 (PDT)
-From: Jing Wu <realwujing@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Qiliang Yuan <realwujing@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	SeongJae Park <sj@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v11] mm/page_alloc: boost watermarks on atomic allocation failure
-Date: Wed, 29 Jul 2026 21:17:01 +0800
-Message-ID: <20260729131701.3354724-1-realwujing@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <90ac10ff-55f8-4f07-8e1d-bb9f3a8cc546@kernel.org>
-References: <20260720-feat-mm-page_alloc-v11-v11-1-7376b02c27b3@gmail.com> <20260720163719.cf37f6be63bfd88a06965761@linux-foundation.org> <90ac10ff-55f8-4f07-8e1d-bb9f3a8cc546@kernel.org>
+        Wed, 29 Jul 2026 06:19:46 -0700 (PDT)
+Date: Wed, 29 Jul 2026 15:19:41 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: phind.uet@gmail.com
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andy King <acking@vmware.com>, 
+	Dmitry Torokhov <dtor@vmware.com>, George Zhang <georgezhang@vmware.com>, 
+	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] vsock: use sock_error() to consume sk_err after a
+Message-ID: <amn7W3hAIEC7kcQO@sgarzare-redhat>
+References: <20260727071305.45826-1-phind.uet@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260727071305.45826-1-phind.uet@gmail.com>
 
-From: Qiliang Yuan <realwujing@gmail.com>
 
-Hi Vlastimil, Andrew,
+commit title seems truncated, can you check?
 
-On 7/21/26 17:10, Vlastimil Babka (SUSE) wrote:
-> ... on a 4.19 (released in 2018) based kernel. There were many changes to
-> this area since then, some for highatomic allocations even very recently.
-> So it's necessary to demonstrate the problem exists today as well.
+On Mon, Jul 27, 2026 at 03:13:02PM +0800, phind.uet@gmail.com wrote:
+>From: Nguyen Dinh Phi <phind.uet@gmail.com>
 >
-> And it shouldn't exist in the form of "logged failures" anyway, thanks to
-> commits such as c89cca307b20 ("net: skbuff: sprinkle more __GFP_NOWARN on
-> ingress allocs") that use GFP_ATOMIC with __GFP_NOWARN. So it's not about
-> avoiding warnings anymore, but preventing fallbacks to non-irq contexts
-> (that those allocations AFAIK have) and probably thus rather demonstrating
-> how that improves performance and justifies the patch and risks that come
-> with it (these heurstics are unfortunately fraught with them).
+>Syzbot report an issue which can be reproduced with these steps:
+>   r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
+>   bind(r0, {VMADDR_CID_ANY, PORT})
+>   connect(r0, {VMADDR_CID_LOCAL, PORT})
+>   listen(r0, backlog)
+>
+>   r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
+>   connect(r1, {VMADDR_CID_LOCAL, PORT})
+>   connect(r0 -> self) -> -1, EPROTO
+>
+>   listen(r0)          -> 0
+>   connect(r1 -> r0)   -> 0
+>   accept(r0)          -> -1, EPROTO
 
-Agreed, noted, and I won't lean on that log again as evidence for
-current mainline behavior.
+I spent some time to understand this, what about changing in this way
+(or something similar):
 
-I also want to walk back the framing a bit, because on reflection
-"does this avoid a dropped/warned allocation" isn't quite the right
-question - mainline already accepts that a single GFP_ATOMIC failure
-in the RX path isn't catastrophic by itself. What I think this patch
-actually affects is the *recovery window* after such a failure, and
-there's a concrete, unmodified mainline code path that shows it:
+     r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
+     bind(r0, {VMADDR_CID_ANY, PORT})
+     connect(r0, {VMADDR_CID_LOCAL, PORT})   -> -1, EPROTO  (self-connect)
+     listen(r0, backlog)                     -> 0
+     r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
+     connect(r1, {VMADDR_CID_LOCAL, PORT})   -> 0
+     accept(r0)                              -> -1, EPROTO  (stale sk_err)
 
-virtio_net's try_fill_recv() runs GFP_ATOMIC from NAPI context. If it
-can't fully refill the ring, it schedules refill_work, which retries
-with GFP_KERNEL (so it can direct reclaim), and if that still comes
-up short, backs off and reschedules itself every HZ/2 until it
-succeeds. None of that is something we added - it's existing driver
-behavior. Unlike the bnxt_en/__GFP_NOWARN log I cited earlier, this
-isn't stale: our downstream 4.19-based virtio_net runs this exact
-same retry logic (try_fill_recv()/refill_work, GFP_KERNEL, HZ/2
-backoff) unchanged from what's in current mainline, so the mechanism
-we're observing is the same one that would fire on mainline today.
+>
+>Basically, it creates a socket (r0) and triggers a self-connect after
+>binding it. This self-connect fails with EPROTO because it loops back to
+>r0 while the socket is still in the TCP_SYN_SENT state, causing it to be
+>incorrectly dispatched to the connecting-client path. The unexpected
+>packet type encountered there sets sk_err to EPROTO.
+>
+>After that, it invokes a listen() call on the same socket. This listen()
+>call succeeds because the kernel's listening path never inspects or
+>clears sk_err. Then, a new socket (r1) is created as a normal client and
+>connects to r0. However, vsock_accept() rejects this incoming connection
+>because the listener's sk_err still holds the EPROTO error from the
+>earlier failed self-connect.
+>
+>This rejection causes the child socket created for r1's connection to
+>never be freed on virtio or hyperv transports; only the VMCI transport
+>implements pending_work to revisit and clean up a rejected socket
+>
+>Fix the issue by using sock_error() to read the sk_err to prevent the
+>rejection branch from occurring  in this scenario.
+>
+>sock_error() atomically reads and clears sk_err, ensuring the error is
+>consumed when vsock_connect() returns and cannot affect subsequent
+>operations on the same socket. This matches the established pattern
+>used by other protocol connect() implementations in the network
+>stack like __inet_stream_connect(), tipc_wait_for_connect()...
+>
+>Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+>Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
+>Fixes: d021c344051af ("VSOCK: Introduce VM Sockets")
+>Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
+>---
+>V2: Add reproducer steps to commit message.
+>
+> net/vmw_vsock/af_vsock.c | 7 ++-----
+> 1 file changed, 2 insertions(+), 5 deletions(-)
+>
+>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>index 622dbd046799..43eddc33ed12 100644
+>--- a/net/vmw_vsock/af_vsock.c
+>+++ b/net/vmw_vsock/af_vsock.c
+>@@ -1847,14 +1847,11 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+> 		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+> 	}
+>
+>-	if (sk->sk_err) {
+>-		err = -sk->sk_err;
+>+	err = sock_error(sk);
 
-What we've observed operationally is that under sustained memory
-pressure, this retry loop can keep missing for multiple HZ/2 cycles
-even with GFP_KERNEL's reclaim capability - the ring stays short of
-buffers, and incoming traffic during that window has nowhere to
-land. With this patch applied and nothing else changed, the same
-retry loop recovers faster: boost_zones_for_atomic() wakes kswapd
-and raises its target the moment the first GFP_ATOMIC attempt hits
-the slowpath, instead of waiting for kswapd to notice on its own. So
-by the time refill_work's GFP_KERNEL attempt (or the next NAPI poll)
-runs, there's a better chance the memory is already there.
+Should we do the same in other paths (e.g. send/recv) as well in a 
+follwup patch or in a series?
 
-virtio_net exposes per-queue drop stats via the standard netdev
-qstat interface, so this recovery-window effect is something we can
-go quantify precisely rather than lean on log messages. I also don't
-think a synthetic microbenchmark that just shows "boosting
-watermarks lets more atomic allocations through" would tell you
-anything you don't already know, so the plan is to measure this
-ring-recovery-time effect directly instead.
+The patch itself LGTM.
 
-Qiliang
+Thanks,
+Stefano
+
+>+	if (err) {
+> 		sk->sk_state = TCP_CLOSE;
+> 		sock->state = SS_UNCONNECTED;
+>-	} else {
+>-		err = 0;
+> 	}
+>-
+> out_wait:
+> 	finish_wait(sk_sleep(sk), &wait);
+> out:
+>-- 
+>2.53.0
+>
+
