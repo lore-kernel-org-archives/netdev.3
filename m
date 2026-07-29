@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E535233BBC5;
-	Wed, 29 Jul 2026 02:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F78E33123D;
+	Wed, 29 Jul 2026 02:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785290954; cv=none; b=J+EYJqIFIGJvQNr5DbPPpuJtrbjnNd2AnVWxvuB/7VgasD1a9dwB8KI+Ztqnrjrmi55RiK35casf/vHeZptEJZyC7PawYpoKlef1Cu9mHDAtC7erIpiWfC+cwYxuc0D48beUGIoRHaRMVe1rrKNtDbnt3eT4dQ1NAZaLBgQDWng=
+	t=1785290958; cv=none; b=U43gnFeO4hNUbSuxfEMxVXdAShgUDYc8U0LVp4jUZjFUyv00fBShtp95t32zzrs5SAP65HCJCAJ0KopOhODFX10jBhdoRqDJouori7+dKnwYV03OacX3TVxUfOqKkMv3S4geiSbP1tOw3/HMsuWc4HKy/x4I1KG6JS2qFPXXoXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785290954; c=relaxed/simple;
-	bh=TViW4i1059NbO8ic+hGNj1vguTGRas3fvmEtConn5Hc=;
+	s=arc-20240116; t=1785290958; c=relaxed/simple;
+	bh=lB7neo5RxkBOFzhstEaCtDv3W/7yQEMIT/To6tcyHIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kRXOZph5LfPaiBkdAgrBXJKEkZIC0TaeoNAWXtlbntia/m6MCGxMOf0Om6aTlx/TJtZMWpv/6Bh0rdbLDqkPpfWK8aKOkiRYWYKBiN6JZeUePLHjdaEQIVmFwwjb8Q6N3kbOVeUHOmZESa+mPnlXijbH09YV3/3G+lNzQ8rIbk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eqqDioe4; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=K6/atWZegJOwZbO3C37Ta4mWNsCAXPre/3117UZZ/4NWrAxM6r904FdBcxDGQv7jh12W5f4A+2auOCLLLMz3jtYJ5KWksY0xjFS61jE+HBS9kNK+2kco9UkHDS48LOr/2gqH28ZGFgZpvLo8iS1b5sMgKwya0W/3uwsBnGJ03lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqj6S1Dh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eqqDioe4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EEE1F00A3A;
-	Wed, 29 Jul 2026 02:09:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqj6S1Dh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637591F000E9;
+	Wed, 29 Jul 2026 02:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785290952;
-	bh=OOmU1QGzB2ufpHut7Us3n0z+1f9VoAWQEgbxI9wn3M0=;
+	s=k20260515; t=1785290953;
+	bh=f+G7iSf6YfRwZUzOh+H/HqMrcYACqwsUrANhxXySrLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eqqDioe4nrENHNUdQO015+tqGpP/7uhAJJpewFiF7msuRpbocM60E+k9v+2ePNixO
-	 3XeQjIMEMqRviGvwr/o5la2T+cVH06W3l+mIj5HjkF60bphf/2eyYeVDO1uNekTUnF
-	 0WifSgTwadyV2Qcr0R2GsY+6Ztls9ipQ/PZcuanwJMZ8dwU7GjMyveaRkxJye2pQ5S
-	 +LZqls9GUlHDKiRHEkD74NaAfUKzmF2SJLYjz7rveh1XN0k8/S4WTOnNtGB5Hip1v9
-	 nlEE2FodQhxeM72hP+NfOl9PS22hQTZ68EPtIWL/WdXpU3npnSEeLzspiht5AaaZ7l
-	 tRyXzfeKu3eLA==
+	b=nqj6S1DhopDZCwQbPd6I04jE9/qoOn+IDqknEnwRC2aMdG1RMoxcQZRJUb9ruT/Ch
+	 zxXM7+fJqPAAjG6s8cAZgoH90Pa2NHJY1OE29JJbXt73wZvUnL/Sz8JiDaIPVlWEU4
+	 vuX9nNBhWPwTvsAzU7ahecJua+EVyWqr/hLI+C2lV51984r3WcBvgaclIbOrptgOHd
+	 zmQDoQIBq1yt+Ky6jfGQG7R1hE8Gr9FQeX3FdW/79AkNiaRiDDd4cAPw2pgXw2Hfhj
+	 yl3gS252cL52A7mFncQkghijVz5LiOObPzWfU2bCZ704T0F2jKgUAdTL1BccL8B5Rv
+	 jiEwjvd9e3qow==
 From: Jakub Kicinski <kuba@kernel.org>
 To: vikas.gupta@broadcom.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -42,12 +42,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	rajashekar.hudumula@broadcom.com,
 	dharmender.garg@broadcom.com,
 	ajit.khaparde@broadcom.com
-Subject: Re: [PATCH net-next 2/4] bnge: refactor rx mode helpers to accept explicit address lists
-Date: Tue, 28 Jul 2026 19:09:11 -0700
-Message-ID: <20260729020911.3657160-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next 3/4] bnge: add ndo_set_rx_mode_async support
+Date: Tue, 28 Jul 2026 19:09:12 -0700
+Message-ID: <20260729020912.3657198-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260724142954.3101980-3-vikas.gupta@broadcom.com>
-References: <20260724142954.3101980-3-vikas.gupta@broadcom.com>
+In-Reply-To: <20260724142954.3101980-4-vikas.gupta@broadcom.com>
+References: <20260724142954.3101980-4-vikas.gupta@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,117 +59,83 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
---- Patch [2]: [PATCH net-next 2/4] bnge: refactor rx mode helpers to accept explicit address lists ---
-commit 89173081c7d6c9342e8bf0ec4661f5150e6862c9
+--- Patch [3]: [PATCH net-next 3/4] bnge: add ndo_set_rx_mode_async support ---
+commit 1fc0ed8b56a0fd5a87f788e357261a7f2693625b
 Author: Vikas Gupta <vikas.gupta@broadcom.com>
-bnge: refactor rx mode helpers to accept explicit address lists
 
-This patch refactors bnge_cfg_def_vnic() to bnge_cfg_rx_mode() and updates
-the MC/UC list update functions to take explicit address lists. It adds a
-snapshot parameter to optionally skip acquiring netif_addr_lock_bh(), and
-schedules a retry if bnge_hwrm_set_vnic_filter() returns -EAGAIN.
+bnge: add ndo_set_rx_mode_async support
+
+This commit registers bnge_set_rx_mode() as ndo_set_rx_mode_async to
+handle filter updates asynchronously. It computes UC list updates directly
+from the snapshot, allowing sleepable HWRM commands without holding the
+address lock.
 
 > diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> index 6f7ef506d4e18..1e3cdaeaa03dc 100644
+> index 1e3cdaeaa03dc..e67536a8c4304 100644
 > --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
 > +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> @@ -2144,16 +2144,16 @@ static int bnge_hwrm_set_vnic_filter(struct bnge_net *bn, u16 vnic_id, u16 idx,
+
+[ ... ]
+
+> @@ -2272,6 +2269,48 @@ static int bnge_cfg_rx_mode(struct bnge_net *bn, struct netdev_hw_addr_list *uc,
 >  	return rc;
 >  }
 >  
-> -static bool bnge_mc_list_updated(struct bnge_net *bn, u32 *rx_mask)
-> +static bool bnge_mc_list_updated(struct bnge_net *bn, u32 *rx_mask,
-> +				 const struct netdev_hw_addr_list *mc)
->  {
->  	struct bnge_vnic_info *vnic = &bn->vnic_info[BNGE_VNIC_DEFAULT];
-> -	struct net_device *dev = bn->netdev;
->  	struct netdev_hw_addr *ha;
->  	int mc_count = 0, off = 0;
->  	bool update = false;
->  	u8 *haddr;
->  
-> -	netdev_for_each_mc_addr(ha, dev) {
-> +	netdev_hw_addr_list_for_each(ha, mc) {
->  		if (mc_count >= BNGE_MAX_MC_ADDRS) {
+> +static int bnge_set_rx_mode(struct net_device *dev,
+> +			    struct netdev_hw_addr_list *uc,
+> +			    struct netdev_hw_addr_list *mc)
+> +{
+> +	struct bnge_net *bn = netdev_priv(dev);
+> +	struct bnge_vnic_info *vnic;
 
 [ ... ]
 
-> @@ -2201,7 +2201,8 @@ static bool bnge_promisc_ok(struct bnge_net *bn)
->  	return true;
->  }
->  
-> -static int bnge_cfg_def_vnic(struct bnge_net *bn)
-> +static int bnge_cfg_rx_mode(struct bnge_net *bn, struct netdev_hw_addr_list *uc,
-> +			    bool snapshot)
->  {
->  	struct bnge_vnic_info *vnic = &bn->vnic_info[BNGE_VNIC_DEFAULT];
->  	struct net_device *dev = bn->netdev;
-> @@ -2210,9 +2211,7 @@ static int bnge_cfg_def_vnic(struct bnge_net *bn)
->  	int i, off = 0, rc;
->  	bool uc_update;
->  
-> -	netif_addr_lock_bh(dev);
-> -	uc_update = bnge_uc_list_updated(bn);
-> -	netif_addr_unlock_bh(dev);
-> +	uc_update = bnge_uc_list_updated(bn, uc);
+> +	if (dev->flags & IFF_ALLMULTI) {
+> +		mask |= CFA_L2_SET_RX_MASK_REQ_MASK_ALL_MCAST;
+> +		vnic->mc_list_count = 0;
+> +	} else if (dev->flags & IFF_MULTICAST) {
+> +		mc_update = bnge_mc_list_updated(bn, &mask, mc);
+> +	}
+> +
+> +	if (mask != vnic->rx_mask || uc_update || mc_update) {
+> +		vnic->rx_mask = mask;
+> +		return bnge_cfg_rx_mode(bn, uc, uc_update, true);
+> +	}
 
 [Severity: High]
-Does this code introduce a data race or list corruption?
+If bnge_cfg_rx_mode() returns -EAGAIN, the network core schedules a retry 
+timer. However, because vnic->rx_mask is eagerly updated here (and 
+vnic->mc_list is mutated in-place inside bnge_mc_list_updated()), won't the 
+subsequent retry falsely detect no state changes and return 0 without 
+programming the hardware?
 
-The function bnge_cfg_rx_mode() is called with the live unicast list, but the
-lock is only acquired later in the function. Since this patch removed
-netif_addr_lock_bh() around the call to bnge_uc_list_updated(), the list
-traversal inside bnge_uc_list_updated() is completely unprotected.
+Could this leave the hardware filter state permanently desynchronized from 
+the network stack?
 
-If there are concurrent modifications to the unicast list (e.g., via
-dev_uc_add()) while the interface is being initialized, won't this race
-cause a crash on poisoned list pointers?
-
->  
->  	if (!uc_update)
->  		goto skip_uc;
+> +
+> +	return 0;
+> +}
 
 [ ... ]
 
-> @@ -2695,13 +2700,17 @@ static int bnge_init_chip(struct bnge_net *bn)
->  	} else if (bn->netdev->flags & IFF_MULTICAST) {
->  		u32 mask = 0;
->  
-> -		bnge_mc_list_updated(bn, &mask);
-> +		bnge_mc_list_updated(bn, &mask, &bn->netdev->mc);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this traverse the live
-multicast list without holding netif_addr_lock_bh()?
-
-Concurrent network stack operations (like IGMP/MLD processing triggering
-dev_mc_add()) can modify this list while the device is opening, potentially
-leading to a race and crash.
-
+> @@ -2704,7 +2743,7 @@ static int bnge_init_chip(struct bnge_net *bn)
 >  		vnic->rx_mask |= mask;
 >  	}
 >  
-> -	rc = bnge_cfg_def_vnic(bn);
-> -	if (rc)
-> +	rc = bnge_cfg_rx_mode(bn, &bn->netdev->uc, false);
-> +	if (rc == -EAGAIN) {
-> +		netif_rx_mode_schedule_retry(bn->netdev);
+> -	rc = bnge_cfg_rx_mode(bn, &bn->netdev->uc, false);
+> +	rc = bnge_cfg_rx_mode(bn, &bn->netdev->uc, true, false);
+>  	if (rc == -EAGAIN) {
+>  		netif_rx_mode_schedule_retry(bn->netdev);
+>  		rc = 0;
 
 [Severity: High]
-If bnge_cfg_rx_mode() returns -EAGAIN, this handles the error by scheduling
-a retry mechanism via netif_rx_mode_schedule_retry().
+This is a pre-existing issue, but does iterating the live netdev multicast
+list earlier in bnge_init_chip() require holding netif_addr_lock_bh()?
 
-However, since this driver does not implement .ndo_set_rx_mode or
-.ndo_set_rx_mode_async in bnge_netdev_ops, will the scheduled retry worker
-(netif_rx_mode_run()) silently return without doing anything?
+Just above this call in bnge_init_chip(), the code evaluates:
+bnge_mc_list_updated(bn, &mask, &bn->netdev->mc)
 
-If so, won't this leave the device permanently without proper receive filters,
-leading to dropped traffic?
-
-> +		rc = 0;
-> +	} else if (rc) {
->  		goto err_out;
-> +	}
->  	return 0;
->  
->  err_out:
+Since this happens without netif_addr_lock_bh() held, could it race with 
+concurrent multicast updates (such as dev_mc_add() from IGMP/MLD timers), 
+potentially leading to a use-after-free or infinite loop during list 
+traversal?
