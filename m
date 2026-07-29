@@ -1,61 +1,63 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52E0377A93
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 03:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB25372045
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 03:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785294097; cv=none; b=TTBuqI/8koiIUA9k05A3opOGAML28ynid7ImTwAdylwluBWidGX8GKjgXAvT0BdlhvW/6YkO0oOkL9iI9s3tBmxVp28ORrBNKPjQu7Msjlx4AdJqgzSE34z5E10MNjLptXItwW45gwjsXthzzkGHUZ3zR5nv002P5JuRdMxT0e8=
+	t=1785294109; cv=none; b=UwA2Tw4203GU+upzh0Jp3mgZhx5D64hYXaxu4F/sWJmmFDeauik+EWKIISZjiTKMAGb0Kzx4z0grcttdE0hXLL03M7p/ZXDPQe/hGzKJjVEHF61K1Pshbe4iSrfpHjLshhNpzpIl/9/PZQs+wg7dsWALhfrVOUOcnTQs0AO/4Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785294097; c=relaxed/simple;
-	bh=QADeywbTPdfKB8Qp6OcHSYccEUAFfm+PWOQ/PnFtrK8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gjz/XZXevFcm7LMZw/JFPLqvjyKh0hSXSCuN6m4QfEoSq1fP0wgComOK5zvYE0U02FVRH3rbUwN5qChhuR6CLMWZCEZMjg/KK1cEtLvii8aqa1NQ6GTDSZcfwpiqCB8yR24uzDG9nrgPN1mE1hqKVU3aafhLnsLacXz9RubhmD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gv1NXtlE; arc=none smtp.client-ip=209.85.214.175
+	s=arc-20240116; t=1785294109; c=relaxed/simple;
+	bh=2+lD755z7Rh4q3JmyL4x3OHtwEBfh1KbS7Y4miJd/mQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bOPJhCpTTMqo1SrC1cB+3IRwRQRhpKYSPSzUDxvkSszwkKAarFBuDlyHvK75uh2BAIJgq9tAIv0+bIiBoSnVfO1nnscscC27CVskSpJgfwf2q2NTUG1XiCK1GbwhCccVWh8sSq1P//igCasrMxn6ykaLouBBbsU8W6afjImW6fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sU2TVmBg; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gv1NXtlE"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cf49dc28ccso392505ad.0
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 20:01:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sU2TVmBg"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84a32ff53fcso55470b3a.0
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 20:01:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785294096; x=1785898896; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OG4+KkePz7FqiZVxRiKijjGdnD6TtTFfUDUGu0gsNfA=;
-        b=gv1NXtlEpOdhqOZwIRzBYkKg0BX7dK/nJCHZCIgnepxpFi7eDl2YFZ99mLtyGan4AP
-         Ly9gMVRhFPMcl33bCrnaGRfcI9VYHvWB1HT/8NoU7phKB4pL0L2z4WfKKDdibg2/0DSo
-         x4UnZHdSWhhtAliFEsHQ8vpmHXaly69E6u+lyjW7Z9CPE6yhMXyzJYXmS8VypN4cuMC3
-         6Y/g8TWi9izV809sowt0UA+KDM/UoPTJrKgAw7I7/0yZAHRbEgAks2opEoDcttfFwJdi
-         rzdX2tv8W3hQ3SRNZ2lNRHhgm07bjy3CTcGC3aRpJu1F5H76VgHu9P4bbV5jFXXtbYPt
-         QyZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785294096; x=1785898896;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1785294107; x=1785898907; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=OG4+KkePz7FqiZVxRiKijjGdnD6TtTFfUDUGu0gsNfA=;
-        b=l7Dg75bTSBulGgCYWp/qNcF2SgxxpfqQTbFskqBxbUjC7Z4DJOsvPaEu3O+6vKlstq
-         j3tbpBPCOFlLNcnI6XBPalJlG7PDcwWUx8gZMafKayXa2FCwf5R2zdNyAaCZD479MQTI
-         yNJ0pk+Bb7tN2qMN4RMabUJZO0+xKAQeK3lhHWvb8jM/g6+LgB3Pmwk5SS2Bok462J32
-         EWFExugFAIZQsy7jiCehhJqGKzVuXHDU/mI3QTF5URT17qETrmyevqK3gtBBGS/uDsMK
-         hAb2qxzcDSDKIfigJEtfZ7M59OmyutHKscW7TV0YIuZWyLE26aliGnaoeABAxDVOX0Dd
-         5Ngw==
-X-Gm-Message-State: AOJu0YwsrSZ59cxHsk69E8RWyRbs8q53PvF8hLL0UdYBN5G7z5PhzxBX
-	rIPhuNcVzhPnvX0XggpV3lysdaaG+pZjdUAV8zqdrNQ74IztSyIu9VdchksHywuD
-X-Gm-Gg: AR+sD13eo5zcq+1lrgUWb1xtuJh14usnrzlFWq5DPbVWczXK8vAYBGXsJeVhu37TqTk
-	D1b7RuuHOFZy/Hoy1VCqe4iK+wxcLbVLH8D7EFC5GyAdc1lVYjAEtm7QPyv+MtAEjOTzPECLP+5
-	R7TTNnAvkkySB8KV5fvVQoicWXPZVYb7FRHeJ3+A53BAqhJR2CR33oQxQJir4KxjalIlCCm+Gem
-	cSRiW0y/fJeRXR9CD5gf8aSMrw5g/Q1MS57OrgCnCztlsr04m4nVs0Ff2NTPh3nVhdhDn+RIlkz
-	qCtMBoHcLpMf0YeHt/ffZabHy9NIQ2mE5Dw6AQ+xvQ4GWLZ7iHycNwTZzrLunIZ+n2sRTSo+9Du
-	akrjLgYQc9aI92ZpHQ+TyJ+Zmhe1cn/PrW8NABZIJ/4yquwYqdXNodK+6Z48wGRD+9Z+4NyKR2j
-	PUrNekqg09tiH5KZ+ZeMHCUOL8EzjrqScktb2lbJrFDVfZA6UwaNAXrSi2xEl8LKLwr/tOQwykP
-	4EsvwgqL7vY2uMnQPTffF8FYsfonl5aedK6HeHPNDpE8YOsMrjv25N5gX28FZk=
-X-Received: by 2002:a17:902:ce10:b0:2c4:397:dd7a with SMTP id d9443c01a7336-2d015c54f1amr44563625ad.4.1785294095995;
-        Tue, 28 Jul 2026 20:01:35 -0700 (PDT)
+        bh=xg7bd++vUDfsPPAlCp93j183GeX7bX18Uk0d449Ghw8=;
+        b=sU2TVmBg6j7Jj9H8t/dy5mhSXKwnfbV1MAWQ8eXmtKas4EFPP7iUdag1TlCKHmYU/x
+         Z6grkbDn8Igx0bvjcDsgWzXrIXYKqjTStV5f2G+j+cQpS4ttfhm1wSVoytvM0guiwVcT
+         C4f6AB2k780ysdsZInOnD//e/XIv1jNML9UfaCJ/1mUMxxKSO/G4PygmQnq1coTWwDPs
+         PFb8Rj6L65iC2lFm5Rt94wsKitho+3YY8HzaHR076cSCySDQ1wMSLpTWP54+21x6sxfP
+         smu6Tp/1ffP3VoVmgUggra3RRltOfXGrAJ4KErnPNTMMWVvNEwYlN8FIfg4+QUaj5Hp4
+         L/Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785294107; x=1785898907;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xg7bd++vUDfsPPAlCp93j183GeX7bX18Uk0d449Ghw8=;
+        b=QLV5V3VroH3mUVAXR/EZ6kNMDdRdWErkDmnP+SRzC5myXffen3QG1Sy2al7tcWgc8f
+         cMLMX14yuLV0levSL70LtgDfJwcZeW3bNIDZ8fcEHjtuNsNoRywpwuGuFBROkYxf2E70
+         LqdFR1Aabk3U0r3+QPTi1/C8ANfHtF9xJhGZuJLWtT0m9pafpoc2h67JKfTyUd42foza
+         JROZrgSGHwoWe5JQyyGf7V8/vWVOK6J9AmBWnFKmg0m1FGjBlob6ONdlDP3INERmOhOx
+         YzN/usLFaZb2Z1/IUQ5vcRW9xc3kXgy9ipcwLqujsrVTOF8WmG3t14C4GphKDitIT6FW
+         qRlg==
+X-Gm-Message-State: AOJu0YxlzfmoYgyRefHV9GyiLKT/uBKc/iil89QUqpj2hfgFop4XJFX4
+	8KjiNuGtkx1zAB4T/vg02s5IZWaW7tLJqrem+BpjR5ASNqozHsQUasAytZCODIBu
+X-Gm-Gg: AR+sD11F7gMHCUpkvnz70FAeBSHwgPzJLB5BWc6c9G0J4YGtrbuqk5zsz/t/sjZHupU
+	9SY9xA8ijsiZfEG+Ho/u+9HxuLMqHo+cFG4IkmbjBCqvlsX3G6J27VKghnRVtp/Z1Aqp0+Xyox/
+	YY5nF/ZH9oqE6cFFotoFUigdnwMF+5jyGPWLVCSioQHhjUi/sc8YecEDr8mV4iiJvnG8vjlNUWv
+	J0QlfyBUqgKL0b8178oJt7RH3skXfTdLGr/7ihZHvyXX/wuooZ8yQ8YRY9oit6dg/HIRQUSVXdx
+	psJ3feo+WSDNkTpqs9PjJsdMSJqbG+0zzwuoXP4zbsNDUHaRsH0PakDOmX49Lw4CNsQv/K3gd2a
+	B1EowsHMggjXXUyFYiAY7AoHrGS1Hd4g+mpN6hwc+t3jnYBvzLNyFY8ZGqx54UFFbn3sYKC/1o/
+	QigGf3NqIrIWYQLnk0afp20LO9b7DlO4X6KEcZeDtYVFkh/JpASOywzQAL5ksyJ8lFMmFM2yJlE
+	hyHPhQMLxce0JUpw1mqMt9rxKAHRIqrTEuuOHk+HUewuMotMiQ=
+X-Received: by 2002:a17:903:2f07:b0:2cc:d6de:d58e with SMTP id d9443c01a7336-2d015c2fa1bmr45187925ad.4.1785294106897;
+        Tue, 28 Jul 2026 20:01:46 -0700 (PDT)
 Received: from localhost.localdomain ([139.159.170.72])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022c3721esm4097385ad.77.2026.07.28.20.01.29
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022c3721esm4097385ad.77.2026.07.28.20.01.39
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 28 Jul 2026 20:01:35 -0700 (PDT)
+        Tue, 28 Jul 2026 20:01:46 -0700 (PDT)
 From: Qihang <q.h.hack.winter@gmail.com>
 To: netdev@vger.kernel.org
 Cc: willemdebruijn.kernel@gmail.com,
@@ -66,11 +68,14 @@ Cc: willemdebruijn.kernel@gmail.com,
 	pabeni@redhat.com,
 	horms@kernel.org,
 	stable@vger.kernel.org,
-	Qihang <q.h.hack.winter@gmail.com>
-Subject: [PATCH net v4 0/2] packet: use consistent hard_header_len in send paths
-Date: Wed, 29 Jul 2026 11:01:20 +0800
-Message-ID: <20260729030122.21462-1-q.h.hack.winter@gmail.com>
+	Qihang <q.h.hack.winter@gmail.com>,
+	Willem de Bruijn <willemb@google.com>
+Subject: [PATCH net v4 1/2] packet: use consistent hard_header_len in non-ring send paths
+Date: Wed, 29 Jul 2026 11:01:21 +0800
+Message-ID: <20260729030122.21462-2-q.h.hack.winter@gmail.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260729030122.21462-1-q.h.hack.winter@gmail.com>
+References: <20260729030122.21462-1-q.h.hack.winter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,28 +84,142 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-AF_PACKET send paths read dev->hard_header_len at several stages of skb
-allocation and construction. Concurrent netdevice reconfiguration can
-make those reads inconsistent and cause skb headroom underflow.
+packet_snd() reads dev->hard_header_len multiple times while allocating
+and constructing an skb. Device reconfiguration can change this value
+concurrently, for example through bonding device type changes.
 
-Split the regular and TX_RING paths so each patch has one Fixes tag.
-The separate SOCK_DGRAM consistency issue between hard_header_len and
-header_ops->create remains outside this series.
+For SOCK_RAW, packet_snd() can save a larger value in reserve and later
+allocate headroom using a smaller value. Moving skb->data back by reserve
+then places it before skb->head, and the following copy from userspace can
+attempt an out-of-bounds write.
 
-Changes in v4:
-- Use one hard_header_len snapshot throughout tpacket_snd(), including
-  reserve and per-frame skb construction.
-- Carry Willem's Reviewed-by on patch 1.
+packet_sendmsg_spkt() has the same issue because it calculates its
+reservation and header offset from separate reads before dropping the RCU
+read lock to allocate the skb.
 
-Link to v3: https://lore.kernel.org/netdev/20260728031345.49562-1-q.h.hack.winter@gmail.com/
+Add LL_RESERVED_SPACE_EX() for callers that already saved a header length.
+Read hard_header_len once in packet_snd() and use it for allocation and
+construction. In packet_sendmsg_spkt(), preserve the allocation-time value
+through the device lookup retry.
 
-Qihang (2):
-  packet: use consistent hard_header_len in non-ring send paths
-  packet: use consistent hard_header_len in TX_RING send path
+The separate SOCK_DGRAM consistency problem between hard_header_len and
+header_ops->create is not addressed here.
 
- include/linux/netdevice.h |  6 +++--
- net/packet/af_packet.c    | 46 ++++++++++++++++++++++++---------------
- 2 files changed, 32 insertions(+), 20 deletions(-)
+Fixes: b84bbaf7a6c8 ("packet: in packet_snd start writing at link layer allocation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+---
+ include/linux/netdevice.h |  6 ++++--
+ net/packet/af_packet.c    | 26 ++++++++++++++++----------
+ 2 files changed, 20 insertions(+), 12 deletions(-)
 
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 9981d637f8b5..e50e8abc1392 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -300,9 +300,11 @@ struct hh_cache {
+  * We could use other alignment values, but we must maintain the
+  * relationship HH alignment <= LL alignment.
+  */
+-#define LL_RESERVED_SPACE(dev) \
+-	((((dev)->hard_header_len + READ_ONCE((dev)->needed_headroom)) \
++#define LL_RESERVED_SPACE_EX(dev, hlen) \
++	((((hlen) + READ_ONCE((dev)->needed_headroom)) \
+ 	  & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
++#define LL_RESERVED_SPACE(dev) \
++	LL_RESERVED_SPACE_EX(dev, (dev)->hard_header_len)
+ #define LL_RESERVED_SPACE_EXTRA(dev,extra) \
+ 	((((dev)->hard_header_len + READ_ONCE((dev)->needed_headroom) + (extra)) \
+ 	  & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index e75d2932475a..88674a6e868c 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -1953,8 +1953,9 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
+ 	struct net_device *dev;
+ 	struct sockcm_cookie sockc;
+ 	__be16 proto = 0;
+-	int err;
++	int hard_header_len;
+ 	int extra_len = 0;
++	int err;
+ 
+ 	/*
+ 	 *	Get and verify the address.
+@@ -1997,14 +1998,18 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
+ 		extra_len = 4; /* We're doing our own CRC */
+ 	}
+ 
++	/* Keep the allocation-time header length across retry. */
++	if (!skb)
++		hard_header_len = READ_ONCE(dev->hard_header_len);
++
+ 	err = -EMSGSIZE;
+-	if (len > dev->mtu + dev->hard_header_len + VLAN_HLEN + extra_len)
++	if (len > dev->mtu + hard_header_len + VLAN_HLEN + extra_len)
+ 		goto out_unlock;
+ 
+ 	if (!skb) {
+-		size_t reserved = LL_RESERVED_SPACE(dev);
++		size_t reserved = LL_RESERVED_SPACE_EX(dev, hard_header_len);
+ 		int tlen = dev->needed_tailroom;
+-		unsigned int hhlen = dev->header_ops ? dev->hard_header_len : 0;
++		unsigned int hhlen = dev->header_ops ? hard_header_len : 0;
+ 
+ 		rcu_read_unlock();
+ 		skb = sock_wmalloc(sk, len + reserved + tlen, 0, GFP_KERNEL);
+@@ -2034,7 +2039,7 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
+ 		err = -EINVAL;
+ 		goto out_unlock;
+ 	}
+-	if (len > (dev->mtu + dev->hard_header_len + extra_len) &&
++	if (len > (dev->mtu + hard_header_len + extra_len) &&
+ 	    !packet_extra_vlan_len_allowed(dev, skb)) {
+ 		err = -EMSGSIZE;
+ 		goto out_unlock;
+@@ -2956,7 +2961,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 	int offset = 0;
+ 	struct packet_sock *po = pkt_sk(sk);
+ 	int vnet_hdr_sz = READ_ONCE(po->vnet_hdr_sz);
+-	int hlen, tlen, linear;
++	int hard_header_len, hlen, tlen, linear;
+ 	int extra_len = 0;
+ 
+ 	/*
+@@ -2996,8 +3001,9 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 			goto out_unlock;
+ 	}
+ 
++	hard_header_len = READ_ONCE(dev->hard_header_len);
+ 	if (sock->type == SOCK_RAW)
+-		reserve = dev->hard_header_len;
++		reserve = hard_header_len;
+ 	if (vnet_hdr_sz) {
+ 		err = packet_snd_vnet_parse(msg, &len, &vnet_hdr, vnet_hdr_sz);
+ 		if (err)
+@@ -3018,10 +3024,10 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 		goto out_unlock;
+ 
+ 	err = -ENOBUFS;
+-	hlen = LL_RESERVED_SPACE(dev);
++	hlen = LL_RESERVED_SPACE_EX(dev, hard_header_len);
+ 	tlen = dev->needed_tailroom;
+ 	linear = __virtio16_to_cpu(vio_le(), vnet_hdr.hdr_len);
+-	linear = max(linear, min_t(int, len, dev->hard_header_len));
++	linear = max(linear, min_t(int, len, hard_header_len));
+ 	skb = packet_alloc_skb(sk, hlen + tlen, hlen, len, linear,
+ 			       msg->msg_flags & MSG_DONTWAIT, &err);
+ 	if (skb == NULL)
+@@ -3037,7 +3043,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 	} else if (reserve) {
+ 		skb_reserve(skb, -reserve);
+ 		if (len < reserve + sizeof(struct ipv6hdr) &&
+-		    dev->min_header_len != dev->hard_header_len)
++		    dev->min_header_len != hard_header_len)
+ 			skb_reset_network_header(skb);
+ 	}
+ 
 -- 
 2.50.1 (Apple Git-155)
+
