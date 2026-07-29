@@ -1,118 +1,87 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBD1362138;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107EA40DB5E;
 	Wed, 29 Jul 2026 10:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785320625; cv=none; b=IHCEhq2wfHm/NUh7he5O4fpF488aiMnl5k0ydrgAxN0gDFR8FxTeJwD7dwIOTdIKXYHolU/TnNsAa8DuD406yDWYbs8ji1TWPSYuR45EVjdNCJfRVpq8us7Ll3W7cG5kG5+qREGz6dVTsYT1SJKv2MIpqdXKCaPTSqotNZqkK74=
+	t=1785320625; cv=none; b=AQ///5iGC2l250YsokQOm7j/M0Bzt3PcYVRohBFfnKqcK3w4eUrqLwe3sdhIz6ZmMeCSb3FHYTICZhKeIAyzgTieEGAnJ0g/Gu810tvNoOeh6BOSf8zzMTxqfR2jyhiY7pjXVy2NsTzUU2/GVEgvORoDQ7Kq/JQqOgw34tHXNiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785320625; c=relaxed/simple;
-	bh=l8y+XPJUC1tQOFXx40rTjlBkSjrAZHGCkyOIHlfIba0=;
+	bh=kfhuk77B0e9r5D2spgZKrCMAL6v1/GH3Ig45qmhEP5M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FPl9mQuSElaqzWoSQpuF6D6AFyx+5osY/wq7HnSucRVkMS2gKmnx+yP0UrnpgsmGO3McN3Om0g0zaFWRs1Mm/OLpNheQ5AE7/EgeAWY6fer+8uDWsREKu0DpMFZUIr0abjt2ihCONX+ZniUv4m8fppz46YSu13PTRQjnknsyalE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=N4EK9U7O; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mv/+1q6cv7ymC36ewKXHGkMkVfoCPN3UbuM4oe2k/++0ekL07CYVTtVDIq7+hB/xHciO++/+NDGfpb10/MY/FwJopczLDzTkq6ASdteUXgk9Xyb5bLv8rujPDevE5Vl50+uK8ODJjrWAYwF/Jow9iM3gvQM8gRZW67A15ORzTOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccXMZbc7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="N4EK9U7O"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=n4EL49jAhP/fLySTuTlorUfpEehwUP34DIPAWZQYhDY=; b=N4EK9U7O+L3K3VbMTIx2GgNFvX
-	w9OqPOdexhkwwU/yg9G8dF95xAYn1E1Rsa4GdZC1TVyJVhwOVDHkviYa68I9B+Oojo9ZhuK5MNRsF
-	8DY+YnXHgaHBfJqyhENF0PxddJHST1NU5ptT8n6lPcmjklENrppOaBD/PpzjlnARBZ31AcwBdUj3+
-	l/VKuIzXd0Kag7KLuFajV/olm1dCtCsk8s8bj4V+vUmXbikg3D7CQKlchxfE5AVh19uYQpSc39ylQ
-	1wC1dHlrJ2FKFHZ9l3ab47HgjIGyVDesp1D9lhGIY34uG0uYV6NAc//ONY7/TOA3dN7QAL7CcOQeD
-	IojpcX7Q==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wp1Rl-008NoJ-2R;
-	Wed, 29 Jul 2026 10:23:34 +0000
-Date: Wed, 29 Jul 2026 03:23:28 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Gustavo Luiz Duarte <gustavold@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	asantostc@gmail.com, kernel-team@meta.com
-Subject: Re: [PATCH net-next 4/9] netconsole: move netpoll_local_ip_unset()
- as netcons_local_ip_unset()
-Message-ID: <amnSAs8Ot4fR3lhc@gmail.com>
-References: <20260724-netconsole_move_more_final-v1-0-a5f7691db81c@debian.org>
- <20260724-netconsole_move_more_final-v1-4-a5f7691db81c@debian.org>
- <CAGSyskW6iqoWk8DpLZbi=8xoME1J8LaSnjBNvAbAg6+b8kszBg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccXMZbc7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08DBC1F000E9;
+	Wed, 29 Jul 2026 10:23:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785320623;
+	bh=TD+Lux/rBcKsRsV04evXaZy/8eK5ceys6vLCawvVXE0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ccXMZbc7C/HzjDOdPn+wxBNnX/KCvzAmBXWU5+LmesuCAO0U/Yanuhpu8kKYpWXnI
+	 c8IXjvBFVJoxhj06AL1GvANdTWlxg6vzilrlP6ZTpIeUxvXM9kVLgFpjJgCSWGvECB
+	 bkkI7f1umm/ePPokZSkIrEJMsL4Q1jd9+jLG256KqLIFgay4AP53pGSdlUJpATEA0k
+	 PFDgyh2psLxMnIRYxP1N249+SZW9wtSBjdX/mtwGeWPAbvOA6hXOEU41ZxikTEKp16
+	 xFLR8CqCggIscZEdIR3LOnWGt/LyTc1ygKbFKCxFR5evwLJPhDr44MClGC8Rrl4FYQ
+	 du//opyiSDziA==
+Date: Wed, 29 Jul 2026 12:23:40 +0200
+From: Antoine Tenart <atenart@kernel.org>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+	Gal Pressman <gal@nvidia.com>, Jiri Pirko <jiri@nvidia.com>, Jiri Pirko <jiri@resnulli.us>, 
+	linux-kernel@vger.kernel.org, Or Har-Toov <ohartoov@nvidia.com>, 
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net] devlink: fix net namespace reference leak in reload
+Message-ID: <amnUeT6MHSNvnM_b@kwain>
+References: <20260729080600.2427721-1-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGSyskW6iqoWk8DpLZbi=8xoME1J8LaSnjBNvAbAg6+b8kszBg@mail.gmail.com>
-X-Debian-User: leitao
+In-Reply-To: <20260729080600.2427721-1-tariqt@nvidia.com>
 
-On Tue, Jul 28, 2026 at 12:49:46AM +0100, Gustavo Luiz Duarte wrote:
-> On Fri, Jul 24, 2026 at 4:05 PM Breno Leitao <leitao@debian.org> wrote:
-> >
-> > Move netpoll_local_ip_unset() from netpoll to netconsole and rename it
-> > to netcons_local_ip_unset();
-> >
-> > The body is otherwise unchanged, only the comment's setup-function
-> > reference is updated.
-> >
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > ---
-> >  drivers/net/netconsole.c | 19 ++++++++++++++++++-
-> >  include/linux/netpoll.h  |  1 -
-> >  net/core/netpoll.c       | 18 ------------------
-> >  3 files changed, 18 insertions(+), 20 deletions(-)
-> >
-> > diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-> > index 3a7a2cafc6276..70f9c5bfb3720 100644
-> > --- a/drivers/net/netconsole.c
-> > +++ b/drivers/net/netconsole.c
-> > @@ -351,6 +351,23 @@ static void netconsole_skb_pool_flush(struct netconsole_target *nt)
-> >         skb_queue_purge_reason(&nt->skb_pool, SKB_CONSUMED);
-> >  }
-> >
-> > +/*
-> > + * Test whether the caller left np->local_ip unset, so that
-> > + * netcons_netpoll_setup() should auto-populate it from the egress device.
-> > + *
-> > + * np->local_ip is a union of __be32 (IPv4) and struct in6_addr (IPv6),
-> > + * so an IPv6 address whose first 4 bytes are zero (e.g. ::1, ::2,
-> > + * IPv4-mapped ::ffff:a.b.c.d) must not be tested via the IPv4 arm —
-> > + * doing so would misclassify a caller-supplied address as unset and
-> > + * silently overwrite it with whatever address the device exposes.
-> > + */
-> > +static bool netcons_local_ip_unset(const struct netpoll *np)
-> > +{
-> > +       if (np->ipv6)
-> > +               return ipv6_addr_any(&np->local_ip.in6);
-> > +       return !np->local_ip.ip;
-> > +}
->
->
-> This whole checking if it is all zeroes in netcons_local_ip_unset()
-> looks very cumbersome.
-> Perhaps instead of storing 'bool ipv6' we could have something like
-> 'u8 family', which would contain AF_INET for ipv4, AF_INET6 for ipv6,
-> or AF_UNSPEC if unset.
+On Wed, Jul 29, 2026 at 11:06:00AM +0300, Tariq Toukan wrote:
+> From: Or Har-Toov <ohartoov@nvidia.com>
+> 
+> devlink_nl_reload_doit() calls devlink_netns_get(), which returns a net
+> with a held reference. When the requested namespace differs from the
+> current one and the reload action is not DRIVER_REINIT, the function
+> returns -EOPNOTSUPP without releasing the reference. Add the missing
+> put_net() on this error path.
+> 
+> Fixes: 2edd92570441 ("devlink: don't allow to change net namespace for FW_ACTIVATE reload action")
+> Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+> Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 
-Agree, an explicit state machine would clarify the three cases: IPv4,
-IPv6, or unspecified (with netconsole deriving it from the device).
+Reviewed-by: Antoine Tenart <atenart@kernel.org>
 
-Now that the helper lives in netconsole, the awkwardness is more visible.
-
-> But that would be another patch separate from this refactoring, so for
-> this patch:
-
-Thanks for the review. Would you be interested in pursuing that change
-once this lands?
+> ---
+>  net/devlink/dev.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/net/devlink/dev.c b/net/devlink/dev.c
+> index 57b2b8f03543..fd5633fa88ec 100644
+> --- a/net/devlink/dev.c
+> +++ b/net/devlink/dev.c
+> @@ -578,6 +578,7 @@ int devlink_nl_reload_doit(struct sk_buff *skb, struct genl_info *info)
+>  		    action != DEVLINK_RELOAD_ACTION_DRIVER_REINIT) {
+>  			NL_SET_ERR_MSG_MOD(info->extack,
+>  					   "Changing namespace is only supported for reinit action");
+> +			put_net(dest_net);
+>  			return -EOPNOTSUPP;
+>  		}
+>  	}
+> 
+> base-commit: 3bd438a58e910db5dc369aa25dfed1fc95f1b596
+> -- 
+> 2.44.0
+> 
