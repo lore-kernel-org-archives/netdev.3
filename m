@@ -1,77 +1,83 @@
-Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75FE3BC668;
-	Wed, 29 Jul 2026 22:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.162.73.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D4C24E4B5
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 22:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785365027; cv=none; b=ln9I72d/jtGEp0a8LpsP73vkk6YBIpdi6LVmoNHylSqMWhwUArG+0WZyYSgny3KoxdsfE0DI1TRs1D7ptefmRmfUx06/GLSR2clRHJ6KYJ9HXHzzg3/raIkGHQ1x3DPoEA/XHTZ9zShdWbDB3fJOfgRDnmqNJvyuy9qmDLakOng=
+	t=1785365156; cv=none; b=i15J7LtSv2VcjAwZpcNkc4ShbiKfKhq+spxziMAnuJMXx+I+apMHNTB2R9hjW/+0UsOcCXd0zgj0b2uZXZ3IuQENiuRCc/vF/Kw7w/g8DuWNRvFszNaA6b/kT1xgVoF1VdsXszcFbwsmmhOi10t938mWxL1IHbXevOESl51u+Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785365027; c=relaxed/simple;
-	bh=NqV2gyvwf53YD0fgRW+DGPQBXmeCXDR8/qp5ZwNz77o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fdNy4IYaef0XdFqNxsZUMdG5soJw9iRQxU24Vu49+ib5qkY5FowL9JAx7o5XayLGVVW5swW5GShGN/4pCAefggSBOBn4XYHhxxo+jLZ9lNLzlixvB5ot1RxC0lT5oxTX3tX3l9uZAyNP9JYqePzw2pTF8HjOpaxD/rBrK8l3XjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=s1F6DSqo; arc=none smtp.client-ip=35.162.73.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1785365156; c=relaxed/simple;
+	bh=GPyxZx0+cSIU8x8jKvE3lu0Z41GxQ/1gIT/YAe6XtNI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lWefQdUl1dedBmxynKxGFuTvbolUAHU5kQKeuInGAN085zFKd3sU3Xly7VdW80qTeAWoTLC/azwWpeg8/0COAgnozBXCqxRPeazQZn0QIgj4l2YRMOf6rwQPRK+JUxENLeHFSWpWv0GI/w0gxl0rIL74wxu7DFd3zXjYZhLhIKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HE541MGz; arc=none smtp.client-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="s1F6DSqo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HE541MGz"
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5bf83925ddaso538670e0c.1
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 15:45:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1785365025; x=1816901025;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=0cX/Esl8gY+kO7NvHpvUsQS5CTl2FTbhi4a44jfBkNE=;
-  b=s1F6DSqo30cAKWg3bsccEFX4mSRqwz1MyuwvRkPWhnLSntkQTS/qLd4V
-   W7G2SB0qeIz01hS58jETo2Mg5ap7UI/us9FYpPO3Tv59PSP4Ph3dYaT6n
-   2Li1mTp/6en6ofm2grxjMEHKOu4RltWNsPu6aaR5dk8aQwwVF+tZlS+Mv
-   +Z0gXZiE9gLnS2336P1H3DcJXoo7tcF/wFhD77FJBf2ubGGXPtrSJctdA
-   zX/ID0uMAMXXj+7g7PN2clCbg+JkZLUazRf6qVOGB25difFIEdEe37wsB
-   7DmRxQS3y3Lc41L2FZTqYAuLiIdnSihhl1210VQfvGj0XYbqZVX0Cack0
-   g==;
-X-CSE-ConnectionGUID: +d1g9/U0QvqXxX9KBS5qrQ==
-X-CSE-MsgGUID: zkxEMZQ7T0GVgf3wSW7srg==
-X-IronPort-AV: E=Sophos;i="6.25,193,1779148800"; 
-   d="scan'208";a="24412671"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 22:43:43 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:21014]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.47.97:2525] with esmtp (Farcaster)
- id c47381f9-be81-467c-b111-5c82cc533eb5; Wed, 29 Jul 2026 22:43:42 +0000 (UTC)
-X-Farcaster-Flow-ID: c47381f9-be81-467c-b111-5c82cc533eb5
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Wed, 29 Jul 2026 22:43:42 +0000
-Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Wed, 29 Jul 2026 22:43:36 +0000
-From: Arthur Kiyanovski <akiyano@amazon.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>, <netdev@vger.kernel.org>
-CC: Arthur Kiyanovski <akiyano@amazon.com>, Eric Dumazet
-	<edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, David Woodhouse
-	<dwmw2@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Miroslav Lichvar
-	<mlichvar@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Andrew Lunn
-	<andrew@lunn.ch>, Carolina Jubran <cjubran@nvidia.com>, Wen Gu
-	<guwen@linux.alibaba.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "David
- Woodhouse" <dwmw@amazon.com>, Yonatan Sarna <ysarna@amazon.com>, "Zorik
- Machulsky" <zorik@amazon.com>, Alexander Matushevsky <matua@amazon.com>,
-	"Saeed Bshara" <saeedb@amazon.com>, Matt Wilson <msw@amazon.com>, Anthony
- Liguori <aliguori@amazon.com>, Nafea Bshara <nafea@amazon.com>, Evgeny
- Schmeilin <evgenys@amazon.com>, Netanel Belgazal <netanel@amazon.com>, Ali
- Saidi <alisaidi@amazon.com>, Benjamin Herrenschmidt <benh@amazon.com>, Noam
- Dagan <ndagan@amazon.com>, David Arinzon <darinzon@amazon.com>, Evgeny
- Ostrovsky <evostrov@amazon.com>, Ofir Tabachnik <ofirt@amazon.com>, Amit
- Bernstein <amitbern@amazon.com>, <linux-kselftest@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <shuah@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Simon Horman
-	<horms@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	<vadim.fedorenko@linux.dev>
-Subject: [PATCH v6 net-next 0/7] ptp: Add PHC timestamp quality attributes
-Date: Wed, 29 Jul 2026 22:43:18 +0000
-Message-ID: <20260729224328.16440-1-akiyano@amazon.com>
-X-Mailer: git-send-email 2.47.3
+        d=gmail.com; s=20251104; t=1785365153; x=1785969953; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=h9u9uRgNdOHE3Hm6tQKrXhbypx1MeLyG0qZtrVKyk00=;
+        b=HE541MGz9Fkq0AIFCfF9fmAeMLlu1bk6w8rOsCf0/QHAEhV69T1sUw4atRrSy5jF6e
+         Gs+kD4UwK1i+GoRRUx5MDCpKWGXi9MhtxawyA2arvIBLibIzlgs8m0jUNla64elsES7i
+         EzqW28xpq3Dgl9hXFJQ2xSaVBWFs1lp3cG6rHGLlpR4fLCh09IKnjcyFr2VJvMHIpvlY
+         wbFWeKQhVkFK+MHG7tqIpKvYxbbxuS5I924IY2Xei6+7jXJSVKVhSQ4hHj3s4jhOjxQ8
+         prK4yWgBS8dRtAHWGRJ2vV6DkmxaWl3MbjoLX5a4D0ohGpdWODpEEiHwZw+uf8DA0FCh
+         Wlqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785365153; x=1785969953;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=h9u9uRgNdOHE3Hm6tQKrXhbypx1MeLyG0qZtrVKyk00=;
+        b=npu069RqGPj17LbnG5+1pGsB3OULD+OiCrH9dBFQuTjSRCo/8kChMQT6nt764x85JP
+         EQ9UOGBMA13uaOdXlmAM2w9r/JoLATADXjBLoyuN40HvFCFu7ruXcPyAI+HjtPNsJst5
+         hAN6vVQa6gGQNFVqv5ZVFDViNA9xE2gs6MwsqIOsZO9TuxYzfN91AqeYLF5Wy43VEGAq
+         zGCRWCskm04X2ei8VYWlfV0wpwjgsMLIx78G2fBPRbUXEGrKoK7dn0Thpdo1At6uxRD9
+         3zrvQlRDqd9V3mnhQqJRMxldptbDh5dVN1siNjwcpPRlOXdgXXb7MFnaxR/lvf5ckAY1
+         KU8w==
+X-Forwarded-Encrypted: i=1; AHgh+Rpgl/Y4uAXbQKKY2labhEA+gB5oX0q/heG7/T+5xPcJvl8tsTlZYMWmLytmpXgujdSz0BZTS/Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPKDpbUdvsrIpRRb6W8jo6Osmqu4tvDyFq0WrvwPs7T1h/ct/1
+	RVjZXmj+q/pNs9/YsjFevnAGYapW6YZcA2a1Sg/QK239MB+AkGejkKeh
+X-Gm-Gg: AR+sD127QcLFkc3HRJlQ3myR5fGkDsJUKfIXYFVPZ04vPx49Xnbfj3WZ8xpyDqDLYvR
+	eSkVAUwIKSgzy/JgT6kURzmxlpAzQt9GlHwlQ6APG4O3YoCxbW/3LtIWh/BKmOlUMLu07ajSY8l
+	+mCugqub4HLLH9UHr4nTcDZUZDf0XgOHJoRfPiWZJCCLHF0EzdcKTVSwsnJdycxGjInjvWRBzYv
+	cbz4SMQe2mLOofrTl8cGGN0gWBx41Pc2xCyPsJS6J2kRdaXPGjCW8I5musq8c5LCxCf2dYJye4+
+	zt+Nz/+I4Zv2ZtOuZOLD24TBJZEznwlcpdpKLaSnzL9O6xTJJLCklPTA14RBcg0wUQWJ2l5sBvb
+	hEBSRPVofy+eL4Xaxn3RMwkcXy2OzqPlmwJ4W1xp2oL3IZO7zjQjHR1S91aGOQS+fDdlifBqp9G
+	R01y/pSsQ2XNKnqG2JarkYmBjoRMSPgZprpo/aS0HvlWJr5W/G+Y/bicvjMQFEwYzAFPePe84CD
+	AIY17jbStt5CSgQIgioTNV09TGpuYF6ItJVRw==
+X-Received: by 2002:a05:6122:4684:b0:5bd:c27a:dafd with SMTP id 71dfb90a1353d-5c365fb257emr35318e0c.3.1785365153129;
+        Wed, 29 Jul 2026 15:45:53 -0700 (PDT)
+Received: from fabio-X870-EAGLE-WIFI7.. ([2804:1b3:a801:60b4:a913:91a7:b883:6046])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c366570bd9sm24356e0c.8.2026.07.29.15.45.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 15:45:52 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+To: kuba@kernel.org
+Cc: maxime.chevallier@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	qiangqing.zhang@nxp.com,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux@armlinux.org.uk,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH net] net: stmmac: Select sleep pin state after suspending phylink
+Date: Wed, 29 Jul 2026 19:45:35 -0300
+Message-ID: <20260729224535.506598-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,186 +85,54 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D044UWA002.ant.amazon.com (10.13.139.11) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-This series adds quality attributes to PTP Hardware Clock (PHC)
-timestamps, allowing userspace to obtain error bound, clock status,
-timescale, and system counter values alongside timestamps in a single
-call.
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-Motivation
-----------
-The existing PTP APIs return timestamps without any indication of
-their quality. Applications that need clock accuracy and
-synchronization status commonly rely on external tools such as
-ptp4l, which implement synchronization logic and can export their
-measurement of clock accuracy. For managed PHC devices - such as
-the ENA network adapter, whose clock is synchronized by the device
-without userspace involvement - these tools are not available, and
-the existing APIs lack a way to report quality metrics to consumers
-of time.
+When MAC Wake-on-LAN is disabled, stmmac_suspend() selects the sleep
+pinctrl state before calling phylink_suspend().
 
-This was previously proposed as an RFC [1] with a single ioctl.
-Based on community feedback, the design was reworked to cover both
-the extended (multi-sample) and precise (cross-timestamp) paths.
+phylink_suspend() may access PHY registers over MDIO while stopping or
+reconfiguring the PHY. If selecting the sleep state muxes the MDC and
+MDIO pins away from the MDIO bus function, these accesses no longer work.
 
-Design
-------
-The UAPI was redesigned based on Thomas Gleixner's proposal [2]:
+Select the sleep pin state only after phylink_suspend() has completed.
 
-- A unified data structure (struct ptp_sys_offset_attrs) is used
-  for both extended and precise ioctls.
+Keep the transition conditional on MAC Wake-on-LAN being disabled so
+that the pins remain active when the MAC must receive wake-up packets.
 
-- A u32 valid bitmask in struct ptp_clock_attrs indicates which
-  attributes are populated, replacing sentinel values. Drivers
-  set only the bits for attributes they provide.
+Fixes: 90702dcd19c0 ("net: stmmac: fix MAC not working when system resume back with WoL active")
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+[fabio: Reworded subject/commit log for clarity and made it priv->wolopts conditional]
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+Based on the NXP kernel fix:
 
-- System counter values (cycles + counter_id) are carried in
-  struct ptp_sys_time alongside each system timestamp. These are
-  populated by the timekeeping core cross-timestamp infrastructure,
-  which is now merged in net-next [3] - drivers do not fill them.
-  This series therefore applies directly to net-next with no
-  out-of-tree dependency.
+https://github.com/nxp-imx/linux-imx/commit/7905fa71ed07d8c2f1da88ad9fffd5ac5e89461f
 
-- Graceful degradation: the attrs ioctls work even on devices
-  without attrs callbacks, falling back to gettimex64 /
-  getcrosststamp and returning attrs.valid = 0. The capability
-  bits reflect this fallback so cap-respecting userspace does not
-  skip the ioctl on base-only drivers.
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-A capability flag is added to ptp_clock_caps so userspace can
-discover attributes support.
-
-Patches 2-3 add testptp support for the new ioctls.
-
-Patch 4 implements the attributes for ptp_vmclock, reporting
-error bound, clock status, and timescale.
-
-Patches 5-7 implement the attributes for the ENA driver,
-reporting error bound from the device's PHC layer.
-
-v6:
-- ptp: reject a non-zero reserved field (request.rsv[]) in the
-  attrs ioctls, matching ptp_sys_offset_extended(). (Jakub Kicinski)
-- ptp: zero-initialize the per-sample system-timestamp snapshot in
-  ptp_sys_offset_extended_attrs() so no uninitialized or stale stack
-  data can reach userspace. (Jakub Kicinski)
-- ptp: translate the kernel enum clocksource_ids to the UAPI enum
-  ptp_counter_id before returning sys_counter_id; sources that are
-  not a raw hardware counter (e.g. kvmclock) are reported as
-  PTP_COUNTER_UNKNOWN with sys_counter = 0. (Jakub Kicinski,
-  David Woodhouse)
-- ptp: initialize the precise cross-timestamp struct and set its
-  clock_id from the validated request; validate clock_id against a
-  precise-path allowlist (CLOCK_REALTIME + CLOCK_AUX) so unsupported
-  clocks return -EINVAL instead of triggering a WARN in
-  get_device_system_crosststamp(). (Jakub Kicinski, David Woodhouse)
-- ptp: make the extended_attrs/precise_attrs capability bits reflect
-  the base-callback fallback (gettimexattrs64 || gettimex64,
-  getcrosststampattrs || getcrosststamp) and document the fallback
-  and the att.valid semantics. (Jakub Kicinski)
-- ptp: echo the full request header back from the attrs ioctls so
-  valid/clock_id/num_samples/rsv round-trip. (Jakub Kicinski)
-- ptp: clarify the FREE_RUNNING vs UNRELIABLE and HOLDOVER status
-  comments and the @error_bound kernel-doc (a maximum bound, not a
-  statistical estimate; not to be trusted when status is UNKNOWN or
-  UNRELIABLE). (Carolina Jubran)
-- ptp: document that both @sts and @att may be NULL in the
-  gettimexattrs64 kernel-doc. (Jakub Kicinski)
-- selftests/ptp: print the returned system counter value and id
-  (sys_counter, sys_counter_id) in the attrs output.
-- Exposing the underlying hw_csid/hw_cycles for derived clocksources
-  (kvmclock, ART, ...) is left to a follow-up; the UAPI leaves room
-  to add them without an ABI change. (David Woodhouse)
-
-v5:
-- ptp: simplify ptp_sys_offset_{extended,precise}_attrs() to copy
-  the request header onto the stack and allocate the result buffer
-  once, instead of memdup_user() + kfree() + kzalloc(). (Saeed
-  Bshara)
-- ptp: deduplicate the kernel-doc for gettimexattrs64 /
-  getcrosststampattrs by referencing the base gettimex64 /
-  getcrosststamp callbacks. (Saeed Bshara)
-- ptp: add missing kernel-doc member descriptions for struct
-  ptp_timestamp and struct ptp_sys_offset_attrs.
-- selftests/ptp: map the clockid to a name and print once instead
-  of three duplicated printfs. (Saeed Bshara)
-- selftests/ptp: make -a a modifier on -x/-X instead of an
-  exclusive option; drop -A (use -X -a); trim the unknown-clock
-  output; print "not reported" for attributes the device does not
-  report. (Saeed Bshara)
-- ptp_vmclock: scope the local 'st' inside the SUPPORT_KVMCLOCK
-  block to fix an unused-variable warning on !CONFIG_KVM_GUEST.
-  (kernel test robot)
-- No UAPI changes; the ioctl structures are unchanged from v4.
-
-v4:
-- Complete UAPI redesign per Thomas Gleixner's proposal [2]:
-  unified data structure with u32 valid bitmask, system counter
-  in ptp_sys_time (populated by core, not drivers), graceful
-  degradation for devices without attrs callbacks. (Thomas Gleixner,
-  David Woodhouse)
-- Counter values moved from driver attrs callback to timekeeping
-  core infrastructure - drivers no longer set counter_id or
-  counter_value.
-- Flexible array member for timestamps[] (kernel bounds the copy,
-  userspace allocates for num_samples requested).
-- Drop separate ptp_clock_attributes kernel struct - driver
-  callbacks fill the UAPI ptp_clock_attrs directly.
-
-v3:
-- Remove patch 5/8 from v2 (return-code bugfix) - sent separately
-  as [PATCH net] to the net tree.
-- Zero-initialize struct ptp_clock_attributes in PTP core ioctl
-  handlers to prevent stack leak of unset fields. (Simon Horman,
-  sashiko)
-- ptp_vmclock: validate counter_period_shift < 128 to prevent
-  undefined behavior on untrusted hypervisor input. (sashiko)
-- ptp_vmclock: add overflow check on err_hi * NSEC_PER_SEC to
-  prevent silent wraparound producing erroneously small error
-  bound. (sashiko)
-- ptp_vmclock: report PTP_TIMESCALE_TAI after tai_adjust() to
-  avoid timescale mismatch. (sashiko)
-- ENA: set counter_id = 0, counter_value = 0 in gettimexattrs64
-  for defense-in-depth. (sashiko)
-
-v2:
-- Fix build bisectability: move ena_com.c consumer updates into
-  patch 6/8 and ena_phc.c caller update into patch 7/8 so each
-  patch compiles independently.
-- Add missing Cc for Amit Bernstein (co-author of ENA patches).
-
-[1] https://lore.kernel.org/netdev/20250724115657.150-1-darinzon@amazon.com/
-[2] https://lore.kernel.org/all/87se7ht25o.ffs@tglx/
-[3] https://lore.kernel.org/all/20260526165826.392227559@kernel.org/
-
-Arthur Kiyanovski (7):
-  ptp: Add ioctls for PHC timestamps with quality attributes
-  selftests/ptp: Extract print_system_timestamp helper in testptp
-  selftests/ptp: Add testptp support for attributes ioctls
-  ptp: ptp_vmclock: Implement attributes ioctls
-  net: ena: Update PHC admin interface for error bound support
-  net: ena: Add error bound to PHC communication layer
-  net: ena: Implement gettimexattrs64 callback for PTP attributes
-
- .../device_drivers/ethernet/amazon/ena.rst    |   2 +
- .../net/ethernet/amazon/ena/ena_admin_defs.h  |  17 +-
- drivers/net/ethernet/amazon/ena/ena_com.c     |  51 ++--
- drivers/net/ethernet/amazon/ena/ena_com.h     |   5 +-
- drivers/net/ethernet/amazon/ena/ena_debugfs.c |   3 +
- drivers/net/ethernet/amazon/ena/ena_phc.c     |  61 +++-
- drivers/ptp/ptp_chardev.c                     | 208 ++++++++++++-
- drivers/ptp/ptp_clock.c                       |   4 +-
- drivers/ptp/ptp_vmclock.c                     | 197 +++++++++++-
- include/linux/ptp_clock_kernel.h              |  20 ++
- include/uapi/linux/ptp_clock.h                | 283 +++++++++++++++++-
- tools/testing/selftests/ptp/testptp.c         | 198 +++++++++---
- 12 files changed, 939 insertions(+), 110 deletions(-)
-
-
-base-commit: b515dc54795ef370be3cb396e7c12ad91686b6d1
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 0de4bc949913..36ab66ad80fd 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -8183,13 +8183,15 @@ int stmmac_suspend(struct device *dev)
+ 		priv->irq_wake = 1;
+ 	} else {
+ 		stmmac_mac_set(priv, priv->ioaddr, false);
+-		pinctrl_pm_select_sleep_state(priv->device);
+ 	}
+ 
+ 	mutex_unlock(&priv->lock);
+ 
+ 	rtnl_lock();
+ 	phylink_suspend(priv->phylink, !!priv->wolopts);
++
++	if (!priv->wolopts)
++		pinctrl_pm_select_sleep_state(priv->device);
+ 	rtnl_unlock();
+ 
+ 	if (stmmac_fpe_supported(priv))
 -- 
-2.47.3
+2.43.0
 
