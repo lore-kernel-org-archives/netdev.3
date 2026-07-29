@@ -1,174 +1,115 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05EB640DB3A
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 16:33:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9114119E6;
+	Wed, 29 Jul 2026 16:37:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785342787; cv=none; b=BTVUuE5WIz4983Gn5fvu65atTOiWpr+nCqdmDqGYt/unaaMVZw1RlMN/gK+2S6TloFUn55T8jX/glflEPWRsR/8E1WGyR4aKaYRhtPMmvIJhtg4EILAXeTQ2gAXgO+leT7R0UWSzrellZaqQBrXP0RG668uAwt87MjjQvP77fL4=
+	t=1785343070; cv=none; b=jn4jMZ3RwQQIX6B8gNorUfExR0HiBtWCTmVF81aVCtJwd2rUS9XXjcQSQGi4ZYovvQM6Td63xY7tGZoRNrdyru9jiCgVQrh3REk7DtYFNQplhmC3wbZyIVM95znPpq6wjguYM4HwGRLcn6xLsfBguYlM3mLmH3GCynKyPKYzrZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785342787; c=relaxed/simple;
-	bh=/4XUSjwFIMzU/ofJvehDBkb4qTc5c53Yt9jPhCQa1Zc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jxlNsyiTjC3omz7PrL+A8RZEc0uwm6hNv/Wd/9AL0/7vJIiVoTIxpf/3Bvu2HAuxUT/5+9aAKZ2nDwUMS5nR74Jqsg+6k9pX8W7MhIw0+gNYRZAwyT/ydJi8qeDOE5hVqfzcOOkKIpfCut4H3uCH1Ti2BASe5ChyxacsQzTmQDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qgn5PVBQ; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785343070; c=relaxed/simple;
+	bh=Z1w5WIvbNQo9Zn50jFBwKMQf8kI7lW0aM+16Dh/V7qY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sUkuoSQgQgeAmk80jLHZ/Qkl2fdN9rqWZO8OuZCQxxhk+BQltiyGQQiva4dq+r3OfiO57mnFC6DxG+fMKoo+4fencLoRhIeoiBw7QnwM5TMdVWmicX/Gqq6tg0OJSPSiqv5EdsC+xqxpURo0Cp0PJnt5uvXQ7QSGrrA7RENv8CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Rigbcil8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JWSoiNys; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qgn5PVBQ"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-384930ca5e2so994504a91.3
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:33:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785342785; x=1785947585; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fArv74sVKQZ0CBDPXzKJ26kTPH49bXsdYCIt+szposY=;
-        b=Qgn5PVBQ8pu96bgenzbkcQs1VTplQN7+cQWi6I0EwLy8YNPqig6KVtHIOrb131Ic9B
-         P1fFR8BgQBd8DsgbWH/sE5qBo3srTeyDrpbA5u4aZkbcIjygSLrFM5wxW1NNkFgQhgvT
-         myw79vus+8Ccc+neTEKYopYkA4HVrf+hiEBfxoaKAeHiET7YiQ64oQNDPC5rOKjPx6SR
-         O6frWIcYJWbfFxQtWKyK2tIslhVEvbvuxRuosYkS1WzmHVzLm2wayrSx6R09i3BtDBjw
-         /3jSInR8+HtvlJh++OVgB7Yl7K0QbUm1aHWXZu0f0utZaT+Qv0TjvszsuPeSzAMvSjqR
-         Ib5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785342785; x=1785947585;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fArv74sVKQZ0CBDPXzKJ26kTPH49bXsdYCIt+szposY=;
-        b=PLL/jSDWf3ySgLUpACLukaHuyBcOZiGeUNGw7gZr47EbWV93a52H3pH9A9LUTQONuJ
-         nkwgM2o9Py68890bm401LEhxJS2Op3DCHeSKCkzYDITE/ZB49UMvHiI5rweg9KoFqQZK
-         HRUqdcZ3oKe/EHhSTcdD2LaxIkvWz1qDRVawJPT4GoagyHSYUDVHO6wRYr84oBYQIKAh
-         izncn385PRm+g0PNhXKA1p06zZBE+iQFEZIyPAfm9CWzlIKgGMU1t/utD1FdkYS6f3ty
-         6i5YtmFgeZVWEvztJFQ1vVTEnlyt8TxlR7olZ5ihEpjNQgrTkS4Tbz/zNSRJU7OKDD+v
-         W6iQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrhjLlbYZl0BLm/5bWW2lrQmJeME0weOoxugRt8DHZFxV+QltYdMhH/YY0D3rghzy8cSfS09fs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTxyjeiTyrpKHciiEZFZrtFHmzpnCqy/+BcXO0OWI5WSSGlr9m
-	6GjP54F0Y1qJBAwgueNm236RlRl3VVrksCKl5taJoWXZC2SZEdwBX0m2
-X-Gm-Gg: AR+sD10BkLkJKMZwGBnT4rm21wt5B6vNuAOE/SotwIDULaqemapPbmSXQ4IJ35Rf27e
-	5Tn4QG3rmPOqLd2Ztz4sKcwV+NF8QV+rf7B/PXiVXnZYQfGyx9lyMaXjb0D2ZaeOJfF4FYQjMzH
-	fVGSjH4be4SrkEKaVsEsmc4CdGrR4LijZr263+jimPecUivfMkadnGShBLxHDAhUri6VxYbprwK
-	S/Qq1UbfHnrLIYMSSGDFulDFN9doPVRgdjDt/F/SIh84zgIVPOxn1BiJl7gBfLXVF8bdPBSx4Lu
-	7UfOr88ro44B/k2mtEllfgkaYD8r+IAK3KyVe0UEAGpzgQrSdXenbUwwRefDlewqCAlM0Ap+fMg
-	VkZpeJd7Keqf1HlS5p+eh3p3uIXkDQsqiYj0JXGIk6y3gVh3xu8H6QJP2i/Dr4BncZzQveb+xHk
-	nBjWCOT8lsoY++f7y6mR7eGNfDchpm+3++DP99MKRT9ZWHfbm+coUU32LDiBUCWQsp6rsxcummI
-	5rkj+o2Mw==
-X-Received: by 2002:a17:90b:4ad0:b0:38e:11ba:992e with SMTP id 98e67ed59e1d1-38f6a544ac8mr6261749a91.35.1785342785061;
-        Wed, 29 Jul 2026 09:33:05 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4f::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f12bcbcsm1672033a91.6.2026.07.29.09.33.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 09:33:04 -0700 (PDT)
-Date: Wed, 29 Jul 2026 09:33:02 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net] net/mlx5e: fix BQL reset on SQ re-activation
-Message-ID: <amorPql8QJRbCNJW@devvm29614.prn0.facebook.com>
-References: <20260728-mlx5-bql-v1-1-99a0ab77ede7@meta.com>
- <756e9c86-38f3-4a94-833f-afb0559397a3@nvidia.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Rigbcil8";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JWSoiNys"
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1785343064;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LtRaNxgRbpO/FK7lN9MVibch0eWYBHUpJXlU+vO4/rQ=;
+	b=Rigbcil8PytSssH8pyA1XNmp7ZqzLaaYaDjedBFfrRypeDeB39SAGfNSjmlkIEh6ADklE1
+	AxggnuCAxcq5RGJySBZA45hiVIwdzwPL+z1S1bgv8lFc0MXCO/QM5TWGTnwFN/ACd5SBpM
+	gwb79nsu/zlQAGd0c2NqH8SFPw2oCdQiRWIFzKKKVmU2m8ftMrnaPILlxWEM65v9yLiCzG
+	0a46+rjus2TXEM7t3Kr9EAtbt3XS3p5oHkTUp+0nwbRakuKPv9BsfbxwPDO0G9AeQKcaeu
+	ciYpcXKB8h5fcdjAr67q0m1KRxTBm5PGeeCUmj6fwv4Buo57ZxgWebzSlKGF0A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1785343064;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LtRaNxgRbpO/FK7lN9MVibch0eWYBHUpJXlU+vO4/rQ=;
+	b=JWSoiNys9q2nq89H6sf17ra8TjUP0dlH2vr1+9ZHbOnj0vZ7gH0ckbe9+aEGRodS5buSQ9
+	a6nIKMvU8jBMZzAw==
+Subject: [PATCH 0/4] net: dsa: Add SoC-e DSA driver
+Date: Wed, 29 Jul 2026 18:36:53 +0200
+Message-Id: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <756e9c86-38f3-4a94-833f-afb0559397a3@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACUsamoC/yXMTQrCMBAG0KuUWTsQI9bqVaSLafJpR/ojmRqE0
+ rsbdfk2byVDUhhdqpUSsprOU8F+V1HoZbqDNRaTd752J3/miIyBsy1JzHroyDYHcDThcWDvYi1
+ HiV1zaKgcz4Sbvn//tf3bXt0DYfmmtG0fj5iUPoEAAAA=
+X-Change-ID: 20260729-devel-vstrassheim-soce-dsa-ml-20d6a5adb838
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+ Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, Martin Kaistra <martin.kaistra@linutronix.de>, 
+ Vasilij Strassheim <v.strassheim@linutronix.de>
 
-On Wed, Jul 29, 2026 at 03:32:56PM +0300, Tariq Toukan wrote:
-> 
-> 
-> On 29/07/2026 0:47, Bobby Eshleman wrote:
-> > From: Bobby Eshleman <bobbyeshleman@meta.com>
-> > 
-> > mlx5e_queue_start() deactivates and re-activates all channels but closes
-> > only the queue being restarted. mlx5e_activate_txqsq() then
-> > unconditionally calls netdev_tx_reset_queue(), zeroing the BQL counters
-> > of channels that kept their in-flight TX WQEs. The next completion then
-> > over-charges and trips the BUG_ON() in dql_completed():
-> > 
-> >    kernel BUG at lib/dynamic_queue_limits.c:99!
-> >    RIP: 0010:dql_completed+0x23d/0x280
-> >    Call Trace:
-> >     <IRQ>
-> >     mlx5e_poll_tx_cq+0x668/0xa60
-> >     mlx5e_napi_poll+0x5b/0x7b0
-> >     net_rx_action+0x15a/0x580
-> > 
-> > Reset BQL only when the SQ has no bytes in flight (sq->cc == sq->pc).
-> > 
-> > In the case that reset is skipped, the outstanding WQEs will eventually
-> > complete and rebalance the dql. The dql->limit is carried across the
-> > reset.
-> > 
-> > Fixes: b2588ea40ec9 ("net/mlx5e: Implement queue mgmt ops and single channel swap")
-> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> > ---
-> >   drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 4 +++-
-> >   drivers/net/ethernet/mellanox/mlx5/core/en_tx.c   | 3 ++-
-> >   2 files changed, 5 insertions(+), 2 deletions(-)
-> > 
-> 
-> Thanks for your patch.
-> 
-> Overall the fix LGTM, just one comment below.
-> 
-> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> > index 4a8351f95b27..44834890a409 100644
-> > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> > @@ -1940,7 +1940,9 @@ void mlx5e_activate_txqsq(struct mlx5e_txqsq *sq)
-> >   {
-> >   	sq->txq = netdev_get_tx_queue(sq->netdev, sq->txq_ix);
-> >   	set_bit(MLX5E_SQ_STATE_ENABLED, &sq->state);
-> > -	netdev_tx_reset_queue(sq->txq);
-> > +	/* Reset BQL only when the SQ has no bytes in flight. */
-> > +	if (sq->cc == sq->pc)
-> > +		netdev_tx_reset_queue(sq->txq);
-> >   	netif_tx_start_queue(sq->txq);
-> >   	netif_queue_set_napi(sq->netdev, sq->txq_ix, NETDEV_QUEUE_TYPE_TX, sq->cq.napi);
-> >   }
-> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-> > index 0b5e600e4a6a..d0ad1b8d6988 100644
-> > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-> > @@ -909,7 +909,8 @@ void mlx5e_free_txqsq_descs(struct mlx5e_txqsq *sq)
-> >   	sq->cc = sqcc;
-> >   	/* Do not update BQL for TXQs that got replaced by new active ones, as
-> > -	 * netdev_tx_reset_queue() is called for them in mlx5e_activate_txqsq().
-> > +	 * netdev_tx_reset_queue() is called for them in mlx5e_activate_txqsq()
-> > +	 * if the queue has zero in-flight WQEs.
-> >   	 */
-> 
-> Please drop this hunk. In this path the replacement SQ is always freshly
-> created, so cc == pc == 0 and the reset always happens - the qualifier
-> invites the reader to worry about a case that cannot occur here. The
-> original wording is accurate as-is.
+Add initial support for the DSA driver for SoC-e FPGA-based (IP core)
+Ethernet switches.
 
-Ah makes sense, thanks. Will re-send with the change!
+This first functional driver baseline is kept focused on Managed
+Redundant Switch (MRS) which is also runtime-tested (25.01 IP using
+24.01 layout) on ZynqMP hardware. It includes basic support for
+networking (STP, FDB and Phylink), but not the IEEE 802.1Q VLAN tagging.
+This will likely be added in the future.
 
-Best,
-Bobby
+This work is based on non-publicly available SoC-e DSA driver code, with
+permission from the company to contribute it under different authorship.
+There are different variants of the SoC-e switch IP, which can be
+additionally configured at runtime with proprietary userspace software.
+All variants share the same DSA features with a few differences in
+register layout. Additional SoC-e switch variants might be introduced
+later in separate patch series. 
 
-> 
-> >   	if (sq == sq->priv->txq2sq[sq->txq_ix])
-> >   		netdev_tx_completed_queue(sq->txq, npkts, nbytes);
-> > 
-> > ---
-> > base-commit: b515dc54795ef370be3cb396e7c12ad91686b6d1
-> > change-id: 20260728-mlx5-bql-84e02a5a46c8
-> > 
-> > Best regards,
-> 
+Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
+---
+Vasilij Strassheim (4):
+      dt-bindings: vendor-prefixes: Add soce
+      dt-bindings: net: dsa: Add SoC-e switch IP and DSA bindings
+      net: dsa: Add support for SoC-e SDSA tags
+      net: dsa: soce: Add initial driver support for MRS switches
+
+ .../bindings/net/dsa/soce,switch-dsa.yaml          | 195 +++++++++++
+ .../bindings/net/dsa/soce,switch-ip.yaml           |  54 +++
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ drivers/net/dsa/Kconfig                            |   2 +
+ drivers/net/dsa/Makefile                           |   1 +
+ drivers/net/dsa/soce/Kconfig                       |  12 +
+ drivers/net/dsa/soce/Makefile                      |   6 +
+ drivers/net/dsa/soce/soce_common.c                 | 159 +++++++++
+ drivers/net/dsa/soce/soce_common.h                 |  36 ++
+ drivers/net/dsa/soce/soce_dsa.h                    |  41 +++
+ drivers/net/dsa/soce/soce_dsa_core.c               | 354 +++++++++++++++++++
+ drivers/net/dsa/soce/soce_mdio.c                   | 381 +++++++++++++++++++++
+ drivers/net/dsa/soce/soce_mdio.h                   |  40 +++
+ drivers/net/dsa/soce/soce_mrs.h                    |  21 ++
+ include/net/dsa.h                                  |   2 +
+ net/dsa/Kconfig                                    |   6 +
+ net/dsa/Makefile                                   |   1 +
+ net/dsa/tag_sdsa.c                                 | 102 ++++++
+ 18 files changed, 1415 insertions(+)
+---
+base-commit: 9fb3b84c9577707db14e633ea3c57048380bf822
+change-id: 20260729-devel-vstrassheim-soce-dsa-ml-20d6a5adb838
+
+Best regards,
+--  
+Vasilij Strassheim <v.strassheim@linutronix.de>
+
