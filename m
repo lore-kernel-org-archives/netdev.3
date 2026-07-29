@@ -1,289 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDB927280A;
-	Wed, 29 Jul 2026 05:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF92377AA7;
+	Wed, 29 Jul 2026 05:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785302243; cv=none; b=W5cAUo6Q/gZ6FlOFlqj5HYirit76+N7IkCbLHg0Qs3wiQT22P6DCuD8S5iq8FQ73A1r3rKQ19LtHefvzl0j7HVO5i1TfMYHjUheDEhEONN1pBPYCAy9/JfoF8AQdR2SVmFTRydxe3u3bjGpz154E768RalOf1FAseYU6oq4ou6k=
+	t=1785303025; cv=none; b=c3N2KeKHAPXrZzjH8ev+UwjselxGocZiUZAbjiRZUUko05fN4CghsAcesadoxJwi51Z9Wqc1u9Ye17UbsAzkarIbqqj4kNQG1bxdF5UAQo77Rij+b+NPQFlBzkzAd0syNxf15tiJkUI9+DTFBGsUE0kujJnC2RWTuwSnmjYf74g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785302243; c=relaxed/simple;
-	bh=b0V3v+Qn18zsM2oGfooMbXC1xj29XL9U6pde+gHzMd4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=M8pH3dwF4X2u0jq/DykxGCeT07DJMMKbEOQu7xUI4kxf9ipE3RZJwxceyrTeItVjl6nT3KB4EDla72ZiMU4fcf4mrfjoF6J9wb6bvfPGEETaMRv/Q4ySTWowPldrwckv5FNvWwoaghaecKhMV2AOA2UJINbRImDAMIJnHWqCa08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EhZImyy4; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EhZImyy4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828C51F00A3A;
-	Wed, 29 Jul 2026 05:17:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785302241;
-	bh=yWs/6GxHQxoazFHckud13tONmCIETA3kp/c4/93T8NM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EhZImyy49vt9VDzAGhjB3JLqZvmRIkP8dVwVm6zFEToqWk8UED3GrttsvyEZIMjr1
-	 xzICm3UOdob564x9n0uwBj2n/8C0oZOZszoY6S6XE7+ug1yZreBTRVOAW/b+56Tlog
-	 YaXfxojn0sUte61ZkePHT+5ou9lMB8n2+4bafMetmJVz5/8JnDbOgOdtNkaf9Qle8C
-	 jslz9QhFqszhv9Zer7+APDKiL4bUhLVNu0NveFivM2O153YPJ+Tgt8c15WCidP7q7V
-	 H9PkRNGTZWcY2/+CIMNaD5apedNQ2GVhj6d9iDJ4BWtXIdIIlTO4LFqiEFW1glXFSK
-	 voWjQuyVjcYwA==
-Message-ID: <10356f7d8b0ffdba27987c79fc7f4b7574cf873b.camel@kernel.org>
-Subject: Re: [PATCH 02/11] nvmet-tcp: implement accept mptcp proto
-From: Geliang Tang <geliang@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>, Matthieu Baerts <matttbe@kernel.org>, 
- Nilay Shroff <nilay@linux.ibm.com>, Hannes Reinecke <hare@suse.de>,
- Christoph Hellwig <hch@lst.de>
-Cc: Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>, Sagi
- Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>, Mat
- Martineau <martineau@kernel.org>,  "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Geliang Tang
- <tanggeliang@kylinos.cn>, 	linux-nvme@lists.infradead.org,
- netdev@vger.kernel.org, mptcp@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, John Meneghini <jmeneghi@redhat.com>,
- Randy Jennings <randyj@purestorage.com>, zhenwei pi <zhenwei.pi@linux.dev>,
- Hui Zhu <zhuhui@kylinos.cn>,  Gang Yan <yangang@kylinos.cn>
-Date: Wed, 29 Jul 2026 13:17:10 +0800
-In-Reply-To: <4df03cad08088fba7fb49beaeb6513cef5b87c2b.camel@kernel.org>
-References: <cover.1779934709.git.tanggeliang@kylinos.cn>
-			<a1fa5dd3ebb0cafe1bf7948bf2a96436e9452e19.1779934709.git.tanggeliang@kylinos.cn>
-		 <20260528082344.7e4cd1a1@kernel.org>
-	 <4df03cad08088fba7fb49beaeb6513cef5b87c2b.camel@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.2-9 
+	s=arc-20240116; t=1785303025; c=relaxed/simple;
+	bh=S74QlMw3en/WquuTyRzO+tx+XBm8tR9h48XkECLtBzg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DlHack0cf6wTHw7F95NUpIFfY1jZTmSpmsKJ5XB/3HbyOnXJAGZOPnlndtgZ+e4RIPLKVjtwm2hHt1Qo8IgMbR0Gl9E6sjdjx2qq6vSsP0koNG3ciDr/MyQWFZwU50xyWzJkayFs/o1I9DhEoBMO9/fOR1+gjORvSVi/ppSIkjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B655F201D85;
+	Wed, 29 Jul 2026 07:30:17 +0200 (CEST)
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wowrx-001pfo-26;
+	Wed, 29 Jul 2026 07:30:17 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wowrx-0000000CL28-2Ar1;
+	Wed, 29 Jul 2026 07:30:17 +0200
+Date: Wed, 29 Jul 2026 07:30:17 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+	davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Zxyan Zhu <zxyan0222@gmail.com>, thomas.petazzoni@bootlin.com,
+	Alexis =?utf-8?Q?Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH net-next 1/2] net: stmmac: Don't use PHY loopback for
+ selftests
+Message-ID: <ammP6SaJ44fzc5bW@pengutronix.de>
+References: <20260728155728.1193169-1-maxime.chevallier@bootlin.com>
+ <20260728155728.1193169-2-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260728155728.1193169-2-maxime.chevallier@bootlin.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-Hi,
-
-Thank you all very much for your interest in "NVMe over MPTCP" and for
-adding review comments to this version of the series. This has been
-very helpful to me. There are indeed some issues with this version, but
-the good news is that I have recently found a direction for improving
-it.
-
-On Fri, 2026-05-29 at 22:20 +0800, Geliang Tang wrote:
-> Hi Jakub,
+On Tue, Jul 28, 2026 at 05:57:26PM +0200, Maxime Chevallier wrote:
+> Stmmac selftests validate the internal behaviour of the various IPs,
+> using local loopback. The current logic is relies on PHY-side local
+> loopback if a PHY is attached, with a fallback to MAC loopback
+> otherwise.
 > 
-> On Thu, 2026-05-28 at 08:23 -0700, Jakub Kicinski wrote:
-> > On Thu, 28 May 2026 11:10:36 +0800 Geliang Tang wrote:
-> > > Dedicated MPTCP helpers are introduced for setting accept socket
-> > > options.
-> > > These helpers (no_linger, set_priority, set_tos) set the values
-> > > on
-> > > all
-> > > existing subflows using mptcp_for_each_subflow(). The values are
-> > > then
-> > > synchronized to other newly created subflows in
-> > > sync_socket_options().
-> > 
-> > These are not protocol specific options, why do we have to export
-> > MPTCP-specific functions for them?
+> However, PHY loopback is currently fragile especially for stmmac that
+> may require RXC to be provided from the PHY. Some PHYs shutdown RXC
+> while in loopback, while others will report carrier off when in local
+> loopback. This also fails when using SFP setup with a module that embeds
+> a PHY, that may also fail to enter loopback.
 > 
-> Thank you for reading the code. In addition to the three MPTCP-
-> specific
-> functions implemented in this patch, I have implemented and exported
-> the following six MPTCP-specific functions throughout the series:
+> MAC loopback is done at the GMII level on dwmac, allowing the internal
+> to be just as meaningful as PHY-loopback testing.
 > 
->     void mptcp_sock_set_nodelay(struct sock *sk)
->     int mptcp_sock_set_syncnt(struct sock *sk, int val)
->     void mptcp_sock_set_tos(struct sock *sk, int val)
->     void mptcp_sock_no_linger(struct sock *sk)
->     void mptcp_sock_set_priority(struct sock *sk, u32 priority)
->     void mptcp_sock_set_reuseaddr(struct sock *sk)
+> Let's simplify stmmac selftests by only relying on MAC-side local
+> loopback, which makes the selftests runnable on a wider HW variety.
 > 
-> These correspond to the following six functions originally used for
-> TCP:
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> ---
+>  .../stmicro/stmmac/stmmac_selftests.c         | 112 ++----------------
+>  1 file changed, 9 insertions(+), 103 deletions(-)
 > 
->     tcp_sock_set_nodelay()
->     tcp_sock_set_syncnt()
->     ip_sock_set_tos()
->     sock_no_linger()
->     sock_set_priority()
->     sock_set_reuseaddr()
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> index 29e824bd90ca..c0e5dee86451 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> @@ -374,25 +374,6 @@ static int stmmac_test_mac_loopback(struct stmmac_priv *priv)
+>  	return __stmmac_test_loopback(priv, &attr);
+>  }
+>  
+> -static int stmmac_test_phy_loopback(struct stmmac_priv *priv)
+> -{
+> -	struct stmmac_packet_attrs attr = { };
+> -	int ret;
+> -
+> -	if (!priv->dev->phydev)
+> -		return -EOPNOTSUPP;
+> -
+> -	ret = phy_loopback(priv->dev->phydev, true, 0);
+> -	if (ret)
+> -		return ret;
+> -
+> -	attr.dst = priv->dev->dev_addr;
+> -	ret = __stmmac_test_loopback(priv, &attr);
+> -
+> -	phy_loopback(priv->dev->phydev, false, 0);
+> -	return ret;
+> -}
+> -
+>  static int stmmac_test_mmc(struct stmmac_priv *priv)
+>  {
+>  	struct stmmac_counters initial, final;
+> @@ -1815,10 +1796,6 @@ static int stmmac_test_tbs(struct stmmac_priv *priv)
+>  	return ret;
+>  }
+>  
+> -#define STMMAC_LOOPBACK_NONE	0
+> -#define STMMAC_LOOPBACK_MAC	1
+> -#define STMMAC_LOOPBACK_PHY	2
+> -
+>  static const struct stmmac_test {
+>  	char name[ETH_GSTRING_LEN];
+>  	int lb;
+> @@ -1826,131 +1803,96 @@ static const struct stmmac_test {
+>  } stmmac_selftests[] = {
+>  	{
+>  		.name = "MAC Loopback               ",
+> -		.lb = STMMAC_LOOPBACK_MAC,
+>  		.fn = stmmac_test_mac_loopback,
+> -	}, {
+> -		.name = "PHY Loopback               ",
+> -		.lb = STMMAC_LOOPBACK_NONE, /* Test will handle it */
+> -		.fn = stmmac_test_phy_loopback,
+>  	}, {
+>  		.name = "MMC Counters               ",
+> -		.lb = STMMAC_LOOPBACK_PHY,
+>  		.fn = stmmac_test_mmc,
+>  	}, {
+>  		.name = "EEE                        ",
+> -		.lb = STMMAC_LOOPBACK_PHY,
+>  		.fn = stmmac_test_eee,
 
-Here I missed one option, SO_BINDTODEVICE. Currently, NVMe TCP sets 7
-sockopts: TCP_NODELAY, TCP_SYNCNT, IP_TOS, SO_LINGER, SO_PRIORITY,
-SO_REUSEADDR, and SO_BINDTODEVICE. The first 6 are called through the
-following 6 functions:
+Hm, not sure this test can be properly executed in all conditions.
+We do not support forced LPI mode from phylink perspective, and it is
+not forced by the tests. If it passes, only by accident if link partner
+local system and link partner advertise the EEE support. 
 
-    tcp_sock_set_nodelay()
-    tcp_sock_set_syncnt()
-    ip_sock_set_tos()
-    sock_no_linger()
-    sock_set_priority()
-    sock_set_reuseaddr()
+>  	}, {
+>  		.name = "Hash Filter MC             ",
+> -		.lb = STMMAC_LOOPBACK_PHY,
+>  		.fn = stmmac_test_hfilt,
+>  	}, {
+>  		.name = "Perfect Filter UC          ",
+> -		.lb = STMMAC_LOOPBACK_PHY,
+>  		.fn = stmmac_test_pfilt,
+>  	}, {
+>  		.name = "MC Filter                  ",
+> -		.lb = STMMAC_LOOPBACK_PHY,
+>  		.fn = stmmac_test_mcfilt,
+>  	}, {
+>  		.name = "UC Filter                  ",
+> -		.lb = STMMAC_LOOPBACK_PHY,
+>  		.fn = stmmac_test_ucfilt,
+>  	}, {
+>  		.name = "Flow Control               ",
+> -		.lb = STMMAC_LOOPBACK_PHY,
+>  		.fn = stmmac_test_flowctrl,
 
-The last one is called through sock_setsockopt:
+Interesting test, it will be cool to have it in generic form. Probably
+most of them, but it will be a lot of work.
 
-    ret = sock_setsockopt(queue->sock, SOL_SOCKET, SO_BINDTODEVICE,
-                          optval, strlen(iface));
+So, yes - most of this tests do not relay on the PHY, instead - on some
+kind of running link configuration. But this tests seems to not enforce
+needed link configuration before and after patches - correct?
 
-In NVMe TCP, the first three - TCP_NODELAY, TCP_SYNCNT, IP_TOS - are
-protocol-specific, while the last four - SO_LINGER, SO_PRIORITY,
-SO_REUSEADDR, SO_BINDTODEVICE - are protocol-independent.
-
-When we add NVMe MPTCP support, all sockets created when using NVMe
-MPTCP are MPTCP sockets. Using the above functions to set sockopts on
-MPTCP sockets will not succeed. The implementations of these 7 sockopts
-for MPTCP are all protocol-specific. MPTCP needs to set the sockopts
-not only on the MPTCP socket itself but also synchronize them to all
-subflow sockets, so that the sockopts actually take effect.
-
-Therefore, in this version, I defined MPTCP-specific sockopt functions
-for each option, and switched between TCP and MPTCP by defining the
-struct nvmet_tcp_proto and struct nvme_tcp_proto structures.
-
-
-
-A better design is to initiate protocol-specific sockopt settings from
-the NVMe side by calling the sock_common_setsockopt() function. This
-can automatically select the appropriate protocol and call each
-protocol's .setsockopt implementation to set the sockopt, thus making
-it compatible with both TCP and MPTCP, without needing to export
-functions from the TCP or MPTCP side for NVMe to use.
-
-For MPTCP, all 7 sockopt functions can be implemented by passing each
-sockopt to sock_common_setsockopt(), similar to:
-
-static void nvmet_tcp_sock_no_linger(struct sock *sk) 
-{
-    struct linger ling = { .l_onoff = 1, .l_linger = 0 }; 
-
-    sock_common_setsockopt(sk->sk_socket, false, SOL_SOCKET, SO_LINGER,
-                           KERNEL_SOCKPTR(&ling), sizeof(ling));
-}
-
-However, for TCP, the three protocol-specific options - TCP_NODELAY,
-TCP_SYNCNT, IP_TOS - can be implemented by calling
-sock_common_setsockopt(), but the other four protocol-independent ones
-need to be called through sock_setsockopt(). To hide this difference,
-we can call the higher-level do_sock_setsockopt() function instead,
-like:
-
-static void nvmet_tcp_sock_no_linger(struct sock *sk) 
-{
-    struct linger ling = { .l_onoff = 1, .l_linger = 0 }; 
-
-    do_sock_setsockopt(sk->sk_socket, false, SOL_SOCKET, SO_LINGER,
-                       KERNEL_SOCKPTR(&ling), sizeof(ling));
-}
-
-In this way, this wrapper becomes protocol-independent and works
-correctly for both TCP and MPTCP. Moreover, all 7 functions are
-uniformly converted into wrappers that call do_sock_setsockopt(), so
-every one of them becomes protocol-independent without needing to
-distinguish between TCP and MPTCP internally.
-
-static void nvmet_tcp_sock_set_priority(struct sock *sk, u32 priority)
-{
-    do_sock_setsockopt(sk->sk_socket, false, SOL_SOCKET, SO_PRIORITY,
-                       KERNEL_SOCKPTR(&priority), sizeof(priority));
-}
-
-static void nvmet_tcp_sock_set_reuseaddr(struct sock *sk) 
-{
-    int val = SK_CAN_REUSE;
-
-    do_sock_setsockopt(sk->sk_socket, false, SOL_SOCKET, SO_REUSEADDR,
-                       KERNEL_SOCKPTR(&val), sizeof(val));
-}
-
-static void nvmet_tcp_sock_set_nodelay(struct sock *sk) 
-{
-    int val = 1; 
-
-    do_sock_setsockopt(sk->sk_socket, false, SOL_TCP, TCP_NODELAY,
-                       KERNEL_SOCKPTR(&val), sizeof(val));
-}
-
-static void nvmet_tcp_sock_set_tos(struct sock *sk, int tos) 
-{
-    do_sock_setsockopt(sk->sk_socket, false, SOL_IP, IP_TOS,
-                       KERNEL_SOCKPTR(&tos), sizeof(tos));
-}
-
-static int nvme_tcp_sock_set_bindtodevice(struct sock *sk, char *iface)
-{
-    return do_sock_setsockopt(sk->sk_socket, false, SOL_SOCKET,
-                              SO_BINDTODEVICE,
-                              KERNEL_SOCKPTR(iface), strlen(iface));
-}
-
-static int nvme_tcp_sock_set_syncnt(struct sock *sk, int val) 
-{
-    return do_sock_setsockopt(sk->sk_socket, false, SOL_TCP,
-                              TCP_SYNCNT, KERNEL_SOCKPTR(&val),
-                              sizeof(val));
-}
-
-With this approach, there is no longer any need to define structures
-like struct nvmet_tcp_proto and struct nvme_tcp_proto, nor to export
-special set-sockopt functions from the MPTCP side. We only need to
-define these 7 wrappers for NVMe, and then replace the original
-function calls with the wrapper calls to enable MPTCP support. For
-example:
-
--   sock_set_reuseaddr(port->sock->sk);
--   tcp_sock_set_nodelay(port->sock->sk);
-+   nvmet_tcp_sock_set_reuseaddr(port->sock->sk);
-+   nvmet_tcp_sock_set_nodelay(port->sock->sk);
-    if (so_priority > 0)
--       sock_set_priority(port->sock->sk, so_priority);
-+       nvmet_tcp_sock_set_priority(port->sock->sk, so_priority);
-
-
-
-With these changes, implementing NVMe MPTCP support is simplified to
-just choosing which type of socket to create at socket creation time.
-In addition, I am also pushing the company I work for to join the NVMe
-membership, in preparation for submitting an MPTCP proposal to the NVMe
-technical working group in the future.
-
-
-
-
-I'm thinking that this approach of unifying NVMe sockopts via
-do_sock_setsockopt() could actually serve as a general improvement, and
-it would be valid even independently of this MPTCP series. If no one
-objects, I will send these patches of do_sock_setsockopt() improvement
-to the NVMe mailing list for review in the near future.
-
-
-
-Thanks,
--Geliang
-
-> 
-> The first two functions - tcp_sock_set_nodelay() and
-> tcp_sock_set_syncnt() - cannot be directly used with an MPTCP socket.
-> In fact, passing an MPTCP socket to tcp_sock_set_nodelay() even
-> causes
-> a crash. Therefore I implemented these two MPTCP-specific functions.
-> Actually, a better approach would be to add protocol-independent
-> sock_set_nodelay() and sock_set_syncnt() in net/core/sock.c.
-> 
-> The third function, ip_sock_set_tos(), takes different arguments for
-> TCP vs. MPTCP. For MPTCP, it needs to pass inet_sk(msk->first)-
-> > rcv_tos, so I implemented an MPTCP-specific function.
-> 
-> The last three functions - sock_no_linger(), sock_set_priority(), and
-> sock_set_reuseaddr() - are not protocol-specific, but attributes set
-> on
-> the MPTCP socket cannot be synchronized to its subflows because
-> mptcp_sockopt_sync_locked() checks msk->setsockopt_seq. Thus I
-> implemented these three MPTCP-specific functions, explicitly calling
-> sockopt_seq_inc(msk) inside them to increment msk->setsockopt_seq, so
-> that mptcp_sockopt_sync_locked() can properly synchronize the
-> attributes to all subflows. There should be a better solution for
-> this,
-> and I will discuss it with @Matt.
-> 
-> Please give me some advice.
-> 
-> Thanks,
-> -Geliang
+Best Regards,
+Oleksij
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
