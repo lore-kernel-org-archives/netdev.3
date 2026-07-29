@@ -1,294 +1,109 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45A239F18A
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 11:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504A84611C2
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 11:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785324584; cv=none; b=K+tYwhzfL/60pFekvhVY6cXpJ1IKSzbmIxMmBPsKvpIzIPvTWFsXMzozmvcARDCE5Px2idUNLi2d5bqvYF2xydbcrhHbefpvhRgGggl4Na8eMnJ0Z7yPsomV4Wf8GA9xRnxgXOPjd1DuyxyA1E085TeENH2P7Ppff32K/mE88rU=
+	t=1785324655; cv=none; b=HpFTmi6S3/4zQFCIK9da3CvZUbPjoeOe/FyPJwDKSLFdLGXS6E4NhSC3iOw4vUEQheEW4xlfM5NEJ0ygiNZoVhkuCLGa0sp7PnVN4WpJogtnG7wZFb0YexgWzZLRPkQahidhTp6q4yxv5gCg4mX30d33YgD1klfloW6YPwCdHj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785324584; c=relaxed/simple;
-	bh=9MhVi3tBuUVUiWdwEgz/IihUj3etazN9M4/4mSNlqdQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TP4N06DtM/az8Kya9BaygX4gEfXD7pSzcnLTyu3BHXDfHosDp4MJjIH/YOMcay+OVYIdhJERkcnfl+f/1wWwkgFSyqZKqpHuSUwttu3ZogRzKlz0bH81HzAvxuYj8h5Auli68CoQft5TG6DcaxbnRNTIZZuBTl1Q0rdrypW+PMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=TtXf2YZO; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1785324655; c=relaxed/simple;
+	bh=fTz2tW2KNSxx4M++IYdUAscJdjE4CMkFx+toWOqBcW0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EEVM5pv9jbrgHcf5f6OlUU5ezOgLBRzdqZX3VrjN39SFI0Cr9eir1ki+RSRuP4g73NORbIP5yuQkVLemd5gsiPZxnF2Tpi5DBuSlR4WCelLx/8EyBPXeZao0UN82DCZZRdCvlpuuk54EV2xuYfKlDYXYPkV67tBU9OdqbuGkmN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lDdc18OQ; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="TtXf2YZO"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2d004f135b1so12214735ad.3
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 04:29:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785324582; x=1785929382; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VYe2iubu6ASdkv/skq7uS2fIda+uHnh2Q+ijL0hRfXc=;
-        b=TtXf2YZOTmfDWDn5cLd3h7aPmaJLsn6oOAsjtyEL36QlIIJEOXBjtF8KSpaURYDE+U
-         PmsXPCtD/MCmYo45rZD28j+Q3HgZGfZHyoT9MGlVzeYbT139iXzGqRVTa6RmTsiYFu5B
-         SKWEyI6CocEEYpZNwcstG87AfuU7Nu5bUmcWKRn1lDtdDoq+y93hyqtYM1Ak4kg/ZtCh
-         GCEfdm1Ga5k1g6rfDe118eFQgf8ETrjz/x1z8cIJ0DlX0PzYy/jppzmkOcG6EJ1dKJqw
-         oB1YVN0xQxvypkcT6uT+9ZQvoKqqkkNivM0iayS9jWCH1MLQP66fxbUvFn7pTykhJWEQ
-         e1dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785324582; x=1785929382;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VYe2iubu6ASdkv/skq7uS2fIda+uHnh2Q+ijL0hRfXc=;
-        b=ARx1HceeEBcDfyIs+uWhuHjITrqIPJby7liqmMu/YPm0W4VJq3DvnhhR/1ff50hPI2
-         mVEH4CqeiHijSif9N2jAyfbqfJGtz7ry/QjdaUron2Yb9J2x6JXSdw1xuisd7P8Vfr/s
-         pUDNKx3rKtRu7VvWIcu665/imE9t+vYje2SNTibvtmfVWwaGJ6MKwmmP/ipq48HZxN84
-         WgLqq7BMDyMBbnt/+L1MWrMo/yrzmyE07gzsFm5H9PbNwYP9QSNsb9ByF1EB6VfOOlK0
-         WIKHT0B8yv8aa2zCEf3vyjOHG6Q1NTbntPa9S477WdoEZoY9TkQeuUxSqHjcMq/7moJi
-         ZE/Q==
-X-Gm-Message-State: AOJu0YzdJPwdp6RwJTZlVWVC38SdELP9jCeZC0M2ztMLG/aKcBaUcMcP
-	RTx6pn5IhYP3cDVR/3iIXsYdOjqA15Q3VR78qqr5cMzhxNfTf8vqlpDyTAXAPv4OCcwRXYvd6KO
-	Vt3LD8SuG
-X-Gm-Gg: AR+sD10PhBrhsfdqPkTf4Ef7xS+2j+PhTuFpsbfPL7htEt3PswKNT09Kw1NaKr995mR
-	Z1q0QSGVK9O20K5AM/ZmEk49eB8iqLVyUStBUT93gD8vRfA/orSIW0rqSrdtT3e0v95R02S/Yr5
-	7teyXRjzh1MY5xg+GblIZXbPMYQkqo0cRsHlNrO4EVGS5jeMde1fFIyD3F5UCYVBxG2ekcWBYZ2
-	PVf5s7u/T48cS+GHyZBtaPE5kjkYvEbsD/lujAP8SI9LxBzlegKeEQGp7MXO3eLoFwtVgmGBYGZ
-	JOgBVTi60JJHyRnXnlemA6eNFrM6Wu0V0Pe6TETreUcGbcJ6tYtHeAQ86djhlxt1vgqH4jy3xAo
-	uOsObtyn3458+3Y1oOs5nihoTVrOqjQn4Itbt1DfEWp6ZJ0Yvr2QSjax3toGgID8Y7JRuGUX4G2
-	/EI1lqHT7dRz6YOFYFsuqB4/xk0qtuxKhFFps7OT3rJkvXp7gyb/ZP02OLNXMEWkuClpVv8517B
-	NvOI9zEYw==
-X-Received: by 2002:a17:903:1a2d:b0:2ca:d7a3:3723 with SMTP id d9443c01a7336-2d015d238bdmr70760425ad.29.1785324581971;
-        Wed, 29 Jul 2026 04:29:41 -0700 (PDT)
-Received: from localhost.localdomain ([115.192.250.185])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022c55a7dsm9898505ad.84.2026.07.29.04.29.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 04:29:41 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netdev@vger.kernel.org,
-	mptcp@lists.linux.dev
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	dsahern@kernel.org,
-	kees@kernel.org,
-	matttbe@kernel.org,
-	martineau@kernel.org,
-	geliang@kernel.org,
-	fw@strlen.de,
-	vega@nebusec.ai,
-	zihanx@nebusec.ai
-Subject: [PATCH net 2/2] mptcp: diag: fix unbounded listener bucket lock hold
-Date: Wed, 29 Jul 2026 11:28:40 +0000
-Message-ID: <4632ca2134dbd3947529180ba8b8ba4b467c2098.1785307984.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1785307984.git.zihanx@nebusec.ai>
-References: <cover.1785307984.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lDdc18OQ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id BCA501A12F9;
+	Wed, 29 Jul 2026 11:30:51 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8A0136039A;
+	Wed, 29 Jul 2026 11:30:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D092611C14D10;
+	Wed, 29 Jul 2026 13:30:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785324646; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=f+AGVRNa1SzZhkLyKFGlOYMYOvwt5zE8+rjSL4vSATU=;
+	b=lDdc18OQJAWS83HE6BFVKDefips09iGZ0t/q81THNYNQ8HRedejVpxxwSZEMgG69CzcVx/
+	UaA/Ok2GH/YyXKwxqzKPZ6m0p62jwpEC0hXFIfzvd02VKi8ZKjqVAqysXr3rpXatVqIXoj
+	aERRzMQhfdfOwKdguTXxtrbvvPAv8bDN6FBJ/y7O29SpejIdbe2xQnkrbcvkMb0y+rJst5
+	Mzc0VCA+42LnnIOAXuehc9nLI0SBiGmJs402/4HPMaUXWwxFZDMwP9wZtj1w3F1XHtYj98
+	FKbPuFwFyzZ2w5ixhLw77MeUQrGuuWyPO8fXdvVa235bBdDrIG505HZA27QXDw==
+Message-ID: <bbc44e43-2fb4-4ab7-9829-bd9bfde4e532@bootlin.com>
+Date: Wed, 29 Jul 2026 13:30:41 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 0/5] net: stmmac: Fix double VLAN 802.1ad tag handling
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ joabreu@synopsys.com, jun.ann.lai@intel.com, yi.fang.gan@intel.com,
+ boon.khai.ng@altera.com, matthew.gerlach@altera.com
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260729095110.164157-1-ovidiu.panait.rb@renesas.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260729095110.164157-1-ovidiu.panait.rb@renesas.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-MPTCP listener diag dumping reuses sk_diag_dump(), which executes
-inet_diag_bc_sk() before filling the netlink reply. The listener walk in
-mptcp_diag_dump_listeners() currently performs MPTCP listener selection
-and bytecode-triggering dump work while holding the listener bucket lock.
+Hi Ovidiu,
 
-A dump request can therefore force unbounded per-bucket lock hold by
-arranging for many listeners in the same bucket to miss the MPTCP or
-socket-attribute prefilters, so the old 16-entry batching limit no longer
-bounds the locked scan itself.
+On 7/29/26 11:51, Ovidiu Panait wrote:
+> Currently, hardware VLAN stripping is broken for 802.1ad tags. vlan_rx_hw()
+> hardcodes ETH_P_8021Q when putting the hardware tag into the skb, rather
+> than using the actual protocol from the packet. Because of this, packets
+> that contain an 802.1ad outer tag are incorrectly passed up the stack as
+> having an 802.1Q tag.
+> 
+> This issue was observed on the Renesas RZ/V2H platform (which has a dwmac4
+> IP), when testing QinQ ping:
+> 
+>   # DUT
+>   ip link add link end0 name end0.100 type vlan proto 802.1ad id 100
+>   ip link add link end0.100 name end0.100.200 type vlan proto 802.1q id 200
+>   ip addr add 172.16.3.2/24 dev end0.100.200
+>   ip link set end0 up
+>   ip link set end0.100 up
+>   ip link set end0.100.200 up
+> 
+>   # Peer
+>   ip link add link eth0 name eth0.100 type vlan proto 802.1ad id 100
+>   ip link add link eth0.100 name eth0.100.200 type vlan proto 802.1q id 200
+>   ip addr add 172.16.3.1/24 dev eth0.100.200
+>   ip link set eth0 up
+>   ip link set eth0.100 up
+>   ip link set eth0.100.200 up
+>   ping 172.16.3.2
+>     -- FAIL --
+> 
+> This series addresses the issue for both dwmac4 and dwxgmac2:
+> - dwmac4: since dwmac4 does not expose the tag type in the RDES3
+>   descriptor, it cannot support hardware double VLAN stripping correctly.
+>   This series disables double VLAN stripping for it, so the 802.1ad tags
+>   are left in place and are handled by the software VLAN path.
+> 
+> - dwxgmac2: the RDES3 descriptor does report the type, so the code was
+>   updated to read it instead of hardcoding ETH_P_8021Q.
+> 
+> Note: patch 5/5 was compile tested only, as I do not have the hardware.
+> However, it uses the same codepath as dwmac4, so it has the same issue.
 
-Fix this by collecting only referenced listener sockets under the bucket
-lock. Re-check the MPTCP listener properties, obtain the parent MPTCP
-socket reference, and run sk_diag_dump() only after dropping the lock.
-Keep a referenced dump cursor so the next batch resumes after the previous
-listener instead of rescanning the bucket head under the listener lock.
+I was able to reproduce the issue on imx8mp, and indeed this series fixes it.
 
-Fixes: 4fa39b701ce9 ("mptcp: listen diag dump support")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
- net/mptcp/mptcp_diag.c | 124 +++++++++++++++++++++++++++++------------
- 1 file changed, 87 insertions(+), 37 deletions(-)
+I'll try to do a more thorough review soon, but this is a good finding, thanks
+for fixing that :)
 
-diff --git a/net/mptcp/mptcp_diag.c b/net/mptcp/mptcp_diag.c
-index 136c2d05c0ee..981e64343039 100644
---- a/net/mptcp/mptcp_diag.c
-+++ b/net/mptcp/mptcp_diag.c
-@@ -6,12 +6,25 @@
-  * Author: Paolo Abeni <pabeni@redhat.com>
-  */
- 
-+/* Process a bounded number of listeners per bucket lock hold. */
-+#define MPTCP_DIAG_BULK_SZ 16
-+
- #include <linux/kernel.h>
- #include <linux/net.h>
- #include <linux/inet_diag.h>
- #include <net/netlink.h>
- #include "protocol.h"
- 
-+static void mptcp_diag_save_cursor(struct inet_diag_dump_data *cb_data,
-+				   unsigned int slot, struct sock *sk)
-+{
-+	sock_hold(sk);
-+	inet_diag_dump_clear_cursor(cb_data);
-+	cb_data->dump_cursor = sk;
-+	cb_data->dump_cursor_slot = slot;
-+	cb_data->dump_cursor_type = INET_DIAG_DUMP_CURSOR_MPTCP_LISTEN;
-+}
-+
- static int sk_diag_dump(struct sock *sk, struct sk_buff *skb,
- 			struct netlink_callback *cb,
- 			const struct inet_diag_req_v2 *req,
-@@ -77,6 +90,7 @@ static void mptcp_diag_dump_listeners(struct sk_buff *skb, struct netlink_callba
- 				      bool net_admin)
- {
- 	struct mptcp_diag_ctx *diag_ctx = (void *)cb->ctx;
-+	struct inet_diag_dump_data *cb_data = cb->data;
- 	struct net *net = sock_net(skb->sk);
- 	struct inet_hashinfo *hinfo;
- 	int i;
-@@ -86,62 +100,98 @@ static void mptcp_diag_dump_listeners(struct sk_buff *skb, struct netlink_callba
- 	for (i = diag_ctx->l_slot; i <= hinfo->lhash2_mask; i++) {
- 		struct inet_listen_hashbucket *ilb;
- 		struct hlist_nulls_node *node;
--		struct sock *sk;
--		int num = 0;
--
-+		struct sock *tmp, *sk, *sk_arr[MPTCP_DIAG_BULK_SZ];
-+		struct sock *cursor;
-+		int accum, idx, num, ret;
-+		int num_arr[MPTCP_DIAG_BULK_SZ];
-+		bool use_cursor;
-+
-+resume_listen_walk:
-+		num = 0;
-+		accum = 0;
- 		ilb = &hinfo->lhash2[i];
-+		ret = 0;
- 
- 		rcu_read_lock();
- 		spin_lock(&ilb->lock);
--		sk_nulls_for_each(sk, node, &ilb->nulls_head) {
--			const struct mptcp_subflow_context *ctx = mptcp_subflow_ctx(sk);
--			struct inet_sock *inet = inet_sk(sk);
--			int ret;
--
--			if (num < diag_ctx->l_num)
--				goto next_listen;
--
--			if (!ctx || strcmp(inet_csk(sk)->icsk_ulp_ops->name, "mptcp"))
--				goto next_listen;
--
--			sk = ctx->conn;
--			if (!sk || !net_eq(sock_net(sk), net))
--				goto next_listen;
--
--			if (r->sdiag_family != AF_UNSPEC &&
--			    sk->sk_family != r->sdiag_family)
--				goto next_listen;
--
--			if (r->id.idiag_sport != inet->inet_sport &&
--			    r->id.idiag_sport)
-+		cursor = cb_data->dump_cursor;
-+		use_cursor = cursor &&
-+			     cb_data->dump_cursor_type ==
-+			     INET_DIAG_DUMP_CURSOR_MPTCP_LISTEN &&
-+			     cb_data->dump_cursor_slot == i &&
-+			     !hlist_nulls_unhashed(&cursor->sk_nulls_node) &&
-+			     cursor->sk_nulls_node.pprev != LIST_POISON2;
-+		node = use_cursor ? cursor->sk_nulls_node.next :
-+				    ilb->nulls_head.first;
-+		hlist_nulls_for_each_entry_from(sk, node, sk_nulls_node) {
-+			if (!use_cursor && num < diag_ctx->l_num)
- 				goto next_listen;
- 
- 			if (!refcount_inc_not_zero(&sk->sk_refcnt))
- 				goto next_listen;
- 
--			ret = sk_diag_dump(sk, skb, cb, r, net_admin);
--
--			sock_put(sk);
--
--			if (ret < 0) {
--				spin_unlock(&ilb->lock);
--				rcu_read_unlock();
--				diag_ctx->l_slot = i;
--				diag_ctx->l_num = num;
--				return;
--			}
--			diag_ctx->l_num = num + 1;
--			num = 0;
-+			num_arr[accum] = num;
-+			sk_arr[accum] = sk;
-+			if (++accum == MPTCP_DIAG_BULK_SZ)
-+				break;
- next_listen:
- 			++num;
- 		}
- 		spin_unlock(&ilb->lock);
- 		rcu_read_unlock();
- 
-+		for (idx = 0; idx < accum; idx++) {
-+			const struct tcp_ulp_ops *ulp_ops;
-+			const struct mptcp_subflow_context *ctx;
-+			struct inet_sock *inet;
-+
-+			sk = sk_arr[idx];
-+			rcu_read_lock();
-+			ctx = mptcp_subflow_ctx(sk);
-+			ulp_ops = READ_ONCE(inet_csk(sk)->icsk_ulp_ops);
-+			inet = inet_sk(sk);
-+			tmp = ctx ? ctx->conn : NULL;
-+			if (!ctx || !ulp_ops || strcmp(ulp_ops->name, "mptcp") ||
-+			    !tmp || !net_eq(sock_net(tmp), net) ||
-+			    (r->sdiag_family != AF_UNSPEC &&
-+			     tmp->sk_family != r->sdiag_family) ||
-+			    (r->id.idiag_sport != inet->inet_sport &&
-+			     r->id.idiag_sport) ||
-+			    !refcount_inc_not_zero(&tmp->sk_refcnt)) {
-+				rcu_read_unlock();
-+				goto processed_listener_sk;
-+			}
-+			rcu_read_unlock();
-+			if (ret >= 0) {
-+				ret = sk_diag_dump(tmp, skb, cb, r, net_admin);
-+				if (ret < 0)
-+					num = num_arr[idx];
-+			}
-+			sock_put(tmp);
-+processed_listener_sk:
-+			if (ret >= 0)
-+				mptcp_diag_save_cursor(cb_data, i, sk);
-+			sock_put(sk);
-+		}
-+
-+		if (ret < 0) {
-+			diag_ctx->l_slot = i;
-+			diag_ctx->l_num = num;
-+			return;
-+		}
-+
- 		cond_resched();
-+
-+		if (accum == MPTCP_DIAG_BULK_SZ) {
-+			diag_ctx->l_num = 0;
-+			goto resume_listen_walk;
-+		}
-+
-+		inet_diag_dump_clear_cursor(cb_data);
- 		diag_ctx->l_num = 0;
- 	}
- 
-+	inet_diag_dump_clear_cursor(cb_data);
- 	diag_ctx->l_num = 0;
- 	diag_ctx->l_slot = i;
- }
--- 
-2.43.0
+Maxime
 
