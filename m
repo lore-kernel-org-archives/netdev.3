@@ -1,266 +1,168 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazhn15011021.outbound.protection.outlook.com [52.102.171.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36D9444707
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D4B4570E3;
+	Wed, 29 Jul 2026 09:51:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.102.171.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785318462; cv=pass; b=ArjQaI+BRGKtMRXVjQ1o+SOpHWf6S5gY6r24N/+haMlLqGGHSmWjni8JDz62jFzprnsjiG1b+eV1kEmflgW5UD4MOOCqHOWIFUdUogO3iGSN35X01TfuqvbSzzAgo0qJzpSsqK94RRFAlZQ1j3u+dx9CQ+epu9Fj6jOFB7V2F3Q=
+	t=1785318688; cv=fail; b=T+sA5o22cmjNwY0r4UAUtZrv6yyjb7L6RC6ixXzKDZ9lGeb/sqUMNuvQdMTC8+M5jAFdmqEOe/880JuvVS/nKZEBOoKC6xMw30uDIGW3pRUeJKAe7gTS2+MwNKlz6K+1mk1/HV5d6yRPoEqPx1YMNb94rJecyqIFe9eYwe4Bo9Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785318462; c=relaxed/simple;
-	bh=HZ03q6QMCfUNFk72w9SHszDvgpUzynEt5vA6dxAXJmk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nbAhLYgjFQX8FcTFa4h2StAP9Ek1NA9DZBZmVTnW9UlGtjv6W9VG9X8R85kw/064STcEf3PlL66P7hR69O/9wui1bAA2ECcwgGLZNnSRMBjFL9qU+qFCKozl682k00MZa2eAVPXOKp26C+XwpGjkFquPdLHzguecH+0LHceQLf8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=ysCbdpUu; arc=pass smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1785318688; c=relaxed/simple;
+	bh=oNZqLk7wUB+dxhi7XSyD1Gvp7wlO1XZ5lABw4ZUufB0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GXwCrjVkasxgrdT4W2ZtfkhfIrXKbnediop+II6ODzl1Mch1Om24tyNJmlLvBFhps/OCrlO5jJto1eq8e4Zw8fODWOsj1lSU7dyTS0eCUmZT2TaLVLA5QkI/np9CpyF8ezpz7aOnXop/OnpQ1/OUxlD5xSyMCEcNKQuJ8Qw3ljk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=PVZMt4W4; arc=fail smtp.client-ip=52.102.171.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="ysCbdpUu"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8484f229529so520976b3a.2
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 02:47:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785318459; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hBnurY50ambqMekmlvRBDsOOt2yJGTPquUM7jaTEG6fbdqE0+MmrhSQ0/pniAixbBQ
-         F9AU0w3S5siJEagvVQHJcpfs56PneLhV2RUj4R+ffRhLKIL/QC90heBi3j4fnt1OL7sv
-         N+BU2s8As0rhBdfVJljhGPY6h7ez7/Fh/WFdzGkLBxVAUsrjYVQhVJGzRQv40xlF8+Nu
-         ccp2Lkn8WpN4uSiJzL55ZszqIbSRCI03/kYkR28wDl+Mzz5Rgr/HRGy5bXxffjaI+UDU
-         1HMpug09lohZvI3J96QfIUwsTyZpZaS3i4CB8TuKhMrH593vYVHJdH4FW5VO2C6YjP+f
-         m6OA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cq3av97tRL0XyOW5kTofSCvaWPbGaGNP++Wd9lP+f7Q=;
-        fh=TQNZBSxBrXgrzCxDRj5GH/QdAZ6l7LqpUg920DtHW1M=;
-        b=XNFFEBMToVhgAJOAPt1BE1Q12hsGS9ulWkFhh6Tzf3/E44bGP3jWyU1YUwtY5YgPAw
-         KwCEujBiMAJX2vyLOwhd6E5laSQVHA9tbAcbTuhXrvejX8hX00ToDnAHotyu0JbqhZOD
-         PXEhVyoHO59PL8W7X+c41D44fup/65xgzt3oxBy7ybCvjTdh8Ah48UQZDMU8/eG73jc6
-         VE3FAfg7mBtmstAEF8CP2LA+zEkP0phvxtB7HrSLPuFYbbWsb8haSbPWICUY1+aGYqSP
-         WIMKKrFaOJfYUjOSk7ZwTluR0saxNS/auEXYvUt0jTwfX99ozbjD60iplZaccWJluOjA
-         AJ3g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1785318459; x=1785923259; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cq3av97tRL0XyOW5kTofSCvaWPbGaGNP++Wd9lP+f7Q=;
-        b=ysCbdpUuqQklTyDRvVm3nrTeFqCX2eA1yvGmNlfn409Z0kC6advfQ7PTe/DJjE9+7f
-         kWQEAcUHwGZhDMOZASPw8VyYWnTD5UQGBaX0AK65DrmJNRqMnsnkZ6XJh8WxAwNtxSsp
-         D+Jvs0msXPBH0DuPIYj+tYRAJVnj9xiLG9LjM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785318459; x=1785923259;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cq3av97tRL0XyOW5kTofSCvaWPbGaGNP++Wd9lP+f7Q=;
-        b=rG7IXNUAmw8bkRmeBdPZXt0LJvQA3sStdTwuFkycezDN+3TDT3nIRSc3o6/qmdzOS+
-         s0NFjZt3Z7zrbRN4F3i8t/Vjv0EI09DHf51annBfAkKAqCUqj5dkjPxNFxUX42Pj4yMy
-         m6DySa4nbd02mPSootzFZktGJb/Zp41FU9Wf3CS9B+n81F/OrG/ehWnQ4UAUxVVEtm4j
-         kz6N6y3WYS9/iSGKUjdR1BAn3N65bbWJHN7scj/eh0AKaAoafKJ0132TIWITk7g+hHmy
-         pCbL8bq75quuXLSFGLQM2Nc/j+XUnVQ1AEi5otll8rrUoKkTCXbPk6dGx02/oNUHYxYN
-         tenQ==
-X-Gm-Message-State: AOJu0YxcSIgNvGqf17qbTeWyi7EKRgYjMx44Z2TvGe7Kroy6hpUio9s6
-	hkbMtk6mMu0SS+qtH2JCtenq42SefmlGVcfWqAvCiOjZ7NHKg84C0dPhFGdT0CCfZXMpEuFYEEA
-	PtsrSYtfdU8B0IsiIimFrYPG+vf6P5WUA40DPqvZyQxSIM0gNWqA=
-X-Gm-Gg: AR+sD11vHJyWtg87/K0OFbG+HqZJklAk83n+1nlI6O+7j02g+JLtX4J373lYdNFKM8N
-	7rxInn/G4KP128R0hm7a3d1KYqd8qVlZRtTMwTsWGdKP1Y+jRpNhi6za9LOdqdrDjPsMw+t7WRp
-	tYZEdMh07VqKEUyosuDN798/rd+L+9e+pTuRkgTYhRl2Eyx0Sfw6ZaUORYtSleQTbJAFlaGh13M
-	frh4ZW8ZDTJj66FtDPHC+70M6JJ3u2qeFIh3qYXSH6vtXljpt/E7r8rekLcRkbF3nrBMd0vlNYN
-	V+M+8JrH2AT0QFvIsi0MzNnHNlQFEfcePEmdg450/Bn5Qg==
-X-Received: by 2002:a05:6a00:1706:b0:848:8027:cb6 with SMTP id
- d2e1a72fcca58-84e933eaefcmr6362985b3a.45.1785318459189; Wed, 29 Jul 2026
- 02:47:39 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="PVZMt4W4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=p4wREjNs/LtyG+0Eq/HEbMhTNXfN1GanXiNsl/5a48EZTGFHWMqnENL6ffn2CeUvnVgYICGkx6NxOao6FAwk8T+tPPDVXvkhFds5/eNxhyt+RVr5FGiQV4p7qSwSQmh5N0b3gzK1L9/TaK2Dypo1Pj2BbB0Ev4Vd6FkOmMw6SNF7O6ypDiw+dDvvcH81EX18BXsNRdJH0MObhNbxl9oIdscbYew2UWHGRaAmMS/xXVCxHzopO+JSD9Cee/NF2xNSwaDf7IKVpp3vBhchSk4hkeJmWZs1Iz77IqOGNe2VksyPa6TEdseHC+QZgcVM8qnrdBEsbe0BSX+rToxTTPNDUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yNbJzJE74xw8nIYZhPcwkTRS8Zv/qFDUaJQKzOkj/hE=;
+ b=cDDhD+Tw+CaCRpajbJheY+DSUoGUCkD3fww6oWjgKspRKN/suKoiluqcgsOUU3ehHDM+A3ilJvr84J+QEsNLYtYDVQOZWfKh3srDRUP6xcispxZcpOHwajG1v36g1Aj9FIYk3fE7dZ+vzNPIZ70yL1eEEXCp8BV14rYPHQFdoCnex9UlJbWjS7m0fPEbx7VvoWqFvnnq6/RwJZDPr767IUeKb5bL+GjcJDEcdtLc8w5vKBhJ/sDl3YWAIhdJ0yr2AjiijhCDiU7VzDB++KBu10SNl2VEa905D1+sf4M60kZLzmbCIMf+ocFw/czTXYQhpjldweFgzSZGvPaCB5ut8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 8.62.32.50) smtp.rcpttodomain=altera.com smtp.mailfrom=renesas.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=renesas.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yNbJzJE74xw8nIYZhPcwkTRS8Zv/qFDUaJQKzOkj/hE=;
+ b=PVZMt4W4Fz+nD7mj77BNTpXDgowqhWuAYCCQr1++d8OlBU/twAfq3ZeuXf74mvhg/rjI4bcfk/k9X9+8UX9zUFGN56MfjIs67wTL1twfeumRqb6CxRQnUm+FzW4iXWwTx02+lZ7/vOiuweHKhIgZq7vlAHAa1ds5wRzbvZfVVbU=
+Received: from OSTP286CA0099.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:219::16)
+ by TYCPR01MB10888.jpnprd01.prod.outlook.com (2603:1096:400:26e::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
+ 2026 09:51:21 +0000
+Received: from OS1PEPF0000D215.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:604:219:cafe::a9) by OSTP286CA0099.outlook.office365.com
+ (2603:1096:604:219::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.12 via Frontend Transport; Wed,
+ 29 Jul 2026 09:51:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 8.62.32.50)
+ smtp.mailfrom=renesas.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=renesas.com;
+Received-SPF: Pass (protection.outlook.com: domain of renesas.com designates
+ 8.62.32.50 as permitted sender) receiver=protection.outlook.com;
+ client-ip=8.62.32.50; helo=ejcrelay005p.adwin.renesas.com; pr=E
+Received: from ejcrelay005p.adwin.renesas.com (8.62.32.50) by
+ OS1PEPF0000D215.mail.protection.outlook.com (10.167.240.22) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.5
+ via Frontend Transport; Wed, 29 Jul 2026 09:51:21 +0000
+Received: from vm01.adwin.renesas.com (DEU-5CG20946WF.adwin.renesas.com [10.226.92.40])
+	by ejcrelay005p.adwin.renesas.com (Postfix) with ESMTP id E8447300027F;
+	Wed, 29 Jul 2026 18:51:13 +0900 (JST)
+From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+To: maxime.chevallier@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	joabreu@synopsys.com,
+	jun.ann.lai@intel.com,
+	yi.fang.gan@intel.com,
+	boon.khai.ng@altera.com,
+	matthew.gerlach@altera.com
+Cc: netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Subject: [PATCH net 0/5] net: stmmac: Fix double VLAN 802.1ad tag handling
+Date: Wed, 29 Jul 2026 09:51:04 +0000
+Message-ID: <20260729095110.164157-1-ovidiu.panait.rb@renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260729094411.46257-1-jhs@mojatatu.com>
-In-Reply-To: <20260729094411.46257-1-jhs@mojatatu.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Wed, 29 Jul 2026 05:47:27 -0400
-X-Gm-Features: AUfX_mwgbQ0U7pv5D3VeUXm1gxszOqY5ZeqR6CSf7Ek3QRtFrUAkKnSTcfb0S0A
-Message-ID: <CAM0EoMnv4H5Y0xhq6vpATMzuvoPzAEacAu9wGMP4MyLmdG3Dfg@mail.gmail.com>
-Subject: Re: [PATCH net] net/sched: cls_route: fix fastmap use-after-free on filter
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, horms@kernel.org, john.fastabend@gmail.com, 
-	jiri@resnulli.us, zdi-disclosures@trendmicro.com, 
-	santosh.kalluri129@gmail.com, victor@mojatatu.com, security@kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OS1PEPF0000D215:EE_|TYCPR01MB10888:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: df090fcd-73f3-4378-1d82-08deed56f20c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700016|34020700016|1800799024|23010399003|921020|6133799003|3023799007|56012099006|11063799006|18002099003|10067099003|12100799066;
+X-Microsoft-Antispam-Message-Info:
+	+OQSGC9n3cwLJLEy34K8IeedGqWHId+C58msij3ug4GvQz0P/PKcy70JANbOm/XnqhT401tl0UZ0EtacLX4Px0OHuGZBMsmR6slNG4lPCzrdOdoHnjvg9GQx1zgq4XuRas8ZjQ0HmIxeZCTzfXxHQVfxHDcfkTl+e/hxOYylrHsgzvynpSgZO7LvIGp/aSvRyeAUXIXFT1CNA1b9rsd1/vQJ8F42AUtRjy17fzo4uIz33LrgoHtO7JKVZ9qjbeZ6SlF2nSGeDFbY+UB5t3FnA5sqCf+O4bjsi2Qonf4aKr27/5JKy6ngKLvX3489hkv/qd802UJ3Ytbcdr7xaugZb3pO2FBzG26lxtRil+2zQ30upoVBnNWzA47dSLyq9GJ7g6JuUAt1tilZwdaC8OKueIFqZhEWJ+63Bl876gQQmuhTER8kxs72OQj+NPTD/4Q/ScaGUjfOyIlWNe70UykDlZrAGSGCffmWd1WgUyV88+BBjJ4oMSsZLbNUnTm7HYvKfKpHcX+Bfm1UjvzsfJr8Cz7koCX3uH17yCmDzEXD2BFEc67ErPsIHgBV/AZBYz3S6LX1s6P//c3TbOENo6qVoQ5unODSiT/vaaVqN2ycD+4ejiJl4Zz6CLzmwS65ag9PI632dxdBRFjWLJ22RXnJdytbcvLCKxOVXMqF7tmKydFcsLITlGJy16CbD3UZhbVqHLOVK+MH3XCvV/gvxvT77OttFQzRrJgoN7tbxBgk0bcMm7RwvFiV/sHhUN+Vg3Gs
+X-Forefront-Antispam-Report:
+	CIP:8.62.32.50;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ejcrelay005p.adwin.renesas.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700016)(34020700016)(1800799024)(23010399003)(921020)(6133799003)(3023799007)(56012099006)(11063799006)(18002099003)(10067099003)(12100799066);DIR:OUT;SFP:1501;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	dVh1VEKdJXqh/bWLpBXvCddUFAzODY1W3/IE9zznjJ7xLDUKOB5Wkjab2eE+A2Id1kMbTnR5ODr8n58fU7I1ihe4Nhi6db359RfUV/PCdvYDZHa/XpuwrGhol100dpWBsKu5B9vHhKLnjJNIYtienAKLJAV3BOdUGgEpXX2xxogzHr6w51hvkUsUfujJ4wWPZ+jQvfq2Lu9O6oWIs+AEQ28XrsIUwpBmVfQivGIsRWDcx5HZuFz2PM/msLBpbqQX9wxKHf5Eq2xbs+V+9YlUfmmsOiCl95JP6dvnx+YK33TAN0sDNoJUlisHOf3uhiF6U0sQfww7EXh3j3AIrWTPv8Qam89SGp5NajxpbwnLS3yQmDrbhIPLUVvMEsrFXGosOw7NsDAXHwz7eNb3ux5CnbyMR3ulNzUc4OJH3XqBQI7R/V/ZZShwsC9YQ77ri+wy
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 09:51:21.6403
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: df090fcd-73f3-4378-1d82-08deed56f20c
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=53d82571-da19-47e4-9cb4-625a166a4a2a;Ip=[8.62.32.50];Helo=[ejcrelay005p.adwin.renesas.com]
+X-MS-Exchange-CrossTenant-AuthSource: OS1PEPF0000D215.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB10888
 
-On Wed, Jul 29, 2026 at 5:44=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> The route4 classifier maintains a 16-slot fastmap cache that stores raw
-> struct route4_filter pointers indexed by (id, iif). The reader
-> (route4_classify) populates this cache via route4_set_fastmap() for every
-> classified packet that hits a filter. The writer (route4_delete,
-> route4_change) clears the cache via route4_reset_fastmap() before
-> RCU-deferred kfree of the filter.
->
+Currently, hardware VLAN stripping is broken for 802.1ad tags. vlan_rx_hw()
+hardcodes ETH_P_8021Q when putting the hardware tag into the skb, rather
+than using the actual protocol from the packet. Because of this, packets
+that contain an 802.1ad outer tag are incorrectly passed up the stack as
+having an 802.1Q tag.
 
-Sigh. I forgot to add v3 on the subject. I could resend if needed.
+This issue was observed on the Renesas RZ/V2H platform (which has a dwmac4
+IP), when testing QinQ ping:
 
+  # DUT
+  ip link add link end0 name end0.100 type vlan proto 802.1ad id 100
+  ip link add link end0.100 name end0.100.200 type vlan proto 802.1q id 200
+  ip addr add 172.16.3.2/24 dev end0.100.200
+  ip link set end0 up
+  ip link set end0.100 up
+  ip link set end0.100.200 up
 
-cheers,
-jamal
+  # Peer
+  ip link add link eth0 name eth0.100 type vlan proto 802.1ad id 100
+  ip link add link eth0.100 name eth0.100.200 type vlan proto 802.1q id 200
+  ip addr add 172.16.3.1/24 dev eth0.100.200
+  ip link set eth0 up
+  ip link set eth0.100 up
+  ip link set eth0.100.200 up
+  ping 172.16.3.2
+    -- FAIL --
 
-> This creates a UAF race:
->  1. Reader walks the RCU-protected bucket chain, finds filter f
->  2. Writer unlinks f, calls route4_reset_fastmap(), then tcf_queue_work()
->  3. Reader calls route4_set_fastmap() and writes f into the cache
->     *after* the writer's reset, caching a pointer about to be freed
->  4. After the RCU grace period, kfree(f) executes
->  5. Next classified packet on the same (id, iif) tuple hits the stale
->     fastmap entry and reads f->res from freed memory
->
-> Reproduced with an mdelay(100) accelerator in route4_set_fastmap() and a
-> concurrent add/delete stress test (provided by both zdi and Santosh).
-> Both triggered KASAN slab-use-after-free reports in the route4 fastmap
-> paths.
->
-> Fix:
-> Introduce a per-filter boolean dying flag to suppress stale fastmap
-> republishing by in-flight readers.
->
-> Fixes: 1109c00547fc ("net: sched: RCU cls_route")
-> Reported-by: zdi-disclosures@trendmicro.com
-> Reported-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-> Suggested-by: Paolo Abeni <pabeni@redhat.com>
-> Tested-by: Victor Nogueira <victor@mojatatu.com>
-> Tested-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
->
-> ---
-> V1->V2
-> 1. Fix based on feedback from the Sashikos
-> https://sashiko.dev/#/patchset/20260723105210.817079-1-jhs%40mojatatu.com
-> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260723105210.817079=
--1-jhs%40mojatatu.com
->
-> Restore the "if (tcf_exts_get_net(&f->exts)) route4_queue_work(f);
-> else __route4_delete_filter(f);"
-> preserving the tcf_exts_get_net() contract for netns teardown.
->
-> V2->V3
-> Revert earlier suggestion from Santosh's rcu sync to Paolo's suggestion t=
-o use
-> the dying flag approach.
-> ---
->  net/sched/cls_route.c | 35 ++++++++++++++++++++++++++---------
->  1 file changed, 26 insertions(+), 9 deletions(-)
->
-> diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
-> index bd6f945bd388..eded7aacd3f7 100644
-> --- a/net/sched/cls_route.c
-> +++ b/net/sched/cls_route.c
-> @@ -52,6 +52,7 @@ struct route4_filter {
->         struct tcf_result       res;
->         struct tcf_exts         exts;
->         u32                     handle;
-> +       bool                    dying;
->         struct route4_bucket    *bkt;
->         struct tcf_proto        *tp;
->         struct rcu_work         rwork;
-> @@ -66,9 +67,11 @@ static inline int route4_fastmap_hash(u32 id, int iif)
->
->  static DEFINE_SPINLOCK(fastmap_lock);
->  static void
-> -route4_reset_fastmap(struct route4_head *head)
-> +route4_reset_fastmap(struct route4_head *head, struct route4_filter *f)
->  {
->         spin_lock_bh(&fastmap_lock);
-> +       if (f)
-> +               f->dying =3D true;
->         memset(head->fastmap, 0, sizeof(head->fastmap));
->         spin_unlock_bh(&fastmap_lock);
->  }
-> @@ -81,9 +84,11 @@ route4_set_fastmap(struct route4_head *head, u32 id, i=
-nt iif,
->
->         /* fastmap updates must look atomic to aling id, iff, filter */
->         spin_lock_bh(&fastmap_lock);
-> -       head->fastmap[h].id =3D id;
-> -       head->fastmap[h].iif =3D iif;
-> -       head->fastmap[h].filter =3D f;
-> +       if (f =3D=3D ROUTE4_FAILURE || !f->dying) {
-> +               head->fastmap[h].id =3D id;
-> +               head->fastmap[h].iif =3D iif;
-> +               head->fastmap[h].filter =3D f;
-> +       }
->         spin_unlock_bh(&fastmap_lock);
->  }
->
-> @@ -297,6 +302,13 @@ static void route4_destroy(struct tcf_proto *tp, boo=
-l rtnl_held,
->                                         next =3D rtnl_dereference(f->next=
-);
->                                         RCU_INIT_POINTER(b->ht[h2], next)=
-;
->                                         tcf_unbind_filter(tp, &f->res);
-> +                                       /* Mark the filter dying under fa=
-stmap_lock so
-> +                                        * any in-flight reader that stil=
-l holds it
-> +                                        * will skip the republish in rou=
-te4_set_fastmap().
-> +                                        */
-> +                                       spin_lock_bh(&fastmap_lock);
-> +                                       f->dying =3D true;
-> +                                       spin_unlock_bh(&fastmap_lock);
->                                         if (tcf_exts_get_net(&f->exts))
->                                                 route4_queue_work(f);
->                                         else
-> @@ -307,6 +319,11 @@ static void route4_destroy(struct tcf_proto *tp, boo=
-l rtnl_held,
->                         kfree_rcu(b, rcu);
->                 }
->         }
-> +
-> +       /* All filters are unlinked and marked dying, so no in-flight
-> +        * reader can republish a stale entry after this reset.
-> +        */
-> +       route4_reset_fastmap(head, NULL);
->         kfree_rcu(head, rcu);
->  }
->
-> @@ -334,11 +351,11 @@ static int route4_delete(struct tcf_proto *tp, void=
- *arg, bool *last,
->                         /* unlink it */
->                         RCU_INIT_POINTER(*fp, rtnl_dereference(f->next));
->
-> -                       /* Remove any fastmap lookups that might ref filt=
-er
-> -                        * notice we unlink'd the filter so we can't get =
-it
-> -                        * back in the fastmap.
-> +                       /* Clear any fastmap entries that may ref this fi=
-lter and
-> +                        * mark it dying so in-flight readers can't repub=
-lish it
-> +                        * after the reset.
->                          */
-> -                       route4_reset_fastmap(head);
-> +                       route4_reset_fastmap(head, f);
->
->                         /* Delete it */
->                         tcf_unbind_filter(tp, &f->res);
-> @@ -558,7 +575,7 @@ static int route4_change(struct net *net, struct sk_b=
-uff *in_skb,
->                 }
->         }
->
-> -       route4_reset_fastmap(head);
-> +       route4_reset_fastmap(head, fold);
->         *arg =3D f;
->         if (fold) {
->                 tcf_unbind_filter(tp, &fold->res);
-> --
-> 2.34.1
->
+This series addresses the issue for both dwmac4 and dwxgmac2:
+- dwmac4: since dwmac4 does not expose the tag type in the RDES3
+  descriptor, it cannot support hardware double VLAN stripping correctly.
+  This series disables double VLAN stripping for it, so the 802.1ad tags
+  are left in place and are handled by the software VLAN path.
+
+- dwxgmac2: the RDES3 descriptor does report the type, so the code was
+  updated to read it instead of hardcoding ETH_P_8021Q.
+
+Note: patch 5/5 was compile tested only, as I do not have the hardware.
+However, it uses the same codepath as dwmac4, so it has the same issue.
+
+Ovidiu Panait (5):
+  net: stmmac: Remove VLAN perfect matching dead code
+  net: stmmac: Enable double VLAN processing only when supported
+  net: stmmac: Move double VLAN handling to a dedicated op
+  net: stmmac: Disable double VLAN stripping on dwmac4
+  net: stmmac: Fix double VLAN stripping on dwxgmac2
+
+ .../ethernet/stmicro/stmmac/dwxgmac2_descs.c  | 15 ++++
+ drivers/net/ethernet/stmicro/stmmac/hwif.h    |  8 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 16 +---
+ .../net/ethernet/stmicro/stmmac/stmmac_vlan.c | 87 +++++--------------
+ 4 files changed, 47 insertions(+), 79 deletions(-)
+
+-- 
+2.34.1
+
