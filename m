@@ -1,322 +1,264 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088C33F12E2
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 22:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785364541; cv=pass; b=eLwPgdfI01Tahd/ii7TM8ET28D57oeZvYxS1N+QdgLYWgMQ58DgU+Fr5sR3Rmjg3+VvNORxAlYS0sa4EZ0RiTfkaGkuM8/hu0sjZM2zIISbt+0sbwzildzh4hvkvn9B55igRWBVrnJ/FodTjr9fV2v6sNLfS+KuZ9ZYwNHLsxbs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785364541; c=relaxed/simple;
-	bh=/px7XPzxM80fwnJlMNzLMSv1QSD5qCUbxnVvSmNHIXE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hrHkWgkNXJhyd5XyR84WUQWK/TpTRvds0gluibAzUEhd/yhvJHrSmOS8FIq4iEkuSvmDogh+jEd6qbfkGprRoQn3oIRB7qnCG96hh4r/VsGAum1kstXisaSvPqAqSTQbT95G3s/lhUyaTXYOEPRvmFjppLFyqnQm3bkP5XU5L/Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N+4Po+c3; arc=pass smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75FE3BC668;
+	Wed, 29 Jul 2026 22:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.162.73.231
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785365027; cv=none; b=ln9I72d/jtGEp0a8LpsP73vkk6YBIpdi6LVmoNHylSqMWhwUArG+0WZyYSgny3KoxdsfE0DI1TRs1D7ptefmRmfUx06/GLSR2clRHJ6KYJ9HXHzzg3/raIkGHQ1x3DPoEA/XHTZ9zShdWbDB3fJOfgRDnmqNJvyuy9qmDLakOng=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785365027; c=relaxed/simple;
+	bh=NqV2gyvwf53YD0fgRW+DGPQBXmeCXDR8/qp5ZwNz77o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fdNy4IYaef0XdFqNxsZUMdG5soJw9iRQxU24Vu49+ib5qkY5FowL9JAx7o5XayLGVVW5swW5GShGN/4pCAefggSBOBn4XYHhxxo+jLZ9lNLzlixvB5ot1RxC0lT5oxTX3tX3l9uZAyNP9JYqePzw2pTF8HjOpaxD/rBrK8l3XjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=s1F6DSqo; arc=none smtp.client-ip=35.162.73.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N+4Po+c3"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cacef7d299so24835ad.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 15:35:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785364536; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TuyrzrZgGqSTODdGwtHZ7mJ1D9upzYVYWb6JsqJ+tP43jF1qDNPfL/3Sry2S16czhy
-         VQiXbZ9EylfnRvR97SJXlmFqLlOBvhnLxO9YVO1OYjA57THuqOM3UlvNnD0Aszr2CyA/
-         zDogDyNeAWC9l4ZkqvYZ1+dzaGjUG8nenrVBpjJc25QxZfdnyvfp6yCR0IyhnePSClYd
-         nGRqPf0TGetdFtiLCe7AIil78Q94gyuNaa8dMvESBmXpvCDugQ+cFfdSnmkINjZoPwNk
-         UsIMiTHo/kn59sjRAmig3i84QX4Hcq3rBxH7RnLlLaYLDaw04kP68EpcBRucVXmEw69E
-         7HBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sAFbqSnTjVvDd7N/ufRBA5YIGxJ6su1eptQYO4lk4FE=;
-        fh=9y1NxAgXdJkYK2hlJg9i6zB1zKBLcR3xnQdz2BZaNwY=;
-        b=jiWpBa1U64DkRIwgo7yNB0he+VJkLvUVLNobnKYTwGSbNKwKxieC1iFoJHut6a3890
-         VBMAdBHs6aTuYVibtY9D1INtn6mt9xTXFqGsRpWEjaNf7tPHLuLkjbg0GNQ1TjyxmcEb
-         C0OYZZCl3wAKqt/mJAivEfZOSY0OdCg7PZgFTkHlubHbbozWJDOqHODTq+UM9OEGsFpb
-         +UzCWXLP6qK85SgtLik8HYWIeuwGLewz/mrdnMwbUlWHKlvNvmrWeQ8XMGB0wWq5bOXE
-         rlzL7NbGMx/HyJhzRitNwECh10487FAThUTUyI+BNDZUD7989flN3H6E1Oq1GVbfykrL
-         GIhA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="s1F6DSqo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785364536; x=1785969336; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sAFbqSnTjVvDd7N/ufRBA5YIGxJ6su1eptQYO4lk4FE=;
-        b=N+4Po+c3TRrDB0DpReGH+upFs71lYD0L9IGfnNrES/rbUb3f9SurSActxhfPRHwyEy
-         bc7o8MIE26t0m8+TkuEQWmTtKjuASu8HT/fFS3zXg3vMY0vbf5uwNs9KOYvmKZCX9uKG
-         eYhC+Qr57xsxpuykLC5Jew5N4C7M0cDNuaZZdzpyHwt4YWel2kRjoKcL3F9Cqus5X7NN
-         mhD4AIHNt5XVyP5EfL0nEtjuMv1Qge54Evt059PbdUlKyEndVbuIXi+ArafI1/ggcG56
-         E6RYS61MPMPSDC4sVt0eViIG+Ta9bIgEu1oSCtYPMZw/+kgbDxowxU4VWmtXs/SOSvFu
-         nHvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785364536; x=1785969336;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sAFbqSnTjVvDd7N/ufRBA5YIGxJ6su1eptQYO4lk4FE=;
-        b=pcif2hEqUbFyLgTdKfsfDlacPyZu93plZraBHsP2683VIe7tZos7GM/BpfhC/LYEMe
-         u8Bw+3XKBWAIfBUdsTDt2aiBtCnWPOVC6pf66auqOMgV3fcI5yYogbINygP7d61v+HMS
-         M5IVi1Tg62ZhLD0+fH++C2LOVCkmu5wKrcxUWnWVFb3IrCO5Ux3A5eugBE22q1KXaxGv
-         TaxIpaQZBTMRH7KvT9FmKIJTOdl+KGJOk22obEIkiSirMo3onzd2/RGR00cu9t4m+bdz
-         ULazmjkdGYGN6a8wiEbIsF72hHNWepBFvAmEsxRKeh6Cuhf80RFZe23drCBPMFt3jYDP
-         4bHQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqvRMTmIU4qijRjx6X57wPxKwFwb0+RIBIJO490a4XYFshExXI2K/+KHLAdl0E/OYs1xtL2FGU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7y7zWfOBGSKF1xou7BqrB+6d9vOTopgLCMpdfQXPB64SXzlIi
-	IzZBvLNnqt0CYRRqi7m3M18Ebn8XRGQGhuFEdOh39ej1KF6LVXgEaHWAQ1vWw6w5EPLC3MKrLcw
-	0teZhRyBH5PpkCUGVrsVnv2JTgNhGVmcc9iOx5AGT
-X-Gm-Gg: AR+sD12ZyJG3C9p3miIYvi8Q/AQtgwtL/WaMVmHU1r8X2qim9UkCHFH3nD6b+Ufjwyp
-	psbw47+g+m73RMrRYtKmBp89oTfwOYc8yUuQt0kj7PS+16s/6ngWw+NMje6gRrPBLTBn+bOeugz
-	Po5q7U6cX36CmHYZcdqbCcMdxxWAhsZrrnWVTEp/k4FCMn8pe38oxd00dvHqtU5J5xlyEDx7C74
-	Nn7qwgPV05GGJcibPFXARaYL/BFLTciSg3PagTxORqiHfoklITaYs2cckLVr/CGrQkde09vDfVQ
-	QDCCzyF6nsCNYFBC3BetlyRw4v2oOlUvk02vmJFpuhoG9gzLbGvSLWbesaHrcFVAMSjsf2Sd8A/
-	XTktMKoVucQ==
-X-Received: by 2002:a17:903:903:b0:2c7:9e6a:1a8d with SMTP id
- d9443c01a7336-2d035e66bb7mr853815ad.12.1785364535618; Wed, 29 Jul 2026
- 15:35:35 -0700 (PDT)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1785365025; x=1816901025;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0cX/Esl8gY+kO7NvHpvUsQS5CTl2FTbhi4a44jfBkNE=;
+  b=s1F6DSqo30cAKWg3bsccEFX4mSRqwz1MyuwvRkPWhnLSntkQTS/qLd4V
+   W7G2SB0qeIz01hS58jETo2Mg5ap7UI/us9FYpPO3Tv59PSP4Ph3dYaT6n
+   2Li1mTp/6en6ofm2grxjMEHKOu4RltWNsPu6aaR5dk8aQwwVF+tZlS+Mv
+   +Z0gXZiE9gLnS2336P1H3DcJXoo7tcF/wFhD77FJBf2ubGGXPtrSJctdA
+   zX/ID0uMAMXXj+7g7PN2clCbg+JkZLUazRf6qVOGB25difFIEdEe37wsB
+   7DmRxQS3y3Lc41L2FZTqYAuLiIdnSihhl1210VQfvGj0XYbqZVX0Cack0
+   g==;
+X-CSE-ConnectionGUID: +d1g9/U0QvqXxX9KBS5qrQ==
+X-CSE-MsgGUID: zkxEMZQ7T0GVgf3wSW7srg==
+X-IronPort-AV: E=Sophos;i="6.25,193,1779148800"; 
+   d="scan'208";a="24412671"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 22:43:43 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:21014]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.47.97:2525] with esmtp (Farcaster)
+ id c47381f9-be81-467c-b111-5c82cc533eb5; Wed, 29 Jul 2026 22:43:42 +0000 (UTC)
+X-Farcaster-Flow-ID: c47381f9-be81-467c-b111-5c82cc533eb5
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
+ Wed, 29 Jul 2026 22:43:42 +0000
+Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
+ Wed, 29 Jul 2026 22:43:36 +0000
+From: Arthur Kiyanovski <akiyano@amazon.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>, <netdev@vger.kernel.org>
+CC: Arthur Kiyanovski <akiyano@amazon.com>, Eric Dumazet
+	<edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, David Woodhouse
+	<dwmw2@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Miroslav Lichvar
+	<mlichvar@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Andrew Lunn
+	<andrew@lunn.ch>, Carolina Jubran <cjubran@nvidia.com>, Wen Gu
+	<guwen@linux.alibaba.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "David
+ Woodhouse" <dwmw@amazon.com>, Yonatan Sarna <ysarna@amazon.com>, "Zorik
+ Machulsky" <zorik@amazon.com>, Alexander Matushevsky <matua@amazon.com>,
+	"Saeed Bshara" <saeedb@amazon.com>, Matt Wilson <msw@amazon.com>, Anthony
+ Liguori <aliguori@amazon.com>, Nafea Bshara <nafea@amazon.com>, Evgeny
+ Schmeilin <evgenys@amazon.com>, Netanel Belgazal <netanel@amazon.com>, Ali
+ Saidi <alisaidi@amazon.com>, Benjamin Herrenschmidt <benh@amazon.com>, Noam
+ Dagan <ndagan@amazon.com>, David Arinzon <darinzon@amazon.com>, Evgeny
+ Ostrovsky <evostrov@amazon.com>, Ofir Tabachnik <ofirt@amazon.com>, Amit
+ Bernstein <amitbern@amazon.com>, <linux-kselftest@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <shuah@kernel.org>, Jonathan Corbet
+	<corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Simon Horman
+	<horms@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	<vadim.fedorenko@linux.dev>
+Subject: [PATCH v6 net-next 0/7] ptp: Add PHC timestamp quality attributes
+Date: Wed, 29 Jul 2026 22:43:18 +0000
+Message-ID: <20260729224328.16440-1-akiyano@amazon.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260729110249.2824835-1-shaojijie@huawei.com>
-In-Reply-To: <20260729110249.2824835-1-shaojijie@huawei.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 29 Jul 2026 15:35:22 -0700
-X-Gm-Features: AUfX_myAyvLvTtKrC4G2AGeQA9myyGoioUK2CwKoGB7ho5rUUkk4YKFRtaphEnQ
-Message-ID: <CAHS8izO+kiugW_qN-US+S88ypDnaEePP+-78vnVOfBtb8P0AKg@mail.gmail.com>
-Subject: Re: [PATCH v3 net] net: page_pool: fix UAF in __page_pool_release_netmem_dma
- on xa_cmpxchg race
-To: Jijie Shao <shaojijie@huawei.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, hawk@kernel.org, 
-	ilias.apalodimas@linaro.org, toke@redhat.com, shenjian15@huawei.com, 
-	liuyonglong@huawei.com, chenhao418@huawei.com, yangshuaisong@h-partners.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D044UWA002.ant.amazon.com (10.13.139.11) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Wed, Jul 29, 2026 at 4:03=E2=80=AFAM Jijie Shao <shaojijie@huawei.com> w=
-rote:
->
-> page_pool_scrub() iterates pool->dma_mapped via xa_for_each() with no
-> page ref held. __page_pool_release_netmem_dma() currently reads and
-> writes netmem fields (dma_addr, DMA index bits in pp_magic) after
-> xa_cmpxchg() returns. The unref path calls put_page() unconditionally
-> regardless of the cmpxchg outcome; when it loses the cmpxchg, it still
-> frees the page before the scrub winner finishes these netmem accesses,
-> so scrub touches a freed page -- a Use-After-Free.
->
-> Fix this by:
->
-> 1. Cache dma_addr to a local variable before xa_cmpxchg() in
->    __page_pool_release_netmem_dma(), so the scrub winner uses the
->    cached address for dma_unmap and never touches netmem fields after
->    the cmpxchg.
->
-> 2. Rename page_pool_release_dma_index() to page_pool_remove_dma_mapping()
->    and strip it down to a pure cmpxchg wrapper; it no longer clears DMA
->    index bits.
->
-> 3. Move dma_addr and DMA index cleanup to page_pool_return_netmem(),
->    which holds a page ref and can safely write netmem fields regardless
->    of the cmpxchg outcome.
->
-> The scrub path (no ref) only does cmpxchg + dma_unmap on the cached
-> address; the unref path (holds ref) clears dma_addr and DMA index bits
-> unconditionally before put_page().
->
-> Suggested-by: Mina Almasry <almasrymina@google.com>
+This series adds quality attributes to PTP Hardware Clock (PHC)
+timestamps, allowing userspace to obtain error bound, clock status,
+timescale, and system counter values alongside timestamps in a single
+call.
 
-Thanks for trying to give credit but I didn't do much but feed your
-earlier iteration to gemini. I don't mind either way but you can
-remove.
+Motivation
+----------
+The existing PTP APIs return timestamps without any indication of
+their quality. Applications that need clock accuracy and
+synchronization status commonly rely on external tools such as
+ptp4l, which implement synchronization logic and can export their
+measurement of clock accuracy. For managed PHC devices - such as
+the ENA network adapter, whose clock is synchronized by the device
+without userspace involvement - these tools are not available, and
+the existing APIs lack a way to report quality metrics to consumers
+of time.
 
-> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them wh=
-en destroying the pool")
-> Assisted-by: OhMyOpenCode:GLM-5.2
+This was previously proposed as an RFC [1] with a single ioctl.
+Based on community feedback, the design was reworked to cover both
+the extended (multi-sample) and precise (cross-timestamp) paths.
 
-I fed this to gemini and I got good feedback, but it needs improved
-human readability.
+Design
+------
+The UAPI was redesigned based on Thomas Gleixner's proposal [2]:
 
-> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-> ---
-> Changes in v3:
-> - Fix unlikely() to likely() for PP_DMA_INDEX_BITS to match
->   file convention.
-> Link to v2: https://lore.kernel.org/r/20260727132612.3277927-1-shaojijie@=
-huawei.com
->
-> Changes in v2:
-> - Redesign the fix per Mina's review: v1's unconditional
->   netmem_set_dma_index() introduced a UAF when the scrub path
->   (no page ref) writes to a page freed by the unref path.
-> - Cache dma_addr before xa_cmpxchg; move dma_addr/DMA index
->   cleanup to page_pool_return_netmem() which holds a page ref.
-> - Rename page_pool_release_dma_index() to
->   page_pool_remove_dma_mapping() to reflect its new role as a
->   pure cmpxchg wrapper.
-> - Link to v1: https://lore.kernel.org/r/20260724092135.414699-1-shaojijie=
-@huawei.com
-> ---
->  net/core/page_pool.c | 33 +++++++++++++++++++--------------
->  1 file changed, 19 insertions(+), 14 deletions(-)
->
-> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> index 21dc4a9c8714..b7f5cdb6c1c4 100644
-> --- a/net/core/page_pool.c
-> +++ b/net/core/page_pool.c
-> @@ -500,8 +500,8 @@ static int page_pool_register_dma_index(struct page_p=
-ool *pool,
->         return err;
->  }
->
-> -static int page_pool_release_dma_index(struct page_pool *pool,
-> -                                      netmem_ref netmem)
-> +static int page_pool_remove_dma_mapping(struct page_pool *pool,
-> +                                       netmem_ref netmem)
+- A unified data structure (struct ptp_sys_offset_attrs) is used
+  for both extended and precise ioctls.
 
-Not a readable name. IDK what 'removing dma mapping' means. It's not
-doing an unmap in the current iteration. Pick a new human-readable
-name based on the changes below:
+- A u32 valid bitmask in struct ptp_clock_attrs indicates which
+  attributes are populated, replacing sentinel values. Drivers
+  set only the bits for attributes they provide.
 
->  {
->         struct page *old, *page =3D netmem_to_page(netmem);
->         unsigned long id;
-> @@ -517,12 +517,7 @@ static int page_pool_release_dma_index(struct page_p=
-ool *pool,
->                 old =3D xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
->         else
->                 old =3D xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, =
-0);
-> -       if (old !=3D page)
-> -               return -1;
-> -
-> -       netmem_set_dma_index(netmem, 0);
-> -
-> -       return 0;
-> +       return (old =3D=3D page) ? 0 : -1;
+- System counter values (cycles + counter_id) are carried in
+  struct ptp_sys_time alongside each system timestamp. These are
+  populated by the timekeeping core cross-timestamp infrastructure,
+  which is now merged in net-next [3] - drivers do not fill them.
+  This series therefore applies directly to net-next with no
+  out-of-tree dependency.
 
-This function, AFAICT, has only 1 call site where this return value
-decides whether to dma_unmap_page_attr. That's not easy for a human to
-follow. Just put the dma_unmap_page_attrs in this function.
+- Graceful degradation: the attrs ioctls work even on devices
+  without attrs callbacks, falling back to gettimex64 /
+  getcrosststamp and returning attrs.valid = 0. The capability
+  bits reflect this fallback so cap-respecting userspace does not
+  skip the ioctl on base-only drivers.
 
-I asked gemini to apply my feedback and it gave me this (untested)
-patch. Consider reviewing this one and putting it through your
-testing/etc. Please review the comments around the code. Some look
-outdated? It's untested:
+A capability flag is added to ptp_clock_caps so userspace can
+discover attributes support.
 
-```
-net/core/page_pool.c
-index 21dc4a9c8714d..628854b56315b 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -500,29 +500,34 @@ static int page_pool_register_dma_index(struct
-page_pool *pool,
-        return err;
- }
+Patches 2-3 add testptp support for the new ioctls.
 
--static int page_pool_release_dma_index(struct page_pool *pool,
-+static void page_pool_release_dma_index(struct page_pool *pool,
-                                       netmem_ref netmem)
- {
-        struct page *old, *page =3D netmem_to_page(netmem);
-        unsigned long id;
-+       dma_addr_t dma;
-+
-+       dma =3D page_pool_get_dma_addr_netmem(netmem);
+Patch 4 implements the attributes for ptp_vmclock, reporting
+error bound, clock status, and timescale.
 
-        if (unlikely(!PP_DMA_INDEX_BITS))
--               return 0;
-+               goto unmap;
+Patches 5-7 implement the attributes for the ENA driver,
+reporting error bound from the device's PHC layer.
 
-        id =3D netmem_get_dma_index(netmem);
-        if (!id)
--               return -1;
-+               return;
+v6:
+- ptp: reject a non-zero reserved field (request.rsv[]) in the
+  attrs ioctls, matching ptp_sys_offset_extended(). (Jakub Kicinski)
+- ptp: zero-initialize the per-sample system-timestamp snapshot in
+  ptp_sys_offset_extended_attrs() so no uninitialized or stale stack
+  data can reach userspace. (Jakub Kicinski)
+- ptp: translate the kernel enum clocksource_ids to the UAPI enum
+  ptp_counter_id before returning sys_counter_id; sources that are
+  not a raw hardware counter (e.g. kvmclock) are reported as
+  PTP_COUNTER_UNKNOWN with sys_counter = 0. (Jakub Kicinski,
+  David Woodhouse)
+- ptp: initialize the precise cross-timestamp struct and set its
+  clock_id from the validated request; validate clock_id against a
+  precise-path allowlist (CLOCK_REALTIME + CLOCK_AUX) so unsupported
+  clocks return -EINVAL instead of triggering a WARN in
+  get_device_system_crosststamp(). (Jakub Kicinski, David Woodhouse)
+- ptp: make the extended_attrs/precise_attrs capability bits reflect
+  the base-callback fallback (gettimexattrs64 || gettimex64,
+  getcrosststampattrs || getcrosststamp) and document the fallback
+  and the att.valid semantics. (Jakub Kicinski)
+- ptp: echo the full request header back from the attrs ioctls so
+  valid/clock_id/num_samples/rsv round-trip. (Jakub Kicinski)
+- ptp: clarify the FREE_RUNNING vs UNRELIABLE and HOLDOVER status
+  comments and the @error_bound kernel-doc (a maximum bound, not a
+  statistical estimate; not to be trusted when status is UNKNOWN or
+  UNRELIABLE). (Carolina Jubran)
+- ptp: document that both @sts and @att may be NULL in the
+  gettimexattrs64 kernel-doc. (Jakub Kicinski)
+- selftests/ptp: print the returned system counter value and id
+  (sys_counter, sys_counter_id) in the attrs output.
+- Exposing the underlying hw_csid/hw_cycles for derived clocksources
+  (kvmclock, ART, ...) is left to a follow-up; the UAPI leaves room
+  to add them without an ABI change. (David Woodhouse)
 
-        if (in_softirq())
-                old =3D xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
-        else
-                old =3D xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0)=
-;
--       if (old !=3D page)
--               return -1;
+v5:
+- ptp: simplify ptp_sys_offset_{extended,precise}_attrs() to copy
+  the request header onto the stack and allocate the result buffer
+  once, instead of memdup_user() + kfree() + kzalloc(). (Saeed
+  Bshara)
+- ptp: deduplicate the kernel-doc for gettimexattrs64 /
+  getcrosststampattrs by referencing the base gettimex64 /
+  getcrosststamp callbacks. (Saeed Bshara)
+- ptp: add missing kernel-doc member descriptions for struct
+  ptp_timestamp and struct ptp_sys_offset_attrs.
+- selftests/ptp: map the clockid to a name and print once instead
+  of three duplicated printfs. (Saeed Bshara)
+- selftests/ptp: make -a a modifier on -x/-X instead of an
+  exclusive option; drop -A (use -X -a); trim the unknown-clock
+  output; print "not reported" for attributes the device does not
+  report. (Saeed Bshara)
+- ptp_vmclock: scope the local 'st' inside the SUPPORT_KVMCLOCK
+  block to fix an unused-variable warning on !CONFIG_KVM_GUEST.
+  (kernel test robot)
+- No UAPI changes; the ioctl structures are unchanged from v4.
 
--       netmem_set_dma_index(netmem, 0);
-+       if (old !=3D page)
-+               return;
+v4:
+- Complete UAPI redesign per Thomas Gleixner's proposal [2]:
+  unified data structure with u32 valid bitmask, system counter
+  in ptp_sys_time (populated by core, not drivers), graceful
+  degradation for devices without attrs callbacks. (Thomas Gleixner,
+  David Woodhouse)
+- Counter values moved from driver attrs callback to timekeeping
+  core infrastructure - drivers no longer set counter_id or
+  counter_value.
+- Flexible array member for timestamps[] (kernel bounds the copy,
+  userspace allocates for num_samples requested).
+- Drop separate ptp_clock_attributes kernel struct - driver
+  callbacks fill the UAPI ptp_clock_attrs directly.
 
--       return 0;
-+unmap:
-+       dma_unmap_page_attrs(pool->p.dev, dma,
-+                            PAGE_SIZE << pool->p.order, pool->p.dma_dir,
-+                            DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERIN=
-G);
- }
+v3:
+- Remove patch 5/8 from v2 (return-code bugfix) - sent separately
+  as [PATCH net] to the net tree.
+- Zero-initialize struct ptp_clock_attributes in PTP core ioctl
+  handlers to prevent stack leak of unset fields. (Simon Horman,
+  sashiko)
+- ptp_vmclock: validate counter_period_shift < 128 to prevent
+  undefined behavior on untrusted hypervisor input. (sashiko)
+- ptp_vmclock: add overflow check on err_hi * NSEC_PER_SEC to
+  prevent silent wraparound producing erroneously small error
+  bound. (sashiko)
+- ptp_vmclock: report PTP_TIMESCALE_TAI after tai_adjust() to
+  avoid timescale mismatch. (sashiko)
+- ENA: set counter_id = 0, counter_value = 0 in gettimexattrs64
+  for defense-in-depth. (sashiko)
 
- static bool page_pool_dma_map(struct page_pool *pool, netmem_ref
-netmem, gfp_t gfp)
-@@ -728,24 +733,13 @@ void page_pool_clear_pp_info(netmem_ref netmem)
- static __always_inline void __page_pool_release_netmem_dma(struct
-page_pool *pool,
-                                                           netmem_ref netme=
-m)
- {
--       dma_addr_t dma;
--
-        if (!pool->dma_map)
-                /* Always account for inflight pages, even if we didn't
-                 * map them
-                 */
-                return;
+v2:
+- Fix build bisectability: move ena_com.c consumer updates into
+  patch 6/8 and ena_phc.c caller update into patch 7/8 so each
+  patch compiles independently.
+- Add missing Cc for Amit Bernstein (co-author of ENA patches).
 
--       if (page_pool_release_dma_index(pool, netmem))
--               return;
--
--       dma =3D page_pool_get_dma_addr_netmem(netmem);
--
--       /* When page is unmapped, it cannot be returned to our pool */
--       dma_unmap_page_attrs(pool->p.dev, dma,
--                            PAGE_SIZE << pool->p.order, pool->p.dma_dir,
--                            DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERIN=
-G);
--       page_pool_set_dma_addr_netmem(netmem, 0);
-+       page_pool_release_dma_index(pool, netmem);
- }
+[1] https://lore.kernel.org/netdev/20250724115657.150-1-darinzon@amazon.com/
+[2] https://lore.kernel.org/all/87se7ht25o.ffs@tglx/
+[3] https://lore.kernel.org/all/20260526165826.392227559@kernel.org/
 
- /* Disconnects a page (from a page_pool).  API users can have a need
-@@ -759,10 +753,17 @@ static void page_pool_return_netmem(struct
-page_pool *pool, netmem_ref netmem)
-        bool put;
+Arthur Kiyanovski (7):
+  ptp: Add ioctls for PHC timestamps with quality attributes
+  selftests/ptp: Extract print_system_timestamp helper in testptp
+  selftests/ptp: Add testptp support for attributes ioctls
+  ptp: ptp_vmclock: Implement attributes ioctls
+  net: ena: Update PHC admin interface for error bound support
+  net: ena: Add error bound to PHC communication layer
+  net: ena: Implement gettimexattrs64 callback for PTP attributes
 
-        put =3D true;
--       if (static_branch_unlikely(&page_pool_mem_providers) && pool->mp_op=
-s)
-+       if (static_branch_unlikely(&page_pool_mem_providers) && pool->mp_op=
-s) {
-                put =3D pool->mp_ops->release_netmem(pool, netmem);
--       else
-+       } else {
-                __page_pool_release_netmem_dma(pool, netmem);
-+               /* clear dma_addr/DMA index; safe because we hold a ref */
-+               if (pool->dma_map) {
-+                       page_pool_set_dma_addr_netmem(netmem, 0);
-+                       if (likely(PP_DMA_INDEX_BITS))
-+                               netmem_set_dma_index(netmem, 0);
-+               }
-+       }
-
-        /* This may be the last page returned, releasing the pool, so
-         * it is not safe to reference pool afterwards.
-```
+ .../device_drivers/ethernet/amazon/ena.rst    |   2 +
+ .../net/ethernet/amazon/ena/ena_admin_defs.h  |  17 +-
+ drivers/net/ethernet/amazon/ena/ena_com.c     |  51 ++--
+ drivers/net/ethernet/amazon/ena/ena_com.h     |   5 +-
+ drivers/net/ethernet/amazon/ena/ena_debugfs.c |   3 +
+ drivers/net/ethernet/amazon/ena/ena_phc.c     |  61 +++-
+ drivers/ptp/ptp_chardev.c                     | 208 ++++++++++++-
+ drivers/ptp/ptp_clock.c                       |   4 +-
+ drivers/ptp/ptp_vmclock.c                     | 197 +++++++++++-
+ include/linux/ptp_clock_kernel.h              |  20 ++
+ include/uapi/linux/ptp_clock.h                | 283 +++++++++++++++++-
+ tools/testing/selftests/ptp/testptp.c         | 198 +++++++++---
+ 12 files changed, 939 insertions(+), 110 deletions(-)
 
 
+base-commit: b515dc54795ef370be3cb396e7c12ad91686b6d1
+-- 
+2.47.3
 
---=20
-Thanks,
-Mina
