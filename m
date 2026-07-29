@@ -1,42 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE48B2D97BB;
-	Wed, 29 Jul 2026 01:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B31322AE65;
+	Wed, 29 Jul 2026 01:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785288273; cv=none; b=tgk6O9toP0DjPz5EihrqtepgkIlx4cJbZWTAI3sivy2kLTFJAJcWU9L95u/e2UURuOd8sk49taUxBteAbeZSgtsjJFAKvQPOARBZoObtI2YXHBlhjLIljqzmR1pIEbMjohHUlbEVu+EnAP7AHLMmv/Vp4nVzd5AhY9GrSYmXx60=
+	t=1785289395; cv=none; b=V/W+Ea7Je369Yw4cgnWDsGVD+/LM5Ba+P1T4/jo+dh3d65BhAoYHGh0i9mk6ywQaZNOfDsGbTvjQ/k70SZ2w33I60v2kf7w5mPUqdk1NS1QG5/Djl0VzICtie/7hvpdlwaW6SZPeE+0S/0XPol3JoH+02h7o4QXirC7Q1H8+ATI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785288273; c=relaxed/simple;
-	bh=0K7v+SNJIde2rWpQJx+biIFzcgjAmzOsq3IB+E4oT1U=;
+	s=arc-20240116; t=1785289395; c=relaxed/simple;
+	bh=oIyk41X5ZpSCbosSjqo1UkivYY2/+g7Tcggvw0G0X/Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CTH3WqtKaSD17B7hH1/5HkOd996+P8fjerBPX7U6Ia4SAXHbOa6BIPWD8wFMzmIveyaatw7yQhcd5CpDfKbftuQFv3XF5HG7jbmRd45d5tKrVKgIECO0R+HunWuaaP/vJRVPShXC/t9fhuZ2xycP2X/Bsa4mZOS7YIBl6mqVmlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i8YIZxfY; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=mEMHg5zMrx8bK6g0WDNwffM9gjYyFoYa90cV5zGjETO84z5rBBmvz8ojInGQ4DranGGQTMctMiWvFpALQ1c3KvYGb0NwS7gmkfAdRLbdHU8w9DOX7zVhNkxdsCX+akFo0g9MgqNMpDCMQrIZ4QtKTi02f9ULoLNUrzrExkeDNoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MquVpH+e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i8YIZxfY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2198F1F00A3A;
-	Wed, 29 Jul 2026 01:24:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MquVpH+e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215A21F000E9;
+	Wed, 29 Jul 2026 01:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785288272;
-	bh=1eCwE+8DaunIjwYH+E8QqyYowTTJ9nKKsaiJjEMSfGU=;
+	s=k20260515; t=1785289393;
+	bh=N00GLSISRz/Ulv4ykckOj8Kr6pruetBm+OdZ1a7fNvg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=i8YIZxfYvHLx8m/m2zA8EyFtXPCgG61w+IJhb3FBaivBQdnEJgdQkXNceZQonzbRI
-	 pidgXBRhbLgDrW0wNJbYHNnNkhGkCHvJgh31DzcsenddaI9sfiEPjh+sngossW0kBj
-	 Zv0C8dXIq/LzukqvqejJbjZipXyOOwWuVYqOzlqIRdLUKkCsVZrXxXQYYX5YyVO//L
-	 jVNglaLHSTiy+naG7LOVFoqyXTJsO+/WSu2o9/XFL5p90xCq0TOsJ2h51GYNQCuQOu
-	 xaTOu6dPq83NgAgSQndYnGIwJBnzbrCLesEfPv67fAlrtEJbANIMoPCq5pH5bt5I0t
-	 1StM6w5LOcSJQ==
-Date: Tue, 28 Jul 2026 18:24:31 -0700
+	b=MquVpH+eCPFM0djjXbRFFv7zpASpcXul1uTcZwMAaDSrEutTuwrGgvTbxYWBWjQyh
+	 LfNn9AKi9gZFAxvyPMjp4Et4O8r6KzTVTvc1gmvp6geqEVvuNHtyExRNWc3aDOukrX
+	 beXnCdikhA7ERa2lJC1OraPyxTH9MAZN/mZJZoCA7o41z9v+NDbbutXg54TzAvsptZ
+	 p5qBb6illfLzB+GLqzMTZGt6iOM8BIAoPgLkXgHeNCZljHEC/Tb4Ggvknu+IQygkdu
+	 B8N32050omrgVnKCWagtEleZhGJ4smzpcyDFUCxFPp6HHOZnDcTxUzZ/Q0o4eRBiV9
+	 um+xm1qAC296g==
+Date: Tue, 28 Jul 2026 18:43:12 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: luoqing <l1138897701@163.com>
-Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- linux-sctp@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net] sctp: fix addip_serial increment on ASCONF_ACK
- allocation failure
-Message-ID: <20260728182431.3291b917@kernel.org>
-In-Reply-To: <20260723071818.459034-1-l1138897701@163.com>
-References: <20260723071818.459034-1-l1138897701@163.com>
+To: Chuck Lever <cel@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>, Sabrina Dubroca <sd@queasysnail.net>,
+ Shuah Khan <shuah@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown
+ <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo
+ <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, netdev@vger.kernel.org,
+ kernel-tls-handshake@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ linux-nfs@vger.kernel.org
+Subject: Re: [PATCH net-next v2 0/6] Deliver TLS control records to kernel
+ read_sock consumers
+Message-ID: <20260728184312.20b21582@kernel.org>
+In-Reply-To: <20260720-tcp-read-sock-v2-0-29545d034f3c@kernel.org>
+References: <20260720-tcp-read-sock-v2-0-29545d034f3c@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,28 +50,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 23 Jul 2026 15:18:18 +0800 luoqing wrote:
-> From: Qing Luo <luoqing@kylinos.cn>
-> 
-> In sctp_process_asconf(), when sctp_make_asconf_ack() fails to allocate
-> the ASCONF_ACK chunk due to memory pressure, the code jumps to the
-> done label where asoc->peer.addip_serial is unconditionally incremented.
-> 
-> This leaves the peer's ASCONF (serial N) unacknowledged while the local
-> endpoint now expects serial N+1. When the peer retransmits serial N, it
-> falls into the serial < addip_serial + 1 branch ,
-> which attempts to look up a cached ACK for serial N. No cached ACK
-> exists since the allocation failed, so the retransmission is silently
-> discarded. The peer eventually times out and ABORTs the association.
-> 
-> Move the addip_serial increment inside the if (asconf_ack) block so that
-> the serial number is only advanced when the ASCONF_ACK is successfully
-> created and cached. This way, on allocation failure, the serial number
-> is unchanged and the peer's retransmitted ASCONF will be correctly
-> re-processed.
-> 
-> Fixes: 1da177e4c3f4 (Linux-2.6.12-rc2)
+On Mon, 20 Jul 2026 10:27:54 -0400 Chuck Lever wrote:
+> - The no-data cap (patch 1) is a prerequisite, not a stand-alone fix.
+>   Once control records reach read_sock, a record carrying no payload
+>   stops advancing the caller's read descriptor, so a peer streaming
+>   such records would pin the socket lock and the kernel receive
+>   context for as long as the flood lasts. Bounding consecutive
+>   no-data records supplies the return boundary a system call would
+>   otherwise provide. The cap is scoped to tls_sw_read_sock() alone:
+>   splice and recvmsg run in the caller's own context, reschedule, and
+>   drop the lock on return, so they need nothing.
 
-nit: missing quotation marks around the subject
--- 
-pw-bot: cr
+Is it just me or this is incomprehensible slop? Run on sentences 
+full of terms no kernel developer would use?
