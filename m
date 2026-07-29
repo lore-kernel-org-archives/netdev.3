@@ -1,200 +1,328 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81E33FBB5E;
-	Wed, 29 Jul 2026 23:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785368292; cv=fail; b=Ch4qtgas8vCfPj14/kt5pmYEtxdlOJ8Euelpg65qQ/Ub9OJWXj8yxAYXnDUwtJrSIA3dPwwAtST4WZRFzS8oEx346T2FNZMhMNba7342Z/tCGSKvm2gUmkcLYnTnbi87mLEAgBrN6/MxgDOwnHYMGRRPbOjQiCpkIrrSYoohwuE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785368292; c=relaxed/simple;
-	bh=SGr3Splk/DNdIH+orwnMZpoMB1+fJH8M+F/0/HFFusU=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=LY+5fuNfdiKIiAuTyKQBC3ovpuv61lj5+A6LWWrJ3ee3End1ASU3UNQ9Nz2t1CZg+jHAyaTnCFOWChvl54QASDs1iuQ9Hef8CQtAIfQa2jfLG6p/Q1vFyoM08T2iwsxTFHHSe1i7wNrYLXu3pYVBnvdOFA+Em0VoSDlKvTu4JYk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZKbmZq2R; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171933F660D;
+	Wed, 29 Jul 2026 23:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.77.92
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785368297; cv=none; b=lW0MzrSZ2yMcsHuq4aAHdk30mxnnuO8fwmNBg+rrx4V55j6RQJD/Y7bEgKtJII8B1a9gi8lv/mtvwGQ3r3HXA5MUPqJty5JFT0U7eyLLDYvCZ5oaj/rODLh7R6Wh3Eye/SpJ3RvEF/T/an+fkBE9w4V37JQx0gcM2B9CdMfRkEY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785368297; c=relaxed/simple;
+	bh=TlzcoICQ1gJsQbu78L61HDY0rppVTqbOQrIrhefqI28=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aopdoIlN4mzzSomCXCttTe6n9UwQmD8LedghhWLem7rz1NQ2rsfx70j5jP+sSD2DklwyIOyaSy9rFrU0yvkvCapnaBVDv/WeRSGR0hS+2ku/ekIDosk7G7Kqhn8Acs/23vwOGBVs/3EY+cZYgqCjXf1Ua2FsKS2V85wq0LNx8og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=mRLpibt8; arc=none smtp.client-ip=44.246.77.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZKbmZq2R"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785368291; x=1816904291;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=SGr3Splk/DNdIH+orwnMZpoMB1+fJH8M+F/0/HFFusU=;
-  b=ZKbmZq2Rj0dItEbOgWdVEcdY8ABuW08gysovH6rcukUIr3GJnIR770k7
-   abAbNQ7Fqk6akB3hHW0BA5IFIYRYhxjaNltlwnsvVIJ5BvhMzv6ieFOKS
-   80gNgNVupS7mg35OGpRxXh0WVNDbgy+E5BRvXoMt9r6K2HHh8OqHZMbdA
-   g3VzTFNAa4Lq+GK6xjMwSvjaWUgl0Ac4K9Zxob8U9uwzd6dTawWCueP3Q
-   kRLIAVcr6cZe4O+zBLgmchiAxli9JLBs6hdpEkpR8+w7LRX/PaTIk9UFh
-   mAruVvywvm/b5L/+novnBhwWAWs9zlKlsSx54jbR7scRBiapRo4VFOifG
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="mRLpibt8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1785368296; x=1816904296;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=FfWJyTmRsx+Xhd0MGY9qu5bM6VZQEUjOoKvWFVxtys4=;
+  b=mRLpibt8oEBHRWQUs7oUAXLLDXDp8tG0GncqYzGilSB8qJrsf+cjUYHx
+   MkUYyOVUvF00wkto7uV7PKSN4fnjCqe9eE2z3dumHBDa6YYgL6j0wC1Pe
+   Zi26Ue0efgaxcNUW/a2vFFzXFgkSUa3yEniBbNE1qIC7D8bNu5Njv2OiH
+   k+PUHVg5G2ykIbHQKDnhmNAly8GFdQslxj3oOESFqAO8oOLGK7+DhGLrI
+   HLP2cc4reGLJhLf2Yb8dUcjKW6lX81cBuj/bjqYq8IBbjxHzhkL/pkOT1
+   lmsMKJFMcLbgMlZEh35arwzw4VeCwf1wF0GHIbwchZcUg+eeJwZ6gMEv2
    w==;
-X-CSE-ConnectionGUID: QAiZj+P1QiKYOeva+Yqsng==
-X-CSE-MsgGUID: mieD7om0Qgu1F6zaVx4YWA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103388450"
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="103388450"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 16:38:10 -0700
-X-CSE-ConnectionGUID: um9MxaONQ8Gbar7VbkGIfA==
-X-CSE-MsgGUID: tfl+7nJ6SOq+zTCq+g7+fQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="257470782"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 16:38:09 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 29 Jul 2026 16:38:09 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 29 Jul 2026 16:38:09 -0700
-Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.2) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 29 Jul 2026 16:38:08 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PH8C2CpEC/VVy/Wq13x+YXB2GcLmcXwAAbvxd6gXjmHMbHn084ag+cFcTrumP5eMe6logH6pblOQI8CUWCzF2IS1CZEb68Pa3vUtobDsEma9RfTbiFlDMCCSYUeGNlp44slG9KCdLnPZOcCY0wJEDNrBOgW5fj3CoXeMo6RdsY04sbLFy70PREKnC8rSRoqRweE9wbg/yFIK7/7c5OXv1BRZvSbahd6rNA+voRP8YjpZnDFTyf0Ey9AB0S8b06Gy5ZySrrRa4rrAoLvI6NXPdG45/QCI/eUoP6dxq+iNVPVSBV/EjursaGnU1wp05ADEAfUADF1lblq/bDFFMGrugQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P1RjM9PtwN3ILbWSEKH5FnSrauoq6trim9IgvXXBWfM=;
- b=jfT0tqMmtIri2cS7CazZ8wq58Ugf9sjPMgswzFlRiJPuVLkkb5qnxZyGjF18ilon45NRxkABotxLv0DVZPBalaVC+Y4AxSsuMDay7Ixsszq7c8wMYRQjkjzteOU1iKLtuSXADry4QF0yDRiyvonTyCZLHSl2Um5vA1590IN6AS5xYFZXNxjEI/QNnxWSWmHPr5UDQzd5uq1SzsNuAVluZpztKMZhJYfckNBOrASYAF2zZOnNk2Jj6Qd0YoVvNxRaNJePTGqGGHlsGGzmkPp3Lj5e+HsHLKOFStY2SxYudYjkZvd2H+3sCIReC2+GWGkV2/tT5QvMfU/uUweZ5c1xzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by SJ0PR11MB5037.namprd11.prod.outlook.com (2603:10b6:a03:2ac::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.13; Wed, 29 Jul
- 2026 23:38:06 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0270.009; Wed, 29 Jul 2026
- 23:38:06 +0000
-Message-ID: <ca7c26d7-17f1-4967-bd1a-71572f0ee4be@intel.com>
-Date: Wed, 29 Jul 2026 16:38:04 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] qlcnic: move notifier error cleanup under CONFIG_INET
-To: Can Peng <pengcan@kylinos.cn>, <manishc@marvell.com>,
-	<rahulv@marvell.com>, <GR-Linux-NIC-Dev@marvell.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20260728032046.121631-1-pengcan@kylinos.cn>
- <20260728032046.121631-3-pengcan@kylinos.cn>
-Content-Language: en-US
-From: Jacob Keller <jacob.e.keller@intel.com>
-In-Reply-To: <20260728032046.121631-3-pengcan@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4P222CA0014.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:303:114::19) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+X-CSE-ConnectionGUID: 2woH6J+0RVmB14kasixIrA==
+X-CSE-MsgGUID: mY1c4nNMRZCij4XkcPF49g==
+X-IronPort-AV: E=Sophos;i="6.25,193,1779148800"; 
+   d="scan'208";a="24617473"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 23:38:12 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.234:29543]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.4.11:2525] with esmtp (Farcaster)
+ id 72e50afd-6742-4f3d-8a9a-c2d0fd5de050; Wed, 29 Jul 2026 23:38:12 +0000 (UTC)
+X-Farcaster-Flow-ID: 72e50afd-6742-4f3d-8a9a-c2d0fd5de050
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
+ Wed, 29 Jul 2026 23:38:12 +0000
+Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
+ Wed, 29 Jul 2026 23:38:06 +0000
+From: Arthur Kiyanovski <akiyano@amazon.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>, <netdev@vger.kernel.org>
+CC: Arthur Kiyanovski <akiyano@amazon.com>, Eric Dumazet
+	<edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, David Woodhouse
+	<dwmw2@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Miroslav Lichvar
+	<mlichvar@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Andrew Lunn
+	<andrew@lunn.ch>, Carolina Jubran <cjubran@nvidia.com>, Wen Gu
+	<guwen@linux.alibaba.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "David
+ Woodhouse" <dwmw@amazon.com>, Yonatan Sarna <ysarna@amazon.com>, "Zorik
+ Machulsky" <zorik@amazon.com>, Alexander Matushevsky <matua@amazon.com>,
+	"Saeed Bshara" <saeedb@amazon.com>, Matt Wilson <msw@amazon.com>, Anthony
+ Liguori <aliguori@amazon.com>, Nafea Bshara <nafea@amazon.com>, Evgeny
+ Schmeilin <evgenys@amazon.com>, Netanel Belgazal <netanel@amazon.com>, Ali
+ Saidi <alisaidi@amazon.com>, Benjamin Herrenschmidt <benh@amazon.com>, Noam
+ Dagan <ndagan@amazon.com>, David Arinzon <darinzon@amazon.com>, Evgeny
+ Ostrovsky <evostrov@amazon.com>, Ofir Tabachnik <ofirt@amazon.com>, Amit
+ Bernstein <amitbern@amazon.com>, <linux-kselftest@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <shuah@kernel.org>, Jonathan Corbet
+	<corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Simon Horman
+	<horms@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	<vadim.fedorenko@linux.dev>
+Subject: [PATCH v6 net-next 3/7] selftests/ptp: Add testptp support for attributes ioctls
+Date: Wed, 29 Jul 2026 23:37:32 +0000
+Message-ID: <20260729233740.16516-4-akiyano@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260729233740.16516-1-akiyano@amazon.com>
+References: <20260729233740.16516-1-akiyano@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|SJ0PR11MB5037:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e3dfe0c-818d-4e3d-a00f-08deedca708c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|18002099003|22082099003|6133799003|56012099006|11063799006|4143699003|10067099003;
-X-Microsoft-Antispam-Message-Info: oWhAPwr0T84UpkL55S9ZCEorUdLH7CMhr3bVVt4hyM2DZOtGLIMRqRq8xnhFGCcXp16pYO9cmI+fTkQ2zlWN+ApBNtApDCRkd2GH3H0zGZuWe+krJOJMFKX+3c8t5gEGSCTNDXAiHTD2WET9cPriPerLo+nhIteKJvLicdmv2OcrJcPoXjMBiHLZ/z7opXYe8MlG3LwSr+63YPStaLHPlvWh5h9ZuCgKgiFEg7wzZ0yyjgYEvcfV8DTSO0744CK114XpBktcSTdoo4icq0aPnN5rvOhItM6zwObtHNqH8w6ze7iHjhbjOQvfCE7Y6HHFqzsQP7QhX64BifCIzrwqwTumriZ0D5snB4yWwnCmr/6GKnLdGLjIi03d0e/fwqVAIi1r3cGX0h7+l/6AUohG8b7HsddMue40CnYHAajWvsm6gq2sLx5WB2+VaiJ02TYvsTKss51rFx9GxfR9ENakKGQjITbPUEKMp7FLIakLUgSpkK6HsVPRfmELkYKIXo9SbHzspH/u+OLT5OsDOmE2cSiu2WC9KFHOPB43ZVh9YmSDIXWUWyXSidDEXFKQALJHWguLy3Ymkn8+ZGF2U9nY09KrauichILt68Qz7Ehv149w4vQEXc568e2FX5+LFGfEjn4aaYlmO466RFMqDdbsNEWfTiKHE7QhLUYoNwrFQgc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(18002099003)(22082099003)(6133799003)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cndCZ3p1Q2JVUHZMTnJMc2svWmNLTFdYQi93V1R2SHZGNEVQZ05ON1BkTDFP?=
- =?utf-8?B?QWZnWUFJaUVyUlZoVUFMK3JHcjg1RzdiREVWeXhCczZJcTFNdzk2VWZqNFh6?=
- =?utf-8?B?dHlTNmZzaVRJK1hFaUw0Y1NuWitoclhZUVpLckpwRUYrSno0eDBHRmJrSEdR?=
- =?utf-8?B?TVF5QnNocHNiS29xQ0ZpTXp3SldvODRYZnFPbE9idnk0NlhtUkc4Y3QvYWJ0?=
- =?utf-8?B?OHozUFBSQlZSUXRqeGJpWnpDTWtGRXZncWFSYW1kK0s1ZkNBVUdKSUg5dkhD?=
- =?utf-8?B?L0kzK1EzTWhpQ1c3bEZMQkdlTlcra2FpU3pJSXBKekVlMVB4bXFBcHJkazRV?=
- =?utf-8?B?QlhXd3UybE1BQlh6bDlQNHJvMjBLYUppd3E2NHFqamorWnluMGJUSUFhR0FI?=
- =?utf-8?B?YzIvWEU5SWhHaUZrelFxMUxHNTJEcmdJbHpLYzJqTTdjdHpmWVpsYVFxUkxa?=
- =?utf-8?B?UUZMLy9iVDFaYkR3VEthSFJJaGpFRUdtMkh5UHJrbzJpdlVtNmNkUEJuM1Rp?=
- =?utf-8?B?cFdmRU1saitjVkFEN2hUNjd1Z0FtVmFaWnJyRTNXRzQ2bFN5STZlUkhXY3d2?=
- =?utf-8?B?MjB1dHVpdC82TnV6RHNNV2ROM2xCZDY3TWMrVG9LcVFhckhhZ2FzRHQxNTZQ?=
- =?utf-8?B?dEFxZEhadFdoM0lXNUFZaFdXN0hzbzBOZUtHam9LV29FUVYzLzZwd2I5YlVq?=
- =?utf-8?B?NEdPUm1waWJvcXJIc01lOE9SK09CZXdUVzhsTXE5ZjNQY3RtN20zNklSdmcw?=
- =?utf-8?B?NDhFNFpBOU9ZWFBVVWRKT1FSZk9GSmY0cHdsL29VM0RtemtVdVlJWUlOWGIy?=
- =?utf-8?B?bENSVGZZVTNtWlNsVllya29UazVxTm5uWGlnZ1BUVDdzRGRUZHhlTkdMM1R2?=
- =?utf-8?B?RHNLNDhsbllVbElBdmtHZ2VUK0tqVmdxY1U0R0VlREtoalVVaHR6dGV1WkJp?=
- =?utf-8?B?dW1qZ1czQzN6TnhhZUdDK1FickpzbDd2dXlXaC8wOUk2YVl0U3NvTm42QlFB?=
- =?utf-8?B?ZTZldWswQ3RSRFp6aW40ZUJxWDZTVkVoOVNMMzRKWUNML2pjV2VUZkkxd0Yw?=
- =?utf-8?B?VUcvdDlMaEhyY1NicVJCeU9MdEFTSW9QSjlKVlVuSXU2UW80SVJCbE5qcVNP?=
- =?utf-8?B?UXBCNFp3UzEvM2U1MlA5ZzNPRVpQK2RsRisydjcwaE1ZdDRTcUsyaUpvMktL?=
- =?utf-8?B?NzhiZk1Tb3kvZzUwaEJkK2pTZk81OTE1RXV0aHVuT29ZOS9HTVlJbHpkUTBy?=
- =?utf-8?B?MEMvRnZ5aHFrQVFscFRuak9BNEF0ejVDYWUvR0tqUkw0SWdLTldvbko3UDNa?=
- =?utf-8?B?RGtxTVpkMXg0aURaamlFM0Z2cmxPM21XbzJhK3M4VHJlSzZSU0U4NzE2d3JU?=
- =?utf-8?B?QkxhMGVMblpaL1pSUTJvYVkyVXJ4bTI0dzRnZnd3YU40SHhWVm1ad0pCUFBD?=
- =?utf-8?B?Tm1uN3JBbkZoT2JMZGxQa29HR25HU2NpZzJ6dlBqNnYvRytidFE5dThsV0Yx?=
- =?utf-8?B?eW5Sb1F4bk9kaFNnRWZTM3BUSXhpelVydVJtYStkcEtabm5Tc0ZwSWdOajY4?=
- =?utf-8?B?b29BbCtLR2Q1MFoySk4wbzRlL1k4U3FOSUp0aEdlL1JTQkk4bDR5Qm04eWVP?=
- =?utf-8?B?RFRHWmdKcFlYS1FRVTlWSWJVNE50eEJ5dEROdkszazVLT1N2anB3b1VPTTZm?=
- =?utf-8?B?RjRlTW5samhVU0J4ZVFQM1E2LzJiT1JpYmNsYXNoamViVWJMQ3NGZTMvWlFO?=
- =?utf-8?B?WEhMQTZqL3ZIQ2l6N0NFY3ZBeDdLMjJqTWE5OVIzV2xHNU9NRU9qc1djMzNk?=
- =?utf-8?B?RTNBclF6WFlaUGFwdk1XRE1TVVJxcmVNU3E3Skx1TmpLSjhHNnFFWDZycUZN?=
- =?utf-8?B?U2VZZmlPRFY3RVV3N3pNcU9GQld5cERkK1dRejVjM042M1FPSVJZdEhmYU5M?=
- =?utf-8?B?UjZRWWVqK2M2eXI4RG5vdkp1ZzhyR2xJNUo4UUU1WHJpWi9OcmxncWFmQjNE?=
- =?utf-8?B?ZVFMcXhRMGM4dnBVTTFHck9tWSt1bjlqWExqSktBdk1sN0gvZFJxV1hWU0N2?=
- =?utf-8?B?bHpCNFVZMmlDZWU5elVmUktVRlpVL3FWc2IyV2YvUSs2Mkh6KzVQNkgveDBO?=
- =?utf-8?B?cmdkZElLWGR0OXlrYnRQNWZYUjZlQkJobXBtQmlFek94UW83Y1BNTmU1OSt3?=
- =?utf-8?B?L1JHV1MvTFlCcHhEdVNhVUVFYXdSKzZ3Q0pIbXBsZFhncXozd3pEN3lmYnVD?=
- =?utf-8?B?T1pkYi9KeStxZ1ljckhQdlFzejV3cWU4T2t2VFFpRjZPOE9QSUF6M0pwb1JE?=
- =?utf-8?B?aUpIQmxKZ3M3a20waUovalY2ekx5MDFzdGtja3ZmSlZOd2NFVWFwT1NLcVVp?=
- =?utf-8?Q?NP7Lvy8eaNlH3EqI=3D?=
-X-Exchange-RoutingPolicyChecked: PsplRMvyK90fTPdDSSa1Rim1uCxbqmjlozI67yQuGdXyeJS3aNzQbapxQAQx1yuTEo0XTtC++WW8SKcJggE5u3kw34ZPBQJnT98N3LC6UDKooiC0/eOmaVGDAA8pExfQ/FOYQMozT85nByyCMcIfNpLPOxlfXg48XQxPS7HcNLrczSajpSuKq9xvmjA9ErdR/7cwC5zRW80WbsnaZVMeuM4dgashScHSyJZGL81PY5O0TNCGHAC7iBg3dKR1AORMxqxSpCord/x/f5VYaas4VvWmjIeEdBrZxmOul1b5AF02+bZQlaxj6hc5DbPPp6lqy+2dtr9jnHEM4YFAK/h4rg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e3dfe0c-818d-4e3d-a00f-08deedca708c
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 23:38:06.2773
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RxKjZJOynIyj4Jzctg5XxeFc540UaX5bLsgUI/1DqzAPSJxLb44UX1bQ6Tnf5v8iQuCoyUKm20GCFOvDtKGd8iILDkh7Xr9fGaAuhwHArUM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5037
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D036UWB003.ant.amazon.com (10.13.139.172) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On 7/27/2026 8:20 PM, Can Peng wrote:
-> qlcnic_init_module() registers the netdevice and inetaddr notifiers only
-> when CONFIG_INET is enabled, but the pci_register_driver() error handling
-> block is outside that guard.
-> 
-> Move the error check under CONFIG_INET together with the cleanup it
-> protects. This avoids an empty if statement when CONFIG_INET is disabled
-> and keeps the cleanup code structured like the guarded registration path.
-> 
-> Signed-off-by: Can Peng <pengcan@kylinos.cn>
-> ---
->  drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-> index ff4f7cd20c79..46d07faa24fd 100644
-> --- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-> +++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-> @@ -4221,12 +4221,12 @@ static int __init qlcnic_init_module(void)
->  #endif
->  
->  	ret = pci_register_driver(&qlcnic_driver);
-> -	if (ret) {
->  #ifdef CONFIG_INET
-> +	if (ret) {
->  		unregister_inetaddr_notifier(&qlcnic_inetaddr_cb);
->  		unregister_netdevice_notifier(&qlcnic_netdev_cb);
-> -#endif
->  	}
-> +#endif
->  
->  	return ret;
->  }
+Add support for testing the new PTP_SYS_OFFSET_EXTENDED_ATTRS and
+PTP_SYS_OFFSET_PRECISE_ATTRS ioctls in the testptp utility.
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Add a "-a" modifier that requests clock quality attributes
+(error_bound, status, timescale) alongside the existing extended (-x)
+and precise (-X) offset requests:
+  -x N -a: extended offset with attributes (N samples)
+  -X -a:   precise cross-timestamp with attributes
+
+When the device does not report a given attribute, print an explicit
+"not reported" line so all attributes are always accounted for.
+
+Also print the system counter value and its identifier (sys_counter,
+sys_counter_id) returned in struct ptp_sys_time, so the counter source
+is visible; a sys_counter_id of 0 (UNKNOWN) with sys_counter 0 indicates
+an unavailable or unidentified counter source.
+
+These options allow testing and validation of PHC devices that provide
+clock quality information alongside timestamps.
+
+Also display the new extended_attrs/precise_attrs capabilities in the -c
+output, and update print_system_timestamp to print unrecognized clock
+types instead of silently dropping them.
+
+Co-developed-by: Amit Bernstein <amitbern@amazon.com>
+Signed-off-by: Amit Bernstein <amitbern@amazon.com>
+Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
+---
+ tools/testing/selftests/ptp/testptp.c | 124 +++++++++++++++++++++++++-
+ 1 file changed, 120 insertions(+), 4 deletions(-)
+
+diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
+index d603d9f82237..62b1d0340d71 100644
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -148,6 +148,8 @@ static void usage(char *progname)
+ 		" -T val     set the ptp clock time to 'val' seconds\n"
+ 		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
+ 		" -X         get a ptp clock cross timestamp\n"
++		" -a         also report clock quality attributes (error_bound,\n"
++		"            status, timescale); use together with -x or -X\n"
+ 		" -y val     pre/post tstamp timebase to use {realtime|monotonic|monotonic-raw}\n"
+ 		" -z         test combinations of rising/falling external time stamp flags\n",
+ 		progname, PTP_MAX_SAMPLES);
+@@ -174,8 +176,10 @@ static void print_system_timestamp(int sample_num, __kernel_clockid_t clockid,
+ 		break;
+ 	}
+ 
+-	if (!name)
++	if (!name) {
++		printf("sample #%2d: unknown clock %d\n", sample_num, clockid);
+ 		return;
++	}
+ 
+ 	printf("sample #%2d: %s time %s: %lld.%09u\n",
+ 	       sample_num, name, when, sec, nsec);
+@@ -194,6 +198,7 @@ int main(int argc, char *argv[])
+ 	struct ptp_sys_offset *sysoff;
+ 	struct ptp_sys_offset_extended *soe;
+ 	struct ptp_sys_offset_precise *xts;
++	struct ptp_sys_offset_attrs *attrs_data;
+ 
+ 	char *progname;
+ 	unsigned int i;
+@@ -215,6 +220,7 @@ int main(int argc, char *argv[])
+ 	int pct_offset = 0;
+ 	int getextended = 0;
+ 	int getcross = 0;
++	int use_attrs = 0;
+ 	int n_samples = 0;
+ 	int pin_index = -1, pin_func;
+ 	int pps = -1;
+@@ -232,7 +238,8 @@ int main(int argc, char *argv[])
+ 
+ 	progname = strrchr(argv[0], '/');
+ 	progname = progname ? 1+progname : argv[0];
+-	while (EOF != (c = getopt(argc, argv, "cd:e:E:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
++	while (EOF != (c = getopt(argc, argv,
++				  "acd:e:E:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
+ 		switch (c) {
+ 		case 'c':
+ 			capabilities = 1;
+@@ -317,6 +324,9 @@ int main(int argc, char *argv[])
+ 				return -1;
+ 			}
+ 			break;
++		case 'a':
++			use_attrs = 1;
++			break;
+ 		case 'X':
+ 			getcross = 1;
+ 			break;
+@@ -373,6 +383,8 @@ int main(int argc, char *argv[])
+ 			       "  %d programmable pins\n"
+ 			       "  %d cross timestamping\n"
+ 			       "  %d adjust_phase\n"
++			       "  %d extended_attrs\n"
++			       "  %d precise_attrs\n"
+ 			       "  %d maximum phase adjustment (ns)\n",
+ 			       caps.max_adj,
+ 			       caps.n_alarm,
+@@ -382,6 +394,8 @@ int main(int argc, char *argv[])
+ 			       caps.n_pins,
+ 			       caps.cross_timestamping,
+ 			       caps.adjust_phase,
++			       caps.extended_attrs,
++			       caps.precise_attrs,
+ 			       caps.max_phase_adj);
+ 		}
+ 	}
+@@ -619,7 +633,7 @@ int main(int argc, char *argv[])
+ 		free(sysoff);
+ 	}
+ 
+-	if (getextended) {
++	if (getextended && !use_attrs) {
+ 		soe = calloc(1, sizeof(*soe));
+ 		if (!soe) {
+ 			perror("calloc");
+@@ -654,7 +668,60 @@ int main(int argc, char *argv[])
+ 		free(soe);
+ 	}
+ 
+-	if (getcross) {
++	if (getextended && use_attrs) {
++		attrs_data = calloc(1, sizeof(*attrs_data) +
++				    getextended * sizeof(struct ptp_timestamp));
++		if (!attrs_data) {
++			perror("calloc");
++			return -1;
++		}
++
++		attrs_data->request.num_samples = getextended;
++		attrs_data->request.clock_id = ext_clockid;
++
++		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED_ATTRS, attrs_data)) {
++			perror("PTP_SYS_OFFSET_EXTENDED_ATTRS");
++		} else {
++			printf("extended attrs timestamp request returned %d samples\n",
++			       getextended);
++
++			for (i = 0; i < getextended; i++) {
++				struct ptp_timestamp *ts = &attrs_data->timestamps[i];
++
++				printf("  sample #%u:\n", i);
++				printf("    sys before: %lld ns\n",
++				       (long long)ts->pre_systime.sys_time);
++				printf("    sys_counter_id: %u\n",
++				       ts->pre_systime.sys_counter_id);
++				printf("    sys_counter:    %llu\n",
++				       (unsigned long long)ts->pre_systime.sys_counter);
++				printf("    phc time:   %lld.%09u\n",
++				       ts->devtime.device_time.sec,
++				       ts->devtime.device_time.nsec);
++				if (ts->devtime.attrs.valid & PTP_ATTRS_VALID_ERROR_BOUND)
++					printf("    error_bound: %u ns\n",
++					       ts->devtime.attrs.error_bound);
++				else
++					printf("    error_bound: not reported\n");
++				if (ts->devtime.attrs.valid & PTP_ATTRS_VALID_STATUS)
++					printf("    status: %u\n",
++					       ts->devtime.attrs.status);
++				else
++					printf("    status: not reported\n");
++				if (ts->devtime.attrs.valid & PTP_ATTRS_VALID_TIMESCALE)
++					printf("    timescale: %u\n",
++					       ts->devtime.attrs.timescale);
++				else
++					printf("    timescale: not reported\n");
++				printf("    sys after:  %lld ns\n",
++				       (long long)ts->post_systime.sys_time);
++			}
++		}
++
++		free(attrs_data);
++	}
++
++	if (getcross && !use_attrs) {
+ 		xts = calloc(1, sizeof(*xts));
+ 		if (!xts) {
+ 			perror("calloc");
+@@ -677,6 +744,55 @@ int main(int argc, char *argv[])
+ 		free(xts);
+ 	}
+ 
++	if (getcross && use_attrs) {
++		attrs_data = calloc(1, sizeof(*attrs_data) +
++				    sizeof(struct ptp_timestamp));
++		if (!attrs_data) {
++			perror("calloc");
++			return -1;
++		}
++
++		attrs_data->request.num_samples = 1;
++		/* precise crosstimestamp supports only CLOCK_REALTIME/AUX */
++		attrs_data->request.clock_id = CLOCK_REALTIME;
++
++		if (ioctl(fd, PTP_SYS_OFFSET_PRECISE_ATTRS, attrs_data)) {
++			perror("PTP_SYS_OFFSET_PRECISE_ATTRS");
++		} else {
++			struct ptp_timestamp *ts = &attrs_data->timestamps[0];
++
++			puts("precise attrs crosstimestamp request okay");
++			printf("device time: %lld.%09u\n",
++			       ts->devtime.device_time.sec,
++			       ts->devtime.device_time.nsec);
++			printf("system time: %lld ns\n",
++			       (long long)ts->systime.sys_time);
++			printf("raw time:    %lld ns\n",
++			       (long long)ts->systime.sys_rawtime);
++			printf("sys_counter_id: %u\n",
++			       ts->systime.sys_counter_id);
++			printf("sys_counter:    %llu\n",
++			       (unsigned long long)ts->systime.sys_counter);
++			if (ts->devtime.attrs.valid & PTP_ATTRS_VALID_ERROR_BOUND)
++				printf("error_bound: %u ns\n",
++				       ts->devtime.attrs.error_bound);
++			else
++				printf("error_bound: not reported\n");
++			if (ts->devtime.attrs.valid & PTP_ATTRS_VALID_STATUS)
++				printf("status: %u\n",
++				       ts->devtime.attrs.status);
++			else
++				printf("status: not reported\n");
++			if (ts->devtime.attrs.valid & PTP_ATTRS_VALID_TIMESCALE)
++				printf("timescale: %u\n",
++				       ts->devtime.attrs.timescale);
++			else
++				printf("timescale: not reported\n");
++		}
++
++		free(attrs_data);
++	}
++
+ 	if (channel >= 0) {
+ 		if (ioctl(fd, PTP_MASK_CLEAR_ALL)) {
+ 			perror("PTP_MASK_CLEAR_ALL");
+-- 
+2.47.3
+
