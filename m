@@ -1,46 +1,68 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012054.outbound.protection.outlook.com [40.107.209.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D7A1C84A0
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 05:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785304238; cv=none; b=fgB0SirBcMjIglv5gbAIhPX7xy4GkG1Mx1axD+1UlL7RkQemNf9yXVUoavU9Zj1K4KZQcHsYqM5Zli/ClIpQxeMp/W8o5l0uebP6svSA+2qp0E/QKFYi9XjHKZOxuS8jtj48k/Lc7n4t9TBuVcai7jyg+jz6U3SixQwLcCtOJn0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785304238; c=relaxed/simple;
-	bh=C7HJEtIxx6ObS3jlAgLuXW6J/tMd5vqxMb4ADjenThA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KE4hKB2SlTIzTmyCBFJe+H9CTDcj4g3SgXTkaGREgBu8cpwA58dfYEra3uPnG/UB+vkAJJ2JOv9vB7z97Ka5Vm5LOdJRq4mPKqmS/A0ij7puY2rJ6qO5uX5iS//lsxbcPGgdlyqs3h8gs5M6PtHq0dCdFiF/kLtMl5LzQfQrKZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RIfHixTp; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515F934A77D
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 05:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785304404; cv=fail; b=N2luWz8nQTWL5I6qEp7SNbqoanqwJ9kQx30bpBowOP13n+6g3WH4lFtW0DLf7awjWZXTTfIv34cBabsyb015JeOtY2/1CQFr0kv3EmkChdNQo43FE1zmXB5+4zPE4Ie72u6EoS9hKmfNgkJJU88XjA9mgNjCEPn3kvh+dYZB5Jg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785304404; c=relaxed/simple;
+	bh=V8kFjC9JIPAUVqsuE6LCMF+A+XFKKbAOnjKvcwUboOI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o0VGPYvCjD6ijNYTULh4lcc5HCJz91iCJnDjF0JXav+RTMXEA8DNB/H16a7zHhsnxfa9Ua40n2Go6xqzz47A+x9UQHwbZDT0fwYY2nKGHiRxMTNj5XNY5mApUPoiszZpzV5e0qaV1wry0UEPfA2fK05aHF40DruIwtX715ckl9c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Y6eG1d6P; arc=fail smtp.client-ip=40.107.209.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RIfHixTp"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785304233;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0bZ169YdbqXKNleo9UtpL+ygZkIM/xnq5Ot5tib0OmI=;
-	b=RIfHixTpVWQn/Rq6tIx31VvRQXojsHnwHU3Z113+j83zuqBLMvxLjnISJurZXgImARBZyD
-	4FUNqnDsmajM/OLAhC2gD1Cg5zNC2FeFNaO/eKohM+04BjGxPw1p8KpjFheXlb9lxInad/
-	TAErrd6yn7c6AKl1Av5iDNAneZKMwoc=
-From: Chenguang Zhao <chenguang.zhao@linux.dev>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	chenguang.zhao@linux.dev,
-	kerneljasonxing@gmail.com,
-	Chenguang Zhao <zhaochenguang@kylinos.cn>
-Subject: [PATCH net-next v2] i40e: xsk: use xdp_build_skb_from_zc() for XDP_PASS
-Date: Wed, 29 Jul 2026 13:49:16 +0800
-Message-Id: <20260729054916.720750-1-chenguang.zhao@linux.dev>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Y6eG1d6P"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ruw7rKSsK50ToFqCR7OoCLZ2JKSoBY/7BKWvRGWws4/F4YgQsmq63xqCcKErwLUBvgDh4WseS6aQ2+OxtHfp++kkU9J/MYKpMMMBs719wB//qRHK3RH1fwhZcdNyJDnW/wIvnFibTJKsmT9HPeoTieqtoHvBhO6mnO/jRW1HH4ni+AwzimbYw+Ce9qY85SEEwJHiw7KaAf1FKiBxQ4gzwwU8XZxeXkdleE4DYvHD8FCP5Aj8+lZlMCUDXlfvFvMAevK190k5zZku38ABOcmNTLUZR3gR8GcvCyDpm6RXovgq4dy6obwgrI4mIK6uk9J0YlAB6uAvn54DtNK1HcPyJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nkIGSr1jriVgw15WUomRunLwU4L3mWoICEBkJTJ73rc=;
+ b=bESeh+hWHD9SDctEezuO0OAyvtRA4+2MvLBQjAYE+Mfgfi1ezsLYzV+nFEKKkOldsJN6Jsn7TVdzNXrppGbHOwGuTRTV97y0wOXi/tp2RPIRd1AT633LHJBzIVdvkGH1oIDOm9DyaCfey6JjUL7Uvrn2tZf//8d6ynMr92wwNiFanN7AbdKmdsAysbtAzJHG3iRE0bWnZmpZ2fi8NaeEERiSLHT/RUt8HZSY89GwXUTnCiI3zrCW9iYQlGdXnsQ2F+j8exxi3cBOquwlcoibOh8x1zA9GV6cPVZtDdS82YoMI5RY3BjJ2dkcdgkBPE53IU8cb7YQk3/MsMX0M/AJwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nkIGSr1jriVgw15WUomRunLwU4L3mWoICEBkJTJ73rc=;
+ b=Y6eG1d6PyTlO06wDKTxcP5lvmnULn1TmA2EURU/cr+osu8A9UaUE/iPzegEeoDOx5UCAoOC4lnBA2ORYffmetl1NL5nXPvR8iD41ml3Op6LFtv3tVI6g2p04I57ar7WhF5deQ9BtLtYHMSWbQZV8w9vS7tFeWJd5cpWw/vBoDg4=
+Received: from SA0PR11CA0199.namprd11.prod.outlook.com (2603:10b6:806:1bc::24)
+ by CY3PR12MB9554.namprd12.prod.outlook.com (2603:10b6:930:109::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
+ 2026 05:53:20 +0000
+Received: from SA2PEPF000015C8.namprd03.prod.outlook.com
+ (2603:10b6:806:1bc:cafe::65) by SA0PR11CA0199.outlook.office365.com
+ (2603:10b6:806:1bc::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.12 via Frontend Transport; Wed,
+ 29 Jul 2026 05:53:20 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SA2PEPF000015C8.mail.protection.outlook.com (10.167.241.198) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Wed, 29 Jul 2026 05:53:19 +0000
+Received: from amd.rund-run.pensando.io (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 29 Jul
+ 2026 00:53:18 -0500
+From: "Nikhil P. Rao" <nikhil.rao@amd.com>
+To: <netdev@vger.kernel.org>
+CC: <kuba@kernel.org>, <brett.creeley@amd.com>, <eric.joyner@amd.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<pabeni@redhat.com>, "Nikhil P. Rao" <nikhil.rao@amd.com>
+Subject: [PATCH net] pds_core: fix cmd_regs access racing BAR unmap on reset
+Date: Wed, 29 Jul 2026 05:52:58 +0000
+Message-ID: <20260729055258.1416225-1-nikhil.rao@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,225 +70,106 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015C8:EE_|CY3PR12MB9554:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01771723-9c38-46b8-15ed-08deed35b17d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700016|1800799024|23010399003|13003099007|18002099003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	vV38/X8iKPNR5clxEostr3CH3rieGFcMWoTWCYEyeNHcVf76ZHVPVKeUn8SsCBJMnXLLiK0ZpA/JDZxnsefUJY9Yiacavd00dVKe2z8fTrFbxUHmWyw8+2eAaxCpy+4rRQAc+LIRXIVFNIFl3eorbYIu9ySPFBE5NZPBArROe8noQiDNpjwLHwlTojc1+oWz/DpKD/DvynoCPKgInGzPeyK+0XpHqavRuSoB98JpO9tTuaj8cVHLpbhjMXEIk0hp3HVo24aU1b6NTHUzTwu4fiSvjluPzhmED14Pre1VsBk/aeEAAF8qi34eKx0BF6ZWZosaQ2yBrKfRgtPhgNQ93x1Fk+ZbFfg0ze6zZlOIlc/MI7d2LJ0ad5VMjxuuF2fj8jiFWHwPF4mKd2DcKX1Xv77xLQQOcKX3WGmOVJcLelo3hMrxWfgoozL4dBzTdnu+N1L4N/vk2UJlozDs55LD9lgDAMyGw67h/cHgUFXfztlPQm9aVcZTd5jT1USdsIJG8V/aXH7qhq7dzVHuLjgSah7KJFMsX0crPwWfMDeI5kLmfuHEY9wOmIRACyRjjRfG1eKtCt0RbM+k2mptFxFMA6g5neFuyS97BcSIV3iGvaZTZ6xNrbnWW/vBn5uFd16G2nIrpdkUbqQuHMu8C+Biog==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(1800799024)(23010399003)(13003099007)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	p+zFbR5EJm24ndKD20qN9p63iFa71m16nh57/CyV+54N2D1hTQA5/JBZm3whQc0Mnvn8dAogw42VqiZddUHpe1V6YBAxBkY0R/UCi1ga3AMhO6scUFJVG5KlaZVPGvdqJU2QvlnzwKQxTvoC0CXAmcl8IEuBMDZrMX7SFHFUCnMnvo6M9SonIEWjqZeoVGFFRFY+/xw29V3fANpfggrl7f7H8HvhExTCoPZBEfiTNAorMzlEAD4zB1jt7IWbCMi3ZSG8hwSY0ljA+xcBafT9Z5WQQU4NJ4GT7+0F6+YcR7HWOyxgkYx+45DxZ+O0vti1PLv9NAgXStMkz2iS3NDhN4GMjtXvFUed2gwGcxd7W+/wppgIbVbZZoi70AgZo6/LBQOUTRG5VXPnV04/fcBz5F17iGDLYdKh91HrAw1Q2lecFor86oIMvXKIiv6c3uMt
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 05:53:19.9349
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01771723-9c38-46b8-15ed-08deed35b17d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF000015C8.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9554
 
-From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+pdsc_reset_prepare() and pdsc_reset_done()'s pdsc_map_bars() error path
+clear/iounmap cmd_regs without devcmd_lock, and pdsc_firmware_update()'s
+download loop derefs cmd_regs after dropping and retaking the lock
+without re-checking. An FLR concurrent with a devlink flash can unmap
+cmd_regs under an in-flight devcmd, causing a NULL deref or a write to
+unmapped MMIO.
 
-Replace the driver-local i40e_construct_skb_zc() with the common
-helper xdp_build_skb_from_zc(). On failure, free the xdp buff in
-the caller.
+Take devcmd_lock across the BAR unmap/remap. Only the PF maps cmd_regs
+and runs devcmd, so guard the locking to the PF.
 
-xdp_build_skb_from_zc() already calls skb_record_rx_queue() and
-eth_type_trans(), so pull the remaining descriptor field setup into
-__i40e_process_skb_fields() and use that on the XDP_PASS path.
-Briefly restore the Ethernet header around eth_skb_pad() so padding
-sees the full L2 frame length.
+pdsc_unmap_bars() also clears info_regs, which has its own readers under
+config_lock (and a lockless debugfs reader); that teardown race is
+pre-existing and handled separately.
 
-Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Fixes: e96094c1d11c ("pds_core: Clear BARs on reset")
+Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260708212222.296202-1-nikhil.rao%40amd.com?part=3
+Assisted-by: Claude:claude-opus-4.8
+Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
 ---
-v2:
-- Extract descriptor field setup into __i40e_process_skb_fields() and
-  use it on the XDP_PASS path, so skb_record_rx_queue()/eth_type_trans()
-  are not repeated after xdp_build_skb_from_zc().
-- Keep a brief __skb_push()/__skb_pull() around eth_skb_pad() so padding
-  still sees the full L2 frame length.
+ drivers/net/ethernet/amd/pds_core/fw.c   |  6 ++++++
+ drivers/net/ethernet/amd/pds_core/main.c | 10 +++++++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-v1:
- - https://lore.kernel.org/all/20260724020125.246333-1-chenguang.zhao@linux.dev/
----
- drivers/net/ethernet/intel/i40e/i40e_txrx.c   | 32 ++++++--
- .../ethernet/intel/i40e/i40e_txrx_common.h    |  2 +
- drivers/net/ethernet/intel/i40e/i40e_xsk.c    | 76 +++----------------
- 3 files changed, 36 insertions(+), 74 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index ef5e657816f0..87553b14d34a 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -1833,17 +1833,17 @@ static inline void i40e_rx_hash(struct i40e_ring *ring,
- }
+diff --git a/drivers/net/ethernet/amd/pds_core/fw.c b/drivers/net/ethernet/amd/pds_core/fw.c
+index fa626719e68d..cd7616ed9ef3 100644
+--- a/drivers/net/ethernet/amd/pds_core/fw.c
++++ b/drivers/net/ethernet/amd/pds_core/fw.c
+@@ -134,6 +134,12 @@ int pdsc_firmware_update(struct pdsc *pdsc, const struct firmware *fw,
  
- /**
-- * i40e_process_skb_fields - Populate skb header fields from Rx descriptor
-+ * __i40e_process_skb_fields - Populate skb fields from Rx descriptor
-  * @rx_ring: rx descriptor ring packet is being transacted on
-  * @rx_desc: pointer to the EOP Rx descriptor
-  * @skb: pointer to current skb being populated
-  *
-- * This function checks the ring, descriptor, and packet information in
-- * order to populate the hash, checksum, VLAN, protocol, and
-- * other fields within the skb.
-+ * Populate hash, checksum, PTP timestamp and VLAN from @rx_desc. Does not
-+ * call skb_record_rx_queue() or eth_type_trans(); callers that already got
-+ * those from xdp_build_skb_from_zc() should use this helper.
-  **/
--void i40e_process_skb_fields(struct i40e_ring *rx_ring,
--			     union i40e_rx_desc *rx_desc, struct sk_buff *skb)
-+void __i40e_process_skb_fields(struct i40e_ring *rx_ring,
-+			       union i40e_rx_desc *rx_desc, struct sk_buff *skb)
- {
- 	u64 qword = le64_to_cpu(rx_desc->wb.qword1.status_error_len);
- 	u32 rx_status = FIELD_GET(I40E_RXD_QW1_STATUS_MASK, qword);
-@@ -1858,14 +1858,30 @@ void i40e_process_skb_fields(struct i40e_ring *rx_ring,
- 
- 	i40e_rx_checksum(rx_ring->vsi, skb, rx_desc);
- 
--	skb_record_rx_queue(skb, rx_ring->queue_index);
--
- 	if (qword & BIT(I40E_RX_DESC_STATUS_L2TAG1P_SHIFT)) {
- 		__le16 vlan_tag = rx_desc->wb.qword0.lo_dword.l2tag1;
- 
- 		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q),
- 				       le16_to_cpu(vlan_tag));
+ 		copy_sz = min_t(unsigned int, buf_sz, fw->size - offset);
+ 		mutex_lock(&pdsc->devcmd_lock);
++		if (!pdsc->cmd_regs) {
++			mutex_unlock(&pdsc->devcmd_lock);
++			err = -ENXIO;
++			NL_SET_ERR_MSG_MOD(extack, "Device reset during flash");
++			goto err_out;
++		}
+ 		memcpy_toio(&pdsc->cmd_regs->data, fw->data + offset, copy_sz);
+ 		err = pdsc_devcmd_fw_download_locked(pdsc, data_addr,
+ 						     offset, copy_sz);
+diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
+index 8d94a4d70395..08af92b47d7d 100644
+--- a/drivers/net/ethernet/amd/pds_core/main.c
++++ b/drivers/net/ethernet/amd/pds_core/main.c
+@@ -501,7 +501,13 @@ static void pdsc_reset_prepare(struct pci_dev *pdev)
+ 		pdsc_auxbus_dev_del(pdsc, pdsc, &pdsc->padev);
  	}
-+}
-+
-+/**
-+ * i40e_process_skb_fields - Populate skb header fields from Rx descriptor
-+ * @rx_ring: rx descriptor ring packet is being transacted on
-+ * @rx_desc: pointer to the EOP Rx descriptor
-+ * @skb: pointer to current skb being populated
-+ *
-+ * This function checks the ring, descriptor, and packet information in
-+ * order to populate the hash, checksum, VLAN, protocol, and
-+ * other fields within the skb.
-+ **/
-+void i40e_process_skb_fields(struct i40e_ring *rx_ring,
-+			     union i40e_rx_desc *rx_desc, struct sk_buff *skb)
-+{
-+	__i40e_process_skb_fields(rx_ring, rx_desc, skb);
-+
-+	skb_record_rx_queue(skb, rx_ring->queue_index);
  
- 	/* modifies the skb - consumes the enet header */
- 	skb->protocol = eth_type_trans(skb, rx_ring->netdev);
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h b/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
-index e26807fd2123..3c52e0e60487 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
-@@ -9,6 +9,8 @@
- int i40e_xmit_xdp_tx_ring(struct xdp_buff *xdp, struct i40e_ring *xdp_ring);
- void i40e_clean_programming_status(struct i40e_ring *rx_ring, u64 qword0_raw,
- 				   u64 qword1);
-+void __i40e_process_skb_fields(struct i40e_ring *rx_ring,
-+			       union i40e_rx_desc *rx_desc, struct sk_buff *skb);
- void i40e_process_skb_fields(struct i40e_ring *rx_ring,
- 			     union i40e_rx_desc *rx_desc, struct sk_buff *skb);
- void i40e_xdp_ring_update_tail(struct i40e_ring *xdp_ring);
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-index 9f47388eaba5..8741dff82bd1 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-@@ -3,6 +3,7 @@
- 
- #include <linux/bpf_trace.h>
- #include <linux/unroll.h>
-+#include <net/xdp.h>
- #include <net/xdp_sock_drv.h>
- #include "i40e_txrx_common.h"
- #include "i40e_xsk.h"
-@@ -277,70 +278,6 @@ bool i40e_alloc_rx_buffers_zc(struct i40e_ring *rx_ring, u16 count)
- 	return count == nb_buffs;
- }
- 
--/**
-- * i40e_construct_skb_zc - Create skbuff from zero-copy Rx buffer
-- * @rx_ring: Rx ring
-- * @xdp: xdp_buff
-- *
-- * This functions allocates a new skb from a zero-copy Rx buffer.
-- *
-- * Returns the skb, or NULL on failure.
-- **/
--static struct sk_buff *i40e_construct_skb_zc(struct i40e_ring *rx_ring,
--					     struct xdp_buff *xdp)
--{
--	unsigned int totalsize = xdp->data_end - xdp->data_meta;
--	unsigned int metasize = xdp->data - xdp->data_meta;
--	struct skb_shared_info *sinfo = NULL;
--	struct sk_buff *skb;
--	u32 nr_frags = 0;
--
--	if (unlikely(xdp_buff_has_frags(xdp))) {
--		sinfo = xdp_get_shared_info_from_buff(xdp);
--		nr_frags = sinfo->nr_frags;
--	}
--	net_prefetch(xdp->data_meta);
--
--	/* allocate a skb to store the frags */
--	skb = napi_alloc_skb(&rx_ring->q_vector->napi, totalsize);
--	if (unlikely(!skb))
--		goto out;
--
--	memcpy(__skb_put(skb, totalsize), xdp->data_meta,
--	       ALIGN(totalsize, sizeof(long)));
--
--	if (metasize) {
--		skb_metadata_set(skb, metasize);
--		__skb_pull(skb, metasize);
--	}
--
--	if (likely(!xdp_buff_has_frags(xdp)))
--		goto out;
--
--	for (int i = 0; i < nr_frags; i++) {
--		struct skb_shared_info *skinfo = skb_shinfo(skb);
--		skb_frag_t *frag = &sinfo->frags[i];
--		struct page *page;
--		void *addr;
--
--		page = dev_alloc_page();
--		if (!page) {
--			dev_kfree_skb(skb);
--			return NULL;
--		}
--		addr = page_to_virt(page);
--
--		memcpy(addr, skb_frag_page(frag), skb_frag_size(frag));
--
--		__skb_fill_page_desc_noacc(skinfo, skinfo->nr_frags++,
--					   addr, 0, skb_frag_size(frag));
--	}
--
--out:
--	xsk_buff_free(xdp);
--	return skb;
--}
--
- static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
- 				      struct xdp_buff *xdp_buff,
- 				      union i40e_rx_desc *rx_desc,
-@@ -372,21 +309,28 @@ static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
- 		 * BIT(I40E_RXD_QW1_ERROR_SHIFT). This is due to that
- 		 * SBP is *not* set in PRT_SBPVSI (default not set).
- 		 */
--		skb = i40e_construct_skb_zc(rx_ring, xdp_buff);
-+		skb = xdp_build_skb_from_zc(xdp_buff);
- 		if (!skb) {
-+			xsk_buff_free(xdp_buff);
- 			rx_ring->rx_stats.alloc_buff_failed++;
- 			*rx_packets = 0;
- 			*rx_bytes = 0;
+-	pdsc_unmap_bars(pdsc);
++	if (!pdev->is_virtfn) {
++		mutex_lock(&pdsc->devcmd_lock);
++		pdsc_unmap_bars(pdsc);
++		mutex_unlock(&pdsc->devcmd_lock);
++	} else {
++		pdsc_unmap_bars(pdsc);
++	}
+ 	pci_release_regions(pdev);
+ 	if (pci_is_enabled(pdev))
+ 		pci_disable_device(pdev);
+@@ -530,7 +536,9 @@ static void pdsc_reset_done(struct pci_dev *pdev)
  			return;
  		}
  
-+		/* xdp_build_skb_from_zc() already ran eth_type_trans() and
-+		 * skb_record_rx_queue(). Restore the Ethernet header only for
-+		 * eth_skb_pad(), then pull it back.
-+		 */
-+		__skb_push(skb, ETH_HLEN);
- 		if (eth_skb_pad(skb)) {
- 			*rx_packets = 0;
- 			*rx_bytes = 0;
++		mutex_lock(&pdsc->devcmd_lock);
+ 		err = pdsc_map_bars(pdsc);
++		mutex_unlock(&pdsc->devcmd_lock);
+ 		if (err)
  			return;
- 		}
-+		__skb_pull(skb, ETH_HLEN);
- 
--		i40e_process_skb_fields(rx_ring, rx_desc, skb);
-+		__i40e_process_skb_fields(rx_ring, rx_desc, skb);
- 		napi_gro_receive(&rx_ring->q_vector->napi, skb);
- 		return;
  	}
 -- 
-2.25.1
+2.43.0
 
