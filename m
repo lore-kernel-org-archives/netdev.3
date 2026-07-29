@@ -1,346 +1,255 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2BD1A682A
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599564ADDA9
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785334560; cv=fail; b=WWXqv8dhjJunRDKwQ+6W/ioAS07D5BN0KTOax0pa8wd7pOW8/WIkM+AiIQdmetp+4dUa3/Ybod0vmgn01ZM0k4T4s885c8OOibyo2YFb8qFQH/M4UW0/Gy2YtcYa3m5pkuoGljV9LQtOKKpBIiXVNwpjpcpjzFP8cVKhh6Qr3TI=
+	t=1785334881; cv=pass; b=s0bV3m+PZEeQC/VwPDqtYBE/ZqoA7P/tMR5S2R+uWaynhnqjzPPxShcJO8Y46/H3p2CmKBkFwKgZRpFdmtFRjm4yAUfi+AKAGjXDt/MpJMlbNcpeyHNjlVq45+4w0YZnQGu72ijgJJFFzWwuoXrbyaKdQZ1gONPQ4veNjE7Alck=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785334560; c=relaxed/simple;
-	bh=JIE3rhHppcFfVeKGI748ksL9FTU+mhQJ/RqFUJAKfYE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XbI+m3m0ECp8EOSWZVnLcNVwbEuNVatamyO1MjcBI7roWxxjgSlEwMJWcrnpy0VZ5jzZVllTak0WwG0/Kg7U9JcZztt+TYbNQ7tF/qJjG7WIz2UMYYmvblxx3VR9VtC/EumrPo5zR/TOYwFI4RzvR3TaYYjtv/JcvzZXFYaWLUg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ajTXb4ov; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785334881; c=relaxed/simple;
+	bh=V3TtLAGmQlfcCnbugVYuYAwlhDcUkcB452p4EfYMSG4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Sspq8Kbo57UwuNWgu8P9yxkEQbmvLTEg9+oLq142S556LFNeU1h6G+r/vbz7qZsF/Kgv6lh7ogtjmlss3tmBHdLKOge0YZRAzse3asYqFm0/F5hv4hQaL8O4le01bGv2lSgJK6YZzzsDx6S5Dn2ONa1JByFiqy+qqGa783ux1vA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=IGUwOkGY; arc=pass smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ajTXb4ov"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785334558; x=1816870558;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=JIE3rhHppcFfVeKGI748ksL9FTU+mhQJ/RqFUJAKfYE=;
-  b=ajTXb4ovCaBrGe2YjI0D7jb95ok9XWFfbyUyXsHsTgD/0vPUHRsv0Wvi
-   1Pe7hVpAT7Zd+lik+CwFNUe2dkHYXcaBx/ZoAise8HKRVY1V8AA6IMdlw
-   bTEMFcNfaPN80/a0F4QF5iDzWU8Q8GL+JE9gtS2MTh6+3cel6FCypwX9V
-   vUre4SNs114I32QgTOESa0LRf6QqHu9kjEjO8EK4NkPIUfT1tR20w0sC6
-   vkRU9EVVVvW1WL13jD0lYJQkj3fX0pPZ72Dymn1s8qaS88rDgcSWpyUg3
-   DdJiwFohYUBpTvRVCGoEaKhlDxXYeuSEr0eGrntsQWMAlxEz6749v21ET
-   Q==;
-X-CSE-ConnectionGUID: CgMXNbwQQeWmn4AUozjaxQ==
-X-CSE-MsgGUID: lAS6YlkJRpaQKiy8PrrSYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="84917735"
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
-   d="scan'208";a="84917735"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 07:15:46 -0700
-X-CSE-ConnectionGUID: s3BdFXAmS66wMdo/kqB3uQ==
-X-CSE-MsgGUID: eM3DgVlnS1yrGFfHPMxh3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
-   d="scan'208";a="265051808"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 07:15:46 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 29 Jul 2026 07:15:45 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 29 Jul 2026 07:15:45 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.21) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 29 Jul 2026 07:15:45 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U1hpT/WzDjYzX3QoTwUnwqMOOSmuQP/tFkBwbCm71XqITJdylo/hocxQc1CnN8phE5MPDdXAwRXz29LVBdI8wHJTgqAdLk3nVkhprG1Fo7TRDiuqdIRjyeDfRvN7xVNj92zuNnFYksPj60GTSVb6b0eBdKThSO8q2ZtVIqGFW2vVJXWQeKjS5VN/VmoPufPPizVnabCeAlqx+tIJmiz7RP6OqzMCBxBkQascDb7/uhuJQQEpllWT6305cipAOGvLVO/o9hXrLB6loBUBCeJYl0YTW24YCA/wDxG5je/oENYiPrVeDZ+3lb5i0AmvyzwgWCuR5AihDVJ72EtnYrtdwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=py2LSh+0NCrOAoF7d/0eqNh1Rcnj8tTaMeNUqjAKqVU=;
- b=YhaBXMJtkD8gLbB1D2EZFW7y4sv04vhqJbjXZA1TMSFE3GjwEzf+FRZj/U6c81SFRZIo3WlcaCQe2m2Xbctvk2kvayESvwDRTm4ImZbO2nEknwJH6PIjSPTOAaEYgUrELUUUAIaAFKGGsOCcX4+g96IXv4U7zSBLVvFnZQMt65b6rBtaVEpaimdIMweElvCp4K4gV6YwIyJu+RqLUj1hqrwq9D/hF6upElUw2bTbDaZlTEj29zEhq+23pmvVKRF+kndanB7nOpTSlCoSFKoEIp3C3xHsZxWImMsnxAaTr5poV6p64hyGGPUYT2DL7MKFTk8e7Oc7xWx1ikihTdb15g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by SA1PR11MB8280.namprd11.prod.outlook.com (2603:10b6:806:25d::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
- 2026 14:15:42 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0270.009; Wed, 29 Jul 2026
- 14:15:42 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Marcin Szycik <marcin.szycik@linux.intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Nowlin, Alexander"
-	<alexander.nowlin@intel.com>
-Subject: RE: [PATCH iwl-next v2] ice: detect duplicates in ACL
-Thread-Topic: [PATCH iwl-next v2] ice: detect duplicates in ACL
-Thread-Index: AQHdH2N1l8f76mBBdUuowMHGv4eNx7aEio6w
-Date: Wed, 29 Jul 2026 14:15:42 +0000
-Message-ID: <IA3PR11MB898622CD73C9F2318A41402AE5CA2@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20260729130510.220222-1-marcin.szycik@linux.intel.com>
-In-Reply-To: <20260729130510.220222-1-marcin.szycik@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|SA1PR11MB8280:EE_
-x-ms-office365-filtering-correlation-id: 36d96445-61cd-4ee1-5a5d-08deed7bdfae
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|23010399003|38070700021|11063799006|56012099006|10067099003|22082099003|18002099003;
-x-microsoft-antispam-message-info: 3hY19QPhtv1Mu/VHwK7Nfy409PPtREhqTrDg1xlHi7D+uW0tu39KmPSbUhQtQ7yjEqCTKLV8OnTfdfDIfKoqW2ptlM/uwVPG+X7xrOnFqe3u3vc0/i29VRzjbkGjQh9J+EIvVDJhrWK2My/GKXFu1IHd0Gfr5ap/ifc1UU8LVzu6fUNpPtNUXMh3V5XwgHKJ8QtKjpx4CBlcDzqiY7+v3azoJh+D1BZ3Klc3H5TxVwCk8by2GKHBBGEmRZ2CiXv9/j675xWNDXnLXZDVVlzDvaMmJxwI0za2jrvXRQeI7kTqFv1m1MM02mYMUD/jAIB+3cmkUGoQAB5JmZsmv9Cvn0ZfoMibGHshCF74wTYCsJ2W3vVGR2TlR6ooksgBUUf/y+v6N1AJcgfxFHpvdJK8zJ7GvGLIS9qHey5ZtdyxArWbRPLZtmbV5XmSD9mrW/e6+guw2MXumtAbSTXZqwqB7uo5u68sKFZUQrmdZkzRdnEWIhls3E4EaDWc8WnmAgt+R06n8vVIkEG1HluU3AnbPAZFG5ToF4R+ZXLuxxThPlYT0MnaI+7+ESG46Aic1JRu4KPTIS3SNeqU+I8l9MW1hb10sT0/CeiPteDPWwg0fP+ROD0BUZHlrbsAHcbqkviRq/smO6WzNyyUtjAaxI2cJ4yDMaW81wQha5AH2e3NjThjw2qiJKkBTCuC0PWSWb0vMr8RmMHUtr2TitKDJgIX1NCzEu/gY8u/oDcvisT69dE=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(38070700021)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?pUiWgx5atTTpDRazmL2G5hphzLcq0DHwIjF7ngltSAo3KVNyrRttr57mehpY?=
- =?us-ascii?Q?VTMvvxKQtk8KfwYGHsXIRtywhfiyEKgQbyslKgRxCpQXzvaSqxxcjE9HFct9?=
- =?us-ascii?Q?RXZA/LuA0Ys3pV1KBplMLJfebbC5Z+h3AJl73PZrUO5SIvEF6bIVbsNoRS4X?=
- =?us-ascii?Q?DGIiUZ6VN8sI7IxR4tQ8QmnukX3ODmgnhy6b25Uf6myKcE0EKgMFybtkB+4B?=
- =?us-ascii?Q?69GPE6EIZy6v91YsvJWD2ydpFgUXf4OQqKPVeXtSxUJm3UHULpPB47mR6lKM?=
- =?us-ascii?Q?b2RLiufx/tBhFUfrtb8w1wz21ACFyV96AjjaMFQi25MfxYYu0pXCuOPRm4TM?=
- =?us-ascii?Q?A1RSe5DFXIvFcSqyPSF2xD0BzzIG0To58s+V1TjIA/RfnDnUIHtV9aYD7RNu?=
- =?us-ascii?Q?fvXvdgCoCimaV33vD2tZZ8nVNuyP2H4rsaOV8HIbcZYB08bOxWf313oBhcPh?=
- =?us-ascii?Q?rzQHt5TLufWXMdDjghnj8Gtw5EOm6SQDEq6iV9Y4CavI8IMYY0ODWALUPeUQ?=
- =?us-ascii?Q?fvzONG310xvo9YlRv1T0S9uUr8l7dzSXuHaCVvheGjF27juqQNEg8+1uyYTW?=
- =?us-ascii?Q?PKsBCBbp/M99CckoKlxeDjnSY8HguEGjlnBJpbbQUykhQq5E22gHC8+07xu1?=
- =?us-ascii?Q?uRc5/v+IXezpqBLjyHfeG2uifxBEHIctS1krlhnxPC8iyuONwvEbEA9o6yEr?=
- =?us-ascii?Q?Zb0uyi9wb6l31SxwNYjIEBgExydTuNA/nN3UL9ZxHBeP18si2Y6/NyqVRNIA?=
- =?us-ascii?Q?SNspyYeGQK8ZXR58Bbbu2IENzy0XHzEE7mTnWjaONPcYgUfzDKSQZVwwzzWw?=
- =?us-ascii?Q?bxDwI04IZtusdEItHBse8f9EuBbd0PTAV24uMUWopfQ2U32m4A/6LQPl2R2O?=
- =?us-ascii?Q?7IA69SG9qLOO0UZS/3pDZBU180zSvTIww9+aki0s8F3haxCz64ZIJBDN3rWp?=
- =?us-ascii?Q?9jswSiciUSjuBAV07fweIpp87vkQg5rH0MkHWXFGIOmH6UHFgad6OKmCKoZ+?=
- =?us-ascii?Q?9Ht93q5Ph3BM99JNvr7K0oN50vt6IX3RHD0bvLjlLQL/q0zHGsxW9D+VG4PC?=
- =?us-ascii?Q?VuZsmwarmwCa1dtTiOoEpZYZlPyJX6jS7eBp0HCfyialtvDNbK4BL3KD/Vya?=
- =?us-ascii?Q?5Uvy9Pw4u2Nb107XEk/U0slsqvzaRNWmdA+tc3pathLaPsTyfKhm/Sq6U67Y?=
- =?us-ascii?Q?AoUjG32uPo6Jk3mzzz7rzBOARanKSwqYgQjnPY+LYQ7LibmtOEks/kIF7jrV?=
- =?us-ascii?Q?2MozjJp3/w+6isOImFmiRCKO0+l9iBrmQWaHDifXtMn79GffK2CMbphmW56G?=
- =?us-ascii?Q?E1KHjkx9QTwhyDHE7B9LwVLy4pb6coxDyHAj6pDHtYwkBS5PR5Mqd5roKWf0?=
- =?us-ascii?Q?PDg/7/wWqAnaiyNbNoaIgWpHoWy+lpACsGtYAleCBTVFBQY6mocVz9OVlREP?=
- =?us-ascii?Q?WstaQebfFrleQpCMeBBrJZCK1JDeFo0ox6936IuKIfzvh6qqWcMjKRdf8mXH?=
- =?us-ascii?Q?aqDKtdFqKVIUqPeSNocCWACoF5kAHhF4rbXIOBkYFbSgDk2PRzkyxCyZizZC?=
- =?us-ascii?Q?zyvgvTCbkbsuwpJXqCakJYGujzRx7Y/dmGl943pcEkIWYP38IXwOy94Sr267?=
- =?us-ascii?Q?7LVB9bVMW/54GBCW7m332jGhYH5xGnMy6DOwzgjtKmUl40K8byA56oMOm0pb?=
- =?us-ascii?Q?B2faljuZczzTwqrsaeSWXf68kQ88Gl+lKq9kYYXSJQm/uuXFKu2oXK3CKrPq?=
- =?us-ascii?Q?LYXLKHjJF86Rh3Qgk7YuC88du/GekQI=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="IGUwOkGY"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-39c94d4fdb9so10065881fa.1
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:21:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785334877; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZGoP3SrB1glsa0dVRsQR2UfEApxgiLT6YIZKyRTmBQWp6BHCqNTyG0CE8MAwfORc1m
+         Atb1i1M5jQ+WplkTr3rH6MysYH8uz8IlxuicKi7gKW8lJQ+qLgnNUsFRYj64GZs3c3cm
+         FXBWmW4UF6bRKC9VXvj2dC0BjUoCtLTLvTYWWiM+XguVYfk1VToCP6MYFIXuxeP8WzQ+
+         STQbqBhjBypqSWknYCjiKEokbWoh19gh8/+suus7CuGE2OkwOodzaeFeWM0MTVFVzUWQ
+         cVCOh6iR7J2MhOukNYiNLsqJJd+UdqW/w8/2bEB0b+VY/ntxAEBkwre6SNWnvabAq8kG
+         YbBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9U+yBXZNydRZ4aLB5sQnQ5jKVySq/ApFlqzcSLrMp4Y=;
+        fh=OJeZOLTg01C9jl/T+BMOKVsqqLKXRQFZfgG6l1IOHj8=;
+        b=FbDERv5LwZUNRDTDVk3cj8UwA+uLvMgqEQx9TSthlUvz8G6MSVntE6BMXMakLrnDFW
+         j8tqze/sC3g/dCtHws/314s6+xaO9Ge26mcy4jbJcMpMVN1/ihFy1cj6L0TK2yyXqgve
+         8IUOUD72/yesxLv8iiC01o0Evge+/Egu6QmKOWh67TT4kgoabRY2mPV2jL5cFwNOXpc3
+         cm5RLGeUXXE2ciU/23m9RH+QMhCQm+ht2+VfHiGc30U2Eeoqh47U1DykBA8I9wlvC9C8
+         NV6CTVoUMdcs9KKqYL+b0O/GjkifUU/14WkR00+v6zlW9yO4JoAmiPH5Wm68ZgfDy6st
+         BI1Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1785334877; x=1785939677; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9U+yBXZNydRZ4aLB5sQnQ5jKVySq/ApFlqzcSLrMp4Y=;
+        b=IGUwOkGYNt+c453SRfV2EOZZgtIoHmG+P5m8iP9L4hOmgkvxW6OWMcZ0j7HqHRb1tz
+         0Xtlj4lLO9khzjJJfznKrQYnKomA0KnXLHLLB4Xfb7jXWm3JFmmfogKLGtuW55qhE9Cd
+         tiXI2Z2M1vpc2P08xkik/4XcrOp9Ab+NlPl3iivrib+cWXG+3iaQ43JADUVf2L+BFinh
+         cb3PVhN0dbqAQw2Fub4ENOA4Agm5lX5BAsUGVfYtOxiSbE0A/9J4WtbXDJWnH8HzFumi
+         1ykXIVchb3sIiF/7VXcw2lO1+mtoH4kkig67x9AVenaAhTbT3I799ybNnoNgDN2BlGkB
+         dnDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785334877; x=1785939677;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9U+yBXZNydRZ4aLB5sQnQ5jKVySq/ApFlqzcSLrMp4Y=;
+        b=YzB8DDLrCl+E5FqoARFCNcxXmXnFymly2uiGAbM0WY9dm0/JbbB8d7WhVhnzAlvsmc
+         r3ippRtjxEhOqoss49r+m3xH31ToN1JKUrf+D9kP9h36Y+BQvloetpbPRuz/aT4so1iu
+         lIi7JL7896o1/pYRkcINHb5uig+eCDStTWHtDYWOajKcj7exa8AbIKpcgUYG3lsOmQ22
+         JbAYGpXSJ12TTVXAfcY+Qx86Yl51aH6SlpLr2LmXSMfG8lcsRfutJusomcqovh047i8E
+         7OggApD3U2JQ0aXO1cjcvqmeWXugUg18smayOBjYh6wRsggxshG7YSuqLLJUrfOb11Y/
+         cS6Q==
+X-Gm-Message-State: AOJu0Yw0odqypagEu0T5HT8HqpUiShV27uz5TUqwBWOAOCXdO+aKo5qR
+	VqvbI2NMw6l6lZedMp4iS9fu7GlJI2CucFtWWJINi5birQ0KdqVKsRxYXMlh6q9MpgrVOIE/Mz0
+	LI8XP2Uyjgc85jYYaAbDdlXjcErCo2s2vg/xTP8PtxKY=
+X-Gm-Gg: AR+sD11mR9roJh5db6HkkbR7mWrWHpYPbF/Ptc7TiUiqrd0Zel9sN9pz+o/8lhWG2Jj
+	zJ1KkLAFHRrsndt8cin93vz3mefKu9gr4JJ4O6tBnQxeLyLfYdUpP7GtVX2Hd/fzrArrQtoG7FO
+	qTPuy3KR5zOqz/funPeeMzGUlAjn3HLnYSeZV1G4u5uCpuL8iF7foznfiqxxOStzIEVUq5JbxPT
+	1AD9if4unoj2fELyDg2b2sHc2/5sLxd93/9FDNGY+CfDP4Vug2sdxJpbbfrc36vX1JE7kA1Et8W
+	BdO4sKO+E5Vu8rRKJTNQITdmCkC2MwlqOoxR9o/vkW4=
+X-Received: by 2002:a2e:bc12:0:b0:39c:956e:77de with SMTP id
+ 38308e7fff4ca-39f605be8ddmr6515871fa.6.1785334877102; Wed, 29 Jul 2026
+ 07:21:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: r61M2eN75K47wEYVw3jC9j1sSI/JPjem93j3yjOZ8W5geIYH2SYWOfl7vXSAsavBfn9Aiemp5pPlc+WLGsrzya7OWGGACvpe0rbsrPiIKgM+kAuQfYNnaG5fFeLTXPpI+m7/CmN/MwvHi6LpSqszXKQigeglD0UBdZKRTFP6BRl8PByyKlHPb0ZmyqpLZnHZxVHCb+GhkTKVxRfKeWz1ODaDjbN1HzRbU4Gxzx1EoHfLlAPuAmb3D08S9ihoWzlKx7WiyPq3ztdjGcEh7gqaTNHNw0FN8b5qQzquQP0b0t9k6SoaYUahAG6K72islVsE7Vz3vqk6jxwHqA+mvAusHQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 36d96445-61cd-4ee1-5a5d-08deed7bdfae
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jul 2026 14:15:42.1617
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AT+zWhV/CgGXl02XMUjuWuvWv7yjhZIRbCDEKjWd++olae3GL+gIn/OLOnKZVNby5nWzUfTKHkRKt7sLIPPX+U5syMOrlWaho2wnXYGhO4w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8280
-X-OriginatorOrg: intel.com
+References: <cover.1785307984.git.zihanx@nebusec.ai> <3b55d602-f9ce-464a-896c-8d89af572f6a@linux.dev>
+In-Reply-To: <3b55d602-f9ce-464a-896c-8d89af572f6a@linux.dev>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Wed, 29 Jul 2026 22:21:02 +0800
+X-Gm-Features: AUfX_mzGUlyZYlslhjWe0i5zHKVZnSYHoT6z4HjQyhgwd_5SBNN0jtS3a72-a0Q
+Message-ID: <CAANe3eSDxw=r4OYo5Ch-2+u24wbC7tKyML-arrSd5VfV7zgiUw@mail.gmail.com>
+Subject: Re: [PATCH net 0/2] tcp: diag: fix unbounded bucket lock hold in diag
+ dump paths
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, davem@davemloft.net, 
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
+	ncardwell@google.com, kuniyu@google.com, dsahern@kernel.org, kees@kernel.org, 
+	matttbe@kernel.org, martineau@kernel.org, geliang@kernel.org, fw@strlen.de, 
+	vega@nebusec.ai
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Jul 29, 2026 at 9:55=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.de=
+v> wrote:
+>
+>
+> On 7/29/26 7:28 PM, Zihan Xi wrote:
+> > Hi Linux kernel maintainers,
+> >
+> > We found and validated a issue in net/ipv4/tcp_diag.c and
+> > net/mptcp/mptcp_diag.c. The bug is reachable by a
+> > non-root user via user and net namespace.
+> > We've tested it, and it should not affect any other functionality.
+> >
+> > We will provide detailed information about the bug
+> > in this email, along with a PoC to trigger it.
+> >
+> > ---- details below ----
+> >
+> > Bug details:
+> >
+> > inet_diag TCP dumps currently execute attacker-controlled
+> > INET_DIAG_REQ_BYTECODE programs while still holding the listener,
+> > bind, or ehash bucket locks in tcp_diag_dump(). If the bucket is
+> > heavily populated and the bytecode is a large reject-all filter, the
+> > dump path can spend an unbounded amount of time under the same bucket
+> > lock while walking attacker-arranged sockets.
+> >
+> > The reproduced listener case places 131072 SO_REUSEPORT listeners onto
+> > one colliding listener bucket and then issues a NETLINK_SOCK_DIAG dump
+> > request with 16380 INET_DIAG_BC_NOP instructions followed by a failing
+> > INET_DIAG_BC_D_EQ test. Because every socket runs the full bytecode and
+> > none reaches the reply fill path, skb backpressure does not terminate t=
+he
+> > walk early. On the unfixed kernel this triggers a watchdog soft lockup
+> > and then a panic in inet_diag_bc_sk().
+> >
+> > The earlier batching fix direction was still too narrow: it only counte=
+d
+> > sockets that survived the cheap prefilters and reached the expensive du=
+mp
+> > path. An attacker can therefore populate one bucket with many sockets o=
+r
+> > listeners that fail the netns/family/port or MPTCP-specific prefilters,
+> > causing the same bucket lock to be scanned far past the 16-entry batch
+> > threshold before control is returned.
+> >
+> > The same root cause also exists in MPTCP listener dumping. The
+> > MPTCP-specific mptcp_diag_dump_listeners() path reuses sk_diag_dump(),
+> > which runs inet_diag_bc_sk() before filling the netlink reply, while th=
+e
+> > listener bucket lock is still held.
+> >
+> > We additionally profiled the MPTCP-specific path locally with a
+> > separate debugging artifact. Because struct inet_diag_req_v2 stores
+> > sdiag_protocol in an __u8 field, that request must keep
+> > sdiag_protocol =3D IPPROTO_TCP and pass INET_DIAG_REQ_PROTOCOL =3D
+> > u32(IPPROTO_MPTCP), otherwise 262 truncates back to TCP and never reach=
+es
+> > the MPTCP handler. With that corrected request, a 1-group run with 3276=
+8
+> > listeners and 16380 NOP bytecode steps took 2082.608 ms on the fixed
+> > kernel versus 8.601 ms on the unfixed kernel, and kprobe profiling show=
+ed
+> > inet_diag_bc_sk() executing 32768 times on the fixed kernel but only 25=
+6
+> > times on the unfixed one. That 256-count is not a missed path: the
+> > unfixed mptcp_diag_dump_listeners() reuses one counter both as the
+> > in-bucket index and as the resume cursor, so each dump restart advances
+> > in a triangular skip pattern and stops after approximately sqrt(2N)
+> > bytecode executions. The inline reproducer and decoded crash log below
+> > cover the TCP panic path; the MPTCP results above are included only as
+> > supporting local validation for the second patch.
+> >
+> > This series fixes both sites by keeping bucket-locked sections limited =
+to
+> > raw socket collection and lifetime pinning, and moving all filtering,
+> > inet_diag_bc_sk(), and socket filling work out of the locked regions so
+> > the batch limit applies to raw bucket traversal itself. For TCP listene=
+r,
+> > bind, and ehash buckets, and for the MPTCP listener bucket, restarts no=
+w
+> > keep a referenced dump cursor so the next batch resumes after the
+> > previous socket instead of rescanning the bucket head under the same
+> > lock.
+> >
+> > For the TCP patch, the underlying root cause predates modern git histor=
+y.
+> > The Fixes tag therefore uses commit 1da177e4c3f4
+> > ("Linux-2.6.12-rc2") as the earliest git-import boundary that still
+> > anchors the pre-git bug in the current repository, rather than
+> > incorrectly attributing it to a later helper or refactor commit. The
+> > MPTCP patch uses the real introduction boundary, commit 4fa39b701ce9
+> > ("mptcp: listen diag dump support").
+> >
+> > Reproducer:
+> >
+> >      gcc -O2 -static -o poc poc.c
+> >      unshare -Urn ./poc
+> >
+> > For the reproduced panic log below, we enabled
+> > softlockup panic sysctls and ran the local helper that executes:
+> >
+> >      ./poc --listen --groups 4 --stride 2048 --count 32768 --nops 16380
+> >
+> > We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+> >
+> > ------BEGIN poc.c------
+> > #define _GNU_SOURCE
+> >
+> > #
+> [...]
+> > static size_t build_request(void *buf, bool listen_mode, bool with_atta=
+ck,
+> >                           unsigned int nops)
+> > {
+> >       size_t msg_len =3D NLMSG_SPACE(sizeof(struct inet_diag_req_v2));
+> >       struct nlmsghdr *nlh =3D buf;
+> >       struct inet_diag_req_v2 *req;
+> >
+> >       memset(buf, 0, msg_len);
+> >       nlh->nlmsg_len =3D msg_len;
+> >       nlh->nlmsg_type =3D SOCK_DIAG_BY_FAMILY;
+> >       nlh->nlmsg_flags =3D NLM_F_REQUEST | NLM_F_DUMP;
+> >       nlh->nlmsg_seq =3D 1;
+> >
+> >       req =3D NLMSG_DATA(nlh);
+> >       req->sdiag_family =3D AF_INET;
+> >       req->sdiag_protocol =3D IPPROTO_TCP;
+> >       req->idiag_states =3D listen_mode ? TCPF_LISTEN : (1U << 12);
+>
+> 1U << 12
+>
+> 12 is TCP_NEW_SYN_RECV. Is TCP_BOUND_INACTIVE what you expected ?
+>
+Hi,
 
+You're right, `1U << 12` is `TCP_NEW_SYN_RECV`, not
+`TCP_BOUND_INACTIVE`.
 
-> -----Original Message-----
-> From: Marcin Szycik <marcin.szycik@linux.intel.com>
-> Sent: Wednesday, July 29, 2026 3:05 PM
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>; Loktionov, Aleksandr
-> <aleksandr.loktionov@intel.com>; Marcin Szycik
-> <marcin.szycik@linux.intel.com>; Nowlin, Alexander
-> <alexander.nowlin@intel.com>
-> Subject: [PATCH iwl-next v2] ice: detect duplicates in ACL
->=20
-> ntuple filters without masks (fdir) disallow duplicate entries. Extend
-> this behaviour to rules with masks (ACL).
-> Also skip checking ACL rules in ice_fdir_is_dup_fltr(), as it's only
-> used for fdir.
->=20
-> Keep the naming convention consistent with ice_fdir_is_dup_fltr() and
-> ice_fdir_comp_rules(). ice_fdir_is_dup_fltr() cannot be reused
-> directly, as it ignores masks.
->=20
-> Before fix: duplicate rules with masks are allowed to be created and
-> the duplicate rule cannot be removed:
->   sudo ethtool -N eth0 flow-type udp4 src-port 9000 m 0xff00 action 18
->     Added rule with ID 31231
->   sudo ethtool -N eth0 flow-type udp4 src-port 9000 m 0xff00 action 18
->     Added rule with ID 31230
->   sudo ethtool -N eth0 delete 31230
->   sudo ethtool -N eth0 delete 31231
->     rmgr: Cannot delete RX class rule: Invalid argument
->     Cannot delete classification rule
->=20
-> After fix: duplicate rule is correctly detected:
->   sudo ethtool -N eth0 flow-type udp4 src-port 9000 m 0xff00 action 18
->     Added rule with ID 31231
->   sudo ethtool -N eth0 flow-type udp4 src-port 9000 m 0xff00 action 18
->     rmgr: Cannot insert RX class rule: Invalid argument
->     Cannot insert classification rule
->=20
-> Fixes: 3272c00a1247 ("ice: create ACL entry")
-> Reported-by: Alexander Nowlin <alexander.nowlin@intel.com>
-> Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-> ---
-> v2:
-> * Tweak ice_acl_is_dup_fltr() function doc and comments to accurately
->   reflect what is actually happening in the function
-> * Add repro steps and expected behaviour to commit msg
-> * ice_acl_comp_rules(): rename ipv4_equal -> base_equal in expectation
->   of future changes that might introduce more fields
-> ---
-> Not sending to net because the fixed code is on dev-queue.
-> Tony, please squash this with the offending commit.
-> ---
->  drivers/net/ethernet/intel/ice/ice_acl_main.c | 87
-> +++++++++++++++++++
->  drivers/net/ethernet/intel/ice/ice_fdir.c     |  3 +
->  2 files changed, 90 insertions(+)
->=20
-> diff --git a/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> b/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> index 7c566077d55a..d13e8bc1b701 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> @@ -283,6 +283,85 @@ void ice_acl_replay_fltrs(struct ice_pf *pf)
->  	}
->  }
->=20
-> +/**
-> + * ice_acl_comp_rules - compare two ACL filters
-> + * @a: first ACL filter
-> + * @b: second ACL filter
-> + *
-> + * Return: true if a and b values and masks are identical, false
-> +otherwise  */ static bool ice_acl_comp_rules(struct ice_ntuple_fltr
-> *a,
-> +struct ice_ntuple_fltr *b) {
-> +	bool base_equal;
-> +
-> +	if (a->flow_type !=3D b->flow_type)
-> +		return false;
-> +
-> +	base_equal =3D a->ip.v4.dst_ip =3D=3D b->ip.v4.dst_ip &&
-> +		     a->ip.v4.src_ip =3D=3D b->ip.v4.src_ip &&
-> +		     a->mask.v4.dst_ip =3D=3D b->mask.v4.dst_ip &&
-> +		     a->mask.v4.src_ip =3D=3D b->mask.v4.src_ip;
-> +
-> +	switch (a->flow_type) {
-> +	case ICE_FLTR_PTYPE_NONF_IPV4_TCP:
-> +	case ICE_FLTR_PTYPE_NONF_IPV4_UDP:
-> +	case ICE_FLTR_PTYPE_NONF_IPV4_SCTP:
-> +		return base_equal &&
-> +		       a->ip.v4.dst_port =3D=3D b->ip.v4.dst_port &&
-> +		       a->ip.v4.src_port =3D=3D b->ip.v4.src_port &&
-> +		       a->mask.v4.dst_port =3D=3D b->mask.v4.dst_port &&
-> +		       a->mask.v4.src_port =3D=3D b->mask.v4.src_port;
-> +	case ICE_FLTR_PTYPE_NONF_IPV4_OTHER:
-> +		return base_equal &&
-> +		       a->ip.v4.l4_header =3D=3D b->ip.v4.l4_header &&
-> +		       a->ip.v4.proto =3D=3D b->ip.v4.proto &&
-> +		       a->ip.v4.ip_ver =3D=3D b->ip.v4.ip_ver &&
-> +		       a->ip.v4.tos =3D=3D b->ip.v4.tos &&
-> +		       a->mask.v4.l4_header =3D=3D b->mask.v4.l4_header &&
-> +		       a->mask.v4.proto =3D=3D b->mask.v4.proto &&
-> +		       a->mask.v4.ip_ver =3D=3D b->mask.v4.ip_ver &&
-> +		       a->mask.v4.tos =3D=3D b->mask.v4.tos;
-> +	default:
-> +		return false;
-> +	}
-> +}
-> +
-> +/**
-> + * ice_acl_is_dup_fltr - test if an ACL filter is already in the list
-> + * @hw: hardware data structure
-> + * @input: ACL filter to check
-> + *
-> + * Return: true if a filter with identical match criteria (same flow
-> +type,
-> + * values, and masks) already exists, unless it is at the same
-> location
-> +with a
-> + * different queue (an update)
-> + */
-> +static bool
-> +ice_acl_is_dup_fltr(struct ice_hw *hw, struct ice_ntuple_fltr *input)
-> {
-> +	struct ice_ntuple_fltr *rule;
-> +
-> +	list_for_each_entry(rule, &hw->fdir_list_head, fltr_node) {
-> +		if (!rule->acl_fltr)
-> +			continue;
-> +
-> +		if (!ice_acl_comp_rules(rule, input))
-> +			continue;
-> +
-> +		/* At this point rule and input have same match
-> criteria.
-> +		 * Same location with a different queue is an update,
-> not a
-> +		 * duplicate - skip it. Everything else is a duplicate.
-> +		 */
-> +		if (rule->fltr_id =3D=3D input->fltr_id &&
-> +		    rule->q_index !=3D input->q_index)
-> +			continue;
-> +
-> +		return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
->  /**
->   * ice_acl_add_rule_ethtool - add an ACL rule
->   * @vsi: pointer to target VSI
-> @@ -322,6 +401,14 @@ int ice_acl_add_rule_ethtool(struct ice_vsi *vsi,
-> struct ethtool_rxnfc *cmd)
->  	if (err)
->  		goto free_input;
->=20
-> +	mutex_lock(&hw->fdir_fltr_lock);
-> +	if (ice_acl_is_dup_fltr(hw, input)) {
-> +		mutex_unlock(&hw->fdir_fltr_lock);
-> +		err =3D -EINVAL;
-> +		goto free_input;
-> +	}
-> +	mutex_unlock(&hw->fdir_fltr_lock);
-> +
->  	memset(&acts, 0, sizeof(acts));
->  	if (fsp->ring_cookie =3D=3D RX_CLS_FLOW_DISC)
->  		ice_acl_set_act_drop(&acts[0]);
-> diff --git a/drivers/net/ethernet/intel/ice/ice_fdir.c
-> b/drivers/net/ethernet/intel/ice/ice_fdir.c
-> index 1bc91cb41769..1d79138683b0 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_fdir.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_fdir.c
-> @@ -1261,6 +1261,9 @@ bool ice_fdir_is_dup_fltr(struct ice_hw *hw,
-> struct ice_ntuple_fltr *input)
->  	bool ret =3D false;
->=20
->  	list_for_each_entry(rule, &hw->fdir_list_head, fltr_node) {
-> +		if (rule->acl_fltr)
-> +			continue;
-> +
->  		if (rule->flow_type !=3D input->flow_type)
->  			continue;
->=20
-> --
-> 2.49.0
+The inline crash reproducer only exercised the `--listen` path, so this did
+not affect the reproduced panic there, but the non-listener branch in the
+PoC is indeed wrong.
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+The intended state there is:
 
+    req->idiag_states =3D listen_mode ? TCPF_LISTEN : TCPF_BOUND_INACTIVE;
+
+I'll include this PoC/cover-letter fix in the next reroll.
+
+Thanks for catching this.
+
+Best regards,
+Zihan
+>
+> >       req->id.idiag_cookie[0] =3D INET_DIAG_NOCOOKIE;
+> >       req->id.idiag_cookie[1] =3D INET_DIAG_NOCOOKIE;
