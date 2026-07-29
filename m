@@ -1,127 +1,141 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBF93E7145;
-	Wed, 29 Jul 2026 08:39:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785314371; cv=none; b=MUVnJ4oi30IF2+b/6ZkTXUa15Fw4pUZlP7knx+bacvBE/vi/cyHkgasyMsq52ANCc1JxJQQnuudoaOUcBpTiGG1SdZAKrHtti/yKOGU+c9+AJlDXPuRWlF82DrlSpDWdb+2LuX49G4YgBwO/1qYCs5NQYp6XQHcRY3rMSrI/8uI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785314371; c=relaxed/simple;
-	bh=UM8HBCtPVdOaOSvdbk9a5tm9Q7JN3rityBvbIxTGeZk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Do49Gdu96lZkRZDUmQVTydoG1yFGMmTIFWyFXo8j1K/GqyPL4HqOg3wTOWAVEs4xudPSH7HT4VL8gBpxCDM6hPmajMLePUAgZBYpncWqJnaHZtXhM43I9nJPyBrsTvJTJlDdL119zPyVkY80EU6a1Q9SDPj+AmLCsqjib4dphDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TG73zpzj; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7547437465
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 08:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785314381; cv=pass; b=Rx4vrTXp5ZHzaYPLXrqvlrofej2K9rz33ufLOKCqZj+0W+qzG8yaenMOz+4jhyNO8NsE0wzFiywsvYSSO13Tz5hbE1OsY9rKf65Et1tyGOBGXqwfm08WpKllIChWbWC/HlbQTHFTiFRuKnzXe79SwSHUI6iYciXz+cdPtQeCe5Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785314381; c=relaxed/simple;
+	bh=CQXX4ctSvXrji6QEdG5MGhj7dPGXqSfCzroNk5lQS+0=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=j4jAh6ZIzjpqkkNgAqaZBqMMbjhCYDA3LVUV9czlNsQXHFU210Pg+2QOfpXrf6cfB9DHRxFYQuaBEVO6hTE7mcsi78VJ3/cWPzCGuKeHPnCqBfUhXYRNYwmHikrfaDAAD9hol252Co1uH2vpdtCU5dGI60L/FpOfsp5gR/bJKP8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=H2ZiknJR; arc=pass smtp.client-ip=209.85.167.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=snu.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TG73zpzj"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 600E01A12E0;
-	Wed, 29 Jul 2026 08:39:28 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2D2B26039A;
-	Wed, 29 Jul 2026 08:39:28 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 552BE11C11F9A;
-	Wed, 29 Jul 2026 10:39:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785314367; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=xEogLVz2Pxf/eMF1mT9hKyyJhYalrfWxY3ZeNkdqKtA=;
-	b=TG73zpzjMGwlBGqQr7eou0y5j+JTAPvYfRWCv0jIqrDhirMl6CevXEP/jZ/jZUbDMA0FMo
-	Xn+W/nhIhOdVDJgnAT9fvMf/m9zPm+S/lwjk1nyXwEJjz2V+0ViCG3qUrKAX532CEBM8CL
-	x5dzsKJ0ySYCJrdRZRGZz+LvGSJCCs0dnf1p82PE77i1GgpssbGp/jy4Zjq0kBS/u0n+eN
-	jGJacI+0zGDaKkxzgj06aQAEc5pi4LXfvfWwUv9U6KXv5ygW9PFaThjK0yReKsr+is+x6V
-	bsJeosa79xsr3vMdtbMmOJ58nUbzr0nUJz73v+4kpTXLXYH0KNpbymEpA9Kglw==
-Message-ID: <ca8bb107-4e64-4078-8747-cd256ecfc792@bootlin.com>
-Date: Wed, 29 Jul 2026 10:39:22 +0200
+	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="H2ZiknJR"
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-495b98b4f6aso262791b6e.2
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 01:39:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785314376; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RXFxxCzHkMH/YY2fH3JfsWmGCvFBwRMdmMRDTk4iR8vV5vhCIwFF5YFLP5mzs7MJ/6
+         bSNmD1UvvmC1u5EVN3oDhVc9Abn5ifya6wxigrZWonOh21wJ4+/WjeuGeeuTt45aBEG2
+         4hlp5xrKpm+k/90n8Z4EopgZ7hsYPxhAPZXBYs8JVQ5aeGZeMbwMJJWMB8sJhaFlkYS5
+         vUq+UIaYsTOWP4wiwf/r+1EpNuWe8p/8KQf4z/OSgD7IvTRBb5QcEtezlfssigaPG9XY
+         DWxrwGT+r32/it/xO8oZ9LFlyJ3w5xLMHBN/XflRDS5yETH+5FZkRFaLvPU+edkwTE8i
+         wmog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=IRxmbjSsoN1Ypj+ARH3lkQXOGvAlo09s4aFGYYGpRVE=;
+        fh=QlJ4ey5QodG7liC6XG8G01wE9e7Or/56bJzobnTT5ug=;
+        b=cAH6MqVwW/79crKtH0XxjWSHh/8PMRPnKBNRKa3R+HwUZhn97n8gaGj4B+zDKVtPww
+         PLCN1hmHL1WzJGMUS7uZeEAtE3gCRnyDzW8/i3Pni3zGx8fA0TAbIQOdO/m4sdmfvJJT
+         sg0iFoplxYsnj+U+H+mQzh3x3WSvGuuWwauM8bEgy5kT6Q0vlF+ssYBv3gdpy0QP2s02
+         lcTCuPxVyecwh48lcS94h8bRxkMvMqxlo+Hmyr8M4WRA+zOSsBzKXluodq+5ZKWe6550
+         TJVt/5FMnIcXcMxijTBqGiUEhmC4beIRjORaSgaF7BCWhpfEu4El6TmdnmEaEa6dYuWa
+         jozg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=snu.ac.kr; s=google; t=1785314376; x=1785919176; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IRxmbjSsoN1Ypj+ARH3lkQXOGvAlo09s4aFGYYGpRVE=;
+        b=H2ZiknJRxKkGAxIpmoo1hoQa0s2IJx/GedqGMn7B/zKDX4ywxyy+EwNmSYsqqxObQC
+         3OK0omHf9xFHgA5xRv1vozkuZr+Sd6bPiKOSW3As7VfrQsXbcjUi9YRnprklIuvPpBHw
+         /b3GWa5CQR79qQAgNxcFFxhEfhUZ5IFSNaWpQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785314376; x=1785919176;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=IRxmbjSsoN1Ypj+ARH3lkQXOGvAlo09s4aFGYYGpRVE=;
+        b=lBh5gdFoqKaV8FKmw0GWH8boJJ9g/LmmTmoEyma3tJ5SMqGvqzxCvk1Vdtl+yFbOky
+         5VjvdoFguYAuSH1rP4b7gbWRbk7eWcaRLUCEsyLP+wGk0JsTo7kJy6xDxiMlW5Jq2Uie
+         cBbR3ulscWk3dv1+nyu1Cr6R2CEJcRaigF/VTaODMIMDz26zmuWVNaKuKRxdCVPJkrCT
+         5k1lOpKBnXIOzOmB3HoTaFvwJGPsduaIGYCcCBVLtKr3GPonQ+O9PS9FUrLIPEeMUh9/
+         GmuJIn70VrsMnnwCNYiAPNESvO2NaI7wlcqqbAfTmiFU2zax0UHqm8X8G+ZDkUe8oaiN
+         bMXg==
+X-Gm-Message-State: AOJu0YyAFHMKhVxtvSyLdx/vTVqjdt+4biPmovikEGX+k8OU+77Ya8wB
+	4mA18tf7JimM+Ka16LJQt/NwXgvNnMxXP1SXcZ6MMweOkdVRgQytORD1b9jSwQAtRpoO4e2BFV9
+	D6DiSBzwWNf/a4xXDoEcHMhUsfNgeu5r2zvyzN5Yj1VaYyDK+57a95O7C7lKO
+X-Gm-Gg: AR+sD11JjFzExO1DAVDhO3xSS7Tzr3b8dBrHgJ5weL2U8c1go8SsSDsvLT87+dkPr2Z
+	a+BinF5noYcMYRjFemBmGj4Tl/PDlpSFqHB9g3MqfagFp1skNP8FYXtxS55whhWaeY/yCUY3KaV
+	Z1LgW+vxGt0cNaT8n3rSJxi8ycNhWpp5l/UaeQ274fVP9E4yUe+biaXENUzI3WWuFabq/qo3/3O
+	mA/dnv7bYoUuTr85lzVAogiKg5rKfVXfcs/A5v+qdKPfK0KGAn9OTKwLkvoT87wtvVOy4LTnpL1
+	wkKzHov/sW46tKmJkjOXUYlmL2uXBWXWfBE0PxqhKkbNZ5n/2O0RQf+Q
+X-Received: by 2002:a05:6808:221d:b0:4a4:2724:fd81 with SMTP id
+ 5614622812f47-4ad5b9c192fmr4026145b6e.23.1785314375770; Wed, 29 Jul 2026
+ 01:39:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 2/2] net: phylink: allow PHYs to be attached
- in 802.3z inband mode
-To: Zxyan Zhu <zxyan0222@gmail.com>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Russell King <linux@armlinux.org.uk>,
- Russell King <rmk+kernel@armlinux.org.uk>,
- Serge Semin <fancer.lancer@gmail.com>,
- Romain Gantois <romain.gantois@bootlin.com>,
- Hariprasad Kelam <hkelam@marvell.com>,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260729074237.2624940-1-zxyan0222@gmail.com>
- <20260729074237.2624940-3-zxyan0222@gmail.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260729074237.2624940-3-zxyan0222@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+From: =?UTF-8?B?7J2067OR7Jqx?= <kennethbwlee@snu.ac.kr>
+Date: Wed, 29 Jul 2026 17:39:22 +0900
+X-Gm-Features: AUfX_mz-LYraq1mxCclPsf9J5Nk24EKrP-DcZgo_vtFr3GApp9M1Q6bbvUvUtoY
+Message-ID: <CANJoUNwAU9r4DTL8mM7uSJA0aCAE_YbjrqAXAzETnbv2KpY7Ow@mail.gmail.com>
+Subject: [PATCH net v1] net: ip_gre: use checksum-aware trim for ERSPAN
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org, "idosch@nvidia.com" <idosch@nvidia.com>, davem@davemloft.net, 
+	"edumazet@google.com" <edumazet@google.com>, kuba@kernel.org, 
+	"pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org" <horms@kernel.org>, 
+	"rhkrqnwk98@gmail.com" <rhkrqnwk98@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi
+ERSPAN currently uses pskb_trim() when truncating packets to the device
+MTU.  For a CHECKSUM_PARTIAL skb, that helper can leave csum_start and
+csum_offset pointing at a checksum field outside the new packet length.
+The skb can then reach skb_checksum_help() during transmit validation,
+which warns when the checksum offset is beyond skb_headlen().
 
-On 7/29/26 09:42, Zxyan Zhu wrote:
-> From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-> 
-> Now that we have proper decision making for inband mode support which
-> makes it a "best efforts" feature based on the capabilities of the PHY
-> and PCS, we can relax whether we expect and permit a PHY to be
-> attached. This is especially true for the 2500BASE-X case which some
-> PHYs use without inband on their host side interface for 2.5G speeds,
-> but use inband for slower speeds switching to SGMII on their host side
-> interface.
-> 
-> We already have such a case for some qcom-ethqos setups, although
-> qcom-ethqos overrides phylink's inband settings by accessing the PCS
-> directly at the moment. This should allow qcom-ethqos to transition to
-> defaulting to inband when 2500BASE-X or SGMII is specified in its DTS.
-> 
-> Allow PHYs to be attached when inband mode has been specified, which
-> will be necessary to allow inband mode to be used on qcom-ethqos.
-> 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
+Use pskb_trim_rcsum() in both ERSPAN transmit paths.  It rejects a
+CHECKSUM_PARTIAL skb whose checksum field is no longer in the trimmed
+linear data and returns -EINVAL.  The existing error paths then free the
+skb instead of transmitting inconsistent checksum metadata.
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+This issue was found using a customized syzkaller-based fuzzer.
 
-Maxime
+Tested on Linux v7.1-rc6 (e43ffb69e043), x86_64, with a diagnostic C
+reproducer derived from the syzkaller reproducer and resolving erspan0
+at runtime. The unpatched kernel reported
+offset (4516) >= skb_headlen() (3730) and panicked with panic_on_warn.
+The patched kernel ran the same program without the warning or panic.
 
-> ---
->  drivers/net/phy/phylink.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index 59dfe35afa54..fd4e80eeeda7 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
-> @@ -1964,9 +1964,7 @@ EXPORT_SYMBOL_GPL(phylink_destroy);
->   */
->  bool phylink_expects_phy(struct phylink *pl)
->  {
-> -	if (pl->cfg_link_an_mode == MLO_AN_FIXED ||
-> -	    (pl->cfg_link_an_mode == MLO_AN_INBAND &&
-> -	     phy_interface_mode_is_8023z(pl->link_interface)))
-> +	if (pl->cfg_link_an_mode == MLO_AN_FIXED)
->  		return false;
->  	return true;
->  }
-> @@ -2205,9 +2203,7 @@ static int phylink_attach_phy(struct phylink *pl, struct phy_device *phy,
->  {
->  	u32 flags = 0;
->  
-> -	if (WARN_ON(pl->cfg_link_an_mode == MLO_AN_FIXED ||
-> -		    (pl->cfg_link_an_mode == MLO_AN_INBAND &&
-> -		     phy_interface_mode_is_8023z(interface) && !pl->sfp_bus)))
-> +	if (WARN_ON(pl->cfg_link_an_mode == MLO_AN_FIXED))
->  		return -EINVAL;
->  
->  	if (pl->phydev)
+Fixes: f192970de860 ("ip_gre: check packet length and mtu correctly in
+erspan tx")
 
+Found-by: Sechang Lim <rhkrqnwk98@gmail.com>
+Signed-off-by: Kenneth Lee <kennethbwlee@snu.ac.kr>
+---
+ net/ipv4/ip_gre.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 169e2921a851..16f80620f6d1 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -576,7 +576,7 @@ static void erspan_fb_xmit(struct sk_buff *skb,
+struct net_device *dev)
+         goto err_free_skb;
+
+     if (skb->len > dev->mtu + dev->hard_header_len) {
+-        if (pskb_trim(skb, dev->mtu + dev->hard_header_len))
++        if (pskb_trim_rcsum(skb, dev->mtu + dev->hard_header_len))
+             goto err_free_skb;
+         truncate = true;
+     }
+@@ -723,7 +723,7 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
+         goto free_skb;
+
+     if (skb->len > dev->mtu + dev->hard_header_len) {
+-        if (pskb_trim(skb, dev->mtu + dev->hard_header_len))
++        if (pskb_trim_rcsum(skb, dev->mtu + dev->hard_header_len))
+             goto free_skb;
+         truncate = true;
+     }
+-- 
+2.53.0
