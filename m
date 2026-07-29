@@ -1,221 +1,243 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD253453A3E
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785336434; cv=pass; b=ptlOfAYVZfdKt6CwI3crj2nMvIdS4h8TghJbv6KXjTi2RyoMuXsh1kfbVK81jvcJfEnnPDZDZnoPM8J/4KxhHCNuCh9mkr8jECL+5wmUcAX27kAU8pPhj514LP+RO40UBv1TyztpdkBzB/ehOHpB+XonZgFJSOymLTrH9p302eU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785336434; c=relaxed/simple;
-	bh=Og4id6Ct8fGABQnVb5LY1NeAnkMXhVQES9jO6xtbdn4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hljrHc331me5K3EhyMskNE265LT4UsnHK+JHskRqxorFyRTyqY4Sy6LMmLFeNXwovLbaQmXC51GY8A/SNWaKFiYo3J5Br+Q8R4qwWjBtGoHEcMwNZS6LY1mIh+B52A6QvdbqpGjFEbekMpCmIOvgXS1IwSKwxtpeNuzyTV8kB5w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=Squ47uon; arc=pass smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CB937B415
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785336440; cv=none; b=S6n4vdfHWL4D+lcRkOMoc8KRVWiSQj/oJpHf9Won0ibN2CRyn/wovq13CBuy3KdQtUXTs26LparKEogVXL8BqftEq2HkR4qZR89hegqIFj8LYUQ6Git6UE9oOKdjkQwjMB70htdidm5k4VrnaJQj3Dk2CKLD5vbQGB8VTDbXHPI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785336440; c=relaxed/simple;
+	bh=F7gJ/ECoIn0yMRAvxBO25GQLBgLR0EPLHh+0r9A2Y1k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MpZTg+rlYFsXkTULhNYjuZ+S+qgUPZJSCe7/9xwVM4intWyw/wyBLt5VcfQcaOg40s31C9YZvlF+8n9+c4FwGnjhFAEJoIpR0n8rIuhCUJ2uw4nw9fLiD9SSkkfwDRfo8fEPV9K7aRGbNXWZwi0bt20rosLmBHEuaQdGsVtPGYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WTmRgDcI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KBnU0bLk; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="Squ47uon"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-39f631dbce3so3524381fa.2
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:47:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785336427; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rD/SpjtcDLPeOTTFsrT9R7lavrLPOjDzDV5yBD5VZiYD42Yg2P4NB7HrOjmvxGz7Dx
-         SR7oPmYg9wtaAz+XZRSsDvqQGujdf5nu5dxZcu2rpRpxx2HTLgB8J2fhFNEanZCJ/r40
-         B1YdXct9RVrsKQ79kXySXDRiLEADsVMTvYaicx0PzOMiL36Ah/CEma91F2II7xjsHOch
-         BDr21M6rpreY2BJc735D+GsMal/gb4YXegcQZs1kF8URTdqePEDNeeUDii/iCk3N9rIL
-         MEXLY8bwmWiJ+iTXIOy5e8E/mTuAsPuXUkdGIiytZdv4sQgAw0VM0J+CnVS3kluH+9GR
-         U2xA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5rr6sUfFH1UW9C7FptcEoqBA/vnNvFWPYC6UpFpRsz8=;
-        fh=6UgC8BH12JnPqBb72xYNtH0lg7NWdVwQUwtNy3Fdm0M=;
-        b=Zwj31+ePIEn8ZI5NV+bzNeag2pMuza89METHZITT6CMSZugS43UT4SgyfF4Bp9ixtt
-         cMUfErC88C+tJ67T1h7lu/yyvA18FIMhOXsMtnJczyypbbui9YCK/L3YhflV4YeYGzdj
-         Smu+yYpw56ZBMJjtEV/OKrT1XvyCW5+udaEaSahpqs5KOlragw1IXi0oepgm6+CY2bEd
-         E9+y7rHlQgSvUxyPNpR/WWy6S1c2Gh9QlWXr5zQGUswaH74bC4fIDO0KmniVxslb76X+
-         h65lnlvYrXFoHb4puF81jUZt1cIc2e1VOpUx3XNsovDEDYWkTxcocjuf1m6dr24mkF2W
-         tzMA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WTmRgDcI";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KBnU0bLk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785336431;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iUO+shHcXPXkW8jm7U6qNBfIeZI1sbU1fzZ8TMtvFnQ=;
+	b=WTmRgDcIqkc6RU5BBv9wCgrEJAc4Y6aeRSv0FpUvdzv8yBVrBNTTgDBg/idnjOwio9ZRoG
+	6Ka/g87/P92mBYXmavEliAu2afy9zN1WKpTHrw5cBF4AkSjeNhV4iCIBsxWuHeTstf7IEk
+	auIHm3oYPJ+PJhuSvWnLS8TI6/0utzg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-433-qJZnJEh4P7Cy457deagHAA-1; Wed, 29 Jul 2026 10:47:10 -0400
+X-MC-Unique: qJZnJEh4P7Cy457deagHAA-1
+X-Mimecast-MFC-AGG-ID: qJZnJEh4P7Cy457deagHAA_1785336429
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49571407d1dso7861795e9.0
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:47:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785336427; x=1785941227; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=redhat.com; s=google; t=1785336429; x=1785941229; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=5rr6sUfFH1UW9C7FptcEoqBA/vnNvFWPYC6UpFpRsz8=;
-        b=Squ47uonSOhNZat70I5DpGUxWk1ENDdPOuC26Syoveo7zMQ28khBv3XoI/lQ1509D7
-         w83YtuLZ4MS4G8JohONBi1ZzwlPvO0scU7beNGXZ0k4ZToxrYInAIc4m1ni2I//xcYFj
-         aJonhG+lfY6J7ySouRfttKNcv67CubFgHrfllxQKdulzepJLvC4cn0bTyt3W3MKgsXpL
-         2IUgNwzJzWjrYshAPgx0t/NiGYsaVFWbGIkTdLPYoqwtmeFXpp4PDZtCTGcDmw7mghVk
-         Yg0IMHyk3XCjNJWuXXXa7Irotod6S6GlZ6klPB7YvIiBhKnbvq+tGU9IUJqEiNIc/L9S
-         tdrQ==
+        bh=iUO+shHcXPXkW8jm7U6qNBfIeZI1sbU1fzZ8TMtvFnQ=;
+        b=KBnU0bLkgwVQuJQLZ3V7g+i1TV6HmLZJatMBRTpofkTxJnOeKFXXFNgmX1iGcXr9Oc
+         zGZTPm00fuAOSGFyQkJmo54LoGCp7ltRTo9KZ8HBx3yGkPjxBTWR41oo3y0uageKCXzC
+         aCMVUfMXbcd344cdEpANGJu8Gms6+BcR7Gl4TLVnqsOPqg721MhMN2QiduTBl7dntHlV
+         WMypzMt+gq1+fZ0wV2tx2exrfVzsoxPmnymTKfBS4MCdiSQGRI0oM6tMRTGKfCCydiv7
+         mQls58TQ9YD4ykIQfNyxDu51pwLXNARPpyw9o9okb+GT7d8dfPOgA3JQjCGIutgvbBkH
+         DPIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785336427; x=1785941227;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1785336429; x=1785941229;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5rr6sUfFH1UW9C7FptcEoqBA/vnNvFWPYC6UpFpRsz8=;
-        b=JLzXRRwZj7ahQjWIAM0/VUbso4+6qXBsYW2kCeAIJ/9rZajfG3xkLLk/rP6VgIiZz8
-         s7c3W++3J+fd61aYSPUXTXEAd9eSl8oCRubJEdEnnu+870WnzXRrjyte0WD7jyzjjuP6
-         zj28j9a3bcGx64BaSNPy9TOUJUzfoARHnfMH9cIZVpuFDSLIXIGvIxvPs27pWUAxbz1a
-         1f2bbZn7U7VECusbeAWWj4wLeVyVM0fORTLDZKo7qNAA0Jr8yObG51xU/uzyJXkfhYeb
-         4A0gdy+prnu6f5C5Z3Hdd4El9oghU6EZPPn12InGarnTmSef2V0/0V7z8PGGM3WHLsiH
-         I02A==
-X-Forwarded-Encrypted: i=1; AHgh+Rpzu9J65vgdcNhJSszxDTKSeUlNHtMW+sVMn+qn/2ztAz+tdKUReGihr3I35xvDjfXEoUM067Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaAujYAmcQplIk9ciVaN+/AxJ6mGSNe5FH+J6yUJ3GBJ2AoOjJ
-	Qrv3V0K4Ibvj6teR3o5wmLhpvmxEcgF85Gdz13DUOhuwFmhPZh6o1iD7eUdc/+f4X4WPzpxvk2Z
-	WEQIJhVAtw4MeuNLdjOe6l3x2HxKeF8EcgQ3G3rad62o=
-X-Gm-Gg: AR+sD11Xf/mTk7PS+C1OlrnNhRI+StVd7H3IEOSEFRvGOt8FGnW3ZxSAG13aTnlCwPk
-	F4WEJ1wVqeLMQgRt8mCBInhDp/sDuHJT6cUpGwZ38Gz2lE8QEiIAJCj99dzgiUanM7qO1BbpFft
-	uhhzIsWFZ0MvchGiwfAVJ5J0GI8Rikl0wW/M9mrUMT+jAGBqSzmji44qneSn8NevLGqFCkDJ5qn
-	3Fj25uPwO57pYw/ZA2Pu+HC+OoGWiqMTf66WgcOkSilp0PlNmQGA0eeQHDudX3G+XK6UPlIEPDT
-	fGigkQgjWl1ovTLvKhyVpm3tXnJ43BFDGzE9Pr7oQMqnFA==
-X-Received: by 2002:a05:6512:6c9:b0:5ae:b78c:da1 with SMTP id
- 2adb3069b0e04-5b2d022f821mr1503106e87.28.1785336426875; Wed, 29 Jul 2026
- 07:47:06 -0700 (PDT)
+        bh=iUO+shHcXPXkW8jm7U6qNBfIeZI1sbU1fzZ8TMtvFnQ=;
+        b=rTGzxHhXEBIQ+HK7Vw/glP+X+eJZ8g22KaIJasljlcgXZk+FnsrZAIXLudhR+s8vo+
+         3qBQBVboV6KupUnVtx0GhstLNq5QuQXlKFWAPqhJKaS0ZILCq/YuwuUapE1sqJZdH1d0
+         GZH8O4QYBwIz1mtanXUqnK2sAgf4130kKGRUqUbb43yt+CehTkWOCxG0flkiu+fwy36Z
+         pO+Qck3MaoBpp5WM4RsaAAi9do4PkpbK8KTT6ZfMxV7oh0tAFHojQ0VFfpFLMpeKNz1S
+         FR4th41nwh9XtOPCiTx2PaFG4ZUilgO5KyMFzatIz3oqGIEaRp/dKtwXfNWLrxKan3Zq
+         tuAA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp+FPr26BkH2KjQ2r+BZujPsCnW9DhFS36As9KVGQS4MZ4z2HR+0mqv3LqDTN6dPf0PM/tT6X8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSgkIIcc//iLM4It+gBknSd6UIjllX+uiA//ehRI1lQvk2+yTu
+	uUFV8rR4HoYP7gRwJXDpksZocMTmvwnobVyDmF1FykBn9hXMF7lWSJ9/plIWEM+TD6rCK6xqGTT
+	DwCFLvVh5XBYYs7UYPH3mkSv2BQg7ywqM7TNQ7mFeF090W1cK2/t0dbMXEQ==
+X-Gm-Gg: AR+sD12gOcgCJsS0p437KcARqH6zdc8YfVrZn69ukE4kSFBFgV/GHJrd5w/s3TT8KMz
+	4EYya0FRQmXjmf8t+QAUL+2eSj4eP+txXH4Mw7+Y0uHEL7XnN71CBSVDuGo6hfhGhjFR1NV82VF
+	aHiQ1EsQMZDLuoYQn9ICrUPrQN6cbz4zCQQ2DK4Bn6DKKUFQgxcxV/JzASbZkri0qlQSEUjZ/5d
+	tFdBrvgO8zXKYeaucW1cE/84CTyGgGp6wNZnT3L1HtkvZdBw8GMNvOmmg1Z1pV8v7PtFxX6GL4I
+	glriFwIaS1DHV+mYHkfRi/Cni9lEDJn/6s56KSrK5OpmxIhtFbzv0/K/o6OFPkZiMTsfUQH73LG
+	LKhKB8+ExFvbIyCmI+psOke3aomYm9dfye7KhIAFNvr8=
+X-Received: by 2002:a05:600c:4fc7:b0:495:5dcc:52b4 with SMTP id 5b1f17b1804b1-496c641505fmr101132165e9.3.1785336428953;
+        Wed, 29 Jul 2026 07:47:08 -0700 (PDT)
+X-Received: by 2002:a05:600c:4fc7:b0:495:5dcc:52b4 with SMTP id 5b1f17b1804b1-496c641505fmr101131455e9.3.1785336428269;
+        Wed, 29 Jul 2026 07:47:08 -0700 (PDT)
+Received: from sgarzare-redhat (ip139-137-192-82.pool-bba.aruba.it. [82.192.137.139])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4976bd6dcb3sm65934695e9.11.2026.07.29.07.47.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 07:47:07 -0700 (PDT)
+Date: Wed, 29 Jul 2026 16:47:02 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Weiming Shi <bestswngs@gmail.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev, 
+	kvm@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Xiang Mei <xmei5@asu.edu>, stable@vger.kernel.org
+Subject: Re: [PATCH] vsock/virtio: prevent workers from using deleted
+ virtqueues
+Message-ID: <amoR0pnMO2OQ2E6z@sgarzare-redhat>
+References: <20260727035804.1860862-1-bestswngs@gmail.com>
+ <amjkQ2F+NEK9SPAj@devvm29614.prn0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1784894076.git.zhilinz@nebusec.ai> <5bc7cd71c2d671b305f25497d88ae8a0aa663c08.1784894076.git.zhilinz@nebusec.ai>
- <20260729091227.GA1258429@shredder>
-In-Reply-To: <20260729091227.GA1258429@shredder>
-From: zhilin zou <zhilinz@nebusec.ai>
-Date: Wed, 29 Jul 2026 22:46:53 +0800
-X-Gm-Features: AUfX_mwhSaF6s44nrueIldqTckkyEJR3Y9YMJvTLwoXXATeLn41rh26IAR1gAmI
-Message-ID: <CANB6i5wBSxrTkBUvK8ehqGN7-oK6m1X29hxMnT7kO-JVpnKpRQ@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] ipmr: only copy pktinfo to cache reports
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: Ren Wei <enjou1224z@gmail.com>, netdev@vger.kernel.org, dsahern@kernel.org, 
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
-	leone4fernando@gmail.com, vega@nebusec.ai
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <amjkQ2F+NEK9SPAj@devvm29614.prn0.facebook.com>
 
-On Wed, Jul 29, 2026 at 5:12=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wr=
-ote:
+On Tue, Jul 28, 2026 at 10:17:55AM -0700, Bobby Eshleman wrote:
+>On Sun, Jul 26, 2026 at 08:58:01PM -0700, Weiming Shi wrote:
+>> The RX, TX and event workers read their virtqueue pointers before taking
+>> the mutex that protects the queue and its run flag. A work item delayed
+>> across freeze and restore can therefore retain a pointer deleted by
+>> virtio_vsock_vqs_del(), observe the run flag for the replacement queues,
+>> and use the freed pointer.
+>>
+>> RX has an additional path: when rx_run is clear, the common exit still
+>> refills the RX queue. A queued worker can consequently call
+>> virtqueue_add_sgs() immediately after freeze deletes the virtqueues.
+>>
+>> BUG: KASAN: slab-use-after-free in virtqueue_add_sgs
+>> Read of size 4 by task kworker/2:1
+>> Workqueue: virtio_vsock virtio_transport_rx_work
+>> Call Trace:
+>>  virtqueue_add_sgs (drivers/virtio/virtio_ring.c:2796)
+>>  virtio_vsock_rx_fill (net/vmw_vsock/virtio_transport.c:332)
+>>  virtio_transport_rx_work (net/vmw_vsock/virtio_transport.c:701)
+>>  process_one_work (kernel/workqueue.c:3314)
+>>  worker_thread (kernel/workqueue.c:3478)
+>>  kthread (kernel/kthread.c:436)
+>>  ret_from_fork (arch/x86/kernel/process.c:158)
+>>  ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+>> ...
+>> Freed by task 141:
+>>  kfree (mm/slub.c:6566)
+>>  vp_del_vq (drivers/virtio/virtio_pci_common.c:259)
+>>  vp_del_vqs (drivers/virtio/virtio_pci_common.c:285)
+>>  virtio_vsock_freeze (net/vmw_vsock/virtio_transport.c:912)
+>>  virtio_device_freeze (drivers/virtio/virtio.c:658)
+>>  virtio_pci_freeze (drivers/virtio/virtio_pci_common.c:601)
+>>  pci_pm_freeze (drivers/pci/pci-driver.c:1098)
+>>  device_suspend (drivers/base/power/main.c:1968)
+>> Kernel panic - not syncing: KASAN: panic_on_warn set ...
+>>
+>> Read each worker's virtqueue under its mutex after confirming that the
+>> queue is running, and only refill RX while RX is running.
+>>
+>> Fixes: b917507e5ad9 ("vsock/virtio: stop workers during the .remove()")
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Xiang Mei <xmei5@asu.edu>
+>> Assisted-by: OpenAI-Codex:gpt-5
+>> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+>> ---
+>>  net/vmw_vsock/virtio_transport.c | 14 ++++++++------
+>>  1 file changed, 8 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+>> index 57f2d6ec3ffc..79cf19f58943 100644
+>> --- a/net/vmw_vsock/virtio_transport.c
+>> +++ b/net/vmw_vsock/virtio_transport.c
+>> @@ -346,12 +346,13 @@ static void virtio_transport_tx_work(struct work_struct *work)
+>>  	struct virtqueue *vq;
+>>  	bool added = false;
+>>
+>> -	vq = vsock->vqs[VSOCK_VQ_TX];
+>>  	mutex_lock(&vsock->tx_lock);
+>>
+>>  	if (!vsock->tx_run)
+>>  		goto out;
+>>
+>> +	vq = vsock->vqs[VSOCK_VQ_TX];
+>> +
+>>  	do {
+>>  		struct sk_buff *skb;
+>>  		unsigned int len;
+>> @@ -451,13 +452,13 @@ static void virtio_transport_event_work(struct work_struct *work)
+>>  		container_of(work, struct virtio_vsock, event_work);
+>>  	struct virtqueue *vq;
+>>
+>> -	vq = vsock->vqs[VSOCK_VQ_EVENT];
+>> -
+>>  	mutex_lock(&vsock->event_lock);
+>>
+>>  	if (!vsock->event_run)
+>>  		goto out;
+>>
+>> +	vq = vsock->vqs[VSOCK_VQ_EVENT];
+>> +
+>>  	do {
+>>  		struct virtio_vsock_event *event;
+>>  		unsigned int len;
+>> @@ -634,13 +635,13 @@ static void virtio_transport_rx_work(struct work_struct *work)
+>>  		container_of(work, struct virtio_vsock, rx_work);
+>>  	struct virtqueue *vq;
+>>
+>> -	vq = vsock->vqs[VSOCK_VQ_RX];
+>> -
+>>  	mutex_lock(&vsock->rx_lock);
+>>
+>>  	if (!vsock->rx_run)
+>>  		goto out;
+>>
+>> +	vq = vsock->vqs[VSOCK_VQ_RX];
+>> +
+>>  	do {
+>>  		virtqueue_disable_cb(vq);
+>>  		for (;;) {
+>> @@ -689,7 +690,8 @@ static void virtio_transport_rx_work(struct work_struct *work)
+>>  	} while (!virtqueue_enable_cb(vq));
+>>
+>>  out:
+>> -	if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
+>> +	if (vsock->rx_run &&
+>> +	    vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
+>>  		virtio_vsock_rx_fill(vsock);
+>>  	mutex_unlock(&vsock->rx_lock);
+>>  }
+>> --
+>> 2.55.0
 >
-> On Tue, Jul 28, 2026 at 12:44:49AM +0800, Ren Wei wrote:
-> > From: Zhiling Zou <zhilinz@nebusec.ai>
-> >
-> > ipmr_cache_report() builds short IGMP reports for mrouted from a packet
-> > that may be a synthetic RTM_GETROUTE query. That query skb stores the
-> > netlink requester portid in NETLINK_CB(), but the report is delivered t=
-o
-> > a raw IPv4 socket, whose receive path interprets skb->cb as IPCB().
-> >
-> > Commit bb7403655b3c ("ipmr: support IP_PKTINFO on cache report IGMP
-> > msg") added IP_PKTINFO support by calling ipv4_pktinfo_prepare() on the
-> > original packet and then copying the whole control buffer to the report
-> > skb. For synthetic route-query packets, this copies NETLINK_CB bytes
->
-> It's copying 48 bytes, which is the size of the control block. Please rew=
-ord.
->
-> > into IPCB and lets a controlled portid corrupt IPCB(skb)->opt. With
-> > IP_RECVOPTS or IP_RETOPTS enabled, the raw socket receive path can then
-> > copy past the short report packet or overflow the stack option buffer.
-> >
-> > Keep the IP_PKTINFO support, but initialize the report skb control buff=
-er
-> > and copy only the pktinfo fields prepared by ipv4_pktinfo_prepare().
->
-> This can break IP_RECVOPTS and IP_RETOPTS on the mrouted socket, but
-> this was never meant to work (side effect of bb7403655b3c) and therefore
-> unlikely to cause any regressions. Please mention this in the commit
-> message.
->
-> >
-> > Fixes: bb7403655b3c ("ipmr: support IP_PKTINFO on cache report IGMP msg=
-")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Vega <vega@nebusec.ai>
-> > Assisted-by: Codex:gpt-5.6-terra
-> > Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
-> > Signed-off-by: Ren Wei <enjou1224z@gmail.com>
-> > ---
-> >  net/ipv4/ipmr.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-> > index 1d9a4ac14fcef..783de5de02ddd 100644
-> > --- a/net/ipv4/ipmr.c
-> > +++ b/net/ipv4/ipmr.c
-> > @@ -1061,6 +1061,7 @@ static int ipmr_cache_report(const struct mr_tabl=
-e *mrt,
-> > +     struct in_pktinfo *info;
-> >       struct sock *mroute_sk;
-> >       struct igmphdr *igmp;
-> >       struct igmpmsg *msg;
-> >       struct sk_buff *skb;
-> >       int ret;
-> >
-> > @@ -1113,7 +1114,10 @@ static int ipmr_cache_report(const struct mr_tab=
-le *mrt,
-> >               msg->im_vif =3D vifi;
-> >               msg->im_vif_hi =3D vifi >> 8;
-> >               ipv4_pktinfo_prepare(mroute_sk, pkt, false);
-> > -             memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
-> > +             info =3D PKTINFO_SKB_CB(skb);
-> > +             memset(skb->cb, 0, sizeof(skb->cb));
-> > +             info->ipi_ifindex =3D PKTINFO_SKB_CB(pkt)->ipi_ifindex;
-> > +             info->ipi_spec_dst =3D PKTINFO_SKB_CB(pkt)->ipi_spec_dst;
-> >               /* Add our header.
-> >                * Note that code, csum and group fields are cleared.
-> >                */
->
-> I believe that Sashiko is correct and there is a similar problem with
-> the other branch:
->
-> https://sashiko.dev/#/patchset/5bc7cd71c2d671b305f25497d88ae8a0aa663c08.1=
-784894076.git.zhilinz%40nebusec.ai
->
-> This should fix both:
->
-> diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-> index 1d9a4ac14fce..4827973c6f9c 100644
-> --- a/net/ipv4/ipmr.c
-> +++ b/net/ipv4/ipmr.c
-> @@ -1058,6 +1058,7 @@ static int ipmr_cache_report(const struct mr_table =
-*mrt,
->                              struct sk_buff *pkt, vifi_t vifi, int assert=
-)
->  {
->         const int ihl =3D ip_hdrlen(pkt);
-> +       struct in_pktinfo *info;
->         struct sock *mroute_sk;
->         struct igmphdr *igmp;
->         struct igmpmsg *msg;
-> @@ -1112,8 +1113,6 @@ static int ipmr_cache_report(const struct mr_table =
-*mrt,
->                 msg =3D (struct igmpmsg *)skb_network_header(skb);
->                 msg->im_vif =3D vifi;
->                 msg->im_vif_hi =3D vifi >> 8;
-> -               ipv4_pktinfo_prepare(mroute_sk, pkt, false);
-> -               memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
->                 /* Add our header.
->                  * Note that code, csum and group fields are cleared.
->                  */
-> @@ -1124,6 +1123,12 @@ static int ipmr_cache_report(const struct mr_table=
- *mrt,
->                 skb->transport_header =3D skb->network_header;
->         }
->
-> +       ipv4_pktinfo_prepare(mroute_sk, pkt, false);
-> +       memset(skb->cb, 0, sizeof(skb->cb));
-> +       info =3D PKTINFO_SKB_CB(skb);
-> +       info->ipi_ifindex =3D PKTINFO_SKB_CB(pkt)->ipi_ifindex;
-> +       info->ipi_spec_dst =3D PKTINFO_SKB_CB(pkt)->ipi_spec_dst;
-> +
->         igmpmsg_netlink_event(mrt, skb);
->
->         /* Deliver to mrouted */
+>Not a strong opinion from me, but since this last hunk is the one that
+>fixes the bug and the other hunks are moreso hardening, maybe break
+>these out into two patches?
 
-Thanks for the review. I will reword the commit message as suggested,
-mention the IP_RECVOPTS/IP_RETOPTS behavior, and send v2 with the fix
-moved to the common path so both branches are covered.
+I think also the other hunks fix an issue, but I agree on the split 
+since IMO we are fixing 2 different commits. Commit b917507e5ad9 
+("vsock/virtio: stop workers during the .remove()") was before 
+freeze/resume added by commit bd50c5dc182b ("vsock/virtio: add support 
+for device suspend/resume"). Only after that one we can have the false 
+-> true transition of *_run variables.
+
+So IMO hunks 1-3 should have Fixes: bd50c5dc182b ... and hunk 4 should
+have Fixes: b917507e5ad9 ...
+
+That said, it's not a strong opinion here too, but if you prefer a 
+single patch, please add both Fixes.
+
+Thanks,
+Stefano
+
+>
+>Besides, that all looks good to me.
+>
+>Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+>
+
