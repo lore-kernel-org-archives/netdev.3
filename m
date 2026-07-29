@@ -1,63 +1,63 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8663D3E1228
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 20:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF183CB2C7
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 20:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785357006; cv=none; b=W7Gw+HL/ARwwKe6bB2NGOLLo/+42weKU+qFPicBqbsLXSoxA/QguejXzt1jKZrxEIy6P/5SwMzCxHDSr0mzGmxS6FjoIRafIikd3BI6KIzdTj8W30pwUISpVFL+yI8SvVIh/AdkwodWy5bHQcABzEdaewz4whgAVeyWj8awxcuY=
+	t=1785357017; cv=none; b=hbfjdTEAUIP91jjNIuaNAH2l27bGjFF2zhavJShfu/9x4wh4a3nuH6T14Gy4tQBCNqajk7GqskjnBQK945rKH5xdO/9rGoCRKeVu2GEjmy2v+dDKlv8OfPwzrEwp5BvR6AbUqNWvZXd65VxTC6aulrv1GgyTjclchNQ9CNYZhV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785357006; c=relaxed/simple;
-	bh=NeG2E7o+v7PpBd8N9EmtNU+R1//qVqRyfbrPbCbFDEA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=t08vBZS5aDp5G7SnHa/tuSJKqDdPwsQH7djBPFLqZTMZOmttqoA3P6du8DdzVQlk1IKq2Dbqj/Nn4Bj/gwWhJH1fIw1F3s/vPTkxh2XsUbtFi0g9R65MTFSIWAJTrY+KOQFh/A3IxhbCYlV8cASh0QCuhtOlK9Gx6N1tueFlV5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=IzXo+qLz; arc=none smtp.client-ip=209.85.216.42
+	s=arc-20240116; t=1785357017; c=relaxed/simple;
+	bh=TIzvQ5yYUuwHOZxSzc2URBeJxr0Wj/Wxqs1MuDtXDC8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=LI6S4OtXHAwFXErrzZu+UOnJZfZSM+ilNzZ3LYndUjO/Jl2DUohq70dBL45NwotmmKvmSuk0bJoO80E6awOxJb+MXnPfxVKetzW2VAXRYGt3B2ZAEiksnzk2U1NuKG/imUDK9w5jyx/TyPqXKF4diMDBzFKEWZ1oywy7qAMLHoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=ILueXSB7; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="IzXo+qLz"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-381b831d535so1597056a91.0
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:29:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="ILueXSB7"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8487214ad2bso2097490b3a.1
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:30:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1785356997; x=1785961797; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1785357014; x=1785961814; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=DLPzQAEQsLT2O+fSZwXxQMjGKwKGH7hwJYQcxqODA3s=;
-        b=IzXo+qLzNqvAm+HOPw5+jup2ycvI3OoNnugNPCUsXE3rhF1hO6ek4Hg4zaGNZm2XCi
-         uICfc5TFZyTeCeSGcRCe2ZMsOJkLllsr9aouL42BFzuifEVRiipimqKR/GTzhCtHiQtw
-         OELR5/crzimXGpp0EvK1RVLBiUtNuz22kcF84ei3zJgJeUfjuBqECPHyphYSDux3R7Om
-         K8eubf3sOmU6UvdgRgDsE4SX/HUQ5EtyDVNtuk9xk5N+0iNyUSU+w70yJTkZm6ZB1+pc
-         rs/aiPU7N+Mf/JHcGzI0tPyfT34o31or7ta5FYQGcP1kRd6uvujTS0yFClkS5yNx3yk0
-         hgZg==
+        bh=ShSGDIdvDY2A/E8agT8O3gUlL/J2ljN0bWMP2ClUyTQ=;
+        b=ILueXSB7NLb5Z1aBP+Qf6+F5cgvclFLjwcELWyebY/DhPKlW1g8spxk6rKUYM3rRjG
+         4KBLmwAr27KsxEu5z/bp3q4ozih7fv9syKSA03PhqklerNlm2hs01ct1/ourDeCgC4Xi
+         cv+u9U/n/AGWOzuFeCiUGW3mrZ3uIhzKYcVPByN8m4k8be3VbWgar2B7YIx3MbuKbwwR
+         qpgjkAClNZ2GJdv63DZyz9UzOnk8Ck92Rxw14sy5NaRkHVzeLfDuzWBiZnCQeIN80kRI
+         4FMJnJ888kVYxPw/V3DUkXcK27zdj/P746M6NKm4UP6nfbXiy28SaXc5DNzwVvJXW97c
+         /3KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785356997; x=1785961797;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
+        d=1e100.net; s=20251104; t=1785357014; x=1785961814;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DLPzQAEQsLT2O+fSZwXxQMjGKwKGH7hwJYQcxqODA3s=;
-        b=lOnp8E1A2Wawa8bWLbQsdR+kXr3RfoRDURU6kVGabaUgc8OQWfxCLIVvyiSktr/m9y
-         5RPphOBxkjnh+xTy+eWM2qB3l3zpI5YwdGXpjg+FNT3afpf91TikttgFBTOCmUilexGI
-         EA42EDxyXY8iTcec8Hw3l3oOCvuMpmWBHcwcS3YDYSjfhcWcK/rSDlFTiOMBELbYF3/2
-         D0xR+qIJqtL4kh66iY8Q9orMpE6T97Z6r4T1IfpNGOFbUBKy8t2X6S/ESYk1p0FlIG9f
-         gtBA6mxS3SC6yMy8pDAWCm+Q/4XdVYS3AGb1t2JSdWYCZYPFTUdiCI1mLnflfOKOBJlW
-         VDLQ==
-X-Gm-Message-State: AOJu0Yy3KMzWdFMzAThJXNRbgaGPr6h6lChiLvIU1EjoS3ej2U7D2kyt
-	NaPWp2pfKfppuPxyX7WNnH9bd5emLhMf9ybQ8ntLpX1xEcoYw9K4VyYcv1XLh07yHHM=
-X-Gm-Gg: AR+sD110/54vcOlfTDdCRtXeG37Q2iqnmVdtJs+D4swFIuF55LBVdKLbpdyjfCeQhh2
-	eGScwjwIih2Hy8EdhSfjW3THq33/fXVvMaSdDUuags6o87h1N2+hwTSg35pDkABBxqoml0vdaT7
-	bknZpIYRlaIpYIToF7uyUvqEt6l2ikg5laHsKQW33ygjDZNgKAe4wEpk54GMc7xz6k4dGoB43GO
-	dcv4Oex23cBlNADwL3+ArgxzxPyFzvWAuwFj9vdPLbAp+AC0Nl/7Sv7roHRdiwO8sFmxc5AdTg4
-	aPwxGcygJtFfOm10oXXpQakFB+PZAwXp2yRPNclR8Kd/zOEhB9B0+U3u8QZPzwnS3BLUcrHzZFH
-	dwrZapHuCw6y5CmlJFAnpVrW82KpQx65OSagxz2KgXi2aniv2J0Cl4nrFpq63JKSy/6UlGzOOcN
-	J/LfcXeMrSgzxDotzuDUuNsAYK7xV9Zv7tF4fVuhgokSA/
-X-Received: by 2002:a05:6a21:60c8:b0:3b4:8bc6:138 with SMTP id adf61e73a8af0-3c8acbcdd34mr9864636637.23.1785356997286;
-        Wed, 29 Jul 2026 13:29:57 -0700 (PDT)
+        bh=ShSGDIdvDY2A/E8agT8O3gUlL/J2ljN0bWMP2ClUyTQ=;
+        b=VaCbMYto46xxdu0fJiAMIIf9QiqABqlWqvmADGUytraO2AJToZXCLinuE6qFzOvcbt
+         L8gWueqIB3tlPMSA6d8WwI+bBTbOzlRh36gUIkRH3cWFWpLKvwUA6Imo9c5mhblG393R
+         N2tGxOpAhLkUAcs5erWZJg2EJOor8rRRNQqKCOFF5Y1UqkDuet02+NqO0ZxC3hXy7cHQ
+         yKwmDHqA6NUK6BZV9+U86dj5g8P0T//ibcfr1/k1t3cMA3eDoQpfkTiTmENtElWDqT4d
+         +pwFpBQMEwtv4MZgINmOL6NBlZyX5R6km8ZX0HOWGsfYm3pW6SprqUYKRR2Njz9wUmU1
+         6GkQ==
+X-Gm-Message-State: AOJu0YzmpwGLfd6jQwW+M4sQLJEedYNH6EMZhCSWKG/zo0k6QN+dvbhI
+	I8/Wi/mRK/nMojH5aL7EfdOKb4XATAkVhFbDj04zDTKFO2syogKk0s6XCuNgtqNNZhM=
+X-Gm-Gg: AR+sD13nMg6ftUvdmSAapX0SWdHU59sncI3UwdDITgi3f2Hy4tLJByw1Yqi0pGpMkAt
+	SwkYTe7tIg32k9XeQYVyM/npVWmxKhDM27Di7c9yZbNSxJGY+kxqTz0E7bIKcftOPWwIjCfz1ac
+	+09Hp2Lmku12ulxOokNVVCppQkiyVs5GsRWEEuZond4oLqPKXSftGjNDQEhMjDqBIgxX4c3A8Tt
+	7r/Hi7NgGkkUsPExt/SiSuKf+ioyW3LoMO7Eit9RXZA17EX3eRmbSg3775Z3uzI+3Xj3m9r47js
+	mVBi0TG+b9omnJQ+je9wyk5M/zn6092pQVvBH4AcoN0PAInxbKUUS2iHeaftc8c6FXhPCouUk7W
+	vKjmQ6zQVY1NJAmM8YetUDR96xJjjDkNPcfqxY4loLSKDFQontgiIE0lL5gnRrcmmwdjqwac/Pr
+	mdPlO5L41pLsAT1oTSN6EGNqtNts/1CILhJ1JrFQ+J69W1FxxGgqxqJ7k=
+X-Received: by 2002:a05:6a21:112:b0:3c3:7bb9:c93 with SMTP id adf61e73a8af0-3c8ba61523bmr9792974637.53.1785357013468;
+        Wed, 29 Jul 2026 13:30:13 -0700 (PDT)
 Received: from localhost ([2620:10d:c090:600::1:d447])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e7273cd9esm13104919c88.13.2026.07.29.13.29.54
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e72643a12sm19441406c88.5.2026.07.29.13.30.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jul 2026 13:29:56 -0700 (PDT)
+        Wed, 29 Jul 2026 13:30:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,8 +66,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Jul 2026 16:29:53 -0400
-Message-Id: <DKBC8GAYVMG5.3PGUZKLGR8QW7@etsalapatis.com>
+Date: Wed, 29 Jul 2026 16:30:10 -0400
+Message-Id: <DKBC8NVXBTW8.C20199U1ITBD@etsalapatis.com>
+Cc: <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH bpf 2/3] bpf: Extract shared reqsk-to-listener upgrade
 From: "Emil Tsalapatis" <emil@etsalapatis.com>
 To: "Michal Luczaj" <mhal@rbox.co>, "Eric Dumazet" <edumazet@google.com>,
  "Kuniyuki Iwashima" <kuniyu@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
@@ -82,57 +85,114 @@ To: "Michal Luczaj" <mhal@rbox.co>, "Eric Dumazet" <edumazet@google.com>,
  Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
  "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>,
  "Emil Tsalapatis" <emil@etsalapatis.com>, "Joe Stringer" <joe@wand.net.nz>
-Cc: <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH bpf 1/3] bpf, sockmap: Use sock_hold() instead of
- refcount_inc_not_zero() in lookup
 X-Mailer: aerc 0.21.0-0-g5549850facc2
 References: <20260723-sockmap-lookup-tcp-leak-v1-0-1bbdc58ce514@rbox.co>
- <20260723-sockmap-lookup-tcp-leak-v1-1-1bbdc58ce514@rbox.co>
-In-Reply-To: <20260723-sockmap-lookup-tcp-leak-v1-1-1bbdc58ce514@rbox.co>
+ <20260723-sockmap-lookup-tcp-leak-v1-2-1bbdc58ce514@rbox.co>
+In-Reply-To: <20260723-sockmap-lookup-tcp-leak-v1-2-1bbdc58ce514@rbox.co>
 
 On Thu Jul 23, 2026 at 7:33 AM EDT, Michal Luczaj wrote:
-> psock's hold on the looked up socket isn't dropped until sk_psock_drop() =
-->
-> queue_rcu_work() -> sk_psock_destroy() runs, which happens only after the
-> entry is unlinked and an RCU grace period elapses. Since the lookup runs
-> under RCU, a non-NULL result guarantees sk_refcnt >=3D 1:
-> refcount_inc_not_zero() can never fail here. Use sock_hold() instead.
+> __bpf_sk_lookup() and bpf_sk_lookup() duplicate the same sk_to_full_sk()
+> reqsk-to-listener upgrade. Extract it into a helper.
 >
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+> Leave the currently unreachable WARN_ONCE as a defensive assert.
+>
+> No functional change.
 
 Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
 
-> ---
->  net/core/sock_map.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
 >
-> diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-> index 9efbd8ca7db8..ca49bc7f8687 100644
-> --- a/net/core/sock_map.c
-> +++ b/net/core/sock_map.c
-> @@ -392,8 +392,8 @@ static void *sock_map_lookup(struct bpf_map *map, voi=
-d *key)
->  	sk =3D __sock_map_lookup_elem(map, *(u32 *)key);
->  	if (!sk)
->  		return NULL;
-> -	if (sk_is_refcounted(sk) && !refcount_inc_not_zero(&sk->sk_refcnt))
-> -		return NULL;
-> +	if (sk_is_refcounted(sk))
-> +		sock_hold(sk);
+> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+> ---
+>  net/core/filter.c | 57 ++++++++++++++++++++++++-------------------------=
+------
+>  1 file changed, 25 insertions(+), 32 deletions(-)
+>
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index b446aa8be5c3..403aba3ce891 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -7074,6 +7074,27 @@ __bpf_skc_lookup(struct sk_buff *skb, struct bpf_s=
+ock_tuple *tuple, u32 len,
 >  	return sk;
 >  }
 > =20
-> @@ -1218,8 +1218,8 @@ static void *sock_hash_lookup(struct bpf_map *map, =
-void *key)
->  	sk =3D __sock_hash_lookup_elem(map, key);
->  	if (!sk)
->  		return NULL;
-> -	if (sk_is_refcounted(sk) && !refcount_inc_not_zero(&sk->sk_refcnt))
-> -		return NULL;
-> +	if (sk_is_refcounted(sk))
-> +		sock_hold(sk);
+> +static struct sock *
+> +bpf_sk_lookup_full_sk(struct sock *sk)
+> +{
+> +	struct sock *sk2 =3D sk_to_full_sk(sk);
+> +
+> +	/* sk_to_full_sk() may return sk->rsk_listener, make sure the original
+> +	 * sk sock refcnt is decremented to prevent a request_sock leak.
+> +	 */
+> +	if (sk2 !=3D sk) {
+> +		sock_gen_put(sk);
+> +		/* Ensure there is no need to bump sk2 refcnt. */
+> +		if (unlikely(sk2 && !sock_flag(sk2, SOCK_RCU_FREE))) {
+> +			WARN_ONCE(1, "Found non-RCU, unreferenced socket!");
+> +			return NULL;
+> +		}
+> +		sk =3D sk2;
+> +	}
+> +
+> +	return sk;
+> +}
+> +
+>  static struct sock *
+>  __bpf_sk_lookup(struct sk_buff *skb, struct bpf_sock_tuple *tuple, u32 l=
+en,
+>  		struct net *caller_net, u32 ifindex, u8 proto, u64 netns_id,
+> @@ -7083,22 +7104,8 @@ __bpf_sk_lookup(struct sk_buff *skb, struct bpf_so=
+ck_tuple *tuple, u32 len,
+>  					   ifindex, proto, netns_id, flags,
+>  					   sdif);
+> =20
+> -	if (sk) {
+> -		struct sock *sk2 =3D sk_to_full_sk(sk);
+> -
+> -		/* sk_to_full_sk() may return (sk)->rsk_listener, so make sure the ori=
+ginal sk
+> -		 * sock refcnt is decremented to prevent a request_sock leak.
+> -		 */
+> -		if (sk2 !=3D sk) {
+> -			sock_gen_put(sk);
+> -			/* Ensure there is no need to bump sk2 refcnt */
+> -			if (unlikely(sk2 && !sock_flag(sk2, SOCK_RCU_FREE))) {
+> -				WARN_ONCE(1, "Found non-RCU, unreferenced socket!");
+> -				return NULL;
+> -			}
+> -			sk =3D sk2;
+> -		}
+> -	}
+> +	if (sk)
+> +		sk =3D bpf_sk_lookup_full_sk(sk);
+> =20
 >  	return sk;
 >  }
+> @@ -7129,22 +7136,8 @@ bpf_sk_lookup(struct sk_buff *skb, struct bpf_sock=
+_tuple *tuple, u32 len,
+>  	struct sock *sk =3D bpf_skc_lookup(skb, tuple, len, proto, netns_id,
+>  					 flags);
 > =20
+> -	if (sk) {
+> -		struct sock *sk2 =3D sk_to_full_sk(sk);
+> -
+> -		/* sk_to_full_sk() may return (sk)->rsk_listener, so make sure the ori=
+ginal sk
+> -		 * sock refcnt is decremented to prevent a request_sock leak.
+> -		 */
+> -		if (sk2 !=3D sk) {
+> -			sock_gen_put(sk);
+> -			/* Ensure there is no need to bump sk2 refcnt */
+> -			if (unlikely(sk2 && !sock_flag(sk2, SOCK_RCU_FREE))) {
+> -				WARN_ONCE(1, "Found non-RCU, unreferenced socket!");
+> -				return NULL;
+> -			}
+> -			sk =3D sk2;
+> -		}
+> -	}
+> +	if (sk)
+> +		sk =3D bpf_sk_lookup_full_sk(sk);
+> =20
+>  	return sk;
+>  }
 
