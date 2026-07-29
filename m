@@ -1,223 +1,305 @@
-Received: from mail-yx1-f97.google.com (mail-yx1-f97.google.com [74.125.224.97])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D8943F097
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 22:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640CC43F4A6
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 22:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785364066; cv=none; b=g/YEX/0rt/Pk2SYN61VqiDH7kWVYRXDCHJBgQS+b4MT0huO7VvxsL+ezWi7MKq8FHMzhXmNnXp/qOBQN3GOFuhsBdP9c2UF3ptgaityhQiDTzrGGEAhn5BnZExFLlcH4eZahP9hZc+yHBnadOizEAIww775wBhPTeWl3AGY3DB8=
+	t=1785364067; cv=none; b=VaFa1pdMcl2dhDyMbMG/bONiQAnnuq3Upvq0n6ucanbk3iuwwIFVv1gY5rCzpMSQ8wHSmG2jJRonSgcns2HzNYJL3LLA7PBZE/dpPbsIIXtkbXHM6cg9oV32b4QrFDfTdnWeU+FwS7yjVVWo0wZ73PmbgCW1M4OS8itHW/cXDaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785364066; c=relaxed/simple;
-	bh=y/52W/69kdVhnQiS1WUybuqINcQrxa9AlM+WRwkrNZo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pkmv/I63uK7lm8rIfLc2wAg4T1k6y30ZXhEnW/B4fkXnRgZrVmSys90miZykPGi69r9wvxWhlpyG+Ftm1CcuOkWhRdzoEeUiPImhCZ16pt2yyMKiQWqog0HGFK4ZHWmuS6/Be8RSDhWZTSNR6TnPMZV2FB4oOtOoBDRo10e29Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=f9F+XKTz; arc=none smtp.client-ip=74.125.224.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1785364067; c=relaxed/simple;
+	bh=BwjhxXRtEXMEJU2pXUu+xiTLRc56h3F1k0B5TE13fAE=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WwAjatORABTLBKjBHccZMwnPyKnhT4slQh3lPBpoV1/InB+xO+SuEd1S1cs/KkrWYeDkwGnWZRiR44A3tcgwh5xD60BOsFJkDkNPTmYWPaB72us+DW9415+pqp60/HSYjbltT4UVIsx7cGq+iHWL1JsZVfjOJzLOlE4UfW60hPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oPxHBFsx; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="f9F+XKTz"
-Received: by mail-yx1-f97.google.com with SMTP id 956f58d0204a3-667bae10ba3so1440026d50.2
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 15:27:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oPxHBFsx"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38dc4553f62so1486355a91.0
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 15:27:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785364064; x=1785968864; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=vp9X1J0psxfoXorUVmriwIdPJGbyvMXmMLZ5dc0hUus=;
+        b=oPxHBFsxWmP86oRAR1//Mw33Sw1cdML23rF4T5hD7nx7hdiA4q1AAV4jqID/auV1eT
+         5HLIhiVRO9MK2jYCmCRr8qn/VsgR06WyT9jpH+I1YXTamWB63EDFxAezuyBTmF7i1fJY
+         P2w/8dNEEVcQef+9ihygdRsFns+NbRg3M590Nca21L2kCu7220XAZ+5Y+aQc31MBUuxo
+         vHkQDI1QOOQ97LE+ik6gKGMUPXJLNdg/+D6PSmX/6zlD54DEIFsVcHbGSNm4CxArMJGT
+         d4Dr7tB8TN3iRcOOzJ6iSTxSB1XU7vrhOpsD8vIf26dCU7bFoebfoO7zXP3tOedvqnX6
+         /hAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1785364064; x=1785968864;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=y/52W/69kdVhnQiS1WUybuqINcQrxa9AlM+WRwkrNZo=;
-        b=oE9gCku7TXIICVJ8uX5rnSDOPS7hDX6pdMArkOOvk1ShsJqGVWaaRjannUpDNVRO/3
-         b2HvEksr7axQt5DGla2icg5Wy41cwju3neAUJ/WhEe24o2w+Uw+w79KQrcp8KwHzOizL
-         bHR/vgD+4ojkTd8RI9h6K0Q1mhnBP7iKn16IM1AsTZ5XDQF2uhbgrTDc7H2HUMyYlFQR
-         UVsLDBdL9fxAYR5clPieX44iQVmJCxpW1fPeBJhiAFMXSEItmIqm22Gu66W3nZiX+KrQ
-         Kh0k5qesNf6w1hSv0fTs6l4uVNZLP1NFXwjfHCGlIOG2N2Vu+utbS/iTO/yDjmUROZDm
-         ztig==
-X-Forwarded-Encrypted: i=1; AHgh+RoPYfZw05nW0Vqn/YWprBaH9O/chQz3M853XH8MUvXRyJx3bZotvF2KcE9dxZs7BuuWVDQSqBs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhnkfmRYYfTM9s+aJBrDDzhvhAPyoh83sX40+IsyaHI6DAjOpZ
-	SfsSNX76r1LGgoZQxjBI7cB2eu8DUiFPLZtLwbctS5S1y6FrNnEXuRNTbGuHgr9U42b1EGnyJ5D
-	J9jkqvz80xHnkKVqnocXoQhrt5svMc477trK4a9gKa2AuYusYPn1cirMZFNyM4SKPl322+KnvlX
-	kA5PXSItg2LjtSXsYouPXXckZw2wQfDgdXxPp7KlgK7msQN8cvCr9cXEioiOdy8xlNsjLgIReCR
-	nVPEEPXTmc=
-X-Gm-Gg: AR+sD110uf7Mla/X+jjm/sPkP9J6TNqztzfDlnTilPBWbKO6+lp/7oxbUqGr+bFDl8I
-	T9t/1S7BkA9Ohq0qpxlA2r2CuU9UyZPKlP2lqYFd6L/GCUirKeARDmiBcpOiw0reEmZso3ZUFZu
-	8YJ0vX15gsUJS+X2+OqgGbrEKg2JMtLq6fEWOiaRoJ2AR1amsq6ztYAM1uSuwWbNYYXyKba7El3
-	qfwjYZVoMFXIoHyJsUYlUyTItKx/MwhmxkuPCtPloIuXKEfJgiqxu+8rZigTDEHDQ1S5Ghbli82
-	Hv/tA0SjP1/mwRrk7NVoWRR5ifsmuLdDrdTAdATRYwUHT3SnOCxTL73hcoWy18rDD88hLtEDxMz
-	h09+a9nSQpFkKD5aFnH1/wCpo9IT+24fYCQzti0WvfpTwMSQQFR6cQQ/9xaGPkqPjEWY5fwHc4Z
-	p/xv+Aw7gExO0jludCzES76gzQL+go+PV4KV8=
-X-Received: by 2002:a05:690e:1599:20b0:667:bae0:e55e with SMTP id 956f58d0204a3-6692b70b148mr314654d50.4.1785364063562;
-        Wed, 29 Jul 2026 15:27:43 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
-        by smtp-relay.gmail.com with ESMTPS id 956f58d0204a3-6692c79f875sm13299d50.10.2026.07.29.15.27.43
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 Jul 2026 15:27:43 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c15cec1ccb6so155843966b.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 15:27:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1785364062; x=1785968862; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=y/52W/69kdVhnQiS1WUybuqINcQrxa9AlM+WRwkrNZo=;
-        b=f9F+XKTzOj4lip6XAKu10rA4zHzcnQQScXycnpnA0cJXv8WqTAm6DLpHzNqlqkHswx
-         FPekAMTGeS46ijEkfO+xnEwMe58Zc+17bt4Ur92UXVq7U3hcyKDkM4aw4rYzd/tfK4rn
-         RDblAYGXiJcgkLPvy0WMaUfQK8crtwelw7lBw=
-X-Forwarded-Encrypted: i=1; AHgh+RpIdFi2Z3FbTCvHsHKp/xtBPR4yijn9ModtcO/26Cyw5mR6R2IdBYJQ81JUKM5Ku4XaKni21mM=@vger.kernel.org
-X-Received: by 2002:a17:907:7ba8:b0:c1f:5349:361e with SMTP id a640c23a62f3a-c1fa5834ae1mr12296066b.65.1785364061957;
-        Wed, 29 Jul 2026 15:27:41 -0700 (PDT)
-X-Received: by 2002:a17:907:7ba8:b0:c1f:5349:361e with SMTP id
- a640c23a62f3a-c1fa5834ae1mr12294866b.65.1785364061554; Wed, 29 Jul 2026
- 15:27:41 -0700 (PDT)
+        bh=vp9X1J0psxfoXorUVmriwIdPJGbyvMXmMLZ5dc0hUus=;
+        b=icgb3P2Kw6CTGn3KHZUGn5WlAVqOE1zyKaF4710flrM2vnCeS2WxQHm0lPHG84sT7+
+         7Kc5A7IEKOu5bbVTxb74O4NDtVuv8nx6wehVsUNd1odXCw0m7vHnkdHc52nr2Up3WYkF
+         V3R1e05ie/YJeyBUXrsMGmMfQUoDky23bQmKE/hGfYKRPQdA5Fop9FhRED8viyNs1fhY
+         Ap4eObw6abgX+c0ZfikbxuZXPurvQEONVw09beP9VP4ZNQaFG/MahT690r3IqfsYqgCR
+         oUlD+kdxPcN0YPbtl9Jid1IBgrU0mj4KOgBqtrOprSPSC7g6134KXpcdgpZNLUk8Zonr
+         h4cQ==
+X-Gm-Message-State: AOJu0Yx94s6qTZGZN/v3In9DPyGhvvaBMzxbG7NhJBk8XJYjVHK2YId1
+	GpjjJ7SdWp/WHwilOuUC9GBYA4Uz3XuIlwnBQ/Z14bkeMsXNpSYM6txT
+X-Gm-Gg: AR+sD10aBPNvXcALiY186hYErP1h8RHqhwk8eyBv2lAHjmvUaKM72TcvEvs1a5O9YMU
+	xkY12Ypjd3uXrcw6luOqW9muT+PgK2M2EpRClQpyy+1gaG3k27+fagFiEc03BgYWxBSQGe44i72
+	qqbaQ03BYVMuzjj7tRMSa1/4Stf2NnLTw8tgLszCcwqRUErueuVWGrh+y9CFo/MyAcBXX0AmUIS
+	+ypv2nXjdMjDlgn2tMuSQ+Yu6eENXq1/k8wCT/WuZonIuqi6LRN0auafnaFpUr+3ozR2xukqrcA
+	v5llo0/eNUHN+IP2Ane/UvD0pmxnJWcFBTW5fSOp52VH0an1idWZZR7zJKCq/2J1sUGLy4w4X/S
+	0PbMvamgKj6NyDs0ekSO6nqKQZeEOiGqwuQRxzAvfNpd2Mp5Q+XAdlhi4qnao/fwpHXAT32Ku+R
+	szDnTQqx0EwVGyjMLxplNQJeRRLOcq80J1BYNfo2Cmwu1YHiy0sEKNRwTb70r8qnUQxCnfxABmg
+	pT8pmFz809+3UgRDAqGPdha7I7lKHOAJVpJuahmUzp2fr1NDBXUn47dOH+/IZcaVXZQ7y7GiL7F
+	yaKBjoL/6HlX7g==
+X-Received: by 2002:a17:90b:4f89:b0:37f:ed7e:7e42 with SMTP id 98e67ed59e1d1-38f9bdd3b5cmr89460a91.14.1785364064398;
+        Wed, 29 Jul 2026 15:27:44 -0700 (PDT)
+Received: from ahduyck-xeon-server.home.arpa ([98.97.33.182])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f814cba32sm1061121a91.2.2026.07.29.15.27.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 15:27:43 -0700 (PDT)
+Subject: [net-next PATCH v4 4/4] net: pcs: xpcs: Add handling for 4 channel
+ rsfec device
+From: Alexander Duyck <alexander.duyck@gmail.com>
+To: netdev@vger.kernel.org
+Cc: mike.marciniszyn@gmail.com, alexanderduyck@fb.com, andrew+netdev@lunn.ch,
+ andrew@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ hkallweit1@gmail.com, jiawenwu@trustnetic.com, kees@kernel.org,
+ kernel-team@meta.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+ linux@armlinux.org.uk, mengyuanlou@net-swift.com, mohsin.bashr@gmail.com,
+ pabeni@redhat.com
+Date: Wed, 29 Jul 2026 15:25:34 -0700
+Message-ID: 
+ <178536393447.250758.12698568086617343381.stgit@ahduyck-xeon-server.home.arpa>
+In-Reply-To: 
+ <178536329631.250758.9931617589255894843.stgit@ahduyck-xeon-server.home.arpa>
+References: 
+ <178536329631.250758.9931617589255894843.stgit@ahduyck-xeon-server.home.arpa>
+User-Agent: StGit/1.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260729220132.1256924-1-will.chen.tty@gmail.com>
-In-Reply-To: <20260729220132.1256924-1-will.chen.tty@gmail.com>
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Wed, 29 Jul 2026 15:27:29 -0700
-X-Gm-Features: AUfX_mx1a25quiQfqESU_dOUe28qPBnNSQYhpGazCZdITIraHi9tb1kdSg4ptmI
-Message-ID: <CACKFLikBFtAL4d2g0QmBVpChNQ9jm1Kxp-5xu0_rRAfLN6-C4A@mail.gmail.com>
-Subject: Re: [PATCH net v2] bnxt: fix memory leak in bnxt_queue_mem_alloc
- error cases
-To: Will Chen <will.chen.tty@gmail.com>
-Cc: Pavan Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Wei <dw@davidwei.uk>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Joe Damato <joe@dama.to>
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000ba9cd90657c77625"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
---000000000000ba9cd90657c77625
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
 
-On Wed, Jul 29, 2026 at 3:01=E2=80=AFPM Will Chen <will.chen.tty@gmail.com>=
- wrote:
->
-> There is a small memory leak in bnxt_queue_mem_alloc:
-> when bnxt_alloc_rx_agg_bmap() succeeds
-> but bnxt_alloc_one_tpa_info() later fails,
-> the rx_agg_bmap allocated by bnxt_alloc_rx_agg_bmap()
-> is not freed in the fallthrough cleanup cases.
->
-> Free the rx_agg_bmap in the err_free_rx_agg_ring case
-> and initialize clone->rx_agg_bmap =3D NULL earlier in the function
-> to allow for safe fallthrough.
->
-> Fixes: bd649c5cc958 ("bnxt_en: handle tpa_info in queue API implementatio=
-n")
-> Signed-off-by: Will Chen <will.chen.tty@gmail.com>
-> Reviewed-by: Joe Damato <joe@dama.to>
+This patch introduces the configuration of vendor specific registers for
+alignment encoding, PCS Mode, and VL_INTVL over the one or two instances as
+required.
 
-Thanks.
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+The DW PCS IP specification calls out the need to configure both lanes
+identically when using 2 lane modes such as 50-R2 and 100-R2, so the
+programming is repeated for each channel.
 
---000000000000ba9cd90657c77625
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+The encoding tables are derived from the IEEE 8023-2022 spec sections
+82.2.7 and tables 82-2 and 82-3 for the alignment markers and their
+insertion.
 
-MIIVWQYJKoZIhvcNAQcCoIIVSjCCFUYCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-ghLGMIIGqDCCBJCgAwIBAgIQfofDCS7XZu8vIeKo0KeY9DANBgkqhkiG9w0BAQwFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNTNaFw0yOTA0MTkwMDAwMDBaMFIxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBS
-NiBTTUlNRSBDQSAyMDIzMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAwjAEbSkPcSyn
-26Zn9VtoE/xBvzYmNW29bW1pJZ7jrzKwPJm/GakCvy0IIgObMsx9bpFaq30X1kEJZnLUzuE1/hlc
-hatYqyORVBeHlv5V0QRSXY4faR0dCkIhXhoGknZ2O0bUJithcN1IsEADNizZ1AJIaWsWbQ4tYEYj
-ytEdvfkxz1WtX3SjtecZR+9wLJLt6HNa4sC//QKdjyfr/NhDCzYrdIzAssoXFnp4t+HcMyQTrj0r
-pD8KkPj96sy9axzegLbzte7wgTHbWBeJGp0sKg7BAu+G0Rk6teO1yPd75arbCvfY/NaRRQHk6tmG
-71gpLdB1ZhP9IcNYyeTKXIgfMh2tVK9DnXGaksYCyi6WisJa1Oa+poUroX2ESXO6o03lVxiA1xyf
-G8lUzpUNZonGVrUjhG5+MdY16/6b0uKejZCLbgu6HLPvIyqdTb9XqF4XWWKu+OMDs/rWyQ64v3mv
-Sa0te5Q5tchm4m9K0Pe9LlIKBk/gsgfaOHJDp4hYx4wocDr8DeCZe5d5wCFkxoGc1ckM8ZoMgpUc
-4pgkQE5ShxYMmKbPvNRPa5YFzbFtcFn5RMr1Mju8gt8J0c+dxYco2hi7dEW391KKxGhv7MJBcc+0
-x3FFTnmhU+5t6+CnkKMlrmzyaoeVryRTvOiH4FnTNHtVKUYDsCM0CLDdMNgoxgkCAwEAAaOCAX4w
-ggF6MA4GA1UdDwEB/wQEAwIBhjBMBgNVHSUERTBDBggrBgEFBQcDAgYIKwYBBQUHAwQGCisGAQQB
-gjcUAgIGCisGAQQBgjcKAwwGCisGAQQBgjcKAwQGCSsGAQQBgjcVBjASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBQAKTaeXHq6D68tUC3boCOFGLCgkjAfBgNVHSMEGDAWgBSubAWjkxPioufi
-1xzWx/B/yGdToDB7BggrBgEFBQcBAQRvMG0wLgYIKwYBBQUHMAGGImh0dHA6Ly9vY3NwMi5nbG9i
-YWxzaWduLmNvbS9yb290cjYwOwYIKwYBBQUHMAKGL2h0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5j
-b20vY2FjZXJ0L3Jvb3QtcjYuY3J0MDYGA1UdHwQvMC0wK6ApoCeGJWh0dHA6Ly9jcmwuZ2xvYmFs
-c2lnbi5jb20vcm9vdC1yNi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUAA4IC
-AQCRkUdr1aIDRmkNI5jx5ggapGUThq0KcM2dzpMu314mJne8yKVXwzfKBtqbBjbUNMODnBkhvZcn
-bHUStur2/nt1tP3ee8KyNhYxzv4DkI0NbV93JChXipfsan7YjdfEk5vI2Fq+wpbGALyyWBgfy79Y
-IgbYWATB158tvEh5UO8kpGpjY95xv+070X3FYuGyeZyIvao26mN872FuxRxYhNLwGHIy38N9ASa1
-Q3BTNKSrHrZngadofHglG5W3TMFR11JOEOAUHhUgpbVVvgCYgGA6dSX0y5z7k3rXVyjFOs7KBSXr
-dJPKadpl4vqYphH7+P40nzBRcxJHrv5FeXlTrb+drjyXNjZSCmzfkOuCqPspBuJ7vab0/9oeNERg
-nz6SLCjLKcDXbMbKcRXgNhFBlzN4OUBqieSBXk80w2Nzx12KvNj758WavxOsXIbX0Zxwo1h3uw75
-AI2v8qwFWXNclO8qW2VXoq6kihWpeiuvDmFfSAwRLxwwIjgUuzG9SaQ+pOomuaC7QTKWMI0hL0b4
-mEPq9GsPPQq1UmwkcYFJ/Z4I93DZuKcXmKMmuANTS6wxwIEw8Q5MQ6y9fbJxGEOgOgYL4QIqNULb
-5CYPnt2LeiIiEnh8Uuh8tawqSjnR0h7Bv5q4mgo3L1Z9QQuexUntWD96t4o0q1jXWLyrpgP7Zcnu
-CzCCBYMwggNroAMCAQICDkXmuwODM8OFZUjm/0VRMA0GCSqGSIb3DQEBDAUAMEwxIDAeBgNVBAsT
-F0dsb2JhbFNpZ24gUm9vdCBDQSAtIFI2MRMwEQYDVQQKEwpHbG9iYWxTaWduMRMwEQYDVQQDEwpH
-bG9iYWxTaWduMB4XDTE0MTIxMDAwMDAwMFoXDTM0MTIxMDAwMDAwMFowTDEgMB4GA1UECxMXR2xv
-YmFsU2lnbiBSb290IENBIC0gUjYxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzARBgNVBAMTCkdsb2Jh
-bFNpZ24wggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCVB+hzymb57BTKezz3DQjxtEUL
-LIK0SMbrWzyug7hBkjMUpG9/6SrMxrCIa8W2idHGsv8UzlEUIexK3RtaxtaH7k06FQbtZGYLkoDK
-RN5zlE7zp4l/T3hjCMgSUG1CZi9NuXkoTVIaihqAtxmBDn7EirxkTCEcQ2jXPTyKxbJm1ZCatzEG
-xb7ibTIGph75ueuqo7i/voJjUNDwGInf5A959eqiHyrScC5757yTu21T4kh8jBAHOP9msndhfuDq
-jDyqtKT285VKEgdt/Yyyic/QoGF3yFh0sNQjOvddOsqi250J3l1ELZDxgc1Xkvp+vFAEYzTfa5MY
-vms2sjnkrCQ2t/DvthwTV5O23rL44oW3c6K4NapF8uCdNqFvVIrxclZuLojFUUJEFZTuo8U4lptO
-TloLR/MGNkl3MLxxN+Wm7CEIdfzmYRY/d9XZkZeECmzUAk10wBTt/Tn7g/JeFKEEsAvp/u6P4W4L
-sgizYWYJarEGOmWWWcDwNf3J2iiNGhGHcIEKqJp1HZ46hgUAntuA1iX53AWeJ1lMdjlb6vmlodiD
-D9H/3zAR+YXPM0j1ym1kFCx6WE/TSwhJxZVkGmMOeT31s4zKWK2cQkV5bg6HGVxUsWW2v4yb3BPp
-DW+4LtxnbsmLEbWEFIoAGXCDeZGXkdQaJ783HjIH2BRjPChMrwIDAQABo2MwYTAOBgNVHQ8BAf8E
-BAMCAQYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUrmwFo5MT4qLn4tcc1sfwf8hnU6AwHwYD
-VR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwDQYJKoZIhvcNAQEMBQADggIBAIMl7ejR/ZVS
-zZ7ABKCRaeZc0ITe3K2iT+hHeNZlmKlbqDyHfAKK0W63FnPmX8BUmNV0vsHN4hGRrSMYPd3hckSW
-tJVewHuOmXgWQxNWV7Oiszu1d9xAcqyj65s1PrEIIaHnxEM3eTK+teecLEy8QymZjjDTrCHg4x36
-2AczdlQAIiq5TSAucGja5VP8g1zTnfL/RAxEZvLS471GABptArolXY2hMVHdVEYcTduZlu8aHARc
-phXveOB5/l3bPqpMVf2aFalv4ab733Aw6cPuQkbtwpMFifp9Y3s/0HGBfADomK4OeDTDJfuvCp8g
-a907E48SjOJBGkh6c6B3ace2XH+CyB7+WBsoK6hsrV5twAXSe7frgP4lN/4Cm2isQl3D7vXM3PBQ
-ddI2aZzmewTfbgZptt4KCUhZh+t7FGB6ZKppQ++Rx0zsGN1s71MtjJnhXvJyPs9UyL1n7KQPTEX/
-07kwIwdMjxC/hpbZmVq0mVccpMy7FYlTuiwFD+TEnhmxGDTVTJ267fcfrySVBHioA7vugeXaX3yL
-SqGQdCWnsz5LyCxWvcfI7zjiXJLwefechLp0LWEBIH5+0fJPB1lfiy1DUutGDJTh9WZHeXfVVFsf
-rSQ3y0VaTqBESMjYsJnFFYQJ9tZJScBluOYacW6gqPGC6EU+bNYC1wpngwVayaQQMIIGjzCCBHeg
-AwIBAgIMZh03KTi4m/vsqWZxMA0GCSqGSIb3DQEBCwUAMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQK
-ExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAy
-MDIzMB4XDTI1MDYyMDEzNDk1NloXDTI3MDYyMTEzNDk1NlowgdcxCzAJBgNVBAYTAlVTMRMwEQYD
-VQQIEwpDYWxpZm9ybmlhMREwDwYDVQQHEwhTYW4gSm9zZTEZMBcGA1UEYRMQTlRSVVMrREUtNjYx
-MDExNzENMAsGA1UEBBMEQ2hhbjEQMA4GA1UEKhMHTWljaGFlbDEWMBQGA1UEChMNQlJPQURDT00g
-SU5DLjEiMCAGA1UEAwwZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTEoMCYGCSqGSIb3DQEJARYZ
-bWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB
-AKkz4mIH6ZNbrDUlrqM0H0NE6zHUgmbgNWPEYa5BWtS4f4fvWkb+cmAlD+3OIpq0NlrhapVR2ENf
-DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
-qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
-5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
-rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
-qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
-2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
-K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
-H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
-Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
-WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
-q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
-2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
-bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
-R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCBIuoA4
-Dx2zTtOmfoLXv9mGMEGCEmF0/HrF+oaRqrrOQTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjA3MjkyMjI3NDJaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBME/L/TAEmYyz63kuOeA0uStct9PL4PLKKL0tTgYx8
-mU86mEPxBz5Yn3k4An2SbP7IJdgGUSpPZUuilgwWc+6M7uUcEH3qQL3G+LF/IJtuf2SPBbF6PEOB
-9xna8rPOGS6oceZs1uL27ZYVi3P7hmZ6vfJV8stcd1JfiMPRyzKu1r6e6sZ0nBo8LwJIFcyXrrdD
-zmIt6uLbpd/R2En0qUNeBAgpFK1GnDlnmbKUIDkMQvpJ5LQ+zXgjmEj/1oxQq48nyDVUi0UynVPQ
-VmbbokV+2uENVYzMqw9eP3drh8e/T9p4OLBWuaa6rfH6XAB2KhiM6r9X8Oy6UGcWw6H1aKkW
---000000000000ba9cd90657c77625--
+Note that there is a conflict between VRs DW_VR_XS_PCS_DIG_STS and the
+DW_PCS_IP DW_VR_MII_PCS_PCS_MODE.  The bit mask for
+DW_VR_XS_PCS_DIG_STS/RX_FIFO_ERR fits within the reserved bits for the DW
+PCS IP DW_VR_MII_PCS_PCS_MODE register so there is no issue.
+
+There is also a conflict between DW_VR_MII_PCS_VL_INTVL and
+DW_VR_MII_AN_INTR_STS but an_mode differs, so again there is no issue.
+
+Signed-off-by: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
+Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
+---
+ drivers/net/pcs/pcs-xpcs.c |   96 ++++++++++++++++++++++++++++++++++++++++++++
+ drivers/net/pcs/pcs-xpcs.h |   25 +++++++++++
+ 2 files changed, 120 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
+index c252f8ba6517..d9c444528f55 100644
+--- a/drivers/net/pcs/pcs-xpcs.c
++++ b/drivers/net/pcs/pcs-xpcs.c
+@@ -1412,11 +1412,67 @@ static int xpcs_read_ids(struct dw_xpcs *xpcs)
+ 	return 0;
+ }
+ 
++/* m0 - m2 from Table 82-2/82-3
++ * m4 - m6 are skipped since they are inversions of m0 - m2.
++ * Inverted parity fields (IEEE 82.2.8) bip3 and bip7 are omitted.
++ */
++struct lane_markers {
++	u8 m0, m1, m2;
++};
++
++/* Alignment marker encodings, see table 82-2 in IEEE 802.3-2022 */
++static const struct lane_markers xpcs_100gbaser_markers[] = {
++	{0xc1, 0x68, 0x21},
++	{0x9d, 0x71, 0x8e},
++	{0x59, 0x4b, 0xe8},
++	{0x4d, 0x95, 0x7b},
++};
++
++/* Alignment marker encodings, see table 82-3 in IEEE 802.3-2022
++ * The content of the 50G markers is identical to 40G values (IEEE 133.2.2).
++ */
++static const struct lane_markers xpcs_50gbaser_markers[] = {
++	{0x90, 0x76, 0x47},
++	{0xf0, 0xc4, 0xe6},
++	{0xc5, 0x65, 0x9b},
++	{0xa2, 0x79, 0x3d},
++};
++
+ struct pma_pcs_values {
++	const struct lane_markers *vl0_markers;
++	const struct lane_markers *vl123_markers;
+ 	int channels;
+ 	u16 rsfec_ctrl;
++	u16 pcs_mode;
++	u16 vl_intvl;
+ };
+ 
++#define XPCS_VL_TO_REG(vl, lh) \
++	(((vl) * 2) + DW_VR_MII_PCS_VL0_##lh)
++
++static int
++xpcs_write_pcs_ch(struct dw_xpcs *xpcs, int ch, int reg, u16 val)
++{
++	return xpcs_mdev_write_ch(xpcs, ch, MDIO_MMD_PCS, reg, val);
++}
++
++static int xpcs_config_ch_vl_markers(struct dw_xpcs *xpcs, int ch, int vl,
++				     const struct lane_markers *m)
++{
++	int ret;
++
++	/* m0, m1, m2 written to _L and _H registers
++	 *
++	 * _L = (m1 << 8) | m0
++	 * _H = m2
++	 */
++	ret = xpcs_write_pcs_ch(xpcs, ch, XPCS_VL_TO_REG(vl, L),
++				((u16)m->m1 << 8) | m->m0);
++	if (ret < 0)
++		return ret;
++	return xpcs_write_pcs_ch(xpcs, ch, XPCS_VL_TO_REG(vl, H), m->m2);
++}
++
+ static int
+ xpcs_config_rsfec_pma(struct dw_xpcs *xpcs, const struct pma_pcs_values *v)
+ {
+@@ -1425,9 +1481,28 @@ xpcs_config_rsfec_pma(struct dw_xpcs *xpcs, const struct pma_pcs_values *v)
+ 	 * work for enabling a non-fbnic device on this PCS.
+ 	 */
+ 	int pma_mmd = MDIO_MMD_SEP_PMA1;
+-	int ret = 0, i;
++	int ret = 0, i, vl;
+ 
+ 	for (i = 0; ret >= 0 && i < v->channels; i++) {
++		/* code word markings */
++		for (vl = 0; ret >= 0 && vl < 4; vl++) {
++			const struct lane_markers *m;
++
++			m = vl ? v->vl123_markers + vl - 1 : v->vl0_markers;
++			ret = xpcs_config_ch_vl_markers(xpcs, i, vl, m);
++		}
++		if (ret < 0)
++			break;
++		/* vendor registers */
++		ret = xpcs_write_pcs_ch(xpcs, i,
++					DW_VR_MII_PCS_VL_INTVL, v->vl_intvl);
++		if (ret < 0)
++			break;
++		ret = xpcs_write_pcs_ch(xpcs, i,
++					DW_VR_MII_PCS_PCS_MODE, v->pcs_mode);
++		if (ret < 0)
++			break;
++		/* rsfec register */
+ 		ret = xpcs_mdev_write_ch(xpcs, i, pma_mmd,
+ 					 MDIO_PMA_RSFEC_CTRL, v->rsfec_ctrl);
+ 	}
+@@ -1440,6 +1515,13 @@ static int xpcs_25gbaser_pma_config(struct dw_xpcs *xpcs)
+ 	const struct pma_pcs_values v = {
+ 		.rsfec_ctrl = 0,
+ 		.channels = 1,
++		/* 25g markers from 100g and 50g tables per 802.3-2022
++		 * 108.5.2.4
++		 */
++		.vl0_markers = &xpcs_100gbaser_markers[0],
++		.vl123_markers = &xpcs_50gbaser_markers[1],
++		.vl_intvl = 20479,
++		.pcs_mode = DW_VR_MII_PCS_MODE_CLAUSE107,
+ 	};
+ 
+ 	return xpcs_config_rsfec_pma(xpcs, &v);
+@@ -1450,6 +1532,10 @@ static int xpcs_50gbaser_pma_config(struct dw_xpcs *xpcs)
+ 	const struct pma_pcs_values v = {
+ 		.rsfec_ctrl = DW_VR_RSFEC_CTRL_TC_PAD_ALTER,
+ 		.channels = 1,
++		.vl0_markers = &xpcs_50gbaser_markers[0],
++		.vl123_markers = &xpcs_50gbaser_markers[1],
++		.pcs_mode = 0,
++		.vl_intvl = 20479,
+ 	};
+ 
+ 	return xpcs_config_rsfec_pma(xpcs, &v);
+@@ -1460,6 +1546,10 @@ static int xpcs_50gbaser2_pma_config(struct dw_xpcs *xpcs)
+ 	const struct pma_pcs_values v = {
+ 		.rsfec_ctrl = DW_VR_RSFEC_CTRL_TC_PAD_ALTER,
+ 		.channels = 2,
++		.vl0_markers = &xpcs_50gbaser_markers[0],
++		.vl123_markers = &xpcs_50gbaser_markers[1],
++		.pcs_mode = 0,
++		.vl_intvl = 20479,
+ 	};
+ 
+ 	return xpcs_config_rsfec_pma(xpcs, &v);
+@@ -1470,6 +1560,10 @@ static int xpcs_100gbasep_pma_config(struct dw_xpcs *xpcs)
+ 	const struct pma_pcs_values v = {
+ 		.rsfec_ctrl = MDIO_PMA_RSFEC_CTRL_4LANE_PMD,
+ 		.channels = 2,
++		.vl0_markers = &xpcs_100gbaser_markers[0],
++		.vl123_markers = &xpcs_100gbaser_markers[1],
++		.pcs_mode = DW_VR_MII_PCS_MODE_DISABLE_MLD,
++		.vl_intvl = 16383,
+ 	};
+ 
+ 	return xpcs_config_rsfec_pma(xpcs, &v);
+diff --git a/drivers/net/pcs/pcs-xpcs.h b/drivers/net/pcs/pcs-xpcs.h
+index ab47d6dd050c..adb7b1c13c2d 100644
+--- a/drivers/net/pcs/pcs-xpcs.h
++++ b/drivers/net/pcs/pcs-xpcs.h
+@@ -100,6 +100,31 @@
+  */
+ #define DW_VR_RSFEC_CTRL_TC_PAD_ALTER	BIT(10)
+ 
++/* Vendor specific 4 channel PCS registers */
++
++/* DW_VR_MII_PCS_VL_INTVL and DW_VR_MII_AN_INTR_STS conflict
++ * but code paths are different
++ */
++#define DW_VR_MII_PCS_VL_INTVL		0x8002
++/* 0x8008 - 0x800f */
++#define DW_VR_MII_PCS_VL0_L		0x8008
++#define DW_VR_MII_PCS_VL0_H		0x8009
++#define DW_VR_MII_PCS_PCS_MODE		0x8010
++
++/* DW_VR_MII_PCS_PCS_MODE bits */
++#define DW_VR_MII_PCS_MODE_HI_BER25		BIT(2)
++#define DW_VR_MII_PCS_MODE_DISABLE_MLD		BIT(1)
++#define DW_VR_MII_PCS_MODE_CLAUSE49		BIT(0)
++
++/* 25G requires these two bits are set.
++ *
++ * The CLAUSE49 bit changes the interface with the MAC
++ * to 64 bit and the BER25 bit changes the measurement
++ * interval to 2ms.
++ */
++#define DW_VR_MII_PCS_MODE_CLAUSE107 \
++	(DW_VR_MII_PCS_MODE_HI_BER25 | DW_VR_MII_PCS_MODE_CLAUSE49)
++
+ #define DW_XPCS_INFO_DECLARE(_name, _pcs, _pma)				\
+ 	static const struct dw_xpcs_info _name = { .pcs = _pcs, .pma = _pma }
+ 
+
+
