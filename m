@@ -1,47 +1,46 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE584D2EC9;
-	Wed, 29 Jul 2026 16:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7AA4C900A;
+	Wed, 29 Jul 2026 16:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785343072; cv=none; b=gaMRXpe9QgEMYSLB9agfFER+JtMpAPayg3T6YcVEvF8lCo090qAQGtiAn7zvcPPTpI/9wI/hlYi9mCrSvSHtZeMGdjBt2xeGcffBP4eA6Xy7lQCkjtS3vjU44mCy0at0ONtZlagotj7Hx9kO1AeNViS9xM7BhFrxYSYQSAzUmTQ=
+	t=1785343073; cv=none; b=dRGSE3DgJPOC+1+WWzLPt4RNQn3Ot2l0GQRcTZiZeUunVtsKJVfASrx0HTsPs9IBi9aSAfJUt/iwZh+Znf/iCB4YJTlch0/Q8fSysWvL75gmwWaxXh/t4Z2EPXtbJF+m3iyzC5NEDzVW3FaBuIKk0kwksxtxvGPJ7kUca6YlS9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785343072; c=relaxed/simple;
-	bh=534tJYDJ6QFErCbnbOlokOI++N4yLUf8EyQ2ORsrCBg=;
+	s=arc-20240116; t=1785343073; c=relaxed/simple;
+	bh=r5bZOrn3pbMQ+Nnfs8WnRpghq+Dm2sqFQLYNMlmC9z4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rA/pOhrppGvU/WMRKChkTFAthecacpUmtkx3TMOdzMCpU4SRWgr4Th2GdBRj1vZ4y0nhFAtP3nAzy7nbN1F2O/k82faTyc4G1+vjT6kosCG1oTKxp8c6xFZ9aehR/x8uRZmRs6A3+kB0CMj9hq1Em/gzyJtHgK3z3YYDldz3Ois=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NmPGgmBJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=e9GxIEGh; arc=none smtp.client-ip=193.142.43.55
+	 In-Reply-To:To:Cc; b=bpv7IeLphohTIauiReU7ZRFghJHgSks3tFkEQmIGSOJP8TvtgHbrB3yXnuXnbt6UnhL26/x7SNZ1im33otpodzOkcQgIqkWOscbLDd9jzhZiYsrSVqkhfjqViPHPZbiqX/T0dYB3P9hdXbRticnZYRLsnfz+x+4+zcMlkoxvyOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nA7YEuMo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3INchAlY; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NmPGgmBJ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e9GxIEGh"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nA7YEuMo";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3INchAlY"
 From: Vasilij Strassheim <v.strassheim@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1785343065;
+	s=2020; t=1785343066;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MXED0YOymkUY93IzzbVvzXMgCr/sUTwfuoww0CG9rHI=;
-	b=NmPGgmBJFQj8GTkH1Qbiqyagt0PTYsGug/SkmdhhzI2YlkPPKgboX6ai/BsrRyA7LUous4
-	QwzfFs2wo8ImGXOW46lzehXaUEpbjSKDjopYFsoQdTRrfqLTxJwZr1ALFlrTLjnNUDyf6+
-	FLi74xKMy4GGV6wlpJ2pivwzJRvyXvtN+TWF3rbdpqSfebFwK5gqJoeAmnW1s4agP3bKo0
-	OxeIy4Z7uD6Vm6ebz/QAp0fFlZJPe17+QG+BFTSvxaJCeoGFksBXkINSzoQtZNbwrvM34G
-	Sc5BH73SdrmZ6jPriWPv6Q5my4+X+1R6EcnbsTichFPKC5TnS+LoNBZdh785Lg==
+	bh=nDDVLWzzb1dep9cMJQx0EWCjVnpAQOthC9yi9bbzIi8=;
+	b=nA7YEuMotw7zW+lxQi1etUhCRT5B6uwjSmsa4tFJkAjKYawC9CXPqfqbl7fS4W06pd9ljT
+	3g1DXiPBY4qibn9IV7xrFmf6vtuSuNArGshFyrVN1jBDfI+ZzvmDCAUxL6vJJFEqFIeCpq
+	zagtQEKZnWARBU80nd7JkdHw3K4K2S+6R/OhR4KRHRplCFxPSxYSehEmk1LgNTNODCKIxa
+	+A1pJV12gRbCLD6jTWNULbCexKejS2UpE8yPUybV2jEPFYsfyO6oImn5gzBp90ot9Xohy6
+	5pKcwdGgatSJvT/z7O8Kvx4OcjlYeyjYP/JdSaQ75peeRxG/5sFZBkc0DNeU0Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1785343065;
+	s=2020e; t=1785343066;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MXED0YOymkUY93IzzbVvzXMgCr/sUTwfuoww0CG9rHI=;
-	b=e9GxIEGhHlNW9hdIk0UkGlzaSV9NJMyPCm5mXCytf1RhDKDUtBYTxHJ5ZdiQKgoVUCIH/5
-	m4dIuyDu77F1D0Cw==
-Date: Wed, 29 Jul 2026 18:36:55 +0200
-Subject: [PATCH 2/4] dt-bindings: net: dsa: Add SoC-e switch IP and DSA
- bindings
+	bh=nDDVLWzzb1dep9cMJQx0EWCjVnpAQOthC9yi9bbzIi8=;
+	b=3INchAlY/Tf1sJrdPUGibXKjev2zPapUMMWHnpKezClBQvUzP79UtV2sncvW7bJmx6RoFQ
+	TtZWbg/LX5vKT1Cg==
+Date: Wed, 29 Jul 2026 18:36:56 +0200
+Subject: [PATCH 3/4] net: dsa: Add support for SoC-e SDSA tags
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,7 +49,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260729-devel-vstrassheim-soce-dsa-ml-v1-2-be569dae1b20@linutronix.de>
+Message-Id: <20260729-devel-vstrassheim-soce-dsa-ml-v1-3-be569dae1b20@linutronix.de>
 References: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
 In-Reply-To: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -63,279 +62,177 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  netdev@vger.kernel.org, Martin Kaistra <martin.kaistra@linutronix.de>, 
  Vasilij Strassheim <v.strassheim@linutronix.de>
 
-Add DT schema documentation for SoC-e FPGA switch devices.
-The binding is split into:
- - a switch IP node describing the MMIO register block
- - a DSA MDIO node describing the DSA-facing switch instance
-Both nodes are linked through the soce,switch-ip phandle.
+Add a DSA tagger for the SoC-e SDSA header format used between
+the conduit and SoC-e switch ports.
+
+The implementation adds TX tag insertion and RX tag parsing and
+registers a new DSA tag protocol.
 
 Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
 ---
- .../bindings/net/dsa/soce,switch-dsa.yaml          | 195 +++++++++++++++++++++
- .../bindings/net/dsa/soce,switch-ip.yaml           |  54 ++++++
- 2 files changed, 249 insertions(+)
+ include/net/dsa.h  |   2 ++
+ net/dsa/Kconfig    |   6 ++++
+ net/dsa/Makefile   |   1 +
+ net/dsa/tag_sdsa.c | 102 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 111 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/soce,switch-dsa.yaml b/Documentation/devicetree/bindings/net/dsa/soce,switch-dsa.yaml
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 8c16ef23cc10..744bbb4d54ea 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -59,6 +59,7 @@ struct tc_action;
+ #define DSA_TAG_PROTO_MXL_GSW1XX_VALUE		31
+ #define DSA_TAG_PROTO_MXL862_VALUE		32
+ #define DSA_TAG_PROTO_NETC_VALUE		33
++#define DSA_TAG_PROTO_SDSA_VALUE		34
+ 
+ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
+@@ -95,6 +96,7 @@ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_MXL_GSW1XX	= DSA_TAG_PROTO_MXL_GSW1XX_VALUE,
+ 	DSA_TAG_PROTO_MXL862		= DSA_TAG_PROTO_MXL862_VALUE,
+ 	DSA_TAG_PROTO_NETC		= DSA_TAG_PROTO_NETC_VALUE,
++	DSA_TAG_PROTO_SDSA		= DSA_TAG_PROTO_SDSA_VALUE,
+ };
+ 
+ struct dsa_switch;
+diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
+index d5e725b90d78..1e1b0f2fb726 100644
+--- a/net/dsa/Kconfig
++++ b/net/dsa/Kconfig
+@@ -98,6 +98,12 @@ config NET_DSA_TAG_EDSA
+ 	  Say Y or M if you want to enable support for tagging frames for the
+ 	  Marvell switches which use EtherType DSA headers.
+ 
++config NET_DSA_TAG_SDSA
++	tristate "Tag driver for SoC-e switches using EtherType SDSA headers"
++	help
++	  Say Y or M if you want to enable support for tagging frames for the
++	  SoC-e switches.
++
+ config NET_DSA_TAG_MTK
+ 	tristate "Tag driver for Mediatek switches"
+ 	help
+diff --git a/net/dsa/Makefile b/net/dsa/Makefile
+index b8c2667cd14a..dc154f10e0a0 100644
+--- a/net/dsa/Makefile
++++ b/net/dsa/Makefile
+@@ -23,6 +23,7 @@ dsa_core-y += \
+ obj-$(CONFIG_NET_DSA_TAG_AR9331) += tag_ar9331.o
+ obj-$(CONFIG_NET_DSA_TAG_BRCM_COMMON) += tag_brcm.o
+ obj-$(CONFIG_NET_DSA_TAG_DSA_COMMON) += tag_dsa.o
++obj-$(CONFIG_NET_DSA_TAG_SDSA) += tag_sdsa.o
+ obj-$(CONFIG_NET_DSA_TAG_GSWIP) += tag_gswip.o
+ obj-$(CONFIG_NET_DSA_TAG_HELLCREEK) += tag_hellcreek.o
+ obj-$(CONFIG_NET_DSA_TAG_KSZ) += tag_ksz.o
+diff --git a/net/dsa/tag_sdsa.c b/net/dsa/tag_sdsa.c
 new file mode 100644
-index 000000000000..a04e2838d14e
+index 000000000000..b32dca1e367c
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/net/dsa/soce,switch-dsa.yaml
-@@ -0,0 +1,195 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/dsa/soce,switch-dsa.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/net/dsa/tag_sdsa.c
+@@ -0,0 +1,102 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2020 System on Chip engineering, S.L.
++ * Copyright (c) 2026 Linutronix GmbH
++ */
 +
-+title: SoC-e DSA switch MDIO device
++#include <linux/bitops.h>
++#include <linux/etherdevice.h>
 +
-+maintainers:
-+  - SoC-e <info@soc-e.com>
++#include "tag.h"
 +
-+description: |
-+  This node is the MDIO-bus device entry for the SoC-e DSA switch driver.
-+  It is a lightweight configuration node that lives on the MDIO bus of the
-+  SoC Ethernet controller acting as the DSA conduit (CPU port).
++#define SDSA_HLEN	8
 +
-+  The switch hardware itself (MMIO register interface) is a separate IP core
-+  described by a companion node with one of the SoC-e compatible strings,
-+  for example:
-+    - soce,mrs-<version>
-+  See the consolidated IP-core binding:
-+    - Documentation/devicetree/bindings/net/dsa/soce,switch-ip.yaml
-+  The two nodes are linked via the "soce,switch-ip" phandle property.
++#define SDSA_NAME	"sdsa"
++#define ETH_P_SDSA	0xDCDC
 +
-+  Port sub-nodes follow the DSA port binding documented in dsa-port.yaml.
-+  User ports should reference PHY nodes through "phy-handle". These PHY nodes
-+  live under the optional "mdio" child node of the switch and are exposed on
-+  the switch's synthetic DSA user MDIO bus.
++/* SDSA tag byte layout (after the 12-byte MAC header):
++ * Bytes 0-1: SDSA EtherType (0xDCDC)
++ * Bytes 2-3: Reserved
++ * Byte 4:    Frame type (bits 7-6), VLAN-info bit (bit 5), port[9:5] (bits 4-0)
++ * Byte 5:    Port[4:0] (bits 7-3)
++ * Bytes 6-7: PCP (bits 7-5) / CFI (bit 4) / VID (bits 3-0 + byte 7), only
++ *            meaningful when the VLAN-info bit is set.
++ */
++#define SDSA_TAG_FRAME_TYPE_MASK	GENMASK(7, 6)
++#define SDSA_TAG_VLAN_BIT		BIT(5)
++#define SDSA_TAG_PORT_HI_MASK		GENMASK(4, 0)
++#define SDSA_TAG_PORT_MASK		GENMASK(7, 3)
 +
-+  The PHY-specific properties "soce,mdio-output" and "soce,phy-addr" describe
-+  the MDIO bus index and hardware PHY address used by the on-chip MDIO master
-+  of the switch IP core.
++static struct sk_buff *sdsa_xmit(struct sk_buff *skb, struct net_device *dev)
++{
++	struct dsa_port *dp = dsa_user_to_port(dev);
++	u8 *sdsa_header;
 +
-+properties:
-+  '#address-cells':
-+    const: 1
++	if (skb_cow_head(skb, SDSA_HLEN) < 0)
++		return NULL;
 +
-+  '#size-cells':
-+    const: 0
++	skb_push(skb, SDSA_HLEN);
++	dsa_alloc_etype_header(skb, SDSA_HLEN);
 +
-+  compatible:
-+    const: soce,switch-dsa
++	/* Construct the FROM_CPU DSA tag. */
++	sdsa_header = dsa_etype_header_pos_tx(skb);
++	sdsa_header[0] = (ETH_P_SDSA >> 8) & 0xff;
++	sdsa_header[1] = ETH_P_SDSA & 0xff;
++	sdsa_header[2] = 0x00; /* reserved */
++	sdsa_header[3] = 0x00; /* reserved */
++	sdsa_header[4] = FIELD_PREP(SDSA_TAG_FRAME_TYPE_MASK, 1) |
++			 FIELD_PREP(SDSA_TAG_PORT_HI_MASK, dp->index >> 5);
++	sdsa_header[5] = FIELD_PREP(SDSA_TAG_PORT_MASK, dp->index);
++	sdsa_header[6] = 0x00; /* VLAN not supported */
++	sdsa_header[7] = 0x00; /* VLAN not supported */
 +
-+  reg:
-+    description: MDIO address of this device on the parent MDIO bus.
-+    maxItems: 1
++	return skb;
++}
 +
-+  soce,switch-ip:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: |
-+      Phandle to the SoC-e switch IP core node that provides the MMIO register
-+      window for this switch instance. The referenced node must carry a
-+      compatible string documented in
-+      Documentation/devicetree/bindings/net/dsa/soce,switch-ip.yaml.
++static struct sk_buff *sdsa_rcv(struct sk_buff *skb, struct net_device *dev)
++{
++	u8 *sdsa_header;
++	int source_port;
++	u8 frame_type;
 +
-+  dsa,member:
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    minItems: 2
-+    maxItems: 2
-+    description:
-+      DSA cluster membership; see Documentation/devicetree/bindings/net/dsa/dsa.yaml.
++	if (unlikely(!pskb_may_pull(skb, SDSA_HLEN)))
++		return NULL;
 +
-+  mdio:
-+    $ref: /schemas/net/mdio.yaml#
-+    description: |
-+      Optional child MDIO bus exposing PHY devices attached to switch user
-+      ports. PHY nodes referenced by port "phy-handle" properties should be
-+      placed here. The PHY address seen by Linux on this bus is the switch port
-+      index, not necessarily the hardware PHY address selected internally by
-+      the switch IP.
-+    unevaluatedProperties: false
++	sdsa_header = dsa_etype_header_pos_rx(skb);
 +
-+    patternProperties:
-+      "^ethernet-phy@[0-9a-f]+$":
-+        type: object
-+        $ref: /schemas/net/ethernet-phy.yaml#
-+        unevaluatedProperties: false
-+        description:
-+          PHY attached to a switch user port through the synthetic switch MDIO
-+          bus.
-+        properties:
-+          soce,mdio-output:
-+            $ref: /schemas/types.yaml#/definitions/uint32
-+            description: |
-+              Zero-based index of the MDIO bus output of the switch IP core to
-+              which this PHY is connected.
++	/* Check that the frame type is TO_CPU. */
++	frame_type = FIELD_GET(SDSA_TAG_FRAME_TYPE_MASK, sdsa_header[4]);
++	if (frame_type != 0)
++		return NULL;
 +
-+          soce,phy-addr:
-+            $ref: /schemas/types.yaml#/definitions/uint32
-+            description: |
-+              Hardware PHY address on the MDIO bus selected by
-+              "soce,mdio-output".
++	/* VLAN-tagged traffic is intentionally unsupported yet. */
++	if (sdsa_header[4] & SDSA_TAG_VLAN_BIT)
++		return NULL;
 +
-+        required:
-+          - soce,mdio-output
-+          - soce,phy-addr
++	/* Determine the source port from the two port fields. */
++	source_port = ((sdsa_header[4] & 0x1f) << 5) |
++		      ((sdsa_header[5] & 0xf8) >> 3);
 +
-+  ports:
-+    type: object
-+    description: Container node for the switch port sub-nodes.
-+    properties:
-+      '#address-cells':
-+        const: 1
-+      '#size-cells':
-+        const: 0
++	skb->dev = dsa_conduit_find_user(dev, 0, source_port);
++	if (!skb->dev)
++		return NULL;
 +
-+    patternProperties:
-+      "^port@[0-9a-f]+$":
-+        $ref: dsa-port.yaml#
-+        unevaluatedProperties: false
-+        description: |
-+          Switch port. In addition to the standard DSA port properties
-+          (label, phy-mode, ethernet, fixed-link) the following
-+          vendor-specific properties are used for data ports connected to
-+          external PHYs.
++	skb_pull_rcsum(skb, SDSA_HLEN);
++	dsa_strip_etype_header(skb, SDSA_HLEN);
 +
-+    required:
-+      - '#address-cells'
-+      - '#size-cells'
++	dsa_default_offload_fwd_mark(skb);
++	return skb;
++}
 +
-+    additionalProperties: false
++static const struct dsa_device_ops sdsa_netdev_ops = {
++	.name = SDSA_NAME,
++	.proto = DSA_TAG_PROTO_SDSA,
++	.xmit = sdsa_xmit,
++	.rcv = sdsa_rcv,
++	.needed_headroom = SDSA_HLEN,
++};
 +
-+required:
-+  - compatible
-+  - reg
-+  - soce,switch-ip
-+  - ports
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("DSA tag driver for SoC-e SDSA protocol");
++MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_SDSA, SDSA_NAME);
 +
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    /* Excerpt from a Xilinx ZynqMP design (ARM64) */
-+    mdio {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        soce_switch: switch@10 {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+            compatible = "soce,switch-dsa";
-+            reg = <0x10>;
-+            soce,switch-ip = <&soce_switch_ip>;
-+            dsa,member = <0 0>;
-+
-+            ports {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+
-+                port@0 {
-+                    reg = <0x0>;
-+                    label = "PORT_0";
-+                    phy-handle = <&switchphy0>;
-+                    phy-mode = "rgmii-id";
-+                };
-+
-+                port@1 {
-+                    reg = <0x1>;
-+                    label = "PORT_1";
-+                    phy-handle = <&switchphy1>;
-+                    phy-mode = "rgmii-id";
-+                };
-+
-+                port@2 {
-+                    reg = <0x2>;
-+                    label = "INTERNAL_PORT";
-+                    ethernet = <&gem3>;
-+                    phy-mode = "gmii";
-+                    fixed-link {
-+                        speed = <1000>;
-+                        full-duplex;
-+                    };
-+                };
-+            };
-+
-+            mdio {
-+              #address-cells = <1>;
-+              #size-cells = <0>;
-+
-+                switchphy0: ethernet-phy@0 {
-+                    compatible = "ethernet-phy-ieee802.3-c22";
-+                    reg = <0x0>;
-+                    soce,mdio-output = <0x00000000>;
-+                    soce,phy-addr = <1>;
-+                };
-+
-+                switchphy1: ethernet-phy@1 {
-+                    compatible = "ethernet-phy-ieee802.3-c22";
-+                    reg = <0x1>;
-+                    soce,mdio-output = <0x00000001>;
-+                    soce,phy-addr = <1>;
-+                };
-+            };
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/net/dsa/soce,switch-ip.yaml b/Documentation/devicetree/bindings/net/dsa/soce,switch-ip.yaml
-new file mode 100644
-index 000000000000..ba9bb396235f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/dsa/soce,switch-ip.yaml
-@@ -0,0 +1,54 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/dsa/soce,switch-ip.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: SoC-e Ethernet Switch IP core
-+
-+maintainers:
-+  - SoC-e <info@soc-e.com>
-+
-+description: |
-+  SoC-e Ethernet switch IP cores are configurable FPGA switch fabrics with
-+  Layer-2 bridging features (including STP/MSTP state control and FDB
-+  fast-age support). Some variants also provide TSN functionality.
-+
-+  This binding describes only the MMIO switch IP core node. The Linux DSA
-+  driver is bound via a companion MDIO node described in:
-+    Documentation/devicetree/bindings/net/dsa/soce,switch-dsa.yaml.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - soce,mrs-21-01
-+      - soce,mrs-23-02
-+      - soce,mrs-24-01
-+
-+  reg:
-+    description: |
-+      MMIO base address and size of the switch register window.
-+      On 64-bit platforms (ARM64), this is typically encoded as two-cell
-+      address and two-cell size values.
-+    maxItems: 1
-+
-+  soce,num-ports:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      Total number of switch ports (external/user ports plus the CPU uplink
-+      port). Must be greater than zero and not exceed the selected IP variant.
-+
-+required:
-+  - compatible
-+  - reg
-+  - soce,num-ports
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    switch_ip: switch@80020000 {
-+        compatible = "soce,mrs-24-01";
-+        reg = <0x0 0x80020000 0x0 0x10000>;
-+        soce,num-ports = <3>;
-+    };
++module_dsa_tag_driver(sdsa_netdev_ops);
 
 -- 
 2.39.5
