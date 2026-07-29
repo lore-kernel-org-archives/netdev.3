@@ -1,543 +1,326 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E145B382F28
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 22:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36DE441611
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 22:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785363544; cv=none; b=PTkgMpCT72xcgv0e24EiTGd8Ngq0Om7ts4wRNBRyF5993BY6OurgPOZox79A4rjQ6DstHl501ZXQpgK2YuzqtRtfEQgA+05qiD1g+IWf1piLJluJHbUfhdlFh/LKXcV9YSCVb6+BLl1TNrtSUi0j3MiM80/Akv9wamjpa+SFTm0=
+	t=1785363659; cv=none; b=baKn+QDrlstnUwSmW8gzmBLPrfYjUEhxQm9JKoJAy61oOct6JT54s9IHtmFTmjHnRtDLIfjwDlo+aRTlVNcopX5bIOOC7F5Pb2EkqfjSFYlUKV/H8YB37W1AwPl6ShpAEIlCJBWEBL9Lmbexm5evZgcHcOg1YlI5o/UqrtfEHHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785363544; c=relaxed/simple;
-	bh=rLekRUkX346SnvBPk5zPiIOOceOAGLeri4nl51E2ZKU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fb920MM1czlKYvh70tkneF4v2xW7VUVk8DQH5XjmsuIl3YmvbcfaL/NaV/VldifaMF/K678trZCIrtNYpp/KnZ6DC2KYavFMGF8OKwxcFhds4xoGMKsdqHds0x885w8pzLGNT1+zHuYbBNc7XpzOo7vf0328QQG4BQA0oz05M7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=hCB37ujE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Go7MdLJi; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
+	s=arc-20240116; t=1785363659; c=relaxed/simple;
+	bh=gP562E48CuWnqs4CMhqtSHWNVh24aNhbk6ZXfihqv5k=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JR5E/hiPEBhYllMI3+hXeF/4AXxRAsE6wpMsONDWczZUoW9cjLBB7MePIgiiF/qA49o3MogjpK5tgSwijnJ4xQCHVbLyd28DwRWSgV32R1hW8zhA17Nnqj9qPvjjVeUB5Q6g1AtOkh5Iw8CYd9/8DAo8WTgzBsjqNq9TZyC3S2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TPIEklRb; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="hCB37ujE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Go7MdLJi"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 4D3501D0033A;
-	Wed, 29 Jul 2026 18:18:58 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Wed, 29 Jul 2026 18:18:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1785363538; x=
-	1785449938; bh=SZVZOqoi4Ks2bWtAYciufICla0IzyOWQ058R7QkyTL0=; b=h
-	CB37ujEYi+U0kA6imjjMQ/gQZWt/kSPQ3QZRytJsFQNRoxHOxs++mYyP2ydOj5Qs
-	lIFouRDbnL0Ajfgdz5dws2RFbSaETt1y93JoPoBrOMbmw6sFuJl4wzKgBdoiQId4
-	Uqh1hlM2JrtJrU9D+Dp86R2NAFEQ6qVC/LIFeAkQrcE9NdnOu2SXSJZjzF1vy3JT
-	wliKQlOCh8cgigUHt/9Bt2vwDwMzqZ24Zz3kOROtqWVmtKnjaNbVLE0tG/qF5Q7D
-	AX9JfsNX7PbYEPLIQ7PyprkCeWjXDf4EXelNcC/8IlY8Z/RZT78i2FxgYGLC6INp
-	K8BmwSiEbbUvGc5lSuZFw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1785363538; x=1785449938; bh=S
-	ZVZOqoi4Ks2bWtAYciufICla0IzyOWQ058R7QkyTL0=; b=Go7MdLJia7Uy+/BIo
-	jrViNU/khjV6P9gbQOFQyzQUUF7IkRzJZifklilJTHvRy8ihsDeZaqI9OcL32fDI
-	9FTTj5PhvzsbNopvSTIh63j3UJTH0AQHHURqeZBv43jl1veqGQZ5nMwPVCztqspe
-	Q0suJ6n3MgEiaRzV5Or368NDhR+SPvnNiRzizBMzncM9Nl2JCJ7zzMh60FatJbon
-	Df5+O8YFACJHIZcUWoUtwj/mjaPDE3kH3VX5TjSU7iWX+A0ZPfRlj1SzLqobuqBU
-	DrlKk43qDGuQopIuCyvb0z6E24htPf1wVWV33VhSNlsl6GYNI2eCewWNaQXtNT06
-	65guA==
-X-ME-Sender: <xms:Unxqaux_twAcl62mIYKj2cJTgDTN8TmMPb_A3INoG8XidWKLJtWsIQ>
-    <xme:UnxqahJmzNv2hAFZCmL5Jii1cFRIEva5IYXKBgnItOTRpSTQyVzFTI_MvNXqkJ-CG
-    aBmC6OAgvWa2FVVT0imnXFYghIIY_MeSwmQWcFF6RiCyQ_0XneATf-T>
-X-ME-Received: <xmr:Unxqaoo0ZpFKM2TScLiV0WvbxKRf8FUnm00kjmZ4s5QA6HUPP9Ud8cZ70ywTT5StVM9yO7uQ6iryWEug0jxN>
-X-ME-Proxy-Cause: dmFkZTFMDyKK2y+dzORRfZPJ89JgoASg/Qb0GjVQW+8GrOVCcEGdUAgKHlUa8Un+iIRNDq
-    OLu1eEmGdL9LiaJp4vb7aukO46GaCpXJmsv06q7iKnx98tky4DIzGBqbiPBus49S5LJbjW
-    1qneKCbP5VuWaw/dwy14ncWM3IhzR+3ff1uRI5OY/HT/Tdbg57FnUba87bbWN1jKovJr55
-    sbfMefc2frq11MXRuj+ZJpguqDFLHUgtPkCHXQJMLgPRwlLsxFCNklRZ3mgQ7tCBlc2WIX
-    rh68MohCmoqsoOTDpc51ZVxRPdFWAIUIMHouI949040nP6WpUNPwFRA0R5WLQtXwav4IN4
-    1J7hH6Y1MrvIFYm/jCa818NDa1LBArrFFpOlKXmWfBgXL8DGyAUJBypfWPO6pBE3ksM91g
-    11dKgKJAmMg8OpjBMUONplj7tfKNwsw9ua4Rn9VnY15aVLS3SNXQsMxPZKwMknfeCZUW0A
-    mnxbXCOaSIEu+yNa+GV1/eYU6j6FLX9rhXDOGvjlE28/hbZePqH8YnBwz7shMneTm3CImD
-    fOT3LjM+/Dp5OWHym8Fi7XY6FIewqhDQ4uWWHFP+AeclM/VF6VhtXNJhyQhIsYPA9iteUI
-    +MuBqGXqqeuTTbLw8mWfr8HQ1KLeLJfJdcZwdqZUg2hQrJXMdDtjulAw00pA
-X-ME-Proxy: <xmx:UnxqagKFkVzaBBVf8r6lO77DgRJaTyxRzU50UhVu5UimEbJZ0QfoVg>
-    <xmx:UnxqatQqY7Zd8GCSnWyn-PHHFV-EsruPw52BAkFoCOOPvcaYDcmOSA>
-    <xmx:UnxqavsNIBjn8-q33pdHwTsSHjdEOkFpiX3P7Ftk2wm9pPTLK-A4xw>
-    <xmx:Unxqaua90vWFUxmLKNL0C7wm_iPb8PL3KVAT5arP-GicA6OG7yRHtw>
-    <xmx:UnxqalrVeOgbvC_Vv5U9lu8pGyGc1D5Jg_26w6K6elfluC_DsNv2Waeh>
-Feedback-ID: i80b64ba7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 29 Jul 2026 18:18:57 -0400 (EDT)
-From: Juanlu Herrero <juanlu@fastmail.com>
-To: David Wei <dw@davidwei.uk>,
-	netdev@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Juanlu Herrero <juanlu@fastmail.com>
-Subject: [PATCH net-next v4 5/6] selftests: net: add multithread server support to iou-zcrx
-Date: Wed, 29 Jul 2026 17:18:24 -0500
-Message-ID: <20260729221825.42773-6-juanlu@fastmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260729221825.42773-1-juanlu@fastmail.com>
-References: <20260729221825.42773-1-juanlu@fastmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TPIEklRb"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8485b358552so1677595b3a.2
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 15:20:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785363655; x=1785968455; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=AYXNNFqRWMppFvRpucp1dEJE1IGIqXaozr9ZqqZJwJ8=;
+        b=TPIEklRbiK4OdeSQt2s3gse1bWAJi8cTC2S5ZN6KC5Y5t0O7mwQBCo1/9d7I0YAly3
+         t8n8E0u/phDGS1YGsYnUxd80Yz8B6WUBmHyOJjYkn2+lnIg2iZhE0KZhiM8hnnQUFp9V
+         heqzs30f3Mt2CSkAWSqeb48UK3Sw6If4iNeQIDE7Ha45NbOi76Ope3B7oqPgLvA3CDxG
+         QHSAVJHKB3SpRHFstl6HgHd8PtXw8pgJ41Av+BD0vpM68flKS+unDkuRUXAQg8oUPkxV
+         wXoo5mTra3Go/PcSTO/SPDxSJBrWQQL4u0kUuAL2SnwgGAMfW7E4nkJQ6sKP8/1qyNas
+         P0Mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785363655; x=1785968455;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AYXNNFqRWMppFvRpucp1dEJE1IGIqXaozr9ZqqZJwJ8=;
+        b=TRSebN+utKIKbuPiXVIv5ep36gx4GVJCbGs/sEJEPpO/NkhQE+ecHnRgymNlvTzAFe
+         L8g1XeL6xhgUo2TjNZA24PQq/S1WJTAtAC2N/+1bWuwCesoXUBgT5dXVZxaO3+tBVuFC
+         f8NsvMLnMsl1Sdt+kS5YQxRaGPRZ//qE7W/gl+79IY1fvDdx9Auo1FmZyYhuPffAjEIk
+         gNfVp7AME6QPxy4HeCMpZQCGSpGGvLzQ5es3yDcIOxG84F5jnPV3ijWhfLZfKq2YOVSr
+         Oc1EEiLKCywmXjK1usHpP940skK+twEZxDjzyJLrj/eAssQmt/eFnhlyvUsPyrP4F11M
+         WWKA==
+X-Gm-Message-State: AOJu0YxIZdmnyfEy9O0lSfYnWzIHKS1GhzGe+GO4V6lo5JJ1gkOftiRo
+	sHp2MhZciZC2J5U14uE87oqKeKTz0pBMQdyh4a4uXtj3h9v+KIjRU6W7
+X-Gm-Gg: AR+sD10PaDUWwISw/NALQpDdXXxN5Id6f1Gn9gHUgPq4ynTHiTqrtp8Fq+fWKmBUw0N
+	E2UaFihqUaa0SQaTbBHmz01kJOplu5ual50hrHAx6I7pLjqjFkNL+joZRQ0EyM6U39VcXaXgF/l
+	5Qj0u5qtf8Pw3Se+2qyDJn/2X0ZyBFo3iOkeJ7l4I7lWNvTe2LcKCPBBNUUpkqkSp13bjwPZTy9
+	/4XJMqXJQkJ9yuSBjU0N8UrbJqsCJe5ixmiHqQ41UkUB1BbM92XEAo6EiPTVj/rDbGte/2v2y3K
+	F61C+6zvvadgNrMv/X3HOfXcfZcFElJJv3TPVCa6C+ivmZwCtPRGBi1DJXkec+bHnxRrNoBXb5W
+	ip21hPh26SW+ART81PQ6n6r65TlNR629oEVwTgTUz40BpAKkEV2skGsDdYcOBmw4WS/qDmUmpsU
+	W0sMBMRJRAtACPbDPT751iisMl8MJ8S7t19aIpb/s2y1LnyqIoTYUIHm+TWtfDD/AS1wfz6Szkq
+	ePPVbCQmgJdyx6Dht93Qm3i7+ypWZt4GKQjiwaInLWZVqK84Yai5nbqt525hMt+/L5ZGbgNPpH6
+	UA==
+X-Received: by 2002:a05:6a00:852:b0:848:67ca:c03 with SMTP id d2e1a72fcca58-84ebc3f9d69mr122244b3a.58.1785363654981;
+        Wed, 29 Jul 2026 15:20:54 -0700 (PDT)
+Received: from ahduyck-xeon-server.home.arpa ([98.97.33.182])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea0055325sm2034154b3a.15.2026.07.29.15.20.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 15:20:54 -0700 (PDT)
+Subject: [net-next PATCH v4 1/4] net: pcs: xpcs: Expand mdiodev member as an
+ array
+From: Alexander Duyck <alexander.duyck@gmail.com>
+To: netdev@vger.kernel.org
+Cc: mike.marciniszyn@gmail.com, alexanderduyck@fb.com, andrew+netdev@lunn.ch,
+ andrew@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ hkallweit1@gmail.com, jiawenwu@trustnetic.com, kees@kernel.org,
+ kernel-team@meta.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+ linux@armlinux.org.uk, mengyuanlou@net-swift.com, mohsin.bashr@gmail.com,
+ pabeni@redhat.com
+Date: Wed, 29 Jul 2026 15:18:40 -0700
+Message-ID: 
+ <178536352090.250758.5722921302651565959.stgit@ahduyck-xeon-server.home.arpa>
+In-Reply-To: 
+ <178536329631.250758.9931617589255894843.stgit@ahduyck-xeon-server.home.arpa>
+References: 
+ <178536329631.250758.9931617589255894843.stgit@ahduyck-xeon-server.home.arpa>
+User-Agent: StGit/1.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Run the iou-zcrx server as N worker threads, each owning one receive
-queue with its own io_uring and zero-copy receive (zcrx) ifq, so the
-test can exercise multi-queue zero-copy receive.
+From: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
 
-The main thread owns the listening socket, accepts connections, and
-dispatches each to the worker owning the queue it landed on by matching
-SO_INCOMING_NAPI_ID against per-queue NAPI IDs.
+This allows for support of 50GR2 and 100GR2 by extending the
+current singleton mdiodev to an array.
 
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Juanlu Herrero <juanlu@fastmail.com>
+DW XPCS can support 25GR1 and 50GR1 using just a single group channel. To
+operate at 50R2 or 100R2 we need both halves of the channel combined into
+one group channel device.
+
+Adjust current use of singleton mdiodev to use the 0th element.
+
+Signed-off-by: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
+Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
- .../testing/selftests/drivers/net/hw/Makefile |   5 +-
- .../selftests/drivers/net/hw/iou-zcrx.c       | 290 ++++++++++++++----
- 2 files changed, 226 insertions(+), 69 deletions(-)
+ drivers/net/pcs/pcs-xpcs-wx.c |    4 ++--
+ drivers/net/pcs/pcs-xpcs.c    |   43 +++++++++++++++++++++--------------------
+ drivers/net/pcs/pcs-xpcs.h    |    5 ++++-
+ 3 files changed, 28 insertions(+), 24 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-index 3cab3b4adbb2e..035581b58bc66 100644
---- a/tools/testing/selftests/drivers/net/hw/Makefile
-+++ b/tools/testing/selftests/drivers/net/hw/Makefile
-@@ -13,10 +13,6 @@ else
- $(warning excluding iouring tests, liburing not installed or too old)
- endif
+diff --git a/drivers/net/pcs/pcs-xpcs-wx.c b/drivers/net/pcs/pcs-xpcs-wx.c
+index fc52f7aa5f59..38c980f974b4 100644
+--- a/drivers/net/pcs/pcs-xpcs-wx.c
++++ b/drivers/net/pcs/pcs-xpcs-wx.c
+@@ -123,7 +123,7 @@ static int txgbe_pcs_poll_power_up(struct dw_xpcs *xpcs)
+ 				10000, 1000000, false,
+ 				xpcs, DW_VR_XS_PCS_DIG_STS);
+ 	if (ret < 0)
+-		dev_err(&xpcs->mdiodev->dev, "xpcs power-up timeout\n");
++		dev_err(&xpcs->mdiodev[0]->dev, "xpcs power-up timeout\n");
  
--TEST_GEN_FILES := \
--	$(COND_GEN_FILES) \
--# end of TEST_GEN_FILES
--
- TEST_PROGS = \
- 	csum.py \
- 	devlink_port_split.py \
-@@ -71,6 +67,7 @@ TEST_INCLUDES := \
- YNL_GEN_FILES := \
- 	ncdevmem \
- 	toeplitz \
-+	$(COND_GEN_FILES) \
- # end of YNL_GEN_FILES
- TEST_GEN_FILES += $(YNL_GEN_FILES)
- TEST_GEN_FILES += $(patsubst %.c,%.o,$(wildcard *.bpf.c))
-diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
-index 7bc61f3b70ca6..16259129df46d 100644
---- a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
-+++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
-@@ -27,6 +27,7 @@
- #include <netinet/tcp.h>
- #include <netinet/udp.h>
- #include <sys/epoll.h>
-+#include <sys/eventfd.h>
- #include <sys/ioctl.h>
- #include <sys/mman.h>
- #include <sys/resource.h>
-@@ -38,6 +39,8 @@
- #include <sys/wait.h>
+ 	return ret;
+ }
+@@ -139,7 +139,7 @@ static int txgbe_pma_init_done(struct dw_xpcs *xpcs)
+ 				100000, 10000000, false,
+ 				xpcs, DW_VR_XS_PCS_DIG_CTRL1);
+ 	if (ret < 0)
+-		dev_err(&xpcs->mdiodev->dev, "xpcs pma initialization timeout\n");
++		dev_err(&xpcs->mdiodev[0]->dev, "xpcs pma initialization timeout\n");
  
- #include <liburing.h>
-+#include <ynl.h>
-+#include "netdev-user.h"
+ 	return ret;
+ }
+diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
+index e69fa2f0a0e8..22246abec948 100644
+--- a/drivers/net/pcs/pcs-xpcs.c
++++ b/drivers/net/pcs/pcs-xpcs.c
+@@ -211,23 +211,24 @@ static bool __xpcs_linkmode_supported(const struct dw_xpcs_compat *compat,
  
- #define SKIP_CODE	42
- 
-@@ -91,6 +94,7 @@ static int cfg_num_threads = 1;
- static char *payload;
- 
- #define CONNS_PER_THREAD	4
-+#define MAX_CONNS_PER_THREAD	64
- 
- struct thread_ctx {
- 	struct io_uring		ring;
-@@ -99,9 +103,14 @@ struct thread_ctx {
- 	size_t			ring_size;
- 	struct io_uring_zcrx_rq	rq_ring;
- 	unsigned long		area_token;
--	int			connfd;
--	bool			stop;
--	size_t			received;
-+	int			queue_id;
-+	int			napi_id;
-+	int			ready_fd;
-+	int			start_fd;
-+
-+	int			connfds[MAX_CONNS_PER_THREAD];
-+	size_t			received[MAX_CONNS_PER_THREAD];
-+	int			nr_conns;
- };
- 
- static unsigned long gettimeofday_ms(void)
-@@ -201,7 +210,7 @@ static void setup_zcrx(struct thread_ctx *ctx)
- 
- 	struct t_io_uring_zcrx_ifq_reg reg = {
- 		.if_idx = ifindex,
--		.if_rxq = cfg_queue_id,
-+		.if_rxq = ctx->queue_id,
- 		.rq_entries = rq_entries,
- 		.area_ptr = (__u64)(unsigned long)&area_reg,
- 		.region_ptr = (__u64)(unsigned long)&region_reg,
-@@ -226,53 +235,32 @@ static void setup_zcrx(struct thread_ctx *ctx)
- 	ctx->area_token = area_reg.rq_area_token;
+ int xpcs_read(struct dw_xpcs *xpcs, int dev, u32 reg)
+ {
+-	return mdiodev_c45_read(xpcs->mdiodev, dev, reg);
++	return mdiodev_c45_read(xpcs->mdiodev[0], dev, reg);
  }
  
--static void add_accept(struct thread_ctx *ctx, int sockfd)
-+static void add_recvzc(struct thread_ctx *ctx, int conn_idx)
+ int xpcs_write(struct dw_xpcs *xpcs, int dev, u32 reg, u16 val)
  {
- 	struct io_uring_sqe *sqe;
- 
- 	sqe = io_uring_get_sqe(&ctx->ring);
- 
--	io_uring_prep_accept(sqe, sockfd, NULL, NULL, 0);
--	sqe->user_data = 1;
--}
--
--static void add_recvzc(struct thread_ctx *ctx, int sockfd)
--{
--	struct io_uring_sqe *sqe;
--
--	sqe = io_uring_get_sqe(&ctx->ring);
--
--	io_uring_prep_rw(IORING_OP_RECV_ZC, sqe, sockfd, NULL, 0, 0);
-+	io_uring_prep_rw(IORING_OP_RECV_ZC, sqe, ctx->connfds[conn_idx],
-+			 NULL, 0, 0);
- 	sqe->ioprio |= IORING_RECV_MULTISHOT;
--	sqe->user_data = 2;
-+	sqe->user_data = conn_idx;
+-	return mdiodev_c45_write(xpcs->mdiodev, dev, reg, val);
++	return mdiodev_c45_write(xpcs->mdiodev[0], dev, reg, val);
  }
  
--static void add_recvzc_oneshot(struct thread_ctx *ctx, int sockfd, size_t len)
-+static void add_recvzc_oneshot(struct thread_ctx *ctx, int conn_idx, size_t len)
+ int xpcs_modify(struct dw_xpcs *xpcs, int dev, u32 reg, u16 mask, u16 set)
  {
- 	struct io_uring_sqe *sqe;
- 
- 	sqe = io_uring_get_sqe(&ctx->ring);
- 
--	io_uring_prep_rw(IORING_OP_RECV_ZC, sqe, sockfd, NULL, len, 0);
-+	io_uring_prep_rw(IORING_OP_RECV_ZC, sqe, ctx->connfds[conn_idx],
-+			 NULL, len, 0);
- 	sqe->ioprio |= IORING_RECV_MULTISHOT;
--	sqe->user_data = 2;
-+	sqe->user_data = conn_idx;
+-	return mdiodev_c45_modify(xpcs->mdiodev, dev, reg, mask, set);
++	return mdiodev_c45_modify(xpcs->mdiodev[0], dev, reg, mask, set);
  }
  
--static void process_accept(struct thread_ctx *ctx, struct io_uring_cqe *cqe)
--{
--	if (cqe->res < 0)
--		error(1, 0, "accept()");
--	if (ctx->connfd)
--		error(1, 0, "Unexpected second connection");
--
--	ctx->connfd = cqe->res;
--	if (cfg_oneshot)
--		add_recvzc_oneshot(ctx, ctx->connfd, page_size);
--	else
--		add_recvzc(ctx, ctx->connfd);
--}
--
--static void process_recvzc(struct thread_ctx *ctx, struct io_uring_cqe *cqe)
-+static void process_recvzc(struct thread_ctx *ctx, struct io_uring_cqe *cqe,
-+			   int conn_idx)
+ static int xpcs_modify_changed(struct dw_xpcs *xpcs, int dev, u32 reg,
+ 			       u16 mask, u16 set)
  {
- 	unsigned int rq_mask = ctx->rq_ring.ring_entries - 1;
- 	struct io_uring_zcrx_cqe *rcqe;
-@@ -283,7 +271,7 @@ static void process_recvzc(struct thread_ctx *ctx, struct io_uring_cqe *cqe)
- 	int i;
+-	return mdiodev_c45_modify_changed(xpcs->mdiodev, dev, reg, mask, set);
++	return mdiodev_c45_modify_changed(xpcs->mdiodev[0], dev, reg,
++					  mask, set);
+ }
  
- 	if (cqe->res == 0 && cqe->flags == 0 && cfg_oneshot_recvs == 0) {
--		ctx->stop = true;
-+		ctx->nr_conns--;
+ static int xpcs_read_vendor(struct dw_xpcs *xpcs, int dev, u32 reg)
+@@ -304,7 +305,7 @@ static int xpcs_soft_reset(struct dw_xpcs *xpcs,
+ #define xpcs_warn(__xpcs, __state, __args...) \
+ ({ \
+ 	if ((__state)->link) \
+-		dev_warn(&(__xpcs)->mdiodev->dev, ##__args); \
++		dev_warn(&(__xpcs)->mdiodev[0]->dev, ##__args); \
+ })
+ 
+ static int xpcs_read_fault_c73(struct dw_xpcs *xpcs,
+@@ -400,7 +401,7 @@ static void xpcs_link_up_usxgmii(struct dw_xpcs *xpcs, int speed)
+ 	return;
+ 
+ out:
+-	dev_err(&xpcs->mdiodev->dev, "%s: XPCS access returned %pe\n",
++	dev_err(&xpcs->mdiodev[0]->dev, "%s: XPCS access returned %pe\n",
+ 		__func__, ERR_PTR(ret));
+ }
+ 
+@@ -726,7 +727,7 @@ static void xpcs_pre_config(struct phylink_pcs *pcs, phy_interface_t interface)
+ 
+ 	ret = xpcs_switch_interface_mode(xpcs, interface);
+ 	if (ret)
+-		dev_err(&xpcs->mdiodev->dev, "switch interface failed: %pe\n",
++		dev_err(&xpcs->mdiodev[0]->dev, "switch interface failed: %pe\n",
+ 			ERR_PTR(ret));
+ 
+ 	if (!xpcs->need_reset)
+@@ -734,14 +735,14 @@ static void xpcs_pre_config(struct phylink_pcs *pcs, phy_interface_t interface)
+ 
+ 	compat = xpcs_find_compat(xpcs, interface);
+ 	if (!compat) {
+-		dev_err(&xpcs->mdiodev->dev, "unsupported interface %s\n",
++		dev_err(&xpcs->mdiodev[0]->dev, "unsupported interface %s\n",
+ 			phy_modes(interface));
  		return;
  	}
  
-@@ -292,11 +280,11 @@ static void process_recvzc(struct thread_ctx *ctx, struct io_uring_cqe *cqe)
+ 	ret = xpcs_soft_reset(xpcs, compat);
+ 	if (ret)
+-		dev_err(&xpcs->mdiodev->dev, "soft reset failed: %pe\n",
++		dev_err(&xpcs->mdiodev[0]->dev, "soft reset failed: %pe\n",
+ 			ERR_PTR(ret));
  
- 	if (cfg_oneshot) {
- 		if (cqe->res == 0 && cqe->flags == 0 && cfg_oneshot_recvs) {
--			add_recvzc_oneshot(ctx, ctx->connfd, page_size);
-+			add_recvzc_oneshot(ctx, conn_idx, page_size);
- 			cfg_oneshot_recvs--;
+ 	xpcs->need_reset = false;
+@@ -1189,30 +1190,30 @@ static void xpcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
+ 
+ 	switch (compat->an_mode) {
+ 	case DW_10GBASER:
+-		phylink_mii_c45_pcs_get_state(xpcs->mdiodev, state);
++		phylink_mii_c45_pcs_get_state(xpcs->mdiodev[0], state);
+ 		break;
+ 	case DW_AN_C73:
+ 		ret = xpcs_get_state_c73(xpcs, state, compat);
+ 		if (ret)
+-			dev_err(&xpcs->mdiodev->dev, "%s returned %pe\n",
++			dev_err(&xpcs->mdiodev[0]->dev, "%s returned %pe\n",
+ 				"xpcs_get_state_c73", ERR_PTR(ret));
+ 		break;
+ 	case DW_AN_C37_SGMII:
+ 		ret = xpcs_get_state_c37_sgmii(xpcs, state);
+ 		if (ret)
+-			dev_err(&xpcs->mdiodev->dev, "%s returned %pe\n",
++			dev_err(&xpcs->mdiodev[0]->dev, "%s returned %pe\n",
+ 				"xpcs_get_state_c37_sgmii", ERR_PTR(ret));
+ 		break;
+ 	case DW_AN_C37_1000BASEX:
+ 		ret = xpcs_get_state_c37_1000basex(xpcs, neg_mode, state);
+ 		if (ret)
+-			dev_err(&xpcs->mdiodev->dev, "%s returned %pe\n",
++			dev_err(&xpcs->mdiodev[0]->dev, "%s returned %pe\n",
+ 				"xpcs_get_state_c37_1000basex", ERR_PTR(ret));
+ 		break;
+ 	case DW_2500BASEX:
+ 		ret = xpcs_get_state_2500basex(xpcs, state);
+ 		if (ret)
+-			dev_err(&xpcs->mdiodev->dev, "%s returned %pe\n",
++			dev_err(&xpcs->mdiodev[0]->dev, "%s returned %pe\n",
+ 				"xpcs_get_state_2500basex", ERR_PTR(ret));
+ 		break;
+ 	default:
+@@ -1232,14 +1233,14 @@ static void xpcs_link_up_sgmii_1000basex(struct dw_xpcs *xpcs,
+ 
+ 	if (interface == PHY_INTERFACE_MODE_1000BASEX) {
+ 		if (speed != SPEED_1000) {
+-			dev_err(&xpcs->mdiodev->dev,
++			dev_err(&xpcs->mdiodev[0]->dev,
+ 				"%s: speed %dMbps not supported\n",
+ 				__func__, speed);
+ 			return;
  		}
- 	} else if (!(cqe->flags & IORING_CQE_F_MORE)) {
--		add_recvzc(ctx, ctx->connfd);
-+		add_recvzc(ctx, conn_idx);
+ 
+ 		if (duplex != DUPLEX_FULL)
+-			dev_err(&xpcs->mdiodev->dev,
++			dev_err(&xpcs->mdiodev[0]->dev,
+ 				"%s: half duplex not supported\n",
+ 				__func__);
  	}
- 
- 	rcqe = (struct io_uring_zcrx_cqe *)(cqe + 1);
-@@ -306,10 +294,10 @@ static void process_recvzc(struct thread_ctx *ctx, struct io_uring_cqe *cqe)
- 	data = (char *)ctx->area_ptr + (rcqe->off & mask);
- 
- 	for (i = 0; i < n; i++) {
--		if (*(data + i) != payload[(ctx->received + i)])
-+		if (*(data + i) != payload[(ctx->received[conn_idx] + i)])
- 			error(1, 0, "payload mismatch at %d", i);
- 	}
--	ctx->received += n;
-+	ctx->received[conn_idx] += n;
- 
- 	rqe = &ctx->rq_ring.rqes[(ctx->rq_ring.rq_tail & rq_mask)];
- 	rqe->off = (rcqe->off & ~IORING_ZCRX_AREA_MASK) | ctx->area_token;
-@@ -322,28 +310,124 @@ static void server_loop(struct thread_ctx *ctx)
- 	struct io_uring_cqe *cqe;
- 	unsigned int count = 0;
- 	unsigned int head;
--	int i, ret;
- 
- 	io_uring_submit_and_wait(&ctx->ring, 1);
- 
- 	io_uring_for_each_cqe(&ctx->ring, head, cqe) {
--		if (cqe->user_data == 1)
--			process_accept(ctx, cqe);
--		else if (cqe->user_data == 2)
--			process_recvzc(ctx, cqe);
--		else
--			error(1, 0, "unknown cqe");
-+		process_recvzc(ctx, cqe, cqe->user_data);
- 		count++;
- 	}
- 	io_uring_cq_advance(&ctx->ring, count);
+@@ -1247,7 +1248,7 @@ static void xpcs_link_up_sgmii_1000basex(struct dw_xpcs *xpcs,
+ 	ret = xpcs_write(xpcs, MDIO_MMD_VEND2, MII_BMCR,
+ 			 mii_bmcr_encode_fixed(speed, duplex));
+ 	if (ret)
+-		dev_err(&xpcs->mdiodev->dev, "%s: xpcs_write returned %pe\n",
++		dev_err(&xpcs->mdiodev[0]->dev, "%s: xpcs_write returned %pe\n",
+ 			__func__, ERR_PTR(ret));
  }
  
--static void run_server(void)
-+static void *server_worker(void *arg)
+@@ -1533,7 +1534,7 @@ static struct dw_xpcs *xpcs_create_data(struct mdio_device *mdiodev)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	mdio_device_get(mdiodev);
+-	xpcs->mdiodev = mdiodev;
++	xpcs->mdiodev[0] = mdiodev;
+ 	xpcs->pcs.ops = &xpcs_phylink_ops;
+ 	xpcs->pcs.poll = true;
+ 
+@@ -1542,7 +1543,7 @@ static struct dw_xpcs *xpcs_create_data(struct mdio_device *mdiodev)
+ 
+ static void xpcs_free_data(struct dw_xpcs *xpcs)
  {
--	struct thread_ctx ctx = {};
--	unsigned int flags = 0;
--	int fd, enable, ret;
-+	struct thread_ctx *ctx = arg;
-+	struct io_uring_params params = { };
- 	uint64_t tstop;
-+	int i;
-+
-+	params.flags |= IORING_SETUP_COOP_TASKRUN;
-+	params.flags |= IORING_SETUP_SINGLE_ISSUER;
-+	params.flags |= IORING_SETUP_DEFER_TASKRUN;
-+	params.flags |= IORING_SETUP_SUBMIT_ALL;
-+	params.flags |= IORING_SETUP_CQE32;
-+	params.flags |= IORING_SETUP_CQSIZE;
-+	params.cq_entries = AREA_SIZE / page_size;
-+
-+	io_uring_queue_init_params(512, &ctx->ring, &params);
-+	setup_zcrx(ctx);
-+
-+	if (cfg_dry_run)
-+		return NULL;
-+
-+	{
-+		uint64_t val = 1;
-+
-+		if (write(ctx->ready_fd, &val, sizeof(val)) != sizeof(val))
-+			error(1, errno, "write(ready_fd)");
-+		if (read(ctx->start_fd, &val, sizeof(val)) != sizeof(val))
-+			error(1, errno, "read(start_fd)");
-+	}
-+
-+	for (i = 0; i < ctx->nr_conns; i++) {
-+		if (cfg_oneshot)
-+			add_recvzc_oneshot(ctx, i, page_size);
-+		else
-+			add_recvzc(ctx, i);
-+	}
-+
-+	tstop = gettimeofday_ms() + 5000;
-+	while (ctx->nr_conns > 0 && gettimeofday_ms() < tstop)
-+		server_loop(ctx);
-+
-+	if (ctx->nr_conns != 0)
-+		error(1, 0, "test failed: %d connections incomplete",
-+		      ctx->nr_conns);
-+
-+	return NULL;
-+}
-+
-+static int query_napi_id(unsigned int ifindex, int queue_id)
-+{
-+	struct netdev_queue_get_req *req;
-+	struct netdev_queue_get_rsp *rsp;
-+	struct ynl_error yerr;
-+	struct ynl_sock *ys;
-+	int napi_id;
-+
-+	ys = ynl_sock_create(&ynl_netdev_family, &yerr);
-+	if (!ys)
-+		error(1, 0, "ynl_sock_create: %s", yerr.msg);
-+
-+	req = netdev_queue_get_req_alloc();
-+	netdev_queue_get_req_set_ifindex(req, ifindex);
-+	netdev_queue_get_req_set_type(req, NETDEV_QUEUE_TYPE_RX);
-+	netdev_queue_get_req_set_id(req, queue_id);
-+
-+	rsp = netdev_queue_get(ys, req);
-+	if (!rsp)
-+		error(1, 0, "netdev_queue_get(q=%d): %s", queue_id,
-+		      ys->err.msg);
-+	if (!rsp->_present.napi_id)
-+		error(1, 0, "netdev_queue_get(q=%d): napi_id not present",
-+		      queue_id);
-+
-+	napi_id = rsp->napi_id;
-+
-+	netdev_queue_get_req_free(req);
-+	netdev_queue_get_rsp_free(rsp);
-+	ynl_sock_destroy(ys);
-+
-+	return napi_id;
-+}
-+
-+static int find_thread_by_napi(struct thread_ctx *ctxs, int napi_id)
-+{
-+	int i;
-+
-+	for (i = 0; i < cfg_num_threads; i++) {
-+		if (ctxs[i].napi_id == napi_id)
-+			return i;
-+	}
-+	return -1;
-+}
-+
-+static void run_server(void)
-+{
-+	struct thread_ctx *ctxs;
-+	struct epoll_event ev, out_ev;
-+	pthread_t *threads;
-+	unsigned int ifindex;
-+	int conns_per_thread, total_conns, accepted = 0, connfd;
-+	int fd, ret, enable, i;
-+	int epfd, ready = 0;
-+	uint64_t val;
-+
-+	ctxs = calloc(cfg_num_threads, sizeof(*ctxs));
-+	threads = calloc(cfg_num_threads, sizeof(*threads));
-+	if (!ctxs || !threads)
-+		error(1, 0, "calloc()");
- 
- 	fd = socket(AF_INET6, SOCK_STREAM, 0);
- 	if (fd == -1)
-@@ -358,29 +442,105 @@ static void run_server(void)
- 	if (ret < 0)
- 		error(1, 0, "bind()");
- 
--	flags |= IORING_SETUP_COOP_TASKRUN;
--	flags |= IORING_SETUP_SINGLE_ISSUER;
--	flags |= IORING_SETUP_DEFER_TASKRUN;
--	flags |= IORING_SETUP_SUBMIT_ALL;
--	flags |= IORING_SETUP_CQE32;
-+	for (i = 0; i < cfg_num_threads; i++) {
-+		ctxs[i].queue_id = cfg_queue_id + i;
-+		ctxs[i].ready_fd = eventfd(0, 0);
-+		ctxs[i].start_fd = eventfd(0, 0);
-+	}
- 
--	io_uring_queue_init(512, &ctx.ring, flags);
-+	for (i = 0; i < cfg_num_threads; i++) {
-+		ret = pthread_create(&threads[i], NULL,
-+				     server_worker, &ctxs[i]);
-+		if (ret)
-+			error(1, ret, "pthread_create()");
-+	}
- 
--	setup_zcrx(&ctx);
- 	if (cfg_dry_run)
--		return;
-+		goto join;
- 
- 	if (listen(fd, 1024) < 0)
- 		error(1, 0, "listen()");
- 
--	add_accept(&ctx, fd);
-+	epfd = epoll_create1(0);
-+	if (epfd < 0)
-+		error(1, errno, "epoll_create1()");
- 
--	tstop = gettimeofday_ms() + 5000;
--	while (!ctx.stop && gettimeofday_ms() < tstop)
--		server_loop(&ctx);
-+	for (i = 0; i < cfg_num_threads; i++) {
-+		ev.events = EPOLLIN;
-+		ev.data.fd = ctxs[i].ready_fd;
-+		if (epoll_ctl(epfd, EPOLL_CTL_ADD,
-+			      ctxs[i].ready_fd, &ev) < 0)
-+			error(1, errno, "epoll_ctl()");
-+	}
-+
-+	while (ready < cfg_num_threads) {
-+		if (epoll_wait(epfd, &out_ev, 1, -1) < 0)
-+			error(1, errno, "epoll_wait()");
-+		if (read(out_ev.data.fd, &val, sizeof(val)) != sizeof(val))
-+			error(1, errno, "read(ready_fd)");
-+		ready++;
-+	}
-+
-+	close(epfd);
-+
-+	if (cfg_num_threads > 1) {
-+		ifindex = if_nametoindex(cfg_ifname);
-+		if (!ifindex)
-+			error(1, 0, "bad interface name: %s", cfg_ifname);
-+		for (i = 0; i < cfg_num_threads; i++)
-+			ctxs[i].napi_id = query_napi_id(ifindex,
-+							ctxs[i].queue_id);
-+	}
-+
-+	conns_per_thread = cfg_num_threads > 1 ? CONNS_PER_THREAD : 1;
-+	total_conns = conns_per_thread * cfg_num_threads;
-+
-+	while (accepted < total_conns) {
-+		int idx;
-+
-+		connfd = accept(fd, NULL, NULL);
-+		if (connfd < 0)
-+			error(1, errno, "accept()");
-+
-+		if (cfg_num_threads > 1) {
-+			int napi_id;
-+			socklen_t len = sizeof(napi_id);
-+
-+			ret = getsockopt(connfd, SOL_SOCKET,
-+					 SO_INCOMING_NAPI_ID,
-+					 &napi_id, &len);
-+			if (ret < 0)
-+				error(1, errno,
-+				      "getsockopt(SO_INCOMING_NAPI_ID)");
-+
-+			idx = find_thread_by_napi(ctxs, napi_id);
-+			if (idx < 0)
-+				error(1, 0, "unknown NAPI ID: %d",
-+				      napi_id);
-+		} else {
-+			idx = 0;
-+		}
- 
--	if (!ctx.stop)
--		error(1, 0, "test failed\n");
-+		if (ctxs[idx].nr_conns >= MAX_CONNS_PER_THREAD)
-+			error(1, 0, "worker %d connection overflow",
-+			      idx);
-+		ctxs[idx].connfds[ctxs[idx].nr_conns++] = connfd;
-+		accepted++;
-+	}
-+
-+	val = 1;
-+	for (i = 0; i < cfg_num_threads; i++) {
-+		if (write(ctxs[i].start_fd, &val, sizeof(val)) != sizeof(val))
-+			error(1, errno, "write(start_fd)");
-+	}
-+
-+join:
-+	for (i = 0; i < cfg_num_threads; i++)
-+		pthread_join(threads[i], NULL);
-+
-+	close(fd);
-+	free(threads);
-+	free(ctxs);
+-	mdio_device_put(xpcs->mdiodev);
++	mdio_device_put(xpcs->mdiodev[0]);
+ 	kfree(xpcs);
  }
  
- static void *client_worker(void *arg)
--- 
-2.53.0-Meta
+@@ -1552,7 +1553,7 @@ static int xpcs_init_clks(struct dw_xpcs *xpcs)
+ 		[DW_XPCS_CORE_CLK] = "core",
+ 		[DW_XPCS_PAD_CLK] = "pad",
+ 	};
+-	struct device *dev = &xpcs->mdiodev->dev;
++	struct device *dev = &xpcs->mdiodev[0]->dev;
+ 	int ret, i;
+ 
+ 	for (i = 0; i < DW_XPCS_NUM_CLKS; ++i)
+@@ -1580,7 +1581,7 @@ static int xpcs_init_id(struct dw_xpcs *xpcs)
+ {
+ 	const struct dw_xpcs_info *info;
+ 
+-	info = dev_get_platdata(&xpcs->mdiodev->dev);
++	info = dev_get_platdata(&xpcs->mdiodev[0]->dev);
+ 	if (!info) {
+ 		xpcs->info.pcs = DW_XPCS_ID_NATIVE;
+ 		xpcs->info.pma = DW_XPCS_PMA_ID_NATIVE;
+diff --git a/drivers/net/pcs/pcs-xpcs.h b/drivers/net/pcs/pcs-xpcs.h
+index 929fa238445e..5c804cfd47d3 100644
+--- a/drivers/net/pcs/pcs-xpcs.h
++++ b/drivers/net/pcs/pcs-xpcs.h
+@@ -105,10 +105,13 @@ enum dw_xpcs_clock {
+ 	DW_XPCS_NUM_CLKS,
+ };
+ 
++/* 2 channels per group DW PCS devices */
++#define DW_XPCS_MAX_CHANNELS 2
++
+ struct dw_xpcs {
+ 	struct dw_xpcs_info info;
+ 	const struct dw_xpcs_desc *desc;
+-	struct mdio_device *mdiodev;
++	struct mdio_device *mdiodev[DW_XPCS_MAX_CHANNELS];
+ 	struct clk_bulk_data clks[DW_XPCS_NUM_CLKS];
+ 	struct phylink_pcs pcs;
+ 	phy_interface_t interface;
+
 
