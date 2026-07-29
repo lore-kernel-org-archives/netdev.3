@@ -1,43 +1,55 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202C93F23BD;
-	Wed, 29 Jul 2026 07:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3BB3F660E;
+	Wed, 29 Jul 2026 07:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785309609; cv=none; b=TY/xYe9N1eWBzXk+5RvAMEvoEIgXLEXx+e29SeiQLCnrMv9V3LZemz9HgqIz+UscKGoNC1eVjOSnFjB687SdYx08/G+sqm3mq7kLom4e/rOyhbXt9MyKBqnsVQgio0fYIvn/3IcgJTMZ6++fgHItMP70FTnUeZoJh8Rj4ZIpQ2w=
+	t=1785309846; cv=none; b=FO2MZWmRTrLvFgxGhblNGK/NB5xxO0lay2yYVEl+oB6EeM4MRwqtkI6iogDZeO/aqfOe+jfFuxCm2qCzQKkKNVwcPaYTD9H5kje99o6HWdedfF27TaB2EBQJAARP7M/AXTVHfl88RlkiGFKq1olKUTmAdvsFi54KXaCa7yBH2Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785309609; c=relaxed/simple;
-	bh=V7hWWO6mhuQqEW9REQVaHEQj9LnMTlK7Pk4hG+CxxjI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jeluTU2l2fOUkIQfNgXENSPc+OCiNwMhcQtXejFaJFXg9lwevXxcz7DwiXsCFrqaV8RR+m+vWF5tqdCiQ8GADGIYniAqKDU9eaIpB0Nswc+zBnuFWN+FdY6Lu5+JzEL/k2arg3VWKFBjq7rnSLNGFnUPfKFRhUSQkKaTymNcWEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qrbUX6z1; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1785309846; c=relaxed/simple;
+	bh=/ohi82fZYvettL2F23m9X97NlsAFeCvGfwX/HvtEgb4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nSC6PLmoAKMBv/Ze0+8tAVVetXYOXO4t8aae6wXMME74QuCbn9/cPnS66G6aesJzXaFrlsZ8DfsD4lg3ym8wIgCwvSM39Szv1eXtrJD3f02ii7/p+dCYb7QcljvooOhwvo+AS9fGbf/E6P6WiQ818Xcns2llkP3GwTY9vuvZueY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Yav1Jd3M; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qrbUX6z1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=jN5Og704DD+cr7s0QTEbW7DW1bfVaR+PYmPPBHoGk2s=; t=1785309601; x=1786519201; 
-	b=qrbUX6z1i+io+D0dCs5ebIQCYtI+4hI/iZ1rPaa5/gxWjwhOyol7NMOESVvTU/61NdxRRY2/+Z/
-	mS4xjbm7RgXkCyCW0DEQOZPQGwNFNVvbtleF7ID4bK8HxiE70cJ0fJ2HyGZKQ+mmyn3kIRv//mSnS
-	lnrtTtx0KufVbVm70ExBhor8KoqaRpd70QABb9m4S1rvi2+7cZJQqtGPnTQZ+ST9mqIsEkFR7t086
-	MJXa2HbqSWhFYhxPJGvU0ofRCkG91KkdhJlYlLN9l2gTyJ/sYHjY/FMTSskfpxpmunPX1+NfqI5D8
-	e9SjeIBL0Ftvdfzaru9l7+j0OLRYXX/Wsa+A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1woya5-0000000HJeF-06Rd;
-	Wed, 29 Jul 2026 09:19:57 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2026-07-29
-Date: Wed, 29 Jul 2026 09:18:13 +0200
-Message-ID: <20260729071954.45655-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Yav1Jd3M"
+Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66T4dwYk3358856;
+	Wed, 29 Jul 2026 00:23:43 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=cMh2n/ExE4X3+btXYMr3Dp3
+	m+D8dpjxH/219xQcQ3FU=; b=Yav1Jd3MUhxcZD1Hs3a11kriTrD/NvqKKOTcEjv
+	irQg6OO8GJdd3GmZVb67EQwS+KvxelkFsOpc30DTHDA0oUnmcdmMrY1hhM7cIKxG
+	Fjtw4dmlsQfVxATY+p/d/7pAnNlOoJ8vr9qYIYToDLLVe6DLTCtPYxF3bmUqkUCO
+	U5B3HpWKkxugTWprcPtkIP18loxAWx6l/HCIMvtMWUGuUs9v/kVjHi4rQ8Wcj25w
+	srSHBStl0VPHwA060aFz8LMtjn5lhs6MRrC0rdPBirPPNUNN9inzrPbF3SGk5yUg
+	XpBqPf4/tzK/Pfo8gv8OgcwlxqJeVOW28UA6iGXCA4u4H8g==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4fpym7jg1e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jul 2026 00:23:43 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 29 Jul 2026 00:23:42 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 29 Jul 2026 00:23:42 -0700
+Received: from numbat.caveonetworks.com (unknown [10.29.36.45])
+	by maili.marvell.com (Postfix) with ESMTP id E03533F704A;
+	Wed, 29 Jul 2026 00:23:38 -0700 (PDT)
+From: Subrat Pandey <subratp@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <pabeni@redhat.com>, <kuba@kernel.org>, <edumazet@google.com>,
+        <davem@davemloft.net>, <andrew+netdev@lunn.ch>, <sbhatta@marvell.com>,
+        <rkannoth@marvell.com>, <gakula@marvell.com>, <sgoutham@marvell.com>
+Subject: [PATCH net 0/3] octeontx2: Misc fixes for RVU drivers
+Date: Wed, 29 Jul 2026 12:53:34 +0530
+Message-ID: <20260729072337.664479-1-subratp@marvell.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,84 +57,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI5MDA1OSBTYWx0ZWRfX7GF5Zjxs716R
+ d11CqWBq9Kdc0ZNcLfvKqGITosp/3EfcIFAtKYVcP+Bv7z23JaJsqjwAPIvoGy/6aDttpwcbhxk
+ +S6uurnFUw/1JT5Mt2Xstzppbf/GpSvt++QPPyJNL+C+cDBUGiA4iwJmdgNcZQ3Js5ZANB6v+CW
+ Q3hbTwzR+bcMbrT5QETmsE6Z5Pxaam4qBiCHyNRBC75lvCAzOvUYIr3CuGmNJex3OuERmT5qF+J
+ KMtj34aQ9CU/RvIALyW6ttritMCqMqsYZSkGcBvAYdAF7wHY53DJHF2zNH2QM+9X4eTHZdAUDsQ
+ jVBkjSWuJDCfU+ppZZ8XcoJ8Rne4ZYsNjgYupIlVzKLTOrmukalbq72lbCzrB4qe/56M3Z+wqwE
+ ZGboWbz+Gd8adhfy+ZolOtf837aaJRpvuSVnB2wYfQXKeOgxV3ij7R4+/IYIoLS5xo8g++xQD78
+ WdW4NlDySEo56w4Y9Ag==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI5MDA1OSBTYWx0ZWRfX/LaRi4YK+7Ru
+ LK1op6iinEc0jdMueSl/QppwP/iINqAQUagEsU5RS9ZNP34op/xvy5PSqN4gyXLbFmQCkwS07xH
+ KGw8dfnJ4NRWJ9HzMMoXR9PMC0uFNN8=
+X-Authority-Analysis: v=2.4 cv=YJOvDxGx c=1 sm=1 tr=0 ts=6a69aa7f cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=TtqV-g6YmW1Jfm2GSLaY:22 a=-wSAhxvUdy9TtfyZpAoA:9
+X-Proofpoint-ORIG-GUID: mjzhkzNwn15rVyboojAPfbYyh9sEGA_8
+X-Proofpoint-GUID: mjzhkzNwn15rVyboojAPfbYyh9sEGA_8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-29_02,2026-07-28_02,2025-10-01_01
 
-Hi,
+A few independent fixes for the Marvell OcteonTX2 (RVU AF/PF) drivers:
 
-So this week is _far_ less, thankfully. A couple more
-fixes that seemed important enough, but I've also been
-much more selective, in particular the 'mwifiex' driver
-seems to be a train-wreck, and has a lot of fixes and
-associated discussions still open - but I think I'll be
-leaving those for -next.
+ - Fix a potential buffer overrun by replacing the unbounded sprintf()
+   for the "mcs%d" debugfs name with snprintf().
+ - Fix aura/CQ BPID assignment under CONFIG_DCB, which assumed
+   queue_to_pfc_map was always allocated (not true for SDP VFs).
+ - Fix the SC resource cleanup loop that iterated over secy.max
+   instead of sc.max.
 
-Please pull and let us know if there's any problem.
+Baha Mesleh (1):
+  octeontx2-af: mcs: Fix SC resource cleanup loop
 
-Thanks,
-johannes
+Geetha sowjanya (1):
+  octeontx2-pf: Fix aura BPID assignment when CONFIG_DCB is enabled
 
+Stefan Wiehler (1):
+  octeontx2-af: Fix mcs string buffer size
 
+ drivers/net/ethernet/marvell/octeontx2/af/mcs.c     |  2 +-
+ .../net/ethernet/marvell/octeontx2/af/rvu_debugfs.c |  4 ++--
+ drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c  |  8 +++++---
+ .../ethernet/marvell/octeontx2/nic/otx2_common.c    | 13 +++++++------
+ 4 files changed, 15 insertions(+), 12 deletions(-)
 
-The following changes since commit d326f83e819c53aa05c40d64f5805d6237b6aa1b:
+-- 
+2.43.0
 
-  Merge tag 'net-7.2-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-07-23 12:58:08 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-07-29
-
-for you to fetch changes up to 57aa1718d5953dd532137d43b696c68545c2e0b3:
-
-  wifi: iwlegacy: replace BUG_ON() with WARN_ON() on num_stations check (2026-07-28 15:35:37 +0200)
-
-----------------------------------------------------------------
-Much quieter, thankfully:
- - a set of ath12k fixes, including a recent
-   MLO regression for WCN7850/QCC2072
- - iwlegacy gets rid of a BUG_ON that triggered
- - a couple more robustness/security fixes
-
-----------------------------------------------------------------
-Baochen Qiang (8):
-      wifi: ath12k: fix out-of-bounds clear_bit in ath12k_mac_dp_peer_cleanup()
-      wifi: ath12k: factor out peer assoc send-and-wait into a helper
-      wifi: ath12k: keep ATH12K_PEER_ML_ID_VALID set in ath12k_sta::ml_peer_id
-      wifi: ath12k: add support for HTT_T2H_MSG_TYPE_MLO_RX_PEER_MAP
-      wifi: ath12k: introduce host_alloc_ml_id hardware parameter
-      wifi: ath12k: do not advertise MLD peer ID for firmware-allocate devices
-      wifi: ath12k: defer dp_peer registration when firmware allocates MLD peer ID
-      wifi: ath12k: resolve PENDING ML peer ID from MLO_PEER_MAP HTT event
-
-Deepanshu Kartikey (1):
-      wifi: cfg80211: validate IEs in cfg80211_wext_siwgenie()
-
-Johannes Berg (1):
-      Merge tag 'ath-current-20260727' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
-
-Stanislaw Gruszka (1):
-      wifi: iwlegacy: replace BUG_ON() with WARN_ON() on num_stations check
-
-Zhao Li (4):
-      wifi: mac80211: fix tid_tx use-after-free on BA session stop
-      wifi: mwifiex: use the subframe length when parsing A-MSDU TDLS frames
-      wifi: cfg80211: publish PMSR request before starting the driver
-      wifi: mac80211: validate individual TWT params before driver setup
-
- drivers/net/wireless/ath/ath12k/core.c             |   2 +
- drivers/net/wireless/ath/ath12k/core.h             |   3 +
- drivers/net/wireless/ath/ath12k/dp_htt.c           |  49 ++++++
- drivers/net/wireless/ath/ath12k/dp_htt.h           |  12 ++
- drivers/net/wireless/ath/ath12k/dp_peer.c          |  75 +++++++++-
- drivers/net/wireless/ath/ath12k/dp_peer.h          |   2 +
- drivers/net/wireless/ath/ath12k/hw.h               |   2 +
- drivers/net/wireless/ath/ath12k/mac.c              | 165 ++++++++++++++-------
- drivers/net/wireless/ath/ath12k/peer.c             |  31 +++-
- drivers/net/wireless/ath/ath12k/peer.h             |   1 +
- drivers/net/wireless/ath/ath12k/wifi7/hw.c         |  12 ++
- drivers/net/wireless/intel/iwlegacy/common.c       |   7 +-
- drivers/net/wireless/intel/iwlegacy/debug.c        |   2 +-
- .../net/wireless/marvell/mwifiex/11n_rxreorder.c   |   2 +-
- net/mac80211/agg-tx.c                              |   4 +-
- net/mac80211/s1g.c                                 |   4 +
- net/wireless/pmsr.c                                |  22 ++-
- net/wireless/wext-sme.c                            |   9 ++
- 18 files changed, 333 insertions(+), 71 deletions(-)
