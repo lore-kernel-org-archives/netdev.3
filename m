@@ -1,176 +1,152 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D593B05A8
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 15:08:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785337710; cv=pass; b=T7RcBr6VRSzty6FwXh3H2OA4YnbFU8jFl0G0JM17qCFCnlPi1KH0kofWeGouRoVaNuS4uTM3DeUroXxB/qYVa9/zvEvQHFyS5TYsZhJz3/lF+fbfJB7e10IkOiQn1p5ta7oINnKgpNT7VENHp2BPfhUtynRstn1jI1pn5xJ4oRI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785337710; c=relaxed/simple;
-	bh=C1hDEqmnAa3TDi8gjx1zqfyVR/iLfuR2KeKJu77rxU4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hn0dPDrXxnYt0j9xCd/+CGy+WmtGNWXw46R2XXv6LC6daNPx2ra3KSaW7khVw39GSUQ5eM4fOb1jS7k6PQkw3aNAbwn4D+waYpX/ZtzXXHYjuRmDf2JOYRS0gDXILBr9ZAxQEHmnDOHKB4RDfGYPV4On4X4WCskqSFIF5Ib57W4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M5rJwYmZ; arc=pass smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DD03B05BB
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 15:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785337719; cv=none; b=i2MPyUgV0GQJ0IAliKi6yqKUwe7sGF/fZMWhgLxMozdqm+q2MvDw1Vx1pj59uQdnrRU+w1S27i3t5ocHJvZ1lmR4TBQWn02ynQIRuq4ZIrEXqmDPU9keD/55rtFaHOsEBCznr3OfjppKlAzNzeQsw/JG1tt/6ZPtHyCk9CmG0sE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785337719; c=relaxed/simple;
+	bh=4EjahhFFPHHEI9xCTkc3CbQvF3cBzffgusdMVoeHEBQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lHEfxJjbtGmmiTDQuKmAGdpuIzU0wV0XguaCxuGR43iROWNCEcJJB22TscIcJyq3Jba5BWsPjgaQWhuJzyvIyiXPkb32LIxwWVDzaXci9/Xd5qxT8e+z+HuRNH3upTuTqpfiKEMh+YkFRaw274cXqMS2JRb2JBkwcQ5lF+kw6KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hEYICALn; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M5rJwYmZ"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso1038171b3a.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 08:08:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785337708; cv=none;
-        d=google.com; s=arc-20260327;
-        b=r+PwCfyTXH7+BGxL9nNixJ3Ckl8Fykh9mWvylcKWm30bVBnUiAY8VW56MmNGwT+Mal
-         8JLV7TyQMYosgAk7cgk7x3A9GRnA8hZKwBpp1zu8nlV/u52CZE3rttn7oBaf4pi9cbtc
-         6T4fJvlGICKl2PvYkBmxT75gzDJpnwJdPL8LUoekNbbLvVnxLqZZVlfoDMOWeS92Robd
-         sFaYVvi7opMcwUZU/RIkft2SNGhZ7sKr6WqOB35DFg4/SVXwyth3ElcD8oButEmWsrPm
-         k1xfyyysjBTPVwgQb1L6fvL1a/uxKqteThBgzWWLHvfExgqo78H8jLBBFxgslhz52iiN
-         K0bg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DN2pJ0iBJxGrKHnDKUdsB6jvMBxu/va3aV7+6RRh+Zg=;
-        fh=NJYiAq9Jvey/qyEhlaPCNvgeuJj7sB9LsZof20nNonE=;
-        b=YN1mQoFIRRrq/6B6D6ptDC1EjNMmaYjK3SJ9KfdAlxKj+7avBsGA0ajm2DbdMSbBXE
-         wA5ldsif4VzOJggUYtYjQSzVDQNxF7kc4gvhvS6mTfLMETjJtDJnBLKKC0PkS79rQV44
-         pNWpxgF+hdcA9vcNceYFwiGmBj2daUAPZ0VymP8WNcttkZtXy6s9m9dXrRDGiJe+2FE6
-         ZgjIbRj5PySFWPy7CS3F4PW23WFDEBBUhpzFoABUrqEfe6reNVsFsRs7zcdYj2O2F1H8
-         E3schY6wfyieG2WKhMwcEbCGrLgCY6xtbYHTKREXM3LE3w64G1II79/g5+oLh7QyEk+Q
-         GZvA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785337708; x=1785942508; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DN2pJ0iBJxGrKHnDKUdsB6jvMBxu/va3aV7+6RRh+Zg=;
-        b=M5rJwYmZIAtlq2ZrXWae5DyVp354Bdhjn+v8XphW1gScMIbXvLwDFkRLCUBBgMqowp
-         u25PREYtIQY4zXbqPGZYRcH9UiWZcSW5cG5J8Ih2etgIARHnoRdnv0VBKWmpQZ4fyatz
-         v+AhHsriMbdRHCgCuedHZj/GXbRfjMRKZjXG2NzBJPp2tk29qMfvGwss8Fk9pbOvJeLr
-         imfUc0eNOr9EEmjc9joTMa+eWQJFoRecb3d2TFqrkn3BtR8k2oARWcg7FhWtV7XZYndt
-         h1NMJkkBhXxhs4Nj6gZp4/iqT7FrEEvG18k+0YIYONZoPFmbyWPLsz301B2E1WEXXnvP
-         JVYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785337708; x=1785942508;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DN2pJ0iBJxGrKHnDKUdsB6jvMBxu/va3aV7+6RRh+Zg=;
-        b=fBlz6hx6ZQ3hYmqIzMgZZ0VQWSSGe97hGPmMXXwIFPlc3yFqzrwdblqJTUvk8ecp39
-         XzBxoK7Y+2yft4PaQ1Ig/Dz6jYS2PqWAaYzcOithKvH/F+oO/tbzf3+AwAHf4C/QtXPA
-         6JdAbGrm0QH+d+8atuaHcJ78tu8O6Qkh6TgSjTxEqJpTMhQlaWUnOa1rTIBxobxwoA5q
-         TgGTZeos+uNOi4BVkmIvspztTeQLKOhVkMAdFaBR18iEjE9XjEemb83+/s8UfcbyOwiI
-         DuP3FJY6dXT1qcJ4kCpbiVTlHIhAeqQyLBznMJIMmEZv2iAFPn51u5CEDy8Ajaufmuy5
-         nEnQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrklbcSeDDOTqLEaogbRBsme/oQ2Y7ESjf69RJdv85s0U/Hh3f8Yj/pErdKRGEWa1pmrqd9S6A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZLyhGA/NNrpkHQE32T6q7fF8tEfH8XlmuFvoj3HKmdw/ILINt
-	y9v8fSVnMaqX5Vall1EqTt+4G3aqRslJ9KZCEi9P6uakTfq3P74mC9L/NWrxHpp51h9QnBaiPK5
-	vstPHVqiU4jiQDTUoa0TF7ucgLK091KQ=
-X-Gm-Gg: AR+sD101H5T0CQl9PLGdNWQrUdD3tP/Hk65YAN4j5OknN+4QLjg5VHWCak+Jj8EYemQ
-	RL2p5CxObsesxRy0MR08NLOg2s3hpaCzrqfJpZ14O1i6EVWHR4IYzQccuPKmhxf+ckOakfU5qw2
-	033uRpSBhxR0h7rpmOtq8AvxrPZEYhsuq1Nzb5i9qePHrYxyGjfSj8Z1HolRWMID55LmqynmdPR
-	I4jWoye2Z6CDZaeSEfvRpOH5F83XTPgQdsmSln2ToOypwWTTLPedAU4v0Vt3lmGh9SAoA06GhpM
-	aIfyj1ytL4T0ACu+eMztpKFoTCIBuobzS8kGRQnHCZseSpn4qRaII/YNEy8k4JfUMOUxYLZYxF5
-	F49baMpVu6WHZjoJqcBOTw8GE1jeH4UJ6twQ2uM5kZLs=
-X-Received: by 2002:a05:6a00:bd86:b0:84a:46ec:3b9c with SMTP id
- d2e1a72fcca58-84ea7aa3469mr2826245b3a.31.1785337708243; Wed, 29 Jul 2026
- 08:08:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hEYICALn"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D02674E40FD7;
+	Wed, 29 Jul 2026 15:08:34 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 84BDC6039A;
+	Wed, 29 Jul 2026 15:08:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A05C211C14FB5;
+	Wed, 29 Jul 2026 17:08:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785337709; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=J1Vg6BlOZ9ZGipKyOXTO4yGk1nIk6WX8XUetJBU5miM=;
+	b=hEYICALnesdXVzcVYgnzSxl3wLM6zu0i8AACNW1rRLecEaH/SvGzI5ZOeuECX3qbWixjc+
+	2QLlxf6FlOq/yn00vJ30eGejmWV092BjFwaf2u1JaZmkcEbVeB+7XkaQnfRVsu3wru0H2j
+	UnlnyT3F1iSGn4iPpZWobyJZ5+p1xysX8yW1GnF3DVATb10GDHhl6yjqFmTkAgnO6o7P++
+	W/DB43IUEyyEtuAP59cQ9X3qhL10Aj8ZO5mM0XB2XernAFEZ3QSqsyNquZQ5/IFHi0jFZP
+	kBdqhXI+whrE1y4lSO58ntGXzAMrrZdxYJum87IX1yPGo6L/zmCUEeSgUBlIzA==
+Message-ID: <fe1b129c-0a9a-4874-a7f9-9b277678a159@bootlin.com>
+Date: Wed, 29 Jul 2026 17:08:17 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260729-sctp-cookie-preservative-length-v1-1-1ade32e42668@gmail.com>
-In-Reply-To: <20260729-sctp-cookie-preservative-length-v1-1-1ade32e42668@gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Wed, 29 Jul 2026 11:08:16 -0400
-X-Gm-Features: AUfX_mypXq3HMlzPwWFUdF9XmRRShPhdnIHIc7-DAFADR9LIdIHSrIzgJYlIUYQ
-Message-ID: <CADvbK_ds_4sNnVTxXEooHkkA6JjV35ByCx+BWXiihiAo2cX8gQ@mail.gmail.com>
-Subject: Re: [PATCH net] sctp: validate Cookie Preservative parameter length
-To: trilobyte777@gmail.com
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/5] net: stmmac: Remove VLAN perfect matching dead
+ code
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "mcoquelin.stm32@gmail.com"
+ <mcoquelin.stm32@gmail.com>,
+ "alexandre.torgue@foss.st.com" <alexandre.torgue@foss.st.com>,
+ "joabreu@synopsys.com" <joabreu@synopsys.com>,
+ "jun.ann.lai@intel.com" <jun.ann.lai@intel.com>,
+ "yi.fang.gan@intel.com" <yi.fang.gan@intel.com>,
+ "boon.khai.ng@altera.com" <boon.khai.ng@altera.com>,
+ "matthew.gerlach@altera.com" <matthew.gerlach@altera.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-stm32@st-md-mailman.stormreply.com"
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260729095110.164157-1-ovidiu.panait.rb@renesas.com>
+ <20260729095110.164157-2-ovidiu.panait.rb@renesas.com>
+ <dfe9ee00-6a8a-418d-9440-339631b31e52@bootlin.com>
+ <OSCPR01MB12769620094BA8C4DFA8DE361D3CA2@OSCPR01MB12769.jpnprd01.prod.outlook.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <OSCPR01MB12769620094BA8C4DFA8DE361D3CA2@OSCPR01MB12769.jpnprd01.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Jul 29, 2026 at 10:54=E2=80=AFAM Charles Vosburgh via B4 Relay
-<devnull+trilobyte777.gmail.com@kernel.org> wrote:
->
-> From: Charles Vosburgh <trilobyte777@gmail.com>
->
-> The Cookie Preservative parameter contains a fixed 32-bit Suggested
-> Cookie Life-span Increment after its parameter header. However,
-> sctp_verify_param() accepts a header-only parameter because the generic
-> parameter walker only requires the header to be present.
->
-> sctp_process_param() then reads lifespan_increment beyond the declared
-> parameter and adds the value to asoc->cookie_life. When the malformed
-> parameter is last in an INIT, the read starts at the receive skb tail,
-> and the resulting value changes the expiration in the State Cookie
-> returned in the INIT ACK.
->
-> Require the declared parameter length to match the fixed structure size
-> and abort the association through the existing invalid parameter length
-> path otherwise.
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Suggested-by: Xin Long <lucien.xin@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Charles Vosburgh <trilobyte777@gmail.com>
-> ---
-> This follows Xin Long's review of "[PATCH net] sctp: validate Adaptation
-> Indication parameter length", which noted that
-> SCTP_PARAM_COOKIE_PRESERVATIVE has the same fixed-format validation issue=
-.
->
-> Runtime-tested in KVM/QEMU. The unchanged reproducer accepts header-only
-> and overlong Cookie Preservative parameters on the unpatched kernel. With
-> this patch applied to net.git base 51b093a7ba27, both malformed forms are
-> rejected while the baseline and valid eight-byte controls still pass.
->
-> The patch passes checkpatch --strict, builds net/sctp/sm_make_chunk.o,
-> and completes a full x86-64 bzImage build.
-> ---
->  net/sctp/sm_make_chunk.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-> index a1c0334a1038..eb9cff77759b 100644
-> --- a/net/sctp/sm_make_chunk.c
-> +++ b/net/sctp/sm_make_chunk.c
-> @@ -2165,7 +2165,14 @@ static enum sctp_ierror sctp_verify_param(struct n=
-et *net,
->         switch (param.p->type) {
->         case SCTP_PARAM_IPV4_ADDRESS:
->         case SCTP_PARAM_IPV6_ADDRESS:
-> +               break;
->         case SCTP_PARAM_COOKIE_PRESERVATIVE:
-> +               if (ntohs(param.p->length) !=3D sizeof(*param.life)) {
-> +                       sctp_process_inv_paramlength(asoc, param.p,
-> +                                                    chunk, err_chunk);
-> +                       retval =3D SCTP_IERROR_ABORT;
-> +               }
-> +               break;
-Why not move 'case SCTP_PARAM_COOKIE_PRESERVATIVE' down
-to after 'case SCTP_PARAM_ECN_CAPABLE'? it will save a 'break;'.
+Hi,
 
-Thanks.
+On 7/29/26 17:02, Ovidiu Panait wrote:
+> Hi Maxime,
+> 
+>>
+>> Hi Ovidiu,
+>>
+>> On 7/29/26 11:51, Ovidiu Panait wrote:
+>>> stmmac_vlan_update() falls back to "perfect matching" when the VLAN hash
+>>> filter is unavailable (!priv->dma_cap.vlhash). This fallback has been
+>>> unreachable in normal operation since its introduction in
+>>> commit c7ab0b8088d7 ("net: stmmac: Fallback to VLAN Perfect filtering if
+>>> HASH is not available") because the NETIF_F_HW_VLAN_{CTAG,STAG}_FILTER
+>>> features are advertised only when priv->dma_cap.vlhash is true.
+>>>
+>>> The fallback is also duplicating the code in vlan_add_hw_rx_fltr(),
+>> which
+>>> is always available since stmmac_get_num_vlan() returns at least 1.
+>>
+>> It's not exactly dead code, there's an stmmac selftest for that, see :
+>>
+>> https://elixir.bootlin.com/linux/v7.2-
+>> rc4/source/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c#L973
+>>
+>> It does exactly what you say, it fakes the fact that we don't support
+>> vlhash,
+>> then exercise the perfect matching path.
+>>
+>> But is it correct to drop that feature altogether ? Or should we just
+>> relax the conditions for NETIF_F_HW_VLAN_{CTAG,STAG}_FILTER to be
+>> advertised ?
+>>
+> 
+> We are not dropping the perfect matching feature by removing this code.
+> Basically, there are two perfect matching code paths that duplicate the
+> same logic and which diverged over time:
+> 
+> - vlan_update_hash() has the "if (perfect_match)" path that has never run on real
+>   hardware (unless running the selftest) because NETIF_F_HW_VLAN_{CTAG,STAG}_FILTER
+>   is only advertised if the core supports VLAN hash filtering.
+> 
+> - vlan_add_hw_rx_fltr() also has a perfect matching codepath, which calls into
+>   vlan_write_single(). This runs unconditionally and overwrites what
+>   vlan_update_hash() did anyway, as it runs after stmmac_vlan_update():
+> 
+> stmmac_vlan_rx_add_vid():
+> ...
+> 	ret = stmmac_vlan_update(priv, num_double_vlans);
+> 	if (ret) {
+> 		clear_bit(vid, priv->active_vlans);
+> 		goto err_pm_put;
+> 	}
+> 
+> 	if (priv->hw->num_vlan) {
+> 		ret = stmmac_add_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
+> 		if (ret) {
+> 			clear_bit(vid, priv->active_vlans);
+> 			stmmac_vlan_update(priv, priv->num_double_vlans);
+> 			goto err_pm_put;
+> 		}
+> 	}
+> 
+> This path is also more correct because it takes into account cores that support
+> extended VLAN filters.
+> 
+> Therefore, I think removing the perfect matching code in vlan_update_hash() is
+> the right choice here.
 
->         case SCTP_PARAM_SUPPORTED_ADDRESS_TYPES:
->         case SCTP_PARAM_STATE_COOKIE:
->         case SCTP_PARAM_HEARTBEAT_INFO:
->
-> ---
-> base-commit: 51b093a7ba27476e1f639455f005e8d2e75390e4
-> change-id: 20260729-sctp-cookie-preservative-length-ffa4472272fb
->
-> Best regards,
-> --
-> Charles Vosburgh <trilobyte777@gmail.com>
->
->
+OK makes sense. Then the sensible followup (not necessarily for -net) would be to
+update the selftests, as there's no point messing with the vlhash cap then, if I'm
+getting this right.
+
+Thanks :)
+
+Maxime
