@@ -1,169 +1,233 @@
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84D44ADD88
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785333974; cv=pass; b=PD92ZZegoPVzNhgpv6yRi0Ztry70kB/FgR7ksQ89bmAJx++ONNtKrDtaK5HNDLOtedzalvBvQ/ZIBTRBqqz1osMgBgSuWhNP8ENcx4bTe65pFJdYPPaNfpaGKm/toz0mUpCEvqsNoRgRNg0DAsBfVckPsFa6xVvGeZTjylMaPps=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785333974; c=relaxed/simple;
-	bh=t0L6/+neIyKR+lpvwA16X79uo+Ys/nV7SVVkDLtkfUA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cxJ3qiK1Pr/CeZ9QOrWEmt2NhQNLGxC1ynx3OyBVS3G4ph8eXTRpN0mogXGiVpe8whKkQT7JWbyZa2nrNgxdCep+94rStQWPJTigBFP9PI3rDnbxMHrdHFmInSvHPiHy1/03394csjE6Bml11cG6gPAqG4LqRLzFToRyqq6I2Rs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mK5dajNc; arc=pass smtp.client-ip=209.85.167.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7A748663E
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785333980; cv=none; b=ktohiT6zB5JnKn2FLC5pVqG+pv3xANj3y/iplbGyHu7VWQRzPJo/prNMZEkPl+zDqpCstJdO9anEc5XErr7Efwx588mSkziB5JIrYMxN+x/xSLo6b+TQWYKXTrAMEqJY3++Ds0JJe8bQUff9plwNifQF3o3trI5AFJ9ajx09wEU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785333980; c=relaxed/simple;
+	bh=1TeedpNf4se513fr5NdVyRJ/Tisrwdz3DUQxuoWnRKc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uJOKFkZ+aEMzeioRQhiw6X/rEtqt+SKMJ3qcEMzH5wiySd/C7oJZyyZmdQXNC4cw5VffkWNKlYvvObpMLl3OAKpSUgqjP52K/tdTUm1zzCCMwLW8CZn9W8f/XpUcQ2nkzFeG6pFg3MnPq3XeuEPESptmJ/dEhhNdNTyEltMoQcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HOJ6fti4; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mK5dajNc"
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-495e5f0f428so67435b6e.0
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:06:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785333971; cv=none;
-        d=google.com; s=arc-20260327;
-        b=BdoQciqKlRGxHEvn8XmUHdYjwD7VML07PtgKVZ88FqTfTQUZr4xyWX5qTgxx+0MSV2
-         XhKXdfDfZBoSSYKRJChzjVo3Zz0mnMpRYpHL00afJSoCOSMK2RTwUschAueJ3TUlf6TF
-         XNz5pRdupV4/B3rw0wiIi4LOJB4D+jUMWfncWEOEzNSqQkSs3gpoJ3v9nMkBWn6ZBjIA
-         TomnbCLUDe3goQcs7dYYvAGEaxOVFcgnTsHBetwAqZybD9NjEnvlOXhti3xvulnAkNLU
-         j6oOnVb3cJtHi7ER2Ntv3CKm9JWwQJkcFtz6DEV8i8bVjp6mGY094F8OoXHg/v5LjpJE
-         7QFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8z2cUWZZ1C0Zbf1Dqq5H0GuloWwBhdaF8EVDinxe7bE=;
-        fh=RKuy1viP/zt81FStTPFUi4hfpmksvRxeEqOP5vczQ0o=;
-        b=PPbZi0dSGshiJyJOI7RKPgjw8bPp3YONMybimr6Vx4HW7vm7INBjJBARRPoz+T8hxf
-         S0me9chSXEqH5x1oWnji3EFJBW5kTqFggI5/k4JUux4+bwnRdS5G5uWAGC/xlHooJo34
-         e2HkmlOgNDvAbE1daIlC+CnvYgyDTWPupKnftU65Wy6pTB3wBCsa30ON9y+kMo2SmoP6
-         rK6HkAYDYqlrTnSdWtqrHdeEXL7EevXascG3X0k1zdkoIQSiySjQZLaw8YVcFbai0KW+
-         pRcyICIoI4O2bqH6dE11BhtSRBTCutnciikeRbuCzxm/nrXBwY7xOWSgJowZjfTSnHBd
-         N6VQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785333971; x=1785938771; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8z2cUWZZ1C0Zbf1Dqq5H0GuloWwBhdaF8EVDinxe7bE=;
-        b=mK5dajNccsI0j5/ykEm3juz49mYKbIca3qiHbUqzU8jfXW84HNXuGVALn5+sny+i2+
-         wBFJ3+Qbo5R1wo5GfQ6ngxtISSXzVj4GCW/VMBg6uK7iBjm6xU+w3eMi8B3zSvvhhFzN
-         +Di2RIPVJKPF/uyuMjwDT2szkUqpqDrUS0/6682WivKQzSEvIYV07uSNa75m9MQU7HPD
-         XDjPoSNdgvWVA/4onnIfuE9OonasBp6wgBWuPTfc44Caz9rDWRY+8CzIP4Wxr/p9jh2j
-         EW7i7l7c+58XeMOkyB28tdtRNNDEinIpuqXmrA8pnAAZp1i1QeJFkQ/6AirL06LJd8sm
-         L++w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785333971; x=1785938771;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8z2cUWZZ1C0Zbf1Dqq5H0GuloWwBhdaF8EVDinxe7bE=;
-        b=MvHXj0EERIix3jaT3olZJA/75Tud1ne50qMTY9GcEKEqM2lSpuNuOo0l/MadCSq/GR
-         lK9Sa0A7sCPOH2mZyDaqRr2EN6Q5waTMJAwzmf58Woxx0VQS9gx6a4sVNMLwijwx8QWU
-         o5hThyFGJ/d1bdv5w5uz5opFK8Bgr9HlosWRWtzRWe0bLWieuRVJu47LED2FkpQRi9dr
-         cLRV7yujFaZLbGD+5xw4lIzaJmdAn1Td49bKSbYfnv2ltPKDo+vE+bfZGnmvJDuXLzG4
-         BAHy4BOPLjPQPThe32pmiTVEx++6dtfQIkuvBvS0CaWlDOVEdWqn6d5RY6NOMpTItA2J
-         9brA==
-X-Forwarded-Encrypted: i=1; AHgh+RrCf2yoSG77AHiwkZMLqmaNNvBzu3zmyewTjc7gdZWzz/QzV13qeDGYdfTs9pq+Fxu2vkqQh8o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaUDeLu/968FN71c9r7/BKBCd0SJsAabOoG2sOmxFAKF5vaGdP
-	UHHPG1QVq5h/zhReiTCUeky1Pioily9p+PaxKOkOA65I2+VGEDM2hb+hjj08obeXdrhTLaqfJQ2
-	1W8Pp6fh3ekN1hjgXXomVr95s+v3/ssM=
-X-Gm-Gg: AR+sD10/VjZW6mvr600A0RtMlDxqdWBHm62xiT81oTgSgeW0MeSvSQYlQpQgU3oApWz
-	DJDQ9GjDtTSNK0tRTYo8bW8xlLvJuE4OcrbGPSl9yQozB+u5yfC4C3hCz0/dlaiV4sxGpJzvey2
-	tULs0vxMyZfRDBFY2pVG04SA/1/p7G/RlYnrko728xmeS3wWhUfLdpYDt2KDIfypmVZgqTnHkJv
-	79Ma2NNw8x19BodcumUQ4EEC8Evk+3wRMZmS8koEC7s+pacxH+kyTFeQiIVMx6D94eLIx1TWQTO
-	AoCtos5V0TfekyTJTY3jPBulBV9n5hgfNrhyEzwqfa6G8DO+JhQqRMz79UKq
-X-Received: by 2002:a05:6808:144f:b0:4a4:da68:943d with SMTP id
- 5614622812f47-4ad5bb1bf0dmr2706373b6e.3.1785333971281; Wed, 29 Jul 2026
- 07:06:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HOJ6fti4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785333978; x=1816869978;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1TeedpNf4se513fr5NdVyRJ/Tisrwdz3DUQxuoWnRKc=;
+  b=HOJ6fti4wCNjTkNJhC2f6cE7sq6Vqa0Puan1lN2EN+6pyYaM9tKE38wz
+   ARoWMqJZH8yNUOdecCK0bBd7AmsFAowI3+8rRkCHn1ZgzELCFWy50/7Q1
+   Pq6rVpFu3qPG7Nv3gnCqpCYV/gSDx1E1UTZib6bv1vZRrONslFpX/ibBS
+   WLHCL9jTYUbBKccQrZnCN3+VVI1GBtckqdsfx2gFhMDA2rkPIRDU57dsw
+   KgBSj0HjuAvoasXNvJ2ki1gYb/xQ2kwrGcog0k+5eTmkDOoud1gNGCywD
+   dvMBIn4j1xVZe4jTFUF2sRovjG/0+AtkV/4P9S9hOlBHcmnk0dfpvrcxb
+   Q==;
+X-CSE-ConnectionGUID: MTiFHMVMRQCNi+awiJ1rvA==
+X-CSE-MsgGUID: PFwjkYnbTkGMKOWFZ1DTuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="89617555"
+X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
+   d="scan'208";a="89617555"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 07:06:17 -0700
+X-CSE-ConnectionGUID: 7G1aELTOTzOMXyEwHqnIdQ==
+X-CSE-MsgGUID: t8LS+BrKRO2Z+ZmwEMgATg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
+   d="scan'208";a="260072634"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa007.jf.intel.com with ESMTP; 29 Jul 2026 07:06:16 -0700
+Received: from gond.igk.intel.com (gond.igk.intel.com [10.123.220.52])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id B115D2FC47;
+	Wed, 29 Jul 2026 15:06:14 +0100 (IST)
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	aleksandr.loktionov@intel.com,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Alexander Nowlin <alexander.nowlin@intel.com>
+Subject: [PATCH iwl-next v2] ice: detect duplicates in ACL
+Date: Wed, 29 Jul 2026 15:05:10 +0200
+Message-ID: <20260729130510.220222-1-marcin.szycik@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260724-netconsole_move_more_final-v1-0-a5f7691db81c@debian.org>
- <20260724-netconsole_move_more_final-v1-4-a5f7691db81c@debian.org>
- <CAGSyskW6iqoWk8DpLZbi=8xoME1J8LaSnjBNvAbAg6+b8kszBg@mail.gmail.com> <amnSAs8Ot4fR3lhc@gmail.com>
-In-Reply-To: <amnSAs8Ot4fR3lhc@gmail.com>
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Wed, 29 Jul 2026 15:05:58 +0100
-X-Gm-Features: AUfX_mytEfIvbsEso_HVMtxCtBGmkQ37abo7DCV-70QNJ0OUm84qTOJOVy4WljM
-Message-ID: <CAGSyskUciEiQup-TdV185UfHa1y4OeS=P1SBJJhRPJvc1edL8g@mail.gmail.com>
-Subject: Re: [PATCH net-next 4/9] netconsole: move netpoll_local_ip_unset() as netcons_local_ip_unset()
-To: Breno Leitao <leitao@debian.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, asantostc@gmail.com, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 29, 2026 at 11:23=E2=80=AFAM Breno Leitao <leitao@debian.org> w=
-rote:
->
-> On Tue, Jul 28, 2026 at 12:49:46AM +0100, Gustavo Luiz Duarte wrote:
-> > On Fri, Jul 24, 2026 at 4:05 PM Breno Leitao <leitao@debian.org> wrote:
-> > >
-> > > Move netpoll_local_ip_unset() from netpoll to netconsole and rename i=
-t
-> > > to netcons_local_ip_unset();
-> > >
-> > > The body is otherwise unchanged, only the comment's setup-function
-> > > reference is updated.
-> > >
-> > > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > > ---
-> > >  drivers/net/netconsole.c | 19 ++++++++++++++++++-
-> > >  include/linux/netpoll.h  |  1 -
-> > >  net/core/netpoll.c       | 18 ------------------
-> > >  3 files changed, 18 insertions(+), 20 deletions(-)
-> > >
-> > > diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-> > > index 3a7a2cafc6276..70f9c5bfb3720 100644
-> > > --- a/drivers/net/netconsole.c
-> > > +++ b/drivers/net/netconsole.c
-> > > @@ -351,6 +351,23 @@ static void netconsole_skb_pool_flush(struct net=
-console_target *nt)
-> > >         skb_queue_purge_reason(&nt->skb_pool, SKB_CONSUMED);
-> > >  }
-> > >
-> > > +/*
-> > > + * Test whether the caller left np->local_ip unset, so that
-> > > + * netcons_netpoll_setup() should auto-populate it from the egress d=
-evice.
-> > > + *
-> > > + * np->local_ip is a union of __be32 (IPv4) and struct in6_addr (IPv=
-6),
-> > > + * so an IPv6 address whose first 4 bytes are zero (e.g. ::1, ::2,
-> > > + * IPv4-mapped ::ffff:a.b.c.d) must not be tested via the IPv4 arm =
-=E2=80=94
-> > > + * doing so would misclassify a caller-supplied address as unset and
-> > > + * silently overwrite it with whatever address the device exposes.
-> > > + */
-> > > +static bool netcons_local_ip_unset(const struct netpoll *np)
-> > > +{
-> > > +       if (np->ipv6)
-> > > +               return ipv6_addr_any(&np->local_ip.in6);
-> > > +       return !np->local_ip.ip;
-> > > +}
-> >
-> >
-> > This whole checking if it is all zeroes in netcons_local_ip_unset()
-> > looks very cumbersome.
-> > Perhaps instead of storing 'bool ipv6' we could have something like
-> > 'u8 family', which would contain AF_INET for ipv4, AF_INET6 for ipv6,
-> > or AF_UNSPEC if unset.
->
-> Agree, an explicit state machine would clarify the three cases: IPv4,
-> IPv6, or unspecified (with netconsole deriving it from the device).
->
-> Now that the helper lives in netconsole, the awkwardness is more visible.
->
-> > But that would be another patch separate from this refactoring, so for
-> > this patch:
->
-> Thanks for the review. Would you be interested in pursuing that change
-> once this lands?
+ntuple filters without masks (fdir) disallow duplicate entries. Extend
+this behaviour to rules with masks (ACL).
+Also skip checking ACL rules in ice_fdir_is_dup_fltr(), as it's only
+used for fdir.
 
-Sure, I will send a patch once this series is merged.
+Keep the naming convention consistent with ice_fdir_is_dup_fltr() and
+ice_fdir_comp_rules(). ice_fdir_is_dup_fltr() cannot be reused directly,
+as it ignores masks.
+
+Before fix: duplicate rules with masks are allowed to be created and the
+duplicate rule cannot be removed:
+  sudo ethtool -N eth0 flow-type udp4 src-port 9000 m 0xff00 action 18
+    Added rule with ID 31231
+  sudo ethtool -N eth0 flow-type udp4 src-port 9000 m 0xff00 action 18
+    Added rule with ID 31230
+  sudo ethtool -N eth0 delete 31230
+  sudo ethtool -N eth0 delete 31231
+    rmgr: Cannot delete RX class rule: Invalid argument
+    Cannot delete classification rule
+
+After fix: duplicate rule is correctly detected:
+  sudo ethtool -N eth0 flow-type udp4 src-port 9000 m 0xff00 action 18
+    Added rule with ID 31231
+  sudo ethtool -N eth0 flow-type udp4 src-port 9000 m 0xff00 action 18
+    rmgr: Cannot insert RX class rule: Invalid argument
+    Cannot insert classification rule
+
+Fixes: 3272c00a1247 ("ice: create ACL entry")
+Reported-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+---
+v2:
+* Tweak ice_acl_is_dup_fltr() function doc and comments to accurately
+  reflect what is actually happening in the function
+* Add repro steps and expected behaviour to commit msg
+* ice_acl_comp_rules(): rename ipv4_equal -> base_equal in expectation
+  of future changes that might introduce more fields
+---
+Not sending to net because the fixed code is on dev-queue.
+Tony, please squash this with the offending commit.
+---
+ drivers/net/ethernet/intel/ice/ice_acl_main.c | 87 +++++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_fdir.c     |  3 +
+ 2 files changed, 90 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_acl_main.c b/drivers/net/ethernet/intel/ice/ice_acl_main.c
+index 7c566077d55a..d13e8bc1b701 100644
+--- a/drivers/net/ethernet/intel/ice/ice_acl_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_acl_main.c
+@@ -283,6 +283,85 @@ void ice_acl_replay_fltrs(struct ice_pf *pf)
+ 	}
+ }
+ 
++/**
++ * ice_acl_comp_rules - compare two ACL filters
++ * @a: first ACL filter
++ * @b: second ACL filter
++ *
++ * Return: true if a and b values and masks are identical, false otherwise
++ */
++static bool
++ice_acl_comp_rules(struct ice_ntuple_fltr *a, struct ice_ntuple_fltr *b)
++{
++	bool base_equal;
++
++	if (a->flow_type != b->flow_type)
++		return false;
++
++	base_equal = a->ip.v4.dst_ip == b->ip.v4.dst_ip &&
++		     a->ip.v4.src_ip == b->ip.v4.src_ip &&
++		     a->mask.v4.dst_ip == b->mask.v4.dst_ip &&
++		     a->mask.v4.src_ip == b->mask.v4.src_ip;
++
++	switch (a->flow_type) {
++	case ICE_FLTR_PTYPE_NONF_IPV4_TCP:
++	case ICE_FLTR_PTYPE_NONF_IPV4_UDP:
++	case ICE_FLTR_PTYPE_NONF_IPV4_SCTP:
++		return base_equal &&
++		       a->ip.v4.dst_port == b->ip.v4.dst_port &&
++		       a->ip.v4.src_port == b->ip.v4.src_port &&
++		       a->mask.v4.dst_port == b->mask.v4.dst_port &&
++		       a->mask.v4.src_port == b->mask.v4.src_port;
++	case ICE_FLTR_PTYPE_NONF_IPV4_OTHER:
++		return base_equal &&
++		       a->ip.v4.l4_header == b->ip.v4.l4_header &&
++		       a->ip.v4.proto == b->ip.v4.proto &&
++		       a->ip.v4.ip_ver == b->ip.v4.ip_ver &&
++		       a->ip.v4.tos == b->ip.v4.tos &&
++		       a->mask.v4.l4_header == b->mask.v4.l4_header &&
++		       a->mask.v4.proto == b->mask.v4.proto &&
++		       a->mask.v4.ip_ver == b->mask.v4.ip_ver &&
++		       a->mask.v4.tos == b->mask.v4.tos;
++	default:
++		return false;
++	}
++}
++
++/**
++ * ice_acl_is_dup_fltr - test if an ACL filter is already in the list
++ * @hw: hardware data structure
++ * @input: ACL filter to check
++ *
++ * Return: true if a filter with identical match criteria (same flow type,
++ * values, and masks) already exists, unless it is at the same location with a
++ * different queue (an update)
++ */
++static bool
++ice_acl_is_dup_fltr(struct ice_hw *hw, struct ice_ntuple_fltr *input)
++{
++	struct ice_ntuple_fltr *rule;
++
++	list_for_each_entry(rule, &hw->fdir_list_head, fltr_node) {
++		if (!rule->acl_fltr)
++			continue;
++
++		if (!ice_acl_comp_rules(rule, input))
++			continue;
++
++		/* At this point rule and input have same match criteria.
++		 * Same location with a different queue is an update, not a
++		 * duplicate - skip it. Everything else is a duplicate.
++		 */
++		if (rule->fltr_id == input->fltr_id &&
++		    rule->q_index != input->q_index)
++			continue;
++
++		return true;
++	}
++
++	return false;
++}
++
+ /**
+  * ice_acl_add_rule_ethtool - add an ACL rule
+  * @vsi: pointer to target VSI
+@@ -322,6 +401,14 @@ int ice_acl_add_rule_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
+ 	if (err)
+ 		goto free_input;
+ 
++	mutex_lock(&hw->fdir_fltr_lock);
++	if (ice_acl_is_dup_fltr(hw, input)) {
++		mutex_unlock(&hw->fdir_fltr_lock);
++		err = -EINVAL;
++		goto free_input;
++	}
++	mutex_unlock(&hw->fdir_fltr_lock);
++
+ 	memset(&acts, 0, sizeof(acts));
+ 	if (fsp->ring_cookie == RX_CLS_FLOW_DISC)
+ 		ice_acl_set_act_drop(&acts[0]);
+diff --git a/drivers/net/ethernet/intel/ice/ice_fdir.c b/drivers/net/ethernet/intel/ice/ice_fdir.c
+index 1bc91cb41769..1d79138683b0 100644
+--- a/drivers/net/ethernet/intel/ice/ice_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_fdir.c
+@@ -1261,6 +1261,9 @@ bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_ntuple_fltr *input)
+ 	bool ret = false;
+ 
+ 	list_for_each_entry(rule, &hw->fdir_list_head, fltr_node) {
++		if (rule->acl_fltr)
++			continue;
++
+ 		if (rule->flow_type != input->flow_type)
+ 			continue;
+ 
+-- 
+2.49.0
+
