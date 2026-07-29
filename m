@@ -1,98 +1,106 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951CC43DA49;
-	Wed, 29 Jul 2026 09:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0723843CE62;
+	Wed, 29 Jul 2026 09:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785316007; cv=none; b=KGrbVcNGvvTGKIfl7Jr94pIX88IKqFpF+8gXmKeCnzY58y6A6JCD4MVOZFC1OjnXwnu5Y90rWkBc5UsItqh++soxQO/NgoRuedE7qW1LeqGWpUSYR+SYhgMj5VjfTH8p+dLIdWxxTiMlhVpWEMG6qLKc2KAi7KF0/pdvf3Chpcs=
+	t=1785316054; cv=none; b=pUPtfPL/8nIwnSv8UsnWD2TMHKv0DZPvUaqhuR2yVoxk5iiH02ig+uilZMfQzE7TF9PhMSBHjp1BX2ncoIi5VTAbCYYGPoPR22q+PMUqvaT+tD6QZT973KTCXKVPt6LQAFUhHHnWYnnszWFlgz7tgAlUDYKAPU8jULJ9bsW1SpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785316007; c=relaxed/simple;
-	bh=00DZ9vWyNOSETeO1x71RqwLCqdL4qftaF8Rs2mDDr9E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V/qdTHDjIObzvzHvcj6Gdf3stvhsQJInyzzl2Cw/OAVgBxCO60x9iDzn6NMnmk4BbvZe/C9ZxszkZY5EEkukya1ftQSD+ezCq0jiW0OUin83yIFlhqxQDgD7HsM2uHbzXiQh06BH90kOTsB4xJeIB5m+TsVxxBCkmqIIpwRbkLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 5688F202ACC;
-	Wed, 29 Jul 2026 11:06:42 +0200 (CEST)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wp0FO-001rJX-0r;
-	Wed, 29 Jul 2026 11:06:42 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wp0FO-0000000CNm4-0bqH;
-	Wed, 29 Jul 2026 11:06:42 +0200
-Date: Wed, 29 Jul 2026 11:06:42 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Jonas Jelonek <jelonek.jonas@gmail.com>
-Cc: Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1785316054; c=relaxed/simple;
+	bh=VY1Q7a8AE13JR0vjd0bxxCh8B/td+JiW29ZH9njvD30=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ja2ZsVK8n7mD+L+fI1QLiJQKGICZIPe3skkStOGHBlEe0Bldl3QY57S92k2YkAiH2Q3vSpIf5BRPnJqJbMFKMxgBi6YMNAEJMEt0hGQEkY2i716JF4MVcHfEa+D6tGhwBuSvCmVOUcZVfKHO85YUXlBylZb0M+WNMa+S5qqhEp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: e9140b4c8b2c11f1aa26b74ffac11d73-20260729
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:2b3a014a-c014-40b6-a511-d57cae50b12c,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:ced5380b2f3d349db8f2ebdf3995463c,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|850|865|898|915,TC:nil,Content:0
+	|15|50,EDM:-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:
+	0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: e9140b4c8b2c11f1aa26b74ffac11d73-20260729
+X-User: heminhong@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <heminhong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 969472451; Wed, 29 Jul 2026 17:07:23 +0800
+From: Minhong He <heminhong@kylinos.cn>
+To: Paul Moore <paul@paul-moore.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Daniel Golle <daniel@makrotopia.org>,
-	=?utf-8?B?QmrDuHJu?= Mork <bjorn@mork.no>
-Subject: Re: [PATCH net-next v10 2/4] net: pse-pd: add Realtek PSE MCU core
-Message-ID: <amnCogCgoLAYgQlM@pengutronix.de>
-References: <20260728084307.2129515-1-jelonek.jonas@gmail.com>
- <20260728084307.2129515-3-jelonek.jonas@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] netlabel: check register_netdevice_notifier() error in netlbl_unlabel_init()
+Date: Wed, 29 Jul 2026 17:07:16 +0800
+Message-Id: <20260729090716.138608-1-heminhong@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260728084307.2129515-3-jelonek.jonas@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 28, 2026 at 08:43:04AM +0000, Jonas Jelonek wrote:
-> A range of managed Realtek-based PoE switches use a small microcontroller
-> on the PCB to front the actual PSE silicon. The host CPU talks to that
-> MCU over I2C/SMBus or UART using a fixed 12-byte request/response
-> protocol with a trailing checksum; the PSE chips are managed by the MCU
-> and are not accessed directly. Two generations of the protocol exist -
-> both Realtek's - diverging in opcode numbering and a few response
-> layouts; the driver handles this with a per-dialect opcode table and
-> parser hooks for the responses that differ, selected by the compatible.
-> The specific PSE chip behind the MCU is detected at runtime and only
-> influences per-chip constants (power scaling and the per-port cap).
-> 
-> This core module implements the protocol, message framing, the dialect
-> machinery and the pse_controller_ops glue, and exports a registration
-> helper for transport modules. The I2C and UART transports that drive it
-> follow in the next patches; the core (PSE_REALTEK_MCU) is selected
-> automatically by those transports and is not user-selectable on its own.
-> 
-> The realtek-pse-mcu-* files and PSE_REALTEK_MCU* symbols match the
-> realtek,pse-mcu-* compatibles (see the binding for the naming rationale).
-> The two protocol generations - gen1 on older Broadcom-PSE boards, gen2 on
-> Realtek's own PSE silicon - are both Realtek's, handled by the same shared
-> core, each selecting its dialect via the compatible.
-> 
-> Power budgeting is left to the MCU firmware; the driver advertises
-> PSE_BUDGET_EVAL_STRAT_DYNAMIC accordingly.
-> 
-> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+netlbl_unlabel_init() installs the unlabeled connection hash table and
+registers a netdevice notifier, but ignores notifier registration errors
+and always returns success.
 
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Check the error and unwind the hash table allocation on failure.
 
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
+Acked-by: Paul Moore <paul@paul-moore.com>
+---
+v2:
+- Use rcu_assign_pointer() instead of RCU_INIT_POINTER() when clearing
+  netlbl_unlhsh on notifier registration failure, as suggested by Paul Moore
+v1: https://lore.kernel.org/all/20260728031043.76586-1-heminhong@kylinos.cn/
+
+ net/netlabel/netlabel_unlabeled.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/net/netlabel/netlabel_unlabeled.c b/net/netlabel/netlabel_unlabeled.c
+index 47bae5e48db6..fe1be424601f 100644
+--- a/net/netlabel/netlabel_unlabeled.c
++++ b/net/netlabel/netlabel_unlabeled.c
+@@ -1397,6 +1397,7 @@ static struct notifier_block netlbl_unlhsh_netdev_notifier = {
+  */
+ int __init netlbl_unlabel_init(u32 size)
+ {
++	int err;
+ 	u32 iter;
+ 	struct netlbl_unlhsh_tbl *hsh_tbl;
+ 
+@@ -1419,7 +1420,16 @@ int __init netlbl_unlabel_init(u32 size)
+ 	rcu_assign_pointer(netlbl_unlhsh, hsh_tbl);
+ 	spin_unlock(&netlbl_unlhsh_lock);
+ 
+-	register_netdevice_notifier(&netlbl_unlhsh_netdev_notifier);
++	err = register_netdevice_notifier(&netlbl_unlhsh_netdev_notifier);
++	if (err) {
++		spin_lock(&netlbl_unlhsh_lock);
++		rcu_assign_pointer(netlbl_unlhsh, NULL);
++		spin_unlock(&netlbl_unlhsh_lock);
++		synchronize_rcu();
++		kfree(hsh_tbl->tbl);
++		kfree(hsh_tbl);
++		return err;
++	}
+ 
+ 	return 0;
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.1
+
