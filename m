@@ -1,47 +1,47 @@
 Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012026.outbound.protection.outlook.com [40.107.200.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2FC330678;
-	Wed, 29 Jul 2026 01:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119343161BA;
+	Wed, 29 Jul 2026 01:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.26
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785289979; cv=fail; b=XQehMrzvrM+Mps+F+b7NCtr/oRiHz7G7xjoSosWe2e30L6Gk2yrRfjyhNkYx+n4FbakLTfWaasE5MPG+X1/cEE/YBMSJm3Wr1CaSEORcDvLFRRzYGJZJIAxj7fga4b8r9va98pcY1XPwnaWK4Kl0CxvLPoRWjT4evFf8BNFDdAI=
+	t=1785289981; cv=fail; b=jJEHUQb9EMLmTWul1czWYJllQiTRZHxVhslj7/6QA+bYRPR2iYuc95JjTWp6xSoEmadyOH++ET0jtf0Y/5KU6hjSo6nVW9csUAUwDiwGyb+92vyUZkZs9P4rQgw2Zt4jB32nmRZQJ3SehzxdW6T5JNfjaHCjiXFlTYz3A5McW04=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785289979; c=relaxed/simple;
-	bh=EoUpzVfVEAU5g5/gAXqa/WoZ+aARpnix/gT1VL53vVc=;
+	s=arc-20240116; t=1785289981; c=relaxed/simple;
+	bh=L21ej2enU48YCnMOs7dHpHRM2rg5vTH4/Ja8FT7NnTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=i+JobwGCIUQQaCnv7I0MSwsc/K63mL6Z2ax5Gz5H93tKLGA/xjfRKeVGU0l6IzxGvPxeTPy39JafDTe6x+NVTYFx0fERpmYYPyLYS1x8YMV6tczx6TEPJfDyyU4xZpsbqoM9TUXhxX7fMGx9K3bWRWoTY448YOIfDYE68GDkE5g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=UmsBzhrV; arc=fail smtp.client-ip=40.107.200.26
+	 Content-Type:MIME-Version; b=u1wxNF2buUiKhdecUHOBAIFlbtPn3PoDuLlRWide8ayglj5LHiZJveuxPCDnx9CC8wjGNCV23GALapw1xId1pCn/mV6+KRBRxhD3oEqVjr9KwVG0REYIteAmbW29juMEff5Khke7E4Yjx89ylSjp3UE4lGWoKIJe//NdGqRq/Yw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=qg00ntTd; arc=fail smtp.client-ip=40.107.200.26
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="UmsBzhrV"
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="qg00ntTd"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vFETkXlFu4vXja83w5jJOJr3P1yr5IT3RNzQnY2f/LHUHG6JqPpvxTvACTzhLvEZcNR2S5EvO9uP5XJuEn1y0Sx48ZikJXOSp04dn+Q9BoUAyORpdTiSmzCRZ0/mt+HILoq43FjGv5gTwv2xZ3ui6s2jhYES+sjcyqJQB1pVS+8/htsMoB1MSlk9lsUYgsipVqfOcjdd0BIw7Kub2sglMgPIFo3UiSyW+hS2TsDsXNPSnpMngQ01iEOWk0DSyMhANw6gSv2a2e+9Kb52czKVBrsUhxJhk+QbcrYCC4Q4WuUE+xCE01hjUyyeKCrwWWvN7N2G35whGzu9ApY1+CPbFw==
+ b=EkKsqLG1/OHz7CEz40gDGLg7YmWZ7TFNFVtzQfjeEpRkRWxltmuQwgVqvHwtcybcdqHQNKgFSZGJO0hRe3bw9+8ZLhA4D2PNHWJohWG28BrlvrmM0DdDxL5UkK4vYqeIjJGICUFpNgLXts4LMPJkeufWCi8jRmAJdQVQ32rp6gdTM+gVIEcUKcpj3PUtBbc20TxWTh+WqY2yRW8SAxmo1jBodwT5ZSGNSHuxq3D4lD/YYIl34tX/mslylzsVWtq6WwFuf9Zkbrffpr+kW6V/4QIP6r6R0l44/yFvZ7WpVZpnLRh4OEhtH3OfxKoI7m/YOcpgoCzFERUDAJbONuwKVg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XYQg/ilolQrVxlqTAnt4MAsteh/Y6Eph4WmYwLcGQd8=;
- b=kUwtyo9bAm8TprsAyPCYUXjlhM8yrukCcFlxHGYTxm0Yd6h52x2dp8C5tigQyzkF7phOv1PvK09KmAT1fhCYHW2Nzqjd+DB0dDFH3VboPRPmvF2tWMXJhRFZstmVC+bjsolZx2AJp0BecHTjezpgDvLhjYBxk+P2wg1NnTXYEOnpgSRNZHJUTPAwxLO7TMK7RXKZfgNIht8mPy5AQNGBgeJW9NtHdL13VGGdVft3STwNTDO43A2FHPWzquuUmYc2sCUFLxf8zC3pTJmlqAvPUFT3H0xB0kzxmuPdo0tl2p+qGEplUtXrb5KAbWP+5QGpmfaAtBMlKtuhP4j2fSTO+g==
+ bh=nyEBuCjNN9KxfPKpLypn7hpCFgeb9a4InoxRxgImcYo=;
+ b=BJfaIblXxDe8ZscvcQ22j87tH9y67AkcOBlQoMRERotdAkwQtUMjWHV+ron4J9u4iJavsPJOPe76n9E524h85Trr1u+SIFle+8HfhkfplOs/rQxBJAXFP5PgdkgxZua2HG8OfEo3Ms/FCY/RSH2aH1VaRFNIg7Pkd+zetDr5oVosDozVck/VDFjPlYbRcYjNNli3G8IT3YXmZp7GCw+2r/FnYdqcgSMMgC2t9tlFDWBAyGiC1ID7hiTOGUGobBh2hddk/+haBYLxndj9ILDuWyc7BWepwm8YTL4AdSie7YvANyTZNsMCJrx/Otl62yn2rw5DcGsFbIypx1tLz0b9jg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
  dkim=pass header.d=altera.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XYQg/ilolQrVxlqTAnt4MAsteh/Y6Eph4WmYwLcGQd8=;
- b=UmsBzhrVSXjTI+qjqocZzUIqhOuLwLmf9wFIm6Nzed4CSfZodVUs+pIhH+wuqNeqjf3aKTgYNM4jvFwiZrA9+vi84sl/ZsGLLghvoDmf00sjq1lwC43LOnEo+EQ/HTIIEsMQxddjy7Xkc3Xk10BBYgLteMXnqZmZ2O8gWyA3y2xMJ72Lsnx2SOF4GKx+7MwqOS32Gho7F89l/yaR0M7EL0T06gB8jbApLAEIk6CcfzOpPK2rD5gCqkT/qb5ci6UOPHlzkuMbK81XK87q98zB5z0Jq3RetoeJpjFzmfVV+JRkuwMcbLsl5TmnR3gn+hUFjpZEEgPWnWft6UWWXPNX2w==
+ bh=nyEBuCjNN9KxfPKpLypn7hpCFgeb9a4InoxRxgImcYo=;
+ b=qg00ntTdVKLcujbKVQCFRFtWAApbqnv5Pj7lITiWCSSRytu3PUK9JxhKMQnUTaqct4NtFwhHt/P184d8MXgJ0gsrFUtGj2TqHcRF+8/iBP1GuHgMcvmo9BdeQwVvbPB6jMnLTkD0Yay4r4gfBZ2lN+uLCAZ+Zk1dgRhda8981DNrEziXlF+QR3Sv8k1+piJifRrvyCiS3m0WFO5BWa/lt6mLK8o4tNz+86TLGgwkSyMbq4zdyq4rdqENxVh9fhJptthRUpS1BVdzG6pazv/YCq3Tl/CSbdAoUxzPxlnt6OMR/0xMa7+YR55mY4nDw4vfzMwICRuvwJ/sVUd4Yt8/lQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=altera.com;
 Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
  by MN6PR03MB7550.namprd03.prod.outlook.com (2603:10b6:208:4f0::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
- 2026 01:52:52 +0000
+ 2026 01:52:54 +0000
 Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
  ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
  ([fe80::b965:bfa8:58fb:e775%4]) with mapi id 15.21.0270.009; Wed, 29 Jul 2026
- 01:52:52 +0000
+ 01:52:53 +0000
 From: muhammad.nazim.amirul.nazle.asmade@altera.com
 To: maxime.chevallier@bootlin.com,
 	andrew+netdev@lunn.ch,
@@ -55,9 +55,9 @@ Cc: netdev@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 2/3] net: stmmac: fpe: Add missing return in stmmac_fpe_init()
-Date: Tue, 28 Jul 2026 18:52:46 -0700
-Message-ID: <20260729015247.25774-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
+Subject: [PATCH net-next 3/3] net: stmmac: fpe: Move fprq configuration to stmmac_fpe_configure_pmac()
+Date: Tue, 28 Jul 2026 18:52:47 -0700
+Message-ID: <20260729015247.25774-4-muhammad.nazim.amirul.nazle.asmade@altera.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260729015247.25774-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
 References: <20260729015247.25774-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
@@ -74,90 +74,126 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SJ0PR03MB6964:EE_|MN6PR03MB7550:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7c569368-a1f9-4f4d-02ab-08deed14199c
+X-MS-Office365-Filtering-Correlation-Id: e15379f1-39ac-428b-6817-08deed141a78
 X-MS-Exchange-AtpMessageProperties: SA
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|6133799003|56012099006|11063799006|55112099003|22082099003|18002099003|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	R4yMJtgTwajTYlAhYUcudGY8BHPtrW+HoxapPp4f0dixVnm7klIxJqnv6f9gQ6hZgH3Whvf46nukbzRCnqw3UzsqBVKvabWQitrjh8p2U8R53zwqiWnHg2ZrfLP1LL/AYiC5iXUSnpuRmyeQ7IS6DtcnsPkJEvvfnQXLnYg7Ni87sidh9ahC2L+VSirfQF0hXndhxUgeLYeg4EnWzfcaYu2cKCPh1nPktRFhKe1b7DQj0z8MsRmwyv9YNXsRSLQjSfatwWlfTkpAEfttG23BYDdGth2JJLRerdScnPlJQseKaQ7mIY2qBhgA55y3clwxkMxqnmSPZ3EppF/L/GdCgSWhgHHIfgpESeq1CPrnzSifcy9xseBddMU8ctyDxB3Q5F0wrWAvi3WxQYcDMwWboTmf3Yg5MIlu5h1MSU5b9Q9MItbYaJ1KUFDuToFm8VsShKttXDpDIEce8um3w1EIJ0QDw4agTmtvKZPV1O/+nMLeNPmIezmaTVp4GG3VRonf+aDJmABI4O9D42UziqjNTl3DWWQMkeqSo7wMDOT05KNwxbrIsN+jTBHQp0XA75qJ612NWPkw67o7CAauy+8yOndwJfntGzqhXFxNxtwL/3JFFsJd89bEr0/SkngcbLhGp/bQEqyNokOjGpFxfINy1+Stwo8mpEZ3FMPWJQ8u8ho=
+	djdnugov1BuwSUUIRpJinvdbHAyBV6H6dZ8QLSjOPmhOlwzkdnnCIyNrM5+p8nWM7ptGIxlN+zAOMrbUZ5/qAW/Hyy00mXCuWviroXgunKK5vPuyk9vhoONR6rmo2jf0cFL0m4yxxj+auVnekgREm7w3HTv58/6HfKCwtXOSTac2ZlBqI8D2gQHhHlWuJ0S7EpcKnKNQcHTc+oDHtzMr9sNrAwIJMHcxvdPhE6AQlg8JjhaUYRUYjRHZ+k7R0vzMhI1lvja64pa3A1f1C8UpeFjSytDBWcpQCCjVkHAmu5jzLgOVQxtwRsdyduoUujFn3eoKVHvz2cONFQtARkbTVreaQpsyX4EncH2pXzGODzTOfH5SyKpLzksXcDMJtH/lL9Wm4tu5K0f/sETsuWlru5Khxb6zN3AGBchVYVnk6xu3xgUKUt/G8UlQC5ZXUZy+CKDeo9f29F5IX20/WaYFEb/0r4AP7tzDJ3QEns/BLaafRrP+ORRaalScxGeHv2XTjcu++vWWb9QcVcjoWfwfHQImN0K5OJtdtMy9hjnSVmLKqZOa0i4eyOP9ff1+fB/rU0OBvSEGwXadxVNhcdq+7k9Io2ZmUFJ5pptUj6cU4PNz9MzpKIDgwCJ4FvRT5I0VliJwj2kqfDEdxH/C0uQgfswYV4ZZfYUTRi44L279oSE=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(6133799003)(56012099006)(11063799006)(55112099003)(22082099003)(18002099003)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8+y5GvvF6tmCo8MrVJgjKIPO85WdAuxigCDV/PkgP0j66BdZKZgh7Jwq0ilw?=
- =?us-ascii?Q?kOZ2IDR5Ks4crH/T0jtxV22YreaXJXRKYB5d6pmNQ7qtTjjMWLmOS9mG8l9O?=
- =?us-ascii?Q?/29sENrdZt4DPbORuntbRJLQ1lSirmbvpuRTtAhcg+oCRJHYxgAoGRHZdes5?=
- =?us-ascii?Q?qMjF98QkMFPPn2pDYVDUi7huJH/ZnvH8GF6qnfh3pi7gCUzP/XUvyMUkzcqF?=
- =?us-ascii?Q?tArgXxHZly2L+9ms7YizQb9QouxtPrieIxmJh+cM2dGGmf2R19CEsZYPuKel?=
- =?us-ascii?Q?9ZWjH4467b61laMMVwiP5FN5lk/2hfBDqVfqgJwSplK3aNvWebUygf3Iujtq?=
- =?us-ascii?Q?sIGvlI9JIV0HU8KQ7N7cDV6hhSIEmh6TDeDxftdgQCzLq4HrZy4JqwTMpOPX?=
- =?us-ascii?Q?whVb1F2lc8k3fw5Mdr1pklpcksSV9SEgGP76XsZUsXeZ7xnp2hWwETqTLUlP?=
- =?us-ascii?Q?OABI2BwIDKTlEx7w1uMZyaYERXj1YbWvsPX8knWuDs7DpzglCu9THVT3EIPj?=
- =?us-ascii?Q?zXj6QHMYHlxFe2zLefn6G5yx5TV2dzMGZ82CDxEq6VCndqko3Ys0w99Docb5?=
- =?us-ascii?Q?lDnqQQINr55C2FjmRprYG2PafppwZ9pOHEuu1v+czGUh5ObKkFzUSlIpQN3p?=
- =?us-ascii?Q?m6tjdj/tXEU2x4hp+t/CEa3lc9UBxksukCnenMW+IDpsz8T8lAc5BxeQ3DbP?=
- =?us-ascii?Q?/FPKnMDcq3DrhjBA4vAro5f4aM5U4e+BZqgo18pHl8PpDDefxjVJGirWpoLa?=
- =?us-ascii?Q?UbPKLZyy+86BYUoMS9cRtthBG7y0skNrUxGpnrCxIt4kpDOvmCosOqUgMw9P?=
- =?us-ascii?Q?Y/BnwQkBlAVNHbmufNIhfi8QxCXS3cu41JW2UdMbuUoPrhETNLkjymflYNRu?=
- =?us-ascii?Q?d6JhcXPwZ8oPQSQXiZQtjKFcNKoi2PcXeepfPr//LubwIXzkEmEiWZ7DFdhp?=
- =?us-ascii?Q?4DTwz0VI1HStswiFKpetrU6NllgBJumPXvyfALU9RBhNdxc2lUX6Pi/PEJXo?=
- =?us-ascii?Q?EicNmOLAxGxI8H52Hm2/CvqscfHGhod13IE+g4AuVrZgC1anWfWpOQy1MYaq?=
- =?us-ascii?Q?ToTXKYJA5NfaYl0a/BpHevDj+xf+bMFGlOWq++nnPuEPc8Zzt5U097gCVZRw?=
- =?us-ascii?Q?Cv3XcnoyapEZBT/86qVbMbIIQ9PBMFIcsVPnK0El/RyVxsP+SUhJniHtTaw+?=
- =?us-ascii?Q?kxpkZo7GG48iO7EsEtBL2p6evGJ+ihqJRmxJIcC5bOaJQSTAOxs/G4tqJ6Gu?=
- =?us-ascii?Q?wBwOF+wn/ZRScbRO7GgqnKAJEU8opnI5UIFNCjy+sSHrU0wGtUtxnrIIKRiG?=
- =?us-ascii?Q?+q7onLF33aTeTuV1YdMCGLFY3IMfw0Gh+0iGwqzrwZUniWL89fHeRFMxh2tp?=
- =?us-ascii?Q?tu0LTyYFya22NlwmRA22bMpA/npoB5o7NRtGBja1uF7S2kMripNdH9/O/qLn?=
- =?us-ascii?Q?E82lU4Q9SjY6SxYD7t2J1JkQ/sLeUhlFFFToucwY/u/RlznDYmrRS4xoPLpO?=
- =?us-ascii?Q?sWr6F1sTP71jbB/2lu9qq4Rppg1ESnHbBCOcVD2SxHv1dcLA0am1Y/flSYV6?=
- =?us-ascii?Q?IzqNPrgaNpy2ohuXJY9H7+cKzVlexxEuEgQQolY7SVHjeI18BfivexxwxBRZ?=
- =?us-ascii?Q?sgpKn+kOQw/ACVoO/ggokJVDGebnIBg1bCm4YavIyChEMoLwljTMgogz2/Hq?=
- =?us-ascii?Q?R84NBOygz/O/d4/apq/sKWUm7OwJGF46h/ciSNIfwqeCJgxGIk92SXVtDemN?=
- =?us-ascii?Q?YSS+yToAk8fq5LCD3dIgSt0i1BbciT9lqY7r7QT3RTLSVCjmPUbL1arNO5CC?=
-X-MS-Exchange-AntiSpam-MessageData-1: gCXjKRii7/VzLA==
+	=?us-ascii?Q?g8JT4qdGYsFdQYG97BFI0e2RRHBFPhjCccbHidF1RAsK7nDwrttSWpO/8iYu?=
+ =?us-ascii?Q?RG85DlaX9KIH40SnNqGNRKEuI+IsaoBjll1Yl0aFNsWz2lC7jLY/sLZwnoq6?=
+ =?us-ascii?Q?EsY84HKAmKGvBb3oFB5aIKyRAPkOsi8OTrIce/c/ORg7zrFlgm+O+VE9p2m5?=
+ =?us-ascii?Q?V0CcQvrO2Xr3yIrEHsRtEEh6urkDfKaI61oyUFPxKPVnx7RpQGRl/RVldflV?=
+ =?us-ascii?Q?nxG70RMGgNvLyckOllPAyhsM9yL397At7nOgipI7nijcLuKGveH0MoExefkP?=
+ =?us-ascii?Q?PqByqZhEXlLVZurZxCbcJvlx+wlPXR3yHp+aSbCAqfVvBUx9c30Ak/wlOyOd?=
+ =?us-ascii?Q?HEZSyHDCZTujcxap8H+O7QwzN7igip1B6C5xGQzQUHx1iEO68hoTM+izW3R3?=
+ =?us-ascii?Q?i7mF8aqBXi7gpOP7FnIZMZskGYFse1Jqar1dHvSEYsm7oaHzQyilJOn+wG3N?=
+ =?us-ascii?Q?2PpMWL5zYFXk5INmCJFk/2Oh4N4p3tIM4m4lopz3KQuypgxOnmlj3sxyNjzn?=
+ =?us-ascii?Q?/PHwtKsFY5I97w8Vn0XXa5xV7A/R37UE7WXl0+9EbqIvZyWKzQwIGXia4YCA?=
+ =?us-ascii?Q?GE0viA2a4ttNfqPDHKj8nEEoSpu+00KSivtQQNvUxkV0T/oKlwa0sFEraDU1?=
+ =?us-ascii?Q?jlv/IxUVM/DWYHyBj6WVGm7CHsbELu8HxrEpNXb3f3pvuXcZ4M3ywle+KlQ4?=
+ =?us-ascii?Q?wvcYLvR8V8feJ/9aiPa31KXtpRuwScuoNRtbyWIs6vwEpHFimPrVzk4FN28/?=
+ =?us-ascii?Q?gtjQopJKOUCsL3jMglBIo/YBoKJpmzVa1+TPGf8PhE2Yyh2ott6ESUgKO4JX?=
+ =?us-ascii?Q?lVxkasXCj1Ra5++ljSSge81YPwUFKlJ//duUZfLLzLtVehnBvzJ3vwCG9KCS?=
+ =?us-ascii?Q?El7gCLj5Jvfliyd5969v1kZhld0i0f0XsNgnaI2ILr+CPPRko/ehjvhlGMvC?=
+ =?us-ascii?Q?M+RoI5XLlfLXZ3TRsP9wJ+ce+JzVBW5e1ktsuYsBi12O5JIa9w6GyQU084Bg?=
+ =?us-ascii?Q?ZxmQB61pH5WFIT2KS/QcycT9WiqErPz6Ura3HlpcUVJzgUC9WteO62gyRfW6?=
+ =?us-ascii?Q?1xzCCIc3dNFP6M+RLz3ptISnrpBIXZVSFPDElbH6q4wIZM379JzBy9gFyb2S?=
+ =?us-ascii?Q?YMtmdh6VLgtfanTsJck8zTCp+a3PrJ4f6dWGXkE1lHHX/xrvOxZaEafWyHAt?=
+ =?us-ascii?Q?hcpWxVziMBY7D0JW5+GPzEYKBT00lsbid6z5Kl25ZSWW5yyVAJgBSY6AB3qi?=
+ =?us-ascii?Q?my60vXrxmD2JbQoI520DBbGMz/UyBGY5wGqAZ8N/Pzk5LBbsu2vzxUDCt8G5?=
+ =?us-ascii?Q?ZaHRndmTa4OZj5I3R13dtUjzO11s7Lo96OD3CFRncOFU6jZjKHyS7eIVh0U3?=
+ =?us-ascii?Q?LyvTYkIzb0ZqtV8cTh0FrFSeTU7T9lj2Oll558kSpk1AjTOYktI0ZaPJjFyd?=
+ =?us-ascii?Q?pWWcjUTzsKC0Jfw61PyU4WdXWmY7l3nQ4E2ckrOKK2TOZM4ngMDwvpXY8g20?=
+ =?us-ascii?Q?gLZtbjKzXDirLsUchSQpRQCxQCugY+WiJJGwlwI0fj4rM/PHywr4D7UFjwnV?=
+ =?us-ascii?Q?ovk9eziAeQ9DyFdO2ldXQ+Sky1h1n7B3KsC3Yf+lLDuLybN9OMRlojqWnaQj?=
+ =?us-ascii?Q?DZMuNYmwMcl98tENK4kRrWUv25UIlGvG54K3f+LJZMN3eNXp1Z0z1HktP4Ex?=
+ =?us-ascii?Q?b6PO3REjCZCFJ1Apev5gVJQprhzFsuFkm5c8rPoWirkdeoQHCLRbAWBvaxpJ?=
+ =?us-ascii?Q?V3VYWwWC5yOLDPzmlOtpiT0+LB+tsGD/PdyytSUb5o3q/U7iLqCxeyCitwVF?=
+X-MS-Exchange-AntiSpam-MessageData-1: 4tA512h2Yt2sTw==
 X-OriginatorOrg: altera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c569368-a1f9-4f4d-02ab-08deed14199c
+X-MS-Exchange-CrossTenant-Network-Message-Id: e15379f1-39ac-428b-6817-08deed141a78
 X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 01:52:52.2771
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 01:52:53.6351
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e0APYYuz7sujc1OfJSCsK9khg0wHjzZgcbKAUQrds1chEduEDeHf6RMDhVQavaEbNMdUGjxUE2SdHbdK+lkyFjK3omfcFkf6i6CpK5dHEWDUHus7LFYPPoEejynRvybimmTRjW8zeeb47Zd7sbnoRg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: yIcHxspxoYjYyFMChjyaRCFhPn5kGTsMEW7++GZ+hK2eO5SDGDeyZmhlixJvv0MhqbMLrs94unGTnIgxScY7tBGex9+gAekAVSyEnfU2pdLG8AQdu0EQutS2ea6x45KSdb7eGI7oQEyjWkKy/84Jog==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR03MB7550
 
 From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 
-When FPE is not supported by the driver, stmmac_fpe_init() prints a
-warning but falls through into the pmac_enabled initialization, which
-should only be reached on supported hardware. Add the missing return
-to prevent this.
+The Frame Preemption Residue Queue (fprq) controls which Rx queue
+receives residual preemptive mPackets from the pmac. This is a pmac
+concern, not a TX concern, so move its configuration from
+stmmac_fpe_configure_tx() to stmmac_fpe_configure_pmac() where it
+logically belongs.
+
+Use u32_replace_bits() instead of the open-coded mask/shift sequence.
 
 Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
 Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_fpe.c  | 20 +++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
-index 2f880c5e35b0..3436e962a238 100644
+index 3436e962a238..27e500edc8ac 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
-@@ -174,8 +174,10 @@ void stmmac_fpe_init(struct stmmac_priv *priv)
- 			  &stmmac_mmsv_ops);
+@@ -47,20 +47,13 @@ static void stmmac_fpe_configure_tx(struct ethtool_mmsv *mmsv, bool tx_enable)
+ 	struct stmmac_fpe_cfg *cfg = container_of(mmsv, struct stmmac_fpe_cfg, mmsv);
+ 	struct stmmac_priv *priv = container_of(cfg, struct stmmac_priv, fpe_cfg);
+ 	const struct stmmac_fpe_reg *reg = cfg->reg;
+-	u32 num_rxq = priv->plat->rx_queues_to_use;
+ 	void __iomem *ioaddr = priv->ioaddr;
+-	u32 value;
  
- 	if ((!priv->fpe_cfg.reg || !priv->hw->mac->fpe_map_preemption_class) &&
--	    priv->dma_cap.fpesel)
-+	    priv->dma_cap.fpesel) {
- 		dev_info(priv->device, "FPE is not supported by driver.\n");
-+		return;
-+	}
+-	if (tx_enable) {
++	if (tx_enable)
+ 		cfg->fpe_csr = STMMAC_MAC_FPE_CTRL_STS_EFPE;
+-		value = readl(ioaddr + reg->rxq_ctrl1_reg);
+-		value &= ~reg->fprq_mask;
+-		/* Keep this SHIFT, FIELD_PREP() expects a constant mask :-/ */
+-		value |= (num_rxq - 1) << __ffs(reg->fprq_mask);
+-		writel(value, ioaddr + reg->rxq_ctrl1_reg);
+-	} else {
++	else
+ 		cfg->fpe_csr = 0;
+-	}
++
+ 	writel(cfg->fpe_csr, ioaddr + reg->mac_fpe_reg);
+ }
  
- 	/* The preemptive MAC in DWMAC is always enabled, so initialize
- 	 * pmac_enabled to true to reflect the hardware state.
+@@ -68,6 +61,7 @@ static void stmmac_fpe_configure_pmac(struct ethtool_mmsv *mmsv, bool pmac_enabl
+ {
+ 	struct stmmac_fpe_cfg *cfg = container_of(mmsv, struct stmmac_fpe_cfg, mmsv);
+ 	struct stmmac_priv *priv = container_of(cfg, struct stmmac_priv, fpe_cfg);
++	u32 num_rxq = priv->plat->rx_queues_to_use;
+ 	const struct stmmac_fpe_reg *reg = cfg->reg;
+ 	void __iomem *ioaddr = priv->ioaddr;
+ 	unsigned long flags;
+@@ -83,6 +77,12 @@ static void stmmac_fpe_configure_pmac(struct ethtool_mmsv *mmsv, bool pmac_enabl
+ 
+ 			value |= reg->int_en_bit;
+ 		}
++		/* Frame Preemption Residue Queue is the Rx Queue to which
++		 * residual preemptive mPackets must be forwarded from the pmac.
++		 */
++		writel(u32_replace_bits(readl(ioaddr + reg->rxq_ctrl1_reg),
++					num_rxq - 1, reg->fprq_mask),
++		       ioaddr + reg->rxq_ctrl1_reg);
+ 	} else {
+ 		value &= ~reg->int_en_bit;
+ 	}
 -- 
 2.43.7
 
