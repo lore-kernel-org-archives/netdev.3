@@ -1,147 +1,119 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2DB38AC7B;
-	Wed, 29 Jul 2026 15:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787213C1D57;
+	Wed, 29 Jul 2026 15:53:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785340232; cv=none; b=ZxcTCzQhPqPovQ2hPJSG9I4RT5accIcm3XzRHB2uzbgSF+s6jqpSOELv6l15jnhYIQgtP8ZGPlrET6MTE2DRuzujELmhgTAO0yem2QRzZG4/2Y9J/JuemwQ5MoR9YfD1J7NGFraSEGRWxYMw/EYM4VOpJPNsIg54qsb5wCbglaU=
+	t=1785340410; cv=none; b=t23INmPilwW3ktOnlMclKs45NKDMYkf5I/j1y2qRaI21k+te828xzGd+ouHsaHI415eD4BNXkZUqlssLqnkfL+F2uhcbwl5bWUchkuDHbeSrYu/A1oJF7lQ9Xyli+sXq+ka/7891s0raM19IvDw0rxANG2/fGVDNNeeLOJWFv9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785340232; c=relaxed/simple;
-	bh=pwWkIUS9sK37NnKiXpE1htndIOMB81AUrFGe5/y+kLE=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Swqu5mOBbUZ/SJ9qHeq1R69A5SY1vnZoAY1uapiSArYohCgJY1/0Nw+ZFdd8VH/Z7CtTix7BUCBcct4vspex4sHitOS1IfVjp7pT4qJC7QgivpO0mSkL/sVNiIFx3+J2NpVcdWMyxfoKP6eGXHpqOHbajK7+hMf+iklZzz/TaEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=e+CL960T; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1785340410; c=relaxed/simple;
+	bh=syVwcaNFaFiBzJd8qnTeh3wk25Xvs8vqXrgriUMbe/0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NLu94ZubFuVe/JrBSxlqutwEMytwuCsgrwnj3YMZ1BgVukVfQXxUscf3qnMSqNeFBPEFAVLBCMqST127fApnueVQso7LSapuWccEg5HsdaojPPkxr68mx9ggYhd63MfUQdtUEIQjurpd7EYLnVupFnzv9z8UXuxiETZDtUwPWA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=HzIJRokq; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="e+CL960T"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1wp6Xt-007kQ6-It; Wed, 29 Jul 2026 17:50:13 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
-	bh=WoKkcEm2o8tc6OKBW/w1WiRDrfEtv48TvFBcds5hUV0=; b=e+CL960TfwnuGQY1qpF9Bz+Qq6
-	5QpAX505WcCsAy0X4HJiBo9ZnhgRTIbojfnr/zTvMyptIlaoeoF2Em+nxSsHrD6Pdmj0yTRHgQqxl
-	cTAD1TO2gvmFV2b/gZzCrjsIprv3HnjfRjKH98dkPWoA548rrsVBqq+gRd6N2LUV4Sc6+V4xxCWfR
-	ZM91TkY35qF1jjxJfkeRFsKCU3bNaF5cMwTe8Kvdhh+dk6/TFo+1MCEQClh5h+ZtrHHASrZA0s5XA
-	zJ5x7MnjkbLKewxTEU761e6qiQAjAOmB84M3PGMwHFrC/A4IxnRdvJjFIMyeVf3+E6w912b3RxYQt
-	cdc8Jxng==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1wp6Xn-0003iG-Mq; Wed, 29 Jul 2026 17:50:07 +0200
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1wp6Xc-004Cwc-Jn;
-	Wed, 29 Jul 2026 17:49:56 +0200
-Message-ID: <bf3a61f0-cd82-4796-a3ce-d6de8c8dd7ae@rbox.co>
-Date: Wed, 29 Jul 2026 17:49:54 +0200
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="HzIJRokq"
+Received: from LAPTOP-99KJFSET (unknown [36.153.54.46])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 480c54625;
+	Wed, 29 Jul 2026 23:53:23 +0800 (GMT+08:00)
+From: Hongyan Xu <getshell@seu.edu.cn>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: getshell@seu.edu.cn,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn
+Subject: [PATCH net-next v3 RESEND] net: phy: nxp-tja11xx: cancel registration work on remove
+Date: Wed, 29 Jul 2026 23:53:22 +0800
+Message-ID: <20260729155322.319-1-getshell@seu.edu.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Michal Luczaj <mhal@rbox.co>
-Subject: Re: [PATCH] vsock: use sock_error() to consume sk_err after connect
- timeout
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "Nguyen Dinh Phi [SG]" <phind.uet@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <b81bfea4-6b19-4cc8-95c0-dcd4ad42476e@gmail.com>
- <95cd0d4e-58c9-44ab-b94f-fcf57b88583b@rbox.co>
- <amHN9mOGj7oMak4-@sgarzare-redhat>
- <27412e44-ab4b-4dd3-9685-481875683860@gmail.com>
- <a6cb1b8f-d8cf-412a-a204-3a26e4db0bd0@rbox.co>
- <6b684c2f-1f98-43ea-84c9-9b6f162d5e9f@gmail.com>
- <amhmjLa9DjNFKgmb@sgarzare-redhat>
- <a4c89c00-ddbe-4278-b386-b83d2b859a70@gmail.com>
- <amn5vWcyY0f5ErEM@sgarzare-redhat>
- <e7ff506a-850d-4d7c-8346-c6fef9ad8553@rbox.co>
- <amoACichDryCaVsG@sgarzare-redhat>
-Content-Language: pl-PL, en-GB
-In-Reply-To: <amoACichDryCaVsG@sgarzare-redhat>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9fae949c8503a1kunmfb884c4112123f
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDS04eVhpISUsaSk4aTUhOHVYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlITVVKTkhVTk9VT01ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
+	xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=HzIJRokqXD1P9mPbLkd+NBapAPXlxMej/9b7gaTVW/BlK3YYkZHECzAofMt4GRsDDJofjXb/xqeTtlrKiVAFEPkP1Hzu1Bi9taKNnMR8/9jEGOgPLsVYHcSKpraIxdoVARaVY5Bh/7mVCfvtdowwej4H8EruQ9sxt65VnnbFPRg=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=5WjZLW/BLefPEIg1Hvp4YtOiEL/dW36wrtHsS/joX0g=;
+	h=date:mime-version:subject:message-id:from;
 
-On 7/29/26 15:29, Stefano Garzarella wrote:
-> On Wed, Jul 29, 2026 at 03:20:38PM +0200, Michal Luczaj wrote:
->> On 7/29/26 15:03, Stefano Garzarella wrote:
->>> On Wed, Jul 29, 2026 at 05:46:29PM +0800, Nguyen Dinh Phi [SG] wrote:
->>>> On 28/7/26 16:21, Stefano Garzarella wrote:
->>>>> On Fri, Jul 24, 2026 at 03:34:23PM +0800, Nguyen Dinh Phi [SG] wrote:
->>>>>> On 24/7/26 05:43, Michal Luczaj wrote:
->>>>>>> On 7/23/26 12:26, Nguyen Dinh Phi [SG] wrote:
->>>>>>>>>>>> ...
->>>>>>>>>>>> Yeah, we need to handle that part better, I think it's
->>>>>>>>>>>> a leftover when
->>>>>>>>>>>> we generalized AF_VSOCK to support more transport than vmci.
->>>>>>>>>>
->>>>>>>>>> Speaking of leftovers, I have trouble understanding where
->>>>>>>>>> does vsock set
->>>>>>>>>> sk_err on listener sockets anyway. If it doesn't, why vsock_accept()
->>>>>>>>>> checks for it?
->>>>>>>>>
->>>>>>>>> I can't also see where it can be set TBH. Should we remove it ?
->>>>>>>>
->>>>>>>> I couldn't find it for listener side too.
->>>>>>>
->>>>>>> Removing sk_err handling from vsock_accept() solves the problem, right?
->>>>>>>
->>>>>>> thanks,
->>>>>>> Michal
->>>>>>
->>>>>> Yes, confirmed, removing sk_err checks from vsock_accept() does
->>>>>> solve the problem.
->>>>>
->>>>> Okay, so maybe better on going on this direction. WDYT?
->>>>>
->>>>> Stefano
->>>>>
->>>>
->>>> I'm still a bit concerned about how connect() and poll() interact
->>>> here, even with the sk_err checks removed from vsock_accept().
->>>>
->>>> For example:
->>>> vsock_accept() now lets us reuse a socket whose connect() failed (call
->>>> it r0) as syzbot reproducer does. After listen(), r0 becomes a
->>>> listener (sk_state == TCP_LISTEN) and works correctly -- it accepts
->>>> connections.
->>>>
->>>> But poll() on r0 still marks POLLERR, even though there is no error on
->>>> that socket at that point.
->>>>
->>>> As I understand it, sk_err holds an error that has not yet been
->>>> reported to userspace. In the blocking vsock_connect() case we have
->>>> already read that error and returned it to the caller, so it is no
->>>> longer pending
->>>> Shouldn't sk_err be consumed/cleared when vsock_connect() returns it
->>>> to userspace?
->>>
->>> Yeah, makes sense to me, I'll ack the v2.
->>> @Michal WDYT?
->>
->> I'm worried this patch does not address the non-blocking connect() case.
->> Could vsock_connect_timeout() set `sk->sk_err = ETIMEDOUT` after connect()
->> returns?
-> 
-> This is a good point!
-> 
-> So we still need to remove `sk_err` check in vsock_accept(), or set 
-> `sk->sk_err = 0` in vsock_listen() to have a complete fix, right?
+tja1102_p0_probe() schedules work to register the second port. That work
+uses the Port 0 private data and phydev. The private data is
+devm-allocated, but the driver does not wait for the pending work on
+remove.
 
-Yup, that's my understanding as well.
+Store the Port 0 private data in phydev->priv and add a remove callback.
+The callback cancels the registration work before devres teardown frees
+the state.
 
-That said, I'm not against flushing sk_err on a failed blocking connect()
-(this patch) as a follow up, if you guys agree that makes vsock behave like
-other socket families.
+This issue was found by a static analysis tool.
+
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Hongyan Xu <getshell@seu.edu.cn>
+---
+RESEND:
+- resend v3 as a new independent thread as required by netdev
+- no code changes
+
+v3:
+- drop the Fixes tag
+- target net-next instead of net
+- no code changes
+
+v2: https://lore.kernel.org/netdev/20260729091621.1726-1-getshell@seu.edu.cn/
+v1: https://lore.kernel.org/netdev/20260728123423.781-1-getshell@seu.edu.cn/
+
+ drivers/net/phy/nxp-tja11xx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/net/phy/nxp-tja11xx.c b/drivers/net/phy/nxp-tja11xx.c
+index 07e94a247..68062a4c5 100644
+--- a/drivers/net/phy/nxp-tja11xx.c
++++ b/drivers/net/phy/nxp-tja11xx.c
+@@ -620,6 +620,7 @@ static int tja1102_p0_probe(struct phy_device *phydev)
+ 		return -ENOMEM;
+ 
+ 	priv->phydev = phydev;
++	phydev->priv = priv;
+ 	INIT_WORK(&priv->phy_register_work, tja1102_p1_register);
+ 
+ 	ret = tja11xx_hwmon_register(phydev, priv);
+@@ -631,6 +632,13 @@ static int tja1102_p0_probe(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++static void tja1102_p0_remove(struct phy_device *phydev)
++{
++	struct tja11xx_priv *priv = phydev->priv;
++
++	cancel_work_sync(&priv->phy_register_work);
++}
++
+ static int tja1102_match_phy_device(struct phy_device *phydev, bool port0)
+ {
+ 	int ret;
+@@ -847,6 +855,7 @@ static struct phy_driver tja11xx_driver[] = {
+ 		.features       = PHY_BASIC_T1_FEATURES,
+ 		.flags          = PHY_POLL_CABLE_TEST,
+ 		.probe		= tja1102_p0_probe,
++		.remove		= tja1102_p0_remove,
+ 		.soft_reset	= tja11xx_soft_reset,
+ 		.config_aneg	= tja11xx_config_aneg,
+ 		.config_init	= tja11xx_config_init,
+-- 
+2.50.1.windows.1
