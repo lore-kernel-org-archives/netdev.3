@@ -1,179 +1,586 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D68449B22;
-	Wed, 29 Jul 2026 10:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785322049; cv=fail; b=JXjRNXCfjV7x7Qn/E6osNO8HNyd/RoVid5QWqU/MApaZThPmtR6eJ7iQBLVGX35qFgQWaLiVRlHWkDVyNka2yInnkq6v+VZOSkjoMElK5sY6SCrtD0qjKJkkNpVAMRs4SHC7dJARZRkm6o6/qiLTp/2yTTKXmtjMfzI4ygk+uGc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785322049; c=relaxed/simple;
-	bh=jw/sTpaDhYEtH+jH3Un+rOPRqAM/zuIgOCr/lykaiQ0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=g3Q3eIHbNeW89JP0h79Mp0wcvvocBe80YAJudpQy+9hlo3cMoKEu7FJY4mvfCruPElwO/QWhaLVLH4htjGQ70ff0xsSZ5/8L/eGZcjNK2tXIYn5eBsQ3lwZgmoVWb24rSo7KeI1YKt3ZjFWm5/tTyToNpaUmIaPuSIumlrXgZ4g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y66nsS5w; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E547045D5F5;
+	Wed, 29 Jul 2026 10:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785322324; cv=none; b=UWqnYoHy/I3CjHfp1SOUanDXjMK28cOwsZzFCKI4NeIzJfI5WHmrc7ndmVEoMDLH5w7pTfzX2Uy2aMA9Pq1cj24ibR9lCDvXkeCZx6Fv6yOSde1T6Jpm1cHCqDb7N3uAjrLm3KF8wgZPi7VB7IzdpmmEyvc1wvcREw3zJyNiW8I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785322324; c=relaxed/simple;
+	bh=ZKqr8Q7PDfW5trUVdHBfReL2nKkW0mIAJvujhMcYmgs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sUHa+zg9SK2/5YyrFLWue7+6Ef/TZIuxVZdob4xfyyVFuwU1gEAPs/yGks5MLjzfScjECvPn40fA1qNSuGAGLGGYy45hKvObAeUPB8SVOe8r1ZUc285WDh0k7bDVUZULOrkUEx8C7jkeNnisd15E0KCKHjy+4EvqBxhTOKAq+1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=PsSQwC6c; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y66nsS5w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785322047; x=1816858047;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=jw/sTpaDhYEtH+jH3Un+rOPRqAM/zuIgOCr/lykaiQ0=;
-  b=Y66nsS5wojx92w0Av1gC6OYTfC9UH7c3J1E4XmwJZ9cr8Q7PaTg0cEzP
-   D4cmPT7I/2tgsUg3hhr1cfYiJPS8W0d0HrGnUuLNi+ubJLMmbNUufMOk0
-   FwY5lGEg8Z5oQH0dfQCwWUjvXH1TBV3c+mrMAfkzfZbGa2aR+iqJ198lx
-   8PUSyKfTmd3OTfJsb6vBHlaQrXaph+LaYo436vF8hKZE183egKsCoSzem
-   fV1nNzs2OEAtX3C9hXep15ECwBc/BxC9ok/okrkOl52y7rQPgjb8iqlif
-   W5RF0xfiaJpdmtiY9WJPXhgPszYyCUM3hkNzULXI/b1h1zw00p5FOGyTh
-   g==;
-X-CSE-ConnectionGUID: lcoLO1Q8TLutld9fzQQrbQ==
-X-CSE-MsgGUID: H1JMLnZcTPalWMfHAkr7uA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="97435151"
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
-   d="scan'208";a="97435151"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 03:47:26 -0700
-X-CSE-ConnectionGUID: xRq1MbAIQu6GBBmPHdNUJA==
-X-CSE-MsgGUID: myo0wlK8RmS9lWJSPXRsow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
-   d="scan'208";a="253636147"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 03:47:26 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="PsSQwC6c"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66T7glvd1854591;
+	Wed, 29 Jul 2026 03:51:49 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=mtxTlVxknM42QNPtj6seder
+	Wt/tu/rKb5jSQ6+GoRR0=; b=PsSQwC6cD3c4276Dp0mYm/WE2/CHmhQfC7KuG6D
+	PDsnL3DtqS4jQz5w4dyCzE35Rc1rhM/4WGg28W+uQwYYaMeziEQ4yB8CypYzG6xx
+	sFU2IA2oJFGpQ3Xxqf1GeVEP0OqNnoiyrNoWIWo9bv/TMRXTevUORVJ5yZHjt6P5
+	iWXQCQ+/jtXj1Wvg3KdWhTBCI3uquqFSoKmICrSmTXbz6IlIa0FGgz104e8NU3lh
+	zodzlHyFC6aqvw+ON9hWLmlqXWpH0XUUg/FTIgS5Ie09Kt5Ikg8E/g0pO6KPNo80
+	b2d/w7O+/VzXfzRJtemalqTMa3KlzhAmBwrFL/75KVIuzSg==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fq0f02sj7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jul 2026 03:51:49 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 29 Jul 2026 03:47:25 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 29 Jul 2026 03:47:25 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.61) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 29 Jul 2026 03:47:25 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bEJARZTCTe6suDdnorbNQ8B4w53hLK3WNC6NK9Rpmqlk/XPR/qMzBMKBp9qHS/NKX0XnTQGrIgToV78XStcZ2QBNGW6pbxdGNMBZLMPQweUAHDSlIMLzzliJe2JssNvqeTfI+iPO3NejcNkDbfwSSP9rKiHOYZ8LjIFLIfWeeoNRFq3eWsIuJ4G2bIkwTi6soUQy7gRoiav1uLBfh8pcOj128Ry6pZZj8voWZLo1hKcR804gLsq1abThmdoslsCiv+bF6clLb0TnGEJyncso1JzewsXBt08cp1LVdwzJtWTJxNOFaPuWNuIphYq5ZDvWTsSFT877CIN8My9QgnF1+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jw/sTpaDhYEtH+jH3Un+rOPRqAM/zuIgOCr/lykaiQ0=;
- b=psFz7uqGWVVr74+mZa7B7hGg0/dNnA+otEe8H9bSAOtynVEe43NEzHDQxyQGYjqiblj97N+uUzsDgrPZqJWAFz839IF73bTabx/72TkS4s9xPebUKkvKU7Nu7Cv+VlkTnGGfbJUP/QNZCu0+XSLAFniT7Z5a7QR0lNPUgomvlZ8YZwrgoa8ogcGJAM8Gcbk2vl6bzBQWwCPbuY4ub1LuN9tFjVfbWhEmglhTBmUM8QkSTXBxe+snBxIkFAZP1Z3cz4p6gioJbgsnFtW1YNBBoYdGO7HkVmUfRoI49W+ezp7Ce+qx3vC3Wu/L+R8C++wer86VBGjNF9OtgLynnO4o6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH0PR11MB5902.namprd11.prod.outlook.com (2603:10b6:510:14d::19)
- by IA4PR11MB9372.namprd11.prod.outlook.com (2603:10b6:208:568::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
- 2026 10:47:22 +0000
-Received: from PH0PR11MB5902.namprd11.prod.outlook.com
- ([fe80::f95a:602a:34d3:5d37]) by PH0PR11MB5902.namprd11.prod.outlook.com
- ([fe80::f95a:602a:34d3:5d37%4]) with mapi id 15.21.0270.012; Wed, 29 Jul 2026
- 10:47:22 +0000
-From: "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>
-To: Subrat Pandey <subratp@marvell.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: "pabeni@redhat.com" <pabeni@redhat.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "edumazet@google.com" <edumazet@google.com>,
-	"davem@davemloft.net" <davem@davemloft.net>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "sbhatta@marvell.com" <sbhatta@marvell.com>,
-	"rkannoth@marvell.com" <rkannoth@marvell.com>, "gakula@marvell.com"
-	<gakula@marvell.com>, "sgoutham@marvell.com" <sgoutham@marvell.com>
-Subject: RE: [PATCH net 1/3] octeontx2-af: Fix mcs string buffer size
-Thread-Topic: [PATCH net 1/3] octeontx2-af: Fix mcs string buffer size
-Thread-Index: AQHdHyzZac10z06QYk6GlATvhYB2DraEULlQ
-Date: Wed, 29 Jul 2026 10:47:22 +0000
-Message-ID: <PH0PR11MB5902D607518134D4FB323044F0CA2@PH0PR11MB5902.namprd11.prod.outlook.com>
-References: <20260729072337.664479-1-subratp@marvell.com>
- <20260729072337.664479-2-subratp@marvell.com>
-In-Reply-To: <20260729072337.664479-2-subratp@marvell.com>
-Accept-Language: pl-PL, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR11MB5902:EE_|IA4PR11MB9372:EE_
-x-ms-office365-filtering-correlation-id: 7b558a22-e586-4a0f-d6f6-08deed5ec516
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|7416014|3023799007|5023799004|11063799006|56012099006|4143699003|10067099003|18002099003|22082099003|38070700021;
-x-microsoft-antispam-message-info: 2WKGSP4pltM4LK5obfARKou+g6aRAbw2XzaaETrd7L8HBfHM6q6QNLbuAmpxLyyxfgXGq8qwwjVnT+yimdRsNV3TTUGgkQ8uUTtCs6X76kdsG4wBjC7RnXw6PK2TT/lXGSNb2kHcD9/7NdxUEpH9Eq5S8hoZu27RqcdfAaPQdmJI9NPhwB+/miQlzC/RRVsN+kvEQFflW4/mN/kb7FdMavR3yEgBZdQxvVZxTgv6tNbUww5p8VcIvCSrkMWdLoUYqi210zn+/Rzm9Y1+pMp+Skk+MFiTDt2AjL2yy8ZUeH68XRFdlo0ekJoUSrHlEeG8RCvgDzInSpwvGQdl/m2LdiT0OOrzYlbB0iwZvcbzZuYCdLnGuZmxOaV9xoW0C5VS2Hdm2frL5eEMPhOUKUi6Y9VAVWZU+LsJg6lfdaaeXT0OsVs5PSjYsBrxD0b2ZEn9/+DUJf/4UNcaw5KnmPThUxj9MCtjQAWHK/q2LAVqFYnTXDN5gaX+xpZBuK6hJwkxpXbAPKutVrdrEfxXIhewNmm5MUF7ZPMwiq9gwJcj8WrcM3SDUbLbbMFrwC+yRXEpWNH7jwG0MRxyO86ltT1UdKMK1T8wTRSXMAFWqnAHbhsW9QTMNn1qZ20l+QYtQg3ZYOVbv5ACLdA5Yzd4v4WhkqTbV3s/CTUAsZrPJXwjOuSAXzPFudRQBVWdmfLO/giPMtlyuDZsuf4z186QWzKN5vXVlsMk8G/fEQQV1yNYbLc=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5902.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(7416014)(3023799007)(5023799004)(11063799006)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?VvxmiKkhj0+QQUFwGckefOB1HaNzk16P4jZZR9+gmvWV9ROqN8HPsWhFs9Bw?=
- =?us-ascii?Q?tLOLI8Q9RK0bLVfjKNbkGBQd66hyuJBFCVqMaN/0poL/oOXPOzt5g/Z4NOe8?=
- =?us-ascii?Q?njjqw6p+7hMwVXUtYS9w5H7/CsvwfjY/XSLZOTIvYMhH+8HpJM+2N0Rgv9xo?=
- =?us-ascii?Q?1VWj3NscaahkG0mRj/SmEioKqhJATAFlLH98+8jDZ57C7GH1g/XdmE4WIQ1H?=
- =?us-ascii?Q?FlicDzmbGVPZvVWHqqhKWFQ5DPAQFxmlKe6i/CL2JwclBT3DC8NS1wlRLBN1?=
- =?us-ascii?Q?HyDW2CX+Sf4WZWz5AyVjC/dEEiUGKA9z9OHKla3dpucAKv3bgAPp6A+obDhK?=
- =?us-ascii?Q?nYrJxwL7dT3Ofb5SB8sBkaj67SxjhZvXX0SsMdbCnrzYZihwtGRFhbIxIuc/?=
- =?us-ascii?Q?m3URUxLuxSACyh76S5XELanWStAJlHioLd93NKzspMbRHjGEYnZvlgeQmDwf?=
- =?us-ascii?Q?kHPNaJfM1wZT0AHZYzR/ALUqaYJDqkucau+JJJKd0WAsyiKZKHcQwjTH5OKV?=
- =?us-ascii?Q?PXMFbxh2tUegHYhD2cdQT5xwfbKCzOw7p7R1YT3NwB3KFdvBX5soVvhqneVH?=
- =?us-ascii?Q?tQmfY6oe6m9fAHkV0JrWjJ3ok0FHTEzxdjpSh+pitwwFlwVjpTWU3v237VtC?=
- =?us-ascii?Q?ApunFP9Og7cJXjo7A2j1rtciOYktmznqkJfuXTlMGwhLDvWncetJelz3ovei?=
- =?us-ascii?Q?kQH96uKgSGSX2pxwlExiq/4Zva1h3PTGLmisBZCIbkrNu9osARf/6b/K+AcU?=
- =?us-ascii?Q?jRwz2kS9wQnCcX265Yr1SMmb7JEi/EDWsLC/YzsU3QkqIQsmt6hN90ROhUBq?=
- =?us-ascii?Q?NpztYwHndCqw1Kp53l7zkUuDFqekRlYj7OELfjNOVawi9X0eqp3wPSBGoMxX?=
- =?us-ascii?Q?TkGfEK62WEdRBob8aVuqTExPhALaEICyzmtXxjS2LRQMJJf064L/31v0ayC4?=
- =?us-ascii?Q?gRwp/rosN3Y2WX5pQwCj+/OOJMP2MFwOhXj9/BD8RFT+uxFIvPPCmQM/UJDe?=
- =?us-ascii?Q?eY2GZsounnZ4GTIGycILumo8Ip/IDfkDw7619Kay9FPWlIMEAdU++RvrxGLP?=
- =?us-ascii?Q?QHxTwS0SR5LhM2vF7VAzzruJqFR5Wy0M+ULFtL0AF0dBtGlnSHHw8LOLFiDH?=
- =?us-ascii?Q?gpGrWZknVA7gf6LWF88SqfcuvClmxXM6WUtXeDPN+h8Rg3wWZ9qsK5sq+nYq?=
- =?us-ascii?Q?0vKErlOLfsBbqUp2a4wc4/1k8R1uoExk/RIR2sLnJeI5wS0dcOBWivmZBawf?=
- =?us-ascii?Q?TyPXL7ezr0+vKjVEGc2dupn5dSAKoL8REzjIsguKkWgZVz3g5WeJzMgV0TBH?=
- =?us-ascii?Q?R5UxG84AzagiKnoeJmDbrIEAcTrYjyHVPaK3cYJV8kmxd7lf0rNq3Uy63uyN?=
- =?us-ascii?Q?MBOL5PULfQTK210G09+g+kEjReoCuHXdSLTQ3Env07WBBqr0JDY4MMqVOTDO?=
- =?us-ascii?Q?F+iChlGXoJZIFMj6ynUdIEdZTsSUUUFT899oUu7Tf68ln17S7sH1nPTjpmwb?=
- =?us-ascii?Q?KRqtTiOqoGkx6zLpI85V/N6c4JnihfuqzGtYLJej+I+yvFFveWmbCS5IOIs9?=
- =?us-ascii?Q?Ys9ldilLLTvITeX12d1tNktWRxz/p9ovx2ZROgOBxlmiYPaTcQ5MYDa+NLra?=
- =?us-ascii?Q?7ZdwpC8rqpFE1t40FQVWUGvzdyVD1LqSHJ3LdYMIUUesyB/gvhV43AYzUUIf?=
- =?us-ascii?Q?bx20bk01PTwWWWgD/TPp3V5bBgN6xsNGXUsYjA9XMZy2sXcFyGRY1coasMy4?=
- =?us-ascii?Q?4AGDhqS4gw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 15.2.1544.25; Wed, 29 Jul 2026 03:51:48 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 29 Jul 2026 03:51:48 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id E6BD45B6985;
+	Wed, 29 Jul 2026 03:51:44 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        "Ratheesh
+ Kannoth" <rkannoth@marvell.com>
+Subject: [PATCH v3 net-next] octeontx2-pf: add mqprio bandwidth offload for NIX TX schedulers
+Date: Wed, 29 Jul 2026 16:21:39 +0530
+Message-ID: <20260729105139.2302908-1-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: mk0sW4H0xY4/d4kiPT2ODQd/kVUm20EEeRid9JZhUB5G7dL6i1AFzGptHHViold1/DFwl2S0iwhCOzR/fxb6bf9XMsEO1nPsqFPRr86WcAFGXkqFNejf3vtdJ7t78V63tFqCA7+UQELCANqom6r/5vZjU8Sh0EwR2Vf5lYjM0odUuYidYM91hqHdZG0pOU+91jtr8BMbt5pPfW8VklidXKorTS9E8jzdvOzOwcfYY4pwxhcYarfbjhHVoDrdspFYqK1DlBDkloMTgD5pVsYnK30U9a+z5KahlPoq155DiudKpShJv2lHqb615c1d9R9RppfyyTeeg/ZOEnlb6DWykA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5902.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b558a22-e586-4a0f-d6f6-08deed5ec516
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jul 2026 10:47:22.1466
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XqH+YOG14Zb6wRIG5OvIyN+IzTGT7ApPDowAjc2FHG7e8874q7AwjzqTdnH2HuUpfrMbFmt9YinWGYlk73p0qi8qj6IG4lYB8RLtNziVadk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9372
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: HpEKQcE93qE0LLcE5a1mYsiYsFnl3fkN
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI5MDA4OSBTYWx0ZWRfX8eaWZkpl5xRk
+ HSnmj92YARz0RrLlTytpBMeEaTvtG0GAKuIX6UO53+FyKGNUiid3UmjztchG9cS3ilTp70Zj+Zt
+ KBdT/v2NwloUeXvsUd8TFD8LFNPYSyJ/Bi0bJAcVZ4k5BSeQgCcPl2x+btGH2PPk0jAXxzuhOWU
+ d/ULSrMheaVaSXOL+fWhCOKnnRa0hfLiciVNrdEkSKb2GtFFZxMzDcdkd/SB4ojKNf7GCk/eYjf
+ 3izRVkkMzS5tojaQ7sOvLfXziA9CRzmMkj5NFAZ9Mw8bXEyA6+krcamhM2QUuDR3kwlmRIepu13
+ xQNN3D9hxLS0jlvYRusRKNXASn6o4KJqvismDTBJkuWs83zqp6olu4mVGlzrjVMX8w6q8d4Osi3
+ 5Pba5om47qfS2vb4IIOjWppqEi7nHXQjJepWqyX01iZxHJ20OnlHIIOplE1NEu5pZyROlS9r/J4
+ 2dGjXyO/yxDU9ltxUTg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI5MDA4OSBTYWx0ZWRfXxcMmYxgfHuFU
+ Zf+SGM/Pu88uIRpbGaYebeMP39jZIvAMuOCEViKSF0+lSZd61+0MTY/oZ9e7mkZlxuUmv+KAPTI
+ B9t9NqVKGaq2UBWaljpMis33Qj+kavk=
+X-Authority-Analysis: v=2.4 cv=NOLlPU6g c=1 sm=1 tr=0 ts=6a69db45 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=QXcCYyLzdtTjyudCfB6f:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
+ a=EEwmCyV0ucGzzqY6WMQA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: HpEKQcE93qE0LLcE5a1mYsiYsFnl3fkN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-29_03,2026-07-28_02,2025-10-01_01
 
-From: Subrat Pandey <subratp@marvell.com>=20
-Sent: Wednesday, July 29, 2026 9:24 AM
+Add TC_SETUP_QDISC_MQPRIO handling to program per-queue MDQ CIR/PIR
+shaping after mqprio channel mode setup, widen SMQ allocation when
+per-queue rate limiting is enabled, and align MDQ parents under that
+mode. Reuse otx2_convert_rate for bps-to-Mbps, fix sparse register
+writes when only one of min/max is set, and improve AF txschq map
+mismatch diagnostics.
 
->From: Stefan Wiehler <stefan.wiehler@nokia.com>
->
->The "mcs%d" name is built with the unbounded sprintf(), which writes
->without any regard for the size of the destination buffer and can
->overrun it. Switch to snprintf() with sizeof() so the formatted write
->is always clamped to the buffer. The buffer is also enlarged to
->24 bytes to comfortably hold the string for any MCS block index.
+Configuration examples:
 
-Hi Subrat
+1) Set up commands
 
-Is this something that can actually occur during any real scenario?
+a. ifconfig eth0 xx.xx.xx.xx up
+b. tc qdisc add dev eth0 parent root handle 100 mqprio num_tc 4 \
+   map 0 1 2 3  queues 1@0 1@1 1@2 1@3  hw 1 mode channel shaper \
+   bw_rlimit \
+   min_rate 100Mbit 200Mbit 300Mbit 400Mbit \
+   max_rate 150Mbit 250Mbit 350Mbit 450Mbit
 
->
->Fixes: d06c2aba5163 ("octeontx2-af: cn10k: mcs: Add debugfs support").
->Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
->Signed-off-by: Subrat Pandey <subratp@marvell.com>
+c. iptables -t mangle -A POSTROUTING -p udp -j CLASSIFY --set-class 0:1
+
+This will guarantee max rate as 250Mbits for UDP traffic
+
+2) Tear down mqprio
+
+a. ifconfig eth0 up
+b. tc qdisc del dev eth0 root
+
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+
+---
+
+v2 -> v3: Addressed sashiko comments
+	https://lore.kernel.org/netdev/amnYX866mYx02cBe@rkannoth-OptiPlex-7090/T/#m67310cbec48b21c7720858ab3a1ea083a0f8dc10
+v1 -> v2: Addressed sashiko comments
+	https://lore.kernel.org/netdev/20260724075010.2665758-1-rkannoth@marvell.com/
+---
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   |   6 +-
+ .../marvell/octeontx2/nic/otx2_common.c       | 142 ++++++++++++++-
+ .../marvell/octeontx2/nic/otx2_common.h       |   5 +
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |   2 +
+ .../ethernet/marvell/octeontx2/nic/otx2_tc.c  | 169 ++++++++++++++++++
+ .../net/ethernet/marvell/octeontx2/nic/qos.c  |  12 ++
+ .../net/ethernet/marvell/octeontx2/nic/qos.h  |   1 +
+ 7 files changed, 335 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index dade7bb6deb7..c509b50a1ef7 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -323,8 +323,12 @@ static bool is_valid_txschq(struct rvu *rvu, int blkaddr,
+ 			return true;
+ 	}
+ 
+-	if (map_func != pcifunc)
++	if (map_func != pcifunc) {
++		dev_err_ratelimited(rvu->dev,
++				    "pcifunc %x map pcifunc %x not equal, lvl=%u schq=%u\n",
++				    pcifunc, map_func, lvl, schq);
+ 		return false;
++	}
+ 
+ 	return true;
+ }
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index ca73a94db794..b11c4af38dd8 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -614,6 +614,139 @@ void otx2_get_mac_from_af(struct net_device *netdev)
+ }
+ EXPORT_SYMBOL(otx2_get_mac_from_af);
+ 
++static int
++otx2_nix_tmq_reg_write(struct otx2_nic *pfvf, int cnt,
++		       u64 reg_addr[MAX_REGS_PER_MBOX_MSG],
++		       u64 reg_val[MAX_REGS_PER_MBOX_MSG])
++{
++	struct mbox *mbox = &pfvf->mbox;
++	struct nix_txschq_config *req;
++	int i, err;
++
++	mutex_lock(&mbox->lock);
++	req = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
++	if (!req) {
++		mutex_unlock(&mbox->lock);
++		return -ENOMEM;
++	}
++
++	req->lvl = NIX_TXSCH_LVL_MDQ;
++	req->num_regs = cnt;
++
++	for (i = 0; i < cnt; i++) {
++		req->reg[i] = reg_addr[i];
++		req->regval[i] = reg_val[i];
++	}
++
++	err = otx2_sync_mbox_msg(mbox);
++	mutex_unlock(&mbox->lock);
++
++	return err;
++}
++
++int otx2_nix_tm_clear_queue_shaper(struct otx2_nic *pfvf)
++{
++	u64 reg_addr[MAX_REGS_PER_MBOX_MSG];
++	u64 reg_val[MAX_REGS_PER_MBOX_MSG];
++	DECLARE_BITMAP(slots, 2048);
++	int err, smq, q, cnt = 0;
++
++	bitmap_zero(slots, 2048);
++
++	for (q = 0; q < pfvf->hw.non_qos_queues; q++) {
++		smq = otx2_get_smq_idx(pfvf, q);
++		if (test_bit(smq, slots))
++			continue;
++
++		reg_addr[cnt] = NIX_AF_MDQX_PIR(smq);
++		reg_val[cnt] = 0;
++		cnt++;
++
++		reg_addr[cnt] = NIX_AF_MDQX_CIR(smq);
++		reg_val[cnt] = 0;
++		cnt++;
++
++		set_bit(smq, slots);
++
++		if (cnt < MAX_REGS_PER_MBOX_MSG - 1)
++			continue;
++
++		err = otx2_nix_tmq_reg_write(pfvf, cnt,
++					     reg_addr, reg_val);
++		if (err)
++			goto fail;
++		cnt = 0;
++	}
++
++	if (cnt) {
++		err = otx2_nix_tmq_reg_write(pfvf, cnt,
++					     reg_addr, reg_val);
++		if (err)
++			goto fail;
++	}
++
++	return 0;
++fail:
++	return err;
++}
++
++int otx2_nix_tm_set_queue_shaper(struct otx2_nic *pfvf,
++				 int txq, u64 minrate, u64 maxrate)
++{
++	struct mbox *mbox = &pfvf->mbox;
++	struct nix_txschq_config *req;
++	int err, smq, n = 0;
++	u64 reg_addr[2];
++	u64 reg_val[2];
++	u64 rate;
++
++	if (!maxrate && !minrate) {
++		smq = otx2_get_smq_idx(pfvf, txq);
++		reg_addr[0] = NIX_AF_MDQX_PIR(smq);
++		reg_val[0] = 0;
++		reg_addr[1] = NIX_AF_MDQX_CIR(smq);
++		reg_val[1] = 0;
++		return otx2_nix_tmq_reg_write(pfvf, 2, reg_addr, reg_val);
++	}
++
++	/* min-only shaping needs CIR, unsupported on OTX2/96xx */
++	if (minrate && !maxrate &&
++	    !test_bit(QOS_CIR_PIR_SUPPORT, &pfvf->hw.cap_flag))
++		return -EOPNOTSUPP;
++
++	smq = otx2_get_smq_idx(pfvf, txq);
++
++	mutex_lock(&mbox->lock);
++	req = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
++	if (!req) {
++		mutex_unlock(&mbox->lock);
++		return -ENOMEM;
++	}
++
++	req->lvl = NIX_TXSCH_LVL_MDQ;
++
++	if (maxrate) {
++		req->reg[n] = NIX_AF_MDQX_PIR(smq);
++		rate = otx2_convert_rate(maxrate);
++		req->regval[n] = otx2_get_txschq_rate_regval(pfvf, rate, 0);
++		n++;
++	}
++	/* Don't configure CIR when both CIR+PIR not supported
++	 * On 96xx, CIR + PIR + RED_ALGO=STALL causes deadlock
++	 */
++	if (minrate && test_bit(QOS_CIR_PIR_SUPPORT, &pfvf->hw.cap_flag)) {
++		req->reg[n] = NIX_AF_MDQX_CIR(smq);
++		rate = otx2_convert_rate(minrate);
++		req->regval[n] = otx2_get_txschq_rate_regval(pfvf, rate, 0);
++		n++;
++	}
++	req->num_regs = n;
++
++	err = otx2_sync_mbox_msg(mbox);
++	mutex_unlock(&mbox->lock);
++	return err;
++}
++
+ int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for_pfc)
+ {
+ 	u16 (*schq_list)[MAX_TXSCHQ_PER_FUNC];
+@@ -650,7 +783,11 @@ int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for
+ 						(u64)hw->smq_link_type);
+ 		req->num_regs++;
+ 		/* MDQ config */
+-		parent = schq_list[NIX_TXSCH_LVL_TL4][prio];
++		if (pfvf->flags & OTX2_FLAG_PER_Q_RATE_LIMIT_ENABLED)
++			parent = schq_list[NIX_TXSCH_LVL_TL4][0];
++		else
++			parent = schq_list[NIX_TXSCH_LVL_TL4][prio];
++
+ 		req->reg[1] = NIX_AF_MDQX_PARENT(schq);
+ 		req->regval[1] = parent << 16;
+ 		req->num_regs++;
+@@ -778,6 +915,9 @@ int otx2_txsch_alloc(struct otx2_nic *pfvf)
+ 		req->schq[NIX_TXSCH_LVL_TL4] = chan_cnt;
+ 	}
+ 
++	if (pfvf->flags & OTX2_FLAG_PER_Q_RATE_LIMIT_ENABLED)
++		req->schq[NIX_TXSCH_LVL_SMQ] = pfvf->hw.non_qos_queues;
++
+ 	rc = otx2_sync_mbox_msg(&pfvf->mbox);
+ 	if (rc)
+ 		return rc;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+index eecee612b7b2..7ad29c5833cb 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -512,6 +512,7 @@ struct otx2_nic {
+ #define OTX2_FLAG_REP_MODE_ENABLED		 BIT_ULL(18)
+ #define OTX2_FLAG_PORT_UP			BIT_ULL(19)
+ #define OTX2_FLAG_IPSEC_OFFLOAD_ENABLED		BIT_ULL(20)
++#define OTX2_FLAG_PER_Q_RATE_LIMIT_ENABLED	BIT_ULL(21)
+ 	u64			flags;
+ 	u64			*cq_op_addr;
+ 
+@@ -1246,6 +1247,10 @@ dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
+ 				 struct sk_buff *skb, int seg, int *len);
+ void otx2_dma_unmap_skb_frags(struct otx2_nic *pfvf, struct sg_list *sg);
+ int otx2_read_free_sqe(struct otx2_nic *pfvf, u16 qidx);
++int otx2_nix_tm_set_queue_shaper(struct otx2_nic *pfvf, int txq,
++				 u64 minrate, u64 maxrate);
++int otx2_nix_tm_clear_queue_shaper(struct otx2_nic *pfvf);
++void otx2_mqprio_down(struct otx2_nic *pfvf);
+ void otx2_queue_vf_work(struct mbox *mw, struct workqueue_struct *mbox_wq,
+ 			int first, int mdevs, u64 intr);
+ int otx2_del_mcam_flow_entry(struct otx2_nic *nic, u16 entry,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index 2e33b33ec993..3821505a0cb9 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -2158,6 +2158,8 @@ int otx2_stop(struct net_device *netdev)
+ 	if (pf->flags & OTX2_FLAG_INTF_DOWN)
+ 		return 0;
+ 
++	otx2_mqprio_down(pf);
++
+ 	netif_carrier_off(netdev);
+ 	netif_tx_stop_all_queues(netdev);
+ 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
+index 0b46ec29e64e..06313f08d712 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
+@@ -16,6 +16,7 @@
+ #include <net/tc_act/tc_mirred.h>
+ #include <net/tc_act/tc_vlan.h>
+ #include <net/ipv6.h>
++#include <net/pkt_sched.h>
+ 
+ #include "cn10k.h"
+ #include "otx2_common.h"
+@@ -1598,6 +1599,172 @@ static int otx2_setup_tc_block(struct net_device *netdev,
+ 					  nic, nic, ingress);
+ }
+ 
++void otx2_mqprio_down(struct otx2_nic *pfvf)
++{
++	struct net_device *netdev = pfvf->netdev;
++
++	if (!(pfvf->flags & OTX2_FLAG_PER_Q_RATE_LIMIT_ENABLED))
++		return;
++
++	otx2_nix_tm_clear_queue_shaper(pfvf);
++	pfvf->flags &= ~OTX2_FLAG_PER_Q_RATE_LIMIT_ENABLED;
++	netdev_set_num_tc(netdev, 0);
++}
++
++static int otx2_mqprio_restart_netdev(struct net_device *netdev)
++{
++	struct otx2_nic *pfvf = netdev_priv(netdev);
++	int err;
++
++	err = otx2_stop(netdev);
++	if (err)
++		return err;
++
++	err = otx2_open(netdev);
++	if (err) {
++		netdev_err(netdev,
++			   "Failed to restart device after mqprio change: %d\n",
++			   err);
++		otx2_mqprio_down(pfvf);
++		dev_close(netdev);
++	}
++
++	return err;
++}
++
++static int otx2_teardown_tc_mqprio(struct otx2_nic *pfvf,
++				   struct tc_mqprio_qopt_offload *mqprio)
++{
++	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
++	struct net_device *netdev = pfvf->netdev;
++	bool if_up = netif_running(netdev);
++	int err;
++
++	otx2_mqprio_down(pfvf);
++
++	qopt->hw = 0;
++
++	if (if_up) {
++		err = otx2_mqprio_restart_netdev(netdev);
++		if (err)
++			return err;
++	}
++
++	return 0;
++}
++
++static int otx2_setup_tc_mqprio(struct net_device *netdev,
++				struct tc_mqprio_qopt_offload *mqprio)
++{
++	struct otx2_nic *pfvf = netdev_priv(netdev);
++	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
++	bool if_up = netif_running(netdev);
++	int tc, txq, err, i;
++
++	if (!if_up) {
++		netdev_err(netdev, "mqprio: setup requires interface UP\n");
++		return -EOPNOTSUPP;
++	}
++
++	if (!qopt->hw)
++		return otx2_teardown_tc_mqprio(pfvf, mqprio);
++
++	if (mqprio->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
++		netdev_err(netdev, "Unsupported mqprio shaper %#x\n", mqprio->shaper);
++		return -EOPNOTSUPP;
++	}
++
++	if (is_otx2_sdp_rep(pfvf->pdev)) {
++		netdev_err(netdev, "mqprio: bandwidth offload not supported on SDP rep\n");
++		return -EOPNOTSUPP;
++	}
++
++	if (otx2_qos_htb_active(pfvf)) {
++		netdev_err(netdev, "mqprio: cannot enable offload while HTB is active\n");
++		return -EOPNOTSUPP;
++	}
++
++	if (qopt->num_tc > pfvf->hw.non_qos_queues) {
++		netdev_err(netdev, "Number of TCs (%u) exceeds hw queues %u\n",
++			   qopt->num_tc, pfvf->hw.non_qos_queues);
++		return -EINVAL;
++	}
++
++	if (pfvf->hw.non_qos_queues > MAX_TXSCHQ_PER_FUNC) {
++		netdev_err(netdev,
++			   "Number of queues (%u) exceeds max scheduler queues %u\n",
++			   pfvf->hw.non_qos_queues, MAX_TXSCHQ_PER_FUNC);
++		return -EINVAL;
++	}
++
++	for (tc = 0; tc < qopt->num_tc; tc++) {
++		u64 min_rate = 0, max_rate = 0;
++
++		if (qopt->count[tc] > 1) {
++			netdev_err(netdev,
++				   "mqprio: TC %d has %u queues, only one queue per TC is supported\n",
++				   tc, qopt->count[tc]);
++			return -EINVAL;
++		}
++
++		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE)
++			min_rate = mqprio->min_rate[tc];
++		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE)
++			max_rate = mqprio->max_rate[tc];
++
++		if (min_rate && max_rate && min_rate > max_rate) {
++			netdev_err(netdev,
++				   "min_rate %llu exceeds max_rate %llu for tc %d\n",
++				   min_rate, max_rate, tc);
++			return -EINVAL;
++		}
++
++		for (txq = qopt->offset[tc];
++		     txq < qopt->offset[tc] + qopt->count[tc]; txq++) {
++			if (txq >= netdev->real_num_tx_queues)
++				return -EINVAL;
++		}
++	}
++
++	err = otx2_mqprio_restart_netdev(pfvf->netdev);
++	if (err)
++		return err;
++
++	for (tc = 0; tc < qopt->num_tc; tc++) {
++		u64 min_rate = 0, max_rate = 0;
++
++		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE)
++			min_rate = mqprio->min_rate[tc];
++		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE)
++			max_rate = mqprio->max_rate[tc];
++
++		for (txq = qopt->offset[tc];
++		     txq < qopt->offset[tc] + qopt->count[tc]; txq++) {
++			netdev_dbg(netdev,
++				   "mqprio: tc %d txq %d min_rate %llu max_rate %llu\n",
++				   tc, txq, min_rate, max_rate);
++
++			err = otx2_nix_tm_set_queue_shaper(pfvf, txq,
++							   min_rate, max_rate);
++			if (err)
++				goto cleanup;
++		}
++	}
++
++	netdev_set_num_tc(netdev, qopt->num_tc);
++	for (i = 0; i < qopt->num_tc; i++)
++		netdev_set_tc_queue(netdev, i, qopt->count[i], qopt->offset[i]);
++
++	qopt->hw = TC_MQPRIO_HW_OFFLOAD_TCS;
++
++	pfvf->flags |= OTX2_FLAG_PER_Q_RATE_LIMIT_ENABLED;
++	return 0;
++
++cleanup:
++	otx2_teardown_tc_mqprio(pfvf, mqprio);
++	return err;
++}
++
+ int otx2_setup_tc(struct net_device *netdev, enum tc_setup_type type,
+ 		  void *type_data)
+ {
+@@ -1606,6 +1773,8 @@ int otx2_setup_tc(struct net_device *netdev, enum tc_setup_type type,
+ 		return otx2_setup_tc_block(netdev, type_data);
+ 	case TC_SETUP_QDISC_HTB:
+ 		return otx2_setup_tc_htb(netdev, type_data);
++	case TC_SETUP_QDISC_MQPRIO:
++		return otx2_setup_tc_mqprio(netdev, type_data);
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+index 69c0911e28e9..a726f00d9388 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+@@ -1729,11 +1729,23 @@ void otx2_qos_config_txschq(struct otx2_nic *pfvf)
+ 	otx2_qos_root_destroy(pfvf);
+ }
+ 
++bool otx2_qos_htb_active(struct otx2_nic *pfvf)
++{
++	return otx2_sw_node_find(pfvf, OTX2_QOS_ROOT_CLASSID);
++}
++
+ int otx2_setup_tc_htb(struct net_device *ndev, struct tc_htb_qopt_offload *htb)
+ {
+ 	struct otx2_nic *pfvf = netdev_priv(ndev);
+ 	int res;
+ 
++	if ((pfvf->flags & OTX2_FLAG_PER_Q_RATE_LIMIT_ENABLED) &&
++	    htb->command != TC_HTB_DESTROY) {
++		NL_SET_ERR_MSG_MOD(htb->extack,
++				   "HTB offload cannot be used with mqprio bandwidth offload active");
++		return -EOPNOTSUPP;
++	}
++
+ 	switch (htb->command) {
+ 	case TC_HTB_CREATE:
+ 		return otx2_qos_root_add(pfvf, htb->parent_classid,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.h b/drivers/net/ethernet/marvell/octeontx2/nic/qos.h
+index 221bd0438f60..c777cc42eac9 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.h
+@@ -23,6 +23,7 @@ enum qos_smq_operations {
+ u64 otx2_get_txschq_rate_regval(struct otx2_nic *nic, u64 maxrate, u32 burst);
+ 
+ int otx2_setup_tc_htb(struct net_device *ndev, struct tc_htb_qopt_offload *htb);
++bool otx2_qos_htb_active(struct otx2_nic *pfvf);
+ int otx2_qos_get_qid(struct otx2_nic *pfvf);
+ void otx2_qos_free_qid(struct otx2_nic *pfvf, int qidx);
+ int otx2_qos_enable_sq(struct otx2_nic *pfvf, int qidx);
+-- 
+2.43.0
+
