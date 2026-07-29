@@ -1,81 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1D14399FF
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 22:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC9D382F28
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 22:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785362789; cv=none; b=V//nRiS/kSBez1bxIv+qT4c43e2QHgJx8NHFL+BhPLxpgpruVCzebbJoLHtRnlWoyqU2Pu7CzRwJ/oxVFGAKVUaAKUH+X7/KTMqAPjGGMC+CgstS8y0vm6NyYDQ6kSZb3vuwj3uV5luDQfkac74jNRihdUUcLHc4b1f41Fntiwo=
+	t=1785363517; cv=none; b=ZYLkkEzEA3wuXvBrOAPbNu/l1Hhi2Bj3s2l6xJ0dIjZJGMZs8ugk3V7sJ/iTxMBvt9u9MD+UGHfT2GF3SlESkN6a+it60gzX75aQTuT+r/+o7SAlFqrdCEufgUKSqftJ6/kYqszfttMI0DLSUcrvmmj7N2eH95o1J8BSLbb6UPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785362789; c=relaxed/simple;
-	bh=bdk7lMS+Lep0YKho1RtnTfHyn3IFIU/nnkvv4fPKjII=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=MDbUkgjNTFku5nzDlapuU99ojgKFC9PonXDsI8osqoDUXCrN5jrD9fXInisJ7l7zYvhWPaeT5zj+UbeggfkGsImQC93eklN0QVdSDgYzmQIuuG3gw+sipKrG2ftdVeFz1ozIuzV/arRduAb+7G8oP2CYh8msJSKNqdjiIOJNKPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=msBlxX2c; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785363517; c=relaxed/simple;
+	bh=nyleos4AoSWbfZPVZWWGj/vCZsfcuuzsttq1Emv2tZ0=;
+	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=nBeFz/XJ9/XTtBSxr6TpIbZJVyz/KsfkKvPGZrVdhSbHJtb+sfoykztLS2N1t/FPPZ5qGa5Pis2S66OnrQnLgVgzvntOyOYlhUwTsAuxpg4eT6q3YQVihICC1wJMkSfK6Coz6AxpUhfUXvxXkIoYRmh3Ex+GKNhXq5kk5tnLCNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m19RAPYi; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="msBlxX2c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905401F000E9;
-	Wed, 29 Jul 2026 22:06:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m19RAPYi"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-383cb94f742so1527532a91.3
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 15:18:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785362781;
-	bh=ATTw859Gg3zuAdifQ00tcJbnF2HfpI7aClAv6SCcxUU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=msBlxX2c5tI9BPwZ57G1PEv9Wmfd5AeoBrTFmKCEuVtGP9O/3dCroPI0Fgi3o75Z2
-	 UPcQHwKtSRaDIC8bT7VGa2JIP+QddhOGgY2ozuDbXFF/i+BzPKQYlWsUvs5LGlcvMU
-	 RlqHJRF7H7FJDC6KN3bn2e3NlrNgr1UMB/WA2lYo=
-Date: Wed, 29 Jul 2026 15:06:20 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Jing Wu <realwujing@gmail.com>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Axel
- Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
- Xu <weixugc@google.com>, Brendan Jackman <jackmanb@google.com>, Johannes
- Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lance Yang
- <lance.yang@linux.dev>, SeongJae Park <sj@kernel.org>, Matthew Wilcox
- <willy@infradead.org>, netdev@vger.kernel.org
-Subject: Re: [PATCH v11] mm/page_alloc: boost watermarks on atomic
- allocation failure
-Message-Id: <20260729150620.7631d856d938d657e60547d1@linux-foundation.org>
-In-Reply-To: <6ddc5919-f001-43ad-8101-d118ad70593f@kernel.org>
-References: <20260720-feat-mm-page_alloc-v11-v11-1-7376b02c27b3@gmail.com>
-	<20260720163719.cf37f6be63bfd88a06965761@linux-foundation.org>
-	<90ac10ff-55f8-4f07-8e1d-bb9f3a8cc546@kernel.org>
-	<20260729131701.3354724-1-realwujing@gmail.com>
-	<6ddc5919-f001-43ad-8101-d118ad70593f@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=gmail.com; s=20251104; t=1785363516; x=1785968316; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:cc:to:from:subject:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lP8ssPR/bx8ZNeUXDsh51j7Vek7sgVAeH3Nw8OcnkCY=;
+        b=m19RAPYicbk88yLp46uu3QcT0zpzSEnvBiGz7tJpJie8bVY1Ntk3JpLhQGOJDtiMwP
+         la7CEJ1qtbxaziYJ/PaHBBBsYjaWJjyQnoeWxwWUF0di6VR5dhVbp6UQWW6UvAunkys4
+         sLpqA7PpmytsD32pXntoVTHkGFzGrRMj7mZO1Ms4q39NmiaeiZfdtlQIBdWUWKjdSGqx
+         U9wDuiKe78Jts/gWbU9e7Xg2522xuWwjv3mtwD70GOpORRCspyJir1x7zvGs7PG2pz5G
+         ttZ6Sp1/Axp9Z78jjC7voJdH7JDPI1JQKGvYMrUBYdIVWHmLEhBQyZSZ9i/Ma0rqSHmu
+         gBXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785363516; x=1785968316;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:cc:to:from:subject:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lP8ssPR/bx8ZNeUXDsh51j7Vek7sgVAeH3Nw8OcnkCY=;
+        b=amIMNwHklnSj12Ib1KI2Hgrk6DQ+kpvwaDCHBglXwWrCltIYG/XIwT6wE75/EufAK1
+         7QS3ZW02xuXqL47ySNCSslk8pgJKsV1ArTYrWJyWJ1QXu5sHfdl2Hl4AJxQ/TpX+s1Ne
+         ruvVAWPQZHfkFDkvWREwZRbszxjPfcEDfqXpYHcKn8XAS6KEFjaEYcHF6Dq9FAih+Z16
+         t0e9GCYg40efr6QvMbfN0fSV0K3wUBDKSpbSUVTVvD9/WNfDwTyxT7VOn6chV6mLWwz9
+         ffufQn3LyykiZcb8RrGrqsuUFysYsYCkSwOwnKS5YPtcoVdjvxZz5MNj6Q76pvISOxWg
+         UHPA==
+X-Gm-Message-State: AOJu0YzLWrFQuX60Fdy8JetnUClw+XB+YnTyi5uYzO9jD2T+oiluNa86
+	oSg9No23cDnAwHKm6900yCo0+47oyHBrA8kTgUTU8DpywGwwmRIkBTGT
+X-Gm-Gg: AR+sD13LBM6s1n2BP/ez6wO/Ft0NvSRaeMXNNJc/R6uRddJKvDKV3WYp4V1FvhMf+ts
+	8j9q0pbS5bi2efv1Kl5GMBRXpeSENWB16rx1ooXYakz8Sv3VW6w3v79lKFM3QlcriWoKK3Pj/ak
+	VsmRtRGYlIZi0q6u2rwyGu+SmoLa3LSbnoP7bq6U9Khlf8klt9cWbde/ljVxQdCK9UCQDWvKoMn
+	82vu7fhnwETrC4LJu0n/xl2u/1MLA/aBZ0IUQO9m4OX2g8fkCfHSFId+8QrzR8p3Nev/NocuGH7
+	+1pfvh1nIx64tqsUofrjotdhDYLRFGoeqzZZ9rju6pKdGglViv9T2DuS4ghLe0yBqS7U76W32Vg
+	Y6L7i1zDkYsE1BfV7BkNMQC9QGcdP78/9PFSDRGhbWo+ZWZ0JHNdG5xHcE/B4lIsrOULqdKSRzw
+	ZubO7bpVgFPXck5CRGh//UjQPjmd9jCvBX5RXFlcNX1Ks8cyUKdgLFVAwvSfgsL39mlUDTIGPYs
+	HQYajpsp5OMlcMkwjUfcbAgWRohiq/xkG+oxPrvBa+IwlePekJOQcKvVar3wPYPKsWqsPG+Na+2
+	qQ==
+X-Received: by 2002:a17:90b:28c3:b0:37e:1430:769b with SMTP id 98e67ed59e1d1-38f9c0952camr56905a91.24.1785363515732;
+        Wed, 29 Jul 2026 15:18:35 -0700 (PDT)
+Received: from ahduyck-xeon-server.home.arpa ([98.97.33.182])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9b42d176sm43910a91.4.2026.07.29.15.18.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 15:18:35 -0700 (PDT)
+Subject: [net-next PATCH v4 0/4] Add support for XPCS based RSFEC
+ configuration
+From: Alexander Duyck <alexander.duyck@gmail.com>
+To: netdev@vger.kernel.org
+Cc: mike.marciniszyn@gmail.com, alexanderduyck@fb.com, andrew+netdev@lunn.ch,
+ andrew@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ hkallweit1@gmail.com, jiawenwu@trustnetic.com, kees@kernel.org,
+ kernel-team@meta.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+ linux@armlinux.org.uk, mengyuanlou@net-swift.com, mohsin.bashr@gmail.com,
+ pabeni@redhat.com
+Date: Wed, 29 Jul 2026 15:16:25 -0700
+Message-ID: 
+ <178536329631.250758.9931617589255894843.stgit@ahduyck-xeon-server.home.arpa>
+User-Agent: StGit/1.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-On Wed, 29 Jul 2026 16:00:29 +0200 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
+This series adds to xpcs to add the necessary configuration steps
+for the DW PCS/rsfec for high speed interfaces.
 
-> Great, especially with a realistic workload. However I'd still worry that
-> we're working around some old and long time fixed allocator deficiency from
-> 4.19, unless it's demonstrated on mainline.
+I picked up the set from Mike Marciniszyn who is no longer with Meta. His
+set ending with v3 can be found here:
+https://lore.kernel.org/netdev/20260527000958.81108-1-mike.marciniszyn@gmail.com/
 
-Yes, 4,19 is soooo old.
+v4 - Address AI review comments
+   - Simplify the set by just using separate PMA1 instead of scanning for it
+v3 - adds an alternate xpcs creation that allows for specifying multiple addr
+     values for creating xpcs
+   - remove probing in favor of new xpcs create call
+v2 - probe mdio bus and use phy_find* to isolate mdio address
+v1 - initial version
 
-I asked Jakub Kicinski about this patch.  Off-list, reproduced without
-permission:
+---
 
-: Most networking drivers today use the page pool API, which should
-: provide a cache of pages circulating between the TCP stack and the
-: driver. If the system is in dire straights we recommend the drivers
-: allow the queues to run dry and get refilled from a watchdog once
-: system recovers.
-: 
-: IDK how good the code looks from MM side, but from networking side
-: there is a lot of unanswered questions.
+Mike Marciniszyn (Meta) (4):
+      net: pcs: xpcs: Expand mdiodev member as an array
+      net: pcs: xpcs: Allow for multiple addr in creation
+      net: pcs: xpcs: Add hooks for xpcs configuration of rsfec
+      net: pcs: xpcs: Add handling for 4 channel rsfec device
 
-So it's quite possible that this change simply is no longer relevant
-for drivers which anyone seriously cares about.
 
-Clearly the next step here is to test a modern kernel and a modern
-driver then decide if there's still a problem to be fixed.  Please.
+ .../net/ethernet/meta/fbnic/fbnic_phylink.c   |   4 +-
+ drivers/net/pcs/pcs-xpcs-wx.c                 |   4 +-
+ drivers/net/pcs/pcs-xpcs.c                    | 304 +++++++++++++++---
+ drivers/net/pcs/pcs-xpcs.h                    |  37 ++-
+ include/linux/pcs/pcs-xpcs.h                  |   2 +
+ include/uapi/linux/mdio.h                     |   3 +
+ 6 files changed, 308 insertions(+), 46 deletions(-)
+
+--
+
