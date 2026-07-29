@@ -1,231 +1,136 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1543F484B
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 20:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785357148; cv=none; b=UO0OskN3L2A8HlRTIX8HxjRkyJR0BVLQBfYV5eVVdd+0mOGAT2FemdmjpYAHSoHlGaci0alBt0ndoHEwJwz6n+MvZno++K4K+BEwIwMGCJO+c0yxx+nbAh89HfoMk05EwbzVC4Mlhqezpt2YKeA9+JlAPU0cySmVnYc/PbYiMic=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785357148; c=relaxed/simple;
-	bh=IZIvUJTftmtCNu/estGFXWd0+fVgT8+7zpvadFJGSF4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=HtImocG37Qv3Hroi1nunVYKL2roJOuJbuO61dsAsSylLq6RvJRg7QEDghyQQbUS5MaOCwsCPwSkjK3KFLNoWdw4fB1SRQFMcTqxZ2cvzLWGWL5StFJUpSpxfQjN8H9KxJx8yeo+Ilz25Aglbkjebnlu7XyJJabWBP37wYNKW6mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=DNvdikDo; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC633FCB37
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 20:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785357893; cv=pass; b=g/a0Spr8vbrgn734XnfQbH0Z8kttwfjab1XNFq30ywg0bNuynmVw4Pe2tdNXFmg2WCQeNbyYKWIae5Hmuz61y7CUirIayuiiI6EbgnhPImZyNHU0p9lls2pRc/XzzzjimxBBZj+CDczeuwkkz5VxG7xNWOGfnxxuFvp+WQFu7Ks=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785357893; c=relaxed/simple;
+	bh=mpdFxm3cH7x/QBy79PiEOUh91yFexqdYbtc2kig8VZ4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GuAkXq979olRjZuDr1/FpZShQa1JCToOaT1Y/mnQMLnJt6kVqhdH5aiX5HBp5mCzXNiPbR8dUBMNHIkcSUwkSBmS4awkjUdrChKOkMO7KnatPNryxRbBnCNzfmBfub9n+BwMco9R47qSVetm/twktFYjO8bKFcNxi50lbUfZXzY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com; spf=pass smtp.mailfrom=isovalent.com; dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b=VznJ5mha; arc=pass smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isovalent.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="DNvdikDo"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso1160316a91.3
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:32:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b="VznJ5mha"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c9e7391839cso1268274a12.0
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:44:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785357890; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LwOX+YZgCeWU6XcvBmcjDTFCLqKY5yGHVM5ey1B7bcnH5gGPUdOPVuuY3sVtedZEBm
+         pZovMY34s0mJPEueYxAs47j2uoteU8vfa/aUcC/dGriCn6adPwCgtWUvFr4ZgO1r15Ce
+         2leWf3p2ZTR5asvWQyQEplhs3cey/Ze6NB2Lv6JbswM4mxqRXjh95bL6umCY0vU72NQQ
+         7msm+tRRFJKGt2qKaqSC0qKEzlfw9jyi91tI2oDREfkURaE7d97aWlAyWgXC8CndVo4U
+         hha3fjvlJNEhqxVLkJvn6VMyqWMMo+XV7Z8h5BfP4Imlvgn4qGuH3lhrXa/hivBNLj8x
+         mwdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=mpdFxm3cH7x/QBy79PiEOUh91yFexqdYbtc2kig8VZ4=;
+        fh=Y7ukfPuuXnEIDc9xfrz6bikNIgI9SCF3Ykqr/efy9us=;
+        b=Zi7IxeRwqeIjbq0MY4boTDxf6K+1HxiPKQRsmorbKpINseamwWAXBEeUpsvxlFO/ML
+         Pl+r7mu/m9XOWsiowIiHw9BM2BFwhrehG+XKzxiZzYoak93UsAL38eeJTyoKdqXVKIYh
+         KV87Q7lrPCSLHnzv50joi8Pc8b7zK0eYOJm5m7s482ttwND7kPTcl6RzLyEb8iDNf7HD
+         4hJ9sjt/8k8lYzCawWCIIYvZHb9tu3gwPBbPCDxSVfkxWw8z2IU3oHdwQWjbWrNDe+Ce
+         EgmblhAs72uIkoPCtgh9anNXYOWsEmik94Bt1jQjUZOzJS6hqRUBbucRWXkf9orUKKkh
+         DEFw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1785357146; x=1785961946; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=GLWph0D0gf9jMPf79Y9vevPriFqqfhdgzEVroySzLQ8=;
-        b=DNvdikDoERC8GWcwW9j5l2LlbQydQMdsA6qcelyf48Yy04Rw4noiigw0RP3OLXc/yn
-         cKmMcb+vs7ijAom7HrZeEUJu/Hs1fYcn0F/1PmRw8a2yK5m40192K8xwUfnnpRn+18fj
-         1diiirdtCEU9Qr/2hAz7dcNKwUYSPiq43WLxvWtcywsexBs7euXvxRE/0OOXbe0RcLZK
-         n+jPLxrVaqCwSWD5qCUibBTNcps+KEmbYgnuk4R6eaUfxcgY9PGukFR6x2lZ+hTmtBfK
-         uxyA1f+WcQ6QaLkp4HpjVTOD/8pVA6dpxKDkg8VhKusUwngqDKLWIqRC38kYhIGqv2kn
-         L+Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785357146; x=1785961946;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=isovalent.com; s=google; t=1785357890; x=1785962690; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GLWph0D0gf9jMPf79Y9vevPriFqqfhdgzEVroySzLQ8=;
-        b=kqTZrx3tfObmZCg1LWzaEPJ9KyXmbt0VBVpkriQHX2TiKL6Qd1ntHE/uRrhnDu24Ow
-         CSEmQIAdAfW4IOsSu3u74ghWM/5/wbTw59TZ1mSbdhDuP4wNMVZ/q5prh29z4Zg/2/Tt
-         kiE7biGOALUxcoZ2f9va0/WMmQyVDNrX9GW6p3yXiJBDItQEblKLqc+tQPJ0H03htHrq
-         J+7SMSHs1ZLxBZuJagHRUssgkzUj1LohvRTIKasxeXc0U244wBU16+iWOkeoqFqytF0t
-         oeljTKuAwT5kt+KF0g0yCpcZpptpCSpx8qTgdKb1tisK+q5ARSO8co4IppGW/+ZCY+q5
-         IkTg==
-X-Gm-Message-State: AOJu0YwpHtbuqXNXf1OG0Zv12E8+kqVJeVm9/wrSVZ3kqS7LH23qQA+e
-	Uy9GKThrUCn6RY8Vr1LPPbEOidji4rDckuujoUo3rHbVjhaSzCY0NBO189I9Rwn+Yys=
-X-Gm-Gg: AR+sD135EjSpCbyzcBCHQV1A0msx4WgnIDKp4Lukxt4izQjX+R029N5v2nPc/gr1A4t
-	dczmSEUp7lQ8DaZu0ov9ZVpA6Xv76tEnE6sHhNErs5Lbb9QR4WPnkV5owmWp1+A2s8lLhx23YB6
-	8KMK8wUDRCTiuKrIUyHiYOGq+BJnh2ztvEf4Ny4gVFq7ZJnk6geY0y/11o+mO5lGo8oERQtoKLN
-	BRqsY5xJd/YuM6ThRMXX+JDJAC0oe7yzUiUP1NN6zBupyMkWtDUYXit+/gDNJReMLjDrf1p5PQt
-	1IomhjweoNQlNdC6Dj0eZ6h1ofG8MNawFDGMScScTqMLetiPCkjWVX7DZl200lBHhaCAZu5ajUg
-	7S4eaJue/yw0lTUXLm4TxxgDMDreSzyfG6tTenRltvoCuCxQXh+73lHDtIpc2N7qcnh15e9gnxK
-	2bKe0kvquuyygPK0e+r52th8H0ApGge+otSnle06q7EnHveEXv7s8Ozm5/
-X-Received: by 2002:a17:90b:5404:b0:380:f389:447b with SMTP id 98e67ed59e1d1-38f98f4183fmr365810a91.11.1785357145938;
-        Wed, 29 Jul 2026 13:32:25 -0700 (PDT)
-Received: from localhost ([2620:10d:c090:600::1:d447])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31504d373c3sm12949029eec.23.2026.07.29.13.32.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jul 2026 13:32:25 -0700 (PDT)
+        bh=mpdFxm3cH7x/QBy79PiEOUh91yFexqdYbtc2kig8VZ4=;
+        b=VznJ5mhaOuVenHa0+vqUWserxUuKHJH1a4oHanag6byNJMex2WNKcDhRRP+VR6Pef0
+         BiGgDZl8s5STfi3IOyNJLLGvRQXxtRTD3q/5BDaajGqKIC40M0KDp0OLLQQ6l7MKaQBg
+         yhzkUkgzp7Q0zziN9tGhA69YWu5WaNGEzgf14FCoW7R3tu6eaqB0aoMNdESx6VeYekWW
+         IkN6GE5Aea61/yRFG9DN3iB66pMLtdGYUxqZqNKRx0uLrOSBFqzg9I87Oa0VSOU1vTcG
+         H1DhHUggt8WUs5p5+UhBCMnHQIPKmtaF5pNz4cglS2cjdnAk6ZHZCo2wOxeoMY3CYyN4
+         bdXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785357890; x=1785962690;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=mpdFxm3cH7x/QBy79PiEOUh91yFexqdYbtc2kig8VZ4=;
+        b=cFU/uge4AvtDbyWg2SCl2u8oGQne7ZuyC2AcTrmYgflZ66in60WIwVetLdYqiAubNt
+         Plgzb8tbkcR9L4rmnajWTiFDSRLIJvmygX7W3vqbe8LHNWP7yl6QwkwlbGAwH3B+fu5u
+         KrGTon/tady/G44CqnSnD6bYf+5ofoJ5/tT9EN0VJolNAv4nZUoMU9nVz/xD+4REX99B
+         461YSDAoiDLcwiVa3iURawGGengpHtyskQUeeIljdDd7q6THXEdLi8A28lX7v2KK9g/4
+         vVhyvdpMCf3qf9TeKy+6p3uarfUKtc48VvBkQcyDtRr5JiNui/fVmqZ3nXk31Di/Itmt
+         xMlQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqBeQyVwMq9odPkrt5BqDQ6/qlo/ggZW8W2ZFVUgATBUHJISm5f1SUk928B539+dvW43Xf1M/Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpBIIQplQW8YHpbY755h2idCNaWjYgDJV1RqBCJOp3mg01Vp1s
+	APoLZiQglfbRVLRO4GvQJ30VAkO8T5WylVpY9UVCMjFSXvPmtELpVEECvJ8nFsRAC26gsYizuGj
+	iFQKylEa6eN5J3HgOFbGkNN5mK9zv0BDrUVVIjOcPEg==
+X-Gm-Gg: AR+sD13LS8a4VvYdrVnvDPePclMqlzcso+Qi2syNrK5c7vZxASWRVG7dt4QVJfSDzLL
+	z7I6IQH/7C55tBThqt6/AWJ9smA4rbUTU5v5gp2Db3feKGz/kOLR3Dfn6PnGcOjjQztnqIdm66Q
+	KZdxvGBLW5Yj3fQShr5gb+nfUTRzXCOT7DpFYWq1axfya+VY9F+l/kUxlFo0UIWRw29NYSpBF3d
+	C1H31erglNhfxnuaNiUxS3FvSgdclCQSdJU2blqM1Y7LYeIUM6Qcf8uHNxmXfdeEQ6h1Ot46MAy
+	VFVXupHYkUDK08r7/RUH5KpMzXmFOo+McHgfWjG2h7R8Nt1+F3gSET9IOBZQ/jJFClzA0Ld2CjH
+	IY2gsexiqoo0NROYte1zfr53e8QFsG10=
+X-Received: by 2002:a05:6a20:1d98:b0:3c0:e6c3:224a with SMTP id
+ adf61e73a8af0-3c8ba5d8f88mr9255047637.37.1785357890204; Wed, 29 Jul 2026
+ 13:44:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Jul 2026 16:32:22 -0400
-Message-Id: <DKBCACHGQHYB.194JPC04N9WT0@etsalapatis.com>
-To: "Michal Luczaj" <mhal@rbox.co>, "Eric Dumazet" <edumazet@google.com>,
- "Kuniyuki Iwashima" <kuniyu@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
- "Willem de Bruijn" <willemb@google.com>, "John Fastabend"
- <john.fastabend@gmail.com>, "Jakub Sitnicki" <jakub@cloudflare.com>,
- "Jiayuan Chen" <jiayuan.chen@linux.dev>, "David S. Miller"
- <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Simon Horman"
- <horms@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Stanislav
- Fomichev" <sdf@fomichev.me>, "Martin KaFai Lau" <martin.lau@linux.dev>,
- "Alexei Starovoitov" <ast@kernel.org>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
- "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>,
- "Emil Tsalapatis" <emil@etsalapatis.com>, "Joe Stringer" <joe@wand.net.nz>
-Cc: <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Sashiko" <sashiko-bot@kernel.org>
-Subject: Re: [PATCH bpf 3/3] bpf: Unconditionally take socket references in
- lookup helpers
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260723-sockmap-lookup-tcp-leak-v1-0-1bbdc58ce514@rbox.co>
- <20260723-sockmap-lookup-tcp-leak-v1-3-1bbdc58ce514@rbox.co>
-In-Reply-To: <20260723-sockmap-lookup-tcp-leak-v1-3-1bbdc58ce514@rbox.co>
+MIME-Version: 1.0
+References: <20260723140241.132120-1-alice.kernel@fastmail.im> <47b580de-9d11-46c9-91c5-55eb13c00bc4@kernel.org>
+In-Reply-To: <47b580de-9d11-46c9-91c5-55eb13c00bc4@kernel.org>
+From: Alice Mikityanska <alice@isovalent.com>
+Date: Wed, 29 Jul 2026 23:44:32 +0300
+X-Gm-Features: AUfX_mzxMWpvdxAVyL3h3UH1AGjypdIO4iLrwwXAqUSW4Oe4-FmUj8hDWjnsjy4
+Message-ID: <CAD0BsJVqmQRz1yNKMMWH1MT+kgVEh=wY=LOTy_ObeTDCsrhHFg@mail.gmail.com>
+Subject: Re: [PATCH net-next] selftests: net: Add a missing config option
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Alice Mikityanska <alice.kernel@fastmail.im>, Jakub Kicinski <kuba@kernel.org>, 
+	Eric Dumazet <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu Jul 23, 2026 at 7:33 AM EDT, Michal Luczaj wrote:
-> Lookup helpers gate whether to acquire a socket reference on
-> sk_is_refcounted(), a check re-evaluated at release. An established socke=
-t
-> refcounted at acquire time can gain SOCK_RCU_FREE via
-> connect(AF_UNSPEC)+listen() before release runs; the release-side re-chec=
-k
-> then reads sk_is_refcounted() =3D=3D false and skips the put. The referen=
-ce
-> leaks.
+On Mon, 27 Jul 2026 at 12:09, Matthieu Baerts <matttbe@kernel.org> wrote:
 >
-> Make acquire and release unconditional and symmetric: always take a
-> reference, always put it. Adapt sk_select_reuseport().
-
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-
-The bot's concern about the comment style is obviously invalid here.
-
+> Hi Alice,
 >
-> Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
-> Fixes: 64d85290d79c ("bpf: Allow bpf_map_lookup_elem for SOCKMAP and SOCK=
-HASH")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/bpf/20260701235552.2B0AA1F00A3F@smtp.kern=
-el.org/
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
-> ---
->  net/core/filter.c   | 25 ++++++++++++++++---------
->  net/core/sock_map.c |  8 ++------
->  2 files changed, 18 insertions(+), 15 deletions(-)
+> On 23/07/2026 16:02, Alice Mikityanska wrote:
+> > From: Alice Mikityanska <alice@isovalent.com>
+> >
+> > Commit 5cb53743e1ff ("selftests: net: Add a test for BIG TCP in UDP
+> > tunnels") used iptables match comment, which was missed from the CI
+> > kernel config. Add the missing config option.
 >
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 403aba3ce891..4bc0b59668fa 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -7027,6 +7027,13 @@ static struct sock *sk_lookup(struct net *net, str=
-uct bpf_sock_tuple *tuple,
->  		WARN_ONCE(1, "Found non-RCU, unreferenced socket!");
->  		sk =3D NULL;
->  	}
-> +
-> +	/* Always take a reference, even if the lookup skipped one;
-> +	 * bpf_sk_release() always puts one.
-> +	 */
-> +	if (sk && !refcounted && !refcount_inc_not_zero(&sk->sk_refcnt))
-> +		sk =3D NULL;
-> +
->  	return sk;
->  }
-> =20
-> @@ -7084,11 +7091,15 @@ bpf_sk_lookup_full_sk(struct sock *sk)
->  	 */
->  	if (sk2 !=3D sk) {
->  		sock_gen_put(sk);
-> -		/* Ensure there is no need to bump sk2 refcnt. */
->  		if (unlikely(sk2 && !sock_flag(sk2, SOCK_RCU_FREE))) {
->  			WARN_ONCE(1, "Found non-RCU, unreferenced socket!");
->  			return NULL;
->  		}
-> +		/* sk2 is RCU-free, but take a reference anyway;
-> +		 * bpf_sk_release() puts.
-> +		 */
-> +		if (sk2 && !refcount_inc_not_zero(&sk2->sk_refcnt))
-> +			sk2 =3D NULL;
->  		sk =3D sk2;
->  	}
-> =20
-> @@ -7273,7 +7284,7 @@ static const struct bpf_func_proto bpf_tc_sk_lookup=
-_udp_proto =3D {
-> =20
->  BPF_CALL_1(bpf_sk_release, struct sock *, sk)
->  {
-> -	if (sk && sk_is_refcounted(sk))
-> +	if (sk)
->  		sock_gen_put(sk);
->  	return 0;
->  }
-> @@ -11565,11 +11576,13 @@ BPF_CALL_4(sk_select_reuseport, struct sk_reuse=
-port_kern *, reuse_kern,
->  	bool is_sockarray =3D map->map_type =3D=3D BPF_MAP_TYPE_REUSEPORT_SOCKA=
-RRAY;
->  	struct sock_reuseport *reuse;
->  	struct sock *selected_sk;
-> -	int err;
-> +	int err =3D 0;
-> =20
->  	selected_sk =3D map->ops->map_lookup_elem(map, key);
->  	if (!selected_sk)
->  		return -ENOENT;
-> +	if (!is_sockarray)
-> +		sock_put(selected_sk);
-> =20
->  	reuse =3D rcu_dereference(selected_sk->sk_reuseport_cb);
->  	if (!reuse) {
-> @@ -11599,13 +11612,7 @@ BPF_CALL_4(sk_select_reuseport, struct sk_reusep=
-ort_kern *, reuse_kern,
->  	}
-> =20
->  	reuse_kern->selected_sk =3D selected_sk;
-> -
-> -	return 0;
->  error:
-> -	/* Lookup in sock_map can return TCP ESTABLISHED sockets. */
-> -	if (sk_is_refcounted(selected_sk))
-> -		sock_put(selected_sk);
-> -
->  	return err;
->  }
-> =20
-> diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-> index ca49bc7f8687..ae18dc4d60f9 100644
-> --- a/net/core/sock_map.c
-> +++ b/net/core/sock_map.c
-> @@ -390,9 +390,7 @@ static void *sock_map_lookup(struct bpf_map *map, voi=
-d *key)
->  	struct sock *sk;
-> =20
->  	sk =3D __sock_map_lookup_elem(map, *(u32 *)key);
-> -	if (!sk)
-> -		return NULL;
-> -	if (sk_is_refcounted(sk))
-> +	if (sk)
->  		sock_hold(sk);
->  	return sk;
->  }
-> @@ -1216,9 +1214,7 @@ static void *sock_hash_lookup(struct bpf_map *map, =
-void *key)
->  	struct sock *sk;
-> =20
->  	sk =3D __sock_hash_lookup_elem(map, key);
-> -	if (!sk)
-> -		return NULL;
-> -	if (sk_is_refcounted(sk))
-> +	if (sk)
->  		sock_hold(sk);
->  	return sk;
->  }
+> It helps, the CI can now run this test!
+>
+> Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+>
+>
+> But I think another follow-up patch is required, because this test is
+> flaky when using a debug kernel config:
+>
+>
+> https://netdev.bots.linux.dev/flakes.html?min-flip=0&tn-needle=big-tcp-tunnels-sh
+>
+> Maybe because wait_local_port_listen() is required after having called
+> netserver?
 
+The issue is hard to reproduce on my machine, but I could reproduce it
+in ~12 hours of non-stop testing in a loop. It reproduces even with
+wait_local_port_listen, so it must be something else. The log above
+(and my repro attempts) shows that it fails in a non-first test, but
+netserver starts only once, before the first test. If the failure was
+due to netserver not being ready, it would fail in the first test.
+I'll keep investigating.
+
+> Cheers,
+> Matt
+> --
+> Sponsored by the NGI0 Core fund.
+>
