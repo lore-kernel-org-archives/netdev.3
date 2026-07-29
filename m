@@ -1,186 +1,178 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF92377AA7;
-	Wed, 29 Jul 2026 05:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05382E737C
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 05:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785303025; cv=none; b=c3N2KeKHAPXrZzjH8ev+UwjselxGocZiUZAbjiRZUUko05fN4CghsAcesadoxJwi51Z9Wqc1u9Ye17UbsAzkarIbqqj4kNQG1bxdF5UAQo77Rij+b+NPQFlBzkzAd0syNxf15tiJkUI9+DTFBGsUE0kujJnC2RWTuwSnmjYf74g=
+	t=1785303952; cv=none; b=iV8IAtZHrpzeoDxPdk1/KGlEH4btYEt/3vFZUkmxVEEeF9UdOMbMKT9oVEjIO1VBa1SkcYEZSzTOCnJuMlx7baZFj3xIxmLFyJK7epFY2Av5Zu21+dA+PWDxGM9X9RpT5ZauHUsqHDP4ImI59d4BkagFk9JOs9bSQGSQ3UTqyk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785303025; c=relaxed/simple;
-	bh=S74QlMw3en/WquuTyRzO+tx+XBm8tR9h48XkECLtBzg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DlHack0cf6wTHw7F95NUpIFfY1jZTmSpmsKJ5XB/3HbyOnXJAGZOPnlndtgZ+e4RIPLKVjtwm2hHt1Qo8IgMbR0Gl9E6sjdjx2qq6vSsP0koNG3ciDr/MyQWFZwU50xyWzJkayFs/o1I9DhEoBMO9/fOR1+gjORvSVi/ppSIkjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B655F201D85;
-	Wed, 29 Jul 2026 07:30:17 +0200 (CEST)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wowrx-001pfo-26;
-	Wed, 29 Jul 2026 07:30:17 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wowrx-0000000CL28-2Ar1;
-	Wed, 29 Jul 2026 07:30:17 +0200
-Date: Wed, 29 Jul 2026 07:30:17 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Zxyan Zhu <zxyan0222@gmail.com>, thomas.petazzoni@bootlin.com,
-	Alexis =?utf-8?Q?Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH net-next 1/2] net: stmmac: Don't use PHY loopback for
- selftests
-Message-ID: <ammP6SaJ44fzc5bW@pengutronix.de>
-References: <20260728155728.1193169-1-maxime.chevallier@bootlin.com>
- <20260728155728.1193169-2-maxime.chevallier@bootlin.com>
+	s=arc-20240116; t=1785303952; c=relaxed/simple;
+	bh=4Nrwj8V7kFFv4LKN1AV12PUOMiDIUX0q5YXokCtB84k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=K346dDYoCB91NJFyjcq/vv7KmO0EvKCdn/hy+vMRQTO00OofFs+WNnl2qCz7pmjCJPHtsHNbk0+najEXYbf0k6GCo5QVvJ+5vOY26EppbGt3APLgeJXoNHik85OW/pSEUwbKXcZpWMkvCJnOHlLqSIizlQK4y32ea9v2V1RGMcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=xgfJKfSL; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="xgfJKfSL"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-848d21bbaffso603469b3a.0
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 22:45:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1785303946; x=1785908746; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=h4j8/bcJx2sqaNy1FkkD1tKrJ77EePT5Y3UEZ3HBUKo=;
+        b=xgfJKfSLWn+8ol107LlGs4YbMA6idVfWeJGe9C30EOEbiUI1xhcXbaxtH/2DfSVR+H
+         4i0N1LsL/3SSPvGYfLB30HY9kDJU7By6GOomuSztIttVikTZ1DnK4xgQH3RIXCxeqFzA
+         xgpgOTFjYJbMiHaiea/gBh4tHJ7vK8A42IsXgY8u1jziO5amafraZ95Po+FcxLO/ZTW5
+         smfEh05pFJFBVjiYUmjdfxOh7Ev4Vlr4uZxyYAKlBb0NahyGnY0yD8gOynd4RPMIVrvd
+         GkDIVkst/xrIWc2jg7lPz+/V4/nZBlT3yG4rbtLDfm9GQZ2fk1YWZfgi8aunUx5FZ3Q2
+         EaTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785303946; x=1785908746;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=h4j8/bcJx2sqaNy1FkkD1tKrJ77EePT5Y3UEZ3HBUKo=;
+        b=tTQvxeNjQQPS6/m93S+JVN0Q0PglUAR8LD/h00cyHY9bS39XlFA8o4T4MZBE44dZf5
+         guwQlBgKa+0f6BwDB+zS/vihMT4hceIqNDCnH+9wJLhbVh/AeDEnj8/b8cVQo2PgrQ6n
+         qi1p3mIhWSugwogfhipmO+4CHeEHLku+JOeSnAOkrqmVNLPghiYhak6dwA7CscKvgcVV
+         AzZwGG3johOqVM4/6DnNigZZOHUPBRYThTEYHASLDbTBexQSm+tALsIMFjYokqqAE1gv
+         VDaw+7CFbS8COh+TVU8if91qswH6HZ3a881Te/d6GGMfMf09wmG2fu5Qp1vpggnp6zOg
+         vSmA==
+X-Gm-Message-State: AOJu0YxFCyoSMlJGMnYRa/i0itB9VA4rGd3BHaJpSRykuM8sWI8NCyMs
+	RZ6cgZ3Mj7YAvR3gA2nAyCVGpD8gkpnnheT+uL/SUKwlVcdTwYIfYxXD6NbkKN8+qAQ=
+X-Gm-Gg: AR+sD12O5eNBU0oKqC+IcnuLH+wzvUF/u8g5aPYYbu7zr6UtlC72BVK2MDtGvdtIwfV
+	aJ4mOA6jn0vcv9qRey+u2vOzuEQnEkiWSi5V9dypqEz2//eoYovGbcSOxFt+d7q4+D7xbxLio/r
+	qIygQT+GXsczEGB69+XBXeTMLp9SmyFRYfFUrrR7tjdDb/b7EwiyIeS+pOiMIcA3csOU/kLyCeV
+	QA+CQmUnW5viw+nwCbaRDIzFRB69M6RiWs2Lvi9M9DXOdsoc39K6qNn1Mz/wx0Gr//iNJ1Njvhk
+	TpRPbHWvfOTFREukyV/7KO61r+20HhIa2PeFZ3DuvwDjrRlLYp5dRMjgDz6K6ddne81uLz4haEO
+	yP0zblZ0cGWMJ0JOeAhfifM+ntU6akqQqYZVVKBxrEmjvuuovfqnAeALqQLwVWOigD//D4UsV7u
+	dZttkHJ1PK+bJRLB2Vna+XFLjVGPoMbmCU6rnArKmBfwcisAficEKeMX4SglMU9s1zsoBCoBKcv
+	GOBasIIObs823vL/g==
+X-Received: by 2002:a05:6a00:2d84:b0:845:3fea:96c with SMTP id d2e1a72fcca58-84e9315a58cmr5454901b3a.21.1785303946026;
+        Tue, 28 Jul 2026 22:45:46 -0700 (PDT)
+Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea03cbd1csm792779b3a.53.2026.07.28.22.45.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Jul 2026 22:45:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260728155728.1193169-2-maxime.chevallier@bootlin.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 Jul 2026 01:45:44 -0400
+Message-Id: <DKATFHMTL31E.272MMJP3JGDGG@etsalapatis.com>
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH] bpf, sockmap: Fix sk_redir use-after-free in send
+ verdict
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: "Chengfeng Ye" <nicoyip.dev@gmail.com>, "Eric Dumazet"
+ <edumazet@google.com>, "Neal Cardwell" <ncardwell@google.com>, "Kuniyuki
+ Iwashima" <kuniyu@google.com>, "John Fastabend" <john.fastabend@gmail.com>,
+ "Jakub Sitnicki" <jakub@cloudflare.com>, "Jiayuan Chen"
+ <jiayuan.chen@linux.dev>, "David S. Miller" <davem@davemloft.net>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
+ "Alexei Starovoitov" <ast@kernel.org>, "open list:BPF [L7 FRAMEWORK]
+ (sockmap)" <bpf@vger.kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260719152207.2892156-1-nicoyip.dev@gmail.com>
+In-Reply-To: <20260719152207.2892156-1-nicoyip.dev@gmail.com>
 
-On Tue, Jul 28, 2026 at 05:57:26PM +0200, Maxime Chevallier wrote:
-> Stmmac selftests validate the internal behaviour of the various IPs,
-> using local loopback. The current logic is relies on PHY-side local
-> loopback if a PHY is attached, with a fallback to MAC loopback
-> otherwise.
-> 
-> However, PHY loopback is currently fragile especially for stmmac that
-> may require RXC to be provided from the PHY. Some PHYs shutdown RXC
-> while in loopback, while others will report carrier off when in local
-> loopback. This also fails when using SFP setup with a module that embeds
-> a PHY, that may also fail to enter loopback.
-> 
-> MAC loopback is done at the GMII level on dwmac, allowing the internal
-> to be just as meaningful as PHY-loopback testing.
-> 
-> Let's simplify stmmac selftests by only relying on MAC-side local
-> loopback, which makes the selftests runnable on a wider HW variety.
-> 
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+On Sun Jul 19, 2026 at 11:22 AM EDT, Chengfeng Ye wrote:
+> sk_psock_msg_verdict() takes a socket reference for psock->sk_redir.
+> tcp_bpf_send_verdict() copies that pointer while holding the source socke=
+t
+> lock, but does not take a reference for the local copy before dropping th=
+e
+> lock around tcp_bpf_sendmsg_redir().
+>
+> When apply_bytes keeps the cached verdict active, another sendmsg() on th=
+e
+> same source socket can consume the remaining bytes and release the cached
+> reference while the first thread still holds only the raw local pointer:
+>
+>   CPU 0                                  CPU 1
+>   sk_redir =3D psock->sk_redir
+>   apply_bytes remains nonzero
+>   release_sock(sk)
+>                                          lock_sock(sk)
+>                                          apply_bytes reaches zero
+>                                          psock->sk_redir =3D NULL
+>                                          release_sock(sk)
+>                                          tcp_bpf_sendmsg_redir(sk_redir)
+>                                          sock_put(sk_redir)
+>   tcp_bpf_sendmsg_redir(sk_redir)
+>
+> The final sock_put() can free sk_redir before CPU 0 dereferences it.
+>
+> KASAN reported:
+>
+>   BUG: KASAN: slab-use-after-free in tcp_bpf_sendmsg_redir+0xf39/0x1020
+>   Read of size 8 at addr ffff888108537090 by task poc/87
+>   Call Trace:
+>    tcp_bpf_sendmsg_redir+0xf39/0x1020
+>    tcp_bpf_sendmsg+0x977/0x1a50
+>    __sys_sendto+0x32c/0x3a0
+>    __x64_sys_sendto+0xdb/0x1b0
+>   Allocated by task 85:
+>    sk_prot_alloc+0x56/0x210
+>    sk_clone+0x6f/0x14b0
+>    inet_csk_clone_lock+0x24/0x740
+>    tcp_create_openreq_child+0x25/0x2710
+>    tcp_v4_syn_recv_sock+0x10a/0xe00
+>   Freed by task 0:
+>    __kasan_slab_free+0x43/0x70
+>    slab_free_after_rcu_debug+0xa6/0x1e0
+>    rcu_core+0x50a/0x1850
+>   Last potentially related work creation:
+>    __sk_destruct+0x3da/0x540
+>    sk_psock_destroy+0x81e/0xab0
+>    process_one_work+0x63a/0x1070
+>
+> Take a temporary socket reference while the source socket lock still
+> protects psock->sk_redir, and drop it after tcp_bpf_sendmsg_redir()
+> returns.  This keeps each unlocked use independent of cached-verdict
+> ownership.
+>
+> Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+
 > ---
->  .../stmicro/stmmac/stmmac_selftests.c         | 112 ++----------------
->  1 file changed, 9 insertions(+), 103 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> index 29e824bd90ca..c0e5dee86451 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> @@ -374,25 +374,6 @@ static int stmmac_test_mac_loopback(struct stmmac_priv *priv)
->  	return __stmmac_test_loopback(priv, &attr);
->  }
->  
-> -static int stmmac_test_phy_loopback(struct stmmac_priv *priv)
-> -{
-> -	struct stmmac_packet_attrs attr = { };
-> -	int ret;
-> -
-> -	if (!priv->dev->phydev)
-> -		return -EOPNOTSUPP;
-> -
-> -	ret = phy_loopback(priv->dev->phydev, true, 0);
-> -	if (ret)
-> -		return ret;
-> -
-> -	attr.dst = priv->dev->dev_addr;
-> -	ret = __stmmac_test_loopback(priv, &attr);
-> -
-> -	phy_loopback(priv->dev->phydev, false, 0);
-> -	return ret;
-> -}
-> -
->  static int stmmac_test_mmc(struct stmmac_priv *priv)
->  {
->  	struct stmmac_counters initial, final;
-> @@ -1815,10 +1796,6 @@ static int stmmac_test_tbs(struct stmmac_priv *priv)
->  	return ret;
->  }
->  
-> -#define STMMAC_LOOPBACK_NONE	0
-> -#define STMMAC_LOOPBACK_MAC	1
-> -#define STMMAC_LOOPBACK_PHY	2
-> -
->  static const struct stmmac_test {
->  	char name[ETH_GSTRING_LEN];
->  	int lb;
-> @@ -1826,131 +1803,96 @@ static const struct stmmac_test {
->  } stmmac_selftests[] = {
->  	{
->  		.name = "MAC Loopback               ",
-> -		.lb = STMMAC_LOOPBACK_MAC,
->  		.fn = stmmac_test_mac_loopback,
-> -	}, {
-> -		.name = "PHY Loopback               ",
-> -		.lb = STMMAC_LOOPBACK_NONE, /* Test will handle it */
-> -		.fn = stmmac_test_phy_loopback,
->  	}, {
->  		.name = "MMC Counters               ",
-> -		.lb = STMMAC_LOOPBACK_PHY,
->  		.fn = stmmac_test_mmc,
->  	}, {
->  		.name = "EEE                        ",
-> -		.lb = STMMAC_LOOPBACK_PHY,
->  		.fn = stmmac_test_eee,
+>  net/ipv4/tcp_bpf.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+> index 8e905b50dead..69cc8bc33bcd 100644
+> --- a/net/ipv4/tcp_bpf.c
+> +++ b/net/ipv4/tcp_bpf.c
+> @@ -469,6 +469,7 @@ static int tcp_bpf_send_verdict(struct sock *sk, stru=
+ct sk_psock *psock,
+>  	case __SK_REDIRECT:
+>  		redir_ingress =3D psock->redir_ingress;
+>  		sk_redir =3D psock->sk_redir;
+> +		sock_hold(sk_redir);
+>  		sk_msg_apply_bytes(psock, tosend);
+>  		if (!psock->apply_bytes) {
+>  			/* Clean up before releasing the sock lock. */
+> @@ -489,6 +490,7 @@ static int tcp_bpf_send_verdict(struct sock *sk, stru=
+ct sk_psock *psock,
+> =20
+>  		if (eval =3D=3D __SK_REDIRECT)
+>  			sock_put(sk_redir);
+> +		sock_put(sk_redir);
+> =20
+>  		lock_sock(sk);
+>  		sk_mem_uncharge(sk, sent);
 
-Hm, not sure this test can be properly executed in all conditions.
-We do not support forced LPI mode from phylink perspective, and it is
-not forced by the tests. If it passes, only by accident if link partner
-local system and link partner advertise the EEE support. 
-
->  	}, {
->  		.name = "Hash Filter MC             ",
-> -		.lb = STMMAC_LOOPBACK_PHY,
->  		.fn = stmmac_test_hfilt,
->  	}, {
->  		.name = "Perfect Filter UC          ",
-> -		.lb = STMMAC_LOOPBACK_PHY,
->  		.fn = stmmac_test_pfilt,
->  	}, {
->  		.name = "MC Filter                  ",
-> -		.lb = STMMAC_LOOPBACK_PHY,
->  		.fn = stmmac_test_mcfilt,
->  	}, {
->  		.name = "UC Filter                  ",
-> -		.lb = STMMAC_LOOPBACK_PHY,
->  		.fn = stmmac_test_ucfilt,
->  	}, {
->  		.name = "Flow Control               ",
-> -		.lb = STMMAC_LOOPBACK_PHY,
->  		.fn = stmmac_test_flowctrl,
-
-Interesting test, it will be cool to have it in generic form. Probably
-most of them, but it will be a lot of work.
-
-So, yes - most of this tests do not relay on the PHY, instead - on some
-kind of running link configuration. But this tests seems to not enforce
-needed link configuration before and after patches - correct?
-
-Best Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
