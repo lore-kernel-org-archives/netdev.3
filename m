@@ -1,79 +1,59 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1093054C7
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 16:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A532D5A01
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 16:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785340836; cv=none; b=B7OYCoo5in1RfQ6eFE0y12vHSo29rRASIjsdoiZSF2rkoYe9LkCWThYlu7WXEc2uRE4QYWBpCO1ZJdIYCc/BEb9Fdq9AQmYnq008UxzSE0K6hnIHqGP6F6IlVkRO/1sGoicsBfwKv8SFk9RMkX8Nhu6cmUW/Atu8DX5rSfClTlg=
+	t=1785340884; cv=none; b=TDvQTxaMbj/1PSoynlEjwd2yIW8JBzyn+lqgo+lr7QmbXtCI7jWmEUPAIzOlTT/PLZqPoNFEnae3hcu2ZdtTbjH/x+mU0yAGdtxnIcidVDisOo82ZxjBn90VJ+UM2Om8XaFbL3kfd2ttVRC6AYI0Cw8O3GxVP4CH4nYdIfECeXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785340836; c=relaxed/simple;
-	bh=wGk13vL35KwG3l0xTxS+K1aQKa+KpFO1SrTRXLK0xuA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YjwA4bI4rnr4ouToFlx/5m0XxcgK3MpnhSdYCV+eeKNgfpc9XIF6uLlKqxXabh6+/mFbhDcD1+3CEk2WsXdhUkQvWZbD8tdCjfMFgJ8HWSOxHS6w0/aheIx2cZU4iOV1n44EqFcxtf8dAWonvO6AQxjRTB9HgZB91GBlUXfu2gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com; spf=pass smtp.mailfrom=xbow.com; dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b=kHzVSBmM; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xbow.com
+	s=arc-20240116; t=1785340884; c=relaxed/simple;
+	bh=lMf1tDi2u9WCGCsJE1OH1PYld6AI3eDZUj7EkhJEpgE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mWK0Ma1ZGCnnzFeE4PiE8F0rqYkv8gnJVYi8Jk4VnjiEs8Jzc5StczFjWxKoAZ1f3l5mWgSohZ3VAmSlY9Ll2r3Ywfe6cChzrRiODg6wMJl5Pe5Mhmz479IIfpMpMn8OBdWoUul+4rXkabVTCVAOB7dCjfoIWoZGhdU9premgj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aQxlmBEZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b="kHzVSBmM"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38101f85591so2065746a91.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:00:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=xbow.com; s=google; t=1785340835; x=1785945635; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mi7DTUQ6I2JLv7hCuqy916IrqtjL9UgcrN2Dk8y583M=;
-        b=kHzVSBmMze66yf7sXerQmvWqALFENLBE4hemGdXQ/RqF14VblyD5kxugNeUyOo6mRi
-         sBbd2CvHXIqGDPiaMCHXyGgJq3WlL5OzYbUyoxNpqu6vRzKv7LfoXezR6iP62xg17D2b
-         o7r6E6u0/xi/WFrHKNPA2KeoUKO+Z650Elco7LhE/6I5GqnRZSXEPVyT9FkBEtEOFp4b
-         slfaOtB4mk3oh5F9pt3TSgTMv2oWgIpkxRK5L2kAid7zXkx+9nChPV2WeH1RcnU70yiU
-         wKaIMbluEfn5oGrNSeEPJAyan5+XrzZqiDN/wOE2ofOP3IZfERS+N9p0qut/A5TKJYUC
-         cD2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785340835; x=1785945635;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mi7DTUQ6I2JLv7hCuqy916IrqtjL9UgcrN2Dk8y583M=;
-        b=jwLwyPBZG+rqIFEGaVXEXIhPDkkiTEQcGLEHXIGRRhJry7tDObxKiG/Rpqq4MOV69U
-         1ixveyPwuG0bhNoN80i/BeSEFnFmT5RVRmFc2VSQvUp6H3UHuyXUocG1UfaK7lSRzSKq
-         +HDpuslE4uW4As3KRh5kcfhwuVORKEXrLYMDZgdCtFKxdfx+oiuFVEYToPb+c+BajKZa
-         GhSGts61bE8+MODfzTUen5+HlHICBa4wJGs3sA9riEf/5eO1eGhddgUdI2+rn0jg2+Eb
-         jymTganiIyfD88p3L7qZH1D4LxPJsB5hZtRGp0SmrGS0d6EQQudZp5lU/iyRinkxreP2
-         ZpuQ==
-X-Gm-Message-State: AOJu0YyUepIMwW+K04QAsDEeIY7UpNVNn9qjmASKSj1FbsmYWXGtUkoj
-	No9iuhZjZc1SqKkF5uQ5kjRYLme19Xtf7K7pdQS67OosbsYKF8cLN6/BnAHR/wruiINOVzhjEOK
-	ESXxXqVQe4A==
-X-Gm-Gg: AR+sD113rKn2dsLlvxISrBf7SSxtpC5WrTD0QbPfrSKPmfPdM9qPCAwq1B/PEbTGu+j
-	pXdnBgv/pbFpmvsoZDlG0kYBQcweQNvcRGSMRZ0uSNtZsQdqZs8pir6ohB8qkoJTkTX0nHWjexo
-	bzDB+gRHYMP0W12557R1A/2LTBlhLrs6+lpgoMLaQ9VhCihusWO4hNdYYqjK96u5ofEJ2SJJuwx
-	qPJFTz65/JJYI5or0QDW3WDW4pYqnFZVP+xfvQYNmBO+Rqzbmj7lA1Ogq1r3n452XypVvc9DnXx
-	J+QmfPc1APx1G+msXMe9guLtFBlgT3CQ1xE82w45J1HuQPnhfE8m1EkKymm1DmM1BADQd6m+f5x
-	XJwKo6qQ0277ypEVV1Q7XKN3qOECPj30+N7t8QIM/nvUBydyqrQ6+TPyqcUUavfJ9AWYjWqgPEN
-	Jy7Az5sbkrcn/N5Y0P4jE6R3x2dU7uEzhbuvG0v5Z2b4K79rgCs/nKsjZO64izu1mwHgrJGhP3J
-	PUqjvE2a5mRviO2E1gIq6adu9f0
-X-Received: by 2002:a17:90b:4a90:b0:37f:9e21:91d6 with SMTP id 98e67ed59e1d1-38f8368746dmr2143556a91.13.1785340833898;
-        Wed, 29 Jul 2026 09:00:33 -0700 (PDT)
-Received: from Mac.lan ([125.128.148.126])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f12f965sm1615685a91.5.2026.07.29.09.00.30
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 29 Jul 2026 09:00:33 -0700 (PDT)
-From: Baul Lee <baul.lee@xbow.com>
-To: netdev@vger.kernel.org,
-	linux-sctp@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aQxlmBEZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785340882;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=JjKpUnU//S5uRjTIsfEgZIbr10YcEHGlNIPhXGuTE1M=;
+	b=aQxlmBEZdbFjiMXIU8KC8x6pmc54izzz3VbzHxdNiMh1fESfzs+irdjk8JIFO7tD29gIUs
+	qM0M6T/VXC8rB697pKng165zJ3e3c2/PHqpJZBIUCIhnV89zbZhOmOms//nRZxMWxJxgju
+	LaC6r5jGhdIt22G7jBDsKBCocwAbOQQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-204-7sK9ZPCuOGygTZEZzLrZaw-1; Wed,
+ 29 Jul 2026 12:01:17 -0400
+X-MC-Unique: 7sK9ZPCuOGygTZEZzLrZaw-1
+X-Mimecast-MFC-AGG-ID: 7sK9ZPCuOGygTZEZzLrZaw_1785340875
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 64F6818002CA;
+	Wed, 29 Jul 2026 16:01:15 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.33.159])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CBB121956089;
+	Wed, 29 Jul 2026 16:01:11 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: netdev@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org,
-	Baul Lee <baul.lee@xbow.com>
-Subject: [PATCH net v3] sctp: keep chunk->transport in step with the list it is queued on
-Date: Thu, 30 Jul 2026 01:00:28 +0900
-Message-ID: <20260729160028.54546-1-baul.lee@xbow.com>
-X-Mailer: git-send-email 2.50.1
+	linux-afs@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v5 00/10] rxrpc: Fix CHALLENGE packet handling
+Date: Wed, 29 Jul 2026 17:00:57 +0100
+Message-ID: <20260729160108.2031453-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,71 +61,167 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-__sctp_outq_flush_rtx() moves a gap-acked chunk onto another transport's
-transmitted list without updating chunk->transport:
+Here's a fix for AF_RXRPC's CHALLENGE packet handling, addressing an issue
+raised by Sashiko[1], plus some miscellaneous fixes found in the process of
+fixing this, plus a number of things raised by Sashiko[2][3][4].
 
-	if (chunk->tsn_gap_acked) {
-		list_move_tail(&chunk->transmitted_list,
-			       &transport->transmitted);
-		continue;
-	}
+Firstly, the miscellaneous patches:
 
-The chunk then sits on a live transport's list while chunk->transport still
-names a different one.  If that transport is removed - sctp_assoc_rm_peer()
-from an ASCONF Delete-IP - sctp_transport_free() RCU-frees it and the chunk
-is left with a dangling pointer.  sctp_assoc_rm_peer() scrubs
-peer->transmitted and asoc->outqueue.out_chunk_list, but the chunk is on
-neither.
+ (1) Fix rxrpc_sendmsg so that it doesn't return an error if it queued the
+     last packet of a call.  After that point, the error will be returned
+     by recvmsg() and returned it twice in two different places may
+     complicate userspace cleaning up its own structures.
 
-The pointer is not followed while tsn_gap_acked is set.  A SACK that
-reneges on the TSN clears the flag, and the next SACK reaches
+ (2) Fix error handling in rxrpc_send_data() for if ->secure_packet()
+     returns an error.
 
-	tchunk->transport->flight_size -= sctp_data_size(tchunk);
+ (3) Fix the update of call->pending in rxrpc_send_data() in paths when the
+     call lock has been dropped.
 
-inside the freed transport.  KASAN reports a slab-use-after-free read in
-sctp_check_transmitted(), freed from sctp_assoc_rm_peer().  Both the
-removal and the SACKs come from the association peer.
+ (4) Fix the generation of notifications from rxrpc after call completion.
 
-Set chunk->transport at the move.  The ordinary resend path needs nothing:
-it reaches its list_move_tail() only after sctp_packet_append_chunk()
-returned SCTP_XMIT_OK, and __sctp_packet_append_chunk() has rebound the
-chunk by then.
+And then there are the patches to fix CHALLENGE packet overqueuing and
+simplify RESPONSE packet generation by pre-creating the RxGK application
+data up front and passing it in a user key (thereby allowing userspace to
+partake).  This is split into five patches:
 
-Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
+ (5) Add a refcount to the user key payload.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Baul Lee <baul.lee@xbow.com>
----
-v3:
- - drop the redundant assignment on the ordinary resend path (Xin Long)
- - trim the commit message
+ (6) Make the AFS filesystem generate per-server appdata keys.
 
-v2:
- - fix the root cause in __sctp_outq_flush_rtx() rather than scrubbing the
-   retransmit queue in sctp_assoc_rm_peer(), which cannot see chunks already
-   migrated onto another transport's list
- - correct the Fixes tag
+ (7) Pass the appdata from AFS (or userspace) to rxrpc.
 
-Link to v1: https://lore.kernel.org/netdev/20260726060453.42730-1-baul.lee@xbow.com/
-Link to v2: https://lore.kernel.org/netdev/20260729124929.5885-1-baul.lee@xbow.com/
+ (8) Change over to using the appdata key to supply the appdata.
 
- net/sctp/outqueue.c | 1 +
- 1 file changed, 1 insertion(+)
+ (9) Remove all the OOB stuff.
 
-diff --git a/net/sctp/outqueue.c b/net/sctp/outqueue.c
-index f6b8c13dafa4..e92fb9da4647 100644
---- a/net/sctp/outqueue.c
-+++ b/net/sctp/outqueue.c
-@@ -650,6 +650,7 @@ static int __sctp_outq_flush_rtx(struct sctp_outq *q, struct sctp_packet *pkt,
- 		if (chunk->tsn_gap_acked) {
- 			list_move_tail(&chunk->transmitted_list,
- 				       &transport->transmitted);
-+			chunk->transport = transport;
- 			continue;
- 		}
- 
--- 
-2.53.0
+[!] Note that this entails a significant change in the UAPI for AF_RXRPC,
+with the CMSG types and sockopt to support the OOB queuing being removed
+and replaced with a new single CMSG type that conveys the user key ID.  I
+don't think it likely anyone is using this outside of my kafs-utils
+package.
+
+This also involves a change to the user-defined key type, making the
+payload refcounted so that it can be accessed and the length read, then a
+buffer allocated that will hold it and other data, and then the content
+copied.  The problem is that the user is perfectly at liberty to change the
+content of a user-defined key (which will RCU-replace the content of the
+key), so the length might change when we drop the RCU read lock in order to
+allocate.  This could be got around by locking the key->rwsem sharedly, but
+that might be able to deadlock part of the rxrpc protocol engine if memory
+reclaim occurs.
+
+David
+
+The patches can be found here also:
+
+	http://git.kernel.org/cgit/linux/kernel/git/dhowells/linux-fs.git/log/?h=rxrpc-fixes
+
+Changes
+=======
+ver #5)
+- Rebased on latest net/main.
+- Fixed more Sashiko-reported bugs[5]:
+  - Removed dropped_lock from rxrpc_do_sendmsg() as it's now always false.
+  - Fix rxrpc_send_data() to not leak a txbuf from the "maybe_error:" path
+    by reattaching it to call->tx_pending.
+  - Increased the size of the rxrpc_abort_reason enum value by removing the
+    __mode(byte) specifier.
+
+ver #4)
+- Rebased on latest net/main.
+- Split out non-relevant AFS patches.
+- Allow logon-type key as well as user-type key as they're basically the
+  same thing internally.
+- Fixed more Sashiko-reported bugs[4]:
+  - Fixed rxrpc_send_data() to wind the transmitted data back by 1 byte if
+    ENOMEM is hit when encrypting the final packet so that the caller can
+    retry.
+  - Fixed afs_create_yfs_rxgk_cm_appdata() to add the 4 bytes for the level
+    into toksize.
+  - Changed bundle code to include the appdata key as part of the client
+    connection bundle lookup criteria (don't share connections with
+    different appdata keys).
+  - Fixed rxrpc_sendmsg_cmsg() to allow only, not disallow user-type keys
+    for RXRPC_RESPONSE_APPDATA.
+  - Reversed the removal of the rejection of MSG_OOB passed to
+    rxrpc_recvmsg().
+  - Fixed rxgk_construct_response() to use xdr_object_len() to calculate
+    the space needed for the appdata and also the space needed for the
+    token and the authenticator.
+  - Added a check into rxgk_respond_to_challenge() to make sure the key
+    type is user or login before we access its payload.
+  - Remove ->sendmsg_respond_to_challenge() too.
+
+ver #3)
+- Rebased on latest net/main.
+  - Removed two obsoleted patches.
+
+ver #2)
+- Split the CHALLENGE/RESPONSE fix into smaller patches.
+- Fixed more Sashiko-reported bugs[2][3]:
+  - Added some more patches to fix some more bugs.
+  - Get rid of the AFS_SERVER_FL_APPDATA flag and check the pointer to the
+    appdata instead.
+  - Rename the appdata key pointer in the AFS_SERVER to reflect this one is
+    only for the YFS-RxGK security class.
+  - Use barriers when reading or writing the server appdata key pointer.
+  - Ignore the appdata for RxNULL, RxKAD and OpenAFS's RxGK for now.
+  - Check that sendmsg() with RXRPC_RESPONSE_APPDATA is passed a user key.
+  - Check that the appdata key's payload isn't NULL, for instance if it
+    gets revoked.
+  - Add some error path key_put()s in rxrpc_do_sendmsg().
+
+[1] https://sashiko.dev/#/patchset/20260624163819.3017002-1-dhowells%40redhat.com
+[2] https://sashiko.dev/#/patchset/20260702144919.172295-1-dhowells%40redhat.com
+[3] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260702144919.172295-1-dhowells%40redhat.com
+[4] https://sashiko.dev/#/patchset/20260713081022.2186481-1-dhowells%40redhat.com
+[5] https://sashiko.dev/#/patchset/20260723100309.530157-1-dhowells%40redhat.com
+
+David Howells (10):
+  rxrpc: Fix sendmsg to not return an error if last packet queued
+  rxrpc: Fix packet encryption error handling
+  rxrpc: Fix update of call->tx_pending without holding lock
+  rxrpc: Fix generation of notifications after call completion
+  rxrpc: Expand abort trace enum
+  keys: Add refcounting to user-defined key type payload
+  afs: Create a server appdata key
+  rxrpc: Pass appdata key to rxrpc_call and thence to rxrpc_bundle
+  rxrpc: Fix CHALLENGE packet overqueuing and simplify RESPONSE
+    generation
+  rxrpc: Remove OOB challenge/response code
+
+ fs/afs/cm_security.c         | 313 +++++++++++++---------------
+ fs/afs/fs_probe.c            |   5 +
+ fs/afs/internal.h            |  36 ++--
+ fs/afs/main.c                |   1 -
+ fs/afs/rxrpc.c               |  40 ++--
+ fs/afs/server.c              |   2 +-
+ include/keys/user-type.h     |   2 +
+ include/net/af_rxrpc.h       |  21 +-
+ include/trace/events/afs.h   |   1 +
+ include/trace/events/rxrpc.h |   7 +-
+ include/uapi/linux/rxrpc.h   |   6 +-
+ net/dns_resolver/dns_key.c   |   1 +
+ net/rxrpc/Makefile           |   1 -
+ net/rxrpc/af_rxrpc.c         |  49 +----
+ net/rxrpc/ar-internal.h      |  27 +--
+ net/rxrpc/call_object.c      |   2 +
+ net/rxrpc/call_state.c       |  57 +++++-
+ net/rxrpc/conn_client.c      |   4 +
+ net/rxrpc/conn_event.c       |  68 +-----
+ net/rxrpc/insecure.c         |   7 -
+ net/rxrpc/key.c              |  37 ++++
+ net/rxrpc/oob.c              | 387 -----------------------------------
+ net/rxrpc/proc.c             |   5 +-
+ net/rxrpc/recvmsg.c          | 124 ++---------
+ net/rxrpc/rxgk.c             | 138 ++++---------
+ net/rxrpc/rxkad.c            |  27 ---
+ net/rxrpc/sendmsg.c          | 128 +++++++++---
+ net/rxrpc/server_key.c       |  40 ----
+ security/keys/user_defined.c |  23 ++-
+ 29 files changed, 483 insertions(+), 1076 deletions(-)
+ delete mode 100644 net/rxrpc/oob.c
 
