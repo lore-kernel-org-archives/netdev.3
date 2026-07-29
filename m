@@ -1,83 +1,57 @@
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466C83AFAE0
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 06:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85C2334C1D
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 06:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785307576; cv=none; b=EKy8Ub3MFrM/reu0kqUjrLNDQIWFYLhYh29JctRL4vgdRimLYZTGFt6NtXZRwFwcUPjrgXXSFDEWh0fuJzVME7UMyhNCwa1YMfFJ7+2sWipGPNXIxtx4tZhh+RfqMZmvuJP7K3Iv5hl7vv11TIHq+J7ok7dYz7yutzy/rfYRCSs=
+	t=1785307844; cv=none; b=iPZPiKiwMqYdmTFSN6SVE0KMkfQQiVI7Y8Ime9nx0NtzSEs36Mp8SiIzslZSyfXhNH10bjLJfOwhynURkS/WlEbsg3M8FmRJ1yatId8AjhKl4bKgnyGtxPOi9scxEhVepzW10ISYikmfvegrQ76YSMTZol7AEgYZwEJSDgalgkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785307576; c=relaxed/simple;
-	bh=aLvrgUhovUotbgq1yV5E5nzK8hKbIYLBa8oT5Q49nik=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V9YsRzKBEGPBPkNyWQsaCECqSVtfj0s3MC1X/oEjOYb/X4dou3B2PukWswzDO5Of/HQsZuNE9L590NLPng9uLjEdDT1Z3F7Mo/kWyvi5gfLWJ1h1Ka/+QzfvRm4Ghhbakrl5d+NCuImeE28C/HIsNGbX1nN+XmHKb3tP3sOqzrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hvnE6OkW; arc=none smtp.client-ip=209.85.221.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785307844; c=relaxed/simple;
+	bh=0gAdO/SwN8Fp58wkZDB0kZjqmSJEq4AXmgOgIMcTAiY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ngYNOSA6aiau76jgMb1qIPrz51KBfzP2rUJXSZZTJ3KIaDbdmWAHskhSpzz6NXFlCQbsrvOrfuBKM+UNGh9KXkpD9XukpnnfJBuu9kLloB+D/1FagzJa9HxrFuacTeW94UvOASd/O2VJ9TT50Yq8VA4JTz8560KkPhSc5Kh+p+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=LTvKZyHX; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hvnE6OkW"
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-5bfd4795097so174895e0c.0
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 23:46:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785307573; x=1785912373; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5ElNQLPF+IOEJVGx3X6HzWFOmVSfbkgUy77zg9FdrcY=;
-        b=hvnE6OkWI4tJmZAVpcStzZALlc1mrRnGMLuV+OKuzjOQMO3pt3NRRQIjs4vkHjGYH0
-         T8s4bOonQvkCWYPuWH/YHID58vg0VwfuCmW5DYf/HOEIyMJt1aC6qU6kFGzqpD6tnmyE
-         dCRFeDUhK7hre2ExvlXKbCiYENP/4Ip6QMuxoOed+trnhH8HgZcSJy6yAPZEfozr83YQ
-         OqBjJh4EhuB4xAmtJlW47wyKeJw4g3k9JO4e4lqqALXBLAYwpJgRBzFxK2CJLV2eOJiq
-         MhKNe02dt5PgDMLl0pmAeu6HqWRscoLW/0Iruu1IVQSZDbNrHCSlnfhxXm7X5WTRD84G
-         JbeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785307573; x=1785912373;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5ElNQLPF+IOEJVGx3X6HzWFOmVSfbkgUy77zg9FdrcY=;
-        b=UFDmaK0RxAZAB2k2tshaFuTbMiZfHubbeeEdTfQ0npFUwKrPRwwIx+skeLaBo+216i
-         g1yp03ND5vIGA3fS77zAvGnYEkOmDh7JyMuKH7ELwnOxxsC91OGPOO8XQUlgjzJCwihm
-         eNLq2u7lRBnx4VHiYTMWMWYmKX+E+F5ulPS0f04K/NKpGk7EcHn4GdIjhi7mSthPtEz5
-         mFnwkE/CmNuY1yzcTxLZ2b5qAkOvQH6HajT3M9MpUWliMGVj7sSyw6aEilR0K1sZCRRA
-         aKr4RvpA8fhmCUiSRTrowTaqBpH6abLua8TgsgP/TbdP38TsmGXPdIDcmCIpCOILHvRA
-         W/8g==
-X-Gm-Message-State: AOJu0Yyygps/9nLg4g/WBqjh0YIc5hXvt+T+KKxG7gSsU1+tCI6tNk4i
-	VTQaJBnsoRmN81Y6uj5ihepAoVdQcJBsUNASSfRbEUqT+C3HqCPzVZOh1zy2VMO8xPWvLw==
-X-Gm-Gg: AR+sD12obPZX4UGMWuDIg+ifWKgdUWGYW6fVxTt/Mr4io0/CqXW6PHIYDNlYQKUBHFZ
-	8r7cjFudWuqVMG9iOUIRRFnvt+u9J/lAs9vVwblAQ4EN8oY1z1uaz/PUWwKPsS9/GWXJ2f/ZuD0
-	UI1QnLMLMWaY5F+6Kp93iUMq21o8zAza6t/YxJkKbnh1jm6URNrXBu/2EwZkuwXvMymxQHZhl4h
-	kt++9zM9Je+EZLmx3Aopo3ZDfnkOB4fEHV1rrclMJtiJvX1AqbJRkWV1iOMzCA3D2GbPHJ+qVBu
-	pdit6NDBEUuxNYCGCCDogEDdyf8fLWCVTpFopJ3RnzwNk1rRsBdYR4Pymn7Zu1WBJows2yX5mT9
-	H3isW1Wo3LuAR8fj444ZPruwDiCpd+I/HGiPr8XRo1Z+oeb89YFRNMm5vt+WBrmeutiaN7QB2g0
-	pCO6eSOOhPe5J/4h2tjo60GKS22RFhieydcollOGwVsIcH1zAyHvKd
-X-Received: by 2002:a05:6122:1815:b0:5c1:706d:aec3 with SMTP id 71dfb90a1353d-5c33fa9be2cmr2218891e0c.11.1785307573078;
-        Tue, 28 Jul 2026 23:46:13 -0700 (PDT)
-Received: from houminxi ([61.170.216.249])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c34ef4dcf5sm1548090e0c.6.2026.07.28.23.46.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 23:46:12 -0700 (PDT)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	dev@openvswitch.org,
-	linux-kselftest@vger.kernel.org,
-	shuah@kernel.org,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Minxi Hou <houminxi@gmail.com>
-Subject: [PATCH 2/2] selftests/net/openvswitch: add SCTP flow key test
-Date: Wed, 29 Jul 2026 02:45:49 -0400
-Message-ID: <20260729064549.3647518-3-houminxi@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260729064549.3647518-1-houminxi@gmail.com>
-References: <20260729064549.3647518-1-houminxi@gmail.com>
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="LTvKZyHX"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id A87FD207B2;
+	Wed, 29 Jul 2026 08:50:39 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 1zmSqaRHO00V; Wed, 29 Jul 2026 08:50:39 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 12658206BC;
+	Wed, 29 Jul 2026 08:50:39 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 12658206BC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1785307839;
+	bh=2P4tFeQkFbTndjB4sG+qvM+qwToEMTsyZ/hkEritd74=;
+	h=From:To:CC:Subject:Date:From;
+	b=LTvKZyHXCJcfIhaUeVI9BiEa2ZyNHaGpe6A4P/+yFgnSjDWyTIxm/VCven0r6Q/s7
+	 oJZrgYblJqHGpEKa+oNyiLyBGdvRaT2B/Un11A89Rxwa8TJaJfUhGyIBRPn4TvEBs7
+	 toVPjlpsX0zuqIgwko2o+Omj4ctMg1Tykr8JLWN1EPkaJVVBn/LKOh/5HnJQ5tUWq3
+	 VjRAGBhT2ReZgy7soMXaZA6MtMz6oh5vkTk1DPI1rkPEv1CZIsOsmCbcN9SvsngnZE
+	 Xn9CXe92cGG7lg/HD0AbImzd6qkPZJTy0CPbg5BL6xJaeBAQj0JHlzsNF5Vg6mr5qF
+	 L4XKXZXksRUrw==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 29 Jul
+ 2026 08:50:38 +0200
+Received: (nullmailer pid 1592273 invoked by uid 1000);
+	Wed, 29 Jul 2026 06:50:38 -0000
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
+	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 0/8] pull request (net): ipsec 2026-07-29
+Date: Wed, 29 Jul 2026 08:50:10 +0200
+Message-ID: <20260729065035.1591985-1-steffen.klassert@secunet.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,165 +59,92 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-Add test_sctp_connect_v4() to verify OVS can match on SCTP flow keys
-(sctp src/dst port).
+1) xfrm6: fix out-of-bounds write in xfrm6_input_addr() when secpath is full
+   Fix an off-by-one in xfrm6_input_addr() secpath depth check
+   that could write one slot past xvec[].
 
-The test sets up client and server namespaces connected through an
-OVS bridge, installs port-keyed flows, and verifies:
-  - sctp(dst=4443) matches client-to-server INIT
-  - sctp(src=4443) matches server-to-client INIT-ACK
-  - removing flows drops the connection
-  - reinstalling flows restores connectivity
+2) esp: do not unref managed frag pages in esp_ssg_unref()
+   Skip unref in esp_ssg_unref() for managed frag pages, avoiding
+   a page-ref underflow when frags are owned by a zerocopy ubuf.
 
-The listener readiness probe reads /proc/net/sctp/eps instead of ss:
-ss requires the sctp_diag interface, which is not enabled on all
-kernels, while /proc/net/sctp/eps exists whenever SCTP is loaded.
+3) xfrm: espintcp: fix UAF during close
+   Serialize espintcp_close() with xfrm_trans_reinject so the
+   saved skb isn't freed while still in use.
 
-Signed-off-by: Minxi Hou <houminxi@gmail.com>
----
- .../selftests/net/openvswitch/openvswitch.sh  | 121 ++++++++++++++++++
- 1 file changed, 121 insertions(+)
+4) xfrm: drop ESP-in-TCP packets with no ingress device
+   Drop ESP-in-TCP records whose saved ingress device can no
+   longer be resolved, avoiding a NULL deref in the XFRM input path.
 
-diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-index 853dbc1b00d7..b448324527d8 100755
---- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-+++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-@@ -34,6 +34,7 @@ tests="
- 	action_set				set: SET action rewrites fields
- 	trunc					trunc: output truncation
- 	icmpv6					icmpv6: ICMPv6 echo type match
-+	sctp_connect_v4				sctp: SCTP flow key matching
- 	psample					psample: Sampling packets with psample"
- 
- info() {
-@@ -611,6 +612,126 @@ test_icmpv6() {
- 	return 0
- }
- 
-+# Check for an SCTP endpoint via /proc, which works without sctp_diag.
-+sctp_eps_has() {
-+	ip netns exec "$1" awk -v p="$2" '$6==p' /proc/net/sctp/eps | grep -q .
-+}
-+
-+# sctp_connect_v4 test
-+# - sctp(dst=4443) matches client-to-server INIT
-+# - sctp(src=4443) matches server-to-client INIT-ACK
-+# - remove flows and verify connection fails, reinstall and recover
-+test_sctp_connect_v4() {
-+	local t="test_sctp_connect_v4"
-+	local srv_ip=172.31.110.20
-+
-+	modprobe -q sctp 2>/dev/null || return "$ksft_skip"
-+	socat -V 2>&1 | grep -q "define WITH_SCTP" || return "$ksft_skip"
-+
-+	sbx_add "$t" || return $?
-+	ovs_add_dp "$t" sctp4 || return 1
-+
-+	info "create namespaces"
-+	for ns in client server; do
-+		ovs_add_netns_and_veths "$t" "sctp4" "$ns" \
-+		    "${ns:0:1}0" "${ns:0:1}1" || return 1
-+	done
-+
-+	ip netns exec client ip addr add 172.31.110.10/24 dev c1
-+	ip netns exec client ip link set c1 up
-+	ip netns exec server ip addr add "${srv_ip}/24" dev s1
-+	ip netns exec server ip link set s1 up
-+
-+	# Probe: check if kernel supports sctp flow key.
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
-+	    '2' &>/dev/null
-+	if [ $? -ne 0 ]; then
-+		info "no support for sctp key - skipping"
-+		ovs_exit_sig
-+		return $ksft_skip
-+	fi
-+	ovs_del_flows "$t" sctp4
-+
-+	# ARP forwarding
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0806),arp()' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(2),eth(),eth_type(0x0806),arp()' \
-+	    '1' || return 1
-+
-+	# SCTP port matching: dst for request, src for reply
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(2),eth(),eth_type(0x0800),ipv4(proto=132),sctp(src=4443)' \
-+	    '1' || return 1
-+
-+	ovs_netns_spawn_daemon "$t" "server" \
-+	    socat -u SCTP4-LISTEN:4443 STDOUT
-+	local server_pid="$pid"
-+	ovs_wait sctp_eps_has server 4443 || return 1
-+
-+	info "verify SCTP association with port-keyed flows"
-+	ovs_sbx "$t" ip netns exec client \
-+	    timeout 3 socat -u STDIN "SCTP4-CONNECT:${srv_ip}:4443" </dev/null \
-+	    || return 1
-+
-+	ovs_del_flows "$t" sctp4
-+
-+	info "verify connection fails without flows"
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0806),arp()' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(2),eth(),eth_type(0x0806),arp()' \
-+	    '1' || return 1
-+
-+	kill -TERM "$server_pid" 2>/dev/null
-+	local i=0
-+	while kill -0 "$server_pid" 2>/dev/null && [ "$i" -lt 5 ]; do
-+	    sleep 0.2
-+	    i=$((i + 1))
-+	done
-+	ovs_netns_spawn_daemon "$t" "server" \
-+	    socat -u SCTP4-LISTEN:4443 STDOUT
-+	server_pid="$pid"
-+	ovs_wait sctp_eps_has server 4443 || return 1
-+
-+	ovs_sbx "$t" ip netns exec client \
-+	    timeout 3 socat -u STDIN "SCTP4-CONNECT:${srv_ip}:4443" </dev/null \
-+	    >/dev/null 2>&1 \
-+	    && { info "connection should fail without flows"
-+	         return 1; }
-+
-+	info "reinstall flows and verify recovery"
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(2),eth(),eth_type(0x0800),ipv4(proto=132),sctp(src=4443)' \
-+	    '1' || return 1
-+
-+	kill -TERM "$server_pid" 2>/dev/null
-+	i=0
-+	while kill -0 "$server_pid" 2>/dev/null && [ "$i" -lt 5 ]; do
-+	    sleep 0.2
-+	    i=$((i + 1))
-+	done
-+	ovs_netns_spawn_daemon "$t" "server" \
-+	    socat -u SCTP4-LISTEN:4443 STDOUT
-+	server_pid="$pid"
-+	ovs_wait sctp_eps_has server 4443 || return 1
-+
-+	ovs_sbx "$t" ip netns exec client \
-+	    timeout 3 socat -u STDIN "SCTP4-CONNECT:${srv_ip}:4443" </dev/null \
-+	    || return 1
-+
-+	return 0
-+}
-+
- # psample test
- # - use psample to observe packets
- test_psample() {
--- 
-2.55.0
+5) xfrm: avoid lock inversion in nat keepalive work
+   Walk the state table under xfrm_state_lock but defer per-state
+   x->lock acquisition until after, avoiding an AB-BA inversion
+   with SA deletion.
 
+6) xfrm: Fix skb double-free in xfrm_dev_direct_output()
+   Return local_out()'s result from xfrm_dev_direct_output()
+   instead of freeing the skb unconditionally, avoiding a
+   double-free when netfilter or another consumer takes ownership.
+
+7) xfrm: ah6: validate routing header segments_left
+   Validate routing-header segments_left before rearranging it
+   in AH6, avoiding an OOB read on malformed packets.
+
+8) xfrm: fix xfrm_state_construct() auth-trunc leak
+   Track the allocated x->aalg directly in xfrm_state_construct()
+   so attach_auth() doesn't overwrite and leak it.
+
+Please pull or let me know if there are problems.
+
+Thanks!
+
+The following changes since commit 3f1f755366687d051174739fb99f7d560202f60b:
+
+  net: openvswitch: reject oversized nested action attrs (2026-07-11 13:09:11 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git tags/ipsec-2026-07-29
+
+for you to fetch changes up to c12cbf56320fb633484ee0ca1fb7d68d6b64b213:
+
+  xfrm: fix xfrm_state_construct() auth-trunc leak (2026-07-28 10:48:18 +0200)
+
+----------------------------------------------------------------
+ipsec-2026-07-29
+
+----------------------------------------------------------------
+Asim Viladi Oglu Manizada (1):
+      xfrm: ah6: validate routing header segments_left
+
+Maher Azzouzi (1):
+      esp: do not unref managed frag pages in esp_ssg_unref()
+
+Sabrina Dubroca (1):
+      xfrm: espintcp: fix UAF during close
+
+Sanghyun Park (1):
+      xfrm: Fix skb double-free in xfrm_dev_direct_output()
+
+Xiang Mei (1):
+      xfrm6: fix out-of-bounds write in xfrm6_input_addr() when secpath is full
+
+Zhiling Zou (1):
+      xfrm: drop ESP-in-TCP packets with no ingress device
+
+Zihan Xi (2):
+      xfrm: avoid lock inversion in nat keepalive work
+      xfrm: fix xfrm_state_construct() auth-trunc leak
+
+ net/ipv4/esp4.c               |  7 ++++++
+ net/ipv6/ah6.c                | 29 +++++++++++++---------
+ net/ipv6/esp6.c               |  7 ++++++
+ net/ipv6/xfrm6_input.c        |  2 +-
+ net/xfrm/espintcp.c           |  9 ++++++-
+ net/xfrm/xfrm_nat_keepalive.c | 57 ++++++++++++++++++++++++++++++++++++-------
+ net/xfrm/xfrm_output.c        |  4 +--
+ net/xfrm/xfrm_user.c          |  2 +-
+ 8 files changed, 91 insertions(+), 26 deletions(-)
