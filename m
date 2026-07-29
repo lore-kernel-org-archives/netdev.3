@@ -1,48 +1,48 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58941A6839;
-	Wed, 29 Jul 2026 04:31:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DC623ABBE;
+	Wed, 29 Jul 2026 04:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785299473; cv=none; b=Xk4k6p0yOT0PT4VP5LLFLJiWY7BM4oANB3TsO4h/RoXsZ5dyG6uVRT2Lg023Z6UUIO7RvxMruPcHONIOZ8GTLWn8bU9JnieTEdaFMZx+pr482CPINKKoqM1cYa+pqDYd2Rwzl1X9wipDNJSJmGoOWPW6WYoCpyxlo/+tMyVpauE=
+	t=1785299483; cv=none; b=IN9ZwfS8MciH8OlEbj3i7R1iQjUgjoCAUVDDA1KuiG3ZRVxMIRIAwdS2bnjomce7cFsmLXP3c0asIi7zrK3hGOxJKSP2UDjj9mcNDW/XzDYqoFgWZuL+gYxPtxDhaNm2Jtd459MA1IcJnQBI5J61JzsrkznM/dx8lZiEWleGVzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785299473; c=relaxed/simple;
-	bh=PszjweWVRlbGp5Ruicus/ZwNC1tgGrJ1Clew8PgqIzc=;
+	s=arc-20240116; t=1785299483; c=relaxed/simple;
+	bh=2ylNmFZqCI2kgHG49ubb9zdoxRHTYw3l7vx/ZozMMP4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=urR+ru/0s5f/PAlAkf/zdOQ5O9enQoK8HL8QVyb4E6ertKHMFTgjWLUW3KY7flZedvZxpwnnHAAeVzTWl4wbjHjcQndS0ID0ckaBHzhcVy8u5RaEaXNmc42B+9FA/ufmziEtrnfxkmgf1bRms57TtCjwJeEauMEVaataXH1eWnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=0TRQtzP1; arc=none smtp.client-ip=68.232.154.123
+	 MIME-Version:Content-Type; b=K6k6ge3hHtW7qxZ4dRusReuv7nMhRntvJsCI0i4aPGs0CaBHWsJpie3myKL6kxIaeRVEZNvIRXZS3ZlBzZJBiUBYnXoSEE+rgIsfGtDqbFlVon3xLNjTdmceeDW1Q+6S6VDJaNx+QSeQN+kfcvbBinSsz0CS4NophDKSe6oScAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=C8J2E28l; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="0TRQtzP1"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="C8J2E28l"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1785299471; x=1816835471;
+  t=1785299484; x=1816835484;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=PszjweWVRlbGp5Ruicus/ZwNC1tgGrJ1Clew8PgqIzc=;
-  b=0TRQtzP1afoAhixxCqEC8OyDVvVt+l1HQYrR/gH08bBqtovsAme3Swsm
-   J7uyRN6ehX+BO6yfRMZIJ6P7pdMWgSLP51YP+nCzXy22vDqFxDztxPvLT
-   xf1lowfKjrMPBhtA/0wLyf7R5nH5R5Aq8uT8vRK5YqL/dA5e6bbLOxKCQ
-   o5wZnlOF/+6ytjURjdIePn7M9Gjsb5xeRY8W6MxhdQn072XF3So+VpVDj
-   7vpMRFC3DDyZDs+tFOU++vSzHjdUr01skCkI071U/nvV+hCkbOEtZmMG6
-   2suV9yXM61vsPM7Hig62p3Ji07r4TKwTNcTVBMa6q5hULhKpVP1lTBwSx
-   Q==;
-X-CSE-ConnectionGUID: FTr3OlbcSMiWEPCEdbRRUQ==
-X-CSE-MsgGUID: X8r9uUQFR5OXgoCYj2zCBw==
+  bh=2ylNmFZqCI2kgHG49ubb9zdoxRHTYw3l7vx/ZozMMP4=;
+  b=C8J2E28l98B/JcOLuATGVo83RTWEFhQGIggJjQhuWykcp27ibp6w8RgL
+   MnynVxBl9DPK7pIPWNCuW3SzPHISyaafAFVQUx6SYyoecIsGApS5/qg2T
+   EJq+LgaMHIZh0+2GXSa8jdS97IYJo/aRVYv6YZNxkYx+bDq3KIq0IXrBR
+   VPY3ZAIZjDYjGte/0D30IWqaBgOEHNUus2hURK25VhdtfcChEvh0KT8vK
+   AgVNGFobIHQJM0+JzvWq0LWHumadzMr/h2IRQxJ0lM4oVigXQWQGY+RyP
+   CZfRr0ofvozOsql0HZ/0MvPJHlYwKsrjeN50cN98ELNHOBaiI7qZIw4IE
+   w==;
+X-CSE-ConnectionGUID: w5AlHoXiT3mQ71s19E8N7g==
+X-CSE-MsgGUID: 4dBMshAoSiKzmP+bF891eg==
 X-IronPort-AV: E=Sophos;i="6.25,191,1779174000"; 
-   d="scan'208";a="60446929"
+   d="scan'208";a="292693740"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Jul 2026 21:31:11 -0700
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Jul 2026 21:31:22 -0700
 Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 28 Jul 2026 21:31:10 -0700
+ 15.1.2507.58; Tue, 28 Jul 2026 21:31:19 -0700
 Received: from che-ll-i67131.microchip.com (10.10.85.11) by
  chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 28 Jul 2026 21:31:02 -0700
+ 15.1.2507.58 via Frontend Transport; Tue, 28 Jul 2026 21:31:11 -0700
 From: Manikandan Muralidharan <manikandan.m@microchip.com>
 To: <pratyush@kernel.org>, <mwalle@kernel.org>,
 	<takahiro.kuwano@infineon.com>, <miquel.raynal@bootlin.com>,
@@ -54,9 +54,9 @@ To: <pratyush@kernel.org>, <mwalle@kernel.org>,
 	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>
 CC: Manikandan Muralidharan <manikandan.m@microchip.com>
-Subject: [PATCH v6 3/7] mtd: spi-nor: sfdp: expose the SFDP as a read-only NVMEM device
-Date: Wed, 29 Jul 2026 10:00:22 +0530
-Message-ID: <20260729043026.1811147-4-manikandan.m@microchip.com>
+Subject: [PATCH v6 4/7] nvmem: layouts: add Microchip/SST SFDP EUI layout driver
+Date: Wed, 29 Jul 2026 10:00:23 +0530
+Message-ID: <20260729043026.1811147-5-manikandan.m@microchip.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260729043026.1811147-1-manikandan.m@microchip.com>
 References: <20260729043026.1811147-1-manikandan.m@microchip.com>
@@ -69,137 +69,259 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-The SPI NOR core already reads the SFDP tables during enumeration and
-caches them in nor->sfdp->dwords (see spi_nor_parse_sfdp()). Re-expose
-that cached data as a read-only NVMEM device, in on-flash byte order,
-rooted at the flash's SFDP child node (compatible "jedec,sfdp").
-
-This lets NVMEM cells reference any SFDP data: a fixed-layout for
-parameters at a known offset, or an nvmem-layout parser for vendor data
-whose location must be discovered at runtime. The device is only registered
-when an "sfdp" node is present in the device tree.
+Add an NVMEM layout that exposes the factory-programmed EUI-48 identifier
+from the Microchip/SST vendor SFDP parameter table (e.g. SST26VF064BEUI)
+as a "mac-address" cell, for use as a network MAC address. The vendor
+table is located at runtime via the SFDP NVMEM device (no offset in DT),
+and a read_post_process callback reverses the LSB-first bytes into
+canonical MAC order. Binds to an "nvmem-layout" node with compatible
+"microchip,sst26vf-sfdp-eui".
 
 Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
 ---
- drivers/mtd/spi-nor/core.c | 91 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 91 insertions(+)
+ MAINTAINERS                              |   6 +
+ drivers/nvmem/layouts/Kconfig            |  10 ++
+ drivers/nvmem/layouts/Makefile           |   1 +
+ drivers/nvmem/layouts/sst26vf-sfdp-eui.c | 182 +++++++++++++++++++++++
+ 4 files changed, 199 insertions(+)
+ create mode 100644 drivers/nvmem/layouts/sst26vf-sfdp-eui.c
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index ccf4396cdcd0..b9221d56a436 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -17,6 +17,7 @@
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/spi-nor.h>
- #include <linux/mutex.h>
-+#include <linux/nvmem-provider.h>
- #include <linux/of.h>
- #include <linux/regulator/consumer.h>
- #include <linux/sched/task_stack.h>
-@@ -3001,6 +3002,88 @@ static void spi_nor_init_fixup_flags(struct spi_nor *nor)
- 		nor->flags |= SNOR_F_IO_MODE_EN_VOLATILE;
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2f9472c1a090..dc7a141a046b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17816,6 +17816,12 @@ F:	Documentation/devicetree/bindings/sound/atmel,at91-ssc.yaml
+ F:	drivers/misc/atmel-ssc.c
+ F:	include/linux/atmel-ssc.h
  
-+static int spi_nor_sfdp_reg_read(void *priv, unsigned int offset,
-+				 void *val, size_t bytes)
-+{
-+	struct spi_nor *nor = priv;
-+	struct sfdp *sfdp = nor->sfdp;
-+	size_t sfdp_size = sfdp->num_dwords * sizeof(*sfdp->dwords);
++MICROCHIP SST SFDP EUI NVMEM LAYOUT DRIVER
++M:	Manikandan Muralidharan <manikandan.m@microchip.com>
++S:	Maintained
++F:	Documentation/devicetree/bindings/nvmem/layouts/microchip,sst26vf-sfdp-eui.yaml
++F:	drivers/nvmem/layouts/sst26vf-sfdp-eui.c
 +
-+	if (offset >= sfdp_size || bytes > sfdp_size - offset)
+ Microchip Timer Counter Block (TCB) Capture Driver
+ M:	Kamel Bouhara <kamel.bouhara@bootlin.com>
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+diff --git a/drivers/nvmem/layouts/Kconfig b/drivers/nvmem/layouts/Kconfig
+index 5e586dfebe47..855c7db530da 100644
+--- a/drivers/nvmem/layouts/Kconfig
++++ b/drivers/nvmem/layouts/Kconfig
+@@ -26,6 +26,16 @@ config NVMEM_LAYOUT_ONIE_TLV
+ 
+ 	  If unsure, say N.
+ 
++config NVMEM_LAYOUT_SST26VF_SFDP_EUI
++	tristate "Microchip/SST SFDP EUI-48 layout support"
++	help
++	  Say Y here if you want to expose the factory-programmed EUI-48
++	  identifier stored in the Microchip/SST vendor-specific SFDP parameter
++	  table (e.g. SST26VF064BEUI) as NVMEM cells, so that network drivers
++	  can use them as a MAC address.
++
++	  If unsure, say N.
++
+ config NVMEM_LAYOUT_U_BOOT_ENV
+ 	tristate "U-Boot environment variables layout"
+ 	select CRC32
+diff --git a/drivers/nvmem/layouts/Makefile b/drivers/nvmem/layouts/Makefile
+index 4940c9db0665..b99eac1f63f2 100644
+--- a/drivers/nvmem/layouts/Makefile
++++ b/drivers/nvmem/layouts/Makefile
+@@ -5,4 +5,5 @@
+ 
+ obj-$(CONFIG_NVMEM_LAYOUT_SL28_VPD) += sl28vpd.o
+ obj-$(CONFIG_NVMEM_LAYOUT_ONIE_TLV) += onie-tlv.o
++obj-$(CONFIG_NVMEM_LAYOUT_SST26VF_SFDP_EUI) += sst26vf-sfdp-eui.o
+ obj-$(CONFIG_NVMEM_LAYOUT_U_BOOT_ENV) += u-boot-env.o
+diff --git a/drivers/nvmem/layouts/sst26vf-sfdp-eui.c b/drivers/nvmem/layouts/sst26vf-sfdp-eui.c
+new file mode 100644
+index 000000000000..641318d6f0af
+--- /dev/null
++++ b/drivers/nvmem/layouts/sst26vf-sfdp-eui.c
+@@ -0,0 +1,182 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * NVMEM layout for the factory-programmed EUI-48 identifier stored in the
++ * Microchip/SST vendor-specific SFDP parameter table (e.g. SST26VF064BEUI).
++ *
++ * The whole SFDP is exposed as a read-only NVMEM device by the SPI NOR core.
++ * This layout locates the Microchip vendor parameter table at runtime and
++ * registers the EUI-48 address as an NVMEM cell, so that a network driver can
++ * consume it as a MAC address. No offset is hardcoded in the device tree.
++ *
++ * Copyright (C) 2026 Microchip Technology Inc. and its subsidiaries
++ *
++ * Author: Manikandan Muralidharan <manikandan.m@microchip.com>
++ */
++
++#include <linux/etherdevice.h>
++#include <linux/minmax.h>
++#include <linux/nvmem-consumer.h>
++#include <linux/nvmem-provider.h>
++#include <linux/of.h>
++#include <linux/unaligned.h>
++#include <uapi/linux/if_ether.h>
++
++/* SFDP header and parameter header, as laid out on the flash. */
++struct sfdp_header {
++	u8 signature[4];
++	u8 minor;
++	u8 major;
++	u8 nph;
++	u8 unused;
++};
++
++struct sfdp_parameter_header {
++	u8 id_lsb;
++	u8 minor;
++	u8 major;
++	u8 length;
++	u8 parameter_table_pointer[3];
++	u8 id_msb;
++};
++
++#define SFDP_SIGNATURE			0x50444653U
++
++#define SFDP_PARAM_HEADER_ID(h)		(((h)->id_msb << 8) | (h)->id_lsb)
++#define SFDP_PARAM_HEADER_PTP(h)	get_unaligned_le24((h)->parameter_table_pointer)
++
++/* Microchip (vendor) parameter table identifier: id_msb << 8 | id_lsb. */
++#define SFDP_MCHP_VENDOR_ID		0x01bf
++
++#define SFDP_MCHP_EUI48_MARKER_OFFSET	0x60
++#define SFDP_MCHP_EUI48_MARKER		0x30
++#define SFDP_MCHP_EUI48_OFFSET		0x61
++
++static int sfdp_eui_read_post_process(void *priv, const char *id, int index,
++				      unsigned int offset, void *buf,
++				      size_t bytes)
++{
++	u8 *data = buf;
++	int i;
++
++	/* SFDP stores the address least-significant octet first; reverse it. */
++	for (i = 0; i < bytes / 2; i++)
++		swap(data[i], data[bytes - 1 - i]);
++
++	if (bytes == ETH_ALEN && !is_valid_ether_addr(buf))
 +		return -EINVAL;
 +
-+	/* The cached SFDP is kept in on-flash (little-endian) byte order. */
-+	memcpy(val, (u8 *)sfdp->dwords + offset, bytes);
-+
 +	return 0;
 +}
 +
-+static void spi_nor_sfdp_nvmem_put_np(void *data)
++static int sfdp_eui_find_vendor_table(struct nvmem_device *nvmem, u32 *ptp)
 +{
-+	of_node_put(data);
-+}
++	struct sfdp_parameter_header ph;
++	struct sfdp_header hdr;
++	int nph, i, ret;
 +
-+/**
-+ * spi_nor_register_sfdp_nvmem() - expose the SFDP as a read-only NVMEM device
-+ * @nor:	pointer to a 'struct spi_nor'
-+ *
-+ * Expose the whole SFDP, in on-flash byte order, as a read-only NVMEM device
-+ * rooted at the flash's SFDP child node (compatible "jedec,sfdp"). This lets
-+ * generic (fixed-layout) or vendor (nvmem-layout) cells reference any SFDP
-+ * data. The device is only registered when a child node with the "jedec,sfdp"
-+ * compatible is described in the device tree.
-+ *
-+ * Return: 0 on success or if there is nothing to do, -errno otherwise.
-+ */
-+static int spi_nor_register_sfdp_nvmem(struct spi_nor *nor)
-+{
-+	struct device *dev = nor->dev;
-+	struct nvmem_config config = { };
-+	struct nvmem_device *nvmem;
-+	struct device_node *np;
-+	int ret;
-+
-+	if (!nor->sfdp)
-+		return 0;
-+
-+	np = of_get_compatible_child(dev_of_node(dev), "jedec,sfdp");
-+	if (!np)
-+		return 0;
-+
-+	/*
-+	 * Register the put before devm_nvmem_register() so it runs last on
-+	 * detach, after the NVMEM device that uses the node is gone.
-+	 */
-+	ret = devm_add_action_or_reset(dev, spi_nor_sfdp_nvmem_put_np, np);
-+	if (ret)
++	ret = nvmem_device_read(nvmem, 0, sizeof(hdr), &hdr);
++	if (ret < 0)
 +		return ret;
 +
-+	config.dev = dev;
-+	config.of_node = np;
-+	config.name = "sfdp";
-+	config.id = NVMEM_DEVID_AUTO;
-+	config.owner = THIS_MODULE;
-+	config.read_only = true;
-+	config.word_size = 1;
-+	config.stride = 1;
-+	config.size = (int)(nor->sfdp->num_dwords * sizeof(*nor->sfdp->dwords));
-+	config.reg_read = spi_nor_sfdp_reg_read;
-+	config.priv = nor;
++	if (get_unaligned_le32(hdr.signature) != SFDP_SIGNATURE)
++		return -EINVAL;
 +
-+	nvmem = devm_nvmem_register(dev, &config);
-+	if (IS_ERR(nvmem)) {
-+		/* NVMEM support is optional. */
-+		if (PTR_ERR(nvmem) == -EOPNOTSUPP)
-+			return 0;
-+		return dev_err_probe(dev, PTR_ERR(nvmem),
-+				     "failed to register SFDP NVMEM device\n");
++	/* The number of parameter headers (NPH) field is zero-based. */
++	nph = hdr.nph;
++
++	for (i = 0; i <= nph; i++) {
++		ret = nvmem_device_read(nvmem, sizeof(hdr) + i * sizeof(ph),
++					sizeof(ph), &ph);
++		if (ret < 0)
++			return ret;
++
++		if (SFDP_PARAM_HEADER_ID(&ph) != SFDP_MCHP_VENDOR_ID)
++			continue;
++
++		*ptp = SFDP_PARAM_HEADER_PTP(&ph);
++		return 0;
 +	}
 +
-+	dev_dbg(dev, "exposed %d-byte SFDP as an NVMEM device\n", config.size);
-+
-+	return 0;
++	return -ENOENT;
 +}
 +
- /**
-  * spi_nor_late_init_params() - Late initialization of default flash parameters.
-  * @nor:	pointer to a 'struct spi_nor'
-@@ -3204,6 +3287,14 @@ static int spi_nor_init_params(struct spi_nor *nor)
- 		spi_nor_init_params_deprecated(nor);
- 	}
- 
-+	/*
-+	 * Expose the SFDP table as an NVMEM device only when
-+	 * the flash actually provides one
-+	 */
-+	ret = spi_nor_register_sfdp_nvmem(nor);
++static int sfdp_eui_add_cells(struct nvmem_layout *layout)
++{
++	struct nvmem_device *nvmem = layout->nvmem;
++	struct device *dev = &layout->dev;
++	struct nvmem_cell_info info = { };
++	struct device_node *layout_np;
++	u32 base = 0;
++	u8 marker;
++	int ret;
++
++	ret = sfdp_eui_find_vendor_table(nvmem, &base);
++	if (ret == -ENOENT) {
++		dev_dbg(dev, "no Microchip SFDP vendor table found\n");
++		return 0;
++	}
 +	if (ret)
 +		return ret;
 +
- 	ret = spi_nor_late_init_params(nor);
- 	if (ret)
- 		return ret;
++	/* The EUI-48 is present only if its marker byte is programmed. */
++	ret = nvmem_device_read(nvmem, base + SFDP_MCHP_EUI48_MARKER_OFFSET,
++				1, &marker);
++	if (ret < 0)
++		return ret;
++	if (marker != SFDP_MCHP_EUI48_MARKER) {
++		dev_dbg(dev, "EUI-48 not programmed (marker 0x%02x)\n", marker);
++		return 0;
++	}
++
++	layout_np = of_nvmem_layout_get_container(nvmem);
++	if (!layout_np)
++		return -ENOENT;
++
++	info.name = "mac-address";
++	info.offset = base + SFDP_MCHP_EUI48_OFFSET;
++	info.bytes = ETH_ALEN;
++	info.np = of_get_child_by_name(layout_np, "mac-address");
++	info.read_post_process = sfdp_eui_read_post_process;
++
++	ret = nvmem_add_one_cell(nvmem, &info);
++	if (ret)
++		of_node_put(info.np);
++	else
++		dev_dbg(dev, "exposed EUI-48 at SFDP offset 0x%x\n", info.offset);
++
++	of_node_put(layout_np);
++
++	return ret;
++}
++
++static int sfdp_eui_probe(struct nvmem_layout *layout)
++{
++	layout->add_cells = sfdp_eui_add_cells;
++
++	return nvmem_layout_register(layout);
++}
++
++static void sfdp_eui_remove(struct nvmem_layout *layout)
++{
++	nvmem_layout_unregister(layout);
++}
++
++static const struct of_device_id sfdp_eui_of_match_table[] = {
++	{ .compatible = "microchip,sst26vf-sfdp-eui" },
++	{}
++};
++MODULE_DEVICE_TABLE(of, sfdp_eui_of_match_table);
++
++static struct nvmem_layout_driver sfdp_eui_layout = {
++	.driver = {
++		.name = "microchip-sst26vf-sfdp-eui-layout",
++		.of_match_table = sfdp_eui_of_match_table,
++	},
++	.probe = sfdp_eui_probe,
++	.remove = sfdp_eui_remove,
++};
++module_nvmem_layout_driver(sfdp_eui_layout);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Manikandan Muralidharan <manikandan.m@microchip.com>");
++MODULE_DESCRIPTION("NVMEM layout for the EUI-48 in the Microchip/SST SFDP vendor table");
 -- 
 2.43.0
 
