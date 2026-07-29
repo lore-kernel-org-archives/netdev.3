@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB62418A43;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC604192EF;
 	Wed, 29 Jul 2026 20:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785357921; cv=none; b=TImgJ5EAmPHWkf7HCTT0RooMXDL6tDPZuzbMnT5N1o9VJ69rb2rCci4h1wfcH5eDuFWrcIr5CRLtuPPItM21ppPPcz9zGLpwOM0VQK580AkwPDhtqo40FUyTbBJPb3rqiX5Ok75oWGfiigJoNWnd2EuTXzZ+ZzUFYOIXx/PB5lw=
+	t=1785357921; cv=none; b=PylcvcAHy3827DW9kJWThoOTVXCezrq8IGHvwhGxD896vzhJau1cYqwgdaGMjJCWqX6Wc8vmRr/lQijK7H0nyFyjvDNOoszcCoKdKNrNd0rYEkkyQFC8b4FZQuFiVxIIp3ahBiVZzFiSzXMxCs890DLGyMX9TSCpMgabc/5jWiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785357921; c=relaxed/simple;
-	bh=p9D6ADmgnvp/zXthJ9yl8W8NNzi9AVUjf3jxkNykmZE=;
+	bh=AnZblPC1aGP+v87vlmy8bLBoaVQmShmwhhyiOjowMdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FV2OKBY2j9347IaqJKKxnZSC1bTry6BwO1Uq23e67VgtinsShs2IvYT+rhlyoXQHNcZfvw1285pz4jn2X0v7Wq/5eM778yF4t4Me/i7OrijC/GYHHI9/z4Q2jSHRvB+0dgZtMT0w/0mrnEHQXKZkwu7N8RmdKnMKgyqY1lG6hiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aS+1HUsZ; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=OrV6YP44krpCRBa8sFHROuhekKyF3hh+I+NZIj98h4vkNopG5iX0X/NhGDmxyyhQo8mKX5aYoh/Ao/9LfLMd+cbr0sxStLe9OxCxlZcIrDgFXgMBH5NbK08Qz160gu0eaOs0Sp/YnQb236MyM3YdQh9S5O9eGsOGrXbhBT6ykJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E9F3iJLq; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aS+1HUsZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E9F3iJLq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1785357915; x=1816893915;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=p9D6ADmgnvp/zXthJ9yl8W8NNzi9AVUjf3jxkNykmZE=;
-  b=aS+1HUsZs061dph5iU5EGl06/nHe5IXFGHbHZyasSVVDF5/Sk2G4EvLk
-   nn9yWxY4Cl/J62fAkLYk4wteShk6/3gXuW07p1+hmeYcDnihS9rtcofLb
-   g1vWCoW9cvaQJ/sN5xQM24HRuok379HlYtPHcEcL3HWD9T71Aw30KRb2/
-   Pt7YS7hloKLCTvUSqlThKfIInLh8cHxZl3f0cOyN5NO8tmI99sQ6lC3Kx
-   qXvmgCsIxKBA3z9dDD1Hw1oXm0JMwexwJv0y146hK6QiX30hUhTgPb9x/
-   KE+Tr7ZBm49ZZ7KPllAzoteZJwfNxYjMSijU5TXYhepQfQHIq/WovQbS9
-   g==;
-X-CSE-ConnectionGUID: /zqL5LpKRbK+K7ZeCG0zbg==
-X-CSE-MsgGUID: TEIsU7lrR+KW8DfHGw3ufQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="84952359"
+  bh=AnZblPC1aGP+v87vlmy8bLBoaVQmShmwhhyiOjowMdA=;
+  b=E9F3iJLq78d4vyrTysxSeDdbFbZsKKvuMBDqRs5FhUlU9LJVLMmwLDGr
+   +QJzJIuqcf0H9XIZ5u1XWG4HdOuGWex6aBUXNTtzy5F2mlbHHLnE29Y/N
+   mP9hyJQH80hrwecLXD7u2ku1vYV3p3baw8Nbufqz1PnUFDeZ8uo6AS5m0
+   gKA4ZKfzmCUyAnj9pYBkes0WLrSGi1lkzn4snHhx0TsNv5nJohI0ydX4i
+   xzeHlLY8SP+qQYbvlnyx38/o2N26qJJEbwY9fCEATPbP2aZ+xFyH8tp+U
+   qk/GwaKGfL6c+6qYnVmkb55rupFqKLqe8WsNGCmcHsjLfjFHHS2AQyaGd
+   A==;
+X-CSE-ConnectionGUID: 5s45GMElSKS6iIUnMXKIYw==
+X-CSE-MsgGUID: wsV2Je9IQHGQRFOUO0On4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="84952369"
 X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="84952359"
+   d="scan'208";a="84952369"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
   by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 13:45:08 -0700
-X-CSE-ConnectionGUID: 6+xt6gNLTVyjzTaINX94zg==
-X-CSE-MsgGUID: H2iNHBwOSkWTK4u9Fh47kg==
+X-CSE-ConnectionGUID: 1lvL1xeETxa1vhm3nH5tRg==
+X-CSE-MsgGUID: JX5YgNEoQ765p83gV8hTsw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="264381326"
+   d="scan'208";a="264381330"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa005.jf.intel.com with ESMTP; 29 Jul 2026 13:45:08 -0700
+  by orviesa005.jf.intel.com with ESMTP; 29 Jul 2026 13:45:09 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,7 +50,8 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Victor Raj <anthony.l.nguyen@intel.com>,
+Cc: Phani R Burra <phani.r.burra@intel.com>,
+	anthony.l.nguyen@intel.com,
 	larysa.zaremba@intel.com,
 	przemyslaw.kitszel@intel.com,
 	aleksander.lobakin@intel.com,
@@ -68,10 +69,11 @@ Cc: Victor Raj <anthony.l.nguyen@intel.com>,
 	richardcochran@gmail.com,
 	skhan@linuxfoundation.org,
 	linux-doc@vger.kernel.org,
+	Bharath R <bharath.r@intel.com>,
 	Samuel Salin <Samuel.salin@intel.com>
-Subject: [PATCH net-next v6 01/15] virtchnl: move virtchnl and virtchnl2 headers to 'include/linux/net/intel'
-Date: Wed, 29 Jul 2026 13:44:48 -0700
-Message-ID: <20260729204505.3373950-2-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next v6 02/15] libie: add PCI device initialization helpers to libie
+Date: Wed, 29 Jul 2026 13:44:49 -0700
+Message-ID: <20260729204505.3373950-3-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260729204505.3373950-1-anthony.l.nguyen@intel.com>
 References: <20260729204505.3373950-1-anthony.l.nguyen@intel.com>
@@ -83,298 +85,342 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Victor Raj <victor.raj@intel.com>
+From: Phani R Burra <phani.r.burra@intel.com>
 
-virtchnl2 headers will be used by both idpf and ixd drivers, so they have
-to be moved to an include directory. On top of that, it would be useful to
-place all iavf headers together with other intel networking headers.
+idpf and ixd drivers serve different PCI functions on the same device,
+therefore their PCI configuration flow is very similar.
 
-Move abovementioned intel header files into 'include/linux/net/intel'.
+Add support functions for idpf and ixd to configure PCI functionality and
+access MMIO space. Add a mapping list which can be traversed by a driver,
+e.g. to pass certain I/O mappings to the auxbus devices. Such list is also
+traversed by the libie_pci_get_mmio_addr() helper, which allows for easier
+memory access.
 
-Suggested-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Phani R Burra <phani.r.burra@intel.com>
+Co-developed-by: Victor Raj <victor.raj@intel.com>
 Signed-off-by: Victor Raj <victor.raj@intel.com>
+Co-developed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Signed-off-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Co-developed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+Tested-by: Bharath R <bharath.r@intel.com>
 Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Co-developed-by: Larysa Zaremba <larysa.zaremba@intel.com>
 Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- MAINTAINERS                                                   | 3 +--
- drivers/net/ethernet/intel/i40e/i40e.h                        | 2 +-
- drivers/net/ethernet/intel/i40e/i40e_common.c                 | 2 +-
- drivers/net/ethernet/intel/i40e/i40e_prototype.h              | 2 +-
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h            | 2 +-
- drivers/net/ethernet/intel/iavf/iavf.h                        | 2 +-
- drivers/net/ethernet/intel/iavf/iavf_common.c                 | 2 +-
- drivers/net/ethernet/intel/iavf/iavf_prototype.h              | 3 ++-
- drivers/net/ethernet/intel/iavf/iavf_types.h                  | 4 +---
- drivers/net/ethernet/intel/ice/ice.h                          | 2 +-
- drivers/net/ethernet/intel/ice/ice_common.h                   | 2 +-
- drivers/net/ethernet/intel/ice/ice_vf_lib.h                   | 2 +-
- drivers/net/ethernet/intel/ice/virt/virtchnl.h                | 2 +-
- drivers/net/ethernet/intel/idpf/idpf.h                        | 2 +-
- drivers/net/ethernet/intel/idpf/idpf_txrx.h                   | 2 +-
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.h               | 2 +-
- include/linux/{avf => net/intel}/virtchnl.h                   | 0
- .../intel/idpf => include/linux/net/intel}/virtchnl2.h        | 0
- .../idpf => include/linux/net/intel}/virtchnl2_lan_desc.h     | 0
- 19 files changed, 17 insertions(+), 19 deletions(-)
- rename include/linux/{avf => net/intel}/virtchnl.h (100%)
- rename {drivers/net/ethernet/intel/idpf => include/linux/net/intel}/virtchnl2.h (100%)
- rename {drivers/net/ethernet/intel/idpf => include/linux/net/intel}/virtchnl2_lan_desc.h (100%)
+ drivers/net/ethernet/intel/libie/Kconfig  |   6 +
+ drivers/net/ethernet/intel/libie/Makefile |   4 +
+ drivers/net/ethernet/intel/libie/pci.c    | 209 ++++++++++++++++++++++
+ include/linux/net/intel/libie/pci.h       |  56 ++++++
+ 4 files changed, 275 insertions(+)
+ create mode 100644 drivers/net/ethernet/intel/libie/pci.c
+ create mode 100644 include/linux/net/intel/libie/pci.h
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2d420d40782e..e6b857ff992a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13039,8 +13039,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue.git
- F:	Documentation/networking/device_drivers/ethernet/intel/
- F:	drivers/net/ethernet/intel/
- F:	drivers/net/ethernet/intel/*/
--F:	include/linux/avf/virtchnl.h
--F:	include/linux/net/intel/*/
-+F:	include/linux/net/intel/
- 
- INTEL ETHERNET PROTOCOL DRIVER FOR RDMA
- M:	Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 83e780919ac9..1b6a8fbaa648 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -8,8 +8,8 @@
- #include <linux/pci.h>
- #include <linux/ptp_clock_kernel.h>
- #include <linux/types.h>
--#include <linux/avf/virtchnl.h>
- #include <linux/net/intel/i40e_client.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <net/devlink.h>
- #include <net/pkt_cls.h>
- #include <net/udp_tunnel.h>
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
-index 59f5c1e810eb..8dadfef2c09f 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_common.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
-@@ -1,10 +1,10 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright(c) 2013 - 2021 Intel Corporation. */
- 
--#include <linux/avf/virtchnl.h>
- #include <linux/bitfield.h>
- #include <linux/delay.h>
- #include <linux/etherdevice.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <linux/pci.h>
- #include "i40e_adminq_cmd.h"
- #include "i40e_devids.h"
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_prototype.h b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-index 26bb7bffe361..e3d57550090e 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-@@ -5,7 +5,7 @@
- #define _I40E_PROTOTYPE_H_
- 
- #include <linux/ethtool.h>
--#include <linux/avf/virtchnl.h>
-+#include <linux/net/intel/virtchnl.h>
- #include "i40e_debug.h"
- #include "i40e_type.h"
- 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-index f558b45725c8..4e119c0502f3 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-@@ -4,7 +4,7 @@
- #ifndef _I40E_VIRTCHNL_PF_H_
- #define _I40E_VIRTCHNL_PF_H_
- 
--#include <linux/avf/virtchnl.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <linux/netdevice.h>
- #include "i40e_type.h"
- 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index 050f8241ef5e..dc31202b2a94 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -27,6 +27,7 @@
- #include <linux/etherdevice.h>
- #include <linux/socket.h>
- #include <linux/jiffies.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <net/ip6_checksum.h>
- #include <net/pkt_cls.h>
- #include <net/pkt_sched.h>
-@@ -37,7 +38,6 @@
- #include <net/net_shaper.h>
- 
- #include "iavf_type.h"
--#include <linux/avf/virtchnl.h>
- #include "iavf_txrx.h"
- #include "iavf_fdir.h"
- #include "iavf_adv_rss.h"
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_common.c b/drivers/net/ethernet/intel/iavf/iavf_common.c
-index 614a886bca99..277193a97d91 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_common.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_common.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright(c) 2013 - 2018 Intel Corporation. */
- 
--#include <linux/avf/virtchnl.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <linux/bitfield.h>
- #include "iavf_type.h"
- #include "iavf_adminq.h"
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_prototype.h b/drivers/net/ethernet/intel/iavf/iavf_prototype.h
-index 7f9f9dbf959a..1b1f6ede3920 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_prototype.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf_prototype.h
-@@ -4,9 +4,10 @@
- #ifndef _IAVF_PROTOTYPE_H_
- #define _IAVF_PROTOTYPE_H_
- 
-+#include <linux/net/intel/virtchnl.h>
+diff --git a/drivers/net/ethernet/intel/libie/Kconfig b/drivers/net/ethernet/intel/libie/Kconfig
+index 70831c7e336e..500a95c944a8 100644
+--- a/drivers/net/ethernet/intel/libie/Kconfig
++++ b/drivers/net/ethernet/intel/libie/Kconfig
+@@ -23,3 +23,9 @@ config LIBIE_FWLOG
+ 	  for it. Firmware logging is using admin queue interface to communicate
+ 	  with the device. Debugfs is a user interface used to config logging
+ 	  and dump all collected logs.
 +
- #include "iavf_type.h"
- #include "iavf_alloc.h"
--#include <linux/avf/virtchnl.h>
++config LIBIE_PCI
++	tristate
++	help
++	  Helper functions for management of PCI resources belonging
++	  to networking devices.
+diff --git a/drivers/net/ethernet/intel/libie/Makefile b/drivers/net/ethernet/intel/libie/Makefile
+index db57fc6780ea..a28509cb9086 100644
+--- a/drivers/net/ethernet/intel/libie/Makefile
++++ b/drivers/net/ethernet/intel/libie/Makefile
+@@ -12,3 +12,7 @@ libie_adminq-y			:= adminq.o
+ obj-$(CONFIG_LIBIE_FWLOG) 	+= libie_fwlog.o
  
- /* Prototypes for shared code functions that are not in
-  * the standard function pointer structures.  These are
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_types.h b/drivers/net/ethernet/intel/iavf/iavf_types.h
-index a095855122bf..35d6d8fcca04 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_types.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf_types.h
-@@ -4,9 +4,7 @@
- #ifndef _IAVF_TYPES_H_
- #define _IAVF_TYPES_H_
- 
--#include "iavf_types.h"
--
--#include <linux/avf/virtchnl.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <linux/ptp_clock_kernel.h>
- 
- /* structure used to queue PTP commands for processing */
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index fc91b6665f90..db3c7015c56c 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -36,7 +36,7 @@
- #include <linux/bpf.h>
- #include <linux/btf.h>
- #include <linux/auxiliary_bus.h>
--#include <linux/avf/virtchnl.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <linux/cpu_rmap.h>
- #include <linux/dim.h>
- #include <linux/gnss.h>
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.h b/drivers/net/ethernet/intel/ice/ice_common.h
-index 9f5344212195..d1d674ca644f 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.h
-+++ b/drivers/net/ethernet/intel/ice/ice_common.h
-@@ -5,13 +5,13 @@
- #define _ICE_COMMON_H_
- 
- #include <linux/bitfield.h>
-+#include <linux/net/intel/virtchnl.h>
- 
- #include "ice.h"
- #include "ice_type.h"
- #include "ice_nvm.h"
- #include "ice_flex_pipe.h"
- #include "ice_parser.h"
--#include <linux/avf/virtchnl.h>
- #include "ice_switch.h"
- #include "ice_fdir.h"
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.h b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-index 7a9c75d1d07c..fa436b3b1eac 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-@@ -8,9 +8,9 @@
- #include <linux/hashtable.h>
- #include <linux/bitmap.h>
- #include <linux/mutex.h>
-+#include <linux/net/intel/virtchnl.h>
- #include <linux/pci.h>
- #include <net/devlink.h>
--#include <linux/avf/virtchnl.h>
- #include "ice_type.h"
- #include "ice_flow.h"
- #include "virt/fdir.h"
-diff --git a/drivers/net/ethernet/intel/ice/virt/virtchnl.h b/drivers/net/ethernet/intel/ice/virt/virtchnl.h
-index 71bb456e2d71..d11789b3ae1f 100644
---- a/drivers/net/ethernet/intel/ice/virt/virtchnl.h
-+++ b/drivers/net/ethernet/intel/ice/virt/virtchnl.h
-@@ -7,7 +7,7 @@
- #include <linux/types.h>
- #include <linux/bitops.h>
- #include <linux/if_ether.h>
--#include <linux/avf/virtchnl.h>
-+#include <linux/net/intel/virtchnl.h>
- #include "ice_vf_lib.h"
- 
- /* Restrict number of MAC Addr and VLAN that non-trusted VF can programmed */
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index ec1b75f039bb..984944bab28b 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -23,8 +23,8 @@ struct idpf_rss_data;
- 
- #include <linux/net/intel/iidc_rdma.h>
- #include <linux/net/intel/iidc_rdma_idpf.h>
-+#include <linux/net/intel/virtchnl2.h>
- 
--#include "virtchnl2.h"
- #include "idpf_txrx.h"
- #include "idpf_controlq.h"
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 4be5b3b6d3ed..08b048664029 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -5,6 +5,7 @@
- #define _IDPF_TXRX_H_
- 
- #include <linux/dim.h>
-+#include <linux/net/intel/virtchnl2_lan_desc.h>
- 
- #include <net/libeth/cache.h>
- #include <net/libeth/types.h>
-@@ -13,7 +14,6 @@
- #include <net/xdp.h>
- 
- #include "idpf_lan_txrx.h"
--#include "virtchnl2_lan_desc.h"
- 
- #define IDPF_LARGE_MAX_Q			256
- #define IDPF_MAX_Q				16
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-index 6876e3ed9d1b..972dd88cf3d2 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-@@ -4,7 +4,7 @@
- #ifndef _IDPF_VIRTCHNL_H_
- #define _IDPF_VIRTCHNL_H_
- 
--#include "virtchnl2.h"
-+#include <linux/net/intel/virtchnl2.h>
- 
- #define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
- #define IDPF_VC_XN_IDX_M		GENMASK(7, 0)
-diff --git a/include/linux/avf/virtchnl.h b/include/linux/net/intel/virtchnl.h
-similarity index 100%
-rename from include/linux/avf/virtchnl.h
-rename to include/linux/net/intel/virtchnl.h
-diff --git a/drivers/net/ethernet/intel/idpf/virtchnl2.h b/include/linux/net/intel/virtchnl2.h
-similarity index 100%
-rename from drivers/net/ethernet/intel/idpf/virtchnl2.h
-rename to include/linux/net/intel/virtchnl2.h
-diff --git a/drivers/net/ethernet/intel/idpf/virtchnl2_lan_desc.h b/include/linux/net/intel/virtchnl2_lan_desc.h
-similarity index 100%
-rename from drivers/net/ethernet/intel/idpf/virtchnl2_lan_desc.h
-rename to include/linux/net/intel/virtchnl2_lan_desc.h
+ libie_fwlog-y			:= fwlog.o
++
++obj-$(CONFIG_LIBIE_PCI)		+= libie_pci.o
++
++libie_pci-y			:= pci.o
+diff --git a/drivers/net/ethernet/intel/libie/pci.c b/drivers/net/ethernet/intel/libie/pci.c
+new file mode 100644
+index 000000000000..a0d3535d6529
+--- /dev/null
++++ b/drivers/net/ethernet/intel/libie/pci.c
+@@ -0,0 +1,209 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright (C) 2025 Intel Corporation */
++
++#include <linux/net/intel/libie/pci.h>
++
++/**
++ * libie_find_mmio_region - find MMIO region containing a range
++ * @mmio_list: list that contains MMIO region info
++ * @offset: range start offset
++ * @size: range size
++ * @bar_idx: BAR index containing the range to search
++ *
++ * Return: pointer to a MMIO region overlapping with the range in any way or
++ *	   NULL if no such region is mapped.
++ */
++static struct libie_pci_mmio_region *
++libie_find_mmio_region(const struct list_head *mmio_list,
++		       resource_size_t offset, resource_size_t size,
++		       int bar_idx)
++{
++	resource_size_t end_offset = offset + size;
++	struct libie_pci_mmio_region *mr;
++
++	list_for_each_entry(mr, mmio_list, list) {
++		resource_size_t mr_end = mr->offset + mr->size;
++		resource_size_t mr_start = mr->offset;
++
++		if (mr->bar_idx != bar_idx)
++			continue;
++		if (offset < mr_end && end_offset > mr_start)
++			return mr;
++	}
++
++	return NULL;
++}
++
++/**
++ * __libie_pci_get_mmio_addr - get the MMIO virtual address
++ * @mmio_info: contains list of MMIO regions
++ * @offset: register offset to find
++ * @num_args: number of additional arguments present
++ *
++ * This function finds the virtual address of a register offset by iterating
++ * through the non-linear MMIO regions that are mapped by the driver.
++ *
++ * Return: valid MMIO virtual address or NULL.
++ */
++void __iomem *__libie_pci_get_mmio_addr(struct libie_mmio_info *mmio_info,
++					resource_size_t offset,
++					int num_args, ...)
++{
++	struct libie_pci_mmio_region *mr;
++	int bar_idx = 0;
++	va_list args;
++
++	if (num_args) {
++		va_start(args, num_args);
++		bar_idx = va_arg(args, int);
++		va_end(args);
++	}
++
++	list_for_each_entry(mr, &mmio_info->mmio_list, list)
++		if (bar_idx == mr->bar_idx && offset >= mr->offset &&
++		    offset < mr->offset + mr->size) {
++			offset -= mr->offset;
++
++			return mr->addr + offset;
++		}
++
++	return NULL;
++}
++EXPORT_SYMBOL_NS_GPL(__libie_pci_get_mmio_addr, "LIBIE_PCI");
++
++/**
++ * __libie_pci_map_mmio_region - map PCI device MMIO region
++ * @mmio_info: struct to store the mapped MMIO region
++ * @offset: MMIO region start offset
++ * @size: MMIO region size
++ * @num_args: number of additional arguments present
++ *
++ * Return: true on success, false on memory map failure.
++ */
++bool __libie_pci_map_mmio_region(struct libie_mmio_info *mmio_info,
++				 resource_size_t offset,
++				 resource_size_t size, int num_args, ...)
++{
++	struct pci_dev *pdev = mmio_info->pdev;
++	struct libie_pci_mmio_region *mr;
++	resource_size_t end_offset;
++	void __iomem *va;
++	int bar_idx = 0;
++	va_list args;
++
++	if (num_args) {
++		va_start(args, num_args);
++		bar_idx = va_arg(args, int);
++		va_end(args);
++	}
++
++	/* pci_iomap_range() would silently map less in such case */
++	if (!size || check_add_overflow(offset, size, &end_offset) ||
++	    end_offset > pci_resource_len(pdev, bar_idx))
++		return false;
++
++	mr = libie_find_mmio_region(&mmio_info->mmio_list, offset, size,
++				    bar_idx);
++	if (mr) {
++		pci_warn(pdev,
++			 "Mapping of BAR%u (offset=%llu, size=%llu) intersecting region (offset=%llu, size=%llu) already exists\n",
++			 bar_idx, (unsigned long long)mr->offset,
++			 (unsigned long long)mr->size,
++			 (unsigned long long)offset, (unsigned long long)size);
++		return mr->offset <= offset &&
++		       mr->offset + mr->size >= end_offset;
++	}
++
++	va = pci_iomap_range(mmio_info->pdev, bar_idx, offset, size);
++	if (!va) {
++		pci_err(pdev, "Failed to map BAR%u region\n", bar_idx);
++		return false;
++	}
++
++	mr = kvzalloc_obj(*mr);
++	if (!mr) {
++		pci_iounmap(pdev, va);
++		return false;
++	}
++
++	mr->addr = va;
++	mr->offset = offset;
++	mr->size = size;
++	mr->bar_idx = bar_idx;
++
++	list_add_tail(&mr->list, &mmio_info->mmio_list);
++
++	return true;
++}
++EXPORT_SYMBOL_NS_GPL(__libie_pci_map_mmio_region, "LIBIE_PCI");
++
++/**
++ * libie_pci_unmap_fltr_regs - unmap selected PCI device MMIO regions
++ * @mmio_info: contains list of MMIO regions to unmap
++ * @fltr: returns true, if region is to be unmapped
++ */
++void libie_pci_unmap_fltr_regs(struct libie_mmio_info *mmio_info,
++			       bool (*fltr)(struct libie_mmio_info *mmio_info,
++					    struct libie_pci_mmio_region *reg))
++{
++	struct libie_pci_mmio_region *mr, *tmp;
++
++	list_for_each_entry_safe(mr, tmp, &mmio_info->mmio_list, list) {
++		if (!fltr(mmio_info, mr))
++			continue;
++		pci_iounmap(mmio_info->pdev, mr->addr);
++		list_del(&mr->list);
++		kvfree(mr);
++	}
++}
++EXPORT_SYMBOL_NS_GPL(libie_pci_unmap_fltr_regs, "LIBIE_PCI");
++
++/**
++ * libie_pci_unmap_all_mmio_regions - unmap all PCI device MMIO regions
++ * @mmio_info: contains list of MMIO regions to unmap
++ */
++void libie_pci_unmap_all_mmio_regions(struct libie_mmio_info *mmio_info)
++{
++	struct libie_pci_mmio_region *mr, *tmp;
++
++	list_for_each_entry_safe(mr, tmp, &mmio_info->mmio_list, list) {
++		pci_iounmap(mmio_info->pdev, mr->addr);
++		list_del(&mr->list);
++		kvfree(mr);
++	}
++}
++EXPORT_SYMBOL_NS_GPL(libie_pci_unmap_all_mmio_regions, "LIBIE_PCI");
++
++/**
++ * libie_pci_init_dev - enable and reserve PCI regions of the device
++ * @pdev: PCI device information
++ *
++ * Return: %0 on success, -%errno on failure.
++ */
++int libie_pci_init_dev(struct pci_dev *pdev)
++{
++	int err;
++
++	err = pcim_enable_device(pdev);
++	if (err)
++		return err;
++
++	for (int bar = 0; bar < PCI_STD_NUM_BARS; bar++)
++		if (pci_resource_flags(pdev, bar) & IORESOURCE_MEM) {
++			err = pcim_request_region(pdev, bar, pci_name(pdev));
++			if (err)
++				return err;
++		}
++
++	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
++	if (err)
++		return err;
++
++	pci_set_master(pdev);
++
++	return 0;
++}
++EXPORT_SYMBOL_NS_GPL(libie_pci_init_dev, "LIBIE_PCI");
++
++MODULE_DESCRIPTION("Common Ethernet PCI library");
++MODULE_LICENSE("GPL");
+diff --git a/include/linux/net/intel/libie/pci.h b/include/linux/net/intel/libie/pci.h
+new file mode 100644
+index 000000000000..effd072c55c8
+--- /dev/null
++++ b/include/linux/net/intel/libie/pci.h
+@@ -0,0 +1,56 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright (C) 2025 Intel Corporation */
++
++#ifndef __LIBIE_PCI_H
++#define __LIBIE_PCI_H
++
++#include <linux/pci.h>
++
++/**
++ * struct libie_pci_mmio_region - structure for MMIO region info
++ * @list: used to add a MMIO region to the list of MMIO regions in
++ *	  libie_mmio_info
++ * @addr: virtual address of MMIO region start
++ * @offset: start offset of the MMIO region
++ * @size: size of the MMIO region
++ * @bar_idx: BAR index to which the MMIO region belongs to
++ */
++struct libie_pci_mmio_region {
++	struct list_head	list;
++	void __iomem		*addr;
++	resource_size_t		offset;
++	resource_size_t		size;
++	u16			bar_idx;
++};
++
++/**
++ * struct libie_mmio_info - contains list of MMIO regions
++ * @pdev: PCI device pointer
++ * @mmio_list: list of MMIO regions
++ */
++struct libie_mmio_info {
++	struct pci_dev		*pdev;
++	struct list_head	mmio_list;
++};
++
++#define libie_pci_map_mmio_region(mmio_info, offset, size, ...)	\
++	__libie_pci_map_mmio_region(mmio_info, offset, size,		\
++				     COUNT_ARGS(__VA_ARGS__), ##__VA_ARGS__)
++
++#define libie_pci_get_mmio_addr(mmio_info, offset, ...)		\
++	__libie_pci_get_mmio_addr(mmio_info, offset,			\
++				   COUNT_ARGS(__VA_ARGS__), ##__VA_ARGS__)
++
++bool __libie_pci_map_mmio_region(struct libie_mmio_info *mmio_info,
++				 resource_size_t offset, resource_size_t size,
++				 int num_args, ...);
++void __iomem *__libie_pci_get_mmio_addr(struct libie_mmio_info *mmio_info,
++					resource_size_t offset,
++					int num_args, ...);
++void libie_pci_unmap_all_mmio_regions(struct libie_mmio_info *mmio_info);
++void libie_pci_unmap_fltr_regs(struct libie_mmio_info *mmio_info,
++			       bool (*fltr)(struct libie_mmio_info *mmio_info,
++					    struct libie_pci_mmio_region *reg));
++int libie_pci_init_dev(struct pci_dev *pdev);
++
++#endif /* __LIBIE_PCI_H */
 -- 
 2.47.1
 
