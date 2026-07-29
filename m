@@ -1,141 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAF830674E;
-	Wed, 29 Jul 2026 02:51:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD593603D3
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 03:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785293514; cv=none; b=IlTb2SfXo9oTw+yMa8PNFg2fPtUDz93ufSuwtyUHtNBnNruWQ8SWI+l6Ta1s4Is25IUt/8IFzq2v2TSrun3nCorengUP7CfbYgNsImMnkqMojXKi+UKd9A0QKK1hyhgEaZ5nERxkFcUj39mlUMa/D0Y/fjf9ToM5zt9HDtYMVks=
+	t=1785294071; cv=none; b=Ety7M7ywlsqUQ4YqNQNncRJV2x1NpjwvsgURbSIvvbuQgrF64MD/BMXjqilfA0vceSobVI3F1gUZVtAZlkhg03BH25x7kkpGKpXuZHzA1QHXfViRvjzX1qOCuhymF4nUcgsuU26I7xeTS6+dYzhv6mC6mPX4mEh86nB7goEnNnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785293514; c=relaxed/simple;
-	bh=vBqwU6/WsXbnVuqp2QQo4t9KFk3yL5vd96Y3Iee5+hY=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=pBuOv2TNPuAjFaKcYg21tXKrKH0H16uakxGfE+S1zMXwiZE2lFySMzPmSssOtrUiCcwc7o9cRgQXuqf73vgZxOujvMKXzyK/uk6BatqRQFCOUJtg0tEBSftf7PzDaJB7iC+InQwqYmWA6wQxyg0Iuvcvng+Sk5oaHCNTiYad7BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h3BTQ2rD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785294071; c=relaxed/simple;
+	bh=QADeywbTPdfKB8Qp6OcHSYccEUAFfm+PWOQ/PnFtrK8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ui53B3DiMNpgSIgdannNTHRXnYrj+Y1del8M7vfxI2r/RsG01/lHNvoS+cX5gdU5cuuLDfPeS0lJswE++JnqY8zH7J3mT14jRKPeWkKW8CWCrKLSFYf3xhtpX/ocDeDkprtiQjDo7W82Z4M8x6vyv6tjZtA0nc0/AlhzOgmBHZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bfABCdKF; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h3BTQ2rD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CAC21F000E9;
-	Wed, 29 Jul 2026 02:51:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785293512;
-	bh=vBqwU6/WsXbnVuqp2QQo4t9KFk3yL5vd96Y3Iee5+hY=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=h3BTQ2rDVTRCtUgFyt0q8Lwn2hMsogcVUWtijTHFYhx/qoVpjmSzZzC65hZsqQhCN
-	 TiAcusmJ+UI7X3wjMeZtFT27W//O/h3lXl5xb3lO9pdJRWN2Uij4MADnTc1zLnHL3o
-	 MQAt+QZ+pDAcM1qO6pG5YMw9haGne7J7UGUIP458ZwHoOAdHHDvYaab7Zp3VoLD0f5
-	 lBfurS1Qen8VBN1dh5D8qcUFVISTBW9Y1gAU3y0hyw8jutwZmugthyNGGPBvd3eteD
-	 TgkFjiC1cbHO6ZxsXcnamjg0aO7/7CninBt5VsUaFLHGGHL8jxioPHMJKnqRmeHZeC
-	 ASXnlcgULPYEg==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 2BC09F4006B;
-	Tue, 28 Jul 2026 22:51:51 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Tue, 28 Jul 2026 22:51:51 -0400
-X-ME-Sender: <xms:x2ppan4ULTyHBBezREfGNlNtWqX1wm1f_rZA8QoZNv4AylUaCWQ-zg>
-    <xme:x2ppanvBUSPX9p7RcKnQmXIeFnzP-C68boN0AVcva8Xmv_ccY6untYOOiOZtXo4c6
-    8nG9MuWVbZVB1uOBsvEc385a41pFvWqnofaBP4LHx12XOCD99U_L4A>
-X-ME-Proxy-Cause: dmFkZTEYwGJI7q4GAvJLJTlFPooOFbb40vE5f4whMe+cCHmEaYajs+PkWwAnoBIMXv2QGy
-    tLOcFy1/949Lj4zOu1Oh2XKEyYOgTXP/jiHkO8SVc0Uav5DDDQ32xflQqeqmSBNkOzh7Wy
-    xTLrb/SuDbaDeX8tbVRrR0CN84M4TqD7fA75xd2U9jHz7JkxDlzvfdBxepoZiFfAnIqonr
-    BFRQnDH6+tMKvUmXjBjArr91pfa1FplLS4qsG6an7NL9nI/XkShWFq8/OKcRJ/vBY/GPRd
-    AmiecsirVQHmmaooBRJQu+czUgWQCfID/9Y17wCiZD2UwDhlscxgZ/tK2Z039p4n+U5Mi1
-    1KCC7JTOqynQ5xbFWheYeQLqw/owELncSse+LzpNmmzM/96MbhLliR1cJDOgoW4e3KwgP9
-    2IT8BlgCu4p8AockFHeJlgup7Ka8+0IYgasaoVDo8wSY/Divao+KeHUiDINgZlZyRBMlqJ
-    I6sBoKd7UowzVcE9bTyRLuZhtnLnOWqj/m2HR0Cp8PARIaSasA/syqha5ag040SbeeD9mK
-    GagGqPoSwHGHeai81pnfNaCAg8AzWQ0BnBIg/Jb5cDp1fioAISPQsaWTqUJBtdHIr3wguy
-    Wx0OW9hUSgQnD9+jKpQeYzb1PdlGFFOv/LQ0kqLLNVsVjOlZPkU56QmYMEvA
-X-ME-Proxy: <xmx:x2ppapxSSDXtiywKjmuBk0sNaQR3ZjgAAv29O_hxjwzFjzwX5nks6A>
-    <xmx:x2ppag0kZXDAEyxnnWOTgsNXUwy9UHcdM-HAsnunl7uVhT8wD1xQ2A>
-    <xmx:x2ppai8SG1Zf0RmyLJdkqGLNpNFr00QG3IkMppE3wAtDOi9NTSOVAA>
-    <xmx:x2ppaoRX5DSJcGFvAV90nmysgY3AfAtC_Oq9vkeGJTTW627uHA_taQ>
-    <xmx:x2ppahlj2-XpROuW8q7EbyI7D8T5Qcv34UjX4XNmvzxdfKXL3DmAAhST>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 0C900780075; Tue, 28 Jul 2026 22:51:51 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bfABCdKF"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84a3e5ca66eso54251b3a.3
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 20:01:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785294070; x=1785898870; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OG4+KkePz7FqiZVxRiKijjGdnD6TtTFfUDUGu0gsNfA=;
+        b=bfABCdKF1X5u1rvpnwEtk3LNgv/n9zXufz/o3Ort5I/pq0AHnokDbemxXR+Pio8s52
+         RaTEi1rJgC6NaBj9LpIal97z5SQneQykMuRpOQzk5uf7OcaHwPgK8Izd4d9ocZ3+tHRb
+         EDWFRLFe2lRAg2XVbC+JWyigs2INIwK8ggxpGL1+f3yyGOQTWxQ/5qHU+QLbFFXHLAeW
+         +wHMeCOlxmzR9lPJ6fMeHkJEwkwMxmgj1qhCK1CF5C+sAbFngPchTaV2FPxyUC+5cV++
+         7ocoq0xXPzjUnvmTfcVJU7GQAHkchnmII5TmP/RXZjEW7C3xoL0VZxGqhAcGm1IF7bW2
+         5f0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785294070; x=1785898870;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OG4+KkePz7FqiZVxRiKijjGdnD6TtTFfUDUGu0gsNfA=;
+        b=tBh1Pb48vtEq+xd7FJsX9sNHeeD0kuZt/g6SwKZmWi3YL827hqRmIeL/lkgLS4rNNm
+         TNOaUcqjVQjQG4LbBkb+COyoKdfKYAIxc6vzzljzfcdJ1nDBogZ7RtQSlFtKiAHtPxnX
+         cxYE9CcF0iA0yaaPw9hVcFnIefcVm0Vf1yNOramkccySbhz6fybodCi1bfZJ5B9hTRTk
+         F6yO2lDvNMIYI/UG8ajxeKfC1cn6FAgJZbth+lqePNTM/6gFbofkLjzjEL6+nFymkamv
+         C//MArEnQpRNQxDfQflTcLDdgeBeDij3CsklxWtHqhk3Ek8l+WmhRjtla5j0TY0RH+Pl
+         exUA==
+X-Gm-Message-State: AOJu0YwEhyBgUU6JYpYiK7daSwCKM02gC0ptyzGr4yalDS993TMS9Av4
+	xPQs4Ch6jnhJUYwEDY11eG3kiD9kFHHcUIKCv0Q5R33E5qAhqu/77BRD1FsF6sJ7
+X-Gm-Gg: AR+sD12Ql9Ni0nVLzKlnyI+v6zzhI0Fz3pltqyPGZAQoHxG7qXvjCVbtwMAz/R0uG4O
+	xi8CM/F+GC1sRr+n2gOHHGmB7oh8ZhY/hdMP0Gr/Tez1RdQRW+l6eRnW1PmFyHzc7VEb8pTOFyF
+	tV2knHKeKZWutyBAXPBAKVIcIMpmMCEFtDLS/EfGbN7Rved3T2Y/5C/sy9qnhEp+enJqEo5eipw
+	SUPWuF7VVfxeqn3YswxkiFR+iyKWYTudMGrUzD4sFeQ4gtw3jEVN+L3PT4W+YxRbii+zTq32+3H
+	EPKwP3PPNDTWihAgLmrNcw5OrktRvHrLOiA/iqOa8dna1phBxQavwADx4vPnyl9hYJ+87do2toD
+	rq0MCc2chNjx2Vus9v+1FonnJOjO6iCNeXxXHonLBK84BXHhSaMv3zDfyc3HyovaLG0s9g56MmR
+	X4OivenrFKI2NblXErr56Kb74y6jRiE/1cbWz36mM06cNoE8WV71AIrrXVJlYkqDu6xAOvQu0HO
+	E3b3Ot3Q5nmanJuqGy8Ch6ctR/GjCIqFTaFvebVyo48qnGs9tovRmByOR1NVlM=
+X-Received: by 2002:a17:903:2f07:b0:2cc:d6de:d58e with SMTP id d9443c01a7336-2d015c2fa1bmr45167035ad.4.1785294069801;
+        Tue, 28 Jul 2026 20:01:09 -0700 (PDT)
+Received: from localhost.localdomain ([139.159.170.72])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022bf4bfesm4086165ad.58.2026.07.28.20.01.03
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 28 Jul 2026 20:01:09 -0700 (PDT)
+From: Qihang <q.h.hack.winter@gmail.com>
+To: netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
+	daniel.zahka@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	Qihang <q.h.hack.winter@gmail.com>
+Subject: [PATCH net v4 0/2] packet: use consistent hard_header_len in send paths
+Date: Wed, 29 Jul 2026 11:00:53 +0800
+Message-ID: <20260729030055.21334-1-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 28 Jul 2026 22:51:30 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Jakub Kicinski" <kuba@kernel.org>
-Cc: "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "John Fastabend" <john.fastabend@gmail.com>,
- "Sabrina Dubroca" <sd@queasysnail.net>, "Shuah Khan" <shuah@kernel.org>,
- "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
- "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
- "Tom Talpey" <tom@talpey.com>, netdev@vger.kernel.org,
- kernel-tls-handshake@lists.linux.dev, linux-kselftest@vger.kernel.org,
- linux-nfs@vger.kernel.org
-Message-Id: <a6fb364d-8344-408e-bcd5-0cee4ffabdc3@app.fastmail.com>
-In-Reply-To: <20260728193058.7f6b453b@kernel.org>
-References: <20260720-tcp-read-sock-v2-0-29545d034f3c@kernel.org>
- <20260720-tcp-read-sock-v2-2-29545d034f3c@kernel.org>
- <20260728185124.72e421c8@kernel.org>
- <480a8337-a91e-40e5-8dbd-d165599fba4b@app.fastmail.com>
- <20260728193058.7f6b453b@kernel.org>
-Subject: Re: [PATCH net-next v2 2/6] net: Introduce read_sock_rectype proto_ops for
- control record delivery
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
+AF_PACKET send paths read dev->hard_header_len at several stages of skb
+allocation and construction. Concurrent netdevice reconfiguration can
+make those reads inconsistent and cause skb headroom underflow.
 
+Split the regular and TX_RING paths so each patch has one Fixes tag.
+The separate SOCK_DGRAM consistency issue between hard_header_len and
+header_ops->create remains outside this series.
 
-On Tue, Jul 28, 2026, at 10:30 PM, Jakub Kicinski wrote:
-> On Tue, 28 Jul 2026 21:57:21 -0400 Chuck Lever wrote:
->> > To me this is an ugly one-off workaround that doesn't fit into=20
->> > the proto_ops (only TLS will use it). And you seem to net out
->> > to the same LOC on SUNRPC side with and without this? =20
->>=20
->> It=E2=80=99s not about LOC. It=E2=80=99s about not cluttering the nor=
-mal I/O
->> path with a lot of exception processing to handle TLS Alert
->> records. The CMSG API is very difficult to use and leaks the
->> alert messages into I/O buffers (which for in-kernel consumers
->> are page cache pages). It=E2=80=99s piss-poor API design.
->
-> I'm not arguing that it's amazing. Doesn't mean we will YOLO
-> a special proto callback for every protocol stacking :/
+Changes in v4:
+- Use one hard_header_len snapshot throughout tpacket_snd(), including
+  reserve and per-frame skb construction.
+- Carry Willem's Reviewed-by on patch 1.
 
-No-one is asking you to roll over. Review means you get to steer
-us in the right direction, and I promise to do the leg work. Terse
-rejection doesn=E2=80=99t move the discussion forward. It stops it cold.
+Link to v3: https://lore.kernel.org/netdev/20260728031345.49562-1-q.h.hack.winter@gmail.com/
 
-Complaining about slop also does not tell me where you need this
-to go. I use AI to go from blank page to RFC/v1. Where we go next
-is up to human taste, as always.
+Qihang (2):
+  packet: use consistent hard_header_len in non-ring send paths
+  packet: use consistent hard_header_len in TX_RING send path
 
+ include/linux/netdevice.h |  6 +++--
+ net/packet/af_packet.c    | 46 ++++++++++++++++++++++++---------------
+ 2 files changed, 32 insertions(+), 20 deletions(-)
 
->> > There needs to be a very strong reason for us to add APIs for
->> > in kernel consumers. =20
->>=20
->> This is not a helpful position. Your objection is the same
->> every time, treating the in-kernel users as second-class
->> citizens.
->
-> No, it's not a second class citizen. But kernel consumers have a
-> tendency to break all abstractions and insert hacks all over the place
-> just because they are not forced to go via uAPI boundary which forces
-> people to think about the API design.
-
-Granted that user space self-tests can=E2=80=99t reach kernel-only APIs.
-But that is what Kunit is for.
-
-
-> You just need to try a little harder to produce a better solution.
-> Rework or augment existing callbacks to let your achieve the behavior
-> you want.
-
-My original approach was to add a new read_sock variant because I
-suspected you wouldn=E2=80=99t want read_sock itself to grow another arg=
-ument.
-
-I thought the RFC series cover letter made it clear that we are
-looking for input and direction, not to sell a completely formed idea.
-
-
---=20
-Chuck Lever
+-- 
+2.50.1 (Apple Git-155)
