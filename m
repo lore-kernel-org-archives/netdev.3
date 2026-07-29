@@ -1,338 +1,258 @@
-Received: from mail-wm2-f2.google.com (mail-wm2-f2.google.com [74.125.225.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4913E41A76F
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64183443A82;
+	Wed, 29 Jul 2026 10:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785318980; cv=none; b=pLPMx8HofiuFpv1eUzH/MZ9H2WoytJ455bEUfkLFSULViIHhCzPXFrp+q+7FKxvOg5JrJWYQnKcVcG2/9l84GNFOdYizV8SjUzYOp+PkB4p5YijSgtYkBfe5mZHYALCawUrIoMFMxjzMLfv1hnc39SfapY0QWy1q9+FHHPrMIa0=
+	t=1785319393; cv=none; b=k7OEpAcuUddcHz/Snjz4eA9Q4jayshiZXhXV0kCw5iOEogqPdj7vvIKz9jrp8IQZfhey38s8vif5yII4A0Q1DZaBM+1EfN7i1xRqrMRDZRquy3ot5qOWB8Ib+ulvK3hFCcuNDz0ebdcHwHSVgSNIv9ecotbdDH72n0SDjy329xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785318980; c=relaxed/simple;
-	bh=QBMF5s2GGHn7SYdtw7JeNKRfZEPuF8g7jalS8kZ7Ehc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=exuQBMCQJHJ7J+0eMvgY6OoS8Mr1IZaAE6krVFmTbvMD1KnwXG5kZjuzkqByUHFGpJeD8oWMGw0dgtmzo4Aun/worMo/E7m1u4r+FflIngzaZW9TDoy2Tm+M5C+akm1EsOYGVMjLhlAXut5sezsR9zCAZRdnnqrreSu+tJxWI6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f2.google.com with SMTP id 5b1f17b1804b1-493b9643ab5so1770555e9.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 02:56:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785318975; x=1785923775;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BuZ3OyXqMCR1yVOgq14LOiOSxzdtZyGJaF2Z1Mbbad8=;
-        b=EDXIMagVQQ2DwInbJKVLBFfuYQ87JTHlPnuTu69AqrSqeukxbFta+vxTtRUXZYVsYj
-         78hWiJKntqs9akL9jwx8ieO06r2Bs4qg0oSxGcZzV57CwbOxfWaqSbHEHSotHVDwdSCw
-         cuSeZ5feDCMIe4t5WUIgoS8YXCv2N69AEeAV7UA78Q/cXdoiEBWDfblswYIcjLxHApxn
-         wPNcLpgIMldKu680C3FjiwxPSySwh4F8S8SW8kDxTxDjzs+EjbHQiG86wEGohWhWXmTM
-         /lwze5UzXdjWlKmlIdJ6R99cTIDEPlVFrxlLnB6ga9os48gvVY7ywq38dHBU56Bevv5T
-         ZMsA==
-X-Forwarded-Encrypted: i=1; AHgh+RonmE8hklBQ7uZkshKhTQ+tgnk4OXi/fK6Ft3aAZ8kJ7vOKlQFfZgwnV5YYxV/R6LG1E+Ka5XM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjxGQWLXpMSHcuTVnhDLEZgKbO5/WMOyfW4z62q1CbSSteNRar
-	/83gLnxyxUD1xJQ+t4T92Of/1O6pVwrAjxL/5mr9hV9hhABqJwiyKHIz
-X-Gm-Gg: AR+sD12EUGoSLS7OkZ/1NeEcYOhXcfAQ9ZcekKUpg3TO9J2+q80fMDEMFyxBzyDNWP1
-	UclT37Mzv4Mj/6mMrxSP71pYndmgk3rzNNZs9LOWg+ustQ/im+PUTmQTIlOQ97qW+ty3Ku0Qfx1
-	xbkVxeespUSl6oBR9afQML4OXtxw0vtfvH87QbQN5P3c+gvA7Em8Ih9XQ1hiFe1McWAAGXrI7ZN
-	mQ7q4RrD9CRHWeHQQWgmLnj6Ghg0rbXspOaS17MhSko1I7slZB6yUu60uPHLFf8iJtxHn2Gh8E0
-	kuEjxFp1kGHbundGZVXfnAkZKqc5LlN0/TvjzahzqsIlS9fcrGX6+FQECaofvDYEkOfuJTNauzO
-	f0iNmAkzSSutuLafkzJRXwZi8eULlnVhN25oocyqOgmuskElNl0mj1Qpe8FJwHhog+ik/3ZHqTl
-	4S51vCD+t54dyh4CivJVU48X1Qo5fjvaux/61gO9Cdk8oJEfohmxYcSj7IW9VvlHBWtOMDngvdv
-	HQH3DyE3U47P2zHtnbC3Ekq5A==
-X-Received: by 2002:a05:600c:3b1f:b0:495:4cba:e288 with SMTP id 5b1f17b1804b1-496c653eb6amr63833235e9.15.1785318975239;
-        Wed, 29 Jul 2026 02:56:15 -0700 (PDT)
-Received: from [192.168.88.241] (78-80-108-129.customers.tmcz.cz. [78.80.108.129])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c46160dfsm128264935e9.10.2026.07.29.02.56.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jul 2026 02:56:14 -0700 (PDT)
-Message-ID: <749a52f7-c613-4b70-a400-6bd54ead39b7@ovn.org>
-Date: Wed, 29 Jul 2026 11:56:13 +0200
+	s=arc-20240116; t=1785319393; c=relaxed/simple;
+	bh=vSlx1YR8yuwqabNxdGdT5bOCw3FjxlNU3NevIxUKNuU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gx/+BY/jmW8cjMw2A7QIxYuCdyVnQa2yruO6p6JCPhISsptPiXNHcpqzanefQXf9i84Vd0GegKBXucS7l1mODetgcXRpjP8ajepGzcZc0c5sQJXoWh9pProTdDbvJJo8pIdMKrsnEnGts3w/xUsP0dCw7RdBIvz5cu6PCCLojpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=c/soOaXN; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="c/soOaXN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1785319389;
+	bh=vSlx1YR8yuwqabNxdGdT5bOCw3FjxlNU3NevIxUKNuU=;
+	h=From:Subject:Date:To:Cc:From;
+	b=c/soOaXNb5PxoIfIOHLXE2UzIIV8kVDu4oURvh1ZyOnCIoDggkm0MIF1C/kH1wQgB
+	 4drjTQqlS6zISIf3pttrHK2Fmo1btop2riP6gYMjHjf/K1vfu8ROQ/CJpAL2dME7AS
+	 5+SGRGaO887kQA0f3retMCOkb0MxLJ+bkyQ1LOaF3sFbLwGu4QwL7RdBKZc9IFoCuF
+	 aUnytaOmlPB1OBW43bUTX0ky6vkMapDi25ZaEhOuFGrKorf9YHr8FeHwpW0EeUuz+8
+	 Js9uEmHmSH2uFVAFlCq1rHQMAnmslGBdNO7dE5fws1zvPEzGtd0DfklFYWgyZJh6LK
+	 faXV3R3b2kFkQ==
+Received: from yukiji.home (unknown [100.64.0.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laeyraud)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1EB5917E0048;
+	Wed, 29 Jul 2026 12:03:08 +0200 (CEST)
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Subject: [PATCH v4 00/24] MT8189: Add support for system and base clock
+ controllers
+Date: Wed, 29 Jul 2026 12:02:44 +0200
+Message-Id: <20260729-mt8189-clocks-system-base-v4-0-e356b813a64c@collabora.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net] net: openvswitch: fix stack exhaustion from unaccounted
- clone_execute() recursion
-To: Aaron Conole <aconole@redhat.com>, i.maximets@ovn.org, echaudro@redhat.com
-Cc: alexyoung0@163.com, dev@openvswitch.org, netdev@vger.kernel.org,
- pabeni@redhat.com, kuba@kernel.org, horms@kernel.org, edumazet@google.com,
- davem@davemloft.net
-References: <178521875706.803907.3226960398667307795@163.com>
- <f7twlufw4js.fsf@redhat.com> <a56fe38b-5fc8-4845-8d68-d199d753dcee@ovn.org>
- <f7tse52x1zz.fsf@redhat.com>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <f7tse52x1zz.fsf@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32Qy27DIBBFf8ViXSoeLsZZ9T+qLgY8NKi2aYGiR
+ JH/vQRvoqry8s7onDuaG0kYPSZy6m4kYvHJh7WG/qkj9gzrB1I/1UwEE4opyeiSNdcjtXOwn4m
+ ma8q4UAMJ6cAG3mPvnAAglf+K6Pylud/e9xzx+6dW5H1IGmbDsvh86la8ZNpqBqHJHTj7lEO8t
+ tsKb8S+Z/zgjMIpo8KwXjtEeGHwasM8gwkRnmtXMxfxaBuPbOJuG4WaQE5GWfefTT7YxNGLiqw
+ 2jWoaRzASJvHXtm3bL5XaD3OTAQAA
+X-Change-ID: 20260630-mt8189-clocks-system-base-70714e4ff2aa
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Chun-Jie Chen <chun-jie.chen@mediatek.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Edward-JW Yang <edward-jw.yang@mediatek.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Chen-Yu Tsai <wenst@chromium.org>
+Cc: kernel@collabora.com, linux-clk@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ netdev@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
+ Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>, 
+ Irving-CH Lin <irving-ch.lin@mediatek.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785319387; l=9420;
+ i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
+ bh=vSlx1YR8yuwqabNxdGdT5bOCw3FjxlNU3NevIxUKNuU=;
+ b=HMumC0T/jkieBml2dcRLtePL/Wdf21tvYbX4ZO+zOonIJ7CHj3Be1sg6VMgJkpzMmnVGHFHs5
+ bVN05+Effr9DBvpaE9bQxt66tvYsK5dysuoHGbozQYBuheZPgo99o7u
+X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
+ pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
 
-On 7/28/26 11:01 PM, Aaron Conole wrote:
-> Ilya Maximets <i.maximets@ovn.org> writes:
-> 
->> On 7/28/26 4:51 PM, Aaron Conole wrote:
->>> Hi Yang,
->>>
->>> yang zhuorao <alexyoung0@163.com> writes:
->>>
->>>> clone_execute() only increments and decrements exec_level when
->>>> clone_flow_key is true.  When clone_flow_key is false the optimized
->>>> path reuses the original flow key and calls do_execute_actions()
->>>> directly without updating the recursion counter, making those layers
->>>> invisible to the OVS_RECURSION_LIMIT check in ovs_execute_actions().
->>>>
->>>> A single action tree allows up to OVS_COPY_ACTIONS_MAX_DEPTH (16)
->>>> nested clone actions.  When the innermost clone contains a RECIRC
->>>> that selects another flow with its own 16-layer validation budget,
->>>> multiple trees of unaccounted recursion can be stacked.  The deferred
->>>> action threshold (OVS_DEFERRED_ACTION_THRESHOLD =
->>>> OVS_RECURSION_LIMIT - 2 = 3) allows three synchronous recirc levels
->>>> before clone_key() forces deferral, yielding 3 x 16 = 48 layers of
->>>> synchronous, unaccounted clone recursion.
->>>>
->>>> Per-layer stack usage is approximately 296 bytes (from disassembly:
->>>> do_execute_actions() allocates 0x98 bytes, clone_execute() allocates
->>>> 0x20 bytes, plus saved registers and return address).  48 layers
->>>> consume ~14,208 bytes before recirc, flow lookup, Netlink, and base
->>>> call frames, exceeding the 16 KiB x86_64 task stack and hitting the
->>>> guard page.
->>>>
->>>> An unprivileged user can trigger this from a private user/net
->>>> namespace (clone(CLONE_NEWUSER | CLONE_NEWNET)) by installing three
->>>> flow rules each with 16 nested clone actions linked by RECIRC, then
->>>> injecting a single packet via OVS_PACKET_CMD_EXECUTE.  The result is
->>>> a kernel panic:
->>>>
->>>>     BUG: TASK stack guard page was hit ...
->>>>     CPU: 0 UID: 1000 PID: 85 ... 7.2.0-rc5+
->>>>     RIP: 0010:clone_execute+0x5a/0x2c0 [openvswitch]
->>>>     [do_execute_actions / clone_execute alternating repeatedly]
->>>>     Kernel panic - not syncing: Fatal exception in interrupt
->>>>
->>>> Fix this by unconditionally incrementing exec_level for all
->>>> synchronous clone recursion edges and checking OVS_RECURSION_LIMIT
->>>> before calling do_execute_actions().  When the limit is exceeded the
->>>> packet is dropped and -ENETDOWN is returned, consistent with the
->>>> existing handling in ovs_execute_actions().
->>>>
->>>> Tested on Linux 7.2.0-rc5+ (mainline HEAD 62cc90241548), x86_64,
->>>> CONFIG_VMAP_STACK=y, CONFIG_OPENVSWITCH=m, isolated QEMU guest.
->>>> Confirmed that the PoC (./poc_clone_overflow 2 16 3, run as UID 1000)
->>>> no longer triggers a panic with this patch applied.
->>>>
->>>> Fixes: b233504033db ("openvswitch: kernel datapath clone action")
->>>> Cc: stable@vger.kernel.org
->>>> Reported-by: yang zhuorao <alexyoung0@163.com>
->>>> Signed-off-by: yang zhuorao <alexyoung0@163.com>
->>>> ---
->>>> Reproducer (C, single file, available upon request):
->>>>
->>>>     gcc -O2 -Wall -o poc_clone_overflow poc_clone_overflow.c
->>>>     ./poc_clone_overflow 2 16 3   # as unprivileged user
->>>>
->>>> The PoC creates a private user/net namespace, installs three flows
->>>> each with 16 nested clone actions linked by RECIRC, and injects a
->>>> triggering packet.  Prerequisites: CONFIG_OPENVSWITCH=m/y loaded,
->>>> unprivileged user namespace creation allowed.
->>>>
->>>> Verified unfixed in Linus mainline (62cc90241548), net (97ac08560d23),
->>>> and net-next (a50eba1e778a) as of 2026-07-27.
->>>>
->>>>  net/openvswitch/actions.c | 13 +++++++++----
->>>>  1 file changed, 9 insertions(+), 4 deletions(-)
->>>>
->>>> --
->>>
->>> General - please remember to CC the netdev maintainers as well.
->>>
->>> [...]
->>>
->>>> @@ -1497,14 +1497,19 @@ static int clone_execute(struct datapath *dp, struct sk_buff *skb,
->>>>  	if (clone) {
->>>>  		int err = 0;
->>>>  		if (actions) { /* Sample action */
->>>> -			if (clone_flow_key)
->>>> -				__this_cpu_inc(ovs_pcpu_storage->exec_level);
->>>> +			__this_cpu_inc(ovs_pcpu_storage->exec_level);
->>>> +
->>>> +			if (unlikely(__this_cpu_read(ovs_pcpu_storage->exec_level) >
->>>> +				     OVS_RECURSION_LIMIT)) {
->>>> +				__this_cpu_dec(ovs_pcpu_storage->exec_level);
->>>> +				ovs_kfree_skb_reason(skb, OVS_DROP_RECURSION_LIMIT);
->>>> +				return -ENETDOWN;
->>>> +			}
->>>
->>> There is an existing check for recursion in ovs_execute_actions() and in
->>> there we have a log before dropping:
->>>
->>> 	net_crit_ratelimited("ovs: recursion limit reached on datapath %s, probable configuration error\n",
->>> 			     ovs_dp_name(dp));
->>>
->>> We should have a similar log here so we're not silently dropping.  But,
->>> since we now have two places where this check occurs (and it's
->>> complicated because of how deferred actions is processed), maybe it's
->>> better to have a function that does the management:
->>>
->>>   static int ovs_exec_level_enter(struct datapath *dp, struct sk_buff *skb) {
->>>   	int level;
->>>
->>>   	level = __this_cpu_inc_return(ovs_pcpu_storage->exec_level);
->>>   	if (unlikely(level > OVS_RECURSION_LIMIT)) {
->>>   		net_crit_ratelimited("ovs: recursion limit reached on datapath %s, probable configuration error\n",
->>>   				     ovs_dp_name(dp));
->>>   		ovs_kfree_skb_reason(skb, OVS_DROP_RECURSION_LIMIT);
->>>   		return -ENETDOWN;
->>>   	}
->>>   	return 0;
->>>   }
->>>
->>>   static void ovs_exec_level_exit(void) {
->>>   	__this_cpu_dec(ovs_pcpu_storage->exec_level);
->>>   }
->>>
->>> Then just put the enter/exit calls in the clone_execute() and
->>> ovs_execute_actions() spaces.  That way if we need to adjust this limit
->>> in the future, it's consolidated to just one place.
->>>
->>
->>
->> There is a different issue here though.  The exec_level is used as a
->> counter for the flow keys during the clone.  And if we increment it
->> unconditionally while not allocating new keys, we'll ran out of key
->> slots much faster without actually using them.  This will lead to
->> much more actions to be deferred and packets dropped in the end.
->> There is already a mismatch here as ovs_execute_actions() increments
->> the level without allocating the key, but doing so also for non-recirc
->> cases would significantly amplify the problem.
-> 
-> That's an additional concern, but the code path at least currently
-> handles the event that we advance beyond the clone flow key per-cpu
-> array.  This change makes a low-likelihood scenario a bit worse (the
-> case where we have lots of clones + sub-actions).  I don't think it
-> needs to be addressed with this work since this is a security fix, but
-> we should address it via a follow up change (and I can work on that if
-> needed).  AFAICT the affected actions are:
-> 
-> - sample()
-> - clone()
-> - dec_ttl()
-> - check_pkt_len()
-> 
-> I think in most deployments I've seen they only nest once or twice, and
-> we should have 3 'nests' worth of clone flow keys to handle it, meaning
-> that the increased pressure should still fit within the slots we have
-> (we just wouldn't support another nest, which is different from today):
-> ie: nest 1, we are 'taking' slot 2 (key[1]), and nest 2 we are 'taking'
-> slot 3 (key[2]), which leaves no more available.
-> 
-> For example, check_pkt_len(..., check_pkt_len(...)) would still work as
-> long as there's no sample() wrapped around it, or a dec_ttl within it,
-> or some other more complex scenario.  And it seems to be very heavy
-> handed to ask for a fix that includes both the stack overflow and the
-> clone allocation change together.
+This series is a continuation by AngeloGioacchino Del Regno and I of a
+previous series ([1]), that adds the clock controller support for
+the Mediatek MT8189 SoC and its variants (MT8371, MT8391).  
 
-While direct nesting is indeed not common, it is very common to have
-recirculation actions inside the clones or check_pkt_len, e.g.:
+The first major changes is the split of the series in two:
+- one for all basic clock controllers including system ones (this
+series)
+- one for the multimedia and graphics related clock controllers (to be
+send in the future)
 
-  check_pkt_len(1514, le(recirc(X)), gt(recirc(Y)))
+We chose to separate the multimedia clock drivers from the base system
+ones, as there is currently an unsolvable inter-dependency between the
+power domains and multimedia clocks; the power domains need a
+dual-stage bring-up, where only a part of the multimedia clocks are
+accessible in the first power domain powerup stage, and the rest when
+the second stage (SRAM enablement) is done.
+The current workarounds for this issue, such as removing the is_enabled
+operation from the impacted clock controllers clk_ops table or
+let the multimedia power domain always on, were quickly discarded
+for upstream.
 
-Before this patch we'd only count one level, which is recirculation
-itself.  After this change it will be two levels.
+The second major change is the dt-bindings patch ([2]) that got heavily
+reworked, not only because of the split choice. We took the opportunity
+to regroup in the MT8186 clock and system clock dt-bindings the
+description of several other Mediatek SoC (MT8188, MT8192 and MT8195)
+and add in them the MT8189 new ones.
+The rationale is to ease maintainability and have common files for
+several currently supported SoC or new future ones, that have the same
+kind of clock controller design.
 
-A lot of production setups hover at 3-4 recirculations on certain
-packet paths, e.g. pod-to-external traffic in ovn-kubernetes.
-And these setups do have at least a few clones or check_pkt_len
-actions on these paths.  And so, if we start counting plain clones
-towards the limit, we could easily break real world deployments,
-given the limit is just 5.
+Finally the pending remarks from peer reviews on the v6 revision of [1]
+were also taken into account and new fixes and cleanups were also
+added.
 
-So, we need to reconsider the limits here.  But we also can't blindly
-increase the limit as it will increase per-CPU memory consumption
-since that number dictates the size of the storage for keys, which
-are large.
+A more detailed changelog between [1] and this series:
+- Removed multimedia and graphics related clock controllers code and
+  definitions from series
+- Added new dt-bindings patches to factorise existing MT8188, MT8192
+  and MT8195 in MT8186 clock dt-bindings
+- Heavily modified the MT8189 dt-bindings to add new compatibles 
+  in MT8186 clock dt-bindings
+- Created a new dt-bindings include for the MT8189 reset controller
+  definitions (include/dt-bindings/reset/mediatek,mt8189-resets.h)
+- Removed unnecessary `syscon` compatible fallback from MT8189 base
+  clock controllers
+- Added missing 'mediatek,mt8189-fhctl' compatible declaration in
+  dt-bindings
+- Modified Kconfig to COMMON_CLK_MT8189 be tristate (and not bool) to 
+  allow all MT8189 clock controller drivers to be built as modules (it
+  was partial) 
+- Fix pll unregisters in clk_mt8189_apmixed_probe error case
+- Reparent several clocks to correct 26M references in clk-mt8189-bus.c,
+  clk-mt8189-topckgen.c and clk-mt8189-vlpckgen.c
+- Removed CLK_SET_RATE_NO_REPARENT flag from mfg_sel_mfgpll
+- Rename TOPCKGEN_fmipi_csi_up26m clock to fmipi_csi_up26m to remove caps usage
+- Implemented reset controllers in clk-mt8189-ufs.c
+- Updated all file headers to update copyrights and add all authors
+- Added all co-developed-by trailers
 
-> 
->> We likely need to decouple the recursion level couter from the slot
->> index in the keys array.  Though they still should stay related as
->> we should start deferring when we approach recursion limit even if
->> we still have some free slots for key clones.
-> 
-> Agreed, we need to have two discreet operations - one to track the stack
-> recursion and one to do the clone flow key allocation.  Unless you feel
-> strongly that they should come as part of the same series, but it seems
-> a lot.
-I think, it should be done within this patch, because otherwise we'll
-be most likely breaking existing deployments.
+The series is based on linux-next tree (tag: next-20260728) and has
+been tested on Mediatek Genio 520-EVK (MT8371) and 720-EVK (MT8391)
+boards, with hardware enablement patch series ([3]), and on Genio
+510-EVK (MT8370, variant of MT8188) and Genio 1200-EVK (MT8395,
+variant of MT8195).
 
-We need a few things:
+[1]: https://lore.kernel.org/linux-mediatek/20260309120512.3624804-1-irving-ch.lin@mediatek.com/
+[2]: https://lore.kernel.org/linux-mediatek/20260309120512.3624804-2-irving-ch.lin@mediatek.com/
+[3]: https://lore.kernel.org/linux-mediatek/20260701-add-mediatek-genio-520-720-evk-v2-0-19d5da4ef984@collabora.com/
 
-1. Decouple the key array index from the execution level.
+---
+Changes in v4:
+- Rebased on next-20260728 tag
+- Added patches 9 to 14 to add new clock ops data set for PLL and
+  PLL-FHCTL to handle a new PLL switch logic for PLL control and BAR
+  reset, supported by MT8189 SoC
+- Patch 15:
+  - Removed useless includes (B. Masney)
+  - Fixed variable declaration order in clk_mt8189_apmixed_probe (B.
+    Masney)
+  - Added missing pwr_reg setting setting in PLL_SETCLR macro (B. 
+    Masney, Sashiko)
+  - Added en_set_reg, en_clr_reg, rst_bar_reg, rst_bar_set_reg and
+    rst_bar_clr_reg fixed offsets and new mtk_pll_setclr_ops ops
+    setting in PLL_SETCLR macro
+  - Added pwr_reg offset values in apmixed_plls array
+  - Fixed rst_bar_mask for mainpll univpll, and mmpll in apmixed_plls
+    array to match rst_bar set/clr reg settings
+- Fixed factor ratio for mainpll_d4_d8, tvdpll1_d16, tvdpll2_d16 and
+  osc_d16 clocks (Sashiko)
+- Link to v3: https://lore.kernel.org/r/20260720-mt8189-clocks-system-base-v3-0-8e6d99ab3ad2@collabora.com
 
-2. Potentially increase the recursion limit, since it is going to count
-   more things.  x2 might be a safe choice, but it is also quite a lot
-   and we're risking to ran out of stack in other scenarios.  Something
-   like +3 may be a change to explore.
+Changes in v3:
+- Rebased on next-20260717 tag
+- Added Fixes tags to patches 1, 2 and 3
+- Reworded patch 8 subject and description messages
+- Updated Reviewed-by and Acked-by trailers
+- Link to v2: https://lore.kernel.org/r/20260709-mt8189-clocks-system-base-v2-0-2926da3db6cf@collabora.com
 
-   We will need extra testing here to make sure we're not breaking
-   existing setups.  I could try and check ovn-kubernetes deployments,
-   as an example of the most demanding configuration, but it will take
-   a bit of time.
+Changes in v2:
+- Rebased on next-20260708 tag
+- Added patch 1,2 and 3 to make the #clock-cells a required property in
+  MT8186, MT8192 and MT8195 clock controller dt-bindings
+- Patch 5:
+  - Removed conditional blocks to check clock-cells property presence
+    for MT8188 clock controller compatible
+  - Reworded commit message to remove the note (no more applicable)
+  - Fixed incorrect property value in else block for #reset-cells
+    property check.
+_ Removed from patch 9 conditional blocks to check clock-cells property
+  presence for MT8189 clock controller compatible
+- Fixed missing MODULE_DEVICE_TABLE in patches 10, 11 and 12.
+- Added devicetree series link in cover letter
+- Link to v1: https://lore.kernel.org/r/20260701-mt8189-clocks-system-base-v1-0-2b048feea50a@collabora.com
 
-3. Sahiko also points out that we should not be dropping packets in
-   case we reached the limit inside the clone_execute(), we should
-   attempt to defer the actions first.  In which case we should not
-   log that the limit is reached.
+---
+Louis-Alexis Eyraud (24):
+      dt-bindings: clock: mediatek: Make '#clock-cells' required for MT8186
+      dt-bindings: clock: mediatek: Make '#clock-cells' required for MT8192
+      dt-bindings: clock: mediatek: Make '#clock-cells' required for MT8195
+      dt-bindings: clock: mediatek: reorder MT8186 compatibles
+      dt-bindings: clock: mediatek: regroup MT8188 dt-bindings into MT8186
+      dt-bindings: clock: mediatek: regroup MT8192 dt-bindings into MT8186
+      dt-bindings: clock: mediatek: regroup MT8195 dt-bindings into MT8186
+      dt-bindings: clock: mediatek: Add MT8189 system/base clocks and resets
+      clk: mediatek: Harmonize mtk_pll_fenc related symbol names
+      clk: mediatek: pll: Add BAR reset register offsets
+      clk: mediatek: pll: split default prepare/unprepare callbacks
+      clk: mediatek: pll: Add ops for PLLs using set/clr regs
+      clk: mediatek: pllfh: Add configurable clock ops to mtk_pllfh_data
+      clk: mediatek: pllfh: Add ops for PLLs using set/clr regs
+      clk: mediatek: Add MT8189 apmixedsys clock support
+      clk: mediatek: Add MT8189 topckgen clock support
+      clk: mediatek: Add MT8189 vlpckgen clock support
+      clk: mediatek: Add MT8189 vlpcfg clock support
+      clk: mediatek: Add MT8189 bus clock support
+      clk: mediatek: Add MT8189 dbgao clock support
+      clk: mediatek: Add MT8189 dvfsrc clock support
+      clk: mediatek: Add MT8189 i2c clock support
+      clk: mediatek: Add MT8189 scp clock support
+      clk: mediatek: Add MT8189 ufs clock support
 
-WDYT?
+ .../bindings/clock/mediatek,mt8186-clock.yaml      |  128 ++-
+ .../bindings/clock/mediatek,mt8186-fhctl.yaml      |    1 +
+ .../bindings/clock/mediatek,mt8186-sys-clock.yaml  |   24 +-
+ .../bindings/clock/mediatek,mt8188-clock.yaml      |   93 --
+ .../bindings/clock/mediatek,mt8188-sys-clock.yaml  |   58 --
+ .../bindings/clock/mediatek,mt8192-clock.yaml      |  191 ----
+ .../bindings/clock/mediatek,mt8192-sys-clock.yaml  |   68 --
+ .../bindings/clock/mediatek,mt8195-clock.yaml      |  238 -----
+ .../bindings/clock/mediatek,mt8195-sys-clock.yaml  |   76 --
+ drivers/clk/mediatek/Kconfig                       |   79 ++
+ drivers/clk/mediatek/Makefile                      |    8 +
+ drivers/clk/mediatek/clk-mt8189-apmixedsys.c       |  203 ++++
+ drivers/clk/mediatek/clk-mt8189-bus.c              |  200 ++++
+ drivers/clk/mediatek/clk-mt8189-dbgao.c            |   98 ++
+ drivers/clk/mediatek/clk-mt8189-dvfsrc.c           |   58 ++
+ drivers/clk/mediatek/clk-mt8189-iic.c              |  122 +++
+ drivers/clk/mediatek/clk-mt8189-scp.c              |   77 ++
+ drivers/clk/mediatek/clk-mt8189-topckgen.c         | 1025 ++++++++++++++++++++
+ drivers/clk/mediatek/clk-mt8189-ufs.c              |  133 +++
+ drivers/clk/mediatek/clk-mt8189-vlpcfg.c           |  116 +++
+ drivers/clk/mediatek/clk-mt8189-vlpckgen.c         |  285 ++++++
+ drivers/clk/mediatek/clk-mt8196-apmixedsys.c       |    2 +-
+ drivers/clk/mediatek/clk-mt8196-vlpckgen.c         |    2 +-
+ drivers/clk/mediatek/clk-pll.c                     |  135 ++-
+ drivers/clk/mediatek/clk-pll.h                     |   13 +-
+ drivers/clk/mediatek/clk-pllfh.c                   |   15 +-
+ drivers/clk/mediatek/clk-pllfh.h                   |    3 +
+ include/dt-bindings/clock/mediatek,mt8189-clk.h    |  433 +++++++++
+ include/dt-bindings/reset/mediatek,mt8189-resets.h |   17 +
+ 29 files changed, 3135 insertions(+), 766 deletions(-)
+---
+base-commit: bbda95765d148ddea2f3876bb09aadd741cf3316
+change-id: 20260630-mt8189-clocks-system-base-70714e4ff2aa
 
-Eelco, do you have some thoughts on this?
+Best regards,
+-- 
+Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-(Moved security@ to Bcc as this is a public discussion.)
-
-Best regards, Ilya Maximets.
