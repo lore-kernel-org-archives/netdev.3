@@ -1,40 +1,40 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504A84611C2
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 11:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C4827CCE0
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 11:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785324655; cv=none; b=HpFTmi6S3/4zQFCIK9da3CvZUbPjoeOe/FyPJwDKSLFdLGXS6E4NhSC3iOw4vUEQheEW4xlfM5NEJ0ygiNZoVhkuCLGa0sp7PnVN4WpJogtnG7wZFb0YexgWzZLRPkQahidhTp6q4yxv5gCg4mX30d33YgD1klfloW6YPwCdHj4=
+	t=1785324961; cv=none; b=gyw3UAydXSv4hqyRECdWgD3hS+ku3Bh7Om0Gw3kJA6razcXjJdCarRGHAGWFH2AyWtnaXjUxNhP58L1bRML+nZPZ0SZ/ruQ2knLA1PbwAjz74Igvj4uL5WkcJ1LEzJGOxfftTWPwk8eqmO2KsE0V9/eAGujmXKn6oympvFKWDyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785324655; c=relaxed/simple;
-	bh=fTz2tW2KNSxx4M++IYdUAscJdjE4CMkFx+toWOqBcW0=;
+	s=arc-20240116; t=1785324961; c=relaxed/simple;
+	bh=bXJ7F6cjL7i3dfzFRxLRXMG6H6Brq7bWk7utyAT/3oM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EEVM5pv9jbrgHcf5f6OlUU5ezOgLBRzdqZX3VrjN39SFI0Cr9eir1ki+RSRuP4g73NORbIP5yuQkVLemd5gsiPZxnF2Tpi5DBuSlR4WCelLx/8EyBPXeZao0UN82DCZZRdCvlpuuk54EV2xuYfKlDYXYPkV67tBU9OdqbuGkmN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lDdc18OQ; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:Content-Type; b=m6JSM6qdFqy0fAMVdg8JZWFjQTfGBOmWE8e7TXr2WfkKYtnEOltBZZP5Nzpn221zuyKMijC1mTqutMSW6BPMOQzY4tQ/tR1OE9s1UPstynVbDcIz0rI73IG3zsRgktUbc3tsp6ZCEHVUH5KBNY+lrqgpLPUkfmi8afrh0nRqAV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Klkzrn58; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lDdc18OQ"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Klkzrn58"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id BCA501A12F9;
-	Wed, 29 Jul 2026 11:30:51 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 6A8921A12EF;
+	Wed, 29 Jul 2026 11:35:57 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8A0136039A;
-	Wed, 29 Jul 2026 11:30:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D092611C14D10;
-	Wed, 29 Jul 2026 13:30:41 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 356F26039A;
+	Wed, 29 Jul 2026 11:35:57 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 77EF811C14D1A;
+	Wed, 29 Jul 2026 13:35:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785324646; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1785324951; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=f+AGVRNa1SzZhkLyKFGlOYMYOvwt5zE8+rjSL4vSATU=;
-	b=lDdc18OQJAWS83HE6BFVKDefips09iGZ0t/q81THNYNQ8HRedejVpxxwSZEMgG69CzcVx/
-	UaA/Ok2GH/YyXKwxqzKPZ6m0p62jwpEC0hXFIfzvd02VKi8ZKjqVAqysXr3rpXatVqIXoj
-	aERRzMQhfdfOwKdguTXxtrbvvPAv8bDN6FBJ/y7O29SpejIdbe2xQnkrbcvkMb0y+rJst5
-	Mzc0VCA+42LnnIOAXuehc9nLI0SBiGmJs402/4HPMaUXWwxFZDMwP9wZtj1w3F1XHtYj98
-	FKbPuFwFyzZ2w5ixhLw77MeUQrGuuWyPO8fXdvVa235bBdDrIG505HZA27QXDw==
-Message-ID: <bbc44e43-2fb4-4ab7-9829-bd9bfde4e532@bootlin.com>
-Date: Wed, 29 Jul 2026 13:30:41 +0200
+	bh=U4x7GgBq+e/gvuJ5cyUD73Nhz+wFnQftgYUhrbLSnes=;
+	b=Klkzrn58+OfHyVsct7f99ef2xFy2v0hvlDqUS2cYaCLTQPDb4AxTw+OoKsqcCXG7G0VS6Q
+	qOkdauVNmLo6rXuia78LE20XMDkaxgw5Xeb55vig37AA56rujq7w49WHfeRdTi73Z7T32r
+	/W00Y5+CPQTBTI/FVZfwDDFj/dPIJIXQPNO43OJZwmhdFT2ktNxh6Qs+LdhMPvz5uPn37k
+	G7AD0IOpMkbKf39CKtuCfnd5DjxBdoFJisIBjhz2kH8ClViQij5pNNoWF8VKzbSF2t4Pq3
+	2zm3TUEbOg7vbiGPgP+oITs4s+uRE9SdIA0ac66Yxw9srYaNIloAMIFHxQqzhQ==
+Message-ID: <af97a4a2-9a1d-4b36-9055-d05124bf4ab9@bootlin.com>
+Date: Wed, 29 Jul 2026 13:35:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,7 +47,9 @@ To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>, andrew+netdev@lunn.ch,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
  pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
  joabreu@synopsys.com, jun.ann.lai@intel.com, yi.fang.gan@intel.com,
- boon.khai.ng@altera.com, matthew.gerlach@altera.com
+ boon.khai.ng@altera.com, matthew.gerlach@altera.com,
+ "Nazle Asmade, Muhammad Nazim Amirul"
+ <muhammad.nazim.amirul.nazle.asmade@altera.com>
 Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <20260729095110.164157-1-ovidiu.panait.rb@renesas.com>
@@ -58,7 +60,7 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Ovidiu,
++ Nazim Amirul
 
 On 7/29/26 11:51, Ovidiu Panait wrote:
 > Currently, hardware VLAN stripping is broken for 802.1ad tags. vlan_rx_hw()
@@ -99,11 +101,9 @@ On 7/29/26 11:51, Ovidiu Panait wrote:
 > 
 > Note: patch 5/5 was compile tested only, as I do not have the hardware.
 > However, it uses the same codepath as dwmac4, so it has the same issue.
+Nazim Amirul, as you seem to have access to some AgileX5 with XGMAC, can you
+see if you can reproduce the issue on your side and if this series solves it ?
 
-I was able to reproduce the issue on imx8mp, and indeed this series fixes it.
-
-I'll try to do a more thorough review soon, but this is a good finding, thanks
-for fixing that :)
+Thanks :)
 
 Maxime
-
