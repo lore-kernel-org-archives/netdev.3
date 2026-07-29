@@ -1,72 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9423A9D9A;
-	Wed, 29 Jul 2026 06:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510682D7DDB;
+	Wed, 29 Jul 2026 06:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785306187; cv=none; b=sBVa3QV+kqfhQYhL/3zJ0AOqrqAJMFsOOiRnCG7cIY89hQhjfaKftkpGwJkFJOV4cTTrsmTWXl0QuUfjWrwwD3gXcKRLEuKOwTmXXcVozy3d+fj1a719QCeADpFj0/Lx7/VbI1AqZWAQzWDoG4IMBDi0tXYtlTOckOteL2FGuqY=
+	t=1785306402; cv=none; b=Bh+//4AsoyAsTlg5/YDmRzoO7TQ9zElp1Y1cUFhd1fnSKZm7e3YjugB39paY/UjIlMFsysgr8UKdVqnfRzkyyx9iqSwyEDyAZ9rY+ceQKfXbZZvUQweTdknzgRc7t8cv/xRnNc8EpUerybcQutWY6Ar76KwNsicNsYMx3tehWdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785306187; c=relaxed/simple;
-	bh=m5SWNBxQdtMePzyMDKJ9Fi4VAu3iaNx82enXShg6uMM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L6XQqh8zCVBpyKXKU3Apc5rNXtUFbgSUNN+g8Z96W/h1ma1gsXnmav7EzqoooA3WVnTloRcZk6icMZGi+nYSQL3cMN5LTICiN3Gr/nVZ06aOQTwbxYe5Nm0TwRH3mRn3x/Aj8vZUSwDFRIW57nyY+fPXWfXJojOc/H5ioQZcnNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3AAutlg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785306402; c=relaxed/simple;
+	bh=XOO3WlEFp4BrInQLNmfEE90essyJsjNwAQ322MsjXbQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b6RAKm7InQNZBusUoCPOuZrc1epN67ae0pIiA8Su84Hmd7dZuk91D5Uht/4O9Wn+ZNmd77DVpQYalAlDE/AZlJVbGyws+C7toN78gYiHkC8xNoobjavxoi5I2JkHwo2bM5rKF+O4vuoux0ofq4B+9HQLYj3bnMJNNCbGQGB5Fgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Y0Z7OUKq; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3AAutlg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3843B1F000E9;
-	Wed, 29 Jul 2026 06:23:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785306185;
-	bh=hA/U9ooyyT4N+H8fqyLDL8P4Nj8V96DYvGvtGFRQdSo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X3AAutlg1b0d4uaufadLTBrecOm+SBXOXEarl8Ydbk8/Y8BafAFkmwbbjM25ZJy2O
-	 H4nXwNfzmeysu8+jK54ARg1JAbp86xbroWSSRpqx65NmtMsxp1Ht9CZ+F48fN/WGjD
-	 RYmaF4BUDcbOohQa+GReRzqoRS3llCRlf4M3hJTxWtfNztC6WgCFjIgtLShfx7jQHw
-	 UMOP6FGbhqUsFfs6XaBUBUWJlJpFR29Dv/JbusdYGrUjWL6jA1SSjErmIApE69X09G
-	 MiPdBVY97Z90ibrM0phck2sEKDP091Drqqd7rL8hpJcQsvbSNBZg8EjecLQ5YBpmXg
-	 O9LVRVsO94Rug==
-Date: Wed, 29 Jul 2026 08:22:59 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Vladimir Oltean <olteanv@gmail.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, "Chester A. Unal" <chester.a.unal@arinc9.com>, 
-	Daniel Golle <daniel@makrotopia.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Simon Horman <horms@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
-	mfd@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v19 01/10] dt-bindings: net: dsa: Document
- support for Airoha AN8855 DSA Switch
-Message-ID: <20260729-mystic-goat-from-asgard-d6c2d8@quoll>
-References: <20260728154846.1828945-1-ansuelsmth@gmail.com>
- <20260728154846.1828945-2-ansuelsmth@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Y0Z7OUKq"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 5C65E4E40FD4;
+	Wed, 29 Jul 2026 06:26:37 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F7366039A;
+	Wed, 29 Jul 2026 06:26:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C11DA11C14993;
+	Wed, 29 Jul 2026 08:26:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785306392; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=Gvf5TT4THTQo8Vgq5kQVKZIB4tzxRyZ0EIxkRmLPp9c=;
+	b=Y0Z7OUKqTitpQC4pDdj2I4WkZwnECbktc3br1Fr8iShkM7wTDbH/k9Kz782dLjGs8OqDZH
+	5l5FRhHKhOwT3gj5i5oH1C0Q+VMOstsWQVZwDs4T+j3SKFAfRtuDus45jDSHkkoxTAq3nd
+	qpMPIcRSGlVJWYI/3w3lEKBs+qSuVH5M8aw6GJl/51E/LSVYUAm/Se6xPGAS24TlL10P+X
+	x5w78hKJJ1wG4xrvUiXVQ0I6LGKZA1otfuXBle0WfTJpgwJcU94/it3tQRnhFDNDo+aCql
+	+borfurKAmqo3Srh7VeEwJMSZgIfW7IVxxBsDZZSXE8H4wEDhYvqJJ7VwTtbQA==
+Message-ID: <22d95b3a-752f-46fc-be0f-497e78f9f189@bootlin.com>
+Date: Wed, 29 Jul 2026 08:26:28 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260728154846.1828945-2-ansuelsmth@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/3] net: stmmac: fpe: Enforce pmac_enabled in
+ set_mm and keep it on at init
+To: muhammad.nazim.amirul.nazle.asmade@altera.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260729015247.25774-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+ <20260729015247.25774-2-muhammad.nazim.amirul.nazle.asmade@altera.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260729015247.25774-2-muhammad.nazim.amirul.nazle.asmade@altera.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Jul 28, 2026 at 05:48:28PM +0200, Christian Marangi wrote:
-> Document support for Airoha AN8855 5-port Gigabit Switch.
+Hi,
+
+On 7/29/26 03:52, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
+> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 > 
-> It does expose the 5 Internal PHYs on the MDIO bus and each port
-> can access the Switch register space by configuring the PHY page.
+> The preemptive MAC in DWMAC is always enabled, meaning DWMAC is always
+> ready to receive preemptive mPackets. Initialize pmac_enabled to true
+> at init time and reject attempts to disable it via ethtool set_mm.
 > 
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> Also add a missing fpesel capability check in stmmac_set_mm() to return
+> -EOPNOTSUPP early on hardware without FPE support.
+> 
+> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+> Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 
-Just one SoB.
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Best regards,
-Krzysztof
+Maxime
+
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 7 +++++++
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c     | 5 +++++
+>  2 files changed, 12 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> index 92585d27ab88..8ebdd249e5c8 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> @@ -1064,6 +1064,13 @@ static int stmmac_set_mm(struct net_device *ndev, struct ethtool_mm_cfg *cfg,
+>  	if (err)
+>  		return err;
+>  
+> +	if (!priv->dma_cap.fpesel)
+> +		return -EOPNOTSUPP;
+> +
+> +	/* DWMAC always have preemptible MAC enabled */
+> +	if (!cfg->pmac_enabled)
+> +		return -EINVAL;
+> +
+>  	stmmac_fpe_set_add_frag_size(priv, frag_size);
+>  	ethtool_mmsv_set_mm(&priv->fpe_cfg.mmsv, cfg);
+>  
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
+> index c54c70224351..2f880c5e35b0 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
+> @@ -176,6 +176,11 @@ void stmmac_fpe_init(struct stmmac_priv *priv)
+>  	if ((!priv->fpe_cfg.reg || !priv->hw->mac->fpe_map_preemption_class) &&
+>  	    priv->dma_cap.fpesel)
+>  		dev_info(priv->device, "FPE is not supported by driver.\n");
+> +
+> +	/* The preemptive MAC in DWMAC is always enabled, so initialize
+> +	 * pmac_enabled to true to reflect the hardware state.
+> +	 */
+> +	priv->fpe_cfg.mmsv.pmac_enabled = true;
+>  }
+>  
+>  int stmmac_fpe_get_add_frag_size(struct stmmac_priv *priv)
 
