@@ -1,63 +1,63 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB25372045
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 03:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9320372EE4
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 03:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785294109; cv=none; b=UwA2Tw4203GU+upzh0Jp3mgZhx5D64hYXaxu4F/sWJmmFDeauik+EWKIISZjiTKMAGb0Kzx4z0grcttdE0hXLL03M7p/ZXDPQe/hGzKJjVEHF61K1Pshbe4iSrfpHjLshhNpzpIl/9/PZQs+wg7dsWALhfrVOUOcnTQs0AO/4Zw=
+	t=1785294119; cv=none; b=boVZR6z2Gj4dlv8Y5FKwenNxemNIIOeuDlTDfJShhXWXeznuFt524Qdv36Qe5b23yC5Z4WminRACHq5pZPcbTEgHA/3juPh8HRkwxuic8M6upji6DF5VYZnYnwfglw1MpLMJrq+1AJgWduqrtRJvq2640i/siLc8zhxmltxUnE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785294109; c=relaxed/simple;
-	bh=2+lD755z7Rh4q3JmyL4x3OHtwEBfh1KbS7Y4miJd/mQ=;
+	s=arc-20240116; t=1785294119; c=relaxed/simple;
+	bh=8pQmOMcFljWndvm8K6rOOGOJ+N7FFwl468qrnHJKbbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bOPJhCpTTMqo1SrC1cB+3IRwRQRhpKYSPSzUDxvkSszwkKAarFBuDlyHvK75uh2BAIJgq9tAIv0+bIiBoSnVfO1nnscscC27CVskSpJgfwf2q2NTUG1XiCK1GbwhCccVWh8sSq1P//igCasrMxn6ykaLouBBbsU8W6afjImW6fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sU2TVmBg; arc=none smtp.client-ip=209.85.210.179
+	 MIME-Version; b=fgH55ZbboFOY+eD68mZPIEXf8j7iNlKIIsg4dF7y1eU2uUFfkvT/p8A08PrizhO+Md/SKU9ESnhslw4vlZvZ+p/J/f6kczTi+SbfZlQAbfI1ESMixx/ASKVHEyewDd7gtgszl1t6jS+YHpeZfsYyZdTkKYQY+NaYgdK1lwfHvk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aLMBnNJG; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sU2TVmBg"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84a32ff53fcso55470b3a.0
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 20:01:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aLMBnNJG"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ccae46de39so366205ad.3
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 20:01:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785294107; x=1785898907; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785294117; x=1785898917; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=xg7bd++vUDfsPPAlCp93j183GeX7bX18Uk0d449Ghw8=;
-        b=sU2TVmBg6j7Jj9H8t/dy5mhSXKwnfbV1MAWQ8eXmtKas4EFPP7iUdag1TlCKHmYU/x
-         Z6grkbDn8Igx0bvjcDsgWzXrIXYKqjTStV5f2G+j+cQpS4ttfhm1wSVoytvM0guiwVcT
-         C4f6AB2k780ysdsZInOnD//e/XIv1jNML9UfaCJ/1mUMxxKSO/G4PygmQnq1coTWwDPs
-         PFb8Rj6L65iC2lFm5Rt94wsKitho+3YY8HzaHR076cSCySDQ1wMSLpTWP54+21x6sxfP
-         smu6Tp/1ffP3VoVmgUggra3RRltOfXGrAJ4KErnPNTMMWVvNEwYlN8FIfg4+QUaj5Hp4
-         L/Yg==
+        bh=NixGGEEqw+E2z4UzpPLkFQOamKXWaytt2d5AlloTFNI=;
+        b=aLMBnNJGx72582/bcD+6zuK6BhMwujxBrA4sL5pj6b6fHSnwYrnIV1QMU8jdgRn81S
+         ode6R4Z/vzTYqr+aIGqf8rWCg7CXH+uNCoslDr/BvcOZLWTEEyK+e7S78IsE4b5pErgl
+         ThkiVVO1A7ZfBB3nKPvPFzAEFsWZydph0eQO8HEmZOugvEKOE5T1qOwiBXGANi1oUiX3
+         VTzq15Bac7Fc4+BQ6O9Z8I2/LUAszSQ4c6IvDQHvYfEpRxkGsyC7yBFC+q9QN6AQTQ2A
+         PmLiZo+d1JLzMa0ZCxOKGeSFppnGT9NEkRTTpS2VC82vlBj6dojdJebEOft17jGP9ytc
+         ozYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785294107; x=1785898907;
+        d=1e100.net; s=20251104; t=1785294117; x=1785898917;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xg7bd++vUDfsPPAlCp93j183GeX7bX18Uk0d449Ghw8=;
-        b=QLV5V3VroH3mUVAXR/EZ6kNMDdRdWErkDmnP+SRzC5myXffen3QG1Sy2al7tcWgc8f
-         cMLMX14yuLV0levSL70LtgDfJwcZeW3bNIDZ8fcEHjtuNsNoRywpwuGuFBROkYxf2E70
-         LqdFR1Aabk3U0r3+QPTi1/C8ANfHtF9xJhGZuJLWtT0m9pafpoc2h67JKfTyUd42foza
-         JROZrgSGHwoWe5JQyyGf7V8/vWVOK6J9AmBWnFKmg0m1FGjBlob6ONdlDP3INERmOhOx
-         YzN/usLFaZb2Z1/IUQ5vcRW9xc3kXgy9ipcwLqujsrVTOF8WmG3t14C4GphKDitIT6FW
-         qRlg==
-X-Gm-Message-State: AOJu0YxlzfmoYgyRefHV9GyiLKT/uBKc/iil89QUqpj2hfgFop4XJFX4
-	8KjiNuGtkx1zAB4T/vg02s5IZWaW7tLJqrem+BpjR5ASNqozHsQUasAytZCODIBu
-X-Gm-Gg: AR+sD11F7gMHCUpkvnz70FAeBSHwgPzJLB5BWc6c9G0J4YGtrbuqk5zsz/t/sjZHupU
-	9SY9xA8ijsiZfEG+Ho/u+9HxuLMqHo+cFG4IkmbjBCqvlsX3G6J27VKghnRVtp/Z1Aqp0+Xyox/
-	YY5nF/ZH9oqE6cFFotoFUigdnwMF+5jyGPWLVCSioQHhjUi/sc8YecEDr8mV4iiJvnG8vjlNUWv
-	J0QlfyBUqgKL0b8178oJt7RH3skXfTdLGr/7ihZHvyXX/wuooZ8yQ8YRY9oit6dg/HIRQUSVXdx
-	psJ3feo+WSDNkTpqs9PjJsdMSJqbG+0zzwuoXP4zbsNDUHaRsH0PakDOmX49Lw4CNsQv/K3gd2a
-	B1EowsHMggjXXUyFYiAY7AoHrGS1Hd4g+mpN6hwc+t3jnYBvzLNyFY8ZGqx54UFFbn3sYKC/1o/
-	QigGf3NqIrIWYQLnk0afp20LO9b7DlO4X6KEcZeDtYVFkh/JpASOywzQAL5ksyJ8lFMmFM2yJlE
-	hyHPhQMLxce0JUpw1mqMt9rxKAHRIqrTEuuOHk+HUewuMotMiQ=
-X-Received: by 2002:a17:903:2f07:b0:2cc:d6de:d58e with SMTP id d9443c01a7336-2d015c2fa1bmr45187925ad.4.1785294106897;
-        Tue, 28 Jul 2026 20:01:46 -0700 (PDT)
+        bh=NixGGEEqw+E2z4UzpPLkFQOamKXWaytt2d5AlloTFNI=;
+        b=kjcuDo2FDJ8JIgXGJB5c2EjxnORgE/oWNBolBaSnx2AcpxWRQCkq/d21Q2Ukjw4M8L
+         4JgejYaaBKjnQ3wlMTmiNhWUkW6hArh67n8wMEAvWyYppFuxE9ruMOKrJlBU8XXziSkI
+         SqyQUpEKzVNUMykUzXhpL5Et2JwMyvibVvKfqZi250NUeut/v6pCcdnoImGY6osicmMF
+         q04+74V+uK5QESt2Nr+mOkGj+0p5B3ycP4+L5fQlRBm9A1O4YwVtDbogZhPqP29A8GSA
+         mo/JwWji+rxIl6OIG/dn+FGY4MNcQAbnWc3G2JuQ0N3pTw6Sc8VtTBiqjNAH9KKrpOOR
+         y4Qw==
+X-Gm-Message-State: AOJu0Yyj2vg9Erl1aZZz59Mb9yLuNmeyPSHAqdRF6Cy+GliC0LWKcvA+
+	yu+Z37ZW2gCGdhIE+t0iUN1peLACotU1+AocJEpocyQcFlCPUMtMNTtBSt6pyd3U
+X-Gm-Gg: AR+sD10tz6eoN8Tn37Kz6DqkoLbZM+58dUsHqQWYrBpd6UOJVa4Gb9vr52Hjk1p6GBP
+	0PSfdb3v8jK6ww3V747y7gRLq3rsE7JF1OO6hfMTimFZV4+BLR0P+jhZqPHcSoUFzx9+EGsubrH
+	5gy/nlpxvBofaQcvE5mUy9a2KvnOPBpmA4i7gnLFOMfwQLBvXYlSMR0gqaj4qWmiM1dXIcXmIV0
+	O6GfslezfuisEeGWNePpfCihDyw4YkhZaGHDFm2S2u/edWNYlvop9Ms2UxaxFNx0Kc9iV3w3+6/
+	2K19gL2S7bsU2JQ9tdN8OG6YYYSi7JsCeBOnwU2f4OAwzf8TauAZ57bC8P0L5FkBmR8PSQnIFs3
+	s/njc5BfCbK/D9Lz6DH9DrekwFx0+gx27b4DfeiNDta46ibHkEMx39+PUNaU172Q/YJiS6Ch4Ro
+	zr5vGOh6C2E180TQ+nIJ9IEURZmjIsoZhxkiYlPJEidnVEtw1j+J20x18/APhjUzOlC9GZtPYR9
+	WV+XMNwnEzxqCHlj0aJh/zy/KRFNVh/V/8FG/lC47Gg6Gw5VoA=
+X-Received: by 2002:a17:903:1904:b0:2ca:6885:8a06 with SMTP id d9443c01a7336-2d015d3a94emr44001065ad.5.1785294117180;
+        Tue, 28 Jul 2026 20:01:57 -0700 (PDT)
 Received: from localhost.localdomain ([139.159.170.72])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022c3721esm4097385ad.77.2026.07.28.20.01.39
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022c3721esm4097385ad.77.2026.07.28.20.01.50
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 28 Jul 2026 20:01:46 -0700 (PDT)
+        Tue, 28 Jul 2026 20:01:56 -0700 (PDT)
 From: Qihang <q.h.hack.winter@gmail.com>
 To: netdev@vger.kernel.org
 Cc: willemdebruijn.kernel@gmail.com,
@@ -68,11 +68,10 @@ Cc: willemdebruijn.kernel@gmail.com,
 	pabeni@redhat.com,
 	horms@kernel.org,
 	stable@vger.kernel.org,
-	Qihang <q.h.hack.winter@gmail.com>,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net v4 1/2] packet: use consistent hard_header_len in non-ring send paths
-Date: Wed, 29 Jul 2026 11:01:21 +0800
-Message-ID: <20260729030122.21462-2-q.h.hack.winter@gmail.com>
+	Qihang <q.h.hack.winter@gmail.com>
+Subject: [PATCH net v4 2/2] packet: use consistent hard_header_len in TX_RING send path
+Date: Wed, 29 Jul 2026 11:01:22 +0800
+Message-ID: <20260729030122.21462-3-q.h.hack.winter@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260729030122.21462-1-q.h.hack.winter@gmail.com>
 References: <20260729030122.21462-1-q.h.hack.winter@gmail.com>
@@ -84,142 +83,105 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-packet_snd() reads dev->hard_header_len multiple times while allocating
-and constructing an skb. Device reconfiguration can change this value
-concurrently, for example through bonding device type changes.
+tpacket_snd() reads dev->hard_header_len independently for skb
+allocation and header construction in tpacket_fill_skb(). Concurrent
+netdevice reconfiguration can therefore make the reserved headroom
+smaller than the amount later pushed, or make copylen - hard_header_len
+negative.
 
-For SOCK_RAW, packet_snd() can save a larger value in reserve and later
-allocate headroom using a smaller value. Moving skb->data back by reserve
-then places it before skb->head, and the following copy from userspace can
-attempt an out-of-bounds write.
-
-packet_sendmsg_spkt() has the same issue because it calculates its
-reservation and header offset from separate reads before dropping the RCU
-read lock to allocate the skb.
-
-Add LL_RESERVED_SPACE_EX() for callers that already saved a header length.
-Read hard_header_len once in packet_snd() and use it for allocation and
-construction. In packet_sendmsg_spkt(), preserve the allocation-time value
-through the device lookup retry.
+Snapshot hard_header_len once before processing ring frames and use it
+for the frame limit, headroom allocation, copy length, and skb
+construction. Pass the snapshot to tpacket_fill_skb(). Reset copylen for
+each frame so a previous frame cannot retain a larger construction
+length.
 
 The separate SOCK_DGRAM consistency problem between hard_header_len and
 header_ops->create is not addressed here.
 
-Fixes: b84bbaf7a6c8 ("packet: in packet_snd start writing at link layer allocation")
+Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
 Cc: stable@vger.kernel.org
 Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
 ---
- include/linux/netdevice.h |  6 ++++--
- net/packet/af_packet.c    | 26 ++++++++++++++++----------
- 2 files changed, 20 insertions(+), 12 deletions(-)
+ net/packet/af_packet.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 9981d637f8b5..e50e8abc1392 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -300,9 +300,11 @@ struct hh_cache {
-  * We could use other alignment values, but we must maintain the
-  * relationship HH alignment <= LL alignment.
-  */
--#define LL_RESERVED_SPACE(dev) \
--	((((dev)->hard_header_len + READ_ONCE((dev)->needed_headroom)) \
-+#define LL_RESERVED_SPACE_EX(dev, hlen) \
-+	((((hlen) + READ_ONCE((dev)->needed_headroom)) \
- 	  & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
-+#define LL_RESERVED_SPACE(dev) \
-+	LL_RESERVED_SPACE_EX(dev, (dev)->hard_header_len)
- #define LL_RESERVED_SPACE_EXTRA(dev,extra) \
- 	((((dev)->hard_header_len + READ_ONCE((dev)->needed_headroom) + (extra)) \
- 	  & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
 diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index e75d2932475a..88674a6e868c 100644
+index 88674a6e868c..8ee0a80fdcea 100644
 --- a/net/packet/af_packet.c
 +++ b/net/packet/af_packet.c
-@@ -1953,8 +1953,9 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
- 	struct net_device *dev;
- 	struct sockcm_cookie sockc;
- 	__be16 proto = 0;
--	int err;
-+	int hard_header_len;
- 	int extra_len = 0;
-+	int err;
+@@ -2574,6 +2574,7 @@ static int packet_snd_vnet_parse(struct msghdr *msg, size_t *len,
+ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 		void *frame, struct net_device *dev, void *data, int tp_len,
+ 		__be16 proto, unsigned char *addr, int hlen, int copylen,
++		int hard_header_len,
+ 		const struct sockcm_cookie *sockc)
+ {
+ 	union tpacket_uhdr ph;
+@@ -2605,8 +2606,8 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 	} else if (copylen) {
+ 		int hdrlen = min_t(int, copylen, tp_len);
  
- 	/*
- 	 *	Get and verify the address.
-@@ -1997,14 +1998,18 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
- 		extra_len = 4; /* We're doing our own CRC */
- 	}
+-		skb_push(skb, dev->hard_header_len);
+-		skb_put(skb, copylen - dev->hard_header_len);
++		skb_push(skb, hard_header_len);
++		skb_put(skb, copylen - hard_header_len);
+ 		err = skb_store_bits(skb, 0, data, hdrlen);
+ 		if (unlikely(err))
+ 			return err;
+@@ -2737,7 +2738,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 	void *data;
+ 	int len_sum = 0;
+ 	int status = TP_STATUS_AVAILABLE;
+-	int hlen, tlen, copylen = 0;
++	int hard_header_len, hlen, tlen, copylen = 0;
+ 	long timeo;
  
-+	/* Keep the allocation-time header length across retry. */
-+	if (!skb)
-+		hard_header_len = READ_ONCE(dev->hard_header_len);
-+
- 	err = -EMSGSIZE;
--	if (len > dev->mtu + dev->hard_header_len + VLAN_HLEN + extra_len)
-+	if (len > dev->mtu + hard_header_len + VLAN_HLEN + extra_len)
- 		goto out_unlock;
- 
- 	if (!skb) {
--		size_t reserved = LL_RESERVED_SPACE(dev);
-+		size_t reserved = LL_RESERVED_SPACE_EX(dev, hard_header_len);
- 		int tlen = dev->needed_tailroom;
--		unsigned int hhlen = dev->header_ops ? dev->hard_header_len : 0;
-+		unsigned int hhlen = dev->header_ops ? hard_header_len : 0;
- 
- 		rcu_read_unlock();
- 		skb = sock_wmalloc(sk, len + reserved + tlen, 0, GFP_KERNEL);
-@@ -2034,7 +2039,7 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
- 		err = -EINVAL;
- 		goto out_unlock;
- 	}
--	if (len > (dev->mtu + dev->hard_header_len + extra_len) &&
-+	if (len > (dev->mtu + hard_header_len + extra_len) &&
- 	    !packet_extra_vlan_len_allowed(dev, skb)) {
- 		err = -EMSGSIZE;
- 		goto out_unlock;
-@@ -2956,7 +2961,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 	int offset = 0;
- 	struct packet_sock *po = pkt_sk(sk);
- 	int vnet_hdr_sz = READ_ONCE(po->vnet_hdr_sz);
--	int hlen, tlen, linear;
-+	int hard_header_len, hlen, tlen, linear;
- 	int extra_len = 0;
- 
- 	/*
-@@ -2996,8 +3001,9 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 			goto out_unlock;
+ 	mutex_lock(&po->pg_vec_lock);
+@@ -2784,8 +2785,9 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 			goto out_put;
  	}
  
 +	hard_header_len = READ_ONCE(dev->hard_header_len);
- 	if (sock->type == SOCK_RAW)
+ 	if (po->sk.sk_socket->type == SOCK_RAW)
 -		reserve = dev->hard_header_len;
 +		reserve = hard_header_len;
- 	if (vnet_hdr_sz) {
- 		err = packet_snd_vnet_parse(msg, &len, &vnet_hdr, vnet_hdr_sz);
- 		if (err)
-@@ -3018,10 +3024,10 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 		goto out_unlock;
+ 	size_max = po->tx_ring.frame_size
+ 		- (po->tp_hdrlen - sizeof(struct sockaddr_ll));
  
- 	err = -ENOBUFS;
--	hlen = LL_RESERVED_SPACE(dev);
-+	hlen = LL_RESERVED_SPACE_EX(dev, hard_header_len);
- 	tlen = dev->needed_tailroom;
- 	linear = __virtio16_to_cpu(vio_le(), vnet_hdr.hdr_len);
--	linear = max(linear, min_t(int, len, dev->hard_header_len));
-+	linear = max(linear, min_t(int, len, hard_header_len));
- 	skb = packet_alloc_skb(sk, hlen + tlen, hlen, len, linear,
- 			       msg->msg_flags & MSG_DONTWAIT, &err);
- 	if (skb == NULL)
-@@ -3037,7 +3043,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 	} else if (reserve) {
- 		skb_reserve(skb, -reserve);
- 		if (len < reserve + sizeof(struct ipv6hdr) &&
--		    dev->min_header_len != dev->hard_header_len)
-+		    dev->min_header_len != hard_header_len)
- 			skb_reset_network_header(skb);
- 	}
+@@ -2822,8 +2824,9 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 			goto tpacket_error;
  
+ 		status = TP_STATUS_SEND_REQUEST;
+-		hlen = LL_RESERVED_SPACE(dev);
++		hlen = LL_RESERVED_SPACE_EX(dev, hard_header_len);
+ 		tlen = dev->needed_tailroom;
++		copylen = 0;
+ 		if (vnet_hdr_sz) {
+ 			data += vnet_hdr_sz;
+ 			tp_len -= vnet_hdr_sz;
+@@ -2840,10 +2843,10 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 						    vnet_hdr.hdr_len);
+ 			has_vnet_hdr = true;
+ 		}
+-		copylen = max_t(int, copylen, dev->hard_header_len);
++		copylen = max_t(int, copylen, hard_header_len);
+ 		skb = sock_alloc_send_skb(&po->sk,
+ 				hlen + tlen + sizeof(struct sockaddr_ll) +
+-				(copylen - dev->hard_header_len),
++				(copylen - hard_header_len),
+ 				!need_wait, &err);
+ 
+ 		if (unlikely(skb == NULL)) {
+@@ -2853,7 +2856,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 			goto out_status;
+ 		}
+ 		tp_len = tpacket_fill_skb(po, skb, ph, dev, data, tp_len, proto,
+-					  addr, hlen, copylen, &sockc);
++					  addr, hlen, copylen, hard_header_len,
++					  &sockc);
+ 		if (likely(tp_len >= 0) &&
+ 		    tp_len > dev->mtu + reserve &&
+ 		    !vnet_hdr_sz &&
 -- 
 2.50.1 (Apple Git-155)
 
