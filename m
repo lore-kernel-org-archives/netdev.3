@@ -1,53 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE723203B6;
-	Wed, 29 Jul 2026 02:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8C654774
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 02:11:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785290958; cv=none; b=aB5MsVA/lqO8LaFKfCOYshBLft5Vwqer1485r/J9Bu1bAPIYUdiE2U8lXcNg0ec5bHdRQTcNzV2KoMFTLjljlY8hg28s5/htLKr+Bp3x6avI09GTIwg1FNJ6xxQD/V50w6AvU3a7pHj/BSvm6e7WErk4KfAmKSThTDYyYsQrYac=
+	t=1785291111; cv=none; b=cZU+ng+MsWBZwf3Y0xtJpR16nSmfWeY9BnDRttxh92jLj7ZstDrgGZXhQXFVkzBRHC5tYHUGV4MX+Bg0mmJSJBkw0/1o0ljY+UDzhif9TqsiAzk0a9N68z3YFHXJAnB4IcI3UsLLVvIFe2Kmb43Rfq09rrRkI/Qakbnrzd7AK0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785290958; c=relaxed/simple;
-	bh=7eswSE9MXB/DhO5eCcOv32h0QMwFX/MAvbivHt826kQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqlkj6aJSb0gTSlfwNLnLmTNAbht/ItNcKGDriDb5WB+5Wq06wp7/B7sR5M1LUbzmbAzD8Fp2mm3znkNbcZbRjPi0V+vVqHG/SKf1XoTKiEoxNbW9r+SDMxl+/is35WJn+qDMOZX877UvrCP5182rR7yCwMXv5lkjLLm8X4I/Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hz58T//w; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785291111; c=relaxed/simple;
+	bh=/KyJ9L1qwzCiwPsOVVf1RbQsUCKEtwgojEyTWOEdsxA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ssl4ga79IbzIMBuQox6fxxldgcIyX1lmJJUtbVVvI4ULQISoLmfb2Lhkq9CJj9gq6I6N6Ppv5A+fpGFLy0g1KnblZj9TDTMIF/5c8iJLlBtMvsKZEufr8SXBDES6bY1vlM/lwnlUXQ3yU/x8KVH5PbgXgwA6hPxT1+LSN0CfauI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=FZ7E3MIK; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hz58T//w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBA21F00A3A;
-	Wed, 29 Jul 2026 02:09:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785290955;
-	bh=A5+i8IWHA3N/GIziVbV57tb9APAV6pu3sfvRxvE2tmg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hz58T//wbHg1NPHGz9tsNUNSXPch53sCnu5Z3mKbgzICETQWfvGOa1k4uzlFqy/S4
-	 zZg9evyuNx3Sa2bw+CS1gm6PLiOhGQ8pCp4Bek3uL/xOZXIR91nOc2CxzfXx8YNk00
-	 62Sn9AbaT4ciav6wiGWJ1fy9sc0RUaBwPQowcsxKLzf+K2H28H1xlR3GupcoOjS7f3
-	 LkrKY1GGgW7u0zh1ZXQPRt+AsgGk1T+wMBM/9rBMhNpX/GgjLIcG1d0CcI1hVA+bMN
-	 Pnd/i03gQmfTNAQZKktzGeb61sqIloctfw8Fhbr40CXSwQGXTwMIPa5CPNiOt20IEv
-	 yEQAUYv+CFPiw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: vikas.gupta@broadcom.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="FZ7E3MIK"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84e507b079dso337328b3a.0
+        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 19:11:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1785291109; x=1785895909; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KJEA1nWK4Gv1bXGA18hX88zHi8hXkIdIpy0wTjYDmKI=;
+        b=FZ7E3MIK4oXWqIN1fw3Al1JUZUpDUVcoD+Hmy7zXZBuDhRwG3yetkfcnwAqlcHlk64
+         4XV68+frQBAVMAc7ahZdQIL4COnJjBPaqN2uXx3MI7Mx0g6LVMv9d/DsCwo8eluOW4nX
+         W7usYgAUXHACH4mvZwBr6KZQ4AgBbK897936YgMnOpkJnFLYL1cXqw3+zRZvUb5ude9D
+         zRm1rGlIEtG62skL9fEWRwPPueIf6bXgQKeF+W4baCht/JJCOx1NtJRutOi6U8HTs8La
+         EUdXB35ycGSGDaoYmZWH3fxQlyqKrEEgcc+sYQ9Gk1Ku3kjdEQJ8svD/O5EkWADDv/PU
+         rsFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785291109; x=1785895909;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KJEA1nWK4Gv1bXGA18hX88zHi8hXkIdIpy0wTjYDmKI=;
+        b=Yl845AcGnTiZI1RhvdeyW7+FQzLlNMPyB5i6GL5t85pDN8K33OsaeFBO0s6zEyqgg9
+         WxZBRApN3Bf0NUmKWy+ZCszGiTYP3mpj0yF7PKSsA8qESQOBAOLtCsExXk3PQ9GCuo9J
+         tXSk6ChHEHOOnAcMwoIoN4ND6jPJRuQwoDh6K+s3fFTxI3KW1fN/P69ylDKCovzzwl9R
+         Qi1Ph/7YU8O2rv4Cc9W96YSKKNZzEiTaMqZAviVoo1+yJKACgthiAog4/mEY6092SIC4
+         4/DonX9WTTvjztPpwiromETjNx8Ipt4H3xkpQUCTRndyNoLbuWmlQC2wIDDF9O/+iElC
+         YoCQ==
+X-Gm-Message-State: AOJu0YzPKe++//RBL/AtSd1F1Sl0AX49JWGOqHP24TanJwpVo7a7QQvA
+	ZEduwypF4ZP0+snNmAWQaLcZdf3qFdDcmOBoJuRH9E2qUqxXikkjYHyOlZqC+eg5V7GOPl581Kb
+	FiKSU7FP6eBA=
+X-Gm-Gg: AR+sD128o0/jWWIuiOBxt9FgTrtBTb/TKXPZGejW+uiFQb1hrXexYs0rxuQGhjjHRY/
+	78DqVjK8EkTWwp+aAQQ8eb0/jyTfQhVO1HgipW0MRHlMitJ3RBSPAQPgDfTHohu53/kQnXjrOcd
+	44IDx/LmXOWjRgZIvwzM7yvh7m5wuWORvKBpqleRAfGjOHy8G5eqglx+xpRaoH5EU9xbl2kcUiu
+	ZdWH2AXH6LtibMgFO2gHei6bAW/dMpe3b+RTC0tJ9ANt+yHpVFVKpdt0Oaxqz5+NMruJyQTBTG8
+	bRhH4viFTunylzxSe+eCUVPQYdPH4qsOvEI6h1LB7fqFCWHF4Q5Y9SbsJaQWnawGsqFe6PRjC7F
+	xz6fvk444cL/dTTooZb/1eU3VBIyrFZm78TXqtRYQVPP1hnObmPKP3yQ4Jr0a50vCKZrMSoRoGr
+	02lgYcqK9VQcOyeyrh0g5vcvTpdULSFNi/oR8+hzyU7flaFPUmHZL0RUxSEiv3DYcbaIQMgVipG
+	dCl
+X-Received: by 2002:a05:6a00:a227:b0:848:5821:9489 with SMTP id d2e1a72fcca58-84e9344fda7mr5059496b3a.68.1785291109428;
+        Tue, 28 Jul 2026 19:11:49 -0700 (PDT)
+Received: from Roxy.localdomain ([203.175.14.54])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e9fbe1b0bsm639081b3a.0.2026.07.28.19.11.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2026 19:11:48 -0700 (PDT)
+From: Zhiling Zou <zhilinz@nebusec.ai>
+To: netdev@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
 	davem@davemloft.net,
 	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
 	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bhargava.marreddy@broadcom.com,
-	rahul-rg.gupta@broadcom.com,
-	vsrama-krishna.nemani@broadcom.com,
-	rajashekar.hudumula@broadcom.com,
-	dharmender.garg@broadcom.com,
-	ajit.khaparde@broadcom.com
-Subject: Re: [PATCH net-next 4/4] bnge: send hwrm for interface down/up transitions
-Date: Tue, 28 Jul 2026 19:09:14 -0700
-Message-ID: <20260729020914.3657232-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260724142954.3101980-5-vikas.gupta@broadcom.com>
-References: <20260724142954.3101980-5-vikas.gupta@broadcom.com>
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: [PATCH net v2 1/1] xfrm: save input state data before secpath resets
+Date: Wed, 29 Jul 2026 10:11:35 +0800
+Message-ID: <e59b617d27acb3a38a3523649d52b90f022fa28d.1785288865.git.zhilinz@nebusec.ai>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,97 +80,104 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+xfrm_input() keeps the current state reference through the skb secpath
+while it performs final transport processing.  Some input paths can reset
+the secpath before xfrm_input() is done using data from that state.
+
+Receive callback users such as VTI and XFRM interfaces can scrub packets
+that cross network namespaces by resetting the secpath.  The
+XFRM_MAX_DEPTH error path can also reset the secpath before the final drop
+callback reports the current state's protocol.  If that drops the last
+state reference and the state is concurrently deleted, xfrm_input() can
+still dereference the freed state.
+
+Save the state protocol on the stack while the state is still valid and use
+the already saved address family for transport_finish().  This avoids the
+post-reset state dereferences without adding an extra state reference to
+every received packet.
+
+Fixes: df3893c176e9 ("vti: Update the ipv4 side to use it's own receive hook.")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
 ---
---- Patch [4]: [PATCH net-next 4/4] bnge: send hwrm for interface down/up transitions ---
-commit d98cba7c642aee81ff9e1c8c6042d1e9dc822e87
-Author: Vikas Gupta <vikas.gupta@broadcom.com>
+changes in v2:
+- Avoid per-packet xfrm_state refcounting by saving state data on the stack.
+- Use the saved protocol and family after secpath resets instead of dereferencing x.
+- v1 Link: https://lore.kernel.org/all/89be67de93958a00193c8c4bd668733c976e2aa9.1785135576.git.zhilinz@nebusec.ai/
 
-bnge: send hwrm for interface down/up transitions
+ net/xfrm/xfrm_input.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-Firmware expects HWRM_FUNC_DRV_IF_CHANGE on interface down/up
-transitions to coordinate resource management.
-Add bnge_hwrm_if_change() to send this notification.
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index eecab337bd0a7..3177fa33961cb 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -474,6 +474,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 	struct xfrm_state *x = NULL;
+ 	xfrm_address_t *daddr;
+ 	u32 mark = skb->mark;
++	u8 xfrm_proto = nexthdr;
+ 	unsigned int family = AF_UNSPEC;
+ 	int decaps = 0;
+ 	int async = 0;
+@@ -485,6 +486,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 	if (encap_type < 0 || (xo && (xo->flags & XFRM_GRO || encap_type == 0 ||
+ 				      encap_type == UDP_ENCAP_ESPINUDP))) {
+ 		x = xfrm_input_state(skb);
++		xfrm_proto = x->type->proto;
+ 
+ 		if (unlikely(x->km.state != XFRM_STATE_VALID)) {
+ 			if (x->km.state == XFRM_STATE_ACQ)
+@@ -592,11 +594,13 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 
+ 		x = xfrm_input_state_lookup(net, mark, daddr, spi, nexthdr, family);
+ 		if (x == NULL) {
++			xfrm_proto = nexthdr;
+ 			secpath_reset(skb);
+ 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINNOSTATES);
+ 			xfrm_audit_state_notfound(skb, family, spi, seq);
+ 			goto drop;
+ 		}
++		xfrm_proto = x->type->proto;
+ 
+ 		if (unlikely(x->dir && x->dir != XFRM_SA_DIR_IN)) {
+ 			secpath_reset(skb);
+@@ -604,6 +608,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 			xfrm_audit_state_notfound(skb, family, spi, seq);
+ 			xfrm_state_put(x);
+ 			x = NULL;
++			xfrm_proto = nexthdr;
+ 			goto drop;
+ 		}
+ 
+@@ -728,7 +733,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 	} while (!err);
+ 
+ 	rcu_read_lock();
+-	err = xfrm_rcv_cb(skb, family, x->type->proto, 0);
++	err = xfrm_rcv_cb(skb, family, xfrm_proto, 0);
+ 	if (err) {
+ 		rcu_read_unlock();
+ 		goto drop;
+@@ -753,7 +758,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 			xfrm_gro = xo->flags & XFRM_GRO;
+ 
+ 		err = -EAFNOSUPPORT;
+-		afinfo = xfrm_state_afinfo_get_rcu(x->props.family);
++		afinfo = xfrm_state_afinfo_get_rcu(family);
+ 		if (likely(afinfo))
+ 			err = afinfo->transport_finish(skb, xfrm_gro || async);
+ 		if (xfrm_gro) {
+@@ -776,7 +781,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ drop:
+ 	if (async)
+ 		dev_put(dev);
+-	xfrm_rcv_cb(skb, family, x && x->type ? x->type->proto : nexthdr, -1);
++	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
+ 	kfree_skb(skb);
+ 	return 0;
+ }
+-- 
+2.43.0
 
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> index e67536a8c4304..220bdcced0db9 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-[ ... ]
-> @@ -2861,6 +2862,24 @@ static void bnge_tx_enable(struct bnge_net *bn)
->  		netif_carrier_on(bn->netdev);
->  }
->  
-> +static int bnge_hwrm_if_change(struct bnge_dev *bd, bool up)
-> +{
-> +	struct hwrm_func_drv_if_change_input *req;
-> +	int rc;
-> +
-> +	if (!(bd->fw_cap & BNGE_FW_CAP_IF_CHANGE))
-> +		return 0;
-> +
-> +	rc = bnge_hwrm_req_init(bd, req, HWRM_FUNC_DRV_IF_CHANGE);
-> +	if (rc)
-> +		return rc;
-> +
-> +	if (up)
-> +		req->flags = cpu_to_le32(FUNC_DRV_IF_CHANGE_REQ_FLAGS_UP);
-> +
-> +	return bnge_hwrm_req_send(bd, req);
-
-[Severity: Medium]
-Is a retry mechanism needed here for transient firmware errors?
-
-This function directly returns the result of the HWRM send instead of executing
-a retry loop. If the firmware returns a transient error (like -EAGAIN), the
-network interface might spuriously fail to open.
-
-In teardown paths, could a single un-retried failure result in asymmetric
-driver and firmware lifecycle states, where the driver tears down but the
-firmware remains 'UP'?
-
-> +}
-> +
-[ ... ]
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
-> index d177919c2e117..a1a939496ebd3 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
-> @@ -275,6 +275,8 @@ enum bnge_net_flag {
->  	BNGE_FLAG_PORT_STATS_EXT	= BIT(1),
->  };
->  
-> +#define BNGE_FW_IF_RETRY	10
-
-[Severity: Medium]
-Should BNGE_FW_IF_RETRY be used in bnge_hwrm_if_change()?
-
-This retry limit constant is defined here but doesn't appear to be used
-anywhere in the implementation.
-
-> +
->  enum bnge_sp_event {
->  	BNGE_LINK_CHNG_SP_EVENT,
->  	BNGE_LINK_SPEED_CHNG_SP_EVENT,
-
-[Severity: High]
-This isn't a bug introduced by this patch, but I noticed a potential data race
-during multicast list traversal in bnge_init_chip().
-
-In drivers/net/ethernet/broadcom/bnge/bnge_netdev.c, bnge_init_chip() calls
-bnge_mc_list_updated() and passes the live multicast list without acquiring
-netif_addr_lock_bh():
-
-bnge_init_chip()
-    ...
-    bnge_mc_list_updated(bn, &mask, &bn->netdev->mc);
-
-Inside bnge_mc_list_updated(), the list is traversed:
-
-    netdev_hw_addr_list_for_each(ha, mc) {
-    ...
-
-If dev->mc is concurrently modified (for example, via dev_mc_add() from a
-softirq context handling IPv6 MLD/ND), could the list pointers be corrupted
-during traversal? Should netif_addr_lock_bh() be held here?
