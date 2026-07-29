@@ -1,242 +1,176 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C665B4052CC
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 22:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785365619; cv=fail; b=VRfXk/lcByX9nhmoxqswAJJk2fdWxnIaf7BTYmJCpLMQYKROb0XK6lCJRgXN7Ct30uG8T32c6FTh8Pm9R44ytXSdFuJXS9V+8zK1ht6b/MHGtc/mJxe0Hc8d5+q5WdQ+tNrsc7J7Fb948tD8B9uRVgsnCb4wiGN/scvkH9Hq3No=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785365619; c=relaxed/simple;
-	bh=BY14EAPLg9ufBoOC0yBQtPtdm/PNTnfIao4MoPESTJk=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=CJTY4vY0fK2Sg2voTaOWuqUbmdP+NKMJWAumSmCGfGmRiNsOvV1/LgAu7P6i1iE6iscOdgdgdVxpXbTfHCqReh9fXSJbWbHk2J/Yn+07k9msJsCng2VyS/VHAiCnFb5yPcRUOa7NWmNOPxn8K0lDWrP4gz5Bsd23mkgJjNsZDAs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZVAb69vs; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B79365A00
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 23:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785366092; cv=none; b=XdLj+VhdJ7fXlrw5C3GeoiyE5wiUdY7dRMB5iqLLxCKyvnf53zuv/m4Ceq35PdwWdENjPFpamwjHREojDPEsqBEFJMWhrwCWJGk+DRNAueocC8hXfm66OaR+GnmGc9bJYI04/31eQ58tqwsh94GEjBB9+SJNnSylHiYsuiSSQ4E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785366092; c=relaxed/simple;
+	bh=YRKwdqURGq6N6OM3wleKkfQLkDaDF1utDoSg9j5TPyI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YnV4T1Cqco672Rq1umXyNPpJNAKeXSstIdO1xuLDXqDAdG3KZcXv4XJDVunnH1FnvpFT9YHDdhFNudledx8cNxL/UDgmnkDqYx5qG6il06lxInzPWYxn3wb/413R77696mQQjlQlPSuYr270GtNpx29+hAjnfQQIK4rt9hCWHag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=Y/qOaorO; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZVAb69vs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785365618; x=1816901618;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=BY14EAPLg9ufBoOC0yBQtPtdm/PNTnfIao4MoPESTJk=;
-  b=ZVAb69vsYOhx8daAbLROmcOiX98sOk+tqHfmw7EdSb4MdggwKdklU4Fz
-   D6kHCoxulwYM32pRQcMCu6nc/6nlzNC4qUDg3JeyqhP+fJjLfV8k0PhTB
-   IqkEwwtLbOxvvK+005xnQlqPv1jfBmzdfBdSPlceMFm7E1Low4CMtnOyu
-   pCrZjSvvJChqv5nkWBITyTF+jF/Ru+JDTr38dI+tOxy90uMDVhT9K6N6X
-   kHlbWGjZq6LYMpeHm358WMnvSWgrpnJDmr4GDwJFRF+5fZPKrj8ujS2hK
-   BK8EBPeQXQr4ojwGhLx79eWDkIExSXMHt9BWzNX9028J/dvo6FBv3pJ8J
-   w==;
-X-CSE-ConnectionGUID: RZ5NEsUBSxWKkp6DX3Iovg==
-X-CSE-MsgGUID: qqayg3M2RIysvJAbGhzP1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103520026"
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="103520026"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 15:53:37 -0700
-X-CSE-ConnectionGUID: fAdAXTSLSbOqY5iOWckzQw==
-X-CSE-MsgGUID: WS3ofc++T7G+ev+xnFEKkA==
-X-ExtLoop1: 1
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 15:53:37 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 29 Jul 2026 15:53:36 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 29 Jul 2026 15:53:36 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.13) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 29 Jul 2026 15:53:34 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kuncOlpNrjIaOex4fWLT9bCFdOMUXQzHC7chszawfnLKc29pkPktqe/rM2ahEK4hAM6LhAJoXX0fPqTJovAMqokEr0tz/jD54zyRFkERyDfEW/FcJgKBTnBOgGsjwX9+IYeYZ246qoF5TL7OofjtiinldOExeMWqfq/JxDM3kQdUhPO1i/Lnr+Wgm58L4I3QrmFLPAdBkUxOxPh27GuUBXvCJKH6REvGktp9Oe3VU4GAR9s4xkeX5rqiSRef5FIG/jIhI+tvypZYtV1uDBR0lzBlTpGLd1QacVgPU3TcINoxX0sP0MOXU/DJPGT9ZZ6TdTATiZACQaHwfqCLFONJXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nbAWylkhsNuabyoDNvVr5jBOwWCSpGGI+uvw2b2h4bc=;
- b=Z5W5pI6kk5g7LS5LXbn+iQgpQABPrYNtenu8oOC6cqtJeXUd3TDAeQxRVtKzYdj1CFIzV5ghSZYvKLfkzEF7ENUVatMCP2CBx47m6xjdYnraVNaHC/wjdZIIY/nbly/Bz8b+1Fml3uYACZYErtmuXkTrIBm7XY8tUSBLkrlCPwO6vWtr+dJ1jKOKYS1Sqy93gyTisVaptDdVo/HyRoXu4xSU6lVraY9zvGM3/PTi1FXib9JMlclq+kuhZZc+9/UfMHTIT09MjRwKkv/UuBLCsMPQQGcOSwAOXzKj98T9GqH0dQGdvLs4ikEzQL87kwMCUjjO4EBeiqkdoB1W9Dm8rw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by MW4PR11MB7056.namprd11.prod.outlook.com (2603:10b6:303:21a::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
- 2026 22:53:21 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0270.009; Wed, 29 Jul 2026
- 22:53:21 +0000
-Message-ID: <d8d1397e-db58-4027-b325-9333e01ef9c7@intel.com>
-Date: Wed, 29 Jul 2026 15:53:19 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] pds_core: keep the health thread stopped during
- reset
-To: "Nikhil P. Rao" <nikhil.rao@amd.com>, <netdev@vger.kernel.org>
-CC: <kuba@kernel.org>, <brett.creeley@amd.com>, <eric.joyner@amd.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<pabeni@redhat.com>
-References: <20260727164548.359562-1-nikhil.rao@amd.com>
-Content-Language: en-US
-From: Jacob Keller <jacob.e.keller@intel.com>
-In-Reply-To: <20260727164548.359562-1-nikhil.rao@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR03CA0043.namprd03.prod.outlook.com
- (2603:10b6:303:8e::18) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="Y/qOaorO"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-848479c9bd5so1312962b3a.3
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 16:01:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=asu.edu; s=google; t=1785366090; x=1785970890; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5yG2hwN2s0pmTB1HUCQ9ld3NCZfzYP4y96KfQfhBfhc=;
+        b=Y/qOaorOMs33xAyY4ijIud3D66wGFPR9eJWw0SFeVdm7iiL1PJefeDyO/OhUNNAtrz
+         bOxDI42gcFg4YZt6z3pkEYWBHirUG1F28RkG9RAzlq2G+YPM6KHi8JIjygNvlTwzRsRe
+         guZcw43RGjNlDx6cMLhmWOWrJRLoTsQtQ3/gQXCnCVPrFp6pzS/q5KSXzMX9M/XuQvQd
+         O63B7fm2gWAUCOveZ1WPR31vbM7LqIf5wtlYx2fOj8HzvVLiZL1ZDJYfSgXi34ss7szP
+         D11yVMLwAwjnRW7z9WMz/3HgZb8pk2vDvAncA+xftRgA/ebDViKAT8j232GYRELa+eCG
+         Ob4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785366090; x=1785970890;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5yG2hwN2s0pmTB1HUCQ9ld3NCZfzYP4y96KfQfhBfhc=;
+        b=O55b2mhlEueyzUM5S9mzGZDDJoO/w3tSCQn77V1LXbp9bxttt+ITH4R4WTaw57f/jd
+         mboDEXMVpZ+OVYVpr2cxXk25jEQcC+Unw2CorPSURxV5fSPrBoESq/FZR3eo0IdTTo5h
+         0YPnFEoz9XQdd5WHtBB/LxJ6IIOeKbhGsWCBfXLfeLedmLcai0v1fkxHEkDI2eRzaY2R
+         kfXSXsO0Kq+a8MotwaH2ygQhE4OgFcALf2VrkEnXflkCH1n0rvSZ8CZeeX5Gdvld1I5+
+         sK/zaTY9Np85AdQ+8hihOfqiUv7LNb4kbNNhY49L3yT4+rZUxKMc+odog16u9668nccH
+         J7cA==
+X-Forwarded-Encrypted: i=1; AHgh+RqU3tzwYYMlYNAqDBOMBh5sZ470jaIE5AP53PFbBDXzsGhxoJOEF/TutTLVLXIONk5ppaYcVa8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdKQpgxPYjC4j4awxnS+ZeKUbt5I5DG/+9cVjUn09J9fzvAQG2
+	umEmu7YxoFnlBaPZZHZ3FGmJ7MbJ5KV65XZSxPNIoJtkO0dFzO8EGaICF0vhyXA5XImo47v5h6N
+	c4Ro=
+X-Gm-Gg: AR+sD10riCUT8RqtUFocvVf81slWDxLKwQkeh/de9snjjTgxjxNwYXRovS2Yt0Nfr5N
+	V+yEy6DH3nmqnVPC36nDbty2ljZaRyXvawV3JvQVGpmmQVhd6EHqZighz/FRXMXbqAt7i4Lo8Uk
+	+0ItdwiJ0e1Hrpa3biSP/HjncZPFiASbdQLoKXltc9v4Htwcofx0PnR7jXXiKk9cJGDETUnEmAQ
+	JPVKCiXgiAS9ZuXmerYD4lJArwVVQxwMIxbS7vqpFguuqmXkmAjMDDIyK9jO2Eg9PDXWmaQ9cJE
+	WTFrsrdzSE9jugaoXgvoDeEtD3uIW0vqwtX1EkPw91hL0Yne7VMduogVuuidDpoUB8Sskv3DKNQ
+	dey7gecChqehmTIKDL97BuWY4hKq5avC54j/GaYhYgBVZjS3bjidIgydbJN/xmsvXZEmWiLX35E
+	ntMZlRF+JwVc8OYkquIA05lxJMqwK+w9WwB4ruXpwcQeobmNWa1MqFSMF8g+cnNVOwVvieP/6cO
+	fnp
+X-Received: by 2002:a05:6a21:2c15:b0:3c4:1c9f:d7d with SMTP id adf61e73a8af0-3c90085d309mr13877637.46.1785366089506;
+        Wed, 29 Jul 2026 16:01:29 -0700 (PDT)
+Received: from xiang.tailc0aff1.ts.net ([20.171.14.70])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31504d373c3sm13777272eec.23.2026.07.29.16.01.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 16:01:28 -0700 (PDT)
+From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+To: Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Hangbin Liu <liuhangbin@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	"Xiang Mei (Microsoft)" <xmei5@asu.edu>
+Subject: [RFC net-next v2 0/3] bonding: fix NS probe transmit over stacked VLANs
+Date: Wed, 29 Jul 2026 23:01:16 +0000
+Message-ID: <20260729230119.2717507-1-xmei5@asu.edu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|MW4PR11MB7056:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c26e2be-2f6e-462d-733f-08deedc4303e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|23010399003|11063799006|56012099006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: g2BXkNazy+21U+7B6nd59obZjwPy7a+uHIDb05YkaJ7r6OPL3Fm8heg8URMrdUKuHFP4OcdU5EH0WplEar3nOhdhDu7JrLUI0adhwfR5Z9B7ulAdlqsPykk2pu3DYrPa7n7djfmTCn3zbhioodKQaFBA72QzBJfj0uoU/abY1ULh/+Bnwgt7VBcsI4AcE5bZitqDgi11ZFpzrebXICogxSjmmwk9T/tOzvLJcaAIxJ6+yO7zg4tOcPQNmjeYkcPG2GnfCUrM1pAi5ZuuQ+002bvfrEcDnislgVWa+Hx0mhY4RLTJ1NRyKYq14Ulmu6nxtQUJPLgB614GVIi/Mu4Jj623fG7jKy12BW1xYXb9oLYVuC54+G9txlSxG/o5iqN4ldhES2ADcdwRodW7pJcSWoFtJH1v+Dlw5zqc8riyZgbpvJbhKMm3ZpyFFfaYSCH0apz4IBDZKJ2ihpaEJIM//q/e5QkATCgWwoqQQ8K8BuT+xRS/Cwm2J2Ch4rARBjRePtb7cnJXZZ82uLFq7rXRw8xjr47fE4+Ox4la6S6GEE8IAk1nMySTxxlTAv4FzH01yFwcDm7vQZgf2l9ZfiKi2bJIhG6VOuNQQVzzRnQj2tQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UEw0dW5Xc2FBRjJUQWNOM0htMEdyREIzMWE4UDd2UW1NVWJiUGFxVzAwL1p1?=
- =?utf-8?B?UW4zd1NvZGxDN3hKM2J4K3djbGpqOXlWdFlmdUFrRWxuYmJSSXhVUzNLbm5n?=
- =?utf-8?B?eitlNW54VG5JRkVZeGpKaTI1TGNsTlVqcXVLaU9NWis5L1ZVT1lRbWlwOWR1?=
- =?utf-8?B?YVNZQnBtZEFyS3doM3ZMZUtjL1h1MXg1b2duMmVGbHcwQlRWK2ZvOHJzcjVu?=
- =?utf-8?B?KzdPMStSbHVUUm9WM0dZMzE2SWxOa3lEeFdidE0zZkRJN2dxUzhIQWRBUXgw?=
- =?utf-8?B?YlVWK2ZwKzExZmlEamRqQ0sxZHdQQUVYMlRkZlBHTUJuU2RSMlRCOFhoRW0w?=
- =?utf-8?B?Q1N1SkxPM1d6WnpsT01mMENqdysrcnFmeWFOVnppeGMyRDBmaHZRMkppQlFq?=
- =?utf-8?B?cHFRbmVRanRvdGplbE9pM1A3b1g5M0FQNEhJK0VPWndwajlMYmQvaU00bGJQ?=
- =?utf-8?B?Y2FIMlAzdlFzc29aTTJ3WXRpS0dFMnFhdHRWdHF0WEZXdHNMWXY0UGhKNitt?=
- =?utf-8?B?N2pYV0VsbVl0Y3VvVlphTmVqT2lUdWprRFI5VXA0SFRPWG1JU1RCVnVqd2xq?=
- =?utf-8?B?eEpOWk1jTUNQd0FlbkF3ZVo3RVNWL2ZoeTd6dUtBSGpwVU1KY0V5TnhwRFdw?=
- =?utf-8?B?dkZhRjhZaU16alUvem1tQzhhTGhzNWswWWplNFZjeWV3OWNNMU1wcEdLN3Ux?=
- =?utf-8?B?Z21EN095cGgwZVB2ME5sWTRFTmkwSWRkOUxjV1h6UUFkZlBnSHNUZ1BKWjdp?=
- =?utf-8?B?Q3BJUUNtRlJOVGdkeGRaUDVTUDNGamJUMWJKVjVxNHlFTDgvWFlMckpBS25n?=
- =?utf-8?B?VS85UUpNZGRacWVhZnVDLzZsUXBJc3M4V3VzSXI2STA4czRSZ1ovRVZQYUZv?=
- =?utf-8?B?OVZhUk94RTN2TVl3UitNYU1GZUpneWl3V2Jua2plNFpvSlUxc2g3RE5sWWdB?=
- =?utf-8?B?U2ozNXZjVVNXWkMreUhCTUdpOHR3Z2RjbEZVdXVWd001eDREUTZiM3o1T1Na?=
- =?utf-8?B?NnFOd2l3Z29Fd0lteHhRV2Q0eGF6RERudHBjNG9vNDdQTi9GcEJxaGdaV0sr?=
- =?utf-8?B?bGJPeHBOeVpZT1lKT1Y0dTJUMnlUa3FGb1RDMitvMUJxNVpTdWtHUHFBQjEr?=
- =?utf-8?B?OXRtQ2pzV1ZidFJPamsxb054L1dRczFsM3B4QzVyMitSRjhkU09wVWlQQ2R5?=
- =?utf-8?B?ZUpnQ2xHRDJEMFpacXdaeEk5TVY4TVJCaHZkWXA1OS9QcGkxaEZLWTB0Zlh0?=
- =?utf-8?B?bVEvZVQyWitBaEpKNUR5RytlekY4OEZ4dngxWkVpbUlSbzNyd1lLejIvYWVT?=
- =?utf-8?B?N2NOWU5ibDJFZUVqYjhVR1QzTndBS0RlMHhFMG5ualRTWGV6RGUxUU9FakVn?=
- =?utf-8?B?NmVJVUQ4VDA2N25wZGlZSkdJdTRsaXdUK3NPcHN2WTJzYTJ6MU5LeVR0WlRn?=
- =?utf-8?B?R1Q4L1QrTHoxYWovQXNuOFJJWGxCbFk1Sk5nNUtpb3Y5QlN0UEhVUmVpckVI?=
- =?utf-8?B?THFDK1ZvdWJKTGdvTjFqRW9nL0pPRTYrVEV4cStrREdxUFBuNzA1UkVxOFBG?=
- =?utf-8?B?L1hFZ3o3MVNqU2daV3hPUE9BbEFidHRYTDVKSEduTnVlYmRKT0g4RUE5c1Nw?=
- =?utf-8?B?eXMyOFgrTGJ2VXdKT2xFclpZdUYwUDMwdTU3SmwwVUhSWUpibTBldUU3WFJk?=
- =?utf-8?B?RkZaeUhtTWpZYkg5N0JpWHB5anl5NktrRDMwbnNTdzhUZ0xWM3J4MUFhbTEv?=
- =?utf-8?B?VXdFUlBSOTcwNkROOWJrdGpWVExyTUNQc1Axcys2eUFVTDhIb3hRV1o0OHM5?=
- =?utf-8?B?aTFicXVVRWM4ZnNpOC9odmVzV2tOaHVKVHRYdnV5ck95Zm1JaGg3am5TMitl?=
- =?utf-8?B?OVZ0UmV2MEd0dDZYNjZuU2xEempvRkU5YW40eWlES01PeDNGaDRtQzVqQ0xj?=
- =?utf-8?B?ZkRKcUJMSjdrNXBKbHI1NzQrdysxRFF2Z1FaTTFOOXZwUUV0LzR4ZWtIbjJj?=
- =?utf-8?B?dTkyVm5WUENXZ1R5dFpaOXMxU1FzLzc2VjFnL093dTBQaWZrOFNjYUQvZ3Bt?=
- =?utf-8?B?SnJac2hBZjdZSG8xbFZsVk5BTDhPNnZjZG9KcmFmdm00cW9zK204Q0UvTFYz?=
- =?utf-8?B?eGlZUFhaTE53MjQ4VWFweHRLUmdwZkxSYnB1dzUyMndVRHRPSlZ3SUlNVmpV?=
- =?utf-8?B?YjQydDN2U05VUUpLdFhhNTl1OGJDMzBSNTQ3dXpBRFpJckttSExyZmdaSGRR?=
- =?utf-8?B?MlJubzk0eURxSi9ITEhZbzJrdk5SWWFyTVFNT3pCL2NlVVI0YlY0dG5haVhw?=
- =?utf-8?B?dWVuNWR0NDJnWG9aV0p4SnUxU24xSThNOEJKU0FoNjlSN2hFdTZmaU9NUGdR?=
- =?utf-8?Q?q1XWjx8dLZk8E+O8=3D?=
-X-Exchange-RoutingPolicyChecked: TMgm1vahhrD4IGIXX3pgoK9aHa16FdX8A8UDy7l2KuEMC9MkALrodcO0am73WLi2T3uxBR+XGjSLg2WC6+9/q7Sme/v+zjqHxZU3VSK8M0GZ8akr2PnrTFi/uMyJIQOQETYYNXTDi09VosXQGPMd5E5oZkDzObgfoXlEtgZFmxc3PCxpkO1Hd/bggPere/0RQTHPu2MnP14obNJ4AMVxsPVNgNNX1qnZAEcSV83xu0aeiCGx1m9bRQQGuKS3QHXnwnFL7N9H3NQorEH81u+yG0lQAYZWuUctd3ZDe5AlD2lsTZwLUcEeulcL6c8mrxkiaomtAL+5lLiCkSXwGcDApQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c26e2be-2f6e-462d-733f-08deedc4303e
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 22:53:21.3687
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: glYXWZ8oWoVGZSu3NBg+KKkn8YxlaMf4qP4cyN0yr/hbzDUOLuWGYHI8aa+YJxtn47y+Ux8B33OzsOiYlkO3LKW0PGE4tUJyVbxT+V2IXzg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB7056
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-On 7/27/2026 9:45 AM, Nikhil P. Rao wrote:
-> Commit d9407ff11809 ("pds_core: Prevent health thread from running
-> during reset/remove") stops the health thread with cancel_work_sync()
-> before a reset, but a devcmd timeout during pdsc_fw_down() re-queues
-> health_work, so pdsc_health_thread() runs again mid-reset and double
-> allocates the core DMA queues via pdsc_fw_up().
-> 
-> Only the reset path is affected: on remove PDSC_S_STOPPING_DRIVER gates
-> the health thread and the workqueue is destroyed.
-> 
-> Use disable_work_sync() to cancel health_work and block further
-> queue_work() on it, and enable_work() in pdsc_restart_health_thread() to
-> re-allow it after the reset.
-> 
-> disable_work_sync() keeps a disable depth, so every disable must be
-> matched by one enable. pdsc_reset_prepare() stops the health thread and
-> pdsc_reset_done() restarts it. On the AER path pdsc_pci_error_detected()
-> calls pdsc_reset_prepare(), then pdsc_pci_error_resume() re-inits via
-> pci_reset_function_locked() (pds_core has no .slot_reset handler), which
-> runs the pair again - stopping the thread twice but restarting it once.
-> Gate the disable and enable on a health_stopped flag so each fires at
-> most once per stopped/running transition.
-> 
-> Fixes: d9407ff11809 ("pds_core: Prevent health thread from running during reset/remove")
-> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260629200358.2626129-1-nikhil.rao%40amd.com?part=2
-> Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
-> ---
+The bonding NS monitor (ns_ip6_target) builds a Neighbour
+Solicitation with ndisc_ns_create() and tags it for the slave's VLAN path in
+bond_ns_send().  ndisc_ns_create() returns only the ICMPv6 message: the IPv6
+and link-layer headers are pushed later, by ndisc_send_skb().  bond_ns_send()
+however hands that bare skb to bond_handle_vlan() first, which is too early:
 
-This version looks good and has no complaints from Sashiko. Might be
-nice to include a changelog, from what I can tell v3 includes the
-health_stopped flag now to avoid issues with double-enable? Makes sense.
+  - bond_handle_vlan() inserts each inner tag with mac_len = ETH_HLEN, so it
+    writes 12 bytes into the ICMPv6 message (inside the target address) when no
+    Ethernet header is present yet.  Any config with two or more stacked VLAN
+    devices therefore emits a probe no peer can answer.
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+  - Each inner tag also eats VLAN_HLEN of the headroom that was reserved for
+    the IPv6 header.  With LL_RESERVED_SPACE(dev) + sizeof(struct ipv6hdr) = 56
+    bytes, six stacked VLAN devices leave 36 and the subsequent
+    ip6_nd_hdr() -> skb_push(sizeof(struct ipv6hdr)) underflows past skb->head:
 
->  drivers/net/ethernet/amd/pds_core/core.h |  1 +
->  drivers/net/ethernet/amd/pds_core/main.c | 10 ++++++++--
->  2 files changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
-> index b7fe9ad73349..a1d41329209f 100644
-> --- a/drivers/net/ethernet/amd/pds_core/core.h
-> +++ b/drivers/net/ethernet/amd/pds_core/core.h
-> @@ -171,6 +171,7 @@ struct pdsc {
->  	struct timer_list wdtimer;
->  	unsigned int wdtimer_period;
->  	struct work_struct health_work;
-> +	bool health_stopped;
->  	struct devlink_health_reporter *fw_reporter;
->  	u32 fw_recoveries;
->  
-> diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
-> index 8d94a4d70395..71a1d4b001c2 100644
-> --- a/drivers/net/ethernet/amd/pds_core/main.c
-> +++ b/drivers/net/ethernet/amd/pds_core/main.c
-> @@ -470,8 +470,10 @@ static void pdsc_stop_health_thread(struct pdsc *pdsc)
->  		return;
->  
->  	timer_shutdown_sync(&pdsc->wdtimer);
-> -	if (pdsc->health_work.func)
-> -		cancel_work_sync(&pdsc->health_work);
-> +	if (pdsc->health_work.func && !pdsc->health_stopped) {
-> +		disable_work_sync(&pdsc->health_work);
-> +		pdsc->health_stopped = true;
-> +	}
->  }
->  
->  static void pdsc_restart_health_thread(struct pdsc *pdsc)
-> @@ -479,6 +481,10 @@ static void pdsc_restart_health_thread(struct pdsc *pdsc)
->  	if (pdsc->pdev->is_virtfn)
->  		return;
->  
-> +	if (pdsc->health_stopped) {
-> +		enable_work(&pdsc->health_work);
-> +		pdsc->health_stopped = false;
-> +	}
->  	timer_setup(&pdsc->wdtimer, pdsc_wdtimer_cb, 0);
->  	mod_timer(&pdsc->wdtimer, jiffies + 1);
->  }
+    skbuff: skb_under_panic: text:ffffffff85eef44b len:84 put:40
+      head:ffff88801400b740 data:ffff88801400b73c
+      tail:0x50 end:0x180 dev:veth0
+    kernel BUG at net/core/skbuff.c:214!
+    Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+    Workqueue: bond0 bond_arp_monitor
+    RIP: 0010:skb_panic+0x142/0x230
+    Call Trace:
+     skb_push (net/core/skbuff.c:224)
+     ndisc_send_skb (net/ipv6/ndisc.c:454 net/ipv6/ndisc.c:506)
+     bond_ns_send (drivers/net/bonding/bond_main.c:3255)
+     bond_ns_send_all (drivers/net/bonding/bond_main.c:3313)
+     bond_arp_monitor (drivers/net/bonding/bond_main.c:3458)
+     process_one_work (kernel/workqueue.c:3322)
+     worker_thread (kernel/workqueue.c:3405)
+     kthread (kernel/kthread.c:436)
+    Kernel panic - not syncing: Fatal exception
+
+The minimal fix for just the panic is a skb_cow_head() before ndisc_send_skb();
+it stops the crash but leaves the packet malformed for two or more stacked
+VLANs, because the tags are still inserted into a header-less skb.  This series
+instead fixes the root cause: it builds the probe in the same order the rest of
+the stack uses, which removes the corruption and the headroom underflow at once.
+
+Approach
+========
+  1/3  Export the ndisc route attach as ndisc_attach_dst().  ndisc_send_skb()
+       both attaches a route and transmits; a caller that has to build the
+       link-layer header itself needs only the attach, because
+       ip6_route_me_harder() in the LOCAL_OUT path dereferences skb_dst()
+       unconditionally and icmp6_dst_alloc()/icmpv6_flow_init() are not
+       exported.  No behavioural change for existing callers.
+
+  2/3  Rework bond_ns_send() to build headers in stack order:
+         - bond_ns_build_ip6hdr() pushes the IPv6 header and computes the checksum;
+         - the probe then traverses NF_INET_LOCAL_OUT as a bare L3 packet, so
+           netfilter sees skb->data at the IPv6 header rather than at a
+           half-built Ethernet frame;
+         - only once the hooks accept it does bond_ns_add_llhdr() push the
+           link-layer header and bond_handle_vlan() add the VLAN tags, after
+           which the probe is transmitted on the slave being tested.
+       With the headers pushed first, skb_vlan_push() grows the headroom
+       itself, so no skb_cow_head() is needed.
+
+  3/3  Convert bond_handle_vlan() to skb_vlan_push(), which inserts the tags at
+       the correct offset once the Ethernet header exists, and share the path
+       with the ARP probe.
+
+Why RFC
+=======
+I understand the security issues, but I am not familiar with the related
+development concerns.  I have tried my best to learn and follow similar
+implementations, but still not sure if it's complete/missing any problems.
+
+Testing
+=======
+Reproduced the skb_under_panic and the malformed probe on a bond over 6 stacked
+VLAN devices, and verified correct NS probes (accepted by the peer, correct
+checksum and tag stack) with 0, 1, 2, 5 and 6 stacked VLAN devices after the
+series.
+
+Xiang Mei (Microsoft) (3):
+  ipv6: ndisc: export the route attach as ndisc_attach_dst()
+  bonding: build NS probe headers before inserting VLAN tags
+  bonding: use skb_vlan_push() for probe tags
+
+ drivers/net/bonding/bond_main.c | 144 ++++++++++++++++++++++++++------
+ include/net/ndisc.h             |   3 +
+ net/ipv6/ndisc.c                |  53 ++++++++----
+ 3 files changed, 160 insertions(+), 40 deletions(-)
+
+-- 
+2.43.0
 
