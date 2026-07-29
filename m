@@ -1,273 +1,143 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f8.google.com (mail-wm2-f8.google.com [74.125.225.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D4D3AAF7D
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 16:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91999411A0D
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 16:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785340904; cv=none; b=sQEtjDsiLYyKeK9yiGYZqnePQ2vS+VIN2g1jn88Wyfw4gMg0kDDq4R6m07rbNQbx3Bpji7ZcFtPY7Wdzt++wdMOxCICIr/WqeLTmJUmrP30AhLuXUVVjE36oeiqWhq2FQeeJ6yGF3YID8cENG/FrRAPVJPSRbhxo8jWdKJmmHQk=
+	t=1785340909; cv=none; b=fsnIwFv/Dop/uymoyqN7Tv8QQ/75xNhhzCNVshcL2Ao2p1EruCYZ5sAnU9jHJuNAQJ04LMa29iTdmwNkzPVD53v3j6XZFRQ30NacHr/2rp+ANqkjvoTSXlDm3pJ28lYfl1o/HGReAo7e9fGNugtsiSI/F50z5gIFbu1XIzhvSv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785340904; c=relaxed/simple;
-	bh=LLqegErpiwnNJz+6QEiPVr0B0jHHttmhiT2gIzb7tbI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAHxpSIGja6+Jr7mOwaOXfK4CNvnCYG0klGfNWY4QsBGV5NQzLLQtzQcbXfU77TE6772apDG3476Y1zm7MVP9IVimEc9zd2YfbhAoEAq1vQCmxII3g6QW2TgbGUz3xzWQ0DYCAzN3365sgSMinHKyxruJg4TzCFmKXlS8SWNuxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N7+ZrFYB; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N7+ZrFYB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785340902;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n0U90slAaEmIBgfeuUR2Wm/d5X06U5sN8cTBSeFBj2M=;
-	b=N7+ZrFYBrxQUjh1AEetXMO7Pl6BriK5ibQGKT06a2Dzn1hybzyR58JJpzrCp1/qcIce2Wd
-	E/uXrNYUSd+uhgkaUdrpsXmvRq2DJqGJvfntx2+Iz697Al8Z35vIctvgrkRNmhiHcmtH+F
-	ufqwqFnFPKxlxyyE7QRqoMCAyzCJ3tA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-wXrLD-_0OI2UG-nf-lyFbQ-1; Wed,
- 29 Jul 2026 12:01:38 -0400
-X-MC-Unique: wXrLD-_0OI2UG-nf-lyFbQ-1
-X-Mimecast-MFC-AGG-ID: wXrLD-_0OI2UG-nf-lyFbQ_1785340896
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 37C0E18002A8;
-	Wed, 29 Jul 2026 16:01:36 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.33.159])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E42D9180034E;
-	Wed, 29 Jul 2026 16:01:32 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@kernel.org
-Subject: [PATCH net v5 04/10] rxrpc: Fix generation of notifications after call completion
-Date: Wed, 29 Jul 2026 17:01:01 +0100
-Message-ID: <20260729160108.2031453-5-dhowells@redhat.com>
-In-Reply-To: <20260729160108.2031453-1-dhowells@redhat.com>
-References: <20260729160108.2031453-1-dhowells@redhat.com>
+	s=arc-20240116; t=1785340909; c=relaxed/simple;
+	bh=RwAX5pgChJMqfXEa33Kd2aBkaBUj6UYE8AgaDNe40rs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q2AIbx39qjjRzA01TeKfKKxMINkYtykpX2NdVdAnnYL1tbDnZa7CfN0Yjb2fmVlwvRqMP6Z8NTOi78LhHnNfLS+7Kmkk8u9m7YfWd+CUkgzK44ibO8j3JthxT/YJ/WMaNbZEP2SJDZ+getG3vDykLQAwLpuUK9zaEL6nJub5y+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm2-f8.google.com with SMTP id 5b1f17b1804b1-4956bc73c0eso4367825e9.1
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:01:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785340906; x=1785945706;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=B4Wt+vjl343skXe3sXNKhwsDuZGTpbrXV2WgtrONqIc=;
+        b=j60B/iygFug/H/Oagh5kKWQaMsEvhUzdux+zNsd0ecpl8yQPRtpd7kmPNNF3DEPR3h
+         G0KMfsUXu5IMNx8CKwAjH4EPmCJPSCkQc/UXPfARh/UhHOskzwgXEDQiKNLkLd0hSxdS
+         x9ruGtI/oFI2rcA6NpjvSgDFoZdRRogoUPVVoHuXyLpakC+McNg8VPsYlVWNXi6rmVdP
+         otW1waiPflkzvElTdvVZJt+uLYJ5xphfmfKPY2RicPScDb4Rigq/wSC6z0592vwOf5yJ
+         mTekIoe1iy/Z54w40OC4mL5rTciWLohxQ/4nVko2x9iCcnSsliapv2wB5hggKz+ytYLe
+         OAow==
+X-Forwarded-Encrypted: i=1; AHgh+RoDnBKkqV3Jujk/hKJ4qVyHh1t8itQTR+k07GjY0BKOPqitb/mts1Pwa5RRSLEhmdC95A3SU6A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2abUEvRK+Yr/P4fU3wdk39KJ71riIQQaFMm6SYEi1SwGdf/GR
+	QSbLYr7xnihcfl5NvQwn5JdG1A7QLJjPdRW2F+nG880cR7LOKBPWC8kj
+X-Gm-Gg: AR+sD13S+GacWT+HPXByK5V27e4z+Z6DBCxxOit85x2C6pq+O/fm8CAA8GJqCQlkYd2
+	xZnFiJR2LU8gAVJayukX9SU7eWXxlx4wV5Q3rAtApULjqQK6ziSD0LrpVcMK7MzKQkTstWvYu++
+	a3WgKvfgF4kujRfXTpINLP8BOzqSztGqL0b9aYhjsfvyHWKgNVyVugXWQpRRCDyQhXT+uUX6rhz
+	P3vIoCNvT53bA0sqt+D3dqQxZtCxrDluq7PAngIRNE9aKSDixGClP+yFqu3KumLHDDuDfkG/FRE
+	dglcrW/wjkrAdORgoDeqnT8S7WYGcUGelSLROOesVvx9uvbyv7RlEQz5Z+1ge4lbL2DZ0DMsVAm
+	Ht2hbmFAcQ7zK5O/Ngwx8AzdpeyZqS/tNVbMyawn/DVVo7UCXgXiqP9s7zXgUJlnKBmq3bEdIkZ
+	7yyQxSLJC+rMu90MRBf4oA9cI0UH9rijZzgDNTO0It40HAC/DNEv4OAlU3HzC/icgNUazboXX1m
+	YxT33TvSIegqZZ9fOWwMCUv87c=
+X-Received: by 2002:a05:600c:4fd2:b0:493:e79e:da6b with SMTP id 5b1f17b1804b1-496c6590660mr93994975e9.21.1785340905518;
+        Wed, 29 Jul 2026 09:01:45 -0700 (PDT)
+Received: from [192.168.88.241] (78-80-108-129.customers.tmcz.cz. [78.80.108.129])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fb6abd0a6sm7503911f8f.10.2026.07.29.09.01.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Jul 2026 09:01:44 -0700 (PDT)
+Message-ID: <9e03f8a1-a880-48a1-b392-a6d72c2abe8e@ovn.org>
+Date: Wed, 29 Jul 2026 18:01:43 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 0/2] selftests: openvswitch: SCTP flow key
+ parsing
+To: Minxi Hou <houminxi@gmail.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, aconole@redhat.com, echaudro@redhat.com,
+ i.maximets@ovn.org, dev@openvswitch.org, linux-kselftest@vger.kernel.org,
+ shuah@kernel.org, horms@kernel.org, linux-kernel@vger.kernel.org
+References: <20260729064549.3647518-1-houminxi@gmail.com>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ xsFNBF77bOMBEADVZQ4iajIECGfH3hpQMQjhIQlyKX4hIB3OccKl5XvB/JqVPJWuZQRuqNQG
+ /B70MP6km95KnWLZ4H1/5YOJK2l7VN7nO+tyF+I+srcKq8Ai6S3vyiP9zPCrZkYvhqChNOCF
+ pNqdWBEmTvLZeVPmfdrjmzCLXVLi5De9HpIZQFg/Ztgj1AZENNQjYjtDdObMHuJQNJ6ubPIW
+ cvOOn4WBr8NsP4a2OuHSTdVyAJwcDhu+WrS/Bj3KlQXIdPv3Zm5x9u/56NmCn1tSkLrEgi0i
+ /nJNeH5QhPdYGtNzPixKgPmCKz54/LDxU61AmBvyRve+U80ukS+5vWk8zvnCGvL0ms7kx5sA
+ tETpbKEV3d7CB3sQEym8B8gl0Ux9KzGp5lbhxxO995KWzZWWokVUcevGBKsAx4a/C0wTVOpP
+ FbQsq6xEpTKBZwlCpxyJi3/PbZQJ95T8Uw6tlJkPmNx8CasiqNy2872gD1nN/WOP8m+cIQNu
+ o6NOiz6VzNcowhEihE8Nkw9V+zfCxC8SzSBuYCiVX6FpgKzY/Tx+v2uO4f/8FoZj2trzXdLk
+ BaIiyqnE0mtmTQE8jRa29qdh+s5DNArYAchJdeKuLQYnxy+9U1SMMzJoNUX5uRy6/3KrMoC/
+ 7zhn44x77gSoe7XVM6mr/mK+ViVB7v9JfqlZuiHDkJnS3yxKPwARAQABzSJJbHlhIE1heGlt
+ ZXRzIDxpLm1heGltZXRzQG92bi5vcmc+wsGUBBMBCAA+AhsDBQsJCAcCBhUKCQgLAgQWAgMB
+ Ah4BAheAFiEEh+ma1RKWrHCY821auffsd8gpv5YFAmfB9JAFCQyI7q0ACgkQuffsd8gpv5YQ
+ og/8DXt1UOznvjdXRHVydbU6Ws+1iUrxlwnFH4WckoFgH4jAabt25yTa1Z4YX8Vz0mbRhTPX
+ M/j1uORyObLem3of4YCd4ymh7nSu++KdKnNsZVHxMcoiic9ILPIaWYa8kTvyIDT2AEVfn9M+
+ vskM0yDbKa6TAHgr/0jCxbS+mvN0ZzDuR/LHTgy3e58097SWJohj0h3Dpu+XfuNiZCLCZ1/G
+ AbBCPMw+r7baH/0evkX33RCBZwvh6tKu+rCatVGk72qRYNLCwF0YcGuNBsJiN9Aa/7ipkrA7
+ Xp7YvY3Y1OrKnQfdjp3mSXmknqPtwqnWzXvdfkWkZKShu0xSk+AjdFWCV3NOzQaH3CJ67NXm
+ aPjJCIykoTOoQ7eEP6+m3WcgpRVkn9bGK9ng03MLSymTPmdINhC5pjOqBP7hLqYi89GN0MIT
+ Ly2zD4m/8T8wPV9yo7GRk4kkwD0yN05PV2IzJECdOXSSStsf5JWObTwzhKyXJxQE+Kb67Wwa
+ LYJgltFjpByF5GEO4Xe7iYTjwEoSSOfaR0kokUVM9pxIkZlzG1mwiytPadBt+VcmPQWcO5pi
+ WxUI7biRYt4aLriuKeRpk94ai9+52KAk7Lz3KUWoyRwdZINqkI/aDZL6meWmcrOJWCUMW73e
+ 4cMqK5XFnGqolhK4RQu+8IHkSXtmWui7LUeEvO/OwU0EXvts4wEQANCXyDOic0j2QKeyj/ga
+ OD1oKl44JQfOgcyLVDZGYyEnyl6b/tV1mNb57y/YQYr33fwMS1hMj9eqY6tlMTNz+ciGZZWV
+ YkPNHA+aFuPTzCLrapLiz829M5LctB2448bsgxFq0TPrr5KYx6AkuWzOVq/X5wYEM6djbWLc
+ VWgJ3o0QBOI4/uB89xTf7mgcIcbwEf6yb/86Cs+jaHcUtJcLsVuzW5RVMVf9F+Sf/b98Lzrr
+ 2/mIB7clOXZJSgtV79Alxym4H0cEZabwiXnigjjsLsp4ojhGgakgCwftLkhAnQT3oBLH/6ix
+ 87ahawG3qlyIB8ZZKHsvTxbWte6c6xE5dmmLIDN44SajAdmjt1i7SbAwFIFjuFJGpsnfdQv1
+ OiIVzJ44kdRJG8kQWPPua/k+AtwJt/gjCxv5p8sKVXTNtIP/sd3EMs2xwbF8McebLE9JCDQ1
+ RXVHceAmPWVCq3WrFuX9dSlgf3RWTqNiWZC0a8Hn6fNDp26TzLbdo9mnxbU4I/3BbcAJZI9p
+ 9ELaE9rw3LU8esKqRIfaZqPtrdm1C+e5gZa2gkmEzG+WEsS0MKtJyOFnuglGl1ZBxR1uFvbU
+ VXhewCNoviXxkkPk/DanIgYB1nUtkPC+BHkJJYCyf9Kfl33s/bai34aaxkGXqpKv+CInARg3
+ fCikcHzYYWKaXS6HABEBAAHCwXwEGAEIACYCGwwWIQSH6ZrVEpascJjzbVq59+x3yCm/lgUC
+ Z8H0qQUJDIjuxgAKCRC59+x3yCm/loAdD/wJCOhPp9711J18B9c4f+eNAk5vrC9Cj3RyOusH
+ Hebb9HtSFm155Zz3xiizw70MSyOVikjbTocFAJo5VhkyuN0QJIP678SWzriwym+EG0B5P97h
+ FSLBlRsTi4KD8f1Ll3OT03lD3o/5Qt37zFgD4mCD6OxAShPxhI3gkVHBuA0GxF01MadJEjMu
+ jWgZoj75rCLG9sC6L4r28GEGqUFlTKjseYehLw0s3iR53LxS7HfJVHcFBX3rUcKFJBhuO6Ha
+ /GggRvTbn3PXxR5UIgiBMjUlqxzYH4fe7pYR7z1m4nQcaFWW+JhY/BYHJyMGLfnqTn1FsIwP
+ dbhEjYbFnJE9Vzvf+RJcRQVyLDn/TfWbETf0bLGHeF2GUPvNXYEu7oKddvnUvJK5U/BuwQXy
+ TRFbae4Ie96QMcPBL9ZLX8M2K4XUydZBeHw+9lP1J6NJrQiX7MzexpkKNy4ukDzPrRE/ruui
+ yWOKeCw9bCZX4a/uFw77TZMEq3upjeq21oi6NMTwvvWWMYuEKNi0340yZRrBdcDhbXkl9x/o
+ skB2IbnvSB8iikbPng1ihCTXpA2yxioUQ96Akb+WEGopPWzlxTTK+T03G2ljOtspjZXKuywV
+ Wu/eHyqHMyTu8UVcMRR44ki8wam0LMs+fH4dRxw5ck69AkV+JsYQVfI7tdOu7+r465LUfg==
+In-Reply-To: <20260729064549.3647518-1-houminxi@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-AF_RXRPC may generate a notification to the application after a call has
-completed because it generates one notification when
-rxrpc_input_split_jumbo() queues the final packet and completes the call
-and then generates another when rxrpc_input_split_jumbo() does the
-aggregated data receive notification at the end of the function.
+On 7/29/26 8:45 AM, Minxi Hou wrote:
+> Add OVS_KEY_ATTR_SCTP to the ovskey parse table in ovs-dpctl.py so
+> that SCTP flow strings carry the L4 key through to the kernel, and
+> add a matching selftest in openvswitch.sh.
+> 
+> The missing parse-table entry caused a selftest NIPA failure: the
+> flow string "sctp(dst=4443)" parsed without error but silently
+> dropped the L4 key, producing a flow with only ipv4(proto=132).
+> The kernel's match_validate() then rejected it with -EINVAL because
+> OVS_KEY_ATTR_SCTP was missing for IPPROTO_SCTP.
+> 
+> Changes from v6:
+>   - Trim unit tests to cover only the new SCTP key parser
+>     (removed tests for TCP/UDP/ICMP/IPv4/EthType which were out of
+>     scope for this patch); address Aaron's feedback that testing
+>     existing parsers was excessive for a selftest tool.
 
-This might cause the AFS filesystem to malfunction because it tries to
-queue the afs_call for processing an extra time.  Most of the time this
-happens quickly enough that the second queue_work skips, but sometimes this
-means that the call work may happen a second time with implications for
-afs_call lifetime management.
+I think, what Aaron meant is that we don't need tests for the test code
+in general, not only for existing parsers.  And I agree that it feels
+a little excessive.  I'd suggest dropping the unit tests and merge patches
+back into one.
 
-Fix this by:
+Also, you need to update the tools/testing/selftests/net/openvswitch/config
+to include SCTP, as it is not enabled at the moment.
 
- (1) Create a lighter version of rxrpc_notify_socket() that's just used to
-     requeue a call for rxrpc_recvmsg() without creating another
-     notification.
+Aaron will do a more technical review of the test, so please wait for his
+reply before sending v8.
 
- (2) Move rxrpc_notify_socket() to call_state.c and rename it to
-     __rxrpc_notify_socket().
-
- (3) Create a wrapper called rxrpc_notify_socket() that skips the
-     notification if a call is completed.
-
- (4) Make rxrpc_set_call_completion() call __rxrpc_notify_socket() to avoid
-     the skip-if-completed check.
-
-Fixes: 2d1faf7a0ca3 ("rxrpc: Simplify skbuff accounting in receive path")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
----
- include/trace/events/rxrpc.h |  1 +
- net/rxrpc/call_state.c       | 57 +++++++++++++++++++++++++++++++++++-
- net/rxrpc/recvmsg.c          | 42 +++++++++-----------------
- 3 files changed, 71 insertions(+), 29 deletions(-)
-
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 8f3e3967885a..d7c7b04d69fc 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -343,6 +343,7 @@
- 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
- 	EM(rxrpc_call_see_input,		"SEE input   ") \
- 	EM(rxrpc_call_see_notify_released,	"SEE nfy-rlsd") \
-+	EM(rxrpc_call_see_notify_skipped,	"SEE nfy-skip") \
- 	EM(rxrpc_call_see_recvmsg,		"SEE recvmsg ") \
- 	EM(rxrpc_call_see_recvmsg_requeue,	"SEE recv-rqu") \
- 	EM(rxrpc_call_see_recvmsg_requeue_first, "SEE recv-rqF") \
-diff --git a/net/rxrpc/call_state.c b/net/rxrpc/call_state.c
-index 6afb54373ebb..6e402312e145 100644
---- a/net/rxrpc/call_state.c
-+++ b/net/rxrpc/call_state.c
-@@ -7,6 +7,61 @@
- 
- #include "ar-internal.h"
- 
-+/*
-+ * Post a call for attention by the socket or kernel service.  Further
-+ * notifications are suppressed by putting recvmsg_link on a dummy queue.
-+ */
-+static void __rxrpc_notify_socket(struct rxrpc_call *call)
-+{
-+	struct rxrpc_sock *rx;
-+	struct sock *sk;
-+
-+	if (test_bit(RXRPC_CALL_RELEASED, &call->flags)) {
-+		rxrpc_see_call(call, rxrpc_call_see_notify_released);
-+		return;
-+	}
-+
-+	rcu_read_lock();
-+
-+	rx = rcu_dereference(call->socket);
-+	sk = &rx->sk;
-+	if (rx && sk->sk_state < RXRPC_CLOSE) {
-+		if (call->notify_rx) {
-+			spin_lock_irq(&call->notify_lock);
-+			call->notify_rx(sk, call, call->user_call_ID);
-+			spin_unlock_irq(&call->notify_lock);
-+		} else {
-+			spin_lock_irq(&rx->recvmsg_lock);
-+			if (list_empty(&call->recvmsg_link)) {
-+				rxrpc_get_call(call, rxrpc_call_get_notify_socket);
-+				list_add_tail(&call->recvmsg_link, &rx->recvmsg_q);
-+			}
-+			spin_unlock_irq(&rx->recvmsg_lock);
-+
-+			if (!sock_flag(sk, SOCK_DEAD)) {
-+				_debug("call %ps", sk->sk_data_ready);
-+				sk->sk_data_ready(sk);
-+			}
-+		}
-+	}
-+
-+	rcu_read_unlock();
-+}
-+
-+/*
-+ * Post a call for attention by the socket or kernel service.  Further
-+ * notifications are suppressed by putting recvmsg_link on a dummy queue.
-+ */
-+void rxrpc_notify_socket(struct rxrpc_call *call)
-+{
-+	if (rxrpc_call_is_complete(call)) {
-+		rxrpc_see_call(call, rxrpc_call_see_notify_skipped);
-+		return;
-+	}
-+
-+	__rxrpc_notify_socket(call);
-+}
-+
- /*
-  * Transition a call to the complete state.
-  */
-@@ -25,7 +80,7 @@ bool rxrpc_set_call_completion(struct rxrpc_call *call,
- 	rxrpc_set_call_state(call, RXRPC_CALL_COMPLETE);
- 	trace_rxrpc_call_complete(call);
- 	wake_up(&call->waitq);
--	rxrpc_notify_socket(call);
-+	__rxrpc_notify_socket(call);
- 	return true;
- }
- 
-diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
-index efcba4b2e74f..28b2148b5693 100644
---- a/net/rxrpc/recvmsg.c
-+++ b/net/rxrpc/recvmsg.c
-@@ -17,13 +17,12 @@
- #include "ar-internal.h"
- 
- /*
-- * Post a call for attention by the socket or kernel service.  Further
-- * notifications are suppressed by putting recvmsg_link on a dummy queue.
-+ * Requeue a call for recvmsg() to pick up.
-  */
--void rxrpc_notify_socket(struct rxrpc_call *call)
-+static void rxrpc_requeue_call(struct socket *sock, struct rxrpc_call *call)
- {
--	struct rxrpc_sock *rx;
--	struct sock *sk;
-+	struct rxrpc_sock *rx = rxrpc_sk(sock->sk);
-+	struct sock *sk = &rx->sk;
- 
- 	_enter("%d", call->debug_id);
- 
-@@ -32,31 +31,18 @@ void rxrpc_notify_socket(struct rxrpc_call *call)
- 		return;
- 	}
- 
--	rcu_read_lock();
--
--	rx = rcu_dereference(call->socket);
--	sk = &rx->sk;
--	if (rx && sk->sk_state < RXRPC_CLOSE) {
--		if (call->notify_rx) {
--			spin_lock_irq(&call->notify_lock);
--			call->notify_rx(sk, call, call->user_call_ID);
--			spin_unlock_irq(&call->notify_lock);
--		} else {
--			spin_lock_irq(&rx->recvmsg_lock);
--			if (list_empty(&call->recvmsg_link)) {
--				rxrpc_get_call(call, rxrpc_call_get_notify_socket);
--				list_add_tail(&call->recvmsg_link, &rx->recvmsg_q);
--			}
--			spin_unlock_irq(&rx->recvmsg_lock);
-+	spin_lock_irq(&rx->recvmsg_lock);
-+	if (list_empty(&call->recvmsg_link)) {
-+		rxrpc_get_call(call, rxrpc_call_get_notify_socket);
-+		list_add_tail(&call->recvmsg_link, &rx->recvmsg_q);
-+	}
-+	spin_unlock_irq(&rx->recvmsg_lock);
- 
--			if (!sock_flag(sk, SOCK_DEAD)) {
--				_debug("call %ps", sk->sk_data_ready);
--				sk->sk_data_ready(sk);
--			}
--		}
-+	if (!sock_flag(sk, SOCK_DEAD)) {
-+		_debug("call %ps", sk->sk_data_ready);
-+		sk->sk_data_ready(sk);
- 	}
- 
--	rcu_read_unlock();
- 	_leave("");
- }
- 
-@@ -561,7 +547,7 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 
- 	if (!(flags & MSG_PEEK) &&
- 	    !skb_queue_empty(&call->recvmsg_queue))
--		rxrpc_notify_socket(call);
-+		rxrpc_requeue_call(sock, call);
- 	goto not_yet_complete;
- 
- call_failed:
-
+Best regards, Ilya Maximets.
