@@ -1,62 +1,60 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF46432BE9
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633ED42FCC4
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785310987; cv=none; b=sYJ7xzACbfuG7CPg0ZOQRXUjx06cWdbShYdp8P49uCftL7ukHJGiQFjWhAezkmSzcfLLKclKkXhnTwF9oZiVFaHm35Hf6/9vagShMPRKRvpKMSFEazJ5pjkiuZz7axlorbpklAIjo5ZrtJ64JSItS4Pv+GJnn6fcL5VsI26zrOA=
+	t=1785310987; cv=none; b=uKszExJ6FtYqX0KbhH7oloLy1/Cn+tmwAlWchXjHjngwr8y0x+o/uJDk2oNIbo8+bl5Z7B//Fvc+6eAHBTAGepcbbv1mJEmkuWyRhhtwhL+r7qhyNOO0BXiJAjYciYWHy0K3hqsm/IboL805qXdlsewiivbWW/uCcrHIFRGloqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785310987; c=relaxed/simple;
-	bh=3yrpu63e5AExL+jcix3y7Gj6Ok2VDhHJQAiDsgszpdk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lfceaofzKLusl61zhlUcCYRfiHOJoT7pUyM/jAasnCm3aHN4hOiv7KYi0lhARaDR+qOQXslGYNYjNZztU0dz/qC4HJ/qyoiTtGQRDN10erC49biU/BYIxfipclBo3lx9Dc7L8z/rcJ4V46WKIXezbGDJZroqP5ikeRDGvtGSrfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OHNgNFGO; arc=none smtp.client-ip=209.85.214.171
+	bh=oFO0czTX5z1fNML8qIjSbHhNqU16f3qJUBRTOIpJcXg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ar9ldaX1BhQ9CYn9YlP/kTVrhyohyAWkgZtdmQF0VBRu2PXCEUqQy6/vWMCaQqbx99dvy0N8TocQKgxi8JmdR2YqazDN25e8xB09vzw3AaKEatBn6MQQVi4/WAd7xy8NjnPaxYBqZAe2CfSEO6cBeWAmloKmygJDkPvvKhxTq2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dqvGxQKR; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OHNgNFGO"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ce98cb8165so6732775ad.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 00:42:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dqvGxQKR"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ceb096e675so9443715ad.0
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 00:42:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785310975; x=1785915775; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kNKMfFoLrxfVgkUmO/8mblNHEBodyP1KuT76nV4WYpo=;
-        b=OHNgNFGOsoHE5agn/gIk3TZkyG6zpCmsEh5jRdzo1iIc0A9mhWO7nhTzgT/ozPbMVG
-         PX/YWKePI/cJyZpKE0ta30+xTeJkslT80dz+vAMm3Urk6JbRn8fpCyeQw9RYaH9YXaB1
-         T+UcoVkSBm0DIw/Mu6L1ifbaD8Ah1r3iG8f264K+j3+Thdc1cFrfbhpkt/Sop8YppyJr
-         oL9VdCyef61Eg1B2nMmoKBtU6zS2HrwUs37JxMzgFLk3C5+mK/sWXsX6PmNiIUAmh7Gw
-         ifOCICAk7UBAB65NRpmmImpc8CJOHE13ohCaqc9LBQG0EC+3eYudp6/FR0NfgN/LKKOB
-         yJZw==
+        d=gmail.com; s=20251104; t=1785310968; x=1785915768; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Np3TxTdvKcS8g72nvKid+BqIJi+sR4NF+QJPQi54MKI=;
+        b=dqvGxQKRHrxNhkqk4y6A/74l9SFY1kYIW+vFeq006pKdaYU/rinV+XWBjplIpI5C4y
+         lcKu63mlTQOePQWQhopfBGP9eEuL8fFBWz/NvOblWx9iqrAE3wLzCViHCmYdSXJiEPTL
+         769jvcEvS8gfoum5VHTCNtlfvtaqmpRKV+O7VHL2qDshEqSEucCKMG4ZbfQnnTfhKK2z
+         OU/HdKjJhAEE4+yGjH0ebgUO79uuI2TT4gsW/ZQ46wN3XH5HqZMXSjmeDca//vxrSJXg
+         H9j13M35lEfTY50JDpQP7berMViquIeiWdCneuJehAKlpx/prueUNRhbb69GAw+v10zS
+         lYvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785310975; x=1785915775;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kNKMfFoLrxfVgkUmO/8mblNHEBodyP1KuT76nV4WYpo=;
-        b=Fi7xXZ5f+Sl7LTpBl2rZ+B+7B6eTG9b8gVHUwR7KuTROIsag1e382arp8JCZ4nJ2Zj
-         HgYzWrceRqjoqBdxI/f5laAeMzILT9oUmPC5U4HslrwdIzNI4PT0onyFKUaqJHQbVppx
-         t5bfGsFkCXXnm5m2Am6WZ5UwYKDlXpukdyNk5+dsOmkS3mVG1Y4X7d2DuQJbBoeCE/TR
-         PwNGgYgX+2FyLReY5CWVlSl6VyUK13771ks0PjA+u1ulBsMmAa2x9Bj4hEX7dT8h5Liv
-         cT6KOfpslAhmGeM/MjyzRwHnoSlNTr5w9PkzM2CqNVXRBvjEbglis5EKrery5Rcbq5NC
-         hiVg==
-X-Gm-Message-State: AOJu0YyIRNU4pL84bnlNpwlL7PtRbspuDTnPoGuoW9D6fcuu0+8PDnqg
-	UWyX1U6hysiozDmDlqM/KqgidC1gasZK6wm4hU3PbOOsaVrLHXY6Fk/Gp2cXE5XF
-X-Gm-Gg: AR+sD12eK7BTL7uQwT7k2tRcdhHh6w/Zzyt8brMyoGGLBN5bge2xgBd2FQYEQyIgf82
-	4NwFmTGYMWyhkQxP3Xz/0vi0uqHBAmYQAnAiB2boNbKYucOTVO2FgGhmWB2AdHBYXoufhXy9Vxa
-	ec+6DKQ5WUuyAdwfxf2Ir8ESz/QYOi3SwGslXBbg8QoVCfLAvIuohmQNOLgv3OGrob9z+CaB3jx
-	FfMLOxSbilkD4s869+nt4WaJv3SGNUahoDLMdZ/JfTm7d2P/MMJb9lloBIGassRMDCdNyNJXTYM
-	cHJKROEGNfg+4Eg+t172MGt0YzsOFqDajFxEYVHApm7IBrgpi9ZibSberObsriXypx/SBNGWiTB
-	LJlemgrrYU3Tq/GIlh2ws4LO8yHvdRLZx/lZp/mVsHQeSzaXFGMvJb6933iTcQV79t5O1fbEWPf
-	NIglLWNlJG47fOWYETdjDWft0faWiQOaBzY5ihkxF+LFw8BPRw/NcJSZr4asY=
-X-Received: by 2002:a17:903:46c6:b0:2ca:e496:5f19 with SMTP id d9443c01a7336-2d0267522d0mr13767845ad.19.1785310975421;
-        Wed, 29 Jul 2026 00:42:55 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785310968; x=1785915768;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Np3TxTdvKcS8g72nvKid+BqIJi+sR4NF+QJPQi54MKI=;
+        b=erz2W0pEepPo142F6pJpKOf71AflLYHRqxawinVNartI8Plg/splIjx3nwkVKEv3Gu
+         aLJPpeZMmYkDXxFHXL3OvsuDT3BdBheW9vZwcGK0FS9hPM7hMPeuU14FcLV9LvOYqDo4
+         LHDNKsWrNO/jWDeooukItR6IVf4no66YXoHSlr32Xs7u/64zXDmmSHQ7Lh1EluOCNcZl
+         5Tspbm+Zr/9s4/GsiDKmMzVphzQ2SAqNAH5Rs6V2SMtHg/H1bi162+Kz4LJPluk8AI85
+         Id8id977ae9cgm1tJGBWXZYJxZtO6OKWcYjpK5wwO3lJwpd5s0+hgS8Ik/Cox6GFOuEc
+         8viQ==
+X-Gm-Message-State: AOJu0YzBCwgJ4Y6bEBj97G4Zx6QGCRO+8XftG7vOlGzXdtbTSCW7Y2d3
+	oS/DpUqM85Zjgx8j11dKWf484UZBE5FX3sqqcF/Kfjcfn8S5uQh9pzeJJBktakvG
+X-Gm-Gg: AR+sD10YpHMmga0dGmpIT0ZUBIVAduLPabmtoTUvyVBIm2u0oufSgrnElN+84OAP8iA
+	XTFESZiYFKfEnWAXwXO8ZBSVKMTHpIAm9qiVLMzTQTmqY6lW65noB1b98AeFbZj8zJuAJGT3Ojo
+	GK/jQhprZT2LowY2++R5o2dqEqz4VXwxx1Esubp3ImvkeAe18fyuC5OObH8DVzkAhSvPv5SMXxd
+	QdrQyNHcuHWJY7xMsM0bgBB6DPAoRz3g0XaYON8Q53sGOwyvfBQ8rFJTQ3pVVQtS98BI4pegpQI
+	9C+V49kRPGRUl3957OnCbELkAywVzxmqqyYmbZe6SkI8lLdlISzRzhSjyJwxOUx7u9QVLT7ffpX
+	VXktvytlPxf8RuSE0jgJEt+C87tvu636jfr/UbRQ/+CfJbVKv0bkwL3WM3ETOdh8lb/2Wclj9u4
+	Zc2mLc4ObJe8jShxvK7R4R9jDvFyooZhDAk8qZd9YqDwMCYzqwCi5ca7cn90dDFeOwCcq16Q==
+X-Received: by 2002:a17:902:ebc2:b0:2cc:6817:d9bc with SMTP id d9443c01a7336-2d015f31b41mr63997355ad.38.1785310968545;
+        Wed, 29 Jul 2026 00:42:48 -0700 (PDT)
 Received: from server227.. ([39.170.101.209])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022bf888csm7154505ad.64.2026.07.29.00.42.48
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022bf888csm7154505ad.64.2026.07.29.00.42.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 00:42:54 -0700 (PDT)
+        Wed, 29 Jul 2026 00:42:48 -0700 (PDT)
 From: Zxyan Zhu <zxyan0222@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -76,12 +74,10 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Zxyan Zhu <zxyan0222@gmail.com>
-Subject: [PATCH net-next v3 1/2] net: stmmac: Skip PHY attach if custom PCS is in use
-Date: Wed, 29 Jul 2026 15:42:36 +0800
-Message-Id: <20260729074237.2624940-2-zxyan0222@gmail.com>
+Subject: [PATCH net-next v3 0/2] net: stmmac: Fix PHY attach when custom PCS is in use
+Date: Wed, 29 Jul 2026 15:42:35 +0800
+Message-Id: <20260729074237.2624940-1-zxyan0222@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260729074237.2624940-1-zxyan0222@gmail.com>
-References: <20260729074237.2624940-1-zxyan0222@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,38 +86,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When a platform provides a custom PCS via the pcs_init callback,
-the MAC's phylink_pcs is already configured. In this case, no
-traditional PHY device is needed.
+This series fixes the issue where stmmac platforms using a custom PCS
+via the pcs_init callback fail to probe when no phy-handle is specified
+in the device tree.
 
-Without this, stmmac_init_phy() falls through to the no-phy-node
-path and errors out with "no phy found" when the DT has no
-phy-handle for such interfaces.
+Patch 1 skips the PHY attach in stmmac when a custom PCS is already
+configured via priv->hw->phylink_pcs and phy_addr is invalid, avoiding
+the "no phy found" error for platforms that manage link state entirely
+through the PCS.
 
-Skip the PHY attach when priv->hw->phylink_pcs is set and
-phy_addr is invalid.
+Patch 2 is Russell King's phylink patch that relaxes phylink_expects_phy()
+to allow PHYs to be attached in 802.3z inband mode.
 
-Fixes: f0ef433fc264 ("net: stmmac: introduce pcs_init/pcs_exit stmmac operations")
-Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
----
+v3:
+- Move the priv->hw->phylink_pcs check inside the "addr < 0" branch
+  to avoid skipping the phy_addr fallback for boards with both a PCS
+  and a PHY
+- Reverse patch order: stmmac fix first, phylink change second
+
+v2:
+- Include Russell's phylink patch as prerequisite
+- This is now a 2-patch series targeting net-next
+
+Zxyan Zhu (1):
+  net: stmmac: Skip PHY attach if custom PCS is in use
+
+Russell King (Oracle) (1):
+  net: phylink: allow PHYs to be attached in 802.3z inband mode
+
  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/phy/phylink.c                         | 8 ++------
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 562d20830b94..575132b9cdbf 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1347,6 +1347,10 @@ static int stmmac_init_phy(struct net_device *dev)
- 		struct phy_device *phydev;
- 
- 		if (addr < 0) {
-+			/* If a custom PCS is in use, no PHY is needed */
-+			if (priv->hw->phylink_pcs)
-+				return 0;
-+
- 			netdev_err(priv->dev, "no phy found\n");
- 			return -ENODEV;
- 		}
 -- 
 2.34.1
 
