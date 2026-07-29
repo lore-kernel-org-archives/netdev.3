@@ -1,226 +1,151 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD48443DA4A
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB61141A792
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785318271; cv=none; b=KTh2GxaInd6z2wEq7et2LcBFegmBXqYmYYDdrf1+CujPyYiCJ1bgxwWTN/kHEzXURZW85b6nuG1p+f9cNsFinhzoaGpQ5q3no9EhES3ZNHlHFeiojgsNPvqL+Z3XVNKGJVOStjSYj5w4v+0Ij29FETJuWpwHbNczomQ+ih3HHR4=
+	t=1785318397; cv=none; b=AKnVQSuOS9/25MFvY9/fLXP3D7s39vD4xgLXfThaK0QPWw/H8zyZSIpXl6wN39QZc1trwD+T8c1V+8s2RlkfiMTJrNzZ6WzWyhNeMehDQReyHXLrhlJEEr4D97SXshfabGRp6DvMx/EJ86xpxwd12YLkU5Fi4AB+89oUpu+nyfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785318271; c=relaxed/simple;
-	bh=eRCD8+c903mdyDGb3OkP+4+gNhLNWKjnmyleU8LBpv0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VOT4e/3op0wDAQV8QnsO13BeLp7AUbxbx1EVUtEqY9LJqVR5CsBYIwj7YRXc7cvwMpyhVV+HCO7D19D9eYDUV558GmHgg1m0TDcG0K7BGCCtgrTi71DIUaOEieSHDFslB9iq3X6i8QT/47CS98H26dLMOXuVTYXAoEVW5PIivbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=BAaTcwG9; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1785318397; c=relaxed/simple;
+	bh=7qQPhbO7x8cevphBaoSYKA87SBMgQmKWwDQX5TBBZrY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hcv5GUmMEBJ73Qckun6BveZqPSkLtnnNC2TOOY+2+vkGt6+XxnztrhME4U0BrfxTbfVQapHvipb4sZxyM98ub9uArSapACv3NxIZIlnY472f9NraG3FdRu+9fXpnhmQA62nKAnr8hA/V9K7MA49g3saR+EAnKEzDMmzZdXIa8WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AEwXHF56; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="BAaTcwG9"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51bfe810293so4098991cf.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 02:44:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AEwXHF56"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso8491395ad.2
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 02:46:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1785318267; x=1785923067; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8qkElVMSbjg2zzOrMS39/7630HdM89/8AUYMYYV6/y8=;
-        b=BAaTcwG9mITeH59VwGIt4cDWU5A6YMAhdU26N0/ObjO47q5puIHMUPYquJet7nomlt
-         K7Uyp7O3A4k+3ew59idbBEYYhQPpUUYFMtVoqH0xFBdxXMV81fGqgkOT5L8iNqtfMCFm
-         8yMvGm+jEJKwB/7VEU9BKXaDl3+YkDtcMi8H4=
+        d=gmail.com; s=20251104; t=1785318395; x=1785923195; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4ZX80IHAYk8WquP9pNurg4cyEfZNZ2WQi/VneUnNeO8=;
+        b=AEwXHF56upoFyYJPJlkOYhSqy+Xj2cXcltS03zQcOU7Owtj1BIMNM09D5gv5vYMSep
+         FkS4e8IHUhotU8a0zX0oryvsnFWSjoOZlzXgr7LpDl2brKe20OZxoiPyN/QLw+81m05u
+         lexyq7BdqJUmaOFDKx4GsLkEW0gLLFggfb88x/6QKN/CEN2sh7Oi9vic7fSRtoIwN5d8
+         A+z71jg9rGdQ7w8H7NcnLwFRA3W/Otaa7m19oM0azefAYJ5ZQFJaR6fNsoGzaTSjqdmP
+         JAGWLx+xgo1UTB95sKh7F6h/APYY36pJreJlya5n6Yei6XW9m+BFqTFRLHdNo5JCPUWW
+         RmXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785318267; x=1785923067;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1785318395; x=1785923195;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8qkElVMSbjg2zzOrMS39/7630HdM89/8AUYMYYV6/y8=;
-        b=Jdi3Cz2fi80iPuSS76bKTtlkOwAeWu3+YAXOnf8drgDLPzF9Kj0Mk7fcNGs6ccRNXa
-         e1Ak2zQ7FnGlOPx2uxRbE7K6EgX2hjXT81i2ipWg+NrY9e/NqMmmMkPAXDTDPXQEMhzM
-         DG5LqdpXksrUsRkhIGRJfJweDBBN6zFzKLXjYCHhFQgNg3wx5Kw/WYtSF4vMed3Z3Bf9
-         NG6YKNR50FZhce8R+1zdFiAnZJdUo7A8782pLwVuZz369VqDcdSsK37TgLS/LOMZkbCC
-         KCyihU3vrYP45ScjqyWsTHrz0wf/15ZwI9VTmabwJ2lbG7u/dF5K7pkfXLJYoOB8jxLv
-         c3Mg==
-X-Gm-Message-State: AOJu0YxzjqIpeOq8Jtf/awUvML/fsd3Q/ewxbLM1QmS2mjgGd5eRbJw/
-	Fv1OxWei2kjeWIXr4OD/Z+76EfxziN0/CC+TPo+MAZxZsKFEJgm623eQpNYm4Jmuofvs+P6BUqx
-	0wkY=
-X-Gm-Gg: AR+sD13mio6IRv2ekdt6YrPKRtjJuZ/ana1y4125YTBaQIWBGX/KUvyFtVgxyNDWvFZ
-	sT4s7qW7VJFtfv/Yv6UnVW3toHjYUIseZH9AR3iJe4yz5JOF/3x2j05eDYSR+uyg2u3+H1XP4AP
-	hzFxlWC5dt4flpRCgBsrtP0kKfq5Yng26GeHZ0Hn1X1FDhSmaX2V+QEzMYMgubtEBwdJqh6+cxe
-	29r3dJQg+edXvoyUFHTtJ/vpPsBpJMFTRy6mJItHalZCmAgLM5Vc+tPW+yKYwYxFC+KJq9FM55p
-	TupUehYgGzNACz81sOsbgo5UEa7VJn89YHhSKz/2ify4d2ZCt6TGzyWb5yGkO9IAl95G4lhGrJl
-	WT1PnbgdxvPfz28SmllDoYUu/rKE4KbJKj0DVgwlGSNmLojpXrLLKH92EblqW3WXOyS2Mo/NQPo
-	Y2WeKU41K09vy82l/NGIOyEJ760NEG/Dlale/AsAMoPSOE2EP7KCDA9HqpuCyLplscvg==
-X-Received: by 2002:ac8:5941:0:b0:527:7d0f:863b with SMTP id d75a77b69052e-529d6fa1d87mr49728431cf.12.1785318267458;
-        Wed, 29 Jul 2026 02:44:27 -0700 (PDT)
-Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-529e2b67050sm15041351cf.12.2026.07.29.02.44.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 02:44:26 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	john.fastabend@gmail.com,
-	jiri@resnulli.us,
-	zdi-disclosures@trendmicro.com,
-	santosh.kalluri129@gmail.com,
-	victor@mojatatu.com,
-	security@kernel.org,
-	stable@vger.kernel.org,
-	Jamal Hadi Salim <jhs@mojatatu.com>
-Subject: [PATCH net] net/sched: cls_route: fix fastmap use-after-free on filter
-Date: Wed, 29 Jul 2026 05:44:11 -0400
-Message-Id: <20260729094411.46257-1-jhs@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+        bh=4ZX80IHAYk8WquP9pNurg4cyEfZNZ2WQi/VneUnNeO8=;
+        b=i1Ib4X5fe70ecTgenRLRGgFdGvdaXfHd26oWCn27jUxDyKp4CzkfbNsEw3vclcgJGK
+         mXbbKVbqVrpV7X3aiJKbRoEqizUo8btbG3FJlgtHI9dHI1Aqj6aHh5mnjg8UpYb1RJjO
+         Xc414pJzxSYkZX5b09T2HKp27DtdXuPf626DwArjqpayIJyqWYmW1TwmeXOPQDlYtmA6
+         PgCnjfWoNfFHUblsncC9VVUJdFr9Jf8DGnnNUSCipp42je+u6tY/6EWLVoVXKCgfF7jp
+         vj6Q7zxguJ3DrMIYXVi+zV/6WE1vI9q7U+QSUbupeXh5qvpq5/gEFnw0naZXDXO99AUo
+         C50Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpDuaJoomWIA2UiZgrMpMoWQ8hF5oLs9R4e2pZFEXxoYD/LctM4uRl2OYsqhQM1Wbv1Z4CZji8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLYpLcdZ2GJg5Y+xZ5WMW6S/A6XVq1nLdS5g4XXJ0q6zdSTCw6
+	crOMcaD+2cuYhhW936QIQtOK8Mb0GbEReVqr8BprYV1xtadl1tlZv+Nm
+X-Gm-Gg: AR+sD12/jP8kOALMgP38UQgdvAwXVGAytCvrz/mFcQLmvkdsg166iy0fwAbgMYb7FyC
+	cbWvNRKY4xfjvPiTtIHlh/o701OYPBDtI8pafd/F7hF3azICkdzNyv6Nc2BsEE8sBuS+YsuItds
+	GawfKpSRfdi34XJEewcC3lTBjby+BeMZ6oYHsCU4tNVSqBCQDlVFojG2HC8KURB5a52TeVCPe7V
+	5IdR+fVaYhX7KQh0nCFZIv8GH5kDekDRyrSOyx4yIW8ZikzkuOv/R7fONad5IdJIX+FudLcyqjX
+	ty0ECq9oSWKc2JYxm8lUDE/BZ+AdKx/9onSHAtzDK8K6z4aG9SmyFrBfkKendy3n8PauF9NVP/d
+	o+1qx405vPwaNZiNId5/T/DnjFJOFixhsdAwS4J4HaQNoxWgXoGnj4vQCCPHfMJcXfc3v1cUkNk
+	JvODwrO2HTQeo+QjbEm3UmpsYWvvT0+VhLxOjFO2Lt7iVqkOJZAMHFUxNTO5yQDrA/n8Zr15Upw
+	xY=
+X-Received: by 2002:a17:903:3d07:b0:2cc:ed57:c7c with SMTP id d9443c01a7336-2d015cbb228mr66348375ad.32.1785318395180;
+        Wed, 29 Jul 2026 02:46:35 -0700 (PDT)
+Received: from [10.22.76.22] ([122.11.166.8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022a4af04sm8816985ad.31.2026.07.29.02.46.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Jul 2026 02:46:34 -0700 (PDT)
+Message-ID: <a4c89c00-ddbe-4278-b386-b83d2b859a70@gmail.com>
+Date: Wed, 29 Jul 2026 17:46:29 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vsock: use sock_error() to consume sk_err after connect
+ timeout
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Michal Luczaj <mhal@rbox.co>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260719220103.684489-1-phind.uet@gmail.com>
+ <al3UuvBhfxp82krV@sgarzare-redhat>
+ <78225425-1ca7-45fb-85cb-9e04f489e68f@gmail.com>
+ <amB15TdzPAEk9A9C@sgarzare-redhat>
+ <b81bfea4-6b19-4cc8-95c0-dcd4ad42476e@gmail.com>
+ <95cd0d4e-58c9-44ab-b94f-fcf57b88583b@rbox.co>
+ <amHN9mOGj7oMak4-@sgarzare-redhat>
+ <27412e44-ab4b-4dd3-9685-481875683860@gmail.com>
+ <a6cb1b8f-d8cf-412a-a204-3a26e4db0bd0@rbox.co>
+ <6b684c2f-1f98-43ea-84c9-9b6f162d5e9f@gmail.com>
+ <amhmjLa9DjNFKgmb@sgarzare-redhat>
+Content-Language: en-GB
+From: "Nguyen Dinh Phi [SG]" <phind.uet@gmail.com>
+In-Reply-To: <amhmjLa9DjNFKgmb@sgarzare-redhat>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The route4 classifier maintains a 16-slot fastmap cache that stores raw
-struct route4_filter pointers indexed by (id, iif). The reader
-(route4_classify) populates this cache via route4_set_fastmap() for every
-classified packet that hits a filter. The writer (route4_delete,
-route4_change) clears the cache via route4_reset_fastmap() before
-RCU-deferred kfree of the filter.
+On 28/7/26 16:21, Stefano Garzarella wrote:
+> On Fri, Jul 24, 2026 at 03:34:23PM +0800, Nguyen Dinh Phi [SG] wrote:
+>> On 24/7/26 05:43, Michal Luczaj wrote:
+>>> On 7/23/26 12:26, Nguyen Dinh Phi [SG] wrote:
+>>>>>>>> ...
+>>>>>>>> Yeah, we need to handle that part better, I think it's a 
+>>>>>>>> leftover when
+>>>>>>>> we generalized AF_VSOCK to support more transport than vmci.
+>>>>>>
+>>>>>> Speaking of leftovers, I have trouble understanding where does 
+>>>>>> vsock set
+>>>>>> sk_err on listener sockets anyway. If it doesn't, why vsock_accept()
+>>>>>> checks for it?
+>>>>>
+>>>>> I can't also see where it can be set TBH. Should we remove it ?
+>>>>
+>>>> I couldn't find it for listener side too.
+>>>
+>>> Removing sk_err handling from vsock_accept() solves the problem, right?
+>>>
+>>> thanks,
+>>> Michal
+>>
+>> Yes, confirmed, removing sk_err checks from vsock_accept() does solve 
+>> the problem.
+> 
+> Okay, so maybe better on going on this direction. WDYT?
+> 
+> Stefano
+> 
 
-This creates a UAF race:
- 1. Reader walks the RCU-protected bucket chain, finds filter f
- 2. Writer unlinks f, calls route4_reset_fastmap(), then tcf_queue_work()
- 3. Reader calls route4_set_fastmap() and writes f into the cache
-    *after* the writer's reset, caching a pointer about to be freed
- 4. After the RCU grace period, kfree(f) executes
- 5. Next classified packet on the same (id, iif) tuple hits the stale
-    fastmap entry and reads f->res from freed memory
+I'm still a bit concerned about how connect() and poll() interact here, 
+even with the sk_err checks removed from vsock_accept().
 
-Reproduced with an mdelay(100) accelerator in route4_set_fastmap() and a
-concurrent add/delete stress test (provided by both zdi and Santosh).
-Both triggered KASAN slab-use-after-free reports in the route4 fastmap
-paths.
+For example:
+vsock_accept() now lets us reuse a socket whose connect() failed (call 
+it r0) as syzbot reproducer does. After listen(), r0 becomes a listener 
+(sk_state == TCP_LISTEN) and works correctly -- it accepts connections.
 
-Fix:
-Introduce a per-filter boolean dying flag to suppress stale fastmap
-republishing by in-flight readers.
+But poll() on r0 still marks POLLERR, even though there is no error on 
+that socket at that point.
 
-Fixes: 1109c00547fc ("net: sched: RCU cls_route")
-Reported-by: zdi-disclosures@trendmicro.com
-Reported-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Tested-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+As I understand it, sk_err holds an error that has not yet been reported 
+to userspace. In the blocking vsock_connect() case we have already read 
+that error and returned it to the caller, so it is no longer pending
+Shouldn't sk_err be consumed/cleared when vsock_connect() returns it to 
+userspace?
 
----
-V1->V2
-1. Fix based on feedback from the Sashikos
-https://sashiko.dev/#/patchset/20260723105210.817079-1-jhs%40mojatatu.com
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260723105210.817079-1-jhs%40mojatatu.com
+If you think the POLLERR above is acceptable, I'm fine going with just 
+the vsock_accept() change.
 
-Restore the "if (tcf_exts_get_net(&f->exts)) route4_queue_work(f);
-else __route4_delete_filter(f);"
-preserving the tcf_exts_get_net() contract for netns teardown.
-
-V2->V3
-Revert earlier suggestion from Santosh's rcu sync to Paolo's suggestion to use
-the dying flag approach.
----
- net/sched/cls_route.c | 35 ++++++++++++++++++++++++++---------
- 1 file changed, 26 insertions(+), 9 deletions(-)
-
-diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
-index bd6f945bd388..eded7aacd3f7 100644
---- a/net/sched/cls_route.c
-+++ b/net/sched/cls_route.c
-@@ -52,6 +52,7 @@ struct route4_filter {
- 	struct tcf_result	res;
- 	struct tcf_exts		exts;
- 	u32			handle;
-+	bool			dying;
- 	struct route4_bucket	*bkt;
- 	struct tcf_proto	*tp;
- 	struct rcu_work		rwork;
-@@ -66,9 +67,11 @@ static inline int route4_fastmap_hash(u32 id, int iif)
- 
- static DEFINE_SPINLOCK(fastmap_lock);
- static void
--route4_reset_fastmap(struct route4_head *head)
-+route4_reset_fastmap(struct route4_head *head, struct route4_filter *f)
- {
- 	spin_lock_bh(&fastmap_lock);
-+	if (f)
-+		f->dying = true;
- 	memset(head->fastmap, 0, sizeof(head->fastmap));
- 	spin_unlock_bh(&fastmap_lock);
- }
-@@ -81,9 +84,11 @@ route4_set_fastmap(struct route4_head *head, u32 id, int iif,
- 
- 	/* fastmap updates must look atomic to aling id, iff, filter */
- 	spin_lock_bh(&fastmap_lock);
--	head->fastmap[h].id = id;
--	head->fastmap[h].iif = iif;
--	head->fastmap[h].filter = f;
-+	if (f == ROUTE4_FAILURE || !f->dying) {
-+		head->fastmap[h].id = id;
-+		head->fastmap[h].iif = iif;
-+		head->fastmap[h].filter = f;
-+	}
- 	spin_unlock_bh(&fastmap_lock);
- }
- 
-@@ -297,6 +302,13 @@ static void route4_destroy(struct tcf_proto *tp, bool rtnl_held,
- 					next = rtnl_dereference(f->next);
- 					RCU_INIT_POINTER(b->ht[h2], next);
- 					tcf_unbind_filter(tp, &f->res);
-+					/* Mark the filter dying under fastmap_lock so
-+					 * any in-flight reader that still holds it
-+					 * will skip the republish in route4_set_fastmap().
-+					 */
-+					spin_lock_bh(&fastmap_lock);
-+					f->dying = true;
-+					spin_unlock_bh(&fastmap_lock);
- 					if (tcf_exts_get_net(&f->exts))
- 						route4_queue_work(f);
- 					else
-@@ -307,6 +319,11 @@ static void route4_destroy(struct tcf_proto *tp, bool rtnl_held,
- 			kfree_rcu(b, rcu);
- 		}
- 	}
-+
-+	/* All filters are unlinked and marked dying, so no in-flight
-+	 * reader can republish a stale entry after this reset.
-+	 */
-+	route4_reset_fastmap(head, NULL);
- 	kfree_rcu(head, rcu);
- }
- 
-@@ -334,11 +351,11 @@ static int route4_delete(struct tcf_proto *tp, void *arg, bool *last,
- 			/* unlink it */
- 			RCU_INIT_POINTER(*fp, rtnl_dereference(f->next));
- 
--			/* Remove any fastmap lookups that might ref filter
--			 * notice we unlink'd the filter so we can't get it
--			 * back in the fastmap.
-+			/* Clear any fastmap entries that may ref this filter and
-+			 * mark it dying so in-flight readers can't republish it
-+			 * after the reset.
- 			 */
--			route4_reset_fastmap(head);
-+			route4_reset_fastmap(head, f);
- 
- 			/* Delete it */
- 			tcf_unbind_filter(tp, &f->res);
-@@ -558,7 +575,7 @@ static int route4_change(struct net *net, struct sk_buff *in_skb,
- 		}
- 	}
- 
--	route4_reset_fastmap(head);
-+	route4_reset_fastmap(head, fold);
- 	*arg = f;
- 	if (fold) {
- 		tcf_unbind_filter(tp, &fold->res);
--- 
-2.34.1
-
+Thanks,
+Phi.
