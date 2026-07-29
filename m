@@ -1,156 +1,115 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6570B221FD4
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 06:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D79639768D;
+	Wed, 29 Jul 2026 06:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785306020; cv=none; b=h1ogg5oiqXoh+V3pjoEnAiGuZAUCLyeb/CiEPJGeTrLHY1BQIYjadZlLi9wJyUy9TgHFvTnafI1m5K3JGEgk1YvQOmITyvnvU5WNlgxj3XT8DDTNEa543irokAw4tqZpjDbBMA4TYklNV7J/PPi/T0namjDptfeBaj8syfYXL9Q=
+	t=1785306148; cv=none; b=O94TgxyZQy0yGNqCTEAU5yfaKDvBQF9pkJ9LewL4GYg4foEV2AgcfYqoO1OFicJxmRcgXiF4ZWjhTjKNqGcjzwQ4Ja7ItzuXuTcEWbmZS9qvEtGb+yxwXaBrMBs62LPk3P2xx5AvvMrhw2FLiutDD98+v9VfAfhK5BOeDgGLYUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785306020; c=relaxed/simple;
-	bh=bf50ROAQtlfrwRMlOb+kpmLId0WQ05GAN8vZxzX9iPU=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=XfcTf4xGEpJuSP6s4YuIuXKwvPFEYEkoBY+21yEE+VWnb4u50RKOps/v15VLfFJsJFnCiDK3wj2yN+DYgsGpRwIe0BjkOc2+LWaUu/FFJIb7ySCFyR6oMAO/xXIpmuPPEA22ksqS3OYZ9JOnfmn5wo4V/H8f4PWCA+01iUtckdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Xo4vXBuv; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1785306148; c=relaxed/simple;
+	bh=15pZePfxoqfH95rdoCZhhvmuo8Nm+GarZpcrCgRlY+E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m/WnLkJQMtW5Le1Cx+qhSSAJX7H8ItwpHuhcFx/B5AbN9k8YM/R4j+x3m9a1TqfryQe1s2DywgpFPmEtsutOZMHkWfEv6umZhKRTS/OfY6YLrtBnbtLt5CA0ca/g18HzuRTrOy1e3lSUM3pQpiaVHSN2hHzoK1VlaBqQ+YPBJsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=aSQ8in+9; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Xo4vXBuv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Content-Type:MIME-Version:Subject:From:To:Date:
-	Message-ID; bh=bf50ROAQtlfrwRMlOb+kpmLId0WQ05GAN8vZxzX9iPU=; b=X
-	o4vXBuvQ9jTUOGEsxZbeLfuWuCz9qOH/0vgsaReep6QiCQum9dwF1dCmJTH7iFs1
-	t7H18Mpk22mShUy4lJI7eas4y1GoN8v5mTd9HlY2uppYL5DRex873Kz3rT9N03li
-	2Y9mU+OCnUr4hNH4w/axoGCsH06PY4MFGTB7TbZazM=
-Received: from [127.0.1.1] (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3f11ym2lq9PpUMg--.6119S2;
-	Wed, 29 Jul 2026 14:19:33 +0800 (CST)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="aSQ8in+9"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2C01C1A12EA;
+	Wed, 29 Jul 2026 06:22:22 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F0D1A6039A;
+	Wed, 29 Jul 2026 06:22:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EB9C111C14983;
+	Wed, 29 Jul 2026 08:22:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785306137; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=IRgRyy4I/iGOdIRbZQjz7pAYVoSvVDRHQXiU6P9/HMs=;
+	b=aSQ8in+9EDU9HVfsYSYQC1fmPobZUJb6cqpsiKBZ8E/wdwbnywx+joCjZiPsoPr7lCgNfM
+	lydLiKClnNB4459mda2XWXFrHvy8DXx+xon3sqXNHErGU+M5aMzKmZwSGygvblieneZXkN
+	URrtHq6wbuDEBj6g7e9ujbNshdnkqRrNfDOrFWurHXncsqnYT+/SBQFTxZbqmtPNJ2whe0
+	WnOp63er7p7aJgQxw774qppUjZgxmlSFL1Z+ZNvjOL2xFvrOLyrHbqYqvJkJ9uWJqOgS0A
+	8AWRe5rFmJ6muG0A0uZjk3SMRYvg9XzO/lp4GhZco6Q7e9LtxVnBXT19M8Gybw==
+Message-ID: <fb9a8280-4166-43ed-a9e5-b54d7079b222@bootlin.com>
+Date: Wed, 29 Jul 2026 08:22:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Subject: [PATCH net v2] net: openvswitch: fix stack exhaustion from unaccounted clone_execute() recursion
-From: yang zhuorao <alexyoung0@163.com>
-To: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org
-Cc: netdev@vger.kernel.org, dev@openvswitch.org, security@kernel.org, pabeni@redhat.com, kuba@kernel.org, horms@kernel.org, edumazet@google.com, davem@davemloft.net
-Date: Wed, 29 Jul 2026 14:19:29 +0800
-Message-ID: <178530596969.1425642.13386639281745710112@163.com>
-X-CM-TRANSID:_____wD3f11ym2lq9PpUMg--.6119S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3JrW7Zr4xAr4DXr4DtF48tFb_yoWxXrWDpa
-	yfC345Ar95AF12gaykJw48Wry5Za18G3y7Grs8Aw1rJ3y5Kw1SgFZYgFyI9FW7CFyUAay7
-	XrWvv3WS9F4UuaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jiKsUUUUUU=
-X-CM-SenderInfo: xdoh55prxqwii6rwjhhfrp/xtbDABj5+Gppm3jsfAAA3p
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 2/2] net: stmmac: Skip PHY attach if custom
+ PCS is in use
+To: Zxyan Zhu <zxyan0222@gmail.com>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Russell King <linux@armlinux.org.uk>,
+ Russell King <rmk+kernel@armlinux.org.uk>,
+ Serge Semin <fancer.lancer@gmail.com>,
+ Romain Gantois <romain.gantois@bootlin.com>,
+ Hariprasad Kelam <hkelam@marvell.com>,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260726132618.3580612-1-zxyan0222@gmail.com>
+ <20260726132618.3580612-3-zxyan0222@gmail.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260726132618.3580612-3-zxyan0222@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Y2xvbmVfZXhlY3V0ZSgpIG9ubHkgaW5jcmVtZW50cyBhbmQgZGVjcmVtZW50cyBleGVjX2xldmVs
-IHdoZW4KY2xvbmVfZmxvd19rZXkgaXMgdHJ1ZS4gIFdoZW4gY2xvbmVfZmxvd19rZXkgaXMgZmFs
-c2UgdGhlIG9wdGltaXplZApwYXRoIHJldXNlcyB0aGUgb3JpZ2luYWwgZmxvdyBrZXkgYW5kIGNh
-bGxzIGRvX2V4ZWN1dGVfYWN0aW9ucygpCmRpcmVjdGx5IHdpdGhvdXQgdXBkYXRpbmcgdGhlIHJl
-Y3Vyc2lvbiBjb3VudGVyLCBtYWtpbmcgdGhvc2UgbGF5ZXJzCmludmlzaWJsZSB0byB0aGUgT1ZT
-X1JFQ1VSU0lPTl9MSU1JVCBjaGVjayBpbiBvdnNfZXhlY3V0ZV9hY3Rpb25zKCkuCgpBIHNpbmds
-ZSBhY3Rpb24gdHJlZSBhbGxvd3MgdXAgdG8gT1ZTX0NPUFlfQUNUSU9OU19NQVhfREVQVEggKDE2
-KQpuZXN0ZWQgY2xvbmUgYWN0aW9ucy4gIFdoZW4gdGhlIGlubmVybW9zdCBjbG9uZSBjb250YWlu
-cyBhIFJFQ0lSQwp0aGF0IHNlbGVjdHMgYW5vdGhlciBmbG93IHdpdGggaXRzIG93biAxNi1sYXll
-ciB2YWxpZGF0aW9uIGJ1ZGdldCwKbXVsdGlwbGUgdHJlZXMgb2YgdW5hY2NvdW50ZWQgcmVjdXJz
-aW9uIGNhbiBiZSBzdGFja2VkLiAgVGhlIGRlZmVycmVkCmFjdGlvbiB0aHJlc2hvbGQgKE9WU19E
-RUZFUlJFRF9BQ1RJT05fVEhSRVNIT0xEID0KT1ZTX1JFQ1VSU0lPTl9MSU1JVCAtIDIgPSAzKSBh
-bGxvd3MgdGhyZWUgc3luY2hyb25vdXMgcmVjaXJjIGxldmVscwpiZWZvcmUgY2xvbmVfa2V5KCkg
-Zm9yY2VzIGRlZmVycmFsLCB5aWVsZGluZyAzIHggMTYgPSA0OCBsYXllcnMgb2YKc3luY2hyb25v
-dXMsIHVuYWNjb3VudGVkIGNsb25lIHJlY3Vyc2lvbi4KClBlci1sYXllciBzdGFjayB1c2FnZSBp
-cyBhcHByb3hpbWF0ZWx5IDI5NiBieXRlcyAoZnJvbSBkaXNhc3NlbWJseToKZG9fZXhlY3V0ZV9h
-Y3Rpb25zKCkgYWxsb2NhdGVzIDB4OTggYnl0ZXMsIGNsb25lX2V4ZWN1dGUoKSBhbGxvY2F0ZXMK
-MHgyMCBieXRlcywgcGx1cyBzYXZlZCByZWdpc3RlcnMgYW5kIHJldHVybiBhZGRyZXNzKS4gIDQ4
-IGxheWVycwpjb25zdW1lIH4xNCwyMDggYnl0ZXMgYmVmb3JlIHJlY2lyYywgZmxvdyBsb29rdXAs
-IE5ldGxpbmssIGFuZCBiYXNlCmNhbGwgZnJhbWVzLCBleGNlZWRpbmcgdGhlIDE2IEtpQiB4ODZf
-NjQgdGFzayBzdGFjayBhbmQgaGl0dGluZyB0aGUKZ3VhcmQgcGFnZS4KCkFuIHVucHJpdmlsZWdl
-ZCB1c2VyIGNhbiB0cmlnZ2VyIHRoaXMgZnJvbSBhIHByaXZhdGUgdXNlci9uZXQKbmFtZXNwYWNl
-IChjbG9uZShDTE9ORV9ORVdVU0VSIHwgQ0xPTkVfTkVXTkVUKSkgYnkgaW5zdGFsbGluZyB0aHJl
-ZQpmbG93IHJ1bGVzIGVhY2ggd2l0aCAxNiBuZXN0ZWQgY2xvbmUgYWN0aW9ucyBsaW5rZWQgYnkg
-UkVDSVJDLCB0aGVuCmluamVjdGluZyBhIHNpbmdsZSBwYWNrZXQgdmlhIE9WU19QQUNLRVRfQ01E
-X0VYRUNVVEUuICBUaGUgcmVzdWx0IGlzCmEga2VybmVsIHBhbmljOgoKICAgIEJVRzogVEFTSyBz
-dGFjayBndWFyZCBwYWdlIHdhcyBoaXQgLi4uCiAgICBDUFU6IDAgVUlEOiAxMDAwIFBJRDogODUg
-Li4uIDcuMi4wLXJjNSsKICAgIFJJUDogMDAxMDpjbG9uZV9leGVjdXRlKzB4NWEvMHgyYzAgW29w
-ZW52c3dpdGNoXQogICAgW2RvX2V4ZWN1dGVfYWN0aW9ucyAvIGNsb25lX2V4ZWN1dGUgYWx0ZXJu
-YXRpbmcgcmVwZWF0ZWRseV0KICAgIEtlcm5lbCBwYW5pYyAtIG5vdCBzeW5jaW5nOiBGYXRhbCBl
-eGNlcHRpb24gaW4gaW50ZXJydXB0CgpGaXggdGhpcyBieSBleHRyYWN0aW5nIHRoZSBleGVjX2xl
-dmVsIG1hbmFnZW1lbnQgaW50byBoZWxwZXJzCm92c19leGVjX2xldmVsX2VudGVyKCkgYW5kIG92
-c19leGVjX2xldmVsX2V4aXQoKSwgYW5kIGNhbGxpbmcgdGhlbQp1bmNvbmRpdGlvbmFsbHkgZm9y
-IGFsbCBzeW5jaHJvbm91cyBjbG9uZSByZWN1cnNpb24gZWRnZXMuICBXaGVuIHRoZQpsaW1pdCBp
-cyBleGNlZWRlZCB0aGUgcGFja2V0IGlzIGRyb3BwZWQgd2l0aCBhIG5ldF9jcml0X3JhdGVsaW1p
-dGVkKCkKbG9nLCBjb25zaXN0ZW50IHdpdGggdGhlIGV4aXN0aW5nIGhhbmRsaW5nIGluIG92c19l
-eGVjdXRlX2FjdGlvbnMoKQp3aGljaCBub3cgYWxzbyB1c2VzIHRoZSBzYW1lIGhlbHBlcnMuCgpU
-ZXN0ZWQgb24gTGludXggNy4yLjAtcmM1KyAobWFpbmxpbmUgSEVBRCA2MmNjOTAyNDE1NDgpLCB4
-ODZfNjQsCkNPTkZJR19WTUFQX1NUQUNLPXksIENPTkZJR19PUEVOVlNXSVRDSD1tLCBpc29sYXRl
-ZCBRRU1VIGd1ZXN0LgpDb25maXJtZWQgdGhhdCB0aGUgUG9DICguL3BvY19jbG9uZV9vdmVyZmxv
-dyAyIDE2IDMsIHJ1biBhcyBVSUQgMTAwMCkKbm8gbG9uZ2VyIHRyaWdnZXJzIGEgcGFuaWMgd2l0
-aCB0aGlzIHBhdGNoIGFwcGxpZWQuCgpGaXhlczogYjIzMzUwNDAzM2RiICgib3BlbnZzd2l0Y2g6
-IGtlcm5lbCBkYXRhcGF0aCBjbG9uZSBhY3Rpb24iKQpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9y
-ZwpSZXBvcnRlZC1ieTogeWFuZyB6aHVvcmFvIDxhbGV4eW91bmcwQDE2My5jb20+ClNpZ25lZC1v
-ZmYtYnk6IHlhbmcgemh1b3JhbyA8YWxleHlvdW5nMEAxNjMuY29tPgotLS0KQ2hhbmdlcyBpbiB2
-MjoKICAtIEV4dHJhY3QgZXhlY19sZXZlbCBtYW5hZ2VtZW50IGludG8gb3ZzX2V4ZWNfbGV2ZWxf
-ZW50ZXIoKSAvCiAgICBvdnNfZXhlY19sZXZlbF9leGl0KCkgaGVscGVycywgY29uc29saWRhdGlu
-ZyB0aGUgcmVjdXJzaW9uCiAgICBjaGVjayB3aXRoIG92c19leGVjdXRlX2FjdGlvbnMoKSAoQWFy
-b24pCiAgLSBBZGQgbmV0X2NyaXRfcmF0ZWxpbWl0ZWQoKSBsb2cgb24gbGltaXQgaGl0IGluc3Rl
-YWQgb2YKICAgIHNpbGVudGx5IGRyb3BwaW5nIChBYXJvbikKICAtIFJlZmFjdG9yIG92c19leGVj
-dXRlX2FjdGlvbnMoKSB0byB1c2UgdGhlIHNhbWUgaGVscGVycwogIC0gQ0MgbmV0ZGV2IG1haW50
-YWluZXJzCgp2MTogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbmV0ZGV2LzE3ODUyMTg3NTcwNi44
-MDM5MDcuMzIyNjk2MDM5ODY2NzMwNzc5NUAxNjMuY29tCgpSZXByb2R1Y2VyIChDLCBzaW5nbGUg
-ZmlsZSwgYXZhaWxhYmxlIHVwb24gcmVxdWVzdCk6CgogICAgZ2NjIC1PMiAtV2FsbCAtbyBwb2Nf
-Y2xvbmVfb3ZlcmZsb3cgcG9jX2Nsb25lX292ZXJmbG93LmMKICAgIC4vcG9jX2Nsb25lX292ZXJm
-bG93IDIgMTYgMyAgICMgYXMgdW5wcml2aWxlZ2VkIHVzZXIKClRoZSBQb0MgY3JlYXRlcyBhIHBy
-aXZhdGUgdXNlci9uZXQgbmFtZXNwYWNlLCBpbnN0YWxscyB0aHJlZSBmbG93cwplYWNoIHdpdGgg
-MTYgbmVzdGVkIGNsb25lIGFjdGlvbnMgbGlua2VkIGJ5IFJFQ0lSQywgYW5kIGluamVjdHMgYQp0
-cmlnZ2VyaW5nIHBhY2tldC4gIFByZXJlcXVpc2l0ZXM6IENPTkZJR19PUEVOVlNXSVRDSD1tL3kg
-bG9hZGVkLAp1bnByaXZpbGVnZWQgdXNlciBuYW1lc3BhY2UgY3JlYXRpb24gYWxsb3dlZC4KClZl
-cmlmaWVkIHVuZml4ZWQgaW4gTGludXMgbWFpbmxpbmUgKDYyY2M5MDI0MTU0OCksIG5ldCAoOTdh
-YzA4NTYwZDIzKSwKYW5kIG5ldC1uZXh0IChhNTBlYmExZTc3OGEpIGFzIG9mIDIwMjYtMDctMjcu
-CgogbmV0L29wZW52c3dpdGNoL2FjdGlvbnMuYyB8IDQ0ICsrKysrKysrKysrKysrKysrKysrKysr
-KysrLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDMwIGluc2VydGlvbnMoKyksIDE0IGRl
-bGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL25ldC9vcGVudnN3aXRjaC9hY3Rpb25zLmMgYi9uZXQv
-b3BlbnZzd2l0Y2gvYWN0aW9ucy5jCmluZGV4IDUxM2ZjYTZhOGU4YS4uZGMxN2FkYmViOTMzIDEw
-MDY0NAotLS0gYS9uZXQvb3BlbnZzd2l0Y2gvYWN0aW9ucy5jCisrKyBiL25ldC9vcGVudnN3aXRj
-aC9hY3Rpb25zLmMKQEAgLTE0NjYsNiArMTQ2NiwyNiBAQCBzdGF0aWMgaW50IGRvX2V4ZWN1dGVf
-YWN0aW9ucyhzdHJ1Y3QgZGF0YXBhdGggKmRwLCBzdHJ1Y3Qgc2tfYnVmZiAqc2tiLAogCXJldHVy
-biAwOwogfQoKK3N0YXRpYyBpbnQgb3ZzX2V4ZWNfbGV2ZWxfZW50ZXIoc3RydWN0IGRhdGFwYXRo
-ICpkcCwgc3RydWN0IHNrX2J1ZmYgKnNrYikKK3sKKwlpbnQgbGV2ZWw7CisKKwlsZXZlbCA9IF9f
-dGhpc19jcHVfaW5jX3JldHVybihvdnNfcGNwdV9zdG9yYWdlLT5leGVjX2xldmVsKTsKKwlpZiAo
-dW5saWtlbHkobGV2ZWwgPiBPVlNfUkVDVVJTSU9OX0xJTUlUKSkgeworCQluZXRfY3JpdF9yYXRl
-bGltaXRlZCgib3ZzOiByZWN1cnNpb24gbGltaXQgcmVhY2hlZCBvbiBkYXRhcGF0aCAlcywgcHJv
-YmFibGUgY29uZmlndXJhdGlvbiBlcnJvclxuIiwKKwkJCQkgICAgIG92c19kcF9uYW1lKGRwKSk7
-CisJCV9fdGhpc19jcHVfZGVjKG92c19wY3B1X3N0b3JhZ2UtPmV4ZWNfbGV2ZWwpOworCQlvdnNf
-a2ZyZWVfc2tiX3JlYXNvbihza2IsIE9WU19EUk9QX1JFQ1VSU0lPTl9MSU1JVCk7CisJCXJldHVy
-biAtRU5FVERPV047CisJfQorCXJldHVybiAwOworfQorCitzdGF0aWMgdm9pZCBvdnNfZXhlY19s
-ZXZlbF9leGl0KHZvaWQpCit7CisJX190aGlzX2NwdV9kZWMob3ZzX3BjcHVfc3RvcmFnZS0+ZXhl
-Y19sZXZlbCk7Cit9CisKIC8qIEV4ZWN1dGUgdGhlIGFjdGlvbnMgb24gdGhlIGNsb25lIG9mIHRo
-ZSBwYWNrZXQuIFRoZSBlZmZlY3Qgb2YgdGhlCiAgKiBleGVjdXRpb24gZG9lcyBub3QgYWZmZWN0
-IHRoZSBvcmlnaW5hbCAnc2tiJyBub3IgdGhlIG9yaWdpbmFsICdrZXknLgogICoKQEAgLTE0OTcs
-MTQgKzE1MTcsMTQgQEAgc3RhdGljIGludCBjbG9uZV9leGVjdXRlKHN0cnVjdCBkYXRhcGF0aCAq
-ZHAsIHN0cnVjdCBza19idWZmICpza2IsCiAJaWYgKGNsb25lKSB7CiAJCWludCBlcnIgPSAwOwog
-CQlpZiAoYWN0aW9ucykgeyAvKiBTYW1wbGUgYWN0aW9uICovCi0JCQlpZiAoY2xvbmVfZmxvd19r
-ZXkpCi0JCQkJX190aGlzX2NwdV9pbmMob3ZzX3BjcHVfc3RvcmFnZS0+ZXhlY19sZXZlbCk7CisJ
-CQllcnIgPSBvdnNfZXhlY19sZXZlbF9lbnRlcihkcCwgc2tiKTsKKwkJCWlmIChlcnIpCisJCQkJ
-cmV0dXJuIGVycjsKCiAJCQllcnIgPSBkb19leGVjdXRlX2FjdGlvbnMoZHAsIHNrYiwgY2xvbmUs
-CiAJCQkJCQkgYWN0aW9ucywgbGVuKTsKCi0JCQlpZiAoY2xvbmVfZmxvd19rZXkpCi0JCQkJX190
-aGlzX2NwdV9kZWMob3ZzX3BjcHVfc3RvcmFnZS0+ZXhlY19sZXZlbCk7CisJCQlvdnNfZXhlY19s
-ZXZlbF9leGl0KCk7CiAJCX0gZWxzZSB7IC8qIFJlY2lyYyBhY3Rpb24gKi8KIAkJCWNsb25lLT5y
-ZWNpcmNfaWQgPSByZWNpcmNfaWQ7CiAJCQlvdnNfZHBfcHJvY2Vzc19wYWNrZXQoc2tiLCBjbG9u
-ZSk7CkBAIC0xNTcxLDE0ICsxNTkxLDExIEBAIGludCBvdnNfZXhlY3V0ZV9hY3Rpb25zKHN0cnVj
-dCBkYXRhcGF0aCAqZHAsIHN0cnVjdCBza19idWZmICpza2IsCiB7CiAJaW50IGVyciwgbGV2ZWw7
-CgotCWxldmVsID0gX190aGlzX2NwdV9pbmNfcmV0dXJuKG92c19wY3B1X3N0b3JhZ2UtPmV4ZWNf
-bGV2ZWwpOwotCWlmICh1bmxpa2VseShsZXZlbCA+IE9WU19SRUNVUlNJT05fTElNSVQpKSB7Ci0J
-CW5ldF9jcml0X3JhdGVsaW1pdGVkKCJvdnM6IHJlY3Vyc2lvbiBsaW1pdCByZWFjaGVkIG9uIGRh
-dGFwYXRoICVzLCBwcm9iYWJsZSBjb25maWd1cmF0aW9uIGVycm9yXG4iLAotCQkJCSAgICAgb3Zz
-X2RwX25hbWUoZHApKTsKLQkJb3ZzX2tmcmVlX3NrYl9yZWFzb24oc2tiLCBPVlNfRFJPUF9SRUNV
-UlNJT05fTElNSVQpOwotCQllcnIgPSAtRU5FVERPV047Ci0JCWdvdG8gb3V0OwotCX0KKwllcnIg
-PSBvdnNfZXhlY19sZXZlbF9lbnRlcihkcCwgc2tiKTsKKwlpZiAoZXJyKQorCQlyZXR1cm4gZXJy
-OworCisJbGV2ZWwgPSBfX3RoaXNfY3B1X3JlYWQob3ZzX3BjcHVfc3RvcmFnZS0+ZXhlY19sZXZl
-bCk7CgogCU9WU19DQihza2IpLT5hY3RzX29yaWdsZW4gPSBhY3RzLT5vcmlnX2xlbjsKIAllcnIg
-PSBkb19leGVjdXRlX2FjdGlvbnMoZHAsIHNrYiwga2V5LApAQCAtMTU4Nyw3ICsxNjA0LDYgQEAg
-aW50IG92c19leGVjdXRlX2FjdGlvbnMoc3RydWN0IGRhdGFwYXRoICpkcCwgc3RydWN0IHNrX2J1
-ZmYgKnNrYiwKIAlpZiAobGV2ZWwgPT0gMSkKIAkJcHJvY2Vzc19kZWZlcnJlZF9hY3Rpb25zKGRw
-KTsKCi1vdXQ6Ci0JX190aGlzX2NwdV9kZWMob3ZzX3BjcHVfc3RvcmFnZS0+ZXhlY19sZXZlbCk7
-CisJb3ZzX2V4ZWNfbGV2ZWxfZXhpdCgpOwogCXJldHVybiBlcnI7CiB9Ci0tCjIuNDMuMAo=
+Hi,
+
+I think sashiko's are correct that we can err on the safe side and move
+the check inside the "if (addr < 0)" check (even though I don't think we
+have platforms with a PCS but no fwnode-described PHYs, but just to be
+safe).
+
+Also, sashiko reports an issue on patch 1 that this exact patch is solving, so
+you may want to re-send but with patches in the reverse order.
+
+Maxime
+
+On 7/26/26 15:26, Zxyan Zhu wrote:
+> When a platform provides a custom PCS via the pcs_init callback,
+> the MAC's phylink_pcs is already configured. In this case, phylink
+> validates against the PCS's supported interfaces and manages link
+> state through the PCS, so no traditional PHY device is needed.
+> 
+> Without this, stmmac_init_phy() falls through to the no-phy-node
+> path and errors out with "no phy found" when the DT has no
+> phy-handle for such interfaces.
+> 
+> Skip the PHY attach when priv->hw->phylink_pcs is already set and no
+> phy-handle is specified in the device tree.
+> 
+> Fixes: f0ef433fc264 ("net: stmmac: introduce pcs_init/pcs_exit stmmac operations")
+> Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 562d20830b94..044ed3b89247 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -1346,6 +1346,10 @@ static int stmmac_init_phy(struct net_device *dev)
+>  		int addr = priv->plat->phy_addr;
+>  		struct phy_device *phydev;
+>  
+> +		/* If a custom PCS is in use, no PHY is needed */
+> +		if (priv->hw->phylink_pcs)
+> +			return 0;
+> +
+>  		if (addr < 0) {
+>  			netdev_err(priv->dev, "no phy found\n");
+>  			return -ENODEV;
 
