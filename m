@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13CA33123D;
-	Wed, 29 Jul 2026 02:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CE015B135
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 02:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785290445; cv=none; b=oBB4rwZnFEvuqhanFeIjDj9v37mSWuHh6LnDfXp0c5SmO9U1D991XCMgwZ2kq0fMzIKGRb3+wi59YTNVobo0XbC0BlyQGg+nA2vQyaAaNQr+vE23EGX+YPl0GPBxNid/2+eK+gV4y7cz3RoF/96YY4wcAT5RAclEiD3agOVMUrg=
+	t=1785290454; cv=none; b=j2DknyuZ83dDvkVygCrC5SZuQ48ZA9us+oY4EBIiiMiUH+ff9vaFbYFfpKnA2lBxhUKnFkRPAbaJKAd/VH+GS8uVQTHoxwdZ3zlZus0qBR8L3Ru6nfN8atycjqRnmRa549tMS/g+t4V8vD795OOnPXaxonuFKk6MDcR4m+rG+1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785290445; c=relaxed/simple;
-	bh=J6bFhGBxGiH7FmfXzOdH6+Da/GvtqvDGRo5sIMHX5hY=;
+	s=arc-20240116; t=1785290454; c=relaxed/simple;
+	bh=icd3UzisFSAyoYdd182VAcDPlawL24HcPoOOyXw2GJw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ERsX2zYBRss5+ofxKc1Ih5APKnlaJTJRu7sKMEBQe08uaNpIXR/4mxIddVemsNCpXw1taxjZjvcQsCwheRgyUT7CFSzuK9cSdfHNi5uN8CA06u6A6i3qeenF9cwAy3uIjBu72BfHTpOWfyPXQPfJAzzyBhX2ABTfc92fu21Qj/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4qX39qO; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=fXXRy3sgkW3mFWYQOLbNLGyE1Jg5SDx4v6lIbzvenxME9gW17hVhIx4Is+hAgtW8YajrEwgF/IMOgHK3UZTxMXVmg9KMAFoVXdpqeJBs3SKpvwxJfTBCz9PoaOT1OQkIzMbCk0F6GaHmPl0uy/r8CO2KauTz4jd5yJ4+JbdY8xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h2Zocp7L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4qX39qO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9023D1F00A3A;
-	Wed, 29 Jul 2026 02:00:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h2Zocp7L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901BE1F000E9;
+	Wed, 29 Jul 2026 02:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785290444;
-	bh=Ha0OD08wkoWj5BNt1xQa7dD0n2/rEZ7jiraEBW6xa0s=;
+	s=k20260515; t=1785290453;
+	bh=7Mi7xfzjW05+qpu1orYlINpbNwPugNentb+SWctKldg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=m4qX39qOF25c/8/KM903U9EXPQzOvOrXouY9qOCq7n2rzOMTeMW1xvNROaC6ZGEXU
-	 Iz232xTdeKjSqCOS92MUhf1dgkSzX11u2Mf9dUIpitTObdc6UfQuliEsNyIFHq92hK
-	 y8iFMG2gjSaWIuLyg4h3vnXFBz1VBlsB9I5QxAk8RpUi9p+XnlokWjodJbzesNjzGL
-	 WZn5v5KG5T9wCoBM3dBIUVECz0HpTJFex1DDmGsLUhkQPObyDWatJ7K77Mqo3vAuys
-	 SxEluNqeAko7ePu8qNPZFNxSaco/SpMl6/qznwUKBsY+WClgLyXvDos6XfNdznCdIs
-	 uU0ACSIAWymNA==
+	b=h2Zocp7LuTsBPJa2yAgy93V6VDcyu6CWk6Tzuf3NQjy44nCaLx0tAeZI6YoodKuon
+	 HGAcfBjC78T3FLof0ZHl6CQeBBrTOGjL9WGgbnkO2Q+ZrEGkjJ6qt8zCagMJmahGeR
+	 jsu/tYb/1MPVYbI1ACdsTTjwAT9q2BHNAGVerKg9SxbmnBa+zIlUcvv/o+uv/OtJBx
+	 nRnjqIl1ctlnoKcQVc/mp/4tRlpZ17MFXGJu6hKfuYCog1TMyRIKQuhVmYqprtrJpf
+	 YSkO1vdO0NScuhONmBST+d2jO8gtiHGne8gFEZ1vPyqcVT7x660tXRA6K/w1X/LSH3
+	 K6VbOgoBr4TIg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56B443924A60;
-	Wed, 29 Jul 2026 02:00:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5682C3924A60;
+	Wed, 29 Jul 2026 02:00:19 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v5 net] octeontx2-af: Block VFs from clobbering special
- CGX
- PKIND state
+Subject: Re: [PATCH net-next 0/3] net_shaper: clarify kernel API docs
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178529040888.2407687.14816470254096794560.git-patchwork-notify@kernel.org>
-Date: Wed, 29 Jul 2026 02:00:08 +0000
-References: <20260722081229.1653619-1-rkannoth@marvell.com>
-In-Reply-To: <20260722081229.1653619-1-rkannoth@marvell.com>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: davem@davemloft.net, gakula@marvell.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, sgoutham@marvell.com, andrew+netdev@lunn.ch,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, hkelam@marvell.com
+ <178529041788.2407687.8522877289989396527.git-patchwork-notify@kernel.org>
+Date: Wed, 29 Jul 2026 02:00:17 +0000
+References: <20260724210756.1553565-1-kuba@kernel.org>
+In-Reply-To: <20260724210756.1553565-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 22 Jul 2026 13:42:29 +0530 you wrote:
-> From: Hariprasad Kelam <hkelam@marvell.com>
+On Fri, 24 Jul 2026 14:07:53 -0700 you wrote:
+> A handful of improvements to struct net_shaper_ops kdoc.
+> Today driver authors have to dig thru the shaper.c code
+> to understand the behavior. I'm covering things I wish
+> were explained already during recent reviews (within Meta).
+> There may be more things that need to be explained, incrementally.
 > 
-> PF and VF NIX LFs that share a CGX LMAC reuse the same hardware PKIND
-> programming. When HiGig2 or EDSA parsing is enabled, a VF NIX LF alloc must
-> not reset the LMAC RX PKIND or default TX parse config over the PF setup.
-> 
-> Add cgx_get_pkind() and rvu_cgx_is_pkind_config_permitted() so VFs skip
-> cgx_set_pkind(), rvu_npc_set_pkind(), and NIX_AF_LFX_TX_PARSE_CFG updates
-> when the LMAC is using NPC_RX_HIGIG_PKIND or NPC_RX_EDSA_PKIND.
+> Jakub Kicinski (3):
+>   net_shaper: remove incorrect comment about group leaves
+>   net_shaper: clarify the kernel API / comments
+>   net_shaper: add some notes on re-parenting
 > 
 > [...]
 
 Here is the summary with links:
-  - [v5,net] octeontx2-af: Block VFs from clobbering special CGX PKIND state
-    https://git.kernel.org/netdev/net/c/3bd438a58e91
+  - [net-next,1/3] net_shaper: remove incorrect comment about group leaves
+    https://git.kernel.org/netdev/net-next/c/16812d9674d4
+  - [net-next,2/3] net_shaper: clarify the kernel API / comments
+    https://git.kernel.org/netdev/net-next/c/26bc4cfb1737
+  - [net-next,3/3] net_shaper: add some notes on re-parenting
+    https://git.kernel.org/netdev/net-next/c/ff6461c14834
 
 You are awesome, thank you!
 -- 
