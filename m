@@ -1,117 +1,120 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC9D382F28
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 22:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB9D382F28
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 22:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785363517; cv=none; b=ZYLkkEzEA3wuXvBrOAPbNu/l1Hhi2Bj3s2l6xJ0dIjZJGMZs8ugk3V7sJ/iTxMBvt9u9MD+UGHfT2GF3SlESkN6a+it60gzX75aQTuT+r/+o7SAlFqrdCEufgUKSqftJ6/kYqszfttMI0DLSUcrvmmj7N2eH95o1J8BSLbb6UPQ=
+	t=1785363536; cv=none; b=kglgiQN2v9KdMvYX9eerJIcwQfDOlWODDWbzFvHOlQLWlJDbvbltAO8Pw+omoDd0ynGrwmdVtP8OMXSm180O6Oa7I2BWJ8CCgpkHrrZWf4OAJCdIgHU2TWjZQPjHvtUSUl3++U/rcbjyH360Q0xTVZL4WbF7oN/fydYCQbuNGPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785363517; c=relaxed/simple;
-	bh=nyleos4AoSWbfZPVZWWGj/vCZsfcuuzsttq1Emv2tZ0=;
-	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=nBeFz/XJ9/XTtBSxr6TpIbZJVyz/KsfkKvPGZrVdhSbHJtb+sfoykztLS2N1t/FPPZ5qGa5Pis2S66OnrQnLgVgzvntOyOYlhUwTsAuxpg4eT6q3YQVihICC1wJMkSfK6Coz6AxpUhfUXvxXkIoYRmh3Ex+GKNhXq5kk5tnLCNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m19RAPYi; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785363536; c=relaxed/simple;
+	bh=p6YT1ojFdHH6dPJ1COfHWuAMGY4uAomeoBbLL9a11c4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LJl9jQ/cTsUD06ezSCKmTY9+dRp+QW5BWLTN+GX0Hx3QoP//9B8KnaxLIaNmIRGdsYKGIa5rxUo9K3Rug70YqGVAlcIozI27ZTetsQa//+B/MaOV2DYKn9yVK/OFi8gh+BQqzg6wMleggQUEq6b7Qh72QTk6WnxhcaLhYF7IShI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=WbxB8sTU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AJM9TKQv; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m19RAPYi"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-383cb94f742so1527532a91.3
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 15:18:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785363516; x=1785968316; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :message-id:date:cc:to:from:subject:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lP8ssPR/bx8ZNeUXDsh51j7Vek7sgVAeH3Nw8OcnkCY=;
-        b=m19RAPYicbk88yLp46uu3QcT0zpzSEnvBiGz7tJpJie8bVY1Ntk3JpLhQGOJDtiMwP
-         la7CEJ1qtbxaziYJ/PaHBBBsYjaWJjyQnoeWxwWUF0di6VR5dhVbp6UQWW6UvAunkys4
-         sLpqA7PpmytsD32pXntoVTHkGFzGrRMj7mZO1Ms4q39NmiaeiZfdtlQIBdWUWKjdSGqx
-         U9wDuiKe78Jts/gWbU9e7Xg2522xuWwjv3mtwD70GOpORRCspyJir1x7zvGs7PG2pz5G
-         ttZ6Sp1/Axp9Z78jjC7voJdH7JDPI1JQKGvYMrUBYdIVWHmLEhBQyZSZ9i/Ma0rqSHmu
-         gBXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785363516; x=1785968316;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :message-id:date:cc:to:from:subject:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lP8ssPR/bx8ZNeUXDsh51j7Vek7sgVAeH3Nw8OcnkCY=;
-        b=amIMNwHklnSj12Ib1KI2Hgrk6DQ+kpvwaDCHBglXwWrCltIYG/XIwT6wE75/EufAK1
-         7QS3ZW02xuXqL47ySNCSslk8pgJKsV1ArTYrWJyWJ1QXu5sHfdl2Hl4AJxQ/TpX+s1Ne
-         ruvVAWPQZHfkFDkvWREwZRbszxjPfcEDfqXpYHcKn8XAS6KEFjaEYcHF6Dq9FAih+Z16
-         t0e9GCYg40efr6QvMbfN0fSV0K3wUBDKSpbSUVTVvD9/WNfDwTyxT7VOn6chV6mLWwz9
-         ffufQn3LyykiZcb8RrGrqsuUFysYsYCkSwOwnKS5YPtcoVdjvxZz5MNj6Q76pvISOxWg
-         UHPA==
-X-Gm-Message-State: AOJu0YzLWrFQuX60Fdy8JetnUClw+XB+YnTyi5uYzO9jD2T+oiluNa86
-	oSg9No23cDnAwHKm6900yCo0+47oyHBrA8kTgUTU8DpywGwwmRIkBTGT
-X-Gm-Gg: AR+sD13LBM6s1n2BP/ez6wO/Ft0NvSRaeMXNNJc/R6uRddJKvDKV3WYp4V1FvhMf+ts
-	8j9q0pbS5bi2efv1Kl5GMBRXpeSENWB16rx1ooXYakz8Sv3VW6w3v79lKFM3QlcriWoKK3Pj/ak
-	VsmRtRGYlIZi0q6u2rwyGu+SmoLa3LSbnoP7bq6U9Khlf8klt9cWbde/ljVxQdCK9UCQDWvKoMn
-	82vu7fhnwETrC4LJu0n/xl2u/1MLA/aBZ0IUQO9m4OX2g8fkCfHSFId+8QrzR8p3Nev/NocuGH7
-	+1pfvh1nIx64tqsUofrjotdhDYLRFGoeqzZZ9rju6pKdGglViv9T2DuS4ghLe0yBqS7U76W32Vg
-	Y6L7i1zDkYsE1BfV7BkNMQC9QGcdP78/9PFSDRGhbWo+ZWZ0JHNdG5xHcE/B4lIsrOULqdKSRzw
-	ZubO7bpVgFPXck5CRGh//UjQPjmd9jCvBX5RXFlcNX1Ks8cyUKdgLFVAwvSfgsL39mlUDTIGPYs
-	HQYajpsp5OMlcMkwjUfcbAgWRohiq/xkG+oxPrvBa+IwlePekJOQcKvVar3wPYPKsWqsPG+Na+2
-	qQ==
-X-Received: by 2002:a17:90b:28c3:b0:37e:1430:769b with SMTP id 98e67ed59e1d1-38f9c0952camr56905a91.24.1785363515732;
-        Wed, 29 Jul 2026 15:18:35 -0700 (PDT)
-Received: from ahduyck-xeon-server.home.arpa ([98.97.33.182])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9b42d176sm43910a91.4.2026.07.29.15.18.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 15:18:35 -0700 (PDT)
-Subject: [net-next PATCH v4 0/4] Add support for XPCS based RSFEC
- configuration
-From: Alexander Duyck <alexander.duyck@gmail.com>
-To: netdev@vger.kernel.org
-Cc: mike.marciniszyn@gmail.com, alexanderduyck@fb.com, andrew+netdev@lunn.ch,
- andrew@lunn.ch, davem@davemloft.net, edumazet@google.com,
- hkallweit1@gmail.com, jiawenwu@trustnetic.com, kees@kernel.org,
- kernel-team@meta.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
- linux@armlinux.org.uk, mengyuanlou@net-swift.com, mohsin.bashr@gmail.com,
- pabeni@redhat.com
-Date: Wed, 29 Jul 2026 15:16:25 -0700
-Message-ID: 
- <178536329631.250758.9931617589255894843.stgit@ahduyck-xeon-server.home.arpa>
-User-Agent: StGit/1.5
+	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="WbxB8sTU";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AJM9TKQv"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 629531D0033C;
+	Wed, 29 Jul 2026 18:18:53 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Wed, 29 Jul 2026 18:18:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm2; t=1785363533; x=1785449933; bh=OScgmI7bI0slUvvJcmdn4
+	OlxoI8boCp/h48Nv/WH/2A=; b=WbxB8sTU/5Mdf/f1vwJaSZBRgjrYHjp4dENIx
+	OukbojFMsqHxnDXTH5RbwuR4+qbkIm0+Hly3owLcEcbAnhzCCXUmCVL4G4Qp3/WJ
+	hPF6K0yEF10yy0wgeWpIEj769MVjmv+W1NJCtXMvhT/uubq86+ykURlALtnubCGJ
+	nWI6+FwBceO7dCTqnjhX2ZAFrNA4+mWEDTkx67Xy1SjGgY5dFqL3KoTUpVM56srN
+	GqSVNS/0yTmqA8Tmhm0GLlx/V07wvJhjzAQ/4T60JEWAEdlPTNGm403mg4RTs+Ki
+	uBY1mawrTWqk0yDgL+XJA4g8aS/PX6tBZSW/PifIxgONeKJ7Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1785363533; x=1785449933; bh=OScgmI7bI0slUvvJcmdn4OlxoI8boCp/h48
+	Nv/WH/2A=; b=AJM9TKQvvtoL0K8NVHiMbV17KUbMX7gTg/xzP1oVy4A+6JP+lXX
+	qPdJGFREN/NLjeax8+1UC9QIFP8BtrsNGObkHXYbXG1C/oOksVXYzuKkKM7XkRRv
+	c3DVzWMmAZrY1ITNdgbsjHVICF6HN8qzcOTM+eAIVmIr7aiQ0ZhEQiRzHO5wQGAY
+	P3CTcFEKFH0L2h+FbcfBH35RlZY98j90vwVkwI0bHEs+P3R3XZ9311NEdbuE6JUB
+	sphjrMstB0u3Ro+NpKF5oT2sOAxOhOd8A/cx1MpRcHnLmsDTfG3NuShHr7Dpn7qr
+	KwSIC6z8wCehH4/DLX3lPcQPL7W6W9PNd8Q==
+X-ME-Sender: <xms:THxqajbC-kVZNs27WFN1V3l_8cTfcjBLFj6o8rMbkxOkQ0ZnX-7wPw>
+    <xme:THxqapQbNg9uD6H3klZkoO2S2IBwHMl9hXKElvcbkzAtLKIYpT8W-6PnBl5YfksF_
+    1i-c3QoAcSVbXx49miIj3R1DMWFuxlVw0oNcxaeL4h_l2LFgFjP6IA>
+X-ME-Received: <xmr:THxqauRIU372VAtfvjJcMbwvmZzlI23n90p_6FDp3LOlTWNTWbbrTshtrFmtOg2vzxCnQ8oQPmp3E21fXniB>
+X-ME-Proxy-Cause: dmFkZTGZTYMpZx7npKrobN2GRfEQSy3971WhVLbHQJJtJzfcokwFL0IWR/DYPuuTierWNv
+    ox2BMQR2xC3PY9KNZyU/9BCKRehWtXuoqooi3FHjPW2GvQ6orEMLQtEwdARECdfNC6wKjc
+    SKhHCsGh0Zd6OwH2eLmlXoGd/ENGpng/24JvdFoFmti3em/nvcp5zMQ5U5bow8kbwyB9bi
+    4NGXnnZNqIfstjLgwfmy8dg1m6Fy7HkAWNGyFZ8y4TAo1Gb6PFVSqXOYRjdC6cyMsRkf4m
+    4WeNQsixacMnzMTmQDiFMsoRM+pBCHgNkOmGEEmFo0cU8BQlZSBLBTEzvdwFZxHDU46THf
+    9jjqd1QQhvSV8EQIWPsbtQg+eNOr0xPU6WwtCHkO0ckKZ7nrOszC3KC+8fi6+U0xaSjcYk
+    vRQ+Om5PvpX71GSnIdnVZ5e06vOj5uOelFlNoAIBQ23VERyAtb1MQR2mWTEPAsAGpAH/cC
+    lI+enURK2GPaqeVMs2mbfqZHWh+RN+r/v95zf0FZv5DRk7rEQXiIxU8gvRGbnAgx/1Dxsi
+    utV9veFLfpMK5qRvflFiCj+Z3YST1e/j9sHmL/L9iNwJ3rrX5G8kynxJwdwEU3Gti3eHo+
+    s44ehq08hf6EdrJrHS+ZuBH1j5j+BhL5IG1bt0ZcmAQkZxR+2uyzBdBsbYjw
+X-ME-Proxy: <xmx:THxqalQLxAxV8dQEDN8DHsReNp4CvStIXQ9tbFUZLxxc7jxifVzxHg>
+    <xmx:THxqar4HLBAfeqT__rZcF9mrj_n29j5Kckpu5QlUyuC1XnHxJHuX_Q>
+    <xmx:THxqap1Z2Fz2jIQLs3WD-08Zo7wPbrsNuyNRR0Qc44pw8qD_81DMQA>
+    <xmx:THxqauB9lgEwCIUGxpZnGhJbxqMQRlcj-yH5vt4Bk3QSpvsNju7kvw>
+    <xmx:TXxqanwxiUEBELOqssU4OAIVq45Io3SP1vVKpmiz8-dkR6ZZUr6a77e6>
+Feedback-ID: i80b64ba7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 29 Jul 2026 18:18:52 -0400 (EDT)
+From: Juanlu Herrero <juanlu@fastmail.com>
+To: David Wei <dw@davidwei.uk>,
+	netdev@vger.kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Juanlu Herrero <juanlu@fastmail.com>
+Subject: [PATCH net-next v4 0/6] selftests: net: multithreaded multiqueue iou-zcrx
+Date: Wed, 29 Jul 2026 17:18:19 -0500
+Message-ID: <20260729221825.42773-1-juanlu@fastmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-This series adds to xpcs to add the necessary configuration steps
-for the DW PCS/rsfec for high speed interfaces.
+Extend the iou-zcrx selftest to exercise multi-queue zero-copy receive. The
+server can now run as N worker threads (-t <n>), each owning a receive queue,
+io_uring and zcrx ifq, with each connection dispatched to the worker owning the
+queue it landed on. A new rss_multiqueue variant drives traffic across a
+multi-queue RSS context; the earlier patches are prep fixes and a refactor.
 
-I picked up the set from Mike Marciniszyn who is no longer with Meta. His
-set ending with v3 can be found here:
-https://lore.kernel.org/netdev/20260527000958.81108-1-mike.marciniszyn@gmail.com/
+Changes since v3:
+ - size the io_uring CQ to the zcrx area buffer count; the default could
+   overflow and abort a recv with -ENOSPC under multishot load
+ - Makefile conditional/list cleanup (Jakub)
+ - drop the anonymous scope blocks in run_server() (Jakub)
+ - docstrings for the new Python helpers (Jakub)
 
-v4 - Address AI review comments
-   - Simplify the set by just using separate PMA1 instead of scanning for it
-v3 - adds an alternate xpcs creation that allows for specifying multiple addr
-     values for creating xpcs
-   - remove probing in favor of new xpcs create call
-v2 - probe mdio bus and use phy_find* to isolate mdio address
-v1 - initial version
+v3: https://lore.kernel.org/netdev/20260722203950.58550-1-juanlu@fastmail.com/
+v2: https://lore.kernel.org/netdev/cover.1776444379.git.juanlu@fastmail.com/
+v1: https://lore.kernel.org/netdev/20260408163816.2760-1-juanlu@fastmail.com/
 
----
+Juanlu Herrero (6):
+  selftests: net: fix get_refill_ring_size() to use its local variable
+  selftests: net: remove unused variable in process_recvzc()
+  selftests: net: refactor server state into struct thread_ctx
+  selftests: net: add multithread client support to iou-zcrx
+  selftests: net: add multithread server support to iou-zcrx
+  selftests: net: add rss_multiqueue test variant to iou-zcrx
 
-Mike Marciniszyn (Meta) (4):
-      net: pcs: xpcs: Expand mdiodev member as an array
-      net: pcs: xpcs: Allow for multiple addr in creation
-      net: pcs: xpcs: Add hooks for xpcs configuration of rsfec
-      net: pcs: xpcs: Add handling for 4 channel rsfec device
+ .../testing/selftests/drivers/net/hw/Makefile |   7 +-
+ .../selftests/drivers/net/hw/iou-zcrx.c       | 437 +++++++++++++-----
+ .../selftests/drivers/net/hw/iou-zcrx.py      |  50 +-
+ 3 files changed, 366 insertions(+), 128 deletions(-)
 
 
- .../net/ethernet/meta/fbnic/fbnic_phylink.c   |   4 +-
- drivers/net/pcs/pcs-xpcs-wx.c                 |   4 +-
- drivers/net/pcs/pcs-xpcs.c                    | 304 +++++++++++++++---
- drivers/net/pcs/pcs-xpcs.h                    |  37 ++-
- include/linux/pcs/pcs-xpcs.h                  |   2 +
- include/uapi/linux/mdio.h                     |   3 +
- 6 files changed, 308 insertions(+), 46 deletions(-)
-
---
+base-commit: 2bb54b49e9d522f54dc9c0fe10ba40fbc56041c8
+-- 
+2.53.0-Meta
 
