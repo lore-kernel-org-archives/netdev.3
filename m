@@ -1,125 +1,224 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012003.outbound.protection.outlook.com [40.93.195.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B3A39EB47
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:12:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785316324; cv=none; b=U4RFZLJ/SPEzLwobKy6xiCaUXuMcImg6cWRl1HOtz2pLaDvn2LvzvrR8yIwykm3jmqf8zoir5fn6XwDNRPa/ItNjvrwlVv/FTQn8tyEU8rrQCnvDzcebSNZnOQFiDrVyiCsQqydjtjDVAapRW5XP5bNUq3cK6ezvBieYUWqlCuA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785316324; c=relaxed/simple;
-	bh=1tfKRhaJjdfZy38gZAanLVHmCMS7aHKIqtBx3ftd3W8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rh6QmSrek0Z+NGAdXktLPKb+5g8DJU9eJI+YnzAH2CHVVP+i7eDOHk0P8DpbrluhUqLD1JsbtmYq4lr9147UBzKOIj+vq6Y0wIIBLqw2OZhzUIGlg3A14WDPoWgTxM3ZAifV8ksox/ZmGPAuet8NUJenl6sVoYaBuTrd3u5VTR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=aP37c3S4; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965F839EB47
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 09:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.3
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785316360; cv=fail; b=PL8iS+HJJufGVrS19qk+Qn1LCdShYE+oqOuwve5elXhOulMDh6cbwzkUiS76l6PpSFTipJczHy3jgYHMDhCuVVFygL9lY/16vntp9JNfVCHxsv1yD1WVM9GbAtwUWYFTe3CVI85TitoK5mYQ8PYWgQgtpO+ITo2JqWASf76h4+k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785316360; c=relaxed/simple;
+	bh=SwmP3gZde3lAqQjcWl1ZoPsLTyyjuJtM9sdAuehATmA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=XVyEsVwEL1SOAScgFQ+nRSUVy6aRXQGhrlY28QTqXEd2+RWvfBSfeChCtLMKksipr9jM2nfWN3blUPlAeoNO/jsDrYljBDF7eS7mCzTvntUFqjG5gYWNkgd5Vcg5btE9+HM1SQ6ToIx6CfNwJaUHWJWzgT5TFvYqfd/2qLv20aE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ng8Z3+95; arc=fail smtp.client-ip=40.93.195.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="aP37c3S4"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-495437bb891so5693705e9.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 02:12:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1785316319; x=1785921119; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kqRebawaW+R270ENqi7eByUr8cNF8X3bbKCoC4j9T1s=;
-        b=aP37c3S4N3h61FwTq7ivW7bCrHai+dbbtEKqCspMYLM4evmUpYEKyM02y8RdbspXKe
-         zJJSBaNBf1ssudK/5kqBsvJooW/UCWG32xOhz+xMhCpTFNiIfFInD+SWb5Tmpp/xKcWj
-         OqzcGUj+gXoK3T7TwVFo/6Q07m6idkMh6lpVOg4s6Dt3+WDr2vS3/2eZ1cRlicc3utlL
-         PANg29KTPwzxWAJpkfx4BW8FrByt/FDzhVzTLvzCCjm+HqxliOLhybIba9paqb/iGLxP
-         TgHQHwq39RuUH/PhImKgDU9NxLBtjOkKl7A3uPx1c9o8scih+dDMF3biUuguGuaV1cT9
-         aqcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785316319; x=1785921119;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kqRebawaW+R270ENqi7eByUr8cNF8X3bbKCoC4j9T1s=;
-        b=qa5swisV9vjWbcO381+Dp+Dv5Rrqwii5emiKQr4X6tF81tFsyoGYsqdRTam+S/QASk
-         SKP7RNCiyEm+SHLDwY0P5LGqfSSeAPbY73UqLSjg2aHhW0ec9YRFiVyFKEIQhccPmhEl
-         9sPmtKITIdKWOFBiX+sJ9EOBzM7zCo2hcGMj0oyD+FYfpCl0XG3/9At7mNnZlo/PMxh5
-         osiKZPEcHy1vH0Pn0K344rFefFF0qjM7uhnoEJGALNuY65L63L1OvJfYzZDRVdNdDkOk
-         S2/on8g8faoRtDnDkQYnR+NGBdP3ycTXyp4bFjKXgRcENXea5jNoUUa3M3g38NTYKvf3
-         1K4g==
-X-Forwarded-Encrypted: i=1; AHgh+RrSrgGjhBLjWBn6TDznH3TtnB3cRKcEMvo2xIC6JzZ8EP1eoPi6aSo7uzuHYUDlL6j0kDhAuJ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNi4GOwlxMkl9/tJDPNdt8ffq38N/Oie6XiTN8buBoLg0IosVf
-	u+eCV2m1iqj1pbNvWF9aBjgVfeA49oemvxZjMgDLfGlJLsQ70tB+8ZWgdZMCSINurq4=
-X-Gm-Gg: AR+sD11fEo5ruSmuu/S569ofXISd0+6M+TuOhCkQ82SzR9c0Wt5J+R2ytG3LCDMij04
-	wOakmO/ibsuEm0yJHpQiuZ9FDkPDY+BogpfSEBPiMx4tFnqcszKUN1lodQPMBxBJzRZlXqSZ448
-	XG0xR9rO6bRs2EAwjfKBatEnRpt0K6Nh/UW6PyebA49ofRFcMQdweKDWceARvh7HqBn4380SD8v
-	N8bFiXwzN0hTWax4nIzuSk7u3UmVzksZsOG8NED5DzOHRp2nT0hgmJWeajNXDSt2qU4NObAdtc+
-	OEy7yPzeVMXx6l0ySnR6H2zn3hM0XhqpM2HTG6wD6y+uarAEbYgxVjPBVBiNfTPQ6zLh2pD+d0R
-	kbILKLtaTR+sFCiG6bAK0stuGWc554w90HvKz4d/9dY67GxZhqh6p+G0FsYXM48vZ9ox1z5xmmm
-	wodPHkP46zVIcNQwaYBuZJL1wq0NzgOY0CmsVmrMkFqaKHTmB+lOR1mO2GdwLQfYfA3QBb2A==
-X-Received: by 2002:a05:600c:8710:b0:492:6f5c:fd8c with SMTP id 5b1f17b1804b1-497fd311860mr15174085e9.15.1785316318462;
-        Wed, 29 Jul 2026 02:11:58 -0700 (PDT)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4975abdca42sm40097255e9.0.2026.07.29.02.11.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 02:11:57 -0700 (PDT)
-Date: Wed, 29 Jul 2026 11:11:53 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Mark Bloch <mbloch@nvidia.com>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org, Jiri Pirko <jiri@nvidia.com>
-Subject: Re: [PATCH net-next V7 4/4] devlink: Apply eswitch mode boot defaults
-Message-ID: <amnDfSmMVzpiH2gE@FV6GYCPJ69>
-References: <20260716084852.549909-1-mbloch@nvidia.com>
- <20260716084852.549909-5-mbloch@nvidia.com>
- <20260724161111.2ac47089@kernel.org>
- <c6c0d67c-d832-49a1-b62a-57fa6ee56a47@nvidia.com>
- <20260727131033.237f70b6@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ng8Z3+95"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vXe1RQSTGf3QbM/auyOluwkn5lcBL3q72SlJNrntr6KEiRVAX7fYAZ0PFnef4fGlpV35UF1XS6cTi/3Y3442qNnPhXSELK+SYGUJv+IR8gaNt5prsx8DO8AyRuvIiiaq7hxj3XnFm/X7RBXw4dg8pmOTZFl/dwrVS/JADuUSqPj5vZEnvYuY8FyFsOeKWDoq64OqgD/e5ODJ/e8L4BHjZjUbEBOnDSr/Aa/6kwcKfFBA3WGaLIDOm9w/KWtWEeZZGAQ+EWMeK1dWui6KkQITXInDbUx8d/p3bqtegWjXFIK8MriUFGkpPr4fFFPOrVFdXfitBgSi5Wy2pJA9809zFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6C3LtNLVNJVoJ5AKQCWQtKmbRHD6UjmujOwipeAuoyI=;
+ b=yLIgpuJiqbZ1hg4eciq822eUHN8BQMqTG9X1l6IHnkxnwRQRGvdSZEkN9k/bD9hArA/7le8U7CA0Vj/cK7v7Am+rX4jI/WVpzk49MLC3HKpTq3QogBOoLEysrfPIuTuzq3Nqnsi86lGlTcGHJjo8P2gJNKIMkCyVu0dbkx51IVhdeiM4RDPWzSM2CUVqjv6IINLDzDZcUQuSEvcLKn0UEhDMpTBqPJrA8csQmRLXP1pDZiddOYKnQUrbCot7R57U6kOcIWPleFbeG/3EtdZe6869sDG/p62f+xJU8uAsHLFXVnXzS9NlwjCCREnqSH94BfivdpcELYuYxSmcoBgdxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6C3LtNLVNJVoJ5AKQCWQtKmbRHD6UjmujOwipeAuoyI=;
+ b=Ng8Z3+95HRVSuqWC1wH91KhkNrzCJmzaKmlLO5DiIpkfXZ0u52OLhC1Sezuq/zievXsjppPZ8u0kiM4PVm2xC9T3odPGGPTPfa5nwsweslwkgdnK55+bDmzRa8P9Y1hBMyMqcLCOizF2I7n2Rybv1jUT0zYisIOjksLD8l3vsQxOfJHCdm2Vyk4SAECGq783GHmiuJ1h6yag4Sk1hpIb5zlhdxhjUcfKwM5phz7Ep6N60Nv+tlK29xE5Xb0jmnBNWguvfCLUrAzjm91YH6BAs/F5lULSSmlZmyR31mYJC/TnKkLKrTJ89mjqezO1WkcOFbddRZ59Wj0UjqB6FwGGpA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by SN7PR12MB6862.namprd12.prod.outlook.com (2603:10b6:806:265::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
+ 2026 09:12:35 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0270.009; Wed, 29 Jul 2026
+ 09:12:35 +0000
+Date: Wed, 29 Jul 2026 12:12:27 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Ren Wei <enjou1224z@gmail.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+	leone4fernando@gmail.com, vega@nebusec.ai, zhilinz@nebusec.ai
+Subject: Re: [PATCH net 1/1] ipmr: only copy pktinfo to cache reports
+Message-ID: <20260729091227.GA1258429@shredder>
+References: <cover.1784894076.git.zhilinz@nebusec.ai>
+ <5bc7cd71c2d671b305f25497d88ae8a0aa663c08.1784894076.git.zhilinz@nebusec.ai>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5bc7cd71c2d671b305f25497d88ae8a0aa663c08.1784894076.git.zhilinz@nebusec.ai>
+X-ClientProxiedBy: FR3P281CA0198.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a5::20) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260727131033.237f70b6@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|SN7PR12MB6862:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8c0957ed-78ae-467a-13d2-08deed51876e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	INd0u+JVB1FFgjLkK3my+L1d8Fgl/2g0b3YYiKnVTwLijjgaKiDu/7+B7wgeybTK7ESLrRfyTfzbaapH5zmvMZYxIXB++ef8JqVdgNXFQ43aXapO+KlCdCx6RejPjAXzZ8qs5pO5iuQMBaGEobHy6oiUVbtznNCgZ6yxLXdT/rnSYmXIO3ylLCwxFa1wLbOwXF9Lo9+D6I7aniP6vs/Qi17Qrjeppj24aPxnaarAjiTX1kyDoNX9kOYIvQUKfR5KRCMDBjD3aLruKFrtOY5PQRyfI/tU0XXF9OKlF94i+o8TEcmRyJXDyEb0g7KiEwIN6Vg1OMW165MRLSVNw4oKyHYrgTA0dre577anfwDUEEzsJMi8ZaoAhjy9aVnnJtaz+jPec4n7qgQlPpn/tEAmM4t2+CMbAUKXVJkKmuzw2bdU8CZqLIgvGzH7UWNm1PI5jATNWx8F5gAYtBeeTULy0Y8c/SBO94t3z53IYUPaIQGIc7/lkur7YQcx4KfncW8k4RQMz7bgcijSwa0RVU1GJ7fA2UPzyAZnhoxR68c3MSENPYOvxBZpbYHvTTLQcxjmosyaHPKyy5lfvcESv1cEqIjEo67g0WkHlnh40vv0STUKWnFlDK6nInU1mxlXerax0HALvfTiA5fWujS/rhfff+Kp25234nrqV8b31UKt1AE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5WmMjfOzICcUU7bYvkQAHibggT0onTsCRecxpNWrcPLkQ6/VAN+LTuy9wAcq?=
+ =?us-ascii?Q?QJUZhGJQKrv7wPqacCfbORSBsxdwOKpRBexoNYcvz384bLlAtPy9VblgDHZR?=
+ =?us-ascii?Q?OSdGF3n4bwRn4n7M54XJJGPvT4J6jhgRM4Jp0ZY948b+mxeLFcj6VQUKOpUO?=
+ =?us-ascii?Q?SDfMj52Z9XXqRd4Hy/xT1lAWij5wdwb42UP5PrRg4PSZRCAzXwZMPCWF5HJp?=
+ =?us-ascii?Q?a120tqqdcM0ZzisM7SACxuM963lfzxk5Mem3RO52l/1v4E0EasDaEKwr8g/H?=
+ =?us-ascii?Q?39zTSCTEgbsx15IeNv1xDj0MxmzQnThizfGK7Zis/T4yLTpRdSFijWNers8m?=
+ =?us-ascii?Q?ZCdIfgvUjKxrCAS0VmjsOEHRFZWyJWXBEes5F4qBqmep9LjHbR9Z9EdC2beG?=
+ =?us-ascii?Q?Qz16X9WWoBtd9knRqvd9ib4YCDrTH35k0cVRNu+QKlyUh1kZf4effsFI1RlI?=
+ =?us-ascii?Q?KMbVtlCDnOOPiSAPj/8XPw8z4PCluFdNLts8Gckjrh7wcZ3YdzYZofrPU12X?=
+ =?us-ascii?Q?Lb6xvijXvZJwrJhBONW6t3h5b9Am7h8ybjPWhVz+6/UwXll9QFFx6OfFtd1W?=
+ =?us-ascii?Q?UipTQyqgeMzi3AyYoWikT3/e8g14tckHhw1piwcjjmi/pqjlZy/PXqEKtQiY?=
+ =?us-ascii?Q?+iaSD4sCAYRGNnbzMC8HVZoJQ0EjCAtA57bKaTNr27yWY2aU+3aYurDcyH9V?=
+ =?us-ascii?Q?RqPmhaf+8I3wfD3I5QAlEl6430bXVM1ODp9onB/XjilpsgSnIJ2cUUIE6QCF?=
+ =?us-ascii?Q?FQluJlOIHliKas2XQuEZzvHYLt8mHW8W9Y1dRq+OgAlmThduAM2NJgdVKwH/?=
+ =?us-ascii?Q?1qtW0+lrCbhQtMQe+QXFfZLaLr4hahXDb5uoXfrKHfWhOJh9V9nse2JWbZwq?=
+ =?us-ascii?Q?P20ByhzRmZvQJu7xntdFVOGLm0Dvr+madHmBjdR4Ri3U1vl60EfePp46gX2m?=
+ =?us-ascii?Q?WGEvdppIaHRK705V2sswgLa4LFVy2vdydirAxIHCAWBTdFUuSi2+muudiTu3?=
+ =?us-ascii?Q?UMUyonTSSn8cm/y9G5amMv2khduBnJtnZdhvrEkA4h45ka0Q2cRN6l5Il7ZF?=
+ =?us-ascii?Q?L05s190VolLVPN2aVLcVYLbz+XM9SXjnMDJk/BuFf9PS5cOolDG5/qMj2iqy?=
+ =?us-ascii?Q?GXGF/cjxyNtsZA5UlhEd0Ygdkm0llI5aTFmQ2v2Ez8dRsFUwLLI1SBSGP2lw?=
+ =?us-ascii?Q?9d7ja6rJKR1zOWBmMiZNmnb8xm8rwcPXOJOw/4A+x83asq9kLklKOtQgmJQO?=
+ =?us-ascii?Q?cUkG2vNkoiAf0ehpGR1h5oACK5luRuK+ekbKwvniVZNpMuBi4KhEc+k5xhrS?=
+ =?us-ascii?Q?9e8EpxVVJ/k/eUXaQxeakhvedebxvjib46Bl69HI2ox/FGNWc9CRRCzky5yF?=
+ =?us-ascii?Q?AeLFoU5ENnm74z+s6rOQbsxdl5fjBnkgAA5EYVX7HIrQ8QbEM7tycrf8Yfqo?=
+ =?us-ascii?Q?r1Zrlvm3il/nV0kSERKUQcK1qS7GA1ZXscetH72JuruqW4JADMGYOc2OA2Jn?=
+ =?us-ascii?Q?/MPXgC+OOl2CDDCZY5GGndAENQitoki+yIzYSkW6Y8N6BZuplFYQ4hRvVBfV?=
+ =?us-ascii?Q?TOTJTkXmUa2Tilq1tELCHZDnPPd9S3UkHuFf/wr1Hv4M/WKTneGRg+axxepU?=
+ =?us-ascii?Q?eCZqcaOH7QxGYLMhLOYhZidKUXM1is8WqFOZfv30ROOXIuz5QB3vqPN6vN3W?=
+ =?us-ascii?Q?21+59X0hmhmFW11h/pg0aEkhJhM7meJa7/Q4DGf6Iwo2YwsT?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c0957ed-78ae-467a-13d2-08deed51876e
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 09:12:35.5986
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GEk+KW8KOANughIm3Ww6tBK3WVuB4RRrF+/zOCgD+o/8fvPkXCihGgM7ASXwrCrIglKGXme4yfvslXuX72nUBQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6862
 
-Mon, Jul 27, 2026 at 10:10:33PM +0200, kuba@kernel.org wrote:
->On Sat, 25 Jul 2026 09:51:34 +0300 Mark Bloch wrote:
->> So I think you and Jiri have different views on the basic design
->> here. It's hard to respin the series when addressing one review
->> takes it back to something the other reviewer objected to.
->
->It'd be great if Jiri, an nVidia employee and a devlink "maintainer",
->paid attention to at the very least revisions of nvidia's patches
->touching devlink. We discussed this on a prior revision and he didn't
->say anything.
->
->> How about I drop the driver API from this series and submit it as
->> a follow-up? This series would only have the generic workqueue
->> fallback.
->> 
->> But where should the work be queued? 
->> - devl_register()
->> - devl_unlock()?
->> 
->> Can we settle that before I post the next version, so we don't go
->> in circles again?
->
->Maybe a middle ground would be to add a dedicated devl_init_unlock()*
->were we can stick such init? Slap a WARN_ON(!registered) in the normal
->unlock? I don't want the normal unlock to grow in complexity like
->rtnl_unlock ended up growing.
+On Tue, Jul 28, 2026 at 12:44:49AM +0800, Ren Wei wrote:
+> From: Zhiling Zou <zhilinz@nebusec.ai>
+> 
+> ipmr_cache_report() builds short IGMP reports for mrouted from a packet
+> that may be a synthetic RTM_GETROUTE query. That query skb stores the
+> netlink requester portid in NETLINK_CB(), but the report is delivered to
+> a raw IPv4 socket, whose receive path interprets skb->cb as IPCB().
+> 
+> Commit bb7403655b3c ("ipmr: support IP_PKTINFO on cache report IGMP
+> msg") added IP_PKTINFO support by calling ipv4_pktinfo_prepare() on the
+> original packet and then copying the whole control buffer to the report
+> skb. For synthetic route-query packets, this copies NETLINK_CB bytes
 
-Yep, that was +- my idea when I suggested this, to have this in a
-separate helper.
+It's copying 48 bytes, which is the size of the control block. Please reword.
 
-devl_unlock_in_init()
-?
+> into IPCB and lets a controlled portid corrupt IPCB(skb)->opt. With
+> IP_RECVOPTS or IP_RETOPTS enabled, the raw socket receive path can then
+> copy past the short report packet or overflow the stack option buffer.
+> 
+> Keep the IP_PKTINFO support, but initialize the report skb control buffer
+> and copy only the pktinfo fields prepared by ipv4_pktinfo_prepare().
 
->
->* better name welcome
->
->BTW AI reported that we reset the mode on reinit request. Based on
->the code this is entirely intentional but would be good to document?
+This can break IP_RECVOPTS and IP_RETOPTS on the mrouted socket, but
+this was never meant to work (side effect of bb7403655b3c) and therefore
+unlikely to cause any regressions. Please mention this in the commit
+message.
+
+> 
+> Fixes: bb7403655b3c ("ipmr: support IP_PKTINFO on cache report IGMP msg")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: Codex:gpt-5.6-terra
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+> Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+> ---
+>  net/ipv4/ipmr.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+> index 1d9a4ac14fcef..783de5de02ddd 100644
+> --- a/net/ipv4/ipmr.c
+> +++ b/net/ipv4/ipmr.c
+> @@ -1061,6 +1061,7 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+> +	struct in_pktinfo *info;
+>  	struct sock *mroute_sk;
+>  	struct igmphdr *igmp;
+>  	struct igmpmsg *msg;
+>  	struct sk_buff *skb;
+>  	int ret;
+>  
+> @@ -1113,7 +1114,10 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+>  		msg->im_vif = vifi;
+>  		msg->im_vif_hi = vifi >> 8;
+>  		ipv4_pktinfo_prepare(mroute_sk, pkt, false);
+> -		memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
+> +		info = PKTINFO_SKB_CB(skb);
+> +		memset(skb->cb, 0, sizeof(skb->cb));
+> +		info->ipi_ifindex = PKTINFO_SKB_CB(pkt)->ipi_ifindex;
+> +		info->ipi_spec_dst = PKTINFO_SKB_CB(pkt)->ipi_spec_dst;
+>  		/* Add our header.
+>  		 * Note that code, csum and group fields are cleared.
+>  		 */
+
+I believe that Sashiko is correct and there is a similar problem with
+the other branch:
+
+https://sashiko.dev/#/patchset/5bc7cd71c2d671b305f25497d88ae8a0aa663c08.1784894076.git.zhilinz%40nebusec.ai
+
+This should fix both:
+
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index 1d9a4ac14fce..4827973c6f9c 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -1058,6 +1058,7 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 			     struct sk_buff *pkt, vifi_t vifi, int assert)
+ {
+ 	const int ihl = ip_hdrlen(pkt);
++	struct in_pktinfo *info;
+ 	struct sock *mroute_sk;
+ 	struct igmphdr *igmp;
+ 	struct igmpmsg *msg;
+@@ -1112,8 +1113,6 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 		msg = (struct igmpmsg *)skb_network_header(skb);
+ 		msg->im_vif = vifi;
+ 		msg->im_vif_hi = vifi >> 8;
+-		ipv4_pktinfo_prepare(mroute_sk, pkt, false);
+-		memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
+ 		/* Add our header.
+ 		 * Note that code, csum and group fields are cleared.
+ 		 */
+@@ -1124,6 +1123,12 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 		skb->transport_header = skb->network_header;
+ 	}
+ 
++	ipv4_pktinfo_prepare(mroute_sk, pkt, false);
++	memset(skb->cb, 0, sizeof(skb->cb));
++	info = PKTINFO_SKB_CB(skb);
++	info->ipi_ifindex = PKTINFO_SKB_CB(pkt)->ipi_ifindex;
++	info->ipi_spec_dst = PKTINFO_SKB_CB(pkt)->ipi_spec_dst;
++
+ 	igmpmsg_netlink_event(mrt, skb);
+ 
+ 	/* Deliver to mrouted */
