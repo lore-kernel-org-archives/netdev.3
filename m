@@ -1,163 +1,226 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5627847DFBB
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785336219; cv=pass; b=eE2Ys44h7eseTP7kQjx9yESSOHZmrcwJEHJ3e8ZtdsidLWLgFBNK43xyS+ouImjF/vdUD1vnjsOL/vCzoF4ZTS6zD+BG5phNChGnsJo9q1jF6D0jKSVHf3m/yiOr8oT257pCmEG1bu+YtEsTEDJm1DLUgNr1kQN02DeuecZnWbQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785336219; c=relaxed/simple;
-	bh=bO30GBdigpLpXr8G01gVY3c3cMypTioYacQIgy7BQwE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s2f0eVJ6BYWcg8Hs36pZ8cySdDioZ3jMfyV6cWfvu9rSH6gR96Y3ewhfErWv1HzZmyIEBY7RUjWPowCjSivU6SMvnIAHKLqtmW3EEfP+rRUV0OKPqA2jotSFcqg0Sj3OVqbChYRCyRwgg05MJ5DiydBM0n25Y0MRY3u2huO54h8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fd+nxQIM; arc=pass smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73550459AC5
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 14:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785336277; cv=none; b=GKAYsVrd8CAynx1cQkRTUMQD6634cDCZeEB+yabiK9W+Tuz4dmXOdSczpN5mIQo0yfCVQyzIsIYa8OkMHy+wOgbN2DY4PPK+3rWKhpj5C4bqeWnrUa5o+3xLcyw4uzjvF5in3/VeYwEqGJzTOaFtitkZpqaFW8+89ht/1f71iNA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785336277; c=relaxed/simple;
+	bh=BJS1HA8rokFIiV0ne5cRaLj+3cbfWQFKkW4X/b+NT0U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QzlcIixhJmEfvVBSAeS8IHBLURSDuJjvC5/pnVSZOMlrKxSRCEMFtrqmUSY/aulSkWvhXWElgh3rUIKdIes7037i7eXJdyD8gU2Va0GpAqdiJ1/scxEJFcWNdzoLXYYQfITJxW37EFuDsZmDR9ooPPE3RetI3oqUqFKcPlmxQKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YNWcPWPn; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LdpwD0qW; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fd+nxQIM"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8485b358552so1190460b3a.2
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:43:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785336217; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jXz120pB+tC0CyBZDTRATKY+qd+6oKAxURvAytysuVLSSQ+eDd42Dm3e+BE0pgrZxu
-         3oNDK/GDdeXN631eZHkndiMWsOt5piTBkvMyLeY//9LFSdWJ6UPFcdzbkFjbeGWhgD9V
-         TezEKvpmHBfyawouIhPMRiSiJZu87mv9R7QpGKh2h4t9giDjroiwcYleP5AXcOAI+k29
-         5B4lxGbLH7jajChl0dasmCQMIlu1g/8R3vpNX0n8XhguBY0ioxcCKbgYtIl9Z3deY80X
-         UC94lGUTOxYtgxy3iC2cCH6ImoGFq5dzyU18AOc8hwLBcUQLMEHDtolDVtnJVpZ5y4QK
-         EhDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SWVLK5NfeZSfuYOjxWPGReqguFO0C9gVVig1mZn9FwQ=;
-        fh=vGtn6xsSEVAR06kBOlUMJLEO2evHUKIaH9Te+M4elBY=;
-        b=Qz8R8LeNgveqL15EkrbJGhVmb/niSlEHzRVCiJvM+y7dUSckCWcnQqpfjRMeLsntb7
-         zM6dpg2pALgGDDeHkgXsvYiTOOFfxCEknVtydlxNAH22T5cIC6AHSPUCdjQuqukI9w6v
-         NTFLybs2TbbYzw7nirpRB3B8fT+Doru7KRxpVH6/gw8UcLu/UkYm26/KD/u0M8G1MpHl
-         Eu3ikk2/QF2gAkt30CFV8rLcvYFLUxOH3bs4uqQ3ccSb7R7SpVoj4uBV2CvUhBhDCEVb
-         4tpMAtpI3Y/N8uyCtpKxTRXwVLpxCkn2VrsUJ0Bd6oaQ1W5Xhf4/M0mGNu3h2uwWKkow
-         BRFg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YNWcPWPn";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LdpwD0qW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785336274;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5H5BXZFmwChe72ax9v3fx7rbm4FIcGAxuXQx1+sJiZI=;
+	b=YNWcPWPn9bvAPNDTNyD2ILT5WLEI7d/1jOq4dpgpaLzenlwxMGF/XU2WLVa/vLq1u6VZKJ
+	g+ZOI/W2pWL6E13TVrj9aatcGZ3t2u3miOaCvVp26h4zpIWMhRQCJrx2qQ02AyOdegEs7j
+	C/6E8lnswo7449EYUtRc1NypluOrXHU=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-686-hgMBF3DsPxi8Yy4vpMckKw-1; Wed, 29 Jul 2026 10:44:33 -0400
+X-MC-Unique: hgMBF3DsPxi8Yy4vpMckKw-1
+X-Mimecast-MFC-AGG-ID: hgMBF3DsPxi8Yy4vpMckKw_1785336272
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4955d314945so7428225e9.0
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 07:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785336217; x=1785941017; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=redhat.com; s=google; t=1785336272; x=1785941072; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=SWVLK5NfeZSfuYOjxWPGReqguFO0C9gVVig1mZn9FwQ=;
-        b=Fd+nxQIMcfaNLq2rpnnBLp+39h4colGbDZd3IFfNiCshwi+RIAJdXfiLvwL6loK7RM
-         98Oha7t8j7cD+Dl7LeQdiQGZ4kxxOp6qSDI4MmdAR8+XT/mBrN3e10edvi/wOBFyhE1c
-         dusuE0V48tnTfwOvlHNhHpuTLc3FU7OIJ+9265GJETQoPeigQwQqvvrXn+p7jnvbqZhZ
-         Rj0AqfTPkSX72NxdebG2eDg2SxH1IIjZci254xm38+zjhYsZI79nLOI1HHXuHEHFs/PS
-         oBG/LJxlS/A1F3bNG8mnZn1fqMePx3jkUE4C+ZrpvNMT/T99FvT0YzNMy1SLiybOhL8D
-         ZtMg==
+        bh=5H5BXZFmwChe72ax9v3fx7rbm4FIcGAxuXQx1+sJiZI=;
+        b=LdpwD0qWphlkCEBxQYrOyS6FkvxzQKoLILQlGrnVFFL763mILU1nefBW7SlHcpU+F6
+         PjsWBFtIiA5eajvFseDlOKCMEAcaW5LJFbXiUOBs74aiww/s+Z87klLkY/Y+rhzwSR8k
+         r37Lha8dRLpCV3ekeHsespKsfqWahPFrN2YlbPI7ad38HSW684mQYfpFwdyhNZcI8ra+
+         uGqzah5sS2rSy9osSn3Gx5X54MNQCKUqy6sM6s7R2OU340BUNGqWlJeiKkdZOPY+F/MX
+         2lpxXmvTyYOGArBoPERg7O/d40hNo1FtNK6OpUs4P7806N6wrqoMsJIsyTA64/53k5Kk
+         EVzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785336217; x=1785941017;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1785336272; x=1785941072;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SWVLK5NfeZSfuYOjxWPGReqguFO0C9gVVig1mZn9FwQ=;
-        b=AdDbQIyhxvP8yN9fddyDT3nkToHTYIpMD8NDE/ZLQhT8MFi/LGEavs2FLv+gnh0KE8
-         fbKDBt7k9ChaHEDWA7obANcgedo8HzTtnPjjc5hSV3nCpWh4YkFB3C/mMWGMYfLm7Lqx
-         a5ASvoe9Fj0zvcLEkDHaiBkWfD0vLPG6QZcpUdchtMIMvwif5nouBJuvvsGSWag299vp
-         ySzSvVicSZZ/a7gM9lK6NFg+z73a+2U62rsJXLxnogIZ23tI0edhhcHGq/xYCUBubSDH
-         qAAMsDOZsSiIPIXRvntZ5xRr63fpCUPflfwKR+7CIgRNl2KQyAQZDnDI1Dcqayqwjist
-         D8JA==
-X-Forwarded-Encrypted: i=1; AHgh+Romyc6lYt7O387eORlQnRnYOFzMPxFBmmzl1tPkPWmNFkkQaRMwla6bb594Z8NB4cqx/srppKc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcKKg0FijRmbovlkXAA2rrvA7MrfdQBG0u0efAmbKoeVvAhD6C
-	g/9hcp4w2SsKuyZgo/EEnheG+zkbvLzaETgArYr/gi/uKCyaj07lGagrEu0N459WV7OwY+nN54v
-	PPQZW6Jcqfsmk2WgAD45yxNKr0wtMGz0=
-X-Gm-Gg: AR+sD13T6oU2H41lCYLUCepaNNQXx4fyyRoGF1VKAvY26rfKy1tDGOgnyvIF9AlDAAo
-	9KgCCOB/UOgXGAWWzo/NCHjanQvKrMn+e58GilPGPuE5db5sKV3jvydyXorjo9pGX9hfql8z4X1
-	NFCEp6urHa0Vtkvin1eTkHO/b/vrk9Lv1uN6GdUu9+Noa08suKIXLInQF9q7jkp7gcLWBGah8BR
-	dYbDYv9XJh2YirKCrANkMZEL0nprETN+FOTMx1lNz/PCYJ4CPQjJHqFLB6z/30RrTgDipsUvW0r
-	eIXZs5wR/uf9fu6cK6y6uydKoZFxZkqLYGafedCCRs3v2E8kV1U6LdzXokmWV8OuJKrH9/IPWG9
-	mMGFlFXzGsupSrV5Wkt7KSwZv2QzcPbFbm1Qs7njRXUw=
-X-Received: by 2002:a05:6a00:bd09:b0:847:8ccc:d7c6 with SMTP id
- d2e1a72fcca58-84e931844b0mr7932333b3a.31.1785336217592; Wed, 29 Jul 2026
- 07:43:37 -0700 (PDT)
+        bh=5H5BXZFmwChe72ax9v3fx7rbm4FIcGAxuXQx1+sJiZI=;
+        b=mzctf4uwEEG7Pt2RDfL/3ASLbQsHI8ohIEARoWU0jaqokYiZbC4Kg6kh1cYFYfNKp5
+         JxXlSSCBMtvlRBMdb3PEIeCJB0IgTlAOpYWHv3PLoP8045+zfVtSvAq46XpYnrIy//HF
+         FW7VyHhlQPSwxUhRLmHVaAIRr9mroNu8bvt+wA62T9qqmnu/Np7zQOI/fQg4kNjmBwVT
+         PCgoMbA65syqKBJbMNR5f+49Z7F/nogaYVmLSH1bLE7FlPk7GmvkxznKEc58kvHwKO0W
+         N9wPNeUl3gKGmpbF+Onbv/0B5ic40kB6Dfq3rQWxmhOYhce9cXJ69oILb7nSTeeNgRbC
+         1KoA==
+X-Forwarded-Encrypted: i=1; AHgh+RoA2/C4BCuJKxm8ZSaUv57VPZNeMeYuwEOuWd48VSxPBWaP7SbCebu1hOE9Kl/r6itGTB0QfZI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWHECBAtpw1P+ZxQFcA9sV/FAWc0SzLgQWKf7yKLaUiU5pXt9K
+	bFY1eQnOxhIk6c7OAbziD6N9IJfN6dMLPsDbQsk+gl7J76DoHPxrWAn0PMm3Xq0K7nANeyFMaCj
+	Vk8fkXcA5A7I66PVbUJ4gA+8RYcnAxFXeH2fzHkKSgFncOg2zOHAHKF4p9Q==
+X-Gm-Gg: AR+sD12tnr8hNRut7qjog/GkVLIE18vhhc7x2q5EOacZO6cadTSr05aNTnhudGO/M6F
+	tH2Nx8MnlUnMf+W58EFPoLikq9rFDIMHYS604Lc+mqiQvAbDU2avDYJCJDQjFzakblbOZEABzFf
+	xWE+PuHmny2W/7FtrasoJLsAaBx6dhONEI4xmdOQnGe18Dd/lpLntEW4oLpilSJGxdnGCW6gGB5
+	pPfnn+/pu0dGvqcstwLnnWBNDaVs24NEEhrN6Ql8BxS26g0tfHT63JToJsSH67LstwI08hgNnaF
+	73zk8YPdop1ztLiKe1TEbiDySFHhqgslDG2UboJxar29m6OPJ75k/eH9Tu1M5t/ZGbJb4NTIOXB
+	rLIf0K6q0Blf7O6EjPqq++SpdBKe3NccnUdi1hxX5U6s=
+X-Received: by 2002:a05:600c:c162:b0:495:7285:a498 with SMTP id 5b1f17b1804b1-496c656540fmr82603525e9.18.1785336271628;
+        Wed, 29 Jul 2026 07:44:31 -0700 (PDT)
+X-Received: by 2002:a05:600c:c162:b0:495:7285:a498 with SMTP id 5b1f17b1804b1-496c656540fmr82603015e9.18.1785336271121;
+        Wed, 29 Jul 2026 07:44:31 -0700 (PDT)
+Received: from sgarzare-redhat (ip139-137-192-82.pool-bba.aruba.it. [82.192.137.139])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4976bd52f3fsm36693245e9.0.2026.07.29.07.44.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 07:44:30 -0700 (PDT)
+Date: Wed, 29 Jul 2026 16:44:23 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Xiang Mei <xmei5@asu.edu>, stable@vger.kernel.org
+Subject: Re: [PATCH] vsock/virtio: prevent workers from using deleted
+ virtqueues
+Message-ID: <amoPm0aVfnadsJaF@sgarzare-redhat>
+References: <20260727035804.1860862-1-bestswngs@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CADvbK_cb8Q=9nv5Z5eR3cf=NLb=5=wSg_HKHrtCtPU_bAN=qvg@mail.gmail.com>
- <20260723061107.384106-1-l1138897701@163.com> <20260728182359.3cd3acf6@kernel.org>
-In-Reply-To: <20260728182359.3cd3acf6@kernel.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Wed, 29 Jul 2026 10:43:26 -0400
-X-Gm-Features: AUfX_myvjigZq3pCCyct8kGwuVqsXaVLLMpSYVzV2Vvf-myxU1YKYy0bIhWF4kQ
-Message-ID: <CADvbK_cAR8qZwA1pAN1Kov+v-Whg_P19VK-Fzpztxc5fiwA+Pg@mail.gmail.com>
-Subject: Re: [PATCH net-next v5] sctp: auth: discard auth_chunk when skb_clone fails
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: luoqing <l1138897701@163.com>, davem@davemloft.net, edumazet@google.com, 
-	horms@kernel.org, linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	marcelo.leitner@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260727035804.1860862-1-bestswngs@gmail.com>
 
-On Tue, Jul 28, 2026 at 9:24=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
+On Sun, Jul 26, 2026 at 08:58:01PM -0700, Weiming Shi wrote:
+>The RX, TX and event workers read their virtqueue pointers before taking
+>the mutex that protects the queue and its run flag. A work item delayed
+>across freeze and restore can therefore retain a pointer deleted by
+>virtio_vsock_vqs_del(), observe the run flag for the replacement queues,
+>and use the freed pointer.
 >
-> On Thu, 23 Jul 2026 14:11:07 +0800 luoqing wrote:
-> > From: Qing Luo <luoqing@kylinos.cn>
-> >
-> > When processing AUTH + COOKIE-ECHO packets, if skb_clone() fails
-> > due to memory pressure, chunk->auth_chunk is NULL. The original
-> > code still sets chunk->auth =3D 1 and continues, leaving the
-> > COOKIE-ECHO to be processed without a valid auth_chunk for
-> > deferred verification.
-> >
-> > Discard the AUTH chunk early via pdiscard when skb_clone() fails,
-> > so that the receive loop can continue processing remaining chunks
-> > in the inqueue instead of stalling the entire packet.
+>RX has an additional path: when rx_run is clear, the common exit still
+>refills the RX queue. A queued worker can consequently call
+>virtqueue_add_sgs() immediately after freeze deletes the virtqueues.
 >
-> Hi Xin Long, should we apply this or it's no longer worth it after
-> 8e04823c120b ?
+>BUG: KASAN: slab-use-after-free in virtqueue_add_sgs
+>Read of size 4 by task kworker/2:1
+>Workqueue: virtio_vsock virtio_transport_rx_work
+>Call Trace:
+> virtqueue_add_sgs (drivers/virtio/virtio_ring.c:2796)
+> virtio_vsock_rx_fill (net/vmw_vsock/virtio_transport.c:332)
+> virtio_transport_rx_work (net/vmw_vsock/virtio_transport.c:701)
+> process_one_work (kernel/workqueue.c:3314)
+> worker_thread (kernel/workqueue.c:3478)
+> kthread (kernel/kthread.c:436)
+> ret_from_fork (arch/x86/kernel/process.c:158)
+> ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+>...
+>Freed by task 141:
+> kfree (mm/slub.c:6566)
+> vp_del_vq (drivers/virtio/virtio_pci_common.c:259)
+> vp_del_vqs (drivers/virtio/virtio_pci_common.c:285)
+> virtio_vsock_freeze (net/vmw_vsock/virtio_transport.c:912)
+> virtio_device_freeze (drivers/virtio/virtio.c:658)
+> virtio_pci_freeze (drivers/virtio/virtio_pci_common.c:601)
+> pci_pm_freeze (drivers/pci/pci-driver.c:1098)
+> device_suspend (drivers/base/power/main.c:1968)
+>Kernel panic - not syncing: KASAN: panic_on_warn set ...
 >
-Apply it to net-next.git.
+>Read each worker's virtqueue under its mutex after confirming that the
+>queue is running, and only refill RX while RX is running.
+>
+>Fixes: b917507e5ad9 ("vsock/virtio: stop workers during the .remove()")
+>Cc: stable@vger.kernel.org
+>Reported-by: Xiang Mei <xmei5@asu.edu>
+>Assisted-by: OpenAI-Codex:gpt-5
+>Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+>---
+> net/vmw_vsock/virtio_transport.c | 14 ++++++++------
+> 1 file changed, 8 insertions(+), 6 deletions(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+>index 57f2d6ec3ffc..79cf19f58943 100644
+>--- a/net/vmw_vsock/virtio_transport.c
+>+++ b/net/vmw_vsock/virtio_transport.c
+>@@ -346,12 +346,13 @@ static void virtio_transport_tx_work(struct work_struct *work)
+> 	struct virtqueue *vq;
+> 	bool added = false;
+>
+>-	vq = vsock->vqs[VSOCK_VQ_TX];
+> 	mutex_lock(&vsock->tx_lock);
+>
+> 	if (!vsock->tx_run)
+> 		goto out;
+>
+>+	vq = vsock->vqs[VSOCK_VQ_TX];
+>+
+> 	do {
+> 		struct sk_buff *skb;
+> 		unsigned int len;
+>@@ -451,13 +452,13 @@ static void virtio_transport_event_work(struct work_struct *work)
+> 		container_of(work, struct virtio_vsock, event_work);
+> 	struct virtqueue *vq;
+>
+>-	vq = vsock->vqs[VSOCK_VQ_EVENT];
+>-
+> 	mutex_lock(&vsock->event_lock);
+>
+> 	if (!vsock->event_run)
+> 		goto out;
+>
+>+	vq = vsock->vqs[VSOCK_VQ_EVENT];
+>+
+> 	do {
+> 		struct virtio_vsock_event *event;
+> 		unsigned int len;
+>@@ -634,13 +635,13 @@ static void virtio_transport_rx_work(struct work_struct *work)
+> 		container_of(work, struct virtio_vsock, rx_work);
+> 	struct virtqueue *vq;
+>
+>-	vq = vsock->vqs[VSOCK_VQ_RX];
+>-
+> 	mutex_lock(&vsock->rx_lock);
+>
+> 	if (!vsock->rx_run)
+> 		goto out;
+>
+>+	vq = vsock->vqs[VSOCK_VQ_RX];
+>+
+> 	do {
+> 		virtqueue_disable_cb(vq);
+> 		for (;;) {
+>@@ -689,7 +690,8 @@ static void virtio_transport_rx_work(struct work_struct *work)
+> 	} while (!virtqueue_enable_cb(vq));
+>
+> out:
+>-	if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
+>+	if (vsock->rx_run &&
 
-Acked-by: Xin Long <lucien.xin@gmail.com>
+Instead of adding this check, what about adding a new label...
 
-So sending patches with wrong in-reply-to doesn't require repost?
+>+	    vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
+> 		virtio_vsock_rx_fill(vsock);
 
-Thanks.
-> > diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-> > index 62d3cc155809..a5f2835dbe0f 100644
-> > --- a/net/sctp/associola.c
-> > +++ b/net/sctp/associola.c
-> > @@ -999,6 +999,10 @@ static void sctp_assoc_bh_rcv(struct work_struct *=
-work)
-> >                       if (next_hdr->type =3D=3D SCTP_CID_COOKIE_ECHO) {
-> >                               chunk->auth_chunk =3D skb_clone(chunk->sk=
-b,
-> >                                                             GFP_ATOMIC)=
-;
-> > +                             if (!chunk->auth_chunk) {
-> > +                                     chunk->pdiscard =3D 1;
-> > +                                     continue;
-> > +                             }
-> >                               chunk->auth =3D 1;
-> >                               continue;
-> >                       }
-> > diff --git a/net/sctp/endpointola.c b/net/sctp/endpointola.c
-> > index dfb1719275db..a15b599b20b7 100644
-> > --- a/net/sctp/endpointola.c
-> > +++ b/net/sctp/endpointola.c
-> > @@ -368,6 +368,10 @@ static void sctp_endpoint_bh_rcv(struct work_struc=
-t *work)
-> >                       if (next_hdr->type =3D=3D SCTP_CID_COOKIE_ECHO) {
-> >                               chunk->auth_chunk =3D skb_clone(chunk->sk=
-b,
-> >                                                               GFP_ATOMI=
-C);
-> > +                             if (!chunk->auth_chunk) {
-> > +                                     chunk->pdiscard =3D 1;
-> > +                                     continue;
-> > +                             }
-> >                               chunk->auth =3D 1;
-> >                               continue;
-> >                       }
->
+out_nofill:
+> 	mutex_unlock(&vsock->rx_lock);
+
+And use it when we check `vsock->rx_run` ?
+
+Since we are taking the mutex, we don't need to check it again.
+
+The rest LGTM, but I agree with Bobby about the split, since the Fixes 
+tag here is confusing. I'll reply there.
+
+Thanks,
+Stefano
+
