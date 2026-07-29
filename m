@@ -1,56 +1,55 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17DA39B4A6;
-	Wed, 29 Jul 2026 05:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDB927280A;
+	Wed, 29 Jul 2026 05:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785302103; cv=none; b=brpFtrx9hdfZdOnUr/H0bigJNB4beS1l+Y8SQLSgUOgRoQyeEvjSRAp/NTke+4W6xf0VUsE7FJzMAlT2pjUedpwM8TgtUoR3dUh5tUJzd9PE8GySuwdP+2g6xU11aPqZsSCdQ71khchoMztKMYbvTDMm62FKZs9NPAOQhRult3k=
+	t=1785302243; cv=none; b=W5cAUo6Q/gZ6FlOFlqj5HYirit76+N7IkCbLHg0Qs3wiQT22P6DCuD8S5iq8FQ73A1r3rKQ19LtHefvzl0j7HVO5i1TfMYHjUheDEhEONN1pBPYCAy9/JfoF8AQdR2SVmFTRydxe3u3bjGpz154E768RalOf1FAseYU6oq4ou6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785302103; c=relaxed/simple;
-	bh=Zclhv6h/TmzDqT45LmzQB/dO7mGMsHxwGDmBK9zOvlg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=D0xieHBL5eAfjoc/COFvIs+/mdpKKJUEKnTe2eeiPwhVeStQQ9+2dciPlAsxLR0eH6sIKlu6hTbOrBuhTSDh8wJXkziC1PaJMnKv+sAIlp8o8y8yluQdso4zFPzsSatAWvPR7t5anvl71AEVxax8JIvO26M+5JY6w4XKI4yjE0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=XBMp165w; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1785302243; c=relaxed/simple;
+	bh=b0V3v+Qn18zsM2oGfooMbXC1xj29XL9U6pde+gHzMd4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=M8pH3dwF4X2u0jq/DykxGCeT07DJMMKbEOQu7xUI4kxf9ipE3RZJwxceyrTeItVjl6nT3KB4EDla72ZiMU4fcf4mrfjoF6J9wb6bvfPGEETaMRv/Q4ySTWowPldrwckv5FNvWwoaghaecKhMV2AOA2UJINbRImDAMIJnHWqCa08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EhZImyy4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="XBMp165w"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66T4eCH21521161;
-	Tue, 28 Jul 2026 21:51:12 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=H5KuICjL/yT2yTUc3OVlL03
-	IrJ+hc+70iHEB7EeNKZ8=; b=XBMp165wWeq/Dnk16TMrJMOpi07b82Ivzw08b3S
-	dE42Kd1cJyfwQSsBeEemBYCVtlNgHWcJEz4TBaNRcLM1wXtyoIN4HExcSxs+rJyN
-	/HGibq87aqvN77aFzTR4NzylC++X2ldERye5GPTdjmaKaexFsRnYr0R/mw1vU+nz
-	3xSZ+2qYf/rN0AmKMfYnhtj9DPICM6XTqQrSb6DLBjlB7oVIWeoCifxRJk6ORoQe
-	+EYFUT01HHEQgWYIzE8t1JLFYD5+IXpU2zjm6jERNmwKVG4Ansk6be20CU+e6E8X
-	k95peJC6KOJWR3rgarxn5XT4s4GHne5VFkbQFOQrrcGZ87w==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4fq06ksxy4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 21:51:11 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 28 Jul 2026 21:51:10 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 28 Jul 2026 21:51:10 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id C1AD63F70A7;
-	Tue, 28 Jul 2026 21:51:07 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH v6 net-next 0/9] Switch support
-Date: Wed, 29 Jul 2026 10:20:50 +0530
-Message-ID: <20260729045100.2177958-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EhZImyy4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828C51F00A3A;
+	Wed, 29 Jul 2026 05:17:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785302241;
+	bh=yWs/6GxHQxoazFHckud13tONmCIETA3kp/c4/93T8NM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=EhZImyy49vt9VDzAGhjB3JLqZvmRIkP8dVwVm6zFEToqWk8UED3GrttsvyEZIMjr1
+	 xzICm3UOdob564x9n0uwBj2n/8C0oZOZszoY6S6XE7+ug1yZreBTRVOAW/b+56Tlog
+	 YaXfxojn0sUte61ZkePHT+5ou9lMB8n2+4bafMetmJVz5/8JnDbOgOdtNkaf9Qle8C
+	 jslz9QhFqszhv9Zer7+APDKiL4bUhLVNu0NveFivM2O153YPJ+Tgt8c15WCidP7q7V
+	 H9PkRNGTZWcY2/+CIMNaD5apedNQ2GVhj6d9iDJ4BWtXIdIIlTO4LFqiEFW1glXFSK
+	 voWjQuyVjcYwA==
+Message-ID: <10356f7d8b0ffdba27987c79fc7f4b7574cf873b.camel@kernel.org>
+Subject: Re: [PATCH 02/11] nvmet-tcp: implement accept mptcp proto
+From: Geliang Tang <geliang@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>, Matthieu Baerts <matttbe@kernel.org>, 
+ Nilay Shroff <nilay@linux.ibm.com>, Hannes Reinecke <hare@suse.de>,
+ Christoph Hellwig <hch@lst.de>
+Cc: Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>, Sagi
+ Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>, Mat
+ Martineau <martineau@kernel.org>,  "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Geliang Tang
+ <tanggeliang@kylinos.cn>, 	linux-nvme@lists.infradead.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+	linux-kselftest@vger.kernel.org, John Meneghini <jmeneghi@redhat.com>,
+ Randy Jennings <randyj@purestorage.com>, zhenwei pi <zhenwei.pi@linux.dev>,
+ Hui Zhu <zhuhui@kylinos.cn>,  Gang Yan <yangang@kylinos.cn>
+Date: Wed, 29 Jul 2026 13:17:10 +0800
+In-Reply-To: <4df03cad08088fba7fb49beaeb6513cef5b87c2b.camel@kernel.org>
+References: <cover.1779934709.git.tanggeliang@kylinos.cn>
+			<a1fa5dd3ebb0cafe1bf7948bf2a96436e9452e19.1779934709.git.tanggeliang@kylinos.cn>
+		 <20260528082344.7e4cd1a1@kernel.org>
+	 <4df03cad08088fba7fb49beaeb6513cef5b87c2b.camel@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,193 +57,233 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI5MDAzNiBTYWx0ZWRfX4+Gokh4GrOQd
- PxTJklyM5Jozy+Rn7GprqCfdhrrDllYnkLbOEvhKjNc6ibB9DgQeFknV7ZDCBpuUQWAlsCNVRii
- 2YRZA87kVyFSo6OfSlqrZ7TCzWbFBGQyUfMKNFWPjZtbDWXERJNzCkX/OyXv9xVtuZt0kk3FTCc
- TvPET/WxshchZ6DadED1WeiEdbcVRcYb1O5M9gLKwzHDVxtSPcM+eXUYdHbX3kmExCZg/ZoG9eC
- QlYLC51HuFfSDv5opTnOUmQwB24uIerG20L/9zMs7FG3NfEhbxNJEO8HayXr9mm+eybu3QLTVCN
- JpePe1o60/Ic7on1dOBngNndJ84VwQ5kqSo7PeEQenBQmqbPQLs27e+6YLA5f6a25F+dR6I33Yz
- SmAm+xgLK8NdCCwFd6NqgHLnkfvV6+6ox061M26gsFstIoTWmhj0bMexZDTrtW+yRtGI5kWtILS
- tZA3ps2eiEBk3QH3Vug==
-X-Proofpoint-ORIG-GUID: kabk29q-gm1nibeBZnNPmP2A-rmrnDUc
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI5MDAzNiBTYWx0ZWRfX59BoQB0brEC8
- I8N+7nk3XH8t/nwxdgdF+WuPlUGS/s31J77DNKiMMxf4exKFutswVyqghHv8uVSiziwCn8YzXUz
- CGAeTdx++ry6RkD3EDmnjVXQDQukFkg=
-X-Authority-Analysis: v=2.4 cv=U8Siy+ru c=1 sm=1 tr=0 ts=6a6986bf cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
- a=Q9e_prp1UuIZLeogYfEA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: kabk29q-gm1nibeBZnNPmP2A-rmrnDUc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-29_02,2026-07-28_02,2025-10-01_01
 
-Marvell OcteonTX2 switch hardware is capable of accelerating L2, L3, and
-flow. When representors are enabled through devlink, a logical port is
-created in switch hardware for each representor device.
+Hi,
 
-This patch series implements communication from the host OS to the switch
-hardware and vice versa.
+Thank you all very much for your interest in "NVMe over MPTCP" and for
+adding review comments to this version of the series. This has been
+very helpful to me. There are indeed some issues with this version, but
+the good news is that I have recently found a direction for improving
+it.
 
-                 control plane (FDB / FIB / flow over mailbox)
-    +---------------------------------------------------------------------+
-    |                               HOST OS                               |
-    |                                                                     |
-    | +------------+  +---------------------+  +---------------+          |
-    | | bridge /   |  | PF + notifiers      |  | TC / flower   |          |
-    | | routing    |  | (FDB, FIB, flow)    |  | offload       |          |
-    | +------+-----+  +-----------+---------+  +-------+-------+          |
-    |        ^                     |                      |               |
-    |        | slow path           |                      |               |
-    |        | (unmatched pkts)    v                      v               |
-    | +------+------+       +------+------+        +------+------+        |
-    | | rep-eth0    |       | PF / VF     | <----> | RVU AF      |        |
-    | +------+------+       +-------------+        +------+------+        |
-    |        |                                                |           |
-    | +------+------+                                         |           |
-    | | rep-eth1    |                                         |           |
-    | +-------------+                                         |           |
-    |        | slow path (miss / control to host stack)       |           |
-    +---------------------------------------------------------------------+
-    |      |                                         |                    |
-    |      |              mailbox / PCIe             |                    |
-    |      v                                         v                    |
-    +---------------------------------------------------------------------+
-    |                           SWITCH HARDWARE                           |
-    |                                                                     |
-    |      +---------------------------------------------------+          |
-    |      | L2 tables   | L3 tables   | flow TCAM (HW)        |          |
-    |      +-------+-------------+---------------+-------------+          |
-    |              |       fast path (HW)           |                     |
-    |              v                                v                     |
-    |           lport0  <========================>  lport1                |
-    |             HW forwarding between ports                             |
-    |                                                                     |
-    | slow path (miss): packets raised to host via representors           |
-    +---------------------------------------------------------------------+
+On Fri, 2026-05-29 at 22:20 +0800, Geliang Tang wrote:
+> Hi Jakub,
+> 
+> On Thu, 2026-05-28 at 08:23 -0700, Jakub Kicinski wrote:
+> > On Thu, 28 May 2026 11:10:36 +0800 Geliang Tang wrote:
+> > > Dedicated MPTCP helpers are introduced for setting accept socket
+> > > options.
+> > > These helpers (no_linger, set_priority, set_tos) set the values
+> > > on
+> > > all
+> > > existing subflows using mptcp_for_each_subflow(). The values are
+> > > then
+> > > synchronized to other newly created subflows in
+> > > sync_socket_options().
+> > 
+> > These are not protocol specific options, why do we have to export
+> > MPTCP-specific functions for them?
+> 
+> Thank you for reading the code. In addition to the three MPTCP-
+> specific
+> functions implemented in this patch, I have implemented and exported
+> the following six MPTCP-specific functions throughout the series:
+> 
+>     void mptcp_sock_set_nodelay(struct sock *sk)
+>     int mptcp_sock_set_syncnt(struct sock *sk, int val)
+>     void mptcp_sock_set_tos(struct sock *sk, int val)
+>     void mptcp_sock_no_linger(struct sock *sk)
+>     void mptcp_sock_set_priority(struct sock *sk, u32 priority)
+>     void mptcp_sock_set_reuseaddr(struct sock *sk)
+> 
+> These correspond to the following six functions originally used for
+> TCP:
+> 
+>     tcp_sock_set_nodelay()
+>     tcp_sock_set_syncnt()
+>     ip_sock_set_tos()
+>     sock_no_linger()
+>     sock_set_priority()
+>     sock_set_reuseaddr()
 
-When representors are created, corresponding logical ports are created in
-switchdev. Matching traffic is accelerated in switch hardware using
-installed L2, L3, and flow rules. Packets that do not match offloaded
-state, or that require software handling, take the slow path through
-representors and the host networking stack. Control updates from the host
-(FDB, FIB, TC flower) are sent to the AF over mailbox and programmed into
-switch hardware tables.
+Here I missed one option, SO_BINDTODEVICE. Currently, NVMe TCP sets 7
+sockopts: TCP_NODELAY, TCP_SYNCNT, IP_TOS, SO_LINGER, SO_PRIORITY,
+SO_REUSEADDR, and SO_BINDTODEVICE. The first 6 are called through the
+following 6 functions:
 
-Notifier callbacks are registered to receive system events such as FDB
-add/delete and FIB add/delete. Flow add/delete operations are handled
-through the ingress flow-table offload path. These events are captured and
-processed by the NIC driver and forwarded to the switch device through the
-AF driver. All message exchanges use the mailbox interface.
+    tcp_sock_set_nodelay()
+    tcp_sock_set_syncnt()
+    ip_sock_set_tos()
+    sock_no_linger()
+    sock_set_priority()
+    sock_set_reuseaddr()
 
-Bridge acceleration:
-FDB add/delete notifications are processed, and learned SMAC information is
-sent to the switch hardware. The switch inserts a hardware rule to
-accelerate packets destined to the MAC address. Switch-initiated FDB
-refresh is propagated back to the host bridge through an AF to PF/VF
-mailbox and switchdev notifier.
+The last one is called through sock_setsockopt:
 
-L3 acceleration:
-IPv4 and IPv6 FIB updates observed through netdev and FIB notifiers are
-queued on the PF and sent to the AF. The AF batches fib_entry structures
-and forwards them to switchdev when firmware is ready.
+    ret = sock_setsockopt(queue->sock, SOL_SOCKET, SO_BINDTODEVICE,
+                          optval, strlen(iface));
 
-Flow acceleration:
-TC flower rules accepted by the ingress flow-table offload callback are
-translated into fl_tuple state, ingress and egress pcifunc are resolved
-through FIB lookup, and flow updates are sent to the switch hardware
-through the mailbox interface. Per-cookie packet counters are kept in sync
-using NPC MCAM multi-stats when the switch requests a flow refresh.
+In NVMe TCP, the first three - TCP_NODELAY, TCP_SYNCNT, IP_TOS - are
+protocol-specific, while the last four - SO_LINGER, SO_PRIORITY,
+SO_REUSEADDR, SO_BINDTODEVICE - are protocol-independent.
 
-Ratheesh Kannoth (9):
-  octeontx2-af: switch: Add AF to switch mbox and skeleton files
-  Host to switch mailbox definitions for FDB, FIB, flow, and flow stats;
-  AF-side L2/L3/flow skeleton objects.
+When we add NVMe MPTCP support, all sockets created when using NVMe
+MPTCP are MPTCP sockets. Using the above functions to set sockopts on
+MPTCP sockets will not succeed. The implementations of these 7 sockopts
+for MPTCP are all protocol-specific. MPTCP needs to set the sockopts
+not only on the MPTCP socket itself but also synchronize them to all
+subflow sockets, so that the sockopts actually take effect.
 
-  octeontx2-af: switch: Add switch dev to AF mboxes
-  Switch to AF and AF to switchdev mailbox messages; interface query
-  handler and NPC helpers for flow delete/stats/features.
+Therefore, in this version, I defined MPTCP-specific sockopt functions
+for each option, and switched between TCP and MPTCP by defining the
+struct nvmet_tcp_proto and struct nvme_tcp_proto structures.
 
-  octeontx2-pf: switch: Add pf files hierarchy
-  CONFIG_OCTEONTX_SWITCH and stub PF switch objects for FDB, FIB, flow, and
-  notifier plumbing.
 
-  octeontx2-af: switch: Representor for switch port
-  Copy devlink switch_id to the AF and map representor pcifunc to a switch
-  port id when eswitch mode is enabled.
 
-  octeontx2-af: PAN switch TL1 scheduling and NPC channel control
-  Allocate multiple TL1 scheduler queues in PAN mode and honor caller
-  supplied NPC channel masks for multi-link steering.
+A better design is to initiate protocol-specific sockopt settings from
+the NVMe side by calling the sock_common_setsockopt() function. This
+can automatically select the appropriate protocol and call each
+protocol's .setsockopt implementation to set the sockopt, thus making
+it compatible with both TCP and MPTCP, without needing to export
+functions from the TCP or MPTCP side for NVMe to use.
 
-  octeontx2-pf: register switch notifiers for eswitch offload
-  Register PF notifier blocks for FIB, neighbour, address, netdev, and
-  switchdev FDB events; split IPv4/IPv6 handling.
+For MPTCP, all 7 sockopt functions can be implemented by passing each
+sockopt to sock_common_setsockopt(), similar to:
 
-  octeontx2: plumb bridge FDB updates through AF and switchdev
-  End-to-end L2 offload from switchdev FDB notifications to AF to
-  switchdev, including firmware gating and FDB refresh to host.
+static void nvmet_tcp_sock_no_linger(struct sock *sk) 
+{
+    struct linger ling = { .l_onoff = 1, .l_linger = 0 }; 
 
-  octeontx2: offload host FIB updates to switch via AF mailbox
-  Queue IPv4/IPv6 FIB updates from notifiers and batch fib_entry delivery
-  from AF to switchdev.
+    sock_common_setsockopt(sk->sk_socket, false, SOL_SOCKET, SO_LINGER,
+                           KERNEL_SOCKPTR(&ling), sizeof(ling));
+}
 
-  octeontx2: add TC flow offload path for switch flows
-  Ingress flow-table offload for TC flower rules, AF forwarding to
-  switchdev, and flow counter refresh from switch to host.
+However, for TCP, the three protocol-specific options - TCP_NODELAY,
+TCP_SYNCNT, IP_TOS - can be implemented by calling
+sock_common_setsockopt(), but the other four protocol-independent ones
+need to be called through sock_setsockopt(). To hide this difference,
+we can call the higher-level do_sock_setsockopt() function instead,
+like:
 
- .../net/ethernet/marvell/octeontx2/Kconfig    |  13 +
- .../ethernet/marvell/octeontx2/af/Makefile    |   3 +-
- .../net/ethernet/marvell/octeontx2/af/mbox.h  | 227 ++++++++
- .../net/ethernet/marvell/octeontx2/af/rvu.c   | 110 ++++
- .../net/ethernet/marvell/octeontx2/af/rvu.h   |   6 +
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   |  53 +-
- .../ethernet/marvell/octeontx2/af/rvu_npc.c   |  76 +++
- .../marvell/octeontx2/af/rvu_npc_fs.c         |  11 +
- .../ethernet/marvell/octeontx2/af/rvu_rep.c   |   3 +-
- .../marvell/octeontx2/af/switch/rvu_sw.c      |  48 ++
- .../marvell/octeontx2/af/switch/rvu_sw.h      |  14 +
- .../marvell/octeontx2/af/switch/rvu_sw_fl.c   | 294 ++++++++++
- .../marvell/octeontx2/af/switch/rvu_sw_fl.h   |  12 +
- .../marvell/octeontx2/af/switch/rvu_sw_l2.c   | 283 +++++++++
- .../marvell/octeontx2/af/switch/rvu_sw_l2.h   |  13 +
- .../marvell/octeontx2/af/switch/rvu_sw_l3.c   | 215 +++++++
- .../marvell/octeontx2/af/switch/rvu_sw_l3.h   |  11 +
- .../ethernet/marvell/octeontx2/nic/Makefile   |  13 +-
- .../marvell/octeontx2/nic/otx2_txrx.h         |   2 +
- .../ethernet/marvell/octeontx2/nic/otx2_vf.c   |  17 +
- .../net/ethernet/marvell/octeontx2/nic/rep.c  |  11 +
- .../marvell/octeontx2/nic/switch/sw_fdb.c     | 144 +++++
- .../marvell/octeontx2/nic/switch/sw_fdb.h     |  14 +
- .../marvell/octeontx2/nic/switch/sw_fib.c     | 132 +++++
- .../marvell/octeontx2/nic/switch/sw_fib.h     |  16 +
- .../marvell/octeontx2/nic/switch/sw_fl.c      | 546 ++++++++++++++++++
- .../marvell/octeontx2/nic/switch/sw_fl.h      |  15 +
- .../marvell/octeontx2/nic/switch/sw_nb.c      | 422 ++++++++++++++
- .../marvell/octeontx2/nic/switch/sw_nb.h      |  35 ++
- .../marvell/octeontx2/nic/switch/sw_nb_v4.c   | 335 +++++++++++
- .../marvell/octeontx2/nic/switch/sw_nb_v4.h   |  21 +
- .../marvell/octeontx2/nic/switch/sw_nb_v6.c   | 236 ++++++++
- .../marvell/octeontx2/nic/switch/sw_nb_v6.h   |  21 +
- 33 files changed, 3361 insertions(+), 11 deletions(-)
+static void nvmet_tcp_sock_no_linger(struct sock *sk) 
+{
+    struct linger ling = { .l_onoff = 1, .l_linger = 0 }; 
 
----
-v5 -> v6: Addressed Jakub/Sashiko comments
-	https://lore.kernel.org/netdev/20260724094018.3213907-1-rkannoth@marvell.com/
+    do_sock_setsockopt(sk->sk_socket, false, SOL_SOCKET, SO_LINGER,
+                       KERNEL_SOCKPTR(&ling), sizeof(ling));
+}
 
-v4 -> v5: Addressed Sashiko comments
-	https://lore.kernel.org/netdev/20260721081824.1430607-1-rkannoth@marvell.com/
+In this way, this wrapper becomes protocol-independent and works
+correctly for both TCP and MPTCP. Moreover, all 7 functions are
+uniformly converted into wrappers that call do_sock_setsockopt(), so
+every one of them becomes protocol-independent without needing to
+distinguish between TCP and MPTCP internally.
 
-v3 -> v4: Addressed Sashiko comments
-	https://lore.kernel.org/netdev/20260714015331.1801922-1-rkannoth@marvell.com/
+static void nvmet_tcp_sock_set_priority(struct sock *sk, u32 priority)
+{
+    do_sock_setsockopt(sk->sk_socket, false, SOL_SOCKET, SO_PRIORITY,
+                       KERNEL_SOCKPTR(&priority), sizeof(priority));
+}
 
-v2 -> v3: Addressed Pabolo comments.
-	https://lore.kernel.org/netdev/20260702045026.2914748-1-rkannoth@marvell.com/
+static void nvmet_tcp_sock_set_reuseaddr(struct sock *sk) 
+{
+    int val = SK_CAN_REUSE;
 
-v1 -> v2: Addressed Jakub comments
-	https://lore.kernel.org/netdev/20260630024715.4124281-1-rkannoth@marvell.com/
+    do_sock_setsockopt(sk->sk_socket, false, SOL_SOCKET, SO_REUSEADDR,
+                       KERNEL_SOCKPTR(&val), sizeof(val));
+}
 
---
-2.43.0
+static void nvmet_tcp_sock_set_nodelay(struct sock *sk) 
+{
+    int val = 1; 
+
+    do_sock_setsockopt(sk->sk_socket, false, SOL_TCP, TCP_NODELAY,
+                       KERNEL_SOCKPTR(&val), sizeof(val));
+}
+
+static void nvmet_tcp_sock_set_tos(struct sock *sk, int tos) 
+{
+    do_sock_setsockopt(sk->sk_socket, false, SOL_IP, IP_TOS,
+                       KERNEL_SOCKPTR(&tos), sizeof(tos));
+}
+
+static int nvme_tcp_sock_set_bindtodevice(struct sock *sk, char *iface)
+{
+    return do_sock_setsockopt(sk->sk_socket, false, SOL_SOCKET,
+                              SO_BINDTODEVICE,
+                              KERNEL_SOCKPTR(iface), strlen(iface));
+}
+
+static int nvme_tcp_sock_set_syncnt(struct sock *sk, int val) 
+{
+    return do_sock_setsockopt(sk->sk_socket, false, SOL_TCP,
+                              TCP_SYNCNT, KERNEL_SOCKPTR(&val),
+                              sizeof(val));
+}
+
+With this approach, there is no longer any need to define structures
+like struct nvmet_tcp_proto and struct nvme_tcp_proto, nor to export
+special set-sockopt functions from the MPTCP side. We only need to
+define these 7 wrappers for NVMe, and then replace the original
+function calls with the wrapper calls to enable MPTCP support. For
+example:
+
+-   sock_set_reuseaddr(port->sock->sk);
+-   tcp_sock_set_nodelay(port->sock->sk);
++   nvmet_tcp_sock_set_reuseaddr(port->sock->sk);
++   nvmet_tcp_sock_set_nodelay(port->sock->sk);
+    if (so_priority > 0)
+-       sock_set_priority(port->sock->sk, so_priority);
++       nvmet_tcp_sock_set_priority(port->sock->sk, so_priority);
+
+
+
+With these changes, implementing NVMe MPTCP support is simplified to
+just choosing which type of socket to create at socket creation time.
+In addition, I am also pushing the company I work for to join the NVMe
+membership, in preparation for submitting an MPTCP proposal to the NVMe
+technical working group in the future.
+
+
+
+
+I'm thinking that this approach of unifying NVMe sockopts via
+do_sock_setsockopt() could actually serve as a general improvement, and
+it would be valid even independently of this MPTCP series. If no one
+objects, I will send these patches of do_sock_setsockopt() improvement
+to the NVMe mailing list for review in the near future.
+
+
+
+Thanks,
+-Geliang
+
+> 
+> The first two functions - tcp_sock_set_nodelay() and
+> tcp_sock_set_syncnt() - cannot be directly used with an MPTCP socket.
+> In fact, passing an MPTCP socket to tcp_sock_set_nodelay() even
+> causes
+> a crash. Therefore I implemented these two MPTCP-specific functions.
+> Actually, a better approach would be to add protocol-independent
+> sock_set_nodelay() and sock_set_syncnt() in net/core/sock.c.
+> 
+> The third function, ip_sock_set_tos(), takes different arguments for
+> TCP vs. MPTCP. For MPTCP, it needs to pass inet_sk(msk->first)-
+> > rcv_tos, so I implemented an MPTCP-specific function.
+> 
+> The last three functions - sock_no_linger(), sock_set_priority(), and
+> sock_set_reuseaddr() - are not protocol-specific, but attributes set
+> on
+> the MPTCP socket cannot be synchronized to its subflows because
+> mptcp_sockopt_sync_locked() checks msk->setsockopt_seq. Thus I
+> implemented these three MPTCP-specific functions, explicitly calling
+> sockopt_seq_inc(msk) inside them to increment msk->setsockopt_seq, so
+> that mptcp_sockopt_sync_locked() can properly synchronize the
+> attributes to all subflows. There should be a better solution for
+> this,
+> and I will discuss it with @Matt.
+> 
+> Please give me some advice.
+> 
+> Thanks,
+> -Geliang
