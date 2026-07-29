@@ -1,207 +1,132 @@
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6733647CA91;
-	Wed, 29 Jul 2026 12:23:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7683E47F2D0;
+	Wed, 29 Jul 2026 12:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785327803; cv=none; b=jR2y570VPvoWIidOdB64avkpndDSKDXIJ0an4eSkSnDGlTkTwyArJoUquM+/lxLSe77E7hJPku4ARKXrK8YoUahAh+MQcKgzMjk6XGeD+misIoKj/o8QLTyXJ/FeDTXyy838Bn6vamADX1Y2cUHHYkuAONTkdWSZvK80HXFTw2I=
+	t=1785327932; cv=none; b=jWo7FY9OYqakY90yaOCYRqZZFuF5oQSVg9+OjpJ5o6ZFsvXI54qy3BW2+TX9JMOCD6faR4x9WvEPvtEk3tkLCYr4u802eDMu/rqR43dukyy6EQmob0VPhjSq7oV+ia3XB6ioKi5ecm2AE0ER364+XwlTHaXTC2qyF8illqwQUac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785327803; c=relaxed/simple;
-	bh=n8Eq+6+Nhabtgy8GnoTwIOfS6ttg6xbpMsrfwdi/K2c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WpVlW4ciPeYXNnI5/KHhhr+I/kDA5qDlrLyaw0lx0KNBZMxPngE7sbranuqaaB53GZXIFms4jxUFulgfWtr+CXs2+DNUl/QGBMEagzLR9Q51VpQxwiebNrxlS1qvtphXTFt8I4gXWM3vFDuWJ3e32yFvGAsvKIStWAYYHcGb1LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=gsozdCQW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=c0/dNjdx; arc=none smtp.client-ip=202.12.124.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1785327932; c=relaxed/simple;
+	bh=4INEZDfxvinau2JwY159d/xUPtSiNSnOWn0J3lzYHw0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OO/A317YXINwS/lRhV9LVNtNro1WVTw36DNfcufc4hCVu0PdyzvGlK5+Cb334U40gpz3THBSmZptP25UiCC3pfC2UC/ZZZ8d8Pob/vc6KDoImFoAcIDttHodY72e4jD2pL9moy+wvm0wSnXu3OmiqnPnX2Z9AhmWHGSAm73NJec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IaGglWqu; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="gsozdCQW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="c0/dNjdx"
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfout.stl.internal (Postfix) with ESMTP id 013811D000D9;
-	Wed, 29 Jul 2026 08:23:16 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Wed, 29 Jul 2026 08:23:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
-	 t=1785327796; x=1785414196; bh=FjyWDcU0AQmtNTB7vEHZRRZ3y0JXpUzK
-	aPUWS4TnRNM=; b=gsozdCQW8M4slO9m2Al4quBNj5zWOyyrCdYVk8uLh1kYiTf/
-	CaA0GbEdMGS+5eHIhIFDBpSPjK5g6b2pIlpY2hQRmIgx1Q5Acp2ovfgKm+r3EmJ5
-	z9h+qmjjwXrXo8lMvdRyyLD1zmaOJchi7q7mmf/46k+DcTYAuchd/WX9QHgI5e5S
-	TzkDDKkOWA1j/Rj7QJnWiV41uHSKGpwP2oiRcQe0jAcOCZjr2B9BTU/oBQLGn9/t
-	piiiuek7ohPNSD47TniWR/JGnQcUizOJ3ebJu8zqas7dClF904CT/a3fDay9l0BC
-	Rr4Xnci9lBKgtqgKRSLYkeF84YGxRSGIMJd9gQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785327796; x=
-	1785414196; bh=FjyWDcU0AQmtNTB7vEHZRRZ3y0JXpUzKaPUWS4TnRNM=; b=c
-	0/dNjdxcpyvR5Vkz3EhNUI+/lC/vZbCnDmhpFrx0RN8ZVqxHPqDwpQoFmM1NXUdK
-	p8FQa0lBTn2taUkOFtVtei62vVSHTjICGfu0WwkynhpP3e+fAf9j+d8F1AtVz3HU
-	yubRND5W/FpYxPkUefjm4mR7qiDkcfUPUIdxEhhp3EUK6VuiaeXJiuhTagoYB1ht
-	6RTnW60lDJGeH8RB3y1Pil+Q9BWc5FZDiprlrZRqwHVZiWwR9tpvEul5h8C5B4Xr
-	tPaKIJqZ9A+GMLlYcTlWfZmDav/LkdNiKMioVMzV8T+XyLN5DD8wXcih1rKVJYIU
-	WKMJAMzFEGGwmGpAeuMZg==
-X-ME-Sender: <xms:tPBpalzdOSSlXBf-Igff4kYyTG5U4tgAKFWBhkpEoVxQ7hbdIV1lOQ>
-    <xme:tPBpaltb_nVYMLej4kxwOTyytiElPM8iNWr7fnrRm5aCeQtLDivCEueFW1ny0xGvk
-    R7oB-j-ZxmS0CPa3ClrhwI3Rm25OfoG7Lsn7LEcpWMUMNjA-Tf6g30>
-X-ME-Received: <xmr:tPBpavEXKEYfzwoeoJh_JN2ICvBz0A4a264GbgkgiYRaEZaW5ak8IETq9iM>
-X-ME-Proxy-Cause: dmFkZTFy9VLstGC/2JcdpGCUEJUK2PuokghQUZYXXVIWYSAQOOOeIK+6vlG3o8tX1idpjb
-    1PHrG9dAgQIo5ypYYC0qtY3cChtoy2fp/jCSB7yeyU0FN3durHDdbxeQ+CBKqSfHuaiEic
-    vMWUb509ccfuHqTBkPmeJHn+btYOQHCNl67P1clA46qs8HQqIQ7PGsu/JGILF+Hn1D3jK1
-    dzr+Li6MpLHGQXKgDpe73QxdN2ObNJbKqGGvIpR8iTmqvoPh70wNHs3xzAw8SPq/4xSdPc
-    IzdhyfUqb1mAgaasV0aEoKgeHTsme1Ao0dajfkHJn0xpGy6usq+cwOqPooDPwD2NSqg5O3
-    Z+F1/GOk8LgyqEYMIR6dZosT0takI/Oneplo/f+1M6KY7LJN29s96z2d1ZSgb0PdDFMKNe
-    PGKtPYoKHFVXXeq8+8hNQDJoUC4SQ6g09DVYO2bAKL/Vc9GURYv49Q7mgQPyXKfGJVWwE4
-    8vBNodZQb+VJbzWIopLwYhBr0BReaZH+PC2xravXShPQ/MMRJ/8+Dp7RiLRaEGMun1tx9b
-    MiP+vE6kJO3H7ND86cVSmLuiXWZwtU9Ifsa4DCGqjhnGHt3YvCC4Dkf7GT3iI9IlTu5VGn
-    4U5noyZo/n3Ufc9wrZ+19RYDvFH6XdMa3fHM0tETBcFjBebowqgjt+HAEBPg
-X-ME-Proxy: <xmx:tPBpaj6HUksZdpZj87eKdKS-I-FWUndbMP31fSu7rova__7vRCUJxw>
-    <xmx:tPBpagxUeMM3zWCKF1qmpF2fSSq1sSWLMXAJ4-Yw8kihUrIHZ8woGQ>
-    <xmx:tPBpap3wgex4l2Jq0BM5CTAFIuBZZkG35TtseW5ZmWEzO-5-XbH6Vg>
-    <xmx:tPBpar4IjnyYK3oy5D2vIB6Uxx9aQmP9ViNDOZ4NvBSsX40o5ZKwvQ>
-    <xmx:tPBpanlYb8acziyIEb4ysKeH9OPo0X4Z-ce7We48iVrR7Uv_HIniMrTV>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 29 Jul 2026 08:23:15 -0400 (EDT)
-Date: Wed, 29 Jul 2026 14:23:13 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Chuck Lever <cel@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
-	linux-kselftest@vger.kernel.org, linux-nfs@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/6] net: Introduce read_sock_rectype
- proto_ops for control record delivery
-Message-ID: <amnwsWrxv6KvrZ_L@krikkit>
-References: <20260720-tcp-read-sock-v2-0-29545d034f3c@kernel.org>
- <20260720-tcp-read-sock-v2-2-29545d034f3c@kernel.org>
- <20260728185124.72e421c8@kernel.org>
- <480a8337-a91e-40e5-8dbd-d165599fba4b@app.fastmail.com>
- <20260728193058.7f6b453b@kernel.org>
- <a6fb364d-8344-408e-bcd5-0cee4ffabdc3@app.fastmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IaGglWqu"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66TBI3jZ4077075;
+	Wed, 29 Jul 2026 12:25:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=+5C613
+	WTrEAgrx10lGrrHDdtf6pJ/PN+7NZoih2kbSc=; b=IaGglWqup6Dnuk6QJvg1b7
+	kEcCCtZXdT6kyIULFNEMgf7EWUrKZ6KoFI0VCcNI6yDwL03iHEZEvFKlibSuxHkw
+	lSnD9t3xmw4EdBDmmb53DjO1IozPXqOoCLGip4Q5jgak+dmF0+kJiQ52KlAuKMt/
+	byTZKycth0JRiLaG5EJ3ATF02Vk+yazwcS6dgIiXC5OxEeCzsajfHN5agO3evsEj
+	skMGVert456MANqTRgc/Z0RmxklceCc4Ac8M99amcY8oR/0Fr1vP7kzkC8KX+uZd
+	4zAHyNSyZqFGyaeqVzTOuQ9YjNlimrGx6bEnNTVprUCvqTxLUnXp46d9jsJDR9XQ
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuwd1u5b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jul 2026 12:25:18 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66TCBNmY025803;
+	Wed, 29 Jul 2026 12:25:17 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fna5y6byg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jul 2026 12:25:17 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66TCPDJO16908726
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Jul 2026 12:25:13 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C009F20043;
+	Wed, 29 Jul 2026 12:25:13 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F36320040;
+	Wed, 29 Jul 2026 12:25:13 +0000 (GMT)
+Received: from [9.224.94.95] (unknown [9.224.94.95])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 29 Jul 2026 12:25:13 +0000 (GMT)
+Message-ID: <fedb6ecd-f5e4-4830-9595-237215fa0164@linux.ibm.com>
+Date: Wed, 29 Jul 2026 14:25:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a6fb364d-8344-408e-bcd5-0cee4ffabdc3@app.fastmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] dibs: fix use-after-free of dmb_node in loopback
+ attach/detach/unregister
+To: Hidayath Khan <hidayath@linux.ibm.com>, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
+        sidraya@linux.ibm.com, wenjia@linux.ibm.com, mjambigi@linux.ibm.com,
+        Rahul Chandelkar <rc@rexion.ai>
+Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, horms@kernel.org,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com, pasic@linux.ibm.com,
+        gbayer@linux.ibm.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260727093530.968834-1-hidayath@linux.ibm.com>
+Content-Language: en-US
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20260727093530.968834-1-hidayath@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: 4MwX9pVB33iqrYqOxD5A_w2oVIBToZWb
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI5MDEwMiBTYWx0ZWRfX20ynG5a+0ss0
+ 3ueQNYLWusR/X51uqNSB7pUTKaoEDXJNC8b1GomI6E2Ecy5Y3Xi+iUcAckmnrcP7w4kdVJ0pVkR
+ p9SZgrt+rCOquIEHc+TjfnCN6/I4PUs=
+X-Authority-Analysis: v=2.4 cv=E/z9Y6dl c=1 sm=1 tr=0 ts=6a69f12e cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=o8dFRQB0AAAA:8 a=DAb8WqUzKgD87k8msboA:9 a=QEXdDO2ut3YA:10
+ a=D5cU4ZU6l4KboW5xFU7l:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI5MDEwMiBTYWx0ZWRfX7GlIJnWnzeAG
+ wRWEFtaAcINncWSZOygZRlhosCpKUIXh3eSm2yD2CKO0AMH1A6C+PWJu1aknfG0U/UNrVfDPpru
+ GbgxnZ4EdvujGeMjyzmWoT0KV4YRZCVUc1ORePy9vjMPnO1ydYWyYrq+l2j0QVfOsRBWfBrNnku
+ Ef37C1dWe4fKITN+Vg+Sqo4tOv8CdumpsF38j0TxLWCMSCYSm7BsPHlIYBHzHkfOnXF1KqN7Ryt
+ VwZ9T4PkQw6jgic7tflXvyzs1+xceVzFql8SaoQib8+KGUD7K0r9je2egP7v3AMCx2SU/lQPsD4
+ ZxCJCE0oHGWKX56HC32Em5KPQ39AOj/Pg8u9eHFq+xTKUN1DXgF7IJSTlO00SzIjdaRSNXFZhOy
+ DhqjZuqcpDNLrB+0l3MittWSMovZrKRjsAZVPIm6DfVOzKT5oDiBwxdQbf6KWfLAP/LqHuE0dOp
+ uD0H1ZbCqBXVo/6HUOA==
+X-Proofpoint-GUID: jdfYQMc6znUxFmTKOdJGrdkhrh0lR4V6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-29_04,2026-07-28_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 spamscore=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607290102
 
-2026-07-28, 22:51:30 -0400, Chuck Lever wrote:
+
+
+On 27.07.26 11:35, Hidayath Khan wrote:
+> dibs_lo_attach_dmb(), dibs_lo_detach_dmb() and dibs_lo_unregister_dmb()
+> look up the dmb_node under dmb_ht_lock, drop the lock and only then
+> operate on the node's refcount. Nothing keeps the node alive across
+> that window: __dibs_lo_unregister_dmb() removes the node from the hash
+> table under the write lock and immediately frees it.
 > 
-> 
-> On Tue, Jul 28, 2026, at 10:30 PM, Jakub Kicinski wrote:
-> > On Tue, 28 Jul 2026 21:57:21 -0400 Chuck Lever wrote:
-> >> > To me this is an ugly one-off workaround that doesn't fit into 
-> >> > the proto_ops (only TLS will use it). And you seem to net out
-> >> > to the same LOC on SUNRPC side with and without this?  
-> >> 
-> >> It’s not about LOC. It’s about not cluttering the normal I/O
-> >> path with a lot of exception processing to handle TLS Alert
-> >> records. The CMSG API is very difficult to use and leaks the
-> >> alert messages into I/O buffers (which for in-kernel consumers
-> >> are page cache pages). It’s piss-poor API design.
-> >
-> > I'm not arguing that it's amazing. Doesn't mean we will YOLO
-> > a special proto callback for every protocol stacking :/
-> 
-> No-one is asking you to roll over. Review means you get to steer
-> us in the right direction, and I promise to do the leg work. Terse
-> rejection doesn’t move the discussion forward. It stops it cold.
-> 
-> Complaining about slop also does not tell me where you need this
-> to go. I use AI to go from blank page to RFC/v1. Where we go next
-> is up to human taste, as always.
 
-RFC/v1 wasn't sent to netdev.
+I had lost track of this, but Rahul Chandelkar had already proposed a
+similar patch [1] for this issue, but never followed up with a v2.
 
-[jumping to the end of your reply]
-> I thought the RFC series cover letter made it clear that we are
-> looking for input and direction, not to sell a completely formed idea.
-
-Then this should have been tagged as "RFC v2". "PATCH v2" sounds more
-like a fully formed idea.
+Rahul, Hidayath,
+Would it be ok for both of you to add
+Reported-by: Rahul Chandelkar <rc@rexion.ai>
 
 
-I see in the RFC thread some doubts about whether read_sock is
-actually helpful with TLS.
-
-Ignoring the "does read_sock even help?" aspect, how much improvement
-are you seeing by going from "read_sock with fallback to recvmsg+cmsg
-in case we get a non-DATA record" to "read_sock_rectype"? (current
-svcsock [before this series] doesn't use read_sock, it may be good to
-compare those 3 variants and not just "old read_sock vs new
-read_sock", but "read_sock vs read_sock++" is the important one to
-justify an API change)
-
-Non-DATA record should be fairly uncommon, I'm not that convinced "oh
-well let's try again" once in a while causes a measurable degradation.
-
-Even with recvmsg(), you have 2 choices:
- - pass a cmsg every time, and check the record type for every recv
- - don't pass a cmsg, and do a retry when you get -EIO
-
-This proposal (call a different CB depending on record type) is... an
-"interesting" approach.
-
-> >> > There needs to be a very strong reason for us to add APIs for
-> >> > in kernel consumers.  
-> >> 
-> >> This is not a helpful position. Your objection is the same
-> >> every time, treating the in-kernel users as second-class
-> >> citizens.
-> >
-> > No, it's not a second class citizen. But kernel consumers have a
-> > tendency to break all abstractions and insert hacks all over the place
-> > just because they are not forced to go via uAPI boundary which forces
-> > people to think about the API design.
-> 
-> Granted that user space self-tests can’t reach kernel-only APIs.
-> But that is what Kunit is for.
-> 
-> 
-> > You just need to try a little harder to produce a better solution.
-> > Rework or augment existing callbacks to let your achieve the behavior
-> > you want.
-> 
-> My original approach was to add a new read_sock variant because I
-> suspected you wouldn’t want read_sock itself to grow another argument.
-
-Given that there's only 2 existing consumers of read_sock (strp and
-nvme, and I'm not sure why strp/sockmap use it at all) [1], and 3
-arguments to read_sock, adding an argument would be ok IMO. The
-implementation (tls_sw_read_sock/tls_sw_read_sock_rectype) ends up
-being a small wrapper around a function that does the actual work with
-a NULL check, might as well propagate that to the callers.
-
-For me the problem is more that this new argument is very specific to
-TLS, and dropping something TLS-specific in a generic API (struct
-proto_ops) is quite ugly. If we want to make this generic, we're back
-to cmsg (or something cmsg-like). And then the benefit for users of
-read_sock gets down to avoiding the "try read_sock, then fall back to
-recvmsg" logic.
-
-
-[1] well, there's also some users that call tcp_read_sock directly
-[1], but I think they can be ignored other than "they'll need to pass
-NULL since .read_sock = tcp_read_sock"
-drivers/infiniband/sw/siw/siw_cm.c	tcp_read_sock(sk, &rd_desc, siw_tcp_rx_data);
-drivers/infiniband/sw/siw/siw_qp.c	tcp_read_sock(sk, &rd_desc, siw_tcp_rx_data);
-drivers/scsi/iscsi_tcp.c		tcp_read_sock(sk, &rd_desc, iscsi_sw_tcp_recv);
-net/rds/tcp_recv.c			tcp_read_sock(sock->sk, &desc, rds_tcp_data_recv);
-
--- 
-Sabrina
+[1] https://lore.kernel.org/netdev/4gRZFl1CWvz2x9j@mail.spacemail.com/
