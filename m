@@ -1,48 +1,48 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0443923ABBE;
-	Wed, 29 Jul 2026 04:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30251F942;
+	Wed, 29 Jul 2026 04:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785299491; cv=none; b=SYSaEjzXkaAjXF9csl6C/mRNXKfRnG0WYCEKJJ9SHd0HCwGPRmH6eSw7Yg3GO+zZpdpq7jd7b9LG2Logzth9KbFVEoc78RrIFCtNjcSSalH2F4s+Q626uHZOrr0Mx8vFuZvxykZPHYRUsmeJm8dbCXjlj8kNy7D3JBb56lzk/xo=
+	t=1785299501; cv=none; b=ClZ8qFOggQzyS6A65hI8peue40aJ9lVbWw57vIJsjGzP+H3xp/9hSixTtXuzWXipBJlewyaSqWhJZEzNv6yNBnpoJH63PpBjsx5aa6l6mmqiGPDb3mMNu90e3g0bzgATCHHPr3Ph3Wl75a8lhOjwRTSiFoT6wLmX52gnHaAwGpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785299491; c=relaxed/simple;
-	bh=+Txf5rjD+DI2shJcwGP84PS0A02ha3PLs4g7tp/AJhg=;
+	s=arc-20240116; t=1785299501; c=relaxed/simple;
+	bh=u07TJeDCCVaXR3QuNiyHWuVEekradh6f6nrwnIgoJZY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Egb31BhBfPOatdotu9IS4dmgZEYz2+PjRrHYG6R4F+2Ed9OCP4HlJDX4t3/lB7nsXjAK0sXDhMtrE2LmwHa0AJ9TlMQK0DEbRlPu3HASHAasdSTyMrXDVPbRKQ29b4/HTXVerxnEI3m29ItueCxDXG3U+2Nv6rAyPDWkduOjx8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=cc8KoZIx; arc=none smtp.client-ip=68.232.154.123
+	 MIME-Version:Content-Type; b=gwUQC7ZhjkwnQB22WfaaYr3K3R8/wAt4SGomCrNDojrMW4+25xEHJvRi+FMf807i+pD3Y6oNM5xy6HuQxxJ4mv1Vd6AHvrjbm4FE362R/FLvbq+VIYRBLL/55kiEk06FWVAdC72LCBpeeYU8dgkp2XF8As6DRtpExECIEFjyGf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=t6pMqaJ7; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="cc8KoZIx"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="t6pMqaJ7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1785299490; x=1816835490;
+  t=1785299502; x=1816835502;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+Txf5rjD+DI2shJcwGP84PS0A02ha3PLs4g7tp/AJhg=;
-  b=cc8KoZIxKBrvS5bhgGMONDz0rqjK2bkZzxu32AzPiM81OYTdG4uWb8Vy
-   Fm+ysOg0/TUpeR5KaQVGbu6qnQU3WC8jk8VYSNmKnLyG9D6FvT1YRiQQC
-   qJF8vpcaUMN7z7TODb8ORfeBeksqwJcl8ZxIMPp2NsDb6jeR3pcZzovTM
-   pmWmMltrQgktS+vxVlo+akC0vAnm2ic60gfTAWkd5IsVAuA5Q6gr1sRpX
-   so+lMJL3Z8CF6m6Y1EEL7reYmAZMhRg7qxq2kTAQjgvnuvSbyK8en8qIN
-   svsPgA4el0kHO4J8PhLNrtqo/5f7sXfJXDDiSiFRQb7e/vlUPu+swyOAo
+  bh=u07TJeDCCVaXR3QuNiyHWuVEekradh6f6nrwnIgoJZY=;
+  b=t6pMqaJ7MNNwjdelikzwLobscHXsinSRIJ9tYsoPvetnEejQWXrd7pH0
+   GTV9B5KvUvWrEJPifokAAcefBgkc67CsgYVwiQX95ySJXeSDA0ETICZxR
+   InvJGXOdblRlbf6gwdvG1MAQ4FT2BS+ILe3Z8raVw7Du0ACap/v8TTbzH
+   4gV+z0zxpEJSX76/5Nx4Wy4nPnZ1doE3zA8JwhbRoRJbCWchv+XTtFoR0
+   Yfh3DzWeHFR8Ra5m/aZUMzklUobzon2LYHa4zCSfUjJw4yLeBRZJc6ieC
+   aRZaqP342tiETMbGMhx/AygC3GuGDAuqapQ8rAMGhqEQkJI8iUmDEuu74
    Q==;
-X-CSE-ConnectionGUID: 0XBTj9xIRi2mrTgPFZ1xkQ==
-X-CSE-MsgGUID: 6t5S/ySKRZSv9COd5FXg1g==
+X-CSE-ConnectionGUID: ni5imx0OTlSyOvf2qThVDg==
+X-CSE-MsgGUID: EVhjFy5dQkeuaEA64k3AeA==
 X-IronPort-AV: E=Sophos;i="6.25,191,1779174000"; 
-   d="scan'208";a="61636953"
+   d="scan'208";a="292693777"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Jul 2026 21:31:29 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 21:31:42 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 28 Jul 2026 21:31:29 -0700
+ 15.2.2562.43; Tue, 28 Jul 2026 21:31:38 -0700
 Received: from che-ll-i67131.microchip.com (10.10.85.11) by
  chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 28 Jul 2026 21:31:20 -0700
+ 15.1.2507.58 via Frontend Transport; Tue, 28 Jul 2026 21:31:30 -0700
 From: Manikandan Muralidharan <manikandan.m@microchip.com>
 To: <pratyush@kernel.org>, <mwalle@kernel.org>,
 	<takahiro.kuwano@infineon.com>, <miquel.raynal@bootlin.com>,
@@ -54,9 +54,9 @@ To: <pratyush@kernel.org>, <mwalle@kernel.org>,
 	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>
 CC: Manikandan Muralidharan <manikandan.m@microchip.com>
-Subject: [PATCH v6 5/7] ARM: dts: microchip: sama5d27_wlsom1: use fixed-partitions for QSPI flash
-Date: Wed, 29 Jul 2026 10:00:24 +0530
-Message-ID: <20260729043026.1811147-6-manikandan.m@microchip.com>
+Subject: [PATCH v6 6/7] ARM: dts: microchip: sama5d27_wlsom1: read MAC address from QSPI SFDP
+Date: Wed, 29 Jul 2026 10:00:25 +0530
+Message-ID: <20260729043026.1811147-7-manikandan.m@microchip.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260729043026.1811147-1-manikandan.m@microchip.com>
 References: <20260729043026.1811147-1-manikandan.m@microchip.com>
@@ -69,85 +69,54 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Move the QSPI flash partitions under a "partitions" node with the
-"fixed-partitions" compatible, as required by the current MTD partition
-binding, instead of declaring them as direct children of the flash node.
-No functional change.
+Describe the QSPI flash SFDP as an NVMEM provider with the
+microchip,sst26vf-sfdp-eui layout, which exposes the factory-programmed
+EUI-48 as a "mac-address" cell, and point macb0 at it through
+nvmem-cells. This yields a stable MAC address on boards where U-Boot does
+not program one, instead of falling back to a random address.
 
 Reviewed-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
 ---
- .../dts/microchip/at91-sama5d27_wlsom1.dtsi   | 52 +++++++++++--------
- 1 file changed, 29 insertions(+), 23 deletions(-)
+ arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1.dtsi | 11 +++++++++++
+ .../boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts    |  2 ++
+ 2 files changed, 13 insertions(+)
 
 diff --git a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1.dtsi b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1.dtsi
-index 0417f53b3e96..062aa02a98ed 100644
+index 062aa02a98ed..6016d7f2a39c 100644
 --- a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1.dtsi
 +++ b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1.dtsi
-@@ -240,34 +240,40 @@ qspi1_flash: flash@0 {
+@@ -240,6 +240,17 @@ qspi1_flash: flash@0 {
  		m25p,fast-read;
  		status = "disabled";
  
--		at91bootstrap@0 {
--			label = "at91bootstrap";
--			reg = <0x0 0x40000>;
--		};
-+		partitions {
-+			compatible = "fixed-partitions";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
++		sfdp {
++			compatible = "jedec,sfdp";
 +
-+			at91bootstrap@0 {
-+				label = "at91bootstrap";
-+				reg = <0x0 0x40000>;
++			nvmem-layout {
++				compatible = "microchip,sst26vf-sfdp-eui";
++
++				mac_address_eui48: mac-address {
++				};
 +			};
++		};
++
+ 		partitions {
+ 			compatible = "fixed-partitions";
+ 			#address-cells = <1>;
+diff --git a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
+index 35a933eec573..5e87bf04bc47 100644
+--- a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
++++ b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
+@@ -97,6 +97,8 @@ uart6: serial@200 {
  
--		bootloader@40000 {
--			label = "bootloader";
--			reg = <0x40000 0xc0000>;
--		};
-+			bootloader@40000 {
-+				label = "bootloader";
-+				reg = <0x40000 0xc0000>;
-+			};
- 
--		bootloaderenvred@100000 {
--			label = "bootloader env redundant";
--			reg = <0x100000 0x40000>;
--		};
-+			bootloaderenvred@100000 {
-+				label = "bootloader env redundant";
-+				reg = <0x100000 0x40000>;
-+			};
- 
--		bootloaderenv@140000 {
--			label = "bootloader env";
--			reg = <0x140000 0x40000>;
--		};
-+			bootloaderenv@140000 {
-+				label = "bootloader env";
-+				reg = <0x140000 0x40000>;
-+			};
- 
--		dtb@180000 {
--			label = "device tree";
--			reg = <0x180000 0x80000>;
--		};
-+			dtb@180000 {
-+				label = "device tree";
-+				reg = <0x180000 0x80000>;
-+			};
- 
--		kernel@200000 {
--			label = "kernel";
--			reg = <0x200000 0x600000>;
-+			kernel@200000 {
-+				label = "kernel";
-+				reg = <0x200000 0x600000>;
-+			};
- 		};
- 	};
+ &macb0 {
+ 	status = "okay";
++	nvmem-cells = <&mac_address_eui48>;
++	nvmem-cell-names = "mac-address";
  };
+ 
+ &pioA {
 -- 
 2.43.0
 
