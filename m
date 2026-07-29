@@ -1,80 +1,84 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121A641B8F1;
-	Wed, 29 Jul 2026 20:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C650040BCC4
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 20:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785357955; cv=none; b=qaQYMkQVwCCzhRIcOHm6R4oEOWhRlNCtqUKEb4OFFBd+Koo0u9ue/v8xGVnmK5fiRA9TlR7Bdwu4XxV9MtZHv3cw8uHLH0clqUJ0Go7k6bOmWnTBuaE9a9TiwfFxk0k85N0YECG2hwNs0uLiM+SObjOKg93kINsmXxED6GaCNV0=
+	t=1785358095; cv=none; b=hlwysbPPk+PR6rmhkqlbT990Z9IydiO+GUo4XEpDsJTriSPBZjp/1T/DzP1hmYRW1xa+DykOSr2S8Sj0mmjRVk2rcfEKh1oCd/lAx/H/vJHl9rBfNTYMunjhhvwwI0UrXyu7zz/BOyOYXuW14O3YYJh+nHT970zg9e481lQgZh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785357955; c=relaxed/simple;
-	bh=yWxfZRD/yZIaSxGelAA8Boxsr8ChzC+blbviTyRk+ss=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GtZ9u/w4ukNsiLWwK0bW6I7rZBmKPX54R5Pg7y9oeUMuJ6v3/LVuunr9fmbX5RWCMFE+qTa0/sx+0RyNETObABWqG6W5TM8U2KY3W3/Q+KFKoO9NWHjVckqBIM1ijPTnSfGRqMxJ6EHc5Dldl1268E4e1RnM9d47zrm3wBUuSdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ky227bVA; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785358095; c=relaxed/simple;
+	bh=ghSvs3bjeMbD0ElSdqAngWYaaXDI5xXr0l+jvLObKnM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CNcLYgU320k8wdnS/lCFzyxalESuu2GaJTmylXqGrqMzjb3JesxwSeEYiclj0mDQhd3sI8LfXG+hMiuhVPaD9WZ+d61QhxXY9bPorjhroxd/Ufq6Pz587v1CbRPUEWInErCi3V0SvHmDooB3Keo1cHyP48GcQuVgIrNWQm0675M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VzGIp2gy; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ky227bVA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785357950; x=1816893950;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=yWxfZRD/yZIaSxGelAA8Boxsr8ChzC+blbviTyRk+ss=;
-  b=Ky227bVA0zpOiDkIRqJNSU1ImANYpH+n8Xb06Rcq2Ueu/6jOAZm8sCXm
-   PxcdeLZrxGNPECKdkRHbK4xLhnrS1sKERqSON0I8tlK68vOJYzjtTpYp4
-   ZbSNsw0Tj1B7CGMKfEVFblEuyAdp3+/ywAWilhylZOSjZDprh6kk9XG5G
-   bk71e2DwsswO3fjV0XgPIt6tCysar9UOfwKpn5e8advubH9lxGF/tfUT2
-   C2fwBu2W9zcYcmeaz9wEynoGf75X4Jem5W3Zf5MWfub/OR4/7+O/rua/o
-   znqi1qeipWoVp44v575vVAjBWEb9xuJ9SgyIqbtI+iigqS1NwGN0lkSze
-   w==;
-X-CSE-ConnectionGUID: jyVZepDLSt2u/s3suZqwow==
-X-CSE-MsgGUID: jHW670DwRd2BwrILqfwB0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="84952505"
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="84952505"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 13:45:13 -0700
-X-CSE-ConnectionGUID: eWs4wzqZQD6N1frRIYKi0Q==
-X-CSE-MsgGUID: I2e+6QCUSey8s/NRAKKh5g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="264381387"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa005.jf.intel.com with ESMTP; 29 Jul 2026 13:45:13 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Amritha Nambiar <anthony.l.nguyen@intel.com>,
-	larysa.zaremba@intel.com,
-	przemyslaw.kitszel@intel.com,
-	aleksander.lobakin@intel.com,
-	sridhar.samudrala@intel.com,
-	michal.swiatkowski@linux.intel.com,
-	maciej.fijalkowski@intel.com,
-	emil.s.tantilov@intel.com,
-	madhu.chittim@intel.com,
-	joshua.a.hay@intel.com,
-	jacob.e.keller@intel.com,
-	jayaprakash.shanmugam@intel.com,
-	jiri@resnulli.us,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VzGIp2gy"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49555a0e68bso7456325e9.2
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 13:48:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785358090; x=1785962890; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7C7vldz7GsXVEVDYDLw9dX12wc2USI49J3820vhn8yQ=;
+        b=VzGIp2gyJbxIIjBfOavXImng7MoqsgVwnTvUJdxIjOVXk36N0l/Ip7bOwOL3q3ws3d
+         XAsPqyCCl7z5HyNPIz3YBwqSqPED+w3glrSu8NK9Uzr5c7W7HAlk0mqgyGSDqvVMJKDW
+         j4tj+ysV9YSRzuKGEMuE0wlWhrRe5G9QzMk7dRszCh7peGSY+R4Uj3DpzbObvzYMupc1
+         5SY+CnXQTg5epjrdfpyleRtS9PzipojY+FuPVJFBURTdEGpqP0EN7rxYvXHUCqyrzlhC
+         zzGHYC3SADdrbP0ttghvqitQ8AAazv1NLe0IYkwCcWciEwQ7L8/MLx0fLJsJDq6EFCh2
+         vhTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785358090; x=1785962890;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7C7vldz7GsXVEVDYDLw9dX12wc2USI49J3820vhn8yQ=;
+        b=Muh7eVXHZbEfH7ffYs1BKZNYXUo5w4xJIFCKc8565x3UQYfZt7X4fLfeuA/O+uY3Lo
+         mx/VGqRLLGl0xJKehYK+flO17qQIW4VreyFZr++Ocx9yogS8iH+1F5TJPIZZlkParkMX
+         78gsVNXjTUuVi9so4f+gcGsP7oEZl2bQZDoz3qpzmIB8PGMvm9pMzZBy50D9THFkP+zM
+         ZAJhlwsP48+I+pwjMBM6W++107PpAtMZTXFrEy21P2U6lKkiO8cykRav0ktE6/nHCWeb
+         zo6CsQgtJheJ2h5H6ZWPU/k6BMxmliP5s/QYBQxz3LB1UmGd1X9O2ljzRQ1VbYRe7KH6
+         HYXw==
+X-Forwarded-Encrypted: i=1; AHgh+RqnxKW7exvvm02MK8cwG75i4251nFELBHQ5Eri+1tJHmJpefhl0un/ShoonowzKhNN2GlCCl1k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yytap1jsJcr+hqMHeNMl5y9OK1ZuShPds13G9X4bHw1RHha3ars
+	tw1zQmeVfTYyb7keJkFLF+aM+WrSDRzIhLG178WVaLIaT/4+B9bfGlDu
+X-Gm-Gg: AR+sD11sUix/yotusbM5bSlJyprp1yVziv5AEjiPt7CEQFnzRAPLhZofCY53ZVr/XQn
+	T2E819+0A3xn4Sg8Nik83+nVGIlNYammbb17FNen02+Lf7PTxzlZ5cPBLPGMkXZIalMJt8S/Ol2
+	8JSBYtWDNH1/DlnLR1e7h7Aoiesm9Bc0zejK2Vjg3vr0HRZOQBx/FfZMlM4v8YjsrHft5lPU6bT
+	DqWCOI+Yv2lsAOCYc41Eyd7ASzz9zmkIfj5K64uFCcpPQv3oRlPKULTfa5cPNzFXG3Bf67DO6PM
+	y+i4cSgJfwNKqwG9S96SX3dt2U9e6X4IZayfItMpwEbJM0jFbOw70gZ7AxYm5Njx/QnNlnvG2Vt
+	4BluIC0QTYSQSU3Us+5UIJQP6JRi8rVapQ0LpdFwl5MkecgfbI8E1zqFXQqHN4DaPaEgkZ77qDD
+	DQCz0iLvz+OcgRBxKHZbmr5N3bEQdaf5ud7X6E6pNWgND1Ai02uFmfXw7VdaHWhaCpxwxwmCEv7
+	0SRukSGVv9mSu8s2a3ExHAHIS402e9XDAI=
+X-Received: by 2002:a05:600c:c8d:b0:495:401d:9f4f with SMTP id 5b1f17b1804b1-49800ea20e7mr16645e9.25.1785358090071;
+        Wed, 29 Jul 2026 13:48:10 -0700 (PDT)
+Received: from syslab05.cs.virginia.edu ([128.143.69.71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4976bd6e179sm93779065e9.9.2026.07.29.13.48.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 13:48:09 -0700 (PDT)
+From: Tianyu Zuo <cosmosocket@gmail.com>
+To: Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Khalid Manaa <khalidm@nvidia.com>,
+	Ben Ben-Ishay <benishay@nvidia.com>
+Cc: dtatulea@nvidia.com,
 	horms@kernel.org,
-	corbet@lwn.net,
-	richardcochran@gmail.com,
-	skhan@linuxfoundation.org,
-	linux-doc@vger.kernel.org,
-	Bharath R <Bharath.r@intel.com>
-Subject: [PATCH net-next v6 15/15] ixd: add devlink support
-Date: Wed, 29 Jul 2026 13:45:02 -0700
-Message-ID: <20260729204505.3373950-16-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260729204505.3373950-1-anthony.l.nguyen@intel.com>
-References: <20260729204505.3373950-1-anthony.l.nguyen@intel.com>
+	Tianyu Zuo <cosmosocket@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net/mlx5e: SHAMPO, Fix IP length overflow on large HW GRO sessions
+Date: Wed, 29 Jul 2026 16:47:45 -0400
+Message-Id: <20260729204745.166584-1-cosmosocket@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,375 +87,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Amritha Nambiar <amritha.nambiar@intel.com>
+mlx5e_hw_gro_skb_has_enough_space() bounds a HW GRO session by the
+payload held in the skb fragments only. The L3/L4 headers that
+header-data split placed in the linear area are not accounted for, and
+the limit is inclusive of GRO_LEGACY_MAX_SIZE.
 
-Enable initial support for the devlink interface with the ixd driver. The
-ixd hardware is a single function PCIe device. So, the PCIe adapter gets
-its own devlink instance to manage device-wide resources or configuration.
+On a 4K page system a session can therefore grow to 16 full page
+fragments (65536 bytes) plus the 40 bytes of IPv4/TCP headers in the
+linear part, giving skb->len = 65576.
 
-$ devlink dev show
-pci/0000:83:00.6
+mlx5e_shampo_update_hdr() writes the IP length itself:
 
-$ devlink dev info pci/0000:83:00.6
-pci/0000:83:00.6:
-  driver ixd
-  serial_number 00-a0-c9-ff-ff-23-45-67
-  versions:
-      fixed:
-        device.type MEV
-      running:
-        virtchnl 2.0
+	__be16 newlen = htons(skb->len - nhoff);
+	csum_replace2(&ipv4->check, ipv4->tot_len, newlen);
+	ipv4->tot_len = newlen;
 
-Signed-off-by: Amritha Nambiar <amritha.nambiar@intel.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Bharath R <Bharath.r@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+With nhoff == 0 this stores tot_len = 40 and updates the header checksum
+to match, so the corruption is self-consistent. The GRO stack does not
+repair it: the header is written before napi_gro_receive(), and
+inet_gro_complete() only runs for skbs that the GRO engine holds on its
+gro_list. HW GRO sessions are typically flushed on TCP_FLAG_PSH, which
+makes tcp_gro_receive() set NAPI_GRO_CB(skb)->flush, so dev_gro_receive()
+hands the skb over via GRO_NORMAL and the gro_complete() callbacks are
+never invoked. The length check in inet_gro_receive() cannot catch it
+either, since tot_len and skb_gro_len() are compared modulo 64K.
+
+ip_rcv_core() then trims the 64KB skb down to the wrapped tot_len,
+silently dropping the payload. The IPv6 path wraps identically in
+ipv6hdr->payload_len.
+
+Triggering this requires the payload of the aggregated session to reach
+GRO_LEGACY_MAX_SIZE with every fragment fully populated, since
+page_size * nr_frags otherwise overestimates the data actually present
+and the session is flushed earlier. In practice this needs an MSS that
+is a multiple of the page size (for example 8192 on a 4K page host with
+jumbo frames) together with a page aligned start of the session.
+
+Account for skb_headlen() and make both checks strictly less than
+GRO_LEGACY_MAX_SIZE so that skb->len can never exceed 65535.
+
+The check is strictly more conservative than before, so the implicit
+bound on the fragment count is preserved: page_size * nr_frags +
+data_bcnt <= 65535 gives nr_frags + data_bcnt / page_size <=
+65536 / page_size - 1, and a single CQE adds at most
+data_bcnt / page_size + 1 fragments, for a total of at most
+65536 / page_size (16 on 4K pages), well below MAX_SKB_FRAGS.
+
+Fixes: 92552d3abd32 ("net/mlx5e: HW_GRO cqe handler implementation")
+Signed-off-by: Tianyu Zuo <cosmosocket@gmail.com>
 ---
- Documentation/networking/devlink/index.rst   |  1 +
- Documentation/networking/devlink/ixd.rst     | 30 ++++++
- drivers/net/ethernet/intel/ixd/Kconfig       |  1 +
- drivers/net/ethernet/intel/ixd/Makefile      |  1 +
- drivers/net/ethernet/intel/ixd/ixd.h         |  1 +
- drivers/net/ethernet/intel/ixd/ixd_devlink.c | 97 ++++++++++++++++++++
- drivers/net/ethernet/intel/ixd/ixd_devlink.h | 50 ++++++++++
- drivers/net/ethernet/intel/ixd/ixd_lib.c     |  3 +
- drivers/net/ethernet/intel/ixd/ixd_main.c    | 14 ++-
- 9 files changed, 195 insertions(+), 3 deletions(-)
- create mode 100644 Documentation/networking/devlink/ixd.rst
- create mode 100644 drivers/net/ethernet/intel/ixd/ixd_devlink.c
- create mode 100644 drivers/net/ethernet/intel/ixd/ixd_devlink.h
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/networking/devlink/index.rst b/Documentation/networking/devlink/index.rst
-index 4745148fecf4..e371be30b99e 100644
---- a/Documentation/networking/devlink/index.rst
-+++ b/Documentation/networking/devlink/index.rst
-@@ -88,6 +88,7 @@ parameters, info versions, and other features it supports.
-    ionic
-    iosm
-    ixgbe
-+   ixd
-    kvaser_pciefd
-    kvaser_usb
-    mlx4
-diff --git a/Documentation/networking/devlink/ixd.rst b/Documentation/networking/devlink/ixd.rst
-new file mode 100644
-index 000000000000..17b63c8425aa
---- /dev/null
-+++ b/Documentation/networking/devlink/ixd.rst
-@@ -0,0 +1,30 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+===================
-+ixd devlink support
-+===================
-+
-+This document describes the devlink features implemented by the ``ixd``
-+device driver.
-+
-+Info versions
-+=============
-+
-+The ``ixd`` driver reports the following versions
-+
-+.. list-table:: devlink info versions implemented
-+    :widths: 5 5 5 90
-+
-+    * - Name
-+      - Type
-+      - Example
-+      - Description
-+    * - ``device.type``
-+      - fixed
-+      - MEV
-+      - The hardware type for this device
-+    * - ``virtchnl``
-+      - running
-+      - 2.0
-+      - 2-digit version number (major.minor) of the communication channel
-+        (virtchnl) used by the device.
-diff --git a/drivers/net/ethernet/intel/ixd/Kconfig b/drivers/net/ethernet/intel/ixd/Kconfig
-index 24510c50070e..34181c59dcdc 100644
---- a/drivers/net/ethernet/intel/ixd/Kconfig
-+++ b/drivers/net/ethernet/intel/ixd/Kconfig
-@@ -7,6 +7,7 @@ config IXD
- 	select LIBETH
- 	select LIBIE_CP
- 	select LIBIE_PCI
-+	select NET_DEVLINK
- 	help
- 	  This driver supports Intel(R) Control Plane PCI Function
- 	  of Intel E2100 and later IPUs and FNICs.
-diff --git a/drivers/net/ethernet/intel/ixd/Makefile b/drivers/net/ethernet/intel/ixd/Makefile
-index 90abf231fb16..03760a2580b9 100644
---- a/drivers/net/ethernet/intel/ixd/Makefile
-+++ b/drivers/net/ethernet/intel/ixd/Makefile
-@@ -8,5 +8,6 @@ obj-$(CONFIG_IXD) += ixd.o
- ixd-y := ixd_main.o
- ixd-y += ixd_ctlq.o
- ixd-y += ixd_dev.o
-+ixd-y += ixd_devlink.o
- ixd-y += ixd_lib.o
- ixd-y += ixd_virtchnl.o
-diff --git a/drivers/net/ethernet/intel/ixd/ixd.h b/drivers/net/ethernet/intel/ixd/ixd.h
-index 8e3cd5bc5a84..343c5053045f 100644
---- a/drivers/net/ethernet/intel/ixd/ixd.h
-+++ b/drivers/net/ethernet/intel/ixd/ixd.h
-@@ -23,6 +23,7 @@ struct ixd_adapter {
- 		struct delayed_work init_work;
- 		u8 reset_retries;
- 		u8 vc_retries;
-+		bool success;
- 	} init_task;
- 	struct delayed_work mbx_task;
- 	struct libie_ctlq_xn_manager *xnm;
-diff --git a/drivers/net/ethernet/intel/ixd/ixd_devlink.c b/drivers/net/ethernet/intel/ixd/ixd_devlink.c
-new file mode 100644
-index 000000000000..23ab11226978
---- /dev/null
-+++ b/drivers/net/ethernet/intel/ixd/ixd_devlink.c
-@@ -0,0 +1,97 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2025, Intel Corporation. */
-+
-+#include "ixd.h"
-+#include "ixd_devlink.h"
-+
-+#define IXD_DEVLINK_INFO_LEN	128
-+
-+/**
-+ * ixd_fill_dsn - Get the serial number for the ixd device
-+ * @adapter: adapter to query
-+ * @buf: storage buffer for the info request
-+ */
-+static void ixd_fill_dsn(struct ixd_adapter *adapter, char *buf)
-+{
-+	u8 dsn[8];
-+
-+	/* Copy the DSN into an array in Big Endian format */
-+	put_unaligned_be64(pci_get_dsn(adapter->cp_ctx.mmio_info.pdev), dsn);
-+
-+	snprintf(buf, IXD_DEVLINK_INFO_LEN, "%8phD", dsn);
-+}
-+
-+/**
-+ * ixd_fill_device_name - Get the name of the underlying hardware
-+ * @adapter: adapter to query
-+ * @buf: storage buffer for the info request
-+ * @buf_size: size of the storage buffer
-+ */
-+static void ixd_fill_device_name(struct ixd_adapter *adapter, char *buf,
-+				 size_t buf_size)
-+{
-+	if (adapter->caps.device_type == cpu_to_le32(VIRTCHNL2_MEV_DEVICE))
-+		snprintf(buf, buf_size, "%s", "MEV");
-+	else
-+		snprintf(buf, buf_size, "%s", "UNKNOWN");
-+}
-+
-+/**
-+ * ixd_devlink_info_get - .info_get devlink handler
-+ * @devlink: devlink instance structure
-+ * @req: the devlink info request
-+ * @extack: extended netdev ack structure
-+ *
-+ * Callback for the devlink .info_get operation. Reports information about the
-+ * device.
-+ *
-+ * Return: zero on success or an error code on failure.
-+ */
-+static int ixd_devlink_info_get(struct devlink *devlink,
-+				struct devlink_info_req *req,
-+				struct netlink_ext_ack *extack)
-+{
-+	struct ixd_adapter *adapter = devlink_priv(devlink);
-+	char buf[IXD_DEVLINK_INFO_LEN];
-+	int err;
-+
-+	ixd_fill_dsn(adapter, buf);
-+	err = devlink_info_serial_number_put(req, buf);
-+	if (err)
-+		return err;
-+
-+	ixd_fill_device_name(adapter, buf, IXD_DEVLINK_INFO_LEN);
-+	err = devlink_info_version_fixed_put(req, "device.type", buf);
-+	if (err)
-+		return err;
-+
-+	snprintf(buf, sizeof(buf), "%u.%u",
-+		 adapter->vc_ver.major, adapter->vc_ver.minor);
-+
-+	return devlink_info_version_running_put(req, "virtchnl", buf);
-+}
-+
-+static const struct devlink_ops ixd_devlink_ops = {
-+	.info_get = ixd_devlink_info_get,
-+};
-+
-+/**
-+ * ixd_adapter_alloc - Allocate devlink and return adapter pointer
-+ * @dev: the device to allocate for
-+ *
-+ * Allocate a devlink instance for this device and return the private area as
-+ * the adapter structure.
-+ *
-+ * Return: adapter structure on success, NULL on failure
-+ */
-+struct ixd_adapter *ixd_adapter_alloc(struct device *dev)
-+{
-+	struct devlink *devlink;
-+
-+	devlink = devlink_alloc(&ixd_devlink_ops, sizeof(struct ixd_adapter),
-+				dev);
-+	if (!devlink)
-+		return NULL;
-+
-+	return devlink_priv(devlink);
-+}
-diff --git a/drivers/net/ethernet/intel/ixd/ixd_devlink.h b/drivers/net/ethernet/intel/ixd/ixd_devlink.h
-new file mode 100644
-index 000000000000..b23a1b37aebc
---- /dev/null
-+++ b/drivers/net/ethernet/intel/ixd/ixd_devlink.h
-@@ -0,0 +1,50 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (c) 2025, Intel Corporation. */
-+
-+#ifndef _IXD_DEVLINK_H_
-+#define _IXD_DEVLINK_H_
-+
-+#include <net/devlink.h>
-+
-+#include "ixd.h"
-+
-+struct ixd_adapter *ixd_adapter_alloc(struct device *dev);
-+
-+/**
-+ * ixd_devlink_free - teardown the devlink
-+ * @adapter: the adapter structure to free
-+ *
-+ */
-+static inline void ixd_devlink_free(struct ixd_adapter *adapter)
-+{
-+	struct devlink *devlink = priv_to_devlink(adapter);
-+
-+	devlink_free(devlink);
-+}
-+
-+/**
-+ * ixd_devlink_unregister - Unregister devlink for this adapter.
-+ * @adapter: the adapter structure to cleanup
-+ *
-+ * Init task must be completed or cancelled beforehand.
-+ */
-+static inline void ixd_devlink_unregister(struct ixd_adapter *adapter)
-+{
-+	if (!adapter->init_task.success)
-+		return;
-+
-+	devlink_unregister(priv_to_devlink(adapter));
-+}
-+
-+/**
-+ * ixd_devlink_register - Register devlink interface for this adapter
-+ * @adapter: pointer to ixd adapter structure to be associated with devlink
-+ *
-+ * Register the devlink instance associated with this adapter
-+ */
-+static inline void ixd_devlink_register(struct ixd_adapter *adapter)
-+{
-+	devlink_register(priv_to_devlink(adapter));
-+}
-+
-+#endif /* _IXD_DEVLINK_H_ */
-diff --git a/drivers/net/ethernet/intel/ixd/ixd_lib.c b/drivers/net/ethernet/intel/ixd/ixd_lib.c
-index e5e8626e8f98..48f4f9fe0e47 100644
---- a/drivers/net/ethernet/intel/ixd/ixd_lib.c
-+++ b/drivers/net/ethernet/intel/ixd/ixd_lib.c
-@@ -3,6 +3,7 @@
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 6fbc0441c4b8..2e9676305439 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -2222,9 +2222,10 @@ static bool mlx5e_hw_gro_skb_has_enough_space(struct sk_buff *skb,
+ 	int nr_frags = skb_shinfo(skb)->nr_frags;
  
- #include "ixd.h"
- #include "ixd_ctlq.h"
-+#include "ixd_devlink.h"
- #include "ixd_virtchnl.h"
- 
- #define IXD_DFLT_MBX_Q_LEN 64
-@@ -157,6 +158,8 @@ void ixd_init_task(struct work_struct *work)
- 
- 	if (!ixd_vc_dev_init(adapter)) {
- 		adapter->init_task.vc_retries = 0;
-+		adapter->init_task.success = true;
-+		ixd_devlink_register(adapter);
- 		return;
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/ixd/ixd_main.c b/drivers/net/ethernet/intel/ixd/ixd_main.c
-index eb8e410300c2..973bc480e25a 100644
---- a/drivers/net/ethernet/intel/ixd/ixd_main.c
-+++ b/drivers/net/ethernet/intel/ixd/ixd_main.c
-@@ -4,6 +4,7 @@
- #include "ixd.h"
- #include "ixd_ctlq.h"
- #include "ixd_lan_regs.h"
-+#include "ixd_devlink.h"
- 
- MODULE_DESCRIPTION("Intel(R) Control Plane Function Device Driver");
- MODULE_IMPORT_NS("LIBIE_CP");
-@@ -21,6 +22,8 @@ static void ixd_remove(struct pci_dev *pdev)
- 	/* Do not mix removal with (re)initialization */
- 	cancel_delayed_work_sync(&adapter->init_task.init_work);
- 
-+	ixd_devlink_unregister(adapter);
-+
- 	/* Leave the device clean on exit */
- 	if (adapter->xnm)
- 		libie_ctlq_xn_shutdown(adapter->xnm);
-@@ -28,6 +31,7 @@ static void ixd_remove(struct pci_dev *pdev)
- 	ixd_deinit_dflt_mbx(adapter);
- 
- 	libie_pci_unmap_all_mmio_regions(&adapter->cp_ctx.mmio_info);
-+	ixd_devlink_free(adapter);
+ 	if (page_size >= GRO_LEGACY_MAX_SIZE)
+-		return skb->len + data_bcnt <= GRO_LEGACY_MAX_SIZE;
++		return skb->len + data_bcnt < GRO_LEGACY_MAX_SIZE;
+ 	else
+-		return page_size * nr_frags + data_bcnt <= GRO_LEGACY_MAX_SIZE;
++		return skb_headlen(skb) + page_size * nr_frags + data_bcnt <
++			GRO_LEGACY_MAX_SIZE;
  }
  
- /**
-@@ -95,7 +99,7 @@ static int ixd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	if (WARN_ON(ent->device != IXD_DEV_ID_CPF))
- 		return -EINVAL;
- 
--	adapter = devm_kzalloc(&pdev->dev, sizeof(*adapter), GFP_KERNEL);
-+	adapter = ixd_adapter_alloc(&pdev->dev);
- 	if (!adapter)
- 		return -ENOMEM;
- 
-@@ -104,13 +108,13 @@ static int ixd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	err = libie_pci_init_dev(pdev);
- 	if (err)
--		return err;
-+		goto free_adapter;
- 
- 	pci_set_drvdata(pdev, adapter);
- 
- 	err = ixd_iomap_regions(adapter);
- 	if (err)
--		return err;
-+		goto free_adapter;
- 
- 	INIT_DELAYED_WORK(&adapter->init_task.init_work,
- 			  ixd_init_task);
-@@ -121,6 +125,10 @@ static int ixd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 			   msecs_to_jiffies(500));
- 
- 	return 0;
-+
-+free_adapter:
-+	ixd_devlink_free(adapter);
-+	return err;
- }
- 
- static const struct pci_device_id ixd_pci_tbl[] = {
+ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe)
+
+base-commit: 51b093a7ba27476e1f639455f005e8d2e75390e4
 -- 
-2.47.1
+2.34.1
 
