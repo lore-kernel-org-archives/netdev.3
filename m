@@ -1,45 +1,45 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012004.outbound.protection.outlook.com [40.93.195.4])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011063.outbound.protection.outlook.com [40.107.208.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE23F2147E5
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 03:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6257E35DA42
+	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 03:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.63
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785297174; cv=fail; b=Wea3i/IrPVbasJX5Wa8p3qTi3ffBdA1IYNwX409n6WEsCJsoUJ0qNxf9/+PeYSryFhe/0TBFY9U3e/613/jfEQhgBGqyWsmc0AisMc5xwcjxRWZ8PC+mCSsbvBH27l2M2Jc/Xc0Ji9jluKBhN8Hwh3AoyZhSLwnBsbyVPSpF6w0=
+	t=1785297175; cv=fail; b=rWOiRyKTRSTxvWUf/mfaHwnW0lL6P/bx6xFIkZK390E9Eqw731ztXBeT/EBK8RnWSDC6Iv9OBKK+jN1gSpVX22BL6bV9k8fwtDQmCAskz1bPV5ViNWtBrouCdw10VBCnSRwf2WF1FjO+wtHetLRkpx5z28Nlex/Ome2wflqJTfk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785297174; c=relaxed/simple;
-	bh=9kvkwWAgWl8m3IwazyeDsR7HOY/PkZXhvnKhg81Qxr4=;
+	s=arc-20240116; t=1785297175; c=relaxed/simple;
+	bh=dG/COgwh0NoOT6WqdH/M/pfkH7EATnPPSWOpHc+vZNo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=hA2wdX+erFp1LrPTebeJCTplKEiReOK3z9UN0k6JUe/Ag9BuCscaGD/Ly4iIxCKO3f2i4fsA0dhB7kcnHGrTHx/5RACzmcQkyhb55letbqVMiBiDxLlFuiOk/9PnwlzHjdM3y65+S0YdV3JjCTTbr374AjNM7UMLGOhMJGkZ+bY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5mDG+CFZ; arc=fail smtp.client-ip=40.93.195.4
+	 In-Reply-To:To:CC; b=lSfj8FLyWrEPXbHj9rXdGNkfNPsdEhIGCys9Wl6f+bMYPCyymOyAs2EdClH/Fmg4plyucl71MTPWNWFBo2p17pyRa/8vU3n6/SIP4JYlzTtS59KJCef989AJOm0i/wTCp4BX3kEN40izTTBzWlFHtOBEqErnfiAt1OWOP6wJI8k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bprp3jXY; arc=fail smtp.client-ip=40.107.208.63
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5mDG+CFZ"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bprp3jXY"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GvhBlJo8QdF7v8zBLlEmM6FH1gS6uQP8W/UyokcV55xrcOkeovRszAlt7okKetb2AgEkyEFZL2qpTVl/SfMn4vayl096SvCFtu0U4yWA8aPPijXNUQWjV44wOyguDq+ZS/3C7r+bqaSEwOXLQJV6BAO7j0LhK1wwChXwEC/Qcvgd/GPX6Z/GBZzhA4G5Pm0F0vuLqb2LfKMM0+823OEUNcMV1XzoAJMXbnK93vyYcssLW0ZSWE1t6juOfS31P1fKV0dMCnkq4aVGmzBPlivIx6Pg9jYc5CFXlBF+PojU5sZ6TuNJ0LXagBzlvv5x9b+oygvRPPOkcqXl1hvZz3EByA==
+ b=rLF9g1W9L/Gob2RignBSyOuqaqxKX+ue7YIvX79CDHj7g1Gmn1jRamsBCiDE+EZpv71btvOjkrsF4H480qh5eZxEmmafCv25yQM/fU9KtdfUpo8V9mfp4BTYxVUXKzwAliFqVZqi2XHLZj8tW3K/jI7XFEoRXBINVMH3MiYfZXw/OZwGj31oxTHRpqeZ9byBf1nkt/bsXC1PV+nmP+tcEy93WBQI1UPTX8N8Ij5qZpy+8QVed0zlShJdhzGiEhzjy4H9kXWEw9DTEqD1dZakGc3PcvwzqJJCBqwyDqVGbVMu3NEevMUwJLwKJ5jJmRvWiNIt2H1XJORkkA78azS1Mw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=65P14G8MrJ6FxNl2IrmSBJvlbbeTKasggJPClwg7HIg=;
- b=Jj6ZMz1KJ3HIThfWHcxeuLBVkIC9Qw+uP4Kxqt9FDN8boPnujdBENIrN2HLSrDj0QbIk4PhIWC64k+9zTvyv6kpCm9SF1WErDlJ6kMJP8bugYVIaC8i51ZJBKLBHyym7FlFIHKDfHFjXwU6pCn5Yjix5q5KZgCTdtZz3Pt08z49P3iojZ1Eju5Ld1zVWrULDZHJyN8wjOt9v6XJj2oAnibfu89tYv7WYZWGDL+zA2T/xyDaF8IacjO7+7yGJDYeiPxL6K1qhk3L+jsb/6gdO8G5kfpBA8ArOtY3B0Y6Z9Et8L3gFYEKoqdBdH5xPYn7tTSqrpPTteVc21IOrm8z0iQ==
+ bh=pnGNbDreLBo2YDmpuXJMh9zNcEZ16ayisOtkuCfjSQY=;
+ b=DXz2fDdqofIzXPVSJ9xmliB/qxgWeO5vT3z/J7UZlCtJJRiK87hErRMoE5TzHCYMVP6psIyVlV8dX1tM4h7VOHLtpdUToRMm363zMn5v8M3CEijNhQuZEQO5UeB7gvy1lnbZMAsGuVGmE6BnMdbcjK5SWfhqGPFZkJXkD+RLvTiYnrszvadvzSTTzbRU+Cx+DdxFRquUS6K15C4jVWmvTFmKI3xyoKJvgSZS1Rbxsp4/BnFAb6tv5idgupWpDSm74i4Ee7sfidBo5cPxRdGgPMaRwAxIqDh5OhVfV92fJDf0LRz8YXEZZyzT8cq0RkrwUA/FXNvOSNQ+yXuA08CjBA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=davemloft.net smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=65P14G8MrJ6FxNl2IrmSBJvlbbeTKasggJPClwg7HIg=;
- b=5mDG+CFZp3W93k6RWYSzCkHQcJEAKD+2LkJzy0cqIA03EY+rDSHEW9lJPLmISnAw7aUcZTHnpq2doYalGDaXoRRtduuwG/3Ebczn9V/HxLvEUXUfKdINZOFpNytR7r4YMJ223tPPTg6R1GnYip7umsjW5bnmSicClY9owvEh4PM=
-Received: from CY8PR12CA0047.namprd12.prod.outlook.com (2603:10b6:930:49::20)
- by DS7PR12MB6005.namprd12.prod.outlook.com (2603:10b6:8:7c::17) with
+ bh=pnGNbDreLBo2YDmpuXJMh9zNcEZ16ayisOtkuCfjSQY=;
+ b=bprp3jXYRwtyr41NO8XzhEWQpGFldh3B7qj8Xq2s1i++5+9rvTSmK4qN1K/SbzgwDt+wpNH2lPjoGaoRt/ykV6UTzfa0C5ecCM/UCDtfjPcEPJbW+OYxPzIfcvxMQkCLhKeny1HMMG/3HAAxxvkx7m6LiedtdKc5Z6v4k1yIOmc=
+Received: from CY8PR12CA0026.namprd12.prod.outlook.com (2603:10b6:930:49::27)
+ by IA0PR12MB8326.namprd12.prod.outlook.com (2603:10b6:208:40d::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
- 2026 03:52:47 +0000
+ 2026 03:52:48 +0000
 Received: from CY4PEPF0000E9D6.namprd05.prod.outlook.com
- (2603:10b6:930:49:cafe::63) by CY8PR12CA0047.outlook.office365.com
- (2603:10b6:930:49::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.12 via Frontend Transport; Wed,
+ (2603:10b6:930:49:cafe::97) by CY8PR12CA0026.outlook.office365.com
+ (2603:10b6:930:49::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.13 via Frontend Transport; Wed,
  29 Jul 2026 03:52:47 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
@@ -54,10 +54,11 @@ Received: from satlexmb07.amd.com (165.204.84.17) by
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 28 Jul
- 2026 22:52:45 -0500
+ 2026 22:52:46 -0500
 From: "Nikhil P. Rao" <nikhil.rao@amd.com>
-Date: Wed, 29 Jul 2026 03:51:59 +0000
-Subject: [PATCH net-next v11 4/6] pds_core: add PLDM component info display
+Date: Wed, 29 Jul 2026 03:52:00 +0000
+Subject: [PATCH net-next v11 5/6] pds_core: add host backed memory support
+ for firmware
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,7 +67,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260729-upstream_v8-v11-4-e4b7d5bb2913@amd.com>
+Message-ID: <20260729-upstream_v8-v11-5-e4b7d5bb2913@amd.com>
 References: <20260729-upstream_v8-v11-0-e4b7d5bb2913@amd.com>
 In-Reply-To: <20260729-upstream_v8-v11-0-e4b7d5bb2913@amd.com>
 To: <netdev@vger.kernel.org>
@@ -74,267 +75,426 @@ CC: Jakub Kicinski <kuba@kernel.org>, Brett Creeley <brett.creeley@amd.com>,
 	Eric Joyner <eric.joyner@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>, Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>, "Nikhil P. Rao" <nikhil.rao@amd.com>
+	Simon Horman <horms@kernel.org>, "Nikhil P. Rao" <nikhil.rao@amd.com>, "Vamsi
+ Atluri" <Vamsi.Atluri@amd.com>
 X-Mailer: b4 0.15.2
 X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D6:EE_|DS7PR12MB6005:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf4ed367-a2aa-47f5-bcbe-08deed24da8b
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D6:EE_|IA0PR12MB8326:EE_
+X-MS-Office365-Filtering-Correlation-Id: 107dd5bd-50b9-4a71-ed00-08deed24dad1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|36860700016|23010399003|1800799024|3023799007|10067099003|18002099003|22082099003|56012099006|11063799006;
+	BCL:0;ARA:13230040|376014|23010399003|82310400026|36860700016|1800799024|6133799003|10067099003|56012099006|11063799006|18002099003|22082099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	tu/O0g0crWaAOUAHdSWFsU1PBPKVDSeznK8Vg9KFFzYypSbY86kvtSrOSgji681fuUfYXi/zRjXiAdmW3jKD7v+ryyPTyINYbHKpiTKXmb7cHvTewIzCV/PSvqTcBm4ove1oxoqKsybiprrQEL+3/9DwTN56y/epllZBKJwlpgMS0oGpOS5E1kor0tTFc9NxpwTctWYK2cbDRjGQ5T3Q0mXW3xt/6hg+yAVOiBKK7tQ06prbewXn4FrNTARLMDv2l1joHBHFcSnALYR0Up/UYswhMuipkEsY5zuo6qo2yexkDZi7ridUTjPPDtaf+S8PeUlO3O4jSnqdFDadIbE2S/OgBOjIa97FZBoP4rbhtb+mFILj2Bs3GztKnHq1CHrrAuezEm1vzKgWSs/wqQkf13FBqgqB1QiAVEMLu2bjnb00GVRou0/X1Xo3kxV9MmDmjmTr3oAuFdhgjOLZBoJ04fnv5yMTcWGArZe3B047PgLruoftontL86gpdPFMg/6PuIJbwM+K6b3ds5baduwsYgm9KSiIZ88g6JwxjtbfvaYKnkPZiSr8Up1jxDJykHD1zJ8hyeySe7NZwtXqL77BNmTQ/LcFj+lNW0FJb32Vof/kqXoUop+ey1D4UO4bYP2UbCzyS4XVnSMp1arqCM9PDpwjVsOmwpoDsYyGyqh0mEwQwEFsZbvXApnkxCk7ailI4SblPXdmd89zfFAqfvAgYw==
+	lEv9st+G7TcbOwTT83wfK2r8sS0ZCebGmCJc6V/DcTT/m8VUeKRWB8I6HsxTa0y+Tad7VjZgxJGDN/MzhzRp8r250DKOmLg1lgPpUhgDwBnDQXVIlmZCDSlpviCdIX8fPq3DD52dXwN7CAVRxQAAGlv+bP52b0V72LOkmsD4hgvZHF0FC1/glmKMC/sbiz1FACxr5OlKjJPVmsNHGcwb40RMSaFIkrdaeOnWzRLqYLhE43cjIF1SeQ6ourwY5ygiLArE8pWsY0l0myXVi1ptGUcJVVoNFQ4o9DG8y9rxuMISCEjOZguo2SyWzvbRHaHEdPLWSL1kl7QF+CASP5Y7xgbe4t8FdH0RVeaUfAQhoKAjzDCkTcafOSgbx0xHT4RCWnZpUbZ50mQDyboInVyT7OVy9/7Dc7vLyv+cVRBpCUD3YqPAuh0KkCNN7quIQHYtes9FjEZnaZE5esC/HFABaogGmIZIQrXOefO/if3vuAfO8AvX8bPk0923NtI7leP1S7BKMgOLsWloo4vZx7h9vU1EZW7cjYSwTQ7jrr+7rMLF3Txjgb33Zj1Iygg4BHX9Ox0VpcUHe/Vguf50EBOIWEsJS2eHP6Qhtls+etUWmce+FRmyuSBLgzDpMc1VTa9DX4wqhKErlJYOhrSu43QXaQrebYIw3PqecJaVKrRIxwjV0396nCjJQaEX7zFkBMDDKCrZOFHI8Ym+00OmHsZ96g==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(23010399003)(1800799024)(3023799007)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(82310400026)(36860700016)(1800799024)(6133799003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Ack+qD+uA6AkigPVnbSaylZ1XsmutZUJfRWtyShk1hhjLEAv3PtlSZVlVYusx+6x0siGdQc3mv14iQA9hsvD0kGpoDqnMq5+fewq0Dw9F+KskLsTj5HLFDF+Xcprls3lHnggCll6MFNz00GpIMc6C0Q1mpUH0/DKIj6wVk4d1gln8z6qh0lELWqHNR7OsKeesA7oRYP+IFkmBorH+3Rxv6ZK+JZRUicEZXAYJco3b1F9w03eH0csn/bIfV1vLs6KdcjHEBXzSvHiWYo1jMuvYSBfT/HziTLbJLXlfS3Fnl9jAu4inJagk4upFDKHMK1qvZALxjwh8McLDsPxeJUoloyYIvFqouvAmGxXvHb/F4D9dTHeV0BLrnJwySDYM5DTB863zJB1OBvyqh9km5EEBciKjBeCdVSKLyQ8hDFvze+16J3RhArzmF9jdDvje0Lo
+	Y8wCmUR2PKjXOFyCjqIRhH/1DxrAvnCWK0ytKPGc4O3WLoxFEsyfYtNL0hjTjoFw4GPLjdo7xZzUKaa63afQlh1D/0h0gfpNtpUkbdmhsiTtPvozHrRDBpphmi3zT6JWUZsYNNkcce9arbogaX0s1iBQvyQEQEhhK9jWZSmUuo/1hxLqNYAUUIVhjNYNKK+nbD+5KH8SV8wmyOp546Y+7fLI2pOboBYMbbIbm4bUI8VhGmbOsb0BSsaX3qW+8oB+gl3t7LRWCki251MWEtLWIKoPL39Qw0ninA/MsvgVnjY4R3laM5wKNcL1IEVeXjnW+JuvE7ahsXzOjhycdj1jHrnEKw68/R3ORse9SlmJL5FZc4vuipy+FMr2pEQ5zOZAe5V8IFhrpInjcyX+Jn7nbDCaacuEEUh/dlNDx7R5h39q1TjCF8mL0dMYUF8uhD8W
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 03:52:47.3507
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 03:52:47.8053
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf4ed367-a2aa-47f5-bcbe-08deed24da8b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 107dd5bd-50b9-4a71-ed00-08deed24dad1
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	CY4PEPF0000E9D6.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6005
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8326
 
-From: Brett Creeley <brett.creeley@amd.com>
+Some newer AMD/Pensando cards have minimal memory and there are cases
+where components, specifically in the control plane, need more memory.
+This series adds support for host backed DMA memory that can be used
+by the firmware for the previously mentioned cases.
 
-Add detailed component information display via devlink info. This
-allows users to see individual firmware components and their versions.
-Components are reported as fixed, running, or stored based on their
-firmware-provided flags.
+Host memory allocation is best-effort: if some allocations fail, the
+driver continues with whatever succeeded. Firmware gracefully degrades
+when less memory is available than requested.
 
-Example output:
-  $ devlink dev info pci/0000:00:05.0
-  versions:
-    fixed:
-      asic.id 0x0
-      asic.rev 0x0
-    running:
-      fw.bootloader 1.2.3
-      fw.uboot 1.60.0-73
-      fw 1.60.0-73
-      fw.cpld 3.18
-    stored:
-      fw.bootloader 1.2.3
-      fw.uboot 1.60.0-73
-      fw.uboot.gold 1.50.0-22
-      fw.gold 1.50.0-22
-      fw 1.60.0-73
-      fw.cpld 3.18
-
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Assisted-by: Claude:claude-opus-4.6
+Signed-off-by: Vamsi Atluri <Vamsi.Atluri@amd.com>
+Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
 ---
- drivers/net/ethernet/amd/pds_core/core.c    |   2 +
- drivers/net/ethernet/amd/pds_core/core.h    |   1 +
- drivers/net/ethernet/amd/pds_core/devlink.c | 145 +++++++++++++++++++++++++++-
- 3 files changed, 143 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/amd/pds_core/core.c | 160 +++++++++++++++++++++++++++++++
+ drivers/net/ethernet/amd/pds_core/core.h |  22 +++++
+ drivers/net/ethernet/amd/pds_core/main.c |   2 +
+ include/linux/pds/pds_core_if.h          |  64 +++++++++++++
+ 4 files changed, 248 insertions(+)
 
 diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
-index d13b727dee42..51d21328c73d 100644
+index 51d21328c73d..26ddcbbfc14c 100644
 --- a/drivers/net/ethernet/amd/pds_core/core.c
 +++ b/drivers/net/ethernet/amd/pds_core/core.c
-@@ -596,6 +596,8 @@ void pdsc_fw_up(struct pdsc *pdsc)
- 		return;
+@@ -506,6 +506,7 @@ void pdsc_teardown(struct pdsc *pdsc, bool removing)
+ 		pdsc->viftype_status = NULL;
  	}
  
-+	pdsc_fw_components_invalidate(pdsc);
-+
- 	err = pdsc_setup(pdsc, PDSC_SETUP_RECOVERY);
- 	if (err)
- 		goto err_out;
-diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
-index c686f0bbbaeb..73356c74bb9f 100644
---- a/drivers/net/ethernet/amd/pds_core/core.h
-+++ b/drivers/net/ethernet/amd/pds_core/core.h
-@@ -340,6 +340,7 @@ int pdsc_firmware_update(struct pdsc *pdsc,
- 			 struct netlink_ext_ack *extack);
- int pdsc_get_component_info(struct pdsc *pdsc);
- const char *pdsc_fw_type_to_name(u8 type);
-+void pdsc_fw_components_invalidate(struct pdsc *pdsc);
++	pdsc_host_mem_free(pdsc);
+ 	pdsc_dev_uninit(pdsc);
  
- void pdsc_fw_down(struct pdsc *pdsc);
- void pdsc_fw_up(struct pdsc *pdsc);
-diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
-index 3b763ee1715e..63fe45e91f71 100644
---- a/drivers/net/ethernet/amd/pds_core/devlink.c
-+++ b/drivers/net/ethernet/amd/pds_core/devlink.c
-@@ -93,14 +93,120 @@ int pdsc_dl_flash_update(struct devlink *dl,
- 	return pdsc_firmware_update(pdsc, params, extack);
+ 	set_bit(PDSC_S_FW_DEAD, &pdsc->state);
+@@ -515,6 +516,7 @@ int pdsc_start(struct pdsc *pdsc)
+ {
+ 	pds_core_intr_mask(&pdsc->intr_ctrl[pdsc->adminqcq.intx],
+ 			   PDS_CORE_INTR_MASK_CLEAR);
++	pdsc_host_mem_add(pdsc);
+ 
+ 	return 0;
  }
- 
-+static int pdsc_dl_report_component(struct devlink_info_req *req,
-+				    struct pds_core_fw_component_info *info)
+@@ -681,3 +683,161 @@ void pdsc_health_thread(struct work_struct *work)
+ out_unlock:
+ 	mutex_unlock(&pdsc->config_lock);
+ }
++
++static void pdsc_host_mem_del_one(struct pdsc *pdsc, u16 tag, u8 reason)
 +{
-+	enum devlink_info_version_type ver_type;
-+	u16 flags = le16_to_cpu(info->flags);
-+	char *ver = info->version;
-+	const char *name;
-+	char buf[32];
++	union pds_core_dev_comp comp = {};
++	union pds_core_dev_cmd cmd = {
++		.host_mem.opcode = PDS_CORE_CMD_HOST_MEM,
++		.host_mem.oper = PDS_CORE_HOST_MEM_DEL,
++		.host_mem.tag = cpu_to_le16(tag),
++		.host_mem.reason = reason,
++	};
 +
-+	/* Main firmware is reported as generic "fw" */
-+	if (info->component_type == PDS_CORE_FW_TYPE_MAIN) {
-+		if (info->slot_id == PDS_CORE_FW_SLOT_GOLD)
-+			snprintf(buf, sizeof(buf), "fw.gold");
-+		else
-+			snprintf(buf, sizeof(buf), "fw");
-+	} else {
-+		name = pdsc_fw_type_to_name(info->component_type);
-+		if (!name)
-+			return 0;
++	dev_dbg(pdsc->dev, "Sending devcmd for mem del tag %d\n", tag);
++	pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
++}
 +
-+		if (info->slot_id == PDS_CORE_FW_SLOT_GOLD)
-+			snprintf(buf, sizeof(buf), "fw.%s.gold", name);
-+		else
-+			snprintf(buf, sizeof(buf), "fw.%s", name);
++static int pdsc_host_mem_add_one(struct pdsc *pdsc, int index)
++{
++	struct pdsc_host_mem *hm = &pdsc->host_mem_reqs[index];
++	union pds_core_dev_comp comp = {};
++	union pds_core_dev_cmd cmd = {};
++	int err;
++
++	cmd.host_mem.opcode = PDS_CORE_CMD_HOST_MEM;
++	cmd.host_mem.oper = PDS_CORE_HOST_MEM_QUERY;
++	cmd.host_mem.index = cpu_to_le16(index);
++	dev_dbg(pdsc->dev, "Sending devcmd for mem query index %d\n", index);
++	err = pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
++	if (err || comp.status != PDS_RC_SUCCESS) {
++		dev_err(pdsc->dev, "mem query failed err %d status %d\n",
++			err, comp.status);
++		return err ? err : -EIO;
++	}
++	hm->size = le32_to_cpu(comp.host_mem.size);
++	hm->tag = le16_to_cpu(comp.host_mem.tag);
++	dev_dbg(pdsc->dev, "mem query returned size %d tag %d\n",
++		hm->size, hm->tag);
++
++	if (!hm->size || hm->size > PDSC_HOST_MEM_MAX_CONTIG) {
++		dev_err(pdsc->dev, "invalid size %d for tag %d\n",
++			hm->size, hm->tag);
++		err = -EINVAL;
++		goto err_del;
 +	}
 +
-+	ver_type = DEVLINK_INFO_VERSION_TYPE_NONE;
-+	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_UPDATE_BY_NAME)
-+		ver_type = DEVLINK_INFO_VERSION_TYPE_COMPONENT;
-+
-+	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_FIXED) {
-+		int err;
-+
-+		err = devlink_info_version_fixed_put(req, buf, ver);
-+		if (err)
-+			return err;
++	hm->order = get_order(hm->size);
++	hm->pg = alloc_pages(GFP_KERNEL | __GFP_ZERO | __GFP_NOWARN, hm->order);
++	if (!hm->pg) {
++		dev_warn(pdsc->dev, "alloc order %d failed for tag %d\n",
++			 hm->order, hm->tag);
++		err = -ENOMEM;
++		goto err_del;
 +	}
 +
-+	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_RUNNING) {
-+		int err;
-+
-+		err = devlink_info_version_running_put_ext(req, buf,
-+							   ver, ver_type);
-+		if (err)
-+			return err;
++	hm->pa = dma_map_page(pdsc->dev, hm->pg, 0, hm->size,
++			      DMA_BIDIRECTIONAL);
++	if (dma_mapping_error(pdsc->dev, hm->pa)) {
++		dev_err(pdsc->dev, "dma map failed for tag %d size %d\n",
++			hm->tag, hm->size);
++		__free_pages(hm->pg, hm->order);
++		hm->pg = NULL;
++		err = -EIO;
++		goto err_del;
 +	}
 +
-+	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_STARTUP) {
-+		int err;
++	/* Track this allocation so pdsc_host_mem_free() can clean it up */
++	pdsc->num_host_mem_reqs++;
 +
-+		err = devlink_info_version_stored_put_ext(req, buf,
-+							  ver, ver_type);
-+		if (err)
-+			return err;
++	memset(&cmd, 0, sizeof(cmd));
++	memset(&comp, 0, sizeof(comp));
++	cmd.host_mem.opcode = PDS_CORE_CMD_HOST_MEM;
++	cmd.host_mem.oper = PDS_CORE_HOST_MEM_ADD;
++	cmd.host_mem.tag = cpu_to_le16(hm->tag);
++	cmd.host_mem.size = cpu_to_le32(hm->size);
++	cmd.host_mem.buf_pa = cpu_to_le64(hm->pa);
++
++	dev_dbg(pdsc->dev, "Sending devcmd for mem add tag %d size %d pa %pad\n",
++		hm->tag, hm->size, &hm->pa);
++	err = pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
++	if (err || comp.status != PDS_RC_SUCCESS) {
++		dev_err(pdsc->dev, "mem add failed err %d status %d for tag %d\n",
++			err, comp.status, hm->tag);
++		err = err ? err : -EIO;
++		goto err_del;
 +	}
++	dev_dbg(pdsc->dev, "mem add completed for tag %d\n", hm->tag);
 +
 +	return 0;
++
++err_del:
++	/* After MEM_QUERY succeeds, firmware expects MEM_ADD or MEM_DEL */
++	pdsc_host_mem_del_one(pdsc, hm->tag, PDS_RC_ENOMEM);
++	return err;
 +}
 +
-+static int pdsc_dl_report_fw_ver(struct devlink_info_req *req, char *fw_ver)
++void pdsc_host_mem_add(struct pdsc *pdsc)
 +{
-+	return devlink_info_version_running_put(req,
-+						DEVLINK_INFO_VERSION_GENERIC_FW,
-+						fw_ver);
-+}
-+
-+static int pdsc_dl_component_info_get(struct devlink *dl,
-+				      struct devlink_info_req *req,
-+				      struct netlink_ext_ack *extack)
-+{
-+	struct pdsc *pdsc = devlink_priv(dl);
-+	u8 num_components;
++	union pds_core_dev_comp comp = {};
++	union pds_core_dev_cmd cmd = {};
++	u16 count;
 +	int err;
 +	int i;
 +
-+	/* Pairs with WRITE_ONCE in pdsc_fw_components_invalidate().
-+	 * Use READ_ONCE to get a consistent snapshot of num_components.
-+	 * pdsc_fw_components_invalidate() can zero it concurrently during
-+	 * firmware recovery; using the local copy avoids iterating zero
-+	 * times when we already decided the cache was valid.
-+	 */
-+	num_components = READ_ONCE(pdsc->fw_components.num_components);
-+	if (!num_components) {
-+		err = pdsc_get_component_info(pdsc);
-+		if (err)
-+			return pdsc_dl_report_fw_ver(req,
-+						    pdsc->dev_info.fw_version);
-+		num_components = READ_ONCE(pdsc->fw_components.num_components);
-+		if (!num_components)
-+			return pdsc_dl_report_fw_ver(req,
-+						    pdsc->dev_info.fw_version);
++	if (!(pdsc->dev_ident.capabilities &
++	     cpu_to_le64(PDS_CORE_DEV_CAP_HOST_MEM)))
++		return;
++
++	cmd.host_mem.opcode = PDS_CORE_CMD_HOST_MEM;
++	cmd.host_mem.oper = PDS_CORE_HOST_MEM_GET_COUNT;
++	cmd.host_mem.index = cpu_to_le16(PDSC_HOST_MEM_MAX_COUNT);
++	cmd.host_mem.max_contig = cpu_to_le32(PDSC_HOST_MEM_MAX_CONTIG);
++	dev_dbg(pdsc->dev, "Sending devcmd for mem get count max_contig %u\n",
++		PDSC_HOST_MEM_MAX_CONTIG);
++	err = pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
++	if (err || comp.status != PDS_RC_SUCCESS) {
++		dev_err(pdsc->dev, "mem get count failed err %d status %d\n",
++			err, comp.status);
++		return;
 +	}
 +
-+	num_components = min_t(u16, num_components,
-+			       le16_to_cpu(pdsc->dev_ident.max_fw_slots));
-+	for (i = 0; i < num_components; i++) {
-+		err = pdsc_dl_report_component(req,
-+					       &pdsc->fw_components.info[i]);
-+		if (err)
-+			return err;
++	count = min(le16_to_cpu(comp.host_mem.count),
++		    PDSC_HOST_MEM_MAX_COUNT);
++	dev_dbg(pdsc->dev, "mem get count returned count %d\n", count);
++	if (count == 0)
++		return;
++
++	pdsc->host_mem_reqs = kzalloc_objs(*pdsc->host_mem_reqs, count,
++					   GFP_KERNEL);
++	if (!pdsc->host_mem_reqs) {
++		dev_err(pdsc->dev, "failed to alloc host_mem_reqs array\n");
++		return;
 +	}
 +
-+	return 0;
++	for (i = 0; i < count; i++) {
++		err = pdsc_host_mem_add_one(pdsc, i);
++		if (err)
++			break;
++	}
 +}
 +
- static char *fw_slotnames[] = {
- 	"fw.goldfw",
- 	"fw.mainfwa",
- 	"fw.mainfwb",
++void pdsc_host_mem_free(struct pdsc *pdsc)
++{
++	int i;
++
++	if (!pdsc->host_mem_reqs)
++		return;
++
++	for (i = 0; i < pdsc->num_host_mem_reqs; i++) {
++		dma_unmap_page(pdsc->dev, pdsc->host_mem_reqs[i].pa,
++			       pdsc->host_mem_reqs[i].size,
++			       DMA_BIDIRECTIONAL);
++		__free_pages(pdsc->host_mem_reqs[i].pg,
++			     pdsc->host_mem_reqs[i].order);
++	}
++
++	kfree(pdsc->host_mem_reqs);
++	pdsc->host_mem_reqs = NULL;
++	pdsc->num_host_mem_reqs = 0;
++}
+diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
+index 73356c74bb9f..085f2e988aa0 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.h
++++ b/drivers/net/ethernet/amd/pds_core/core.h
+@@ -5,6 +5,7 @@
+ #define _PDSC_H_
+ 
+ #include <linux/debugfs.h>
++#include <linux/mmzone.h>
+ #include <net/devlink.h>
+ 
+ #include <linux/pds/pds_common.h>
+@@ -23,6 +24,12 @@
+ #define PDSC_SETUP_RECOVERY	false
+ #define PDSC_SETUP_INIT		true
+ 
++/* Use fixed 4MB instead of PAGE_SIZE << MAX_PAGE_ORDER to avoid
++ * cpu_to_le32() truncation on large-page configs
++ */
++#define PDSC_HOST_MEM_MAX_CONTIG (4 * 1024 * 1024)
++#define PDSC_HOST_MEM_MAX_COUNT  256
++
+ struct pdsc_deferred_dma {
+ 	struct list_head list;
+ 	dma_addr_t dma_addr;
+@@ -149,6 +156,14 @@ struct pdsc_viftype {
+ 	struct pds_auxiliary_dev *padev;
  };
  
--int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
--		     struct netlink_ext_ack *extack)
-+static int pdsc_dl_fw_list_info_get(struct devlink *dl,
-+				    struct devlink_info_req *req,
-+				    struct netlink_ext_ack *extack)
++struct pdsc_host_mem {
++	u32 size;
++	u16 tag;
++	u8 order;
++	struct page *pg;
++	dma_addr_t pa;
++};
++
+ /* No state flags set means we are in a steady running state */
+ enum pdsc_state_flags {
+ 	PDSC_S_FW_DEAD,		    /* stopped, wait on startup or recovery */
+@@ -210,6 +225,9 @@ struct pdsc {
+ 	struct pdsc_viftype *viftype_status;
+ 	struct work_struct pci_reset_work;
+ 
++	struct pdsc_host_mem *host_mem_reqs;
++	u16 num_host_mem_reqs;
++
+ 	struct pds_core_component_list_info fw_components;
+ };
+ 
+@@ -287,6 +305,7 @@ void pdsc_debugfs_add_viftype(struct pdsc *pdsc);
+ void pdsc_debugfs_add_irqs(struct pdsc *pdsc);
+ void pdsc_debugfs_add_qcq(struct pdsc *pdsc, struct pdsc_qcq *qcq);
+ void pdsc_debugfs_del_qcq(struct pdsc_qcq *qcq);
++void pdsc_debugfs_add_host_mem(struct pdsc *pdsc);
+ 
+ int pdsc_err_to_errno(enum pds_core_status_code code);
+ bool pdsc_is_fw_running(struct pdsc *pdsc);
+@@ -346,6 +365,9 @@ void pdsc_fw_down(struct pdsc *pdsc);
+ void pdsc_fw_up(struct pdsc *pdsc);
+ void pdsc_pci_reset_thread(struct work_struct *work);
+ 
++void pdsc_host_mem_add(struct pdsc *pdsc);
++void pdsc_host_mem_free(struct pdsc *pdsc);
++
+ void pdsc_deferred_dma_add(struct pdsc *pdsc, struct pdsc_deferred_dma *entry,
+ 			   dma_addr_t dma_addr, void *va, size_t size,
+ 			   enum dma_data_direction dir);
+diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
+index c15a1e376353..5e1b07850163 100644
+--- a/drivers/net/ethernet/amd/pds_core/main.c
++++ b/drivers/net/ethernet/amd/pds_core/main.c
+@@ -21,6 +21,8 @@ static const struct pci_device_id pdsc_id_table[] = {
+ };
+ MODULE_DEVICE_TABLE(pci, pdsc_id_table);
+ 
++static void pdsc_stop_health_thread(struct pdsc *pdsc);
++
+ static void pdsc_wdtimer_cb(struct timer_list *t)
  {
- 	union pds_core_dev_cmd cmd = {
- 		.fw_control.opcode = PDS_CORE_CMD_FW_CONTROL,
-@@ -134,12 +240,41 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
- 			return err;
- 	}
+ 	struct pdsc *pdsc = timer_container_of(pdsc, t, wdtimer);
+diff --git a/include/linux/pds/pds_core_if.h b/include/linux/pds/pds_core_if.h
+index 5a1fafaccf20..901e1e628f89 100644
+--- a/include/linux/pds/pds_core_if.h
++++ b/include/linux/pds/pds_core_if.h
+@@ -46,6 +46,7 @@ enum pds_core_cmd_opcode {
+ 	PDS_CORE_CMD_SEND_COMPONENT	= 9,
+ 	PDS_CORE_CMD_FINALIZE_UPDATE	= 10,
+ 	PDS_CORE_CMD_MATCH_RECORD_DESC	= 11,
++	PDS_CORE_CMD_HOST_MEM		= 12,
  
--	err = devlink_info_version_running_put(req,
--					       DEVLINK_INFO_VERSION_GENERIC_FW,
--					       pdsc->dev_info.fw_version);
-+	return 0;
-+}
-+
-+static int pdsc_dl_info_get_v1(struct devlink *dl,
-+			       struct devlink_info_req *req,
-+			       struct netlink_ext_ack *extack)
-+{
-+	struct pdsc *pdsc = devlink_priv(dl);
-+	int err;
-+
-+	err = pdsc_dl_fw_list_info_get(dl, req, extack);
- 	if (err)
- 		return err;
+ 	/* SR/IOV commands */
+ 	PDS_CORE_CMD_VF_GETATTR		= 60,
+@@ -110,9 +111,11 @@ struct pds_core_drv_identity {
+ /**
+  * enum pds_core_dev_capability - Device capabilities
+  * @PDS_CORE_DEV_CAP_PLDM_FW_UPDATE: Device only supports FW update via PLDM
++ * @PDS_CORE_DEV_CAP_HOST_MEM: Device supports host memory for fw use
+  */
+ enum pds_core_dev_capability {
+ 	PDS_CORE_DEV_CAP_PLDM_FW_UPDATE = BIT(0),
++	PDS_CORE_DEV_CAP_HOST_MEM = BIT(1),
+ };
  
-+	/* Version 1: report fw from dev_info (running only) */
-+	return pdsc_dl_report_fw_ver(req, pdsc->dev_info.fw_version);
-+}
+ #define PDS_DEV_TYPE_MAX	16
+@@ -837,6 +840,65 @@ struct pds_core_match_record_desc_comp {
+ 	u8 rsvd;
+ };
+ 
++/**
++ * enum pds_core_host_mem_oper - HOST_MEM sub-operations
++ * @PDS_CORE_HOST_MEM_GET_COUNT: Query number of memory requests
++ * @PDS_CORE_HOST_MEM_QUERY:     Query details of a memory request
++ * @PDS_CORE_HOST_MEM_ADD:       Provide allocated memory to firmware
++ * @PDS_CORE_HOST_MEM_DEL:       Notify firmware of memory deallocation
++ */
++enum pds_core_host_mem_oper {
++	PDS_CORE_HOST_MEM_GET_COUNT	= 0,
++	PDS_CORE_HOST_MEM_QUERY		= 1,
++	PDS_CORE_HOST_MEM_ADD		= 2,
++	PDS_CORE_HOST_MEM_DEL		= 3,
++};
 +
-+int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
-+		     struct netlink_ext_ack *extack)
-+{
-+	struct pdsc *pdsc = devlink_priv(dl);
-+	char buf[32];
-+	int err;
++/**
++ * struct pds_core_host_mem_cmd - HOST_MEM command
++ * @opcode:     Opcode PDS_CORE_CMD_HOST_MEM
++ * @oper:       Operation (enum pds_core_host_mem_oper)
++ * @index:      Memory request index (GET_COUNT: max_count, QUERY: index)
++ * @tag:        Tag for this memory request (ADD/DEL)
++ * @reason:     Reason for deletion (DEL only)
++ * @rsvd:       Reserved
++ * @max_contig: Maximum contiguous memory size (GET_COUNT only)
++ * @size:       Size of memory in bytes (ADD only)
++ * @buf_pa:     DMA address of memory (ADD only)
++ *
++ * Unified command for all host memory operations. Fields are reused
++ * across operations to minimize opcode space usage.
++ */
++struct pds_core_host_mem_cmd {
++	u8     opcode;
++	u8     oper;
++	__le16 index;
++	__le16 tag;
++	u8     reason;
++	u8     rsvd;
++	__le32 max_contig;
++	__le32 size;
++	__le64 buf_pa;
++};
 +
-+	if (pdsc->dev_ident.version >= PDS_CORE_IDENTITY_VERSION_2) {
-+		err = pdsc_dl_component_info_get(dl, req, extack);
-+		if (err)
-+			return err;
-+	} else {
-+		err = pdsc_dl_info_get_v1(dl, req, extack);
-+		if (err)
-+			return err;
-+	}
++/**
++ * struct pds_core_host_mem_comp - HOST_MEM completion
++ * @status:       Status of the command (enum pds_core_status_code)
++ * @oper:         Operation that was performed
++ * @count:        Number of memory requests (GET_COUNT)
++ * @size:         Size of memory request in bytes (QUERY)
++ * @tag:          Tag for this memory request (QUERY/DEL)
++ * @rsvd:         Reserved
++ */
++struct pds_core_host_mem_comp {
++	u8     status;
++	u8     oper;
++	__le16 count;
++	__le32 size;
++	__le16 tag;
++	u8     rsvd[6];
++};
 +
- 	snprintf(buf, sizeof(buf), "0x%x", pdsc->dev_info.asic_type);
- 	err = devlink_info_version_fixed_put(req,
- 					     DEVLINK_INFO_VERSION_GENERIC_ASIC_ID,
+ /*
+  * union pds_core_dev_cmd - Overlay of core device command structures
+  */
+@@ -860,6 +922,7 @@ union pds_core_dev_cmd {
+ 	struct pds_core_send_component_cmd     send_component;
+ 	struct pds_core_finalize_update_cmd    finalize_update;
+ 	struct pds_core_match_record_desc_cmd  match_record_desc;
++	struct pds_core_host_mem_cmd           host_mem;
+ };
+ 
+ /*
+@@ -885,6 +948,7 @@ union pds_core_dev_comp {
+ 	struct pds_core_send_component_comp     send_component;
+ 	struct pds_core_finalize_update_comp    finalize_update;
+ 	struct pds_core_match_record_desc_comp  match_record_desc;
++	struct pds_core_host_mem_comp           host_mem;
+ };
+ 
+ /**
 
 -- 
 2.43.0
