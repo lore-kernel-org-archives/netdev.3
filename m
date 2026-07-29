@@ -1,183 +1,258 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF5D2874E6
-	for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 04:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785299761; cv=pass; b=tm8K2KkwT67RFKnVADFHpZjGzFbws5lLvVjgSZMuq6wmPABlybNwdQVuK7PNFekcyoFZM9P9G0NDn3ALe+GeYevwpxuF/R1RAZ4ofKMN/6pK1G30mMxN7+kPTpQcpy/XgRpgUgGaS+HM/jjNjTYPnkUxa4fzt8zaLYzdc7hQWA0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785299761; c=relaxed/simple;
-	bh=eXxuZZCRR4m1SNx9TqLOQOAWhfwaZChlZDGtoBJUfDs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=noEaQ6dyipoLt6Du6DMBzY/b2T7XH8omG9wNnxU2k839sZklA2ICTMTLBdwYcRlD00aymx0l8NiJ7WnGGBexE3FCjNrW3UoSw8TWO+P7QvjHb3S8c/loBPKlWTOXUyWLjgtK0ZfnnFGMNafXXvW2yqwHNAvOrVzhtnq7NXqlUO0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l6A+vyeC; arc=pass smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A640C2C8;
+	Wed, 29 Jul 2026 04:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785300702; cv=none; b=lMow3HM4OjvfTHFS1ntwHq5jOe1eyQY5aXrIlol3cYwYBay4AcrU9JZuIJuNiL701eWrbHMOgaHZ1l8SZ7oSdzSWeiWjslBk3u5xKaK7BRPOeEivoT9pZ8nyGz0tK2zLgX36xiMJSXa38y3BoyY7ZORTOquuapNSLS8Vihxu9B0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785300702; c=relaxed/simple;
+	bh=lIYxCuIxs8kTQZdin/lfa4sCNABG1D0t/RJ9m24VKU4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W65dgafEKBSOHgcCUea96DUQc2urfBJ47UnXtvvupN2GMlJEw8JIzDI/0yPbaqlz2Cmle4PEMSq8Jyp+c524WEQpa6LDROc7BxRF9SJfpnvPmei+X7jktmxaDk0X5TLLHurwrNEzStHdUQ8HorSDxMu+mieeGH7IP6RUcNnUl3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=B5tZ0T+W; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l6A+vyeC"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-80dc4a68e4aso8074837b3.0
-        for <netdev@vger.kernel.org>; Tue, 28 Jul 2026 21:35:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785299757; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lb1oRdkjKrGdOJcLoQsc8lV7FZFB8OlrJ1I8WtQlIfYeroDQgGBN6MB+3mQHpcV5il
-         MPTEAjDSXRSA4hqjwXOYoRUf6E/27ZicRfQlRfwo4qh2SIuh8HTKENjieDmNU0mJqaL5
-         3veDbQdCQZyB3VJYEAlQCzjkfGhf7aTDrwLsftr/fnk/9nx8PRvUg8H5hsRKdVS6XUEk
-         TLYndXqhwRGm0jGUb6EifaPM96IyXjwI9YuzJqqoYFsZqza1+bq7LG5leuBfavVLdrBa
-         dQDm/Gx8Fygt7s55RWZJ1cuTht3cE2/bjd/pP4n7sMC+eZFGAKgEh6sKaj5nd9H3jtBe
-         saDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sJnft9PmfWlLs1b4MKRuyLFvy1g2soCrYIGgLbTdANE=;
-        fh=8e+mqzgREIIIwgG+5CnFf1/5fr5/S3LxEcDzGH29ORk=;
-        b=o9Ha7c3zTJdwZl/RrhYLzHRrPxiwbUrkx3Kmh+a5q+DkDnJGOF57FMog7k73UcFs4/
-         AtnCkZa73bj/xt5s0UCYolfNHI4YuNHzGlrEVR7v62Sieic+ZwQpLnL6kRFT2K4366Gz
-         7PUFnIMs3KEk8hRQOQ1gvESDT3f7eMvyjPWUKystzKGBDKZmO7GmoJYTKTnDxYh0MeI9
-         1Sm9GGeElC22B+/9NvG5w8WLFilwOvArNRMhf4VYMWVHhzc082ZoJ8MGSUtWnQ+h3wLX
-         d4BHqzr4G+rWxbqSEA+H94uPaonlNxaFHfxD39rMbvfpoAZ0Dg7OA5jOE+gFwx1N7jSx
-         HFbw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785299757; x=1785904557; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sJnft9PmfWlLs1b4MKRuyLFvy1g2soCrYIGgLbTdANE=;
-        b=l6A+vyeCtZ5Vc77/EbmgNFgvlPrXl5+NoSac+IUW7nQV32Mrwgz0JzrO4BkFOQXYck
-         EWHTwv76SqUcwVa3wgBQgFakN7DsD6l7pKqL3Yd/j2usjmHAKrPR7FGmrllYMd5dGi8a
-         OyjSjAtKdwhHjQwiNVx56na6BJ5VlivPjvguFQSvcYQAVjNkmjBtO57kg/tXNrlb05PO
-         GxDuINWPFEzyeniiv3Vsn/voZNYYgBKhWAKmQ+AolOYyGIlCaIR0ufxvIY2JRl2An6l9
-         a14D6DXl6RZwtjkTdsJ/0Knpc8rQ0NFhRQ2Cjg6qPTyZyi9/wAejWC8FEnx87yPSro7+
-         QQIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785299757; x=1785904557;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sJnft9PmfWlLs1b4MKRuyLFvy1g2soCrYIGgLbTdANE=;
-        b=BH0ebhjTIuy3NFdFPog/Lc0FtyNRZM0AST/jNZaYHgNpl+l6HtdGiH61KbEO/L4+yQ
-         IC8/6BHuGwBXWnfOh1ONphjNpQ3DgAgmh1aeVWNz7BHLi5uwUo6t+S1aQ4stR+RFTk09
-         YBwJTRDyVJ/fo631VPE9B/CVAbjDlZY0mzoNEDe7QkBmrYwGRBYYzxvqjW9wf4BfYUy1
-         O476LdoBc4V0DuM7zw9SF9GXGlr2G/u5tb+9surcfoaT9SKnKOWgS05euGC/qjfo9iv+
-         d4DIqz5Mwy1UI8Eid57lpM1JPSUUhqtIFaCFOOralzStM3Scb5e604VYkUEeLrdss0tA
-         CdUg==
-X-Gm-Message-State: AOJu0Yz8QtPZQZeUAapNnWZWJetcUNFNrrnlgbDnxYPFT/isuf4PGLOS
-	U2gU9TOJn8lso/aNJkyiDBli+UPjkKYnPafAnEwXh1boZTdp/HKtKRGy7cqMrRh8QKfX6f8syT+
-	II/bs4pkNv+Qke63Q2Vc4auXH5zFZQVE=
-X-Gm-Gg: AR+sD10BDh6Pc7WdZdb300maEB+87WyBPxNI5alCPiIPiRrsiYVV8FWVQfg2IiCnAE6
-	ehDbT3ww30aJldcq9w3MmzB5or0vLeiTHlZMS7E0LWYC47RMln1vIFPowtld3NXQ6HhT7UgPotA
-	ZGq2m0OOadv7tZnwQXyq+JzBud6SR9W0OBSX/K8Xx95aZuw22+9+I37Ni0/ByLS4qFpgQgEuZJj
-	T5jAhg6mFcv/WUjWgi+qkCw4hWqM7dTyuwXWWTkdjLKRu4mXOFKvssKL5kqP/DH/REcIJLwy5js
-	OtPiCa1L8XLweK+dSieqoaBACzAOWtSEBqQZ1xF0QdC0ogkpwcbd8tcbCS5kOM2gwAlJDNgoHRd
-	RFDWvkUrtx09+B/8y16k=
-X-Received: by 2002:a05:690c:4d41:b0:81d:5155:213b with SMTP id
- 00721157ae682-81f990adcdbmr25491617b3.14.1785299757024; Tue, 28 Jul 2026
- 21:35:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="B5tZ0T+W"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66T4dgFp3415813;
+	Tue, 28 Jul 2026 21:51:27 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=V
+	P4BrmslEGr8TYpL/BS5Sjhg/tLyxPTbSW+6SCypeFo=; b=B5tZ0T+WytdXVn9Sh
+	yrsgO7GHuaU/dynAkq4LFz2TQaXmwMFE0/n6cGGsjfToY/EN+M72myD1P86hc86O
+	f151Ixexd3lwUqI9AQ71e2Q8YHUGy0pQ7GtrDm5XqeBGTxZOBFkMpih2ZDFvQt54
+	Nid3KAUFKb00NgEQqMEfwgrQ37ymeZMBqOF2Lwg7SNeHBYHjeW4ebsR9floQu35T
+	wmYUpVubsQAhlDVQPzNCCschWDB2z9xXFCzS0pzuHtQmM+b5hrBUaFFZyRBpljym
+	ToSPeE04UllMaNrH9x4Fw/0aM2rmuTxvHGhfAzb/RKT3/ouqyj4YbxGfi5HJ5/8c
+	dBJjA==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fq64ggq91-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jul 2026 21:51:26 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 28 Jul 2026 21:51:26 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 28 Jul 2026 21:51:26 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id EB3083F70A7;
+	Tue, 28 Jul 2026 21:51:22 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        "Ratheesh
+ Kannoth" <rkannoth@marvell.com>
+Subject: [PATCH v6 net-next 4/9] octeontx2-af: switch: Representor for switch port
+Date: Wed, 29 Jul 2026 10:20:54 +0530
+Message-ID: <20260729045100.2177958-5-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260729045100.2177958-1-rkannoth@marvell.com>
+References: <20260729045100.2177958-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260727032535.13469-1-sun.jian.kdev@gmail.com>
- <20260727032535.13469-2-sun.jian.kdev@gmail.com> <amesUgTjM+4WvTkJ@boxer>
-In-Reply-To: <amesUgTjM+4WvTkJ@boxer>
-From: sun jian <sun.jian.kdev@gmail.com>
-Date: Wed, 29 Jul 2026 12:35:46 +0800
-X-Gm-Features: AUfX_myQ6iay0D6KuhMY71cOqlREpxPTZjbUcUBLGVWUwA3h0jnwU10zyOyJWrY
-Message-ID: <CABFUUZFfE86j8QVZoR6HSs1PsgLjxOB0=_hqBRwBaFbXKJKxXg@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] net: fix skb length accounting after generic XDP
- frag adjustment
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	andrew+netdev@lunn.ch, horms@kernel.org, ast@kernel.org, daniel@iogearbox.net, 
-	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, 
-	lorenzo@kernel.org, toke@redhat.com, matt@readmodwrite.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI5MDAzNiBTYWx0ZWRfX7KzF4fjpm34B
+ AkkvqN0/fX8r1M77uKuWcaGTkBkoEd3BbWGryToBcO2ZhNxp4mB3J2+nN71Qc3AQFMtWwBe9Z8L
+ C2t0+TwA72R6GTBBrVKRp0E8Gt0H2g46SyYpeFhAv4kFcLsv4Y3VOyt7befuSTuzgPp6vrdxqO8
+ c3w3euvb+VLfZrM6Ig5jmKXr8ZYjURQtz9K3wiFCenNO57o1a1ebnJekaLJeDBKATfRunMHezJt
+ 0JjG/VbWNMSorMld+y1kNDA7xVHL6DsFYGWUzQhFnh5Lq5MLms/c6pAGi/WsDZVn2PcFWFWhiTR
+ qZztK1vZDoY0UdpD2VdoQ8sj1p3sMzue7t+vHHFpAez9MnTkwKm+k0f8KOpQ6RyE+052eAX6oce
+ bPVn8ml60V36tuqkSZBZ2r8DJsLXu1oFSwBp45txLeb+cgnGLz+ETCkXqJXLLmUZD7yg/GBfRJP
+ KzW73+dnHzVj5vWyQ4A==
+X-Proofpoint-ORIG-GUID: nS3Cp1uwv0nU1nOtRLgsMO-iHp4Kmm9i
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI5MDAzNiBTYWx0ZWRfX4LbjIDfWU9BM
+ YJCyu0YrHZB1Mf2TxGgljB71IRza/kxaFu82s6eruyV3jXVFiaH2lF1Bez1IQS5vQk6aTDoIU8M
+ RDhCHsGbw02sJDj0FiNsr81IMYYEETw=
+X-Authority-Analysis: v=2.4 cv=GM841ONK c=1 sm=1 tr=0 ts=6a6986ce cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=QyM62yzxPVerMAYBTT0A:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: nS3Cp1uwv0nU1nOtRLgsMO-iHp4Kmm9i
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-29_02,2026-07-28_02,2025-10-01_01
 
-On Tue, Jul 28, 2026 at 3:07=E2=80=AFAM Maciej Fijalkowski
-<maciej.fijalkowski@intel.com> wrote:
->
-> On Sun, Jul 26, 2026 at 08:25:34PM -0700, Sun Jian wrote:
-> > Generic XDP exposes non-linear skb fragments through an xdp_buff. If an
-> > XDP program adjusts the fragment area, bpf_prog_run_generic_xdp() copie=
-s
-> > xdp_frags_size back to skb->data_len but leaves skb->len containing the
-> > old fragment contribution.
-> >
-> > After a fragment shrink, this makes skb_headlen() larger than the actua=
-l
-> > linear area. In the reproduced UDP receive path, __skb_datagram_iter()
-> > copied 1024 bytes past the actual linear tail to userspace, starting at
-> > struct skb_shared_info. The copied bytes included the affected skb's
-> > nr_frags, xdp_frags_size and a kernel pointer from
-> > skb_shinfo(skb)->frags[0]. Real packet data was displaced by the same
-> > amount and truncated at the end.
-> >
-> > Subtract the old data_len before replacing it and add the new data_len
-> > afterwards, keeping skb->len and skb->data_len synchronized.
-> >
-> > A 60000-byte UDP datagram on a veth pair with MTU 64000 was shortened b=
-y
-> > 1024 bytes from its fragment area. Before the fix, all 10 runs produced
-> > corrupted payloads. After the fix, all 10 runs matched the expected
-> > payload exactly.
-> >
-> > Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in ge=
-neric mode")
-> > Cc: stable@vger.kernel.org
-> > Link: https://lore.kernel.org/r/20260720141859.19FF41F000E9@smtp.kernel=
-.org
-> > Link: https://lore.kernel.org/bpf/al9T9Eto%2FhRIzP5W@boxer/
-> > Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
-> > ---
-> >  net/core/dev.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/net/core/dev.c b/net/core/dev.c
-> > index 5933c5dab09e..94204702cb02 100644
-> > --- a/net/core/dev.c
-> > +++ b/net/core/dev.c
-> > @@ -5517,12 +5517,14 @@ u32 bpf_prog_run_generic_xdp(struct sk_buff *sk=
-b, struct xdp_buff *xdp,
-> >       }
-> >
-> >       /* XDP frag metadata (e.g. nr_frags) are updated in eBPF helpers
-> > -      * (e.g. bpf_xdp_adjust_tail), we need to update data_len here.
-> > +      * (e.g. bpf_xdp_adjust_tail), update skb length fields here.
-> >        */
-> > +     skb->len -=3D skb->data_len;
-> >       if (xdp_buff_has_frags(xdp))
-> >               skb->data_len =3D skb_shinfo(skb)->xdp_frags_size;
-> >       else
-> >               skb->data_len =3D 0;
-> > +     skb->len +=3D skb->data_len;
->
-> hm that reads a bit weird to me. maybe we could follow the existing
-> semantics and reuse @off ? that would be a nicer way to update ::len only
-> by a delta.
->
-> if we would stick with existing approach i would appreciate comment being
-> more elaborative, where we could explain that it is simpler to wipe out
-> data_len altogether from len and then just add it back.
->
-> >
-> >       /* check if XDP changed eth hdr such SKB needs update */
-> >       eth =3D (struct ethhdr *)xdp->data;
-> > --
-> > 2.43.0
-> >
+Extends esw_cfg with a devlink-derived switch id, copies it into
+rvu->rswitch on the AF, adds rvu_sw_port_id(), exports
+rvu_rep_get_vlan_id().
 
-Hi Maciej,
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+---
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |  1 +
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |  5 +++++
+ .../ethernet/marvell/octeontx2/af/rvu_rep.c   | 20 ++++++++++++++++++-
+ .../marvell/octeontx2/af/switch/rvu_sw.c      | 19 ++++++++++++++++++
+ .../marvell/octeontx2/af/switch/rvu_sw.h      |  5 +++++
+ .../net/ethernet/marvell/octeontx2/nic/rep.c  |  4 ++++
+ 6 files changed, 53 insertions(+), 1 deletion(-)
 
-Thanks. I am reworking the length update around the delta and checking
-whether the existing off can be reused. I am also validating the ordering
-against the head/frag adjustment paths before sending v2.
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index 8d08ca504148..062b3e612c7b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -1837,6 +1837,7 @@ struct esw_cfg_req {
+ 	struct mbox_msghdr hdr;
+ 	u8 ena;
+ 	u64 rsvd;
++	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
+ };
+ 
+ struct rep_evt_data {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index 73d2329b5c26..8cf1ad9ec749 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -576,6 +576,10 @@ struct rvu_switch {
+ 	u16 *entry2pcifunc;
+ 	u16 mode;
+ 	u16 start_entry;
++	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
++#define RVU_SWITCH_FLAG_FW_READY BIT_ULL(0)
++	u64 flags;
++	u16 pcifunc;
+ };
+ 
+ struct rep_evtq_ent {
+@@ -1197,4 +1201,5 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu);
+ void rvu_rep_update_rules(struct rvu *rvu, u16 pcifunc, bool ena);
+ int rvu_rep_notify_pfvf_state(struct rvu *rvu, u16 pcifunc, bool enable);
+ int npc_mcam_verify_entry(struct npc_mcam *mcam, u16 pcifunc, int entry);
++u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc);
+ #endif /* RVU_H */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+index a2781e0f504e..6f012f72ddc2 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/bitfield.h>
++#include <linux/stddef.h>
+ #include <linux/types.h>
+ #include <linux/device.h>
+ #include <linux/module.h>
+@@ -189,7 +190,7 @@ int rvu_mbox_handler_nix_lf_stats(struct rvu *rvu,
+ 	return 0;
+ }
+ 
+-static u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc)
++u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc)
+ {
+ 	int id;
+ 
+@@ -429,6 +430,20 @@ int rvu_rep_pf_init(struct rvu *rvu)
+ 	return 0;
+ }
+ 
++/* ESW_CFG is always sent as the sole message in a mailbox transaction
++ * (see rvu_eswitch_config()), so next_msgoff minus the mailbox header
++ * offset yields this message's size. The calculation is not valid if
++ * ESW_CFG were ever batched with other messages.
++ */
++static bool esw_cfg_req_has_switch_id(const struct esw_cfg_req *req)
++{
++	u16 msg_len = req->hdr.next_msgoff -
++		      ALIGN(sizeof(struct mbox_hdr), MBOX_MSG_ALIGN);
++
++	return msg_len >= offsetof(struct esw_cfg_req, switch_id) +
++			  MAX_PHYS_ITEM_ID_LEN;
++}
++
+ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
+ 			     struct msg_rsp *rsp)
+ {
+@@ -436,6 +451,9 @@ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
+ 		return 0;
+ 
+ 	rvu->rep_mode = req->ena;
++	if (esw_cfg_req_has_switch_id(req))
++		memcpy(rvu->rswitch.switch_id, req->switch_id,
++		       MAX_PHYS_ITEM_ID_LEN);
+ 
+ 	if (!rvu->rep_mode)
+ 		rvu_npc_free_mcam_entries(rvu, req->hdr.pcifunc, -1);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
+index fe143ad3f944..403d57870efe 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
+@@ -5,7 +5,26 @@
+  *
+  */
+ 
++#include <linux/bitfield.h>
++
+ #include "rvu.h"
++#include "rvu_sw.h"
++
++u32 rvu_sw_port_id(struct rvu *rvu, u16 pcifunc)
++{
++	u16 rep_id;
++
++	if (!rvu->rep2pfvf_map || !rvu->rep_cnt)
++		return RVU_SW_INVALID_PORT_ID;
++
++	rep_id = rvu_rep_get_vlan_id(rvu, pcifunc);
++	if (rep_id >= rvu->rep_cnt ||
++	    rvu->rep2pfvf_map[rep_id] != pcifunc)
++		return RVU_SW_INVALID_PORT_ID;
++
++	return FIELD_PREP(GENMASK_ULL(31, 16), rep_id) |
++	       FIELD_PREP(GENMASK_ULL(15, 0), pcifunc);
++}
+ 
+ int rvu_mbox_handler_swdev2af_notify(struct rvu *rvu,
+ 				     struct swdev2af_notify_req *req,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.h b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.h
+index f28dba556d80..e9ad32c84576 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.h
+@@ -8,4 +8,9 @@
+ #ifndef RVU_SWITCH_H
+ #define RVU_SWITCH_H
+ 
++/* RVU Switch */
++#define RVU_SW_INVALID_PORT_ID	((u32)~0U)
++
++u32 rvu_sw_port_id(struct rvu *rvu, u16 pcifunc);
++
+ #endif
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+index 0f5d5642d3f7..257a2ae6a53e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+@@ -399,8 +399,11 @@ static void rvu_rep_get_stats64(struct net_device *dev,
+ 
+ static int rvu_eswitch_config(struct otx2_nic *priv, u8 ena)
+ {
++	struct devlink_port_attrs attrs = {};
+ 	struct esw_cfg_req *req;
+ 
++	rvu_rep_devlink_set_switch_id(priv, &attrs.switch_id);
++
+ 	mutex_lock(&priv->mbox.lock);
+ 	req = otx2_mbox_alloc_msg_esw_cfg(&priv->mbox);
+ 	if (!req) {
+@@ -408,6 +411,7 @@ static int rvu_eswitch_config(struct otx2_nic *priv, u8 ena)
+ 		return -ENOMEM;
+ 	}
+ 	req->ena = ena;
++	memcpy(req->switch_id, attrs.switch_id.id, attrs.switch_id.id_len);
+ 	otx2_sync_mbox_msg(&priv->mbox);
+ 	mutex_unlock(&priv->mbox.lock);
+ 	return 0;
+-- 
+2.43.0
 
-Thanks,
-Sun Jian
