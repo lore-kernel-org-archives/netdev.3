@@ -1,141 +1,156 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415E03803E9
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 03:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785381180; cv=pass; b=o02TYTcpacRW3LzCAOP8LEz+8uOjgfppF4eR0oQCwNZKoVi5h4zRoLeHqMSCWiFP6on4I7bkgfGAWO6HBg7vYbQ3H0ktgaa4DoZv516CqhAV6pWISte5Kj4mQhbuKCgPd9FsGrbzO32v0bTzWJEri/Xr2YEJWnREcCk+Z2DSZsw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785381180; c=relaxed/simple;
-	bh=In7RBCmHYZ09TNZOHM06Bg9lmsVQgh4FrpPRtcDavDM=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=eeHvdK0FZX4Np9VIR6mtz9Gqc+juyuaN5RPJoWbEF/5XICRNxpbVuI810JXyqBMjU5R5zwecXpPkeBjq+qe87F5DKsSd6LngvA4AtgcmKsaNX+RG6mdmqXmNp6T2OVUQyzp1SFpjoUeyhD0HTYPs+0TZ7E0z+qRYIFR0TNeqW88=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aronleigh.au; spf=fail smtp.mailfrom=aronleigh.au; dkim=pass (2048-bit key) header.d=aronleigh.au header.i=@aronleigh.au header.b=H4FLkDrd; arc=pass smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aronleigh.au
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=aronleigh.au
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF4937475D
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 03:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785381447; cv=none; b=c/CZbg3A0VxxvCOP9xC1aHERJA+xjJxFvvAWJSEHnOvfyjUTwZL1Eib/Cm5d7rra9A/Jgfl34xSiaE/lzLk4qAAyT9L42wqGX63VcixzRutJHXsUxedmqcJ6Q4hR44A0vc4dE/w2ZBOUOKd1maz3XUMaqBUvPlX1STvYCRKLfzw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785381447; c=relaxed/simple;
+	bh=1iI2qNUGWESVt6zMqTZu3USM6BuyGG863S2nQD7khfc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uS/WDmidCeuzlnObU95pPoMThLT8UbkBcOhJid/YkArXTjlN48f9M0KW56DKD19rk3u/1SkGueC8E/2gOvbBiVjPg8cBfJ5O0n/7euURrwGBMB0eaAyJ/pNCa9dbVH6gs8eRX0npwSjXYtefCLxa5r/SWQJcx0PPxAS5xTjimTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=e7YxSPAu; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aronleigh.au header.i=@aronleigh.au header.b="H4FLkDrd"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8f256eaedf8so14592586d6.2
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 20:12:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785381175; cv=none;
-        d=google.com; s=arc-20260327;
-        b=i04lqFeRHubJHO/wvDqjq6uxANGNVD9QDkMXe1HtJd3ITnxNxbJbFL4mFUHZRkYve4
-         pLr9zBq3D9SJOp7x+SHTiuo78BnA+UZ3hJ3AS+urErjIIa+iIY7SfxnolAa4eGd6YZoG
-         MFzW/5aTkjSGGaeE0Zrd9ZfE77R4/6/NHEQsy6yYk6pEaUJZVxtrk53VZncL9EMOlBNG
-         tfh2XBVA/qqADxDeiun7pjqza7nJAWIaDaC0/OsERuOHlPys/Fk8sJj23bP83ISFxV/g
-         sNVC2Xzc868r3Y0d8d646EJZ8LHwmdNNOD0fCWsVapDX/PxHfBh4gjwvLsovYzChM3hp
-         0fuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=Xl6z19DhTD/cT0yvcBqIK1w93FTqqag56/74jr7/luw=;
-        fh=URNcnYaPuXYJNykgNzrhuvWtlfYfYPIq0VRPzRvj+O8=;
-        b=DH9v8nN6sU4yLE0uuANuDuwBDBZy5BUbfTuexP4Ffb9I4ReB/OwGnNJwqCa9YJuAl2
-         yXBbiPWGOQB7+Yho8wBkxrRYXiG+DgqqIGxIESe3X61sjau8kt5fxVXfyfdawnrRIFra
-         SB6RIk8FN9clQYtVUBjDRTYXwaV0ebuUEkjmdoeZFFw6j1bhxS+0T2/qA92wFE0gdDsB
-         hY49jqP3bHdkkl4b9U531OOc530fDUavV2po92D2a39QtjB3LMdssbbsVpISnujggxH1
-         wypfaBIP490QkKzVCN+ynmzSJwPPkNRKMa/mcPfTHRWejiMMJqZuGmooZyzPYh8UCbpy
-         mINw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="e7YxSPAu"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-51c5382806fso16249731cf.2
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 20:17:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=aronleigh.au; s=google; t=1785381175; x=1785985975; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xl6z19DhTD/cT0yvcBqIK1w93FTqqag56/74jr7/luw=;
-        b=H4FLkDrdqMLmLmB1yQVEnccoRUvnH7D9JYbPCUj0GxpFs4xJDevhKgVTP8/W4z9hKm
-         qronvTo/mHKAi7dkFGokRz70rEu55dP/O8f3JSsCgoFd8WRHvqdg/yunZKIRS2HwL7VD
-         Mi31ag6nhtjM4/Un9HO6Q/XzOCTJky7VRXkZNIKdDb5VYCdtFLYrq60Mf1Bv//In8x2g
-         R4YcU8XVBBntDqa7LjF6WegRTv7+IggWcxvWeT19Hmx+8NWVcUT8F+jK+LIQWvK9ntyi
-         6g60wO/R2H9/Ym1CQxnGwROFRfe89IFVDV6/KydrbalZ1AdOmMvftVb9s38QoBQlvFt/
-         3oTg==
+        d=nebusec.ai; s=google; t=1785381443; x=1785986243; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lawFeYPo6BCltKTZ9+d/IYGmzDr01K26lhBILllK1d0=;
+        b=e7YxSPAuePsTYWXzyCXaUBljTZxOmd4UWlCPd3YwtdOBYI/aIKTo98rB8rlMaHB8RI
+         9Y/K1JfKE2Nu8R5gMn2yMznU85a0mw573QNb0LYEBnBxIzpfgFpsXfu4LJRuAxbXFPm9
+         fdC1S6jhG4BXdQZdFrB+jbcoq7yK/ADVYIL3+mtUNPE2RNdb21E/WReGwcXU2JZe/SeB
+         Xs/2DzR5XtBczX+MY7s19p4W9AsqE882pzaCsLJeOovjaNCqK4OnOEqN6D/AUVI/WONA
+         fvbs8crkn7sHnIXIaA9es8sg/geaNCgAg8HXUFDAjNrYNyNJTQiwOY2qXzbKSlexn5Gp
+         Yspg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785381175; x=1785985975;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Xl6z19DhTD/cT0yvcBqIK1w93FTqqag56/74jr7/luw=;
-        b=InUwJPuLbm3s1VQRAGjdAEvsG5p9dvGUYylpcgAEwIrHP1S8kT2NMFBpRqbBLmhqGT
-         Nb/PnKBxZrYt4Hb5cujFnMjPpy+mnzXS7p3DTzs1I+11sKzIQ7HNyzg9RsUgTOV+dgqg
-         /m0eGIoSkhtphJJuQsuGgK4vyL1QsdksMBGwFZdD0D8gegzKZYjLZXQUAu11mPaHvx5c
-         M/LMcRQL/75s/tJg5NTRkqunXyRjD4hnom5hTEwAzEw1DZ8yuNNysN8i6APX8xnXszpi
-         k0X1Q0Sspqtd4wuEKKefvoccK4Mk+kn+7fqejX9HZ5tv0SzIJSdHHBMvEwHxhb6DO4V0
-         GE4g==
-X-Forwarded-Encrypted: i=1; AHgh+RomS6RlJWnXGWpTv0Mu3dlp9uTaWtzvggYoJHnNYug1kQTGTrDI/8WAFBRi+Ur0gqLWUn4XE/8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNkXk/3nKGUOa7ytFWlqh8TDX+LO8AoxoDz7XHxbhPXTU/vqTh
-	FKLBfJhDlBK2gN64NilB7YUFVpmNa2bpsCTnioUqwjvaGnH0DDAWFaU4YR+pF209gjwr0EullT3
-	syJKDY4reGeNA9JzH9BojiWu4H84FTspdl3fBL6hFCOQ=
-X-Gm-Gg: AR+sD11NLEiz7ozcMDtlmIDWzZ2miBJmUo5nTjmnCDNVfwPLWGewGVmVpmsTOUZN/xJ
-	piS9+c36RexLKdlqVkKHdJhtfad4fh/gBmmqPscn/+YdB9kyIzaf49dXPOQsrvOXrvNQoHC11lF
-	8SRyamehM5MDnFoOuzdHRlGGV/qrocc1DxFAK0O/N2QbWmrsrgjf/b7qyZKGaM5TeorFoX2C+rN
-	r/+Ydqv3C6nwUkToGGQgDAxZhhOT3tBkvhVIYCeN4otYdISljlH451LI4oiGuWYRaJ+ePoBIGEw
-	S1U6qJSaJrEje+FCOIOhiz7swAybyzbg1f74eFiHfFLvnz6jvHDJU1/uWD9UifAkU6tCbQeS+qV
-	gwCo=
-X-Received: by 2002:a05:6214:234e:b0:8ef:24e9:4258 with SMTP id
- 6a1803df08f44-908347a96a6mr7470676d6.39.1785381175505; Wed, 29 Jul 2026
- 20:12:55 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785381443; x=1785986243;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lawFeYPo6BCltKTZ9+d/IYGmzDr01K26lhBILllK1d0=;
+        b=pp00gq5hiSJMy67sOLfDyCb20zBIKvnfq4xw9YRxy/MR627FCW88FC3f5epHx+uDWN
+         CXbXeu+JA7eUT84/k9F0PDNfwPoN6rgf0j/rzDuLazN/DLKMVfJmN0ZOe1BzaSf85eMK
+         H+LqsSRZmNZuKWSNDU+r6rC5dANyGOCEd/BnYJsxkXU4iiX/t6icnBqoa0l0FB/sVcyn
+         c1eNqSS5YTrcXdMhCjX2buCDu4fGshxvxt8xW5SXcS+bWN0e4IhP1Q1mLR6RyRJg9rs2
+         t9E0ewOJ5Z3Au7+C3Kmf+uUHxQYtyhekhm6984RotG13pSgoakiPIAqNjO/0jWFXP/9D
+         rL7g==
+X-Gm-Message-State: AOJu0YwLMNITgcb+UaT1W0WH3ialYHqD63R3FMK0NZu5mw9E1WlfKjiH
+	caJelIswc2McxKW3GMUI/E37J6tfJ77pktPVHp+wt+Vpc4BEWanb4zWyBdWY4YDkQiFa4x4Sv3P
+	luuaOWMQ/M08=
+X-Gm-Gg: AR+sD10RxjqA86f/ceLew+NK2bkr4T9KUI8QK56YHrtQIx2kuF/I4gVAhltLQvRLL4p
+	CKoQ6B6Bl1OqHGytJqvxozfQGeuuot3lSC+L1CV6IJdExC/+MYzsquwMqBK+AKShbPlQQsaYZTU
+	wkpzyJmfJ0+tlAZpzMgPd3M6r1c5P8W4ZbJXyvvyQENxJmUROWoyYHWRGuB5bNZ1Np9nDgWrqWq
+	+6S3WpD8NAe1OmxbGIjxXU2UUL+0prrWDkTk5orRg1OY/eKraFhsxA/6MOioooSKXbokTiNEk29
+	PjyoE1+JaN6BWS+JxoUFDVaV/FKJeU3P0KdDDjMEvmL9fkpXneT7eCRkYsThqgo3O4sC9Fj7j9v
+	MBgjswui05xFhDnHrw4+n29IWHl8Ku9m1p6cinaEd3dIwaRpjs+pmm4YBt+B4HBO+TiFsuxsb3e
+	9N/V7SH6tzAl0BH+DiEwuDqguDrmsDXSv3UbQCaum3J9A7niCy+lAQLkNcQonUr6YiHYHH2voqh
+	nqZnii5u5GVMX7r
+X-Received: by 2002:a05:622a:4d04:b0:516:d83c:edb6 with SMTP id d75a77b69052e-52b38378bc5mr12179731cf.12.1785381442562;
+        Wed, 29 Jul 2026 20:17:22 -0700 (PDT)
+Received: from Roxy.localdomain ([203.175.14.54])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-529e2b54941sm32069081cf.8.2026.07.29.20.17.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 20:17:21 -0700 (PDT)
+From: Zhiling Zou <zhilinz@nebusec.ai>
+To: netdev@vger.kernel.org,
+	idosch@nvidia.com
+Cc: dsahern@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	leone4fernando@gmail.com,
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: [PATCH net v2 1/1] ipmr: only copy pktinfo to cache reports
+Date: Thu, 30 Jul 2026 11:17:07 +0800
+Message-ID: <1b809975e5bd9c0a1dd6fdd1db534e701fe5a4b6.1785379072.git.zhilinz@nebusec.ai>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Lilly Aronleigh <lilly@aronleigh.au>
-Date: Thu, 30 Jul 2026 13:12:44 +1000
-X-Gm-Features: AUfX_mypJDGDYQfaVRX13rAghU3NsXueNoz7bUo51S-X-Bl4N-87iZga62Hppng
-Message-ID: <CAFrrV-O1fesaza+5_WqH8OciXRu9KKE4UsB6RcMamDu0j2-nBA@mail.gmail.com>
-Subject: [PATCH net] xfrm: iptfs: avoid canceling reorder-window drop timer
-To: Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Christian Hopps <chopps@labn.net>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-IP-TFS uses xtfs->drop_timer for both partial inner-packet
-reassembly and the reorder-window drop timeout. Reassembly completion
-currently cancels the timer unconditionally.
+ipmr_cache_report() builds reports for mrouted from a packet that may be a
+synthetic RTM_GETROUTE query. That query skb stores the netlink requester
+portid in NETLINK_CB(), but the report is delivered to a raw IPv4 socket,
+whose receive path interprets skb->cb as IPCB().
 
-That is only correct when the reorder window is empty. If the reorder
-window already contains saved packets, the same timer belongs to the
-reorder-window state and must remain armed so the missing sequence can
-be considered lost and the window can advance.
+Commit bb7403655b3c ("ipmr: support IP_PKTINFO on cache report IGMP
+msg") added IP_PKTINFO support by calling ipv4_pktinfo_prepare() on the
+original packet and then copying the entire 48-byte skb control block to
+the report skb. For synthetic route-query packets, this copies
+NETLINK_CB() bytes into IPCB() and lets a controlled portid corrupt
+IPCB(skb)->opt. With IP_RECVOPTS or IP_RETOPTS enabled, the raw socket
+receive path can then copy past the short report packet or overflow the
+stack option buffer.
 
-Only cancel drop_timer from __iptfs_reassem_done() when the reorder
-window has no saved packets. The existing drop_lock serializes this
-with the reorder-window paths, and a failed cancel remains harmless.
+Keep the IP_PKTINFO support, but initialize the report skb control buffer
+and copy only the pktinfo fields prepared by ipv4_pktinfo_prepare(). Do
+this in the common path so both short reports and whole-packet reports are
+covered.
 
-Tested with a reproducer that completes reassembly while the reorder
-window contains saved packets.
+This removes the accidental IP_RECVOPTS/IP_RETOPTS behavior on the
+mrouted socket, but that behavior was only a side effect of copying the
+entire control block and was never intended to work for these reports.
 
-With this change, the reorder-window timeout remains active and the
-window can advance correctly when the missing sequence is not received.
-
-Fixes: 0756947654468 ("xfrm: iptfs: handle received fragmented inner packets")
-Assisted-by: ChatGPT:5.5-extrahigh
-Assisted-by: Claude:4.6-opus
-Signed-off-by: Lilly Aronleigh <lilly@aronleigh.au>
+Fixes: bb7403655b3c ("ipmr: support IP_PKTINFO on cache report IGMP msg")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
 ---
- net/xfrm/xfrm_iptfs.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+changes in v2:
+- reword the commit message to say the entire 48-byte skb control block is copied
+- mention that IP_RECVOPTS/IP_RETOPTS on the mrouted socket was never intended
+- move the pktinfo copy to the common path so both report branches are covered
+- v1 Link: https://lore.kernel.org/all/5bc7cd71c2d671b305f25497d88ae8a0aa663c08.1784894076.git.zhilinz@nebusec.ai/
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index ad810d1f97c..02fbb8d781a 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -698,8 +698,12 @@ static void __iptfs_reassem_done(struct
-xfrm_iptfs_data *xtfs, bool free)
+ net/ipv4/ipmr.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index 1d9a4ac14fcef..4827973c6f9c0 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -1058,6 +1058,7 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 			     struct sk_buff *pkt, vifi_t vifi, int assert)
  {
-        assert_spin_locked(&xtfs->drop_lock);
-
--       /* We don't care if it works locking takes care of things */
--       hrtimer_try_to_cancel(&xtfs->drop_timer);
-+       /*
-+        * The drop timer also drives the reorder window timeout. Locking makes
-+        * a failed cancel harmless.
-+        */
-+       if (!xtfs->w_savedlen)
-+               hrtimer_try_to_cancel(&xtfs->drop_timer);
-        if (free)
-                kfree_skb(xtfs->ra_newskb);
-        xtfs->ra_newskb = NULL;
---
+ 	const int ihl = ip_hdrlen(pkt);
++	struct in_pktinfo *info;
+ 	struct sock *mroute_sk;
+ 	struct igmphdr *igmp;
+ 	struct igmpmsg *msg;
+@@ -1112,8 +1113,6 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 		msg = (struct igmpmsg *)skb_network_header(skb);
+ 		msg->im_vif = vifi;
+ 		msg->im_vif_hi = vifi >> 8;
+-		ipv4_pktinfo_prepare(mroute_sk, pkt, false);
+-		memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
+ 		/* Add our header.
+ 		 * Note that code, csum and group fields are cleared.
+ 		 */
+@@ -1124,6 +1123,12 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 		skb->transport_header = skb->network_header;
+ 	}
+ 
++	ipv4_pktinfo_prepare(mroute_sk, pkt, false);
++	memset(skb->cb, 0, sizeof(skb->cb));
++	info = PKTINFO_SKB_CB(skb);
++	info->ipi_ifindex = PKTINFO_SKB_CB(pkt)->ipi_ifindex;
++	info->ipi_spec_dst = PKTINFO_SKB_CB(pkt)->ipi_spec_dst;
++
+ 	igmpmsg_netlink_event(mrt, skb);
+ 
+ 	/* Deliver to mrouted */
+-- 
 2.43.0
