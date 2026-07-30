@@ -1,70 +1,58 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAA435C180
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 14:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FECB38DC50;
+	Thu, 30 Jul 2026 14:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785422819; cv=none; b=uMuqye5fXqeJYgeY8U9l9JkOwaqPMRPRcV9ZCa2AaipfVcebYfzaO6OEcGYOgPiyb270LBTOjo4OR45c3bUW0A5pTqd97Et8uAcIKfy57KOBVdId6qTTYheIFq0YnhQgY8xzaMuiyn89Wbe3sOfqs1m6lN+eIWfutwe78eHx57w=
+	t=1785422830; cv=none; b=ZY84L2YD/F2MLdHtc3ZB9uZskShkMfngSNocgWBBis3ThPAMNj4QNw/vyVgpldtzU5S9Ffllt/EtU6dpz6+DzQATO6yhFlst/7VpE/OrROy9UOj5RfIpJyPzFy5+icw+qwcoyMp8mr2m3+gz6zCvR4J7A6J5P54VKIiqvcAxzVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785422819; c=relaxed/simple;
-	bh=fky8gcypEoBJ3AGom61/sbvLSrOMTaQ3+6aPyUc6spY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c8kr7jcdApj7atFgS0ErzOqDEEI23UL2V1YgTQ3jP9SHICr+SVGRjpr/qnCnmOwMSNomOv4BTzvTXrmKFTg2DOtxHtvcD0K0Nki3zdGjc1RBbmQmvoiqJKqn4/Nj0xc0+8b+xLhhXnp733PhLlifWdHZ/Nc5QN9zo9XWmwn6tBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f+P3uh1F; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785422830; c=relaxed/simple;
+	bh=kUE5i8p9QVvzL+XnMimLV4JyGsBzaWMnWl8xmyuYB6Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=id5ozh6/mI002keyYPpToWQvTplYVr0p1VmLgzHX6cYWGK45bSWBzy9HXM+wMDLAnsC6hTNEy0CI36r41aWHw0eRToV1iyDiyuwul57QTJijKDc067NnxsZKe3F0tAgSiaD1qjrpym6quLRSUpwkh6MDgOr7jeFdgGf0ExHksA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eWtQDiQp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f+P3uh1F"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4954a2e73a9so13279805e9.3
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 07:46:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785422816; x=1786027616; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=G6LXRZrc4Zq8r+P/Ny5YSdNSE7jhUxZKcv6RzfqQxUc=;
-        b=f+P3uh1FAQSg0OoAxNmqlmARiHZTVBMshWu77enJusEmMWXvij6xYLeed9x9xDr4Cj
-         u55h3xBM5f4OLw1+XtrdWzmVM+/uVhb56eO3cUINgeb30mqPmlWN05ZY1qQKMhZ+dRUi
-         41J3Szsps61896LAdjwvei8kxJEo3x3MR1qmGVK8hMnDA2QnFWuSA5XQEj8FTJnk5JgD
-         Ss76Sg80iDpkppFUXXyaAU1PoWHZ1sKK+oGvZyMaOmdXO+UehA79ZgLOKvx1EE6VTdQY
-         XMSC5KzvK+euLD04xg/B4fVWDHYtn21hYxRdtBr4A3jNQoTb6fR+YC55k1mLxuB4OPY4
-         Fmbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785422816; x=1786027616;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=G6LXRZrc4Zq8r+P/Ny5YSdNSE7jhUxZKcv6RzfqQxUc=;
-        b=U0hrsO8gzE8gjSxu0dzfRk2LklwiPv3tIiP2gYpUI0YuHXZW6vtjMiti3mDeACyx++
-         tvynu73Kjxm2q6dnBWLh1kD7pwR/M+yf0yDOTXOfgH8lJ+ai/b39iqxqovKvsY4gmbZa
-         +8sMZkJ/yX60BPe+/oG4AtHWe95Jw07Di/i3B6vamb8wYqG3MADjjB0CZP5BCjEXoCq7
-         ihf5OCEfcQ0dCjBAu/Ux/vqCb1RhNy3XVuE5INPsM00WMlZFPymAJws31jjBYwsSAjs5
-         +ILpkljpvEKg4/bssXhNFkT/sipx4pcqEjXRpIgnQRB5iP6FZ0qmv141n9dKl9jhexHV
-         GKHQ==
-X-Gm-Message-State: AOJu0Yypbeif3CHwBbGd0NqmN+sbiPJeGxUErW0BE0leA9VK6HXXtX2x
-	HXNgM95Vxs2SmUGjKxQFUqQQG22LfEyCFfSTu4Kz4jEZZk+pRWx6GoVDdWoY1Q==
-X-Gm-Gg: AR+sD12Pp3v6+KM3oW4Eife706iPhpS2DIDwt4w0ZcTKoYg/nQvc++tKFpSP7/MxJIz
-	ZsgfURnFLWNzImryhtdfXbXgDQ6wl/yPF8COEYTIQ30IMmqlwn3hUqSsKQvsXLPXWmgfvRqqUZD
-	uCtts/u4L+psB6zu0w5JbMJ0pKmmIXOSzJN279Hogz3FgQnk8+D98cUOPfGBbM+VTUp3bftEsys
-	VdU99830khzUFiWSPvPvbxvaqtJeR/1EO9gt5DWoG7O8F3g1RO0D53KtQUIyAKSPnW4P9GcPj/W
-	pzcKmUyXaWaPlK75YY3Sa8iIH9DqEpYmiN5/wQkfPohDiAvBjeJbNnKxZQjRWgQGfWWZafSxv8F
-	DwqAw0KSPHjBPKrvVdeBisxVVJnWf2RuyONPx0zreeVYG726+KfPdQOE4hCrxLWEMEUFZNOqqhQ
-	VkfzthUeeUJXUpZhCAXc2jlY4QYsnY1OvtsRnnsB+glILI9qBve0TRRW/MIMmG+81rp7k7vW41R
-	X7hWkS2Q9T4SpzE7MhBSfzW07cxgqHQBQ==
-X-Received: by 2002:a05:600c:c05c:b0:495:6060:d6de with SMTP id 5b1f17b1804b1-49800ece23fmr27592965e9.31.1785422816099;
-        Thu, 30 Jul 2026 07:46:56 -0700 (PDT)
-Received: from localhost.suse.org ([37.109.160.96])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-498011e4ed5sm64491575e9.1.2026.07.30.07.46.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 07:46:55 -0700 (PDT)
-From: Sebastian Chlad <sebastianchlad@gmail.com>
-X-Google-Original-From: Sebastian Chlad <sebastian.chlad@suse.com>
-To: netdev@vger.kernel.org
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
-	Sebastian Chlad <sebastian.chlad@suse.com>
-Subject: [PATCH net] selftests: af_unix: skip scm_inq tests when SO_INQ is unsupported
-Date: Thu, 30 Jul 2026 16:46:52 +0200
-Message-ID: <20260730144652.5715-1-sebastian.chlad@suse.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eWtQDiQp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F66C1F00A3A;
+	Thu, 30 Jul 2026 14:47:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785422828;
+	bh=FYx9PFFHsxsK0B8I6N6sUGEP6tsXyBn7+dYN7OyFtFg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=eWtQDiQpWc/KiRV8lRfmdpMx9GkYxDg3FajW9zcGCjORaFy6CYcZMtzQRqc5ZG997
+	 kfu2uFc/MAXvZeSwYxAFxrynCsnYsgvXadTYodCOU3kiejfURLUz5IWZ1ZP9oqdZD6
+	 iGnDR71fjIqg55V/PLWIMBNaoYPyhuONESsahmi6wOflm7/fo5bP6Rs3U/LlbyaGCt
+	 D9/mB5Y/HgK0t7nmAalFwtdOw9iaaBprLSXbf6QulQWW/8t5vm0bFfMcc6hS0zMP5J
+	 5eyJ88Mnz/KpjNIXJGwylPnQP0UP/GYezFea5buBsQ+eHa3DweQyKSHnijSVP8F6MS
+	 lJm5qu2jjT+tA==
+From: Simon Horman <horms@kernel.org>
+To: xiexinet@gmail.com
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	shuah@kernel.org,
+	kees@kernel.org,
+	petr.wozniak@gmail.com,
+	qingfang.deng@linux.dev,
+	fmaurer@redhat.com,
+	luka.gejak@linux.dev,
+	bigeasy@linutronix.de,
+	xiaoliang.yang_1@nxp.com,
+	skhawaja@google.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2 1/4] net: hsr: fix packet drops caused by GRO superpackets
+Date: Thu, 30 Jul 2026 15:46:53 +0100
+Message-ID: <20260730144653.147367-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260724161253.79-2-xiexinet@gmail.com>
+References: <20260724161253.79-2-xiexinet@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,44 +61,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-SO_INQ was added in df30285b3670 ("af_unix: Introduce SO_INQ."). On
-older kernels this returns -ENOPROTOOPT for SOCK_STREAM too, which
-scm_inq.basic/partial_read currently treat as a failure.
-
-Enabling SO_INQ here is only a precondition for the actual test: the
-SCM_INQ/ioctl(SIOCINQ) consistency checks that follow. SKIP when the
-precondition itself isn't met, rather than asserting it succeeds.
-
-Signed-off-by: Sebastian Chlad <sebastian.chlad@suse.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev/#/patchset/20260724161253.79-2-xiexinet@gmail.com?part=1
 ---
- tools/testing/selftests/net/af_unix/scm_inq.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+--- Patch [1]: [PATCH net v2 1/4] net: hsr: fix packet drops caused by GRO superpackets ---
+commit b386202ef95164a9e68085058531ac441d9df79d
+Author: Xin Xie <xiexinet@gmail.com>
 
-diff --git a/tools/testing/selftests/net/af_unix/scm_inq.c b/tools/testing/selftests/net/af_unix/scm_inq.c
-index 6268b5bf50be..2868cce61a9a 100644
---- a/tools/testing/selftests/net/af_unix/scm_inq.c
-+++ b/tools/testing/selftests/net/af_unix/scm_inq.c
-@@ -111,6 +111,9 @@ TEST_F(scm_inq, basic)
- 		return;
- 	}
- 
-+	if (err && errno == ENOPROTOOPT)
-+		SKIP(return, "SO_INQ is not supported");
-+
- 	ASSERT_EQ(0, err);
- 
- 	err = ioctl(self->fd[1], SIOCINQ, &inq);
-@@ -136,6 +139,10 @@ TEST_F(scm_inq, partial_read)
- 		ASSERT_EQ(-ENOPROTOOPT, -errno);
- 		return;
- 	}
-+
-+	if (err && errno == ENOPROTOOPT)
-+		SKIP(return, "SO_INQ is not supported");
-+
- 	ASSERT_EQ(0, err);
- 
- 	ret = send(self->fd[0], buf, sizeof(buf), 0);
--- 
-2.51.0
+net: hsr: fix packet drops caused by GRO superpackets
 
+This commit fixes HSR/PRP packet drops by preventing lower devices from
+aggregating frames into GRO super-packets. It adds dev_disable_gro() and
+netif_disable_gro() functions and calls them during HSR port setup.
+
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index 5933c5dab09ee..a6cf2adc86256 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+
+[ ... ]
+
+> @@ -1840,6 +1840,24 @@ void netif_disable_lro(struct net_device *dev)
+>  	}
+>  }
+>  
+> +void netif_disable_gro(struct net_device *dev)
+> +{
+> +	struct net_device *lower_dev;
+> +	struct list_head *iter;
+> +
+> +	dev->wanted_features &= ~(NETIF_F_GRO | NETIF_F_GRO_HW);
+
+[Severity: High]
+Does this one-time modification of wanted_features prevent userspace from
+subsequently re-enabling GRO?
+
+Since NETIF_F_GRO and NETIF_F_GRO_HW are not included in the
+NETIF_F_UPPER_DISABLES macro definition in include/linux/netdev_features.h,
+would netdev_sync_upper_features() and netdev_sync_lower_features() fail
+to enforce the disabled state on lower devices during features recalculation?
+
+Could an administrator run ethtool -K eth0 gro on (or add a new physical
+device to an intermediate upper device already enslaved to HSR) to bypass
+this restriction and cause the HSR packet drops to resurface?
+
+> +	netdev_update_features(dev);
+> +
+> +	if (unlikely(dev->features & (NETIF_F_GRO | NETIF_F_GRO_HW)))
+> +		netdev_WARN(dev, "failed to disable GRO!\n");
+> +
+> +	netdev_for_each_lower_dev(dev, lower_dev, iter) {
+> +		netdev_lock_ops(lower_dev);
+> +		netif_disable_gro(lower_dev);
+> +		netdev_unlock_ops(lower_dev);
+> +	}
+> +}
