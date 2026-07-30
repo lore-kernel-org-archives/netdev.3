@@ -1,92 +1,80 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323FD3C871E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3E23C199C
 	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 08:30:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785400221; cv=none; b=OPHsEQaHxCdAuYU/Dkcg5K41GcYUFvuVlLQbFy/cejjb3khYIri95Omzxz0WNp1xQ6OIdorbeIaEx5lyRlMC0VVf8Z5qs8uvyaKQWJpjjjxq5K5uMilfsQ+sCoTNkMmOODukT3BF9ouDs1RL8OopeE+33yWw3t1pt52L/d/vJ/w=
+	t=1785400222; cv=none; b=Cz/25mPsUwJEgIDlrIu9RhdQ/3NAZcd/j6QOU1G4QBVwEUQw9M7Gkv/KdVvQgzPLXTwNv03gNRYNkzvw1qerL8axe0kWyZQLBG2zxWjKGN4/u9T9+LUN+suH4sWOsJZcpaOtoL7J4Zaqio0Mi1XZYIOFcXkWWTEMQkza2DGIN3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785400221; c=relaxed/simple;
-	bh=SKCawZyJ18LIWo/TXdAjj24mqMeJQGIHXE6x68vNbwA=;
+	s=arc-20240116; t=1785400222; c=relaxed/simple;
+	bh=l7p9UcHDiSd7+m7lm/77lTGfiIA203P9noSrPEmlO3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbO7tI/VbAwbEIyXkobLe37HYtQjdfuG2no47FlopX1wuE+k1ncykmX5b9mvZpKypB/XpP1L4F37OAjA3H90KpmgOCx1Mpa1vmbVU7EhiVKgIxojPeoaQk5kGMi7tn96d3W57Y54IduJFQoyoBxPg5xe56FfE6r/8M1pyOroMMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S5jraFo9; arc=none smtp.client-ip=209.85.128.172
+	 MIME-Version; b=pID2CwiIFZg4e3NOUWbE2xbB5OTTH3l79cYbPy350cigyK5GM5H0IQbNkOEKPg4nQ7QwcjfbQYTBDByQuKLcT3M6p9xCEfNb0r/tGRfTPxuc4fHhdo5L6Pis7YouEfu1umpNIiSig0Y7YdUE+qx7mJhcKUnVj9/hkR7cYkIAcZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PGIA8v9z; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S5jraFo9"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-81ef8adf7a7so1656767b3.3
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PGIA8v9z"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38ecc48b3deso136637a91.0
         for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 01:30:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785400218; x=1786005018; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785400219; x=1786005019; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LOsNwn1XETjvDtGfeNQeQJmlf7vcHA2X05x3Dyf3ZGg=;
-        b=S5jraFo9In0fPWE9ay7C87WbXsVkrgKV8vakMvzVMaETLgDveph1a8ke9M3ArZd0o0
-         UlSS8D22DXs6X51UvMBf+bSJtD7cpCYFaw3Gk8HRjzUDD2ZPrd5hCXGG8Rn6FbOA7rRX
-         ZFqGL9Jt78L5hiS3ENoYqIhJGYRME9Sz5kJPQgsqObSulQFHnDaEEihvAekVpkig6vQl
-         /xpc39p2uII1cIQmYih/pbFOIlT6Bdc7/a2pgUF8YzRoK3VM9phoOIXLakdIJ+NiFG8B
-         8rlphXKgbwbGFJNw7osEGqRcDgB2cEyBj0wGDzR+8OIcDXWJxgkxsA/W16yw6nja+1ey
-         1gpw==
+        bh=FhwT5i7wSSCttQ3m6wlTBY5PMPdtDneVtB578ExkyTo=;
+        b=PGIA8v9z/JZWlynjiLhzFAzA+44q6dPYrC5kTZHVayzwELC/LPYGdu7OWIjsY86cVQ
+         nB7iC7GMC6RYQO6jpIdKtY/xgoCsr7oBvgFvJUV45lxmKJV1/RmSiOO++qcTC3DXbna4
+         9JpwU0JmaeDOD31c0wAb1CmrbVhUEO+DGOZT0QdJpqTSeIxB/YvO5Mrqc0adPB5FiPxt
+         1ptA+c1bqFE2xtAfQEEzB81ZfaOJFRJsbRu0LKcs2rjoD8NDv5NCdNNl14UoDDoVQ70Y
+         VTn14AMB1AkIv2DpwAR+XA+K7qRziJU5v8WV+tpgXlIbn4t9Z6hH5f+w5BJd8iVFM8pE
+         Z9+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785400218; x=1786005018;
+        d=1e100.net; s=20251104; t=1785400219; x=1786005019;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LOsNwn1XETjvDtGfeNQeQJmlf7vcHA2X05x3Dyf3ZGg=;
-        b=nRfZ6ejKEOijPhiIDY8ZAB1dpZU0rBPZmX1iezA0wHgQge4TMOpAfDfrbORVaReB9U
-         D2k7IPFvDToqMBUhHQPzjNArX6xb4bg1SNVsGDhiZkaOLhSGcOI61TJExDDEAEnKKP+/
-         3VVgLVawIUxrf8hWS/bjjwSx+a330+cRVjfgSK3plpbmE0A0nlxIPyfKdhsArEgtl4BC
-         OAmY5fIBEuu+tDdZ7WSsYErwpdX5mCcD8V8dQ4gt6Tw6NJcaxB+oIoQryyo/UOb9HOKe
-         7+rPH+Cq4IzaIBjj9qQLLFxsdCZlEdP3ndGXTsRcTqpW9HS8oqCIXrUrC2SCUASwN5PU
-         MSGA==
-X-Forwarded-Encrypted: i=1; AHgh+RrN9yoE30AhkWxOcIzBd11bkjsmRw4eA2c1c5yK+dH/KDRsd/PMAm6bx9/rFwXLEtVb5GwXwow=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCTYSvwaLvsrkvtM9SDSx5DTodXmSbseyJXBY36Z2IhwICXqD9
-	K5nThFPdJXwUtwC1OoBAKQxxUNe6/YgvobHQLtNebdAIggYM/CDusd6w
-X-Gm-Gg: AR+sD123Jq3DG0qgouB84XWdyYXzgcSWIbJvSaASEJZC/9NJ0Y4sNsAtu5/QrUCRyZQ
-	93l8ueAAs/B+aetTbZIOUGnpT32XSfVzzaOy4wMIDdNiYEHXXw9w9ClVIF32n4cG8xTma36KPcG
-	Dd3FwPGpqIvLSQrsOZlpKGQWHcUorTiwBgQSMt2N5A9GDepTNZ/+ynQ0LqHwymMyKP02lIFIa8i
-	83Rq0ljWc1l5/qDMqppvKocJDIJiOU2M9aP9IxMpNvzeKV8x+Tj1BJCp73UKBcuOw5TILj0V44H
-	8YOO++I4eAwwqob6scLS8BYnECufDNU5i54nyI17WRDWlI4uX2ePTB3kLpFHbduw77p5cLCBXim
-	PkaIe5nCIQzwoR8Z24nSWgET4Cg4T1GoroqhedQIf+RI8q5p6D0OTaVl4KuVMfu4XSRlA1O+7Ea
-	oVGYjwVD6dkQN5uH5Dpb/ygOPBBjc5nLLH2ovhGUnt6cvrAqAKb4Z4uacqkqb3Iu9a/0YfNNHH0
-	5iTJm4uadg5hezJ9D+YZh739aaN6xAx0luVg4Wo/HQeU37cOKy+Ljw=
-X-Received: by 2002:a05:690c:c4f1:b0:81f:45f0:21d7 with SMTP id 00721157ae682-81fb8741de0mr19462267b3.0.1785400218085;
+        bh=FhwT5i7wSSCttQ3m6wlTBY5PMPdtDneVtB578ExkyTo=;
+        b=WxJ8ChO7RH54Pg4EyHSh8z5BqrGoVvt1lfd09uXdx//jilTH4vFIe+7mbKTrsztGdb
+         YsyUTkjnCwIVHnPhMI7x8RDqDmHLUkcfFY7iQU8N7r1ujvJdgVQ1trzCmRSw4ib8PEBh
+         e8Re66noUPQ1pIZrO9a+DtqYxyS/sNm+ix1/i6Ca8PtGWGMMUrhwoeyfA2rCXEbHNM8m
+         6wVSJW2AV7ZK0wOAQpWxEtAdVxhfAK71K/I0CeYGSaEV0KLzQhaTpni0Hg3GhmocB/PX
+         AxR7luPszQCoJnFovsruJfW/PgqBZNntCieoYL7g49oPHwMx91Q0cMH01rIkpCs31G3Y
+         dOUg==
+X-Gm-Message-State: AOJu0YxJYnl4xiGgNn1JgX8fTh4oDHFygxrjIx+7Q5eWaOoswCNE9LbV
+	fpIqVAzErEAVfl871EqFe4RRWq+JbFQWut8gedKGAcZ5WkkLFE/5CFe9BbUduaJm4Og=
+X-Gm-Gg: AR+sD134Ob8oSXwSQDHyJEmCUjmb049RPIuH5Qe0J1Gu9PwG+FUyaTAzyVkLSMXa7S2
+	F4iGFqAH07COIxAy2NCUtX8IJEnsqxTWKKjO9cEIC90hejhqpXDha/5ithA5Go6sbbza6InU/mw
+	0iOXw9IohmikSBr4LxxNrzTHz76QjSHCtdDtLDoWP5EKWiPnYkC3jhMESn8vbPWV0k01c4kOV9J
+	E2Gaaz5dKPnsoBR3xTvOes5FJnKaySsjCvxTrQRE5nqfvwh5zhWnHLzqCLSr7j0dtpk6aETwtIE
+	4gWWAdiamoOeF8pVOQHmFHYE+Dz9C6eAXr3b6Ez15s9fu5iR7iyY0ZlzYKtETJOjZMNQB5nQFc6
+	pzqrOeQnAAvVG3O0MKNd5JgtOE3ojx8puleXuJLII5QJrzXzO0pgACByRsKFU/7qCsuO1V7re4G
+	Vnpk+OZPWJKtirkyHmexqii0jUaTj3sIptSCdaZvpzralyMNjjzIQykeqUbnpptB2entKnVklKd
+	MuI3RLMpZodWq5eu6uLYgGbKN4YUd4gm6aS9+RoVH+p3RGG5aw=
+X-Received: by 2002:a17:90b:4d10:b0:37f:eda5:516f with SMTP id 98e67ed59e1d1-38f9bb0ccc8mr2200269a91.0.1785400219464;
+        Thu, 30 Jul 2026 01:30:19 -0700 (PDT)
+Received: from localhost.localdomain ([139.159.170.89])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9b770e33sm664279a91.15.2026.07.30.01.30.11
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
         Thu, 30 Jul 2026 01:30:18 -0700 (PDT)
-Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fb8a89719sm6356597b3.27.2026.07.30.01.30.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 01:30:17 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>
-Subject: [PATCH bpf v2] bpf: Fix netns reference imbalance in conntrack kfuncs
-Date: Thu, 30 Jul 2026 16:29:58 +0800
-Message-ID: <20260730082958.2065194-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260729163141.213611-1-nicoyip.dev@gmail.com>
-References: <20260729163141.213611-1-nicoyip.dev@gmail.com>
+From: Qihang <q.h.hack.winter@gmail.com>
+To: netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
+	daniel.zahka@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	Qihang <q.h.hack.winter@gmail.com>
+Subject: [PATCH net v5 2/2] packet: use consistent hard_header_len in TX_RING send path
+Date: Thu, 30 Jul 2026 16:29:25 +0800
+Message-ID: <20260730082925.93759-3-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260730082925.93759-1-q.h.hack.winter@gmail.com>
+References: <20260730082925.93759-1-q.h.hack.winter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -95,209 +83,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The opts argument of the BPF conntrack kfuncs can point to a shared
-map value.  __bpf_nf_ct_lookup() and __bpf_nf_ct_alloc_entry() read
-opts->netns_id separately when acquiring and releasing the network
-namespace reference.
+tpacket_snd() reads dev->hard_header_len independently for skb
+allocation and header construction in tpacket_fill_skb(). Concurrent
+netdevice reconfiguration can therefore make the reserved headroom
+smaller than the amount later pushed, or make copylen - hard_header_len
+negative.
 
-The reference imbalance can occur as follows:
+Snapshot hard_header_len once before processing ring frames and use it
+for the frame limit, headroom allocation, copy length, and skb
+construction. Pass the snapshot to tpacket_fill_skb().
 
-  CPU 0                                  CPU 1
-  read opts->netns_id (-1)
-  skip get_net_ns_by_id()
-                                         write opts->netns_id (id)
-  read opts->netns_id (id)
-  put_net(net) /* no matching get */
+The separate SOCK_DGRAM consistency problem between hard_header_len and
+header_ops->create is not addressed here.
 
-The reverse transition leaks the reference.  Repeating the unmatched put
-can destroy a live namespace and crash later users.
-
-The kernel reported:
-
-  Oops: general protection fault, probably for non-canonical address
-  KASAN: null-ptr-deref in range [0x00000000000000e8-0x00000000000000ef]
-  RIP: 0010:bpf_prog_test_run_xdp+0x52c/0x1700
-  Call Trace:
-   __sys_bpf+0x1662/0x50c0
-   __x64_sys_bpf+0x73/0xb0
-   do_syscall_64+0xf9/0x540
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  Kernel panic - not syncing: Fatal exception
-
-Snapshot every input field of opts with READ_ONCE() before validating or
-using it.  The netns_id snapshot keeps the namespace get/put pair
-balanced, while the other snapshots keep the remaining options from
-changing partway through an invocation.  The individual reads can still
-observe an inconsistent combination during a concurrent update, but each
-selected field value remains stable for that invocation.
-
-Fixes: aed8ee7feb44 ("net: netfilter: Deduplicate code in bpf_{xdp,skb}_ct_lookup")
-Fixes: d7e79c97c00c ("net: netfilter: Add kfuncs to allocate and insert CT")
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
 ---
-Changes in v2:
-- Snapshot l4proto, ct_zone_id, ct_zone_dir, and the reserved bytes in
-  addition to netns_id, as requested in review.
-- Rebase onto current bpf/master.
+ net/packet/af_packet.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-Please queue this fix for stable kernels.
-
- net/netfilter/nf_conntrack_bpf.c | 76 ++++++++++++++++++++++----------
- 1 file changed, 52 insertions(+), 24 deletions(-)
-
-diff --git a/net/netfilter/nf_conntrack_bpf.c b/net/netfilter/nf_conntrack_bpf.c
-index f98d1d4b42c3..c3395cb98c00 100644
---- a/net/netfilter/nf_conntrack_bpf.c
-+++ b/net/netfilter/nf_conntrack_bpf.c
-@@ -122,42 +122,56 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_sock_tuple *bpf_tuple,
- 	struct nf_conntrack_tuple otuple, rtuple;
- 	struct nf_conntrack_zone ct_zone;
- 	struct nf_conn *ct;
-+	u16 ct_zone_id;
-+	s32 netns_id;
-+	u8 ct_zone_dir = 0;
-+	u8 reserved[3] = {};
-+	u8 l4proto;
- 	int err;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 88674a6e868c..e9b6810c885e 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2574,6 +2574,7 @@ static int packet_snd_vnet_parse(struct msghdr *msg, size_t *len,
+ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 		void *frame, struct net_device *dev, void *data, int tp_len,
+ 		__be16 proto, unsigned char *addr, int hlen, int copylen,
++		int hard_header_len,
+ 		const struct sockcm_cookie *sockc)
+ {
+ 	union tpacket_uhdr ph;
+@@ -2605,8 +2606,8 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 	} else if (copylen) {
+ 		int hdrlen = min_t(int, copylen, tp_len);
  
- 	if (!(opts_len == NF_BPF_CT_OPTS_SZ || opts_len == 12))
- 		return ERR_PTR(-EINVAL);
-+
-+	netns_id = READ_ONCE(opts->netns_id);
-+	l4proto = READ_ONCE(opts->l4proto);
-+	ct_zone_id = READ_ONCE(opts->ct_zone_id);
- 	if (opts_len == NF_BPF_CT_OPTS_SZ) {
--		if (opts->reserved[0] || opts->reserved[1] || opts->reserved[2])
-+		ct_zone_dir = READ_ONCE(opts->ct_zone_dir);
-+		reserved[0] = READ_ONCE(opts->reserved[0]);
-+		reserved[1] = READ_ONCE(opts->reserved[1]);
-+		reserved[2] = READ_ONCE(opts->reserved[2]);
-+		if (reserved[0] || reserved[1] || reserved[2])
- 			return ERR_PTR(-EINVAL);
- 	} else {
--		if (opts->ct_zone_id)
-+		if (ct_zone_id)
- 			return ERR_PTR(-EINVAL);
+-		skb_push(skb, dev->hard_header_len);
+-		skb_put(skb, copylen - dev->hard_header_len);
++		skb_push(skb, hard_header_len);
++		skb_put(skb, copylen - hard_header_len);
+ 		err = skb_store_bits(skb, 0, data, hdrlen);
+ 		if (unlikely(err))
+ 			return err;
+@@ -2737,7 +2738,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 	void *data;
+ 	int len_sum = 0;
+ 	int status = TP_STATUS_AVAILABLE;
+-	int hlen, tlen, copylen = 0;
++	int hard_header_len, hlen, tlen, copylen = 0;
+ 	long timeo;
+ 
+ 	mutex_lock(&po->pg_vec_lock);
+@@ -2784,8 +2785,9 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 			goto out_put;
  	}
  
--	if (unlikely(opts->netns_id < BPF_F_CURRENT_NETNS))
-+	if (unlikely(netns_id < BPF_F_CURRENT_NETNS))
- 		return ERR_PTR(-EINVAL);
++	hard_header_len = READ_ONCE(dev->hard_header_len);
+ 	if (po->sk.sk_socket->type == SOCK_RAW)
+-		reserve = dev->hard_header_len;
++		reserve = hard_header_len;
+ 	size_max = po->tx_ring.frame_size
+ 		- (po->tp_hdrlen - sizeof(struct sockaddr_ll));
  
--	err = bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
-+	err = bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, l4proto,
- 				    IP_CT_DIR_ORIGINAL, &otuple);
- 	if (err < 0)
- 		return ERR_PTR(err);
+@@ -2822,7 +2824,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 			goto tpacket_error;
  
--	err = bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
-+	err = bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, l4proto,
- 				    IP_CT_DIR_REPLY, &rtuple);
- 	if (err < 0)
- 		return ERR_PTR(err);
+ 		status = TP_STATUS_SEND_REQUEST;
+-		hlen = LL_RESERVED_SPACE(dev);
++		hlen = LL_RESERVED_SPACE_EX(dev, hard_header_len);
+ 		tlen = dev->needed_tailroom;
+ 		if (vnet_hdr_sz) {
+ 			data += vnet_hdr_sz;
+@@ -2840,10 +2842,10 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 						    vnet_hdr.hdr_len);
+ 			has_vnet_hdr = true;
+ 		}
+-		copylen = max_t(int, copylen, dev->hard_header_len);
++		copylen = max_t(int, copylen, hard_header_len);
+ 		skb = sock_alloc_send_skb(&po->sk,
+ 				hlen + tlen + sizeof(struct sockaddr_ll) +
+-				(copylen - dev->hard_header_len),
++				(copylen - hard_header_len),
+ 				!need_wait, &err);
  
--	if (opts->netns_id >= 0) {
--		net = get_net_ns_by_id(net, opts->netns_id);
-+	if (netns_id >= 0) {
-+		net = get_net_ns_by_id(net, netns_id);
- 		if (unlikely(!net))
- 			return ERR_PTR(-ENONET);
- 	}
- 
- 	if (opts_len == NF_BPF_CT_OPTS_SZ) {
--		if (opts->ct_zone_dir == 0)
--			opts->ct_zone_dir = NF_CT_DEFAULT_ZONE_DIR;
--		nf_ct_zone_init(&ct_zone,
--				opts->ct_zone_id, opts->ct_zone_dir, 0);
-+		if (ct_zone_dir == 0) {
-+			ct_zone_dir = NF_CT_DEFAULT_ZONE_DIR;
-+			opts->ct_zone_dir = ct_zone_dir;
-+		}
-+		nf_ct_zone_init(&ct_zone, ct_zone_id, ct_zone_dir, 0);
- 	} else {
- 		ct_zone = nf_ct_zone_dflt;
- 	}
-@@ -171,7 +185,7 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_sock_tuple *bpf_tuple,
- 	__nf_ct_set_timeout(ct, timeout * HZ);
- 
- out:
--	if (opts->netns_id >= 0)
-+	if (netns_id >= 0)
- 		put_net(net);
- 
- 	return ct;
-@@ -186,46 +200,60 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct net *net,
- 	struct nf_conntrack_tuple tuple;
- 	struct nf_conntrack_zone ct_zone;
- 	struct nf_conn *ct;
-+	u16 ct_zone_id;
-+	s32 netns_id;
-+	u8 ct_zone_dir = 0;
-+	u8 reserved[3] = {};
-+	u8 l4proto;
- 	int err;
- 
- 	if (!opts || !bpf_tuple)
- 		return ERR_PTR(-EINVAL);
- 	if (!(opts_len == NF_BPF_CT_OPTS_SZ || opts_len == 12))
- 		return ERR_PTR(-EINVAL);
-+
-+	netns_id = READ_ONCE(opts->netns_id);
-+	l4proto = READ_ONCE(opts->l4proto);
-+	ct_zone_id = READ_ONCE(opts->ct_zone_id);
- 	if (opts_len == NF_BPF_CT_OPTS_SZ) {
--		if (opts->reserved[0] || opts->reserved[1] || opts->reserved[2])
-+		ct_zone_dir = READ_ONCE(opts->ct_zone_dir);
-+		reserved[0] = READ_ONCE(opts->reserved[0]);
-+		reserved[1] = READ_ONCE(opts->reserved[1]);
-+		reserved[2] = READ_ONCE(opts->reserved[2]);
-+		if (reserved[0] || reserved[1] || reserved[2])
- 			return ERR_PTR(-EINVAL);
- 	} else {
--		if (opts->ct_zone_id)
-+		if (ct_zone_id)
- 			return ERR_PTR(-EINVAL);
- 	}
--	if (unlikely(opts->l4proto != IPPROTO_TCP && opts->l4proto != IPPROTO_UDP))
-+	if (unlikely(l4proto != IPPROTO_TCP && l4proto != IPPROTO_UDP))
- 		return ERR_PTR(-EPROTO);
--	if (unlikely(opts->netns_id < BPF_F_CURRENT_NETNS))
-+	if (unlikely(netns_id < BPF_F_CURRENT_NETNS))
- 		return ERR_PTR(-EINVAL);
- 
--	err = bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
-+	err = bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, l4proto,
- 				    IP_CT_DIR_ORIGINAL, &tuple);
- 	if (err < 0)
- 		return ERR_PTR(err);
- 
--	if (opts->netns_id >= 0) {
--		net = get_net_ns_by_id(net, opts->netns_id);
-+	if (netns_id >= 0) {
-+		net = get_net_ns_by_id(net, netns_id);
- 		if (unlikely(!net))
- 			return ERR_PTR(-ENONET);
- 	}
- 
- 	if (opts_len == NF_BPF_CT_OPTS_SZ) {
--		if (opts->ct_zone_dir == 0)
--			opts->ct_zone_dir = NF_CT_DEFAULT_ZONE_DIR;
--		nf_ct_zone_init(&ct_zone,
--				opts->ct_zone_id, opts->ct_zone_dir, 0);
-+		if (ct_zone_dir == 0) {
-+			ct_zone_dir = NF_CT_DEFAULT_ZONE_DIR;
-+			opts->ct_zone_dir = ct_zone_dir;
-+		}
-+		nf_ct_zone_init(&ct_zone, ct_zone_id, ct_zone_dir, 0);
- 	} else {
- 		ct_zone = nf_ct_zone_dflt;
- 	}
- 
- 	hash = nf_conntrack_find_get(net, &ct_zone, &tuple);
--	if (opts->netns_id >= 0)
-+	if (netns_id >= 0)
- 		put_net(net);
- 	if (!hash)
- 		return ERR_PTR(-ENOENT);
+ 		if (unlikely(skb == NULL)) {
+@@ -2853,7 +2855,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 			goto out_status;
+ 		}
+ 		tp_len = tpacket_fill_skb(po, skb, ph, dev, data, tp_len, proto,
+-					  addr, hlen, copylen, &sockc);
++					  addr, hlen, copylen, hard_header_len,
++					  &sockc);
+ 		if (likely(tp_len >= 0) &&
+ 		    tp_len > dev->mtu + reserve &&
+ 		    !vnet_hdr_sz &&
 -- 
-2.43.0
+2.50.1 (Apple Git-155)
