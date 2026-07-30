@@ -1,128 +1,89 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283CB4503ED;
-	Thu, 30 Jul 2026 16:18:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD083446BEB;
+	Thu, 30 Jul 2026 16:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785428284; cv=none; b=T02yhLiwg83uWS4+v0XpJ0/J2DzU1LAP5hYgVdJqZzD2x3Q27ytn7oUFSG5hmdJ2X58e/f4wKVV8OdyTqPNOganbayl878Ka/5xNdkC+PV6H+MmRs/0EWLxWscsA2k540JpcHMDkKHTQtR1JFU/620xhXIhSQdqUoGgSGvn5L9Q=
+	t=1785428427; cv=none; b=ttU3e5Ki8jpKyay1E5rHQkGlETMKt3YIm3NsGqej5RoNYTDrAHIFkH6XJ39Qiu4D6xVHlFGfpaHNclRsYSrKZatMKvusKS6+tGtfypGr+MmQt5sQpGoV43H5vK8KsYCCdLMJ+JuDO6VdWaFLVAkA/oEMvAMBefcpHs1p6QFEaJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785428284; c=relaxed/simple;
-	bh=vJsCj0WGJFT/r3pSwZHqh0YnsZAM2HXVrUjgnJln13M=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=Ufd8Nj4i+TLbdxucAunEFap8OpiSYtbM9X1MXfQBLePI+6aWuhLV93JIj2KF6znS+iBxuRerDu5cMvT8A8zU2KNncCUuIR1lj52dZxF8ccUlH1SB9Smwvhr+AHh4gaYFSS0ewlwLTUCxxsusfRWp77aAGtrMRn/TtFiXdeAu8dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UiurkyXn; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785428427; c=relaxed/simple;
+	bh=7kQaVcZWAjdDsBUtk2x0Tjc/P794gFThT6IdoYljb4I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bAin1hiPghWxKqiXx4a8N5+WURdX9hdnk43IcJEU19VFuMg+BsTrMf06JL5m1qyOOdXR1TiNhDwxCnJuBjfCBSk/RgDd2AbXuZFGrjiq90lkJEBFkXaI1mjASN4VOhGYaN/y6Rn4qpV3/4mGLfuZKmsrM4PiTrJCQDhDXiWsTeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5kdi3HH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UiurkyXn"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9AAF51A1325;
-	Thu, 30 Jul 2026 16:17:59 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 646275FFA8;
-	Thu, 30 Jul 2026 16:17:59 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1DE6711C15DAD;
-	Thu, 30 Jul 2026 18:17:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785428278; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=6zpxkZ89sJOGEuFlHm5pF9gcWQR7fy9CI9LVjWccDQg=;
-	b=UiurkyXn+4Yr+Ep/gQss2cw6qZJ68TW0pLO1h6aJbL1JusuA6JIB5IT1Nk+9M28+yp/5/L
-	luLSXpcAElCHa1LeTtS6j8qRqMRSJwqM8l+o6WZAp/NOjY0mqZddEe83Kh/QvLwkJI4EIm
-	EIWIWYR/C6s5HPT+W8mh12zdxRSJTdlZISZftHha46pkMi6fDFe4gk1Xhf4wlcv4sRq6xe
-	qsWZYAq/Z+xz6nLRYBcQIe/RuuJy4ACnRzdsKmLlVK+NyhIOt6loxxG37t7JigwHVZ81BZ
-	SrqfnuNoPv0miMuDW2cBWi0VeFoRZWeRj5iu3uhgYCkyV9OaqMpea19bH5OCTQ==
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5kdi3HH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24211F000E9;
+	Thu, 30 Jul 2026 16:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1785428426;
+	bh=/4oNgarC/98qWuR+AyyaCO3AdfMypG6g5lOZJYx7xdU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=z5kdi3HHzVN7keKI/1OQL1XgX8LCdqgEaENqjpq716OxVTwgbG+4EVwLa1Tfy2E2c
+	 Cn/aRwi5BlSI9R5T9egDLSXXiQJs2M+5Uh+UrnhtMUUDuWleaD3wn6VdSVOM4rdFYi
+	 7M3k5kR1xynJir3FheJW+1dMiSQowz8kvwJZDkHE=
+Date: Thu, 30 Jul 2026 16:50:42 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Yun Zhou <yun.zhou@windriver.com>
+Cc: jirislaby@kernel.org, socketcan@hartkopp.net,
+	linux-serial@vger.kernel.org, mkl@pengutronix.de,
+	linux-can@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] tty: ldisc: fix deadlock between ldisc_sem and
+ rtnl_mutex
+Message-ID: <2026073027-nervy-imposing-0068@gregkh>
+References: <20260724084648.3879356-1-yun.zhou@windriver.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 30 Jul 2026 18:17:50 +0200
-Message-Id: <DKC1I0FXMZJM.3ESMASUANI66R@bootlin.com>
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Nicolas
- Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Paolo Valerio" <pvalerio@redhat.com>, "Nicolai
- Buchwitz" <nb@tipi-net.de>, "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
- <maxime.chevallier@bootlin.com>
-To: "Paolo Abeni" <pabeni@redhat.com>, "Conor Dooley"
- <conor.dooley@microchip.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Richard Cochran"
- <richardcochran@gmail.com>, "Russell King" <linux@armlinux.org.uk>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next v5 00/15] net: macb: implement context swapping
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260724-macb-context-v5-0-569b1852bc7f@bootlin.com>
- <55b10825-5ecb-4abc-8551-bc4fc3c20365@redhat.com>
-In-Reply-To: <55b10825-5ecb-4abc-8551-bc4fc3c20365@redhat.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260724084648.3879356-1-yun.zhou@windriver.com>
 
-Hello Paolo,
+On Fri, Jul 24, 2026 at 04:46:48PM +0800, Yun Zhou wrote:
+> syzbot reported a circular lock dependency involving tty ldisc_sem and
+> the networking rtnl_mutex. The full chain is:
+> 
+>   rtnl_mutex --> nft_commit_mutex --> ... --> ep->mtx --> ldisc_sem --> rtnl_mutex
+> 
+> The last edge (ldisc_sem -> rtnl_mutex) is created because tty line
+> discipline .open() callbacks (slcan, slip) call register_netdev() which
+> acquires rtnl_mutex, and .open() runs under ldisc_sem write lock in
+> tty_set_ldisc().
+> 
+> Fix by moving the .open() call outside the ldisc_sem write lock. The
+> ldisc .open() is initialization of the NEW discipline after the old one
+> has been closed - there is no need for ldisc_sem protection at this
+> point since:
+> 
+>  - tty_lock is held throughout, preventing concurrent tty_set_ldisc,
+>    hangup, or close
+>  - tty->ldisc is set to NULL during the window. tty_ldisc_ref_wait()
+>    waits for the transition to complete. tty_ldisc_ref() returns NULL
+>    which callers already handle.
+>  - tty buffer data stays queued until the ldisc is installed
+> 
+> The sequence becomes:
+>   1. Hold ldisc_sem(write): close old ldisc, set tty->ldisc = NULL
+>   2. Release ldisc_sem(write)
+>   3. Call new_ldisc->ops->open() without ldisc_sem
+>   4. Re-acquire ldisc_sem(write): install new ldisc (or restore old)
+>   5. Release ldisc_sem(write)
+> 
+> Reported-by: syzbot+de610eeef174bd59a8a3@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=de610eeef174bd59a8a3
+> Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
+> ---
 
-On Thu Jul 30, 2026 at 1:52 PM CEST, Paolo Abeni wrote:
-> On 7/24/26 5:29 PM, Th=C3=A9o Lebrun wrote:
->> MACB has a pretty primitive approach to buffer management. They are all
->> stored in `struct macb *bp`. On operations that require buffer realloc
->> (set_ringparam & change_mtu at the moment), the only option is to close
->> the interface, change our global state and re-open the interface.
->>=20
->> Two issues:
->> - It doesn't fly on memory pressured systems; we free our precious
->>   buffers and don't manage to reallocate fully, meaning our machine
->>   just lost its network access.
->> - Anecdotally, it is pretty slow because it implies a full PHY reinit.
->>=20
->> Instead, we shall:
->>  - allocate a new context (including buffers) first
->>  - if it fails, early return without any impact to the interface
->>  - stop interface
->>  - update global state (bp, netdev, etc)
->>  - pass newly allocated buffer pointers to the hardware
->>  - start interface
->>  - free old context
->>=20
->> This is what we implement here. Both .set_ringparam() and
->> .ndo_change_mtu() are covered by this series. In the future,
->> at least .set_channels() [0], XDP [1] and XSK [2] would benefit.
->>=20
->> The change is super intrusive so conflicts will be major. Sorry!
->>=20
->> --
->>=20
->> During iteration V3, the LLM raised many race conditions because BH
->> features aren't disabled at close and might do a variety of bad things
->> (interact with NAPI while disabled or re-arm IRQs). This is NOT fixed
->> here. Here we focus on swap, not close. The series is way too long
->> already.
-> Note that Sashiko gemini has more to say:
->
-> https://sashiko.dev/#/patchset/20260724-macb-context-v5-0-569b1852bc7f%40=
-bootlin.com
->
-> At least the possible deadlock in patch 13/15 looks real to me.
+Sashiko has some comments:
+	https://sashiko.dev/#/patchset/20260724084648.3879356-1-yun.zhou@windriver.com
+are they correct?
 
-Thanks. I've patched it by moving printk() calls out of the bp->lock
-critical section. I'll appear in next revision.
+thanks,
 
->
-> Please also note net-next commit c82ff94592fb
-
-Thanks for the hint, makes sense. I had heard "rumors" but didn't know
-it was official policy. I'll make a full pass before sending next
-revision (tomorrow probably).
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+greg k-h
