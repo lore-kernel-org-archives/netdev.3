@@ -1,168 +1,169 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010066.outbound.protection.outlook.com [52.101.46.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199343D9035
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 08:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785401133; cv=none; b=Uim67ocE8D13a18QPDAGuDtMKmK2hbIGoSRpkb4nDl9hJje6D30RUAH21eUBZvn7MbBlWhvlYUWZCKvG4QIfmwINE2Ix95FTnHFwiHL3h7Tv85MxmgX/peve8clHFdi6vXHky3VjQxAqeKCwZ1oWJhMJ0LayzhkOhPmuEcS1VR4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785401133; c=relaxed/simple;
-	bh=sC9lPD1w0NqaXrCcspRVIT6YfcbV+JFCEhrHkXgg8FY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KQPV3qqxmnanfWlxZmAIzJysGuAf4GYGoS5SwcbOrVOSaubGiBFqPOIskR8H7OBapIErxkb5ImmjWtgb2zhFCv0B+v/ImxHvITdJ8dphPxva+96qElQttdxrUfSzWjD6RiMOSy75VEQ34oS3xzFHu8pDNeF2y0cPfZWZQsUBvIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TquS0iOn; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nbwRBdCO; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5753B3896;
+	Thu, 30 Jul 2026 08:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785401266; cv=fail; b=ah7dx0Er5gERq2abAgCU7V5vb9JFoMb8pv5XhduXz1jNjGfXPajPtpAjraJJgH1tGWWkh4CNwL0sn+hC2N4wV55TB3WkDpA4f4STOza1w3KM4Pi2ApGf25D1qfh1TLvIuH5k9yaXIsUsA9rZ1LQOB6ZM4MijI65X50wJasCGjhs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785401266; c=relaxed/simple;
+	bh=cOiMhwQN0CKmT2qlBWAdpCvkSvaseyko2XTAIn8B6m8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=iwI5sB7P6GkJ4HppsjczoQlKrPS3TQ/j6L9v4A3LT4hi7smG4YFQxYmGd3yJNuML1sZoN9hFAvwuEvtcIR1mb/kwtrqnLpjb7oLEpxVDG5UZv3jFeED8Qj83UmSDlUXANjZtlaQTI2XCAI/X1rcQUaDYAfUwfJJVFFNPV3GQXEA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=S4wlh4fx; arc=fail smtp.client-ip=52.101.46.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TquS0iOn";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nbwRBdCO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785401129;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KUB53N8ZW7olaQibApR60mfiLMJvQ7kWg88nhg9lW2Y=;
-	b=TquS0iOnkQC7aGx1liw1YefBUEMLemPCkKI/m2a50rPB2IFsb3TzuuCLrJDXh4RQ5lh0sM
-	I7syJW7OJ6itk3vqo+60XqQu+6VYmLhqZJI8uyH0meHWz9flSlvf72tUFWlqaaU3xlABW0
-	C5BAffAN/itSynWMk4ccorUWYmAbD10=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-216-TkahmgoKOhSdEw4zBMg4ag-1; Thu, 30 Jul 2026 04:45:27 -0400
-X-MC-Unique: TkahmgoKOhSdEw4zBMg4ag-1
-X-Mimecast-MFC-AGG-ID: TkahmgoKOhSdEw4zBMg4ag_1785401126
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49571407d1dso12922925e9.0
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 01:45:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785401126; x=1786005926; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KUB53N8ZW7olaQibApR60mfiLMJvQ7kWg88nhg9lW2Y=;
-        b=nbwRBdCOcTangZpKTpm45qKbap7OVzTqhldDy/yDR8G2Z+yRceg3/ihjkukhUj1XZU
-         Az9O3/s9jLqx8SyfkPdNiKcasKS6BZkiR8IVka8fEfg3Rj/EQ//nShKzKqXvzmn+O36z
-         PzqLNe1IPiWzV4SzDg3mmNV2dkTozj2CkqWNEnM6P7SM+VOLsPHAlivhHGMES8mwTjnP
-         2tDMl3VfOmDm/LbKTxXbHx2UKcEzWdHsx694TGZu08bNmwiSiKvv6uSijwhgl697ms3n
-         8jQCklXQBm0jIkux2/XbgsosGDsrxXMW/HS/NOpP9UyaaJYjmN6vOfOb9K2ZxoCKsUB4
-         2QEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785401126; x=1786005926;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KUB53N8ZW7olaQibApR60mfiLMJvQ7kWg88nhg9lW2Y=;
-        b=IvpafIpPMa5oXLgVuTbyEzQvaGlhEnhim551oGUD/q6/I4P2boWo0bSg8vLkEC8Sk2
-         Exu86WvS3ZKQWQw4HzeXWZwXjEBqkJVgXry2NerogJpcnbuKZVwerApD225R3z0af2Yb
-         4kqc2zThkiYOFVgvG3J2HsuCP/degaXe+22283k1YFstrMLJNm1SIsv/3SuSTrMrqzel
-         eu31vhSuqguykjU5PwqN6MyTVvuoJtUZW8oRSRa48O/95QiixiSPBy/dt9wa5Cl7iW8J
-         3wFTglH88ulxOKPAPjCck6Vmreb+TxkuiC95FhXglqJg2AZ0OylXaWBaLiVdMYXawe8/
-         rHng==
-X-Forwarded-Encrypted: i=1; AHgh+RrTcnK6HzwDHKcY6gu/PjOMOvtRhtYfSEvUDVimR7TM5awpGAvEFuYklrfE0A3r8rH6jNdDdkc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPNefJ4POUADdYlYvh/Ctx1J8Y9TrSux4hvKPxNLXvEWi6HlWS
-	os8SgKm1irwzrRIsY1kkGJfprZjQFyagpgIk+SwfCiii54wqPE2owY/O73kVCKsrHu8CA4EzNGB
-	9MoMRRvLaR8EmGp1+vJMUwmRbutveT/3R2a90cQK85zcy7FTh9qu2eqmIbw==
-X-Gm-Gg: AR+sD10AmyRPIxXqsePPce6VqbCt3jwnw/PG5h0TJiF8wYSM2wffwowcu3t6hkUaSL0
-	z+1nlF09AayhBAy5vyWgGzXzaGfkIels74YQI/rvyTuwwGXECppLy3cIzWyCahPN5v/Z1TnyfOW
-	udzldPjElPgLWr1iaZ34n5laAnhu9sT+gvFmZx7LeBLkjM4MZmTDnOj6e4N6ozGO6iOtgvmi4Px
-	wLj+yVEIuUbAMP7HsYPP02xxYERIU9y8xvQWfGZQ1GRUYnBec2+4Ei88rPmIDKarsLjYKrPIVv3
-	Si5UIlZ7zvUaqCTFwAxIzz07H+cdwFeRkOCiz6PFpBxlhWvlAFK74wjH8UBxeRS0cGFp8tb+AhB
-	a9ItlmmekTb8P33v4T4+o0fJSSy3NJPNdcONzNTelQuwAMFd/61+G8FHyXK+xdljbugnVcMhHXc
-	vPIQ==
-X-Received: by 2002:a05:600c:4248:b0:493:f78f:cd70 with SMTP id 5b1f17b1804b1-49800ebefc7mr12654605e9.18.1785401126008;
-        Thu, 30 Jul 2026 01:45:26 -0700 (PDT)
-X-Received: by 2002:a05:600c:4248:b0:493:f78f:cd70 with SMTP id 5b1f17b1804b1-49800ebefc7mr12654155e9.18.1785401125431;
-        Thu, 30 Jul 2026 01:45:25 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-498010aaceasm43139675e9.12.2026.07.30.01.45.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Jul 2026 01:45:24 -0700 (PDT)
-Message-ID: <049f7b53-8bbe-4ee8-a347-6c07ee11c1ac@redhat.com>
-Date: Thu, 30 Jul 2026 10:45:23 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="S4wlh4fx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sfXzp9mrpyRoXjTT6LhNXoRyEwqWg7v9RlooARaFPa40ObnjM2idtltwohm9jOa2qwlvsYnJfR/sqtk4luCwNuy2u+lcLbeSRb/xXDJYpRuqtbVVCiMPhj5Vn8699YD4VnQlqj5SSPrACqghDt0aAaKW+TYUckoBzp1uDRKVVSusOl3U0GqY5FVy0d1IH9WwmUu6dlr3Cffgs3Q2zm/kz1+qXkAGkBZ0G4j/4vC4rr22+5tKzXYTRT2Z9jGufMh48EpiBn8wz/xtsyjsJm4aoOTtVEIP4i3gGB2BlbP++1etV6kl8RyyU1J0YZnxzGgXBCO067SPalnapNl1Bro4gQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cOiMhwQN0CKmT2qlBWAdpCvkSvaseyko2XTAIn8B6m8=;
+ b=Q2yb7dY9o20BNFTq6si9CBM9y813ATAk1FAcKT7l3LquYIBoTyuW3ObONGQjAaFaNWKgkBC9l4/394W7WIg9OSrRU9f+fWJcVs4flbhDIKGGMB8w5d1RVMKSfJDZfiPvkcbjr2yBk22KxPzSSBlo6+TVGDWonq37l2WdEwWTVsAtV2J6Dzhg1kngPwal2uzdW4jn+Ja8C32nPlT96wzfVtXXTgQRe4cIPrADRSdIyOouZjxmvYssDWmJvVRTQ7vackUvEmcwuh10S5UEehnel+G9YIl+qoHDF2xsvxWIZFKUvm+lKF1M4FMtcFgPhTSmKihdYaEfvsKxxTyFPcqwxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cOiMhwQN0CKmT2qlBWAdpCvkSvaseyko2XTAIn8B6m8=;
+ b=S4wlh4fxWN3PIB+HCdSsl0szLslrjG7m9gCGTWdwcX75gskd8PPa4FQovoNeFDNYnBZRpEFZ1TLhhU4CBBQSgkKnTUhy7DtKEUVedwV3FsGh213xIiGtSJUbHejpAXYHnt0m3T/VQeaujjPWYVhni9T+u/uNERBClTwOs183yDU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS0PR12MB7777.namprd12.prod.outlook.com (2603:10b6:8:153::22)
+ by PH7PR12MB9175.namprd12.prod.outlook.com (2603:10b6:510:2e6::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Thu, 30 Jul
+ 2026 08:47:41 +0000
+Received: from DS0PR12MB7777.namprd12.prod.outlook.com
+ ([fe80::826:25fa:4fd6:2d74]) by DS0PR12MB7777.namprd12.prod.outlook.com
+ ([fe80::826:25fa:4fd6:2d74%4]) with mapi id 15.21.0270.009; Thu, 30 Jul 2026
+ 08:47:41 +0000
+Message-ID: <31315f8d-44ad-db97-4cb3-ffae887d7bb8@amd.com>
+Date: Thu, 30 Jul 2026 14:17:32 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [for-next v4 0/2] Add Reorder Completion Queue (RCQ) support
+Content-Language: en-US
+To: Jakub Kicinski <kuba@kernel.org>, leon@kernel.org, jgg@ziepe.ca
+Cc: brett.creeley@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, allen.hubbe@amd.com,
+ nikhil.agarwal@amd.com, linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260721121034.1616562-1-abhijit.gangurde@amd.com>
+ <20260727182825.7b9bdffe@kernel.org>
+ <18c6130a-c8e0-8e58-ad1c-f1578e1c5f46@amd.com>
+ <20260728151058.17f8fc94@kernel.org>
+From: Abhijit Gangurde <abhijit.gangurde@amd.com>
+In-Reply-To: <20260728151058.17f8fc94@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5PR01CA0139.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b9::12) To DS0PR12MB7777.namprd12.prod.outlook.com
+ (2603:10b6:8:153::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2] tcp: honor BPF_SOCK_OPS_RWND_INIT on the
- active connect path
-To: Tejas Birajdar <tejasbirajdar@meta.com>,
- Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
- netdev@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260723214208.3655474-1-tejasbirajdar@meta.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260723214208.3655474-1-tejasbirajdar@meta.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7777:EE_|PH7PR12MB9175:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ae07855-983f-4666-cbcd-08deee17372c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|23010399003|11063799006|4143699003|56012099006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	D1cUhxG7eBLMWmJjSq91TXmNLMjweq7nIBvVgAr6uln865IFWSHW9CEIvcpFjiLzXts2cezr3SM0NNA7w7YwbPG8r5j1WKDGQGpVJpBtSihTgGcIQ+XsWb4/549Khmdn4x4avXIR4DyztueEw16WfZ2L8s7OVGhK8ql5GzGoykpbgsU+oNXy+d/LSxxVjNhIjR5VZupSqhO0mHWzS3BrgYfHUXDcmXhOrAbmGKWlvp6CXSKcYeRzRScIYw1Hhrn3d+JPldBwC+XXPe/MUerIemuobzeVNmQt5HDs2LC6q/iryDpMrc86QjDna/gyUIOEWb/Uxd/dcUMnuovG53KX1WBAkRVDrMofR7yTDTNZzondNT0Ta6vyMQcDxyv7B7i2woPLEQ5cECImizkCLvyN+f+tnd2y+/2BPEdDV+O/GAl9XOHhbA49IZwHMDUHXn9/JeNJb+yqMAP3wuJJ2HZRmXgXnXsRZr0nb5TcOB8LYaaE7O207zKqoqBfTw5HNwc4LFLRydhNnUsTj127DAER+KfyMVXR+kwGZAR9FgBeUT0LGywmHiaBz80/w1cMoMrJhYf0zAUyFS8UD6tjr7gjgCcvgxtMndIvDNJBGE+fSVcHKkhwc9dHW4sVW3PEGsIPh8YRNmYr6kaWdbu5gZK0E1DA/aW8FlBJxRYNNsZTteM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7777.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(23010399003)(11063799006)(4143699003)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dEo5UzBId21UYlZjYmZDY1pEaWxtcS9uUkdpUW9xZ2pLVzAxczdTYmdyNU9y?=
+ =?utf-8?B?V29sN1VJYy8yVUZZaXF0K3l2ZGtMQzRZWGF4WEtpa0o3VDRoSmpFZjdtbnRU?=
+ =?utf-8?B?Yk1uWWRQejVqbWtyQWFtVDU0VE1DS1o4N1FUQWtQQzRFcWtweEZSNlFseENM?=
+ =?utf-8?B?V3NBMm0xdm5lRkZ0U1hEclBMVllaMmk4OVBaOFI5YUdHZWQ5Wlg4alRnN2Fw?=
+ =?utf-8?B?M0ZkSHkxbHpBVGcreEFwU25nWEJvR3MrRnFBYW5tVi9adFlDSXdWT0xxM2d3?=
+ =?utf-8?B?WVJ6bzZuaHFuRGs3TGsybWVIaEpXRDArVVREa3JMZCtGL1lIazM4NjFBSEhF?=
+ =?utf-8?B?QTZxMjhGMGk5S3NwM3VEczBFa2I5cGR0dlJaRnUxQVpkQnZ5MVV2Znc2RHhM?=
+ =?utf-8?B?OU9NRTUvWEhDWEliQ01HRFJvQWpvUVZTanBtVVlFTFVQVHEvWHVpVXlMYmVj?=
+ =?utf-8?B?eGMxclpzWTVxcFM1WENIME13YU9OQ1NWSUk1S2c3OW85VGZrcDNNT21ZUVdM?=
+ =?utf-8?B?a2czVXhKNU1PZnJ2dU1JU29vODBUSlB5SGpLMWhWbENMQ3RiT0tsRzJWQTlu?=
+ =?utf-8?B?R3cxSUZnb05uODZQeWxxTXZ6ZmJERnpZK3g5L3dhTkdNRlBoaXQ2Z0l2L1Rj?=
+ =?utf-8?B?Ymcwek90cUdWM2VpaTBWY2M1RUNlL0RXY3E2STI0bVZtZzlMQ1Fua2xwLzdY?=
+ =?utf-8?B?cUFyamd0MjNkc3FZZE5LOTRvMVkwcHY5QnlQejlhajRrdVRDeGV2NG5yRmxV?=
+ =?utf-8?B?RUFwR0lTVllZMHc1Q2o3VS92QjFaK3JxcXd3VnVIQTgvRkxCTkFzUGhlN0Uz?=
+ =?utf-8?B?MHVjWkxzc3ZSMUl6WEIrdGxvcC92VDdKYXJsNW84VGpNYzNvdHBTNmxKRFFn?=
+ =?utf-8?B?cTJDVVA0QWxKR1oxTXJveU1JS1JjZkY3OVpqN0NQcGNlREhLb2lXTVNzZ0Fh?=
+ =?utf-8?B?L21KTHBZZytBSThUbW1UdDZWRnNIT29OYnpPbHJoSnNpbzJwVWlUeWdtNjZu?=
+ =?utf-8?B?L2VadmNwb3BIWllERHp4cHlwdmRGbmZ2cG1sQVExOHQyelJYTFJ6RlJBV09G?=
+ =?utf-8?B?ZUthOG96Q1JBM2dpNnhUY25KQXBaZEhxc0oyeUtDM3RPYTBmOUdOZExPbUJn?=
+ =?utf-8?B?RnNpRWdvK2EzbUgydFZ6SnlzRGJYMXJqY1BqcXp5WVY2Q0dabE02Z0xNYVRL?=
+ =?utf-8?B?U01VWCtPcDhCc3NsaTBiRVVEZllSUkFRbnA3VHdZRUI0blhiVzFqVjBSWVRl?=
+ =?utf-8?B?ZUlheUs0aDFWSGFsanBzeG13RlV5VHczYzduQzRPYklzd3FHQkEvblBOY3Y4?=
+ =?utf-8?B?VE5mWFBsVjUzMHM3YXZ0eHE2M0k0SGFPNmlQeGxEbFNycHA4Q01mNUg2emJP?=
+ =?utf-8?B?WmtxWnFOZmdTZkdRNXloZTVHbVRKMUYzTXd5QmxaaDNvSk93WjBkT0ppeWlq?=
+ =?utf-8?B?SHNTVUUzNFc3THUwUmhiUHB1T3R1Uy9JSWE4ekFiN0tnSmRYdzZrY1pWb25U?=
+ =?utf-8?B?NmlYWWsxSkNjQjBJcmxrYkFMMHBvNUJNdENTZVZjTTVsQjhxZGI1YjQ1NGtx?=
+ =?utf-8?B?NlZSVnVxUDFNZlJDWDJVUmFvdHdZeGgyNFUwTUtVamM5U1drQUYyNDF4bmVo?=
+ =?utf-8?B?Z0tMTlYzRzRudDMyU0Erak9nMHQvbUJLbXhkT0RLRkFaZ1hPQXhObEkxMFRX?=
+ =?utf-8?B?Yk14ZXZDa1ZvSU5xb1FoUFB1NFZ5MkJ3UWhhQ0VIWUx0TnFKdDk3dW80dkNs?=
+ =?utf-8?B?V2p0RDNiTVNKc2NoZGVZU0Q4TU9YSmd1bmVVSWx4V2d6T3Q2Tm0zSktvZUJF?=
+ =?utf-8?B?ZlduT2FPL3NLNzVNS3d4V1djK0dLR2RKaDJrZnZDMStNZDZneEM4R3F6Wjk0?=
+ =?utf-8?B?eUFCYThTRFg4bEtJOHpheEY1SUdsb2lZTjZDUEJ4SUZyd0dhVEFidTJJTXUw?=
+ =?utf-8?B?RVBKNDJhUnB2Qmh1VjdmZzNCWUNBRm16UGRmY2YxR0tqcGRONUZjSjIvaWdH?=
+ =?utf-8?B?V3l4a3dwK1VCb1E4YUM1azF6MFEwNkljQlpBNmxTRjFiSnBEbFFuYkhWZU5Q?=
+ =?utf-8?B?VEkvWTRXejFwYjQ5U2NhN3JQZmFMVk1admdubjV2ZVgzVzJBbml5clFkY05Q?=
+ =?utf-8?B?bWNvZ09DT2ZTRVFDSDJTb1BubUE1dlc5R3R4YkZMV2FDejVnQ3JwMXN6dXBq?=
+ =?utf-8?B?Ym16c1dLMkpqZmJWNXRRT0wrYWhpZ0QyRkpiTTRiSlNmQlhFOUpZWEtsYkth?=
+ =?utf-8?B?TXROS2ZOTkRpVEdSeVVYYWlhVXN5dlVyazNvRW5rZXVCbytJemJnNjNUSzhZ?=
+ =?utf-8?B?RmcxaDZ3Z3NGOFZLbFJFZG9rTjdaOWltd2FGbjRYcWVRekF3YnVxQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ae07855-983f-4666-cbcd-08deee17372c
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7777.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 08:47:41.4308
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: g35fybmOTZP0dLKbbU/MgFPLmWdJhYtlcQyLC59TC9sk+ufZiwRSkkapKsSsNH7CrVnTnl3zcYZHj5v3YWKA2Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9175
 
-On 7/23/26 11:42 PM, Tejas Birajdar wrote:
-> BPF_SOCK_OPS_RWND_INIT lets a sockops BPF program pick the initial TCP
-> receive window, e.g. to advertise a larger window up front in environments
-> where that is known to be safe. Today it is only effective for the passive
-> (listener) side; on the active (connect) side the value is computed and
-> then silently discarded.
-> 
-> On the passive path tcp_openreq_init_rwin() inflates full_space when the
-> program returns a non-zero window, so tcp_select_initial_window() can offer
-> it:
-> 
-> 	else if (full_space < (u64)rcv_wnd * mss)
-> 		full_space = min_t(u64, (u64)rcv_wnd * mss, INT_MAX);
-> 
-> tcp_select_initial_window() only clamps the requested window *down* to the
-> available space, so without inflating the space first the BPF reply can
-> never raise the offered window above tcp_full_space(sk).
-> 
-> tcp_connect_init() calls tcp_rwnd_init_bpf() but never inflates full_space,
-> so on connect() the requested window is clamped back to tcp_full_space(sk)
-> (~64KB at the default rcvbuf) and the program's value is ignored.
-> 
-> Inflate full_space in tcp_connect_init() as well; tp->advmss is the mss the
-> listener path uses (both are tcp_mss_clamp(tp, dst_metric_advmss(dst))).
-> Read full_space after tcp_rwnd_init_bpf() so a program that also adjusts
-> SO_RCVBUF is still reflected. Compute the inflated value in u64 and clamp
-> to INT_MAX to avoid overflow (full_space is int, rcv_wnd is u32), and
-> apply the same overflow fix to the existing listener-side computation.
-> 
-> Fixes: 13d3b1ebe287 ("bpf: Support for setting initial receive window")
-> Suggested-by: Eric Dumazet <edumazet@google.com>
-> Signed-off-by: Tejas Birajdar <tejasbirajdar@meta.com>
-> ---
-> v2:
->   - Do the inflated full_space arithmetic in u64 and clamp to INT_MAX to
->     avoid overflow, and apply the same fix to the existing listener path
->     in tcp_openreq_init_rwin().
->   - Read full_space after tcp_rwnd_init_bpf() so a program that also raises
->     SO_RCVBUF via bpf_setsockopt() is reflected in the offered window.
->   - Re-ran the sockops BPF/RWND functional test and the full in-tree
->     packetdrill regression suite on the revised code (details below).
-> v1: https://lore.kernel.org/netdev/20260722170033.2763794-1-tejasbirajdar@meta.com/
-> 
-> Functional test: a cgroup sockops BPF program returning
-> skops->reply = N for BPF_SOCK_OPS_RWND_INIT was attached to the
-> connecting socket and driven with packetdrill on the active-open
-> (connect) path (advmss 1460, negotiated wscale 8). The offered window on
-> the first post-handshake ACK now tracks the requested value:
-> 
->   req_segs   offered window (bytes)   = req_segs * advmss
->   256        373760
->   1024       1495040  (~1.43 MB)
->   4096       5980160  (~5.7 MB)
 
-The still present, sashiko reported, integer overflow in
-tcp_select_initial_window() looks real to me, and the last value in the
-above table is greater than the overflow threshold, so I'm wondering
-what I'm missing here?
+On 7/29/26 03:40, Jakub Kicinski wrote:
+> On Tue, 28 Jul 2026 16:48:25 +0530 Abhijit Gangurde wrote:
+>> For the earlier PHC series [1] Leon picked up both the net/ionic and
+>> RDMA changes through the rdma tree. Would you be okay with the same
+>> approach for this series or would you still prefer a shared branch with
+>> a PR?
+>>
+>> If you'd still prefer a separate PR, I can set that up.
+> Send the PR for shared parts, please, that's the normal process.
 
-I *think* you should additionally take care of tcp_select_initial_window().
+I have collected both series patches on below PR,
 
-/P
+The following changes since commit f5098b6bae761e346ebcd9da7f95622c04733cff:
+
+   Linux 7.2-rc5 (2026-07-26 14:45:48 -0700)
+
+are available in the Git repository at:
+
+   https://github.com/abhijitG-xlnx/linux.git ionic_phc_rcq_shared
+
+for you to fetch changes up to 43aefbd7583f5acb3d689675028f0e49a0861ad7:
+
+   net: ionic: Fetch RCQ sign bit from firmware (2026-07-29 06:08:09 +0000)
+
+----------------------------------------------------------------
+Abhijit Gangurde (3):
+       net: ionic: register PHC for rdma timestamping
+       net: ionic: Add PHC state page for user space access
+       net: ionic: Fetch RCQ sign bit from firmware
+
+Thanks,
+Abhijit
 
