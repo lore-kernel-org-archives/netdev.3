@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03AFD30674E;
-	Thu, 30 Jul 2026 00:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4112E2D3725;
+	Thu, 30 Jul 2026 00:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785369658; cv=none; b=TLkL2phVacuTlkvNQeCdXj2PVe8NHExq1x5PsCLvnS19goPlEZuuBZ44qn53h3CSp/cx+0pEvgrB0vRYziinbIdPNtYnRhcntj6iaKHf19BLBhzLT4SXSr0d9LFmiyKAUoQa+J9rH56wcjt8O+uetH88JFNHnfdx7jzcrM3Yhlw=
+	t=1785369659; cv=none; b=IQp2c1wWbNkm9T2BxMr699e5M/6hlX0Kx1XXEhti3EREI+LQaAvUo6/JbG/r9/XqaeGo4Rlv+5jV8BqIhDtg5IlohJlnu5oT//NpY+lFgd/PV+f+JB5+HTI4oqbrCmWJrggak9W0no3LiRLpjG+9DSA6EbZxQG5iklt1XfQX2uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785369658; c=relaxed/simple;
-	bh=leXaSP8LFnt50FYIDTkJh/3Ttb1WuAj+UN1dnGYl1Yo=;
+	s=arc-20240116; t=1785369659; c=relaxed/simple;
+	bh=sybty8jTfU5PonJgsH5PfTUuX5cssVmkVv/U2qx7UCY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YkccpzsaYuZH9fw99ubUURW4pzr74KVdi12l36VSB/rcuTIFTmrHT33aHX+N2XV0z1u0oRTYxaNX7KnQ+UFfkEhCfyOSH32KKlIzGv8sl6x1lx4bINJZNz1NnPFht107evfHuTBVrRSR7TX0PmrQ2E8WvgMQFk4GBz22kGjX0DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iFt+cjxv; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=oQTRfKbus6VjaTWt2j1/FhDcvSF7XPGn4l1u3IZuCaCV7UN92Kvx+nBWzmgPuaBNxRAC4jOrHd2mGZzEHRjX/E3EQVJiGimyOrlXuvTLe4nAFlrn7wJkEooKX/pC+Y2nhXCsy0BwFFs89QYGru0dJecOecFMCnXfv/0C6+CpU1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qb/dgLXV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iFt+cjxv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AB31F000E9;
-	Thu, 30 Jul 2026 00:00:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qb/dgLXV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260621F000E9;
+	Thu, 30 Jul 2026 00:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785369656;
-	bh=c6/1QRTO6GU4trLCSIEcpqYa282SU3GNO1VjmD6rK3s=;
+	s=k20260515; t=1785369658;
+	bh=Jtcm2foB59NzaOWEEVfF+6Bq1aS1xVP/bEJOD++z0hs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=iFt+cjxvdciJHTRmCCn+jwCFCia17G7SHSmLQ5rB/WCRf0TwjbrOmk6zXHekh7vb7
-	 QYpFhKtiSfaWYKBCD7wN/fwubgEgxlQcbWeTs1N/87PlPiik5+rRQ26s7SckmGswPE
-	 gtdeZ709of8xdjUw/QFwLLwOmEyvQRMe4Ce5BEQStuhHLxTmdNniA1gdDO9kGlT7yS
-	 dfdWgMuR0Q+2Fcu0SP+iWpRHkYWqo5QUL0rd7ge2GHVN6Gp8jzL6XXFVDu/m2WeWqE
-	 /FIvD2mzytqE52zW2GEaL/+vfi3cA5jhQdVHefNAQpmoZc0CPGZEyK9JVvTprseBkQ
-	 3UxOCfJkL/KOw==
+	b=Qb/dgLXVE0uMa6d0kmfuX53563IKC6IXK3LIhy/WogJRYBMQLz/GXhdiVEXO1m5IE
+	 XUahzoCPKVJw3xFyn7wuBE9+GNfj+tpgC0Cg7sxSsTxcGTkt1TOmdLP4FglA5LDc3l
+	 VteonEeYXQtEyD3RGlTt++pibi6v/fc5QiXHVAP6bxULD2LdZaSJYu8zP58vdX9hft
+	 irsW6TwF5Jx0kewRpvvFXSX5miloDXdK4UWpOH5/LXZ+iEPsOZXo5h78piK886WAzk
+	 EteoZXsXvhkzc8vf+v2sl/r745RW8pNG90BILLzHwefAUN3/MY3K5qK8qFzb9BRw+o
+	 PgWyZ2R8deZQQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D12A73926250;
-	Thu, 30 Jul 2026 00:00:21 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56EB13926250;
+	Thu, 30 Jul 2026 00:00:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] dibs: fix use-after-free of dmb_node in loopback
- attach/detach/unregister
+Subject: Re: [PATCH net] sctp: validate Adaptation Indication parameter length
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178536962038.3288516.6334881564101626025.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Jul 2026 00:00:20 +0000
-References: <20260727093530.968834-1-hidayath@linux.ibm.com>
-In-Reply-To: <20260727093530.968834-1-hidayath@linux.ibm.com>
-To: Hidayathulla Khan I <hidayath@linux.ibm.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, wintera@linux.ibm.com, alibuda@linux.alibaba.com,
- dust.li@linux.alibaba.com, sidraya@linux.ibm.com, wenjia@linux.ibm.com,
- mjambigi@linux.ibm.com, tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
- horms@kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
- agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
- pasic@linux.ibm.com, gbayer@linux.ibm.com, andrew+netdev@lunn.ch,
- netdev@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178536962190.3288516.17824582484008131483.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Jul 2026 00:00:21 +0000
+References: <20260727-sctp-adaptation-length-v1-1-0ab58b2810a5@gmail.com>
+In-Reply-To: <20260727-sctp-adaptation-length-v1-1-0ab58b2810a5@gmail.com>
+To: Charles Vosburgh <trilobyte777@gmail.com>
+Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 27 Jul 2026 11:35:30 +0200 you wrote:
-> dibs_lo_attach_dmb(), dibs_lo_detach_dmb() and dibs_lo_unregister_dmb()
-> look up the dmb_node under dmb_ht_lock, drop the lock and only then
-> operate on the node's refcount. Nothing keeps the node alive across
-> that window: __dibs_lo_unregister_dmb() removes the node from the hash
-> table under the write lock and immediately frees it.
+On Mon, 27 Jul 2026 19:17:30 -0400 you wrote:
+> From: Charles Vosburgh <trilobyte777@gmail.com>
 > 
-> A concurrent final put can therefore free the node between the lookup
-> and the refcount operation:
+> The Adaptation Layer Indication parameter contains a fixed 32-bit
+> Adaptation Code Point after its parameter header. However,
+> sctp_verify_param() accepts a header-only parameter because the generic
+> parameter walker only requires the header to be present.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] dibs: fix use-after-free of dmb_node in loopback attach/detach/unregister
-    https://git.kernel.org/netdev/net/c/a10ea943356b
+  - [net] sctp: validate Adaptation Indication parameter length
+    https://git.kernel.org/netdev/net/c/74b21f52c5c5
 
 You are awesome, thank you!
 -- 
