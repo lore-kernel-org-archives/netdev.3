@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C379447809;
-	Thu, 30 Jul 2026 16:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFC244685B;
+	Thu, 30 Jul 2026 16:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785427408; cv=none; b=brdKI/hmGoWzF83r9uKlg5d+q4pxb8y3Rab2wCN8focFuf3izsXC7GkzPP+FBeyJXuq28YSDBscuG16QsaZb9NjKNGMXkGj6w5vr6Zw2qwN/kgBHxfwi1A7cXWOoNNF9YaFgtorVOdhEeAiLIFhCwKfV09Yn9plUHYVaGpEfod8=
+	t=1785427410; cv=none; b=QmlsV/dZ3T7m9n5f/CbLRRwym2aFCcI5LnIizCnOfEPrwwgl8m0kMOY/SNhQ3eMV5t577TybU30m0gO6LrYoYF8sdFrPALtVV/cgXq59UPHlYUXKP2DyLaPFghHdhuQ4P4IcrTcyiprWNA7hQilJy6KTkvlgcPgRn8H8CGkzhIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785427408; c=relaxed/simple;
-	bh=oCK7P0Hj5+tJHaksLHbdSYMVatVkvqzOux5Sag0Q0d0=;
+	s=arc-20240116; t=1785427410; c=relaxed/simple;
+	bh=ivIxxUfSGWS0PYEU/rCXCNoOtjw1VlicP1mi7k36Rks=;
 	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pWcPWtfPfElWlEymSwrD6jzZHlwjBzg7PVovJ+lXa9zolqqSYES7ijegIWQiDFYv0mevrl3kHDkZJ0revZR52wu2CPOIxIdN2vQaz+L2biFy2DwMgW/Q4c632pBzsC5kIO1gmeLDwZ82AkPDDzWYW9vHbYQ/Cneh1lmW8YyjggU=
+	 Content-Type:Content-Disposition:In-Reply-To; b=hgQUPbBNxczN6Xb5bSw0KjKu0i/+VE4+2jC45n0YztHIo8FUbB0nhpbRlqjrs91vU/bdi48dVNOflPETapd1UBx1gROSWVLZa+uZiKv6COqI2ybPvf4QFtuSuOjdkjSDel8bCDzVUPF17RubBMGVmr7I3oBc4Kt6wykcTJmMJu8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1wpTE2-000000007W4-1UaJ;
-	Thu, 30 Jul 2026 16:03:14 +0000
-Date: Thu, 30 Jul 2026 17:03:11 +0100
+	id 1wpTE9-000000007WV-09gR;
+	Thu, 30 Jul 2026 16:03:21 +0000
+Date: Thu, 30 Jul 2026 17:03:17 +0100
 From: Daniel Golle <daniel@makrotopia.org>
 To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
@@ -39,9 +39,9 @@ To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Sean Wang <sean.wang@mediatek.com>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH net 1/4] net: pcs: mtk-lynxi: check regmap reads in
- mtk_pcs_lynxi_get_state()
-Message-ID: <c41c256a5b4695bec24abc6baa4f990fca88f834.1785427248.git.daniel@makrotopia.org>
+Subject: [PATCH net 2/4] net: dsa: mt7530: check bus->read() error in
+ core_rmw()
+Message-ID: <fe3926ab260b94d88d97ee5f417dab7dcf55f8fc.1785427248.git.daniel@makrotopia.org>
 References: <cover.1785427248.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -53,34 +53,35 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1785427248.git.daniel@makrotopia.org>
 
-mtk_pcs_lynxi_get_state() ignores regmap_read()'s return value; a
-failed read leaves bm and adv holding uninitialized stack values
-which are then decoded into the reported link state. The regmaps
-backing the MT7531 SGMII PCS instances sit on an MDIO bus where
-reads can fail. Check both reads and leave the state untouched on
-error.
+core_rmw() accesses the MMD core registers directly rather than
+through the regmap and has the same unchecked bus->read() as the
+one just fixed in the MDIO regmap backend: a negative errno is
+consumed as register data, modified and written back to the switch.
+Check the read and bail out like the surrounding bus accesses do.
 
-Fixes: 4765a9722e09 ("net: pcs: add driver for MediaTek SGMII PCS")
+Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
- drivers/net/pcs/pcs-mtk-lynxi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/dsa/mt7530.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/pcs/pcs-mtk-lynxi.c b/drivers/net/pcs/pcs-mtk-lynxi.c
-index a753bd88cbc2..454f2924831c 100644
---- a/drivers/net/pcs/pcs-mtk-lynxi.c
-+++ b/drivers/net/pcs/pcs-mtk-lynxi.c
-@@ -113,8 +113,9 @@ static void mtk_pcs_lynxi_get_state(struct phylink_pcs *pcs,
- 	unsigned int bm, adv;
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index aa33d94e11b5..9be6fb63c311 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -124,8 +124,12 @@ core_rmw(struct mt7530_priv *priv, u32 reg, u32 mask, u32 set)
+ 		goto err;
  
- 	/* Read the BMSR and LPA */
--	regmap_read(mpcs->regmap, SGMSYS_PCS_CONTROL_1, &bm);
--	regmap_read(mpcs->regmap, SGMSYS_PCS_ADVERTISE, &adv);
-+	if (regmap_read(mpcs->regmap, SGMSYS_PCS_CONTROL_1, &bm) ||
-+	    regmap_read(mpcs->regmap, SGMSYS_PCS_ADVERTISE, &adv))
-+		return;
- 
- 	phylink_mii_c22_pcs_decode_state(state, neg_mode,
- 					 FIELD_GET(SGMII_BMSR, bm),
+ 	/* Read the content of the MMD's selected register */
+-	val = bus->read(bus, MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
++	ret = bus->read(bus, MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
+ 			MII_MMD_DATA);
++	if (ret < 0)
++		goto err;
++	val = ret;
++
+ 	val &= ~mask;
+ 	val |= set;
+ 	/* Write the data into MMD's selected register */
 -- 
 2.55.0
