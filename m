@@ -1,90 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA3A3B894B;
-	Thu, 30 Jul 2026 08:28:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9423F3B0AFA
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 08:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785400102; cv=none; b=pM1pcDMbL9byQOB9Jj4LUQs3AmT95ZbHD9NlBH6zlZMMBbBqYk3ZmjaozAp5y0gw6HXl1XEaoAwGlZrrDuL/7kIAHtA3nmPOfR8efR7IxKmGEG9sK8rUyk+uP+mjyN3+S2lDG4WYB67T4BbLVrjf2YJ//iUMgFqubHUs5fiIwtQ=
+	t=1785400183; cv=none; b=tG0PgH0UNCNtk8ay8RWNO1/Af/ny7s2UARo6ClNjSN8r7PEcorx0zHpbV/lwtFsp8hKYwGR8b0TnscuKC1xGlm8alDAMDwyRi48oyyEIXuDv3eWXWXlhNTk277Otg+MPnwemyj8H94i1ZSoiWUPjQh/zm53WxfiA7XLeCRJt5xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785400102; c=relaxed/simple;
-	bh=bxBJBjrKqgZwEbpNaf5/UI47pXkxo93TJAhmSmSxQ98=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AVeKUWufyzS0IeSgYx4ROM4/cj+6dmXgO31GQYELlkpsV8x1qDhc258/NH/wM7dIY4vTSH/5qnL/KSTrfIcTj1tWg4y3zocnlfeQL2yI032Ipi7D9qUcdQMgzjrtgQN7Z3rh7QQApKCH9ctWPte+UxtG6G3QKL4aegv68srjmgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dxi1cOys; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785400183; c=relaxed/simple;
+	bh=B42SBYl9aaiB6nmRTz1a/KnUKAuigPrYtj6ZNfBf1yA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=snGIk2/LSuTODFPUReQB7Qi+wZ4lxzgwR1mWZ70/U/41HFmc6oiPXN7zc9ML+Tgy5YmWZx1vg/dOkTen6zj7E2HIWb27yFBWn/BqXFWxgYGWSyL6ns7k5QjvE8Ufzpb3rwTDGw7xVd3OVkmX5mFPAjwWwNwoFQ8QLHWnx1/yDlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GKvyorm3; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dxi1cOys"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F251F000E9;
-	Thu, 30 Jul 2026 08:28:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785400096;
-	bh=IqWfPHowzypNS3fC5xvMrVulrkg/53CBTJvxev8Nx5k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Dxi1cOyszRtlP/OETbzH9DzS1JrcmsxerAuE1GIeA4eMSLgfQxwXEVtPcz45v6Jk+
-	 rA2Bks3auZ1nx2bGDNs1LFcWAjBoxlIVoYdQQAbVUCPNEMbFFwA/99atlIdEc/e0FK
-	 Q4q0EhvQbJsdKHIH+4Wh/EEPMOKTtz5h12QXlKgLsdMVsDhzfiGJI1a7uPWNkTkhlL
-	 6oBTm9s571O/TBpR2hhYdjXIeRJ20qGx+dTOlKb4oElWzDStMNGNlCLHpNAHVCS9BO
-	 naVZLLc713RhicSXOhVRgNOpzqzdebsGnG8DLHLn90BHePFJ4XNGVKTTBQCYKHaSd/
-	 9WrV7yUewA71w==
-Date: Thu, 30 Jul 2026 10:28:10 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Gavin Gao <attinagaoxu@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, heiko@sntech.de, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, mcoquelin.stm32@gmail.com, 
-	alexandre.torgue@foss.st.com, richardcochran@gmail.com, nicolas.frattaroli@collabora.com, 
-	sebastian.reichel@collabora.com, sashal@kernel.org, alchark@gmail.com, chaoyi.chen@rock-chips.com, 
-	amadeus@jmu.edu.cn, rmk+kernel@armlinux.org.uk, horms@kernel.org, 
-	alok.a.tiwari@oracle.com, david.wu@rock-chips.com, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH net-next 2/3] arm64: dts: rockchip: Add RK3576 GMAC 25M
- refout clocks
-Message-ID: <20260730-complex-funky-angelfish-dc9aad@quoll>
-References: <20260727021048.3375444-1-attinagaoxu@gmail.com>
- <20260727021048.3375444-3-attinagaoxu@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GKvyorm3"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-ca53979f8e8so194201a12.2
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 01:29:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785400182; x=1786004982; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Bw64pOvp75tqjEbxe44Ni3tYR32AoO/7olUauM7iC3c=;
+        b=GKvyorm3ah+QffBXR3s74KWJCVMGmLEA4+kk0g0Q3c/WUNQU49N1bNTce6OJ9v9Vm0
+         Zd9v6TvsTBG3wg81kD7ScTFREJvrJPe0J9wWNAI2CpGwxCwy4dUvp5xozR8SSAZOWLCX
+         RvYAsWDO+IkyshN3O2t2Etb+Mqcdn0olytCgxBCTOu6REzj3QwjwnL3qCPTqSO/wOVy9
+         G/Ghsw8AX4suneRoR5XamhBdpGcxJI2QXwhj0+u76dQkcxg41p6iGiMxxg9JArxzlF/V
+         39iCi33B/LJELbRiaMEWqPXoKN73iEEpZEkPS29lGvlg76NQEZ+xwFqA3ciLDeYHaFVw
+         OxYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785400182; x=1786004982;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Bw64pOvp75tqjEbxe44Ni3tYR32AoO/7olUauM7iC3c=;
+        b=bCyCWbLsW4Z/xrl1/NT+ssjN0hAnPVHetJ0w4sZx4Rlry96F/UM0RV6EFpOgbI7OF3
+         eAIPhbjPBHaTnYCTWFCMOUEAPH1/z4LtinVox2ySr3oZQVtXG8o5jlrNwSj1G4BPw+BU
+         2xr8j4RbvQt5R3BfU1HF/+6r64NWOmWfEh0yefph/xhd/TPQAzH3RTuHeB829vIrHtZU
+         uj81JRmZYWpGasQKDLOLaOgYRnZYcGsFCZFidKsV9388RGwDe60KyN9vDClVuW/tuiSs
+         6A0QSiTqqROTYuVVsz8jIdNZemKiun5+LENmehWFFLCpfazdI9HrpOoHFWklwqAXb4WH
+         vuAA==
+X-Gm-Message-State: AOJu0YwpTG3u75CaPMaKXvQPMxm6jc/ukbEO3p3k2iszc6wcr1cPnxKO
+	R4TYcgUMIRFu9ufFWZNr1DsMrWCfoRboXnIZAVVMEqPr9yrxIaNvXresxqWcCg==
+X-Gm-Gg: AR+sD13p5s/ZfzR2J/atpfhUTkCZ2ifZGYuVJnLCakbHEy6kdvNqTuOBI59qX/q9f/v
+	BI2K/TUyQWqxkWFV19pNAfE1MvWWflMNGoCGsUH359pRpOwim3W5Nz2sW82D228XWaX37VgALQm
+	TXXbF+1ROcz+SKMy+2mKsfF3cfLwSav5GSZvhxX2SGGnIdIurHFcIoO2VBGzUgkmd70qy5JFfSF
+	Ye2HfNdxn03rokqHk6qMvoeGD8Sipjq+GUDPnnpVK4mGt7qt1At55uMcgEt5Gfj+YMAdGwakJXm
+	EZ6xnIoepjfPniGHGMDcKXiTeSXfy9wOQlQ5rPysRfBUXgsc/f3SaFyp9IHL/ZyJQ/Zs/I6I0mC
+	oRjGIMCAnBFP7HjYgRvn3eC31Tn3PsjgEyQ6O5LUQ4erzpdF7g+ISqh+eB1m8Lj5AGHVQNBU6wc
+	pScy2oLlpkYGzBQ2PJkZwapZGNJ3eYHWkBTcfMJ5j5kVEjz8rhiSxxygYQueYeAXIabVtXBkzBV
+	9y6Pk1GJvyIFRMchViZCvE8MOxKoo0ENo+iU4bRW6kXh8/bc2U=
+X-Received: by 2002:a17:90a:ec8d:b0:38e:7069:7117 with SMTP id 98e67ed59e1d1-38f9bb18cbemr2207672a91.0.1785400181820;
+        Thu, 30 Jul 2026 01:29:41 -0700 (PDT)
+Received: from localhost.localdomain ([139.159.170.89])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9b770e33sm664279a91.15.2026.07.30.01.29.34
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 30 Jul 2026 01:29:41 -0700 (PDT)
+From: Qihang <q.h.hack.winter@gmail.com>
+To: netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
+	daniel.zahka@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	Qihang <q.h.hack.winter@gmail.com>
+Subject: [PATCH net v5 0/2] packet: use consistent hard_header_len in send paths
+Date: Thu, 30 Jul 2026 16:29:23 +0800
+Message-ID: <20260730082925.93759-1-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260727021048.3375444-3-attinagaoxu@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 27, 2026 at 10:10:46AM +0800, Gavin Gao wrote:
-> RK3576 provides REFCLKO25M_GMAC0_OUT and REFCLKO25M_GMAC1_OUT clocks
-> for the two GMAC instances.
-> 
-> Describe these clocks with the clk_mac_25m_refout clock name so boards
-> using RGMII output clock mode can let the MAC driver manage the 25 MHz
-> reference output.
-> 
-> Signed-off-by: Gavin Gao <attinagaoxu@gmail.com>
-> ---
->  arch/arm64/boot/dts/rockchip/rk3576.dtsi | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-> index 70e67d4dccb8..f1125c2f88ab 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-> @@ -1692,10 +1692,10 @@ gmac0: ethernet@2a220000 {
->  			reg = <0x0 0x2a220000 0x0 0x10000>;
->  			clocks = <&cru CLK_GMAC0_125M_SRC>, <&cru CLK_GMAC0_RMII_CRU>,
->  				 <&cru PCLK_GMAC0>, <&cru ACLK_GMAC0>,
-> -				 <&cru CLK_GMAC0_PTP_REF>;
-> +				 <&cru CLK_GMAC0_PTP_REF>, <&cru REFCLKO25M_GMAC0_OUT>;
->  			clock-names = "stmmaceth", "clk_mac_ref",
->  				      "pclk_mac", "aclk_mac",
-> -				      "ptp_ref";
-> +				      "ptp_ref", "clk_mac_25m_refout";
+AF_PACKET send paths read dev->hard_header_len at several stages of skb
+allocation and construction. Concurrent netdevice reconfiguration can
+make those reads inconsistent and cause skb headroom underflow.
 
-Where is clk_mac_refout? Why do you claim this is a different input
-(important: INPUT)?
+Split the regular and TX_RING paths so each patch has one Fixes tag.
+The separate SOCK_DGRAM consistency issue between hard_header_len and
+header_ops->create remains outside this series.
 
-Best regards,
-Krzysztof
+Changes in v5:
+- Drop the unnecessary per-frame copylen reset from patch 2.
 
+Changes in v4:
+- Use one hard_header_len snapshot throughout tpacket_snd(), including
+  reserve and per-frame skb construction.
+- Carry Willem's Reviewed-by on patch 1.
+
+Link to v4: https://lore.kernel.org/netdev/20260729030122.21462-1-q.h.hack.winter@gmail.com/
+Link to v3: https://lore.kernel.org/netdev/20260728031345.49562-1-q.h.hack.winter@gmail.com/
+
+Qihang (2):
+  packet: use consistent hard_header_len in non-ring send paths
+  packet: use consistent hard_header_len in TX_RING send path
+
+ include/linux/netdevice.h |  6 ++++--
+ net/packet/af_packet.c    | 45 +++++++++++++++++++++++----------------
+ 2 files changed, 31 insertions(+), 20 deletions(-)
+
+-- 
+2.50.1 (Apple Git-155)
