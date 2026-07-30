@@ -1,79 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F29C36F909;
-	Thu, 30 Jul 2026 20:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C79C38DC5B;
+	Thu, 30 Jul 2026 21:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785445058; cv=none; b=LlnjwgIkxC8JskmQXhJAXTb67F2HCpB3fsBY6B1nXLcipUZDwr7JFFi6hCgll75CKzL9gErf/xMTcWbO+uEPuFUKb6VRwUkoB3RQOjhlxpCwMuhHRZLg2+UQI90rlwQZdTsBEMXCn8NvAiO+pzQX7JRgaJHYvZeXDWw5wBm41jI=
+	t=1785445248; cv=none; b=kBcesS9c8QRoA4ALC1hlBk8Lg1mjQFOagFABhy3F+xPONSnceB4Z6P04ZqREmhayvVPSn5X/sbv5kBLqoa2ICGmHDIftp009ppIJIizBHbdUfBUHdBJP8OliLVpjydJMl8x6xXN6FWeQTV0vjM+qHY34gAzEHVgRzK9rOQjjhU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785445058; c=relaxed/simple;
-	bh=9M1BoGClEHtRQjpp7QmSvBAMy0926/5Sb2c+J2JLCEM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HHEtipC3SSD6A/FI+m4QHUlaUuj5KlnKxAyAWHDqhylxtGfy6VxU0rDnVWgmSjnu21jB8oUz5crcSOolbgQpO8SfAW4ZSZrWyTuQqAulzKF59YZlR6cUzHMr1+1EPvowVeNyXioJebtKlFUfY/CIKQq4iZfv/AhkHqq1Hm+f5V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fkzbIk8O; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785445248; c=relaxed/simple;
+	bh=wopGtB1S22TrpBVMOBYbCsh1svYedp9ZYyUzDfjK2ts=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=C1PJ9xUyo52t+CzC1JXCCH0KUUOKf5Lil9Qq/XsePDmWrQCQa6RyhzdZZYRybmRBAKZHrJ1G1TanIH5Bj2icJRxhZt834IK7ycfgYRr2dDWbbBQYyqtdiV8NGisADRk3oOwwpDaaFQs9KOE7IlU2ROwL1I7KowmFXifSPkBCa44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XlIrnsvx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fkzbIk8O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF2F1F00A3A;
-	Thu, 30 Jul 2026 20:57:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XlIrnsvx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722611F000E9;
+	Thu, 30 Jul 2026 21:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785445057;
-	bh=IX/6o90+8h04SXwvpSu/GbJI8gZhu+oy4pv4k4OllqU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fkzbIk8O+8GdKUV9jGZOmxdZQVjC+uerkISxQhVLif1hCbElX5yOPThIlDIKCxkfX
-	 c0BwsQIplHeu/iXXn3gz4KK4G13U0Th1LcHH0s1/yyimMR5o1DcIitP3dNUsYAQh/7
-	 SYzTzU4ycyPbaEAsW0eee0PRLPNlJybbDgYo8sAFf5fUX3rfPsdWkj6uDm/YL6zLOX
-	 JJFMCoGHbZreyAEsVvfBwTJ5AFHhusGZxp5+qNcU/KFzrnUfXytStc9tZRxFMC0orn
-	 kEE3akftVp1qZf/w/D4BFwEr5HXfwJPYlcJOSBhYpwI2gSTBAy+RQQ0gU81LEk8jzw
-	 edkewFF10NZSA==
-Date: Thu, 30 Jul 2026 13:57:36 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Laurent Vivier <lvivier@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Stefano Brivio <sbrivio@redhat.com>,
- netdev@vger.kernel.org, Oliver Neukum <oneukum@suse.com>,
- linux-usb@vger.kernel.org, jarod@redhat.com, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] usbnet: cap max_mtu for drivers without bind
- callback
-Message-ID: <20260730135736.7bbe0767@kernel.org>
-In-Reply-To: <d81babcf-a4aa-423b-90d7-9b4037872c5e@redhat.com>
-References: <20260727072304.154608-1-lvivier@redhat.com>
-	<20260729175218.15b5d081@kernel.org>
-	<d81babcf-a4aa-423b-90d7-9b4037872c5e@redhat.com>
+	s=k20260515; t=1785445246;
+	bh=GU4+hYZmZbT8tEUgTys+3//O3qZ0GI86e9VhsvZnCak=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=XlIrnsvxN8Tws6u8wpf2xhSPdpQHht3nk99pv2UUZrTJ7CnNuNd1V6nCgKcOici7E
+	 1u4l/as7uDuGCMZcCATCX+vfNtTub5A/vSX6tZzdslKO+vYQrE/zLGe/ccTvDzzVBc
+	 P+STc3ugdaY3KKCj0Toc6vC25GYbp1QZUQdFEsUdYjTcx6Yp8dIIBx+Oev7dr9AZPc
+	 zu6XBHxm+7fy+kKyE1jJ507sJoBnw5H5eaggmkbYl/oMXml+8QgZ1InStH/bweo7Po
+	 ZicWB64bO2erPMxgizFIxFBmnlOMbc4D36IhSRxFip3Lx9GTpQbbqtvD0u3kb2IKtN
+	 1WMlasksKTS8g==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 30 Jul 2026 23:00:37 +0200
+Message-Id: <DKC7IILD54UO.1N47QGSHMKENI@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 11/11] RFC: rust: driver: support map-like syntax for
+ ID table
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Abdiel Janulgue" <abdiel.janulgue@gmail.com>,
+ "Robin Murphy" <robin.murphy@arm.com>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <iweiny@kernel.org>, "Leon
+ Romanovsky" <leon@kernel.org>, "Len Brown" <lenb@kernel.org>, "Igor
+ Korotin" <igor.korotin@linux.dev>, "Rob Herring" <robh@kernel.org>,
+ "Saravana Kannan" <saravanak@kernel.org>, "Viresh Kumar"
+ <viresh.kumar@linaro.org>, "Michal Wilczynski" <m.wilczynski@samsung.com>,
+ "Drew Fustini" <fustini@kernel.org>, "Guo Ren" <guoren@kernel.org>, "Fu
+ Wei" <wefu@redhat.com>, =?utf-8?q?Uwe_Kleine-K=C3=B6nig?=
+ <ukleinek@kernel.org>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <linux-pci@vger.kernel.org>,
+ <linux-acpi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+ <linux-usb@vger.kernel.org>
+References: <20260629-id_info-v2-0-56fccbe9c5ef@garyguo.net>
+ <20260629-id_info-v2-11-56fccbe9c5ef@garyguo.net>
+In-Reply-To: <20260629-id_info-v2-11-56fccbe9c5ef@garyguo.net>
 
-On Thu, 30 Jul 2026 09:30:57 +0200 Laurent Vivier wrote:
-> On 7/30/26 02:52, Jakub Kicinski wrote:
-> > On Mon, 27 Jul 2026 09:23:04 +0200 Laurent Vivier wrote:  
-> >> -		if ((dev->driver_info->flags & FLAG_NOMAXMTU) == 0 &&
-> >> -		    net->max_mtu > (dev->hard_mtu - net->hard_header_len))
-> >> +		if (dev->driver_info->flags & FLAG_NOMAXMTU)
-> >> +			net->max_mtu = ETH_MAX_MTU;
-> >> +		else
-> >>   			net->max_mtu = dev->hard_mtu - net->hard_header_len;  
-> > 
-> > Sashikos point out that this will causes issues for existing drivers in
-> > both directions. Some drivers explicitly set max_mtu. So we need to move
-> > the
-> > 
-> > 	net->max_mtu = ETH_MAX_MTU;
-> > 
-> > line before the call to ->bind ?  
-> 
-> So you mean like my v1?
+On Mon Jun 29, 2026 at 2:39 PM CEST, Gary Guo wrote:
+> diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
+> index c81fca5b4986..5f4d191fce51 100644
+> --- a/rust/kernel/device_id.rs
+> +++ b/rust/kernel/device_id.rs
+> @@ -183,6 +183,17 @@ macro_rules! module_device_table {
+>          $table_type: literal, $device_id_ty: ty,
+>          $table_name: ident, $id_info_type: ty,
+>          [$(($id: expr, $info:expr $(,)?)),* $(,)?]
+> +    ) =3D> {
+> +        $crate::module_device_table!(
+> +            $table_type, $device_id_ty, $table_name, $id_info_type,
+> +            {$($id=3D>$info,)*}
+> +        );
+> +    };
+> +
+> +    (
+> +        $table_type: literal, $device_id_ty: ty,
+> +        $table_name: ident, $id_info_type: ty,
+> +        {$($id: expr =3D> $info:expr),* $(,)?}
+>      ) =3D> {
+>          #[export_name =3D
+>              concat!("__mod_device_table__", ::core::line!(),
+> diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_p=
+ci.rs
+> index 2282191e6292..652819dff082 100644
+> --- a/samples/rust/rust_driver_pci.rs
+> +++ b/samples/rust/rust_driver_pci.rs
+> @@ -75,10 +75,9 @@ struct SampleDriverData<'bound> {
+>  kernel::pci_device_table!(
+>      PCI_TABLE,
+>      <SampleDriver as pci::Driver>::IdInfo,
+> -    [(
+> -        pci::DeviceId::from_id(pci::Vendor::REDHAT, 0x5),
+> -        TestIndex::NO_EVENTFD
+> -    )]
+> +    {
+> +        pci::DeviceId::from_id(pci::Vendor::REDHAT, 0x5) =3D> TestIndex:=
+:NO_EVENTFD,
+> +    }
+>  );
 
-No, there should be no conditional stuff on the non-bind path.
-Init the max_mtu to net->mtu like you do in v2.
-Override it to ETH_MAX_MTU _under if (info->bind)_
-And I think that's it - the conditions can stay as they are right now?
+This LGTM, do you want to send a follow-up series?
 
-What I'm getting at is after the patch the code should say "we have
-some extra MTU discovery path for drivers with info->bind, all
-remaining drivers get net->mtu". I think the change I described above
-will make that clear.
+Thanks,
+Danilo
