@@ -1,129 +1,145 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB4F19A2A3
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 03:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B8938644D
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 03:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785383424; cv=none; b=jyWve5dtRNfdGeGMBihE9k+cUDHiKVuTgMBEm06g+9tgjDxcPyb//rtFiE2hCl9nr+YK26sLeiAacLtOUXgAKMrt1iBhewLsBouxsCbVyNGBbzz+b5kcohctpv2m7Banqy83vTjU9UUOQ66g1KP1wQi8dsrMss2AmxwC85ljzGA=
+	t=1785383597; cv=none; b=Ds1TpEFmnhFx37nd5spHGwAlr9jbAjLbf7uVetcrpqhqs37qvhLMPv8xhz0vHGocjDnLO8QUYrkznkUs5OFP+/nGgIvjrERXnRTh0VNdMVjchzU9QMy1S+pWKKLx4xwMCG62WUE+OUcesiluKkHccUq2goFx6AXzNSs+GSsm/Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785383424; c=relaxed/simple;
-	bh=+yi6uN5iRBIblyxibTs7ZkXcE1cO2XpCfbfHTAEmp1M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rbMYuZyvkMHK3wUhHgxx2nPM8pi6uROfdsUUm7nhlhHFGxtvBj5VGZre0HUK4wysR3MbcH+/Vp0w13G9qjBs39H6xtcZJ3vone8xztsHdM5pOYdJNQUhwyIiUHMr2xJc3FRHJ0ywBrqs6usSgxzUcR/oXFGzuxKGjwR7g9abVVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pgIgDB2c; arc=none smtp.client-ip=209.85.216.41
+	s=arc-20240116; t=1785383597; c=relaxed/simple;
+	bh=98/Zm+4X6FjtRx3S4N46Xjpyceyc/g1u5+NVl3ahtHo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tGL4HdQTtcKbrWMGD1Yd4TICUHkOYHfIwnZBYlSlhJQz8Z1aUq08eQTN7anW0FhzcYJDjae3UO4/ZEF3NAqjO5CG2Hn+egZfmTaynoXcBeQmgcaaQpAnG2MwOffSggfkjCq2aj3uhPP34EBkjRezSXWfOk3s3URYSxqEpzlU73w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WKMCGZxP; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pgIgDB2c"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38e42560ebcso1259535a91.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 20:50:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WKMCGZxP"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d032846c95so4120305ad.1
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 20:53:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785383423; x=1785988223; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bRToeNqXboRrsPp4rN2QXShTZgRCA+alJAy+M1p+bqU=;
-        b=pgIgDB2cBVMsjjHqMGcW2ZYkgIjuZw9KdkoF/21h9PtWIYty4RUkdW2T7hnn4l0xCc
-         KmMqhVxBeHS6ovYjFr/VOUUA0PkDasj99ojUoQ7cXATiPze3AcIHIwX3O+unhLA71HIw
-         4bpvaUTA0WvbVAdzjRvJVaolF8uixV8GOkaeHtRYCHgEdocqZjN3xiOXbNZHHi13Stcw
-         Q9KjymvQSl1UvYt4MVKsFlm2Ooc7Kzt6qePhZfIEawLs75o/1nKa2gqfmLk3wb7gOdvS
-         UoDGnCtTx7xT1k92g464Ypteqc42ndlpRhQNVCzBh4UYN2czJsIzhqZKgJDG5Ald5Uqk
-         ohvQ==
+        d=gmail.com; s=20251104; t=1785383595; x=1785988395; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nftFX/SYLuJBbL79K9Nl7EIHq2QsHnleVpWoc6Vases=;
+        b=WKMCGZxP2/IRLSdBBspCeLPxcVQmG2lkv3bG1e0mCEPNoS7GnquWCo62X9Nm42k3/E
+         Z89wYmi6jSHOuc9U+Hrb3E1pYV4dd/2A1uembwBiwHxofYRavP2JMa+wOR2SvdS0/CFn
+         ib75rLr/TlwjqOTeNl5P3PZVKH5rJ/U0/Dy5TDd3xFThS7+8/OuFLOSTXjTT8mdfTott
+         6DxgvFAYFj2VqvKx/MJKbwypOg2EDAYFrm2F1ZAKO4vmqtNu0L+2XOkyLPCJRF5KXtOg
+         iojK8JptnaF6EdFpXk6NhbnTsiB1NBzSRrf5ozGUJTUsbKiC3qyCb1MULaHKQ4g1js87
+         i4fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785383423; x=1785988223;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bRToeNqXboRrsPp4rN2QXShTZgRCA+alJAy+M1p+bqU=;
-        b=pfjiKMtzJYy5UN2od+f3GzVtRX7I+mFSG/T//7BIvyTBLtcI6fSwqsl4hLTHnl/B30
-         15C1VxNbVeEL6IBwUmiTVMlwuRbq88s4qx903pC6VsawZQozok8xcNE/jwr8DdYQ9crW
-         2EhWRLnmU0Be0Kp6gRF/UH7njarWGdzagLIi4PgK6GhZzAbTxxA/wm6i10bshbGUZf/V
-         NH85RHwlLgAKWzAZ5Cmm664gbwqe4W2aKodJmgkJGxzVwvKbYSV4Q+yrrk3oCs9o+x6a
-         9I3SbOmKRyFvpaECcc46HlDzKnubi6gdidt32O2PYx9jz5AAn5oibTBEwKPRHKwjBVdu
-         nFtg==
-X-Forwarded-Encrypted: i=1; AHgh+RqAWjWvUifjus3vq64rAmisKJM5Q7yWejTPSqmofdKJcT8X93jsZQiVsAZnWQoLco9gVhYzPV0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmHdzW2Vsry6kQAwYD3/QkCbrZhM1rpaShWqMpnmyTFfXHAri8
-	iamdJDXwr4aCFmiJjEbVn75vhi02GbPyhPLZdJdfWIJbT0hzyM+o725rFrKmbXxm
-X-Gm-Gg: AR+sD1013ZL+EeDzSzjvCbMr+2i4bvPgUnKs0XF9LFpEaQZKq+D8o7ug+BXP1q4+ZiS
-	rgUnXwACW4sekMsX8VutbbKTPkhKAwQohQRKs8ye2cXP1h76qGpM93N/jbnsb28QZCM8NGWUiNf
-	ou/aJ67mHR9DT/+NwyxYr7NwgrQ9xo81Pb9C0om4+fWs4IGRJFiecsJMeozcLa5PVuS1/bLl1h5
-	JIdqNByon4/AzuWd/4iRLKh95c1/j2fr2M5kCOH/wg141wK8tYgfT1Qdy1M4G9kRlUGBp9hJuci
-	AeHmWXv4Ht7vGGehNQACoIeysQRmuHbf7TVrk8gnB3Xl1809bQ6g1i7QszgGA45LKU2fDCXlFKq
-	bmVnZfk8iUm4X917lBV22yL1HgLj5vPw2ICwkknh+cKR03s+oLUrRNVCle5Yb4PTkZ5sfbYjOTT
-	RZ3BaDpCPU+xXjrLaMRbmIL0lS83EqvtDn3A8KjDu0pIAOaoan/UWy6bs=
-X-Received: by 2002:a17:90b:4c8b:b0:38e:673:5d18 with SMTP id 98e67ed59e1d1-38f9c035ba8mr772309a91.36.1785383422828;
-        Wed, 29 Jul 2026 20:50:22 -0700 (PDT)
-Received: from fedora ([203.175.12.240])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9b72d243sm301354a91.10.2026.07.29.20.50.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 20:50:22 -0700 (PDT)
-Date: Thu, 30 Jul 2026 11:50:15 +0800
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Xiang Mei <xmei5@asu.edu>
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
-	tgopinath@linux.microsoft.com, kys@microsoft.com
-Subject: Re: [PATCH net] bonding: fix skb_under_panic in bond_ns_send() over
- stacked VLANs
-Message-ID: <amrIbBqpw9Ol5wPJ@fedora>
-References: <20260719232153.1405569-1-xmei5@asu.edu>
- <2820549.1784570299@famine>
- <CAPpSM+RkHO7uEVrEbqgfundSbiLU67enaSXhtk6mL8bXzC17xQ@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1785383595; x=1785988395;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nftFX/SYLuJBbL79K9Nl7EIHq2QsHnleVpWoc6Vases=;
+        b=b5Pmsnah9m0Sbk9mbMcnoRjFHc/7b2q/DuaP1P2cIGFpe+aDIptxjyzcIX2vgEzJEx
+         TujeNp3Uh6KorcPInk9sTV9kjZok03GDFaG0+JKxWoaWHhM1srmKI6ZB9RFvSDxCWBTJ
+         QYVP4QFTHo5NTlU5Ekv8EQjSFhhkcEtR+x4NDFQPPQ6S1wcLV6qbhdNJ7/eHsKMNI3f2
+         LG574wJh+6dKvWzV+L83t0iERFKmMChikuHze/TTYVk4+UYIM5d6FeliTX/AjkPmsZha
+         nxLUMPqJXRjw5FQypF8ue41SZ2+001GKEiNGatAy0dzmS/zHWY6Zh8YxAX2rNQhm/WPB
+         FFIg==
+X-Forwarded-Encrypted: i=1; AHgh+RqD8/Nw33XCd7Ow1UEjdFqotA6vQflnasJWWFn/J9YIz9chCO2pwFNNQXDPjSF1MlFqHjEw7FE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzKby/7sDNih5yhRtkVYk0+csQrfHQqFcxhZVm5HWqDXmpjMRV
+	5qwftX+9R5UpyKrYud6u66lTzXffwS/VSSK+3V7KuAg6+XTIH195gkOE
+X-Gm-Gg: AR+sD13MLEIXyqVxwmrPMA+wAs7PaUAgxF9L7Fd9oj8OeBwG5lCz904M2Tf8m8Wu0yF
+	HZmnLSf8t8fnbQVmHmb78PNElGJu9VH+nL/ZrhdoIspwtyEJ2z8K6hkTLQkTUlmKv4tP7m9Kw6N
+	vM/zz3dIdKAEcjWjsLMRvDLdhDay10CSRMVPRSdNziEKDQ98e6erWzc9NIYfhVEqjvgywiNcJPs
+	UYWNLFnK/TrJXtrm0cDJLOQem2rOPLjerSHBMflx/+ZbYFHokI9ZTGPuiDAWtymOoi3TizmmTEJ
+	2o+DqwMSqiSnEWk+JUAxpRxIDK4ZarrwbH3G70/k48WyBLU4se8chbPPyXdNMisDNTjeoos8PlS
+	RfD80BJ+juY+g5VuRtMqcBhtc9sB9WZrIGTk36m/lwgBimoOyxYEseK0U3+itIr4Irl9o/Vw7Qp
+	eJgryosp207Us8dRrFQLB/mTsUI0grYknZBa6D72dJ07k8uaJJSA2Jx8xfbSl9e8Lk3vN3JK48o
+	lonq/FVa9nC1wPSc2Tq
+X-Received: by 2002:a17:903:8c7:b0:2cc:f5b8:4c2e with SMTP id d9443c01a7336-2d035bedd6dmr11609825ad.9.1785383595452;
+        Wed, 29 Jul 2026 20:53:15 -0700 (PDT)
+Received: from localhost.localdomain ([103.216.73.99])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022a6a58fsm19327935ad.34.2026.07.29.20.53.10
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 29 Jul 2026 20:53:14 -0700 (PDT)
+From: Yuejie Shi <syjcnss@gmail.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	YOSHIFUJI Hideaki <yoshfuji@linux-ipv6.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] ipv6: fix Route Information option length validation
+Date: Thu, 30 Jul 2026 11:52:32 +0800
+Message-ID: <20260730035310.74584-1-syjcnss@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CAPpSM+RkHO7uEVrEbqgfundSbiLU67enaSXhtk6mL8bXzC17xQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Xiang,
+rt6_route_rcv() validates the Route Information option (RFC 4191) length
+against the prefix length, but both checks are off by one.
 
-On 29.07.2026 16:30, Xiang Mei wrote:
->>         Does adding one or two more nested VLANs move the panic into the
->> above call path?
->>
->
->No, for both of the reasons above: there is no room to add more
->(-EMLINK at N = 7), and skb_cow_head() would absorb it if there were.
+rinfo->length is the ND option length in units of 8 octets and it
+*includes* the 8-byte option header, so an option carrying N bytes of
+prefix has length == 1 + N/8.  RFC 4191 section 2.3 requires length 3
+when Prefix Length is greater than 64, and 2 or 3 when it is greater
+than 0.  The code accepts length >= 2 and length >= 1 respectively.
 
-What about the scenario that involves nested VLANs? For example:
+ipv6_addr_prefix() then copies prefix_len/8 bytes out of rinfo->prefix,
+so a Router Advertisement with (prefix_len=128, length=2) or
+(prefix_len=64, length=1) makes the kernel read up to 8 bytes past the
+end of the option.  Those bytes end up in the prefix of the route that
+gets installed, so they are visible to userspace:
 
-vlan.1 - vlan.1.2 ... vlan.1..6 - bond - bond.1 - bond.1.2 ... bond.1..6?
+  # RA with a Route Information option (prefix_len=128, length=2)
+  # followed by a source link-layer address option, 01 01 de ad be ef ca fe
+  $ ip -6 route show
+  2001:db8:dead:beef:101:dead:beef:cafe via fe80::1234 dev veth0 proto ra
+                     ^^^^^^^^^^^^^^^^^^ the next option, read out of bounds
 
->Both symptoms have the same cause, tags inserted before any header
->exists, so the fix is to build the probe in the order the stack uses:
->
->  - push the IPv6 header first, so the reservation is consumed up front
->    and the later tag inserts grow the head via skb_vlan_push() instead
->    of eating it;
->
->  - run the probe through NF_INET_LOCAL_OUT as a bare IPv6 packet,
->    exactly what ndisc_send_skb() feeds the hooks today.  This needs a
->    small export (ndisc_attach_dst()) because ip6_route_me_harder()
->    dereferences skb_dst() unconditionally;
->
->  - only then push the link-layer header and add the VLAN tags, so they
->    land at a real Ethernet header and the target address is untouched.
->
->With that applied the N = 1..6 wire capture is clean throughout.  I kept
->LOCAL_OUT deliberately so NS monitoring keeps traversing netfilter the
->way it does today; dropping it would be simpler, but a silent behaviour
->change.
->
->I am not familiar with the bonding and ndisc internals, so I posted it as
->an RFC rather than presenting it as settled:
->
->  https://lore.kernel.org/netdev/20260729230119.2717507-1-xmei5@asu.edu/T/#t
+When the Route Information option is the last one in the packet, those
+eight bytes come from the skb tail room instead.
 
-I'm not sure if calling NF_INET_LOCAL_OUT in bond code is a good idea. Waiting
-for other's opinion.
+Reject the option lengths RFC 4191 does not allow.
 
-Thanks
-Hangbin
+Fixes: 70ceb4f53929 ("[IPV6]: ROUTE: Add experimental support for Route Information Option in RA (RFC4191).")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuejie Shi <syjcnss@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+---
+v2:
+  - drop the stray blank line in the tag block; no code change
+v1: https://lore.kernel.org/netdev/20260729034806.58923-1-syjcnss@gmail.com/
+
+ net/ipv6/route.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index fc42d67e5822..5968ce5ad150 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -988,13 +988,13 @@ int rt6_route_rcv(struct net_device *dev, u8 *opt, int len,
+ 	} else if (rinfo->prefix_len > 128) {
+ 		return -EINVAL;
+ 	} else if (rinfo->prefix_len > 64) {
+-		if (rinfo->length < 2) {
++		/* RFC 4191: Length MUST be 3 when Prefix Length > 64 */
++		if (rinfo->length < 3)
+ 			return -EINVAL;
+-		}
+ 	} else if (rinfo->prefix_len > 0) {
+-		if (rinfo->length < 1) {
++		/* RFC 4191: Length MUST be 2 or 3 when Prefix Length > 0 */
++		if (rinfo->length < 2)
+ 			return -EINVAL;
+-		}
+ 	}
+ 
+ 	pref = rinfo->route_pref;
+--
+2.51.0
