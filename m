@@ -1,245 +1,238 @@
-Received: from mail-oa1-f97.google.com (mail-oa1-f97.google.com [209.85.160.97])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1281368263
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 06:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F0A3B2D0F
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 06:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785393328; cv=none; b=PXBLZodkBj743IWW59uV5gj7+CaYw7JnJo0bu5eFtx0E7iD9AkcWDir6DnYl9RSaPr+8ADy6lqaqT/SnJ7CKRobwznT4jujlUJfQRRlF6kEsUZ5UdRKb+2t+c7T6/0xVpS3VgQwFKl8vs4nooLPA0JPoRqyaa3p+dHQ7ZYUifig=
+	t=1785393501; cv=none; b=XeomvbvndaFdfjc8RqLdRBe52uZkBMZq5GFNReL53fLlk69Aklc7pzdTkrGmaeVZxaVLZmCBBMmXJYg68b2l4094LMGPUjcnIYyTMHFAncI9qd0mth65IGCo4XJ++HTjgtr3Wd+fC2GWvyD1BEtFQEvzomwYpDIP5cSTcahHFfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785393328; c=relaxed/simple;
-	bh=J5vZTxUpBflOe54oFn18oXdJHySodDRj/pKuu23IJwU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j8YWVlj5T9Vsw/iTJat3YKuHjZrl2+0wDLt9VhvsIq9SWoHVBBbdLgzFZLeHAnEXm/knKfIXQSxhhmqf/nd3BGf6lhBVxYr5ffCJplBU2LXwKPnOH0YPipd9yT+Q+XzLrgrZtKq72KkqsDsMfsn64kpuPh1qfNiWQ626+fnzLOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bMPnjGfr; arc=none smtp.client-ip=209.85.160.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1785393501; c=relaxed/simple;
+	bh=ccS/vynfAjtPWGb8cQXbw2Ma7u9Kc2So5zt5lpzwcaM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=gTUAV4FpWcI4XE15l9rGfp+Tty/hddN0RPu2z3JXZ/Mr74LK+VjHKRiQlPP1+R0rTkEUeq2zZI/MG/auY/XhAn3wRGd0IwKKoC0mxt9j1gOajc9CL+rRNGhxEhWIYBXY8ie8YkwG5BcCARyC99e0aSw5DWOYix3yePyN8lohsjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=pHZHCR7C; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bMPnjGfr"
-Received: by mail-oa1-f97.google.com with SMTP id 586e51a60fabf-43b7e186a0cso515597fac.0
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 23:35:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785393326; x=1785998126;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=o4txhQCdGGm69Rz7gvizavJPPFx4klwZzUSI5gjzUvc=;
-        b=nAMoNMvOs5R97l0kR3HHRdiXNg+wr/lS48OtVIhMyE8KMr6ARUelu5pLC/gT6tCu3k
-         MeOtyr8hrgWq71KC83baEXLCBlZogyNskQP55z0DQyFF7jF8U74FScWURCeFAaJzoDG6
-         GolhoJBTQ7k9pPZegO3+SiL/66/IQYbxVewKSO08Vcx2jnH+kMxfY2xeuhJWbojYwiza
-         s9756IEtyQ/yMqgLVJ1c9ZOqTrIeezqNhsrggvAtc+pIeNP7OeaxW0kX3//vB26WWqey
-         G4nLAJFZdps7R9zhZJm/UfJz54u0ay6Xfz5OohanFjajynOgGpDME1s59jAET6fjkJjR
-         zdmw==
-X-Gm-Message-State: AOJu0YxYN3kQVR/s/6xrgo4IaIqWwEsYMmUr/kdT5/SFzXyzKJYMoXYp
-	OluN6zRfYX9z3bbTRfcqrMpR4png1/A+0NHj241o9RyRB2JfVjGWj5sTWcEWjbfLRoGcmFUrUEH
-	lXEakz+C5serXX4V8OkVPzJyxbAk6VhiI6eH6jHGk1daV7MHLMo3dbkT5BFjz7mk7GmqyRNVwvH
-	5uibr9SPc5RH/lavh3/yXdIeWmqBNuE3GFTvPhEE66QZgfOK3KS3mL1+bHurH6nRDt5yClrvygM
-	CFAyUgv2RY=
-X-Gm-Gg: AR+sD13pPth++trSByzn3dvQ+sa7m1bu8nGcFnci+jylzMELmRrrHgnC3g4NU+DRxJc
-	1N1GIXqrFyemjObaAaWxrZAKaN+0OA9TSQo+bJ/OR3bM5s/i1DXUUJ+0WfIsGhcSyU4ubgbPtrd
-	ot8O0S4EdCada0jCXCrXNrYntNS4hgNrALV33dwNrct5aveYbGO76Deo/VStF+YPwuE6MeKDRN9
-	4lsrr+a6wqREUQ8QZ/JZICHXrZZtICLuBjCKf1jTMSKruMUe+Sa0CS7NWrHJJEphP+Nsl990ymk
-	qoUj1fY2eWNxGeorlB4YTIr8ql1r3hITgZ9cMTX4oAvCEuyxAOdaZ4gBurHc69/Uu94Vp3bF/9f
-	GFSInLygCpk7zkvbLrg6WulbW90t7KWEdUhi8nReos/A3b1+KxawPsC41EGFDDWWOSrt3kNEAZT
-	NybpmsOZX/YqxM1BDDCPRk3Ed2Cfz+onPfL80=
-X-Received: by 2002:a05:6871:eb14:b0:448:4fe7:8b68 with SMTP id 586e51a60fabf-458c1ae9978mr746417fac.26.1785393325602;
-        Wed, 29 Jul 2026 23:35:25 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-26.dlp.protect.broadcom.com. [144.49.247.26])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-458c2bb1e9esm107852fac.14.2026.07.29.23.35.25
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 Jul 2026 23:35:25 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c15f0aea084so139523866b.0
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 23:35:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="pHZHCR7C"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2d004f135b1so24567005ad.3
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 23:38:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1785393324; x=1785998124; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1785393500; x=1785998300; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gGidP0vHSPV0NPul0Vyzr/cFRYrRFVowQdSQZFiXkIw=;
+        b=pHZHCR7C3tPT3Z0r4VooonpWF4QZlEuUJnGudgBKFC2RitXrAmnzkSPkhrhLlF2fKs
+         mLHD1MaDmhd1yr1tGy4JyXW3FhZ1dO88b04iMaW76E+hURKiq0Eu8DNLqtYVF+SpZ5+G
+         gRPSWAhWz5L7D/SLEhZjJip+i+OlQTPK+NRpxxTQokfvn/lCbBmcILN7fqI88WBDcv54
+         TPUQnkIZpb6pI2vwh4FIAoCWPSFWStSLMz7MZkB8F8KmMZhs8GpUy/Wyow/DEpy3aZL8
+         T7s9YAVkd/I74rwyfPjcTpImFB7z3fJ+ysE2CVA/Eh9Hrl7Xi61z72WwOSWu6bAj/RmP
+         Mjtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785393500; x=1785998300;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=o4txhQCdGGm69Rz7gvizavJPPFx4klwZzUSI5gjzUvc=;
-        b=bMPnjGfryec8jfUZx+MTsyoB8iB34Obgiy6lTi9AlUu7RKtm79C6FAHQDSCrqArTCf
-         v+yWT8a9b6lb8p/x7TIpcFnstMFf2s3xiAxLoSkPug2rT2Vwa51vtD2dF2682sQn4inu
-         XWFf1BNOijTgAY8SUgRDxZtoGJYq4YTbL3DfU=
-X-Received: by 2002:a17:907:9625:b0:c1c:6150:c2f1 with SMTP id a640c23a62f3a-c1fa53ab08emr70827766b.8.1785393323828;
-        Wed, 29 Jul 2026 23:35:23 -0700 (PDT)
-X-Received: by 2002:a17:907:9625:b0:c1c:6150:c2f1 with SMTP id
- a640c23a62f3a-c1fa53ab08emr70826066b.8.1785393323416; Wed, 29 Jul 2026
- 23:35:23 -0700 (PDT)
+        bh=gGidP0vHSPV0NPul0Vyzr/cFRYrRFVowQdSQZFiXkIw=;
+        b=mFNNa7XEOWyovq1HwfYSLcY/1yZm91acxiRVBxxLLtZm7MwvIcxs5bp4xuNHkqK2CN
+         krRa21ObKaPmjfd/OStQy5s6R1QzNdVK42qO7cB0/PggcryjODYOvnT9qX0TeWPGwxm4
+         lGVkDjgyUF4mAmEgFYjY8cLwRIOfDWuSAUbzfMkfCo0hNCnn4XQ13VcMvwu3QlK6Ehcy
+         zKLVas8dacgqVvpCt1NiofjGlu5ysqhafQiIhNfqX3CKVhtua8KDMFyggU35NQ8pN2zw
+         dHFm6HtOXCoL6APuVvpZkWkuoC13JtUbxVn2/kxlsoTv0kuH8VuUuTDRcVXlk+dWx85e
+         b1Wg==
+X-Forwarded-Encrypted: i=1; AHgh+RoMWe95hw00drV39fQm7TseP+p+LeChxBmwHywbofUgq6bK2pzgERJLBWD390+RQXRR51aMajE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx383RKqznNgC8f3hkI3RtmKyL0t4zkilOBZgVrecQRXbrvLdyn
+	LZAV+gEXzrhX4yFNQuY55BuWNByEbn1RceNwqdyh9fGW8atTvx5TY5Y5JUy1WxcgtiY=
+X-Gm-Gg: AR+sD10roEvCj50YgunYXwrCYH+P+E8mYZNUVkV8D8mqmKx4ERkMT61Z4nvFJVlRfTF
+	nMEux86HOhMrBxjwxFEi5JCH7ppB1P58KX0hkDMVsTg0JUOYQ0ANTTTRmCdQGtQPE8cqpBvTyWh
+	K9q8/r2I8a5MZyc/nAK3rK/8k5TprCRe4+Logyh4GI0w4+7jYRPIDGMye3rq5dp3v67/UFO8b9i
+	kJ8ZEacr5WMPsUwkhsgE1mE2jvDvGFR4tZOGSXXMPNgXkDCV/GcKpjwN58X1o39QiwX37tkRzRJ
+	dy8pi1DkE3CLDlKSa9xl8/lTkpta/RRTY4F/If8WbGf6xaQN7lQ/UGyZHoDGY2SqoRuWogSWaaN
+	MKLWMraW3djbvjg5JAhy0A5dSXawFW1djBg9G8recpHPV4TuZol4BZeeLp/SvROaiW8QLqnFZfI
+	KbEiCCCxyCC4XZOr4p3Ux2FKxaLCDtInubWC7u5q6MfAzwTZzwRrmZ8wrjWGSdVdyVZgm3FnncH
+	Q7Z9PEHXfGWix0NrA==
+X-Received: by 2002:a17:903:1a2f:b0:2ce:8e70:3210 with SMTP id d9443c01a7336-2d035bdde67mr15176115ad.16.1785393499622;
+        Wed, 29 Jul 2026 23:38:19 -0700 (PDT)
+Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022a15303sm21373135ad.3.2026.07.29.23.38.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Jul 2026 23:38:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260710042400.3996847-1-michael.chan@broadcom.com> <20260710042400.3996847-10-michael.chan@broadcom.com>
-In-Reply-To: <20260710042400.3996847-10-michael.chan@broadcom.com>
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Wed, 29 Jul 2026 23:35:11 -0700
-X-Gm-Features: AUfX_my0U3xxMIGWrks9f9340Ak6HTz4u-L2KfRAz3IjgUoibJequBXCleJAhLE
-Message-ID: <CACKFLimbGNJSg23FuzrTehD63K644eGKu9yuVJGfshyZN+odww@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 09/15] bnxt_en: Add infrastructure for crypto
- key context IDs
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, pavan.chebbi@broadcom.com, 
-	andrew.gospodarek@broadcom.com
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000de4a3d0657ce46f3"
-
---000000000000de4a3d0657ce46f3
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 30 Jul 2026 02:38:18 -0400
+Message-Id: <DKBP6A3V5I02.3GNQ1SEZST1F0@etsalapatis.com>
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: "Chengfeng Ye" <nicoyip.dev@gmail.com>, "Pablo Neira Ayuso"
+ <pablo@netfilter.org>, "Florian Westphal" <fw@strlen.de>, "Phil Sutter"
+ <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
+ <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
+ <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, "Alexei
+ Starovoitov" <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
+ "Jesper Dangaard Brouer" <hawk@kernel.org>, "John Fastabend"
+ <john.fastabend@gmail.com>, "Stanislav Fomichev" <sdf@fomichev.me>, "Kumar
+ Kartikeya Dwivedi" <memxor@gmail.com>, "Lorenzo Bianconi"
+ <lorenzo@kernel.org>
+Cc: <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <bpf@vger.kernel.org>
+Subject: Re: [PATCH bpf] bpf: Fix netns reference imbalance in conntrack
+ kfuncs
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260729163141.213611-1-nicoyip.dev@gmail.com>
+In-Reply-To: <20260729163141.213611-1-nicoyip.dev@gmail.com>
 
-Responding to Sashiko comments:
-https://sashiko.dev/#/patchset/20260710042400.3996847-1-michael.chan%40broa=
-dcom.com
+On Wed Jul 29, 2026 at 12:31 PM EDT, Chengfeng Ye wrote:
+> The opts argument of the BPF conntrack kfuncs can point to a shared map
+> value.  __bpf_nf_ct_lookup() and __bpf_nf_ct_alloc_entry() read
+> opts->netns_id separately when acquiring and releasing the network
+> namespace reference.
+>
+> The reference imbalance can occur as follows:
+>
+>   CPU 0                                  CPU 1
+>   read opts->netns_id (-1)
+>   skip get_net_ns_by_id()
+>                                          write opts->netns_id (id)
+>   read opts->netns_id (id)
+>   put_net(net) /* no matching get */
+>
+> The reverse transition leaks the reference.  Repeating the unmatched put
+> can destroy a live namespace and crash later users.
+>
+> The kernel reported:
+>
+>   Oops: general protection fault, probably for non-canonical address
+>   KASAN: null-ptr-deref in range [0x00000000000000e8-0x00000000000000ef]
+>   RIP: 0010:bpf_prog_test_run_xdp+0x52c/0x1700
+>   Call Trace:
+>    __sys_bpf+0x1662/0x50c0
+>    __x64_sys_bpf+0x73/0xb0
+>    do_syscall_64+0xf9/0x540
+>    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>   Kernel panic - not syncing: Fatal exception
+>
+> Read netns_id once with READ_ONCE() and use that value for validation
+> and the matching get/put pair.  Each invocation then consistently uses
+> either the calling namespace or a referenced namespace.
+>
+> Fixes: aed8ee7feb44 ("net: netfilter: Deduplicate code in bpf_{xdp,skb}_c=
+t_lookup")
+> Fixes: d7e79c97c00c ("net: netfilter: Add kfuncs to allocate and insert C=
+T")
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 
-On Thu, Jul 9, 2026 at 9:24=E2=80=AFPM Michael Chan <michael.chan@broadcom.=
-com> wrote:
+Sashiko is right on this regarding all other fields of opts having the
+same issue. While they can't lead to a crash, let's still snapshot them
+at the beginning of the function so they don't change from under us.
+This is still far from ideal - we may read an inconsistent snapshot of
+the struct - but it's backed by BPF program-controlled memory so AFAICT
+this is the best we can do.
 
-> +void bnxt_clear_crypto(struct bnxt *bp)
-> +{
-> +       struct bnxt_crypto_info *crypto =3D bp->crypto_info;
-> +       struct bnxt_kid_info *kid, *tmp;
-> +       struct bnxt_kctx *kctx;
-> +       int i;
-> +
-> +       if (!crypto)
-> +               return;
-> +
-> +       /* No concurrent access; see the locking note above. */
-> +       for (i =3D 0; i < BNXT_MAX_CRYPTO_KEY_TYPE; i++) {
-> +               kctx =3D &crypto->kctx[i];
-> +               list_for_each_entry_safe(kid, tmp, &kctx->list, list) {
-> +                       list_del(&kid->list);
-> +                       kfree(kid);
-> +               }
+pw-bot: cr
 
-Sashiko:
-Is the locking assumption stated in the comment always met?
-Looking at bnxt_io_error_detected() in bnxt.c, it appears to call
-bnxt_clear_crypto() without clearing BNXT_STATE_OPEN or synchronizing again=
-st
-asynchronous socket closures:
+> ---
+> Please queue this fix for stable kernels.
+>
+>  net/netfilter/nf_conntrack_bpf.c | 20 ++++++++++++--------
+>  1 file changed, 12 insertions(+), 8 deletions(-)
+>
+> diff --git a/net/netfilter/nf_conntrack_bpf.c b/net/netfilter/nf_conntrac=
+k_bpf.c
+> index f98d1d4b42c3..8b540846f299 100644
+> --- a/net/netfilter/nf_conntrack_bpf.c
+> +++ b/net/netfilter/nf_conntrack_bpf.c
+> @@ -122,6 +122,7 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_s=
+ock_tuple *bpf_tuple,
+>  	struct nf_conntrack_tuple otuple, rtuple;
+>  	struct nf_conntrack_zone ct_zone;
+>  	struct nf_conn *ct;
+> +	s32 netns_id;
+>  	int err;
+> =20
+>  	if (!(opts_len =3D=3D NF_BPF_CT_OPTS_SZ || opts_len =3D=3D 12))
+> @@ -134,7 +135,8 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_s=
+ock_tuple *bpf_tuple,
+>  			return ERR_PTR(-EINVAL);
+>  	}
+> =20
+> -	if (unlikely(opts->netns_id < BPF_F_CURRENT_NETNS))
+> +	netns_id =3D READ_ONCE(opts->netns_id);
+> +	if (unlikely(netns_id < BPF_F_CURRENT_NETNS))
+>  		return ERR_PTR(-EINVAL);
+> =20
+>  	err =3D bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
+> @@ -147,8 +149,8 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_s=
+ock_tuple *bpf_tuple,
+>  	if (err < 0)
+>  		return ERR_PTR(err);
+> =20
+> -	if (opts->netns_id >=3D 0) {
+> -		net =3D get_net_ns_by_id(net, opts->netns_id);
+> +	if (netns_id >=3D 0) {
+> +		net =3D get_net_ns_by_id(net, netns_id);
+>  		if (unlikely(!net))
+>  			return ERR_PTR(-ENONET);
+>  	}
+> @@ -171,7 +173,7 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_s=
+ock_tuple *bpf_tuple,
+>  	__nf_ct_set_timeout(ct, timeout * HZ);
+> =20
+>  out:
+> -	if (opts->netns_id >=3D 0)
+> +	if (netns_id >=3D 0)
+>  		put_net(net);
+> =20
+>  	return ct;
+> @@ -186,6 +188,7 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct net =
+*net,
+>  	struct nf_conntrack_tuple tuple;
+>  	struct nf_conntrack_zone ct_zone;
+>  	struct nf_conn *ct;
+> +	s32 netns_id;
+>  	int err;
+> =20
+>  	if (!opts || !bpf_tuple)
+> @@ -201,7 +204,8 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct net =
+*net,
+>  	}
+>  	if (unlikely(opts->l4proto !=3D IPPROTO_TCP && opts->l4proto !=3D IPPRO=
+TO_UDP))
+>  		return ERR_PTR(-EPROTO);
+> -	if (unlikely(opts->netns_id < BPF_F_CURRENT_NETNS))
+> +	netns_id =3D READ_ONCE(opts->netns_id);
+> +	if (unlikely(netns_id < BPF_F_CURRENT_NETNS))
+>  		return ERR_PTR(-EINVAL);
+> =20
+>  	err =3D bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
+> @@ -209,8 +213,8 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct net =
+*net,
+>  	if (err < 0)
+>  		return ERR_PTR(err);
+> =20
+> -	if (opts->netns_id >=3D 0) {
+> -		net =3D get_net_ns_by_id(net, opts->netns_id);
+> +	if (netns_id >=3D 0) {
+> +		net =3D get_net_ns_by_id(net, netns_id);
+>  		if (unlikely(!net))
+>  			return ERR_PTR(-ENONET);
+>  	}
+> @@ -225,7 +229,7 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct net =
+*net,
+>  	}
+> =20
+>  	hash =3D nf_conntrack_find_get(net, &ct_zone, &tuple);
+> -	if (opts->netns_id >=3D 0)
+> +	if (netns_id >=3D 0)
+>  		put_net(net);
+>  	if (!hash)
+>  		return ERR_PTR(-ENOENT);
 
-bnxt_io_error_detected()
-  if (pci_is_enabled(pdev))
-    pci_disable_device(pdev);
-  bnxt_clear_crypto(bp);
-
-Response:
-Yes the locking assumption is always met.  In
-bnxt_io_error_detected(), we do this under netdev_lock():
-
-if (netif_running())
-  __bnxt_close_nic()
-
-So BNXT_STATE_OPEN is always cleared and the device is quiesced before
-we call bnxt_clear_crypto().
-
---000000000000de4a3d0657ce46f3
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
-qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
-5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
-rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
-qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
-2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
-K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
-H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
-Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
-WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
-q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
-2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
-bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
-R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCD2BW77
-NvJNfDd7sCAkcgvIOYlTozSscNDHcP3QJNY3DDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjA3MzAwNjM1MjRaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBAe279Dg+SOCj28Pmq8rFC9Xmwm43vQIEP1dpFyZgS
-hddH6Gv6UtkzpjoGcGBEhdwjRFUG78/sKH9KYhTBXx4aTblRVxwUEXGroF2/COiuz3lbymW/SGuq
-pdkyh8BoewIIMuBVBkH6DKwlQF9WJXptN9z1kybi2aoMLixTh5Y4cP5x4i7U08swCXqpke3IgpQ8
-zesQIF7wJyf8Xo9fhmKRjc8hVT+WkuPvfifxKWWCw36Qhe0S3xW9zT++K2fZ9HD2YpX0+/mPYHYy
-SVhO4TuqKkEG/uPbo8NEQ5U0cr5AdgO3JyIM6VYdskXR2DB36qzk+rWtUdoowwj1IcUM9Qxu
---000000000000de4a3d0657ce46f3--
