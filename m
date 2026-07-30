@@ -1,63 +1,65 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A92A3BA22C
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 20:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EB03A8722
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 20:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785442303; cv=none; b=tTXf9N+WtRSe/1MCUCcZ4/EFw4ZdC9vonYZyUtD/EKwj8EMKSTqaRijOSSOWIdeCr/NPHRmflXC0FhO61Tk5DPmUqbu0Nqva87PTX3CElJA4XJt8rvXm3HzplYEW1Qf5ZaLddpi95I3Eaw6sbg1Ld1COJRddL/87gro21IpY26A=
+	t=1785442310; cv=none; b=C3yI8r/vE/zuNgU1CiL3blGlvaKsxYsTqJP6HfTg3vxZN61YoJR5423grqbJDRCE5SVne+b/FqmXPW2BEUYNjUmGJv0PaeNl+eY6S+FWJVtyNxemu3WW02UXU1yR7273bNhO74C2iwioMLSH5bWxdAuiiA8G4wL0O2Dqq4cYaIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785442303; c=relaxed/simple;
-	bh=kG0V+A0XD3vYLFfqsb3MVX9KgiOaGk9ZgE+CUb0lYYI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A36PtWED24NWilf/oXrRF2KZ0NOK6z7l+rrnUpRJ+s5fKksbKu8L00CR3CVF3yYO4y9G53kJEte3AnQzasEBOocd/6cRtox7dYWoZ0rLZVKGwi2t0c786zCL9uScG/VRnQcuItG3ttnHaIWTl95szzoRYh0iTjYNbaVKtUEppUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XuOVa+dM; arc=none smtp.client-ip=209.85.210.171
+	s=arc-20240116; t=1785442310; c=relaxed/simple;
+	bh=ywoJVudyQly2BSU4Suu/ELob67veyV2IT2JljVMnXPQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=dJbodwP0OE3TKg99n0vkaWSddxrzuGZldEfZQ9lBiskOUBkK7joI7fduGJdhF8vXjJp/+GuaOB/rP1PyxJSyHI07ZaESARHqjpY8UUIMZfDh57WAoWX0PHtHg9KCOsp8bu/heKl9OgWCHHGLev6TTkDyezZ2drlLii8lJxRtC7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZZE+rgqp; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XuOVa+dM"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8487214ad2bso436848b3a.1
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 13:11:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZZE+rgqp"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84a4d8fd6ecso324288b3a.1
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 13:11:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785442293; x=1786047093; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yHhFvDLdT6/nmSmrERMl9Q942exbwnTVnKlPTxRQFfM=;
-        b=XuOVa+dMzlyDnn1BPSEEkX8oQBMdZwJU3JHkj7ujkeimyVzNW4XtIL0ta4GZOCF5WQ
-         TqoPWfhu3/KDNjOZuh6sgU45OT2fh6REyZTbi9wdDzAm9GPFSdN63bpGnNu68Q5ekCsG
-         VXXAmaXJncYUeWavSekd2+APgLcqTC21lnBfWVigp3euL/NYsJeU8+5+dV41bWusPaUQ
-         qfp0hlMBpS72XQd9F4YNNdLna/zgBC5qAlUEXq8EAPy9OYQtlrtJOG7k/Erv/PcdZvL8
-         F0Z8s+vUf1qeQvqOvenlNMgXdVph70GggaKYJY16laaBcroDHt+CDCx+dVaubKYGXfRK
-         k5dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785442293; x=1786047093;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1785442301; x=1786047101; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=yHhFvDLdT6/nmSmrERMl9Q942exbwnTVnKlPTxRQFfM=;
-        b=F9iCER4mGqLTA05ZbxIQDsR/2U7FeqZJQR34i+d2H62CPVQEgs00O/7uxZ7M4j9nj/
-         BxXfAtYcBG2oX1nWzYWkyRgeFRDHxqC+nm4jW8KklCxyBdC3bVt8nXPjDllQzz3qUxUo
-         F2clxgl/dvT9Plo87epgERxGaB0zgowgI5ChEPSbbH7vzZ2VmVNsGji37qkuO+dyxcCX
-         p9sMbwAygpv1hH9kD+MKCh0zNzyftzw4PEl0qjhIrdvxeA+C6z/wK6/n7Z2vJHhsKTtb
-         zlB40hY64a2tyRF0yAHynW6679lixSt0SsJYVGbNIo5bq+FeN5fKgHcSg/8e2Xa0ukSs
-         MbnA==
-X-Forwarded-Encrypted: i=1; AHgh+RrV6H50GiVSIGsamK8mpSmdLfkiJNoasDkevT5VHiOfEIYXAtLwj8KB4B0b99RiScqsNPxmIzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMDTKWHfqylOEVi0pCbM5XBEMX3SDBX/dOYlOjkBMSe/6aphA2
-	2XBuC8g+940X8u26nDXWUbyHuBfhxJ7L1H9Y0N8VGQEie4VNA5KYvHdY
-X-Gm-Gg: AR+sD11RsvHHX7W4k6s+DmnHCfz1l3YQw9VNVXx64mF7FzvQqnx4TKeqpaZ40sR0w04
-	O6hLFJsoavQNS9e67qzOCEe5AkRHsP+N93uXDu5QSx2Di21WlCa3je/kksZ62aQpnCxUJkXCiIJ
-	Yfde1GOuQDHnh/Nrf5tBtPwrFtHjGtrSJbIloV86O6PGU9IOI9a7z34a1BFuZL2rpNjKqXHe+/p
-	2T3FAJojF8OLJajYnVXhI7Ur/OKkL4yT/a6aDn3l5XV1Vc8h+7NcFcEpSmFuCZCYzmOmUxdHpgc
-	VlaiMf5oAXHjr0nHhW5B7rTNSvf0C6DqMoUavBh4UaChrJV0bb1HOYdgrvoMVuUrrpfY26JGN1s
-	MS++t5tWvTtAmhE6DW6poTL+BydTwFQahYN/02qMp7Pkqq9dHBQ8adcc3QaQ0kmPLJGMU22Er0Z
-	usclUDFIcWwxfFpaOPsc62HVfPpVDVaN4GCFqJ7vXMMpneePyP8/Iw5W3/1GU1itwVAd7S8zhmb
-	iW3oS6xWFnXd8xPyG62oDHei9S1kWui3xTGZmvhhJ4=
-X-Received: by 2002:a05:6a00:1150:b0:845:d284:9e0a with SMTP id d2e1a72fcca58-84ebc425164mr3944086b3a.49.1785442293425;
-        Thu, 30 Jul 2026 13:11:33 -0700 (PDT)
+        bh=SiwSGXnRH3TAjHZf8TYJ+bLPyzkydxq8UaVMUOfakl0=;
+        b=ZZE+rgqpWGO8ojZDXUbip2ounkYY1eNg1d/0oFePsUOEIaLoBEWK68sJkW7Do71l+c
+         mv2c21/bWO0tG92lgpzz8W59tzWOgzs5Dyb+TSZ63ocakvnEwITXuv2zLJHhH5YoFoUf
+         h32nb2ymWScCbUNtfx1Wh9iEYigiS3fehlP6otLLhF/HFqkH3dC9bLl/rlouFDNV1lNp
+         57RGYHcbxYHG6TKhdjIMrOTJSX6ljivYWRSYXrsjc9RyVX3bqWyG84P2MnMo2XJKI8jQ
+         DgjQ+LjftpwVskuSqBOBR/leyinBmGfR93VbzVs5jHN5dy6CqqY8jpajaPK5QyvgGU9L
+         qCGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785442301; x=1786047101;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SiwSGXnRH3TAjHZf8TYJ+bLPyzkydxq8UaVMUOfakl0=;
+        b=krt3oI9u6Y3felX4V4NUZYHk2LO6xuVGV0uBJDoQRXrYzpgr1Uw5HcZ1zbfs+IMoV6
+         aRLe6tR0h5DKgpBdtw4Hleq3qJDdCW2mNgeBJfH58Z1U435VIvUWEoR2NN6ApWFmexQZ
+         wM3Zb8RGJ/Bvo/yGG3dlNVlxpHjtdbnyCEid029I94hoMBPXT5FuRXxeSD6J2uMgRqZQ
+         Tgy08SgL13G8CxC23S20Twrllb3x7OTR4/zYosjaqmE6m61Ax/vlR1hjttoqIuo713Ey
+         s/nrbVA0fJcoGfETPg++5s2j7GoziL3RWZDwDH8182TWxLvPJaTVBA8CUOHvC0oZIN7X
+         oJjA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp9DB6+hnAmFS7Bk1eEC4mxjPVShgoE3CUvk+cu5j/lEcZ7mpa3xEpibOMIo99Ax9+Q/s6O/f4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/3PRns+nY4Lgur/z+ykeClrd3z1Bvj6DtQLy2D/kW3/SxvCGa
+	k4acmbTWJf8ooOw0vYwc0T+fcoB/qDfL8IMtJxdme5uSMB9gbZ6OiifL
+X-Gm-Gg: AR+sD11CTgRwLwYYHF4xcWIWl6AdYQUf7u7N8vAU0ZvWavn9QiehVseBfNsNDeOvsLb
+	u1M6wOsR3vAIr4TVH70DpshAaTe+2TEZTSLewAjrUdJcPmtja4Ah897keOqlgTV4wfnJy1qrm3K
+	ThRe2ik7Ny8WDYAM0g67U5iegKAKRMdTdECy1ISGkTc4BLhBFy2Bw4DrjKcyIUF2MJE1F5WiVBD
+	mk8USdVWr4uR8kyFzkEiEmStyBbuysr+kVb2WK0+55R9ybtJKH9oHTjYeJ+H4dkepkqyUKSESQC
+	gdAwBtV+QTZSFITro046Y+92TMaXZUo4BSqjTSnLYmsLj5h0xu16RxrYPDHW651iOa4iO+7WmHm
+	vnb8bzA0nW05H1VegM6nsNj5Zy7qZeZARoag2ttikys4GXzPPz5N7t4vWx04v7Zn7Xllr04rOGy
+	TER8uoxh/VH2auPRPcWA+5EEz8NwaYMn5cMc4USrrZKxS9UZX1bZtTdiKVJ87NhAPgbX6P8DNDC
+	NKvDcDo1vUwux3ppS2EJNkxIwgc5wru/fQXr0czRnWkHPcPLKdlpQ==
+X-Received: by 2002:a05:6a00:1391:b0:848:56ff:6ced with SMTP id d2e1a72fcca58-84ebc1f5844mr3898044b3a.8.1785442301426;
+        Thu, 30 Jul 2026 13:11:41 -0700 (PDT)
 Received: from localhost.localdomain (c-174-165-208-10.hsd1.wa.comcast.net. [174.165.208.10])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea0055325sm3689108b3a.15.2026.07.30.13.11.31
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea0055325sm3689108b3a.15.2026.07.30.13.11.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 13:11:32 -0700 (PDT)
+        Thu, 30 Jul 2026 13:11:40 -0700 (PDT)
 From: Michael Kelley <mhkelley58@gmail.com>
 X-Google-Original-From: Michael Kelley <mhklinux@outlook.com>
 To: kys@microsoft.com,
@@ -93,10 +95,12 @@ Cc: x86@kernel.org,
 	netdev@vger.kernel.org,
 	linux-scsi@vger.kernel.org,
 	virtualization@lists.linux.dev
-Subject: [RESEND PATCH 0/6] Remove support for Windows Server 2012/2012R2 & Win8/Win8.1 versions of Hyper-V
-Date: Thu, 30 Jul 2026 13:11:17 -0700
-Message-Id: <20260730201123.1767-1-mhklinux@outlook.com>
+Subject: [RESEND PATCH net-next 3/6] hv_netvsc: Remove GPADL teardown special case for old Hyper-V hosts
+Date: Thu, 30 Jul 2026 13:11:20 -0700
+Message-Id: <20260730201123.1767-4-mhklinux@outlook.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260730201123.1767-1-mhklinux@outlook.com>
+References: <20260730201123.1767-1-mhklinux@outlook.com>
 Reply-To: mhklinux@outlook.com
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -106,81 +110,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Linux code for running as a Hyper-V guest includes special cases for
-running on Hyper-V in WS2012/2012R2 and Windows 8/8.1. These versions
-were initially released 14 years ago, and official support ended in 2023
-(unless a customer has contracted for extended security updates). Given
-the release of subsequent versions with improved functionality, there's
-no need to continue to support the latest Linux kernels on these versions
-of Hyper-V. If someone is running Linux on one of these older Hyper-V
-versions and doesn't want to upgrade, they can continue to do so as
-presumably they don't want upgrade the Linux version either.
+With the overall removal of Linux support for running on Hyper-V
+hosts earlier than WS2016 and Windows 10, the special case handling of
+GPADL teardown is no longer necessary. Remove it.
 
-Simplify Linux code by removing special cases for running on these
-old versions of Hyper-V. This includes removing the negotiation of the
-VMBus protocol versions for WS2012/Win8, and the special case code based
-on those VMBus protocol versions. Changes are in the core VMBus code and
-several drivers for synthetic VMBus devices.
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+---
+ drivers/net/hyperv/netvsc.c | 20 +++-----------------
+ 1 file changed, 3 insertions(+), 17 deletions(-)
 
-Some VMBus drivers have device-specific protocols with the Hyper-V host.
-Further simplify the code by removing the use of protocol versions that
-are specific to WS2012/Win8 and earlier.
-
-Finally, the WS2012/Win8 versions of Hyper-V were the last to use
-messages to deliver synthetic timer interrupts. Starting in WS2016/Win10,
-stimer interrupts are delivered to their own assigned interrupt vector
-(called "Direct Mode"). So remove the code for handling timer interrupts
-delivered as messages. This removal has a broader benefit in removing
-a key blocker to disentangling VMBus code (which handles the messages)
-and stimer code, as they should be independent of each other. The
-final disentangling will come as a follow-on patch set.
-
-Testing:
-* VM on local Hyper-V on up-to-date Windows 11
-* Added temp debug code to suppress Direct Mode enumeration. Fallback
-  to LAPIC timer worked as expected (x86/x64 only)
-* Azure VM DC16eds v6: TDX CoCo VM with HvLite paravisor
-* Azure VM DC16ads v6: SEV-SNP VM with an older paravisor
-* Azure VM D16alds_v7: normal AMD x86 VM with HvLite paravisor
-* Azure VM D16plds v6: normal ARM64 VM with MSFT Cobalt processor
-* Not tested running in VTL2
-
-There's no specific urgency to removing the special case code for
-WS2012/Win8, so if the broader Linux kernel community surfaces
-a reason why this clean-up should not be done now, we can wait.
-But I think we want to eventually stop carrying around this extra
-baggage, and based on discussions with the Hyper-V team within
-Microsoft, we're past the point that it has any value.
-
-Michael Kelley (6):
-  Drivers: hv: Remove support for WS2012/2012R2 & Win8/8.1 version of
-    Hyper-V
-  hv_sock: Remove check for old Hyper-V hosts
-  hv_netvsc: Remove GPADL teardown special case for old Hyper-V hosts
-  drm_hyperv: Remove support for synth video protocol of old Hyper-V
-    hosts
-  scsi: storvsc: Remove support for storvsc protocol of old Hyper-V
-    hosts
-  clocksource: hyper-v: Remove support for stimer interrupts in message
-    mode
-
- arch/x86/hyperv/hv_init.c                 |  17 +--
- arch/x86/kernel/cpu/mshyperv.c            |   4 +-
- drivers/clocksource/hyperv_timer.c        | 150 +++-------------------
- drivers/gpu/drm/hyperv/hyperv_drm_proto.c |  33 ++---
- drivers/hv/channel_mgmt.c                 |   4 -
- drivers/hv/connection.c                   |   8 +-
- drivers/hv/hv.c                           |   4 -
- drivers/hv/hv_balloon.c                   |  36 +++---
- drivers/hv/hv_snapshot.c                  |   5 -
- drivers/hv/vmbus_drv.c                    |  10 +-
- drivers/net/hyperv/netvsc.c               |  20 +--
- drivers/scsi/storvsc_drv.c                |  53 ++------
- include/clocksource/hyperv_timer.h        |   6 -
- include/linux/hyperv.h                    |   5 +-
- net/vmw_vsock/hyperv_transport.c          |   3 -
- 15 files changed, 76 insertions(+), 282 deletions(-)
-
+diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
+index 4d319c50955e..4295b96b4312 100644
+--- a/drivers/net/hyperv/netvsc.c
++++ b/drivers/net/hyperv/netvsc.c
+@@ -695,17 +695,8 @@ void netvsc_device_remove(struct hv_device *device)
+ 		= rtnl_dereference(net_device_ctx->nvdev);
+ 	int i;
+ 
+-	/*
+-	 * Revoke receive buffer. If host is pre-Win2016 then tear down
+-	 * receive buffer GPADL. Do the same for send buffer.
+-	 */
+ 	netvsc_revoke_recv_buf(device, net_device, ndev);
+-	if (vmbus_proto_version < VERSION_WIN10)
+-		netvsc_teardown_recv_gpadl(device, net_device, ndev);
+-
+ 	netvsc_revoke_send_buf(device, net_device, ndev);
+-	if (vmbus_proto_version < VERSION_WIN10)
+-		netvsc_teardown_send_gpadl(device, net_device, ndev);
+ 
+ 	RCU_INIT_POINTER(net_device_ctx->nvdev, NULL);
+ 
+@@ -733,14 +724,9 @@ void netvsc_device_remove(struct hv_device *device)
+ 	/* Now, we can close the channel safely */
+ 	vmbus_close(device->channel);
+ 
+-	/*
+-	 * If host is Win2016 or higher then we do the GPADL tear down
+-	 * here after VMBus is closed.
+-	*/
+-	if (vmbus_proto_version >= VERSION_WIN10) {
+-		netvsc_teardown_recv_gpadl(device, net_device, ndev);
+-		netvsc_teardown_send_gpadl(device, net_device, ndev);
+-	}
++	/* Must do the GPADL teardown after channel is closed */
++	netvsc_teardown_recv_gpadl(device, net_device, ndev);
++	netvsc_teardown_send_gpadl(device, net_device, ndev);
+ 
+ 	/* Release all resources */
+ 	free_netvsc_device_rcu(net_device);
 -- 
 2.25.1
 
