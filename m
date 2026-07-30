@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD3F1DA60D;
-	Thu, 30 Jul 2026 01:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEC21AF0BB;
+	Thu, 30 Jul 2026 01:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785373304; cv=none; b=juVnYsDLsyt5SgSmocKALwkCuZsxaC+DD5lIMSgOnbGqUwC1bhyU21JwC1TpiNtuMeb4VBnATAUOSdMBSYU+gCSjHeRF/jBqNtiqJVGiwkjk4lYS3k1qXRdGx6jHJwPh6mLWO9IC4pTWop9jd5B6vzlYbIs3L7xuq/XZxVbxWU4=
+	t=1785373314; cv=none; b=FYosMXoAyGucrGeSk6lvd860eGSrRGjXiqUT2AvpuyjZT6SYgcWZNAaheJZ8Y9YWr1PHY9Yx3ZZf3ZGnMlzJGBoofEWiyKMFKbQyagqPD2LOAi2qbCsTrtfq5yFfDeOwt163tpO6vM4p0hAbElp2cDWcmo+jCLWtbxV6YORcy3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785373304; c=relaxed/simple;
-	bh=gRGXzSakZiJaXj7Qpdv/+QdbrYel7A8TRVi8NA5CjvA=;
+	s=arc-20240116; t=1785373314; c=relaxed/simple;
+	bh=whzIaJD1Wk9glzs20HLSa7gLbWKZozgVkuVCS+ILZ9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5kYLCwpkHmAYUbIVVU/Z1ABvDN/7Cg+LAr5BGjH/JSE2XBhd1jlU8AQRD94af8WDUs9TkAF/B/mipN3Nf2v8/ulrfeb8xVNY3u94PrKZ/ErgUUe4MUyQ3BVCHSuzwWALvSFzC8qN8Me9WH8+9xQlcL04dJFB+xXZ4Vu01YkHwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhQYvnV7; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=Bzul93acBsnI6y9O+DC4mjZhRstst1P0CWVo1A8PnElBG1vBsYuQD3/jFYXhpoS3lyMizx3gNSL6YvcBJlYcSQm6QhLf1AAU6BYAOzfXwCIUIfv6JeTjLvqCKujmuDKgUYXsc5n/t+/yzdekcKOFU669m77kD4jHTRFCO2gkaBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TSe+G3kt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhQYvnV7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909681F00A3A;
-	Thu, 30 Jul 2026 01:01:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TSe+G3kt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7EF1F000E9;
+	Thu, 30 Jul 2026 01:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785373302;
-	bh=6LIaTLd4GrJ9A0RDu/tU48tl9MVB4sXzgCjiDvwOeRM=;
+	s=k20260515; t=1785373305;
+	bh=IV184mMzyuY3FpuiIwRjUzuaJqay2mHZ2w3om4g2Vxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hhQYvnV709x3Wh+Z4dStafefiy8obi3fYC8EuuG3SeYXV+K+8+6cUW7cKeBcytgyf
-	 jiLKU0BlRPGZUVI/+31+y+7q8WMjP8tZCOXAYyFaYdyYiDki16lN0sw2qS65a0j4H4
-	 Dhm1HcZv9fT0q6L1rR5s86qJroM97dAN4hljM3BQUfK6UOm/qsjrCu7aDVNt3xM+Bi
-	 zFpq6skLqLmfCU4OUulISb8Eh9Gmdwcz7qbtaYvnILmO20hLmOHlIf0qTGKpBxmt9b
-	 IKAIc9ddd/UI9qdoFLANRnAHUyBO7frhagAaDNgTYYLcoY4o+H+YQhZDR8Pj6LOWfT
-	 4xhtDUa/P2XDA==
+	b=TSe+G3kt0jBF7rtNkZ4GmZ6d38s0RpsexwdAct4FejZdLTmUfrQzuQSEKyaQN9G2v
+	 4w9nyOSvETLiPhRpbev4hJ+NUt7Mv3+2GIJ/TXNT0TfwgPqL5i6bRAprTmGaJohZH1
+	 mHqiPJoA/B5jNI6vJjSeQz0jYfRqoJ/pWfCEce8pBO92YxfudCVM7FjLOvBONNp4Pb
+	 PWA/+j/ZW9DXf3T2OisnwIIYGrK+Ae/p4DM45aMr7IbNStx98jyA8dLv1GJhC9mRne
+	 fGh1E4bU+v8K8mkLnj4GFHhqmQUcIKHu9hJDVnaFBUIThgSDQsP+mmNcRDfrmrC6VW
+	 lKV/1SwvYFGfw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -39,13 +39,13 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-fsdevel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 4/8] rxrpc: Allow the app to store private data on peer structs
-Date: Wed, 29 Jul 2026 21:01:33 -0400
-Message-ID: <20260730010137.1700032-4-sashal@kernel.org>
+Subject: [PATCH 6.12.y 4/9] rxrpc: Allow the app to store private data on peer structs
+Date: Wed, 29 Jul 2026 21:01:35 -0400
+Message-ID: <20260730010140.1700208-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260730010137.1700032-1-sashal@kernel.org>
-References: <2026072131-schilling-spectrum-ef97@gregkh>
- <20260730010137.1700032-1-sashal@kernel.org>
+In-Reply-To: <20260730010140.1700208-1-sashal@kernel.org>
+References: <2026072127-dress-overplay-421f@gregkh>
+ <20260730010140.1700208-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,7 +78,7 @@ cc: linux-fsdevel@vger.kernel.org
 cc: netdev@vger.kernel.org
 Link: https://lore.kernel.org/r/20250224234154.2014840-13-dhowells@redhat.com/ # v1
 Link: https://lore.kernel.org/r/20250310094206.801057-9-dhowells@redhat.com/ # v4
-Stable-dep-of: 330e2c514823 ("afs: Fix dynamic lookup to fail on cell lookup failure")
+Stable-dep-of: 26f17ce6fa3f ("afs: Fix premature cell exposure through /afs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  include/net/af_rxrpc.h  |  2 ++
