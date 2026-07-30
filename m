@@ -1,163 +1,126 @@
-Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058B43B05A9
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 05:28:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947CE2F39C7;
+	Thu, 30 Jul 2026 05:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785389304; cv=none; b=jpMVHjcP9lSsQx7gTcFqqkzBH4VUtrs0VN5h+xgwnpywA4RbEXnGfCTLAHmdGS6H2iLR0A4S1oR19MBWwp7ZEE/FFtHodeZg4tWwqth4GyoOsV4PUvcZydOGYRjOD1KDpJhXOYBN3XzccH6SPv+pIslcHhzade6D2rpQYFDvYzU=
+	t=1785390236; cv=none; b=YVa9WGhX4vFZDx15EKolY2p7M0zAP/F7GPuhsmo/JUAmNrVxOTv8200VCig6I+NgNfLM2Gi4esFl2dNzHTpzf/yLkD2QBDYbHEEb8FkdloFWFIH7oyB+xaI9K4B37Qd9ruZ7hRGyqn9E8RB6U5f318md7jDoJo05gAt9en2Xbto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785389304; c=relaxed/simple;
-	bh=yl94ymhBwsMWWLB/i/YPI6mck4HKp1tM81c1xp2Bxr8=;
-	h=Message-Id:Mime-Version:References:Content-Type:Subject:To:From:
-	 Date:In-Reply-To:Cc; b=mggcLJKfwY19mqAg6SIyGbxzBHKTfah6M0Au3kzj8kKordFD+b71YbtT9AkjltSM3KFWDWuBls0Ic6pHRfrKCOc1Z2VxJQxQK+wgUzNuGhvUZ/tX8zSHKcDOyILg9pvqy9HqcT431zilKgw101tap9hxfGo+b34MD86IZiowQlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=hRVy+pyG; arc=none smtp.client-ip=209.127.230.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+	s=arc-20240116; t=1785390236; c=relaxed/simple;
+	bh=r67pZ/vOuOMEK045wV+jH6NC7RflH5Q1MUGdqlyGvSc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qKLpe7bEvL2PMXf8Og8SwCHl1nRRezl+ZZu8Is435/YatOfDOsvVAUf0UvsdVC5ZfsV2+QW7lG+NnlGM1KPbJ54VgHoHDE0ua99DEz+9BhoqQgYs3xc3x5FoZs3+DSI7KKNtM9l0ikc/UYlI1I5EENhfD/QXA8OU7Iswv+mvvQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=bWmVau9z; arc=none smtp.client-ip=115.124.30.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="hRVy+pyG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1785389290; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=NodeUa70AZXIC374qnjJWxHQAwni28ruRy38JLx9Ks0=;
- b=hRVy+pyGl2ZbG5Rwi+a2zlJagZCgDG2N0lgJm5G1WhLMYMPWmj+gmNNhMxUpT43hWfEXtZ
- uel71TRXNokpRCCAsxU2TFsydM+0RD0xySetjCwxCYSJOuOxae5I7BB1fZkdRdkdR3JS3z
- nPc1MBwScnlePDMBtA4TOUYdPYLJXLSLEvcsEYIdS5/RKr9DrjRrZPc9GfYPJV0czKBYfO
- LfXpr6sAXHGcIjc7T6D0pB6SODBli8hCIbnv9jpm5NcWi0QVgCoOxa3XqzpaYLZKQKv3wr
- hqIYcE7TtsT2uME2I1Hd14iTYmrN4DneGMPT4Jq1SlmHzj2FS1CjcwZIluNviA==
-Message-Id: <20260730052752.25116-1-guojinhui.liam@bytedance.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="bWmVau9z"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1785390224; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=wpE+mVKTeJAkeuJ9qronGd9HrTv1M9cJYsVrmp3yGDA=;
+	b=bWmVau9z5gpxXrsP9SDECU0s3/p9VE0x9PLmCDCJrmwrMvJsQpZ39wEVPUUMSBOrxxYs1S+yx0emexxhhHN/ocdmTMteAGJk1IRCnUp6y1zTanhNSMATLekycF1h2VOeZuBorXWGYTGSycaX7q/sXq5XE5wAdXjSRPNgewf9Gd4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=alibuda@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X84.V02_1785390223;
+Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0X84.V02_1785390223 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 30 Jul 2026 13:43:43 +0800
+Date: Thu, 30 Jul 2026 13:43:42 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com    >
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Cc: "D. Wythe" <alibuda@linux.alibaba.com>, wenjia@linux.ibm.com,
+	wintera@linux.ibm.com, dust.li@linux.alibaba.com,
+	tonylu@linux.alibaba.com, guwen@linux.alibaba.com, kuba@kernel.org,
+	davem@davemloft.net, netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+	leonro@nvidia.com, pabeni@redhat.com, edumazet@google.com,
+	sidraya@linux.ibm.com, jaka@linux.ibm.com,
+	oliver.yang@linux.alibaba.com
+Subject: Re: [PATCH net-next v4 3/3] net/smc: transition to RDMA core CQ
+ pooling
+Message-ID: <20260730054342.GA116570@j66a10360.sqa.eu95>
+References: <20260716113745.65234-1-alibuda@linux.alibaba.com>
+ <20260716113745.65234-4-alibuda@linux.alibaba.com>
+ <92ba5a37-3496-424c-8425-6535515c01ce@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260730051341.24930-1-guojinhui.liam@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Subject: Re: [PATCH] net: usb: cdc_ether: add quirk for AMI BMC stale link events
-X-Lms-Return-Path: <lba+26a6ae0e8+b49e2b+vger.kernel.org+guojinhui.liam@bytedance.com>
-X-Mailer: git-send-email 2.17.1
-Content-Transfer-Encoding: 7bit
-To: "Oliver Neukum" <oliver@neukum.org>, 
-	"Andrew Lunn" <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, 
-	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
-	"Paolo Abeni" <pabeni@redhat.com>
-From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
-Date: Thu, 30 Jul 2026 13:27:52 +0800
-In-Reply-To: <20260730051341.24930-1-guojinhui.liam@bytedance.com>
-X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
-Cc: <linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <92ba5a37-3496-424c-8425-6535515c01ce@linux.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-Hi,
+On Wed, Jul 22, 2026 at 05:17:15PM +0530, Mahanta Jambigi wrote:
+> 
+> 
+> On 16/07/26 5:07 pm, D. Wythe wrote:
+> > Performance Test: redis-benchmark with max 32 connections per QP
+> > Data format: Requests Per Second (RPS), Percentage in brackets
+> > represents the gain/loss compared to TCP.
+> > 
+> > | Clients | TCP      | SMC (original)      | SMC (cq_pool)       |
+> > |---------|----------|---------------------|---------------------|
+> > | c = 1   | 24449    | 31172  (+27%)       | 34039  (+39%)       |
+> > | c = 2   | 46420    | 53216  (+14%)       | 64391  (+38%)       |
+> > | c = 16  | 159673   | 83668  (-48%)  <--  | 216947 (+36%)       |
+> > | c = 32  | 164956   | 97631  (-41%)  <--  | 249376 (+51%)       |
+> > | c = 64  | 166322   | 118192 (-29%)  <--  | 249488 (+50%)       |
+> > | c = 128 | 167700   | 121497 (-27%)  <--  | 249480 (+48%)       |
+> > | c = 256 | 175021   | 146109 (-16%)  <--  | 240384 (+37%)       |
+> > | c = 512 | 168987   | 101479 (-40%)  <--  | 226634 (+34%)       |
+> > 
+> > The results demonstrate that this optimization effectively resolves the
+> > scalability bottleneck, with RPS increasing by over 110% at c=64
+> > compared to the original implementation.
+> 
+> Thanks for the performance numbers — the scalability improvement at high
+> client counts is striking. A few questions to help reproduce these results:
+> 
+> 1) Was net.smc.smcr_max_conns_per_lgr=32 the value used? The "max 32
+> connections per QP" in the description suggests so, but the sysctl
+> wasn't explicitly listed.
+> 
+> 2) Were net.smc.smcr_max_send_wr and net.smc.smcr_max_recv_wr left at
+> their defaults, or tuned? With per-link CQs the optimal WR counts may
+> differ from the global-CQ case, so knowing whether these were touched
+> would help interpret the numbers.
+> 
+> 3) Was this SMC-R v2? The v2 TX path (smc_wr_tx_get_v2_slot,
+> wr_tx_v2_ib) has different concurrency characteristics, so confirming
+> the version matters for the contention analysis in patch 2/3 as well.
 
-To help review this patch, here is the runtime evidence captured on
-one of the affected Genoa boxes. All timestamps below are from the
-same failing boot; I have trimmed unrelated lines and replaced host-
-specific addresses with placeholders.
+In our tests, we set net.smc.smcr_max_conns_per_lgr=32 via sysctl. We
+also tuned net.smc.smcr_max_send_wr and net.smc.smcr_max_recv_wr from
+their default to 64 to provide sufficient work request depth. 
 
-1. usbmon: the two back-to-back NETWORK_CONNECTION notifications
+All tests were run with SMC-R v2.
 
-Right after enumeration the BMC gadget delivers two class
-notifications on the interrupt endpoint within ~130us of each other.
-Both are USB_CDC_NOTIFY_NETWORK_CONNECTION (bNotificationType = 0x00,
-bmRequestType = 0xa1); the first has wValue = 0 (link OFF), the
-second has wValue = 1 (link ON):
+And the performance numbers do need a refresh: with recent improvements—including
+thundering herd mitigation in earlier patches, the original SMC implementation’s
+regression in the c=16–512 range is expected to be largely resolved.
 
-ffff9c48c... Ii:1:007:1 -115:1 8
-ffff9c48c... Ii:1:007:1 0:1 8 = a1000000 00000000 0000        <- OFF
-ffff9c48c... Ii:1:007:1 -115:1 8
-ffff9c48c... Ii:1:007:1 0:1 8 = a1000000 01000000 0000        <- ON
+> 
+> 4) Was uperf tested for v4 as well, as we did for v1[1] in
+> February-2026? uperf exercises a wider range of message sizes and thread
+> counts, so its numbers would strengthen the case — particularly for the
+> intermediate client counts (c=16 to c=64) where the original
+> implementation regresses below TCP.
 
-Timing between the two Ii completions is ~130us. There is no
-carrier-off event in between and no earlier NETWORK_CONNECTION was
-seen, so the OFF is purely a stale event generated by the BMC
-firmware on cold boot.
+Of course uperf was tested. We’ll include a comprehensive uperf
+evaluation in the next version. 
 
-2. Why the OFF is not filtered out
+Given that this CQ-pooling patch may require additional review time, I
+plan to send the first two patches of the series separately.
+They’ve already been reviewed and are ready to merge. This patch
+will follow as a standalone submission once the uperf results are
+ready.
 
-At the moment the OFF arrives, alloc_netdev() has already run but
-netif_carrier_off() has not, so __LINK_STATE_NOCARRIER is clear and
-netif_carrier_ok() returns 1. usbnet_cdc_status() therefore takes
-the wValue-differs branch and calls usbnet_link_change(dev, 0, 0),
-which schedules EVENT_LINK_CHANGE. This is confirmed by tracing at
-the cdc_ether entry:
+D. Wythe
 
-[Test] CDC status: set carrier 0, current carrier 1     <- OFF, propagated
-[Test] CDC status: set carrier 1, current carrier 0     <- ON, propagated
-
-The ~130us window between the two events is much shorter than the
-kevent workqueue latency, so both are queued before
-__handle_link_change() runs and are processed in order.
-
-3. xHCI trace: rx URBs killed with data already DMA'd
-
-When __handle_link_change() processes the OFF it takes the
-!netif_carrier_ok branch and calls unlink_urbs() on dev->rxq (~60
-URBs at the moment of failure). The xhci_ring events show that
-several TRBs are already in a completed state when Stop Ring runs;
-their Transfer Events carry a non-zero transferred length and are
-delivered to the driver as -ECONNRESET:
-
-xhci_handle_command:    Stop Ring, slot 3 ep 1
-xhci_handle_transfer:   TRB[...] type 'Transfer' len 1514 status 'Stopped'
-xhci_urb_giveback:      ep1in-bulk urb ffff8a... status -108 -> -104 length 1514/1514
-xhci_urb_giveback:      ep1in-bulk urb ffff8a... status -104 length 1500/1514
-...
-
-(-104 == -ECONNRESET, -108 == -ESHUTDOWN. Both cases hit the same
-goto block in rx_complete().)
-
-rx_complete() unconditionally drops these frames:
-
-switch (urb_status) {
-case -ECONNRESET:
-case -ESHUTDOWN:
-        goto block;
-}
-
-so the ARP reply that happened to have been DMA'd into one of these
-URBs just before Stop Ring is discarded, even though the payload was
-already resident in memory. The subsequent ON re-arms the rx queue,
-but by then the reply is gone and the interface stays "up but
-silent" until the peer times out and re-ARPs, or until the operator
-runs ifdown/ifup. This matches the observed intermittent behaviour:
-whether the ARP reply falls into the tiny "DMA done, giveback not
-yet" window is a race, so the failure only reproduces on some
-fraction of AC cold boots.
-
-4. Why DC reboots don't hit this
-
-On DC reboot the BMC USB gadget state is preserved, so the stale
-OFF/ON pair is not queued and the sequence above never starts. This
-matches every failing boot we captured being an AC cold boot.
-
-5. Why FLAG_LINK_INTR fixes it
-
-With FLAG_LINK_INTR the probe path calls
-usbnet_link_change(dev, 0, 0), which sets carrier off before
-register_netdev() exposes the netdev. When the stale OFF arrives,
-usbnet_cdc_status() sees netif_carrier_ok() == !!event->wValue
-(both 0) and returns without calling usbnet_link_change(), so no
-EVENT_LINK_CHANGE is queued and unlink_urbs() never runs. The
-following ON is the first real state change and brings the link up
-cleanly, without ever tearing down the rx queue.
-
-I chose to add this as a device quirk rather than modifying cdc_info
-because commit 71cc1fa9f2d7 ("cdc_ether: Set FLAG_LINK_INTR for all
-devices with a status endpoint") was reverted in the same series
-after it broke CDC devices that never send NETWORK_CONNECTION
-notifications; restricting FLAG_LINK_INTR to 046b:ffb0 keeps those
-devices untouched.
-
-Verified across 100+ AC cold boot cycles on both Genoa and Turin
-reference boards: first-packet ping success went from intermittent
-to 100%. DC reboot and ifdown/ifup paths are unchanged.
-
-Happy to provide fuller usbmon / xhci trace captures if that would
-help.
-
-Thanks,
-Jinhui
+> 
+> [1]
+> https://lore.kernel.org/netdev/20260202094800.30373-1-alibuda@linux.alibaba.com/
