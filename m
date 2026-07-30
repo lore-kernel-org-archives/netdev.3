@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6223B1009;
-	Thu, 30 Jul 2026 08:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA3A3B894B;
+	Thu, 30 Jul 2026 08:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785400040; cv=none; b=rm3v5WbHZuuM0Orzzy26dPMnZWGHcgumLFdY3RG1GVIHyzTt24WI74JSEy3VHeJzTtP+0d3lqfmMnspIsv87IavrNq4/HtvqS3AU1eCanmjY8zOvgj1GiYf+fCCpAWcSR5xtL4JipM+3I4GwkBlDQ8tyNQLhyG1skGczhrua0Io=
+	t=1785400102; cv=none; b=pM1pcDMbL9byQOB9Jj4LUQs3AmT95ZbHD9NlBH6zlZMMBbBqYk3ZmjaozAp5y0gw6HXl1XEaoAwGlZrrDuL/7kIAHtA3nmPOfR8efR7IxKmGEG9sK8rUyk+uP+mjyN3+S2lDG4WYB67T4BbLVrjf2YJ//iUMgFqubHUs5fiIwtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785400040; c=relaxed/simple;
-	bh=MC3/HWMmjm0uJwMQVHVAl2Y+ib9jRwwMSKlUO4GcHhA=;
+	s=arc-20240116; t=1785400102; c=relaxed/simple;
+	bh=bxBJBjrKqgZwEbpNaf5/UI47pXkxo93TJAhmSmSxQ98=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sNdketCU80+C1onBOiEisjgFjGPe7ImhLxH/FlzoLTVycaXoHiweNH1bGJ5TuuX6Q4nIxD/eL3yQbbrWHaVkSeT+Apo6gR5Db+IYkgaRKcRTt0JqqZo/WHETIjlbnvGLpwPie7Ytmp65k+1sOAXhWTTOus7kBp0TQ4WI5Xg7n/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YGORvmoo; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=AVeKUWufyzS0IeSgYx4ROM4/cj+6dmXgO31GQYELlkpsV8x1qDhc258/NH/wM7dIY4vTSH/5qnL/KSTrfIcTj1tWg4y3zocnlfeQL2yI032Ipi7D9qUcdQMgzjrtgQN7Z3rh7QQApKCH9ctWPte+UxtG6G3QKL4aegv68srjmgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dxi1cOys; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YGORvmoo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093921F000E9;
-	Thu, 30 Jul 2026 08:27:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dxi1cOys"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F251F000E9;
+	Thu, 30 Jul 2026 08:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785400036;
-	bh=ynUIE+OmGITuTnDcYm4pdy5E15n1t8RviFFzWHgFPBQ=;
+	s=k20260515; t=1785400096;
+	bh=IqWfPHowzypNS3fC5xvMrVulrkg/53CBTJvxev8Nx5k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YGORvmoonkdoewLciDAteO2KJ+3ljKDoXhdVceRx1MQblS/hxzAlNumE6DegrAgoM
-	 Zcgtg9bNa35V4lD6OvtC/bJa4Z7nda/TOHETtITwT7n6yrGNGehZdcG1sB+o47Y9e1
-	 OS086oRjJUHJWz4uPDrgOA1ayuR6dtb055dWa2CBfO+4mFHchvXsZ/BFuvaEOyTSc4
-	 R+rItOGG9z9ZbrYGU9AAdwtKpigwvUn3L43zXnIYTqaImXFcOQjfA2wA/qd53xC92n
-	 0SGAoJVhIS/hrew2ODhgZWXv3Por6U7OXARoHqlz94+wVqdycwyeJNVrolpawBJV4B
-	 GGgtCRyXc2A0A==
-Date: Thu, 30 Jul 2026 10:27:11 +0200
+	b=Dxi1cOyszRtlP/OETbzH9DzS1JrcmsxerAuE1GIeA4eMSLgfQxwXEVtPcz45v6Jk+
+	 rA2Bks3auZ1nx2bGDNs1LFcWAjBoxlIVoYdQQAbVUCPNEMbFFwA/99atlIdEc/e0FK
+	 Q4q0EhvQbJsdKHIH+4Wh/EEPMOKTtz5h12QXlKgLsdMVsDhzfiGJI1a7uPWNkTkhlL
+	 6oBTm9s571O/TBpR2hhYdjXIeRJ20qGx+dTOlKb4oElWzDStMNGNlCLHpNAHVCS9BO
+	 naVZLLc713RhicSXOhVRgNOpzqzdebsGnG8DLHLn90BHePFJ4XNGVKTTBQCYKHaSd/
+	 9WrV7yUewA71w==
+Date: Thu, 30 Jul 2026 10:28:10 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Gavin Gao <attinagaoxu@gmail.com>
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
@@ -39,11 +39,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
 	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
 	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH net-next 1/3] dt-bindings: net: rockchip-dwmac: Add 25M
- refout clock
-Message-ID: <20260730-lucky-strict-oryx-9ce8de@quoll>
+Subject: Re: [PATCH net-next 2/3] arm64: dts: rockchip: Add RK3576 GMAC 25M
+ refout clocks
+Message-ID: <20260730-complex-funky-angelfish-dc9aad@quoll>
 References: <20260727021048.3375444-1-attinagaoxu@gmail.com>
- <20260727021048.3375444-2-attinagaoxu@gmail.com>
+ <20260727021048.3375444-3-attinagaoxu@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,33 +52,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260727021048.3375444-2-attinagaoxu@gmail.com>
+In-Reply-To: <20260727021048.3375444-3-attinagaoxu@gmail.com>
 
-On Mon, Jul 27, 2026 at 10:10:45AM +0800, Gavin Gao wrote:
-> Some Rockchip GMAC instances can provide a 25 MHz reference clock output
-> for an external RGMII PHY.
+On Mon, Jul 27, 2026 at 10:10:46AM +0800, Gavin Gao wrote:
+> RK3576 provides REFCLKO25M_GMAC0_OUT and REFCLKO25M_GMAC1_OUT clocks
+> for the two GMAC instances.
 > 
-> Add a clock name for this 25 MHz reference output so SoC dtsi files can
-> describe it separately from the existing MAC reference clocks.
+> Describe these clocks with the clk_mac_25m_refout clock name so boards
+> using RGMII output clock mode can let the MAC driver manage the 25 MHz
+> reference output.
 > 
 > Signed-off-by: Gavin Gao <attinagaoxu@gmail.com>
 > ---
->  Documentation/devicetree/bindings/net/rockchip-dwmac.yaml | 1 +
->  1 file changed, 1 insertion(+)
+>  arch/arm64/boot/dts/rockchip/rk3576.dtsi | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-> index 0ac7c4b47d6b..074ac274f2e0 100644
-> --- a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-> @@ -81,6 +81,7 @@ properties:
->          - pclk_mac
->          - clk_mac_ref
->          - clk_mac_refout
-> +        - clk_mac_25m_refout
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+> index 70e67d4dccb8..f1125c2f88ab 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+> +++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+> @@ -1692,10 +1692,10 @@ gmac0: ethernet@2a220000 {
+>  			reg = <0x0 0x2a220000 0x0 0x10000>;
+>  			clocks = <&cru CLK_GMAC0_125M_SRC>, <&cru CLK_GMAC0_RMII_CRU>,
+>  				 <&cru PCLK_GMAC0>, <&cru ACLK_GMAC0>,
+> -				 <&cru CLK_GMAC0_PTP_REF>;
+> +				 <&cru CLK_GMAC0_PTP_REF>, <&cru REFCLKO25M_GMAC0_OUT>;
+>  			clock-names = "stmmaceth", "clk_mac_ref",
+>  				      "pclk_mac", "aclk_mac",
+> -				      "ptp_ref";
+> +				      "ptp_ref", "clk_mac_25m_refout";
 
-That's the same as clk_mac_ref and clk_mac_refout. clocks are not
-outputs but inputs, so explain how does the device take three SAME
-clocks: clk_mac_ref, clk_mac_refout and clk_mac_25m_refout?
+Where is clk_mac_refout? Why do you claim this is a different input
+(important: INPUT)?
 
 Best regards,
 Krzysztof
