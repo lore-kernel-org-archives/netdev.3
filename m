@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E4D1B4F09;
-	Thu, 30 Jul 2026 00:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5023825333F;
+	Thu, 30 Jul 2026 00:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785370502; cv=none; b=diITGTuG5xP/HkDDNpIFWl1+XjYUIVXqiXogwERINBZHWwA/wD2Y3KFc6/+vhD9k4TtPP4/PeA67kvbBT4aPqviaUOwGNV+3fO925BD/w/FWle0pY4h8ffCV2VdGJYYqBFCP+6NdibTfUA5471R0o/4aryF0sNDbuS1EEQ5veck=
+	t=1785370502; cv=none; b=tRQrZ2jiliHRe3Pb7mO0xOPjrSPC7vlilsR4NpfrY03aCqyKKYAuSOOOFN+V/JYqXIQkNeT+TfBTW2osoO9NlnFJznc6yoSO4MChHBkPxwnK/0UriHDkAMMqqqo604uwg3b47NeuBYUP5h7tM0TdksPTtwmfgH5ocGhxhsoR344=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785370502; c=relaxed/simple;
-	bh=yWRWko7MppgFDoU+FbLOboA8Xzh6tym5SMEq6SERbTI=;
+	bh=gdIojHk9aA7OJR46q2meOjy6rukyYmCRxhwevMQxrCE=;
 	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TPtlLP8BAgaMKHcT/AZIfO9rECt3y343Okw9gKKiY1vS50Y+O2NQViZmfZjaP3m0QQlsg5Ka+kayYRNGxCrVHrPSRSwdluLrQj+6UELFTS5tRznfiUWdXrr9j34gHelA3+5p9KumKz8kkO+nPd2wESy7zUzQX7A/ffTh/Krtfx8=
+	 Content-Type:Content-Disposition:In-Reply-To; b=ccONf89qRbPJlZyQPqj/xlJN3S5hkgMt1pOzWuTtk/57x7E3GdzIy34ewXW9mdf+4KcQe6Dmbt/Eu/0N69er16raxslo3+OaXZP0keExNE4EpFWXr8t+l1PT08UEow2iXE56QNQRrlUq1pAYpg/V51m0rbZj8np7PpdMwOi9Ueo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1wpEQC-000000002f9-2oqg;
-	Thu, 30 Jul 2026 00:14:48 +0000
-Date: Thu, 30 Jul 2026 01:14:45 +0100
+	id 1wpEQJ-000000002fc-1daf;
+	Thu, 30 Jul 2026 00:14:55 +0000
+Date: Thu, 30 Jul 2026 01:14:52 +0100
 From: Daniel Golle <daniel@makrotopia.org>
 To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
@@ -39,9 +39,9 @@ To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Landen Chao <Landen.Chao@mediatek.com>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH net v2 2/5] net: dsa: mt7530: check bus->read() errors in the
- MDIO regmap backend
-Message-ID: <cead5b47a21b7aeb8fc869f072ba981fc93aa6f0.1785368701.git.daniel@makrotopia.org>
+Subject: [PATCH net v2 3/5] net: dsa: mt7530: error out on failed reads in
+ ATC/VTCR command polling
+Message-ID: <b3158e751c5e8e3a36cd3bbb6b1c6f4ac9c17afd.1785368701.git.daniel@makrotopia.org>
 References: <cover.1785368701.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -53,69 +53,99 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1785368701.git.daniel@makrotopia.org>
 
-bus->read() returns a negative errno on failure, but
-mt7530_regmap_read() assigns it to a u16, truncating e.g. -ETIMEDOUT
-into 0xff92, and returns success. The garbage word is then consumed as
-register data, and read-modify-write cycles write it back to the
-switch. Check both reads and propagate their errors.
+mt7530_fdb_cmd() and mt7530_vlan_cmd() poll the command register
+through a helper which returns 0 when the underlying read fails. A
+failed bus transaction thus clears ATC_BUSY/VTCR_BUSY and is treated
+as successful command completion, and the subsequent ATC_INVALID and
+VTCR_INVALID checks are defeated the same way.
 
-The same defect existed in mt7530_mii_read() since the driver was
-introduced and moved into the regmap backend unchanged. core_rmw(),
-which accesses the MMD core registers directly rather than through the
-regmap, has the identical unchecked bus->read(); fix it the same way.
+Poll using regmap_read_poll_timeout(), which stops on read errors and
+propagates them, and use the register value it already read back
+instead of re-reading it. Take the MDIO bus lock across the sequence
+as the switch regmap is set up with locking disabled.
 
 Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
+Fixes: 83163f7dca56 ("net: dsa: mediatek: add VLAN support for MT7530")
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
 v2:
- * also check the identical unchecked bus->read() in core_rmw()
-   (found by Sashiko AI review)
- * split the mtk_pcs_lynxi_get_state() fix into its own patch
+ * drop the extra regmap_read() after regmap_read_poll_timeout(); the
+   macro already leaves the polled value in val (found by Sashiko AI
+   review)
+ * print ret in the error messages and stop mislabeling propagated bus
+   errors as "reset timeout"/"poll timeout"
 
- drivers/net/dsa/mt7530-mdio.c | 11 +++++++++--
- drivers/net/dsa/mt7530.c      |  6 +++++-
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ drivers/net/dsa/mt7530.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/dsa/mt7530-mdio.c b/drivers/net/dsa/mt7530-mdio.c
-index 11ea924a9f35..784dd58a7158 100644
---- a/drivers/net/dsa/mt7530-mdio.c
-+++ b/drivers/net/dsa/mt7530-mdio.c
-@@ -55,8 +55,15 @@ mt7530_regmap_read(void *context, unsigned int reg, unsigned int *val)
- 	if (ret < 0)
- 		return ret;
- 
--	lo = bus->read(bus, priv->mdiodev->addr, r);
--	hi = bus->read(bus, priv->mdiodev->addr, 0x10);
-+	ret = bus->read(bus, priv->mdiodev->addr, r);
-+	if (ret < 0)
-+		return ret;
-+	lo = ret;
-+
-+	ret = bus->read(bus, priv->mdiodev->addr, 0x10);
-+	if (ret < 0)
-+		return ret;
-+	hi = ret;
- 
- 	*val = (hi << 16) | (lo & 0xffff);
- 
 diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 3c2a3029b10c..f349b54c2d9e 100644
+index f349b54c2d9e..aab26970f39b 100644
 --- a/drivers/net/dsa/mt7530.c
 +++ b/drivers/net/dsa/mt7530.c
-@@ -124,8 +124,12 @@ core_rmw(struct mt7530_priv *priv, u32 reg, u32 mask, u32 set)
- 		goto err;
+@@ -252,24 +252,26 @@ mt7530_fdb_cmd(struct mt7530_priv *priv, enum mt7530_fdb_cmd cmd, u32 *rsp)
+ {
+ 	u32 val;
+ 	int ret;
+-	struct mt7530_dummy_poll p;
  
- 	/* Read the content of the MMD's selected register */
--	val = bus->read(bus, MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
-+	ret = bus->read(bus, MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
- 			MII_MMD_DATA);
-+	if (ret < 0)
-+		goto err;
-+	val = ret;
+ 	/* Set the command operating upon the MAC address entries */
+ 	val = ATC_BUSY | ATC_MAT(0) | cmd;
+ 	mt7530_write(priv, MT7530_ATC, val);
+ 
+-	INIT_MT7530_DUMMY_POLL(&p, priv, MT7530_ATC);
+-	ret = readx_poll_timeout(_mt7530_read, &p, val,
+-				 !(val & ATC_BUSY), 20, 20000);
++	mt7530_mutex_lock(priv);
 +
- 	val &= ~mask;
- 	val |= set;
- 	/* Write the data into MMD's selected register */
++	ret = regmap_read_poll_timeout(priv->regmap, MT7530_ATC, val,
++				       !(val & ATC_BUSY), 20, 20000);
++
++	mt7530_mutex_unlock(priv);
++
+ 	if (ret < 0) {
+-		dev_err(priv->dev, "reset timeout\n");
++		dev_err(priv->dev, "ATC poll failed: %d\n", ret);
+ 		return ret;
+ 	}
+ 
+ 	/* Additional sanity for read command if the specified
+ 	 * entry is invalid
+ 	 */
+-	val = mt7530_read(priv, MT7530_ATC);
+ 	if ((cmd == MT7530_FDB_READ) && (val & ATC_INVALID))
+ 		return -EINVAL;
+ 
+@@ -1630,22 +1632,24 @@ mt7530_port_bridge_join(struct dsa_switch *ds, int port,
+ static int
+ mt7530_vlan_cmd(struct mt7530_priv *priv, enum mt7530_vlan_cmd cmd, u16 vid)
+ {
+-	struct mt7530_dummy_poll p;
+ 	u32 val;
+ 	int ret;
+ 
+ 	val = VTCR_BUSY | VTCR_FUNC(cmd) | vid;
+ 	mt7530_write(priv, MT7530_VTCR, val);
+ 
+-	INIT_MT7530_DUMMY_POLL(&p, priv, MT7530_VTCR);
+-	ret = readx_poll_timeout(_mt7530_read, &p, val,
+-				 !(val & VTCR_BUSY), 20, 20000);
++	mt7530_mutex_lock(priv);
++
++	ret = regmap_read_poll_timeout(priv->regmap, MT7530_VTCR, val,
++				       !(val & VTCR_BUSY), 20, 20000);
++
++	mt7530_mutex_unlock(priv);
++
+ 	if (ret < 0) {
+-		dev_err(priv->dev, "poll timeout\n");
++		dev_err(priv->dev, "VTCR poll failed: %d\n", ret);
+ 		return ret;
+ 	}
+ 
+-	val = mt7530_read(priv, MT7530_VTCR);
+ 	if (val & VTCR_INVALID) {
+ 		dev_err(priv->dev, "read VTCR invalid\n");
+ 		return -EINVAL;
 -- 
 2.55.0
