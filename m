@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC3C3B7B76
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 22:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7895F3B7777;
+	Thu, 30 Jul 2026 22:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785451717; cv=none; b=Xs5FUiaPcgJqnlf8YpjiLKcP4U1Oq0vXq5FyighhQzzKHeTLdo0+ahz6tAbo0z8UBtglOV4T1fn+3oIgmQ6JLbUX6FdvIOBjLAYOxiJ+mPyPheDKqzAn5sOpVVW/LVA3MpC/KTCkqDAfhdh/qRCcZ3Vb8fsfWvjnW75eU5NL3g4=
+	t=1785451847; cv=none; b=rGv3/jHsMGVn0VsGXwSAJz8dJ/0kmEhZBUraC2qz2BL3NuWRoR00uUiEw4GGc6Jp8g2VXN+IOAI7JYIdxPbFuGkdn5a5JZwR2oFUTUdv/Ovv6sG7lhGw7E6S/9Q626o6bXxnkgM0YxBajCRN44tLCO4aTy1JVP99RPUOriC81/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785451717; c=relaxed/simple;
-	bh=DFohw7Zh8YqFL8Kbyp3qBvizvm4Ti0kROPEeUL0S1lI=;
+	s=arc-20240116; t=1785451847; c=relaxed/simple;
+	bh=JpalKRZX9njfQ3MQWD2YrqzINhvOq+OkFBODMOuwKNc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X0o2d6tCOUjUWor+fUbVRVYnEewF3qbnbaetMe7+XNlOAlqctJKMYE09H48Nf7v57SRUimZoCJBTRN6RJIG75vtsjNyb4lXsFcfhAGDr0UrAxK2vJdy7GreZ2giCo/7wjjGQFWzPIAZKWjDOgDpys8svMjEFSHXkYDpo0rF+DiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vm4Dz1Vj; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Fesfeu2ZUpOKar0Qaz7zC6J1MF13Paf+ZrUuu7McI7khLZpK0RL5vnuE4G0BoteiZcl2dGIxR91YnsmsQ5hJloJJS6z0xU3r7mZczucrBo/cXor+A9doNOGXaXrMIntGaBaYEajzCJKzPiWF5W/M+yoabe0bxJMifvm09p9WC34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HAOTyD4B; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vm4Dz1Vj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7E41F000E9;
-	Thu, 30 Jul 2026 22:48:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HAOTyD4B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C711F000E9;
+	Thu, 30 Jul 2026 22:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785451715;
-	bh=U/sWpKygvafKmTyoHjspn7efgUGsFg1/J/5JyTKmdt8=;
+	s=k20260515; t=1785451846;
+	bh=XEd6hXttOvySEFhA8BB4g88telRNG8B5whgcgWs6ekE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Vm4Dz1VjEXwp5u7W4Wa+1fAoiCEb7Ik+m6uerjejqDTGhOtkzIpE4ohnGjmxDZLVt
-	 asxSKnoMJeqKD7NCmDOZg8yWpP1O2LDMR7WPij89Ui18b+8SHb+GFZ17ZrLD8uU7kB
-	 mmUMT8qFIsa0TcyH0rBkEB3wlQhjMoYwf3tTJHOHipTZ3pUGXFBma8NcbaDNvzb1sT
-	 FB1T/xLZtX2t6yov/PgI7XEpQHwsxsDMbsr3QigYICExQO+R/InkyI8+ueB3xsA3oS
-	 RFmkQ2nWo86XDF4sYr2cy+0prpoe8sWacTyo1Kzg2y23jSXEJA2vogntTAApn+YFJX
-	 38Reb13YHWsdA==
-Date: Thu, 30 Jul 2026 15:48:34 -0700
+	b=HAOTyD4B8puIKieu5T5fmZPrOiCunXcFCu/RbkdR3cIIyYfh4FHH+tqt7J0ViTd+y
+	 0qWN67PzI+lA973vWHy7s3tHObtMYDcPXhjdxVGQuOEVqs27+Nwrg7pgzBlCMX4IJu
+	 n6Y5seAb3ieitQm7kd6BFSGeo2AR3TGN8hVVFbOogCcKKyPe3vwt8UBKIAJ9jBvqsV
+	 h2ROiem8ZHHHq1nGrzXdea2fNxe9O1PlVNdOmgLxDogE+mMG0+TqcIK1JYTfJZJU8b
+	 At07fPNAd13f7qq6Lw5j27VNmy8Y0zdLOoCJLlG753+wHr/1Hy0/Gzx1WtvZjT8ffa
+	 CmK8fyOyLi0gQ==
+Date: Thu, 30 Jul 2026 15:50:45 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Alvin =?UTF-8?B?xaBpcHJhZ2E=?= <alsi@bang-olufsen.dk>, Andrew Lunn
- <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v3] net: dsa: realtek: rtl8366rb: Fix up port
- isolation
-Message-ID: <20260730154834.07038c8d@kernel.org>
-In-Reply-To: <20260725-rtl8366rb-fixes-v3-1-57557b39aaa5@kernel.org>
-References: <20260725-rtl8366rb-fixes-v3-1-57557b39aaa5@kernel.org>
+To: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Cc: Steen.Hegelund@microchip.com, daniel.machon@microchip.com,
+ UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, joe@dama.to,
+ linux-arm-kernel@lists.infradead.org, horatiu.vultur@microchip.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net: microchip: vcap api: Fix possible memory
+ leak in vcap_decode_rule()
+Message-ID: <20260730155045.49d7252b@kernel.org>
+In-Reply-To: <20260728114253.196398-1-nihaal@cse.iitm.ac.in>
+References: <20260728114253.196398-1-nihaal@cse.iitm.ac.in>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,36 +49,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 25 Jul 2026 15:46:21 +0200 Linus Walleij wrote:
-> Sashiko reports that we incorrectly disable isolation in the setup
-> loop while what we want to do is to enable it.
+On Tue, 28 Jul 2026 17:12:51 +0530 Abdun Nihaal wrote:
+> The memory allocated for struct vcap_rule_internal, keyfields and
+> actionfields inside vcap_dup_rule() are not freed in some of the error
+> paths in vcap_decode_rule(). Fix that by calling vcap_free_rule().
 > 
-> Enable it by setting all isolation bits in the isolation mask
-> for all ports in the switch.
+> Fixes: 610c32b2ce66 ("net: microchip: vcap: Add vcap_get_rule")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Joe Damato <joe@dama.to>
+> Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+> ---
+> Compile tested only. Issue found using static analysis.
+
+This is important information please add it to the main commit message
+body.
+
+> v1->v2:
+> - Convert the error labels from "err" to "out_err" to avoid confusion
+>   with the err variable, as suggested by Joe Damato.
 > 
-> Fix up the comments so it is clear what is going on, including a
-> missing word in the helper function.
+> Link to v1: https://patchwork.kernel.org/project/netdevbpf/patch/20260727125757.134611-1-nihaal@cse.iitm.ac.in/
+> 
+>  drivers/net/ethernet/microchip/vcap/vcap_api.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microchip/vcap/vcap_api.c b/drivers/net/ethernet/microchip/vcap/vcap_api.c
+> index ff86cde11a32..376be059d662 100644
+> --- a/drivers/net/ethernet/microchip/vcap/vcap_api.c
+> +++ b/drivers/net/ethernet/microchip/vcap/vcap_api.c
+> @@ -2427,18 +2427,21 @@ struct vcap_rule *vcap_decode_rule(struct vcap_rule_internal *elem)
+>  
+>  	err = vcap_read_rule(ri);
+>  	if (err)
+> -		return ERR_PTR(err);
+> +		goto out_err;
+>  
+>  	err = vcap_decode_keyset(ri);
+>  	if (err)
+> -		return ERR_PTR(err);
+> +		goto out_err;
+>  
+>  	err = vcap_decode_actionset(ri);
+>  	if (err)
+> -		return ERR_PTR(err);
+> +		goto out_err;
+>  
+>  out:
+>  	return &ri->data;
+> +out_err:
 
-Sorry to report that both Sashikos remain skeptical.
+Please name the label after the first action being undone
 
-https://sashiko.dev/#/patchset/20260725-rtl8366rb-fixes-v3-1-57557b39aaa5@kernel.org
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260725-rtl8366rb-fixes-v3-1-57557b39aaa5@kernel.org
+err_free_rule:
 
-The mask is the allowed mask so the write of 0 was correct,
-but we want EN + mask(0) ? The problem being that
-rtl8366rb_port_set_isolation() does:
-
- if (mask)
-	reg |= EN
-
-so with mask of 0 we can't enable.
-
-Maybe pass 
-
-	rtl8366rb_port_set_isolation(priv, dp->index, BIT(dp->index));
-
-?
-
-Of course neither I nor the LLMs actually know this HW :S
-But comments on other calls to rtl8366rb_port_set_isolation()
-suggest that indeed the mask is for allowed ports.
+> +	vcap_free_rule(&ri->data);
+> +	return ERR_PTR(err);
+-- 
+pw-bot: cr
