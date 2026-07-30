@@ -1,315 +1,84 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457EF3B2FC8
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 18:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AF337C933;
+	Thu, 30 Jul 2026 18:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785434889; cv=none; b=eEb8Svm9NHSlIpINF6qdzs3HFoTlEUanhVMO3B10p1baHckmE0LrsCVCavk8a0juLy3cb4xypjUBuIqBY7wIVr9MeCYWr27DXbkjVWTSEfXMmHNieAF5m11yz0MR2emS0uxuethCqwcoEcoi6GsB04gumtchw/OQ3g/O3ZfL91o=
+	t=1785435079; cv=none; b=LGkw1YJwBMSilfCMG777dyLE9bbbm8z68uJl8mfxOPAXZ4Fb0yfvahITDJYUA/yf99zLaD0XYwLvnuN+ZakX44R7Z8AgyoP9qQN1n96Z0rLp/C66KyOFSYF3KdTjzIOFhXjGr41VwgIwKc6juJtIKWFGuB4AHdPjZAvUDX5olIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785434889; c=relaxed/simple;
-	bh=tSrfAlD2lgvetemBvKtXVwnOZ3zgTipsfi54/ygirdk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Uu1+2RalTbF1Zp84FV3wjrjM3s9HDt6D/YxFp+jJNnfP/tV7L4LmlT/PsuDwKLSsD7SoqwVRk+we0aRlzjjIzIha8j2QteAzQ98XeKyCm20t2Jkdauxh+Ji4SpAtV6C866EogrY2m4Ct46RlpmUWSskF/UZXor3c9VAZX3hycMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=F4O1RutH; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	s=arc-20240116; t=1785435079; c=relaxed/simple;
+	bh=sBv3VR9CRsNEK5jNvW9AjciatL7QeoY2g0y0bsHs4jY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d8CtRAO2Y7l8XLk0mYJmJmic3MEZXoSH2AVLOuSLktogpKeQatDWqeyGa572VptftnHFq2JQgGX0iSMwv3JF6nekKapqq6HQZTEG+zMIUDXqHm3hk/NZzE9aGHnH+fcEl+ZhyJDl4iUmR/oLzrZtvPjaSj7X1/QB+v9+n/uUVXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U23d2qld; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="F4O1RutH"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so1161815ad.1
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 11:08:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1785434886; x=1786039686; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=MACLsRcN4y51CiS0cg9uBHC3yOz6OO5aiyPbHKz0564=;
-        b=F4O1RutH5IeHSzSijnjVocM1MevwxvLe6eAp7cFBulON+cfgjjHsAuNcD4uIOFXD/q
-         uZP+GdHXEOejEfsg8x79ILuL6FL5azukOHtPe+lJ9YWpvyKAkFT4t+MZLDL+HrkBaYwZ
-         nDwcvG9iqmXbM125tjkeZCrrUaKA8rdXylb1rK69c+3a7sD/vxn5UHcOVcMWprjMwHZ2
-         iZJ1/706phe3wEOvGVIHM80Bi7GGw5UWZxA0QAmS1n72KNW6pNyHao9n3QbDbBUj2P79
-         2G/Ba8FE1Vyb1nANAmA+oB3b7DH824xeqFR6o4Tqj1DT1ZgEFLthChidf/xqgcqcYvbq
-         HXWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785434886; x=1786039686;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MACLsRcN4y51CiS0cg9uBHC3yOz6OO5aiyPbHKz0564=;
-        b=aBHtc05VSb0AFPnfkZYOTXiCx/+votJHMydnKY6M0VYNPlMYn7cq5D4XmJqJ9BqymF
-         jVwRAsqNLp3XXh+HqAtgS0buJ3xz9idiMnSnfI8DFohJWfgUci47U0zFmKKBSMQuBO8D
-         RmflAO7van9fXBgjFal0/cwYfGJtkBtOC3+xPkb0PdxfBEapBZP7Enhy1GiTRV9kzBa6
-         /OiO5wl84MjqKZru+OWrDbtgmBlHtADQhaaNWA/WU6Ep9toat2fIca+DkSIg05N4H/Sc
-         G+FpbXlNoUJPmBlEaV1vroS+piJhXHalRaddwZR37aW65nv60xKOq8IsiZWRPV0nUuVE
-         HNoQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro0AXC01YpWWBY0mO9WLtogIL3ItlrJh9MJn9lRXohoKF1vNGzlJc7M3Xj5KMyUOKEt0lTDNv0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBYS/vQYVqyFhWXmbnDgyzypIc2lHkU/fE2oXYRPuD4Tl4WlQp
-	leHYdXEPYDa+Z5D0kzrHlmMULhNLMdDL3+8nyPCH34waXkK7G/KbjG9YgZzGGnKQGr0=
-X-Gm-Gg: AR+sD11+wnfPBxKdh4PZgKgQe/1nalTEH5qdkKYQzn+rNEB9xo2eXIoLcba9qPFz/aB
-	Un97IuIPYiDNXdECXouZgn5kQLn5tQxzu9bsVAS+9RpGsSygCE5UjN8ILFDQrRER9smpq6w1UhU
-	hnGaa9kvTKZBUpjAw+aonqgglAR5R9Wu+gr88nLhn/FN/3wt3C9ZLkiyur0TioJX9FQ+Ifb4Wzl
-	dmoYHfthVoERZYCIuwb3euCvOYIPUG6JmzCZI5yU9bVPoYrhaKGQzXmxI767i2nLGVght4/7zTO
-	NeBahTuBLJgnB9iI/Cimdcbokfyoa/oqFdurJ2rgj2a8EyiQQwEPXb3PB2kag40RQZ92g9SctFD
-	ZQViA9OwGdvCjgZBd+/7KQcV/uAlmtjjXRxokip9PLGgxYawgfZXISv2qaQGfbSLAE5cpn5qKbJ
-	sABDkH1aIuxPLk6s2t0iVZKNbnV9ywzj8o3waKvK8ul/RO2qQs7S6NnaG2W5dASkwpzzhN1z1Ct
-	A2Jh01fEBUHLWxJQg==
-X-Received: by 2002:a17:902:ccd2:b0:2c6:90ec:f601 with SMTP id d9443c01a7336-2d035b85755mr32939755ad.8.1785434886244;
-        Thu, 30 Jul 2026 11:08:06 -0700 (PDT)
-Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022bf845asm29948135ad.60.2026.07.30.11.08.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Jul 2026 11:08:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U23d2qld"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273B91F000E9;
+	Thu, 30 Jul 2026 18:11:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785435069;
+	bh=sBv3VR9CRsNEK5jNvW9AjciatL7QeoY2g0y0bsHs4jY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=U23d2qld+qR2KQzcJDQEIl4sYPXRI4iFYh93DLtnewjvPZt5dhlezzdw35fSlOB7f
+	 zWttJHUVjpkbjkaWn7PAPguxvuvtH/q9LRLCiNRwBFfgOQ2pyX2te891vd5o3Apljq
+	 inkShbU0VcoTBOR5t6U9RbAKyQP6YVMwKO30CxbZzyiVvAgGzLY9s//MADiO0uETZ/
+	 ZwCZ5OjJZy0kFeA+Uq/Maz6xhlCdKjrOaacnzJoopzrsHn/GlT2q7nqhDUSIfW3Mly
+	 bEm0S/t3JpzZf6f4ZS0kxCKiw7OrFr2Dls1HbW1Wysq/XGeGLU5SjtlM5nsf6J31v9
+	 H+VP1rz6psWyQ==
+Date: Thu, 30 Jul 2026 19:11:05 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Vincent Jardin <vjardin@free.fr>
+Cc: Ivan Vecera <ivecera@redhat.com>,
+	Prathosh Satish <Prathosh.Satish@microchip.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: dpll: zl3073x: ZL30643 is compatible
+Message-ID: <20260730-fiftieth-unknown-adbe797ccf1e@spud>
+References: <20260730-for-upstream-zl30643-v2-0-0ea0bbd03755@free.fr>
+ <20260730-for-upstream-zl30643-v2-1-0ea0bbd03755@free.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="FD31+yUB1cpSMfRK"
+Content-Disposition: inline
+In-Reply-To: <20260730-for-upstream-zl30643-v2-1-0ea0bbd03755@free.fr>
+
+--FD31+yUB1cpSMfRK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 30 Jul 2026 14:08:04 -0400
-Message-Id: <DKC3UER7LFE1.229F428MUH14A@etsalapatis.com>
-Cc: <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <bpf@vger.kernel.org>
-Subject: Re: [PATCH bpf v2] bpf: Fix netns reference imbalance in conntrack
- kfuncs
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Chengfeng Ye" <nicoyip.dev@gmail.com>, "Pablo Neira Ayuso"
- <pablo@netfilter.org>, "Florian Westphal" <fw@strlen.de>, "Phil Sutter"
- <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
- <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, "Alexei
- Starovoitov" <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
- "Jesper Dangaard Brouer" <hawk@kernel.org>, "John Fastabend"
- <john.fastabend@gmail.com>, "Stanislav Fomichev" <sdf@fomichev.me>, "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>, "Lorenzo Bianconi"
- <lorenzo@kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260729163141.213611-1-nicoyip.dev@gmail.com>
- <20260730082958.2065194-1-nicoyip.dev@gmail.com>
-In-Reply-To: <20260730082958.2065194-1-nicoyip.dev@gmail.com>
 
-On Thu Jul 30, 2026 at 4:29 AM EDT, Chengfeng Ye wrote:
-> The opts argument of the BPF conntrack kfuncs can point to a shared
-> map value.  __bpf_nf_ct_lookup() and __bpf_nf_ct_alloc_entry() read
-> opts->netns_id separately when acquiring and releasing the network
-> namespace reference.
->
-> The reference imbalance can occur as follows:
->
->   CPU 0                                  CPU 1
->   read opts->netns_id (-1)
->   skip get_net_ns_by_id()
->                                          write opts->netns_id (id)
->   read opts->netns_id (id)
->   put_net(net) /* no matching get */
->
-> The reverse transition leaks the reference.  Repeating the unmatched put
-> can destroy a live namespace and crash later users.
->
-> The kernel reported:
->
->   Oops: general protection fault, probably for non-canonical address
->   KASAN: null-ptr-deref in range [0x00000000000000e8-0x00000000000000ef]
->   RIP: 0010:bpf_prog_test_run_xdp+0x52c/0x1700
->   Call Trace:
->    __sys_bpf+0x1662/0x50c0
->    __x64_sys_bpf+0x73/0xb0
->    do_syscall_64+0xf9/0x540
->    entry_SYSCALL_64_after_hwframe+0x77/0x7f
->   Kernel panic - not syncing: Fatal exception
->
-> Snapshot every input field of opts with READ_ONCE() before validating or
-> using it.  The netns_id snapshot keeps the namespace get/put pair
-> balanced, while the other snapshots keep the remaining options from
-> changing partway through an invocation.  The individual reads can still
-> observe an inconsistent combination during a concurrent update, but each
-> selected field value remains stable for that invocation.
->
-> Fixes: aed8ee7feb44 ("net: netfilter: Deduplicate code in bpf_{xdp,skb}_c=
-t_lookup")
-> Fixes: d7e79c97c00c ("net: netfilter: Add kfuncs to allocate and insert C=
-T")
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+On Thu, Jul 30, 2026 at 07:35:35PM +0200, Vincent Jardin wrote:
+> The Microchip ZL30643 (chip ID 0x0E3B) is a member of the ZL3064x
+> line card timing family. It is register compatible with the 3-channel
+> ZL30733 (chip ID 0x0E95) of the ZL3073x family: both datasheets
+> describe the same register map and use the same chip-ID encoding.
+>=20
+> Describe it with a fallback to microchip,zl30733 rather than a new
+> standalone compatible.
 
-Looking a lot better, one nit: We don't really need to read reserve[]
-into a separate variable. We use it only once, so reading it into the
-stack isn't giving us anything, in contrast to all other fields.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-The bot's ordering nit is also a nice-to-have.
 
-pw-bot: cr
+--FD31+yUB1cpSMfRK
+Content-Type: application/pgp-signature; name=signature.asc
 
-> ---
-> Changes in v2:
-> - Snapshot l4proto, ct_zone_id, ct_zone_dir, and the reserved bytes in
->   addition to netns_id, as requested in review.
-> - Rebase onto current bpf/master.
->
-> Please queue this fix for stable kernels.
->
->  net/netfilter/nf_conntrack_bpf.c | 76 ++++++++++++++++++++++----------
->  1 file changed, 52 insertions(+), 24 deletions(-)
->
-> diff --git a/net/netfilter/nf_conntrack_bpf.c b/net/netfilter/nf_conntrac=
-k_bpf.c
-> index f98d1d4b42c3..c3395cb98c00 100644
-> --- a/net/netfilter/nf_conntrack_bpf.c
-> +++ b/net/netfilter/nf_conntrack_bpf.c
-> @@ -122,42 +122,56 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf=
-_sock_tuple *bpf_tuple,
->  	struct nf_conntrack_tuple otuple, rtuple;
->  	struct nf_conntrack_zone ct_zone;
->  	struct nf_conn *ct;
-> +	u16 ct_zone_id;
-> +	s32 netns_id;
-> +	u8 ct_zone_dir =3D 0;
-> +	u8 reserved[3] =3D {};
-> +	u8 l4proto;
->  	int err;
-> =20
->  	if (!(opts_len =3D=3D NF_BPF_CT_OPTS_SZ || opts_len =3D=3D 12))
->  		return ERR_PTR(-EINVAL);
-> +
-> +	netns_id =3D READ_ONCE(opts->netns_id);
-> +	l4proto =3D READ_ONCE(opts->l4proto);
-> +	ct_zone_id =3D READ_ONCE(opts->ct_zone_id);
->  	if (opts_len =3D=3D NF_BPF_CT_OPTS_SZ) {
-> -		if (opts->reserved[0] || opts->reserved[1] || opts->reserved[2])
-> +		ct_zone_dir =3D READ_ONCE(opts->ct_zone_dir);
-> +		reserved[0] =3D READ_ONCE(opts->reserved[0]);
-> +		reserved[1] =3D READ_ONCE(opts->reserved[1]);
-> +		reserved[2] =3D READ_ONCE(opts->reserved[2]);
-> +		if (reserved[0] || reserved[1] || reserved[2])
->  			return ERR_PTR(-EINVAL);
->  	} else {
-> -		if (opts->ct_zone_id)
-> +		if (ct_zone_id)
->  			return ERR_PTR(-EINVAL);
->  	}
-> =20
-> -	if (unlikely(opts->netns_id < BPF_F_CURRENT_NETNS))
-> +	if (unlikely(netns_id < BPF_F_CURRENT_NETNS))
->  		return ERR_PTR(-EINVAL);
-> =20
-> -	err =3D bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
-> +	err =3D bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, l4proto,
->  				    IP_CT_DIR_ORIGINAL, &otuple);
->  	if (err < 0)
->  		return ERR_PTR(err);
-> =20
-> -	err =3D bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
-> +	err =3D bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, l4proto,
->  				    IP_CT_DIR_REPLY, &rtuple);
->  	if (err < 0)
->  		return ERR_PTR(err);
-> =20
-> -	if (opts->netns_id >=3D 0) {
-> -		net =3D get_net_ns_by_id(net, opts->netns_id);
-> +	if (netns_id >=3D 0) {
-> +		net =3D get_net_ns_by_id(net, netns_id);
->  		if (unlikely(!net))
->  			return ERR_PTR(-ENONET);
->  	}
-> =20
->  	if (opts_len =3D=3D NF_BPF_CT_OPTS_SZ) {
-> -		if (opts->ct_zone_dir =3D=3D 0)
-> -			opts->ct_zone_dir =3D NF_CT_DEFAULT_ZONE_DIR;
-> -		nf_ct_zone_init(&ct_zone,
-> -				opts->ct_zone_id, opts->ct_zone_dir, 0);
-> +		if (ct_zone_dir =3D=3D 0) {
-> +			ct_zone_dir =3D NF_CT_DEFAULT_ZONE_DIR;
-> +			opts->ct_zone_dir =3D ct_zone_dir;
-> +		}
-> +		nf_ct_zone_init(&ct_zone, ct_zone_id, ct_zone_dir, 0);
->  	} else {
->  		ct_zone =3D nf_ct_zone_dflt;
->  	}
-> @@ -171,7 +185,7 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_s=
-ock_tuple *bpf_tuple,
->  	__nf_ct_set_timeout(ct, timeout * HZ);
-> =20
->  out:
-> -	if (opts->netns_id >=3D 0)
-> +	if (netns_id >=3D 0)
->  		put_net(net);
-> =20
->  	return ct;
-> @@ -186,46 +200,60 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct ne=
-t *net,
->  	struct nf_conntrack_tuple tuple;
->  	struct nf_conntrack_zone ct_zone;
->  	struct nf_conn *ct;
-> +	u16 ct_zone_id;
-> +	s32 netns_id;
-> +	u8 ct_zone_dir =3D 0;
-> +	u8 reserved[3] =3D {};
-> +	u8 l4proto;
->  	int err;
-> =20
->  	if (!opts || !bpf_tuple)
->  		return ERR_PTR(-EINVAL);
->  	if (!(opts_len =3D=3D NF_BPF_CT_OPTS_SZ || opts_len =3D=3D 12))
->  		return ERR_PTR(-EINVAL);
-> +
-> +	netns_id =3D READ_ONCE(opts->netns_id);
-> +	l4proto =3D READ_ONCE(opts->l4proto);
-> +	ct_zone_id =3D READ_ONCE(opts->ct_zone_id);
->  	if (opts_len =3D=3D NF_BPF_CT_OPTS_SZ) {
-> -		if (opts->reserved[0] || opts->reserved[1] || opts->reserved[2])
-> +		ct_zone_dir =3D READ_ONCE(opts->ct_zone_dir);
-> +		reserved[0] =3D READ_ONCE(opts->reserved[0]);
-> +		reserved[1] =3D READ_ONCE(opts->reserved[1]);
-> +		reserved[2] =3D READ_ONCE(opts->reserved[2]);
-> +		if (reserved[0] || reserved[1] || reserved[2])
->  			return ERR_PTR(-EINVAL);
->  	} else {
-> -		if (opts->ct_zone_id)
-> +		if (ct_zone_id)
->  			return ERR_PTR(-EINVAL);
->  	}
-> -	if (unlikely(opts->l4proto !=3D IPPROTO_TCP && opts->l4proto !=3D IPPRO=
-TO_UDP))
-> +	if (unlikely(l4proto !=3D IPPROTO_TCP && l4proto !=3D IPPROTO_UDP))
->  		return ERR_PTR(-EPROTO);
-> -	if (unlikely(opts->netns_id < BPF_F_CURRENT_NETNS))
-> +	if (unlikely(netns_id < BPF_F_CURRENT_NETNS))
->  		return ERR_PTR(-EINVAL);
-> =20
-> -	err =3D bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
-> +	err =3D bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, l4proto,
->  				    IP_CT_DIR_ORIGINAL, &tuple);
->  	if (err < 0)
->  		return ERR_PTR(err);
-> =20
-> -	if (opts->netns_id >=3D 0) {
-> -		net =3D get_net_ns_by_id(net, opts->netns_id);
-> +	if (netns_id >=3D 0) {
-> +		net =3D get_net_ns_by_id(net, netns_id);
->  		if (unlikely(!net))
->  			return ERR_PTR(-ENONET);
->  	}
-> =20
->  	if (opts_len =3D=3D NF_BPF_CT_OPTS_SZ) {
-> -		if (opts->ct_zone_dir =3D=3D 0)
-> -			opts->ct_zone_dir =3D NF_CT_DEFAULT_ZONE_DIR;
-> -		nf_ct_zone_init(&ct_zone,
-> -				opts->ct_zone_id, opts->ct_zone_dir, 0);
-> +		if (ct_zone_dir =3D=3D 0) {
-> +			ct_zone_dir =3D NF_CT_DEFAULT_ZONE_DIR;
-> +			opts->ct_zone_dir =3D ct_zone_dir;
-> +		}
-> +		nf_ct_zone_init(&ct_zone, ct_zone_id, ct_zone_dir, 0);
->  	} else {
->  		ct_zone =3D nf_ct_zone_dflt;
->  	}
-> =20
->  	hash =3D nf_conntrack_find_get(net, &ct_zone, &tuple);
-> -	if (opts->netns_id >=3D 0)
-> +	if (netns_id >=3D 0)
->  		put_net(net);
->  	if (!hash)
->  		return ERR_PTR(-ENOENT);
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCamuTuQAKCRB4tDGHoIJi
+0mxpAP0aVge6CptrKQGRsRMo+AnqEKoxrpEuYUIFF6FnLdWH6gD/WvWiDBoJlbn6
+zcLvNISSwOGiC+kBoX9rTo9EMHPikgY=
+=4/5T
+-----END PGP SIGNATURE-----
+
+--FD31+yUB1cpSMfRK--
