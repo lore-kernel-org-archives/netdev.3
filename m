@@ -1,71 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862083CC9EA;
-	Thu, 30 Jul 2026 21:28:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11ACC3264F1;
+	Thu, 30 Jul 2026 21:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785446885; cv=none; b=OqUtcIIXSOHwuU5t5/8M4/YSlwVnfBA9IS8L/RYrcJ/rN3bnoLV0NEFDHK/aqAeWeEva7dY9L55fGV102+rP/crTrAyG6/gqgKqVOrCB+XNQs42ueW0jlCRqp2OPSDHuCQwOufHwPjWWdVM35F41Y0D3gm4pZXJm9wSz743t4rs=
+	t=1785447001; cv=none; b=rgSZjvgpMKOVXAulBXfE19A5yL9TpM54k6sOIDGabsN3H3HWGTR+hmBB36hFPTOWWQAVY6m05XVmeQu4d+/MPPC93LNjPyZXpPTCiZkuwha6OC7cn1pWlDThw3g6tFn5X9ZHw1q5omZjOlKuJo1y1gnJbKoQ+8l+humQL4D7Ezo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785446885; c=relaxed/simple;
-	bh=tw9L8ZwSB+X0PgyBrat7PqhkQ4BwWT4L8GRCPGEeGhc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u2lh53Shzp4DdX32HuTc2JKvSRGay0+WwK4hdqxHTG7tQbkU1ZjAQkaswKR1pTvZ9+u4LSp3uPs4jBco7GeqC7nqGAV0EyY6ciFIlAhCl8uc+0CJC5r+JM3N+GMB+pd1SKeJVyrG1vbWFrmNuTuV95SKsbxoMc4MvAp+2b85i7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a7PUJTa8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785447001; c=relaxed/simple;
+	bh=GkLFfAiUjew/JKSAjfg7zvVezyZXAnky/0wqk4cx/8Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B9GDL0nbLGfQ7StVXfyJAiGOe548vLpO8Sq0HTAzt+OypAgiJT0FYeXnBAxXIVUFsfzx5HWHmWpsIqCmoWiR9uMd1Yg74ZZzDDInXCrHHTk0RIq+81Qmc7kYuUtDmG/P6wf2hCM+JAmOEWTK+LRSpRXwkpF2Q2Z6Bgmp0Cp173U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=URxRTSUW; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a7PUJTa8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BBF1F000E9;
-	Thu, 30 Jul 2026 21:28:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785446882;
-	bh=K+7pOeB0yOEQdZUZidiQ4skv9ZZEXtSOHw7yB4R3KGY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=a7PUJTa8B9ykx6WtWoLWHo0FcfYDIwb1qUMLuPzK97+Ox4EoEVJQs+3lFPtJd0qFU
-	 CxOEEbsSBxa+wtQOqycRQCqviSzwqrOAqUemKVd+VAHmjrqkLcaRj/f+ZtVVJeOFg8
-	 cRuKHXWhFTyAz2YksHNBKz5e5cSnwVRvqjmOiNvI5tz+xFOpTb+ptNn4xl6EBgsI73
-	 LoMRQq3U7owue0fKrXnQFeQv3XBJBH7YMX77japzdLm4JhWwtRpZaZX7z6Q/g8ttkN
-	 w7Dej+J2jUpGdJwYQpnEJpGX9eQlCHMzIwI5nimHoCpGZlkkQ1CrDd9KqyajKpqVwW
-	 AtL2EQosSFCkA==
-Date: Thu, 30 Jul 2026 14:28:00 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Abhijit Gangurde <abhijit.gangurde@amd.com>
-Cc: leon@kernel.org, jgg@ziepe.ca, brett.creeley@amd.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, allen.hubbe@amd.com, nikhil.agarwal@amd.com,
- linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [for-next v4 0/2] Add Reorder Completion Queue (RCQ) support
-Message-ID: <20260730142800.19df4e4e@kernel.org>
-In-Reply-To: <31315f8d-44ad-db97-4cb3-ffae887d7bb8@amd.com>
-References: <20260721121034.1616562-1-abhijit.gangurde@amd.com>
-	<20260727182825.7b9bdffe@kernel.org>
-	<18c6130a-c8e0-8e58-ad1c-f1578e1c5f46@amd.com>
-	<20260728151058.17f8fc94@kernel.org>
-	<31315f8d-44ad-db97-4cb3-ffae887d7bb8@amd.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="URxRTSUW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=B5axHUZyTZ+dZ8oS+he0haGxtMrwBrygnxKTL9ukhLg=; b=URxRTSUWJpGoXTekd7TUVnwwlX
+	BznA9QYR4/SGbXfkXjQc3HdrSJW4wxtZ3SgTIEA7PhELxlXAObsL9A1zGkmY8z36nF3xeJx9mjx95
+	mO8w5unCj7r0SXFee0iuj5uKAQZgP+C3uxYzJbxbPmmMOu84X3f2rVAKnh8lQK1kRs0A=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wpYK3-00F466-3F; Thu, 30 Jul 2026 23:29:47 +0200
+Date: Thu, 30 Jul 2026 23:29:47 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v5 3/5] net: dsa: mxl862xx: add devlink
+ flash_update and info_get
+Message-ID: <14be7694-8ec7-40b9-8845-d93896ed822c@lunn.ch>
+References: <cover.1784945329.git.daniel@makrotopia.org>
+ <73a63f1d11658a041514f79ae177bfb93153d33a.1784945329.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <73a63f1d11658a041514f79ae177bfb93153d33a.1784945329.git.daniel@makrotopia.org>
 
-On Thu, 30 Jul 2026 14:17:32 +0530 Abhijit Gangurde wrote:
-> On 7/29/26 03:40, Jakub Kicinski wrote:
-> > On Tue, 28 Jul 2026 16:48:25 +0530 Abhijit Gangurde wrote:  
-> >> For the earlier PHC series [1] Leon picked up both the net/ionic and
-> >> RDMA changes through the rdma tree. Would you be okay with the same
-> >> approach for this series or would you still prefer a shared branch with
-> >> a PR?
-> >>
-> >> If you'd still prefer a separate PR, I can set that up.  
-> > Send the PR for shared parts, please, that's the normal process.  
-> 
-> I have collected both series patches on below PR,
+> The switch leaves MCUboot on its own by booting the new image, but the
+> driver has no in-place path back, so it reinitialises with a full
+> device_reprobe() scheduled regardless of the transfer outcome -- after a
+> failure the switch is still in MCUboot and probe re-detects it. During
+> the teardown its API reads return -ENODEV and writes fake success, so it
+> neither stalls on the absent firmware nor consumes buffers it never
+> filled. The reprobe holds module and device references taken before the
+> switch was disturbed and runs from a heap work item, not a kernel
+> thread: remove() frees the devm-managed priv, and kthread_create() in
+> the devlink caller would return -EINTR on interrupt or trip the
+> hung-task watchdog while parked across the minute-long flash.
 
-"shared parts" means patch 1, only. (Which is patch 2 in your PR for
-some reason.)
+Just for my understanding....
 
-But since Leon responded let's wait for the adjudication on patch 2
-before respinning.
+The reprobe causes all the user point netdevs to be destroyed, and are
+then recreated?
+
+That seems like a good solution to the issue of all state information
+has been lost in the switch.
+
+> +static int mxl862xx_sb_pdi_poll_stat(struct mxl862xx_priv *priv, u16 expected,
+> +				     unsigned long timeout_ms)
+> +{
+> +	unsigned long timeout = jiffies + msecs_to_jiffies(timeout_ms);
+> +	int ret;
+> +
+> +	do {
+> +		ret = mxl862xx_smdio_read(priv, MXL862XX_SB_PDI_STAT);
+> +		if (ret < 0)
+> +			return ret;
+> +		if ((u16)ret == expected)
+> +			return 0;
+> +		usleep_range(10000, 11000);
+> +	} while (time_before(jiffies, timeout));
+> +
+> +	return -ETIMEDOUT;
+
+I suggest using iopoll.h. This code has the usual bug when rolling
+your own.
+
+> +/* Post-flash reprobe. Runs from a self-contained heap work (not a kthread and
+> + * not the devlink caller's context): kthread_create() in the caller context
+> + * fails -EINTR if the devlink command was Ctrl-C'd, and schedule_work() cannot.
+
+A English sentence should not finish with the word "cannot".
+
+> +	/* Failures from here on must go through end_magic so MCUboot
+> +	 * reboots instead of waiting forever.
+> +	 */
+> +	ret = mxl862xx_sb_pdi_poll_stat(priv, MXL862XX_SB_PDI_READY,
+> +					MXL862XX_FW_READY_TIMEOUT_MS);
+> +	if (ret) {
+> +		dev_err(&priv->mdiodev->dev,
+> +			"flash: bootloader not ready: %pe\n", ERR_PTR(ret));
+> +		return ret;
+
+What about the comment above? end_magic?
+
+     	   Andrew
