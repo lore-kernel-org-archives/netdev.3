@@ -1,192 +1,92 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E143B3806D9
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 15:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFD143C7C4;
+	Thu, 30 Jul 2026 15:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785425952; cv=none; b=eib57lGgFpQX+8cjkOk/H1NWCWLtVvhRaDCOaMGbAiPjXYX5OvgL9lKvEn70jIwQ+nm4ldJudXtN1MSbhgZa+26BSk/wfR+8qJ8DiNk9u6XzK2jnsBfuvh7UJpaQmsQOBD/kFfRPqg9d1nKEj9IpBisIQ7cF4L2R2jox76knBWE=
+	t=1785426312; cv=none; b=ppAHvI3gIaNBqaIa0UDjxxOYlwuLoVb/gLpvF2di2f8ABCeEffSWlKAHzyrOATSemqZZfcyFIgjodShlbkaRdY+JeaR9SXnwNYMfqKByxUx9ectRWqCOTEyCrnVcrEXn1Bzdw5hXAAenW0hSIpaNRjUoYNDMdDPdd66AAjKDS18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785425952; c=relaxed/simple;
-	bh=TfYjiyxSZQWShWeKuVieNR1hpXAfbNI9JGyEi+hZeA0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1DTZYAtBoUbUHKo7CQCM1wZ2CP4fV1u/YdHlPZF9nEhBG19v0+SR7VUn38kxeuFeGDgIKSvtVLTOcqBghgqQecE8h3pEMUVnUAM3wbISg1bdj0KYuoRM9bipUL2BPVeq9AethB57WgRPa7APXloUvv8b8UX9iWJLCOae+GaaAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=AmM7Lohd; arc=none smtp.client-ip=74.125.227.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1785426312; c=relaxed/simple;
+	bh=iTHw/K2IF9EmPyxT8/T6I69QfQf5cZNgodrYtpJfWMY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B/YM4kKBE5UXCeSZIFYnNntuVSl0nB0xGKAAiwrnoQJ4eiRAQviPgRqk495u4KAycf6Wo9hlQhvAMujVKzxIsFd17EYmJSS9S6/Ua7lWKYos6sfEriYYDoK0fEAfnMZT4XsFErXiTwfAvoVl9mwgqhrzDBDmiXNwM2PM5PRpIpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dW18L1Bj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="AmM7Lohd"
-Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2cabf1f1051so6852505ad.0
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 08:39:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785425950; x=1786030750; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2EIBFtdmD218tgwkiMxBZe+9ZM0XALpaRjTlqLBpcvM=;
-        b=AmM7LohdavokgRhj+yTgsGfKges88Du2VbYjSDHU1aB7jHa6Rl0cTLmNaJh26XLG3+
-         j3q6tj/pQUnl762MtXewmbqx/uCqGFTZYJG8kEVjXi4m6AgbjmL8BN05Wb8bacsGUqAX
-         E9GjR1lPLC9hFwy6613/a5jAvIotdimyanQSn8vAQXbbLY1olLdFvwLjCC6YyGXIJwQk
-         DOgPHGXnNTxRm/7Wj6iaQpeP7HOeZa3uen92LQlbWo7VVP8+k2v5NiCbY3OklpdvvdUo
-         XrtBypP60SNZsuxgaNk78/Ky5QR5Zq1RH6ScsTse2uP35AouJlbO7H9C+9yqbaSTAWxR
-         6Pcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785425950; x=1786030750;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2EIBFtdmD218tgwkiMxBZe+9ZM0XALpaRjTlqLBpcvM=;
-        b=m1zOUejRPipRKgw3Ujc0uGEa02VCr/cVU4EqtRErVwtDBlVRFISnIeoUDZuN5nRwqR
-         1Fl4bU+swJ/HF0RqawJVoTne39TbIapeMd+rpoouFhbepoFTHlgZophWDY05H6En3AoA
-         aQAIy/LmAsSh60ooDG9mVZTb09/S2YgaFBUUfgSroD2DSakTofqLLyNV1di2sqF5vlg7
-         LMJ3LiqBHvitrFnWUo//jxcwAG/tZFxJXJJcUbFPoq1u52fCxjrF4c5x6Ig2cJeZAHN7
-         NDRzI3dofNWFKjhim6gIdwXg6fxIHMoIPp4oZjeJwNnIl7mW9oyWeyIBAklsbocmkj9X
-         /VSA==
-X-Gm-Message-State: AOJu0YwATbnhRrPUmEeWCyHVI9IF/EVTJdn4H8kzGxZ4N7uOOsmdOBUr
-	xZwwRTWjYSENkI0zMbvUn7MEaTkecB+VDMPf74iTC1VhKJcjM8Pu4JU5lrYgLhntgnnPGuidzi1
-	ZHYxOkzgD3e8=
-X-Gm-Gg: AR+sD10KFfpO01XdKZwRBH4vcJWle9dqQXI7nm41PCGtmGMJXZwYm/rWZQ8o+K7DdnJ
-	IvuisBJtmgkdrO54FLhbP0rTZsp3Twjh+DLfM9F7w1JB5Sl4YyWmcYAnkmzS2BhFOEj8MQJC6/i
-	KIOr09CS7kXkL+7t3Ouhv3hS+hkCawSBYOOoNBAurTXXUB5NXtlamK7DMQ+cKgimIfdHf2VYwmk
-	800OqayXtm5yKC/KgRnlOVxzbhlD4L93PCujrpkeoErfHQC8rJHrwahMLpBY5DWOHeyie/9Jy6c
-	sFcYfjAAN+KNy1NVCTiGYvyjf7Je4sm9c/0llJq69HXtn/kauPpF7M5GHU7nJj2Cv4GbOxrW5Ae
-	ufjzu7p52MJtfkbbbtO/tdUPrSZSvPEE1uQVJKRtfVWdoQvruX7WRkSzuQ+9bxiatGo69kJI+m6
-	QnfMtj6NMkoscnnvezP63CMJvLvif+5TnmGX/rF7zkpVfBshXDTJYO3LQ8SlLhdZDMUyAjpcY=
-X-Received: by 2002:a05:6a21:150c:b0:3c3:b57b:645e with SMTP id adf61e73a8af0-3c900470cf5mr3301025637.5.1785425950026;
-        Thu, 30 Jul 2026 08:39:10 -0700 (PDT)
-Received: from localhost.localdomain ([115.192.250.185])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbdb824f077sm2242214a12.11.2026.07.30.08.39.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 08:39:09 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	sdf@fomichev.me,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	vega@nebusec.ai,
-	zihanx@nebusec.ai
-Subject: [PATCH net v2 1/1] xsk: account ring allocations to RLIMIT_MEMLOCK
-Date: Thu, 30 Jul 2026 15:38:32 +0000
-Message-ID: <20260730153832.11238-2-zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260730153832.11238-1-zihanx@nebusec.ai>
-References: <20260730153832.11238-1-zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dW18L1Bj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2F01F00A3A;
+	Thu, 30 Jul 2026 15:45:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785426311;
+	bh=ZVvrjrZ4uU5XwtVP5iM2dZ93y5LbtvYPGASnI2bE1gc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dW18L1Bjux4+OxpHA4P5NBoDRjwqCllbEtviiH3OuEpX7uaSjG14FFsBjqaJxhGQA
+	 Si3GXRPpVKYHhOzJHRwwH848XObl372eeh6n+BNF3q1dagPeRTiAKQLm86h42Mypf/
+	 hlm6Uj0M/9pCQkxHG5xUL4FMfssCh3MMDixuP3yXNPCZaiIvLRwhyYv77iT94pvIXA
+	 dZRxfNJXY+7HpV8YvzO2UDEsjnoop5NScbgKOAveSlNYvNEmy+TvqFC7GELKFxlxo5
+	 Oq0O1sioaAE6T/OJTh+3ctMsrooKlNtMaQTmiFF4BXrIOTcK76mVyM4CVueR25QOai
+	 W97eEDRl70BtQ==
+Date: Thu, 30 Jul 2026 17:45:08 +0200
+From: Antoine Tenart <atenart@kernel.org>
+To: xuanqiang.luo@linux.dev
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, tom@herbertland.com, 
+	aduyck@mirantis.com, linux-kernel@vger.kernel.org, 
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Subject: Re: [PATCH net v1] udp: fix potential use-after-free in tunnel
+ segmentation
+Message-ID: <amtxfCFLD-nlsdTm@kwain>
+References: <20260730093554.68127-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260730093554.68127-1-xuanqiang.luo@linux.dev>
 
-AF_XDP lets user space create RX, TX, fill and completion rings via
-setsockopt() and mmap them into the process.  xskq_create() allocates the
-ring backing memory, but unlike XDP UMEM registration it never accounts
-those pages against RLIMIT_MEMLOCK / user->locked_vm.
+On Thu, Jul 30, 2026 at 05:35:54PM +0800, xuanqiang.luo@linux.dev wrote:
+> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> 
+> __skb_udp_tunnel_segment() gets the UDP header before ensuring the
+> tunnel header is in the skb head. If the pull reallocates skb->head,
+> the saved UDP header pointer is no longer valid.
+> 
+> Get the UDP header after the pull to avoid a potential use-after-free.
+> 
+> Fixes: dbef491ebe7f ("udp: Use uh->len instead of skb->len to compute checksum in segmentation")
+> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-A process with CAP_NET_RAW in a user and network namespace can therefore
-request very large rings and pin a large amount of kernel memory before
-bind or any packet I/O.  The later vmalloc_user() conversion changed the
-allocation mechanism, but it did not create this missing resource boundary:
-the unaccounted mmapable ring allocation already existed in the original
-shared xskq_create() helper.
+Reviewed-by: Antoine Tenart <atenart@kernel.org>
 
-Fix this by accounting AF_XDP ring allocations with the existing
-mm_account_pinned_pages() helper and unaccounting them when the queue is
-destroyed.  This puts ring memory under the same RLIMIT_MEMLOCK /
-user->locked_vm model that AF_XDP already uses for UMEM pages, without
-introducing AF_XDP-specific limits or socket lifetime coupling.
-
-Fixes: 423f38329d26 ("xsk: add umem fill queue support and mmap")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
-changes in v2:
-  - replace the socket optmem limit proposal with RLIMIT_MEMLOCK /
-    user->locked_vm accounting via mm_account_pinned_pages()
-  - drop the earlier socket/pool lifetime coupling changes and keep the
-    final code diff limited to xsk_queue.c and xsk_queue.h
-  - retarget Fixes to 423f38329d26, the original mmapable queue
-    allocation that introduced the missing resource boundary
-  - v1 Link: https://lore.kernel.org/all/cover.1785313094.git.zihanx@nebusec.ai/
- net/xdp/xsk_queue.c | 8 ++++++++
- net/xdp/xsk_queue.h | 4 +++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/net/xdp/xsk_queue.c b/net/xdp/xsk_queue.c
-index 4dd01b7d858e..8be251096277 100644
---- a/net/xdp/xsk_queue.c
-+++ b/net/xdp/xsk_queue.c
-@@ -25,6 +25,7 @@ struct xsk_queue *xskq_create(u32 nentries, bool umem_queue)
- {
- 	struct xsk_queue *q;
- 	size_t size;
-+	int err;
- 
- 	q = kzalloc_obj(*q);
- 	if (!q)
-@@ -45,9 +46,15 @@ struct xsk_queue *xskq_create(u32 nentries, bool umem_queue)
- 	}
- 
- 	size = PAGE_ALIGN(size);
-+	err = mm_account_pinned_pages(&q->mmp, size);
-+	if (err) {
-+		kfree(q);
-+		return NULL;
-+	}
- 
- 	q->ring = vmalloc_user(size);
- 	if (!q->ring) {
-+		mm_unaccount_pinned_pages(&q->mmp);
- 		kfree(q);
- 		return NULL;
- 	}
-@@ -62,5 +69,6 @@ void xskq_destroy(struct xsk_queue *q)
- 		return;
- 
- 	vfree(q->ring);
-+	mm_unaccount_pinned_pages(&q->mmp);
- 	kfree(q);
- }
-diff --git a/net/xdp/xsk_queue.h b/net/xdp/xsk_queue.h
-index 1bc42c8902f4..b2e96c65f955 100644
---- a/net/xdp/xsk_queue.h
-+++ b/net/xdp/xsk_queue.h
-@@ -7,6 +7,7 @@
- #define _LINUX_XSK_QUEUE_H
- 
- #include <linux/types.h>
-+#include <linux/skbuff.h>
- #include <linux/if_xdp.h>
- #include <net/xdp_sock.h>
- #include <net/xsk_buff_pool.h>
-@@ -46,6 +47,7 @@ struct xsk_queue {
- 	u64 invalid_descs;
- 	u64 queue_empty_descs;
- 	size_t ring_vmalloc_size;
-+	struct mmpin mmp;
- 	/* Mutual exclusion of the completion ring in the SKB mode.
- 	 * Protect: when sockets share a single cq when the same netdev
- 	 * and queue id is shared.
-@@ -532,6 +534,6 @@ static inline u64 xskq_nb_queue_empty_descs(struct xsk_queue *q)
- }
- 
- struct xsk_queue *xskq_create(u32 nentries, bool umem_queue);
--void xskq_destroy(struct xsk_queue *q_ops);
-+void xskq_destroy(struct xsk_queue *q);
- 
- #endif /* _LINUX_XSK_QUEUE_H */
--- 
-2.43.0
-
+> ---
+>  net/ipv4/udp_offload.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+> index 29651b1a0bc70..639c59044c135 100644
+> --- a/net/ipv4/udp_offload.c
+> +++ b/net/ipv4/udp_offload.c
+> @@ -178,7 +178,7 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
+>  	int tnl_hlen = skb_inner_mac_header(skb) - skb_transport_header(skb);
+>  	bool remcsum, need_csum, offload_csum, gso_partial;
+>  	struct sk_buff *segs = ERR_PTR(-EINVAL);
+> -	struct udphdr *uh = udp_hdr(skb);
+> +	struct udphdr *uh;
+>  	u16 mac_offset = skb->mac_header;
+>  	__be16 protocol = skb->protocol;
+>  	u16 mac_len = skb->mac_len;
+> @@ -189,6 +189,8 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
+>  	if (unlikely(!pskb_may_pull(skb, tnl_hlen)))
+>  		goto out;
+>  
+> +	uh = udp_hdr(skb);
+> +
+>  	/* Adjust partial header checksum to negate old length.
+>  	 * We cannot rely on the value contained in uh->len as it is
+>  	 * possible that the actual value exceeds the boundaries of the
+> -- 
+> 2.43.0
+> 
