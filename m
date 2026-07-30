@@ -1,107 +1,129 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3D14052D6
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 11:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11CC4052AA
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 11:02:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785409261; cv=none; b=WQWYpDvJTlLTT2h+OZM9ZTCm6uAyR2CpTKa4bCk0o3/2mydJsxP17WYIwrE1JiAeox37F2BuGxtr2UIRP/rKV3IuD3GEKA4/DY1xDiowzI2FacTnVcrAqM5aisQzYJE9TAaB6VtQvIrtdxOFn8dZYjfGC/nIg6MoE4IFgyR/Zmw=
+	t=1785409336; cv=none; b=qL4mYPmdokp6FJfWa35Nz+lo2e4Zvf8mOT+zfCQ1XU5dczMPLBB4NkUN9bF+opOgRBRmUOdksBEPPJ4/S3uZa97RteUWwozgwQdfHx0qAdCT7pRgZ6opcOx1PqjAJGgirHyEW7wSxu9gUGfbe7SPxIPb9D1njDLDrkg7PdFoIUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785409261; c=relaxed/simple;
-	bh=IkecOhyE31DlB6ewxaKp3faFALMJMMHrlZR/v5uvapI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K0fHkWAIsr/h7D3S3OxGdnyA1qLgc+TWU3B0Rr5wQST5hg/Xo/hnPhKyYF/Ut2u4tjvfLHPsMVh31ox6kutCGcobNXlz5kF3vEZp/8VksXYG0fr4fR01Kaf0sTHGIEmxsCDxniWqcgFlnwBRwbHPcN8plpRUyQOs5r9ZknWvqPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=v5IFtawI; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1785409336; c=relaxed/simple;
+	bh=4dNV8PH0CaE40xpTad7DkyOXVNy048PvQhAPvDCkzwI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PJbSMrsj/JG0ttkLBU0v7BY3ZkdC5HpEf532WNi/i6QiiOVyXaeZ56O6oqNSWVYEDMZskob1hapg2YfUFN5AueAlQmSBSZbw9Z1WB8lkcttgvCPKwR72nd712yZ4uIv/E9LQFVH5lLDLRuXMw8bevzDvhOOtfm2lDnBerucrgCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UqXoLe4o; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=juxbA9z6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="v5IFtawI"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4954c0833b4so13229815e9.1
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 04:00:58 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UqXoLe4o";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="juxbA9z6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785409334;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xGF4bBEyPT9GA0aGVwzyimStY//dkrh0h2Ht9VGZr7c=;
+	b=UqXoLe4o0pV8vH9tHJ5gH33EIizWCO5d84JXeQZuiSXGLpocoZTWuANNNzkoONMvuFrMB8
+	FdYI1e/Knj/qtmE/65a4dNV7YKWIYu7wWZ3/mJNTHOYtEoflKNv+0eqVA3aw9paQ7+9FxW
+	mCutB81zrNyPVI597xLT6rU1kcYq+NY=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-628-dIRlE2sRMPipHYV3Q8vjww-1; Thu, 30 Jul 2026 07:02:12 -0400
+X-MC-Unique: dIRlE2sRMPipHYV3Q8vjww-1
+X-Mimecast-MFC-AGG-ID: dIRlE2sRMPipHYV3Q8vjww_1785409331
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47eaa4006a1so371538f8f.0
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 04:02:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1785409256; x=1786014056; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZohQaCf3r9LKYnA3FBqlh9CHwHw3y+cuU8Dt+LV0QCQ=;
-        b=v5IFtawIwOPctGXvOtm2VQB/EKa658FwM43NWzM0f9p2j2If9F6GpR8KlAWmgU4vLR
-         4Ht4DBRegp0Q3Fm0n2rOSccyuyl14ri2KhbW4ESlD5z8r/8YBYpW+VpVL41aQ4hgbHg0
-         eCPK2sq1f41ztD8b2qFjPvKHQExkmfr5fC9R7aR5Q+JvzKshDD1VNnggkgF28AvEmivl
-         lOMjE0F+PGOvivianG32TNSnUchPXeKV+xDR9IZzot+44NvIbVGCc+HttA9pUxRl9pXH
-         SyD2Q0VlYWoVguixSQOoTudUKyDJl0u3lBo/BHuVU1Xt44oGghYRawgNbit6AR1pgVGr
-         FRDw==
+        d=redhat.com; s=google; t=1785409331; x=1786014131; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xGF4bBEyPT9GA0aGVwzyimStY//dkrh0h2Ht9VGZr7c=;
+        b=juxbA9z6XqwaJNCKcoJ9uv4M1IVgCjDc0YXm8yxZ2l3vGHwftQxeCCkM0uoX6pxUbV
+         k5Dhn73wHJGdoRAmhvE5azNSLPVbqAhTWTaLPU9QDdQpxSYIejUPO/jf7O3tn/R+27F9
+         1MM0EB9QMF9ljk7hqOYrPMtwTItpVJXfST9Mo7oEhjHnPXtU4FrtKhgYK0labPnXMISq
+         9U94puQo7Bgay8+6Tr789dTymCrSXxBF/OIsvIcoex2ugL5a5NstkGLVgv0LVMKcju2C
+         HDRpRAP1JAE/pvJysv4ihxXUmGWgtvmH4KF8P/KCy08U/NH32Y5jv6c+DbHvmfq8Eswi
+         TSQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785409256; x=1786014056;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZohQaCf3r9LKYnA3FBqlh9CHwHw3y+cuU8Dt+LV0QCQ=;
-        b=SshpmTDOOURNjqZbLjsQhrXpDBIG3SynuqeRa2465iQG9wg+XhyeHy3BMonPj3KXF3
-         T75Puuh0xp+LAeApHlQza0qq2GNqqFDAF+1cB+/MSLknxMzawQRy7QahNFMdiTPZjQCM
-         Tp3U6qxK9CunwRTzwkb0o1tZTZL9/XpzBpC0C3r1EoPGfLAaHDf81RWZy/xSZu0xARCE
-         Gd2tTUxPCg1dsbvV+SziOHp5n05rgjiLDmPCH9TXG6aY8KC39yNFBmpAPASJKzL/1RjO
-         +YvYq2y2CgZztVMS523NO/tWhMPPJ0q+MzDf+1cHY4onDId5uPfwrUYFMWb2m1l9o0Z8
-         rRrQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpEOH5eyFar7jfPNpddEZM/XVw9p8fjVrUyZdLtobfsxFpmugwmPerQvsBoIs6ZEy9nrj/olNA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygIudg64r7VUgT6NgGYtbELPlkz2bkDzna7D+dgqvobmWhXhuQ
-	eUp+ly6nVRY4Bpdpd9PxwJzh9DLn3s97zm67DKWIDqmZukI2sx1qYkmSQuhWRObGA7I=
-X-Gm-Gg: AR+sD12f7RgxDNwTUaN3wWWSKLDRN06+N+cwrTsMqtnEqxpf8Q2og220OtScAiUQxFE
-	R0gXVFIR82TZKfsM5+aKAl7NjIHC9FUcZv4k61Yk+UWiAmXX9iPmq05RBEmNlM6M2+DsZ9pzPng
-	c/jeAyhdG2yA8OBIfFf0KmJxbH9AN2CkRZCuxXaMg/l4iggNcGDU7L1Y24KSKG9hZa6KoAD/RZ3
-	gBrGIkvfx/DT16Dn0XHqPwDJkzxqtl4Fkzma29Qy4GSsh7S/DB/Ft5rjCgRzXG+AwGc4DXMzwjP
-	kAobRcMG06X5nLfkC3NrnHfTvXdMuOB2BKQCUMJUsk+Aw3ZoV6WQC23rsGIV43Gp80SZZpwfpes
-	Bwns2XRQrZMKeVFlQDkpBGEXIQYg/82A+dealuhdE0kNWZ+gSVuz7j/SifOjNlCzU7Oj0zgUuxu
-	WvZaiAVhYw2+vnnKDBt5xWixD9Nhv0KrIiaVM+XMayZHxFAt7/WFK0CnVhrZlrAeC2bxbPEg==
-X-Received: by 2002:a05:600c:6289:b0:495:3fe8:880f with SMTP id 5b1f17b1804b1-49800e6ae41mr26675685e9.4.1785409256325;
-        Thu, 30 Jul 2026 04:00:56 -0700 (PDT)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49800f19bb3sm49193765e9.4.2026.07.30.04.00.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 04:00:55 -0700 (PDT)
-Date: Thu, 30 Jul 2026 13:00:52 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Mark Bloch <mbloch@nvidia.com>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org, Jiri Pirko <jiri@nvidia.com>
-Subject: Re: [PATCH net-next V7 4/4] devlink: Apply eswitch mode boot defaults
-Message-ID: <amsu3mbWht_pc4KJ@FV6GYCPJ69>
-References: <20260716084852.549909-1-mbloch@nvidia.com>
- <20260716084852.549909-5-mbloch@nvidia.com>
- <20260724161111.2ac47089@kernel.org>
- <c6c0d67c-d832-49a1-b62a-57fa6ee56a47@nvidia.com>
- <20260727131033.237f70b6@kernel.org>
- <amnDfSmMVzpiH2gE@FV6GYCPJ69>
- <20260729160608.3c491568@kernel.org>
+        d=1e100.net; s=20251104; t=1785409331; x=1786014131;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xGF4bBEyPT9GA0aGVwzyimStY//dkrh0h2Ht9VGZr7c=;
+        b=oy8S2AGGv2WFaHvDnWaaFcY02Y9/IHnz3bUJvrLBCMHP5PY3NrLJb1j9A3LI3Oemsp
+         2GknHRCW8SxZwfBDBrqBIHHoTv6V/hMyV25cyQTX5UVte8AGcVFpbmaRgR0CnhJEXiV3
+         ggR6pI5byZaL8oL5yfw93E/ECwxa6agX+2pbYN4yQZVdZh4coHRGTmVN/TeO4OKMrvJL
+         Rws9S5U0E7zqBEW5PaIMYCLIeWSHjKrHcDpDy8rxCLC0xf32OvgqvMC3uiWeL7k9XndN
+         x1SR29xTyWQ1LMoGdMM6aORK9VeSUfZcOfYtk9c/Z60JUagMX66BNRJtdxZER+tx/FeF
+         95aw==
+X-Forwarded-Encrypted: i=1; AHgh+RrqF1pmdUob+fQ+S0363YAwL6244lkCD/B3IsveCDaJBoWDLokUgJC2sh9cphUMzz5x9N7r0ms=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyozYqyAx51MGQFVQwc8ygQKN2DiKnqQfgxk8XYQaxifAZu4u5b
+	DBeUMNzitOYwsy9JdrZuME6AcGzDYjGoC2piTmOszf2ITmEf8EUZ/rpChRaMjiiEvIeLRVjlV+6
+	dCZlOSfSp0RyZvoehyvJ94w9ZwDq5eoYE0QuHrn31C8lzVC8LMvW1NiY71w==
+X-Gm-Gg: AR+sD10NVIZld9cO33CZZHUvfqpZBwuVJ9vuA8Rbk8GamsEzlsWUJS5HYwxqbg06eV8
+	zyi369r9nz4ybSoMN8wHj/GxvKIuFt7b6utWSfAOv17np5VqgeC9vjJ/d+zAGEx5e8bFGCNm9rH
+	A1kMLZPpgFaeCcyByiAF3Z9KIwN5v8Q6gwNobvy5huw3wNVubcCoPAj+BZHBJC80yaE0oW8wCDh
+	Uqg3NTB/NCyhuJxMpBWLwt9jhDRKY6BAKrbTyNr4iBdpRrhBdS2LAUURcihq/KshFjaqyt7xFK+
+	NQNu7AA9fauaDR5yv6l0Ls8AMJgToBrVhWR5gzcCk4HON8W+OxH3jEhwFlMCgH6dV56SGfw0UPw
+	rdhSeYc/LDTo8OpchN5d1ZDmq8hLUSn9V9YFkqPT1PWsKLappqJYNtDmCACqtlk0gObANni4afs
+	L56A==
+X-Received: by 2002:a05:6000:469c:b0:47f:70f2:ccf6 with SMTP id ffacd0b85a97d-47fc8bcfa1dmr1198746f8f.6.1785409331137;
+        Thu, 30 Jul 2026 04:02:11 -0700 (PDT)
+X-Received: by 2002:a05:6000:469c:b0:47f:70f2:ccf6 with SMTP id ffacd0b85a97d-47fc8bcfa1dmr1198714f8f.6.1785409330584;
+        Thu, 30 Jul 2026 04:02:10 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc8934ba3sm4817223f8f.27.2026.07.30.04.02.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Jul 2026 04:02:10 -0700 (PDT)
+Message-ID: <9da84225-3d4c-4dd2-ac77-192ab0f3c03b@redhat.com>
+Date: Thu, 30 Jul 2026 13:02:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260729160608.3c491568@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] liquidio: Fix possible memory leak in
+ lio_reset_queues()
+To: Jacob Keller <jacob.e.keller@intel.com>,
+ Abdun Nihaal <nihaal@cse.iitm.ac.in>, andrew+netdev@lunn.ch
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260727080258.86279-1-nihaal@cse.iitm.ac.in>
+ <54804d01-9254-4482-a0be-c38c3c6177b8@intel.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <54804d01-9254-4482-a0be-c38c3c6177b8@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thu, Jul 30, 2026 at 01:06:08AM +0200, kuba@kernel.org wrote:
->On Wed, 29 Jul 2026 11:11:53 +0200 Jiri Pirko wrote:
->> >Maybe a middle ground would be to add a dedicated devl_init_unlock()*
->> >were we can stick such init? Slap a WARN_ON(!registered) in the normal
->> >unlock? I don't want the normal unlock to grow in complexity like
->> >rtnl_unlock ended up growing.  
->> 
->> Yep, that was +- my idea when I suggested this, to have this in a
->> separate helper.
->> 
->> devl_unlock_in_init()
->> ?
->
->Maybe "after_init()" ? "in" sounds like we can release it multiple
->times but I think the idea is that it's the final, single "release 
->into the wild" unlock.
+On 7/28/26 12:55 AM, Jacob Keller wrote:
+> On 7/27/2026 1:02 AM, Abdun Nihaal wrote:
+>> The memory allocated in lio_setup_glists() and setup_rx_oom_poll_fn() is
+>> not freed in some of the error paths in lio_reset_queues().
+>> Fix that by adding the corresponding free functions to the error paths.
+>>
+>> Fixes: 4b6e326b2d34 ("liquidio: Per queue oom work queue")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+>> ---
+>> Compile tested only. Issue found using static analysis.
+>>
+> 
+> Would be nice if we had a reproduction but I suspect this is tricky to
+> do without some kind of fault injection.
 
-ack
+We are actually requesting such info, especially for patch touching less
+active device drivers.
+
+Also sashiko has a bit to say:
+
+https://sashiko.dev/#/patchset/20260727080258.86279-1-nihaal%40cse.iitm.ac.in
+
+/P
+
