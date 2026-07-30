@@ -1,55 +1,54 @@
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D175F489874;
-	Thu, 30 Jul 2026 06:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FF23B7B9D;
+	Thu, 30 Jul 2026 06:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785394587; cv=none; b=WINO8yQa3bUvEXyG0h/H5ycMTNhvN+8TjaMqcga50fRPEMRlumbcJ+aLXNoUYExTHaDnvsIDFLJadd4aV9EqGf4tnSdZa1xkeoWG6+j+WXLtXImBdSUu7BsDDnmFWcwuWtBBMLvuiHhmhAphNyX2fry+A1tfyFo+eniom1O6cx8=
+	t=1785394589; cv=none; b=Jz31AYEMOq9FeelpkaS3wJexX8hKoLXCfXY25LTUHmwFvu1nIqYX+BFRLblTir+wgZE8bkXMzlR69pZRcjW3dd/zWDsEfH6582dnxHa7Z77EaHjgzYOPxetBtMT5g3+CZmodw1h+IVtWUC05Em/8jpK+7xWIl0+HjTaLAyvReJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785394587; c=relaxed/simple;
-	bh=CJwhcCCiCVCv+c+PNTJzPd4B4u312Rt1bTojoIvWSvg=;
+	s=arc-20240116; t=1785394589; c=relaxed/simple;
+	bh=TadxosrR89czIQh25lMwUqpdn4Etdmjik4Wkl7nexYI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LvQ+cJ+mz+rWpgdaGqbmmFcRJMnOXINgMFqJa6PTNC0jtUg9ArD4oHf4mnylmrkZhSHw/n+BxkJXTC+4MdQrJluI4EgDr4VdrdoWCpjFaJ4jjGVfn52vDQ6lFzyI8rKbmHbttgnxd0eJEY70F4HgRBEzrift9XTV66uQAlyxKKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=OyDQh7ba; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=P8rix72EqtDvXfYPUkcodM1hipvkYgFpYLrZFSlAZmieqwGh/jlS7p956Mmh5huJbrl70u7m6aymRNaWwUJu8eUEWSPaghC5VJiUFpEU5q6eUotoG1f77dy+lQtBN/WnMGv5cX+SHhTlEJWO/JbfvfGNHsDC/P+Eo4zqQ2X9kVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=Rykn8YIW; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="OyDQh7ba"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66U6oHdX51003586, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="Rykn8YIW"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66U6oJdW51003586, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1785394217;
-	bh=wo1cwIb+iDa0S7qQq6X5IGYegdgx8m8Ve01fkh7yEVs=;
+	s=dkim; t=1785394219;
+	bh=EdXsCQQcY2LNXLI7qdZJcQ1VyZyd5AA3cfy4cTuXqVM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=OyDQh7baWszefaHz9AWSQm5qgLKVBZfoupTm0Nb5HmWuMiavyS2rrg+lAQPtbuBXh
-	 EhLmgE+NM131lPcx9f6d88nTKmEKG7upAn2XSLiTsrYKxs5BPZ2quPc5PHZlcc7KNR
-	 SaKNK9rkaLhZb7Wk8HrydPUu8kj3Ivof1XyBknQ+9FoLUGPizgSGSA+9QIbov3uc2D
-	 kmt8iXxN/t0kTmtHqildo3Gv5/3kHb0bmBZwaOG7ZvmbdVhy8NtyBzGEzoKSwwHdq8
-	 dXRrZ7gOdzG06S4d/Qf7QW4PlAq3HYvkZ3m4vIr4wf/QNoVhB/eKo/iv3cCY/ELzyR
-	 YmOYYfAuDGltA==
+	b=Rykn8YIWgGN8BqfaBQDhPHcNz+Nanh5a1Zru7wTQXCqC5H8JMFtaUTTedz3gGuMSR
+	 dFrJ401nLb/MpALkzStZMVFmdWYgdY/cEVy026UooLs51U+ZVZgb3WVU7njZDK6GB8
+	 yv9M7wQa2w4rzNgfZ6yrWdaktiPis7qIDPAP/g/1/MLzUawrowjHWdLLb3pssXq4O5
+	 Le/G1xcLnLIOYahPdHqpBYHwPqxf3vgBFdIxbsOD+efl6mM7bnrzJ4cCjibkKpxl/l
+	 0Lz83vabjui5jh2C6c+mGYZ6VuIgfhkWoT6UHv7e4YRRdESjEPJT0KgfG7drmarZNE
+	 Lh/BtwsuCYRxQ==
 Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66U6oHdX51003586
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66U6oJdW51003586
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 30 Jul 2026 14:50:17 +0800
+	Thu, 30 Jul 2026 14:50:19 +0800
 Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
  RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 30 Jul 2026 14:50:17 +0800
+ 15.2.2562.43; Thu, 30 Jul 2026 14:50:18 +0800
 Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
  (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.43 via Frontend
- Transport; Thu, 30 Jul 2026 14:50:17 +0800
+ Transport; Thu, 30 Jul 2026 14:50:18 +0800
 From: javen <javen_xu@realsil.com.cn>
 To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
 	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <maxime.chevallier@bootlin.com>, <horms@kernel.org>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<daniel@makrotopia.org>, <linux@armlinux.org.uk>, <enelsonmoore@gmail.com>,
-	<daniel@thingy.jp>, Javen Xu <javen_xu@realsil.com.cn>, Andrew Lunn
-	<andrew@lunn.ch>
-Subject: [PATCH net-next v8 2/7] net: phy: phylink: add helper to modify pause
-Date: Thu, 30 Jul 2026 14:50:09 +0800
-Message-ID: <20260730065014.883-3-javen_xu@realsil.com.cn>
+	<daniel@thingy.jp>, Javen Xu <javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v8 7/7] r8169: fix RTL8116af can not enter s0idle and c10
+Date: Thu, 30 Jul 2026 14:50:14 +0800
+Message-ID: <20260730065014.883-8-javen_xu@realsil.com.cn>
 X-Mailer: git-send-email 2.50.1.windows.1
 In-Reply-To: <20260730065014.883-1-javen_xu@realsil.com.cn>
 References: <20260730065014.883-1-javen_xu@realsil.com.cn>
@@ -64,240 +63,124 @@ Content-Type: text/plain
 
 From: Javen Xu <javen_xu@realsil.com.cn>
 
-For Realtek nics, when we enable jumbo, pause are not supported. So we
-must check the pause capabilities from ourself and lp.
+RTL8116AF is a multi-function device. Functions 2 to 7 are hidden from
+the PCI core and return an all-ones response when their vendor ID is read,
+so they are not enumerated as normal PCI functions.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+However, these hidden functions can still affect platform power
+management. If they are left in D0 or keep ASPM disabled, the platform may
+fail to enter the low-power s0ix state and the CPU package may fail to
+enter Package C10.
+
+Put functions 2 to 7 into D3hot and enable ASPM on their PCIe link control
+register. Since these functions are hidden, access their configuration
+space through pci_bus_read_config_dword() / pci_bus_write_config_dword()
+using the same slot and the target function numbers.
+
+Ignore functions that return a PCI error response when reading their
+configuration space.
+
 Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
 ---
+Changes in v2:
+ - no changes
+
+Changes in v3:
+ - no changes
+
+Changes in v4:
+ - add gate for rtl_lowpower_hidden_functions, only for RTL8116af
+
 Changes in v5:
- - no changes, new file
+ - no changes
 
 Changes in v6:
- - rename phylink_update_mac_pause_capabilities(), this function only
-   changes mac pause capability
- - set asym pause and pause according to config->pause tx and rx
- - add phydev->lock when change pl->phydev->advertising
+ - no changes
 
 Changes in v7:
- - modify the logic of phylink_update_mac_pause_capabilities
-   funciton
- - extract a helper function to update phylink from phylink_ethtool_set_pauseparam
+ - replace PCI_D3HOT with RTL_PM_CTRL_D3HOT, PCI_D3HOT has type
+   restricted pci_power_t, but we only need unsigned int type
 
 Changes in v8:
  - no changes
 ---
- drivers/net/phy/phylink.c | 171 +++++++++++++++++++++++++++-----------
- include/linux/phylink.h   |   2 +
- 2 files changed, 123 insertions(+), 50 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 42 +++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 59dfe35afa54..34a0e4f9b3dd 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -1828,6 +1828,126 @@ int phylink_set_fixed_link(struct phylink *pl,
- }
- EXPORT_SYMBOL_GPL(phylink_set_fixed_link);
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index c2873b436362..dc205ac12cb1 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -114,6 +114,7 @@
+ #define RTL_INT_HW_ID		0xd006
+ #define RTL_INT_HW_ID_MASK	0x00ff
+ #define RTL_INT_HW_ID_8116AF	0x0000
++#define RTL_PM_CTRL_D3HOT	0x03
  
-+/**
-+ * phylink_update_pause_state() - Update the phylink pause frame configuration
-+ * @pl: a pointer to a &struct phylink instance
-+ * @pause_state: bitmask indicating the new pause state
-+ *
-+ * Update the MAC pause frame (flow control) state for the phylink instance.
-+ */
-+static void phylink_update_pause_state(struct phylink *pl, int pause_state)
+ static const struct rtl_chip_info {
+ 	u32 mask;
+@@ -3771,6 +3772,41 @@ static void rtl_hw_start_8168ep_3(struct rtl8169_private *tp)
+ 	r8168_mac_ocp_modify(tp, 0xe860, 0x0000, 0x0080);
+ }
+ 
++static void rtl_lowpower_hidden_functions(struct pci_dev *pdev)
 +{
-+	struct phylink_link_state *config = &pl->link_config;
-+	bool tx_pause = !!(pause_state & MLO_PAUSE_TX);
-+	bool rx_pause = !!(pause_state & MLO_PAUSE_RX);
-+	bool manual_changed;
++	unsigned int slot = PCI_SLOT(pdev->devfn);
++	struct pci_bus *bus = pdev->bus;
++	int func, pos;
++	u16 val;
 +
-+	mutex_lock(&pl->state_mutex);
++	for (func = 2; func < 8; func++) {
++		unsigned int devfn = PCI_DEVFN(slot, func);
 +
-+	/*
-+	 * See the comments for linkmode_set_pause(), wrt the deficiencies
-+	 * with the current implementation.  A solution to this issue would
-+	 * be:
-+	 * ethtool  Local device
-+	 *  rx  tx  Pause AsymDir
-+	 *  0   0   0     0
-+	 *  1   0   1     1
-+	 *  0   1   0     1
-+	 *  1   1   1     1
-+	 * and then use the ethtool rx/tx enablement status to mask the
-+	 * rx/tx pause resolution.
-+	 */
-+	linkmode_set_pause(config->advertising, tx_pause,
-+			   rx_pause);
++		pos = pci_bus_find_capability(bus, devfn, PCI_CAP_ID_EXP);
++		if (pos) {
++			pci_bus_read_config_word(bus, devfn, pos + PCI_EXP_LNKCTL, &val);
 +
-+	manual_changed = (config->pause ^ pause_state) & MLO_PAUSE_AN ||
-+			 (!(pause_state & MLO_PAUSE_AN) &&
-+			   (config->pause ^ pause_state) & MLO_PAUSE_TXRX_MASK);
++			if (PCI_POSSIBLE_ERROR(val))
++				continue;
 +
-+	config->pause = pause_state;
++			val |= (PCI_EXP_LNKCTL_ASPMC | PCI_EXP_LNKCTL_CLKREQ_EN);
++			pci_bus_write_config_word(bus, devfn, pos + PCI_EXP_LNKCTL, val);
++		}
 +
-+	/* Update our in-band advertisement, triggering a renegotiation if
-+	 * the advertisement changed.
-+	 */
-+	if (!pl->phydev)
-+		phylink_change_inband_advert(pl);
++		pos = pci_bus_find_capability(bus, devfn, PCI_CAP_ID_PM);
++		if (pos) {
++			pci_bus_read_config_word(bus, devfn, pos + PCI_PM_CTRL, &val);
 +
-+	mutex_unlock(&pl->state_mutex);
++			if (PCI_POSSIBLE_ERROR(val))
++				continue;
 +
-+	/* If we have a PHY, a change of the pause frame advertisement will
-+	 * cause phylib to renegotiate (if AN is enabled) which will in turn
-+	 * call our phylink_phy_change() and trigger a resolve.  Note that
-+	 * we can't hold our state mutex while calling phy_set_asym_pause().
-+	 */
-+	if (pl->phydev)
-+		phy_set_asym_pause(pl->phydev, rx_pause, tx_pause);
-+
-+	/* If the manual pause settings changed, make sure we trigger a
-+	 * resolve to update their state; we can not guarantee that the
-+	 * link will cycle.
-+	 */
-+	if (manual_changed) {
-+		pl->link_failed = true;
-+		phylink_run_resolve(pl);
++			val &= ~PCI_PM_CTRL_STATE_MASK;
++			val |= (RTL_PM_CTRL_D3HOT | PCI_PM_CTRL_PME_STATUS);
++			pci_bus_write_config_word(bus, devfn, pos + PCI_PM_CTRL, val);
++		}
 +	}
 +}
 +
-+/**
-+ * phylink_update_mac_pause_capabilities() - Dynamically update MAC pause
-+ * @pl: a pointer to a &struct phylink returned from phylink_create()
-+ * @mac_pause: the new MAC pause capabilities mask
-+ *
-+ * This function allows a MAC driver to dynamically change its pause state,
-+ * such as losing/gaining Pause frame support based on MTU size.
-+ * It recalculates supported link modes and triggers renegotiation if needed.
-+ */
-+void phylink_update_mac_pause_capabilities(struct phylink *pl, unsigned long mac_pause)
-+{
-+	struct phylink_link_state *config = &pl->link_config;
-+	unsigned long old_pause;
-+	int pause_state;
-+
-+	ASSERT_RTNL();
-+
-+	if (mac_pause & ~(MAC_SYM_PAUSE | MAC_ASYM_PAUSE)) {
-+		phylink_err(pl, "Attempted to dynamically change non-pause MAC capabilities\n");
-+		return;
-+	}
-+
-+	old_pause = pl->config->mac_capabilities & (MAC_SYM_PAUSE | MAC_ASYM_PAUSE);
-+	if (old_pause == mac_pause)
-+		return;
-+
-+	mutex_lock(&pl->state_mutex);
-+
-+	pl->config->mac_capabilities &= ~(MAC_SYM_PAUSE | MAC_ASYM_PAUSE);
-+	pl->config->mac_capabilities |= mac_pause;
-+
-+	phylink_set(pl->supported, Pause);
-+	phylink_set(pl->supported, Asym_Pause);
-+
-+	if (pl->phydev)
-+		linkmode_and(pl->supported, pl->supported, pl->phydev->supported);
-+	else if (pl->sfp_bus)
-+		linkmode_and(pl->supported, pl->supported, pl->sfp_support);
-+
-+	phylink_validate(pl, pl->supported, config);
-+
-+	pause_state = config->pause;
-+
-+	if (!phylink_test(pl->supported, Pause)) {
-+		pause_state &= ~(MLO_PAUSE_RX | MLO_PAUSE_TX);
-+	} else if (!phylink_test(pl->supported, Asym_Pause)) {
-+		if ((pause_state & MLO_PAUSE_RX) ^ (pause_state & MLO_PAUSE_TX))
-+			pause_state &= ~(MLO_PAUSE_RX | MLO_PAUSE_TX);
-+	}
-+
-+	mutex_unlock(&pl->state_mutex);
-+
-+	phylink_update_pause_state(pl, pause_state);
-+}
-+EXPORT_SYMBOL_GPL(phylink_update_mac_pause_capabilities);
-+
- /**
-  * phylink_create() - create a phylink instance
-  * @config: a pointer to the target &struct phylink_config
-@@ -3190,8 +3310,6 @@ EXPORT_SYMBOL_GPL(phylink_ethtool_get_pauseparam);
- int phylink_ethtool_set_pauseparam(struct phylink *pl,
- 				   struct ethtool_pauseparam *pause)
+ static void rtl_hw_start_8117(struct rtl8169_private *tp)
  {
--	struct phylink_link_state *config = &pl->link_config;
--	bool manual_changed;
- 	int pause_state;
+ 	static const struct ephy_info e_info_8117[] = {
+@@ -5324,6 +5360,9 @@ static int rtl8169_resume(struct device *device)
+ 	/* Some chip versions may truncate packets without this initialization */
+ 	rtl_init_rxcfg(tp);
  
- 	ASSERT_RTNL();
-@@ -3215,54 +3333,7 @@ int phylink_ethtool_set_pauseparam(struct phylink *pl,
- 	if (pause->tx_pause)
- 		pause_state |= MLO_PAUSE_TX;
- 
--	mutex_lock(&pl->state_mutex);
--	/*
--	 * See the comments for linkmode_set_pause(), wrt the deficiencies
--	 * with the current implementation.  A solution to this issue would
--	 * be:
--	 * ethtool  Local device
--	 *  rx  tx  Pause AsymDir
--	 *  0   0   0     0
--	 *  1   0   1     1
--	 *  0   1   0     1
--	 *  1   1   1     1
--	 * and then use the ethtool rx/tx enablement status to mask the
--	 * rx/tx pause resolution.
--	 */
--	linkmode_set_pause(config->advertising, pause->tx_pause,
--			   pause->rx_pause);
--
--	manual_changed = (config->pause ^ pause_state) & MLO_PAUSE_AN ||
--			 (!(pause_state & MLO_PAUSE_AN) &&
--			   (config->pause ^ pause_state) & MLO_PAUSE_TXRX_MASK);
--
--	config->pause = pause_state;
--
--	/* Update our in-band advertisement, triggering a renegotiation if
--	 * the advertisement changed.
--	 */
--	if (!pl->phydev)
--		phylink_change_inband_advert(pl);
--
--	mutex_unlock(&pl->state_mutex);
--
--	/* If we have a PHY, a change of the pause frame advertisement will
--	 * cause phylib to renegotiate (if AN is enabled) which will in turn
--	 * call our phylink_phy_change() and trigger a resolve.  Note that
--	 * we can't hold our state mutex while calling phy_set_asym_pause().
--	 */
--	if (pl->phydev)
--		phy_set_asym_pause(pl->phydev, pause->rx_pause,
--				   pause->tx_pause);
--
--	/* If the manual pause settings changed, make sure we trigger a
--	 * resolve to update their state; we can not guarantee that the
--	 * link will cycle.
--	 */
--	if (manual_changed) {
--		pl->link_failed = true;
--		phylink_run_resolve(pl);
--	}
-+	phylink_update_pause_state(pl, pause_state);
- 
- 	return 0;
- }
-diff --git a/include/linux/phylink.h b/include/linux/phylink.h
-index 2bc0db3d52ac..e3c7822100ab 100644
---- a/include/linux/phylink.h
-+++ b/include/linux/phylink.h
-@@ -842,4 +842,6 @@ void phylink_replay_link_begin(struct phylink *pl);
- 
- void phylink_replay_link_end(struct phylink *pl);
- 
-+void phylink_update_mac_pause_capabilities(struct phylink *pl, unsigned long mac_pause);
++	if (rtl_is_8116af(tp))
++		rtl_lowpower_hidden_functions(tp->pci_dev);
 +
- #endif
+ 	return rtl8169_runtime_resume(device);
+ }
+ 
+@@ -6158,6 +6197,9 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		rtl8168_driver_start(tp);
+ 	}
+ 
++	if (rtl_is_8116af(tp))
++		rtl_lowpower_hidden_functions(tp->pci_dev);
++
+ 	if (pci_dev_run_wake(pdev))
+ 		pm_runtime_put_sync(&pdev->dev);
+ 
 -- 
 2.43.0
 
