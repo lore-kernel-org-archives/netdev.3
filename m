@@ -1,257 +1,85 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED46035E1B1;
-	Thu, 30 Jul 2026 20:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785442403; cv=fail; b=pF/vFsR7V9joFlqbLTMSvhNsKLR9w8ulCX1s1WSKj4+15n0tj0yw8DpHEubRtvLA3ZVumkRm8oPiAZowVHaOm3P0pAK6YceDBzccNZWxMuKLl4p3p6cFV9nOrXt1e42zJ0skh7lCu2U8eEaGMShiVZQiyLeyT6fvaQYkcXb0nj4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785442403; c=relaxed/simple;
-	bh=ms+/XESfyKrYQPIs43uW/HeuwFjvdS4+0tO/aqJN6ks=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=O5vIz7UOcbBLtC66I0vyhzUhSLEF3PIdgNXxPq4UM3IPMarhayR9A5CbI44P0zQiv2qx+njoLadZGUOIPEa82ugZxfEFuFP2B17lyJkDvLwYoNJYAqc/SWcDdcWD3IkuMVjN3IIUaGgzgbH+Hi4zApQHCk9fk1kf4GQLLv6G1lo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nr2g91om; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D063C6A56;
+	Thu, 30 Jul 2026 20:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785443230; cv=none; b=jssDZ+93ya9RjeZLYjmTlNuyjoZ59nxWnuZ77Y9dq6VvZahXhJru6n36QpRUYbPIrKQFQJ3Ow+UZKcwgS8On4FxHBnw8oO8Ugo6BKCvduhyPcqsIoJs7SNRh+utJtmR3t6AoMp0UbaWifJ0ecLtpPPqE19oXdnYzla6MVGuNYIg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785443230; c=relaxed/simple;
+	bh=0M6OiyujQcSFWGAQZkpgjJ09w3VYQzS7bHqsglTXnKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oP2ssxVATouWr7MYlmQqmt9txnfG9u8onf3HcrWmxqYBXL5amM1Kqb4iYDQ0TgAZhiviwfWI9PzzYjeMRUF7DPDM0ndwEdsMZpef6td1BSQM32aA/juLZdvWFqrnx34e7v6qCOphaegFNF7DmD7E9Q3nInrCdoAwR0we0X0Mn1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hgCYe1w6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nr2g91om"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785442401; x=1816978401;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=ms+/XESfyKrYQPIs43uW/HeuwFjvdS4+0tO/aqJN6ks=;
-  b=nr2g91omBJGjrfQSM6oFuwhpLLMi4bI5V5CNQkezryn38O17i+OaXGhF
-   kdyqpVGmYPrVTbHoRlNTWh3IKnkX9V+adhf6gA1Xtgpo0DEQppFas4EbB
-   FPH4XM1Ezfm6b8DtVruvOH5B2btxmSOC82m8nviPnWdBIrtaL6faDLLAn
-   OVu3quklAT1NiWZa7awlqUs7X7VxCI6bpvXEDhuPW1LMUgxfHOdwXhxtO
-   4Wl0lpfHHW3EFGIxDFGhj7utWKJbTWkKBwVo4BYrgsHqxTibGuao45Lc3
-   iRPO/+z7FbZ4J3QGMSdxGTJeSndrgLCekYjYUS+zQkPlKE0a2yo8HjYpy
-   A==;
-X-CSE-ConnectionGUID: qpTqn4IyRXqWsvQnlNbEug==
-X-CSE-MsgGUID: 3TncS2g1SEOEmCnSUBFOEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="85943904"
-X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; 
-   d="scan'208";a="85943904"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 13:13:20 -0700
-X-CSE-ConnectionGUID: AIfwod9hRm68L87Aet2CiA==
-X-CSE-MsgGUID: PRllHMoZTyG/FSAcn0EY+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; 
-   d="scan'208";a="256086200"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 13:13:19 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 30 Jul 2026 13:13:19 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Thu, 30 Jul 2026 13:13:19 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.7) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 30 Jul 2026 13:13:18 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O4UZT+m9BZT+8D6gnr5Qtc1snOI0ya7z7a8G15BmfWKDJ1LhLXFCHoN5AqjfyOQ58jlxiEKAqlBn/jBplige8tnudWgmxeFl+zHm98oRGuMtgWat6R06WhQyN5Bq3N7lkbG4n1JzwEf3Xh5sb1MFF1n74TAchWVL9u/nR8AbI7mGU85fXdxt1JM7WzEr+yUjHvZPe93yUXiHcQc/Rg/fhAwzJNuKchRyhbxFrCMI5LmwOSgBx7gWV8EypQXo26gJq+fctZXBD6SqxUDv9LVWmNhJiAP5y+/V6vwRhOiM2SiRO6RMOOxlVvY995PSBfuphlt4b+Z3d7PzaNLgPcaY4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4gfEiF6W83MsXcNXAhP3fDMs+/VVdyOpDJjeUVaDGsE=;
- b=zPNjR/I4eBGf+jXds0Qv59dvOk7cFiGB/htKSZDyyAMjIIXsl4+5BOQGERLIWu94YqChjtSVveo+jNpdV8bpnvshdPXRMkEBvz8Q0emPeslpnjQ1Nk1wXSU7VKQKqT7nj4YpeoE2d/sE3BJADJLqwRb67/KEbfbiQdOb2OwhhaT3EJ/t+qSE8WB5eU3CpTyys8jIFx/N2rWZO9+h1czxr4rmImJ9lszzIhU392rYihEspdZfnya6Fs/F+/aGdQkJGL/yUwH1/ajiHzda44CcEPS6JULmYx4Mdi+ZgIwg5sL6hbSyBJG/O/E5HbYjoTvjE20wEVd6MVcTU028oQ4wsw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MN6PR11MB8241.namprd11.prod.outlook.com (2603:10b6:208:473::9)
- by LVXPR11MB9708.namprd11.prod.outlook.com (2603:10b6:408:388::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Thu, 30 Jul
- 2026 20:13:17 +0000
-Received: from MN6PR11MB8241.namprd11.prod.outlook.com
- ([fe80::cf79:ceec:e277:9d46]) by MN6PR11MB8241.namprd11.prod.outlook.com
- ([fe80::cf79:ceec:e277:9d46%7]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
- 20:13:16 +0000
-Message-ID: <5f1456d9-a098-4459-8fe0-3a90c4db0ed3@intel.com>
-Date: Thu, 30 Jul 2026 13:13:13 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] i40e: Avoid repeating RX filter warning
-To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
-	"przemyslaw.kitszel@intel.com" <przemyslaw.kitszel@intel.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"aleksander.lobakin@intel.com" <aleksander.lobakin@intel.com>
-CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Blair Steven
-	<Blair.Steven@alliedtelesis.co.nz>, Carl Smith
-	<Carl.Smith@alliedtelesis.co.nz>
-References: <20260514003733.1718771-1-chris.packham@alliedtelesis.co.nz>
- <c2f3acdd-9985-4d8f-bfc4-5d83f520f4a9@alliedtelesis.co.nz>
-Content-Language: en-US
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-In-Reply-To: <c2f3acdd-9985-4d8f-bfc4-5d83f520f4a9@alliedtelesis.co.nz>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR03CA0171.namprd03.prod.outlook.com
- (2603:10b6:303:8d::26) To MN6PR11MB8241.namprd11.prod.outlook.com
- (2603:10b6:208:473::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hgCYe1w6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D636C1F000E9;
+	Thu, 30 Jul 2026 20:27:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785443226;
+	bh=oaFgb7FcLIccJmyowpWmlw7aD0mw7q9LLhJkgC2z4gE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=hgCYe1w6B1pD4kXOWvkfco2VdGK4jONQ7eG2f9OBgg+I5t6RjhyhkOOV3DmkaMOhg
+	 TYw3yzslJqVjwJx0M2G0ly4oGzgfayT2JXzxvVBcI3e5zkUIzdNxjxzyP8P+b8/Rzr
+	 e+3PfdX0dlBemQHAoxHE5ip3zbheXqlaIUZDiqGA3+4MEoBrKdIWa7n4TUH1YcToK9
+	 /mSQTytf+ip73TZRiRkJ5yrdNayYi0mWG936vxg6klDtuHKMQPIOXHbHfhMuruRhmX
+	 tU2Oc1J92sg1NSJhHRu/5Z4X8bIyro9D/114mqdbM6lOSkLE8/TQKEdyRlaCctN+vz
+	 SqeFXAAkrpK1g==
+Date: Thu, 30 Jul 2026 13:27:05 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Florian Westphal
+ <fw@strlen.de>, Davide Caratti <dcaratti@redhat.com>, Christoph Paasch
+ <cpaasch@openai.com>
+Subject: Re: [PATCH net 1/5] mptcp: avoid combining some incoming suboptions
+Message-ID: <20260730132705.58e65d98@kernel.org>
+In-Reply-To: <c77bd843-725f-4d65-8750-87da6105a8d3@kernel.org>
+References: <20260728-net-mptcp-misc-fixes-7-2-rc6-v1-0-f7e2d229159d@kernel.org>
+	<20260728-net-mptcp-misc-fixes-7-2-rc6-v1-1-f7e2d229159d@kernel.org>
+	<20260729172306.31deb67d@kernel.org>
+	<c77bd843-725f-4d65-8750-87da6105a8d3@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN6PR11MB8241:EE_|LVXPR11MB9708:EE_
-X-MS-Office365-Filtering-Correlation-Id: fbff5a38-cab2-4035-d7a2-08deee76fde6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: 3JQc3jtkrqc+UyGM6kZWj09R6J/neutAdq14RpWJn1za0qQpObxt4QytWrbG2tZNVhpwFeY0ozkL9bOSMGW6zRtRPtVjX71cexWzll51SRPxMamgPCFPJUtYSgjgrtL4n8mpIUu7jZEs/lwk71ct2HrsqJfd3jsbpJNnDRdTCdPPP2Xeg32WkCukFwSQz3S/rCZ1LH3wCXk/WaA49qDFy/Bm5veGyUK0s9Jtps465rpJZ/KSBLvJGSi9xgAWtdhKxxWlIWH8BziklEJAHi3RVA7pf6Vnt8BeeOf+22oEJvRSFK8cInkeJO9ox6f5wW3hTAp8k8PtZ3KinkKoayLzdRIWWqNWTaljajMj8igZJ5PmMClzmISsiMFAYa2R8rNJAxGOQXXe1Uc2A4/BjEqCtk//dhOxFZhadf738V+cKgHEeg8JUW6OUaBsceM/KZ0GAozUV7B5q90MEPwZtilKWpzux2TnoR/ua9nf4eOfgsqCpxXBiSNQbmVRAdBQvvHil256LLMpPxFdLT0nZSTZuHrsFTmjz3Qq1LqQeqGcD4TMgmvruHfhkPV0vicB/JExGJND4bnIYYwJGXgN8TpB+pd1g1PAw9SuXhG4yIRcSZiCetjdM++IqssOh3NqbII2dipalWOUOOYemYYMqpubhsAgXlTT3PDPRkov5uxo1dk=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8241.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZW5hUFBBZHJqSXVHZ0lRRnZDRUdpOUFkQTBRcktvcHJnMjFZN1dsZjk1b0hi?=
- =?utf-8?B?b2lkNUZycmpPVTFTZUtMMjZ2VWhOdHh2SFVudVVYaVliclZnWUFrV3NxNE9S?=
- =?utf-8?B?TXQzaVBGdHhKOG5FSzgxYnZSZmlsYUVUMDFiSngvSkFuSm5YZWJnUHhIQmZV?=
- =?utf-8?B?QlBVTGgrZkVoUjI2OVc1UFRkU3N0dWFtWDJlWUxLdURVcUNsMnYwVGgwRzM4?=
- =?utf-8?B?ZjNRT1FwMUsxdG9tTkdjRUFpVWIzbmRyeXY5Y0NQOGdFcEthQlF6UXZDV2Nn?=
- =?utf-8?B?RzdwcmhKQWcvdHJ3N015UXU0NWI3WGtZUHU3U3hNZFBna1RPVWUwbDNOR2xr?=
- =?utf-8?B?UlVtaEVwWld1WnVBUW1kVWM4UUdIUHA0L0FRbENRR2ZJMU14RndjcHdFa1RM?=
- =?utf-8?B?SHJCZXd0ako1TG1oZ0UrN0tCaVVCUm4vVUx3K2gydEdmQXkzd0p2RUswSlVo?=
- =?utf-8?B?Y29HNnNuUjduTmw3bUxLZlJIdHNXeU9pQ2FVZ05UajZBbkpzV3NHZk9KQmtL?=
- =?utf-8?B?QWluckFtZWdTZkFMSEtacm1WVnpUTGN5NVB5MXNXTytWQnhrSFFhQTg0bmhu?=
- =?utf-8?B?TmhrcXkra1hoR0llSjZkZVRLamthWDJMaWd3M3JjZmxjSXhsKzZOV1NSRTZG?=
- =?utf-8?B?cDVmd2RJb01keG5zOTFkNXlzNUc0S3JPTmVSbU4vVWxMZGNIR1FldjExYk03?=
- =?utf-8?B?Z3N5S0xWcm4vZXJhUWVQYkdwVGhNMFhoWlhvUFJOY0VmODlpL290UzVneWhI?=
- =?utf-8?B?Ui90VFE5QWdBTkR4U3JnVzZLZ0FYT0JrQmRUUVZLQUM0N21TSWx2am5UK2tx?=
- =?utf-8?B?RFNDdllKWG1uelo2UmdoZzQzU1F1TkUrd1QvbFVDWUZ1VVN0RC90NzhKaFZC?=
- =?utf-8?B?UUkvQnBmN0xSRis3MXR1aGx4NUxDMTdXOTBYRjJucFJZYlY2dTJnT25GUUtV?=
- =?utf-8?B?emhLcjRvQkcyMjFCaS8xVlFhYTFNYkVUTytwVjJYNGU1SXliY0FNT3FSVWh0?=
- =?utf-8?B?TVNNenM0VlIxYnRGeFcvQ2pyMk9vVjEyYjFjbzVJS1ZjSkRvUDlrTXNQOXBz?=
- =?utf-8?B?VlVoZHgyeWZhWlhPUUNVRXdUQ25TZFRhbU93UktDTFFEbC8rMXZ4Z3hHOThO?=
- =?utf-8?B?YmZQaHliU2NHb0lSMnVlZW40ZjRVT0xJcHB2cUxkKzh5S1JSS0UxTlQ2bWdQ?=
- =?utf-8?B?T0ZEWU1UK0xyeDQ4SG5yVVBlYmxhcXBpQzBJOVRBTlhxK3JHYytHK2pEakNs?=
- =?utf-8?B?d0ozZ2JLeFFQcTR0dGdXREE5bENoaGc5Q21pMVdaZ0w4VHNxWjJ1UGxvQ0xE?=
- =?utf-8?B?MytIMXdNR2kwNytFQkU0d1c1V3VQcTlzSFFNa3N1RFhRUWViYzNlZy9sSHM0?=
- =?utf-8?B?MXcxdkx0Y2lhU3dRU25LMXpiVzJtUVU3QWluR3NtaVlkNFNVN3FaZ2JPOGtk?=
- =?utf-8?B?d0k2WXNkbTBqMEc1RjVNRUIzS1ZmbzljYm9ZNWQxNkRmOWl5N0w1SHRqWFJG?=
- =?utf-8?B?RFFQT25jOW1nblQvTVZNRnJ1VVhOd1JpQUIxY3ZQMHdmTlRkY3AxS0lkNE5Y?=
- =?utf-8?B?RWJ3Sk8yZkVMRnFNQXNNSFIyOGZBc3NvQi9TVXJrazBHR3VqcnM2K3hhOWly?=
- =?utf-8?B?SEt1SklrSjRzOGc0UDY5VWdYZDhCaE5KZDU3V3JvNmRLTHdVYlVGUS9uQm52?=
- =?utf-8?B?NlhhMGw3alFpZGNhRm5kR1RNaVJjWEVlM1dhMmFUM2x2dWNIdGVYZnR1cG9w?=
- =?utf-8?B?N0VBb2RmVCsyOHlGMkUrWkxGMG11MSs2dGFyc2tmR3FiNnk5elRtcDBqUnZo?=
- =?utf-8?B?K2ZrcXhjeExBdUtWelMxVGFPN0Y2cDljYWxRbjc0WVdBOFkzMDVDeFo2MFJy?=
- =?utf-8?B?WTg2VzMxOEliODFqYVYvKzRJeWhIMjJhbDVIUStzeGNEdFJYc2htT01BVnBk?=
- =?utf-8?B?MDVuVGNzeldzRWVzSTUzQ1I5YUlZOFRxTW5zOGQ1aXBZamN1S0sraS9VcWRl?=
- =?utf-8?B?R2NJMXE1R2ZwanJCNVZNMm5WNXordWNMeUo2VGFxQytVd0I3Qk95UkFSM09I?=
- =?utf-8?B?eTUxbExQQWd6Y2FvMkI2aWkwaWdIVEgrcFpWUVgvd2hKV1Y5ZFVuUlMwamp5?=
- =?utf-8?B?dEwxZ0p5UEN3RFd2NnhXcG9iVE5SMVFhVnFqRDV6MU9jbGVzbzlIbW1SWHA1?=
- =?utf-8?B?dDYvTjQ3TVBmUnFlck5yTkVUY21Va3Vqck0zNW85SWxBZG5ialBjZTBrSjNE?=
- =?utf-8?B?aFAwS045WE9sN3R4RU41Q1BYclVVTEZwUEVhTHpDaDVPSFg4Zk9nbEp3UUYx?=
- =?utf-8?B?SkdPVldwZ0RKMTJxTzM0eGJDMTQvUk1Nek1yQklmdlo3alVkRW9iSzVBTy84?=
- =?utf-8?Q?sWcM2zOxE7oqwrWI=3D?=
-X-Exchange-RoutingPolicyChecked: mChDufQEXLxx3/E6Y843xYaoV9gMPQvEXqiwrUP3T3TVaP8JcZp5AEMv7jj8Oiu+solDALxWkH2VnNsR44E4XrBSfe19gxV0o8n1A+dRkQpcdWwpmTuhhzKnxYSRw0d7514R6cqcSOFRRntDwf3cPXNbKiGBRUHF+ewSTO4vEqt6XY2sC1PrSO0TAAEmSNeg2cvq2N8sGNR8YUXgOEiPGvw3xztqGLr5TYhGm8ICWZt+If7RksYwsX40hwZe723sdyeXt8ilC3ldNN1rSDEZYlTp7SE0uzfvSicpBI0+NgzspTdf7AI3XwWsmx2sxNWyPlQ8bmyfKTxJzfmFxHUwRA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: fbff5a38-cab2-4035-d7a2-08deee76fde6
-X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8241.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 20:13:16.8267
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0nIDQnrdz/L9VsvbMjpmcmVyEanGxD7hVz2YPX44DafUsU3Rh34Kwgk/ROSbxNKaIAGBlKFazHg2PBv9EJYNYV9DiNL0pxRIa97kp/tMCYg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LVXPR11MB9708
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-
-
-On 7/29/2026 4:53 PM, Chris Packham wrote:
-> Hi All,
+On Thu, 30 Jul 2026 10:14:53 +0200 Matthieu Baerts wrote:
+> On 30/07/2026 02:23, Jakub Kicinski wrote:
+> > On Tue, 28 Jul 2026 19:11:57 +0200 Matthieu Baerts (NGI0) wrote:  
+> >> Some MPTCP suboptions are mutually exclusive according to the RFC8684,
+> >> but also because in different places, the code doesn't expect some
+> >> combinations to be present. That's specially true for suboptions that
+> >> would be present twice, but with different attributes.  
+> > 
+> > Looks like Clashiko has much to say about this patch.
+> > Could you check?  
 > 
-> On 14/05/2026 12:37, Chris Packham wrote:
->> When the i40e runs out of space for RX filters the driver switches to
->> promiscuous mode and warns that it has done so. In scenarios with a
->> large number of these filters this can generate a lot of warnings. For
->> example:
->>
->>     $ dmesg -c > /dev/null
->>     $ ip link add dev br0 type bridge vlan_filtering 1 vlan_default_pvid 1
->>     $ ip link set dev eth7 master br0
->>     $ bridge vlan add vid 1 dev eth7 pvid untagged self
->>     $ bridge vlan add vid 2-4094 dev eth7 tagged
->>     $ dmesg
->>     [   25.601705] i40e 0000:01:00.1: Error LIBIE_AQ_RC_ENOSPC, forcing overflow promiscuous on PF
->>     [   25.601833] i40e 0000:01:00.1: Error LIBIE_AQ_RC_ENOSPC, forcing overflow promiscuous on PF
->>     [   25.601961] i40e 0000:01:00.1: Error LIBIE_AQ_RC_ENOSPC, forcing overflow promiscuous on PF
->>     [   25.602088] i40e 0000:01:00.1: Error LIBIE_AQ_RC_ENOSPC, forcing overflow promiscuous on PF
->>     [   25.602216] i40e 0000:01:00.1: Error LIBIE_AQ_RC_ENOSPC, forcing overflow promiscuous on PF
->>     [   25.602344] i40e 0000:01:00.1: Error LIBIE_AQ_RC_ENOSPC, forcing overflow promiscuous on PF
->>     ...
->>
->> Use test_and_set_bit() so that the warning is only issued when the
->> driver enables promiscuous mode and not on the addition of subsequent RX
->> filters.
->>
->> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
->> ---
->>
->> Resend with net-next tag
+> Sure, I will check that.
 > 
-> Has this fallen through the cracks? I've seen some Reviewed-bys but it
-> doesn't seem to have been picked up.
+> Do you think Clashiko could look at patches from the MPTCP ML as well?
+> Because the (deprecated?) AI review tool we use didn't find anything:
+> 
+> https://netdev-ai.bots.linux.dev/ai-review.html?id=d1d1ff69-0f15-4812-ad16-e4f6f2df9f6b
+> 
+> Or maybe that's because the model is different, and this can be easily
+> fixed? Or maybe the prompts are different too?
+> 
+> I'm asking, mainly because once patches have been accepted in our tree,
+> it can be hard to have the original author fixing them. Not to block
+> other patches too long, I often have to fix them, so I would prefer to
+> get the same review tools (if possible) to prevent that :)
 
-Hi Chris,
-
-I have it in my queue of patches to send out but I'm working my way to 
-it. I do hope to have it sent on soon.
-
-Thanks,
-Tony
-
->>
->>    drivers/net/ethernet/intel/i40e/i40e_main.c | 18 ++++++++++--------
->>    1 file changed, 10 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
->> index 926d001b2150..8741990b5a5e 100644
->> --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
->> +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
->> @@ -2408,10 +2408,11 @@ void i40e_aqc_add_filters(struct i40e_vsi *vsi, const char *vsi_name,
->>    
->>    	if (fcnt != num_add) {
->>    		if (vsi->type == I40E_VSI_MAIN) {
->> -			set_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
->> -			dev_warn(&vsi->back->pdev->dev,
->> -				 "Error %s adding RX filters on %s, promiscuous mode forced on\n",
->> -				 libie_aq_str(aq_status), vsi_name);
->> +			if (!test_and_set_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state)) {
->> +				dev_warn(&vsi->back->pdev->dev,
->> +					 "Error %s adding RX filters on %s, promiscuous mode forced on\n",
->> +					 libie_aq_str(aq_status), vsi_name);
->> +			}
->>    		} else if (vsi->type == I40E_VSI_SRIOV ||
->>    			   vsi->type == I40E_VSI_VMDQ1 ||
->>    			   vsi->type == I40E_VSI_VMDQ2) {
->> @@ -2461,10 +2462,11 @@ i40e_aqc_broadcast_filter(struct i40e_vsi *vsi, const char *vsi_name,
->>    	}
->>    
->>    	if (aq_ret) {
->> -		set_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
->> -		dev_warn(&vsi->back->pdev->dev,
->> -			 "Error %s, forcing overflow promiscuous on %s\n",
->> -			 libie_aq_str(hw->aq.asq_last_status), vsi_name);
->> +		if (!test_and_set_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state)) {
->> +			dev_warn(&vsi->back->pdev->dev,
->> +				 "Error %s, forcing overflow promiscuous on %s\n",
->> +				 libie_aq_str(hw->aq.asq_last_status), vsi_name);
->> +		}
->>    	}
->>    
->>    	return aq_ret;
-
+Sorry about that, I know it's annoying. Not the best time TBH.
+I'm modifying our instances very actively, I don't want to have
+to worry about the extra surface of integrations. Hopefully things
+converge soon and we can switch you over and kill that old service
+we had completely.
