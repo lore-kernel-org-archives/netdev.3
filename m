@@ -1,152 +1,144 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012070.outbound.protection.outlook.com [52.101.43.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC381433BB2
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 13:53:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785419608; cv=none; b=KmkxdMBPiNaQT44ix0zKEhL/Ov1uj5CTCWDDXFHbllo699aesRheKzGZoHimMBHQtdYUG6zs8haPQO2Th1yoIkY/UqHO8TPNxVlPuwfGeo7f7bS3tCgFzs4qqhQAB0HT6aoG4fEcNCdyyZXOWVvCusVGSSgw+JPJrNO7ei+zKks=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785419608; c=relaxed/simple;
-	bh=K95i2dycr1Y1y9y+ClkO0QRYJ0O3v/04py+y9K32lRw=;
-	h=Date:From:To:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=H1F+tCIx+HGNcOxHIiNDVBO43CRLS5tPm5gFqdFJzySsBCnhj2ehHYFSLBdBrgInLaCBYMDAAe/QsFgmI5pRWX4Tn0Lt0QIzOpU3WbsR57D4iZUco01EmaIGyCvOhKLhrheGoltSohu93QoAOZ0dDSJQoWvu2kwrbDWfqtMKwZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r0Z38qOJ; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019DF2E4257
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 13:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785419652; cv=fail; b=dhoW0tp7Pnd0C1ZKD/wMYIYaRU5wyCNLbpQkUgnk/sZdgwglz1u/8fzVAhJSTe6n/RwEDIYM5vMAMMnAuFNIYy8EnFagjT6j7o+eG9xTe6V5kzB+eZI0fZ/3QXYYBkayh69UjTpBwCpk8LzuaO+Ln3y0S52SLw1mFJEfo/rFAiM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785419652; c=relaxed/simple;
+	bh=yTfF+6o5enW9GwnNqcSBJ4nXRNdSBr1Eez3mxQmAPn4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QHGZnpDH6/uo6Cq1IGew2ruLQ7Fn8dAV723Y1kp+hERMd2LfoK5NXE2+icxTq/1Z3WdHafnK15wQ63XlrvHXT7LUepMgufDIVt0m1InjIc4delNT5XtwsseE0oH2c0L1qBFXOKeh6PYdnSRLpixtNmm4IagI33+4f+3HXHTz0Vo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ohmpEhXG; arc=fail smtp.client-ip=52.101.43.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r0Z38qOJ"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-81f36179dd5so31533027b3.2
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 06:53:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785419605; x=1786024405; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Mu6cNrR0W8flzZXRF2HaqMmIkY9quL2cGjJt6Hs8JDQ=;
-        b=r0Z38qOJLeXH+WNiMb6z5XtpXY+xK0iHVRWHv/TfvOlQqLb4CBZ3nniX2FA29fsguc
-         ul4Auq1QyJlE4MWB8PaayUVR+qhkg16CGaxA4c+dPbKMl69umAO6/i5MRZQPb/qvsvGv
-         uLHPaDStSVOTxNNopuTFeNXEu6spmIks4qF616qM3ujZLqW9sSPM5BmqynankqyDp+ER
-         Jb/BISPO5GjYkbJp43Puju8e8IiNeCTEaH81Cg2yvKT2Kfd5LNXx2uolZDJUZglEKjyd
-         CGBeXDwP2jd7x2GUDLllT4nfaNXcN+YuxDd1D7ZJWs0bYxQHd/pEq2iQZRWZgb+1vv71
-         zb5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785419605; x=1786024405;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Mu6cNrR0W8flzZXRF2HaqMmIkY9quL2cGjJt6Hs8JDQ=;
-        b=YA7TnuZjTXhpwPmDGYCvcPY7YI6BtM9ExgRmpSxMikJm1D0Vg/L8iu48N5MrkcCQBq
-         0oUdALnfBl94dyjwt7rZ+YbyYLrj5U9URS4V6obuga9wUG/sfLdJoYwtKMfSq9APVib7
-         9Tm+QKcUbRgwf/MmEYajGWAs8fn09wsO4/zxHkwelIkDxtujOw1Yy330NPrr3V500Mug
-         zwH7A1oi+Byfn79SE9UOjve8gdpQ92e8qI4eNOA3G0pmvC6AbyVSft4ucyhxotKXNmzO
-         7GyYzMBZAJsjvZoIZXXOqKVrFuKHqsvxtQLurmtqNB+rzJ/SNaxgUAKZ9m99WDAiFGvE
-         Zd1g==
-X-Forwarded-Encrypted: i=1; AHgh+RpxABf2eP6LCQ4Nw+WupCvg71rm+l6Me96MtIRJDw1W3xv3K83H3jFXHpmP550/boT2LaEq4oA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0BhSwFZWhE3nwn+LF40B/pJI+vwO6kykA1MMA5+KAkpPx58Zq
-	S6/UbPoxFbW8nU+1lrZnEkodPjK+B4kVfoWncwyFDcELTJAUTWvzXmerEHtnkNfr
-X-Gm-Gg: AR+sD12/PeKSYCZVj28Ykh35dH5SKAC+1MFpdfrF7Wc8QMKDdu1ISQixMiROsd1WdNY
-	aIokkE1/TqpPfa4w49OIbfZvm5zTGac7FAdwDtMs0kZ+yyV6jhWSyod0ZpWbkV7yooTpD9jCW6y
-	5v+Bc6kclAf7hAf+zg7byQIjUlA0SzHPoLg11wboUJhkv03+q3oBknpQakoAXDXOR1ZbmILMnCa
-	bAIwIoqtVzmACRGXyAGnxq2I2LpxUKjflIMmQ8hnwA9tqRIf6n1caOPHeuzghPiBGAsWu1KES0b
-	KsVgyzT07/KIpJFCc42M/o3AZ6vlH69FX2bigjBYqcPgoEQI3yjB4hwd3I8hQW0qUUhzNxnwP+H
-	7iQeBw1c4ERKM0vr8ZOr1dFVxGp7z5rx7q5WXc8izGULYQBI4Ylf2YR3iWlzkid9pGU563fsooK
-	e2RfVqdVFkKHVN5ROF6prWAeQb5KPCDvZtYdHHBSOFufDwaWj2SjsApJI4kjxhrKf6/c5aa1jce
-	1PR8ZUBjbNN4bPejJ0NEWoLyN4MkuumaEHlakiurzuxsS0=
-X-Received: by 2002:a05:690c:6d02:b0:80d:c2cc:f673 with SMTP id 00721157ae682-81fb89781cdmr18468717b3.20.1785419605542;
-        Thu, 30 Jul 2026 06:53:25 -0700 (PDT)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fb8ae4d56sm9981737b3.39.2026.07.30.06.53.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 06:53:24 -0700 (PDT)
-Date: Thu, 30 Jul 2026 09:53:24 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: syzbot <syzbot+ce13c07d96d04716eaa2@syzkaller.appspotmail.com>, 
- davem@davemloft.net, 
- edumazet@google.com, 
- horms@kernel.org, 
- kuba@kernel.org, 
- linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, 
- pabeni@redhat.com, 
- syzkaller-bugs@googlegroups.com, 
- willemdebruijn.kernel@gmail.com, 
- alice.kernel@fastmail.im
-Message-ID: <willemdebruijn.kernel.1cc6c160b4b5d@gmail.com>
-In-Reply-To: <6a6a966c.86abc875.e5c3d.0054.GAE@google.com>
-References: <6a6a966c.86abc875.e5c3d.0054.GAE@google.com>
-Subject: Re: [syzbot] [net?] WARNING in udp_v6_send_skb
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ohmpEhXG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dKUEuBoLC4HETpcXIyG6UfutrfmPCmmaxzcQdzqmzwpmfaxPluE7NzBaAHuzL3CQVmJfXLIThzRG/o6q84FokkJfCCq2Mik6zBGYJ8mknMJbdYXkJV3ctiCX3dLz20q4a/5WPmAgFRZZYKE5Qk7g04E5ucQbTGpL3eZEcmTebQw0Sph/ABP2/u/PuSgp51Hpnd0hkZfP9oSzwMXYqVR5zwgCQ1rnKzksVIosRKJkRx0OZGEOQwEDT2l4MqTIXGlh4PaXhQgFWRg/hi2oJXmWLaeiF4YbIUfAKz3iRoZ+qz1KdWa6pD1tqLLueCM501Ive84YaQnSEKxYx9QYl55uVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pDVyjo0anU8bmLaxjOk5TpZbB46w9q1euX2BFcFVueM=;
+ b=gWk0mHm1Zj7OddV1fLh4itflsOqtGDovU+Y9AM0JU9BDPgs5j+nS0lrbQM8pDaaIQQ9puHq6SfdzVy2xaXgSBIBleDyfqpiu3DY0JjZ7N9yib14dpw4pkLcNHmzwY94lO/9k2StxzpktIdt6pVc5ww5F8qQG1dKf5BnVaK7lwVm4YJE0OqNAykJmOMpvr8nLUmQAiGcLF+EoKPeSMrXhLuwEYdcN1lnxMRGOSvQ3DhlPJZ0/W5uBYrt6ZeO9Yg4Sd2bzE3H8neSRsaDkMF1SSSp6+khg37r4QSVzrPFQ5V6g2pU8O917wQtuAjEPoKNnT6FKyMJTSygEGEFnYjzXBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pDVyjo0anU8bmLaxjOk5TpZbB46w9q1euX2BFcFVueM=;
+ b=ohmpEhXGsvNUrUGtOFTEFLTyZahLpzz9KC81amyHZnhuTPAlYL/VPTwUo6F2vKDUy0aiTFI2ntxq3QErFPgMNRKFnXihSvDn0Ts6Yr6Ufl3xKI+88PlazRoZ/eDOBi5YW9kBuj9uadG4Dm/mSuNfx6mccJXZk/kw1Rbf2kM8aJWChj+eexbJybh5zfK8DeICsvAcrOlren9z2XZAy9Bz7pDDp/naMu01n9WpxS76PwoUYkIzN66bljhZ0EbqhJp5zUHD1O/uVwPQytb0q8hCHaEAr+VVenAmako6BhJ9klbaePdRJN1Sf14lgd8i7h/vJayCFKEEPngsqN1evyXZ5g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by CH8PR12MB9790.namprd12.prod.outlook.com (2603:10b6:610:274::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Thu, 30 Jul
+ 2026 13:53:58 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
+ 13:53:58 +0000
+Date: Thu, 30 Jul 2026 16:53:50 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Zihan Xi <zihanx@nebusec.ai>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+	vega@nebusec.ai
+Subject: Re: [PATCH net v2 1/1] ipv4: Fix fib_nlmsg_size() for RTA_VIA
+ nexthops
+Message-ID: <20260730135350.GA1789341@shredder>
+References: <cover.1785411219.git.zihanx@nebusec.ai>
+ <6f53fa797fcaeb26966432ed7ae9bb87c4961f37.1785411220.git.zihanx@nebusec.ai>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6f53fa797fcaeb26966432ed7ae9bb87c4961f37.1785411220.git.zihanx@nebusec.ai>
+X-ClientProxiedBy: TLZP290CA0003.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:9::17) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CH8PR12MB9790:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76f39120-d051-4b5f-a3a7-08deee4200fd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|6133799003|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	SFgXoAaveHCPmPHJj869FiIyKsKlpzxJPtP1D3eLP6BaPZX0lBbIyh5llLyBu6t5EVImfIomppbwt6HXM36JJx/2CaZR4RWSKiYRtuewWzkjOvMr4IPkAPAmu3onahVPLxsDbXuzucviHPuNAjUXx4Zqt6EXNb2BbEOG2kbvioQ3scYoMZXilRfliPb3J276qr8rzXJldvA35eFANwotEzp8uJhuemEegROH68gDXu45/JRvbIBg7D1wfo6zuktsgz3vs0vyC3/3fjgMSKGVQFdJavQR3MGfJ3w2luYTw/kgkMVqBebOudXqkyYdiqUDXjvcYv/w6r0PuMvUyom8Lg88RI3VYsqGmXQLnnE75999n7+YR7z3T1el3YllEK2wbGwp+aJG9ipnmGlP+6c6ojH7CSOD3Ix7guZKMF9DbV2pxMg3X8xIM4hX3Nbag2w5UFUF3LMDxFAgbG76JhsHmcEik5LLi7LOnNjf5bvCtUBKRzE+1UQi3magpRkDutKz5YHQEjdY5JlvNkEbnODf+G+nxa5GoFWN77cVMOrBFIgD6zoVSQCEUcPwfAGwqgSko8YE4Enp5uG3/r1cdvMcgOoE4PfurvKVdOvC9EMAcIjLGS5RvaSPt+o9NykTQSdIhXRgVPxXKQE/buJT3n5tgje76ShTM89Eq+MFqYAQruc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(6133799003)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?a4Nx5HMFga12o0R8bDAyeJjRQ1j2S7yp0P9WEz9g2bVLZBo+o9ciBNl4ZUOi?=
+ =?us-ascii?Q?IOjP+4tyabnQiaeSo57lIQrDA68LRVWUW5Ok3hS2+/XWkXVdofYlrDm8ynKZ?=
+ =?us-ascii?Q?gfh12xzzjeEeioPS+lkM3L/P/qMDJtBCNHKxifRZXxw6HDRLUKsORxfETNrI?=
+ =?us-ascii?Q?NRfIwAmQionrvDDjBKkFFD1uEOT25iY1X2oDwVgbXVv15XaOTQOqAXHzyznQ?=
+ =?us-ascii?Q?RnTliS1RTvmmPLYXHLHVf1+Teb3taivvORX8OT59YdmYkD9qDxFAm+LY6y22?=
+ =?us-ascii?Q?SUjb5qaSZ2WEhjIt3M1lnz5XHLXdW0YbBX+hj08fhoSxoXDUI9nGtMLT8bXt?=
+ =?us-ascii?Q?+qZ3PdsOW16OeQ1WjzC+D65gNSB70fi5oLrSkDK1+0V0ay46Bm+08WC+bn2g?=
+ =?us-ascii?Q?tIy1I1PvEMIGhI2DG0IYMotzhVNxMJ1KTK9IqBsmmzMbwWrO58sOi51QNfDt?=
+ =?us-ascii?Q?xdtvRTA0PYW2b/k9ITY+B7EDErr1ibUcybpygQJfMUijiMA1/QI68lZKoQNb?=
+ =?us-ascii?Q?5B+5I7kXqU84UlFriQb6bcl0jJdyfrSc4Ix1JqRo1ioiiX+S3PPLPMHgesGX?=
+ =?us-ascii?Q?XxZgOqzs6cg2PTwm9UAc5cQdDCU8e7UzwOrdUIPtiLxzxgCwvmnWWWE7A23h?=
+ =?us-ascii?Q?/lGvJ6PMSTMF6Ah3EE7vydmVW7V07jnSR3Agt63r3tvXE5I/0pDn2e/2pe5C?=
+ =?us-ascii?Q?8ZG+Vx1a7PIOmQu9Ze+dp6Pn3Y0bi03c6uHGF3cMZUYuXWug3DdYaI1jjlRq?=
+ =?us-ascii?Q?dtxjDysb+fbJrdETSvXdHRHZiezY50tZdKdcUcF901d4ssAe7cldfU89XXHu?=
+ =?us-ascii?Q?QZNmjs5lyraXuLswa3nxoWWrmd7Q7BCA2Da6wvZn82Ugp0y3B3o+KEZ1XUjY?=
+ =?us-ascii?Q?27yTzhCwHs3wovbVVj4IDoteu/3zficXko9ExYg1ZKdTXXU8IsiyUyGwnVlR?=
+ =?us-ascii?Q?mzKNqNc6fIJMtnhfWdIQVGu2FHp86vAhabrr/aoDOoDTBCbYW7VF5cEXb0cL?=
+ =?us-ascii?Q?wUV5MnMvGR3pPgBa0ldEXlXsatDMpAQf2MWxWLChrjA4YXjyh28A1a7cuqCF?=
+ =?us-ascii?Q?FNzUJCwVcG6vKu5T2bwHIrFOrS4Eo0vKLzZOQb98SgLm5bOpBOWkSUwu6OjF?=
+ =?us-ascii?Q?+ZDfStpuoX8KY5PXqFrxRyUhTuvIi5NwIXr9glDLeyw54xx3iwqRvoWQ/Xrs?=
+ =?us-ascii?Q?8EWIDFEP17HnhSG690vXFPlhSOD4m/+EXfIh3XxpfxY3MsIiVvZyDmaOa6AC?=
+ =?us-ascii?Q?d5OcykNodC9ih2WRcj03Mi/ZX3cijifxDNo7RDckg1Ek1A1NVUQv2SqX7b72?=
+ =?us-ascii?Q?/0vKtCaBWBdN4WXIs3ipATcofau0zTa4K9qC34QZUOACaVCLVFPz/wIUWD0X?=
+ =?us-ascii?Q?RDgqLBWujIFMhjgRHMpG/kys0ZgeuLYFkfBNRSeqI2SHpSt3AznmiyioTrmj?=
+ =?us-ascii?Q?vmULm0DvRD/+HAkuq9v//liKVDvSJAU09nUFgnfTKFR3aSg5nL8LeTU1qHP5?=
+ =?us-ascii?Q?bdydA7elOr94Bmou4MdoHbQa00QTa2Gu1BeC1N4oBkzuW1aYgY7iIhhHyeaB?=
+ =?us-ascii?Q?9UItodMOyMar1fcxxIe+5QhNQsenoebDXFq0C3hROxZdmP6tL9LFsbklT4vz?=
+ =?us-ascii?Q?RS+pg68rt8Lhrz7yY1l1zWu8KyvtPmf/LDB0f2LeM8YiFv609pZBMI2/y8+u?=
+ =?us-ascii?Q?HKY4srWisXxh/lv7KtdzdSYIfQwDpbiS3TcaTu9hHwIjJPVGJ4xwr1oMOPI4?=
+ =?us-ascii?Q?Z7fj2yS9BQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76f39120-d051-4b5f-a3a7-08deee4200fd
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 13:53:58.6493
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +lM10US21bOCYG8CUldLxR8tT3gTRsZuJ62JAtvOs+PojGSu2OZiho/COwDbtAWPTBgby4SH+eIdBl4HhBmmVA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH8PR12MB9790
 
-syzbot wrote:
-> Hello,
+On Thu, Jul 30, 2026 at 12:59:26PM +0000, Zihan Xi wrote:
+> fib_nlmsg_size() still estimates nexthop space as if every gateway is
+> encoded as an IPv4 RTA_GATEWAY attribute. IPv4 routes can also carry an
+> IPv6 gateway, which fib_nexthop_info() dumps as RTA_VIA.
 > 
-> syzbot found the following issue on:
+> As a result, route notifications can allocate an skb that is too small.
+> fib_dump_info() then fails with -EMSGSIZE and rtmsg_fib() hits the
+> WARN_ON() that marks such failures as a fib_nlmsg_size() bug. With
+> panic_on_warn set, this becomes a kernel panic.
 > 
-> HEAD commit:    04026c998c24 net/rds: use krealloc_array() for iovector gr..
-> git tree:       net-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=163a6499580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=f9f592a4e0cc86da
-> dashboard link: https://syzkaller.appspot.com/bug?extid=ce13c07d96d04716eaa2
-> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+> Mirror the actual nexthop dump layout in fib_nlmsg_size(): account for
+> IPv6 nexthop gateways dumped as RTA_VIA, for the no-header rtnexthop
+> layout used inside RTA_MULTIPATH, and for RTA_FLOW only when it is
+> actually present.
 > 
-> Unfortunately, I don't have any reproducer for this issue yet.
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/4f82b6352d02/disk-04026c99.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/9b29e52c71b2/vmlinux-04026c99.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/0b1e84e828d6/bzImage-04026c99.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+ce13c07d96d04716eaa2@syzkaller.appspotmail.com
-> 
-> ------------[ cut here ]------------
-> len >= 65536u
-> WARNING: ./include/linux/udp.h:49 at udp_set_len_short include/linux/udp.h:49 [inline], CPU#0: syz.4.4430/24120
-> WARNING: ./include/linux/udp.h:49 at udp_v6_send_skb+0xd3b/0x13a0 net/ipv6/udp.c:1375, CPU#0: syz.4.4430/24120
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 24120 Comm: syz.4.4430 Not tainted syzkaller #0 PREEMPT(full) 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-> RIP: 0010:udp_set_len_short include/linux/udp.h:49 [inline]
-> RIP: 0010:udp_v6_send_skb+0xd3b/0x13a0 net/ipv6/udp.c:1375
-> Code: 42 0f b6 04 38 84 c0 0f 85 37 06 00 00 41 0f b7 1e e9 60 f3 ff ff e8 04 c3 43 f7 90 0f 0b 90 e9 02 f4 ff ff e8 f6 c2 43 f7 90 <0f> 0b 90 e9 e9 f4 ff ff e8 e8 c2 43 f7 90 0f 0b 90 e9 94 f5 ff ff
-> RSP: 0018:ffffc9000e0a74c8 EFLAGS: 00010287
-> RAX: ffffffff8a833e8a RBX: ffff8880355e4a00 RCX: 0000000000080000
-> RDX: ffffc900100ca000 RSI: 00000000000049e3 RDI: 00000000000049e4
-> RBP: 000000000000244c R08: ffff888049ed5d00 R09: 0000000000000003
-> R10: 000000000000000b R11: 0000000000000002 R12: dffffc0000000000
-> R13: ffff888027cb0c80 R14: 0000000000010000 R15: ffff8880355e4a02
-> FS:  00007f2d4a07b6c0(0000) GS:ffff888124f54000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000200000010000 CR3: 0000000029d28000 CR4: 00000000003526f0
-> Call Trace:
->  <TASK>
->  udp_v6_push_pending_frames+0xa2/0x140 net/ipv6/udp.c:1451
->  udpv6_sendmsg+0xfa0/0x2610 net/ipv6/udp.c:1740
->  sock_sendmsg_nosec+0x90/0x180 net/socket.c:775
->  __sock_sendmsg net/socket.c:790 [inline]
->  ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
->  ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
->  __sys_sendmmsg+0x273/0x4d0 net/socket.c:2827
->  __do_sys_sendmmsg net/socket.c:2854 [inline]
->  __se_sys_sendmmsg net/socket.c:2851 [inline]
->  __x64_sys_sendmmsg+0xa0/0xc0 net/socket.c:2851
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f2d4919de99
+> Fixes: d15662682db2 ("ipv4: Allow ipv6 gateway with ipv4 routes")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: Codex:gpt-5.4
+> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
 
-Interesting trigger of the recently added DEBUG_NET_WARN_ON_ONCE in
-udp_set_len_short called in udp_v6_send_skb.
-
-No reproducer yet, so probably not very actionable at this point.
-A mostly straightforward looking ipv6 udp sendmsg path.
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
