@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CAB4071D2;
-	Thu, 30 Jul 2026 11:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0154119E3
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 11:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785409852; cv=none; b=uUv/JmiBWBoe+Q3Y+JEKeAf9yibJsGCot+6Mlr9gSyhr46nvaCp3peNXsveQ2wt1f1NXV7/iuutfDVLL1UK3h7vihYx5mIqzYRG/kBI1NsGzIR+thVB80Y9jd3mhM+9wOIytdBC3Hxsbqys4ewvgPnQEA+2btm/uEbzkkAzgi7c=
+	t=1785410446; cv=none; b=QZuHzaKt3x/P8gDmqajnuWh9wHz4Vxn9zX/u5d27VpBK/XoTWo9jShnVv4UqwRwdtyc0VlvhN3532CBF4k6h6oM+EDW5PvyJZkly94c3/GSa3B1j+uRUxVQIF4hsIiUcX/EJHeU+n6lHSxhzJDqy4DZDg++nlwjIDgPfxtbaDBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785409852; c=relaxed/simple;
-	bh=ksC4BjLwy2WfQuKuGmed+qEPDydY5UJ8889WNvv2zdw=;
+	s=arc-20240116; t=1785410446; c=relaxed/simple;
+	bh=moUAKuo2wH6sRUk73Z11zFV9GguDD9iP26KAqNTXHCo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZniLUQv3u7FKA0plf8DjK8Tw9xesFQWXYbwcY7kQuf+xebZ/DBxFVckfLXoc2/yTIA+U8zKvXAxTC0JL1KD1/UdVu9960vWxW9SY9kzDw/SQjGNSexpqeUHuHQIxbOv5hr5ouhrCt3ceCt/w5aCdU36+XZZH0pepNnXyIKYmGxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LeeldTa+; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=JqEVLDJfEfUjJjouegFzm1dxCZB/iYOTbF7FzGfeq/ZSrO6freQR0+g2FLPq5nKq/lMTjjraDKgI1t3b7gzklq34uRKzBayYDCguDHGYALb+RjFX7pdLLIMzLL738yb4let9gEaMDdYNK/wvgfN2CheWrAtTUP4eTgGFgrVP8mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F72gP6J6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LeeldTa+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7C61F000E9;
-	Thu, 30 Jul 2026 11:10:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F72gP6J6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFE71F000E9;
+	Thu, 30 Jul 2026 11:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785409848;
-	bh=AJkDsS9HNsZ4JT0gnehBL3CTCqFSrq9Jq+kMQzKKmTE=;
+	s=k20260515; t=1785410444;
+	bh=lPp3lY2pIQH2uSC7G7deXpYepE8KniShwxQhKC0vZyI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=LeeldTa+Q4MxaLaZPoWUWBF9WJAGZGxlC7NbcwAqwV7ks8PJwFqmvIEoxh7Xt0ZBS
-	 Pwn4YfOH77hWo1nbUWpf9B91059YNCseSvbdfJ4ZTERvLYIkt9g66ZloFQlrDPt5WW
-	 TzTaI1VWVpWAFHDofV7fE1eLtjB9KL5DsB9yS4eO9LHzC62zZjyJ50igJXnXTrfAEc
-	 jXiQUNVGVAJ14tzuE1DqyjseubynEXL8BjOw9mrXV84XVbKGVlEHSQapvt6Ws32Ndq
-	 IyByS/6C+zMMhx1V3oZ+shnoo3ObCNLzBvBtca8DejSgm8eSPiOmdMMOU2IeRZ+xWF
-	 7mZJ6MVwhbtjg==
+	b=F72gP6J6X03YPWYE0o97P3aQh1bruVK3GJkSoRuy2Li9bAFcWQUVIwOxBpYPtc86x
+	 me2I604KHHJlPlWXwHn3HZWRFeFIYvNbhJejc7pa90wgTLHMik7SnjI8K6q5ihgrAZ
+	 w0DrTKllyFb6dKfKKwvUZx7cycUTmRQbXbbx4+o8tPWyf2nIAxgFI8l0/sYG407rks
+	 p0w2BWVl8vSSGq76lqGQ2MrXnm9bgzGd1J73o/a/pljSu4eAIIlA85ZEwsokO4Nah9
+	 Wz2lXr0b7FKrd2Rxzxnu8hCZ7qmAZccUcI5qI+L+OHazvstjqFbzm337Lkm8/U7Bv3
+	 agJr5h6Q8ingA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 563153811979;
-	Thu, 30 Jul 2026 11:10:13 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 44DFF38119C6;
+	Thu, 30 Jul 2026 11:20:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,55 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/4] net: remove conditional returns with no
- effect
+Subject: Re: [PATCH net-next] ipip: reject unsupported configurations in
+ fill_forward_path
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178540981214.3511446.3496334936444624926.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Jul 2026 11:10:12 +0000
-References: <20260725150852.859188-1-ekffu200098@gmail.com>
-In-Reply-To: <20260725150852.859188-1-ekffu200098@gmail.com>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: kuba@kernel.org, andrew@lunn.ch, andrew+netdev@lunn.ch,
- arkadiusz.kubalewski@intel.com, akiyano@amazon.com,
- arun.ramadoss@microchip.com, claudiu.manoil@nxp.com, darinzon@amazon.com,
- davem@davemloft.net, edumazet@google.com, hkallweit1@gmail.com,
- ioana.ciornei@nxp.com, ivecera@redhat.com, jiri@resnulli.us,
- kory.maincent@bootlin.com, manishc@marvell.com,
- niklas.soderlund@ragnatech.se, o.rempel@pengutronix.de, pabeni@redhat.com,
- Prathosh.Satish@microchip.com, przemyslaw.kitszel@intel.com,
- rahulv@marvell.com, sd@queasysnail.net, shshaikh@marvell.com,
- sukhdeeps@marvell.com, anthony.l.nguyen@intel.com, vadim.fedorenko@linux.dev,
- GR-Linux-NIC-Dev@marvell.com, intel-wired-lan@lists.osuosl.org,
- linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- netdev@vger.kernel.org, linux@armlinux.org.uk, UNGLinuxDriver@microchip.com
+ <178541040806.3517205.6987640971492782243.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Jul 2026 11:20:08 +0000
+References: <20260725-ipip-fill-forward-path-fix-v1-1-bc69fd3127d5@kernel.org>
+In-Reply-To: 
+ <20260725-ipip-fill-forward-path-fix-v1-1-bc69fd3127d5@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Sun, 26 Jul 2026 00:08:48 +0900 you wrote:
-> Hello,
+On Sat, 25 Jul 2026 11:33:45 +0200 you wrote:
+> The ipip fill_forward_path callback currently does not check for
+> configurations that cannot be offloaded to hardware:
 > 
-> This series removes conditional returns where both branches return
-> the same value, so the check has no effect. As suggested by Jakub, the
-> netdev patches of the treewide v1 series [1] are posted separately.
-> 
-> All patches are generated by the Coccinelle script, which you can
-> find in v1.
+> - Collect metadata (flow-based) tunnels have no fixed destination
+>   and rely on per-packet tunnel metadata, so the forward path
+>   cannot be pre-computed.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2,1/4] dpll: zl3073x: remove conditional return with no effect
-    https://git.kernel.org/netdev/net-next/c/87579b8cda9e
-  - [net-next,v2,2/4] net: ethernet: remove conditional return with no effect
-    https://git.kernel.org/netdev/net-next/c/66084e9510a9
-  - [net-next,v2,3/4] net: remove conditional return with no effect
-    https://git.kernel.org/netdev/net-next/c/cd833378bafa
-  - [net-next,v2,4/4] net: intel: remove conditional return with no effect
-    https://git.kernel.org/netdev/net-next/c/1f35011c281a
+  - [net-next] ipip: reject unsupported configurations in fill_forward_path
+    https://git.kernel.org/netdev/net-next/c/d25c5beea9a0
 
 You are awesome, thank you!
 -- 
