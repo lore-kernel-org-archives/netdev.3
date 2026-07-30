@@ -1,172 +1,120 @@
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4480A3815D5;
-	Thu, 30 Jul 2026 17:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FDD3AAF6D;
+	Thu, 30 Jul 2026 17:35:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785432075; cv=none; b=ctyi7PVaSzEKxvJVUbrvRLNMZK4dfUZw7/h4C3Zx+uvNKNbcUzvk0zOkR8Z/+Kka1cmWURykV9E45X7T5l+3bVOLtpxNp+sbsfFH0rYI0n6TF/Q0hW64gORCnWH3Aat3rKE7HsqKvBhlTYb+ZTvs0gxG4Qy0JHawHc4ZeipXCLo=
+	t=1785432954; cv=none; b=ZVrX3M7GyVPZDGndUN2dHYaNMMuOPIdzzhajeagjFx4RoYi2lXpDL73oEZoyBE5oH/eIfx1lihGue4OOHliq37dqCKmUy1H+nZZFA5eZ1nmhaeGtITShQhD5STxOT0kwiLtLT+274DUhJgWG9K0uR3lWkjakgAs0MZXDDjFspAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785432075; c=relaxed/simple;
-	bh=iu1m+/2AOaAgGsmwOrKPlvB0lSOtrV4PblnI+gQhbS0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bleSqhmJoXu6xTpkvCqISZsduBVpl4VjDLcwiY3WNQ3osrbkQ0NITtYqzp8nnVwn/7zSX0BNhnNOulWIka9hktmqYGwCTvyjSKxf4jDYvX+6InPmJA+pRxojOXr9yVBmHXKHgMnrPz7QizWAjjkvuWPkdv4acVa09LOLaTw2ut0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=aDYJtQmU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fmVNhXBS; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1785432954; c=relaxed/simple;
+	bh=acaD9K41+QiD/mT5oibqK0MWmcPuDMQ2txDDD6kYMtA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=oVENA1H/XnuJO8RQoCKEHH96wdN+PQxgsinla3dCqf/TR324l/V5Ms+D1vZdOKW9U9dp/8fZkDoHMQda9FCSvl1y+t+liG7TAYG9H+ZFOE6GnCq7VFvhui9x57qi+WfSPYweaNDXWFXjvX7Ug2jO1x10fA2OyqaknYbvgYnMopQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iWFNN7jl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="aDYJtQmU";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fmVNhXBS"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 32E02EC018E;
-	Thu, 30 Jul 2026 13:21:11 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 30 Jul 2026 13:21:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1785432071; x=
-	1785518471; bh=ADIAqMH4tRhMsCcZXT83cTQECWUs0qCQY1Htxbl2RW0=; b=a
-	DYJtQmUPPlYecmiyIJXa0ooT4yMxNXTosi7oRTQtp6FVzsZMZnXwgcncgUeMI5Cr
-	8hkHgFgU8kEtKeuF+B1Lz3X03dkKeAOnGQBWWOPO8FlqKP4VEbxzl7TcMcZ+TyG5
-	/wnYG6oneaeicAv90tsxG1+Vtx6VXm+/xZbQbdDjz03WJ2kV3t0AdTlpHQ3eeOyd
-	ZS0l+UN2lKJIO5/xHde+vqEiSLv0ylLFevV8sXFiRIiPyXt8etDUASWcJfHQ1MvZ
-	zT3jjGp59443MCCi1tMzr4MZalz0sE+CtyNVv454MJbCtKmWV6LdTLk1T88td8bf
-	AZUX5K9A7H5j6NSliqyyg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1785432071; x=1785518471; bh=ADIAqMH4tRhMsCcZXT83cTQECWUs0qCQY1H
-	txbl2RW0=; b=fmVNhXBSSrawFwZkMiHwsDYK9RM4U+2eYMMVNKU47c3RZMyoBvG
-	f5E0Kj/90UgOu+oMV0b2O1kO2ZemmY2iiU4PV1hXAhpBCETk680riNp4sLAn+LFe
-	I3u89McnGACRaRYOWHBUTPh/l9dlcUbl5Fc9OK34NuV49xiOhkzdW3fny9hvUKnB
-	J5XppUl9qBg4sSKljkClFuz/eUa3ANbCAAkONhH5Ptr8d2zhPclN7QDPoFwQdhHh
-	R3mE5RK4D/3Qkw1uzQ+dOY/Vq/CD8tUcir1LzAK7oSXWR0Tk4cisMtCheayzdqyl
-	62ATht/fjG6OFnXjSR/kkyJAiIr6TSZmRjA==
-X-ME-Sender: <xms:Bohragsp6eK4FeINiCv3YXvg_VGYAYkMm-o7xfYIMtm0oYmcXyIl_Q>
-    <xme:BohrarvhwtqJOOd5VeDAz4e1PhhyK10yP7KhS9FtjmqztRWqey8aRFa8KrEqDemgA
-    BsGRvoXxJyPbqTpCbZ7P0TQ4jDdQG-FLmGmxJEtu4DbdYvbKt8LCLo>
-X-ME-Received: <xmr:BohralFienVgHSiXAELw_7AKAKK2jHZbFhzrUXbp4kVbVp05bTBxxDKLycI>
-X-ME-Proxy-Cause: dmFkZTG0PlGSwIEyh1lUlAkeS6++o87AMta4vyzTBKzQGb/4j1g/YpJC0sGmrTUwM+Pvcb
-    HEPZ24bG2/uDoVmbs6oCXe2S2khQwPkOryDO38aAMubet+6eCI7eobwHGS8Gx/KnayKjzt
-    GUfiyPMVd2Mnnk1YpeTpniL2qeVTpWPDi7B31Jhq7zKiEi432jakss8XC443zjDT35khv7
-    r1MPQMR1cZODRNuEHSdv2bLNKFzXL7aRKVDImR7LfaeePiS6vsrv66CARoPx5dlvbwnpku
-    +JwPxtbKoBT9YbPUjBNRLcrzZn86p929EtHOljHLQovD7b2Ox8VkZWRlhnN8XhWAHmpoPp
-    +CHO5XBfNGyJq0mkhE25NkSPYm7fih3F4QL1eRDbfs76E/pZH0Isjg5Q7bzHsFyYpkpvgv
-    jOOUbAcrOX9PJAWfQgTlvbIQNH8CbzgL1tSkWEF9/SkP+JtFaRRnSL3Mk/lFEjibjGynZk
-    BfIWlJ2nWNs4ieYaYdHCa2mMHbtkjLOdSc6g6qJ780YFwu9LA8Yh1lEx1GCLlALemdMsWd
-    Jfgo/9qpGx4w9K6ZJmmajm1nFfUyCbgm1CHSzxhAblJw5uCtuSZdR046CPj19lnh/2SxdC
-    8eOmBeCw9g0lyWw9drD5uur9rBULs/ygCJukwVooC9t7Jh6vx/uSOoNYdk4g
-X-ME-Proxy: <xmx:BohramN1AdHW50HUk5jI5RJHiBeC-Z0NqFTBOPCGsVVtA1CclDfLNA>
-    <xmx:BohrakIIJS5lWudjEUlm4GTAQoxLZ9fa2zxHvPFwpKKlLCL7vHqnog>
-    <xmx:Bohrav86OYF2vK-wcqFA4UXxkBEddTsyoa-O-8EqwK6X4yj6btqB2w>
-    <xmx:BohragFyxL2gQA07BkgpDYCbn8ha2SFX6p3dVcH_UZ44Iu0TunUeTg>
-    <xmx:B4hraod7eVMrni570DrhXx-7zZLZG8nisU5RV2FeWqV-SNw0f9U8ub7R>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Jul 2026 13:21:09 -0400 (EDT)
-Date: Thu, 30 Jul 2026 19:21:07 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Chuck Lever <cel@kernel.org>
-Cc: John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Dave Watson <davejwatson@fb.com>,
-	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net 1/9] net/tls: Bound time spent on no-data records in
- tls_sw_read_sock()
-Message-ID: <amuIA8GjpwBf1ecB@krikkit>
-References: <20260726-tls-follow-on-v1-0-99bf4cc1c729@kernel.org>
- <20260726-tls-follow-on-v1-1-99bf4cc1c729@kernel.org>
- <amsVm65P9E0_SUT3@krikkit>
- <eaa66ad3-fd50-4ec5-b097-e60bd11b2bc9@app.fastmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iWFNN7jl"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B9520C2BCB9;
+	Thu, 30 Jul 2026 17:35:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785432953;
+	bh=acaD9K41+QiD/mT5oibqK0MWmcPuDMQ2txDDD6kYMtA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=iWFNN7jl+tAiw9mqVuETM+di2rLntSVtDYvRSAxiIS/1IneObTvfNnt0EcRp6m4ns
+	 eQvDvQHeQPO+GEXX8EPJgvRgJjv6eUztF5rlyi8bbCQNTRmtRH5Nfv+qbDUI1PSQom
+	 An8z52hcWejAf4GY0fma6Qm4EdJniG+rvHUU4HowJS93olNstv7cY993OWtM36VhCY
+	 aE0hGOqR1m1lZPnCysAjp63j0YAK39xSIUUEavzizCj4DeFtblNginAozlhE1eUBcn
+	 ySFD/g9JfILsTZutxkwNt9ijAgq3/LLS6MZhJUcTPTczLTQUdJ6nf3azblHlxQ2b+z
+	 Wdasqf3hq6pbA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B085C5516E;
+	Thu, 30 Jul 2026 17:35:53 +0000 (UTC)
+From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
+Date: Thu, 30 Jul 2026 19:35:35 +0200
+Subject: [PATCH v2 1/2] dt-bindings: dpll: zl3073x: ZL30643 is compatible
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <eaa66ad3-fd50-4ec5-b097-e60bd11b2bc9@app.fastmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260730-for-upstream-zl30643-v2-1-0ea0bbd03755@free.fr>
+References: <20260730-for-upstream-zl30643-v2-0-0ea0bbd03755@free.fr>
+In-Reply-To: <20260730-for-upstream-zl30643-v2-0-0ea0bbd03755@free.fr>
+To: Ivan Vecera <ivecera@redhat.com>, 
+ Prathosh Satish <Prathosh.Satish@microchip.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
+ Jiri Pirko <jiri@resnulli.us>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Vincent Jardin <vjardin@free.fr>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785432952; l=1773;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=hxP/Qko0hV2ofmO+jMLSUDHekBmOPqUro1uZGRZYS10=;
+ b=cSXPD8AtHdb07rV/UrvxgRHHUHmhna8lo8Fxj+WoyhYSh0ALue5YJCWRAwAko26/llCjzej6G
+ 29/SCzGVPxFDP3J/QWjfERr23+gTvb6GlqWK5D5MD9bIKrwPSUQUhUf
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
+ auth_id=871
+X-Original-From: Vincent Jardin <vjardin@free.fr>
+Reply-To: vjardin@free.fr
 
-2026-07-30, 09:05:17 -0400, Chuck Lever wrote:
-> 
-> 
-> On Thu, Jul 30, 2026, at 5:12 AM, Sabrina Dubroca wrote:
-> > 2026-07-26, 20:33:29 -0400, Chuck Lever wrote:
-> 
-> >> Bound a run of such records, as net_rx_action() bounds a softirq
-> >> poll. The first record that delivers no bytes arms a deadline
-> >> TLS_RX_NODATA_NS ahead; any record that delivers bytes disarms it,
-> >> so a normal stream never trips it. Breaking out with nothing copied
-> >
-> > Another thought here: I think a peer that sends "some" 0-length data
-> > records followed by one (possibly very small) data record, and then
-> > repeats that sequence, will not hit this "rate-limiting" of no-data
-> > records. Is that right? And if so, is that a problem?
-> 
-> That occurred to me too. It's right on the cusp between still
-> making progress and gumming things up. Neither the packet-count
-> limit nor the time-bound address this case.
-> 
-> I don't have a good answer.
+From: Vincent Jardin <vjardin@free.fr>
 
-I'm not sure that can be addressed in a generic way within ktls. Maybe
-the caller needs to do its own accounting of "this read_sock/read_actor
-dance has been going on for too long now, let's stop".
+The Microchip ZL30643 (chip ID 0x0E3B) is a member of the ZL3064x
+line card timing family. It is register compatible with the 3-channel
+ZL30733 (chip ID 0x0E95) of the ZL3073x family: both datasheets
+describe the same register map and use the same chip-ID encoding.
 
-> > [I'm guessing that the caller is doing something equivalent to
-> > recvmsg(WAITALL), so it could be stuck for a long time even with this
-> > new bound]
-> 
-> Still digesting your other feedback. I plan to send a v2 to
-> address it.
+Describe it with a fallback to microchip,zl30733 rather than a new
+standalone compatible.
 
-Thanks. There was also some from sashiko but I couldn't force myself
-to read it.
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
+---
+ .../devicetree/bindings/dpll/microchip,zl30731.yaml   | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-BTW I'm not requesting you to also fix the existing misbehavior I've
-mentioned (EOR and timeo).
-
-
-One small thing I've just noticed in this patch:
-
->                 if (rxm->full_len == 0) {
-> +                       err = 0;
->                         consume_skb(skb);
-> +                       if (!nodata_deadline) {
-> +                               nodata_deadline = ktime_get_ns() +
-> +                                                 TLS_RX_NODATA_NS;
-> +                       } else if (ktime_get_ns() >= nodata_deadline) {
-> +                               /* Queued records raise no new sk_data_ready(),
-> +                                * and tls_rx_reader_release() announces only to
-> +                                * saved_data_ready(), not the consumer's own.
-> +                                */
-> +                               sk->sk_data_ready(sk);
-> +                               break;
-> +                       }
->                         continue;
->                 }
->  
->                 used = read_actor(desc, skb, rxm->offset, rxm->full_len);
->                 if (used <= 0) {
->                         if (!copied)
->                                 err = used;
->                         goto read_sock_requeue;
->                 }
-
-If we hit the nodata_deadline, we break out of the loop, read_actor
-returns 0 since it's an empty record, and we jump to
-read_sock_requeue. It doesn't make much sense to requeue the empty
-record? Well, we'll start the next read_sock with a record that
-immediately arms the deadline, and it avoids a small additional diff
-to handle that case in the "used <= 0" block. Nothing serious, I just
-thought I'd mention it. I can live with the current change.
+diff --git a/Documentation/devicetree/bindings/dpll/microchip,zl30731.yaml b/Documentation/devicetree/bindings/dpll/microchip,zl30731.yaml
+index fa5a8f8e390c..17983e6c3597 100644
+--- a/Documentation/devicetree/bindings/dpll/microchip,zl30731.yaml
++++ b/Documentation/devicetree/bindings/dpll/microchip,zl30731.yaml
+@@ -14,15 +14,22 @@ description:
+   provides up to 5 independent DPLL channels, up to 10 differential or
+   single-ended inputs and 10 differential or 20 single-ended outputs.
+   These devices support both I2C and SPI interfaces.
++  The ZL3064x line card timing ICs  share the ZL3073x register map
++  and are described with a fallback to the register equivalent ZL3073x
++  part.
+ 
+ properties:
+   compatible:
+-    enum:
+-      - microchip,zl30731
+-      - microchip,zl30732
+-      - microchip,zl30733
+-      - microchip,zl30734
+-      - microchip,zl30735
++    oneOf:
++      - enum:
++          - microchip,zl30731
++          - microchip,zl30732
++          - microchip,zl30733
++          - microchip,zl30734
++          - microchip,zl30735
++      - items:
++          - const: microchip,zl30643
++          - const: microchip,zl30733
+ 
+   reg:
+     maxItems: 1
 
 -- 
-Sabrina
+2.43.0
+
+
