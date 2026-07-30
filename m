@@ -1,40 +1,60 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A552B9B7;
-	Thu, 30 Jul 2026 07:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDDE389473;
+	Thu, 30 Jul 2026 07:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785395848; cv=none; b=IbkIuuoiKfuu1GxJmrJuId+iuSrOr+zZ+sCDZA0oTV00WSzDFeQuEOhO0fgZvKW+kmRSa+91ft9sCFQ9VhutpipF+Y9Y/2jg6q35l0US1/Rixw4CUQlPqBK3tHX2KlkO2pkuaEtEw71iK7cpbYnTeq7ZDukqYDSalunu+Pai8yA=
+	t=1785396320; cv=none; b=Mny4b3REqPGxEAJoeyqhKTWi1EUIrwCsXSoJDCch/Dk7ZRRg+/tG2mLP+8vjrZ/71l2lwUXwcgSbGUFhzgjjzEWZRX6aiGrQmKshOeWeQ+ZPN5J3deu/hzaMrC/mnSWAw5deOYqFRY6pZGpPGpht7E+9IUWRaqWc9bdDuAvloAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785395848; c=relaxed/simple;
-	bh=xYRuyCw+sZaHb6fF6gw0XCuwMjdAkENggsGxsYPic88=;
+	s=arc-20240116; t=1785396320; c=relaxed/simple;
+	bh=BLdWqPUp+7FmrV80qqPMYH4S9Xj6Uiny8rj8fDcSe9s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FIxGrF9n3AFqylOIhihKkkKWceDMwOfNmkG4pKD4eYNk7ZAh/a5a6uOmz16iP1zSFxQLuWCKaJRTcY+QZKOIcRmqWTHpM9SkgHyBQSV6BWBejePVbmgiZuvT4qkIrKhWRgSO+t5Br2Qvim7d8uLGv80KRfGupe7gwf/24KReDyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qvBTU4Ug; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 In-Reply-To:Content-Type; b=h5J+CudUhZaYJMsDYq3IfCePNjMJfRrHCHgv58xVLBVRaiqoTsiSBCGl2+ebufX2HHHAmZhMKqrUzDjWCfIkd6+9JUglFwt+aIw+60PAbp74CawBRbPpky1EUX1NVA460caSQm+d66OhaFudBt+hvD1ykunAuLV2lPLi4QDtwZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=M7UyVGk8; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qvBTU4Ug"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 6EB3B4E41000;
-	Thu, 30 Jul 2026 07:17:21 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F5D9602B8;
-	Thu, 30 Jul 2026 07:17:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4CCB511C15761;
-	Thu, 30 Jul 2026 09:17:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785395835; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=3H6MWK6GwyDeXeOh9tGK2U19UW/15BQhpRWg3MHlJEI=;
-	b=qvBTU4UgiJERlymmlQTYl2oKQFff1y6cSPjY4Im1uWQm4Sqm5IGQjyP2HYoq+190piGqib
-	CUll1NMoV7VRPpQdXp9Et998bquRUIrxsZx51WMRPKQ00AjYZRy0PJJa3xhWA2J1gcJJrV
-	UtH9+vCGVyD4IyPPveHs9JrMRqV1Nyp5t0Tu95xhJsYEdV2GXO3bUIYHNQCdUHm9Oo51Tr
-	M3VokwPpJ4O5V4hwcKsyQVsCT9FqffbrI9IZ08Nzto1LJxRikgn8MWOXPTSM09EtT46x30
-	2l8ioYFCQbcXGu7IgWSqqos2+JHDe3JByWUQEMCZTcZbtnIdqf6UJcNp7kmecg==
-Message-ID: <d0f6d828-1c73-42af-aac6-e48330b77dea@bootlin.com>
-Date: Thu, 30 Jul 2026 09:17:08 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="M7UyVGk8"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66U6lghk2193171;
+	Thu, 30 Jul 2026 07:25:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=kUnaYu
+	7woz6SEbRNde+L9WerO0WZWK6oYSMtlxH7Rqo=; b=M7UyVGk8VMnwieLyC62nvl
+	6beE3e5yGEKA3FyryIiSQMX6hZgFOdD+gqkCtNADpHqAYRdCYVi1jnVmzVAEDb6t
+	1mq4kxPOkX2HhBQv9r6dxGVCnzUxvNY+BAjqul66mazRTSpUTeyftVgLs1zAJKzA
+	qHPMADyRoZdDBOIfQJL7dcIjbn84F8Ny7osa45QCtu+jsxzc7RNJ3pOSTyZ7G+6Z
+	MOpOKy6c847lBZcxZryNxtUFnn2336HP1uA1SvxFVojyJ3quCgIUtmLJ38LyGaHG
+	138aHnHcXIPpxX5liV7zDfX3CbB3zX+3XRk1NQrsA9L9MInCizqQQHrfMc9qfNag
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuyjdphg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jul 2026 07:25:10 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66U7BR6e031167;
+	Thu, 30 Jul 2026 07:25:10 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8yhj66r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jul 2026 07:25:10 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66U7P89w38797900
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Jul 2026 07:25:08 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8AFCF5805A;
+	Thu, 30 Jul 2026 07:25:08 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1DA0558064;
+	Thu, 30 Jul 2026 07:25:02 +0000 (GMT)
+Received: from [9.124.209.182] (unknown [9.124.209.182])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 30 Jul 2026 07:25:01 +0000 (GMT)
+Message-ID: <9f873ee1-599e-4e3b-b2e5-4880699f178b@linux.ibm.com>
+Date: Thu, 30 Jul 2026 12:55:00 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,85 +62,134 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: stmmac: Select sleep pin state after suspending
- phylink
-To: Fabio Estevam <festevam@gmail.com>, kuba@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- qiangqing.zhang@nxp.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux@armlinux.org.uk, Clark Wang <xiaoning.wang@nxp.com>
-References: <20260729224535.506598-1-festevam@gmail.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next v4 3/3] net/smc: transition to RDMA core CQ
+ pooling
+To: "D. Wythe" <alibuda@linux.alibaba.com>
+Cc: wenjia@linux.ibm.com, wintera@linux.ibm.com, dust.li@linux.alibaba.com,
+        tonylu@linux.alibaba.com, guwen@linux.alibaba.com, kuba@kernel.org,
+        davem@davemloft.net, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+        leonro@nvidia.com, pabeni@redhat.com, edumazet@google.com,
+        sidraya@linux.ibm.com, jaka@linux.ibm.com,
+        oliver.yang@linux.alibaba.com
+References: <20260716113745.65234-1-alibuda@linux.alibaba.com>
+ <20260716113745.65234-4-alibuda@linux.alibaba.com>
+ <92ba5a37-3496-424c-8425-6535515c01ce@linux.ibm.com>
+ <20260730054342.GA116570@j66a10360.sqa.eu95>
 Content-Language: en-US
-In-Reply-To: <20260729224535.506598-1-festevam@gmail.com>
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <20260730054342.GA116570@j66a10360.sqa.eu95>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDA1MCBTYWx0ZWRfX5YgCi98xIGJt
+ FLBjCsD4IXBF/7/SSKCyj4iYU1VPYf2rrWj8BhLPRjcoEpNM19upzX/awPEXZGV5ERguLPq4EyE
+ C2N119yYBVAp5l9egxuwK77bsEjz/QI=
+X-Proofpoint-GUID: h5I78xr1thhsKW2veCP3gnGrsePkzVZ-
+X-Proofpoint-ORIG-GUID: vUeeVdxDLzXwhwqK0Mu6iaanhFzGwdXu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDA1MCBTYWx0ZWRfX+hsbKKfuFkpA
+ XXhUtURF7IrZ44q8syXFW7O17ynHor2rU8KlqkSRibykZbcekGA127Q8Joz66QadF/IOhIG++sd
+ dH8+n2+uSlxPpnoSozBG4/ML3IHTuaA2d2BgB27NBf90PDrEeS9zAcUhf+JIKnSPTL64Pfa2rHj
+ kOKuTmQXtdqWMkIisvMfCVffqYGD037Iz0FRnTvue5xNlpULHeQ1p7K3DyPP4nkPJMbqDNDMUmj
+ SVs/qZjCErY8OUEn6YxaY8FW+Skx0SPw1ExwD2BHe2VGk5GVSpZg9cqInrXFT+zMMRE1SquLxSB
+ jF+wCuEXxf0s1ExZSfP+iTPT7dkUGiV75H9uwMRtDETJ46j86JUn51EdAcOH4wi+o8KRztme8kc
+ Qp/uFWj2+lcjWbN9t0G1VmWZhbClbjMers/QalyeVZiBHmPUF8L2f5pUOF/XoCLNyQ7qIVKyv9N
+ B6JRL1pz3e6dDj/7pwQ==
+X-Authority-Analysis: v=2.4 cv=X5Vi7mTe c=1 sm=1 tr=0 ts=6a6afc57 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=SRrdq9N9AAAA:8 a=uXagFE_kSg624K14DQIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-30_02,2026-07-29_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 lowpriorityscore=0 phishscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607300050
 
-Hi,
 
-On 7/30/26 00:45, Fabio Estevam wrote:
-> From: Clark Wang <xiaoning.wang@nxp.com>
-> 
-> When MAC Wake-on-LAN is disabled, stmmac_suspend() selects the sleep
-> pinctrl state before calling phylink_suspend().
-> 
-> phylink_suspend() may access PHY registers over MDIO while stopping or
-> reconfiguring the PHY. If selecting the sleep state muxes the MDC and
-> MDIO pins away from the MDIO bus function, these accesses no longer work.
-> 
-> Select the sleep pin state only after phylink_suspend() has completed.
-> 
-> Keep the transition conditional on MAC Wake-on-LAN being disabled so
-> that the pins remain active when the MAC must receive wake-up packets.
-I think we need that fix, but it does raise even more questions:
 
-How about when the PHY handles WoL ? We may have to access it early at wakeup,
-possibly even before the MAC has woken up and restored the pinmux for mdio ?
+On 30/07/26 11:13 am, D. Wythe wrote:
+> On Wed, Jul 22, 2026 at 05:17:15PM +0530, Mahanta Jambigi wrote:
+>>
+>>
+>> On 16/07/26 5:07 pm, D. Wythe wrote:
+>>> Performance Test: redis-benchmark with max 32 connections per QP
+>>> Data format: Requests Per Second (RPS), Percentage in brackets
+>>> represents the gain/loss compared to TCP.
+>>>
+>>> | Clients | TCP      | SMC (original)      | SMC (cq_pool)       |
+>>> |---------|----------|---------------------|---------------------|
+>>> | c = 1   | 24449    | 31172  (+27%)       | 34039  (+39%)       |
+>>> | c = 2   | 46420    | 53216  (+14%)       | 64391  (+38%)       |
+>>> | c = 16  | 159673   | 83668  (-48%)  <--  | 216947 (+36%)       |
+>>> | c = 32  | 164956   | 97631  (-41%)  <--  | 249376 (+51%)       |
+>>> | c = 64  | 166322   | 118192 (-29%)  <--  | 249488 (+50%)       |
+>>> | c = 128 | 167700   | 121497 (-27%)  <--  | 249480 (+48%)       |
+>>> | c = 256 | 175021   | 146109 (-16%)  <--  | 240384 (+37%)       |
+>>> | c = 512 | 168987   | 101479 (-40%)  <--  | 226634 (+34%)       |
+>>>
+>>> The results demonstrate that this optimization effectively resolves the
+>>> scalability bottleneck, with RPS increasing by over 110% at c=64
+>>> compared to the original implementation.
+>>
+>> Thanks for the performance numbers — the scalability improvement at high
+>> client counts is striking. A few questions to help reproduce these results:
+>>
+>> 1) Was net.smc.smcr_max_conns_per_lgr=32 the value used? The "max 32
+>> connections per QP" in the description suggests so, but the sysctl
+>> wasn't explicitly listed.
+>>
+>> 2) Were net.smc.smcr_max_send_wr and net.smc.smcr_max_recv_wr left at
+>> their defaults, or tuned? With per-link CQs the optimal WR counts may
+>> differ from the global-CQ case, so knowing whether these were touched
+>> would help interpret the numbers.
+>>
+>> 3) Was this SMC-R v2? The v2 TX path (smc_wr_tx_get_v2_slot,
+>> wr_tx_v2_ib) has different concurrency characteristics, so confirming
+>> the version matters for the contention analysis in patch 2/3 as well.
+> 
+> In our tests, we set net.smc.smcr_max_conns_per_lgr=32 via sysctl. We
+> also tuned net.smc.smcr_max_send_wr and net.smc.smcr_max_recv_wr from
+> their default to 64 to provide sufficient work request depth. 
+> 
+> All tests were run with SMC-R v2.
+> 
+> And the performance numbers do need a refresh: with recent improvements—including
+> thundering herd mitigation in earlier patches, the original SMC implementation’s
+> regression in the c=16–512 range is expected to be largely resolved.
 
-The mdio bus may be shared with other PHYs as well, they may race on suspend
-as well if the stmmac instance that drives MDIO quiesces before the other MAC
-that needs the other PHY ?
-
-All in all the question is, should we instead deal with MDIO muxing independently
-of MII muxing, especially for suspend/resume ?
-
-Maxime
+I believe that Patch 2/3, "net/smc: reduce TX slot contention with
+exclusive wait", largely mitigates the thundering herd effect.
 
 > 
-> Fixes: 90702dcd19c0 ("net: stmmac: fix MAC not working when system resume back with WoL active")
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> [fabio: Reworded subject/commit log for clarity and made it priv->wolopts conditional]
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
-> ---
-> Based on the NXP kernel fix:
+>>
+>> 4) Was uperf tested for v4 as well, as we did for v1[1] in
+>> February-2026? uperf exercises a wider range of message sizes and thread
+>> counts, so its numbers would strengthen the case — particularly for the
+>> intermediate client counts (c=16 to c=64) where the original
+>> implementation regresses below TCP.
 > 
-> https://github.com/nxp-imx/linux-imx/commit/7905fa71ed07d8c2f1da88ad9fffd5ac5e89461f
+> Of course uperf was tested. We’ll include a comprehensive uperf
+> evaluation in the next version. 
 > 
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> Given that this CQ-pooling patch may require additional review time, I
+> plan to send the first two patches of the series separately.
+> They’ve already been reviewed and are ready to merge. This patch
+> will follow as a standalone submission once the uperf results are
+> ready.
+
+Sounds good. I'll be looking forward to the standalone patch that
+introduces CQ pooling and the accompanying uperf results.
+
 > 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 0de4bc949913..36ab66ad80fd 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -8183,13 +8183,15 @@ int stmmac_suspend(struct device *dev)
->  		priv->irq_wake = 1;
->  	} else {
->  		stmmac_mac_set(priv, priv->ioaddr, false);
-> -		pinctrl_pm_select_sleep_state(priv->device);
->  	}
->  
->  	mutex_unlock(&priv->lock);
->  
->  	rtnl_lock();
->  	phylink_suspend(priv->phylink, !!priv->wolopts);
-> +
-> +	if (!priv->wolopts)
-> +		pinctrl_pm_select_sleep_state(priv->device);
->  	rtnl_unlock();
->  
->  	if (stmmac_fpe_supported(priv))
+> D. Wythe
+> 
+>>
+>> [1]
+>> https://lore.kernel.org/netdev/20260202094800.30373-1-alibuda@linux.alibaba.com/
 
