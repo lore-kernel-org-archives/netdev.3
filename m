@@ -1,226 +1,126 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610F939DBCB
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 07:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785395411; cv=fail; b=p/rMPZaEIJbsUeviZcfnV+zA32pQQTT1DL6VzRexQrnNwGaGX3HwxJA+ZXyHbHxlO31E++mgYD/QyglR5UF4El4QvQKn0clJTQp1Ym018mYN+pQkd42rboHbczjTrjACKCtaj8EzREynhqatqgrmlgGMLJtGQquSIy0nelLM0tw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785395411; c=relaxed/simple;
-	bh=5ab1En0b0HCP5gCIjfSppd9u3/W00JFByF88HqoUJTs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=J1u4ab2aHLJxgZNc6rVTuiTMooG54qYLtazTqfN2PW9cczPw3SfsSjIDjFZPgwk9s9ORsT4mlLXc+QI0OD3SWWgFFbu6UYVDbJMgAR8NpiYFvWaNQUjPTNCmKqvDm7njuZIIT/tFfpqFfknBAaLiSCFGqia6frx5e6A71ACeemo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UzAtqTGZ; arc=fail smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A552B9B7;
+	Thu, 30 Jul 2026 07:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785395848; cv=none; b=IbkIuuoiKfuu1GxJmrJuId+iuSrOr+zZ+sCDZA0oTV00WSzDFeQuEOhO0fgZvKW+kmRSa+91ft9sCFQ9VhutpipF+Y9Y/2jg6q35l0US1/Rixw4CUQlPqBK3tHX2KlkO2pkuaEtEw71iK7cpbYnTeq7ZDukqYDSalunu+Pai8yA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785395848; c=relaxed/simple;
+	bh=xYRuyCw+sZaHb6fF6gw0XCuwMjdAkENggsGxsYPic88=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FIxGrF9n3AFqylOIhihKkkKWceDMwOfNmkG4pKD4eYNk7ZAh/a5a6uOmz16iP1zSFxQLuWCKaJRTcY+QZKOIcRmqWTHpM9SkgHyBQSV6BWBejePVbmgiZuvT4qkIrKhWRgSO+t5Br2Qvim7d8uLGv80KRfGupe7gwf/24KReDyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qvBTU4Ug; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UzAtqTGZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785395406; x=1816931406;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=5ab1En0b0HCP5gCIjfSppd9u3/W00JFByF88HqoUJTs=;
-  b=UzAtqTGZAyc9N8qKPZtMf2hhihFFEH41HEKxpwaOC4nJ0ORtXuRc2NWG
-   0W60sj1uGYcmaKycpuaswyjiwKs2EhF+8GqXAhLkWCPyYxpmCa0GyLTAx
-   VNyIAgiow4DF1iOIeYI3MCmm9Pmf6b3aA746+cXH7PtC90T31pDujnKhV
-   wX0hd55yC4KYccvyH0L3KSyzYDc3f/cnU0QupYlVw7IUE/W1MAtD5jXIr
-   oK31dOuZhuq7CfFCEydXQS9I0/BrTPux7icuXfOvEoaxpbP9W+3mKwIfp
-   DRcXUFVdBfjDgighThF8xDEf8xxz1/1JdnaArtOAEMLroyZEo8l9foDsJ
-   A==;
-X-CSE-ConnectionGUID: rasB8HzyTni4ftBq4e/ZYg==
-X-CSE-MsgGUID: XEql8IekQBSx7V1duE06eQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="86085720"
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
-   d="scan'208";a="86085720"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 00:10:02 -0700
-X-CSE-ConnectionGUID: /ITkwJ3pTaiYwacmbsKFJg==
-X-CSE-MsgGUID: v4lZAGgBT9urRcjZzWvHNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
-   d="scan'208";a="265279382"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 00:09:58 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 30 Jul 2026 00:09:58 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Thu, 30 Jul 2026 00:09:58 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.5) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 30 Jul 2026 00:09:58 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J0B3lgDqUAdAAvnbfUd/aGqFg4OATVShJiL0OyEcHRALwpgTIcoikh5CbI9w/Odinp55mJUjTc9aYXdaTNgdHqUQh8UvuMXQWBw4ipa6HWRi8mPCyVoaisbWfdy3mW5tyxVz1gUq+Qmc+efxjef+KZ0Wj36R3hpWB64SpzoTPHPOOH+CSABach0aFVGNBcgXK2gj58hGPaDnlglR98qqZq++h/zlzA0Scxd5INApaSiyg+sPkrQtMB+3Vrdx6VWZU0/lmttWJrj/SX4Ykkks8BHTDVxKRCr0G6FXLj01zZ+eMCIJlYC9sta5ZvCqRXHCuHBUtuF1XpJGLltPg2Ez5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1AMamnrWsUdPLi1/ajDW8bLzIyHdC5Hh/PruZRlbCLU=;
- b=EazKq1HYaO+3TS7fg9FPkyrwqulWUQ+ey8o3M3xirB7ZoHarWNfSbQp54pHuVWzENkAftP3nF/Evn85/bvUV1jdqnFdTZiRx/EZq/yICzszJv0TEKP7VBQOx1K9gmgTiCbVkdC7eDvQOaec+xPE5bVkKVZuu5wXmgJaJMSG8c84+ZG5mUn2tWZ50U5maCBNWoci16XF2n19MFegG+UnkcxVQphK4IydGi8RJsmiZmpni7Uwox9pD2pdXTHjR2KyMYgfX14tjauAh+U3kqRmf4iyQ1woN9+NeF0Wv0z9nYYNB685ZeXAeaykWDfgRkSnv2ySdacQW+TLtbRD5fDpK/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8985.namprd11.prod.outlook.com (2603:10b6:208:575::17)
- by SJ0PR11MB4848.namprd11.prod.outlook.com (2603:10b6:a03:2af::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.12; Thu, 30 Jul
- 2026 07:09:50 +0000
-Received: from IA3PR11MB8985.namprd11.prod.outlook.com
- ([fe80::355c:96ca:a45:dd5d]) by IA3PR11MB8985.namprd11.prod.outlook.com
- ([fe80::355c:96ca:a45:dd5d%3]) with mapi id 15.21.0270.009; Thu, 30 Jul 2026
- 07:09:48 +0000
-From: "Romanowski, Rafal" <rafal.romanowski@intel.com>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, "Loktionov, Aleksandr"
-	<aleksandr.loktionov@intel.com>, "Keller, Jacob E"
-	<jacob.e.keller@intel.com>, "horms@kernel.org" <horms@kernel.org>, "Nguyen,
- Anthony L" <anthony.l.nguyen@intel.com>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-Subject: RE: [Intel-wired-lan] [PATCH net v7 4/4] ice: skip unnecessary VF
- reset when setting trust
-Thread-Topic: [Intel-wired-lan] [PATCH net v7 4/4] ice: skip unnecessary VF
- reset when setting trust
-Thread-Index: AQHdAvnFxUKtcgHeCE2cMytCGAqZ+7aF3seQ
-Date: Thu, 30 Jul 2026 07:09:48 +0000
-Message-ID: <IA3PR11MB89856B526E0F6417B566DB788FC92@IA3PR11MB8985.namprd11.prod.outlook.com>
-References: <20260623101800.991293-1-jtornosm@redhat.com>
- <20260623101800.991293-5-jtornosm@redhat.com>
-In-Reply-To: <20260623101800.991293-5-jtornosm@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8985:EE_|SJ0PR11MB4848:EE_
-x-ms-office365-filtering-correlation-id: 99d95155-417f-4941-6acd-08deee098b06
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|11063799006|4143699003|10067099003|56012099006|18002099003|22082099003|38070700021;
-x-microsoft-antispam-message-info: SsVKVMxyv4IjTb4HzqciiC7neUnE8X0jnCH818nIX3TtdSI8nCzhgew8nfl3QPhn3yuuif2mj7MVsZ7AnygQgovIvsh6H76rIIT2Z24cslQ6RPxyyVyKVFqCb5zbyIjo7w7CgrhN2UbROeP5wDbrOQdsD+Kn7IjZ4ZLucZt4u83rLtYEYoFgzh5vWqm9DF0TIOKnZlXXhAevJGiwZQNTO7GGGIdEytyHK3dt6XqDlpiym0m8G2s/EOP1uw19c85zAUO1dn2/p00fPnQKcW4z7BwhyQMzTpFszY0TdVjQb5t05M16EoVw7G2kqvmMgjo1FUn4Y/+21aNHX5vPQZSJ/QUtK8CK3QyBjeUEHKO4Wg2U/Pq7OW5ZEbjJxlSp2eSgdOnbGqUO/aaV6UEBYYrvGzovk+nhLei/ZoSiLKltZJGiHb8e4FBlcW86OFHS4kvTdaSsOqyuMFHVZkBWZtlGBiBuTu9Im9UneDDYikgv5tuWZAIEoK/QAhix8n8DsADUYvX+k/5j9rq3roPvMsaAzy2fpqBJpZycQtSukFTdP3cK6Y7O7ePR+D2oWGdwsTi16hj9V5D66rRDjPlFZ5vs4N6N6l5y5wWKJwK+KZqefqDmJM7yRQPNoB9ArE2JIQ/Wm02EZIy5wN3Lv1VCdJ2h9W4wqO0s1F2v65zHvsdPDtKTwWu/vHaSKSM2QGILc8frz5SBXP4k3cNwfc/rHXyN/uOuHxG+7cluVa3awTZdJLE=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8985.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(11063799006)(4143699003)(10067099003)(56012099006)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?c2caA74V0MNPLOeZvcExIpqgXqlhmxWuqTPMMOmYPLQ01svoN+wdoVHXhV5t?=
- =?us-ascii?Q?fhigkZhZZB8R1qzGH0I+ysFmkDyVRfKmELvK9zhVOidqaPTJUH50l1zk5/Dj?=
- =?us-ascii?Q?iFS4HraboOO8dQUonQZ9dBc4l1LjndcoICe4+RRfg7IuO0y5Fl9l+BZg5sYd?=
- =?us-ascii?Q?Hyo8iEyjMrYjHZa4lrprRjyvyFOihktX1xT2yNk3TRBGGuQcxBio+l4qsN/0?=
- =?us-ascii?Q?uagahVe7qry8q0Dpci1ogKbOb1xypilnRMW1e8PAho97iEmZawUD929volSc?=
- =?us-ascii?Q?oSHh3MCMytVumUGrJnsVjkCjQLQkq2JRAyEZ4R/ZM36mDXU+GP6vcCP1WzJu?=
- =?us-ascii?Q?FIO2KJm8m792zp878f1bOo5ZoqCabV1hHSRyjJX4cZRs2D7wx5b+EbaRL/um?=
- =?us-ascii?Q?PNwmmX3a3gRbqs7cgPMZvtMKrHvBpN4ugtuH5TnINxo+zUJqxwtLwxSxkaQ7?=
- =?us-ascii?Q?PzVc7V8yQoSBcOoXCedYn+F9kTfn2hMyWGlj1d+kZVT1KZsmHEWC/yM13MvS?=
- =?us-ascii?Q?25nnMITo3TLVAIG8gWbka1FXuWe9TgfRmT8vYsJSqYmU43kw2VfaztSwD+6b?=
- =?us-ascii?Q?8MdWUJ+9PrTzVbuyegPYDENGlKo3XTLpY1qn/s8Av9Yv0ZVaqXkfIIzKOCIa?=
- =?us-ascii?Q?Ds4BbfSojU38/lYuGp5gmGdHDfK4a9Vuft82e3LkTPXBA2oghrEAoNhFUGvA?=
- =?us-ascii?Q?4Qvq2c4onW3z0m7vyu18uRxsYMMhF+H98Uc1T8SgG5cHdD/eQU2M0gKhE8/l?=
- =?us-ascii?Q?iBFKw+OaA6JANdSEfUBOMX1KP3fAiOoxQ/X4QsD85yXcvqGQrjCpPpryICnm?=
- =?us-ascii?Q?v6XaTDYv0CEZoW6ZbGsLMPZO9misFntwvMUEnVDzo5zHLizWV73xNhGttY17?=
- =?us-ascii?Q?YwRfV6H8rIXvFQCkZMM/MrZZhv3EhYAaHK0aOpQRrZT4TC+YtaA2Hfzp9Z1C?=
- =?us-ascii?Q?dlmAcAff96ygojmAE8F5skuefU3fr8qYaeucwDImRkmepofsoT84Qpz7ozBU?=
- =?us-ascii?Q?v+KtYN7W9xX+FXNa5CL/HPFzgLTmzV0NMDxXf2376zKnbAU6ELQv5AQioaQR?=
- =?us-ascii?Q?BevXtknSQw+IMRQBXQZ6orowBuW8Za3unP6FGZB/r/OSy27IO/f8HViywxcs?=
- =?us-ascii?Q?+EuSdhtI6mH7eATP0aasx0J2IJsxYi7xZHPZORKP/eHu3rf4i9uAZqjrYHBn?=
- =?us-ascii?Q?H/k6io7IZf30O+5E+nVqwKGJwflr7UlDNurjcoXg83Yf+39A7sgrOYwPdVjm?=
- =?us-ascii?Q?k9R9iXTYEFZXJ44klCGtUetUhUp6CTOW1vVguFIPcHTkOcJe8DWsc6Kr+vrF?=
- =?us-ascii?Q?9xaTToqy3kZPMxQq6Yr2leQXUAoM5ObYUwaHiF3+ds4WOT4JuC/UO9OVclEH?=
- =?us-ascii?Q?/S06DYJmJkuVVicD1UUaPaWwnhfc/w6CIPKmz6iINS/rtPnsJrXmAeymokFL?=
- =?us-ascii?Q?tivJCrZMOVymqMLusWZAc+ki4BrXQxEXUnf6W4WE1gAeOrD1VIv8vuVVdQYg?=
- =?us-ascii?Q?dLhDBVmrBgA/+mG1nwu5BS81jIGe0vWdq+qyrmemgDvPkrP354PRGGkbsK6X?=
- =?us-ascii?Q?e1MxzGxhYnEL+WlJldsUkPqR9XvZuJT5rIgXvWlH9UB8McGNv/LLbE78PWTa?=
- =?us-ascii?Q?mHrDTHKUNEG+sKxQDHr4nzTfH5bBqSQueB0Tq3FetmMoLi4EAoIZ2jnZMjpT?=
- =?us-ascii?Q?wpYYsXXOgG65f+jgf+70m+phxU1gOqewvwIhIVM6uCqVhYXJtsOyg8wArEbT?=
- =?us-ascii?Q?EMpmv5QVzg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qvBTU4Ug"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 6EB3B4E41000;
+	Thu, 30 Jul 2026 07:17:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F5D9602B8;
+	Thu, 30 Jul 2026 07:17:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4CCB511C15761;
+	Thu, 30 Jul 2026 09:17:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785395835; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=3H6MWK6GwyDeXeOh9tGK2U19UW/15BQhpRWg3MHlJEI=;
+	b=qvBTU4UgiJERlymmlQTYl2oKQFff1y6cSPjY4Im1uWQm4Sqm5IGQjyP2HYoq+190piGqib
+	CUll1NMoV7VRPpQdXp9Et998bquRUIrxsZx51WMRPKQ00AjYZRy0PJJa3xhWA2J1gcJJrV
+	UtH9+vCGVyD4IyPPveHs9JrMRqV1Nyp5t0Tu95xhJsYEdV2GXO3bUIYHNQCdUHm9Oo51Tr
+	M3VokwPpJ4O5V4hwcKsyQVsCT9FqffbrI9IZ08Nzto1LJxRikgn8MWOXPTSM09EtT46x30
+	2l8ioYFCQbcXGu7IgWSqqos2+JHDe3JByWUQEMCZTcZbtnIdqf6UJcNp7kmecg==
+Message-ID: <d0f6d828-1c73-42af-aac6-e48330b77dea@bootlin.com>
+Date: Thu, 30 Jul 2026 09:17:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: dl8mwNlD1Ttj8rEqHzkEJYPLD0p/Z0nShqK++G9zg3tREmFm2HLKyXQ04D4/HiMu9K5ax8Aq1Zwn1s31nHzd5AqUVqj+je9/I3SpSRNpzIuBPQaJk8p3+eGwR1w/d9Ycjua1H5y/lpzakhGeTpaFiiLqQob9aejRQNlrll6AjV0HoF3Cjjq/s6dS39Sa2AbVmvInkIjhSG+CPzPon/Br7XD0n1XTiBxsdYtr2fQmKz2FupmluOvNWX9Ux+GIvAXxempZxJ5wrmCZyNqciImDMdt6baowMGQI+mz01XEpRPLxo8zmCVGlVXNsi3ubM8JoVJ+Z+v3xO4v5vhXPHmCCmg==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8985.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99d95155-417f-4941-6acd-08deee098b06
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2026 07:09:48.7297
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8w3b1+tmcA4aO9DtdLMNMkCE5a0UgY7kS4jxwxj71K0n2A43DbUVqgPLMV87QM4q1zk0cSBo8nBNBTakIYrB7M1wyCSTuM+0kEuMl5+xR14=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4848
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: stmmac: Select sleep pin state after suspending
+ phylink
+To: Fabio Estevam <festevam@gmail.com>, kuba@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ qiangqing.zhang@nxp.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux@armlinux.org.uk, Clark Wang <xiaoning.wang@nxp.com>
+References: <20260729224535.506598-1-festevam@gmail.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260729224535.506598-1-festevam@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of J=
-ose
-> Ignacio Tornos Martinez
-> Sent: Tuesday, June 23, 2026 12:18 PM
-> To: netdev@vger.kernel.org
-> Cc: intel-wired-lan@lists.osuosl.org; Kitszel, Przemyslaw
-> <przemyslaw.kitszel@intel.com>; Loktionov, Aleksandr
-> <aleksandr.loktionov@intel.com>; Keller, Jacob E <jacob.e.keller@intel.co=
-m>;
-> horms@kernel.org; Nguyen, Anthony L <anthony.l.nguyen@intel.com>;
-> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
-> pabeni@redhat.com; Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-> Subject: [Intel-wired-lan] [PATCH net v7 4/4] ice: skip unnecessary VF re=
-set when
-> setting trust
->=20
-> Similar to the i40e fix, ice_set_vf_trust() unconditionally calls
-> ice_reset_vf() when the trust setting changes. While the delay is smaller=
- than
-> i40e, this reset is still unnecessary in most cases.
->=20
-> When granting trust, no reset is needed - we can just set the capability =
-flag to
-> allow privileged operations.
->=20
-> When revoking trust, we only need to reset (conservative approach) if the=
- VF has
-> actually configured advanced features that require cleanup (MAC LLDP filt=
-ers,
-> promiscuous mode). For VFs in a clean state, we can safely change the tru=
-st
-> setting without the disruptive reset.
->=20
-> When we do reset, we maintain the original ice pattern that has been reli=
-able in
-> production: cleanup LLDP filters first, then set vf->trusted, then reset.=
- This
-> ensures the privilege capability bit is handled correctly during reset re=
-build.
->=20
-> When we don't reset, we manually handle the capability flag via helper fu=
-nction,
-> eliminating the delay.
->=20
-> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Hi,
+
+On 7/30/26 00:45, Fabio Estevam wrote:
+> From: Clark Wang <xiaoning.wang@nxp.com>
+> 
+> When MAC Wake-on-LAN is disabled, stmmac_suspend() selects the sleep
+> pinctrl state before calling phylink_suspend().
+> 
+> phylink_suspend() may access PHY registers over MDIO while stopping or
+> reconfiguring the PHY. If selecting the sleep state muxes the MDC and
+> MDIO pins away from the MDIO bus function, these accesses no longer work.
+> 
+> Select the sleep pin state only after phylink_suspend() has completed.
+> 
+> Keep the transition conditional on MAC Wake-on-LAN being disabled so
+> that the pins remain active when the MAC must receive wake-up packets.
+I think we need that fix, but it does raise even more questions:
+
+How about when the PHY handles WoL ? We may have to access it early at wakeup,
+possibly even before the MAC has woken up and restored the pinmux for mdio ?
+
+The mdio bus may be shared with other PHYs as well, they may race on suspend
+as well if the stmmac instance that drives MDIO quiesces before the other MAC
+that needs the other PHY ?
+
+All in all the question is, should we instead deal with MDIO muxing independently
+of MII muxing, especially for suspend/resume ?
+
+Maxime
+
+> 
+> Fixes: 90702dcd19c0 ("net: stmmac: fix MAC not working when system resume back with WoL active")
+> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> [fabio: Reworded subject/commit log for clarity and made it priv->wolopts conditional]
+> Signed-off-by: Fabio Estevam <festevam@gmail.com>
 > ---
-> v7: Rebase on current net tree (no code changes from v6)
-> v6: https://lore.kernel.org/all/20260619061321.8554-5-jtornosm@redhat.com=
-/
->=20
->  drivers/net/ethernet/intel/ice/ice_sriov.c | 33 +++++++++++++++++++---
->  1 file changed, 29 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c
-> b/drivers/net/ethernet/intel/ice/ice_sriov.c
-> index 7e00e091756d..XXXXXXXXXXXXXXXX 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-> @@ -1364,6 +1364,23 @@ int ice_set_vf_mac(struct net_device *netdev, int
-
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+> Based on the NXP kernel fix:
+> 
+> https://github.com/nxp-imx/linux-imx/commit/7905fa71ed07d8c2f1da88ad9fffd5ac5e89461f
+> 
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 0de4bc949913..36ab66ad80fd 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -8183,13 +8183,15 @@ int stmmac_suspend(struct device *dev)
+>  		priv->irq_wake = 1;
+>  	} else {
+>  		stmmac_mac_set(priv, priv->ioaddr, false);
+> -		pinctrl_pm_select_sleep_state(priv->device);
+>  	}
+>  
+>  	mutex_unlock(&priv->lock);
+>  
+>  	rtnl_lock();
+>  	phylink_suspend(priv->phylink, !!priv->wolopts);
+> +
+> +	if (!priv->wolopts)
+> +		pinctrl_pm_select_sleep_state(priv->device);
+>  	rtnl_unlock();
+>  
+>  	if (stmmac_fpe_supported(priv))
 
