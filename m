@@ -1,42 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA6C358D32;
-	Thu, 30 Jul 2026 20:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECE2399CED;
+	Thu, 30 Jul 2026 20:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785441866; cv=none; b=QEaSKizbeekgDV/SIORo3IDelMasy1Fp5+6MSXTV364p+6WvoTvfAJ8cDhwTIVwW2MnUu7GUb98fttVlL8XnrSqnO9DLkQvMvR2tq435ZFVw8FkdoqgBYITuSnW1CKLWQ0Sd4Pdp2pzAHqdZwuRBpzChZhwePnz/GtkNnYIyROw=
+	t=1785442189; cv=none; b=mCMnDC7oF0w02p0eou/67wbknPyP2N+JlPM9qQFPHlFg+J5bwzctm2Ba6qzJUgAXDsCk96F8NZtqUX4G71a23JMogRWkcwJukxaIDF090yvysp3hkY8T3oRtR9rgEsyK2k++vsN45OuTvX+98028BfJ9XHhk53fvi4zmMQWf3nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785441866; c=relaxed/simple;
-	bh=aJck0Y7scb0vU+rdVfgOpL/hJqCtMuUYNeqMKEdT+y0=;
+	s=arc-20240116; t=1785442189; c=relaxed/simple;
+	bh=YoageaeHuW+vLD+n3J3BgniEcl+294LoQ8nwrWdQTmM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HsH4/2rH2YNk8dr4vwfTD0uKpDrYN9knbkV91aCqZN0lWDo121zkrRwFOoTRKj93bVF6+/nWgEYQ9ndrRknC93bscWfm2MKM09rxxfVhw51v5FOkrPdo6uKb6oeX9OLrLMBRB5jmvnkK8iaV5rjLlMfIrksY6Y9uzboOKYozRn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRlMHH7M; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Hb1uZPtalSUgR1Xc3XNhn1uilMBAEdeioWunrYxy9JxyNZvoPyYsUwI/mD/iWwkvfwSKIJk9gcHGRPEPlBa4Y3SEmxgQQmWSUvXUr3hqQol8CcxOm5sIFbFEEdZ6KRjPSt5y+POnC0b0iEWC+ZJrl4oHQgDZ5SdjW3284uIcCyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m9tJgX3s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRlMHH7M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DC71F000E9;
-	Thu, 30 Jul 2026 20:04:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m9tJgX3s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3511F00A3A;
+	Thu, 30 Jul 2026 20:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785441865;
-	bh=DkfozPFfZasEvd1VpRhx4EMyFWUQPWlRrdgk7MquWrg=;
+	s=k20260515; t=1785442166;
+	bh=YoageaeHuW+vLD+n3J3BgniEcl+294LoQ8nwrWdQTmM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=bRlMHH7M4As5h+paPhR9/dQgbnEXELAo8DyzM43GawpISJlXt43UYudo86A6gU4Il
-	 xNJIYRY3EV5a3JH9sqfok4w8VJAYyiQdusJFINPJjTgWAjUQEbl/f/Cojypyv5UaGT
-	 jFE2RFCg/pEhDjUuF8p/lrheZEyxFp8nrlvbxByRIe2zVJt0aGEjb3vWiccR398/Az
-	 ND0RJwGHQScvIh680IMzqSGg/hYn4GcbS99d7O63RryVsnuaPldoUNGsceVGn1tyf6
-	 V7wHriMsAg//RYChnMLeTvx3m/uoAticu9H1OFU74GUmhTeiFKMRtda2v7ihAyLV+E
-	 T6tXeFHyBdMFQ==
-Date: Thu, 30 Jul 2026 13:04:24 -0700
+	b=m9tJgX3s2+fJtTOhhzSUFdSf87f6HjmB6S0nyzk6AawrnI2k3ZI7Ayp4PPvoIHtcB
+	 x/nuxXEsuEtzHawo9hnIacD46ErBp0Ce8aOJMYeeZa07Sc6imTMJrJT4AZaarPmd3U
+	 3iEVDGLGDiUtOZnb1OB6kHky6CS03EbgSp2Wv6uh0VpiXc94wEQpq3xXoEY3KAdhL/
+	 +xaTi+pCBaTEB8me4zzBzMj7/WvYt/OoK1/dL2hL0JPZ8CNQCn5FFCD2Sgp83hJoRA
+	 9mg7rEbTuCxYM0onWdSQSwyWXIC9Sdc+XCXq08APafCGENqjiwOMCN189/C96EUqmQ
+	 FKQZbf/MUCEPg==
+Date: Thu, 30 Jul 2026 13:09:24 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Sagi Maimon <maimon.sagi@gmail.com>
-Cc: jonathan.lemon@gmail.com, vadim.fedorenko@linux.dev,
- richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [PATCH v7] ptp: ocp: add CPLD ISP support for ADVA TimeCard X1
-Message-ID: <20260730130424.77a90fa3@kernel.org>
-In-Reply-To: <20260730134401.20241-1-maimon.sagi@gmail.com>
-References: <20260730134401.20241-1-maimon.sagi@gmail.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Vladimir
+ Oltean <olteanv@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>, Daniel Golle
+ <daniel@makrotopia.org>, Heiner Kallweit <hkallweit1@gmail.com>, Russell
+ King <linux@armlinux.org.uk>, Simon Horman <horms@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ netdev@vger.kernel.org, mfd@lists.linux.dev, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v19 00/10] net: dsa: Add Airoha AN8855 support
+Message-ID: <20260730130924.1f99801a@kernel.org>
+In-Reply-To: <20260728154846.1828945-1-ansuelsmth@gmail.com>
+References: <20260728154846.1828945-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,15 +54,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 30 Jul 2026 16:43:50 +0300 Sagi Maimon wrote:
-> The ADVA TimeCard X1 (PCI device 0x0410) uses a Lattice MachXO3 CPLD
-> that is programmed over I2C using in-system programming (ISP).
+On Tue, 28 Jul 2026 17:48:27 +0200 Christian Marangi wrote:
+> This series add the initial support for the Airoha AN8855 Switch.
 
-coccicheck says:
+This series did not apply at the time of posting.
 
-  if (IS_ERR(fwl))
-          dev_warn(&bp->pdev->dev,
-                   "CPLD firmware upload unavailable: %ld\n",
-                   PTR_ERR(fwl));
+Looks like Sashiko/Gemini applied and reviewed it against net/main
+so you should check if it has anything worth addressing to say:
 
-drivers/ptp/ptp_ocp.c: WARNING: Consider using %pe to print PTR_ERR()
+https://sashiko.dev/#/patchset/20260728154846.1828945-8-ansuelsmth@gmail.com
