@@ -1,173 +1,112 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013022.outbound.protection.outlook.com [40.107.162.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA73A31E831;
-	Thu, 30 Jul 2026 01:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785375088; cv=fail; b=Crt1d0uW6K6+04Bv8grRnNiG2GCmbLCv59c1zYmR1F2nVpEdZC+7aR8bHm/FrTIJGA8UfTzyOZomBzLCQnJ24WKpKJ56rHtvIDobtyjjK17aThtsXfq8Y3hNREZLRBp7XWrrVzoPoNnwksZic4abSBOESoU2/b0ZNljMzIhpSD4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785375088; c=relaxed/simple;
-	bh=eOIU1cGy+SUZjrCYE5aRvcFynOBTD8Zx3O91TkgEGIg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=qNEwKyGNJ3Fo6v71oUPhx9NdwUb3Vfa0PTaeuryz7PCoVS1GIxqoTtNCBlhyivrEiGz5DRhU9Z/gd7rQnFLiFecObjcplc27Hh50l0aFswjEgDYaHbJZBzdFvLFL3kGKateoBZ22SOGQ4SO/fbfc3vKTO2p4wkX32E0aHAoQLIk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BsyRIQOE; arc=fail smtp.client-ip=40.107.162.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C22352C35;
+	Thu, 30 Jul 2026 01:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785375358; cv=none; b=PeMw/NrC9MOpz/Mi5asLAhHk3HVfyMyjJT4/5hGjfz9oX4iEv5OBR214G4luhFVI1CJv98bHLL4FxdeIebAjzjXnk3uQIX52pSY0S4Y6i4od6sCnpDm0qEMg+ov/11b3+K0E3svrb8hD3Nm2Dphlb9jgKmPSaXizrS1Et3nCy0A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785375358; c=relaxed/simple;
+	bh=KrA3WgNCI5TOdaefThH0CUcMMXtUVuwevNQYQyIJ+Wc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WsfiAre+W5Bu3dOmMB7wgWIHD4sPsHpMWZZymoaCAXSyc+CFcxAwskakYUWmqVlQ3lXTOlOfUrRpCzYl0+9snQ99uGwGQMNZj8PPPi2xXkKAMXr/6V7R8iJuXgW+1H99I2RHcE0gXDVu8NwCqpvXtrdIhQNkRqcq4x1MUF4I0vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPodlZ6z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BsyRIQOE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jmREe+2mXwnupEYG6r/yQgLM795i1xki2TqDF9FrGtZRYp7r6P1pzizqo37AzWyJ2249fmbzaleBixDM0gdDCM3Z+HJjcVYOQNzVbaEK7S5b6ZC3KCB4dnTVJpzZeJCKgIseSuup4zRM86HgeXArVaov+PH+Tbc93Hoo1YgX9CaAiraPOTbGB4RLbUvpXfqcZdqOjGytcgdGoUBW61373LHUfUUqxHjhF1a0FsaSx3Njv9CVBwLKT6JQFT/9+shy6UzgvcSHIza1LbqeFRLsZpYrJKWoIBryuFiM9CNISAbm/pz7dUNOcYVgPzjm/SAonydXbB0MZpzE2g2aw498bA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eOIU1cGy+SUZjrCYE5aRvcFynOBTD8Zx3O91TkgEGIg=;
- b=OJY+fTudp30V0MOeC/D7/98xX4cPFueKw3d+y1jE/nMlX0ng5xozr3q2Ut3anL/1EHIn6EzP91APGsVJMN4QngpIOIg/FWk+w5ZoEIfA/MET0+sYQY/eFy3doAOWTPvXLA05kwHUD/Da42HcnxPMX186L0rjxjGHH1fAIgJah6nm49IzuVD71k6cuvGKZwwK9y8u3HdBmF0SobRtQnNcPvSSRQpWW+aB58z3o8B6MbqkK7E8M5/rRsvWzfFtwnogXrzJ7pcuCViIZ8foego/RXhIfnQ00y/Vv49hTWaEsRJI+r6WqYwQ67B0Yo/RhiLntFRmGOAJH9MMey9kvvfFaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eOIU1cGy+SUZjrCYE5aRvcFynOBTD8Zx3O91TkgEGIg=;
- b=BsyRIQOElo5WIlRhSdliYNr8rrtckVTeSRLqXRwFrk7FBn00hZqdtsPWgzq4xTy3lu/gkgC9bYbbSlakRBvDGkjfukKQO/RVwSRTJJ3MtOPjZKLl/WSK15Yvc2jkX04qDaKF/fIa/94SRs6bsmlfg6eY4zj5pisxknmQjza9pvrR7l/k4FEV13+uO+JcVLgRZyjyUOYY4AaoZ+M6/f1ZTly3nM03qhG47/4xUuFyh3nmZO0RhKfvQDqDV70Y7cOe9GuUawSWz9kc4RDNN5d+E0emYwQcYJCnYAcaYCbbfJKRSZR0SW3JK0neGyzTjcFjfNOTd05mjtU5xYzlbjuiUA==
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by DB9PR04MB8347.eurprd04.prod.outlook.com
- (2603:10a6:10:245::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Thu, 30 Jul
- 2026 01:31:23 +0000
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0270.009; Thu, 30 Jul 2026
- 01:31:22 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, "Wei Fang (OSS)"
-	<wei.fang@oss.nxp.com>, "richardcochran@gmail.com"
-	<richardcochran@gmail.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Clark
- Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, "andrew@lunn.ch"
-	<andrew@lunn.ch>, "olteanv@gmail.com" <olteanv@gmail.com>
-CC: "chleroy@kernel.org" <chleroy@kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH net-next 6/7] net: dsa: netc: add PTP two-step
- timestamping support
-Thread-Topic: [PATCH net-next 6/7] net: dsa: netc: add PTP two-step
- timestamping support
-Thread-Index: AQHdHn3QkpUr6cDt4EqYdfYE1i+p9raEgvcAgADEjZA=
-Date: Thu, 30 Jul 2026 01:31:22 +0000
-Message-ID:
- <GV2PR04MB11739A4EDB782AB83B60968D988C92@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260728104548.3301214-1-wei.fang@oss.nxp.com>
- <20260728104548.3301214-7-wei.fang@oss.nxp.com>
- <59ecaa4e-f111-4dd4-914a-7704990ac58e@linux.dev>
-In-Reply-To: <59ecaa4e-f111-4dd4-914a-7704990ac58e@linux.dev>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|DB9PR04MB8347:EE_
-x-ms-office365-filtering-correlation-id: 89b7e7c8-d1f3-414b-133f-08deedda43a1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|19092799006|38070700021|921020|56012099006|11063799006|10067099003|4143699003|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- d6RCkeFUNmHx9q0v9/SyPOZtIMm9cuklkfR4NnZxtgpG76Rc3XQAyShTZ91YLrDhFYeU21Fx+QW3sZK2gILXvktNQjp+qRiZWELttV1Y8PN3byHgkczBkdPOtFiDi252QkwmIp3rc/Szkle9JFRDfeLx0AMRdc0p0YwfZk3EfsHOdX92IxkRAbRiKfe5sm/Ra2ujWPfgzEzTm3ksfavKYKAsYjt7q/UAi9LzfV2kCkLkWJtgBabb9nADa1r5pv0n4s9BP3IFTxBPOcwajRsv/WG3lViSqTXhcdPlSVR+zhUDOQR9UNoyKP7JQDxTI9iPl0hjTtI/yf6kEpXwUtNI7jSq9U1qmWG2mVpeeQ/pKEgYygoEt4D+pmbvSSvhihVwieYCRN+AArwDrv2/NcfjjLziXdAC7U+9akrDJdSjQrZWZGyPuU8BzoGiEJBac/auPYeVFfRpCI4HewFCoRM5+WiszIx5rf8gWArppwJQhGxdROFTl2c3hjKURRA9c35qTp/I6ynG66UpID0YGIbDAhun9T3wwh0THgl0kj6BNlSw0Jtrkzll0xmGE22iXIWQQBEZux0lvR1x/0aV6MUzHZ0tBoC1m/xzoDeyRGClBTXwqjKNmbrNyoBADdhZhX/swGEzA3fHXVhYD8MIAF8OMPiRZlKBGshoF7PivN9+zhIo44XghiDSe7YY8WQtajv2JJf3dbtLvLrn7zo2foVKGs9HlJHBus1q2HtmW2HW4evFNv/ijDTl0GR/Nb/zzm9+
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(19092799006)(38070700021)(921020)(56012099006)(11063799006)(10067099003)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?RDI4OXJhbHNkNEp2Vm9ITUNpdDdnb2UrdmphdW9PRkszNCsyV0g4TStVb3cr?=
- =?utf-8?B?dk8wK3NQd3UvK2xNU3plMzk4U1hiV3gwVnFBMUpxR3hiU2k0Zllhdms0YXhK?=
- =?utf-8?B?YWFYU0Z2eXA2K0JMSUxkcE4xQTZuRHRZdG5TbGJyQmE3NklGUm1CUmF1bDRa?=
- =?utf-8?B?TzhFL1VybllDbXFIVzJnRTNJU2xyQ2dya3ZWNi92VUlpV2hOMVVRL3ZJMzZD?=
- =?utf-8?B?U0tqZkJ1dVh5STVkQ3ZrMktjOWhiU3cvMXVkK2tYQWMyQmRobGY3WW8wRGY2?=
- =?utf-8?B?aGQ4UmZSNWFBVGVuYjlmNC84bXQyNThnVzNlY0VQLzBRbndQSUxWMFBmdW85?=
- =?utf-8?B?a0phc3lGbS9majlGVlYvSk1KdHlxdlJ1L0d5anBZa1lQdEtoMVBlbHlZa0dV?=
- =?utf-8?B?UHY5Q1B2S3cwY2kvYlNPcmViZ0x5aWxnQXZYNlpacUtqK2NXRE5heUhXUlBk?=
- =?utf-8?B?ZmJ4ZmhWNElKRG5tdnVoUDJQQUtaM0M2anZBQnFlSWtEVnhTZm9KbURONG5N?=
- =?utf-8?B?N29MeC8wZkFuV3ROTmo0eW1rVXpzM2g5bzlZdzhDUzUydFN1cW93b3E2aDNJ?=
- =?utf-8?B?b3FHWXVmVTNHRVhPcUdoTy94QXVYOVg0T01aUDdnU0NzbGhsSHU1MzFLSVpx?=
- =?utf-8?B?ME8zOVIyTGxkN0dPN3BvZG4zUnM4ZU1nV1RScER6QmtyeXZuTlBNa0xrS1ZD?=
- =?utf-8?B?S0JKMVV5djRiOER0a1dLOStSaE1OY0toNU5wazhuQTZ2WWFESSs1cUU0R3ZK?=
- =?utf-8?B?dlJHMnFOMUROR1VYbkRlQ2xZR3pkWUFMd1lCREIzNzRsM0wvRWZPV3dhUm03?=
- =?utf-8?B?ZVdvT3ZmZXBmbEZ5YlMzOUx0Umc0ZnY3a0FxbVRWMldlcWZuQkw2bGJFUCsy?=
- =?utf-8?B?dnJkQ2Z4WXdUY2pVM1NZbThwOTNKOGZqNWtlRGl3bnlFb2xRdzdPREdSMVNT?=
- =?utf-8?B?M0J6MlZmN0hURTJ4R1Nua0dxS0JnbGJVQ200QmFEVFp4aHJRNnlreXZsSnY0?=
- =?utf-8?B?VVBGbDZKcW9SVGxhRnVQd05NUE9hSEdTZTdLN0w0RWYwRlIzU2w2YXo4TXhs?=
- =?utf-8?B?cEdXTG9ldmhhd3BDcWFCamJ6SjBjN2hGNWJsV3VHbUNMc2VtVjBETWZpZFpY?=
- =?utf-8?B?WUtqVHZoREpFanIydFNkWGpYQklEM1ltZ0RyemhBZkhUM1h6aHN6MXd1UFNU?=
- =?utf-8?B?b2lxaXRLeUIxejBCV09WWGFlbVUvWGZQRzZzOGx6K1k0M2djQTV1TGVka3NV?=
- =?utf-8?B?cU9TejkrQ0JGeVMxc1lDMzlVb1hvY0xNQk4vbElaUmZyVk5NakRUd1ZZZmow?=
- =?utf-8?B?VEY1bGFKTlFSdThMN1Jwa0lKdEhJQWswUHA1OTZCbFh4b25POFFUdEl4Wlcz?=
- =?utf-8?B?cHErZmNCV05Ya3UvclMwdWdrSlg2ZStBcC9Rb29PK3pJNmd2QmRUd0JyYzlE?=
- =?utf-8?B?M21MTWtndU5lZCsxZ3RwVkJGcm9Gem1uaUoxdFEyMUs0cUR2ZlJNYnh3NXVa?=
- =?utf-8?B?aDd6V3ZEbkF3aEtNSytadzBJTk1yLzhvdm5YNzQwOWN0WlFyT0ZndkhYN1Ja?=
- =?utf-8?B?ME1DWHJIaXhUbUJvQWc5MmRXS0NwOVlEbWQzbFFTQmIyL3ZHbmg5b3ZYdjZD?=
- =?utf-8?B?aFc5VDJyUk9XOGY2MGRwRlEwckJRL2F6VzRNQmdHbDI1VytYTDhpK1pHS3Vx?=
- =?utf-8?B?UWZwN3BwTVBtSGxjaWE3V21HY2N1eEMvNkl6ZGdVeFlmYzQzL0x4eUNHMFFV?=
- =?utf-8?B?a3hJUGtQRUYyeXBIa0NYMllKNUhLL29uOEFzcXhmSHJ4N2sxL3pONUFmdVdz?=
- =?utf-8?B?cDNuM3RBTzFzbXJIK0RtQXRwN240aC85eFQ1aU1KYjR4Um5helBFWnNucmV3?=
- =?utf-8?B?VjFHdmN1amxacFVwR2ozVU1TYXZFWjJGc2J1OUJFeWV5a2puT2lyNGJDUktV?=
- =?utf-8?B?MC9mNzZoL3RaY3h5NlBqRmkycjVNRzZNdHFJUFZsdHpJekR4RnkxYXNibzBB?=
- =?utf-8?B?RUMyTkNkZklCL1dWQ0lnZEtPcytHNjd5NTl6cDNja2NYd3dKUm5LZUcvamJD?=
- =?utf-8?B?aWd1Zk9Ta2dBdTZsMUl3UmxaSXM3TmtSRUdjRVpsU0x1RFQ4Y0VOT3dnN0sy?=
- =?utf-8?B?cG9MZzZRUkU5NE0yV1cvdnNmaWJ5MzZrQlRhQXQ2UVc4Nkl5bTBCK1NkdzNa?=
- =?utf-8?B?OFppSEI3OHJ4cDloQWxmUDl6NS9iVXFpWitFYlpNSlFVVUNMMk05WjJjQjdV?=
- =?utf-8?B?WWhTbjZVdzVEcW9JOEpieXMwbDZ0djRPTWw2OUh4Y0dNSUVDOGRZMjd0NVNi?=
- =?utf-8?Q?FeWVSDZYlPo10H4OZZ?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPodlZ6z"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 12FB9C2BCFB;
+	Thu, 30 Jul 2026 01:35:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785375358;
+	bh=KrA3WgNCI5TOdaefThH0CUcMMXtUVuwevNQYQyIJ+Wc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=FPodlZ6zdhZzw1tR9xyHulG0isBZP2ggWiIwykPAMSLd0+hzEJw/wo8NABzDsV4mO
+	 qYfYhEKV46x51bgJ48N/7p51QhHES5nYo77C6Xsp5/ryPtKaJNa5U3JwU60LO9D9Xm
+	 g/vl8k22u/m8lNQX0eMqpBnsb3ITe9H26Ygb7RhTPkhpUbvxfvSnZ2b59hSJYBiaK7
+	 SVPIk/MfgLv5qIaVMjpe57BGcMvCH62L7KulCx97koHUltp82DjZxG5J/sVTA9x/eH
+	 U+7oCiCeKfXjRhhZG8I/On3ArnvgR77bx22MDidi+kAQfBrV+c80RlCdgAykoLUudp
+	 u2NChdpmqgaRA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC712C55165;
+	Thu, 30 Jul 2026 01:35:57 +0000 (UTC)
+From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
+Date: Wed, 29 Jul 2026 18:35:17 -0700
+Subject: [PATCH net v5 3/4] net: ethernet: oa_tc6: Disable tx queues on
+ fatal error
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 89b7e7c8-d1f3-414b-133f-08deedda43a1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2026 01:31:22.6184
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Wh7A0PngS6HlSIJVBgroh2XpJ7jb9oamWHsPCPBYR1IE7Hym7ilOgz2LZKNNthfNf4ck5U6i8eebR2WeOZYq0Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8347
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260729-fix-race-condition-and-crash-v5-3-3906bc485daf@onsemi.com>
+References: <20260729-fix-race-condition-and-crash-v5-0-3906bc485daf@onsemi.com>
+In-Reply-To: <20260729-fix-race-condition-and-crash-v5-0-3906bc485daf@onsemi.com>
+To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Piergiorgio Beruto <pier.beruto@onsemi.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andrew Lunn <andrew@lunn.ch>, 
+ Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>, 
+ Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785375315; l=1429;
+ i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
+ bh=sCF8vvxErMf2hHtBkFe8CtJck2QFBgMa9qyNAHiHLSY=;
+ b=OMqW9xqrChJ96jjx5yEczWGH58L0E0zO4BUS+4R3lT1QAWIHRNYLp9r4Ks9RWs0J+D9xn4qct
+ FMQSOIh9cQRDAE4Ayzlq4Og0aaX+wHz0z/pxQ7e3z56MDmUOwFm+7B0
+X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
+ pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
+X-Endpoint-Received: by B4 Relay for
+ Selvamani.Rajagopal@onsemi.com/20260531 with auth_id=803
+X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Reply-To: Selvamani.Rajagopal@onsemi.com
 
-PiA+ICtpbnQgbmV0Y19nZXRfdHNfaW5mbyhzdHJ1Y3QgZHNhX3N3aXRjaCAqZHMsIGludCBwb3J0
-LA0KPiA+ICsJCSAgICAgc3RydWN0IGtlcm5lbF9ldGh0b29sX3RzX2luZm8gKmluZm8pDQo+ID4g
-K3sNCj4gPiArCXN0cnVjdCBuZXRjX3N3aXRjaCAqcHJpdiA9IGRzLT5wcml2Ow0KPiA+ICsNCj4g
-PiArCWluZm8tPnNvX3RpbWVzdGFtcGluZyA9IFNPRl9USU1FU1RBTVBJTkdfVFhfU09GVFdBUkUg
-fA0KPiA+ICsJCQkJU09GX1RJTUVTVEFNUElOR19SWF9TT0ZUV0FSRSB8DQo+ID4gKwkJCQlTT0Zf
-VElNRVNUQU1QSU5HX1NPRlRXQVJFOw0KPiANCj4gU09GX1RJTUVTVEFNUElOR19SWF9TT0ZUV0FS
-RSBhbmQgU09GX1RJTUVTVEFNUElOR19TT0ZUV0FSRQ0KPiBhcmUgYXZhaWxhYmxlDQo+IGJ5IGRl
-ZmF1bHQsIG5vIG5lZWQgdG8gYWRkIHRoZW0uDQoNClllcywgeW91IGFyZSByaWdodCwgSSB3aWxs
-IHJlbW92ZSB0aGVtLg0KDQo+IA0KPiB0aGUgY29kZSBkb2Vzbid0IGhhdmUgc2tiX3R4X3RpbWVz
-dGFtcCgpIGNhbGxzLCBJIHdvbmRlciBob3cgaXMNCj4gU09GX1RJTUVTVEFNUElOR19UWF9TT0ZU
-V0FSRSBpbXBsZW1lbnRlZD8NCg0KVGhlIHN3aXRjaCBhbmQgdGhlIGNvbmR1aXQgcG9ydCAoRU5F
-VEMpIGFyZSBpbnRlZ3JhdGVkIGludG8gdGhlIE5FVEMgSVAsDQpzbyB0aGUgc3dpdGNoIGNhbiBv
-bmx5IGNvbm5lY3QgdG8gdGhlIEVORVRDIE1BQy4gQW5kIHRoZSBFTkVUQyBkcml2ZXINCmNhbGxz
-IHNrYl90eF90aW1lc3RhbXAoKSB1bmNvbmRpdGlvbmFsbHksIHNvIEkgdGhvdWdodA0KU09GX1RJ
-TUVTVEFNUElOR19UWF9TT0ZUV0FSRSBjYW4gYmUgYWRkZWQuIEkgY2hlY2tlZCB0aGUgZXhpc3Rp
-bmcNCkRTQSBkcml2ZXJzIGFuZCBmb3VuZCBubyBkcml2ZXJzIHNldCB0aGlzIGZsYWcsIG1heWJl
-IEkgc2hvdWxkIHJlbW92ZSB0aGlzDQpmbGFnIGFzIHdlbGwuIFRoYW5rcy4NCg0KPiANCj4gPiAr
-DQo+ID4gKwlpbmZvLT5waGNfaW5kZXggPSBuZXRjX2dldF9waGNfaW5kZXgocHJpdik7DQo+ID4g
-KwlpZiAoaW5mby0+cGhjX2luZGV4IDwgMCkNCj4gPiArCQlyZXR1cm4gMDsNCj4gPiArDQo+ID4g
-KwlpbmZvLT5zb190aW1lc3RhbXBpbmcgfD0gU09GX1RJTUVTVEFNUElOR19UWF9IQVJEV0FSRSB8
-DQo+ID4gKwkJCQkgU09GX1RJTUVTVEFNUElOR19SWF9IQVJEV0FSRSB8DQo+ID4gKwkJCQkgU09G
-X1RJTUVTVEFNUElOR19SQVdfSEFSRFdBUkU7DQo+ID4gKw0KPiA+ICsJaW5mby0+dHhfdHlwZXMg
-PSBCSVQoSFdUU1RBTVBfVFhfT0ZGKSB8IEJJVChIV1RTVEFNUF9UWF9PTik7DQo+ID4gKw0KPiA+
-ICsJaW5mby0+cnhfZmlsdGVycyA9IEJJVChIV1RTVEFNUF9GSUxURVJfTk9ORSkgfA0KPiA+ICsJ
-CQkgICBCSVQoSFdUU1RBTVBfRklMVEVSX1BUUF9WMl9FVkVOVCkgfA0KPiA+ICsJCQkgICBCSVQo
-SFdUU1RBTVBfRklMVEVSX1BUUF9WMl9MMl9FVkVOVCkgfA0KPiA+ICsJCQkgICBCSVQoSFdUU1RB
-TVBfRklMVEVSX1BUUF9WMl9MNF9FVkVOVCk7DQo+ID4gKw0KPiA+ICsJcmV0dXJuIDA7DQo+ID4g
-K30NCj4gDQoNCg==
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+
+Previously, TX queue interface was stopped when
+disable_traffic flag was set, which would indicate fatal
+error. It is more appropriate to disable the queue as,
+unless driver is unloaded and reloaded, there is no recovery
+after disable_traffic is set.
+
+Fixes: b542d13fab0f ("net: ethernet: oa_tc6: Interrupt is active low, level triggered.")
+Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+
+---
+changes in v5
+  - Changed the commit message to accurately reflect the
+    changes
+changes in v4
+  - Reverted the change that turned carrier off on disable_traffic,
+    as it may have side effects
+changes in v3
+  - New patch. Carrier marked off once disable_traffic is set
+---
+ drivers/net/ethernet/oa_tc6.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+index 421f72e6f71e..bb644509c32b 100644
+--- a/drivers/net/ethernet/oa_tc6.c
++++ b/drivers/net/ethernet/oa_tc6.c
+@@ -730,6 +730,10 @@ static void oa_tc6_disable_traffic(struct oa_tc6 *tc6)
+ 	skb = oa_tc6_detach_waiting_tx_skb(tc6);
+ 	spin_unlock_bh(&tc6->tx_skb_lock);
+ 
++	/* disable_traffic, when set, is a point of no return to working
++	 * state. TX queues are disabled.
++	 */
++	netif_tx_disable(tc6->netdev);
+ 	oa_tc6_drop_tx_skb(tc6, skb);
+ 	oa_tc6_free_ongoing_skbs(tc6);
+ 	oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
+
+-- 
+2.43.0
+
+
