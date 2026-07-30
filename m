@@ -1,176 +1,234 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f99.google.com (mail-vs1-f99.google.com [209.85.217.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CA53803E9;
-	Thu, 30 Jul 2026 05:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE28239478F
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 06:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785391111; cv=none; b=XrQwY436xNqlrYOlz1hboUvuVU6BraRDUs5Wy9NclVVTj3iWrN41eLWvtuc00tMhxEgSrIE1uUFkhBENmwQQLb2+GMriEgEH0z1fjEUg4zOzvGZVX6EIWu5s0D29adW2PUdsj69mkOQ/yFFMV4UIOiPps6cXgVHJ1b+xdJacBP4=
+	t=1785392465; cv=none; b=Vlbh9BJtDeGgc5h2NEYkF0lgmvkwcl4nMGQtv2JouRLgCSQmd9evTu5y4bt1tE+7t2laWRLoj+w9Mk3qtoNA7rpajpukz4FnvP7ooB0ox+PHB2+OwiPYMVWvHK7vRMQk+2/DAWQj9Bwb50V99GwHVb8XOcnXH1Kg+bIwft9KPLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785391111; c=relaxed/simple;
-	bh=z9ArgD3xPlNgAHtRhCxAHpih9LA7eBt1fXmTng2lyDU=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mJ5b8/aji2YJrDVOJmkGgbkTN/y7gslQBoTyekiPDEma+vwyHpkXI4DSaObWggvznKd7zMMEhPzKbF7jpX6AP2X64s/4tFOdc0fwdX+gK+Gvwe9Ql1NDNVmJxyZGOAO7qXWfsFOOhgvpD0cqdbmAeAK1foVogkscB09QC7iM3LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1wpJmf-000000003zR-01cJ;
-	Thu, 30 Jul 2026 05:58:21 +0000
-Date: Thu, 30 Jul 2026 06:58:18 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v8 5/5] net: dsa: mxl862xx: document devlink flash
- and info support
-Message-ID: <ee4b4f3f472c6f77867a5f020a151dd54a79b34b.1785389905.git.daniel@makrotopia.org>
-References: <cover.1785389905.git.daniel@makrotopia.org>
+	s=arc-20240116; t=1785392465; c=relaxed/simple;
+	bh=Ojte/xnDOrYcqjA0NPiNcJM6mXKzHDk8LRd+ad66K4o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dSjaUS4/bV3KjzaRNprWK1zTF7XPF/YNKr+tdDQNL0UREEJ9tRn0qAVgNvCeceobKMV/mggocgxlOK3zZBE0ZxHoY186vuZFXXQKTwm7x+balkBPAJM/eyZom/o2i1ZwXE2b5AsIyyN2y/4tJP+Kk1BrIWY8ecQXm1EFixksoJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=MLu+1WSh; arc=none smtp.client-ip=209.85.217.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="MLu+1WSh"
+Received: by mail-vs1-f99.google.com with SMTP id ada2fe7eead31-7377dde7bc6so314922137.0
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 23:20:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785392456; x=1785997256;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0GkVFjICpP5NiP8s/68ou3Uwae1GckQWm3+ASUr9KGQ=;
+        b=lRiNo9nUxvHh2kYzRYBtxqlNd+u9ORX4/P0nWWvEuB6qvHpeb1q1uIaVdv9OSgydbK
+         nK9j0kD2gGxljwRanaxG+ChpuRQf+d7PRgJkNkN4+WR2G8RX6ol3BfnSH8XpONKQfaEe
+         5fSKlVMwKZo16fQP8BDW+rE6I2d8vOCLP8+pgSHq0FOnmaI8xQy1Wm0fkaKaYwlfJi0R
+         79SV2GoY+k2GqoZ4valGVpDhrwWH92XwA1ohIZ1m3kWbDodn/cvieUHkNBkHZUcPVbOx
+         pW3TMycqAYpSlnlZ58Z7ZugYqq4HzbAFo1BG0wneMQi5cZvNbQry7JbV04MyP5fnImB1
+         qL4g==
+X-Gm-Message-State: AOJu0YwCuqC5F9L0K2Xn+lrAnlGgefTcbGtGeJqBvwvpMX9545q9IFnW
+	WqI3ANmt+NYpuZMmkmVX+MQrhfAVyWODWbZzcgXXaV4ZPfy8eS4RyxeGT1ZeuEoOXVBs/4XXEYk
+	Ag1nLbrcml2p5HnwAnRlzpZFXuoeZO8Sm7pwsDdgb+ba5hRuK6hLHkaVbKABn4d1MFuPq+LOEFH
+	VqvFMjysQHNRN86ruNPPqBssrAeCI1HLJ5nyJ/EOhcDKmPKmpfMGSwalUkM/HLgJMxv2PL9rsBp
+	aIwKnLSInk=
+X-Gm-Gg: AR+sD10zTT64gAEudao/AAqiowVjJyGu5l0CazEMrYGsGEDj54C2elUK+zflYEuVuZi
+	yM1Nw9ZhnLslt0mX3vfGex5IO5XYT3KIH2zJUJTGw4dGQMxlLCaar+5G8bAn1gFuSNktuV2lqxb
+	Hxbwo0xwW7juKds52GNZwDeYXgCp4kl5VkkiEp1OMCNy3wqWM+ewQDEDx2J9ZvVYVP4zojN4MCV
+	2LHzU5/f0bTC+1KECrtAZOWiKip3547hxxe3MDqn4fCrAnZi4BHiVM7Z9Ti5/KTkDxPKgFMF/Lf
+	wt/JYOigTkbw9L1WnBysVfl0Y5RUHh3FD3SSgHOuocja0p5dZ9PcdXNOxYpkmVFD94zoSF4VSjk
+	rUb6DMbRLuUmUOzaH2nGLL04daxjjdlI9hjB3elsVtKM+8C7KmGXWEPGTdWzowGCHvFsCSVX/Tj
+	ifyhM8L8futQd1a6UDQ0hp0ptSiRx+DyDQhqk=
+X-Received: by 2002:a05:6102:2920:b0:632:5db8:f672 with SMTP id ada2fe7eead31-757715418cdmr303772137.6.1785392455955;
+        Wed, 29 Jul 2026 23:20:55 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-27.dlp.protect.broadcom.com. [144.49.247.27])
+        by smtp-relay.gmail.com with ESMTPS id ada2fe7eead31-7575bf9c9dcsm84393137.28.2026.07.29.23.20.55
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 Jul 2026 23:20:55 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-698af52daa4so1864787a12.0
+        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 23:20:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1785392454; x=1785997254; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0GkVFjICpP5NiP8s/68ou3Uwae1GckQWm3+ASUr9KGQ=;
+        b=MLu+1WSh+2/cW2tZeY2+MUrEw88b2dNZJy9KsFfV02tJwBb3FX9Q9wNVfug7uD/9Kt
+         2Kux8Vsa9/TNyohlcMmOZw4zI9gGYWBrKqpwxfsTGQBABqMwpFPzIH4QTP/9/X8FFzIZ
+         4WVySIhFBGGxkSMCVo9EUpCgW16KPh7xCob1A=
+X-Received: by 2002:a17:907:1b12:b0:c15:d0b6:495c with SMTP id a640c23a62f3a-c1fa57399fcmr55486466b.29.1785392454461;
+        Wed, 29 Jul 2026 23:20:54 -0700 (PDT)
+X-Received: by 2002:a17:907:1b12:b0:c15:d0b6:495c with SMTP id
+ a640c23a62f3a-c1fa57399fcmr55485066b.29.1785392454068; Wed, 29 Jul 2026
+ 23:20:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1785389905.git.daniel@makrotopia.org>
+References: <20260710042400.3996847-1-michael.chan@broadcom.com> <20260710042400.3996847-2-michael.chan@broadcom.com>
+In-Reply-To: <20260710042400.3996847-2-michael.chan@broadcom.com>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Wed, 29 Jul 2026 23:20:40 -0700
+X-Gm-Features: AUfX_mwce7EHACE9RZ5yb85OTGjuwEZgpNuuLRMPx9BaL4NcFUYqlWXH_CKyFJY
+Message-ID: <CACKFLikxe4C7b5QcaV71dBTfd=Tw-Y_nPBUFaMjP8NrzxhTGjA@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 01/15] bnxt_en: Add Midpath channel information
+To: David Miller <davem@davemloft.net>
+Cc: Netdev <netdev@vger.kernel.org>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	Andrew Gospodarek <andrew.gospodarek@broadcom.com>, Ajit Khaparde <ajit.khaparde@broadcom.com>, 
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000000c9e2d0657ce133d"
 
-Describe the devlink info versions and the flash update behaviour,
-including the MCUboot rescue mode recovery, in a dedicated file under
-Documentation/networking/devlink/ and link it from the index. Add the
-new file to the driver's MAINTAINERS entry.
+--0000000000000c9e2d0657ce133d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
----
-v8:
- * asic.id and asic.rev are omitted whenever the part number reads
-   zero, not only in MCUboot rescue mode (found by Sashiko AI review)
- * drop the claim that "0.0.0" marks a switch that never ran firmware;
-   rescue mode always reports it (found by Sashiko AI review)
- * document devlink dev flash as the signal that says whether a
-   recovery is still running, including the -EIO it returns once the
-   recovery has failed (found by Sashiko AI review)
-v7: no changes
-v6: no changes
-v5: new patch, splitting the devlink documentation out of the flash
-    update and rescue mode recovery patches so each keeps to code
-    (Jakub Kicinski asked for the documentation)
+Responding to Sashiko comments:
+https://sashiko.dev/#/patchset/20260710042400.3996847-1-michael.chan%40broa=
+dcom.com
 
- Documentation/networking/devlink/index.rst    |  1 +
- Documentation/networking/devlink/mxl862xx.rst | 71 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 3 files changed, 73 insertions(+)
- create mode 100644 Documentation/networking/devlink/mxl862xx.rst
+On Thu, Jul 9, 2026 at 9:24=E2=80=AFPM Michael Chan <michael.chan@broadcom.=
+com> wrote:
 
-diff --git a/Documentation/networking/devlink/index.rst b/Documentation/networking/devlink/index.rst
-index 4745148fecf4..058999d0dc56 100644
---- a/Documentation/networking/devlink/index.rst
-+++ b/Documentation/networking/devlink/index.rst
-@@ -94,6 +94,7 @@ parameters, info versions, and other features it supports.
-    mlx5
-    mlxsw
-    mv88e6xxx
-+   mxl862xx
-    netdevsim
-    nfp
-    octeontx2
-diff --git a/Documentation/networking/devlink/mxl862xx.rst b/Documentation/networking/devlink/mxl862xx.rst
-new file mode 100644
-index 000000000000..7c2dc11f6585
---- /dev/null
-+++ b/Documentation/networking/devlink/mxl862xx.rst
-@@ -0,0 +1,71 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+========================
-+mxl862xx devlink support
-+========================
-+
-+This document describes the devlink features implemented by the
-+``mxl862xx`` device driver.
-+
-+Info versions
-+=============
-+
-+The ``mxl862xx`` driver reports the following versions
-+
-+.. list-table:: devlink info versions implemented
-+   :widths: 5 5 5 85
-+
-+   * - Name
-+     - Type
-+     - Example
-+     - Description
-+   * - ``asic.id``
-+     - fixed
-+     - 8628
-+     - The chip part number read from the CHIP ID registers. Omitted
-+       when the part number reads as zero, which happens for a switch
-+       sitting in MCUboot rescue mode (the registers need a running
-+       firmware), for an unfused part, and after a failed flash.
-+   * - ``asic.rev``
-+     - fixed
-+     - 0
-+     - The chip version read from the same register word, so it is
-+       omitted whenever ``asic.id`` is.
-+   * - ``fw``
-+     - running, stored
-+     - 1.0.70
-+     - Version of the firmware running on the switch, reported as both
-+       running and stored since the switch boots it from its own flash.
-+       It is omitted while no firmware version is known: after a failed
-+       flash, and in MCUboot rescue mode while an interrupted download
-+       is still being recovered in the background. Once the loader is
-+       ready to accept a new image the version appears as "0.0.0",
-+       which no released firmware reports, so version-comparing tools
-+       offer any available release as an upgrade. Use ``devlink dev
-+       flash`` to tell a recovering switch from a ready one, see below;
-+       a missing version on its own does not say why.
-+
-+Flash update
-+============
-+
-+The ``mxl862xx`` driver implements support for ``devlink dev flash``.
-+The signed firmware image is transferred to the switch over the same
-+MDIO bus which is also used to manage the switch, then verified and
-+installed by the MCUboot bootloader running on the switch. All ports
-+of the switch are closed for the duration of the update and the driver
-+reprobes the switch after it has rebooted into the new firmware. A
-+complete flash and reprobe cycle takes about one minute.
-+
-+A switch stuck in MCUboot rescue mode, e.g. after an interrupted
-+update, is registered without user ports. If the previous download was
-+interrupted mid-transfer the loader is wedged; the driver drains it
-+back to a clean ready state in the background, one byte at a time,
-+which takes tens of minutes for a large image and is reported through
-+the kernel log as it progresses. During that recovery ``devlink dev
-+flash`` returns ``-EBUSY`` with an extack message saying so, and
-+``devlink dev info`` reports no firmware version. Once the loader is
-+ready the firmware version appears and flashing a firmware image
-+through the regular update flow recovers the switch.
-+
-+If the recovery fails, the loader needs a power cycle: ``devlink dev
-+flash`` then returns ``-EIO`` and says so in its extack message.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3d17b7b143c4..bb862b69ac50 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16106,6 +16106,7 @@ M:	Daniel Golle <daniel@makrotopia.org>
- L:	netdev@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/net/dsa/maxlinear,mxl862xx.yaml
-+F:	Documentation/networking/devlink/mxl862xx.rst
- F:	drivers/net/dsa/mxl862xx/
- F:	net/dsa/tag_mxl862xx.c
- 
--- 
-2.55.0
+> +#define BNXT_MPC_CRYPTO_CAPABLE(bp)                                    \
+> +       ((bp)->mpc_info ?                                               \
+> +        ((bp)->mpc_info->mpc_chnls_cap & BNXT_MPC_CRYPTO_CAP) =3D=3D    =
+   \
+> +         BNXT_MPC_CRYPTO_CAP : false)
+> +
+
+Sashiko:
+Is this macro safe from a race if accessed by the datapath?
+It appears bp->mpc_info is evaluated twice. If a concurrent SR-IOV
+configuration change happens while the interface is running, it could invok=
+e
+__bnxt_hwrm_func_qcaps(). If firmware returns mpc_chnls_cap =3D=3D 0, that =
+path
+calls bnxt_free_mpc_info(), which frees the memory and sets the pointer to
+NULL:
+__bnxt_hwrm_func_qcaps()
+bnxt_free_mpc_info(bp)
+kfree(bp->mpc_info);
+bp->mpc_info =3D NULL;
+...
+
+Response:
+This theoretical problem is only an issue if the FW suddenly drops the
+MPC capability during run-time without going through a reset.  I can
+prevent this by only updating bp->mpc_info during reset when
+everything has quiesced.
+
+--0000000000000c9e2d0657ce133d
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
+qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
+5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
+rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
+qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
+2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
+K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
+H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
+Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
+WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
+q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
+2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
+bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
+R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCDFmCK5
+Bh27x+B3C3EPp5QfOAzd5DwFtx57Wn1jXRm3IDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjA3MzAwNjIwNTRaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBosPg1fsI3TSUBpUEgVXwcxUXw2ChHzmNxzbym6WhX
+T+aiW3BGqgtgC5qf6KPa+SfbsAknU3ygnp2MGzChRHZ9kAGiP/nYZC/6vTu2G8xNjxBBJckKLUuA
+yzsYF9YD9ymSz7K7/+F7CKeejOuZ7N2UY6ZqklSFrstimfRTqfWqnP0oPLCqhLx3ovDi11kZ0JSa
+opCgGEGnNCXV+2q6C2EUUqp8iRvpyn7eqfvsaj9uqCqXNcGIY6/Hpq16Hp0L5xpOK4YoDWJBa+Pg
+XCnCrn5Eq+yHO0mpR5rDMMztOyCpcZttNfqnG1uejTG9L6WTXL+fm0VEoz6nlOVypoi3wQS9
+--0000000000000c9e2d0657ce133d--
