@@ -1,196 +1,132 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F11A4749F4
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 23:18:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA64F4749F9
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 23:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785453490; cv=none; b=QCJ1DvghtEevrvZX5mvskSGV8qHdXnVFHO6wE4xSri/+EmOrF3jC3iIKzEMKPV3Rt+F8qSKixIrQTBX5xIBSZ6t4w17CitzTdL6CjvxX0telf2uOBOpdoQBVTBHOYMTbEUcKvErn87yf6A3CRBIUA54qit020o58TJVkIw42gSo=
+	t=1785453548; cv=none; b=Cj03hUOA1I92E6RMFPR5+H2w0ymHoD3XyDMyIuDQlleVvWasOGebmDQWkMXoaGIAbkSqej3hJh37CwLPhfq/QHzi5Uk+kRMOI3l2JhFionnhjEFZ+uUuQJ15QrVCFOinBnnsMzh4jlwD4MT9hCQ6lmmtECQ4PuQGrnlhCaizidE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785453490; c=relaxed/simple;
-	bh=GvY9rZoHOiUCbKNFvWYXMjo3afjwi/WM8Y5LuZPREdY=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=unBVeMVRQ7zS/Omg4cKrBcNDp8aHwkoZA2xHGj9oZBEtM4ZnqZFm+FePudoqq7GkyswWemOwrXbAkVXmvLbbrTOGJiytaXstjkq75DQ4H0MpkMAGDY6zy3pD8NhVXz7ConkTlYubfEHSXsGm3YpZzWfMRvH9eeodNYU11Fq+cOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XSrBuyt6; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785453548; c=relaxed/simple;
+	bh=aLMBrcPWTZCdw0WfHdJOhtUC+4XxhD23zOXG0xPYfwo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H2gb4WxHGDpK2L7fXDTlEvhimM+P2Qbf+DHpJTH2QOa78kvJpqCrUCgwMsn8HGIifX5LAZEEaKnLr86lP3FxI/x13+HKmt3/rll9c+f1/rA4oFmIJdFzcXo6w2JMNgYlB+0vE455EpFOQQBWDBxU6V9Yk7wOmswPiJ6yS1osEEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=edbliV5G; arc=none smtp.client-ip=209.85.210.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XSrBuyt6"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66UNHdJJ2518090
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 23:18:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=z5mlX7S63bsfOaZjfyCDCtmpDkmO
-	I8vi+fhEmS37zac=; b=XSrBuyt6O6Ugf1KaMsfBnTSWM8nXKIbQiDzsH9Cjudgh
-	sXG93GDFka1tFaudAAkTNpQPALM9MQFHkFJC98+r/JnFn27GF8nWBAtmlqBdAfrZ
-	l9gOumkxo24x+aYQlDQRNnO/z9yv3d7C7mduC+VCsCty349HJsREeVj8dhgrXcCe
-	s35634Q8BAIbs1e510hhnxpmdbdcEHzSy9agchaPW5B0CuH8MNH40jI2GDdvzwPw
-	qn25vI3cuEbd2ZnNgPEFcsbJS1yjwrOsw2spehD4V+CN5DozkORigqZ67cc9AUdX
-	SCBCXG1OnGrh3MejisnuLg/cG6iPqpzix/HxVtQNMg==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuyct93j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jul 2026 23:18:04 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66UNBIri001006;
-	Thu, 30 Jul 2026 23:18:03 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8fkdk5q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jul 2026 23:18:03 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66UNI3W110093180
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Jul 2026 23:18:03 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3944E58058;
-	Thu, 30 Jul 2026 23:18:03 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B810B5805B;
-	Thu, 30 Jul 2026 23:18:02 +0000 (GMT)
-Received: from [9.61.247.54] (unknown [9.61.247.54])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 30 Jul 2026 23:18:02 +0000 (GMT)
-Message-ID: <2c6ddccb-0cf8-4aac-9e6d-243c051696c6@linux.ibm.com>
-Date: Thu, 30 Jul 2026 16:18:02 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="edbliV5G"
+Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-84847482584so150427b3a.0
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 16:19:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785453546; x=1786058346; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=H7ePSkr4Nohk5yi+jX5ROWCggJE59bixaFcCgsHLMHk=;
+        b=edbliV5G7b/1Qrv2bl2TeMx0WztMNGLPvmr2HV96YcOwrnRpm9E+RdN6NuwVHLl434
+         Ft1P6cdVGYlHPL6pFDgxPs4tHwXlDAjZegnLp8LgCJ3HG5Kn6DWFjDGCKuWLRUM2YJ07
+         jFuSfhFOCqlNUMAl0TBFo6JNSDyQy7XPSPQl8QGHQyQPBjK3WGYZl1gSP/CGrTu8/meO
+         iPMVRGyc+RwruDIvdcSTqFuEUm99mpvT/czcJSWakn8dxSruIC7Zpf1fNsAKd2IjKZFq
+         N2uowuQYFSiA0oFcX4HsRUr1Mj+GDY8LdtMckDkKMjijajQ72SPcAIwJa+Et08RTVMYn
+         8F0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785453546; x=1786058346;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=H7ePSkr4Nohk5yi+jX5ROWCggJE59bixaFcCgsHLMHk=;
+        b=ZP4Gx6fz9Ghh5uJEPJHNPITc/g/AI+H25qbsYQWz+HndIMj8qe/FiP141bas6c6PO3
+         WqDdTU1RuBF2ZgAOFtJxiAKxYU4bZ/4958B8jl80G/sCeq3aIHWBTQSuN8e07zufwLWA
+         K1z0f+Mmrce0QXZNUuQn2bwg6SZgElo0zyZB2KTYonu0gTwRtpb/Jw+9Sj3auAD5lQ79
+         4ObaPruZgoDGqN+UgSo+lfBKR8iML/YHspfsWwfofWPtptPRXc/1ckFV2rifz+OtszF4
+         n0Vhd13VCshfnQXn22DjpIiHnNLz4li26hvjoSNwKG3opCo8H0QNRB0IkH5Y7qAnsDQ7
+         kcfQ==
+X-Gm-Message-State: AOJu0YwR39I5fUD8Nl15optXZWBBinLQlepXPIOzpF0JN+wjUNlW8SbY
+	ORdUrWi3+Zg/4oZ38K42/pKye4O8vsL4eQBheHWozuTczHGrJblSwHgj
+X-Gm-Gg: AR+sD13K/+NimlmkJT1E+jpt35fvqz8WFbnbHBKG0bQxIgm32fqIYmzCDK0MJNEXu88
+	f8o8YGRYaPqdwW/Ljxl563jTfsy3/PnJXVLDSmZVic+rcXiHk3aIVQCR0K9sbUuwaRobmKK0d3I
+	0HEFgxjMu+CFrNOttt7NngSeW+GrtL/D0bDTDns57xhmMtBlb60oTUC2FCt9ghLl6ZIw59gNIx2
+	I0plHRogmLFrc36Lb6Ga/NeGl9DZPds5ct4V0iWBqembM1icBPJy6GsGxTW4kFng2d9UL4zVfdM
+	PuYpGFlh7EboDfV5AK4/nlx924F+6/eDbG6jJmpdML43W7b+DgBZjAayGmAwFbhtcBRK0moyzB/
+	LTJH9HchDFd+VAtD33HwCyNfEsFnPcCbU9o5wRH3y5oJHciQPOWDfPXnNIzT95fiA0yfFIxYunw
+	LaWaEC/JcIR+Nib4AuJMMkGw3hG8ocgPkRzyh2mlQJF5yzA4NO+EFl1w==
+X-Received: by 2002:a05:6a00:b8a:b0:848:2f58:e1eb with SMTP id d2e1a72fcca58-84ec9f635d1mr1760230b3a.38.1785453546109;
+        Thu, 30 Jul 2026 16:19:06 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4c::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e9fe238ffsm3773363b3a.12.2026.07.30.16.19.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 16:19:05 -0700 (PDT)
+Date: Thu, 30 Jul 2026 16:19:01 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Zihan Xi <zihanx@nebusec.ai>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com, 
+	maciej.fijalkowski@intel.com, sdf@fomichev.me, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, horms@kernel.org, ast@kernel.org, daniel@iogearbox.net, 
+	hawk@kernel.org, john.fastabend@gmail.com, vega@nebusec.ai
+Subject: Re: [PATCH net v2 0/1] xsk: fix unaccounted ring allocations causing
+ memory exhaustion
+Message-ID: <amvaYrq3bpuT5sqQ@devvm7509.cco0.facebook.com>
+References: <20260730153832.11238-1-zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com, ncardwell@google.com, zdai@linux.vnet.ibm.com
-From: Pradeep Satyanarayana <pradeeps@linux.ibm.com>
-Subject: [BUG] reason=TCP_ACK_UNSENT_DATA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: 3vC15lBdxXymJMTgtUGjDsAUXc9dZgUc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDE2NiBTYWx0ZWRfX3/OmZeo4EPxR
- iZQ1CamUXQrkwgrEaT+0LpE5EAObkmHIuV9n0/DFQ4zEmOWbooWUeAw7C+RDcBFelawOw/F55CW
- gv2fULi3C+pxo0EJQIt1symdnUYaDdG4PRbhSH9RO7P/BdK5vn3peiwK3HdyQoFZ+2Vqd6GfWUo
- JALEtQy7lXm5DbBRNkN1SDKADz8BSYxws2AV6SfyNQTJwK/c0TWJT6R2UcV4mO66hLjF6DAkLDQ
- YVqbe5IsWyOq2K34o/3KjbiLMU4EegdTAwSJxtDIUFpqgq/dY8JpdVcGanQYFr8zt+QKgRmUZrp
- IBSqVzh4iW5DvCEtKY4x4ipz11CZ3HcbsbynJYDtY4mNoWbYsI/77h/73W6gGi4ApHfpy9iAsSR
- vA+kkreohmeZklCzkWgvWecnqNIXE/8MNjSRTLXjpYeDy7FtIyMT9kqipEAwHYOLq3gOei2yYek
- t32yJv748uyNdSs6JoA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDE2NiBTYWx0ZWRfXyELea6SxmZOD
- 2LthPe1wDP2ASl6G6Aa2oKvosYr9frT5JjzjqBa/zQeX0zOIxdjLdy3uR33I1UCNwZJ0VpWR7Hz
- BDBpvVz7nE38EPKsgPDh6ZDllvmWUPI=
-X-Authority-Analysis: v=2.4 cv=AZeB2XXG c=1 sm=1 tr=0 ts=6a6bdbad cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=7V9UEB20Uande5cxrgQA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: nm61VZ65dVIdO1pbpGWGe3_Dy3w_zsOz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-30_07,2026-07-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 phishscore=0 adultscore=0 impostorscore=0
- clxscore=1015 malwarescore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607300166
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260730153832.11238-1-zihanx@nebusec.ai>
 
-For one particular workload, under load TCP streams grind to a halt, 
-throughput falls to zero and never recovers.
+On 07/30, Zihan Xi wrote:
+> Hi Linux kernel maintainers,
+> 
+> We found and validated a issue in net/xdp/xsk_queue.c. The bug is reachable by a
+> non-root user via user and net namespace.
+> We've tested it, and it should not affect any other functionality.
+> 
+> We will provide detailed information about the bug
+> in this email, along with a PoC to trigger it.
+> 
+> ---- details below ----
+> 
+> Bug details:
+> 
+> AF_XDP lets user space allocate RX, TX, UMEM fill and UMEM completion
+> rings with setsockopt() and mmap them into the process. The shared
+> xskq_create() helper allocates the ring backing memory, but unlike UMEM
+> registration it does not account those pages against RLIMIT_MEMLOCK /
+> user->locked_vm.
+> 
+> As a result, a process with CAP_NET_RAW in a user and network namespace
+> can request very large rings and pin a large amount of kernel memory
+> before bind or any packet I/O. In our original report the resulting OOM
+> ended in a panic because that guest had panic_on_oom enabled. The panic
+> was only the environment-specific end result; the bug itself is the
+> missing resource boundary that lets ring allocations consume excessive
+> memory in the first place.
+> 
+> The first version tried to bound these allocations with sysctl_optmem_max,
+> but that was the wrong resource model. We also evaluated a memcg-accounted
+> vmalloc path as suggested,
 
-On Power 11 systems, two asymmetric interfaces are bonded in an 
-Active-Backup configuration. The primary interface is used with IPsec 
-offload. The secondary interface only does software encryption (using 
-aes_gcm_p10_crypto).
+[..]
 
-We are using iperf for the tests, and when we fail-over to the backup 
-interface, all the iperf threads grind to a halt.
+> but memcg attribution by itself did not impose
+> a default enforcement boundary in our validation setup.
 
-Once we are in this state, on the iperf client, the Send-Q is full. The 
-iperf server is sending ACKs, but it appears that TCP (on the iperf 
-client) is dropping them. Here is an example:
+Can you expand on this? Maybe we don't pass some GFP_ACCOUNT flag or
+something?
 
-probe__tcp_rcv_established_L179    12 21012.316236112    19162 
-kworker/12:2         __probe_ip=0xc0000000011b39f0, snd_una=0x535b271, 
-snd_nxt=0x535b7f7, ack_seq=0x536420d, write_seq=0x57526df
-         [c0000000011b39f0] tcp_rcv_established+0x3d0 ([kernel.kallsyms])
-         [c0000000011b39f0] tcp_rcv_established+0x3d0 ([kernel.kallsyms])
-         [c0000000011ca69c] tcp_v4_do_rcv+0x1ec ([kernel.kallsyms])
-         [c0000000011cc9f0] tcp_v4_rcv+0xc30 ([kernel.kallsyms])
-         [c000000001180ef0] ip_protocol_deliver_rcu+0x60 ([kernel.kallsyms])
-         [c0000000011811d4] ip_local_deliver_finish+0xb4 ([kernel.kallsyms])
-         [c000000001181338] ip_local_deliver+0x88 ([kernel.kallsyms])
-         [c0000000011809d8] ip_sublist_rcv_finish+0x98 ([kernel.kallsyms])
-         [c000000001180c0c] ip_sublist_rcv+0x1fc ([kernel.kallsyms])
-         [c00000000118170c] ip_list_rcv+0x16c ([kernel.kallsyms])
-         [c000000001068164] __netif_receive_skb_list_core+0x244 
-([kernel.kallsyms])
-         [c000000001068a88] netif_receive_skb_list_internal+0x248 
-([kernel.kallsyms])
-         [c000000001068eac] napi_complete_done+0x9c ([kernel.kallsyms])
-         [c0000000010f940c] gro_cell_poll+0xcc ([kernel.kallsyms])
-         [c0000000010690e0] __napi_poll+0x60 ([kernel.kallsyms])
-         [c00000000106974c] net_rx_action+0x39c ([kernel.kallsyms])
-         [c000000000241b68] handle_softirqs+0x158 ([kernel.kallsyms])
-         [c000000000018998] do_softirq_own_stack+0x38 ([kernel.kallsyms])
-         [c000000000242958] do_softirq+0x78 ([kernel.kallsyms])
-         [c000000000242a44] __local_bh_enable_ip+0xc4 ([kernel.kallsyms])
-         [c00800000a1c0bd0]
-         [c00800000a1c07f4]
-         [c000000000268a14] process_one_work+0x1e4 ([kernel.kallsyms])
-         [c0000000002697ec] worker_thread+0x1ec ([kernel.kallsyms])
-         [c0000000002762c4] kthread+0x194 ([kernel.kallsyms])
-         [c00000000000ded8] start_kernel_thread+0x14 ([kernel.kallsyms])
+> AF_XDP already
+> uses RLIMIT_MEMLOCK / user->locked_vm to bound pinned UMEM pages, and the
+> ring pages are likewise user-controlled, mmapable and long-lived. This
+> version therefore accounts AF_XDP ring allocations with the existing
+> mm_account_pinned_pages() helper and unaccounts them when the queue is
+> destroyed, so ring memory is constrained by the same default limit model
+> already used for AF_XDP UMEM pages.
 
-skb__kfree_skb          12 21012.316237054    19162 kworker/12:2 
-skbaddr=13835058059510742784, location=13835058055300675500, 
-rx_sk=13835058058125504512, protocol=2048, reason=TCP_ACK_UNSENT_DATA
-         [c0000000010d9924] __traceiter_kfree_skb+0x74 ([kernel.kallsyms])
-         [0]
-         [c0000000010372f4] sk_skb_reason_drop+0xf4 ([kernel.kallsyms])
-         [c0000000011a77ac] tcp_drop_reason+0x6c ([kernel.kallsyms])
-         [c0000000011ca69c] tcp_v4_do_rcv+0x1ec ([kernel.kallsyms])
-         [c0000000011cc9f0] tcp_v4_rcv+0xc30 ([kernel.kallsyms])
-         [c000000001180ef0] ip_protocol_deliver_rcu+0x60 ([kernel.kallsyms])
-         [c0000000011811d4] ip_local_deliver_finish+0xb4 ([kernel.kallsyms])
-         [c000000001181338] ip_local_deliver+0x88 ([kernel.kallsyms])
-         [c0000000011809d8] ip_sublist_rcv_finish+0x98 ([kernel.kallsyms])
-         [c000000001180c0c] ip_sublist_rcv+0x1fc ([kernel.kallsyms])
-         [c00000000118170c] ip_list_rcv+0x16c ([kernel.kallsyms])
-         [c000000001068164] __netif_receive_skb_list_core+0x244 
-([kernel.kallsyms])
-         [c000000001068a88] netif_receive_skb_list_internal+0x248 
-([kernel.kallsyms])
-         [c000000001068eac] napi_complete_done+0x9c ([kernel.kallsyms])
-         [c0000000010f940c] gro_cell_poll+0xcc ([kernel.kallsyms])
-         [c0000000010690e0] __napi_poll+0x60 ([kernel.kallsyms])
-         [c00000000106974c] net_rx_action+0x39c ([kernel.kallsyms])
-         [c000000000241b68] handle_softirqs+0x158 ([kernel.kallsyms])
-         [c000000000018998] do_softirq_own_stack+0x38 ([kernel.kallsyms])
-         [c000000000242958] do_softirq+0x78 ([kernel.kallsyms])
-         [c000000000242a44] __local_bh_enable_ip+0xc4 ([kernel.kallsyms])
-         [c00800000a1c0bd0]
-         [c00800000a1c07f4]
-         [c000000000268a14] process_one_work+0x1e4 ([kernel.kallsyms])
-         [c0000000002697ec] worker_thread+0x1ec ([kernel.kallsyms])
-         [c0000000002762c4] kthread+0x194 ([kernel.kallsyms])
-         [c00000000000ded8] start_kernel_thread+0x14 ([kernel.kallsyms])
-
-This has been recreated with kernel 7.2-rc5. This kernel does have the 
-patch in:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=0c9de092ef8c50a7ee9612811566f0aa81d8d7b6
-
-We tried turning off TSO as an experiment, but that didn't help.
-
-This is quite easy to recreate (on Power 11), but it does appear that we 
-do need specific combinations like a 100G crypto offload on the primary, 
-and aes_gcm_p10_crypto for software encryption on the backup device. We 
-require moderate to heavy traffic in both directions.
-
-Bonding two interfaces, both using aes_gcm_p10_crypto and failing over 
-between them doesn't recreate the problem.
-
-Pradeep
-
-
+We get RLIMIT_MEMLOCK just because the users do mmap(), nothing af_xdp
+specific. Idk, manually doing accounting seems a bit wrong, memcg/kmem seems
+like the way to go. (also, panic on oom also still seems wrong)
