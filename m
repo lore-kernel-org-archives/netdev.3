@@ -1,90 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13A43C3F41;
-	Thu, 30 Jul 2026 21:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EB63C1F4B;
+	Thu, 30 Jul 2026 21:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785447358; cv=none; b=rGM8UGj9aTDhdEcyVQ4keujLukYB2HvxC1c20ooJbHsn8yAiqwhZI1Hcb4YAde1gSWMJgliwizsuVpXR1m83XcYYCmXMzeiBdMj/iPuLtz0MgEl4hByM8cKsFN8cdWPVr5/lMj+G6u1CiqjaaJ9medbPPhoKE3VGg4cTny9J6zU=
+	t=1785447415; cv=none; b=a4+hJNpwS0c3DcUCFzM60wJ5/llN7g+a1VVvlFK4kKHkCpc3jl0R9MqYKtfXDWhO6wQfIobh4tWiVUgffAUg1sHJLm4NwkAJRqzMuR63HsHm56qLzT3uSL/r08irO2/EyHbSVqjMDwhF9thpb231f7kMFjQP80pEAQMtZWYrCxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785447358; c=relaxed/simple;
-	bh=hmbJwvv+QHJ2/b0lqV0NNCRelbFPAL1DmeomnFkAZPw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PNt+j0oWMRqrWO5Uw93e729/ULV2DVDdG8ojOFOCB90CYh2tQ0CXGE0QipOKUbtP8z2wZXDApvR0/MKfwWUm7R9WVIMywmfWP+YB0fk3xSDRCQv9w2aJDbUxtYAac0WoNdtrufJ+5cWwqZekPGnH4agsX53muCGCbbksI0fnMM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S1WazX2n; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785447415; c=relaxed/simple;
+	bh=OfsMYWSKElRUzAExWbu5//FDYuy+tOKl2nXq6vYDM3I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QvycGtL4K3NIPMsl4+TsQsdEe0dv+S7KpqncAZ7moLfRwfaNwoB+xaBk/G0MdqdFrFC0ZyliOCDaoWRrwaafxB+ZwUHl6OQKd3QRNZfJNl9vOShIcnnt2HJq2faQGIgJK+X6gEdqafCUlAig6VpYIlb0Y6ATJQxdtSxuY/nc8Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ckLMvo9C; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S1WazX2n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A921F000E9;
-	Thu, 30 Jul 2026 21:35:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785447357;
-	bh=hmbJwvv+QHJ2/b0lqV0NNCRelbFPAL1DmeomnFkAZPw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=S1WazX2ne1KdpkwWes3A2jNnXPqOLM8XZ8JF9ymxYz0hNmskk1pnuysL1UZ+g8h7E
-	 FW2mFjjJqxpqalABdPr2XTh16dAYYs2/TNAb86VBfqvr7lYQOmeM9SIR2xQuKW/so+
-	 2FcIpudgAQ/I7A9Qh26qtBzJLCdev7a8BtB2XvDWNOlvadrrmPfWoneSJFTW3FYMW9
-	 MioDklS89c6OrbSYRxSlgpGbjYenDrmOghULzqXqD9yZDNARBdP1EX6E/JPAYUuekr
-	 YxqAynPm9A9nVqhDa70KeJES4C/U5ohWdm+FiRQlArAXk7d+015cOR3FocjjueQhcF
-	 rKzNPKjJZvxfQ==
-Date: Thu, 30 Jul 2026 14:35:56 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Chuck Lever <cel@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Shuah
- Khan <shuah@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown
- <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo
- <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, netdev@vger.kernel.org,
- kernel-tls-handshake@lists.linux.dev, linux-kselftest@vger.kernel.org,
- linux-nfs@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/6] net: Introduce read_sock_rectype
- proto_ops for control record delivery
-Message-ID: <20260730143556.4a8463fd@kernel.org>
-In-Reply-To: <amtcwSO24GGq_qd0@krikkit>
-References: <20260720-tcp-read-sock-v2-0-29545d034f3c@kernel.org>
-	<20260720-tcp-read-sock-v2-2-29545d034f3c@kernel.org>
-	<20260728185124.72e421c8@kernel.org>
-	<480a8337-a91e-40e5-8dbd-d165599fba4b@app.fastmail.com>
-	<20260728193058.7f6b453b@kernel.org>
-	<a6fb364d-8344-408e-bcd5-0cee4ffabdc3@app.fastmail.com>
-	<20260729163142.4f41484f@kernel.org>
-	<amtcwSO24GGq_qd0@krikkit>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ckLMvo9C"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=eGpIqSUk2mChLjot8RRqzOHwtL++I70V4YakqH8Tv0k=; b=ckLMvo9Cx0PENix2miPHfBOMSG
+	83BiDwzzOVNV2e1c0fmrhCBY8e92YXiUpcISsJBYb5fmpGnoJMoALVsVPSLA1fQN5swDB8T6Uo+CB
+	PulHQzpfA+aqjwOQ0kdaUmUVjWPp2vkmMBxtgQTFwunYVv69hraj2VygjWxpHH34MWSY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wpYQj-00F49z-AA; Thu, 30 Jul 2026 23:36:41 +0200
+Date: Thu, 30 Jul 2026 23:36:41 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v5 5/5] net: dsa: mxl862xx: document devlink
+ flash and info support
+Message-ID: <40199aa0-b7a2-4fb4-bd13-e5b4202dea5d@lunn.ch>
+References: <cover.1784945329.git.daniel@makrotopia.org>
+ <3a85832b8584543241bc9fe382fcb9849b78bd01.1784945329.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3a85832b8584543241bc9fe382fcb9849b78bd01.1784945329.git.daniel@makrotopia.org>
 
-On Thu, 30 Jul 2026 16:16:33 +0200 Sabrina Dubroca wrote:
-> 2026-07-29, 16:31:42 -0700, Jakub Kicinski wrote:
-> > On Tue, 28 Jul 2026 22:51:30 -0400 Chuck Lever wrote: =20
-> > > No-one is asking you to roll over. Review means you get to steer
-> > > us in the right direction, and I promise to do the leg work. Terse
-> > > rejection doesn=E2=80=99t move the discussion forward. It stops it co=
-ld. =20
-> >=20
-> > With LLMs tho, the entire human effort is in finding the right design,
-> > rather than the code. So asking maintainers to hand hold everyone thru
-> > their features is unrealistic.
-> >=20
-> > Off the top of my head I think a setsockopt which pre-seeds the content
-> > type so that the read returns an errno if the queued content type is
-> > different could be a simple fix. You'd configure that on your sockets
-> > to DATA and once you see a EWHATEVER you'd assume that some special
-> > record arrived and the socket has to be handed back over to the TLS
-> > control path. This is literally the first thing that comes to mind,
-> > IDK how ugly it will look in reality so no promises. =20
->=20
-> But then you're back to "read_sock stopped, caller has to take some
-> special action to handle the next bit of payload". It's not better
-> than "read_sock, and do a recvmsg when read_sock says it's not DATA".
+On Sat, Jul 25, 2026 at 03:17:30AM +0100, Daniel Golle wrote:
+> Describe the devlink info versions and the flash update behaviour,
+> including the MCUboot rescue mode recovery, in a dedicated file under
+> Documentation/networking/devlink/ and link it from the index. Add the
+> new file to the driver's MAINTAINERS entry.
+> 
+> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 
-My bad, I replied without looking at the code.
-We already constrain control records in the way I proposed.
-rcvmsg (w/o cmsg) and read_sock will error out if the next
-record is control.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-I guess I don't understand what Chuck meant when he said that
-he has control data leaking into page cache ;/
+    Andrew
