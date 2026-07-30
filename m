@@ -1,194 +1,85 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7609124DCF6;
-	Thu, 30 Jul 2026 22:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA07A396D1C;
+	Thu, 30 Jul 2026 22:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785448879; cv=none; b=iu7TEZHL0AN/p68xuzGEbbswC/XZ9HEZvgD675PYBu7ExrUVTTURLMK8dCTrcPHJamOB2MGJad57TDRHERV36oAiIiQv5AzKaLUCocDBPFq4pGOX5oGErirBpr3FBeTo+0hbaXQoAhs8YDDuyqP5axbmJbcvJEpuYlu49YuXlG4=
+	t=1785449675; cv=none; b=Bk3YB89oU5c/dmjCqTCq9Aa2Y4nEp2kNKoa/4TRopgRL0ioNtJ9RSyApoxzI5tP/5YQ3eFmQySYe6KHEFY4HPbHLwY45iJ9GxpIzipqzw11fQeZGDJNwR4E577OopGBvhxISSsUPrWufyuH/W+o0HyYmgOtMMgCdXqTqwPHGFDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785448879; c=relaxed/simple;
-	bh=sQQNI0T320x5izTnyyq6J5o0mamqvX++AhBGZawqwr0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Zlv/ssJAdaGWluwJQf6dfH7Dg9dMVlaS8rIz4AoGjJ8R2v5CDE+7D+/NS9ZSKt3xl++AR+y3xArxx4NzxaIxRZ1KO++CAfVR6dOFUJab7OB6Ak1R7B3BjljaD+MO6wqxRvFrxrxH54qwyNrXhTXC7hL3Dxe51R46wNY/IJ9vybM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=OV3ArW9R; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1785449675; c=relaxed/simple;
+	bh=Ks52QOTiD98HHI6H2NHEKIUiKbmRup8/EAejzNRV994=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=j0vev1g63zzZvkxn+1UYOA7yuKr2xCTQKHqJ+O0u0usJ07q3l0njiHvaoVYPF+GJEnJteiiGUKxOtVlpg7Zcid6RvC1WGpWtex20yrHdmDeGEoxaXZ2fdkDZyh5f5TX3HZhanvB1Md1lvqVTtP0+NzRp/bp8OxM4FGvKu+s+3t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VdhvzbIZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="OV3ArW9R"
-Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66UL1wL33369365;
-	Thu, 30 Jul 2026 15:01:10 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=UkH7mKEM9
-	P7dqP/Lb82d88AqlrpsQErduRlaXFMEngE=; b=OV3ArW9RFioggVk+ukIwRScYb
-	/Ry3kjWsOLKKVH2UVK1ciF+eIV5cMT6dF1S8RBncB/8hem9aS3W3nF5VppSLyG4P
-	II+/zv4j+hO7MORcLwJma7N0hoAwduNhcI5QZ+FzL08u01HW8cBETF60imIgk3SX
-	+kwfWSwxXDX2/bko+Sb3xf3tJkcwCz6trVuwjYLkUeIQPcLh3Y27v1WQq+r6s0D/
-	cc1gcrJO4VtU5ai20jvt3tlo1Xkb82YlqzUvwoHISHRPYnO0OQ2yB5kjI/LuE7xT
-	FiXI9CyvuiLbH2xdVh5ln9Ck+l6geFiBnuBXrIaK8oGphdG+J33+jMXbWqfsQ==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fqrn90upq-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 30 Jul 2026 15:01:10 -0700 (PDT)
-Received: from localhost (2620:10d:c0a8:1b::8e35) by mail.thefacebook.com
- (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.45; Thu, 30 Jul
- 2026 22:01:09 +0000
-From: Tejas Birajdar <tejasbirajdar@meta.com>
-To: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
-        <netdev@vger.kernel.org>
-CC: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        "David
- S . Miller" <davem@davemloft.net>,
-        David Ahern <dsahern@kernel.org>, <bpf@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Tejas Birajdar
-	<tejasbirajdar@meta.com>,
-        Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net-next v3] tcp: honor BPF_SOCK_OPS_RWND_INIT on the active connect path
-Date: Thu, 30 Jul 2026 15:00:55 -0700
-Message-ID: <20260730220055.2946171-1-tejasbirajdar@meta.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VdhvzbIZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BF21F000E9;
+	Thu, 30 Jul 2026 22:14:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785449674;
+	bh=Kl2LXuRXOLf8ez6vuCeLQNRBxMhbN4T2fkvqGYlD1Pg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=VdhvzbIZEhTFZpSrmfSEKrYBbBotmePo+jHszCXt7RFIbzxeNrIMnkWKi/v5zE24t
+	 HbCvzfF9ZWJk/r7Zs3ySklRNoYhZuD90r3Tq2HZGiOIm+u2Q+4xHq4Gf8II/k+99ps
+	 KG9Du3Rumlssz3fog7MwICUQ6Hp7t+6JhGyXVQl9yIg1PxJwciVwzhKsXhjkwuj/In
+	 5Ht3vyVDHYpwCyfYx1l+x7wbci1OnivFrf0/86TsDKUADCd3z9EJUT0fd4b3NZm4ry
+	 AuyYg2wxX3HTEgSE/8MgJJZBDTk1u3MvQqDM4aPZfyD8pI8tLOrIFUGobHGHzk6mrc
+	 O3qlkcU2jjUOw==
+Date: Thu, 30 Jul 2026 15:14:33 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Donald Hunter <donald.hunter@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Gerd Hoffmann <kraxel@redhat.com>, Vivek Kasireddy
+ <vivek.kasireddy@intel.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Shuah Khan
+ <shuah@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org,
+ sdf@fomichev.me, razor@blackwall.org, daniel@iogearbox.net,
+ almasrymina@google.com, matttbe@kernel.org, skhawaja@google.com,
+ dw@davidwei.uk, Joe Damato <joe@dama.to>, Bobby Eshleman
+ <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v6 3/3] selftests/net: devmem.py: add
+ check_rx_large_niov
+Message-ID: <20260730151433.6f71258e@kernel.org>
+In-Reply-To: <amvEJVio9XtCn+YT@devvm29614.prn0.facebook.com>
+References: <20260724-tcpdm-large-niovs-v6-0-7975f62cdfbb@meta.com>
+	<20260724-tcpdm-large-niovs-v6-3-7975f62cdfbb@meta.com>
+	<20260729191649.55ab7942@kernel.org>
+	<amvEJVio9XtCn+YT@devvm29614.prn0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDE1OCBTYWx0ZWRfX8J5ZCRBZNJSG
- 7H6m7brEmwavmDpmn6rumA7DtK7y9i0/w4BN5CICAKG+LEBUUsqMB6p7OUQ+mg6AGB4W7VOXasI
- bt3E3QNwXQL6CrH+eyY778tQzj4Tjx4sYrkAopefF5Bp70e9KeESYo8DO77jkWih1Pvs4vEHpaL
- QBlmK2vOXY5XrW8UYTvO2WGCf86PTFlDLYcB4Fkf+86BFxvXW6AbDOn3+mq5EWQhSfHAYGGEXih
- TWG/2/d3RKb1PMzErsTra5FC27dFpSEqLql6Mz/oYMpFklmhhPhMk1WtY4a8NVL14bj48Z8ydyG
- DuUa/cGsd2D2WcUlFXSoAoqpG1vHkHkXqEw3fJrQIFYCfhm7e7gAmDhTxwJtD6J/TDxOpxMrLSD
- a/OoBzqSn8H7b8l4ncxTNkBHBPg93GhMZ8J4TQR6V+4BKk027nOnj6r+kj0zhzthgbax0T8dMLB
- 4E5URz+mNkJa7+dpLoQ==
-X-Authority-Analysis: v=2.4 cv=cpGrVV4i c=1 sm=1 tr=0 ts=6a6bc9a6 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=_1IyUuN4QrATX339ibzo:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8 a=1XWaLZrsAAAA:8
- a=20KFwNOVAAAA:8 a=4XeK37IC55s43dnOpu4A:9 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDE1OCBTYWx0ZWRfXzl+zEcI6hfGX
- auRwOi6hYx3cmqyfekwqp8XZdOqL0Dfti67YOL5arF7UPQ23foYC1hplkLaFGweR1wdxjnAUW3f
- sbXuhZ8ZvsdpS493sOCncB1X+rkXnQQ=
-X-Proofpoint-ORIG-GUID: MV0HKsZ3_ja9AdgYCADM9FxARXy9_Yft
-X-Proofpoint-GUID: MV0HKsZ3_ja9AdgYCADM9FxARXy9_Yft
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-30_06,2026-07-30_01,2025-10-01_01
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-BPF_SOCK_OPS_RWND_INIT lets a sockops BPF program pick the initial TCP
-receive window, e.g. to advertise a larger window up front in environments
-where that is known to be safe. Today it is only effective for the passive
-(listener) side; on the active (connect) side the value is computed and
-then silently discarded.
+On Thu, 30 Jul 2026 14:39:37 -0700 Bobby Eshleman wrote:
+> Poking around, it looks like 231.1.167.0 and above should support
+> everything, so fw should be okay AFAICT.
+> 
+> Looks like the config is missing CONFIG_NET_DEVMEM and CONFIG_UDMABUF?
 
-On the passive path tcp_openreq_init_rwin() inflates full_space when the
-program returns a non-zero window, so tcp_select_initial_window() can offer
-it:
+Ah, damn, you're right. I grepped for DEVMEM and didn't look closely on
+a hit. Turns out there's a non-NET DEVMEM, too.
 
-	else if (full_space < (u64)rcv_wnd * mss)
-		full_space = min_t(u64, (u64)rcv_wnd * mss, INT_MAX);
+Could you send a patch to add the missing config options to 
+tools/testing/selftests/drivers/net/hw/config ?
 
-tcp_select_initial_window() only clamps the requested window *down* to the
-available space, so without inflating the space first the BPF reply can
-never raise the offered window above tcp_full_space(sk).
+Can be separate or part of this series, doesn't matter.
 
-tcp_connect_init() calls tcp_rwnd_init_bpf() but never inflates full_space,
-so on connect() the requested window is clamped back to tcp_full_space(sk)
-(~64KB at the default rcvbuf) and the program's value is ignored.
+> Sorry, took me a while... was certain it was a bug in my code.
+> 
+> Not the failure here, but wondering if this was on ARM led to seeing
+> that 16K hardcoded rx_page_size in run_rx_large_niov() may fail on ARM
+> with 64K pages because it will fail the IS_ALIGN(16K, 64K) check...
 
-Inflate full_space in tcp_connect_init() as well; tp->advmss is the mss the
-listener path uses (both are tcp_mss_clamp(tp, dst_metric_advmss(dst))).
-Read full_space after tcp_rwnd_init_bpf() so a program that also adjusts
-SO_RCVBUF is still reflected. Compute the inflated value in u64 and clamp
-to INT_MAX to avoid overflow (full_space is int, rcv_wnd is u32), and
-apply the same overflow fix to the existing listener-side computation.
-
-tcp_select_initial_window() itself also computes init_rcv_wnd * mss in
-32-bit when clamping the offered window down to the requested value. A
-large requested window (init_rcv_wnd greater than ~2.9M segments at
-1460 mss) wraps this multiply and collapses the offered window to a tiny
-value, so compute it in u64 as well.
-
-Fixes: 13d3b1ebe287 ("bpf: Support for setting initial receive window")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Suggested-by: Sashiko <sashiko-bot@kernel.org>
-Signed-off-by: Tejas Birajdar <tejasbirajdar@meta.com>
----
-v3:
-  - Also compute init_rcv_wnd * mss in u64 in tcp_select_initial_window();
-    a large requested window otherwise overflows the 32-bit multiply and
-    collapses the offered window.
-v2: https://lore.kernel.org/netdev/20260723214208.3655474-1-tejasbirajdar@meta.com/
-  - Compute the inflated full_space in u64 and clamp to INT_MAX in both the
-    connect and listener paths; read full_space after tcp_rwnd_init_bpf().
-v1: https://lore.kernel.org/netdev/20260722170033.2763794-1-tejasbirajdar@meta.com/
-
-Verified on the connect path with packetdrill: the offered initial window
-now tracks the BPF-requested value, and a large request that previously
-overflowed no longer collapses it. No new failures in the in-tree
-packetdrill selftests.
-
- net/ipv4/tcp_minisocks.c | 4 ++--
- net/ipv4/tcp_output.c    | 8 ++++++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
-index ddc4b17a826b..f8c1123aba43 100644
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -453,8 +453,8 @@ void tcp_openreq_init_rwin(struct request_sock *req,
- 	rcv_wnd = tcp_rwnd_init_bpf((struct sock *)req);
- 	if (rcv_wnd == 0)
- 		rcv_wnd = dst_metric(dst, RTAX_INITRWND);
--	else if (full_space < rcv_wnd * mss)
--		full_space = rcv_wnd * mss;
-+	else if (full_space < (u64)rcv_wnd * mss)
-+		full_space = min_t(u64, (u64)rcv_wnd * mss, INT_MAX);
- 
- 	/* tcp_full_space because it is guaranteed to be the first packet */
- 	tcp_select_initial_window(sk_listener, full_space,
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index d7c1444b5e30..fcaa04e65189 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -251,7 +251,7 @@ void tcp_select_initial_window(const struct sock *sk, int __space, __u32 mss,
- 		(*rcv_wnd) = space;
- 
- 	if (init_rcv_wnd)
--		*rcv_wnd = min(*rcv_wnd, init_rcv_wnd * mss);
-+		*rcv_wnd = min_t(u64, *rcv_wnd, (u64)init_rcv_wnd * mss);
- 
- 	*rcv_wscale = 0;
- 	if (wscale_ok) {
-@@ -4103,6 +4103,7 @@ static void tcp_connect_init(struct sock *sk)
- 	const struct dst_entry *dst = __sk_dst_get(sk);
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	__u8 rcv_wscale;
-+	int full_space;
- 	u16 user_mss;
- 	u32 rcv_wnd;
- 
-@@ -4137,10 +4138,13 @@ static void tcp_connect_init(struct sock *sk)
- 		WRITE_ONCE(tp->window_clamp, tcp_full_space(sk));
- 
- 	rcv_wnd = tcp_rwnd_init_bpf(sk);
-+	full_space = tcp_full_space(sk);
- 	if (rcv_wnd == 0)
- 		rcv_wnd = dst_metric(dst, RTAX_INITRWND);
-+	else if (full_space < (u64)rcv_wnd * tp->advmss)
-+		full_space = min_t(u64, (u64)rcv_wnd * tp->advmss, INT_MAX);
- 
--	tcp_select_initial_window(sk, tcp_full_space(sk),
-+	tcp_select_initial_window(sk, full_space,
- 				  tp->advmss - (tp->rx_opt.ts_recent_stamp ? tp->tcp_header_len - sizeof(struct tcphdr) : 0),
- 				  &tp->rcv_wnd,
- 				  &tp->window_clamp,
--- 
-2.53.0-Meta
-
+Ah, good thought. We've been meaning to get an ARM64 server for NIPA
+(our current server supplier is out). If it's not too hard could be nice
+to guard against that. But also not a huge deal for HW tests if they
+fail instead of skipping.
