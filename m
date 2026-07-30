@@ -1,64 +1,64 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8B83D3321
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 10:00:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925DD3DE429
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 10:00:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785405638; cv=none; b=kYmPKE19h3JTlDyNQN/A1Le1Y7WDO1HqTM9KzEAL151MDFEMPP11EuRLkqBJFkxwMIh14JPuBnrukdBjHUksc4WD/E7Un56p1+lv8mzay7RDrH8RdkFenMoLDYx+HW3AS65c6x/TjImOvIqSqg22RNTtFTO4hddXg7g2v4mIJy8=
+	t=1785405640; cv=none; b=DhY327vyWmlw5L9PqCyp9W4IqhOyUnfotKByunvx6fHD7ET7oADXD0fb+iJtP4HbzkiCnR88ShMqt1mTZtBFPVDJnnl3vns95JPtss5uad2G2wAX3n32INcub33lGKscGY1kRawlV6fBWTK0/l2/UPVHynyAW77HO6hVfrq4Wgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785405638; c=relaxed/simple;
-	bh=v2otgkqcGoPAxtDs9BIv0BddY44N60tS9V3/kzf1rVY=;
+	s=arc-20240116; t=1785405640; c=relaxed/simple;
+	bh=M+EikJXOV5ueFth3iiiyE2gUNLf/QkhEf+GG9Ksx+o0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IesWEJaStjuM6RHPZVg9Im79YWB3kYI7HS+ryjCpZETCH1TdJSlvOtvuFql5lNKvdWzO1OVBBAB8ONHKirtZLpsoXYClq/T01kmVLFqmQ6I5l1PLTQO+k5DVrBlH4Aw0fQgzciwyIfz38IJbD1SjXiNT0vrBDq+HVFF69s6LwJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sHyqn9ZF; arc=none smtp.client-ip=209.85.221.47
+	 MIME-Version; b=maUd/IAxTPqGM8IJfSeyhu9eJVHsfTwvrk6Mj5sB5TEnfOuOVJWB5cQ72t/OGUMVfiXoLT7l8tNn6BRl7Mr6yzBWNi6YXazKlBTB8G2H9MpmrMy5o9Rgf34ElENSa5ywVnC/yx5MPVIsq3b4C+HjE9VTE8g/ZNBSIrZSwtEnsbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rJVcZk90; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sHyqn9ZF"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-471eeac43bfso1763823f8f.3
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 03:00:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rJVcZk90"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47de0093c42so1466422f8f.3
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 03:00:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785405635; x=1786010435; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785405637; x=1786010437; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gPbuhEVbHecHzC1qayYU8wiK5gPmiPP8a157RrhfrjE=;
-        b=sHyqn9ZFEY06m5SHFvzkLzgAr0InYknJQoZMQKQmpIEp/PPqDoncKpeiLPqfk+7YJ9
-         oZgR832i35eIYbADjPN6XycyZV4i9RcxVUR9DNdTT3cakxcKSavXi0oOJc6iKItGOWgl
-         L2jO7GaAnIgPTpe9rCD0NwyiaAA3W1YLTe3PDrksOiyr8fpVLuijL8MwXxD64899RFFT
-         pNBm55xedsjE3uuosLxWAHgZHNmWHapRhZbn8+n4vsQYj5OKNtbv7jrWU0H395yYAV9C
-         TMlRhWnfjs2zGZSbNBP2/5mtXdJklRBF8BrWeO2Ubaj/Pmt58g3NCSHL+PQUTwjdNh47
-         mShQ==
+        bh=brqEgrC204Q7R2Ht2zUutLTCuoa/Yw12EIf+KqcFosU=;
+        b=rJVcZk90XgABKAAS7X3Z3Q4VZwrrfhvjMtWep4Necwy5l5G1G4pxfcKQQcWjYfLjWD
+         Df9Tzl6GQVHId31JQoUYnbO4U11vUxqTUYeQy6CcmCNnH2ruSUZqe7ecgmyW/TLiKlG0
+         joLT7JwMTctO9WlIJSRryLMnaxLZUlDaDc6WfAEQLHBUL5Z7bgs6yB9w6tSVPjzvEqxM
+         RMd5WSEBkxVu+n8jV/TOW0saPkF9y8D44iAKEwAP9xlw6IBQXh07Js/m3cj94OX9+rbK
+         +ZBBaqeF26pCMKemByQOQQrYVOCwKIi8SgHT1M69WJ44Do5w9AJP6eSRi4XJHrquz7Li
+         Dlng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785405635; x=1786010435;
+        d=1e100.net; s=20251104; t=1785405637; x=1786010437;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gPbuhEVbHecHzC1qayYU8wiK5gPmiPP8a157RrhfrjE=;
-        b=sH6yiw33a2ivpJyjjCfAzO8nNJYy+Q3fpD3w5LoHbEeSGQDrUSU/DBgUdC9DxT45tw
-         2XsqEG5hYX65AZe1PIgfvxReNZL5igtMongM8pYGEEtkjazwC6r8igfo2TXoCfm0nhzt
-         5P7AlC9gwadZBnwDWZUuqt67twHWiPdexrOwg4glH/N5ddo3zkou9Py244RcWg3W+UrD
-         r2rormu9CcIgedCXYFULeaxEeYcqu0IqPev//j2Duo/O0jCAoY/PxrBU3M7tTcE1a0HQ
-         i4fd0ifsquwiv8W9O2QBoJ2o/U7It60+CouFDjkZHjaelCAat2jemzMRClZVEnbs2GPB
-         EKDA==
-X-Forwarded-Encrypted: i=1; AHgh+RpR6DJhX/a6m1IErlvzqikRtNRbVdOIht+4FaTAGV4gBmkM9ruuh9/GwrJwAbZzGxcu/4hJdXo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywu5D9Lo7v+4UB67OgZ0b5bLEfBdMeUGJZxtVsNwjk465Cr0dYu
-	s/VRxOnAhIcnsiefgRu8+AVEYrZvVNcUp3fGxxZtLLvWF2N7zReBL8au
-X-Gm-Gg: AR+sD118vtTwtoTC/plsTpqJtP9cGAdzSzXHH27JR/4eKozMhG71WViBgk7qyiuWxwc
-	HLG5ITKJOctfeODTiqpVnNXq0Tl4rFBrBAxo0deLJ3Rq/HBrNKiooeHuvDqvyfN4hqivWuHzMAG
-	8m6zN3DMGyRVglVEI9hh3VjgW5nRv28ezpMmtHWjVOVlANxqr5ELP8j3Ko2AcSaaS1GYFDCSTIi
-	Lw7fOaWxfx5VYGGkVJ2dJKQ+dUDIA6V7c/u7c4dHTUnJvOsO6RT/+7ur5Wsldgrr3pnEvaZ4Y3a
-	VKIy111SYEp9CqWAbTbkophBWukXvw2076rgrlpIwvtiKPADmzzlXl5m9zKDi3hjQbg5Zrmvzp0
-	U43N8nAdkAt5aZxuk+EfH3cg9mlmxeJRXXfLz6k7vvJx4JFSxsqFamunD9O9x4NbUFzAaUnR2YF
-	4dPiJocL2GfFCVkA5tSl0xcLZRDpfWnbfgyYHmqDoth0jNkJvthYcewTjlCHZ+Fo8zlUhP/JGug
-	xVmC/INnNoV
-X-Received: by 2002:a05:6000:2010:b0:47f:4fa9:ae42 with SMTP id ffacd0b85a97d-47fc80c2fcbmr2863337f8f.11.1785405634990;
-        Thu, 30 Jul 2026 03:00:34 -0700 (PDT)
+        bh=brqEgrC204Q7R2Ht2zUutLTCuoa/Yw12EIf+KqcFosU=;
+        b=Lg29sAoVviiBH+N8ytTLz0j0EpDLI6N49KlrOsE+9gO6V/vS7VaCYQQqKq/kzGmHA0
+         v1VTih5DxixH+dzmGCJfyZPiM3z2VC73XaP1ginqrNAV60Mt8qxP0DqwlmQEb4YJ95tl
+         vSjuwCG0QAquYmDuZ/LA5298U2L3UnmK8rtuE1gXoZIfXOSZe+IPxHMXKplrG2IVLqvR
+         wsrJyMP3M0j4wqiLOVRJv0wxKH1sAEwu+rHGdzrk+SFRywMOETNAZJL9BV3VyL59cA9X
+         qilAco2Ni9BylrkBZ8WaJceCrREuBczb71PmfnkdE7HxbazXv7fx1CnifzuuKrTb/vjo
+         fu1A==
+X-Forwarded-Encrypted: i=1; AHgh+Ro76LF+jhbZduokkdUTpwU/jwoiOwL2c673UQxja36gaXfBxT2CbBZDHeFph/WuInLVaJyh+Vo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFoZ6TqNgdNtJRP4RfBT8pq/pKqdgEiAGlGlxnBgxxs7uY2q3i
+	46PbyaHthK4wN/WaaVId4CEg3T9KIC77FSbkE1bFDSwhIe57JiRdbvornNxQigbW
+X-Gm-Gg: AR+sD13Odm0GOnGP6dlc5ajDhO+p9SG+rtXjAusxLkp94ZOO0Wi4EDxuQ6ol1OF01Ph
+	MjGhFcxGlQFsU8QI71pO+jbMrp2myxaWdZ/ien6cp3t+QN50WPyjbkwHsbBpS9GaPoxKEpeYuhl
+	bMI1G2oKz0psaBrbsitFzVtN3Wm06WQjsJjjzagud64xg9eUDrcSuS3C+LnHyPZpubYyAcYLmQQ
+	TmqIqbwpShWiqJvZw9blS/UT4Z7Kh9e2/V72q2hWzdKARwoion25g7+Aihf6PKOwop0PnlqoY/S
+	tGi7jd/v45TSN9sA3+zhppSMpj8I6fYiu91EqXLjbnNjaHzAqAXRAr/7KJb3Wir33pBWC6t3rUs
+	JwrZZfMqC1mBmVtEoY/D7TpLkQjfsbpOOLFGrcgE3bots6OL21u/xyPC7Wlhxwi9mvxW9Zz8NRo
+	35ZBUURFxBhA+KvIRFxKRi+X2HTanja8OTsXjh2+K9dpLpYxU2c/VExtq2Uk5w2PFQQFSKBDEYw
+	6E00ydQLbPD
+X-Received: by 2002:a05:6000:4a10:b0:47f:9720:4740 with SMTP id ffacd0b85a97d-47fc822dc64mr2244168f8f.37.1785405636307;
+        Thu, 30 Jul 2026 03:00:36 -0700 (PDT)
 Received: from pf-5j7x25.fkb.profitbricks.net ([2001:9e8:482:5000:a5d:311:98af:bd1a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc88e4721sm3984728f8f.16.2026.07.30.03.00.34
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc88e4721sm3984728f8f.16.2026.07.30.03.00.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 03:00:34 -0700 (PDT)
+        Thu, 30 Jul 2026 03:00:35 -0700 (PDT)
 From: Reshma Sreekumar <reshmaisat@gmail.com>
 To: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jiri Pirko <jiri@resnulli.us>,
@@ -72,9 +72,9 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Reshma Sreekumar <reshmaisat@gmail.com>
-Subject: [PATCH net 1/2] net/sched: flag inconsistent qdisc dumps
-Date: Thu, 30 Jul 2026 12:00:05 +0200
-Message-ID: <20260730100006.3547944-2-reshmaisat@gmail.com>
+Subject: [PATCH net 2/2] selftests: net: check that a disturbed qdisc dump is flagged
+Date: Thu, 30 Jul 2026 12:00:06 +0200
+Message-ID: <20260730100006.3547944-3-reshmaisat@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260730100006.3547944-1-reshmaisat@gmail.com>
 References: <20260730100006.3547944-1-reshmaisat@gmail.com>
@@ -86,69 +86,172 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-tc_dump_qdisc() walks every netdev in the netns and can span many netlink
-batches.  RTNL is only held while a single batch is filled, so devices can
-be registered or unregistered in between.  Since 748bbef5fc6a ("net/sched:
-switch tc_dump_qdisc() to for_each_netdev_dump()") the walk resumes on an
-ifindex rather than a list position, but ifindexes are reused: a device
-created between two batches can be given an ifindex the dump has already
-walked past, and is then missed entirely.  Before that commit the resume
-used a position in the device list, so any unregister shifted every later
-device and silently dropped a run of qdiscs from the reply.
+Add a test for NLM_F_DUMP_INTR on RTM_GETQDISC.  A qdisc dump spans several
+netlink batches once a few devices carry a full set of qdiscs, and RTNL is
+only held while a single batch is filled, so the device list can change in
+between and entries can be missed.
 
-Unlike rtnl_dump_ifinfo(), which pairs for_each_netdev_dump() with
-cb->seq = dev_base_seq and nl_dump_check_consistent(), nothing under
-net/sched sets cb->seq at all -- and never has.  NLM_F_DUMP_INTR is
-therefore never raised for a qdisc dump, an incomplete reply is
-indistinguishable from a complete one, and userspace has no way to tell it
-is reconciling against a partial listing.  Callers already handle the flag
-by redoing the dump (iproute2 warns, netlink libraries retry), so raising
-it is enough to make this self-correcting.
+Netlink dumps are driven by the reader, so rather than racing against a
+dump the test unregisters a device at a known point: it receives the first
+batch, unregisters a dummy, then drains the rest.  This is deterministic --
+one flagged message, every run.
 
-Use the same idiom as the link dump.  Both return paths are covered, as
-the -EMSGSIZE path is the normal one for every batch but the last.
+A second case dumps without disturbing anything and requires that the flag
+stays clear, so the test cannot be satisfied by a kernel that raises it
+unconditionally.
 
-Tested by dumping the qdiscs of 400 dummy devices (mq + 16 fq + clsact
-each) while unregistering devices ahead of the dump: NLM_F_DUMP_INTR is
-raised on 482 of 972 dumps with this patch and on 0 of 1089 without it.
+Four dummy devices with mq + 16 fq + clsact each, read with a 4KiB buffer,
+give 12 batches and run in about a second.  The test skips if dummy, mq, fq
+or clsact are unavailable.
 
 Signed-off-by: Reshma Sreekumar <reshmaisat@gmail.com>
 ---
- net/sched/sch_api.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/Makefile          |   1 +
+ .../testing/selftests/net/qdisc_dump_intr.py  | 123 ++++++++++++++++++
+ 2 files changed, 124 insertions(+)
+ create mode 100755 tools/testing/selftests/net/qdisc_dump_intr.py
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 668bcd60d..ab31a75fa 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1949,12 +1949,26 @@ static int tc_dump_qdisc(struct sk_buff *skb, struct netlink_callback *cb)
- 		netdev_unlock_ops(dev);
- 		s_q_idx = 0;
- 	}
--	return skb->len;
-+	err = skb->len;
-+	goto out;
- 
- error_unlock:
- 	netdev_unlock_ops(dev);
- 	ctx->q_idx = q_idx;
- 
-+out:
-+	/* RTNL is dropped between dump batches, so devices may have been
-+	 * registered or unregistered while this dump was in flight.  Because
-+	 * ifindexes get reused, a device created in that window can be given an
-+	 * ifindex this dump has already walked past and be missed entirely.
-+	 * Advertise that, as rtnl_dump_ifinfo() does for RTM_GETLINK, so that
-+	 * userspace redoes the dump instead of acting on a listing that silently
-+	 * omits entries.
-+	 */
-+	cb->seq = READ_ONCE(net->dev_base_seq);
-+	if (skb->len)
-+		nl_dump_check_consistent(cb, nlmsg_hdr(skb));
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index 708d960ae..769ee26ae 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -72,6 +72,7 @@ TEST_PROGS := \
+ 	pmtu.sh \
+ 	protodown.sh \
+ 	psock_snd.sh \
++	qdisc_dump_intr.py \
+ 	reuseaddr_ports_exhausted.sh \
+ 	reuseport_addr_any.sh \
+ 	route_hint.sh \
+diff --git a/tools/testing/selftests/net/qdisc_dump_intr.py b/tools/testing/selftests/net/qdisc_dump_intr.py
+new file mode 100755
+index 000000000..9623847f4
+--- /dev/null
++++ b/tools/testing/selftests/net/qdisc_dump_intr.py
+@@ -0,0 +1,123 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0
 +
- 	return err;
- }
- 
++"""
++Check that a qdisc dump disturbed by a device unregister reports
++NLM_F_DUMP_INTR.
++
++tc_dump_qdisc() walks every netdev in the netns and spans several netlink
++batches once there are more than a handful of qdiscs.  RTNL is only held
++while a single batch is filled, so the device list can change in between and
++the reply can miss entries.  Netlink dumps are driven by the reader, so this
++test unregisters a device at a known point between two batches rather than
++racing against one.
++"""
++
++import socket
++import struct
++
++from lib.py import ksft_run, ksft_exit, ksft_true, ksft_pr, KsftSkipEx
++from lib.py import CmdExitFailure, NetNS, NetNSEnter, ip, tc
++
++NETLINK_ROUTE = 0
++RTM_NEWQDISC = 36
++RTM_GETQDISC = 38
++NLMSG_DONE = 3
++NLM_F_REQUEST = 0x001
++NLM_F_DUMP = 0x300
++NLM_F_DUMP_INTR = 0x010
++
++NLMSGHDR = "=IHHII"
++TCMSG_LEN = 20          # struct tcmsg
++
++# tc parses handles as hex; 64: keeps the mq root clear of the fq children
++MQ_HANDLE = "64"
++CHANNELS = 16           # fq children per device
++NDEVS = 4               # 4 * (mq + 16 fq + clsact) is several batches worth
++BUFSZ = 4096            # small recv buffer keeps the kernel's batches small
++
++
++def _setup():
++    """Devices carrying enough qdiscs that a dump has to paginate."""
++    try:
++        for i in range(NDEVS):
++            ip(f"link add d{i} numtxqueues {CHANNELS} type dummy")
++            ip(f"link set d{i} up")
++            tc(f"qdisc replace dev d{i} root handle {MQ_HANDLE}: mq")
++            for q in range(1, CHANNELS + 1):
++                tc(f"qdisc replace dev d{i} parent {MQ_HANDLE}:{q:x} "
++                   f"handle {q:x}: fq")
++            tc(f"qdisc replace dev d{i} clsact")
++    except CmdExitFailure as exc:
++        raise KsftSkipEx("dummy, mq, fq or clsact unavailable") from exc
++
++
++def _dump(between_batches=None):
++    """
++    Walk an RTM_GETQDISC dump one batch at a time, optionally running
++    `between_batches` after the first batch.  Returns (batches, qdiscs,
++    messages carrying NLM_F_DUMP_INTR).
++    """
++    sk = socket.socket(socket.AF_NETLINK, socket.SOCK_RAW, NETLINK_ROUTE)
++    try:
++        sk.bind((0, 0))
++        hdr = struct.pack(NLMSGHDR, struct.calcsize(NLMSGHDR) + TCMSG_LEN,
++                          RTM_GETQDISC, NLM_F_REQUEST | NLM_F_DUMP, 1, 0)
++        sk.send(hdr + bytes(TCMSG_LEN))
++
++        batches = qdiscs = intr = 0
++        done = False
++        while not done:
++            buf = sk.recv(BUFSZ)
++            batches += 1
++            off = 0
++            while off + 16 <= len(buf):
++                mlen, mtype, flags = struct.unpack_from("=IHH", buf, off)
++                if mlen < 16:
++                    break
++                if flags & NLM_F_DUMP_INTR:
++                    intr += 1
++                if mtype == NLMSG_DONE:
++                    done = True
++                elif mtype == RTM_NEWQDISC:
++                    qdiscs += 1
++                off += (mlen + 3) & ~3
++            if batches == 1 and not done and between_batches:
++                between_batches()
++        return batches, qdiscs, intr
++    finally:
++        sk.close()
++
++
++def dump_intr_on_unregister() -> None:
++    """Unregistering a device mid-dump must raise NLM_F_DUMP_INTR."""
++    ip("link add victim type dummy")
++
++    batches, qdiscs, intr = _dump(lambda: ip("link del victim"))
++
++    ksft_pr(f"{batches} batches, {qdiscs} qdiscs, {intr} flagged messages")
++    ksft_true(batches > 1, "dump did not paginate, nothing to disturb")
++    ksft_true(intr > 0,
++              "NLM_F_DUMP_INTR not set although a device was unregistered "
++              "while the dump was in flight")
++
++
++def dump_intr_absent_when_stable() -> None:
++    """An undisturbed dump must not raise NLM_F_DUMP_INTR."""
++    batches, qdiscs, intr = _dump()
++
++    ksft_pr(f"{batches} batches, {qdiscs} qdiscs, {intr} flagged messages")
++    ksft_true(batches > 1, "dump did not paginate, test is not meaningful")
++    ksft_true(intr == 0, "NLM_F_DUMP_INTR set on an undisturbed dump")
++
++
++def main() -> None:
++    with NetNS() as ns:
++        with NetNSEnter(str(ns)):
++            _setup()
++            ksft_run(globs=globals(), case_pfx={"dump_"})
++    ksft_exit()
++
++
++if __name__ == "__main__":
++    main()
 -- 
 2.43.0
 
