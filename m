@@ -1,141 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A0B1C84A0;
-	Thu, 30 Jul 2026 08:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40513793CE
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 08:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785399300; cv=none; b=BCOcGZ7/r8Rz0sKsx0xUdZyGsDqaOgnbh/nbUbd2NwegHGqZCX2v88TWsm2L446CR4w0wgNEAAwBnfctMHMikb8pEqcBiwWFyELEwHbNfZL+93eyzsAuNSEA+H8ffTeBLflHysZqd6H/nmrvwdF1pP3/GRV3jJoaXTD9AoFwvIc=
+	t=1785399540; cv=none; b=TSXDFFXchATFPgABOk0uFTilndK1XJWbhWbS9zZyJ35iwjwA9H1dN5BACJK3Ue4OAPLpYlzs79ZikEZGj/xfsjq0K/zZr59OERdCPwPXKAVNme2Bv0nI5ORvkRvg06RqyU5scVMd4w9HneYQsPvmeBndOFyy/emNrxDlY5v6mOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785399300; c=relaxed/simple;
-	bh=C5WrY1vEz31ML3OlQd1IhwzItZ5XB0CaN9YsdnlVPmQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tz/rbNxRrtyL4xD5FytHovo0H0jFHGjT21TgKujchEQY8weiHL0CSK/iKHTx/xYJIi9aaE5S5jV4vv9oR9fOVLbR1JBPkU3TsB3vONOYiudDgEyY73/km/Gy4e2kzca0suTNI6i4I4iBzdaZ4G8AmDQKP1cCcqBouQdkGG9ZAeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOPLNFhk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785399540; c=relaxed/simple;
+	bh=aQj2lpDoDMr3oTGZoAlSySzMKpl0kzj7UtX+5NrpPp4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nrFS18WmVQg3gCNGv/NvbsH2PcMrea3cmYSL3EU5KEHEAz/09wc8NaaeNglj5MWldTu90AdVQXknBXIHC/JTSXGDsiuRbXwfjxPqTLY+SBSN44WGqD4rWncUPdSFo7YacAFcOqgtPMcxGZr34nNEHpyw+0NHKvb5vqvKCOyoBxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bJZgF7M3; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOPLNFhk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C781F00A3A;
-	Thu, 30 Jul 2026 08:14:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785399299;
-	bh=GoiNtXq8Abb50lnLbXDPvEIZ8aemEipO0A0IZNA5T2c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EOPLNFhkCb7ZOY1aU3N0p1YIXJXUxobiMB3b2P1sbmIi8wQ/nE2ImRcE7k0F2Y94z
-	 LJYXcwMja4s9/cblXhryh3pEFY4D9yavJ0D7TIGEcjC6Wt7UnRN53Ro+ighqsw+v44
-	 4+LnXslJsPgN43esz4eBggKezKYkFkv/z33qH9M3uazJNuEd6YIOvCP/Hy2H0e6ahe
-	 4STqQl/qja2ba8TVao/WGyhED6CofFZYL5oqPEdu0jy1KXkau6Jjyae0ki4VffDZwk
-	 qyMdT5RHOGMwgqshOS1OAa+kSnS0yZ6pNBfuSt5Xz5EMBALfJERidlNbRR0fd8cVz4
-	 k4UZ7VWLwXehA==
-Message-ID: <c77bd843-725f-4d65-8750-87da6105a8d3@kernel.org>
-Date: Thu, 30 Jul 2026 10:14:53 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bJZgF7M3"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38e347638adso1971378a91.0
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 01:18:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785399538; x=1786004338; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f2dUIXZ0ftJ9QMv7KKCUkHExqYY5TKyD6DDp/Xnu51Q=;
+        b=bJZgF7M3u2a9vq1S9vEm4DerpDF4R0CwLfH0kuR4gbam9hL71dL2hl8rXqwi00vE2p
+         n6JfKrz+APi3d5XIKwgp4ustJbB8TAYKorKTcQvCudfgtm5m+nUWCE7r2zI5/IBICGk1
+         /U88z0eDJok4buscRKZFw9tjeBEXZzdnLyusxyysoq9KexeysHBR65ncFGLb7Aewt3bg
+         tsMzbzodaNYNPEcgednO1Q4Dcu6y9T44+aqdjPwqdK3pvl9dYkDk39DPgdlZF7oDIIBn
+         ckdHKvBBe399daXCHlxG15r14rIZJiTr2wnyMYXliBsRfkBTi5emhaQt2Fwn2f8touxo
+         CqYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785399538; x=1786004338;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f2dUIXZ0ftJ9QMv7KKCUkHExqYY5TKyD6DDp/Xnu51Q=;
+        b=Xi7V/kh26mzS3pk7eE565j5dBft7xEIvb+E727LfCNLIgpx9l+8aBaN1FMSBXnHemm
+         7C1Yi4GR2jOFpkQ3h7EYzmqCWgG5ibnQqXU692RwbAhzektpxV/b0W43XvzrX2qTlsb/
+         svInK1XfOXOsMJVG9q4bJL4VNyD8HhkBsMkzFBTWEyHfldFXJ5rIO0WHhFIvdw7Is6n9
+         3Q4O4cZC33PFFyNhhao0UVRXBkYp+wQQtWLlm2KvfME0T6ZwhMsKX2wpO+/wkVgy/dR3
+         8R7wNFNwWkrQpsxYRGM7GP+lBTtinMkFVOXFjIx9dhM6A+CLXYR6KxbZkms1juXjmBE4
+         m0eA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro++PKp4Qbtet5YA5OQaG3S26a98FammK0ZjesV39ljpQWwiaLJKLHSgWg8uduHVqsWnOlH25Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwD6paFA0UWR7QMErRnaQuMqNCWM/o75AlXV/pIRUyKH2BJp1La
+	JlXtNckqDt+KSRVMYXmOX7nOY+qPj9nfCmC4LDHiNndmui7WBfR6XLWo
+X-Gm-Gg: AR+sD12ZcU26ylKh6GyrsoPLMNk04SakUqjSp+OLRFf43SpIMS1eqDRSVW2V8+2mQJa
+	EGAdqg5lAGMLYF9dLZBggGHXW1VNWYmQk2wNZdWOJY2yGZxiStkdGNoRC2wqnxsV9hp69TL4GDz
+	RcwJC8aXYHKgNg1KQbEFkcOrEAbj7p+UQQpHqweb0CXnB3gZRgn8TIDKZM3LfmikLi/yOmWJ7uW
+	jmFgUvWlJCfu4Ch8OOWFaucOqLMJLQtAMk4i/DirlUjrmzeHLffg72jDa8GlOodyu1YAPmFjajf
+	aH8MpApt9S8GERGCY7aWMQqD8bwOKpnJgRXLgHHQRkYoeOAWwzNWGYRFoyoGuipaQDk0TS00X1Q
+	XcrR28trGg8Fy2y5VBZqI+yeRJ6+C7WJ1A+J6reMHPL882e5SKryfp+JOBCh4QkOS24GWkduW2m
+	PWjVBocKDLAMrjHSVEZwL5G5WD+k3ucRofbotIQsWltZqMzPvGAvuTI2kCKGoNX8luzFxz8k97C
+	Py+QXbFeyo=
+X-Received: by 2002:a17:90b:5745:b0:387:df8f:1408 with SMTP id 98e67ed59e1d1-38f9c08163bmr1533690a91.41.1785399538185;
+        Thu, 30 Jul 2026 01:18:58 -0700 (PDT)
+Received: from localhost.localdomain ([147.136.157.1])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-38f9bab61desm636142a91.13.2026.07.30.01.18.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 01:18:57 -0700 (PDT)
+From: phind.uet@gmail.com
+To: Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andy King <acking@vmware.com>,
+	George Zhang <georgezhang@vmware.com>,
+	Dmitry Torokhov <dtor@vmware.com>
+Cc: Nguyen Dinh Phi <phind.uet@gmail.com>,
+	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] vsock: use sock_error() to consume sk_err after a failed connect
+Date: Thu, 30 Jul 2026 16:18:40 +0800
+Message-ID: <20260730081843.287563-1-phind.uet@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net 1/5] mptcp: avoid combining some incoming suboptions
-Content-Language: fr
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Florian Westphal <fw@strlen.de>,
- Davide Caratti <dcaratti@redhat.com>, Christoph Paasch <cpaasch@openai.com>
-References: <20260728-net-mptcp-misc-fixes-7-2-rc6-v1-0-f7e2d229159d@kernel.org>
- <20260728-net-mptcp-misc-fixes-7-2-rc6-v1-1-f7e2d229159d@kernel.org>
- <20260729172306.31deb67d@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260729172306.31deb67d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Jakub,
+From: Nguyen Dinh Phi <phind.uet@gmail.com>
 
-On 30/07/2026 02:23, Jakub Kicinski wrote:
-> On Tue, 28 Jul 2026 19:11:57 +0200 Matthieu Baerts (NGI0) wrote:
->> Some MPTCP suboptions are mutually exclusive according to the RFC8684,
->> but also because in different places, the code doesn't expect some
->> combinations to be present. That's specially true for suboptions that
->> would be present twice, but with different attributes.
-> 
-> Looks like Clashiko has much to say about this patch.
-> Could you check?
+Syzbot report an issue which can be reproduced with these steps:
 
-Sure, I will check that.
+   r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
+   bind(r0, {VMADDR_CID_ANY, PORT})
+   connect(r0, {VMADDR_CID_LOCAL, PORT})   -> -1, EPROTO  (self-connect)
+   listen(r0, backlog)                     -> 0
+   r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
+   connect(r1, {VMADDR_CID_LOCAL, PORT})   -> 0
+   accept(r0)                              -> -1, EPROTO  (stale sk_err)
 
-Do you think Clashiko could look at patches from the MPTCP ML as well?
-Because the (deprecated?) AI review tool we use didn't find anything:
+Basically, it creates a socket (r0) and triggers a self-connect after
+binding it. This self-connect fails with EPROTO because it loops back to
+r0 while the socket is still in the TCP_SYN_SENT state, causing it to be
+incorrectly dispatched to the connecting-client path. The unexpected
+packet type encountered there sets sk_err to EPROTO.
 
+After that, it invokes a listen() call on the same socket. This listen()
+call succeeds because the kernel's listening path never inspects or
+clears sk_err. Then, a new socket (r1) is created as a normal client and
+connects to r0. However, vsock_accept() rejects this incoming connection
+because the listener's sk_err still holds the EPROTO error from the
+earlier failed self-connect.
 
-https://netdev-ai.bots.linux.dev/ai-review.html?id=d1d1ff69-0f15-4812-ad16-e4f6f2df9f6b
+This rejection causes the child socket created for r1's connection to
+never be freed on virtio or hyperv transports; only the VMCI transport
+implements pending_work to revisit and clean up a rejected socket
 
-Or maybe that's because the model is different, and this can be easily
-fixed? Or maybe the prompts are different too?
+Fix the issue by using sock_error() to read the sk_err to prevent the
+rejection branch from occurring  in this scenario.
 
-I'm asking, mainly because once patches have been accepted in our tree,
-it can be hard to have the original author fixing them. Not to block
-other patches too long, I often have to fix them, so I would prefer to
-get the same review tools (if possible) to prevent that :)
+sock_error() atomically reads and clears sk_err, ensuring the error is
+consumed when vsock_connect() returns and cannot affect subsequent
+operations on the same socket. This matches the established pattern
+used by other protocol connect() implementations in the network
+stack like __inet_stream_connect(), tipc_wait_for_connect()...
 
-> From my perspective I'm not sure if such RFC compliance changes
-> really belong as Fixes? I don't feel too strongly tho.
+Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
+Fixes: d021c344051af ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
+Tested-by: Wupeng Ma <mawupeng1@huawei.com>
+---
+V2: Add reproducer steps to commit message.
+V3: Fix truncated title and add annotations to reproducer steps.
+ net/vmw_vsock/af_vsock.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-I think this fix is important: it is not really about RFC compliances,
-but more about the fact the rest of the code is not taking into account
-suboptions combinations. For example, if the same suboption is present
-twice, but with different values, then the parsing will end up with a
-mix of the two. Also, when such combinations are used, it is likely the
-remote peer is attempting an attack, so better to block this early.
-
-Cheers,
-Matt
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 622dbd046799..43eddc33ed12 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1847,14 +1847,11 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+ 		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+ 	}
+ 
+-	if (sk->sk_err) {
+-		err = -sk->sk_err;
++	err = sock_error(sk);
++	if (err) {
+ 		sk->sk_state = TCP_CLOSE;
+ 		sock->state = SS_UNCONNECTED;
+-	} else {
+-		err = 0;
+ 	}
+-
+ out_wait:
+ 	finish_wait(sk_sleep(sk), &wait);
+ out:
 -- 
-Sponsored by the NGI0 Core fund.
+2.43.0
 
