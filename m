@@ -1,126 +1,176 @@
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947CE2F39C7;
-	Thu, 30 Jul 2026 05:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ED824DCF6;
+	Thu, 30 Jul 2026 05:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785390236; cv=none; b=YVa9WGhX4vFZDx15EKolY2p7M0zAP/F7GPuhsmo/JUAmNrVxOTv8200VCig6I+NgNfLM2Gi4esFl2dNzHTpzf/yLkD2QBDYbHEEb8FkdloFWFIH7oyB+xaI9K4B37Qd9ruZ7hRGyqn9E8RB6U5f318md7jDoJo05gAt9en2Xbto=
+	t=1785390734; cv=none; b=icSnFTxQxG8n8yKMn2Yu7dfPUz1CGiektNUnHexOsEhHXvmoRSZIr9tcW9wQv0wsiobpDSVNOyDGQh5/j2H/+ypEY+APWhkJL1FAgPwFEnQtp7Lsav4CKXDLpEUlPoNy/XXUK3mc3t3I9BArMKCDyA/Sz1u2p0u5KA3nmbB+LRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785390236; c=relaxed/simple;
-	bh=r67pZ/vOuOMEK045wV+jH6NC7RflH5Q1MUGdqlyGvSc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qKLpe7bEvL2PMXf8Og8SwCHl1nRRezl+ZZu8Is435/YatOfDOsvVAUf0UvsdVC5ZfsV2+QW7lG+NnlGM1KPbJ54VgHoHDE0ua99DEz+9BhoqQgYs3xc3x5FoZs3+DSI7KKNtM9l0ikc/UYlI1I5EENhfD/QXA8OU7Iswv+mvvQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=bWmVau9z; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="bWmVau9z"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1785390224; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=wpE+mVKTeJAkeuJ9qronGd9HrTv1M9cJYsVrmp3yGDA=;
-	b=bWmVau9z5gpxXrsP9SDECU0s3/p9VE0x9PLmCDCJrmwrMvJsQpZ39wEVPUUMSBOrxxYs1S+yx0emexxhhHN/ocdmTMteAGJk1IRCnUp6y1zTanhNSMATLekycF1h2VOeZuBorXWGYTGSycaX7q/sXq5XE5wAdXjSRPNgewf9Gd4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=alibuda@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X84.V02_1785390223;
-Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0X84.V02_1785390223 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 30 Jul 2026 13:43:43 +0800
-Date: Thu, 30 Jul 2026 13:43:42 +0800
-From: "D. Wythe" <alibuda@linux.alibaba.com    >
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: "D. Wythe" <alibuda@linux.alibaba.com>, wenjia@linux.ibm.com,
-	wintera@linux.ibm.com, dust.li@linux.alibaba.com,
-	tonylu@linux.alibaba.com, guwen@linux.alibaba.com, kuba@kernel.org,
-	davem@davemloft.net, netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
-	leonro@nvidia.com, pabeni@redhat.com, edumazet@google.com,
-	sidraya@linux.ibm.com, jaka@linux.ibm.com,
-	oliver.yang@linux.alibaba.com
-Subject: Re: [PATCH net-next v4 3/3] net/smc: transition to RDMA core CQ
- pooling
-Message-ID: <20260730054342.GA116570@j66a10360.sqa.eu95>
-References: <20260716113745.65234-1-alibuda@linux.alibaba.com>
- <20260716113745.65234-4-alibuda@linux.alibaba.com>
- <92ba5a37-3496-424c-8425-6535515c01ce@linux.ibm.com>
+	s=arc-20240116; t=1785390734; c=relaxed/simple;
+	bh=kyLb6SdSaueSoNJ6Q/sQJ6XPjXMAVYNIWDCzGnzGyI0=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lJMd/zBURBQ3LbIS7ND/jY/T0uqmDxhbM5sejFSV82A1AaYTbwvzI+Yv8n8Q7tJ/T4EhiEgSuhGlOPzxc+vHd4+dv/Nk8gtyghxbF1ZquWMvLRHdZwh5vmGDf92eEkw+s1sVBlxogoBoWDyva+vAjCSXKbkDyn0TkUAeptlDApc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wpJgc-000000003wl-1w6A;
+	Thu, 30 Jul 2026 05:52:06 +0000
+Date: Thu, 30 Jul 2026 06:52:03 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v8 1/5] net: dsa: add devlink flash_update callback
+ to dsa_switch_ops
+Message-ID: <2103d1c460b35c5e59c96bd91a892596478474d1.1785389905.git.daniel@makrotopia.org>
+References: <cover.1785389905.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <92ba5a37-3496-424c-8425-6535515c01ce@linux.ibm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <cover.1785389905.git.daniel@makrotopia.org>
 
-On Wed, Jul 22, 2026 at 05:17:15PM +0530, Mahanta Jambigi wrote:
-> 
-> 
-> On 16/07/26 5:07 pm, D. Wythe wrote:
-> > Performance Test: redis-benchmark with max 32 connections per QP
-> > Data format: Requests Per Second (RPS), Percentage in brackets
-> > represents the gain/loss compared to TCP.
-> > 
-> > | Clients | TCP      | SMC (original)      | SMC (cq_pool)       |
-> > |---------|----------|---------------------|---------------------|
-> > | c = 1   | 24449    | 31172  (+27%)       | 34039  (+39%)       |
-> > | c = 2   | 46420    | 53216  (+14%)       | 64391  (+38%)       |
-> > | c = 16  | 159673   | 83668  (-48%)  <--  | 216947 (+36%)       |
-> > | c = 32  | 164956   | 97631  (-41%)  <--  | 249376 (+51%)       |
-> > | c = 64  | 166322   | 118192 (-29%)  <--  | 249488 (+50%)       |
-> > | c = 128 | 167700   | 121497 (-27%)  <--  | 249480 (+48%)       |
-> > | c = 256 | 175021   | 146109 (-16%)  <--  | 240384 (+37%)       |
-> > | c = 512 | 168987   | 101479 (-40%)  <--  | 226634 (+34%)       |
-> > 
-> > The results demonstrate that this optimization effectively resolves the
-> > scalability bottleneck, with RPS increasing by over 110% at c=64
-> > compared to the original implementation.
-> 
-> Thanks for the performance numbers — the scalability improvement at high
-> client counts is striking. A few questions to help reproduce these results:
-> 
-> 1) Was net.smc.smcr_max_conns_per_lgr=32 the value used? The "max 32
-> connections per QP" in the description suggests so, but the sysctl
-> wasn't explicitly listed.
-> 
-> 2) Were net.smc.smcr_max_send_wr and net.smc.smcr_max_recv_wr left at
-> their defaults, or tuned? With per-link CQs the optimal WR counts may
-> differ from the global-CQ case, so knowing whether these were touched
-> would help interpret the numbers.
-> 
-> 3) Was this SMC-R v2? The v2 TX path (smc_wr_tx_get_v2_slot,
-> wr_tx_v2_ib) has different concurrency characteristics, so confirming
-> the version matters for the contention analysis in patch 2/3 as well.
+Add a devlink_flash_update callback to dsa_switch_ops so that DSA
+drivers can support devlink dev flash without open-coding the devlink
+plumbing. Unlike the other trampolines in net/dsa/devlink.c, the
+flash_update op is only installed for switches whose driver implements
+the callback: the devlink core rejects flash requests up front when the
+op is absent, before fetching the firmware file from userspace, and an
+unconditionally present trampoline would defeat that early check and
+let unsupported requests block on request_firmware() only to fail with
+-EOPNOTSUPP afterwards.
 
-In our tests, we set net.smc.smcr_max_conns_per_lgr=32 via sysctl. We
-also tuned net.smc.smcr_max_send_wr and net.smc.smcr_max_recv_wr from
-their default to 64 to provide sufficient work request depth. 
+The devlink core calls the op with the devlink instance lock held and
+without rtnl_lock, whereas DSA serialises its switch and port ops under
+rtnl_lock, so a driver has to serialise a flash against its own ops
+itself.
 
-All tests were run with SMC-R v2.
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+---
+v8:
+ * retitled: this patch adds the callback, its first user is patch 3
+ * describe the op's calling context in the commit message
+v7: no changes
+v6: no changes
+v5: no changes
+v4: only install the flash_update op for drivers implementing the
+    callback so the devlink core keeps rejecting unsupported flash
+    requests before fetching the firmware file
+v3: no changes
+v2: align continuation lines with the open parenthesis
 
-And the performance numbers do need a refresh: with recent improvements—including
-thundering herd mitigation in earlier patches, the original SMC implementation’s
-regression in the c=16–512 range is expected to be largely resolved.
+ include/net/dsa.h |  3 +++
+ net/dsa/devlink.c | 50 +++++++++++++++++++++++++++++++++++------------
+ 2 files changed, 41 insertions(+), 12 deletions(-)
 
-> 
-> 4) Was uperf tested for v4 as well, as we did for v1[1] in
-> February-2026? uperf exercises a wider range of message sizes and thread
-> counts, so its numbers would strengthen the case — particularly for the
-> intermediate client counts (c=16 to c=64) where the original
-> implementation regresses below TCP.
-
-Of course uperf was tested. We’ll include a comprehensive uperf
-evaluation in the next version. 
-
-Given that this CQ-pooling patch may require additional review time, I
-plan to send the first two patches of the series separately.
-They’ve already been reviewed and are ready to merge. This patch
-will follow as a standalone submission once the uperf results are
-ready.
-
-D. Wythe
-
-> 
-> [1]
-> https://lore.kernel.org/netdev/20260202094800.30373-1-alibuda@linux.alibaba.com/
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 8c16ef23cc10..c9e19348de61 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -1170,6 +1170,9 @@ struct dsa_switch_ops {
+ 	int	(*devlink_info_get)(struct dsa_switch *ds,
+ 				    struct devlink_info_req *req,
+ 				    struct netlink_ext_ack *extack);
++	int	(*devlink_flash_update)(struct dsa_switch *ds,
++					struct devlink_flash_update_params *params,
++					struct netlink_ext_ack *extack);
+ 	int	(*devlink_sb_pool_get)(struct dsa_switch *ds,
+ 				       unsigned int sb_index, u16 pool_index,
+ 				       struct devlink_sb_pool_info *pool_info);
+diff --git a/net/dsa/devlink.c b/net/dsa/devlink.c
+index ed342f345692..d6022267a839 100644
+--- a/net/dsa/devlink.c
++++ b/net/dsa/devlink.c
+@@ -20,6 +20,15 @@ static int dsa_devlink_info_get(struct devlink *dl,
+ 	return -EOPNOTSUPP;
+ }
+ 
++static int dsa_devlink_flash_update(struct devlink *dl,
++				    struct devlink_flash_update_params *params,
++				    struct netlink_ext_ack *extack)
++{
++	struct dsa_switch *ds = dsa_devlink_to_ds(dl);
++
++	return ds->ops->devlink_flash_update(ds, params, extack);
++}
++
+ static int dsa_devlink_sb_pool_get(struct devlink *dl,
+ 				   unsigned int sb_index, u16 pool_index,
+ 				   struct devlink_sb_pool_info *pool_info)
+@@ -167,18 +176,31 @@ dsa_devlink_sb_occ_tc_port_bind_get(struct devlink_port *dlp,
+ 							p_max);
+ }
+ 
+-static const struct devlink_ops dsa_devlink_ops = {
+-	.info_get			= dsa_devlink_info_get,
+-	.sb_pool_get			= dsa_devlink_sb_pool_get,
+-	.sb_pool_set			= dsa_devlink_sb_pool_set,
+-	.sb_port_pool_get		= dsa_devlink_sb_port_pool_get,
+-	.sb_port_pool_set		= dsa_devlink_sb_port_pool_set,
+-	.sb_tc_pool_bind_get		= dsa_devlink_sb_tc_pool_bind_get,
+-	.sb_tc_pool_bind_set		= dsa_devlink_sb_tc_pool_bind_set,
+-	.sb_occ_snapshot		= dsa_devlink_sb_occ_snapshot,
+-	.sb_occ_max_clear		= dsa_devlink_sb_occ_max_clear,
+-	.sb_occ_port_pool_get		= dsa_devlink_sb_occ_port_pool_get,
++/* The devlink core rejects flash requests up front when the flash_update
++ * op is absent, before fetching the firmware file from userspace. Only
++ * install the op for switches whose driver implements it, so that
++ * unsupported requests keep failing early.
++ */
++#define DSA_DEVLINK_OPS							\
++	.info_get			= dsa_devlink_info_get,		\
++	.sb_pool_get			= dsa_devlink_sb_pool_get,	\
++	.sb_pool_set			= dsa_devlink_sb_pool_set,	\
++	.sb_port_pool_get		= dsa_devlink_sb_port_pool_get,	\
++	.sb_port_pool_set		= dsa_devlink_sb_port_pool_set,	\
++	.sb_tc_pool_bind_get		= dsa_devlink_sb_tc_pool_bind_get, \
++	.sb_tc_pool_bind_set		= dsa_devlink_sb_tc_pool_bind_set, \
++	.sb_occ_snapshot		= dsa_devlink_sb_occ_snapshot,	\
++	.sb_occ_max_clear		= dsa_devlink_sb_occ_max_clear,	\
++	.sb_occ_port_pool_get		= dsa_devlink_sb_occ_port_pool_get, \
+ 	.sb_occ_tc_port_bind_get	= dsa_devlink_sb_occ_tc_port_bind_get,
++
++static const struct devlink_ops dsa_devlink_ops = {
++	DSA_DEVLINK_OPS
++};
++
++static const struct devlink_ops dsa_devlink_flash_ops = {
++	DSA_DEVLINK_OPS
++	.flash_update			= dsa_devlink_flash_update,
+ };
+ 
+ int dsa_devlink_param_get(struct devlink *dl, u32 id,
+@@ -378,12 +400,16 @@ void dsa_switch_devlink_unregister(struct dsa_switch *ds)
+ int dsa_switch_devlink_alloc(struct dsa_switch *ds)
+ {
+ 	struct dsa_devlink_priv *dl_priv;
++	const struct devlink_ops *ops;
+ 	struct devlink *dl;
+ 
++	ops = ds->ops->devlink_flash_update ? &dsa_devlink_flash_ops
++					    : &dsa_devlink_ops;
++
+ 	/* Add the switch to devlink before calling setup, so that setup can
+ 	 * add dpipe tables
+ 	 */
+-	dl = devlink_alloc(&dsa_devlink_ops, sizeof(*dl_priv), ds->dev);
++	dl = devlink_alloc(ops, sizeof(*dl_priv), ds->dev);
+ 	if (!dl)
+ 		return -ENOMEM;
+ 
+-- 
+2.55.0
