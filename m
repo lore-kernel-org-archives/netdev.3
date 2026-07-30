@@ -1,35 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5674433F8BE
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 00:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5677B31F9B4;
+	Thu, 30 Jul 2026 00:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785371458; cv=none; b=kXSgV8FrQRnNqWm3QfJoei+eIa4O8OODFYW1wJRse7BT7K6SNogDsAZzq+h9lN7GVxgqx3IEHTI7j8Dj/1qvAu0oDI8dyW4riuG7+nNV5+wRgTjvQRsM0WBg7Kof81e3ii1OZVnFek6IpxA9ASmVpwbVsVbCDP8boAt8Y2/aliY=
+	t=1785371929; cv=none; b=YLh8d7A/NZmx6MiEacZ5pVP8COEIfkoaRBvXkxLIvy+gp5/tFwbAG4cw1EF71/03j/6zLs6EtZDvxoeHaIMU0SXTejuWpeMtP3ykocM4mHjfUE3yWdULZfU7LKDN9b/AMzF15ItvbvosFRv91aUUbjXJVkoeb8RYiLZ/EDtMjU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785371458; c=relaxed/simple;
-	bh=9LywR6m8fABJtLd5Fse9TODCDuL0dQFJlfcluqTAlps=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rzXK5drmSqQpYtsIFzWjGGurzJ1mGAN9okT5cn0T2+VPeRn9OkJ8M27dFLMyi6Gzl2gaOp1yjhQERQOJb+gPAtmXnsdcCokDsFNzdy+hcw7OKYdCWykvelP64b/5lj8Rx/xaV7aDXjskPn0tZ/JxdeEeIrqIWSPC6sYUoJM55Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mW0KQ2wY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785371929; c=relaxed/simple;
+	bh=gXldHQTkdDklhHvlVtE1VrA3/16585frIArf32rnBl8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XduhyTjdVwnkRz+ckOMtQWp8Boq1AjlKDqguhNFKTkhPb0JpVYg/ELa6rX8LwdH7o2yPLqBlNpO2Ls+ZKygzTE4kT/OMeYIaazN7659evH28eP9bFu9khrZK49FOKi95ty4N+yA3EJkhwBextTTCedpyPn7ovzGoBlJDPGOAWHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRY3AgFu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mW0KQ2wY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A851F000E9;
-	Thu, 30 Jul 2026 00:30:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRY3AgFu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746FF1F000E9;
+	Thu, 30 Jul 2026 00:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785371455;
-	bh=NlloNg5mOpQXimdtQrrQhacwoGzu1dpc6btZHva9d70=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=mW0KQ2wYm6uxE5RN9m5bUgm/xhza34Rxrug7iUZxUflZv1bbOV0Z9X0yLlQyQ95mf
-	 V1iuv61iaCE9s0A1poHCPzw8LOqirM/kwaJ2KmBzFdD0CHWIvJ2lDxSH53QU8PjrKL
-	 ytLidV0kHjH4smbficUK6n5LqWlkroI5S2wAQuiTX8Ew+VdJirqifqfqS/70FNcga+
-	 q2WLVehszo3lLNdZEYjvffuhfhLUsl0wms3JWkmE9C01Rxgex0NIJJQRgAYrY4ahfy
-	 /NX4peRvJF9EE7H1kTA3EuHyG7DEclV30dxwcVrmlYzJo3Auf8/m1n/MMbHMGCD1zF
-	 eW81XbaaIvwEQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198FC3926251;
-	Thu, 30 Jul 2026 00:30:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1785371927;
+	bh=ZNTcxGXpnmUmvFAJvVveI6Jd6TkHR61LCnlfIMKYz/o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gRY3AgFuhTQ/inksc++kXl5/KMNUsuyPSBCisiMMuYIZkrV8g5ycWGHtLuiVfBPGV
+	 CcE+4Vk6Fe0Nf1CMCmeX62qoQNS+ZqZtIewOpunUHWniDcx/fAjNJtsF9Ca6eedt4b
+	 w+u63V1USxNPxZONe+1h243UARf08MG+YwyUl5MqEWd6zjhENn3ehCDkKHAC/MCJKa
+	 ZNLyOnhdKiCH/px+wowj22O1LyduoNiTtx6souZeeNIKGdsRTSWUx4ibn5S+CjQJKd
+	 vUN8BhcMrkh1LkkvRSvirrEb7ugGRRqYk0zfBUp0FvYCaLtaEAVDbKf/QVj00gw/ur
+	 17b7FOEq2LgIw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: zhaoyz24@mails.tsinghua.edu.cn
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	yangyx22@mails.tsinghua.edu.cn,
+	wangao@seu.edu.cn,
+	fengxw06@126.com,
+	qli01@tsinghua.edu.cn,
+	xuke@tsinghua.edu.cn,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] nexthop: account nexthop allocations to memcg
+Date: Wed, 29 Jul 2026 17:38:45 -0700
+Message-ID: <20260730003845.4166255-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260728060112.30367-1-zhaoyz24@mails.tsinghua.edu.cn>
+References: <20260728060112.30367-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,59 +56,96 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 00/10][pull request] Intel Wired LAN Driver Updates
- 2026-07-28 (idpf, ice, igc, igbvf, e1000)
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178537141964.3296803.9033446911621307576.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Jul 2026 00:30:19 +0000
-References: <20260728210909.3042004-1-anthony.l.nguyen@intel.com>
-In-Reply-To: <20260728210909.3042004-1-anthony.l.nguyen@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org
 
-Hello:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+--- Patch [1]: [PATCH net] nexthop: account nexthop allocations to memcg ---
+commit 186a5b6499e65039b5037906ec518baac2833b1d
+Author: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 
-This series was applied to netdev/net.git (main)
-by Tony Nguyen <anthony.l.nguyen@intel.com>:
+    nexthop: account nexthop allocations to memcg
+    
+    The nexthop creation path allocates struct nexthop, struct nh_info,
+    group storage, resilient bucket tables, transient notifier tables and
+    per-group stats without memcg accounting. As a result, a task with
+    CAP_NET_ADMIN can create nexthops and resilient groups whose kernel
+    memory is not charged to the task's memory cgroup, so memory.max does
+    not constrain this part of the workload.
 
-On Tue, 28 Jul 2026 14:08:57 -0700 you wrote:
-> Michael Bommarito adds bounds checking to ensure interrupt vector array
-> stays in-bounds on idpf.
-> 
-> Josh adjusts minimum value for Tx ring descriptors to prevent Tx
-> timeouts in flow based scheduling mode in idpf.
-> 
-> Yuho Choi frees IRQ name in error path to prevent memory leak for idpf.
-> 
-> [...]
+> diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+> index 44fe75004cacb..c8685c5835794 100644
+> --- a/net/ipv4/nexthop.c
+> +++ b/net/ipv4/nexthop.c
+[ ... ]
+> @@ -2943,7 +2945,7 @@ static struct nexthop *nexthop_create(struct net *net, struct nh_config *cfg,
+>  	if (!nh)
+>  		return ERR_PTR(-ENOMEM);
+>  
+> -	nhi = kzalloc_obj(*nhi);
+> +	nhi = kzalloc_obj(*nhi, GFP_KERNEL_ACCOUNT);
 
-Here is the summary with links:
-  - [net,01/10] idpf: bound interrupt-vector register fill to the allocated array
-    https://git.kernel.org/netdev/net/c/9f7007ee9858
-  - [net,02/10] idpf: adjust TxQ ring count minimum
-    https://git.kernel.org/netdev/net/c/bef152db47de
-  - [net,03/10] idpf: Fix mailbox IRQ name leak on request failure
-    https://git.kernel.org/netdev/net/c/9bff30482c10
-  - [net,04/10] ice: wait for reset completion in ice_resume()
-    https://git.kernel.org/netdev/net/c/c2816d613f38
-  - [net,05/10] ice: fix VF interrupts cleanup
-    https://git.kernel.org/netdev/net/c/fb096882095e
-  - [net,06/10] ice: fix memory leak in ice_lbtest_prepare_rings()
-    https://git.kernel.org/netdev/net/c/3a9de5590da4
-  - [net,07/10] ice: suppress DPLL errors during reset recovery
-    https://git.kernel.org/netdev/net/c/b00be7c6b4bd
-  - [net,08/10] igc: remove napi_synchronize() in igc_down()
-    https://git.kernel.org/netdev/net/c/5ffab5b9589c
-  - [net,09/10] igbvf: Fix leak in TX DMA error cleanup
-    https://git.kernel.org/netdev/net/c/0565052b7e2f
-  - [net,10/10] e1000: fix memory leak in e1000_probe()
-    https://git.kernel.org/netdev/net/c/816419dfea5c
+[Severity: High]
+This is a pre-existing issue, but does this patch miss some per-CPU
+allocations in the nexthop creation path?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+When creating IPv4 and IPv6 nexthops, nh_create_ipv6() and fib_nh_init()
+explicitly pass GFP_KERNEL without __GFP_ACCOUNT down to the initialization
+functions:
+
+net/ipv4/nexthop.c:nh_create_ipv6() {
+    ...
+    err = fib6_nh_init(net, fib6_nh, &fib6_cfg, GFP_KERNEL, extack);
+    ...
+}
+
+This results in unaccounted per-CPU allocations:
+
+net/ipv6/route.c:fib6_nh_init() {
+    ...
+    fib6_nh->rt6i_pcpu = alloc_percpu_gfp(struct rt6_info *, gfp_flags);
+    ...
+}
+
+A similar missing accounting happens for IPv4 in fib_nh_common_init():
+
+net/ipv4/fib_semantics.c:fib_nh_common_init() {
+    ...
+    nhc->nhc_pcpu_rth_output = alloc_percpu_gfp(struct rtable __rcu *,
+                                                gfp_flags);
+    ...
+}
+
+Could an unprivileged user with CAP_NET_ADMIN still bypass memcg limits by
+exhausting memory through these per-CPU allocations?
 
 
+[Severity: High]
+This is a pre-existing issue, but do we also need to account for Lightweight
+Tunnel (LWT) state allocations?
+
+During nexthop creation with encapsulation attributes, fib_nh_common_init()
+triggers LWT state allocation:
+
+net/ipv4/fib_semantics.c:fib_nh_common_init() {
+    ...
+    err = lwtunnel_build_state(net, encap_type, encap,
+                               nhc->nhc_family, cfg, &lwtstate,
+                               extack);
+    ...
+}
+
+The allocation unconditionally uses GFP_ATOMIC without __GFP_ACCOUNT:
+
+net/core/lwtunnel.c:lwtunnel_state_alloc() {
+    ...
+    lws = kzalloc(sizeof(*lws) + encap_len, GFP_ATOMIC);
+    ...
+}
+
+Could a task in a container bypass memory.max limits by creating many nexthops
+with encapsulation attributes?
+
+>  	if (!nhi) {
+>  		kfree(nh);
+>  		return ERR_PTR(-ENOMEM);
