@@ -1,76 +1,80 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9C93F0777
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 09:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E483EFD04
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 09:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785404795; cv=none; b=uCvwEfjTE4DIWIIqsEeZzh/s/qCZtm9SoxOg9mvLNeFz1oCpkJo+UMmUby9Oqycc7nw2d2I6jNalV5UMLW4UelQCRyULHM4hNXd1bHJmr0g9+TCuOyI325m31Rp/FSqmCoMaC1A5AHOoCNbeUBO6eT4o9hE0GRxxq/BXBNdwIOM=
+	t=1785404796; cv=none; b=VBiMAG8tqzWyi3liXWaKQnN8QIl2lvmgCyy++H+31+9MboPmRDCGBbd0oG+URzyS/Jjl+ylnwqltGXTOxLYibHRypGVW7V5cn+YnGrYKI6Z3vSvN8wxDZ5URKFmRay01rJD8NddzUsgzMpbng0Lxjf+f9jvRjFMz2uPAQwU0pEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785404795; c=relaxed/simple;
-	bh=8vqXnDNjy/ZpcD+yyfUpie1jDLplieWLAlfOd/VS9bk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KJ1FLusF69s7A1w6r4apFRXERsFxqgQiX4lt20mvV/Y4ssHbLwFsasJKHPyss6PlIdgY++xkmEGhm+uiG//hKrjvstE8VMbnINq4/aHiMq9nkrAFnPj9jhurNw6NLw3L9hBzq0ksZDhA6N6ZuLlc/pDOqk8iAf4vVZs0ZvJSApM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=cCdY/i2g; arc=none smtp.client-ip=209.85.221.50
+	s=arc-20240116; t=1785404796; c=relaxed/simple;
+	bh=lC1SrqJQblKrqItVDcvl0MUO77hDHYgoTD8kArcSXCY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m+DiYlMq2de7HR4WQ8411bmRCVj+TGexxne1tJRG6EsduuKZzpQjRn4ongetMq3osz1AhnDmU9GwUtd6OUyGw+d3Kl4v5pfsqnL3yNLPWrQLjru1CP7B5wy5lxWBb4W+qC+9QeYEl4Q9I0VA94SlkOBB/7/LhePKONblrBDT/qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=K1MPh04y; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="cCdY/i2g"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47f96c5b722so1141744f8f.0
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 02:46:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="K1MPh04y"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47f96c5b722so1141765f8f.0
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 02:46:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1785404792; x=1786009592; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wAd4xFo0r8wvmjNNA1QQUVtEiqBDg/i9KGW3ihSCdmA=;
-        b=cCdY/i2gmJ8C1N/Sp79JnyVow2pfgYZoBIXyVOzW3kovI8hGkd1U0PlsyOlmzIsx48
-         wUIQFRwlRuuKlJ7HZFJRvBwcEfEylEqAff8jAFFHB72bEUnRitu66crZDZMXpJrg1Kt3
-         TA0pqVo4eAworowhUWRVPk2X0iJ/pfWkzhwqjXlmI/pDCwuw8JQxnianKUCRaD5OdEly
-         ztEX1E3nL2pthAGxWnAjyplSgnM/xA1a3rwfNvYO+/6yBxAdpckvN3IoqfON+BfISShN
-         pkQ/UnreGVGIqu7qTg/GWc6gecP2ru9fos6EpXau7Avf7lA91qlDhOGPBK/ojmStq9kt
-         Y8Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785404792; x=1786009592;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=openvpn.net; s=google; t=1785404793; x=1786009593; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wAd4xFo0r8wvmjNNA1QQUVtEiqBDg/i9KGW3ihSCdmA=;
-        b=JQhADTReXbsGnoNxGZpLUji4jeMntI5byV7DKDX9/MjNTQKp7acgmQ+DtOrC31e74i
-         pBXfG2xGVdu2iYVoDUc02fC32+zjZeff0+Vc1r/xLtTOpF4xQzuuTCFxFXP+JYZTxKIn
-         egtpxuyOXiPqp53j2kLIJ4sawSdaOCcdBNtHGITJ/p0ULqeQZMHZIHWgldL6chNv1Uul
-         AcUUUDxfOU8NQrqEHIMffQPinWfEsFpinIl+e4tfMshu1URTiFFpDAUgQzfttUXVGmmA
-         kBa9ZiJiZRwql+5OXaGddLUW+s59LZRnV3AlYaV8rcaVTQj7MyyK5Ye33lc7gN8/F9Kx
-         fG6g==
-X-Gm-Message-State: AOJu0YyEIlS7WDB0MIYrcPbVtZrmDVWgmPpdYWiBxptwBYCC3qONFrsJ
-	OPc3cU6SaAQnjj33Vq+IibzmJJSw7AH2bPtFospbsJCX+iTouxjm3AgWAKBIDSwHmGBbwQ0tIDo
-	d+bAEP6fnEHH9YOneDNUIngScL8lVZxnnBtdMM5FSaVl6g7RLGcmCNftaY/nNQCWE
-X-Gm-Gg: AR+sD11T5t2MrA6gefWNGBgmVmvO2aGGgzqtfYJHUD/ey9y9P6yCgsPMg/In3Pa5nMp
-	fUDq0VuCNKAgtKNcKRza3l3zoY/dExVj5WeGZrNooRKu8ylnAjCN4FhVk/apuTv4Ybh/4WX23AL
-	d2Xok8ZWi5MAdStVvtSO4jD1Kz2Nz/DpZ4TN98RB+qaoNbKBbN/XsVo7XoZ9o75EjWJwQZnPb3n
-	+nf1io55NgGFXqzYUwLbnL3AlgUnVJF43QhTCpIGZlk2XAT0hybtF1UXpxn8EUyEP9okzJC6/sd
-	Wqp1KhtS/LEOCG2MX/QN+Kt+USkqr/Wb+7GEbOV7O557MXm7xtU/4GTmU9lNkGEX2hAoBZQUHVW
-	qSxigvJgp2pV0XQXO+y9kU3qxT2H0+BHEQ/rMSO6hsZgKdgujwpcZzuTo8DDyPGWzdIyIzTkd0L
-	XuOChI3JBM3SxPdnMGA0udgI1KjuK8Zk1eI1TdCjxAekUKCcIWBOhZ0UTTIIwRC1NAQP1twMsWO
-	w==
-X-Received: by 2002:a05:6000:2586:b0:47f:9ac6:ca60 with SMTP id ffacd0b85a97d-47fc806f1bfmr2664972f8f.0.1785404791950;
-        Thu, 30 Jul 2026 02:46:31 -0700 (PDT)
+        bh=15oQURTncK+pFxmxR0CvsVgg+tM2vtL7pK7rnpoPYX0=;
+        b=K1MPh04yLYDe4R8G/RU8sWoie4omFjjb16sUOfRzRDdpXG72JUr8D2F4AHEBGuaSQu
+         7Lal5dg++0A5mR1OAmqxYg0USzWWaIZajBsD/+fPe78IicZT97jB4Sa7vhjUt3YBnwZd
+         67pPmvgXMoy4gSP1bhkTdYh1WzpjbGKngrZtDpumzgfWvwPTG6l3bMmvgd80xpT3oFPR
+         EzbkI131Zmx3RRgyw4Eyc5kQnRvXQePqvSkpE/ezZAD1r+K7SigDemgWfFjaR1b4NgnV
+         JJtUe6h2rV7XXtUBownutD04utIvaefVqKBvVNEU37TJu3E9U6DVcQzhtodlKmZqIo85
+         bv1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785404793; x=1786009593;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=15oQURTncK+pFxmxR0CvsVgg+tM2vtL7pK7rnpoPYX0=;
+        b=bqSztsxkAJCPpZCT6adzrF9QTeFVWxdNzOn8OcY2ToDIW9VE0rlS16SnkvjmHITiAr
+         Suvrxib8ABsiiXq9AVJkb6tiPzJ8O+2FItci9dpftuyM2Q7ixt/J/p/s38pGy5bk5/uo
+         zDJxo7v2Y57UZEZPY94tDznSTxcpMpV9HXEISEtUUoUbgEeiNhBnpOHcSrHzFxttrDhi
+         HjnfVOo16rv9OzNVH4TVG0yKPoHCH7i4fYx3bt3hJBJuIZId3ndDpg02yLQDQ96QDnLj
+         2YcMAse1oHYc8x68PnOhQG+AHC54teROzzX74BPR4Eo6yWzFFvxV7YF8eQH6gItUFWMJ
+         o6Qw==
+X-Gm-Message-State: AOJu0YxT+cugvbqf2ru+isKP3wpQb9n0xKauhkIc0XJ4MjIk3pOKZ+FB
+	QrciYHKo9y2v6Qx6NGCizYx8qop6uCDC/cPj8qk8cweMQNkjsZOs3TTKrky+TUxYxCIcE0vwYCI
+	NzgP+FllTWSzSawUJ+55Jsbi1Ws1BWm+AkMV2BVPufLpp8uhqQDd2qP/tanSORtGW
+X-Gm-Gg: AR+sD11WqvL/Kr92d5/Sd5pvqlTI4sKDuzFy4nbRqBX75/Ffj4Yc91zbEoXcNXR8dN9
+	pPjQIfYXkD1hgxLyt27S0d7Obnpe0Ap7+2LkNsWnpLPWdAIzVxqsDOMHs1lZ0lXQcmfkHUgT1U4
+	GEK02+lbYZz93lLUTxfXVoGoHyt6f6W+Kfc5SGxnYq/5CDsg6cgKM+75Sr0m3+04w5EAZUlI9CI
+	RUlOZEKZ+a0U+P9mVuKuuhE8Lah/B3RhXsTGqWnz2+yTU3S1mxG5Mo55Blt+jbGEPYEQj2CSC98
+	QXJ4++8iH+S22H84yZ4RZzGGyqeIGc2zA6p9YoC6qr3KvY9s0iluud4pZajBzziRi+TwuMJ1dYU
+	b197V195P3QR8Z6jLXCMAZZdrQep9Tsqjt8BjhzcNt3wCYtUu0tPph/jOz46oRUOm4r9WPFqzah
+	NtXGAXyRyscwEXZZh8G1eHGzrhxnS3rW6HNRxIi/ae8gLmqdx3dDBrLg0k2HwieYfvgPm+CTZQ3
+	A==
+X-Received: by 2002:a5d:64e3:0:b0:47f:97f6:d39a with SMTP id ffacd0b85a97d-47fc81c5cf5mr2617454f8f.17.1785404792969;
+        Thu, 30 Jul 2026 02:46:32 -0700 (PDT)
 Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:97f0:8a89:3637:d698])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc88e424fsm6971410f8f.14.2026.07.30.02.46.30
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc88e424fsm6971410f8f.14.2026.07.30.02.46.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 02:46:31 -0700 (PDT)
+        Thu, 30 Jul 2026 02:46:32 -0700 (PDT)
 From: Antonio Quartulli <antonio@openvpn.net>
 To: netdev@vger.kernel.org
-Cc: Antonio Quartulli <antonio@openvpn.net>,
+Cc: Ralf Lici <ralf@mandelbit.com>,
 	Sabrina Dubroca <sd@queasysnail.net>,
-	Ralf Lici <ralf@mandelbit.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>
-Subject: [PATCH net 00/10] pull request: fixes for ovpn 2026-07-30
-Date: Thu, 30 Jul 2026 11:46:11 +0200
-Message-ID: <20260730094624.4102963-1-antonio@openvpn.net>
+	Eric Dumazet <edumazet@google.com>,
+	Antonio Quartulli <antonio@openvpn.net>
+Subject: [PATCH net 01/10] ovpn: add missing rtnl_link_ops->get_size callback
+Date: Thu, 30 Jul 2026 11:46:12 +0200
+Message-ID: <20260730094624.4102963-2-antonio@openvpn.net>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260730094624.4102963-1-antonio@openvpn.net>
+References: <20260730094624.4102963-1-antonio@openvpn.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,80 +83,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi all!
+From: Ralf Lici <ralf@mandelbit.com>
 
-Here is a batch of ovpn fixes for net, collected and reviewed over the
-past weeks (they went through a few rounds of sashiko pre-review on
-openvpn-devel).
+ovpn_fill_info emits IFLA_OVPN_MODE inside IFLA_INFO_DATA, but
+ovpn_link_ops does not provide a get_size callback. Consequently,
+rtnetlink's size estimate for ovpn link messages does not include the
+nested mode attribute.
 
-There are still larger fixes in our queue, so please ignore any
-"previous issue" Sashiko may report on these.
+Available skb tailroom may hide this mismatch. When the remaining space
+is insufficient, however, ovpn_fill_info returns -EMSGSIZE and message
+construction fails.
 
-Please pull or let me know of any issue!
+Add the callback and account for IFLA_OVPN_MODE.
 
-Thanks a lot,
-	Antonio
+Fixes: c2d950c4672a ("ovpn: add basic interface creation/destruction/management routines")
+Signed-off-by: Ralf Lici <ralf@mandelbit.com>
+Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+---
+ drivers/net/ovpn/main.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
+diff --git a/drivers/net/ovpn/main.c b/drivers/net/ovpn/main.c
+index 9993c1dfe471..9d9a0ff690d6 100644
+--- a/drivers/net/ovpn/main.c
++++ b/drivers/net/ovpn/main.c
+@@ -210,6 +210,12 @@ static int ovpn_newlink(struct net_device *dev,
+ 	return register_netdevice(dev);
+ }
+ 
++static size_t ovpn_get_size(const struct net_device *dev)
++{
++	/* IFLA_OVPN_MODE */
++	return nla_total_size(sizeof(u8));
++}
++
+ static int ovpn_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ {
+ 	struct ovpn_priv *ovpn = netdev_priv(dev);
+@@ -228,6 +234,7 @@ static struct rtnl_link_ops ovpn_link_ops = {
+ 	.policy = ovpn_policy,
+ 	.maxtype = IFLA_OVPN_MAX,
+ 	.newlink = ovpn_newlink,
++	.get_size = ovpn_get_size,
+ 	.fill_info = ovpn_fill_info,
+ };
+ 
+-- 
+2.54.0
 
-The following changes since commit 51b093a7ba27476e1f639455f005e8d2e75390e4:
-
-  net: sxgbe: check descriptor ring allocation failures (2026-07-29 09:33:10 +0100)
-
-are available in the Git repository at:
-
-  https://github.com/OpenVPN/ovpn-net-next.git ovpn-net-20260730
-
-for you to fetch changes up to 26ba17d845193dac4921ae1ab280d28d1938052e:
-
-  ovpn: fix incorrect use of rcu_access_pointer() (2026-07-30 11:28:30 +0200)
-
-----------------------------------------------------------------
-Included fixes:
-* use rcu_dereference_bh() instead of rcu_access_pointer() where the
-  pointer is actually dereferenced
-* ensure TCP global variables are initialized before they can be
-  accessed via netlink (e.g. when attaching a TCP socket)
-* actually disable IPv4 redirects on multipeer interfaces (the
-  previous attempt was a no-op and did not survive netns moves)
-* hash a floated peer by its transport identity only, consistently
-  with the add and lookup paths
-* zero the sockaddr padding before learning a floated endpoint so it
-  does not leak into the by_transp_addr hash key
-* ensure the socket is owned by ovpn before dereferencing
-  sk_user_data
-* rehash a peer in the by_transp_addr table when its remote endpoint
-  is updated via CMD_PEER_SET
-* avoid re-adding to the hashtables a peer that was concurrently
-  removed (use-after-free)
-* limit keepalive values to one day to avoid overflowing the
-  delayed-work delay on 32-bit systems
-* add the missing rtnl_link_ops->get_size callback so link messages
-  account for the nested mode attribute
-
-----------------------------------------------------------------
-Antonio Quartulli (7):
-      ovpn: skip rehash for peers already removed from by_id
-      ovpn: rehash peer in by_transp_addr table on CMD_PEER_SET
-      ovpn: ensure socket is owned by ovpn before deref sk_user_data
-      ovpn: zero-initialize sockaddr before learning a floated endpoint
-      ovpn: hash floated peer by transport identity only
-      ovpn: disable IPv4 redirects on MP interfaces
-      ovpn: ensure TCP vars are initialized first
-
-Marco Baffo (1):
-      ovpn: limit keepalive values to one day
-
-Qingfang Deng (1):
-      ovpn: fix incorrect use of rcu_access_pointer()
-
-Ralf Lici (1):
-      ovpn: add missing rtnl_link_ops->get_size callback
-
- Documentation/netlink/specs/ovpn.yaml |   4 +
- drivers/net/ovpn/main.c               |  64 +++++++++----
- drivers/net/ovpn/netlink-gen.c        |  20 ++--
- drivers/net/ovpn/netlink.c            |   6 ++
- drivers/net/ovpn/peer.c               | 172 +++++++++++++++++++++++++---------
- drivers/net/ovpn/peer.h               |   1 +
- drivers/net/ovpn/socket.c             |   9 ++
- 7 files changed, 208 insertions(+), 68 deletions(-)
