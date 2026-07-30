@@ -1,77 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5661D5CFB;
-	Thu, 30 Jul 2026 00:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD96217723;
+	Thu, 30 Jul 2026 00:14:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785370267; cv=none; b=BQR/axuMiBpn+lU34pw4Ysia/SnefzmqPf7pkQP59Lhqud89gtT0YIKdUxdMUJB5sYu+/lYTzjOCXwfmSaqlwEs7K4ijhFuv993cm3R2DQJCTiKfTgXmttv3JBhzMTsI6IeeaGN0OL07k/DPEuo26c25Pytrjt2oYFvxIIkJiiI=
+	t=1785370500; cv=none; b=kW6BEbZ5Xwbjp/mJsWVb/IRR9hDAmF4le4Lk2wPSinpPIylOKWz8JHT5SBFm85ekiZH1MjqMjYW6gPY37xHuptwmrE0VIpJAERoanhirtTx9ywQMpJrQ3uR94eF8BOLj/sHMXaZ/ml7FyIL+N1hOScMDj89U8gAFrRpnI3P7GgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785370267; c=relaxed/simple;
-	bh=RQR74oZpi6Jc12LtJTOy6B27LVH61L+S9Kr9ntFIoVg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nfulk+9qHbeikdUSuyBwoeYvHeQEHxEh0V9TEjXyZtTOYro9ehbizwk3n7j65dEW70PvOf2A6PfYcR3QXaKgrfB8HVWyb9JI3h1S6mqXXta3bf9QP1O2ikHmwHkOLcxoicylRFdWpIZrqtdHSnDJ2jQziUALcP+LREt3VacCQt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mWBK5EvW; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mWBK5EvW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9A01F00A3A;
-	Thu, 30 Jul 2026 00:11:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785370264;
-	bh=CmtsYrfAh+CcYVC4SMfUXggvgre6+mM2oAaW/NnS0DY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=mWBK5EvWyHommCP1pwQqOGEXcT+9q08aUTHqJHq3byb70mtoWuJ5rB/XCDBU76pN4
-	 GEGSFkbvedbdwp1JC3x5ZodMu/4epxN7dp2UVs2AooHrBbSXL6S0tJ10JQhALqIjDl
-	 3y9lnolxns7WpfMqkh9k5Z+7tHPjzJsBf325HXp4vfpspdzqusROVXz0ABY+4P2M9u
-	 iI4PIvNo3P1I84UlNELz4T9lCoweItS6LvcLl/d7uV9mo7KHRV/aEv/ApQib5hWJhw
-	 k8lYgo1PQCycrekvQkr/HY8tIPk23EaFiVXuGAbBHB76aFMOGkOFOtxOSxIhmXbXEQ
-	 0TZMj0cBMVe0Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A3D3926250;
-	Thu, 30 Jul 2026 00:10:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1785370500; c=relaxed/simple;
+	bh=Ux88rPlT64mc1DzpYFWfYdC54U3Kfck630XvxlvSlQU=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c1p3spZIZ4j4/N8FU/P+BkXbtaov+x4t0o94aHSphGJsJ/13ro5cfeKEd84GhmoekHtt9fZCvf6PWvgJZRwjWCgPUCsCoM7MTldqruBWm0YePEXvChsbdyScZrs6k4BtAecI/spPZSlSqlTNcCT2jtiYQ0ZjO9I/JAn1+kA85vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wpEQ6-000000002eZ-02Hr;
+	Thu, 30 Jul 2026 00:14:42 +0000
+Date: Thu, 30 Jul 2026 01:14:38 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alexander Couzens <lynxis@fe80.eu>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Landen Chao <Landen.Chao@mediatek.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH net v2 1/5] net: pcs: mtk-lynxi: check regmap reads in
+ mtk_pcs_lynxi_get_state()
+Message-ID: <b58d5d99dddd67e35a6f14a14a6ad63d8b3fbadc.1785368701.git.daniel@makrotopia.org>
+References: <cover.1785368701.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] netlink: specs: nl80211: fix TOOD -> TODO
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178537022839.3290991.9616480521704728604.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Jul 2026 00:10:28 +0000
-References: <20260728154142.12133-1-shaikhkamal2012@gmail.com>
-In-Reply-To: <20260728154142.12133-1-shaikhkamal2012@gmail.com>
-To: shaikh kamaluddin <shaikhkamal2012@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, donald.hunter@gmail.com,
- matttbe@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1785368701.git.daniel@makrotopia.org>
 
-Hello:
+mtk_pcs_lynxi_get_state() ignores regmap_read()'s return value; a
+failed read leaves bm and adv holding uninitialized stack values
+which are then decoded into the reported link state. The regmaps
+backing the MT7531 SGMII PCS instances sit on an MDIO bus where
+reads can fail. Check both reads and leave the state untouched on
+error.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Fixes: 4765a9722e09 ("net: pcs: add driver for MediaTek SGMII PCS")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+---
+v2: new patch
 
-On Tue, 28 Jul 2026 21:11:42 +0530 you wrote:
-> Fix spelling error reported by codespell in description strings:
-> TOOD -> TODO. Attribute names are untouched. No functional change.
-> 
-> Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-> ---
->  Documentation/netlink/specs/nl80211.yaml | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> [...]
+ drivers/net/pcs/pcs-mtk-lynxi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Here is the summary with links:
-  - [net-next,v2] netlink: specs: nl80211: fix TOOD -> TODO
-    https://git.kernel.org/netdev/net-next/c/bb3fed50cb01
-
-You are awesome, thank you!
+diff --git a/drivers/net/pcs/pcs-mtk-lynxi.c b/drivers/net/pcs/pcs-mtk-lynxi.c
+index a753bd88cbc2..454f2924831c 100644
+--- a/drivers/net/pcs/pcs-mtk-lynxi.c
++++ b/drivers/net/pcs/pcs-mtk-lynxi.c
+@@ -113,8 +113,9 @@ static void mtk_pcs_lynxi_get_state(struct phylink_pcs *pcs,
+ 	unsigned int bm, adv;
+ 
+ 	/* Read the BMSR and LPA */
+-	regmap_read(mpcs->regmap, SGMSYS_PCS_CONTROL_1, &bm);
+-	regmap_read(mpcs->regmap, SGMSYS_PCS_ADVERTISE, &adv);
++	if (regmap_read(mpcs->regmap, SGMSYS_PCS_CONTROL_1, &bm) ||
++	    regmap_read(mpcs->regmap, SGMSYS_PCS_ADVERTISE, &adv))
++		return;
+ 
+ 	phylink_mii_c22_pcs_decode_state(state, neg_mode,
+ 					 FIELD_GET(SGMII_BMSR, bm),
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+2.55.0
