@@ -1,76 +1,161 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D0113959D;
-	Thu, 30 Jul 2026 20:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5DA3BCD36
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 20:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785444474; cv=none; b=POr8dd5o1axum973wNTEnju0mp3GDtvMBQ1WqI3S7ndqxxoM1ejtKtdd6fSqZBjAxlQKCnVztAfD5okX6pOuTRUd8tv/C/lWkB8LhzldBmZPKSwAyi3Ek69C+V4VGd5bkEIxqL6M7GOqcjli4YpY06UVwk6btZjCbAxWGzcZnGc=
+	t=1785444537; cv=none; b=DIWiNiHTrTIbpJs22vTkE0ZXUY0qARy9yk6dHqc9zcELBhgCT6tYEpTHpcgTClBR8ReYROXY4gKob/Am4jRxFtrMqzcM0ANEpiP146DWfnh8IfviWFkQopjfDoG5xNvHnFo+9c/iy2pbjzkqicxtPnmiN78vyLlYUmjyDXw16hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785444474; c=relaxed/simple;
-	bh=LgB0EJLtU2FGnOzqpmmvPddiayHPb3U+NyYHgqiNP0Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oWzb6IZXihZ+lmOB7UINMQbdhyIj3ac3CVs31+PbFZiGhn+k/9QbkVCCv3ULJWL+11rICdac/QEfYk+fWkW/ZLi6Ad9tgWQPBXKTYyJiDZt67AC7p7woloNGjelmnWN7Iz2+toweVBlu6ZoPVB7KojOqMfD+QWos3XTarTm2k9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zjXHXN6T; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785444537; c=relaxed/simple;
+	bh=+JX9cWqUuW45m07C5RH0ARr6Sep3gbrZV1Hw7AxFGmk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=OJGE2hgU8xz5Kp4KXIWNBQLcax1fAMMe6nbHUWNnXXO+Re42VDr9Q4K3NGp7/b6+YVJE/Ik6PboGEKUKLJVFyfeMFUSWjjUzBkJcM5rGAKH/xD4rEcHAZn/148Hk96Tc8dIXaDiWYDu6sBiV66e/o3ZwfRMly1DNrzu9uOYwiEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=c9laAda2; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zjXHXN6T"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=TY0IrMd0BC7glBD9LmPPRPksKcbqLLy1R8rWMvMhY3s=; b=zjXHXN6T9IIYrzafBdCljZ0rLr
-	u84tNPG6iIDJur/mLvwyU0WBAYrfGIuWjrdfD77QcaWHRnh2usgGs17HwYpsHlZAzCmHWsmAvLcnx
-	rQ1iu3TS6giWCcqDhuJxKkvw6V8PhGeCOJGEw/cfLaaiUbMF5bnVuZq+3t6iUEpVh/+0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wpXeb-00F3qd-3F; Thu, 30 Jul 2026 22:46:57 +0200
-Date: Thu, 30 Jul 2026 22:46:57 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: mhklinux@outlook.com
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, longli@microsoft.com, tglx@kernel.org,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	hpa@zytor.com, daniel.lezcano@kernel.org,
-	ssengar@linux.microsoft.com, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-	simona@ffwll.ch, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	James.Bottomley@hansenpartnership.com, martin.petersen@oracle.com,
-	sgarzare@redhat.com, horms@kernel.org, x86@kernel.org,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
-	linux-scsi@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [RESEND PATCH net-next 2/6] hv_sock: Remove check for old
- Hyper-V hosts
-Message-ID: <04e5274c-b44c-4b59-998c-1af2f58883c1@lunn.ch>
-References: <20260730201123.1767-1-mhklinux@outlook.com>
- <20260730201123.1767-3-mhklinux@outlook.com>
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="c9laAda2"
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id BA62C2C0373;
+	Fri, 31 Jul 2026 08:48:51 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1785444531;
+	bh=+JX9cWqUuW45m07C5RH0ARr6Sep3gbrZV1Hw7AxFGmk=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=c9laAda2HkK/YjLzvFl4q4+Dqhforj5THWA1gnLD1ctdNTeX07W1Tpqxl4T/VdOnR
+	 oox6jiU1zViAnBw0MtIPLZJ5n0NSQz8mb8EYXWOcIiYI9THZh6fDQD1Hw30g2rGSFq
+	 noH+zB1GVXe02Zw3jRxg1ni3gMfuv/x5GnnyLm/1a4rdGuRlUZ+gIufJ2QfFEZnPiR
+	 gqjrbEYRsNGx/6act9KR7ftgwBqb0ma6kczJMlIhXXlxPy8v2p2heZpNeIY0aMm1sa
+	 yWGhQLW2W92XuiRhiml50Ur2mDOrp5xn9+eMnMPYCTKJkxfDaKGyYu/8ooYZJJak5a
+	 fwDcbLXAyuoSg==
+Received: from svr-chch-ex2.atlnz.lc (Not Verified[2001:df5:b000:bc8::76]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B6a6bb8b30001>; Fri, 31 Jul 2026 08:48:51 +1200
+Received: from svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) by
+ svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.39; Fri, 31 Jul 2026 08:48:51 +1200
+Received: from svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567]) by
+ svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567%15]) with mapi id
+ 15.02.1748.039; Fri, 31 Jul 2026 08:48:51 +1200
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, "przemyslaw.kitszel@intel.com"
+	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"aleksander.lobakin@intel.com" <aleksander.lobakin@intel.com>
+CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Blair Steven
+	<Blair.Steven@alliedtelesis.co.nz>, Carl Smith
+	<Carl.Smith@alliedtelesis.co.nz>
+Subject: Re: [PATCH net-next] i40e: Avoid repeating RX filter warning
+Thread-Topic: [PATCH net-next] i40e: Avoid repeating RX filter warning
+Thread-Index: AQHc4znbWyYjUBsJCUSplU0ijsiEzraE2zuAgAFU2YCAAAn1gA==
+Date: Thu, 30 Jul 2026 20:48:51 +0000
+Message-ID: <38bfcc78-ca4d-4f4c-b4de-5afa486be302@alliedtelesis.co.nz>
+References: <20260514003733.1718771-1-chris.packham@alliedtelesis.co.nz>
+ <c2f3acdd-9985-4d8f-bfc4-5d83f520f4a9@alliedtelesis.co.nz>
+ <5f1456d9-a098-4459-8fe0-3a90c4db0ed3@intel.com>
+In-Reply-To: <5f1456d9-a098-4459-8fe0-3a90c4db0ed3@intel.com>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1D25F770D98A8F4BA884C3BD633DC0B3@alliedtelesis.co.nz>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260730201123.1767-3-mhklinux@outlook.com>
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=O66avw9W c=1 sm=1 tr=0 ts=6a6bb8b3 a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=drD7vYo3kbIA:10 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=K7DEirGRrMXiwQqxwewA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-SEG-SpamProfiler-Score: 0
 
-On Thu, Jul 30, 2026 at 01:11:19PM -0700, Michael Kelley wrote:
-> With the overall removal of Linux support for running on Hyper-V
-> hosts earlier than WS2016 and Windows 10, the check for such versions
-> during hv_sock initialization is no longer necessary. Remove the
-> check.
-
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-
-Please don't send new versions of a patchset within 24 hours. You need
-to give reviewers time to review your patches. And if there is
-discussion, please wait for it to reach a conclusion.
-
-    Andrew
-
----
-pw-bot: cr
+T24gMzEvMDcvMjAyNiAwODoxMywgVG9ueSBOZ3V5ZW4gd3JvdGU6DQo+DQo+DQo+IE9uIDcvMjkv
+MjAyNiA0OjUzIFBNLCBDaHJpcyBQYWNraGFtIHdyb3RlOg0KPj4gSGkgQWxsLA0KPj4NCj4+IE9u
+IDE0LzA1LzIwMjYgMTI6MzcsIENocmlzIFBhY2toYW0gd3JvdGU6DQo+Pj4gV2hlbiB0aGUgaTQw
+ZSBydW5zIG91dCBvZiBzcGFjZSBmb3IgUlggZmlsdGVycyB0aGUgZHJpdmVyIHN3aXRjaGVzIHRv
+DQo+Pj4gcHJvbWlzY3VvdXMgbW9kZSBhbmQgd2FybnMgdGhhdCBpdCBoYXMgZG9uZSBzby4gSW4g
+c2NlbmFyaW9zIHdpdGggYQ0KPj4+IGxhcmdlIG51bWJlciBvZiB0aGVzZSBmaWx0ZXJzIHRoaXMg
+Y2FuIGdlbmVyYXRlIGEgbG90IG9mIHdhcm5pbmdzLiBGb3INCj4+PiBleGFtcGxlOg0KPj4+DQo+
+Pj4gwqDCoMKgICQgZG1lc2cgLWMgPiAvZGV2L251bGwNCj4+PiDCoMKgwqAgJCBpcCBsaW5rIGFk
+ZCBkZXYgYnIwIHR5cGUgYnJpZGdlIHZsYW5fZmlsdGVyaW5nIDEgDQo+Pj4gdmxhbl9kZWZhdWx0
+X3B2aWQgMQ0KPj4+IMKgwqDCoCAkIGlwIGxpbmsgc2V0IGRldiBldGg3IG1hc3RlciBicjANCj4+
+PiDCoMKgwqAgJCBicmlkZ2UgdmxhbiBhZGQgdmlkIDEgZGV2IGV0aDcgcHZpZCB1bnRhZ2dlZCBz
+ZWxmDQo+Pj4gwqDCoMKgICQgYnJpZGdlIHZsYW4gYWRkIHZpZCAyLTQwOTQgZGV2IGV0aDcgdGFn
+Z2VkDQo+Pj4gwqDCoMKgICQgZG1lc2cNCj4+PiDCoMKgwqAgW8KgwqAgMjUuNjAxNzA1XSBpNDBl
+IDAwMDA6MDE6MDAuMTogRXJyb3IgTElCSUVfQVFfUkNfRU5PU1BDLCANCj4+PiBmb3JjaW5nIG92
+ZXJmbG93IHByb21pc2N1b3VzIG9uIFBGDQo+Pj4gwqDCoMKgIFvCoMKgIDI1LjYwMTgzM10gaTQw
+ZSAwMDAwOjAxOjAwLjE6IEVycm9yIExJQklFX0FRX1JDX0VOT1NQQywgDQo+Pj4gZm9yY2luZyBv
+dmVyZmxvdyBwcm9taXNjdW91cyBvbiBQRg0KPj4+IMKgwqDCoCBbwqDCoCAyNS42MDE5NjFdIGk0
+MGUgMDAwMDowMTowMC4xOiBFcnJvciBMSUJJRV9BUV9SQ19FTk9TUEMsIA0KPj4+IGZvcmNpbmcg
+b3ZlcmZsb3cgcHJvbWlzY3VvdXMgb24gUEYNCj4+PiDCoMKgwqAgW8KgwqAgMjUuNjAyMDg4XSBp
+NDBlIDAwMDA6MDE6MDAuMTogRXJyb3IgTElCSUVfQVFfUkNfRU5PU1BDLCANCj4+PiBmb3JjaW5n
+IG92ZXJmbG93IHByb21pc2N1b3VzIG9uIFBGDQo+Pj4gwqDCoMKgIFvCoMKgIDI1LjYwMjIxNl0g
+aTQwZSAwMDAwOjAxOjAwLjE6IEVycm9yIExJQklFX0FRX1JDX0VOT1NQQywgDQo+Pj4gZm9yY2lu
+ZyBvdmVyZmxvdyBwcm9taXNjdW91cyBvbiBQRg0KPj4+IMKgwqDCoCBbwqDCoCAyNS42MDIzNDRd
+IGk0MGUgMDAwMDowMTowMC4xOiBFcnJvciBMSUJJRV9BUV9SQ19FTk9TUEMsIA0KPj4+IGZvcmNp
+bmcgb3ZlcmZsb3cgcHJvbWlzY3VvdXMgb24gUEYNCj4+PiDCoMKgwqAgLi4uDQo+Pj4NCj4+PiBV
+c2UgdGVzdF9hbmRfc2V0X2JpdCgpIHNvIHRoYXQgdGhlIHdhcm5pbmcgaXMgb25seSBpc3N1ZWQg
+d2hlbiB0aGUNCj4+PiBkcml2ZXIgZW5hYmxlcyBwcm9taXNjdW91cyBtb2RlIGFuZCBub3Qgb24g
+dGhlIGFkZGl0aW9uIG9mIA0KPj4+IHN1YnNlcXVlbnQgUlgNCj4+PiBmaWx0ZXJzLg0KPj4+DQo+
+Pj4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgUGFja2hhbSA8Y2hyaXMucGFja2hhbUBhbGxpZWR0ZWxl
+c2lzLmNvLm56Pg0KPj4+IC0tLQ0KPj4+DQo+Pj4gUmVzZW5kIHdpdGggbmV0LW5leHQgdGFnDQo+
+Pg0KPj4gSGFzIHRoaXMgZmFsbGVuIHRocm91Z2ggdGhlIGNyYWNrcz8gSSd2ZSBzZWVuIHNvbWUg
+UmV2aWV3ZWQtYnlzIGJ1dCBpdA0KPj4gZG9lc24ndCBzZWVtIHRvIGhhdmUgYmVlbiBwaWNrZWQg
+dXAuDQo+DQo+IEhpIENocmlzLA0KPg0KPiBJIGhhdmUgaXQgaW4gbXkgcXVldWUgb2YgcGF0Y2hl
+cyB0byBzZW5kIG91dCBidXQgSSdtIHdvcmtpbmcgbXkgd2F5IHRvIA0KPiBpdC4gSSBkbyBob3Bl
+IHRvIGhhdmUgaXQgc2VudCBvbiBzb29uLg0KPg0KPiBUaGFua3MsDQo+IFRvbnkgDQoNCkhpIFRv
+bnksDQoNClRoYW5rcyBmb3IgY29uZmlybWluZyB0aGF0LiBObyBodXJyeSBqdXN0IHRocm91Z2gg
+dGhpcyBtaWdodCBiZSBzbyBzbWFsbCANCml0J2QgYmUgZWFzaWx5IGxvc3QgaW4gdGhlIHN3YXJt
+IG9mIEFJIHRoYXQgd2UncmUgYWxsIGdldHRpbmcgY2F1Z2h0IHVwIGluLg0KDQo+Pj4NCj4+PiDC
+oMKgIGRyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2k0MGUvaTQwZV9tYWluLmMgfCAxOCArKysr
+KysrKysrLS0tLS0tLS0NCj4+PiDCoMKgIDEgZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCsp
+LCA4IGRlbGV0aW9ucygtKQ0KPj4+DQo+Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2V0aGVy
+bmV0L2ludGVsL2k0MGUvaTQwZV9tYWluLmMgDQo+Pj4gYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9p
+bnRlbC9pNDBlL2k0MGVfbWFpbi5jDQo+Pj4gaW5kZXggOTI2ZDAwMWIyMTUwLi44NzQxOTkwYjVh
+NWUgMTAwNjQ0DQo+Pj4gLS0tIGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaTQwZS9pNDBl
+X21haW4uYw0KPj4+ICsrKyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2k0MGUvaTQwZV9t
+YWluLmMNCj4+PiBAQCAtMjQwOCwxMCArMjQwOCwxMSBAQCB2b2lkIGk0MGVfYXFjX2FkZF9maWx0
+ZXJzKHN0cnVjdCBpNDBlX3ZzaSANCj4+PiAqdnNpLCBjb25zdCBjaGFyICp2c2lfbmFtZSwNCj4+
+PiDCoMKgIMKgwqDCoMKgwqDCoCBpZiAoZmNudCAhPSBudW1fYWRkKSB7DQo+Pj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqAgaWYgKHZzaS0+dHlwZSA9PSBJNDBFX1ZTSV9NQUlOKSB7DQo+Pj4gLcKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgc2V0X2JpdChfX0k0MEVfVlNJX09WRVJGTE9XX1BST01JU0MsIHZz
+aS0+c3RhdGUpOw0KPj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRldl93YXJuKCZ2c2ktPmJh
+Y2stPnBkZXYtPmRldiwNCj4+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIkVy
+cm9yICVzIGFkZGluZyBSWCBmaWx0ZXJzIG9uICVzLCBwcm9taXNjdW91cyANCj4+PiBtb2RlIGZv
+cmNlZCBvblxuIiwNCj4+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbGliaWVf
+YXFfc3RyKGFxX3N0YXR1cyksIHZzaV9uYW1lKTsNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCBpZiAoIXRlc3RfYW5kX3NldF9iaXQoX19JNDBFX1ZTSV9PVkVSRkxPV19QUk9NSVNDLCANCj4+
+PiB2c2ktPnN0YXRlKSkgew0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZGV2
+X3dhcm4oJnZzaS0+YmFjay0+cGRldi0+ZGV2LA0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgICJFcnJvciAlcyBhZGRpbmcgUlggZmlsdGVycyBvbiAlcywgcHJv
+bWlzY3VvdXMgDQo+Pj4gbW9kZSBmb3JjZWQgb25cbiIsDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbGliaWVfYXFfc3RyKGFxX3N0YXR1cyksIHZzaV9uYW1l
+KTsNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9DQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgfSBlbHNlIGlmICh2c2ktPnR5cGUgPT0gSTQwRV9WU0lfU1JJT1YgfHwNCj4+PiDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHZzaS0+dHlwZSA9PSBJNDBFX1ZTSV9WTURRMSB8
+fA0KPj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdnNpLT50eXBlID09IEk0
+MEVfVlNJX1ZNRFEyKSB7DQo+Pj4gQEAgLTI0NjEsMTAgKzI0NjIsMTEgQEAgaTQwZV9hcWNfYnJv
+YWRjYXN0X2ZpbHRlcihzdHJ1Y3QgaTQwZV92c2kgDQo+Pj4gKnZzaSwgY29uc3QgY2hhciAqdnNp
+X25hbWUsDQo+Pj4gwqDCoMKgwqDCoMKgIH0NCj4+PiDCoMKgIMKgwqDCoMKgwqDCoCBpZiAoYXFf
+cmV0KSB7DQo+Pj4gLcKgwqDCoMKgwqDCoMKgIHNldF9iaXQoX19JNDBFX1ZTSV9PVkVSRkxPV19Q
+Uk9NSVNDLCB2c2ktPnN0YXRlKTsNCj4+PiAtwqDCoMKgwqDCoMKgwqAgZGV2X3dhcm4oJnZzaS0+
+YmFjay0+cGRldi0+ZGV2LA0KPj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIkVycm9yICVz
+LCBmb3JjaW5nIG92ZXJmbG93IHByb21pc2N1b3VzIG9uICVzXG4iLA0KPj4+IC3CoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgbGliaWVfYXFfc3RyKGh3LT5hcS5hc3FfbGFzdF9zdGF0dXMpLCB2c2lf
+bmFtZSk7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIGlmICghdGVzdF9hbmRfc2V0X2JpdChfX0k0MEVf
+VlNJX09WRVJGTE9XX1BST01JU0MsIA0KPj4+IHZzaS0+c3RhdGUpKSB7DQo+Pj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgZGV2X3dhcm4oJnZzaS0+YmFjay0+cGRldi0+ZGV2LA0KPj4+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiRXJyb3IgJXMsIGZvcmNpbmcgb3ZlcmZsb3cg
+cHJvbWlzY3VvdXMgb24gJXNcbiIsDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgIGxpYmllX2FxX3N0cihody0+YXEuYXNxX2xhc3Rfc3RhdHVzKSwgdnNpX25hbWUpOw0KPj4+
+ICvCoMKgwqDCoMKgwqDCoCB9DQo+Pj4gwqDCoMKgwqDCoMKgIH0NCj4+PiDCoMKgIMKgwqDCoMKg
+wqDCoCByZXR1cm4gYXFfcmV0Ow0KPg==
