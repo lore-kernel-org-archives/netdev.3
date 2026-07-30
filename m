@@ -1,61 +1,61 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88CE4052CC
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 11:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552B340863A
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 11:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785409374; cv=none; b=jWi47LTJ91ynxC12NYSs7qO4tGmvbrGgM8iJJjP6QrDHI27w/2b2bGUoDx/62tEoeLQaJbUyAwpgnO7Wo3REwbc0V593Tzhtsp0AE/zOZKTeHMe8QwO4LgtSIZ07hP8QwSOrZIGhiEKDSYKOEZiquw0g3yyxvAyilIAA+o5wj9s=
+	t=1785409570; cv=none; b=ji1M4T0pBOq8LbzMCh7/76M3TMYulPxLLRuNgD7EF3iTvJz0LZvu/oqFgCiHCasFeu1NLjXdR8PrU3wpDrsKb8QMLosaBUEkOA517oBybPaCsN/0G8pkrKB4R61JIHIcsEe/YBd0WUt7EQlilUju0MJsIb3XD3Xt/aLFZmaB8Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785409374; c=relaxed/simple;
-	bh=GLYj4y9qOcb+4URpLy99dPxoLwMSgIMPJmTKMxy/yBg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T6F13N8Vh0F4onLue3JzHxawFFy/v1be1kh+Sk5vbIjP4xZv2XQhjPdcJIVb3MLxzJX9nnJB0LoRPItKbsPyYLIpD37I3yRiIwwMRctE72BsCTF07wyscrqw7hHwZr/z09Y3tPTZlQCuDuxcex7V+a0kNZovhSA8jBK8SMrUKgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QrndH/qH; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1785409570; c=relaxed/simple;
+	bh=Cb1fLXFgbedj/YEAAoR11911QXQg0TtlncEsBz+Pim0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rzSz92oCCurRCLJJ1EJrWA2jrhv8gXRsyoHE103V727tIqc5HZmZlQbJc3dIRPsR7tM9wEfTFliuBFUsKcyhtFdDOKb++s4QlSglA/JO9b5bUQTX7B3sUqa5/USxGXDVKrHU2VaEYL7IH7lqm/DkNUPONx3HUQpGnPl2GAJKRNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OjioGBHO; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QrndH/qH"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d004f135b1so27283375ad.3
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 04:02:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OjioGBHO"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ce7d2adef4so29725495ad.3
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 04:06:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785409372; x=1786014172; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785409568; x=1786014368; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VfJWXRx7XSYo0yICaQTUNXgfXIN1L4L4orSeuNAFQFw=;
-        b=QrndH/qHpZ+8ow8JHFOzfd7VxPOoxsnV5fWjh1y4C+0yKoYXcu8ucWsqPXKsXEo8jx
-         EJeff6KZBkWT6EpKYOmOYjo1T7OFvPr+NBOQUD8rcGgYRQjwiFpJtw4z/Tlh1PRgdO9d
-         V1973WuA7sfnZWUkvoCbHrWI5NDScGTt1kszomAmR8wMak2ZPBq/fo3GGOFaTxY/6Gzl
-         qHQWmLo4/T17xN1EpjJKswmImbFMdh8jiTcEFD9pgqigHwwdXpFXucYaKfMD4l3SVgHK
-         arfx5o4QnXqb1xZ0c1PzbGrf3T7iMqw1GtEmOTmIjrUHR2dJrjuriHBAbQsV/NdFfQeC
-         /oTA==
+        bh=n2ed6co16JfSMJoBLM0RMYpPKipd3X7URaBIZ4848UU=;
+        b=OjioGBHO+e8K6ThNJymmBkFJtMKt1mAAUtiKeYvGFYkc02NGt0Yumpne7B++U7qvw6
+         vI+kpzKUW0cDZNWcJ2DjGvGoSLp3AUPBNrhYo6H9zzUVqd0S7+4i7pNilOZle0oL157h
+         0noTtx342NYrMx8pFz0ZiQSj8WbgdbHQf0emriOpQDnHbJ5cbY6Kfn3g4Hck6kDHJMkO
+         NRv7zsDDMH0qZaxXE8yi7Yy5D7S3XC+4067e+qZv4oGdBH3llGOi324W31UjQlrygBJK
+         sbeS7ppUkgvHIZfjk6pOt8v24Pemh0fJspKk06nUOxPU60+iDTW58m5MpK8JT0BrbmXM
+         lx2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785409372; x=1786014172;
+        d=1e100.net; s=20251104; t=1785409568; x=1786014368;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VfJWXRx7XSYo0yICaQTUNXgfXIN1L4L4orSeuNAFQFw=;
-        b=ngL9qm6IxmvuKA6Uy9fCS6Z8Rx8NsMer4/0XVBmUJxtwHEW3SRvnzqr+ISikj4Qynk
-         SMc1HisEezOcdCEU8LTO9UG7/mkVgxqvytjNqg3RiR2uByTIrOvPhzr+2sJRxLDR4++H
-         cuDaMM8jmfNma+Qblpog5w6KEq9h466shs50qleyvAruH6p5YGoF5u8PScPBOpnMxzuZ
-         vn8gxs9gI8jtT5AjZ734GDBuun/hG1uY7yftPC1fUz91OrOggXaepCwdUvSd4V21DUk3
-         jAneOfyc89ZjdeY24tgitWmgrYZIrjGITjLWyjalqSBE5wXZcnbJQc2dBh3psE4VeZio
-         okZw==
-X-Gm-Message-State: AOJu0Yyewkn0pSh+DhoKiJgTfKmGNvGllzAQmkLHLF15i30Ejv4PuGJ4
-	mZS+xnGSjUAxO+jDODAkZJCdr3KgZKY+mNJLBOFXBIfUcorfJ7St/o1s9zF/GmcoRXHz/4Ku
-X-Gm-Gg: AR+sD11492bBWei0LfWrTDRN/d7I6ci/bFMbJw1bf1Dohrvmir2mTeL8p2CbdMFRxnv
-	ieqsHJNTKwxLp37xkrMgRgEHnC1SktNOiqHO1SAeJNKJvGkvS9rM9ppKmka+Sqc75sr54CwAKrC
-	m+YW/KqRLW0gb0AO6aw7U8LJ/uyUlFf2qW/iik4I4Ug3REBWqepFygBV3QvKn5C9SuTui2XITld
-	nNZmq7+JjTNhs++WO1u9kwUi4YW5QAejfNJdVaNB5T4PoiI6u4EsyxVmSsiAzQbJZmd3WjIkoKh
-	80SjeX6cT2O2V9jmEScLdn+YuIN25Ew2PZKYbGrQuZI3WrqCJUJ3I1yYfCnxPoqlijv3YIc7nUv
-	sbjA6Bwc6sEppFm+URWBDY9z6ByiR676mc6bU9vZZRswGgXtEnnydjaEdZVSYq2F3vY1p0nIHF+
-	aqSHKfmimGCbKLlQDGJRLmEK+geEyuCt42Le1COWMl6cey98AqnYRm+McaDBp10Z62+GdG5WnpY
-	4bYWgEbhC2lS31uvUJcdQa3sAFUFPDPVS72/Pw=
-X-Received: by 2002:a17:90b:4b8b:b0:381:f7a:2e0d with SMTP id 98e67ed59e1d1-38f9bee90e8mr1637384a91.33.1785409371973;
-        Thu, 30 Jul 2026 04:02:51 -0700 (PDT)
+        bh=n2ed6co16JfSMJoBLM0RMYpPKipd3X7URaBIZ4848UU=;
+        b=Fskj47ZGX6qeRz/uDSPEhS+rBDV0zMKcO19zQPf+ZCpAD7qC4jWIGWws2/wn8icOPP
+         Ue7i9+/4fdWxVmAsLo3CjngD0b12VZ4wZFRvoWEfXh/ZMt1tlbUIw8pJTAcUQVLYhyo9
+         pK/48B/vM/M3dTGdVWNRUg9xUon/eQvr6qSxEzkkXp4nZtqaEFsgS26urz1jv6ny9R4U
+         hi2UOFSnPyfjBRtG2l8PC/h+futRJMIBDJ4PYrXypJl4uvMB/2Alozcl48gbqS7TsvZs
+         i40mlETmD5hMC3yXmvS0zapvhzLToMam3sOj0vJP1M2ievSdp+2VkP2zyK2hlAS/+m1t
+         GysA==
+X-Gm-Message-State: AOJu0Yz5H0Ism8jkdn9YKMoDiS6nQcY7ULL+ZUtZJTZ8xcNKJhDO1fjl
+	THmE1Pv6wo/p2IKJCSKqxY2irEDrGB5HCRK12WXzMAkrpnLYoBkXhiEO00lmV1yppIWJwkeJ
+X-Gm-Gg: AR+sD12tbEtCe0i2L9jKpVvcDmgmzTdmkvdhUBAt/5dxNNvk+CBaGeAE+sRmPkciAi6
+	6DkmkDzUAewvN1thBk9pAjXIWA6X23NSlvu3u2i6WNeaSs69A2OpynOzVrSB1eisGU+r7m2eH4f
+	S/40YKarwG6GXLqqF1ZWyIF6Qp5AQg3EtBfqb5A0sJBMOgos1PdkpNc9xTvDyIGJ0alZ/FUuqbE
+	2zPrHYYCXpy4FnUqB3/UfuO0tQhvEvP1/kr0G16vJc+5Wx4QdgNv7yCRpCB6PqLEPjbBKIOEiGZ
+	OTxCCvNcnz0oxdbPrOqYx8R5iZGw+5GEeXVpPfhQ9Y/4O9lYHrsy77MOezn0o3VRs5GBRyCYut5
+	UGnlWDUwVOIfAQfyY1FYQz7mFeCKD0NtZMQeNCeRz46xky+W7K0IBsFQlBmj6TllVdZwwWGHaOx
+	4kwnyUekjjBUlP/CsFDKs4IhYBNa/f64PKGPBdw+wOY958S1JOhQK7TSOmZVMV2UuOJ9wSLSR2c
+	/oFg/ryXodKBX0QpoLWiSkgevc=
+X-Received: by 2002:a17:902:f54e:b0:2ca:61bc:317c with SMTP id d9443c01a7336-2d035bcb60amr21647465ad.13.1785409567460;
+        Thu, 30 Jul 2026 04:06:07 -0700 (PDT)
 Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9b42d1a3sm873014a91.2.2026.07.30.04.02.48
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022bc821asm25192555ad.41.2026.07.30.04.06.04
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 30 Jul 2026 04:02:51 -0700 (PDT)
+        Thu, 30 Jul 2026 04:06:07 -0700 (PDT)
 From: Jun Yang <juny24602@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Jun Yang <junvyyang@tencent.com>,
@@ -70,9 +70,9 @@ Cc: Jun Yang <junvyyang@tencent.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-sctp@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net] sctp: fix stream->outcnt underflow on duplicate RECONF responses
-Date: Thu, 30 Jul 2026 19:02:19 +0800
-Message-ID: <20260730110225.37371-1-juny24602@gmail.com>
+Subject: [PATCH net] sctp: re-point the GSO head_skb socket on association migration
+Date: Thu, 30 Jul 2026 19:05:22 +0800
+Message-ID: <20260730110554.41177-1-juny24602@gmail.com>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -84,82 +84,111 @@ Content-Transfer-Encoding: 8bit
 
 From: Jun Yang <junvyyang@tencent.com>
 
-sctp_process_strreset_resp() rolls back a denied ADD_OUT_STREAMS request
-by subtracting the requested count from the current stream count:
+sctp_ulpevent_set_owner() stashes the receiving socket on the GSO "cover
+letter" skb as a bare pointer (net/sctp/ulpevent.c:90):
 
-  nums   = ntohs(addstrm->number_of_streams);
-  number = stream->outcnt - nums;          /* net/sctp/stream.c:1050 */
-  ...
-  stream->outcnt = number;                 /* net/sctp/stream.c:1060 */
+	if (chunk && chunk->head_skb && !chunk->head_skb->sk)
+		chunk->head_skb->sk = asoc->base.sk;
 
-This undoes the increment sctp_send_add_streams() performed at request
-time, and is only correct if it runs exactly once per request.  Nothing
-enforces that.
+That store takes no reference and installs no destructor, unlike the
+sctp_skb_set_owner_r() applied to the event skb just above it.
 
-The function does not check asoc->strreset_outstanding on entry; it only
-decrements it at the tail, and asoc->strreset_chunk - the only thing
-sctp_chunk_lookup_strreset_param() consults - stays live until that
-counter reaches zero.  When both outgoing and incoming streams are added
-in one setsockopt(SCTP_ADD_STREAMS), sctp_send_add_streams() sets
-strreset_outstanding to 2 and caches a chunk holding both the ADD_OUT
-and ADD_IN parameters.
+When an association is moved to another socket -- SCTP_SOCKOPT_PEELOFF, or
+accept() on a TCP-style socket -- sctp_sock_migrate() re-owns the queued
+skbs with sctp_skb_set_owner_r_frag().  That walks the receive, lobby and
+reassembly queues, but chunk->head_skb is on none of them: it is reachable
+only through event->chunk->head_skb.  Its ->sk therefore keeps pointing at
+the original socket.  Once that socket is closed and freed, the dangling
+pointer is dereferenced on the very next receive, in sctp_recvmsg()
+(net/sctp/socket.c:2155):
 
-sctp_verify_reconf() permits a RESET_RESPONSE to follow another
-RESET_RESPONSE, and the lookup accepts any request still present in the
-cached chunk.  A peer can therefore put two responses carrying the
-ADD_OUT request_seq into a single RECONF chunk.  sctp_sf_do_reconf()
-processes both: the first rollback restores the original count and the
-second subtracts nums again.  Depending on the counts, this either wraps
-the __u16 or silently shrinks the stream count a second time.
+	sp->pf->skb_msgname(head_skb, msg->msg_name, &msg->msg_namelen);
 
-SCTP_SO() is genradix_ptr(), which returns NULL past the preallocated
-range, so sctp_sendmsg_to_asoc() accepts an out-of-range stream id at
-net/sctp/socket.c:1803 and dereferences the resulting NULL slot at
-net/sctp/socket.c:1808.  Other stream walkers likewise trust the
-inflated count until a later operation repairs or tears down the
-association.
+which for IPv6 reads sctp_sk(skb->sk)->v4mapped (net/sctp/ipv6.c:894).
 
-Only accept the response sequence currently named by strreset_outseq.
-Each accepted response advances that sequence, so a duplicate becomes
-stale even while another request parameter remains outstanding.  Also
-reject a response whose count exceeds the current stream count as a
-defence-in-depth check on the subtraction.
+Re-point the cover-letter skb during migration as well.  The event lives in
+skb->cb of the event skb only, so this cannot be folded into
+sctp_skb_set_owner_r_frag(), which also recurses over fragment skbs; add a
+small wrapper and use it at the three migration call sites.
 
-Fixes: 11ae76e67a17 ("sctp: implement receiver-side procedures for the Reconf Response Parameter")
+  BUG: KASAN: slab-use-after-free in sctp_inet6_skb_msgname+0x633/0xb30
+  Read of size 2 at addr ff1100010aafc8e0 by task gso_uaf/6387
+  CPU: 1 UID: 1000 PID: 6387 Comm: gso_uaf
+   sctp_inet6_skb_msgname+0x633/0xb30
+   sctp_recvmsg+0x481/0xa00
+   sock_recvmsg+0x121/0x170
+  Freed by task 0:
+   __sk_destruct+0x39d/0x4c0
+   sctp_endpoint_destroy_rcu+0x8b/0xc0
+  The buggy address belongs to the object at ff1100010aafc380
+   which belongs to the cache SCTPv6 of size 1560
+
+Fixes: 90017accff61 ("sctp: Add GSO support")
 Cc: stable@kernel.org
 Reported-by: TencentOS Corvus AI <corvus@tencent.com>
 Signed-off-by: Jun Yang <junvyyang@tencent.com>
 ---
- net/sctp/stream.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/sctp/socket.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/net/sctp/stream.c b/net/sctp/stream.c
-index 34ffe6c945a4..b751d0843b3d 100644
---- a/net/sctp/stream.c
-+++ b/net/sctp/stream.c
-@@ -927,6 +927,14 @@ struct sctp_chunk *sctp_process_strreset_resp(
- 	struct sctp_paramhdr *req;
- 	__u32 result;
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index c7b9e325ec1c..ade413bbec56 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -9522,6 +9522,27 @@ static void sctp_skb_set_owner_r_frag(struct sk_buff *skb, struct sock *sk)
+ 	sctp_skb_set_owner_r(skb, sk);
+ }
  
-+	/* Process responses in request sequence.  strreset_outseq advances after
-+	 * each accepted response, so this also rejects duplicate responses while
-+	 * another parameter from the same RECONF chunk remains outstanding.
-+	 */
-+	if (!asoc->strreset_outstanding ||
-+	    resp->response_seq != htonl(asoc->strreset_outseq))
-+		return NULL;
++/* Re-own a queued event's skbs, including the GSO "cover letter" skb.
++ *
++ * sctp_ulpevent_set_owner() stashes the socket on chunk->head_skb as a bare
++ * pointer, with no reference and no destructor.  That skb is not on any of the
++ * queues walked during a migration, so it has to be re-pointed explicitly.
++ *
++ * Only the event skb itself carries a struct sctp_ulpevent in ->cb, so this
++ * must not be folded into the recursive helper above, which also visits
++ * fragment skbs.
++ */
++static void sctp_skb_set_owner_r_event(struct sk_buff *skb, struct sock *sk)
++{
++	struct sctp_ulpevent *event = sctp_skb2event(skb);
 +
- 	req = sctp_chunk_lookup_strreset_param(asoc, resp->response_seq, 0);
- 	if (!req)
- 		return NULL;
-@@ -1047,6 +1055,8 @@ struct sctp_chunk *sctp_process_strreset_resp(
++	sctp_skb_set_owner_r_frag(skb, sk);
++
++	if (event->chunk && event->chunk->head_skb &&
++	    event->chunk->head_skb != skb)
++		event->chunk->head_skb->sk = sk;
++}
++
+ /* Populate the fields of the newsk from the oldsk and migrate the assoc
+  * and its messages to the newsk.
+  */
+@@ -9571,7 +9592,7 @@ static int sctp_sock_migrate(struct sock *oldsk, struct sock *newsk,
+ 		if (event->asoc == assoc) {
+ 			__skb_unlink(skb, &oldsk->sk_receive_queue);
+ 			__skb_queue_tail(&newsk->sk_receive_queue, skb);
+-			sctp_skb_set_owner_r_frag(skb, newsk);
++			sctp_skb_set_owner_r_event(skb, newsk);
+ 		}
+ 	}
  
- 		addstrm = (struct sctp_strreset_addstrm *)req;
- 		nums = ntohs(addstrm->number_of_streams);
-+		if (nums > stream->outcnt)
-+			return NULL;
- 		number = stream->outcnt - nums;
+@@ -9600,7 +9621,7 @@ static int sctp_sock_migrate(struct sock *oldsk, struct sock *newsk,
+ 			if (event->asoc == assoc) {
+ 				__skb_unlink(skb, &oldsp->pd_lobby);
+ 				__skb_queue_tail(queue, skb);
+-				sctp_skb_set_owner_r_frag(skb, newsk);
++				sctp_skb_set_owner_r_event(skb, newsk);
+ 			}
+ 		}
  
- 		if (result == SCTP_STRRESET_PERFORMED) {
+@@ -9612,7 +9633,7 @@ static int sctp_sock_migrate(struct sock *oldsk, struct sock *newsk,
+ 
+ 	}
+ 
+-	sctp_for_each_rx_skb(assoc, newsk, sctp_skb_set_owner_r_frag);
++	sctp_for_each_rx_skb(assoc, newsk, sctp_skb_set_owner_r_event);
+ 
+ 	/* Set the type of socket to indicate that it is peeled off from the
+ 	 * original UDP-style socket or created with the accept() call on a
 -- 
-2.55.0
+2.43.7
