@@ -1,86 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1D6381AE0;
-	Thu, 30 Jul 2026 23:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1233AB47A;
+	Thu, 30 Jul 2026 23:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785455443; cv=none; b=AQUlPOxuu0AAYM9Jr4dvAAahZ6CPr65j9etG2I85aRWTJql8sYqKAksdmDA337kqXbBv6Pef7xTJoifpOF2KFwCvaXAZbw1rcv+ZIqaEShyOT5WwVKv7vigMXAoHRwdWHpn5NWUjW9SxC7UGoGKNzlGM0CNvq/nkSY1A4kJnsU8=
+	t=1785455594; cv=none; b=M+MBmnnOlJyxLStnirFv3E5i019dgfKpg8Cgd4OCAKow1izJIdP4fo3dv9eq/dNmg2H9HEltyvjk52tQoNED5d+hJAr95wRNt9nfF/syzrgS2hGbjcfLCcYQbWhOy4nAB7MRS6yUx3HyuZu0GI9Plgh/AsyVzBTDhgFsFww8Vcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785455443; c=relaxed/simple;
-	bh=EfHJMSR9mrQkJNs0iulkb3NIEL/Ny+oJslGFBxYe3yE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fCRFxR2mtrn92VkrZQj6KMkKe6ie9SJbfKU16CwN1+xfHoR48Tx5+Vf1r7vMoZnQ82Daj/5cx4THIsFK0vVyRa/F11HFtNhmXxgUoOU2McBb1giTlUbC0s4g1bT5wcWpnKQnVdsaPcjvZdht7rxZXvuznlGiogG5RI0+X/QSV38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=chSYqu4r; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785455594; c=relaxed/simple;
+	bh=2s5Vvi76CoVnbWZhzKsfBUCdIl0PJe2It1zlXLpxWy8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=vBZjJpiaVACUuP4x1l5HzTI2w7z7XM2hd5ZZ1SrmRouE1iR7L/34yQqe73hYAp/V6XOUgLOCaOUhuchn26r1Lwks8Y1x8gHvT9/iPetloW9pcP46ieQO6sH6VovAaKwigg5yuTyDU5ziPuXPn3oRl24ayC0+0PlMgo3w8fsagfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TaDQYqEF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="chSYqu4r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2311F00A3A;
-	Thu, 30 Jul 2026 23:50:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TaDQYqEF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDAB1F000E9;
+	Thu, 30 Jul 2026 23:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785455442;
-	bh=o7x4qo0dbYpOtv9TGn49E1T/fS6oN6kSEOvCKZK4ytc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=chSYqu4rYSZM/ZJnQ8/1TifbqGTQuv8Tozu89mKl5ffg+pGewxwghVCheJnlZTJ4X
-	 bibxHfrHN1B1qd3pxsztrC+XJxKHmxY1jdt5/SJyPtd6avRNDF9ILd43GbUbQVH4Vo
-	 Oy6gqZmXG7H33j580d1HzhAdf4Mqneyj69tG5L+dGN7ssJV1tKyMEW2TmFCpkIFuGH
-	 uyBDcD7Db+ShGsqOqAN9LnZE2L+CXzaLDzjvrwLdYz1+2l/N421UH6lrSnG6XltjAt
-	 VddjZouMPKwOJkwanUdS3GpIOwZC+yOADXNq7UAmRJ3TqYY72F0kfi5ICF4OBHIZif
-	 r6BqRvWdE7Nrw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B2D392445F;
-	Thu, 30 Jul 2026 23:50:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1785455593;
+	bh=yekPJtQ/HKN1KxJKL79pejnbw8t9jCzVGqxMhycKleg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=TaDQYqEF6gCw1dji2g/MFKwz2+9ikzgV0aeXuIf600oJIfwv7/f2YIs1eYx1mm62w
+	 /Kaps0cySjwZDz7ANKoGN5LLfi0+msvxRJQTgqKRwjc/5ZDLLsC8Bs9pZLSOWnsr5H
+	 F+pz5bSonwRFr8Ret7Ns6BkxGfNHblJMcL1wNmK12GhX/pklfAUJzit5k3VSoZnO1I
+	 kPZHrwOtmZ27pcACEEgbQFIMl7B2bTXqxMvvLru5uc3K8nUnn68w4yXyMd7tJ0+f6o
+	 R1LDSmKAiYR93HNYEIidZwjYJcvNQ2Zm8b6bqYiIrn2Q3yeMV/S3Ui4otIbBrRzEhH
+	 EOcy+OfabEguA==
+Date: Thu, 30 Jul 2026 16:53:12 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Tim Fuechsel <t.fuechsel@gmx.de>
+Cc: "David S. Miller" <davem@davemloft.net>, David Ahern
+ <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Neal Cardwell
+ <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, fmancera@suse.de,
+ ebiggers@kernel.org, Lukas Prause <lukas.prause@ikt.uni-hannover.de>
+Subject: Re: [PATCHv4 net-next] tcp: Add TCP ROCCET congestion control
+ module.
+Message-ID: <20260730165312.4b0e8d0a@kernel.org>
+In-Reply-To: <amHMvwtUk6CocMBr@volt-roccet-vm>
+References: <amHMvwtUk6CocMBr@volt-roccet-vm>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net/packet: reset the MAC header on the
- packet-socket
- transmit path
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178545540570.44276.13476302996465546754.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Jul 2026 23:50:05 +0000
-References: <20260724144015.63219-1-doruk@0sec.ai>
-In-Reply-To: <20260724144015.63219-1-doruk@0sec.ai>
-To: Doruk Tan Ozturk <doruk@0sec.ai>
-Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, sd@queasysnail.net,
- olteanv@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Thu, 23 Jul 2026 10:11:43 +0200 Tim Fuechsel wrote:
+> +static __always_inline bool is_in_min_rtt_probing(struct roccettcp *ca, u32 now)
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+this seems to not be called, please remove
 
-On Fri, 24 Jul 2026 16:40:15 +0200 you wrote:
-> packet_parse_headers() resets the MAC header only for a SOCK_RAW frame
-> whose socket did not bind a protocol. A protocol-bound SOCK_RAW socket,
-> any SOCK_DGRAM frame, and the legacy SOCK_PACKET path therefore leave
-> skb->mac_header unset here.
-> 
-> For frames sent via __dev_queue_xmit() this is harmless: it resets the
-> MAC header unconditionally. But the packet-socket PACKET_QDISC_BYPASS
-> path uses dev_direct_xmit(), which does not, so the frame reaches
-> ndo_start_xmit() with the MAC header unset. A driver that reads
-> eth_hdr(skb) on transmit then dereferences skb->head + (u16)~0, an
-> out-of-bounds access ~64 KiB past the head -- the same class fixed for
-> one consumer in commit f5089008f90c ("macsec: do not read an unset MAC
-> header in macsec_encrypt()").
-> 
-> [...]
+In general please remove the __always_inline annotations sprinkled
+everywhere. Modern compilers will inline things correctly, and it
+just hides such unused code warnings.
 
-Here is the summary with links:
-  - [net,v2] net/packet: reset the MAC header on the packet-socket transmit path
-    https://git.kernel.org/netdev/net/c/c2707480cfbf
-
-You are awesome, thank you!
+Please respin for this and whatever else in the sashiko bot response
+you consider worth addressing. Looks like TCP experts are on vacation,
+maybe v5 will be luckier.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
