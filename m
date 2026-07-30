@@ -1,145 +1,138 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B8938644D
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 03:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD55A357D10;
+	Thu, 30 Jul 2026 04:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785383597; cv=none; b=Ds1TpEFmnhFx37nd5spHGwAlr9jbAjLbf7uVetcrpqhqs37qvhLMPv8xhz0vHGocjDnLO8QUYrkznkUs5OFP+/nGgIvjrERXnRTh0VNdMVjchzU9QMy1S+pWKKLx4xwMCG62WUE+OUcesiluKkHccUq2goFx6AXzNSs+GSsm/Dc=
+	t=1785384992; cv=none; b=a/XSwikmU3I7zDDuyrKfEvXl+J5vtBR+y21E7JgDtAk4LMMtU2rlqDLgiQ9byqZmprWjnk5ZdHyDSsAmQ7BH69DUdyZyM1KWAES0UJKCr4W+WMeVRvSDxeM3hjShlvl3mdakHkXM7nbsDcRHpEHI6kRN+XGpiSIPlAw0Je6Zvs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785383597; c=relaxed/simple;
-	bh=98/Zm+4X6FjtRx3S4N46Xjpyceyc/g1u5+NVl3ahtHo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tGL4HdQTtcKbrWMGD1Yd4TICUHkOYHfIwnZBYlSlhJQz8Z1aUq08eQTN7anW0FhzcYJDjae3UO4/ZEF3NAqjO5CG2Hn+egZfmTaynoXcBeQmgcaaQpAnG2MwOffSggfkjCq2aj3uhPP34EBkjRezSXWfOk3s3URYSxqEpzlU73w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WKMCGZxP; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785384992; c=relaxed/simple;
+	bh=ai/vqb9Zuqdc/epRqtSd9mn2uLFfQWfWWfRC6ACpPEw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=S2h05EOv1sspz1Vlrcfgqhovr+LzS1YsXG4hISk6EZzj5Qpt1rnC0kbCtIuSSkIWGbJUv7ksmHsA5qmgPiXS/UUlTBGkJOK22Rb9cOO9pye8oBrmVZeTQxVqITxkpiAZ5SxyI0Z4UoiOGPJOsQ++pG6pNb7OjPi9eHTnutmVpxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XSaEuePk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WKMCGZxP"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d032846c95so4120305ad.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 20:53:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785383595; x=1785988395; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nftFX/SYLuJBbL79K9Nl7EIHq2QsHnleVpWoc6Vases=;
-        b=WKMCGZxP2/IRLSdBBspCeLPxcVQmG2lkv3bG1e0mCEPNoS7GnquWCo62X9Nm42k3/E
-         Z89wYmi6jSHOuc9U+Hrb3E1pYV4dd/2A1uembwBiwHxofYRavP2JMa+wOR2SvdS0/CFn
-         ib75rLr/TlwjqOTeNl5P3PZVKH5rJ/U0/Dy5TDd3xFThS7+8/OuFLOSTXjTT8mdfTott
-         6DxgvFAYFj2VqvKx/MJKbwypOg2EDAYFrm2F1ZAKO4vmqtNu0L+2XOkyLPCJRF5KXtOg
-         iojK8JptnaF6EdFpXk6NhbnTsiB1NBzSRrf5ozGUJTUsbKiC3qyCb1MULaHKQ4g1js87
-         i4fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785383595; x=1785988395;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nftFX/SYLuJBbL79K9Nl7EIHq2QsHnleVpWoc6Vases=;
-        b=b5Pmsnah9m0Sbk9mbMcnoRjFHc/7b2q/DuaP1P2cIGFpe+aDIptxjyzcIX2vgEzJEx
-         TujeNp3Uh6KorcPInk9sTV9kjZok03GDFaG0+JKxWoaWHhM1srmKI6ZB9RFvSDxCWBTJ
-         QYVP4QFTHo5NTlU5Ekv8EQjSFhhkcEtR+x4NDFQPPQ6S1wcLV6qbhdNJ7/eHsKMNI3f2
-         LG574wJh+6dKvWzV+L83t0iERFKmMChikuHze/TTYVk4+UYIM5d6FeliTX/AjkPmsZha
-         nxLUMPqJXRjw5FQypF8ue41SZ2+001GKEiNGatAy0dzmS/zHWY6Zh8YxAX2rNQhm/WPB
-         FFIg==
-X-Forwarded-Encrypted: i=1; AHgh+RqD8/Nw33XCd7Ow1UEjdFqotA6vQflnasJWWFn/J9YIz9chCO2pwFNNQXDPjSF1MlFqHjEw7FE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzKby/7sDNih5yhRtkVYk0+csQrfHQqFcxhZVm5HWqDXmpjMRV
-	5qwftX+9R5UpyKrYud6u66lTzXffwS/VSSK+3V7KuAg6+XTIH195gkOE
-X-Gm-Gg: AR+sD13MLEIXyqVxwmrPMA+wAs7PaUAgxF9L7Fd9oj8OeBwG5lCz904M2Tf8m8Wu0yF
-	HZmnLSf8t8fnbQVmHmb78PNElGJu9VH+nL/ZrhdoIspwtyEJ2z8K6hkTLQkTUlmKv4tP7m9Kw6N
-	vM/zz3dIdKAEcjWjsLMRvDLdhDay10CSRMVPRSdNziEKDQ98e6erWzc9NIYfhVEqjvgywiNcJPs
-	UYWNLFnK/TrJXtrm0cDJLOQem2rOPLjerSHBMflx/+ZbYFHokI9ZTGPuiDAWtymOoi3TizmmTEJ
-	2o+DqwMSqiSnEWk+JUAxpRxIDK4ZarrwbH3G70/k48WyBLU4se8chbPPyXdNMisDNTjeoos8PlS
-	RfD80BJ+juY+g5VuRtMqcBhtc9sB9WZrIGTk36m/lwgBimoOyxYEseK0U3+itIr4Irl9o/Vw7Qp
-	eJgryosp207Us8dRrFQLB/mTsUI0grYknZBa6D72dJ07k8uaJJSA2Jx8xfbSl9e8Lk3vN3JK48o
-	lonq/FVa9nC1wPSc2Tq
-X-Received: by 2002:a17:903:8c7:b0:2cc:f5b8:4c2e with SMTP id d9443c01a7336-2d035bedd6dmr11609825ad.9.1785383595452;
-        Wed, 29 Jul 2026 20:53:15 -0700 (PDT)
-Received: from localhost.localdomain ([103.216.73.99])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022a6a58fsm19327935ad.34.2026.07.29.20.53.10
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 29 Jul 2026 20:53:14 -0700 (PDT)
-From: Yuejie Shi <syjcnss@gmail.com>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	YOSHIFUJI Hideaki <yoshfuji@linux-ipv6.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] ipv6: fix Route Information option length validation
-Date: Thu, 30 Jul 2026 11:52:32 +0800
-Message-ID: <20260730035310.74584-1-syjcnss@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XSaEuePk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA281F000E9;
+	Thu, 30 Jul 2026 04:16:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785384990;
+	bh=QcNWEIPWss26jS8GBtz9OaQr6IWq6VVjmrLE9jNef90=;
+	h=From:To:Cc:Subject:Date;
+	b=XSaEuePkJhO/kuOQ+4k66R07hkcFE7CJf6Sk040Vn20II605ixoNcRIg76oOijRVG
+	 8kEaUuQwlD+5+6iVFWx3U/EfJmDKE26W7hgisJ3IPx/Cfta3+PiqQHBvVlu2G7bOhc
+	 mTlwprCOp5O/TqJiFj5WjcUvw6De5uSl/Xph3TianL+0BNQHrEAtjMEcHRNwmSjb7y
+	 b9jvR8RPPBzSThwSgSrlVTIVzBxXEUeNbHNisvAqIZO8TxOxaXxELKx4DvxHxfzxbb
+	 4hZCBJvKIF7xLZSS7gN8nM3700pxpDtYZK5PEPl/57tX9WGCOehIRtLoZgXlqoXmkQ
+	 xF0AL5I3a4Obg==
+From: Allison Henderson <achender@kernel.org>
+To: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	horms@kernel.org
+Cc: achender@kernel.org,
+	jhubbard@nvidia.com,
+	leon@kernel.org
+Subject: [PATCH net v4 0/4] net/rds: Bug fix ports
+Date: Wed, 29 Jul 2026 21:16:25 -0700
+Message-Id: <20260730041629.3512480-1-achender@kernel.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-rt6_route_rcv() validates the Route Information option (RFC 4191) length
-against the prefix length, but both checks are off by one.
+Hi all,
 
-rinfo->length is the ND option length in units of 8 octets and it
-*includes* the 8-byte option header, so an option carrying N bytes of
-prefix has length == 1 + N/8.  RFC 4191 section 2.3 requires length 3
-when Prefix Length is greater than 64, and 2 or 3 when it is greater
-than 0.  The code accepts length >= 2 and length >= 1 respectively.
+This is a small set of net/rds bug fixes and ports from uek to upstream
+rds.  I've been working on extending the rds selftest case, but need to
+stabilize a few more bugs and the first few fall into net with Fixes
+tags. I decided to leverage fable for this set and I thought the ports we
+clean and well explained.
 
-ipv6_addr_prefix() then copies prefix_len/8 bytes out of rinfo->prefix,
-so a Router Advertisement with (prefix_len=128, length=2) or
-(prefix_len=64, length=1) makes the kernel read up to 8 bytes past the
-end of the option.  Those bytes end up in the prefix of the route that
-gets installed, so they are visible to userspace:
+This series fixes a sleeping-in-softirq bug in the RDS message free
+path, a use-after-free of the RDS socket through long-lived MR
+references, a message leak in the rds_send_xmit() drop path, and - new
+in v4 - a pinned-page leak in the IB transport's MR teardown.
 
-  # RA with a Route Information option (prefix_len=128, length=2)
-  # followed by a source link-layer address option, 01 01 de ad be ef ca fe
-  $ ip -6 route show
-  2001:db8:dead:beef:101:dead:beef:cafe via fe80::1234 dev veth0 proto ra
-                     ^^^^^^^^^^^^^^^^^^ the next option, read out of bounds
+The first three patches are ports of fixes carried in the Oracle UEK
+kernel, reworked where the UEK approach no longer applies upstream.
 
-When the Route Information option is the last one in the packet, those
-eight bytes come from the skb tail room instead.
+[PATCH net 1/3] net/rds: don't use unpin_user_pages_dirty_lock() from atomic context
+   Originally a port of ueks 4d4a5551a1d2 ("net/rds: Avoid
+   unpin_user_pages_dirty_lock() in tasklets"), but reworked to defer
+   the user-page unpin to a work item.  The rest of the message purge
+   (including the MR and socket reference drops) stay in the caller's
+   context.  The deferred work touches only core mm and the rds modules
+   own memory, so it cannot race with transport module unload, and the
+   flush_workqueue() calls previously added to rds_ib_exit() are gone
+   along with the concerns raised against them.
 
-Reject the option lengths RFC 4191 does not allow.
+[PATCH net 2/3] net/rds: hold the socket while an rds_mr references it
+   Port: commit c4d69e511f3b ("rds: Add proper refcnt when an RDS MR references an RDS Socket")
+   https://github.com/oracle/linux-uek/commit/94549e4732d8
 
-Fixes: 70ceb4f53929 ("[IPV6]: ROUTE: Add experimental support for Route Information Option in RA (RFC4191).")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuejie Shi <syjcnss@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
----
-v2:
-  - drop the stray blank line in the tag block; no code change
-v1: https://lore.kernel.org/netdev/20260729034806.58923-1-syjcnss@gmail.com/
+[PATCH net-next 3/3] net/rds: fix rds_message leak in the rds_send_xmit() drop path
+  Port: commit 94549e4732d8 ("net/rds: fix rds_message memleak in rds_send_xmit")
+  https://github.com/oracle/linux-uek/commit/94549e4732d8
 
- net/ipv6/route.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+[PATCH net v4 4/4] net/rds: unpin MR pages with unpin_user_pages_dirty_lock()
+  Fix page leak in __rds_ib_teardown_mr() by releasing
+  pin_user_pages_fast()-pinned pages with unpin_user_pages_dirty_lock()
+  instead of leaving them pinned with put_page()
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index fc42d67e5822..5968ce5ad150 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -988,13 +988,13 @@ int rt6_route_rcv(struct net_device *dev, u8 *opt, int len,
- 	} else if (rinfo->prefix_len > 128) {
- 		return -EINVAL;
- 	} else if (rinfo->prefix_len > 64) {
--		if (rinfo->length < 2) {
-+		/* RFC 4191: Length MUST be 3 when Prefix Length > 64 */
-+		if (rinfo->length < 3)
- 			return -EINVAL;
--		}
- 	} else if (rinfo->prefix_len > 0) {
--		if (rinfo->length < 1) {
-+		/* RFC 4191: Length MUST be 2 or 3 when Prefix Length > 0 */
-+		if (rinfo->length < 2)
- 			return -EINVAL;
--		}
- 	}
- 
- 	pref = rinfo->route_pref;
---
-2.51.0
+These were carved out of a larger porting effort, but I'll follow up with a few more
+targeted for net-net after these land in net.
+
+Question and comments appreciated!
+
+Thanks,
+Allison
+
+Change log
+v1: https://lore.kernel.org/all/20260711025118.2449428-1-achender@kernel.org/
+
+v2: https://lore.kernel.org/netdev/20260725082939.2546624-1-achender@kernel.org/
+  - Patch 1/3: re-written to delay page ditying via queued work items
+  - Patch 3/3: fixed check patch nits
+
+v3: https://lore.kernel.org/netdev/20260726230449.2880446-1-achender@kernel.org/
+  - Patch 3/3: Added extra flush for possible purge work item queued
+               after the first flush
+v4:
+  - Patch 1/4: reworked to delay only user-page unpin
+  - Patch 2/4: ODP path now takes the socket ref next to kref_init()
+    and unwinds its get_mr() error path through __rds_put_mr_final(),
+    so both MR allocation sites follow the same ownership rule.
+  - Patch 3/4: commit message corrected to name the code paths that
+    actually clear RDS_MSG_ON_CONN.
+  - Patch 4/4: new
+
+Allison Henderson (2):
+  net/rds: don't use unpin_user_pages_dirty_lock() from atomic context
+  net/rds: unpin MR pages with unpin_user_pages_dirty_lock()
+
+Håkon Bugge (1):
+  net/rds: hold the socket while an rds_mr references it
+
+Sharath Srinivasan (1):
+  net/rds: fix rds_message leak in the rds_send_xmit() drop path
+
+ net/rds/ib_rdma.c |  4 +--
+ net/rds/message.c | 26 +++++++++++++++++++
+ net/rds/rdma.c    | 63 ++++++++++++++++++++++++++++++++++++++---------
+ net/rds/rds.h     | 15 ++++++++++-
+ net/rds/send.c    | 18 +++++++++++---
+ 5 files changed, 107 insertions(+), 19 deletions(-)
+
+
+base-commit: 89d8006259b81dd25c962f6cc8d7ab268d6ea426
+-- 
+2.25.1
+
