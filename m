@@ -1,157 +1,142 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214D83B5820
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 22:20:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BAE03911AF;
+	Thu, 30 Jul 2026 22:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785450006; cv=none; b=Z1Vp9CCO43k9X1TMJWus0FYoWnsDhV64g44pBQI/ji/4Pb3AL+zy8RLI47D/RudmRO6V6rZt4H2aDLTriKnR10yMHFTerwPurVxrQfGHWFdu0zdDJ/QVbRKHryNbFC9q+irAX+PShW73EhgJkkPdty0cMA2hli5RmzK/HiZrry4=
+	t=1785450286; cv=none; b=A+62wYvhY67Wj/4E6Mo083+CFHAoYsnaIs7la9lzELwuk3Lqkh8pl/9HkJFeuFlJsEyr74+KswqeqFSfX0aF0PJrr8SO3SKDimFYj4n8qrxiGa9ae9nZiEw2n28DG0HrpQ+NImEQZV91SQIv5mFJpC3AJ78mUhhwccA7Dwj+QsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785450006; c=relaxed/simple;
-	bh=fhyEAwRgPCc5c916Q+I/wm8pbitZmx4LANPnJJwdpwI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UXHkLTusCDrqdsvvl3QR2PHPFrsxyWQTBrhptlWfE0pX7N7pkrWad5ARBf7oPRtvVzuuc2C2k3xRy8QFgr9Y+ZW9cxcR24MBM7D1bNFuy6qgVunEmBlAjVavTZ0efEQjWE3NON3SyEqXkXUN4P7YP1Lt2anRBWsKVnzwuQCeEiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f4U8FhPF; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785450286; c=relaxed/simple;
+	bh=BnYeYCvIYpGQ3W9fmruMxznkg+lLVKqa7Ow2sXgmc+E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gEmYn+4Woxo34H+FM3UqqiAi5asR0e5UmHKpMi0eSWUyf5t2uzkQLR88Xq9QkwlBCkBGWOfhw+S9hYX0eKVk/NDkxDW2bx6QI0LGZzF4rH9nDehZu1TVsdAUzp/3pUsQI2yexqexGp3u6Lr5noxbnKoFx4440qveBdpLm4IDlnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=mzGXwP2/; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f4U8FhPF"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-81ed2a00f12so4971037b3.2
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 15:20:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785450004; x=1786054804; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vB1dn6n1NNKuzBV/L+HJypGV+E1W0vhkQDqiEoxhKgs=;
-        b=f4U8FhPFK7nmgo4zzyuz8dpPImyuOG/FlLrCi7r3rrAzrkraIV2dpZ44wZYga8DQWo
-         8hhZ1ZTVY201u4ntRjyK7JhUcpdsapmK2LQAVnQmFfjsB4+Bxbjsl9d1q2fLxD/qInYJ
-         H1wdyQ3LL4w4vo4VcEyOR7Evl6w+cmqaJMoytIDzp274I9wTf5FiTElYbtmRqW5TlJtK
-         X2d6MBe0NA6CNplz7+JVBC+60VEXQm2bHKaDHk6ef3AXux7LMZwpeCZJqLrDRaaObe1R
-         MNKVl7vfpO+qSdSunq7bK84SiRJVxfAlA8BVoAlgrt7OHfKAP5v6WEm3HMF76wb2GDxM
-         JW1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785450004; x=1786054804;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vB1dn6n1NNKuzBV/L+HJypGV+E1W0vhkQDqiEoxhKgs=;
-        b=C1UvoOBy1dzG8WXjPMYbw+Ii/kRYDZn1T7F+iv3xh36iH65oBVTfAQr2R4hYNW+j3/
-         sNENUHq5vkJDecioMNC2IQqm0mC/31P1mU+oCfs9tmJFB4h6RnGyR1Ywv9t16QPW9BPK
-         VaY6PfmhJLJcJhrxFewrgNEQk4ELJcJI+acX62GeahraUvT196nv6SkOCdPGLBflfB+N
-         VoVW6+l3uXA/kwCY+bZ0jls/a1K/taJOhM+9f6nKoZLeXEcottDbFA1nCOMzrgZlkF7N
-         i7s1845qxFX6n6JYCIBhwsuu7A0LKYItF3FGURUartT/PWTS/2OPDHthQw9+joggmCvd
-         qBvA==
-X-Gm-Message-State: AOJu0Yz06/DpPfYBmQgouwIUI5mn+DzQgGCBqWcYNZn87LR9+7ksEakk
-	/FwJVIXgy9mSnPorNRq7VFl2d6VR1urFfUO72Uehz82n7WcvmQXMhRc7
-X-Gm-Gg: AR+sD11oPq2k+4TnKwVa6nFyt6RJPneIzt9p2FWSG8iX/xncajOjUjG4VxpmNUbY6Ye
-	R/lcfsl/rlZU3HiQ40PUeExm4EZWyidtr6OC1JIHV7gu6T9oYFU6b2FlASu9oOPr/33a4CleDJv
-	4Bi1U1hvA0pTtJjxBQoO2Ek0bhozllSfb6cGYlWCmfpplvFiXvQZRxWq2qRO5RhqTGl99ItI/Na
-	n8PIo1qbKN2bK2xX5XLTlHcWmBOgKdmKvYLbdKs8w/biK22y2NFlDmrDoc2uVRyfgJHUZDExutS
-	cnvg7/sWKqBF7sWl4E6HbwiQmE174zX7RDQnmd/oNrF+dcC2GB7dh7O+JnCFvMCCtAqhyc/S52J
-	As44TIUP5aHF4mShIfXZxfgHMMv6oTyB8UHFuPLANIiesHdpw0sbuFFnmUy/rppyKybEEu0h5BH
-	hKUZnhzAuo0QPGuJnQ/X9ky0UBKl8XPZlT+8aoKbMV7iMTtOlXGuY4kbyZ5+mEXPckuG8/PZh7v
-	NDqWkzygqvENws0Kb7pZsFh2+OnchXu20m1NiGUdFZkig3bWKr8JO0XKrM=
-X-Received: by 2002:a05:690c:498d:b0:81e:69c7:3536 with SMTP id 00721157ae682-81fb8a39731mr32498237b3.46.1785450003648;
-        Thu, 30 Jul 2026 15:20:03 -0700 (PDT)
-Received: from LAPTOP-83ECOPAB.localdomain (76-204-101-112.lightspeed.tukrga.sbcglobal.net. [76.204.101.112])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fb8abd448sm18139727b3.34.2026.07.30.15.20.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 15:20:03 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	dev@openvswitch.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	blbllhy@gmail.com
-Subject: [PATCH net v5] net/openvswitch: check Ethernet header length in  key_extract()
-Date: Thu, 30 Jul 2026 18:20:06 -0400
-Message-ID: <20260730222006.118652-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="mzGXwP2/"
+Received: by linux.microsoft.com (Postfix, from userid 1216)
+	id B2AD920B7166; Thu, 30 Jul 2026 15:24:25 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B2AD920B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1785450265;
+	bh=pqRfRnByDDrmG9mYWVTH89ngmj87IUFru7WB45pYJ1c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mzGXwP2/EJNYI5Ns1Yn4bfz1dd3LMSi6jLBf7Ri3GjUlwhBYmOchzbs7DYJ8ENh+C
+	 xS2vqJJZwCJGVWwaESGDAbPn2tpt8gE9T7Mc3AWT3/axxnicmibv35KVO0AP0fx672
+	 TdaPLOQsvytqTSam/TnsmcH0+QcsBodB7ib2Rg98=
+Date: Thu, 30 Jul 2026 18:24:25 -0400
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+To: mhklinux@outlook.com
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, longli@microsoft.com, tglx@kernel.org,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	hpa@zytor.com, daniel.lezcano@kernel.org,
+	ssengar@linux.microsoft.com, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	simona@ffwll.ch, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	James.Bottomley@hansenpartnership.com, martin.petersen@oracle.com,
+	sgarzare@redhat.com, horms@kernel.org, x86@kernel.org,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
+	linux-scsi@vger.kernel.org, virtualization@lists.linux.dev
+Subject: Re: [RESEND PATCH 0/6] Remove support for Windows Server 2012/2012R2
+ & Win8/Win8.1 versions of Hyper-V
+Message-ID: <amvPGQcEqgzWe+yn@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260730201123.1767-1-mhklinux@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260730201123.1767-1-mhklinux@outlook.com>
 
-When a packet arrives on an ARPHRD_NONE device (e.g. TUN),
-ovs_flow_key_extract() trusts the user-provided skb->protocol field: if
-it is ETH_P_TEB, the packet is classified as MAC_PROTO_ETHERNET and
-key_extract() is called without ensuring the skb has ETH_HLEN (14) bytes
-of linear data. key_extract() unconditionally pulls 2 * ETH_ALEN bytes
-for MAC addresses and parse_ethertype() pulls 2 more, either of which
-triggers a kernel BUG in __skb_pull() when the linear area is too small.
+On Thu, Jul 30, 2026 at 01:11:17PM -0700, Michael Kelley wrote:
+> Linux code for running as a Hyper-V guest includes special cases for
+> running on Hyper-V in WS2012/2012R2 and Windows 8/8.1. These versions
+> were initially released 14 years ago, and official support ended in 2023
+> (unless a customer has contracted for extended security updates). Given
+> the release of subsequent versions with improved functionality, there's
+> no need to continue to support the latest Linux kernels on these versions
+> of Hyper-V. If someone is running Linux on one of these older Hyper-V
+> versions and doesn't want to upgrade, they can continue to do so as
+> presumably they don't want upgrade the Linux version either.
+> 
+> Simplify Linux code by removing special cases for running on these
+> old versions of Hyper-V. This includes removing the negotiation of the
+> VMBus protocol versions for WS2012/Win8, and the special case code based
+> on those VMBus protocol versions. Changes are in the core VMBus code and
+> several drivers for synthetic VMBus devices.
+> 
+> Some VMBus drivers have device-specific protocols with the Hyper-V host.
+> Further simplify the code by removing the use of protocol versions that
+> are specific to WS2012/Win8 and earlier.
+> 
+> Finally, the WS2012/Win8 versions of Hyper-V were the last to use
+> messages to deliver synthetic timer interrupts. Starting in WS2016/Win10,
+> stimer interrupts are delivered to their own assigned interrupt vector
+> (called "Direct Mode"). So remove the code for handling timer interrupts
+> delivered as messages. This removal has a broader benefit in removing
+> a key blocker to disentangling VMBus code (which handles the messages)
+> and stimer code, as they should be independent of each other. The
+> final disentangling will come as a follow-on patch set.
+> 
+> Testing:
+> * VM on local Hyper-V on up-to-date Windows 11
+> * Added temp debug code to suppress Direct Mode enumeration. Fallback
+>   to LAPIC timer worked as expected (x86/x64 only)
+> * Azure VM DC16eds v6: TDX CoCo VM with HvLite paravisor
+> * Azure VM DC16ads v6: SEV-SNP VM with an older paravisor
+> * Azure VM D16alds_v7: normal AMD x86 VM with HvLite paravisor
+> * Azure VM D16plds v6: normal ARM64 VM with MSFT Cobalt processor
+> * Not tested running in VTL2
+> 
+> There's no specific urgency to removing the special case code for
+> WS2012/Win8, so if the broader Linux kernel community surfaces
+> a reason why this clean-up should not be done now, we can wait.
+> But I think we want to eventually stop carrying around this extra
+> baggage, and based on discussions with the Hyper-V team within
+> Microsoft, we're past the point that it has any value.
 
-  kernel BUG at include/linux/skbuff.h:2848!
-  RIP: 0010:key_extract+0xa7e/0xd90 net/openvswitch/flow.c:933
-  ovs_flow_key_extract+0x419/0xa70
-  ovs_vport_receive+0x222/0x390
-  netdev_frame_hook+0x3e0/0x630
-  tun_get_user+0x2d0c/0x38e0
+I do feel that this is a nice cleanup overall, however do we really want
+things to break silently if someone does attempt running the latest
+kernel on older hosts? or do we want to include (at the very least) a
+warning message that indicates that things might be broken (and or
+that we don't make any guarantees of future support)?
 
-Fixed by calling check_header() in key_extract() before accessing the
-Ethernet header.
-
-Fixes: 217ac77a3c25 ("openvswitch: allow L3 netdev ports")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Reviewed-by: Eelco Chaudron <echaudro@redhat.com>
-Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
----
-v5: Separate err declaration and initialization per review.
-v4: Update documentation and move variables into the Ethernet block.
-v3: Use check_header() per review, fix format issue.
-v2: Moved the check into key_extract() per Ilya Maximets.
-Link: https://lore.kernel.org/r/20260725043128.193164-1-blbllhy@gmail.com
-
- net/openvswitch/flow.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
-index 66366982f604..46c1d66aad8c 100644
---- a/net/openvswitch/flow.c
-+++ b/net/openvswitch/flow.c
-@@ -889,8 +889,6 @@ static int key_extract_l3l4(struct sk_buff *skb, struct sw_flow_key *key)
-  * Ethernet header
-  * @key: output flow key
-  *
-- * The caller must ensure that skb->len >= ETH_HLEN.
-- *
-  * Initializes @skb header fields as follows:
-  *
-  *    - skb->mac_header: the L2 header.
-@@ -910,8 +908,6 @@ static int key_extract_l3l4(struct sk_buff *skb, struct sw_flow_key *key)
-  */
- static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
- {
--	struct ethhdr *eth;
--
- 	/* Flags are always used as part of stats */
- 	key->tp.flags = 0;
- 
-@@ -926,6 +922,13 @@ static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
- 		skb_reset_network_header(skb);
- 		key->eth.type = skb->protocol;
- 	} else {
-+		struct ethhdr *eth;
-+		int err;
-+
-+		err = check_header(skb, ETH_HLEN);
-+		if (unlikely(err))
-+			return err;
-+
- 		eth = eth_hdr(skb);
- 		ether_addr_copy(key->eth.src, eth->h_source);
- 		ether_addr_copy(key->eth.dst, eth->h_dest);
--- 
-2.53.0
-
+> 
+> Michael Kelley (6):
+>   Drivers: hv: Remove support for WS2012/2012R2 & Win8/8.1 version of
+>     Hyper-V
+>   hv_sock: Remove check for old Hyper-V hosts
+>   hv_netvsc: Remove GPADL teardown special case for old Hyper-V hosts
+>   drm_hyperv: Remove support for synth video protocol of old Hyper-V
+>     hosts
+>   scsi: storvsc: Remove support for storvsc protocol of old Hyper-V
+>     hosts
+>   clocksource: hyper-v: Remove support for stimer interrupts in message
+>     mode
+> 
+>  arch/x86/hyperv/hv_init.c                 |  17 +--
+>  arch/x86/kernel/cpu/mshyperv.c            |   4 +-
+>  drivers/clocksource/hyperv_timer.c        | 150 +++-------------------
+>  drivers/gpu/drm/hyperv/hyperv_drm_proto.c |  33 ++---
+>  drivers/hv/channel_mgmt.c                 |   4 -
+>  drivers/hv/connection.c                   |   8 +-
+>  drivers/hv/hv.c                           |   4 -
+>  drivers/hv/hv_balloon.c                   |  36 +++---
+>  drivers/hv/hv_snapshot.c                  |   5 -
+>  drivers/hv/vmbus_drv.c                    |  10 +-
+>  drivers/net/hyperv/netvsc.c               |  20 +--
+>  drivers/scsi/storvsc_drv.c                |  53 ++------
+>  include/clocksource/hyperv_timer.h        |   6 -
+>  include/linux/hyperv.h                    |   5 +-
+>  net/vmw_vsock/hyperv_transport.c          |   3 -
+>  15 files changed, 76 insertions(+), 282 deletions(-)
+> 
+> -- 
+> 2.25.1
+> 
