@@ -1,144 +1,63 @@
-Received: from mailgate02.uberspace.is (mailgate02.uberspace.is [185.26.156.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E6E2236F2
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 00:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.26.156.114
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51422D8767;
+	Thu, 30 Jul 2026 00:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785370888; cv=none; b=FB/Q1QOc6CXfhYG61eQsX9saIrsXhT5X7WATyZTFZHpP1BWplJ48qYHp5atPzteIviqf0839ogbZj8s6MpzCmAuGUS0nHSk+RESibq1GC/L6MdAQHu2UDRowhO8SXj0bkOGDC8XUJozXXqYSz5IttyqUyRzOocNFdQKD1h8AHWQ=
+	t=1785370989; cv=none; b=Wtp3bOgzPdSIn1NsxL+W6DKHzRs27RO3mNYb1oxyvEGMWCmx68KdODEjmI9ri6M2obSLEjJUWB8cBZhv/5ponEHOEi5oYy/EsD8mobQwg/eum0bUmO4eg+AcGPhKyHpmtd1ZIrCxgtgUpRyOsb8ejpGfme6WCxJQ1ib9/9Akin8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785370888; c=relaxed/simple;
-	bh=U/rwNanqn3XfYHC5o1rIYS4gIYBhz5xgEHxAbSACRrU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bhkK1e1eNXS7j9jKRflQDJp8hMM8D7xgQk5jTM2llTYbnuETuDhsQTmbdLhZuVyX1TDYI9jBiuGV/WSlnVNUh7Vs86v+Xrg5xcXwLfXOUw5oLqZPOSZdszl/Gt3n0GxSJ7ZV8COToLOQfYguioUevSz9ol8hNpgUaN9q+DC2S7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=david-bauer.net; spf=pass smtp.mailfrom=david-bauer.net; dkim=pass (4096-bit key) header.d=david-bauer.net header.i=@david-bauer.net header.b=OuyFSff3; arc=none smtp.client-ip=185.26.156.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=david-bauer.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=david-bauer.net
+	s=arc-20240116; t=1785370989; c=relaxed/simple;
+	bh=P1YiPg4t92Fgdvv53R2b61R1zeguosUqvGGmuDmEjII=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IsoCaFzRTnRkpCTbWOSAhYbr/dTnuPY40mVbHf5IrzejCbYFLCJM0hW0pkXcbqGTm7EZe1WtpOyzF15vIlU9YEaOC5usTl7Esa3x1cZGj+hFVP1l+JdGLOmoE2vhLvMiQpflcrICUmHQIu6m0+9ykMp7PgFJ0vMNLdHbd3zPmN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZNUDxnyW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=david-bauer.net header.i=@david-bauer.net header.b="OuyFSff3"
-Received: from perseus.uberspace.de (perseus.uberspace.de [95.143.172.134])
-	by mailgate02.uberspace.is (Postfix) with ESMTPS id 2586E1802C7
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 02:21:14 +0200 (CEST)
-Received: (qmail 14319 invoked by uid 988); 30 Jul 2026 00:21:14 -0000
-Authentication-Results: perseus.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unknown) (::1)
-	by perseus.uberspace.de (Haraka/3.1.1) with ESMTPSA; Thu, 30 Jul 2026 02:21:13 +0200
-From: David Bauer <mail@david-bauer.net>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 1/2] l2tp: account for IP version in SKB headroom
-Date: Thu, 30 Jul 2026 02:21:04 +0200
-Message-ID: <20260730002107.447471-1-mail@david-bauer.net>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZNUDxnyW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B910B1F000E9;
+	Thu, 30 Jul 2026 00:23:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785370987;
+	bh=P1YiPg4t92Fgdvv53R2b61R1zeguosUqvGGmuDmEjII=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ZNUDxnyW7gsS6HCsr6lr7vyN9LUVKuOQQT0JfW4i5VztKSUi2fkf96UQb6KVJlSzE
+	 rlVDuluYmgtPhRPdPbw8juw0rWZwpAyPGHHxHQ5UYcZmnr2AIeNWIrM3oPXbaoiv71
+	 33+JJ9QejpzLqnQARHlqzq8MlrocQvukPIo16NQ66A0+Vrf5I1RXhvUJxRp9VDmZZC
+	 QWkidKfYhuRUB8sV9ze2NQ2ZCP/CuEFKl9IUweuTBqjSC/jRzHJs6qhP3vxc2CA42D
+	 heoL0myquTx2SEURnmbrf9WtbnjSh33+Jdp2ILZFxUobILzoBq/EzGYPa+fHZKHkYJ
+	 sR3vPtJF2iF0w==
+Date: Wed, 29 Jul 2026 17:23:06 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Florian Westphal
+ <fw@strlen.de>, Davide Caratti <dcaratti@redhat.com>, Christoph Paasch
+ <cpaasch@openai.com>
+Subject: Re: [PATCH net 1/5] mptcp: avoid combining some incoming suboptions
+Message-ID: <20260729172306.31deb67d@kernel.org>
+In-Reply-To: <20260728-net-mptcp-misc-fixes-7-2-rc6-v1-1-f7e2d229159d@kernel.org>
+References: <20260728-net-mptcp-misc-fixes-7-2-rc6-v1-0-f7e2d229159d@kernel.org>
+	<20260728-net-mptcp-misc-fixes-7-2-rc6-v1-1-f7e2d229159d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: -
-X-Rspamd-Report: MID_CONTAINS_FROM(1) BAYES_HAM(-3) MIME_GOOD(-0.1) FUZZY_BULK(0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -1.5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=david-bauer.net; s=uberspace;
-	h=from:to:cc:subject:date;
-	bh=U/rwNanqn3XfYHC5o1rIYS4gIYBhz5xgEHxAbSACRrU=;
-	b=OuyFSff3Ex6YXwAqBVRoeYFWFzmLk6Vgo+D/5sVf2NN+AxQr7XujQ24IZvvFJk8TFhO1z+6Lh3
-	sF2N3Z2Ugnrf+2M3U6Xh/b3x9SJEvXG7FSEDU1qSzQ3abBDO0QNRbRqrJKE9nOspqtmILukblE+0
-	+hGUfpNaRwhTq+h7ONPEOFOSrlP5KLiSx6EFeGeQhZJ9NzJU+hUfOFXLIa7wI8DCp22Skp4pWj/5
-	p0RAy04onJgjG4LbYElQ9QYTe1a91NqgzbpS3wEe4xPILg4/738jLt7psne3qChpXSM3ANdKGAuR
-	aXNSC7PmFiF5FjEutoUMd5qHfkYGEvkXuUQXjw3iEdSQcZq91VdFF11+65k2pEFUo+uHpHaogG6s
-	lV/EMoxzWDXIQab5+hQ/HmCEMj+wM499IhRR/3Ux3SJCvx8XiWanGT0N9EC3tc4YrGlhkHalZbCN
-	FfX/OY4OpxAblvxIyS+LdGxRZmdbtiIKnvmX9yqN3+PDSZANmAE1xbbi1ZqYRxbTZ9p4et3i9guf
-	SXMpNjmaePMhBZHLDu5hCbT4imt4XvwLROHIt4bD1Wzt6HfNvrAuKT4DCYe07AzOLHiXIcM+VVFd
-	Yk/gJDYtPz3WrILNrinzSs1mdwi3eXqY28p961s5X/i9eNxMTYPtTdIfEFwFtUaPHqmTt/ENpPNO
-	M=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Account for the IP version of the tunnel when accounting skb headroom on
-xmit. This avoids having to potentially copy the skb a second time down
-the stack due to allocating not enough space for IPv6 headers in case
-the tunnel uses IPv6.
+On Tue, 28 Jul 2026 19:11:57 +0200 Matthieu Baerts (NGI0) wrote:
+> Some MPTCP suboptions are mutually exclusive according to the RFC8684,
+> but also because in different places, the code doesn't expect some
+> combinations to be present. That's specially true for suboptions that
+> would be present twice, but with different attributes.
 
-Signed-off-by: David Bauer <mail@david-bauer.net>
----
- net/l2tp/l2tp_core.c | 3 ++-
- net/l2tp/l2tp_core.h | 1 +
- net/l2tp/l2tp_eth.c  | 9 ++-------
- 3 files changed, 5 insertions(+), 8 deletions(-)
+Looks like Clashiko has much to say about this patch.
+Could you check?
 
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index 4712cc41881a3..d6fa0f7436629 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1237,7 +1237,7 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
- 	 * make room. Adjust truesize.
- 	 */
- 	uhlen = (tunnel->encap == L2TP_ENCAPTYPE_UDP) ? sizeof(*uh) : 0;
--	headroom = NET_SKB_PAD + sizeof(struct iphdr) + uhlen + session->hdr_len;
-+	headroom = NET_SKB_PAD + tunnel->l3_overhead + uhlen + session->hdr_len;
- 	if (skb_cow_head(skb, headroom)) {
- 		kfree_skb(skb);
- 		return NET_XMIT_DROP;
-@@ -1688,6 +1688,7 @@ int l2tp_tunnel_register(struct l2tp_tunnel *tunnel, struct net *net,
- 	}
- 
- 	sk->sk_allocation = GFP_ATOMIC;
-+	tunnel->l3_overhead = kernel_sock_ip_overhead(sk);
- 	release_sock(sk);
- 
- 	sock_hold(sk);
-diff --git a/net/l2tp/l2tp_core.h b/net/l2tp/l2tp_core.h
-index ffd8ced3a51ff..aab574376d95f 100644
---- a/net/l2tp/l2tp_core.h
-+++ b/net/l2tp/l2tp_core.h
-@@ -167,6 +167,7 @@ struct l2tp_tunnel {
- 	u32			tunnel_id;
- 	u32			peer_tunnel_id;
- 	int			version;	/* 2=>L2TPv2, 3=>L2TPv3 */
-+	int			l3_overhead;	/* IP header overhead */
- 
- 	char			name[L2TP_TUNNEL_NAME_MAX]; /* for logging */
- 	enum l2tp_encap_type	encap;
-diff --git a/net/l2tp/l2tp_eth.c b/net/l2tp/l2tp_eth.c
-index a4956ef9574cc..9e5f9deac08cf 100644
---- a/net/l2tp/l2tp_eth.c
-+++ b/net/l2tp/l2tp_eth.c
-@@ -188,7 +188,6 @@ static void l2tp_eth_adjust_mtu(struct l2tp_tunnel *tunnel,
- 				struct net_device *dev)
- {
- 	unsigned int overhead = 0;
--	u32 l3_overhead = 0;
- 	u32 mtu;
- 
- 	/* if the encap is UDP, account for UDP header size */
-@@ -197,11 +196,7 @@ static void l2tp_eth_adjust_mtu(struct l2tp_tunnel *tunnel,
- 		dev->needed_headroom += sizeof(struct udphdr);
- 	}
- 
--	lock_sock(tunnel->sock);
--	l3_overhead = kernel_sock_ip_overhead(tunnel->sock);
--	release_sock(tunnel->sock);
--
--	if (l3_overhead == 0) {
-+	if (tunnel->l3_overhead == 0) {
- 		/* L3 Overhead couldn't be identified, this could be
- 		 * because tunnel->sock was NULL or the socket's
- 		 * address family was not IPv4 or IPv6,
-@@ -212,7 +207,7 @@ static void l2tp_eth_adjust_mtu(struct l2tp_tunnel *tunnel,
- 	/* Adjust MTU, factor overhead - underlay L3, overlay L2 hdr
- 	 * UDP overhead, if any, was already factored in above.
- 	 */
--	overhead += session->hdr_len + ETH_HLEN + l3_overhead;
-+	overhead += session->hdr_len + ETH_HLEN + tunnel->l3_overhead;
- 
- 	mtu = l2tp_tunnel_dst_mtu(tunnel) - overhead;
- 	if (mtu < dev->min_mtu || mtu > dev->max_mtu)
--- 
-2.53.0
-
+=46rom my perspective I'm not sure if such RFC compliance changes
+really belong as Fixes? I don't feel too strongly tho.
