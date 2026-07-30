@@ -1,146 +1,144 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8750D43E4B5;
-	Thu, 30 Jul 2026 15:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69175441600
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 15:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785424996; cv=none; b=ESXy0h45gWbKElsVd/gkxahOyAvWjglPHKlrwWEy/xVvupjbSb6c3mBJ8g9QW1y7nruQpFVzinLcBFdrIOG550eshjSvKMeZMO/cUku5jh19POMEgm0/flQQAEy+2jOcv9sCa3yH8fXxgEMRdw9tgGZWKU2JqGoLF0cjFwEp6Xw=
+	t=1785425268; cv=none; b=tFEvKMuJUD7+v+6Uu2mt6ufvAlqOSDfK1f+24NXy7sAfY+gZx3aQG60hOxHqRCA0Cz4TQ2/h8FTKVPsal2Zad3+osYdsG//GAEb6hvGRKxD4PaQ90rZIyjy0q3lCpTQxfLMctykRmJYYD0xEJa5viFc0p7nckDrx+QRoMYBZMbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785424996; c=relaxed/simple;
-	bh=Db4vA4aUvVWwI7W3Nxy4MAnyyprKf3UyYROSrrdd8SA=;
+	s=arc-20240116; t=1785425268; c=relaxed/simple;
+	bh=d5RXFfVRX5p3oscQXB9FNGQJzjxxqOI0ZyUQ/yhbbX0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YuffagZPJ0Ank1CeFgUQX6lfYUpIh5ItByTmfIMiT0B4UTcZGUpey2J4EOMJQCUPbZ7PdJXXGkgpxbn3eodiUWESskKBHrDJ5gUnlX8V9jEc3SYHAx/qV3zsO6rvrh5gb9X+TuZsuQ/C8PxZxHlIM5o++JVGf4KlsF6MtYiD3Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=i0JLIpi0; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=chjVj3TmY4BWaUrzUFJn/HEJJRUfPeJdn6ICadA3bq1jszkCUFagZYU1XcnATBvlDrf92eYGPFLu+K3YJ1sz4iWNeyOOmRFAVgD1VLjJuzDhqImD2WtjoTR5L+hAdOzZHYTxqqyr8adM/WhxgMl0foMLCDqlvCYnwxSebCt200A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=MvUYPrTR; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="i0JLIpi0"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 3437760194;
-	Thu, 30 Jul 2026 17:23:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1785424992;
-	bh=+VXFPS0Wn0M0LrMiKNlzTgCsnQESTB/C+oBKrrzXNJk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i0JLIpi0ecrkxAEKX49xLzmTihQhLhVFyncN1xAfjYAxYQev1aOJFztWLTMTmuV/f
-	 hIIiuVi68RKA0fEoIy1usKFAOaxVaqzgihenHHP4KWweCAB+6PnDcqX1/bpOf/ZFRY
-	 XwAQFGE1wHki/PKQUdsEy4oRy17NrEZAEWqtI/HbbEkWI7Op+3vvXj/8RPBlJfp12s
-	 DbXz/nD+PYGqo9jdx2Gp6N3UIPuzMWUWSbfqhJa7sAqp+ON44TfuslCIKhZc74nLJu
-	 1ScOYF0ru9t8eILCk3Xk7hsDrvM1bwDqTMqJnMaQ5YuXMshFrwufwDOUA/iAvEa3B3
-	 Ob9S1myIfzUhQ==
-Date: Thu, 30 Jul 2026 17:23:09 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: Xiang Mei <xmei5@asu.edu>, Jakub Kicinski <kuba@kernel.org>,
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="MvUYPrTR"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4954a32cf1eso11470295e9.3
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 08:27:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1785425264; x=1786030064; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nzJUatZRCgVEofo3LM1zenQhlJFklBY9WtRFTuod4dQ=;
+        b=MvUYPrTRlUzfqhGO2lvbt+DzpOn3ZZ9R4BWLe3W386eVczuQ5jyFZYWflnlgJjiOcR
+         SMbwCzv6Ap6noHsptRWREdy0iDN5UjtZ+Jv5Au2VasahB3UTot8Dwu1JAagLBlPjTR9m
+         DX4OZThyja3k403hIVqCCjLHcE2dkAh65yLbCFZsxLI4A139S6MnFzpsrOT5rY2yOhQl
+         K5bgvN03sIPLtSMygse2btmEwDDyZSY9LOkmXFUowJyHkI32+Ng5pvcyNcnTugCCPHo6
+         LgXVymOwrinsKiUoKw8QNSvafvSU7V9c/uAcpRCSQ/ArLuhNewhUjHQ/jOYn6fRWlOv0
+         reew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785425264; x=1786030064;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nzJUatZRCgVEofo3LM1zenQhlJFklBY9WtRFTuod4dQ=;
+        b=auSmZ3kpLfB61eCamGEDCXOROhB1oKkmCn/tYdj+wU/wJ/O4GEYLb1l5jD/CMU3cEw
+         sjn05gqZLrUb4cvvF7XNX1VKRUAU4nV6LIuk36t0wxWEu3MwvVzlmpZXgq5RkiLwLN0v
+         xmMTNEDFeqwCUnR9Jc0fi2YrpjZgp2O7zoJERUV21KyLUXh7P9JxwUAFvILQYbkUpv5p
+         BqKJxJIBRIMj0GiOCcUKMZ59fYzD3BxcosUqj7k2j+rpo18spaXCICJvIsMCgqVVjdHU
+         t8EJOmHoikqigC/tkm5hKccDW4bGqiTkOZVs2Ns235S7b4cNNx5OlpvSCxCmus9SWzDc
+         3Akw==
+X-Gm-Message-State: AOJu0YyLSrOEf9F1PXU0RnKaiYIrCWg2KmaO4adnEdlwdt7SHVjMXEH6
+	wdEQ3mnC1xD3JVKb15PeaGgQbVONL7wR//Wo/gUMgEsynulYRU7EMTKbi5mTsbxd8d8=
+X-Gm-Gg: AR+sD10ExiLeVneGVRfbglrG8qRv6BIfhv8jkB8st4/CHf4gRJhqdhLl1kKlqrbZzIQ
+	x1i8+JEHYnNXJ6JNd2xZIZgeMf1lqvaFkJZP5F1Nrxi4VjJ2Rek7Pr087wbbX2CWu/QCoy1IBGZ
+	Cfiy1j8nawbMq1jG7dAJiz8HfNaHPP2lqDIKZy+vNwT2iuA10eGxMW3y7+X+ZLNtgcrTP7Wlg5m
+	gpoWK9oclnZHk9nS0m5KvI3pspiINwhqufJZgeA1EHyufc0NEeAiiZMIx0VF4tn2K+gA0rq5i/C
+	Uag4eqmYVhTEXuI4uDZ51qlzjc0HWEAQXG+Y+2s8M9lDwDxa4hJ7qiQwvt27ExzdZ17xfdPzwRD
+	+DFsIgn+JIwD/gOEa9Ef2j1p6zf6eiuQJRqXlp0I2RUdT8EArDQ5EUyAXZ1mTePNO8/O/j6O6s3
+	we+pYChMUx/9NsC/Qvw2i763Iv1FDgPYLKVjAsLulOoULiigM3yvRpcxI=
+X-Received: by 2002:a7b:cc89:0:b0:495:6f6b:fb75 with SMTP id 5b1f17b1804b1-49800ebba08mr29432035e9.38.1785425264161;
+        Thu, 30 Jul 2026 08:27:44 -0700 (PDT)
+Received: from localhost ([109.160.74.77])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-498011fd5fesm62954505e9.7.2026.07.30.08.27.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 08:27:43 -0700 (PDT)
+Date: Thu, 30 Jul 2026 18:27:41 +0300
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: Baul Lee <baul.lee@xbow.com>
+Cc: netdev@vger.kernel.org, bridge@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Ido Schimmel <idosch@nvidia.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Ryoga Saito <contact@proelbtn.com>,
-	AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
-	kys@microsoft.com, stefano.salsano@uniroma2.it,
-	justin.iurman@gmail.com
-Subject: Re: [PATCH net] seg6: fix NULL deref in
- input_action_end_dx{4,6}_finish() after nf hook
-Message-ID: <amtsXXZlig9diWeP@chamomile>
-References: <20260720204430.1886091-1-xmei5@asu.edu>
- <20260723100949.4443811e@kernel.org>
- <20260724151100.16b60b15db7c6353b4fedf99@uniroma2.it>
- <CAPpSM+QNoS4VQ51UTM2idgG-V_5cNgJ5rf=k9uN0ya7UR2n27Q@mail.gmail.com>
- <20260730171610.fd26496925644598ab9a3297@uniroma2.it>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net: bridge: mrp: fix uninitialised bytes on the
+ wire
+Message-ID: <amttbcdZkuWVSdLE@penguin>
+References: <20260726062518.43774-1-baul.lee@xbow.com>
+ <20260729131941.10254-1-baul.lee@xbow.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260730171610.fd26496925644598ab9a3297@uniroma2.it>
+In-Reply-To: <20260729131941.10254-1-baul.lee@xbow.com>
 
-On Thu, Jul 30, 2026 at 05:16:10PM +0200, Andrea Mayer wrote:
-> On Tue, 28 Jul 2026 14:49:08 -0700
-> Xiang Mei <xmei5@asu.edu> wrote:
+On Wed, Jul 29, 2026 at 10:19:41PM +0900, Baul Lee wrote:
+> br_mrp_alloc_test_skb() builds MRP test frames on an skb from
+> dev_alloc_skb(), which does not clear the linear data area.  On the MRA
+> ring-role branch the sub-option TLV header is appended with
 > 
-> > [snip]
-> >
-> > You are right. Following your hint, I also found seg6_local_input_core(),
-> > which has the same shape. v2 is a series of two patches and covers all
-> > five sites:
-> >
-> > seg6_local.c:
-> >   seg6_local_input_core()        LOCAL_IN
-> >   input_action_end_dx4_finish()  PRE_ROUTING
-> >   input_action_end_dx6_finish()  PRE_ROUTING
-> > seg6_iptunnel.c
-> >   seg6_input_core()              POST_ROUTING
-> >   seg6_output_core()             POST_ROUTING
+> 	sub_tlv = skb_put(skb, sizeof(*sub_tlv));
+> 	sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
 > 
-> Thanks for covering all five sites.
+> so sub_tlv->length is never written, and the two trailing alignment bytes
+> are appended with a bare skb_put() that does not clear them either.  The
+> neighbouring oui and sub_opt regions are explicitly zeroed, so three
+> uninitialised bytes are left in every MRA MRP_Test frame that goes out.
 > 
-> I ran into this pattern during the MUP v2 review [1] and have been
-> working on the skb_ext approach since. My work covers these sites and
-> also includes selftests for DNAT. I will post it as an RFC for
-> net-next.
+> Put the sub-option TLV header and the alignment padding in a single
+> skb_put_zero(), which clears both.  The AUTO_MGR sub-TLV carries no
+> payload, so the zeroed length field is already the value it should have.
 > 
-> > [snip]
-> >
-> > So an skb extension really would do it. SKB_EXT_* is refcounted, rides
-> > with the skb, and nf_queue leaves it alone. I want to be clear that your
-> > suggestion is workable; I just did not take it in this series.
-> >
-> > My reasoning is scope. It means a new skb_ext type plus an lwtstate
-> > reference on every seg6 packet, which feels like net-next material.
+> Fixes: f7458934b079 ("net: bridge: mrp: Update the Test frames for MRA")
+> Suggested-by: Nikolay Aleksandrov <razor@blackwall.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Baul Lee <baul.lee@xbow.com>
+> ---
+> v2:
+>  - fold the alignment padding into a single skb_put_zero() for the
+>    sub-option TLV header, dropping the explicit length assignment and the
+>    second skb_put() (Nikolay Aleksandrov)
+>  - drop the paragraph about observing the leak, and the Reported-by tags
 > 
-> As things stand, preserving state across the hook needs new machinery,
-> so type-check and drop is a reasonable fix for net.
+> Link to v1: https://lore.kernel.org/netdev/20260726062518.43774-1-baul.lee@xbow.com/
 > 
-> > There is also one open question. I want your view on it, and that of
-> > the other maintainers.
-> >
-> > Say a DNAT rule in PRE_ROUTING rewrites the inner packet's destination,
-> > and End.DX4 then runs with its state preserved. Then which one is intended:
-> >
-> > 1) send the packet to slwt->nh4, the nexthop from the SRv6 route.
-> >      This ignores the DNAT rule the admin installed.
-> >
-> >  2) route on the new destination instead. This ignores the nexthop the
-> >      SRv6 route asked for.
-> >
-> > v2 does neither. It drops the packet. If you have a suggestion for
-> > this, I can do it in v3.
+>  net/bridge/br_mrp.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 > 
-> For net, dropping is the safe choice. Before the fix, the same scenario
-> panics the kernel (NULL deref), so a clean drop is not a regression.
-> I will look at v2.
+> diff --git a/net/bridge/br_mrp.c b/net/bridge/br_mrp.c
+> index 179d2470b..ef16d0703 100644
+> --- a/net/bridge/br_mrp.c
+> +++ b/net/bridge/br_mrp.c
+> @@ -224,11 +224,9 @@ static struct sk_buff *br_mrp_alloc_test_skb(struct br_mrp *mrp,
+>  		sub_opt = skb_put(skb, sizeof(*sub_opt));
+>  		memset(sub_opt, 0x0, sizeof(*sub_opt));
+>  
+> -		sub_tlv = skb_put(skb, sizeof(*sub_tlv));
+> -		sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
+> -
+>  		/* 32 bit alligment shall be ensured therefore add 2 bytes */
+> -		skb_put(skb, MRP_OPT_PADDING);
+> +		sub_tlv = skb_put_zero(skb, sizeof(*sub_tlv) + MRP_OPT_PADDING);
+> +		sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
+>  	}
+>  
+>  	br_mrp_skb_tlv(skb, BR_MRP_TLV_HEADER_END, 0x0);
+> -- 
+> 2.53.0
+> 
 
-I would go for dropping the packet too, it is a simple fix for this crash.
+You should not send patches as replies, they should be sent on
+their own. Aside from that the patch looks good to me:
 
-> With the lwtstate preserved (e.g., the skb_ext approach), the existing
-> code already handles both cases. Indeed, End.DX4 does
-> nhaddr = slwt->nh4.s_addr ?: iph->daddr, so a configured nexthop takes
-> precedence over the rewritten address, while an unconfigured one lets
-> the DNAT destination drive the lookup. End.DX6 follows the same pattern
-> through seg6_lookup_nexthop.
-
-What is the usecase for a hook to clear lwtstate information?
-
-> > I left the "different instance of the same type" case alone for the same
-> > reason. The type test passes, and the behavior uses another route's
-> > parameters. It is wrong, but it is not a memory bug, and it predates the
-> > crash.
-> 
-> Without saving the original lwtstate before NF_HOOK, in theory there is
-> no guarantee that the instance is the same after the hook returns. The
-> skb_ext approach addresses this too, since it preserves the original
-> lwtstate rather than re-reading it from the current dst.
-> 
-> [1] https://lore.kernel.org/netdev/20260516182556.66af27a9c63208435911990b@uniroma2.it/
-> 
-> > Thanks again,
-> > Xiang
-> 
-> Thanks,
-> 
-> Ciao,
-> Andrea
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
