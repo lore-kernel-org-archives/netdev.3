@@ -1,126 +1,163 @@
-Received: from sg-3-111.ptr.tlmpb.com (sg-3-111.ptr.tlmpb.com [101.45.255.111])
+Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0E92AEE4
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 05:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.45.255.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058B43B05A9
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 05:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785388596; cv=none; b=QjKHlFU6sy9hc5wYnPQTgF3YAelEG60E0nDyVvq4xJjhnL0AWSD7fp7RpRrDJHy9MXQO9p+4i4lxiW3rdqIJFJ4Px+yn65SgmtjV+6nBphWqq8ohPnGz/ieNFLJaWzWmMFoEA3XsBG1N9llwUOSkrGPNYJZ4+TBM7juFBjRaI1w=
+	t=1785389304; cv=none; b=jpMVHjcP9lSsQx7gTcFqqkzBH4VUtrs0VN5h+xgwnpywA4RbEXnGfCTLAHmdGS6H2iLR0A4S1oR19MBWwp7ZEE/FFtHodeZg4tWwqth4GyoOsV4PUvcZydOGYRjOD1KDpJhXOYBN3XzccH6SPv+pIslcHhzade6D2rpQYFDvYzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785388596; c=relaxed/simple;
-	bh=L4Fr/IPBaswcp0Tdqp78Oxfob8Q+aYAGLFBQxTEoO2g=;
-	h=From:Subject:Date:Mime-Version:Content-Type:Cc:Message-Id:To; b=fjas3cZm7slhzqeQWRDphjvN3L48CEz8tmZXUJsqrw98OTwWPjZBEKzkBsAHDc0psvvM9K/ol97/F1o4oNCiwkCgCj9KI2sCM2JlZlT7i9+Ev4U7k7kYjDbKjd5Q73S8KWolRq5R6r5/Xynu6yzb2wzeSOCwPWRuOUXYUzxpg24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Q0kcxUPs; arc=none smtp.client-ip=101.45.255.111
+	s=arc-20240116; t=1785389304; c=relaxed/simple;
+	bh=yl94ymhBwsMWWLB/i/YPI6mck4HKp1tM81c1xp2Bxr8=;
+	h=Message-Id:Mime-Version:References:Content-Type:Subject:To:From:
+	 Date:In-Reply-To:Cc; b=mggcLJKfwY19mqAg6SIyGbxzBHKTfah6M0Au3kzj8kKordFD+b71YbtT9AkjltSM3KFWDWuBls0Ic6pHRfrKCOc1Z2VxJQxQK+wgUzNuGhvUZ/tX8zSHKcDOyILg9pvqy9HqcT431zilKgw101tap9hxfGo+b34MD86IZiowQlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=hRVy+pyG; arc=none smtp.client-ip=209.127.230.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Q0kcxUPs"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="hRVy+pyG"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1785388544; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1785389290; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=eicauRYls+vtChdKBvYJvUOMEv7Id/rxHhxy0VE2Rq4=;
- b=Q0kcxUPsvEu6IH7BXaacP51/gm+IEjIYuXi+pitis5ZaeMeWQvr2Sq7TgJTJbQ5wyeGmqv
- wjfBtCKXyEt3FctakEe8OzlWWMidtdhQDrDganRPUkVyjZGL0ykp2WgfkgxONNPezJxibs
- cfGW0B/KQeZdlBrRsEX/qd0Z+ikxnHEgj8W/xlj632MbQ0kD8yE1MgvAVk/WFCdZ9BZpMC
- /TUBB/kgDUeraf+9kwpukWGOnvR7aFlrT9d1+oncGC7O3TemyZkQxnrr0na6RxD+Bn36lA
- V5kJZFQVijS4I+YewwFP9zk1OSmIJ4x4bZ4rEHg9FNVNY1ohE60ihlQuQQnZkQ==
-From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
-X-Mailer: git-send-email 2.17.1
-Subject: [PATCH] net: usb: cdc_ether: add quirk for AMI BMC stale link events
-Date: Thu, 30 Jul 2026 13:13:41 +0800
+ bh=NodeUa70AZXIC374qnjJWxHQAwni28ruRy38JLx9Ks0=;
+ b=hRVy+pyGl2ZbG5Rwi+a2zlJagZCgDG2N0lgJm5G1WhLMYMPWmj+gmNNhMxUpT43hWfEXtZ
+ uel71TRXNokpRCCAsxU2TFsydM+0RD0xySetjCwxCYSJOuOxae5I7BB1fZkdRdkdR3JS3z
+ nPc1MBwScnlePDMBtA4TOUYdPYLJXLSLEvcsEYIdS5/RKr9DrjRrZPc9GfYPJV0czKBYfO
+ LfXpr6sAXHGcIjc7T6D0pB6SODBli8hCIbnv9jpm5NcWi0QVgCoOxa3XqzpaYLZKQKv3wr
+ hqIYcE7TtsT2uME2I1Hd14iTYmrN4DneGMPT4Jq1SlmHzj2FS1CjcwZIluNviA==
+Message-Id: <20260730052752.25116-1-guojinhui.liam@bytedance.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+References: <20260730051341.24930-1-guojinhui.liam@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
-Cc: <linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, 
-	"Jinhui Guo" <guojinhui.liam@bytedance.com>
-Message-Id: <20260730051341.24930-1-guojinhui.liam@bytedance.com>
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] net: usb: cdc_ether: add quirk for AMI BMC stale link events
+X-Lms-Return-Path: <lba+26a6ae0e8+b49e2b+vger.kernel.org+guojinhui.liam@bytedance.com>
+X-Mailer: git-send-email 2.17.1
+Content-Transfer-Encoding: 7bit
 To: "Oliver Neukum" <oliver@neukum.org>, 
 	"Andrew Lunn" <andrew+netdev@lunn.ch>, 
 	"David S . Miller" <davem@davemloft.net>, 
 	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
 	"Paolo Abeni" <pabeni@redhat.com>
-X-Lms-Return-Path: <lba+26a6addfe+7bba8e+vger.kernel.org+guojinhui.liam@bytedance.com>
+From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
+Date: Thu, 30 Jul 2026 13:27:52 +0800
+In-Reply-To: <20260730051341.24930-1-guojinhui.liam@bytedance.com>
+X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+Cc: <linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>
 
-On AMD Genoa/Turin platforms the BMC-provided USB-Ethernet gadget
-(American Megatrends, VID 0x046b PID 0xffb0) intermittently fails to
-respond to ARP after AC cold boot.  usbmon captures a stale
-NETWORK_CONNECTION(off) immediately followed by
-NETWORK_CONNECTION(on) on the interrupt endpoint (~130us apart)
-after enumeration.  Because alloc_netdev() leaves
-__LINK_STATE_NOCARRIER cleared, netif_carrier_ok() returns true
-when the spurious OFF arrives, so usbnet_cdc_status() cannot
-recognise it as redundant and schedules EVENT_LINK_CHANGE.
-__handle_link_change() then calls unlink_urbs(), killing ~60 rx
-URBs whose payload has already been DMA'd into memory =E2=80=94 xHCI trace
-confirms them completing as -ECONNRESET with non-zero residual
-length.  rx_complete() drops these unconditionally.  The following
-ON restores the carrier and re-submits URBs, but the ARP reply is
-already lost; the interface looks "up but silent" until ifdown/ifup.
+Hi,
 
-Fix this by adding a device-specific quirk with FLAG_LINK_INTR set,
-which makes usbnet_probe() call netif_carrier_off() after bind.
-With initial carrier =3D=3D OFF, usbnet_cdc_status() recognises the
-spurious OFF as matching the current state and drops it; the
-subsequent ON is the first real event and brings the link up
-cleanly without ever tearing down the rx queue.  The scheduled
-link-change kevent is harmless because EVENT_DEV_OPEN is not yet
-set at probe time.
+To help review this patch, here is the runtime evidence captured on
+one of the affected Genoa boxes. All timestamps below are from the
+same failing boot; I have trimmed unrelated lines and replaced host-
+specific addresses with placeholders.
 
-This is applied as a device-specific quirk rather than a change to
-the shared cdc_info driver_info because some CDC devices never
-send NETWORK_CONNECTION notifications; forcing carrier off for
-them would leave the link permanently DOWN.  Restricting the change
-to this VID/PID keeps that class of device untouched.
+1. usbmon: the two back-to-back NETWORK_CONNECTION notifications
 
-Tested on Genoa and Turin across 100+ AC cold boot cycles; ping
-first-packet success rate went from intermittent to 100%.
+Right after enumeration the BMC gadget delivers two class
+notifications on the interrupt endpoint within ~130us of each other.
+Both are USB_CDC_NOTIFY_NETWORK_CONNECTION (bNotificationType = 0x00,
+bmRequestType = 0xa1); the first has wValue = 0 (link OFF), the
+second has wValue = 1 (link ON):
 
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
----
- drivers/net/usb/cdc_ether.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ffff9c48c... Ii:1:007:1 -115:1 8
+ffff9c48c... Ii:1:007:1 0:1 8 = a1000000 00000000 0000        <- OFF
+ffff9c48c... Ii:1:007:1 -115:1 8
+ffff9c48c... Ii:1:007:1 0:1 8 = a1000000 01000000 0000        <- ON
 
-diff --git a/drivers/net/usb/cdc_ether.c b/drivers/net/usb/cdc_ether.c
-index a0a5740590b9..b5e4b195b69a 100644
---- a/drivers/net/usb/cdc_ether.c
-+++ b/drivers/net/usb/cdc_ether.c
-@@ -538,6 +538,16 @@ static const struct driver_info	cdc_info =3D {
- 	.manage_power =3D	usbnet_manage_power,
- };
-=20
-+static const struct driver_info ami_bmc_info =3D {
-+	.description =3D	"AMI BMC USB Ethernet",
-+	.flags =3D	FLAG_ETHER | FLAG_POINTTOPOINT | FLAG_LINK_INTR,
-+	.bind =3D		usbnet_cdc_bind,
-+	.unbind =3D	usbnet_cdc_unbind,
-+	.status =3D	usbnet_cdc_status,
-+	.set_rx_mode =3D	usbnet_cdc_update_filter,
-+	.manage_power =3D	usbnet_manage_power,
-+};
-+
- static const struct driver_info	zte_cdc_info =3D {
- 	.description =3D	"ZTE CDC Ethernet Device",
- 	.flags =3D	FLAG_ETHER | FLAG_POINTTOPOINT,
-@@ -946,6 +956,12 @@ static const struct usb_device_id	products[] =3D {
- 				      USB_CDC_SUBCLASS_ETHERNET,
- 				      USB_CDC_PROTO_NONE),
- 	.driver_info =3D (unsigned long)&wwan_info,
-+}, {
-+	/* AMI BMC gadget */
-+	USB_DEVICE_AND_INTERFACE_INFO(0x046b, 0xffb0, USB_CLASS_COMM,
-+				      USB_CDC_SUBCLASS_ETHERNET,
-+				      USB_CDC_PROTO_NONE),
-+	.driver_info =3D (unsigned long)&ami_bmc_info,
- }, {
- 	USB_INTERFACE_INFO(USB_CLASS_COMM, USB_CDC_SUBCLASS_ETHERNET,
- 			USB_CDC_PROTO_NONE),
---=20
-2.20.1
+Timing between the two Ii completions is ~130us. There is no
+carrier-off event in between and no earlier NETWORK_CONNECTION was
+seen, so the OFF is purely a stale event generated by the BMC
+firmware on cold boot.
+
+2. Why the OFF is not filtered out
+
+At the moment the OFF arrives, alloc_netdev() has already run but
+netif_carrier_off() has not, so __LINK_STATE_NOCARRIER is clear and
+netif_carrier_ok() returns 1. usbnet_cdc_status() therefore takes
+the wValue-differs branch and calls usbnet_link_change(dev, 0, 0),
+which schedules EVENT_LINK_CHANGE. This is confirmed by tracing at
+the cdc_ether entry:
+
+[Test] CDC status: set carrier 0, current carrier 1     <- OFF, propagated
+[Test] CDC status: set carrier 1, current carrier 0     <- ON, propagated
+
+The ~130us window between the two events is much shorter than the
+kevent workqueue latency, so both are queued before
+__handle_link_change() runs and are processed in order.
+
+3. xHCI trace: rx URBs killed with data already DMA'd
+
+When __handle_link_change() processes the OFF it takes the
+!netif_carrier_ok branch and calls unlink_urbs() on dev->rxq (~60
+URBs at the moment of failure). The xhci_ring events show that
+several TRBs are already in a completed state when Stop Ring runs;
+their Transfer Events carry a non-zero transferred length and are
+delivered to the driver as -ECONNRESET:
+
+xhci_handle_command:    Stop Ring, slot 3 ep 1
+xhci_handle_transfer:   TRB[...] type 'Transfer' len 1514 status 'Stopped'
+xhci_urb_giveback:      ep1in-bulk urb ffff8a... status -108 -> -104 length 1514/1514
+xhci_urb_giveback:      ep1in-bulk urb ffff8a... status -104 length 1500/1514
+...
+
+(-104 == -ECONNRESET, -108 == -ESHUTDOWN. Both cases hit the same
+goto block in rx_complete().)
+
+rx_complete() unconditionally drops these frames:
+
+switch (urb_status) {
+case -ECONNRESET:
+case -ESHUTDOWN:
+        goto block;
+}
+
+so the ARP reply that happened to have been DMA'd into one of these
+URBs just before Stop Ring is discarded, even though the payload was
+already resident in memory. The subsequent ON re-arms the rx queue,
+but by then the reply is gone and the interface stays "up but
+silent" until the peer times out and re-ARPs, or until the operator
+runs ifdown/ifup. This matches the observed intermittent behaviour:
+whether the ARP reply falls into the tiny "DMA done, giveback not
+yet" window is a race, so the failure only reproduces on some
+fraction of AC cold boots.
+
+4. Why DC reboots don't hit this
+
+On DC reboot the BMC USB gadget state is preserved, so the stale
+OFF/ON pair is not queued and the sequence above never starts. This
+matches every failing boot we captured being an AC cold boot.
+
+5. Why FLAG_LINK_INTR fixes it
+
+With FLAG_LINK_INTR the probe path calls
+usbnet_link_change(dev, 0, 0), which sets carrier off before
+register_netdev() exposes the netdev. When the stale OFF arrives,
+usbnet_cdc_status() sees netif_carrier_ok() == !!event->wValue
+(both 0) and returns without calling usbnet_link_change(), so no
+EVENT_LINK_CHANGE is queued and unlink_urbs() never runs. The
+following ON is the first real state change and brings the link up
+cleanly, without ever tearing down the rx queue.
+
+I chose to add this as a device quirk rather than modifying cdc_info
+because commit 71cc1fa9f2d7 ("cdc_ether: Set FLAG_LINK_INTR for all
+devices with a status endpoint") was reverted in the same series
+after it broke CDC devices that never send NETWORK_CONNECTION
+notifications; restricting FLAG_LINK_INTR to 046b:ffb0 keeps those
+devices untouched.
+
+Verified across 100+ AC cold boot cycles on both Genoa and Turin
+reference boards: first-packet ping success went from intermittent
+to 100%. DC reboot and ifdown/ifup paths are unchanged.
+
+Happy to provide fuller usbmon / xhci trace captures if that would
+help.
+
+Thanks,
+Jinhui
