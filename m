@@ -1,226 +1,194 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010062.outbound.protection.outlook.com [52.101.201.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E332448D15;
-	Thu, 30 Jul 2026 17:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785434259; cv=fail; b=P6uEBM52rKk8EMN+tx7IVj38gIOOKJyfBnNrjqerbTVQhw4yazvUy/I1RkyX5Jt+zHVXsNc281gCs4t09PebdcqOgI7AZKdsQRKphyxzeFjzlpo3BtjnZMMpHDthyHjNtCBxVVAJ3F0kpLEQ7KSqMf6SdYEywYIr7NTd/s+YPpk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785434259; c=relaxed/simple;
-	bh=dHVSeBQ25yHQBP2am21PyuDeEwDEtsWrpJam1sd72gE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=tYZxbTdcTFSMx9DjI04pZ7pcKK3pfRF1p15W8FfGcYLIak+6YEj8ECGfmlXzmSckXDbi4s9WlwoFar3I9/NOGTn1p4XtlsQYBGY3hhRgtUP/kY5rqefEXi4pEG/qDUGKw8aAkCFTTwUFjL5nQQIopgsjq1H8SkgweffIEmb+Et0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bNxjbpHy; arc=fail smtp.client-ip=52.101.201.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA773B05A7;
+	Thu, 30 Jul 2026 18:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785434624; cv=none; b=V3KwBfnvBIRlLOax0FUMn3SmYryVAEj6BQZ/PCKIQKqX3rCdnXtNgMo3ra0re4pdm9jc/ne85fbLleTtU/cHrFV64HndQRgyGvYm+Xn56T1mPqq7Ri4dOy5xi0O83F23vonTdUkGsOTTVqyYzQAXHqdVVxEtz0NtyUPaaX2pU68=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785434624; c=relaxed/simple;
+	bh=BNmwDpLhI7j42YzupuEGlX4vmb9ZkM0O366FxBgJh+0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=atmIDA8qCzK+eAjRD/zNaimx9ckNqGRCscaC0acEnas5CWXLtDwn3VqfA/sNI/Xz6q2YJy4G+xQ2AVbOvUnsH24E9qlbW1OIYxeZS3MEzzxGg9KmRPlAXyPNnTWzS8aOB5xTHqfbhD6mSkU6o6bUN5S3lUXKHAwy0ZVdnCmudm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2xdBBYj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bNxjbpHy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VI+gWSgnbbalHbbDVJTVH8EL7PQ6yFyQv5u6CmU4vZRvEnTPkWyCRRBT3MwyF3ncSqLcflT86W1n0+h3F4Bqk6ulInE4WBlEXx+W3d9Gia75AQ5c0r8V19VeMHolstEWhLodzCn3oTz4/dVlhflPhu/qMTiblVkKAu1GXK2sAMDlRDJg1/tU0QcCVSul8GQAVEbEO7tz3WtpBIPWaH2bU7fx0dDrlxb3IhjlAyXixbBmIEdCJ+1XVR1Nz3aQi4MHkCuNyD/4yYNNaWyQRDeF5JMiOxYQQprPaWgcTPbIJVe8flOjTD1oN7fytVIW3x9cvRf8sPuAaVjUdcrH4oq9nA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lTKoejLeFZAg1ymcbv2pybBxlYWU4nKoavgl35y7mS8=;
- b=VR1r8pmDzqhfmwxVgLm8r2Uo8PHfV/l89r4yqLbUcOlDusSwEqUzaZ/Tw+p54ZRl4KlaZG8KNbbYNpi1vIqY3aKuqjHUmQPoBNPyJSsB64hIwimB5KSrvajbphGQrZFiwKP4R5wwEIWT6PTDNTjWtcLAAYOPdfW6eQRCdnyXfJGBc14TNX9Bp5Xj6aF7779RQkwsJiqLosEEl3G7HHENtRWJ2kjq75hrtvqk4Munrq59wDwYjDV2BG2SDTRPq6LMIDCGzYJPED9BltEJDjyLLUlr94JZvjuZEsvve/3k2NxWCpcnirxBWcboz3yC/Kzt4JB/d1doR7xDfVCd8hZkMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lTKoejLeFZAg1ymcbv2pybBxlYWU4nKoavgl35y7mS8=;
- b=bNxjbpHypY4XgGZUItGcGfximcJTt8qIKixLOtUFpoHuqJZvWjf1I4bYizwh101un3721vbGkacIfHFGGOyyZfm0igAapeSDMEskC6pWEya2I5/83czCRFuZvB9ruAPT3QBH21OjKIq2fapNMfrxZx6ywgALyYo8nVEbRnY5ovC+3Z/ionZ6oZqUSodKiIg9NZ5sBp7YjGNetL1DzCQ4f+B76+CnMbIjNu4QndEaHye9SF81sO5/BS8xWWYoQKz6zM+gFT8CKD+YT8l2crAANPYQ6QLfN9Iuq2icn5qPYVh5XOERA8H91FqdxpG3CTLAw9KzO28+B2s562uhT61TxQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
- by DS2PR12MB9797.namprd12.prod.outlook.com (2603:10b6:8:2ba::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Thu, 30 Jul
- 2026 17:57:31 +0000
-Received: from CH3PR12MB8728.namprd12.prod.outlook.com
- ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
- ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
- 17:57:31 +0000
-Message-ID: <13fde98b-d3cc-469b-b970-840469427a0d@nvidia.com>
-Date: Thu, 30 Jul 2026 19:57:25 +0200
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net] net/mlx5e: SHAMPO, Fix IP length overflow on large HW
- GRO sessions
-To: Tianyu Zuo <cosmosocket@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Khalid Manaa <khalidm@nvidia.com>, Ben Ben-Ishay <benishay@nvidia.com>
-Cc: horms@kernel.org, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260729204745.166584-1-cosmosocket@gmail.com>
-Content-Language: en-US
-From: Dragos Tatulea <dtatulea@nvidia.com>
-In-Reply-To: <20260729204745.166584-1-cosmosocket@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0192.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ca::10) To CH3PR12MB8728.namprd12.prod.outlook.com
- (2603:10b6:610:171::12)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2xdBBYj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5117F1F000E9;
+	Thu, 30 Jul 2026 18:03:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785434623;
+	bh=xcnMnS1SAFYRObzVF/sQ+C45aUfsURxcmGZxWYdiRWQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Q2xdBBYjvm+8sN+nDc25ltM1j1bRRgd/CGz84AarLcqQIBbpN+PApOrFIWztjPsLt
+	 JEx3GSyOwq3NJsrPgnvnu3gle9sBZp3vk8GGrGREScfMePz21/ba08m5gZFhXV5npP
+	 +1wSDJRt2+qD2FeYr6PeC7qZasQICxdDIHqGpkVYcV0s/LSKP4fFF76+Gp9WnLfEKW
+	 0KTmesBpqR22kMOsGTrkJxRl9NZ9OMHludTt2nZObYhqc1lUDFe5AzvskyripYKlF2
+	 7UVq6T6a4nHV5rHEW3OqS2z5r5KbuSdbEbbUPllgvDOpIzs+Y7agTNpuQQuh89jAyM
+	 vwzmgwzSt9Jzg==
+Message-ID: <d13300c5-596d-45a4-8686-9eba63125e3e@kernel.org>
+Date: Thu, 30 Jul 2026 20:03:35 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|DS2PR12MB9797:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0e79989a-9689-435d-54a1-08deee6406a5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|921020|6133799003|22082099003|18002099003|56012099006|10067099003|5023799004|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	+TFqlDOrocAytyc6VTn76O7+xgO7rcTgzDWdnSYEhajUdZbXx4Ttar3tFo7dXpQa9aI4RTTurQdDx/1ffyXndOZjgxcZmKUcYRQcjTfYQ6hAlR+BzV5xzm1EYDnBbBJ7Q8w3Sl8cusCf6gU70RVb01hxdyqgxNmLFIcgw4gQH0d4uHEtJI8JmyuqOMV7pIvg04caROUZ/+FfiYrYYfHUJRh9zYeOCAJirPGBRe6y71kRjY6YUzJFEclkysGxY6VI3lbMCoBK65FAQnf+n1T553weHDgz/z8v9tA+9xHWRylBiOkpqwGjmA1yhk88CUV5XV8rief54Ik38kD7BpvH9OgIcwBFcXGjmf17w4M9SiOxk6sTM26u5cSawFyCV1ezFy3Vbx0/qXPwF4pEIfd3gIMpB00VK3IGEgHsLMeLWf6+RvcCJf5iqpld3gLKnUIUdWU19QuEFqsaZmtHk4zGCvS2vDOh3PEzhGA9zIwfg9t/ptC8uatuDpknEN07EioAX3brtFolN7+NvDgvzD9zWPg5nP1sjJvDCTQiU8Afb5p/ShflBeKl+B8OWMJiIoDseTyF6yXPCGhpl7JFT5P/DbaKRcMrVSjDzPgUenz9P5BKykSJYAqy6ons0adOi7T6RhptkF4fEsGU/wQpGNFpunogXvuq1sVG9BAO2E2TUo5+tVaZnXNcek8Uw84pUT2MjFPqb84S6PiGZVOR+yRguw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(921020)(6133799003)(22082099003)(18002099003)(56012099006)(10067099003)(5023799004)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MnRzUWVSVFNidHhhd2p1cjV6a0tTVnk4R2FVVXEySlVwdS9DUE1tVytQdTE0?=
- =?utf-8?B?YUx0SWZRdS9hdktPQlBJWDZxaUhaWm1UTW43allHMXVxdFpQUzVWampHY2Fv?=
- =?utf-8?B?MUlORm43VDRHdEpxOHczOTZkaXdLU1hyR0NxVnRzYUEyUTFkUU45VXBwYVZz?=
- =?utf-8?B?RU5kUEFqeXRxSGU2YWNSVkZJNUZIek5pQ1pwUW5ENEhjN1NoZTBPc2FOcUxY?=
- =?utf-8?B?aFZSQ0ZnSWFmSUlIZDdBSzY5Y0duc0l6Q3VZckw3bHFKZitPNDYvUGpYWXpm?=
- =?utf-8?B?NlIvdGd3TjJES3o2NWcwcFp6YWFneXhZSDJPTnlsbk5rNDhaVFo5V09PYjJx?=
- =?utf-8?B?eXArcjNwamhSc3l6MldwcjZoSHBkUnhiZ21LTE92aUMxSWJsYjI5bWU4dGZQ?=
- =?utf-8?B?Z2JZbjQ4QVIzS1pleklEUFJpYk80cEZidmZndks2eG9yU3ZtSjlIUTV0Ukp1?=
- =?utf-8?B?S2lPUlYzMEU4cUlYMmFyOURpSmZQenh5U2pmWGJSK3hUS21QQ1RaS3VPQXN5?=
- =?utf-8?B?d2JNdit6aisrd1Byb0Mya1ZJeVU4MDJtS01QL21UWDBkOTBUbXV0ODZyRGpt?=
- =?utf-8?B?Kzg1N1BRM2JKNmNLeWI4MnBqTUhRS3UvWVMva1cwK2NRelkyRTlvOFUxRHlI?=
- =?utf-8?B?a0NnUjlMY3E5UUlXVnZpTk01NTAvdGZmczRvbm1YZ1FjMjFsbEpOTXVHMjVW?=
- =?utf-8?B?Q2pXS1Vmajd0QS9CT1Rwb1NEaTAzcG9xQll2aHFaaE42b0pMa0FEYnlRU0JD?=
- =?utf-8?B?K040TXVWN0JYWkc2dmdHYWhreHVobG9xb2taQnNzQ2RkSHQxbFZuVllDNWQ1?=
- =?utf-8?B?WGlaMHBTbEtXUWhtNkd2RFRoTFY2cjBSeEZLU2FmVWpXR1ZkVnVKUmNmRlJQ?=
- =?utf-8?B?ZmJQVE4yaWUzUS9YcXhHRzhXaXgzd3U3RGRhVHk5Wms5eDM4UlgvT2d5d3NK?=
- =?utf-8?B?aGVSWExtZUQ3dHRvQ3dQKzFWcnNzRlZWeTI3c0t2aVdIWWdmNDVTTUhkVVpT?=
- =?utf-8?B?V1RwcnNQVWluMVVQWVloRnJBLytxNU9QcHZ1eFQ0YVVicWpkWi91d3dDMFRF?=
- =?utf-8?B?MHRoNFpuYzFIZE0yMzY3ZVVCS2c3Ynh3V09oSGsrclFacHQ4OExkL1lySW9z?=
- =?utf-8?B?aXA3OUZQbGFLald1eVpZSkdCNlgxZEVCT0NlNzRIQVhmS1hFb1ZzNG1sbzFn?=
- =?utf-8?B?ZE9USHp5aWw5a0EwVmI0cjE1WU03dVIzUHhhZUFkUVJvcm9hVTdVbmdNL2FG?=
- =?utf-8?B?TjNSaTJwdzdjU2k2WDIyLzIwQjREQnk1bEVuZnc3OXRwbnVoVDVsMXRVR3A1?=
- =?utf-8?B?UHdJZkZrb2ZHN2dNeG5ud09sTWoyV005eU5GYlJLMWdvSVBaUjFzQW85akJW?=
- =?utf-8?B?Um1aLzcrbzVlT1dCd2UzbnNFQ3orWHROUnhjdjlneFF0azg1ZHdVZ3Q0dHRO?=
- =?utf-8?B?SXBJQitvYTQ2N2UrQU85dGhkODVEcllNMW9JQlI1cENvUzQ0anlaeW9HSzk2?=
- =?utf-8?B?bW5WQjZNMlBydExnWU52YWcyODZXSUpXR3FYZjNlNE9CUWlFSGdQM2o4V1do?=
- =?utf-8?B?TVlxNmVHMHdtYW9yWXdDNksrQTJpQ3djWWQycXZyY0VDWE5xUzZUVWE0U3FC?=
- =?utf-8?B?bUNWb3lpSGdDSlNiWUVCQzhNcWhOcTBvS1NTZER1NHV0UEVUS1hYbzhoRnJx?=
- =?utf-8?B?TzEzRE8vR2N1ZHVaUytEc2YxZUhDeUVxZ1I3TGVwSStiWWc1U2RMZkxpNkh6?=
- =?utf-8?B?RHJ2c0JvTENvb3pSL3BTQStwZndtTDNOWXB2NmFiUzhReFVDVXB2N1BwaEJr?=
- =?utf-8?B?dnA1VzRBKzM4ZWFmQ3ZWVnBXckg2NERNbUd4UmtGdGUxbVY2dXg1bjFqeHhm?=
- =?utf-8?B?d2xZa08rN1Jra1Fxb0N1RVFyalV1Z0U2NlJySi8wVUpjZXF3RU9Jd09kQ0Q2?=
- =?utf-8?B?R0tYOWVpV2ZYdWg0bDVZUENDL25DM2VwZ1hBbURMMXlIREVtWnNMdjRKa1Fk?=
- =?utf-8?B?MVJKOHlJZVhnOXBhaEt6UHVRUjltZ1FXQ21walN5R0hUVkpGeGRXaGdKeVNZ?=
- =?utf-8?B?RnZRbWErS0NqbFNhM2NqbUFSNGQ2VU5UUnJCM0tYTkVFMGFjSmtmZUxVOU9H?=
- =?utf-8?B?Wk13c0VIZFZBeVZuVXpqYkRhUFl5S3JnNUFhdFFzWUpLaWhNRGIwYTNhbXAx?=
- =?utf-8?B?V1ltUU10ekhMMkExWExRYkZJOHhqVUhJcTdteUpWQkpZWWVPZE5SQUJ0OGJW?=
- =?utf-8?B?eGhoeitkd1NvdGdiZHpFbUJuSEsxK1hBRGJwdWZSbU1yNkNRbVRHL2RJY3VR?=
- =?utf-8?B?TFpWV1JidXhpTmtTbEFWWnZvbWlyMGMzQlBNWW5HS2RvWGF0cCtLQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e79989a-9689-435d-54a1-08deee6406a5
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 17:57:31.1975
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y78dxEx00Mja9y697JNZBUKbVhZFQbLN6Sjcg0Oe9bDln2UoRvhjKoFMi3i2vnQ/B9/p+XiW7yzIcADmi8gjfA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9797
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net v2 1/1] mptcp: fix request ownership when cloning
+ reqsk
+Content-Language: fr
+To: Ren Wei <n05ec@lzu.edu.cn>, caoruide123@gmail.com
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, horms@kernel.org,
+ ncardwell@google.com, kuniyu@google.com, daniel@iogearbox.net, kafai@fb.com,
+ yuantan098@gmail.com, yifanwucs@gmail.com, tomapufckgml@gmail.com,
+ bird@lzu.edu.cn, enjou1224z@gmail.com, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev
+References: <40fd38e7a368e5b7bc9bc83364a32241f977d53f.1778404619.git.caoruide123@gmail.com>
+ <be1b6f66-207a-4ed6-8188-72ec11f222a4@redhat.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <be1b6f66-207a-4ed6-8188-72ec11f222a4@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Tianyu,
+Hi Ren, Ruide,
 
-Thanks for your patch. It is a good find.
+On 13/05/2026 11:37, Paolo Abeni wrote:
+> On 5/10/26 4:14 PM, Ren Wei wrote:
+>> From: Ruide Cao <caoruide123@gmail.com>
+>>
+>> TCP request migration clones pending request sockets with
+>> inet_reqsk_clone(). For MPTCP MP_JOIN requests this raw-copies
+>> subflow_req->msk, but the cloned request does not take a new reference.
+>>
+>> Both the original and the cloned request can later drop the same msk in
+>> subflow_req_destructor(), and a migrated request may keep a dangling msk
+>> pointer after the original owner has already been released.
+>>
+>> MP_CAPABLE requests have a similar ownership issue for token_node. The
+>> original request is hashed in the token table, and inet_reqsk_clone()
+>> raw-copies the hlist pointers into the clone. The clone must not inherit
+>> that hashed state on migration failure, and the token ownership must move
+>> only after the new req has actually replaced the old one in the ehash.
+>>
+>> Fix both cases while keeping the change local to MPTCP and the TCP
+>> migration path: grab a reference for cloned subflow requests that carry an
+>> msk, clear any raw-copied token hash state from the clone, and move the
+>> hashed token request ownership only after migration succeeds.
 
-On 29.07.26 22:47, Tianyu Zuo wrote:
-> mlx5e_hw_gro_skb_has_enough_space() bounds a HW GRO session by the
-> payload held in the skb fragments only. The L3/L4 headers that
-> header-data split placed in the linear area are not accounted for, and
-> the limit is inclusive of GRO_LEGACY_MAX_SIZE.
-> 
-> On a 4K page system a session can therefore grow to 16 full page
-> fragments (65536 bytes) plus the 40 bytes of IPv4/TCP headers in the
-> linear part, giving skb->len = 65576.
-> 
-> mlx5e_shampo_update_hdr() writes the IP length itself:
-> 
-> 	__be16 newlen = htons(skb->len - nhoff);
-> 	csum_replace2(&ipv4->check, ipv4->tot_len, newlen);
-> 	ipv4->tot_len = newlen;
-> 
-Commit message is clear until here.
+(...)
 
-> With nhoff == 0 this stores tot_len = 40 and updates the header checksum
-> to match, so the corruption is self-consistent. The GRO stack does not
-> repair it: the header is written before napi_gro_receive(), and
-> inet_gro_complete() only runs for skbs that the GRO engine holds on its
-> gro_list. HW GRO sessions are typically flushed on TCP_FLAG_PSH, which
-> makes tcp_gro_receive() set NAPI_GRO_CB(skb)->flush, so dev_gro_receive()
-> hands the skb over via GRO_NORMAL and the gro_complete() callbacks are
-> never invoked. The length check in inet_gro_receive() cannot catch it
-> either, since tot_len and skb_gro_len() are compared modulo 64K.
-> 
-> ip_rcv_core() then trims the 64KB skb down to the wrapped tot_len,
-> silently dropping the payload. The IPv6 path wraps identically in
-> ipv6hdr->payload_len.
-> 
-> Triggering this requires the payload of the aggregated session to reach
-> GRO_LEGACY_MAX_SIZE with every fragment fully populated, since
-> page_size * nr_frags otherwise overestimates the data actually present
-> and the session is flushed earlier. In practice this needs an MSS that
-> is a multiple of the page size (for example 8192 on a 4K page host with
-> jumbo frames) together with a page aligned start of the session.
-> 
-You can drop this bit.
+>> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+>> index e961936b6be7..578471bb8a2b 100644
+>> --- a/net/ipv4/inet_connection_sock.c
+>> +++ b/net/ipv4/inet_connection_sock.c
 
-> Account for skb_headlen() and make both checks strictly less than
-> GRO_LEGACY_MAX_SIZE so that skb->len can never exceed 65535.
-> 
-This is useful.
+(...)
 
-> The check is strictly more conservative than before, so the implicit
-> bound on the fragment count is preserved: page_size * nr_frags +
-> data_bcnt <= 65535 gives nr_frags + data_bcnt / page_size <=
-> 65536 / page_size - 1, and a single CQE adds at most
-> data_bcnt / page_size + 1 fragments, for a total of at most
-> 65536 / page_size (16 on 4K pages), well below MAX_SKB_FRAGS.
+>> @@ -1115,6 +1121,8 @@ static void reqsk_timer_handler(struct timer_list *t)
+>>  			goto no_ownership;
+>>  		}
+>>  
+>> +		if (rsk_is_mptcp(oreq))
+>> +			mptcp_subflow_reqsk_migrated(oreq, nreq);
 > 
-You can drop this last paragraph. Or summarize it in the previous
-one.
-
-> Fixes: 92552d3abd32 ("net/mlx5e: HW_GRO cqe handler implementation")
-> Signed-off-by: Tianyu Zuo <cosmosocket@gmail.com>
+> Sashiko says:
+> 
 > ---
->  drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> Can this sequence trigger a race condition with network RX processing?
+> In reqsk_timer_handler(), nreq is inserted into the global ehash table
+> via inet_ehash_insert() right before this block. The ehash lock is
+> immediately dropped, making nreq globally visible to concurrent network
+> RX softirq processing.
+> However, the MPTCP token state is not migrated to nreq until the call to
+> mptcp_subflow_reqsk_migrated(oreq, nreq).
+> If a concurrent RX thread processes an incoming ACK for the connection
+> in this narrow window, it could find nreq in the ehash table,
+> successfully process it, and invoke mptcp_token_accept(nreq).
+> Inside mptcp_token_accept(), __token_lookup_req() searches the token
+> bucket and finds oreq, because the timer thread hasn't moved the token yet.
+> The code then asserts ownership:
+> mptcp_token_accept()
+> 	pos = __token_lookup_req(bucket, req->token);
+> 	if (!WARN_ON_ONCE(pos != req))
+> 		hlist_nulls_del_init_rcu(&req->token_node);
+> Since pos is oreq and req is nreq, would this fail the assertion and
+> trigger a kernel warning?
+> If the calls were reordered so that mptcp_subflow_reqsk_migrated()
+> happens before inet_ehash_insert(), could that merely shift the race? If
+> a concurrent ACK is already processing oreq, it might call
+> mptcp_token_accept(oreq) after the token was moved to nreq, triggering
+> the same warning, since the ehash table and the token bucket are
+> protected by different locks and the updates are non-atomic.
+> Could a remote attacker time ACKs to hit this window during a listener
+> migration, potentially leading to a denial of service on systems
+> configured to panic on warnings?
+> ---
 > 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-> index 6fbc0441c4b8..2e9676305439 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-> @@ -2222,9 +2222,10 @@ static bool mlx5e_hw_gro_skb_has_enough_space(struct sk_buff *skb,
->  	int nr_frags = skb_shinfo(skb)->nr_frags;
->  
->  	if (page_size >= GRO_LEGACY_MAX_SIZE)
-> -		return skb->len + data_bcnt <= GRO_LEGACY_MAX_SIZE;
-> +		return skb->len + data_bcnt < GRO_LEGACY_MAX_SIZE;
->  	else
-> -		return page_size * nr_frags + data_bcnt <= GRO_LEGACY_MAX_SIZE;
-> +		return skb_headlen(skb) + page_size * nr_frags + data_bcnt <
-> +			GRO_LEGACY_MAX_SIZE;
->  }
->  
->  static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe)
+> I _think_ the above race could/should be solved squashing
+> mptcp_subflow_reqsk_migrated() into mptcp_subflow_reqsk_clone() and
+> adjusting  mptcp_token_destroy_request() and mptcp_token_accept() to
+> deal with already removed token, checking (again) for unhased token_node
+> under the bucket lock.
 > 
-> base-commit: 51b093a7ba27476e1f639455f005e8d2e75390e4
+> The latter will require a little more work, returning a success status
+> to the caller - mptcp_sk_clone_init() - and make the latter fail on
+> mptcp_token_accept() failures.
+> 
+> The above would also make the fix more encapsulated into the mptcp code.
 
-The code looks good to me. Wait for Tariq's comments before re-spinning.
+I was checking old patches tracked on our MPTCP Patchwork, and noticed
+this one is marked as "Changes Requested". I don't think a v3 has been
+posted: are you still working on a v3 addressing Paolo's comments? Or
+did I miss the v3 because it had a different name?
 
-Thanks,
-Dragos
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
