@@ -1,238 +1,175 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F0A3B2D0F
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 06:38:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BED269D18;
+	Thu, 30 Jul 2026 06:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785393501; cv=none; b=XeomvbvndaFdfjc8RqLdRBe52uZkBMZq5GFNReL53fLlk69Aklc7pzdTkrGmaeVZxaVLZmCBBMmXJYg68b2l4094LMGPUjcnIYyTMHFAncI9qd0mth65IGCo4XJ++HTjgtr3Wd+fC2GWvyD1BEtFQEvzomwYpDIP5cSTcahHFfw=
+	t=1785393773; cv=none; b=Rj84vcHAnIJ7QHMefvuZNkFY5wwg+jpOPLfTOo/GwU/nO3ecFTEQoR3E15VXd1F6SN3k6a3XGof8GAhsAbnMwjQweYVb9TNK1VOb4hJXrfd3DBD374iobmyntjVn9F+v+ppTkDTkeoekfLyIiKhOYNznghNNZCtsab+M8/i5IPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785393501; c=relaxed/simple;
-	bh=ccS/vynfAjtPWGb8cQXbw2Ma7u9Kc2So5zt5lpzwcaM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=gTUAV4FpWcI4XE15l9rGfp+Tty/hddN0RPu2z3JXZ/Mr74LK+VjHKRiQlPP1+R0rTkEUeq2zZI/MG/auY/XhAn3wRGd0IwKKoC0mxt9j1gOajc9CL+rRNGhxEhWIYBXY8ie8YkwG5BcCARyC99e0aSw5DWOYix3yePyN8lohsjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=pHZHCR7C; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	s=arc-20240116; t=1785393773; c=relaxed/simple;
+	bh=sml0g70QaU4HVAdwCFEzNOniTZ+HbDLWGhEbzGOrZFE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hg9sEITQjwJpOBBLm+orV/mHup61Vse/BQa6v+35MXxnXLI2CgSlzPBu536jrOX93i+xB1CcLuoDAKaEZlQ7hOLiGGN6OsXe/xptUCl8kUtPRXwWhCzD7yAdk7BI1FmBYyj7EttOjEmO5+wKCjFRlEXtILl+UDfd3vVO0AAuH2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=CYaKIJq9; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="pHZHCR7C"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2d004f135b1so24567005ad.3
-        for <netdev@vger.kernel.org>; Wed, 29 Jul 2026 23:38:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1785393500; x=1785998300; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=gGidP0vHSPV0NPul0Vyzr/cFRYrRFVowQdSQZFiXkIw=;
-        b=pHZHCR7C3tPT3Z0r4VooonpWF4QZlEuUJnGudgBKFC2RitXrAmnzkSPkhrhLlF2fKs
-         mLHD1MaDmhd1yr1tGy4JyXW3FhZ1dO88b04iMaW76E+hURKiq0Eu8DNLqtYVF+SpZ5+G
-         gRPSWAhWz5L7D/SLEhZjJip+i+OlQTPK+NRpxxTQokfvn/lCbBmcILN7fqI88WBDcv54
-         TPUQnkIZpb6pI2vwh4FIAoCWPSFWStSLMz7MZkB8F8KmMZhs8GpUy/Wyow/DEpy3aZL8
-         T7s9YAVkd/I74rwyfPjcTpImFB7z3fJ+ysE2CVA/Eh9Hrl7Xi61z72WwOSWu6bAj/RmP
-         Mjtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785393500; x=1785998300;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gGidP0vHSPV0NPul0Vyzr/cFRYrRFVowQdSQZFiXkIw=;
-        b=mFNNa7XEOWyovq1HwfYSLcY/1yZm91acxiRVBxxLLtZm7MwvIcxs5bp4xuNHkqK2CN
-         krRa21ObKaPmjfd/OStQy5s6R1QzNdVK42qO7cB0/PggcryjODYOvnT9qX0TeWPGwxm4
-         lGVkDjgyUF4mAmEgFYjY8cLwRIOfDWuSAUbzfMkfCo0hNCnn4XQ13VcMvwu3QlK6Ehcy
-         zKLVas8dacgqVvpCt1NiofjGlu5ysqhafQiIhNfqX3CKVhtua8KDMFyggU35NQ8pN2zw
-         dHFm6HtOXCoL6APuVvpZkWkuoC13JtUbxVn2/kxlsoTv0kuH8VuUuTDRcVXlk+dWx85e
-         b1Wg==
-X-Forwarded-Encrypted: i=1; AHgh+RoMWe95hw00drV39fQm7TseP+p+LeChxBmwHywbofUgq6bK2pzgERJLBWD390+RQXRR51aMajE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx383RKqznNgC8f3hkI3RtmKyL0t4zkilOBZgVrecQRXbrvLdyn
-	LZAV+gEXzrhX4yFNQuY55BuWNByEbn1RceNwqdyh9fGW8atTvx5TY5Y5JUy1WxcgtiY=
-X-Gm-Gg: AR+sD10roEvCj50YgunYXwrCYH+P+E8mYZNUVkV8D8mqmKx4ERkMT61Z4nvFJVlRfTF
-	nMEux86HOhMrBxjwxFEi5JCH7ppB1P58KX0hkDMVsTg0JUOYQ0ANTTTRmCdQGtQPE8cqpBvTyWh
-	K9q8/r2I8a5MZyc/nAK3rK/8k5TprCRe4+Logyh4GI0w4+7jYRPIDGMye3rq5dp3v67/UFO8b9i
-	kJ8ZEacr5WMPsUwkhsgE1mE2jvDvGFR4tZOGSXXMPNgXkDCV/GcKpjwN58X1o39QiwX37tkRzRJ
-	dy8pi1DkE3CLDlKSa9xl8/lTkpta/RRTY4F/If8WbGf6xaQN7lQ/UGyZHoDGY2SqoRuWogSWaaN
-	MKLWMraW3djbvjg5JAhy0A5dSXawFW1djBg9G8recpHPV4TuZol4BZeeLp/SvROaiW8QLqnFZfI
-	KbEiCCCxyCC4XZOr4p3Ux2FKxaLCDtInubWC7u5q6MfAzwTZzwRrmZ8wrjWGSdVdyVZgm3FnncH
-	Q7Z9PEHXfGWix0NrA==
-X-Received: by 2002:a17:903:1a2f:b0:2ce:8e70:3210 with SMTP id d9443c01a7336-2d035bdde67mr15176115ad.16.1785393499622;
-        Wed, 29 Jul 2026 23:38:19 -0700 (PDT)
-Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022a15303sm21373135ad.3.2026.07.29.23.38.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jul 2026 23:38:19 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="CYaKIJq9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=fd
+	7EeLzqIzXnsvsdH/t3dNXTkLibPRunpxRsLnLRThY=; b=CYaKIJq9hXNTxm6+qb
+	VSOHSpTig9Ety+R0fGa9RNRDjLu4QQy4tHK+WhGw8OvDv1W/VmE5+mB76qbajYgK
+	kEdxZVAKs0tK4p0qP9Ha2bOgRKusjozvmPZsr6aeyrjNyWsSnVkxS3pHa2XRQ+Km
+	srPlKCTmQeUAm9J01W5lKkXb4=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgDXKeA68mpq0UVAJw--.61375S2;
+	Thu, 30 Jul 2026 14:42:03 +0800 (CST)
+From: luoqing <l1138897701@163.com>
+To: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] sctp: auth: propagate HMAC calculation errors to callers
+Date: Thu, 30 Jul 2026 14:42:02 +0800
+Message-Id: <20260730064202.792809-1-l1138897701@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 30 Jul 2026 02:38:18 -0400
-Message-Id: <DKBP6A3V5I02.3GNQ1SEZST1F0@etsalapatis.com>
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Chengfeng Ye" <nicoyip.dev@gmail.com>, "Pablo Neira Ayuso"
- <pablo@netfilter.org>, "Florian Westphal" <fw@strlen.de>, "Phil Sutter"
- <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
- <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, "Alexei
- Starovoitov" <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
- "Jesper Dangaard Brouer" <hawk@kernel.org>, "John Fastabend"
- <john.fastabend@gmail.com>, "Stanislav Fomichev" <sdf@fomichev.me>, "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>, "Lorenzo Bianconi"
- <lorenzo@kernel.org>
-Cc: <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <bpf@vger.kernel.org>
-Subject: Re: [PATCH bpf] bpf: Fix netns reference imbalance in conntrack
- kfuncs
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260729163141.213611-1-nicoyip.dev@gmail.com>
-In-Reply-To: <20260729163141.213611-1-nicoyip.dev@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgDXKeA68mpq0UVAJw--.61375S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGFy3Xr1kWF47Kr1kAFWxtFb_yoWrZr43p3
+	Z8ZFZ5Cw1xAr43XFZ3Cw48G3W5Wws5C343tF4Yvw1Sy3Z8Xryrtr10kaykGrW5CrWkJa47
+	Aw4jgF13Gr1qyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jb4SrUUUUU=
+X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3RsARGpq8jvb0gAA3C
 
-On Wed Jul 29, 2026 at 12:31 PM EDT, Chengfeng Ye wrote:
-> The opts argument of the BPF conntrack kfuncs can point to a shared map
-> value.  __bpf_nf_ct_lookup() and __bpf_nf_ct_alloc_entry() read
-> opts->netns_id separately when acquiring and releasing the network
-> namespace reference.
->
-> The reference imbalance can occur as follows:
->
->   CPU 0                                  CPU 1
->   read opts->netns_id (-1)
->   skip get_net_ns_by_id()
->                                          write opts->netns_id (id)
->   read opts->netns_id (id)
->   put_net(net) /* no matching get */
->
-> The reverse transition leaks the reference.  Repeating the unmatched put
-> can destroy a live namespace and crash later users.
->
-> The kernel reported:
->
->   Oops: general protection fault, probably for non-canonical address
->   KASAN: null-ptr-deref in range [0x00000000000000e8-0x00000000000000ef]
->   RIP: 0010:bpf_prog_test_run_xdp+0x52c/0x1700
->   Call Trace:
->    __sys_bpf+0x1662/0x50c0
->    __x64_sys_bpf+0x73/0xb0
->    do_syscall_64+0xf9/0x540
->    entry_SYSCALL_64_after_hwframe+0x77/0x7f
->   Kernel panic - not syncing: Fatal exception
->
-> Read netns_id once with READ_ONCE() and use that value for validation
-> and the matching get/put pair.  Each invocation then consistently uses
-> either the calling namespace or a referenced namespace.
->
-> Fixes: aed8ee7feb44 ("net: netfilter: Deduplicate code in bpf_{xdp,skb}_c=
-t_lookup")
-> Fixes: d7e79c97c00c ("net: netfilter: Add kfuncs to allocate and insert C=
-T")
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+From: Qing Luo <luoqing@kylinos.cn>
 
-Sashiko is right on this regarding all other fields of opts having the
-same issue. While they can't lead to a crash, let's still snapshot them
-at the beginning of the function so they don't change from under us.
-This is still far from ideal - we may read an inconsistent snapshot of
-the struct - but it's backed by BPF program-controlled memory so AFAICT
-this is the best we can do.
+sctp_auth_calculate_hmac() silently returns when
+sctp_auth_asoc_create_secret() fails under memory pressure,
+leaving the digest zeroed. Callers then compare the zeroed
+digest against the saved one, getting SCTP_IERROR_BAD_SIG
+instead of the correct SCTP_IERROR_NOMEM.
 
-pw-bot: cr
+Change sctp_auth_calculate_hmac() to return int so callers
+can distinguish allocation failures from bad signatures:
 
-> ---
-> Please queue this fix for stable kernels.
->
->  net/netfilter/nf_conntrack_bpf.c | 20 ++++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
->
-> diff --git a/net/netfilter/nf_conntrack_bpf.c b/net/netfilter/nf_conntrac=
-k_bpf.c
-> index f98d1d4b42c3..8b540846f299 100644
-> --- a/net/netfilter/nf_conntrack_bpf.c
-> +++ b/net/netfilter/nf_conntrack_bpf.c
-> @@ -122,6 +122,7 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_s=
-ock_tuple *bpf_tuple,
->  	struct nf_conntrack_tuple otuple, rtuple;
->  	struct nf_conntrack_zone ct_zone;
->  	struct nf_conn *ct;
-> +	s32 netns_id;
->  	int err;
-> =20
->  	if (!(opts_len =3D=3D NF_BPF_CT_OPTS_SZ || opts_len =3D=3D 12))
-> @@ -134,7 +135,8 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_s=
-ock_tuple *bpf_tuple,
->  			return ERR_PTR(-EINVAL);
->  	}
-> =20
-> -	if (unlikely(opts->netns_id < BPF_F_CURRENT_NETNS))
-> +	netns_id =3D READ_ONCE(opts->netns_id);
-> +	if (unlikely(netns_id < BPF_F_CURRENT_NETNS))
->  		return ERR_PTR(-EINVAL);
-> =20
->  	err =3D bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
-> @@ -147,8 +149,8 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_s=
-ock_tuple *bpf_tuple,
->  	if (err < 0)
->  		return ERR_PTR(err);
-> =20
-> -	if (opts->netns_id >=3D 0) {
-> -		net =3D get_net_ns_by_id(net, opts->netns_id);
-> +	if (netns_id >=3D 0) {
-> +		net =3D get_net_ns_by_id(net, netns_id);
->  		if (unlikely(!net))
->  			return ERR_PTR(-ENONET);
->  	}
-> @@ -171,7 +173,7 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_s=
-ock_tuple *bpf_tuple,
->  	__nf_ct_set_timeout(ct, timeout * HZ);
-> =20
->  out:
-> -	if (opts->netns_id >=3D 0)
-> +	if (netns_id >=3D 0)
->  		put_net(net);
-> =20
->  	return ct;
-> @@ -186,6 +188,7 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct net =
-*net,
->  	struct nf_conntrack_tuple tuple;
->  	struct nf_conntrack_zone ct_zone;
->  	struct nf_conn *ct;
-> +	s32 netns_id;
->  	int err;
-> =20
->  	if (!opts || !bpf_tuple)
-> @@ -201,7 +204,8 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct net =
-*net,
->  	}
->  	if (unlikely(opts->l4proto !=3D IPPROTO_TCP && opts->l4proto !=3D IPPRO=
-TO_UDP))
->  		return ERR_PTR(-EPROTO);
-> -	if (unlikely(opts->netns_id < BPF_F_CURRENT_NETNS))
-> +	netns_id =3D READ_ONCE(opts->netns_id);
-> +	if (unlikely(netns_id < BPF_F_CURRENT_NETNS))
->  		return ERR_PTR(-EINVAL);
-> =20
->  	err =3D bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
-> @@ -209,8 +213,8 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct net =
-*net,
->  	if (err < 0)
->  		return ERR_PTR(err);
-> =20
-> -	if (opts->netns_id >=3D 0) {
-> -		net =3D get_net_ns_by_id(net, opts->netns_id);
-> +	if (netns_id >=3D 0) {
-> +		net =3D get_net_ns_by_id(net, netns_id);
->  		if (unlikely(!net))
->  			return ERR_PTR(-ENONET);
->  	}
-> @@ -225,7 +229,7 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct net =
-*net,
->  	}
-> =20
->  	hash =3D nf_conntrack_find_get(net, &ct_zone, &tuple);
-> -	if (opts->netns_id >=3D 0)
-> +	if (netns_id >=3D 0)
->  		put_net(net);
->  	if (!hash)
->  		return ERR_PTR(-ENOENT);
+- sctp_sf_authenticate() frees save_digest and returns
+  SCTP_IERROR_NOMEM on failure.
+- sctp_packet_pack() frees the auth chunk and returns 0
+  (drop the packet). In the non-GSO path nskb equals head,
+  so only free nskb in the GSO path to avoid a double-free;
+  the caller handles head cleanup when pkt_count is 0.
+
+Also update the declaration in auth.h to match.
+
+Assisted-by: LLM # review
+Signed-off-by: Qing Luo <luoqing@kylinos.cn>
+---
+ include/net/sctp/auth.h |  6 +++---
+ net/sctp/auth.c         |  6 ++++--
+ net/sctp/output.c       | 10 ++++++++--
+ net/sctp/sm_statefuns.c |  9 ++++++---
+ 4 files changed, 21 insertions(+), 10 deletions(-)
+
+diff --git a/include/net/sctp/auth.h b/include/net/sctp/auth.h
+index 6f2cd562b1de..eeb3297fe97d 100644
+--- a/include/net/sctp/auth.h
++++ b/include/net/sctp/auth.h
+@@ -83,9 +83,9 @@ int sctp_auth_send_cid(enum sctp_cid chunk,
+ 		       const struct sctp_association *asoc);
+ int sctp_auth_recv_cid(enum sctp_cid chunk,
+ 		       const struct sctp_association *asoc);
+-void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
+-			      struct sk_buff *skb, struct sctp_auth_chunk *auth,
+-			      struct sctp_shared_key *ep_key, gfp_t gfp);
++int sctp_auth_calculate_hmac(const struct sctp_association *asoc,
++			     struct sk_buff *skb, struct sctp_auth_chunk *auth,
++			     struct sctp_shared_key *ep_key, gfp_t gfp);
+ void sctp_auth_shkey_release(struct sctp_shared_key *sh_key);
+ void sctp_auth_shkey_hold(struct sctp_shared_key *sh_key);
+ 
+diff --git a/net/sctp/auth.c b/net/sctp/auth.c
+index c901d373af80..4db3a3a4a457 100644
+--- a/net/sctp/auth.c
++++ b/net/sctp/auth.c
+@@ -613,7 +613,7 @@ int sctp_auth_recv_cid(enum sctp_cid chunk, const struct sctp_association *asoc)
+  *    zero (as shown in Figure 6) followed by all chunks that are placed
+  *    after the AUTH chunk in the SCTP packet.
+  */
+-void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
++int sctp_auth_calculate_hmac(const struct sctp_association *asoc,
+ 			      struct sk_buff *skb, struct sctp_auth_chunk *auth,
+ 			      struct sctp_shared_key *ep_key, gfp_t gfp)
+ {
+@@ -636,7 +636,7 @@ void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
+ 		/* ep_key can't be NULL here */
+ 		asoc_key = sctp_auth_asoc_create_secret(asoc, ep_key, gfp);
+ 		if (!asoc_key)
+-			return;
++			return -ENOMEM;
+ 
+ 		free_key = 1;
+ 	}
+@@ -654,6 +654,8 @@ void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
+ 
+ 	if (free_key)
+ 		sctp_auth_key_put(asoc_key);
++
++	return 0;
+ }
+ 
+ /* API Helpers */
+diff --git a/net/sctp/output.c b/net/sctp/output.c
+index 23e96305cad7..a7930cd9400e 100644
+--- a/net/sctp/output.c
++++ b/net/sctp/output.c
+@@ -517,8 +517,14 @@ static int sctp_packet_pack(struct sctp_packet *packet,
+ 		}
+ 
+ 		if (auth) {
+-			sctp_auth_calculate_hmac(tp->asoc, nskb, auth,
+-						 packet->auth->shkey, gfp);
++			if (sctp_auth_calculate_hmac(tp->asoc, nskb, auth,
++						    packet->auth->shkey, gfp)) {
++				sctp_chunk_free(packet->auth);
++				packet->auth = NULL;
++				if (gso)
++					kfree_skb(nskb);
++				return 0;
++			}
+ 			/* free auth if no more chunks, or add it back */
+ 			if (list_empty(&packet->chunk_list))
+ 				sctp_chunk_free(packet->auth);
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index b01db33bbc36..b68de2c4dc26 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -4455,9 +4455,12 @@ static enum sctp_ierror sctp_sf_authenticate(
+ 
+ 	memset(digest, 0, sig_len);
+ 
+-	sctp_auth_calculate_hmac(asoc, chunk->skb,
+-				 (struct sctp_auth_chunk *)chunk->chunk_hdr,
+-				 sh_key, GFP_ATOMIC);
++	if (sctp_auth_calculate_hmac(asoc, chunk->skb,
++				     (struct sctp_auth_chunk *)chunk->chunk_hdr,
++				     sh_key, GFP_ATOMIC)) {
++		kfree(save_digest);
++		return SCTP_IERROR_NOMEM;
++	}
+ 
+ 	/* Discard the packet if the digests do not match */
+ 	if (crypto_memneq(save_digest, digest, sig_len)) {
+-- 
+2.25.1
 
