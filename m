@@ -1,149 +1,152 @@
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E9540BCC4;
-	Thu, 30 Jul 2026 11:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBAB417369;
+	Thu, 30 Jul 2026 11:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785411651; cv=none; b=FeePLCXyPAhT3+sATRQj5Iivh54Y7iNs28R0Dln4tsTQCsh41ydmhTkVPZdAHjL2fbmHTXwLbB0wwig7gR/CjLYwO0UaLTH2raGCyBehd0eSGSJ8yG0W/0gO1dYHJiS6xsupG5cDExS6z01+nDA88ZL3c54fNOL8IDjjh8R+37E=
+	t=1785411699; cv=none; b=A6RP6/PWHKGPJ2BL7kU6mP1kMVVTEH8rCrFSdDHGacOqqtRrIbg5R/GDuzmy5x8MQiu0W60ZC8qzIu7cn/VJpGopa6tvyqogNXXb0f7HNMovyU0NjrTLzushftlViscj8PdWiLbir5hieMGcGDzE+/M8j7ODjKBv4Cu9xrUoEPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785411651; c=relaxed/simple;
-	bh=++m2A5f/g1GhI7LD4S7U4F2Oc1KNNWqDYFaeuDOvHZM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qVjqvprVvklTY+9mmKMgo6mM4OZj8ZnIxeCYTR/HrX/dMJ92GiqX8/d0E/PoBu4T9hoHGo/BHpIpMfU+bhtG8Grp/1K9wyhbm7pP3zS+j3etiYz/qfqWOgi4dKvFOt3dA9vlpRq9oGf0BM3PM9PHZd5KVKAeqAdbeq3J/pb7W94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fourdim.xyz; spf=pass smtp.mailfrom=fourdim.xyz; dkim=pass (2048-bit key) header.d=fourdim.xyz header.i=@fourdim.xyz header.b=GpKyrMKW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=U+ZpxL2Z; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fourdim.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fourdim.xyz
+	s=arc-20240116; t=1785411699; c=relaxed/simple;
+	bh=XJC8VPRE2FBJbIJ8kWSMeCvOs6Pnqmn6A4ET3qRLeCQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P17Vig5wNMDzqe2VGb5IQJtAJmY5rWI1CV7kFqIwABWpUeW+2q0IxEkKzax05KKnJU6kj+aae7gYic4BaZuno5Kk3bwTw9MTrQluuF11Bj+9oWFtLi/A4EnSAEqwLneP4VSm6nR6/ZXq4bc1/869tWRozEDYywrA/QbRPoEmFxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eqHrVb4c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fourdim.xyz header.i=@fourdim.xyz header.b="GpKyrMKW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="U+ZpxL2Z"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id A8DF61400102;
-	Thu, 30 Jul 2026 07:40:48 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 30 Jul 2026 07:40:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fourdim.xyz; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1785411648;
-	 x=1785498048; bh=2PRH+TiaRNTVck/c7fpAib4XXYBnbYQMJn2aUAaKQuY=; b=
-	GpKyrMKW4lpwiITVCOwUU/8kKq1DfPupVwdznsIHyk8H8yWfdgmV9qHLmY7RysbA
-	iGETRvBYIHW0TE4ay2vUw32p1XaEkrzeS2iXOUaF9v3LHkOIOVOGROWgEUkMJu8o
-	acBkQOwH3pITPJBvD+rVcK0CGsIUTICTvR14q7ic8IW7Guo4ZeyZSp5Q3Fzfn4SL
-	olsNwf7WUrJWD9gT8pI3sLpTpnpaHWAciVB5wLcpEEnPOrD61fWbMtbCRswHlBG2
-	TKzu+toC7U3enSFPjJJRTLKjagYJ78lAcW+UOZipEdWsTWdjAsoVXdTNSqpTf4gQ
-	/DX2Ot/Vry5kA1ySskoJKQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785411648; x=
-	1785498048; bh=2PRH+TiaRNTVck/c7fpAib4XXYBnbYQMJn2aUAaKQuY=; b=U
-	+ZpxL2ZXoYHky/pEshDpBhiRc3UN82IhaxM+bRz/vRmDUZkII9iMd0leP1EQpXgN
-	8fiTKEFrGtBJzXmjGQphEHVIWDg7CDxIZzQrPvhC/Y0FBr0qh26sNSwprboDVYih
-	Bf3nMTEACQ6e7Hq+D+8wMf74pZQrjfZY6IPX6bZBYhrhfeUrHdHDvvM1LW0SLtpS
-	OuH1hkDj6KGZ8nLyITdX2zIjbn5WZPcKCLY4frKL/SMmHCHfHsxZ57AFi5v7ZXzJ
-	+9H6NOkhFggJCgYlydmHdYkcofKvvgljqkCPaYkz7btwqnbc7UlyIvf5lBAC+0Fe
-	tJr5osRtZEHpQDe7H58QA==
-X-ME-Sender: <xms:QDhraknH1QYx-mvslUVCUcehsSjkmL9RPsZGCmTHxaUwCYMemN_UIw>
-    <xme:QDhrasCAz8FfszlCx27aBuHKQGFFR3BPRFjI5KeYkjVKNuwcbgAm24ioukFO5MEFf
-    5umWs7_v6rz2bsblEesDDSMAOG01KQIN8SLiTatmeZv5nfFjNGB8pM>
-X-ME-Received: <xmr:QDhrauMTga3PCBeQHaDmdp1rg81jiiF5Scy6N7q_42WmF6O5ud6Iet3k7xMdPHyY7nkg_AAWTA>
-X-ME-Proxy-Cause: dmFkZTGV6Xa745a9rX5TyYW4BcJ0aXa9Un0vyb2mpcHCGd5FrqrV04PxC8YY5y+e8HpGg7
-    eirwmOCqGe9QgzKm4/lnJz0De9GY4CL6jgx3mrMYA4timNJLBPhy+3aJ3jrVIvhskwTWSa
-    iTl6ICzCDm5voKRGqhAs0fR5+iewTOg70GhxRJG+/HrhrRz1tjOd8KS83o3Ev51xISuyr2
-    u8hMynPZDVMP+hZRaadh+Aw3e0pAMRprtWmBos02IKRGptYcMq+DsI95D6d3mIWevV/nxR
-    h3EhCIbPLuLK/2NObwa/xo4YCImqT4OhZTJ4Rsm7UdpQsp3H9mVomnywQn+00ZSq6KHmFJ
-    7IC6fBTK7QV0IQ98z+Yte6tLIhWjnYv1iN2k7ByQGNiTJ8zmIkq1Z+sVMys1SCSsWG4U7U
-    Xk4RsrKnw28XBu8PsWYNTRXvTBs6RqPJeI9VUpedW60emdWCMQjhTNLrXc9/6AzRTC5rE0
-    //MhY1HsOy3ltrpob03wVBDRD+SNxbHSajBr8+EvdPcvcKfobVdXXGAiTunHeLTHJwBfxQ
-    NdDQEgVeWBk+wt6FLON4k81NiVh5JaIL2xt1GdZQij3aA/JNHe0Z/2umgaId7/Dj5C+J8Q
-    bS+eshGEnlDwqx3YIK5C0aXDF9BkkCN71zw9lDx46cYJQ8lzEY6iPmwKfx5g
-X-ME-Proxy: <xmx:QDhrarPvj2kqoRr6tD_DwwSXgGXk_MUW5gTc9F-a3bMR_C9s8kFG9A>
-    <xmx:QDhraukk9m2ee8avhMyEGvO7068y7jkAwjEzBDvLHo2ksb83hsfZ9w>
-    <xmx:QDhrahvgpwL-F1oWT8zZkYwM7lcKjeuYw3qawg9o2NA6KeN1_RSE7w>
-    <xmx:QDhraprIgce6isqY929WL3mKwRsrllpiYrErQ8Sqke6dOhOAw4Komg>
-    <xmx:QDhrapekmF7YeWY_vQfI87Nf8g3I4O_eWmoRrLy29tm1UAd8lW_9HRU2>
-Feedback-ID: if72e4b10:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Jul 2026 07:40:45 -0400 (EDT)
-From: Siwei Zhang <oss@fourdim.xyz>
-To: netdev@vger.kernel.org
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Siwei Zhang <fourdizhang@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 1/1] xfrm: use hlist_del_init_rcu for state_cache and state_cache_input
-Date: Thu, 30 Jul 2026 19:40:08 +0800
-Message-ID: <20260730114028.1077499-2-oss@fourdim.xyz>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260730114028.1077499-1-oss@fourdim.xyz>
-References: <20260730114028.1077499-1-oss@fourdim.xyz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eqHrVb4c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8F31F000E9;
+	Thu, 30 Jul 2026 11:41:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785411697;
+	bh=1Y8PGz3vJMmVf3g3KPKLx97MsTPFyh1Ze5zLLFy1D3E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=eqHrVb4chm2WrXk/JzLSXzeLtQVgdu9ebdSEi+JIp5/CUt6ouGFo9TKj4ghriWlaG
+	 Uf1WHTR+UqoQ8tWyHhdsLITg419hjDWrtP1ZmwtI3LgjX1jga6Fr8aOdYRYkwfmxhk
+	 Alr7c8hbnQGfKJ5Po7UwtVQu8rtEIemR6hdVRh67H/s0tF1ictYUvZX5KxqeZASww+
+	 y5bp0XZE4gbMZiRs4Z8CEnjB0eTDIfhdQ+C/dSAVlS2MFg71PTTjR4c8fut1Uy5uaK
+	 GHWLXK8BZWweiQxBjTepfIzHcU0MqpbgX5GYMEg5vYQdncF673DCNQQm8hfwDoyL6y
+	 eC1HvdVvJ3WvA==
+Message-ID: <50a524c2-a470-4b24-9b63-41b37346fa74@kernel.org>
+Date: Thu, 30 Jul 2026 13:41:26 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/3] dt-bindings: net: rockchip-dwmac: Add 25M
+ refout clock
+To: Gavin Gao <attinagaoxu@gmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, heiko@sntech.de, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, richardcochran@gmail.com,
+ nicolas.frattaroli@collabora.com, sebastian.reichel@collabora.com,
+ sashal@kernel.org, alchark@gmail.com, chaoyi.chen@rock-chips.com,
+ amadeus@jmu.edu.cn, rmk+kernel@armlinux.org.uk, horms@kernel.org,
+ alok.a.tiwari@oracle.com, david.wu@rock-chips.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20260727021048.3375444-1-attinagaoxu@gmail.com>
+ <20260727021048.3375444-2-attinagaoxu@gmail.com>
+ <20260730-lucky-strict-oryx-9ce8de@quoll>
+ <CAK2JjQVoaHjzf4Z=_LDVzTj0R-ey1Z4T+1OF_xYACdz1C4yReQ@mail.gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <CAK2JjQVoaHjzf4Z=_LDVzTj0R-ey1Z4T+1OF_xYACdz1C4yReQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Siwei Zhang <fourdizhang@tencent.com>
+On 30/07/2026 13:38, Gavin Gao wrote:
+> On Thu, Jul 30, 2026 at 4:27 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>
+>> On Mon, Jul 27, 2026 at 10:10:45AM +0800, Gavin Gao wrote:
+>>> Some Rockchip GMAC instances can provide a 25 MHz reference clock output
+>>> for an external RGMII PHY.
+>>>
+>>> Add a clock name for this 25 MHz reference output so SoC dtsi files can
+>>> describe it separately from the existing MAC reference clocks.
+>>>
+>>> Signed-off-by: Gavin Gao <attinagaoxu@gmail.com>
+>>> ---
+>>>  Documentation/devicetree/bindings/net/rockchip-dwmac.yaml | 1 +
+>>>  1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
+>>> index 0ac7c4b47d6b..074ac274f2e0 100644
+>>> --- a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
+>>> +++ b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
+>>> @@ -81,6 +81,7 @@ properties:
+>>>          - pclk_mac
+>>>          - clk_mac_ref
+>>>          - clk_mac_refout
+>>> +        - clk_mac_25m_refout
+>>
+>> That's the same as clk_mac_ref and clk_mac_refout. clocks are not
+>> outputs but inputs, so explain how does the device take three SAME
+>> clocks: clk_mac_ref, clk_mac_refout and clk_mac_25m_refout?
+>>
+>> Best regards,
+>> Krzysztof
+>>
+> 
+> This is not the existing clk_mac_refout clock. On RK3576 the
+> REFCLKO25M_GMAC[01]_OUT clocks are separate 25 MHz reference clock outputs
 
-Commit 14acf9652e56 ("xfrm: defensively unhash xfrm_state lists in
-__xfrm_state_delete") converted bydst/bysrc/byseq/byspi from
-hlist_del_rcu() to hlist_del_init_rcu() so that a second
-__xfrm_state_delete() on the same object becomes a no-op rather than a
-write through LIST_POISON pprev. It missed state_cache and
-state_cache_input, which kept hlist_del_rcu():
+That's why I emphasized here and in other patch we do not talk about
+outputs. Read the comments.
 
-- hlist_del_rcu() leaves pprev = LIST_POISON2 (non-NULL), so
-  hlist_unhashed() returns false.
-- hlist_del_init_rcu() leaves pprev = NULL, so hlist_unhashed()
-  returns true.
+> intended for RGMII PHYs, while clk_mac_refout is the existing refout clock
+> used by the Rockchip DWMAC binding for the RMII reference output path.
 
-A second __xfrm_state_delete() therefore enters __hlist_del() on the
-already-deleted state_cache/state_cache_input nodes and does
-WRITE_ONCE(*pprev, next) through LIST_POISON2 — a write use-after-free
-once the slab is reused. The corruption can in turn cause a subsequent
-hlist_for_each_entry_rcu traversal to follow a dangling next pointer,
-producing the read use-after-free reported in xfrm_input_state_lookup().
 
-Switch state_cache and state_cache_input to hlist_del_init_rcu() to
-match the other four lists, closing the write use-after-free and, with
-it, the read use-after-free it spawns.
 
-Assisted-by: CodeBuddy:GLM-5.2
-Fixes: 0045e3d80613 ("xfrm: Cache used outbound xfrm states at the policy.")
-Fixes: 81a331a0e72d ("xfrm: Add an inbound percpu state cache.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Siwei Zhang <fourdizhang@tencent.com>
----
- net/xfrm/xfrm_state.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 36a4f6793ede..f494c1ac57a4 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -823,9 +823,9 @@ int __xfrm_state_delete(struct xfrm_state *x)
- 		if (!hlist_unhashed(&x->byseq))
- 			hlist_del_init_rcu(&x->byseq);
- 		if (!hlist_unhashed(&x->state_cache))
--			hlist_del_rcu(&x->state_cache);
-+			hlist_del_init_rcu(&x->state_cache);
- 		if (!hlist_unhashed(&x->state_cache_input))
--			hlist_del_rcu(&x->state_cache_input);
-+			hlist_del_init_rcu(&x->state_cache_input);
- 
- 		if (!hlist_unhashed(&x->byspi))
- 			hlist_del_init_rcu(&x->byspi);
--- 
-2.43.7
 
+Best regards,
+Krzysztof
