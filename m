@@ -1,35 +1,48 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDC24779B9;
-	Thu, 30 Jul 2026 23:30:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C927477E4D;
+	Thu, 30 Jul 2026 23:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785454248; cv=none; b=NZ6MiLch99vTlktIi0TU6dFxN49s/Y6Os4X8SWbUvTETXjGIF2HB/OQfRxvASG9/X5jUCFjxMU1XYWmyv+HqczUNUI1KoCP6PyMVTj1/nazWuMf1ux1/VJddIko70p1+2wxi3yqzZ0GGclOS+q7qiYUWhgYW4gyyOFxZlAuYQ2M=
+	t=1785454487; cv=none; b=H9b7UDprFOUJERrldl8XcLQhGV6g6y12pgdQnZUUC9GwYOIRkxY/O77/tIVH3ekiyz5zNmYp2EJhSU/RNnoANW9ZxDrry+ozQj5ywtHoLaUXU3QxA0CWTZT0qKvsNum+XlxM2Du3CfjwpWRpZAyGNn3w17t6KB04ot1L4h0+xdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785454248; c=relaxed/simple;
-	bh=sVvDdwdWocEX4eQiZfZ6KXs3wR3Z2HLL0i4cU9mxp5Y=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KYwIY1TPOcwuskv+fn8gm+LQVyI7CfRJGL8kSX4EfYoD6gHQ5Xk6OdKpipw49N0wS+DGuQmT5ra6D9uHjEIE5oMAzNPVrojW1/Jp61QnFfpbrwPO1Q4ONl05NwNsQwoJY5qDaXu/4azJk/h8haATCD+N2qCtUYHj9qwWmTLCF9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YvY+YD0/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785454487; c=relaxed/simple;
+	bh=JzTGQfZc+bq34S4FJ580Z3fOqsbtklwarbQ7qfQGCPk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AO2IKmglVLBrfAGj5oDykOizvJevEhnU38j1muNk0E0aBuahS090lKs0JTe+A7+t9Z9su8Dx3tlACZVsIdcS3K3ONqXRAKSCNe9ZGTi2B5WMOdWb0eAyR+7b6TafiEeJvGclvCYtJvrKx7EeV3v8s4XXxfDcwNVJVUhz0ILR1PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=SRjY6enb; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YvY+YD0/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096871F000E9;
-	Thu, 30 Jul 2026 23:30:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785454247;
-	bh=nG5vXe6YVJ/CQ0f3t4Po4QS/3P98bdRLH1qDNC2Hak8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=YvY+YD0/lfUafYTmOONOzpUVIMD+ngRcaHXBNdjcBor6IQNykKvHnjLFwz+WfPg0k
-	 WCaishs29yJTFjhCB/OVCVCz8W/XS6+etuz5kQxbhNSKYAAu4f0TvnficIdjRgmjDy
-	 6zzN1aTojvHeHeV/8CiBdge9z5Tn5+tMP95aj8xmbfL2g1NnejPCoJ9Dh1Dw0ftBbk
-	 NnDmt3Dm3Hm9vRfWINNhAIltlJAqOAuzKcfjrLjCoYCVlT75+z1aAOi3RNT0cOpxKP
-	 yep/tUeccjqmO3LZTHXgDjv28/KaHWEyREfTEdQikc5AoTH7izXSs2Kb2M9n08TxJL
-	 XYI7p3Dx2eznQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93888392445F;
-	Thu, 30 Jul 2026 23:30:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="SRjY6enb"
+Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id E900E20B7167;
+	Thu, 30 Jul 2026 16:34:22 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E900E20B7167
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1785454463;
+	bh=RucA4cTdoZD100NHIS/VD42apsvD09hKC3y6JqFhedE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SRjY6enbYbYFJmGnnCMQv9ivfVUh3q+nhyFmoUABZDE+U02SYOltdsdf0G3oYB4/c
+	 kkUU59yf4upB9Q1H7Oo91tuA1gBBkCGqaEfJE+A9n6k5S7jCjA64IOFLk6R/Z3DTE+
+	 jItmISIjL4Lt/tEhpEtcIsc7Xow/2N98a8tli0LI=
+From: Kameron Carr <kameroncarr@linux.microsoft.com>
+To: decui@microsoft.com,
+	haiyangz@microsoft.com,
+	kys@microsoft.com,
+	longli@microsoft.com,
+	wei.liu@kernel.org,
+	mhklinux@outlook.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH v2 0/2] Drivers: hv: decrypt netvsc buffers on contiguous direct-map addresses
+Date: Thu, 30 Jul 2026 16:33:57 -0700
+Message-ID: <20260730233359.3850612-1-kameroncarr@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,47 +50,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] bonding: alb: re-check primary_is_promisc under
- RTNL
- in bond_alb_monitor
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178545421014.36899.8795736744485931799.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Jul 2026 23:30:10 +0000
-References: <20260725233930.2957317-1-xmei5@asu.edu>
-In-Reply-To: <20260725233930.2957317-1-xmei5@asu.edu>
-To: Xiang Mei <xmei5@asu.edu>
-Cc: razor@blackwall.org, jv@jvosburgh.net, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
- kys@microsoft.com
 
-Hello:
+Arm CCA Realms implement set_memory_decrypted() only for addresses in the
+kernel linear map; vmalloc()/vmap() addresses are rejected. netvsc
+allocates its large send and receive buffers with vzalloc() and passes
+those addresses to vmbus_establish_gpadl(), which calls
+set_memory_decrypted(), causing GPADL establishment to fail in a Realm.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This series allocates shared buffers as a list of chunks, each physically
+contiguous, decrypts each chunk through its direct-map address, and
+combines them into a virtually contiguous mapping with vmap(). Private
+buffers continue to use vzalloc().
 
-On Sat, 25 Jul 2026 23:39:30 +0000 you wrote:
-> bond_alb_monitor() reads primary_is_promisc under RCU, then drops RCU and
-> takes RTNL via rtnl_trylock() before undoing the promiscuity it set on the
-> active slave. In that window the active slave can change under RTNL
-> (RTM_DELLINK -> __bond_release_one() -> bond_alb_handle_active_change()),
-> which already drops the promiscuity and clears primary_is_promisc. The
-> monitor still acts on the stale decision: if the slave was removed with no
-> failover, curr_active_slave is now NULL and the deref faults; if it failed
-> over, the stale dev_set_promiscuity(-1) underflows the new slave's
-> promiscuity counter and pins it in IFF_PROMISC.
-> 
-> [...]
+Changes since v1 [1]:
+  Patch 1:
+    - Add HV_GPADL_BUFFER_DECRYPTED to enum hv_gpadl_type to indicate a
+      buffer that has already been decrypted.
+  Patch 2:
+    - Rename netvsc_{alloc,free}_buf_pages() -> vmbus_{alloc,free}_buffer()
+      and move them to channel.c. 
+    - Remove struct netvsc_buf_chunk and replace with page folio in
+      compound pages.
+    - vmbus_alloc_buffer():
+      - use vzalloc() for non-host-visible buffers and remove the
+        encryption decision out of netvsc.
+      - min_t() -> min().
+      - zero the memory after allocation.
+      - specify @size "will be rounded up to PAGE_SIZE" in the docstring.
 
-Here is the summary with links:
-  - [net,v2] bonding: alb: re-check primary_is_promisc under RTNL in bond_alb_monitor
-    https://git.kernel.org/netdev/net/c/683c6ba6e58e
+[1]: https://lore.kernel.org/all/20260721195633.1438361-1-kameroncarr@linux.microsoft.com/
 
-You are awesome, thank you!
+Kameron Carr (2):
+  Drivers: hv: vmbus: add vmbus_establish_gpadl_caller_decrypted()
+  hv_netvsc: Allocate host-visible GPADL buffers as decrypted contiguous
+    chunks
+
+ drivers/hv/channel.c            | 185 +++++++++++++++++++++++++++++++-
+ drivers/net/hyperv/hyperv_net.h |   8 +-
+ drivers/net/hyperv/netvsc.c     | 104 ++++++++++++------
+ drivers/net/hyperv/netvsc_drv.c |   6 ++
+ include/linux/hyperv.h          |  15 ++-
+ 5 files changed, 281 insertions(+), 37 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.45.4
 
