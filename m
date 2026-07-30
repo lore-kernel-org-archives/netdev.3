@@ -1,79 +1,79 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B89C2D5408
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 09:05:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15EE3DB62D
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 09:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785402346; cv=none; b=ltZ66G7Sd9NJOOBESTzhrBaxIY3sOhWLmoD1R3llghZ1A7hukIiTn8+N6h6GyesCzVUVrMxl4LGb7/qTKKEnVmpBhj5Qz2ouJrhPxwn8EQojcmRRJ/lKePZ5fybZ1FYEWtYMH2WjizLyKX0wSLBHkwkOAAVt13wc6fzfiaNHx7w=
+	t=1785402445; cv=none; b=Z+ZQ8z2MqnJ/W5pU8eohQFdJg/ffslBi9W74pQctWIfz9DyT2nqgWK9mjZy19hBRpoRTR/KF+tqOq3zdjPLgmjAGdMucg8B3CfrOFk+5BeCJ6kGqm1KHJE5+F+09GvxjskrOjNwKkUHCEjTebcBVgvMly+OnW3h73N7IAVXrWP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785402346; c=relaxed/simple;
-	bh=kL3IVIOe1ALgbrOXk8HHOMTEE77ThONwsjZG93CgMo4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mArb89kI1svMXx0GvbHKCJic8I/Itbi0pHYS+B4qyPZo4wI81OzJ1CpBtsNkZYdr5SKS0Kvv2Rqo7LMaqj+N/MMVBaRkmWzbyB+sUcPvxNiJxSOzAMokpKlp0z6+Xs3gN6vDwXMnss8ad2Zsq7qWMLiJRloGFo4bndnauU+MoIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nBvVYFHF; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1785402445; c=relaxed/simple;
+	bh=oFUrZtRRNj2gTDkbGbXwoDomFxQzWtw5x1jET3rFJzk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bm1ALMcLrVLQwmHFPRHLgIL2cmZ65FMrBhu6oMwh/QHgfL0gyRsMERYEfILN3LEtyOPXYBD6pIBHSalsS2UVIE7BtW0KvU3IPntoUr0FbgCLSzDIxltUnY/nQcW2wE0B91NtDBikchXiEhz4EDtZkYHFVbqL3wVULgCSegkbuXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e3ZG3xnD; arc=none smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nBvVYFHF"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so24608975ad.1
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 02:05:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e3ZG3xnD"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-39c9a3acd40so15554051fa.3
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 02:07:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785402345; x=1786007145; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CpKlGxNrk83Ii+YIm4YNlRDoPzJNOT0xfV5KNDUW93I=;
-        b=nBvVYFHFbjYQTnCofCA9ks75kdDzRumkvCh9rWUEPgwpuconZFERRu1m1cA320yIvs
-         4LMgNPTkaY4QT4d6kYcEGyRV0eNXeElR21szhtVlBZK8pwk0izYer/+LDf+lAShJK30+
-         ReR8Oc0rIE/9mdSKJTGg0c8WX6SpugumR3679LhELayb4FIph6sRciGQCPLLpvrpd97/
-         bUAe0S2nG1MYsMM910VUZ/YUB3p7nm0ZfljtCVm/KGlu6B7u5wpa8rSdDr+G79pnpAPh
-         OXKyuUj51Q5DxVbdKqrZA24NWVzgTnCjb56hqM3B6PflIl3X/KzBiTEs0rGSP9bJmuoQ
-         x7mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785402345; x=1786007145;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1785402442; x=1786007242; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CpKlGxNrk83Ii+YIm4YNlRDoPzJNOT0xfV5KNDUW93I=;
-        b=FV+8N7qjvMCVa5hVDhWW9ZB5EeteSgIeZ9arfeEhH/P0FPi3aBMWjh9LCSYQqkbcG6
-         +8w3yn55gsytrzgjHE4DQylTdz2MdmnA/3X1XNBO0QyP4FovBs2NcEcEpyb4J5SYF8PF
-         A0/7vMVOc9YFP9S0YC6I2CdNKMaM+IcBrpqH3hc9McPuuhVwRsGNihpc9u2hOof1qvYS
-         DzUfRVuTx/PQAbxZxOFSm5t/HF9elptYGphxVwZ/hGdfiy2Z7hCHKmEelts8vgXfGV1T
-         qsZ103cDwod2GQpmznDknu0QRKMdNLaupKs+Sqb/GTqEtCa3gnKej/7IFEnK0cmbCWv+
-         OWug==
-X-Gm-Message-State: AOJu0YxnASaUh5eRTFr4U0RjnHVnkSxmBKBORwzSHNkKd3svxoRTz8Hb
-	n1mnCCwP9LaEvjme9lhV6/fwq1AV02PZpIbW07TjWyrsiV8e9BDsnrRuILTTjds8OQsOkMC8
-X-Gm-Gg: AR+sD13ulX1ftO5Y9pwwSC5+xerJpPwAYVYovEsQq5p58x6X6geroEKKvvSPI4YhKnm
-	aI24+NO8PtniRFQ9PH/6fMAIJyhR6o+cIi+go+TD+cNRXL6gtIKU2BLlL5c5YHMhF+P6ysJGvgd
-	0obxTajxYtCL54F53isT1HhN1700U9sW47Vdg3R1be09f6WSInrhaJw3H1EBDsivpPhSY+AqHGn
-	cJVz1KoIc7qICw5X/iGrkJnVje5BQyQpU/8d89CqXMLOlYkuK98DXNE7n8mB7gx5zEThpfaswrn
-	tJl7SvSdunXef3VclRCbLu++poqNYxM9Zz8VqX6O2joV448AoTshpyNHyNtY2KXqAfKPDlOH2dV
-	fQuvYTXTcwG/SC4TiNjB+0mz75fRuVJrTlUyyOVtBHiParx27OXchX9cZ3qlnbWOxVgyoI7dMiQ
-	zPS9Ymh8HHUgBCQDFkP5kxSQJz4pD9oOdbfTA46f+gD2s7YI14DUtP4B2qdTjdr/Ns1ROZnUQu/
-	MRq6cQ4sPDZIuhwpFpA7jxQP/kDlZHRQS3H
-X-Received: by 2002:a17:902:d983:b0:2cc:a977:4260 with SMTP id d9443c01a7336-2d035bdf26amr19397505ad.21.1785402344493;
-        Thu, 30 Jul 2026 02:05:44 -0700 (PDT)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.24])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0228417adsm23387555ad.0.2026.07.30.02.05.41
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 30 Jul 2026 02:05:44 -0700 (PDT)
-From: Jun Yang <juny24602@gmail.com>
+        bh=U0z4UuuolGvo1Tjv+Sep5cfV44lwXxHOj4UIRPkpfFM=;
+        b=e3ZG3xnDcplUTV+enEuRZVRHR9X1MMVotyHRFLYNDtu3zZwqhyoOSURHr5pbcBBgwY
+         dfCq4TSxzDGBHGLaKZelPKplPKP2rqu+Zg9xICl1xTKgH8MyL11SgU6jNe564KYKNsVo
+         FjFq12vaw/Fi5NDPYkYEa/4NMCv6v7hyZLGjHcg3PDoYZr/52Uu3egCuPwp7JGh41PWm
+         r6/CIieSenHciP2gDlc21e4OYOZEkcEfKSYhPwFykYyve+i+eCaM7Y6AU9CakcmXcZOd
+         zKafwtbO5KYxKG2tSNs6rtZ+i+ol1aTdPVdChOxg8KDX8FP/DepQHLYcgCNpGyXlnqyk
+         xIyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785402442; x=1786007242;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=U0z4UuuolGvo1Tjv+Sep5cfV44lwXxHOj4UIRPkpfFM=;
+        b=kCHHQ7WgTqW8aDelQiIxITcMelgJm9RkkiOcfNoOQ4FkbzSLQI4WAR+qUikcj6Ltxp
+         dyXSAHDXWQgjxt6rkb0D0rO7MrhES0zTjhrlE2Cl60CbwXYjrIqmp5FC4a/glDxjtE5t
+         ra4Om/3HjtC2qyAtGqDcFoHTKPLbU41ZlQ6er0bw/99KH4rrEdwaP+eXngSC8GCG6xF3
+         IoDFpTTsZcReDdtNm+Oo9zn/yiMkgH88u8MbxauDyAm0VyE8K1d/7MTQp1oUtDUrZUfq
+         dDwNqrnlocYMDqY+IrAsykvURNkL4uKHJafXf1+hblyHrhMK4ffkiv0kKU4FYsIxPQAW
+         5cpw==
+X-Gm-Message-State: AOJu0Ywks+HSV/Zgd3DbShH+hdTYMOdcoV7VcepS+3IJfQAjtsAeCZ//
+	Pgr5l56JKcWPlM8/ACUdREOAIN2DFqdJN785DzedAkgHq7/hqiHOiIkxiypStg==
+X-Gm-Gg: AR+sD10MYkhX0m+NA8+p5Qp934GDkmIHI/ZEloQb7mAp7SOtOmb38zQ0k7Xnzfbwms6
+	D6cXadD+6xsfZ63xXwMHQJWTgaglb5tDHEBU4V1JgBZj8LN/QZkcp/VWWNr1bH2eJmg4IMqUwrX
+	4NvTJjdOymHhhkPDUqFtth8lrcq+vcRz0fxCnGw3M+Z1SPriZU0iA/t55rWGwoMKcsA74QFgbeL
+	Obc9pCBQk8F0+8hEpG1QoDwFpUJDAMJvcfFfDdR5ZuAnAB1R59xDDgyVqV6DfWJtwLJQqj4Xncs
+	oqN/id7mpOXpGdribouU7O0kucm8SMCBvYagVmqCBd2wz3h47QmTHdhhU0Ou+jBW9dk/luJHxEL
+	0lMIv5Pm/gk4NyiwDaOdxoN2MGN5dP705QrwUtvDelAHwOUH23DPfh5YAIoD4sLdKfsIB1jU9TQ
+	skUlY/eMW75mDgCGH031tcAC2G1ecJzXxqKL2iltBQAzYQRY0v4N4TSt3F6OQnT7cF8f1FIGs9h
+	0ZAsIaID6hRUUrSKSu+lxXSW06PSOtaf+KYU4TGobkJplFyfKDoKhBORtI=
+X-Received: by 2002:a2e:be28:0:b0:39c:628c:15ec with SMTP id 38308e7fff4ca-39f6b8a6772mr3117331fa.23.1785402441658;
+        Thu, 30 Jul 2026 02:07:21 -0700 (PDT)
+Received: from localhost.localdomain (46-138-176-102.dynamic.spd-mgts.ru. [46.138.176.102])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39f6a598d87sm2015941fa.5.2026.07.30.02.07.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 02:07:21 -0700 (PDT)
+From: Artem Lytkin <iprintercanon@gmail.com>
 To: netdev@vger.kernel.org
-Cc: Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-sctp@vger.kernel.org,
+Cc: kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	donald.hunter@gmail.com,
+	jacob.e.keller@intel.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net] sctp: re-point retained control chunks on association migration
-Date: Thu, 30 Jul 2026 17:05:25 +0800
-Message-ID: <20260730090537.27629-1-juny24602@gmail.com>
-X-Mailer: git-send-email 2.50.1
+Subject: [PATCH net-next v2] rtnetlink: cap IFLA_VFINFO_LIST at a documented number of VFs
+Date: Thu, 30 Jul 2026 12:07:00 +0300
+Message-ID: <20260730090700.65867-1-iprintercanon@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260729185513.52564971@kernel.org>
+References: <20260729185513.52564971@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,79 +82,143 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jun Yang <junvyyang@tencent.com>
+rtnl_fill_vf() emits one IFLA_VF_INFO per VF into the IFLA_VFINFO_LIST
+nest and closes it with nla_nest_end(), which stores the accumulated
+length into nla_len. That field is a u16, so a nest larger than 65535
+bytes is written truncated modulo 65536.
 
-sctp_control_set_owner_w() records the owning socket in a control chunk's
-skb->sk as a bare pointer.  sctp_sock_migrate() re-owns the association's
-DATA chunks via sctp_for_each_tx_datachunk(), but that walk keys off
-chunk->msg and so skips control chunks: any control chunk the association
-still holds (for example the saved stream-reset request
-asoc->strreset_chunk, the ASCONF request/ack lists, or
-asoc->addip_last_asconf) keeps pointing at the old socket after the
-association is moved to the new one.
+Nothing catches it on the way. if_nlmsg_size() adds rtnl_vfinfo_size()
+for every VF, so the skb really is large enough and none of the nla_put()
+calls fails. Userspace then walks the message with RTA_NEXT(), which
+advances by the stored length, so parsing resumes inside VF payload and
+the attributes after the nest are read out of VF data: IFLA_VF_PORTS,
+IFLA_XDP, IFLA_LINKINFO, IFLA_PERM_ADDRESS, IFLA_AF_SPEC. iproute2
+prints "!!!Deficit" and strictly validating parsers reject the message.
+On CONFIG_DEBUG_NET kernels nla_nest_end() also splats, via the
+DEBUG_NET_WARN_ON_ONCE() added in commit 1346586a9ac9 ("netlink: add a
+nla_nest_end_safe() helper").
 
-Once the old socket is freed, a later retransmit reaches
-sctp_packet_transmit() -> skb_set_owner_w(head, chunk->skb->sk) and
-operates on the freed socket -- refcount_add() on its sk_wmem_alloc,
-then sk->sk_write_space() from sock_wfree() -- a use-after-free of
-struct sock.
+Where the wrap falls depends on what was asked for and on the host. A VF
+costs 196 bytes, 296 with statistics, 236 with GUIDs and 336 with both.
+On a kernel without CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS the statistics
+carry a padding attribute each and cost 32 bytes more, which makes those
+two 328 and 368. So the nest overflows somewhere between 179 and 335
+VFs. ice allows 256 VFs per PF
+(ICE_MAX_SRIOV_VFS), which reaches it. Statistics are included unless the
+request sets RTEXT_FILTER_SKIP_STATS, so the common case is the one that
+wraps first.
 
-Re-point every control chunk the association still holds at the new
-socket right after sctp_assoc_migrate(), as is already done for DATA
-chunks.  Control chunks carry no socket wmem charge and their skb
-destructor does not use skb->sk, so a bare owner update is sufficient.
+A limit that moves with the requested attribute set and with the host's
+alignment requirements is not something userspace can be told, so use
+fixed numbers instead and document them as what the interface supports:
+256 VFs, or 128 when statistics are included. Both stay well inside
+U16_MAX even in the largest per-VF encoding, at 60416 and 47104 bytes
+respectively. rtnl_vfinfo_size() applies the same limit so that the skb
+is not sized for VFs that will not be emitted.
 
-Fixes: d04adf1b3551 ("sctp: reset owner sk for data chunks on out queues when migrating a sock")
-Cc: stable@kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
+A device with more VFs than the limit reports a shorter
+IFLA_VFINFO_LIST. IFLA_NUM_VF keeps carrying the real count, and
+everything after the nest stays parsable, which is the part that is
+broken today. An empty nest is already emitted for a PF with no VFs, so a
+list shorter than IFLA_NUM_VF is not a new encoding.
+
+Returning -EMSGSIZE instead, which is what nla_nest_end_safe() would
+give, is not an option here: a nest that does not fit in a u16 will not
+fit in a retried skb either, so it would turn a link dump on such a
+device into a hard failure.
+
+The other large nests in rtnl_fill_ifinfo() were audited and cannot
+overflow. IFLA_AF_SPEC is bounded by a handful of address families at
+about a kilobyte each, and IFLA_VF_PORTS would need more than 560 VFs,
+which no in-tree driver allows.
+
+Reported-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/netdev/16b289f6-b025-5dd3-443d-92d4c167e79c@intel.com/
+Assisted-by: Claude:claude-fable-5
+Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
 ---
- net/sctp/socket.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+v2:
+ - cap at fixed limits, 256 VFs and 128 when statistics are included, and
+   document them in the netlink spec, rather than dropping whichever VF
+   happens not to fit (Jakub)
+ - drop the Fixes: tag, this is a long standing limitation of the
+   interface and not a regression (Jakub)
+ - retarget net-next for the same reason
+ - changelog: corrected the per-VF sizes, which mixed two configurations,
+   and dropped IFLA_PROP_LIST from the list of attributes that follow the
+   nest, since it is emitted before it
+v1: https://lore.kernel.org/netdev/20260725132236.88318-1-iprintercanon@gmail.com/
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index c7b9e325ec1c..9a6da4e0d741 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -9522,6 +9522,30 @@ static void sctp_skb_set_owner_r_frag(struct sk_buff *skb, struct sock *sk)
- 	sctp_skb_set_owner_r(skb, sk);
+ Documentation/netlink/specs/rt-link.yaml |  5 +++++
+ net/core/rtnetlink.c                     | 25 +++++++++++++++++++++++-
+ 2 files changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+index 68c26a70bb649..b80c2ac3ac311 100644
+--- a/Documentation/netlink/specs/rt-link.yaml
++++ b/Documentation/netlink/specs/rt-link.yaml
+@@ -928,6 +928,11 @@ attribute-sets:
+         name: vfinfo-list
+         type: nest
+         nested-attributes: vfinfo-list-attrs
++        doc: |
++          Per-VF details. The list holds at most 256 VFs, or 128 when
++          statistics are included, because it is one attribute and has to fit
++          in a u16 length. A device with more VFs than that reports a
++          truncated list; num-vf still carries the real count.
+       -
+         name: stats64
+         type: binary
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 31c65a545a107..6395ea6701210 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -1174,12 +1174,30 @@ static void copy_rtnl_link_stats(struct rtnl_link_stats *a,
+ 	a->rx_nohandler = b->rx_nohandler;
  }
  
-+/* Control chunks record their owning socket in skb->sk as a bare pointer and
-+ * are not reached by sctp_for_each_tx_datachunk(); re-point the ones the
-+ * association still holds so migration does not leave them on the old socket.
++/* IFLA_VFINFO_LIST is one netlink attribute, so everything nested inside it
++ * has to fit in the u16 nla_len. Bound the number of VFs described there at a
++ * fixed value rather than at whatever happens to fit, so that the limit is a
++ * property of the interface instead of one of the requested attribute set and
++ * the host's alignment requirements. The largest per-VF encoding is 368 bytes
++ * with statistics and GUIDs and 236 bytes without statistics, so both limits
++ * keep the nest well inside U16_MAX.
 + */
-+static void sctp_ctrl_set_owner_w(struct sctp_chunk *chunk, struct sock *sk)
++#define RTNL_VFINFO_MAX_VFS		256
++#define RTNL_VFINFO_MAX_VFS_STATS	128
++
++static int rtnl_vfinfo_max_vfs(u32 ext_filter_mask)
 +{
-+	if (chunk && chunk->skb)
-+		chunk->skb->sk = sk;
++	return ext_filter_mask & RTEXT_FILTER_SKIP_STATS ?
++		RTNL_VFINFO_MAX_VFS : RTNL_VFINFO_MAX_VFS_STATS;
 +}
 +
-+static void sctp_for_each_tx_ctrlchunk(struct sctp_association *assoc, struct sock *sk)
-+{
-+	struct sctp_chunk *chunk;
-+
-+	list_for_each_entry(chunk, &assoc->outqueue.control_chunk_list, list)
-+		sctp_ctrl_set_owner_w(chunk, sk);
-+	list_for_each_entry(chunk, &assoc->asconf_ack_list, transmitted_list)
-+		sctp_ctrl_set_owner_w(chunk, sk);
-+	list_for_each_entry(chunk, &assoc->addip_chunk_list, list)
-+		sctp_ctrl_set_owner_w(chunk, sk);
-+	sctp_ctrl_set_owner_w(assoc->strreset_chunk, sk);
-+	sctp_ctrl_set_owner_w(assoc->addip_last_asconf, sk);
-+}
-+
- /* Populate the fields of the newsk from the oldsk and migrate the assoc
-  * and its messages to the newsk.
-  */
-@@ -9633,6 +9657,7 @@ static int sctp_sock_migrate(struct sock *oldsk, struct sock *newsk,
- 	sctp_for_each_tx_datachunk(assoc, true, sctp_clear_owner_w);
- 	sctp_assoc_migrate(assoc, newsk);
- 	sctp_for_each_tx_datachunk(assoc, false, sctp_set_owner_w);
-+	sctp_for_each_tx_ctrlchunk(assoc, newsk);
+ /* All VF info */
+ static inline int rtnl_vfinfo_size(const struct net_device *dev,
+ 				   u32 ext_filter_mask)
+ {
+ 	if (dev->dev.parent && (ext_filter_mask & RTEXT_FILTER_VF)) {
+-		int num_vfs = dev_num_vf(dev->dev.parent);
++		int num_vfs = min(dev_num_vf(dev->dev.parent),
++				  rtnl_vfinfo_max_vfs(ext_filter_mask));
+ 		size_t size = nla_total_size(0);
+ 		size += num_vfs *
+ 			(nla_total_size(0) +
+@@ -1717,6 +1735,11 @@ static noinline_for_stack int rtnl_fill_vf(struct sk_buff *skb,
+ 	if (!vfinfo)
+ 		return -EMSGSIZE;
  
- 	/* If the association on the newsk is already closed before accept()
- 	 * is called, set RCV_SHUTDOWN flag.
++	/* IFLA_NUM_VF above stays the device's VF count; the list itself is
++	 * capped so that its length cannot overflow nla_len.
++	 */
++	num_vfs = min(num_vfs, rtnl_vfinfo_max_vfs(ext_filter_mask));
++
+ 	for (i = 0; i < num_vfs; i++) {
+ 		if (rtnl_fill_vfinfo(skb, dev, i, ext_filter_mask)) {
+ 			nla_nest_cancel(skb, vfinfo);
+
+base-commit: bc03e080390a1b8dd6252b598aa5ec801fc5e13d
 -- 
-2.55.0
+2.43.0
 
