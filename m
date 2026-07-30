@@ -1,136 +1,162 @@
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6769043BDCB;
-	Thu, 30 Jul 2026 14:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0195436BF8;
+	Thu, 30 Jul 2026 14:22:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785420999; cv=none; b=OCeDUIJn7qpPenYV82Ar8xWp5mXJwZ+oNCxATJZT0uVFo/HaXntLRDfyg2h9orQi3tS0UXlGSrs0RRvEgGH/aSPmked8Y8iqS7C3PT4f65OGkn6uYt9n4vgnjQuedw+oTU2pgX9BNUgc4a0uoXEfCV3hU0P7aJSai3zmmFjZGN4=
+	t=1785421351; cv=none; b=rGmKGc7GFBZ/mrsn6JNsThhlu6QDiDEPqBKCmYnn3Ljm3BHco7TdmdizrHH34Ze5zEhis+bOHAUDbG8p6Gu7AkCDeZoJXgix9d4ZA13liFoEbRJzl6UWAiM2KGo9YWgUqKZAfQP74FtCJozwRs3aHmYYCVCPn/M9tPsekiGsz0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785420999; c=relaxed/simple;
-	bh=neyuCrtmmIrWJ/iVD0cqPhZqHnNftIit3tNwhhtFy2Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bVMoUzsKIJxb4MhLApP8bboF9CCB7csC2y0Qa3FaAoti0A7q2iK5VmRyN5oAAqu5prIccYU+I77R1DXvQK8b/HYdUhlyQKlXEvJYCkWw69UOv8DNABdMj1rBDY2pO+W+SIVpB9Ba3t7h/hVnwYjKmXm0NmA01y9ruu3Tsx5hCPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=klOTFwzt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FYxXsxHz; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1785421351; c=relaxed/simple;
+	bh=KJSnyvdiAco750mGTVtanDSDO6A6n3AwLNo0d4+t5W4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tpLBHaREmUKgvIu/AVXFtpklFAKjxRFPL46fg53Q+ifvWP7Kzod9tH1t1eyS2rhqOtaipKYJhXol7O4vVLAhHDFB9gv6CDKygC4Jb6k0vG3ogQtyeMCQn/N1/TH2/M0THuMAQZyoxjhAOgJjMLEfP3bGcnWTmtaPedF0KaaRNmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fsofAuZW; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="klOTFwzt";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FYxXsxHz"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 85D3AEC01B5;
-	Thu, 30 Jul 2026 10:16:36 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Thu, 30 Jul 2026 10:16:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
-	 t=1785420996; x=1785507396; bh=e22OP4qR6VMUdIgHXf2EU5bTioavoTrM
-	CQbP68IkrAE=; b=klOTFwztwLwOvU+Ij0HSQKn+FFBcU+0olmBds+XGv4Xyv3/q
-	36+uwEfDwmjSo3JnPbrtv0v6mb6mIfTGUtl95YyjdxWInXFfqOSo3CXNmBUnIWZk
-	PSNWIVXSdHFlRoF/ja2E+/b+tpPZaLMaIg7k7tbVdjPnaVp2OY6GEroj4jx2Mhn0
-	kStcH/3WqkXxc6SXUItSa849njsVn5JK0wls5j6JdEt/HP7qXu4mitksdlBa1h09
-	kfWC1WhGqKQRSSZ01sGQ5oKJzJ6hGw+X2/H8WjTaYfKy3QEvKZpDwmTjUp/EUwyx
-	QDiEUISaWKpnuAuPfAcis7Khmhqo25379ecBoQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785420996; x=
-	1785507396; bh=e22OP4qR6VMUdIgHXf2EU5bTioavoTrMCQbP68IkrAE=; b=F
-	YxXsxHznsnmxH/fwkJWG/+r04Qeyuk1DSEUvR9rBarZJCTWfTjbilO85Iwb8X+yz
-	zLy/a6sa74dTqE7Nnnt0G5GFRN5gAnDE4+G+X6XuPIpDSuArW333zimD50D/e292
-	i3yce+oIpwJqNpEBKFU+DeOR6/+G1w4WGu+KzWPJu5lTCxHV3EV/vz6ohKDA3U/F
-	7BS0QEhj0Ypwzy2llmxVdKaMIsQbQ1zA4Pxt2LOFHT02hFWJf8fuRj38M28DYH29
-	Gl34svSWzD+C9zP+T0Enc3RBVaFzFgEEYSitr+sYcB/AybaZ03zguDkwVbQ95AKr
-	akq1/SRzB0aSsd8eUmamQ==
-X-ME-Sender: <xms:xFxrarAmApjk6kYeOgKZVL5l4DTA_pqWG4m-tlkPDBMM3pS5m2XWzw>
-    <xme:xFxrah8MlyVJH95dqiJNtuCSVSXEesSie3-lnoll89EvmCZxC7PtPzQpss9TtQ6Ac
-    yEVdXi0wgkALkLRJD-8xYkXR35vkUsysU0dODnFlmErKuetuS6XDg>
-X-ME-Received: <xmr:xFxramVzqyWEl4i7nCM0FdBRInUvkM34x9S1dkYP5C2EPnx3LXZ2hOHT-0A>
-X-ME-Proxy-Cause: dmFkZTGLLBkJ6ZVUV3LnEzngFLMlIUsRBFCHzkrYUmJPwtiwCHdQ9B5yaqM8iUq5/SltAJ
-    klJUul8cCDtP0rQokE2+Penaiue+l4yIWbmSj5GMWfw7oynZ1iZY/EfteVnQI04GhtLeFG
-    MqXOzquqaCe/ClHBLXoI2JZI4WNnRXh8FjQlVJ3K4w+TLoqvQ3IMRZMer1ghUfzD+JTIQC
-    fySNcnLDpWqPMbrq41raFnQJDnfv3P1hI+QDCuFio32/VEuPTneCThV53IVVmerKZ//pU6
-    RQC6QC3qiEznB5TmkGL8td57xpCpum0qmsBw8cIluX5z1vqFevzhB+ZkmPJnKgRtUJXpNj
-    EKoGRfwmsZR6qTVAzvJFZW+9P9r4gxI8rtL1ni+YGfSt91LylhC5qiCybaok6aEhbA2cjF
-    gcBhXg6T4zqFn8WqySpFjwx6XLxOl3G1+vtYCSBE7WuMoSE0GgNZySA/x7kciyA9nKYd+6
-    RC0uebugREK9ceHc6Da1kWTyztFEIyaeutM7hV7HTrkamTdPQ9/VUebXrhK2GgEbowlLNJ
-    OSVWwejG+qYk5ugPOkgyDMicLP9kTHv8P2wAsNJNGzRCzb/X5buLjZPfoKa7W3hDM6LZgb
-    tSJ6fkQLTW9VXLDo9fbYBqQlqmqpMuw+EyeEE0EL98sjzPUKx9fkl399oEgA
-X-ME-Proxy: <xmx:xFxraqKvWmF2XzPio1jfdTSW4RpFxnEFIXGZ1iGt2tcKhpUQ1ncjiw>
-    <xmx:xFxraqBea23UmzspUnK87GLTC1TowILwiuhGjDdY0Sko21h--ETngg>
-    <xmx:xFxraqFp7rxU4PF-v3H-TBhqLaytFcm9RtRQFhw-W5hLODDnKp3OrQ>
-    <xmx:xFxranInJ7f3Z6aN61gL46NYwGaR7HmsBuYedezBFQ722RJFEnF9Ew>
-    <xmx:xFxraj2DnPopppfeLJ_vxYyopw9ezLRXYpPlvw9TFJBBCXtXnYj6VWVj>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Jul 2026 10:16:35 -0400 (EDT)
-Date: Thu, 30 Jul 2026 16:16:33 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Chuck Lever <cel@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
-	linux-kselftest@vger.kernel.org, linux-nfs@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/6] net: Introduce read_sock_rectype
- proto_ops for control record delivery
-Message-ID: <amtcwSO24GGq_qd0@krikkit>
-References: <20260720-tcp-read-sock-v2-0-29545d034f3c@kernel.org>
- <20260720-tcp-read-sock-v2-2-29545d034f3c@kernel.org>
- <20260728185124.72e421c8@kernel.org>
- <480a8337-a91e-40e5-8dbd-d165599fba4b@app.fastmail.com>
- <20260728193058.7f6b453b@kernel.org>
- <a6fb364d-8344-408e-bcd5-0cee4ffabdc3@app.fastmail.com>
- <20260729163142.4f41484f@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fsofAuZW"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66UDI2hR3021096;
+	Thu, 30 Jul 2026 14:22:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=UghDOZsVKAzSNf7EyXits0JuTMIlxcrKuhkq6t1eK
+	Ow=; b=fsofAuZWHtvKmWeNfPASM8i7nCoTtMLeKqYbQDv78uPST4hrhLE36L5EE
+	YVsBkiePK1FzKPp871tdif7xbP8B38gXK8C+25AUCazSbsPakdsgVJuPyih1eSfn
+	Z6kTmcZF8ffQmNByk9E+oSpE0vmJFF5v54QK4Jyt8RNVftziXE+SqxiO1Un+Qabz
+	q8WVFYgqIQYHmZDIYI33/uLuSacjVKLsBydlkNtwQLF6He2d9++4wWjQhJC/gO2h
+	+LwmB1Ja+DNAmoCNzMbDKIRxEqGTLwV1IdvtDel/5JkDb4YsyzxCVEbZ+PWL2cho
+	WewWdnQOli78VijklFQU5HLf7ceyw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuyjfagr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jul 2026 14:22:21 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66UEBJoD013233;
+	Thu, 30 Jul 2026 14:22:21 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8yhkm7u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jul 2026 14:22:20 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66UEMGHU28836396
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Jul 2026 14:22:17 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D45EC2004B;
+	Thu, 30 Jul 2026 14:22:16 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 898BF20040;
+	Thu, 30 Jul 2026 14:22:16 +0000 (GMT)
+Received: from t83lp68.lnxne.boe (unknown [9.87.84.240])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 30 Jul 2026 14:22:16 +0000 (GMT)
+From: Hidayath Khan <hidayath@linux.ibm.com>
+To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, andrew+netdev@lunn.ch, wintera@linux.ibm.com,
+        aswin@linux.ibm.com
+Cc: hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com, horms@kernel.org,
+        netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, hidayath@linux.ibm.com,
+        stable@vger.kernel.org
+Subject: [PATCH net] s390/qeth: validate user buffer length in SNMP and ARP query ioctls
+Date: Thu, 30 Jul 2026 16:22:16 +0200
+Message-ID: <20260730142216.218309-1-hidayath@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260729163142.4f41484f@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDEwOSBTYWx0ZWRfX5lmiucqFddfX
+ VEB8K42UlOFXZp5XWFee7p/ZRoA4KEsYkhtnZIsDbwESJe/ef+0KK8Hhf5sGZiq0JU8xYlJ0++j
+ PhDg0fTMMH64a5IrOldNTahZOVKxm/w=
+X-Proofpoint-GUID: iF-om9MhUhz1E0-T4S7USqIjuj_iAjhr
+X-Proofpoint-ORIG-GUID: SgpBaxh1ByQordkDx0Iz8mqFkfQ75pbM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDEwOSBTYWx0ZWRfXw+ZTc9qAqrov
+ iLx4Nk7ZNcMKZzOkskHH+k2g4Tl0jEMa95+Q+nzOf35CXhAifpPYfkGnX0vH/LOBCekZAZrjczp
+ G8//UBMh0ij3XN9DfbiPH+ukYglJ4mrxmU80fT6kDb7A4Bn1VAIRRaFkWP+Qp/aNopvD2s5jdnZ
+ 4HUGuiyRsxfDDF0lg7DeI+5ZdBzSPi0CHF8Ne3pTYjW9Od9lLytFgIYr4BfMuQos2JfsGKof7DD
+ uIj82h0S+QG66uHadCF1IhAvgEHh+oC8ap3GAxTRw/qNsogH2V3zjWKmZqnx3HIFXxl6w0iQZq/
+ GvClnJE5HAmXkEJngBJUBejgPQMpivm9eJgw4BuE7IslQ3WiPdRZ8L1fbjmeoyYqWrBHA42JUBR
+ vDBDhm9oXv3VJ4rqyZzpi6flrxJMhfrTbPHwycF/L/XhAfqjptuEPkfedy/92lf1q0lJrDBncrF
+ PR5I6l9dV7LCN7RM+kQ==
+X-Authority-Analysis: v=2.4 cv=X5Vi7mTe c=1 sm=1 tr=0 ts=6a6b5e1e cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=8BjajkXoXOh5Z-NPRBsA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-30_04,2026-07-29_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 lowpriorityscore=0 phishscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607300109
 
-2026-07-29, 16:31:42 -0700, Jakub Kicinski wrote:
-> On Tue, 28 Jul 2026 22:51:30 -0400 Chuck Lever wrote:
-> > >> It’s not about LOC. It’s about not cluttering the normal I/O
-> > >> path with a lot of exception processing to handle TLS Alert
-> > >> records. The CMSG API is very difficult to use and leaks the
-> > >> alert messages into I/O buffers (which for in-kernel consumers
-> > >> are page cache pages). It’s piss-poor API design.  
-> > >
-> > > I'm not arguing that it's amazing. Doesn't mean we will YOLO
-> > > a special proto callback for every protocol stacking :/  
-> > 
-> > No-one is asking you to roll over. Review means you get to steer
-> > us in the right direction, and I promise to do the leg work. Terse
-> > rejection doesn’t move the discussion forward. It stops it cold.
-> 
-> With LLMs tho, the entire human effort is in finding the right design,
-> rather than the code. So asking maintainers to hand hold everyone thru
-> their features is unrealistic.
-> 
-> Off the top of my head I think a setsockopt which pre-seeds the content
-> type so that the read returns an errno if the queued content type is
-> different could be a simple fix. You'd configure that on your sockets
-> to DATA and once you see a EWHATEVER you'd assume that some special
-> record arrived and the socket has to be handed back over to the TLS
-> control path. This is literally the first thing that comes to mind,
-> IDK how ugly it will look in reality so no promises.
+qeth_snmp_command() and qeth_l3_arp_query() allocate a buffer sized by
+a user-supplied length (udata_len) without checking a lower bound, then
+set udata_offset to a fixed non-zero value and pass both to a reply
+callback. The callback bounds-checks the copy with
 
-But then you're back to "read_sock stopped, caller has to take some
-special action to handle the next bit of payload". It's not better
-than "read_sock, and do a recvmsg when read_sock says it's not DATA".
+        if ((udata_len - udata_offset) < len)
 
+Both fields are u32, so a udata_len smaller than udata_offset makes the
+subtraction wrap and the check pass, and the following memcpy() writes
+past the allocation. A udata_len of 0 also yields ZERO_SIZE_PTR from
+kzalloc(), which the existing NULL check does not catch.
+
+Reject buffers smaller than udata_offset before allocating, so the
+callback subtraction can no longer underflow.
+
+Fixes: 4a71df50047f ("qeth: new qeth device driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
+---
+ drivers/s390/net/qeth_core_main.c | 3 +++
+ drivers/s390/net/qeth_l3_main.c   | 5 +++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
+index f18eed9df3c7..c3257b213360 100644
+--- a/drivers/s390/net/qeth_core_main.c
++++ b/drivers/s390/net/qeth_core_main.c
+@@ -4710,6 +4710,9 @@ static int qeth_snmp_command(struct qeth_card *card, char __user *udata)
+ 	if (req_len > QETH_BUFSIZE)
+ 		return -EINVAL;
+ 
++	if (qinfo.udata_len < sizeof(struct qeth_snmp_ureq_hdr))
++		return -EINVAL;
++
+ 	iob = qeth_get_adapter_cmd(card, IPA_SETADP_SET_SNMP_CONTROL, req_len);
+ 	if (!iob)
+ 		return -ENOMEM;
+diff --git a/drivers/s390/net/qeth_l3_main.c b/drivers/s390/net/qeth_l3_main.c
+index 1542bfc9f561..f1ac9950dcb4 100644
+--- a/drivers/s390/net/qeth_l3_main.c
++++ b/drivers/s390/net/qeth_l3_main.c
+@@ -1415,6 +1415,11 @@ static int qeth_l3_arp_query(struct qeth_card *card, char __user *udata)
+ 		rc = -EFAULT;
+ 		goto out;
+ 	}
++
++	if (qinfo.udata_len < QETH_QARP_ENTRIES_OFFSET) {
++		rc = -EINVAL;
++		goto out;
++	}
+ 	qinfo.udata = kzalloc(qinfo.udata_len, GFP_KERNEL);
+ 	if (!qinfo.udata) {
+ 		rc = -ENOMEM;
+
+base-commit: 58c1c294d685baf94801839334df20501711eb8e
 -- 
-Sabrina
+2.52.0
+
