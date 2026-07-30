@@ -1,115 +1,137 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E785E400E15
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 09:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C534B4028C3;
+	Thu, 30 Jul 2026 09:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785404806; cv=none; b=Fow2Rbv+9PBTqcEL0oHvTadjOjOn8jZ9p0mKB57oOFf7Teu+eON4x0Nfr6NTSH91tw/+3e53ZU8Juw46fMUbadz3lUW8gmRlw9iC+9Z8aqCcZzw1P1sqFjzHSCgHUa3F5OvSq/GrIbyWdpltJ0k+Rhy8nXmV+zr+Srr1I1Mb/tU=
+	t=1785405140; cv=none; b=o/60D3FHNkcWx0O486bQVb8F29mOnW/Oohyck3MQo8vToulPFFZS51HM/eXEcYue23rpQiJuayT3+JScxqTMG9bHrDxHwsc1ODrftAjBgXTX3eFGMHhiHQHGYX8IBHPKixcMAqAMc6H9n+vf5AsVWaz7KliA8wW1+zQrwlXdTMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785404806; c=relaxed/simple;
-	bh=EtJrfh3gWIgBwQrJoI9hQ3uIjjGozoh6Lke4Lv9BmRY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FGTEOKfkplenz80ErisSmgq3WDF6yoKEbXLaXpbyuEOtU9gNauKvo9+lLf7nYOXmAvoTCDWWGsnAeteEHklQeAjELsj5+n1OA68dvZgpvALAhEfR04mminPRaTJMqiSdm884nD1Uel+TfNhY47pbB2GG049K4q/pMk65QrIr+PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=F0QerX0h; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1785405140; c=relaxed/simple;
+	bh=t894MoMYEdKrUphOfQJj8pkCwyRwo80HRcbW6XR1exk=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=axDhjT0thoHndcMZvuybHfxi+L/f0iXEyv/oBgr3MEdqZJEwufxtbqbJviUIDFPrxFBvHvEKmNHTdJBlUESMU9Ez+75kCyfj3OnRlM9ay7fCd1FhzunFw4GNrTJHOX3bVx6V8NO7XwH/i0JtpN7WEtufkdF7tiz4wvFk+TmqTsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VC+EP3GK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="F0QerX0h"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4798bea72f9so1292282f8f.1
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 02:46:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1785404803; x=1786009603; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=U9EHZ0CHdtF8wFlrl6hQrJPZxdjWuXWMoN7dC7+RCGg=;
-        b=F0QerX0hFXpwOyb6Qs1JjrOKyil6eF1qfFl79SCNEBLqSBALDKkAFdBlzi1l8vlIOJ
-         zTeC6njf/WG+Rd9YT+RSCeAm7gl6Gp5hdpxv914G5Yv8ssRby3RAZrXx8KOovQSgC6rD
-         9/OZcCY2lm29NIhguIMsigYKw70/0nVi/Nj/hlw9OdGlOxk8IsG0if8ugNbay1TzV5iW
-         kZND9rJeuahOZnRA6RcutSVuyToZLCmc2Y2nPQN+S42UsZPQeKzqonT5a1P6tO5NLdCF
-         cjmIHw6kNMSAEXYhuM9emgypff7DSwvvT1i3Pab+5GJVRc+9AHAQE0ErFzTZFAN0jYBX
-         fvUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785404803; x=1786009603;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=U9EHZ0CHdtF8wFlrl6hQrJPZxdjWuXWMoN7dC7+RCGg=;
-        b=dElGezisnxXSEWO+s8+6YHozVqV64Qa60jGTiRV18fBGcsX697Unawpz0kussRGGsZ
-         l6N+JY47tZ+9SsFQXYpFF60jG54dpFf5hXvmOyV5GMh09du8GZ5q9W5+R3E6Gt/Jlalc
-         4fMBmJ9i+zslD/CIC/9CMwoVL+rfbjFUBLG1r3TJEIOX6Pl/E9saRR7XcZL99pt8jMXm
-         jNW6AMsPmAJ/O+kFGnjDEhvtipvwKGgQEnBvRLvGnmS8lUhYLSYiVV0X/2F69T34/zNF
-         j4DoMPA1Pmp9LVxepGBplP/H7Biy/WWIIhBFW+plzRP7SWFMEunI8xVIAWaJL8Mpi8d8
-         wpyQ==
-X-Gm-Message-State: AOJu0YxsNDX75O9bpMTNkG0Rr6VS4TChQJMeq7nH/R067NW2VxNUeb4X
-	a8J3QZm6X15HFOkU1W/6j+vR40EycbMvKlRtyyIb20ZPkWB7zbP0yhNkwzm0PqOkGYXI8/4j/u7
-	4MkhUhJDTZrKkzX5w3QkHt9a5ZbZUmSSFwd7Z6PJLfTedXAGrzY0E15nLk9S0++4l
-X-Gm-Gg: AR+sD11kASqoRmi/uInf2LUw4v/f9lJGOX5jmmxtW0vU2AavlXWou+ncfL9wfCcON11
-	DmZY94xx8lwEI8r0Vn5SeriBsqd2w2MAFNZs+Ke8zPGlFSWn5sGf04nsdhprkZCeYnbij8eCPWg
-	Dc6d20/mRvMsZBuXUDad+T4wGo5crUD2A6k586kT++mw8f/2FpSHjkr4tTVbJY36l5lRzfxJjZ2
-	wFzf66EkIqrUHq0sURj6p0h0HHaeVVEE1dAGogNc7zx9wTh61SsOo4J+z2CBRtv3TE55A4k4pnu
-	vh+OuigH/UiWgYpCwWMLWQ7OEiw6HhFfVI43DYy9YPcszS03mLO3Qipq8PR1qjxLeRfCQlotrao
-	DTyBDoI7YAYA+QC23vyIzhrIjFka0EHI79zO3V1z15n8wX6KSdY+uTwYWTWVnSsRMHokK1iI2oc
-	i6yVHFVu/BaE8UlVUTcljfc4No5Mjm5BoqzPallYlmondDTCZrLtZ7jV/UpZSyQq3Sw6gET6jB3
-	A==
-X-Received: by 2002:a05:6000:220b:b0:47f:4980:4908 with SMTP id ffacd0b85a97d-47fc8202b8emr2469720f8f.47.1785404803112;
-        Thu, 30 Jul 2026 02:46:43 -0700 (PDT)
-Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:97f0:8a89:3637:d698])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc88e424fsm6971410f8f.14.2026.07.30.02.46.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 02:46:42 -0700 (PDT)
-From: Antonio Quartulli <antonio@openvpn.net>
-To: netdev@vger.kernel.org
-Cc: Qingfang Deng <qingfang.deng@linux.dev>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Ralf Lici <ralf@mandelbit.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Antonio Quartulli <antonio@openvpn.net>
-Subject: [PATCH net 10/10] ovpn: fix incorrect use of rcu_access_pointer()
-Date: Thu, 30 Jul 2026 11:46:21 +0200
-Message-ID: <20260730094624.4102963-11-antonio@openvpn.net>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260730094624.4102963-1-antonio@openvpn.net>
-References: <20260730094624.4102963-1-antonio@openvpn.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VC+EP3GK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441991F00A3F;
+	Thu, 30 Jul 2026 09:52:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785405138;
+	bh=xUqL87DdA8qA2aMXoECkvDvuXXO5oy6OAIDvleX9BCE=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=VC+EP3GKfFLT3d+mN8FImpiyFsl5cBpEICmni8wrtByv1MTDmd/rxr2NIcrgHyTCN
+	 i73DS4ezlu3VTcRQux/Q51YlE/6VdxnZBr2BnY5fxlFJKtaexXytWvEFnUj9YR/ylN
+	 Zom1t3p982D6fxnPH9M6qKBtnJ5yAnnvNP4nHk/pEqa1/1MXpKfxiD9aHPe4yXyel0
+	 BulSFbaI7ixxEy0hHqfN8xobbMjpSVqClQVJI37AsWHq0VaFDycWF1kp4GqE1uSmqz
+	 5AbLDSmxNKV+RlFWb9IUxkx7IR9VjncxT/Ri9o5O/S6/JAvv2kVXV8CobTc7u/dEFA
+	 d3vxTs60XOp9A==
+Content-Type: multipart/mixed; boundary="===============0063013281550582967=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <3bd200c7256262889a96f82d8c4c3535a1e5170067c9a9bde35a7e264814fb30@mail.kernel.org>
+In-Reply-To: <20260730082958.2065194-1-nicoyip.dev@gmail.com>
+References: <20260730082958.2065194-1-nicoyip.dev@gmail.com>
+Subject: Re: [PATCH bpf v2] bpf: Fix netns reference imbalance in conntrack kfuncs
+From: bot+bpf-ci@kernel.org
+To: nicoyip.dev@gmail.com,pablo@netfilter.org,fw@strlen.de,phil@nwl.cc,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,ast@kernel.org,daniel@iogearbox.net,hawk@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,memxor@gmail.com,lorenzo@kernel.org
+Cc: netfilter-devel@vger.kernel.org,coreteam@netfilter.org,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,nicoyip.dev@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Thu, 30 Jul 2026 09:52:17 +0000 (UTC)
 
-From: Qingfang Deng <qingfang.deng@linux.dev>
+--===============0063013281550582967==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-rcu_access_pointer() should only be used to test the value of a pointer,
-not to dereference it. As it's in a spin_lock_bh() critical section, use
-rcu_dereference_bh() instead, avoiding an extra rcu_read_lock().
+> diff --git a/net/netfilter/nf_conntrack_bpf.c b/net/netfilter/nf_conntrack_bpf.c
+> index f98d1d4b42c3..c3395cb98c00 100644
+> --- a/net/netfilter/nf_conntrack_bpf.c
+> +++ b/net/netfilter/nf_conntrack_bpf.c
+> @@ -122,42 +122,56 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_sock_tuple *bpf_tuple,
+>  	struct nf_conntrack_tuple otuple, rtuple;
+>  	struct nf_conntrack_zone ct_zone;
+>  	struct nf_conn *ct;
+> +	u16 ct_zone_id;
+> +	s32 netns_id;
+> +	u8 ct_zone_dir = 0;
+> +	u8 reserved[3] = {};
+> +	u8 l4proto;
 
-Fixes: f6226ae7a0cd ("ovpn: introduce the ovpn_socket object")
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+This isn't a bug, but would it be worth reordering these declarations
+longest-to-shortest to match the netdev reverse-xmas-tree convention
+before this goes out again? The block goes from 'struct nf_conn *ct;'
+(21 chars) down to 's32 netns_id;' (15), then back up to 'u8 reserved[3]
+= {};' (22). The same ordering appears in __bpf_nf_ct_lookup() further
+down.
+
+>  	int err;
+>
+>  	if (!(opts_len == NF_BPF_CT_OPTS_SZ || opts_len == 12))
+>  		return ERR_PTR(-EINVAL);
+> +
+> +	netns_id = READ_ONCE(opts->netns_id);
+> +	l4proto = READ_ONCE(opts->l4proto);
+> +	ct_zone_id = READ_ONCE(opts->ct_zone_id);
+>  	if (opts_len == NF_BPF_CT_OPTS_SZ) {
+> -		if (opts->reserved[0] || opts->reserved[1] || opts->reserved[2])
+> +		ct_zone_dir = READ_ONCE(opts->ct_zone_dir);
+> +		reserved[0] = READ_ONCE(opts->reserved[0]);
+> +		reserved[1] = READ_ONCE(opts->reserved[1]);
+> +		reserved[2] = READ_ONCE(opts->reserved[2]);
+> +		if (reserved[0] || reserved[1] || reserved[2])
+
+This isn't a bug, but since reserved[] is only used by the check on the
+next line, could the three READ_ONCE() calls be inlined into the condition
+instead of going through a local array? The same block appears in
+__bpf_nf_ct_lookup() at the corresponding location.
+
+>  			return ERR_PTR(-EINVAL);
+>  	} else {
+> -		if (opts->ct_zone_id)
+> +		if (ct_zone_id)
+>  			return ERR_PTR(-EINVAL);
+>  	}
+
+[ ... ]
+
+> @@ -186,46 +200,60 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct net *net,
+>  	struct nf_conntrack_tuple tuple;
+>  	struct nf_conntrack_zone ct_zone;
+>  	struct nf_conn *ct;
+> +	u16 ct_zone_id;
+> +	s32 netns_id;
+> +	u8 ct_zone_dir = 0;
+> +	u8 reserved[3] = {};
+> +	u8 l4proto;
+>  	int err;
+>
+>  	if (!opts || !bpf_tuple)
+>  		return ERR_PTR(-EINVAL);
+>  	if (!(opts_len == NF_BPF_CT_OPTS_SZ || opts_len == 12))
+>  		return ERR_PTR(-EINVAL);
+> +
+> +	netns_id = READ_ONCE(opts->netns_id);
+> +	l4proto = READ_ONCE(opts->l4proto);
+> +	ct_zone_id = READ_ONCE(opts->ct_zone_id);
+>  	if (opts_len == NF_BPF_CT_OPTS_SZ) {
+> -		if (opts->reserved[0] || opts->reserved[1] || opts->reserved[2])
+> +		ct_zone_dir = READ_ONCE(opts->ct_zone_dir);
+> +		reserved[0] = READ_ONCE(opts->reserved[0]);
+> +		reserved[1] = READ_ONCE(opts->reserved[1]);
+> +		reserved[2] = READ_ONCE(opts->reserved[2]);
+> +		if (reserved[0] || reserved[1] || reserved[2])
+>  			return ERR_PTR(-EINVAL);
+
+[ ... ]
+
+
 ---
- drivers/net/ovpn/peer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
-index eada414a9d92..b0519f9840d8 100644
---- a/drivers/net/ovpn/peer.c
-+++ b/drivers/net/ovpn/peer.c
-@@ -1249,7 +1249,7 @@ static void ovpn_peer_release_p2p(struct ovpn_priv *ovpn, struct sock *sk,
- 	}
- 
- 	if (sk) {
--		ovpn_sock = rcu_access_pointer(peer->sock);
-+		ovpn_sock = rcu_dereference_bh(peer->sock);
- 		if (!ovpn_sock || ovpn_sock->sk != sk) {
- 			spin_unlock_bh(&ovpn->lock);
- 			return;
--- 
-2.54.0
-
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/30527661826
+--===============0063013281550582967==--
