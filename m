@@ -1,304 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98033FD15C;
-	Thu, 30 Jul 2026 09:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE57C3F4DD2
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 09:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785402087; cv=none; b=bRDy4sZc9nRN02VGbSaGMYn7Sqe7O/t62zrLPIEKqKUqfcj4mOWbVm/vPzrm8O3sERi5AhxxYtcbmfSYTeToXXTAVW/C6+G6p+ZyTeg/V07iupDVhRpBVwySRUAJRTbkp2Lmc0lyh5U25penKY0aWAttD855chTR2GL0UuDJpDo=
+	t=1785402137; cv=none; b=Fa5AFSex+Iu7EQMbf+aG1J4sJKnKPRQidI47PtaUkC+hTvxqgv0BB5Y3VXKFuhu2nB3FPEIJjnm6TYe2QpsQ1tsvOcURrC4F74Fnq8r34E94FZCvNIzfKeptF+/Sr7NBr/uhweC9hV7XsoLvokBD6/GGrQubsOn3ia1aUgmXA5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785402087; c=relaxed/simple;
-	bh=FQGG9EdXeLCFKlw3fTa4ZgWVnxwsqR8KzTnyuDGnBrQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FRh3RKTwtiPQUAhn91tZSKwIZMJGOks2dqzHKjAxl3/RS4/7DpIcsGKkP8+Ep/8XGzDdB2K1Vp5To3yOTlR+NwfMDtjHGhuXPnygTjMc18TFQfs/dkNcfWFLLfsDvB+Xv3wFngdvp0J5vheWCzJwLfaz+Q3okUjHK4BD1ymVjNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N6lFwRzf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785402137; c=relaxed/simple;
+	bh=7ZO1Hs1qH/JY5i06DvrUJ0HS2+O7RV7KvSY9xWkAOOg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SnlzLTOFGom+7ccg342jeXJ20OcgAiYJzIsDT1vgRuqxvEcBKZ9Luqx+6jjucD60k6PuSWmnlFbspHA28iwIZ7LZHHUphhKGe+cGR/LLi/vWXwybvVHqRiYBdqI0rWsq0ptTqXZmAl7uW/v/ggYF//3UcFBNg2YhObv1o8J/oFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NX1/GIS+; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N6lFwRzf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4142A1F000E9;
-	Thu, 30 Jul 2026 09:01:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785402085;
-	bh=3/rECwPkwxTy3VN5aPaQh8oM39tG4Fhfd5VEsxGT1ls=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=N6lFwRzfs7oqvi96anrfXWwiJPNPBeE0+AwYFKPGoAGugX9ZYT0dNlJ09zoVEV/mI
-	 42/YM33pc0BDmzFLzhdBt2kJv94tpcZw0vQwxiHC8+Kewowu0uN3woTswmK9+xZl8X
-	 g93TDY6NOs9dZ/stITEtZVTalUNdF8U9AnXJHQ2D+HI5ayrO0boXcqeom2NcSm2DuK
-	 C3WSRzOvZnznI4mWLiK1HQs29cUOb/ZW/tGOltHWzIVm0eENbl89Txba38cVuaGjKz
-	 ZuAJsowhW3qMEULdOYGzF45D5yWlCafkQuHbNlY1GT+QXnYUyL/7J5V8tsuXQ6jv7Q
-	 vMpUzOKSiyC9g==
-Date: Thu, 30 Jul 2026 11:01:21 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Vasilij Strassheim <v.strassheim@linutronix.de>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, Martin Kaistra <martin.kaistra@linutronix.de>
-Subject: Re: [PATCH 4/4] net: dsa: soce: Add initial driver support for MRS
- switches
-Message-ID: <20260730-prophetic-ordinary-crane-0ebedf@quoll>
-References: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
- <20260729-devel-vstrassheim-soce-dsa-ml-v1-4-be569dae1b20@linutronix.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NX1/GIS+"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-848593533cbso1228477b3a.3
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 02:02:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785402135; x=1786006935; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2nznSY9JJdaXURervFAHNSIkzxfbF08nZ/1yUlKod9U=;
+        b=NX1/GIS+D8NPxnH5WEAY7ulKY6AKBfK8f3kYRsCtV0DwBHvNOjWWWfhtN+gKQ4yIDt
+         Z+zU8tBHy6CC5VXnP6duB10uuQ+ajzCTSN0oA4t9CzmcIKfUi9Mxpc3+fnZBhXbA3dHX
+         H0rUq0puhK1AYWyYUJoRl24kbK2TSabUaMe84tJ9AVkSpjrik18gBquEI1k+IcRAmmSP
+         p4vty3hZqZT1HrAJzgbHoKWode3AFo/xQWkDPN0mWcAq6A+hPOpZyy9rq4jHH43S3NPD
+         8DB6ZUBQeRvYq2A1R1xoLhyjjQhU+DFjk00MptHW2j05JRaoAHYfJn7U5n4cbrqn5ZoF
+         yGiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785402135; x=1786006935;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2nznSY9JJdaXURervFAHNSIkzxfbF08nZ/1yUlKod9U=;
+        b=ZQRPj6lrBWZneIQBAEGHJWSqKF73OBHqkydaM0gIlzpWBnlNUDREX7Imr26BlOv1YJ
+         UfrPo1q5gMtiLjfMa9M63jBqLeLaqMSP3Sow9Hy+h0x6i9dlOyTe7AAqAJPSUC1Ezi4d
+         oq8q49tvTizpjSigVsd8Dr56M9b4DrB/wlNjkLgstwuUYXM9Bgbo99g4ZkPLszew1iqz
+         snmgFlKc0ynRtbQv79QJ4mNeytvlXRao6DZFmyM3aOFdDmAuoE0L+Aab+hZiG0UfYiqa
+         u2yjhD1snHGPBZqXYI9+CDkp90w63BRIa5UXmOKZmFCrmglD7y/Tn/OqTchCNz73AkBo
+         giEw==
+X-Gm-Message-State: AOJu0YwVgwP8revs0b1QRYs3oe69Vqxxxq0p0GpVkDHCDz5u+cwjLJYL
+	mq6vbBopiS077JaJtPtL4XB/8ypG9CXovDqdNxKjFlVkH8NEh9kx2jplbCPfTdqAepo/WD9F
+X-Gm-Gg: AR+sD10DD8bcqyURZoon5yCm57voCz4pibcPrVda8GGTzC+nOUDMuE28hH+U857W/ip
+	G1szGY78ND2CCeoNlEuIHktxG2Cd82mTm5Hgb8fH61F8wazOmjgxSIDDKUHC778N40Vms5nQBCq
+	eT5KPZTxbpzWWpSmcya28pJdCkZC3iN4HPMD1nAV5JO3+RVJIF7XjaP7JogyfgrAdxtv0eQLq0j
+	DfmId9k2uPWu8u0X+BJ5Vg1C+L/hS3qEp80WlE6Ym43jqkjbPov4Osht3QOzy8H0srt5fDg+m8p
+	yZ5eDIGNPwTKYMGhiBWy+gA/vTPkNApwMNcItoKhz7MEf8b39lgHA7Xde3iFzT384zkxEJqPacJ
+	pGI7JtIqUQebuLmid6GJJ8EY3RLxu6OkO6LPWsCFsW3dhmeIabL79ztdpbNvzL9FcBnedwbud6x
+	sKub8mEuhHWVuAkXoxsm4SroLKH5+1sx2sipU16qcadi8km7ZHL/sMLXcMTE0FV2Pm1UojucwRH
+	7Hbt5ON6qFGqXOfM09pw8hvPw==
+X-Received: by 2002:a05:6a00:a15:b0:848:6b76:592f with SMTP id d2e1a72fcca58-84ebc1eb894mr1674847b3a.5.1785402134967;
+        Thu, 30 Jul 2026 02:02:14 -0700 (PDT)
+Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.24])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea0375d6csm2743552b3a.43.2026.07.30.02.02.11
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 30 Jul 2026 02:02:14 -0700 (PDT)
+From: Jun Yang <juny24602@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Jun Yang <junvyyang@tencent.com>,
+	stable@kernel.org,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Vlad Yasevich <vladislav.yasevich@hp.com>,
+	linux-sctp@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] sctp: bound the auth_chunks copy length in SCTP_LOCAL_AUTH_CHUNKS
+Date: Thu, 30 Jul 2026 17:01:47 +0800
+Message-ID: <20260730090149.24040-1-juny24602@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260729-devel-vstrassheim-soce-dsa-ml-v1-4-be569dae1b20@linutronix.de>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 29, 2026 at 06:36:57PM +0200, Vasilij Strassheim wrote:
-> +static const struct soce_variant_desc soce_variants[] = {
-> +	{
-> +		.compatible		= "soce,mrs-21-01",
-> +		.mdio_master_offset	= SOCE_MRS_21_01_MDIO_MASTER_OFFSET,
-> +		.layout			= &soce_mrs_21_01_layout,
-> +		.mdio_ops		= &soce_mdio_ops_20_03,
-> +	},
-> +	{
-> +		.compatible		= "soce,mrs-23-02",
-> +		.mdio_master_offset	= SOCE_MRS_21_01_MDIO_MASTER_OFFSET,
-> +		.layout			= &soce_mrs_24_01_layout,
-> +		.mdio_ops		= &soce_mdio_ops_c22_c45,
-> +	},
-> +	{
-> +		.compatible		= "soce,mrs-24-01",
-> +		.mdio_master_offset	= SOCE_MRS_21_01_MDIO_MASTER_OFFSET,
-> +		.layout			= &soce_mrs_24_01_layout,
-> +		.mdio_ops		= &soce_mdio_ops_c22_c45,
-> +	},
-> +	{ /* sentinel */ },
-> +};
-> +
-> +static const struct soce_variant_desc *
-> +soce_match_variant(const char *compatible)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; soce_variants[i].compatible; i++) {
-> +		if (!strcmp(compatible, soce_variants[i].compatible))
-> +			return &soce_variants[i];
+From: Jun Yang <junvyyang@tencent.com>
 
-Do not re-invent OF matching. This is supposed to be of_device_id table.
+sctp_getsockopt_local_auth_chunks() copies ntohs(length) -
+sizeof(paramhdr) bytes out of ch->chunks without bounding the count.
+For an association ch is the fixed-size asoc->c.auth_chunks[] array
+(sizeof(struct sctp_paramhdr) + SCTP_AUTH_MAX_CHUNKS bytes), whose length
+field is restored from the received state cookie by sctp_unpack_cookie()
+and is not validated against the array size.  A cookie carrying an
+oversized length makes copy_to_user() read past the array (out-of-bounds
+read).
 
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static int soce_sw_parse_port_mdio_config(struct soce_dsa_local *local,
-> +					  struct device *dev,
-> +					  struct device_node *port_node,
-> +					  u32 port)
-> +{
-> +	struct device_node *phy_node;
-> +	u32 val;
-> +	int ret;
-> +
-> +	if (of_find_property(port_node, "ethernet", NULL) ||
-> +	    of_find_property(port_node, "link", NULL)) {
-> +		if (of_find_property(port_node, "phy-handle", NULL)) {
-> +			dev_err(dev,
-> +				"phy-handle not allowed on CPU/DSA port %u\n",
-> +				port);
-> +			return -EINVAL;
-> +		}
-> +
-> +		return 0;
-> +	}
-> +
-> +	phy_node = of_parse_phandle(port_node, "phy-handle", 0);
-> +	if (!phy_node) {
-> +		if (of_phy_is_fixed_link(port_node))
-> +			return 0;
-> +
-> +		dev_err(dev, "user port %u requires phy-handle or fixed-link\n",
-> +			port);
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = of_property_read_u32(phy_node, "soce,mdio-output", &val);
-> +	if (ret) {
-> +		dev_err(dev,
-> +			"missing soce,mdio-output in %pOF referenced by port %u\n",
-> +			phy_node, port);
-> +		goto out_put_phy;
-> +	}
-> +	local->mdio_info[port].mdio_output = val;
-> +
-> +	ret = of_property_read_u32(phy_node, "soce,phy-addr", &val);
-> +	if (ret) {
-> +		dev_err(dev,
-> +			"missing soce,phy-addr in %pOF referenced by port %u\n",
-> +			phy_node, port);
-> +		goto out_put_phy;
-> +	}
-> +	local->mdio_info[port].phy_addr = val;
-> +
-> +out_put_phy:
-> +	of_node_put(phy_node);
-> +	return ret;
-> +}
-> +
-> +static int soce_sw_parse_port_mdio(struct soce_priv *priv, struct device *dev,
-> +				   u32 numports)
-> +{
-> +	struct soce_dsa_local *local = &priv->local;
-> +	struct device_node *ports_node;
-> +	struct device_node *port_node;
-> +	u32 port;
-> +	int ret;
-> +
-> +	ports_node = of_get_child_by_name(dev->of_node, "ports");
-> +	if (!ports_node) {
-> +		dev_err(dev, "missing ports node\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	for_each_available_child_of_node(ports_node, port_node) {
+Bound the chunk count to SCTP_AUTH_MAX_CHUNKS before the copy.  That is
+the most valid chunk bytes either source can hold, so legitimate output
+is unchanged, and it also covers a stored length smaller than the
+parameter header, which would otherwise underflow.
 
-Why not scoped?
+Fixes: 65b07e5d0d09 ("[SCTP]: API updates to suport SCTP-AUTH extensions.")
+Cc: stable@kernel.org
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Signed-off-by: Jun Yang <junvyyang@tencent.com>
+---
+ net/sctp/socket.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> +		if (of_property_read_u32(port_node, "reg", &port))
-> +			continue;
-> +
-> +		if (port >= numports || port >= SOCE_MAX_NUM_PORTS) {
-> +			dev_warn(dev,
-> +				 "ignoring invalid port index %u in %pOF\n",
-> +				 port, port_node);
-> +			continue;
-> +		}
-> +
-> +		ret = soce_sw_parse_port_mdio_config(local, dev, port_node,
-> +						     port);
-> +		if (ret) {
-> +			of_node_put(port_node);
-> +			of_node_put(ports_node);
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	of_node_put(ports_node);
-> +	return 0;
-> +}
-> +
-> +static int soce_sw_probe(struct mdio_device *mdiodev)
-> +{
-> +	const struct soce_variant_desc *variant;
-> +	struct device *dev = &mdiodev->dev;
-> +	struct device_node *switch_node;
-> +	struct soce_dsa_local *local;
-> +	const char *soce_compatible;
-> +	struct soce_priv *priv;
-> +	u32 numports;
-> +	int ret;
-> +
-> +	priv = devm_kzalloc(&mdiodev->dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	priv->ds = devm_kzalloc(&mdiodev->dev, sizeof(*priv->ds), GFP_KERNEL);
-> +	if (!priv->ds)
-> +		return -ENOMEM;
-> +
-> +	priv->ds->dev = dev;
-> +	priv->ds->priv = priv;
-> +	local = &priv->local;
-> +
-> +	switch_node = of_parse_phandle(dev->of_node, "soce,switch-ip", 0);
-> +	if (!switch_node) {
-> +		dev_err(dev, "missing or invalid switch IP reference\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = of_property_read_string(switch_node, "compatible",
-> +				      &soce_compatible);
-> +	if (ret) {
-> +		dev_err(dev, "missing compatible property in %pOF\n",
-> +			switch_node);
-> +		of_node_put(switch_node);
-> +		return -EINVAL;
-> +	}
-> +
-> +	variant = soce_match_variant(soce_compatible);
-> +	if (!variant) {
-> +		dev_err(dev, "unsupported compatible '%s' in %pOF\n",
-> +			soce_compatible, switch_node);
-> +		of_node_put(switch_node);
-
-Use proper error handling exit paths with goto.
-
-> +		return -ENODEV;
-> +	}
-> +
-> +	ret = of_property_read_u32(switch_node, "soce,num-ports", &numports);
-> +	if (ret) {
-> +		dev_err(dev, "missing soce,num-ports in %pOF\n", switch_node);
-> +		of_node_put(switch_node);
-> +		return -EINVAL;
-> +	}
-> +	if (numports == 0 || numports > SOCE_MAX_NUM_PORTS) {
-> +		dev_err(dev, "invalid soce,num-ports %u (max %d)\n", numports,
-> +			SOCE_MAX_NUM_PORTS);
-> +		of_node_put(switch_node);
-> +		return -EINVAL;
-> +	}
-> +
-> +	local->base_addr = devm_of_iomap(dev, switch_node, 0, NULL);
-> +	if (IS_ERR(local->base_addr)) {
-> +		dev_err(dev, "failed to map switch register space for %pOF\n",
-> +			switch_node);
-> +		of_node_put(switch_node);
-> +		return PTR_ERR(local->base_addr);
-> +	}
-> +
-> +	priv->ds->ops = &soce_switch_ops;
-> +	local->mdio_ops = variant->mdio_ops;
-> +	local->mdio_master_addr =
-> +		local->base_addr + variant->mdio_master_offset;
-> +	local->layout = variant->layout;
-> +	of_node_put(switch_node);
-> +
-> +	priv->ds->num_ports = numports;
-> +	ret = soce_sw_parse_port_mdio(priv, dev, numports);
-> +	if (ret)
-> +		return ret;
-> +
-> +	dev_set_drvdata(&mdiodev->dev, priv);
-> +
-> +	dev_info(dev, "soce %s SDSA driver probed.\n", soce_compatible);
-
-Drop, driver should be silent on success.
-
-> +
-> +	return dsa_register_switch(priv->ds);
-> +}
-> +
-> +static void soce_sw_remove(struct mdio_device *mdiodev)
-> +{
-> +	struct soce_priv *priv = dev_get_drvdata(&mdiodev->dev);
-> +
-> +	dsa_unregister_switch(priv->ds);
-> +}
-> +
-> +static const struct of_device_id soce_of_match[] = {
-> +	{ .compatible = "soce,switch-dsa" },
-> +	{ /* sentinel */ },
-> +};
-> +
-> +static struct mdio_driver soce_mdio_driver = {
-> +	.mdiodrv.driver = {
-> +		.name = "soce-switch-dsa",
-> +		.of_match_table = soce_of_match,
-> +	},
-> +	.probe  = soce_sw_probe,
-> +	.remove = soce_sw_remove,
-> +};
-
-Best regards,
-Krzysztof
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 9a6da4e0d741..3e9dacb772a0 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -7109,6 +7109,12 @@ static int sctp_getsockopt_local_auth_chunks(struct sock *sk, int len,
+ 		goto num;
+ 
+ 	num_chunks = ntohs(ch->param_hdr.length) - sizeof(struct sctp_paramhdr);
++	/* asoc->c.auth_chunks[] holds at most SCTP_AUTH_MAX_CHUNKS bytes but its
++	 * length is restored from the state cookie and is not bounded here;
++	 * clamp so an oversized length cannot read past the array.
++	 */
++	if (num_chunks > SCTP_AUTH_MAX_CHUNKS)
++		num_chunks = SCTP_AUTH_MAX_CHUNKS;
+ 	if (len < sizeof(struct sctp_authchunks) + num_chunks)
+ 		return -EINVAL;
+ 
+-- 
+2.55.0
 
