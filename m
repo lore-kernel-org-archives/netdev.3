@@ -1,86 +1,55 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B31539DBFC
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 21:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7609124DCF6;
+	Thu, 30 Jul 2026 22:01:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785448404; cv=none; b=QhMKHtejFT3j19R9SSuU6+Jg4vMg4gRDmPX5r5w06W4DZW7yhqe0Vqe9QDCkuhUQPAiyvtS2Dk498AhZCqj4PrrGrD9Jzpr6lIRY4nIwbBieN6P6NERh9XeRAVlhyWeRYYuxor0sqpRdFU1dbZb1bjHZ9WD5OwkCnpjZa4ZjB9M=
+	t=1785448879; cv=none; b=iu7TEZHL0AN/p68xuzGEbbswC/XZ9HEZvgD675PYBu7ExrUVTTURLMK8dCTrcPHJamOB2MGJad57TDRHERV36oAiIiQv5AzKaLUCocDBPFq4pGOX5oGErirBpr3FBeTo+0hbaXQoAhs8YDDuyqP5axbmJbcvJEpuYlu49YuXlG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785448404; c=relaxed/simple;
-	bh=lpr1JjX+P9ddvRnDAtgdZ8YhdQhIEvfPlpdAaYpJZN8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JV3ZMu1LcYYrXXkduIzMlYI1AuEhwtsAMutC6NnE1KywgtI9h2dnOUF5kmt9bym3MrZBZRDjVg8VMUsSU+6OPw4cI/Jz/X4Q5bWuqswetOEGAEO2lhQobR6HihdWrjF3Tdljlu1hWoipKI1UDKKTDDCN66A0X6xih8ugJe5Kiw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tay4dpoI; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785448879; c=relaxed/simple;
+	bh=sQQNI0T320x5izTnyyq6J5o0mamqvX++AhBGZawqwr0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Zlv/ssJAdaGWluwJQf6dfH7Dg9dMVlaS8rIz4AoGjJ8R2v5CDE+7D+/NS9ZSKt3xl++AR+y3xArxx4NzxaIxRZ1KO++CAfVR6dOFUJab7OB6Ak1R7B3BjljaD+MO6wqxRvFrxrxH54qwyNrXhTXC7hL3Dxe51R46wNY/IJ9vybM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=OV3ArW9R; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tay4dpoI"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-81e9f7491ffso5163317b3.0
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 14:53:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785448402; x=1786053202; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lpr1JjX+P9ddvRnDAtgdZ8YhdQhIEvfPlpdAaYpJZN8=;
-        b=Tay4dpoIth7iPYRssDwp8r8dbWyAgRqSvqjoXSAkLd6IUsRtLf823EjvjvwzTERHwk
-         SU+oS11o7NKVR279FhQSmynX+LPIxvb8zumI9K4YemIgDSYOTu/8qhg0zZRbh27j0D1O
-         VuYCbOZ+CN36zZ5TE1yMGd2e0gq8m+Zy67eTTlzfPaJierEsOHFPekkmMKcVNbXDyour
-         XNDiNo+gAt7dfmvv7BxlrSxkOB12GuiCE8H2Ky0mX+55W+o/FgPv2ca80IKRRm6VtHY+
-         1zLbFelUWLYW/KnHwHQykj4omJOqGkqCai2qX6Q58j01cD+9kX+Ggr18Xqm3DmIKXC2X
-         jK5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785448402; x=1786053202;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lpr1JjX+P9ddvRnDAtgdZ8YhdQhIEvfPlpdAaYpJZN8=;
-        b=CuNmE1Gn1NXIetc6w8QqWhN1AFeSUg+Fu8MK/l0BFZcSSuSGx6vVZHBsLM8S0yDwJ/
-         ImdVp+YkrnKI+5dS0IoCSJWuhdJR2G8CnU11d+eIHVvJ6lmnPi3o/enj9HQHl8drBuVA
-         iRlAXwtUsGJrOv2rKX/XKjKDaC6XamBYpdSSU410nJOpLsBVH3ikzadjwUfLvaX7fLSq
-         TU9rXF+Ll6XYxNzBe7dnhJNhi2MaU+9u46d7O2gpsFkpdXncaMWDLTdTi58xA9KwIY5h
-         V02Dfa80ohz5k37ymcI51BvvwAEPktsqRHjJQnlJsld1Hl/La0AYfs+GIK2cWDjsD/Da
-         elQg==
-X-Forwarded-Encrypted: i=1; AHgh+Rrz4rwP/K/VU2J5oz2jl/XT+oSE88uVHCdNm5gdSKbyPYVzxSgVoJcdK7oRNOxUYkfGvtLpXBA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7OeVeVDTWc+B55AHzuVHbO3RlzNtLAp7fU2OROQ9prVBbiipA
-	bFgdVUBTI6c8rseq4z//0ID/LSNAPT4Uh5yGoKvWTIHN0/PfJ67lDt4W
-X-Gm-Gg: AR+sD10cYlu17UD0eCayWeO4tcKnzhuZjue4yuzUTzsfkdwiwdd8fczz8dNmyo35GdM
-	YeOb5dkS9XX0/UZyvSDpuFGTAcn/iH3QTR1rFscVUYALOSMpjfNgy242mGTdaFyANtjSuQ33jKj
-	WYoW8dkbv0al5MGX0KUFi1wbfvcYg7PlQb4AlLnruWxSNH+IWIKFfFLpY2HTiLhnGqb1sq/2G8M
-	XYM7yQmI+Da5U19y97BVfUHBV2W9aIhOPIANmRzUkY4byD9SZBqMSRqPOTar+2Ucq+3A5MJ8Y1W
-	Petbzu0rzoB/BwuMbSpwyZ24QQLv0UlcW7suIVSRh/un+Fk5YEHiy+ZTNwBIVlIRZSQCAsANYV3
-	Vmj3Zv+VZrrVN/8mxOTnYMTydCBIOqq6l1PRb7mup9UmqWiJXsWKaMZgw5TFnqRpVayxep/GlSP
-	IbA8Ll9u02pCHt01IspBwj6+pQJxIciB4HQqo2J9+llZ5CUW2jEfFpEAGbtLsoTSmekeNfwnNkM
-	Jvng2lvmUrYkbhHz36hzQ4mYrjg7pDD3VMYIyS+1XdasPydwMuBh2RIBVI=
-X-Received: by 2002:a05:690c:6d10:b0:81f:3dab:372f with SMTP id 00721157ae682-81fb88c616fmr31428597b3.12.1785448401868;
-        Thu, 30 Jul 2026 14:53:21 -0700 (PDT)
-Received: from LAPTOP-83ECOPAB.localdomain (76-204-101-112.lightspeed.tukrga.sbcglobal.net. [76.204.101.112])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fb8a8dc3asm17635417b3.25.2026.07.30.14.53.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 14:53:21 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: i.maximets@ovn.org
-Cc: AutonomousCodeSecurity@microsoft.com,
-	aconole@redhat.com,
-	blbllhy@gmail.com,
-	davem@davemloft.net,
-	dev@openvswitch.org,
-	echaudro@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	kys@microsoft.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	tgopinath@linux.microsoft.com
-Subject: Re: [PATCH net v4] net/openvswitch: check Ethernet header length in key_extract()
-Date: Thu, 30 Jul 2026 17:53:25 -0400
-Message-ID: <20260730215325.117542-1-blbllhy@gmail.com>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="OV3ArW9R"
+Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66UL1wL33369365;
+	Thu, 30 Jul 2026 15:01:10 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=UkH7mKEM9
+	P7dqP/Lb82d88AqlrpsQErduRlaXFMEngE=; b=OV3ArW9RFioggVk+ukIwRScYb
+	/Ry3kjWsOLKKVH2UVK1ciF+eIV5cMT6dF1S8RBncB/8hem9aS3W3nF5VppSLyG4P
+	II+/zv4j+hO7MORcLwJma7N0hoAwduNhcI5QZ+FzL08u01HW8cBETF60imIgk3SX
+	+kwfWSwxXDX2/bko+Sb3xf3tJkcwCz6trVuwjYLkUeIQPcLh3Y27v1WQq+r6s0D/
+	cc1gcrJO4VtU5ai20jvt3tlo1Xkb82YlqzUvwoHISHRPYnO0OQ2yB5kjI/LuE7xT
+	FiXI9CyvuiLbH2xdVh5ln9Ck+l6geFiBnuBXrIaK8oGphdG+J33+jMXbWqfsQ==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fqrn90upq-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 30 Jul 2026 15:01:10 -0700 (PDT)
+Received: from localhost (2620:10d:c0a8:1b::8e35) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.45; Thu, 30 Jul
+ 2026 22:01:09 +0000
+From: Tejas Birajdar <tejasbirajdar@meta.com>
+To: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
+        <netdev@vger.kernel.org>
+CC: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        "David
+ S . Miller" <davem@davemloft.net>,
+        David Ahern <dsahern@kernel.org>, <bpf@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Tejas Birajdar
+	<tejasbirajdar@meta.com>,
+        Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH net-next v3] tcp: honor BPF_SOCK_OPS_RWND_INIT on the active connect path
+Date: Thu, 30 Jul 2026 15:00:55 -0700
+Message-ID: <20260730220055.2946171-1-tejasbirajdar@meta.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <403ae4a4-5df3-4744-89e4-12e46fd56f25@ovn.org>
-References: <403ae4a4-5df3-4744-89e4-12e46fd56f25@ovn.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,8 +57,138 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDE1OCBTYWx0ZWRfX8J5ZCRBZNJSG
+ 7H6m7brEmwavmDpmn6rumA7DtK7y9i0/w4BN5CICAKG+LEBUUsqMB6p7OUQ+mg6AGB4W7VOXasI
+ bt3E3QNwXQL6CrH+eyY778tQzj4Tjx4sYrkAopefF5Bp70e9KeESYo8DO77jkWih1Pvs4vEHpaL
+ QBlmK2vOXY5XrW8UYTvO2WGCf86PTFlDLYcB4Fkf+86BFxvXW6AbDOn3+mq5EWQhSfHAYGGEXih
+ TWG/2/d3RKb1PMzErsTra5FC27dFpSEqLql6Mz/oYMpFklmhhPhMk1WtY4a8NVL14bj48Z8ydyG
+ DuUa/cGsd2D2WcUlFXSoAoqpG1vHkHkXqEw3fJrQIFYCfhm7e7gAmDhTxwJtD6J/TDxOpxMrLSD
+ a/OoBzqSn8H7b8l4ncxTNkBHBPg93GhMZ8J4TQR6V+4BKk027nOnj6r+kj0zhzthgbax0T8dMLB
+ 4E5URz+mNkJa7+dpLoQ==
+X-Authority-Analysis: v=2.4 cv=cpGrVV4i c=1 sm=1 tr=0 ts=6a6bc9a6 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=_1IyUuN4QrATX339ibzo:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8 a=1XWaLZrsAAAA:8
+ a=20KFwNOVAAAA:8 a=4XeK37IC55s43dnOpu4A:9 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDE1OCBTYWx0ZWRfXzl+zEcI6hfGX
+ auRwOi6hYx3cmqyfekwqp8XZdOqL0Dfti67YOL5arF7UPQ23foYC1hplkLaFGweR1wdxjnAUW3f
+ sbXuhZ8ZvsdpS493sOCncB1X+rkXnQQ=
+X-Proofpoint-ORIG-GUID: MV0HKsZ3_ja9AdgYCADM9FxARXy9_Yft
+X-Proofpoint-GUID: MV0HKsZ3_ja9AdgYCADM9FxARXy9_Yft
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-30_06,2026-07-30_01,2025-10-01_01
 
-Thanks for the reviews, Eelco and Ilya. Sorry for the delayed response;
-I was tied up with other work over the past few days.
+BPF_SOCK_OPS_RWND_INIT lets a sockops BPF program pick the initial TCP
+receive window, e.g. to advertise a larger window up front in environments
+where that is known to be safe. Today it is only effective for the passive
+(listener) side; on the active (connect) side the value is computed and
+then silently discarded.
 
-I'll send v5 shortly.
+On the passive path tcp_openreq_init_rwin() inflates full_space when the
+program returns a non-zero window, so tcp_select_initial_window() can offer
+it:
+
+	else if (full_space < (u64)rcv_wnd * mss)
+		full_space = min_t(u64, (u64)rcv_wnd * mss, INT_MAX);
+
+tcp_select_initial_window() only clamps the requested window *down* to the
+available space, so without inflating the space first the BPF reply can
+never raise the offered window above tcp_full_space(sk).
+
+tcp_connect_init() calls tcp_rwnd_init_bpf() but never inflates full_space,
+so on connect() the requested window is clamped back to tcp_full_space(sk)
+(~64KB at the default rcvbuf) and the program's value is ignored.
+
+Inflate full_space in tcp_connect_init() as well; tp->advmss is the mss the
+listener path uses (both are tcp_mss_clamp(tp, dst_metric_advmss(dst))).
+Read full_space after tcp_rwnd_init_bpf() so a program that also adjusts
+SO_RCVBUF is still reflected. Compute the inflated value in u64 and clamp
+to INT_MAX to avoid overflow (full_space is int, rcv_wnd is u32), and
+apply the same overflow fix to the existing listener-side computation.
+
+tcp_select_initial_window() itself also computes init_rcv_wnd * mss in
+32-bit when clamping the offered window down to the requested value. A
+large requested window (init_rcv_wnd greater than ~2.9M segments at
+1460 mss) wraps this multiply and collapses the offered window to a tiny
+value, so compute it in u64 as well.
+
+Fixes: 13d3b1ebe287 ("bpf: Support for setting initial receive window")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Suggested-by: Sashiko <sashiko-bot@kernel.org>
+Signed-off-by: Tejas Birajdar <tejasbirajdar@meta.com>
+---
+v3:
+  - Also compute init_rcv_wnd * mss in u64 in tcp_select_initial_window();
+    a large requested window otherwise overflows the 32-bit multiply and
+    collapses the offered window.
+v2: https://lore.kernel.org/netdev/20260723214208.3655474-1-tejasbirajdar@meta.com/
+  - Compute the inflated full_space in u64 and clamp to INT_MAX in both the
+    connect and listener paths; read full_space after tcp_rwnd_init_bpf().
+v1: https://lore.kernel.org/netdev/20260722170033.2763794-1-tejasbirajdar@meta.com/
+
+Verified on the connect path with packetdrill: the offered initial window
+now tracks the BPF-requested value, and a large request that previously
+overflowed no longer collapses it. No new failures in the in-tree
+packetdrill selftests.
+
+ net/ipv4/tcp_minisocks.c | 4 ++--
+ net/ipv4/tcp_output.c    | 8 ++++++--
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index ddc4b17a826b..f8c1123aba43 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -453,8 +453,8 @@ void tcp_openreq_init_rwin(struct request_sock *req,
+ 	rcv_wnd = tcp_rwnd_init_bpf((struct sock *)req);
+ 	if (rcv_wnd == 0)
+ 		rcv_wnd = dst_metric(dst, RTAX_INITRWND);
+-	else if (full_space < rcv_wnd * mss)
+-		full_space = rcv_wnd * mss;
++	else if (full_space < (u64)rcv_wnd * mss)
++		full_space = min_t(u64, (u64)rcv_wnd * mss, INT_MAX);
+ 
+ 	/* tcp_full_space because it is guaranteed to be the first packet */
+ 	tcp_select_initial_window(sk_listener, full_space,
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index d7c1444b5e30..fcaa04e65189 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -251,7 +251,7 @@ void tcp_select_initial_window(const struct sock *sk, int __space, __u32 mss,
+ 		(*rcv_wnd) = space;
+ 
+ 	if (init_rcv_wnd)
+-		*rcv_wnd = min(*rcv_wnd, init_rcv_wnd * mss);
++		*rcv_wnd = min_t(u64, *rcv_wnd, (u64)init_rcv_wnd * mss);
+ 
+ 	*rcv_wscale = 0;
+ 	if (wscale_ok) {
+@@ -4103,6 +4103,7 @@ static void tcp_connect_init(struct sock *sk)
+ 	const struct dst_entry *dst = __sk_dst_get(sk);
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	__u8 rcv_wscale;
++	int full_space;
+ 	u16 user_mss;
+ 	u32 rcv_wnd;
+ 
+@@ -4137,10 +4138,13 @@ static void tcp_connect_init(struct sock *sk)
+ 		WRITE_ONCE(tp->window_clamp, tcp_full_space(sk));
+ 
+ 	rcv_wnd = tcp_rwnd_init_bpf(sk);
++	full_space = tcp_full_space(sk);
+ 	if (rcv_wnd == 0)
+ 		rcv_wnd = dst_metric(dst, RTAX_INITRWND);
++	else if (full_space < (u64)rcv_wnd * tp->advmss)
++		full_space = min_t(u64, (u64)rcv_wnd * tp->advmss, INT_MAX);
+ 
+-	tcp_select_initial_window(sk, tcp_full_space(sk),
++	tcp_select_initial_window(sk, full_space,
+ 				  tp->advmss - (tp->rx_opt.ts_recent_stamp ? tp->tcp_header_len - sizeof(struct tcphdr) : 0),
+ 				  &tp->rcv_wnd,
+ 				  &tp->window_clamp,
+-- 
+2.53.0-Meta
+
