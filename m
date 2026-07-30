@@ -1,78 +1,77 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2F23F8257
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 09:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF263F0777
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 09:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785404797; cv=none; b=FGKyLcaSnoIwQbocyxn35wzgvauUl+XJh8NyG4mvSuJz+5ae+wTGRAbBWmwIiDj1ygWNwNuqkeBYmJc+7DvXiEu3Sb19s2HRXZ+be6wBHWsphaVdHsSERGF4dt5aEOChhwJdEQT+W60opplTsAIAzTNibHbJlhHuZqZYQtPQu4k=
+	t=1785404798; cv=none; b=o6T4Z6vO7iNyJYOZIVU5G86CHfgJqHIfMB+p6/PSfsPz78rI4HPYykpEdBWkDRnwPtV7YxQOZr12xLAUbHr//jq6y6yEEX7qu71DjMq+SMs+wAuZxaZ5q0P9DmlhfSOzDQk1RVikcmHCklKlbMKEfNC557ZVxfmfmF/lGJeqyn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785404797; c=relaxed/simple;
-	bh=eErbmbzF0p+Ymvxi2rWlK7tHjT3lb4LsRDu48s3ll/s=;
+	s=arc-20240116; t=1785404798; c=relaxed/simple;
+	bh=kmUK4k+J33lkejqc1ZGYFBbkyqaIcvzbR2wKiTK13aA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WJZ4LqhAEJSJHO8xDqQwiywXI3JeRrvTCNpXjlS+5SkSK9RkeuFmv+bu0FVBTaTY8Aze0dbLRXpBLh9zrf4G+Hhgb0mTVpssQZCtvG9O9RO7S6SsYBR98CPYguBHNRO9diAhNCHcbNJroLqqvAvszSSMOOD3bXrKAtvz6FnYBUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=AJw8X4ha; arc=none smtp.client-ip=209.85.221.53
+	 MIME-Version; b=HKgqPHcxzPhHkjr+Nk9LQUJGBn4LgHiequwePkLrky7whPZ4q9xPzLmUfQCTKL818NcVaGxTesYdHzHhkSlp2kO+olQf5wye4LhhhfKl5VQkKOoKfcRoTgloDpKBj3pW+q5SA77Nz7Flk+lvZxHk1gFzJ94Wx5mxu1e23e928ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=H01tqNfD; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="AJw8X4ha"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-471eeac43bfso1751069f8f.3
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 02:46:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="H01tqNfD"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47f7854678bso1004719f8f.3
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 02:46:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1785404794; x=1786009594; darn=vger.kernel.org;
+        d=openvpn.net; s=google; t=1785404795; x=1786009595; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ANuF36uLeJZqBWVbJg0BQItKy/nIiK9wSozqm5stJ70=;
-        b=AJw8X4haJpMM+i8MKbDs4zHZrqQnXCQf9N/gBYBD84+t3RDt6MBtCMs4pWj7fJU28R
-         z3WZVUdqqsMysQU8fiXVO1cr1F0IO+QOcDMKjSLOgFB6x3eA98Bu1g/NBFo+/bsses4W
-         CDHZxMKBdSTEKTwDuong04DsYV2OA60jC52KHN0N/NdSPcNxEs/mlFObePL++2NzvI4V
-         Ed50ayUsOqU7LIp6L8ZcRqTT/kwgz8Kd7YZe5lsm17TufRDJfBhTQKvoAQtb6+CQXzcT
-         4rWrHJveYSOksJM/LvoSZWR/Rpt4qBr8P9ZlsbdmQDScsHBuehmxbinlZSulRAnrhXTq
-         7koQ==
+        bh=B5p2VOIIELxz4YPcxQqWzujchMhHHNhaY5ukfxYn7+w=;
+        b=H01tqNfD1C68ep/gB0Vz5PsmdC0lrVul4FqZZyveDVlOM2GBEI88DlmPCwToTrjRzR
+         D+2JfmE2sR9zw16CwVnhlzcQ0aukkhmiK7bEzt4aVDXuCL+KKTXwsG9z9Ducxv7SHS9v
+         uhibnE2u3M+mgmut1JJTpKHbvb3AHjtC0pkqKtKpDGdTs9D8t843DsTJPL72rMwXFSzH
+         Byb7eekQOpYauPs1Uyeb3VNK4UAEbwPtqgOBriIhbNfOaMn8tVr9w/IKyLM0hyaOoKMN
+         wpgJVpK5FdcsvTvpCENA1slj8f7CdqI4pb/O1YsWYzNVPY6hVIX1npC/dZdOmfo90Tk/
+         Q9fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785404794; x=1786009594;
+        d=1e100.net; s=20251104; t=1785404795; x=1786009595;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ANuF36uLeJZqBWVbJg0BQItKy/nIiK9wSozqm5stJ70=;
-        b=r2oMsyh9pJq//bSJcpR+6Te2eNhh7bj0mL1+b9iy6E8g2A/l74hegbXhfqBiVmUL0N
-         J5+L+DPy7wiLzqpC9g3c0BMSe3Kjpz39JoB4uJOu5gEwnol/nsoRt+aUOJ/QppmIN45f
-         mJ0oPpzuuNem9v7+FdE1E1hqwVfRefzT7nc9NSjB/Xyj1SyrMDBBflURXpmKb5ICZj3l
-         ylXEHr0lr/Xtq2EXNBKfMCMKyLgGheZWa0lzbHvRcDusjrAD1XkmcTgX+bJQm9d04ZD2
-         TSmn5xsCkzua/Tzk371ymq5wkoF3r8zRm0plimeLuE2rv1bUUN4KROW8gsg4hpd3c0KU
-         Ny8w==
-X-Gm-Message-State: AOJu0YwSwtn+X0tEFCS27z0THM41IcmB3/vr0LDtNasmbfRK2iau1vb0
-	IF49NU88/zASOmqQcxccsvkGW3JdoSAQjFNSe1Rgwl9+lPnV4eO05JxabUyZihbMko2vqjYEPxQ
-	f21zt1nGUbMtm4xAKeg6w58Qhrl2ugvpEO4lbBai05jqZs924kbz3UQ/DyGu2BBrl
-X-Gm-Gg: AR+sD13P/h3ygsHLL7JPFh2vcZXLDO1zL+zkXk99scp3J2YuubOYsxSYxz1F/rh+qIa
-	AjgFmhUU4eKgSG6bZtlUNan7Fyn2VszKkT0AfwPUsX2qXSboUc0vm99RXrnItEuvQ6EmDNKZ/BQ
-	hQLhGaap8SHSRGEseNcln14jcWg0MY0XolhmbPtX4PqB8cbJ12EjQbuD0SVZjucgH2W6gKvZy2R
-	c47MCAze7YGzRcVTpoV0L0h2KoKIVYFZ+A6ajZ/Ge0WNXHjSJuqOSkVeDwphXKpRAysFaDDkwqc
-	aXxfsy5zFyjeKxy3EoWz02yKrxiFix5ypktKqzpkOn7kRKUwT9ETACKeAHkxEGM54/djdXysgB0
-	DhADxe8S7Msg0SCkB+hz5A3b26mqan66TBUZTgynFGmBUBubk1zhMSt8go5Rbz11+i/v7k2Fe2A
-	Xd3bV84/xkxEirYiYZEblL//QOkpxndQIMoF1dKv7kHaQlUmhEn0n/1KpiB6FZBP8WSM1u0cspD
+        bh=B5p2VOIIELxz4YPcxQqWzujchMhHHNhaY5ukfxYn7+w=;
+        b=aOPYVIP+amaaGr/HchA1C/vj5jcgRppXQPH3z6rBHTe4ujHHInmxEMpwn68yKOGy3m
+         MznCfVtqbk+puY34k5H6fF+KgacKSxDQpF8XHbv23r9vE5k0Bnf3MCkehAF0ZBpoIXmo
+         dyBVywC9e2CDk4ENL8rdAy0E3miIyuVgsErkUz8tY5rJgRE/UQpxTn1Dkkm88TmvDGqr
+         SgT42Mwm3tRhUYYEiYoKshCwztppnPSF2FgNcbpGgRpZLzcwTN/mGHQLlqPu1JNpZD+C
+         OM3lyePVcTheFUng5cciLJY77UezlTxpBfiYimg+DOuIvnpCMyrzrYFXNDOvg+IHBmyb
+         AWLg==
+X-Gm-Message-State: AOJu0YwNSHHRTgYqcWjC8k27awy/LMYFLxHH7rN2Ivsa+IY3rwGsjsVl
+	v5DpmAAt66BdEubH6hYtlYCLwCTuw8lomHiHvLJh6fUDD/MbGIdnViXs7TtXCit2YYsjGfBrN37
+	oV9g/avyUSTaPNhJOjzwg8h3+uRlOepNbB0ouaDcBNpewEJ8LPwP02OeodOVGasrr
+X-Gm-Gg: AR+sD12nYdCwSGCStMG/0eeSGtGI0qv3qozftS5SnztxyEhnXEaWsXgk3RgBdYPaKWK
+	1Dom86hsAW6q8U/iYqkrNM4Tufqa4yS2DxsFDiOr+QhQTetK8EnWZ0Q4VXKTAXBjFBOzApxK+f3
+	Ef4b92y/m+dZP5aAz5T69e7OgsnXYdqv5obP+QgJKFFtYERW4mtqZ+bn0oxFOwGPAVwN+N/ShCE
+	Gn0pJLvJLtIetKknXbY4gFHDiKszYWXFQ/XRShoN7O9Trc2QDUEI8hLBsTRsn896Y/MSBCEptCv
+	6gAMMx9UkeH8RywDiROP9I/pdQ+6694//+N+MMMiO/9fdeET+CTVcG2sFhSIbZQm4/pBxZOYKL+
+	+r3H++ZbNJh4LWB5tcp13yp2BXWv22XP2Ee2t4fCu8MySn3uR3jrtXVXelm9NuLP4dji8rNpO3K
+	HDU2XCWEPa2fAJcEeP+9cZ0g59lKeiZM1egHjsUJC7LcvoWLKZYfZjFXxNzuR9b3KmkJiZPfroL
 	A==
-X-Received: by 2002:a05:6000:381:b0:47d:f01e:83cf with SMTP id ffacd0b85a97d-47fc821708bmr2550992f8f.58.1785404794080;
-        Thu, 30 Jul 2026 02:46:34 -0700 (PDT)
+X-Received: by 2002:a05:6000:2909:b0:47d:ea8a:d224 with SMTP id ffacd0b85a97d-47fc81feb15mr2314848f8f.23.1785404795189;
+        Thu, 30 Jul 2026 02:46:35 -0700 (PDT)
 Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:97f0:8a89:3637:d698])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc88e424fsm6971410f8f.14.2026.07.30.02.46.33
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc88e424fsm6971410f8f.14.2026.07.30.02.46.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 02:46:33 -0700 (PDT)
+        Thu, 30 Jul 2026 02:46:34 -0700 (PDT)
 From: Antonio Quartulli <antonio@openvpn.net>
 To: netdev@vger.kernel.org
-Cc: Marco Baffo <marco@mandelbit.com>,
+Cc: Antonio Quartulli <antonio@openvpn.net>,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	Ralf Lici <ralf@mandelbit.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Antonio Quartulli <antonio@openvpn.net>
-Subject: [PATCH net 02/10] ovpn: limit keepalive values to one day
-Date: Thu, 30 Jul 2026 11:46:13 +0200
-Message-ID: <20260730094624.4102963-3-antonio@openvpn.net>
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH net 03/10] ovpn: skip rehash for peers already removed from by_id
+Date: Thu, 30 Jul 2026 11:46:14 +0200
+Message-ID: <20260730094624.4102963-4-antonio@openvpn.net>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260730094624.4102963-1-antonio@openvpn.net>
 References: <20260730094624.4102963-1-antonio@openvpn.net>
@@ -84,95 +83,135 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Marco Baffo <marco@mandelbit.com>
+ovpn_nl_peer_set_doit() resolves the target peer via
+ovpn_peer_get_by_id() before taking ovpn->lock. In the window between
+the lookup (which only takes a refcount) and the subsequent
+spin_lock_bh(&ovpn->lock), a concurrent OVPN_CMD_PEER_DEL, keepalive
+expiry, or socket teardown can take ovpn->lock first, run
+ovpn_peer_remove() to unhash the peer from all four tables (by_id,
+by_vpn_addr4/6, by_transp_addr) and release the lock. set_doit then
+acquires ovpn->lock and calls ovpn_peer_hash_vpn_ip(), which
+re-inserts the now-removed peer back into the rehashing tables.
 
-Large keepalive values can overflow the delayed-work delay on 32-bit
-systems, causing the keepalive worker to be repeatedly scheduled.
+The same race affects the float path: ovpn_peer_endpoints_update()
+holds only a refcount and acquires ovpn->lock very late (after async
+AEAD decrypt and a netlink notification), then rehashes the peer
+in the by_transp_addr table.
 
-A correct configuration should not require such large keepalive values,
-and an upper limit of one day is already generous and unnecessary in
-practice. Limit both the keepalive interval and timeout to 86400 seconds.
+The resurrected peer becomes reachable again from the RX lookup
+(ovpn_peer_get_by_transp_addr) and the TX VPN-IP lookup, even though
+userspace believes it is gone. Once the data-path refcount drops the
+peer is freed via call_rcu while the hash entries embedded in it
+remain linked, opening a UAF window.
 
-Signed-off-by: Marco Baffo <marco@mandelbit.com>
+Bail out of the rehash when hash_entry_id is unhashed, mirroring
+the sentinel already used by ovpn_peer_remove() to detect the
+already-removed state. The check is safe under ovpn->lock, which
+serializes every mutation of hash_entry_id, and is a no-op for the
+add path because ovpn_peer_add_mp() inserts hash_entry_id before
+calling ovpn_peer_hash_vpn_ip().
+
+Fixes: 1d36a36f6d53 ("ovpn: implement peer add/get/dump/delete via netlink")
 Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
 ---
- Documentation/netlink/specs/ovpn.yaml |  4 ++++
- drivers/net/ovpn/netlink-gen.c        | 20 ++++++++++++++------
- 2 files changed, 18 insertions(+), 6 deletions(-)
+ drivers/net/ovpn/peer.c | 73 ++++++++++++++++++++++++-----------------
+ 1 file changed, 43 insertions(+), 30 deletions(-)
 
-diff --git a/Documentation/netlink/specs/ovpn.yaml b/Documentation/netlink/specs/ovpn.yaml
-index b0c782e59a32..ac50d1d7c00a 100644
---- a/Documentation/netlink/specs/ovpn.yaml
-+++ b/Documentation/netlink/specs/ovpn.yaml
-@@ -118,12 +118,16 @@ attribute-sets:
-         doc: >-
-           The number of seconds after which a keep alive message is sent to the
-           peer
-+        checks:
-+          max: 86400
-       -
-         name: keepalive-timeout
-         type: u32
-         doc: >-
-           The number of seconds from the last activity after which the peer is
-           assumed dead
-+        checks:
-+          max: 86400
-       -
-         name: del-reason
-         type: u32
-diff --git a/drivers/net/ovpn/netlink-gen.c b/drivers/net/ovpn/netlink-gen.c
-index 2147cec7c2c5..92d2fdc17c2e 100644
---- a/drivers/net/ovpn/netlink-gen.c
-+++ b/drivers/net/ovpn/netlink-gen.c
-@@ -16,6 +16,14 @@ static const struct netlink_range_validation ovpn_a_peer_id_range = {
- 	.max	= 16777215ULL,
- };
+diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
+index a21d02ac715e..68021c0c1783 100644
+--- a/drivers/net/ovpn/peer.c
++++ b/drivers/net/ovpn/peer.c
+@@ -297,40 +297,46 @@ void ovpn_peer_endpoints_update(struct ovpn_peer *peer, struct sk_buff *skb)
+ 	/* rehashing is required only in MP mode as P2P has one peer
+ 	 * only and thus there is no hashtable
+ 	 */
+-	if (peer->ovpn->mode == OVPN_MODE_MP) {
+-		spin_lock_bh(&peer->ovpn->lock);
+-		spin_lock_bh(&peer->lock);
+-		bind = rcu_dereference_protected(peer->bind,
+-						 lockdep_is_held(&peer->lock));
+-		if (unlikely(!bind)) {
+-			spin_unlock_bh(&peer->lock);
+-			spin_unlock_bh(&peer->ovpn->lock);
+-			return;
+-		}
++	if (peer->ovpn->mode != OVPN_MODE_MP)
++		return;
  
-+static const struct netlink_range_validation ovpn_a_peer_keepalive_interval_range = {
-+	.max	= 86400ULL,
-+};
+-		/* This function may be invoked concurrently, therefore another
+-		 * float may have happened in parallel: perform rehashing
+-		 * using the peer->bind->remote directly as key
+-		 */
++	spin_lock_bh(&peer->ovpn->lock);
++	spin_lock_bh(&peer->lock);
++	bind = rcu_dereference_protected(peer->bind,
++					 lockdep_is_held(&peer->lock));
++	if (unlikely(!bind))
++		goto unlock2;
+ 
+-		switch (bind->remote.in4.sin_family) {
+-		case AF_INET:
+-			salen = sizeof(*sa);
+-			break;
+-		case AF_INET6:
+-			salen = sizeof(*sa6);
+-			break;
+-		}
++	/* peer may have been concurrently removed between the caller's
++	 * initial lookup and our acquisition of ovpn->lock; skip the
++	 * rehash so we don't re-insert a removed peer
++	 */
++	if (unlikely(hlist_unhashed(&peer->hash_entry_id)))
++		goto unlock2;
+ 
+-		/* remove old hashing */
+-		hlist_nulls_del_init_rcu(&peer->hash_entry_transp_addr);
+-		/* re-add with new transport address */
+-		nhead = ovpn_get_hash_head(peer->ovpn->peers->by_transp_addr,
+-					   &bind->remote, salen);
+-		hlist_nulls_add_head_rcu(&peer->hash_entry_transp_addr, nhead);
+-		spin_unlock_bh(&peer->lock);
+-		spin_unlock_bh(&peer->ovpn->lock);
++	/* This function may be invoked concurrently, therefore another
++	 * float may have happened in parallel: perform rehashing
++	 * using the peer->bind->remote directly as key
++	 */
 +
-+static const struct netlink_range_validation ovpn_a_peer_keepalive_timeout_range = {
-+	.max	= 86400ULL,
-+};
++	switch (bind->remote.in4.sin_family) {
++	case AF_INET:
++		salen = sizeof(*sa);
++		break;
++	case AF_INET6:
++		salen = sizeof(*sa6);
++		break;
+ 	}
 +
- static const struct netlink_range_validation ovpn_a_peer_tx_id_range = {
- 	.max	= 16777215ULL,
- };
-@@ -68,8 +76,8 @@ const struct nla_policy ovpn_peer_nl_policy[OVPN_A_PEER_TX_ID + 1] = {
- 	[OVPN_A_PEER_LOCAL_IPV4] = { .type = NLA_BE32, },
- 	[OVPN_A_PEER_LOCAL_IPV6] = NLA_POLICY_EXACT_LEN(16),
- 	[OVPN_A_PEER_LOCAL_PORT] = NLA_POLICY_MIN(NLA_BE16, 1),
--	[OVPN_A_PEER_KEEPALIVE_INTERVAL] = { .type = NLA_U32, },
--	[OVPN_A_PEER_KEEPALIVE_TIMEOUT] = { .type = NLA_U32, },
-+	[OVPN_A_PEER_KEEPALIVE_INTERVAL] = NLA_POLICY_FULL_RANGE(NLA_U32, &ovpn_a_peer_keepalive_interval_range),
-+	[OVPN_A_PEER_KEEPALIVE_TIMEOUT] = NLA_POLICY_FULL_RANGE(NLA_U32, &ovpn_a_peer_keepalive_timeout_range),
- 	[OVPN_A_PEER_DEL_REASON] = NLA_POLICY_MAX(NLA_U32, 4),
- 	[OVPN_A_PEER_VPN_RX_BYTES] = { .type = NLA_UINT, },
- 	[OVPN_A_PEER_VPN_TX_BYTES] = { .type = NLA_UINT, },
-@@ -97,8 +105,8 @@ const struct nla_policy ovpn_peer_new_input_nl_policy[OVPN_A_PEER_TX_ID + 1] = {
- 	[OVPN_A_PEER_VPN_IPV6] = NLA_POLICY_EXACT_LEN(16),
- 	[OVPN_A_PEER_LOCAL_IPV4] = { .type = NLA_BE32, },
- 	[OVPN_A_PEER_LOCAL_IPV6] = NLA_POLICY_EXACT_LEN(16),
--	[OVPN_A_PEER_KEEPALIVE_INTERVAL] = { .type = NLA_U32, },
--	[OVPN_A_PEER_KEEPALIVE_TIMEOUT] = { .type = NLA_U32, },
-+	[OVPN_A_PEER_KEEPALIVE_INTERVAL] = NLA_POLICY_FULL_RANGE(NLA_U32, &ovpn_a_peer_keepalive_interval_range),
-+	[OVPN_A_PEER_KEEPALIVE_TIMEOUT] = NLA_POLICY_FULL_RANGE(NLA_U32, &ovpn_a_peer_keepalive_timeout_range),
- 	[OVPN_A_PEER_TX_ID] = NLA_POLICY_FULL_RANGE(NLA_U32, &ovpn_a_peer_tx_id_range),
- };
++	/* remove old hashing */
++	hlist_nulls_del_init_rcu(&peer->hash_entry_transp_addr);
++	/* re-add with new transport address */
++	nhead = ovpn_get_hash_head(peer->ovpn->peers->by_transp_addr,
++				   &bind->remote, salen);
++	hlist_nulls_add_head_rcu(&peer->hash_entry_transp_addr, nhead);
++unlock2:
++	spin_unlock_bh(&peer->lock);
++	spin_unlock_bh(&peer->ovpn->lock);
+ 	return;
+ unlock:
+ 	spin_unlock_bh(&peer->lock);
+@@ -906,6 +912,13 @@ void ovpn_peer_hash_vpn_ip(struct ovpn_peer *peer)
+ 	if (peer->ovpn->mode != OVPN_MODE_MP)
+ 		return;
  
-@@ -112,8 +120,8 @@ const struct nla_policy ovpn_peer_set_input_nl_policy[OVPN_A_PEER_TX_ID + 1] = {
- 	[OVPN_A_PEER_VPN_IPV6] = NLA_POLICY_EXACT_LEN(16),
- 	[OVPN_A_PEER_LOCAL_IPV4] = { .type = NLA_BE32, },
- 	[OVPN_A_PEER_LOCAL_IPV6] = NLA_POLICY_EXACT_LEN(16),
--	[OVPN_A_PEER_KEEPALIVE_INTERVAL] = { .type = NLA_U32, },
--	[OVPN_A_PEER_KEEPALIVE_TIMEOUT] = { .type = NLA_U32, },
-+	[OVPN_A_PEER_KEEPALIVE_INTERVAL] = NLA_POLICY_FULL_RANGE(NLA_U32, &ovpn_a_peer_keepalive_interval_range),
-+	[OVPN_A_PEER_KEEPALIVE_TIMEOUT] = NLA_POLICY_FULL_RANGE(NLA_U32, &ovpn_a_peer_keepalive_timeout_range),
- 	[OVPN_A_PEER_TX_ID] = NLA_POLICY_FULL_RANGE(NLA_U32, &ovpn_a_peer_tx_id_range),
- };
- 
++	/* peer may have been concurrently removed between the caller's
++	 * initial lookup and our acquisition of ovpn->lock; skip the
++	 * rehash so we don't re-insert a removed peer
++	 */
++	if (hlist_unhashed(&peer->hash_entry_id))
++		return;
++
+ 	if (peer->vpn_addrs.ipv4.s_addr != htonl(INADDR_ANY)) {
+ 		/* remove potential old hashing */
+ 		hlist_nulls_del_init_rcu(&peer->hash_entry_addr4);
 -- 
 2.54.0
 
