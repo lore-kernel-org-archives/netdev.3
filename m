@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0939F33DEC0;
-	Thu, 30 Jul 2026 05:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C6C33ADAE;
+	Thu, 30 Jul 2026 05:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785390752; cv=none; b=P6XKSW4E7rByABR57LUV52Wg4Jfi+eMSa5/TN3ZWZx/M5GoVbVQTg4geMtj7p7Hi2y9OWXQjJhB6CBAd9x08sr3DKELcQMkfJxnZloKOfIYEJrUJsFjte0OVbNgo9nDetmQpuTgTqXdTYEDIrkIp2eovxY6eQ+HQDk2LqW08h/M=
+	t=1785390762; cv=none; b=LUbzZ5+NQDhUfmWhaa5gFunD2H6Fpypj8t8Ejz3jEoUB6vS/6KF/UQGCAlwCsi4veq2rlw9sfuutfdaE4fsOUPkqwTEMhKUGB6gyCkdaDHYHPasxV0gMNBqzurr2zPTQELKkvTqT8LAOOAAFDzCZT2/3vghdZcpjzCrWHuYKDQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785390752; c=relaxed/simple;
-	bh=PDAetKMBfrHH+ezY2NBJLUvEjfllzK4zQPPQPfp0yqE=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=kKiRwKjpVJhM/CnuWUwtpWWmX6TrCdneWrxfCf4cRF4y60QYBCsMtItDYB+8jE/VN5vpI2DzVu2AZyy9sgJJ0u6NbuHZTWPCNxaHaT/zs5jT8NX2/UgbSU0ydyUZxbxR7d1AMnN7/TVxneWZ8X+9JDwWvshxtCSs5HMMM2cmVM4=
+	s=arc-20240116; t=1785390762; c=relaxed/simple;
+	bh=PAjYa6lLty9zTtVoSG6aF2MdE6bAPhHLKpXtZl1Gtj4=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y+PkDsaxC4/6rvZauVwaZi0MTY7GvQX97EkxV2OObLta7twa602ylHKiQ5dfvZXAEIljJ/UiAPG4V/VNbZwAQCYzorjtNmFqu0zCVzIoF+c03LS0wCoXEcT5Fk5TEtvvtF5+9ERZ0++tEK3/sMjMxkiacMI/lQ0tvCj2/xtKQbU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1wpJgT-000000003wV-2Wjf;
-	Thu, 30 Jul 2026 05:51:57 +0000
-Date: Thu, 30 Jul 2026 06:51:54 +0100
+	id 1wpJh0-000000003xC-36n8;
+	Thu, 30 Jul 2026 05:52:30 +0000
+Date: Thu, 30 Jul 2026 06:52:27 +0100
 From: Daniel Golle <daniel@makrotopia.org>
 To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -30,8 +30,10 @@ To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
 	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
 	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v8 0/5] net: dsa: mxl862xx: support firmware update
-Message-ID: <cover.1785389905.git.daniel@makrotopia.org>
+Subject: [PATCH net-next v8 2/5] net: dsa: mxl862xx: add SMDIO clause-22
+ register access
+Message-ID: <e121cb26514e3ea0792a18058a7b39fdb49e1a05.1785389905.git.daniel@makrotopia.org>
+References: <cover.1785389905.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,238 +42,105 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <cover.1785389905.git.daniel@makrotopia.org>
 
-The firmware of MxL862xx managed Ethernet switches can be updated
-in-system via the same MDIO bus which is also used to manage the
-switch. Wire up the devlink flash_update operation for DSA drivers
-and implement firmware update and version reporting in the mxl862xx
-driver.
+Add mxl862xx_smdio_read() and mxl862xx_smdio_write() for clause-22
+SMDIO register access. The switch's MCUboot bootloader exposes only
+clause-22 registers; the clause-45 MMD interface needs the running
+firmware and is unavailable while the switch is in MCUboot. The MDIO
+bus lock is held per-transaction (not across polls) so that SB PDI
+polling during flash erase does not starve other non-switch users of
+the same MDIO bus, such as separate PHYs providing WAN or management
+interfaces.
 
-Changes since v7 [7]:
- - most of the changes below address findings of the Sashiko AI
-   reviews of v7
- - The interrupted-download drain no longer sends END, which a loader
-   still in its receive loop consumes as a byte count and underflows
-   its receive counter on, and the flash path now reports a rejected
-   image instead of a write timeout
- - refuse a second devlink dev flash while the previous one's reprobe
-   is still pending, and stop publishing a zeroed firmware version
-   after a failed transfer
- - initialise the SerDes state before the rescue-mode early return,
-   so a successful rescue-mode flash cannot hand phylink an
-   unconfigured PCS
- - do not fail probe from the wedged-download branch of the rescue
-   detection, which a download interrupted with exactly one byte
-   outstanding would trigger, and report a failed recovery through
-   devlink rather than refusing every flash for good
- - reset the SB PDI mailbox before probing it, log the drain's
-   progress, and correct the protocol and register comments throughout
+Unlike mxl862xx_api_wrap(), which takes the bus lock with
+MDIO_MUTEX_NESTED because it can be entered from the accessors of
+the switch-internal MDIO bus while that bus's lock of the same lock
+class is already held, the SMDIO helpers take it with a plain
+mutex_lock(). They are only called from probe and devlink flash
+contexts where no other MDIO bus lock can be held.
 
-Changes since v6 [6]:
- - reprobe from a single delayed work item instead of a kthread
-   spawned by a workqueue kickoff; the kthread existed only to drop
-   the module reference from core code, but its creation-failure path
-   did the racy module_put() from module text anyway and could strand
-   the driver bound with skip_teardown set. The collapsed form
-   matches iwl_trans_reprobe_wk(), and a failed reprobe now leaves
-   the device unbound like a failed probe
- - only signal END on a successful transfer; a failure leaves the
-   loader mid-payload, where END is read as a byte count and can
-   underflow the receive counter, so return the error and let the
-   reprobe recover
- - add cond_resched() to the payload loop so a long transfer over a
-   bit-banged MDIO bus under CONFIG_PREEMPT_NONE does not trip the
-   soft-lockup detector
- - drop the cached firmware version and chip id on a failed flash so
-   devlink dev info stops reporting the pre-flash version until the
-   reprobe
- - report the firmware version under DEVLINK_INFO_VERSION_GENERIC_FW
-   instead of a bare "fw" string
- - correct the SB PDI header comment's SMDIO register map and expand
-   the note on why closing the shared conduit is safe
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+---
+v8: document the paged register window and the per-transaction bus
+    locking next to the helpers, rather than only in this changelog
+    (found by Sashiko AI review)
+v7: no changes
+v6: no changes
+v5: no changes
+v4: no changes
+v3: explain the plain mutex_lock() vs MDIO_MUTEX_NESTED choice in
+    the commit message
+v2: clarify in the commit message that the per-transaction bus
+    locking is about unrelated non-switch devices on the same MDIO
+    bus (Andrew Lunn)
 
-Changes since v5 [5]:
- - run the post-flash reprobe from a kthread that drops the module
-   reference with module_put_and_kthread_exit() from core code, fixing
-   a use-after-free where a work item's trailing module_put() could
-   return into module text a racing rmmod had freed; a workqueue
-   kickoff spawns the kthread off the devlink caller where
-   kthread_create() can return -EINTR
- - send END on every flash failure from the ready handshake onward so
-   an aborted transfer lets MCUboot reboot instead of leaving it
-   waiting
- - after the background drain finalises an interrupted download,
-   reprobe and let the probe-time detection re-classify the switch,
-   so a valid image a last-moment interruption left bootable comes up
-   as running firmware; rescue_drain() no longer inspects or reports
-   the outcome
- - re-read the SB PDI status register once more after a poll timeout
-   expires, so a preempted poll cannot report a spurious -ETIMEDOUT
- - bail out of the periodic stats poll when the flash teardown has set
-   WORK_STOPPED, closing a get_stats64() re-arm race
- - allocate the reprobe kickoff before disturbing the switch, so an
-   -ENOMEM cannot leave it flashed but never reprobed
- - omit asic.id/asic.rev when the CHIP ID read returned 0, instead of
-   publishing a bogus "0000" for fwupd to match firmware against
- - treat the flashless-download loop (STAT 0xc33c) as an unsupported
-   configuration and fail probe with -ENODEV instead of advertising
-   it as flashable
+ drivers/net/dsa/mxl862xx/mxl862xx-host.c | 40 ++++++++++++++++++++++++
+ drivers/net/dsa/mxl862xx/mxl862xx-host.h |  2 ++
+ 2 files changed, 42 insertions(+)
 
-Changes since v4 [4]:
- - report the numeric chip part number and version read from the
-   static CHIP ID registers as the "asic.id" and "asic.rev" fixed
-   versions instead of a model-name string, which does not belong in
-   a devlink version identifier (Jakub Kicinski)
- - report the running firmware version as the "stored" version too,
-   since the switch boots it from its own flash, so userspace can
-   distinguish a flash-backed part from a flashless one by the
-   presence of "stored" without a future API change
- - run the post-flash reprobe from a self-contained work item again
-   instead of the v4 kernel thread, which tripped the hung-task
-   watchdog while parked across the flash and returned -EINTR from
-   kthread_create() when the devlink command was interrupted
- - re-read the new firmware version through the reprobe's fresh probe
-   and drop the SYS_MISC_FW_VERSION exemption from the host block
- - raise the firmware command poll timeout so the FW_UPDATE command
-   that reboots into MCUboot is not cut short
- - detect the switch state from the value MCUboot publishes in the SB
-   PDI STAT register (loader ready, wedged download, or running
-   firmware), confirming a live console loader with a register-read
-   challenge, instead of trusting a bare SMDIO scratch write
- - fail probe with -ENODEV over SB PDI when the switch does not
-   respond at all (absent, unpowered, or misdescribed in the device
-   tree) instead of letting the clause-45 API flood the log with CRC
-   errors
- - drain a wedged interrupted download back to a clean ready state
-   from a background work item so the multi-minute recovery never
-   holds the devlink instance lock, reporting no firmware version and
-   refusing flash with -EBUSY until it completes
- - report the rescue-mode null firmware version "0.0.0" as both the
-   running and stored version, matching the running/stored reporting
-   above
- - split the devlink documentation into its own patch and add
-   Documentation/networking/devlink/mxl862xx.rst describing the info
-   versions and the flash update behaviour (Jakub Kicinski)
- - include example "devlink dev info" outputs in the commit messages
-   of patches 3 and 4 (Jakub Kicinski)
-
-Changes since v3 [3]:
- - only install the flash_update devlink op for switches whose
-   driver implements it, so the devlink core rejects unsupported
-   requests before fetching the firmware file from userspace
- - run the deferred reprobe from a kernel thread which ends in
-   module_put_and_kthread_exit() instead of a work item that
-   dropped its module reference while still executing module code
- - fail firmware API read commands with -ENODEV after the update
-   has finished instead of faking success with an unfilled buffer,
-   which could send port_fdb_dump() into an endless loop
- - keep the host block in place across the post-update version
-   query by exempting SYS_MISC_FW_VERSION from block_host instead
-   of briefly lifting the block, and write all blocking flags under
-   the MDIO bus lock
- - check the return value of all SB PDI control writes; a failed
-   address write during the half-bank switch could otherwise place
-   the second half of the payload at the wrong flash offset
- - initialise the progress notification deadline from jiffies so
-   notifications are not suppressed on 32-bit systems shortly
-   after boot
- - log a distinct diagnostic when rescue mode detection fails on an
-   SMDIO bus error instead of silently treating it as not being in
-   rescue mode
- - flush the switchdev deferred queue after closing the ports so
-   the bridge's deferred STP DISABLED transitions reach the
-   firmware while it is still running instead of failing against
-   the host block with "failed to set STP state" errors
- - treat -ENODEV as successful deletion in port_mdb_del() so the
-   post-update teardown no longer leaves host MDB entries behind
-   for the DSA core to report when the tree is torn down
-
-Changes since v2 [2]:
- - validate the firmware image, including both CRCs, before taking
-   down any ports, so that a malformed file is rejected without
-   disturbing the running switch and without the needless flash and
-   reprobe cycle it previously triggered
- - reject images whose declared payload sizes overflow when summed
-   (check_add_overflow) or sum up to zero; the latter previously
-   erased the flash without writing anything back
- - allocate the reprobe work item and take the module and device
-   references before starting the update, so scheduling the reprobe
-   can no longer fail after the switch has been pushed into MCUboot
- - prevent the stats poll work from being re-armed and cancel the
-   CRC error work before starting the transfer
- - check the host-blocking flags in mxl862xx_api_wrap() under the
-   MDIO bus lock to close the race window where an API command
-   which had already passed the check could reach the bus after the
-   switch rebooted into MCUboot
- - check the return value of SB PDI data word writes so a failed
-   MDIO transaction aborts the transfer instead of being noticed
-   only through a corrupted image
- - report a per-model chip name (e.g. "MaxLinear MxL86252") as the
-   devlink "asic.id" fixed version instead of the devicetree
-   compatible string, whose comma is awkward for userspace
-   consumers such as fwupd (see discussion on v2 patch 3)
- - report the canonical null version "0.0.0" instead of
-   "mcuboot-rescue" as the running firmware version in rescue mode,
-   so that version-comparing update tools like fwupd treat every
-   available release as an upgrade and offer it for recovery
-
-Changes since RFC [1]:
- - detect a switch stuck in MCUboot rescue mode at probe, register
-   the switch without any ports and report "mcuboot-rescue" as the
-   running firmware version, so devlink flash can recover from a
-   failed or interrupted update (Andrew Lunn)
- - clarify in the commit message of patch 2 that the per-transaction
-   MDIO bus locking is about other, non-switch devices on the same
-   MDIO bus (Andrew Lunn)
- - mention in the commit message of patch 3 that closing the ports
-   also stops phylib from polling the switch-internal PHYs during
-   the transfer (Andrew Lunn)
- - split up run-on sentence and explain the dynamically allocated
-   reprobe work item instead of just pointing at iwlwifi in the
-   commit message of patch 3 (Manuel Ebner)
- - use kzalloc_obj() (Manuel Ebner)
- - state the actual duration of a complete flash and reprobe cycle
-   (just under a minute) in comments and the commit message, and
-   clarify that the timeout values are generous upper bounds
-   (Manuel Ebner)
-
-[1] https://lore.kernel.org/all/ak0J-HgzMRea53om@makrotopia.org/
-[2] https://lore.kernel.org/all/cover.1783988826.git.daniel@makrotopia.org/
-[3] https://lore.kernel.org/all/cover.1784513694.git.daniel@makrotopia.org/
-[4] https://lore.kernel.org/all/cover.1784665017.git.daniel@makrotopia.org/
-[5] https://lore.kernel.org/all/cover.1784945329.git.daniel@makrotopia.org/
-[6] https://lore.kernel.org/all/cover.1785119999.git.daniel@makrotopia.org/
-[7] https://lore.kernel.org/all/cover.1785274610.git.daniel@makrotopia.org/
-
-Daniel Golle (5):
-  net: dsa: add devlink flash_update callback to dsa_switch_ops
-  net: dsa: mxl862xx: add SMDIO clause-22 register access
-  net: dsa: mxl862xx: add devlink flash_update and info_get
-  net: dsa: mxl862xx: recover switch stuck in MCUboot rescue mode
-  net: dsa: mxl862xx: document devlink flash and info support
-
- Documentation/networking/devlink/index.rst    |    1 +
- Documentation/networking/devlink/mxl862xx.rst |   71 ++
- MAINTAINERS                                   |    1 +
- drivers/net/dsa/mxl862xx/Makefile             |    2 +-
- drivers/net/dsa/mxl862xx/mxl862xx-api.h       |   10 +
- drivers/net/dsa/mxl862xx/mxl862xx-cmd.h       |    2 +
- drivers/net/dsa/mxl862xx/mxl862xx-fw.c        | 1102 +++++++++++++++++
- drivers/net/dsa/mxl862xx/mxl862xx-fw.h        |   20 +
- drivers/net/dsa/mxl862xx/mxl862xx-host.c      |   60 +
- drivers/net/dsa/mxl862xx/mxl862xx-host.h      |    2 +
- drivers/net/dsa/mxl862xx/mxl862xx-phylink.c   |    2 +
- drivers/net/dsa/mxl862xx/mxl862xx.c           |  166 ++-
- drivers/net/dsa/mxl862xx/mxl862xx.h           |   48 +
- include/net/dsa.h                             |    3 +
- net/dsa/devlink.c                             |   50 +-
- 15 files changed, 1509 insertions(+), 31 deletions(-)
- create mode 100644 Documentation/networking/devlink/mxl862xx.rst
- create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-fw.c
- create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-fw.h
-
-
-base-commit: ec83512ba345b1e415ca491509a7a952db84c4c7
-prerequisite-patch-id: 0000000000000000000000000000000000000000
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+index 4acd216f7cc0..11759fa6069b 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+@@ -495,6 +495,46 @@ int mxl862xx_reset(struct mxl862xx_priv *priv)
+ 	return ret;
+ }
+ 
++#define MXL862XX_SMDIO_ADDR_REG		0x1f
++#define MXL862XX_SMDIO_PAGE_MASK	0xfff0
++#define MXL862XX_SMDIO_OFF_MASK		0x000f
++
++/* Paged clause-22 window: the page goes into MII register 0x1f, the low nibble
++ * of addr selects one of the 16 registers within it. Both helpers take the MDIO
++ * bus lock per transaction, so callers must not already hold it -- unlike
++ * mxl862xx_api_wrap(), which holds it across a whole firmware command.
++ */
++int mxl862xx_smdio_read(struct mxl862xx_priv *priv, u32 addr)
++{
++	struct mii_bus *bus = priv->mdiodev->bus;
++	int phy = priv->mdiodev->addr;
++	int ret;
++
++	mutex_lock(&bus->mdio_lock);
++	ret = __mdiobus_write(bus, phy, MXL862XX_SMDIO_ADDR_REG,
++			      addr & MXL862XX_SMDIO_PAGE_MASK);
++	if (ret >= 0)
++		ret = __mdiobus_read(bus, phy, addr & MXL862XX_SMDIO_OFF_MASK);
++	mutex_unlock(&bus->mdio_lock);
++	return ret;
++}
++
++int mxl862xx_smdio_write(struct mxl862xx_priv *priv, u32 addr, u16 val)
++{
++	struct mii_bus *bus = priv->mdiodev->bus;
++	int phy = priv->mdiodev->addr;
++	int ret;
++
++	mutex_lock(&bus->mdio_lock);
++	ret = __mdiobus_write(bus, phy, MXL862XX_SMDIO_ADDR_REG,
++			      addr & MXL862XX_SMDIO_PAGE_MASK);
++	if (ret >= 0)
++		ret = __mdiobus_write(bus, phy, addr & MXL862XX_SMDIO_OFF_MASK,
++				      val);
++	mutex_unlock(&bus->mdio_lock);
++	return ret;
++}
++
+ void mxl862xx_host_init(struct mxl862xx_priv *priv)
+ {
+ 	INIT_WORK(&priv->crc_err_work, mxl862xx_crc_err_work_fn);
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.h b/drivers/net/dsa/mxl862xx/mxl862xx-host.h
+index 66d6ae198aff..4e054c6e4c0e 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-host.h
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.h
+@@ -18,5 +18,7 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *data, u16 size,
+ 	mxl862xx_api_wrap(dev, cmd, &(data), sizeof((data)), true, true)
+ 
+ int mxl862xx_reset(struct mxl862xx_priv *priv);
++int mxl862xx_smdio_read(struct mxl862xx_priv *priv, u32 addr);
++int mxl862xx_smdio_write(struct mxl862xx_priv *priv, u32 addr, u16 val);
+ 
+ #endif /* __MXL862XX_HOST_H */
 -- 
 2.55.0
