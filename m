@@ -1,161 +1,140 @@
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5DA3BCD36
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 20:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99F43BBA04
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 20:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785444537; cv=none; b=DIWiNiHTrTIbpJs22vTkE0ZXUY0qARy9yk6dHqc9zcELBhgCT6tYEpTHpcgTClBR8ReYROXY4gKob/Am4jRxFtrMqzcM0ANEpiP146DWfnh8IfviWFkQopjfDoG5xNvHnFo+9c/iy2pbjzkqicxtPnmiN78vyLlYUmjyDXw16hs=
+	t=1785444631; cv=none; b=EDd0qCxv0Eo8tfSL0VJcdtTLL4N1C6sOB4cu2YB8p1s/bITpP5oMPAqYVtesT15MDCSv9yGOSeorthyj/gFAhcoeP3vgHqnm76+qpuunSmwn0I3KeQwmLe4ESNYRIVCPqutGb1aKbTcNuSzUlU8tmUd5fpjkJEJ6OW359GYhpLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785444537; c=relaxed/simple;
-	bh=+JX9cWqUuW45m07C5RH0ARr6Sep3gbrZV1Hw7AxFGmk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OJGE2hgU8xz5Kp4KXIWNBQLcax1fAMMe6nbHUWNnXXO+Re42VDr9Q4K3NGp7/b6+YVJE/Ik6PboGEKUKLJVFyfeMFUSWjjUzBkJcM5rGAKH/xD4rEcHAZn/148Hk96Tc8dIXaDiWYDu6sBiV66e/o3ZwfRMly1DNrzu9uOYwiEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=c9laAda2; arc=none smtp.client-ip=202.36.163.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+	s=arc-20240116; t=1785444631; c=relaxed/simple;
+	bh=LJX2nCqARKuPOp+0AXCPLowxKogPqOqrxjJCDjWMdFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FkPfaMLNCbQHhdnSfj0w0xwGGnt9SCgD0O4QmJ2GmQKf1vjIiUN0270BvMs2vGWnMUfc7yIHaaqMxaDLt46XGTvkr0Ti0/UWDUsrrVuH9CY439VrvLLLqmNwKCYVFeOs+hMxpVSZD5cHawZlaumBa1Y8ty4C9RNNO7d0gbXPF7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EKSQIfi7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="c9laAda2"
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id BA62C2C0373;
-	Fri, 31 Jul 2026 08:48:51 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1785444531;
-	bh=+JX9cWqUuW45m07C5RH0ARr6Sep3gbrZV1Hw7AxFGmk=;
-	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=c9laAda2HkK/YjLzvFl4q4+Dqhforj5THWA1gnLD1ctdNTeX07W1Tpqxl4T/VdOnR
-	 oox6jiU1zViAnBw0MtIPLZJ5n0NSQz8mb8EYXWOcIiYI9THZh6fDQD1Hw30g2rGSFq
-	 noH+zB1GVXe02Zw3jRxg1ni3gMfuv/x5GnnyLm/1a4rdGuRlUZ+gIufJ2QfFEZnPiR
-	 gqjrbEYRsNGx/6act9KR7ftgwBqb0ma6kczJMlIhXXlxPy8v2p2heZpNeIY0aMm1sa
-	 yWGhQLW2W92XuiRhiml50Ur2mDOrp5xn9+eMnMPYCTKJkxfDaKGyYu/8ooYZJJak5a
-	 fwDcbLXAyuoSg==
-Received: from svr-chch-ex2.atlnz.lc (Not Verified[2001:df5:b000:bc8::76]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B6a6bb8b30001>; Fri, 31 Jul 2026 08:48:51 +1200
-Received: from svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) by
- svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.39; Fri, 31 Jul 2026 08:48:51 +1200
-Received: from svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567]) by
- svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567%15]) with mapi id
- 15.02.1748.039; Fri, 31 Jul 2026 08:48:51 +1200
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, "przemyslaw.kitszel@intel.com"
-	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"aleksander.lobakin@intel.com" <aleksander.lobakin@intel.com>
-CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Blair Steven
-	<Blair.Steven@alliedtelesis.co.nz>, Carl Smith
-	<Carl.Smith@alliedtelesis.co.nz>
-Subject: Re: [PATCH net-next] i40e: Avoid repeating RX filter warning
-Thread-Topic: [PATCH net-next] i40e: Avoid repeating RX filter warning
-Thread-Index: AQHc4znbWyYjUBsJCUSplU0ijsiEzraE2zuAgAFU2YCAAAn1gA==
-Date: Thu, 30 Jul 2026 20:48:51 +0000
-Message-ID: <38bfcc78-ca4d-4f4c-b4de-5afa486be302@alliedtelesis.co.nz>
-References: <20260514003733.1718771-1-chris.packham@alliedtelesis.co.nz>
- <c2f3acdd-9985-4d8f-bfc4-5d83f520f4a9@alliedtelesis.co.nz>
- <5f1456d9-a098-4459-8fe0-3a90c4db0ed3@intel.com>
-In-Reply-To: <5f1456d9-a098-4459-8fe0-3a90c4db0ed3@intel.com>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1D25F770D98A8F4BA884C3BD633DC0B3@alliedtelesis.co.nz>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EKSQIfi7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F641F000E9;
+	Thu, 30 Jul 2026 20:50:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785444628;
+	bh=9QCKuwrtyd7I9iR3Ou1IzlQBa2Lv3qDqs2xqynH12DA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=EKSQIfi7NVvXPiybw43bKG3PA4CRZlSHpisVtHo6xrLnywRmNKv8ABnTIlgBVSi3K
+	 ZVirC+jlDclpja05mWUk7Vo0kL7kNnkKvAcTkuiF/BQnKTCR/85HheJaCyFlcpuWjC
+	 lgci2sJxdc+f+DOHqVocmYufsXaF6lFSNaMRfLux8cl8Z83j6u+PV/NSwg3Vxiwvr1
+	 H0QXWkXz4xxIpsQKXYajnmoyp6f2crJ7gepmTOfyvwmLVvzt6fbbRaSSYOw9igrQ+l
+	 6KL3ulhJtmszvrBYYlBIoUO4DeS4eWGRyT4wkjidvvcqnSBumekxtTWieCof+Ro3b6
+	 rXFkmAXjbc8BA==
+Date: Thu, 30 Jul 2026 13:50:27 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: Matthieu Baerts <matttbe@kernel.org>, davem@davemloft.net,
+ netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org
+Subject: Re: [RFC] docs: netdev: additional info requirements for bug fixes
+Message-ID: <20260730135027.6252ed70@kernel.org>
+In-Reply-To: <amtb096CVcSxaXeX@krikkit>
+References: <20260727204724.2787038-1-kuba@kernel.org>
+	<20260727152517.312895f3@kernel.org>
+	<amgBCpqbkrEIiCuh@krikkit>
+	<b39fa14e-1bd3-4e02-8d44-648628303197@kernel.org>
+	<amkzn_79gJWAjGEV@krikkit>
+	<20260728160820.3860b3de@kernel.org>
+	<amtb096CVcSxaXeX@krikkit>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=O66avw9W c=1 sm=1 tr=0 ts=6a6bb8b3 a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=drD7vYo3kbIA:10 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=K7DEirGRrMXiwQqxwewA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-SEG-SpamProfiler-Score: 0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-T24gMzEvMDcvMjAyNiAwODoxMywgVG9ueSBOZ3V5ZW4gd3JvdGU6DQo+DQo+DQo+IE9uIDcvMjkv
-MjAyNiA0OjUzIFBNLCBDaHJpcyBQYWNraGFtIHdyb3RlOg0KPj4gSGkgQWxsLA0KPj4NCj4+IE9u
-IDE0LzA1LzIwMjYgMTI6MzcsIENocmlzIFBhY2toYW0gd3JvdGU6DQo+Pj4gV2hlbiB0aGUgaTQw
-ZSBydW5zIG91dCBvZiBzcGFjZSBmb3IgUlggZmlsdGVycyB0aGUgZHJpdmVyIHN3aXRjaGVzIHRv
-DQo+Pj4gcHJvbWlzY3VvdXMgbW9kZSBhbmQgd2FybnMgdGhhdCBpdCBoYXMgZG9uZSBzby4gSW4g
-c2NlbmFyaW9zIHdpdGggYQ0KPj4+IGxhcmdlIG51bWJlciBvZiB0aGVzZSBmaWx0ZXJzIHRoaXMg
-Y2FuIGdlbmVyYXRlIGEgbG90IG9mIHdhcm5pbmdzLiBGb3INCj4+PiBleGFtcGxlOg0KPj4+DQo+
-Pj4gwqDCoMKgICQgZG1lc2cgLWMgPiAvZGV2L251bGwNCj4+PiDCoMKgwqAgJCBpcCBsaW5rIGFk
-ZCBkZXYgYnIwIHR5cGUgYnJpZGdlIHZsYW5fZmlsdGVyaW5nIDEgDQo+Pj4gdmxhbl9kZWZhdWx0
-X3B2aWQgMQ0KPj4+IMKgwqDCoCAkIGlwIGxpbmsgc2V0IGRldiBldGg3IG1hc3RlciBicjANCj4+
-PiDCoMKgwqAgJCBicmlkZ2UgdmxhbiBhZGQgdmlkIDEgZGV2IGV0aDcgcHZpZCB1bnRhZ2dlZCBz
-ZWxmDQo+Pj4gwqDCoMKgICQgYnJpZGdlIHZsYW4gYWRkIHZpZCAyLTQwOTQgZGV2IGV0aDcgdGFn
-Z2VkDQo+Pj4gwqDCoMKgICQgZG1lc2cNCj4+PiDCoMKgwqAgW8KgwqAgMjUuNjAxNzA1XSBpNDBl
-IDAwMDA6MDE6MDAuMTogRXJyb3IgTElCSUVfQVFfUkNfRU5PU1BDLCANCj4+PiBmb3JjaW5nIG92
-ZXJmbG93IHByb21pc2N1b3VzIG9uIFBGDQo+Pj4gwqDCoMKgIFvCoMKgIDI1LjYwMTgzM10gaTQw
-ZSAwMDAwOjAxOjAwLjE6IEVycm9yIExJQklFX0FRX1JDX0VOT1NQQywgDQo+Pj4gZm9yY2luZyBv
-dmVyZmxvdyBwcm9taXNjdW91cyBvbiBQRg0KPj4+IMKgwqDCoCBbwqDCoCAyNS42MDE5NjFdIGk0
-MGUgMDAwMDowMTowMC4xOiBFcnJvciBMSUJJRV9BUV9SQ19FTk9TUEMsIA0KPj4+IGZvcmNpbmcg
-b3ZlcmZsb3cgcHJvbWlzY3VvdXMgb24gUEYNCj4+PiDCoMKgwqAgW8KgwqAgMjUuNjAyMDg4XSBp
-NDBlIDAwMDA6MDE6MDAuMTogRXJyb3IgTElCSUVfQVFfUkNfRU5PU1BDLCANCj4+PiBmb3JjaW5n
-IG92ZXJmbG93IHByb21pc2N1b3VzIG9uIFBGDQo+Pj4gwqDCoMKgIFvCoMKgIDI1LjYwMjIxNl0g
-aTQwZSAwMDAwOjAxOjAwLjE6IEVycm9yIExJQklFX0FRX1JDX0VOT1NQQywgDQo+Pj4gZm9yY2lu
-ZyBvdmVyZmxvdyBwcm9taXNjdW91cyBvbiBQRg0KPj4+IMKgwqDCoCBbwqDCoCAyNS42MDIzNDRd
-IGk0MGUgMDAwMDowMTowMC4xOiBFcnJvciBMSUJJRV9BUV9SQ19FTk9TUEMsIA0KPj4+IGZvcmNp
-bmcgb3ZlcmZsb3cgcHJvbWlzY3VvdXMgb24gUEYNCj4+PiDCoMKgwqAgLi4uDQo+Pj4NCj4+PiBV
-c2UgdGVzdF9hbmRfc2V0X2JpdCgpIHNvIHRoYXQgdGhlIHdhcm5pbmcgaXMgb25seSBpc3N1ZWQg
-d2hlbiB0aGUNCj4+PiBkcml2ZXIgZW5hYmxlcyBwcm9taXNjdW91cyBtb2RlIGFuZCBub3Qgb24g
-dGhlIGFkZGl0aW9uIG9mIA0KPj4+IHN1YnNlcXVlbnQgUlgNCj4+PiBmaWx0ZXJzLg0KPj4+DQo+
-Pj4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgUGFja2hhbSA8Y2hyaXMucGFja2hhbUBhbGxpZWR0ZWxl
-c2lzLmNvLm56Pg0KPj4+IC0tLQ0KPj4+DQo+Pj4gUmVzZW5kIHdpdGggbmV0LW5leHQgdGFnDQo+
-Pg0KPj4gSGFzIHRoaXMgZmFsbGVuIHRocm91Z2ggdGhlIGNyYWNrcz8gSSd2ZSBzZWVuIHNvbWUg
-UmV2aWV3ZWQtYnlzIGJ1dCBpdA0KPj4gZG9lc24ndCBzZWVtIHRvIGhhdmUgYmVlbiBwaWNrZWQg
-dXAuDQo+DQo+IEhpIENocmlzLA0KPg0KPiBJIGhhdmUgaXQgaW4gbXkgcXVldWUgb2YgcGF0Y2hl
-cyB0byBzZW5kIG91dCBidXQgSSdtIHdvcmtpbmcgbXkgd2F5IHRvIA0KPiBpdC4gSSBkbyBob3Bl
-IHRvIGhhdmUgaXQgc2VudCBvbiBzb29uLg0KPg0KPiBUaGFua3MsDQo+IFRvbnkgDQoNCkhpIFRv
-bnksDQoNClRoYW5rcyBmb3IgY29uZmlybWluZyB0aGF0LiBObyBodXJyeSBqdXN0IHRocm91Z2gg
-dGhpcyBtaWdodCBiZSBzbyBzbWFsbCANCml0J2QgYmUgZWFzaWx5IGxvc3QgaW4gdGhlIHN3YXJt
-IG9mIEFJIHRoYXQgd2UncmUgYWxsIGdldHRpbmcgY2F1Z2h0IHVwIGluLg0KDQo+Pj4NCj4+PiDC
-oMKgIGRyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2k0MGUvaTQwZV9tYWluLmMgfCAxOCArKysr
-KysrKysrLS0tLS0tLS0NCj4+PiDCoMKgIDEgZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCsp
-LCA4IGRlbGV0aW9ucygtKQ0KPj4+DQo+Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2V0aGVy
-bmV0L2ludGVsL2k0MGUvaTQwZV9tYWluLmMgDQo+Pj4gYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9p
-bnRlbC9pNDBlL2k0MGVfbWFpbi5jDQo+Pj4gaW5kZXggOTI2ZDAwMWIyMTUwLi44NzQxOTkwYjVh
-NWUgMTAwNjQ0DQo+Pj4gLS0tIGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaTQwZS9pNDBl
-X21haW4uYw0KPj4+ICsrKyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2k0MGUvaTQwZV9t
-YWluLmMNCj4+PiBAQCAtMjQwOCwxMCArMjQwOCwxMSBAQCB2b2lkIGk0MGVfYXFjX2FkZF9maWx0
-ZXJzKHN0cnVjdCBpNDBlX3ZzaSANCj4+PiAqdnNpLCBjb25zdCBjaGFyICp2c2lfbmFtZSwNCj4+
-PiDCoMKgIMKgwqDCoMKgwqDCoCBpZiAoZmNudCAhPSBudW1fYWRkKSB7DQo+Pj4gwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgaWYgKHZzaS0+dHlwZSA9PSBJNDBFX1ZTSV9NQUlOKSB7DQo+Pj4gLcKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgc2V0X2JpdChfX0k0MEVfVlNJX09WRVJGTE9XX1BST01JU0MsIHZz
-aS0+c3RhdGUpOw0KPj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRldl93YXJuKCZ2c2ktPmJh
-Y2stPnBkZXYtPmRldiwNCj4+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIkVy
-cm9yICVzIGFkZGluZyBSWCBmaWx0ZXJzIG9uICVzLCBwcm9taXNjdW91cyANCj4+PiBtb2RlIGZv
-cmNlZCBvblxuIiwNCj4+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbGliaWVf
-YXFfc3RyKGFxX3N0YXR1cyksIHZzaV9uYW1lKTsNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCBpZiAoIXRlc3RfYW5kX3NldF9iaXQoX19JNDBFX1ZTSV9PVkVSRkxPV19QUk9NSVNDLCANCj4+
-PiB2c2ktPnN0YXRlKSkgew0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZGV2
-X3dhcm4oJnZzaS0+YmFjay0+cGRldi0+ZGV2LA0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgICJFcnJvciAlcyBhZGRpbmcgUlggZmlsdGVycyBvbiAlcywgcHJv
-bWlzY3VvdXMgDQo+Pj4gbW9kZSBmb3JjZWQgb25cbiIsDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbGliaWVfYXFfc3RyKGFxX3N0YXR1cyksIHZzaV9uYW1l
-KTsNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9DQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgfSBlbHNlIGlmICh2c2ktPnR5cGUgPT0gSTQwRV9WU0lfU1JJT1YgfHwNCj4+PiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHZzaS0+dHlwZSA9PSBJNDBFX1ZTSV9WTURRMSB8
-fA0KPj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdnNpLT50eXBlID09IEk0
-MEVfVlNJX1ZNRFEyKSB7DQo+Pj4gQEAgLTI0NjEsMTAgKzI0NjIsMTEgQEAgaTQwZV9hcWNfYnJv
-YWRjYXN0X2ZpbHRlcihzdHJ1Y3QgaTQwZV92c2kgDQo+Pj4gKnZzaSwgY29uc3QgY2hhciAqdnNp
-X25hbWUsDQo+Pj4gwqDCoMKgwqDCoMKgIH0NCj4+PiDCoMKgIMKgwqDCoMKgwqDCoCBpZiAoYXFf
-cmV0KSB7DQo+Pj4gLcKgwqDCoMKgwqDCoMKgIHNldF9iaXQoX19JNDBFX1ZTSV9PVkVSRkxPV19Q
-Uk9NSVNDLCB2c2ktPnN0YXRlKTsNCj4+PiAtwqDCoMKgwqDCoMKgwqAgZGV2X3dhcm4oJnZzaS0+
-YmFjay0+cGRldi0+ZGV2LA0KPj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIkVycm9yICVz
-LCBmb3JjaW5nIG92ZXJmbG93IHByb21pc2N1b3VzIG9uICVzXG4iLA0KPj4+IC3CoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAgbGliaWVfYXFfc3RyKGh3LT5hcS5hc3FfbGFzdF9zdGF0dXMpLCB2c2lf
-bmFtZSk7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIGlmICghdGVzdF9hbmRfc2V0X2JpdChfX0k0MEVf
-VlNJX09WRVJGTE9XX1BST01JU0MsIA0KPj4+IHZzaS0+c3RhdGUpKSB7DQo+Pj4gK8KgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAgZGV2X3dhcm4oJnZzaS0+YmFjay0+cGRldi0+ZGV2LA0KPj4+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiRXJyb3IgJXMsIGZvcmNpbmcgb3ZlcmZsb3cg
-cHJvbWlzY3VvdXMgb24gJXNcbiIsDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIGxpYmllX2FxX3N0cihody0+YXEuYXNxX2xhc3Rfc3RhdHVzKSwgdnNpX25hbWUpOw0KPj4+
-ICvCoMKgwqDCoMKgwqDCoCB9DQo+Pj4gwqDCoMKgwqDCoMKgIH0NCj4+PiDCoMKgIMKgwqDCoMKg
-wqDCoCByZXR1cm4gYXFfcmV0Ow0KPg==
+On Thu, 30 Jul 2026 16:12:35 +0200 Sabrina Dubroca wrote:
+> 2026-07-28, 16:08:20 -0700, Jakub Kicinski wrote:
+> > On Wed, 29 Jul 2026 00:56:31 +0200 Sabrina Dubroca wrote:  
+> > > If that's the case, good. But "quote this text at people until they
+> > > comply" and "get an AI bot looking at all patches coming in" doesn't
+> > > sound like that to me.  
+> > 
+> > IMO it's really very useful for reviewers to know if the author
+> > triggered the issue.  
+> 
+> People usually add that information if they did. If it's not present,
+> we should assume they didn't, and treat it as belonging to the "AI
+> report/other-tool report/code analysis" bucket?
+
+The ask is for info about discovery, repro, test.
+The sentence you quoted is about repro, you seem to be talking
+about tool.
+
+I think all 3 pieces of info (discovery, repro, test env) are valuable.
+
+> > Also, for downstream backporters it's useful 
+> > to know in case of conflict whether to invest time in resolving
+> > or the patch is mostly theoretical and waiting until next major is fine.  
+> 
+> For downstream backports, there can be a number of differences that
+> make an issue either easier or harder/impossible to trigger. But sure,
+> that's a useful baseline.
+> 
+> 
+> If we could reword the statement to include something like (with a
+> formulation/presentation similar to your patch, this is a short/ugly
+> version):
+> 
+> Fixes should describe if and how the issue was triggered/reproduced.
+> This information should describe how likely it is to happen in real
+> life [stuff about delays/fault injection/etc].
+
+Here we'd ask the author to judge likelihood. Which is hard and takes
+effort. My goal was to ask for pure information, no thinking effort.
+
+> If this information is
+> missing, we WILL assume the bug was found through code analysis
+> (whether by human or tool/AI) and not actually triggered on a live
+> system.
+> [something about such patches being penalized in the reviews/queue?
+> I don't know]
+> 
+> 
+> my concern about having to add a bunch of uninformative text would go
+> away.
+
+I feel bad enough accusing people of using LLMs (even when they
+_obviously_ do). I don't want to accuse people of not testing their
+fixes based on information missing :( I'd rather first ask them
+to add such info explicitly and then shout at them :)
+
+> > I'm also guilty of not adding "impact to the user" info, but that
+> > requires thinking and theorizing. The ask here is to purely state
+> > the facts.  
+> 
+> So just something like "possible UAF/memleak/deadlock/some unwanted
+> behavior" is what you expect here? That's totally reasonable. I
+> thought you meant something more abstract.
+
+Right, my patch doesn't ask for impact specifically.
+But the direction is right - ask for info the author already has rather
+than require the author to theorize about likelihood and impact, or
+do extra experiments.
+
+> > FWIW the immediate trigger for me is the people who started sending
+> > sloppy fixes to drivers that nobody uses. I ask them about the
+> > discovery process and half of the time they don't even respond.  
+> 
+> Sure, I get that, you're drowning in pointless slop.
+> 
+> An alternative could be an AI bot that looks at "fixes" and checks if
+> they're likely to ever happen (or have a measurable impact. a tiny
+> memleak when a device is initialized/module is loaded, even with great
+> reproduction steps in the commit message, still falls in the "don't
+> care" category IMO). My experiments with "find a way to trigger this
+> code path" have been pretty good, so I guess if the bot comes up with
+> "basically can't happen", that would be fairly reliable.
+
+Yes, definitely planning to do that too (once I figure out how 
+to squeeze some free tokens out of the current pipeline :/)
+
+Still, I'd also like to ask the author.
