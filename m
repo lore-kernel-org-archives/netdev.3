@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DE670830;
-	Thu, 30 Jul 2026 00:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66A2175A97;
+	Thu, 30 Jul 2026 00:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785370252; cv=none; b=hhN87mO8jJ9mJWY1CYEdBVPSBltjc735GhAnS9oSgQtB+UTfV107ioEGvkpoBbQvNjLBoTMsj3p7rAcgf+RuIKWfavpCDDYGql2jKrfrIY72NZQG0rYg8/5KN30KDdvzIZfNA5Vc6xS6PuwQE3v6uW9nZ/kZUxwbCuBZVhE1lMg=
+	t=1785370265; cv=none; b=qjZUDeTcPseo4n1t+9BxcHTDu4ldFBr5rmA1GxTJ5qZHCNsTg2+5Div2JBjb8DpHzGHCCIKzBWDAgxkuERJUNy556XUVuZyERcFJeFyeTKUWzLHiNuV9IgMxxAuvJf4lpRD6UFIxms80rGybnQyu/chl4IyXFPWyf/2vvNtiIOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785370252; c=relaxed/simple;
-	bh=hZbnNZYTlIuzOJPK5+Dydjul8ZNKeHDVY4NvJ6omxPQ=;
+	s=arc-20240116; t=1785370265; c=relaxed/simple;
+	bh=l0Kjke7ci9wJl/UXiC6nBW1xUktZiAKap9ViTmSI3Rc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qrIo1ftcjTw5PU8+DeSBNdFeQkdurQtV+YX8V3tX0rTt8o3bTKg8gq1YP6jo5PiUTef59Ok2zJ/xJJazNnZWP38HKm4yGfUmOsr1OIXvFLp/T9E2mqtto8z9Wpuygf+Igo0N3Rf46jjKUN+0XhncljdwyuCPgWjAZE8DEQUXGkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQhwVN8X; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=B2p82LtMfzfYVd4IAAr4pUKgeE9ynRujBrWiOjfRyEwpxp8LsLj5TaDmedpDkj99bg5i9Fh3LPVE0pBbdPBY/K/Qv36G6QZzKHtvV+fj2H0ioMJJzbJ+6MjVLPIJC7h5wAWhT9I7cNVFYFjMAHIM7fbGR1M0oAWrpJ1+7kdrEsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1BBOe8d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQhwVN8X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCBC1F000E9;
-	Thu, 30 Jul 2026 00:10:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1BBOe8d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B401F000E9;
+	Thu, 30 Jul 2026 00:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785370249;
-	bh=3fEmEoYtD335VF1av2SV00+cug+S+HXXY4n9sAP+VA8=;
+	s=k20260515; t=1785370263;
+	bh=WNBf7vcnRnqBuJySp5fZ+6YEWR3zYmPQ3c974AuSIFE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ZQhwVN8XkbK6Es9t2jSJw1sHrhGosM6R1JPZSbAgvYRAR+ztrK80CyzG4navRBVq4
-	 FLnKrKR1lWhmH9CipuCC6r7tHTl/YubngI2fu55svzkAUFZFctbjYYXrmxFAB249og
-	 JRVZ5fUHBdFf10hICHqAFl6atgHNa+NI5agJKi561/BmJyrTo9wVHuBSqDni+oIYUG
-	 lmBSSUGJxhfubzMwvfn9Mjvc2SMl8zfVIYmqdeqn5TM31q8uq5k9KG8QAXPWelzi2/
-	 RgJy3SXxxsWBOxGziwPMeD2wgjQ72+q0CKS0TF7s6uEnYVod7KuomITJ8EyVabVSZM
-	 V5bAOcDLegt4w==
+	b=o1BBOe8dKkbHutesBG/qLY1E1j5dj2zcwQQZ60Jvko8KKwPKB0Iaj4/J2lz8XdtC+
+	 /Om8kPFuSqnoBRYT0Op99O3LL63kuimNQRnvvDPg+lj2uvLBQ7y6oV3BQpoax05blu
+	 j96i/tWNPDlrfSnn/mjlzoGe4S0IbazGBr9Jr/Jtx2a4SlBK4/IfYJ+/DpI3yQhe9z
+	 IlfwSljwYcBnPYaL+MM4B6oZww8gQ55eh+F4dwRdtHfx4hWi03/LNiRBk8v024gGrv
+	 eul95NtpLQsV443ae5t1LosAk0ucgN3b4l7pmTTFYELn8K+UyMJXPAMaVg0pdj18ul
+	 e6WX1w16PGKug==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197AF3926250;
-	Thu, 30 Jul 2026 00:10:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569EB3926250;
+	Thu, 30 Jul 2026 00:10:28 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,36 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] wireless-2026-07-29
+Subject: Re: [PATCH net-next 0/5] Add PACKET_IGNORE_OUTGOING selftest for
+ packet
+ sockets
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178537021389.3290991.12279912690137712219.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Jul 2026 00:10:13 +0000
-References: <20260729071954.45655-3-johannes@sipsolutions.net>
-In-Reply-To: <20260729071954.45655-3-johannes@sipsolutions.net>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+ <178537022688.3290991.16102834801090577683.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Jul 2026 00:10:26 +0000
+References: <20260728160935.4128982-1-joe@dama.to>
+In-Reply-To: <20260728160935.4128982-1-joe@dama.to>
+To: Joe Damato <joe@dama.to>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ willemb@google.com, linux-kselftest@vger.kernel.org, shuah@kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This pull request was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 29 Jul 2026 09:18:13 +0200 you wrote:
-> Hi,
+On Tue, 28 Jul 2026 09:09:25 -0700 you wrote:
+> Greetings:
 > 
-> So this week is _far_ less, thankfully. A couple more
-> fixes that seemed important enough, but I've also been
-> much more selective, in particular the 'mwifiex' driver
-> seems to be a train-wreck, and has a lot of fixes and
-> associated discussions still open - but I think I'll be
-> leaving those for -next.
+> Following up on my previous series [1] and further extending the selftests
+> for packet sockets to test PACKET_IGNORE_OUTGOING.
+> 
+> I re-ran the tests and the existing and new tests all pass.
 > 
 > [...]
 
 Here is the summary with links:
-  - [GIT,PULL] wireless-2026-07-29
-    https://git.kernel.org/netdev/net/c/82f0e98ba302
+  - [net-next,1/5] selftests/net: psock: Generalize psock bind
+    https://git.kernel.org/netdev/net-next/c/0982666c1bb0
+  - [net-next,2/5] selftests/net: psock: Generalize stats check
+    https://git.kernel.org/netdev/net-next/c/9404fe514efc
+  - [net-next,3/5] selftests/net: psock_snd: unify on recvmsg()
+    https://git.kernel.org/netdev/net-next/c/2544d30c11eb
+  - [net-next,4/5] selftests/net: psock_snd: Verify sll_pkttype
+    https://git.kernel.org/netdev/net-next/c/f5a445d2a2a3
+  - [net-next,5/5] selftests/net: test PACKET_IGNORE_OUTGOING
+    https://git.kernel.org/netdev/net-next/c/b75609e42bbc
 
 You are awesome, thank you!
 -- 
