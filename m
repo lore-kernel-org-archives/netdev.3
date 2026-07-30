@@ -1,94 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EB737475D;
-	Thu, 30 Jul 2026 02:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359DB2DEA68;
+	Thu, 30 Jul 2026 02:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785377828; cv=none; b=CfJRBCih24xS1MOyLmz9lcNoCH6fXLD8e8HEx44KkNoJb1eweELMr132rxHVEn54yA2nawVx8/mUWSad6HeZYvwOCIhkUsXn6GKMSt8K0wMs37fX33XYQwID2kjlVfmaTPAZ8X1y2+H+fwgxhS+UcZcqlwg+XB2qA9uVPnDlRNM=
+	t=1785378049; cv=none; b=u9nfTnrL8R66t6W17e7/fzmVNExFUH7Q5nouBaAHYENXY7ArfY0uf16HSIh02FCNMDP37rGF6zcWIMq0+5rdURQ9cDtUvt3TIuLmnq0AfMj6FkpdQ6uj5ul8yq3Cz1VFjunJ3p2NoeOo22JlTCJEDwItF3krEnW9fngTvluWFrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785377828; c=relaxed/simple;
-	bh=30cNrd4lFH9KzXqi3/2gD74bgunJldgiiZnALq+oh7A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=crGAGno5LHrj2T3Xyd05r6khVdY6xO0gw528EUkeUgufHIRN7aN/QHZQ/S33gYe+bh57GbliwR+RzBNdztLItVJal0DToPGYctCwnEzhUaR0nruaMvvL3D0O7Mxr1BfEKy7jog1MTpCL7MHmE2I/kyaTqae+bVH8KKtsDC+Mn9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z12ZPJp0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785378049; c=relaxed/simple;
+	bh=p3ysLYDSVIKvFivWvnWU3P1+UgxBWGVHeeLPacgpy44=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=S9pwTT1sJXrq5Rnq5DIUjIICcmrwNtoLlQL+v3XDVtfNKwB94/UYWkDXhwmjJrQPOKK258b6akxe7qX/6yZj9vjgn41RTWG+vzfPDRk9T/L4gE48GvVVP7El1CJyx7ijMbi/CcNlGS8ziiNpMwmew+exXfvrBiaWkDsm8dT1MdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h+NlSEAe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z12ZPJp0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3771F00AC4;
-	Thu, 30 Jul 2026 02:16:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h+NlSEAe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2BA61F000E9;
+	Thu, 30 Jul 2026 02:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785377811;
-	bh=6tGaLHu0EVxq2PjCuK3R5veUeuraNN9YsqvpMJewVOg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Z12ZPJp011u3s3PDprGcf1a5zlmaiUeaUierOQGXq4dQfYMLMO/04zzgLXJkmCVym
-	 StBAqim4ZI8cxUY+XOxoaXosmPgz8mnQvg6ALmBwvJjxqzOmrVkcWena8klv20OXIZ
-	 kj8fSG0CgKyfnmkkMM1JQ/hBblyh+bmUtI7HRD/cW75OwlZFEv8cW49WVzYPIM7Gxs
-	 dTl3PGH953kS+VotnYVDf1m+ThNPd2o5ddbEKXrGdq/B7OP19qkk6pD4KNoDBrEZhc
-	 ZjwMfXUH3gx+t4Ne3u5UpcLW4KVA6+cXFy8r03U3rGWz8VPMpYsFE4iriobjTuG5Cr
-	 sc3XohhZN0vjw==
-Date: Wed, 29 Jul 2026 19:16:49 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: Donald Hunter <donald.hunter@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Gerd Hoffmann <kraxel@redhat.com>, Vivek Kasireddy
- <vivek.kasireddy@intel.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Shuah Khan
- <shuah@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org,
- sdf@fomichev.me, razor@blackwall.org, daniel@iogearbox.net,
- almasrymina@google.com, matttbe@kernel.org, skhawaja@google.com,
- dw@davidwei.uk, Joe Damato <joe@dama.to>, Bobby Eshleman
- <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v6 3/3] selftests/net: devmem.py: add
- check_rx_large_niov
-Message-ID: <20260729191649.55ab7942@kernel.org>
-In-Reply-To: <20260724-tcpdm-large-niovs-v6-3-7975f62cdfbb@meta.com>
-References: <20260724-tcpdm-large-niovs-v6-0-7975f62cdfbb@meta.com>
-	<20260724-tcpdm-large-niovs-v6-3-7975f62cdfbb@meta.com>
+	s=k20260515; t=1785378047;
+	bh=h2Nr+7XkpE/Tol0SM5/QQa6PfI2500i/nKvHyoi74/Y=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=h+NlSEAe1RfMP4MB4BZ++BB2h+vwUwFZ7SA1MyLC+qEOKUt03hmYcXfx2vjDQBwcv
+	 sATsLAXNVghXjonmLv8sdTmsKA5YkGLRO6kOHqlJ6ZRin8BCE7At8/rUoH6a/9R/3v
+	 bc9ERIVkfjJInXSTgwuIRYflrLS9PBdP0oYV0VNuI190fdloqX/kQYPY+eM7RfN5Si
+	 1pS+RjAhlC+BKYGNDcVC4pycd4slVPkK0wwtj/fagjfcOJCGs+I8TlCI3ixFHQEDe9
+	 h6u5nnemRpGkBFEcEmg9dw+UNz70xdszdwhuBZ4vHZmkrJ/1y9aAjeIoQhtAiZPr/J
+	 XJdgolsBlIZMg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0BC2380DBEC;
+	Thu, 30 Jul 2026 02:20:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 0/4] net: dsa: realtek: use devm_mutex_init
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178537801146.3325894.11590642723292261438.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Jul 2026 02:20:11 +0000
+References: <20260726-realtek_mutext-v2-0-5d62ba998791@gmail.com>
+In-Reply-To: <20260726-realtek_mutext-v2-0-5d62ba998791@gmail.com>
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Cc: linusw@kernel.org, alsi@bang-olufsen.dk, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mir@bang-olufsen.dk, f.fainelli@gmail.com,
+ namiltd@yahoo.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Fri, 24 Jul 2026 14:21:17 -0700 Bobby Eshleman wrote:
-> From: Bobby Eshleman <bobbyeshleman@meta.com>
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sun, 26 Jul 2026 22:56:07 -0300 you wrote:
+> This series fixes mutex teardown in the Realtek DSA drivers.
 > 
-> Add a new devmem test case for binding the dmabuf with rx-page-size=16K.
-> The test sweeps RX payload sizes straddling the niov boundary to cover
-> the sub-niov, exact-niov, and multi-niov RX paths.
+> With CONFIG_DEBUG_MUTEXES enabled, mutex_destroy() must be called before
+> the mutex is discarded. Using devm_mutex_init() lets the driver core
+> handle that automatically.
 > 
-> Silence pylint invalid-name (`with open() as f`) and too-many-arguments
-> (ncdevmem_rx grew to 6 args) at file scope.
+> The changes are split into individual commits based on the feature that
+> introduced each lock to allow proper backports to stable trees.
 > 
-> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+> [...]
 
-Hm, odd. In NIPA we're getting:
+Here is the summary with links:
+  - [net,v2,1/4] net: dsa: realtek: rtl8365mb: use devm_mutex_init for mib_lock
+    https://git.kernel.org/netdev/net/c/70fd0cf29bc4
+  - [net,v2,2/4] net: dsa: realtek: use devm_mutex_init for regmap lock
+    https://git.kernel.org/netdev/net/c/050e07f8765d
+  - [net,v2,3/4] net: dsa: realtek: use devm_mutex_init for vlan_lock
+    https://git.kernel.org/netdev/net/c/a95f3e9b8985
+  - [net,v2,4/4] net: dsa: realtek: use devm_mutex_init for l2_lock
+    https://git.kernel.org/netdev/net/c/442ecdc83d00
 
-TAP version 13
-1..1
-# timeout set to 0
-# selftests: drivers/net/hw: devmem.py
-# TAP version 13
-# 1..5
-# ok 1 devmem.check_rx # SKIP marked as disruptive
-# ok 2 devmem.check_tx # SKIP marked as disruptive
-# ok 3 devmem.check_tx_chunks # SKIP marked as disruptive
-# ok 4 devmem.check_rx_hds # SKIP Test requires devmem support
-# ok 5 devmem.check_rx_large_niov # SKIP Test requires devmem support
-# # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:5 error:0
-ok 1 selftests: drivers/net/hw: devmem.py
-# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-https://netdev.bots.linux.dev/logs/hwksft/BCM57508/results/755681/config
-driver: bnxt
-fw: 237.1.148.0
 
-Any idea?
