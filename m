@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE94224886A;
-	Thu, 30 Jul 2026 00:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B1628C5B1;
+	Thu, 30 Jul 2026 00:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785370510; cv=none; b=Gg9EafrU0iyst/lWN4XJsjgRHN3JHEU+2u0XUKdCdJk/6TczsbVA1yo/iG1Q+jXVPps5h5goIBvOrcm3uEzy5SWSNO0FVUcYht5itdhqKq33B6oRYo771qsMdmrJfo6U31qr3y0YzsHL+CQ7dBIdM979SCLl+LDSNgE0AXmdqIQ=
+	t=1785370516; cv=none; b=FHNexgESGGQh3LurftxkVtuBHNkQmgOhBTVJoXByYVINriTB6w7u6Icv+YGYa4jA/5pSeatxorYBa27PzbpdSE3mb7KU13Lrchc2JLI04XPy2lPo0LOrl+MRUkl+DjNYiqR1UwOuGznacLIW18vL3olzhzLnOKfy5rFg8GhxIIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785370510; c=relaxed/simple;
-	bh=sFZa7FIXg7FFK5W3HxfxCnGUjpjpw8cMI14WD+ZRbHM=;
+	s=arc-20240116; t=1785370516; c=relaxed/simple;
+	bh=meF5CJHFc2gqkZs9+4TkcEH8rUX4WpdmvBo/oyEKuqw=;
 	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QS2qHQzZ/0ANaH1CBq8j3YoawvIuR5EnT5mDtmqrO/ttsitJzCn9ctLYg5Y+D3e3gadqcMQim8BDLNbXZG/AIHq7rYlOYkxsLJ14vAb79xzENxO+XvPOjHcDuizkFmalYo7EoTXtK05cOFg8ti3bNog6pZgb3VDmIDOuBajJlew=
+	 Content-Type:Content-Disposition:In-Reply-To; b=ONDxsJnUFWoBs1JwxGBg04ZM342LV8HjkWzm8Tmr6EsczafDVn318nRupbMpLO7GRx/HRuPDdMRabDXTlzU+p4boLAxx28RLoaRD0bSYVReumPnU+3NupdyaMF27P4qV+N62DzgOM+o35ZT7qOhlb+qesYAw2y/Hqvd2RtFJkOI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1wpEQQ-000000002gI-1Bf0;
-	Thu, 30 Jul 2026 00:15:02 +0000
-Date: Thu, 30 Jul 2026 01:14:59 +0100
+	id 1wpEQX-000000002gm-14zt;
+	Thu, 30 Jul 2026 00:15:09 +0000
+Date: Thu, 30 Jul 2026 01:15:06 +0100
 From: Daniel Golle <daniel@makrotopia.org>
 To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
@@ -39,9 +39,9 @@ To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Landen Chao <Landen.Chao@mediatek.com>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH net v2 4/5] net: dsa: mt7530: error out on failed reads in
- MT7531 PHY polling
-Message-ID: <efe3a67d40b02c4ba06fa0d2fa2bb343d150fb98.1785368701.git.daniel@makrotopia.org>
+Subject: [PATCH net v2 5/5] net: dsa: mt7530: serialize the regmap IRQ chip
+ like every other user
+Message-ID: <b28df01d04c0e50c3d44ca2f29b12260bc32072d.1785368701.git.daniel@makrotopia.org>
 References: <cover.1785368701.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -53,252 +53,112 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1785368701.git.daniel@makrotopia.org>
 
-The MT7531 indirect PHY access functions poll MT7531_PHY_IAC through
-a helper which returns 0 when the underlying read fails, so a failed
-bus transaction clears MT7531_PHY_ACS_ST and the access carries on,
-returning garbage PHY register data to phylib.
+The switch register regmap is created with .disable_locking = true;
+every other user in this driver calls mt7530_mutex_lock()/unlock()
+around it, which takes priv->bus->mdio_lock, since the underlying
+mt7530_regmap_read()/write() issue raw, unserialized bus->read()/
+write() MDIO transactions.
 
-Poll using regmap_read_poll_timeout(), which stops on read errors and
-propagates them. These functions hold the MDIO bus lock across the
-whole sequence, so the unlocked regmap accesses remain correct. Remove
-the now-unused _mt7530_unlocked_read().
+mt7530_setup_irq() hands this same unlocked regmap straight to
+devm_regmap_add_irq_chip_fwnode(), whose threaded IRQ handler then
+calls regmap_read()/regmap_update_bits() on it without ever calling
+mt7530_mutex_lock(). An interrupt firing while another thread is
+mid-transaction on the same regmap (e.g. a paged register access, or
+an indirect PHY access) can interleave with the IRQ handler's own
+paged access and corrupt page selection on either side.
 
-MT7531_PHY_ACS_ST is only ever set by the command write that precedes
-each poll, and that write's return value was discarded. A failed write
-leaves ACS_ST at 0 from the previous access, so the hardened poll above
-succeeds on its first iteration and the functions return stale IAC
-contents as if they were fresh PHY data, exactly the failure this patch
-otherwise closes. Check the write too and bail out before polling.
+Use struct regmap_irq_chip's handle_mask_sync hook to call
+mt7530_mutex_lock()/unlock() around the mask register write regmap-irq
+issues whenever a consumer of one of the mapped sub-IRQs enables,
+disables, requests or frees its line. This needs a per-device copy of
+mt7530_regmap_irq_chip, since devm_regmap_add_irq_chip_fwnode() keeps
+a pointer to it rather than copying it.
 
-Fixes: c288575f7810 ("net: dsa: mt7530: Add the support of MT7531 switch")
+handle_pre_irq/handle_post_irq, which would additionally cover the
+status read and ack write the threaded handler does directly, bracket
+the whole handler including its handle_nested_irq() calls. Lockdep
+caught this on hardware: those calls reach phy_interrupt() for the
+per-port PHY IRQ lines mapped through this chip, which takes
+phydev->lock, while phy_attach_direct() and this driver's own indirect
+PHY access already establish the opposite order (phydev->lock, then
+priv->bus->mdio_lock) elsewhere. Using them here would close that
+cycle, so they are not used.
+
+regmap_irq_sync_unlock() also has its own init_ack_masked path, used
+by this chip, which unconditionally does its own regmap_write() to ack
+currently-masked IRQs; that path has no per-driver hook. Together with
+the threaded handler's own status read and ack write, these stay
+unprotected -- a narrower, harder-to-hit gap than the recurring mask
+sync above -- and will be closed once the switch regmap moves to
+regmap's own locking in the driver-wide register access cleanup.
+
+Fixes: 254f6b272e3b ("dsa: mt7530: Utilize REGMAP_IRQ for interrupt handling")
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
-v2:
- * also check mt7530_mii_write()'s return for the PHY_IAC command word
-   in all four helpers; an unchecked failed write left ACS_ST clear
-   and made the poll succeed instantly on stale data (found by
-   Sashiko AI review)
- * print ret in the poll timeout messages instead of a fixed string,
-   since ret can now be a propagated bus error rather than -ETIMEDOUT
+v2: new patch
 
- drivers/net/dsa/mt7530.c | 110 ++++++++++++++++++---------------------
- 1 file changed, 50 insertions(+), 60 deletions(-)
+ drivers/net/dsa/mt7530.c | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index aab26970f39b..29b8b28e8d2c 100644
+index 29b8b28e8d2c..575eb90ce3f0 100644
 --- a/drivers/net/dsa/mt7530.c
 +++ b/drivers/net/dsa/mt7530.c
-@@ -195,12 +195,6 @@ mt7530_write(struct mt7530_priv *priv, u32 reg, u32 val)
- 	mt7530_mutex_unlock(priv);
- }
+@@ -2303,6 +2303,21 @@ static const struct regmap_irq mt7530_irqs[] = {
+ 	REGMAP_IRQ_REG_LINE(31, 32), /* ACL */
+ };
  
--static u32
--_mt7530_unlocked_read(struct mt7530_dummy_poll *p)
--{
--	return mt7530_mii_read(p->priv, p->reg);
--}
--
- static u32
- _mt7530_read(struct mt7530_dummy_poll *p)
- {
-@@ -555,40 +549,41 @@ static int
- mt7531_ind_c45_phy_read(struct mt7530_priv *priv, int port, int devad,
- 			int regnum)
- {
--	struct mt7530_dummy_poll p;
- 	u32 reg, val;
- 	int ret;
- 
--	INIT_MT7530_DUMMY_POLL(&p, priv, MT7531_PHY_IAC);
--
- 	mt7530_mutex_lock(priv);
- 
--	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, val,
--				 !(val & MT7531_PHY_ACS_ST), 20, 100000);
-+	ret = regmap_read_poll_timeout(priv->regmap, MT7531_PHY_IAC, val,
-+				       !(val & MT7531_PHY_ACS_ST), 20, 100000);
- 	if (ret < 0) {
--		dev_err(priv->dev, "poll timeout\n");
-+		dev_err(priv->dev, "PHY_IAC poll failed: %d\n", ret);
- 		goto out;
- 	}
- 
- 	reg = MT7531_MDIO_CL45_ADDR | MT7531_MDIO_PHY_ADDR(port) |
- 	      MT7531_MDIO_DEV_ADDR(devad) | regnum;
--	mt7530_mii_write(priv, MT7531_PHY_IAC, reg | MT7531_PHY_ACS_ST);
-+	ret = mt7530_mii_write(priv, MT7531_PHY_IAC, reg | MT7531_PHY_ACS_ST);
-+	if (ret < 0)
-+		goto out;
- 
--	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, val,
--				 !(val & MT7531_PHY_ACS_ST), 20, 100000);
-+	ret = regmap_read_poll_timeout(priv->regmap, MT7531_PHY_IAC, val,
-+				       !(val & MT7531_PHY_ACS_ST), 20, 100000);
- 	if (ret < 0) {
--		dev_err(priv->dev, "poll timeout\n");
-+		dev_err(priv->dev, "PHY_IAC poll failed: %d\n", ret);
- 		goto out;
- 	}
- 
- 	reg = MT7531_MDIO_CL45_READ | MT7531_MDIO_PHY_ADDR(port) |
- 	      MT7531_MDIO_DEV_ADDR(devad);
--	mt7530_mii_write(priv, MT7531_PHY_IAC, reg | MT7531_PHY_ACS_ST);
-+	ret = mt7530_mii_write(priv, MT7531_PHY_IAC, reg | MT7531_PHY_ACS_ST);
-+	if (ret < 0)
-+		goto out;
- 
--	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, val,
--				 !(val & MT7531_PHY_ACS_ST), 20, 100000);
-+	ret = regmap_read_poll_timeout(priv->regmap, MT7531_PHY_IAC, val,
-+				       !(val & MT7531_PHY_ACS_ST), 20, 100000);
- 	if (ret < 0) {
--		dev_err(priv->dev, "poll timeout\n");
-+		dev_err(priv->dev, "PHY_IAC poll failed: %d\n", ret);
- 		goto out;
- 	}
- 
-@@ -603,42 +598,41 @@ static int
- mt7531_ind_c45_phy_write(struct mt7530_priv *priv, int port, int devad,
- 			 int regnum, u16 data)
- {
--	struct mt7530_dummy_poll p;
- 	u32 val, reg;
- 	int ret;
- 
--	INIT_MT7530_DUMMY_POLL(&p, priv, MT7531_PHY_IAC);
--
- 	mt7530_mutex_lock(priv);
- 
--	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, val,
--				 !(val & MT7531_PHY_ACS_ST), 20, 100000);
-+	ret = regmap_read_poll_timeout(priv->regmap, MT7531_PHY_IAC, val,
-+				       !(val & MT7531_PHY_ACS_ST), 20, 100000);
- 	if (ret < 0) {
--		dev_err(priv->dev, "poll timeout\n");
-+		dev_err(priv->dev, "PHY_IAC poll failed: %d\n", ret);
- 		goto out;
- 	}
- 
- 	reg = MT7531_MDIO_CL45_ADDR | MT7531_MDIO_PHY_ADDR(port) |
- 	      MT7531_MDIO_DEV_ADDR(devad) | regnum;
--	mt7530_mii_write(priv, MT7531_PHY_IAC, reg | MT7531_PHY_ACS_ST);
-+	ret = mt7530_mii_write(priv, MT7531_PHY_IAC, reg | MT7531_PHY_ACS_ST);
-+	if (ret < 0)
-+		goto out;
- 
--	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, val,
--				 !(val & MT7531_PHY_ACS_ST), 20, 100000);
-+	ret = regmap_read_poll_timeout(priv->regmap, MT7531_PHY_IAC, val,
-+				       !(val & MT7531_PHY_ACS_ST), 20, 100000);
- 	if (ret < 0) {
--		dev_err(priv->dev, "poll timeout\n");
-+		dev_err(priv->dev, "PHY_IAC poll failed: %d\n", ret);
- 		goto out;
- 	}
- 
- 	reg = MT7531_MDIO_CL45_WRITE | MT7531_MDIO_PHY_ADDR(port) |
- 	      MT7531_MDIO_DEV_ADDR(devad) | data;
--	mt7530_mii_write(priv, MT7531_PHY_IAC, reg | MT7531_PHY_ACS_ST);
--
--	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, val,
--				 !(val & MT7531_PHY_ACS_ST), 20, 100000);
--	if (ret < 0) {
--		dev_err(priv->dev, "poll timeout\n");
-+	ret = mt7530_mii_write(priv, MT7531_PHY_IAC, reg | MT7531_PHY_ACS_ST);
-+	if (ret < 0)
- 		goto out;
--	}
++/* Serialize regmap-irq's mask sync like every other regmap user */
++static int mt7530_irq_mask_sync(int index, unsigned int mask_buf_def,
++				unsigned int mask_buf, void *irq_drv_data)
++{
++	struct mt7530_priv *priv = irq_drv_data;
++	int ret;
 +
-+	ret = regmap_read_poll_timeout(priv->regmap, MT7531_PHY_IAC, val,
-+				       !(val & MT7531_PHY_ACS_ST), 20, 100000);
-+	if (ret < 0)
-+		dev_err(priv->dev, "PHY_IAC poll failed: %d\n", ret);
++	mt7530_mutex_lock(priv);
++	ret = regmap_update_bits(priv->regmap, MT7530_SYS_INT_EN,
++				 mask_buf_def, ~mask_buf);
++	mt7530_mutex_unlock(priv);
++
++	return ret;
++}
++
+ static const struct regmap_irq_chip mt7530_regmap_irq_chip = {
+ 	.name = KBUILD_MODNAME,
+ 	.status_base = MT7530_SYS_INT_STS,
+@@ -2312,12 +2327,14 @@ static const struct regmap_irq_chip mt7530_regmap_irq_chip = {
+ 	.irqs = mt7530_irqs,
+ 	.num_irqs = ARRAY_SIZE(mt7530_irqs),
+ 	.num_regs = 1,
++	.handle_mask_sync = mt7530_irq_mask_sync,
+ };
  
- out:
- 	mt7530_mutex_unlock(priv);
-@@ -649,30 +643,29 @@ mt7531_ind_c45_phy_write(struct mt7530_priv *priv, int port, int devad,
  static int
- mt7531_ind_c22_phy_read(struct mt7530_priv *priv, int port, int regnum)
+ mt7530_setup_irq(struct mt7530_priv *priv)
  {
--	struct mt7530_dummy_poll p;
- 	int ret;
- 	u32 val;
+ 	struct regmap_irq_chip_data *irq_data;
++	struct regmap_irq_chip *chip;
+ 	struct device *dev = priv->dev;
+ 	struct device_node *np = dev->of_node;
+ 	int irq, ret;
+@@ -2337,10 +2354,17 @@ mt7530_setup_irq(struct mt7530_priv *priv)
+ 	if (priv->id == ID_MT7530 || priv->id == ID_MT7621)
+ 		mt7530_set(priv, MT7530_TOP_SIG_CTRL, TOP_SIG_CTRL_NORMAL);
  
--	INIT_MT7530_DUMMY_POLL(&p, priv, MT7531_PHY_IAC);
--
- 	mt7530_mutex_lock(priv);
- 
--	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, val,
--				 !(val & MT7531_PHY_ACS_ST), 20, 100000);
-+	ret = regmap_read_poll_timeout(priv->regmap, MT7531_PHY_IAC, val,
-+				       !(val & MT7531_PHY_ACS_ST), 20, 100000);
- 	if (ret < 0) {
--		dev_err(priv->dev, "poll timeout\n");
-+		dev_err(priv->dev, "PHY_IAC poll failed: %d\n", ret);
- 		goto out;
- 	}
- 
- 	val = MT7531_MDIO_CL22_READ | MT7531_MDIO_PHY_ADDR(port) |
- 	      MT7531_MDIO_REG_ADDR(regnum);
- 
--	mt7530_mii_write(priv, MT7531_PHY_IAC, val | MT7531_PHY_ACS_ST);
-+	ret = mt7530_mii_write(priv, MT7531_PHY_IAC, val | MT7531_PHY_ACS_ST);
-+	if (ret < 0)
-+		goto out;
- 
--	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, val,
--				 !(val & MT7531_PHY_ACS_ST), 20, 100000);
-+	ret = regmap_read_poll_timeout(priv->regmap, MT7531_PHY_IAC, val,
-+				       !(val & MT7531_PHY_ACS_ST), 20, 100000);
- 	if (ret < 0) {
--		dev_err(priv->dev, "poll timeout\n");
-+		dev_err(priv->dev, "PHY_IAC poll failed: %d\n", ret);
- 		goto out;
- 	}
- 
-@@ -687,32 +680,29 @@ static int
- mt7531_ind_c22_phy_write(struct mt7530_priv *priv, int port, int regnum,
- 			 u16 data)
- {
--	struct mt7530_dummy_poll p;
- 	int ret;
- 	u32 reg;
- 
--	INIT_MT7530_DUMMY_POLL(&p, priv, MT7531_PHY_IAC);
--
- 	mt7530_mutex_lock(priv);
- 
--	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, reg,
--				 !(reg & MT7531_PHY_ACS_ST), 20, 100000);
-+	ret = regmap_read_poll_timeout(priv->regmap, MT7531_PHY_IAC, reg,
-+				       !(reg & MT7531_PHY_ACS_ST), 20, 100000);
- 	if (ret < 0) {
--		dev_err(priv->dev, "poll timeout\n");
-+		dev_err(priv->dev, "PHY_IAC poll failed: %d\n", ret);
- 		goto out;
- 	}
- 
- 	reg = MT7531_MDIO_CL22_WRITE | MT7531_MDIO_PHY_ADDR(port) |
- 	      MT7531_MDIO_REG_ADDR(regnum) | data;
- 
--	mt7530_mii_write(priv, MT7531_PHY_IAC, reg | MT7531_PHY_ACS_ST);
--
--	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, reg,
--				 !(reg & MT7531_PHY_ACS_ST), 20, 100000);
--	if (ret < 0) {
--		dev_err(priv->dev, "poll timeout\n");
-+	ret = mt7530_mii_write(priv, MT7531_PHY_IAC, reg | MT7531_PHY_ACS_ST);
-+	if (ret < 0)
- 		goto out;
--	}
++	chip = devm_kmemdup(dev, &mt7530_regmap_irq_chip, sizeof(*chip),
++			    GFP_KERNEL);
++	if (!chip)
++		return -ENOMEM;
 +
-+	ret = regmap_read_poll_timeout(priv->regmap, MT7531_PHY_IAC, reg,
-+				       !(reg & MT7531_PHY_ACS_ST), 20, 100000);
-+	if (ret < 0)
-+		dev_err(priv->dev, "PHY_IAC poll failed: %d\n", ret);
- 
- out:
- 	mt7530_mutex_unlock(priv);
++	chip->irq_drv_data = priv;
++
+ 	ret = devm_regmap_add_irq_chip_fwnode(dev, dev_fwnode(dev),
+ 					      priv->regmap, irq,
+ 					      IRQF_ONESHOT,
+-					      0, &mt7530_regmap_irq_chip,
++					      0, chip,
+ 					      &irq_data);
+ 	if (ret)
+ 		return ret;
 -- 
 2.55.0
