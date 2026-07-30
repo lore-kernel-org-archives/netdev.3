@@ -1,35 +1,44 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBF9326945
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 09:30:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8883FB7E5
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 09:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785403845; cv=none; b=YiQEvxSXLjnn5QilPj22/9NJARv5bVjqowogbtJCTSB3jJH7eCIkd57qsphQAT/uSDMEhVTgc5lqcqMLSiEVddX8o7+lbvuqSzqc5T2QZVybN1ATWMZkxaKU4Wjuyd85oWQMag9+m7xm548acoYoi+x4t5/tf9YsBGOIgRdTvy0=
+	t=1785404252; cv=none; b=ZMVesfqDbKwx/E90GBZBp1iB7F8PFIR2QZ+85pBfGZdk6W2ZEM0feAZdfXhqwJU9ReWWE5g44An1YLBpayimHWVd7Rw7l6t42J+rZlr/UEoSXg40KJRF6D6EjPQhsBpJ8bHsWMz7weYVEw4S1uZEFJUsob+bA+5R2jVKwpTygiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785403845; c=relaxed/simple;
-	bh=rZ9JbA0S5TbAZ8HiK8jE6ygWzKrJ6rHIK6/VacccEoY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=jSeCpJpSyU8THvShANLX9P9a7VjtrVVWYRiUxMo+B+XnJNNW7pHkNamJ/9UU2QvSTNksXuTCO+KEHmDe5rGTTJ10+r+GJbVrtkcgOZHkCHqPOhK462bPLI7/R36SDKoOWGSQvxxIeCHg2JjoyKW0JZW8Y3gkgYwM16jJANjBHQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bGtvfLtK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785404252; c=relaxed/simple;
+	bh=X8TqHta6SQG1kDetfgvisBDb0XOd0BhPLN1LSm2gESg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AWSZ3BqCQbgXUAKNcNJr2ogEtKbpefawmw7XahUiYUgu54nQHkEqb4+s29FcAwztl/yJNaouacr449IvjsQtoi5USZXxlA25R7LjNcECSXIdfRqXOk3acYUTRj6iR/IhxrlhVvy/DsGYxFvWdxhvUbLX+6WTfiOqqYgV8u60P1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Od9R3sOQ; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bGtvfLtK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655541F000E9;
-	Thu, 30 Jul 2026 09:30:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785403844;
-	bh=SnKNYJ5kYHmHl2jv7xeQbuwj5ySBW8abAiJvknwfpfk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=bGtvfLtKTaqdA9EBfwxNTuLN9o1DW4VxYp1S65hUiQsGkg6dFAw81ZBp+zibUYUxZ
-	 5FKD9ZStea8PVUBM7ANrIV5n2T0Mk0DGw7jgB7cDliHwcXjtPauq39Rp9z0o+32tgk
-	 q9Sj0cIUNZbTGVf9bj6EIvsOWE/y0dKVZWT/+WV194vByOSAtJ3qMp5r5SkkpCsfNS
-	 aHXd+iwe1NzUwzG9DAbYCliDdUXbaySnP/9oBi+uxnOpBbli18A9YNo++AgKqc8xGE
-	 3yhmxXpoYIDcx/z+E0nYHY865NgGnDJP1jyI/s6R7fIE+Z5+gDau17WXrYBx7x1I6Z
-	 NWaUveZ4ZrCJg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5690B381195A;
-	Thu, 30 Jul 2026 09:30:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Od9R3sOQ"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785404238;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Q68pCMBhtAA9sl/pJLe4jec7qNxz/4+cksry5gtaMjg=;
+	b=Od9R3sOQBXyekooCYGEwKtHtMuF4jrCDEhQEmQsM0/xF/KpkdpD0RWjIIkUHUUchcaVj5N
+	tcalQhgZgAlTX05qCuGbfBA5KhGS3F4MJZLbYeX1OGDUYB7V5to2Trm59dybRdcCgjBWGI
+	e7zjjoNuvxX9D3iEiQvuKgh5vS4JKqE=
+From: xuanqiang.luo@linux.dev
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	tom@herbertland.com,
+	aduyck@mirantis.com,
+	linux-kernel@vger.kernel.org,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Subject: [PATCH net v1] udp: fix potential use-after-free in tunnel segmentation
+Date: Thu, 30 Jul 2026 17:35:54 +0800
+Message-ID: <20260730093554.68127-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,44 +46,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/2 net-next v2] ipv4: remove unnecessary reset of
- position
- pointer
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178540380789.3461627.4239979739077038624.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Jul 2026 09:30:07 +0000
-References: <20260727091834.6645-1-fmancera@suse.de>
-In-Reply-To: <20260727091834.6645-1-fmancera@suse.de>
-To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com,
- kuba@kernel.org, edumazet@google.com, davem@davemloft.net, idosch@nvidia.com,
- dsahern@kernel.org
+X-Migadu-Flow: FLOW_OUT
 
-Hello:
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+__skb_udp_tunnel_segment() gets the UDP header before ensuring the
+tunnel header is in the skb head. If the pull reallocates skb->head,
+the saved UDP header pointer is no longer valid.
 
-On Mon, 27 Jul 2026 11:18:33 +0200 you wrote:
-> The position pointer is only advanced if the return value of the proc
-> handler is positive at new_sync_write(). Therefore no need to manually
-> reset it when doing error handling.
-> 
-> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-> 
-> [...]
+Get the UDP header after the pull to avoid a potential use-after-free.
 
-Here is the summary with links:
-  - [1/2,net-next,v2] ipv4: remove unnecessary reset of position pointer
-    https://git.kernel.org/netdev/net-next/c/ea771e17e995
-  - [2/2,net-next,v2] ipv6: remove unnecessary reset of position pointer
-    https://git.kernel.org/netdev/net-next/c/ac84c8551801
+Fixes: dbef491ebe7f ("udp: Use uh->len instead of skb->len to compute checksum in segmentation")
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+---
+ net/ipv4/udp_offload.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-You are awesome, thank you!
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index 29651b1a0bc70..639c59044c135 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -178,7 +178,7 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
+ 	int tnl_hlen = skb_inner_mac_header(skb) - skb_transport_header(skb);
+ 	bool remcsum, need_csum, offload_csum, gso_partial;
+ 	struct sk_buff *segs = ERR_PTR(-EINVAL);
+-	struct udphdr *uh = udp_hdr(skb);
++	struct udphdr *uh;
+ 	u16 mac_offset = skb->mac_header;
+ 	__be16 protocol = skb->protocol;
+ 	u16 mac_len = skb->mac_len;
+@@ -189,6 +189,8 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
+ 	if (unlikely(!pskb_may_pull(skb, tnl_hlen)))
+ 		goto out;
+ 
++	uh = udp_hdr(skb);
++
+ 	/* Adjust partial header checksum to negate old length.
+ 	 * We cannot rely on the value contained in uh->len as it is
+ 	 * possible that the actual value exceeds the boundaries of the
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
