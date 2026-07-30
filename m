@@ -1,99 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27965448D0D;
-	Thu, 30 Jul 2026 16:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD70D39A070
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 16:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785429286; cv=none; b=ghlRdGcxt6YDuAsjARTjIUqQWaR2z0hGog7XSh7RbN++s1X/lWSK+OqzIErpg6SQb0JtPaumv5W5HJdHuQGtq21gWQ7m82nnW9IskXE5iEoGltdoRpSgshVGVxtrDR8ATx9TIHj3csTusvoQwfjjd8nLwEQclWI1RBfAhzQ7pqE=
+	t=1785429990; cv=none; b=ZtJqraX1zx5UGP3aQzmkFpiVGuHl3yfLsYFXEamUMrF33KhiByqMKtAWkpGk27zc9K5BlWsTn09O8nqh5pL5Mz3Zi5qqDWjPyyJiP+sd+itB7wjcUJafebDEJzbMueoKUNCJACCpnXj1AZYNnvjPW0sjfxDP7xgQDmzE01ZqLkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785429286; c=relaxed/simple;
-	bh=1PuMJJvJlG1Zm0cchYttJHHdZBgvkDXaaOdZaFfrUdE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lyjGHfeDAFzspbZbHbK7xWfh04UjvBLZsvb4GfdHnu8EXvOv5VTBkAa7iB7oX5i8tcQKUGg+/MfEffsmQsqVMcGe0AdSevkMOrQaTBE0g0meNXSqxM8JSP7gxau/9EdqBaI555CXfsKnhb+VXrGvT5ceL4OwfW5jeyki4VfCTy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cfwB/iHw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785429990; c=relaxed/simple;
+	bh=BAXdmGMgsI8WSzefMNGXUq4jYvxq7gLeF6GtVDWlcu0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IsVmJXbX4IhoCoKm3fx2MydzDZBoZ4eHLnii6gLuWaJaqxUJnrC+ZYnWji5ekzcSSsSnG1Ud0rlc6HNIp0/GtjCvLSfvuiaYddTa59pVsVrTWRvfnl9ZDUqSLr0cjF7SqHQ2pXpQiEmmHVXlgJ2pDaBZ4sLdRXB7/4Dj8XunNxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ngyDxh05; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cfwB/iHw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E431F000E9;
-	Thu, 30 Jul 2026 16:34:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785429284;
-	bh=XWg6SdRoiEscgSxEnJp0ilq1kD+g/1pc5IyB6EebBtw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cfwB/iHwzmlJITXYQBcJp/3oWznakyomnl8TSf5UOQbeXnA01Sn70zhTqRdkgDPCY
-	 wKT5wXBLDQteNfM9zaZpnl2ie7MBmB3e29tkFjn8J90REnfVprGmK+TQxA5yygUlze
-	 eBInxRzEs3wjKHNPOTl4F0R8ZwLTL3cdjnRklDPhrDytqmSSjlvU6Te8Gt2/p+zCJ2
-	 XnCMLjGYvBgKDWn4DgDJ2zLZOfKNuSqhPImg/XlJlo83tK83gaZ4nk4Q8PpLBJHElA
-	 9xURl4O955Niz9td2WK1FcsXLXtrmQCMJ2vnRUI5SrI0hFLmjafRPLDK6tlkpfV39F
-	 tgyHU/Epcb9Lg==
-Date: Thu, 30 Jul 2026 17:34:40 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jijie Shao <shaojijie@huawei.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, shenjian15@huawei.com,
-	liuyonglong@huawei.com, chenhao418@huawei.com,
-	yangshuaisong@h-partners.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3 net] net: hns3: fix speed configuration residue after
- driver reload
-Message-ID: <20260730163440.GE51943@horms.kernel.org>
-References: <20260724093036.426631-1-shaojijie@huawei.com>
- <20260729110240.GA76598@horms.kernel.org>
- <87b5d9ec-3a8d-4bca-92d0-53d27beb9e2b@huawei.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ngyDxh05"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38e7109321dso52258a91.3
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 09:46:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785429988; x=1786034788; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=N8bI1Lg5owKwKHmnXpdk6gdmBX5YDmvVulHi1yxH4UA=;
+        b=ngyDxh05Ov+xTRIY8k9EyfHFjS55c2ZGS4PHQ2w0Wy3Ci4nMlTAPG9Fys1gmIolA4P
+         ZTWVGeCucI+nQGhB/8sIJ2bvhMVyI8m7+dcXx0jPc22CABlhVeutgfyQIBBg+t+ynr+H
+         6A1bpWy1LpCPvloop7NEAD5pnzon06jMdKVHomNk7G6JoSH4gZGv7zJM4+iQwShkLs76
+         uCweSOJlLIulD99kpkYO6DXkG4aa4OU6MtjgK41HdYoXZodaCuHnNDuUjpqPeQ1brd4z
+         UTnqE6aza2CEbXfB/gkmKn5NwyLN8h55yytXob3U/sKfdxenj4xYhRYNxjbbOrQcVWpN
+         Cp6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785429988; x=1786034788;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=N8bI1Lg5owKwKHmnXpdk6gdmBX5YDmvVulHi1yxH4UA=;
+        b=VXAUt2DJFfrM8KdBVMPxygcsAWiSCBdvjNqy+eHCOhQHXEEQTdQgP0MpEQ4MyLmSih
+         61lHLftEiXFV9ivCcK4Qe8nX8znck3NZvrXJ6aKc/u8rdX9KPH6M4Km/Jk40jAMEg5t8
+         5G3I/i2Wops8iYlCJ1R4r7C+eqJFW7Xi8Yy8Qw0yLKuAKe+PbM26XrJubCTwyXpbPzpC
+         gz6Ow2i05M2baE708LRPOWGzvjAmwQioSona3h+kqhO6HXY1fbI6XT9sLhzm2SjHS61c
+         ZXWPDBSA7GGLa0LzUZkOdhmCVqrRgKjF6HwUyiznTQkjoDs++EXbl/75pxgF/kkNxQYZ
+         VUHQ==
+X-Gm-Message-State: AOJu0YwTdmAt/8jZhBY/K5QSGTGOrcqZlG/+QwC3G1zjE/tX/uU8QMXB
+	YLDL0Z/t57wg9NlguSrspiWTBvyW9fFtqlbQe0VltH+lV/wJ6IRIjcRt
+X-Gm-Gg: AR+sD102JX99qojHmbozo/Y8/4nCbTnt81MqY9Ga/7BPI9km3K1nlTdkxxJ2yC2UMVe
+	aCBo5zJjbwoC+wRO1I9DEJ/mAuynrp0vKuXUovxGSuO6WHn65PPNWSwTx7RhTWGNnOn3IA0JNBh
+	BV5doSRo8Q/5AKpDY5bopqSgiGs/WcdizviEnsAm4HX1wMc7ZiDUECcs/qOfxvST/kFH80egeSc
+	ZCOAOygVE/GMU4sGRq091ys80ziENqLrew+Luf7dE1QcIc2r9Sl89Eq8KaJ3UqQ1bUoldv+ucZc
+	rqspFd8mQxMk6GnfhoQ3X+r1PoB1uBHEHxP0Uhrce1mBfrfCBXSyptuJFU1tT6O01ngXVtOKi/3
+	/0fnDRftMCOogjSMBhV3XZiPN6IfPYT7sqjosRfVkrmrrCQaFp4QqaXRpWtS2G/AxBu7r/dB4sS
+	T8MSraYvufncHiQbizjIY0E9u5rlWhxnRA7KRdgp4sz+TOot/c2ZtFOp8cxJZjHIPgWLNw0UazF
+	Xmm58xUetEEc6KyyKb5Ar+5F95arztZtn4hDas+bybjC2DYOrUooqJak7c=
+X-Received: by 2002:a17:90b:582c:b0:38e:485c:ebd3 with SMTP id 98e67ed59e1d1-38f9bdac904mr2965133a91.15.1785429987976;
+        Thu, 30 Jul 2026 09:46:27 -0700 (PDT)
+Received: from ?IPV6:2601:646:8f02:5350:ce4:701d:f6e3:3a6b? ([2601:646:8f02:5350:ce4:701d:f6e3:3a6b])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e7275973dsm20107506c88.15.2026.07.30.09.46.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Jul 2026 09:46:27 -0700 (PDT)
+Message-ID: <81e5156d-1619-4892-ac29-e8bb11acd494@gmail.com>
+Date: Thu, 30 Jul 2026 09:46:26 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87b5d9ec-3a8d-4bca-92d0-53d27beb9e2b@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next V4] selftests: drv-net: Test queue stall upon
+ reconfig
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, dw@davidwei.uk
+References: <20260725002156.3027762-1-mohsin.bashr@gmail.com>
+ <20260729191014.2634ab1e@kernel.org>
+Content-Language: en-US
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
+In-Reply-To: <20260729191014.2634ab1e@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 29, 2026 at 07:45:21PM +0800, Jijie Shao wrote:
+
+
+On 7/29/26 7:10 PM, Jakub Kicinski wrote:
+> On Fri, 24 Jul 2026 17:21:55 -0700 Mohsin Bashir wrote:
+>> +# TX ring size the test shrinks to so the ring fills quickly.
+>> +MIN_TX_RING = 64
 > 
-> on 2026/7/29 19:03, Simon Horman wrote:
-> > On Fri, Jul 24, 2026 at 05:30:36PM +0800, Jijie Shao wrote:
-> > > After setting a 100G optical port to 40G via ethtool and reloading
-> > > the driver, the port remains at 40G instead of reverting to the
-> > > firmware default speed of 100G.
-> > > 
-> > > The commit referenced in Fixes: added two overwrites in
-> > > hclge_init_ae_dev() for non-copper media, so that optical ports
-> > > connected to forced-mode remotes inherit the firmware-preset
-> > > autoneg and speed instead of the hardcoded defaults:
-> > > 
-> > >    req_autoneg = mac.autoneg
-> > >    req_speed   = mac.speed         (when autoneg disabled)
-> > > 
-> > > The autoneg overwrite keeps existing behavior:
-> > > hclge_set_autoneg_speed_dup() already uses mac.autoneg (not
-> > > req_autoneg) since it was introduced, so autoneg inheritance from
-> > > firmware was already in place. This part is kept.
-> > The AI-generated review on netdev-ai [1] flags that this isn't strictly
-> > true as req_autoneg does appear to be used in hclge_set_autoneg_speed_dup().
-> > I don't want to nitpick, but perhaps this is worth clarifying.
-> > 
-> > [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260724093036.426631-1-shaojijie%40huawei.com
-> 
-> 
-> The intent is to restore the pre-c711f6d1cee9 behavior for non-copper
-> media, where the helper read mac.autoneg directly and fiber ports
-> inherited firmware autoneg at init. c711f6d1cee9 switched the helper
-> to req_autoneg, breaking that inheritance; d9d349c4e8a0 (same patchset)
-> added the explicit req_autoneg = autoneg copy to restore
-> it, and also added a req_speed = mac.speed copy.
-> 
-> This patch keeps the req_autoneg copy — load-bearing as the sole
-> init-time path for non-copper media — and drops the req_speed copy,
-> which is the residue source. The commit message wording about the
-> helper reading mac.autoneg describes the pre-c711f6d1cee9 state,
-> not the current code.
+> Testing against bnxt is failing in NIPA, could you check why?
+> I suspect the rings size may be too small (hence the quote).
+> There was a recent patch to Intel drivers to require min ring of 128
+> so we may need to try a few values ([32, 64, 128, 256]?) before
+> giving up?
 
-Thanks for clarifying.
-
-In that case all seems to be in order to me.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+Thanks for the pointer. Your suspicion is correct. Broadcom does not 
+allow tx ring size to be < 420 when we have software based udp 
+segmentation. I'll harden the test accordingly.
