@@ -1,76 +1,69 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AB739446B;
-	Thu, 30 Jul 2026 21:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0108F3BFE33;
+	Thu, 30 Jul 2026 21:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785445888; cv=none; b=fpAmMyrDsf8lZnHu+N2R85gjtFptOLii9LhAoHKvgm1ed79QLPRhT4iLvx7N0EBXcofEDsbSrAXGJii1XH8oMDpbS/9/SzGOAapb5BRC78pTmaNEvjVMxf8qKMMUUiE7wj+A/v9I4H3svJjcYW3dWjWNKXrt7LnxV6ePlide+L4=
+	t=1785446218; cv=none; b=swv0+A8+o11ieD2FWNOBW1l1bIVTLruuoFg1raD8GKnc1LfVUIN0hJxFtkBPy1KveDKJFM+qQe7owcQdZOHPCXGLsLf5CSSob8I+h1xJKp/GogfCcqNcNjV4Ygv6Jf6f9iz3oyioXuEFVJNd0ELzL9QIBFFfavuzjRmuyd17qZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785445888; c=relaxed/simple;
-	bh=vguYnrv968SIFndWBxf3ttUcQ2HQUqM9AQgTLfM5au0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q2RDoYq9jF85cczsOQKGEpmSiG3T9Ds8jJgNY15TC7WtOHT8dfKYPNqyX85xlSbSdPgrkrYidqJIliHknjE2AgSx6kT0j4IIoRaKIg/mqc5A3Mu1/ZxeaxUVoJ/fNCLwDfFvebHZTCkEDesQUvSOz8bpaPEa5ivGSQ3kUvnugxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4YiJRBOW; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785446218; c=relaxed/simple;
+	bh=wLUliK0qNT6XN3fFRkYlUfoZ3EfdJ3RB2Shrd8C9l5w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BPDVdCe6zywcfpPLDZ+wO/8OTdchR2/cDaLSK8ktMaAarzJWBKI59erFRjaKh6STgjF7UeFdXAdrsOWo07B4XyAAZHi1kD2oW0B8isvDrsokT6a5D/KS5OEKXcpKmltE820YsWdPYrOEkHwEUNx92jo7mz6vRb2WIIIW4fPjVKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UVmQYFFy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4YiJRBOW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=09fcXTAgsKEUEyRixaZS58XnfkzLWLnI31Z4WuGsMbg=; b=4YiJRBOWtkIu9AD+Oc4ZCVzisI
-	ukmi0rpfrd/RjxDifadSDc9pdryFAwbqMpMJx2As0mleUhsCKNmnf43fHxJJebP+h7kypYIYv84hr
-	udbL+lF2KMcv5+jyn9khD9zLKVEolmx0TDeIHt8rWI4Z0sCkSSdpQm33XqsqGBzPuqWE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wpY26-00F40m-GW; Thu, 30 Jul 2026 23:11:14 +0200
-Date: Thu, 30 Jul 2026 23:11:14 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v5 2/5] net: dsa: mxl862xx: add SMDIO clause-22
- register access
-Message-ID: <c7a20740-c34d-4812-8d36-09af7998cc35@lunn.ch>
-References: <cover.1784945329.git.daniel@makrotopia.org>
- <4703e62868c862be4cef4933c7a7466310acee7a.1784945329.git.daniel@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UVmQYFFy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1551F000E9;
+	Thu, 30 Jul 2026 21:16:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785446216;
+	bh=/swWG87rr+upA5TBYrdcvg2wZ1k8HFzm4gqmEFB8jqM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UVmQYFFyNgEjcHEGMExEm7wTCHKYnPMQNdVIoStKEqoRFUEpsP0A+p8oeS2Yw9T69
+	 NcNOH6cWYzmyEcnMDSv79Kjpl9NFY5YqnN7loNSROtsTtl+R2HqjFrgg86fMf9u8wA
+	 DG/MWBx216Kr0ZEVwMBY3MN3BCrjXF46+5B08Xl2chnMw3+gXUcoxYPsbDss/A2Slc
+	 CR0cNyU65/nRO1wr8Sef8L/FliVb4GFJqZu5ZtDvSEohWsOD5+PKrC2AiCCg5Dn/WU
+	 W6peuV/ML48bHkUl9y9I+LTii0EKjECqNOBVsjraMoqXZxMlKpdclPaBkiMVAB4KCb
+	 hvXTa+iOU7BVQ==
+Date: Thu, 30 Jul 2026 14:16:55 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Vikas Gupta <vikas.gupta@broadcom.com>
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bhargava.marreddy@broadcom.com,
+ rahul-rg.gupta@broadcom.com, vsrama-krishna.nemani@broadcom.com,
+ rajashekar.hudumula@broadcom.com, dharmender.garg@broadcom.com,
+ ajit.khaparde@broadcom.com
+Subject: Re: [PATCH net-next 0/4] bnge: add more functionality
+Message-ID: <20260730141655.2c326b2a@kernel.org>
+In-Reply-To: <CAHLZf_tb5+JmoP9=LyKDwnmsSTzefC7py0U6HN17hGYqvU8jpA@mail.gmail.com>
+References: <20260724142954.3101980-1-vikas.gupta@broadcom.com>
+	<20260729163352.6e0b9bc5@kernel.org>
+	<CAHLZf_tb5+JmoP9=LyKDwnmsSTzefC7py0U6HN17hGYqvU8jpA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4703e62868c862be4cef4933c7a7466310acee7a.1784945329.git.daniel@makrotopia.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jul 25, 2026 at 03:16:03AM +0100, Daniel Golle wrote:
-> Add mxl862xx_smdio_read() and mxl862xx_smdio_write() for clause-22
-> SMDIO register access. The switch's MCUboot bootloader exposes only
-> clause-22 registers; the clause-45 MMD interface needs the running
-> firmware and is unavailable while the switch is in MCUboot. The MDIO
-> bus lock is held per-transaction (not across polls) so that SB PDI
-> polling during flash erase does not starve other non-switch users of
-> the same MDIO bus, such as separate PHYs providing WAN or management
-> interfaces.
+On Thu, 30 Jul 2026 11:26:17 +0530 Vikas Gupta wrote:
+> > And the concern about IRQs being in use on shutdown perhaps.  
 > 
-> Unlike mxl862xx_api_wrap(), which takes the bus lock with
-> MDIO_MUTEX_NESTED because it can be entered from the accessors of
-> the switch-internal MDIO bus while that bus's lock of the same lock
-> class is already held, the SMDIO helpers take it with a plain
-> mutex_lock(). They are only called from probe and devlink flash
-> contexts where no other MDIO bus lock can be held.
-> 
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+>  Since the IRQ issue stems from the new shared bng_re RoCE driver, and
+> it lacks a bng_re_shutdown
+>  implementation to free the IRQs, should we implement this in the
+> current series, especially given that the bng_re driver
+> implementation is currently minimal?
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Doesn't look like the other patches will conflict, maybe I'm missing
+something. If there's no conflict perhaps you could take patch 1 out 
+of this series and post a combined patch series for bng and _re
+scoped to the parts that need to change in both trees.
+And we can pull that series into both networking and RDMA?
 
-    Andrew
+Note that you can post multiple series at once, as long as they don't
+conflict and the sum(patches) <= 15.
