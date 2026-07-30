@@ -1,227 +1,323 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010071.outbound.protection.outlook.com [52.101.56.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422FF3F12EC;
-	Thu, 30 Jul 2026 09:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2D43F0A81;
+	Thu, 30 Jul 2026 09:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785403082; cv=fail; b=Jcfsfy9gqXhRJeyB/lvL/GMoR219ldNEtBtJIPu+mOGbbUuUwKrcnJXABrjvqYJOml6JqDRVnpO8RCx2EfjL2oIlmdm54or45RsJMgdzEfr7gVD7wCItQfNC4KNjBLgtSQ/OmvOx05pMu19zEMvv4HiNjk1r1f2r6d1Y087sI4k=
+	t=1785403125; cv=fail; b=ZaqiCCU61EJkElMLYuBw5s8pUjZ9ie3yazKDo8DK7lyOKfH9kBzq9OPGOL3fwnTFwuBkFsBkNI5Uv3Id4sDGMf0f3S4wR3hvvTM+zubTQTd6emxe4QdvaahaT2YB+KdELOV4sfhdJM/uItNgM5BMmLTiiwP31MnEbAqpoR8nX1U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785403082; c=relaxed/simple;
-	bh=mDWl/OuzU4kIlvqhfe7WyXriRVls4l4+1ZWdimC+Xho=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Q5jrg3nCNRdvyN5g2Ibt3Sf8eQGNmKYIwuCFZZyDJzHP59jWzUe02dOOoU/as8P7uWeN326fSYuqFqiPExJa9diFpMdusUkHd/zZEHJ4xVkt7Jx6r4Le5v+6ppgfdnXBqT4zuWlFYEAn2c1/xHYNHRGf2sht8UwZVQ28vbJOCNM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n8DrTY1k; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785403125; c=relaxed/simple;
+	bh=Ew9f9pCjGslTvhjKp6vhg+hTlxcaMno/wiuFH+2TbZY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WzMaN3hey20zJmA4EMGEcvkfv3pRCSYXR6YWYOLHWD7jO6qz3ujtF3nhFpgkjqBuK1q93btIDBPivmzLmQIUt6rY6pasyS5nFNwssn7F6lbr74oBdJ6dni2w1pxfWRDaMdXo9BINlmOTI3OOKghqPdrU7WvCz8CZroy1GzvHaBM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=m216+EYy; arc=fail smtp.client-ip=52.101.56.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n8DrTY1k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785403079; x=1816939079;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=mDWl/OuzU4kIlvqhfe7WyXriRVls4l4+1ZWdimC+Xho=;
-  b=n8DrTY1kdpTSJdQ5fdAskJlOtMEEutsM0s34Y7jgxsoZudGR78+sR6yc
-   wU+gWvaMNthkPFuhR05gcyMqQpZGjyGtpCp8sOyRHWg6OsVZFaztwK4gZ
-   FElmaFOH9WiYOPgFKRdmg27SSn4AAXOXOmZVzKvSRLDtoyZsEjs0QbDyy
-   7QMlTzqTJ2n0dq0TnsSsRb0VROcn4ITP6kijF7cya6HcqegBVD46Vng13
-   +2enAUGZAwgGrxNI11HWZYuNkzKOMYX1Flj0r3MnCfmWSqWlbdZr3BN8y
-   VXkzKl6Rw/ch7TPy9NmOGJOMvJaS+w8wFy7Opzot7wlOKY+JBjy1XBnL4
-   Q==;
-X-CSE-ConnectionGUID: tUffZ4soRWmGXoidQVZ42w==
-X-CSE-MsgGUID: lUUCVHInTm6Zfc/bldZ6gw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="86136730"
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
-   d="scan'208";a="86136730"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 02:17:53 -0700
-X-CSE-ConnectionGUID: H7GUpAlsQ6u6s8If1ulL+g==
-X-CSE-MsgGUID: 9xoVWmtcSXqM0jK1gJIwbw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
-   d="scan'208";a="260851301"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 02:17:42 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 30 Jul 2026 02:17:41 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Thu, 30 Jul 2026 02:17:41 -0700
-Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.13) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 30 Jul 2026 02:17:40 -0700
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="m216+EYy"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sGWZuGxbRa+FRyLldXYEo9gImX4GXQphlCwBDg5lV23+ie90B7XoIuYNxSEW8I5eNnDluzBdCE4DavFQObptQw9wi4sqzv56n+GzRaZ7CpdhAB/K/oaQb0+cXXPe4WtQu3TE9gbCI+tE4qjweYPJ7ViHc7BOPNf3dhSSqSBH60wqV7WtRlagB4lVL5uzckTzk2ceKgHnplWJg27OVOPnGDzX5DW3L2/xJJhrGcy1y/sKsWhdqIZO0SdYY+QXJt6ZIISP8hKFvfVaERstCif06/LcuoRhCVPkVWbQyKE8wxih6LpUptvmikbAst4hddYfGyHRDkdDXIAD0YrIhcAKMA==
+ b=vwKkny00gwaj+YZzsRA1fYRPO7uQ2XuK2bAuBuQ+vN2zTDXJDnnJieYkFis4QVBy0LG18TVVjPGEdpwEBHEBPpHaAHEjY45lsZVP6LkbJ1CP66fmTxO3TIuX9C6MufhiiHr9NDSE2EbIylZd2XcduXxuVeNfAzqLc6WGwQSg0WqCQ4KLqYWIv22wQA3u0RE6sgye1UI0x+Ph3F/D+KDRpkPG5zBe+4wnQC+lbjFFBBPBWtXQVqvGdPukgiaYvqoEcH2esokGQLV0RN6eKnnvFTPjPa4XN3XeI/0jUvd7woJEtlogM4kC0etdrX0Eez1DGbK17/qcyy8ux8URgvwzLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pUZ1fPL2RVbFivsvEH5wux7js6SX0fqvcsKhPBrT8Wo=;
- b=UnRfDPC0mXxMUzMcSfYW7E7XMfUAYmDKlslPgpY1if/sWP8Cxjk6XPQuKB4LyO39da1PfXxe9DVeKK/9uLoY2/rNouxhpAyP44ohZo5TdXZsiRTgoyGxIHfMZnRNehD+zWPoGrdG18nVWRg6BsYI0jKNGJEXpDlBXcxws5DpOypLIw+naX+dI0B/vc1ImbbIv5uobVdHRlAEG3cyBb6yyw/c4FPBgdrw3xcP+iopivyPef962cjWXmOos2b5krtUlK6zTjlIV3ttk8sICXEjmYBAxroyR8azjGXRpSKsHVPuwY3s5i7/LJSBYbnBwcXV7iizbVF1tMenex4DE9X3KA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by IA1PR11MB6267.namprd11.prod.outlook.com (2603:10b6:208:3e5::8) with
+ bh=6nyqwdRJDsojcfnlasvMUL9weVYt2ZV9yIXtfcVzCUE=;
+ b=WnJltpcUtgjJHRIF1jiZMWnatU/igJsn/q6fC3PSmMamkHC3iMjPxbKvnDzUG9kAt6FCa6EF9A7mzkNYFTEw8pH9++ba4CI6dH0pbqnEwNtiAe0HIjV6lmUEF147fNhkejqerna+FzZSl0s177x2e6uJTxjSuKmqACu3sIEBFT4nvB3L+mti0Ofy5Qcy1QFCA8MCdVKGmH0g/o1HYseDyb7vy6VtANuLVkWCNA6RaQ+w/NIH1Alv3oD1F6SG093cyz2Q93y4mHrh/meKneO3MAbSrndSIaJd5J5XQqPFFOVLx7ezaX5kMvqry1YVO5E+boMxz6Ycrtb05Wt22MoewQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6nyqwdRJDsojcfnlasvMUL9weVYt2ZV9yIXtfcVzCUE=;
+ b=m216+EYynYGQQNsk3tbd8e/NJJgRcVUxwbcLfnLjhKzA26C7/lhljqIR1B/RMMmnopV8ZhdZQ4zQzP7IXeoc0KBcIxkTRDY80WSZRKNdh51/i8jKN/SSldOEykQh2Oept7HfJLB/RnI5MiQaV9XUAqdOix6LltbJByOyX/t/yXOO3fwDvQxNPpIfZ0jW36/Tvs8JdtHjZXExt/IEQ7bVbuCZtMUm0kpc1Zq0fvECLe0kaUD2KHrVEXbElvGpC9u+uAcg0cABD4Q0xx59OU21+5AhTvcDUN/JtkgpfrI6mEQU1LFmDGl9fikIS/KStVS5pJfFqgrhtr/0NPVCIv998w==
+Received: from SA1PR05CA0015.namprd05.prod.outlook.com (2603:10b6:806:2d2::24)
+ by CYXPR12MB9388.namprd12.prod.outlook.com (2603:10b6:930:e8::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.14; Thu, 30 Jul
- 2026 09:17:38 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
- 09:17:37 +0000
-Message-ID: <0773587b-b355-46cb-9f4a-f3eecf8e01ad@intel.com>
-Date: Thu, 30 Jul 2026 02:17:35 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] rtnetlink: truncate IFLA_VFINFO_LIST instead of
- overflowing its length
-To: Jakub Kicinski <kuba@kernel.org>, Artem Lytkin <iprintercanon@gmail.com>
-CC: <netdev@vger.kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <chrisw@sous-sol.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260725132236.88318-1-iprintercanon@gmail.com>
- <20260729185513.52564971@kernel.org>
-From: Jacob Keller <jacob.e.keller@intel.com>
-Content-Language: en-US
-In-Reply-To: <20260729185513.52564971@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4P222CA0008.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:303:114::13) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+ 2026 09:18:35 +0000
+Received: from SN1PEPF00026367.namprd02.prod.outlook.com
+ (2603:10b6:806:2d2:cafe::78) by SA1PR05CA0015.outlook.office365.com
+ (2603:10b6:806:2d2::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.9 via Frontend Transport; Thu, 30
+ Jul 2026 09:18:35 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SN1PEPF00026367.mail.protection.outlook.com (10.167.241.132) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.8 via Frontend Transport; Thu, 30 Jul 2026 09:18:34 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 30 Jul
+ 2026 02:18:19 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 30 Jul
+ 2026 02:18:18 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Thu, 30
+ Jul 2026 02:18:10 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>
+CC: Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Alexei Lazar
+	<alazar@nvidia.com>, Boris Pismenny <borisp@nvidia.com>, Carolina Jubran
+	<cjubran@nvidia.com>, Chris Mi <cmi@nvidia.com>, Cosmin Ratiu
+	<cratiu@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>, Doruk Tan Ozturk
+	<doruk@0sec.ai>, Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman
+	<gal@nvidia.com>, Jacob Keller <Jacob.e.keller@intel.com>, Jianbo Liu
+	<jianbol@nvidia.com>, Kees Cook <kees@kernel.org>, Lama Kayal
+	<lkayal@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, "Patrisious
+ Haddad" <phaddad@nvidia.com>, Raed Salem <raeds@nvidia.com>, Rahul Rameshbabu
+	<rrameshbabu@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan
+	<shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Simon Horman
+	<horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Stanislav Fomichev
+	<sdf.kernel@gmail.com>, Tariq Toukan <tariqt@nvidia.com>
+Subject: [PATCH net-next 00/13] net/mlx5e: Add support for HW-GRO to PSP
+Date: Thu, 30 Jul 2026 12:17:42 +0300
+Message-ID: <20260730091756.2543777-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|IA1PR11MB6267:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e05e1c4-3209-4a77-4519-08deee1b65d2
+X-MS-TrafficTypeDiagnostic: SN1PEPF00026367:EE_|CYXPR12MB9388:EE_
+X-MS-Office365-Filtering-Correlation-Id: e8ef2e8a-24d9-453e-5425-08deee1b87e4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|6133799003|56012099006|4143699003|11063799006|10067099003|3023799007|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: hTG+07xJ1hAiusSdTncra4yIx9OTYW3WRDpj9+p5u9EKfuM2EgKBZUkOrxzNxayGbOKkMn9EMhKZbL+B0gh5CWveaV4rooglj69dqRKm5Hg0QUbp6+sa/5aryN+uRrJxLw9eRny+bAw2MVBTHMSTx1myyt6CuFtCOKFTQKOqe4yn2U2FRvR72hxIkQADG5ef5LJDTiSWfc7oFOwcvVlDvExFuNSr1T/+Kk4tICRoj5j5NTJyDhJ9XmG8/ctOdBc4vCXimq8lTiSzx4Wocuht7Cg4lGPrUuQoAxirQgBU1FSR4SpBBzV59Bcpg6PKKHjmg1eY3oWOk1cYo0jN6mCIorugI0snac/LV4+pAAr4E3Ecae3QgaimY7mWHAs7kms8G3dFPdxBJ+TR/S6HFoDtgGXQs1iVlJZnK2hQrdUYaQelLfLq/g+4Z5A/qAJl5wGzWz3BogADnX1/awH/VUL8qYmPTYUgR8ojxsMLzbFbBkED1xA5kYYCjiqGqsNUB6yuUUpD2mBg3/tIh/SYWgKmrWHIirpFKauL639+z3xX7gzf3tPJ6DTGx2SL5H2URF1Vyw71OllCGr5IuIs/VrfjndItCbq0hiqvCINF6WyPei4EVtnfXCJBlZtj07EOw88L1/bzYwJEVxkQ+ZuBtR0jvqsarUtSbJMIRX8/bvmr0KM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(6133799003)(56012099006)(4143699003)(11063799006)(10067099003)(3023799007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|376014|7416014|82310400026|1800799024|6133799003|56012099006|11063799006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	az543zAwNjdaNt0/CZySt5uyiOdXb8ASpCpn5vhOrZcR9T8zRZDTVbkF77i6KK/ot3vDRbx4R1VN3lHhvKf1aJQCVSxQYLgzLQ+djW+4bJXPAWbJfkdXnCHVkBTxIQaSFqBX78o1weZ3VPTMY1nlbrHE0IDqMuhMF5lNwNY/U0Y4IPQSiYvEXty4bXaaA2lpyPWooDBZwXt9fwoz+P4TwtjqjBVdkPxt3xgz4WSntb/Gt0KNMVti4EO8GW0OJsBPV/unB0adMjshmTDUylzt1+kyhJwzbzHb9AdsB3CHFHD1uclZwHI9ih+Dwx2DXxmt0khnmhvgg1jFfbAHABZS0IMlVgiEJ7KrmjWz20cy18XJuBs+P7szP4JnWLmdj7M7L33S8N1Va0RKfSSY2TV4AnHX4H776vojqaEJ4FvkOp5Jj2ItP+eZ9cC3qJVspD17yego0S3FVk4NZgNK1s5cK/ZhP2gRKej0PG4RC65m5y7+kY3GurToMXjR9uOc78L1OloFOFSAwEeoPkB/hWNfZTnirCFgGbAWVK3azVlRfFF+PRs6Z1cZ7yGbZlYu/z3R3XIByCuI+fgnI5UiOdLPjFPmeWKo26RlcpNIK551/nsomXySjpVtUcSoOi/PBoCKDBSLOkujobkryx2EomTeC8JIG/0kT9RxVVtj8cAeF3Ig7affqgri0pvZuEbPSjQXGdDhzEtYU88HiraCtN4tBg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(376014)(7416014)(82310400026)(1800799024)(6133799003)(56012099006)(11063799006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?azgrd1U5WTdVTFI5R01LbG81V3JrNkhKUDVaOHNIdklKYit5TnA4S21GNDFB?=
- =?utf-8?B?bFo1bkpDQTNLNE9XRmFheS90RFVEWG5RMUFUaGN1NjViSnI0R1ZCbS9RZW83?=
- =?utf-8?B?cThEOHRpeUlXaitUenR0YUcwOGFEY1JkOXNrNm4wMStuTGg4NXpzNk80UXE3?=
- =?utf-8?B?ekxiSjVtaDJGRFNVblRrR3Bpampybng4N3B3Tk50RFN5YmRjSnBjd094U2R5?=
- =?utf-8?B?dnJmMEduSHZER1MrRXczdy95eTVqdHA3SGtUYmtOZlBZMzk4bEJUbzBhbFJC?=
- =?utf-8?B?bWdZanVST29pamRON0QvbkNXMlk3RnF3SkdkOTBYTC9PUVhiU1g2RGh0Mmo4?=
- =?utf-8?B?Yko0OU9PaVJvODZHK2JhTzMrbkR6YTBKNUJJbitYZktSZS9XUm5zKy9YWndF?=
- =?utf-8?B?azRHYUROSVFwVnc3Z09Ra2hSalVRS1FLL3orTTRJbDIxQW5sVk5saVkvcXg3?=
- =?utf-8?B?N203Y2l5M2Vvbk1uMWxBSzlCUVY3SHp2ajJFT2RhTmdWMi9LNjJ4NUdMWjBK?=
- =?utf-8?B?SS95bkdSSjc4dXdHVk5DMlZ3bXlsYnAyTWd2cjltRWZoT3N0YUYyN2tIUUxH?=
- =?utf-8?B?U2V1RUhaWGlRdE5QZy94U0U3T2M0U2pNWlkvWldzWTM4V1Z4bjRBMlFVbVYr?=
- =?utf-8?B?OGlUd25ybTNobmMzd2djdm8xZmRpaVlWeDJJTmxnWnNselNyczN6MzJQZUk3?=
- =?utf-8?B?OWQ2MmdRazU5Mlp4V1BhRU1SUDB6Q0o4MW9uOFdwdG5KS0t1M0pHMW9jandO?=
- =?utf-8?B?Q1BuYmRSbzZCZStSdHNYendLVDhaL0pWRGJmeHNkSGlLVnNlNkhBRXVuSVk1?=
- =?utf-8?B?L2RQUjNNVHFDaG1BU3dsWU0xSDFnbndnS3d4b1MzUFo4aTdqRTFLMkxpdzJw?=
- =?utf-8?B?dURTaG8vTk9FSWNnQ00zVkVYSGxsUXFNclZlTjhPeXg3QkRhbXoxaUNuWHIz?=
- =?utf-8?B?clNUaDJ4WjNXeDlCaEJuVkl0b3VPOG1kWFNGenp3U2tENk9ldjJYbmg3NzRF?=
- =?utf-8?B?eFVqWVh6VnpJUDJCWlhiNzZqbjN3b3BVN3V1b05RQk1DcG1HYmExeU5xZlVm?=
- =?utf-8?B?cGlBTzE0eUtBWVZQVFJHYVRzQTYySGpFRENKakJLMFNZZ01UZTFVWnpLdU9k?=
- =?utf-8?B?RXFBVGJiTkN1bmJkNlRpQ3lYV3NxanNDb1JmSGlNb3FqVEVUYWx5Q0kybE9K?=
- =?utf-8?B?aElpQWhzUU9LaEg3MzZBK2FNbnF1aWZhdkgzMUlhYm9TdGRWQ2haeUJXaDcz?=
- =?utf-8?B?QXFZakdJRStxaVVnZXBYT25wNkh6RUNQVTV5MjZZdDZsNzFCSGhTb0VaN0Rt?=
- =?utf-8?B?OGtreEpaVmFxV0ZZQ2xlcTd5ZU1iRkRyTk5PWElNelgrYzJQbUp5dE8wSlg2?=
- =?utf-8?B?VFVJcDAvQjZyeGV4NVQwa3NqbEhTWDFpYVdRSzZ0dE03VGRCc2lPeVpVR1JV?=
- =?utf-8?B?T2RiV1AzMy90ZkxlTGE5SGdYRzRibzlGcmZYaW9KUHNmRk5pckhzNFBiaVZM?=
- =?utf-8?B?cGljN0hqenJsMU1LQm50ajZyQTZkMmhTVmFUMHBPWW1rTXVSNmpkY0xxc1Fj?=
- =?utf-8?B?QWZ5SEZ6YTIxdXkyTUxEc1Y4V0tvZEF5Y0dwbTlPV0xFbnhYYStkdVpIQ2Jh?=
- =?utf-8?B?UnRTNDRRd2hMUS9VazJRZy9lczd5cDQ4dytLSWVkZnFRNHJndzZ6UzRBWVFV?=
- =?utf-8?B?amg5Q3JwZklGa1lsbEZCMFBlTlplOWFiZS9qYXFjRXlLZlpTcnZXUStPaGpp?=
- =?utf-8?B?b1g3ZFgrZEM1ZWlxSzU1SXlRRW15ckhmYTRoZmh3T0lrSEF1QVl1a2NoUGtQ?=
- =?utf-8?B?NE1LNEdsN3NqSmJ2ZWh2R2NRbDYwUTI0Q3daWHkrZDhJeTBlZUorQTNnMjBw?=
- =?utf-8?B?eDhTbXJIUU1rVVhITm50Q3haNEhVQ2dnS1dTUGdzQ0dKMmhoZ2sxeUlxaG5x?=
- =?utf-8?B?NzdubWo0ZnFzYUJkS1Ixd1ViRFRXTnhmSk9zM1BSU2NXYmMyMVQ5LzB5Z1NE?=
- =?utf-8?B?RVpzVENxT2xYZlk4aXlUL0JMN0tNNmV5MEpIeHpkZzdmUyszdzZ0MWdDdzl6?=
- =?utf-8?B?bDEyUVQ1SDJtcGVXNlEvQkZHUFo0OS85TkNNdFhvNXdPWU85aVRxMEJQSEpY?=
- =?utf-8?B?YTBxYy9jSGtsS24vNTYrdW9HdStSa2ZkWjlJMEtJZXJQYUt0citLMVRmSUM3?=
- =?utf-8?B?bUNEd2txcjI0NXN4TEpiMEQ3eGFSOGJQWnplelZjZVUvRS9rK1ZSblZCcjY1?=
- =?utf-8?B?czdweHhXMzU1Z1ZadUYzdkxlcTg3ZkVsekIyTEw4cHR4UWYyTExSQWdDdlNW?=
- =?utf-8?B?RzA3WUdkcmk1NEMzSkdFbWhuc05hYnZwRGJQdlZmc1h2MThSbTUrZz09?=
-X-Exchange-RoutingPolicyChecked: FizhwdJvKtusB7k6pxcx8qJm7w004bO2VF8uU2CKvYjxFn+VlAzsI19k83oNJ86p7rPGv5D5y7MNvrfiZ+yQCbtC7xWX+xMPdyd2nwJE11EExrDPjbTBL0t/W4Z8Lua1xIfg/FkgmEeJZJH7mrRVUsXNpkW0erAxTOnddxd/2oVgBxqD46w43vAOaa5rsasJx69LeS3CZXfK8Kk0yNu6A1VsaIMuJc2JmezikvL4gNJjKD5+YBAz0ZHwGaE+WlUzG36J6eblQP+C8mVna3eBQaXe3oPq+vTqD2K3Cd393p381rbpRB90B1q1uWMEWVXrIz5Hmf76LHfzuBNRAP82Bg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e05e1c4-3209-4a77-4519-08deee1b65d2
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 09:17:37.5142
+X-MS-Exchange-AntiSpam-MessageData-0:
+	nsKGRn8d/7fIzEoZKnBiNC+wZMdmfBKxWDc43Wc70SP0pTLP35e3z4fJ4u1+fYFJo64mj7zmbN8yabeOG8u6WY74ki2VirnHY4cYJBr6jrJ9nqxfVrUtRZ1lOgMFH2CcV/8YA7Iuuz+LynTEsOWl1Bt4FfrvUHPA+K806XO7/R2iIbkRypDqTE5sSWrKki32zfwLWFE6NFIR21SuF4iKxHEWyuUolR/QRqc0dmzPHsR+jWQ8y0eSgcB3SNuCPVHz+9v0j3qet5S4ybjg4V+kQeF3vTBWinEsD8pQnA6ZDOUGmxq+0JjdYby195UPh3hRisvDsXidv9VFk6QUWn6PQOHcN4IOPLpb8H7cKmFKTL53br65ITYsd9s5B+A679fp1uYaFbM26V6LbknAkNXiOlFeQBma8yT/V3V7IWOeEUTMU3+XbA5GGnSzPvhxhccp
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 09:18:34.3099
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /dIxL2pFc2sQuSuBgEOTLR9KFYHKdUtsxlcoJ/0JJ+tIhdpU6V+5hIQWxt0a0coReA1NrkjjIXv60hjwBJZhyQ9agAYlUXWCFHOQDb/t1wE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6267
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8ef2e8a-24d9-453e-5425-08deee1b87e4
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF00026367.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9388
 
-On 7/29/2026 6:55 PM, Jakub Kicinski wrote:
-> On Sat, 25 Jul 2026 16:22:36 +0300 Artem Lytkin wrote:
->> rtnl_fill_vf() closes the IFLA_VFINFO_LIST nest with nla_nest_end(),
->> which stores the accumulated length into nla_len. That field is a u16,
->> so a nest larger than 65535 bytes is written truncated modulo 65536.
->>
->> The skb is sized by if_nlmsg_size(), which adds rtnl_vfinfo_size() for
->> every VF, so the buffer really is large enough for the whole list and
->> none of the nla_put() calls in rtnl_fill_vfinfo() fails. The overflow is
->> therefore silent. Userspace then walks the message with RTA_NEXT(),
->> which advances by the stored length, so parsing resumes inside VF
->> payload and the top-level attributes that follow the nest are read out
->> of VF data. Those are IFLA_VF_PORTS, IFLA_XDP, IFLA_LINKINFO,
->> IFLA_PERM_ADDRESS and IFLA_PROP_LIST. iproute2 prints "!!!Deficit", and
->> strictly validating parsers reject the message outright.
->>
->> rtnl_fill_vfinfo() emits 296 bytes per VF on a 64-bit kernel with
->> efficient unaligned access, so the nest wraps at 222 VFs; without
->> CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS it is 328 bytes and 200 VFs, and
->> with ndo_get_vf_guid 336 bytes and 196 VFs. ice supports up to 256 VFs
->> per PF (ICE_MAX_SRIOV_VFS), so this is reachable on shipping hardware.
->> Requests that set RTEXT_FILTER_SKIP_STATS need 335 VFs, which the 256-VF
->> limit puts out of reach, so plain "ip link show" is fine today while
->> "ip -s link show" is not.
-> 
-> We should cap the output at known values and document them as the max
-> the interface supports. "The number depends on attr set and random
-> things like CPU alignment requirements" sounds like a terrible uAPI
-> contract.
-> 
-> Perhaps 128 with stats and 256 without?
-> 
+Hi,
 
-This seems reasonable to me.
+Ingress PSP packets cannot be merged by the HW-GRO HW state machine
+because they are not decapsulated and the current HW-GRO state machine
+does not understand PSP.
 
->> On CONFIG_DEBUG_NET kernels nla_nest_end() now also splats via
->> DEBUG_NET_WARN_ON_ONCE(), added along with nla_nest_end_safe() in commit
->> 1346586a9ac9 ("netlink: add a nla_nest_end_safe() helper").
->>
->> Using nla_nest_end_safe() here would not help: a nest that does not fit
->> in a u16 will not fit in a retried skb either, so returning -EMSGSIZE
->> would turn "ip link show" on such a device into a hard failure. Bound
->> the nest in the writer instead, as suggested when this was last
->> discussed: drop the VF that would push it past U16_MAX and end the list
->> there. Userspace sees IFLA_NUM_VF unchanged and a shorter
->> IFLA_VFINFO_LIST, and everything after the nest stays parsable. An empty
->> nest is already emitted for a PF with no VFs, so a list shorter than
->> IFLA_NUM_VF is not a new encoding.
->>
->> The other large nests in rtnl_fill_ifinfo() were audited and cannot
->> overflow: IFLA_AF_SPEC is bounded by a handful of address families at
->> about a kilobyte each, and IFLA_VF_PORTS would need more than 560 VFs.
->>
->> Fixes: c02db8c6290b ("rtnetlink: make SR-IOV VF interface symmetric")
-> 
-> Not a fix - this is along standing limitation of the interface.
+This series by Cosmin decapsulates PSP packets in steering, which allows
+the now-decapsulated PSP packets (== TCP) to go through HW-GRO and be
+aggregated. The SPI and PSP version from the PSP header are handed off
+to the driver in the CQE metadata fields. They are used to terminate the
+HW GRO session on mismatch, and are required to construct the skb
+extension which is used higher up in the stack.
 
-I'd argue this is a "fix", as we were previously doing objectively the
-wrong thing by randomly truncating the message at arbitrary points.
+kperf tests on a pair of CX7 NICs with 200Gbps link speed:
 
-That being said, this *is* a well known limitation of the interface that
-has been around for a while, so I can accept the argument not to tag it
-as a fix for net.
+Streams   Gbps no HW-GRO   Gbps HW-GRO   Speedup
+-------   --------------   -----------   -------
+      1               28            58     2.07x
+      2               67           102     1.52x
+      4              136           180     1.32x
+      8              175           183     1.05x
+        
+Regards,
+Tariq
+
+Some internal Sashiko findings, plus Cosmin's comments:
+
+> +        cfg.wait_hw_stats_settle()
+> +        after = cfg.netnl.qstats_get({"ifindex": cfg.ifindex}, dump=True)[0]
+Could this lead to flaky test failures on multiqueue NICs?
+By hardcoding the netlink dump array access to index [0], the test statically
+verifies statistics for the first queue only. Since the test sends traffic over
+an ephemeral random port, Receive Side Scaling (RSS) will hash this 4-tuple and
+could deliver the flow to any active RX queue. If the flow lands on a queue
+other than queue 0, will the test fail to observe the hardware GRO packet
+increments?
+[CR] The premise is wrong. [0] is not queue 0, it's the result for the
+requested dev.
+> @@ -224,6 +253,28 @@ run_session(struct ynl_sock *ys, struct opts *opts,
+>                                               fprintf(stderr, "WARN: echo but no data sock\n");
+>                                       send_ack(comm_sock);
+>                               }
+> +                             if (cmd("data send")) {
+> +                                     __u32 len;
+> +
+> +                                     if (data_sock < 0) {
+> +                                             fprintf(stderr, "WARN: send but no data sock\n");
+> +                                             send_err(comm_sock);
+> +                                             continue;
+> +                                     }
+Is there a race condition between processing the control command and accepting
+the data socket?
+If the Python client initiates the data socket connection and immediately
+sends the "data send" command on the control socket, both the server_sock
+(accept queue) and comm_sock (control connection) could become readable
+simultaneously before the responder calls poll().
+Because the comm_sock is processed first in run_session():
+tools/testing/selftests/drivers/net/psp_responder.c:run_session() {
+    ...
+    /* comm sock */
+    if (pfds[1].revents & POLLIN) {
+        ...
+    }
+    /* server sock */
+    if (pfds[0].revents & POLLIN) {
+        data_sock = accept(server_sock, NULL, NULL);
+    }
+    ...
+}
+does this cause the responder to handle the "data send" command before
+accepting the data socket, resulting in data_sock < 0 and an immediate failure?
+[CR] Possible in theory, not happening in practice today because "data send" is
+only used after a few round trips from the Python test, so it is guaranteed
+that the new socket is accepted by the time the command gets executed.
+Fixing this class of races in the responder would be nice, but outside the
+scope of this series.
+> @@ -1757,11 +1755,10 @@ macsec_fs_rx_add_rule(struct mlx5_macsec_fs *macsec_fs,
+>       rx_tables = &rx_fs->tables;
+>       ft_crypto = &rx_tables->ft_crypto;
+>
+> -     /* Set bit[31 - 30] macsec marker - 0x01 */
+>       /* Set bit[15-0] fs id */
+>       MLX5_SET(set_action_in, action, action_type, MLX5_ACTION_TYPE_SET);
+>       MLX5_SET(set_action_in, action, field, MLX5_ACTION_IN_FIELD_METADATA_REG_B);
+> -     MLX5_SET(set_action_in, action, data, macsec_fs_set_rx_fs_id(fs_id));
+> +     MLX5_SET(set_action_in, action, data, fs_id);
+Does removing the BIT(30) marker from the MACsec fs_id metadata cause a
+regression by exposing RoCE MACsec to an aliasing issue?
+By removing BIT(30) from the fs_id in this patch, the fs_id written to
+METADATA_REG_B becomes a small integer (e.g., 1, 2).
+Later in mlx5_macsec_fs_add_roce_rule_rx(), the hardware rule
+ft_macsec_op_check enforces MACsec on RoCE traffic by matching
+metadata_reg_c_5 exactly against this same fs_id value.
+Could any unencrypted packet that has its REG_B set to this small integer
+by another NIC feature (such as TC rules setting packet marks, or PSP IPsec
+decryption) falsely pass the MACsec check and bypass encryption enforcement?
+[CR] Preexisting, TC rules could set the fsid to the the previous value even before.
+'PSP IPsec' decryption doesn't make sense.
+> @@ -1717,7 +1717,7 @@ void mlx5e_macsec_offload_handle_rx_skb(struct net_device *netdev,
+>       if (!macsec)
+>               return;
+>
+> -     fs_id = MLX5_MACSEC_RX_METADAT_HANDLE(macsec_meta_data);
+> +     fs_id = MLX5_MACSEC_RX_METADATA_HANDLE(macsec_meta_data);
+>
+>       rcu_read_lock();
+>       sc_xarray_element = xa_load(&macsec->sc_xarray, fs_id);
+This is a pre-existing issue, but can this xa_load() race with an immediate
+kfree() during deletion, causing a use-after-free?
+In the deletion path, mlx5e_macsec_del_rxsc() calls xa_erase() and then
+immediately frees the element without an RCU grace period:
+mlx5e_macsec_del_rxsc() {
+        ...
+        xa_erase(&macsec->sc_xarray, rx_sc->sc_xarray_element->fs_id);
+        dst_release(&rx_sc->md_dst->dst);
+        kfree(rx_sc->sc_xarray_element);
+        ...
+}
+Since mlx5e_macsec_offload_handle_rx_skb() retrieves sc_xarray_element
+locklessly under rcu_read_lock() via xa_load(), would a concurrent deletion
+result in dereferencing freed memory?
+[CR] Preexisting.
+> +static inline int mlx5e_accel_block_tc_offload(struct mlx5_core_dev *mdev)
+> +{
+> +     int ret = 0;
+> +
+> +     mutex_lock(&mdev->offload_block.lock);
+> +     if (mdev->offload_block.num_accel)
+> +             ret = -EBUSY;
+> +     else
+> +             mdev->offload_block.num_tc++;
+This isn't a bug, but does the new naming here swap the semantics of the
+variables?
+In the original logic, num_block_tc counted the number of blockers on TC
+(which are IPsec/accel rules). By renaming it to num_tc,
+mlx5e_accel_block_tc_offload() now increments num_tc when an accel rule
+is added.
+Would it be clearer to keep "block" in the names, e.g., num_block_tc, so
+it doesn't look like num_tc is tracking the number of TC rules?
+[CR] Intentional, "offload_block.num_{tc, accel}" sounds better.
+> +static inline int mlx5e_accel_block_tc_offload(struct mlx5_core_dev *mdev)
+> +{
+> +	int ret = 0;
+> +
+> +	mutex_lock(&mdev->offload_block.lock);
+> +	if (mdev->offload_block.num_accel)
+> +		ret = -EBUSY;
+> +	else
+> +		mdev->offload_block.num_tc++;
+Are the semantic meanings of the num_tc and num_accel variables inverted?
+When an Accel rule is added here in mlx5e_accel_block_tc_offload(), it
+increments num_tc.
+[CR] Same thing, it's an intentional rename.
+Change-Id: Ib52fd4bfc205ea2e4da47e07a54cc0b727cc225a
+
+Cosmin Ratiu (13):
+  net/mlx5e: Generalize TC <-> IPsec mutual exclusion
+  net/mlx5e: ipsec: Block TC offload when IPsec is enabled
+  net/mlx5e: psp: Block TC offload when PSP is enabled
+  net/mlx5e: macsec: Block TC offload when MACsec is enabled
+  net/mlx5e: psp: Move RX marker from ft_metadata to flow_tag
+  net/mlx5e: ipsec: Move RX marker from ft_metadata to flow_tag
+  net/mlx5e: macsec: Move RX marker from ft_metadata to flow_tag
+  net/mlx5e: psp: Handle HW-decapsulated RX PSP packets
+  net/mlx5e: psp: Add an rx_decap steering table
+  net/mlx5e: shampo: Flush session on PSP mismatch
+  net/mlx5e: psp: Dynamically reconfigure based on SHAMPO mode
+  selftests: drv-net: psp: Fix responder parsing
+  selftests: drv-net: psp: Add a test for PSP with HW-GRO
+
+ .../net/ethernet/mellanox/mlx5/core/en/fs.h   |   1 +
+ .../mellanox/mlx5/core/en_accel/en_accel.h    |  31 ++
+ .../mellanox/mlx5/core/en_accel/flow_tag.h    |  45 +++
+ .../mellanox/mlx5/core/en_accel/ipsec_fs.c    |  70 ++--
+ .../mellanox/mlx5/core/en_accel/ipsec_rxtx.h  |   9 +-
+ .../mellanox/mlx5/core/en_accel/macsec.c      |  34 +-
+ .../mellanox/mlx5/core/en_accel/macsec.h      |   5 +-
+ .../mellanox/mlx5/core/en_accel/psp.c         | 319 ++++++++++++++++--
+ .../mellanox/mlx5/core/en_accel/psp.h         |   2 +
+ .../mellanox/mlx5/core/en_accel/psp_rxtx.c    |  21 +-
+ .../mellanox/mlx5/core/en_accel/psp_rxtx.h    |  44 ++-
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |   8 +-
+ .../net/ethernet/mellanox/mlx5/core/en_rx.c   |  32 +-
+ .../net/ethernet/mellanox/mlx5/core/en_tc.c   |  46 +--
+ .../net/ethernet/mellanox/mlx5/core/en_tc.h   |   7 +-
+ .../mellanox/mlx5/core/lib/macsec_fs.c        |  17 +-
+ .../mellanox/mlx5/core/lib/macsec_fs.h        |   9 +-
+ .../net/ethernet/mellanox/mlx5/core/main.c    |   3 +
+ include/linux/mlx5/driver.h                   |   7 +-
+ tools/testing/selftests/drivers/net/psp.py    | 129 ++++++-
+ .../selftests/drivers/net/psp_responder.c     |  87 +++--
+ 21 files changed, 763 insertions(+), 163 deletions(-)
+ create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/en_accel/flow_tag.h
+
+
+base-commit: 2bb54b49e9d522f54dc9c0fe10ba40fbc56041c8
+-- 
+2.44.0
+
