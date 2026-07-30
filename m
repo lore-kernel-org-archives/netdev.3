@@ -1,109 +1,134 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB743AAF4E;
-	Thu, 30 Jul 2026 18:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785435797; cv=none; b=TdOdKUC5Ts/WXN3vlrFbjqPjJWDIx15JBhqpafv4UNPeXfXH+Bu9jlDxGFRn3IuAJhz5MnfJLkn5OHQnHsneVJe27EO0U7JxyIWzVVdAb2q7nIB6plZ9PpGqbSWcHq+kBYQfBLaDykH/D+fzX//Nu4XzmnjZEz2MyDWogTwIZJQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785435797; c=relaxed/simple;
-	bh=1UlL8WY47iCqXXl/j5FVVyaCM6333yVG8avaeWvZhJA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cxdlRhf4zjb3dbv392bX2afqmh2tfqFKL3MFi52Do9l6iHCjcSJnC5F6qvmXkPWQVNjfiq3KfthRk9qXh2Xy/0tsAejSrS/sub2awI7W7PAS41nxEQHWxbqX7l6VIonDZYn0o1aheFFMtSwXaqneKid8PVZk/76HLgiZ6BSUrLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FCwBRcpN; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A886531D367
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 18:28:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785436091; cv=pass; b=mZIWt/E4TAmgk6wpprD9+E01T7pIP5L8QI94unRQbhNJxBpzrPNSnYNY9DBOuIUeqVMrJFInWqO6WfdZj5pispcb9EdQvSdo4G+nS/5LnqgZmxMnNAZr2gdTZUF2MHNa7iScw6QmYk6OvhHL3cfu3diWpulWlPUVCEBzfSD8TtY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785436091; c=relaxed/simple;
+	bh=JPbfYqZ4QGxJpVE3P4um8mvE7xf3kPfP7sPwLZuhxuY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M+IW6+I/J8pvn1chfqASpWguHVHpxP7KkKxCz04gJXyNVsxLKQ89OCoBSubMuh0KJG51JpEMLIlUfhD+MX96WmysxTuC92k6sUQ0+LZFV9+F5Mt5xU08zKXfb9/qBs+opPR0dx/ibmY1hflf95GT+pYgK5DJ0qnyJwk73gUq/Ac=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Tyg/8pKZ; arc=pass smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FCwBRcpN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=clxCsEQvLeknhEmgMllQnjE05y0bWUTRUV24sv3aoFQ=; b=FCwBRcpN38nBeb2SSWEKkJb3OA
-	pbxOPfbZwV9q49uus8tvXRjkXnphsorza6QWBNp373oWGXBVsnDZ9wSen5NyOaskINAlMQg3XSSms
-	sOyzZniousgOrlbHFMZWt2RM+EAfBqmUrjuit47DaSGLZyFRd2ct6I/EqJoQ2t/s4MiU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wpVPB-00F2wO-5N; Thu, 30 Jul 2026 20:22:53 +0200
-Date: Thu, 30 Jul 2026 20:22:53 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: "Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Alexander Couzens <lynxis@fe80.eu>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Landen Chao <Landen.Chao@mediatek.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Sean Wang <sean.wang@mediatek.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net 4/4] net: dsa: mt7530: serialize the regmap IRQ chip
- like every other user
-Message-ID: <dfaf8f23-e2c4-4f1c-a341-4d44c153e79d@lunn.ch>
-References: <cover.1785427248.git.daniel@makrotopia.org>
- <f2a52e4ada145fe6aa3fcbe5f923b125364b1a87.1785427248.git.daniel@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Tyg/8pKZ"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso179806a91.3
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 11:28:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785436090; cv=none;
+        d=google.com; s=arc-20260327;
+        b=IHOvHLibhCkU6ejVj0y6Ajr2Ss69mNwYyTEhl4R2QvHsimupZ2NDGk+OpRhNA4+PRV
+         SWtJrl6zC1tGMPgAEyWGm7m2ihtHZtAITbvizXaSUqyJAJsgt/mEY+i+aQ1rO73q3W+P
+         Z7Ie20AdQ0b2qxtpxhk2JXaGhULyV3iZCzIc357jqbamfOsafa0nabPM3Zpwq7ffs9sR
+         gM6ril59JHxLdWSgtkpiDQH5P1+D/k17OOVPZYYwOHsxEcQZgbcUtZwbjoBUtEXiVtN9
+         FhSBuZbBe5iY3p4i7qhUGp7uTQGMCeK/axEA/s5n3cRpk+fnmxkujzhBZgOiBGTm6tfl
+         U0cw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FPS0CmuTJ2HqpKxy0zCGVr+gG3iSDxGGRZ0iGF8CO7Q=;
+        fh=7DGnaOOvrbO7eg9VuHXZfgrZ+qVIHKWxkJbDSVSe7l8=;
+        b=GoIrVSA3Ovq30i5coXuAKHyiY09rgecLAXUcCYYPTPJTPXAJQ0GYsCEWKTsHWLZiGZ
+         zs/veBgXnf1/hAu/3ytL8Cb4bTp8xP5VVvPV77FWZAUhfcAc9dATzpvI1pCf9uDKlZCu
+         JCTfNWWy0f+O/7bCKv6rciCWBEm/7rc3JnZi4kKEfyGz7vegfiNfpDVEXB5IZkTEa7jm
+         t7kCEao5p2n+cshc444OJOCPDKcqYSSXgXfuoGyt28N95Ay0APboEihvAoBflyJ4l+Hl
+         eH4YDBwsXq+2wj2nFxWW4rGx0u6xkpaagiHzy0UrIFsuYnE68lY9JgKB2a0mhg7piMtw
+         QPOw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785436090; x=1786040890; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FPS0CmuTJ2HqpKxy0zCGVr+gG3iSDxGGRZ0iGF8CO7Q=;
+        b=Tyg/8pKZ79TpvPU8QLyyffMjIdMDD7lBDJTfOUQEZW+6qeaGIspdmG7OoXjUNjjHk0
+         0nZTdMFEy0psIXhtNqTQsKGPcroRDkknnX5KPsrSCRoRMrWSM2PxjSzew+Mc8pomZ5VD
+         4MV/6JJdR1OAOJkS6lui9CTQZ83W5743A5F7yZmwRXtGVNZiA4AaUKiYCdZDUC5dt//W
+         BPJnr57McE53/9PloT91QviKdDnHeB64ieBU2+5B2eMOUwHTmaGHskWxwX2rYnuYbTEy
+         JpQcG3jbPkC6s297jzvyCgw7/DsQhKjDzxQDjveLrhmvuFHyDDpxtbXWp6r0k8RfFC1R
+         +TWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785436090; x=1786040890;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FPS0CmuTJ2HqpKxy0zCGVr+gG3iSDxGGRZ0iGF8CO7Q=;
+        b=RVmEBvtluUsnwGNHmMqhaOEjK6tCXIMIlFrYHK0wsJOMbYyjsCUtAMfar+qM+GjCVb
+         C4ueJjVTG54znYJHqK47D2tHxJNy9nVqey0IF36ZoMT92knrsrpV2FhQgOChxCeBvtRE
+         X/oHjPBYTDCAd4+Gx5HBgzlVSab5IbxHm3hAXaGAtwCF1ANFcTDiFmRhsZ3PgMp7a4vo
+         3uAFWyjuRCvLJ1eZmY+N4ayHU0+wRHsxe2VtFJtEzTBTMPBOCpgSVH0iRGR/lUsskQ3k
+         hhDD+GjIDGG8j/DISpz1M0zK9yYFxCj996Ja7Wku/LD3HKkEHDZQJIdlnAocTPtAM/td
+         VjfA==
+X-Gm-Message-State: AOJu0Yxt6ICfrH2WmYBGRHLoOQzhosgWmGecirztKjyI4XlADIk4V2St
+	oiPQIkFqL8Ftn96sEzAGf09PUsvsbF05b6Nho53cdeX5yiLeHaYtv25fjpKO1g0U+etGGlgLlaN
+	Qk7jVrBXbkTFhC9KXMufN/vzf2sbC7uZXhvBzO0zlO2/x/nxEetCHePO+PdSiA13G
+X-Gm-Gg: AR+sD11wjEkL4nPhBcM9hyc7v2/gIKdgBz3nz0JGDUkLdpnBNmEXhM7/L4aDexBidqg
+	eoR6rqfcH/scyFgtG42ds/SVuDv/toeD+THffADEhwagXKRWwUdewjBrTic8nwIf1A8A+TLHBpD
+	yKT2tlrKmkxi11H2MxoIz5WuojrixsetAKwVp2hpDkADmzP/FsU4C4OIWvN6LTSF+G7NRp3aT3U
+	3RzBWkDwIl9CGY6PHoxTlZljFcpklVu05J5lT+1MUipRuEKPX+uN9LRzE2gUNbtRCkoAPDhqWIi
+	UFH2ae4KOhnZf06ETmwdnsi6XVnIaImXSdJ6zRXNRNjjEQjD7tl0lUT2yWelcfvIln6zHqAAcCX
+	5QZE86BhfrvvjdH7ZM80rojgcnOcgbN+44fHKU6zH0zZzRoWGiw2nRlXuJFswtkaO0HeH
+X-Received: by 2002:a17:90b:55cc:b0:383:f52b:d616 with SMTP id
+ 98e67ed59e1d1-38f9bde6a3amr3242176a91.10.1785436089446; Thu, 30 Jul 2026
+ 11:28:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f2a52e4ada145fe6aa3fcbe5f923b125364b1a87.1785427248.git.daniel@makrotopia.org>
+References: <20260730144652.5715-1-sebastian.chlad@suse.com>
+In-Reply-To: <20260730144652.5715-1-sebastian.chlad@suse.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Thu, 30 Jul 2026 20:27:54 +0200
+X-Gm-Features: AUfX_mw4oD85eQb0Y_pUAUD5vecY7ESwauFV7I3GKVvFZJdMjIhV1Kt762B6nY4
+Message-ID: <CAAVpQUCkKUa55gJTqObD_6RNLDVdXqaak7Wst8o20X4RDnSmQw@mail.gmail.com>
+Subject: Re: [PATCH net] selftests: af_unix: skip scm_inq tests when SO_INQ is unsupported
+To: Sebastian Chlad <sebastianchlad@gmail.com>
+Cc: netdev@vger.kernel.org, Sebastian Chlad <sebastian.chlad@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 30, 2026 at 05:03:47PM +0100, Daniel Golle wrote:
-> The switch register regmap is created with .disable_locking = true;
-> every other user in this driver calls mt7530_mutex_lock()/unlock()
-> around it, which takes priv->bus->mdio_lock, since the underlying
-> mt7530_regmap_read()/write() issue raw, unserialized bus->read()/
-> write() MDIO transactions.
-> 
-> mt7530_setup_irq() hands this same unlocked regmap straight to
-> devm_regmap_add_irq_chip_fwnode(), whose threaded IRQ handler then
-> calls regmap_read()/regmap_update_bits() on it without ever calling
-> mt7530_mutex_lock(). An interrupt firing while another thread is
-> mid-transaction on the same regmap (e.g. a paged register access, or
-> an indirect PHY access) can interleave with the IRQ handler's own
-> paged access and corrupt page selection on either side.
-> 
-> Use struct regmap_irq_chip's handle_mask_sync hook to call
-> mt7530_mutex_lock()/unlock() around the mask register write regmap-irq
-> issues whenever a consumer of one of the mapped sub-IRQs enables,
-> disables, requests or frees its line. This needs a per-device copy of
-> mt7530_regmap_irq_chip, since devm_regmap_add_irq_chip_fwnode() keeps
-> a pointer to it rather than copying it.
-> 
-> handle_pre_irq/handle_post_irq, which would additionally cover the
-> status read and ack write the threaded handler does directly, bracket
-> the whole handler including its handle_nested_irq() calls. Lockdep
-> caught this on hardware: those calls reach phy_interrupt() for the
-> per-port PHY IRQ lines mapped through this chip, which takes
-> phydev->lock, while phy_attach_direct() and this driver's own indirect
-> PHY access already establish the opposite order (phydev->lock, then
-> priv->bus->mdio_lock) elsewhere. Using them here would close that
-> cycle, so they are not used.
-> 
-> regmap_irq_sync_unlock() also has its own init_ack_masked path, used
-> by this chip, which unconditionally does its own regmap_write() to ack
-> currently-masked IRQs; that path has no per-driver hook. Together with
-> the threaded handler's own status read and ack write, these stay
-> unprotected -- a narrower, harder-to-hit gap than the recurring mask
-> sync above -- and will be closed once the switch regmap moves to
-> regmap's own locking in the driver-wide register access cleanup.
-> 
-> Fixes: 254f6b272e3b ("dsa: mt7530: Utilize REGMAP_IRQ for interrupt handling")
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+On Thu, Jul 30, 2026 at 4:46=E2=80=AFPM Sebastian Chlad
+<sebastianchlad@gmail.com> wrote:
+>
+> SO_INQ was added in df30285b3670 ("af_unix: Introduce SO_INQ."). On
+> older kernels this returns -ENOPROTOOPT for SOCK_STREAM too, which
+> scm_inq.basic/partial_read currently treat as a failure.
+>
+> Enabling SO_INQ here is only a precondition for the actual test: the
+> SCM_INQ/ioctl(SIOCINQ) consistency checks that follow. SKIP when the
+> precondition itself isn't met, rather than asserting it succeeds.
+>
+> Signed-off-by: Sebastian Chlad <sebastian.chlad@suse.com>
+> ---
+>  tools/testing/selftests/net/af_unix/scm_inq.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/tools/testing/selftests/net/af_unix/scm_inq.c b/tools/testin=
+g/selftests/net/af_unix/scm_inq.c
+> index 6268b5bf50be..2868cce61a9a 100644
+> --- a/tools/testing/selftests/net/af_unix/scm_inq.c
+> +++ b/tools/testing/selftests/net/af_unix/scm_inq.c
+> @@ -111,6 +111,9 @@ TEST_F(scm_inq, basic)
+>                 return;
+>         }
+>
+> +       if (err && errno =3D=3D ENOPROTOOPT)
+> +               SKIP(return, "SO_INQ is not supported");
+> +
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+It seems you missed this in the few lines above.
 
-    Andrew
+        if (variant->type !=3D SOCK_STREAM) {
+                ASSERT_EQ(-ENOPROTOOPT, -errno);
+                return;
+        }
+
+---
+pw-bot: cr
