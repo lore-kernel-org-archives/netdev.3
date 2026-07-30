@@ -1,153 +1,113 @@
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0375436A03A;
-	Thu, 30 Jul 2026 15:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6703A384223
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 15:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785426405; cv=none; b=uyHagFdgyM+TyLrHK/SsUtUqhDWE2rvpSzR/ewT+ohG5Y71oguUDaW8PJlmD9QbI/BcjQzLZtVZU9t8KUPjjTvRmKNkdBg9kee3068BNEbn0aNRBDAM1Ft+Bx7ycq7bqftATlQP0Lbz4SD/8A9nVaMBAruXIG6KVK4//XPKJDvo=
+	t=1785426789; cv=none; b=pOOyhNA83nSTz+sUPfzraL8WPx4Ebd5wv0nycCgCj7UTOj1YjB38NsD3wLvshNsqKkhlZdYBeUmLsLnRD0up67xcAdbfsiqYhEYFivOz6ff7l7fgeN/zYFJhHpneTTWM/CrLbf2bPcCPnwVx1x8qOZutYOcyJYH6IpssgX5uU0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785426405; c=relaxed/simple;
-	bh=ISje5j4TbGjdxujN3oabyB7XbWpeKMCZ3jviVqSv+4o=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=PshPlsj16xWf2BYd0rk3MsGlDWs3MVgtcAuFrU+xHz/BC17Ioijp6cYyU8m3Qj4Yy7+06AY3qFZ44NqbUXmipzQJCs5ahylFo1FLnn59163uINqdqoASFkQrNwmwh6Bf9vvcvbkvQcNFc0SDmXql0+nJsOrvMWlF0TAunGIZDMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=mTna9431; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jNSmIlC2; arc=none smtp.client-ip=103.168.172.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	s=arc-20240116; t=1785426789; c=relaxed/simple;
+	bh=VtdxPng0YYBiALhxGMo3ep9mcH+EbhIpTkEyJddDs4Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VsM2OGOEN8ZFxIqh2YVxKWp99NtSLoUY398/oe4dwVHikiBYo53GUBe4wRM13aiUVaYZGLKFw8nt+mElV/P9GEz7uZ2sD8knbx/0Q2XR9+u/GoBCZ8INTbEVEzGmkkjAMilWNav4mF2eeolSzYAzDYmQ/BhjNuBptWu9JOnTbBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DqeJc758; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="mTna9431";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jNSmIlC2"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 0203114000E2;
-	Thu, 30 Jul 2026 11:46:42 -0400 (EDT)
-Received: from phl-imap-03 ([10.202.2.93])
-  by phl-compute-10.internal (MEProxy); Thu, 30 Jul 2026 11:46:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1785426401;
-	 x=1785512801; bh=EPx7ldPkYz7H8YR2YG1jaSpG4h7nt4R9Js2IOlyWFU4=; b=
-	mTna9431xMo4VtjkAfZltSBp+5oXAXJPCqGsgRpGHsj/8P4g7SlqB6UGvomoziPT
-	m34gJnclz7ja7F6RkqbP0mgSZw3d3UKcIFv/+tPbT05hMJdxXgXSuPWC7In4ScDN
-	B8JaUe9XCU/3OwCWjcuzX3NcQcTv7vafSyNnvqDIjt/8EYUbVqJBWOpVa6k4lqxa
-	TTzeCCNblSIroV1nisaAITISSw9sapSad38WnN6B0Emg9dip0NVZxBFa/LqNNV9U
-	j3z0ok7fmqC4x/nPLjgd9JyPwZqlIT+LuChv7Bl633AO1HXlFYdLf1pj4vOBYkKX
-	KagX1fBbKuJZJjoDLvkpZg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785426401; x=
-	1785512801; bh=EPx7ldPkYz7H8YR2YG1jaSpG4h7nt4R9Js2IOlyWFU4=; b=j
-	NSmIlC244na/rrb1oChZF++kKJIi/wClt8gYDwjVDTYOhUNgjwlrELB4ATb4lpQj
-	httPFY7ILBqeyxcFxYoX0EVz1Q1vfMcrENlevv6FG97DRY9fGZ/ykYridCPQId+S
-	oUAdWRNGgrt3IAVO1oOSkI2Et4cVbexW3Wv0u9H0ARoozCQdjDQkc3hSLnOUobLs
-	6Uc9iOJ+OSWJw0FkBHOQ2Z5NRJjt6kULWqBDFpLnGilIQq4+t4aWolAnTnYQQ0aG
-	Ikvf97XHQYtxkIW+704Usw9AqeszSsaeQr6TBt6/oOxbVZ8US1jehnh88vwPijdU
-	/i+ytULDqqVPvJ5hGCPKg==
-X-ME-Sender: <xms:4XFravInZMRQr5xuLHmdE4PG9BW6nWfuZnEBgG__4mpl_ZdC_PjsBw>
-    <xme:4XFrat9BLyVzbCn0sxgD2meDFSrkmG7Sbr1OgCJ-9Zas-INogsQO6SokUa5z1ZMVs
-    -wfW6OdzEixWAUyX1xBb1lPdhJTj9FXxVd3maQZGjAtPGW4KU3CcqkF>
-X-ME-Proxy-Cause: dmFkZTE6sxYGvXKpNbu8pMlXILMywKeyYQodCqz1lDjkAHxGhoWnEg932jEC4+gwjO9mMR
-    m1RbyFA/Jng4kcjKUiU5wmvL15ov/9JL/+hzpFshdz9F8U2WeRUTy1bVeWS2zzJQ7UGZgK
-    8TA0SXNfjJ0RUrU5DOzep9N3NunXA5mG0XfbunqZDpO4alsawClsdLnI/EF7oAotSRE1BE
-    8ulow8RMHFLiEwIrW/3Eqj7yQNGkCCB3n8tvo0nrdcpagYePm2vALS2Q/XVeUiib9GnJDm
-    8svVV0rDQZTB9xkm+Hjpy9CwtpzdjG9iEicdjASDndU3GfiD3nUzoy6qv8KHHppzTVf4cM
-    x93/3yf9X4nv1pPuL0aXimlomCRTHcrKF6eK+4JLWjyHm4y+icTATk5hb7h7udbjYrH7UT
-    splq+5B9QCAhQLaSAn6Njt3jR7yxvTiOPragHR3o7thiTg1dkrutfX/5pmAcRi2hMfWVMB
-    nVs0GIJ2oomdZ2/elFHCR2gWeABAUqcWoI8dFiPhBjQgjchN5aj8pynaDyYqSJx2ZxY/XC
-    JgEZ0M+KPOUiqVOf7I/yIHLrmA4Sd55/0ljder9WbJl6YnZtPe6zLv6rCAixzXRsyFvFg3
-    7JwNspDEQcpssPDU69YOmpwi/vfgk8AhSAztorii2I389WgGTkhbBAK7RdBA
-X-ME-Proxy: <xmx:4XFrap0fPLs_vM0QfhVCBxAFGj37sOjlvzgPa3Djha4SUsYOtkiV3A>
-    <xmx:4XFramH7vuDDwX2RcvASAr7bEbWCtKS3fzyglFSIomy0bljOPtpnRg>
-    <xmx:4XFrakuXVraSieZJ_hYtORqDDL8e8lWTUbALvoyEJVbYMDm3uRsetg>
-    <xmx:4XFraprdYbQz_kon0P_EoxKQ36jys8zXxCXr1U8ukbsWf3KdUBN89g>
-    <xmx:4XFrarCEHa3jlj1Z9bN7AOgQq28UqYs6vXi0dB0QxP2YL7mgfAsoa9rt>
-Feedback-ID: i559e4809:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 31AC518E006C; Thu, 30 Jul 2026 11:46:41 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DqeJc758"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4955c545a94so1459525e9.3
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 08:53:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785426785; x=1786031585; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=llV+7vajoOu21zsyKEPa5kePWTMyBf+D//kaJbKHIs0=;
+        b=DqeJc758S+U2hT2jjoH5rBKUwsnqrpk7UePXBpHEY7bd2e/8pi4ixfwKKNasXYjWsW
+         pm95qM1nSFDECRCZWup4oNe/Kn4rb/7eT+8X/ArWfLoAgEO8VuIdhdVDwOOI8uO6XD/x
+         MKAd2EHAUCNiQsJW/ma0+ea4IiTsq8Sxv5Kb5S97aBch30KtJ8GTOoBkY2FAn2bHc7Ym
+         kXV6PdrOUcmZ7gFZID1vka1/1NL+1pdWRnsay0nbMgUa7ZqG7YpJSv8CYI1Hg12gh0Zx
+         yndrzsYurKO3gvN1fq/nCs9Su1ygqOhYvIeJOiSllNmu/uwB+VuaOGTTuP50tGixOPdj
+         xWGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785426785; x=1786031585;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=llV+7vajoOu21zsyKEPa5kePWTMyBf+D//kaJbKHIs0=;
+        b=chEPy67BcJ7axRAQNioPOFiCqH9HT4mF805xv57348RKtFSYWSkk9yeJianY6q2YpT
+         dFl6WRd5hDUL2xYMzJGTUpj1ywM8v57Heo035naywT9vcZCK8v0tKA2N3sZUEz4+rOxn
+         m7nB1l5FYlI10S4Tdj8H+CE+xc4NUiNddEWgURl8MxThCZq/Mz6bLDMTUQad/VJBjZVF
+         XXt6dEdrm5t9EaSpkaEpvfuoxEwNsWpqw9i8qsglXBL/qGxuPvUrkcRznAJeMHWz0RIm
+         2BwtUERRHAgixmbYCbpNYVTx6NkGfHwuXD3hQJopZk5UlznyWYimjc8/mwQLUuWqWFH7
+         PXBw==
+X-Gm-Message-State: AOJu0Yx5LomJRFcaxnrPYdzoXLNOQmzkMYMgc32xwz7ujix1x62ZzQEe
+	wNERuSdiH6QlT5qNYuM5miZ4v8khZ4KmD7HCwXec9eb6NhoW44LwaOXv
+X-Gm-Gg: AR+sD11B/BDtAgAzAHU8ghodHthnguWwnv/FwGKprYXqNfMAdNWYq1zC9z/L96Jp4h3
+	8VEhutl+zdyd30sits5Y8T9a9wmPEDKW7NuRl0gQeNdypGrtvJKzYgwaVzfoNIzFJAUF+uIZ4Qw
+	9mMukTducoTqKeDyqjsjZu0X4cE53G4z5Ru4FrCw7MeCN5jahjlbsxzBXyc5Lchp+qVU6kpbAem
+	bci4toYaKMVjGbzOuHX3E46eEtQYG1aWbKFw9IHEXre3VfbGyw7u6XyPQvhVibM1jswDPmZWGhr
+	rcfECub00+XtK6l5+IlDWiT49cOMVOCv+aAPHRug8LaW9BsZ2noBFfr86cMvnuqASnrjn7yXPdJ
+	oHVbzxMMV7uL72h37EuFPFmFzEF71Fvxnyx7tZ+ElMQ+rWjtfbQ+OPzjl1PmzqMJBulYwz5s723
+	rk0k5O285mHj+EclfNmc3oGJzHBEQqamEFjKMqjzgmaPhI+Ddi7PFGdcoOvFo8mLUkGimxZNBno
+	C/wEAzLRoyX0kQm2ScTRf9ghUVEp3enAAHKuZhGyG/4gjaqZdsNsYeMHP/zRXS5gdm2FfKboKRo
+	Xj2XGRzk+3o=
+X-Received: by 2002:a05:600c:3105:b0:495:4505:dad0 with SMTP id 5b1f17b1804b1-49804c442fbmr16212615e9.2.1785426785328;
+        Thu, 30 Jul 2026 08:53:05 -0700 (PDT)
+Received: from [192.168.2.69] (dynamic-078-051-177-165.78.51.pool.telefonica.de. [78.51.177.165])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-498011fec37sm67692795e9.9.2026.07.30.08.53.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Jul 2026 08:53:04 -0700 (PDT)
+Message-ID: <67cf57e7-37d8-4995-9a8b-b4a48c750c9d@gmail.com>
+Date: Thu, 30 Jul 2026 17:53:03 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 30 Jul 2026 18:46:07 +0300
-From: "Alice Mikityanska" <alice.kernel@fastmail.im>
-To: "Paolo Abeni" <pabeni@redhat.com>,
- "Alice Mikityanska" <alice@isovalent.com>,
- "Matthieu Baerts" <matttbe@kernel.org>
-Cc: "Jakub Kicinski" <kuba@kernel.org>, "Eric Dumazet" <edumazet@google.com>,
- "David S. Miller" <davem@davemloft.net>, "Simon Horman" <horms@kernel.org>,
- "Shuah Khan" <shuah@kernel.org>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Message-Id: <349c582c-73e3-468c-91cd-ad6cc3562700@app.fastmail.com>
-In-Reply-To: <606acc01-e22d-4e69-ad26-a8afff262b98@redhat.com>
-References: <20260723140241.132120-1-alice.kernel@fastmail.im>
- <47b580de-9d11-46c9-91c5-55eb13c00bc4@kernel.org>
- <CAD0BsJVqmQRz1yNKMMWH1MT+kgVEh=wY=LOTy_ObeTDCsrhHFg@mail.gmail.com>
- <606acc01-e22d-4e69-ad26-a8afff262b98@redhat.com>
-Subject: Re: [PATCH net-next] selftests: net: Add a missing config option
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/4] net: hsr: fix packet drops caused by GRO
+ superpackets
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, shuah@kernel.org,
+ kees@kernel.org, petr.wozniak@gmail.com, qingfang.deng@linux.dev,
+ fmaurer@redhat.com, luka.gejak@linux.dev, bigeasy@linutronix.de,
+ xiaoliang.yang_1@nxp.com, skhawaja@google.com, stable@vger.kernel.org
+References: <20260724161253.79-2-xiexinet@gmail.com>
+ <20260730144653.147367-1-horms@kernel.org>
+Content-Language: en-GB
+From: Xin Xie <xiexinet@gmail.com>
+In-Reply-To: <20260730144653.147367-1-horms@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 30, 2026, at 10:46, Paolo Abeni wrote:
-> On 7/29/26 10:44 PM, Alice Mikityanska wrote:
->> On Mon, 27 Jul 2026 at 12:09, Matthieu Baerts <matttbe@kernel.org> wrote:
->>> On 23/07/2026 16:02, Alice Mikityanska wrote:
->>>> From: Alice Mikityanska <alice@isovalent.com>
->>>>
->>>> Commit 5cb53743e1ff ("selftests: net: Add a test for BIG TCP in UDP
->>>> tunnels") used iptables match comment, which was missed from the CI
->>>> kernel config. Add the missing config option.
->>>
->>> It helps, the CI can now run this test!
->>>
->>> Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
->>>
->>>
->>> But I think another follow-up patch is required, because this test is
->>> flaky when using a debug kernel config:
->>>
->>>
->>> https://netdev.bots.linux.dev/flakes.html?min-flip=0&tn-needle=big-tcp-tunnels-sh
->>>
->>> Maybe because wait_local_port_listen() is required after having called
->>> netserver?
->> 
->> The issue is hard to reproduce on my machine, but I could reproduce it
->> in ~12 hours of non-stop testing in a loop. It reproduces even with
->> wait_local_port_listen, so it must be something else. The log above
->> (and my repro attempts) shows that it fails in a non-first test, but
->> netserver starts only once, before the first test. If the failure was
->> due to netserver not being ready, it would fail in the first test.
->> I'll keep investigating.
-> I *think* this kind of flakes are sort of expected for 'performance'
-> related tests when running on debug kernel: the environment can be
-> painful slow, and few failed iterations I saw has csum offload disabled
-> - even lower expected tput.
->
-> AFAICS the target packet number is independent from KSFT_MACHINE_SLOW
-> and the actual offload setting. Possibly you can tune the target value a
-> bit WRT the mentioned variables or skip entirely pkts number validation
-> in the slowest permutation (note that the self-test will still have some
-> value due to code coverage with sanitizers enabled).
+On 30/07/2026 16:46, Simon Horman wrote:
+> [Severity: High]
+> Does this one-time modification of wanted_features prevent userspace from
+> subsequently re-enabling GRO?
+> 
+> Since NETIF_F_GRO and NETIF_F_GRO_HW are not included in the
+> NETIF_F_UPPER_DISABLES macro definition in include/linux/netdev_features.h,
+> would netdev_sync_upper_features() and netdev_sync_lower_features() fail
+> to enforce the disabled state on lower devices during features recalculation?
+> 
+> Could an administrator run ethtool -K eth0 gro on (or add a new physical
+> device to an intermediate upper device already enslaved to HSR) to bypass
+> this restriction and cause the HSR packet drops to resurface?
+The review is correct that dev_disable_gro() is setup-time enforcement, not an immutable policy. Clearing wanted_features prevents an ordinary feature recalculation from restoring GRO, but a privileged administrator can explicitly request it again with ethtool. Adding a new lower device below an already enslaved stacked device can similarly escape the recursive setup-time walk.
 
-Hmm, the above makes sense for the failures like this:
+I did not add GRO to NETIF_F_UPPER_DISABLES because that is a generic upper/lower feature rule. It would make an upper device which does not advertise GRO disable GRO on all of its lowers, well beyond HSR/PRP. That seems too broad for this fix.
 
-https://netdev-ctrl.bots.linux.dev/logview.html?f=/logs/vmksft/net-dbg/results/754376/28-big-tcp-tunnels-sh/stdout
+Patch 3 is the second line of defense. Even if GRO is explicitly re-enabled, no GSO super-packet is forwarded as one HSR/PRP frame. Plain Ethernet GSO packets from the master or interlink are unfolded and each segment receives its own tag and sequence number. GSO packets from an HSR/PRP LAN slave are rejected because software cannot reconstruct their individual HSR tags or PRP RCTs. Patch 2 makes the segmentation path practical by moving the expensive work outside seqnr_lock; it is not itself an additional GRO guard.
 
-971 is slightly below than 1000 (even though it's typically 1600-1700 on
-the CI runners, in this configuration). Tuning the thresholds can help.
+The two layers therefore have different roles: patch 1 establishes the safe default when a port is enslaved, while patch 3 guarantees fail-safe handling if a super-packet nevertheless reaches the forward path. An administrator override can still cause packet loss on LAN ingress, but it cannot make an aggregate bypass the per-frame forwarding invariant.
 
-But I also see failures like this:
-
-https://netdev-ctrl.bots.linux.dev/logview.html?f=/logs/vmksft/net-dbg/results/751124/21-big-tcp-tunnels-sh/stdout
-
-It's a complete zero, so lowering the threshold won't help here. I could
-reproduce it on my machine, although it requires hours of retries. I'd
-like to capture the tcpdump and see what actually happens in this case.
-
-> /p
+ 
+--
+Xin
