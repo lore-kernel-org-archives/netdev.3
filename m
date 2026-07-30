@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DDC476CC7;
-	Thu, 30 Jul 2026 23:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2461D5CFE;
+	Thu, 30 Jul 2026 23:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785453643; cv=none; b=PhyL6k/asP9A5ULRRpOp/Ie4P28V6hpyLhGUGKaEeEI0sfrFwF/+83lKoUKQKB65F2TgMUQ7IDntEXc9A+7DeWNgnz3+zNPJbtaGvkBQQ79xcJ/y0eAVQUf2QZLAPVKqG+4j58Qja/+DJHD9z+Bg9kIywJFKwyo/jmYkN87owI0=
+	t=1785453654; cv=none; b=lf8K35id8IKeX9irhrJDQenNfxjAgRhQF0f1F45dj8HtxO2oJoW+2knf6V+XrHltRNJClVHqmcE+aXw+OairW9JyoU8CRBApV2qogdxdmzGKJtrT3pF67eP9UDZ2ntbMSJj47SXia8ppY9ZXrz2jDkTcNosMynq0lVAJyhKplLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785453643; c=relaxed/simple;
-	bh=5pYHdW/vBRFXy0w1l4Y1ylAPmxkZ0eI2vT7NgL5li0g=;
+	s=arc-20240116; t=1785453654; c=relaxed/simple;
+	bh=8x8lEXNu1ys7aGu2cbi5tQBP2+SOUTvkgvDSLAVE4PQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=vCF+addUX4wI8aywgdjjpAe6fTFbh8J5Ox8FR+I7p9fH6bB68cST4iTYq5chgo6bDYdf7Qbax/BfcSYK5PDPYGx3w6Y6ACP1CqfNEgnPJUswpVeyPwVIZY0UE8X80gKMT1YM1tmtuJ3AeyHu39O3xQo+ruoNI4sKSv3rTNlEQVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ec7xmj7r; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=m9ueAsC1h1inZbUgGuUYbO+F2A/aAWrLJvmxkix8TvrLUsKVl9rKZEpH4pGOoyQCu8jPOIJzyJhL5VOMF8a0Un6xNviLScSMqAy2Es32A2yC++WWrYZItErQyvFkty8Msk/456U8p4wYf+2sYaIGKwc6/DzRrKgeyY3YhUBzeyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C8oVTNyf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ec7xmj7r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098781F000E9;
-	Thu, 30 Jul 2026 23:20:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C8oVTNyf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0BA1F000E9;
+	Thu, 30 Jul 2026 23:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785453642;
-	bh=d2TacTZDef2/EL0R0VBY9nN8vUB2OwHHUhV0sLOuzHo=;
+	s=k20260515; t=1785453653;
+	bh=Hal3ZHUEy1yTMiKKkMegpPtw7RsTkkGM+Qi9/69gGIo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Ec7xmj7r53GG2rZhsfwmXRZuVrmU/2es20jGMbhDCDU7B5nxQfRQuV1Qcv30h2YiJ
-	 RaebAonsEzy6AJKi98y0gE1upM8JInGjOn2B8TQK+F9QI7t0jvKMrYNqRJd69bgC6e
-	 5DVhm/KDyNita/Ni0IWrtXE37LrvF1vHBwbuippeGZwMv8i9OObQQ5JNuJD8rv8dsD
-	 ideremtm0Q11CGunDzrxPXolEEhwNQnIDJvlRz92r7SaKh8G/YUG42RlQlqqyg/W9F
-	 KhzvswEEkuBSo0pa46j3c3Ys5sadPOJBFiH2QgiT3tlmq/oXuzm/0UcgDES4HCJLod
-	 UF9VwrQCOHg0w==
+	b=C8oVTNyfJJUlA/X2Lo8EDVWJTzchOWGJwdTHTldhPHp1tv/2j7uiCdO8Ufx1tI9Q/
+	 RDOOGJCGlwSpC/vAzYmDs0rYg8lLiEd/nUtmz425bJyTO+1JNp9/ydsP76dxo1RAo/
+	 vuRBdkuPQD1d95b5BheAgVvIpukl3j/W22lZJGQsfv7wP42hYRuOkbId/Vjn/zyZ6V
+	 hs1vnHD+fm2Uk10UXneIw8nsbpoPqJ3M7Xb5tZes0W1ul2N62a9jEMpz4CHzmHuvYZ
+	 TlOo6cHcUGUEjBF8+cKh3VHBvGZy9qzlqAFgk1vx4WO5EeTX0FNSWrFhG8jZs8xxMk
+	 LO6Gfps1gVF5Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93CEA392445F;
-	Thu, 30 Jul 2026 23:20:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A75392445F;
+	Thu, 30 Jul 2026 23:20:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] Revert "net: thunderbolt: Enable end-to-end flow
- control also in transmit"
+Subject: Re: [PATCH net-next v5 0/3] net: nexthop: per-nexthop UDP dst port
+ for
+ fdb (VXLAN) nexthops
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178545360506.33420.2965947923440784665.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Jul 2026 23:20:05 +0000
-References: <20260727123002.25225-1-fy15309206903@gmail.com>
-In-Reply-To: <20260727123002.25225-1-fy15309206903@gmail.com>
-To: Fan Ye <fy15309206903@gmail.com>
-Cc: westeri@kernel.org, YehezkelShB@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- zhangjianrong5@huawei.com
+ <178545361613.33420.12124174635799172963.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Jul 2026 23:20:16 +0000
+References: <20260724-b4-vxlan-fdb-port-v5-0-cd1c6aeee058@gmail.com>
+In-Reply-To: <20260724-b4-vxlan-fdb-port-v5-0-cd1c6aeee058@gmail.com>
+To: Jack Ma <jack4it@gmail.com>
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ shuah@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 27 Jul 2026 12:29:48 +0000 you wrote:
-> This reverts commit a8065af3346ebd7c76ebc113451fb3ba94cf7769.
+On Fri, 24 Jul 2026 00:26:15 +0000 you wrote:
+> FDB nexthops let a VXLAN fdb entry point at a group of remote VTEPs, with the
+> kernel flow-hashing across the group (commit 1274e1cc4226 ("vxlan: ecmp support
+> for mac fdb entries")).  Each leg carries its own remote IP, but the UDP
+> destination port is always taken from the VXLAN device (vxlan->cfg.dst_port)
+> and cannot be set per leg.
 > 
-> Per the USB4 spec, a Transmit Descriptor Ring with E2E flow control
-> disabled does not require any credits to be available before the Host
-> Interface Adapter Layer transmits a tunneled packet from it. Once E2E is
-> enabled on that ring the controller must first obtain end-to-end
-> credits.
+> This series adds an optional per-nexthop UDP destination port for fdb nexthops,
+> so a group's legs can share a remote IP and differ only in UDP port.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] Revert "net: thunderbolt: Enable end-to-end flow control also in transmit"
-    https://git.kernel.org/netdev/net/c/1881f2efbf7f
+  - [net-next,v5,1/3] net: nexthop: add NHA_DST_PORT for fdb nexthops
+    https://git.kernel.org/netdev/net-next/c/53531e6a644a
+  - [net-next,v5,2/3] vxlan: honor per-nexthop fdb destination port
+    https://git.kernel.org/netdev/net-next/c/951085f82873
+  - [net-next,v5,3/3] selftests: net: add coverage for fdb nexthop dst_port
+    https://git.kernel.org/netdev/net-next/c/992965451db7
 
 You are awesome, thank you!
 -- 
