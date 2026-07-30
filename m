@@ -1,329 +1,110 @@
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474853F6614;
-	Thu, 30 Jul 2026 09:21:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E67406270
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 09:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785403289; cv=none; b=U07Hpsud9YyTDBb7724CXXKJNLOxvXzCKE1wmgsA0F8Cg4k+IQuWY+Nq5EbXEARWssuBnKoVsj3BG8kMJI9im9i45uz3STmRZKb98IYg2WK/NC43+MxN3YUxdGKRzyqkanmhgyh0oxSBIptei4bWw8xNpIyGKo4+mGlGzXU1EGg=
+	t=1785403345; cv=none; b=ig7nOPavqanPE/QYdR8Vwz1fjoUvyjL6PlIJ/h788uj4liksuy4hKGAZrhToSgOx1iQYDSIub3j/ryUzbao2vMm9+hVT9/5AkX7doNLLkqkGzVWmD/HODoU8w/g//0a6YT6QnqlsRGSqUFJMtO6CgS7Zwtu8OAWF356mUh0TdZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785403289; c=relaxed/simple;
-	bh=UInsaWDbdrSwoTEJsdBfpC1yKMLrZ9UoyNlFTTS47ds=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=m8V+RIX7kf/o8BeWuyT1Ix3ZEvjsmg0GySnRjSbHyPOjgpauu+uVreIo9+6O5/+CU2pwhD4zodmpkf20oFSB//P5hAUi06KxhyUDJmrbPf4CNfyiP2k30RRzbC9mpMeNpHdgEqh10efXkwlmjHZciBlNq32wYmPPMRxfXVQt9oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=WVl1tY8V; arc=none smtp.client-ip=113.46.200.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1785403345; c=relaxed/simple;
+	bh=+ZPUS+pWBIyobZk02S5SG+Jfpd9YvNmk6RAjNBVIEik=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=Jcftg15ZkxqNf7FSDGvlhkOpDDmaUEHxSplJ4wMBY93ZUXp34lxnLfw76c0mH775nzPweKTVM3TRf+RjuPEUhTY0if+JFkvhoiPYR3+pT3dl53GiFqPQZGpspyqrvKzu9NnTUmugWmCdmIQ4Ho7CPjXfYMw1Srew7JkKw7ODNsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X/K24zff; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="WVl1tY8V"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=nepUfLoqF6bqbQUSMjrQkvmDDqAdoktlr7zcVmRfsjs=;
-	b=WVl1tY8V7WtkzTKWCcmIrvPZ+1ZnjH5TLH9CqnZ6sjm2Vo6nSlX12R5SMJUnsmJjqGsbqZs1N
-	Ek8xMDYeBaPzhr9jhgyVUW6rU5/N2PbBVrG6VhDWpO5kJijdVedo5xtfxnNP85QeLGBTTRlqWX0
-	kfjy9ogqSK89D2MufoA6/Vc=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4h9k3Q4bzhzKmTp;
-	Thu, 30 Jul 2026 17:11:46 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id BCCE8402AB;
-	Thu, 30 Jul 2026 17:21:16 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Thu, 30 Jul 2026 17:21:15 +0800
-Message-ID: <0d98a4d1-fad2-4539-b40d-58ea58cacff7@huawei.com>
-Date: Thu, 30 Jul 2026 17:21:15 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X/K24zff"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7ff05e5d009so24227367b3.1
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 02:22:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785403343; x=1786008143; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=U/uGz8/en7PP3yUR7bLkaXn8KlTTvQzld3gW8RE4GTA=;
+        b=X/K24zff6w60/fMyWEnDA1lOOZrMM42en6VUTpBPgQcE/0zDlv2XlL/u+4PCRbxoGL
+         /N3U5K93b9iQ7Brn+X3D7s31AZUb/FS+1uBwMRH+8wJK9ozE3+r8dM0kqgkJFwfI5b4u
+         amaoGBW3Wc6GG4DgHs1rW7FIFsAAMOjZUgIDVaLxJOqjojeHNoKhUqm/CrxIDA+udrhG
+         M0wkNDSz73gc+gFjm/qIBAF9CAnFiJ1V5/B5cGuz4pIhv90SRzN3m8m5xaFBMb7XRiZr
+         UDrMZBL5eFYfkeEu9f1ckapapaN5FA3DVfYiL0GeZjt0mWr7qSDCLKXqWoA2Qn5/kTl7
+         f2jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785403343; x=1786008143;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=U/uGz8/en7PP3yUR7bLkaXn8KlTTvQzld3gW8RE4GTA=;
+        b=CpLUtUHTEnXKPixdA/ef15yEkFDYCmM3dEgwO2aXYUeqNd43kIYpyxqjdjio4n8Xd5
+         91cR4KsUcQiqGakZ13vuYS5VlZpVRk8gl6wFwVij9Ys8xptRhS+MRQI7PEMQpfyiOaJX
+         uxyn4CYVgJaGiy/AvOurOGbOazKQpB04zasNQ6Y8lWoFPMWSsuiYO/MpzmEPAiHR8EwM
+         UZ/c8ITDhDEBuOji0J8jqYw41ID8eWbJrpzvEC8rbV92nRMDM9RWEPrAk5YzHfiaAzRo
+         JhhW38pRbdkSJQKL4ZERB7rM9hMf0JXBJhdycX6pCtrTLoWPYiVIhzr2d+sKxLKU0Ooi
+         DgRA==
+X-Forwarded-Encrypted: i=1; AHgh+RoIxrGIseM88OIK2EjaDDLA2WkO1b1U2RTFyha+KvCwWfpBg4zAkh/pNrVqUv99HTh0rhLaDII=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIJqSCaeE2fBosJtk36zhL9Z9KF6YmLMHDNpddIOHsdIeS65yi
+	r4m4OmGyF+eVy2JyuUtTd+I7NVOx8Jql5yUDPfJFvYD9h2aW2L1qoMRL
+X-Gm-Gg: AR+sD11Aw//GLtZSuswHHYI+VIkqL0/PFpXiiQQhyofCZ08+84G+TOVIaSVapJ9PBvT
+	EuU9notKnuJuzb3tfcNPkFnA726HvZwrlMQyD9x5smFYaGzdhSX7VP8Oa6KNRX8I93kQtRQedwx
+	rHatKxA3hkF0zJntZ19BiAav02YOC9kmgZYo0Uacu/nZ6x2B8LQNOJZ+ifvNc2HNdCXxe/JPnBC
+	+EO4qVoxMlQ4HzWIvVe9bJW8Kzjk5SnQvqR6M7hmnAYEr5U3/PCV99GQe9YcySjRaHlBBMdi4vd
+	5/M0JnaZI9JP5YHz1EdeO0+lsDpHnw0UQL3HynP0SYViS7w2ZIjsQI7kE78PSsz9kgcxQ3qevm3
+	HcAuzN1xpmqov3WOWtwXf5zKv+mSf5IjIPN/FYgmKRSqwR6RAYE6pMFG3ZliyOvy69oXA0ZbbOP
+	VKbAz4nVIANRlpNpcEkOWRV+l3Wp7XzaXE9ufJ2lINNKKbGNZ2VVUFwqrTAMYVdznmMC+zHQFe2
+	5v2H+ZlWIGSBGPtAEZ9qlzN5tQnUrx2Rajk
+X-Received: by 2002:a05:690c:6d10:b0:81f:3dab:372f with SMTP id 00721157ae682-81fb88c616fmr11936857b3.12.1785403342691;
+        Thu, 30 Jul 2026 02:22:22 -0700 (PDT)
+Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fb8acb5f0sm6856507b3.38.2026.07.30.02.22.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 02:22:21 -0700 (PDT)
+Date: Thu, 30 Jul 2026 05:22:21 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Qihang <q.h.hack.winter@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, 
+ daniel.zahka@gmail.com, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ stable@vger.kernel.org, 
+ Qihang <q.h.hack.winter@gmail.com>
+Message-ID: <willemdebruijn.kernel.f39af6152c60@gmail.com>
+In-Reply-To: <20260730082925.93759-3-q.h.hack.winter@gmail.com>
+References: <20260730082925.93759-1-q.h.hack.winter@gmail.com>
+ <20260730082925.93759-3-q.h.hack.winter@gmail.com>
+Subject: Re: [PATCH net v5 2/2] packet: use consistent hard_header_len in
+ TX_RING send path
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
-	<horms@kernel.org>, <hawk@kernel.org>, <ilias.apalodimas@linaro.org>,
-	<toke@redhat.com>, <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <yangshuaisong@h-partners.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 net] net: page_pool: fix UAF in
- __page_pool_release_netmem_dma on xa_cmpxchg race
-To: Mina Almasry <almasrymina@google.com>
-References: <20260729110249.2824835-1-shaojijie@huawei.com>
- <CAHS8izO+kiugW_qN-US+S88ypDnaEePP+-78vnVOfBtb8P0AKg@mail.gmail.com>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <CAHS8izO+kiugW_qN-US+S88ypDnaEePP+-78vnVOfBtb8P0AKg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemo500018.china.huawei.com (7.202.195.199)
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
+Qihang wrote:
+> tpacket_snd() reads dev->hard_header_len independently for skb
+> allocation and header construction in tpacket_fill_skb(). Concurrent
+> netdevice reconfiguration can therefore make the reserved headroom
+> smaller than the amount later pushed, or make copylen - hard_header_len
+> negative.
+> 
+> Snapshot hard_header_len once before processing ring frames and use it
+> for the frame limit, headroom allocation, copy length, and skb
+> construction. Pass the snapshot to tpacket_fill_skb().
+> 
+> The separate SOCK_DGRAM consistency problem between hard_header_len and
+> header_ops->create is not addressed here.
+> 
+> Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
 
-on 2026/7/30 6:35, Mina Almasry wrote:
-> On Wed, Jul 29, 2026 at 4:03 AM Jijie Shao <shaojijie@huawei.com> wrote:
->> page_pool_scrub() iterates pool->dma_mapped via xa_for_each() with no
->> page ref held. __page_pool_release_netmem_dma() currently reads and
->> writes netmem fields (dma_addr, DMA index bits in pp_magic) after
->> xa_cmpxchg() returns. The unref path calls put_page() unconditionally
->> regardless of the cmpxchg outcome; when it loses the cmpxchg, it still
->> frees the page before the scrub winner finishes these netmem accesses,
->> so scrub touches a freed page -- a Use-After-Free.
->>
->> Fix this by:
->>
->> 1. Cache dma_addr to a local variable before xa_cmpxchg() in
->>     __page_pool_release_netmem_dma(), so the scrub winner uses the
->>     cached address for dma_unmap and never touches netmem fields after
->>     the cmpxchg.
->>
->> 2. Rename page_pool_release_dma_index() to page_pool_remove_dma_mapping()
->>     and strip it down to a pure cmpxchg wrapper; it no longer clears DMA
->>     index bits.
->>
->> 3. Move dma_addr and DMA index cleanup to page_pool_return_netmem(),
->>     which holds a page ref and can safely write netmem fields regardless
->>     of the cmpxchg outcome.
->>
->> The scrub path (no ref) only does cmpxchg + dma_unmap on the cached
->> address; the unref path (holds ref) clears dma_addr and DMA index bits
->> unconditionally before put_page().
->>
->> Suggested-by: Mina Almasry <almasrymina@google.com>
-> Thanks for trying to give credit but I didn't do much but feed your
-> earlier iteration to gemini. I don't mind either way but you can
-> remove.
->
->> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when destroying the pool")
->> Assisted-by: OhMyOpenCode:GLM-5.2
-> I fed this to gemini and I got good feedback, but it needs improved
-> human readability.
->
->> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
->> ---
->> Changes in v3:
->> - Fix unlikely() to likely() for PP_DMA_INDEX_BITS to match
->>    file convention.
->> Link to v2: https://lore.kernel.org/r/20260727132612.3277927-1-shaojijie@huawei.com
->>
->> Changes in v2:
->> - Redesign the fix per Mina's review: v1's unconditional
->>    netmem_set_dma_index() introduced a UAF when the scrub path
->>    (no page ref) writes to a page freed by the unref path.
->> - Cache dma_addr before xa_cmpxchg; move dma_addr/DMA index
->>    cleanup to page_pool_return_netmem() which holds a page ref.
->> - Rename page_pool_release_dma_index() to
->>    page_pool_remove_dma_mapping() to reflect its new role as a
->>    pure cmpxchg wrapper.
->> - Link to v1: https://lore.kernel.org/r/20260724092135.414699-1-shaojijie@huawei.com
->> ---
->>   net/core/page_pool.c | 33 +++++++++++++++++++--------------
->>   1 file changed, 19 insertions(+), 14 deletions(-)
->>
->> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
->> index 21dc4a9c8714..b7f5cdb6c1c4 100644
->> --- a/net/core/page_pool.c
->> +++ b/net/core/page_pool.c
->> @@ -500,8 +500,8 @@ static int page_pool_register_dma_index(struct page_pool *pool,
->>          return err;
->>   }
->>
->> -static int page_pool_release_dma_index(struct page_pool *pool,
->> -                                      netmem_ref netmem)
->> +static int page_pool_remove_dma_mapping(struct page_pool *pool,
->> +                                       netmem_ref netmem)
-> Not a readable name. IDK what 'removing dma mapping' means. It's not
-> doing an unmap in the current iteration. Pick a new human-readable
-> name based on the changes below:
->
->>   {
->>          struct page *old, *page = netmem_to_page(netmem);
->>          unsigned long id;
->> @@ -517,12 +517,7 @@ static int page_pool_release_dma_index(struct page_pool *pool,
->>                  old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
->>          else
->>                  old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
->> -       if (old != page)
->> -               return -1;
->> -
->> -       netmem_set_dma_index(netmem, 0);
->> -
->> -       return 0;
->> +       return (old == page) ? 0 : -1;
-> This function, AFAICT, has only 1 call site where this return value
-> decides whether to dma_unmap_page_attr. That's not easy for a human to
-> follow. Just put the dma_unmap_page_attrs in this function.
->
-> I asked gemini to apply my feedback and it gave me this (untested)
-> patch. Consider reviewing this one and putting it through your
-> testing/etc. Please review the comments around the code. Some look
-> outdated? It's untested:
->
-> ```
-> net/core/page_pool.c
-> index 21dc4a9c8714d..628854b56315b 100644
-> --- a/net/core/page_pool.c
-> +++ b/net/core/page_pool.c
-> @@ -500,29 +500,34 @@ static int page_pool_register_dma_index(struct
-> page_pool *pool,
->          return err;
->   }
->
-> -static int page_pool_release_dma_index(struct page_pool *pool,
-> +static void page_pool_release_dma_index(struct page_pool *pool,
->                                         netmem_ref netmem)
->   {
->          struct page *old, *page = netmem_to_page(netmem);
->          unsigned long id;
-> +       dma_addr_t dma;
-> +
-> +       dma = page_pool_get_dma_addr_netmem(netmem);
->
->          if (unlikely(!PP_DMA_INDEX_BITS))
-> -               return 0;
-> +               goto unmap;
->
->          id = netmem_get_dma_index(netmem);
->          if (!id)
-> -               return -1;
-> +               return;
->
->          if (in_softirq())
->                  old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
->          else
->                  old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
-> -       if (old != page)
-> -               return -1;
->
-> -       netmem_set_dma_index(netmem, 0);
-> +       if (old != page)
-> +               return;
->
-> -       return 0;
-> +unmap:
-> +       dma_unmap_page_attrs(pool->p.dev, dma,
-> +                            PAGE_SIZE << pool->p.order, pool->p.dma_dir,
-> +                            DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
->   }
->
->   static bool page_pool_dma_map(struct page_pool *pool, netmem_ref
-> netmem, gfp_t gfp)
-> @@ -728,24 +733,13 @@ void page_pool_clear_pp_info(netmem_ref netmem)
->   static __always_inline void __page_pool_release_netmem_dma(struct
-> page_pool *pool,
->                                                             netmem_ref netmem)
->   {
-> -       dma_addr_t dma;
-> -
->          if (!pool->dma_map)
->                  /* Always account for inflight pages, even if we didn't
->                   * map them
->                   */
->                  return;
->
-> -       if (page_pool_release_dma_index(pool, netmem))
-> -               return;
-> -
-> -       dma = page_pool_get_dma_addr_netmem(netmem);
-> -
-> -       /* When page is unmapped, it cannot be returned to our pool */
-> -       dma_unmap_page_attrs(pool->p.dev, dma,
-> -                            PAGE_SIZE << pool->p.order, pool->p.dma_dir,
-> -                            DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
-> -       page_pool_set_dma_addr_netmem(netmem, 0);
-> +       page_pool_release_dma_index(pool, netmem);
->   }
->
->   /* Disconnects a page (from a page_pool).  API users can have a need
-> @@ -759,10 +753,17 @@ static void page_pool_return_netmem(struct
-> page_pool *pool, netmem_ref netmem)
->          bool put;
->
->          put = true;
-> -       if (static_branch_unlikely(&page_pool_mem_providers) && pool->mp_ops)
-> +       if (static_branch_unlikely(&page_pool_mem_providers) && pool->mp_ops) {
->                  put = pool->mp_ops->release_netmem(pool, netmem);
-> -       else
-> +       } else {
->                  __page_pool_release_netmem_dma(pool, netmem);
-> +               /* clear dma_addr/DMA index; safe because we hold a ref */
-> +               if (pool->dma_map) {
-> +                       page_pool_set_dma_addr_netmem(netmem, 0);
-> +                       if (likely(PP_DMA_INDEX_BITS))
-> +                               netmem_set_dma_index(netmem, 0);
-> +               }
-> +       }
->
->          /* This may be the last page returned, releasing the pool, so
->           * it is not safe to reference pool afterwards.
-> ```
->
-
-Hi Mina,
-
-Thanks for the review! I restructured the fix as follows — is this
-roughly what you had in mind?
-
-Split into two functions. __page_pool_unmap_netmem_dma() does cmpxchg +
-dma_unmap only, with dma_unmap inlined via a goto label. It caches
-dma_addr before the cmpxchg and never touches netmem fields after, so
-it is safe for the scrub path which holds no page ref:
-
-static __always_inline void __page_pool_unmap_netmem_dma(struct page_pool *pool,
-							 netmem_ref netmem)
-{
-	struct page *old, *page = netmem_to_page(netmem);
-	unsigned long id;
-	dma_addr_t dma;
-
-	if (!pool->dma_map)
-		return;
-
-	dma = page_pool_get_dma_addr_netmem(netmem);
-
-	if (unlikely(!PP_DMA_INDEX_BITS))
-		goto unmap;
-
-	id = netmem_get_dma_index(netmem);
-	if (!id)
-		return;
-
-	if (in_softirq())
-		old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
-	else
-		old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
-	if (old != page)
-		return;
-
-unmap:
-	dma_unmap_page_attrs(pool->p.dev, dma,
-			     PAGE_SIZE << pool->p.order, pool->p.dma_dir,
-			     DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
-}
-
-__page_pool_release_netmem_dma() is now a thin wrapper that calls the
-above and clears dma_addr/DMA index bits — safe because the caller
-holds a page ref:
-
-static __always_inline void __page_pool_release_netmem_dma(struct page_pool *pool,
-							   netmem_ref netmem)
-{
-	if (!pool->dma_map)
-		return;
-
-	__page_pool_unmap_netmem_dma(pool, netmem);
-	page_pool_set_dma_addr_netmem(netmem, 0);
-	if (likely(PP_DMA_INDEX_BITS))
-		netmem_set_dma_index(netmem, 0);
-}
-
-Scrub path calls __page_pool_unmap_netmem_dma() directly:
-
-	xa_for_each(&pool->dma_mapped, id, ptr)
-		__page_pool_unmap_netmem_dma(pool, page_to_netmem((struct page *)ptr));
-
-
-
-
-
+Reviewed-by: Willem de Bruijn <willemb@google.com>
