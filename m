@@ -1,142 +1,157 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012006.outbound.protection.outlook.com [40.107.209.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB49388E7A;
-	Thu, 30 Jul 2026 07:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785398202; cv=none; b=qrYE/ckLUmyQo3LxtfloD/lnKPDBnCT6zg7zAHVq0IT0LY7+Rsiivxk9WeTih1e8eIrOMmTU2F+f6FIaNvD7SgSeVRah7VSb+J5qaeq8gcQBDgYcXXjSsDFMl32FclqgaXf6rkWvu8hLIPAssIK2yZRrzFO3CtcAbHB3BTtDoLI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785398202; c=relaxed/simple;
-	bh=lfCd83wlnK2yYwxnTrJj6bXjEBCsKfR1al4IeWNcH28=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l75TWbCB75AWeww0nPKIOJnvEbMHwbowZ4gzlE8IB87xkgk5/FUexER7oWdVqiVw6yL6SeKVpPYXeGhkIi3opq0kucDoAvvCf1x0utbaZDbehaf5VAB9ucQbmLqGEEku5xFolMYw6S7NgIyLlHRvohxSaeS8RPaCm2D3ExzqVHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mAx8AFz0; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F95332EBB
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 08:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785399014; cv=fail; b=LeiqnNG8N3ZSG44cKWavshVnKKPrlLYTB1/Xw5PgZ7ehAamiwBoiTpUq1KfHpFcYJvOzbgRQ1B2J+gHu9iT6hwa2pXUOInDOwyZkB7jaGMGrTRcpnc7d8GRWU+AsdYRu/eisM1jnlOS/67f8e7UNoXaONilrv7YEgCnAknspkdQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785399014; c=relaxed/simple;
+	bh=mczKyiKyKKF7YKj8Mt7k3wBkWfgX7WGrla3pXdexMI8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=EyXR4Y/+rh2TOuwmPM/I/PX5SghK8ten1OF7ndcrXXD6fift0XJpSphqw0zmU4jnFfokV8M/MnXRUduGYlajPzeNxj0CrpL2Dw7XFfmsWAJ2bKmbXCXmnOymo7xR7yV9xoWHz7SP2lZ87RL42WhqnqM2xmAAt8Im8kLfvvMoR9U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QdIM4XKD; arc=fail smtp.client-ip=40.107.209.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mAx8AFz0"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66U6ll192193257;
-	Thu, 30 Jul 2026 07:56:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=i5Foh+HxRSdT7/xEiUWmClXolFVnL3jAUjnokCpK5
-	eU=; b=mAx8AFz0scb27SKUDoAQW6a5Yk+CctCQshbLRZkxzxECGG25wV6gzjgFb
-	xZI58ijL30VSJAAC3tqH255A69TapwXOmygznSL79nyNraMY/FqgVmDk5ozmG5Vx
-	qiP6Q5aIaPywL8I3OSzV7t3L54Lp4pVg4PJVzm32ciHP7afVuX9xASD9TyOQAliQ
-	n2PJkw/QnviInABiFpOimckD7Yhn0wNg1rtHL6QCucah2VTwHQjSchRC5syyaCIB
-	vVlNdf7Fp7xArfYwvKlbMJGT9IPef/iSm1YKIxhYeySOZLSi8FTeFwSjaoEgbKfL
-	dUo8Hg8QS7TUdwuKBJusxzcDJl1yg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuyjdtcf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jul 2026 07:56:29 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66U7uQOB021168;
-	Thu, 30 Jul 2026 07:56:29 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn7uwagd9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jul 2026 07:56:29 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66U7uOtC33620258
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Jul 2026 07:56:24 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BBB232004E;
-	Thu, 30 Jul 2026 07:56:24 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 621712004B;
-	Thu, 30 Jul 2026 07:56:24 +0000 (GMT)
-Received: from t83lp68.lnxne.boe (unknown [9.87.84.240])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 30 Jul 2026 07:56:24 +0000 (GMT)
-From: Hidayath Khan <hidayath@linux.ibm.com>
-To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, wintera@linux.ibm.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com, wenjia@linux.ibm.com
-Cc: mjambigi@linux.ibm.com, tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
-        horms@kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        pasic@linux.ibm.com, gbayer@linux.ibm.com, andrew+netdev@lunn.ch,
-        netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net] dibs: fix double free of dmb_clientid_arr
-Date: Thu, 30 Jul 2026 09:56:24 +0200
-Message-ID: <20260730075624.114778-1-hidayath@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QdIM4XKD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TDNyN7Mn4csWYF7XpuzgyObNmMVMPEbDAPj4kt34UG1hqEWpplZ7uk6MDn6gceD+rKjM+w+w5oRz2mOc52EFH5U38Jf8WM/HNkx+l4C7S0LWJwpF5NEcpT6g09Jll7Nde9Xh631gMr6tycIllDkFKR/Qe0Yw4Sh5ULjrmDJ1gc8nbk/L5t5d8eu5YIAwDHEGQSsguGeTrLOm0DLv5BfoxUSwDUPamxbbwxVUE843cqJDMUcsp2EFiWS4tuUI0xBzj4//nqK5/9T+TlNRti7bcuhJeIlxVIKFgSqTWL8AWJKojO9eL++RzMfNbu1P1e1nmY/iZ7XtLP/d13tA60gN3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gwu0iyEIEoiXkTBfvhDNaRAuuX/zJtTjllB9m0pe+I8=;
+ b=BluF04e79Wsy10NtcMzZCPXa7739dCskFc9G+2REIkCgdkFVNtXZ02LUtAeRDyXeV8zUPxRvYqiEjTS2X97jrB60W7MfsSeELQUykYLy+jOT2Ea4jb/W02LtUfOKulXxAIVZjQRgarAD5ex9OKO/TySv075pipPTbXX4Yq36FvBx4PBzg+e+szryd//9bgqpV68kOnfxXCXurTgNXdej8e9GrSaSzrse20OP3nCeQxVI/uMNTg2iqlE1N522GDcDxwSpyv+VjUcbTR1UbN4b+tXK2n+jw332ee2BZ8ERB4LuAGOmNWrTHDswxl8EcwGlUeqGZhSLs3a2SN5ewFQHdA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gwu0iyEIEoiXkTBfvhDNaRAuuX/zJtTjllB9m0pe+I8=;
+ b=QdIM4XKDX8e/ABfTWYi9KBxKLtrKRYdhXhXUo3Q/VnuRzyglpJYWXlAIa4UbhqF9fdRB0mXQEk0o71fYQq3nTOwbOrBAkGbl3Kvvy9yUKfVU++qBr0W9ZM/5iGlcua1Qq9U6pPhwSC4OT2DYVW3RZwLe/8Qyn+EZ9RJnfKx2zVU/69ENHEcOBFuXWaOrB8gsSoQZlqE5LnhrueHq0K6BlQkaPt06uigjc2LdbM4K802Vx0xcHqPSKkNkgGvtwAq4FlcssaBmeebP7KRxxgSNwwTYG1ACcLC1ehpx4DbjU6Rz6pEXVUliqLj5vHmKDZDroqWiQZp8kFIilpsYmkQt0Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by CH3PR12MB7764.namprd12.prod.outlook.com (2603:10b6:610:14e::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Thu, 30 Jul
+ 2026 08:10:06 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
+ 08:10:06 +0000
+Date: Thu, 30 Jul 2026 11:09:57 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Ren Wei <enjou1224z@gmail.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+	kuniyu@google.com, jlayton@kernel.org, runyu.xiao@seu.edu.cn,
+	kees@kernel.org, michael.bommarito@gmail.com, gustavoars@kernel.org,
+	willemb@google.com, lirongqing@baidu.com, vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: Re: [PATCH net 0/1] net: reject IP sends with excessive headroom
+Message-ID: <20260730080957.GA1551985@shredder>
+References: <cover.1785054561.git.zhilinz@nebusec.ai>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1785054561.git.zhilinz@nebusec.ai>
+X-ClientProxiedBy: TLZP290CA0010.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:9::9)
+ To SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDA1NSBTYWx0ZWRfXwavfkeF4/Kt6
- JoOxs/lXNV6ejkeSz1wRu5cOxKjFHpgXqn9EAInIQP5m82MxQBZUhhAx5yxSuKl+3ZwU+b2yM9z
- PbvmGmEyCXzmRM3SHEW1J4GHcJVXYg0=
-X-Proofpoint-GUID: Qknss0pyhU9cLSpgH2kGICeVnBYw5r1C
-X-Proofpoint-ORIG-GUID: eu5Yn7kJEpYarRcB3EoH6X1j_meabnsC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDA1NSBTYWx0ZWRfXy6i7XPPWhEC7
- Eo6LIkLVau9jMO9pmu0RBXpcx1FmyRZ6mZmq5mxkpzCmh5ifUuE0xkCIyaEA6Ofozrv1bsXQJ73
- vm2hXSmPLJU3u/lXlIyOCtdeLac80M3WlwfFKVH7pNXep71+x4TvxGfnCAgjyRWzdC6K+ApzFOl
- eybYCmjZYnueOJBx8+ypwcs9JZ0G9l/R71Smr0aerNYpYmVRGdBY0rwYBqdeIeCzjzwvGh21J3Y
- d7fduZ4jtjfqrxdQb9NofP1ptMYAtI4fWlIQxzDGae4E6H4l7PVEoMRyyzCTjV6DLyiCag61diS
- moBsSqzV80ZQbjOzyhv2F3kJ2bTIFsJL0ZmN4agGYD3rX7KKBTtgsOlwvJqXD6X1PGZTvNWxYE7
- stDtwRkwMXTI0q9rMgM858Fj0C53ORx72b22x0p+oNkUp9627JQW/DSVnedS4Dm4OIr72CU7r+F
- 2qrRZd9bwWBX9fqruCg==
-X-Authority-Analysis: v=2.4 cv=X5Vi7mTe c=1 sm=1 tr=0 ts=6a6b03ae cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=NnsqlADyzmQ-ARdX89kA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-30_02,2026-07-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 phishscore=0
- priorityscore=1501 malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607300055
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CH3PR12MB7764:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4beb0c25-3ef7-4194-0fa5-08deee11f747
+X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|6133799003|56012099006|11063799006|10067099003|3023799007|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	dsHx6SClXkAPaVqoXs/abYUkmg7IkW0bTWME+w3G4ouTiOfEbFhdKW7eqTgJe0Z8QGCOOYhDZfK+B+hdTeqjsEX9k3NSSRloXZBvkxlP4/OQSy44uHntKkjY4RV+AW5fbZkws8RYi8gxB6+r5aTmomh1PH8yJ7gN2mdsIes9VD/vVYh97hbEYvrH0V2mMyisrnJAaCjzDjKdOi03lS/8EOjHTbagutDn89NuNQQJ5dTGc+L+m7Eo5gXwrR5KTkkR23lTeO0EFXEcZCdZWUGSR54K3ZnT2oUmQX4iynooUrdqwBLFBtQLcm4GNBMTL2dzGsG+cmJw4EteACQzErf1dnuebWzSDAxmsbCNPj55FWXt/B+8yQXpT4WQb1M6AVyq4uzv208qZMNmbr16XJcZ43or+H52KDvku6piA6+jZEFtk65BdoIg+Itcx5LH/1ovpr0uUAoykW2lK6xiWZGQPFAKACiLVQeNo2xmezeiatDkwOaKRURI5sYEN2JPpmZkTUKWdyxOoO2twUcXoLf1LMUu36VOfch/XpWAd7uPRLd3aF+ZUOprgE/pqHnZuuxBdPgvV28xtdGG/XbPqh33T041mJI5L/gPbIZ/DmLIwvOp22i6dc8cd90HXwVC+GfLLkKLxAJBa64/0TrUzQKpe7evpiso8lJrILU4PFLMGr4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(6133799003)(56012099006)(11063799006)(10067099003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?YlBchXS55ovmTW1FRR2KQBcxFiqFOortVRvfexMVz2dewll4CBU6XXdvPqt3?=
+ =?us-ascii?Q?DCh4F5256AJO458I/MBp0OO6mc+YyzZ63IdIO9rCdS+H0f7mtcVLK4ekzPSr?=
+ =?us-ascii?Q?0WtERYygbNx4vMWsNY7FcI47giLi3rRlKtygRygP9TkolgTc1/1u0pnsb+EN?=
+ =?us-ascii?Q?/Ge0YUcsYpW8MSWadlxVXSxTZIxjYb20WidltfvYjaOI3mmtpzA1NbCqju8Q?=
+ =?us-ascii?Q?f+hLjw7U7i5ohBbP2lScSii6wXQZNi8+C4gnEXV+Hp+3M2zkVGarCsKIM6C7?=
+ =?us-ascii?Q?HahWdPCNUehFeLSbgPkRGOhp0GtL+lO0jwh0B8RgF3XcCIRpag6tnvS4Zn6E?=
+ =?us-ascii?Q?Z+VF6NOCZlAhkWm/60r7gTXVzPurWNqh7QZPC8g11uGgYX8VnPNriLD6gNJP?=
+ =?us-ascii?Q?usi0aPLzQGPaf+ftfo6Hd1m5qf39FBQtgEAzmZ9FAujYTnNDcWW9c6vmjBts?=
+ =?us-ascii?Q?yWTnHWzyKSp8Jl9QNcpSgW83Oq1x1QX4A9I8aYnb7YZfld0/1JM6WFICj25T?=
+ =?us-ascii?Q?o1cnLp9i8/vfkeEiyA0UBdIJhlgCSlNsFR8WfE4AGaxhV+Hqib6rIz3/PZNt?=
+ =?us-ascii?Q?qJmWoLSd0LQYT5PK6TtV+c+VnxMg5DeJ1BsEC3Iy4dGamzszMkxeqyiiLUgz?=
+ =?us-ascii?Q?tsUDa/p3Rw5bOd6g0CuswIJtm2mzncvRm95e+lU0WAxIylTJ3q/Fj+46EiEz?=
+ =?us-ascii?Q?T3JTOJQ1YhLXoXBSYLN1zInZHvBqj3hnC+84FEH/FozICI2w8jjc9kanOK1j?=
+ =?us-ascii?Q?oiT+CsYmWoUUfh4rgcipRAfQEBXpcHtaFy0ZtLWnOYVMQpAMr9ItsJ5uzqO3?=
+ =?us-ascii?Q?z2GGzvWfVo/TxgY6ebck//m4p7iUiF/gUVW2DH7XHMzfV5kQf8Z5ZCVlim2Q?=
+ =?us-ascii?Q?bhtkgMP7MH3vi3ncX39FgkZ6JAB9hr9tCHW13PtAp0UOAqXKDmmo7tPhzYjP?=
+ =?us-ascii?Q?WZ7TLGpvJZV8HZXAUcrbpUHWZ4JelB7zQpk9T3zQbnB19rEgF52hZLPnirTO?=
+ =?us-ascii?Q?A8Mqy7btqgopY0CTWp7mx4fSP+iv9QREg+ywNHuCVF5ZrbT3e40F42itgRDL?=
+ =?us-ascii?Q?u/T0eAzfTV8ehu3rpwPJJIKNjUkLdx9sKdHlzmZUPS82+A1SSEjwb+qccSEg?=
+ =?us-ascii?Q?GdN+7tPLAetQUuimotN3zywZ0ezB09dNQhTshTt3tHUViQ0F8L401cD0Xd9M?=
+ =?us-ascii?Q?+gDgFgFt5ml70FDCKDXJf3/TfXcIIupLEUya4RWwd+kyRhuxYmQmuNBPcJEz?=
+ =?us-ascii?Q?K3bMzCj+9BlbBP1S3/o0wWmv+ST627nyYsYmh2wz3U3S15kXTHFa37evuK+t?=
+ =?us-ascii?Q?qIZPQ0UcPHsfb5PQR/QsJWKyGWuzmwpRIaXQGErJEpmuOw1vRkZGPsnWX9KS?=
+ =?us-ascii?Q?+ypuU5gzJG0OwmQm2R5s+A6W8hGYSWcnIFdYBEnulwOr0epuoUpDvKKUORaC?=
+ =?us-ascii?Q?PV+3H3uB/CtowBprRwzB32/MOzzXGHp9ZcXSxY4nnRP/6LSkkkPoZO7j2gk7?=
+ =?us-ascii?Q?PegJCNFz+2Hra5BNzM67h1iaae026qwRV4U+jE4je6F0h9lad5nT9VxbAfno?=
+ =?us-ascii?Q?D+d+PI1fhDxRSVkAJo5yyFEBZGJKm56qf07aHT9JSXi2P3VmDugQCRXhedDr?=
+ =?us-ascii?Q?KEIDe01hO6ah3B5hZyEfAuX2h8hsjgMT/KrjdCD5xxpUCZPuzupJE1FD8ayN?=
+ =?us-ascii?Q?OauA+vxZNxjxBoHmVoFo+8ynI9R3mP7YpP1HMePZUqF4eh0f2Ow4MG4njZqo?=
+ =?us-ascii?Q?3HPdnsWFRA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4beb0c25-3ef7-4194-0fa5-08deee11f747
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 08:10:06.5254
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VRO9+hKigK7Qnc0gPZpxTywOFCuBAnu70dZZ6+DwA6U+3w4NIMPKrqsD/L2HmErjSU50BFypzmzEibvBlKajVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7764
 
-dibs_dev_add() frees dibs->dmb_clientid_arr on both of its failure
-paths, but does not clear the pointer. dibs_lo_dev_probe() then frees
-the same pointer again in its err_reg path, so a failing device_add()
-or sysfs_create_group() results in a double free.
+On Tue, Jul 28, 2026 at 02:03:05AM +0800, Ren Wei wrote:
+> From: Zhiling Zou <zhilinz@nebusec.ai>
+> Bug details:
+> 
+> IPv4 and IPv6 output paths reserve LL_RESERVED_SPACE(dev) before recording skb
+> network and transport header offsets. Those offsets are stored in 16-bit skb
+> fields.
+> 
+> A namespace-local stack of tunnel devices can make hard_header_len plus
+> needed_headroom exceed the range of those fields. In rawv6_send_hdrinc(), the
+> wrapped skb->network_header makes ipv6_hdr(skb) point back into headroom
+> instead of the packet area just reserved by skb_put(). The user-supplied IPv6
+> packet is copied to that wrapped header pointer while the actual packet data
+> remains stale. Later IPv6 output and error handling can operate on invalid
+> headers and crash, as seen in __skb_flow_dissect().
+> 
+> The same root cause is present in the ordinary IPv4 and IPv6 append/cork
+> paths, which reserve device headroom and then store network_header plus
+> fragheaderlen in skb->transport_header. IPv4 raw HDRINCL also adds the
+> user-provided ihl to skb->transport_header after parsing the header.
+> 
+> The fix rejects IPv4 and IPv6 sends before the affected header offsets are
+> stored if the largest offset for that path cannot be encoded in the skb header
+> fields.
 
-Drop the kfree() from dibs_lo_dev_probe().
+Instead of sprinkling checks in the data path, why not make sure that
+net devices don't advertise bogus needed_headroom / hard_header_len
+values in the control path? Commit 5ae1e9922bbd ("net: ip_tunnel:
+prevent perpetual headroom growth") chose a value of 512, so maybe we
+can use that.
 
-Note: commit cc21191b584c ("dibs: Move data path to dibs layer") moved
-the code to its current location; the race was introduced earlier by
-commit c3a910f2380f ("net/smc: implement DMB-merged operations of
-loopback-ism").
-
-Fixes: c3a910f2380f ("net/smc: implement DMB-merged operations of loopback-ism")
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
----
- drivers/dibs/dibs_loopback.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/dibs/dibs_loopback.c b/drivers/dibs/dibs_loopback.c
-index fd5caf1e19a8..649e4e375be3 100644
---- a/drivers/dibs/dibs_loopback.c
-+++ b/drivers/dibs/dibs_loopback.c
-@@ -335,7 +335,6 @@ static int dibs_lo_dev_probe(void)
- 	return 0;
- 
- err_reg:
--	kfree(dibs->dmb_clientid_arr);
- 	/* pairs with dibs_dev_alloc() */
- 	put_device(&dibs->dev);
- 	kfree(ldev);
-
-base-commit: 98379cf6109c0adb5879f86ba3efd4afe389a64a
-prerequisite-patch-id: da145e40ff1ce22e9701dd49676606f612c03872
--- 
-2.52.0
-
+AFAICT, the bug can only happen when stacking IP tunnels or when
+creating a netkit device with a bogus headroom using
+IFLA_NETKIT_HEADROOM.
