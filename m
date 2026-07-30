@@ -1,205 +1,114 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010051.outbound.protection.outlook.com [52.101.46.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA0D3FCB06
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 13:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785418563; cv=fail; b=MUM8PaNrMjxgKINbI/VB1xIpByRduFaiofQkzrVCe4+KFCPzLWuLIZ18HV5x05xHRMLIjbsuw0nZkYhuW9VIsCu67SzznzuR93EW920uLQp5s/RB4qvM26g81yLl3QgoPPj7UucVJ6pDw6CvnqlSkfaagP6QhhQXC0nLYSzEogI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785418563; c=relaxed/simple;
-	bh=j3XP8obbbfO4Hg/0g2PhBlfc2xXuof6Xqc4vBSfsfOY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=bv/p5DdY2C6gr0+5hjCLIYdP5OG8clwXLIzzdElpKYxBLQpA9G/E/WDQZol1wP0i/V7K8gfsR6/bQ7gwnlAqOItGtYz92YPe+M/j2t9G5iufQRqYWK8plzDWA/DQPWRXqR9Gm4td1nHq18lAxGiMylF+Il/kasP0HNr3o/AQu3M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CLEJKNKa; arc=fail smtp.client-ip=52.101.46.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821C743846C;
+	Thu, 30 Jul 2026 13:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785418613; cv=none; b=cMQdw8jiZy4KHrvsVotwJiGohRyr1DoRZxM4856rl/qMGIlF19RqVJM06z67H7R6LAGGBGxzaZbeXWdaliF+mxQQzxPCd16S2vIzwKHEM+bZWyQ3Vun2pk5MT3UKxTSRiTwpExhi+s0wRp6rTVbF3X6LbcMuvRfD9/ygmOPp1gc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785418613; c=relaxed/simple;
+	bh=cy78vmkSWsMBJa6w7Nx+k4PAR86/jFxz+3HWwQjx5lY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P7jLvrazrC5jX+yRjUBdE2elTsde3enQVQKtxJpqVNN8i9Z2YDKMdtDclwgsD4MMBCb4aztfLrT9FXY0hmOfsieHjL+hPr4qbTzwNuuYuLaa4Z0EdJppzYMGCWQ4sGrfdF4nn1qIOiWn3qhCBedX1Zyv8+dTMaoC+xlrRlmYs5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BD6dZVsq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CLEJKNKa"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tAQ4uZHnai+DssR6OdqmpwhutkBx4LYZax8gK3uObGtD4O02vDRUgFPySGGMKGdZy3ytzwTz6fwgK6WYpuKop3zE/HRegpB4KOTuavCD9o43ba9SRp8PdF7QB7KNA12NDYTKh7jxUQxrAo7c+ucgo7IX6nGEl/7iOK6ZSrid+vnpDuVl7AIRtr0JTqteNgwTgegD+0s6b/j+4ArnL4uoRqb17v/MRy8pYAvGPfV6cQ/GR0ZZ1OQGSGVqjDbp6yqOH93s8sLKGjcLuCU5cDGckYKfjVCVKsWo4YTvFAdLQoCR0HgnPA+nrQG0uRfPsqKWd0PWoWbCnssXWTkqaBpEqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jUdtKrT0jW+tcJAUWf7Pgr1QNJvf/G/ICDL0fEEXgc0=;
- b=y8IBZox9ttyKJCU4bIY91U44rNPpHBJXkwiE/0lRCSG5uWwYLQ9V+qxNyhx6fVPEzLagEI3AmHKmWGVNI8m+nVrbazmeRQEYPCpOBCiJRnnljVUCpMEN+5cdo4SscmnpdyK4yWHavtlMjI/M/l9TfjvGIEyksOmnV4Yo1zBkEfeQGIOzc1YpZW1E9fay56OY20k95dTNguxnsWxtwPo0gpcemHuM8sUS0200qH4HqA9fUpFAQ+SSdEs7L7rkoHwPtqeCmAIRHhA4mJ3j4J8fUAzs18oqHThxr5FkzSfYnsND1lmSolHInT+cHpgc5nKq7KaEftM95uKapDmGLU1HzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jUdtKrT0jW+tcJAUWf7Pgr1QNJvf/G/ICDL0fEEXgc0=;
- b=CLEJKNKak2VK1PFw7xjuzKp508xmbpBTaV8rEFVvXKy5YsZgwV900UT5hNt5SV1W0J14a9chdHkP7qfbQt9eNREGSXHJtLlofs3du3uq5qpqt6dxOgu/Yq2NAGQJnuiWw5Jaj2dLVA9HIiovJkjDX3eM9JUEiiVh5Wjog4FhhiynOafRffycTa2EPit7oF6c2DsLuMHkyGjpcxkYkcoPA4hu4QwFncvO+gnX4ZN19PMEdu4V8hqKRA/J9SgCmg589nmMW3GW4rmf2q6Lzp5UgtxB6dJG2yluaFSmbaGUyHaC1L2Tp0p33iBkmoL/N3b90xFkj+gTMjUAiy1t5V214A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by SA0PR12MB7001.namprd12.prod.outlook.com (2603:10b6:806:2c0::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Thu, 30 Jul
- 2026 13:35:56 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
- 13:35:56 +0000
-Date: Thu, 30 Jul 2026 16:35:46 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Ren Wei <enjou1224z@gmail.com>, edumazet@google.com,
-	ncardwell@google.com
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
-	vega@nebusec.ai, edragain@163.com
-Subject: Re: [PATCH net 1/1] ipv4: reject RTAX_ADVMSS values below TCP_MIN_MSS
-Message-ID: <20260730133546.GA1761428@shredder>
-References: <cover.1784972917.git.edragain@163.com>
- <a2e93ae9003f33bf49b789dbd537f4a6c10f26fa.1784972917.git.edragain@163.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a2e93ae9003f33bf49b789dbd537f4a6c10f26fa.1784972917.git.edragain@163.com>
-X-ClientProxiedBy: TL2P290CA0009.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:2::10) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BD6dZVsq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4DD1F000E9;
+	Thu, 30 Jul 2026 13:36:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785418611;
+	bh=ViilNJPgoMkwo2zOy3hAi/9IjN6+I9KEXX+bony59A8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BD6dZVsqY9UCd0d4Hfz0+jZzD419tY6GWKb+Oyfn3EQ5eN8p4Oyh+p8p66bJiD85N
+	 ZWJ7zEJV98FBm+GkWyj/lFKu+33JF28cG140sxEP/QvdPsROe/saHt2Kb5DlLXJ0Sq
+	 xC7klYv89xIZt2hTsv3APFDia1gBwgJUOsX/JTVPiyL/JAqx7l/1KjPMvuRZcEPCuR
+	 XT7hxtYowbUuuyFJg3uepjy/kqJmS1SZ1V6jN9sYM98/DyqpPH6sK7yiCSZGyFz5Wi
+	 HvXodJYJOMBl3pwljvSop+KjeazH3hwT+ssxxPiXKpS1ZDb1YC8AY3pfcRueU/wN1t
+	 YwtP5NK1dWeWA==
+Date: Thu, 30 Jul 2026 14:36:47 +0100
+From: Simon Horman <horms@kernel.org>
+To: hexlabsecurity@proton.me
+Cc: David Heidelberg <david@ixit.cz>, Doruk Tan Ozturk <doruk@0sec.ai>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Robert Dolca <robert.dolca@intel.com>, oe-linux-nfc@lists.linux.dev,
+	Samuel Ortiz <sameo@linux.intel.com>
+Subject: Re: [PATCH v3] nfc: fdp: bound the device-reported read length and
+ fix an skb leak
+Message-ID: <20260730133647.GC51943@horms.kernel.org>
+References: <20260724-b4-disp-e8ec6012-v3-1-3a6f3a2fee47@proton.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|SA0PR12MB7001:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd731e16-e27b-4078-4eac-08deee3f7baf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|18002099003|22082099003|4143699003|10067099003|56012099006|11063799006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	9XqGN4kNkWu9xdptzKiRSa1mBv1dQEynPxCGMlnGReJKaRI43/ehi96yR8J/W9NJXV5pvSZ2K7CwbqQrzb7XXcwsQSCyzfxK0UlfShrbRNrgsuhC4G6971l8Ddhb2gtlUR78wOs3gvmUdp+4kLB0oFswlFKPbluBD2BLjBFnlfSs3XlZYkUneFURftjDcD0h9hKCfEl7Vy+eZ24Kj2LoSXBQ1g5KGUPz5j/5ywiti+L6hvhsB5XUonFxaWYpHirrTjsZhMHzNOeoMwjc8ss+VkJkKvcmcQsOe6tZP+4C3VVTGDaTy8UM6vX7N1WkJLXlkCiskKfApoI1aKtnXtTHOwaBqAmhzODsTH6AqnD9S37tj+AQDn99dD6zJmeG4ELpSXvMYrT19SB1Sj4yEzCFsz+pyWVJYn/v5E3L8lIa8Uznybspo608R8o9Ual5eR133B6ZUDmuBylKdIXq52F3lMTmYBJb7J4XqB7BbP5lDbTGNUsUc5BG9dyUNOGbtJSBhI2XqTdXIDI06Ec3dIlAkLYFADemjakR2697FWYcgym43TkJKmICtm18ZphWmwCWDSczWyLL28VXHI44voOCLySLgYN0ohYOf/2LSH1Gc373BHEm+tcrQEWBPft1OxvzKnYeuWa+swEHUnKexsbo/vw1+FGSbfkHM95qvMwyuLc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(18002099003)(22082099003)(4143699003)(10067099003)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?s4I4/ok1krx4Kkuhnz7BXRoDCnyrw4xNRolxV0/cJ/H3VorG0xKf8M9rcphY?=
- =?us-ascii?Q?H5Omeh6gE9uHjH+O6Ui5KpsSzVGEZBXJtIlIBcOOKijOWHC20mUT2Q4jvzZF?=
- =?us-ascii?Q?no1Kuwbw7eVM15Rp8bsdVCXBr7HgNmb0SIq7fgtuoSvlq4mgHppj3B3vvunh?=
- =?us-ascii?Q?zHRRHztku2xah+pr1fbt7/HK1BgxpqpJ/0RRHIUM0G6gNrt7wLC+cLTlCwIq?=
- =?us-ascii?Q?+tOvj9dIC5nEWV2VTqlAq3ECvcCa2eMbH3FU6x0dAuRZL8IoTofcDnRCdVrX?=
- =?us-ascii?Q?2I6hYiFZbFZiD6Gu+umql5X/knSMDh5NuzOJ4ui6PuTe/s0KmTgCj2Inr2DK?=
- =?us-ascii?Q?sEuGyYTx8HbbG05yImzjBh1u/JXP1qPqtLxKqkhI187/5XfM599HOmjs4DUP?=
- =?us-ascii?Q?nR9tgrkwpUoUjPtSJmi1o7uCiTK7h8zpghzs2Ge68TyVKRwZsovz18m7SF9k?=
- =?us-ascii?Q?sdoEbm/GpREaY03WnNG3RYr/rL+fxdmeQF+M6xBkMCK1n7Eb2YL3zRkyiRiL?=
- =?us-ascii?Q?i1tMv+bBNqGvSug76PmKQssB8oTeDUySRKl/ITug/dWjhd4zAwJqKwh0aD5x?=
- =?us-ascii?Q?ZD2LdsX/Z+dvTGc/HMYBPxrm6MfEoe+PNRZ6vwI+/YGRJSWCqMGaFcNtkg63?=
- =?us-ascii?Q?osNKuPzoi1qJ5Cgx3a0gOgF3uIrNNTZK8rdklwLYP4BwVrCxsmi3T8J8LSyd?=
- =?us-ascii?Q?USlRPpWeP64LjbzYOosTiezGTFE796r+08B77y9UnLrqtEvGZNk4RFCtHOoZ?=
- =?us-ascii?Q?9XpF3IhOK/Wmnmw3gh+Pqtbg1LL1TtIQAcpecNOqbSsbTFx6IrdNtIdvSDx8?=
- =?us-ascii?Q?r44GbdVYrmiV2FedlkTCb4+mVAlu8SuITAl4hJ32x9npmZngJl51wVITt9wO?=
- =?us-ascii?Q?4Wy4MpiNF6nhs1M9DejMTWTTim5V8CillQyWDZyD8/w6aGgDoL+5PlYHo1Ft?=
- =?us-ascii?Q?R9kPgmlWmLrS2KZPbqH/DTkn/FCIjNDIZsgX8IRBlRGo5gCWAd8yQUEYY25G?=
- =?us-ascii?Q?m4S7gc+23Pxp4lnTBch/m+w4GoUk4gaqCc+al/3aaC0WoFDgPCsFvCDGG+o1?=
- =?us-ascii?Q?pwO/QSPHYdYRBN7/C7MTRNpRpUuxDXCjq4gunOWQZVWWmOUSUtw2OC75e5dA?=
- =?us-ascii?Q?HdGj+5G9ETF2RbqrHHzSeqCVzP5E7sz7LJY7fLJ9rD+k6hpMBwJRZRNCWSf8?=
- =?us-ascii?Q?F9fOPxH7Vw5ET3LYgPWdWU2hPuyew+ECxdDBORUFkWIiNSe0tKCZFlHQGKBp?=
- =?us-ascii?Q?b5VY76fovMl4uM4DCt1hY5JL8Orc85CG7lhj5ebyMN+oTnMUQl3Uu0ckE5lO?=
- =?us-ascii?Q?/Uui6xQmcoTQ8TVIjF2fHWql+XVsNtRgYMpt9cSCY/SwdGCIqpm650YoPHv2?=
- =?us-ascii?Q?gGf6pzSzFLBJPsHzgpOmNxaI8x9ES7vkvmdK//HwfIAIECIO8Xewq/qCMugy?=
- =?us-ascii?Q?z5MGw2xbTrfBnXyPm9vmCpH90BPYxfLXJLft8L9KAH2D+csH/Y3EjBUe+FP8?=
- =?us-ascii?Q?4239PO2Bktj5DtTZ6yi0U3tB6MJrr+eOb4EkqJdRjFCfjGXkO0XId1URG7L/?=
- =?us-ascii?Q?gdEOUhOU94ES9Y6aqalJYGJ8SImJN8HHEqGmtMBicbSYzDlTghgCPfb1jlAu?=
- =?us-ascii?Q?BQluJrE4rXvJt1aSB6k6JJa0MM+86NJbMZTnk0Lys/TMCTytpcs0IlSUvfwt?=
- =?us-ascii?Q?TvYoBfkLTrAkFOh+IplVdhFVIPeHOOeI3btSB1YVt9KB0Davr1KXzZZydrvy?=
- =?us-ascii?Q?FZ5rpYowQw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd731e16-e27b-4078-4eac-08deee3f7baf
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 13:35:56.1718
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XJb0wsVPrKNCRHqDmEQPpc+NJkM2+6k+M/yoSFD5ji7KH01qPfEGcplnMlbSZB8UyOA38hP+rZSuX6ntYXPqAA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260724-b4-disp-e8ec6012-v3-1-3a6f3a2fee47@proton.me>
 
-On Tue, Jul 28, 2026 at 01:08:17PM +0800, Ren Wei wrote:
-> From: Yong Wang <edragain@163.com>
+On Fri, Jul 24, 2026 at 06:22:55AM -0500, Bryam Vargas via B4 Relay wrote:
+> From: Bryam Vargas <hexlabsecurity@proton.me>
 > 
-> ip_metrics_convert() only caps RTAX_ADVMSS at the upper bound and
-> still accepts undersized non-zero values from userspace.
+> fdp_nci_i2c_read() takes the next packet length from two device-supplied
+> bytes and never validates it. The value is a u16 used as the
+> i2c_master_recv() count into a 261-byte on-stack buffer: a malicious,
+> counterfeit or malfunctioning controller (or an i2c bus interposer) can
+> drive it far past the buffer for a stack out-of-bounds write that
+> clobbers the canary and return address, or below the minimum frame size
+> (directly, or by truncating the computed sum) so the header/LRC strip
+> and the next length read run past a short receive. Reject a length
+> outside [FDP_NCI_I2C_MIN_PAYLOAD, FDP_NCI_I2C_MAX_PAYLOAD], as a
+> corrupted packet already is, and force resynchronization.
 > 
-> A route installed with "advmss 12" can later reach the passive TCP
-> open path. When SYN timestamps are enabled, tcp_openreq_init_rwin()
-> subtracts TCPOLEN_TSTAMP_ALIGNED from the route advmss before calling
-> tcp_select_initial_window(). This can reduce the effective MSS to
-> zero and trigger a divide-by-zero in the rounddown(space, mss) path.
+> The same loop allocates one data skb per iteration and assumes a length
+> packet followed by a data packet; a device that sends two data packets
+> in one call leaks the first skb when the second allocation overwrites
+> it. Free a previously allocated skb before allocating the next.
 > 
-> Reject non-zero RTAX_ADVMSS values smaller than TCP_MIN_MSS while
-> keeping the existing "0 means use default advmss" behavior intact.
-> 
-> This matches the existing TCP_MIN_MSS based validation used for
-> TCP_MAXSEG and fixes the bug at the route metric input point rather
-> than adding a redundant guard deeper in the TCP stack.
-
-Eric / Neal, the comment above tcp_select_initial_window() says:
-
-"[...]. We assume here that mss >= 1. This MUST be enforced by all
-callers".
-
-AFAICT, tcp_openreq_init_rwin() and tcp_connect_init() are the only
-callers that subtract the size of the timestamp option from the MSS
-without validating the result.
-
-Fixing it there also takes care of the comment from Sashiko regarding
-RTAX_MTU:
-
-"If an unprivileged user sets the namespace specific sysctl
-net.ipv4.route.min_adv_mss to 0 (which is accessible due to an exporting
-flaw) and adds a route with an MTU of 52, the IPv4 stack evaluates the
-default advmss as max(MTU - 40, min_adv_mss), yielding 12.
-
-[...]
-
-Should a similar lower bound check be enforced for RTAX_MTU during
-netlink conversion to prevent this bypass?"
-
-Do you prefer to fix this in TCP?
-
-Sashiko link:
-
-https://sashiko.dev/#/patchset/a2e93ae9003f33bf49b789dbd537f4a6c10f26fa.1784972917.git.edragain%40163.com
-
-Patch link:
-
-https://lore.kernel.org/netdev/cover.1784972917.git.edragain@163.com/
-
-Thanks
-
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Fixes: a06347c04c13 ("NFC: Add Intel Fields Peak NFC solution driver")
 > Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: Codex:GPT-5.4
-> Signed-off-by: Yong Wang <edragain@163.com>
-> Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+> Suggested-by: Simon Horman <horms@kernel.org>
+> Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
 > ---
->  net/ipv4/metrics.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> v3:
+>  - Rebase on current net; no code change since v2. Doruk Tan Ozturk
+>    independently found the same missing bound (0sec,
+>    https://lore.kernel.org/all/20260720132133.69635-1-doruk@0sec.ai) and
+>    noted there that this v2 is the more complete fix -- it also rejects the
+>    sub-minimum length Simon flagged and closes the skb leak. Reposting now
+>    that the driver has an active maintainer.
+>  v2: https://lore.kernel.org/all/20260616-b4-disp-b1f8ab4c-v2-1-2d1fe5955325@proton.me
 > 
-> diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
-> index ad40762a8b38..b9b97a0a5126 100644
-> --- a/net/ipv4/metrics.c
-> +++ b/net/ipv4/metrics.c
-> @@ -44,6 +44,12 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
->  			}
->  			val = nla_get_u32(nla);
->  		}
-> +		if (type == RTAX_ADVMSS && val && val < TCP_MIN_MSS) {
-> +			NL_SET_ERR_MSG_ATTR_FMT(extack, nla,
-> +						"Invalid advmss, must be 0 or >= %u",
-> +						TCP_MIN_MSS);
-> +			return -EINVAL;
-> +		}
->  		if (type == RTAX_ADVMSS && val > 65535 - 40)
->  			val = 65535 - 40;
->  		if (type == RTAX_MTU && val > 65535 - 15)
-> -- 
-> 2.53.0
+> v2:
+>  - Also reject next_read_size < FDP_NCI_I2C_MIN_PAYLOAD, not just
+>    > FDP_NCI_I2C_MAX_PAYLOAD (Simon Horman). The small value is reachable
+>    both directly (tmp[2] == 0 && tmp[3] < 2) and through the u16
+>    truncation of the computed sum (e.g. 0xff,0xff -> 65538 -> 2); a single
+>    range check on the stored value covers both, and also keeps the next
+>    length-field read from running on stale buffer bytes.
+>  - Fold in a fix for an skb leak in the same function (two data packets
+>    in one call overwrite and leak the first skb).
+>  v1: https://lore.kernel.org/all/20260615-b4-disp-f42dce2d-v1-1-186ff3dcbf37@proton.me
+> 
+> Reproduced in-kernel on x86-64 (Linux 7.1.0-rc5, CONFIG_KASAN_STACK=y)
+> with a faithful port of the read loop, and at full device magnitude with
+> a userspace AddressSanitizer model:
+> 
+>   Stack OOB write
+>     A  no bound, next_read_size 281 -> 20 B past tmp[261]:
+>          BUG: KASAN: stack-out-of-bounds in i2c_master_recv...
+>          Write of size 281 ... This frame has 1 object: [48, 309) 'tmp'
+>     B  bounded to <= FDP_NCI_I2C_MAX_PAYLOAD:   no KASAN report
+>     C  well-formed (len 5):                     no KASAN report
+>     ASan model, full u16 next_read_size = 65535 -> 65274-byte
+>     stack-buffer-overflow WRITE on both -m32 and -m64; bounded build clean.
+> 
+> skb leak (slabinfo active-object delta over 20000 reads, two data
+>   packets each, measured after a slab shrink)
+>     without the fix:  skbuff_head_cache +20047, skbuff_small_head +20057
+>                       (one orphaned skb per call, unreclaimable)
+>     with the fix:     ~0
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+
