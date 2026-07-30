@@ -1,257 +1,146 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925DD3DE429
-	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 10:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACECB369D57
+	for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 10:02:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785405640; cv=none; b=DhY327vyWmlw5L9PqCyp9W4IqhOyUnfotKByunvx6fHD7ET7oADXD0fb+iJtP4HbzkiCnR88ShMqt1mTZtBFPVDJnnl3vns95JPtss5uad2G2wAX3n32INcub33lGKscGY1kRawlV6fBWTK0/l2/UPVHynyAW77HO6hVfrq4Wgw=
+	t=1785405728; cv=none; b=DvAuu5ea/RvY2Qx7oLDCQkwTwSE6vX3/zQytEfV5Ksa+cQQm/o/RnjCFRksXJhHBSNXpyQaJ2VQJjJxTYDI0N/GMB8DQUsyTRXxUGXjbR+DU/FSSZM6Ui0fPWFHqlxKXG6xOdFyqZbK9KdG62IUxHJc2QPQ8PG83ODKb+Qy1ZqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785405640; c=relaxed/simple;
-	bh=M+EikJXOV5ueFth3iiiyE2gUNLf/QkhEf+GG9Ksx+o0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=maUd/IAxTPqGM8IJfSeyhu9eJVHsfTwvrk6Mj5sB5TEnfOuOVJWB5cQ72t/OGUMVfiXoLT7l8tNn6BRl7Mr6yzBWNi6YXazKlBTB8G2H9MpmrMy5o9Rgf34ElENSa5ywVnC/yx5MPVIsq3b4C+HjE9VTE8g/ZNBSIrZSwtEnsbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rJVcZk90; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785405728; c=relaxed/simple;
+	bh=hrSLrX7YC7PkUUv3YBWcTkVq+DlhAeV468G35ct75MA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rnKa3dcuZTInafdFfUFfbTdHBfkCbP8o+EwIfgPRtN/EIphVJmOZA7toEB14wJiRLQMbLHddnu579yGMcApKvblJVqkgC8Ci4TPIvKmE/TFlSJmPkgTf3wi9brKVVETul6cr5ve8fMcoHongz41kOBKDHcepOr5NDF/Zv0k5PEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L9UwGFQS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gH3ZYSPn; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rJVcZk90"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47de0093c42so1466422f8f.3
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 03:00:38 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L9UwGFQS";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gH3ZYSPn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785405725;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QiyZuiTForSAZqWqo/gtIBy3q8EpOKn9So3zlplj93M=;
+	b=L9UwGFQSW1+cSx6q21dF7ogm9EJfnq14eC++sO5q6gcMDVog1o6D4SPwFZGQ2rZyBefJys
+	HkdI05QvTfD1AzvwVBuA8wop8QPOahNRpfuPglp/1IKYUSvD3KWrZ78yeHCSzTKkaMHftw
+	NZ5nK/t6EReffdMLsAxDbP/0HjZmiYQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-110-3_pdmnYXPRGUT1tZVdHDoA-1; Thu, 30 Jul 2026 06:02:02 -0400
+X-MC-Unique: 3_pdmnYXPRGUT1tZVdHDoA-1
+X-Mimecast-MFC-AGG-ID: 3_pdmnYXPRGUT1tZVdHDoA_1785405721
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-496b4cc049fso5596535e9.1
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 03:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785405637; x=1786010437; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=brqEgrC204Q7R2Ht2zUutLTCuoa/Yw12EIf+KqcFosU=;
-        b=rJVcZk90XgABKAAS7X3Z3Q4VZwrrfhvjMtWep4Necwy5l5G1G4pxfcKQQcWjYfLjWD
-         Df9Tzl6GQVHId31JQoUYnbO4U11vUxqTUYeQy6CcmCNnH2ruSUZqe7ecgmyW/TLiKlG0
-         joLT7JwMTctO9WlIJSRryLMnaxLZUlDaDc6WfAEQLHBUL5Z7bgs6yB9w6tSVPjzvEqxM
-         RMd5WSEBkxVu+n8jV/TOW0saPkF9y8D44iAKEwAP9xlw6IBQXh07Js/m3cj94OX9+rbK
-         +ZBBaqeF26pCMKemByQOQQrYVOCwKIi8SgHT1M69WJ44Do5w9AJP6eSRi4XJHrquz7Li
-         Dlng==
+        d=redhat.com; s=google; t=1785405721; x=1786010521; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QiyZuiTForSAZqWqo/gtIBy3q8EpOKn9So3zlplj93M=;
+        b=gH3ZYSPnb6B6gOY7N0sUwsaw7O2gWzQkbJ97NOCp26yF2JmPh/gFKJd8F0WWMqmsF5
+         EZLXlJ6gUkEY5Jr6ccNZUjOx0u96x6hkFRYljqryY2eGcCO6LHattrfmG5PECKvA57wX
+         GdLMLixSh1wFTvy4fbfNMEuBI8V+lNhJByTMkpmx0zCvUQWmky6IHvy8ghCX8FxcS35J
+         L9UkmQgQ9PJ0ouVD3XNQ7rkzC7SfwatGlALAbKBXrRHtU28GSwVKcm1hiQbQB/5/p8t0
+         yTF+rfbYzn76eZ62iP33/xnrNVVh/UZHLtuZe0TeO+Bt15ywNX8cCPskl5sTucJgc55N
+         RUuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785405637; x=1786010437;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=brqEgrC204Q7R2Ht2zUutLTCuoa/Yw12EIf+KqcFosU=;
-        b=Lg29sAoVviiBH+N8ytTLz0j0EpDLI6N49KlrOsE+9gO6V/vS7VaCYQQqKq/kzGmHA0
-         v1VTih5DxixH+dzmGCJfyZPiM3z2VC73XaP1ginqrNAV60Mt8qxP0DqwlmQEb4YJ95tl
-         vSjuwCG0QAquYmDuZ/LA5298U2L3UnmK8rtuE1gXoZIfXOSZe+IPxHMXKplrG2IVLqvR
-         wsrJyMP3M0j4wqiLOVRJv0wxKH1sAEwu+rHGdzrk+SFRywMOETNAZJL9BV3VyL59cA9X
-         qilAco2Ni9BylrkBZ8WaJceCrREuBczb71PmfnkdE7HxbazXv7fx1CnifzuuKrTb/vjo
-         fu1A==
-X-Forwarded-Encrypted: i=1; AHgh+Ro76LF+jhbZduokkdUTpwU/jwoiOwL2c673UQxja36gaXfBxT2CbBZDHeFph/WuInLVaJyh+Vo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFoZ6TqNgdNtJRP4RfBT8pq/pKqdgEiAGlGlxnBgxxs7uY2q3i
-	46PbyaHthK4wN/WaaVId4CEg3T9KIC77FSbkE1bFDSwhIe57JiRdbvornNxQigbW
-X-Gm-Gg: AR+sD13Odm0GOnGP6dlc5ajDhO+p9SG+rtXjAusxLkp94ZOO0Wi4EDxuQ6ol1OF01Ph
-	MjGhFcxGlQFsU8QI71pO+jbMrp2myxaWdZ/ien6cp3t+QN50WPyjbkwHsbBpS9GaPoxKEpeYuhl
-	bMI1G2oKz0psaBrbsitFzVtN3Wm06WQjsJjjzagud64xg9eUDrcSuS3C+LnHyPZpubYyAcYLmQQ
-	TmqIqbwpShWiqJvZw9blS/UT4Z7Kh9e2/V72q2hWzdKARwoion25g7+Aihf6PKOwop0PnlqoY/S
-	tGi7jd/v45TSN9sA3+zhppSMpj8I6fYiu91EqXLjbnNjaHzAqAXRAr/7KJb3Wir33pBWC6t3rUs
-	JwrZZfMqC1mBmVtEoY/D7TpLkQjfsbpOOLFGrcgE3bots6OL21u/xyPC7Wlhxwi9mvxW9Zz8NRo
-	35ZBUURFxBhA+KvIRFxKRi+X2HTanja8OTsXjh2+K9dpLpYxU2c/VExtq2Uk5w2PFQQFSKBDEYw
-	6E00ydQLbPD
-X-Received: by 2002:a05:6000:4a10:b0:47f:9720:4740 with SMTP id ffacd0b85a97d-47fc822dc64mr2244168f8f.37.1785405636307;
-        Thu, 30 Jul 2026 03:00:36 -0700 (PDT)
-Received: from pf-5j7x25.fkb.profitbricks.net ([2001:9e8:482:5000:a5d:311:98af:bd1a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc88e4721sm3984728f8f.16.2026.07.30.03.00.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 03:00:35 -0700 (PDT)
-From: Reshma Sreekumar <reshmaisat@gmail.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Reshma Sreekumar <reshmaisat@gmail.com>
-Subject: [PATCH net 2/2] selftests: net: check that a disturbed qdisc dump is flagged
-Date: Thu, 30 Jul 2026 12:00:06 +0200
-Message-ID: <20260730100006.3547944-3-reshmaisat@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260730100006.3547944-1-reshmaisat@gmail.com>
-References: <20260730100006.3547944-1-reshmaisat@gmail.com>
+        d=1e100.net; s=20251104; t=1785405721; x=1786010521;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QiyZuiTForSAZqWqo/gtIBy3q8EpOKn9So3zlplj93M=;
+        b=kWVVNx092OX3rogW6ktzO04d5A8lgmoEc78g/4+vQSbLtlu4d7L3zCirYxQSstvi72
+         2Pnu2fI41ZvA7t0le/c57BJE6opaIssc5Dae9JcSwye9dZnZ6+FzmYDdtNxP1iYvbB2R
+         kTssxBwz31XlZ3Vjj42cRwDrycc8fkGu4UeWbzS3UPalP3Xit0Fh/zrqqoRljCofO5Gd
+         hBAiZrKGETfGKShnDhYApp7J8COS5V1T/hUJzG5MEydb7w/WnSQ5Pnq9I5itbwmaGPXN
+         pJyJxGv789/HJhXiZUPjldhLcXsa5Cn6zukaXLClxdWrwfMkllMeME1KjeHFQPxrh6Bi
+         Hvtw==
+X-Gm-Message-State: AOJu0YzL+dT1wWPXem4u0KvBmjQ/rdle6rwUgU+wNpsKuxSUksoQDvNJ
+	otq/ibemHpfw7IRjLQF1RXRJ+q+d0hzPfGbzhzWr166bxpxvJP+RWJdFVcGBCUPJULVjP8PGN5B
+	bpUI6O/M7tuhrwFhPgl6KXjZdlmfpF1hCW3X0RkGHYDSVXuMT09W5J5xq3g==
+X-Gm-Gg: AR+sD12R9UDdPt3RxMwfPFeJiDY5UkFLG79v3/Gp0RH7jYDJx6NQnOwNB8pIvIAdH9e
+	iFIf00Zhp9o8VdePm2UZFFGbAGSkYY/uEjNILCajiibzcOE5hoVFXLDFvM/3COQW+M6LCjU7fj7
+	Q4DkvPa/2rBbyFpVAYvMZStQK1PW45fT/mHCYU+cuENMkCDKlt7tfMQEfvAPk3viPzjTSeYZnw/
+	gjx2ohoB9UqhlzX97UV/ZPb4tuyC7L/F9AuDaREVIM1OfcC2SZ6i3L2yi2o0iY8LG7/LLBlPfVY
+	gpkiiwTRNpe0iGmPBxph98lXACND4ecNuugWjw5+Latl6MtEHdYE+QTV9ik+Fu6T+t1kAR43oB+
+	m6k8U8MOcEV7ms5E3Lr5jfO/cucQdwzCpbGocjouFwbBFO/6FjxfrkC0y0FeJUA+dSE/oyxdxJE
+	1pdg==
+X-Received: by 2002:a05:600c:5487:b0:496:bc89:f0f1 with SMTP id 5b1f17b1804b1-49801f1eafamr18738295e9.14.1785405721458;
+        Thu, 30 Jul 2026 03:02:01 -0700 (PDT)
+X-Received: by 2002:a05:600c:5487:b0:496:bc89:f0f1 with SMTP id 5b1f17b1804b1-49801f1eafamr18737955e9.14.1785405720951;
+        Thu, 30 Jul 2026 03:02:00 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-498011e5edesm46969165e9.2.2026.07.30.03.01.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Jul 2026 03:02:00 -0700 (PDT)
+Message-ID: <26c1ea30-e6cb-4f3f-ab88-6d00f0ed2117@redhat.com>
+Date: Thu, 30 Jul 2026 12:01:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] rds: synchronize info callbacks with module
+ unload
+To: Chengfeng Ye <nicoyip.dev@gmail.com>,
+ Allison Henderson <achender@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Santosh Shilimkar <santosh.shilimkar@oracle.com>,
+ Ka-Cheong Poon <ka-cheong.poon@oracle.com>, Dan Carpenter <error27@gmail.com>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
+References: <20260720184955.3008978-1-nicoyip.dev@gmail.com>
+ <20260727174826.135662-1-nicoyip.dev@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260727174826.135662-1-nicoyip.dev@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add a test for NLM_F_DUMP_INTR on RTM_GETQDISC.  A qdisc dump spans several
-netlink batches once a few devices carry a full set of qdiscs, and RTNL is
-only held while a single batch is filled, so the device list can change in
-between and entries can be missed.
+Hi,
 
-Netlink dumps are driven by the reader, so rather than racing against a
-dump the test unregisters a device at a known point: it receives the first
-batch, unregisters a dummy, then drains the rest.  This is deterministic --
-one flagged message, every run.
+It looks like I was too optimistic in my previous reply.
 
-A second case dumps without disturbing anything and requires that the flag
-stays clear, so the test cannot be satisfied by a kernel that raises it
-unconditionally.
+On 7/27/26 7:48 PM, Chengfeng Ye wrote:
+> @@ -78,8 +80,13 @@ void rds_info_register_func(int optname, rds_info_func func)
+>  	BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
+>  
+>  	spin_lock(&rds_info_lock);
+> -	BUG_ON(rds_info_funcs[offset]);
+> -	rds_info_funcs[offset] = func;
+> +	/* Validate the latest published slot value. */
+> +	if (WARN_ON_ONCE(smp_load_acquire(&rds_info_funcs[offset]))) {
 
-Four dummy devices with mq + 16 fq + clsact each, read with a 4KiB buffer,
-give 12 batches and run in about a second.  The test skips if dummy, mq, fq
-or clsact are unavailable.
+This read is under the same lock that perform the store. It's totally
+unclear why smp_load_acquire() would be needed here. Very reasonably
+it's not.
 
-Signed-off-by: Reshma Sreekumar <reshmaisat@gmail.com>
----
- tools/testing/selftests/net/Makefile          |   1 +
- .../testing/selftests/net/qdisc_dump_intr.py  | 123 ++++++++++++++++++
- 2 files changed, 124 insertions(+)
- create mode 100755 tools/testing/selftests/net/qdisc_dump_intr.py
+> +		spin_unlock(&rds_info_lock);
+> +		return;
+> +	}
+> +	/* Pair with lockless callback lookup. */
+> +	smp_store_release(&rds_info_funcs[offset], func);
+>  	spin_unlock(&rds_info_lock);
+>  }
+>  EXPORT_SYMBOL_GPL(rds_info_register_func);
+> @@ -91,9 +98,15 @@ void rds_info_deregister_func(int optname, rds_info_func func)
+>  	BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
+>  
+>  	spin_lock(&rds_info_lock);
+> -	BUG_ON(rds_info_funcs[offset] != func);
+> -	rds_info_funcs[offset] = NULL;
+> +	/* Validate the latest published slot value. */
+> +	if (WARN_ON_ONCE(smp_load_acquire(&rds_info_funcs[offset]) != func)) {
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 708d960ae..769ee26ae 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -72,6 +72,7 @@ TEST_PROGS := \
- 	pmtu.sh \
- 	protodown.sh \
- 	psock_snd.sh \
-+	qdisc_dump_intr.py \
- 	reuseaddr_ports_exhausted.sh \
- 	reuseport_addr_any.sh \
- 	route_hint.sh \
-diff --git a/tools/testing/selftests/net/qdisc_dump_intr.py b/tools/testing/selftests/net/qdisc_dump_intr.py
-new file mode 100755
-index 000000000..9623847f4
---- /dev/null
-+++ b/tools/testing/selftests/net/qdisc_dump_intr.py
-@@ -0,0 +1,123 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+"""
-+Check that a qdisc dump disturbed by a device unregister reports
-+NLM_F_DUMP_INTR.
-+
-+tc_dump_qdisc() walks every netdev in the netns and spans several netlink
-+batches once there are more than a handful of qdiscs.  RTNL is only held
-+while a single batch is filled, so the device list can change in between and
-+the reply can miss entries.  Netlink dumps are driven by the reader, so this
-+test unregisters a device at a known point between two batches rather than
-+racing against one.
-+"""
-+
-+import socket
-+import struct
-+
-+from lib.py import ksft_run, ksft_exit, ksft_true, ksft_pr, KsftSkipEx
-+from lib.py import CmdExitFailure, NetNS, NetNSEnter, ip, tc
-+
-+NETLINK_ROUTE = 0
-+RTM_NEWQDISC = 36
-+RTM_GETQDISC = 38
-+NLMSG_DONE = 3
-+NLM_F_REQUEST = 0x001
-+NLM_F_DUMP = 0x300
-+NLM_F_DUMP_INTR = 0x010
-+
-+NLMSGHDR = "=IHHII"
-+TCMSG_LEN = 20          # struct tcmsg
-+
-+# tc parses handles as hex; 64: keeps the mq root clear of the fq children
-+MQ_HANDLE = "64"
-+CHANNELS = 16           # fq children per device
-+NDEVS = 4               # 4 * (mq + 16 fq + clsact) is several batches worth
-+BUFSZ = 4096            # small recv buffer keeps the kernel's batches small
-+
-+
-+def _setup():
-+    """Devices carrying enough qdiscs that a dump has to paginate."""
-+    try:
-+        for i in range(NDEVS):
-+            ip(f"link add d{i} numtxqueues {CHANNELS} type dummy")
-+            ip(f"link set d{i} up")
-+            tc(f"qdisc replace dev d{i} root handle {MQ_HANDLE}: mq")
-+            for q in range(1, CHANNELS + 1):
-+                tc(f"qdisc replace dev d{i} parent {MQ_HANDLE}:{q:x} "
-+                   f"handle {q:x}: fq")
-+            tc(f"qdisc replace dev d{i} clsact")
-+    except CmdExitFailure as exc:
-+        raise KsftSkipEx("dummy, mq, fq or clsact unavailable") from exc
-+
-+
-+def _dump(between_batches=None):
-+    """
-+    Walk an RTM_GETQDISC dump one batch at a time, optionally running
-+    `between_batches` after the first batch.  Returns (batches, qdiscs,
-+    messages carrying NLM_F_DUMP_INTR).
-+    """
-+    sk = socket.socket(socket.AF_NETLINK, socket.SOCK_RAW, NETLINK_ROUTE)
-+    try:
-+        sk.bind((0, 0))
-+        hdr = struct.pack(NLMSGHDR, struct.calcsize(NLMSGHDR) + TCMSG_LEN,
-+                          RTM_GETQDISC, NLM_F_REQUEST | NLM_F_DUMP, 1, 0)
-+        sk.send(hdr + bytes(TCMSG_LEN))
-+
-+        batches = qdiscs = intr = 0
-+        done = False
-+        while not done:
-+            buf = sk.recv(BUFSZ)
-+            batches += 1
-+            off = 0
-+            while off + 16 <= len(buf):
-+                mlen, mtype, flags = struct.unpack_from("=IHH", buf, off)
-+                if mlen < 16:
-+                    break
-+                if flags & NLM_F_DUMP_INTR:
-+                    intr += 1
-+                if mtype == NLMSG_DONE:
-+                    done = True
-+                elif mtype == RTM_NEWQDISC:
-+                    qdiscs += 1
-+                off += (mlen + 3) & ~3
-+            if batches == 1 and not done and between_batches:
-+                between_batches()
-+        return batches, qdiscs, intr
-+    finally:
-+        sk.close()
-+
-+
-+def dump_intr_on_unregister() -> None:
-+    """Unregistering a device mid-dump must raise NLM_F_DUMP_INTR."""
-+    ip("link add victim type dummy")
-+
-+    batches, qdiscs, intr = _dump(lambda: ip("link del victim"))
-+
-+    ksft_pr(f"{batches} batches, {qdiscs} qdiscs, {intr} flagged messages")
-+    ksft_true(batches > 1, "dump did not paginate, nothing to disturb")
-+    ksft_true(intr > 0,
-+              "NLM_F_DUMP_INTR not set although a device was unregistered "
-+              "while the dump was in flight")
-+
-+
-+def dump_intr_absent_when_stable() -> None:
-+    """An undisturbed dump must not raise NLM_F_DUMP_INTR."""
-+    batches, qdiscs, intr = _dump()
-+
-+    ksft_pr(f"{batches} batches, {qdiscs} qdiscs, {intr} flagged messages")
-+    ksft_true(batches > 1, "dump did not paginate, test is not meaningful")
-+    ksft_true(intr == 0, "NLM_F_DUMP_INTR set on an undisturbed dump")
-+
-+
-+def main() -> None:
-+    with NetNS() as ns:
-+        with NetNSEnter(str(ns)):
-+            _setup()
-+            ksft_run(globs=globals(), case_pfx={"dump_"})
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
--- 
-2.43.0
+Same here.
+
+/P
 
