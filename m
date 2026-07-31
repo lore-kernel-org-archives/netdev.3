@@ -1,56 +1,57 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E4A3A7F48
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958083A450F
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785483617; cv=none; b=AEctwpCtj0CZx9xXmw4RYLqtECFw8Jvqrf4zWoZnK/PSis0w574ZF8issE9ecvIn4YlooRV0fCSemJyY/s7/9MJpzqEePPD7qYIAy8Q3BwC5utJ0VaMswOyk7NCF3VGDeYB2KktGw668SK8DCkiwZkFQpcNlyvVE1E5QaqBpaZM=
+	t=1785483625; cv=none; b=hE7R/T56+Sz3pXFC9qRaZxJ4wz2Mg+BawjedglbZSobfgahji6WztSlgOFFokSUhv8JpYKLXA6AcI5cc3288E7aSwVetSEwRBdFGlDRhHhN5tgPRSMJhwyXzcVhKnE+FPiy+CWYEajNgdHukn6NOCJCVR/wT8Z3wQrvSkejXhoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785483617; c=relaxed/simple;
-	bh=Vc6gQy3bpAIL7wI/wsOK9GFtAR9MX6Wn+qVg3XXFWZk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NveYZC0VJPwi9NffYzr+haYS4j6U/KkzCvrSNmOwrICETy1TOZ7e1BtBSGMcJzqtsSd5YPNPd2oaDocGgqlrJ06THYtHD9LfWKdbToaYOP4l3LEdY6ttSwbF4bUiXFcRTuVcbnngJjTRgm9W7gEc0JBTsJ/6fuUB+rMaUavTWIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IXMdF7TK; arc=none smtp.client-ip=148.163.156.1
+	s=arc-20240116; t=1785483625; c=relaxed/simple;
+	bh=+Hg6Iz/qPGAVH2HXuUmTFvQO5eCaZ1xoDi2W/S1TLHk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=A520/YfaZMMXVhCeV416VVDKQBX+hjJCtpl/sCmr22urcZDfAYda7IwwgMbiY2W3ZKnZHvtnxxtDZ9g8fOADMpHVPKv3s/U3yywnYQ2NTJAg6kyzC/D+5WSOAvpcJ9kNn8x323p8LYbkFBMbqWAJK+tJuXUVeqXh7FJtjZIMGf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=B5KX7M9X; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IXMdF7TK"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66V5Hj1V3252751;
-	Fri, 31 Jul 2026 07:39:46 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="B5KX7M9X"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66V5I4N2975229;
+	Fri, 31 Jul 2026 07:39:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=OM/jPgP+8hnz2owFSSCHYzFo5cC4
-	nIebpSMnv5SHUys=; b=IXMdF7TKKHuSI2d4BU1Z9kcmCpB1zVZ/74Xe9xQlkf+d
-	JrCp2qZtkdWFRtfPwFjsMwoQMFpJEyDsjk9StkNDwcRgeokFYurYyhIc+A7tOb8M
-	i/yoM44BlaAc5aCwEoXRos/403ziniKNUMcKAR3uHxYQNi03MslWmDj6wvw28A+1
-	gtut4HxfPpMbHoiMtxy45IxXSy3EDBYtdpRVv3mgZ5uP2qwSrHH+YJTgFZsCiZoM
-	pk3QASq30m45EDnPrry/ZOO6c9HZREuv/78zMJVBdr4o8g7kptU0SZ17cQbVMrrV
-	f2KvK8R5gQpLE/rAq9jnpT1f45duPRXnk4tUCywV/w==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuycuu2g-1
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=fTjgA/m4QpVivZiMo
+	QzC1lgl6oU+D76RO43IbLRSvdk=; b=B5KX7M9XvyfZk7NPNB0KH2ob5dTHfca8W
+	TCjdOXV8sPsUOEQSePa6uT9UNiV6sEtxlSHJTgtIPjXJttMUK5SfG038DfDvv1JD
+	kaTEyWvxibiEs5EzX32zMgEAzpTEyE4bVn4Gyk4q+aczuI0b+ZJBV7wMlu0jC0ea
+	kwwY/RzpMLAsjO6Eu8+JMHem/hvggTsezvwrkvCIZAK8boqGy02ANs+Sgb9oMNUc
+	edgWuTnbzXL+usheGFUtmxf7vqX/RhnvJYO9kO88yG5oGfAjZD+DnZPEqikfJh/I
+	TRbSbbRhVlY7nAEMpUdyNSAT2pE10QRS2bksjuR/uN2NfaLprXytw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuwdawsr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Jul 2026 07:39:45 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66V7QJjs030825;
-	Fri, 31 Jul 2026 07:39:44 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fn7fqq5bp-1
+	Fri, 31 Jul 2026 07:39:57 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66V7QJ1M002143;
+	Fri, 31 Jul 2026 07:39:56 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8yhpwff-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Jul 2026 07:39:44 +0000 (GMT)
+	Fri, 31 Jul 2026 07:39:56 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66V7dfuY28312042
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66V7dqg617432880
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 Jul 2026 07:39:41 GMT
+	Fri, 31 Jul 2026 07:39:52 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F3B4B20040;
-	Fri, 31 Jul 2026 07:39:40 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 69ED920043;
+	Fri, 31 Jul 2026 07:39:52 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4C41320043;
-	Fri, 31 Jul 2026 07:39:37 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 0409720040;
+	Fri, 31 Jul 2026 07:39:49 +0000 (GMT)
 Received: from li-a84c74cc-2b13-11b2-a85c-acdd023f0674.ibm.com.com (unknown [9.43.125.83])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 31 Jul 2026 07:39:37 +0000 (GMT)
+	Fri, 31 Jul 2026 07:39:48 +0000 (GMT)
 From: Nilay Shroff <nilay@linux.ibm.com>
 To: kbusch@kernel.org, hch@lst.de, hare@suse.de, sagi@grimberg.me,
         chaitanyak@nvidia.com, gjoyce@linux.ibm.com, kuba@kernel.org,
@@ -58,199 +59,236 @@ To: kbusch@kernel.org, hch@lst.de, hare@suse.de, sagi@grimberg.me,
         horms@kernel.org
 Cc: linux-nvme@lists.infradead.org, netdev@vger.kernel.org,
         Nilay Shroff <nilay@linux.ibm.com>
-Subject: [RESEND PATCH v2 0/4] nvme-tcp: NIC topology aware I/O queue scaling and queue info export
-Date: Fri, 31 Jul 2026 13:09:04 +0530
-Message-ID: <20260731073918.614014-1-nilay@linux.ibm.com>
+Subject: [RESEND PATCH v2 3/4] nvme: add debugfs helpers for NVMe drivers
+Date: Fri, 31 Jul 2026 13:09:07 +0530
+Message-ID: <20260731073918.614014-4-nilay@linux.ibm.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260731073918.614014-1-nilay@linux.ibm.com>
+References: <20260731073918.614014-1-nilay@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: VlvQQgoDIOO3QUXYYJKv2qvTRQMmgNd_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDA1MCBTYWx0ZWRfX13kFYXufqI5q
- H2Kc5j1jBBE6wBLDHxVrcdeWo1iqv2uPd4lMt+14iJ+OlYmjBjpKgS8I/UgJlANi9t1mAlOGWIc
- Tyhg49rr42k6PQsDL75xkuhFqwOgqsxIHUOUlG0PShgHe/8bZopYPxvWEe0nlGNu74cef7/9oh6
- CcB2mFBBLmQnB2CyCBNqfMhWDNnEsSE/JI+mwyOaFhil4bBYVvtrOzfknsEHlD/4JF4rSweQHTy
- 6MLDfd2O0qfT18P/Dl9oJoIgvxtv8Fp+NoI0JFateqyN/oyI07JIaIx2nfEr1QM1ZTfdeqyjJL/
- O21Z8D/Ft8JKQfmPKcLaARSqwBDoQKjG9av0E9U0FNL4+vO1pZrPpT9DqtTVQ3eLjY1xF4xL5ex
- HRB5pSvxkzdzM2GB/zC7LYFxCsR9t9jdprCi4jx2ellnLRNg5oIbyCH5f6e25Me4JsKhDEQeNHn
- 2mdVBPdxFGaA9qjktiw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDA1MCBTYWx0ZWRfX/k1exCl0FOmM
- iIvxj26xLHaoiLIjCW2luqnFdVfAgnvqWYwzsIXJpTc06q0XztS4Mufk8XxDtgZktxLX1KRErJ/
- ZPhJeVy9VV4mIpECACzs0/ac+kiLcZ0=
-X-Authority-Analysis: v=2.4 cv=AZeB2XXG c=1 sm=1 tr=0 ts=6a6c5142 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=QMeSkxUhXQUGZ0QmNXkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: t8oL1UliF7Fj2j6WK-b9g7SmqS_izXXP
+X-Proofpoint-ORIG-GUID: 5kj2F2b-JWg5B9vd_rT2RJBVKwZtd734
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDA1MCBTYWx0ZWRfX729/xgJLbFA8
+ 0UgYV55OBRDjtS7d6wUegI00HST0fK+v1pH4uvMPcIHTrGLM0FLvTDAeNQLuAbhzDfQPVY5q9C6
+ acuwjv0hLGZIEVdsa/RUcdcA6UfRC5Q=
+X-Authority-Analysis: v=2.4 cv=E/z9Y6dl c=1 sm=1 tr=0 ts=6a6c514d cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=ooCht5J9LIHKhMPangUA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDA1MCBTYWx0ZWRfX1hnVJ17AarAT
+ tpcD1lgePmoG/AZKcq54h2n5doUDCNKifIPSh7OP94ZlzbIgfwTapQi8g+4VhTVilSqjkPZzwQ5
+ yxdxrGdLixoA+0oHx7lbNwSqcNIPub2OqUWK/7EV1BqyUD2Wktsx2Iwx2aOxe2dQAmFg2t93HnM
+ obV6KMmHsuEuYs9QaGbZ4LvIR5qvVrJd34uwhdOf0GjHdx+DB8JlWaj640fDar/LREl606uAJ4Z
+ oNAcmVnB3dWCXAQbGXfozwoBiEflpADAVOIe+L61VwBR/Bmhb7EMOLGrpKHvKs2k8hOp8vFo683
+ J7QL0u+xKXJPKtsgb/1X07rjwblsTAd2p5HJn75mkEB+glmZyWBKF+fRTrXqsPxgFRPfgleNsgq
+ twwtHp/Cn6BdhvHXNgc89iWSZU1CDktW0EQ84NsAk+zQJaYv0nFukSvSJ5QaB7zrdK2Q9bKTkv3
+ wm9GriEMKYMtpcAZb8Q==
+X-Proofpoint-GUID: 7Op3_dPUT4IPvPTLgazjwCitPPHcalz9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-31_02,2026-07-30_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 phishscore=0 adultscore=0 impostorscore=0
- clxscore=1015 malwarescore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
+ adultscore=0 priorityscore=1501 spamscore=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607310050
 
-Hi,
+Introduce helper APIs that allow NVMe drivers to register and unregister
+debugfs entries, along with a reusable attribute structure for defining
+new debugfs files.
 
-This is a resend of the previous series to include the networking maintainers
-and mailing list. There are no code or commit message changes since the
-previous posting.
+The implementation uses seq_file interfaces to safely expose per-
+namespace or per-path statistics, while supporting both simple show
+callbacks and full seq_operations.
 
-This series has been updated based on the feedback received during LSFMM.
-The changelog is updated accordingly.
+This will be used by subsequent patches to expose NVMe-TCP queue
+and flow information for tuning NVMe TCP I/O workqueue and network stack
+components.
 
-The NVMe/TCP host driver currently provisions I/O queues primarily based
-on CPU availability rather than the capabilities and topology of the
-underlying network interface.
-
-On modern systems with many CPUs but fewer NIC hardware queues, this can
-lead to multiple NVMe/TCP I/O workers contending for the same TX/RX queue,
-resulting in increased lock contention, cacheline bouncing, and degraded
-throughput.
-
-This RFC proposes a set of changes to better align NVMe/TCP I/O queues
-with NIC queue resources, and to expose queue/flow information to enable
-more effective system-level tuning.
-
-Key ideas
----------
-
-1. Scale NVMe/TCP I/O queues based on NIC queue count
-   Instead of relying solely on CPU count, limit the number of I/O workers
-   to:
-       min(num_online_cpus, netdev->real_num_{tx,rx}_queues)
-
-2. Improve CPU locality
-   Align NVMe/TCP I/O workers with CPUs associated with NIC IRQ affinity
-   to reduce cross-CPU traffic and improve cache locality.
-
-3. Expose queue and flow information via debugfs
-   Export per-I/O queue information including:
-       - queue id (qid)
-       - CPU affinity
-       - TCP flow (src/dst IP and ports)
-
-   This enables userspace tools to configure:
-       - IRQ affinity
-       - RPS/XPS
-       - ntuple steering
-       - or any other scaling as deemed feasible
-
-4. Provide infrastructure for extensible debugfs support in NVMe
-
-Together, these changes allow better alignment of:
-    flow -> NIC queue -> IRQ -> CPU -> NVMe/TCP I/O worker
-
-Performance Evaluation
-----------------------
-Tests were conducted using fio over NVMe/TCP with the following parameters:
-    ioengine=io_uring
-    direct=1
-    bs=4k
-    numjobs=<#nic-queues>
-    iodepth=64
-System:
-    CPUs: 72
-    NIC: 100G mlx5
-
-Two configurations were evaluated.
-
-Scenario 1: NIC queues < CPU count
-----------------------------------
-- CPUs: 72
-- NIC queues: 32
-
-                Baseline        Patched        Patched + tuning
-randread        3141 MB/s       3228 MB/s      7509 MB/s
-                (767k IOPS)     (788k IOPS)    (1833k IOPS)
-
-randwrite       4510 MB/s       6172 MB/s      7518 MB/s
-                (1101k IOPS)    (1507k IOPS)   (1836k IOPS)
-
-randrw (read)   2156 MB/s       2560 MB/s      3932 MB/s
-                (526k IOPS)     (625k IOPS)    (960k IOPS)
-
-randrw (write)  2155 MB/s       2560 MB/s      3932 MB/s
-                (526k IOPS)     (625k IOPS)    (960k IOPS)
-
-Observation:
-When CPU count exceeds NIC queue count, the baseline configuration
-suffers from queue contention. The proposed changes provide modest
-improvements on their own, and when combined with queue-aware tuning
-(IRQ affinity, ntuple steering, and CPU alignment), enable up to 
-~1.5x–2.5x throughput improvement.
-
-Scenario 2: NIC queues == CPU count
------------------------------------
-
-- CPUs: 72
-- NIC queues: 72
-
-                Baseline                Patched + tuning
-randread        4310 MB/s               7987 MB/s
-                (1052k IOPS)            (1950k IOPS)
-
-randwrite       7947 MB/s               7972 MB/s
-                (1940k IOPS)            (1946k IOPS)
-
-randrw (read)   3583 MB/s               4030 MB/s
-                (875k IOPS)             (984k IOPS)
-
-randrw (write)  3583 MB/s               4029 MB/s
-                (875k IOPS)             (984k IOPS)
-
-Observation:
-When NIC queues are already aligned with CPU count, the baseline performs
-well. The proposed changes maintain write performance (no regression) and
-still improve read and mixed workloads due to better flow-to-CPU locality.
-
-Notes on tuning
----------------
-The "patched + tuning" configuration includes:
-    - aligning NVMe/TCP I/O workers with NIC queue count
-    - IRQ affinity configuration per RX queue
-    - ntuple-based flow steering
-    - CPU/queue affinity alignment
-
-These tuning steps are enabled by the queue/flow information exposed through
-this patchset.
-
-As usual, feedback/comment/suggestions are most welcome!
-
-Changes from v1:
-  - remove the "match-hw-queues" fabric option; always limit the number
-    of NVMe/TCP I/O queues to min(num_online_cpus, num_nic_queues)
-  - drop the diagnostic patch reporting NIC queue underutilization
-  - split the netdev helper into a separate patch
-  - move the netdev helper implementation to net/core/dev.c
- 
-Link to v1: https://lore.kernel.org/all/20260420115716.3071293-1-nilay@linux.ibm.com/
-
-Nilay Shroff (4):
-  net: add helper for device lookup by destination address
-  nvme-tcp: limit I/O queue count based on NIC queue count
-  nvme: add debugfs helpers for NVMe drivers
-  nvme: expose queue information via debugfs
-
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+---
  drivers/nvme/host/Makefile  |   2 +-
- drivers/nvme/host/core.c    |   3 +
- drivers/nvme/host/debugfs.c | 191 ++++++++++++++++++++++++++++++++++++
- drivers/nvme/host/nvme.h    |  12 +++
- drivers/nvme/host/tcp.c     | 115 ++++++++++++++++++++++
- include/linux/netdevice.h   |   5 +
- net/core/dev.c              |  84 ++++++++++++++++
- 7 files changed, 411 insertions(+), 1 deletion(-)
+ drivers/nvme/host/debugfs.c | 129 ++++++++++++++++++++++++++++++++++++
+ drivers/nvme/host/nvme.h    |  10 +++
+ 3 files changed, 140 insertions(+), 1 deletion(-)
  create mode 100644 drivers/nvme/host/debugfs.c
 
+diff --git a/drivers/nvme/host/Makefile b/drivers/nvme/host/Makefile
+index 6414ec968f99..7962dfc3b2ad 100644
+--- a/drivers/nvme/host/Makefile
++++ b/drivers/nvme/host/Makefile
+@@ -10,7 +10,7 @@ obj-$(CONFIG_NVME_FC)			+= nvme-fc.o
+ obj-$(CONFIG_NVME_TCP)			+= nvme-tcp.o
+ obj-$(CONFIG_NVME_APPLE)		+= nvme-apple.o
+ 
+-nvme-core-y				+= core.o ioctl.o sysfs.o pr.o
++nvme-core-y				+= core.o ioctl.o sysfs.o pr.o debugfs.o
+ nvme-core-$(CONFIG_NVME_VERBOSE_ERRORS)	+= constants.o
+ nvme-core-$(CONFIG_TRACING)		+= trace.o
+ nvme-core-$(CONFIG_NVME_MULTIPATH)	+= multipath.o
+diff --git a/drivers/nvme/host/debugfs.c b/drivers/nvme/host/debugfs.c
+new file mode 100644
+index 000000000000..b4802ea3bd48
+--- /dev/null
++++ b/drivers/nvme/host/debugfs.c
+@@ -0,0 +1,129 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2026 IBM Corporation
++ *	Nilay Shroff <nilay@linux.ibm.com>
++ */
++
++#include <linux/debugfs.h>
++#include <linux/seq_file.h>
++#include <linux/slab.h>
++
++#include "nvme.h"
++
++struct nvme_debugfs_attr {
++	const char *name;
++	umode_t mode;
++	int (*show)(void *data, struct seq_file *m);
++	const struct seq_operations *seq_ops;
++	bool (*get)(void *data);
++	void (*put)(void *data);
++};
++
++struct nvme_debugfs_ctx {
++	void *data;
++	struct nvme_debugfs_attr *attr;
++};
++
++static int nvme_debugfs_show(struct seq_file *m, void *v)
++{
++	struct nvme_debugfs_ctx *ctx = m->private;
++	void *data = ctx->data;
++	struct nvme_debugfs_attr *attr = ctx->attr;
++
++	return attr->show(data, m);
++}
++
++static int nvme_debugfs_open(struct inode *inode, struct file *file)
++{
++	void *data = inode->i_private;
++	struct nvme_debugfs_attr *attr = debugfs_get_aux(file);
++	struct nvme_debugfs_ctx *ctx;
++	struct seq_file *m;
++	int ret;
++
++	if (attr->get && !attr->get(data))
++		return -ENODEV;
++
++	ctx = kzalloc_obj(*ctx);
++	if (WARN_ON_ONCE(!ctx)) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	ctx->data = data;
++	ctx->attr = attr;
++
++	if (attr->seq_ops) {
++		ret = seq_open(file, attr->seq_ops);
++		if (ret)
++			goto out_free;
++
++		m = file->private_data;
++		m->private = ctx;
++		return ret;
++	}
++
++	if (WARN_ON_ONCE(!attr->show)) {
++		ret = -EPERM;
++		goto out_free;
++	}
++
++	ret = single_open(file, nvme_debugfs_show, ctx);
++	if (!ret)
++		return ret;
++
++out_free:
++	kfree(ctx);
++out:
++	if (attr->put)
++		attr->put(data);
++	return ret;
++}
++
++static int nvme_debugfs_release(struct inode *inode, struct file *file)
++{
++	struct seq_file *m = file->private_data;
++	struct nvme_debugfs_ctx *ctx = m->private;
++	struct nvme_debugfs_attr *attr = ctx->attr;
++	int ret;
++
++	if (attr->seq_ops)
++		ret = seq_release(inode, file);
++	else
++		ret = single_release(inode, file);
++
++	if (attr->put)
++		attr->put(ctx->data);
++
++	kfree(ctx);
++	return ret;
++}
++
++static const struct file_operations nvme_debugfs_fops = {
++	.owner   = THIS_MODULE,
++	.open    = nvme_debugfs_open,
++	.read    = seq_read,
++	.llseek  = seq_lseek,
++	.release = nvme_debugfs_release,
++};
++
++static const struct nvme_debugfs_attr nvme_ns_debugfs_attrs[] = {
++	{},
++};
++
++static void nvme_debugfs_create_files(struct request_queue *q,
++		const struct nvme_debugfs_attr *attr, void *data)
++{
++	if (WARN_ON_ONCE(!q->debugfs_dir))
++		return;
++
++	for (; attr->name; attr++)
++		debugfs_create_file_aux(attr->name, attr->mode, q->debugfs_dir,
++				data, (void *)attr, &nvme_debugfs_fops);
++}
++
++void nvme_debugfs_register(struct gendisk *disk)
++{
++	nvme_debugfs_create_files(disk->queue, nvme_ns_debugfs_attrs,
++			disk->private_data);
++}
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 824651cc898d..72f9d9c668a1 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -474,6 +474,16 @@ struct nvme_ctrl {
+ 	u16			awupf; /* 0's based value. */
+ };
+ 
++void nvme_debugfs_register(struct gendisk *disk);
++static inline void nvme_debugfs_unregister(struct gendisk *disk)
++{
++	/*
++	 * Nothing to do for now. When the request queue is unregistered,
++	 * all files under q->debugfs_dir are recursively deleted.
++	 * This is just a placeholder; the compiler will optimize it out.
++	 */
++}
++
+ static inline enum nvme_ctrl_state nvme_ctrl_state(struct nvme_ctrl *ctrl)
+ {
+ 	return READ_ONCE(ctrl->state);
 -- 
 2.53.0
 
