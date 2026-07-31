@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AF830567D;
-	Fri, 31 Jul 2026 01:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9652F7EFE;
+	Fri, 31 Jul 2026 01:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785461431; cv=none; b=sXjlFeAct4Ec0X3aPJvmWSbJ+H/5JVlVgzjAiW41YHDgyAoumJdXl2q+cKXYUVHrEhp4N/rxrzdNy56g4G0EjxuT/XCQlkq00kzFVxGWdljUB59OxTTis8WHsjP9BehuBry8rd84zSIMb4Q81++XL+J8x66E9dNO9/MMnRWQ/iE=
+	t=1785461432; cv=none; b=eA89KUMSoRpnxQFKb32Lb9f6JFheFNlX77i0+vqpZtyZGxiiFkQ3I948w2sVs9I+ERcIS5gTfa1/aBQHZ9pqFW/e1LCLUQgZUi/tyIda+H0VPDFkeNOj/SMsMN335k+p9Xtg/yDrbshRseZycXivR1X1JGJ43RGoO/pY5ADjBDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785461431; c=relaxed/simple;
-	bh=fZi4jVfPsujVUdGj8sZ0uehBREvQuWGw4rD2/QI7/Jk=;
+	s=arc-20240116; t=1785461432; c=relaxed/simple;
+	bh=ZJg4Tbkx4zEWG/RUSmAXR5v72+cebG7ZfbdODsW0Z08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=spWv09RHOtTlrSpVEkY1tpHeBwYrKfPhYp84hWvTxAsBNYttb18w0Ob+Iykcegjgoa3oi4NUIQGdq1Xrr78ZoIIchu6Z+fl85cBSaPk9h368M0GYAIL7j0tCttlYS0DvDxmtIqqPMvInvpc1nlhBqobYhHGs+qtYHuHhfzsOceo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ssu1gW1C; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=IFTSfZOhlC8hGYKKmvoocx83cj1Ag9ajiW3kUf3WVtrF+ZGsDTC2Ns64PEVYRr5s2uDZp5x0ItysYxUnoADhts9H9OHJ/+wmVjTwP2PRHh1noJ0md8gJd/xflspBRqSwvBvltrjVd3wJ8o5wnfOTgRodRV1/HgEPExDZ1QqNKEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cUHa3M/f; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ssu1gW1C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8BA1F00A3A;
-	Fri, 31 Jul 2026 01:30:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cUHa3M/f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D861F000E9;
+	Fri, 31 Jul 2026 01:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785461429;
-	bh=LRjT+KAX8gcZXAISOAOkgM/iAzcME+Bdl+E5ixUjZBM=;
+	s=k20260515; t=1785461431;
+	bh=tO4akjwUPHMhgTErtbLTcBL2x6FVO2cY0DLEncCKQdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ssu1gW1CqaAPzsPfOjudekF4xh4DW0o3HAu/JKsKyNDx6PlqUxJwwbNzFtludx0zI
-	 3S4tggL6IVdQJHA2V2Zt+ZCC6fh2ybtx+0F7WEZ5/NPQAalkymrLMMJh4r1r9ugxdx
-	 muw2AE40/UhTdECPHEgO7qpkK8iXhoSklFbIl1cfMs/UyQmLnkT7UKircOyxSkpKzc
-	 sR5KVvJsehD1pt3DDkDqGRL2L5vBWfaTbEt1a/QYDssrZIIesnvEsLHJ8P0vnIixjL
-	 6jqlgeECrj1lct7521y94G3Mk4HVCPAwiuHK8QfLGEekODWJbEsdKLL6sSmah8rsHM
-	 rsgawGhex4hhg==
+	b=cUHa3M/ft0GJq/sZ6PXKF2DV/PTcbWWW5GYhCZYL9YshDCZEy/nw4MAxvL7FncaXq
+	 SFoz8PbMbzw/AJajjlT9u/fsKCgG9zvtityAqT3BtQw7/I1PH1RePSzW5JNg6xxqRC
+	 Jtqv90qjwe9sxBvrbuKR3HWpHbeLc9tzDSVcqqAdHGsI082FTm6HoySf/s97OADVzI
+	 XLuJzj4n1hDyD0ZNKkx0viN51rgtRT28+FaJYCvHgRoxO+5FJKaJc2ylRbCllk6RAM
+	 Oq/bGWabBqteW2dEah6ugaz6iPtcPPdpu5LNSyQUo4ehsHaF9+Wg1PjUKl3JjXQtOf
+	 PG7QKZSnPNJ9A==
 From: Jakub Kicinski <kuba@kernel.org>
 To: illusion.wang@nebula-matrix.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -45,12 +45,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	skhan@linuxfoundation.org,
 	hkallweit1@gmail.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v22 net-next 04/12] net/nebula-matrix: add channel layer
-Date: Thu, 30 Jul 2026 18:30:28 -0700
-Message-ID: <20260731013028.745006-1-kuba@kernel.org>
+Subject: Re: [PATCH v22 net-next 05/12] net/nebula-matrix: add common resource implementation
+Date: Thu, 30 Jul 2026 18:30:29 -0700
+Message-ID: <20260731013029.745041-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260723040110.91410-5-illusion.wang@nebula-matrix.com>
-References: <20260723040110.91410-5-illusion.wang@nebula-matrix.com>
+In-Reply-To: <20260723040110.91410-6-illusion.wang@nebula-matrix.com>
+References: <20260723040110.91410-6-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,166 +62,47 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
---- Patch [4]: [PATCH v22 net-next 04/12] net/nebula-matrix: add channel layer ---
-commit 52547754390ebdc264a4b6a5c891b4ecfbcd56a7
+--- Patch [5]: [PATCH v22 net-next 05/12] net/nebula-matrix: add common resource implementation ---
+commit d40e580d6fb636a87bb6f2eb1a3079e1e85c78a0
 Author: illusion wang <illusion.wang@nebula-matrix.com>
 
-net/nebula-matrix: add channel layer
+net/nebula-matrix: add common resource implementation
 
-This patch introduces a channel management layer for the Nebula Matrix
-driver to handle communication between different components and drivers.
-It adds support for mailbox channels, queue initialization, hardware
-abstraction, and interrupt-driven receive paths with waitqueues for
-transmission.
+The patch introduces the common resource implementation for the Nebula
+Matrix driver. It provides conversions among vsi_id, func_id, eth_id,
+and pf_id, and sets up initialization for the control devices.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
-> new file mode 100644
-> index 0000000000000..85218f826f59d
-> --- /dev/null
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+> index b37df49f86c80..4c7eea24c70ed 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
 [ ... ]
-> +static void nbl_chan_clean_queue(struct nbl_channel_mgt *chan_mgt,
-> +				 struct nbl_chan_info *chan_info)
+> @@ -133,6 +154,14 @@ static u32 nbl_hw_get_host_pf_mask(struct nbl_hw_mgt *hw_mgt)
+>  	return data;
+>  }
+>  
+> +static u8 nbl_hw_get_real_bus(struct nbl_hw_mgt *hw_mgt)
 > +{
-[ ... ]
-> +	rxq->next_to_clean = next_to_clean;
-> +	/* add READ_ONCE check to avoid UAF when clean_task is null*/
-> +	if (more_work && READ_ONCE(chan_info->clean_task))
-> +		schedule_work(chan_info->clean_task);
+> +	u32 data;
+> +
+> +	data = nbl_hw_rd32(hw_mgt, NBL_PCIE_HOST_TL_CFG_BUSDEV);
+
+[Severity: High]
+Will this cause a kernel panic due to an out-of-bounds MMIO read?
+
+During device initialization, nbl_res_ctrl_dev_sriov_info_init() calls
+hw_ops->get_real_bus(), which performs an MMIO read on
+NBL_PCIE_HOST_TL_CFG_BUSDEV.
+
+Since NBL_PCIE_HOST_TL_CFG_BUSDEV is defined using NBL_INTF_HOST_PCIE_BASE
+(which is roughly a 21 MiB offset), and the driver only maps a 16 MiB PCI
+BAR during nbl_hw_init_leonis(), this appears to read from an unmapped
+physical address.
+
+Similarly, the call to hw_ops->get_host_pf_mask() from nbl_res_init_pf_num()
+will read from NBL_PCIE_HOST_K_PF_MASK_REG, which also evaluates to an
+out-of-bounds register address.
+
+> +	return FIELD_GET(NBL_PCIE_BUS_MASK, data);
 > +}
-
-[Severity: High]
-Can this result in a NULL pointer dereference if chan_info->clean_task is
-cleared concurrently?
-
-When calling schedule_work(chan_info->clean_task), the compiler fetches the
-pointer from memory a second time. If nbl_chan_teardown_queue() sets
-chan_info->clean_task = NULL right after the READ_ONCE() check but before
-the schedule_work() call, wouldn't a NULL pointer be passed to the workqueue
-API? Could a local variable be used to cache the pointer to avoid this?
-
-[ ... ]
-> +static int nbl_chan_teardown_queue(struct nbl_channel_mgt *chan_mgt,
-> +				   u8 chan_type)
-> +{
-> +	struct nbl_chan_info *chan_info = chan_mgt->chan_info[chan_type];
-> +	struct nbl_chan_waitqueue_head *wait_head;
-> +	u16 i;
 > +
-> +	/* Step 1: Mark shutdown flag, reject all new send requests */
-> +	WRITE_ONCE(chan_info->shutdown, true);
-> +
-> +	/* Stop hardware queues */
-> +	nbl_chan_stop_queue(chan_mgt);
-> +
-> +	/* Cancel any pending cleanup work */
-> +	if (chan_info->clean_task) {
-> +		cancel_work_sync(chan_info->clean_task);
-> +		chan_info->clean_task = NULL;
-> +	}
-> +	for (i = 0; i < chan_info->num_txq_entries; i++) {
-[ ... ]
-> +	}
-> +
-> +	/* Step 2: Wait all in-flight send_msg threads exit via counter */
-> +	while (atomic_read(&chan_info->inflight_tx_cnt) != 0) {
-> +		/* synchronize atomic counter load with other CPUs */
-> +		smp_rmb();
-> +		usleep_range(100, 1000);
-> +	}
-> +	return 0;
-> +}
-
-[Severity: High]
-Is cancel_work_sync() called too early here?
-
-Since cancel_work_sync() is called before waiting for inflight_tx_cnt to
-drain, could an in-flight sender thread currently executing its polling loop
-call queue_work() concurrently after the cancellation is finished? This
-might leave pending work in the queue that executes after the device has been
-torn down, causing a use-after-free regression.
-
-[ ... ]
-> +static int nbl_chan_send_msg(struct nbl_channel_mgt *chan_mgt,
-> +			     struct nbl_chan_send_info *chan_send)
-> +{
-[ ... ]
-> +	/* Reject new send if shutdown already triggered */
-> +	if (READ_ONCE(chan_info->shutdown))
-> +		return -ESHUTDOWN;
-> +	/* Ensure shutdown load is ordered before inflight counter increment */
-> +	smp_rmb();
-> +	atomic_inc(&chan_info->inflight_tx_cnt);
-
-[Severity: High]
-Does this sequence create a TOCTOU race with nbl_chan_teardown_queue()?
-
-If a sender thread checks READ_ONCE(chan_info->shutdown) and it is false,
-but the thread is then preempted before incrementing inflight_tx_cnt,
-could nbl_chan_teardown_queue() set shutdown = true, observe the counter
-is 0, and proceed to free resources? When the sender resumes, wouldn't it
-increment the counter and access destroyed queues?
-
-[ ... ]
-> +	if (test_bit(NBL_CHAN_INTERRUPT_READY, chan_info->state)) {
-> +		spin_lock_irq(&wait_head->status_lock);
-> +		while (!READ_ONCE(wait_head->acked)) {
-> +			spin_unlock_irq(&wait_head->status_lock);
-> +			ret = wait_event_timeout(wait_head->wait_queue,
-> +						 READ_ONCE(wait_head->acked),
-> +						 NBL_CHAN_ACK_WAIT_TIME);
-> +			spin_lock_irq(&wait_head->status_lock);
-> +
-> +			if (READ_ONCE(chan_info->shutdown)) {
-> +				ret = -ESHUTDOWN;
-> +				goto inflight_dec_out;
-> +			}
-
-[Severity: Critical]
-Does this error path leak the spinlock and leave interrupts disabled?
-
-Since spin_lock_irq(&wait_head->status_lock) was called right before this
-check, and the inflight_dec_out label simply decrements the counter and
-returns, shouldn't spin_unlock_irq() be called before taking this goto?
-
-> +			if (ret == 0) {
-> +				if (READ_ONCE(wait_head->status) ==
-> +				    NBL_MBX_STATUS_WAITING) {
-> +					wait_head->status =
-> +						NBL_MBX_STATUS_TIMEOUT;
-> +					wait_head->acked = 0;
-> +					wait_head->ack_data = NULL;
-> +					wait_head->ack_data_len = 0;
-> +				}
-> +				spin_unlock_irq(&wait_head->status_lock);
-> +				dev_err(dev,
-> +					"Channel waiting ack failed, message type: %d, msg id: %u\n",
-> +					chan_send->msg_type, msgid);
-> +				goto inflight_dec_out;
-> +			}
-
-[Severity: High]
-When wait_event_timeout() times out, it returns 0. If this path is taken,
-will the function incorrectly return 0 (success) instead of -ETIMEDOUT to
-the caller? This might lead callers to believe the transmission succeeded and
-read uninitialized response buffers.
-
-[ ... ]
-> +	/* Polling: only init/deinit, add shutdown detect to avoid deadlock */
-> +	while (i--) {
-> +		if (READ_ONCE(chan_info->shutdown)) {
-> +			ret = -ESHUTDOWN;
-> +			goto inflight_dec_out;
-> +		}
-> +		/* Order shutdown read before accessing clean_task/workqueue */
-> +		smp_rmb();
-> +		if (READ_ONCE(chan_info->clean_task) && common->wq)
-> +			queue_work(common->wq, chan_info->clean_task);
-
-[Severity: High]
-Could this suffer from the same double-read TOCTOU race as in
-nbl_chan_clean_queue()?
-
-If chan_info->clean_task is set to NULL after the READ_ONCE() check but
-before queue_work() evaluates its arguments, could this pass a NULL pointer
-to the workqueue core?
