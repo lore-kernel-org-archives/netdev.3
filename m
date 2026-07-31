@@ -1,167 +1,126 @@
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3893030C60F
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 13:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785505785; cv=pass; b=QWoxtLM++EqzInQ5KuBzbDZjk2yZkZ99pyityRR8fXx8t9reuxJ/WoWcSfjQZmdB6N1n3M+flkc3IihzMOsjoTCjCETLCjWQ9LDHYbZjMuWkhvGzUcm9NW8OR5e+oEvJ7ukuJ1hEsiFvu9Y9kj+74T+oGvwP2tvUDyGEorbuZQ8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785505785; c=relaxed/simple;
-	bh=YZ9CkSlTlrJLbh1WOVmHl9IAHWd1C2X3EZjHD0e7Bls=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UQVQzo6oacdEP3EAxEgyADAKeZHbUVMA2qzhBpU919blAkoUhLeM7takf9L05Vlw7WqS7DgMnHtYVtf+AFhg9jSXg91ILoloDxrEP8eP9lqe1NWgM0DJ/PsOgymvyAJI0pjgBpy7ZuaJHWfpKMi1mKx44HZ5AJgfRZCUWwUwcGE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qg2MeH0a; arc=pass smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E9930C171
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 13:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785505853; cv=none; b=muCByjJj/PCkuV7fuXFiSIbBlUyMUhDbfo5b+4oFUr4NCEFTVTq0oxk1pPEGb882uIjgGk3fFW517FyG6mOCkinexv94McIo6C1nfAM1h1ozEEy7Vx5khpeeynuIZ/lDE9eIlIgOFH1g2pQkylUZ+USw6UjXDmuw22MctYuzLF4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785505853; c=relaxed/simple;
+	bh=f8yZkcVmz8X/zJe6i68UctVtU3pEPajP9RKDHAr2/cQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sQLw71P9RlsU60duo+hPUn2y+JEtW4rND3yrbXTXcjIIqv4OVezSEhrrHoVEJNcy3BXNi9yuJrNNSmA7l8PDV0pbjPt35TPqdIidcnE2vzDwPwdZ33bjuWX6dYsKOucgvC+KVAjyyqTdY2Iu1Is208AwEeihfP7BBoj/+VfEyws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEsPXWSO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qg2MeH0a"
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-4ab47c40e7eso406075b6e.3
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 06:49:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785505779; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WQiVOKJHGrPI44baxXAxgwAPUOVPwU5/PUlMqQYg+r+6SQLEUM20qeoS5yE7CYlSB1
-         YhfIw+QDiOoTdZ0bzjiL0NwXy2kusfyRDyI92WzqNOyeHWzWWGZOzCP9L0HHT0OzQYHI
-         6g7DJ+uD0uaCBshsGUSA71q6R5Ot6OTOvR+a6tRRD/Oh+k1UW/oL/icSzdtzTDLTHx94
-         3rm9DfPdJUVSKJMJOg+tVW+hDzhxFpmnP0tFPxz+0huqBKr/9ZNYDReU/xrMrrsoKB8T
-         s20xY5Q3xKHkpNnL2kH6MVjp1UbimrXd/Tn7B3msWSuSuZ2SInipZW9mjzVk3KgpEtoV
-         sEgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sCROSErOvst+rw5J7GR2giK0/Qqz2Z7mQAMi+70946Y=;
-        fh=sB2nt6D219ubEkZ6UHorFi8YGC2jjW9Uv9lyWG/hwO0=;
-        b=FvOu87ISr7fvs5VppfsGoZoclOhES15HUbGo9TB0k2dIsijJL7NkGFeUdNRMTEx2/X
-         n7bNJxHOaX8klVvfYDDG731dYR0kkkQOl2V2RW3ss2wtsF3GSeIl9h8Pnsl05lN5QVaJ
-         MfTiL0u/fztEO3wqU1h0ThYPxQRQNHM16opZaDuApK8SahmuiidVrjsT80UpvAB5XG8/
-         utHs7M67/3cgdqeBvgUAqQekpWPv4NwUfCQ93XNrQQp2adaz9MUKc5cywBzS/wOzAbzV
-         GcWvGL8doo4YQ2OcTX7vmv7nPnBzpJrbw6RbfeJZAvempaR25GRIVUuzZu9ORLw7fg8J
-         vU8w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785505779; x=1786110579; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sCROSErOvst+rw5J7GR2giK0/Qqz2Z7mQAMi+70946Y=;
-        b=Qg2MeH0ar3dUWrbDhSdYL1mOObW9k9LRK0A3OVYEpDmZ9FnXWsT7igVPlFGgqvvulC
-         SEU4FNfXsgm/aXDMO9ovfvPlpzJRkcy9/o815pDSQCXZqDkJV0FN4O2IUBHMohHcQA+b
-         uXfK7p+v7QG/SLw8/VpRTna5SbfT1DUP3s23k37LnJ80wOdbyXF9Z9zkabP5oA6hvra9
-         QXKfbbu22Vml+oBs0T7o7oSwMO1pU5vw4uLUarpDlH2PUqyWgUASyo4FI/x3MXLKlRun
-         6ccLa0rUo9ig8Yz5+DSB/CIOkfgXgMtsJ5FAfWI+aO35Z1BRDxGqSMnzJ+wQNLJsvyh4
-         zryg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785505779; x=1786110579;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sCROSErOvst+rw5J7GR2giK0/Qqz2Z7mQAMi+70946Y=;
-        b=eSeoLG6aaPmqo3S/g2u3CSqsgdXlvXxqnucesfD3szeGuPtJ/bvadaoZ/8IwExMbtb
-         7bQVkJLYELaFwOdSTn2qJy4kKJgUdK8FUZtv708aGFSDR9zBqdpP7BnbeecZNlErbpJT
-         2uc1jAuzHAVTztMOLbBL67TX6djtfsx0r+EWyKwAZzyzGear8UpSFAook0BaN6wrf1vg
-         SNh5uHeK3eFE9VvYxxSSCMxtPw4gG2m9bljhiXapsa9bn8Y8CHBpK6BBeXlZfCAmlu0n
-         8yMGkVhRr5zbFjdcUqo0Db+ufn3lADZ5hNCJcflhCRvntemDiwo4dbb0iMGhk88V1Ozn
-         +Ewg==
-X-Forwarded-Encrypted: i=1; AHgh+RqE4z7cKohtQkgSnKWxBqoXsPgwjqqPVP2jOZNPYkVgKwWQNb+TZpZ9UOoO2NiNn/YXO9KPrRo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLfyoGTwS9mWlEXFsSDYk3ktSJ7/P6XB/SxnZhSA8ghscB7LIc
-	b76tiUNlEFscgScmVI2TFhrWruYNhss/XicUKueOmp5fW8O6vxQPRI6K4FaMhb83dbj/9ZslB4I
-	tSZpRN9UwbEJD/FygmDZIz9bpp49CFek=
-X-Gm-Gg: AR+sD13hqjS07Gj3RjpERFt1P74eMhom0iVwbKcaDChgynP2FU8IMXRvkZa4NF3qlil
-	r/wfxblamfUl1cmrDUTfwKEIPYw1E6jW4QdwVOTyri0tC0LMOvQelFxLIMywu+WftgfF8fn/ymY
-	v/4RVlR8KlC9LLCwuSA56Z4ooT5JsPVsok9w0iEVNVGna0V00YNWDK9R1fuk9ZVGQW7OZRS/A2G
-	pcFIBagbaMSCiWsDgp8t2P4YxC7rv9ZnBsk6e6GkRvhTtNy5BL9dyIzDojS+s4ioU6ub9cqB1es
-	vtY/0zgWnFOq8wclcxHaRamyuhqfTxbtslCgMGaeajU07qsgHxPBxOAIhkpqEytQDQYSHLVWWRG
-	m
-X-Received: by 2002:a05:6808:344c:b0:4ab:2abe:f031 with SMTP id
- 5614622812f47-4ae4c42b8a4mr2564917b6e.6.1785505779353; Fri, 31 Jul 2026
- 06:49:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEsPXWSO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8932A1F000E9;
+	Fri, 31 Jul 2026 13:50:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785505852;
+	bh=cZCns3eWuLSsfgbb38uCl9MT+3a/TtYnxE2Kh2kGIes=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hEsPXWSO62Ii5srd6RJOu9pQ6CzvjX2FYvxD2hZV+g2UJYfHfH3Sh3APDIpxxdyvA
+	 muv8i6Ny0OZZimwJ5iWjupr6kLKe9fVJEY35WcpEnbfh3mhh+db8NUUHC1GkFw4Zoo
+	 UKy8no5XXTQBq/xxKd0iA5Wx3Bp1Cb7Hi2noHQ2GnxpKqh/neRX3y7waE3NRouyvl9
+	 6s/2yqmlaLb5DB3apoXf2Ih988V/U86A6YzjGcRd1TC1rpWft/YVx73cAL3bMNEs1y
+	 DH79FmpNrh9Spuvp6TkQi4SM9tHBKNt3MRUZ6hdCuyNr+iQ3KLbSgFRUw3V75I/9+B
+	 +/4XKYtJX8DBg==
+Date: Fri, 31 Jul 2026 14:50:46 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Rongguang Wei <weirongguang@kylinos.cn>,
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>,
+	Joe Damato <joe@dama.to>, Larysa Zaremba <larysa.zaremba@intel.com>
+Subject: Re: [PATCH net] net: ngbe: fix NULL pointer dereference in non-MSI-X
+ interrupt enabling
+Message-ID: <20260731135046.GI51943@horms.kernel.org>
+References: <21947C51A754F86C+20260728093554.9324-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260730100006.3547944-1-reshmaisat@gmail.com>
- <20260730100006.3547944-2-reshmaisat@gmail.com> <CANn89iLqLYAE_ZbK8F1HNop7nVPAR8AaMD2ojk+XuCNomJPEUg@mail.gmail.com>
-In-Reply-To: <CANn89iLqLYAE_ZbK8F1HNop7nVPAR8AaMD2ojk+XuCNomJPEUg@mail.gmail.com>
-From: Reshma Sreekumar <reshmaisat@gmail.com>
-Date: Fri, 31 Jul 2026 15:49:28 +0200
-X-Gm-Features: AUfX_myxRyw9a1CIwOvJkIMGVH30iSlpFvC5hopR2ZmA55gPHYfsi0yrgbcYxtc
-Message-ID: <CAGwYyQmtvyKd-NiA0-3fgB0FAjnExF+svd5CRaNzUvvMLemzfw@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] net/sched: flag inconsistent qdisc dumps
-To: Eric Dumazet <edumazet@google.com>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <21947C51A754F86C+20260728093554.9324-1-jiawenwu@trustnetic.com>
 
-On Thu, Jul 30, 2026 at 1:24 PM Eric Dumazet <edumazet@google.com> wrote:
-  > I dislike this patch; it will force dump operations to restart on
-busy netns.
-  >
-  > Most devices are created with a new ifindex (dev_index_reserve() is
-  > called with ifindex =3D=3D 0)
-  >
-  > Forcing a given ifindex is rather unusual.
+On Tue, Jul 28, 2026 at 05:35:54PM +0800, Jiawen Wu wrote:
+> In non-MSI-X mode (such as legacy INTx or single MSI), wx->msix_entry is
+> not allocated or initialized. Calling NGBE_INTR_MISC(wx) dereferences
+> wx->msix_entry->entry, leading to a NULL pointer dereference crash.
+> 
+> This issue was introduced by fixing the IRQ vector when the number of
+> VFs is 7. Since macro NGBE_INTR_MISC is used in only one place and
+> relies on MSI-X allocation, remove it.
+> 
+> Fix the issue by explicitly checking WX_FLAG_IRQ_VECTOR_SHARED to
+> determine the correct vector index and using BIT() to convert it into
+> the interrupt mask required by wx_intr_enable().
+> 
+> Fixes: 4174c0c331a2 ("net: ngbe: specify IRQ vector when the number of VFs is 7")
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> ---
+>  drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 4 +++-
+>  drivers/net/ethernet/wangxun/ngbe/ngbe_type.h | 1 -
+>  2 files changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+> index a16221995909..5d89fc84e8bc 100644
+> --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+> +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+> @@ -180,8 +180,10 @@ static void ngbe_irq_enable(struct wx *wx, bool queues)
+>  	/* mask interrupt */
+>  	if (queues)
+>  		wx_intr_enable(wx, NGBE_INTR_ALL);
+> +	else if (test_bit(WX_FLAG_IRQ_VECTOR_SHARED, wx->flags))
+> +		wx_intr_enable(wx, BIT(0));
 
-  Agreed.
+Hi Jiawen,
 
-  For context on why I went looking: we hit this on production hosts runnin=
-g
-  kernels predating 748bbef5fc6a. An agent that reconciles tc configuration
-  against a qdisc dump saw qdiscs that did exist as absent, tried to create=
- them
-  again (-EEXIST), and tore down configuration it believed had gone stale.
-  Because nothing sets cb->seq there, a truncated reply is indistinguishabl=
-e
-  from a complete one, so there was no way to detect it and retry.
+I am wondering if you could take a look over the following issue
+which is included in the AI-generated review on sashiko.dev [1]
 
-  748bbef5fc6a makes that far less likely, and I have not been able to repr=
-oduce
-  the missing-qdisc case on 7.2-rc5. One case does remain, which this patch
-  would not have fixed either: ctx->q_idx is a position within the per-devi=
-ce
-  qdisc_hash walk, so a qdisc added or removed on the device at a batch bou=
-ndary
-  misaligns the skip count.
+[1] https://sashiko.dev/#/patchset/21947C51A754F86C%2B20260728093554.9324-1-jiawenwu%40trustnetic.com
 
-  Is that worth reporting to userspace, and how would you want it detected?
+  Does this change introduce a desynchronization between the software state
+  and the hardware configuration if SR-IOV enablement fails?
 
+  If pci_enable_sriov() fails inside wx_pci_sriov_enable(), the error path
+  clears the WX_FLAG_IRQ_VECTOR_SHARED flag via wx_sriov_clear_data():
 
-On Thu, Jul 30, 2026 at 12:25=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
- wrote:
->
-> On Thu, Jul 30, 2026 at 12:00=E2=80=AFPM Reshma Sreekumar <reshmaisat@gma=
-il.com> wrote:
-> >
-> > tc_dump_qdisc() walks every netdev in the netns and can span many netli=
-nk
-> > batches.  RTNL is only held while a single batch is filled, so devices =
-can
-> > be registered or unregistered in between.  Since 748bbef5fc6a ("net/sch=
-ed:
-> > switch tc_dump_qdisc() to for_each_netdev_dump()") the walk resumes on =
-an
-> > ifindex rather than a list position, but ifindexes are reused: a device
-> > created between two batches can be given an ifindex the dump has alread=
-y
-> > walked past, and is then missed entirely.  Before that commit the resum=
-e
-> > used a position in the device list, so any unregister shifted every lat=
-er
-> > device and silently dropped a run of qdiscs from the reply.
->
-> I dislike this patch; it will force dump operations to restart on busy ne=
-tns.
->
-> Most devices are created with a new ifindex (dev_index_reserve() is
-> called with ifindex =3D=3D 0)
->
-> Forcing a given ifindex is rather unusual.
->
-> I suggest detecting this specific use case instead of slowing down everyt=
-hing.
+  wx_pci_sriov_enable() {
+      ...
+      err = pci_enable_sriov(wx->pdev, num_vfs);
+      if (err) {
+          ...
+          goto err_out;
+      }
+      ...
+  err_out:
+      wx_sriov_clear_data(wx);
+      return err;
+  }
+
+  However, the hardware was already re-initialized with the MISC interrupt
+  mapped to vector 0. Since the hardware configuration isn't reverted, won't
+  subsequent shared interrupts cause the hardware to auto-mask vector 0, which
+  will then never be unmasked here because the flag was cleared? This appears
+  to result in a permanent masking of Queue 0 and MISC events.
+
+>  	else
+> -		wx_intr_enable(wx, NGBE_INTR_MISC(wx));
+> +		wx_intr_enable(wx, BIT(wx->num_q_vectors));
+>  }
+>  
+>  /**
+
+...
