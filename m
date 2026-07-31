@@ -1,90 +1,89 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7276D42902E;
-	Fri, 31 Jul 2026 14:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4733323A562;
+	Fri, 31 Jul 2026 14:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785507576; cv=none; b=fQ6Og6opD5bQKyUzkOg68OuTGJHuctelLC0Kg58fWqWFa7cdlRqNkaQdDEfoTCayKLu1LMbQO0D+BTX93bcbP1mZAzMwMSKVWBBWNC7CmitaJKxG3j2KHtMwYKo7/H7L1wTyRBRII9pAUrptLXfBBYgb3GwoUDlH8L2lFg2Z5dI=
+	t=1785507621; cv=none; b=DTcdli/wp42Uw1WsMnleZdvXvQ1zsqtFijDWyRi26DlxJjo6ufDwBcG1WhKM1C8Z1IyYR7nByx3zBSiY2PxVQuDt00DTb6XZeYArnj5OysNB5A9G3KgRKFRx0aguKsdjR7AhxNqDZk3EQZs6DbVU0G4lPJ7PxYDTe19eBU0nX8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785507576; c=relaxed/simple;
-	bh=FW3GVl2KrQAaWnVDxE749UsbkFFRvKHl1f3RCmAtCqQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ClfF1AJqvf0lZzQnqV3/ukwQanSS5UO/uc3aTjBI8KkmoRG5Wk0AgtKct5yDWioobh7WFdXp0HvShaffoXPZS0YPvGC9P9BMk7geI1edrodCUTvpmvgtmos5rRo59QyE+B1pfrp/ERqI6xEf82ooDQ/o0iRbicQnmXJ/0lM3btg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [111.196.241.250])
-	by APP-03 (Coremail) with SMTP id rQCowAC3wT_brmxqABhKAg--.22001S2;
-	Fri, 31 Jul 2026 22:19:08 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Elad Nachman <enachman@marvell.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>
-Subject: [PATCH net v2] net: prestera: validate firmware header length
-Date: Fri, 31 Jul 2026 22:19:06 +0800
-Message-ID: <20260731141500.1-prestera-v2-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1785507621; c=relaxed/simple;
+	bh=bpnaHBw5URQcNRrcVJj7UR0opKBNv8yeV8RneGmZuV0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=em0r/Hctziu+ogGx6PPswfIILcxjfMnlG6LrKUrDAWtidwLwWkFgQIfCjprRaug9YcGyzv0rgnOAdeMgkq6ottPNQGcPk/7QZmgZarJLOmhvXDNqT7oow3iPhEjiiff00TF7FFBMJTJPYdYc4Of1qNntcrqA5NKofooBj0Lb6Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kxx9+6rQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eb4BSkLZ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kxx9+6rQ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eb4BSkLZ"
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh_=28Schneider_Electric=29?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1785507618;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=nI7fTHKHKg6UE0/aQX98hR80HNriUU4/NTMDJw1+u8A=;
+	b=kxx9+6rQpz0CYCOT4OEHu9EWZkeBaxSSnxSBSIe/f6xLnqYGG1Ha0F3OVOIQ5ad41/8wmy
+	fpzmT6NdKS0B/6CivPltN3s8IyWLBLywBvSEww5mqj0r7Se3bI8TF80ZlI+ojCj3Kok6Qi
+	mNbXVF835xOennK75KlXLBSae1ICImjnR2nIs+9NRDKW7Yt2P/8zgd0kt+n+1fE9YsZ0em
+	ArMiLUOkxoiciKEKkvdoLTDeSCUINIoki7OG3vEt9Lns2LqKxTzfCCRpudWtSd6qM97gmH
+	QO9Hxae7UCLTezhxl5N3YACNpTgxw2mKJyu4TCjCVWZ+Z9AFEvbh4b5x3WF/7w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1785507618;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=nI7fTHKHKg6UE0/aQX98hR80HNriUU4/NTMDJw1+u8A=;
+	b=eb4BSkLZCIqdKKMZT5EUb7xRxTuwwZ0LhjB+qsU3G1OMPLYVOY5k4lV7erFd13Jw6uQjlt
+	Ke76ZyLwN5QRiYDw==
+Subject: [PATCH 0/2] timekeeping: Annotate auxiliary clock accessors with
+ __must_check
+Date: Fri, 31 Jul 2026 16:20:13 +0200
+Message-Id: <20260731-timekeeping-aux-must-check-v1-0-11ae93068497@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAC3wT_brmxqABhKAg--.22001S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Gry3Ww45GryrCFW5ZF1rtFb_yoWkKrXE9r
-	n7uFn3Gay5GFsI9a17Kr43AryakryDuFn5uw42y398Gr1kWa12qr18CF4fJF1DWrW5Xr9x
-	Gryxtr4fA345KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbcAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r1q
-	6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUonmRUUUUU
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqDMBAF0KvIrDsQZ2GhVyldxMmvDiGpJFoE8
+ e4Gl2/zDqoohkqv7qCCv1X75Yb+0ZHOPk9gC80kTgY3iPBqCRFYLE/st53TVlfWGRq5D6N4eap
+ idNSCpeBr+52/P+d5AeuZjrFsAAAA
+X-Change-ID: 20260622-timekeeping-aux-must-check-1db2a27cceb0
+To: John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Stephen Boyd <sboyd@kernel.org>, Richard Cochran <richardcochran@gmail.com>, 
+ Miroslav Lichvar <mlichvar@redhat.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh_=28Schneider_Electric=29?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785507617; l=770;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=bpnaHBw5URQcNRrcVJj7UR0opKBNv8yeV8RneGmZuV0=;
+ b=oAqiS4rk/2A9QhRvbYUz4Fl7mSChL0mwU3vtJJshLEeK78dNW7eVhNbKJbRSAm/yaYwuIfpcB
+ hZAef6R/ZkBBP0l0/e/qHC4FBlrs/gNQ9/BlCBGNPU0ZgWHyli3Dc+u
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-prestera_fw_hdr_parse() reads the firmware header before checking
-that the firmware image contains that header.
+In contrast to the classic time accessors, the ones for auxiliary clocks
+can fail.
 
-Reject images shorter than struct prestera_fw_header before decoding the
-magic and version fields.
+Make sure the callers check for this.
 
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Signed-off-by: Thomas Weißschuh (Schneider Electric) <thomas.weissschuh@linutronix.de>
 ---
-Changes since v1: https://lore.kernel.org/all/20260706092602.79240-1-pengpeng@iscas.ac.cn/
-- target the net tree in the Subject as requested by Andrew Lunn
-- rebase onto the current tree
+Thomas Weißschuh (Schneider Electric) (2):
+      timekeeping: Remove the unused ktime_get_clock_ts64()
+      timekeeping: Annotate auxiliary clock accessors with __must_check
 
- drivers/net/ethernet/marvell/prestera/prestera_pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/timekeeping.h | 12 +++++++-----
+ kernel/time/timekeeping.c   | 34 ----------------------------------
+ 2 files changed, 7 insertions(+), 39 deletions(-)
+---
+base-commit: ecc330e3096173f433659aa64ab3674d0d48440e
+change-id: 20260622-timekeeping-aux-must-check-1db2a27cceb0
 
-diff --git a/drivers/net/ethernet/marvell/prestera/prestera_pci.c b/drivers/net/ethernet/marvell/prestera/prestera_pci.c
-index 2989a77e3b42..1ad0e62a8433 100644
---- a/drivers/net/ethernet/marvell/prestera/prestera_pci.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_pci.c
-@@ -684,6 +684,9 @@ static int prestera_fw_hdr_parse(struct prestera_fw *fw)
- 	struct prestera_fw_header *hdr;
- 	u32 magic;
- 
-+	if (fw->bin->size < sizeof(*hdr))
-+		return -EINVAL;
-+
- 	hdr = (struct prestera_fw_header *)fw->bin->data;
- 
- 	magic = be32_to_cpu(hdr->magic_number);
--- 
-2.50.1
+Best regards,
+--  
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
