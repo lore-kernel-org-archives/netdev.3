@@ -1,156 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7121D2FFFA4;
-	Fri, 31 Jul 2026 16:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2593EDE60
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785517049; cv=none; b=KunLFsvnj1AY6/7uDiigSPlOsXm3jV9yQZMd6jJFYFQ8F6jW+sbnSTnfNo4LbKEnQjxFacyH9gMo0rIlvYhFF/mKIEi9efm4YoG1/VzPxAdeNddLwgpDEfbxp3z2XAsfCokr50n6cwk0AP5XvKNAAE9DtmabEG4GxEtgvDjf0sM=
+	t=1785517105; cv=none; b=IBw//K8kp0fN9U7E9uO7jKBZ4wAHCVwJtnCqHgpSk56cKiPKBE5pD/JhJAEh66U6qBBmZS3+OpYlgxGwfK0IIk110qjGaooFM0cKDWhEa6vC9Ley9Er86VLqiQkrlgJp5fihrwr06BYgopz6wjIwuTMaPTfUK8hDzpVeIuWgSPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785517049; c=relaxed/simple;
-	bh=XJM7279h+Yj3A3zgcpixVvnyJmiW2VMDoNofwRg6Dgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u5GQelii5TGMrq6BTBqqR8gGZPu7TK1bqUsqL159oeGeGR/7LQiSVf3UnIGxiZ+y7phT033/zjwUbgQDcAbJa00zBshqT63GRXQ0gW6+3w8XaIJS9Zg0Thz0vOhCa6mVJY9M/Vx7jxkgutyF8rBaiQlXvFiC02eq2nHwlpjy4tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M/JWp6O2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785517105; c=relaxed/simple;
+	bh=7Wkc5vnPJfK8+T6cj+GxOwF6aP8t3LLmOUCwYz0pevc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eJ6ywt5LQddsv6DbL9zYscSuBYI4mO/g9VXKeoiaCX1K3r7dl/C2yKi7y0cZFaQN1AmDxh8ZlXg7dm7PKzKDWo1Tkr3JBTkZ5qRyMejbJGFdZIZ1ptQ/Tf4ppI6UP93ubrbnZJ/EjVBk8Aa8ZhAEG+glxuCG1myMsxuckSWkNXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QDupzw9e; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M/JWp6O2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625091F00AC4;
-	Fri, 31 Jul 2026 16:57:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785517048;
-	bh=IyAsbXXV2p1aDsgxm2hy2xqrSUBtvpVaiO7mx1IfkqI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=M/JWp6O2FPiAUqpPmM7XUuIdwQp8OT76RZnpZlt0Lw4vv+jMy4x++gALYD7wTTqk3
-	 nj594wC9DfAOpaw5uoynV+KwXKIbFutB8dxdOA2CR/BcIB60MWbpHzBX85WL+mirqj
-	 VBHX+jWACuNOPWL99oBvNHdcsRUmJYjqxdhjvabF0T0Meggoh8oAZrOIJm4yT8cWcz
-	 NANVb9xq44C/nufJaDCo0LKDKOQ10LYhEZiWbSReULyV8OuuTWptutcVgz1R9NSLMt
-	 LKoL3lK2axJ1oV93P+MJtqQaVomWVLthk4f/C7DqdWlEtupN5XJcxTyR2N+v0Igk+a
-	 ohn7jP0whpL1g==
-Date: Fri, 31 Jul 2026 17:57:22 +0100
-From: Simon Horman <horms@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Daniel Jurgens <danielj@nvidia.com>, Gal Pressman <gal@nvidia.com>,
-	Jiri Pirko <jiri@resnulli.us>, Kees Cook <kees@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org, Maher Sanalla <msanalla@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>,
-	Or Har-Toov <ohartoov@nvidia.com>, Parav Pandit <parav@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>, Shay Drori <shayd@nvidia.com>
-Subject: Re: [PATCH net] net/mlx5e: Move representor vnic reporter to eswitch
- devlink port
-Message-ID: <20260731165722.GK51943@horms.kernel.org>
-References: <20260729070059.2421788-1-tariqt@nvidia.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QDupzw9e"
+Message-ID: <191efe80-24d1-4aab-8746-21afb4c379bc@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785517090;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7Wkc5vnPJfK8+T6cj+GxOwF6aP8t3LLmOUCwYz0pevc=;
+	b=QDupzw9eNh0JVgtVkhnk9fpyAzqrfoSZcykUG5rIYn9PyeUrXBswOnBQUHvPKBV/p2MNUf
+	mfRJ1cQlIl9txEmp6iCYbDFObuLFKeBZy0GRG3CtTIljNnrDbkEdkJiywNamh8zB4FrxIM
+	8PggOuJ4D54cvOEyYOsxvLigg1zLIWo=
+Date: Sat, 1 Aug 2026 00:57:22 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260729070059.2421788-1-tariqt@nvidia.com>
+Subject: Re: [PATCH v9 00/10] Fix missing fops.owner in Rust DRM/misc
+ abstractions
+To: Gary Guo <gary@garyguo.net>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann
+ <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>,
+ David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
+ Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>,
+ Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>,
+ Igor Korotin <igor.korotin@linux.dev>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org,
+ linux-modules@vger.kernel.org, driver-core@lists.linux.dev,
+ dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-pci@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>
+References: <20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev>
+ <CANiq72m59O-ruHUvUcZC7yCvu0KV0w_m5vMO4e0rxyHdRmihJw@mail.gmail.com>
+ <68c43a03-5fa0-42a8-b886-2c756e39515e@linux.dev>
+ <DKCWO60T6JPR.1P3AAJAATMXBI@garyguo.net>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Alvin Sun <alvin.sun@linux.dev>
+In-Reply-To: <DKCWO60T6JPR.1P3AAJAATMXBI@garyguo.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Jul 29, 2026 at 10:00:59AM +0300, Tariq Toukan wrote:
 
-...
+On 8/1/26 00:43, Gary Guo wrote:
+> On Fri Jul 31, 2026 at 5:34 PM BST, Alvin Sun wrote:
+>> Hi Miguel,
+>>
+>> Thanks for taking a look!
+>>
+>> On 7/31/26 14:46, Miguel Ojeda wrote:
+>>> On Thu, Jul 23, 2026 at 4:11 AM Alvin Sun <alvin.sun@linux.dev> wrote:
+>>>> base-commit: b7e5ac83cb16f7ffd11dc23736f84276602100ed
+>>> Was this old tag used for some reason?
+>> That was an oversight on my part - I forgot to rebase onto the latest
+>> tag before sending v9. The series is now based on v7.2-rc4.
+>>
+>>>> prerequisite-change-id: 20260519-miscdev-use-format-9ab7e83b1c11:v3
+>>>> prerequisite-patch-id: 405b334ff0d48ad350014f05a2321bdbaa025400
+>>>> prerequisite-patch-id: 604b631c81d5423f4ebb2e12ba2d22e9ce371bfc
+>>>> prerequisite-patch-id: cb550d94cefe01920e0d3ced2b2bcbecd76f3907
+>>>> prerequisite-patch-id: 3bc830839742591460cb86d9472c04f4686dc600
+>>>> prerequisite-patch-id: 571058244bc8c7088638d2e3225713011246c7e9
+>>>> prerequisite-patch-id: 347c5a3c6dbef9832bfce8419fc23e6e08ba477f
+>>>> prerequisite-patch-id: 3e202d988b56b88446f7535e90d3f00cf5f15701
+>>> Are all these actually needed? Some seem unrelated (some were already
+>>> applied too).
+>> The prerequisites were just some import formatting changes that the
+>> series depended on at the time. After rebasing onto v7.2-rc4, I was
+>> able to drop all of them - the rebase was clean with no conflicts.
+>>
+>> I'll send v10 shortly.
+> If the patch applies cleanly then there's a no need to send a new version.
 
-> @@ -252,6 +275,16 @@ int mlx5_esw_offloads_devlink_port_register(struct mlx5_eswitch *esw, struct mlx
->  		mlx5_core_dbg(dev, "Failed to register port resources: %d\n",
->  			      err);
->  
-> +	rep = mlx5_eswitch_vport_rep(esw, vport_num);
-> +	reporter = devl_port_health_reporter_create(
-> +		&dl_port->dl_port, &mlx5_esw_rep_vnic_reporter_ops, rep);
+Sounds good. I'll hold off on v10 then. Thanks!
 
-Hi Caroila, and Tariq,
+Best regards,
+Alvin
 
-I'm wondering if you could take a look over the following which appears at
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260729070059.2421788-1-tariqt%40nvidia.com
-
-  Can rep or rep->esw be NULL at this point?
-
-  mlx5_eswitch_vport_rep() is a plain lookup with no NULL check here:
-
-  eswitch_offloads.c:mlx5_eswitch_get_rep() {
-	return xa_load(&esw->offloads.vport_reps, vport);
-  }
-
-  and rep->esw is only assigned lazily. In mlx5_esw_offloads_rep_add() the
-  assignment sits after the continue that is taken whenever no rep_ops are
-  registered yet, which is the state at probe time when
-  esw_offloads_init_reps() creates the reps:
-
-  eswitch_offloads.c:mlx5_esw_offloads_rep_add() {
-	rep = kzalloc_obj(*rep);
-	...
-	for (rep_type = 0; rep_type < NUM_REP_TYPES; rep_type++) {
-		if (!esw->offloads.rep_ops[rep_type]) {
-			atomic_set(&rep->rep_data[rep_type].state,
-				   REP_UNREGISTERED);
-			continue;
-		}
-		...
-		rep->esw = esw;
-	}
-  }
-
-  The only other writer is mlx5_eswitch_register_vport_reps_blocked(),
-  which runs from the mlx5_core.eth-rep auxiliary driver probe
-  (mlx5e_rep_probe() -> mlx5_eswitch_register_vport_reps()):
-
-  eswitch_offloads.c:mlx5_eswitch_register_vport_reps_blocked() {
-	esw->offloads.rep_ops[rep_type] = ops;
-	mlx5_esw_for_each_rep(esw, i, rep) {
-		if (likely(mlx5_eswitch_vport_has_rep(esw, rep->vport))) {
-			rep->esw = esw;
-			...
-  }
-
-  Is that probe guaranteed to have succeeded before ports are registered?
-  esw_mode_change() discards the mlx5_rescan_drivers_locked() return value
-  and sets esw->mode = mode regardless, and add_drivers() only warns when
-  add_adev() fails:
-
-  dev.c:add_drivers() {
-	priv->adev[i] = add_adev(dev, i);
-	if (IS_ERR(priv->adev[i])) {
-		mlx5_core_warn(dev, "Device[%d] (%s) failed to load\n", ...);
-		/* We continue to rescan drivers and leave to the caller ... */
-
-  In that case rep_ops[REP_ETH] stays NULL, rep->esw stays NULL, and
-  mlx5_eswitch_load_vport() -> mlx5_esw_offloads_load_rep() ->
-  mlx5_esw_offloads_devlink_port_register() still installs a live reporter.
-  Would a subsequent "devlink health diagnose <dev>/<port> reporter vnic"
-  then oops on rep->esw->dev in mlx5_esw_rep_vnic_reporter_diagnose(),
-  with the devlink instance lock held?
-
-  The old code could not hit this because the reporter was created from the
-  REP_ETH load callback, i.e. only after rep_ops were registered and
-  rep->esw was set. Note also that mlx5_esw_offloads_rep_remove() does
-  check the same lookup result for NULL, which this call site does not.
-
-  Since struct mlx5_devlink_port already carries a struct mlx5_vport
-  pointer, which gives both vport->dev and vport->vport and whose lifetime
-  matches the port exactly, could dl_port->vport be used as the reporter
-  priv instead of the rep?
-
-> +	if (IS_ERR(reporter))
-> +		mlx5_core_dbg(dev,
-> +			      "Failed to create vnic health reporter for vport %d: %pe\n",
-> +			      vport_num, reporter);
-> +	else
-> +		dl_port->vnic_reporter = reporter;
-> +
->  	return 0;
->  
->  rate_err:
-
-...
+>
+> Best,
+> Gary
+>
+>> Best regards,
+>> Alvin
+>>
+>>> The only one that seems needed has Andreas' Acked-by, so
+>>> I guess it is fine.
+>>>
+>>> (By the way, I will use this second message to take this chance to
+>>> move the modules maintainers in the To: in case it helps, since I
+>>> didn't do it in my previous message)
+>>>
+>>> Thanks!
+>>>
+>>> Cheers,
+>>> Miguel
+>
