@@ -1,210 +1,164 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013007.outbound.protection.outlook.com [40.107.159.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614FA448396
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 17:04:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785517498; cv=none; b=g3HknI2E3WbW7GQM9iaNtGqe56RwIrHQX9T2/WZ6dQL+7yn3k0C434JgWbJy1gJ7CZtQmZOYWRMzkPhEFJ3s6UTptPCLLLp3FWylLAjFEydziLpumSfEs69C9dL/Q86aTTc4FeGwfg2QXMkwPskD0sPM2N/F632tnds0tJm7B1I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785517498; c=relaxed/simple;
-	bh=TiEiCLzRBgCRWu0MaEFZR+ai00p3m9+yXWylxLxfsEo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O9/3IYLRhP221ejmURBVbhmDzqiBxelMON4uGFfbhpuMw9mSXpB4gJANQQb7HzgLmjjbnqZvOEUlT8+DJJmk19QC/TJV+Uaa6i+cYERsT7XPGucjoBuESFIqvTVYFWGAea4By59HSidxASXFVQSzPfwqqQZcOxQdFuPIvWO9eXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rM9unod5; arc=none smtp.client-ip=74.125.227.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3512BE05A;
+	Fri, 31 Jul 2026 17:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.7
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785517864; cv=fail; b=JrE1mwNwmMHr9HmDg4gnFRMokU1lMK9LvFcv5PXV/N5FIuPLSwmQrE0DTfQpJwNrFIwTm8FcKN+SGXPaMUVYR434SGwrhk7PhYfON+Kmz8Y23sxtsAv+hOkfWJ2JfO57Ka2IBX6xoMvFnuwhQoIDmkJbUxpt//MWf+MYctOT2dw=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785517864; c=relaxed/simple;
+	bh=E+HoAFyDwTMgpewmTTZJQ9hlk92RkRaYWn7LxvJVX1I=;
+	h=Message-ID:Date:Cc:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=dywATkkQKXsQ32k1NEWLvdTo7LCaAqFj1l13u4lP6tfL+R9rd0EJ1Wi4sEqBorWjKeavEgI9LnOGiBZt2uafkXGCi4w5L+EZGRadp5xhD5JE3GjcEngJZ6Yq//GYDG0aS2AroUlkjmVuI8d/rrbbh7bXVJLDHEMI4a8xPCfKeXo=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kLoOipH0; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kLoOipH0; arc=fail smtp.client-ip=40.107.159.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rM9unod5"
-Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2cb3f5bb19aso3751935ad.1
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 10:04:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785517496; x=1786122296; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mI1rZZtu8o4cfi0FGJlAmOUjg03NURhPr/05wZVSU0k=;
-        b=rM9unod5pYatwebtwY+/vwPLU9+50BbGH3K02+rneNv4Y8g+SCWZfmTWYjjOC9beu7
-         kDJ+c/vM0f/4ZiFiTTy5V0GcVqF989QMreBEpjs4IrM7FBmqNgPdtkaiLVKmlXtROKc6
-         bdmE5APDKVPrZqoghJgR/COA8nFKlhZBAjKYC+93VfpNBRy/K/tKTSs2U/MJqWAoZKUQ
-         BiOFEgdZRL3yxx5BDxa3t8VEE53Rk7QGLgYQcpPg5osYHAAbQ9mguzbs8RD0tfsnOCH4
-         02DcxhEPblKWNYY9w+ZwTEfOT13p8PJOnXpqEbkSzDVz/misFIh7nvu4dps82zZfTDjW
-         vu2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785517496; x=1786122296;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mI1rZZtu8o4cfi0FGJlAmOUjg03NURhPr/05wZVSU0k=;
-        b=UDtEZRuwHx4kU2lnJXne9Qm9P+La5tNaLSJGXaWrTuBIjSdbo1eyFaHhey4UqeC2T2
-         6rP0qURi6+owhjJnRldOOFEnQO0ueK7iPMUnC+8AfjsOAwyR08eLPMzD4XftX2r61VoL
-         FjnAvXTN+eea8mpEEH10kVwvSE8XAS17GfyzKBxFeohAmrNUHdslqo6RndM7cIgQpnZq
-         6wlywyfQ3Lt9uEFKEv1t3M5h7AFOhG6QGhLu5/bpipC4af597k6oUKOtG6uAYGpHwpH5
-         q7mIKAPGY73nrGaD2c7Bp6hI+VsTHyoYxEVlXIUkPFq9lVRGZl4sKYqvx58g+CrYs2jW
-         loCw==
-X-Forwarded-Encrypted: i=1; AHgh+RruQMkUCIpEa5A53b9SR9ducJRyZ39LtaSx7pzsd0dNdHgR8Mhca0hXvLkZ5eeNooWCxEkE8tc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyiSmlBklwuIo2JDcR7shqQo2ptizzVKXbj3pKkcNaJRT50QQT
-	7kiSJ+uFP5duh9+PNjfjHPRkPIjFXIBR4phdj5+q5170EGoR+fhp1A4=
-X-Gm-Gg: AR+sD119rqkLfieNBU5xq59sVReLH0VpiaXGNwfEob8Pkmva/wew90rHEr0K0Ub5+8Y
-	nXMS+qVXYqHf4yYJo6BL17KwLnHZhPesxKY7eTfI8XTrMlzHFwS1igme+yAMs5h46ws8gT9PHm2
-	zYjxNM0OFhlBGK5Qi3jrW3YKnJB81E9cPfqdu3paduFqBiWIdd5siQE8UxNAA6plwVB0FnZrRzR
-	ojXJ4YKMusqOnD1hkApsh8T6D1DqqOrEFPiurkzpa3bGNTi12ta8B++B2v1Vb+QRZCyXkA8uonJ
-	rNaMKFGcWu8It6dbu54+HgQzidDqelS8vQmvMKBHAIYSHPtDSSPGU4RMom4N1Sm83WFkLbzogc8
-	GlG22KJ3WD6lwgOTFJiFXronZMi67qMdk6sp2XhcCFqxyP63HEq9KOR0TaUcd34QkP221zWBqk8
-	Jb1h6iP/nA/yADwfnEB1SVvv9en/iZMMxXsdZJaiWv5VIYJ+xEMygMSmx3RlhJeZo=
-X-Received: by 2002:a17:902:ea0c:b0:2cf:6f7f:55d8 with SMTP id d9443c01a7336-2d0523f76edmr6597195ad.37.1785517495457;
-        Fri, 31 Jul 2026 10:04:55 -0700 (PDT)
-Received: from jplife-black.. ([171.2.207.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae19b82sm8064705ad.6.2026.07.31.10.04.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 10:04:55 -0700 (PDT)
-From: Fan XinRan <shinjiangjiang@gmail.com>
-To: westeri@kernel.org,
-	YehezkelShB@gmail.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Fan XinRan <shinjiangjiang@gmail.com>
-Subject: [PATCH net] net: thunderbolt: Tear down DMA paths before stopping the rings
-Date: Fri, 31 Jul 2026 17:04:42 +0000
-Message-ID: <20260731170442.45530-1-shinjiangjiang@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kLoOipH0";
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kLoOipH0"
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=y8akWaIvDEOdqE+GnyX9blq/Eq7sAI08qxtCkCU6a/0R5f0qe1M5ouw3r527LwVkiDGpHo1WG/wHpcRB+HiD3f3WY34eYNZ5M/TLTGPZcNnP1hlp80hxOYwQ5iul7TRaJ5BtHUal3DX6mXLGTBIGYXaNwu694jt4pgWWJJL5Q1ZIrFlyblpqt5qQnVP6w1ZhljxyXC8zBLD64+HfsXJIx9dGCEwdu7VNjok1L8qAo/qsG7yW98TUY5LWp2G8U5im+1iSaaZBlPzJZPvLT0/EE4A8sQVBOg0Ow9mjP6hSHIt9RRTI604TiRogdJtCQhUrKijOdhSZ0v/ruCjixQSa4w==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=twqmqFfg7xQjIhvS1lslIDpp9TU99Ff1L5SaF6cx8p8=;
+ b=PNSnp8p6httThDArl6fWu/9kPd2qfnif46db3r5fbgor28NfpLE5b+OH9Ab3Wft9CbB6msDjJj355P9hq6UsVr2Ulw8SIzcpTjNqdJa3OSZCUO2XOAX8W3HFGDjzmi/vkQjr5+UnEVzhKLqzuHGsnaQKk0gRWrF4/hG8st0YqB6U0Bxu+gvQWOnA6ZoxnA9xQIAx29L21IhDWS2XEd7joz3A5LiJ+7lM24VYB7Vx/3CM721fZZmeMH4U4W0wQDq7n0QqOT+KBjvxH5aqBGCF6O1ak0ACERenSXzkN8d5PR5ezfXSP1h8XLnGOAqD7PsJKuX9+9f2CMNrPXlZUeytRA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=hpe.com smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=twqmqFfg7xQjIhvS1lslIDpp9TU99Ff1L5SaF6cx8p8=;
+ b=kLoOipH0BlhRgZ7Uop2HiQoystvKh8mUbxAclzxnW28GTXknOqRZFG4Y9saPO8KsmUf4cVP+laktm7A4lvZ6rMFpZqONTBdu+WRHm3KIAo2xBtacr/n1uKDbGA51tl+NTeT/FSb2yAFZWnOY7OPgyamojMq93grxoeIjZBMTEAo=
+Received: from AM8P191CA0002.EURP191.PROD.OUTLOOK.COM (2603:10a6:20b:21a::7)
+ by GV1PR08MB8475.eurprd08.prod.outlook.com (2603:10a6:150:83::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Fri, 31 Jul
+ 2026 17:10:54 +0000
+Received: from AM3PEPF0000A794.eurprd04.prod.outlook.com
+ (2603:10a6:20b:21a:cafe::8d) by AM8P191CA0002.outlook.office365.com
+ (2603:10a6:20b:21a::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.15 via Frontend Transport; Fri,
+ 31 Jul 2026 17:10:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AM3PEPF0000A794.mail.protection.outlook.com (10.167.16.123) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.8
+ via Frontend Transport; Fri, 31 Jul 2026 17:10:53 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AobdSuaHglBhwrNz00itU8SbtE0jlINIYPmEuxCKVYCBrCv5UNRjPIs0WQ7zIJMqGd5a7NZr4+DnnTjWhSvz6GgxYapCG8k0XztKcLH2k/L3qe3ghU7BzVCvezQoX4nEw/sBI8icZW1DsFV6Y3TYn9x4EXfKKnO91eScy8sqxAwEFO6E28hE4AaUncjWSxo0BxCfaHGRftVvrPd9QNcL1rvXog0LmqVSDTeHjbKSOH+yUElaWXa/cSrohNVqetlnq7Ot3MHLgWdwEzbXSldlSzN6JXV5m9+rD/eh7/4LZ1+Eq2JtgwqLOX5iT9UXEWsor2fohkjrNGDJ8cdSqYwvlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=twqmqFfg7xQjIhvS1lslIDpp9TU99Ff1L5SaF6cx8p8=;
+ b=SiiBcnISl32n+gsdMaqDlapYDBiAceSlp/AhqnBEIaA8IG5ztZxi32eXXojZZdTamPeayw9kGGp8kaOJXdPc9jEMmfroDwRZ48SRQEPcAjruiDCCvDyS3lwtDE77t4VyHhCsEFLWFCJ9eovOwEUiL2wxXyc8vp4TMm/oxKzVIPM9uZMoG0jOCsY/O23z7OFC0XNjUA7JQUeK9/Im35y7prHpxfE4+fGP+7LicxR34ziv6BnEw46+CnSI2hYyI9H3VVaKLCku5yqvE9uRkOXHsIrO4QCmezYxnAXieEPFPLgyc9WDX8KH0VHpkLLVPeLTyVxmNBmppUFLrpNct3K3bA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=twqmqFfg7xQjIhvS1lslIDpp9TU99Ff1L5SaF6cx8p8=;
+ b=kLoOipH0BlhRgZ7Uop2HiQoystvKh8mUbxAclzxnW28GTXknOqRZFG4Y9saPO8KsmUf4cVP+laktm7A4lvZ6rMFpZqONTBdu+WRHm3KIAo2xBtacr/n1uKDbGA51tl+NTeT/FSb2yAFZWnOY7OPgyamojMq93grxoeIjZBMTEAo=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
+ by DB3PR08MB9010.eurprd08.prod.outlook.com (2603:10a6:10:42b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.16; Fri, 31 Jul
+ 2026 17:09:50 +0000
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4%3]) with mapi id 15.21.0270.009; Fri, 31 Jul 2026
+ 17:09:50 +0000
+Message-ID: <c08b7cb7-9b53-4a47-abc6-ae6c7d67d91d@arm.com>
+Date: Fri, 31 Jul 2026 18:09:48 +0100
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@arm.com, Steve Wahl <steve.wahl@hpe.com>,
+ "Anderson, Russ" <russ.anderson@hpe.com>, Robin Holt <robinmholt@gmail.com>,
+ Arnd Bergmann <arnd@arndb.de>, Kees Cook <kees@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] misc: sgi-gru: Remove SGI GRU driver
+To: Dimitri Sivanich <sivanich@hpe.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <amywpyZgGWyhzBjZ@hpe.com> <amyzGw1-MVLpNH-d@hpe.com>
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+Content-Language: en-US
+In-Reply-To: <amyzGw1-MVLpNH-d@hpe.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0118.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:192::15) To VI1PR08MB3421.eurprd08.prod.outlook.com
+ (2603:10a6:803:80::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-TrafficTypeDiagnostic:
+	VI1PR08MB3421:EE_|DB3PR08MB9010:EE_|AM3PEPF0000A794:EE_|GV1PR08MB8475:EE_
+X-MS-Office365-Filtering-Correlation-Id: 71f5798c-42f4-4f21-1764-08deef26add6
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|376014|1800799024|7416014|23010399003|56012099006|4143699003|11063799006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ Ys0+AEQV/LB3TOS0mRgaWDpTpYTo+Hi9MJuQ4pKXwn2cgsNRUkLYigoGwfDypkyd00YXbquwyzkj5NmhTuozPMm/Cha31fv78Ur4dpTLV4Fl9VhT7qVl1QKe2puu7xHK/N1fBIwxDBPPDp/Kf6Agox1XqlCdm4qBxnsiEX8shiEiMBuq8FNent1TgijhBir+Hu24FUPn/X1D/TZ6Ka5eqXbFAEk/BsLfGvdNZg1sOh3a1W2b429BfIYQ7geDUds5GE7fRbcb+AgRBsIYL0orPP31HD8XmK0nLCeTab+Lg9tc8FjHSMlIsleqgBDXWCnoPaTXgMUIart+FB2jOfeLjHhCLCXXBzrQps6Gzxhq3j+WNyNy5B6t3aoMjClqiUESYPx8qJOSvmL8fJ07U7rmmlUeMOzbyCPthRjtPLO3bLUEmbiya1gW5WEFGJ7LZZG7pGzYxGYbljF8od0mo7rKokafHvZmVJmMuX452oAiCfMVCnSMqJqVHwM/O0x5jOyIGLmKFOfaW+BN8AEgkVwhmtUwrbXa/6pSupljWfHnN6apySxtJTQAvvJmI8QO0CjZ6jhEJV3xm74uiA0VfotE6RRkZ/HWE3ezHe8bhV9ydOZr5eZzblt3+fBEq3FwSNJOsB/TOORNeaLpviFylAkPCsKinbuk1B/B31zBXKqSSf0=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(23010399003)(56012099006)(4143699003)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ CJy9X60EQncUHhf5YygF1Mso3/ctWHweiQYIFYwrW2TPwAiVAm26ZC9qY0MVSMsjIhFYYDgwrvujALo1kSz96x3IPJA8Iq2fARDRj6XOk5fkV4ifiX5Rhl2PGSxpFItHUDkKs/MBzCwK3qoZ2dsON/whUrCCJArCjVoga2f18ASh3IOXBPWQ61IHw6g1bs9FooL/bJ/NX3dfUL/54NjJB9jQS3wp/CpLIpZKycGEwLi4qoDHHkVL+4Q2QO+c1moK9Q+JdrWSpJovVUXHtq0sYB3gBmPq7hIIzAHZhM376dKux+KO7Gw1EtxYS1su+zDOCLkYKzRom8bd3/YYAn3dHg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR08MB9010
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AM3PEPF0000A794.eurprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	d3313251-ec9f-4def-2f56-08deef2687d3
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|35042699022|36860700016|14060799003|23010399003|82310400026|1800799024|376014|7416014|56012099006|10067099003|18002099003|22082099003|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	z9Jdt1YBL9Qbyr5qKv1Lv3NGzgTDxuZQVRVgOgVcubMIZPIuzqLZDkw0iPE/pQ9MmiiPORC8/Hvkyg+w/JBHQ9fN2oCyw0eicFYzThX2N/naFRtXIW19YEZQh0TZ8cYLESPNmzZVkRs9VO8X+t9WkdqCjZ/PY9TnLSxPJzBsJx7QhsRAAPuRl8GzzRw4Yip91+Vvd3hnCyFTbv26ixgXapvSWNu3tsAcAOJIJJB2QhmAFQk0WJR2HxLCUQyLMiSuyFfyJOGeObUPU+OoWajeNGAiPBr/JTPB2/zPN460vu5sbR50v7MWaVF3OOfE7OJ7cZaEHAehGGqci5F5g/gCI2lc63pi/6rvQ+3NZQL68lUsCKhvmMXk3yiBW74Y3Qbu7DLmTmFvuYLooNExe+O0IufcFG4PFDVZ5LJatgfdZWtz17jlIte4pbJY7LQduBU4KA6cTx7KHxo30EM+ebSrkuNYCCraOXM/IJzl+AEC2+YUxQDhR/WSQoNEFnbLlf4DYo3qd2TcnVOqK7lz5Q57Ll3L0lGs9KmOfbZdggo16DN/v8nbOtJNpZUIPG+9gdcEIjNp6V0XMR0sYKEa8KoLX2ysxCOqnccplEIWFM6qE5cby8Aw618rQhlNmRLRVhAzdoFnAN1CdRdO0WEd0f+7qhhFhxiGKOzGvUM6nDSlMqDHelmh30fzerDLRo3pcMtMug7pqOr7P/bn7Qnv7PaDvQ==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(36860700016)(14060799003)(23010399003)(82310400026)(1800799024)(376014)(7416014)(56012099006)(10067099003)(18002099003)(22082099003)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	IlSD2FNJd09DK3j8VwkVkr6oXkwejKvc00JA2Pm4tNWacUk5AYdWCrT2djCvCPcVqMO0rOj/dyo/7enSzLLMh9wJGNy8Kz7rTzkw4UQZfYcPXX+NSQCGDMbXTXtFUmnLWruFxO+1gCLXz26db9NPyklSoYMlx5B5Sb0zJyn08FotbC5VPqWGnmlB/qIdCftjzdq/N79MvSJYIjha+lFS6a+r3ycirUzw5+tPmyryMjupdbhR7feHyfEaGzJucEUC8b890FVK8Vq/3UZJ8hQcN91gVp1Vzyf1rCGxrF2GmtWtauDjC7S8QyTcvXw14tud+eT8oLwR/s2rlg1QX78jke07GXbU6b6tIyl/8G8c9lVY4CksafgYvnIgYt371Eszfu592NETdT2fS85ri2CuU/vVzKAojcDPF7SnGqOPolKA0lYiYWZddBr237zvDo7Q
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2026 17:10:53.6606
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 71f5798c-42f4-4f21-1764-08deef26add6
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF0000A794.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB8475
 
-tbnet_tear_down() stops both rings and frees their frame buffers before
-calling tb_xdomain_disable_paths().  tb_ring_stop() zeroes the ring's
-descriptor base and tbnet_free_buffers() unmaps and frees the pages the
-frames sit in, so by the time __tb_path_deactivate_hop() polls the hop's
-'pending' bit, anything still in flight has nowhere to drain to.
+On 31/07/2026 3:37 pm, Dimitri Sivanich wrote:
+> Due to security concerns, remove the SGI GRU driver, which cannot be used
+> on anything newer than the long time unsupported UV2 platform.
+> 
+> Signed-off-by: Dimitri Sivanich <sivanich@hpe.com>
+Acked-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-This is the mirror image of the setup path.  tbnet_connected_work()
-already documents the invariant:
-
-	/* Both logins successful so enable the rings, high-speed DMA
-	 * paths and start the network device queue.
-	 *
-	 * Note we enable the DMA paths last to make sure we have primed
-	 * the Rx ring before any incoming packets are allowed to
-	 * arrive.
-	 */
-
-Teardown should undo that in reverse, but does not.
-
-On an ASMedia ASM4242 host router the 'pending' bit then never clears:
-every teardown burns the full 500 ms timeout and
-__tb_path_deactivate_hop() returns -ETIMEDOUT.  Raising the timeout to
-5 s does not help, so the hop is not slow to drain, it never drains
-at all.
-
-The failure is invisible above the thunderbolt core.
-__tb_path_deactivate_hops() is void and only calls tb_port_warn();
-tb_path_deactivate(), tb_tunnel_deactivate() and
-__tb_disconnect_xdomain_paths() are void as well, and
-tb_disconnect_xdomain_paths() ends in an unconditional "return 0".  So
-tb_xdomain_disable_paths() reports success and the netdev_warn() below
-it never fires.  Repeated teardowns eventually take the XDomain control
-channel down, after which the peer node is gone and only a power cycle
-brings the controller back.
-
-Deactivating the paths first fixes it.  Measured with kretprobes on a
-stock v6.17 tree with no other patches applied, on a link that was up
-and had just carried traffic:
-
-  before: __tb_path_deactivate_hop() returns 0 for the first hop, then
-          -ETIMEDOUT for the second 500335 us later
-  after:  0 for both, 525 us apart
-
-Alternating the two orderings ABBA over three load levels, four
-teardowns per arm: every teardown failed before the change (21 of 21
-that ran), none failed after (0 of 24).  The before arms ran short
-because the link died partway through.  The same split shows up when
-the interface is enslaved to a bond instead of just brought down, which
-is how I ran into this in the first place.  Throughput and latency after
-the change are unchanged.
-
-Hosts whose routers drain the hop despite the stale descriptor base see
-no functional difference, since the paths end up deactivated either way.
-
-Fixes: 4944269305df ("thunderbolt: Properly disable path")
-Signed-off-by: Fan XinRan <shinjiangjiang@gmail.com>
----
-Notes for reviewers, not for the commit log:
-
-I can only test this on an ASMedia ASM4242 host router - I have no Intel
-host router to check for regressions on, and that is the gap I would most
-like a second opinion on.  The argument that other hosts are unaffected is
-that the paths end up deactivated in both orderings, and that the window
-this opens (rings still armed while tb_xdomain_disable_paths() runs) cannot
-take new traffic: __tb_path_deactivate_hop() clears hop.enable before it
-starts polling, and tbnet_tear_down() has already called netif_stop_queue().
-That is an argument, not a measurement.
-
-Details left out of the commit log to keep it short:
-
-- The three load levels were idle, 100 pings, and 3 s of iperf3 before each
-  teardown.  The 21 vs 24 asymmetry is because the "before" arms stopped
-  early when the link died: 8 teardowns completed idle, 7 under light load,
-  6 under heavy load.  Only one arm per load level died, so I would not read
-  a dose-response into that on its own.
-
-- The failing hop is an ingress hop on a non-NHI port:
-    thunderbolt 0000:70:00.0: 0:5: hop deactivation failed for hop 0, index 1
-
-- The enslave run is a smaller sample (the link dies faster there, so the
-  before arm only got two teardowns in): -ETIMEDOUT on both before the
-  change, 0 after.  Note the interface also gets destroyed on enslave
-  regardless of the ordering - that looks like a separate problem and this
-  patch does not claim to fix it.
-
- drivers/net/thunderbolt/main.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
-index 02a9165..a04c090 100644
---- a/drivers/net/thunderbolt/main.c
-+++ b/drivers/net/thunderbolt/main.c
-@@ -386,11 +386,16 @@ static void tbnet_tear_down(struct tbnet *net, bool send_logout)
- 				break;
- 		}
-
--		tb_ring_stop(net->rx_ring.ring);
--		tb_ring_stop(net->tx_ring.ring);
--		tbnet_free_buffers(&net->rx_ring);
--		tbnet_free_buffers(&net->tx_ring);
--
-+		/* Tear the paths down before stopping the rings.  This mirrors
-+		 * tbnet_connected_work(), which enables the paths last so the
-+		 * Rx ring is primed before packets can arrive.  Stopping a
-+		 * ring zeroes its descriptor base and tbnet_free_buffers()
-+		 * unmaps and frees the frame buffers, leaving anything still
-+		 * in flight with nowhere to drain to;
-+		 * __tb_path_deactivate_hop() then waits for the hop's
-+		 * 'pending' bit, which on some host routers never clears in
-+		 * that state.
-+		 */
- 		ret = tb_xdomain_disable_paths(net->xd,
- 					       net->local_transmit_path,
- 					       net->tx_ring.ring->hop,
-@@ -399,6 +404,11 @@ static void tbnet_tear_down(struct tbnet *net, bool send_logout)
- 		if (ret)
- 			netdev_warn(net->dev, "failed to disable DMA paths\n");
-
-+		tb_ring_stop(net->rx_ring.ring);
-+		tb_ring_stop(net->tx_ring.ring);
-+		tbnet_free_buffers(&net->rx_ring);
-+		tbnet_free_buffers(&net->tx_ring);
-+
- 		tb_xdomain_release_in_hopid(net->xd, net->remote_transmit_path);
- 		net->remote_transmit_path = 0;
- 	}
---
-2.43.0
+-- 
+Thanks,
+Usama
 
