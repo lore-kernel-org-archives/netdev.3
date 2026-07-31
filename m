@@ -1,73 +1,285 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FA0489875
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:01:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C93B3090E8
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785488490; cv=none; b=j0sngVBqoUfHjq+M8W1rE/bSlGHea8TFrDfn/g5MsCsWJ4Ijq7nO1lK9bFQCrtYYrg2nzAtPS/4aW8r8Ox6Bxg/xJWEbCpvCiCZ4RQniu++DEige7UOpjegCvMoT7v7QRnBcDcplXvJybijQjdl63bsZbL0ksqTavVqMX+Q/ZrM=
+	t=1785488550; cv=none; b=nh4rDvzjzRY3ITfYZ9EhW7V1zWw6xvN4eLnSBhxp9Ie0joQYCS2GjZul1X4SoGOue/4LgjubqbMDAEF4DIcc3LciKYy0EPpXuENbgffFqW30nLTVdQ/IBC1tRpmaatwgmRGvasnntnnHlDeB45KSkEmg6lulesl59H/oDbbWb7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785488490; c=relaxed/simple;
-	bh=0VrUY+gEnLtmGw+1gj7YQuosVWmN/YPI9qdIPQID/vo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fh6x6rzxflN5ZhHV2vaIGB47Eh7yiMg4x9dgnGmb9T7uZLzP4v0tF7KWeRX+lUGdP5hoQ9Da/9EB6aDbeTBNqdwi0GUJ6CC2TilUcjM73/0JhKKb/CncqSn1tOBkCHcL7Z1EohWjhrOtjcxdLDsgf93DV44ikons2eMevpfRqYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=JcwUt14+; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1785488550; c=relaxed/simple;
+	bh=Rz5nAQxD9dzi7f1HZQXIEM2PVcmvgnNeWMsMmOJ3iM0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BaydNyqqOVbbljvebAW7vpQJkxVl/d6bkR0Ub9bOuz/fnho+/MHiL6eAgDeI47tE9FfOKoDaF+vNf8zjbcDP3rhH7vTUsyj24oipE0pqEZ9zh73+4WGXvz1zznFcdHc6sfM5bcjJnf+5UhVzWyxHM8z63WtiaryddzYx0sTANS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=juTvJyC1; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="JcwUt14+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wafImtkEyd9MI5nNFWdF9f9ypA+3yvesyjLi7gMe+4Y=; b=JcwUt14+2+CeuYXrfh0EAV/2BH
-	bB87h4St5NtmAvOC6BhD0emfgqGuKmtLO67gvJFJn2gLCp892i2TgishKKuOpd1fmtp7QBnk2LVxc
-	mV2zo++9BdXtQ7DU41DBYVmepYVKXD6V7Iv9uv/EI5IDMwYcpICPZcyWCGQhTg1eoUvEmuJouq/sS
-	2VUMR4y3vKxi8h2k1bCom0nIq0UagLENpFwAIgYjC4hjU1Zf3yI36WS7xiDc9ay14IjSCh2dC/ejo
-	112PRO5vn+CHbTMDWqPZ17T4MPwvXaOUlZ4c5yP+9lytxNB9tWeSAlmPmezn5gilIhEM2tEvodCYR
-	F91/j0eA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wpj7K-009toS-2A;
-	Fri, 31 Jul 2026 09:01:22 +0000
-Date: Fri, 31 Jul 2026 02:01:15 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: netdev@vger.kernel.org, Mengyuan Lou <mengyuanlou@net-swift.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
-	Jacob Keller <jacob.e.keller@intel.com>, Simon Horman <horms@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Rongguang Wei <weirongguang@kylinos.cn>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>, Joe Damato <joe@dama.to>, 
-	Larysa Zaremba <larysa.zaremba@intel.com>, Chenguang Zhao <zhaochenguang@kylinos.cn>, 
-	Fabio Baltieri <fabio.baltieri@gmail.com>
-Subject: Re: [PATCH net-next v13 2/5] net: wangxun: add Tx timeout process
-Message-ID: <amxjZX1eShpKD1V8@gmail.com>
-References: <20260731061837.12672-1-jiawenwu@trustnetic.com>
- <20260731061837.12672-3-jiawenwu@trustnetic.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="juTvJyC1"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47df6a5655aso83699f8f.1
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 02:02:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785488547; x=1786093347; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+eM+ORJQphpBEjlLS6lBhvY6W8A+kEMRV5W3folsyVI=;
+        b=juTvJyC1U4VfLKHHBwFnC9Wf9uEgyhRkDiyG2lMG7807JtCi9tUwPz8oCapruSWNst
+         VFHmYuMum7b9Idr5fHuEco2ZECM/e4bm3b5nCjO7sWYJ5Kd5CVCyLtDo/e0UCwedBRap
+         yZVXMnf3ZmFy6C3PyE98H/ZL9+wEZKjLFATTKGiZGguEl/EwjDuoIN2JW2I4EeGeD5gE
+         2sl+tjZ5SATryp7Vst6rM/qsDhJ8DFceVHSxv4U0eiMIKVFayS4ynegWMfgwQmwLFbuh
+         9fTb83z3nLSz6yPPC2gF2mIWEcJ8zFCGC8J3yMIc5PNCRzWxUW1mH8xZn1MyS4xDVo9+
+         Kj5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785488547; x=1786093347;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+eM+ORJQphpBEjlLS6lBhvY6W8A+kEMRV5W3folsyVI=;
+        b=bHyO9oHfTwdAS5HN4/rtbOl4ejxUCFjJoKVoDwlr2rn2Mhi5a4b+aodgxb4oyFjr0j
+         PkXLYAasx31kl2nO0qZWsxJZ3rcaP2SCpaMLl0lwwD0eZCRl0wC7drETkSK8FBEpB6TE
+         HfjCLymCH/ZHzFtBE4YAGfGtw5155K5Wn63QNlkk3eb+8yNEDjzqDn9TsGC6m4mn7M3A
+         tmMmH96WTgGNvD5n5sxLGsVdFBdI9P3CemLqmFnWnkd4K70oE1TcyMLNqYr4KVkyXGM4
+         8GsbrMPi6RGeeePd4ALfHXclwjNBy3c9W5kCHG6uxQZ+lnEBvveuOI5vNOyACKV0URcW
+         LZdw==
+X-Gm-Message-State: AOJu0YxJrWzcvo/+8JCzAy2R8IQsYGyt9h+ML4Z2HiWPZZaBsMmbUVOx
+	F3zsmJ/NyNPKKqSXFQXgn5NixjPyAcuZDXE74U0cr+UWBzfAF93g5IwrcUVDtrl2S6I=
+X-Gm-Gg: AR+sD11slS98brD/Ue/62Zh/OXPrL56wa2dGxngbMSgt46lWWUulWXsM3vXxgsznSML
+	H27acu3SDau7sZJaejwQh4OsA6lj8WMhslMPv1Y4dAA5RCxWYYLc/EmFoikj4evOtTSNc9nT33J
+	iykabDt3dCsguZLfoYi3crNNh672GoKrNovc9BFubgigUj8fVzwKAyyzM4+gHHfZnk19SBXYmLY
+	ekyqQxc2xQyGLcDkGMWGbFIF0nvUDW8XujoPxfZ5u6DWpPT+EB9ZtNuR/4DDxUepNSm+PDTNhYj
+	t7PnccQ/BrrR3xQDmUtOhYrIVKPlxdUeZp42ptDu2BK2b5+X9jq+HlJ3ZuoYesGgoLZe8qXtQJQ
+	UhtYHR9w/i8HeMTeAE3QivliOLaHYKEHQvQaLpWVl94cF9+gCBJ+D7Bgyvw9cL6w1e+5KgEn+Tb
+	cRp0kItr300JA1YqVgvaCihth9iAgNcXXdwD3MQm4+81ciR1yRRHyuS6ZAKorJhgowYmze3X0zh
+	TdVK8AVHB/FxpN51rBMuVEropuVdDSsJTUXDwVJ02ust2PtufpcpmuD2WOdMk2AdSzO79PdpNn/
+	vqTOoYDqVybcDbZOmrUlFg==
+X-Received: by 2002:a05:6000:4202:b0:47f:6c7e:b32d with SMTP id ffacd0b85a97d-47fd2abd5a9mr3197342f8f.1.1785488546264;
+        Fri, 31 Jul 2026 02:02:26 -0700 (PDT)
+Received: from L-022584.energy.envision.com (dynamic-077-184-219-058.77.184.pool.telefonica.de. [77.184.219.58])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd41d1a58sm2965051f8f.7.2026.07.31.02.02.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 02:02:25 -0700 (PDT)
+From: Xin Xie <xiexinet@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	andrew+netdev@lunn.ch,
+	shuah@kernel.org,
+	kees@kernel.org,
+	petr.wozniak@gmail.com,
+	qingfang.deng@linux.dev,
+	fmaurer@redhat.com,
+	luka.gejak@linux.dev,
+	bigeasy@linutronix.de,
+	xiaoliang.yang_1@nxp.com,
+	skhawaja@google.com,
+	stable@vger.kernel.org,
+	Xin Xie <xiexinet@gmail.com>
+Subject: [PATCH net v3 0/4] net: hsr: fix GRO/GSO super-packet handling
+Date: Fri, 31 Jul 2026 11:02:19 +0200
+Message-ID: <20260731090224.18-1-xiexinet@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260731061837.12672-3-jiawenwu@trustnetic.com>
-X-Debian-User: leitao
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 31, 2026 at 02:18:34PM +0800, Jiawen Wu wrote:
-> @@ -1275,6 +1288,7 @@ enum wx_pf_flags {
->  	WX_FLAG_NEED_DO_RESET,
->  	WX_FLAG_RX_MERGE_ENABLED,
->  	WX_FLAG_TXHEAD_WB_ENABLED,
-> +	WX_FLAG_NEED_PF_RESET,
->  	WX_PF_FLAGS_NBITS               /* must be last */
->  };
+HSR/PRP forward frames one by one: each wire frame gets its own tag
+or RCT and sequence number, and duplicate discard is per frame. Two
+aggregation mechanisms break that per-frame assumption:
 
-You need WX_FLAG_NEED_PF_RESET and also WX_FLAG_NEED_DO_RESET? isn't one
-of them enough?
+* On RX, a lower device that aggregates frames into a GRO
+  super-packet feeds the HSR receive and forward paths a single
+  skb instead of the individual frames. Depending on the lower
+  device, that super-skb is then either rejected outright (for
+  example when it exceeds the lower MTU at egress), or forwarded
+  without valid per-wire-frame HSR/PRP processing: its single
+  trailing HSR tag / PRP RCT cannot represent the per-frame
+  trailers and sequence numbers of the aggregated frames. On
+  memory-constrained devices processing super-skbs in softirq
+  context also pressures atomic allocation.
+
+* At the forward entry, a GSO super-packet (locally generated on
+  the master, or delivered intact by software NICs such as veth)
+  would be tagged and forwarded as a single frame, violating
+  per-frame wire semantics.
+
+Patch 1 adds netif_disable_gro() and dev_disable_gro() alongside
+the existing LRO helpers.  HSR calls the public wrapper at
+enslavement time, while the networking core handles the generic
+feature update and recursive lower-device traversal. Enslavement to
+an HSR/PRP master therefore strips NETIF_F_GRO and NETIF_F_GRO_HW
+on the lower device. Disabling GRO on our own lowers is the cheap,
+always-correct default for this problem: unlike the bridge,
+HSR/PRP must attach a tag or RCT and a sequence number to every
+wire frame, so leaving GRO enabled and re-segmenting later (the
+bridge pattern) would add per-packet segmentation cost and still
+could not recover per-frame trailer state from a super-skb. This
+is a setup-time default, not an immutable feature policy: a later
+privileged feature override, or a lower newly attached below a
+stacked slave, can re-enable GRO without re-walking the HSR
+enslavement path.
+
+Patch 2 is a preparatory locking change: it shrinks
+hsr->seqnr_lock from whole hsr_forward_skb() calls to the
+individual sequence counter updates, so that the segmentation work
+of patch 3 (per-segment allocation, checksums and forwarding)
+never runs with BH disabled under the global sequence lock.
+Patch 3 depends on patch 2; their automatic stable selection is
+limited to 7.0 and newer, where sparse-bitmap duplicate discard
+accepts out-of-order arrival. Older stable branches require an
+adapted backport.
+
+Patch 3 unfolds the remaining GSO super-packets at the forward
+entry with the top-level GSO dispatch (__skb_gso_segment()), so
+each wire frame still gets its own tag and sequence number. Patch 1
+and patch 3 cover different sources and neither is redundant:
+patch 1 establishes the safe default on our own enslaved lowers at
+setup time (a later privileged override can re-enable GRO, and
+patch 3 is the fail-safe for that case), while patch 3 handles GSO
+super-packets that legitimately arise from locally generated
+master traffic or from untagged SAN ingress on the interlink.
+Segmentation is offered only for those two roles, whose frames are
+known to be plain Ethernet. A super-packet from a LAN slave may
+carry per-frame HSR tags or PRP RCT trailers that software
+segmentation cannot recover, and an already-tagged HSR/PRP
+super-packet violates per-frame wire semantics; both are rejected
+by ingress-port policy. The HSR master also stops advertising
+NETIF_F_GSO_MASK so locally generated traffic is segmented as
+early as possible.
+
+Patch 4 adds a kselftest covering the above: GRO disabled on
+enslaved devices, no GSO/TSO advertised by the HSR master, and a
+TCP stream from a TSO-enabled SAN through an HSR DUT. The stream
+evidence is direct: the SAN's TX frame-size average must exceed a
+fixed super-packet threshold while the DUT LAN legs' averages stay
+below a fixed per-frame guard, which is aggregate evidence that
+super-packets entered the forward path and bulk output was
+segmented (not a per-frame maximum proof); zero retransmits is
+reported as a secondary health signal. The one-shot iperf3 server
+is confined to a private mktemp workdir with its real exit status
+propagated, so on every path exercised by the test itself (normal
+completion, server startup failure, client failure,
+never-published PID, and baseline/final counter-snapshot parse
+failures) no process or directory can leak.
+
+Validation:
+* build: W=1 allmodconfig and allyesconfig, base vs patched - no
+  new warnings (final run on this frozen v3 candidate: all four
+  builds RC=0; 342/342 normalized warnings in allmodconfig and
+  345/345 in allyesconfig, base-vs-patched diffs empty).
+* selftests (all on this exact v3 kernel, QEMU x86_64):
+  hsr_gro_superpacket passes (GRO stripped on enslaved devices; SAN
+  TX frame-size average ~38k bytes > super-packet threshold; DUT
+  LAN legs ~1.5k bytes < per-frame guard; 0 retransmits) and fails
+  on the base kernel: the LAN per-frame-average guard fails at
+  approximately 1.9 kB on a veth lower device (aggregate evidence;
+  not a universal MTU-drop or per-frame-maximum proof); hsr_ping,
+  hsr_redbox, link_faults and
+  prp_ping all pass.
+* functional: IPv4, IPv6 and VLAN-tagged SAN TSO streams unfold
+  per-frame through an HSR DUT with clean dmesg; the counter
+  assertions show super-packets entering the forward path and
+  per-frame output on both LAN legs. LAN-side aggregates and
+  already-tagged super-packets are dropped by ingress-port policy
+  (supplementary, reused v1/v2 evidence per the same patch-id
+  argument).
+* concurrency: parallel interlink-RX (GSO) and master-TX streams
+  with supervision timers running, under a PROVE_LOCKING kernel
+  built from this candidate: both streams 0 retransmits, no
+  lockdep/WARN/BUG/sleep-atomic findings.
+* lifecycle: normal completion, server startup failure, client
+  failure, a never-published server PID (live-but-unpublished
+  proven), and forced baseline/final counter-snapshot parse
+  failures all exit bounded with no leftover iperf3 process,
+  workdir, or namespace (all re-run on this exact v3 script; the
+  parse-failure paths are new v3 evidence: a baseline-snapshot
+  parse failure aborts before the iperf3 client workload, a
+  final-snapshot parse failure aborts before any counter-delta
+  verdict, and both leave no process or workdir).
+* physical igb lower devices (supplementary, reused v1 evidence:
+  patches 1-3 are patch-id identical and the only upstream delta
+  in the touched files is an unrelated 2-line hsr_del_port()
+  change): GRO stripped at enslavement; force-enabled generic GRO
+  super-packets unfold at line rate with a clean dmesg.
+
+---
+
+Changes in v3:
+- Fix the selftest's early-abort path: both TX counter snapshot
+  blocks now validate their values as decimal counters. Previously
+  the error flag was lost in a command-substitution subshell: a
+  baseline-snapshot parse failure let the test continue into the
+  iperf3 client workload, and a final-snapshot parse failure was
+  only caught indirectly. Now a baseline failure aborts before the
+  client workload, and a final failure aborts before any
+  counter-delta evaluation.
+- Wrap the remaining lines that exceed 80 columns (tab-expanded)
+  in the selftest.
+- Make the selftest's network namespaces instance-unique via
+  setup_ns()/cleanup_all_ns(): the previous hard-coded namespace
+  names were deleted unconditionally at setup, which could destroy
+  unrelated host namespaces and made concurrent instances collide.
+  Also re-prove that pre-existing namespaces survive and that two
+  instances run in parallel.
+- Patch 2 message: state explicitly that the lock shrink removes
+  the old allocation-through-forward ordering guarantee and why
+  current sparse-bitmap duplicate discard accepts that; correct
+  the seqnr_lock history to its actual branch shape.
+- Patch 1 message and the failure description: the outcome of a
+  GRO aggregate is driver-dependent (rejected by a constrained
+  lower device, or forwarded without valid per-frame processing),
+  not a universal MTU drop. Also spell out the enforcement
+  contract: the enslavement-time GRO disable is a setup-time
+  default, not an immutable feature policy, and patch 3 is the
+  fail-safe for traffic that still arrives aggregated.
+- Stable floor: patches 2 and 3 are marked for 7.0 and newer
+  (sparse-bitmap duplicate discard); patch 1's eligibility is
+  unchanged; older branches need adapted backports.
+- Rebase onto current net; patches 1-3 code payloads are unchanged
+  (stable patch-ids).
+- Cover clarifications: the concrete RX failure site, the patch 1
+  vs patch 3 layering, and why disabling GRO is preferred over
+  re-segmenting later.
+
+Note on the v2 contest report: the v2 series conflicts in net-next
+with our own PRP RedBox series now merged there
+(https://lore.kernel.org/netdev/20260717201457.54-1-xiexinet@gmail.com/).
+On current net it applies cleanly (re-verified by a full-series
+git am). A tested net-next merge resolution is available on
+request.
+
+Previous postings (newest first):
+v2: https://lore.kernel.org/netdev/20260724161253.79-1-xiexinet@gmail.com/
+v1: https://lore.kernel.org/netdev/20260722171836.196-1-xiexinet@gmail.com/
+
+Xin Xie (4):
+  net: hsr: fix packet drops caused by GRO superpackets
+  net: hsr: shrink seqnr_lock to sequence counter updates
+  net: hsr: unfold GSO super-packets at the forward entry
+  selftests: net: hsr: add GRO super-packet forwarding test
+
+ include/linux/netdevice.h                     |   2 +
+ net/core/dev.c                                |  18 +
+ net/core/dev_api.c                            |  16 +
+ net/hsr/hsr_device.c                          |  17 +-
+ net/hsr/hsr_forward.c                         |  53 +-
+ net/hsr/hsr_slave.c                           |  12 +-
+ tools/testing/selftests/net/hsr/Makefile      |   1 +
+ .../selftests/net/hsr/hsr_gro_superpacket.sh  | 462 ++++++++++++++++++
+ 8 files changed, 557 insertions(+), 24 deletions(-)
+ create mode 100755 tools/testing/selftests/net/hsr/hsr_gro_superpacket.sh
+
+
+base-commit: 51b093a7ba27476e1f639455f005e8d2e75390e4
+-- 
+2.43.0
+
