@@ -1,63 +1,68 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418B3468C25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E081B468C23
 	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785516378; cv=none; b=aO2M84XJ6Ywrjn7aXOWb2d74ZV5Tx/rOfvmn/OxCkilxoLULe6nkNe8QyEJIEAvydFodlFocpylj0nAlgeEjUA91xcY9nNdp6uDW0hN8SaFDcenMnqFEzv026q8Igv+iTDyFyX1rmfKQ+weC2fjVrueRteJKj3fRWizbAse7cTE=
+	t=1785516379; cv=none; b=tAlmdeCCwaOGXONjMR0qPKHWADLi8NQUAbcAPjZ0goO3t6gy+FGuU/Ldm2OGlm/O449GEo+fzWOtNGsQDqeBaOSmLImeeH9AeCta3tqpT+Fv51eJr9R3T5qAsjz8JN0fmjUvJGz2rQLQnpDGG9N3nNDdKyY5a1EiOZtkmrNEJ6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785516378; c=relaxed/simple;
-	bh=23j6/Kdn4Fky5LWOBfVuEtb/XpL7yJRde7gU8wJcBqA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=u0+0TixmhQxFC14ui+8eWuIviLHRgHiPQdaE5gEdm3HZrh6RQUQy4+Wcd1iTXr5CPfDPC8CcjJXB79f9UZcqH2AV2ZN7K8pLxionhIZmcj4iof6OejehUCqgBNFxq2HXxOny6WJJSWBqDvJZw0MXMzH2FWPGAVTwjjAxBZ0gYe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LasaUPbA; arc=none smtp.client-ip=209.85.210.200
+	s=arc-20240116; t=1785516379; c=relaxed/simple;
+	bh=HvXC7My+C9wD7ZpBigTIoU1OByFMCQ38cBOggZJTL7o=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SNuo7n8HaJmZl5tlHpWGNWxg0h+iezmQ7MyFJhsQxpRXOYOTGjU7bbJA7yDzna2hJzPUCgzVKkYpLZZQTJMILQDQavCPom5WZmKD2K12HqKzmA/FzauFV3FWMmQVNXtiQsQ4blxMgY1DSliwts75AtVLVwIPz8rkAfyegfQruOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DEBQhfxz; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LasaUPbA"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84a251c2e3eso2825536b3a.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DEBQhfxz"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cc6dd43737so25576025ad.2
         for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:46:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785516376; x=1786121176; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2dWR5u6X43A2VripdgjlkdNnkBXaoNaZZnB7Sf6Qf58=;
-        b=LasaUPbA9u1cOSlBjj8GjEGHrAQbPsBtbHrDpFFC8ccJknHQiTQ7Tquwbm6qwE/N5A
-         x35+L9LILGXTyhLhltSWi3qDD8jolXV4cBFaUmAMU4l9Mn3qSU5E2eahP3Ad1QRHyAIF
-         5ouovCN48bjPT5/bH44jcaAxNRC4dbuI+MGR+jcl9cC/CJ71SMfIkthZpUubw1hwXmvz
-         u06rgHAAsk0BTORDf3zDYkE/t4Cus04OB9w4soAWbrCVMzhdIwzLoJMabviYbNfSGgEQ
-         RPcpoJpqq5D3tipjie51Bj9hXEzQlKe2uXmZDUUrUtYJhyocrvYUfkHbSlBKrAd4d8vh
-         1SVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785516376; x=1786121176;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785516377; x=1786121177; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2dWR5u6X43A2VripdgjlkdNnkBXaoNaZZnB7Sf6Qf58=;
-        b=sjV5KyB1D6ikSloD+UaI6FLNX0wpw+R2wNVQ4CiVeu2uM3Z/gAY3PP9Cl6GsCzYzds
-         7Qvu+3keqMYoKRZ56guaP4ntPFU7wfdy8lSxWo96bxWpdTB5rvYtW4PrWR8VV6PZGeGH
-         vHS/r1A2andqDeYTM/0wkas2CqojG8/uAVL2O0pDgglj7JlMHG/l72VYSV1XGx6mRh/h
-         u9f7Q+EwIeDIDgue94mEsaqwQDVHfb2plHgeu2l++nw+9z5Zmp5Eiz18yqAwCiMhz68o
-         7oRPJ6CQp3BoCOtE4JlMyGLQNzyQxfVWCadoUcCVcFRZCVHTlJiHSLkmC2/HamP46/9H
-         u8lQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrII1xhc6ZZtkA7e4p/TJHMaHZVvNeueVs17TwpZ1s/etTASQBayeaQ/II40PO3fAXQQlpE6tc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwnXPP+npP+yPwSKCWjRHJyFhD5BYmRdRuMzp991mEQrmBBjDV
-	jedNMKj4+F8PnwIajpsCGAl84P6U+QKpnJAtSgWlPcD1f1+o/6O9X83hQty2ljqoSqt/xIWI9TW
-	GHGW5dQ==
-X-Received: from pgah18.prod.google.com ([2002:a05:6a02:4e92:b0:cbb:8616:5536])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:cf86:b0:3c4:3672:b86
- with SMTP id adf61e73a8af0-3c92ac44794mr333543637.3.1785516376197; Fri, 31
- Jul 2026 09:46:16 -0700 (PDT)
-Date: Fri, 31 Jul 2026 16:45:52 +0000
+        bh=osjh6i84XXjsTS1Oq5pRDD3g+N45uKIPW1ZN1vF5UWQ=;
+        b=DEBQhfxzpfFI/3plIDw9G1KeMjwF+ZtzNNNQBaMwKTmNYfM2v4wOcfRK6k4DzAZGFX
+         D0fDqUGcEQgSZK5c9kJRyIJwdNFB1zKAbVh1EF8FRC/dHFpMNcQf3kJFoTjs+EoJ8gXr
+         v4k+N6CQH3qq3V/jBfpsqN946+X0wDAZFKRiOvLPQvfIzSlSLua/Yt1HdnRdvwqmPbPj
+         WHrvr2fOOkHu+kQDh2ADchbrxyJPQH2L5qEl5LoxPdFN1Mg3CcICB+R4nVqmOA1jp6rI
+         Vv3Fuyy8h7RL7UxSS1Zsfg5LGW4JFvdePG+mNEyb7Hlxt8suz/GdHtSCbxmYy6hIQsYm
+         ioPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785516377; x=1786121177;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=osjh6i84XXjsTS1Oq5pRDD3g+N45uKIPW1ZN1vF5UWQ=;
+        b=POwjWgrcJobSSbfR9cOPq2Ke4e2QnXYsAzEOJSWBXOUOtL/vpezElNiDFT8v4gwhkD
+         m195yJLiCy0txt/DfSfsnDjrpoBYAMdpO6wb+lQ+U06jEpqkdhgAYeYFkqjJWDYBB5sW
+         oeHJWqRwg/DktzEWGupFEBfLMqF97Ss5h0YNgR53DTPvSA8lSCmfGiCDrPHOa5SinWG+
+         1xz8GC0EwjRwV7sCHZ+mRvgyHUmZMR9ck/RoEIyecQlOkeIa2tfmGM4aKX/VZJZ15ION
+         9vSB6NFThiVqIzmQD7q8J2FLgJmN8aPQT+/gdJgxWVOL2SS9c5F86q7gF4Uwa3LeeAQX
+         3yAQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoDelfFKeI2Diy/cPrmgaomQaiw3IuS+ojc2alx/U8HIKn/WNEtcXYR/KgK8yHmp6sN6eJb0cQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydnG222gzV1YcKWluG0aBdXN+QOhwOsISl56uWBxL7EDE/Njjd
+	11L6EjZAN/qLB1QNMsEyAddIBJFKC/ASERZ9NE4kqh8v0hcPO3wcyj/GG69Fer2addV0Bri+1JK
+	zgZ/Yjw==
+X-Received: from pjyd7.prod.google.com ([2002:a17:90a:dfc7:b0:38f:2371:f421])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2d0b:b0:38e:7f1b:f01
+ with SMTP id 98e67ed59e1d1-38fbc5428d7mr480168a91.36.1785516377019; Fri, 31
+ Jul 2026 09:46:17 -0700 (PDT)
+Date: Fri, 31 Jul 2026 16:45:53 +0000
+In-Reply-To: <20260731164612.2148830-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260731164612.2148830-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260731164612.2148830-1-kuniyu@google.com>
-Subject: [PATCH v1 net-next 0/3] geneve: Support per-netns device unregistration.
+Message-ID: <20260731164612.2148830-2-kuniyu@google.com>
+Subject: [PATCH v1 net-next 1/3] geneve: Unlink geneve->sock[46].hlist[46].hlist
+ in __geneve_sock_release().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
@@ -65,22 +70,94 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Patch 1 is a prep patch to make patch 2 clean, which
-adds a per-netns mutex for geneve linked lists.
+Currently, geneve->sock[46].hlist[46] is unliked from
+geneve_sock.vni_list in geneve_stop() and geneve_sock.refcnt is
+decremented for each socket later in __geneve_sock_release().
 
-Patch 3 supports per-netns netdev unreg by using
-unregister_netdevice_queue_net().
+The following patch will introduce a mutex in geneve_net to
+protect geneve_sock.{refcnt,vni_list}.
 
+However, udp_tunnel_notify_del_rx_port() must be outside of the
+lock to avoid AB-BA deadlock.
 
-Kuniyuki Iwashima (3):
-  geneve: Unlink geneve->sock[46].hlist[46].hlist in
-    __geneve_sock_release().
-  geneve: Protect geneve_net and geneve_sock with per-netns mutex.
-  geneve: Support per-netns netdev unregistration.
+To make the change cleaner, let's move hlist_del_init_rcu()
+from geneve_stop() to __geneve_sock_release().
 
- drivers/net/geneve.c | 126 ++++++++++++++++++++++++++++++++-----------
- 1 file changed, 95 insertions(+), 31 deletions(-)
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ drivers/net/geneve.c | 42 +++++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index 542e53f9dc3e..bd4fc6dba2fa 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -1052,9 +1052,30 @@ static struct geneve_sock *geneve_socket_create(struct net *net,
+ 	return gs;
+ }
+ 
+-static void __geneve_sock_release(struct geneve_sock *gs)
++static void __geneve_sock_release(struct geneve_dev *geneve, bool ipv6)
+ {
+-	if (!gs || --gs->refcnt)
++	struct geneve_dev_node *node;
++	struct geneve_sock *gs;
++
++#if IS_ENABLED(CONFIG_IPV6)
++	if (ipv6) {
++		gs = rtnl_dereference(geneve->sock6);
++		rcu_assign_pointer(geneve->sock6, NULL);
++		node = &geneve->hlist6;
++	} else
++#endif
++	{
++		gs = rtnl_dereference(geneve->sock4);
++		rcu_assign_pointer(geneve->sock4, NULL);
++		node = &geneve->hlist4;
++	}
++
++	if (!gs)
++		return;
++
++	hlist_del_init_rcu(&node->hlist);
++
++	if (--gs->refcnt)
+ 		return;
+ 
+ 	list_del(&gs->list);
+@@ -1065,19 +1086,10 @@ static void __geneve_sock_release(struct geneve_sock *gs)
+ 
+ static void geneve_sock_release(struct geneve_dev *geneve)
+ {
+-	struct geneve_sock *gs4 = rtnl_dereference(geneve->sock4);
+ #if IS_ENABLED(CONFIG_IPV6)
+-	struct geneve_sock *gs6 = rtnl_dereference(geneve->sock6);
+-
+-	rcu_assign_pointer(geneve->sock6, NULL);
+-#endif
+-
+-	rcu_assign_pointer(geneve->sock4, NULL);
+-
+-	__geneve_sock_release(gs4);
+-#if IS_ENABLED(CONFIG_IPV6)
+-	__geneve_sock_release(gs6);
++	__geneve_sock_release(geneve, true);
+ #endif
++	__geneve_sock_release(geneve, false);
+ }
+ 
+ static struct geneve_sock *geneve_find_sock(struct net *net,
+@@ -1187,10 +1199,6 @@ static int geneve_stop(struct net_device *dev)
+ {
+ 	struct geneve_dev *geneve = netdev_priv(dev);
+ 
+-	hlist_del_init_rcu(&geneve->hlist4.hlist);
+-#if IS_ENABLED(CONFIG_IPV6)
+-	hlist_del_init_rcu(&geneve->hlist6.hlist);
+-#endif
+ 	geneve_sock_release(geneve);
+ 	return 0;
+ }
 -- 
 2.55.0.571.g244d577d93-goog
 
