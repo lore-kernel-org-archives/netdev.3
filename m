@@ -1,312 +1,211 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020113.outbound.protection.outlook.com [52.101.195.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992EF44E67C
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:41:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE7544C4F8;
+	Fri, 31 Jul 2026 16:43:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.113
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785516072; cv=pass; b=fzVZ2ajp0SVAPIJAtZ6fuTIGuso6hkRnO0XJwzBB+nzClGAJ4n3edYAmziVrVjx/qMiWe1TvlQsqXtjmKGBGj/dvOCxdNT28GZZ8oMqBDK3pP4hpNj8XuGXa3bLiF9GfhULBGSjh9sRda9U9648u3jii8beT5mBRC5MbVyziD/4=
+	t=1785516214; cv=fail; b=tMSQwELRRzKCDFQq9b7RLL01mp5Cvg4hqOBw7+4/0MweMwYEepr22BlAX1woHFWw0QSxF3A3g4Gna4krR+FEfS75Eht/bbT2vSMSmy2yRk0RFDpmrfZYgJpcY1FoGpduuen/a/xi+m+T26m28MssoMzgVF7i/a2oI7wtKkvxAcE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785516072; c=relaxed/simple;
-	bh=LDAI12GDdNlOLQXaMcEoG9I4i7EH8flzOwY4MCI4u/k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N1TJHNXnUmdOTUKJzQV43r/hyjilqFTo/6w9TLTAle7H67w6Vfmo7rhBxKNrBMK1bJdQdt+mP87o0Gp9zF6m0Yqb/Rq0Rrj+hd51yWOVVAAfz80dEX7kpa4GPdvgjtAhPaCSdK9jrz0oP+aNdx/jvDai2bZI3DI2pUU0UVwGxO8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q6UX2svQ; arc=pass smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1785516214; c=relaxed/simple;
+	bh=RTZVsFKDzX76Y+RxbbfwyEtOlXfpmsVAiYcbFD4D6H0=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=UizGL5No1AWNiJCYhtsYuOkLZXLtir9Kxa9yUGFU9SUaUaW29LV9soPoY/9QZbaWygaS9yPTAT2SNh7jg7tqxS9rH+48SS43jH5UewlWrtJ7KePQQ/TkDK5gtbG0sWDNhBf6UK1YdaPnsT4PgNEuc2GUM/Y2S9TMASQ2TsmgDfM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=gJJXXIGY; arc=fail smtp.client-ip=52.101.195.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q6UX2svQ"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c15a5b265so371801cf.0
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:41:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785516069; cv=none;
-        d=google.com; s=arc-20260327;
-        b=N4xulgzb7kwr6ydJXYsO3/pzI7L/wM6ZpUdUWag6e7VFNVV87y69fK75oHLHpuQ9v6
-         NlshZN4GFKrtP1FwDPT81/D190tO62Xz5PtqoVjtBIYcQxECtOD4XWFFnavZOkDEUWdw
-         GwK8VEhNbudBt6CMiz2io9oW2T+RiDQXnSQ1yLHnZC4xB7RfdWRcHwOLExvgvzW+xrUD
-         22cmU/FEIpYAhoOLxpb7C/oUHk20pGA5dCjNGysOpz+EQhNz1Z2wYbunYb7h4n5bI4Y8
-         DHJeFFmWFpNA3Dv9LvttcrIh7iHBxol5fSS3HH6B5aWW1lB25lVvUBMiMgDuGb8SlaPo
-         LWmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=i+S0di2X0YwWIaY6VQuq99O/SRiscLkhJLs10nTFRS8=;
-        fh=wahV1Vq+8zM6cX7P6rV7iSUG9Kl5CKJfeKUfkJ6Ajmo=;
-        b=ZE8v0TrpQeYJw3Jq32rqCgPHBL3V5EmCmBujyGuEqvlvfw+FdvRbFAAU8jCkm/rtp6
-         50GrQMThp6jrgZrqO1oPqqe3wegbm1tYfQkuZemw1Ta3EZyjLPTwg0WtXExoxKWIKrxE
-         P1ayX6L4ZseOLI076dYV6TJrPMgqUafcEnyYsYFdjG8+wJeNaWBAwuDGdsJYUZHUQOZn
-         dB+lZT+aKVJ4BgBIecgdvBCfinHf+UungP3IkfESXstwx3zaIqytzqT1Aioddv7QVbn/
-         Q8Q0fWNZzvGtewFUCtiuf0oOuFvh8vNdIFZxTQhVB2GoU0/HW9JRRCpzBFo3GCHHzCxy
-         Z5XA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785516069; x=1786120869; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=i+S0di2X0YwWIaY6VQuq99O/SRiscLkhJLs10nTFRS8=;
-        b=q6UX2svQyO8DVyeuezRCDiFqF6jo5+g8/6xReQW2NA8fhBp0X21KQlbws1oLFj9QwR
-         R08S/AeERId2iYrBMF26742AKYg4ULFD9pM3rJC6dEt1k9raz2czx0N4LTHMxEX7PatF
-         51jAuct7VriPdtKNOZkaJW6iRqgYAOc2xg35sJj+44LwVx7GvD6NCsbhw7cG5o9jxFCZ
-         +DE8wB/1DsYWKdbQ1KkmdgxtqU3tw6tdL5doLsgX8M0uBWWW4oiNxJfZ+upBmNjg4kkR
-         nTUDGbLhMHFHgg2jfosCaQcyxuwJdDqTIdHVpWLWeuCSXOelS9H1nxaJrPgKKVJNnXKj
-         dswQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785516069; x=1786120869;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i+S0di2X0YwWIaY6VQuq99O/SRiscLkhJLs10nTFRS8=;
-        b=nB2UUiZbF9hi2nLzZqedIaQUXd9YRPd8XVArGAepKxvo4Z3OhPn6mf93xP3q8PVrRT
-         nny+rsiHREgm7OrGWz8OHljfnFR4z3eQHaMyE2nkuI4VF6neDaquGgNQD8ysgJ9WGcWa
-         ts/vvI7jWW4/7h87hSyFYy2x9jRQnP/HSx27Q8BH8hRh5aUJNUm3bocdgvpKxra0LJWw
-         +Ar+6SSmNIQMq87MEHOrhpus78kwJ4albXnBI4AwIo0ODX2zqdnoUM3wvTiEHYP6zNPt
-         8KfIVTiONJFOnFL41vTnFg9ERMsXuJoDb06PZqzn1Zlb+0h8wmSArmE9uSg7yyB+/JP8
-         7G0A==
-X-Forwarded-Encrypted: i=1; AHgh+Rp0k5TmM7ucmTJhALqRpaGDxH8fwtEX6s6zTQnk2kNXK757DtMQjvCRyy49BX2S+pss/UTpphQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDrZHdswFkkK0lroTdt0c1YPbJx6nQp+gHDcaSfoxHfpKCljBf
-	ItjaDn3WPYy27qGyCMZfaWq6NuAeFZXXx/FobWwiQVLGOLphvyQuO3OBKUF63Tm82c/uCCNJxnI
-	alVZYegYvB4wYvo1TTQI1uh4EqyZpHJAcQobXrqtK
-X-Gm-Gg: AR+sD13oOxIF9x4jNAky2aqjG74ahEicp6ahjffORXVdagsMsU9RjB4CriShhNSgM5b
-	XDmM/kmR8apQDRLaDArPDaTX66avVvDORaS32rsg4yiNibkkzT/D9jFWZEUL7YojaASNkzmTNHU
-	IkiQ/O5J1su+QBpPjFGxnHRXnDl/707gViNlkjngxi65IeFVcDL1C96a0epXfkeKn2+JxQa3NlS
-	ihDVDb8HvnjU0qatBCHWZ7J9+BFyHoc6BA5LmwQhU0ASH720ldJpa8RWR5gBzaUiWbtANiP0hnZ
-	fpHes2QW6SYsNJeVQGbXCvczdGDd58E4BuXFx0tL/F7i4rDD75BIEMzQFNOLGA0kaJjSJtLL
-X-Received: by 2002:ac8:598e:0:b0:50f:af60:3496 with SMTP id
- d75a77b69052e-52b4aeef4cbmr14633211cf.1.1785516068661; Fri, 31 Jul 2026
- 09:41:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="gJJXXIGY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mQLApDi+mQT1yFpvvMOjlH7BvqUXJLnUonZmZImqck2GG35wKg6NNfJYs6qJvX0PiXh9j1hGBJM0EncWnnA2Q6ne+HP5wDcTYuAV42eTc66wS94r4XEL0ljfH7lslTp79VVb725nK9XYe2kzhz9DvFtpfjR/j+nI8xRNdfT6krtXcFDpFujjYmpeuJ/lc07bL/G9jkVZZTLRoXX4cwLu6egkUJD1Fl2IdWquhmYCLM+sWEuC0sL3AaC+7qWG1j7jzpUdbWOs7UnMe9ZOfMpnzm/MLFU6MFhIRcA2up1UcBZ4d3O6wBonMIQA7XYFymzS6qI4IfydgP7yetvqBEm7+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RTZVsFKDzX76Y+RxbbfwyEtOlXfpmsVAiYcbFD4D6H0=;
+ b=PDvpNG+p//lmbprIlbeINrW+RKcjIHPkPcocj4eTWBJqd6GfYaPn6PaQqMrWnfCtDr5xsQzSSI80kwTyIcdkg5wJ/8Whgh9nGG+QzYFVDXE+Jvzcmwobk1AckWdSXr7MpGBb7OctnG98yUpxLsYZVqCZNEEH8HYAQWFQfni9GMBdK6+XmX/kWkW695GGFiJ9abdBbSTO3nN3u/MGR9KRtHLP6zdqJ32jDKGRerOUsCAu4lNZOFjLrEeOTSyK7uubl2qExg8OBXSCRW+U9yS9tNrhGsURTaH26OZsZqiyZNqiTmwmO2XCFHg4T2hM/hVgUyqqR8zOJrKQzZ8qToOtYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RTZVsFKDzX76Y+RxbbfwyEtOlXfpmsVAiYcbFD4D6H0=;
+ b=gJJXXIGYtz1EcqXX2nkYPiMtww+EhAaN0f81jFiGZwENKR6Ey4Aq7tt11TVSAxIzUjEQOR7CSCVHcnKADaDCOspUgAMvTdyUQUFz1m6ZUIzxruu5Shy4sYJ3OzBLwekIZ3+1bG++HIrICRHIz1hSqlkkF8OY+qUClOnmGY9chgk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO2P265MB3135.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:165::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Fri, 31 Jul
+ 2026 16:43:28 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%2]) with mapi id 15.21.0270.015; Fri, 31 Jul 2026
+ 16:43:28 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 31 Jul 2026 17:43:27 +0100
+Message-Id: <DKCWO60T6JPR.1P3AAJAATMXBI@garyguo.net>
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alvin Sun" <alvin.sun@linux.dev>, "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Arnd
+ Bergmann" <arnd@arndb.de>, "Brendan Higgins" <brendan.higgins@linux.dev>,
+ "David Gow" <david@davidgow.net>, "Rae Moar" <raemoar63@gmail.com>, "Breno
+ Leitao" <leitao@debian.org>, "Jens Axboe" <axboe@kernel.dk>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Leon Romanovsky" <leon@kernel.org>, "Igor
+ Korotin" <igor.korotin@linux.dev>, "FUJITA Tomonori"
+ <fujita.tomonori@gmail.com>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, "Todd Kjos"
+ <tkjos@android.com>, "Christian Brauner" <brauner@kernel.org>, "Carlos
+ Llamas" <cmllamas@google.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-modules@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <nova-gpu@lists.linux.dev>,
+ <linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>,
+ <linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-pci@vger.kernel.org>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Daniel Gomez"
+ <da.gomez@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Aaron
+ Tomlin" <atomlin@atomlin.com>
+Subject: Re: [PATCH v9 00/10] Fix missing fops.owner in Rust DRM/misc
+ abstractions
+X-Mailer: aerc 0.21.0
+References: <20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev>
+ <CANiq72m59O-ruHUvUcZC7yCvu0KV0w_m5vMO4e0rxyHdRmihJw@mail.gmail.com>
+ <68c43a03-5fa0-42a8-b886-2c756e39515e@linux.dev>
+In-Reply-To: <68c43a03-5fa0-42a8-b886-2c756e39515e@linux.dev>
+X-ClientProxiedBy: LO4P123CA0649.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:296::9) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com>
- <20260610230415.C0521C88@davehans-spike.ostc.intel.com> <5b27d22d-a3fd-4267-b63b-5de9e6586d5e@kernel.org>
-In-Reply-To: <5b27d22d-a3fd-4267-b63b-5de9e6586d5e@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 31 Jul 2026 16:40:57 +0000
-X-Gm-Features: AUfX_myd8WR-rKHyxTRYIqU4O90PcBqOHaAe_5w4HYy9Kvov8AvwQm8q27RX__E
-Message-ID: <CAJuCfpEnzS7KxYsxU4kTTGFsdYrgpY2gQ46nHR1QacyqLBo9Nw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] mm: Add RCU-based VMA lookup helper that waits for writers
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Carlos Llamas <cmllamas@google.com>, Christian Brauner <christian@brauner.io>, 
-	David Ahern <dsahern@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Todd Kjos <tkjos@android.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB3135:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5edb5aba-3891-4f9c-dc43-08deef22d90a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|18002099003|22082099003|4143699003|10067099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	VPgetq3G+0JvU6nUNTr/YIOS7zdRBbv3KaiQ7yJXyuFpW2xGHCuOn6oMUKE6ccFR1oAkHp9NrU0xprTRQiKgrgcfTF/MZtQfSxiu+PnqUVuPbJqyBYWwgN7WOHpKiUyzBeO1pF30eLjQIVxWgIL0/hjgzm0iqxO8n2Xa5/MQomOZhBd16rW54FBOjzEB/25yYLCy+lRl9U4m8v5tAF/U6YNeRae02+RcxDowXGQVEfwyoHVn8QQVpR+emmkV4AMFnLG4VpQ5Z5RJxNCsvufI32sQIvXq/hkWAJghfdp52R58at5E7vd+JZHhK1gznioskONop3O7lsIlmV9qW4sJGF1+LS7FB9gQK5PHJf0lT8r8LFsAFEy+Xomnu1nwKm8qAG8gxCFMF82Njv13a/AG4PLfNRf7lxc4exmGes6Wtvy6jNoSXTU9In2PDvLe+sqRCYm48SSyRYFhxkNHPo+uTIxJuQjKbRp7hHxHeOo2/5lKYoRfieuZ1Kh2naC/n1enWvhEuSSVTQk0gnFXfqftDr0098UsWgGNHRjU3abS7oKNpZhYixudZytUAP0knaHnSctScidQ3AqSAjI+YbD7XF3gRblY232T4wERRZ/0eCFcD68XOjbY+V5ME8wIFm9PjU0TAgqADLpX7SdKGyv1W+Z0RWS3sr3jmJFKlpl3giM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(18002099003)(22082099003)(4143699003)(10067099003)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZkppSHZiVUQ0RTYrRlJSa25UdzgyRXpnYUp4NzBibGVwNGRhOGtlSVg0U1g0?=
+ =?utf-8?B?QzVqbE5MUnY2aXNkb2cvTXhFUk9iaFY0eER3L3l3OE9XRzRRWWI5bXFUWEE4?=
+ =?utf-8?B?Ymg5ZVZRVkIyemJIN1ZuOFREZm5BZGdyQVlKS2NDbWdKQmdaUzRDbXMxL2dQ?=
+ =?utf-8?B?SkhTa1dHRTE4OFBkZEdyL2tmamVlRUxqTzBtQTJzNjhTbGtkYVBKUzlacDZa?=
+ =?utf-8?B?a242ZXczZ0RwYWFodkc5K2lOeGwxYmcvUWlHZjQ5bS9KUWpuVDQweDE3RWpq?=
+ =?utf-8?B?RmdKdXQ3bHJ2OEFJYS9OVG5PNmdlYTZlT0ZOTlZGUHRHMkE2cEgxNzFUT3lk?=
+ =?utf-8?B?Wm9xdTBZbEhpakQxSSs4MWxBTkRXOXVPRXNiYXJaaVVheWhlMEZyRmprNHRq?=
+ =?utf-8?B?bEc1Mks5c1hYdlRzTWpPQUQ0N0toUGMxSHUybXQ0Tyswd1RTeHpMVTZTUWtx?=
+ =?utf-8?B?ZHRSTU5ZaGxRMTBVWWRZN2c1eFlSWjV4VU5TQWMvVDB4UkI1U3NyeGR1QjVT?=
+ =?utf-8?B?a1dBMGlFWldsMUVvMk95K1VFYW96WUZFaUFpZ2xxL20wY05iemRIdzdjcU5R?=
+ =?utf-8?B?VHk5dCtEV1czSHpxdmpiL2pmbVBkVXF2NXV0WjI3MWU0SE9CelR1Wis5b1FY?=
+ =?utf-8?B?VnNwYWdRdXFPcWxZSFg0ZGhzREVyMGRLNEtCQysrOGpjSnB5Y2daa2UyVE45?=
+ =?utf-8?B?UmdUSis2S3A1ZkRyWUZIZGdFMUR2Q2JQdWI1aWtOZ1Vaa3hnbUxzN3Fsc0N4?=
+ =?utf-8?B?a2hrSjl3QW9BYUk2VzlhdW16Y3QyWXdIZFAzeWl2aWRrQ2l1dUk0cjJxbGI2?=
+ =?utf-8?B?UlF4S2ZQdmxabTNrbEJBOVV2OWpjVkdQaWF0S1Bha0xRb1dNWk81OEo0VFQv?=
+ =?utf-8?B?NEtSRzhMK0FGdDhmakVDWGx0M1pKWlRzdUF4QkVzM3FIVUUzRXB4aVBiOURv?=
+ =?utf-8?B?YnBzcllSWGZZVHc3cm1UN3plLzVuM0lXUG9FS0RRcHZpM2d5OWsybk8yelVP?=
+ =?utf-8?B?M2tET1ovb0lhVllZWnNQREVhUnNCSEs5TXFFOTUzb3crZjdTN21OL1hRNE5N?=
+ =?utf-8?B?dWpBYUxKblYxZVlxZnlvMnNOVis2UnhLWlgyZjBZb2tHTEtOaUEraS9MWnhw?=
+ =?utf-8?B?elRNMUpBOUVUWk5rUWJqVitsMHVULy8rMVhzdHBpb3lhR1QrU3pZUytMZ3dR?=
+ =?utf-8?B?TUhUTkJHKzVHUlFTSExOWVRPS1JnL2hHNGY3T0hTODJUOVZuMGFQSDRuQ3pS?=
+ =?utf-8?B?SkljenlSTzMvUWJiR0VBYTE2RzlOVWM3M2x0Rk94Q3paSXArNlI0UVZyYjIz?=
+ =?utf-8?B?R0ROdkZ0MG8yaGM5WjZ2dlZHY2EzZ0RDandXbG9UeU81bnJWYjlKNWJhcksw?=
+ =?utf-8?B?enZTaWYxUjVMMHQwajJXbVNlS2swNE9FZ1dFbmtXdGZsU09IMll1NG8wN0VG?=
+ =?utf-8?B?aDlMbENOd2hDVy9vbDJjM3NGT2JLSHYrSXllaEJrV3JLbUxGeEtpblVXM1Bl?=
+ =?utf-8?B?Z2NwcFc0WHZBNmh2Q3Rra0xMbWQ2RzM4dGxyUDlsS3VPd21zS1pKNDlwaVhu?=
+ =?utf-8?B?ZlIvWlNheUZCV1lPK1JEVFk2WUh5a1dCWkI4NFVPcDFFdXJUbFJWNmZ2ZW4v?=
+ =?utf-8?B?ZllIY1hRajM0UzlyVVY5NkUyWHFqR2VWTmVHUjRzbmNVL0tpSUsxWVRPN0lW?=
+ =?utf-8?B?QWZZOFYvZWtyK05yYXMwK3dhcUFvYmkwRWlTWkllaldyRjRlSSsxMlF4blAx?=
+ =?utf-8?B?OW9PbXBoMHdpdkNXekJ0dDZUWHRDdHM5OEhxVlBaNUdwNWlMS05IRmdSQjhF?=
+ =?utf-8?B?WGN5QWRMWTZGcnVZMDFGK1Vrd0x6bFB5dUtwTCtlY3FpTHhKWmZJaWY5aVdO?=
+ =?utf-8?B?ZFcwV1c4cnhYWTVQTmR4ajhEVTAxeE5PbmxJWlh5NHV1WmhHTCtaRkE3dW5H?=
+ =?utf-8?B?QzlKZ3pNK0RwU1JLZnJBYVd6d0poa1FiUTE0ZnBwaENrbHpWdHdpNFFyM0w3?=
+ =?utf-8?B?cWZIZlZqaHJwZWtwUGRJZ1dKTHRURFRtTzllQXVOTEhLK2FvZGJLbHo5Z3ZY?=
+ =?utf-8?B?L1pFeGlFS3pyd1RYTVAwRDFxUTJKUldjVWVtY3lzZFNMKzlQS2xJUlBoVHoy?=
+ =?utf-8?B?THhLQTFxcTdIOHQ3V012cnZuZE05N3FBMjhwK0JicUZySHNnYmd6MDMyZ2lB?=
+ =?utf-8?B?UDN3WlZxTFN3Y0JuTUh5ZlRWaWFKb3E4UGZxRE1icjhwRkNvbEZpdEhkUEdo?=
+ =?utf-8?B?MnJMRFhpT1FVSGhWVGdITkRxYk1OTTNmME1MNGgyU2lZaWEweVZQNWdncjFj?=
+ =?utf-8?Q?8Dvh6MKWHd2DBctxbs?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5edb5aba-3891-4f9c-dc43-08deef22d90a
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2026 16:43:28.3620
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zDEjAsJ1O814bAYxAl3j0kQGqmLys9mlTSk5n/moAvCGE5uZH7VYQ4ip0bVtRl9xnw0iO3jm55J7ow/o6zyb0A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB3135
 
-On Fri, Jun 12, 2026 at 6:00=E2=80=AFPM Vlastimil Babka (SUSE)
-<vbabka@kernel.org> wrote:
+On Fri Jul 31, 2026 at 5:34 PM BST, Alvin Sun wrote:
+> Hi Miguel,
 >
-> On 6/11/26 01:04, Dave Hansen wrote:
-> > From: Dave Hansen <dave.hansen@linux.intel.com>
-> >
-> > =3D=3D Background =3D=3D
-> >
-> > There are basically two parallel ways to look up a VMA: the
-> > traditional way, which is protected by mmap_lock, and the RCU-based
-> > per-VMA lock way which is based on RCU and refcounts.
-> >
-> > =3D=3D Problem =3D=3D
-> >
-> > The mmap_lock one is more straightforward to use but it has a big
-> > disadvantage in that it can not be mixed with page faults since those
-> > can take mmap_lock for read, which can deadlock when mixed with page
-> > faults. For example:
+> Thanks for taking a look!
 >
-> ... mixed with nested page faults and parallel writers, perhaps?
+> On 7/31/26 14:46, Miguel Ojeda wrote:
+>> On Thu, Jul 23, 2026 at 4:11=E2=80=AFAM Alvin Sun <alvin.sun@linux.dev> =
+wrote:
+>>> base-commit: b7e5ac83cb16f7ffd11dc23736f84276602100ed
+>> Was this old tag used for some reason?
 >
-> >
-> >       mmap_read_lock(mm);
-> >       // Another thread does mmap_write_lock().
-> >       // New mmap_lock readers are blocked.
-> >       vma =3D vma_lookup(mm, address);
-> >       // This deadlocks on mmap_read_lock() if it faults:
-> >       copy_from_user(address);
-> >       mmap_read_unlock(mm);
-> >
-> > The RCU one can be mixed with faults, but it is not available in all
+> That was an oversight on my part - I forgot to rebase onto the latest
+> tag before sending v9. The series is now based on v7.2-rc4.
 >
-> I'd stick to the per-VMA lock term than "RCU one"
+>>
+>>> prerequisite-change-id: 20260519-miscdev-use-format-9ab7e83b1c11:v3
+>>> prerequisite-patch-id: 405b334ff0d48ad350014f05a2321bdbaa025400
+>>> prerequisite-patch-id: 604b631c81d5423f4ebb2e12ba2d22e9ce371bfc
+>>> prerequisite-patch-id: cb550d94cefe01920e0d3ced2b2bcbecd76f3907
+>>> prerequisite-patch-id: 3bc830839742591460cb86d9472c04f4686dc600
+>>> prerequisite-patch-id: 571058244bc8c7088638d2e3225713011246c7e9
+>>> prerequisite-patch-id: 347c5a3c6dbef9832bfce8419fc23e6e08ba477f
+>>> prerequisite-patch-id: 3e202d988b56b88446f7535e90d3f00cf5f15701
+>> Are all these actually needed? Some seem unrelated (some were already
+>> applied too).
 >
-> > configs, so all RCU users need to be able to fall back to the
-> > traditional way.
+> The prerequisites were just some import formatting changes that the
+> series depended on at the time. After rebasing onto v7.2-rc4, I was
+> able to drop all of them - the rebase was clean with no conflicts.
 >
-> This is now an obsolete statement as patch 1 makes them available? But th=
-e
-> problem is that they can fail and using mmap read lock as a fallback in a
-> simple way has the above issue?
->
-> > =3D=3D Solution =3D=3D
-> >
-> > Add a variant of the RCU-based lookup that waits for writers. This is
-> > basically the same as the existing RCU-based lookup, but it also takes
-> > mmap_lock for read and waits for writers to finish before returning
-> > the VMA. This has some advantages:
->
-> I would stress the part that the mmap lock is taken *only temporarily* to
-> wait for the writers and ensure we obtain a per-vma read lock, and then
-> dropped again? As that's the main trick IIUC.
->
-> >  1. Callers do not need to have a fallback path for when they
-> >     collide with writers.
-> >  2. It can be used in contexts where page faults can happen because
-> >     it can take the mmap_lock for read but never *holds* it.
-> >  3. Its fast path does not require taking mmap_lock for read.
-> >
-> > Basically, when applied correctly, this approach results in faster
-> > *and* simpler code.
-> >
-> > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > Cc: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > Cc: Vlastimil Babka <vbabka@kernel.org>
-> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> > Cc: linux-mm@kvack.org
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-> > Cc: Todd Kjos <tkjos@android.com>
-> > Cc: Christian Brauner <christian@brauner.io>
-> > Cc: Carlos Llamas <cmllamas@google.com>
-> > Cc: Alice Ryhl <aliceryhl@google.com>
-> > Cc: "David S. Miller" <davem@davemloft.net>
-> > Cc: David Ahern <dsahern@kernel.org>
-> > Cc: netdev@vger.kernel.org
-> >
-> > --
-> >
-> > Changes from v1:
-> >  * Add a comment explaining that this can not be mixed with other
-> >    per-VMA lock or mmap_lock users. It is prone to deadlocks if so.
-> >  * Add a FIXME about making the mmap_read_lock() killable
->
-> I don't see it anywhere?
->
-> >  * Add more chaneglog bits about the possibility for an infinite goto
-> >    loop.
-> >  * Adopt vma_start_read_unlocked() implementation from Lorenzo
-> > ---
-> >
-> >  b/include/linux/mmap_lock.h |    3 +++
-> >  b/mm/mmap_lock.c            |   27 +++++++++++++++++++++++++++
-> >  2 files changed, 30 insertions(+)
-> >
-> > diff -puN include/linux/mmap_lock.h~lock-vma-under-rcu-wait include/lin=
-ux/mmap_lock.h
-> > --- a/include/linux/mmap_lock.h~lock-vma-under-rcu-wait       2026-06-1=
-0 15:57:55.828431712 -0700
-> > +++ b/include/linux/mmap_lock.h       2026-06-10 15:57:55.834431925 -07=
-00
-> > @@ -257,6 +257,9 @@ static inline bool vma_start_read_locked
-> >       return vma_start_read_locked_nested(vma, 0);
-> >  }
-> >
-> > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
-> > +                                            unsigned long address);
-> > +
-> >  static inline void vma_end_read(struct vm_area_struct *vma)
-> >  {
-> >       vma_refcount_put(vma);
-> > diff -puN mm/mmap_lock.c~lock-vma-under-rcu-wait mm/mmap_lock.c
-> > --- a/mm/mmap_lock.c~lock-vma-under-rcu-wait  2026-06-10 15:57:55.83143=
-1819 -0700
-> > +++ b/mm/mmap_lock.c  2026-06-10 16:02:50.723860779 -0700
-> > @@ -338,6 +338,33 @@ inval:
-> >       return NULL;
-> >  }
-> >
-> > +/*
-> > + * Find the VMA covering 'address' and lock it for reading. Waits for =
-writers to
-> > + * finish if the VMA is being modified. Returns NULL if there is no VM=
-A covering
-> > + * 'address'.
-> > + *
-> > + * Use only in code paths where no mmap_lock and no VMA lock is held.
->
-> I think we have various asserts that could be used and are stronger than =
-a
-> comment ;)
+> I'll send v10 shortly.
 
-I'm working on a resping for this patchset (per Dave's request) and
-I'm not sure which asserts we can use to assert that locks are *not*
-held. I think that would be a racy assertion anyway (the lock might be
-taken right after that assert) but maybe I'm wrong?
+If the patch applies cleanly then there's a no need to send a new version.
+
+Best,
+Gary
 
 >
-> > + *
-> > + * The fast path does not take mmap_lock.
-> > + */
-> > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
-> > +                                            unsigned long address)
-> > +{
-> > +     struct vm_area_struct *vma;
-> > +
-> > +     /* Fast path: return stable VMA covering 'address': */
-> > +     vma =3D lock_vma_under_rcu(mm, address);
-> > +     if (vma)
-> > +             return vma;
-> > +
-> > +     /* Slow path: preclude VMA writers by getting mmap read lock. */
+> Best regards,
+> Alvin
 >
-> Again I would say "temporarily".
->
-> > +     guard(rwsem_read)(&mm->mmap_lock);
->
-> Aside from the missing vma_lookup() I'm not sure we should also trust the
-> result of the lookup blindly? Should we also verify we found a vma? Some
-> callers might not fail the lookup because they will only lookup something
-> that's sure to be present, but some might fail?
->
-> > +     if (!vma_start_read_locked(vma))
-> > +             return NULL;
->
-> You can count me on the side that would rather see explicit operations th=
-an
-> the guard. Exactly because it's a subtle usage of the mmap sem, and yeah
-> also the tracing that Suren pointed out.
->
-> Seems to me uffd_lock_vma() mostly does all this right (but also does mor=
-e
-> stuff that we don't want to do). I'm just not sure right know when
-> vma_start_read_locked() failures can happen in practice here (can it be o=
-nly
-> recfount overflow or also refcount being zero? hopefully not zero if we
-> found the vma under mmap lock for read? comment in
-> lock_next_vma_under_mmap_lock() seems to hint at that) and what to do abo=
-ut
-> them. We seem to have some unhelpfully stale comments around.
->
-> - uffd_lock_vma() doesn't document that it can return -EAGAIN. (and shoul=
-d
-> the caller then retry or what?)
->
-> - vma_start_read_locked() has a comment saying how it cannot fail, but it=
- in
-> fact can.
+>> The only one that seems needed has Andreas' Acked-by, so
+>> I guess it is fine.
+>>
+>> (By the way, I will use this second message to take this chance to
+>> move the modules maintainers in the To: in case it helps, since I
+>> didn't do it in my previous message)
+>>
+>> Thanks!
+>>
+>> Cheers,
+>> Miguel
 
-I'll modify the comments for these functions to be clearer and more complet=
-e.
 
->
-> > +
-> > +     return vma;
-> > +}
-> > +
-> >  static struct vm_area_struct *lock_next_vma_under_mmap_lock(struct mm_=
-struct *mm,
-> >                                                           struct vma_it=
-erator *vmi,
-> >                                                           unsigned long=
- from_addr)
-> > _
->
