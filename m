@@ -1,235 +1,131 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294D542E8F1
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 14:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BC0542C4FE;
+	Fri, 31 Jul 2026 14:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.161.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785508773; cv=none; b=KZdiFPfLp7h1SNvftNOMYXSVjPkt91ee3v4JZ9bjHK0z9B6E8QR9SCKUIaH+3oFwltV6d5pKMclMuRxB5nqUEsx/fZRWce7o+cZ1w0RJqmfT5ALiHLH0heWSPfCtMxhF0zfOwGbqk+aR6JMcxDtpmK+HSUXpSUusQt+wKnDAIqI=
+	t=1785509648; cv=none; b=sScVSQPdc24SCtzEtlv3zMQGeRA5pSCKomJOf2jt/XU1tNoF9nSZOWDncnfIOsRpMAVccl6+31aqjtnOrhMaz7lVsQ7kQbL0w8i1Yc9gBZOUXAVsKw9PC+z6CvjCmoZFWZIJQ1d+7zN8Gu06U8UZpUYRItRnA/LzaeM3j2oY7ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785508773; c=relaxed/simple;
-	bh=D1aJPZBOo/OhYP1HH4IOSv56VOjVJA/fxuLhsShIff8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=huYr+wrDwBH3GdadVNg2QwtqhJ9kfLbqLIhkdo925Pj/snSHs0WIYyS5nL0yKNcZ0rR4at5kpxfCqRJnM9LhRM/Kvma3wdhtfRqwEwaW3n3TUizW1S1jP3izBTGgAQJowVYc8dyumqOrtATVkjBCPMNhkM0HXWXDneUTggDvA0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=g4z2dp+2; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785509648; c=relaxed/simple;
+	bh=y4nMOC9rQwMNh9/QY5ohrtC8GVSatFRMMa5dqqJ11SQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CsugH0ahsa2ILb0AvwGZSlbPs9UONZWGWJeZ3VbhYKsKEpP9dmIHe865a7zwLZvR0euMpvgiRT+Bcwkc3L1rjw7m1Hpg9zDOqepvqMqMUBC+hskyPfV40pgdnwsDlNI4bvzHWzF5/SqbEIQAbbiMGVBnI3cDWp7DQn6o1PK4VCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=DpSmphZ6; arc=none smtp.client-ip=162.243.161.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="g4z2dp+2"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 585971A135E;
-	Fri, 31 Jul 2026 14:39:28 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1C5C36039A;
-	Fri, 31 Jul 2026 14:39:28 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6EAE411C1693A;
-	Fri, 31 Jul 2026 16:39:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785508763; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=uUpTXFVzOqLSupsepWIgmJgJHum04BsXDSlkHLk2W5U=;
-	b=g4z2dp+2U6NXxgj5+EGOa+1bUiHld1jmAudMsJhfsve9so34i4hgSn15/kRc6YO9nzBghl
-	jDEkUwGDqi+WRt/30NI2dY+573Knomgyhqz/Q9rceKooc6eA13aK0Vmje/MQrfgNZwnru4
-	OZH1XJfBuSdNTUse06FFo8bsgtJXdPfL3pHZ3/kBldaIJMN+9JnJE/GNUHzDJU3oEAI/DN
-	a3R+HQ4HsRShpLVzCpddMh6nRt2BkMCQLJ2SP2zkqIAkkNNWBotCYNkVY3XqspAlk+Sw2P
-	aA79JRRElrYQohV0xE8htBrd8f7vphQMVTT+fu7KfllXzSOiG3yIYbwheKGKTg==
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="DpSmphZ6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=eEBf+
+	+lMlqIjYQrTOiYA3dW3YJg7bayGuafygzjVaDw=; b=DpSmphZ6xA+AMRNLVPqSb
+	V64JubUX4q+k2vE6B00gDRKHiFt1BwaDGJHwonE27J4Ct4pQeh4hVUQ0jH/Aao5y
+	W4L+0+Sm+skIweYF31/0I56PY1q6slpDYJl/+sbxmXoik3VMUPwkEk+aO26Two8N
+	y8P6jGDKHwHlIlbv2bkPlw=
+Received: from localhost.localdomain (unknown [106.111.19.240])
+	by web1 (Coremail) with SMTP id yAQGZQBnCcn4tmxqZRvfAA--.52498S2;
+	Fri, 31 Jul 2026 22:53:46 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: netfilter-devel@vger.kernel.org
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>
+Subject: [PATCH nf-next] netfilter: conntrack: sctp: validate vtag before state changes
+Date: Fri, 31 Jul 2026 22:53:41 +0800
+Message-ID: <20260731145342.56890-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 31 Jul 2026 16:39:16 +0200
-Message-Id: <DKCU137TXTQJ.1G54TGB6LKZVW@bootlin.com>
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Nicolas
- Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Paolo Valerio" <pvalerio@redhat.com>, "Nicolai
- Buchwitz" <nb@tipi-net.de>, "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
- <maxime.chevallier@bootlin.com>
-To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, "Conor Dooley"
- <conor.dooley@microchip.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Richard Cochran" <richardcochran@gmail.com>, "Russell King"
- <linux@armlinux.org.uk>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next v5 07/15] net: macb: introduce macb_context
- struct for buffer management
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260724-macb-context-v5-0-569b1852bc7f@bootlin.com>
- <20260724-macb-context-v5-7-569b1852bc7f@bootlin.com>
-In-Reply-To: <20260724-macb-context-v5-7-569b1852bc7f@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:yAQGZQBnCcn4tmxqZRvfAA--.52498S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZrykWrW5XF4ftFy7Xry5urg_yoW5GryDpa
+	yFkr1agFyxGr4ayan3Kw1vyF47Grs3C39FkryUCFyvkwn8JF1Fga13K3yxuw1DZF1DKry3
+	AFZ0qr4YyF1DCwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9v1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
+	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4
+	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28E
+	F7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzx
+	vE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VCjz48v1sIEY20_GrWk
+	Jr1UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5c
+	I20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxkIecxE
+	wVAFwVW5XwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4rKr1UJr1l4I8I3I
+	0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWU
+	GVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI
+	0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0
+	rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4UJV
+	WxJrUvcSsGvfC2KfnxnUUI43ZEXa7VU1m9aPUUUUU==
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQYFAWprzrTllAAAsJ
 
-This is a reply to both Sashikos comments.
-https://sashiko.dev/#/patchset/20260724-macb-context-v5-0-569b1852bc7f%40bo=
-otlin.com
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260724-macb-context-v=
-5-0-569b1852bc7f%40bootlin.com
+The packet-wide vtag check in nf_conntrack_sctp_packet() is skipped when
+the bundle map contains a chunk type with special vtag handling.  The
+per-chunk path re-checks INIT, ABORT, SHUTDOWN_COMPLETE, and COOKIE_ECHO,
+but other state-changing chunks can still reach sctp_new_state() without
+validating sh->vtag.
 
-sashiko.dev has comments on previous patches but they all match
+This lets a wrong-vtag packet bundle HEARTBEAT with COOKIE_ACK, ERROR,
+SHUTDOWN, or SHUTDOWN_ACK and update SCTP conntrack state.  The resulting
+state can diverge from that of the SCTP association.
 
-> This is a pre-existing issue, but [...]
+Check sh->vtag before processing those chunks when conntrack already
+knows the expected direction vtag.  This keeps the existing
+HEARTBEAT/HEARTBEAT_ACK learning and connection-reuse behavior for the
+`vtag == 0` cases.
 
-What remains:
-
-> > @@ -3696,8 +3783,8 @@ static int macb_set_ringparam(struct net_device *=
-netdev,
-> >  			      MIN_TX_RING_SIZE, MAX_TX_RING_SIZE);
-> >  	new_tx_size =3D roundup_pow_of_two(new_tx_size);
-> >
-> > -	if ((new_tx_size =3D=3D bp->tx_ring_size) &&
-> > -	    (new_rx_size =3D=3D bp->rx_ring_size)) {
-> > +	if (new_tx_size =3D=3D bp->configured_tx_ring_size &&
-> > +	    new_rx_size =3D=3D bp->configured_rx_ring_size) {
-> >  		/* nothing to do */
-> >  		return 0;
-> >  	}
-> > @@ -3707,8 +3794,8 @@ static int macb_set_ringparam(struct net_device *=
-netdev,
-> >  		macb_close(bp->netdev);
-> >  	}
-> >
-> > -	bp->rx_ring_size =3D new_rx_size;
-> > -	bp->tx_ring_size =3D new_tx_size;
-> > +	bp->configured_rx_ring_size =3D new_rx_size;
-> > +	bp->configured_tx_ring_size =3D new_tx_size;
-> >
-> >  	if (reset)
-> >  		macb_open(bp->netdev);
-> >
-> >  	return 0;
-> >  }
->
-> [Severity: Critical]
-> Does ignoring the return value of macb_open() here risk leaving the
-> device in the UP state with a NULL bp->ctx?
->
-> If a ring parameter update fails during macb_open() (for example, due to =
-a
-> DMA allocation failure), bp->ctx will be freed and left as NULL. Because
-> the failure is ignored and 0 is returned, the network stack still
-> considers the device to be UP. A subsequent interface down event will cal=
-l
-> macb_close() which will panic when it dereferences bp->ctx to free the
-> queues.
-
-This is also a pre-existing issue but it's wasn't flagged as one.
-Anyway, it should be ignored because by the end of the series this
-macb_open() disappears and we do context swapping.
-
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Assisted-by: Claude Code:GLM-5.2
+Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://lore.kernel.org/netfilter-devel/amx58O5Jb6B29XDJ@chamomile/
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 ---
+ net/netfilter/nf_conntrack_proto_sctp.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-For netdev sashiko now:
-
-> > @@ -3138,14 +3205,22 @@ static int macb_open(struct net_device *netdev)
-> >  	if (err < 0)
-> >  		return err;
-> >
-> > +	bp->ctx =3D kzalloc_obj(*bp->ctx);
-> > +	if (!bp->ctx) {
-> > +		err =3D -ENOMEM;
-> > +		goto pm_exit;
-> > +	}
-> > +
-> >  	/* RX buffers initialization */
-> >  	macb_init_rx_buffer_size(bp, bufsz);
-> > +	bp->ctx->rx_ring_size =3D bp->configured_rx_ring_size;
-> > +	bp->ctx->tx_ring_size =3D bp->configured_tx_ring_size;
-> >
-> >  	err =3D macb_alloc(bp);
-> >  	if (err) {
-> >  		netdev_err(netdev, "Unable to allocate DMA memory (error %d)\n",
-> >  			   err);
-> > -		goto pm_exit;
-> > +		goto free_ctx;
-> >  	}
-> >
-> >  	bp->macbgem_ops.mog_init_rings(bp);
-> > @@ -3187,6 +3262,9 @@ static int macb_open(struct net_device *netdev)
-> >  		napi_disable(&queue->napi_tx);
-> >  	}
-> >  	macb_free(bp);
-> > +free_ctx:
-> > +	kfree(bp->ctx);
-> > +	bp->ctx =3D NULL;
-> >  pm_exit:
-> >  	pm_runtime_put_sync(&bp->pdev->dev);
-> >  	return err;
->
-> [High]
-> Once macb_init_hw() has enabled IRQs, can the hardware fire a TX error
-> or HRESP interrupt whose handler schedules work before this error path
-> runs?
->
-> [...]
-
-Same type of report. It sees a bug because now the race lands in a
-bp->ctx null ptr deref, but the bug existed before and probably crashes
-the system as well.
-
-> > @@ -3220,6 +3298,8 @@ static int macb_close(struct net_device *netdev)
-> >  	spin_unlock_irqrestore(&bp->lock, flags);
-> >
-> >  	macb_free(bp);
-> > +	kfree(bp->ctx);
-> > +	bp->ctx =3D NULL;
-> >
-> >  	if (bp->ptp_info)
-> >  		bp->ptp_info->ptp_remove(netdev);
->
-> [High, High]
-> The same question applies here: after macb_reset_hw() masks the HW
-> interrupts under bp->lock, can a handler that had already read ISR on
-> another CPU still schedule tx_error_task or hresp_err_bh_work once
-> bp->lock is dropped?
->
-> [...]
-
-Again, pre-existing issue.
-
-> > @@ -5093,6 +5187,10 @@ static int at91ether_close(struct net_device *ne=
-tdev)
-> >
-> >  	at91ether_stop(bp);
-> >
-> > +	synchronize_irq(bp->netdev->irq);
-> > +	kfree(bp->ctx);
-> > +	bp->ctx =3D NULL;
-> > +
-> >  	pm_runtime_put(&bp->pdev->dev);
-> >
-> >  	return 0;
->
-> [High]
-> Is the ordering here inverted?
->
-> at91ether_stop() writes IDR to mask MAC interrupts and then calls
-> at91ether_free_coherent(), which dma_free_coherent()s rxq->ring and
-> rxq->buffers and sets both pointers to NULL. Only after that does
-> synchronize_irq() run.
->
-> If an at91ether_interrupt handler on another CPU had already read a
-> set RCOMP bit before the IDR write became visible, it will proceed
-> into at91ether_rx():
-
-This is true: synchronize_irq() is too late. I'm pretty sure this is
-moot anyway because AT91 is (old and) only single core. I expect a lot
-of at91ether code would break if at91ether_*() functions were used on a
-multicore SoC.
-
-Anyway I'll fix in next revision.
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
+index 7e10fa65cbdd..9978ecd05b1e 100644
+--- a/net/netfilter/nf_conntrack_proto_sctp.c
++++ b/net/netfilter/nf_conntrack_proto_sctp.c
+@@ -407,9 +407,17 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
+ 			/* (D) vtag must be same as init_vtag as found in INIT_ACK */
+ 			if (sh->vtag != ct->proto.sctp.vtag[dir])
+ 				goto out_unlock;
+-		} else if (sch->type == SCTP_CID_COOKIE_ACK) {
+-			ct->proto.sctp.init[dir] = 0;
+-			ct->proto.sctp.init[!dir] = 0;
++		} else if (sch->type == SCTP_CID_COOKIE_ACK ||
++			   sch->type == SCTP_CID_ERROR ||
++			   sch->type == SCTP_CID_SHUTDOWN ||
++			   sch->type == SCTP_CID_SHUTDOWN_ACK) {
++			if (ct->proto.sctp.vtag[dir] &&
++			    sh->vtag != ct->proto.sctp.vtag[dir])
++				goto out_unlock;
++			if (sch->type == SCTP_CID_COOKIE_ACK) {
++				ct->proto.sctp.init[dir] = 0;
++				ct->proto.sctp.init[!dir] = 0;
++			}
+ 		} else if (sch->type == SCTP_CID_HEARTBEAT) {
+ 			if (ct->proto.sctp.vtag[dir] == 0) {
+ 				pr_debug("Setting %d vtag %x for dir %d\n", sch->type, sh->vtag, dir);
+-- 
+2.47.3
 
