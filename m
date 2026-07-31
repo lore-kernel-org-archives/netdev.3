@@ -1,119 +1,98 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F7A302767
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:27:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299F03A59A3
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785490042; cv=none; b=QD03HpyoM4WhuMlB+ZEe3eoVtjBzwqEZsjuDqPUE7yh/qbjVVZMJIHv3DiYFoueiAWZ0yeYXlrObryZ6Jj1Fecjr3BdsdMYR3kWXWhQ40Xm60MqCIdqyrHCP6kCK2eI9rR3WqH2V9iNyvQTD9LiihcEzFhHm9S9XQWpYr39fhQI=
+	t=1785490114; cv=none; b=Vin4iN3xU5Mkc4nkgwN53qf0BRaacEBYHIdldlXvo5A+eOWS7zApYS1QK+e6G0ykrd7IYFid2jvZ/J+L8BVAMFrWFrmUnpJr3ZW2dlytyyJ5QGl4oR8tKWfQHcwP9YVUXTEEv1zkibU8RdJp+XyCiBuGMZpXREIhJc4zOWoB7AM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785490042; c=relaxed/simple;
-	bh=hqZihM8hK+I8nFhpFn08kRiurxV1utL6Ta1OJMrFiIc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GMIwRMcTW29DNfINueU60RqNsyr28uEbtapNTDm+ey/AF26W69xMXfc/C7pC//x6Rr1JsmnGvo8DMueDkKRa46fQY63R/mn0i1/Y8Hv6HfpNkWBhh7Wm56FsXWKGJs8vtsFLfj4Zu4wKY+6cfkioPiNNS5jSk0ahK4++1olvxis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AP2Ra4my; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AP2Ra4my"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785490040;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+h/M58pkHioJJHeT49LZUSs+akm76z/lS6bXu9sSoX0=;
-	b=AP2Ra4myYgWDucaLbVeOrsaWKW3TeJs00xANQWt7M3CnFz1YI21QmW85jqqH7YLywzPP5T
-	bHbOeucQVSzrjlimTvJ9b3xuOVI4t394Y1rpsJrDbMCn1zcnOOd3G4xTwrP7b07yeUNA+d
-	M236rDvukCXN0fz6qoFmgzsT39H+rSI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-110-LD-_2h9BNHeGDPWYwuGc9w-1; Fri,
- 31 Jul 2026 05:27:16 -0400
-X-MC-Unique: LD-_2h9BNHeGDPWYwuGc9w-1
-X-Mimecast-MFC-AGG-ID: LD-_2h9BNHeGDPWYwuGc9w_1785490035
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6AB2E1800350;
-	Fri, 31 Jul 2026 09:27:15 +0000 (UTC)
-Received: from lenovo-t14s.redhat.corp (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2EE741800480;
-	Fri, 31 Jul 2026 09:27:13 +0000 (UTC)
-From: Laurent Vivier <lvivier@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>,
-	linux-usb@vger.kernel.org,
-	Laurent Vivier <lvivier@redhat.com>,
-	jarod@redhat.com,
-	stable@vger.kernel.org
-Subject: [PATCH net v3] usbnet: cap max_mtu for drivers without bind callback
-Date: Fri, 31 Jul 2026 11:27:11 +0200
-Message-ID: <20260731092711.857684-1-lvivier@redhat.com>
+	s=arc-20240116; t=1785490114; c=relaxed/simple;
+	bh=B6lnZ6re4ipdXA2AsLr/Qk4kNG+C+7dDeQUVln/dK4s=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=n6KGYVlw4Wa2M8P7FkyeqeFPfMT8d3nDZ1qnEBNFdHaH2NoK7Z74v4wuU8fz1WJ+/ElsQ18T4M5BxqmOSj/NlxyHyV6EOryy5p0PfAAoFb7357wNGF/JAqnNWFT3fUUX+GpCP4mwhSzERHHDFCKbOSUA+PUjTqL+xCJFuk/y684=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.19.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:tivesync4t1785490055td5d56842
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [122.235.139.83])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 12865441474952582425
+To: "'Breno Leitao'" <leitao@debian.org>
+Cc: <netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Richard Cochran'" <richardcochran@gmail.com>,
+	"'Russell King'" <linux@armlinux.org.uk>,
+	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
+	"'Jacob Keller'" <jacob.e.keller@intel.com>,
+	"'Simon Horman'" <horms@kernel.org>,
+	"'Kees Cook'" <kees@kernel.org>,
+	"'Rongguang Wei'" <weirongguang@kylinos.cn>,
+	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
+	"'Joe Damato'" <joe@dama.to>,
+	"'Larysa Zaremba'" <larysa.zaremba@intel.com>,
+	"'Chenguang Zhao'" <zhaochenguang@kylinos.cn>,
+	"'Fabio Baltieri'" <fabio.baltieri@gmail.com>
+References: <20260731061837.12672-1-jiawenwu@trustnetic.com> <20260731061837.12672-3-jiawenwu@trustnetic.com> <amxjZX1eShpKD1V8@gmail.com>
+In-Reply-To: <amxjZX1eShpKD1V8@gmail.com>
+Subject: RE: [PATCH net-next v13 2/5] net: wangxun: add Tx timeout process
+Date: Fri, 31 Jul 2026 17:27:34 +0800
+Message-ID: <04f701dd20ce$d21842a0$7648c7e0$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQGvKca1hNpLUk5TH4rh01kaL1lr8AIUgh3gArm6K/m2vNTJUA==
+X-QQ-SENDSIZE: 520
+Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MbJyXRLS/UlCjU0rGNkKowjhTASK0nRkea0x+URbOkkYLGq2QspTcspS
+	Db0hxEFhlIzDRMFmuH+9y2cWWa4tC9Tf0QlhMfK8RWrYvIOksw5e7gTpDqO5JyMB6BVrDZt
+	egCXrZtwNwWmgqfAm0W0aNTQJbNnvKy3s+ZZPO+CA+PAy66GDEExUbx354zOw1GIFZ2yrCE
+	UTNiI0gEowaoYx2EJy7+BkNBTfO7A1L7CQ3KZPLxi+aSYgJ3pIB3zts4FVGwD9T/JEgiRef
+	8iVEbt7qpnaonRhvbOuj3isSw4JUcNr/75RPK43o3gTmn85xXkoFPRL5jR0lBJzHsVyvFy4
+	Ae+d+/aiiYE7N/bxQjEMHdUmnIbUIOnNXATqb3xonZD0Yy/37K+36SfRtJ876x2icEurNgi
+	1G58Nq+V6/nehugl+irAIAg1KphD1TVd3B1ODx8337lXS1R07RwDlOFlWTKsR4/QJW2WfMn
+	sdoUp1afB26xiNpM5GQyEdnxSAFkl16mDVS5F123pErduwKOIee+mKwWckoGUlYt7OhxhPW
+	xAZtQELTMIKSHd9FmeQXeob0D9naa6K7p4pdisKBKRGTz1WzazpaUgEVH7pm2cYlkp4B/VG
+	aXDEhXCe7q5NIcl17CMnU/27Y0VHJRFwyqT7RFKfyB5i8WONTwLCSMUIahM/QACQw+dxFvu
+	5p6K9KKoJnWkFXMcJRvsVOl8uX60R/Yyp+1JdWGGsMELblHn2DBDazSYjsPmrH09FbcP62/
+	ieDmwPhkKGqRxaEg/eR0h8Ig2xsPMnY+W0b7MOBIZrUHkQb81dQeMPOC6N22O3GwONHlxz6
+	mva4uE7Ul5A4CXg/k7NXqg6FMuBdGxtUVKxX8O7gGciAJfKsUtcj8+RuMUKZPeaouBBP16c
+	aMrCt2EayrrYvJtKY9v7912zJ+gNOj6Ft3bJ57D8hXdR+O8SO+6/RRc4Kbnv7g+4/MEXNoc
+	g6VmyANVcQv8+Bnel5kZLbQiCvy0Xi+72tMWGH738glkTu+Dv755bp9s1wHJ9NQBSeNZm+P
+	fJ9fpm3cCbZSc8zk3YS2A1WxqUsDDjgArJD9Y4t7fVsKTbvqxXMuK0F7T5CdByCNWlC9zyr
+	qvVc0fzNR7EivZY4oIfYAjIKjwxUmbfOU/sRyENSWfTYXmH+vplWSYSVEtM2o5MdA==
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 
-usbnet_probe() initializes max_mtu to ETH_MAX_MTU and only caps it
-inside the if (info->bind) block. Drivers without a bind callback
-never enter this block, so max_mtu stays at ETH_MAX_MTU.
+On Fri, Jul 31, 2026 5:01 PM, Breno Leitao wrote:
+> On Fri, Jul 31, 2026 at 02:18:34PM +0800, Jiawen Wu wrote:
+> > @@ -1275,6 +1288,7 @@ enum wx_pf_flags {
+> >  	WX_FLAG_NEED_DO_RESET,
+> >  	WX_FLAG_RX_MERGE_ENABLED,
+> >  	WX_FLAG_TXHEAD_WB_ENABLED,
+> > +	WX_FLAG_NEED_PF_RESET,
+> >  	WX_PF_FLAGS_NBITS               /* must be last */
+> >  };
+> 
+> You need WX_FLAG_NEED_PF_RESET and also WX_FLAG_NEED_DO_RESET? isn't one
+> of them enough?
 
-QEMU's usb-net device (0x0525/0xa4a2) is claimed by the cdc_subset
-driver which has no bind callback. The guest accepts any MTU from DHCP
-(e.g. 65520 from passt), leading to TCP segments that exceed the
-device's 2048-byte receive buffer and are silently dropped.
+Sorry I didn't notice flag WX_FLAG_NEED_DO_RESET introduced by VF driver here.
+I'll fix to reuse it in the next version.
 
-Initialize max_mtu to net->mtu at probe time and update it inside
-the bind block.
-
-Fixes: f77f0aee4da4 ("net: use core MTU range checking in USB NIC drivers")
-Cc: jarod@redhat.com
-Cc: stable@vger.kernel.org
-Link: https://gitlab.com/qemu-project/qemu/-/issues/3268
-Link: https://bugs.passt.top/show_bug.cgi?id=189
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
----
-
-Notes:
-    v3:
-    - set max_mtu to ETH_MAX_MTU under if (info->bind) before calling
-      info->bind()
-    v2:
-    - Set max_mtu to net->mtu at init, update inside bind
-    - Fix Fixes tag to f77f0aee4da4
-
- drivers/net/usb/usbnet.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 25518635b7b7..a19ecf718f36 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1794,7 +1794,7 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
- 	 */
- 	dev->hard_mtu = net->mtu + net->hard_header_len;
- 	net->min_mtu = 0;
--	net->max_mtu = ETH_MAX_MTU;
-+	net->max_mtu = net->mtu;
- 
- 	net->netdev_ops = &usbnet_netdev_ops;
- 	net->watchdog_timeo = TX_TIMEOUT_JIFFIES;
-@@ -1804,6 +1804,7 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
- 	// allow device-specific bind/init procedures
- 	// NOTE net->name still not usable ...
- 	if (info->bind) {
-+		net->max_mtu = ETH_MAX_MTU;
- 		status = info->bind(dev, udev);
- 		if (status < 0)
- 			goto out1;
--- 
-2.54.0
+But I think 'wx_pf_flags' needs to be renamed to 'wx_flags', since VF is also used.
 
