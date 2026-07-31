@@ -1,104 +1,132 @@
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BA83B637A
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 19:26:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785525992; cv=pass; b=eAXsGLkbZD8hWOj/76rojdOTi19iuRkAFskzdQM9AgbPToptYMoFgk4OiaEWpAjV8IdMa4KXMGiHdqmYWG8eBqDLJsG3NcGMwRBQDUl0Oj0Kq6PBq5kV1hvFcPCuVz95f0eRQID0aMDMG7GcforWmw3KNAHn0KstsspRVwkXHkQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785525992; c=relaxed/simple;
-	bh=73pWa1BlX5RpNJhwInFUJ18btopb328zkDMMQ6IUiC4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=okeOQ8JL2NRbxGVX/E8jB52MajRHpoZN/eCNjc4UmWtBdo5OuZ70Ksp1ZvKiG3d4rhHZek8wgOKj5uNRUfYoxRpjkGPFMd3zIMS/mHFEIyUfiLue2M1F1S//dFEDbYYJ3UjdONqErxH7DxLjAfz52ni3U1M8LW2/LY5MsEG+zbw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iusegentoo.com; spf=pass smtp.mailfrom=iusegentoo.com; dkim=pass (1024-bit key) header.d=iusegentoo.com header.i=ali@iusegentoo.com header.b=nuXDQ15W; arc=pass smtp.client-ip=136.143.169.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iusegentoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iusegentoo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC0A45DF77
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 19:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785525995; cv=none; b=RE3ne6SU3a1hAILFRDDyxD+uTULeWyhMrSbvfO+WML+ouGTVRnOdyC+o/DrwwTE3zGEM9eX99lTZBTGljovIxcm5Fh+pMienllTYiA1LcDMkm6iYtMWKq0W3Ft81ApyPwgD3jcZBA2+kT5jJF8WxInofOimNyb0eh+Ri+cgJDzs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785525995; c=relaxed/simple;
+	bh=KkF5Nke1QJHyg8FJ5OsLAEE7JZPzkufAokSHnEISuKY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MbjpSRzo19zWiTs8+aOLEIs76LfdyLroBrQh/bMKMZ0LWPO7nVHHvGx81rQJ8F8QN7WzjDe2jDCFV8bnIbG8oggUmO9CfXDjT+ielREdZwGGlGH4m8yto4YW3ipiR6IdIAl3aqNFWmObilhb3scD5y4FVGDLbqOGyyVWZvw1ipM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e4Uz/U/p; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iusegentoo.com header.i=ali@iusegentoo.com header.b="nuXDQ15W"
-ARC-Seal: i=1; a=rsa-sha256; t=1785525958; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=in8HxxLgJjCXoDRIa4cCLwjY1UoxO1RFGyw+SFVstFDAqUD642wRFCLHMNHK6B69VvnU6q5WbKrploVngXapJA24EPqAQ201KlYbqdPlsCuIdMeyg4L0//C7l9KSuft4UbBaLRjtfTyLw6Oqk0DNez0p7QSZcb2Dos9kG9Pdt+k=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1785525958; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=+1MEG93QTr2RoYK3YV/UK/c3NShlE3HAOJF+xBCkrUk=; 
-	b=DJwdmEzkCvZv+dMDKq7h48bQp5Eo3nMvJuSg1evbWWF1osC67kNf+xzGyGAWNUZ/EtsBvPFxo82jcElgwoRcS1oBeZNixTeCinuqVJGDZKwTMYbuAajFT1JPr4vad/hRsXMVRUL8kEEd3kb1hrFFKkB9MwsxLfo3N3LWDWQC23U=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=iusegentoo.com;
-	spf=pass  smtp.mailfrom=ali@iusegentoo.com;
-	dmarc=pass header.from=<ali@iusegentoo.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785525958;
-	s=zmail; d=iusegentoo.com; i=ali@iusegentoo.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=+1MEG93QTr2RoYK3YV/UK/c3NShlE3HAOJF+xBCkrUk=;
-	b=nuXDQ15WpC6YtNp7GRwpQCEpdrtwpwWBUP3SEcwReUrJ2FbuSVzd5/vHfrTnsLei
-	vRO3haKDllhoxhTBzv3RG1UklBRlz3EBdF3Liu+8/k+a7BZBGGXGjUSZrc1XZI1ueD+
-	j2OyqicmRjqhOE3JcGHK+QrYIGTNzfa63CYvcT/w=
-Received: by mx.zoho.eu with SMTPS id 1785525956388972.9501036438804;
-	Fri, 31 Jul 2026 21:25:56 +0200 (CEST)
-From: Ali Ahmet Memis <ali@iusegentoo.com>
-To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: hsr: wait for pending node-free RCU callbacks on module exit
-Date: Fri, 31 Jul 2026 22:25:43 +0300
-Message-ID: <20260731192545.176969-1-ali@iusegentoo.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e4Uz/U/p"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-471eeac43bfso1489443f8f.3
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 12:26:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785525992; x=1786130792; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qto0P01IO3CrmBO6x4tfgO5l9DTkXSKTrk6PtYpQaHs=;
+        b=e4Uz/U/pWX6IZHurxJRR0uNlWsjpNhjjwuf9tLgg2x6OxxS3QMmX1iUTNfQJlc1zl4
+         uOb1WkJ+DkHK7z1PQBLl50B0TTmZ2BJ2xPX9UpbQfsCtJ3A1xfBh91aZ0o8STrGPixUo
+         JXQnXfcIUgQr//zSkidl+kSNA927hyddaRi0BNOwEfvHm03zjCpe4H5Wrtnk4TbMvb70
+         79yFNHceEDbjOgqV7ocJIXF2ELjRBFO2AQmG8XN0bChrJNQXY5AaBp+ieAqVIUZ+w2Ym
+         67z3sCNXRbZE4FC/ZP6sU7xyEaU//mmVly6bcJgGF8eUhZwfsfC5vABgobsowoyU1j0S
+         ZQ8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785525992; x=1786130792;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qto0P01IO3CrmBO6x4tfgO5l9DTkXSKTrk6PtYpQaHs=;
+        b=WH/sNN9cBVBQeOJIm9CNI0y3uVcMxIpBn5Lb9bdkdQbUyswTO3wcVCCI6ttwwZL0bs
+         EZMdgQGLC2eAITCMZ3GiLVmWSAG8wQvv6PMMAoK29U6WG1eKfgCaz/HB7eXKs/xIjJ7F
+         yRQe8/SDXdyivUGPWlq3AtjcQudJnYBmiMwtDhezZwqVYDtb67Cfjubp5gz2tt5Ag+/0
+         Pmbg0qWesse/JoaAGnXp8SSibjP2ataDzHf8YuRzt2n5jjz/mI2lXjY5LCpQe7Vf8iUv
+         7OO0uwFKItFgnVsOogSLcD9jSYcG/KNuWSWjMR7oEaYjgAfB7KdhCrvgZhrRVfACQoZn
+         hyjQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrxbRA2HhoohWe0deu+zKLwb3k0Q5fA0O2Aw1OjTvNlgPXxUzqPtlzbh9oRu4SfCw7Bu7RfLuU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxg4AB5Eo10ShaNE9PN9b68ZSbOn2T+XXibTCrzku9UPNLM6zA/
+	bNd6xp/CFd9y8Z2XeCvoigotOSTLY4L1rjI9XqvvkX6SqCCDvA8bxrg+
+X-Gm-Gg: AR+sD1212UD9E+w0mtn/zyyaZ3ZGmfTqLKBH/mlPlu64zKueR7p3NDLvZhJqRfo/1O2
+	OJW9RDDOP0DQbsF1sbzPvGUgJ/x6BEtUPy+uTgPI7yYNzI+wr7TqnMyODF7hfzwhQWQa3eJ/8K/
+	jZrBIHG10/Uax1+xPxnGTGuQY7XHxmVIP0Nj9wJ2LRzmE3ZbHTBudG1jF5+zbq4bcO1TI8Hc+iR
+	XG3ZovS9FAJ12G9cZQfuMvbWSXk1ostMFuKHzcCuN/w9s5HdgeEuBB5xAKwO9oMlwA1f/bIgIoo
+	Yexe1P/FdOIgHzDzGiLK43NLCZCH+4BL9MeBpTxXepma55J8PFrO6A6YGcuLIySLUpNQDs2RYAd
+	+6hIoKDFDfR+ZEAa6VBlKiXMcHJ4aoBn7lm9tqL92NjpGelgdEtTIfT0A870yIJp4Ue/MqEvtjO
+	JA06Cpj8kXu1Gx1nVrWBUfGj0pcLAb5pjhkOI+QMdiCiK+4KgMcnoisPbcy9CelRnzxl3n4t8pk
+	/Li0RxvsflzrfPX3B8udaMCNQ==
+X-Received: by 2002:a05:6000:2489:b0:475:3a97:8e2c with SMTP id ffacd0b85a97d-47fd72a8634mr1849874f8f.16.1785525991497;
+        Fri, 31 Jul 2026 12:26:31 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd456262bsm7841993f8f.17.2026.07.31.12.26.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 12:26:31 -0700 (PDT)
+Date: Fri, 31 Jul 2026 20:26:29 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Pablo =?UTF-8?B?VmFsbGVzcMOtbg==?= Aranguren <pablopva014@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "open list:TULIP
+ NETWORK DRIVERS" <netdev@vger.kernel.org>, "open list:TULIP NETWORK
+ DRIVERS" <linux-parisc@vger.kernel.org>, open list
+ <linux-kernel@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] net: tulip: xircom_cb: drop runt frames before skb copy
+Message-ID: <20260731202629.10ff97e6@pumpkin>
+In-Reply-To: <amzqfjeo0Yo1p0Rd@ThinkPad-P15>
+References: <amzqfjeo0Yo1p0Rd@ThinkPad-P15>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-HSR/PRP node teardown and the prune paths queue node frees with
-call_rcu(&node->rcu_head, hsr_free_node_rcu). hsr_free_node_rcu() lives
-in the hsr module text.
+On Fri, 31 Jul 2026 20:33:34 +0200
+Pablo Vallesp=C3=ADn Aranguren <pablopva014@gmail.com> wrote:
 
-hsr_exit() tears down netlink, debugfs and the netdev notifier, but it
-never calls rcu_barrier(). If a node-free callback is still pending when
-the module is unloaded, RCU can invoke hsr_free_node_rcu() after the
-module text has been freed, branching into freed memory.
+> investigate_read_descriptor() takes the 11-bit packet length straight
+> from the device-written descriptor and subtracts 4 for the CRC. A
+> length below 4 underflows pkt_len to a negative value, which is then
+> passed to skb_put_data() as a huge unsigned length and corrupts memory
+> past the end of the freshly allocated skb.
 
-Per Documentation/RCU/checklist.rst, a module that registers callbacks
-with call_rcu() must call rcu_barrier() in its exit path before it is
-unloaded; synchronize_rcu() is not sufficient because it only waits for
-a grace period, not for the queued callbacks to actually run.
+Have you checked that that hardware can actually set a short value?
+I'd expect that packets shorter than 64 bytes (including the crc) are
+dropped as 'runts' and probably don't even use a ring entry.
 
-Add rcu_barrier() at the end of hsr_exit(), after netlink/link teardown
-has stopped any new callbacks from being queued.
+Of course, if you think the device might lie all bets are off.
+(Without an iommu is can write anywhere in host memory...)
 
-Fixes: 415e6367512b ("hsr: Implement more robust duplicate discard for PRP")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ali Ahmet Memis <ali@iusegentoo.com>
----
- net/hsr/hsr_main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+	David
 
-diff --git a/net/hsr/hsr_main.c b/net/hsr/hsr_main.c
-index 33951d9bd..05d2e5750 100644
---- a/net/hsr/hsr_main.c
-+++ b/net/hsr/hsr_main.c
-@@ -179,6 +179,13 @@ static void __exit hsr_exit(void)
- 	hsr_netlink_exit();
- 	hsr_debugfs_remove_root();
- 	unregister_netdevice_notifier(&hsr_nb);
-+
-+	/* Node teardown queues frees via call_rcu(hsr_free_node_rcu), whose
-+	 * callback lives in this module. Wait for any still-pending callback
-+	 * before the module text is freed. synchronize_rcu() is not enough:
-+	 * it waits for a grace period, not for the callbacks to run.
-+	 */
-+	rcu_barrier();
- }
- 
- module_init(hsr_init);
--- 
-2.54.0
+>=20
+> Drop the frame as a length error if pkt_len is negative after CRC
+> removal.
+>=20
+> Signed-off-by: Pablo Vallesp=C3=ADn Aranguren <pablopva014@gmail.com>
+> Assisted-by: gkh_clanker_t1000
+> ---
+>  drivers/net/ethernet/dec/tulip/xircom_cb.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>=20
+> diff --git a/drivers/net/ethernet/dec/tulip/xircom_cb.c b/drivers/net/eth=
+ernet/dec/tulip/xircom_cb.c
+> index e5d2ede13845..62c64da1c8fa 100644
+> --- a/drivers/net/ethernet/dec/tulip/xircom_cb.c
+> +++ b/drivers/net/ethernet/dec/tulip/xircom_cb.c
+> @@ -1110,6 +1110,11 @@ investigate_read_descriptor(struct net_device *dev=
+, struct xircom_private *card,
+>  					/* minus 4, we don't want the CRC */
+>  		struct sk_buff *skb;
+> =20
+> +		if (pkt_len < 0) {
+> +			dev->stats.rx_length_errors++;
+> +			goto out;
+> +		}
+> +
+>  		if (pkt_len > 1518) {
+>  			netdev_err(dev, "Packet length %i is bogus\n", pkt_len);
+>  			pkt_len =3D 1518;
 
