@@ -1,174 +1,312 @@
-Received: from mail-pz2-f9.google.com (mail-pz2-f9.google.com [74.125.228.9])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BAD361978
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785516071; cv=none; b=TrtvZwGU+quMR2d5KrGafZtMjq6lQcf9rpcsBzso+4HQvHTbyoXRTx0n53yc/16LHPWpISUJxPleUPyyBgZplIKMfhibx4pbp/ZG4jJR2N8wNs7pVN/wipczbwySMDSm469zedOgy+GWKGDiPLHX1UepMMKXOzCM0DOZZ49ZvL4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785516071; c=relaxed/simple;
-	bh=xmYCwKC08BYL7lMXr/sMs8VYWdRHpT7NkXW792QlUsY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aMIfxc2fBB4HokgOT/21CcdhI0J37mf3plGhrQzGOQ3fp7j3epy4MDnMDh8yVnshkCfQ1rgwG9wAnmKSdUKKqpsV2fmMaK9c7vvZXrdDx02YFUbLi1RP16WIMRSw/J7l2WWiDZbxlLKjZ1Wz3IYV0BFoWD/0YT44ULWVHAwjoaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ja+iNjQQ; arc=none smtp.client-ip=74.125.228.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992EF44E67C
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785516072; cv=pass; b=fzVZ2ajp0SVAPIJAtZ6fuTIGuso6hkRnO0XJwzBB+nzClGAJ4n3edYAmziVrVjx/qMiWe1TvlQsqXtjmKGBGj/dvOCxdNT28GZZ8oMqBDK3pP4hpNj8XuGXa3bLiF9GfhULBGSjh9sRda9U9648u3jii8beT5mBRC5MbVyziD/4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785516072; c=relaxed/simple;
+	bh=LDAI12GDdNlOLQXaMcEoG9I4i7EH8flzOwY4MCI4u/k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N1TJHNXnUmdOTUKJzQV43r/hyjilqFTo/6w9TLTAle7H67w6Vfmo7rhBxKNrBMK1bJdQdt+mP87o0Gp9zF6m0Yqb/Rq0Rrj+hd51yWOVVAAfz80dEX7kpa4GPdvgjtAhPaCSdK9jrz0oP+aNdx/jvDai2bZI3DI2pUU0UVwGxO8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q6UX2svQ; arc=pass smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ja+iNjQQ"
-Received: by mail-pz2-f9.google.com with SMTP id 41be03b00d2f7-cbbc9e6e637so592136a12.0
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:41:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q6UX2svQ"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c15a5b265so371801cf.0
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:41:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785516069; cv=none;
+        d=google.com; s=arc-20260327;
+        b=N4xulgzb7kwr6ydJXYsO3/pzI7L/wM6ZpUdUWag6e7VFNVV87y69fK75oHLHpuQ9v6
+         NlshZN4GFKrtP1FwDPT81/D190tO62Xz5PtqoVjtBIYcQxECtOD4XWFFnavZOkDEUWdw
+         GwK8VEhNbudBt6CMiz2io9oW2T+RiDQXnSQ1yLHnZC4xB7RfdWRcHwOLExvgvzW+xrUD
+         22cmU/FEIpYAhoOLxpb7C/oUHk20pGA5dCjNGysOpz+EQhNz1Z2wYbunYb7h4n5bI4Y8
+         DHJeFFmWFpNA3Dv9LvttcrIh7iHBxol5fSS3HH6B5aWW1lB25lVvUBMiMgDuGb8SlaPo
+         LWmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=i+S0di2X0YwWIaY6VQuq99O/SRiscLkhJLs10nTFRS8=;
+        fh=wahV1Vq+8zM6cX7P6rV7iSUG9Kl5CKJfeKUfkJ6Ajmo=;
+        b=ZE8v0TrpQeYJw3Jq32rqCgPHBL3V5EmCmBujyGuEqvlvfw+FdvRbFAAU8jCkm/rtp6
+         50GrQMThp6jrgZrqO1oPqqe3wegbm1tYfQkuZemw1Ta3EZyjLPTwg0WtXExoxKWIKrxE
+         P1ayX6L4ZseOLI076dYV6TJrPMgqUafcEnyYsYFdjG8+wJeNaWBAwuDGdsJYUZHUQOZn
+         dB+lZT+aKVJ4BgBIecgdvBCfinHf+UungP3IkfESXstwx3zaIqytzqT1Aioddv7QVbn/
+         Q8Q0fWNZzvGtewFUCtiuf0oOuFvh8vNdIFZxTQhVB2GoU0/HW9JRRCpzBFo3GCHHzCxy
+         Z5XA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785516069; x=1786120869; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1785516069; x=1786120869; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=geJgXx5Dm6qqt2ZAAFVL9G2Q6MfkYPKO/H3Ubz8hDvA=;
-        b=Ja+iNjQQbEBSVCCDpKvJyinbxRrtjetNKZJD/L+o7dcPkRRnKicLpecdVFEVrzwLAm
-         iaVRky3anFqsZXnzsCDLaGL1Cw5mhjJbrBy6fBlVO8bI1v2bYpUJBbMiD5iN6B4A5+0r
-         ZrVr6uj4MFdIugiWUjRyAHnJVBjaopWPArLN9RqtTPrjxEnzahhpDqem8D05DEgIQzoi
-         kBtTYvL7Q/H8MSi9VdVA5obxDbZjXJknn675SLVOjaRjCshiviLfiO0wB8WIi7of4xT7
-         NuX6B2ceOYY9T8L/3f/beYNr+QZzNfJI+nsNVZU4+DlzjG7LisSQ4pHQg9pTgMh+kjfR
-         zvLg==
+        bh=i+S0di2X0YwWIaY6VQuq99O/SRiscLkhJLs10nTFRS8=;
+        b=q6UX2svQyO8DVyeuezRCDiFqF6jo5+g8/6xReQW2NA8fhBp0X21KQlbws1oLFj9QwR
+         R08S/AeERId2iYrBMF26742AKYg4ULFD9pM3rJC6dEt1k9raz2czx0N4LTHMxEX7PatF
+         51jAuct7VriPdtKNOZkaJW6iRqgYAOc2xg35sJj+44LwVx7GvD6NCsbhw7cG5o9jxFCZ
+         +DE8wB/1DsYWKdbQ1KkmdgxtqU3tw6tdL5doLsgX8M0uBWWW4oiNxJfZ+upBmNjg4kkR
+         nTUDGbLhMHFHgg2jfosCaQcyxuwJdDqTIdHVpWLWeuCSXOelS9H1nxaJrPgKKVJNnXKj
+         dswQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1785516069; x=1786120869;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=geJgXx5Dm6qqt2ZAAFVL9G2Q6MfkYPKO/H3Ubz8hDvA=;
-        b=OdnweflD2lY5axWiOyaWVcmX5UJvWYCLGqa473XUzvS9mP5q/qMIcMz0DtROewksJ2
-         d8AM2mvHR4PrNBQb0nxBqyRLri9Y4vUmecWnIYItqS5vfM803GQCELVn+2yzWtufU5wa
-         sq/9j9XTJWdnuf+KX0dth7NQB9IRbhM/91dQsGtoibrw3SKIrhJ9gNrUvsacYHp9iugL
-         oeIZVKQPViON4g382XrXNfumeoJc4zmYTzEA1rRpj/mw6WrHtatqMCemWI9pX8/8lv6O
-         CsYLKHmu5/40UFoxy5cCbjjigSeqOltxiuWOvUoCKmHlfA5cMZ2xpJMXMPVB3AmUb8Lx
-         lTZg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr2lz/WERzuFMM+D9uYOv6xFeZmq+6W6PVFgjZysEaovq+dKYSm4bKBzqzSg0gdBqqHbcS7nag=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZJNo9ETCPWl6mQW8dlcdzcYa31smYRNFfqPyOLAF4d8C6bwru
-	9uWZICQTIsGYeKj3wex1Mm/hQkT2WH72RTJiUa5LVr9LFycOtIvMP1e3
-X-Gm-Gg: AR+sD12BiuN9CjFeMLp4AGkuXVCFpnxtrB9nvxn+eM0I5KU+S7sDglSoGMLmqModEha
-	oD9K9MFI8PFhxJs9i2u03AEcQQ2bdgq/5ZRuAlXQvHQon9Mu5NeyLyWV5dGH1fNru6nSLGTytWq
-	GKF24w+K6UpUuVt2kKIADkY44w2XMmIdrmu4V6Cziokf3bAcXU5vki9luZFrRIVd2HwH0toqEhw
-	L65z+p6R2uxwzW9b9M9G9eSyWvLBZj8yEUTzuZ5AX9hCAIcRfBunHzjWL/+Atbvt3UWh1VIeEOI
-	EaquLRIdvwJWz5KNZeE7HPmj+3PfJ9D919SvNxQa4LQzDmthnslWo9elhpS4qEK8QTtDWz9NqGI
-	1ST+OIAXUuncx9h5qyY8v6dJDGUrW2Zl8RccV8ANDuC0hQk1raAdcl20ETRzLlN03ufbJAnHaow
-	aV7NtX65QmtmRYeGb63HC04wXretrQ+hViZ4V6Wy8EPUMTtCN0qApVUw==
-X-Received: by 2002:a05:6a00:4fc7:b0:845:4928:8655 with SMTP id d2e1a72fcca58-84ee4899b2dmr323897b3a.39.1785516068847;
-        Fri, 31 Jul 2026 09:41:08 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:45::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edc2d901csm675606b3a.48.2026.07.31.09.41.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 09:41:08 -0700 (PDT)
-Date: Fri, 31 Jul 2026 09:41:00 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Nilay Shroff <nilay@linux.ibm.com>
-Cc: kbusch@kernel.org, hch@lst.de, hare@suse.de, sagi@grimberg.me, 
-	chaitanyak@nvidia.com, gjoyce@linux.ibm.com, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
-	linux-nvme@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [RESEND PATCH v2 2/4] nvme-tcp: limit I/O queue count based on
- NIC queue count
-Message-ID: <amzPvMWfzetiirw0@devvm7509.cco0.facebook.com>
-References: <20260731073918.614014-1-nilay@linux.ibm.com>
- <20260731073918.614014-3-nilay@linux.ibm.com>
+        bh=i+S0di2X0YwWIaY6VQuq99O/SRiscLkhJLs10nTFRS8=;
+        b=nB2UUiZbF9hi2nLzZqedIaQUXd9YRPd8XVArGAepKxvo4Z3OhPn6mf93xP3q8PVrRT
+         nny+rsiHREgm7OrGWz8OHljfnFR4z3eQHaMyE2nkuI4VF6neDaquGgNQD8ysgJ9WGcWa
+         ts/vvI7jWW4/7h87hSyFYy2x9jRQnP/HSx27Q8BH8hRh5aUJNUm3bocdgvpKxra0LJWw
+         +Ar+6SSmNIQMq87MEHOrhpus78kwJ4albXnBI4AwIo0ODX2zqdnoUM3wvTiEHYP6zNPt
+         8KfIVTiONJFOnFL41vTnFg9ERMsXuJoDb06PZqzn1Zlb+0h8wmSArmE9uSg7yyB+/JP8
+         7G0A==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0k5TmM7ucmTJhALqRpaGDxH8fwtEX6s6zTQnk2kNXK757DtMQjvCRyy49BX2S+pss/UTpphQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDrZHdswFkkK0lroTdt0c1YPbJx6nQp+gHDcaSfoxHfpKCljBf
+	ItjaDn3WPYy27qGyCMZfaWq6NuAeFZXXx/FobWwiQVLGOLphvyQuO3OBKUF63Tm82c/uCCNJxnI
+	alVZYegYvB4wYvo1TTQI1uh4EqyZpHJAcQobXrqtK
+X-Gm-Gg: AR+sD13oOxIF9x4jNAky2aqjG74ahEicp6ahjffORXVdagsMsU9RjB4CriShhNSgM5b
+	XDmM/kmR8apQDRLaDArPDaTX66avVvDORaS32rsg4yiNibkkzT/D9jFWZEUL7YojaASNkzmTNHU
+	IkiQ/O5J1su+QBpPjFGxnHRXnDl/707gViNlkjngxi65IeFVcDL1C96a0epXfkeKn2+JxQa3NlS
+	ihDVDb8HvnjU0qatBCHWZ7J9+BFyHoc6BA5LmwQhU0ASH720ldJpa8RWR5gBzaUiWbtANiP0hnZ
+	fpHes2QW6SYsNJeVQGbXCvczdGDd58E4BuXFx0tL/F7i4rDD75BIEMzQFNOLGA0kaJjSJtLL
+X-Received: by 2002:ac8:598e:0:b0:50f:af60:3496 with SMTP id
+ d75a77b69052e-52b4aeef4cbmr14633211cf.1.1785516068661; Fri, 31 Jul 2026
+ 09:41:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260731073918.614014-3-nilay@linux.ibm.com>
+References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com>
+ <20260610230415.C0521C88@davehans-spike.ostc.intel.com> <5b27d22d-a3fd-4267-b63b-5de9e6586d5e@kernel.org>
+In-Reply-To: <5b27d22d-a3fd-4267-b63b-5de9e6586d5e@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 31 Jul 2026 16:40:57 +0000
+X-Gm-Features: AUfX_myd8WR-rKHyxTRYIqU4O90PcBqOHaAe_5w4HYy9Kvov8AvwQm8q27RX__E
+Message-ID: <CAJuCfpEnzS7KxYsxU4kTTGFsdYrgpY2gQ46nHR1QacyqLBo9Nw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] mm: Add RCU-based VMA lookup helper that waits for writers
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Carlos Llamas <cmllamas@google.com>, Christian Brauner <christian@brauner.io>, 
+	David Ahern <dsahern@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org, 
+	Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Todd Kjos <tkjos@android.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 07/31, Nilay Shroff wrote:
-> NVMe-TCP currently provisions I/O queues based primarily on the number
-> of online CPUs. On systems where the CPU count significantly exceeds the
-> number of NIC hardware queues, multiple NVMe-TCP I/O queues end up
-> sharing the same NIC TX/RX queues. This increases lock contention,
-> cacheline bouncing, and inter-processor interrupts (IPIs), reducing I/O
-> efficiency.
-> 
-> Limit the number of NVMe-TCP default I/O queues to the smaller of the
-> number of online CPUs and the number of NIC hardware queues. Aligning
-> the number of NVMe-TCP I/O queues with the NIC queue topology reduces
-> queue sharing, improves locality, and can improve throughput while
-> reducing tail latency.
-> 
-> The number of NVMe-TCP I/O queues is now limited to:
-> 
->     min(num_online_cpus, num_nic_queues)
-> 
-> Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-> ---
->  drivers/nvme/host/tcp.c | 61 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 61 insertions(+)
-> 
-> diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-> index ba5c7b3e2a7c..a2110287099e 100644
-> --- a/drivers/nvme/host/tcp.c
-> +++ b/drivers/nvme/host/tcp.c
-> @@ -1774,6 +1774,50 @@ static int nvme_tcp_start_tls(struct nvme_ctrl *nctrl,
->  	return ret;
->  }
->  
-> +static struct net_device *nvme_tcp_get_netdev(struct nvme_ctrl *ctrl,
-> +		netdevice_tracker *tracker, gfp_t gfp)
-> +{
-> +	struct net_device *dev = NULL;
-> +
-> +	if (ctrl->opts->mask & NVMF_OPT_HOST_IFACE)
-> +		dev = netdev_get_by_name(&init_net, ctrl->opts->host_iface,
-> +				tracker, gfp);
-> +	else {
-> +		struct nvme_tcp_ctrl *tctrl = to_tcp_ctrl(ctrl);
-> +		struct sockaddr_storage *src = NULL, *dest = NULL;
-> +
-> +		if (ctrl->opts->mask & NVMF_OPT_HOST_TRADDR)
-> +			src = &tctrl->src_addr;
-> +
-> +		dest = &tctrl->addr;
-> +
-> +		dev = netdev_get_by_addr(&init_net, src, dest, tracker, gfp);
-> +	}
-> +	return dev;
-> +}
-> +
-> +/*
-> + * Returns number of active NIC queues (min of TX/RX), or 0 if device cannot
-> + * be determined.
-> + */
-> +static int nvme_tcp_get_netdev_current_queue_count(struct nvme_ctrl *ctrl)
-> +{
-> +	struct net_device *dev;
-> +	int tx_queues, rx_queues;
-> +	netdevice_tracker tracker;
-> +
-> +	dev = nvme_tcp_get_netdev(ctrl, &tracker, GFP_KERNEL);
-> +	if (!dev)
-> +		return 0;
-> +
-> +	tx_queues = dev->real_num_tx_queues;
-> +	rx_queues = dev->real_num_rx_queues;
-> +
-> +	netdev_put(dev, &tracker);
-> +
-> +	return min(tx_queues, rx_queues);
-> +}
-> +
->  static int nvme_tcp_alloc_queue(struct nvme_ctrl *nctrl, int qid,
->  				key_serial_t pskid)
->  {
-> @@ -2165,6 +2209,23 @@ static int nvme_tcp_alloc_io_queues(struct nvme_ctrl *ctrl)
->  	unsigned int nr_io_queues;
->  	int ret;
+On Fri, Jun 12, 2026 at 6:00=E2=80=AFPM Vlastimil Babka (SUSE)
+<vbabka@kernel.org> wrote:
+>
+> On 6/11/26 01:04, Dave Hansen wrote:
+> > From: Dave Hansen <dave.hansen@linux.intel.com>
+> >
+> > =3D=3D Background =3D=3D
+> >
+> > There are basically two parallel ways to look up a VMA: the
+> > traditional way, which is protected by mmap_lock, and the RCU-based
+> > per-VMA lock way which is based on RCU and refcounts.
+> >
+> > =3D=3D Problem =3D=3D
+> >
+> > The mmap_lock one is more straightforward to use but it has a big
+> > disadvantage in that it can not be mixed with page faults since those
+> > can take mmap_lock for read, which can deadlock when mixed with page
+> > faults. For example:
+>
+> ... mixed with nested page faults and parallel writers, perhaps?
+>
+> >
+> >       mmap_read_lock(mm);
+> >       // Another thread does mmap_write_lock().
+> >       // New mmap_lock readers are blocked.
+> >       vma =3D vma_lookup(mm, address);
+> >       // This deadlocks on mmap_read_lock() if it faults:
+> >       copy_from_user(address);
+> >       mmap_read_unlock(mm);
+> >
+> > The RCU one can be mixed with faults, but it is not available in all
+>
+> I'd stick to the per-VMA lock term than "RCU one"
+>
+> > configs, so all RCU users need to be able to fall back to the
+> > traditional way.
+>
+> This is now an obsolete statement as patch 1 makes them available? But th=
+e
+> problem is that they can fail and using mmap read lock as a fallback in a
+> simple way has the above issue?
+>
+> > =3D=3D Solution =3D=3D
+> >
+> > Add a variant of the RCU-based lookup that waits for writers. This is
+> > basically the same as the existing RCU-based lookup, but it also takes
+> > mmap_lock for read and waits for writers to finish before returning
+> > the VMA. This has some advantages:
+>
+> I would stress the part that the mmap lock is taken *only temporarily* to
+> wait for the writers and ensure we obtain a per-vma read lock, and then
+> dropped again? As that's the main trick IIUC.
+>
+> >  1. Callers do not need to have a fallback path for when they
+> >     collide with writers.
+> >  2. It can be used in contexts where page faults can happen because
+> >     it can take the mmap_lock for read but never *holds* it.
+> >  3. Its fast path does not require taking mmap_lock for read.
+> >
+> > Basically, when applied correctly, this approach results in faster
+> > *and* simpler code.
+> >
+> > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > Cc: Suren Baghdasaryan <surenb@google.com>
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> > Cc: Lorenzo Stoakes <ljs@kernel.org>
+> > Cc: Vlastimil Babka <vbabka@kernel.org>
+> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> > Cc: linux-mm@kvack.org
+> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
+> > Cc: Todd Kjos <tkjos@android.com>
+> > Cc: Christian Brauner <christian@brauner.io>
+> > Cc: Carlos Llamas <cmllamas@google.com>
+> > Cc: Alice Ryhl <aliceryhl@google.com>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: David Ahern <dsahern@kernel.org>
+> > Cc: netdev@vger.kernel.org
+> >
+> > --
+> >
+> > Changes from v1:
+> >  * Add a comment explaining that this can not be mixed with other
+> >    per-VMA lock or mmap_lock users. It is prone to deadlocks if so.
+> >  * Add a FIXME about making the mmap_read_lock() killable
+>
+> I don't see it anywhere?
+>
+> >  * Add more chaneglog bits about the possibility for an infinite goto
+> >    loop.
+> >  * Adopt vma_start_read_unlocked() implementation from Lorenzo
+> > ---
+> >
+> >  b/include/linux/mmap_lock.h |    3 +++
+> >  b/mm/mmap_lock.c            |   27 +++++++++++++++++++++++++++
+> >  2 files changed, 30 insertions(+)
+> >
+> > diff -puN include/linux/mmap_lock.h~lock-vma-under-rcu-wait include/lin=
+ux/mmap_lock.h
+> > --- a/include/linux/mmap_lock.h~lock-vma-under-rcu-wait       2026-06-1=
+0 15:57:55.828431712 -0700
+> > +++ b/include/linux/mmap_lock.h       2026-06-10 15:57:55.834431925 -07=
+00
+> > @@ -257,6 +257,9 @@ static inline bool vma_start_read_locked
+> >       return vma_start_read_locked_nested(vma, 0);
+> >  }
+> >
+> > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
+> > +                                            unsigned long address);
+> > +
+> >  static inline void vma_end_read(struct vm_area_struct *vma)
+> >  {
+> >       vma_refcount_put(vma);
+> > diff -puN mm/mmap_lock.c~lock-vma-under-rcu-wait mm/mmap_lock.c
+> > --- a/mm/mmap_lock.c~lock-vma-under-rcu-wait  2026-06-10 15:57:55.83143=
+1819 -0700
+> > +++ b/mm/mmap_lock.c  2026-06-10 16:02:50.723860779 -0700
+> > @@ -338,6 +338,33 @@ inval:
+> >       return NULL;
+> >  }
+> >
+> > +/*
+> > + * Find the VMA covering 'address' and lock it for reading. Waits for =
+writers to
+> > + * finish if the VMA is being modified. Returns NULL if there is no VM=
+A covering
+> > + * 'address'.
+> > + *
+> > + * Use only in code paths where no mmap_lock and no VMA lock is held.
+>
+> I think we have various asserts that could be used and are stronger than =
+a
+> comment ;)
 
-[..]
- 
-> +	if (!(ctrl->opts->mask & NVMF_OPT_NR_IO_QUEUES)) {
-> +		int nr_hw_queues;
+I'm working on a resping for this patchset (per Dave's request) and
+I'm not sure which asserts we can use to assert that locks are *not*
+held. I think that would be a racy assertion anyway (the lock might be
+taken right after that assert) but maybe I'm wrong?
 
-Looks like the userspace can already pass the preferred number of queues,
-so in this case, why not do all this netdev resolution and queue
-estimation in the userspace? Presumably most or the users you care
-about always go through nvme-cli, right?
+>
+> > + *
+> > + * The fast path does not take mmap_lock.
+> > + */
+> > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
+> > +                                            unsigned long address)
+> > +{
+> > +     struct vm_area_struct *vma;
+> > +
+> > +     /* Fast path: return stable VMA covering 'address': */
+> > +     vma =3D lock_vma_under_rcu(mm, address);
+> > +     if (vma)
+> > +             return vma;
+> > +
+> > +     /* Slow path: preclude VMA writers by getting mmap read lock. */
+>
+> Again I would say "temporarily".
+>
+> > +     guard(rwsem_read)(&mm->mmap_lock);
+>
+> Aside from the missing vma_lookup() I'm not sure we should also trust the
+> result of the lookup blindly? Should we also verify we found a vma? Some
+> callers might not fail the lookup because they will only lookup something
+> that's sure to be present, but some might fail?
+>
+> > +     if (!vma_start_read_locked(vma))
+> > +             return NULL;
+>
+> You can count me on the side that would rather see explicit operations th=
+an
+> the guard. Exactly because it's a subtle usage of the mmap sem, and yeah
+> also the tracing that Suren pointed out.
+>
+> Seems to me uffd_lock_vma() mostly does all this right (but also does mor=
+e
+> stuff that we don't want to do). I'm just not sure right know when
+> vma_start_read_locked() failures can happen in practice here (can it be o=
+nly
+> recfount overflow or also refcount being zero? hopefully not zero if we
+> found the vma under mmap lock for read? comment in
+> lock_next_vma_under_mmap_lock() seems to hint at that) and what to do abo=
+ut
+> them. We seem to have some unhelpfully stale comments around.
+>
+> - uffd_lock_vma() doesn't document that it can return -EAGAIN. (and shoul=
+d
+> the caller then retry or what?)
+>
+> - vma_start_read_locked() has a comment saying how it cannot fail, but it=
+ in
+> fact can.
+
+I'll modify the comments for these functions to be clearer and more complet=
+e.
+
+>
+> > +
+> > +     return vma;
+> > +}
+> > +
+> >  static struct vm_area_struct *lock_next_vma_under_mmap_lock(struct mm_=
+struct *mm,
+> >                                                           struct vma_it=
+erator *vmi,
+> >                                                           unsigned long=
+ from_addr)
+> > _
+>
