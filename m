@@ -1,241 +1,206 @@
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4EE3F0AA9
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 11:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.125.188.122
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785496444; cv=pass; b=AjugDjJvlJWFuxHctA2G1yoUwFHKRPkybeAQK5cynK7m9SdMyN+ccQKLwSKSUbyBHxwvBO+z3ga3icEPjS59s8leQCjf0grmVkxBP4cqpXco+0UK7oHk/+TUkLpuk4B1jKjy/bfCnNEgMyB2PD7bxiCQQg/77HCElMNYca7oMaA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785496444; c=relaxed/simple;
-	bh=oZsJpVaNEkQDcHixw3LBHnxAomUzHf9H9YdzNddkPzk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qR5fO0RA1iaLNH+Xi7XRq7pgQcCG+jg4q0UHnMwwGNqDE18DxktISI5mh/KB8CBt+lDiBwg0sJA3sMGdahGogGmknSqTFLdO9wRx3aZOGmD8iqefmPLQ/2R0yQ+HZo5x/poOUpu0h+oZU1QdptjN8P7bEreDqrny2U5iYwwpzTk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=aJOsqBaO; arc=pass smtp.client-ip=185.125.188.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D793ED132;
+	Fri, 31 Jul 2026 11:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785496545; cv=none; b=l4tMcJaKtnfuiJyv270f0jioQ4j29675dO8/Fz+llrUoRzatSi5Sl2Y/DrrtIWg70E8O9Vtw7JUuAereMaByXR3MKaFGbLqJK2/nRliNqGZP9uN2QAEutuRvfZueNOz0C1SZs9qxw4vrAloqjSPabIAuSypbahAxiHgmlRhN50w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785496545; c=relaxed/simple;
+	bh=/2m5hcTmtuLW74gAWEjdMx2iJZ4wS4ZFmWTTHM4mwtU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WronzR3MtxK+7DNUWCAnCxM//yzOjHbn1dHmA4eVglSNURPGgg+f6vr4AVW++lohGU5yOjTMqtScflAruG3gVbSnGFBYifb3xMK/G5VK2VPOsABMOsnzIbQfdlPK8iiw1jjAadF1iRTF3bYRwQ2otH7qWeRNaQ5kpteQN3gti2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=zNgGlicO; arc=none smtp.client-ip=113.46.200.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="aJOsqBaO"
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 1CA583FC09
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 11:14:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1785496440;
-	bh=wAU2ZewH0WgY1G+zytmo33JeSOSlAxzihbl4tS+Xfw8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=aJOsqBaOVUroornroTImHQ7/bUdleSXMBnqykBJHblOAIMmGGTLqrHlBflNDPZcJN
-	 k8J2/lhjk7bWoSg9k8TQPnTOR3XqwZSUgaiYYifPRL6yGwPfBCJCMkBWwO3r+zKKFC
-	 bBapLV5yhJVC/BIFU+OumZ6gaf0I2AxM3/zjQzLPjVdPdfWq632nF7YzPz2zUpncNT
-	 OY/3Kc/7kSr0Kl1uFOTrRDu7n3Wo7DoeOoWPldbXKc3voG0cztiz+s0v+W1TRCHop0
-	 5ZdSn2q17+94YmC2Xef1igxJnPGaqoSnsptR2nLwAtDyWxphHxJWuKjeIHHfK6R9re
-	 s4BGNSRFl9DW+18hkRwGfg8VZwZa2Lyh+AHdaouDietF0cPVChwgo1S+SV2uItTNsy
-	 jMVbZ8MMUIaNjSI0roNA6VVtV7vNHgBcXLpmCmPF7sUvP32NoDOGUda/vgqK1iILM6
-	 lJ7iFHJn6iq2ciMMEsjhtrc66guO7yr75DAM2YekwfqBNHC2WYEGKYVZmDOjBpvTR9
-	 zP6eRx0XATLJmF+CiNSVUBUNDGnRxk0UERQa/EUYHXN66M1Z7Iaq+ShfmXYNVWLvPE
-	 dsFkaHilpvOoTpx5+oLlEWbo5468030NMPRX3WRyKnhh0wrJOWjizAHWY3AEgh57mp
-	 M9HtRAgPy5POGUXvSP1oJsLg=
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c1c232fa136so119259566b.0
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 04:14:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785496439; cv=none;
-        d=google.com; s=arc-20260327;
-        b=liNUZ6KU88ivkhfE3WGuqk6qUWKnCFGzoAppFYq1m5W9cM/xHLvjafetBVtp+3prcc
-         tZM73EpC4oR0XtDePwremfB/1WD51WcZ8EhBquk9IG7BgDOhvbEhp3DELjuiJBhIAVpK
-         4p67ANlgXI7lKZwUCqMpzvYcMbgi9gbWPabhKeBRvpPQ8U7GbY/7l3PHZ83OgCFXxGlg
-         Ool2ag4e5N3YoeCqE7EbdxN/+b9hksmvRzzC7QUbAPkZjKS95w0v3TdqyhxV1nGYenKV
-         BuGYaQMbB8Vbh2sK6OieqOuRcVmd1yWDYEGuNeH9dIebNHT658RO+RdOIcVjm/Qtubsx
-         75gg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=wAU2ZewH0WgY1G+zytmo33JeSOSlAxzihbl4tS+Xfw8=;
-        fh=cgMkmj2gBuBRNHNZyvHcYeO+Ie2teP2uKkXmykQL/zM=;
-        b=s12PT5sSUdV9KIwsPjodP1vuCXUoJ2aumUNMHFMJAIonC4yghCagTdjH2CnTRa/eS7
-         4ALzYUHWPuyq/Pp/7dSUCLz9v6s2i27joWdAp8GO9lPggw2qWa4I/3+I5UXiswaiTjke
-         WEGn5d1d1MJNvr4n3XFybXHHGuus3a94Ii87pUNxA3qFzRKMFoz7ntxNgKivLV7VjMf5
-         hsUKEiGqzDzLEAL/pOOLC+9a8YuC7vG6M2/Tew/UPBpmwILjzLio/jyijf++Y/zYuVAm
-         WXbz7VBBqLqX0NyBhkQHPAflWIkcK6Yz1IYOBebnkW99KWtIPbAnWCSjhp2/qiZ4/PUc
-         e2xg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785496439; x=1786101239;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wAU2ZewH0WgY1G+zytmo33JeSOSlAxzihbl4tS+Xfw8=;
-        b=B6FPgpdPlz59qi40skuZO+pLehW8morSu306SxxQAos3jZwn+JtFPP+240TbVWlOz9
-         fPUkcjZULHGH23y875GJqVlp0zFbppzgrXbSZqoaDQPi0+5m87sdmHfDAIT8SImqxGkb
-         l5gzV5T7xoqV2PQxPJubYuAo2UnObgBvme9dR3NT7qazTsEtoRxyYK21y0s74e3qgSUL
-         sp63B15P+4JyezZm/qmHYlEINF0ekMpgSlUgGojONGMtjN01hMivF9Iq5ZqAefX3KBzo
-         6jUOaLOBKg4j93uZChrbfk6N6NanHX2dmPVSaB6QmRrJtzNKesan7yGGHgc2vDDv+93h
-         QKvw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp1i3GGQTIJioG8bOxjX/2zf/bheTGYvluaC2uUIrQDp9MzQGkyVVHxuRTIWnxZTh7cUhnr/D0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXONmVHCVDonRU5OIj9xZVHyLmEKlb5C4TItz0m0TdBFg4bMJV
-	/WEf/tg4VBIx3u6zSzZvLTjHZhEEdg4Zf03ihUpGBMi8/1/yUTJ1jTxk1dxYO+5mQTiyj4e3hcU
-	ZS7AV+2E8DOAqOOwLtxutaZUuG8EsB7l9YwtL5z/vzIu38Ucjv5XexuCJltZYOk3NNmilS2V5KI
-	useAEidzEdwDiLl9uo2YkdsOE/vcpzJPZdEqrmk4oUpgIAzwbX
-X-Gm-Gg: AR+sD11S9vgkEgGm3RFrJ3uI4qwZhVrF2lXgIsyPAJHF99LgqFgEUN+DjGhIv5yGpO5
-	S6wiIqKRCbCXAozABfTFeXKapmgLG2ZxXSbRULV9GF9c07+hSpjPgLoNbUoIwHWcaiKC9Eotq3z
-	Py9/Dd0HymXhvRzPg1MW4KSoszrO+v+41751GZlylWvj1nDAzeD6fDa/8=
-X-Received: by 2002:a17:907:c24:b0:c16:aee0:5422 with SMTP id a640c23a62f3a-c1fd3168c63mr90468866b.6.1785496439598;
-        Fri, 31 Jul 2026 04:13:59 -0700 (PDT)
-X-Received: by 2002:a17:907:c24:b0:c16:aee0:5422 with SMTP id
- a640c23a62f3a-c1fd3168c63mr90465666b.6.1785496439129; Fri, 31 Jul 2026
- 04:13:59 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="zNgGlicO"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=qaTJiqKj0B/4XarzkFvIQFLZSht/1QQ07TK3EhZ2830=;
+	b=zNgGlicOMoZGYJkZAn4opIVkWhwYy8WsPSWX/gZ702+/hnuEoJPl5lFoBPjlPUirWE9dN6h6x
+	qpSNbkjn4WAmIcdgbfk/ZlynHn0/NHiGGZOJmHh/D9QU7GtdIm7ZKddJUyAG2xphIdyrVSQ4OtU
+	0DGIjLz3KIj+/MxYSqW6pXg=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4hBNXS5Nyszcb3L;
+	Fri, 31 Jul 2026 19:05:44 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id E253E2025F;
+	Fri, 31 Jul 2026 19:15:27 +0800 (CST)
+Received: from localhost.huawei.com (10.90.31.46) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Fri, 31 Jul 2026 19:15:27 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
+	<hawk@kernel.org>, <ilias.apalodimas@linaro.org>, <almasrymina@google.com>,
+	<toke@redhat.com>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <yangshuaisong@h-partners.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<shaojijie@huawei.com>
+Subject: [PATCH v4 net] net: page_pool: fix UAF in __page_pool_release_netmem_dma on xa_cmpxchg race
+Date: Fri, 31 Jul 2026 19:15:07 +0800
+Message-ID: <20260731111507.2355601-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260717121224.3908963-1-robert.malz@canonical.com> <IA3PR11MB8986E2BE513E6BA3AEAABE6EE5CC2@IA3PR11MB8986.namprd11.prod.outlook.com>
-In-Reply-To: <IA3PR11MB8986E2BE513E6BA3AEAABE6EE5CC2@IA3PR11MB8986.namprd11.prod.outlook.com>
-From: Robert Malz <robert.malz@canonical.com>
-Date: Fri, 31 Jul 2026 13:13:47 +0200
-X-Gm-Features: AUfX_mzoxeJQ5WIo0tJ5aZ1g3dKP61ZkHXfa_nLqpwgqBsAVQgT0uwWoKQPDRbs
-Message-ID: <CADcc-bxGVRYK3GfYa_sCaFgQV1EvwOzm+mxFuV4eG_XPgoPBKQ@mail.gmail.com>
-Subject: Re: [Intel-wired-lan] [PATCH iwl v2] ice: acquire NVM lock around
- each flash read
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-Cc: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, 
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"Lobakin, Aleksander" <aleksander.lobakin@intel.com>, "Keller, Jacob E" <jacob.e.keller@intel.com>, 
-	Jesse Brandeburg <jbrandeb@kernel.org>, 
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
-Hey Aleksandr,
-Thanks for the review.
-Added debug logs instead of warning as some callers are already
-logging errors in case of ice_read_flat_nvm failure.
-Let me know if that works for you.
+page_pool_scrub() iterates pool->dma_mapped via xa_for_each() with no
+page ref held. __page_pool_release_netmem_dma() currently reads and
+writes netmem fields (dma_addr, DMA index bits in pp_magic) after
+xa_cmpxchg() returns. The unref path calls put_page() unconditionally
+regardless of the cmpxchg outcome; when it loses the cmpxchg, it still
+frees the page before the scrub winner finishes these netmem accesses,
+so scrub touches a freed page -- a Use-After-Free.
 
-v3 for reference:
-https://lists.osuosl.org/pipermail/intel-wired-lan/Week-of-Mon-20260727/056=
-245.html
+Fix this by splitting the DMA release into two functions:
 
-Regards,
-Robert
+1. __page_pool_unmap_netmem_dma() caches dma_addr before xa_cmpxchg(),
+   does the cmpxchg to remove the DMA mapping, and calls dma_unmap on
+   the cached address. It never touches netmem fields after the cmpxchg,
+   making it safe for the scrub path which holds no page ref.
 
+2. __page_pool_release_netmem_dma() wraps the above and additionally
+   clears dma_addr and DMA index bits in netmem fields. This is safe
+   only when the caller holds a page ref, so it is used by the return
+   path (page_pool_return_netmem).
 
-On Mon, Jul 27, 2026 at 10:27=E2=80=AFAM Loktionov, Aleksandr
-<aleksandr.loktionov@intel.com> wrote:
->
->
->
-> > -----Original Message-----
-> > From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> > Of Robert Malz via Intel-wired-lan
-> > Sent: Friday, July 17, 2026 2:12 PM
-> > To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
-> > Przemyslaw <przemyslaw.kitszel@intel.com>; Andrew Lunn
-> > <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>; Eric
-> > Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
-> > Abeni <pabeni@redhat.com>; Lobakin, Aleksander
-> > <aleksander.lobakin@intel.com>; Keller, Jacob E
-> > <jacob.e.keller@intel.com>; Jesse Brandeburg <jbrandeb@kernel.org>
-> > Cc: Robert Malz <robert.malz@canonical.com>; intel-wired-
-> > lan@lists.osuosl.org; netdev@vger.kernel.org; linux-
-> > kernel@vger.kernel.org
-> > Subject: [Intel-wired-lan] [PATCH iwl v2] ice: acquire NVM lock around
-> > each flash read
-> >
-> > FW caps the NVM read lock at a maximum of 3000ms regardless of the
-> > timeout requested via ice_acquire_nvm(). ice_read_flat_nvm() splits a
-> > read into multiple ice_aq_read_nvm() commands, one per 4KB sector, all
-> > issued under a single lock taken by the caller. Reading a large region
-> > can exceed 3000ms, so FW reclaims the lock mid-read and the remaining
-> > commands might fail.
-> >
-> > Move the lock acquire/release into ice_read_flat_nvm() so it brackets
-> > each individual ice_aq_read_nvm() command, ensuring the lock is never
-> > held across more than one FW read.
-> >
-> > ice_release_nvm() issues its own AQ command and overwrites
-> > hw->adminq.sq_last_status, which some callers inspect after a failed
-> > read.
-> > Add an optional read_aq_err output parameter to ice_read_flat_nvm() to
-> > capture the failing read's AQ error before the release; callers that
-> > need it (ice_discover_flash_size() and the ethtool/devlink log paths)
-> > use it instead of sq_last_status, others pass NULL.
-> >
-> > Callers that previously took the lock around ice_read_flat_nvm(),
-> > ice_read_sr_word() or ice_read_flash_module() now call them without
-> > it.
-> > The now-redundant per-block locking in ice_devlink_nvm_snapshot() is
-> > dropped.
-> >
-> > Fixes: e94509906d6b ("ice: create function to read a section of the
-> > NVM and Shadow RAM")
-> > Signed-off-by: Robert Malz <robert.malz@canonical.com>
-> > ---
-> > v2:
-> > - Replace the save/restore of sq_last_status across ice_release_nvm(),
-> >   which could race with a concurrent AdminQ command, with a new
-> > optional
-> >   read_aq_err output parameter.
-> > - Add missing "Return:" kdoc to ice_read_sr_word().
-> > ---
-> >  .../net/ethernet/intel/ice/devlink/devlink.c  | 32 ++------
-> > drivers/net/ethernet/intel/ice/ice_ethtool.c  | 16 +---
-> >  drivers/net/ethernet/intel/ice/ice_nvm.c      | 76 +++++++++++-------
-> > -
-> >  drivers/net/ethernet/intel/ice/ice_nvm.h      |  2 +-
-> >  4 files changed, 56 insertions(+), 70 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c
-> > b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-> > index 22b7d8e6bd9e..5a1ab9654fb8 100644
-> > --- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
-> > +++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-> > @@ -1856,6 +1856,7 @@ static int ice_devlink_nvm_snapshot(struct
-> > devlink *devlink,  {
-> >       struct ice_pf *pf =3D devlink_priv(devlink);
-> >       struct device *dev =3D ice_pf_to_dev(pf);
-> > +     enum libie_aq_err read_aq_err =3D LIBIE_AQ_RC_OK;
-> >       struct ice_hw *hw =3D &pf->hw;
-> >       bool read_shadow_ram;
-> >       u8 *nvm_data, *tmp, i;
-> > @@ -1891,26 +1892,16 @@ static int ice_devlink_nvm_snapshot(struct
-> > devlink *devlink,
-> >       for (i =3D 0; i < num_blks; i++) {
-> >               u32 read_sz =3D min_t(u32, ICE_DEVLINK_READ_BLK_SIZE,
-> > left);
-> >
->
-> ...
->
-> >  {
-> >       u32 inlen =3D *length;
-> >       u32 bytes_read =3D 0;
-> > @@ -92,12 +102,27 @@ ice_read_flat_nvm(struct ice_hw *hw, u32 offset,
-> > u32 *length, u8 *data,
-> >
-> >               last_cmd =3D !(bytes_read + read_size < inlen);
-> >
-> > +             status =3D ice_acquire_nvm(hw, ICE_RES_READ);
-> > +             if (status)
-> Silent lock failure without any traces in dmesg looks scary!
-> I'm pretty sure we need at least log an warning or error.
-> > +                     break;
-> > +
->
-> ...
->
-> >  int
-> >  ice_get_pfa_module_tlv(struct ice_hw *hw, u16 *module_tlv, u16
-> > *module_tlv_len,
-> >                      u16 module_type);
-> > --
-> > 2.34.1
->
+The scrub path calls __page_pool_unmap_netmem_dma() directly; the return
+path calls __page_pool_release_netmem_dma().
+
+Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when destroying the pool")
+Suggested-by: Mina Almasry <almasrymina@google.com>
+Assisted-by: OhMyOpenCode:GLM-5.2
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+Changes in v4:
+- Restructure per Mina's review: merge page_pool_remove_dma_mapping()
+  into __page_pool_unmap_netmem_dma() with dma_unmap inlined via goto
+  label; simplify __page_pool_release_netmem_dma() to a thin wrapper.
+- Link to v3: https://lore.kernel.org/r/20260729110249.2824835-1-shaojijie@huawei.com
+
+Changes in v3:
+- Fix unlikely() to likely() for PP_DMA_INDEX_BITS to match
+  file convention.
+- Link to v2: https://lore.kernel.org/r/20260727132612.3277927-1-shaojijie@huawei.com
+
+Changes in v2:
+- Redesign the fix per Mina's review: v1's unconditional
+  netmem_set_dma_index() introduced a UAF when the scrub path
+  (no page ref) writes to a page freed by the unref path.
+- Cache dma_addr before xa_cmpxchg; move dma_addr/DMA index
+  cleanup to page_pool_return_netmem() which holds a page ref.
+- Rename page_pool_release_dma_index() to
+  page_pool_remove_dma_mapping() to reflect its new role as a
+  pure cmpxchg wrapper.
+- Link to v1: https://lore.kernel.org/r/20260724092135.414699-1-shaojijie@huawei.com
+---
+ net/core/page_pool.c | 46 ++++++++++++++++++++++----------------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
+
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 21dc4a9c8714..497bb1906fc3 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -500,29 +500,40 @@ static int page_pool_register_dma_index(struct page_pool *pool,
+ 	return err;
+ }
+ 
+-static int page_pool_release_dma_index(struct page_pool *pool,
+-				       netmem_ref netmem)
++static void __page_pool_unmap_netmem_dma(struct page_pool *pool,
++					 netmem_ref netmem)
+ {
+ 	struct page *old, *page = netmem_to_page(netmem);
+ 	unsigned long id;
++	dma_addr_t dma;
++
++	if (!pool->dma_map)
++		return;
++
++	/* Cache dma_addr before xa_cmpxchg. The scrub path holds no page ref;
++	 * the unref path calls put_page() regardless of cmpxchg outcome, so
++	 * after the cmpxchg we cannot safely touch netmem fields.
++	 */
++	dma = page_pool_get_dma_addr_netmem(netmem);
+ 
+ 	if (unlikely(!PP_DMA_INDEX_BITS))
+-		return 0;
++		goto unmap;
+ 
+ 	id = netmem_get_dma_index(netmem);
+ 	if (!id)
+-		return -1;
++		return;
+ 
+ 	if (in_softirq())
+ 		old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
+ 	else
+ 		old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
+ 	if (old != page)
+-		return -1;
+-
+-	netmem_set_dma_index(netmem, 0);
++		return;
+ 
+-	return 0;
++unmap:
++	dma_unmap_page_attrs(pool->p.dev, dma,
++			     PAGE_SIZE << pool->p.order, pool->p.dma_dir,
++			     DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
+ }
+ 
+ static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t gfp)
+@@ -728,24 +739,13 @@ void page_pool_clear_pp_info(netmem_ref netmem)
+ static __always_inline void __page_pool_release_netmem_dma(struct page_pool *pool,
+ 							   netmem_ref netmem)
+ {
+-	dma_addr_t dma;
+-
+ 	if (!pool->dma_map)
+-		/* Always account for inflight pages, even if we didn't
+-		 * map them
+-		 */
+ 		return;
+ 
+-	if (page_pool_release_dma_index(pool, netmem))
+-		return;
+-
+-	dma = page_pool_get_dma_addr_netmem(netmem);
+-
+-	/* When page is unmapped, it cannot be returned to our pool */
+-	dma_unmap_page_attrs(pool->p.dev, dma,
+-			     PAGE_SIZE << pool->p.order, pool->p.dma_dir,
+-			     DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
++	__page_pool_unmap_netmem_dma(pool, netmem);
+ 	page_pool_set_dma_addr_netmem(netmem, 0);
++	if (likely(PP_DMA_INDEX_BITS))
++		netmem_set_dma_index(netmem, 0);
+ }
+ 
+ /* Disconnects a page (from a page_pool).  API users can have a need
+@@ -1172,7 +1172,7 @@ static void page_pool_scrub(struct page_pool *pool)
+ 		}
+ 
+ 		xa_for_each(&pool->dma_mapped, id, ptr)
+-			__page_pool_release_netmem_dma(pool, page_to_netmem((struct page *)ptr));
++			__page_pool_unmap_netmem_dma(pool, page_to_netmem((struct page *)ptr));
+ 	}
+ 
+ 	/* No more consumers should exist, but producers could still
+
+base-commit: 2195424c3da2ef1829a63b807e3a900a90e57d85
+-- 
+2.33.0
+
