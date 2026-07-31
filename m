@@ -1,61 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6C77262E
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 02:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AF230E0DC
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 02:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785463857; cv=none; b=COuN91rCgNPaagMYGg/zZCzTPEqubMdRzMKl/ucBNDUWIKv+PgILbwVoeJUHfUYRMGOHACDVUIumlpEwx1XzayijmTCH6eV1P/k5DJMEw7QLz9BSMxaG31ywG7hl4e/bWx07RYNggCN5hye1WbXG6EO9Rn7Ee1MSk5RkkwWJagg=
+	t=1785463937; cv=none; b=eOFyDrqMRcpYVz8IO8h7K8wiuxGn8tbYCpTvDISbWVeYJxsdvKQoILbft5UypgbJI9+sxtxlA/PkNk3/RvZSoumiICsyzir80kCJ40sOWQyhNJa1cLdLh8V+2+/O0rW4IJUGM/zbGVSd9FNY4bd7JVrSYsg0FJk9mhc0R7j5XL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785463857; c=relaxed/simple;
-	bh=laaDGR8OD4JUMLPIL/IM/G66XrvJzCKytq92XGT2G9s=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RcFS/uJj4Wqg/1reR+BtxeVWbgZALNwbvrTlIuVfL2aUd05Lddt4s075aV+3nKy2RYogf6oLjoiOwJQhKNvoRdwBiuBjfoUZsppnohVqZkMsFmAVV2adIZ7tu81g+zdbeclsuCY1AhLRbzEaXST1VhghHUui2GVStzdAk7P/PoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9SpMXD9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785463937; c=relaxed/simple;
+	bh=Ez+/JFeXCDtwc4NVMrUoqND9RSN2ABIDsDipzLsa4TI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ViIJ/pH0Cp9yqsP4Oa9nO8sDR6kmPBFe6ReqEHXj117mwtnebPuzaqWKLIvfw1zoouzWNzAjq9m/beLRXFswCsbdTnOOgkq566AGQlZ+zbFad8DjaVAFogj3cfgP+BukZH1nqn4YEgsqIxVS7Q/ItdAaxBX52aGZwI6HnD8eBT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=set1ZuMU; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9SpMXD9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52731F000E9;
-	Fri, 31 Jul 2026 02:10:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785463856;
-	bh=laaDGR8OD4JUMLPIL/IM/G66XrvJzCKytq92XGT2G9s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=D9SpMXD9FlkVEMbCKg6S1UQYGlx09rwPXcb0tcp1rcWCAG3+rSvRZn36G9A8yvKPm
-	 dDy2QYmuGkfBVkZBFUjj9QUMqriUHsVIuxepBEkvBGQwlFcfWIuNoUd15lNjzezxY4
-	 WBLWkc3De0h57PNhRmUo177OSXQwfxw9BKp4ch7cGCEOubJXHf/m1afw4BbgUqQlJw
-	 9/Nvd5HnDh6qWjdN0M6mdeLurvquoXRLVqSX6QwiwynUGgS9b/iaPDLD8+jA/3GJgX
-	 Iz/pjymS0P8YBuECAcwuoyIa3xsyb8M0MmYqkKMO/ZdCkLVd3sZ8yv92x5kDNUH539
-	 QzEjZkTQ3iHWA==
-Date: Thu, 30 Jul 2026 19:10:55 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Zihan Xi <zihanx@nebusec.ai>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, steffen.klassert@secunet.com,
- herbert@gondor.apana.org.au, kerneljasonxing@gmail.com, kuniyu@google.com,
- bjorn@kernel.org, bigeasy@linutronix.de, jiayuan.chen@linux.dev,
- willemb@google.com, jlayton@kernel.org, gustavoars@kernel.org,
- michael.bommarito@gmail.com, runyu.xiao@seu.edu.cn, kees@kernel.org,
- lirongqing@baidu.com, vega@nebusec.ai
-Subject: Re: [PATCH net 1/1] net: skbuff: reject skb header offset updates
- that truncate
-Message-ID: <20260730191055.2dabc26f@kernel.org>
-In-Reply-To: <06ac032651d91cfe4b2e246f6fc36e3d4b2f87d1.1785346409.git.zihanx@nebusec.ai>
-References: <cover.1785346409.git.zihanx@nebusec.ai>
-	<06ac032651d91cfe4b2e246f6fc36e3d4b2f87d1.1785346409.git.zihanx@nebusec.ai>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="set1ZuMU"
+Message-ID: <507ad6a6-52a2-4c68-9ba2-5cc4f92e192d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785463933;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zmPGEnHMged4MVtOCZdKBh7EW5THeW2s3SZc/Fx5p8U=;
+	b=set1ZuMU2l1LJhdbElnaHncW3htVMpJ+LT8KAyNE87oHGeSl7ekI5XfgExA7/eEmyO/xEK
+	cH9suoKK28MhKg/0O3j1IwdJeTw1fAH2LwjDMLqOmWbVqqs2wRfjKhxljNqtMwsg7XPFSu
+	S0HbUbvxgby2Ctjh8oGiyIouzCzomMI=
+Date: Fri, 31 Jul 2026 10:11:40 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Subject: Re: [PATCH v2] net: stmmac: enable MAC rx/tx after DMA start
+To: Abid Ali <dev.taqnialabs@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260727-stmmac-rx-fifo-block-v2-1-4dc3457d31d0@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qingfang Deng <qingfang.deng@linux.dev>
+In-Reply-To: <20260727-stmmac-rx-fifo-block-v2-1-4dc3457d31d0@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, 29 Jul 2026 18:40:33 +0000 Zihan Xi wrote:
-> raw_send_hdrinc() and rawv6_send_hdrinc() reserve LL headroom before
-> storing skb header offsets in 16-bit fields. If the reserved headroom
-> grows past the representable range, skb_reset_network_header() truncates
-> the stored offset and the hdrincl path later copies the user header to
-> the wrong location.
+Hi,
 
-Breaks a bunch of tests, quickest repro will be udpgro_fwd.sh
+On 2026/7/27 14:14, Abid Ali wrote:
+> The EMAC should only accept packets after the DMAs are enabled.
+This is correct.
+> Similarly, the teardown should ensure the MAC rx/tx is stopped before
+> DMA engine is stopped.
+
+This is _not_ correct. Instead it's a bit more complicated, according to 
+their programming guidelines:
+
+Stopping and Restarting Transmission
+
+- Disable the Transmit DMA (if applicable) by clearing Bit 0 (ST) of the 
+`DMA_CH(#i)_Tx_Control` register.
+- Wait until the Transmit DMA generates the stopped interrupt (TPS field 
+of the `DMA_CH(#i)_Status` register).
+- Wait for any previous frame transmissions to complete. You can check 
+this by reading the appropriate fields of the `MTL_TxQ0_Debug` register 
+(`TRCSTS != 1` and `TXQSTS = 0`).
+- Disable the MAC transmitter and MAC receiver by clearing Bit 0 (RE) of 
+the `MAC_Rx_Configuration` and Bit 0 (TE) of the `MAC_Tx_Configuration` 
+register.
+- Disable the Receive DMA (if applicable), after ensuring the data in 
+the Rx FIFO is transferred to the system memory (by reading the 
+appropriate fields of the `MTL_RxQ0_Debug` register; `PRXQ = 0` and 
+`RXQSTS = 0`).
+- Wait until the Receive DMA generates the stopped interrupt, which is 
+available in the RPS field of the `DMA_CH(#i)_Status` register.
+- Restart the DMAs.
+- Enable the MAC Transmitter and Receiver.
+
+So the correct order is: stop TX DMA -> stop MAC RX/TX -> stop RX DMA.
+
+Best regards,
+
+Qingfang
+
