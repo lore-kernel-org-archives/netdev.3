@@ -1,68 +1,68 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D84E46D2DC
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD7146EC67
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785515457; cv=none; b=neHBip23H81iFOjBBAneydNGrQKxO+FmTQl/Un7qYWs81dVOPilQxY8bnZvUbJBdr5sHXuZW6lLhXyO52SyQdVuVceE0e4EYzTJHIa0+YVbD8paqeTLZDSLk9v0LVekoCEqwRjiLQ5wcofhw4Z9J1oSCcSVdELTyaSCtuIQQjUI=
+	t=1785515461; cv=none; b=B8i7aMlVQr2swfHQH9ueiIFJOSKMq7zioTZfxqhTmqXJFc9vxSjrx9dj2l7x+hXOUmjkFX4Qbu/6Tkph3zmtgdNi0A8WQhZpkCpIfDOurRwxJfrM8kE/anTNUsyRqMi2q+Hhx7xO2IwY1Fg0YG4zLRcg7gQk50nplDLJrYxByqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785515457; c=relaxed/simple;
-	bh=0KxQNfxHtgxVP7p+J7kLnmloyIjqtkqU8bi4/9D5Pn4=;
+	s=arc-20240116; t=1785515461; c=relaxed/simple;
+	bh=R6z60t6FDjDvLZiOQXYefYIG0bNfh9SKw55q0G81SGM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JNlb0ti2DUnTwTgMA/L9JyPyf0Rf5a0u3dL+E2HfrEEAb3Qs/CCvQTvbfpJ/CEDG+A2w0UE95KTXKMOTO37SqF9oJqcQyYmx1AMFgq5Dv1hTuzhSbJmoJCg7zWW+goP4SbeTyeOwCkN5v/ZOSOGeO5byC+LKDxIa3oGXITOKvS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=k4n0Ncnk; arc=none smtp.client-ip=209.85.221.53
+	 In-Reply-To:To:Cc; b=ogun/70H7Db7LFF26OQcKyd6QtSSQjqF++CyNyTWlNaMA7oAEPBGY8V81bTAuteK72vqUccSWA5etCgqdEWu+8ik34hXu7OfkVCrj5wKwvJ/NKfd+6TqS1/7tMnTZk0QJFX7r2aFUkQcBvkKlBFRHu5DBu0OQ23uaqoMcacumuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=jIRxpunw; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="k4n0Ncnk"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47f59f25ec4so609179f8f.2
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:30:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="jIRxpunw"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47de008b020so849092f8f.1
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:30:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1785515452; x=1786120252; darn=vger.kernel.org;
+        d=baylibre.com; s=google; t=1785515455; x=1786120255; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aXK3NWYi082LyOZjH5CFEpjpWT9epWTpuRaVAOKU4cw=;
-        b=k4n0NcnkffnwX6VxC1q/kgOjq4ExUsEShLogQHGadzSyVr9fSJw83KuvKSgnXietIe
-         /phpPr3/Qj/50Lj56jh0AeC81PWygwonrGBxQXV3KjETPN09VkN/sz+7u7sF1j5ip8Ja
-         Mo8T7giMgdzIrqWyqvbopBjKCRMoPd886M2FtmTiFgb+nO8BjwwknM76UCDWgHCwDsFQ
-         wpHsaWXHjDzrM+XAuCJBDtLN+Tiv+qwFG9LVCcadtwXP76Ddcne7hweOgEHq5XLpULr5
-         YeyQpTbS4Iaj1ZLb7pM1VWYPoFOOlVaqTRf0AbsFfv9UYzxT4KMxl33af6vm+0Z8714O
-         EiiA==
+        bh=djWGAgZFPMEwkPACC0SH0yA3REA4ghQKhBwTkhJwSTQ=;
+        b=jIRxpunwGF/JlJq7POWfYun28f8D1tN4c2NGItPbrcgkWL5hF3le0bzcZiG5tevgWi
+         LFnsMzXDkS46/QEKxSCgnHG1a50kzSWPHpOn1hWVpdVu6jBeUXyNZMMGj38tcKG409W+
+         fyXjXzXV/k1t0+Ggb3j11EmfwfRlJW2lYD6fQbcym+wM2qWOyfO3PR54olFRdTFUl0dR
+         BxrZ/+qjF1yMDDmRcxFdGTVhIme+/6dpF2RP9eyhk2HKNPfo0QhypgWj1DRpSm/xfUtC
+         zGOOApY7eCoADVBNIEMt1fio0pVPLz72H4H4pnuivCooqM1/uaAYCo+gXvelIVw9lknh
+         8xow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785515452; x=1786120252;
+        d=1e100.net; s=20251104; t=1785515455; x=1786120255;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=aXK3NWYi082LyOZjH5CFEpjpWT9epWTpuRaVAOKU4cw=;
-        b=PnVDo2FGkhejXS330TR9pAciS8rPLWrsgCVOMI4h0QnkOfle8tMV0b+AAfkQ2reTGS
-         TvpbrKmx+6H4QBRqSCQrZkrUo9RLO8yP2Y6XRK7qB/lVb3EtC6IAMjV1BqgaKPhHQskj
-         v9vi61XfGYdSwVcvAdwJcAB7erwqtWVgCXcqXB38NavcZedJAdaOTQWR157kWFrxkZnv
-         s/Y/iwEYrmm5IT+tWHg+7sT2yuwAZoMSuIda2b361nEQu9aIkB/llZ8SdO9tNQ+m2/Ah
-         bEOCoo3+MGtj59JG+J2+5ugKkAwCes4pQ6EVoTnp3rcCS2k6m1WEIB/Invklx3n+tXJB
-         /AwA==
-X-Gm-Message-State: AOJu0YxhUq5V9Z25j7bc+xyLTw9QdYpSWDnbd7Lep2cNdlETXrFSeFVn
-	jd8CZuoe5QwCwzOXMTX+6YEGNeSOBGe7BnTlOaDdSZoKJAjuAqKhK+AUDUiEIcloNDMFw0UqIyS
-	66k7N
-X-Gm-Gg: AR+sD12WC7PXbXVwAgK38Y+ZLNDI5tQhqSmeWpl1yUaplX69/uEDPnwCLlMGwtC3Cju
-	5f2NIty4DBPyBhe0TheIC0zJ34ls9SVYZxOjkj/8hy3J6BCOFE75c/7JPX5EWEvpSRa0KENoEg2
-	KhF8IaHH8WhzbR1PBh+kA6eOWYyOXkCKH32iXq4WuWlJAoiJlNeBlTEhSZNuZ1wxlUMwiSooAbg
-	UzDbiXwUAriNa7qXpthHepbLCVtOz2r3xLR5trOFKzPsC+jJxb/PLIzXGce7sqw+IE76Kl9VXoe
-	iljG5jinnbysCpW/+DNznLYfD3D+sGEwO/eJyZ3u5aF6mJAYMrL2MgZxWydaEqHdiudhCxhdZms
-	FGKUzmv9dcaPgp4CKtCQ/r3t8PGQ/17kg0NdEI4CC8BUDc4RSOY9BlWrzg1p92L4hpy+3El4DNo
-	6uyMD7I9c/6GiYwljUx4NmmKyHwHe/TwDh88QhZWqNIj8zQpktMIv0Wk9Ahw==
-X-Received: by 2002:a05:6000:983:b0:47f:8f54:125f with SMTP id ffacd0b85a97d-47fd72a9038mr642064f8f.7.1785515448372;
-        Fri, 31 Jul 2026 09:30:48 -0700 (PDT)
+        bh=djWGAgZFPMEwkPACC0SH0yA3REA4ghQKhBwTkhJwSTQ=;
+        b=noGC8tLC5Ql48p0YuwHAckqxRFm9YV2lzAcBPn+srHgYF60mvOrn00/1CpgsQyofpk
+         ek9pgAMD2KbVzmo9Wj0IXmAvjoIrovveqc+RF0uT7HDyI2eMYvv4r/xeMkybquO6X96t
+         JHb4O7sEzCe04kX7CIbgoSLY1TzusB2jRHLrRpF61o8k9t27EU6iVoyq/ywVk8N01R/e
+         arbViotSsQtuaDhwz12gOkdvaVJ72eoVPch2t+UhXxC9Dbwl3RSRWeOM+Fcm0rvwMn3g
+         ymx7oDO0z/5sDcTKYbetvtpX56A9TSxzwVOrjQEMN4awE0sAaLvjKINti9XOyXvBL1Z4
+         XspA==
+X-Gm-Message-State: AOJu0YyKIu/UPWbh9FCQruu+AJiwKE8BnTAorEiD7tMkRY+zvJtS6vad
+	t7eZlleUGkAHkwaVx4BmNqVsXS42fBmQrh4BUUUEpk2+MBiQZ531TrJxP7szzsI2zclvfe6iuQE
+	G2XRQ
+X-Gm-Gg: AR+sD11MaIqHgW94SkxchEKRszB4nmNL2zdrelaw9ei2hxKllwPZVH+5+59+tAj8xVm
+	BBKuN2iT21Gsrv1o71+7PvFe+w30pE49Q+dgN0Dqe9TspsCx2C/MrDu34P5D6Pjf+W6qc9TLo4d
+	F33gzQ8uIqVd1qipYimB38OTuMMqhCJuFpIdw7LZ/bRAcQGOqL35CEr7eXsk4fs09E7lFKrS2ly
+	Gl4QGXe563htPg9NWylUNDG1UB8ZCNgnfFo15RejrEX8k7mem/6WjuauHt13aCAYshn4HZUtEo/
+	x5YuU5wYCJ72gI/6gKuBr2VIECmmGcoNEv/jFs/Rc/o3vw/zUEd7FGLtkxSDFemfJjYYN6gk9tG
+	L3IIRCN3LOGt0mESmsNObMsIlXWSx/SWElR+67+9JOGtKL8bS/BvB6jKBvj/tlqTWBlGoFvtVAK
+	tZ3x/1W+a++00RjQ48tVBI9wP9kXj91q/9JrEuw9o7LcHrERotrE6BMEay+g==
+X-Received: by 2002:a05:6000:1846:b0:47f:6e8b:699c with SMTP id ffacd0b85a97d-47fd729208fmr726837f8f.14.1785515455179;
+        Fri, 31 Jul 2026 09:30:55 -0700 (PDT)
 Received: from localhost ([2a01:e0a:3c5:5fb1:d00b:bc94:65a:a73d])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-47fd41e296csm6513850f8f.12.2026.07.31.09.30.47
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-47fd4562667sm6935966f8f.24.2026.07.31.09.30.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 09:30:47 -0700 (PDT)
+        Fri, 31 Jul 2026 09:30:54 -0700 (PDT)
 From: Jerome Brunet <jbrunet@baylibre.com>
-Date: Fri, 31 Jul 2026 18:30:26 +0200
-Subject: [PATCH RFC/RFT 1/2] dt-bindings: net: sun8i-emac: Add A733 GMAC210
- compatible
+Date: Fri, 31 Jul 2026 18:30:27 +0200
+Subject: [PATCH RFC/RFT 2/2] net: stmmac: Add support for Allwinner A733
+ GMAC210
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260731-allwinner-a733-gmac-support-v1-1-d0a8732bfa82@baylibre.com>
+Message-Id: <20260731-allwinner-a733-gmac-support-v1-2-d0a8732bfa82@baylibre.com>
 References: <20260731-allwinner-a733-gmac-support-v1-0-d0a8732bfa82@baylibre.com>
 In-Reply-To: <20260731-allwinner-a733-gmac-support-v1-0-d0a8732bfa82@baylibre.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -91,244 +91,275 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
  Jerome Brunet <jbrunet@baylibre.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6093; i=jbrunet@baylibre.com;
- h=from:subject:message-id; bh=0KxQNfxHtgxVP7p+J7kLnmloyIjqtkqU8bi4/9D5Pn4=;
- b=owEBbQKS/ZANAwAKAeb8Dxw38tqFAcsmYgBqbM2xquVAc309vSgKPGdFcjh7GkmzmsbHShAaG
- 2+Xz5vdSoWJAjMEAAEKAB0WIQT04VmuGPP1bV8btxvm/A8cN/LahQUCamzNsQAKCRDm/A8cN/La
- hVYjD/4h49mYaowx0kPXeu4N+tawC2LKn/y5trYsXdnPdHmdfzHZtHE1sbRZCKd4zo3VNEpCkUz
- 3ZEyvd1719+F3UGAqXAndBPgq/sN0WCV7/9y6m8XRfeJWGXcljWdJKIRPMme3g5XzvoyGUDCPAn
- aQ25LXLBhtvnGX5DXbWYSLrYr2lPMu6w1ZxqRMg3eBfZbOBvnwljx2Qv7GDAHlIrvGb3Kgj0AsM
- FOgHmSnW8iSWx/NtDXciYBKu5P4cgv+c20KktVmdANY27RVQsfkeb/ozqs972CE4uTNBkuaEMB0
- ygkCAj2lRmHFKpVxapgG9YD4/UE5zwxVzKQaAzLHOjwVazmXCWdB9tPTUoyaAdAkkTnyqdoEail
- k6iP0hNqNcGam9TmyMkEJkNaHOdswDX/D+H6bHN5lBeUzEoz1AHaAXZi/iDauKKV3tooyukOuGH
- nB2hz5KVP8+VG+vwRZTZZKLsXQQM8568MopRMKciRUtT5HLwjRItUVwVpHwqlmroVhRYyYfwCMu
- 49z8l+11BmRDapU7WzzqrQXCoTfTpsTvHwUu18vrpQYAJbnUnkS6fRKbG0l3Hv2DiPncxZeF7Y4
- xma9MDf3jBOllSMS4tgfuAK60M+ntQPUI+mO7GkQdc2RO6qfmwpYuqR5FccHOg2MZU6H0CxAQqr
- OgQSoMmlrTaSxNQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8196; i=jbrunet@baylibre.com;
+ h=from:subject:message-id; bh=R6z60t6FDjDvLZiOQXYefYIG0bNfh9SKw55q0G81SGM=;
+ b=owEBbQKS/ZANAwAKAeb8Dxw38tqFAcsmYgBqbM2yrm2AuGpFLVpemVLX90B3DnBbzHrGoGWqT
+ xiLTieBOeuJAjMEAAEKAB0WIQT04VmuGPP1bV8btxvm/A8cN/LahQUCamzNsgAKCRDm/A8cN/La
+ hegtD/wPspDO73Xa87akPckAschP4dgHAyp7127Gd1baf5ZpC5mHrFkJXQpW9DiH5scwiM465l+
+ /kS8Z8F/V8xxYrn6InOmmg/dw3Im+JiNr+W1C1xOiEAwzmTNPdfFLIOAv0V8tsjCj9bpgFecs+P
+ QOPV3JtzpAvELG9QPOWIxEnOYwEdvP7uKtEK5GdqccTQd4ICtdKau1GlPaXRKjaPxhv960YnUWl
+ jJrW3w/jXAcgMkwJLB/y0OVjiziU5HKrnCmrAHcvvMDjeYRs+q6rO5kmTcaBBNPdfWrmCAKjfAx
+ t+JIUu1mHbWuFIG4S78NQNN6J4X9I89doMc8xQ6/2LW68RfiEJQJzKVp2Q5E4XxUwYs8XSxBSZC
+ vTzp79KWSngh19GFNZy8KDFx2Bp1kPSDKFxY2xuTFMGhyTj+JNeJ1hlPV9m1rTkesoKvhBiUSVx
+ N4x+SYbDcm497L01W8ONCfXmClBY+JNsPFNjefBlt6MfBGSPl3z26CioYv8WRKxavAamQWnaXt8
+ AIKw2rFOKWxIf0i8jV6PHQgag5tkp+byybxhFHvdnTU9YQCshdOpxxtcZyFC9qMNxgDlq2qdx44
+ X/NwUNm2POmlNsmBFMBLdKzYyjYJOlByszNC50hS74Bz0CHcBhBoU0gNs649jNUCrhb/KUjN7h7
+ Zma6cXT7h4ab0HQ==
 X-Developer-Key: i=jbrunet@baylibre.com; a=openpgp;
  fpr=F29F26CF27BAE1A9719AE6BDC3C92AAF3E60AED9
 
-The A733 GMAC210 is a DesignWare MAC 5.20 close to the A523 GMAC200, with
-the following differences:
+The A733 GMAC210 is a DesignWare MAC 5.20 using an Allwinner glue close to
+the A523 GMAC200 already supported by this driver, with the following
+differences to handle:
 
- * The glue configuration registers are a dedicated MMIO region of the
-   controller instead of a syscon register, so a second reg entry replaces
-   the syscon phandle.
- * The DMA channels and the LPI event have their own interrupt lines.
- * A PTP reference clock and an AHB reset are needed.
- * Unlike the A523, the controller does not appear to belong to a power
-   domain.
- * The TX clock delay field is 5 bits wide, allowing up to 3100ps.
+* The glue configuration registers are a dedicated MMIO region of the
+  controller instead of a syscon register. This new register region
+  appears to be in the reset domain of stmmac's main reset. This requires
+  the glue driver to handle the reset rather than letting stmmac deal with
+  it.
+* The TX clock delay value is 5 bits wide, split over 2 register fields,
+  allowing delays up to 3100ps.
+* The DMA channels have their own interrupt lines, so the per-DMA-channel
+  interrupt mode is enabled, as the vendor SDK does.
+* TX LPI clock gating is supported, as the vendor SDK indicates. Follow
+  the PHY capability with STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP rather than
+  forcing it on with the deprecated 'snps,en-tx-lpi-clockgating' DT
+  property.
 
-Add the new compatible and describe those differences.
+Unlike the A523, both GMAC instances are supported by the same driver.
 
 Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 ---
- .../bindings/net/allwinner,sun8i-a83t-emac.yaml    | 130 ++++++++++++++++++---
- 1 file changed, 115 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c | 145 ++++++++++++++++++---
+ 1 file changed, 127 insertions(+), 18 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml b/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
-index 323a669fa982..fec42f46378a 100644
---- a/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
-+++ b/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
-@@ -22,6 +22,7 @@ select:
-           - allwinner,sun8i-v3s-emac
-           - allwinner,sun50i-a64-emac
-           - allwinner,sun55i-a523-gmac200
-+          - allwinner,sun60i-a733-gmac210
-   required:
-     - compatible
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c
+index 862df173d963..3d434a52fb02 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c
+@@ -10,21 +10,22 @@
+  */
  
-@@ -44,25 +45,38 @@ properties:
-       - items:
-           - const: allwinner,sun55i-a523-gmac200
-           - const: snps,dwmac-4.20a
-+      - items:
-+          - const: allwinner,sun60i-a733-gmac210
-+          - const: snps,dwmac-5.20
+ #include <linux/bitfield.h>
++#include <linux/bitops.h>
+ #include <linux/bits.h>
+ #include <linux/mfd/syscon.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/phy.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
++#include <linux/reset.h>
+ #include <linux/stmmac.h>
  
-   reg:
--    maxItems: 1
-+    minItems: 1
-+    items:
-+      - description: MAC controller registers
-+      - description: Glue configuration registers
+ #include "stmmac.h"
+ #include "stmmac_platform.h"
  
-   interrupts:
--    maxItems: 1
-+    minItems: 1
-+    maxItems: 4
+-#define SYSCON_REG		0x34
+-
+ /* RMII specific bits */
+ #define SYSCON_RMII_EN		BIT(13) /* 1: enable RMII (overrides EPIT) */
+ /* Generic system control EMAC_CLK bits */
+@@ -37,17 +38,99 @@
+ #define SYSCON_ETCS_EXT_GMII	0x1
+ #define SYSCON_ETCS_INT_GMII	0x2
  
-   interrupt-names:
--    const: macirq
-+    minItems: 1
-+    items:
-+      - const: macirq
-+      - const: eth_lpi
-+      - const: tx-queue-0
-+      - const: rx-queue-0
- 
-   clocks:
-     minItems: 1
--    maxItems: 2
-+    maxItems: 3
- 
-   clock-names:
-     minItems: 1
-     items:
-       - const: stmmaceth
-       - const: mbus
-+      - const: ptp_ref
- 
-   phy-supply:
-     description: PHY regulator
-@@ -87,7 +101,6 @@ required:
-   - reset-names
-   - phy-handle
-   - phy-mode
--  - syscon
- 
- allOf:
-   - $ref: snps,dwmac.yaml#
-@@ -219,36 +232,94 @@ allOf:
-       properties:
-         compatible:
-           contains:
--            const: allwinner,sun55i-a523-gmac200
-+            enum:
-+              - allwinner,sun55i-a523-gmac200
-+              - allwinner,sun60i-a733-gmac210
-     then:
-       properties:
--        clocks:
--          minItems: 2
--        clock-names:
--          minItems: 2
-         tx-internal-delay-ps:
-           default: 0
-           minimum: 0
--          maximum: 700
-           multipleOf: 100
-           description:
--            External RGMII PHY TX clock delay chain value in ps.
-+            Internal RGMII PHY TX clock delay chain value in ps.
-         rx-internal-delay-ps:
-           default: 0
-           minimum: 0
-           maximum: 3100
-           multipleOf: 100
-           description:
--            External RGMII PHY TX clock delay chain value in ps.
--      required:
--        - power-domains
-+            Internal RGMII PHY RX clock delay chain value in ps.
-     else:
-       properties:
-+        reg:
-+          maxItems: 1
-+        interrupts:
-+          maxItems: 1
-+        interrupt-names:
-+          maxItems: 1
-         clocks:
-           maxItems: 1
-         clock-names:
-           maxItems: 1
-         power-domains: false
-+      required:
-+        - syscon
+-static int sun55i_gmac200_set_syscon(struct device *dev,
+-				     struct plat_stmmacenet_data *plat)
++struct sun55i_gmac_data {
++	struct regmap *(*get_regmap)(struct platform_device *pdev,
++				     struct plat_stmmacenet_data *plat);
++	unsigned int flags;
++	u32 etxdc_ext_mask;
++	u32 offset;
++};
 +
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: allwinner,sun55i-a523-gmac200
-+    then:
-+      properties:
-+        reg:
-+          maxItems: 1
-+        interrupts:
-+          maxItems: 1
-+        interrupt-names:
-+          maxItems: 1
-+        clocks:
-+          minItems: 2
-+          maxItems: 2
-+        clock-names:
-+          minItems: 2
-+          maxItems: 2
-+        resets:
-+          maxItems: 1
-+        reset-names:
-+          maxItems: 1
-+        tx-internal-delay-ps:
-+          maximum: 700
-+      required:
-+        - power-domains
-+        - syscon
++static struct regmap *sun55i_gmac200_get_regmap(struct platform_device *pdev,
++						struct plat_stmmacenet_data *plat)
++{
++	struct regmap *map =
++		syscon_regmap_lookup_by_phandle(pdev->dev.of_node, "syscon");
 +
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: allwinner,sun60i-a733-gmac210
-+    then:
-+      properties:
-+        reg:
-+          minItems: 2
-+        interrupts:
-+          minItems: 4
-+        interrupt-names:
-+          minItems: 4
-+        clocks:
-+          minItems: 3
-+        clock-names:
-+          minItems: 3
-+        resets:
-+          minItems: 2
-+        reset-names:
-+          minItems: 2
-+        tx-internal-delay-ps:
-+          maximum: 3100
-+        syscon: false
-+        power-domains: false
++	if (IS_ERR(map))
++		dev_err_probe(&pdev->dev, PTR_ERR(map), "Unable to map syscon\n");
++
++	return map;
++}
++
++static const struct regmap_config sun60i_a733_regmap_cfg = {
++	.reg_bits = 32,
++	.val_bits = 32,
++	.reg_stride = 4,
++};
++
++static void sun60i_gmac210_reset_assert(void *data)
+ {
+-	struct device_node *node = dev->of_node;
++	struct reset_control *rst = data;
++
++	reset_control_assert(rst);
++}
++
++static struct regmap *sun60i_gmac210_get_regmap(struct platform_device *pdev,
++						struct plat_stmmacenet_data *plat)
++{
++	struct device *dev = &pdev->dev;
++	void __iomem *base;
++	int ret;
++
++	base = devm_platform_ioremap_resource(pdev, 1);
++	if (IS_ERR(base)) {
++		dev_err_probe(dev, PTR_ERR(base), "unable to get glue memory region\n");
++		return ERR_CAST(base);
++	}
++
++	if (!plat->stmmac_rst || !plat->stmmac_ahb_rst) {
++		dev_err(dev, "missing required reset controls\n");
++		return ERR_PTR(-EINVAL);
++	}
++
++	/*
++	 * The configuration registers are inside the controller
++	 * reset domain, so the reset must happen before any write to them
++	 * and should not be done again by stmmac or the configuration will
++	 * be lost.
++	 */
++	ret = reset_control_assert(plat->stmmac_rst);
++	if (!ret)
++		ret = reset_control_deassert(plat->stmmac_rst);
++
++	if (ret) {
++		dev_err_probe(dev, ret, "device reset failed\n");
++		return ERR_PTR(ret);
++	}
++
++	ret = devm_add_action_or_reset(dev, sun60i_gmac210_reset_assert,
++				       plat->stmmac_rst);
++	if (ret)
++		return ERR_PTR(ret);
++
++	plat->stmmac_rst = NULL;
++
++	return devm_regmap_init_mmio(&pdev->dev, base, &sun60i_a733_regmap_cfg);
++}
++
++static int sun55i_gmac200_setup(struct platform_device *pdev,
++				struct plat_stmmacenet_data *plat,
++				const struct sun55i_gmac_data *data)
++{
++	unsigned int lo_bits = hweight32(SYSCON_ETXDC_MASK);
++	struct device_node *node = pdev->dev.of_node;
++	struct device *dev = &pdev->dev;
+ 	struct regmap *regmap;
+ 	u32 val, reg = 0;
++	u32 max_delay;
+ 	int ret;
  
- unevaluatedProperties: false
+-	regmap = syscon_regmap_lookup_by_phandle(node, "syscon");
++	max_delay = (1U << (lo_bits + hweight32(data->etxdc_ext_mask))) - 1;
++
++	regmap = data->get_regmap(pdev, plat);
+ 	if (IS_ERR(regmap))
+-		return dev_err_probe(dev, PTR_ERR(regmap), "Unable to map syscon\n");
++		return PTR_ERR(regmap);
  
-@@ -412,4 +483,33 @@ examples:
-             };
-         };
-     };
+ 	if (!of_property_read_u32(node, "tx-internal-delay-ps", &val)) {
+ 		if (val % 100)
+@@ -55,12 +138,15 @@ static int sun55i_gmac200_set_syscon(struct device *dev,
+ 					     "tx-delay must be a multiple of 100ps\n");
+ 		val /= 100;
+ 		dev_dbg(dev, "set tx-delay to %x\n", val);
+-		if (!FIELD_FIT(SYSCON_ETXDC_MASK, val))
++		if (val > max_delay)
+ 			return dev_err_probe(dev, -EINVAL,
+-					     "TX clock delay exceeds maximum (%u00ps > %lu00ps)\n",
+-					     val, FIELD_MAX(SYSCON_ETXDC_MASK));
++					     "TX clock delay exceeds maximum (%u00ps > %u00ps)\n",
++					     val, max_delay);
+ 
+-		reg |= FIELD_PREP(SYSCON_ETXDC_MASK, val);
++		reg |= field_prep(SYSCON_ETXDC_MASK, val);
++		if (data->etxdc_ext_mask)
++			reg |= field_prep(data->etxdc_ext_mask,
++					  val >> lo_bits);
+ 	}
+ 
+ 	if (!of_property_read_u32(node, "rx-internal-delay-ps", &val)) {
+@@ -95,21 +181,29 @@ static int sun55i_gmac200_set_syscon(struct device *dev,
+ 				     phy_modes(plat->phy_interface));
+ 	}
+ 
+-	ret = regmap_write(regmap, SYSCON_REG, reg);
++	ret = regmap_write(regmap, data->offset, reg);
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret, "Failed to write to syscon\n");
+ 
++	plat->flags |= data->flags;
++	plat->host_dma_width = 32;
 +
-+  - |
-+    ethernet@4510000 {
-+        compatible = "allwinner,sun60i-a733-gmac210",
-+                     "snps,dwmac-5.20";
-+        reg = <0x04510000 0x8000>,
-+              <0x04518000 0x1000>;
-+        clocks = <&ccu 58>, <&ccu 59>, <&ccu 60>;
-+        clock-names = "stmmaceth", "mbus", "ptp_ref";
-+        resets = <&ccu 30>, <&ccu 31>;
-+        reset-names = "stmmaceth", "ahb";
-+        interrupts = <0 175 4>, <0 179 4>, <0 176 4>, <0 177 4>;
-+        interrupt-names = "macirq", "eth_lpi", "tx-queue-0", "rx-queue-0";
-+        pinctrl-names = "default";
-+        pinctrl-0 = <&rgmii1_pins>;
-+        phy-handle = <&ext_rgmii_phy_2>;
-+        phy-mode = "rgmii-id";
-+        snps,fixed-burst;
+ 	return 0;
+ }
+ 
+ static int sun55i_gmac200_probe(struct platform_device *pdev)
+ {
+ 	struct plat_stmmacenet_data *plat_dat;
++	const struct sun55i_gmac_data *data;
+ 	struct stmmac_resources stmmac_res;
+ 	struct device *dev = &pdev->dev;
+ 	struct clk *clk;
+ 	int ret;
+ 
++	data = device_get_match_data(dev);
++	if (!data)
++		return -EINVAL;
 +
-+        mdio {
-+            compatible = "snps,dwmac-mdio";
-+            #address-cells = <1>;
-+            #size-cells = <0>;
+ 	ret = stmmac_get_platform_resources(pdev, &stmmac_res);
+ 	if (ret)
+ 		return ret;
+@@ -118,11 +212,7 @@ static int sun55i_gmac200_probe(struct platform_device *pdev)
+ 	if (IS_ERR(plat_dat))
+ 		return PTR_ERR(plat_dat);
+ 
+-	/* BSP disables it */
+-	plat_dat->flags |= STMMAC_FLAG_SPH_DISABLE;
+-	plat_dat->host_dma_width = 32;
+-
+-	ret = sun55i_gmac200_set_syscon(dev, plat_dat);
++	ret = sun55i_gmac200_setup(pdev, plat_dat, data);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -138,8 +228,27 @@ static int sun55i_gmac200_probe(struct platform_device *pdev)
+ 	return devm_stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
+ }
+ 
++static const struct sun55i_gmac_data sun55i_a523_gmac200_data = {
++	.get_regmap = sun55i_gmac200_get_regmap,
++	.flags = STMMAC_FLAG_SPH_DISABLE,
++	.offset = 0x34,
++	.etxdc_ext_mask = 0,
++};
 +
-+            ext_rgmii_phy_2: ethernet-phy@1 {
-+                reg = <1>;
-+            };
-+        };
-+    };
- ...
++static const struct sun55i_gmac_data sun60i_a733_gmac210_data = {
++	.get_regmap = sun60i_gmac210_get_regmap,
++	.flags = (STMMAC_FLAG_SPH_DISABLE |
++		  STMMAC_FLAG_MULTI_MSI_EN |
++		  STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP),
++	.offset = 0x0,
++	.etxdc_ext_mask = GENMASK(17, 16),
++};
++
+ static const struct of_device_id sun55i_gmac200_match[] = {
+-	{ .compatible = "allwinner,sun55i-a523-gmac200" },
++	{ .compatible = "allwinner,sun55i-a523-gmac200",
++	  .data = &sun55i_a523_gmac200_data },
++	{ .compatible = "allwinner,sun60i-a733-gmac210",
++	  .data = &sun60i_a733_gmac210_data },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, sun55i_gmac200_match);
 
 -- 
 2.47.3
