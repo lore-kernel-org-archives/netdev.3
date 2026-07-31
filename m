@@ -1,50 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7B72D3EEB;
-	Fri, 31 Jul 2026 01:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F0D48986C;
+	Fri, 31 Jul 2026 01:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785459824; cv=none; b=ZMP/LbaO44hr2+X9Yu1B8em1tNMHjhOEfbHB8ykgTZ0e7h24O6ubyB4osVtCHuBD/J6i+/8h1axJU6kVAqwpqknGIMwSs1bHJU2CnijwC7V78R9F4K+OoVdjs3+kOz1atwTND64kg6rLC/B410to/B0+mbZY4VPojHkyk3eBNt0=
+	t=1785460229; cv=none; b=Kx5j5vciHVpXuE+fs8o2n1qozY/lX/p+m1LnbRAUgJaXQDd71QzX92macxVb3Tdt4+/dVeiVLzv0QGn5wSnHan/KOjyeSbNqSYW2rdGihmvp4JqdYfvaMX3AYd3he7QSFh+aL170taQieDxd9fIsvVa3juLMd3IVSaRqjNVdc/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785459824; c=relaxed/simple;
-	bh=Z6w1vDmyi8Ro4MsCYO800LR37xI8ie0IZo+YAcC5IhQ=;
+	s=arc-20240116; t=1785460229; c=relaxed/simple;
+	bh=LYEnLgoEWxlA5WhI0qzv+Ewlf2gwhJwtbcSPUiMpexY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sz/xZ/j2h8KC+odd2Fvys0fdGsdvUAXliMTgw3LZKaEsIzIYq3L4lPl0PYhWtIUj5pd286jkqta/WOJXiP+YeSp88TcuXVzoNWumPRSb/a6XyKgymPeGDAz6umI34DQtfiTzVTTCYOig1rIB4cPZIjOQCB44Uhxx1Nxcf4DTW0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KYM4+pXl; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=CgRrxkmKUpezh+LyZ5Prp0DLWDCm2O7uB49FqGxOn+ZxyRYeoIAaynaLp40TEzyXClf2QOu+PBdckzUpkETV5t5lFoKpyf0peCYgt7IbqmpN5u4xUKLOcvr8LUm62J4Zpmda3/rDvDYNgym0Fp0OM297WvKSHUEa0r5oCzaCcug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EW0DybYT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYM4+pXl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8C61F000E9;
-	Fri, 31 Jul 2026 01:03:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EW0DybYT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579941F000E9;
+	Fri, 31 Jul 2026 01:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785459823;
-	bh=iiSSjg80EDycR8obWWDh44uNX+f5T/nFkgGlg/IY5p4=;
+	s=k20260515; t=1785460227;
+	bh=ryZkJzv+oPiqpys8luF54dVvEDhJeA69sd6+yHuqlzU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=KYM4+pXlnRGRIWXB4wDQC+bDKE8ioH09X/m4fGhqTHx4bKg/DXX8zBl6dKkPzXEHy
-	 7vdBijodShoE0oL6vptfuOSxQ7mumogxBEZXcq0JCrserpo0PYvDqq1gild60y7mYa
-	 psbIG5C+is4ktpoQyk9O2amgmBVq+o4nQSnyVXQlHkdxTe0nIQFpgBh1k4UinOhexp
-	 df+pwiGtdmUYQnOCe4AskucchVeOLEUXUf48+9CRxW1V1Oc/rfjDaZp+McZPMltqML
-	 qKOlR/fEXk1h6QSs3eK1AufP0tBnqD84BDz8kIKXWJfpfr6N+O18kx1lajcoMwOU8y
-	 dk3aA88s8MUhA==
-Date: Thu, 30 Jul 2026 18:03:41 -0700
+	b=EW0DybYTL9CgviHX5FLsl5Gv1Fg/ErlRClqCcUPLWJT9ZjRVqGmE7ymslBcigvFVF
+	 O17EA7/f+Toy6UViLYeDnQnYxHiFTTMCBQPX1Tgn3kCqNzmUkc+zx8peQk3jzi0+aG
+	 ukoADpsWjKbrqpQljwq89L9/iUdKz2GUpUXgUYO1+gWs2Z9Ztrg0Th+5QzFmgCY3zF
+	 mUOftm1tFOPazFQjNWn3vrj1bEJuM/HiFrYYQfhC+ebaFXkW7lalXFbj0irPnPBMjv
+	 o4/8JkS9QT9AMuSsTnu+ixahvnGbJeJFSIO/hV4+x87oEtLMWwKzPteVvOtUuO+5Z2
+	 MKIgEGKdZlwVA==
+Date: Thu, 30 Jul 2026 18:10:26 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-Cc: "D. Wythe" <alibuda@linux.alibaba.com>, Dust Li
- <dust.li@linux.alibaba.com>, Sidraya Jayagond <sidraya@linux.ibm.com>,
- Wenjia Zhang <wenjia@linux.ibm.com>, Mahanta Jambigi
- <mjambigi@linux.ibm.com>, Tony Lu <tonylu@linux.alibaba.com>, Wen Gu
- <guwen@linux.alibaba.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Guangguan Wang
- <guangguan.wang@linux.alibaba.com>, linux-rdma@vger.kernel.org,
- linux-s390@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Kees Cook <kees@kernel.org>, "Gustavo A. R.
- Silva" <gustavoars@kernel.org>, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH net v3] net/smc: fix out-of-bounds read of rkey array in
- SMC-Rv2 LLC processing
-Message-ID: <20260730180341.4c4dccfd@kernel.org>
-In-Reply-To: <20260727095833.1079618-1-yhlee@isslab.korea.ac.kr>
-References: <20260727095833.1079618-1-yhlee@isslab.korea.ac.kr>
+To: "illusion.wang" <illusion.wang@nebula-matrix.com>
+Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
+ sam.chen@nebula-matrix.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+ corbet@lwn.net, horms@kernel.org, linux-doc@vger.kernel.org,
+ pabeni@redhat.com, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
+ edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
+ hkallweit1@gmail.com, linux-kernel@vger.kernel.org (open list)
+Subject: Re: [PATCH v22 net-next 01/12] net/nebula-matrix: add minimum nbl
+ build framework
+Message-ID: <20260730181026.614aea2d@kernel.org>
+In-Reply-To: <20260723040110.91410-2-illusion.wang@nebula-matrix.com>
+References: <20260723040110.91410-1-illusion.wang@nebula-matrix.com>
+	<20260723040110.91410-2-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,20 +50,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 27 Jul 2026 18:58:33 +0900 Yehyeong Lee wrote:
-> An SMC-Rv2 LLC message can be longer than the 44-byte union smc_llc_msg.
-> If the device offers two receive SGEs, the part beyond 44 bytes is
-> scattered into the link group's shared v2 buffer. If it does not
-> (max_recv_sge == 1, so smc_link_shared_v2_rxbuf() is false), the whole
-> message is received into the link's own receive buffer.
+On Thu, 23 Jul 2026 12:00:53 +0800 illusion.wang wrote:
+> +config NET_VENDOR_NEBULA_MATRIX
+> +	bool "Nebula-matrix devices"
+> +	default y
+> +	help
+> +	  If you have a network (Ethernet) card belonging to this class, say Y.
+> +	  Note that the answer to this question doesn't directly affect the
+> +	  kernel: saying N will just cause the configurator to skip all
+> +	  the questions about Nebula-matrix cards. If you say Y, you will be asked
+> +	  for your specific card in the following questions.
+> +
+> +if NET_VENDOR_NEBULA_MATRIX
+> +
+> +config NBL
+> +	tristate "Nebula-matrix Ethernet Controller m18110/m18000 support"
+> +	depends on PCI && (64BIT || COMPILE_TEST) && !CPU_BIG_ENDIAN
+> +	help
+> +	  This driver supports Nebula-matrix Ethernet Controller m18110/m18000
+> +	  Family of devices.  For more information about this product, go to
+> +	  the product description with smart NIC:
+> +
+> +	  <http://www.nebula-matrix.com>
 
-This should probably be a 3 patch series:
+Let's skip the "For more information.. " and the link the sentence
+below pointing to Documentation is enough. 
 
-  1. the use-after-free fix in smc_llc_srv_add_link() (qentry_del ->
-     qentry_clr plus the explicit kfree(qentry) on both exit paths)
-  2. the new peer-count validation in smc_llc_save_add_link_rkeys() and
-     smc_llc_rmt_delete_rkey()
-  3. the ownership refactor of struct smc_llc_qentry and the
-     smc_llc_enqueue() signature change
--- 
-pw-bot: cr
+> +	  More specific information on configuring the driver is in
+> +	  <file:Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst>.
+> +
+> +	  To compile this driver as a module, choose M here. The module
+> +	  will be called nbl.
+
+> +enum {
+> +	NBL_CAP_HAS_CTRL_BIT,
+> +	NBL_CAP_HAS_NET_BIT,
+> +};
+
+This enum is unused in the patch.
+Please don't add unused code, it makes the submission hard to review.
+
