@@ -1,121 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D2A3D75C9;
-	Fri, 31 Jul 2026 09:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271053DB64A
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785491719; cv=none; b=su9LcxpAuwOcMjt33cbOtJwYI03Gre9Y83SuGLJ1tkjdBt7Z7P4duFTmhSnRAXS7ymhjA7gcRMVFiDeznqEIkJ9R24Wd0dPPa1Ck/XvwJO6gayade6ZkmY+eVdqc9NNpxT9s39J4yTrcdiNpbH0WAuFEW5QavNjOUBYco1dd8Ic=
+	t=1785491753; cv=none; b=IszyXxZleF9qZsaJEauad+qSxSXwlsMHxsRpZvKPyZsqofSB+McBh0CMAUWzD/62n3PNYk2Ul2HVA7usImxTOOH2BOy3XJjlNDysBU8z4VFbMJV9ywSKGQLN7vylIVCempjOA4N81pS3ZWyhASVEeoijcg1VEcihKHEbfaFWqsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785491719; c=relaxed/simple;
-	bh=yW6RhZvuXTXdVFnVlFob/HJMgH21yu4UQrqnhYTDcd0=;
-	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=YIuWLsBhdNKJ+XTZ5nZ2VHWBA8XD9v17PwT9G9kfqM6wj+JR5+WECbyVTWIyj9cHoKAa7glH3sswssA+zkT+gmHBextwcpkDGkRrg4bDC5A+1V4LWcnNaESzfb96lkES2n3d+ugOMMbeVM1bm/VePYiMNpjrOAi6QOQb6OT5EOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gVoSEpTv; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gVoSEpTv"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 78CCB1F000E9;
-	Fri, 31 Jul 2026 09:55:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785491704;
-	bh=mmsyaXlTFwznzYLlEJF3sMY3DY+k6fK78Dx18suj9WA=;
-	h=From:To:Cc:Subject:Date;
-	b=gVoSEpTv+jksdfqBUUxUpd/qJ+eDUcRw7rjGPBj5RB/J5DBhG7qRzFsPzjqIO2Wmk
-	 nRq3F9OwZKOsG/N2AbbPGTvrogJ91F3Tl2genSkoC4+quLXufQcMsUl0f94CjUFrEj
-	 beZ1L3PDE6HQoN+DacCYipOT9VrTlrKA72PkL3+aRXSar38/LuDBGevxOtBGCwI6D/
-	 ANCh/xyhU3ccVTWuD/z7Ykp+JqTENuoRA2mEzyChdSzkUN7r9XY0DpHiHwwxKoTmDk
-	 O5eUP80eEeGpiJ2RO7wxXwZ9Ghro1++o33GBjJ4zgL9ZkdjZn26TGsQ9yjB8CkmBql
-	 7TjB41ScOmizg==
-From: "syzbot" <syzbot@kernel.org>
-To: syzkaller-bugs@googlegroups.com, Slawomir Stepien <sst@poczta.fm>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
-Cc: linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
-Subject: [PATCH] netdevsim: fix deadlock in nsim_bus_dev_max_vfs_write()
-Message-ID: <b7bf56ea-7522-4163-acd5-aaa69ad03b3a@mail.kernel.org>
+	s=arc-20240116; t=1785491753; c=relaxed/simple;
+	bh=AsOIUmBy9HF3ILMPFXG1NXAVzPffNyGO3+vQ8IyYHiU=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=I9gLbEiQXNUKdqVMp/CpmqNMhUZ+P79tPPf67uxl6GFTl1Ov0znURakMV395pSfB41oJ/3XC19gEjtetjsITxfE5HjqmueMe/TYz1arHwWWlGCJByyv4EouBXHZJvncYxx3Gl5QF4eNZMf0eGxtCZsV15o7unWynPYs+G9V9Khg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:tivesync1t1785491701t3ee9e442
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [122.235.139.83])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 7302125335014293527
+To: "'Breno Leitao'" <leitao@debian.org>
+Cc: <netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Richard Cochran'" <richardcochran@gmail.com>,
+	"'Russell King'" <linux@armlinux.org.uk>,
+	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
+	"'Jacob Keller'" <jacob.e.keller@intel.com>,
+	"'Simon Horman'" <horms@kernel.org>,
+	"'Kees Cook'" <kees@kernel.org>,
+	"'Rongguang Wei'" <weirongguang@kylinos.cn>,
+	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
+	"'Joe Damato'" <joe@dama.to>,
+	"'Larysa Zaremba'" <larysa.zaremba@intel.com>,
+	"'Chenguang Zhao'" <zhaochenguang@kylinos.cn>,
+	"'Fabio Baltieri'" <fabio.baltieri@gmail.com>
+References: <20260731061837.12672-1-jiawenwu@trustnetic.com> <20260731061837.12672-3-jiawenwu@trustnetic.com> <amxs3A1lC7ijwE8W@gmail.com>
+In-Reply-To: <amxs3A1lC7ijwE8W@gmail.com>
+Subject: RE: [PATCH net-next v13 2/5] net: wangxun: add Tx timeout process
+Date: Fri, 31 Jul 2026 17:55:00 +0800
+Message-ID: <04f801dd20d2$a6fc5a80$f4f50f80$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Date: Fri, 31 Jul 2026 09:55:04 +0000 (UTC)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQGvKca1hNpLUk5TH4rh01kaL1lr8AIUgh3gAkP9jXS2wI1iMA==
+X-QQ-SENDSIZE: 520
+Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MdTuaOGnZwiPJyN4dChWjTbguWZ09y+JCfHC/72zSttXMmN6dLbgrvOc
+	KLyN8Dh/rXQYDUSnhtPnqTE8IDJKlO1byMdKZEV+xVR70irWlj15EZQAH3DCXo4cI3yd4TR
+	iwK81z3vsjW9dNF6CiRk+tw3byYedQJfyDrWlivNBhgnDOSpfspryU4nkj2yL9nAjW1U29j
+	A37W+kfxjxHf0iYF3zhrlLp0D+RVFfxeBz6aCWNnS11aM71UMHOEQcvSkRIovQeel+j8oUD
+	QAJV14a+bfqAbNUG8Gkab+j/NzhU7VUKMI+0GPeSHDcGVQmjW7oMnqjl+9TttG+81S34M+S
+	HhUKT74fk4K1Knwi4QSI0NjPZ/4aXuhnJmusIjMME2l7FzFk5e0e1Xbvq/KfL+7HTdYcquY
+	8lR8E/vVGAA9g/aluuVkM12ED2sW1NgYSHj+XsXd1dyeX9CPcB9URRvmUtKIupPCADUD6/G
+	YPYNYgDl0ctFSFHJyG3Vy84Z8NzkozfstPyrOfcD67/W5FfenOJa91E05pmR2ZNOyMb/MLV
+	eFShgu6tavqhHHC3zzHZHXENT00zpxmX/gGs14je3yoPemcb7U6x/N8QzPeRHDZEjQSilCd
+	66K0xitkFnLP2GQVIJyZyn1xdBjBWfpSWZFoFI+XkcLlyrzTa6GLK4DfeZt+tvVxfAsN2tn
+	o4IBpeo2GNKllxleH6/fc/ACVIhA3LrDTtMlOdwKqrtAmoKX/dgQsc21OJPIci/VYYJjwjA
+	cdKpU4z4ktqqJxn8Gvv5bJeNja5D2pqqYhJu6vlGIW067mr+h1ANTFRBc9pT8fByua6jcSN
+	4s8RxNZMde9BJk1jARoWjsWvZy+R5CO+KL8O199WzX7Ya7M/LYuDiUZ/TDIGHmpgokw8Zt6
+	+VXvs4Tv5JZ39zUu+vyr8Luy7A6oQmTlwexF3AamdFngLCG/UWXrMeioQlVupcVL06jDswj
+	HCktY5vZ9JZAGr3+31T0jAyVfv20EsuwRIKa068CEUMWznwglPLQWPUJMqKXku5NKuavu+4
+	Cd+0hfm555hje2GJzl8HgUyv0u5x9fvNv04qL6PJdS09oBacK4emRcCEW7KtdifGckr+alV
+	j8GiStOkLsW
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-RECHKSPAM: 0
 
-From: Slawomir Stepien <sst@poczta.fm>
+On Fri, Jul 31, 2026 5:43 PM, Breno Leitao wrote:
+> On Fri, Jul 31, 2026 at 02:18:34PM +0800, Jiawen Wu wrote:
+> 
+> > +	netdev->watchdog_timeo = 5 * HZ;
+> 
+> Is this needed?  netdev_watchdog_up() already does it, no?
+> 
+> 	void netdev_watchdog_up(struct net_device *dev)
+> 	{
+> 		if (!dev->netdev_ops->ndo_tx_timeout)
+> 			return;
+> 		if (dev->watchdog_timeo <= 0)
+> 			dev->watchdog_timeo = 5*HZ;
+> 
 
-There is an ABBA deadlock between the devlink instance lock and the debugfs
-active file reference mechanism.
+Right, I'll remove it.
 
-When a device is being removed (e.g., via nsim_drv_remove()), the driver
-acquires the devlink instance lock and then calls
-debugfs_remove_recursive(). This function blocks waiting for all active
-file operations on the debugfs files to complete.
-
-Concurrently, if a user writes to the "max_vfs" debugfs file, the VFS layer
-acquires an active reference to the file. The write handler,
-nsim_bus_dev_max_vfs_write(), then attempts to acquire the devlink instance
-lock, which is already held by the removal task.
-
-This creates a circular dependency resulting in a deadlock:
-
-INFO: task blocked for more than 143 seconds.
-Call Trace:
- wait_for_completion+0x2ca/0x5e0 kernel/sched/completion.c:153
- __debugfs_file_removed fs/debugfs/inode.c:751 [inline]
- remove_one+0x2df/0x3b0 fs/debugfs/inode.c:758
- __simple_recursive_removal+0x215/0x520 fs/libfs.c:623
- debugfs_remove+0x5b/0x70 fs/debugfs/inode.c:781
- nsim_dev_debugfs_exit drivers/net/netdevsim/dev.c:372 [inline]
- nsim_drv_remove+0xc0/0x170 drivers/net/netdevsim/dev.c:1803
-
-INFO: task blocked for more than 143 seconds.
-Call Trace:
- __mutex_lock+0x7bf/0x1550 kernel/locking/mutex.c:821
- nsim_bus_dev_max_vfs_write+0x229/0x3d0 drivers/net/netdevsim/dev.c:276
- full_proxy_write+0x127/0x1f0 fs/debugfs/file.c:388
- vfs_write+0x296/0xba0 fs/read_write.c:685
-
-To fix this, use devl_trylock() in nsim_bus_dev_max_vfs_write() instead of
-devl_lock(). If the lock cannot be acquired, return -EBUSY. This aborts the
-write operation, releases the debugfs active file reference, and allows the
-pending debugfs_remove_recursive() to proceed.
-
-Assisted-by: Gemini:gemini-3.5-flash Gemini:gemini-3.1-pro-preview syzbot
-Reported-by: syzbot+3147c5de186107ffc7a1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3147c5de186107ffc7a1
-Link: https://syzkaller.appspot.com/ai_job?id=fcdda182-bebf-49ab-ada0-d4d2e814ebf7
-Signed-off-by: Slawomir Stepien <sst@poczta.fm>
-
----
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index aed9ad5f1..421cd7327 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -273,7 +273,11 @@ static ssize_t nsim_bus_dev_max_vfs_write(struct file *file,
- 		return -ENOMEM;
- 
- 	nsim_dev = file->private_data;
--	devl_lock(priv_to_devlink(nsim_dev));
-+	if (!devl_trylock(priv_to_devlink(nsim_dev))) {
-+		ret = -EBUSY;
-+		goto out;
-+	}
-+
- 	/* Reject if VFs are configured */
- 	if (nsim_dev_get_vfs(nsim_dev)) {
- 		ret = -EBUSY;
-@@ -285,6 +289,7 @@ static ssize_t nsim_bus_dev_max_vfs_write(struct file *file,
- 	}
- 	devl_unlock(priv_to_devlink(nsim_dev));
- 
-+out:
- 	kfree(vfconfigs);
- 	return ret;
- }
-
-
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
--- 
-See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
-You can comment on the patch as usual, syzbot will try to address
-the comments and send a new version of the patch if necessary.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
