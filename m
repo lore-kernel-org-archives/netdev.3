@@ -1,313 +1,110 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70C83A7F48
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CF83B05B0
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:42:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785483626; cv=none; b=p22CWBrpmqwpIkX84sR26sOnGU+6+EN/bZBMDwpBTa1edZKFcoBB71l5ZWlKKQ9zRhzakHCQczGQIIys/LPpcFDA/lOacRWdRFsPjl1IMCziObz+PAFIf/JUb+ERmvqqNlJfO5x4pcJtFBo6vaoaW3+1YfXEo6jWiIiBEe/ECIA=
+	t=1785483755; cv=none; b=WJPPVrCoOEDViLff0UT3+h1v9oLrVXda1J+tYRQF07VR4vRiI3EC4a/7W3+v63s3KS8IE89Bvi+iTjf1N0SAo8kX860vetf12yHkJPbJ3UpqQbEAM/l/xXuKYy02vv7Qq8b44twxPRvzesmH6+rtekWF0OY+50orqwUgv+WHt6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785483626; c=relaxed/simple;
-	bh=5rqepiO8H/jQD63hUvebUuG+WYdg8lRlvQZj8xW2EVo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2+Mz/d7fpkPn1giTVeQBK5tA1sTgB7qBVm8U1P2g6EdwJ3UDTMlmAqWPQ/1fQjvHid8juntMJAOChdfNeUfBCIR6J0sRj/0GHypqpaKvAtL9n+MbhLEtsJyUce7RxPJ7OAE4u1zvO8UmkJTjy+YZnVtNnRYBI84gGkuqwgc2JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Rzay8pSZ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785483755; c=relaxed/simple;
+	bh=q8XpgHCUOvT3D/2ywHlOhi5pXNd87Ng5kB+Y/RltCu0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ota4xstZsvOyby4Cze+pJzrRycPbp0YFVpdZ2cmnbfUJTIcYdgsFUIuyrykIvVsZtiOpLE1k6LM8xwtxY2CwTuIJe5+3SzL2QXQkgaj+W6XFvfJ5pCDPei5vm2R/t0HaZgb1k2h46mZk77ecjNQho3up6nuhy19n4nZowOEy6y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iG2cYPrS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Rzay8pSZ"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66V5Iia2855565;
-	Fri, 31 Jul 2026 07:40:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=2Q1W1L6YOHCAsJpGE
-	z/+PtUNR5hYgPocfjM3AQzUa6g=; b=Rzay8pSZ/8fUL+7ch0Hkf3LddqpfbVCIj
-	bGUMqX6yzf/tuFFGYp8R8RzS7hLQ1rk+xWjYmOCstLPWMJKWT+SAe8NqCAwu363y
-	t3sIfEIfa4Lc/5jnYZhTxeDTSDxhsc1IUzJ3PyvU6nPU8uKSDNQclqi32z8xq0ng
-	mSjz79h6+a9GvN0KtUsYhIvi6VsBHUAQU1cfDu2T5Z3z9rbZExfuJO6IVmimrXOZ
-	P5DTxkMNuGzIP88epRuw2o5apcVhJNBHX1BFFZmi79aP8yTi/vDzsrQ2YR1ya4i7
-	3ixcuwYd7tLnZcgccqca65fsr8FRE+qOqcAvIQ8LJB6hh09YX7KEA==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0p2vuh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Jul 2026 07:40:00 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66V7QJMi021514;
-	Fri, 31 Jul 2026 07:40:00 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8fkf0jy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Jul 2026 07:40:00 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66V7duK630998992
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 Jul 2026 07:39:56 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2173820043;
-	Fri, 31 Jul 2026 07:39:56 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BF3D720040;
-	Fri, 31 Jul 2026 07:39:52 +0000 (GMT)
-Received: from li-a84c74cc-2b13-11b2-a85c-acdd023f0674.ibm.com.com (unknown [9.43.125.83])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 31 Jul 2026 07:39:52 +0000 (GMT)
-From: Nilay Shroff <nilay@linux.ibm.com>
-To: kbusch@kernel.org, hch@lst.de, hare@suse.de, sagi@grimberg.me,
-        chaitanyak@nvidia.com, gjoyce@linux.ibm.com, kuba@kernel.org,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        horms@kernel.org
-Cc: linux-nvme@lists.infradead.org, netdev@vger.kernel.org,
-        Nilay Shroff <nilay@linux.ibm.com>
-Subject: [RESEND PATCH v2 4/4] nvme: expose queue information via debugfs
-Date: Fri, 31 Jul 2026 13:09:08 +0530
-Message-ID: <20260731073918.614014-5-nilay@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260731073918.614014-1-nilay@linux.ibm.com>
-References: <20260731073918.614014-1-nilay@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iG2cYPrS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456A71F00A3A;
+	Fri, 31 Jul 2026 07:42:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785483751;
+	bh=FFaIEiqXOswkD09MczFoBFv4NcZyzjzVaslzhiJM1+o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iG2cYPrSQTmIoIiXxlGyq/dr1E65vN8rmQ2biXIScv20KLIrl88oYuA/44ZeYKgng
+	 KbXm5tfQx8X8EQ2WM3EBPsEBoQAQxKfkOOfAop31WAC7urz5exYh2Ds1XqKgdc3q+f
+	 6436hx5knnraXPlWjMJCb7VMzcrrPbqfQ3f1a2/56ofwaqHVd65kfVvEPhcvBt+A11
+	 hC09HOD0evhsxl5meqULrLvsROI5DgptRiDR1XXVwBcoBVqriH5x6AyqV3geYtci+d
+	 rTv7JWmeoqM3kaCX54rnaB5Cl8ju3d1LgcUQuJA7uKMGDhJWMYgBXZCEZV50V4IOyK
+	 G49fUzZzZVZ0g==
+Date: Fri, 31 Jul 2026 09:42:28 +0200
+From: Antoine Tenart <atenart@kernel.org>
+To: Kenneth Lee <kennethbwlee@snu.ac.kr>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, rhkrqnwk98@gmail.com
+Subject: Re: [PATCH net] net: ip_gre: use checksum-aware trim for ERSPAN
+Message-ID: <amxPmrfUFbSUNmgE@kwain>
+References: <20260730085220.985948-1-kennethbwlee@snu.ac.kr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDA1MCBTYWx0ZWRfX4HtJuoicjy9z
- JIA73GdJUVQoxgIVoZRUZmbH/CxWozPIXmDGQvmD/+T8CrO1wttF4KhPIDu5K+dW4b6VukiPq/9
- bSnpUndDosw8ftGo5W/0mKdid+oEzYU=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDA1MCBTYWx0ZWRfX/pq+t8B4/hKH
- 7I/DJTvuS4ayvVSY9kz4sHM/mcYmIvqJYi1CN7zvCe3ZNwbZRes6w2CgV4WTAs/Kk9rYNjQpamL
- q0hiHzz6y6vlkXWJ3Hp/MEAB8wRR0q+rH2EtHLm+BEo1VoojTLaSXHfS87+3S+LnvQpNUX13g0n
- wrgo2lWvPDaWpFv6gZ7TnD/XNfPyIEVqOGXo5cgyOkkKD094Owrhqdc68QNSi99OqDNw9CchsFX
- rObXp5rO5fpGN43jiBBvrKlmLuvtiX9CE1hRjjF876bFsa3Zs71Gi+tA6vLSTa2QmMLy51e+oMQ
- 4vbun+48/fcWbWn+RtvgcWZp5/qL9h5pat2HLvEKlBbdO3h9Qn2cYUhVDADaiLEG0KSf9TFRm50
- gpGno7CaQThMh4lv+ACrd1TBE5PV3nWFIftcfJLykyo+ecJwfYsU1skyqgTpFLTrtc5/vkZ98qE
- U9i2ij/k7W7SeInMPIA==
-X-Authority-Analysis: v=2.4 cv=b5WCJNGx c=1 sm=1 tr=0 ts=6a6c5151 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=LWIoN9EnsF6OxIflJ4MA:9
-X-Proofpoint-GUID: hwzmbAy2EvZUu42IE_X8TbrFfzqeqMYY
-X-Proofpoint-ORIG-GUID: R2CT-wKH-A9tUPm6yhLoGQSJ4yQW8pjC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-31_02,2026-07-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0 impostorscore=0
- bulkscore=0 phishscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607310050
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260730085220.985948-1-kennethbwlee@snu.ac.kr>
 
-Add a new debugfs attribute "io_queue_info" to expose per-queue
-information for NVMe controllers. For NVMe-TCP, this includes the
-CPU handling each I/O queue and the associated TCP flow (source and
-destination address/port).
+On Thu, Jul 30, 2026 at 05:52:20PM +0900, Kenneth Lee wrote:
+> ERSPAN currently uses pskb_trim() when truncating packets to the device
+> MTU.  For a CHECKSUM_PARTIAL skb, that helper can leave csum_start and
+> csum_offset pointing at a checksum field outside the new packet length.
+> The skb can then reach skb_checksum_help() during transmit validation,
+> which warns when the checksum offset is beyond skb_headlen().
+> 
+> Use pskb_trim_rcsum() in both ERSPAN transmit paths.  It rejects a
+> CHECKSUM_PARTIAL skb whose checksum field is no longer in the trimmed
+> linear data and returns -EINVAL.  The existing error paths then free the
+> skb instead of transmitting inconsistent checksum metadata.
 
-This information can be useful for understanding and tuning the
-interaction between NVMe-TCP I/O queues and network stack components,
-such as IRQ affinity, RPS/RFS, XPS, or NIC flow steering (ntuple).
+Can you include a description of the MTU and kind of packet that
+triggers this?
 
-The data is exported using seq_file interfaces to allow iteration
-over all controller queues.
+> Fixes: f192970de860 ("ip_gre: check packet length and mtu correctly in erspan tx")
+> 
 
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
----
- drivers/nvme/host/core.c    |  3 ++
- drivers/nvme/host/debugfs.c | 64 ++++++++++++++++++++++++++++++++++++-
- drivers/nvme/host/nvme.h    |  2 ++
- drivers/nvme/host/tcp.c     | 54 +++++++++++++++++++++++++++++++
- 4 files changed, 122 insertions(+), 1 deletion(-)
+Extra empty line.
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 453c1f0b2dd0..50e81892a9d6 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4264,6 +4264,8 @@ static void nvme_alloc_ns(struct nvme_ctrl *ctrl, struct nvme_ns_info *info)
- 	if (device_add_disk(ctrl->device, ns->disk, nvme_ns_attr_groups))
- 		goto out_cleanup_ns_from_list;
- 
-+	nvme_debugfs_register(ns->disk);
-+
- 	if (!nvme_ns_head_multipath(ns->head))
- 		nvme_add_ns_cdev(ns);
- 
-@@ -4344,6 +4346,7 @@ static void nvme_ns_remove(struct nvme_ns *ns)
- 
- 	nvme_mpath_remove_sysfs_link(ns);
- 
-+	nvme_debugfs_unregister(ns->disk);
- 	del_gendisk(ns->disk);
- 
- 	mutex_lock(&ns->ctrl->namespaces_lock);
-diff --git a/drivers/nvme/host/debugfs.c b/drivers/nvme/host/debugfs.c
-index b4802ea3bd48..6146f33bc586 100644
---- a/drivers/nvme/host/debugfs.c
-+++ b/drivers/nvme/host/debugfs.c
-@@ -24,6 +24,61 @@ struct nvme_debugfs_ctx {
- 	struct nvme_debugfs_attr *attr;
- };
- 
-+static void *nvme_io_queue_info_start(struct seq_file *m, loff_t *pos)
-+{
-+	struct nvme_debugfs_ctx *ctx = m->private;
-+	struct nvme_ns *ns = ctx->data;
-+	struct nvme_ctrl *ctrl = ns->ctrl;
-+
-+	/*
-+	 * IO queues starts at offset 1.
-+	 */
-+	return (++*pos < ctrl->queue_count) ? pos : NULL;
-+}
-+
-+static void *nvme_io_queue_info_next(struct seq_file *m, void *v, loff_t *pos)
-+{
-+	struct nvme_debugfs_ctx *ctx = m->private;
-+	struct nvme_ns *ns = ctx->data;
-+	struct nvme_ctrl *ctrl = ns->ctrl;
-+
-+	return (++*pos < ctrl->queue_count) ? pos : NULL;
-+}
-+
-+static void nvme_io_queue_info_stop(struct seq_file *m, void *v)
-+{
-+	/* nothing to be done */
-+}
-+
-+static int nvme_io_queue_info_show(struct seq_file *m, void *v)
-+{
-+	struct nvme_debugfs_ctx *ctx = m->private;
-+	struct nvme_ns *ns = ctx->data;
-+	struct nvme_ctrl *ctrl = ns->ctrl;
-+
-+	if (ctrl->ops->print_io_queue_info)
-+		return ctrl->ops->print_io_queue_info(m, ctrl, *(loff_t *)v);
-+
-+	return 0;
-+}
-+
-+const struct seq_operations nvme_io_queue_info_seq_ops = {
-+	.start = nvme_io_queue_info_start,
-+	.next = nvme_io_queue_info_next,
-+	.stop = nvme_io_queue_info_stop,
-+	.show = nvme_io_queue_info_show
-+};
-+
-+static bool nvme_debugfs_get_ns(void *data)
-+{
-+	return nvme_get_ns(data);
-+}
-+
-+static void nvme_debugfs_put_ns(void *data)
-+{
-+	nvme_put_ns(data);
-+}
-+
- static int nvme_debugfs_show(struct seq_file *m, void *v)
- {
- 	struct nvme_debugfs_ctx *ctx = m->private;
-@@ -108,7 +163,14 @@ static const struct file_operations nvme_debugfs_fops = {
- };
- 
- static const struct nvme_debugfs_attr nvme_ns_debugfs_attrs[] = {
--	{},
-+	{
-+		.name    = "io_queue_info",
-+		.mode    = 0400,
-+		.seq_ops = &nvme_io_queue_info_seq_ops,
-+		.get     = nvme_debugfs_get_ns,
-+		.put     = nvme_debugfs_put_ns
-+	},
-+	{}
- };
- 
- static void nvme_debugfs_create_files(struct request_queue *q,
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 72f9d9c668a1..430971c56406 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -663,6 +663,8 @@ struct nvme_ctrl_ops {
- 	void (*print_device_info)(struct nvme_ctrl *ctrl);
- 	bool (*supports_pci_p2pdma)(struct nvme_ctrl *ctrl);
- 	unsigned long (*get_virt_boundary)(struct nvme_ctrl *ctrl, bool is_admin);
-+	int (*print_io_queue_info)(struct seq_file *m, struct nvme_ctrl *ctrl,
-+			int qid);
- };
- 
- /*
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index a2110287099e..e98f025ce99f 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -2651,6 +2651,59 @@ static void nvme_tcp_free_ctrl(struct nvme_ctrl *nctrl)
- 	kfree(ctrl);
- }
- 
-+static int nvme_tcp_print_io_queue_info(struct seq_file *m,
-+		struct nvme_ctrl *ctrl, int qid)
-+{
-+	int cpu;
-+	struct sockaddr_storage src, dst;
-+	struct nvme_tcp_ctrl *tctrl = to_tcp_ctrl(ctrl);
-+	struct nvme_tcp_queue *queue = &tctrl->queues[qid];
-+	int ret = -EINVAL;
-+
-+	if (!qid || qid >= ctrl->queue_count)
-+		return -EINVAL;
-+
-+	if (!test_bit(NVME_TCP_Q_LIVE, &queue->flags))
-+		return 0;
-+
-+	mutex_lock(&queue->queue_lock);
-+	if (!queue->sock)
-+		goto unlock;
-+
-+	ret = kernel_getsockname(queue->sock, (struct sockaddr *)&src);
-+	if (ret <= 0)
-+		goto unlock;
-+
-+	ret = kernel_getpeername(queue->sock, (struct sockaddr *)&dst);
-+	if (ret <= 0)
-+		goto unlock;
-+
-+	cpu = (queue->io_cpu == WORK_CPU_UNBOUND) ? -1 : queue->io_cpu;
-+
-+	if (src.ss_family == AF_INET) {
-+		struct sockaddr_in *sip = (struct sockaddr_in *)&src;
-+		struct sockaddr_in *dip = (struct sockaddr_in *)&dst;
-+
-+		seq_printf(m, "qid=%d cpu=%d src_ip=%pI4 src_port=%u dst_ip=%pI4 dst_port=%u\n",
-+				qid, cpu,
-+				&sip->sin_addr.s_addr, ntohs(sip->sin_port),
-+				&dip->sin_addr.s_addr, ntohs(dip->sin_port));
-+		ret = 0;
-+	} else if (src.ss_family == AF_INET6) {
-+		struct sockaddr_in6 *sip6 = (struct sockaddr_in6 *)&src;
-+		struct sockaddr_in6 *dip6 = (struct sockaddr_in6 *)&dst;
-+
-+		seq_printf(m, "qid=%d cpu=%d src_ip=%pI6c src_port=%u dst_ip=%pI6c dst_port=%u\n",
-+				qid, cpu,
-+				&sip6->sin6_addr, ntohs(sip6->sin6_port),
-+				&dip6->sin6_addr, ntohs(dip6->sin6_port));
-+		ret = 0;
-+	}
-+unlock:
-+	mutex_unlock(&queue->queue_lock);
-+	return ret;
-+}
-+
- static void nvme_tcp_set_sg_null(struct nvme_command *c)
- {
- 	struct nvme_sgl_desc *sg = &c->common.dptr.sgl;
-@@ -2951,6 +3004,7 @@ static const struct nvme_ctrl_ops nvme_tcp_ctrl_ops = {
- 	.get_address		= nvme_tcp_get_address,
- 	.stop_ctrl		= nvme_tcp_stop_ctrl,
- 	.get_virt_boundary	= nvmf_get_virt_boundary,
-+	.print_io_queue_info	= nvme_tcp_print_io_queue_info,
- };
- 
- static bool
--- 
-2.53.0
+Wasn't pskb_trim called before this commit?
 
+> Found-by: Sechang Lim <rhkrqnwk98@gmail.com>
+
+This is not a known tag,
+https://docs.kernel.org/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes
+
+(You should used Reported-by: here).
+
+> Signed-off-by: Kenneth Lee <kennethbwlee@snu.ac.kr>
+> ---
+>  net/ipv4/ip_gre.c | 4 ++--
+
+Looks like the IPv6 counterpart has the same construction, can you
+check?
+
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+> index 169e2921a851..16f80620f6d1 100644
+> --- a/net/ipv4/ip_gre.c
+> +++ b/net/ipv4/ip_gre.c
+> @@ -576,7 +576,7 @@ static void erspan_fb_xmit(struct sk_buff *skb, struct net_device *dev)
+>  		goto err_free_skb;
+>  
+>  	if (skb->len > dev->mtu + dev->hard_header_len) {
+> -		if (pskb_trim(skb, dev->mtu + dev->hard_header_len))
+> +		if (pskb_trim_rcsum(skb, dev->mtu + dev->hard_header_len))
+>  			goto err_free_skb;
+>  		truncate = true;
+>  	}
+> @@ -723,7 +723,7 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
+>  		goto free_skb;
+>  
+>  	if (skb->len > dev->mtu + dev->hard_header_len) {
+> -		if (pskb_trim(skb, dev->mtu + dev->hard_header_len))
+> +		if (pskb_trim_rcsum(skb, dev->mtu + dev->hard_header_len))
+>  			goto free_skb;
+>  		truncate = true;
+>  	}
+> -- 
+> 2.53.0
+> 
