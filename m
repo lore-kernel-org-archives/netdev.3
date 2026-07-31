@@ -1,87 +1,60 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673D3432BE6
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 14:59:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83495402B8A;
+	Fri, 31 Jul 2026 15:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785509965; cv=none; b=s+w8G+RIKNSdB9RUNjlSoHv/9PVeHPeYRaaqq7CP1HdetHAqAughvZron23uF37Zr2LTJzV0NzA4QCZyjTs+2vSZoGJsnJIDzWRpeZh2RDE7UDnNoHmmsAX99d4wGaN2cE14wwTVBT7LNchlE+cX4TdpiyasH7RiEQls+cRvncw=
+	t=1785510155; cv=none; b=G8F2ysPgI5nZxsQE+Ikzbt3LTyyCYA0M6D2ASnEC7KNiMMs6u7Dw8Hg3kRjOyusam7NBK03GUsvYr17zXWRmw6027NgxClK4SbO+2bdM5l6UjYtcgKnhxJvhndAiMBJ0LqzCCpqBFqJwh1VqE9e6waG5l1lLzLvZcSStb8xPWMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785509965; c=relaxed/simple;
-	bh=c6cPb7PSp3JUeUhUO4+oAzTADEyNQE4jXFaaHyq4WQQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ils9lodOq7m6FFSWkgV0y0rOxEAuY431sk2funj445maNPGnrGpaAJf1jNyGqgBHICDmAXFg7zLeegWKXjlWlemSJN9AP731gODPmkyQCIOjr1yUqZHpY6j0+EBYn3oLr59vZsfCb2BHJclScLVXxfSXPfE61ubmLwR0LKs8eI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SdMw5GNx; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785510155; c=relaxed/simple;
+	bh=iF1BhOtejeR085PE9sNu/M/STG1QLBKSdwVbzAl15B0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UUSlKvzUFYk0YNv5130ANRsZ0JrmTKrLl2cv7S4niE5YPkCqjPKlIWdi6FrhVUjhkY1luKTDPZfKHY2rM0v7Wbpb9pehLHaRKmwbYPcPKm4Xjuujd/8eZh82De09CYLuY1bGx8cYBKvQowS/0qLVKa3lRJgTbxjUexiQVTxnnUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=buWwkqlu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SdMw5GNx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785509962;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Zfzl5161juAkmaNitF1Hm5SCf0UuByVgyEH28WzLNRA=;
-	b=SdMw5GNxLDuYQ855kHR4fwxz7uKSHOhQW0qDJUk5dNFVp+Z1DQ152pbtrP22MUHtSOh8yX
-	WUS7M9z1+BBhNLi5pBlr5CI/11xJPuxOtSG5oTOGud3I+9VMdXnDVtalWxU0O9VjYIAeqM
-	nxmartclkfWl7ek/fM/DUJ0khz10hP8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-ELLellS0MraqB44IboUyNQ-1; Fri,
- 31 Jul 2026 10:59:18 -0400
-X-MC-Unique: ELLellS0MraqB44IboUyNQ-1
-X-Mimecast-MFC-AGG-ID: ELLellS0MraqB44IboUyNQ_1785509957
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AA97F1956088;
-	Fri, 31 Jul 2026 14:59:17 +0000 (UTC)
-Received: from bgrech-thinkpadp1gen3.rmtustx.csb (unknown [10.2.16.27])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B5A6D42A;
-	Fri, 31 Jul 2026 14:59:16 +0000 (UTC)
-From: Brian Grech <bgrech@redhat.com>
-To: netdev@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org,
-	shuah@kernel.org,
-	Brian Grech <bgrech@redhat.com>
-Subject: [PATCH] selftests/net: fin_ack_lat: fix latency threshold typo
-Date: Fri, 31 Jul 2026 09:59:14 -0500
-Message-ID: <20260731145914.4014912-1-bgrech@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="buWwkqlu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B096C1F00A3D;
+	Fri, 31 Jul 2026 15:02:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785510154;
+	bh=Ct/8b0OzeWA8cNS0UAQtJUc138sjf+Wn3O7cYJjYJMU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=buWwkqluo02urvxdtvAmPE4Y9fNBw7Gr8UX1RwA4PN/l34R5r7r3jlNXMtTKCLv2Q
+	 T4EN16nsqkGIFOn3qtFDbYXhBeq5V/l2f5+Sx3juQpKhLVoWuONoCZnfjlBDGGdLUc
+	 1qFjcq2MJ87ZGGxs3mTzgPpeXKKPfVYJsmXjBq/NfzWubPsG68K++2fNfgWEvlvbEn
+	 ZIFfWtQoiM1it2Wrcu71D2MVxrMSJus+FqkHFBlWYUaecL/keuRRCbFoWL9WS1Fcla
+	 Oau4x/oRHEU42g8iJ9vhpBZW+h6JwaSvfuAqA0DzcRdUFPIE1Dh+JwaxYP1XTb0WJs
+	 /Y+1pC2gW4Vdw==
+Date: Fri, 31 Jul 2026 08:02:33 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Zhiling Zou <zhilinz@nebusec.ai>
+Cc: netfilter-devel@vger.kernel.org, bridge@lists.linux.dev,
+ netdev@vger.kernel.org, pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
+ razor@blackwall.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai
+Subject: Re: [PATCH nf 1/1] netfilter: bridge: release template ct on non-IP
+ path
+Message-ID: <20260731080233.1956d41c@kernel.org>
+In-Reply-To: <3cf187b612fd78f8835fa9dad870326ce380f82f.1785479514.git.zhilinz@nebusec.ai>
+References: <cover.1785479514.git.zhilinz@nebusec.ai>
+	<3cf187b612fd78f8835fa9dad870326ce380f82f.1785479514.git.zhilinz@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The FIN-ACK latency threshold was written as 100000 (100ms) instead
-of the intended 1000000 (1 second). Connections completing between
-100ms and 1 second were incorrectly flagged as high-latency outliers
-and printed as failures on loaded systems.
+On Fri, 31 Jul 2026 14:36:53 +0800 Zhiling Zou wrote:
+> A bridge nftables ct zone set rule can attach a conntrack template to
+> an skb before nf_ct_bridge_pre() sees it. For non-IPv4 and non-IPv6
+> EtherTypes, nf_ct_bridge_pre() currently overwrites skb->_nfct with
+> IP_CT_UNTRACKED without releasing the existing template reference.
 
-Add the missing zero to restore the intended 1 second threshold.
-
-Signed-off-by: Brian Grech <bgrech@redhat.com>
----
- tools/testing/selftests/net/fin_ack_lat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/net/fin_ack_lat.c b/tools/testing/selftests/net/fin_ack_lat.c
-index 70187494b57a..4117332eb1a9 100644
---- a/tools/testing/selftests/net/fin_ack_lat.c
-+++ b/tools/testing/selftests/net/fin_ack_lat.c
-@@ -69,7 +69,7 @@ static void client(int port)
- 		lat = timediff(start, end);
- 		sum_lat += lat;
- 		nr_lat++;
--		if (lat < 100000)
-+		if (lat < 1000000)
- 			goto close;
- 
- 		if (getsockname(sock, (struct sockaddr *)&laddr, &len) == -1)
+could be a coincidence but around the time this landed in our test tree
+the nft_queue.sh test became more flaky.
 -- 
-2.55.0
-
+pw-bot: au
