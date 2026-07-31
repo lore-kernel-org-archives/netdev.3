@@ -1,251 +1,113 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D634033B6EF;
-	Fri, 31 Jul 2026 02:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1970833F59A;
+	Fri, 31 Jul 2026 02:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785465957; cv=none; b=hPb49tsrSP9F9jd6Gol+QFFyZjVIFuZgARKJeR6MY6wHU1fdaPji69YEuyfQ6dvMOYH2+1XYQqLsJPBnPC7pkQ14B20yXJ5gEYah2q4Rwcu9qYzGwbeKc7HowbxIEgRVuMKh8jTOieIE1FLkh2IE0retmqqBfxRZfSD3wGhRK3s=
+	t=1785465979; cv=none; b=d/nizp1qTCZuEEGriigoudFCGY5eFx0lgBJeKorGJgn+U++lb74ajGzenfNpOXbbI3XL9jE4k1d0T5H8hv5CR8gPKuN8NUE9PbFSKiOt4+mgMmD0aDWP1sERNplb0w/cmm1H19g9xsCOB8Pq2HFTzvsNGPe1UIFyJ3CAEawHsjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785465957; c=relaxed/simple;
-	bh=YXhAnCbpQfIpSH9+aP4NqP6qqAdaEKG3Q/K/0i17brE=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Vknyo5x+gTmTXxY0mN4BMwmgBLOH91cI+nHdVQ6VJCp6BXvUcw/ZmxhFAKhO0BVCSgGEjlHRgBInzN+KIqpE/HjW7qjE7qLL+xNShVcf8MesEMVsHcTe3q2ESLJQKwdvLbN/fZC19iZIRC7i4THcSUs1pVoG2Mynd+VDYVgq3pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=g4BgawMs; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=AoMBWMT6; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="g4BgawMs";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="AoMBWMT6"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 66V2j76R027288;
-	Fri, 31 Jul 2026 04:45:12 +0200
-Received: from lubuntu-18.04 (host-82-61-152-174.retail.telecomitalia.it [82.61.152.174])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 30A741211F3;
-	Fri, 31 Jul 2026 04:45:03 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1785465903; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=veD/K7HALBBirvZNsoEXPnCdS5wkZwxMAlJlWRPdo3s=;
-	b=g4BgawMshc35gPjSXzdIjMmh/Pz1OSzBr1Q6fQnjQ4FGKznjfNobXFkktQWGnzgmIrLDZx
-	tSnh6BvLBXDpf+CQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1785465903; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=veD/K7HALBBirvZNsoEXPnCdS5wkZwxMAlJlWRPdo3s=;
-	b=AoMBWMT6l1XrrF8LieKUU/qw5uy0gy7zEEP0AOA1Lm9QvlCFREFKwX0IWoCjsx3TjZGLDr
-	z2Pve/ziiqlRs3L83twVzj/xzoE7s6w8m5futN7+o4DXcTaGV1MuGPiCv8lTRa1A4+diDr
-	is618kSX2UIzqJuPixvaHUJWjcHgSrerLYEeKBaeruXfMxWFsXIuOakJa/48STJ6D17FbZ
-	3cl6RofXqkfzVpyZrpvhHl/yElRCYpGbudfA65QwY7JHdTrNUIEDJWpeGzeZ0IV8fHvFZQ
-	nUrYpdkApNyWUklJT99xZuzxprbDq/0XAvM+vmSMj/olEpuh0ERgVRdjLdubYQ==
-Date: Fri, 31 Jul 2026 04:45:02 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
-Cc: kuba@kernel.org, pablo@netfilter.org,
-        "David S . Miller"
- <davem@davemloft.net>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ryoga Saito <contact@proelbtn.com>,
-        AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
-        kys@microsoft.com, justin.iurman@gmail.com,
-        stefano.salsano@uniroma2.it, Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net v2 1/2] seg6: check lwtunnel state after nf hooks in
- seg6local
-Message-Id: <20260731044502.4b208c42bcb89191489644dd@uniroma2.it>
-In-Reply-To: <20260728215448.1543553-1-xmei5@asu.edu>
-References: <20260728215448.1543553-1-xmei5@asu.edu>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1785465979; c=relaxed/simple;
+	bh=w0KlrMO9P/MJZBucv1ynNv1CArXsmfi4apzicOb3kB4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XFQoPprH2VMKAsyH0xc56rKsKKziTRUEjeXxGP4cf56r7LZEZOYzD3aOyCj7tAP5tkHVzlcx5LF9KiNyUBeDxnhEvLS5I82vxB24dFKl8LywoYK27tXxekoZu8I53Rjxs9RRLpep2+GoGFlYNavT45cAc3LLlZXQtjbNQJ6noFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=206.189.79.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [10.98.66.117])
+	by mtasvr (Coremail) with SMTP id _____wDHGtQXDGxqViNSAA--.7644S3;
+	Fri, 31 Jul 2026 10:44:40 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.98.66.117])
+	by mail-app2 (Coremail) with SMTP id zC_KCgCH9coXDGxq1EJjAw--.19349S2;
+	Fri, 31 Jul 2026 10:44:39 +0800 (CST)
+From: Fan Wu <fanwu01@zju.edu.cn>
+To: netdev@vger.kernel.org
+Cc: horms@kernel.org,
+	david@ixit.cz,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuniyu@google.com,
+	christophe.ricard@gmail.com,
+	sameo@linux.intel.com,
+	oe-linux-nfc@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v2 0/2] nfc: st-nci: drain SE timers before NCI teardown
+Date: Fri, 31 Jul 2026 02:43:42 +0000
+Message-Id: <20260731024344.317793-1-fanwu01@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zC_KCgCH9coXDGxq1EJjAw--.19349S2
+X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
+X-CM-DELIVERINFO: =?B?QL9qwgXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
+	sfncGSG+szpQCInt5Y8rbJUI0gCzlebqh2Vq8BSwVe27bE5XDDVYGTb/X7qfj0EuaAm7OZ
+	w1GPJhkomEWw1jVE3rSp9E6mavGmQbzmcFsnzP86
+X-Coremail-Antispam: 1Uk129KBj93XoW7Kw43tr15Wr4DJF4xJw4fWFX_yoW8tr48p3
+	ySg34fKFyktryIqanFvr47ZFWF9Fs5WFW7u34Ikry09r15KFyFkr9Yyr40vFWUC3s5G3y2
+	9FZ8Jw1kWr4kJabCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Cr1j6rxdM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6x
+	kI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v2
+	6r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2
+	Ij64vIr41lF7xvr2IYc2Ij64vIr40E4x8a64kEw24lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
+	42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJV
+	WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAK
+	I48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F
+	4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY
+	6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7rcfUUUUU
 
-On Tue, 28 Jul 2026 21:54:47 +0000
-"Xiang Mei (Microsoft)" <xmei5@asu.edu> wrote:
+This is v2 of the st-nci SE-timer use-after-free fix.  v1 was reviewed by
+Simon Horman, who raised two concerns about draining the
+timers while userspace operations may be in flight.  v2 resolves both and
+is restructured as two patches so the drain runs behind an admission
+barrier instead of before the device is unregistered.
 
-Thanks for the v2.
+1/2 adds the barrier pieces to the NFC core:
+  - nfc_se_io() is the only secure-element entry point missing the
+    dev->shutting_down check the other SE operations have; add it.
+  - an optional nci_ops::pre_unregister hook, called in
+    nci_unregister_device() after nfc_unregister_rfkill() (the barrier is
+    up) and before nci_close_device()/destroy_workqueue() (the NCI core
+    still exists).
+  This follows the barrier-first teardown ordering from d2492688bb9f.
 
-The overall code looks fine.
+2/2 registers st_nci_se_deinit() as that hook so the two orphaned se_info
+timers are drained after the barrier and before the NCI core is torn down.
+It also completes an in-flight SE enable/disable and resolves a pending
+APDU with -ENODEV, using bwi_active as an xchg() ownership token so the
+callback fires exactly once.
 
-> When nf_hooks_lwtunnel is enabled, three seg6local functions run as the
-> okfn of a netfilter hook and recover the behavior's parameters by
-> re-reading skb_dst(skb)->lwtstate:
->
->   seg6_local_input_core()          LOCAL_IN
->   input_action_end_dx4_finish()    PRE_ROUTING
->   input_action_end_dx6_finish()    PRE_ROUTING
->
-> The okfn signature is (net, sk, skb), so the skb's dst is the only place
-> the state can be found, but a hook is free to change it.
-> nf_nat_ipv{4,6}_in() calls skb_dst_drop(skb) once a NAT rule has
-> rewritten the addresses, and the okfn then dereferences NULL. A hook can
+The two patches are a pair: 2/2 assigns the pre_unregister hook that 1/2
+adds to struct nci_ops, so 2/2 will not build without 1/2.  Please take
+both, in order.
 
-Isn't nf_nat_ipv4_in() called nf_nat_ipv4_pre_routing() nowadays? The IPv6
-one still has _in. The rest of the sentence is right.
+v1 handled operations pending at the drain, but a new SE I/O could install
+callback state afterward; with the timer shut down and the PHY closed, that
+context was never resolved.  The barrier added by 1/2 closes the window.
 
-> also leave a metadata dst, a route whose lwtstate is NULL, or a route of
-> a foreign encap type, the last of which makes seg6_local_lwtunnel()
-> reinterpret another structure so that seg6_local_input_core() calls
-> through slwt->desc->input.
->
-> An unprivileged user can reach the End.DX6 case from a user and network
-> namespace: enable nf_hooks_lwtunnel, install a seg6local End.DX6 route
-> and an nftables ip6 nat PRE_ROUTING DNAT rule, then send one matching
-> SRv6 packet. It panics in softirq NAPI receive context:
->
->   Oops: general protection fault, probably for non-canonical address...
->   KASAN: null-ptr-deref in range [0x0000000000000080-0x0000000000000087]
->   RIP: 0010:input_action_end_dx6_finish (net/ipv6/seg6_local.c:912)
->   Call Trace:
->    input_action_end_dx6 (net/ipv6/seg6_local.c:946)
->    seg6_local_input_core (net/ipv6/seg6_local.c:1621)
->    seg6_local_input (net/ipv6/seg6_local.c:1643)
->    lwtunnel_input (net/core/lwtunnel.c:465)
->    ipv6_rcv (net/ipv6/ip6_input.c:351)
->    __netif_receive_skb_core.constprop.0 (net/core/dev.c:6165)
->   Kernel panic - not syncing: Fatal exception in interrupt
->
-> Add a helper that returns the state only when skb_dst() still is a real
-> (non-metadata) route whose lwtstate is of the expected type, and drop the
-> packet otherwise.
->
-> The six other callers of seg6_local_lwtunnel() take the lwtunnel_state as
-> an argument from the lwtunnel core, which dispatched them through
-> seg6_local_ops, so the pointer and its type are known good.
->
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+---
 
-That is true except for seg6_local_build_state(), which allocates the
-lwtunnel_state with lwtunnel_state_alloc() and passes it back through the
-output parameter. The pointer is still known good there, just for a
-different reason.
+v1: <20260722034729.3254078-1-fanwu01@zju.edu.cn>
 
-> Fixes: 7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-> ---
-> v2:
->  - Check that the dst is valid and its lwtstate is of the expected type,
->    not just that the dst is non-NULL (Jakub Kicinski, Pablo Neira Ayuso,
->    Sashiko).
->  - Also fix seg6_local_input_core(), same okfn-after-NF_HOOK shape.
->  - seg6_iptunnel.c is handled in patch 2/2 (Andrea Mayer).
->
-> v1: https://lore.kernel.org/all/20260720204430.1886091-1-xmei5%40asu.edu/
->
->  net/ipv6/seg6_local.c | 34 ++++++++++++++++++++++++++++------
->  1 file changed, 28 insertions(+), 6 deletions(-)
->
-> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-> index 2b41e4c0dddd..b75a4dc3a36d 100644
-> --- a/net/ipv6/seg6_local.c
-> +++ b/net/ipv6/seg6_local.c
-> @@ -24,6 +24,7 @@
->  #include <net/addrconf.h>
->  #include <net/ip6_route.h>
->  #include <net/dst_cache.h>
-> +#include <net/dst_metadata.h>
->  #include <net/ip_tunnels.h>
->  #ifdef CONFIG_IPV6_SEG6_HMAC
->  #include <net/seg6_hmac.h>
-> @@ -213,6 +214,17 @@ static struct seg6_local_lwt *seg6_local_lwtunnel(struct lwtunnel_state *lwt)
->  	return (struct seg6_local_lwt *)lwt->data;
->  }
->
-> +static struct seg6_local_lwt *seg6_local_lwt_from_skb(struct sk_buff *skb)
-> +{
-> +	struct dst_entry *dst = skb_dst(skb);
-> +
-> +	if (!skb_valid_dst(skb) || !dst->lwtstate ||
-> +	    dst->lwtstate->type != LWTUNNEL_ENCAP_SEG6_LOCAL)
-> +		return NULL;
+Changes since v1:
+  - restructure into this 2-patch series (admission barrier + hook drain)
+    instead of a direct deinit call in st_nci_remove();
+  - complete req_completion so an in-flight SE enable/disable holding the
+    device lock is not left waiting (concern 1);
+  - invoke the pending APDU callback with -ENODEV (concern 2);
+  - bwi_active as an xchg() ownership token (callback exactly once);
+  - Fixes: 8ae01f796771 (the orphaned deinit predates the rename).
 
-The check is type-level, so it stops the crash without guaranteeing the
-same instance, as we discussed on v1. That is reasonable for net.
+Tested: builds as a 2-patch series on netdev/net (st-nci.ko, x86_64);
+        applies cleanly in order.
 
-> +
-> +	return seg6_local_lwtunnel(dst->lwtstate);
-> +}
-> +
->  static struct ipv6_sr_hdr *get_and_validate_srh(struct sk_buff *skb)
->  {
->  	struct ipv6_sr_hdr *srh;
-> @@ -905,11 +917,14 @@ static int input_action_end_dx2(struct sk_buff *skb,
->  static int input_action_end_dx6_finish(struct net *net, struct sock *sk,
->  				       struct sk_buff *skb)
->  {
-> -	struct dst_entry *orig_dst = skb_dst(skb);
->  	struct in6_addr *nhaddr = NULL;
->  	struct seg6_local_lwt *slwt;
->
-> -	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
-> +	slwt = seg6_local_lwt_from_skb(skb);
-> +	if (!slwt) {
-> +		kfree_skb(skb);
-> +		return -EINVAL;
-> +	}
-
-One nit: the same check has unlikely() in patch 2/2 but not here. It is
-just as rare here, so I would add it, and to the others below as well.
-
->
->  	/* The inner packet is not associated to any local interface,
->  	 * so we do not call netif_rx().
-> @@ -956,13 +971,16 @@ static int input_action_end_dx6(struct sk_buff *skb,
->  static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
->  				       struct sk_buff *skb)
->  {
-> -	struct dst_entry *orig_dst = skb_dst(skb);
->  	enum skb_drop_reason reason;
->  	struct seg6_local_lwt *slwt;
->  	struct iphdr *iph;
->  	__be32 nhaddr;
->
-> -	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
-> +	slwt = seg6_local_lwt_from_skb(skb);
-> +	if (!slwt) {
-> +		kfree_skb(skb);
-> +		return -EINVAL;
-> +	}
->
->  	iph = ip_hdr(skb);
->
-> @@ -1609,13 +1627,17 @@ static void seg6_local_update_counters(struct seg6_local_lwt *slwt,
->  static int seg6_local_input_core(struct net *net, struct sock *sk,
->  				 struct sk_buff *skb)
->  {
-> -	struct dst_entry *orig_dst = skb_dst(skb);
->  	struct seg6_action_desc *desc;
->  	struct seg6_local_lwt *slwt;
->  	unsigned int len = skb->len;
->  	int rc;
->
-> -	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
-> +	slwt = seg6_local_lwt_from_skb(skb);
-> +	if (!slwt) {
-> +		kfree_skb(skb);
-> +		return -EINVAL;
-> +	}
-> +
->  	desc = slwt->desc;
->
->  	rc = desc->input(skb, slwt);
-> --
-> 2.43.0
->
-
-I will follow up on patch 2/2.
-
-Ciao,
-Andrea
