@@ -1,134 +1,210 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2593EDE60
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614FA448396
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 17:04:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785517105; cv=none; b=IBw//K8kp0fN9U7E9uO7jKBZ4wAHCVwJtnCqHgpSk56cKiPKBE5pD/JhJAEh66U6qBBmZS3+OpYlgxGwfK0IIk110qjGaooFM0cKDWhEa6vC9Ley9Er86VLqiQkrlgJp5fihrwr06BYgopz6wjIwuTMaPTfUK8hDzpVeIuWgSPw=
+	t=1785517498; cv=none; b=g3HknI2E3WbW7GQM9iaNtGqe56RwIrHQX9T2/WZ6dQL+7yn3k0C434JgWbJy1gJ7CZtQmZOYWRMzkPhEFJ3s6UTptPCLLLp3FWylLAjFEydziLpumSfEs69C9dL/Q86aTTc4FeGwfg2QXMkwPskD0sPM2N/F632tnds0tJm7B1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785517105; c=relaxed/simple;
-	bh=7Wkc5vnPJfK8+T6cj+GxOwF6aP8t3LLmOUCwYz0pevc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eJ6ywt5LQddsv6DbL9zYscSuBYI4mO/g9VXKeoiaCX1K3r7dl/C2yKi7y0cZFaQN1AmDxh8ZlXg7dm7PKzKDWo1Tkr3JBTkZ5qRyMejbJGFdZIZ1ptQ/Tf4ppI6UP93ubrbnZJ/EjVBk8Aa8ZhAEG+glxuCG1myMsxuckSWkNXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QDupzw9e; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785517498; c=relaxed/simple;
+	bh=TiEiCLzRBgCRWu0MaEFZR+ai00p3m9+yXWylxLxfsEo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O9/3IYLRhP221ejmURBVbhmDzqiBxelMON4uGFfbhpuMw9mSXpB4gJANQQb7HzgLmjjbnqZvOEUlT8+DJJmk19QC/TJV+Uaa6i+cYERsT7XPGucjoBuESFIqvTVYFWGAea4By59HSidxASXFVQSzPfwqqQZcOxQdFuPIvWO9eXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rM9unod5; arc=none smtp.client-ip=74.125.227.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QDupzw9e"
-Message-ID: <191efe80-24d1-4aab-8746-21afb4c379bc@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785517090;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7Wkc5vnPJfK8+T6cj+GxOwF6aP8t3LLmOUCwYz0pevc=;
-	b=QDupzw9eNh0JVgtVkhnk9fpyAzqrfoSZcykUG5rIYn9PyeUrXBswOnBQUHvPKBV/p2MNUf
-	mfRJ1cQlIl9txEmp6iCYbDFObuLFKeBZy0GRG3CtTIljNnrDbkEdkJiywNamh8zB4FrxIM
-	8PggOuJ4D54cvOEyYOsxvLigg1zLIWo=
-Date: Sat, 1 Aug 2026 00:57:22 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rM9unod5"
+Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2cb3f5bb19aso3751935ad.1
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 10:04:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785517496; x=1786122296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mI1rZZtu8o4cfi0FGJlAmOUjg03NURhPr/05wZVSU0k=;
+        b=rM9unod5pYatwebtwY+/vwPLU9+50BbGH3K02+rneNv4Y8g+SCWZfmTWYjjOC9beu7
+         kDJ+c/vM0f/4ZiFiTTy5V0GcVqF989QMreBEpjs4IrM7FBmqNgPdtkaiLVKmlXtROKc6
+         bdmE5APDKVPrZqoghJgR/COA8nFKlhZBAjKYC+93VfpNBRy/K/tKTSs2U/MJqWAoZKUQ
+         BiOFEgdZRL3yxx5BDxa3t8VEE53Rk7QGLgYQcpPg5osYHAAbQ9mguzbs8RD0tfsnOCH4
+         02DcxhEPblKWNYY9w+ZwTEfOT13p8PJOnXpqEbkSzDVz/misFIh7nvu4dps82zZfTDjW
+         vu2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785517496; x=1786122296;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mI1rZZtu8o4cfi0FGJlAmOUjg03NURhPr/05wZVSU0k=;
+        b=UDtEZRuwHx4kU2lnJXne9Qm9P+La5tNaLSJGXaWrTuBIjSdbo1eyFaHhey4UqeC2T2
+         6rP0qURi6+owhjJnRldOOFEnQO0ueK7iPMUnC+8AfjsOAwyR08eLPMzD4XftX2r61VoL
+         FjnAvXTN+eea8mpEEH10kVwvSE8XAS17GfyzKBxFeohAmrNUHdslqo6RndM7cIgQpnZq
+         6wlywyfQ3Lt9uEFKEv1t3M5h7AFOhG6QGhLu5/bpipC4af597k6oUKOtG6uAYGpHwpH5
+         q7mIKAPGY73nrGaD2c7Bp6hI+VsTHyoYxEVlXIUkPFq9lVRGZl4sKYqvx58g+CrYs2jW
+         loCw==
+X-Forwarded-Encrypted: i=1; AHgh+RruQMkUCIpEa5A53b9SR9ducJRyZ39LtaSx7pzsd0dNdHgR8Mhca0hXvLkZ5eeNooWCxEkE8tc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyiSmlBklwuIo2JDcR7shqQo2ptizzVKXbj3pKkcNaJRT50QQT
+	7kiSJ+uFP5duh9+PNjfjHPRkPIjFXIBR4phdj5+q5170EGoR+fhp1A4=
+X-Gm-Gg: AR+sD119rqkLfieNBU5xq59sVReLH0VpiaXGNwfEob8Pkmva/wew90rHEr0K0Ub5+8Y
+	nXMS+qVXYqHf4yYJo6BL17KwLnHZhPesxKY7eTfI8XTrMlzHFwS1igme+yAMs5h46ws8gT9PHm2
+	zYjxNM0OFhlBGK5Qi3jrW3YKnJB81E9cPfqdu3paduFqBiWIdd5siQE8UxNAA6plwVB0FnZrRzR
+	ojXJ4YKMusqOnD1hkApsh8T6D1DqqOrEFPiurkzpa3bGNTi12ta8B++B2v1Vb+QRZCyXkA8uonJ
+	rNaMKFGcWu8It6dbu54+HgQzidDqelS8vQmvMKBHAIYSHPtDSSPGU4RMom4N1Sm83WFkLbzogc8
+	GlG22KJ3WD6lwgOTFJiFXronZMi67qMdk6sp2XhcCFqxyP63HEq9KOR0TaUcd34QkP221zWBqk8
+	Jb1h6iP/nA/yADwfnEB1SVvv9en/iZMMxXsdZJaiWv5VIYJ+xEMygMSmx3RlhJeZo=
+X-Received: by 2002:a17:902:ea0c:b0:2cf:6f7f:55d8 with SMTP id d9443c01a7336-2d0523f76edmr6597195ad.37.1785517495457;
+        Fri, 31 Jul 2026 10:04:55 -0700 (PDT)
+Received: from jplife-black.. ([171.2.207.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae19b82sm8064705ad.6.2026.07.31.10.04.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 10:04:55 -0700 (PDT)
+From: Fan XinRan <shinjiangjiang@gmail.com>
+To: westeri@kernel.org,
+	YehezkelShB@gmail.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Fan XinRan <shinjiangjiang@gmail.com>
+Subject: [PATCH net] net: thunderbolt: Tear down DMA paths before stopping the rings
+Date: Fri, 31 Jul 2026 17:04:42 +0000
+Message-ID: <20260731170442.45530-1-shinjiangjiang@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v9 00/10] Fix missing fops.owner in Rust DRM/misc
- abstractions
-To: Gary Guo <gary@garyguo.net>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann
- <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>,
- David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
- Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>,
- Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>,
- Igor Korotin <igor.korotin@linux.dev>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
- Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org,
- linux-modules@vger.kernel.org, driver-core@lists.linux.dev,
- dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev,
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-pci@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>
-References: <20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev>
- <CANiq72m59O-ruHUvUcZC7yCvu0KV0w_m5vMO4e0rxyHdRmihJw@mail.gmail.com>
- <68c43a03-5fa0-42a8-b886-2c756e39515e@linux.dev>
- <DKCWO60T6JPR.1P3AAJAATMXBI@garyguo.net>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alvin Sun <alvin.sun@linux.dev>
-In-Reply-To: <DKCWO60T6JPR.1P3AAJAATMXBI@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
+tbnet_tear_down() stops both rings and frees their frame buffers before
+calling tb_xdomain_disable_paths().  tb_ring_stop() zeroes the ring's
+descriptor base and tbnet_free_buffers() unmaps and frees the pages the
+frames sit in, so by the time __tb_path_deactivate_hop() polls the hop's
+'pending' bit, anything still in flight has nowhere to drain to.
 
-On 8/1/26 00:43, Gary Guo wrote:
-> On Fri Jul 31, 2026 at 5:34 PM BST, Alvin Sun wrote:
->> Hi Miguel,
->>
->> Thanks for taking a look!
->>
->> On 7/31/26 14:46, Miguel Ojeda wrote:
->>> On Thu, Jul 23, 2026 at 4:11 AM Alvin Sun <alvin.sun@linux.dev> wrote:
->>>> base-commit: b7e5ac83cb16f7ffd11dc23736f84276602100ed
->>> Was this old tag used for some reason?
->> That was an oversight on my part - I forgot to rebase onto the latest
->> tag before sending v9. The series is now based on v7.2-rc4.
->>
->>>> prerequisite-change-id: 20260519-miscdev-use-format-9ab7e83b1c11:v3
->>>> prerequisite-patch-id: 405b334ff0d48ad350014f05a2321bdbaa025400
->>>> prerequisite-patch-id: 604b631c81d5423f4ebb2e12ba2d22e9ce371bfc
->>>> prerequisite-patch-id: cb550d94cefe01920e0d3ced2b2bcbecd76f3907
->>>> prerequisite-patch-id: 3bc830839742591460cb86d9472c04f4686dc600
->>>> prerequisite-patch-id: 571058244bc8c7088638d2e3225713011246c7e9
->>>> prerequisite-patch-id: 347c5a3c6dbef9832bfce8419fc23e6e08ba477f
->>>> prerequisite-patch-id: 3e202d988b56b88446f7535e90d3f00cf5f15701
->>> Are all these actually needed? Some seem unrelated (some were already
->>> applied too).
->> The prerequisites were just some import formatting changes that the
->> series depended on at the time. After rebasing onto v7.2-rc4, I was
->> able to drop all of them - the rebase was clean with no conflicts.
->>
->> I'll send v10 shortly.
-> If the patch applies cleanly then there's a no need to send a new version.
+This is the mirror image of the setup path.  tbnet_connected_work()
+already documents the invariant:
 
-Sounds good. I'll hold off on v10 then. Thanks!
+	/* Both logins successful so enable the rings, high-speed DMA
+	 * paths and start the network device queue.
+	 *
+	 * Note we enable the DMA paths last to make sure we have primed
+	 * the Rx ring before any incoming packets are allowed to
+	 * arrive.
+	 */
 
-Best regards,
-Alvin
+Teardown should undo that in reverse, but does not.
 
->
-> Best,
-> Gary
->
->> Best regards,
->> Alvin
->>
->>> The only one that seems needed has Andreas' Acked-by, so
->>> I guess it is fine.
->>>
->>> (By the way, I will use this second message to take this chance to
->>> move the modules maintainers in the To: in case it helps, since I
->>> didn't do it in my previous message)
->>>
->>> Thanks!
->>>
->>> Cheers,
->>> Miguel
->
+On an ASMedia ASM4242 host router the 'pending' bit then never clears:
+every teardown burns the full 500 ms timeout and
+__tb_path_deactivate_hop() returns -ETIMEDOUT.  Raising the timeout to
+5 s does not help, so the hop is not slow to drain, it never drains
+at all.
+
+The failure is invisible above the thunderbolt core.
+__tb_path_deactivate_hops() is void and only calls tb_port_warn();
+tb_path_deactivate(), tb_tunnel_deactivate() and
+__tb_disconnect_xdomain_paths() are void as well, and
+tb_disconnect_xdomain_paths() ends in an unconditional "return 0".  So
+tb_xdomain_disable_paths() reports success and the netdev_warn() below
+it never fires.  Repeated teardowns eventually take the XDomain control
+channel down, after which the peer node is gone and only a power cycle
+brings the controller back.
+
+Deactivating the paths first fixes it.  Measured with kretprobes on a
+stock v6.17 tree with no other patches applied, on a link that was up
+and had just carried traffic:
+
+  before: __tb_path_deactivate_hop() returns 0 for the first hop, then
+          -ETIMEDOUT for the second 500335 us later
+  after:  0 for both, 525 us apart
+
+Alternating the two orderings ABBA over three load levels, four
+teardowns per arm: every teardown failed before the change (21 of 21
+that ran), none failed after (0 of 24).  The before arms ran short
+because the link died partway through.  The same split shows up when
+the interface is enslaved to a bond instead of just brought down, which
+is how I ran into this in the first place.  Throughput and latency after
+the change are unchanged.
+
+Hosts whose routers drain the hop despite the stale descriptor base see
+no functional difference, since the paths end up deactivated either way.
+
+Fixes: 4944269305df ("thunderbolt: Properly disable path")
+Signed-off-by: Fan XinRan <shinjiangjiang@gmail.com>
+---
+Notes for reviewers, not for the commit log:
+
+I can only test this on an ASMedia ASM4242 host router - I have no Intel
+host router to check for regressions on, and that is the gap I would most
+like a second opinion on.  The argument that other hosts are unaffected is
+that the paths end up deactivated in both orderings, and that the window
+this opens (rings still armed while tb_xdomain_disable_paths() runs) cannot
+take new traffic: __tb_path_deactivate_hop() clears hop.enable before it
+starts polling, and tbnet_tear_down() has already called netif_stop_queue().
+That is an argument, not a measurement.
+
+Details left out of the commit log to keep it short:
+
+- The three load levels were idle, 100 pings, and 3 s of iperf3 before each
+  teardown.  The 21 vs 24 asymmetry is because the "before" arms stopped
+  early when the link died: 8 teardowns completed idle, 7 under light load,
+  6 under heavy load.  Only one arm per load level died, so I would not read
+  a dose-response into that on its own.
+
+- The failing hop is an ingress hop on a non-NHI port:
+    thunderbolt 0000:70:00.0: 0:5: hop deactivation failed for hop 0, index 1
+
+- The enslave run is a smaller sample (the link dies faster there, so the
+  before arm only got two teardowns in): -ETIMEDOUT on both before the
+  change, 0 after.  Note the interface also gets destroyed on enslave
+  regardless of the ordering - that looks like a separate problem and this
+  patch does not claim to fix it.
+
+ drivers/net/thunderbolt/main.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
+index 02a9165..a04c090 100644
+--- a/drivers/net/thunderbolt/main.c
++++ b/drivers/net/thunderbolt/main.c
+@@ -386,11 +386,16 @@ static void tbnet_tear_down(struct tbnet *net, bool send_logout)
+ 				break;
+ 		}
+
+-		tb_ring_stop(net->rx_ring.ring);
+-		tb_ring_stop(net->tx_ring.ring);
+-		tbnet_free_buffers(&net->rx_ring);
+-		tbnet_free_buffers(&net->tx_ring);
+-
++		/* Tear the paths down before stopping the rings.  This mirrors
++		 * tbnet_connected_work(), which enables the paths last so the
++		 * Rx ring is primed before packets can arrive.  Stopping a
++		 * ring zeroes its descriptor base and tbnet_free_buffers()
++		 * unmaps and frees the frame buffers, leaving anything still
++		 * in flight with nowhere to drain to;
++		 * __tb_path_deactivate_hop() then waits for the hop's
++		 * 'pending' bit, which on some host routers never clears in
++		 * that state.
++		 */
+ 		ret = tb_xdomain_disable_paths(net->xd,
+ 					       net->local_transmit_path,
+ 					       net->tx_ring.ring->hop,
+@@ -399,6 +404,11 @@ static void tbnet_tear_down(struct tbnet *net, bool send_logout)
+ 		if (ret)
+ 			netdev_warn(net->dev, "failed to disable DMA paths\n");
+
++		tb_ring_stop(net->rx_ring.ring);
++		tb_ring_stop(net->tx_ring.ring);
++		tbnet_free_buffers(&net->rx_ring);
++		tbnet_free_buffers(&net->tx_ring);
++
+ 		tb_xdomain_release_in_hopid(net->xd, net->remote_transmit_path);
+ 		net->remote_transmit_path = 0;
+ 	}
+--
+2.43.0
+
