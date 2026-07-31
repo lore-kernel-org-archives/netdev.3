@@ -1,67 +1,71 @@
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5EB192B75
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 00:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41E42641C6
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 00:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785458875; cv=none; b=Gb+zsrUwrIe1PU5s6DJ7Ydj9mbhOcOGTcoHqxapNcS/I5YB+6fgv3LuS/j3MMML00nu8bbxp3/gKX55Rn56Hw1iDhYmIpPT13LazWib4WBF0ZKfBDcD3CKFhDodrWsg9JhyDulxs9sqZ9Glr3wGXuuFk+a686NTjJPcfn0qwYhU=
+	t=1785458882; cv=none; b=lY2Zvg0wQU/GMp6xWkzn2hBoy7FPue1ZY6TI17qYL0nOznaHdJjzQs3n21QxZ/MJqT/UUP/q3bztpTvs1gp8qLLJ47KnRDFmml4PPsumb4jh1vH0CZcQBTgFwEqZ6akoQfYwRY7kI8r86okKBhbli/4/T/VlmA+B1xeivlPBkOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785458875; c=relaxed/simple;
-	bh=z4uEFIYOHHWbkov3rvs3HIbBw3sfjhPMIDOfDz2eBbk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i9yc6/fevQp7ZN0StSNmmpri+vciAo7ah0DMwp+QriEsNcbXHkG6r4Qz3P7rBPbK992LKl/egLcl6XRll+eRxC67vlb2AeAxzJ18huNmB3Sw0pcBLU4ojHUAvCIs2WGs2B5ekzuRy263nHQ7qRMNVrLTWwluZL4XmIZKutzcQyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NiaDKlsX; arc=none smtp.client-ip=148.163.156.1
+	s=arc-20240116; t=1785458882; c=relaxed/simple;
+	bh=hsqFIVaJFQebSMl6XsQnh+nqTawD/xu+3utmIosQQ6s=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=meg7D07yash1JrKoj5WFLUGB3TQ3CjnozNEoze7aCbmum8d3CcC5MtDnz7kzfe8GSRQO8udn/UakrNwyoaz0kBHs6EpgsdUaz1cKl68J5Jo7DxhZUE9kjSysgDGK0HMt8f3Ak9gOlRd9IH3kChXdFfXfedpeCzGUsHN5/w7BNdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QhUIsMFU; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NiaDKlsX"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66UNK4XK223094;
-	Fri, 31 Jul 2026 00:47:37 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QhUIsMFU"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66UNHcU6184557;
+	Fri, 31 Jul 2026 00:47:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=cceipyx7ZETmL+wGyudLwxubSxgmMClxud2EHJXtR
-	74=; b=NiaDKlsXvZuJRpUwUJGz9bSumnLiim72NCyVafFy/mPz2zDvz8EUH70iZ
-	FSP9US5wPdNis8aJLaVbxqoIc8fwCNpchMFgiubq5yV+EoGZZa42qnMZj3zjAS5Q
-	dVAsNDcu+oQZkG/45S/UAVg4wb7zDMQoA4AlXgUq4OamUFz6c9x15eJjNyvN6vrf
-	EllN8Bs4uy2Z19HV4YPIqTarVFXKGBmsjoBz0LfGTVvgGhDUiXrBDpbDJNuiDS6Y
-	Xu1RJJBqd91pxmalQXxtTNoytAYwtQ5z2GgGYZ8StA3Kd2ISCQNCDyscdQyDvoch
-	xG9IrohK55M1G40G+WhgmCzx0I+cQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0y2mhr-1
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=7XIwhdn2muqEGo+kV
+	gkbNH0lzAmLbCdWBfdDmBuKrI8=; b=QhUIsMFU3+yrz5ARYJppvIWDWQPGuHTnG
+	SIMFYInv/e2njTGb4z+gU9/Z4Xwadf8UsZPqxhGhTJLsYH80Yw/seMA+8hAUpf3E
+	BKNcaknj2uuAH6lkes3q48dVYAsnMjV/hvXxZwfmhhJORxywEsJk82NAdmG4ngaF
+	Kdrt2uTsowlNcJ2C6Fr4NNjcCw4cKBdpl0b+Tw7uOCYoy+Vn+ysIR3Ngnr0noY/g
+	099aKWf6+cEcSRyVr5inHMPOElXLQy6gfcMGUtMNdyoVqSYTPZbKoT6HIAOlD3F+
+	ppvq0PU6Z3CGh4HvK5baYXSa+xxLDPI51s72n6LGOe+6xbryuKfUw==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuw7tkb6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Jul 2026 00:47:36 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66V0fOug031579;
-	Fri, 31 Jul 2026 00:47:36 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fn9pgnpcw-1
+	Fri, 31 Jul 2026 00:47:47 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66V0fHpC018141;
+	Fri, 31 Jul 2026 00:47:46 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn7uwe04k-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Jul 2026 00:47:36 +0000 (GMT)
+	Fri, 31 Jul 2026 00:47:46 +0000 (GMT)
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66V0lYYg3277602
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66V0ljJ260490212
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 Jul 2026 00:47:34 GMT
+	Fri, 31 Jul 2026 00:47:45 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 38CC15805D;
-	Fri, 31 Jul 2026 00:47:34 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id E270458058;
+	Fri, 31 Jul 2026 00:47:44 +0000 (GMT)
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4ACBE58058;
-	Fri, 31 Jul 2026 00:47:33 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id DA38658057;
+	Fri, 31 Jul 2026 00:47:43 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.61.44.71])
 	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 31 Jul 2026 00:47:33 +0000 (GMT)
+	Fri, 31 Jul 2026 00:47:43 +0000 (GMT)
 From: Mingming Cao <mmc@linux.ibm.com>
 To: netdev@vger.kernel.org
 Cc: horms@kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
         ricklind@linux.ibm.com, mmc@linux.ibm.com, kuba@kernel.org,
         edumazet@google.com, pabeni@redhat.com, davem@davemloft.net,
         linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        simon.horman@corigine.com, shaik.abdulla1@ibm.com
-Subject: [PATCH net-next v4 00/14] ibmveth: Add multi-queue RX support
-Date: Thu, 30 Jul 2026 17:47:03 -0700
-Message-Id: <cover.1785457143.git.mmc@linux.ibm.com>
+        simon.horman@corigine.com, shaik.abdulla1@ibm.com,
+        Dave Marquardt <davemarq@linux.ibm.com>
+Subject: [PATCH net-next v4 01/14] ibmveth: Add MQ RX hypercall wrappers and call definitions
+Date: Thu, 30 Jul 2026 17:47:04 -0700
+Message-Id: <1bb2ecd260f27171c534b9beda377b75ea1790ae.1785457143.git.mmc@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <cover.1785457143.git.mmc@linux.ibm.com>
+References: <cover.1785457143.git.mmc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,106 +75,235 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: B86ouFPx9-oyuR1H3h9w5hciM22FQ0UY
-X-Proofpoint-ORIG-GUID: 006rnVtAuByHYr-6L-4_P4rFMKuoR901
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDAwMyBTYWx0ZWRfX19Odk60asf8e
- xuN8GneLiQZGh9JePN2SA44R9L+ER87mm06Z8HQZHKDoETSmUsd0bwDuOJFnU4rTXwmNOorBR5l
- mQ3wlvrH4xDJG55S9N2IYzrZ/vG1GTs=
-X-Authority-Analysis: v=2.4 cv=dYuwG3Xe c=1 sm=1 tr=0 ts=6a6bf0a9 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-GUID: uzAMUsGqEcBVuQZEudFXCqq2ah_YqKv-
+X-Proofpoint-ORIG-GUID: 2VAV0ftKqVeRRtOd9jaeZiShYF-8-jcP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDAwMyBTYWx0ZWRfXzJLcpIJhMg24
+ BlB+J+GWPrfJibsF0f45qefnxQXL+VK+osWwNj+aTta7afgFaXUFIsXAvnYuBBGsS1KeZ+o0cit
+ yFb1fwrvN14TzcGMalOfjFyPfaqp2SZoscFUgi8HzvvlZTLVKiI9yYKmsQ0SoUytPuI4nf59xKJ
+ YAE5XApyoyw2PyDrOcQgCC7MgK487N9uq1kocBDuze1NnOI1G2+SEshjd/5nfwZV8gZsCwluLrS
+ uDtQiprT+Lqg1h6Fg3Y9saAZaswyZtgW0eDq9d7901SHSXHXPkvcvCHV80pIhukmlenOYX63Lbo
+ lIjEWNyPnFVyZPkOuknlutRXSVcr9Co0CsfQ0DHhPQxJAoq79a5Q035sJAerrWE4dmf9Pp4qvpv
+ CgKr3loLFWoMqhNzQfnChfer1CMJkkYmgp+HemH94nMAZ1pZkTZVDUcL4z97GnD6imKu+fE+QKU
+ c77tcUTH4Cx5Q1zScCA==
+X-Authority-Analysis: v=2.4 cv=SKFykuvH c=1 sm=1 tr=0 ts=6a6bf0b3 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=-zOltsE3303Mi9OEyQUA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDAwMyBTYWx0ZWRfX6icomEOrbyyM
- JQ0D9LCf4b1xoC7tdes/RQQ8HFbESVUOPp2RIofokCp4RA3cI/yyzK+/tgbud11gF7fNs/g4hAZ
- uhJ4MfRD14jIqxKsEZBc7PfWundxJmxvw/wyjbFWuECWkRzPg5gyQ9I67BzKzmcxTCaF3ggHzLa
- YcdRDkNGAUzl1rBZ8WuaxafSZigHafzQxMiJvXT3WhWVaQGT4X/hK1zWNP0PWBh45D6ZgNm9c+P
- A5lFeodl4Nj8eBLBTJikx/p3I2lfPOaXosj/7VLsw2hQ6RK5eQ1Hx3hDZt3aWYvMBr2RkWlChcN
- htYDdPe889xHQxbDiXnclspzJnT4Lu31cFxLHL1J5qo9Vnk0VmdAv6Bat+bFXC02SJJksXC8IM+
- PAWWbR4LtVp4uQSZxAl3R52R9RoeDczPh+57s1yfzbm1LhtbDsBwZXSxAoDy2g6XwGlGyV1uJZa
- 9YzfP/+1bZi2bWclUEw==
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=zgFZsV-58I_ewvCFsDoA:9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDAwMyBTYWx0ZWRfX8a7NDQ1cIlAa
+ umg6nbqsavrFup23Srg/BeRrC4WspPrYPt1XgMXSWZFXFxwdagifzDoiA4Kx3hHEhzSEh5kGNfj
+ uNsjuPTcvxc/64cC8QtovN8lHc3puvQ=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-30_07,2026-07-30_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 clxscore=1011 phishscore=0 malwarescore=0
- spamscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607310003
+ priorityscore=1501 malwarescore=0 clxscore=1015 adultscore=0
+ lowpriorityscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607310003
 
-Hi,
+Single-queue ibmveth only needs h_register_logical_lan() plus legacy
+buffer add/free calls. MQ RX uses per-queue handles, so the driver must
+also be able to register/deregister subordinate queues and post
+buffers against a specific queue handle.
 
-Power11 PHYP adds Virtual Ethernet multi-queue (MQ) RX: multiple
-logical-LAN RX queues, per-queue buffer posting, and completion
-delivery. Guest Linux did not use that; ibmveth still registered one
-RX queue even when PHYP was MQ-capable.
+Add the PHYP call IDs for:
 
-This series adds the ibmveth MQ client for net-next. When PHYP
-advertises IBMVETH_ILLAN_RX_MULTI_QUEUE_SUPPORT via H_ILLAN_ATTRIBUTES,
-probe enables MQ with a default RX count of min(num_online_cpus(), 8)
-(same cap as TX today); ethtool -L can raise RX up to 16. Packets are
-received on per-queue NAPI. Older firmware without the bit is unchanged.
-Queue selection remains firmware-defined (PHYP hash). Ethtool RSS hash
-get/set for that algorithm is deferred to a follow-up series so this
-one stays MQ datapath only.
+  H_REG_LOGICAL_LAN_QUEUE
+  H_ADD_LOGICAL_LAN_BUFFERS_QUEUE
+  H_FREE_LOGICAL_LAN_QUEUE
 
-User-visible bits: ethtool -l/-L (channels), ethtool -S and
-ndo_get_stats64 (per-queue + aggregate), and a read-only debugfs
-buffer_pools dump (v3's multi-line sysfs dump moved to debugfs; the
-historical queue-0 poolN/ sysfs ABI is unchanged).
+and add ibmveth.h wrapper helpers (h_reg_logical_lan_queue(),
+h_add_logical_lan_buffers_queue(), h_free_logical_lan_queue()) with
+argument ordering and return semantics matching the existing ibmveth
+hcall wrappers. Also add h_register_logical_lan_with_handle() so
+queue 0 can capture the PHYP queue handle in MQ mode.
 
-Background:
+This patch is intentionally plumbing only: no runtime behavior change
+yet. Legacy firmware keeps H_REGISTER_LOGICAL_LAN and the existing
+buffer hcalls. The new wrappers are used only when a later commit sets
+multi_queue from H_ILLAN_ATTRIBUTES.
 
-ibmveth today uses one logical LAN, one set of buffer pools, and one
-NAPI context. PHYP MQ mode gives each RX queue its own handle (post via
-H_ADD_LOGICAL_LAN_BUFFERS_QUEUE, subordinate register via
-H_REG_LOGICAL_LAN_QUEUE). Legacy firmware keeps the original hcall path.
-
-Series layout (14 patches):
-
-  1-2   Hypercall wrappers; MQ adapter layout (MAX_RX_QUEUES stays 1)
-  3-8   Refactor open/close into queue-aware helpers (still SQ runtime)
-  9     Enable MQ datapath at probe/open (subordinate register helpers
-        land here with first use; probe pool-kobj fail paths put
-        already-created pool kobjects)
-  10-11 Per-queue RX/TX stats; debugfs buffer_pools
-  12-13 Incremental RX resize; ethtool set_channels
-  14    Poll/close fixes after aggressive ethtool -L
-
-Patch 2 is layout-only. Statistics types land with first use
-(hcall_stats in 7, rx/tx qstats in 10). Patches 3-8 do not change
-runtime behaviour until patch 9. v3's separate big-bang open/close
-pipeline patch is gone; wiring is incremental across 3-8.
-
-Testing:
-
-ppc64le PowerVM LPAR, MQ-capable firmware:
-* ethtool -L cycling (16/1/8/11/1/3/16/8/1) with ping
-* ethtool -L under iperf3; link down/up during traffic
-* ifdown/ifup under iperf3 RX+TX (SQ and MQ)
-* Legacy firmware (no MQ bit): open/close/stress on helper path
-* allmodconfig W=1 clean at each patch (bisect-friendly restack)
+Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
+Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
+---
 
 Changes in v4:
+- Document @queue_handle and @irq in h_reg_logical_lan_queue() kdoc.
+- Wrap h_register_logical_lan_with_handle() prototype for readability /
+  checkpatch.
+- Drop unused H_FREE_LOGICAL_LAN_BUFFER_QUEUE wrapper/opcode (no caller;
+  buffer return is local harvest + queue free).
 
-Addresses Simon's v3 review and related fixes:
-* First-use helpers/includes (irqdomain.h with first dispose); no
-  unused statics; dropped orphan open/close pipeline patch
-* Open/close unwind (free LAN before RX pools); no double TX teardown
-* MQ open: replenish all queues before PHYP unmask; H_FUNCTION on
-  subordinate register is a hard open failure
-* Resize/set_channels hardenings; stats probe-lifetime + sum-on-read;
-  buffer_pools diagnostic on debugfs
-* Patch 9: put already-created pool kobjects on probe failure paths
-* Patch 14: correlator skip, skb tailroom check, napi_complete_done
-  shutdown return < budget
+ arch/powerpc/include/asm/hvcall.h  |   5 +-
+ drivers/net/ethernet/ibm/ibmveth.h | 137 +++++++++++++++++++++++++++++
+ 2 files changed, 141 insertions(+), 1 deletion(-)
 
-Comments welcome.
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index dff90a7d7f70..d79baf2e3827 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -362,7 +362,10 @@
+ #define H_GUEST_DELETE		0x488
+ #define H_PKS_WRAP_OBJECT	0x490
+ #define H_PKS_UNWRAP_OBJECT	0x494
+-#define MAX_HCALL_OPCODE	H_PKS_UNWRAP_OBJECT
++#define H_REG_LOGICAL_LAN_QUEUE 0x49C
++#define H_ADD_LOGICAL_LAN_BUFFERS_QUEUE 0x4A0
++#define H_FREE_LOGICAL_LAN_QUEUE 0x4A8
++#define MAX_HCALL_OPCODE	H_FREE_LOGICAL_LAN_QUEUE
+ 
+ /* Scope args for H_SCM_UNBIND_ALL */
+ #define H_UNBIND_SCOPE_ALL (0x1)
+diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+index d87713668ed3..c88dbeb7cd96 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.h
++++ b/drivers/net/ethernet/ibm/ibmveth.h
+@@ -66,6 +66,143 @@ static inline long h_add_logical_lan_buffers(unsigned long unit_address,
+ 			    desc5, desc6, desc7, desc8);
+ }
+ 
++/**
++ * h_reg_logical_lan_queue - Register a subordinate receive queue
++ * @unit_address: Device unit address
++ * @buffer_list: DMA address of 4KB page for tracking registered buffers
++ * @rec_queue: Buffer descriptor of receive queue
++ * @queue_handle: Output queue handle on success (may be NULL)
++ * @irq: Output hypervisor IRQ number on success (may be NULL)
++ *
++ * Registers a subordinate receive queue with the hypervisor.
++ *
++ * Return:
++ *   H_SUCCESS (0) on success
++ *   H_PARAMETER if parameters are invalid
++ *
++ * On success, hypervisor returns:
++ *   R3: H_SUCCESS
++ *   R4: Queue handle
++ *   R5: IRQ number for this queue
++ */
++static inline long h_reg_logical_lan_queue(unsigned long unit_address,
++					   unsigned long buffer_list,
++					   unsigned long rec_queue,
++					   unsigned long *queue_handle,
++					   unsigned long *irq)
++{
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++	long rc;
++
++	rc = plpar_hcall9(H_REG_LOGICAL_LAN_QUEUE,
++			  retbuf, unit_address,
++			  buffer_list, rec_queue);
++
++	if (rc == H_SUCCESS) {
++		if (queue_handle)
++			*queue_handle = retbuf[0];
++		if (irq)
++			*irq = retbuf[1];
++	}
++
++	return rc;
++}
++
++/**
++ * h_add_logical_lan_buffers_queue - Add buffers to subordinate queue
++ * @unit_address: Device unit address
++ * @queue_handle: Queue handle from h_reg_logical_lan_queue()
++ * @buffersznum: Buffer size (upper 32 bits) | count (lower 32 bits)
++ * @ioba12: Buffer addresses 1 and 2 packed ((addr1 << 32) | addr2)
++ * @ioba34: Buffer addresses 3 and 4 packed
++ * @ioba56: Buffer addresses 5 and 6 packed
++ * @ioba78: Buffer addresses 7 and 8 packed
++ * @ioba910: Buffer addresses 9 and 10 packed
++ * @ioba1112: Buffer addresses 11 and 12 packed
++ *
++ * Return:
++ *   H_SUCCESS - All buffers added successfully
++ *   H_PARAMETER - Invalid parameters
++ *   H_HARDWARE - Hardware error
++ */
++static inline long h_add_logical_lan_buffers_queue(unsigned long unit_address,
++						   unsigned long queue_handle,
++						   unsigned long buffersznum,
++						   unsigned long ioba12,
++						   unsigned long ioba34,
++						   unsigned long ioba56,
++						   unsigned long ioba78,
++						   unsigned long ioba910,
++						   unsigned long ioba1112)
++{
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++
++	return plpar_hcall9(H_ADD_LOGICAL_LAN_BUFFERS_QUEUE,
++			    retbuf, unit_address,
++			    queue_handle, buffersznum,
++			    ioba12, ioba34, ioba56,
++			    ioba78, ioba910, ioba1112);
++}
++
++/**
++ * h_free_logical_lan_queue - Deregister subordinate receive queue
++ * @unit_address: Device unit address
++ * @queue_handle: Queue handle from h_reg_logical_lan_queue()
++ *
++ * Deregisters and frees all structures associated with the subordinate queue.
++ *
++ * Return:
++ *   H_SUCCESS - Queue freed successfully
++ *   H_PARAMETER - Invalid parameters
++ *   H_HARDWARE - Hardware error
++ *   H_STATE - VIOA not in valid state
++ *   H_BUSY / H_LONG_BUSY_* - Resource busy, retry
++ */
++static inline long h_free_logical_lan_queue(unsigned long unit_address,
++					    unsigned long queue_handle)
++{
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++
++	return plpar_hcall9(H_FREE_LOGICAL_LAN_QUEUE,
++			    retbuf, unit_address, queue_handle);
++}
++
++/**
++ * h_register_logical_lan_with_handle - Register primary queue and get handle
++ * @unit_address: Device unit address
++ * @buffer_list: DMA address of buffer list
++ * @rec_queue: Buffer descriptor of receive queue
++ * @filter_list: DMA address of filter list
++ * @mac_address: MAC address
++ * @queue_handle: Output parameter for queue handle
++ *
++ * Registers the primary receive queue (queue 0) with the hypervisor and
++ * returns the queue handle. This is needed in multi-queue mode to use
++ * h_add_logical_lan_buffers_queue() for all queues including queue 0.
++ *
++ * Return: H_SUCCESS (0) on success, error code otherwise
++ */
++static inline long
++h_register_logical_lan_with_handle(unsigned long unit_address,
++				   unsigned long buffer_list,
++				   unsigned long rec_queue,
++				   unsigned long filter_list,
++				   unsigned long mac_address,
++				   u64 *queue_handle)
++{
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++	long rc;
++
++	rc = plpar_hcall9(H_REGISTER_LOGICAL_LAN, retbuf,
++			  unit_address, buffer_list, rec_queue,
++			  filter_list, mac_address);
++
++	if (rc == H_SUCCESS && queue_handle)
++		*queue_handle = retbuf[0];
++
++	return rc;
++}
++
+ /* FW allows us to send 6 descriptors but we only use one so mark
+  * the other 5 as unused (0)
+  */
+-- 
+2.50.1 (Apple Git-155)
 
----
-Previous versions
-v3: https://lore.kernel.org/r/20260706193603.8039-1-mmc@linux.ibm.com
-v2: https://lore.kernel.org/r/20260701222327.61325-1-mmc@linux.ibm.com
-v1: https://lore.kernel.org/r/cover.1782758799.git.mmc@linux.ibm.com
-v3 review (Simon, from 05/15):
-  https://lore.kernel.org/r/20260714124327.GJ1364329@horms.kernel.org
