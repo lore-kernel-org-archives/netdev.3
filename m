@@ -1,162 +1,276 @@
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+Received: from smtp-out-1a.sgdsn.gouv.fr (smtp-out-1b.sgdsn.gouv.fr [143.126.255.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D59C2E1F06
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 19:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4C336A377;
+	Fri, 31 Jul 2026 19:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.126.255.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785527146; cv=none; b=Zli2v1lmd7Zc1nGMKgqklaoxZMEvxs363tkI5XjQrB4poUVXRqcEmgHYIdWFxV/5yXhuOb5mmfmsq16MBpBvMNdUH8W2B70HKvuS4kjpQd4P1Ea1LKzCJqLcnpIU7LWyJ8ntwMDyOpzH5fV5Ue9gn1FR+7lRUevzysZJlIbzQQc=
+	t=1785527676; cv=none; b=pFl5YH8id3SqxbbBqyFKDlKQGopWj8YMAjsE9JHxmtAPP/Qm9yxPc3GI/xRotYQg4kmiMPgB+zfYcjSD/iySiS7LU0Un9QeGJAuQkcEWFx9RshEMfYCx14WqOm44vjTETEDvF1145yLwNY9f3vT8w4IwRlWxZ5p6spFg6CSEAqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785527146; c=relaxed/simple;
-	bh=NCwKcmZcjwpyxfuCBu3gRJQo8N9He6UW9Gym6yLkACk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mnp4ynpoVxHTJmqnEMSOXVTwZS+BftSR0JmY1aHu64iT198tWZ3NLGjBwXX60vDZRo2f+cGuolvFlSeiJClBMNIiWKvda43YnKYxvYqNMrYkZCTxmQa4GVxJ1j/Y5LpOz5iX4T9I/IbxwOXI4sKx8BMDLnY7glg/xk+HcxPtZyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=c127.dev; spf=pass smtp.mailfrom=c127.dev; dkim=pass (2048-bit key) header.d=c127.dev header.i=@c127.dev header.b=VkCWi2jj; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=CebkOwiY; arc=none smtp.client-ip=34.202.193.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=c127.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c127.dev
+	s=arc-20240116; t=1785527676; c=relaxed/simple;
+	bh=j0j9T5uJ9jG+pnaYLyGvLBJDb2M+TAur5f5KeewAEho=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LR91YKd0WHeYEssrBV7Di6asIjPGegMFroc/IkbtJ0WJywJOCAzrFJpyNuQQ25AWUftUsdAZIhTZ6OhZt9ejdtApkK8FCL/pD256ACaS9PsfFgeDZ31EjM8rSZEWD24pHEvCglJESuut5CZQ5dypJGXrys6QTxmhjkpqP61Nxb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ssi.gouv.fr; spf=pass smtp.mailfrom=ssi.gouv.fr; dkim=pass (2048-bit key) header.d=ssi.gouv.fr header.i=@ssi.gouv.fr header.b=BoQLe0Um; arc=none smtp.client-ip=143.126.255.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ssi.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=c127.dev header.i=@c127.dev header.b="VkCWi2jj";
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="CebkOwiY"
-Authentication-Results: purelymail.com; auth=pass
-DKIM-Signature: a=rsa-sha256; b=VkCWi2jjyEYL/h8rDWd1bR0QkKmYifYNep/rXJw5JJWPilwb/FpDTOBlwRFyet5RE+SdJyhLNn9EsxK0FG2l5pT87IFhK0vI/6VyKs82hjdMU+QMzYnzfz3nyCz+RocVrwS0PmLAB7dl5CsLrV83gMSqOHvDYBEC5QvBQrPgzqoqBOta9442AgjLy8Xkzi9I6qs7tL2ZA5Lf1eT62aKKmx/S2iMsy8lRFjUEDOPc3be8Hy+/KPkp0DTPMTHdJWuBhJE5mm9Z6DLfXrd0F/vTeQYuZN7+wqiXeDEBkwK+Y5OWxLDovi5lVNRFF+noJqzCrLZRE56yQ08RGIfgzF9R1Q==; s=purelymail1; d=c127.dev; v=1; bh=NCwKcmZcjwpyxfuCBu3gRJQo8N9He6UW9Gym6yLkACk=; h=Received:From:To:Subject:Date;
-DKIM-Signature: a=rsa-sha256; b=CebkOwiYxvxLYJB+Yak+5HZxAqksb3saekcQ0A1hsSx8+gQJDnqp6yAwSOYXlSDWmn5hVDujqP0o/rVam4RkKwdig+bkhrTO/LUdP05BKpD2qvlcRxXb1OIuUaF2GLGtAGXIrZR++0NYippD4JC7vKCYX1bxLYYKyIcuacQUk9OhRL2SCSoNN5JTnf8sf0acpy+v2Nc5FlsolTxJhFA6HSfA/3oLmVy5VGVMyMr7vAwCFPDDi0kvXTYF/7AaZnl5ZqAW+RhHLWkw/NkHYpHTGCEBlphmt2SgV4Iob7sXTTNUvHfPbGuyPESAUy8qQfoyeXhZFoffTx8ztvQSu6C3Mg==; s=purelymail1; d=purelymail.com; v=1; bh=NCwKcmZcjwpyxfuCBu3gRJQo8N9He6UW9Gym6yLkACk=; h=Feedback-ID:Received:From:To:Subject:Date;
-Feedback-ID: 1017243:43747:null:purelymail
-X-Pm-Original-To: netdev@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 897215426;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Fri, 31 Jul 2026 19:45:41 +0000 (UTC)
-From: Johan Alvarado <contact@c127.dev>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	Jose.Abreu@synopsys.com,
-	rmk+kernel@armlinux.org.uk,
-	pavel@ucw.cz,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Johan Alvarado <contact@c127.dev>
-Subject: [PATCH net RESEND] net: stmmac: raise TX completion interrupt at the end of an xmit burst
-Date: Fri, 31 Jul 2026 14:45:22 -0500
-Message-ID: <20260731194522.55069-1-contact@c127.dev>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=ssi.gouv.fr header.i=@ssi.gouv.fr header.b="BoQLe0Um"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ssi.gouv.fr;
+	s=20240601; t=1785527295;
+	bh=j0j9T5uJ9jG+pnaYLyGvLBJDb2M+TAur5f5KeewAEho=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From:Subject;
+	b=BoQLe0Um4jTHyeWY6bIXMrFcghJ7inw22uTJxNpcKAott8ZnLnX5LGxNxvBeSIK/c
+	 /T4eEjNpk/Zx+Nl4RymP1WSSh5NTe9sPAQ4sHJrNmwYXdlGo/neHjIfBls5Napytsr
+	 701Qd/1u7oaHQQcxfTeOBtTt0l63DmJpoY0CyUprL/MLDztIBogDF02SZ/BxBmzWSB
+	 xnV9C7O0GhjfvVsa9NHVOH94KkskwefQ5THNVNwIui4ZE6MVY0OrkFJGn/YSZXY0WT
+	 pdZZhUoOp6TxJcUoIW/kHm79Eoqnx6N+GSiFaGwK2Ww41w/iyLc7Bkf7wnwctBX3Do
+	 ol7Xg7FeZ1TDw==
+From: JEAN Jeremy <Jeremy.Jean@ssi.gouv.fr>
+To: Xin Long <lucien.xin@gmail.com>, Jun Yang <juny24602@gmail.com>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Jun Yang
+	<junvyyang@tencent.com>, "stable@kernel.org" <stable@kernel.org>, "TencentOS
+ Corvus AI" <corvus@tencent.com>, Marcelo Ricardo Leitner
+	<marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Vlad Yasevich
+	<vladislav.yasevich@hp.com>, "linux-sctp@vger.kernel.org"
+	<linux-sctp@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net] sctp: bound the auth_chunks copy length in
+ SCTP_LOCAL_AUTH_CHUNKS
+Thread-Topic: [PATCH net] sctp: bound the auth_chunks copy length in
+ SCTP_LOCAL_AUTH_CHUNKS
+Thread-Index: AQHdIQEXYam16JDD0EqbuX9liZo/ALaIBa9Q
+Date: Fri, 31 Jul 2026 19:48:15 +0000
+Message-ID: <7402d0e3ade541f18d764ca6ecc037fc@ssi.gouv.fr>
+References: <20260730090149.24040-1-juny24602@gmail.com>
+ <CADvbK_fx=1mQZ4LaSvQj=3jW+=1zCUuAf1xZpiez7Mag4e_GDw@mail.gmail.com>
+In-Reply-To: <CADvbK_fx=1mQZ4LaSvQj=3jW+=1zCUuAf1xZpiez7Mag4e_GDw@mail.gmail.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator:
+Content-Type: multipart/mixed;
+	boundary="_002_7402d0e3ade541f18d764ca6ecc037fcssigouvfr_"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-The TX mitigation logic only sets the Interrupt on Completion bit once
-every tx_coal_frames descriptors (STMMAC_TX_FRAMES = 25), with the
-tx_coal_timer hrtimer (STMMAC_COAL_TX_TIMER = 5000 us) as the only
-fallback. TX skbs are freed exclusively from the TX completion path,
-so any flow that keeps fewer than 25 frames in flight has all of its
-skbs held for up to 5 ms after transmission.
+--_002_7402d0e3ade541f18d764ca6ecc037fcssigouvfr_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Paced flows never queue enough frames to reach the frame threshold:
-TCP Small Queues caps the amount of unfreed data at roughly two pacing
-intervals worth, which at moderate pacing rates is only a couple of
-packets. Every small burst then stalls until the coalesce timer fires,
-and throughput collapses to approximately tsq_limit / tx_coal_timer
-regardless of link capacity.
+RGVhciBhbGwsDQoNCkF0dGFjaGVkIGlzIGEgcHJvcG9zZWQgZml4IHRoYXQgcmVsaWVzIG9uIGEg
+Y29kZSBzdWdnZXN0aW9uIGZyb20gWGluIExvbmcsIGJ1dCByZXdvcmtlZCB0byBiZXR0ZXIgaGFu
+ZGxlIGFsbCBjYXNlcy4NCkRvZXMgdGhpcyBsb29rIG9rPw0KSSB2ZXJpZmllZCBleHBlcmltZW50
+YWxseSBvbiA4YmEwOThlNmI2ZmYgdGhhdCB0aGlzIGZpeCBzb2x2ZXMgdGhlIHR3byBidWdzIEkg
+cmVwb3J0ZWQuDQoNClJlZ2FyZHMsDQpKw6lyw6lteQ0KDQotLS0tLU1lc3NhZ2UgZCdvcmlnaW5l
+LS0tLS0NCkRlIDogWGluIExvbmcgPGx1Y2llbi54aW5AZ21haWwuY29tPg0KRW52b3nDqSA6IHZl
+bmRyZWRpIDMxIGp1aWxsZXQgMjAyNiAxNzoyNw0Kw4AgOiBKdW4gWWFuZyA8anVueTI0NjAyQGdt
+YWlsLmNvbT47IEpFQU4gSmVyZW15IDxKZXJlbXkuSmVhbkBzc2kuZ291di5mcj4NCkNjIDogbmV0
+ZGV2QHZnZXIua2VybmVsLm9yZzsgSnVuIFlhbmcgPGp1bnZ5eWFuZ0B0ZW5jZW50LmNvbT47IHN0
+YWJsZUBrZXJuZWwub3JnOyBUZW5jZW50T1MgQ29ydnVzIEFJIDxjb3J2dXNAdGVuY2VudC5jb20+
+OyBNYXJjZWxvIFJpY2FyZG8gTGVpdG5lciA8bWFyY2Vsby5sZWl0bmVyQGdtYWlsLmNvbT47IERh
+dmlkIFMuIE1pbGxlciA8ZGF2ZW1AZGF2ZW1sb2Z0Lm5ldD47IEVyaWMgRHVtYXpldCA8ZWR1bWF6
+ZXRAZ29vZ2xlLmNvbT47IEpha3ViIEtpY2luc2tpIDxrdWJhQGtlcm5lbC5vcmc+OyBQYW9sbyBB
+YmVuaSA8cGFiZW5pQHJlZGhhdC5jb20+OyBTaW1vbiBIb3JtYW4gPGhvcm1zQGtlcm5lbC5vcmc+
+OyBWbGFkIFlhc2V2aWNoIDx2bGFkaXNsYXYueWFzZXZpY2hAaHAuY29tPjsgbGludXgtc2N0cEB2
+Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCk9iamV0IDogUmU6
+IFtQQVRDSCBuZXRdIHNjdHA6IGJvdW5kIHRoZSBhdXRoX2NodW5rcyBjb3B5IGxlbmd0aCBpbiBT
+Q1RQX0xPQ0FMX0FVVEhfQ0hVTktTDQoNCk9uIFRodSwgSnVsIDMwLCAyMDI2IGF0IDU6MDLigK9B
+TSBKdW4gWWFuZyA8anVueTI0NjAyQGdtYWlsLmNvbT4gd3JvdGU6DQo+DQo+IEZyb206IEp1biBZ
+YW5nIDxqdW52eXlhbmdAdGVuY2VudC5jb20+DQo+DQo+IHNjdHBfZ2V0c29ja29wdF9sb2NhbF9h
+dXRoX2NodW5rcygpIGNvcGllcyBudG9ocyhsZW5ndGgpIC0NCj4gc2l6ZW9mKHBhcmFtaGRyKSBi
+eXRlcyBvdXQgb2YgY2gtPmNodW5rcyB3aXRob3V0IGJvdW5kaW5nIHRoZSBjb3VudC4NCj4gRm9y
+IGFuIGFzc29jaWF0aW9uIGNoIGlzIHRoZSBmaXhlZC1zaXplIGFzb2MtPmMuYXV0aF9jaHVua3Nb
+XSBhcnJheQ0KPiAoc2l6ZW9mKHN0cnVjdCBzY3RwX3BhcmFtaGRyKSArIFNDVFBfQVVUSF9NQVhf
+Q0hVTktTIGJ5dGVzKSwgd2hvc2UNCj4gbGVuZ3RoIGZpZWxkIGlzIHJlc3RvcmVkIGZyb20gdGhl
+IHJlY2VpdmVkIHN0YXRlIGNvb2tpZSBieQ0KPiBzY3RwX3VucGFja19jb29raWUoKSBhbmQgaXMg
+bm90IHZhbGlkYXRlZCBhZ2FpbnN0IHRoZSBhcnJheSBzaXplLiAgQQ0KPiBjb29raWUgY2Fycnlp
+bmcgYW4gb3ZlcnNpemVkIGxlbmd0aCBtYWtlcyBjb3B5X3RvX3VzZXIoKSByZWFkIHBhc3QgdGhl
+DQo+IGFycmF5IChvdXQtb2YtYm91bmRzIHJlYWQpLg0KPg0KPiBCb3VuZCB0aGUgY2h1bmsgY291
+bnQgdG8gU0NUUF9BVVRIX01BWF9DSFVOS1MgYmVmb3JlIHRoZSBjb3B5LiAgVGhhdA0KPiBpcyB0
+aGUgbW9zdCB2YWxpZCBjaHVuayBieXRlcyBlaXRoZXIgc291cmNlIGNhbiBob2xkLCBzbyBsZWdp
+dGltYXRlDQo+IG91dHB1dCBpcyB1bmNoYW5nZWQsIGFuZCBpdCBhbHNvIGNvdmVycyBhIHN0b3Jl
+ZCBsZW5ndGggc21hbGxlciB0aGFuDQo+IHRoZSBwYXJhbWV0ZXIgaGVhZGVyLCB3aGljaCB3b3Vs
+ZCBvdGhlcndpc2UgdW5kZXJmbG93Lg0KPg0KPiBGaXhlczogNjViMDdlNWQwZDA5ICgiW1NDVFBd
+OiBBUEkgdXBkYXRlcyB0byBzdXBvcnQgU0NUUC1BVVRIDQo+IGV4dGVuc2lvbnMuIikNCj4gQ2M6
+IHN0YWJsZUBrZXJuZWwub3JnDQo+IFJlcG9ydGVkLWJ5OiBUZW5jZW50T1MgQ29ydnVzIEFJIDxj
+b3J2dXNAdGVuY2VudC5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IEp1biBZYW5nIDxqdW52eXlhbmdA
+dGVuY2VudC5jb20+DQo+IC0tLQ0KPiAgbmV0L3NjdHAvc29ja2V0LmMgfCA2ICsrKysrKw0KPiAg
+MSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvbmV0L3Nj
+dHAvc29ja2V0LmMgYi9uZXQvc2N0cC9zb2NrZXQuYyBpbmRleA0KPiA5YTZkYTRlMGQ3NDEuLjNl
+OWRhY2I3NzJhMCAxMDA2NDQNCj4gLS0tIGEvbmV0L3NjdHAvc29ja2V0LmMNCj4gKysrIGIvbmV0
+L3NjdHAvc29ja2V0LmMNCj4gQEAgLTcxMDksNiArNzEwOSwxMiBAQCBzdGF0aWMgaW50IHNjdHBf
+Z2V0c29ja29wdF9sb2NhbF9hdXRoX2NodW5rcyhzdHJ1Y3Qgc29jayAqc2ssIGludCBsZW4sDQo+
+ICAgICAgICAgICAgICAgICBnb3RvIG51bTsNCj4NCj4gICAgICAgICBudW1fY2h1bmtzID0gbnRv
+aHMoY2gtPnBhcmFtX2hkci5sZW5ndGgpIC0gc2l6ZW9mKHN0cnVjdA0KPiBzY3RwX3BhcmFtaGRy
+KTsNCj4gKyAgICAgICAvKiBhc29jLT5jLmF1dGhfY2h1bmtzW10gaG9sZHMgYXQgbW9zdCBTQ1RQ
+X0FVVEhfTUFYX0NIVU5LUyBieXRlcyBidXQgaXRzDQo+ICsgICAgICAgICogbGVuZ3RoIGlzIHJl
+c3RvcmVkIGZyb20gdGhlIHN0YXRlIGNvb2tpZSBhbmQgaXMgbm90IGJvdW5kZWQgaGVyZTsNCj4g
+KyAgICAgICAgKiBjbGFtcCBzbyBhbiBvdmVyc2l6ZWQgbGVuZ3RoIGNhbm5vdCByZWFkIHBhc3Qg
+dGhlIGFycmF5Lg0KPiArICAgICAgICAqLw0KPiArICAgICAgIGlmIChudW1fY2h1bmtzID4gU0NU
+UF9BVVRIX01BWF9DSFVOS1MpDQo+ICsgICAgICAgICAgICAgICBudW1fY2h1bmtzID0gU0NUUF9B
+VVRIX01BWF9DSFVOS1M7DQo+ICAgICAgICAgaWYgKGxlbiA8IHNpemVvZihzdHJ1Y3Qgc2N0cF9h
+dXRoY2h1bmtzKSArIG51bV9jaHVua3MpDQo+ICAgICAgICAgICAgICAgICByZXR1cm4gLUVJTlZB
+TDsNCj4NCj4gLS0NCj4gMi41NS4wDQo+DQpUaGUgaXNzdWUgcmVxdWlyZXMgc3lzY3RsIG5ldC5z
+Y3RwLmNvb2tpZV9obWFjX2FsZz1ub25lLCByaWdodD8NCg0KSWYgc28sIEplYW4gSmVyZW15IGhh
+cyByZXBvcnRlZCB0d28gaXNzdWVzIGNhdXNlZCBieSB0aGUgbWlzc2luZyB2YWxpZGF0aW9uIG9m
+IHRoZSBhdXRoIHBhcmFtcyBpbiB0aGUgY29va2llLiBXZSBtYXkgbmVlZCB0byB2YWxpZGF0ZSBh
+bGwgYXV0aF9yYW5kb20sIGF1dGhfaG1hY3MgYW5kIGF1dGhfY2h1bmtzIGluIHNjdHBfdW5wYWNr
+X2Nvb2tpZSgpLg0KDQpMZXQncyB3YWl0IGEgYml0IGFuZCBzZWUgaWYgaGUgcHJvY2VlZHMgd2l0
+aCB0aGUgZml4IEkndmUgc3VnZ2VzdGVkLg0KDQpUaGFua3MuDQpMZXMgZG9ubsOpZXMgw6AgY2Fy
+YWN0w6hyZSBwZXJzb25uZWwgcmVjdWVpbGxpZXMgZXQgdHJhaXTDqWVzIGRhbnMgbGUgY2FkcmUg
+ZGUgY2V0IMOpY2hhbmdlLCBsZSBzb250IMOgIHNldWxlIGZpbiBk4oCZZXjDqWN1dGlvbiBk4oCZ
+dW5lIHJlbGF0aW9uIHByb2Zlc3Npb25uZWxsZSBldCBz4oCZb3DDqHJlbnQgZGFucyBjZXR0ZSBz
+ZXVsZSBmaW5hbGl0w6kgZXQgcG91ciBsYSBkdXLDqWUgbsOpY2Vzc2FpcmUgw6AgY2V0dGUgcmVs
+YXRpb24uIFNpIHZvdXMgc291aGFpdGV6IGZhaXJlIHVzYWdlIGRlIHZvcyBkcm9pdHMgZGUgY29u
+c3VsdGF0aW9uLCBkZSByZWN0aWZpY2F0aW9uIGV0IGRlIHN1cHByZXNzaW9uIGRlIHZvcyBkb25u
+w6llcywgdmV1aWxsZXogY29udGFjdGVyIGNvbnRhY3QucmdwZEBzZ2Rzbi5nb3V2LmZyLiBTaSB2
+b3VzIGF2ZXogcmXDp3UgY2UgbWVzc2FnZSBwYXIgZXJyZXVyLCBub3VzIHZvdXMgcmVtZXJjaW9u
+cyBk4oCZZW4gaW5mb3JtZXIgbOKAmWV4cMOpZGl0ZXVyIGV0IGRlIGTDqXRydWlyZSBsZSBtZXNz
+YWdlLiBUaGUgcGVyc29uYWwgZGF0YSBjb2xsZWN0ZWQgYW5kIHByb2Nlc3NlZCBkdXJpbmcgdGhp
+cyBleGNoYW5nZSBhaW1zIHNvbGVseSBhdCBjb21wbGV0aW5nIGEgYnVzaW5lc3MgcmVsYXRpb25z
+aGlwIGFuZCBpcyBsaW1pdGVkIHRvIHRoZSBuZWNlc3NhcnkgZHVyYXRpb24gb2YgdGhhdCByZWxh
+dGlvbnNoaXAuIElmIHlvdSB3aXNoIHRvIHVzZSB5b3VyIHJpZ2h0cyBvZiBjb25zdWx0YXRpb24s
+IHJlY3RpZmljYXRpb24gYW5kIGRlbGV0aW9uIG9mIHlvdXIgZGF0YSwgcGxlYXNlIGNvbnRhY3Q6
+IGNvbnRhY3QucmdwZEBzZ2Rzbi5nb3V2LmZyLiBJZiB5b3UgaGF2ZSByZWNlaXZlZCB0aGlzIG1l
+c3NhZ2UgaW4gZXJyb3IsIHdlIHRoYW5rIHlvdSBmb3IgaW5mb3JtaW5nIHRoZSBzZW5kZXIgYW5k
+IGRlc3Ryb3lpbmcgdGhlIG1lc3NhZ2UuDQo=
 
-This is easily reproducible with BBR, which paces its output and thus
-keeps only a few frames in flight at a time. On a YT6801
-(dwmac-motorcomm) equipped Orange Pi 5 Pro, a BBR upload over a ~23 ms
-RTT path is capped at 5.24 Mbit/s, while CUBIC reaches 207 Mbit/s on
-the same path. BBR measures the stalled send rate as the path
-bandwidth and locks its estimate near the floor, so the connection
-never recovers. Lowering the coalesce settings with ethtool -C
-(tx-usecs 100 tx-frames 1) lifts the same transfer to 447 Mbit/s,
-confirming the mechanism.
+--_002_7402d0e3ade541f18d764ca6ecc037fcssigouvfr_
+Content-Type: application/octet-stream; name="cookie-hmac-id-new.patch"
+Content-Description: cookie-hmac-id-new.patch
+Content-Disposition: attachment; filename="cookie-hmac-id-new.patch";
+	size=6922; creation-date="Fri, 31 Jul 2026 19:40:12 GMT";
+	modification-date="Fri, 31 Jul 2026 19:40:16 GMT"
+Content-Transfer-Encoding: base64
 
-Fix this by setting the IC bit on the last descriptor of every xmit
-burst, i.e. whenever netdev_xmit_more() reports that no further frames
-are pending in the current dequeue batch. Frame-based coalescing still
-applies within a burst, bulk traffic keeps batching through qdisc bulk
-dequeue and NAPI polling, and the coalesce timer becomes a pure
-fallback instead of the primary completion mechanism for lightly
-queued flows.
+RnJvbSA4MzVjNDBjM2FhMGIxOTU5YjFmYTI3ZWQ0MTM4NTQ4Nzk4N2EwMDk4IE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiA9P1VURi04P3E/Sj1DMz1BOXI9QzM9QTlteT0yMEplYW4/PSA8
+SmVyZW15LkplYW5Ac3NpLmdvdXYuZnI+CkRhdGU6IFN1biwgMjYgSnVsIDIwMjYgMjM6MDM6MDQg
+KzAwMDAKU3ViamVjdDogW1BBVENIXSBzY3RwOiB2YWxpZGF0ZSBjb29raWUgQVVUSCBzdGF0ZSBi
+ZWZvcmUgdXNlCk1JTUUtVmVyc2lvbjogMS4wCkNvbnRlbnQtVHlwZTogdGV4dC9wbGFpbjsgY2hh
+cnNldD1VVEYtOApDb250ZW50LVRyYW5zZmVyLUVuY29kaW5nOiA4Yml0CgpXaGVuIGNvb2tpZSBh
+dXRoZW50aWNhdGlvbiBpcyBkaXNhYmxlZCwgQ09PS0lFX0VDSE8gcmVzdG9yZXMgZml4ZWQtc2l6
+ZQpBVVRIIGZpZWxkcyBkaXJlY3RseSBmcm9tIHBlZXItY29udHJvbGxlZCBjb29raWUgYnl0ZXMu
+ICBBIGZvcmdlZCBSQU5ET00KbGVuZ3RoLCBITUFDIGxpc3QsIG9yIENIVU5LUyBsaXN0IGNhbiB0
+aGVuIHJlYWNoIGFzc29jaWF0aW9uIGNvbnN1bWVycwp3aXRoIGxlbmd0aHMgb3IgaWRlbnRpZmll
+cnMgdGhhdCB3ZXJlIG5ldmVyIHZhbGlkYXRlZCBhZ2FpbnN0IHRoZSBsb2NhbApiYWNraW5nIGFy
+cmF5cy4KClZhbGlkYXRlIHRoZSBjb29raWUncyBSQU5ET00sIEhNQUNTLCBhbmQgQ0hVTktTIHBh
+cmFtZXRlcnMgYXQgdGhlIGNvb2tpZQp0cnVzdCBib3VuZGFyeSBiZWZvcmUgY29weWluZyB0aGVt
+IGludG8gdGhlIGFzc29jaWF0aW9uLiAgUmVqZWN0IGludmFsaWQKdHlwZXMsIG1hbGZvcm1lZCBs
+ZW5ndGhzLCB1bnN1cHBvcnRlZCBITUFDIGlkZW50aWZpZXJzLCBITUFDIGxpc3RzCndpdGhvdXQg
+U0hBMSwgYW5kIGZvcmJpZGRlbiBjaHVuayBpZHMuICBLZWVwIHRoZSBkb3duc3RyZWFtIEhNQUMg
+bG9va3VwCnBhdGggcmFuZ2Utc2FmZSBhcyBhIHNlY29uZCBsaW5lIG9mIGRlZmVuc2UuCgpGaXhl
+czogYmJkMGQ1OTgwOWY5ICgiW1NDVFBdOiBJbXBsZW1lbnQgdGhlIHJlY2VpdmUgYW5kIHZlcmlm
+aWNhdGlvbiBvZiBBVVRIIGNodW5rIikKRml4ZXM6IDFmNDg1NjQ5ZjUyOSAoIltTQ1RQXTogSW1w
+bGVtZW50IFNDVFAtQVVUSCBpbnRlcm5hbHMiKQpTaWduZWQtb2ZmLWJ5OiBKw6lyw6lteSBKZWFu
+IDxKZXJlbXkuSmVhbkBzc2kuZ291di5mcj4KLS0tCiBpbmNsdWRlL25ldC9zY3RwL2F1dGguaCAg
+fCAgMyArKwogbmV0L3NjdHAvYXV0aC5jICAgICAgICAgIHwgODggKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiBuZXQvc2N0cC9zbV9tYWtlX2NodW5rLmMg
+fCAgMyArKwogbmV0L3NjdHAvc21fc3RhdGVmdW5zLmMgIHwgIDMgKysKIDQgZmlsZXMgY2hhbmdl
+ZCwgOTcgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2luY2x1ZGUvbmV0L3NjdHAvYXV0aC5o
+IGIvaW5jbHVkZS9uZXQvc2N0cC9hdXRoLmgKaW5kZXggNmYyY2Q1NjJiMWRlLi43NGIzNzkwZTJh
+M2QgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvbmV0L3NjdHAvYXV0aC5oCisrKyBiL2luY2x1ZGUvbmV0
+L3NjdHAvYXV0aC5oCkBAIC0yMiw2ICsyMiw3IEBAIHN0cnVjdCBzY3RwX2VuZHBvaW50Owogc3Ry
+dWN0IHNjdHBfYXNzb2NpYXRpb247CiBzdHJ1Y3Qgc2N0cF9hdXRoa2V5Owogc3RydWN0IHNjdHBf
+aG1hY2FsZ287CitzdHJ1Y3Qgc2N0cF9jb29raWU7CiAKIC8qIERlZmluZXMgYW4gSE1BQyBhbGdv
+cml0aG0gc3VwcG9ydGVkIGJ5IFNDVFAgY2h1bmsgYXV0aGVudGljYXRpb24gKi8KIHN0cnVjdCBz
+Y3RwX2htYWMgewpAQCAtNzIsNiArNzMsOCBAQCBzdHJ1Y3Qgc2N0cF9zaGFyZWRfa2V5ICpzY3Rw
+X2F1dGhfZ2V0X3Noa2V5KAogaW50IHNjdHBfYXV0aF9hc29jX2NvcHlfc2hrZXlzKGNvbnN0IHN0
+cnVjdCBzY3RwX2VuZHBvaW50ICplcCwKIAkJCQlzdHJ1Y3Qgc2N0cF9hc3NvY2lhdGlvbiAqYXNv
+YywKIAkJCQlnZnBfdCBnZnApOworYm9vbCBzY3RwX2F1dGhfdmVyaWZ5X2Nvb2tpZV9wYXJhbXMo
+Y29uc3Qgc3RydWN0IHNjdHBfZW5kcG9pbnQgKmVwLAorCQkJCSAgICBjb25zdCBzdHJ1Y3Qgc2N0
+cF9jb29raWUgKmNvb2tpZSk7CiBjb25zdCBzdHJ1Y3Qgc2N0cF9obWFjICpzY3RwX2F1dGhfZ2V0
+X2htYWMoX191MTYgaG1hY19pZCk7CiBjb25zdCBzdHJ1Y3Qgc2N0cF9obWFjICoKIHNjdHBfYXV0
+aF9hc29jX2dldF9obWFjKGNvbnN0IHN0cnVjdCBzY3RwX2Fzc29jaWF0aW9uICphc29jKTsKZGlm
+ZiAtLWdpdCBhL25ldC9zY3RwL2F1dGguYyBiL25ldC9zY3RwL2F1dGguYwppbmRleCBjOTAxZDM3
+M2FmODAuLjYxNjJlYjczMWE2YyAxMDA2NDQKLS0tIGEvbmV0L3NjdHAvYXV0aC5jCisrKyBiL25l
+dC9zY3RwL2F1dGguYwpAQCAtMzc3LDYgKzM3Nyw4NCBAQCBpbnQgc2N0cF9hdXRoX2Fzb2NfY29w
+eV9zaGtleXMoY29uc3Qgc3RydWN0IHNjdHBfZW5kcG9pbnQgKmVwLAogCXJldHVybiAtRU5PTUVN
+OwogfQogCitzdGF0aWMgYm9vbCBzY3RwX2F1dGhfY29va2llX2NodW5rX2ZvcmJpZGRlbihfX3U4
+IGNodW5rX2lkKQoreworCXN3aXRjaCAoY2h1bmtfaWQpIHsKKwljYXNlIFNDVFBfQ0lEX0lOSVQ6
+CisJY2FzZSBTQ1RQX0NJRF9JTklUX0FDSzoKKwljYXNlIFNDVFBfQ0lEX1NIVVRET1dOX0NPTVBM
+RVRFOgorCWNhc2UgU0NUUF9DSURfQVVUSDoKKwkJcmV0dXJuIHRydWU7CisJZGVmYXVsdDoKKwkJ
+cmV0dXJuIGZhbHNlOworCX0KK30KKworLyogVmVyaWZ5IEFVVEggcGFyYW1ldGVycyBjb3BpZWQg
+ZnJvbSBhIHN0YXRlIGNvb2tpZSBiZWZvcmUgdGhleSBhcmUgcmVzdG9yZWQKKyAqIGludG8gYW4g
+YXNzb2NpYXRpb24uICBXaGVuIGNvb2tpZSBhdXRoZW50aWNhdGlvbiBpcyBkaXNhYmxlZCB0aGVz
+ZSBmaWVsZHMKKyAqIGFyZSBwZWVyLWNvbnRyb2xsZWQsIHNvIHRoZXkgbXVzdCBzYXRpc2Z5IHRo
+ZSBzYW1lIGNvbnN0cmFpbnRzIGFzIGxvY2FsbHkKKyAqIGdlbmVyYXRlZCBBVVRIIHBhcmFtZXRl
+cnMuCisgKi8KK2Jvb2wgc2N0cF9hdXRoX3ZlcmlmeV9jb29raWVfcGFyYW1zKGNvbnN0IHN0cnVj
+dCBzY3RwX2VuZHBvaW50ICplcCwKKwkJCQkgICAgY29uc3Qgc3RydWN0IHNjdHBfY29va2llICpj
+b29raWUpCit7CisJY29uc3Qgc3RydWN0IHNjdHBfcGFyYW1oZHIgKnJhbmRvbTsKKwljb25zdCBz
+dHJ1Y3Qgc2N0cF9obWFjX2FsZ29fcGFyYW0gKmhtYWNzOworCWNvbnN0IHN0cnVjdCBzY3RwX2No
+dW5rc19wYXJhbSAqY2h1bmtzOworCWJvb2wgaGFzX3NoYTEgPSBmYWxzZTsKKwlfX3UxNiBobWFj
+c19sZW47CisJX191MTYgY2h1bmtzX2xlbjsKKwlfX3UxNiBuX2htYWNzOworCV9fdTE2IG5fY2h1
+bmtzOworCV9fdTE2IGk7CisKKwlpZiAoc2N0cF9zayhlcC0+YmFzZS5zayktPmNvb2tpZV9hdXRo
+X2VuYWJsZSB8fCAhZXAtPmF1dGhfZW5hYmxlKQorCQlyZXR1cm4gdHJ1ZTsKKworCXJhbmRvbSA9
+IChjb25zdCBzdHJ1Y3Qgc2N0cF9wYXJhbWhkciAqKWNvb2tpZS0+YXV0aF9yYW5kb207CisJaWYg
+KHJhbmRvbS0+dHlwZSAhPSBTQ1RQX1BBUkFNX1JBTkRPTSB8fAorCSAgICBudG9ocyhyYW5kb20t
+Pmxlbmd0aCkgIT0gc2l6ZW9mKCpyYW5kb20pICsgU0NUUF9BVVRIX1JBTkRPTV9MRU5HVEgpCisJ
+CXJldHVybiBmYWxzZTsKKworCWhtYWNzID0gKGNvbnN0IHN0cnVjdCBzY3RwX2htYWNfYWxnb19w
+YXJhbSAqKWNvb2tpZS0+YXV0aF9obWFjczsKKwlobWFjc19sZW4gPSBudG9ocyhobWFjcy0+cGFy
+YW1faGRyLmxlbmd0aCk7CisJaWYgKGhtYWNzLT5wYXJhbV9oZHIudHlwZSAhPSBTQ1RQX1BBUkFN
+X0hNQUNfQUxHTyB8fAorCSAgICBobWFjc19sZW4gPCBzaXplb2Yoc3RydWN0IHNjdHBfcGFyYW1o
+ZHIpICsKKwkJCXNpemVvZihobWFjcy0+aG1hY19pZHNbMF0pIHx8CisJICAgIGhtYWNzX2xlbiA+
+IHNpemVvZihjb29raWUtPmF1dGhfaG1hY3MpIHx8CisJICAgIChobWFjc19sZW4gLSBzaXplb2Yo
+c3RydWN0IHNjdHBfcGFyYW1oZHIpKSAlCisJCQlzaXplb2YoaG1hY3MtPmhtYWNfaWRzWzBdKSkK
+KwkJcmV0dXJuIGZhbHNlOworCisJbl9obWFjcyA9IChobWFjc19sZW4gLSBzaXplb2Yoc3RydWN0
+IHNjdHBfcGFyYW1oZHIpKSAvCisJCSAgc2l6ZW9mKGhtYWNzLT5obWFjX2lkc1swXSk7CisJZm9y
+IChpID0gMDsgaSA8IG5faG1hY3M7IGkrKykgeworCQlfX3UxNiBobWFjX2lkID0gbnRvaHMoaG1h
+Y3MtPmhtYWNfaWRzW2ldKTsKKworCQlpZiAoIXNjdHBfaG1hY19zdXBwb3J0ZWQoaG1hY19pZCkp
+CisJCQlyZXR1cm4gZmFsc2U7CisJCWlmIChobWFjX2lkID09IFNDVFBfQVVUSF9ITUFDX0lEX1NI
+QTEpCisJCQloYXNfc2hhMSA9IHRydWU7CisJfQorCWlmICghaGFzX3NoYTEpCisJCXJldHVybiBm
+YWxzZTsKKworCWNodW5rcyA9IChjb25zdCBzdHJ1Y3Qgc2N0cF9jaHVua3NfcGFyYW0gKiljb29r
+aWUtPmF1dGhfY2h1bmtzOworCWNodW5rc19sZW4gPSBudG9ocyhjaHVua3MtPnBhcmFtX2hkci5s
+ZW5ndGgpOworCWlmIChjaHVua3MtPnBhcmFtX2hkci50eXBlICE9IFNDVFBfUEFSQU1fQ0hVTktT
+IHx8CisJICAgIGNodW5rc19sZW4gPCBzaXplb2Yoc3RydWN0IHNjdHBfcGFyYW1oZHIpIHx8CisJ
+ICAgIGNodW5rc19sZW4gPiBzaXplb2YoY29va2llLT5hdXRoX2NodW5rcykpCisJCXJldHVybiBm
+YWxzZTsKKworCW5fY2h1bmtzID0gY2h1bmtzX2xlbiAtIHNpemVvZihzdHJ1Y3Qgc2N0cF9wYXJh
+bWhkcik7CisJZm9yIChpID0gMDsgaSA8IG5fY2h1bmtzOyBpKyspIHsKKwkJaWYgKHNjdHBfYXV0
+aF9jb29raWVfY2h1bmtfZm9yYmlkZGVuKGNodW5rcy0+Y2h1bmtzW2ldKSkKKwkJCXJldHVybiBm
+YWxzZTsKKwl9CisKKwlyZXR1cm4gdHJ1ZTsKK30KKwogCiAvKiBQdWJsaWMgaW50ZXJmYWNlIHRv
+IGNyZWF0ZSB0aGUgYXNzb2NpYXRpb24gc2hhcmVkIGtleS4KICAqIFNlZSBjb2RlIGFib3ZlIGZv
+ciB0aGUgYWxnb3JpdGhtLgpAQCAtNDQ3LDYgKzUyNSw5IEBAIHN0cnVjdCBzY3RwX3NoYXJlZF9r
+ZXkgKnNjdHBfYXV0aF9nZXRfc2hrZXkoCiAKIGNvbnN0IHN0cnVjdCBzY3RwX2htYWMgKnNjdHBf
+YXV0aF9nZXRfaG1hYyhfX3UxNiBobWFjX2lkKQogeworCWlmICghc2N0cF9obWFjX3N1cHBvcnRl
+ZChobWFjX2lkKSkKKwkJcmV0dXJuIE5VTEw7CisKIAlyZXR1cm4gJnNjdHBfaG1hY19saXN0W2ht
+YWNfaWRdOwogfQogCkBAIC01MDgsNiArNTg5LDExIEBAIGludCBzY3RwX2F1dGhfYXNvY192ZXJp
+ZnlfaG1hY19pZChjb25zdCBzdHJ1Y3Qgc2N0cF9hc3NvY2lhdGlvbiAqYXNvYywKIAkJcmV0dXJu
+IDA7CiAKIAlobWFjcyA9IChzdHJ1Y3Qgc2N0cF9obWFjX2FsZ29fcGFyYW0gKilhc29jLT5jLmF1
+dGhfaG1hY3M7CisJaWYgKG50b2hzKGhtYWNzLT5wYXJhbV9oZHIubGVuZ3RoKSA8IHNpemVvZihz
+dHJ1Y3Qgc2N0cF9wYXJhbWhkcikgfHwKKwkgICAgbnRvaHMoaG1hY3MtPnBhcmFtX2hkci5sZW5n
+dGgpID4gc2l6ZW9mKGFzb2MtPmMuYXV0aF9obWFjcykgfHwKKwkgICAgIXNjdHBfaG1hY19zdXBw
+b3J0ZWQobnRvaHMoaG1hY19pZCkpKQorCQlyZXR1cm4gMDsKKwogCW5fZWx0ID0gKG50b2hzKGht
+YWNzLT5wYXJhbV9oZHIubGVuZ3RoKSAtCiAJCSBzaXplb2Yoc3RydWN0IHNjdHBfcGFyYW1oZHIp
+KSA+PiAxOwogCkBAIC02MjksNiArNzE1LDggQEAgdm9pZCBzY3RwX2F1dGhfY2FsY3VsYXRlX2ht
+YWMoY29uc3Qgc3RydWN0IHNjdHBfYXNzb2NpYXRpb24gKmFzb2MsCiAJICovCiAJa2V5X2lkID0g
+bnRvaHMoYXV0aC0+YXV0aF9oZHIuc2hrZXlfaWQpOwogCWhtYWNfaWQgPSBudG9ocyhhdXRoLT5h
+dXRoX2hkci5obWFjX2lkKTsKKwlpZiAoIXNjdHBfaG1hY19zdXBwb3J0ZWQoaG1hY19pZCkpCisJ
+CXJldHVybjsKIAogCWlmIChrZXlfaWQgPT0gYXNvYy0+YWN0aXZlX2tleV9pZCkKIAkJYXNvY19r
+ZXkgPSBhc29jLT5hc29jX3NoYXJlZF9rZXk7CmRpZmYgLS1naXQgYS9uZXQvc2N0cC9zbV9tYWtl
+X2NodW5rLmMgYi9uZXQvc2N0cC9zbV9tYWtlX2NodW5rLmMKaW5kZXggMGFlMzBjM2M4OTEzLi5j
+MDhhNTc1M2ZiNTggMTAwNjQ0Ci0tLSBhL25ldC9zY3RwL3NtX21ha2VfY2h1bmsuYworKysgYi9u
+ZXQvc2N0cC9zbV9tYWtlX2NodW5rLmMKQEAgLTE4NTIsNiArMTg1Miw5IEBAIHN0cnVjdCBzY3Rw
+X2Fzc29jaWF0aW9uICpzY3RwX3VucGFja19jb29raWUoCiAJLyogU2V0IHVwIG91ciBwZWVyJ3Mg
+cG9ydCBudW1iZXIuICAqLwogCXJldHZhbC0+cGVlci5wb3J0ID0gbnRvaHMoY2h1bmstPnNjdHBf
+aGRyLT5zb3VyY2UpOwogCisJaWYgKCFzY3RwX2F1dGhfdmVyaWZ5X2Nvb2tpZV9wYXJhbXMoZXAs
+IGJlYXJfY29va2llKSkKKwkJZ290byBtYWxmb3JtZWQ7CisKIAkvKiBQb3B1bGF0ZSB0aGUgYXNz
+b2NpYXRpb24gZnJvbSB0aGUgY29va2llLiAgKi8KIAltZW1jcHkoJnJldHZhbC0+YywgYmVhcl9j
+b29raWUsIHNpemVvZigqYmVhcl9jb29raWUpKTsKIApkaWZmIC0tZ2l0IGEvbmV0L3NjdHAvc21f
+c3RhdGVmdW5zLmMgYi9uZXQvc2N0cC9zbV9zdGF0ZWZ1bnMuYwppbmRleCA3MDhmYTA3ZDVmZmYu
+LjgyODM2ZTkyN2JlNiAxMDA2NDQKLS0tIGEvbmV0L3NjdHAvc21fc3RhdGVmdW5zLmMKKysrIGIv
+bmV0L3NjdHAvc21fc3RhdGVmdW5zLmMKQEAgLTQ0MzYsNiArNDQzNiw5IEBAIHN0YXRpYyBlbnVt
+IHNjdHBfaWVycm9yIHNjdHBfc2ZfYXV0aGVudGljYXRlKAogCXNpZ19sZW4gPSBudG9ocyhjaHVu
+ay0+Y2h1bmtfaGRyLT5sZW5ndGgpIC0KIAkJICBzaXplb2Yoc3RydWN0IHNjdHBfYXV0aF9jaHVu
+ayk7CiAJaG1hYyA9IHNjdHBfYXV0aF9nZXRfaG1hYyhudG9ocyhhdXRoX2hkci0+aG1hY19pZCkp
+OworCWlmICghaG1hYykKKwkJcmV0dXJuIFNDVFBfSUVSUk9SX0FVVEhfQkFEX0hNQUM7CisKIAlp
+ZiAoc2lnX2xlbiAhPSBobWFjLT5obWFjX2xlbikKIAkJcmV0dXJuIFNDVFBfSUVSUk9SX1BST1RP
+X1ZJT0xBVElPTjsKIAotLSAKMi40Ny4zCg==
 
-tx-frames 0 keeps its meaning of timer-based mitigation only.
-
-Fixes: da2024510031 ("net: stmmac: Tune-up default coalesce settings")
-Signed-off-by: Johan Alvarado <contact@c127.dev>
----
-No code changes since the original posting on 2026-07-06; reposting at
-Jakub's request after the netdev patch queue overflowed:
-https://lore.kernel.org/netdev/20260720173557.09e322d7@kernel.org/
-
-Previous posting, including the discussion with Maciej Fijalkowski on
-whether frame-based coalescing could be dropped entirely (kept as is;
-any rework is net-next material):
-https://lore.kernel.org/netdev/0100019f35ea26e0-42ad009c-01ab-4a8f-b126-fa65fbacae5c-000000@email.amazonses.com/
-
-Notes for reviewers (not for the changelog):
-
-Tested on an Orange Pi 5 Pro (RK3588, Motorcomm YT6801 PCIe GbE via
-dwmac-motorcomm), iperf3 upload to a public server over a ~23 ms RTT
-path, coalesce settings left at their shipped values (tx-usecs 5000,
-tx-frames 25):
-
-  before, BBR:    5.24 Mbit/s (cwnd pinned, bw estimate ~6 Mbit/s)
-  before, CUBIC:  207 Mbit/s
-  after,  BBR:    447 Mbit/s
-
-Interrupt overhead stays sane: ~3.3k NIC IRQs/s total at 447 Mbit/s
-(~38 kpps), i.e. roughly 12 packets per interrupt, since qdisc bulk
-dequeue plus NAPI polling still coalesce within bursts.
-
-The 5000 us STMMAC_COAL_TX_TIMER value postdates the tagged commit
-(it was 1000 us back then); the stall mechanism is the same, only the
-throughput ceiling differs, hence the Fixes tag on the frame-count
-change.
-
-The XSK/XDP TX paths keep their frame-count-only IC logic: there is
-no skb/TSQ backpressure on those paths, and netdev_xmit_more() is not
-meaningful outside ndo_start_xmit.
-
-The same completion starvation was reported by Pavel Machek in 2016
-(UDP burst pauses, back then a 40 ms low-res timer):
-https://lore.kernel.org/netdev/20161123105125.GA26394@amd/
-His patch disabling TX coalescing entirely was rejected in favour of
-"a real solution":
-https://lore.kernel.org/netdev/20161205122711.GA30774@amd/
-The subsequent hrtimer conversion fixed the timer resolution but kept
-the timer as the only completion mechanism for lightly queued flows;
-this patch adds the missing burst-end interrupt.
-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 3801f9d45278..89f207eaf560 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4613,6 +4613,8 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 		set_ic = true;
- 	else if (!priv->tx_coal_frames[queue])
- 		set_ic = false;
-+	else if (!netdev_xmit_more())
-+		set_ic = true;
- 	else if (tx_packets > priv->tx_coal_frames[queue])
- 		set_ic = true;
- 	else if ((tx_q->tx_count_frames %
-@@ -4897,6 +4899,8 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
- 		set_ic = true;
- 	else if (!priv->tx_coal_frames[queue])
- 		set_ic = false;
-+	else if (!netdev_xmit_more())
-+		set_ic = true;
- 	else if (tx_packets > priv->tx_coal_frames[queue])
- 		set_ic = true;
- 	else if ((tx_q->tx_count_frames %
--- 
-2.55.0
-
+--_002_7402d0e3ade541f18d764ca6ecc037fcssigouvfr_--
