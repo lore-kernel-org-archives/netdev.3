@@ -1,87 +1,79 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E28F30C177
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11DF446830
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785514185; cv=none; b=Z1Rd0vDw35YGKa4oCilCgLua9P10RKbkKCy7ebWT9GS0WLGIKsc+XLDIWfhOMvGjqBAwYQloyYJ2Nrjg73N+L8eoLJYE4qDtnJdTfECkazsyo4viyiGdgla3pzZah8vUZQGIOjsTIb8tPXe3MPFi84AfBGDEJ/+IaOECm2XWIn4=
+	t=1785514196; cv=none; b=kllITwvnmpnCgF2MuHit/l/wte8UB0OuqlANQ4kIDKEgsU2Y4Js3uFV7G8HUHhnlj2Tzs+a7OM9HBKRaUp5Dy3IfJrqiIqdrzs+zNR70ktJsFn4j2fRznquPD04mva6aWMdFJUgnRUIq5W0IFdvfgR+GDYx9PjQHhA3RzGoBRx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785514185; c=relaxed/simple;
-	bh=QuOHVUXZaNXIhrShG9cSusa/YKkv8CbCwuwOv5iBRuQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fIULurYEQV7YwCsY5iUh5pvULeIxHfAzjpTmtFzJsIUSKjVlQYb0o64S9NtuDCTmaB48JZ4RMDP0doo2EV9SpqNFHG3n7mbj5eCL3vr+EKHODw/+DRuFBon7fs8pTSYxGDQ/MpPbTpZp37nCMXP44Tp9lzHYr/EOJduxtvUeuu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZDHBUdqc; arc=none smtp.client-ip=209.85.128.179
+	s=arc-20240116; t=1785514196; c=relaxed/simple;
+	bh=z4Qhe6C2aCMSOTeXB7AyUYqEYyZgecaWjg4p4FyQSKw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rLPsmn7iji5SR3Pb+1qNVb7ZFv6Rjyy7azGV03/Fw2VkQT5Ic3C99VMVc9xbTJgGtXO70+akJE0XM6EQdH7n2MJ+38QYehcDRhaSLg2p5o1YSA1VrJQYAxN0sHfnMrlNMZ7SbmZldSyiMvswfcltlxgXxqJKwsDy8ipSG9nHLBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U1NEIcd5; arc=none smtp.client-ip=74.125.224.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZDHBUdqc"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-81f64e6eae4so571727b3.1
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:09:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U1NEIcd5"
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-660a40aac63so167855d50.0
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:09:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785514182; x=1786118982; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785514193; x=1786118993; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HryNKTJ9ZUnf2M5m7KIoAdHK6I+SlFQkEvsnZ8zee2c=;
-        b=ZDHBUdqcaewPYvSBd0UMifrj6G3KYHUk6PLUHzsnlk7ZGpd5sxf3EO6AiLicGplg+W
-         mZ+5VHw5lXtbc27XK4pnfTfzfZa0YXrCwmSpvPYQUUujppCeqo22lFjj7UFbo7dBcOCI
-         iJn+PmbdKQdCfwKy87sVqf8ihIfiud++niItWW3i8EOAIb1zSBokzXOhqzlPHkDe3RKo
-         KTivB7ksGRgqo1eMmijmAmb2sHqXV7C8Tez3GpiHbb4/PaI/o/0q6tnWXGDG/UzSfCBb
-         yr5lVoD+E6YD8thA9ebrKEQsVfK799fYoEtQA3OOevnh85Qtr4x1UX6Z+uoTK+eoXmSk
-         YqRA==
+        bh=TVPw52z6WBQH7CgAI69D0zm3cgBs9+c1LhxWSzEvrzM=;
+        b=U1NEIcd5bRLmMgEJjaUWQl/DKYLg6BfVUmFTQMtyKyjQvhhEfiwgNBWNzX0vcrif30
+         6FR7/aqKVbpR0PRjCaMepWVwYu71GQvX83pGgMHfvLf+zNINz3m1hywJH/zSh1+xJuNC
+         57Q8JQvSKy+snlT/Vvbs/7MQ26IfemO8+l5cy9WjNZPdsrWjFOCqXgvBS/5QBUGZx/xP
+         BVJYH9EH/DtLXSEeXU3IEZTqk7Ve+xcDsVOG7ECjn9viPUVtEb3AB9MBgE7PtXrBkmXC
+         hqkdqJi0mENF7CzMf+XZkKrqE3UAIUK+YITdVMOOP4eyGhHvDb0tXFPYGFXuhcF2Gz/n
+         7aVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785514182; x=1786118982;
+        d=1e100.net; s=20251104; t=1785514193; x=1786118993;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HryNKTJ9ZUnf2M5m7KIoAdHK6I+SlFQkEvsnZ8zee2c=;
-        b=S5MVDjal3h3hUnZSHrbzoZqvbjcq2AnvUkw8sjKn6iZSqPzIdbP953Qs4LAYieaQFb
-         KQKs/MCbpgvzUnGwDtUm+DVse08jHt/ZglSmJDipEi6cHTMO73Ey2//pcFbV4xZURcu1
-         3adSQbXZ8Y0Z/kdQZTxZVMD6Pn3LJB3PILEF1ym+a1+sW2wZbVHGMhVFiWloORRLI5Pw
-         WZ6oyXDSfTmTkbE3JwQuAswGQC2HseBqQmkuFhLyunv1Vv1m0/xRdw7mvjUiXpHk4Kaj
-         26yXwTv9Hn40up8ehhqm10yGVd7cntTFMzNGBSPpGPLk7GRSFlM8fpMByUvU/wtwbLBu
-         MT1g==
-X-Forwarded-Encrypted: i=1; AHgh+Ro9dIZ1Dcwww2m3ZPPonyNWC6narjMjeej/7JmHEcgP8EcLJPU75YmcLITfnctnJVVru5X5q/E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJ6e5TWMOlxrOQLDNGrRRHd5ucyyrcarMA8cN5d6EfQZY89HET
-	EhT22ck5E7jG4ZtN6c2aGkSr5joeWxl1ZOcbtcwJqcnOUtogW8l3fY/i
-X-Gm-Gg: AR+sD11FooqmygqmpiJEmy8RAgxhNeC/VIcuTBNRBemQupSfuGblSNfQQD5QZen9fCz
-	cl6Eqw0QT40DY03vXsL8m72dJfsIFG2aU+K/9B+X60lnp3PDK8uKbjayiShAyWRkcjRcXXgRT1N
-	fRl8dKdTgv4+hW48VUeJOe7FoIqFWPmz5BW6fhTOmYZKppvTj/P++pwmNKxko0lzYkwLiNO1hM0
-	KSXIBxf11YehRY0vNs8mzNCPv56IsaDF2EJT4hbsUYVOCVABdS2QT0gzycMS3retXFcX+t6uUIz
-	fTH6tdVHt5S/tfdxaW7/XUeTcmXFogKr2nxiWctQB7k5QxgxteeM6ocAoUDPIHmVjGxgTrMuDp5
-	LgD4HRjFxcSsYgIGhkrTXZBwdCg8cSl3nJtKoBakiK00Noea8Q0Fr/e/aVdLIovad8yDmzuUa8e
-	9WCeLVLy1uebbB+mZVi7/sLOsJ9n+0hrGu30hCbIPSdLEC8UM0kFBafTqEHo12vTwSuCdrtAxZ7
-	LidGQYNaIBLHn39rlr0H94kzZRdMqQxRsXtjIucUTII+mtDL7Jz81cCPmmIohZLBqQ=
-X-Received: by 2002:a05:690c:d8b:b0:7f0:9099:daed with SMTP id 00721157ae682-81fd4831691mr5715347b3.0.1785514182186;
-        Fri, 31 Jul 2026 09:09:42 -0700 (PDT)
+        bh=TVPw52z6WBQH7CgAI69D0zm3cgBs9+c1LhxWSzEvrzM=;
+        b=oMvfTbRYBkzttXHKCdtz0sQMrzdeyrpLRslfc2+DdoiZVlu+hJZ/L/zRjz+YL7rZLD
+         Gr1Uybmfdqqp6gMadRaFGKR6+wqZkadOXDCyqHctDxRMiDH/a5qS7tyqDynXCV/DuymT
+         sTR0dnwaoJUK6H8mKJ6ZCLyIPuMELU94CuL7fmd+/71UiJYhqhRKhozC/3L7DMGKqlfm
+         ixZTb563VSGAbgES67KjRTCX4Dcxj/F4uQbfDcEbClPiC7ZzFaoDC4zCivaZfHVnYFgw
+         zSAhT+4yiGmZ08ISHwER+jdf+qndk+nAlUUykeUNkHQun5W6uRfSwk8Au8s5YYZNNeqL
+         R3HA==
+X-Gm-Message-State: AOJu0Yw5CFI1slXIqgBVRn02Et5KlhL24m3XPJf3egMFRALbxW9Dzpvp
+	GTizCjof+Ea7/Pp9WFTgHtCfdM/DfRF42I9qfU/RMGdrHmT2z10VBM0M
+X-Gm-Gg: AR+sD10HyaXxija2RrpQuqR6+6T6TXN92iRTk3hm88rt8q708qJVVii2mxEjPmYeKAm
+	cvB31s93CfmdGNqmNZPnmarahwcAhfF6jPVipCna2mxDOfjZbsoHKRlXZ5YNKr8AsKdJvNF6pRH
+	Es+AneVd9bDTN7iGPwHKeIbsM6JueH6ntWG090dr+1JGE6M3dZwzf+BWeI3kdyIek/IMX28p751
+	ItDgzzOB3HR8WXkZkbaIfbTSqpOp7qqVRs+sQXBX+pLT3PIrsbFo46rCjxYd1jnn7j+/KsaREkK
+	JDBnhf5da7w/qGiEcIcZEbj2goSNH/9wZ+DuLqCQqKuBXs88aMQlaGMyVbM7VLai0rh1kRnauB4
+	+QzPya4by55qUgo9Wd1ooOQ1Xk+nbI6odU34bO0VoDF92z4l9DaSl2Px20Ff0X9XDfdGYisMpif
+	pY11gLFegX5f+5A47IIf81q1G6whP4LOlf+3xThgB0SSag3qJbZjDanCuRZ5TQePpBwG8xf2Cmo
+	qSf6ygxXbn7v2qkHQvvELGMeLISvP0UZ2/yn6lZpQev0qAHaRAoh5M=
+X-Received: by 2002:a05:690c:6601:b0:81e:c06e:58b1 with SMTP id 00721157ae682-81fd49c65eemr5130227b3.1.1785514193473;
+        Fri, 31 Jul 2026 09:09:53 -0700 (PDT)
 Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fccf610a0sm9179887b3.14.2026.07.31.09.09.36
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fcd0d6f24sm9194187b3.30.2026.07.31.09.09.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 09:09:41 -0700 (PDT)
+        Fri, 31 Jul 2026 09:09:53 -0700 (PDT)
 From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
+To: Allison Henderson <achender@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
+	Santosh Shilimkar <santosh.shilimkar@oracle.com>,
+	Ka-Cheong Poon <ka-cheong.poon@oracle.com>,
+	Dan Carpenter <error27@gmail.com>
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
 	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
 	Chengfeng Ye <nicoyip.dev@gmail.com>
-Subject: [PATCH bpf v3] bpf: Fix netns reference imbalance in conntrack kfuncs
-Date: Sat,  1 Aug 2026 00:09:21 +0800
-Message-ID: <20260731160921.3245840-1-nicoyip.dev@gmail.com>
+Subject: [PATCH net-next v3] rds: synchronize info callbacks with module unload
+Date: Sat,  1 Aug 2026 00:09:42 +0800
+Message-ID: <20260731160942.3245965-1-nicoyip.dev@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -91,215 +83,147 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The opts argument of the BPF conntrack kfuncs can point to a shared
-map value.  __bpf_nf_ct_lookup() and __bpf_nf_ct_alloc_entry() read
-opts->netns_id separately when acquiring and releasing the network
-namespace reference.
+rds_info_getsockopt() reads a callback from rds_info_funcs and invokes it
+without protecting the callback's lifetime.  Transport modules register
+functions stored in this array.  For example, rds_tcp.ko registers
+rds_tcp_tc_info() for RDS_INFO_TCP_SOCKETS.
 
-The reference imbalance can occur as follows:
+This permits the following interleaving:
 
-  CPU 0                                  CPU 1
-  read opts->netns_id (-1)
-  skip get_net_ns_by_id()
-                                         write opts->netns_id (id)
-  read opts->netns_id (id)
-  put_net(net) /* no matching get */
+  CPU0                             CPU1
+  rds_info_getsockopt()
+    func = rds_tcp_tc_info
+                                   rmmod rds_tcp
+                                     rds_tcp_exit()
+                                       rds_info_deregister_func()
+                                         rds_info_funcs[offset] = NULL
+                                     free rds_tcp module text
+    func()
 
-The reverse transition leaks the reference.  Repeating the unmatched put
-can destroy a live namespace and crash later users.
+The reader can therefore branch to an address in unloaded module text.
 
-The kernel reported:
+Protect callback invocation with SRCU.  Enter the SRCU read-side critical
+section before loading the callback and leave it only after the callback
+returns.  Clear the callback with release semantics and call
+synchronize_srcu() before deregistration returns, preventing module unload
+from freeing its text while an old reader is still executing it.  SRCU is
+required because callbacks such as RDS_INFO_COUNTERS can sleep.
 
-  Oops: general protection fault, probably for non-canonical address
-  KASAN: null-ptr-deref in range [0x00000000000000e8-0x00000000000000ef]
-  RIP: 0010:bpf_prog_test_run_xdp+0x52c/0x1700
-  Call Trace:
-   __sys_bpf+0x1662/0x50c0
-   __x64_sys_bpf+0x73/0xb0
-   do_syscall_64+0xf9/0x540
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  Kernel panic - not syncing: Fatal exception
+Keep the callback array unannotated and use acquire and release operations
+for publication so sparse does not have to apply __rcu through the
+function-pointer typedef.  Replace the two callback-slot BUG_ON() checks
+with WARN_ON_ONCE() and return without changing the slot on mismatch.
 
-Snapshot every input field of opts with READ_ONCE() before validating or
-using it.  The netns_id snapshot keeps the namespace get/put pair
-balanced, while the other snapshots keep the remaining options from
-changing partway through an invocation.  The individual reads can still
-observe an inconsistent combination during a concurrent update, but each
-selected field value remains stable for that invocation.
-
-Fixes: aed8ee7feb44 ("net: netfilter: Deduplicate code in bpf_{xdp,skb}_ct_lookup")
-Fixes: d7e79c97c00c ("net: netfilter: Add kfuncs to allocate and insert CT")
+Link: https://lore.kernel.org/netdev/20260720184955.3008978-1-nicoyip.dev@gmail.com/
+Suggested-by: Allison Henderson <achender@kernel.org>
+Reviewed-by: Allison Henderson <achender@kernel.org>
 Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 ---
-Changes in v3:
-- Inline the one-use reserved-byte READ_ONCE() checks instead of
-  copying them into a local array.
-- Reorder the new local declarations in reverse-xmas-tree order.
 
-Link: https://lore.kernel.org/bpf/20260730082958.2065194-1-nicoyip.dev@gmail.com/ [v2]
+Changes in v3:
+- Use ordinary loads for callback-slot validation under rds_info_lock;
+  retain acquire semantics only for the lockless reader.
+- Drop the Fixes tag because this patch targets net-next.
+- Add Allison Henderson's Reviewed-by tag.
+
+Link: https://lore.kernel.org/netdev/20260727174826.135662-1-nicoyip.dev@gmail.com/ [v2]
 
 Changes in v2:
-- Snapshot l4proto, ct_zone_id, ct_zone_dir, and the reserved bytes in
-  addition to netns_id, as requested in review.
-- Rebase onto bpf/master.
+- Split the info callback/module-unload race from the independent
+  inc->i_conn lifetime bug.
+- Keep the callback array unannotated and use smp_load_acquire() and
+  smp_store_release() to resolve the sparse errors.
+- Replace the two touched callback-slot BUG_ON() checks with
+  WARN_ON_ONCE() error paths.
+- Rewrite the commit message for the callback race and omit the unrelated
+  inc->i_conn KASAN report.
 
-Link: https://lore.kernel.org/bpf/20260729163141.213611-1-nicoyip.dev@gmail.com/ [v1]
+Link: https://lore.kernel.org/netdev/20260720184955.3008978-1-nicoyip.dev@gmail.com/ [v1]
 
-Please queue this fix for stable kernels.
+ net/rds/info.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
- net/netfilter/nf_conntrack_bpf.c | 72 +++++++++++++++++++++-----------
- 1 file changed, 48 insertions(+), 24 deletions(-)
-
-diff --git a/net/netfilter/nf_conntrack_bpf.c b/net/netfilter/nf_conntrack_bpf.c
-index f98d1d4b42c3..c2df7c948281 100644
---- a/net/netfilter/nf_conntrack_bpf.c
-+++ b/net/netfilter/nf_conntrack_bpf.c
-@@ -122,42 +122,54 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_sock_tuple *bpf_tuple,
- 	struct nf_conntrack_tuple otuple, rtuple;
- 	struct nf_conntrack_zone ct_zone;
- 	struct nf_conn *ct;
-+	u8 ct_zone_dir = 0;
-+	u16 ct_zone_id;
-+	s32 netns_id;
-+	u8 l4proto;
- 	int err;
+diff --git a/net/rds/info.c b/net/rds/info.c
+index 21b32eb16559..385fefbfa07f 100644
+--- a/net/rds/info.c
++++ b/net/rds/info.c
+@@ -32,6 +32,7 @@
+  */
+ #include <linux/percpu.h>
+ #include <linux/seq_file.h>
++#include <linux/srcu.h>
+ #include <linux/slab.h>
+ #include <linux/proc_fs.h>
+ #include <linux/export.h>
+@@ -68,6 +69,7 @@ struct rds_info_iterator {
+ 	unsigned long offset;
+ };
  
- 	if (!(opts_len == NF_BPF_CT_OPTS_SZ || opts_len == 12))
- 		return ERR_PTR(-EINVAL);
-+
-+	netns_id = READ_ONCE(opts->netns_id);
-+	l4proto = READ_ONCE(opts->l4proto);
-+	ct_zone_id = READ_ONCE(opts->ct_zone_id);
- 	if (opts_len == NF_BPF_CT_OPTS_SZ) {
--		if (opts->reserved[0] || opts->reserved[1] || opts->reserved[2])
-+		ct_zone_dir = READ_ONCE(opts->ct_zone_dir);
-+		if (READ_ONCE(opts->reserved[0]) ||
-+		    READ_ONCE(opts->reserved[1]) ||
-+		    READ_ONCE(opts->reserved[2]))
- 			return ERR_PTR(-EINVAL);
- 	} else {
--		if (opts->ct_zone_id)
-+		if (ct_zone_id)
- 			return ERR_PTR(-EINVAL);
++DEFINE_STATIC_SRCU(rds_info_srcu);
+ static DEFINE_SPINLOCK(rds_info_lock);
+ static rds_info_func rds_info_funcs[RDS_INFO_LAST - RDS_INFO_FIRST + 1];
+ 
+@@ -78,8 +80,12 @@ void rds_info_register_func(int optname, rds_info_func func)
+ 	BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
+ 
+ 	spin_lock(&rds_info_lock);
+-	BUG_ON(rds_info_funcs[offset]);
+-	rds_info_funcs[offset] = func;
++	if (WARN_ON_ONCE(rds_info_funcs[offset])) {
++		spin_unlock(&rds_info_lock);
++		return;
++	}
++	/* Pair with lockless callback lookup. */
++	smp_store_release(&rds_info_funcs[offset], func);
+ 	spin_unlock(&rds_info_lock);
+ }
+ EXPORT_SYMBOL_GPL(rds_info_register_func);
+@@ -91,9 +97,14 @@ void rds_info_deregister_func(int optname, rds_info_func func)
+ 	BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
+ 
+ 	spin_lock(&rds_info_lock);
+-	BUG_ON(rds_info_funcs[offset] != func);
+-	rds_info_funcs[offset] = NULL;
++	if (WARN_ON_ONCE(rds_info_funcs[offset] != func)) {
++		spin_unlock(&rds_info_lock);
++		return;
++	}
++	/* Hide the callback before waiting for old readers. */
++	smp_store_release(&rds_info_funcs[offset], NULL);
+ 	spin_unlock(&rds_info_lock);
++	synchronize_srcu(&rds_info_srcu);
+ }
+ EXPORT_SYMBOL_GPL(rds_info_deregister_func);
+ 
+@@ -165,6 +176,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, sockopt_t *opt)
+ 	int npages = 0;
+ 	int ret;
+ 	int len;
++	int srcu_idx;
+ 	int total;
+ 
+ 	len = opt->optlen;
+@@ -214,8 +226,11 @@ int rds_info_getsockopt(struct socket *sock, int optname, sockopt_t *opt)
+ 	rdsdebug("len %d nr_pages %lu\n", len, nr_pages);
+ 
+ call_func:
+-	func = rds_info_funcs[optname - RDS_INFO_FIRST];
++	srcu_idx = srcu_read_lock(&rds_info_srcu);
++	/* Pair with callback slot publication and removal. */
++	func = smp_load_acquire(&rds_info_funcs[optname - RDS_INFO_FIRST]);
+ 	if (!func) {
++		srcu_read_unlock(&rds_info_srcu, srcu_idx);
+ 		ret = -ENOPROTOOPT;
+ 		goto out;
  	}
+@@ -225,6 +240,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, sockopt_t *opt)
+ 	iter.offset = offset0;
  
--	if (unlikely(opts->netns_id < BPF_F_CURRENT_NETNS))
-+	if (unlikely(netns_id < BPF_F_CURRENT_NETNS))
- 		return ERR_PTR(-EINVAL);
+ 	func(sock, len, &iter, &lens);
++	srcu_read_unlock(&rds_info_srcu, srcu_idx);
+ 	BUG_ON(lens.each == 0);
  
--	err = bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
-+	err = bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, l4proto,
- 				    IP_CT_DIR_ORIGINAL, &otuple);
- 	if (err < 0)
- 		return ERR_PTR(err);
- 
--	err = bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
-+	err = bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, l4proto,
- 				    IP_CT_DIR_REPLY, &rtuple);
- 	if (err < 0)
- 		return ERR_PTR(err);
- 
--	if (opts->netns_id >= 0) {
--		net = get_net_ns_by_id(net, opts->netns_id);
-+	if (netns_id >= 0) {
-+		net = get_net_ns_by_id(net, netns_id);
- 		if (unlikely(!net))
- 			return ERR_PTR(-ENONET);
- 	}
- 
- 	if (opts_len == NF_BPF_CT_OPTS_SZ) {
--		if (opts->ct_zone_dir == 0)
--			opts->ct_zone_dir = NF_CT_DEFAULT_ZONE_DIR;
--		nf_ct_zone_init(&ct_zone,
--				opts->ct_zone_id, opts->ct_zone_dir, 0);
-+		if (ct_zone_dir == 0) {
-+			ct_zone_dir = NF_CT_DEFAULT_ZONE_DIR;
-+			opts->ct_zone_dir = ct_zone_dir;
-+		}
-+		nf_ct_zone_init(&ct_zone, ct_zone_id, ct_zone_dir, 0);
- 	} else {
- 		ct_zone = nf_ct_zone_dflt;
- 	}
-@@ -171,7 +183,7 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_sock_tuple *bpf_tuple,
- 	__nf_ct_set_timeout(ct, timeout * HZ);
- 
- out:
--	if (opts->netns_id >= 0)
-+	if (netns_id >= 0)
- 		put_net(net);
- 
- 	return ct;
-@@ -186,46 +198,58 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct net *net,
- 	struct nf_conntrack_tuple tuple;
- 	struct nf_conntrack_zone ct_zone;
- 	struct nf_conn *ct;
-+	u8 ct_zone_dir = 0;
-+	u16 ct_zone_id;
-+	s32 netns_id;
-+	u8 l4proto;
- 	int err;
- 
- 	if (!opts || !bpf_tuple)
- 		return ERR_PTR(-EINVAL);
- 	if (!(opts_len == NF_BPF_CT_OPTS_SZ || opts_len == 12))
- 		return ERR_PTR(-EINVAL);
-+
-+	netns_id = READ_ONCE(opts->netns_id);
-+	l4proto = READ_ONCE(opts->l4proto);
-+	ct_zone_id = READ_ONCE(opts->ct_zone_id);
- 	if (opts_len == NF_BPF_CT_OPTS_SZ) {
--		if (opts->reserved[0] || opts->reserved[1] || opts->reserved[2])
-+		ct_zone_dir = READ_ONCE(opts->ct_zone_dir);
-+		if (READ_ONCE(opts->reserved[0]) ||
-+		    READ_ONCE(opts->reserved[1]) ||
-+		    READ_ONCE(opts->reserved[2]))
- 			return ERR_PTR(-EINVAL);
- 	} else {
--		if (opts->ct_zone_id)
-+		if (ct_zone_id)
- 			return ERR_PTR(-EINVAL);
- 	}
--	if (unlikely(opts->l4proto != IPPROTO_TCP && opts->l4proto != IPPROTO_UDP))
-+	if (unlikely(l4proto != IPPROTO_TCP && l4proto != IPPROTO_UDP))
- 		return ERR_PTR(-EPROTO);
--	if (unlikely(opts->netns_id < BPF_F_CURRENT_NETNS))
-+	if (unlikely(netns_id < BPF_F_CURRENT_NETNS))
- 		return ERR_PTR(-EINVAL);
- 
--	err = bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, opts->l4proto,
-+	err = bpf_nf_ct_tuple_parse(bpf_tuple, tuple_len, l4proto,
- 				    IP_CT_DIR_ORIGINAL, &tuple);
- 	if (err < 0)
- 		return ERR_PTR(err);
- 
--	if (opts->netns_id >= 0) {
--		net = get_net_ns_by_id(net, opts->netns_id);
-+	if (netns_id >= 0) {
-+		net = get_net_ns_by_id(net, netns_id);
- 		if (unlikely(!net))
- 			return ERR_PTR(-ENONET);
- 	}
- 
- 	if (opts_len == NF_BPF_CT_OPTS_SZ) {
--		if (opts->ct_zone_dir == 0)
--			opts->ct_zone_dir = NF_CT_DEFAULT_ZONE_DIR;
--		nf_ct_zone_init(&ct_zone,
--				opts->ct_zone_id, opts->ct_zone_dir, 0);
-+		if (ct_zone_dir == 0) {
-+			ct_zone_dir = NF_CT_DEFAULT_ZONE_DIR;
-+			opts->ct_zone_dir = ct_zone_dir;
-+		}
-+		nf_ct_zone_init(&ct_zone, ct_zone_id, ct_zone_dir, 0);
- 	} else {
- 		ct_zone = nf_ct_zone_dflt;
- 	}
- 
- 	hash = nf_conntrack_find_get(net, &ct_zone, &tuple);
--	if (opts->netns_id >= 0)
-+	if (netns_id >= 0)
- 		put_net(net);
- 	if (!hash)
- 		return ERR_PTR(-ENOENT);
+ 	total = lens.nr * lens.each;
 -- 
 2.43.0
 
