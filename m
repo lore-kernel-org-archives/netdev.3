@@ -1,171 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B12C348C4C;
-	Fri, 31 Jul 2026 16:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A214499BB;
+	Fri, 31 Jul 2026 16:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785514323; cv=none; b=ZsNgtpiZMee/ZyJXHpUYslBpms+KmS+Q/+DnTTJy+EhyKQPtAfruG876GNLBWdZb7HDzUuMtfVwxAJurPanlXi0WlPQfG5z7POOGpohIYYB7Hk+t7jpjoPGd10Zyj0X7+CROlvpXGUKIUyZ3y+4h3An6vg8RoGAPSAMKpBthsfQ=
+	t=1785514344; cv=none; b=mi/epa/3bNePiNGsC6atrJlAG6cJ7jVxN+MT9FP5koEElZjmPLH0D+gv9sLEpyvkyZQgoASH+VIZQyPLbmxRI36jU42uNsK0YDAVmixIAqyIz/GKoGg8WNmcCzxAIKVX8NyY4M5B95LiwluhYsbcYtSttXDR+MQ0XGK5bUW9eQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785514323; c=relaxed/simple;
-	bh=ui8VDtI5yOAFU3S8ye/n7ySA6W76JGnaC2JuarKKSug=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GL6OLGs+lei0eic/IrmDz8Melnx2egWBFwWfJ0IPPFykrH7rfAq8vX81LS8kMC3g5QnqCTUCTWvp44oQuOrI2zvycMOYmtWJaK6KNRf3O44QO1jNz+zzjninxk3QXNwhzLXwhE9y2ftvPWN7iwG41eZLqO1aDxvub1HTZ4I5rUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J5+VHPiv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785514344; c=relaxed/simple;
+	bh=kcZ+RNr7XdnGnY+wFRtrg4jim/4yt6hYdbLxw79pNbo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G6JCZYckCqOQw67U/7jhLvq4Hp4xZe13Nozgydk3SMwCEbTy5Cdhw4NxAT2rrj7LL18/xEunzYNQHNDSQr3kDh+R3ykFUKGeoD+nvWLbBTq2Bl/mEEwF6Z15GYgx3mS3Z+159HBzfnjlbd7s6lZw2L91BnQwJ5u5Tnm3oigULy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=eQVRQIO5; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Pvt0s9Ob; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J5+VHPiv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5B31F00AC4;
-	Fri, 31 Jul 2026 16:11:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785514321;
-	bh=+aY16cQD1yi/fI/iYzD2yH9asZaD/+RJNulXbhKPIL4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=J5+VHPivrFG08eNk6jh85FQbBiRLs+GBo+x95+l61naVKO3k6qkgOGHlYzTzvq9LQ
-	 c6RrJyw8TM2kMYdwe6bKJZRXZ+aaD3RK+E09W86CSjhzlr7SZylKMhsCzR+fcOBrJX
-	 4JRs7vtkSELCKH2DcR3r3Z6OkbIouGAeQnVUQa8J7H9lUJ0nK1IcPj4ZhyQHIRPC6q
-	 fYwUnX6InUkLpQ2464gk1ELegKQRzXVsEWXMAFuI3cMn/WlwpY5AsO/oISjeLQytmQ
-	 LppNW7pmoGnuNt0wkTybBy5pLUI4kb3GbS4yPCpml9KjY79RtOG1CvOaCD/PczuW/j
-	 WcWUVONYA1/xw==
-From: Simon Horman <horms@kernel.org>
-To: mhun512@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	qiang.zhao@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	ae878000@gmail.com
-Subject: Re: [PATCH net] net: wan: fsl_ucc_hdlc: release HDLC device on remove
-Date: Fri, 31 Jul 2026 17:10:00 +0100
-Message-ID: <20260731161000.334673-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260728171545.49247-1-mhun512@gmail.com>
-References: <20260728171545.49247-1-mhun512@gmail.com>
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="eQVRQIO5";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Pvt0s9Ob"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1785514340;
+	bh=kcZ+RNr7XdnGnY+wFRtrg4jim/4yt6hYdbLxw79pNbo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eQVRQIO5V6ZaYuTlKoMNWPTkNlSAlN1HsH0UeKMPgFLH9MzYM9F3bIbGMVy+tBy05
+	 LAt4RnT/plNCp2/mxDhdg53doOGlal6JhpDvvuYleUCsHO0HyVpXPHGauKLIkmOrce
+	 atV8wkT1IHYMwdtsJzwpDe5RQtUbR+9Fn3FabBQg5hDLYYTNO7BD0GBT6CxCh2tqfZ
+	 vKbtXH1R155sa1UsTTMyrqXsoQaxypClTz0zCXTbr+hPA44NzZO+xcV+vwTA2RhAxr
+	 CETDZXxiV3ICnc+g5wQbXnJ8xooQsa2o1mwtkARxll5RmuCpuZOG4/zHZhgFUxz2Rg
+	 7pqFx8tAHyH+g==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 54B62494F6; Fri, 31 Jul 2026 16:12:20 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1785514335;
+	bh=kcZ+RNr7XdnGnY+wFRtrg4jim/4yt6hYdbLxw79pNbo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Pvt0s9ObYbz1lbPY4LM5KCAiJfqo8CNrvZiMl3PUwi1G0okKasIBmlTwQyb8tQ6GV
+	 qrIhCTfuODQmCkB7ISm0XN3ZE5aGMeS7KyQJzytk1jPIlaqajPxD3OWaH5njwhNtVw
+	 +qUINukqWxS8acm7DaEn5TvNwoIwGGOy8wKNzwrrULvbQpyDILZsVvtXl+DW3K0AUt
+	 dJr7lnNlDYLLgo2ye2u0fmM/6fEeQJd5vjDq7DI+NRGCq+noJhPkTLGV7e8sJnGXpn
+	 RKNpk2f0hOZcAAeciiJBlMb0NrfkdQB6vU06pd5v90Ym+yXcG4cIYgVDp3WDPcqq1F
+	 eW7AAWKumnxug==
+Received: from [10.99.12.190] (unknown [82.99.30.195])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id B6AA7494ED;
+	Fri, 31 Jul 2026 16:12:14 +0000 (UTC)
+Message-ID: <c0848394-d29f-4709-81f7-a2b58e5a3449@birger-koblitz.de>
+Date: Fri, 31 Jul 2026 18:12:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 07/13] ax88179_178a: Obtain speed and duplex
+ from Interrupt URB
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
+ <20260724-ax88179a-v3-7-bdde4f905883@birger-koblitz.de>
+ <434f6f0b-40ce-4f2c-95ac-1fe24ce38366@lunn.ch>
+From: Birger Koblitz <mail@birger-koblitz.de>
+Content-Language: en-US
+In-Reply-To: <434f6f0b-40ce-4f2c-95ac-1fe24ce38366@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260728171545.49247-1-mhun512@gmail.com?part=1
----
---- Patch [1]: [PATCH net] net: wan: fsl_ucc_hdlc: release HDLC device on remove ---
-commit 345f90c3e598219f0faf6e99ee38f97b8bd6452d
-Author: Myeonghun Pak <mhun512@gmail.com>
+On 24/07/2026 19:01, Andrew Lunn wrote:
+>> @@ -506,6 +507,9 @@ static void ax88179_status(struct usbnet *dev, struct urb *urb)
+>>   	le32_to_cpus((void *)&event->intdata1);
+>>   
 
-net: wan: fsl_ucc_hdlc: release HDLC device on remove
-
-The remove path previously freed the ucc_hdlc_private object without
-unregistering or freeing the HDLC netdev. This patch adds
-unregister_hdlc_device() at the start of ucc_hdlc_remove() and
-free_netdev() before kfree(priv).
-
-> diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-> index 809f21fb93f5..4c843c94cf43 100644
-> --- a/drivers/net/wan/fsl_ucc_hdlc.c
-> +++ b/drivers/net/wan/fsl_ucc_hdlc.c
-> @@ -1255,6 +1255,8 @@ static void ucc_hdlc_remove(struct platform_device *pdev)
->  {
->  	struct ucc_hdlc_private *priv = dev_get_drvdata(&pdev->dev);
+> The phylink link up callback will however tell you the truth. I would
+> trust it over firmware.
 >
-> +	unregister_hdlc_device(priv->ndev);
-> +
+x88179_status() has been dropped in v4.
 
-[Severity: High]
-The commit message says this "closes an active interface through ndo_stop,
-which disables NAPI, stops the UCC, and frees its IRQ".  Is ndo_stop really
-reached here?
+Birger
 
-unregister_hdlc_device() detaches the protocol before unregistering:
 
-drivers/net/wan/hdlc.c:unregister_hdlc_device() {
-	rtnl_lock();
-	detach_hdlc_protocol(dev);
-	unregister_netdevice(dev);
-	rtnl_unlock();
-}
-
-and detach_hdlc_protocol() ends with an unconditional hdlc_setup_dev(),
-which assigns dev->flags rather than or-ing into it:
-
-drivers/net/wan/hdlc.c:hdlc_setup_dev() {
-	dev->flags		 = IFF_POINTOPOINT | IFF_NOARP;
-	...
-}
-
-So IFF_UP is cleared while the interface is still running.  Both the
-unregister path and netif_close_many() in net/core/dev.c then gate the
-close on that flag:
-
-	if (!(dev->flags & IFF_UP))
-		continue;
-...
-	list_for_each_entry_safe(dev, tmp, head, close_list)
-		if (!(dev->flags & IFF_UP))
-			list_del_init(&dev->close_list);
-
-Doesn't that mean uhdlc_close() never runs, so none of napi_disable(), the
-QE_GRACEFUL_STOP_TX/QE_CLOSE_RX_BD sequence, ucc_fast_disable() or
-free_irq(priv->ut_info->uf_info.irq, priv) happen on the remove path when
-the link was brought up with "ip link set hdlc0 up"?
-
->  	uhdlc_memclean(priv);
->
->  	if (priv->utdm && priv->utdm->si_regs) {
-> @@ -1266,6 +1268,7 @@ static void ucc_hdlc_remove(struct platform_device *pdev)
->  		iounmap(priv->utdm->siram);
->  		priv->utdm->siram = NULL;
->  	}
-> +	free_netdev(priv->ndev);
->  	kfree(priv);
-
-[Severity: High]
-Following on from the above: if uhdlc_close() is skipped, can this sequence
-free memory that the hardware and the IRQ handler are still using?
-
-uhdlc_open() installs the handler with priv as dev_id and enables NAPI:
-
-drivers/net/wan/fsl_ucc_hdlc.c:uhdlc_open() {
-	if (request_irq(priv->ut_info->uf_info.irq,
-			ucc_hdlc_irq_handler, 0, "hdlc", priv))
-		return -ENODEV;
-	...
-	napi_enable(&priv->napi);
-	...
-}
-
-With no free_irq() anywhere else in the driver, the handler stays installed
-after kfree(priv), and the first thing it does is dereference dev_id:
-
-drivers/net/wan/fsl_ucc_hdlc.c:ucc_hdlc_irq_handler() {
-	struct ucc_hdlc_private *priv = (struct ucc_hdlc_private *)dev_id;
-	struct net_device *dev = priv->ndev;
-	...
-			__napi_schedule(&priv->napi);
-	...
-}
-
-Is that a use-after-free of priv, of the uccf freed by ucc_fast_free() in
-uhdlc_memclean(), and of the already deleted napi_struct?
-
-Also, since napi_disable() never ran, does free_netdev(priv->ndev) ->
-netdev_napi_exit() -> __netif_napi_del_locked() trip its
-WARN_ON(!test_bit(NAPI_STATE_SCHED, &napi->state)) and tear down a NAPI that
-may still be scheduled or polling?
-
-And with the UCC left enabled, can it keep DMAing into the coherent RX/TX
-rings and buffers that uhdlc_memclean() already returned via
-dma_free_coherent()?
-
-Would forcing the interface down before the protocol is detached, for
-example netif_close()/dev_close() under rtnl, or an explicit
-napi_disable()/UCC stop/free_irq() sequence in remove, address this?
