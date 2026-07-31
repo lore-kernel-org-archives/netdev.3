@@ -1,74 +1,99 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E1A443311;
-	Fri, 31 Jul 2026 15:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FAB11F30BB;
+	Fri, 31 Jul 2026 15:48:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785512866; cv=none; b=CWi3PLUxsy5FmvclaVa8Afb2TWpN5LahRGjT4KZvA4TeA4J6UTiGdKtB8gHrX5YZbyLiwfIxf88pquomOks4g/4EfGluvww15LxT53hS+CLymVaL73A7SjooL7PPWpeGdt3x1WeqKmhNHHaVXO50wqOLvAeR9XUII6o03R/nVTg=
+	t=1785512888; cv=none; b=QI+EMj/6yoYZuU9rdfsTW3SwJlfseXhEykV6KaU31vq/AtrRCaAJ7pS1fJqX6B7fm2D+oAlRawCkqCC7TPyxbrmHueHFkY5cLAlWRLGB0tgMfJaKWdzgFySOjuyKX2bxhAaSaG/S0KXEbirHFxBjWwZrlfP8nqQcxTHIhmU/dRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785512866; c=relaxed/simple;
-	bh=/IJwHqjmTXLNDi9+f7Jq20EAgi7qI99KySOm+dl8fYs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qg3OYYuSsdl/MjvWKUoEiU8FOfIGTBMSlApaySsYTUWx7IlLseMSmIiH3TPUD/YzhndzGNkJgpnE1krQRaNbIcxJABki9hozp/YkR+4raGa6KhgHSBBbL1Q4iAMd6xhKOuGHFgHQZP5hn06TfOQsOeCFGRuoegSNWOesussfhhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=AViRU+UK; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1785512888; c=relaxed/simple;
+	bh=E2lAHYOV1zA4r1eCJaIfPG87QPoFujjOI6UdDYwo/Xs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VKtBHb0FNxsBaUHfv55C4crYlhTDJnT1AJ2nkQj3M6kFF3RgpV7BTXqvOSoHRbMRoyNC5YXCINnRbLfSWPk/kCR4tnfFqIZiVtENdQ2O8I4MIlOC7nvXp02U+9yV3Drlo02IAVw2AUwdK0ZD6Ll35X7aLfUrMSnxa0SxUKy7/K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nnoasHzs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="AViRU+UK"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 60334601A6;
-	Fri, 31 Jul 2026 17:47:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1785512863;
-	bh=O/3G3HCfWlgBgJ00yPfEN3DKrDl1GzpN/k6fokooYts=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AViRU+UKMC++YfYfuAtfgGKqXMiUC2dlsHoqayzPXHuGmM34dJjUeDiNgv0oYCvob
-	 PHk4MHB7SdQxH1xAGtenCFp9thBuJeMADwpI5tjkLR1w0fBjD0RhF2Smk4mMtw6E/D
-	 cSI+XOQT667dpDRAjvSqIzXusvLpPZuolYa/R1cbIUjfnrUdtOpYeMRqCN+yRmsI3O
-	 5jCbZoX9FSGwoiO/QP4w81Zsgz9RXP4EFTcM3roP2uT6X2OO6pjYMTKnQ8mzalkBmu
-	 es3toSHWGHOh/Vs0QmunCQoECH2vvFIncIT1va0R61daG1alLJGKHTLViCdjDqujGO
-	 VQ1qKXINmPXIA==
-Date: Fri, 31 Jul 2026 17:47:40 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Zhiling Zou <zhilinz@nebusec.ai>, netfilter-devel@vger.kernel.org,
-	bridge@lists.linux.dev, netdev@vger.kernel.org, fw@strlen.de,
-	phil@nwl.cc, razor@blackwall.org, idosch@nvidia.com,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	horms@kernel.org, vega@nebusec.ai
-Subject: Re: [PATCH nf 1/1] netfilter: bridge: release template ct on non-IP
- path
-Message-ID: <amzDnLMB9bZDP4rw@chamomile>
-References: <cover.1785479514.git.zhilinz@nebusec.ai>
- <3cf187b612fd78f8835fa9dad870326ce380f82f.1785479514.git.zhilinz@nebusec.ai>
- <20260731080233.1956d41c@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nnoasHzs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5989B1F000E9;
+	Fri, 31 Jul 2026 15:48:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785512886;
+	bh=4lJnn4e7C9hE6wEWtqXYdtrs6SZibcqzJoHLR3d96n8=;
+	h=From:Date:Subject:To:Cc;
+	b=nnoasHzsDdLvEN2QpeRX1ph5kHse9vG8b5v0LLU9Pgf+Jij8GtrLXweeDr0HICtJ5
+	 cMDJZHdbE0vlsdQRmKbergVjSarNn3ymSq7iG64hsibhPaY/usqwMhE77E+QlWhjrx
+	 RNuf0VS0RWAJMTybz8zNMcoHVOpGsCnUuwZPsEp209gn25zqw+91vdD2jMkvrS/WNM
+	 +3XQhojPT0nWmtDo0CHtqudif05HiW35HoIVSAUFNT9ih1q4RrOiJvMd+4jHY95tUG
+	 +XdDWuZMArvbjWOEpFzw0pVq1ibZX+3Ipx1mMljhIBadglr6hb0p+U1II4sQ85F7Fm
+	 0aeNbqh5flXSw==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Fri, 31 Jul 2026 17:47:38 +0200
+Subject: [PATCH net-next] net: airoha: fix ARRAY_SIZE() division by zero on
+ UP builds
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260731080233.1956d41c@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260731-airoha-spinlock-array-fix-v1-1-863a7e239a5f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqDQAwAvyI5N+CuUm2/UjzENdagZCUrxSL+3
+ cXjDMwckNiEE7yLA4x/kiRqBvcoIEykX0YZMoMv/bNsKockFifCtIouMcxIZvTHUXYcfPUam7Z
+ 2oW8h96tx1vf7A8obKu8bdOd5ARE5m6x1AAAA
+X-Change-ID: 20260731-airoha-spinlock-array-fix-d239f7841cb8
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <ndesaulniers@google.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+ llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
+ kernel test robot <lkp@intel.com>, Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.3
 
-On Fri, Jul 31, 2026 at 08:02:33AM -0700, Jakub Kicinski wrote:
-> On Fri, 31 Jul 2026 14:36:53 +0800 Zhiling Zou wrote:
-> > A bridge nftables ct zone set rule can attach a conntrack template to
-> > an skb before nf_ct_bridge_pre() sees it. For non-IPv4 and non-IPv6
-> > EtherTypes, nf_ct_bridge_pre() currently overwrites skb->_nfct with
-> > IP_CT_UNTRACKED without releasing the existing template reference.
-> 
-> could be a coincidence but around the time this landed in our test tree
-> the nft_queue.sh test became more flaky.
+airoha_alloc_gdm_device() initializes the txq_lock[] array iterating
+over ARRAY_SIZE(dev->txq_lock). ARRAY_SIZE() expands to
+sizeof(dev->txq_lock) / sizeof((dev->txq_lock)[0]), but on UP builds
+(CONFIG_SMP unset, CONFIG_DEBUG_SPINLOCK unset) arch_spinlock_t is an
+empty struct, so sizeof(spinlock_t) is zero and the expression is a
+compile-time division by zero (undefined behavior), reported by clang
+as "division by zero is undefined [-Wdivision-by-zero]".
 
-Maybe this patch could be causing it?
+Since the array is statically sized with AIROHA_NUM_NETDEV_TX_RINGS,
+use the named constant as loop bound instead of ARRAY_SIZE().
 
-[nf,v3,1/1] netfilter: validate L4 headers after userspace packet writes
-https://patchwork.ozlabs.org/project/netfilter-devel/patch/587830a57a593c4b621f7e8e94b2ddc73e6becb0.1785468829.git.zhilinz@nebusec.ai/
+Fixes: 78a35725e533 ("net: airoha: defer GDM3/GDM4 WAN mode and GDM2 loopback to QoS offload")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202607311850.6p0ZUVq4-lkp@intel.com/
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This is related to nfqueue specifically and it also was posted a few
-hours before the same day?
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index dba7c52c0896..64619e9a704d 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -3467,7 +3467,7 @@ static int airoha_alloc_gdm_device(struct airoha_eth *eth,
+ 	netdev->dev.of_node = of_node_get(np);
+ 	dev = netdev_priv(netdev);
+ 	u64_stats_init(&dev->stats.syncp);
+-	for (i = 0; i < ARRAY_SIZE(dev->txq_lock); i++)
++	for (i = 0; i < AIROHA_NUM_NETDEV_TX_RINGS; i++)
+ 		spin_lock_init(&dev->txq_lock[i]);
+ 	dev->port = port;
+ 	dev->eth = eth;
 
-Thanks.
+---
+base-commit: 2fbade66245059c78daeaccfce13ecf499fffb51
+change-id: 20260731-airoha-spinlock-array-fix-d239f7841cb8
+
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
+
