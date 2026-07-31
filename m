@@ -1,95 +1,103 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7756E430CDC
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 14:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD26840242B;
+	Fri, 31 Jul 2026 14:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785509807; cv=none; b=LqBAodGhU4w+EUzcYaMsGF6VqiWBGi2K1xDc7oCYaLPa+2vhsGn6i+xAsGV9wCJYUz2lwlTXh4Dt6jdm/xtmsyIxlEcHFtAZxi/OpivGULBtYOuSHx32YSTaVDsgm2oHxqhBDLWRdbibkjxPAZ6oDuvohuh6e8riawrU5NXqt0Q=
+	t=1785509947; cv=none; b=hSRTWWiyXxsrg4BXHe8EqEJOFHickEoXRWVp/vd0VEDK5GcXIoajgzT3uQOGC9zaEr4TpN3X1AoQMpfdWLxFfvm9eRoU4iga4eKRgW2C7Tj1bXH+iuL5TF35xRuTpF5IgPJsB6X5vZj1otY0ERqGthklM2qccezWsLdgHs2tn98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785509807; c=relaxed/simple;
-	bh=hZ1YauAi3dGx8ucxhDwiFNmqYPLCrvErBB3RNfqn5t4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lsX4hiQxuA20NMB1u3Qj8bIHzIsC9tRpRBKev0IZFpRvZ2433J8QF0njoysd7+XXefG/IGKO9jqTDePweOJ9R8OXl7NZoVRV7YFKwnAPvN5BVNHUDI5iPBo/ZF490MYTj7fLeJkCm091z/8q2eSmuPiAkv3ZsUE6A4ZhGR+/u60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HQuN1V40; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785509947; c=relaxed/simple;
+	bh=wHUAmpND+DI3KmeIldKd2YsRDR99VNDRNYR7EzHamuY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=QcfWl3VKrIPRtIH6L/NOgIPf7AhdGrCF7+YHDDzkF9pn/2KIZlrE5AUBH+RghlAy544ziJZd3I8N6WCMD9pwHBbe2Hj2Ugnqf9hJiuC0mAKhZ3qUlT3UIBoWIDxQG+DD8oqvY4+J76ufOIU+9KGRjJZngZSSGc6lGWKTmqVuz8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=XA/UA8Zh; arc=none smtp.client-ip=206.189.79.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HQuN1V40"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785509798;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=s28ds64NKsQOrjmawHAp2UwN4M9GHd+vx61+rPxcqfo=;
-	b=HQuN1V40wcBGQeAWO6HYoMJclcMUfnAifV3HfgjAV8Ifu97/2HP3fH119DSzQWzDcW0Lja
-	udiW/JvqGQm5LB/fXuDL3CNmDKN6tgM0qD+Wj0dzjsk4P0XKhcaT9CzUB0BG7QnGJrzc/B
-	6h0/O6JYokAFWFnlz/frOTVJituafGM=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-f1bjXoioMVSDs39G3OhrcQ-1; Fri,
- 31 Jul 2026 10:56:14 -0400
-X-MC-Unique: f1bjXoioMVSDs39G3OhrcQ-1
-X-Mimecast-MFC-AGG-ID: f1bjXoioMVSDs39G3OhrcQ_1785509773
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6F9C11956094;
-	Fri, 31 Jul 2026 14:56:13 +0000 (UTC)
-Received: from bgrech-thinkpadp1gen3.rmtustx.csb (unknown [10.2.16.27])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 819F21956089;
-	Fri, 31 Jul 2026 14:56:12 +0000 (UTC)
-From: Brian Grech <bgrech@redhat.com>
-To: netdev@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org,
-	shuah@kernel.org,
-	Brian Grech <bgrech@redhat.com>
-Subject: [PATCH] selftests/net: gro: use variable sleep to handle slow environments
-Date: Fri, 31 Jul 2026 09:55:45 -0500
-Message-ID: <20260731145545.4011291-1-bgrech@redhat.com>
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="XA/UA8Zh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:Content-Type:
+	Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	Content-Transfer-Encoding:Message-Id:References:To; bh=wHUAmpND+
+	DI3KmeIldKd2YsRDR99VNDRNYR7EzHamuY=; b=XA/UA8ZhTbrGoX46bRTCaQnJU
+	pK2TZHHenRKblAHBd0sZOPl/yDGvHbR/4uD0e7zPC7vd9X8iuUEI63jx4lo4/Gfl
+	dDGXyoXDh45UUE6jSjxoU4O0nB4u1UJYdcLPrYBiPLf3fI6miGG4tg1aUY7Sh5NM
+	g+XbwryPmGm84NvMb4=
+Received: from smtpclient.apple (unknown [106.111.19.240])
+	by web1 (Coremail) with SMTP id yAQGZQB3F8cquGxq8yHfAA--.53903S2;
+	Fri, 31 Jul 2026 22:58:51 +0800 (CST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH nf] netfilter: conntrack: sctp: verify vtag before state
+ changes
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+In-Reply-To: <amx58O5Jb6B29XDJ@chamomile>
+Date: Fri, 31 Jul 2026 22:58:40 +0800
+Cc: netfilter-devel@vger.kernel.org,
+ Florian Westphal <fw@strlen.de>,
+ Phil Sutter <phil@nwl.cc>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ coreteam@netfilter.org,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org,
+ Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+ Ao Wang <wangao@seu.edu.cn>,
+ Xuewei Feng <fengxw06@126.com>,
+ Qi Li <qli01@tsinghua.edu.cn>,
+ Ke Xu <xuke@tsinghua.edu.cn>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D67DAA07-B087-4BE9-8446-A746FC21EF01@mails.tsinghua.edu.cn>
+References: <20260728073507.30635-1-zhaoyz24@mails.tsinghua.edu.cn>
+ <amkCbQ1UDRKcZBez@chamomile>
+ <AD2FFF7F-7EC3-4205-BB44-508B31BC2620@mails.tsinghua.edu.cn>
+ <amx58O5Jb6B29XDJ@chamomile>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
+X-CM-TRANSID:yAQGZQB3F8cquGxq8yHfAA--.53903S2
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYJ7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcV
+	AFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280
+	aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwV
+	AKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6x8ErcxFaVAv8VW8Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrw
+	ACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK67AK
+	6ry5MxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCF54CYxVCY1x
+	0262kKe7AKxVW8ZVWrXwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j
+	6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64
+	vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0x
+	vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUIMKuUUUUU
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQEFAWprzrTmFQABsN
 
-The server socket initialization sleep was hardcoded at 0.5 seconds.
-On slow or heavily loaded machines this is insufficient, causing the
-client to connect before the server is ready and producing spurious
-test failures.
+Hi Pablo,
 
-Respect KSFT_MACHINE_SLOW by extending the sleep to 2 seconds when
-set, consistent with how other selftests handle slow environments.
+> On Jul 31, 2026, at 18:33, Pablo Neira Ayuso <pablo@netfilter.org> =
+wrote:
+>=20
+> Yes, repurpose this patch to nf-next without Fixes tag and stable for =
+review.
+>=20
+> Thanks.
 
-Signed-off-by: Brian Grech <bgrech@redhat.com>
----
- tools/testing/selftests/net/gro.sh | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Thank you for your suggestion.
 
-diff --git a/tools/testing/selftests/net/gro.sh b/tools/testing/selftests/net/gro.sh
-index 4c5144c6f652..7c0e4434fa58 100755
---- a/tools/testing/selftests/net/gro.sh
-+++ b/tools/testing/selftests/net/gro.sh
-@@ -21,12 +21,14 @@ run_test() {
-   # Each test is run 6 times to deflake, because given the receive timing,
-   # not all packets that should coalesce will be considered in the same flow
-   # on every try.
-+  local sleep_time=0.5
-+  [ "$KSFT_MACHINE_SLOW" = yes ] && sleep_time=2
-   for tries in {1..6}; do
-     # Actual test starts here
-     ip netns exec $server_ns ./gro "${ARGS[@]}" "--rx" "--iface" "server" \
-       1>>log.txt &
-     server_pid=$!
--    sleep 0.5  # to allow for socket init
-+    sleep $sleep_time  # to allow for socket init
-     ip netns exec $client_ns ./gro "${ARGS[@]}" "--iface" "client" \
-       1>>log.txt
-     wait "${server_pid}"
--- 
-2.55.0
+We have posted an nf-next patch at =
+https://lore.kernel.org/netfilter-devel/20260731145342.56890-1-zhaoyz24@ma=
+ils.tsinghua.edu.cn/T/#u
+following your suggestion.
+
+Regards,
+Yizhou
+
 
