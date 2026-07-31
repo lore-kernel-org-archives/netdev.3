@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3DE31AF1B;
-	Fri, 31 Jul 2026 02:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C66830674C;
+	Fri, 31 Jul 2026 02:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785464627; cv=none; b=Z1yj14AdXINVrZAfeIvSmGM8/DL1W/t7jawzcmm76R3pKMbYH0x1hAcJ5bmbA7HSBVDHlEgvIpH30Vm/krSat/VMCg7G1KlhotxoBVkHABeBLGwx0ww3OTnTjqVKaiAUrnBNElyESXUOAFlRTqNZySCSPSu0dnlItty22dfQI3o=
+	t=1785464629; cv=none; b=q1F6daBUnwxoIJ92J2PIEiweqcr+QBI6Olh+xsJLrN424WBUtcmCIUZSXGysUn8G6v6THb7yWZPbLd60Pr7mKxMIpJ63IZQ7RSb1jERJDcnlpIL9cZN28Qo0ITa7HcugaAI9SAklURxBERvd8deuK0Js21xaWN7xXjDgECaBolQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785464627; c=relaxed/simple;
-	bh=WwJGSVIIJ1fKYemV58PL1pJHWMIznBBUXARjFOKw4x4=;
+	s=arc-20240116; t=1785464629; c=relaxed/simple;
+	bh=1p9CkoboVX6cSCQuU9f+xIlH6AuFxyBlFtL61A1ig8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Omrjy1iJBo+0hqoxlgc5u7ezXk2lYhN27j6GvNYF1g947ziV6kllP9Jcu4DLjkvZlkeDhQXv2PIOzGXgBCkscv8wMja2KNMfVeBCSsB8uX8gYboDQPfGoZs48WEnjFuWMXmgyBs5owKuPFS/ByANboqcO0p+9Qo2rR1zt2mUYF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ho9HMXe7; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=pU23J4XP7dV4hiPEzDAx5Ug6l7GJ3BhaHTOPSJCvgp2clSrHvvUurybOli4BH2hc2AhvhR7z9NPsFC1BJChS3nLrjrDyyDUjNHSfnho89PO+8SPVMrgz13YO5uxI0slGASZsOHS2gT91dRRtoYM/xy4pFPy3IKNDBvo3/BZ8wM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LATovILZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ho9HMXe7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9221F00A3E;
-	Fri, 31 Jul 2026 02:23:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LATovILZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991EC1F000E9;
+	Fri, 31 Jul 2026 02:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785464625;
-	bh=joTOFeAi+LvcFHgMzW8uPYLHHSWRvsJOqPPFwBEpdrw=;
+	s=k20260515; t=1785464627;
+	bh=ZaEm1c5UMepB7WT49Z9d3s05X5VaZIyqZup08wI5VlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ho9HMXe7vrjKsj3UbOr4IFvqXKcBl5qUk/gC63P/TB0sjhpfIeNIHycDJiZLi6fcD
-	 pJx77I1H39QxSjA22p6fuMtz5YHWgD2d3M2xgusYFTouawrSQFYhefsik6omX3Csr2
-	 B9w2EvHchV58hxut9V8I/LEx0aWhCju8cA2/NcchrhwzxeBrIyCJrkwpx93NNzu2qB
-	 pYhOcNz0+xAa8X+Y5ggHuxCsoM6MjPqksqqZVIS3xu0YPytdYXOlt5Yfy0kZlptGTd
-	 NEgB8NvGKVd7rEjb3r0Zn0eraGMiGI0IdjhqPRwIjmym9csU7mjcZOziH38H6Y0l2L
-	 XpwZEv1QQUnlg==
+	b=LATovILZ9GeRr/g1FiyhKuSsMY/OTc3T8MMChKvfQayM342CvymjgzpXMkfhkU13X
+	 vjL2A2VtUiq0Der0QqazMsBNMwNzUj8YEYasf7kyFFpsk8TJOlQKqW/qVsxw9dPt5K
+	 fRox36BJ30vRMBkhhaa/nWz3nesWjYiZpI8Bm1SBDc/YbJKsCk2vRhI4lMw+VrQo3U
+	 RaqwDO6czH/TBNBFG9w9hphDs/yR8OKGhBJ0S0dA0PT4LYpf/UCTRupPglLZ2FLrol
+	 +jWADNtyaIOkbjN6d9YCvGyicSlDBYniLFqR47e457jIz3X7l1FjV2M9mCtPV9+ltG
+	 N6bRitenzHpIw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: bastien.curutchet@bootlin.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -45,12 +45,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	thomas.petazzoni@bootlin.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 08/10] net: dsa: microchip: add KSZ8463 tail tag handling
-Date: Thu, 30 Jul 2026 19:23:44 -0700
-Message-ID: <20260731022344.800383-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v3 10/10] net: dsa: microchip: add two-steps PTP support for KSZ8463
+Date: Thu, 30 Jul 2026 19:23:46 -0700
+Message-ID: <20260731022346.800416-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260727-ksz-new-ptp-v3-8-caba39e680e3@bootlin.com>
-References: <20260727-ksz-new-ptp-v3-8-caba39e680e3@bootlin.com>
+In-Reply-To: <20260727-ksz-new-ptp-v3-10-caba39e680e3@bootlin.com>
+References: <20260727-ksz-new-ptp-v3-10-caba39e680e3@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,295 +62,403 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
---- Patch [8]: [PATCH net-next v3 08/10] net: dsa: microchip: add KSZ8463 tail tag handling ---
-commit 20a43ca1297a3640a458d9df2837f23e6b9191ea
+--- Patch [10]: [PATCH net-next v3 10/10] net: dsa: microchip: add two-steps PTP support for KSZ8463 ---
+commit 17314cc888f74f2fde26bc0da770a948737b2b66
 Author: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 
-net: dsa: microchip: add KSZ8463 tail tag handling
+net: dsa: microchip: add two-steps PTP support for KSZ8463
 
-This adds a KSZ8463-specific DSA tag driver so that RX timestamps can be
-taken from the reserved2 field of the PTP header instead of from the tail
-tag, and switches ksz8463_get_tag_protocol() over to the new
-DSA_TAG_PROTO_KSZ8463.  A few questions below about the new receive and
-transmit paths.
+This adds L2 two-step PTP timestamping for the KSZ8463 by registering the
+generic KSZ PTP clock and adding KSZ8463-specific .get_ts_info and
+.port_hwtstamp_set callbacks.  A new per-port last_tx_is_pdelayresp flag is
+used to decide which of the two timestamp registers behind the shared
+interrupt status bit should be read.
+
+A few questions below.
 
 > diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-> index 5e5bfc5cae2d..ac9e8ef5774a 100644
+> index ac9e8ef5774a..941ae9f66f70 100644
 > --- a/drivers/net/dsa/microchip/ksz8.c
 > +++ b/drivers/net/dsa/microchip/ksz8.c
-> @@ -2966,7 +2966,7 @@ static enum dsa_tag_protocol ksz8463_get_tag_protocol(struct dsa_switch *ds,
->  						      int port,
->  						      enum dsa_tag_protocol mp)
+> @@ -242,8 +242,11 @@ static int ksz8463_girq_setup(struct ksz_device *dev)
+>  
+>  static int ksz8463_reset_switch(struct ksz_device *dev)
 >  {
-> -	return DSA_TAG_PROTO_KSZ9893;
-> +	return DSA_TAG_PROTO_KSZ8463;
+> -	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET, true);
+> -	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET,
+> +	ksz_cfg(dev, KSZ8463_REG_SW_RESET,
+> +		KSZ8463_GLOBAL_SOFTWARE_RESET | KSZ8463_PTP_SOFTWARE_RESET,
+> +		true);
+> +	ksz_cfg(dev, KSZ8463_REG_SW_RESET,
+> +		KSZ8463_GLOBAL_SOFTWARE_RESET | KSZ8463_PTP_SOFTWARE_RESET,
+>  		false);
+>  	return 0;
 >  }
->  
->  static int ksz8463_connect_tag_protocol(struct dsa_switch *ds,
-> @@ -2974,7 +2974,7 @@ static int ksz8463_connect_tag_protocol(struct dsa_switch *ds,
->  {
->  	struct ksz_tagger_data *tagger_data;
->  
-> -	if (proto != DSA_TAG_PROTO_KSZ9893)
-> +	if (proto != DSA_TAG_PROTO_KSZ8463)
->  		return -EPROTONOSUPPORT;
 
 [Severity: Low]
-This changes the user-visible tagging protocol name for KSZ8463 boards,
-which is reachable both through the conduit's sysfs "tagging" attribute and
-through the "dsa-tag-protocol" device tree property.
+ksz8463_reset_switch() is called unconditionally from ksz8463_setup(),
+before and independently of the "if (dev->irq > 0)" block, and
+independently of CONFIG_NET_DSA_MICROCHIP_KSZ_PTP.
 
-A board that currently pins the previous default:
+So the PTP reset domain (BIT(2) of 0x126) is now toggled also on boards
+that never register a PTP clock, and in kernels built without the KSZ PTP
+support.
 
-	dsa-tag-protocol = "ksz9893";
+The changelog only describes adding two-step PTP support and does not
+mention resetting the PTP block.  Could the rationale be added to the
+commit message, or the extra reset bit be moved into the PTP setup path?
 
-now hits the -EPROTONOSUPPORT return in ksz8463_connect_tag_protocol()
-instead of degrading to the old behaviour.  Would it be worth mentioning
-this compatibility aspect in the commit message?
+> @@ -2474,17 +2477,24 @@ static int ksz8463_setup(struct dsa_switch *ds)
+>  		ret = ksz8463_ptp_irq_setup(ds);
+>  		if (ret)
+>  			goto free_girq;
+> +
+> +		ret = ksz_ptp_clock_register(ds);
+> +		if (ret) {
+> +			dev_err(dev->dev, "Failed to register PTP clock: %d\n",
+> +				ret);
+> +			goto free_ptp_irq;
+> +		}
+>  	}
 
->  
->  	tagger_data = ksz_tagger_data(ds);
+[Severity: Medium]
+Does registering the generic clock here also advertise periodic output and
+programmable pins that the KSZ8463 path does not implement?
 
-[ ... include/net/dsa.h hunks snipped ... ]
+ksz_ptp_clock_register() fills the capabilities unconditionally for every
+chip:
 
-> diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
-> index f8b40437c5fa..b4d70ba930dc 100644
-> --- a/net/dsa/tag_ksz.c
-> +++ b/net/dsa/tag_ksz.c
+	ptp_data->caps.enable		= ksz_ptp_enable;
+	ptp_data->caps.verify		= ksz_ptp_verify_pin;
+	ptp_data->caps.n_pins		= KSZ_PTP_N_GPIO;
+	ptp_data->caps.n_per_out	= 3;
+	...
+	ptp_data->caps.pin_config = ptp_data->pin_config;
+
+The trigger-output code behind those callbacks uses absolute KSZ9477 and
+LAN937x register literals rather than dev->info->regs[], for example in
+ksz_ptp_tou_reset() and ksz_ptp_configure_perout():
+
+	ksz_rmw32(dev, REG_PTP_UNIT_INDEX__4,
+		  PTP_GPIO_INDEX | PTP_TOU_INDEX, data32);   /* 0x0520 */
+	...
+	ksz_write32(dev, REG_TRIG_TARGET_NANOSEC, ...);     /* 0x0530+ */
+
+On KSZ8463 the PTP block lives at 0x600 and above (ksz8463_regs[]:
+PTP_CLK_CTRL 0x0600, PTP_MSG_CONF1 0x0620), and ksz8463_get_port_addr()
+only relocates offsets >= 0x600, so 0x0520-0x0548 are not KSZ8463 PTP
+registers.  The KSZ8463 32-bit regmap declares max_register = BIT(13) - 1
+and the KSZ8463 entry in ksz_switch_chips[] has neither wr_table nor
+rd_table, so these accesses are not filtered and reach the SPI bus.
+
+ksz_ptp_verify_pin() accepts PTP_PF_PEROUT, and ksz_ptp_tou_gpio() returns
+0 for anything that is not LAN937x, so a PTP_PIN_SETFUNC followed by
+PTP_PEROUT_REQUEST on the new clock can report success while writing into
+unrelated registers.  Should the pin/perout capabilities be left out for
+this chip?
+
+> @@ -3129,9 +3143,9 @@ const struct dsa_switch_ops ksz8463_switch_ops = {
+>  	.port_max_mtu		= ksz88xx_max_mtu,
+>  	.suspend		= ksz_suspend,
+>  	.resume			= ksz_resume,
+> -	.get_ts_info		= ksz_get_ts_info,
+> +	.get_ts_info		= ksz8463_get_ts_info,
+>  	.port_hwtstamp_get	= ksz_hwtstamp_get,
+> -	.port_hwtstamp_set	= ksz_hwtstamp_set,
+> +	.port_hwtstamp_set	= ksz8463_hwtstamp_set,
+>  	.port_txtstamp		= ksz_port_txtstamp,
+>  	.port_rxtstamp		= ksz_port_rxtstamp,
+>  	.port_setup_tc		= ksz8_setup_tc,
 
 [ ... ]
 
-> @@ -396,6 +397,70 @@ static const struct dsa_device_ops ksz9893_netdev_ops = {
->  DSA_TAG_DRIVER(ksz9893_netdev_ops);
->  MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ9893, KSZ9893_NAME);
+> diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+> index be6b8240ac03..9d8b78687f53 100644
+> --- a/drivers/net/dsa/microchip/ksz_ptp.c
+> +++ b/drivers/net/dsa/microchip/ksz_ptp.c
+> @@ -297,6 +297,31 @@ static int ksz_ptp_enable_mode(struct ksz_device *dev)
+>  			 tag_en ? PTP_ENABLE : 0);
+>  }
 >  
-> +#define KSZ8463_TAIL_TAG_PRIO		GENMASK(4, 3)
-> +#define KSZ8463_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
-> +
-> +static struct sk_buff *ksz8463_xmit(struct sk_buff *skb,
-> +				    struct net_device *dev)
+> +int ksz8463_get_ts_info(struct dsa_switch *ds, int port,
+> +			struct kernel_ethtool_ts_info *ts)
 > +{
-> +	u16 queue_mapping = skb_get_queue_mapping(skb);
-> +	u8 prio = netdev_txq_to_tc(dev, queue_mapping);
+> +	struct ksz_device *dev = ds->priv;
+> +	struct ksz_ptp_data *ptp_data;
 > +
-> +	return ksz_common_xmit(skb, dev, false,
-> +			       FIELD_PREP(KSZ8463_TAIL_TAG_PRIO, prio),
-> +			       0);
+> +	ptp_data = &dev->ptp_data;
+> +
+> +	if (!ptp_data->clock)
+> +		return -ENODEV;
+> +
+> +	ts->so_timestamping = SOF_TIMESTAMPING_TX_HARDWARE |
+> +			      SOF_TIMESTAMPING_RX_HARDWARE |
+> +			      SOF_TIMESTAMPING_RAW_HARDWARE;
+> +
+> +	ts->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ON);
+> +
+> +	ts->rx_filters = BIT(HWTSTAMP_FILTER_NONE) |
+> +			 BIT(HWTSTAMP_FILTER_PTP_V2_L2_EVENT);
+> +
+> +	ts->phc_index = ptp_clock_index(ptp_data->clock);
+> +
+> +	return 0;
 > +}
+> +
 
-[Severity: Medium]
-Is the loss of the tail tag override bit intentional here?
+[Severity: Low]
+This isn't a bug, but this is a near-verbatim copy of ksz_get_ts_info(),
+with only tx_types and rx_filters differing, and ksz8463_hwtstamp_set()
+below is a byte-for-byte copy of ksz_hwtstamp_set() apart from the inner
+helper call.
 
-Until this patch KSZ8463 used ksz9893_xmit(), which passes
-KSZ9893_TAIL_TAG_OVERRIDE (BIT(5)) as the override_mask argument, and
-ksz8795_xmit() likewise passes KSZ8795_TAIL_TAG_OVERRIDE.  ksz8463_xmit()
-passes 0, which makes this branch of ksz_common_xmit() dead for the new
-tagger:
-
-	if (is_link_local_ether_addr(hdr->h_dest))
-		*tag |= override_mask;
-
-Does that mean CPU-injected link-local frames (STP BPDUs, peer delay
-multicast, LLDP) are now subject to normal port state filtering, so a port
-in BLOCKING or LISTENING state drops them?
-
-KSZ8463_TAIL_TAG_PRIO is GENMASK(4, 3), i.e. the same layout as the KSZ9893
-tail tag, which suggests the override bit does exist at BIT(5) on this part.
-The KSZ8463 tail tag layout is not documented anywhere in the driver, so if
-BIT(5) is in fact reserved on this chip, could the change (and the now
-constant override_mask argument) get an explicit note?
-
-[Severity: Medium]
-The do_tstamp = false argument means ksz_xmit_timestamp() never runs for
-KSZ8463, and that is the only consumer of
-KSZ_SKB_CB(skb)->update_correction:
-
-net/dsa/tag_ksz.c:ksz_xmit_timestamp() {
-	...
-	/* Set correction field to 0 and update UDP checksum */
-	ptp_header_update_correction(skb, ptp_type, ptp_hdr, 0);
-	...
-}
-
-ksz_port_txtstamp() in drivers/net/dsa/microchip/ksz_ptp.c still sets that
-field and returns without cloning, expecting the tagger to do the work:
-
-	case PTP_MSGTYPE_PDELAY_RESP:
-		if (prt->tstamp_config.tx_type == HWTSTAMP_TX_ONESTEP_P2P) {
-			KSZ_SKB_CB(skb)->ptp_type = type;
-			KSZ_SKB_CB(skb)->update_correction = true;
-			return;
-		}
-
-ksz_get_ts_info() also keeps advertising the mode for this chip:
-
-	ts->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ONESTEP_P2P);
+ksz_get_ts_info() already differentiates chips inline:
 
 	if (is_lan937x(dev))
 		ts->tx_types |= BIT(HWTSTAMP_TX_ON);
 
-So user space can select HWTSTAMP_TX_ONESTEP_P2P on a KSZ8463 port while the
-tag driver performs no correction field handling at all, and
-ksz_port_rxtstamp() still subtracts the ingress timestamp from the
-PDelay_Req correction in that mode.  Is the correction field expected to be
-handled entirely in hardware here?  If so, could the commit message say so,
-since the xmit side behaviour change is not mentioned?
+and ksz_set_hwtstamp_config() does the same with:
 
-> +
-> +static struct sk_buff *ksz8463_rcv(struct sk_buff *skb, struct net_device *dev)
+	if (!is_lan937x(dev))
+		return -ERANGE;
+
+Could the KSZ8463 differences be expressed the same way, or through
+ksz_chip_data fields, instead of a second pair of callbacks plus a second
+set of "#define ... NULL" stubs in ksz_ptp.h?  As it stands the missing
+clock check discussed below has to be fixed in two places.
+
+> @@ -341,6 +366,72 @@ int ksz_hwtstamp_get(struct dsa_switch *ds, int port,
+>  	return 0;
+>  }
+>  
+> +static int ksz8463_set_hwtstamp_config(struct ksz_device *dev,
+> +				       struct ksz_port *prt,
+> +				       struct kernel_hwtstamp_config *config)
 > +{
-> +	unsigned int len = KSZ_EGRESS_TAG_LEN;
-> +	struct ptp_header *ptp_hdr;
-> +	unsigned int ptp_class;
-> +	unsigned int port;
-> +	ktime_t ts;
-> +	u8 *tag;
+> +	const u16 *regs = dev->info->regs;
+> +	int ret;
 > +
-> +	if (skb_linearize(skb)) {
-> +		kfree_skb(skb);
-> +		return NULL;
+> +	if (config->flags)
+> +		return -EINVAL;
+> +
+> +	switch (config->tx_type) {
+> +	case HWTSTAMP_TX_OFF:
+> +		prt->ptpmsg_irq[KSZ8463_SYNC_MSG].ts_en  = false;
+> +		prt->ptpmsg_irq[KSZ8463_XDREQ_PDRES_MSG].ts_en = false;
+> +		prt->hwts_tx_en = false;
+> +		break;
+> +	case HWTSTAMP_TX_ON:
+> +		prt->ptpmsg_irq[KSZ8463_SYNC_MSG].ts_en  = true;
+> +		prt->ptpmsg_irq[KSZ8463_XDREQ_PDRES_MSG].ts_en = true;
+> +		prt->hwts_tx_en = true;
+> +
+> +		ret = ksz_rmw16(dev, regs[PTP_MSG_CONF1], PTP_1STEP, 0);
+> +		if (ret)
+> +			return ret;
+> +
+> +		break;
+> +	default:
+> +		return -ERANGE;
 > +	}
 > +
-> +	KSZ_SKB_CB(skb)->tstamp = 0;
+> +	switch (config->rx_filter) {
+> +	case HWTSTAMP_FILTER_NONE:
+> +		prt->hwts_rx_en = false;
+> +		break;
+> +	case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
+> +	case HWTSTAMP_FILTER_PTP_V2_L2_SYNC:
+> +		config->rx_filter = HWTSTAMP_FILTER_PTP_V2_L2_EVENT;
+> +		prt->hwts_rx_en = true;
+> +		break;
+> +	default:
+> +		config->rx_filter = HWTSTAMP_FILTER_NONE;
+> +		return -ERANGE;
+> +	}
 > +
-> +	/* Tag decoding */
-> +	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-> +	port = tag[0] & KSZ8463_TAIL_TAG_EG_PORT_M;
+> +	return ksz_ptp_enable_mode(dev);
+> +}
+
+[Severity: Medium]
+Only L2 filters are accepted here and the changelog says "IPv4 and IPv6
+layers aren't supported", but should PTP_IPV4_UDP_ENABLE (BIT(4)) and
+PTP_IPV6_UDP_ENABLE (BIT(3)) of PTP_MSG_CONF1 be cleared somewhere?
+
+The only writes to that register are the set-only rmw in
+ksz_ptp_clock_register():
+
+	ret = ksz_rmw16(dev, regs[PTP_MSG_CONF1],
+			PTP_TC_P2P | PTP_802_1AS | PTP_ETH_ENABLE,
+			PTP_TC_P2P | PTP_802_1AS | PTP_ETH_ENABLE);
+
+and the PTP_1STEP clear above, so the transport-detect bits keep their
+reset value.  With the new PTP soft reset in ksz8463_reset_switch() the
+register is back at its hardware default, and the existing comment in
+ksz8463_config_cpu_port() suggests the default is not zero on this chip:
+
+	/* Turn off PTP function as the switch enables it by default */
+	regmap_update_bits(ksz_regmap_16(dev), KSZ8463_PTP_MSG_CONF1,
+			   PTP_ENABLE, 0);
+
+If BIT(3)/BIT(4) are set after reset, UDP-encapsulated PTP frames are
+detected too, and since PTP_802_1AS forwards detected PTP frames to the
+host port only, L4 PTP traffic crossing the switch would be trapped and
+could raise timestamp interrupts the driver does not expect.
+
 > +
-> +	__skb_push(skb, ETH_HLEN);
-> +	ptp_class = ptp_classify_raw(skb);
-> +	__skb_pull(skb, ETH_HLEN);
+> +int ksz8463_hwtstamp_set(struct dsa_switch *ds, int port,
+> +			 struct kernel_hwtstamp_config *config,
+> +			 struct netlink_ext_ack *extack)
+> +{
+> +	struct ksz_device *dev = ds->priv;
+> +	struct ksz_port *prt;
+> +	int ret;
+> +
+> +	prt = &dev->ports[port];
+> +
+> +	ret = ksz8463_set_hwtstamp_config(dev, prt, config);
+> +	if (ret)
+> +		return ret;
+> +
+> +	prt->tstamp_config = *config;
+> +
+> +	return 0;
+> +}
+> +
+
+[Severity: High]
+This isn't a bug introduced by this patch, but can this path be reached on
+a KSZ8463 without a PTP clock and oops?
+
+ksz8463_get_ts_info() added above returns -ENODEV when ptp_data->clock is
+NULL, while ksz8463_hwtstamp_set() has no such check and always ends in
+ksz_ptp_enable_mode(), which does:
+
+	if (tag_en)
+		ptp_schedule_worker(ptp_data->clock, 0);
+	else
+		ptp_cancel_worker_sync(ptp_data->clock);
+
+ksz8463_setup() only calls ksz_ptp_clock_register() (the sole place where
+ptp_data->lock, ptp_data->clock_lock and ptp_data->clock are initialized)
+inside "if (dev->irq > 0)", but ksz8463_switch_ops installs
+.port_hwtstamp_set unconditionally, and dsa_user_hwtstamp_set() only
+checks that the op pointer exists.
+
+dev->irq comes from spi->irq in ksz_spi_probe() and is 0 when the DT node
+describes no interrupt, which the driver supports.  In that case even a
+trivial HWTSTAMP_TX_OFF plus HWTSTAMP_FILTER_NONE request ends in
+ptp_cancel_worker_sync(NULL), which passes &ptp->aux_work to
+kthread_cancel_delayed_work_sync().
+
+The same hole existed before with the generic ksz_hwtstamp_set(), but the
+new KSZ8463-specific copy keeps it while making the clock and lock
+initialization conditional.  Would a "!ptp_data->clock" check, as done in
+the new ksz8463_get_ts_info(), be appropriate here?
+
+> @@ -571,6 +662,31 @@ static void ksz_ptp_txtstamp_skb(struct ksz_device *dev,
+>  	skb_complete_tx_timestamp(skb, &hwtstamps);
+>  }
+>  
+> +static void ksz8463_set_pdelayresp_flag(struct ksz_port *prt,
+> +					struct sk_buff *skb)
+> +{
+> +	struct ptp_header *hdr;
+> +	unsigned int type;
+> +	u8 ptp_msg_type;
+> +
+> +	if (!ksz_is_ksz8463(prt->ksz_dev))
+> +		return;
+> +
+> +	if (skb_linearize(skb))
+> +		return;
+> +
+> +	type = ptp_classify_raw(skb);
+> +	if (type == PTP_CLASS_NONE)
+> +		return;
+> +
+> +	hdr = ptp_parse_header(skb, type);
+> +	if (!hdr)
+> +		return;
+> +
+> +	ptp_msg_type = ptp_get_msgtype(hdr, type);
+> +	prt->last_tx_is_pdelayresp = (ptp_msg_type == PTP_MSGTYPE_PDELAY_RESP);
+> +}
+> +
+>  void ksz_port_deferred_xmit(struct kthread_work *work)
+>  {
+>  	struct ksz_deferred_xmit_work *xmit_work = work_to_xmit_work(work);
+> @@ -587,6 +703,8 @@ void ksz_port_deferred_xmit(struct kthread_work *work)
+>  
+>  	reinit_completion(&prt->tstamp_msg_comp);
+>  
+> +	ksz8463_set_pdelayresp_flag(prt, skb);
+> +
+>  	dsa_enqueue_skb(skb, skb->dev);
+>  
+>  	ksz_ptp_txtstamp_skb(dev, prt, clone);
+
+[Severity: Medium]
+Can a late timestamp interrupt observe the flag of the following packet?
+
+prt->last_tx_is_pdelayresp is written here from the deferred-xmit kthread
+and read from the threaded PTP interrupt in ksz_ptp_msg_thread_fn() ->
+ksz_read_ts(), with no lock, no READ_ONCE()/WRITE_ONCE() and no barrier.
+
+Correctness seems to depend on the interrupt for packet N always being
+consumed before packet N+1 is queued, but ksz_ptp_txtstamp_skb() gives up
+after a timeout:
+
+	ret = wait_for_completion_timeout(&prt->tstamp_msg_comp,
+					  msecs_to_jiffies(100));
+	if (!ret)
+		return;
+
+So for a Pdelay_Resp whose interrupt is late, the worker can proceed to
+the next frame (say a Pdelay_Req) and set the flag to false; the delayed
+interrupt for the Pdelay_Resp then reads KSZ8463_REG_PORT_DREQ_TS instead
+of DREQ_TS + KSZ8463_DRESP_TS_OFFSET and completes tstamp_msg_comp, so
+that value is handed to skb_complete_tx_timestamp() for the next packet.
+
+reinit_completion() is a plain "x->done = 0" while complete() takes
+x->wait.lock, so it cannot discard the stale completion either.  Is there
+something that ties an interrupt to the packet it belongs to?
+
+> @@ -979,7 +1097,22 @@ void ksz_ptp_clock_unregister(struct dsa_switch *ds)
+>  
+>  static int ksz_read_ts(struct ksz_port *port, u16 reg, u32 *ts)
+>  {
+> -	return ksz_read32(port->ksz_dev, reg, ts);
+> +	u16 ts_reg = reg;
+> +
+> +	/**
+      ^^^^
 
 [Severity: Low]
-This isn't a bug, but the DSA core runs the same classifier a few
-instructions later and hands the result to the driver:
+This isn't a bug, but "/**" is the kernel-doc marker and this is an
+ordinary comment inside a function body, so plain "/*" would be better.
 
-net/dsa/tag.c:dsa_skb_defer_rx_timestamp() {
-	...
-	__skb_push(skb, ETH_HLEN);
-	type = ptp_classify_raw(skb);
-	__skb_pull(skb, ETH_HLEN);
-	if (type == PTP_CLASS_NONE)
-		return false;
-	return ds->ops->port_rxtstamp(ds, p->dp->index, skb, type);
-}
+> +	 * On KSZ8463 DREQ and DRESP timestamps share one interrupt line
+                                                          ^^^^^^^^^^^^^^
 
-and ksz_port_rxtstamp() already calls ptp_parse_header() itself.  So every
-received frame on a KSZ8463 conduit now runs the PTP BPF classifier in the
-tagger, even with hardware timestamping disabled, and PTP frames are
-classified twice.
+[Severity: Low]
+The commit message says the two timestamps "share one interrupt bit
+status", which matches the hardware: KSZ8463_REG_PORT_DREQ_TS and
+KSZ8463_REG_PORT_DRESP_TS share a single status bit in
+KSZ8463_PTP_TS_ISR rather than sitting on separate interrupt lines.  The
+sentence is also missing a terminating period.
 
-Unlike KSZ9477/KSZ9893, where the timestamp sits in the tail tag and has to
-be consumed before ksz_common_rcv() trims it, ptp_hdr->reserved2 survives
-into ksz_port_rxtstamp() untouched.  Could the reserved2 extraction live in
-ksz_port_rxtstamp() instead, where the PTP class is already available?
-
-> +	if (ptp_class == PTP_CLASS_NONE)
-> +		goto common_rcv;
+> +	 * so we have to check the nature of the latest event sent to know
+> +	 * where the timestamp is located
+> +	 */
+> +	if (ksz_is_ksz8463(port->ksz_dev)) {
+> +		const struct ksz_dev_ops *ops = port->ksz_dev->dev_ops;
 > +
-> +	ptp_hdr = ptp_parse_header(skb, ptp_class);
-
-[Severity: Medium]
-Only PTP_CLASS_NONE is filtered here, but the code below interprets the
-frame with the PTPv2 struct ptp_header layout.  ptp_classify_raw() also
-returns PTP_CLASS_V1_IPV4/PTP_CLASS_V1_IPV6, as documented in
-include/linux/ptp_classify.h:
-
- * PTP_CLASS_V1_IPV{4,6}, PTP_CLASS_V2_IPV{4,6} or
- * PTP_CLASS_V2_{L2,VLAN}, depending on the packet content.
-
-and the classifier program simply masks the version nibble, so any value
-1..15 comes back ORed with the encapsulation bits:
-
-net/core/ptp_classifier.c:
-	{ 0x48, 0, 0, 0x0016 },	/* ldh [22] */
-	{ 0x54, 0, 0, 0x000f },	/* and #0xf */
-	{ 0x44, 0, 0, 0x0010 },	/* or #0x10 */
-
-ptp_parse_header() does no version filtering either, it only skips
-VLAN/IP/UDP headers and bounds-checks sizeof(struct ptp_header).  For a
-PTPv1 frame, offsets 8..11 are inside the 16-byte subdomain field rather
-than a reserved field, so real header content would be read as a timestamp
-and then zeroed.  Should there be a "if (!(ptp_class & PTP_CLASS_V2))" gate
-before the reserved2 access?
-
-> +	if (ptp_hdr) {
-> +		ts = ksz_decode_tstamp(get_unaligned_be32(&ptp_hdr->reserved2));
-> +		KSZ_SKB_CB(skb)->tstamp = ts;
-> +		ptp_hdr->reserved2 = 0;
+> +		if (port->last_tx_is_pdelayresp &&
+> +		    ts_reg == ops->get_port_addr(port->num, KSZ8463_REG_PORT_DREQ_TS))
+> +			ts_reg += KSZ8463_DRESP_TS_OFFSET;
 > +	}
+> +
+> +	return ksz_read32(port->ksz_dev, ts_reg, ts);
+>  }
 
-[Severity: Medium]
-Is there anything that keeps this from running while the switch PTP unit is
-disabled?  The tagger never looks at KSZ_HWTS_EN here, and does not even
-fetch ksz_tagger_private(), while the transmit side in the same file does
-gate on it:
-
-net/dsa/tag_ksz.c:ksz_xmit_timestamp() {
-	...
-	if (!test_bit(KSZ_HWTS_EN, &priv->state))
-		return;
-	...
-}
-
-That bit is set together with PTP_ENABLE in ksz_ptp_enable_mode():
-
-	tagger_data->hwtstamp_set_state(dev->ds, tag_en);
-
-	return ksz_rmw16(dev, regs[PTP_MSG_CONF1], PTP_ENABLE,
-			 tag_en ? PTP_ENABLE : 0);
-
-so "PTP disabled" is the default state, in which the hardware never wrote
-anything into reserved2.  In that state, does this code destroy 4 bytes of a
-genuine remote frame (messageTypeSpecific in IEEE 1588-2019) and build
-KSZ_SKB_CB(skb)->tstamp out of remote bytes?  ksz_port_rxtstamp() then
-publishes it with no prt->hwts_rx_en test:
-
-drivers/net/dsa/microchip/ksz_ptp.c:ksz_port_rxtstamp() {
-	...
-	tstamp = KSZ_SKB_CB(skb)->tstamp;
-	memset(hwtstamps, 0, sizeof(*hwtstamps));
-	hwtstamps->hwtstamp = ksz_tstamp_reconstruct(dev, tstamp);
-	...
-}
-
-ksz9477_rcv() only trusts the timestamp when the hardware sets
-KSZ9477_PTP_TAG_INDICATION, and the commit message says KSZ8463 provides no
-such indication.  For comparison, hellcreek gates on the enable bit before
-touching reserved2, in hellcreek_should_tstamp():
-
-	if (!test_bit(HELLCREEK_HWTSTAMP_ENABLED, &ps->state))
-		return NULL;
-
-Would the same gating be appropriate here?
-
-[Severity: Medium]
-Does the "ptp_hdr->reserved2 = 0" store need checksum bookkeeping?  For PTP
-over UDP (advertised by ksz_get_ts_info() through
-HWTSTAMP_FILTER_PTP_V2_L4_EVENT) these 4 bytes are covered by the UDP
-checksum, but neither the checksum field nor skb->csum / skb->ip_summed are
-updated.
-
-On a conduit reporting CHECKSUM_COMPLETE, skb->csum then still describes the
-unmodified bytes and is carried forward by ksz_common_rcv():
-
-	if (pskb_trim_rcsum(skb, skb->len - len)) {
-
-In HWTSTAMP_TX_ONESTEP_P2P mode, ksz_port_rxtstamp() additionally calls
-ptp_header_update_correction() on the same frame, which does:
-
-include/linux/ptp_classify.h:ptp_header_update_correction() {
-	...
-	uhdr->check = csum_fold(ptp_check_diff8(correction_old, hdr->correction,
-						~csum_unfold(uhdr->check)));
-	...
-	skb->ip_summed = CHECKSUM_NONE;
-}
-
-so the stack recomputes the UDP checksum over data whose reserved2 delta was
-never accounted for.  If the switch updates the UDP checksum when it inserts
-the timestamp, would PDelay_Req frames then be dropped in udp_rcv()?  The
-same file already uses ptp_header_update_correction() from
-ksz_xmit_timestamp() for in-place PTP header edits.
-
-[ ... remaining tag_ksz.c hunks snipped ... ]
+[ ... ]
