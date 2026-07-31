@@ -1,73 +1,76 @@
-Received: from mail-qt1-f228.google.com (mail-qt1-f228.google.com [209.85.160.228])
+Received: from mail-yw1-f227.google.com (mail-yw1-f227.google.com [209.85.128.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C1344A710
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B05C44CF44
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785515846; cv=none; b=SAEULFNo/9G1ddDsxNjpnJ1sZ9++oxJrY7RAtVyKACY8MjPpyc1ZUSuIQDvQrgsPIB6TDFD6L8Mie3qFfFvsAnQd8QebUlhrfurN1Opf6Rs9C5XP0EI7XgNg0oEjlIdSH6y3qpki6e2RvjnzuhzDrk/yiaSCzg2akEU0duRGKEs=
+	t=1785515852; cv=none; b=gzwEujrkMuWAUEYiNI6PAZ3jzrwXl8URxePW8jV1TRd39JpsJiG8/2r4G5uyvO4BRMkxyrkBe/9gc2qmBEIxGOFW0ubCkwocX6mC0lzfxLCotChZfJxJVcAWR7UAFbP2k7+yht/H1Qn6KECemsPmMMLIvBBH+PmZ1L0PkaRimgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785515846; c=relaxed/simple;
-	bh=qY6aPKpX+OxWw+UAI55wtyPh1DaWz8WHgumy1dU/8ZM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YfVf5HCBVklQfXdoWpdZGaX26NQon6jjO5gzyKT3U7mYQ3ioMG2kQI68THQgP56gpRcADsz4Etp85CfBuTMf1K5EwBj1tZZzSh8tNr9CBxDt/8ooZdwJUl27sAnKQJ96GwUSDxA0F5Zqnp7q+2feOfqD9IjaNyIGRENiQOT8NHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=PUzb5aFB; arc=none smtp.client-ip=209.85.160.228
+	s=arc-20240116; t=1785515852; c=relaxed/simple;
+	bh=O5fJQ3d6PuDgPKpL8e9OVHaXuQDovYEMEiNrPn9MFLU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lcSWqRxrwK3HmpyjEgKqX5C2fAuMspEGfkSTgRZKQDlTLDtCtFEgyWzuUo43ywWRLEZBw5lrScVuB6aZO8lj5L9XWgJ6tYISNtvZ/ZkvLA8c5aAC5IhWmkDyDMOGmHr5EqiDYjZ7ORAthZm8oDP7w3opFTGiO17d7RgfFzg3rFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=NMdKNdC8; arc=none smtp.client-ip=209.85.128.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PUzb5aFB"
-Received: by mail-qt1-f228.google.com with SMTP id d75a77b69052e-51e4ba1cfb4so7171151cf.0
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:37:24 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="NMdKNdC8"
+Received: by mail-yw1-f227.google.com with SMTP id 00721157ae682-81e69a2db34so18184827b3.0
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:37:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785515844; x=1786120644;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=S0mL7LdNZpr9btSXfODZh7CXj2sMytdsJEG0jRgwtnw=;
-        b=s3mqZnO53OoLzlfVPxWfoEQU6vgPIJtpCToy+mFPmknvTbBU1E385DHlRD+kxfp2lG
-         I3KisZT3JRo7+gVey1PZJkkenOCFlFxhq0d5NriDmt7spy9USbP1s7MsMkINewpvTiFy
-         JrlrE7u6a2SNgJQqHLM41S08GWbsv94tSaOfcbFmk34r2jx2it4kRVn9lF7xrLotri5c
-         QV5AHTXzSJqQjYjNRmSKlcxqZxCGGxZXU0BQVFsENCjXn/97TYMdsmkV3wdlXb9ZONv0
-         +bWIk+rdDydC5Cw+D4JaKkiIHqOgMtDtIRmWMoK6SofAS81k0bf8B3WB2QZ74RD5v2i1
-         NVCg==
-X-Gm-Message-State: AOJu0Yxj6iCtK914dZL53lrzMz1dZZ1dS/z1pTvJvkRzCeV4tbrnPPHR
-	wwEJncnE703IFRbGicigYrN0JvX2riZAtNpwmRl43hmT3lrZkf/L4UwyUoeEBIzC92r0ZCY5Jkn
-	5AtYdL8ZFXvIYT59SKFgMfv+5mbnUovxWiq0BOJL7sDqTAUpwoRq2Ar6isFa876yjdS5zIBeEp9
-	TMfPXR0CXlm+ApVf/bfh7oPLfFxULUKasImmFxksFR6hNrluli5qQEvu1ZRM3Kn1RVCmIv9Kdw0
-	voA46Tc3Q==
-X-Gm-Gg: AR+sD11X1mEEBGTqILHMzcfjDnxRcVZedgUgnYG/jRU2Jp1i3OuNKfh6hHk+g7u39aO
-	81gRk5ZZDrtUXoWZ0B7gaf/nM2vLGm64WUa0PLDY/8XWCAVCP57w4v/50ZfsYdxb6+tS67JLkHK
-	BQ+iyCRuo7H02v/4vCQ9CtItOO2EYjkv26YCip6G09bqPirBPkTil0tBmLHNWwkkJNnajtG4OjD
-	rcwgg4yZ1JlqUI/MhYImaPVAMlVTq8GX2lSFLtevQ10Ml5Ooteb1DoV+Zlky5PvkTPRPQ92Nnce
-	Y6PVE96azTQJYjZof9KftrPUu5TQig4nuf1qe+P+L/7tv2H8VAfxZBEsmzdY4Azmta54OTw6UV3
-	UMXMqCTOTbdrSHc16E7F9ZfdU6CDRnbswvS7pjGtb8Dwlk0VPVKLq/YS8LCamAzQd6MW2OFR6bU
-	3Fd79T2Y2vekuJ8ugJ4DfWV0XaOj3PMoFqCg==
-X-Received: by 2002:a05:622a:4cce:b0:51b:efbb:fbf with SMTP id d75a77b69052e-52b566b52e9mr19328541cf.18.1785515843591;
-        Fri, 31 Jul 2026 09:37:23 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
-        by smtp-relay.gmail.com with ESMTPS id d75a77b69052e-52b4e7eba8esm769951cf.1.2026.07.31.09.37.23
+        d=1e100.net; s=20251104; t=1785515849; x=1786120649;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MmTQj4gHPMMZifdDZe2dPfuW/tp8ej1Qu6RBJZYcOCE=;
+        b=ModohZp/ePtWD7c5R5UUUSiAv8XlYvBfWKQYCZ+o4EwbPIySsWguKtSnKWbfsBD8FG
+         4OO4vy2towY8mBXZEg2Tzac7AP2ucc8XbQO6jnkzV4brLsjDNHufotxNLBg1kW9+k4ZV
+         UJqZfHqxhCo00Xaku3MVvtLwcD6IfSeY4i6pOPmgbA2vrC9KRaQ1D8McaMMKX0OTbD2y
+         4mQ5GK2G2M0HJJYZW3XsPAYyqOjsvtTMRmIJZzLaYJssSIJnZ33wrzx/JazVYp0JYemx
+         RgIa+cdeNvIETX8RnysIT6BebG3bExsVF+zeD5vELogOsAZTVEmTVgoST026glb0ymNY
+         MPsA==
+X-Gm-Message-State: AOJu0YywiLqM1jy6W/PK21WZA5/yKNjJUd0NiLo3JINxeKgJpGxv4dYm
+	PhBPT6Ti9IAm63OIeTjVlcwzuNfiSf7UPDDF2h8Z2LQHEex6+JyIFpE9ieXZNNgYiXwk7QYKQ5w
+	FMirzhA19P9xNHgWxaFfSfJy/HGRSuRxJ1VNrMF/H2Zes5KDjC1wR1RGCo/RKdnscIR/wRmkS/D
+	j9xntIeX7+0A54cSDlNlqV5k2+pUgpao8+LPFntOjOtq19AMFfvlD44Sip5dSJpV7pT/szuO7zp
+	qRkNHtI3g==
+X-Gm-Gg: AR+sD12gZZfOX8J3dlGxSou686g5iGnssGZ/IyJZv48RsRML+svGhs99sJaxq27HgmW
+	chkHDJof9NIBAkVqSbpggPqjC6+Knh/El6qVQ7FzlHPnHwVyzhHNUNugPsrXLPPETwvv5hdTV6D
+	JHXylaWqADSqLQ3f+gvhNhlQDh2CzQQxc/Z+Gdl+aaElVvCWq789uUsOfDz/xN7/p/BH12U9/2R
+	M1IQBd/ffjyQyzrTlcpOqhlHwk3G2SPqKoJ0xwXYOQahwFuV8uMBWqnYD/zZN8sVtqGPxMk3fJT
+	uoBQ0b7EQ8ohSNkNNXLHNVUaBsKym9d0961Wv+e1IfYm0UHvbXOUxDKjyuXVn0+IXHnN8z4HLyG
+	NCnNx1K1GW0jtuvNE24Dkrv9YHNNPO3DCAx0KHVnejMTSDZUoKJd8+ok0FpdH31pGRSGNwnmWbi
+	CfKb3+/bc8FEpYenmd7q7ajtiVFpnNCbGetA==
+X-Received: by 2002:a05:690c:4b85:b0:81e:ac09:c89d with SMTP id 00721157ae682-81fd49bf6afmr7528547b3.4.1785515849035;
+        Fri, 31 Jul 2026 09:37:29 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-27.dlp.protect.broadcom.com. [144.49.247.27])
+        by smtp-relay.gmail.com with ESMTPS id 00721157ae682-81fcd0fb905sm935377b3.26.2026.07.31.09.37.28
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 31 Jul 2026 09:37:23 -0700 (PDT)
+        Fri, 31 Jul 2026 09:37:29 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8484ba00601so1488402b3a.1
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:37:23 -0700 (PDT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-847a00bcbd0so1657284b3a.0
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:37:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1785515842; x=1786120642; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=S0mL7LdNZpr9btSXfODZh7CXj2sMytdsJEG0jRgwtnw=;
-        b=PUzb5aFB3EchgsED5ewy4PQMOX8rb19CN7x0CIPOigTR2Xzju4v7LasFKoJ5OhAE6M
-         3Szg7zyieyZaHGpiNL9v072XQ41zUca4trga0rFXdHMh+O6ulhdNXcYQzmmy4z3KE6Up
-         yYECIs17URA2AbXPLHDpCsbke+JFsX7V9GPqA=
-X-Received: by 2002:a05:6a00:4fce:b0:848:2f74:d8d2 with SMTP id d2e1a72fcca58-84ee49269a8mr301142b3a.67.1785515842264;
-        Fri, 31 Jul 2026 09:37:22 -0700 (PDT)
-X-Received: by 2002:a05:6a00:4fce:b0:848:2f74:d8d2 with SMTP id d2e1a72fcca58-84ee49269a8mr301117b3a.67.1785515841760;
-        Fri, 31 Jul 2026 09:37:21 -0700 (PDT)
+        d=broadcom.com; s=google; t=1785515848; x=1786120648; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MmTQj4gHPMMZifdDZe2dPfuW/tp8ej1Qu6RBJZYcOCE=;
+        b=NMdKNdC8K5AkAWbo7yab82YHFogSkSByHFCXfHJiiSwZolJ8JL4eaHNwbn60Sr19le
+         zvZ5Fm0GwEJwUFS+yymgrbGwtwrcDVN8eCnyc/zHGz2jAhtEcHe+zllNxFVDEK12WDSL
+         ll5OiqX6Y7Ou4LQwIH1axXVmGNSy71JhPNxI0=
+X-Received: by 2002:a05:6a00:3cd2:b0:847:8b1d:230d with SMTP id d2e1a72fcca58-84ee482bb68mr331594b3a.3.1785515847761;
+        Fri, 31 Jul 2026 09:37:27 -0700 (PDT)
+X-Received: by 2002:a05:6a00:3cd2:b0:847:8b1d:230d with SMTP id d2e1a72fcca58-84ee482bb68mr331559b3a.3.1785515847125;
+        Fri, 31 Jul 2026 09:37:27 -0700 (PDT)
 Received: from localhost.localdomain ([192.19.203.250])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edbe57020sm690127b3a.17.2026.07.31.09.37.16
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edbe57020sm690127b3a.17.2026.07.31.09.37.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 09:37:21 -0700 (PDT)
+        Fri, 31 Jul 2026 09:37:26 -0700 (PDT)
 From: Vikas Gupta <vikas.gupta@broadcom.com>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -84,10 +87,12 @@ Cc: netdev@vger.kernel.org,
 	dharmender.garg@broadcom.com,
 	ajit.khaparde@broadcom.com,
 	Vikas Gupta <vikas.gupta@broadcom.com>
-Subject: [net-next, v2 0/3] bnge: add more functionality
-Date: Fri, 31 Jul 2026 22:07:09 +0530
-Message-ID: <20260731163712.3463362-1-vikas.gupta@broadcom.com>
+Subject: [net-next, v2 1/3] bnge: refactor rx mode helpers to accept explicit address lists
+Date: Fri, 31 Jul 2026 22:07:10 +0530
+Message-ID: <20260731163712.3463362-2-vikas.gupta@broadcom.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20260731163712.3463362-1-vikas.gupta@broadcom.com>
+References: <20260731163712.3463362-1-vikas.gupta@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,35 +102,136 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Hi,
+Rename bnge_cfg_def_vnic() to bnge_cfg_rx_mode() and update
+bnge_mc_list_updated() and bnge_uc_list_updated() to accept
+explicit netdev_hw_addr_list pointers rather than deriving
+them from the netdev.
 
-This patch series adds a few functionality for bnge driver:
+Add a snapshot parameter to bnge_cfg_rx_mode() to skip
+netif_addr_lock_bh() when the caller provides a pre-snapshotted
+list. On the open path (snapshot=false), the live netdev UC list
+is passed and the addr lock is taken as before.
 
-Patch 1-2: Implements ndo_set_rx_mode_async().
+Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
+Reviewed-by: Rahul Gupta <rahul-rg.gupta@broadcom.com>
+---
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 39 +++++++++++--------
+ 1 file changed, 23 insertions(+), 16 deletions(-)
 
-Patch 3: Adds a dedicated HWRM (Hardware Resource Management) command
-         sequence to handle explicit interface down and up transitions cleanly.
-
-Thanks,
-Vikas
-
-v1->v2:
-1)  Addressed review comments from Sashiko.
-    https://sashiko.dev/#/patchset/20260724142954.3101980-2-vikas.gupta@broadcom.com
-    https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260724142954.3101980-2-vikas.gupta@broadcom.com
-
-2) Removed a patch (bnge shutdown callback implementation) from the series, bringing
-   the patch count down to 3. The implementation shall be pushed in a separate series.
-
-Vikas Gupta (3):
-  bnge: refactor rx mode helpers to accept explicit address lists
-  bnge: add ndo_set_rx_mode_async support
-  bnge: send hwrm for interface down/up transitions
-
- .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 132 ++++++++++++++----
- .../net/ethernet/broadcom/bnge/bnge_netdev.h  |   6 +
- 2 files changed, 112 insertions(+), 26 deletions(-)
-
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+index 6f7ef506d4e1..db0e616fc46c 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+@@ -2144,16 +2144,16 @@ static int bnge_hwrm_set_vnic_filter(struct bnge_net *bn, u16 vnic_id, u16 idx,
+ 	return rc;
+ }
+ 
+-static bool bnge_mc_list_updated(struct bnge_net *bn, u32 *rx_mask)
++static bool bnge_mc_list_updated(struct bnge_net *bn, u32 *rx_mask,
++				 const struct netdev_hw_addr_list *mc)
+ {
+ 	struct bnge_vnic_info *vnic = &bn->vnic_info[BNGE_VNIC_DEFAULT];
+-	struct net_device *dev = bn->netdev;
+ 	struct netdev_hw_addr *ha;
+ 	int mc_count = 0, off = 0;
+ 	bool update = false;
+ 	u8 *haddr;
+ 
+-	netdev_for_each_mc_addr(ha, dev) {
++	netdev_hw_addr_list_for_each(ha, mc) {
+ 		if (mc_count >= BNGE_MAX_MC_ADDRS) {
+ 			*rx_mask |= CFA_L2_SET_RX_MASK_REQ_MASK_ALL_MCAST;
+ 			vnic->mc_list_count = 0;
+@@ -2177,17 +2177,17 @@ static bool bnge_mc_list_updated(struct bnge_net *bn, u32 *rx_mask)
+ 	return update;
+ }
+ 
+-static bool bnge_uc_list_updated(struct bnge_net *bn)
++static bool bnge_uc_list_updated(struct bnge_net *bn,
++				 const struct netdev_hw_addr_list *uc)
+ {
+ 	struct bnge_vnic_info *vnic = &bn->vnic_info[BNGE_VNIC_DEFAULT];
+-	struct net_device *dev = bn->netdev;
+ 	struct netdev_hw_addr *ha;
+ 	int off = 0;
+ 
+-	if (netdev_uc_count(dev) != (vnic->uc_filter_count - 1))
++	if (netdev_hw_addr_list_count(uc) != (vnic->uc_filter_count - 1))
+ 		return true;
+ 
+-	netdev_for_each_uc_addr(ha, dev) {
++	netdev_hw_addr_list_for_each(ha, uc) {
+ 		if (!ether_addr_equal(ha->addr, vnic->uc_list + off))
+ 			return true;
+ 
+@@ -2201,7 +2201,8 @@ static bool bnge_promisc_ok(struct bnge_net *bn)
+ 	return true;
+ }
+ 
+-static int bnge_cfg_def_vnic(struct bnge_net *bn)
++static int bnge_cfg_rx_mode(struct bnge_net *bn, struct netdev_hw_addr_list *uc,
++			    bool snapshot)
+ {
+ 	struct bnge_vnic_info *vnic = &bn->vnic_info[BNGE_VNIC_DEFAULT];
+ 	struct net_device *dev = bn->netdev;
+@@ -2211,7 +2212,7 @@ static int bnge_cfg_def_vnic(struct bnge_net *bn)
+ 	bool uc_update;
+ 
+ 	netif_addr_lock_bh(dev);
+-	uc_update = bnge_uc_list_updated(bn);
++	uc_update = bnge_uc_list_updated(bn, uc);
+ 	netif_addr_unlock_bh(dev);
+ 
+ 	if (!uc_update)
+@@ -2226,22 +2227,28 @@ static int bnge_cfg_def_vnic(struct bnge_net *bn)
+ 
+ 	vnic->uc_filter_count = 1;
+ 
+-	netif_addr_lock_bh(dev);
+-	if (netdev_uc_count(dev) > (BNGE_MAX_UC_ADDRS - 1)) {
++	if (!snapshot)
++		netif_addr_lock_bh(dev);
++	if (netdev_hw_addr_list_count(uc) > (BNGE_MAX_UC_ADDRS - 1)) {
+ 		vnic->rx_mask |= CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
+ 	} else {
+-		netdev_for_each_uc_addr(ha, dev) {
++		netdev_hw_addr_list_for_each(ha, uc) {
+ 			memcpy(vnic->uc_list + off, ha->addr, ETH_ALEN);
+ 			off += ETH_ALEN;
+ 			vnic->uc_filter_count++;
+ 		}
+ 	}
+-	netif_addr_unlock_bh(dev);
++	if (!snapshot)
++		netif_addr_unlock_bh(dev);
+ 
+ 	for (i = 1, off = 0; i < vnic->uc_filter_count; i++, off += ETH_ALEN) {
+ 		rc = bnge_hwrm_set_vnic_filter(bn, 0, i, vnic->uc_list + off);
+ 		if (rc) {
+-			netdev_err(dev, "HWRM vnic filter failure rc: %d\n", rc);
++			if (rc == -EAGAIN)
++				netdev_warn(dev, "FW busy while setting vnic filter, will retry\n");
++			else
++				netdev_err(dev, "HWRM vnic filter failure rc: %d\n",
++					   rc);
+ 			vnic->uc_filter_count = i;
+ 			return rc;
+ 		}
+@@ -2695,11 +2702,11 @@ static int bnge_init_chip(struct bnge_net *bn)
+ 	} else if (bn->netdev->flags & IFF_MULTICAST) {
+ 		u32 mask = 0;
+ 
+-		bnge_mc_list_updated(bn, &mask);
++		bnge_mc_list_updated(bn, &mask, &bn->netdev->mc);
+ 		vnic->rx_mask |= mask;
+ 	}
+ 
+-	rc = bnge_cfg_def_vnic(bn);
++	rc = bnge_cfg_rx_mode(bn, &bn->netdev->uc, false);
+ 	if (rc)
+ 		goto err_out;
+ 	return 0;
 -- 
 2.47.1
 
