@@ -1,50 +1,50 @@
 Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D813A283C9D;
-	Fri, 31 Jul 2026 14:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D593CB57C;
+	Fri, 31 Jul 2026 14:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.143.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785508267; cv=none; b=eTZspDZpa9C0+/rhNiB2vmJD7XcVgmM/Q48Zj3l7m/J1XRNaL4PGYtkze+uaBbHqRD8lRXTB+OGXtNS92Me8sJp8Ces7B5GD3pUuYCtIj8klT8k7Zg9yslqRAGeEV5wNr8oy515hAkN1ak8NUHPZPXbnMDuMazb1uNZVscm0zgU=
+	t=1785508684; cv=none; b=lZyOfCVOp4swkPM+ymDXb4XS0pBUuV0MvIusZpCpCaWsOcg4Cc4HpxRLZI7TGMvdpkx0fxuheAWa9TBZzyyZ/oJhG1UQfWX+vVroSpa8yflxvPC9Ldyf4Qe9Cm/xlMXId00cQGVsWZtEbWY0etuxy4/fST34qc9F9CELfhDcc+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785508267; c=relaxed/simple;
-	bh=3t1jd/h7XwHNNvVY0MAfoAw2IfLT0ie24jwnYs0NQ1Y=;
+	s=arc-20240116; t=1785508684; c=relaxed/simple;
+	bh=GxHOuzDCKSOSsfAC/J+Psdqcp7hM0B6vRcuQ67oNVKE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qWFabTmZrDj9DG+bX2hi+hm9Ln2jEtdXq1KtN8PjTFrriHG3Bj8AvbQ6cBn0iVDsTMbwZxt1nZg6Aq+ff1EsNbYwQskrXKnn0iLyj33jAkc4rgLCww92/YbqiZyGc5+yMqwOJZc+ETSQL6PlEAEoZO2X40G4sNzx9Id8C3Pi3U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=MW9aqqVK; arc=none smtp.client-ip=148.163.143.35
+	 Content-Type:Content-Disposition:In-Reply-To; b=dSanyR0YGBXZ6+2WRoSIBcJ9KuiE6vmhFiuotM7VHOY7FqDwgId5jeTF7hEXiDYPmgdrfMFMudHbkXK+DgkB8UAi9tXtVvNb3Tq6hFuhL7p/2pjkF2t9OHXPurLcDU8MzcsR5PgusYfjITnCQqCjTQnKqo7SAq5/Hga2JKuWHdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=BT7/5KLR; arc=none smtp.client-ip=148.163.143.35
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="MW9aqqVK"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="BT7/5KLR"
 Received: from pps.filterd (m0134423.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66VE14UA4183042;
-	Fri, 31 Jul 2026 14:30:29 GMT
+	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66VE2b64572641;
+	Fri, 31 Jul 2026 14:37:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
 	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps0720; bh=gOX94CsnSpCUaq3J7MYsfEMNu2
-	lYevY1QIGrkuUrkKc=; b=MW9aqqVKYUK8/kC2j/YQ2JD/0suF5GQ55/CNnLsRrY
-	nBJFzISdEYwVE/5xPvBirC3Ng5/EFteEVQnAdwuJGs9XBNVWU7iMOixBNyAKSVtv
-	qKbFdrSL8S1MbMZSq6IeWjtekqhI4Ad1nXpcT/wH8Efd2fSVyiss+fBKdjzSoXCG
-	RlTtbju0uk6IJBc8Tv49GUGyeZ2TnI3px7PV7NDgp+kNP8kH/a2R84dAfCq5k8vM
-	3TomVycT+MhhJu0yR/QXqlswPUiwG37SJvU33Aj6zTGmHXyIPfIMB4IktfFoPh3+
-	Yn4V+NUO2KvmmiaHfia2G4IqTmLLHxnN9Ky6YyyXuiAQ==
-Received: from p1lg14881.it.hpe.com (p1lg14881.it.hpe.com [16.230.97.202])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4frrqu58wv-1
+	:references:subject:to; s=pps0720; bh=yhrgEygaL40NCACVvRlOU/dmrL
+	nLkzl4e5MOa2INx9Y=; b=BT7/5KLRAMNgj9D8eEbN3xtWugSv2v4Mc/xmDAMuLo
+	LMwpQYEzZhMdYE566bH+JaWfKzUCGK/KQTaEbSVh2ZMP6813vaw9O9P/8InX3fz/
+	KR4SXGjR09O0CHGqRgg/Pl0e1JLG0CjDFePIVqb4DuGipKvW7JGQCZwZxcZJcJ9h
+	u9SRYneRwNVvZEtmiC8ipMiMz5Cj53nzIyO7KjFdjTFXBZWjGj9aYLa9nC6cwazP
+	2m5LpcKpL6IarMpLfB8jBlniPxTcJddMt/dpJTowBVceHbleKNjb9sA16bEX1jUi
+	mEm4qDVZR5C2SwCk/3bQ8678dn3I/junp5j02bnUkpkA==
+Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4frrqu5dh7-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 31 Jul 2026 14:30:29 +0000 (GMT)
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+	Fri, 31 Jul 2026 14:37:21 +0000 (GMT)
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by p1lg14881.it.hpe.com (Postfix) with ESMTPS id 196E7806B02;
-	Fri, 31 Jul 2026 14:30:28 +0000 (UTC)
+	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id BC92280022F;
+	Fri, 31 Jul 2026 14:37:19 +0000 (UTC)
 Received: from hpe.com (unknown [16.231.227.36])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id 158C580BC4F;
-	Fri, 31 Jul 2026 14:30:25 +0000 (UTC)
-Date: Fri, 31 Jul 2026 09:30:24 -0500
+	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id 7729480027F;
+	Fri, 31 Jul 2026 14:37:17 +0000 (UTC)
+Date: Fri, 31 Jul 2026 09:37:15 -0500
 From: Dimitri Sivanich <sivanich@hpe.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Steve Wahl <steve.wahl@hpe.com>, "Anderson, Russ" <russ.anderson@hpe.com>,
@@ -55,8 +55,8 @@ Cc: Steve Wahl <steve.wahl@hpe.com>, "Anderson, Russ" <russ.anderson@hpe.com>,
         "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
         Muhammad Usama Anjum <usama.anjum@arm.com>, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, Dimitri Sivanich <sivanich@hpe.com>
-Subject: [PATCH 1/2] misc: sgi-xp: Remove SGI XP drivers
-Message-ID: <amyxgPYeowzWt_8W@hpe.com>
+Subject: [PATCH 2/2] misc: sgi-gru: Remove SGI GRU driver
+Message-ID: <amyzGw1-MVLpNH-d@hpe.com>
 References: <amywpyZgGWyhzBjZ@hpe.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,25 +67,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <amywpyZgGWyhzBjZ@hpe.com>
-X-Proofpoint-GUID: V3MoAoOutGz1dJ_eiQwdBRXSyUYm0lk8
-X-Proofpoint-ORIG-GUID: V3MoAoOutGz1dJ_eiQwdBRXSyUYm0lk8
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDExMCBTYWx0ZWRfXxjdK1U0sGWdj
- 2rbkcvwEydJvjsF5x2GTTmSCOEnj58+v/NXE5rJfGX+q1oY70qoFGyV3phsBGE55cw6s6kMM9HL
- f6FagStJFbWJZbXuvMhzE/3s9TTqirc=
-X-Authority-Analysis: v=2.4 cv=NLrlPU6g c=1 sm=1 tr=0 ts=6a6cb185 cx=c_pps
- a=FAnPgvRYq/vnBSvlTDCQOQ==:117 a=FAnPgvRYq/vnBSvlTDCQOQ==:17
+X-Proofpoint-GUID: LxhHQX-lVOAIPkdHNa6dX-QMYgZWme8W
+X-Proofpoint-ORIG-GUID: LxhHQX-lVOAIPkdHNa6dX-QMYgZWme8W
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDExMSBTYWx0ZWRfX23fIwsvStbaZ
+ lOMA6MLc3LUoH0b2C4dqsoyFg747ZTEq5ucjR4wPc/q1pawuFTjoeJ/kao+9XyLC9SPUlpX8MY4
+ Akse/lXldm0QLug+4c60qnFAQRtIP4c=
+X-Authority-Analysis: v=2.4 cv=NLrlPU6g c=1 sm=1 tr=0 ts=6a6cb321 cx=c_pps
+ a=A+SOMQ4XYIH4HgQ50p3F5Q==:117 a=A+SOMQ4XYIH4HgQ50p3F5Q==:17
  a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
  a=gQcMVamqm3wCPoSYhaRC:22 a=g3u0LPWLDYfGfufhFw6-:22 a=MvuuwTCpAAAA:8
- a=pGLkceISAAAA:8 a=SRrdq9N9AAAA:8 a=irEKfKKr8M9xOzIeViEA:9
- a=cRY9VM_CqMle-d1K:21 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDExMCBTYWx0ZWRfX5l1vWxmMVkBt
- ETzkKqPh+BZ0l0ypmeqPV20LIrOsB4N8Q/ZqsDu8nx+llLY3/6d/20KA2StyeMP9gWpshCV1Q7T
- ZMz1cxtzMRaX1PWHaDg6BGra2K8BE7FLz145b1vbebBbxPY19bmxWk5ugR2KQ0TaRSg98z7yhTl
- R7JdyR7AcTKCOw60iIsrZY2QZiEJDfSf6TfuTdPVzPXYjaDzSALDLMZ75dZch3EJI1zo0Jk8+HM
- n3PjQhzDLIyxd+t9G9CwhY5XBg9juFkRly4pkdMNMZWHFg7yCLMC1FZozZDUFxmpJIA6uF1nFIo
- 8hBpDdvuD8KTITTO+3V+eeippIU5bmFkWw9xJEvdpC0z2g3jG32zDYEiHGK76WRwCGtc1hsSHbU
- G/KxYvL8POSzlIqgyJtpjrBnpMwuzGf21Wc5pYz0eyK199Rvt8tipsoqCyOKNrb0ojzIB7ln7SR
- fwpy6mWeg0SE2yUGSwA==
+ a=SRrdq9N9AAAA:8 a=ZgDHjy79OHVoia_7W-sA:9 a=PzGzLs9CxK44lCOa:21
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDExMSBTYWx0ZWRfX6fUOtG4+3VAb
+ LqZ/XA0Asr8PwpqxbE3RO9PgjhUkxJusB0S8FmA1dG1+ovCNL+pTgFnT8OL4No59RcLMONK0qwR
+ k/JqF0Mtj+ziCRGK+B0jQeR9Pnfo+y+xM6dkY807aQ9uvSWm9urbxuVHmfNRfB50dqdqxn+uO49
+ 9i7I/qagbwQUsnMC/yMKLlJ5wkQCv68Go7gR5LWPZMlfQ7cmhwbh9XFFwuVrjNcx4/5T5iUODAs
+ VIJMjRVDje7VeLx2ZwOM0ayCU+1nu6twGFYD21miyfM15ZaHHbD68YVTroIxS/2mzLOJJNu8hhr
+ gvMQXsAm9/AVoN6CW3jEYqkKBrHZujtqUKFEVkNjYkUF94zgCZEqvfb0BtI67kDkplNUX4HwRCo
+ dwcsgy1x6zqTO9GgDJG95jriWysguI39c0cJU9S3096Cy+KSW6ERtcDa5GrUEIITGT4woDUjfRk
+ /wxB8oljvaPw443HsCQ==
 X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
@@ -94,6841 +94,7144 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  clxscore=1011 priorityscore=1501 suspectscore=0 phishscore=0 impostorscore=0
  spamscore=0 bulkscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607310110
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607310111
 
-Working XP drivers require the GRU driver.  The GRU driver is being
-removed, so remove XP as well.
+Due to security concerns, remove the SGI GRU driver, which cannot be used
+on anything newer than the long time unsupported UV2 platform.
 
 Signed-off-by: Dimitri Sivanich <sivanich@hpe.com>
 ---
- MAINTAINERS                         |    6 -
- drivers/misc/Kconfig                |   13 -
- drivers/misc/Makefile               |    1 -
- drivers/misc/sgi-xp/Makefile        |   13 -
- drivers/misc/sgi-xp/xp.h            |  341 ------
- drivers/misc/sgi-xp/xp_main.c       |  261 ----
- drivers/misc/sgi-xp/xp_uv.c         |  151 ---
- drivers/misc/sgi-xp/xpc.h           |  732 ------------
- drivers/misc/sgi-xp/xpc_channel.c   | 1011 ----------------
- drivers/misc/sgi-xp/xpc_main.c      | 1309 --------------------
- drivers/misc/sgi-xp/xpc_partition.c |  545 ---------
- drivers/misc/sgi-xp/xpc_uv.c        | 1728 ---------------------------
- drivers/misc/sgi-xp/xpnet.c         |  599 ----------
- 13 files changed, 6710 deletions(-)
- delete mode 100644 drivers/misc/sgi-xp/Makefile
- delete mode 100644 drivers/misc/sgi-xp/xp.h
- delete mode 100644 drivers/misc/sgi-xp/xp_main.c
- delete mode 100644 drivers/misc/sgi-xp/xp_uv.c
- delete mode 100644 drivers/misc/sgi-xp/xpc.h
- delete mode 100644 drivers/misc/sgi-xp/xpc_channel.c
- delete mode 100644 drivers/misc/sgi-xp/xpc_main.c
- delete mode 100644 drivers/misc/sgi-xp/xpc_partition.c
- delete mode 100644 drivers/misc/sgi-xp/xpc_uv.c
- delete mode 100644 drivers/misc/sgi-xp/xpnet.c
+ MAINTAINERS                             |    5 -
+ drivers/misc/Kconfig                    |   21 -
+ drivers/misc/Makefile                   |    1 -
+ drivers/misc/sgi-gru/Makefile           |    6 -
+ drivers/misc/sgi-gru/gru.h              |   76 --
+ drivers/misc/sgi-gru/gru_instructions.h |  726 --------------
+ drivers/misc/sgi-gru/grufault.c         |  903 ------------------
+ drivers/misc/sgi-gru/grufile.c          |  540 -----------
+ drivers/misc/sgi-gru/gruhandles.c       |  192 ----
+ drivers/misc/sgi-gru/gruhandles.h       |  517 ----------
+ drivers/misc/sgi-gru/grukdump.c         |  223 -----
+ drivers/misc/sgi-gru/grukservices.c     | 1157 -----------------------
+ drivers/misc/sgi-gru/grukservices.h     |  201 ----
+ drivers/misc/sgi-gru/grulib.h           |  153 ---
+ drivers/misc/sgi-gru/grumain.c          |  969 -------------------
+ drivers/misc/sgi-gru/gruprocfs.c        |  308 ------
+ drivers/misc/sgi-gru/grutables.h        |  659 -------------
+ drivers/misc/sgi-gru/grutlbpurge.c      |  316 -------
+ 18 files changed, 6973 deletions(-)
+ delete mode 100644 drivers/misc/sgi-gru/Makefile
+ delete mode 100644 drivers/misc/sgi-gru/gru.h
+ delete mode 100644 drivers/misc/sgi-gru/gru_instructions.h
+ delete mode 100644 drivers/misc/sgi-gru/grufault.c
+ delete mode 100644 drivers/misc/sgi-gru/grufile.c
+ delete mode 100644 drivers/misc/sgi-gru/gruhandles.c
+ delete mode 100644 drivers/misc/sgi-gru/gruhandles.h
+ delete mode 100644 drivers/misc/sgi-gru/grukdump.c
+ delete mode 100644 drivers/misc/sgi-gru/grukservices.c
+ delete mode 100644 drivers/misc/sgi-gru/grukservices.h
+ delete mode 100644 drivers/misc/sgi-gru/grulib.h
+ delete mode 100644 drivers/misc/sgi-gru/grumain.c
+ delete mode 100644 drivers/misc/sgi-gru/gruprocfs.c
+ delete mode 100644 drivers/misc/sgi-gru/grutables.h
+ delete mode 100644 drivers/misc/sgi-gru/grutlbpurge.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 62d53465ef9b..0267f5e3ce5e 100644
+index 0267f5e3ce5e..6bce127b8263 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -24623,12 +24623,6 @@ M:	Dimitri Sivanich <dimitri.sivanich@hpe.com>
- S:	Maintained
- F:	drivers/misc/sgi-gru/
+@@ -24618,11 +24618,6 @@ F:	include/linux/phylink.h
+ F:	include/linux/sfp.h
+ K:	phylink\.h|struct\s+phylink|\.phylink|>phylink_|phylink_(autoneg|clear|connect|create|destroy|disconnect|ethtool|helper|mac|mii|of|set|start|stop|test|validate)
  
--SGI XP/XPC/XPNET DRIVER
--M:	Robin Holt <robinmholt@gmail.com>
--M:	Steve Wahl <steve.wahl@hpe.com>
+-SGI GRU DRIVER
+-M:	Dimitri Sivanich <dimitri.sivanich@hpe.com>
 -S:	Maintained
--F:	drivers/misc/sgi-xp/
+-F:	drivers/misc/sgi-gru/
 -
  SHARED MEMORY COMMUNICATIONS (SMC) SOCKETS
  M:	D. Wythe <alibuda@linux.alibaba.com>
  M:	Dust Li <dust.li@linux.alibaba.com>
 diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index 390256ed91f4..18b09ca716ca 100644
+index 18b09ca716ca..16c172fd58fe 100644
 --- a/drivers/misc/Kconfig
 +++ b/drivers/misc/Kconfig
-@@ -185,19 +185,6 @@ config ENCLOSURE_SERVICES
- 	  driver (SCSI/ATA) which supports enclosures
- 	  or a SCSI enclosure device (SES) to use these services.
+@@ -297,27 +297,6 @@ config QCOM_FASTRPC
+ 	  applications DSP processor. Say M if you want to enable this
+ 	  module.
  
--config SGI_XP
--	tristate "Support communication between SGI SSIs"
--	depends on NET
+-config SGI_GRU
+-	tristate "SGI GRU driver"
 -	depends on X86_UV && SMP
--	depends on X86_64 || BROKEN
--	select SGI_GRU if X86_64 && SMP
+-	select MMU_NOTIFIER
 -	help
--	  An SGI machine can be divided into multiple Single System
--	  Images which act independently of each other and have
--	  hardware based memory protection from the others.  Enabling
--	  this feature will allow for direct communication between SSIs
--	  based on a network adapter and DMA messaging.
+-	  The GRU is a hardware resource located in the system chipset. The GRU
+-	  contains memory that can be mmapped into the user address space.
+-	  This memory is used to communicate with the GRU to perform functions
+-	  such as load/store, scatter/gather, bcopy, AMOs, etc.  The GRU is
+-	  directly accessed by user instructions using user virtual addresses.
+-	  GRU instructions (ex., bcopy) use user virtual addresses for operands.
 -
- config SMPRO_ERRMON
- 	tristate "Ampere Computing SMPro error monitor driver"
- 	depends on MFD_SMPRO || COMPILE_TEST
+-	  If you are not running on a SGI UV system, say N.
+-
+-config SGI_GRU_DEBUG
+-	bool  "SGI GRU driver debug"
+-	depends on SGI_GRU
+-	help
+-	  This option enables additional debugging code for the SGI GRU driver.
+-	  If you are unsure, say N.
+-
+ config APDS9802ALS
+ 	tristate "Medfield Avago APDS9802 ALS Sensor module"
+ 	depends on I2C
 diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-index fed47c7672b9..0e74b550b938 100644
+index 0e74b550b938..765da6c2819a 100644
 --- a/drivers/misc/Makefile
 +++ b/drivers/misc/Makefile
 @@ -22,7 +22,6 @@ obj-$(CONFIG_QCOM_FASTRPC)	+= fastrpc.o
  obj-$(CONFIG_SENSORS_BH1770)	+= bh1770glc.o
  obj-$(CONFIG_ENCLOSURE_SERVICES) += enclosure.o
  obj-$(CONFIG_KGDB_TESTS)	+= kgdbts.o
--obj-$(CONFIG_SGI_XP)		+= sgi-xp/
- obj-$(CONFIG_SGI_GRU)		+= sgi-gru/
+-obj-$(CONFIG_SGI_GRU)		+= sgi-gru/
  obj-$(CONFIG_SMPRO_ERRMON)	+= smpro-errmon.o
  obj-$(CONFIG_SMPRO_MISC)	+= smpro-misc.o
-diff --git a/drivers/misc/sgi-xp/Makefile b/drivers/misc/sgi-xp/Makefile
+ obj-$(CONFIG_CS5535_MFGPT)	+= cs5535-mfgpt.o
+diff --git a/drivers/misc/sgi-gru/Makefile b/drivers/misc/sgi-gru/Makefile
 deleted file mode 100644
-index 34c55a4045af..000000000000
---- a/drivers/misc/sgi-xp/Makefile
+index 8132116ec0f0..000000000000
+--- a/drivers/misc/sgi-gru/Makefile
 +++ /dev/null
-@@ -1,13 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0
--#
--# Makefile for SGI's XP devices.
--#
+@@ -1,6 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-ccflags-$(CONFIG_SGI_GRU_DEBUG)	:= -DDEBUG
 -
--obj-$(CONFIG_SGI_XP)		+= xp.o
--xp-y				:= xp_main.o xp_uv.o
+-obj-$(CONFIG_SGI_GRU) := gru.o
+-gru-y := grufile.o grumain.o grufault.o grutlbpurge.o gruprocfs.o grukservices.o gruhandles.o grukdump.o
 -
--obj-$(CONFIG_SGI_XP)		+= xpc.o
--xpc-y				:= xpc_main.o xpc_channel.o xpc_partition.o \
--				   xpc_uv.o
--
--obj-$(CONFIG_SGI_XP)		+= xpnet.o
-diff --git a/drivers/misc/sgi-xp/xp.h b/drivers/misc/sgi-xp/xp.h
+diff --git a/drivers/misc/sgi-gru/gru.h b/drivers/misc/sgi-gru/gru.h
 deleted file mode 100644
-index 3185711beb07..000000000000
---- a/drivers/misc/sgi-xp/xp.h
+index 6ae045037219..000000000000
+--- a/drivers/misc/sgi-gru/gru.h
 +++ /dev/null
-@@ -1,341 +0,0 @@
+@@ -1,76 +0,0 @@
 -/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
 - *
-- * (C) Copyright 2020 Hewlett Packard Enterprise Development LP
-- * Copyright (C) 2004-2008 Silicon Graphics, Inc. All rights reserved.
+- *  This program is free software; you can redistribute it and/or modify
+- *  it under the terms of the GNU Lesser General Public License as published by
+- *  the Free Software Foundation; either version 2.1 of the License, or
+- *  (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *  GNU Lesser General Public License for more details.
+- *
+- *  You should have received a copy of the GNU Lesser General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 - */
+-
+-#ifndef __GRU_H__
+-#define __GRU_H__
 -
 -/*
-- * External Cross Partition (XP) structures and defines.
+- * GRU architectural definitions
 - */
+-#define GRU_CACHE_LINE_BYTES		64
+-#define GRU_HANDLE_STRIDE		256
+-#define GRU_CB_BASE			0
+-#define GRU_DS_BASE			0x20000
 -
--#ifndef _DRIVERS_MISC_SGIXP_XP_H
--#define _DRIVERS_MISC_SGIXP_XP_H
--
--#include <linux/mutex.h>
--
--#if defined CONFIG_X86_UV
--#include <asm/uv/uv.h>
--#endif
--
--#ifdef USE_DBUG_ON
--#define DBUG_ON(condition)	BUG_ON(condition)
+-/*
+- * Size used to map GRU GSeg
+- */
+-#if defined(CONFIG_X86_64)
+-#define GRU_GSEG_PAGESIZE	(256 * 1024UL)		/* ZZZ 2MB ??? */
 -#else
--#define DBUG_ON(condition)
+-#error "Unsupported architecture"
 -#endif
 -
 -/*
-- * Define the maximum number of partitions the system can possibly support.
-- * It is based on the maximum number of hardware partitionable regions. The
-- * term 'region' in this context refers to the minimum number of nodes that
-- * can comprise an access protection grouping. The access protection is in
-- * regards to memory, IPI and IOI.
-- *
-- * The maximum number of hardware partitionable regions is equal to the
-- * maximum number of nodes in the entire system divided by the minimum number
-- * of nodes that comprise an access protection grouping.
+- * Structure for obtaining GRU resource information
 - */
--#define XP_MAX_NPARTITIONS_SN2	64
--#define XP_MAX_NPARTITIONS_UV	256
+-struct gru_chiplet_info {
+-	int	node;
+-	int	chiplet;
+-	int	blade;
+-	int	total_dsr_bytes;
+-	int	total_cbr;
+-	int	total_user_dsr_bytes;
+-	int	total_user_cbr;
+-	int	free_user_dsr_bytes;
+-	int	free_user_cbr;
+-};
 -
 -/*
-- * XPC establishes channel connections between the local partition and any
-- * other partition that is currently up. Over these channels, kernel-level
-- * `users' can communicate with their counterparts on the other partitions.
-- *
-- * If the need for additional channels arises, one can simply increase
-- * XPC_MAX_NCHANNELS accordingly. If the day should come where that number
-- * exceeds the absolute MAXIMUM number of channels possible (eight), then one
-- * will need to make changes to the XPC code to accommodate for this.
-- *
-- * The absolute maximum number of channels possible is limited to eight for
-- * performance reasons on sn2 hardware. The internal cross partition structures
-- * require sixteen bytes per channel, and eight allows all of this
-- * interface-shared info to fit in one 128-byte cacheline.
+- * Statictics kept for each context.
 - */
--#define XPC_MEM_CHANNEL		0	/* memory channel number */
--#define	XPC_NET_CHANNEL		1	/* network channel number */
+-struct gru_gseg_statistics {
+-	unsigned long	fmm_tlbmiss;
+-	unsigned long	upm_tlbmiss;
+-	unsigned long	tlbdropin;
+-	unsigned long	context_stolen;
+-	unsigned long	reserved[10];
+-};
 -
--#define XPC_MAX_NCHANNELS	2	/* max #of channels allowed */
+-/* Flags for GRU options on the gru_create_context() call */
+-/* Select one of the follow 4 options to specify how TLB misses are handled */
+-#define GRU_OPT_MISS_DEFAULT	0x0000	/* Use default mode */
+-#define GRU_OPT_MISS_USER_POLL	0x0001	/* User will poll CB for faults */
+-#define GRU_OPT_MISS_FMM_INTR	0x0002	/* Send interrupt to cpu to
+-					   handle fault */
+-#define GRU_OPT_MISS_FMM_POLL	0x0003	/* Use system polling thread */
+-#define GRU_OPT_MISS_MASK	0x0003	/* Mask for TLB MISS option */
 -
--#if XPC_MAX_NCHANNELS > 8
--#error	XPC_MAX_NCHANNELS exceeds absolute MAXIMUM possible.
+-
+-
+-#endif		/* __GRU_H__ */
+diff --git a/drivers/misc/sgi-gru/gru_instructions.h b/drivers/misc/sgi-gru/gru_instructions.h
+deleted file mode 100644
+index da5eb9edf9ec..000000000000
+--- a/drivers/misc/sgi-gru/gru_instructions.h
++++ /dev/null
+@@ -1,726 +0,0 @@
+-/*
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
+- *
+- *  This program is free software; you can redistribute it and/or modify
+- *  it under the terms of the GNU Lesser General Public License as published by
+- *  the Free Software Foundation; either version 2.1 of the License, or
+- *  (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *  GNU Lesser General Public License for more details.
+- *
+- *  You should have received a copy of the GNU Lesser General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+- */
+-
+-#ifndef __GRU_INSTRUCTIONS_H__
+-#define __GRU_INSTRUCTIONS_H__
+-
+-extern int gru_check_status_proc(void *cb);
+-extern int gru_wait_proc(void *cb);
+-extern void gru_wait_abort_proc(void *cb);
+-
+-
+-
+-/*
+- * Architecture dependent functions
+- */
+-
+-#if defined(CONFIG_X86_64)
+-#include <asm/cacheflush.h>
+-#define __flush_cache(p)		clflush(p)
+-#define gru_ordered_store_ulong(p, v)					\
+-		do {							\
+-			barrier();					\
+-			*(unsigned long *)p = v;			\
+-		} while (0)
+-#else
+-#error "Unsupported architecture"
 -#endif
 -
 -/*
-- * Define macro, XPC_MSG_SIZE(), is provided for the user
-- * that wants to fit as many msg entries as possible in a given memory size
-- * (e.g. a memory page).
+- * Control block status and exception codes
 - */
--#define XPC_MSG_MAX_SIZE	128
--#define XPC_MSG_HDR_MAX_SIZE	16
--#define XPC_MSG_PAYLOAD_MAX_SIZE (XPC_MSG_MAX_SIZE - XPC_MSG_HDR_MAX_SIZE)
+-#define CBS_IDLE			0
+-#define CBS_EXCEPTION			1
+-#define CBS_ACTIVE			2
+-#define CBS_CALL_OS			3
 -
--#define XPC_MSG_SIZE(_payload_size) \
--				ALIGN(XPC_MSG_HDR_MAX_SIZE + (_payload_size), \
--				      is_uv_system() ? 64 : 128)
+-/* CB substatus bitmasks */
+-#define CBSS_MSG_QUEUE_MASK		7
+-#define CBSS_IMPLICIT_ABORT_ACTIVE_MASK	8
 -
+-/* CB substatus message queue values (low 3 bits of substatus) */
+-#define CBSS_NO_ERROR			0
+-#define CBSS_LB_OVERFLOWED		1
+-#define CBSS_QLIMIT_REACHED		2
+-#define CBSS_PAGE_OVERFLOW		3
+-#define CBSS_AMO_NACKED			4
+-#define CBSS_PUT_NACKED			5
 -
 -/*
-- * Define the return values and values passed to user's callout functions.
-- * (It is important to add new value codes at the end just preceding
-- * xpUnknownReason, which must have the highest numerical value.)
+- * Structure used to fetch exception detail for CBs that terminate with
+- * CBS_EXCEPTION
 - */
--enum xp_retval {
--	xpSuccess = 0,
--
--	xpNotConnected,		/*  1: channel is not connected */
--	xpConnected,		/*  2: channel connected (opened) */
--	xpRETIRED1,		/*  3: (formerly xpDisconnected) */
--
--	xpMsgReceived,		/*  4: message received */
--	xpMsgDelivered,		/*  5: message delivered and acknowledged */
--
--	xpRETIRED2,		/*  6: (formerly xpTransferFailed) */
--
--	xpNoWait,		/*  7: operation would require wait */
--	xpRetry,		/*  8: retry operation */
--	xpTimeout,		/*  9: timeout in xpc_allocate_msg_wait() */
--	xpInterrupted,		/* 10: interrupted wait */
--
--	xpUnequalMsgSizes,	/* 11: message size disparity between sides */
--	xpInvalidAddress,	/* 12: invalid address */
--
--	xpNoMemory,		/* 13: no memory available for XPC structures */
--	xpLackOfResources,	/* 14: insufficient resources for operation */
--	xpUnregistered,		/* 15: channel is not registered */
--	xpAlreadyRegistered,	/* 16: channel is already registered */
--
--	xpPartitionDown,	/* 17: remote partition is down */
--	xpNotLoaded,		/* 18: XPC module is not loaded */
--	xpUnloading,		/* 19: this side is unloading XPC module */
--
--	xpBadMagic,		/* 20: XPC MAGIC string not found */
--
--	xpReactivating,		/* 21: remote partition was reactivated */
--
--	xpUnregistering,	/* 22: this side is unregistering channel */
--	xpOtherUnregistering,	/* 23: other side is unregistering channel */
--
--	xpCloneKThread,		/* 24: cloning kernel thread */
--	xpCloneKThreadFailed,	/* 25: cloning kernel thread failed */
--
--	xpNoHeartbeat,		/* 26: remote partition has no heartbeat */
--
--	xpPioReadError,		/* 27: PIO read error */
--	xpPhysAddrRegFailed,	/* 28: registration of phys addr range failed */
--
--	xpRETIRED3,		/* 29: (formerly xpBteDirectoryError) */
--	xpRETIRED4,		/* 30: (formerly xpBtePoisonError) */
--	xpRETIRED5,		/* 31: (formerly xpBteWriteError) */
--	xpRETIRED6,		/* 32: (formerly xpBteAccessError) */
--	xpRETIRED7,		/* 33: (formerly xpBtePWriteError) */
--	xpRETIRED8,		/* 34: (formerly xpBtePReadError) */
--	xpRETIRED9,		/* 35: (formerly xpBteTimeOutError) */
--	xpRETIRED10,		/* 36: (formerly xpBteXtalkError) */
--	xpRETIRED11,		/* 37: (formerly xpBteNotAvailable) */
--	xpRETIRED12,		/* 38: (formerly xpBteUnmappedError) */
--
--	xpBadVersion,		/* 39: bad version number */
--	xpVarsNotSet,		/* 40: the XPC variables are not set up */
--	xpNoRsvdPageAddr,	/* 41: unable to get rsvd page's phys addr */
--	xpInvalidPartid,	/* 42: invalid partition ID */
--	xpLocalPartid,		/* 43: local partition ID */
--
--	xpOtherGoingDown,	/* 44: other side going down, reason unknown */
--	xpSystemGoingDown,	/* 45: system is going down, reason unknown */
--	xpSystemHalt,		/* 46: system is being halted */
--	xpSystemReboot,		/* 47: system is being rebooted */
--	xpSystemPoweroff,	/* 48: system is being powered off */
--
--	xpDisconnecting,	/* 49: channel disconnecting (closing) */
--
--	xpOpenCloseError,	/* 50: channel open/close protocol error */
--
--	xpDisconnected,		/* 51: channel disconnected (closed) */
--
--	xpBteCopyError,		/* 52: bte_copy() returned error */
--	xpSalError,		/* 53: sn SAL error */
--	xpRsvdPageNotSet,	/* 54: the reserved page is not set up */
--	xpPayloadTooBig,	/* 55: payload too large for message slot */
--
--	xpUnsupported,		/* 56: unsupported functionality or resource */
--	xpNeedMoreInfo,		/* 57: more info is needed by SAL */
--
--	xpGruCopyError,		/* 58: gru_copy_gru() returned error */
--	xpGruSendMqError,	/* 59: gru send message queue related error */
--
--	xpBadChannelNumber,	/* 60: invalid channel number */
--	xpBadMsgType,		/* 61: invalid message type */
--	xpBiosError,		/* 62: BIOS error */
--
--	xpUnknownReason		/* 63: unknown reason - must be last in enum */
+-struct control_block_extended_exc_detail {
+-	unsigned long	cb;
+-	int		opc;
+-	int		ecause;
+-	int		exopc;
+-	long		exceptdet0;
+-	int		exceptdet1;
+-	int		cbrstate;
+-	int		cbrexecstatus;
 -};
 -
 -/*
-- * Define the callout function type used by XPC to update the user on
-- * connection activity and state changes via the user function registered
-- * by xpc_connect().
-- *
-- * Arguments:
-- *
-- *	reason - reason code.
-- *	partid - partition ID associated with condition.
-- *	ch_number - channel # associated with condition.
-- *	data - pointer to optional data.
-- *	key - pointer to optional user-defined value provided as the "key"
-- *	      argument to xpc_connect().
-- *
-- * A reason code of xpConnected indicates that a connection has been
-- * established to the specified partition on the specified channel. The data
-- * argument indicates the max number of entries allowed in the message queue.
-- *
-- * A reason code of xpMsgReceived indicates that a XPC message arrived from
-- * the specified partition on the specified channel. The data argument
-- * specifies the address of the message's payload. The user must call
-- * xpc_received() when finished with the payload.
-- *
-- * All other reason codes indicate failure. The data argmument is NULL.
-- * When a failure reason code is received, one can assume that the channel
-- * is not connected.
+- * Instruction formats
 - */
--typedef void (*xpc_channel_func) (enum xp_retval reason, short partid,
--				  int ch_number, void *data, void *key);
 -
 -/*
-- * Define the callout function type used by XPC to notify the user of
-- * messages received and delivered via the user function registered by
-- * xpc_send_notify().
-- *
-- * Arguments:
-- *
-- *	reason - reason code.
-- *	partid - partition ID associated with condition.
-- *	ch_number - channel # associated with condition.
-- *	key - pointer to optional user-defined value provided as the "key"
-- *	      argument to xpc_send_notify().
-- *
-- * A reason code of xpMsgDelivered indicates that the message was delivered
-- * to the intended recipient and that they have acknowledged its receipt by
-- * calling xpc_received().
-- *
-- * All other reason codes indicate failure.
-- *
-- * NOTE: The user defined function must be callable by an interrupt handler
-- *       and thus cannot block.
+- * Generic instruction format.
+- * This definition has precise bit field definitions.
 - */
--typedef void (*xpc_notify_func) (enum xp_retval reason, short partid,
--				 int ch_number, void *key);
--
--/*
-- * The following is a registration entry. There is a global array of these,
-- * one per channel. It is used to record the connection registration made
-- * by the users of XPC. As long as a registration entry exists, for any
-- * partition that comes up, XPC will attempt to establish a connection on
-- * that channel. Notification that a connection has been made will occur via
-- * the xpc_channel_func function.
-- *
-- * The 'func' field points to the function to call when aynchronous
-- * notification is required for such events as: a connection established/lost,
-- * or an incoming message received, or an error condition encountered. A
-- * non-NULL 'func' field indicates that there is an active registration for
-- * the channel.
-- */
--struct xpc_registration {
--	struct mutex mutex;
--	xpc_channel_func func;	/* function to call */
--	void *key;		/* pointer to user's key */
--	u16 nentries;		/* #of msg entries in local msg queue */
--	u16 entry_size;		/* message queue's message entry size */
--	u32 assigned_limit;	/* limit on #of assigned kthreads */
--	u32 idle_limit;		/* limit on #of idle kthreads */
--} ____cacheline_aligned;
--
--#define XPC_CHANNEL_REGISTERED(_c)	(xpc_registrations[_c].func != NULL)
--
--/* the following are valid xpc_send() or xpc_send_notify() flags */
--#define XPC_WAIT	0	/* wait flag */
--#define XPC_NOWAIT	1	/* no wait flag */
--
--struct xpc_interface {
--	void (*connect) (int);
--	void (*disconnect) (int);
--	enum xp_retval (*send) (short, int, u32, void *, u16);
--	enum xp_retval (*send_notify) (short, int, u32, void *, u16,
--					xpc_notify_func, void *);
--	void (*received) (short, int, void *);
--	enum xp_retval (*partid_to_nasids) (short, void *);
+-struct gru_instruction_bits {
+-    /* DW 0  - low */
+-    unsigned int		icmd:      1;
+-    unsigned char		ima:	   3;	/* CB_DelRep, unmapped mode */
+-    unsigned char		reserved0: 4;
+-    unsigned int		xtype:     3;
+-    unsigned int		iaa0:      2;
+-    unsigned int		iaa1:      2;
+-    unsigned char		reserved1: 1;
+-    unsigned char		opc:       8;	/* opcode */
+-    unsigned char		exopc:     8;	/* extended opcode */
+-    /* DW 0  - high */
+-    unsigned int		idef2:    22;	/* TRi0 */
+-    unsigned char		reserved2: 2;
+-    unsigned char		istatus:   2;
+-    unsigned char		isubstatus:4;
+-    unsigned char		reserved3: 1;
+-    unsigned char		tlb_fault_color: 1;
+-    /* DW 1 */
+-    unsigned long		idef4;		/* 42 bits: TRi1, BufSize */
+-    /* DW 2-6 */
+-    unsigned long		idef1;		/* BAddr0 */
+-    unsigned long		idef5;		/* Nelem */
+-    unsigned long		idef6;		/* Stride, Operand1 */
+-    unsigned long		idef3;		/* BAddr1, Value, Operand2 */
+-    unsigned long		reserved4;
+-    /* DW 7 */
+-    unsigned long		avalue;		 /* AValue */
 -};
 -
--extern struct xpc_interface xpc_interface;
+-/*
+- * Generic instruction with friendlier names. This format is used
+- * for inline instructions.
+- */
+-struct gru_instruction {
+-    /* DW 0 */
+-    union {
+-    	unsigned long		op64;    /* icmd,xtype,iaa0,ima,opc,tri0 */
+-	struct {
+-		unsigned int	op32;
+-		unsigned int	tri0;
+-	};
+-    };
+-    unsigned long		tri1_bufsize;		/* DW 1 */
+-    unsigned long		baddr0;			/* DW 2 */
+-    unsigned long		nelem;			/* DW 3 */
+-    unsigned long		op1_stride;		/* DW 4 */
+-    unsigned long		op2_value_baddr1;	/* DW 5 */
+-    unsigned long		reserved0;		/* DW 6 */
+-    unsigned long		avalue;			/* DW 7 */
+-};
 -
--extern void xpc_set_interface(void (*)(int),
--			      void (*)(int),
--			      enum xp_retval (*)(short, int, u32, void *, u16),
--			      enum xp_retval (*)(short, int, u32, void *, u16,
--						 xpc_notify_func, void *),
--			      void (*)(short, int, void *),
--			      enum xp_retval (*)(short, void *));
--extern void xpc_clear_interface(void);
+-/* Some shifts and masks for the low 64 bits of a GRU command */
+-#define GRU_CB_ICMD_SHFT	0
+-#define GRU_CB_ICMD_MASK	0x1
+-#define GRU_CB_XTYPE_SHFT	8
+-#define GRU_CB_XTYPE_MASK	0x7
+-#define GRU_CB_IAA0_SHFT	11
+-#define GRU_CB_IAA0_MASK	0x3
+-#define GRU_CB_IAA1_SHFT	13
+-#define GRU_CB_IAA1_MASK	0x3
+-#define GRU_CB_IMA_SHFT		1
+-#define GRU_CB_IMA_MASK		0x3
+-#define GRU_CB_OPC_SHFT		16
+-#define GRU_CB_OPC_MASK		0xff
+-#define GRU_CB_EXOPC_SHFT	24
+-#define GRU_CB_EXOPC_MASK	0xff
+-#define GRU_IDEF2_SHFT		32
+-#define GRU_IDEF2_MASK		0x3ffff
+-#define GRU_ISTATUS_SHFT	56
+-#define GRU_ISTATUS_MASK	0x3
 -
--extern enum xp_retval xpc_connect(int, xpc_channel_func, void *, u16,
--				   u16, u32, u32);
--extern void xpc_disconnect(int);
+-/* GRU instruction opcodes (opc field) */
+-#define OP_NOP		0x00
+-#define OP_BCOPY	0x01
+-#define OP_VLOAD	0x02
+-#define OP_IVLOAD	0x03
+-#define OP_VSTORE	0x04
+-#define OP_IVSTORE	0x05
+-#define OP_VSET		0x06
+-#define OP_IVSET	0x07
+-#define OP_MESQ		0x08
+-#define OP_GAMXR	0x09
+-#define OP_GAMIR	0x0a
+-#define OP_GAMIRR	0x0b
+-#define OP_GAMER	0x0c
+-#define OP_GAMERR	0x0d
+-#define OP_BSTORE	0x0e
+-#define OP_VFLUSH	0x0f
 -
--static inline enum xp_retval
--xpc_send(short partid, int ch_number, u32 flags, void *payload,
--	 u16 payload_size)
+-
+-/* Extended opcodes values (exopc field) */
+-
+-/* GAMIR - AMOs with implicit operands */
+-#define EOP_IR_FETCH	0x01 /* Plain fetch of memory */
+-#define EOP_IR_CLR	0x02 /* Fetch and clear */
+-#define EOP_IR_INC	0x05 /* Fetch and increment */
+-#define EOP_IR_DEC	0x07 /* Fetch and decrement */
+-#define EOP_IR_QCHK1	0x0d /* Queue check, 64 byte msg */
+-#define EOP_IR_QCHK2	0x0e /* Queue check, 128 byte msg */
+-
+-/* GAMIRR - Registered AMOs with implicit operands */
+-#define EOP_IRR_FETCH	0x01 /* Registered fetch of memory */
+-#define EOP_IRR_CLR	0x02 /* Registered fetch and clear */
+-#define EOP_IRR_INC	0x05 /* Registered fetch and increment */
+-#define EOP_IRR_DEC	0x07 /* Registered fetch and decrement */
+-#define EOP_IRR_DECZ	0x0f /* Registered fetch and decrement, update on zero*/
+-
+-/* GAMER - AMOs with explicit operands */
+-#define EOP_ER_SWAP	0x00 /* Exchange argument and memory */
+-#define EOP_ER_OR	0x01 /* Logical OR with memory */
+-#define EOP_ER_AND	0x02 /* Logical AND with memory */
+-#define EOP_ER_XOR	0x03 /* Logical XOR with memory */
+-#define EOP_ER_ADD	0x04 /* Add value to memory */
+-#define EOP_ER_CSWAP	0x08 /* Compare with operand2, write operand1 if match*/
+-#define EOP_ER_CADD	0x0c /* Queue check, operand1*64 byte msg */
+-
+-/* GAMERR - Registered AMOs with explicit operands */
+-#define EOP_ERR_SWAP	0x00 /* Exchange argument and memory */
+-#define EOP_ERR_OR	0x01 /* Logical OR with memory */
+-#define EOP_ERR_AND	0x02 /* Logical AND with memory */
+-#define EOP_ERR_XOR	0x03 /* Logical XOR with memory */
+-#define EOP_ERR_ADD	0x04 /* Add value to memory */
+-#define EOP_ERR_CSWAP	0x08 /* Compare with operand2, write operand1 if match*/
+-#define EOP_ERR_EPOLL	0x09 /* Poll for equality */
+-#define EOP_ERR_NPOLL	0x0a /* Poll for inequality */
+-
+-/* GAMXR - SGI Arithmetic unit */
+-#define EOP_XR_CSWAP	0x0b /* Masked compare exchange */
+-
+-
+-/* Transfer types (xtype field) */
+-#define XTYPE_B		0x0	/* byte */
+-#define XTYPE_S		0x1	/* short (2-byte) */
+-#define XTYPE_W		0x2	/* word (4-byte) */
+-#define XTYPE_DW	0x3	/* doubleword (8-byte) */
+-#define XTYPE_CL	0x6	/* cacheline (64-byte) */
+-
+-
+-/* Instruction access attributes (iaa0, iaa1 fields) */
+-#define IAA_RAM		0x0	/* normal cached RAM access */
+-#define IAA_NCRAM	0x2	/* noncoherent RAM access */
+-#define IAA_MMIO	0x1	/* noncoherent memory-mapped I/O space */
+-#define IAA_REGISTER	0x3	/* memory-mapped registers, etc. */
+-
+-
+-/* Instruction mode attributes (ima field) */
+-#define IMA_MAPPED	0x0	/* Virtual mode  */
+-#define IMA_CB_DELAY	0x1	/* hold read responses until status changes */
+-#define IMA_UNMAPPED	0x2	/* bypass the TLBs (OS only) */
+-#define IMA_INTERRUPT	0x4	/* Interrupt when instruction completes */
+-
+-/* CBE ecause bits */
+-#define CBE_CAUSE_RI				(1 << 0)
+-#define CBE_CAUSE_INVALID_INSTRUCTION		(1 << 1)
+-#define CBE_CAUSE_UNMAPPED_MODE_FORBIDDEN	(1 << 2)
+-#define CBE_CAUSE_PE_CHECK_DATA_ERROR		(1 << 3)
+-#define CBE_CAUSE_IAA_GAA_MISMATCH		(1 << 4)
+-#define CBE_CAUSE_DATA_SEGMENT_LIMIT_EXCEPTION	(1 << 5)
+-#define CBE_CAUSE_OS_FATAL_TLB_FAULT		(1 << 6)
+-#define CBE_CAUSE_EXECUTION_HW_ERROR		(1 << 7)
+-#define CBE_CAUSE_TLBHW_ERROR			(1 << 8)
+-#define CBE_CAUSE_RA_REQUEST_TIMEOUT		(1 << 9)
+-#define CBE_CAUSE_HA_REQUEST_TIMEOUT		(1 << 10)
+-#define CBE_CAUSE_RA_RESPONSE_FATAL		(1 << 11)
+-#define CBE_CAUSE_RA_RESPONSE_NON_FATAL		(1 << 12)
+-#define CBE_CAUSE_HA_RESPONSE_FATAL		(1 << 13)
+-#define CBE_CAUSE_HA_RESPONSE_NON_FATAL		(1 << 14)
+-#define CBE_CAUSE_ADDRESS_SPACE_DECODE_ERROR	(1 << 15)
+-#define CBE_CAUSE_PROTOCOL_STATE_DATA_ERROR	(1 << 16)
+-#define CBE_CAUSE_RA_RESPONSE_DATA_ERROR	(1 << 17)
+-#define CBE_CAUSE_HA_RESPONSE_DATA_ERROR	(1 << 18)
+-#define CBE_CAUSE_FORCED_ERROR			(1 << 19)
+-
+-/* CBE cbrexecstatus bits */
+-#define CBR_EXS_ABORT_OCC_BIT			0
+-#define CBR_EXS_INT_OCC_BIT			1
+-#define CBR_EXS_PENDING_BIT			2
+-#define CBR_EXS_QUEUED_BIT			3
+-#define CBR_EXS_TLB_INVAL_BIT			4
+-#define CBR_EXS_EXCEPTION_BIT			5
+-#define CBR_EXS_CB_INT_PENDING_BIT		6
+-
+-#define CBR_EXS_ABORT_OCC			(1 << CBR_EXS_ABORT_OCC_BIT)
+-#define CBR_EXS_INT_OCC				(1 << CBR_EXS_INT_OCC_BIT)
+-#define CBR_EXS_PENDING				(1 << CBR_EXS_PENDING_BIT)
+-#define CBR_EXS_QUEUED				(1 << CBR_EXS_QUEUED_BIT)
+-#define CBR_EXS_TLB_INVAL			(1 << CBR_EXS_TLB_INVAL_BIT)
+-#define CBR_EXS_EXCEPTION			(1 << CBR_EXS_EXCEPTION_BIT)
+-#define CBR_EXS_CB_INT_PENDING			(1 << CBR_EXS_CB_INT_PENDING_BIT)
+-
+-/*
+- * Exceptions are retried for the following cases. If any OTHER bits are set
+- * in ecause, the exception is not retryable.
+- */
+-#define EXCEPTION_RETRY_BITS (CBE_CAUSE_EXECUTION_HW_ERROR |		\
+-			      CBE_CAUSE_TLBHW_ERROR |			\
+-			      CBE_CAUSE_RA_REQUEST_TIMEOUT |		\
+-			      CBE_CAUSE_RA_RESPONSE_NON_FATAL |		\
+-			      CBE_CAUSE_HA_RESPONSE_NON_FATAL |		\
+-			      CBE_CAUSE_RA_RESPONSE_DATA_ERROR |	\
+-			      CBE_CAUSE_HA_RESPONSE_DATA_ERROR		\
+-			      )
+-
+-/* Message queue head structure */
+-union gru_mesqhead {
+-	unsigned long	val;
+-	struct {
+-		unsigned int	head;
+-		unsigned int	limit;
+-	};
+-};
+-
+-
+-/* Generate the low word of a GRU instruction */
+-static inline unsigned long
+-__opdword(unsigned char opcode, unsigned char exopc, unsigned char xtype,
+-       unsigned char iaa0, unsigned char iaa1,
+-       unsigned long idef2, unsigned char ima)
 -{
--	if (!xpc_interface.send)
--		return xpNotLoaded;
--
--	return xpc_interface.send(partid, ch_number, flags, payload,
--				  payload_size);
+-    return (1 << GRU_CB_ICMD_SHFT) |
+-	   ((unsigned long)CBS_ACTIVE << GRU_ISTATUS_SHFT) |
+-	   (idef2<< GRU_IDEF2_SHFT) |
+-	   (iaa0 << GRU_CB_IAA0_SHFT) |
+-	   (iaa1 << GRU_CB_IAA1_SHFT) |
+-	   (ima << GRU_CB_IMA_SHFT) |
+-	   (xtype << GRU_CB_XTYPE_SHFT) |
+-	   (opcode << GRU_CB_OPC_SHFT) |
+-	   (exopc << GRU_CB_EXOPC_SHFT);
 -}
 -
--static inline enum xp_retval
--xpc_send_notify(short partid, int ch_number, u32 flags, void *payload,
--		u16 payload_size, xpc_notify_func func, void *key)
+-/*
+- * Architecture specific intrinsics
+- */
+-static inline void gru_flush_cache(void *p)
 -{
--	if (!xpc_interface.send_notify)
--		return xpNotLoaded;
--
--	return xpc_interface.send_notify(partid, ch_number, flags, payload,
--					 payload_size, func, key);
+-	__flush_cache(p);
 -}
 -
--static inline void
--xpc_received(short partid, int ch_number, void *payload)
+-/*
+- * Store the lower 64 bits of the command including the "start" bit. Then
+- * start the instruction executing.
+- */
+-static inline void gru_start_instruction(struct gru_instruction *ins, unsigned long op64)
 -{
--	if (xpc_interface.received)
--		xpc_interface.received(partid, ch_number, payload);
+-	gru_ordered_store_ulong(ins, op64);
+-	mb();
+-	gru_flush_cache(ins);
 -}
 -
--static inline enum xp_retval
--xpc_partid_to_nasids(short partid, void *nasids)
--{
--	if (!xpc_interface.partid_to_nasids)
--		return xpNotLoaded;
 -
--	return xpc_interface.partid_to_nasids(partid, nasids);
+-/* Convert "hints" to IMA */
+-#define CB_IMA(h)		((h) | IMA_UNMAPPED)
+-
+-/* Convert data segment cache line index into TRI0 / TRI1 value */
+-#define GRU_DINDEX(i)		((i) * GRU_CACHE_LINE_BYTES)
+-
+-/* Inline functions for GRU instructions.
+- *     Note:
+- *     	- nelem and stride are in elements
+- *     	- tri0/tri1 is in bytes for the beginning of the data segment.
+- */
+-static inline void gru_vload_phys(void *cb, unsigned long gpa,
+-		unsigned int tri0, int iaa, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (struct gru_instruction *)cb;
+-
+-	ins->baddr0 = (long)gpa | ((unsigned long)iaa << 62);
+-	ins->nelem = 1;
+-	ins->op1_stride = 1;
+-	gru_start_instruction(ins, __opdword(OP_VLOAD, 0, XTYPE_DW, iaa, 0,
+-					(unsigned long)tri0, CB_IMA(hints)));
 -}
 -
--extern short xp_max_npartitions;
--extern short xp_partition_id;
--extern u8 xp_region_size;
+-static inline void gru_vstore_phys(void *cb, unsigned long gpa,
+-		unsigned int tri0, int iaa, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (struct gru_instruction *)cb;
 -
--extern unsigned long (*xp_pa) (void *);
--extern unsigned long (*xp_socket_pa) (unsigned long);
--extern enum xp_retval (*xp_remote_memcpy) (unsigned long, const unsigned long,
--		       size_t);
--extern int (*xp_cpu_to_nasid) (int);
--extern enum xp_retval (*xp_expand_memprotect) (unsigned long, unsigned long);
--extern enum xp_retval (*xp_restrict_memprotect) (unsigned long, unsigned long);
+-	ins->baddr0 = (long)gpa | ((unsigned long)iaa << 62);
+-	ins->nelem = 1;
+-	ins->op1_stride = 1;
+-	gru_start_instruction(ins, __opdword(OP_VSTORE, 0, XTYPE_DW, iaa, 0,
+-					(unsigned long)tri0, CB_IMA(hints)));
+-}
 -
--extern struct device *xp;
--extern enum xp_retval xp_init_uv(void);
--extern void xp_exit_uv(void);
+-static inline void gru_vload(void *cb, unsigned long mem_addr,
+-		unsigned int tri0, unsigned char xtype, unsigned long nelem,
+-		unsigned long stride, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (struct gru_instruction *)cb;
 -
--#endif /* _DRIVERS_MISC_SGIXP_XP_H */
-diff --git a/drivers/misc/sgi-xp/xp_main.c b/drivers/misc/sgi-xp/xp_main.c
+-	ins->baddr0 = (long)mem_addr;
+-	ins->nelem = nelem;
+-	ins->op1_stride = stride;
+-	gru_start_instruction(ins, __opdword(OP_VLOAD, 0, xtype, IAA_RAM, 0,
+-					(unsigned long)tri0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_vstore(void *cb, unsigned long mem_addr,
+-		unsigned int tri0, unsigned char xtype, unsigned long nelem,
+-		unsigned long stride, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)mem_addr;
+-	ins->nelem = nelem;
+-	ins->op1_stride = stride;
+-	gru_start_instruction(ins, __opdword(OP_VSTORE, 0, xtype, IAA_RAM, 0,
+-					tri0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_ivload(void *cb, unsigned long mem_addr,
+-		unsigned int tri0, unsigned int tri1, unsigned char xtype,
+-		unsigned long nelem, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)mem_addr;
+-	ins->nelem = nelem;
+-	ins->tri1_bufsize = tri1;
+-	gru_start_instruction(ins, __opdword(OP_IVLOAD, 0, xtype, IAA_RAM, 0,
+-					tri0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_ivstore(void *cb, unsigned long mem_addr,
+-		unsigned int tri0, unsigned int tri1,
+-		unsigned char xtype, unsigned long nelem, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)mem_addr;
+-	ins->nelem = nelem;
+-	ins->tri1_bufsize = tri1;
+-	gru_start_instruction(ins, __opdword(OP_IVSTORE, 0, xtype, IAA_RAM, 0,
+-					tri0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_vset(void *cb, unsigned long mem_addr,
+-		unsigned long value, unsigned char xtype, unsigned long nelem,
+-		unsigned long stride, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)mem_addr;
+-	ins->op2_value_baddr1 = value;
+-	ins->nelem = nelem;
+-	ins->op1_stride = stride;
+-	gru_start_instruction(ins, __opdword(OP_VSET, 0, xtype, IAA_RAM, 0,
+-					 0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_ivset(void *cb, unsigned long mem_addr,
+-		unsigned int tri1, unsigned long value, unsigned char xtype,
+-		unsigned long nelem, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)mem_addr;
+-	ins->op2_value_baddr1 = value;
+-	ins->nelem = nelem;
+-	ins->tri1_bufsize = tri1;
+-	gru_start_instruction(ins, __opdword(OP_IVSET, 0, xtype, IAA_RAM, 0,
+-					0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_vflush(void *cb, unsigned long mem_addr,
+-		unsigned long nelem, unsigned char xtype, unsigned long stride,
+-		unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)mem_addr;
+-	ins->op1_stride = stride;
+-	ins->nelem = nelem;
+-	gru_start_instruction(ins, __opdword(OP_VFLUSH, 0, xtype, IAA_RAM, 0,
+-					0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_nop(void *cb, int hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	gru_start_instruction(ins, __opdword(OP_NOP, 0, 0, 0, 0, 0, CB_IMA(hints)));
+-}
+-
+-
+-static inline void gru_bcopy(void *cb, const unsigned long src,
+-		unsigned long dest,
+-		unsigned int tri0, unsigned int xtype, unsigned long nelem,
+-		unsigned int bufsize, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)src;
+-	ins->op2_value_baddr1 = (long)dest;
+-	ins->nelem = nelem;
+-	ins->tri1_bufsize = bufsize;
+-	gru_start_instruction(ins, __opdword(OP_BCOPY, 0, xtype, IAA_RAM,
+-					IAA_RAM, tri0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_bstore(void *cb, const unsigned long src,
+-		unsigned long dest, unsigned int tri0, unsigned int xtype,
+-		unsigned long nelem, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)src;
+-	ins->op2_value_baddr1 = (long)dest;
+-	ins->nelem = nelem;
+-	gru_start_instruction(ins, __opdword(OP_BSTORE, 0, xtype, 0, IAA_RAM,
+-					tri0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_gamir(void *cb, int exopc, unsigned long src,
+-		unsigned int xtype, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)src;
+-	gru_start_instruction(ins, __opdword(OP_GAMIR, exopc, xtype, IAA_RAM, 0,
+-					0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_gamirr(void *cb, int exopc, unsigned long src,
+-		unsigned int xtype, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)src;
+-	gru_start_instruction(ins, __opdword(OP_GAMIRR, exopc, xtype, IAA_RAM, 0,
+-					0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_gamer(void *cb, int exopc, unsigned long src,
+-		unsigned int xtype,
+-		unsigned long operand1, unsigned long operand2,
+-		unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)src;
+-	ins->op1_stride = operand1;
+-	ins->op2_value_baddr1 = operand2;
+-	gru_start_instruction(ins, __opdword(OP_GAMER, exopc, xtype, IAA_RAM, 0,
+-					0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_gamerr(void *cb, int exopc, unsigned long src,
+-		unsigned int xtype, unsigned long operand1,
+-		unsigned long operand2, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)src;
+-	ins->op1_stride = operand1;
+-	ins->op2_value_baddr1 = operand2;
+-	gru_start_instruction(ins, __opdword(OP_GAMERR, exopc, xtype, IAA_RAM, 0,
+-					0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_gamxr(void *cb, unsigned long src,
+-		unsigned int tri0, unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)src;
+-	ins->nelem = 4;
+-	gru_start_instruction(ins, __opdword(OP_GAMXR, EOP_XR_CSWAP, XTYPE_DW,
+-				 IAA_RAM, 0, 0, CB_IMA(hints)));
+-}
+-
+-static inline void gru_mesq(void *cb, unsigned long queue,
+-		unsigned long tri0, unsigned long nelem,
+-		unsigned long hints)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	ins->baddr0 = (long)queue;
+-	ins->nelem = nelem;
+-	gru_start_instruction(ins, __opdword(OP_MESQ, 0, XTYPE_CL, IAA_RAM, 0,
+-					tri0, CB_IMA(hints)));
+-}
+-
+-static inline unsigned long gru_get_amo_value(void *cb)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	return ins->avalue;
+-}
+-
+-static inline int gru_get_amo_value_head(void *cb)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	return ins->avalue & 0xffffffff;
+-}
+-
+-static inline int gru_get_amo_value_limit(void *cb)
+-{
+-	struct gru_instruction *ins = (void *)cb;
+-
+-	return ins->avalue >> 32;
+-}
+-
+-static inline union gru_mesqhead  gru_mesq_head(int head, int limit)
+-{
+-	union gru_mesqhead mqh;
+-
+-	mqh.head = head;
+-	mqh.limit = limit;
+-	return mqh;
+-}
+-
+-/*
+- * Get struct control_block_extended_exc_detail for CB.
+- */
+-extern int gru_get_cb_exception_detail(void *cb,
+-		       struct control_block_extended_exc_detail *excdet);
+-
+-#define GRU_EXC_STR_SIZE		256
+-
+-
+-/*
+- * Control block definition for checking status
+- */
+-struct gru_control_block_status {
+-	unsigned int	icmd		:1;
+-	unsigned int	ima		:3;
+-	unsigned int	reserved0	:4;
+-	unsigned int	unused1		:24;
+-	unsigned int	unused2		:24;
+-	unsigned int	istatus		:2;
+-	unsigned int	isubstatus	:4;
+-	unsigned int	unused3		:2;
+-};
+-
+-/* Get CB status */
+-static inline int gru_get_cb_status(void *cb)
+-{
+-	struct gru_control_block_status *cbs = (void *)cb;
+-
+-	return cbs->istatus;
+-}
+-
+-/* Get CB message queue substatus */
+-static inline int gru_get_cb_message_queue_substatus(void *cb)
+-{
+-	struct gru_control_block_status *cbs = (void *)cb;
+-
+-	return cbs->isubstatus & CBSS_MSG_QUEUE_MASK;
+-}
+-
+-/* Get CB substatus */
+-static inline int gru_get_cb_substatus(void *cb)
+-{
+-	struct gru_control_block_status *cbs = (void *)cb;
+-
+-	return cbs->isubstatus;
+-}
+-
+-/*
+- * User interface to check an instruction status. UPM and exceptions
+- * are handled automatically. However, this function does NOT wait
+- * for an active instruction to complete.
+- *
+- */
+-static inline int gru_check_status(void *cb)
+-{
+-	struct gru_control_block_status *cbs = (void *)cb;
+-	int ret;
+-
+-	ret = cbs->istatus;
+-	if (ret != CBS_ACTIVE)
+-		ret = gru_check_status_proc(cb);
+-	return ret;
+-}
+-
+-/*
+- * User interface (via inline function) to wait for an instruction
+- * to complete. Completion status (IDLE or EXCEPTION is returned
+- * to the user. Exception due to hardware errors are automatically
+- * retried before returning an exception.
+- *
+- */
+-static inline int gru_wait(void *cb)
+-{
+-	return gru_wait_proc(cb);
+-}
+-
+-/*
+- * Wait for CB to complete. Aborts program if error. (Note: error does NOT
+- * mean TLB mis - only fatal errors such as memory parity error or user
+- * bugs will cause termination.
+- */
+-static inline void gru_wait_abort(void *cb)
+-{
+-	gru_wait_abort_proc(cb);
+-}
+-
+-/*
+- * Get a pointer to the start of a gseg
+- * 	p	- Any valid pointer within the gseg
+- */
+-static inline void *gru_get_gseg_pointer (void *p)
+-{
+-	return (void *)((unsigned long)p & ~(GRU_GSEG_PAGESIZE - 1));
+-}
+-
+-/*
+- * Get a pointer to a control block
+- * 	gseg	- GSeg address returned from gru_get_thread_gru_segment()
+- * 	index	- index of desired CB
+- */
+-static inline void *gru_get_cb_pointer(void *gseg,
+-						      int index)
+-{
+-	return gseg + GRU_CB_BASE + index * GRU_HANDLE_STRIDE;
+-}
+-
+-/*
+- * Get a pointer to a cacheline in the data segment portion of a GSeg
+- * 	gseg	- GSeg address returned from gru_get_thread_gru_segment()
+- * 	index	- index of desired cache line
+- */
+-static inline void *gru_get_data_pointer(void *gseg, int index)
+-{
+-	return gseg + GRU_DS_BASE + index * GRU_CACHE_LINE_BYTES;
+-}
+-
+-/*
+- * Convert a vaddr into the tri index within the GSEG
+- * 	vaddr		- virtual address of within gseg
+- */
+-static inline int gru_get_tri(void *vaddr)
+-{
+-	return ((unsigned long)vaddr & (GRU_GSEG_PAGESIZE - 1)) - GRU_DS_BASE;
+-}
+-#endif		/* __GRU_INSTRUCTIONS_H__ */
+diff --git a/drivers/misc/sgi-gru/grufault.c b/drivers/misc/sgi-gru/grufault.c
 deleted file mode 100644
-index 87d156c15f35..000000000000
---- a/drivers/misc/sgi-xp/xp_main.c
+index 3557d78ee47a..000000000000
+--- a/drivers/misc/sgi-gru/grufault.c
 +++ /dev/null
-@@ -1,261 +0,0 @@
+@@ -1,903 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
+- * SN Platform GRU Driver
 - *
-- * (C) Copyright 2020 Hewlett Packard Enterprise Development LP
-- * Copyright (c) 2004-2008 Silicon Graphics, Inc.  All Rights Reserved.
+- *              FAULT HANDLER FOR GRU DETECTED TLB MISSES
+- *
+- * This file contains code that handles TLB misses within the GRU.
+- * These misses are reported either via interrupts or user polling of
+- * the user CB.
+- *
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
 - */
 -
--/*
-- * Cross Partition (XP) base.
-- *
-- *	XP provides a base from which its users can interact
-- *	with XPC, yet not be dependent on XPC.
-- *
-- */
--
--#include <linux/module.h>
+-#include <linux/kernel.h>
+-#include <linux/errno.h>
+-#include <linux/spinlock.h>
+-#include <linux/mm.h>
+-#include <linux/hugetlb.h>
 -#include <linux/device.h>
--#include "xp.h"
--
--/* define the XP debug device structures to be used with dev_dbg() et al */
--
--static struct device_driver xp_dbg_name = {
--	.name = "xp"
--};
--
--static struct device xp_dbg_subname = {
--	.init_name = "",		/* set to "" */
--	.driver = &xp_dbg_name
--};
--
--struct device *xp = &xp_dbg_subname;
--
--/* max #of partitions possible */
--short xp_max_npartitions;
--EXPORT_SYMBOL_GPL(xp_max_npartitions);
--
--short xp_partition_id;
--EXPORT_SYMBOL_GPL(xp_partition_id);
--
--u8 xp_region_size;
--EXPORT_SYMBOL_GPL(xp_region_size);
--
--unsigned long (*xp_pa) (void *addr);
--EXPORT_SYMBOL_GPL(xp_pa);
--
--unsigned long (*xp_socket_pa) (unsigned long gpa);
--EXPORT_SYMBOL_GPL(xp_socket_pa);
--
--enum xp_retval (*xp_remote_memcpy) (unsigned long dst_gpa,
--				    const unsigned long src_gpa, size_t len);
--EXPORT_SYMBOL_GPL(xp_remote_memcpy);
--
--int (*xp_cpu_to_nasid) (int cpuid);
--EXPORT_SYMBOL_GPL(xp_cpu_to_nasid);
--
--enum xp_retval (*xp_expand_memprotect) (unsigned long phys_addr,
--					unsigned long size);
--EXPORT_SYMBOL_GPL(xp_expand_memprotect);
--enum xp_retval (*xp_restrict_memprotect) (unsigned long phys_addr,
--					  unsigned long size);
--EXPORT_SYMBOL_GPL(xp_restrict_memprotect);
--
--/*
-- * xpc_registrations[] keeps track of xpc_connect()'s done by the kernel-level
-- * users of XPC.
-- */
--struct xpc_registration xpc_registrations[XPC_MAX_NCHANNELS];
--EXPORT_SYMBOL_GPL(xpc_registrations);
--
--/*
-- * Initialize the XPC interface to NULL to indicate that XPC isn't loaded.
-- */
--struct xpc_interface xpc_interface = { };
--EXPORT_SYMBOL_GPL(xpc_interface);
--
--/*
-- * XPC calls this when it (the XPC module) has been loaded.
-- */
--void
--xpc_set_interface(void (*connect) (int),
--		  void (*disconnect) (int),
--		  enum xp_retval (*send) (short, int, u32, void *, u16),
--		  enum xp_retval (*send_notify) (short, int, u32, void *, u16,
--						  xpc_notify_func, void *),
--		  void (*received) (short, int, void *),
--		  enum xp_retval (*partid_to_nasids) (short, void *))
--{
--	xpc_interface.connect = connect;
--	xpc_interface.disconnect = disconnect;
--	xpc_interface.send = send;
--	xpc_interface.send_notify = send_notify;
--	xpc_interface.received = received;
--	xpc_interface.partid_to_nasids = partid_to_nasids;
--}
--EXPORT_SYMBOL_GPL(xpc_set_interface);
--
--/*
-- * XPC calls this when it (the XPC module) is being unloaded.
-- */
--void
--xpc_clear_interface(void)
--{
--	memset(&xpc_interface, 0, sizeof(xpc_interface));
--}
--EXPORT_SYMBOL_GPL(xpc_clear_interface);
--
--/*
-- * Register for automatic establishment of a channel connection whenever
-- * a partition comes up.
-- *
-- * Arguments:
-- *
-- *	ch_number - channel # to register for connection.
-- *	func - function to call for asynchronous notification of channel
-- *	       state changes (i.e., connection, disconnection, error) and
-- *	       the arrival of incoming messages.
-- *      key - pointer to optional user-defined value that gets passed back
-- *	      to the user on any callouts made to func.
-- *	payload_size - size in bytes of the XPC message's payload area which
-- *		       contains a user-defined message. The user should make
-- *		       this large enough to hold their largest message.
-- *	nentries - max #of XPC message entries a message queue can contain.
-- *		   The actual number, which is determined when a connection
-- * 		   is established and may be less then requested, will be
-- *		   passed to the user via the xpConnected callout.
-- *	assigned_limit - max number of kthreads allowed to be processing
-- * 			 messages (per connection) at any given instant.
-- *	idle_limit - max number of kthreads allowed to be idle at any given
-- * 		     instant.
-- */
--enum xp_retval
--xpc_connect(int ch_number, xpc_channel_func func, void *key, u16 payload_size,
--	    u16 nentries, u32 assigned_limit, u32 idle_limit)
--{
--	struct xpc_registration *registration;
--
--	DBUG_ON(ch_number < 0 || ch_number >= XPC_MAX_NCHANNELS);
--	DBUG_ON(payload_size == 0 || nentries == 0);
--	DBUG_ON(func == NULL);
--	DBUG_ON(assigned_limit == 0 || idle_limit > assigned_limit);
--
--	if (XPC_MSG_SIZE(payload_size) > XPC_MSG_MAX_SIZE)
--		return xpPayloadTooBig;
--
--	registration = &xpc_registrations[ch_number];
--
--	if (mutex_lock_interruptible(&registration->mutex) != 0)
--		return xpInterrupted;
--
--	/* if XPC_CHANNEL_REGISTERED(ch_number) */
--	if (registration->func != NULL) {
--		mutex_unlock(&registration->mutex);
--		return xpAlreadyRegistered;
--	}
--
--	/* register the channel for connection */
--	registration->entry_size = XPC_MSG_SIZE(payload_size);
--	registration->nentries = nentries;
--	registration->assigned_limit = assigned_limit;
--	registration->idle_limit = idle_limit;
--	registration->key = key;
--	registration->func = func;
--
--	mutex_unlock(&registration->mutex);
--
--	if (xpc_interface.connect)
--		xpc_interface.connect(ch_number);
--
--	return xpSuccess;
--}
--EXPORT_SYMBOL_GPL(xpc_connect);
--
--/*
-- * Remove the registration for automatic connection of the specified channel
-- * when a partition comes up.
-- *
-- * Before returning this xpc_disconnect() will wait for all connections on the
-- * specified channel have been closed/torndown. So the caller can be assured
-- * that they will not be receiving any more callouts from XPC to their
-- * function registered via xpc_connect().
-- *
-- * Arguments:
-- *
-- *	ch_number - channel # to unregister.
-- */
--void
--xpc_disconnect(int ch_number)
--{
--	struct xpc_registration *registration;
--
--	DBUG_ON(ch_number < 0 || ch_number >= XPC_MAX_NCHANNELS);
--
--	registration = &xpc_registrations[ch_number];
--
--	/*
--	 * We've decided not to make this a down_interruptible(), since we
--	 * figured XPC's users will just turn around and call xpc_disconnect()
--	 * again anyways, so we might as well wait, if need be.
--	 */
--	mutex_lock(&registration->mutex);
--
--	/* if !XPC_CHANNEL_REGISTERED(ch_number) */
--	if (registration->func == NULL) {
--		mutex_unlock(&registration->mutex);
--		return;
--	}
--
--	/* remove the connection registration for the specified channel */
--	registration->func = NULL;
--	registration->key = NULL;
--	registration->nentries = 0;
--	registration->entry_size = 0;
--	registration->assigned_limit = 0;
--	registration->idle_limit = 0;
--
--	if (xpc_interface.disconnect)
--		xpc_interface.disconnect(ch_number);
--
--	mutex_unlock(&registration->mutex);
--
--	return;
--}
--EXPORT_SYMBOL_GPL(xpc_disconnect);
--
--static int __init
--xp_init(void)
--{
--	enum xp_retval ret;
--	int ch_number;
--
--	/* initialize the connection registration mutex */
--	for (ch_number = 0; ch_number < XPC_MAX_NCHANNELS; ch_number++)
--		mutex_init(&xpc_registrations[ch_number].mutex);
--
--	if (is_uv_system())
--		ret = xp_init_uv();
--	else
--		ret = 0;
--
--	if (ret != xpSuccess)
--		return ret;
--
--	return 0;
--}
--
--module_init(xp_init);
--
--static void __exit
--xp_exit(void)
--{
--	if (is_uv_system())
--		xp_exit_uv();
--}
--
--module_exit(xp_exit);
--
--MODULE_AUTHOR("Silicon Graphics, Inc.");
--MODULE_DESCRIPTION("Cross Partition (XP) base");
--MODULE_LICENSE("GPL");
-diff --git a/drivers/misc/sgi-xp/xp_uv.c b/drivers/misc/sgi-xp/xp_uv.c
-deleted file mode 100644
-index 3faa7eadf679..000000000000
---- a/drivers/misc/sgi-xp/xp_uv.c
-+++ /dev/null
-@@ -1,151 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * (C) Copyright 2020 Hewlett Packard Enterprise Development LP
-- * Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
-- */
--
--/*
-- * Cross Partition (XP) uv-based functions.
-- *
-- *      Architecture specific implementation of common functions.
-- *
-- */
--
--#include <linux/device.h>
+-#include <linux/io.h>
+-#include <linux/uaccess.h>
+-#include <linux/security.h>
+-#include <linux/sync_core.h>
+-#include <linux/prefetch.h>
+-#include "gru.h"
+-#include "grutables.h"
+-#include "grulib.h"
+-#include "gru_instructions.h"
 -#include <asm/uv/uv_hub.h>
--#if defined CONFIG_X86_64
--#include <asm/uv/bios.h>
--#endif
--#include "../sgi-gru/grukservices.h"
--#include "xp.h"
+-
+-/* Return codes for vtop functions */
+-#define VTOP_SUCCESS               0
+-#define VTOP_INVALID               -1
+-#define VTOP_RETRY                 -2
+-
 -
 -/*
-- * Convert a virtual memory address to a physical memory address.
+- * Test if a physical address is a valid GRU GSEG address
 - */
--static unsigned long
--xp_pa_uv(void *addr)
+-static inline int is_gru_paddr(unsigned long paddr)
 -{
--	return uv_gpa(addr);
+-	return paddr >= gru_start_paddr && paddr < gru_end_paddr;
 -}
 -
 -/*
-- * Convert a global physical to socket physical address.
+- * Find the vma of a GRU segment. Caller must hold mmap_lock.
 - */
--static unsigned long
--xp_socket_pa_uv(unsigned long gpa)
+-struct vm_area_struct *gru_find_vma(unsigned long vaddr)
 -{
--	return uv_gpa_to_soc_phys_ram(gpa);
+-	struct vm_area_struct *vma;
+-
+-	vma = vma_lookup(current->mm, vaddr);
+-	if (vma && vma->vm_ops == &gru_vm_ops)
+-		return vma;
+-	return NULL;
 -}
 -
--static enum xp_retval
--xp_remote_mmr_read(unsigned long dst_gpa, const unsigned long src_gpa,
--		   size_t len)
+-/*
+- * Find and lock the gts that contains the specified user vaddr.
+- *
+- * Returns:
+- * 	- *gts with the mmap_lock locked for read and the GTS locked.
+- *	- NULL if vaddr invalid OR is not a valid GSEG vaddr.
+- */
+-
+-static struct gru_thread_state *gru_find_lock_gts(unsigned long vaddr)
 -{
--	int ret;
--	unsigned long *dst_va = __va(uv_gpa_to_soc_phys_ram(dst_gpa));
+-	struct mm_struct *mm = current->mm;
+-	struct vm_area_struct *vma;
+-	struct gru_thread_state *gts = NULL;
 -
--	BUG_ON(!uv_gpa_in_mmr_space(src_gpa));
--	BUG_ON(len != 8);
--
--	ret = gru_read_gpa(dst_va, src_gpa);
--	if (ret == 0)
--		return xpSuccess;
--
--	dev_err(xp, "gru_read_gpa() failed, dst_gpa=0x%016lx src_gpa=0x%016lx "
--		"len=%ld\n", dst_gpa, src_gpa, len);
--	return xpGruCopyError;
+-	mmap_read_lock(mm);
+-	vma = gru_find_vma(vaddr);
+-	if (vma)
+-		gts = gru_find_thread_state(vma, TSID(vaddr, vma));
+-	if (gts)
+-		mutex_lock(&gts->ts_ctxlock);
+-	else
+-		mmap_read_unlock(mm);
+-	return gts;
 -}
 -
--
--static enum xp_retval
--xp_remote_memcpy_uv(unsigned long dst_gpa, const unsigned long src_gpa,
--		    size_t len)
+-static struct gru_thread_state *gru_alloc_locked_gts(unsigned long vaddr)
 -{
--	int ret;
+-	struct mm_struct *mm = current->mm;
+-	struct vm_area_struct *vma;
+-	struct gru_thread_state *gts = ERR_PTR(-EINVAL);
 -
--	if (uv_gpa_in_mmr_space(src_gpa))
--		return xp_remote_mmr_read(dst_gpa, src_gpa, len);
+-	mmap_write_lock(mm);
+-	vma = gru_find_vma(vaddr);
+-	if (!vma)
+-		goto err;
 -
--	ret = gru_copy_gpa(dst_gpa, src_gpa, len);
--	if (ret == 0)
--		return xpSuccess;
+-	gts = gru_alloc_thread_state(vma, TSID(vaddr, vma));
+-	if (IS_ERR(gts))
+-		goto err;
+-	mutex_lock(&gts->ts_ctxlock);
+-	mmap_write_downgrade(mm);
+-	return gts;
 -
--	dev_err(xp, "gru_copy_gpa() failed, dst_gpa=0x%016lx src_gpa=0x%016lx "
--		"len=%ld\n", dst_gpa, src_gpa, len);
--	return xpGruCopyError;
+-err:
+-	mmap_write_unlock(mm);
+-	return gts;
 -}
 -
--static int
--xp_cpu_to_nasid_uv(int cpuid)
+-/*
+- * Unlock a GTS that was previously locked with gru_find_lock_gts().
+- */
+-static void gru_unlock_gts(struct gru_thread_state *gts)
 -{
--	/* ??? Is this same as sn2 nasid in mach/part bitmaps set up by SAL? */
--	return UV_PNODE_TO_NASID(uv_cpu_to_pnode(cpuid));
+-	mutex_unlock(&gts->ts_ctxlock);
+-	mmap_read_unlock(current->mm);
 -}
 -
--static enum xp_retval
--xp_expand_memprotect_uv(unsigned long phys_addr, unsigned long size)
+-/*
+- * Set a CB.istatus to active using a user virtual address. This must be done
+- * just prior to a TFH RESTART. The new cb.istatus is an in-cache status ONLY.
+- * If the line is evicted, the status may be lost. The in-cache update
+- * is necessary to prevent the user from seeing a stale cb.istatus that will
+- * change as soon as the TFH restart is complete. Races may cause an
+- * occasional failure to clear the cb.istatus, but that is ok.
+- */
+-static void gru_cb_set_istatus_active(struct gru_instruction_bits *cbk)
 -{
--	int ret;
--
--#if defined CONFIG_X86_64
--	ret = uv_bios_change_memprotect(phys_addr, size, UV_MEMPROT_ALLOW_RW);
--	if (ret != BIOS_STATUS_SUCCESS) {
--		dev_err(xp, "uv_bios_change_memprotect(,, "
--			"UV_MEMPROT_ALLOW_RW) failed, ret=%d\n", ret);
--		return xpBiosError;
+-	if (cbk) {
+-		cbk->istatus = CBS_ACTIVE;
 -	}
--#else
--	#error not a supported configuration
--#endif
--	return xpSuccess;
--}
--
--static enum xp_retval
--xp_restrict_memprotect_uv(unsigned long phys_addr, unsigned long size)
--{
--	int ret;
--
--#if defined CONFIG_X86_64
--	ret = uv_bios_change_memprotect(phys_addr, size,
--					UV_MEMPROT_RESTRICT_ACCESS);
--	if (ret != BIOS_STATUS_SUCCESS) {
--		dev_err(xp, "uv_bios_change_memprotect(,, "
--			"UV_MEMPROT_RESTRICT_ACCESS) failed, ret=%d\n", ret);
--		return xpBiosError;
--	}
--#else
--	#error not a supported configuration
--#endif
--	return xpSuccess;
--}
--
--enum xp_retval
--xp_init_uv(void)
--{
--	WARN_ON(!is_uv_system());
--	if (!is_uv_system())
--		return xpUnsupported;
--
--	xp_max_npartitions = XP_MAX_NPARTITIONS_UV;
--#ifdef CONFIG_X86
--	xp_partition_id = sn_partition_id;
--	xp_region_size = sn_region_size;
--#endif
--	xp_pa = xp_pa_uv;
--	xp_socket_pa = xp_socket_pa_uv;
--	xp_remote_memcpy = xp_remote_memcpy_uv;
--	xp_cpu_to_nasid = xp_cpu_to_nasid_uv;
--	xp_expand_memprotect = xp_expand_memprotect_uv;
--	xp_restrict_memprotect = xp_restrict_memprotect_uv;
--
--	return xpSuccess;
--}
--
--void
--xp_exit_uv(void)
--{
--	WARN_ON(!is_uv_system());
--}
-diff --git a/drivers/misc/sgi-xp/xpc.h b/drivers/misc/sgi-xp/xpc.h
-deleted file mode 100644
-index 225f2bb84e39..000000000000
---- a/drivers/misc/sgi-xp/xpc.h
-+++ /dev/null
-@@ -1,732 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (c) 2004-2009 Silicon Graphics, Inc.  All Rights Reserved.
-- */
--
--/*
-- * Cross Partition Communication (XPC) structures and macros.
-- */
--
--#ifndef _DRIVERS_MISC_SGIXP_XPC_H
--#define _DRIVERS_MISC_SGIXP_XPC_H
--
--#include <linux/wait.h>
--#include <linux/completion.h>
--#include <linux/timer.h>
--#include <linux/sched.h>
--#include "xp.h"
--
--/*
-- * XPC Version numbers consist of a major and minor number. XPC can always
-- * talk to versions with same major #, and never talk to versions with a
-- * different major #.
-- */
--#define _XPC_VERSION(_maj, _min)	(((_maj) << 4) | ((_min) & 0xf))
--#define XPC_VERSION_MAJOR(_v)		((_v) >> 4)
--#define XPC_VERSION_MINOR(_v)		((_v) & 0xf)
--
--/* define frequency of the heartbeat and frequency how often it's checked */
--#define XPC_HB_DEFAULT_INTERVAL		5	/* incr HB every x secs */
--#define XPC_HB_CHECK_DEFAULT_INTERVAL	20	/* check HB every x secs */
--
--/* define the process name of HB checker and the CPU it is pinned to */
--#define XPC_HB_CHECK_THREAD_NAME	"xpc_hb"
--#define XPC_HB_CHECK_CPU		0
--
--/* define the process name of the discovery thread */
--#define XPC_DISCOVERY_THREAD_NAME	"xpc_discovery"
--
--/*
-- * the reserved page
-- *
-- *   SAL reserves one page of memory per partition for XPC. Though a full page
-- *   in length (16384 bytes), its starting address is not page aligned, but it
-- *   is cacheline aligned. The reserved page consists of the following:
-- *
-- *   reserved page header
-- *
-- *     The first two 64-byte cachelines of the reserved page contain the
-- *     header (struct xpc_rsvd_page). Before SAL initialization has completed,
-- *     SAL has set up the following fields of the reserved page header:
-- *     SAL_signature, SAL_version, SAL_partid, and SAL_nasids_size. The
-- *     other fields are set up by XPC. (xpc_rsvd_page points to the local
-- *     partition's reserved page.)
-- *
-- *   part_nasids mask
-- *   mach_nasids mask
-- *
-- *     SAL also sets up two bitmaps (or masks), one that reflects the actual
-- *     nasids in this partition (part_nasids), and the other that reflects
-- *     the actual nasids in the entire machine (mach_nasids). We're only
-- *     interested in the even numbered nasids (which contain the processors
-- *     and/or memory), so we only need half as many bits to represent the
-- *     nasids. When mapping nasid to bit in a mask (or bit to nasid) be sure
-- *     to either divide or multiply by 2. The part_nasids mask is located
-- *     starting at the first cacheline following the reserved page header. The
-- *     mach_nasids mask follows right after the part_nasids mask. The size in
-- *     bytes of each mask is reflected by the reserved page header field
-- *     'SAL_nasids_size'. (Local partition's mask pointers are xpc_part_nasids
-- *     and xpc_mach_nasids.)
-- *
-- *     Immediately following the mach_nasids mask are the XPC variables
-- *     required by other partitions. First are those that are generic to all
-- *     partitions (vars), followed on the next available cacheline by those
-- *     which are partition specific (vars part). These are setup by XPC.
-- *
-- * Note: Until 'ts_jiffies' is set non-zero, the partition XPC code has not been
-- *       initialized.
-- */
--struct xpc_rsvd_page {
--	u64 SAL_signature;	/* SAL: unique signature */
--	u64 SAL_version;	/* SAL: version */
--	short SAL_partid;	/* SAL: partition ID */
--	short max_npartitions;	/* value of XPC_MAX_PARTITIONS */
--	u8 version;
--	u8 pad1[3];		/* align to next u64 in 1st 64-byte cacheline */
--	unsigned long ts_jiffies; /* timestamp when rsvd pg was setup by XPC */
--	union {
--		struct {
--			unsigned long heartbeat_gpa; /* phys addr */
--			unsigned long activate_gru_mq_desc_gpa; /* phys addr */
--		} uv;
--	} sn;
--	u64 pad2[9];		/* align to last u64 in 2nd 64-byte cacheline */
--	u64 SAL_nasids_size;	/* SAL: size of each nasid mask in bytes */
--};
--
--#define XPC_RP_VERSION _XPC_VERSION(3, 0) /* version 3.0 of the reserved page */
--
--/* the reserved page sizes and offsets */
--
--#define XPC_RP_HEADER_SIZE	L1_CACHE_ALIGN(sizeof(struct xpc_rsvd_page))
--
--#define XPC_RP_PART_NASIDS(_rp) ((unsigned long *)((u8 *)(_rp) + \
--				 XPC_RP_HEADER_SIZE))
--#define XPC_RP_MACH_NASIDS(_rp) (XPC_RP_PART_NASIDS(_rp) + \
--				 xpc_nasid_mask_nlongs)
--
--
--/*
-- * The following structure describes the partition's heartbeat info which
-- * will be periodically read by other partitions to determine whether this
-- * XPC is still 'alive'.
-- */
--struct xpc_heartbeat_uv {
--	unsigned long value;
--	unsigned long offline;	/* if 0, heartbeat should be changing */
--};
--
--/*
-- * Info pertinent to a GRU message queue using a watch list for irq generation.
-- */
--struct xpc_gru_mq_uv {
--	void *address;		/* address of GRU message queue */
--	unsigned int order;	/* size of GRU message queue as a power of 2 */
--	int irq;		/* irq raised when message is received in mq */
--	int mmr_blade;		/* blade where watchlist was allocated from */
--	unsigned long mmr_offset; /* offset of irq mmr located on mmr_blade */
--	unsigned long mmr_value; /* value of irq mmr located on mmr_blade */
--	int watchlist_num;	/* number of watchlist allocatd by BIOS */
--	void *gru_mq_desc;	/* opaque structure used by the GRU driver */
--};
--
--/*
-- * The activate_mq is used to send/receive GRU messages that affect XPC's
-- * partition active state and channel state. This is uv only.
-- */
--struct xpc_activate_mq_msghdr_uv {
--	unsigned int gru_msg_hdr; /* FOR GRU INTERNAL USE ONLY */
--	short partid;		/* sender's partid */
--	u8 act_state;		/* sender's act_state at time msg sent */
--	u8 type;		/* message's type */
--	unsigned long rp_ts_jiffies; /* timestamp of sender's rp setup by XPC */
--};
--
--/* activate_mq defined message types */
--#define XPC_ACTIVATE_MQ_MSG_SYNC_ACT_STATE_UV		0
--
--#define XPC_ACTIVATE_MQ_MSG_ACTIVATE_REQ_UV		1
--#define XPC_ACTIVATE_MQ_MSG_DEACTIVATE_REQ_UV		2
--
--#define XPC_ACTIVATE_MQ_MSG_CHCTL_CLOSEREQUEST_UV	3
--#define XPC_ACTIVATE_MQ_MSG_CHCTL_CLOSEREPLY_UV		4
--#define XPC_ACTIVATE_MQ_MSG_CHCTL_OPENREQUEST_UV	5
--#define XPC_ACTIVATE_MQ_MSG_CHCTL_OPENREPLY_UV		6
--#define XPC_ACTIVATE_MQ_MSG_CHCTL_OPENCOMPLETE_UV	7
--
--#define XPC_ACTIVATE_MQ_MSG_MARK_ENGAGED_UV		8
--#define XPC_ACTIVATE_MQ_MSG_MARK_DISENGAGED_UV		9
--
--struct xpc_activate_mq_msg_uv {
--	struct xpc_activate_mq_msghdr_uv hdr;
--};
--
--struct xpc_activate_mq_msg_activate_req_uv {
--	struct xpc_activate_mq_msghdr_uv hdr;
--	unsigned long rp_gpa;
--	unsigned long heartbeat_gpa;
--	unsigned long activate_gru_mq_desc_gpa;
--};
--
--struct xpc_activate_mq_msg_deactivate_req_uv {
--	struct xpc_activate_mq_msghdr_uv hdr;
--	enum xp_retval reason;
--};
--
--struct xpc_activate_mq_msg_chctl_closerequest_uv {
--	struct xpc_activate_mq_msghdr_uv hdr;
--	short ch_number;
--	enum xp_retval reason;
--};
--
--struct xpc_activate_mq_msg_chctl_closereply_uv {
--	struct xpc_activate_mq_msghdr_uv hdr;
--	short ch_number;
--};
--
--struct xpc_activate_mq_msg_chctl_openrequest_uv {
--	struct xpc_activate_mq_msghdr_uv hdr;
--	short ch_number;
--	short entry_size;	/* size of notify_mq's GRU messages */
--	short local_nentries;	/* ??? Is this needed? What is? */
--};
--
--struct xpc_activate_mq_msg_chctl_openreply_uv {
--	struct xpc_activate_mq_msghdr_uv hdr;
--	short ch_number;
--	short remote_nentries;	/* ??? Is this needed? What is? */
--	short local_nentries;	/* ??? Is this needed? What is? */
--	unsigned long notify_gru_mq_desc_gpa;
--};
--
--struct xpc_activate_mq_msg_chctl_opencomplete_uv {
--	struct xpc_activate_mq_msghdr_uv hdr;
--	short ch_number;
--};
--
--/*
-- * Functions registered by add_timer() or called by kernel_thread() only
-- * allow for a single 64-bit argument. The following macros can be used to
-- * pack and unpack two (32-bit, 16-bit or 8-bit) arguments into or out from
-- * the passed argument.
-- */
--#define XPC_PACK_ARGS(_arg1, _arg2) \
--			((((u64)_arg1) & 0xffffffff) | \
--			((((u64)_arg2) & 0xffffffff) << 32))
--
--#define XPC_UNPACK_ARG1(_args)	(((u64)_args) & 0xffffffff)
--#define XPC_UNPACK_ARG2(_args)	((((u64)_args) >> 32) & 0xffffffff)
--
--/*
-- * Define a structure that contains arguments associated with opening and
-- * closing a channel.
-- */
--struct xpc_openclose_args {
--	u16 reason;		/* reason why channel is closing */
--	u16 entry_size;		/* sizeof each message entry */
--	u16 remote_nentries;	/* #of message entries in remote msg queue */
--	u16 local_nentries;	/* #of message entries in local msg queue */
--	unsigned long local_msgqueue_pa; /* phys addr of local message queue */
--};
--
--#define XPC_OPENCLOSE_ARGS_SIZE \
--	      L1_CACHE_ALIGN(sizeof(struct xpc_openclose_args) * \
--	      XPC_MAX_NCHANNELS)
--
--
--/*
-- * Structures to define a fifo singly-linked list.
-- */
--
--struct xpc_fifo_entry_uv {
--	struct xpc_fifo_entry_uv *next;
--};
--
--struct xpc_fifo_head_uv {
--	struct xpc_fifo_entry_uv *first;
--	struct xpc_fifo_entry_uv *last;
--	spinlock_t lock;
--	int n_entries;
--};
--
--/*
-- * The format of a uv XPC notify_mq GRU message is as follows:
-- *
-- * A user-defined message resides in the payload area. The max size of the
-- * payload is defined by the user via xpc_connect().
-- *
-- * The size of a message (payload and header) sent via the GRU must be either 1
-- * or 2 GRU_CACHE_LINE_BYTES in length.
-- */
--
--struct xpc_notify_mq_msghdr_uv {
--	union {
--		unsigned int gru_msg_hdr;	/* FOR GRU INTERNAL USE ONLY */
--		struct xpc_fifo_entry_uv next;	/* FOR XPC INTERNAL USE ONLY */
--	} u;
--	short partid;		/* FOR XPC INTERNAL USE ONLY */
--	u8 ch_number;		/* FOR XPC INTERNAL USE ONLY */
--	u8 size;		/* FOR XPC INTERNAL USE ONLY */
--	unsigned int msg_slot_number;	/* FOR XPC INTERNAL USE ONLY */
--};
--
--struct xpc_notify_mq_msg_uv {
--	struct xpc_notify_mq_msghdr_uv hdr;
--	unsigned long payload;
--};
--
--/* struct xpc_notify_sn2 type of notification */
--
--#define	XPC_N_CALL	0x01	/* notify function provided by user */
--
--/*
-- * Define uv's version of the notify entry. It additionally is used to allocate
-- * a msg slot on the remote partition into which is copied a sent message.
-- */
--struct xpc_send_msg_slot_uv {
--	struct xpc_fifo_entry_uv next;
--	unsigned int msg_slot_number;
--	xpc_notify_func func;	/* user's notify function */
--	void *key;		/* pointer to user's key */
--};
--
--/*
-- * Define the structure that manages all the stuff required by a channel. In
-- * particular, they are used to manage the messages sent across the channel.
-- *
-- * This structure is private to a partition, and is NOT shared across the
-- * partition boundary.
-- *
-- * There is an array of these structures for each remote partition. It is
-- * allocated at the time a partition becomes active. The array contains one
-- * of these structures for each potential channel connection to that partition.
-- */
--
--struct xpc_channel_uv {
--	void *cached_notify_gru_mq_desc; /* remote partition's notify mq's */
--					 /* gru mq descriptor */
--
--	struct xpc_send_msg_slot_uv *send_msg_slots;
--	void *recv_msg_slots;	/* each slot will hold a xpc_notify_mq_msg_uv */
--				/* structure plus the user's payload */
--
--	struct xpc_fifo_head_uv msg_slot_free_list;
--	struct xpc_fifo_head_uv recv_msg_list;	/* deliverable payloads */
--};
--
--struct xpc_channel {
--	short partid;		/* ID of remote partition connected */
--	spinlock_t lock;	/* lock for updating this structure */
--	unsigned int flags;	/* general flags */
--
--	enum xp_retval reason;	/* reason why channel is disconnect'g */
--	int reason_line;	/* line# disconnect initiated from */
--
--	u16 number;		/* channel # */
--
--	u16 entry_size;		/* sizeof each msg entry */
--	u16 local_nentries;	/* #of msg entries in local msg queue */
--	u16 remote_nentries;	/* #of msg entries in remote msg queue */
--
--	atomic_t references;	/* #of external references to queues */
--
--	atomic_t n_on_msg_allocate_wq;	/* #on msg allocation wait queue */
--	wait_queue_head_t msg_allocate_wq;	/* msg allocation wait queue */
--
--	u8 delayed_chctl_flags;	/* chctl flags received, but delayed */
--				/* action until channel disconnected */
--
--	atomic_t n_to_notify;	/* #of msg senders to notify */
--
--	xpc_channel_func func;	/* user's channel function */
--	void *key;		/* pointer to user's key */
--
--	struct completion wdisconnect_wait;    /* wait for channel disconnect */
--
--	/* kthread management related fields */
--
--	atomic_t kthreads_assigned;	/* #of kthreads assigned to channel */
--	u32 kthreads_assigned_limit;	/* limit on #of kthreads assigned */
--	atomic_t kthreads_idle;	/* #of kthreads idle waiting for work */
--	u32 kthreads_idle_limit;	/* limit on #of kthreads idle */
--	atomic_t kthreads_active;	/* #of kthreads actively working */
--
--	wait_queue_head_t idle_wq;	/* idle kthread wait queue */
--
--	union {
--		struct xpc_channel_uv uv;
--	} sn;
--
--} ____cacheline_aligned;
--
--/* struct xpc_channel flags */
--
--#define	XPC_C_WASCONNECTED	0x00000001	/* channel was connected */
--
--#define XPC_C_ROPENCOMPLETE	0x00000002    /* remote open channel complete */
--#define XPC_C_OPENCOMPLETE	0x00000004     /* local open channel complete */
--#define	XPC_C_ROPENREPLY	0x00000008	/* remote open channel reply */
--#define	XPC_C_OPENREPLY		0x00000010	/* local open channel reply */
--#define	XPC_C_ROPENREQUEST	0x00000020     /* remote open channel request */
--#define	XPC_C_OPENREQUEST	0x00000040	/* local open channel request */
--
--#define	XPC_C_SETUP		0x00000080 /* channel's msgqueues are alloc'd */
--#define	XPC_C_CONNECTEDCALLOUT	0x00000100     /* connected callout initiated */
--#define	XPC_C_CONNECTEDCALLOUT_MADE \
--				0x00000200     /* connected callout completed */
--#define	XPC_C_CONNECTED		0x00000400	/* local channel is connected */
--#define	XPC_C_CONNECTING	0x00000800	/* channel is being connected */
--
--#define	XPC_C_RCLOSEREPLY	0x00001000	/* remote close channel reply */
--#define	XPC_C_CLOSEREPLY	0x00002000	/* local close channel reply */
--#define	XPC_C_RCLOSEREQUEST	0x00004000    /* remote close channel request */
--#define	XPC_C_CLOSEREQUEST	0x00008000     /* local close channel request */
--
--#define	XPC_C_DISCONNECTED	0x00010000	/* channel is disconnected */
--#define	XPC_C_DISCONNECTING	0x00020000   /* channel is being disconnected */
--#define	XPC_C_DISCONNECTINGCALLOUT \
--				0x00040000 /* disconnecting callout initiated */
--#define	XPC_C_DISCONNECTINGCALLOUT_MADE \
--				0x00080000 /* disconnecting callout completed */
--#define	XPC_C_WDISCONNECT	0x00100000  /* waiting for channel disconnect */
--
--/*
-- * The channel control flags (chctl) union consists of a 64-bit variable which
-- * is divided up into eight bytes, ordered from right to left. Byte zero
-- * pertains to channel 0, byte one to channel 1, and so on. Each channel's byte
-- * can have one or more of the chctl flags set in it.
-- */
--
--union xpc_channel_ctl_flags {
--	u64 all_flags;
--	u8 flags[XPC_MAX_NCHANNELS];
--};
--
--/* chctl flags */
--#define	XPC_CHCTL_CLOSEREQUEST	0x01
--#define	XPC_CHCTL_CLOSEREPLY	0x02
--#define	XPC_CHCTL_OPENREQUEST	0x04
--#define	XPC_CHCTL_OPENREPLY	0x08
--#define XPC_CHCTL_OPENCOMPLETE	0x10
--#define	XPC_CHCTL_MSGREQUEST	0x20
--
--#define XPC_OPENCLOSE_CHCTL_FLAGS \
--			(XPC_CHCTL_CLOSEREQUEST | XPC_CHCTL_CLOSEREPLY | \
--			 XPC_CHCTL_OPENREQUEST | XPC_CHCTL_OPENREPLY | \
--			 XPC_CHCTL_OPENCOMPLETE)
--#define XPC_MSG_CHCTL_FLAGS	XPC_CHCTL_MSGREQUEST
--
--static inline int
--xpc_any_openclose_chctl_flags_set(union xpc_channel_ctl_flags *chctl)
--{
--	int ch_number;
--
--	for (ch_number = 0; ch_number < XPC_MAX_NCHANNELS; ch_number++) {
--		if (chctl->flags[ch_number] & XPC_OPENCLOSE_CHCTL_FLAGS)
--			return 1;
--	}
--	return 0;
--}
--
--static inline int
--xpc_any_msg_chctl_flags_set(union xpc_channel_ctl_flags *chctl)
--{
--	int ch_number;
--
--	for (ch_number = 0; ch_number < XPC_MAX_NCHANNELS; ch_number++) {
--		if (chctl->flags[ch_number] & XPC_MSG_CHCTL_FLAGS)
--			return 1;
--	}
--	return 0;
--}
--
--struct xpc_partition_uv {
--	unsigned long heartbeat_gpa; /* phys addr of partition's heartbeat */
--	struct xpc_heartbeat_uv cached_heartbeat; /* cached copy of */
--						  /* partition's heartbeat */
--	unsigned long activate_gru_mq_desc_gpa;	/* phys addr of parititon's */
--						/* activate mq's gru mq */
--						/* descriptor */
--	void *cached_activate_gru_mq_desc; /* cached copy of partition's */
--					   /* activate mq's gru mq descriptor */
--	struct mutex cached_activate_gru_mq_desc_mutex;
--	spinlock_t flags_lock;	/* protect updating of flags */
--	unsigned int flags;	/* general flags */
--	u8 remote_act_state;	/* remote partition's act_state */
--	u8 act_state_req;	/* act_state request from remote partition */
--	enum xp_retval reason;	/* reason for deactivate act_state request */
--};
--
--/* struct xpc_partition_uv flags */
--
--#define XPC_P_CACHED_ACTIVATE_GRU_MQ_DESC_UV	0x00000001
--#define XPC_P_ENGAGED_UV			0x00000002
--
--/* struct xpc_partition_uv act_state change requests */
--
--#define XPC_P_ASR_ACTIVATE_UV		0x01
--#define XPC_P_ASR_REACTIVATE_UV		0x02
--#define XPC_P_ASR_DEACTIVATE_UV		0x03
--
--struct xpc_partition {
--
--	/* XPC HB infrastructure */
--
--	u8 remote_rp_version;	/* version# of partition's rsvd pg */
--	unsigned long remote_rp_ts_jiffies; /* timestamp when rsvd pg setup */
--	unsigned long remote_rp_pa;	/* phys addr of partition's rsvd pg */
--	u64 last_heartbeat;	/* HB at last read */
--	u32 activate_IRQ_rcvd;	/* IRQs since activation */
--	spinlock_t act_lock;	/* protect updating of act_state */
--	u8 act_state;		/* from XPC HB viewpoint */
--	enum xp_retval reason;	/* reason partition is deactivating */
--	int reason_line;	/* line# deactivation initiated from */
--
--	unsigned long disengage_timeout;	/* timeout in jiffies */
--	struct timer_list disengage_timer;
--
--	/* XPC infrastructure referencing and teardown control */
--
--	u8 setup_state;		/* infrastructure setup state */
--	wait_queue_head_t teardown_wq;	/* kthread waiting to teardown infra */
--	atomic_t references;	/* #of references to infrastructure */
--
--	u8 nchannels;		/* #of defined channels supported */
--	atomic_t nchannels_active;  /* #of channels that are not DISCONNECTED */
--	atomic_t nchannels_engaged;  /* #of channels engaged with remote part */
--	struct xpc_channel *channels;	/* array of channel structures */
--
--	/* fields used for managing channel avialability and activity */
--
--	union xpc_channel_ctl_flags chctl; /* chctl flags yet to be processed */
--	spinlock_t chctl_lock;	/* chctl flags lock */
--
--	void *remote_openclose_args_base;  /* base address of kmalloc'd space */
--	struct xpc_openclose_args *remote_openclose_args; /* copy of remote's */
--							  /* args */
--
--	/* channel manager related fields */
--
--	atomic_t channel_mgr_requests;	/* #of requests to activate chan mgr */
--	wait_queue_head_t channel_mgr_wq;	/* channel mgr's wait queue */
--
--	union {
--		struct xpc_partition_uv uv;
--	} sn;
--
--} ____cacheline_aligned;
--
--struct xpc_arch_operations {
--	int (*setup_partitions) (void);
--	void (*teardown_partitions) (void);
--	void (*process_activate_IRQ_rcvd) (void);
--	enum xp_retval (*get_partition_rsvd_page_pa)
--		(void *, u64 *, unsigned long *, size_t *);
--	int (*setup_rsvd_page) (struct xpc_rsvd_page *);
--
--	void (*allow_hb) (short);
--	void (*disallow_hb) (short);
--	void (*disallow_all_hbs) (void);
--	void (*increment_heartbeat) (void);
--	void (*offline_heartbeat) (void);
--	void (*online_heartbeat) (void);
--	void (*heartbeat_init) (void);
--	void (*heartbeat_exit) (void);
--	enum xp_retval (*get_remote_heartbeat) (struct xpc_partition *);
--
--	void (*request_partition_activation) (struct xpc_rsvd_page *,
--						 unsigned long, int);
--	void (*request_partition_reactivation) (struct xpc_partition *);
--	void (*request_partition_deactivation) (struct xpc_partition *);
--	void (*cancel_partition_deactivation_request) (struct xpc_partition *);
--	enum xp_retval (*setup_ch_structures) (struct xpc_partition *);
--	void (*teardown_ch_structures) (struct xpc_partition *);
--
--	enum xp_retval (*make_first_contact) (struct xpc_partition *);
--
--	u64 (*get_chctl_all_flags) (struct xpc_partition *);
--	void (*send_chctl_closerequest) (struct xpc_channel *, unsigned long *);
--	void (*send_chctl_closereply) (struct xpc_channel *, unsigned long *);
--	void (*send_chctl_openrequest) (struct xpc_channel *, unsigned long *);
--	void (*send_chctl_openreply) (struct xpc_channel *, unsigned long *);
--	void (*send_chctl_opencomplete) (struct xpc_channel *, unsigned long *);
--	void (*process_msg_chctl_flags) (struct xpc_partition *, int);
--
--	enum xp_retval (*save_remote_msgqueue_pa) (struct xpc_channel *,
--						      unsigned long);
--
--	enum xp_retval (*setup_msg_structures) (struct xpc_channel *);
--	void (*teardown_msg_structures) (struct xpc_channel *);
--
--	void (*indicate_partition_engaged) (struct xpc_partition *);
--	void (*indicate_partition_disengaged) (struct xpc_partition *);
--	void (*assume_partition_disengaged) (short);
--	int (*partition_engaged) (short);
--	int (*any_partition_engaged) (void);
--
--	int (*n_of_deliverable_payloads) (struct xpc_channel *);
--	enum xp_retval (*send_payload) (struct xpc_channel *, u32, void *,
--					   u16, u8, xpc_notify_func, void *);
--	void *(*get_deliverable_payload) (struct xpc_channel *);
--	void (*received_payload) (struct xpc_channel *, void *);
--	void (*notify_senders_of_disconnect) (struct xpc_channel *);
--};
--
--/* struct xpc_partition act_state values (for XPC HB) */
--
--#define	XPC_P_AS_INACTIVE	0x00	/* partition is not active */
--#define XPC_P_AS_ACTIVATION_REQ	0x01	/* created thread to activate */
--#define XPC_P_AS_ACTIVATING	0x02	/* activation thread started */
--#define XPC_P_AS_ACTIVE		0x03	/* xpc_partition_up() was called */
--#define XPC_P_AS_DEACTIVATING	0x04	/* partition deactivation initiated */
--
--#define XPC_DEACTIVATE_PARTITION(_p, _reason) \
--			xpc_deactivate_partition(__LINE__, (_p), (_reason))
--
--/* struct xpc_partition setup_state values */
--
--#define XPC_P_SS_UNSET		0x00	/* infrastructure was never setup */
--#define XPC_P_SS_SETUP		0x01	/* infrastructure is setup */
--#define XPC_P_SS_WTEARDOWN	0x02	/* waiting to teardown infrastructure */
--#define XPC_P_SS_TORNDOWN	0x03	/* infrastructure is torndown */
--
--/* number of seconds to wait for other partitions to disengage */
--#define XPC_DISENGAGE_DEFAULT_TIMELIMIT		90
--
--/* interval in seconds to print 'waiting deactivation' messages */
--#define XPC_DEACTIVATE_PRINTMSG_INTERVAL	10
--
--#define XPC_PARTID(_p)	((short)((_p) - &xpc_partitions[0]))
--
--/* found in xp_main.c */
--extern struct xpc_registration xpc_registrations[];
--
--/* found in xpc_main.c */
--extern struct device *xpc_part;
--extern struct device *xpc_chan;
--extern struct xpc_arch_operations xpc_arch_ops;
--extern int xpc_disengage_timelimit;
--extern int xpc_disengage_timedout;
--extern int xpc_activate_IRQ_rcvd;
--extern spinlock_t xpc_activate_IRQ_rcvd_lock;
--extern wait_queue_head_t xpc_activate_IRQ_wq;
--extern void *xpc_kzalloc_cacheline_aligned(size_t, gfp_t, void **);
--extern void xpc_activate_partition(struct xpc_partition *);
--extern void xpc_activate_kthreads(struct xpc_channel *, int);
--extern void xpc_create_kthreads(struct xpc_channel *, int, int);
--extern void xpc_disconnect_wait(int);
--
--/* found in xpc_uv.c */
--extern int xpc_init_uv(void);
--extern void xpc_exit_uv(void);
--
--/* found in xpc_partition.c */
--extern int xpc_exiting;
--extern int xpc_nasid_mask_nlongs;
--extern struct xpc_rsvd_page *xpc_rsvd_page;
--extern unsigned long *xpc_mach_nasids;
--extern struct xpc_partition *xpc_partitions;
--extern void *xpc_kmalloc_cacheline_aligned(size_t, gfp_t, void **);
--extern int xpc_setup_rsvd_page(void);
--extern void xpc_teardown_rsvd_page(void);
--extern int xpc_identify_activate_IRQ_sender(void);
--extern int xpc_partition_disengaged(struct xpc_partition *);
--extern int xpc_partition_disengaged_from_timer(struct xpc_partition *part);
--extern enum xp_retval xpc_mark_partition_active(struct xpc_partition *);
--extern void xpc_mark_partition_inactive(struct xpc_partition *);
--extern void xpc_discovery(void);
--extern enum xp_retval xpc_get_remote_rp(int, unsigned long *,
--					struct xpc_rsvd_page *,
--					unsigned long *);
--extern void xpc_deactivate_partition(const int, struct xpc_partition *,
--				     enum xp_retval);
--extern enum xp_retval xpc_initiate_partid_to_nasids(short, void *);
--
--/* found in xpc_channel.c */
--extern void xpc_initiate_connect(int);
--extern void xpc_initiate_disconnect(int);
--extern enum xp_retval xpc_allocate_msg_wait(struct xpc_channel *);
--extern enum xp_retval xpc_initiate_send(short, int, u32, void *, u16);
--extern enum xp_retval xpc_initiate_send_notify(short, int, u32, void *, u16,
--					       xpc_notify_func, void *);
--extern void xpc_initiate_received(short, int, void *);
--extern void xpc_process_sent_chctl_flags(struct xpc_partition *);
--extern void xpc_connected_callout(struct xpc_channel *);
--extern void xpc_deliver_payload(struct xpc_channel *);
--extern void xpc_disconnect_channel(const int, struct xpc_channel *,
--				   enum xp_retval, unsigned long *);
--extern void xpc_disconnect_callout(struct xpc_channel *, enum xp_retval);
--extern void xpc_partition_going_down(struct xpc_partition *, enum xp_retval);
--
--static inline void
--xpc_wakeup_channel_mgr(struct xpc_partition *part)
--{
--	if (atomic_inc_return(&part->channel_mgr_requests) == 1)
--		wake_up(&part->channel_mgr_wq);
 -}
 -
 -/*
-- * These next two inlines are used to keep us from tearing down a channel's
-- * msg queues while a thread may be referencing them.
-- */
--static inline void
--xpc_msgqueue_ref(struct xpc_channel *ch)
--{
--	atomic_inc(&ch->references);
--}
--
--static inline void
--xpc_msgqueue_deref(struct xpc_channel *ch)
--{
--	s32 refs = atomic_dec_return(&ch->references);
--
--	DBUG_ON(refs < 0);
--	if (refs == 0)
--		xpc_wakeup_channel_mgr(&xpc_partitions[ch->partid]);
--}
--
--#define XPC_DISCONNECT_CHANNEL(_ch, _reason, _irqflgs) \
--		xpc_disconnect_channel(__LINE__, _ch, _reason, _irqflgs)
--
--/*
-- * These two inlines are used to keep us from tearing down a partition's
-- * setup infrastructure while a thread may be referencing it.
-- */
--static inline void
--xpc_part_deref(struct xpc_partition *part)
--{
--	s32 refs = atomic_dec_return(&part->references);
--
--	DBUG_ON(refs < 0);
--	if (refs == 0 && part->setup_state == XPC_P_SS_WTEARDOWN)
--		wake_up(&part->teardown_wq);
--}
--
--static inline int
--xpc_part_ref(struct xpc_partition *part)
--{
--	int setup;
--
--	atomic_inc(&part->references);
--	setup = (part->setup_state == XPC_P_SS_SETUP);
--	if (!setup)
--		xpc_part_deref(part);
--
--	return setup;
--}
--
--/*
-- * The following macro is to be used for the setting of the reason and
-- * reason_line fields in both the struct xpc_channel and struct xpc_partition
-- * structures.
-- */
--#define XPC_SET_REASON(_p, _reason, _line) \
--	{ \
--		(_p)->reason = _reason; \
--		(_p)->reason_line = _line; \
--	}
--
--#endif /* _DRIVERS_MISC_SGIXP_XPC_H */
-diff --git a/drivers/misc/sgi-xp/xpc_channel.c b/drivers/misc/sgi-xp/xpc_channel.c
-deleted file mode 100644
-index 8e6607fc8a67..000000000000
---- a/drivers/misc/sgi-xp/xpc_channel.c
-+++ /dev/null
-@@ -1,1011 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
+- * Read & clear a TFM
 - *
-- * Copyright (c) 2004-2009 Silicon Graphics, Inc.  All Rights Reserved.
-- */
--
--/*
-- * Cross Partition Communication (XPC) channel support.
+- * The GRU has an array of fault maps. A map is private to a cpu
+- * Only one cpu will be accessing a cpu's fault map.
 - *
-- *	This is the part of XPC that manages the channels and
-- *	sends/receives messages across them to/from other partitions.
-- *
+- * This function scans the cpu-private fault map & clears all bits that
+- * are set. The function returns a bitmap that indicates the bits that
+- * were cleared. Note that sense the maps may be updated asynchronously by
+- * the GRU, atomic operations must be used to clear bits.
 - */
--
--#include <linux/device.h>
--#include "xpc.h"
--
--/*
-- * Process a connect message from a remote partition.
-- *
-- * Note: xpc_process_connect() is expecting to be called with the
-- * spin_lock_irqsave held and will leave it locked upon return.
-- */
--static void
--xpc_process_connect(struct xpc_channel *ch, unsigned long *irq_flags)
+-static void get_clear_fault_map(struct gru_state *gru,
+-				struct gru_tlb_fault_map *imap,
+-				struct gru_tlb_fault_map *dmap)
 -{
--	enum xp_retval ret;
+-	unsigned long i, k;
+-	struct gru_tlb_fault_map *tfm;
 -
--	lockdep_assert_held(&ch->lock);
--
--	if (!(ch->flags & XPC_C_OPENREQUEST) ||
--	    !(ch->flags & XPC_C_ROPENREQUEST)) {
--		/* nothing more to do for now */
--		return;
+-	tfm = get_tfm_for_cpu(gru, gru_cpu_fault_map_id());
+-	prefetchw(tfm);		/* Helps on hardware, required for emulator */
+-	for (i = 0; i < BITS_TO_LONGS(GRU_NUM_CBE); i++) {
+-		k = tfm->fault_bits[i];
+-		if (k)
+-			k = xchg(&tfm->fault_bits[i], 0UL);
+-		imap->fault_bits[i] = k;
+-		k = tfm->done_bits[i];
+-		if (k)
+-			k = xchg(&tfm->done_bits[i], 0UL);
+-		dmap->fault_bits[i] = k;
 -	}
--	DBUG_ON(!(ch->flags & XPC_C_CONNECTING));
--
--	if (!(ch->flags & XPC_C_SETUP)) {
--		spin_unlock_irqrestore(&ch->lock, *irq_flags);
--		ret = xpc_arch_ops.setup_msg_structures(ch);
--		spin_lock_irqsave(&ch->lock, *irq_flags);
--
--		if (ret != xpSuccess)
--			XPC_DISCONNECT_CHANNEL(ch, ret, irq_flags);
--		else
--			ch->flags |= XPC_C_SETUP;
--
--		if (ch->flags & XPC_C_DISCONNECTING)
--			return;
--	}
--
--	if (!(ch->flags & XPC_C_OPENREPLY)) {
--		ch->flags |= XPC_C_OPENREPLY;
--		xpc_arch_ops.send_chctl_openreply(ch, irq_flags);
--	}
--
--	if (!(ch->flags & XPC_C_ROPENREPLY))
--		return;
--
--	if (!(ch->flags & XPC_C_OPENCOMPLETE)) {
--		ch->flags |= (XPC_C_OPENCOMPLETE | XPC_C_CONNECTED);
--		xpc_arch_ops.send_chctl_opencomplete(ch, irq_flags);
--	}
--
--	if (!(ch->flags & XPC_C_ROPENCOMPLETE))
--		return;
--
--	dev_info(xpc_chan, "channel %d to partition %d connected\n",
--		 ch->number, ch->partid);
--
--	ch->flags = (XPC_C_CONNECTED | XPC_C_SETUP);	/* clear all else */
--}
--
--/*
-- * spin_lock_irqsave() is expected to be held on entry.
-- */
--static void
--xpc_process_disconnect(struct xpc_channel *ch, unsigned long *irq_flags)
--{
--	struct xpc_partition *part = &xpc_partitions[ch->partid];
--	u32 channel_was_connected = (ch->flags & XPC_C_WASCONNECTED);
--
--	lockdep_assert_held(&ch->lock);
--
--	if (!(ch->flags & XPC_C_DISCONNECTING))
--		return;
--
--	DBUG_ON(!(ch->flags & XPC_C_CLOSEREQUEST));
--
--	/* make sure all activity has settled down first */
--
--	if (atomic_read(&ch->kthreads_assigned) > 0 ||
--	    atomic_read(&ch->references) > 0) {
--		return;
--	}
--	DBUG_ON((ch->flags & XPC_C_CONNECTEDCALLOUT_MADE) &&
--		!(ch->flags & XPC_C_DISCONNECTINGCALLOUT_MADE));
--
--	if (part->act_state == XPC_P_AS_DEACTIVATING) {
--		/* can't proceed until the other side disengages from us */
--		if (xpc_arch_ops.partition_engaged(ch->partid))
--			return;
--
--	} else {
--
--		/* as long as the other side is up do the full protocol */
--
--		if (!(ch->flags & XPC_C_RCLOSEREQUEST))
--			return;
--
--		if (!(ch->flags & XPC_C_CLOSEREPLY)) {
--			ch->flags |= XPC_C_CLOSEREPLY;
--			xpc_arch_ops.send_chctl_closereply(ch, irq_flags);
--		}
--
--		if (!(ch->flags & XPC_C_RCLOSEREPLY))
--			return;
--	}
--
--	/* wake those waiting for notify completion */
--	if (atomic_read(&ch->n_to_notify) > 0) {
--		/* we do callout while holding ch->lock, callout can't block */
--		xpc_arch_ops.notify_senders_of_disconnect(ch);
--	}
--
--	/* both sides are disconnected now */
--
--	if (ch->flags & XPC_C_DISCONNECTINGCALLOUT_MADE) {
--		spin_unlock_irqrestore(&ch->lock, *irq_flags);
--		xpc_disconnect_callout(ch, xpDisconnected);
--		spin_lock_irqsave(&ch->lock, *irq_flags);
--	}
--
--	DBUG_ON(atomic_read(&ch->n_to_notify) != 0);
--
--	/* it's now safe to free the channel's message queues */
--	xpc_arch_ops.teardown_msg_structures(ch);
--
--	ch->func = NULL;
--	ch->key = NULL;
--	ch->entry_size = 0;
--	ch->local_nentries = 0;
--	ch->remote_nentries = 0;
--	ch->kthreads_assigned_limit = 0;
--	ch->kthreads_idle_limit = 0;
 -
 -	/*
--	 * Mark the channel disconnected and clear all other flags, including
--	 * XPC_C_SETUP (because of call to
--	 * xpc_arch_ops.teardown_msg_structures()) but not including
--	 * XPC_C_WDISCONNECT (if it was set).
+-	 * Not functionally required but helps performance. (Required
+-	 * on emulator)
 -	 */
--	ch->flags = (XPC_C_DISCONNECTED | (ch->flags & XPC_C_WDISCONNECT));
+-	gru_flush_cache(tfm);
+-}
 -
--	atomic_dec(&part->nchannels_active);
+-/*
+- * Atomic (interrupt context) & non-atomic (user context) functions to
+- * convert a vaddr into a physical address. The size of the page
+- * is returned in pageshift.
+- * 	returns:
+- * 		  0 - successful
+- * 		< 0 - error code
+- * 		  1 - (atomic only) try again in non-atomic context
+- */
+-static int non_atomic_pte_lookup(struct vm_area_struct *vma,
+-				 unsigned long vaddr, int write,
+-				 unsigned long *paddr, int *pageshift)
+-{
+-	struct page *page;
 -
--	if (channel_was_connected) {
--		dev_info(xpc_chan, "channel %d to partition %d disconnected, "
--			 "reason=%d\n", ch->number, ch->partid, ch->reason);
+-#ifdef CONFIG_HUGETLB_PAGE
+-	*pageshift = is_vm_hugetlb_page(vma) ? HPAGE_SHIFT : PAGE_SHIFT;
+-#else
+-	*pageshift = PAGE_SHIFT;
+-#endif
+-	if (get_user_pages(vaddr, 1, write ? FOLL_WRITE : 0, &page) <= 0)
+-		return -EFAULT;
+-	*paddr = page_to_phys(page);
+-	put_page(page);
+-	return 0;
+-}
+-
+-/*
+- * atomic_pte_lookup
+- *
+- * Convert a user virtual address to a physical address
+- * Only supports Intel large pages (2MB only) on x86_64.
+- *	ZZZ - hugepage support is incomplete
+- *
+- * NOTE: mmap_lock is already held on entry to this function. This
+- * guarantees existence of the page tables.
+- */
+-static int atomic_pte_lookup(struct vm_area_struct *vma, unsigned long vaddr,
+-	int write, unsigned long *paddr, int *pageshift)
+-{
+-	pgd_t *pgdp;
+-	p4d_t *p4dp;
+-	pud_t *pudp;
+-	pmd_t *pmdp;
+-	pte_t pte;
+-
+-	pgdp = pgd_offset(vma->vm_mm, vaddr);
+-	if (unlikely(pgd_none(*pgdp)))
+-		goto err;
+-
+-	p4dp = p4d_offset(pgdp, vaddr);
+-	if (unlikely(p4d_none(*p4dp)))
+-		goto err;
+-
+-	pudp = pud_offset(p4dp, vaddr);
+-	if (unlikely(pud_none(*pudp)))
+-		goto err;
+-
+-	pmdp = pmd_offset(pudp, vaddr);
+-	if (unlikely(pmd_none(*pmdp)))
+-		goto err;
+-#ifdef CONFIG_X86_64
+-	if (unlikely(pmd_leaf(*pmdp)))
+-		pte = ptep_get((pte_t *)pmdp);
+-	else
+-#endif
+-		pte = *pte_offset_kernel(pmdp, vaddr);
+-
+-	if (unlikely(!pte_present(pte) ||
+-		     (write && (!pte_write(pte) || !pte_dirty(pte)))))
+-		return 1;
+-
+-	*paddr = pte_pfn(pte) << PAGE_SHIFT;
+-#ifdef CONFIG_HUGETLB_PAGE
+-	*pageshift = is_vm_hugetlb_page(vma) ? HPAGE_SHIFT : PAGE_SHIFT;
+-#else
+-	*pageshift = PAGE_SHIFT;
+-#endif
+-	return 0;
+-
+-err:
+-	return 1;
+-}
+-
+-static int gru_vtop(struct gru_thread_state *gts, unsigned long vaddr,
+-		    int write, int atomic, unsigned long *gpa, int *pageshift)
+-{
+-	struct mm_struct *mm = gts->ts_mm;
+-	struct vm_area_struct *vma;
+-	unsigned long paddr;
+-	int ret, ps;
+-
+-	vma = find_vma(mm, vaddr);
+-	if (!vma)
+-		goto inval;
+-
+-	/*
+-	 * Atomic lookup is faster & usually works even if called in non-atomic
+-	 * context.
+-	 */
+-	rmb();	/* Must/check ms_range_active before loading PTEs */
+-	ret = atomic_pte_lookup(vma, vaddr, write, &paddr, &ps);
+-	if (ret) {
+-		if (atomic)
+-			goto upm;
+-		if (non_atomic_pte_lookup(vma, vaddr, write, &paddr, &ps))
+-			goto inval;
 -	}
+-	if (is_gru_paddr(paddr))
+-		goto inval;
+-	paddr = paddr & ~((1UL << ps) - 1);
+-	*gpa = uv_soc_phys_ram_to_gpa(paddr);
+-	*pageshift = ps;
+-	return VTOP_SUCCESS;
 -
--	if (ch->flags & XPC_C_WDISCONNECT) {
--		/* we won't lose the CPU since we're holding ch->lock */
--		complete(&ch->wdisconnect_wait);
--	} else if (ch->delayed_chctl_flags) {
--		if (part->act_state != XPC_P_AS_DEACTIVATING) {
--			/* time to take action on any delayed chctl flags */
--			spin_lock(&part->chctl_lock);
--			part->chctl.flags[ch->number] |=
--			    ch->delayed_chctl_flags;
--			spin_unlock(&part->chctl_lock);
--		}
--		ch->delayed_chctl_flags = 0;
+-inval:
+-	return VTOP_INVALID;
+-upm:
+-	return VTOP_RETRY;
+-}
+-
+-
+-/*
+- * Flush a CBE from cache. The CBE is clean in the cache. Dirty the
+- * CBE cacheline so that the line will be written back to home agent.
+- * Otherwise the line may be silently dropped. This has no impact
+- * except on performance.
+- */
+-static void gru_flush_cache_cbe(struct gru_control_block_extended *cbe)
+-{
+-	if (unlikely(cbe)) {
+-		cbe->cbrexecstatus = 0;         /* make CL dirty */
+-		gru_flush_cache(cbe);
 -	}
 -}
 -
 -/*
-- * Process a change in the channel's remote connection state.
+- * Preload the TLB with entries that may be required. Currently, preloading
+- * is implemented only for BCOPY. Preload  <tlb_preload_count> pages OR to
+- * the end of the bcopy tranfer, whichever is smaller.
 - */
--static void
--xpc_process_openclose_chctl_flags(struct xpc_partition *part, int ch_number,
--				  u8 chctl_flags)
+-static void gru_preload_tlb(struct gru_state *gru,
+-			struct gru_thread_state *gts, int atomic,
+-			unsigned long fault_vaddr, int asid, int write,
+-			unsigned char tlb_preload_count,
+-			struct gru_tlb_fault_handle *tfh,
+-			struct gru_control_block_extended *cbe)
 -{
--	unsigned long irq_flags;
--	struct xpc_openclose_args *args =
--	    &part->remote_openclose_args[ch_number];
--	struct xpc_channel *ch = &part->channels[ch_number];
--	enum xp_retval reason;
--	enum xp_retval ret;
--	int create_kthread = 0;
+-	unsigned long vaddr = 0, gpa;
+-	int ret, pageshift;
 -
--	spin_lock_irqsave(&ch->lock, irq_flags);
+-	if (cbe->opccpy != OP_BCOPY)
+-		return;
+-
+-	if (fault_vaddr == cbe->cbe_baddr0)
+-		vaddr = fault_vaddr + GRU_CACHE_LINE_BYTES * cbe->cbe_src_cl - 1;
+-	else if (fault_vaddr == cbe->cbe_baddr1)
+-		vaddr = fault_vaddr + (1 << cbe->xtypecpy) * cbe->cbe_nelemcur - 1;
+-
+-	fault_vaddr &= PAGE_MASK;
+-	vaddr &= PAGE_MASK;
+-	vaddr = min(vaddr, fault_vaddr + tlb_preload_count * PAGE_SIZE);
+-
+-	while (vaddr > fault_vaddr) {
+-		ret = gru_vtop(gts, vaddr, write, atomic, &gpa, &pageshift);
+-		if (ret || tfh_write_only(tfh, gpa, GAA_RAM, vaddr, asid, write,
+-					  GRU_PAGESIZE(pageshift)))
+-			return;
+-		gru_dbg(grudev,
+-			"%s: gid %d, gts 0x%p, tfh 0x%p, vaddr 0x%lx, asid 0x%x, rw %d, ps %d, gpa 0x%lx\n",
+-			atomic ? "atomic" : "non-atomic", gru->gs_gid, gts, tfh,
+-			vaddr, asid, write, pageshift, gpa);
+-		vaddr -= PAGE_SIZE;
+-		STAT(tlb_preload_page);
+-	}
+-}
+-
+-/*
+- * Drop a TLB entry into the GRU. The fault is described by info in an TFH.
+- *	Input:
+- *		cb    Address of user CBR. Null if not running in user context
+- * 	Return:
+- * 		  0 = dropin, exception, or switch to UPM successful
+- * 		  1 = range invalidate active
+- * 		< 0 = error code
+- *
+- */
+-static int gru_try_dropin(struct gru_state *gru,
+-			  struct gru_thread_state *gts,
+-			  struct gru_tlb_fault_handle *tfh,
+-			  struct gru_instruction_bits *cbk)
+-{
+-	struct gru_control_block_extended *cbe = NULL;
+-	unsigned char tlb_preload_count = gts->ts_tlb_preload_count;
+-	int pageshift = 0, asid, write, ret, atomic = !cbk, indexway;
+-	unsigned long gpa = 0, vaddr = 0;
+-
+-	/*
+-	 * NOTE: The GRU contains magic hardware that eliminates races between
+-	 * TLB invalidates and TLB dropins. If an invalidate occurs
+-	 * in the window between reading the TFH and the subsequent TLB dropin,
+-	 * the dropin is ignored. This eliminates the need for additional locks.
+-	 */
+-
+-	/*
+-	 * Prefetch the CBE if doing TLB preloading
+-	 */
+-	if (unlikely(tlb_preload_count)) {
+-		cbe = gru_tfh_to_cbe(tfh);
+-		prefetchw(cbe);
+-	}
+-
+-	/*
+-	 * Error if TFH state is IDLE or FMM mode & the user issuing a UPM call.
+-	 * Might be a hardware race OR a stupid user. Ignore FMM because FMM
+-	 * is a transient state.
+-	 */
+-	if (tfh->status != TFHSTATUS_EXCEPTION) {
+-		gru_flush_cache(tfh);
+-		sync_core();
+-		if (tfh->status != TFHSTATUS_EXCEPTION)
+-			goto failnoexception;
+-		STAT(tfh_stale_on_fault);
+-	}
+-	if (tfh->state == TFHSTATE_IDLE)
+-		goto failidle;
+-	if (tfh->state == TFHSTATE_MISS_FMM && cbk)
+-		goto failfmm;
+-
+-	write = (tfh->cause & TFHCAUSE_TLB_MOD) != 0;
+-	vaddr = tfh->missvaddr;
+-	asid = tfh->missasid;
+-	indexway = tfh->indexway;
+-	if (asid == 0)
+-		goto failnoasid;
+-
+-	rmb();	/* TFH must be cache resident before reading ms_range_active */
+-
+-	/*
+-	 * TFH is cache resident - at least briefly. Fail the dropin
+-	 * if a range invalidate is active.
+-	 */
+-	if (atomic_read(&gts->ts_gms->ms_range_active))
+-		goto failactive;
+-
+-	ret = gru_vtop(gts, vaddr, write, atomic, &gpa, &pageshift);
+-	if (ret == VTOP_INVALID)
+-		goto failinval;
+-	if (ret == VTOP_RETRY)
+-		goto failupm;
+-
+-	if (!(gts->ts_sizeavail & GRU_SIZEAVAIL(pageshift))) {
+-		gts->ts_sizeavail |= GRU_SIZEAVAIL(pageshift);
+-		if (atomic || !gru_update_cch(gts)) {
+-			gts->ts_force_cch_reload = 1;
+-			goto failupm;
+-		}
+-	}
+-
+-	if (unlikely(cbe) && pageshift == PAGE_SHIFT) {
+-		gru_preload_tlb(gru, gts, atomic, vaddr, asid, write, tlb_preload_count, tfh, cbe);
+-		gru_flush_cache_cbe(cbe);
+-	}
+-
+-	gru_cb_set_istatus_active(cbk);
+-	gts->ustats.tlbdropin++;
+-	tfh_write_restart(tfh, gpa, GAA_RAM, vaddr, asid, write,
+-			  GRU_PAGESIZE(pageshift));
+-	gru_dbg(grudev,
+-		"%s: gid %d, gts 0x%p, tfh 0x%p, vaddr 0x%lx, asid 0x%x, indexway 0x%x,"
+-		" rw %d, ps %d, gpa 0x%lx\n",
+-		atomic ? "atomic" : "non-atomic", gru->gs_gid, gts, tfh, vaddr, asid,
+-		indexway, write, pageshift, gpa);
+-	STAT(tlb_dropin);
+-	return 0;
+-
+-failnoasid:
+-	/* No asid (delayed unload). */
+-	STAT(tlb_dropin_fail_no_asid);
+-	gru_dbg(grudev, "FAILED no_asid tfh: 0x%p, vaddr 0x%lx\n", tfh, vaddr);
+-	if (!cbk)
+-		tfh_user_polling_mode(tfh);
+-	else
+-		gru_flush_cache(tfh);
+-	gru_flush_cache_cbe(cbe);
+-	return -EAGAIN;
+-
+-failupm:
+-	/* Atomic failure switch CBR to UPM */
+-	tfh_user_polling_mode(tfh);
+-	gru_flush_cache_cbe(cbe);
+-	STAT(tlb_dropin_fail_upm);
+-	gru_dbg(grudev, "FAILED upm tfh: 0x%p, vaddr 0x%lx\n", tfh, vaddr);
+-	return 1;
+-
+-failfmm:
+-	/* FMM state on UPM call */
+-	gru_flush_cache(tfh);
+-	gru_flush_cache_cbe(cbe);
+-	STAT(tlb_dropin_fail_fmm);
+-	gru_dbg(grudev, "FAILED fmm tfh: 0x%p, state %d\n", tfh, tfh->state);
+-	return 0;
+-
+-failnoexception:
+-	/* TFH status did not show exception pending */
+-	gru_flush_cache(tfh);
+-	gru_flush_cache_cbe(cbe);
+-	if (cbk)
+-		gru_flush_cache(cbk);
+-	STAT(tlb_dropin_fail_no_exception);
+-	gru_dbg(grudev, "FAILED non-exception tfh: 0x%p, status %d, state %d\n",
+-		tfh, tfh->status, tfh->state);
+-	return 0;
+-
+-failidle:
+-	/* TFH state was idle  - no miss pending */
+-	gru_flush_cache(tfh);
+-	gru_flush_cache_cbe(cbe);
+-	if (cbk)
+-		gru_flush_cache(cbk);
+-	STAT(tlb_dropin_fail_idle);
+-	gru_dbg(grudev, "FAILED idle tfh: 0x%p, state %d\n", tfh, tfh->state);
+-	return 0;
+-
+-failinval:
+-	/* All errors (atomic & non-atomic) switch CBR to EXCEPTION state */
+-	tfh_exception(tfh);
+-	gru_flush_cache_cbe(cbe);
+-	STAT(tlb_dropin_fail_invalid);
+-	gru_dbg(grudev, "FAILED inval tfh: 0x%p, vaddr 0x%lx\n", tfh, vaddr);
+-	return -EFAULT;
+-
+-failactive:
+-	/* Range invalidate active. Switch to UPM iff atomic */
+-	if (!cbk)
+-		tfh_user_polling_mode(tfh);
+-	else
+-		gru_flush_cache(tfh);
+-	gru_flush_cache_cbe(cbe);
+-	STAT(tlb_dropin_fail_range_active);
+-	gru_dbg(grudev, "FAILED range active: tfh 0x%p, vaddr 0x%lx\n",
+-		tfh, vaddr);
+-	return 1;
+-}
+-
+-/*
+- * Process an external interrupt from the GRU. This interrupt is
+- * caused by a TLB miss.
+- * Note that this is the interrupt handler that is registered with linux
+- * interrupt handlers.
+- */
+-static irqreturn_t gru_intr(int chiplet, int blade)
+-{
+-	struct gru_state *gru;
+-	struct gru_tlb_fault_map imap, dmap;
+-	struct gru_thread_state *gts;
+-	struct gru_tlb_fault_handle *tfh = NULL;
+-	struct completion *cmp;
+-	int cbrnum, ctxnum;
+-
+-	STAT(intr);
+-
+-	gru = &gru_base[blade]->bs_grus[chiplet];
+-	if (!gru) {
+-		dev_err(grudev, "GRU: invalid interrupt: cpu %d, chiplet %d\n",
+-			raw_smp_processor_id(), chiplet);
+-		return IRQ_NONE;
+-	}
+-	get_clear_fault_map(gru, &imap, &dmap);
+-	gru_dbg(grudev,
+-		"cpu %d, chiplet %d, gid %d, imap %016lx %016lx, dmap %016lx %016lx\n",
+-		smp_processor_id(), chiplet, gru->gs_gid,
+-		imap.fault_bits[0], imap.fault_bits[1],
+-		dmap.fault_bits[0], dmap.fault_bits[1]);
+-
+-	for_each_cbr_in_tfm(cbrnum, dmap.fault_bits) {
+-		STAT(intr_cbr);
+-		cmp = gru->gs_blade->bs_async_wq;
+-		if (cmp)
+-			complete(cmp);
+-		gru_dbg(grudev, "gid %d, cbr_done %d, done %d\n",
+-			gru->gs_gid, cbrnum, cmp ? cmp->done : -1);
+-	}
+-
+-	for_each_cbr_in_tfm(cbrnum, imap.fault_bits) {
+-		STAT(intr_tfh);
+-		tfh = get_tfh_by_index(gru, cbrnum);
+-		prefetchw(tfh);	/* Helps on hdw, required for emulator */
+-
+-		/*
+-		 * When hardware sets a bit in the faultmap, it implicitly
+-		 * locks the GRU context so that it cannot be unloaded.
+-		 * The gts cannot change until a TFH start/writestart command
+-		 * is issued.
+-		 */
+-		ctxnum = tfh->ctxnum;
+-		gts = gru->gs_gts[ctxnum];
+-
+-		/* Spurious interrupts can cause this. Ignore. */
+-		if (!gts) {
+-			STAT(intr_spurious);
+-			continue;
+-		}
+-
+-		/*
+-		 * This is running in interrupt context. Trylock the mmap_lock.
+-		 * If it fails, retry the fault in user context.
+-		 */
+-		gts->ustats.fmm_tlbmiss++;
+-		if (!gts->ts_force_cch_reload &&
+-					mmap_read_trylock(gts->ts_mm)) {
+-			gru_try_dropin(gru, gts, tfh, NULL);
+-			mmap_read_unlock(gts->ts_mm);
+-		} else {
+-			tfh_user_polling_mode(tfh);
+-			STAT(intr_mm_lock_failed);
+-		}
+-	}
+-	return IRQ_HANDLED;
+-}
+-
+-irqreturn_t gru0_intr(int irq, void *dev_id)
+-{
+-	return gru_intr(0, uv_numa_blade_id());
+-}
+-
+-irqreturn_t gru1_intr(int irq, void *dev_id)
+-{
+-	return gru_intr(1, uv_numa_blade_id());
+-}
+-
+-irqreturn_t gru_intr_mblade(int irq, void *dev_id)
+-{
+-	int blade;
+-
+-	for_each_possible_blade(blade) {
+-		if (uv_blade_nr_possible_cpus(blade))
+-			continue;
+-		gru_intr(0, blade);
+-		gru_intr(1, blade);
+-	}
+-	return IRQ_HANDLED;
+-}
+-
+-
+-static int gru_user_dropin(struct gru_thread_state *gts,
+-			   struct gru_tlb_fault_handle *tfh,
+-			   void *cb)
+-{
+-	struct gru_mm_struct *gms = gts->ts_gms;
+-	int ret;
+-
+-	gts->ustats.upm_tlbmiss++;
+-	while (1) {
+-		wait_event(gms->ms_wait_queue,
+-			   atomic_read(&gms->ms_range_active) == 0);
+-		prefetchw(tfh);	/* Helps on hdw, required for emulator */
+-		ret = gru_try_dropin(gts->ts_gru, gts, tfh, cb);
+-		if (ret <= 0)
+-			return ret;
+-		STAT(call_os_wait_queue);
+-	}
+-}
+-
+-/*
+- * This interface is called as a result of a user detecting a "call OS" bit
+- * in a user CB. Normally means that a TLB fault has occurred.
+- * 	cb - user virtual address of the CB
+- */
+-int gru_handle_user_call_os(unsigned long cb)
+-{
+-	struct gru_tlb_fault_handle *tfh;
+-	struct gru_thread_state *gts;
+-	void *cbk;
+-	int ucbnum, cbrnum, ret = -EINVAL;
+-
+-	STAT(call_os);
+-
+-	/* sanity check the cb pointer */
+-	ucbnum = get_cb_number((void *)cb);
+-	if ((cb & (GRU_HANDLE_STRIDE - 1)) || ucbnum >= GRU_NUM_CB)
+-		return -EINVAL;
 -
 -again:
+-	gts = gru_find_lock_gts(cb);
+-	if (!gts)
+-		return -EINVAL;
+-	gru_dbg(grudev, "address 0x%lx, gid %d, gts 0x%p\n", cb, gts->ts_gru ? gts->ts_gru->gs_gid : -1, gts);
 -
--	if ((ch->flags & XPC_C_DISCONNECTED) &&
--	    (ch->flags & XPC_C_WDISCONNECT)) {
--		/*
--		 * Delay processing chctl flags until thread waiting disconnect
--		 * has had a chance to see that the channel is disconnected.
--		 */
--		ch->delayed_chctl_flags |= chctl_flags;
--		goto out;
+-	if (ucbnum >= gts->ts_cbr_au_count * GRU_CBR_AU_SIZE)
+-		goto exit;
+-
+-	if (gru_check_context_placement(gts)) {
+-		gru_unlock_gts(gts);
+-		gru_unload_context(gts, 1);
+-		goto again;
 -	}
 -
--	if (chctl_flags & XPC_CHCTL_CLOSEREQUEST) {
--
--		dev_dbg(xpc_chan, "XPC_CHCTL_CLOSEREQUEST (reason=%d) received "
--			"from partid=%d, channel=%d\n", args->reason,
--			ch->partid, ch->number);
--
--		/*
--		 * If RCLOSEREQUEST is set, we're probably waiting for
--		 * RCLOSEREPLY. We should find it and a ROPENREQUEST packed
--		 * with this RCLOSEREQUEST in the chctl_flags.
--		 */
--
--		if (ch->flags & XPC_C_RCLOSEREQUEST) {
--			DBUG_ON(!(ch->flags & XPC_C_DISCONNECTING));
--			DBUG_ON(!(ch->flags & XPC_C_CLOSEREQUEST));
--			DBUG_ON(!(ch->flags & XPC_C_CLOSEREPLY));
--			DBUG_ON(ch->flags & XPC_C_RCLOSEREPLY);
--
--			DBUG_ON(!(chctl_flags & XPC_CHCTL_CLOSEREPLY));
--			chctl_flags &= ~XPC_CHCTL_CLOSEREPLY;
--			ch->flags |= XPC_C_RCLOSEREPLY;
--
--			/* both sides have finished disconnecting */
--			xpc_process_disconnect(ch, &irq_flags);
--			DBUG_ON(!(ch->flags & XPC_C_DISCONNECTED));
--			goto again;
--		}
--
--		if (ch->flags & XPC_C_DISCONNECTED) {
--			if (!(chctl_flags & XPC_CHCTL_OPENREQUEST)) {
--				if (part->chctl.flags[ch_number] &
--				    XPC_CHCTL_OPENREQUEST) {
--
--					DBUG_ON(ch->delayed_chctl_flags != 0);
--					spin_lock(&part->chctl_lock);
--					part->chctl.flags[ch_number] |=
--					    XPC_CHCTL_CLOSEREQUEST;
--					spin_unlock(&part->chctl_lock);
--				}
--				goto out;
--			}
--
--			XPC_SET_REASON(ch, 0, 0);
--			ch->flags &= ~XPC_C_DISCONNECTED;
--
--			atomic_inc(&part->nchannels_active);
--			ch->flags |= (XPC_C_CONNECTING | XPC_C_ROPENREQUEST);
--		}
--
--		chctl_flags &= ~(XPC_CHCTL_OPENREQUEST | XPC_CHCTL_OPENREPLY |
--		    XPC_CHCTL_OPENCOMPLETE);
--
--		/*
--		 * The meaningful CLOSEREQUEST connection state fields are:
--		 *      reason = reason connection is to be closed
--		 */
--
--		ch->flags |= XPC_C_RCLOSEREQUEST;
--
--		if (!(ch->flags & XPC_C_DISCONNECTING)) {
--			reason = args->reason;
--			if (reason <= xpSuccess || reason > xpUnknownReason)
--				reason = xpUnknownReason;
--			else if (reason == xpUnregistering)
--				reason = xpOtherUnregistering;
--
--			XPC_DISCONNECT_CHANNEL(ch, reason, &irq_flags);
--
--			DBUG_ON(chctl_flags & XPC_CHCTL_CLOSEREPLY);
--			goto out;
--		}
--
--		xpc_process_disconnect(ch, &irq_flags);
+-	/*
+-	 * CCH may contain stale data if ts_force_cch_reload is set.
+-	 */
+-	if (gts->ts_gru && gts->ts_force_cch_reload) {
+-		gts->ts_force_cch_reload = 0;
+-		gru_update_cch(gts);
 -	}
 -
--	if (chctl_flags & XPC_CHCTL_CLOSEREPLY) {
+-	ret = -EAGAIN;
+-	cbrnum = thread_cbr_number(gts, ucbnum);
+-	if (gts->ts_gru) {
+-		tfh = get_tfh_by_index(gts->ts_gru, cbrnum);
+-		cbk = get_gseg_base_address_cb(gts->ts_gru->gs_gru_base_vaddr,
+-				gts->ts_ctxnum, ucbnum);
+-		ret = gru_user_dropin(gts, tfh, cbk);
+-	}
+-exit:
+-	gru_unlock_gts(gts);
+-	return ret;
+-}
 -
--		dev_dbg(xpc_chan, "XPC_CHCTL_CLOSEREPLY received from partid="
--			"%d, channel=%d\n", ch->partid, ch->number);
+-/*
+- * Fetch the exception detail information for a CB that terminated with
+- * an exception.
+- */
+-int gru_get_exception_detail(unsigned long arg)
+-{
+-	struct control_block_extended_exc_detail excdet;
+-	struct gru_control_block_extended *cbe;
+-	struct gru_thread_state *gts;
+-	int ucbnum, cbrnum, ret;
 -
--		if (ch->flags & XPC_C_DISCONNECTED) {
--			DBUG_ON(part->act_state != XPC_P_AS_DEACTIVATING);
--			goto out;
--		}
+-	STAT(user_exception);
+-	if (copy_from_user(&excdet, (void __user *)arg, sizeof(excdet)))
+-		return -EFAULT;
 -
--		DBUG_ON(!(ch->flags & XPC_C_CLOSEREQUEST));
+-	gts = gru_find_lock_gts(excdet.cb);
+-	if (!gts)
+-		return -EINVAL;
 -
--		if (!(ch->flags & XPC_C_RCLOSEREQUEST)) {
--			if (part->chctl.flags[ch_number] &
--			    XPC_CHCTL_CLOSEREQUEST) {
+-	gru_dbg(grudev, "address 0x%lx, gid %d, gts 0x%p\n", excdet.cb, gts->ts_gru ? gts->ts_gru->gs_gid : -1, gts);
+-	ucbnum = get_cb_number((void *)excdet.cb);
+-	if (ucbnum >= gts->ts_cbr_au_count * GRU_CBR_AU_SIZE) {
+-		ret = -EINVAL;
+-	} else if (gts->ts_gru) {
+-		cbrnum = thread_cbr_number(gts, ucbnum);
+-		cbe = get_cbe_by_index(gts->ts_gru, cbrnum);
+-		gru_flush_cache(cbe);	/* CBE not coherent */
+-		sync_core();		/* make sure we are have current data */
+-		excdet.opc = cbe->opccpy;
+-		excdet.exopc = cbe->exopccpy;
+-		excdet.ecause = cbe->ecause;
+-		excdet.exceptdet0 = cbe->idef1upd;
+-		excdet.exceptdet1 = cbe->idef3upd;
+-		excdet.cbrstate = cbe->cbrstate;
+-		excdet.cbrexecstatus = cbe->cbrexecstatus;
+-		gru_flush_cache_cbe(cbe);
+-		ret = 0;
+-	} else {
+-		ret = -EAGAIN;
+-	}
+-	gru_unlock_gts(gts);
 -
--				DBUG_ON(ch->delayed_chctl_flags != 0);
--				spin_lock(&part->chctl_lock);
--				part->chctl.flags[ch_number] |=
--				    XPC_CHCTL_CLOSEREPLY;
--				spin_unlock(&part->chctl_lock);
+-	gru_dbg(grudev,
+-		"cb 0x%lx, op %d, exopc %d, cbrstate %d, cbrexecstatus 0x%x, ecause 0x%x, "
+-		"exdet0 0x%lx, exdet1 0x%x\n",
+-		excdet.cb, excdet.opc, excdet.exopc, excdet.cbrstate, excdet.cbrexecstatus,
+-		excdet.ecause, excdet.exceptdet0, excdet.exceptdet1);
+-	if (!ret && copy_to_user((void __user *)arg, &excdet, sizeof(excdet)))
+-		ret = -EFAULT;
+-	return ret;
+-}
+-
+-/*
+- * User request to unload a context. Content is saved for possible reload.
+- */
+-static int gru_unload_all_contexts(void)
+-{
+-	struct gru_thread_state *gts;
+-	struct gru_state *gru;
+-	int gid, ctxnum;
+-
+-	if (!capable(CAP_SYS_ADMIN))
+-		return -EPERM;
+-	foreach_gid(gid) {
+-		gru = GID_TO_GRU(gid);
+-		spin_lock(&gru->gs_lock);
+-		for (ctxnum = 0; ctxnum < GRU_NUM_CCH; ctxnum++) {
+-			gts = gru->gs_gts[ctxnum];
+-			if (gts && mutex_trylock(&gts->ts_ctxlock)) {
+-				spin_unlock(&gru->gs_lock);
+-				gru_unload_context(gts, 1);
+-				mutex_unlock(&gts->ts_ctxlock);
+-				spin_lock(&gru->gs_lock);
 -			}
--			goto out;
 -		}
+-		spin_unlock(&gru->gs_lock);
+-	}
+-	return 0;
+-}
 -
--		ch->flags |= XPC_C_RCLOSEREPLY;
+-int gru_user_unload_context(unsigned long arg)
+-{
+-	struct gru_thread_state *gts;
+-	struct gru_unload_context_req req;
 -
--		if (ch->flags & XPC_C_CLOSEREPLY) {
--			/* both sides have finished disconnecting */
--			xpc_process_disconnect(ch, &irq_flags);
--		}
+-	STAT(user_unload_context);
+-	if (copy_from_user(&req, (void __user *)arg, sizeof(req)))
+-		return -EFAULT;
+-
+-	gru_dbg(grudev, "gseg 0x%lx\n", req.gseg);
+-
+-	if (!req.gseg)
+-		return gru_unload_all_contexts();
+-
+-	gts = gru_find_lock_gts(req.gseg);
+-	if (!gts)
+-		return -EINVAL;
+-
+-	if (gts->ts_gru)
+-		gru_unload_context(gts, 1);
+-	gru_unlock_gts(gts);
+-
+-	return 0;
+-}
+-
+-/*
+- * User request to flush a range of virtual addresses from the GRU TLB
+- * (Mainly for testing).
+- */
+-int gru_user_flush_tlb(unsigned long arg)
+-{
+-	struct gru_thread_state *gts;
+-	struct gru_flush_tlb_req req;
+-	struct gru_mm_struct *gms;
+-
+-	STAT(user_flush_tlb);
+-	if (copy_from_user(&req, (void __user *)arg, sizeof(req)))
+-		return -EFAULT;
+-
+-	gru_dbg(grudev, "gseg 0x%lx, vaddr 0x%lx, len 0x%lx\n", req.gseg,
+-		req.vaddr, req.len);
+-
+-	gts = gru_find_lock_gts(req.gseg);
+-	if (!gts)
+-		return -EINVAL;
+-
+-	gms = gts->ts_gms;
+-	gru_unlock_gts(gts);
+-	gru_flush_tlb_range(gms, req.vaddr, req.len);
+-
+-	return 0;
+-}
+-
+-/*
+- * Fetch GSEG statisticss
+- */
+-long gru_get_gseg_statistics(unsigned long arg)
+-{
+-	struct gru_thread_state *gts;
+-	struct gru_get_gseg_statistics_req req;
+-
+-	if (copy_from_user(&req, (void __user *)arg, sizeof(req)))
+-		return -EFAULT;
+-
+-	/*
+-	 * The library creates arrays of contexts for threaded programs.
+-	 * If no gts exists in the array, the context has never been used & all
+-	 * statistics are implicitly 0.
+-	 */
+-	gts = gru_find_lock_gts(req.gseg);
+-	if (gts) {
+-		memcpy(&req.stats, &gts->ustats, sizeof(gts->ustats));
+-		gru_unlock_gts(gts);
+-	} else {
+-		memset(&req.stats, 0, sizeof(gts->ustats));
 -	}
 -
--	if (chctl_flags & XPC_CHCTL_OPENREQUEST) {
+-	if (copy_to_user((void __user *)arg, &req, sizeof(req)))
+-		return -EFAULT;
 -
--		dev_dbg(xpc_chan, "XPC_CHCTL_OPENREQUEST (entry_size=%d, "
--			"local_nentries=%d) received from partid=%d, "
--			"channel=%d\n", args->entry_size, args->local_nentries,
--			ch->partid, ch->number);
+-	return 0;
+-}
 -
--		if (part->act_state == XPC_P_AS_DEACTIVATING ||
--		    (ch->flags & XPC_C_ROPENREQUEST)) {
--			goto out;
--		}
+-/*
+- * Register the current task as the user of the GSEG slice.
+- * Needed for TLB fault interrupt targeting.
+- */
+-int gru_set_context_option(unsigned long arg)
+-{
+-	struct gru_thread_state *gts;
+-	struct gru_set_context_option_req req;
+-	int ret = 0;
 -
--		if (ch->flags & (XPC_C_DISCONNECTING | XPC_C_WDISCONNECT)) {
--			ch->delayed_chctl_flags |= XPC_CHCTL_OPENREQUEST;
--			goto out;
--		}
--		DBUG_ON(!(ch->flags & (XPC_C_DISCONNECTED |
--				       XPC_C_OPENREQUEST)));
--		DBUG_ON(ch->flags & (XPC_C_ROPENREQUEST | XPC_C_ROPENREPLY |
--				     XPC_C_OPENREPLY | XPC_C_CONNECTED));
+-	STAT(set_context_option);
+-	if (copy_from_user(&req, (void __user *)arg, sizeof(req)))
+-		return -EFAULT;
+-	gru_dbg(grudev, "op %d, gseg 0x%lx, value1 0x%lx\n", req.op, req.gseg, req.val1);
 -
--		/*
--		 * The meaningful OPENREQUEST connection state fields are:
--		 *      entry_size = size of channel's messages in bytes
--		 *      local_nentries = remote partition's local_nentries
--		 */
--		if (args->entry_size == 0 || args->local_nentries == 0) {
--			/* assume OPENREQUEST was delayed by mistake */
--			goto out;
--		}
+-	gts = gru_find_lock_gts(req.gseg);
+-	if (!gts) {
+-		gts = gru_alloc_locked_gts(req.gseg);
+-		if (IS_ERR(gts))
+-			return PTR_ERR(gts);
+-	}
 -
--		ch->flags |= (XPC_C_ROPENREQUEST | XPC_C_CONNECTING);
--		ch->remote_nentries = args->local_nentries;
--
--		if (ch->flags & XPC_C_OPENREQUEST) {
--			if (args->entry_size != ch->entry_size) {
--				XPC_DISCONNECT_CHANNEL(ch, xpUnequalMsgSizes,
--						       &irq_flags);
--				goto out;
--			}
+-	switch (req.op) {
+-	case sco_blade_chiplet:
+-		/* Select blade/chiplet for GRU context */
+-		if (req.val0 < -1 || req.val0 >= GRU_CHIPLETS_PER_HUB ||
+-		    req.val1 < -1 || req.val1 >= GRU_MAX_BLADES ||
+-		    (req.val1 >= 0 && !gru_base[req.val1])) {
+-			ret = -EINVAL;
 -		} else {
--			ch->entry_size = args->entry_size;
--
--			XPC_SET_REASON(ch, 0, 0);
--			ch->flags &= ~XPC_C_DISCONNECTED;
--
--			atomic_inc(&part->nchannels_active);
--		}
--
--		xpc_process_connect(ch, &irq_flags);
--	}
--
--	if (chctl_flags & XPC_CHCTL_OPENREPLY) {
--
--		dev_dbg(xpc_chan, "XPC_CHCTL_OPENREPLY (local_msgqueue_pa="
--			"0x%lx, local_nentries=%d, remote_nentries=%d) "
--			"received from partid=%d, channel=%d\n",
--			args->local_msgqueue_pa, args->local_nentries,
--			args->remote_nentries, ch->partid, ch->number);
--
--		if (ch->flags & (XPC_C_DISCONNECTING | XPC_C_DISCONNECTED))
--			goto out;
--
--		if (!(ch->flags & XPC_C_OPENREQUEST)) {
--			XPC_DISCONNECT_CHANNEL(ch, xpOpenCloseError,
--					       &irq_flags);
--			goto out;
--		}
--
--		DBUG_ON(!(ch->flags & XPC_C_ROPENREQUEST));
--		DBUG_ON(ch->flags & XPC_C_CONNECTED);
--
--		/*
--		 * The meaningful OPENREPLY connection state fields are:
--		 *      local_msgqueue_pa = physical address of remote
--		 *                          partition's local_msgqueue
--		 *      local_nentries = remote partition's local_nentries
--		 *      remote_nentries = remote partition's remote_nentries
--		 */
--		DBUG_ON(args->local_msgqueue_pa == 0);
--		DBUG_ON(args->local_nentries == 0);
--		DBUG_ON(args->remote_nentries == 0);
--
--		ret = xpc_arch_ops.save_remote_msgqueue_pa(ch,
--						      args->local_msgqueue_pa);
--		if (ret != xpSuccess) {
--			XPC_DISCONNECT_CHANNEL(ch, ret, &irq_flags);
--			goto out;
--		}
--		ch->flags |= XPC_C_ROPENREPLY;
--
--		if (args->local_nentries < ch->remote_nentries) {
--			dev_dbg(xpc_chan, "XPC_CHCTL_OPENREPLY: new "
--				"remote_nentries=%d, old remote_nentries=%d, "
--				"partid=%d, channel=%d\n",
--				args->local_nentries, ch->remote_nentries,
--				ch->partid, ch->number);
--
--			ch->remote_nentries = args->local_nentries;
--		}
--		if (args->remote_nentries < ch->local_nentries) {
--			dev_dbg(xpc_chan, "XPC_CHCTL_OPENREPLY: new "
--				"local_nentries=%d, old local_nentries=%d, "
--				"partid=%d, channel=%d\n",
--				args->remote_nentries, ch->local_nentries,
--				ch->partid, ch->number);
--
--			ch->local_nentries = args->remote_nentries;
--		}
--
--		xpc_process_connect(ch, &irq_flags);
--	}
--
--	if (chctl_flags & XPC_CHCTL_OPENCOMPLETE) {
--
--		dev_dbg(xpc_chan, "XPC_CHCTL_OPENCOMPLETE received from "
--			"partid=%d, channel=%d\n", ch->partid, ch->number);
--
--		if (ch->flags & (XPC_C_DISCONNECTING | XPC_C_DISCONNECTED))
--			goto out;
--
--		if (!(ch->flags & XPC_C_OPENREQUEST) ||
--		    !(ch->flags & XPC_C_OPENREPLY)) {
--			XPC_DISCONNECT_CHANNEL(ch, xpOpenCloseError,
--					       &irq_flags);
--			goto out;
--		}
--
--		DBUG_ON(!(ch->flags & XPC_C_ROPENREQUEST));
--		DBUG_ON(!(ch->flags & XPC_C_ROPENREPLY));
--		DBUG_ON(!(ch->flags & XPC_C_CONNECTED));
--
--		ch->flags |= XPC_C_ROPENCOMPLETE;
--
--		xpc_process_connect(ch, &irq_flags);
--		create_kthread = 1;
--	}
--
--out:
--	spin_unlock_irqrestore(&ch->lock, irq_flags);
--
--	if (create_kthread)
--		xpc_create_kthreads(ch, 1, 0);
--}
--
--/*
-- * Attempt to establish a channel connection to a remote partition.
-- */
--static enum xp_retval
--xpc_connect_channel(struct xpc_channel *ch)
--{
--	unsigned long irq_flags;
--	struct xpc_registration *registration = &xpc_registrations[ch->number];
--
--	if (mutex_trylock(&registration->mutex) == 0)
--		return xpRetry;
--
--	if (!XPC_CHANNEL_REGISTERED(ch->number)) {
--		mutex_unlock(&registration->mutex);
--		return xpUnregistered;
--	}
--
--	spin_lock_irqsave(&ch->lock, irq_flags);
--
--	DBUG_ON(ch->flags & XPC_C_CONNECTED);
--	DBUG_ON(ch->flags & XPC_C_OPENREQUEST);
--
--	if (ch->flags & XPC_C_DISCONNECTING) {
--		spin_unlock_irqrestore(&ch->lock, irq_flags);
--		mutex_unlock(&registration->mutex);
--		return ch->reason;
--	}
--
--	/* add info from the channel connect registration to the channel */
--
--	ch->kthreads_assigned_limit = registration->assigned_limit;
--	ch->kthreads_idle_limit = registration->idle_limit;
--	DBUG_ON(atomic_read(&ch->kthreads_assigned) != 0);
--	DBUG_ON(atomic_read(&ch->kthreads_idle) != 0);
--	DBUG_ON(atomic_read(&ch->kthreads_active) != 0);
--
--	ch->func = registration->func;
--	DBUG_ON(registration->func == NULL);
--	ch->key = registration->key;
--
--	ch->local_nentries = registration->nentries;
--
--	if (ch->flags & XPC_C_ROPENREQUEST) {
--		if (registration->entry_size != ch->entry_size) {
--			/* the local and remote sides aren't the same */
--
--			/*
--			 * Because XPC_DISCONNECT_CHANNEL() can block we're
--			 * forced to up the registration sema before we unlock
--			 * the channel lock. But that's okay here because we're
--			 * done with the part that required the registration
--			 * sema. XPC_DISCONNECT_CHANNEL() requires that the
--			 * channel lock be locked and will unlock and relock
--			 * the channel lock as needed.
--			 */
--			mutex_unlock(&registration->mutex);
--			XPC_DISCONNECT_CHANNEL(ch, xpUnequalMsgSizes,
--					       &irq_flags);
--			spin_unlock_irqrestore(&ch->lock, irq_flags);
--			return xpUnequalMsgSizes;
--		}
--	} else {
--		ch->entry_size = registration->entry_size;
--
--		XPC_SET_REASON(ch, 0, 0);
--		ch->flags &= ~XPC_C_DISCONNECTED;
--
--		atomic_inc(&xpc_partitions[ch->partid].nchannels_active);
--	}
--
--	mutex_unlock(&registration->mutex);
--
--	/* initiate the connection */
--
--	ch->flags |= (XPC_C_OPENREQUEST | XPC_C_CONNECTING);
--	xpc_arch_ops.send_chctl_openrequest(ch, &irq_flags);
--
--	xpc_process_connect(ch, &irq_flags);
--
--	spin_unlock_irqrestore(&ch->lock, irq_flags);
--
--	return xpSuccess;
--}
--
--void
--xpc_process_sent_chctl_flags(struct xpc_partition *part)
--{
--	unsigned long irq_flags;
--	union xpc_channel_ctl_flags chctl;
--	struct xpc_channel *ch;
--	int ch_number;
--	u32 ch_flags;
--
--	chctl.all_flags = xpc_arch_ops.get_chctl_all_flags(part);
--
--	/*
--	 * Initiate channel connections for registered channels.
--	 *
--	 * For each connected channel that has pending messages activate idle
--	 * kthreads and/or create new kthreads as needed.
--	 */
--
--	for (ch_number = 0; ch_number < part->nchannels; ch_number++) {
--		ch = &part->channels[ch_number];
--
--		/*
--		 * Process any open or close related chctl flags, and then deal
--		 * with connecting or disconnecting the channel as required.
--		 */
--
--		if (chctl.flags[ch_number] & XPC_OPENCLOSE_CHCTL_FLAGS) {
--			xpc_process_openclose_chctl_flags(part, ch_number,
--							chctl.flags[ch_number]);
--		}
--
--		ch_flags = ch->flags;	/* need an atomic snapshot of flags */
--
--		if (ch_flags & XPC_C_DISCONNECTING) {
--			spin_lock_irqsave(&ch->lock, irq_flags);
--			xpc_process_disconnect(ch, &irq_flags);
--			spin_unlock_irqrestore(&ch->lock, irq_flags);
--			continue;
--		}
--
--		if (part->act_state == XPC_P_AS_DEACTIVATING)
--			continue;
--
--		if (!(ch_flags & XPC_C_CONNECTED)) {
--			if (!(ch_flags & XPC_C_OPENREQUEST)) {
--				DBUG_ON(ch_flags & XPC_C_SETUP);
--				(void)xpc_connect_channel(ch);
+-			gts->ts_user_blade_id = req.val1;
+-			gts->ts_user_chiplet_id = req.val0;
+-			if (gru_check_context_placement(gts)) {
+-				gru_unlock_gts(gts);
+-				gru_unload_context(gts, 1);
+-				return ret;
 -			}
--			continue;
 -		}
--
--		/*
--		 * Process any message related chctl flags, this may involve
--		 * the activation of kthreads to deliver any pending messages
--		 * sent from the other partition.
--		 */
--
--		if (chctl.flags[ch_number] & XPC_MSG_CHCTL_FLAGS)
--			xpc_arch_ops.process_msg_chctl_flags(part, ch_number);
+-		break;
+-	case sco_gseg_owner:
+- 		/* Register the current task as the GSEG owner */
+-		gts->ts_tgid_owner = current->tgid;
+-		break;
+-	case sco_cch_req_slice:
+- 		/* Set the CCH slice option */
+-		gts->ts_cch_req_slice = req.val1 & 3;
+-		break;
+-	default:
+-		ret = -EINVAL;
 -	}
--}
--
--/*
-- * XPC's heartbeat code calls this function to inform XPC that a partition is
-- * going down.  XPC responds by tearing down the XPartition Communication
-- * infrastructure used for the just downed partition.
-- *
-- * XPC's heartbeat code will never call this function and xpc_partition_up()
-- * at the same time. Nor will it ever make multiple calls to either function
-- * at the same time.
-- */
--void
--xpc_partition_going_down(struct xpc_partition *part, enum xp_retval reason)
--{
--	unsigned long irq_flags;
--	int ch_number;
--	struct xpc_channel *ch;
--
--	dev_dbg(xpc_chan, "deactivating partition %d, reason=%d\n",
--		XPC_PARTID(part), reason);
--
--	if (!xpc_part_ref(part)) {
--		/* infrastructure for this partition isn't currently set up */
--		return;
--	}
--
--	/* disconnect channels associated with the partition going down */
--
--	for (ch_number = 0; ch_number < part->nchannels; ch_number++) {
--		ch = &part->channels[ch_number];
--
--		xpc_msgqueue_ref(ch);
--		spin_lock_irqsave(&ch->lock, irq_flags);
--
--		XPC_DISCONNECT_CHANNEL(ch, reason, &irq_flags);
--
--		spin_unlock_irqrestore(&ch->lock, irq_flags);
--		xpc_msgqueue_deref(ch);
--	}
--
--	xpc_wakeup_channel_mgr(part);
--
--	xpc_part_deref(part);
--}
--
--/*
-- * Called by XP at the time of channel connection registration to cause
-- * XPC to establish connections to all currently active partitions.
-- */
--void
--xpc_initiate_connect(int ch_number)
--{
--	short partid;
--	struct xpc_partition *part;
--
--	DBUG_ON(ch_number < 0 || ch_number >= XPC_MAX_NCHANNELS);
--
--	for (partid = 0; partid < xp_max_npartitions; partid++) {
--		part = &xpc_partitions[partid];
--
--		if (xpc_part_ref(part)) {
--			/*
--			 * Initiate the establishment of a connection on the
--			 * newly registered channel to the remote partition.
--			 */
--			xpc_wakeup_channel_mgr(part);
--			xpc_part_deref(part);
--		}
--	}
--}
--
--void
--xpc_connected_callout(struct xpc_channel *ch)
--{
--	/* let the registerer know that a connection has been established */
--
--	if (ch->func != NULL) {
--		dev_dbg(xpc_chan, "ch->func() called, reason=xpConnected, "
--			"partid=%d, channel=%d\n", ch->partid, ch->number);
--
--		ch->func(xpConnected, ch->partid, ch->number,
--			 (void *)(u64)ch->local_nentries, ch->key);
--
--		dev_dbg(xpc_chan, "ch->func() returned, reason=xpConnected, "
--			"partid=%d, channel=%d\n", ch->partid, ch->number);
--	}
--}
--
--/*
-- * Called by XP at the time of channel connection unregistration to cause
-- * XPC to teardown all current connections for the specified channel.
-- *
-- * Before returning xpc_initiate_disconnect() will wait until all connections
-- * on the specified channel have been closed/torndown. So the caller can be
-- * assured that they will not be receiving any more callouts from XPC to the
-- * function they registered via xpc_connect().
-- *
-- * Arguments:
-- *
-- *	ch_number - channel # to unregister.
-- */
--void
--xpc_initiate_disconnect(int ch_number)
--{
--	unsigned long irq_flags;
--	short partid;
--	struct xpc_partition *part;
--	struct xpc_channel *ch;
--
--	DBUG_ON(ch_number < 0 || ch_number >= XPC_MAX_NCHANNELS);
--
--	/* initiate the channel disconnect for every active partition */
--	for (partid = 0; partid < xp_max_npartitions; partid++) {
--		part = &xpc_partitions[partid];
--
--		if (xpc_part_ref(part)) {
--			ch = &part->channels[ch_number];
--			xpc_msgqueue_ref(ch);
--
--			spin_lock_irqsave(&ch->lock, irq_flags);
--
--			if (!(ch->flags & XPC_C_DISCONNECTED)) {
--				ch->flags |= XPC_C_WDISCONNECT;
--
--				XPC_DISCONNECT_CHANNEL(ch, xpUnregistering,
--						       &irq_flags);
--			}
--
--			spin_unlock_irqrestore(&ch->lock, irq_flags);
--
--			xpc_msgqueue_deref(ch);
--			xpc_part_deref(part);
--		}
--	}
--
--	xpc_disconnect_wait(ch_number);
--}
--
--/*
-- * To disconnect a channel, and reflect it back to all who may be waiting.
-- *
-- * An OPEN is not allowed until XPC_C_DISCONNECTING is cleared by
-- * xpc_process_disconnect(), and if set, XPC_C_WDISCONNECT is cleared by
-- * xpc_disconnect_wait().
-- *
-- * THE CHANNEL IS TO BE LOCKED BY THE CALLER AND WILL REMAIN LOCKED UPON RETURN.
-- */
--void
--xpc_disconnect_channel(const int line, struct xpc_channel *ch,
--		       enum xp_retval reason, unsigned long *irq_flags)
--{
--	u32 channel_was_connected = (ch->flags & XPC_C_CONNECTED);
--
--	lockdep_assert_held(&ch->lock);
--
--	if (ch->flags & (XPC_C_DISCONNECTING | XPC_C_DISCONNECTED))
--		return;
--
--	DBUG_ON(!(ch->flags & (XPC_C_CONNECTING | XPC_C_CONNECTED)));
--
--	dev_dbg(xpc_chan, "reason=%d, line=%d, partid=%d, channel=%d\n",
--		reason, line, ch->partid, ch->number);
--
--	XPC_SET_REASON(ch, reason, line);
--
--	ch->flags |= (XPC_C_CLOSEREQUEST | XPC_C_DISCONNECTING);
--	/* some of these may not have been set */
--	ch->flags &= ~(XPC_C_OPENREQUEST | XPC_C_OPENREPLY |
--		       XPC_C_ROPENREQUEST | XPC_C_ROPENREPLY |
--		       XPC_C_CONNECTING | XPC_C_CONNECTED);
--
--	xpc_arch_ops.send_chctl_closerequest(ch, irq_flags);
--
--	if (channel_was_connected)
--		ch->flags |= XPC_C_WASCONNECTED;
--
--	spin_unlock_irqrestore(&ch->lock, *irq_flags);
--
--	/* wake all idle kthreads so they can exit */
--	if (atomic_read(&ch->kthreads_idle) > 0) {
--		wake_up_all(&ch->idle_wq);
--
--	} else if ((ch->flags & XPC_C_CONNECTEDCALLOUT_MADE) &&
--		   !(ch->flags & XPC_C_DISCONNECTINGCALLOUT)) {
--		/* start a kthread that will do the xpDisconnecting callout */
--		xpc_create_kthreads(ch, 1, 1);
--	}
--
--	/* wake those waiting to allocate an entry from the local msg queue */
--	if (atomic_read(&ch->n_on_msg_allocate_wq) > 0)
--		wake_up(&ch->msg_allocate_wq);
--
--	spin_lock_irqsave(&ch->lock, *irq_flags);
--}
--
--void
--xpc_disconnect_callout(struct xpc_channel *ch, enum xp_retval reason)
--{
--	/*
--	 * Let the channel's registerer know that the channel is being
--	 * disconnected. We don't want to do this if the registerer was never
--	 * informed of a connection being made.
--	 */
--
--	if (ch->func != NULL) {
--		dev_dbg(xpc_chan, "ch->func() called, reason=%d, partid=%d, "
--			"channel=%d\n", reason, ch->partid, ch->number);
--
--		ch->func(reason, ch->partid, ch->number, NULL, ch->key);
--
--		dev_dbg(xpc_chan, "ch->func() returned, reason=%d, partid=%d, "
--			"channel=%d\n", reason, ch->partid, ch->number);
--	}
--}
--
--/*
-- * Wait for a message entry to become available for the specified channel,
-- * but don't wait any longer than 1 jiffy.
-- */
--enum xp_retval
--xpc_allocate_msg_wait(struct xpc_channel *ch)
--{
--	enum xp_retval ret;
--	DEFINE_WAIT(wait);
--
--	if (ch->flags & XPC_C_DISCONNECTING) {
--		DBUG_ON(ch->reason == xpInterrupted);
--		return ch->reason;
--	}
--
--	atomic_inc(&ch->n_on_msg_allocate_wq);
--	prepare_to_wait(&ch->msg_allocate_wq, &wait, TASK_INTERRUPTIBLE);
--	ret = schedule_timeout(1);
--	finish_wait(&ch->msg_allocate_wq, &wait);
--	atomic_dec(&ch->n_on_msg_allocate_wq);
--
--	if (ch->flags & XPC_C_DISCONNECTING) {
--		ret = ch->reason;
--		DBUG_ON(ch->reason == xpInterrupted);
--	} else if (ret == 0) {
--		ret = xpTimeout;
--	} else {
--		ret = xpInterrupted;
--	}
+-	gru_unlock_gts(gts);
 -
 -	return ret;
 -}
--
--/*
-- * Send a message that contains the user's payload on the specified channel
-- * connected to the specified partition.
-- *
-- * NOTE that this routine can sleep waiting for a message entry to become
-- * available. To not sleep, pass in the XPC_NOWAIT flag.
-- *
-- * Once sent, this routine will not wait for the message to be received, nor
-- * will notification be given when it does happen.
-- *
-- * Arguments:
-- *
-- *	partid - ID of partition to which the channel is connected.
-- *	ch_number - channel # to send message on.
-- *	flags - see xp.h for valid flags.
-- *	payload - pointer to the payload which is to be sent.
-- *	payload_size - size of the payload in bytes.
-- */
--enum xp_retval
--xpc_initiate_send(short partid, int ch_number, u32 flags, void *payload,
--		  u16 payload_size)
--{
--	struct xpc_partition *part = &xpc_partitions[partid];
--	enum xp_retval ret = xpUnknownReason;
--
--	dev_dbg(xpc_chan, "payload=0x%p, partid=%d, channel=%d\n", payload,
--		partid, ch_number);
--
--	DBUG_ON(partid < 0 || partid >= xp_max_npartitions);
--	DBUG_ON(ch_number < 0 || ch_number >= part->nchannels);
--	DBUG_ON(payload == NULL);
--
--	if (xpc_part_ref(part)) {
--		ret = xpc_arch_ops.send_payload(&part->channels[ch_number],
--				  flags, payload, payload_size, 0, NULL, NULL);
--		xpc_part_deref(part);
--	}
--
--	return ret;
--}
--
--/*
-- * Send a message that contains the user's payload on the specified channel
-- * connected to the specified partition.
-- *
-- * NOTE that this routine can sleep waiting for a message entry to become
-- * available. To not sleep, pass in the XPC_NOWAIT flag.
-- *
-- * This routine will not wait for the message to be sent or received.
-- *
-- * Once the remote end of the channel has received the message, the function
-- * passed as an argument to xpc_initiate_send_notify() will be called. This
-- * allows the sender to free up or re-use any buffers referenced by the
-- * message, but does NOT mean the message has been processed at the remote
-- * end by a receiver.
-- *
-- * If this routine returns an error, the caller's function will NOT be called.
-- *
-- * Arguments:
-- *
-- *	partid - ID of partition to which the channel is connected.
-- *	ch_number - channel # to send message on.
-- *	flags - see xp.h for valid flags.
-- *	payload - pointer to the payload which is to be sent.
-- *	payload_size - size of the payload in bytes.
-- *	func - function to call with asynchronous notification of message
-- *		  receipt. THIS FUNCTION MUST BE NON-BLOCKING.
-- *	key - user-defined key to be passed to the function when it's called.
-- */
--enum xp_retval
--xpc_initiate_send_notify(short partid, int ch_number, u32 flags, void *payload,
--			 u16 payload_size, xpc_notify_func func, void *key)
--{
--	struct xpc_partition *part = &xpc_partitions[partid];
--	enum xp_retval ret = xpUnknownReason;
--
--	dev_dbg(xpc_chan, "payload=0x%p, partid=%d, channel=%d\n", payload,
--		partid, ch_number);
--
--	DBUG_ON(partid < 0 || partid >= xp_max_npartitions);
--	DBUG_ON(ch_number < 0 || ch_number >= part->nchannels);
--	DBUG_ON(payload == NULL);
--	DBUG_ON(func == NULL);
--
--	if (xpc_part_ref(part)) {
--		ret = xpc_arch_ops.send_payload(&part->channels[ch_number],
--			  flags, payload, payload_size, XPC_N_CALL, func, key);
--		xpc_part_deref(part);
--	}
--	return ret;
--}
--
--/*
-- * Deliver a message's payload to its intended recipient.
-- */
--void
--xpc_deliver_payload(struct xpc_channel *ch)
--{
--	void *payload;
--
--	payload = xpc_arch_ops.get_deliverable_payload(ch);
--	if (payload != NULL) {
--
--		/*
--		 * This ref is taken to protect the payload itself from being
--		 * freed before the user is finished with it, which the user
--		 * indicates by calling xpc_initiate_received().
--		 */
--		xpc_msgqueue_ref(ch);
--
--		atomic_inc(&ch->kthreads_active);
--
--		if (ch->func != NULL) {
--			dev_dbg(xpc_chan, "ch->func() called, payload=0x%p "
--				"partid=%d channel=%d\n", payload, ch->partid,
--				ch->number);
--
--			/* deliver the message to its intended recipient */
--			ch->func(xpMsgReceived, ch->partid, ch->number, payload,
--				 ch->key);
--
--			dev_dbg(xpc_chan, "ch->func() returned, payload=0x%p "
--				"partid=%d channel=%d\n", payload, ch->partid,
--				ch->number);
--		}
--
--		atomic_dec(&ch->kthreads_active);
--	}
--}
--
--/*
-- * Acknowledge receipt of a delivered message's payload.
-- *
-- * This function, although called by users, does not call xpc_part_ref() to
-- * ensure that the partition infrastructure is in place. It relies on the
-- * fact that we called xpc_msgqueue_ref() in xpc_deliver_payload().
-- *
-- * Arguments:
-- *
-- *	partid - ID of partition to which the channel is connected.
-- *	ch_number - channel # message received on.
-- *	payload - pointer to the payload area allocated via
-- *			xpc_initiate_send() or xpc_initiate_send_notify().
-- */
--void
--xpc_initiate_received(short partid, int ch_number, void *payload)
--{
--	struct xpc_partition *part = &xpc_partitions[partid];
--	struct xpc_channel *ch;
--
--	DBUG_ON(partid < 0 || partid >= xp_max_npartitions);
--	DBUG_ON(ch_number < 0 || ch_number >= part->nchannels);
--
--	ch = &part->channels[ch_number];
--	xpc_arch_ops.received_payload(ch, payload);
--
--	/* the call to xpc_msgqueue_ref() was done by xpc_deliver_payload()  */
--	xpc_msgqueue_deref(ch);
--}
-diff --git a/drivers/misc/sgi-xp/xpc_main.c b/drivers/misc/sgi-xp/xpc_main.c
+diff --git a/drivers/misc/sgi-gru/grufile.c b/drivers/misc/sgi-gru/grufile.c
 deleted file mode 100644
-index 15b6a8e35681..000000000000
---- a/drivers/misc/sgi-xp/xpc_main.c
+index e755690c9805..000000000000
+--- a/drivers/misc/sgi-gru/grufile.c
 +++ /dev/null
-@@ -1,1309 +0,0 @@
+@@ -1,540 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
+- * SN Platform GRU Driver
 - *
-- * (C) Copyright 2020 Hewlett Packard Enterprise Development LP
-- * Copyright (c) 2004-2009 Silicon Graphics, Inc.  All Rights Reserved.
-- */
--
--/*
-- * Cross Partition Communication (XPC) support - standard version.
+- *              FILE OPERATIONS & DRIVER INITIALIZATION
 - *
-- *	XPC provides a message passing capability that crosses partition
-- *	boundaries. This module is made up of two parts:
+- * This file supports the user system call for file open, close, mmap, etc.
+- * This also incudes the driver initialization code.
 - *
-- *	    partition	This part detects the presence/absence of other
-- *			partitions. It provides a heartbeat and monitors
-- *			the heartbeats of other partitions.
-- *
-- *	    channel	This part manages the channels and sends/receives
-- *			messages across them to/from other partitions.
-- *
-- *	There are a couple of additional functions residing in XP, which
-- *	provide an interface to XPC for its users.
-- *
-- *
-- *	Caveats:
-- *
-- *	  . Currently on sn2, we have no way to determine which nasid an IRQ
-- *	    came from. Thus, xpc_send_IRQ_sn2() does a remote amo write
-- *	    followed by an IPI. The amo indicates where data is to be pulled
-- *	    from, so after the IPI arrives, the remote partition checks the amo
-- *	    word. The IPI can actually arrive before the amo however, so other
-- *	    code must periodically check for this case. Also, remote amo
-- *	    operations do not reliably time out. Thus we do a remote PIO read
-- *	    solely to know whether the remote partition is down and whether we
-- *	    should stop sending IPIs to it. This remote PIO read operation is
-- *	    set up in a special nofault region so SAL knows to ignore (and
-- *	    cleanup) any errors due to the remote amo write, PIO read, and/or
-- *	    PIO write operations.
-- *
-- *	    If/when new hardware solves this IPI problem, we should abandon
-- *	    the current approach.
-- *
+- *  (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+- *  Copyright (c) 2008-2014 Silicon Graphics, Inc.  All Rights Reserved.
 - */
 -
 -#include <linux/module.h>
+-#include <linux/kernel.h>
+-#include <linux/errno.h>
 -#include <linux/slab.h>
--#include <linux/sysctl.h>
+-#include <linux/mm.h>
+-#include <linux/io.h>
+-#include <linux/spinlock.h>
 -#include <linux/device.h>
--#include <linux/delay.h>
--#include <linux/reboot.h>
--#include <linux/kdebug.h>
--#include <linux/kthread.h>
--#include "xpc.h"
--
+-#include <linux/miscdevice.h>
+-#include <linux/interrupt.h>
+-#include <linux/proc_fs.h>
+-#include <linux/uaccess.h>
 -#ifdef CONFIG_X86_64
--#include <asm/traps.h>
+-#include <asm/uv/uv_irq.h>
 -#endif
+-#include <asm/uv/uv.h>
+-#include "gru.h"
+-#include "grulib.h"
+-#include "grutables.h"
 -
--/* define two XPC debug device structures to be used with dev_dbg() et al */
+-#include <asm/uv/uv_hub.h>
+-#include <asm/uv/uv_mmrs.h>
 -
--static struct device_driver xpc_dbg_name = {
--	.name = "xpc"
--};
+-struct gru_blade_state *gru_base[GRU_MAX_BLADES] __read_mostly;
+-unsigned long gru_start_paddr __read_mostly;
+-void *gru_start_vaddr __read_mostly;
+-unsigned long gru_end_paddr __read_mostly;
+-unsigned int gru_max_gids __read_mostly;
+-struct gru_stats_s gru_stats;
 -
--static struct device xpc_part_dbg_subname = {
--	.init_name = "",	/* set to "part" at xpc_init() time */
--	.driver = &xpc_dbg_name
--};
+-/* Guaranteed user available resources on each node */
+-static int max_user_cbrs, max_user_dsr_bytes;
 -
--static struct device xpc_chan_dbg_subname = {
--	.init_name = "",	/* set to "chan" at xpc_init() time */
--	.driver = &xpc_dbg_name
--};
+-static struct miscdevice gru_miscdev;
 -
--struct device *xpc_part = &xpc_part_dbg_subname;
--struct device *xpc_chan = &xpc_chan_dbg_subname;
--
--static int xpc_kdebug_ignore;
--
--/* systune related variables for /proc/sys directories */
--
--static int xpc_hb_interval = XPC_HB_DEFAULT_INTERVAL;
--static int xpc_hb_min_interval = 1;
--static int xpc_hb_max_interval = 10;
--
--static int xpc_hb_check_interval = XPC_HB_CHECK_DEFAULT_INTERVAL;
--static int xpc_hb_check_min_interval = 10;
--static int xpc_hb_check_max_interval = 120;
--
--int xpc_disengage_timelimit = XPC_DISENGAGE_DEFAULT_TIMELIMIT;
--static int xpc_disengage_min_timelimit;	/* = 0 */
--static int xpc_disengage_max_timelimit = 120;
--
--static const struct ctl_table xpc_sys_xpc_hb[] = {
--	{
--	 .procname = "hb_interval",
--	 .data = &xpc_hb_interval,
--	 .maxlen = sizeof(int),
--	 .mode = 0644,
--	 .proc_handler = proc_dointvec_minmax,
--	 .extra1 = &xpc_hb_min_interval,
--	 .extra2 = &xpc_hb_max_interval},
--	{
--	 .procname = "hb_check_interval",
--	 .data = &xpc_hb_check_interval,
--	 .maxlen = sizeof(int),
--	 .mode = 0644,
--	 .proc_handler = proc_dointvec_minmax,
--	 .extra1 = &xpc_hb_check_min_interval,
--	 .extra2 = &xpc_hb_check_max_interval},
--};
--static const struct ctl_table xpc_sys_xpc[] = {
--	{
--	 .procname = "disengage_timelimit",
--	 .data = &xpc_disengage_timelimit,
--	 .maxlen = sizeof(int),
--	 .mode = 0644,
--	 .proc_handler = proc_dointvec_minmax,
--	 .extra1 = &xpc_disengage_min_timelimit,
--	 .extra2 = &xpc_disengage_max_timelimit},
--};
--
--static struct ctl_table_header *xpc_sysctl;
--static struct ctl_table_header *xpc_sysctl_hb;
--
--/* non-zero if any remote partition disengage was timed out */
--int xpc_disengage_timedout;
--
--/* #of activate IRQs received and not yet processed */
--int xpc_activate_IRQ_rcvd;
--DEFINE_SPINLOCK(xpc_activate_IRQ_rcvd_lock);
--
--/* IRQ handler notifies this wait queue on receipt of an IRQ */
--DECLARE_WAIT_QUEUE_HEAD(xpc_activate_IRQ_wq);
--
--static unsigned long xpc_hb_check_timeout;
--static struct timer_list xpc_hb_timer;
--
--/* notification that the xpc_hb_checker thread has exited */
--static DECLARE_COMPLETION(xpc_hb_checker_exited);
--
--/* notification that the xpc_discovery thread has exited */
--static DECLARE_COMPLETION(xpc_discovery_exited);
--
--static void xpc_kthread_waitmsgs(struct xpc_partition *, struct xpc_channel *);
--
--static int xpc_system_reboot(struct notifier_block *, unsigned long, void *);
--static struct notifier_block xpc_reboot_notifier = {
--	.notifier_call = xpc_system_reboot,
--};
--
--static int xpc_system_die(struct notifier_block *, unsigned long, void *);
--static struct notifier_block xpc_die_notifier = {
--	.notifier_call = xpc_system_die,
--};
--
--struct xpc_arch_operations xpc_arch_ops;
--
--/*
-- * Timer function to enforce the timelimit on the partition disengage.
-- */
--static void
--xpc_timeout_partition_disengage(struct timer_list *t)
+-static int gru_supported(void)
 -{
--	struct xpc_partition *part = timer_container_of(part, t,
--							disengage_timer);
--
--	DBUG_ON(time_is_after_jiffies(part->disengage_timeout));
--
--	xpc_partition_disengaged_from_timer(part);
--
--	DBUG_ON(part->disengage_timeout != 0);
--	DBUG_ON(xpc_arch_ops.partition_engaged(XPC_PARTID(part)));
+-	return is_uv_system() &&
+-		(uv_hub_info->hub_revision < UV3_HUB_REVISION_BASE);
 -}
 -
 -/*
-- * Timer to produce the heartbeat.  The timer structures function is
-- * already set when this is initially called.  A tunable is used to
-- * specify when the next timeout should occur.
-- */
--static void
--xpc_hb_beater(struct timer_list *unused)
--{
--	xpc_arch_ops.increment_heartbeat();
--
--	if (time_is_before_eq_jiffies(xpc_hb_check_timeout))
--		wake_up_interruptible(&xpc_activate_IRQ_wq);
--
--	xpc_hb_timer.expires = jiffies + (xpc_hb_interval * HZ);
--	add_timer(&xpc_hb_timer);
--}
--
--static void
--xpc_start_hb_beater(void)
--{
--	xpc_arch_ops.heartbeat_init();
--	timer_setup(&xpc_hb_timer, xpc_hb_beater, 0);
--	xpc_hb_beater(NULL);
--}
--
--static void
--xpc_stop_hb_beater(void)
--{
--	timer_delete_sync(&xpc_hb_timer);
--	xpc_arch_ops.heartbeat_exit();
--}
--
--/*
-- * At periodic intervals, scan through all active partitions and ensure
-- * their heartbeat is still active.  If not, the partition is deactivated.
-- */
--static void
--xpc_check_remote_hb(void)
--{
--	struct xpc_partition *part;
--	short partid;
--	enum xp_retval ret;
--
--	for (partid = 0; partid < xp_max_npartitions; partid++) {
--
--		if (xpc_exiting)
--			break;
--
--		if (partid == xp_partition_id)
--			continue;
--
--		part = &xpc_partitions[partid];
--
--		if (part->act_state == XPC_P_AS_INACTIVE ||
--		    part->act_state == XPC_P_AS_DEACTIVATING) {
--			continue;
--		}
--
--		ret = xpc_arch_ops.get_remote_heartbeat(part);
--		if (ret != xpSuccess)
--			XPC_DEACTIVATE_PARTITION(part, ret);
--	}
--}
--
--/*
-- * This thread is responsible for nearly all of the partition
-- * activation/deactivation.
-- */
--static int
--xpc_hb_checker(void *ignore)
--{
--	int force_IRQ = 0;
--
--	/* this thread was marked active by xpc_hb_init() */
--
--	set_cpus_allowed_ptr(current, cpumask_of(XPC_HB_CHECK_CPU));
--
--	/* set our heartbeating to other partitions into motion */
--	xpc_hb_check_timeout = jiffies + (xpc_hb_check_interval * HZ);
--	xpc_start_hb_beater();
--
--	while (!xpc_exiting) {
--
--		dev_dbg(xpc_part, "woke up with %d ticks rem; %d IRQs have "
--			"been received\n",
--			(int)(xpc_hb_check_timeout - jiffies),
--			xpc_activate_IRQ_rcvd);
--
--		/* checking of remote heartbeats is skewed by IRQ handling */
--		if (time_is_before_eq_jiffies(xpc_hb_check_timeout)) {
--			xpc_hb_check_timeout = jiffies +
--			    (xpc_hb_check_interval * HZ);
--
--			dev_dbg(xpc_part, "checking remote heartbeats\n");
--			xpc_check_remote_hb();
--		}
--
--		/* check for outstanding IRQs */
--		if (xpc_activate_IRQ_rcvd > 0 || force_IRQ != 0) {
--			force_IRQ = 0;
--			dev_dbg(xpc_part, "processing activate IRQs "
--				"received\n");
--			xpc_arch_ops.process_activate_IRQ_rcvd();
--		}
--
--		/* wait for IRQ or timeout */
--		(void)wait_event_interruptible(xpc_activate_IRQ_wq,
--					       (time_is_before_eq_jiffies(
--						xpc_hb_check_timeout) ||
--						xpc_activate_IRQ_rcvd > 0 ||
--						xpc_exiting));
--	}
--
--	xpc_stop_hb_beater();
--
--	dev_dbg(xpc_part, "heartbeat checker is exiting\n");
--
--	/* mark this thread as having exited */
--	complete(&xpc_hb_checker_exited);
--	return 0;
--}
--
--/*
-- * This thread will attempt to discover other partitions to activate
-- * based on info provided by SAL. This new thread is short lived and
-- * will exit once discovery is complete.
-- */
--static int
--xpc_initiate_discovery(void *ignore)
--{
--	xpc_discovery();
--
--	dev_dbg(xpc_part, "discovery thread is exiting\n");
--
--	/* mark this thread as having exited */
--	complete(&xpc_discovery_exited);
--	return 0;
--}
--
--/*
-- * The first kthread assigned to a newly activated partition is the one
-- * created by XPC HB with which it calls xpc_activating(). XPC hangs on to
-- * that kthread until the partition is brought down, at which time that kthread
-- * returns back to XPC HB. (The return of that kthread will signify to XPC HB
-- * that XPC has dismantled all communication infrastructure for the associated
-- * partition.) This kthread becomes the channel manager for that partition.
+- * gru_vma_close
 - *
-- * Each active partition has a channel manager, who, besides connecting and
-- * disconnecting channels, will ensure that each of the partition's connected
-- * channels has the required number of assigned kthreads to get the work done.
+- * Called when unmapping a device mapping. Frees all gru resources
+- * and tables belonging to the vma.
 - */
--static void
--xpc_channel_mgr(struct xpc_partition *part)
+-static void gru_vma_close(struct vm_area_struct *vma)
 -{
--	while (part->act_state != XPC_P_AS_DEACTIVATING ||
--	       atomic_read(&part->nchannels_active) > 0 ||
--	       !xpc_partition_disengaged(part)) {
+-	struct gru_vma_data *vdata;
+-	struct gru_thread_state *gts;
+-	struct list_head *entry, *next;
 -
--		xpc_process_sent_chctl_flags(part);
+-	if (!vma->vm_private_data)
+-		return;
 -
--		/*
--		 * Wait until we've been requested to activate kthreads or
--		 * all of the channel's message queues have been torn down or
--		 * a signal is pending.
--		 *
--		 * The channel_mgr_requests is set to 1 after being awakened,
--		 * This is done to prevent the channel mgr from making one pass
--		 * through the loop for each request, since he will
--		 * be servicing all the requests in one pass. The reason it's
--		 * set to 1 instead of 0 is so that other kthreads will know
--		 * that the channel mgr is running and won't bother trying to
--		 * wake him up.
--		 */
--		atomic_dec(&part->channel_mgr_requests);
--		(void)wait_event_interruptible(part->channel_mgr_wq,
--				(atomic_read(&part->channel_mgr_requests) > 0 ||
--				 part->chctl.all_flags != 0 ||
--				 (part->act_state == XPC_P_AS_DEACTIVATING &&
--				 atomic_read(&part->nchannels_active) == 0 &&
--				 xpc_partition_disengaged(part))));
--		atomic_set(&part->channel_mgr_requests, 1);
+-	vdata = vma->vm_private_data;
+-	vma->vm_private_data = NULL;
+-	gru_dbg(grudev, "vma %p, file %p, vdata %p\n", vma, vma->vm_file,
+-				vdata);
+-	list_for_each_safe(entry, next, &vdata->vd_head) {
+-		gts =
+-		    list_entry(entry, struct gru_thread_state, ts_next);
+-		list_del(&gts->ts_next);
+-		mutex_lock(&gts->ts_ctxlock);
+-		if (gts->ts_gru)
+-			gru_unload_context(gts, 0);
+-		mutex_unlock(&gts->ts_ctxlock);
+-		gts_drop(gts);
 -	}
+-	kfree(vdata);
+-	STAT(vdata_free);
 -}
 -
 -/*
-- * Guarantee that the kzalloc'd memory is cacheline aligned.
+- * gru_file_mmap
+- *
+- * Called when mmapping the device.  Initializes the vma with a fault handler
+- * and private data structure necessary to allocate, track, and free the
+- * underlying pages.
 - */
--void *
--xpc_kzalloc_cacheline_aligned(size_t size, gfp_t flags, void **base)
+-static int gru_file_mmap(struct file *file, struct vm_area_struct *vma)
 -{
--	/* see if kzalloc will give us cachline aligned memory by default */
--	*base = kzalloc(size, flags);
--	if (*base == NULL)
--		return NULL;
+-	if ((vma->vm_flags & (VM_SHARED | VM_WRITE)) != (VM_SHARED | VM_WRITE))
+-		return -EPERM;
 -
--	if ((u64)*base == L1_CACHE_ALIGN((u64)*base))
--		return *base;
+-	if (vma->vm_start & (GRU_GSEG_PAGESIZE - 1) ||
+-				vma->vm_end & (GRU_GSEG_PAGESIZE - 1))
+-		return -EINVAL;
 -
--	kfree(*base);
+-	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_LOCKED |
+-			 VM_DONTCOPY | VM_DONTEXPAND | VM_DONTDUMP);
+-	vma->vm_page_prot = PAGE_SHARED;
+-	vma->vm_ops = &gru_vm_ops;
 -
--	/* nope, we'll have to do it ourselves */
--	*base = kzalloc(size + L1_CACHE_BYTES, flags);
--	if (*base == NULL)
--		return NULL;
+-	vma->vm_private_data = gru_alloc_vma_data(vma, 0);
+-	if (!vma->vm_private_data)
+-		return -ENOMEM;
 -
--	return (void *)L1_CACHE_ALIGN((u64)*base);
+-	gru_dbg(grudev, "file %p, vaddr 0x%lx, vma %p, vdata %p\n",
+-		file, vma->vm_start, vma, vma->vm_private_data);
+-	return 0;
 -}
 -
 -/*
-- * Setup the channel structures necessary to support XPartition Communication
-- * between the specified remote partition and the local one.
+- * Create a new GRU context
 - */
--static enum xp_retval
--xpc_setup_ch_structures(struct xpc_partition *part)
+-static int gru_create_new_context(unsigned long arg)
 -{
--	enum xp_retval ret;
--	int ch_number;
--	struct xpc_channel *ch;
--	short partid = XPC_PARTID(part);
+-	struct gru_create_context_req req;
+-	struct vm_area_struct *vma;
+-	struct gru_vma_data *vdata;
+-	int ret = -EINVAL;
 -
--	/*
--	 * Allocate all of the channel structures as a contiguous chunk of
--	 * memory.
--	 */
--	DBUG_ON(part->channels != NULL);
--	part->channels = kzalloc_objs(struct xpc_channel, XPC_MAX_NCHANNELS);
--	if (part->channels == NULL) {
--		dev_err(xpc_chan, "can't get memory for channels\n");
--		return xpNoMemory;
+-	if (copy_from_user(&req, (void __user *)arg, sizeof(req)))
+-		return -EFAULT;
+-
+-	if (req.data_segment_bytes > max_user_dsr_bytes)
+-		return -EINVAL;
+-	if (req.control_blocks > max_user_cbrs || !req.maximum_thread_count)
+-		return -EINVAL;
+-
+-	if (!(req.options & GRU_OPT_MISS_MASK))
+-		req.options |= GRU_OPT_MISS_FMM_INTR;
+-
+-	mmap_write_lock(current->mm);
+-	vma = gru_find_vma(req.gseg);
+-	if (vma) {
+-		vdata = vma->vm_private_data;
+-		vdata->vd_user_options = req.options;
+-		vdata->vd_dsr_au_count =
+-		    GRU_DS_BYTES_TO_AU(req.data_segment_bytes);
+-		vdata->vd_cbr_au_count = GRU_CB_COUNT_TO_AU(req.control_blocks);
+-		vdata->vd_tlb_preload_count = req.tlb_preload_count;
+-		ret = 0;
 -	}
+-	mmap_write_unlock(current->mm);
 -
--	/* allocate the remote open and close args */
--
--	part->remote_openclose_args =
--	    xpc_kzalloc_cacheline_aligned(XPC_OPENCLOSE_ARGS_SIZE,
--					  GFP_KERNEL, &part->
--					  remote_openclose_args_base);
--	if (part->remote_openclose_args == NULL) {
--		dev_err(xpc_chan, "can't get memory for remote connect args\n");
--		ret = xpNoMemory;
--		goto out_1;
--	}
--
--	part->chctl.all_flags = 0;
--	spin_lock_init(&part->chctl_lock);
--
--	atomic_set(&part->channel_mgr_requests, 1);
--	init_waitqueue_head(&part->channel_mgr_wq);
--
--	part->nchannels = XPC_MAX_NCHANNELS;
--
--	atomic_set(&part->nchannels_active, 0);
--	atomic_set(&part->nchannels_engaged, 0);
--
--	for (ch_number = 0; ch_number < part->nchannels; ch_number++) {
--		ch = &part->channels[ch_number];
--
--		ch->partid = partid;
--		ch->number = ch_number;
--		ch->flags = XPC_C_DISCONNECTED;
--
--		atomic_set(&ch->kthreads_assigned, 0);
--		atomic_set(&ch->kthreads_idle, 0);
--		atomic_set(&ch->kthreads_active, 0);
--
--		atomic_set(&ch->references, 0);
--		atomic_set(&ch->n_to_notify, 0);
--
--		spin_lock_init(&ch->lock);
--		init_completion(&ch->wdisconnect_wait);
--
--		atomic_set(&ch->n_on_msg_allocate_wq, 0);
--		init_waitqueue_head(&ch->msg_allocate_wq);
--		init_waitqueue_head(&ch->idle_wq);
--	}
--
--	ret = xpc_arch_ops.setup_ch_structures(part);
--	if (ret != xpSuccess)
--		goto out_2;
--
--	/*
--	 * With the setting of the partition setup_state to XPC_P_SS_SETUP,
--	 * we're declaring that this partition is ready to go.
--	 */
--	part->setup_state = XPC_P_SS_SETUP;
--
--	return xpSuccess;
--
--	/* setup of ch structures failed */
--out_2:
--	kfree(part->remote_openclose_args_base);
--	part->remote_openclose_args = NULL;
--out_1:
--	kfree(part->channels);
--	part->channels = NULL;
 -	return ret;
 -}
 -
 -/*
-- * Teardown the channel structures necessary to support XPartition Communication
-- * between the specified remote partition and the local one.
+- * Get GRU configuration info (temp - for emulator testing)
 - */
--static void
--xpc_teardown_ch_structures(struct xpc_partition *part)
+-static long gru_get_config_info(unsigned long arg)
 -{
--	DBUG_ON(atomic_read(&part->nchannels_engaged) != 0);
--	DBUG_ON(atomic_read(&part->nchannels_active) != 0);
+-	struct gru_config_info info;
+-	int nodesperblade;
 -
--	/*
--	 * Make this partition inaccessible to local processes by marking it
--	 * as no longer setup. Then wait before proceeding with the teardown
--	 * until all existing references cease.
--	 */
--	DBUG_ON(part->setup_state != XPC_P_SS_SETUP);
--	part->setup_state = XPC_P_SS_WTEARDOWN;
+-	if (num_online_nodes() > 1 &&
+-			(uv_node_to_blade_id(1) == uv_node_to_blade_id(0)))
+-		nodesperblade = 2;
+-	else
+-		nodesperblade = 1;
+-	memset(&info, 0, sizeof(info));
+-	info.cpus = num_online_cpus();
+-	info.nodes = num_online_nodes();
+-	info.blades = info.nodes / nodesperblade;
+-	info.chiplets = GRU_CHIPLETS_PER_BLADE * info.blades;
 -
--	wait_event(part->teardown_wq, (atomic_read(&part->references) == 0));
--
--	/* now we can begin tearing down the infrastructure */
--
--	xpc_arch_ops.teardown_ch_structures(part);
--
--	kfree(part->remote_openclose_args_base);
--	part->remote_openclose_args = NULL;
--	kfree(part->channels);
--	part->channels = NULL;
--
--	part->setup_state = XPC_P_SS_TORNDOWN;
+-	if (copy_to_user((void __user *)arg, &info, sizeof(info)))
+-		return -EFAULT;
+-	return 0;
 -}
 -
 -/*
-- * When XPC HB determines that a partition has come up, it will create a new
-- * kthread and that kthread will call this function to attempt to set up the
-- * basic infrastructure used for Cross Partition Communication with the newly
-- * upped partition.
+- * gru_file_unlocked_ioctl
 - *
-- * The kthread that was created by XPC HB and which setup the XPC
-- * infrastructure will remain assigned to the partition becoming the channel
-- * manager for that partition until the partition is deactivating, at which
-- * time the kthread will teardown the XPC infrastructure and then exit.
+- * Called to update file attributes via IOCTL calls.
 - */
--static int
--xpc_activating(void *__partid)
+-static long gru_file_unlocked_ioctl(struct file *file, unsigned int req,
+-				    unsigned long arg)
 -{
--	short partid = (u64)__partid;
--	struct xpc_partition *part = &xpc_partitions[partid];
--	unsigned long irq_flags;
+-	int err = -EBADRQC;
 -
--	DBUG_ON(partid < 0 || partid >= xp_max_npartitions);
+-	gru_dbg(grudev, "file %p, req 0x%x, 0x%lx\n", file, req, arg);
 -
--	spin_lock_irqsave(&part->act_lock, irq_flags);
+-	switch (req) {
+-	case GRU_CREATE_CONTEXT:
+-		err = gru_create_new_context(arg);
+-		break;
+-	case GRU_SET_CONTEXT_OPTION:
+-		err = gru_set_context_option(arg);
+-		break;
+-	case GRU_USER_GET_EXCEPTION_DETAIL:
+-		err = gru_get_exception_detail(arg);
+-		break;
+-	case GRU_USER_UNLOAD_CONTEXT:
+-		err = gru_user_unload_context(arg);
+-		break;
+-	case GRU_USER_FLUSH_TLB:
+-		err = gru_user_flush_tlb(arg);
+-		break;
+-	case GRU_USER_CALL_OS:
+-		err = gru_handle_user_call_os(arg);
+-		break;
+-	case GRU_GET_GSEG_STATISTICS:
+-		err = gru_get_gseg_statistics(arg);
+-		break;
+-	case GRU_KTEST:
+-		err = gru_ktest(arg);
+-		break;
+-	case GRU_GET_CONFIG_INFO:
+-		err = gru_get_config_info(arg);
+-		break;
+-	case GRU_DUMP_CHIPLET_STATE:
+-		err = gru_dump_chiplet_request(arg);
+-		break;
+-	}
+-	return err;
+-}
 -
--	if (part->act_state == XPC_P_AS_DEACTIVATING) {
--		part->act_state = XPC_P_AS_INACTIVE;
--		spin_unlock_irqrestore(&part->act_lock, irq_flags);
--		part->remote_rp_pa = 0;
+-/*
+- * Called at init time to build tables for all GRUs that are present in the
+- * system.
+- */
+-static void gru_init_chiplet(struct gru_state *gru, unsigned long paddr,
+-			     void *vaddr, int blade_id, int chiplet_id)
+-{
+-	spin_lock_init(&gru->gs_lock);
+-	spin_lock_init(&gru->gs_asid_lock);
+-	gru->gs_gru_base_paddr = paddr;
+-	gru->gs_gru_base_vaddr = vaddr;
+-	gru->gs_gid = blade_id * GRU_CHIPLETS_PER_BLADE + chiplet_id;
+-	gru->gs_blade = gru_base[blade_id];
+-	gru->gs_blade_id = blade_id;
+-	gru->gs_chiplet_id = chiplet_id;
+-	gru->gs_cbr_map = (GRU_CBR_AU == 64) ? ~0 : (1UL << GRU_CBR_AU) - 1;
+-	gru->gs_dsr_map = (1UL << GRU_DSR_AU) - 1;
+-	gru->gs_asid_limit = MAX_ASID;
+-	gru_tgh_flush_init(gru);
+-	if (gru->gs_gid >= gru_max_gids)
+-		gru_max_gids = gru->gs_gid + 1;
+-	gru_dbg(grudev, "bid %d, gid %d, vaddr %p (0x%lx)\n",
+-		blade_id, gru->gs_gid, gru->gs_gru_base_vaddr,
+-		gru->gs_gru_base_paddr);
+-}
+-
+-static int gru_init_tables(unsigned long gru_base_paddr, void *gru_base_vaddr)
+-{
+-	int pnode, nid, bid, chip;
+-	int cbrs, dsrbytes, n;
+-	int order = get_order(sizeof(struct gru_blade_state));
+-	struct page *page;
+-	struct gru_state *gru;
+-	unsigned long paddr;
+-	void *vaddr;
+-
+-	max_user_cbrs = GRU_NUM_CB;
+-	max_user_dsr_bytes = GRU_NUM_DSR_BYTES;
+-	for_each_possible_blade(bid) {
+-		pnode = uv_blade_to_pnode(bid);
+-		nid = uv_blade_to_memory_nid(bid);/* -1 if no memory on blade */
+-		page = alloc_pages_node(nid, GFP_KERNEL, order);
+-		if (!page)
+-			goto fail;
+-		gru_base[bid] = page_address(page);
+-		memset(gru_base[bid], 0, sizeof(struct gru_blade_state));
+-		gru_base[bid]->bs_lru_gru = &gru_base[bid]->bs_grus[0];
+-		spin_lock_init(&gru_base[bid]->bs_lock);
+-		init_rwsem(&gru_base[bid]->bs_kgts_sema);
+-
+-		dsrbytes = 0;
+-		cbrs = 0;
+-		for (gru = gru_base[bid]->bs_grus, chip = 0;
+-				chip < GRU_CHIPLETS_PER_BLADE;
+-				chip++, gru++) {
+-			paddr = gru_chiplet_paddr(gru_base_paddr, pnode, chip);
+-			vaddr = gru_chiplet_vaddr(gru_base_vaddr, pnode, chip);
+-			gru_init_chiplet(gru, paddr, vaddr, bid, chip);
+-			n = hweight64(gru->gs_cbr_map) * GRU_CBR_AU_SIZE;
+-			cbrs = max(cbrs, n);
+-			n = hweight64(gru->gs_dsr_map) * GRU_DSR_AU_BYTES;
+-			dsrbytes = max(dsrbytes, n);
+-		}
+-		max_user_cbrs = min(max_user_cbrs, cbrs);
+-		max_user_dsr_bytes = min(max_user_dsr_bytes, dsrbytes);
+-	}
+-
+-	return 0;
+-
+-fail:
+-	for (bid--; bid >= 0; bid--)
+-		free_pages((unsigned long)gru_base[bid], order);
+-	return -ENOMEM;
+-}
+-
+-static void gru_free_tables(void)
+-{
+-	int bid;
+-	int order = get_order(sizeof(struct gru_state) *
+-			      GRU_CHIPLETS_PER_BLADE);
+-
+-	for (bid = 0; bid < GRU_MAX_BLADES; bid++)
+-		free_pages((unsigned long)gru_base[bid], order);
+-}
+-
+-static unsigned long gru_chiplet_cpu_to_mmr(int chiplet, int cpu, int *corep)
+-{
+-	unsigned long mmr = 0;
+-	int core;
+-
+-	/*
+-	 * We target the cores of a blade and not the hyperthreads themselves.
+-	 * There is a max of 8 cores per socket and 2 sockets per blade,
+-	 * making for a max total of 16 cores (i.e., 16 CPUs without
+-	 * hyperthreading and 32 CPUs with hyperthreading).
+-	 */
+-	core = uv_cpu_core_number(cpu) + UV_MAX_INT_CORES * uv_cpu_socket_number(cpu);
+-	if (core >= GRU_NUM_TFM || uv_cpu_ht_number(cpu))
 -		return 0;
+-
+-	if (chiplet == 0) {
+-		mmr = UVH_GR0_TLB_INT0_CONFIG +
+-		    core * (UVH_GR0_TLB_INT1_CONFIG - UVH_GR0_TLB_INT0_CONFIG);
+-	} else if (chiplet == 1) {
+-		mmr = UVH_GR1_TLB_INT0_CONFIG +
+-		    core * (UVH_GR1_TLB_INT1_CONFIG - UVH_GR1_TLB_INT0_CONFIG);
+-	} else {
+-		BUG();
 -	}
 -
--	/* indicate the thread is activating */
--	DBUG_ON(part->act_state != XPC_P_AS_ACTIVATION_REQ);
--	part->act_state = XPC_P_AS_ACTIVATING;
+-	*corep = core;
+-	return mmr;
+-}
 -
--	XPC_SET_REASON(part, 0, 0);
--	spin_unlock_irqrestore(&part->act_lock, irq_flags);
+-static int gru_chiplet_setup_tlb_irq(int chiplet, char *irq_name,
+-			irq_handler_t irq_handler, int cpu, int blade)
+-{
+-	unsigned long mmr;
+-	int irq, core;
+-	int ret;
 -
--	dev_dbg(xpc_part, "activating partition %d\n", partid);
+-	mmr = gru_chiplet_cpu_to_mmr(chiplet, cpu, &core);
+-	if (mmr == 0)
+-		return 0;
 -
--	xpc_arch_ops.allow_hb(partid);
--
--	if (xpc_setup_ch_structures(part) == xpSuccess) {
--		(void)xpc_part_ref(part);	/* this will always succeed */
--
--		if (xpc_arch_ops.make_first_contact(part) == xpSuccess) {
--			xpc_mark_partition_active(part);
--			xpc_channel_mgr(part);
--			/* won't return until partition is deactivating */
--		}
--
--		xpc_part_deref(part);
--		xpc_teardown_ch_structures(part);
+-	irq = uv_setup_irq(irq_name, cpu, blade, mmr, UV_AFFINITY_CPU);
+-	if (irq < 0) {
+-		printk(KERN_ERR "%s: uv_setup_irq failed, errno=%d\n",
+-		       GRU_DRIVER_ID_STR, -irq);
+-		return irq;
 -	}
 -
--	xpc_arch_ops.disallow_hb(partid);
--	xpc_mark_partition_inactive(part);
--
--	if (part->reason == xpReactivating) {
--		/* interrupting ourselves results in activating partition */
--		xpc_arch_ops.request_partition_reactivation(part);
+-	ret = request_irq(irq, irq_handler, 0, irq_name, NULL);
+-	if (ret) {
+-		uv_teardown_irq(irq);
+-		printk(KERN_ERR "%s: request_irq failed, errno=%d\n",
+-		       GRU_DRIVER_ID_STR, -ret);
+-		return ret;
 -	}
--
+-	gru_base[blade]->bs_grus[chiplet].gs_irq[core] = irq;
 -	return 0;
 -}
 -
--void
--xpc_activate_partition(struct xpc_partition *part)
+-static void gru_chiplet_teardown_tlb_irq(int chiplet, int cpu, int blade)
 -{
--	short partid = XPC_PARTID(part);
--	unsigned long irq_flags;
--	struct task_struct *kthread;
+-	int irq, core;
+-	unsigned long mmr;
 -
--	spin_lock_irqsave(&part->act_lock, irq_flags);
--
--	DBUG_ON(part->act_state != XPC_P_AS_INACTIVE);
--
--	part->act_state = XPC_P_AS_ACTIVATION_REQ;
--	XPC_SET_REASON(part, xpCloneKThread, __LINE__);
--
--	spin_unlock_irqrestore(&part->act_lock, irq_flags);
--
--	kthread = kthread_run(xpc_activating, (void *)((u64)partid), "xpc%02d",
--			      partid);
--	if (IS_ERR(kthread)) {
--		spin_lock_irqsave(&part->act_lock, irq_flags);
--		part->act_state = XPC_P_AS_INACTIVE;
--		XPC_SET_REASON(part, xpCloneKThreadFailed, __LINE__);
--		spin_unlock_irqrestore(&part->act_lock, irq_flags);
+-	mmr = gru_chiplet_cpu_to_mmr(chiplet, cpu, &core);
+-	if (mmr) {
+-		irq = gru_base[blade]->bs_grus[chiplet].gs_irq[core];
+-		if (irq) {
+-			free_irq(irq, NULL);
+-			uv_teardown_irq(irq);
+-		}
 -	}
 -}
 -
--void
--xpc_activate_kthreads(struct xpc_channel *ch, int needed)
+-static void gru_teardown_tlb_irqs(void)
 -{
--	int idle = atomic_read(&ch->kthreads_idle);
--	int assigned = atomic_read(&ch->kthreads_assigned);
--	int wakeup;
+-	int blade;
+-	int cpu;
 -
--	DBUG_ON(needed <= 0);
--
--	if (idle > 0) {
--		wakeup = (needed > idle) ? idle : needed;
--		needed -= wakeup;
--
--		dev_dbg(xpc_chan, "wakeup %d idle kthreads, partid=%d, "
--			"channel=%d\n", wakeup, ch->partid, ch->number);
--
--		/* only wakeup the requested number of kthreads */
--		wake_up_nr(&ch->idle_wq, wakeup);
+-	for_each_online_cpu(cpu) {
+-		blade = uv_cpu_to_blade_id(cpu);
+-		gru_chiplet_teardown_tlb_irq(0, cpu, blade);
+-		gru_chiplet_teardown_tlb_irq(1, cpu, blade);
 -	}
--
--	if (needed <= 0)
--		return;
--
--	if (needed + assigned > ch->kthreads_assigned_limit) {
--		needed = ch->kthreads_assigned_limit - assigned;
--		if (needed <= 0)
--			return;
+-	for_each_possible_blade(blade) {
+-		if (uv_blade_nr_possible_cpus(blade))
+-			continue;
+-		gru_chiplet_teardown_tlb_irq(0, 0, blade);
+-		gru_chiplet_teardown_tlb_irq(1, 0, blade);
 -	}
--
--	dev_dbg(xpc_chan, "create %d new kthreads, partid=%d, channel=%d\n",
--		needed, ch->partid, ch->number);
--
--	xpc_create_kthreads(ch, needed, 0);
 -}
 -
--/*
-- * This function is where XPC's kthreads wait for messages to deliver.
-- */
--static void
--xpc_kthread_waitmsgs(struct xpc_partition *part, struct xpc_channel *ch)
+-static int gru_setup_tlb_irqs(void)
 -{
--	int (*n_of_deliverable_payloads) (struct xpc_channel *) =
--		xpc_arch_ops.n_of_deliverable_payloads;
+-	int blade;
+-	int cpu;
+-	int ret;
 -
--	do {
--		/* deliver messages to their intended recipients */
+-	for_each_online_cpu(cpu) {
+-		blade = uv_cpu_to_blade_id(cpu);
+-		ret = gru_chiplet_setup_tlb_irq(0, "GRU0_TLB", gru0_intr, cpu, blade);
+-		if (ret != 0)
+-			goto exit1;
 -
--		while (n_of_deliverable_payloads(ch) > 0 &&
--		       !(ch->flags & XPC_C_DISCONNECTING)) {
--			xpc_deliver_payload(ch);
--		}
+-		ret = gru_chiplet_setup_tlb_irq(1, "GRU1_TLB", gru1_intr, cpu, blade);
+-		if (ret != 0)
+-			goto exit1;
+-	}
+-	for_each_possible_blade(blade) {
+-		if (uv_blade_nr_possible_cpus(blade))
+-			continue;
+-		ret = gru_chiplet_setup_tlb_irq(0, "GRU0_TLB", gru_intr_mblade, 0, blade);
+-		if (ret != 0)
+-			goto exit1;
 -
--		if (atomic_inc_return(&ch->kthreads_idle) >
--		    ch->kthreads_idle_limit) {
--			/* too many idle kthreads on this channel */
--			atomic_dec(&ch->kthreads_idle);
--			break;
--		}
--
--		dev_dbg(xpc_chan, "idle kthread calling "
--			"wait_event_interruptible_exclusive()\n");
--
--		(void)wait_event_interruptible_exclusive(ch->idle_wq,
--				(n_of_deliverable_payloads(ch) > 0 ||
--				 (ch->flags & XPC_C_DISCONNECTING)));
--
--		atomic_dec(&ch->kthreads_idle);
--
--	} while (!(ch->flags & XPC_C_DISCONNECTING));
--}
--
--static int
--xpc_kthread_start(void *args)
--{
--	short partid = XPC_UNPACK_ARG1(args);
--	u16 ch_number = XPC_UNPACK_ARG2(args);
--	struct xpc_partition *part = &xpc_partitions[partid];
--	struct xpc_channel *ch;
--	int n_needed;
--	unsigned long irq_flags;
--	int (*n_of_deliverable_payloads) (struct xpc_channel *) =
--		xpc_arch_ops.n_of_deliverable_payloads;
--
--	dev_dbg(xpc_chan, "kthread starting, partid=%d, channel=%d\n",
--		partid, ch_number);
--
--	ch = &part->channels[ch_number];
--
--	if (!(ch->flags & XPC_C_DISCONNECTING)) {
--
--		/* let registerer know that connection has been established */
--
--		spin_lock_irqsave(&ch->lock, irq_flags);
--		if (!(ch->flags & XPC_C_CONNECTEDCALLOUT)) {
--			ch->flags |= XPC_C_CONNECTEDCALLOUT;
--			spin_unlock_irqrestore(&ch->lock, irq_flags);
--
--			xpc_connected_callout(ch);
--
--			spin_lock_irqsave(&ch->lock, irq_flags);
--			ch->flags |= XPC_C_CONNECTEDCALLOUT_MADE;
--			spin_unlock_irqrestore(&ch->lock, irq_flags);
--
--			/*
--			 * It is possible that while the callout was being
--			 * made that the remote partition sent some messages.
--			 * If that is the case, we may need to activate
--			 * additional kthreads to help deliver them. We only
--			 * need one less than total #of messages to deliver.
--			 */
--			n_needed = n_of_deliverable_payloads(ch) - 1;
--			if (n_needed > 0 && !(ch->flags & XPC_C_DISCONNECTING))
--				xpc_activate_kthreads(ch, n_needed);
--
--		} else {
--			spin_unlock_irqrestore(&ch->lock, irq_flags);
--		}
--
--		xpc_kthread_waitmsgs(part, ch);
+-		ret = gru_chiplet_setup_tlb_irq(1, "GRU1_TLB", gru_intr_mblade, 0, blade);
+-		if (ret != 0)
+-			goto exit1;
 -	}
 -
--	/* let registerer know that connection is disconnecting */
--
--	spin_lock_irqsave(&ch->lock, irq_flags);
--	if ((ch->flags & XPC_C_CONNECTEDCALLOUT_MADE) &&
--	    !(ch->flags & XPC_C_DISCONNECTINGCALLOUT)) {
--		ch->flags |= XPC_C_DISCONNECTINGCALLOUT;
--		spin_unlock_irqrestore(&ch->lock, irq_flags);
--
--		xpc_disconnect_callout(ch, xpDisconnecting);
--
--		spin_lock_irqsave(&ch->lock, irq_flags);
--		ch->flags |= XPC_C_DISCONNECTINGCALLOUT_MADE;
--	}
--	spin_unlock_irqrestore(&ch->lock, irq_flags);
--
--	if (atomic_dec_return(&ch->kthreads_assigned) == 0 &&
--	    atomic_dec_return(&part->nchannels_engaged) == 0) {
--		xpc_arch_ops.indicate_partition_disengaged(part);
--	}
--
--	xpc_msgqueue_deref(ch);
--
--	dev_dbg(xpc_chan, "kthread exiting, partid=%d, channel=%d\n",
--		partid, ch_number);
--
--	xpc_part_deref(part);
 -	return 0;
+-
+-exit1:
+-	gru_teardown_tlb_irqs();
+-	return ret;
 -}
 -
 -/*
-- * For each partition that XPC has established communications with, there is
-- * a minimum of one kernel thread assigned to perform any operation that
-- * may potentially sleep or block (basically the callouts to the asynchronous
-- * functions registered via xpc_connect()).
+- * gru_init
 - *
-- * Additional kthreads are created and destroyed by XPC as the workload
-- * demands.
-- *
-- * A kthread is assigned to one of the active channels that exists for a given
-- * partition.
+- * Called at boot or module load time to initialize the GRUs.
 - */
--void
--xpc_create_kthreads(struct xpc_channel *ch, int needed,
--		    int ignore_disconnecting)
--{
--	unsigned long irq_flags;
--	u64 args = XPC_PACK_ARGS(ch->partid, ch->number);
--	struct xpc_partition *part = &xpc_partitions[ch->partid];
--	struct task_struct *kthread;
--	void (*indicate_partition_disengaged) (struct xpc_partition *) =
--		xpc_arch_ops.indicate_partition_disengaged;
--
--	while (needed-- > 0) {
--
--		/*
--		 * The following is done on behalf of the newly created
--		 * kthread. That kthread is responsible for doing the
--		 * counterpart to the following before it exits.
--		 */
--		if (ignore_disconnecting) {
--			if (!atomic_inc_not_zero(&ch->kthreads_assigned)) {
--				/* kthreads assigned had gone to zero */
--				BUG_ON(!(ch->flags &
--					 XPC_C_DISCONNECTINGCALLOUT_MADE));
--				break;
--			}
--
--		} else if (ch->flags & XPC_C_DISCONNECTING) {
--			break;
--
--		} else if (atomic_inc_return(&ch->kthreads_assigned) == 1 &&
--			   atomic_inc_return(&part->nchannels_engaged) == 1) {
--			xpc_arch_ops.indicate_partition_engaged(part);
--		}
--		(void)xpc_part_ref(part);
--		xpc_msgqueue_ref(ch);
--
--		kthread = kthread_run(xpc_kthread_start, (void *)args,
--				      "xpc%02dc%d", ch->partid, ch->number);
--		if (IS_ERR(kthread)) {
--			/* the fork failed */
--
--			/*
--			 * NOTE: if (ignore_disconnecting &&
--			 * !(ch->flags & XPC_C_DISCONNECTINGCALLOUT)) is true,
--			 * then we'll deadlock if all other kthreads assigned
--			 * to this channel are blocked in the channel's
--			 * registerer, because the only thing that will unblock
--			 * them is the xpDisconnecting callout that this
--			 * failed kthread_run() would have made.
--			 */
--
--			if (atomic_dec_return(&ch->kthreads_assigned) == 0 &&
--			    atomic_dec_return(&part->nchannels_engaged) == 0) {
--				indicate_partition_disengaged(part);
--			}
--			xpc_msgqueue_deref(ch);
--			xpc_part_deref(part);
--
--			if (atomic_read(&ch->kthreads_assigned) <
--			    ch->kthreads_idle_limit) {
--				/*
--				 * Flag this as an error only if we have an
--				 * insufficient #of kthreads for the channel
--				 * to function.
--				 */
--				spin_lock_irqsave(&ch->lock, irq_flags);
--				XPC_DISCONNECT_CHANNEL(ch, xpLackOfResources,
--						       &irq_flags);
--				spin_unlock_irqrestore(&ch->lock, irq_flags);
--			}
--			break;
--		}
--	}
--}
--
--void
--xpc_disconnect_wait(int ch_number)
--{
--	unsigned long irq_flags;
--	short partid;
--	struct xpc_partition *part;
--	struct xpc_channel *ch;
--	int wakeup_channel_mgr;
--
--	/* now wait for all callouts to the caller's function to cease */
--	for (partid = 0; partid < xp_max_npartitions; partid++) {
--		part = &xpc_partitions[partid];
--
--		if (!xpc_part_ref(part))
--			continue;
--
--		ch = &part->channels[ch_number];
--
--		if (!(ch->flags & XPC_C_WDISCONNECT)) {
--			xpc_part_deref(part);
--			continue;
--		}
--
--		wait_for_completion(&ch->wdisconnect_wait);
--
--		spin_lock_irqsave(&ch->lock, irq_flags);
--		DBUG_ON(!(ch->flags & XPC_C_DISCONNECTED));
--		wakeup_channel_mgr = 0;
--
--		if (ch->delayed_chctl_flags) {
--			if (part->act_state != XPC_P_AS_DEACTIVATING) {
--				spin_lock(&part->chctl_lock);
--				part->chctl.flags[ch->number] |=
--				    ch->delayed_chctl_flags;
--				spin_unlock(&part->chctl_lock);
--				wakeup_channel_mgr = 1;
--			}
--			ch->delayed_chctl_flags = 0;
--		}
--
--		ch->flags &= ~XPC_C_WDISCONNECT;
--		spin_unlock_irqrestore(&ch->lock, irq_flags);
--
--		if (wakeup_channel_mgr)
--			xpc_wakeup_channel_mgr(part);
--
--		xpc_part_deref(part);
--	}
--}
--
--static int
--xpc_setup_partitions(void)
--{
--	short partid;
--	struct xpc_partition *part;
--
--	xpc_partitions = kzalloc_objs(struct xpc_partition, xp_max_npartitions);
--	if (xpc_partitions == NULL) {
--		dev_err(xpc_part, "can't get memory for partition structure\n");
--		return -ENOMEM;
--	}
--
--	/*
--	 * The first few fields of each entry of xpc_partitions[] need to
--	 * be initialized now so that calls to xpc_connect() and
--	 * xpc_disconnect() can be made prior to the activation of any remote
--	 * partition. NOTE THAT NONE OF THE OTHER FIELDS BELONGING TO THESE
--	 * ENTRIES ARE MEANINGFUL UNTIL AFTER AN ENTRY'S CORRESPONDING
--	 * PARTITION HAS BEEN ACTIVATED.
--	 */
--	for (partid = 0; partid < xp_max_npartitions; partid++) {
--		part = &xpc_partitions[partid];
--
--		DBUG_ON((u64)part != L1_CACHE_ALIGN((u64)part));
--
--		part->activate_IRQ_rcvd = 0;
--		spin_lock_init(&part->act_lock);
--		part->act_state = XPC_P_AS_INACTIVE;
--		XPC_SET_REASON(part, 0, 0);
--
--		timer_setup(&part->disengage_timer,
--			    xpc_timeout_partition_disengage, 0);
--
--		part->setup_state = XPC_P_SS_UNSET;
--		init_waitqueue_head(&part->teardown_wq);
--		atomic_set(&part->references, 0);
--	}
--
--	return xpc_arch_ops.setup_partitions();
--}
--
--static void
--xpc_teardown_partitions(void)
--{
--	xpc_arch_ops.teardown_partitions();
--	kfree(xpc_partitions);
--}
--
--static void
--xpc_do_exit(enum xp_retval reason)
--{
--	short partid;
--	int active_part_count, printed_waiting_msg = 0;
--	struct xpc_partition *part;
--	unsigned long printmsg_time, disengage_timeout = 0;
--
--	/* a 'rmmod XPC' and a 'reboot' cannot both end up here together */
--	DBUG_ON(xpc_exiting == 1);
--
--	/*
--	 * Let the heartbeat checker thread and the discovery thread
--	 * (if one is running) know that they should exit. Also wake up
--	 * the heartbeat checker thread in case it's sleeping.
--	 */
--	xpc_exiting = 1;
--	wake_up_interruptible(&xpc_activate_IRQ_wq);
--
--	/* wait for the discovery thread to exit */
--	wait_for_completion(&xpc_discovery_exited);
--
--	/* wait for the heartbeat checker thread to exit */
--	wait_for_completion(&xpc_hb_checker_exited);
--
--	/* sleep for a 1/3 of a second or so */
--	(void)msleep_interruptible(300);
--
--	/* wait for all partitions to become inactive */
--
--	printmsg_time = jiffies + (XPC_DEACTIVATE_PRINTMSG_INTERVAL * HZ);
--	xpc_disengage_timedout = 0;
--
--	do {
--		active_part_count = 0;
--
--		for (partid = 0; partid < xp_max_npartitions; partid++) {
--			part = &xpc_partitions[partid];
--
--			if (xpc_partition_disengaged(part) &&
--			    part->act_state == XPC_P_AS_INACTIVE) {
--				continue;
--			}
--
--			active_part_count++;
--
--			XPC_DEACTIVATE_PARTITION(part, reason);
--
--			if (part->disengage_timeout > disengage_timeout)
--				disengage_timeout = part->disengage_timeout;
--		}
--
--		if (xpc_arch_ops.any_partition_engaged()) {
--			if (time_is_before_jiffies(printmsg_time)) {
--				dev_info(xpc_part, "waiting for remote "
--					 "partitions to deactivate, timeout in "
--					 "%ld seconds\n", (disengage_timeout -
--					 jiffies) / HZ);
--				printmsg_time = jiffies +
--				    (XPC_DEACTIVATE_PRINTMSG_INTERVAL * HZ);
--				printed_waiting_msg = 1;
--			}
--
--		} else if (active_part_count > 0) {
--			if (printed_waiting_msg) {
--				dev_info(xpc_part, "waiting for local partition"
--					 " to deactivate\n");
--				printed_waiting_msg = 0;
--			}
--
--		} else {
--			if (!xpc_disengage_timedout) {
--				dev_info(xpc_part, "all partitions have "
--					 "deactivated\n");
--			}
--			break;
--		}
--
--		/* sleep for a 1/3 of a second or so */
--		(void)msleep_interruptible(300);
--
--	} while (1);
--
--	DBUG_ON(xpc_arch_ops.any_partition_engaged());
--
--	xpc_teardown_rsvd_page();
--
--	if (reason == xpUnloading) {
--		(void)unregister_die_notifier(&xpc_die_notifier);
--		(void)unregister_reboot_notifier(&xpc_reboot_notifier);
--	}
--
--	/* clear the interface to XPC's functions */
--	xpc_clear_interface();
--
--	if (xpc_sysctl)
--		unregister_sysctl_table(xpc_sysctl);
--	if (xpc_sysctl_hb)
--		unregister_sysctl_table(xpc_sysctl_hb);
--
--	xpc_teardown_partitions();
--
--	if (is_uv_system())
--		xpc_exit_uv();
--}
--
--/*
-- * This function is called when the system is being rebooted.
-- */
--static int
--xpc_system_reboot(struct notifier_block *nb, unsigned long event, void *unused)
--{
--	enum xp_retval reason;
--
--	switch (event) {
--	case SYS_RESTART:
--		reason = xpSystemReboot;
--		break;
--	case SYS_HALT:
--		reason = xpSystemHalt;
--		break;
--	case SYS_POWER_OFF:
--		reason = xpSystemPoweroff;
--		break;
--	default:
--		reason = xpSystemGoingDown;
--	}
--
--	xpc_do_exit(reason);
--	return NOTIFY_DONE;
--}
--
--/* Used to only allow one cpu to complete disconnect */
--static unsigned int xpc_die_disconnecting;
--
--/*
-- * Notify other partitions to deactivate from us by first disengaging from all
-- * references to our memory.
-- */
--static void
--xpc_die_deactivate(void)
--{
--	struct xpc_partition *part;
--	short partid;
--	int any_engaged;
--	long keep_waiting;
--	long wait_to_print;
--
--	if (cmpxchg(&xpc_die_disconnecting, 0, 1))
--		return;
--
--	/* keep xpc_hb_checker thread from doing anything (just in case) */
--	xpc_exiting = 1;
--
--	xpc_arch_ops.disallow_all_hbs();   /*indicate we're deactivated */
--
--	for (partid = 0; partid < xp_max_npartitions; partid++) {
--		part = &xpc_partitions[partid];
--
--		if (xpc_arch_ops.partition_engaged(partid) ||
--		    part->act_state != XPC_P_AS_INACTIVE) {
--			xpc_arch_ops.request_partition_deactivation(part);
--			xpc_arch_ops.indicate_partition_disengaged(part);
--		}
--	}
--
--	/*
--	 * Though we requested that all other partitions deactivate from us,
--	 * we only wait until they've all disengaged or we've reached the
--	 * defined timelimit.
--	 *
--	 * Given that one iteration through the following while-loop takes
--	 * approximately 200 microseconds, calculate the #of loops to take
--	 * before bailing and the #of loops before printing a waiting message.
--	 */
--	keep_waiting = xpc_disengage_timelimit * 1000 * 5;
--	wait_to_print = XPC_DEACTIVATE_PRINTMSG_INTERVAL * 1000 * 5;
--
--	while (1) {
--		any_engaged = xpc_arch_ops.any_partition_engaged();
--		if (!any_engaged) {
--			dev_info(xpc_part, "all partitions have deactivated\n");
--			break;
--		}
--
--		if (!keep_waiting--) {
--			for (partid = 0; partid < xp_max_npartitions;
--			     partid++) {
--				if (xpc_arch_ops.partition_engaged(partid)) {
--					dev_info(xpc_part, "deactivate from "
--						 "remote partition %d timed "
--						 "out\n", partid);
--				}
--			}
--			break;
--		}
--
--		if (!wait_to_print--) {
--			dev_info(xpc_part, "waiting for remote partitions to "
--				 "deactivate, timeout in %ld seconds\n",
--				 keep_waiting / (1000 * 5));
--			wait_to_print = XPC_DEACTIVATE_PRINTMSG_INTERVAL *
--			    1000 * 5;
--		}
--
--		udelay(200);
--	}
--}
--
--/*
-- * This function is called when the system is being restarted or halted due
-- * to some sort of system failure. If this is the case we need to notify the
-- * other partitions to disengage from all references to our memory.
-- * This function can also be called when our heartbeater could be offlined
-- * for a time. In this case we need to notify other partitions to not worry
-- * about the lack of a heartbeat.
-- */
--static int
--xpc_system_die(struct notifier_block *nb, unsigned long event, void *_die_args)
--{
--	struct die_args *die_args = _die_args;
--
--	switch (event) {
--	case DIE_TRAP:
--		if (die_args->trapnr == X86_TRAP_DF)
--			xpc_die_deactivate();
--
--		if (((die_args->trapnr == X86_TRAP_MF) ||
--		     (die_args->trapnr == X86_TRAP_XF)) &&
--		    !user_mode(die_args->regs))
--			xpc_die_deactivate();
--
--		break;
--	case DIE_INT3:
--	case DIE_DEBUG:
--		break;
--	case DIE_OOPS:
--	case DIE_GPF:
--	default:
--		xpc_die_deactivate();
--	}
--
--	return NOTIFY_DONE;
--}
--
--static int __init
--xpc_init(void)
+-static int __init gru_init(void)
 -{
 -	int ret;
--	struct task_struct *kthread;
 -
--	dev_set_name(xpc_part, "part");
--	dev_set_name(xpc_chan, "chan");
+-	if (!gru_supported())
+-		return 0;
 -
--	if (is_uv_system()) {
--		ret = xpc_init_uv();
--
--	} else {
--		ret = -ENODEV;
+-	gru_start_paddr = uv_read_local_mmr(UVH_RH_GAM_GRU_OVERLAY_CONFIG) &
+-				0x7fffffffffffUL;
+-	gru_start_vaddr = __va(gru_start_paddr);
+-	gru_end_paddr = gru_start_paddr + GRU_MAX_BLADES * GRU_SIZE;
+-	printk(KERN_INFO "GRU space: 0x%lx - 0x%lx\n",
+-	       gru_start_paddr, gru_end_paddr);
+-	ret = misc_register(&gru_miscdev);
+-	if (ret) {
+-		printk(KERN_ERR "%s: misc_register failed\n",
+-		       GRU_DRIVER_ID_STR);
+-		goto exit0;
 -	}
 -
+-	ret = gru_proc_init();
+-	if (ret) {
+-		printk(KERN_ERR "%s: proc init failed\n", GRU_DRIVER_ID_STR);
+-		goto exit1;
+-	}
+-
+-	ret = gru_init_tables(gru_start_paddr, gru_start_vaddr);
+-	if (ret) {
+-		printk(KERN_ERR "%s: init tables failed\n", GRU_DRIVER_ID_STR);
+-		goto exit2;
+-	}
+-
+-	ret = gru_setup_tlb_irqs();
 -	if (ret != 0)
--		return ret;
+-		goto exit3;
 -
--	ret = xpc_setup_partitions();
--	if (ret != 0) {
--		dev_err(xpc_part, "can't get memory for partition structure\n");
--		goto out_1;
--	}
+-	gru_kservices_init();
 -
--	xpc_sysctl = register_sysctl("xpc", xpc_sys_xpc);
--	xpc_sysctl_hb = register_sysctl("xpc/hb", xpc_sys_xpc_hb);
--
--	/*
--	 * Fill the partition reserved page with the information needed by
--	 * other partitions to discover we are alive and establish initial
--	 * communications.
--	 */
--	ret = xpc_setup_rsvd_page();
--	if (ret != 0) {
--		dev_err(xpc_part, "can't setup our reserved page\n");
--		goto out_2;
--	}
--
--	/* add ourselves to the reboot_notifier_list */
--	ret = register_reboot_notifier(&xpc_reboot_notifier);
--	if (ret != 0)
--		dev_warn(xpc_part, "can't register reboot notifier\n");
--
--	/* add ourselves to the die_notifier list */
--	ret = register_die_notifier(&xpc_die_notifier);
--	if (ret != 0)
--		dev_warn(xpc_part, "can't register die notifier\n");
--
--	/*
--	 * The real work-horse behind xpc.  This processes incoming
--	 * interrupts and monitors remote heartbeats.
--	 */
--	kthread = kthread_run(xpc_hb_checker, NULL, XPC_HB_CHECK_THREAD_NAME);
--	if (IS_ERR(kthread)) {
--		dev_err(xpc_part, "failed while forking hb check thread\n");
--		ret = -EBUSY;
--		goto out_3;
--	}
--
--	/*
--	 * Startup a thread that will attempt to discover other partitions to
--	 * activate based on info provided by SAL. This new thread is short
--	 * lived and will exit once discovery is complete.
--	 */
--	kthread = kthread_run(xpc_initiate_discovery, NULL,
--			      XPC_DISCOVERY_THREAD_NAME);
--	if (IS_ERR(kthread)) {
--		dev_err(xpc_part, "failed while forking discovery thread\n");
--
--		/* mark this new thread as a non-starter */
--		complete(&xpc_discovery_exited);
--
--		xpc_do_exit(xpUnloading);
--		return -EBUSY;
--	}
--
--	/* set the interface to point at XPC's functions */
--	xpc_set_interface(xpc_initiate_connect, xpc_initiate_disconnect,
--			  xpc_initiate_send, xpc_initiate_send_notify,
--			  xpc_initiate_received, xpc_initiate_partid_to_nasids);
--
+-	printk(KERN_INFO "%s: v%s\n", GRU_DRIVER_ID_STR,
+-	       GRU_DRIVER_VERSION_STR);
 -	return 0;
 -
--	/* initialization was not successful */
--out_3:
--	xpc_teardown_rsvd_page();
--
--	(void)unregister_die_notifier(&xpc_die_notifier);
--	(void)unregister_reboot_notifier(&xpc_reboot_notifier);
--out_2:
--	if (xpc_sysctl_hb)
--		unregister_sysctl_table(xpc_sysctl_hb);
--	if (xpc_sysctl)
--		unregister_sysctl_table(xpc_sysctl);
--
--	xpc_teardown_partitions();
--out_1:
--	if (is_uv_system())
--		xpc_exit_uv();
+-exit3:
+-	gru_free_tables();
+-exit2:
+-	gru_proc_exit();
+-exit1:
+-	misc_deregister(&gru_miscdev);
+-exit0:
 -	return ret;
+-
 -}
 -
--module_init(xpc_init);
--
--static void __exit
--xpc_exit(void)
+-static void __exit gru_exit(void)
 -{
--	xpc_do_exit(xpUnloading);
+-	if (!gru_supported())
+-		return;
+-
+-	gru_teardown_tlb_irqs();
+-	gru_kservices_exit();
+-	gru_free_tables();
+-	misc_deregister(&gru_miscdev);
+-	gru_proc_exit();
+-	mmu_notifier_synchronize();
 -}
 -
--module_exit(xpc_exit);
+-static const struct file_operations gru_fops = {
+-	.owner		= THIS_MODULE,
+-	.unlocked_ioctl	= gru_file_unlocked_ioctl,
+-	.mmap		= gru_file_mmap,
+-	.llseek		= noop_llseek,
+-};
+-
+-static struct miscdevice gru_miscdev = {
+-	.minor		= MISC_DYNAMIC_MINOR,
+-	.name		= "gru",
+-	.fops		= &gru_fops,
+-};
+-
+-const struct vm_operations_struct gru_vm_ops = {
+-	.close		= gru_vma_close,
+-	.fault		= gru_fault,
+-};
+-
+-#ifndef MODULE
+-fs_initcall(gru_init);
+-#else
+-module_init(gru_init);
+-#endif
+-module_exit(gru_exit);
+-
+-module_param(gru_options, ulong, 0644);
+-MODULE_PARM_DESC(gru_options, "Various debug options");
 -
 -MODULE_AUTHOR("Silicon Graphics, Inc.");
--MODULE_DESCRIPTION("Cross Partition Communication (XPC) support");
 -MODULE_LICENSE("GPL");
+-MODULE_DESCRIPTION(GRU_DRIVER_ID_STR GRU_DRIVER_VERSION_STR);
+-MODULE_VERSION(GRU_DRIVER_VERSION_STR);
 -
--module_param(xpc_hb_interval, int, 0);
--MODULE_PARM_DESC(xpc_hb_interval, "Number of seconds between "
--		 "heartbeat increments.");
--
--module_param(xpc_hb_check_interval, int, 0);
--MODULE_PARM_DESC(xpc_hb_check_interval, "Number of seconds between "
--		 "heartbeat checks.");
--
--module_param(xpc_disengage_timelimit, int, 0);
--MODULE_PARM_DESC(xpc_disengage_timelimit, "Number of seconds to wait "
--		 "for disengage to complete.");
--
--module_param(xpc_kdebug_ignore, int, 0);
--MODULE_PARM_DESC(xpc_kdebug_ignore, "Should lack of heartbeat be ignored by "
--		 "other partitions when dropping into kdebug.");
-diff --git a/drivers/misc/sgi-xp/xpc_partition.c b/drivers/misc/sgi-xp/xpc_partition.c
+diff --git a/drivers/misc/sgi-gru/gruhandles.c b/drivers/misc/sgi-gru/gruhandles.c
 deleted file mode 100644
-index d0467010558c..000000000000
---- a/drivers/misc/sgi-xp/xpc_partition.c
+index 695316a83b01..000000000000
+--- a/drivers/misc/sgi-gru/gruhandles.c
 +++ /dev/null
-@@ -1,545 +0,0 @@
+@@ -1,192 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
+- *              GRU KERNEL MCS INSTRUCTIONS
 - *
-- * (C) Copyright 2020 Hewlett Packard Enterprise Development LP
-- * Copyright (c) 2004-2008 Silicon Graphics, Inc.  All Rights Reserved.
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
 - */
 -
--/*
-- * Cross Partition Communication (XPC) partition support.
-- *
-- *	This is the part of XPC that detects the presence/absence of
-- *	other partitions. It provides a heartbeat and monitors the
-- *	heartbeats of other partitions.
-- *
-- */
+-#include <linux/kernel.h>
+-#include "gru.h"
+-#include "grulib.h"
+-#include "grutables.h"
 -
--#include <linux/device.h>
--#include <linux/hardirq.h>
--#include <linux/slab.h>
--#include "xpc.h"
--#include <asm/uv/uv_hub.h>
+-/* 10 sec */
+-#include <linux/sync_core.h>
+-#include <asm/tsc.h>
+-#define GRU_OPERATION_TIMEOUT	((cycles_t) tsc_khz*10*1000)
+-#define CLKS2NSEC(c)		((c) * 1000000 / tsc_khz)
 -
--/* XPC is exiting flag */
--int xpc_exiting;
+-/* Extract the status field from a kernel handle */
+-#define GET_MSEG_HANDLE_STATUS(h)	(((*(unsigned long *)(h)) >> 16) & 3)
 -
--/* this partition's reserved page pointers */
--struct xpc_rsvd_page *xpc_rsvd_page;
--static unsigned long *xpc_part_nasids;
--unsigned long *xpc_mach_nasids;
+-struct mcs_op_statistic mcs_op_statistics[mcsop_last];
 -
--static int xpc_nasid_mask_nbytes;	/* #of bytes in nasid mask */
--int xpc_nasid_mask_nlongs;	/* #of longs in nasid mask */
--
--struct xpc_partition *xpc_partitions;
--
--/*
-- * Guarantee that the kmalloc'd memory is cacheline aligned.
-- */
--void *
--xpc_kmalloc_cacheline_aligned(size_t size, gfp_t flags, void **base)
+-static void update_mcs_stats(enum mcs_op op, unsigned long clks)
 -{
--	/* see if kmalloc will give us cachline aligned memory by default */
--	*base = kmalloc(size, flags);
--	if (*base == NULL)
--		return NULL;
+-	unsigned long nsec;
 -
--	if ((u64)*base == L1_CACHE_ALIGN((u64)*base))
--		return *base;
--
--	kfree(*base);
--
--	/* nope, we'll have to do it ourselves */
--	*base = kmalloc(size + L1_CACHE_BYTES, flags);
--	if (*base == NULL)
--		return NULL;
--
--	return (void *)L1_CACHE_ALIGN((u64)*base);
+-	nsec = CLKS2NSEC(clks);
+-	atomic_long_inc(&mcs_op_statistics[op].count);
+-	atomic_long_add(nsec, &mcs_op_statistics[op].total);
+-	if (mcs_op_statistics[op].max < nsec)
+-		mcs_op_statistics[op].max = nsec;
 -}
 -
--/*
-- * Given a nasid, get the physical address of the  partition's reserved page
-- * for that nasid. This function returns 0 on any error.
-- */
--static unsigned long
--xpc_get_rsvd_page_pa(int nasid)
+-static void start_instruction(void *h)
 -{
--	enum xp_retval ret;
--	u64 cookie = 0;
--	unsigned long rp_pa = nasid;	/* seed with nasid */
--	size_t len = 0;
--	size_t buf_len = 0;
--	void *buf = NULL;
--	void *buf_base = NULL;
--	enum xp_retval (*get_partition_rsvd_page_pa)
--		(void *, u64 *, unsigned long *, size_t *) =
--		xpc_arch_ops.get_partition_rsvd_page_pa;
+-	unsigned long *w0 = h;
+-
+-	wmb();		/* setting CMD/STATUS bits must be last */
+-	*w0 = *w0 | 0x20001;
+-	gru_flush_cache(h);
+-}
+-
+-static void report_instruction_timeout(void *h)
+-{
+-	unsigned long goff = GSEGPOFF((unsigned long)h);
+-	char *id = "???";
+-
+-	if (TYPE_IS(CCH, goff))
+-		id = "CCH";
+-	else if (TYPE_IS(TGH, goff))
+-		id = "TGH";
+-	else if (TYPE_IS(TFH, goff))
+-		id = "TFH";
+-
+-	panic(KERN_ALERT "GRU %p (%s) is malfunctioning\n", h, id);
+-}
+-
+-static int wait_instruction_complete(void *h, enum mcs_op opc)
+-{
+-	int status;
+-	unsigned long start_time = get_cycles();
 -
 -	while (1) {
--
--		/* !!! rp_pa will need to be _gpa on UV.
--		 * ??? So do we save it into the architecture specific parts
--		 * ??? of the xpc_partition structure? Do we rename this
--		 * ??? function or have two versions? Rename rp_pa for UV to
--		 * ??? rp_gpa?
--		 */
--		ret = get_partition_rsvd_page_pa(buf, &cookie, &rp_pa, &len);
--
--		dev_dbg(xpc_part, "SAL returned with ret=%d, cookie=0x%016lx, "
--			"address=0x%016lx, len=0x%016lx\n", ret,
--			(unsigned long)cookie, rp_pa, len);
--
--		if (ret != xpNeedMoreInfo)
+-		cpu_relax();
+-		status = GET_MSEG_HANDLE_STATUS(h);
+-		if (status != CCHSTATUS_ACTIVE)
 -			break;
--
--		if (len > buf_len) {
--			kfree(buf_base);
--			buf_len = L1_CACHE_ALIGN(len);
--			buf = xpc_kmalloc_cacheline_aligned(buf_len, GFP_KERNEL,
--							    &buf_base);
--			if (buf_base == NULL) {
--				dev_err(xpc_part, "unable to kmalloc "
--					"len=0x%016lx\n", buf_len);
--				ret = xpNoMemory;
--				break;
--			}
--		}
--
--		ret = xp_remote_memcpy(xp_pa(buf), rp_pa, len);
--		if (ret != xpSuccess) {
--			dev_dbg(xpc_part, "xp_remote_memcpy failed %d\n", ret);
--			break;
+-		if (GRU_OPERATION_TIMEOUT < (get_cycles() - start_time)) {
+-			report_instruction_timeout(h);
+-			start_time = get_cycles();
 -		}
 -	}
--
--	kfree(buf_base);
--
--	if (ret != xpSuccess)
--		rp_pa = 0;
--
--	dev_dbg(xpc_part, "reserved page at phys address 0x%016lx\n", rp_pa);
--	return rp_pa;
+-	if (gru_options & OPT_STATS)
+-		update_mcs_stats(opc, get_cycles() - start_time);
+-	return status;
 -}
 -
--/*
-- * Fill the partition reserved page with the information needed by
-- * other partitions to discover we are alive and establish initial
-- * communications.
-- */
--int
--xpc_setup_rsvd_page(void)
+-int cch_allocate(struct gru_context_configuration_handle *cch)
 -{
 -	int ret;
--	struct xpc_rsvd_page *rp;
--	unsigned long rp_pa;
--	unsigned long new_ts_jiffies;
 -
--	/* get the local reserved page's address */
--
--	preempt_disable();
--	rp_pa = xpc_get_rsvd_page_pa(xp_cpu_to_nasid(smp_processor_id()));
--	preempt_enable();
--	if (rp_pa == 0) {
--		dev_err(xpc_part, "SAL failed to locate the reserved page\n");
--		return -ESRCH;
--	}
--	rp = (struct xpc_rsvd_page *)__va(xp_socket_pa(rp_pa));
--
--	if (rp->SAL_version < 3) {
--		/* SAL_versions < 3 had a SAL_partid defined as a u8 */
--		rp->SAL_partid &= 0xff;
--	}
--	BUG_ON(rp->SAL_partid != xp_partition_id);
--
--	if (rp->SAL_partid < 0 || rp->SAL_partid >= xp_max_npartitions) {
--		dev_err(xpc_part, "the reserved page's partid of %d is outside "
--			"supported range (< 0 || >= %d)\n", rp->SAL_partid,
--			xp_max_npartitions);
--		return -EINVAL;
--	}
--
--	rp->version = XPC_RP_VERSION;
--	rp->max_npartitions = xp_max_npartitions;
--
--	/* establish the actual sizes of the nasid masks */
--	if (rp->SAL_version == 1) {
--		/* SAL_version 1 didn't set the nasids_size field */
--		rp->SAL_nasids_size = 128;
--	}
--	xpc_nasid_mask_nbytes = rp->SAL_nasids_size;
--	xpc_nasid_mask_nlongs = BITS_TO_LONGS(rp->SAL_nasids_size *
--					      BITS_PER_BYTE);
--
--	/* setup the pointers to the various items in the reserved page */
--	xpc_part_nasids = XPC_RP_PART_NASIDS(rp);
--	xpc_mach_nasids = XPC_RP_MACH_NASIDS(rp);
--
--	ret = xpc_arch_ops.setup_rsvd_page(rp);
--	if (ret != 0)
--		return ret;
+-	cch->opc = CCHOP_ALLOCATE;
+-	start_instruction(cch);
+-	ret = wait_instruction_complete(cch, cchop_allocate);
 -
 -	/*
--	 * Set timestamp of when reserved page was setup by XPC.
--	 * This signifies to the remote partition that our reserved
--	 * page is initialized.
+-	 * Stop speculation into the GSEG being mapped by the previous ALLOCATE.
+-	 * The GSEG memory does not exist until the ALLOCATE completes.
 -	 */
--	new_ts_jiffies = jiffies;
--	if (new_ts_jiffies == 0 || new_ts_jiffies == rp->ts_jiffies)
--		new_ts_jiffies++;
--	rp->ts_jiffies = new_ts_jiffies;
--
--	xpc_rsvd_page = rp;
--	return 0;
--}
--
--void
--xpc_teardown_rsvd_page(void)
--{
--	/* a zero timestamp indicates our rsvd page is not initialized */
--	xpc_rsvd_page->ts_jiffies = 0;
--}
--
--/*
-- * Get a copy of a portion of the remote partition's rsvd page.
-- *
-- * remote_rp points to a buffer that is cacheline aligned for BTE copies and
-- * is large enough to contain a copy of their reserved page header and
-- * part_nasids mask.
-- */
--enum xp_retval
--xpc_get_remote_rp(int nasid, unsigned long *discovered_nasids,
--		  struct xpc_rsvd_page *remote_rp, unsigned long *remote_rp_pa)
--{
--	int l;
--	enum xp_retval ret;
--
--	/* get the reserved page's physical address */
--
--	*remote_rp_pa = xpc_get_rsvd_page_pa(nasid);
--	if (*remote_rp_pa == 0)
--		return xpNoRsvdPageAddr;
--
--	/* pull over the reserved page header and part_nasids mask */
--	ret = xp_remote_memcpy(xp_pa(remote_rp), *remote_rp_pa,
--			       XPC_RP_HEADER_SIZE + xpc_nasid_mask_nbytes);
--	if (ret != xpSuccess)
--		return ret;
--
--	if (discovered_nasids != NULL) {
--		unsigned long *remote_part_nasids =
--		    XPC_RP_PART_NASIDS(remote_rp);
--
--		for (l = 0; l < xpc_nasid_mask_nlongs; l++)
--			discovered_nasids[l] |= remote_part_nasids[l];
--	}
--
--	/* zero timestamp indicates the reserved page has not been setup */
--	if (remote_rp->ts_jiffies == 0)
--		return xpRsvdPageNotSet;
--
--	if (XPC_VERSION_MAJOR(remote_rp->version) !=
--	    XPC_VERSION_MAJOR(XPC_RP_VERSION)) {
--		return xpBadVersion;
--	}
--
--	/* check that both remote and local partids are valid for each side */
--	if (remote_rp->SAL_partid < 0 ||
--	    remote_rp->SAL_partid >= xp_max_npartitions ||
--	    remote_rp->max_npartitions <= xp_partition_id) {
--		return xpInvalidPartid;
--	}
--
--	if (remote_rp->SAL_partid == xp_partition_id)
--		return xpLocalPartid;
--
--	return xpSuccess;
--}
--
--/*
-- * See if the other side has responded to a partition deactivate request
-- * from us. Though we requested the remote partition to deactivate with regard
-- * to us, we really only need to wait for the other side to disengage from us.
-- */
--static int __xpc_partition_disengaged(struct xpc_partition *part,
--				      bool from_timer)
--{
--	short partid = XPC_PARTID(part);
--	int disengaged;
--
--	disengaged = !xpc_arch_ops.partition_engaged(partid);
--	if (part->disengage_timeout) {
--		if (!disengaged) {
--			if (time_is_after_jiffies(part->disengage_timeout)) {
--				/* timelimit hasn't been reached yet */
--				return 0;
--			}
--
--			/*
--			 * Other side hasn't responded to our deactivate
--			 * request in a timely fashion, so assume it's dead.
--			 */
--
--			dev_info(xpc_part, "deactivate request to remote "
--				 "partition %d timed out\n", partid);
--			xpc_disengage_timedout = 1;
--			xpc_arch_ops.assume_partition_disengaged(partid);
--			disengaged = 1;
--		}
--		part->disengage_timeout = 0;
--
--		/* Cancel the timer function if not called from it */
--		if (!from_timer)
--			timer_delete_sync(&part->disengage_timer);
--
--		DBUG_ON(part->act_state != XPC_P_AS_DEACTIVATING &&
--			part->act_state != XPC_P_AS_INACTIVE);
--		if (part->act_state != XPC_P_AS_INACTIVE)
--			xpc_wakeup_channel_mgr(part);
--
--		xpc_arch_ops.cancel_partition_deactivation_request(part);
--	}
--	return disengaged;
--}
--
--int xpc_partition_disengaged(struct xpc_partition *part)
--{
--	return __xpc_partition_disengaged(part, false);
--}
--
--int xpc_partition_disengaged_from_timer(struct xpc_partition *part)
--{
--	return __xpc_partition_disengaged(part, true);
--}
--
--/*
-- * Mark specified partition as active.
-- */
--enum xp_retval
--xpc_mark_partition_active(struct xpc_partition *part)
--{
--	unsigned long irq_flags;
--	enum xp_retval ret;
--
--	dev_dbg(xpc_part, "setting partition %d to ACTIVE\n", XPC_PARTID(part));
--
--	spin_lock_irqsave(&part->act_lock, irq_flags);
--	if (part->act_state == XPC_P_AS_ACTIVATING) {
--		part->act_state = XPC_P_AS_ACTIVE;
--		ret = xpSuccess;
--	} else {
--		DBUG_ON(part->reason == xpSuccess);
--		ret = part->reason;
--	}
--	spin_unlock_irqrestore(&part->act_lock, irq_flags);
--
+-	sync_core();
 -	return ret;
 -}
 -
--/*
-- * Start the process of deactivating the specified partition.
-- */
--void
--xpc_deactivate_partition(const int line, struct xpc_partition *part,
--			 enum xp_retval reason)
+-int cch_start(struct gru_context_configuration_handle *cch)
 -{
--	unsigned long irq_flags;
--
--	spin_lock_irqsave(&part->act_lock, irq_flags);
--
--	if (part->act_state == XPC_P_AS_INACTIVE) {
--		XPC_SET_REASON(part, reason, line);
--		spin_unlock_irqrestore(&part->act_lock, irq_flags);
--		if (reason == xpReactivating) {
--			/* we interrupt ourselves to reactivate partition */
--			xpc_arch_ops.request_partition_reactivation(part);
--		}
--		return;
--	}
--	if (part->act_state == XPC_P_AS_DEACTIVATING) {
--		if ((part->reason == xpUnloading && reason != xpUnloading) ||
--		    reason == xpReactivating) {
--			XPC_SET_REASON(part, reason, line);
--		}
--		spin_unlock_irqrestore(&part->act_lock, irq_flags);
--		return;
--	}
--
--	part->act_state = XPC_P_AS_DEACTIVATING;
--	XPC_SET_REASON(part, reason, line);
--
--	spin_unlock_irqrestore(&part->act_lock, irq_flags);
--
--	/* ask remote partition to deactivate with regard to us */
--	xpc_arch_ops.request_partition_deactivation(part);
--
--	/* set a timelimit on the disengage phase of the deactivation request */
--	part->disengage_timeout = jiffies + (xpc_disengage_timelimit * HZ);
--	part->disengage_timer.expires = part->disengage_timeout;
--	add_timer(&part->disengage_timer);
--
--	dev_dbg(xpc_part, "bringing partition %d down, reason = %d\n",
--		XPC_PARTID(part), reason);
--
--	xpc_partition_going_down(part, reason);
+-	cch->opc = CCHOP_START;
+-	start_instruction(cch);
+-	return wait_instruction_complete(cch, cchop_start);
 -}
 -
--/*
-- * Mark specified partition as inactive.
-- */
--void
--xpc_mark_partition_inactive(struct xpc_partition *part)
+-int cch_interrupt(struct gru_context_configuration_handle *cch)
 -{
--	unsigned long irq_flags;
--
--	dev_dbg(xpc_part, "setting partition %d to INACTIVE\n",
--		XPC_PARTID(part));
--
--	spin_lock_irqsave(&part->act_lock, irq_flags);
--	part->act_state = XPC_P_AS_INACTIVE;
--	spin_unlock_irqrestore(&part->act_lock, irq_flags);
--	part->remote_rp_pa = 0;
+-	cch->opc = CCHOP_INTERRUPT;
+-	start_instruction(cch);
+-	return wait_instruction_complete(cch, cchop_interrupt);
 -}
 -
--/*
-- * SAL has provided a partition and machine mask.  The partition mask
-- * contains a bit for each even nasid in our partition.  The machine
-- * mask contains a bit for each even nasid in the entire machine.
-- *
-- * Using those two bit arrays, we can determine which nasids are
-- * known in the machine.  Each should also have a reserved page
-- * initialized if they are available for partitioning.
-- */
--void
--xpc_discovery(void)
+-int cch_deallocate(struct gru_context_configuration_handle *cch)
 -{
--	void *remote_rp_base;
--	struct xpc_rsvd_page *remote_rp;
--	unsigned long remote_rp_pa;
--	int region;
--	int region_size;
--	int max_regions;
--	int nasid;
--	unsigned long *discovered_nasids;
--	enum xp_retval ret;
+-	int ret;
 -
--	remote_rp = xpc_kmalloc_cacheline_aligned(XPC_RP_HEADER_SIZE +
--						  xpc_nasid_mask_nbytes,
--						  GFP_KERNEL, &remote_rp_base);
--	if (remote_rp == NULL)
--		return;
--
--	discovered_nasids = kcalloc(xpc_nasid_mask_nlongs, sizeof(long),
--				    GFP_KERNEL);
--	if (discovered_nasids == NULL) {
--		kfree(remote_rp_base);
--		return;
--	}
+-	cch->opc = CCHOP_DEALLOCATE;
+-	start_instruction(cch);
+-	ret = wait_instruction_complete(cch, cchop_deallocate);
 -
 -	/*
--	 * The term 'region' in this context refers to the minimum number of
--	 * nodes that can comprise an access protection grouping. The access
--	 * protection is in regards to memory, IOI and IPI.
+-	 * Stop speculation into the GSEG being unmapped by the previous
+-	 * DEALLOCATE.
 -	 */
--	region_size = xp_region_size;
--
--	if (is_uv_system())
--		max_regions = 256;
--	else {
--		max_regions = 64;
--
--		switch (region_size) {
--		case 128:
--			max_regions *= 2;
--			fallthrough;
--		case 64:
--			max_regions *= 2;
--			fallthrough;
--		case 32:
--			max_regions *= 2;
--			region_size = 16;
--		}
--	}
--
--	for (region = 0; region < max_regions; region++) {
--
--		if (xpc_exiting)
--			break;
--
--		dev_dbg(xpc_part, "searching region %d\n", region);
--
--		for (nasid = (region * region_size * 2);
--		     nasid < ((region + 1) * region_size * 2); nasid += 2) {
--
--			if (xpc_exiting)
--				break;
--
--			dev_dbg(xpc_part, "checking nasid %d\n", nasid);
--
--			if (test_bit(nasid / 2, xpc_part_nasids)) {
--				dev_dbg(xpc_part, "PROM indicates Nasid %d is "
--					"part of the local partition; skipping "
--					"region\n", nasid);
--				break;
--			}
--
--			if (!(test_bit(nasid / 2, xpc_mach_nasids))) {
--				dev_dbg(xpc_part, "PROM indicates Nasid %d was "
--					"not on Numa-Link network at reset\n",
--					nasid);
--				continue;
--			}
--
--			if (test_bit(nasid / 2, discovered_nasids)) {
--				dev_dbg(xpc_part, "Nasid %d is part of a "
--					"partition which was previously "
--					"discovered\n", nasid);
--				continue;
--			}
--
--			/* pull over the rsvd page header & part_nasids mask */
--
--			ret = xpc_get_remote_rp(nasid, discovered_nasids,
--						remote_rp, &remote_rp_pa);
--			if (ret != xpSuccess) {
--				dev_dbg(xpc_part, "unable to get reserved page "
--					"from nasid %d, reason=%d\n", nasid,
--					ret);
--
--				if (ret == xpLocalPartid)
--					break;
--
--				continue;
--			}
--
--			xpc_arch_ops.request_partition_activation(remote_rp,
--							 remote_rp_pa, nasid);
--		}
--	}
--
--	kfree(discovered_nasids);
--	kfree(remote_rp_base);
+-	sync_core();
+-	return ret;
 -}
 -
--/*
-- * Given a partid, get the nasids owned by that partition from the
-- * remote partition's reserved page.
-- */
--enum xp_retval
--xpc_initiate_partid_to_nasids(short partid, void *nasid_mask)
+-int cch_interrupt_sync(struct gru_context_configuration_handle
+-				     *cch)
 -{
--	struct xpc_partition *part;
--	unsigned long part_nasid_pa;
--
--	part = &xpc_partitions[partid];
--	if (part->remote_rp_pa == 0)
--		return xpPartitionDown;
--
--	memset(nasid_mask, 0, xpc_nasid_mask_nbytes);
--
--	part_nasid_pa = (unsigned long)XPC_RP_PART_NASIDS(part->remote_rp_pa);
--
--	return xp_remote_memcpy(xp_pa(nasid_mask), part_nasid_pa,
--				xpc_nasid_mask_nbytes);
+-	cch->opc = CCHOP_INTERRUPT_SYNC;
+-	start_instruction(cch);
+-	return wait_instruction_complete(cch, cchop_interrupt_sync);
 -}
-diff --git a/drivers/misc/sgi-xp/xpc_uv.c b/drivers/misc/sgi-xp/xpc_uv.c
+-
+-int tgh_invalidate(struct gru_tlb_global_handle *tgh,
+-				 unsigned long vaddr, unsigned long vaddrmask,
+-				 int asid, int pagesize, int global, int n,
+-				 unsigned short ctxbitmap)
+-{
+-	tgh->vaddr = vaddr;
+-	tgh->asid = asid;
+-	tgh->pagesize = pagesize;
+-	tgh->n = n;
+-	tgh->global = global;
+-	tgh->vaddrmask = vaddrmask;
+-	tgh->ctxbitmap = ctxbitmap;
+-	tgh->opc = TGHOP_TLBINV;
+-	start_instruction(tgh);
+-	return wait_instruction_complete(tgh, tghop_invalidate);
+-}
+-
+-int tfh_write_only(struct gru_tlb_fault_handle *tfh,
+-				  unsigned long paddr, int gaa,
+-				  unsigned long vaddr, int asid, int dirty,
+-				  int pagesize)
+-{
+-	tfh->fillasid = asid;
+-	tfh->fillvaddr = vaddr;
+-	tfh->pfn = paddr >> GRU_PADDR_SHIFT;
+-	tfh->gaa = gaa;
+-	tfh->dirty = dirty;
+-	tfh->pagesize = pagesize;
+-	tfh->opc = TFHOP_WRITE_ONLY;
+-	start_instruction(tfh);
+-	return wait_instruction_complete(tfh, tfhop_write_only);
+-}
+-
+-void tfh_write_restart(struct gru_tlb_fault_handle *tfh,
+-				     unsigned long paddr, int gaa,
+-				     unsigned long vaddr, int asid, int dirty,
+-				     int pagesize)
+-{
+-	tfh->fillasid = asid;
+-	tfh->fillvaddr = vaddr;
+-	tfh->pfn = paddr >> GRU_PADDR_SHIFT;
+-	tfh->gaa = gaa;
+-	tfh->dirty = dirty;
+-	tfh->pagesize = pagesize;
+-	tfh->opc = TFHOP_WRITE_RESTART;
+-	start_instruction(tfh);
+-}
+-
+-void tfh_user_polling_mode(struct gru_tlb_fault_handle *tfh)
+-{
+-	tfh->opc = TFHOP_USER_POLLING_MODE;
+-	start_instruction(tfh);
+-}
+-
+-void tfh_exception(struct gru_tlb_fault_handle *tfh)
+-{
+-	tfh->opc = TFHOP_EXCEPTION;
+-	start_instruction(tfh);
+-}
+-
+diff --git a/drivers/misc/sgi-gru/gruhandles.h b/drivers/misc/sgi-gru/gruhandles.h
 deleted file mode 100644
-index 772c78726893..000000000000
---- a/drivers/misc/sgi-xp/xpc_uv.c
+index 5a498bf8d003..000000000000
+--- a/drivers/misc/sgi-gru/gruhandles.h
 +++ /dev/null
-@@ -1,1728 +0,0 @@
+@@ -1,517 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
 -/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
+- * SN Platform GRU Driver
 - *
-- * Copyright (c) 2008-2009 Silicon Graphics, Inc.  All Rights Reserved.
+- *              GRU HANDLE DEFINITION
+- *
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
 - */
 -
+-#ifndef __GRUHANDLES_H__
+-#define __GRUHANDLES_H__
+-#include "gru_instructions.h"
+-
 -/*
-- * Cross Partition Communication (XPC) uv-based functions.
+- * Manifest constants for GRU Memory Map
+- */
+-#define GRU_GSEG0_BASE		0
+-#define GRU_MCS_BASE		(64 * 1024 * 1024)
+-#define GRU_SIZE		(128UL * 1024 * 1024)
+-
+-/* Handle & resource counts */
+-#define GRU_NUM_CB		128
+-#define GRU_NUM_DSR_BYTES	(32 * 1024)
+-#define GRU_NUM_TFM		16
+-#define GRU_NUM_TGH		24
+-#define GRU_NUM_CBE		128
+-#define GRU_NUM_TFH		128
+-#define GRU_NUM_CCH		16
+-
+-/* Maximum resource counts that can be reserved by user programs */
+-#define GRU_NUM_USER_CBR	GRU_NUM_CBE
+-#define GRU_NUM_USER_DSR_BYTES	GRU_NUM_DSR_BYTES
+-
+-/* Bytes per handle & handle stride. Code assumes all cb, tfh, cbe handles
+- * are the same */
+-#define GRU_HANDLE_BYTES	64
+-#define GRU_HANDLE_STRIDE	256
+-
+-/* Base addresses of handles */
+-#define GRU_TFM_BASE		(GRU_MCS_BASE + 0x00000)
+-#define GRU_TGH_BASE		(GRU_MCS_BASE + 0x08000)
+-#define GRU_CBE_BASE		(GRU_MCS_BASE + 0x10000)
+-#define GRU_TFH_BASE		(GRU_MCS_BASE + 0x18000)
+-#define GRU_CCH_BASE		(GRU_MCS_BASE + 0x20000)
+-
+-/* User gseg constants */
+-#define GRU_GSEG_STRIDE		(4 * 1024 * 1024)
+-#define GSEG_BASE(a)		((a) & ~(GRU_GSEG_PAGESIZE - 1))
+-
+-/* Data segment constants */
+-#define GRU_DSR_AU_BYTES	1024
+-#define GRU_DSR_CL		(GRU_NUM_DSR_BYTES / GRU_CACHE_LINE_BYTES)
+-#define GRU_DSR_AU_CL		(GRU_DSR_AU_BYTES / GRU_CACHE_LINE_BYTES)
+-#define GRU_DSR_AU		(GRU_NUM_DSR_BYTES / GRU_DSR_AU_BYTES)
+-
+-/* Control block constants */
+-#define GRU_CBR_AU_SIZE		2
+-#define GRU_CBR_AU		(GRU_NUM_CBE / GRU_CBR_AU_SIZE)
+-
+-/* Convert resource counts to the number of AU */
+-#define GRU_DS_BYTES_TO_AU(n)	DIV_ROUND_UP(n, GRU_DSR_AU_BYTES)
+-#define GRU_CB_COUNT_TO_AU(n)	DIV_ROUND_UP(n, GRU_CBR_AU_SIZE)
+-
+-/* UV limits */
+-#define GRU_CHIPLETS_PER_HUB	2
+-#define GRU_HUBS_PER_BLADE	1
+-#define GRU_CHIPLETS_PER_BLADE	(GRU_HUBS_PER_BLADE * GRU_CHIPLETS_PER_HUB)
+-
+-/* User GRU Gseg offsets */
+-#define GRU_CB_BASE		0
+-#define GRU_CB_LIMIT		(GRU_CB_BASE + GRU_HANDLE_STRIDE * GRU_NUM_CBE)
+-#define GRU_DS_BASE		0x20000
+-#define GRU_DS_LIMIT		(GRU_DS_BASE + GRU_NUM_DSR_BYTES)
+-
+-/* Convert a GRU physical address to the chiplet offset */
+-#define GSEGPOFF(h) 		((h) & (GRU_SIZE - 1))
+-
+-/* Convert an arbitrary handle address to the beginning of the GRU segment */
+-#define GRUBASE(h)		((void *)((unsigned long)(h) & ~(GRU_SIZE - 1)))
+-
+-/* Test a valid handle address to determine the type */
+-#define TYPE_IS(hn, h)		((h) >= GRU_##hn##_BASE && (h) <	\
+-		GRU_##hn##_BASE + GRU_NUM_##hn * GRU_HANDLE_STRIDE &&   \
+-		(((h) & (GRU_HANDLE_STRIDE - 1)) == 0))
+-
+-
+-/* General addressing macros. */
+-static inline void *get_gseg_base_address(void *base, int ctxnum)
+-{
+-	return (void *)(base + GRU_GSEG0_BASE + GRU_GSEG_STRIDE * ctxnum);
+-}
+-
+-static inline void *get_gseg_base_address_cb(void *base, int ctxnum, int line)
+-{
+-	return (void *)(get_gseg_base_address(base, ctxnum) +
+-			GRU_CB_BASE + GRU_HANDLE_STRIDE * line);
+-}
+-
+-static inline void *get_gseg_base_address_ds(void *base, int ctxnum, int line)
+-{
+-	return (void *)(get_gseg_base_address(base, ctxnum) + GRU_DS_BASE +
+-			GRU_CACHE_LINE_BYTES * line);
+-}
+-
+-static inline struct gru_tlb_fault_map *get_tfm(void *base, int ctxnum)
+-{
+-	return (struct gru_tlb_fault_map *)(base + GRU_TFM_BASE +
+-					ctxnum * GRU_HANDLE_STRIDE);
+-}
+-
+-static inline struct gru_tlb_global_handle *get_tgh(void *base, int ctxnum)
+-{
+-	return (struct gru_tlb_global_handle *)(base + GRU_TGH_BASE +
+-					ctxnum * GRU_HANDLE_STRIDE);
+-}
+-
+-static inline struct gru_control_block_extended *get_cbe(void *base, int ctxnum)
+-{
+-	return (struct gru_control_block_extended *)(base + GRU_CBE_BASE +
+-					ctxnum * GRU_HANDLE_STRIDE);
+-}
+-
+-static inline struct gru_tlb_fault_handle *get_tfh(void *base, int ctxnum)
+-{
+-	return (struct gru_tlb_fault_handle *)(base + GRU_TFH_BASE +
+-					ctxnum * GRU_HANDLE_STRIDE);
+-}
+-
+-static inline struct gru_context_configuration_handle *get_cch(void *base,
+-					int ctxnum)
+-{
+-	return (struct gru_context_configuration_handle *)(base +
+-				GRU_CCH_BASE + ctxnum * GRU_HANDLE_STRIDE);
+-}
+-
+-static inline unsigned long get_cb_number(void *cb)
+-{
+-	return (((unsigned long)cb - GRU_CB_BASE) % GRU_GSEG_PAGESIZE) /
+-					GRU_HANDLE_STRIDE;
+-}
+-
+-/* byte offset to a specific GRU chiplet. (p=pnode, c=chiplet (0 or 1)*/
+-static inline unsigned long gru_chiplet_paddr(unsigned long paddr, int pnode,
+-							int chiplet)
+-{
+-	return paddr + GRU_SIZE * (2 * pnode  + chiplet);
+-}
+-
+-static inline void *gru_chiplet_vaddr(void *vaddr, int pnode, int chiplet)
+-{
+-	return vaddr + GRU_SIZE * (2 * pnode  + chiplet);
+-}
+-
+-static inline struct gru_control_block_extended *gru_tfh_to_cbe(
+-					struct gru_tlb_fault_handle *tfh)
+-{
+-	unsigned long cbe;
+-
+-	cbe = (unsigned long)tfh - GRU_TFH_BASE + GRU_CBE_BASE;
+-	return (struct gru_control_block_extended*)cbe;
+-}
+-
+-
+-
+-
+-/*
+- * Global TLB Fault Map
+- * 	Bitmap of outstanding TLB misses needing interrupt/polling service.
 - *
-- *     Architecture specific implementation of common functions.
+- */
+-struct gru_tlb_fault_map {
+-	unsigned long fault_bits[BITS_TO_LONGS(GRU_NUM_CBE)];
+-	unsigned long fill0[2];
+-	unsigned long done_bits[BITS_TO_LONGS(GRU_NUM_CBE)];
+-	unsigned long fill1[2];
+-};
+-
+-/*
+- * TGH - TLB Global Handle
+- * 	Used for TLB flushing.
 - *
+- */
+-struct gru_tlb_global_handle {
+-	unsigned int cmd:1;		/* DW 0 */
+-	unsigned int delresp:1;
+-	unsigned int opc:1;
+-	unsigned int fill1:5;
+-
+-	unsigned int fill2:8;
+-
+-	unsigned int status:2;
+-	unsigned long fill3:2;
+-	unsigned int state:3;
+-	unsigned long fill4:1;
+-
+-	unsigned int cause:3;
+-	unsigned long fill5:37;
+-
+-	unsigned long vaddr:64;		/* DW 1 */
+-
+-	unsigned int asid:24;		/* DW 2 */
+-	unsigned int fill6:8;
+-
+-	unsigned int pagesize:5;
+-	unsigned int fill7:11;
+-
+-	unsigned int global:1;
+-	unsigned int fill8:15;
+-
+-	unsigned long vaddrmask:39;	/* DW 3 */
+-	unsigned int fill9:9;
+-	unsigned int n:10;
+-	unsigned int fill10:6;
+-
+-	unsigned int ctxbitmap:16;	/* DW4 */
+-	unsigned long fill11[3];
+-};
+-
+-enum gru_tgh_cmd {
+-	TGHCMD_START
+-};
+-
+-enum gru_tgh_opc {
+-	TGHOP_TLBNOP,
+-	TGHOP_TLBINV
+-};
+-
+-enum gru_tgh_status {
+-	TGHSTATUS_IDLE,
+-	TGHSTATUS_EXCEPTION,
+-	TGHSTATUS_ACTIVE
+-};
+-
+-enum gru_tgh_state {
+-	TGHSTATE_IDLE,
+-	TGHSTATE_PE_INVAL,
+-	TGHSTATE_INTERRUPT_INVAL,
+-	TGHSTATE_WAITDONE,
+-	TGHSTATE_RESTART_CTX,
+-};
+-
+-enum gru_tgh_cause {
+-	TGHCAUSE_RR_ECC,
+-	TGHCAUSE_TLB_ECC,
+-	TGHCAUSE_LRU_ECC,
+-	TGHCAUSE_PS_ECC,
+-	TGHCAUSE_MUL_ERR,
+-	TGHCAUSE_DATA_ERR,
+-	TGHCAUSE_SW_FORCE
+-};
+-
+-
+-/*
+- * TFH - TLB Global Handle
+- * 	Used for TLB dropins into the GRU TLB.
+- *
+- */
+-struct gru_tlb_fault_handle {
+-	unsigned int cmd:1;		/* DW 0 - low 32*/
+-	unsigned int delresp:1;
+-	unsigned int fill0:2;
+-	unsigned int opc:3;
+-	unsigned int fill1:9;
+-
+-	unsigned int status:2;
+-	unsigned int fill2:2;
+-	unsigned int state:3;
+-	unsigned int fill3:1;
+-
+-	unsigned int cause:6;
+-	unsigned int cb_int:1;
+-	unsigned int fill4:1;
+-
+-	unsigned int indexway:12;	/* DW 0 - high 32 */
+-	unsigned int fill5:4;
+-
+-	unsigned int ctxnum:4;
+-	unsigned int fill6:12;
+-
+-	unsigned long missvaddr:64;	/* DW 1 */
+-
+-	unsigned int missasid:24;	/* DW 2 */
+-	unsigned int fill7:8;
+-	unsigned int fillasid:24;
+-	unsigned int dirty:1;
+-	unsigned int gaa:2;
+-	unsigned long fill8:5;
+-
+-	unsigned long pfn:41;		/* DW 3 */
+-	unsigned int fill9:7;
+-	unsigned int pagesize:5;
+-	unsigned int fill10:11;
+-
+-	unsigned long fillvaddr:64;	/* DW 4 */
+-
+-	unsigned long fill11[3];
+-};
+-
+-enum gru_tfh_opc {
+-	TFHOP_NOOP,
+-	TFHOP_RESTART,
+-	TFHOP_WRITE_ONLY,
+-	TFHOP_WRITE_RESTART,
+-	TFHOP_EXCEPTION,
+-	TFHOP_USER_POLLING_MODE = 7,
+-};
+-
+-enum tfh_status {
+-	TFHSTATUS_IDLE,
+-	TFHSTATUS_EXCEPTION,
+-	TFHSTATUS_ACTIVE,
+-};
+-
+-enum tfh_state {
+-	TFHSTATE_INACTIVE,
+-	TFHSTATE_IDLE,
+-	TFHSTATE_MISS_UPM,
+-	TFHSTATE_MISS_FMM,
+-	TFHSTATE_HW_ERR,
+-	TFHSTATE_WRITE_TLB,
+-	TFHSTATE_RESTART_CBR,
+-};
+-
+-/* TFH cause bits */
+-enum tfh_cause {
+-	TFHCAUSE_NONE,
+-	TFHCAUSE_TLB_MISS,
+-	TFHCAUSE_TLB_MOD,
+-	TFHCAUSE_HW_ERROR_RR,
+-	TFHCAUSE_HW_ERROR_MAIN_ARRAY,
+-	TFHCAUSE_HW_ERROR_VALID,
+-	TFHCAUSE_HW_ERROR_PAGESIZE,
+-	TFHCAUSE_INSTRUCTION_EXCEPTION,
+-	TFHCAUSE_UNCORRECTIBLE_ERROR,
+-};
+-
+-/* GAA values */
+-#define GAA_RAM				0x0
+-#define GAA_NCRAM			0x2
+-#define GAA_MMIO			0x1
+-#define GAA_REGISTER			0x3
+-
+-/* GRU paddr shift for pfn. (NOTE: shift is NOT by actual pagesize) */
+-#define GRU_PADDR_SHIFT			12
+-
+-/*
+- * Context Configuration handle
+- * 	Used to allocate resources to a GSEG context.
+- *
+- */
+-struct gru_context_configuration_handle {
+-	unsigned int cmd:1;			/* DW0 */
+-	unsigned int delresp:1;
+-	unsigned int opc:3;
+-	unsigned int unmap_enable:1;
+-	unsigned int req_slice_set_enable:1;
+-	unsigned int req_slice:2;
+-	unsigned int cb_int_enable:1;
+-	unsigned int tlb_int_enable:1;
+-	unsigned int tfm_fault_bit_enable:1;
+-	unsigned int tlb_int_select:4;
+-
+-	unsigned int status:2;
+-	unsigned int state:2;
+-	unsigned int reserved2:4;
+-
+-	unsigned int cause:4;
+-	unsigned int tfm_done_bit_enable:1;
+-	unsigned int unused:3;
+-
+-	unsigned int dsr_allocation_map;
+-
+-	unsigned long cbr_allocation_map;	/* DW1 */
+-
+-	unsigned int asid[8];			/* DW 2 - 5 */
+-	unsigned short sizeavail[8];		/* DW 6 - 7 */
+-} __attribute__ ((packed));
+-
+-enum gru_cch_opc {
+-	CCHOP_START = 1,
+-	CCHOP_ALLOCATE,
+-	CCHOP_INTERRUPT,
+-	CCHOP_DEALLOCATE,
+-	CCHOP_INTERRUPT_SYNC,
+-};
+-
+-enum gru_cch_status {
+-	CCHSTATUS_IDLE,
+-	CCHSTATUS_EXCEPTION,
+-	CCHSTATUS_ACTIVE,
+-};
+-
+-enum gru_cch_state {
+-	CCHSTATE_INACTIVE,
+-	CCHSTATE_MAPPED,
+-	CCHSTATE_ACTIVE,
+-	CCHSTATE_INTERRUPTED,
+-};
+-
+-/* CCH Exception cause */
+-enum gru_cch_cause {
+-	CCHCAUSE_REGION_REGISTER_WRITE_ERROR = 1,
+-	CCHCAUSE_ILLEGAL_OPCODE = 2,
+-	CCHCAUSE_INVALID_START_REQUEST = 3,
+-	CCHCAUSE_INVALID_ALLOCATION_REQUEST = 4,
+-	CCHCAUSE_INVALID_DEALLOCATION_REQUEST = 5,
+-	CCHCAUSE_INVALID_INTERRUPT_REQUEST = 6,
+-	CCHCAUSE_CCH_BUSY = 7,
+-	CCHCAUSE_NO_CBRS_TO_ALLOCATE = 8,
+-	CCHCAUSE_BAD_TFM_CONFIG = 9,
+-	CCHCAUSE_CBR_RESOURCES_OVERSUBSCRIPED = 10,
+-	CCHCAUSE_DSR_RESOURCES_OVERSUBSCRIPED = 11,
+-	CCHCAUSE_CBR_DEALLOCATION_ERROR = 12,
+-};
+-/*
+- * CBE - Control Block Extended
+- * 	Maintains internal GRU state for active CBs.
+- *
+- */
+-struct gru_control_block_extended {
+-	unsigned int reserved0:1;	/* DW 0  - low */
+-	unsigned int imacpy:3;
+-	unsigned int reserved1:4;
+-	unsigned int xtypecpy:3;
+-	unsigned int iaa0cpy:2;
+-	unsigned int iaa1cpy:2;
+-	unsigned int reserved2:1;
+-	unsigned int opccpy:8;
+-	unsigned int exopccpy:8;
+-
+-	unsigned int idef2cpy:22;	/* DW 0  - high */
+-	unsigned int reserved3:10;
+-
+-	unsigned int idef4cpy:22;	/* DW 1 */
+-	unsigned int reserved4:10;
+-	unsigned int idef4upd:22;
+-	unsigned int reserved5:10;
+-
+-	unsigned long idef1upd:64;	/* DW 2 */
+-
+-	unsigned long idef5cpy:64;	/* DW 3 */
+-
+-	unsigned long idef6cpy:64;	/* DW 4 */
+-
+-	unsigned long idef3upd:64;	/* DW 5 */
+-
+-	unsigned long idef5upd:64;	/* DW 6 */
+-
+-	unsigned int idef2upd:22;	/* DW 7 */
+-	unsigned int reserved6:10;
+-
+-	unsigned int ecause:20;
+-	unsigned int cbrstate:4;
+-	unsigned int cbrexecstatus:8;
+-};
+-
+-/* CBE fields for active BCOPY instructions */
+-#define cbe_baddr0	idef1upd
+-#define cbe_baddr1	idef3upd
+-#define cbe_src_cl	idef6cpy
+-#define cbe_nelemcur	idef5upd
+-
+-enum gru_cbr_state {
+-	CBRSTATE_INACTIVE,
+-	CBRSTATE_IDLE,
+-	CBRSTATE_PE_CHECK,
+-	CBRSTATE_QUEUED,
+-	CBRSTATE_WAIT_RESPONSE,
+-	CBRSTATE_INTERRUPTED,
+-	CBRSTATE_INTERRUPTED_MISS_FMM,
+-	CBRSTATE_BUSY_INTERRUPT_MISS_FMM,
+-	CBRSTATE_INTERRUPTED_MISS_UPM,
+-	CBRSTATE_BUSY_INTERRUPTED_MISS_UPM,
+-	CBRSTATE_REQUEST_ISSUE,
+-	CBRSTATE_BUSY_INTERRUPT,
+-};
+-
+-/* CBE cbrexecstatus bits  - defined in gru_instructions.h*/
+-/* CBE ecause bits  - defined in gru_instructions.h */
+-
+-/*
+- * Convert a processor pagesize into the strange encoded pagesize used by the
+- * GRU. Processor pagesize is encoded as log of bytes per page. (or PAGE_SHIFT)
+- * 	pagesize	log pagesize	grupagesize
+- * 	  4k			12	0
+- * 	 16k 			14	1
+- * 	 64k			16	2
+- * 	256k			18	3
+- * 	  1m			20	4
+- * 	  2m			21	5
+- * 	  4m			22	6
+- * 	 16m			24	7
+- * 	 64m			26	8
+- * 	...
+- */
+-#define GRU_PAGESIZE(sh)	((((sh) > 20 ? (sh) + 2 : (sh)) >> 1) - 6)
+-#define GRU_SIZEAVAIL(sh)	(1UL << GRU_PAGESIZE(sh))
+-
+-/* minimum TLB purge count to ensure a full purge */
+-#define GRUMAXINVAL		1024UL
+-
+-int cch_allocate(struct gru_context_configuration_handle *cch);
+-int cch_start(struct gru_context_configuration_handle *cch);
+-int cch_interrupt(struct gru_context_configuration_handle *cch);
+-int cch_deallocate(struct gru_context_configuration_handle *cch);
+-int cch_interrupt_sync(struct gru_context_configuration_handle *cch);
+-int tgh_invalidate(struct gru_tlb_global_handle *tgh, unsigned long vaddr,
+-	unsigned long vaddrmask, int asid, int pagesize, int global, int n,
+-	unsigned short ctxbitmap);
+-int tfh_write_only(struct gru_tlb_fault_handle *tfh, unsigned long paddr,
+-	int gaa, unsigned long vaddr, int asid, int dirty, int pagesize);
+-void tfh_write_restart(struct gru_tlb_fault_handle *tfh, unsigned long paddr,
+-	int gaa, unsigned long vaddr, int asid, int dirty, int pagesize);
+-void tfh_user_polling_mode(struct gru_tlb_fault_handle *tfh);
+-void tfh_exception(struct gru_tlb_fault_handle *tfh);
+-
+-#endif /* __GRUHANDLES_H__ */
+diff --git a/drivers/misc/sgi-gru/grukdump.c b/drivers/misc/sgi-gru/grukdump.c
+deleted file mode 100644
+index 9869f4f2f476..000000000000
+--- a/drivers/misc/sgi-gru/grukdump.c
++++ /dev/null
+@@ -1,223 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * SN Platform GRU Driver
+- *
+- *            Dump GRU State
+- *
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
 - */
 -
 -#include <linux/kernel.h>
 -#include <linux/mm.h>
--#include <linux/interrupt.h>
+-#include <linux/spinlock.h>
+-#include <linux/uaccess.h>
 -#include <linux/delay.h>
--#include <linux/device.h>
--#include <linux/cpu.h>
--#include <linux/module.h>
--#include <linux/err.h>
--#include <linux/slab.h>
--#include <linux/numa.h>
+-#include <linux/bitops.h>
 -#include <asm/uv/uv_hub.h>
--#include <asm/uv/bios.h>
--#include <asm/uv/uv_irq.h>
--#include "../sgi-gru/gru.h"
--#include "../sgi-gru/grukservices.h"
--#include "xpc.h"
 -
--static struct xpc_heartbeat_uv *xpc_heartbeat_uv;
+-#include <linux/nospec.h>
 -
--#define XPC_ACTIVATE_MSG_SIZE_UV	(1 * GRU_CACHE_LINE_BYTES)
--#define XPC_ACTIVATE_MQ_SIZE_UV		(4 * XP_MAX_NPARTITIONS_UV * \
--					 XPC_ACTIVATE_MSG_SIZE_UV)
--#define XPC_ACTIVATE_IRQ_NAME		"xpc_activate"
+-#include "gru.h"
+-#include "grutables.h"
+-#include "gruhandles.h"
+-#include "grulib.h"
 -
--#define XPC_NOTIFY_MSG_SIZE_UV		(2 * GRU_CACHE_LINE_BYTES)
--#define XPC_NOTIFY_MQ_SIZE_UV		(4 * XP_MAX_NPARTITIONS_UV * \
--					 XPC_NOTIFY_MSG_SIZE_UV)
--#define XPC_NOTIFY_IRQ_NAME		"xpc_notify"
+-#define CCH_LOCK_ATTEMPTS	10
 -
--static int xpc_mq_node = NUMA_NO_NODE;
--
--static struct xpc_gru_mq_uv *xpc_activate_mq_uv;
--static struct xpc_gru_mq_uv *xpc_notify_mq_uv;
--
--static int
--xpc_setup_partitions_uv(void)
+-static int gru_user_copy_handle(void __user **dp, void *s)
 -{
--	short partid;
--	struct xpc_partition_uv *part_uv;
--
--	for (partid = 0; partid < XP_MAX_NPARTITIONS_UV; partid++) {
--		part_uv = &xpc_partitions[partid].sn.uv;
--
--		mutex_init(&part_uv->cached_activate_gru_mq_desc_mutex);
--		spin_lock_init(&part_uv->flags_lock);
--		part_uv->remote_act_state = XPC_P_AS_INACTIVE;
--	}
+-	if (copy_to_user(*dp, s, GRU_HANDLE_BYTES))
+-		return -1;
+-	*dp += GRU_HANDLE_BYTES;
 -	return 0;
 -}
 -
--static void
--xpc_teardown_partitions_uv(void)
+-static int gru_dump_context_data(void *grubase,
+-			struct gru_context_configuration_handle *cch,
+-			void __user *ubuf, int ctxnum, int dsrcnt,
+-			int flush_cbrs)
 -{
--	short partid;
--	struct xpc_partition_uv *part_uv;
--	unsigned long irq_flags;
+-	void *cb, *cbe, *tfh, *gseg;
+-	int i, scr;
 -
--	for (partid = 0; partid < XP_MAX_NPARTITIONS_UV; partid++) {
--		part_uv = &xpc_partitions[partid].sn.uv;
+-	gseg = grubase + ctxnum * GRU_GSEG_STRIDE;
+-	cb = gseg + GRU_CB_BASE;
+-	cbe = grubase + GRU_CBE_BASE;
+-	tfh = grubase + GRU_TFH_BASE;
 -
--		if (part_uv->cached_activate_gru_mq_desc != NULL) {
--			mutex_lock(&part_uv->cached_activate_gru_mq_desc_mutex);
--			spin_lock_irqsave(&part_uv->flags_lock, irq_flags);
--			part_uv->flags &= ~XPC_P_CACHED_ACTIVATE_GRU_MQ_DESC_UV;
--			spin_unlock_irqrestore(&part_uv->flags_lock, irq_flags);
--			kfree(part_uv->cached_activate_gru_mq_desc);
--			part_uv->cached_activate_gru_mq_desc = NULL;
--			mutex_unlock(&part_uv->
--				     cached_activate_gru_mq_desc_mutex);
--		}
+-	for_each_cbr_in_allocation_map(i, &cch->cbr_allocation_map, scr) {
+-		if (flush_cbrs)
+-			gru_flush_cache(cb);
+-		if (gru_user_copy_handle(&ubuf, cb))
+-			goto fail;
+-		if (gru_user_copy_handle(&ubuf, tfh + i * GRU_HANDLE_STRIDE))
+-			goto fail;
+-		if (gru_user_copy_handle(&ubuf, cbe + i * GRU_HANDLE_STRIDE))
+-			goto fail;
+-		cb += GRU_HANDLE_STRIDE;
 -	}
--}
--
--static int
--xpc_get_gru_mq_irq_uv(struct xpc_gru_mq_uv *mq, int cpu, char *irq_name)
--{
--	int mmr_pnode = uv_blade_to_pnode(mq->mmr_blade);
--
--	mq->irq = uv_setup_irq(irq_name, cpu, mq->mmr_blade, mq->mmr_offset,
--			UV_AFFINITY_CPU);
--	if (mq->irq < 0)
--		return mq->irq;
--
--	mq->mmr_value = uv_read_global_mmr64(mmr_pnode, mq->mmr_offset);
--
+-	if (dsrcnt)
+-		memcpy(ubuf, gseg + GRU_DS_BASE, dsrcnt * GRU_HANDLE_STRIDE);
 -	return 0;
+-
+-fail:
+-	return -EFAULT;
 -}
 -
--static void
--xpc_release_gru_mq_irq_uv(struct xpc_gru_mq_uv *mq)
+-static int gru_dump_tfm(struct gru_state *gru,
+-		void __user *ubuf, void __user *ubufend)
 -{
--	uv_teardown_irq(mq->irq);
+-	struct gru_tlb_fault_map *tfm;
+-	int i;
+-
+-	if (GRU_NUM_TFM * GRU_CACHE_LINE_BYTES > ubufend - ubuf)
+-		return -EFBIG;
+-
+-	for (i = 0; i < GRU_NUM_TFM; i++) {
+-		tfm = get_tfm(gru->gs_gru_base_vaddr, i);
+-		if (gru_user_copy_handle(&ubuf, tfm))
+-			goto fail;
+-	}
+-	return GRU_NUM_TFM * GRU_CACHE_LINE_BYTES;
+-
+-fail:
+-	return -EFAULT;
 -}
 -
--static int
--xpc_gru_mq_watchlist_alloc_uv(struct xpc_gru_mq_uv *mq)
+-static int gru_dump_tgh(struct gru_state *gru,
+-		void __user *ubuf, void __user *ubufend)
 -{
--	int ret;
+-	struct gru_tlb_global_handle *tgh;
+-	int i;
 -
--	ret = uv_bios_mq_watchlist_alloc(uv_gpa(mq->address),
--					 mq->order, &mq->mmr_offset);
--	if (ret < 0) {
--		dev_err(xpc_part, "uv_bios_mq_watchlist_alloc() failed, "
--			"ret=%d\n", ret);
--		return ret;
+-	if (GRU_NUM_TGH * GRU_CACHE_LINE_BYTES > ubufend - ubuf)
+-		return -EFBIG;
+-
+-	for (i = 0; i < GRU_NUM_TGH; i++) {
+-		tgh = get_tgh(gru->gs_gru_base_vaddr, i);
+-		if (gru_user_copy_handle(&ubuf, tgh))
+-			goto fail;
 -	}
+-	return GRU_NUM_TGH * GRU_CACHE_LINE_BYTES;
 -
--	mq->watchlist_num = ret;
--	return 0;
+-fail:
+-	return -EFAULT;
 -}
 -
--static void
--xpc_gru_mq_watchlist_free_uv(struct xpc_gru_mq_uv *mq)
+-static int gru_dump_context(struct gru_state *gru, int ctxnum,
+-		void __user *ubuf, void __user *ubufend, char data_opt,
+-		char lock_cch, char flush_cbrs)
 -{
--	int ret;
--	int mmr_pnode = uv_blade_to_pnode(mq->mmr_blade);
+-	struct gru_dump_context_header hdr;
+-	struct gru_dump_context_header __user *uhdr = ubuf;
+-	struct gru_context_configuration_handle *cch, *ubufcch;
+-	struct gru_thread_state *gts;
+-	int try, cch_locked, cbrcnt = 0, dsrcnt = 0, bytes = 0, ret = 0;
+-	void *grubase;
 -
--	ret = uv_bios_mq_watchlist_free(mmr_pnode, mq->watchlist_num);
--	BUG_ON(ret != BIOS_STATUS_SUCCESS);
--}
--
--static struct xpc_gru_mq_uv *
--xpc_create_gru_mq_uv(unsigned int mq_size, int cpu, char *irq_name,
--		     irq_handler_t irq_handler)
--{
--	enum xp_retval xp_ret;
--	int ret;
--	int nid;
--	int nasid;
--	int pg_order;
--	struct page *page;
--	struct xpc_gru_mq_uv *mq;
--	struct uv_IO_APIC_route_entry *mmr_value;
--
--	mq = kmalloc_obj(struct xpc_gru_mq_uv);
--	if (mq == NULL) {
--		dev_err(xpc_part, "xpc_create_gru_mq_uv() failed to kmalloc() "
--			"a xpc_gru_mq_uv structure\n");
--		ret = -ENOMEM;
--		goto out_0;
--	}
--
--	mq->gru_mq_desc = kzalloc_obj(struct gru_message_queue_desc);
--	if (mq->gru_mq_desc == NULL) {
--		dev_err(xpc_part, "xpc_create_gru_mq_uv() failed to kmalloc() "
--			"a gru_message_queue_desc structure\n");
--		ret = -ENOMEM;
--		goto out_1;
--	}
--
--	pg_order = get_order(mq_size);
--	mq->order = pg_order + PAGE_SHIFT;
--	mq_size = 1UL << mq->order;
--
--	mq->mmr_blade = uv_cpu_to_blade_id(cpu);
--
--	nid = cpu_to_node(cpu);
--	page = __alloc_pages_node(nid,
--				      GFP_KERNEL | __GFP_ZERO | __GFP_THISNODE,
--				      pg_order);
--	if (page == NULL) {
--		dev_err(xpc_part, "xpc_create_gru_mq_uv() failed to alloc %d "
--			"bytes of memory on nid=%d for GRU mq\n", mq_size, nid);
--		ret = -ENOMEM;
--		goto out_2;
--	}
--	mq->address = page_address(page);
--
--	/* enable generation of irq when GRU mq operation occurs to this mq */
--	ret = xpc_gru_mq_watchlist_alloc_uv(mq);
--	if (ret != 0)
--		goto out_3;
--
--	ret = xpc_get_gru_mq_irq_uv(mq, cpu, irq_name);
--	if (ret != 0)
--		goto out_4;
--
--	ret = request_irq(mq->irq, irq_handler, 0, irq_name, NULL);
--	if (ret != 0) {
--		dev_err(xpc_part, "request_irq(irq=%d) returned error=%d\n",
--			mq->irq, -ret);
--		goto out_5;
--	}
--
--	nasid = UV_PNODE_TO_NASID(uv_cpu_to_pnode(cpu));
--
--	mmr_value = (struct uv_IO_APIC_route_entry *)&mq->mmr_value;
--	ret = gru_create_message_queue(mq->gru_mq_desc, mq->address, mq_size,
--				     nasid, mmr_value->vector, mmr_value->dest);
--	if (ret != 0) {
--		dev_err(xpc_part, "gru_create_message_queue() returned "
--			"error=%d\n", ret);
--		ret = -EINVAL;
--		goto out_6;
--	}
--
--	/* allow other partitions to access this GRU mq */
--	xp_ret = xp_expand_memprotect(xp_pa(mq->address), mq_size);
--	if (xp_ret != xpSuccess) {
--		ret = -EACCES;
--		goto out_6;
--	}
--
--	return mq;
--
--	/* something went wrong */
--out_6:
--	free_irq(mq->irq, NULL);
--out_5:
--	xpc_release_gru_mq_irq_uv(mq);
--out_4:
--	xpc_gru_mq_watchlist_free_uv(mq);
--out_3:
--	free_pages((unsigned long)mq->address, pg_order);
--out_2:
--	kfree(mq->gru_mq_desc);
--out_1:
--	kfree(mq);
--out_0:
--	return ERR_PTR(ret);
--}
--
--static void
--xpc_destroy_gru_mq_uv(struct xpc_gru_mq_uv *mq)
--{
--	unsigned int mq_size;
--	int pg_order;
--	int ret;
--
--	/* disallow other partitions to access GRU mq */
--	mq_size = 1UL << mq->order;
--	ret = xp_restrict_memprotect(xp_pa(mq->address), mq_size);
--	BUG_ON(ret != xpSuccess);
--
--	/* unregister irq handler and release mq irq/vector mapping */
--	free_irq(mq->irq, NULL);
--	xpc_release_gru_mq_irq_uv(mq);
--
--	/* disable generation of irq when GRU mq op occurs to this mq */
--	xpc_gru_mq_watchlist_free_uv(mq);
--
--	pg_order = mq->order - PAGE_SHIFT;
--	free_pages((unsigned long)mq->address, pg_order);
--
--	kfree(mq);
--}
--
--static enum xp_retval
--xpc_send_gru_msg(struct gru_message_queue_desc *gru_mq_desc, void *msg,
--		 size_t msg_size)
--{
--	enum xp_retval xp_ret;
--	int ret;
--
--	while (1) {
--		ret = gru_send_message_gpa(gru_mq_desc, msg, msg_size);
--		if (ret == MQE_OK) {
--			xp_ret = xpSuccess;
+-	memset(&hdr, 0, sizeof(hdr));
+-	grubase = gru->gs_gru_base_vaddr;
+-	cch = get_cch(grubase, ctxnum);
+-	for (try = 0; try < CCH_LOCK_ATTEMPTS; try++) {
+-		cch_locked =  trylock_cch_handle(cch);
+-		if (cch_locked)
 -			break;
+-		msleep(1);
+-	}
+-
+-	ubuf += sizeof(hdr);
+-	ubufcch = ubuf;
+-	if (gru_user_copy_handle(&ubuf, cch)) {
+-		if (cch_locked)
+-			unlock_cch_handle(cch);
+-		return -EFAULT;
+-	}
+-	if (cch_locked)
+-		ubufcch->delresp = 0;
+-	bytes = sizeof(hdr) + GRU_CACHE_LINE_BYTES;
+-
+-	if (cch_locked || !lock_cch) {
+-		gts = gru->gs_gts[ctxnum];
+-		if (gts && gts->ts_vma) {
+-			hdr.pid = gts->ts_tgid_owner;
+-			hdr.vaddr = gts->ts_vma->vm_start;
 -		}
--
--		if (ret == MQE_QUEUE_FULL) {
--			dev_dbg(xpc_chan, "gru_send_message_gpa() returned "
--				"error=MQE_QUEUE_FULL\n");
--			/* !!! handle QLimit reached; delay & try again */
--			/* ??? Do we add a limit to the number of retries? */
--			(void)msleep_interruptible(10);
--		} else if (ret == MQE_CONGESTION) {
--			dev_dbg(xpc_chan, "gru_send_message_gpa() returned "
--				"error=MQE_CONGESTION\n");
--			/* !!! handle LB Overflow; simply try again */
--			/* ??? Do we add a limit to the number of retries? */
--		} else {
--			/* !!! Currently this is MQE_UNEXPECTED_CB_ERR */
--			dev_err(xpc_chan, "gru_send_message_gpa() returned "
--				"error=%d\n", ret);
--			xp_ret = xpGruSendMqError;
--			break;
+-		if (cch->state != CCHSTATE_INACTIVE) {
+-			cbrcnt = hweight64(cch->cbr_allocation_map) *
+-						GRU_CBR_AU_SIZE;
+-			dsrcnt = data_opt ? hweight32(cch->dsr_allocation_map) *
+-						GRU_DSR_AU_CL : 0;
 -		}
--	}
--	return xp_ret;
--}
--
--static void
--xpc_process_activate_IRQ_rcvd_uv(void)
--{
--	unsigned long irq_flags;
--	short partid;
--	struct xpc_partition *part;
--	u8 act_state_req;
--
--	DBUG_ON(xpc_activate_IRQ_rcvd == 0);
--
--	spin_lock_irqsave(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--	for (partid = 0; partid < XP_MAX_NPARTITIONS_UV; partid++) {
--		part = &xpc_partitions[partid];
--
--		if (part->sn.uv.act_state_req == 0)
--			continue;
--
--		xpc_activate_IRQ_rcvd--;
--		BUG_ON(xpc_activate_IRQ_rcvd < 0);
--
--		act_state_req = part->sn.uv.act_state_req;
--		part->sn.uv.act_state_req = 0;
--		spin_unlock_irqrestore(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--
--		if (act_state_req == XPC_P_ASR_ACTIVATE_UV) {
--			if (part->act_state == XPC_P_AS_INACTIVE)
--				xpc_activate_partition(part);
--			else if (part->act_state == XPC_P_AS_DEACTIVATING)
--				XPC_DEACTIVATE_PARTITION(part, xpReactivating);
--
--		} else if (act_state_req == XPC_P_ASR_REACTIVATE_UV) {
--			if (part->act_state == XPC_P_AS_INACTIVE)
--				xpc_activate_partition(part);
--			else
--				XPC_DEACTIVATE_PARTITION(part, xpReactivating);
--
--		} else if (act_state_req == XPC_P_ASR_DEACTIVATE_UV) {
--			XPC_DEACTIVATE_PARTITION(part, part->sn.uv.reason);
--
--		} else {
--			BUG();
--		}
--
--		spin_lock_irqsave(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--		if (xpc_activate_IRQ_rcvd == 0)
--			break;
--	}
--	spin_unlock_irqrestore(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--
--}
--
--static void
--xpc_handle_activate_mq_msg_uv(struct xpc_partition *part,
--			      struct xpc_activate_mq_msghdr_uv *msg_hdr,
--			      int part_setup,
--			      int *wakeup_hb_checker)
--{
--	unsigned long irq_flags;
--	struct xpc_partition_uv *part_uv = &part->sn.uv;
--	struct xpc_openclose_args *args;
--
--	part_uv->remote_act_state = msg_hdr->act_state;
--
--	switch (msg_hdr->type) {
--	case XPC_ACTIVATE_MQ_MSG_SYNC_ACT_STATE_UV:
--		/* syncing of remote_act_state was just done above */
--		break;
--
--	case XPC_ACTIVATE_MQ_MSG_ACTIVATE_REQ_UV: {
--		struct xpc_activate_mq_msg_activate_req_uv *msg;
--
--		/*
--		 * ??? Do we deal here with ts_jiffies being different
--		 * ??? if act_state != XPC_P_AS_INACTIVE instead of
--		 * ??? below?
--		 */
--		msg = container_of(msg_hdr, struct
--				   xpc_activate_mq_msg_activate_req_uv, hdr);
--
--		spin_lock_irqsave(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--		if (part_uv->act_state_req == 0)
--			xpc_activate_IRQ_rcvd++;
--		part_uv->act_state_req = XPC_P_ASR_ACTIVATE_UV;
--		part->remote_rp_pa = msg->rp_gpa; /* !!! _pa is _gpa */
--		part->remote_rp_ts_jiffies = msg_hdr->rp_ts_jiffies;
--		part_uv->heartbeat_gpa = msg->heartbeat_gpa;
--
--		if (msg->activate_gru_mq_desc_gpa !=
--		    part_uv->activate_gru_mq_desc_gpa) {
--			spin_lock(&part_uv->flags_lock);
--			part_uv->flags &= ~XPC_P_CACHED_ACTIVATE_GRU_MQ_DESC_UV;
--			spin_unlock(&part_uv->flags_lock);
--			part_uv->activate_gru_mq_desc_gpa =
--			    msg->activate_gru_mq_desc_gpa;
--		}
--		spin_unlock_irqrestore(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--
--		(*wakeup_hb_checker)++;
--		break;
--	}
--	case XPC_ACTIVATE_MQ_MSG_DEACTIVATE_REQ_UV: {
--		struct xpc_activate_mq_msg_deactivate_req_uv *msg;
--
--		msg = container_of(msg_hdr, struct
--				   xpc_activate_mq_msg_deactivate_req_uv, hdr);
--
--		spin_lock_irqsave(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--		if (part_uv->act_state_req == 0)
--			xpc_activate_IRQ_rcvd++;
--		part_uv->act_state_req = XPC_P_ASR_DEACTIVATE_UV;
--		part_uv->reason = msg->reason;
--		spin_unlock_irqrestore(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--
--		(*wakeup_hb_checker)++;
--		return;
--	}
--	case XPC_ACTIVATE_MQ_MSG_CHCTL_CLOSEREQUEST_UV: {
--		struct xpc_activate_mq_msg_chctl_closerequest_uv *msg;
--
--		if (!part_setup)
--			break;
--
--		msg = container_of(msg_hdr, struct
--				   xpc_activate_mq_msg_chctl_closerequest_uv,
--				   hdr);
--		args = &part->remote_openclose_args[msg->ch_number];
--		args->reason = msg->reason;
--
--		spin_lock_irqsave(&part->chctl_lock, irq_flags);
--		part->chctl.flags[msg->ch_number] |= XPC_CHCTL_CLOSEREQUEST;
--		spin_unlock_irqrestore(&part->chctl_lock, irq_flags);
--
--		xpc_wakeup_channel_mgr(part);
--		break;
--	}
--	case XPC_ACTIVATE_MQ_MSG_CHCTL_CLOSEREPLY_UV: {
--		struct xpc_activate_mq_msg_chctl_closereply_uv *msg;
--
--		if (!part_setup)
--			break;
--
--		msg = container_of(msg_hdr, struct
--				   xpc_activate_mq_msg_chctl_closereply_uv,
--				   hdr);
--
--		spin_lock_irqsave(&part->chctl_lock, irq_flags);
--		part->chctl.flags[msg->ch_number] |= XPC_CHCTL_CLOSEREPLY;
--		spin_unlock_irqrestore(&part->chctl_lock, irq_flags);
--
--		xpc_wakeup_channel_mgr(part);
--		break;
--	}
--	case XPC_ACTIVATE_MQ_MSG_CHCTL_OPENREQUEST_UV: {
--		struct xpc_activate_mq_msg_chctl_openrequest_uv *msg;
--
--		if (!part_setup)
--			break;
--
--		msg = container_of(msg_hdr, struct
--				   xpc_activate_mq_msg_chctl_openrequest_uv,
--				   hdr);
--		args = &part->remote_openclose_args[msg->ch_number];
--		args->entry_size = msg->entry_size;
--		args->local_nentries = msg->local_nentries;
--
--		spin_lock_irqsave(&part->chctl_lock, irq_flags);
--		part->chctl.flags[msg->ch_number] |= XPC_CHCTL_OPENREQUEST;
--		spin_unlock_irqrestore(&part->chctl_lock, irq_flags);
--
--		xpc_wakeup_channel_mgr(part);
--		break;
--	}
--	case XPC_ACTIVATE_MQ_MSG_CHCTL_OPENREPLY_UV: {
--		struct xpc_activate_mq_msg_chctl_openreply_uv *msg;
--
--		if (!part_setup)
--			break;
--
--		msg = container_of(msg_hdr, struct
--				   xpc_activate_mq_msg_chctl_openreply_uv, hdr);
--		args = &part->remote_openclose_args[msg->ch_number];
--		args->remote_nentries = msg->remote_nentries;
--		args->local_nentries = msg->local_nentries;
--		args->local_msgqueue_pa = msg->notify_gru_mq_desc_gpa;
--
--		spin_lock_irqsave(&part->chctl_lock, irq_flags);
--		part->chctl.flags[msg->ch_number] |= XPC_CHCTL_OPENREPLY;
--		spin_unlock_irqrestore(&part->chctl_lock, irq_flags);
--
--		xpc_wakeup_channel_mgr(part);
--		break;
--	}
--	case XPC_ACTIVATE_MQ_MSG_CHCTL_OPENCOMPLETE_UV: {
--		struct xpc_activate_mq_msg_chctl_opencomplete_uv *msg;
--
--		if (!part_setup)
--			break;
--
--		msg = container_of(msg_hdr, struct
--				xpc_activate_mq_msg_chctl_opencomplete_uv, hdr);
--		spin_lock_irqsave(&part->chctl_lock, irq_flags);
--		part->chctl.flags[msg->ch_number] |= XPC_CHCTL_OPENCOMPLETE;
--		spin_unlock_irqrestore(&part->chctl_lock, irq_flags);
--
--		xpc_wakeup_channel_mgr(part);
--	}
--		fallthrough;
--	case XPC_ACTIVATE_MQ_MSG_MARK_ENGAGED_UV:
--		spin_lock_irqsave(&part_uv->flags_lock, irq_flags);
--		part_uv->flags |= XPC_P_ENGAGED_UV;
--		spin_unlock_irqrestore(&part_uv->flags_lock, irq_flags);
--		break;
--
--	case XPC_ACTIVATE_MQ_MSG_MARK_DISENGAGED_UV:
--		spin_lock_irqsave(&part_uv->flags_lock, irq_flags);
--		part_uv->flags &= ~XPC_P_ENGAGED_UV;
--		spin_unlock_irqrestore(&part_uv->flags_lock, irq_flags);
--		break;
--
--	default:
--		dev_err(xpc_part, "received unknown activate_mq msg type=%d "
--			"from partition=%d\n", msg_hdr->type, XPC_PARTID(part));
--
--		/* get hb checker to deactivate from the remote partition */
--		spin_lock_irqsave(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--		if (part_uv->act_state_req == 0)
--			xpc_activate_IRQ_rcvd++;
--		part_uv->act_state_req = XPC_P_ASR_DEACTIVATE_UV;
--		part_uv->reason = xpBadMsgType;
--		spin_unlock_irqrestore(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--
--		(*wakeup_hb_checker)++;
--		return;
--	}
--
--	if (msg_hdr->rp_ts_jiffies != part->remote_rp_ts_jiffies &&
--	    part->remote_rp_ts_jiffies != 0) {
--		/*
--		 * ??? Does what we do here need to be sensitive to
--		 * ??? act_state or remote_act_state?
--		 */
--		spin_lock_irqsave(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--		if (part_uv->act_state_req == 0)
--			xpc_activate_IRQ_rcvd++;
--		part_uv->act_state_req = XPC_P_ASR_REACTIVATE_UV;
--		spin_unlock_irqrestore(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--
--		(*wakeup_hb_checker)++;
--	}
--}
--
--static irqreturn_t
--xpc_handle_activate_IRQ_uv(int irq, void *dev_id)
--{
--	struct xpc_activate_mq_msghdr_uv *msg_hdr;
--	short partid;
--	struct xpc_partition *part;
--	int wakeup_hb_checker = 0;
--	int part_referenced;
--
--	while (1) {
--		msg_hdr = gru_get_next_message(xpc_activate_mq_uv->gru_mq_desc);
--		if (msg_hdr == NULL)
--			break;
--
--		partid = msg_hdr->partid;
--		if (partid < 0 || partid >= XP_MAX_NPARTITIONS_UV) {
--			dev_err(xpc_part, "xpc_handle_activate_IRQ_uv() "
--				"received invalid partid=0x%x in message\n",
--				partid);
--		} else {
--			part = &xpc_partitions[partid];
--
--			part_referenced = xpc_part_ref(part);
--			xpc_handle_activate_mq_msg_uv(part, msg_hdr,
--						      part_referenced,
--						      &wakeup_hb_checker);
--			if (part_referenced)
--				xpc_part_deref(part);
--		}
--
--		gru_free_message(xpc_activate_mq_uv->gru_mq_desc, msg_hdr);
--	}
--
--	if (wakeup_hb_checker)
--		wake_up_interruptible(&xpc_activate_IRQ_wq);
--
--	return IRQ_HANDLED;
--}
--
--static enum xp_retval
--xpc_cache_remote_gru_mq_desc_uv(struct gru_message_queue_desc *gru_mq_desc,
--				unsigned long gru_mq_desc_gpa)
--{
--	enum xp_retval ret;
--
--	ret = xp_remote_memcpy(uv_gpa(gru_mq_desc), gru_mq_desc_gpa,
--			       sizeof(struct gru_message_queue_desc));
--	if (ret == xpSuccess)
--		gru_mq_desc->mq = NULL;
--
--	return ret;
--}
--
--static enum xp_retval
--xpc_send_activate_IRQ_uv(struct xpc_partition *part, void *msg, size_t msg_size,
--			 int msg_type)
--{
--	struct xpc_activate_mq_msghdr_uv *msg_hdr = msg;
--	struct xpc_partition_uv *part_uv = &part->sn.uv;
--	struct gru_message_queue_desc *gru_mq_desc;
--	unsigned long irq_flags;
--	enum xp_retval ret;
--
--	DBUG_ON(msg_size > XPC_ACTIVATE_MSG_SIZE_UV);
--
--	msg_hdr->type = msg_type;
--	msg_hdr->partid = xp_partition_id;
--	msg_hdr->act_state = part->act_state;
--	msg_hdr->rp_ts_jiffies = xpc_rsvd_page->ts_jiffies;
--
--	mutex_lock(&part_uv->cached_activate_gru_mq_desc_mutex);
--again:
--	if (!(part_uv->flags & XPC_P_CACHED_ACTIVATE_GRU_MQ_DESC_UV)) {
--		gru_mq_desc = part_uv->cached_activate_gru_mq_desc;
--		if (gru_mq_desc == NULL) {
--			gru_mq_desc = kmalloc_obj(struct gru_message_queue_desc,
--						  GFP_ATOMIC);
--			if (gru_mq_desc == NULL) {
--				ret = xpNoMemory;
--				goto done;
--			}
--			part_uv->cached_activate_gru_mq_desc = gru_mq_desc;
--		}
--
--		ret = xpc_cache_remote_gru_mq_desc_uv(gru_mq_desc,
--						      part_uv->
--						      activate_gru_mq_desc_gpa);
--		if (ret != xpSuccess)
--			goto done;
--
--		spin_lock_irqsave(&part_uv->flags_lock, irq_flags);
--		part_uv->flags |= XPC_P_CACHED_ACTIVATE_GRU_MQ_DESC_UV;
--		spin_unlock_irqrestore(&part_uv->flags_lock, irq_flags);
--	}
--
--	/* ??? Is holding a spin_lock (ch->lock) during this call a bad idea? */
--	ret = xpc_send_gru_msg(part_uv->cached_activate_gru_mq_desc, msg,
--			       msg_size);
--	if (ret != xpSuccess) {
--		smp_rmb();	/* ensure a fresh copy of part_uv->flags */
--		if (!(part_uv->flags & XPC_P_CACHED_ACTIVATE_GRU_MQ_DESC_UV))
--			goto again;
--	}
--done:
--	mutex_unlock(&part_uv->cached_activate_gru_mq_desc_mutex);
--	return ret;
--}
--
--static void
--xpc_send_activate_IRQ_part_uv(struct xpc_partition *part, void *msg,
--			      size_t msg_size, int msg_type)
--{
--	enum xp_retval ret;
--
--	ret = xpc_send_activate_IRQ_uv(part, msg, msg_size, msg_type);
--	if (unlikely(ret != xpSuccess))
--		XPC_DEACTIVATE_PARTITION(part, ret);
--}
--
--static void
--xpc_send_activate_IRQ_ch_uv(struct xpc_channel *ch, unsigned long *irq_flags,
--			 void *msg, size_t msg_size, int msg_type)
--{
--	struct xpc_partition *part = &xpc_partitions[ch->partid];
--	enum xp_retval ret;
--
--	ret = xpc_send_activate_IRQ_uv(part, msg, msg_size, msg_type);
--	if (unlikely(ret != xpSuccess)) {
--		if (irq_flags != NULL)
--			spin_unlock_irqrestore(&ch->lock, *irq_flags);
--
--		XPC_DEACTIVATE_PARTITION(part, ret);
--
--		if (irq_flags != NULL)
--			spin_lock_irqsave(&ch->lock, *irq_flags);
--	}
--}
--
--static void
--xpc_send_local_activate_IRQ_uv(struct xpc_partition *part, int act_state_req)
--{
--	unsigned long irq_flags;
--	struct xpc_partition_uv *part_uv = &part->sn.uv;
--
--	/*
--	 * !!! Make our side think that the remote partition sent an activate
--	 * !!! mq message our way by doing what the activate IRQ handler would
--	 * !!! do had one really been sent.
--	 */
--
--	spin_lock_irqsave(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--	if (part_uv->act_state_req == 0)
--		xpc_activate_IRQ_rcvd++;
--	part_uv->act_state_req = act_state_req;
--	spin_unlock_irqrestore(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--
--	wake_up_interruptible(&xpc_activate_IRQ_wq);
--}
--
--static enum xp_retval
--xpc_get_partition_rsvd_page_pa_uv(void *buf, u64 *cookie, unsigned long *rp_pa,
--				  size_t *len)
--{
--	s64 status;
--	enum xp_retval ret;
--
--	status = uv_bios_reserved_page_pa((u64)buf, cookie, (u64 *)rp_pa,
--					  (u64 *)len);
--	if (status == BIOS_STATUS_SUCCESS)
--		ret = xpSuccess;
--	else if (status == BIOS_STATUS_MORE_PASSES)
--		ret = xpNeedMoreInfo;
--	else
--		ret = xpBiosError;
--
--	return ret;
--}
--
--static int
--xpc_setup_rsvd_page_uv(struct xpc_rsvd_page *rp)
--{
--	xpc_heartbeat_uv =
--	    &xpc_partitions[sn_partition_id].sn.uv.cached_heartbeat;
--	rp->sn.uv.heartbeat_gpa = uv_gpa(xpc_heartbeat_uv);
--	rp->sn.uv.activate_gru_mq_desc_gpa =
--	    uv_gpa(xpc_activate_mq_uv->gru_mq_desc);
--	return 0;
--}
--
--static void
--xpc_allow_hb_uv(short partid)
--{
--}
--
--static void
--xpc_disallow_hb_uv(short partid)
--{
--}
--
--static void
--xpc_disallow_all_hbs_uv(void)
--{
--}
--
--static void
--xpc_increment_heartbeat_uv(void)
--{
--	xpc_heartbeat_uv->value++;
--}
--
--static void
--xpc_offline_heartbeat_uv(void)
--{
--	xpc_increment_heartbeat_uv();
--	xpc_heartbeat_uv->offline = 1;
--}
--
--static void
--xpc_online_heartbeat_uv(void)
--{
--	xpc_increment_heartbeat_uv();
--	xpc_heartbeat_uv->offline = 0;
--}
--
--static void
--xpc_heartbeat_init_uv(void)
--{
--	xpc_heartbeat_uv->value = 1;
--	xpc_heartbeat_uv->offline = 0;
--}
--
--static void
--xpc_heartbeat_exit_uv(void)
--{
--	xpc_offline_heartbeat_uv();
--}
--
--static enum xp_retval
--xpc_get_remote_heartbeat_uv(struct xpc_partition *part)
--{
--	struct xpc_partition_uv *part_uv = &part->sn.uv;
--	enum xp_retval ret;
--
--	ret = xp_remote_memcpy(uv_gpa(&part_uv->cached_heartbeat),
--			       part_uv->heartbeat_gpa,
--			       sizeof(struct xpc_heartbeat_uv));
--	if (ret != xpSuccess)
--		return ret;
--
--	if (part_uv->cached_heartbeat.value == part->last_heartbeat &&
--	    !part_uv->cached_heartbeat.offline) {
--
--		ret = xpNoHeartbeat;
--	} else {
--		part->last_heartbeat = part_uv->cached_heartbeat.value;
--	}
--	return ret;
--}
--
--static void
--xpc_request_partition_activation_uv(struct xpc_rsvd_page *remote_rp,
--				    unsigned long remote_rp_gpa, int nasid)
--{
--	short partid = remote_rp->SAL_partid;
--	struct xpc_partition *part = &xpc_partitions[partid];
--	struct xpc_activate_mq_msg_activate_req_uv msg;
--
--	part->remote_rp_pa = remote_rp_gpa; /* !!! _pa here is really _gpa */
--	part->remote_rp_ts_jiffies = remote_rp->ts_jiffies;
--	part->sn.uv.heartbeat_gpa = remote_rp->sn.uv.heartbeat_gpa;
--	part->sn.uv.activate_gru_mq_desc_gpa =
--	    remote_rp->sn.uv.activate_gru_mq_desc_gpa;
--
--	/*
--	 * ??? Is it a good idea to make this conditional on what is
--	 * ??? potentially stale state information?
--	 */
--	if (part->sn.uv.remote_act_state == XPC_P_AS_INACTIVE) {
--		msg.rp_gpa = uv_gpa(xpc_rsvd_page);
--		msg.heartbeat_gpa = xpc_rsvd_page->sn.uv.heartbeat_gpa;
--		msg.activate_gru_mq_desc_gpa =
--		    xpc_rsvd_page->sn.uv.activate_gru_mq_desc_gpa;
--		xpc_send_activate_IRQ_part_uv(part, &msg, sizeof(msg),
--					   XPC_ACTIVATE_MQ_MSG_ACTIVATE_REQ_UV);
--	}
--
--	if (part->act_state == XPC_P_AS_INACTIVE)
--		xpc_send_local_activate_IRQ_uv(part, XPC_P_ASR_ACTIVATE_UV);
--}
--
--static void
--xpc_request_partition_reactivation_uv(struct xpc_partition *part)
--{
--	xpc_send_local_activate_IRQ_uv(part, XPC_P_ASR_ACTIVATE_UV);
--}
--
--static void
--xpc_request_partition_deactivation_uv(struct xpc_partition *part)
--{
--	struct xpc_activate_mq_msg_deactivate_req_uv msg;
--
--	/*
--	 * ??? Is it a good idea to make this conditional on what is
--	 * ??? potentially stale state information?
--	 */
--	if (part->sn.uv.remote_act_state != XPC_P_AS_DEACTIVATING &&
--	    part->sn.uv.remote_act_state != XPC_P_AS_INACTIVE) {
--
--		msg.reason = part->reason;
--		xpc_send_activate_IRQ_part_uv(part, &msg, sizeof(msg),
--					 XPC_ACTIVATE_MQ_MSG_DEACTIVATE_REQ_UV);
--	}
--}
--
--static void
--xpc_cancel_partition_deactivation_request_uv(struct xpc_partition *part)
--{
--	/* nothing needs to be done */
--	return;
--}
--
--static void
--xpc_init_fifo_uv(struct xpc_fifo_head_uv *head)
--{
--	head->first = NULL;
--	head->last = NULL;
--	spin_lock_init(&head->lock);
--	head->n_entries = 0;
--}
--
--static void *
--xpc_get_fifo_entry_uv(struct xpc_fifo_head_uv *head)
--{
--	unsigned long irq_flags;
--	struct xpc_fifo_entry_uv *first;
--
--	spin_lock_irqsave(&head->lock, irq_flags);
--	first = head->first;
--	if (head->first != NULL) {
--		head->first = first->next;
--		if (head->first == NULL)
--			head->last = NULL;
--
--		head->n_entries--;
--		BUG_ON(head->n_entries < 0);
--
--		first->next = NULL;
--	}
--	spin_unlock_irqrestore(&head->lock, irq_flags);
--	return first;
--}
--
--static void
--xpc_put_fifo_entry_uv(struct xpc_fifo_head_uv *head,
--		      struct xpc_fifo_entry_uv *last)
--{
--	unsigned long irq_flags;
--
--	last->next = NULL;
--	spin_lock_irqsave(&head->lock, irq_flags);
--	if (head->last != NULL)
--		head->last->next = last;
--	else
--		head->first = last;
--	head->last = last;
--	head->n_entries++;
--	spin_unlock_irqrestore(&head->lock, irq_flags);
--}
--
--static int
--xpc_n_of_fifo_entries_uv(struct xpc_fifo_head_uv *head)
--{
--	return head->n_entries;
--}
--
--/*
-- * Setup the channel structures that are uv specific.
-- */
--static enum xp_retval
--xpc_setup_ch_structures_uv(struct xpc_partition *part)
--{
--	struct xpc_channel_uv *ch_uv;
--	int ch_number;
--
--	for (ch_number = 0; ch_number < part->nchannels; ch_number++) {
--		ch_uv = &part->channels[ch_number].sn.uv;
--
--		xpc_init_fifo_uv(&ch_uv->msg_slot_free_list);
--		xpc_init_fifo_uv(&ch_uv->recv_msg_list);
--	}
--
--	return xpSuccess;
--}
--
--/*
-- * Teardown the channel structures that are uv specific.
-- */
--static void
--xpc_teardown_ch_structures_uv(struct xpc_partition *part)
--{
--	/* nothing needs to be done */
--	return;
--}
--
--static enum xp_retval
--xpc_make_first_contact_uv(struct xpc_partition *part)
--{
--	struct xpc_activate_mq_msg_uv msg;
--
--	/*
--	 * We send a sync msg to get the remote partition's remote_act_state
--	 * updated to our current act_state which at this point should
--	 * be XPC_P_AS_ACTIVATING.
--	 */
--	xpc_send_activate_IRQ_part_uv(part, &msg, sizeof(msg),
--				      XPC_ACTIVATE_MQ_MSG_SYNC_ACT_STATE_UV);
--
--	while (!((part->sn.uv.remote_act_state == XPC_P_AS_ACTIVATING) ||
--		 (part->sn.uv.remote_act_state == XPC_P_AS_ACTIVE))) {
--
--		dev_dbg(xpc_part, "waiting to make first contact with "
--			"partition %d\n", XPC_PARTID(part));
--
--		/* wait a 1/4 of a second or so */
--		(void)msleep_interruptible(250);
--
--		if (part->act_state == XPC_P_AS_DEACTIVATING)
--			return part->reason;
--	}
--
--	return xpSuccess;
--}
--
--static u64
--xpc_get_chctl_all_flags_uv(struct xpc_partition *part)
--{
--	unsigned long irq_flags;
--	union xpc_channel_ctl_flags chctl;
--
--	spin_lock_irqsave(&part->chctl_lock, irq_flags);
--	chctl = part->chctl;
--	if (chctl.all_flags != 0)
--		part->chctl.all_flags = 0;
--
--	spin_unlock_irqrestore(&part->chctl_lock, irq_flags);
--	return chctl.all_flags;
--}
--
--static enum xp_retval
--xpc_allocate_send_msg_slot_uv(struct xpc_channel *ch)
--{
--	struct xpc_channel_uv *ch_uv = &ch->sn.uv;
--	struct xpc_send_msg_slot_uv *msg_slot;
--	unsigned long irq_flags;
--	int nentries;
--	int entry;
--	size_t nbytes;
--
--	for (nentries = ch->local_nentries; nentries > 0; nentries--) {
--		nbytes = nentries * sizeof(struct xpc_send_msg_slot_uv);
--		ch_uv->send_msg_slots = kzalloc(nbytes, GFP_KERNEL);
--		if (ch_uv->send_msg_slots == NULL)
--			continue;
--
--		for (entry = 0; entry < nentries; entry++) {
--			msg_slot = &ch_uv->send_msg_slots[entry];
--
--			msg_slot->msg_slot_number = entry;
--			xpc_put_fifo_entry_uv(&ch_uv->msg_slot_free_list,
--					      &msg_slot->next);
--		}
--
--		spin_lock_irqsave(&ch->lock, irq_flags);
--		if (nentries < ch->local_nentries)
--			ch->local_nentries = nentries;
--		spin_unlock_irqrestore(&ch->lock, irq_flags);
--		return xpSuccess;
--	}
--
--	return xpNoMemory;
--}
--
--static enum xp_retval
--xpc_allocate_recv_msg_slot_uv(struct xpc_channel *ch)
--{
--	struct xpc_channel_uv *ch_uv = &ch->sn.uv;
--	struct xpc_notify_mq_msg_uv *msg_slot;
--	unsigned long irq_flags;
--	int nentries;
--	int entry;
--	size_t nbytes;
--
--	for (nentries = ch->remote_nentries; nentries > 0; nentries--) {
--		nbytes = nentries * ch->entry_size;
--		ch_uv->recv_msg_slots = kzalloc(nbytes, GFP_KERNEL);
--		if (ch_uv->recv_msg_slots == NULL)
--			continue;
--
--		for (entry = 0; entry < nentries; entry++) {
--			msg_slot = ch_uv->recv_msg_slots +
--			    entry * ch->entry_size;
--
--			msg_slot->hdr.msg_slot_number = entry;
--		}
--
--		spin_lock_irqsave(&ch->lock, irq_flags);
--		if (nentries < ch->remote_nentries)
--			ch->remote_nentries = nentries;
--		spin_unlock_irqrestore(&ch->lock, irq_flags);
--		return xpSuccess;
--	}
--
--	return xpNoMemory;
--}
--
--/*
-- * Allocate msg_slots associated with the channel.
-- */
--static enum xp_retval
--xpc_setup_msg_structures_uv(struct xpc_channel *ch)
--{
--	static enum xp_retval ret;
--	struct xpc_channel_uv *ch_uv = &ch->sn.uv;
--
--	DBUG_ON(ch->flags & XPC_C_SETUP);
--
--	ch_uv->cached_notify_gru_mq_desc = kmalloc_obj(struct gru_message_queue_desc);
--	if (ch_uv->cached_notify_gru_mq_desc == NULL)
--		return xpNoMemory;
--
--	ret = xpc_allocate_send_msg_slot_uv(ch);
--	if (ret == xpSuccess) {
--
--		ret = xpc_allocate_recv_msg_slot_uv(ch);
--		if (ret != xpSuccess) {
--			kfree(ch_uv->send_msg_slots);
--			xpc_init_fifo_uv(&ch_uv->msg_slot_free_list);
--		}
--	}
--	return ret;
--}
--
--/*
-- * Free up msg_slots and clear other stuff that were setup for the specified
-- * channel.
-- */
--static void
--xpc_teardown_msg_structures_uv(struct xpc_channel *ch)
--{
--	struct xpc_channel_uv *ch_uv = &ch->sn.uv;
--
--	lockdep_assert_held(&ch->lock);
--
--	kfree(ch_uv->cached_notify_gru_mq_desc);
--	ch_uv->cached_notify_gru_mq_desc = NULL;
--
--	if (ch->flags & XPC_C_SETUP) {
--		xpc_init_fifo_uv(&ch_uv->msg_slot_free_list);
--		kfree(ch_uv->send_msg_slots);
--		xpc_init_fifo_uv(&ch_uv->recv_msg_list);
--		kfree(ch_uv->recv_msg_slots);
--	}
--}
--
--static void
--xpc_send_chctl_closerequest_uv(struct xpc_channel *ch, unsigned long *irq_flags)
--{
--	struct xpc_activate_mq_msg_chctl_closerequest_uv msg;
--
--	msg.ch_number = ch->number;
--	msg.reason = ch->reason;
--	xpc_send_activate_IRQ_ch_uv(ch, irq_flags, &msg, sizeof(msg),
--				    XPC_ACTIVATE_MQ_MSG_CHCTL_CLOSEREQUEST_UV);
--}
--
--static void
--xpc_send_chctl_closereply_uv(struct xpc_channel *ch, unsigned long *irq_flags)
--{
--	struct xpc_activate_mq_msg_chctl_closereply_uv msg;
--
--	msg.ch_number = ch->number;
--	xpc_send_activate_IRQ_ch_uv(ch, irq_flags, &msg, sizeof(msg),
--				    XPC_ACTIVATE_MQ_MSG_CHCTL_CLOSEREPLY_UV);
--}
--
--static void
--xpc_send_chctl_openrequest_uv(struct xpc_channel *ch, unsigned long *irq_flags)
--{
--	struct xpc_activate_mq_msg_chctl_openrequest_uv msg;
--
--	msg.ch_number = ch->number;
--	msg.entry_size = ch->entry_size;
--	msg.local_nentries = ch->local_nentries;
--	xpc_send_activate_IRQ_ch_uv(ch, irq_flags, &msg, sizeof(msg),
--				    XPC_ACTIVATE_MQ_MSG_CHCTL_OPENREQUEST_UV);
--}
--
--static void
--xpc_send_chctl_openreply_uv(struct xpc_channel *ch, unsigned long *irq_flags)
--{
--	struct xpc_activate_mq_msg_chctl_openreply_uv msg;
--
--	msg.ch_number = ch->number;
--	msg.local_nentries = ch->local_nentries;
--	msg.remote_nentries = ch->remote_nentries;
--	msg.notify_gru_mq_desc_gpa = uv_gpa(xpc_notify_mq_uv->gru_mq_desc);
--	xpc_send_activate_IRQ_ch_uv(ch, irq_flags, &msg, sizeof(msg),
--				    XPC_ACTIVATE_MQ_MSG_CHCTL_OPENREPLY_UV);
--}
--
--static void
--xpc_send_chctl_opencomplete_uv(struct xpc_channel *ch, unsigned long *irq_flags)
--{
--	struct xpc_activate_mq_msg_chctl_opencomplete_uv msg;
--
--	msg.ch_number = ch->number;
--	xpc_send_activate_IRQ_ch_uv(ch, irq_flags, &msg, sizeof(msg),
--				    XPC_ACTIVATE_MQ_MSG_CHCTL_OPENCOMPLETE_UV);
--}
--
--static void
--xpc_send_chctl_local_msgrequest_uv(struct xpc_partition *part, int ch_number)
--{
--	unsigned long irq_flags;
--
--	spin_lock_irqsave(&part->chctl_lock, irq_flags);
--	part->chctl.flags[ch_number] |= XPC_CHCTL_MSGREQUEST;
--	spin_unlock_irqrestore(&part->chctl_lock, irq_flags);
--
--	xpc_wakeup_channel_mgr(part);
--}
--
--static enum xp_retval
--xpc_save_remote_msgqueue_pa_uv(struct xpc_channel *ch,
--			       unsigned long gru_mq_desc_gpa)
--{
--	struct xpc_channel_uv *ch_uv = &ch->sn.uv;
--
--	DBUG_ON(ch_uv->cached_notify_gru_mq_desc == NULL);
--	return xpc_cache_remote_gru_mq_desc_uv(ch_uv->cached_notify_gru_mq_desc,
--					       gru_mq_desc_gpa);
--}
--
--static void
--xpc_indicate_partition_engaged_uv(struct xpc_partition *part)
--{
--	struct xpc_activate_mq_msg_uv msg;
--
--	xpc_send_activate_IRQ_part_uv(part, &msg, sizeof(msg),
--				      XPC_ACTIVATE_MQ_MSG_MARK_ENGAGED_UV);
--}
--
--static void
--xpc_indicate_partition_disengaged_uv(struct xpc_partition *part)
--{
--	struct xpc_activate_mq_msg_uv msg;
--
--	xpc_send_activate_IRQ_part_uv(part, &msg, sizeof(msg),
--				      XPC_ACTIVATE_MQ_MSG_MARK_DISENGAGED_UV);
--}
--
--static void
--xpc_assume_partition_disengaged_uv(short partid)
--{
--	struct xpc_partition_uv *part_uv = &xpc_partitions[partid].sn.uv;
--	unsigned long irq_flags;
--
--	spin_lock_irqsave(&part_uv->flags_lock, irq_flags);
--	part_uv->flags &= ~XPC_P_ENGAGED_UV;
--	spin_unlock_irqrestore(&part_uv->flags_lock, irq_flags);
--}
--
--static int
--xpc_partition_engaged_uv(short partid)
--{
--	return (xpc_partitions[partid].sn.uv.flags & XPC_P_ENGAGED_UV) != 0;
--}
--
--static int
--xpc_any_partition_engaged_uv(void)
--{
--	struct xpc_partition_uv *part_uv;
--	short partid;
--
--	for (partid = 0; partid < XP_MAX_NPARTITIONS_UV; partid++) {
--		part_uv = &xpc_partitions[partid].sn.uv;
--		if ((part_uv->flags & XPC_P_ENGAGED_UV) != 0)
--			return 1;
--	}
--	return 0;
--}
--
--static enum xp_retval
--xpc_allocate_msg_slot_uv(struct xpc_channel *ch, u32 flags,
--			 struct xpc_send_msg_slot_uv **address_of_msg_slot)
--{
--	enum xp_retval ret;
--	struct xpc_send_msg_slot_uv *msg_slot;
--	struct xpc_fifo_entry_uv *entry;
--
--	while (1) {
--		entry = xpc_get_fifo_entry_uv(&ch->sn.uv.msg_slot_free_list);
--		if (entry != NULL)
--			break;
--
--		if (flags & XPC_NOWAIT)
--			return xpNoWait;
--
--		ret = xpc_allocate_msg_wait(ch);
--		if (ret != xpInterrupted && ret != xpTimeout)
--			return ret;
--	}
--
--	msg_slot = container_of(entry, struct xpc_send_msg_slot_uv, next);
--	*address_of_msg_slot = msg_slot;
--	return xpSuccess;
--}
--
--static void
--xpc_free_msg_slot_uv(struct xpc_channel *ch,
--		     struct xpc_send_msg_slot_uv *msg_slot)
--{
--	xpc_put_fifo_entry_uv(&ch->sn.uv.msg_slot_free_list, &msg_slot->next);
--
--	/* wakeup anyone waiting for a free msg slot */
--	if (atomic_read(&ch->n_on_msg_allocate_wq) > 0)
--		wake_up(&ch->msg_allocate_wq);
--}
--
--static void
--xpc_notify_sender_uv(struct xpc_channel *ch,
--		     struct xpc_send_msg_slot_uv *msg_slot,
--		     enum xp_retval reason)
--{
--	xpc_notify_func func = msg_slot->func;
--
--	if (func != NULL && cmpxchg(&msg_slot->func, func, NULL) == func) {
--
--		atomic_dec(&ch->n_to_notify);
--
--		dev_dbg(xpc_chan, "msg_slot->func() called, msg_slot=0x%p "
--			"msg_slot_number=%d partid=%d channel=%d\n", msg_slot,
--			msg_slot->msg_slot_number, ch->partid, ch->number);
--
--		func(reason, ch->partid, ch->number, msg_slot->key);
--
--		dev_dbg(xpc_chan, "msg_slot->func() returned, msg_slot=0x%p "
--			"msg_slot_number=%d partid=%d channel=%d\n", msg_slot,
--			msg_slot->msg_slot_number, ch->partid, ch->number);
--	}
--}
--
--static void
--xpc_handle_notify_mq_ack_uv(struct xpc_channel *ch,
--			    struct xpc_notify_mq_msg_uv *msg)
--{
--	struct xpc_send_msg_slot_uv *msg_slot;
--	int entry = msg->hdr.msg_slot_number % ch->local_nentries;
--
--	msg_slot = &ch->sn.uv.send_msg_slots[entry];
--
--	BUG_ON(msg_slot->msg_slot_number != msg->hdr.msg_slot_number);
--	msg_slot->msg_slot_number += ch->local_nentries;
--
--	if (msg_slot->func != NULL)
--		xpc_notify_sender_uv(ch, msg_slot, xpMsgDelivered);
--
--	xpc_free_msg_slot_uv(ch, msg_slot);
--}
--
--static void
--xpc_handle_notify_mq_msg_uv(struct xpc_partition *part,
--			    struct xpc_notify_mq_msg_uv *msg)
--{
--	struct xpc_partition_uv *part_uv = &part->sn.uv;
--	struct xpc_channel *ch;
--	struct xpc_channel_uv *ch_uv;
--	struct xpc_notify_mq_msg_uv *msg_slot;
--	unsigned long irq_flags;
--	int ch_number = msg->hdr.ch_number;
--
--	if (unlikely(ch_number >= part->nchannels)) {
--		dev_err(xpc_part, "xpc_handle_notify_IRQ_uv() received invalid "
--			"channel number=0x%x in message from partid=%d\n",
--			ch_number, XPC_PARTID(part));
--
--		/* get hb checker to deactivate from the remote partition */
--		spin_lock_irqsave(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--		if (part_uv->act_state_req == 0)
--			xpc_activate_IRQ_rcvd++;
--		part_uv->act_state_req = XPC_P_ASR_DEACTIVATE_UV;
--		part_uv->reason = xpBadChannelNumber;
--		spin_unlock_irqrestore(&xpc_activate_IRQ_rcvd_lock, irq_flags);
--
--		wake_up_interruptible(&xpc_activate_IRQ_wq);
--		return;
--	}
--
--	ch = &part->channels[ch_number];
--	xpc_msgqueue_ref(ch);
--
--	if (!(ch->flags & XPC_C_CONNECTED)) {
--		xpc_msgqueue_deref(ch);
--		return;
--	}
--
--	/* see if we're really dealing with an ACK for a previously sent msg */
--	if (msg->hdr.size == 0) {
--		xpc_handle_notify_mq_ack_uv(ch, msg);
--		xpc_msgqueue_deref(ch);
--		return;
--	}
--
--	/* we're dealing with a normal message sent via the notify_mq */
--	ch_uv = &ch->sn.uv;
--
--	msg_slot = ch_uv->recv_msg_slots +
--	    (msg->hdr.msg_slot_number % ch->remote_nentries) * ch->entry_size;
--
--	BUG_ON(msg_slot->hdr.size != 0);
--
--	memcpy(msg_slot, msg, msg->hdr.size);
--
--	xpc_put_fifo_entry_uv(&ch_uv->recv_msg_list, &msg_slot->hdr.u.next);
--
--	if (ch->flags & XPC_C_CONNECTEDCALLOUT_MADE) {
--		/*
--		 * If there is an existing idle kthread get it to deliver
--		 * the payload, otherwise we'll have to get the channel mgr
--		 * for this partition to create a kthread to do the delivery.
--		 */
--		if (atomic_read(&ch->kthreads_idle) > 0)
--			wake_up_nr(&ch->idle_wq, 1);
+-		bytes += (3 * cbrcnt + dsrcnt) * GRU_CACHE_LINE_BYTES;
+-		if (bytes > ubufend - ubuf)
+-			ret = -EFBIG;
 -		else
--			xpc_send_chctl_local_msgrequest_uv(part, ch->number);
+-			ret = gru_dump_context_data(grubase, cch, ubuf, ctxnum,
+-							dsrcnt, flush_cbrs);
 -	}
--	xpc_msgqueue_deref(ch);
+-	if (cch_locked)
+-		unlock_cch_handle(cch);
+-	if (ret)
+-		return ret;
+-
+-	hdr.magic = GRU_DUMP_MAGIC;
+-	hdr.gid = gru->gs_gid;
+-	hdr.ctxnum = ctxnum;
+-	hdr.cbrcnt = cbrcnt;
+-	hdr.dsrcnt = dsrcnt;
+-	hdr.cch_locked = cch_locked;
+-	if (copy_to_user(uhdr, &hdr, sizeof(hdr)))
+-		return -EFAULT;
+-
+-	return bytes;
 -}
 -
--static irqreturn_t
--xpc_handle_notify_IRQ_uv(int irq, void *dev_id)
+-int gru_dump_chiplet_request(unsigned long arg)
 -{
--	struct xpc_notify_mq_msg_uv *msg;
--	short partid;
--	struct xpc_partition *part;
+-	struct gru_state *gru;
+-	struct gru_dump_chiplet_state_req req;
+-	void __user *ubuf;
+-	void __user *ubufend;
+-	int ctxnum, ret, cnt = 0;
 -
--	while ((msg = gru_get_next_message(xpc_notify_mq_uv->gru_mq_desc)) !=
--	       NULL) {
+-	if (copy_from_user(&req, (void __user *)arg, sizeof(req)))
+-		return -EFAULT;
 -
--		partid = msg->hdr.partid;
--		if (partid < 0 || partid >= XP_MAX_NPARTITIONS_UV) {
--			dev_err(xpc_part, "xpc_handle_notify_IRQ_uv() received "
--				"invalid partid=0x%x in message\n", partid);
--		} else {
--			part = &xpc_partitions[partid];
+-	/* Currently, only dump by gid is implemented */
+-	if (req.gid >= gru_max_gids)
+-		return -EINVAL;
+-	req.gid = array_index_nospec(req.gid, gru_max_gids);
 -
--			if (xpc_part_ref(part)) {
--				xpc_handle_notify_mq_msg_uv(part, msg);
--				xpc_part_deref(part);
--			}
--		}
+-	gru = GID_TO_GRU(req.gid);
+-	ubuf = req.buf;
+-	ubufend = req.buf + req.buflen;
 -
--		gru_free_message(xpc_notify_mq_uv->gru_mq_desc, msg);
--	}
+-	ret = gru_dump_tfm(gru, ubuf, ubufend);
+-	if (ret < 0)
+-		goto fail;
+-	ubuf += ret;
 -
--	return IRQ_HANDLED;
--}
+-	ret = gru_dump_tgh(gru, ubuf, ubufend);
+-	if (ret < 0)
+-		goto fail;
+-	ubuf += ret;
 -
--static int
--xpc_n_of_deliverable_payloads_uv(struct xpc_channel *ch)
--{
--	return xpc_n_of_fifo_entries_uv(&ch->sn.uv.recv_msg_list);
--}
--
--static void
--xpc_process_msg_chctl_flags_uv(struct xpc_partition *part, int ch_number)
--{
--	struct xpc_channel *ch = &part->channels[ch_number];
--	int ndeliverable_payloads;
--
--	xpc_msgqueue_ref(ch);
--
--	ndeliverable_payloads = xpc_n_of_deliverable_payloads_uv(ch);
--
--	if (ndeliverable_payloads > 0 &&
--	    (ch->flags & XPC_C_CONNECTED) &&
--	    (ch->flags & XPC_C_CONNECTEDCALLOUT_MADE)) {
--
--		xpc_activate_kthreads(ch, ndeliverable_payloads);
--	}
--
--	xpc_msgqueue_deref(ch);
--}
--
--static enum xp_retval
--xpc_send_payload_uv(struct xpc_channel *ch, u32 flags, void *payload,
--		    u16 payload_size, u8 notify_type, xpc_notify_func func,
--		    void *key)
--{
--	enum xp_retval ret = xpSuccess;
--	struct xpc_send_msg_slot_uv *msg_slot = NULL;
--	struct xpc_notify_mq_msg_uv *msg;
--	u8 msg_buffer[XPC_NOTIFY_MSG_SIZE_UV];
--	size_t msg_size;
--
--	DBUG_ON(notify_type != XPC_N_CALL);
--
--	msg_size = sizeof(struct xpc_notify_mq_msghdr_uv) + payload_size;
--	if (msg_size > ch->entry_size)
--		return xpPayloadTooBig;
--
--	xpc_msgqueue_ref(ch);
--
--	if (ch->flags & XPC_C_DISCONNECTING) {
--		ret = ch->reason;
--		goto out_1;
--	}
--	if (!(ch->flags & XPC_C_CONNECTED)) {
--		ret = xpNotConnected;
--		goto out_1;
--	}
--
--	ret = xpc_allocate_msg_slot_uv(ch, flags, &msg_slot);
--	if (ret != xpSuccess)
--		goto out_1;
--
--	if (func != NULL) {
--		atomic_inc(&ch->n_to_notify);
--
--		msg_slot->key = key;
--		smp_wmb(); /* a non-NULL func must hit memory after the key */
--		msg_slot->func = func;
--
--		if (ch->flags & XPC_C_DISCONNECTING) {
--			ret = ch->reason;
--			goto out_2;
+-	for (ctxnum = 0; ctxnum < GRU_NUM_CCH; ctxnum++) {
+-		if (req.ctxnum == ctxnum || req.ctxnum < 0) {
+-			ret = gru_dump_context(gru, ctxnum, ubuf, ubufend,
+-						req.data_opt, req.lock_cch,
+-						req.flush_cbrs);
+-			if (ret < 0)
+-				goto fail;
+-			ubuf += ret;
+-			cnt++;
 -		}
 -	}
 -
--	msg = (struct xpc_notify_mq_msg_uv *)&msg_buffer;
--	msg->hdr.partid = xp_partition_id;
--	msg->hdr.ch_number = ch->number;
--	msg->hdr.size = msg_size;
--	msg->hdr.msg_slot_number = msg_slot->msg_slot_number;
--	memcpy(&msg->payload, payload, payload_size);
+-	if (copy_to_user((void __user *)arg, &req, sizeof(req)))
+-		return -EFAULT;
+-	return cnt;
 -
--	ret = xpc_send_gru_msg(ch->sn.uv.cached_notify_gru_mq_desc, msg,
--			       msg_size);
--	if (ret == xpSuccess)
--		goto out_1;
--
--	XPC_DEACTIVATE_PARTITION(&xpc_partitions[ch->partid], ret);
--out_2:
--	if (func != NULL) {
--		/*
--		 * Try to NULL the msg_slot's func field. If we fail, then
--		 * xpc_notify_senders_of_disconnect_uv() beat us to it, in which
--		 * case we need to pretend we succeeded to send the message
--		 * since the user will get a callout for the disconnect error
--		 * by xpc_notify_senders_of_disconnect_uv(), and to also get an
--		 * error returned here will confuse them. Additionally, since
--		 * in this case the channel is being disconnected we don't need
--		 * to put the msg_slot back on the free list.
--		 */
--		if (cmpxchg(&msg_slot->func, func, NULL) != func) {
--			ret = xpSuccess;
--			goto out_1;
--		}
--
--		msg_slot->key = NULL;
--		atomic_dec(&ch->n_to_notify);
--	}
--	xpc_free_msg_slot_uv(ch, msg_slot);
--out_1:
--	xpc_msgqueue_deref(ch);
+-fail:
 -	return ret;
 -}
--
+diff --git a/drivers/misc/sgi-gru/grukservices.c b/drivers/misc/sgi-gru/grukservices.c
+deleted file mode 100644
+index 205945ce9e86..000000000000
+--- a/drivers/misc/sgi-gru/grukservices.c
++++ /dev/null
+@@ -1,1157 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * Tell the callers of xpc_send_notify() that the status of their payloads
-- * is unknown because the channel is now disconnecting.
+- * SN Platform GRU Driver
 - *
-- * We don't worry about putting these msg_slots on the free list since the
-- * msg_slots themselves are about to be kfree'd.
+- *              KERNEL SERVICES THAT USE THE GRU
+- *
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
 - */
--static void
--xpc_notify_senders_of_disconnect_uv(struct xpc_channel *ch)
--{
--	struct xpc_send_msg_slot_uv *msg_slot;
--	int entry;
 -
--	DBUG_ON(!(ch->flags & XPC_C_DISCONNECTING));
--
--	for (entry = 0; entry < ch->local_nentries; entry++) {
--
--		if (atomic_read(&ch->n_to_notify) == 0)
--			break;
--
--		msg_slot = &ch->sn.uv.send_msg_slots[entry];
--		if (msg_slot->func != NULL)
--			xpc_notify_sender_uv(ch, msg_slot, ch->reason);
--	}
--}
+-#include <linux/kernel.h>
+-#include <linux/errno.h>
+-#include <linux/slab.h>
+-#include <linux/mm.h>
+-#include <linux/spinlock.h>
+-#include <linux/device.h>
+-#include <linux/miscdevice.h>
+-#include <linux/proc_fs.h>
+-#include <linux/interrupt.h>
+-#include <linux/sync_core.h>
+-#include <linux/uaccess.h>
+-#include <linux/delay.h>
+-#include <linux/export.h>
+-#include <asm/io_apic.h>
+-#include "gru.h"
+-#include "grulib.h"
+-#include "grutables.h"
+-#include "grukservices.h"
+-#include "gru_instructions.h"
+-#include <asm/uv/uv_hub.h>
 -
 -/*
-- * Get the next deliverable message's payload.
+- * Kernel GRU Usage
+- *
+- * The following is an interim algorithm for management of kernel GRU
+- * resources. This will likely be replaced when we better understand the
+- * kernel/user requirements.
+- *
+- * Blade percpu resources reserved for kernel use. These resources are
+- * reserved whenever the kernel context for the blade is loaded. Note
+- * that the kernel context is not guaranteed to be always available. It is
+- * loaded on demand & can be stolen by a user if the user demand exceeds the
+- * kernel demand. The kernel can always reload the kernel context but
+- * a SLEEP may be required!!!.
+- *
+- * Async Overview:
+- *
+- * 	Each blade has one "kernel context" that owns GRU kernel resources
+- * 	located on the blade. Kernel drivers use GRU resources in this context
+- * 	for sending messages, zeroing memory, etc.
+- *
+- * 	The kernel context is dynamically loaded on demand. If it is not in
+- * 	use by the kernel, the kernel context can be unloaded & given to a user.
+- * 	The kernel context will be reloaded when needed. This may require that
+- * 	a context be stolen from a user.
+- * 		NOTE: frequent unloading/reloading of the kernel context is
+- * 		expensive. We are depending on batch schedulers, cpusets, sane
+- * 		drivers or some other mechanism to prevent the need for frequent
+- *	 	stealing/reloading.
+- *
+- * 	The kernel context consists of two parts:
+- * 		- 1 CB & a few DSRs that are reserved for each cpu on the blade.
+- * 		  Each cpu has it's own private resources & does not share them
+- * 		  with other cpus. These resources are used serially, ie,
+- * 		  locked, used & unlocked  on each call to a function in
+- * 		  grukservices.
+- * 		  	(Now that we have dynamic loading of kernel contexts, I
+- * 		  	 may rethink this & allow sharing between cpus....)
+- *
+- *		- Additional resources can be reserved long term & used directly
+- *		  by UV drivers located in the kernel. Drivers using these GRU
+- *		  resources can use asynchronous GRU instructions that send
+- *		  interrupts on completion.
+- *		  	- these resources must be explicitly locked/unlocked
+- *		  	- locked resources prevent (obviously) the kernel
+- *		  	  context from being unloaded.
+- *			- drivers using these resource directly issue their own
+- *			  GRU instruction and must wait/check completion.
+- *
+- * 		  When these resources are reserved, the caller can optionally
+- * 		  associate a wait_queue with the resources and use asynchronous
+- * 		  GRU instructions. When an async GRU instruction completes, the
+- * 		  driver will do a wakeup on the event.
+- *
 - */
--static void *
--xpc_get_deliverable_payload_uv(struct xpc_channel *ch)
--{
--	struct xpc_fifo_entry_uv *entry;
--	struct xpc_notify_mq_msg_uv *msg;
--	void *payload = NULL;
 -
--	if (!(ch->flags & XPC_C_DISCONNECTING)) {
--		entry = xpc_get_fifo_entry_uv(&ch->sn.uv.recv_msg_list);
--		if (entry != NULL) {
--			msg = container_of(entry, struct xpc_notify_mq_msg_uv,
--					   hdr.u.next);
--			payload = &msg->payload;
--		}
--	}
--	return payload;
--}
 -
--static void
--xpc_received_payload_uv(struct xpc_channel *ch, void *payload)
--{
--	struct xpc_notify_mq_msg_uv *msg;
--	enum xp_retval ret;
+-#define ASYNC_HAN_TO_BID(h)	((h) - 1)
+-#define ASYNC_BID_TO_HAN(b)	((b) + 1)
+-#define ASYNC_HAN_TO_BS(h)	gru_base[ASYNC_HAN_TO_BID(h)]
 -
--	msg = container_of(payload, struct xpc_notify_mq_msg_uv, payload);
+-#define GRU_NUM_KERNEL_CBR	1
+-#define GRU_NUM_KERNEL_DSR_BYTES 256
+-#define GRU_NUM_KERNEL_DSR_CL	(GRU_NUM_KERNEL_DSR_BYTES /		\
+-					GRU_CACHE_LINE_BYTES)
 -
--	/* return an ACK to the sender of this message */
+-/* GRU instruction attributes for all instructions */
+-#define IMA			IMA_CB_DELAY
 -
--	msg->hdr.partid = xp_partition_id;
--	msg->hdr.size = 0;	/* size of zero indicates this is an ACK */
+-/* GRU cacheline size is always 64 bytes - even on arches with 128 byte lines */
+-#define __gru_cacheline_aligned__                               \
+-	__attribute__((__aligned__(GRU_CACHE_LINE_BYTES)))
 -
--	ret = xpc_send_gru_msg(ch->sn.uv.cached_notify_gru_mq_desc, msg,
--			       sizeof(struct xpc_notify_mq_msghdr_uv));
--	if (ret != xpSuccess)
--		XPC_DEACTIVATE_PARTITION(&xpc_partitions[ch->partid], ret);
--}
+-#define MAGIC	0x1234567887654321UL
 -
--static const struct xpc_arch_operations xpc_arch_ops_uv = {
--	.setup_partitions = xpc_setup_partitions_uv,
--	.teardown_partitions = xpc_teardown_partitions_uv,
--	.process_activate_IRQ_rcvd = xpc_process_activate_IRQ_rcvd_uv,
--	.get_partition_rsvd_page_pa = xpc_get_partition_rsvd_page_pa_uv,
--	.setup_rsvd_page = xpc_setup_rsvd_page_uv,
+-/* Default retry count for GRU errors on kernel instructions */
+-#define EXCEPTION_RETRY_LIMIT	3
 -
--	.allow_hb = xpc_allow_hb_uv,
--	.disallow_hb = xpc_disallow_hb_uv,
--	.disallow_all_hbs = xpc_disallow_all_hbs_uv,
--	.increment_heartbeat = xpc_increment_heartbeat_uv,
--	.offline_heartbeat = xpc_offline_heartbeat_uv,
--	.online_heartbeat = xpc_online_heartbeat_uv,
--	.heartbeat_init = xpc_heartbeat_init_uv,
--	.heartbeat_exit = xpc_heartbeat_exit_uv,
--	.get_remote_heartbeat = xpc_get_remote_heartbeat_uv,
+-/* Status of message queue sections */
+-#define MQS_EMPTY		0
+-#define MQS_FULL		1
+-#define MQS_NOOP		2
 -
--	.request_partition_activation =
--		xpc_request_partition_activation_uv,
--	.request_partition_reactivation =
--		xpc_request_partition_reactivation_uv,
--	.request_partition_deactivation =
--		xpc_request_partition_deactivation_uv,
--	.cancel_partition_deactivation_request =
--		xpc_cancel_partition_deactivation_request_uv,
--
--	.setup_ch_structures = xpc_setup_ch_structures_uv,
--	.teardown_ch_structures = xpc_teardown_ch_structures_uv,
--
--	.make_first_contact = xpc_make_first_contact_uv,
--
--	.get_chctl_all_flags = xpc_get_chctl_all_flags_uv,
--	.send_chctl_closerequest = xpc_send_chctl_closerequest_uv,
--	.send_chctl_closereply = xpc_send_chctl_closereply_uv,
--	.send_chctl_openrequest = xpc_send_chctl_openrequest_uv,
--	.send_chctl_openreply = xpc_send_chctl_openreply_uv,
--	.send_chctl_opencomplete = xpc_send_chctl_opencomplete_uv,
--	.process_msg_chctl_flags = xpc_process_msg_chctl_flags_uv,
--
--	.save_remote_msgqueue_pa = xpc_save_remote_msgqueue_pa_uv,
--
--	.setup_msg_structures = xpc_setup_msg_structures_uv,
--	.teardown_msg_structures = xpc_teardown_msg_structures_uv,
--
--	.indicate_partition_engaged = xpc_indicate_partition_engaged_uv,
--	.indicate_partition_disengaged = xpc_indicate_partition_disengaged_uv,
--	.assume_partition_disengaged = xpc_assume_partition_disengaged_uv,
--	.partition_engaged = xpc_partition_engaged_uv,
--	.any_partition_engaged = xpc_any_partition_engaged_uv,
--
--	.n_of_deliverable_payloads = xpc_n_of_deliverable_payloads_uv,
--	.send_payload = xpc_send_payload_uv,
--	.get_deliverable_payload = xpc_get_deliverable_payload_uv,
--	.received_payload = xpc_received_payload_uv,
--	.notify_senders_of_disconnect = xpc_notify_senders_of_disconnect_uv,
+-/*----------------- RESOURCE MANAGEMENT -------------------------------------*/
+-/* optimized for x86_64 */
+-struct message_queue {
+-	union gru_mesqhead	head __gru_cacheline_aligned__;	/* CL 0 */
+-	int			qlines;				/* DW 1 */
+-	long 			hstatus[2];
+-	void 			*next __gru_cacheline_aligned__;/* CL 1 */
+-	void 			*limit;
+-	void 			*start;
+-	void 			*start2;
+-	char			data ____cacheline_aligned;	/* CL 2 */
 -};
 -
--static int
--xpc_init_mq_node(int nid)
+-/* First word in every message - used by mesq interface */
+-struct message_header {
+-	char	present;
+-	char	present2;
+-	char 	lines;
+-	char	fill;
+-};
+-
+-#define HSTATUS(mq, h)	((mq) + offsetof(struct message_queue, hstatus[h]))
+-
+-/*
+- * Reload the blade's kernel context into a GRU chiplet. Called holding
+- * the bs_kgts_sema for READ. Will steal user contexts if necessary.
+- */
+-static void gru_load_kernel_context(struct gru_blade_state *bs, int blade_id)
 -{
--	int cpu;
+-	struct gru_state *gru;
+-	struct gru_thread_state *kgts;
+-	void *vaddr;
+-	int ctxnum, ncpus;
 -
--	cpus_read_lock();
+-	up_read(&bs->bs_kgts_sema);
+-	down_write(&bs->bs_kgts_sema);
 -
--	for_each_cpu(cpu, cpumask_of_node(nid)) {
--		xpc_activate_mq_uv =
--			xpc_create_gru_mq_uv(XPC_ACTIVATE_MQ_SIZE_UV, nid,
--					     XPC_ACTIVATE_IRQ_NAME,
--					     xpc_handle_activate_IRQ_uv);
--		if (!IS_ERR(xpc_activate_mq_uv))
--			break;
+-	if (!bs->bs_kgts) {
+-		do {
+-			bs->bs_kgts = gru_alloc_gts(NULL, 0, 0, 0, 0, 0);
+-			if (!IS_ERR(bs->bs_kgts))
+-				break;
+-			msleep(1);
+-		} while (true);
+-		bs->bs_kgts->ts_user_blade_id = blade_id;
 -	}
--	if (IS_ERR(xpc_activate_mq_uv)) {
--		cpus_read_unlock();
--		return PTR_ERR(xpc_activate_mq_uv);
--	}
+-	kgts = bs->bs_kgts;
 -
--	for_each_cpu(cpu, cpumask_of_node(nid)) {
--		xpc_notify_mq_uv =
--			xpc_create_gru_mq_uv(XPC_NOTIFY_MQ_SIZE_UV, nid,
--					     XPC_NOTIFY_IRQ_NAME,
--					     xpc_handle_notify_IRQ_uv);
--		if (!IS_ERR(xpc_notify_mq_uv))
--			break;
+-	if (!kgts->ts_gru) {
+-		STAT(load_kernel_context);
+-		ncpus = uv_blade_nr_possible_cpus(blade_id);
+-		kgts->ts_cbr_au_count = GRU_CB_COUNT_TO_AU(
+-			GRU_NUM_KERNEL_CBR * ncpus + bs->bs_async_cbrs);
+-		kgts->ts_dsr_au_count = GRU_DS_BYTES_TO_AU(
+-			GRU_NUM_KERNEL_DSR_BYTES * ncpus +
+-				bs->bs_async_dsr_bytes);
+-		while (!gru_assign_gru_context(kgts)) {
+-			msleep(1);
+-			gru_steal_context(kgts);
+-		}
+-		gru_load_context(kgts);
+-		gru = bs->bs_kgts->ts_gru;
+-		vaddr = gru->gs_gru_base_vaddr;
+-		ctxnum = kgts->ts_ctxnum;
+-		bs->kernel_cb = get_gseg_base_address_cb(vaddr, ctxnum, 0);
+-		bs->kernel_dsr = get_gseg_base_address_ds(vaddr, ctxnum, 0);
 -	}
--	if (IS_ERR(xpc_notify_mq_uv)) {
--		xpc_destroy_gru_mq_uv(xpc_activate_mq_uv);
--		cpus_read_unlock();
--		return PTR_ERR(xpc_notify_mq_uv);
--	}
+-	downgrade_write(&bs->bs_kgts_sema);
+-}
 -
--	cpus_read_unlock();
+-/*
+- * Free all kernel contexts that are not currently in use.
+- *   Returns 0 if all freed, else number of inuse context.
+- */
+-static int gru_free_kernel_contexts(void)
+-{
+-	struct gru_blade_state *bs;
+-	struct gru_thread_state *kgts;
+-	int bid, ret = 0;
+-
+-	for (bid = 0; bid < GRU_MAX_BLADES; bid++) {
+-		bs = gru_base[bid];
+-		if (!bs)
+-			continue;
+-
+-		/* Ignore busy contexts. Don't want to block here.  */
+-		if (down_write_trylock(&bs->bs_kgts_sema)) {
+-			kgts = bs->bs_kgts;
+-			if (kgts && kgts->ts_gru)
+-				gru_unload_context(kgts, 0);
+-			bs->bs_kgts = NULL;
+-			up_write(&bs->bs_kgts_sema);
+-			kfree(kgts);
+-		} else {
+-			ret++;
+-		}
+-	}
+-	return ret;
+-}
+-
+-/*
+- * Lock & load the kernel context for the specified blade.
+- */
+-static struct gru_blade_state *gru_lock_kernel_context(int blade_id)
+-{
+-	struct gru_blade_state *bs;
+-	int bid;
+-
+-	STAT(lock_kernel_context);
+-again:
+-	bid = blade_id < 0 ? uv_numa_blade_id() : blade_id;
+-	bs = gru_base[bid];
+-
+-	/* Handle the case where migration occurred while waiting for the sema */
+-	down_read(&bs->bs_kgts_sema);
+-	if (blade_id < 0 && bid != uv_numa_blade_id()) {
+-		up_read(&bs->bs_kgts_sema);
+-		goto again;
+-	}
+-	if (!bs->bs_kgts || !bs->bs_kgts->ts_gru)
+-		gru_load_kernel_context(bs, bid);
+-	return bs;
+-
+-}
+-
+-/*
+- * Unlock the kernel context for the specified blade. Context is not
+- * unloaded but may be stolen before next use.
+- */
+-static void gru_unlock_kernel_context(int blade_id)
+-{
+-	struct gru_blade_state *bs;
+-
+-	bs = gru_base[blade_id];
+-	up_read(&bs->bs_kgts_sema);
+-	STAT(unlock_kernel_context);
+-}
+-
+-/*
+- * Reserve & get pointers to the DSR/CBRs reserved for the current cpu.
+- * 	- returns with preemption disabled
+- */
+-static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
+-{
+-	struct gru_blade_state *bs;
+-	int lcpu;
+-
+-	BUG_ON(dsr_bytes > GRU_NUM_KERNEL_DSR_BYTES);
+-	bs = gru_lock_kernel_context(-1);
+-	lcpu = uv_blade_processor_id();
+-	*cb = bs->kernel_cb + lcpu * GRU_HANDLE_STRIDE;
+-	*dsr = bs->kernel_dsr + lcpu * GRU_NUM_KERNEL_DSR_BYTES;
 -	return 0;
 -}
 -
--int
--xpc_init_uv(void)
+-/*
+- * Free the current cpus reserved DSR/CBR resources.
+- */
+-static void gru_free_cpu_resources(void *cb, void *dsr)
 -{
--	int nid;
+-	gru_unlock_kernel_context(uv_numa_blade_id());
+-}
+-
+-/*
+- * Reserve GRU resources to be used asynchronously.
+- *   Note: currently supports only 1 reservation per blade.
+- *
+- * 	input:
+- * 		blade_id  - blade on which resources should be reserved
+- * 		cbrs	  - number of CBRs
+- * 		dsr_bytes - number of DSR bytes needed
+- *	output:
+- *		handle to identify resource
+- *		(0 = async resources already reserved)
+- */
+-unsigned long gru_reserve_async_resources(int blade_id, int cbrs, int dsr_bytes,
+-			struct completion *cmp)
+-{
+-	struct gru_blade_state *bs;
+-	struct gru_thread_state *kgts;
 -	int ret = 0;
 -
--	xpc_arch_ops = xpc_arch_ops_uv;
+-	bs = gru_base[blade_id];
 -
--	if (sizeof(struct xpc_notify_mq_msghdr_uv) > XPC_MSG_HDR_MAX_SIZE) {
--		dev_err(xpc_part, "xpc_notify_mq_msghdr_uv is larger than %d\n",
--			XPC_MSG_HDR_MAX_SIZE);
--		return -E2BIG;
+-	down_write(&bs->bs_kgts_sema);
+-
+-	/* Verify no resources already reserved */
+-	if (bs->bs_async_dsr_bytes + bs->bs_async_cbrs)
+-		goto done;
+-	bs->bs_async_dsr_bytes = dsr_bytes;
+-	bs->bs_async_cbrs = cbrs;
+-	bs->bs_async_wq = cmp;
+-	kgts = bs->bs_kgts;
+-
+-	/* Resources changed. Unload context if already loaded */
+-	if (kgts && kgts->ts_gru)
+-		gru_unload_context(kgts, 0);
+-	ret = ASYNC_BID_TO_HAN(blade_id);
+-
+-done:
+-	up_write(&bs->bs_kgts_sema);
+-	return ret;
+-}
+-
+-/*
+- * Release async resources previously reserved.
+- *
+- *	input:
+- *		han - handle to identify resources
+- */
+-void gru_release_async_resources(unsigned long han)
+-{
+-	struct gru_blade_state *bs = ASYNC_HAN_TO_BS(han);
+-
+-	down_write(&bs->bs_kgts_sema);
+-	bs->bs_async_dsr_bytes = 0;
+-	bs->bs_async_cbrs = 0;
+-	bs->bs_async_wq = NULL;
+-	up_write(&bs->bs_kgts_sema);
+-}
+-
+-/*
+- * Wait for async GRU instructions to complete.
+- *
+- *	input:
+- *		han - handle to identify resources
+- */
+-void gru_wait_async_cbr(unsigned long han)
+-{
+-	struct gru_blade_state *bs = ASYNC_HAN_TO_BS(han);
+-
+-	wait_for_completion(bs->bs_async_wq);
+-	mb();
+-}
+-
+-/*
+- * Lock previous reserved async GRU resources
+- *
+- *	input:
+- *		han - handle to identify resources
+- *	output:
+- *		cb  - pointer to first CBR
+- *		dsr - pointer to first DSR
+- */
+-void gru_lock_async_resource(unsigned long han,  void **cb, void **dsr)
+-{
+-	struct gru_blade_state *bs = ASYNC_HAN_TO_BS(han);
+-	int blade_id = ASYNC_HAN_TO_BID(han);
+-	int ncpus;
+-
+-	gru_lock_kernel_context(blade_id);
+-	ncpus = uv_blade_nr_possible_cpus(blade_id);
+-	if (cb)
+-		*cb = bs->kernel_cb + ncpus * GRU_HANDLE_STRIDE;
+-	if (dsr)
+-		*dsr = bs->kernel_dsr + ncpus * GRU_NUM_KERNEL_DSR_BYTES;
+-}
+-
+-/*
+- * Unlock previous reserved async GRU resources
+- *
+- *	input:
+- *		han - handle to identify resources
+- */
+-void gru_unlock_async_resource(unsigned long han)
+-{
+-	int blade_id = ASYNC_HAN_TO_BID(han);
+-
+-	gru_unlock_kernel_context(blade_id);
+-}
+-
+-/*----------------------------------------------------------------------*/
+-int gru_get_cb_exception_detail(void *cb,
+-		struct control_block_extended_exc_detail *excdet)
+-{
+-	struct gru_control_block_extended *cbe;
+-	struct gru_thread_state *kgts = NULL;
+-	unsigned long off;
+-	int cbrnum, bid;
+-
+-	/*
+-	 * Locate kgts for cb. This algorithm is SLOW but
+-	 * this function is rarely called (ie., almost never).
+-	 * Performance does not matter.
+-	 */
+-	for_each_possible_blade(bid) {
+-		if (!gru_base[bid])
+-			break;
+-		kgts = gru_base[bid]->bs_kgts;
+-		if (!kgts || !kgts->ts_gru)
+-			continue;
+-		off = cb - kgts->ts_gru->gs_gru_base_vaddr;
+-		if (off < GRU_SIZE)
+-			break;
+-		kgts = NULL;
+-	}
+-	BUG_ON(!kgts);
+-	cbrnum = thread_cbr_number(kgts, get_cb_number(cb));
+-	cbe = get_cbe(GRUBASE(cb), cbrnum);
+-	gru_flush_cache(cbe);	/* CBE not coherent */
+-	sync_core();
+-	excdet->opc = cbe->opccpy;
+-	excdet->exopc = cbe->exopccpy;
+-	excdet->ecause = cbe->ecause;
+-	excdet->exceptdet0 = cbe->idef1upd;
+-	excdet->exceptdet1 = cbe->idef3upd;
+-	gru_flush_cache(cbe);
+-	return 0;
+-}
+-
+-static char *gru_get_cb_exception_detail_str(int ret, void *cb,
+-					     char *buf, int size)
+-{
+-	struct gru_control_block_status *gen = cb;
+-	struct control_block_extended_exc_detail excdet;
+-
+-	if (ret > 0 && gen->istatus == CBS_EXCEPTION) {
+-		gru_get_cb_exception_detail(cb, &excdet);
+-		snprintf(buf, size,
+-			"GRU:%d exception: cb %p, opc %d, exopc %d, ecause 0x%x,"
+-			"excdet0 0x%lx, excdet1 0x%x", smp_processor_id(),
+-			gen, excdet.opc, excdet.exopc, excdet.ecause,
+-			excdet.exceptdet0, excdet.exceptdet1);
+-	} else {
+-		snprintf(buf, size, "No exception");
+-	}
+-	return buf;
+-}
+-
+-static int gru_wait_idle_or_exception(struct gru_control_block_status *gen)
+-{
+-	while (gen->istatus >= CBS_ACTIVE) {
+-		cpu_relax();
+-		barrier();
+-	}
+-	return gen->istatus;
+-}
+-
+-static int gru_retry_exception(void *cb)
+-{
+-	struct gru_control_block_status *gen = cb;
+-	struct control_block_extended_exc_detail excdet;
+-	int retry = EXCEPTION_RETRY_LIMIT;
+-
+-	while (1)  {
+-		if (gru_wait_idle_or_exception(gen) == CBS_IDLE)
+-			return CBS_IDLE;
+-		if (gru_get_cb_message_queue_substatus(cb))
+-			return CBS_EXCEPTION;
+-		gru_get_cb_exception_detail(cb, &excdet);
+-		if ((excdet.ecause & ~EXCEPTION_RETRY_BITS) ||
+-				(excdet.cbrexecstatus & CBR_EXS_ABORT_OCC))
+-			break;
+-		if (retry-- == 0)
+-			break;
+-		gen->icmd = 1;
+-		gru_flush_cache(gen);
+-	}
+-	return CBS_EXCEPTION;
+-}
+-
+-int gru_check_status_proc(void *cb)
+-{
+-	struct gru_control_block_status *gen = cb;
+-	int ret;
+-
+-	ret = gen->istatus;
+-	if (ret == CBS_EXCEPTION)
+-		ret = gru_retry_exception(cb);
+-	rmb();
+-	return ret;
+-
+-}
+-
+-int gru_wait_proc(void *cb)
+-{
+-	struct gru_control_block_status *gen = cb;
+-	int ret;
+-
+-	ret = gru_wait_idle_or_exception(gen);
+-	if (ret == CBS_EXCEPTION)
+-		ret = gru_retry_exception(cb);
+-	rmb();
+-	return ret;
+-}
+-
+-static void gru_abort(int ret, void *cb, char *str)
+-{
+-	char buf[GRU_EXC_STR_SIZE];
+-
+-	panic("GRU FATAL ERROR: %s - %s\n", str,
+-	      gru_get_cb_exception_detail_str(ret, cb, buf, sizeof(buf)));
+-}
+-
+-void gru_wait_abort_proc(void *cb)
+-{
+-	int ret;
+-
+-	ret = gru_wait_proc(cb);
+-	if (ret)
+-		gru_abort(ret, cb, "gru_wait_abort");
+-}
+-
+-
+-/*------------------------------ MESSAGE QUEUES -----------------------------*/
+-
+-/* Internal status . These are NOT returned to the user. */
+-#define MQIE_AGAIN		-1	/* try again */
+-
+-
+-/*
+- * Save/restore the "present" flag that is in the second line of 2-line
+- * messages
+- */
+-static inline int get_present2(void *p)
+-{
+-	struct message_header *mhdr = p + GRU_CACHE_LINE_BYTES;
+-	return mhdr->present;
+-}
+-
+-static inline void restore_present2(void *p, int val)
+-{
+-	struct message_header *mhdr = p + GRU_CACHE_LINE_BYTES;
+-	mhdr->present = val;
+-}
+-
+-/*
+- * Create a message queue.
+- * 	qlines - message queue size in cache lines. Includes 2-line header.
+- */
+-int gru_create_message_queue(struct gru_message_queue_desc *mqd,
+-		void *p, unsigned int bytes, int nasid, int vector, int apicid)
+-{
+-	struct message_queue *mq = p;
+-	unsigned int qlines;
+-
+-	qlines = bytes / GRU_CACHE_LINE_BYTES - 2;
+-	memset(mq, 0, bytes);
+-	mq->start = &mq->data;
+-	mq->start2 = &mq->data + (qlines / 2 - 1) * GRU_CACHE_LINE_BYTES;
+-	mq->next = &mq->data;
+-	mq->limit = &mq->data + (qlines - 2) * GRU_CACHE_LINE_BYTES;
+-	mq->qlines = qlines;
+-	mq->hstatus[0] = 0;
+-	mq->hstatus[1] = 1;
+-	mq->head = gru_mesq_head(2, qlines / 2 + 1);
+-	mqd->mq = mq;
+-	mqd->mq_gpa = uv_gpa(mq);
+-	mqd->qlines = qlines;
+-	mqd->interrupt_pnode = nasid >> 1;
+-	mqd->interrupt_vector = vector;
+-	mqd->interrupt_apicid = apicid;
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(gru_create_message_queue);
+-
+-/*
+- * Send a NOOP message to a message queue
+- * 	Returns:
+- * 		 0 - if queue is full after the send. This is the normal case
+- * 		     but various races can change this.
+- *		-1 - if mesq sent successfully but queue not full
+- *		>0 - unexpected error. MQE_xxx returned
+- */
+-static int send_noop_message(void *cb, struct gru_message_queue_desc *mqd,
+-				void *mesg)
+-{
+-	const struct message_header noop_header = {
+-					.present = MQS_NOOP, .lines = 1};
+-	unsigned long m;
+-	int substatus, ret;
+-	struct message_header save_mhdr, *mhdr = mesg;
+-
+-	STAT(mesq_noop);
+-	save_mhdr = *mhdr;
+-	*mhdr = noop_header;
+-	gru_mesq(cb, mqd->mq_gpa, gru_get_tri(mhdr), 1, IMA);
+-	ret = gru_wait(cb);
+-
+-	if (ret) {
+-		substatus = gru_get_cb_message_queue_substatus(cb);
+-		switch (substatus) {
+-		case CBSS_NO_ERROR:
+-			STAT(mesq_noop_unexpected_error);
+-			ret = MQE_UNEXPECTED_CB_ERR;
+-			break;
+-		case CBSS_LB_OVERFLOWED:
+-			STAT(mesq_noop_lb_overflow);
+-			ret = MQE_CONGESTION;
+-			break;
+-		case CBSS_QLIMIT_REACHED:
+-			STAT(mesq_noop_qlimit_reached);
+-			ret = 0;
+-			break;
+-		case CBSS_AMO_NACKED:
+-			STAT(mesq_noop_amo_nacked);
+-			ret = MQE_CONGESTION;
+-			break;
+-		case CBSS_PUT_NACKED:
+-			STAT(mesq_noop_put_nacked);
+-			m = mqd->mq_gpa + (gru_get_amo_value_head(cb) << 6);
+-			gru_vstore(cb, m, gru_get_tri(mesg), XTYPE_CL, 1, 1,
+-						IMA);
+-			if (gru_wait(cb) == CBS_IDLE)
+-				ret = MQIE_AGAIN;
+-			else
+-				ret = MQE_UNEXPECTED_CB_ERR;
+-			break;
+-		case CBSS_PAGE_OVERFLOW:
+-			STAT(mesq_noop_page_overflow);
+-			fallthrough;
+-		default:
+-			BUG();
+-		}
+-	}
+-	*mhdr = save_mhdr;
+-	return ret;
+-}
+-
+-/*
+- * Handle a gru_mesq full.
+- */
+-static int send_message_queue_full(void *cb, struct gru_message_queue_desc *mqd,
+-				void *mesg, int lines)
+-{
+-	union gru_mesqhead mqh;
+-	unsigned int limit, head;
+-	unsigned long avalue;
+-	int half, qlines;
+-
+-	/* Determine if switching to first/second half of q */
+-	avalue = gru_get_amo_value(cb);
+-	head = gru_get_amo_value_head(cb);
+-	limit = gru_get_amo_value_limit(cb);
+-
+-	qlines = mqd->qlines;
+-	half = (limit != qlines);
+-
+-	if (half)
+-		mqh = gru_mesq_head(qlines / 2 + 1, qlines);
+-	else
+-		mqh = gru_mesq_head(2, qlines / 2 + 1);
+-
+-	/* Try to get lock for switching head pointer */
+-	gru_gamir(cb, EOP_IR_CLR, HSTATUS(mqd->mq_gpa, half), XTYPE_DW, IMA);
+-	if (gru_wait(cb) != CBS_IDLE)
+-		goto cberr;
+-	if (!gru_get_amo_value(cb)) {
+-		STAT(mesq_qf_locked);
+-		return MQE_QUEUE_FULL;
 -	}
 -
--	if (xpc_mq_node < 0)
--		for_each_online_node(nid) {
--			ret = xpc_init_mq_node(nid);
+-	/* Got the lock. Send optional NOP if queue not full, */
+-	if (head != limit) {
+-		if (send_noop_message(cb, mqd, mesg)) {
+-			gru_gamir(cb, EOP_IR_INC, HSTATUS(mqd->mq_gpa, half),
+-					XTYPE_DW, IMA);
+-			if (gru_wait(cb) != CBS_IDLE)
+-				goto cberr;
+-			STAT(mesq_qf_noop_not_full);
+-			return MQIE_AGAIN;
+-		}
+-		avalue++;
+-	}
 -
--			if (!ret)
+-	/* Then flip queuehead to other half of queue. */
+-	gru_gamer(cb, EOP_ERR_CSWAP, mqd->mq_gpa, XTYPE_DW, mqh.val, avalue,
+-							IMA);
+-	if (gru_wait(cb) != CBS_IDLE)
+-		goto cberr;
+-
+-	/* If not successfully in swapping queue head, clear the hstatus lock */
+-	if (gru_get_amo_value(cb) != avalue) {
+-		STAT(mesq_qf_switch_head_failed);
+-		gru_gamir(cb, EOP_IR_INC, HSTATUS(mqd->mq_gpa, half), XTYPE_DW,
+-							IMA);
+-		if (gru_wait(cb) != CBS_IDLE)
+-			goto cberr;
+-	}
+-	return MQIE_AGAIN;
+-cberr:
+-	STAT(mesq_qf_unexpected_error);
+-	return MQE_UNEXPECTED_CB_ERR;
+-}
+-
+-/*
+- * Handle a PUT failure. Note: if message was a 2-line message, one of the
+- * lines might have successfully have been written. Before sending the
+- * message, "present" must be cleared in BOTH lines to prevent the receiver
+- * from prematurely seeing the full message.
+- */
+-static int send_message_put_nacked(void *cb, struct gru_message_queue_desc *mqd,
+-			void *mesg, int lines)
+-{
+-	unsigned long m;
+-	int ret, loops = 200;	/* experimentally determined */
+-
+-	m = mqd->mq_gpa + (gru_get_amo_value_head(cb) << 6);
+-	if (lines == 2) {
+-		gru_vset(cb, m, 0, XTYPE_CL, lines, 1, IMA);
+-		if (gru_wait(cb) != CBS_IDLE)
+-			return MQE_UNEXPECTED_CB_ERR;
+-	}
+-	gru_vstore(cb, m, gru_get_tri(mesg), XTYPE_CL, lines, 1, IMA);
+-	if (gru_wait(cb) != CBS_IDLE)
+-		return MQE_UNEXPECTED_CB_ERR;
+-
+-	if (!mqd->interrupt_vector)
+-		return MQE_OK;
+-
+-	/*
+-	 * Send a noop message in order to deliver a cross-partition interrupt
+-	 * to the SSI that contains the target message queue. Normally, the
+-	 * interrupt is automatically delivered by hardware following mesq
+-	 * operations, but some error conditions require explicit delivery.
+-	 * The noop message will trigger delivery. Otherwise partition failures
+-	 * could cause unrecovered errors.
+-	 */
+-	do {
+-		ret = send_noop_message(cb, mqd, mesg);
+-	} while ((ret == MQIE_AGAIN || ret == MQE_CONGESTION) && (loops-- > 0));
+-
+-	if (ret == MQIE_AGAIN || ret == MQE_CONGESTION) {
+-		/*
+-		 * Don't indicate to the app to resend the message, as it's
+-		 * already been successfully sent.  We simply send an OK
+-		 * (rather than fail the send with MQE_UNEXPECTED_CB_ERR),
+-		 * assuming that the other side is receiving enough
+-		 * interrupts to get this message processed anyway.
+-		 */
+-		ret = MQE_OK;
+-	}
+-	return ret;
+-}
+-
+-/*
+- * Handle a gru_mesq failure. Some of these failures are software recoverable
+- * or retryable.
+- */
+-static int send_message_failure(void *cb, struct gru_message_queue_desc *mqd,
+-				void *mesg, int lines)
+-{
+-	int substatus, ret = 0;
+-
+-	substatus = gru_get_cb_message_queue_substatus(cb);
+-	switch (substatus) {
+-	case CBSS_NO_ERROR:
+-		STAT(mesq_send_unexpected_error);
+-		ret = MQE_UNEXPECTED_CB_ERR;
+-		break;
+-	case CBSS_LB_OVERFLOWED:
+-		STAT(mesq_send_lb_overflow);
+-		ret = MQE_CONGESTION;
+-		break;
+-	case CBSS_QLIMIT_REACHED:
+-		STAT(mesq_send_qlimit_reached);
+-		ret = send_message_queue_full(cb, mqd, mesg, lines);
+-		break;
+-	case CBSS_AMO_NACKED:
+-		STAT(mesq_send_amo_nacked);
+-		ret = MQE_CONGESTION;
+-		break;
+-	case CBSS_PUT_NACKED:
+-		STAT(mesq_send_put_nacked);
+-		ret = send_message_put_nacked(cb, mqd, mesg, lines);
+-		break;
+-	case CBSS_PAGE_OVERFLOW:
+-		STAT(mesq_page_overflow);
+-		fallthrough;
+-	default:
+-		BUG();
+-	}
+-	return ret;
+-}
+-
+-/*
+- * Send a message to a message queue
+- * 	mqd	message queue descriptor
+- * 	mesg	message. ust be vaddr within a GSEG
+- * 	bytes	message size (<= 2 CL)
+- */
+-int gru_send_message_gpa(struct gru_message_queue_desc *mqd, void *mesg,
+-				unsigned int bytes)
+-{
+-	struct message_header *mhdr;
+-	void *cb;
+-	void *dsr;
+-	int istatus, clines, ret;
+-
+-	STAT(mesq_send);
+-	BUG_ON(bytes < sizeof(int) || bytes > 2 * GRU_CACHE_LINE_BYTES);
+-
+-	clines = DIV_ROUND_UP(bytes, GRU_CACHE_LINE_BYTES);
+-	if (gru_get_cpu_resources(bytes, &cb, &dsr))
+-		return MQE_BUG_NO_RESOURCES;
+-	memcpy(dsr, mesg, bytes);
+-	mhdr = dsr;
+-	mhdr->present = MQS_FULL;
+-	mhdr->lines = clines;
+-	if (clines == 2) {
+-		mhdr->present2 = get_present2(mhdr);
+-		restore_present2(mhdr, MQS_FULL);
+-	}
+-
+-	do {
+-		ret = MQE_OK;
+-		gru_mesq(cb, mqd->mq_gpa, gru_get_tri(mhdr), clines, IMA);
+-		istatus = gru_wait(cb);
+-		if (istatus != CBS_IDLE)
+-			ret = send_message_failure(cb, mqd, dsr, clines);
+-	} while (ret == MQIE_AGAIN);
+-	gru_free_cpu_resources(cb, dsr);
+-
+-	if (ret)
+-		STAT(mesq_send_failed);
+-	return ret;
+-}
+-EXPORT_SYMBOL_GPL(gru_send_message_gpa);
+-
+-/*
+- * Advance the receive pointer for the queue to the next message.
+- */
+-void gru_free_message(struct gru_message_queue_desc *mqd, void *mesg)
+-{
+-	struct message_queue *mq = mqd->mq;
+-	struct message_header *mhdr = mq->next;
+-	void *next, *pnext;
+-	int half = -1;
+-	int lines = mhdr->lines;
+-
+-	if (lines == 2)
+-		restore_present2(mhdr, MQS_EMPTY);
+-	mhdr->present = MQS_EMPTY;
+-
+-	pnext = mq->next;
+-	next = pnext + GRU_CACHE_LINE_BYTES * lines;
+-	if (next == mq->limit) {
+-		next = mq->start;
+-		half = 1;
+-	} else if (pnext < mq->start2 && next >= mq->start2) {
+-		half = 0;
+-	}
+-
+-	if (half >= 0)
+-		mq->hstatus[half] = 1;
+-	mq->next = next;
+-}
+-EXPORT_SYMBOL_GPL(gru_free_message);
+-
+-/*
+- * Get next message from message queue. Return NULL if no message
+- * present. User must call next_message() to move to next message.
+- * 	rmq	message queue
+- */
+-void *gru_get_next_message(struct gru_message_queue_desc *mqd)
+-{
+-	struct message_queue *mq = mqd->mq;
+-	struct message_header *mhdr = mq->next;
+-	int present = mhdr->present;
+-
+-	/* skip NOOP messages */
+-	while (present == MQS_NOOP) {
+-		gru_free_message(mqd, mhdr);
+-		mhdr = mq->next;
+-		present = mhdr->present;
+-	}
+-
+-	/* Wait for both halves of 2 line messages */
+-	if (present == MQS_FULL && mhdr->lines == 2 &&
+-				get_present2(mhdr) == MQS_EMPTY)
+-		present = MQS_EMPTY;
+-
+-	if (!present) {
+-		STAT(mesq_receive_none);
+-		return NULL;
+-	}
+-
+-	if (mhdr->lines == 2)
+-		restore_present2(mhdr, mhdr->present2);
+-
+-	STAT(mesq_receive);
+-	return mhdr;
+-}
+-EXPORT_SYMBOL_GPL(gru_get_next_message);
+-
+-/* ---------------------- GRU DATA COPY FUNCTIONS ---------------------------*/
+-
+-/*
+- * Load a DW from a global GPA. The GPA can be a memory or MMR address.
+- */
+-int gru_read_gpa(unsigned long *value, unsigned long gpa)
+-{
+-	void *cb;
+-	void *dsr;
+-	int ret, iaa;
+-
+-	STAT(read_gpa);
+-	if (gru_get_cpu_resources(GRU_NUM_KERNEL_DSR_BYTES, &cb, &dsr))
+-		return MQE_BUG_NO_RESOURCES;
+-	iaa = gpa >> 62;
+-	gru_vload_phys(cb, gpa, gru_get_tri(dsr), iaa, IMA);
+-	ret = gru_wait(cb);
+-	if (ret == CBS_IDLE)
+-		*value = *(unsigned long *)dsr;
+-	gru_free_cpu_resources(cb, dsr);
+-	return ret;
+-}
+-EXPORT_SYMBOL_GPL(gru_read_gpa);
+-
+-
+-/*
+- * Copy a block of data using the GRU resources
+- */
+-int gru_copy_gpa(unsigned long dest_gpa, unsigned long src_gpa,
+-				unsigned int bytes)
+-{
+-	void *cb;
+-	void *dsr;
+-	int ret;
+-
+-	STAT(copy_gpa);
+-	if (gru_get_cpu_resources(GRU_NUM_KERNEL_DSR_BYTES, &cb, &dsr))
+-		return MQE_BUG_NO_RESOURCES;
+-	gru_bcopy(cb, src_gpa, dest_gpa, gru_get_tri(dsr),
+-		  XTYPE_B, bytes, GRU_NUM_KERNEL_DSR_CL, IMA);
+-	ret = gru_wait(cb);
+-	gru_free_cpu_resources(cb, dsr);
+-	return ret;
+-}
+-EXPORT_SYMBOL_GPL(gru_copy_gpa);
+-
+-/* ------------------- KERNEL QUICKTESTS RUN AT STARTUP ----------------*/
+-/* 	Temp - will delete after we gain confidence in the GRU		*/
+-
+-static int quicktest0(unsigned long arg)
+-{
+-	unsigned long word0;
+-	unsigned long word1;
+-	void *cb;
+-	void *dsr;
+-	unsigned long *p;
+-	int ret = -EIO;
+-
+-	if (gru_get_cpu_resources(GRU_CACHE_LINE_BYTES, &cb, &dsr))
+-		return MQE_BUG_NO_RESOURCES;
+-	p = dsr;
+-	word0 = MAGIC;
+-	word1 = 0;
+-
+-	gru_vload(cb, uv_gpa(&word0), gru_get_tri(dsr), XTYPE_DW, 1, 1, IMA);
+-	if (gru_wait(cb) != CBS_IDLE) {
+-		printk(KERN_DEBUG "GRU:%d quicktest0: CBR failure 1\n", smp_processor_id());
+-		goto done;
+-	}
+-
+-	if (*p != MAGIC) {
+-		printk(KERN_DEBUG "GRU:%d quicktest0 bad magic 0x%lx\n", smp_processor_id(), *p);
+-		goto done;
+-	}
+-	gru_vstore(cb, uv_gpa(&word1), gru_get_tri(dsr), XTYPE_DW, 1, 1, IMA);
+-	if (gru_wait(cb) != CBS_IDLE) {
+-		printk(KERN_DEBUG "GRU:%d quicktest0: CBR failure 2\n", smp_processor_id());
+-		goto done;
+-	}
+-
+-	if (word0 != word1 || word1 != MAGIC) {
+-		printk(KERN_DEBUG
+-		       "GRU:%d quicktest0 err: found 0x%lx, expected 0x%lx\n",
+-		     smp_processor_id(), word1, MAGIC);
+-		goto done;
+-	}
+-	ret = 0;
+-
+-done:
+-	gru_free_cpu_resources(cb, dsr);
+-	return ret;
+-}
+-
+-#define ALIGNUP(p, q)	((void *)(((unsigned long)(p) + (q) - 1) & ~(q - 1)))
+-
+-static int quicktest1(unsigned long arg)
+-{
+-	struct gru_message_queue_desc mqd;
+-	void *p, *mq;
+-	int i, ret = -EIO;
+-	char mes[GRU_CACHE_LINE_BYTES], *m;
+-
+-	/* Need  1K cacheline aligned that does not cross page boundary */
+-	p = kmalloc(4096, 0);
+-	if (p == NULL)
+-		return -ENOMEM;
+-	mq = ALIGNUP(p, 1024);
+-	memset(mes, 0xee, sizeof(mes));
+-
+-	gru_create_message_queue(&mqd, mq, 8 * GRU_CACHE_LINE_BYTES, 0, 0, 0);
+-	for (i = 0; i < 6; i++) {
+-		mes[8] = i;
+-		do {
+-			ret = gru_send_message_gpa(&mqd, mes, sizeof(mes));
+-		} while (ret == MQE_CONGESTION);
+-		if (ret)
+-			break;
+-	}
+-	if (ret != MQE_QUEUE_FULL || i != 4) {
+-		printk(KERN_DEBUG "GRU:%d quicktest1: unexpected status %d, i %d\n",
+-		       smp_processor_id(), ret, i);
+-		goto done;
+-	}
+-
+-	for (i = 0; i < 6; i++) {
+-		m = gru_get_next_message(&mqd);
+-		if (!m || m[8] != i)
+-			break;
+-		gru_free_message(&mqd, m);
+-	}
+-	if (i != 4) {
+-		printk(KERN_DEBUG "GRU:%d quicktest2: bad message, i %d, m %p, m8 %d\n",
+-			smp_processor_id(), i, m, m ? m[8] : -1);
+-		goto done;
+-	}
+-	ret = 0;
+-
+-done:
+-	kfree(p);
+-	return ret;
+-}
+-
+-static int quicktest2(unsigned long arg)
+-{
+-	static DECLARE_COMPLETION(cmp);
+-	unsigned long han;
+-	int blade_id = 0;
+-	int numcb = 4;
+-	int ret = 0;
+-	unsigned long *buf;
+-	void *cb0, *cb;
+-	struct gru_control_block_status *gen;
+-	int i, k, istatus, bytes;
+-
+-	bytes = numcb * 4 * 8;
+-	buf = kmalloc(bytes, GFP_KERNEL);
+-	if (!buf)
+-		return -ENOMEM;
+-
+-	ret = -EBUSY;
+-	han = gru_reserve_async_resources(blade_id, numcb, 0, &cmp);
+-	if (!han)
+-		goto done;
+-
+-	gru_lock_async_resource(han, &cb0, NULL);
+-	memset(buf, 0xee, bytes);
+-	for (i = 0; i < numcb; i++)
+-		gru_vset(cb0 + i * GRU_HANDLE_STRIDE, uv_gpa(&buf[i * 4]), 0,
+-				XTYPE_DW, 4, 1, IMA_INTERRUPT);
+-
+-	ret = 0;
+-	k = numcb;
+-	do {
+-		gru_wait_async_cbr(han);
+-		for (i = 0; i < numcb; i++) {
+-			cb = cb0 + i * GRU_HANDLE_STRIDE;
+-			istatus = gru_check_status(cb);
+-			if (istatus != CBS_ACTIVE && istatus != CBS_CALL_OS)
 -				break;
 -		}
--	else
--		ret = xpc_init_mq_node(xpc_mq_node);
+-		if (i == numcb)
+-			continue;
+-		if (istatus != CBS_IDLE) {
+-			printk(KERN_DEBUG "GRU:%d quicktest2: cb %d, exception\n", smp_processor_id(), i);
+-			ret = -EFAULT;
+-		} else if (buf[4 * i] || buf[4 * i + 1] || buf[4 * i + 2] ||
+-				buf[4 * i + 3]) {
+-			printk(KERN_DEBUG "GRU:%d quicktest2:cb %d,  buf 0x%lx, 0x%lx, 0x%lx, 0x%lx\n",
+-			       smp_processor_id(), i, buf[4 * i], buf[4 * i + 1], buf[4 * i + 2], buf[4 * i + 3]);
+-			ret = -EIO;
+-		}
+-		k--;
+-		gen = cb;
+-		gen->istatus = CBS_CALL_OS; /* don't handle this CBR again */
+-	} while (k);
+-	BUG_ON(cmp.done);
 -
--	if (ret < 0)
--		dev_err(xpc_part, "xpc_init_mq_node() returned error=%d\n",
--			-ret);
+-	gru_unlock_async_resource(han);
+-	gru_release_async_resources(han);
+-done:
+-	kfree(buf);
+-	return ret;
+-}
+-
+-#define BUFSIZE 200
+-static int quicktest3(unsigned long arg)
+-{
+-	char buf1[BUFSIZE], buf2[BUFSIZE];
+-	int ret = 0;
+-
+-	memset(buf2, 0, sizeof(buf2));
+-	memset(buf1, get_cycles() & 255, sizeof(buf1));
+-	gru_copy_gpa(uv_gpa(buf2), uv_gpa(buf1), BUFSIZE);
+-	if (memcmp(buf1, buf2, BUFSIZE)) {
+-		printk(KERN_DEBUG "GRU:%d quicktest3 error\n", smp_processor_id());
+-		ret = -EIO;
+-	}
+-	return ret;
+-}
+-
+-/*
+- * Debugging only. User hook for various kernel tests
+- * of driver & gru.
+- */
+-int gru_ktest(unsigned long arg)
+-{
+-	int ret = -EINVAL;
+-
+-	switch (arg & 0xff) {
+-	case 0:
+-		ret = quicktest0(arg);
+-		break;
+-	case 1:
+-		ret = quicktest1(arg);
+-		break;
+-	case 2:
+-		ret = quicktest2(arg);
+-		break;
+-	case 3:
+-		ret = quicktest3(arg);
+-		break;
+-	case 99:
+-		ret = gru_free_kernel_contexts();
+-		break;
+-	}
+-	return ret;
+-
+-}
+-
+-int gru_kservices_init(void)
+-{
+-	return 0;
+-}
+-
+-void gru_kservices_exit(void)
+-{
+-	if (gru_free_kernel_contexts())
+-		BUG();
+-}
+-
+diff --git a/drivers/misc/sgi-gru/grukservices.h b/drivers/misc/sgi-gru/grukservices.h
+deleted file mode 100644
+index 510e45e9737e..000000000000
+--- a/drivers/misc/sgi-gru/grukservices.h
++++ /dev/null
+@@ -1,201 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-
+-/*
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
+- */
+-#ifndef __GRU_KSERVICES_H_
+-#define __GRU_KSERVICES_H_
+-
+-
+-/*
+- * Message queues using the GRU to send/receive messages.
+- *
+- * These function allow the user to create a message queue for
+- * sending/receiving 1 or 2 cacheline messages using the GRU.
+- *
+- * Processes SENDING messages will use a kernel CBR/DSR to send
+- * the message. This is transparent to the caller.
+- *
+- * The receiver does not use any GRU resources.
+- *
+- * The functions support:
+- * 	- single receiver
+- * 	- multiple senders
+- *	- cross partition message
+- *
+- * Missing features ZZZ:
+- * 	- user options for dealing with timeouts, queue full, etc.
+- * 	- gru_create_message_queue() needs interrupt vector info
+- */
+-
+-struct gru_message_queue_desc {
+-	void		*mq;			/* message queue vaddress */
+-	unsigned long	mq_gpa;			/* global address of mq */
+-	int		qlines;			/* queue size in CL */
+-	int		interrupt_vector;	/* interrupt vector */
+-	int		interrupt_pnode;	/* pnode for interrupt */
+-	int		interrupt_apicid;	/* lapicid for interrupt */
+-};
+-
+-/*
+- * Initialize a user allocated chunk of memory to be used as
+- * a message queue. The caller must ensure that the queue is
+- * in contiguous physical memory and is cacheline aligned.
+- *
+- * Message queue size is the total number of bytes allocated
+- * to the queue including a 2 cacheline header that is used
+- * to manage the queue.
+- *
+- *  Input:
+- * 	mqd	pointer to message queue descriptor
+- * 	p	pointer to user allocated mesq memory.
+- * 	bytes	size of message queue in bytes
+- *      vector	interrupt vector (zero if no interrupts)
+- *      nasid	nasid of blade where interrupt is delivered
+- *      apicid	apicid of cpu for interrupt
+- *
+- *  Errors:
+- *  	0	OK
+- *  	>0	error
+- */
+-extern int gru_create_message_queue(struct gru_message_queue_desc *mqd,
+-		void *p, unsigned int bytes, int nasid, int vector, int apicid);
+-
+-/*
+- * Send a message to a message queue.
+- *
+- * Note: The message queue transport mechanism uses the first 32
+- * bits of the message. Users should avoid using these bits.
+- *
+- *
+- *   Input:
+- * 	mqd	pointer to message queue descriptor
+- * 	mesg	pointer to message. Must be 64-bit aligned
+- * 	bytes	size of message in bytes
+- *
+- *   Output:
+- *      0	message sent
+- *     >0	Send failure - see error codes below
+- *
+- */
+-extern int gru_send_message_gpa(struct gru_message_queue_desc *mqd,
+-			void *mesg, unsigned int bytes);
+-
+-/* Status values for gru_send_message() */
+-#define MQE_OK			0	/* message sent successfully */
+-#define MQE_CONGESTION		1	/* temporary congestion, try again */
+-#define MQE_QUEUE_FULL		2	/* queue is full */
+-#define MQE_UNEXPECTED_CB_ERR	3	/* unexpected CB error */
+-#define MQE_PAGE_OVERFLOW	10	/* BUG - queue overflowed a page */
+-#define MQE_BUG_NO_RESOURCES	11	/* BUG - could not alloc GRU cb/dsr */
+-
+-/*
+- * Advance the receive pointer for the message queue to the next message.
+- * Note: current API requires messages to be gotten & freed in order. Future
+- * API extensions may allow for out-of-order freeing.
+- *
+- *   Input
+- * 	mqd	pointer to message queue descriptor
+- * 	mesq	message being freed
+- */
+-extern void gru_free_message(struct gru_message_queue_desc *mqd,
+-			     void *mesq);
+-
+-/*
+- * Get next message from message queue. Returns pointer to
+- * message OR NULL if no message present.
+- * User must call gru_free_message() after message is processed
+- * in order to move the queue pointers to next message.
+- *
+- *   Input
+- * 	mqd	pointer to message queue descriptor
+- *
+- *   Output:
+- *	p	pointer to message
+- *	NULL	no message available
+- */
+-extern void *gru_get_next_message(struct gru_message_queue_desc *mqd);
+-
+-
+-/*
+- * Read a GRU global GPA. Source can be located in a remote partition.
+- *
+- *    Input:
+- *    	value		memory address where MMR value is returned
+- *    	gpa		source numalink physical address of GPA
+- *
+- *    Output:
+- *	0		OK
+- *	>0		error
+- */
+-int gru_read_gpa(unsigned long *value, unsigned long gpa);
+-
+-
+-/*
+- * Copy data using the GRU. Source or destination can be located in a remote
+- * partition.
+- *
+- *    Input:
+- *    	dest_gpa	destination global physical address
+- *    	src_gpa		source global physical address
+- *    	bytes		number of bytes to copy
+- *
+- *    Output:
+- *	0		OK
+- *	>0		error
+- */
+-extern int gru_copy_gpa(unsigned long dest_gpa, unsigned long src_gpa,
+-							unsigned int bytes);
+-
+-/*
+- * Reserve GRU resources to be used asynchronously.
+- *
+- * 	input:
+- * 		blade_id  - blade on which resources should be reserved
+- * 		cbrs	  - number of CBRs
+- * 		dsr_bytes - number of DSR bytes needed
+- * 		cmp	  - completion structure for waiting for
+- * 			    async completions
+- *	output:
+- *		handle to identify resource
+- *		(0 = no resources)
+- */
+-extern unsigned long gru_reserve_async_resources(int blade_id, int cbrs, int dsr_bytes,
+-				struct completion *cmp);
+-
+-/*
+- * Release async resources previously reserved.
+- *
+- *	input:
+- *		han - handle to identify resources
+- */
+-extern void gru_release_async_resources(unsigned long han);
+-
+-/*
+- * Wait for async GRU instructions to complete.
+- *
+- *	input:
+- *		han - handle to identify resources
+- */
+-extern void gru_wait_async_cbr(unsigned long han);
+-
+-/*
+- * Lock previous reserved async GRU resources
+- *
+- *	input:
+- *		han - handle to identify resources
+- *	output:
+- *		cb  - pointer to first CBR
+- *		dsr - pointer to first DSR
+- */
+-extern void gru_lock_async_resource(unsigned long han,  void **cb, void **dsr);
+-
+-/*
+- * Unlock previous reserved async GRU resources
+- *
+- *	input:
+- *		han - handle to identify resources
+- */
+-extern void gru_unlock_async_resource(unsigned long han);
+-
+-#endif 		/* __GRU_KSERVICES_H_ */
+diff --git a/drivers/misc/sgi-gru/grulib.h b/drivers/misc/sgi-gru/grulib.h
+deleted file mode 100644
+index 85c103923632..000000000000
+--- a/drivers/misc/sgi-gru/grulib.h
++++ /dev/null
+@@ -1,153 +0,0 @@
+-/*
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
+- *
+- *  This program is free software; you can redistribute it and/or modify
+- *  it under the terms of the GNU Lesser General Public License as published by
+- *  the Free Software Foundation; either version 2.1 of the License, or
+- *  (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *  GNU Lesser General Public License for more details.
+- *
+- *  You should have received a copy of the GNU Lesser General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+- */
+-
+-#ifndef __GRULIB_H__
+-#define __GRULIB_H__
+-
+-#define GRU_BASENAME		"gru"
+-#define GRU_FULLNAME		"/dev/gru"
+-#define GRU_IOCTL_NUM 		 'G'
+-
+-/*
+- * Maximum number of GRU segments that a user can have open
+- * ZZZ temp - set high for testing. Revisit.
+- */
+-#define GRU_MAX_OPEN_CONTEXTS		32
+-
+-/* Set Number of Request Blocks */
+-#define GRU_CREATE_CONTEXT		_IOWR(GRU_IOCTL_NUM, 1, void *)
+-
+-/*  Set Context Options */
+-#define GRU_SET_CONTEXT_OPTION		_IOWR(GRU_IOCTL_NUM, 4, void *)
+-
+-/* Fetch exception detail */
+-#define GRU_USER_GET_EXCEPTION_DETAIL	_IOWR(GRU_IOCTL_NUM, 6, void *)
+-
+-/* For user call_os handling - normally a TLB fault */
+-#define GRU_USER_CALL_OS		_IOWR(GRU_IOCTL_NUM, 8, void *)
+-
+-/* For user unload context */
+-#define GRU_USER_UNLOAD_CONTEXT		_IOWR(GRU_IOCTL_NUM, 9, void *)
+-
+-/* For dumpping GRU chiplet state */
+-#define GRU_DUMP_CHIPLET_STATE		_IOWR(GRU_IOCTL_NUM, 11, void *)
+-
+-/* For getting gseg statistics */
+-#define GRU_GET_GSEG_STATISTICS		_IOWR(GRU_IOCTL_NUM, 12, void *)
+-
+-/* For user TLB flushing (primarily for tests) */
+-#define GRU_USER_FLUSH_TLB		_IOWR(GRU_IOCTL_NUM, 50, void *)
+-
+-/* Get some config options (primarily for tests & emulator) */
+-#define GRU_GET_CONFIG_INFO		_IOWR(GRU_IOCTL_NUM, 51, void *)
+-
+-/* Various kernel self-tests */
+-#define GRU_KTEST			_IOWR(GRU_IOCTL_NUM, 52, void *)
+-
+-#define CONTEXT_WINDOW_BYTES(th)        (GRU_GSEG_PAGESIZE * (th))
+-#define THREAD_POINTER(p, th)		(p + GRU_GSEG_PAGESIZE * (th))
+-#define GSEG_START(cb)			((void *)((unsigned long)(cb) & ~(GRU_GSEG_PAGESIZE - 1)))
+-
+-struct gru_get_gseg_statistics_req {
+-	unsigned long			gseg;
+-	struct gru_gseg_statistics	stats;
+-};
+-
+-/*
+- * Structure used to pass TLB flush parameters to the driver
+- */
+-struct gru_create_context_req {
+-	unsigned long		gseg;
+-	unsigned int		data_segment_bytes;
+-	unsigned int		control_blocks;
+-	unsigned int		maximum_thread_count;
+-	unsigned int		options;
+-	unsigned char		tlb_preload_count;
+-};
+-
+-/*
+- * Structure used to pass unload context parameters to the driver
+- */
+-struct gru_unload_context_req {
+-	unsigned long	gseg;
+-};
+-
+-/*
+- * Structure used to set context options
+- */
+-enum {sco_gseg_owner, sco_cch_req_slice, sco_blade_chiplet};
+-struct gru_set_context_option_req {
+-	unsigned long	gseg;
+-	int		op;
+-	int		val0;
+-	long		val1;
+-};
+-
+-/*
+- * Structure used to pass TLB flush parameters to the driver
+- */
+-struct gru_flush_tlb_req {
+-	unsigned long	gseg;
+-	unsigned long	vaddr;
+-	size_t		len;
+-};
+-
+-/*
+- * Structure used to pass TLB flush parameters to the driver
+- */
+-enum {dcs_pid, dcs_gid};
+-struct gru_dump_chiplet_state_req {
+-	unsigned int	op;
+-	unsigned int	gid;
+-	int		ctxnum;
+-	char		data_opt;
+-	char		lock_cch;
+-	char		flush_cbrs;
+-	char		fill[10];
+-	pid_t		pid;
+-	void		*buf;
+-	size_t		buflen;
+-	/* ---- output --- */
+-	unsigned int	num_contexts;
+-};
+-
+-#define GRU_DUMP_MAGIC	0x3474ab6c
+-struct gru_dump_context_header {
+-	unsigned int	magic;
+-	unsigned int	gid;
+-	unsigned char	ctxnum;
+-	unsigned char	cbrcnt;
+-	unsigned char	dsrcnt;
+-	pid_t		pid;
+-	unsigned long	vaddr;
+-	int		cch_locked;
+-	unsigned long	data[];
+-};
+-
+-/*
+- * GRU configuration info (temp - for testing)
+- */
+-struct gru_config_info {
+-	int		cpus;
+-	int		blades;
+-	int		nodes;
+-	int		chiplets;
+-	int		fill[16];
+-};
+-
+-#endif /* __GRULIB_H__ */
+diff --git a/drivers/misc/sgi-gru/grumain.c b/drivers/misc/sgi-gru/grumain.c
+deleted file mode 100644
+index 278b76cbd281..000000000000
+--- a/drivers/misc/sgi-gru/grumain.c
++++ /dev/null
+@@ -1,969 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * SN Platform GRU Driver
+- *
+- *            DRIVER TABLE MANAGER + GRU CONTEXT LOAD/UNLOAD
+- *
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
+- */
+-
+-#include <linux/kernel.h>
+-#include <linux/slab.h>
+-#include <linux/mm.h>
+-#include <linux/spinlock.h>
+-#include <linux/sched.h>
+-#include <linux/device.h>
+-#include <linux/list.h>
+-#include <linux/err.h>
+-#include <linux/prefetch.h>
+-#include <asm/uv/uv_hub.h>
+-#include "gru.h"
+-#include "grutables.h"
+-#include "gruhandles.h"
+-
+-unsigned long gru_options __read_mostly;
+-
+-static struct device_driver gru_driver = {
+-	.name = "gru"
+-};
+-
+-static struct device gru_device = {
+-	.init_name = "",
+-	.driver = &gru_driver,
+-};
+-
+-struct device *grudev = &gru_device;
+-
+-/*
+- * Select a gru fault map to be used by the current cpu. Note that
+- * multiple cpus may be using the same map.
+- *	ZZZ should be inline but did not work on emulator
+- */
+-int gru_cpu_fault_map_id(void)
+-{
+-	int cpu = smp_processor_id();
+-	int id, core;
+-
+-	core = uv_cpu_core_number(cpu);
+-	id = core + UV_MAX_INT_CORES * uv_cpu_socket_number(cpu);
+-	return id;
+-}
+-
+-/*--------- ASID Management -------------------------------------------
+- *
+- *  Initially, assign asids sequentially from MIN_ASID .. MAX_ASID.
+- *  Once MAX is reached, flush the TLB & start over. However,
+- *  some asids may still be in use. There won't be many (percentage wise) still
+- *  in use. Search active contexts & determine the value of the first
+- *  asid in use ("x"s below). Set "limit" to this value.
+- *  This defines a block of assignable asids.
+- *
+- *  When "limit" is reached, search forward from limit+1 and determine the
+- *  next block of assignable asids.
+- *
+- *  Repeat until MAX_ASID is reached, then start over again.
+- *
+- *  Each time MAX_ASID is reached, increment the asid generation. Since
+- *  the search for in-use asids only checks contexts with GRUs currently
+- *  assigned, asids in some contexts will be missed. Prior to loading
+- *  a context, the asid generation of the GTS asid is rechecked. If it
+- *  doesn't match the current generation, a new asid will be assigned.
+- *
+- *   	0---------------x------------x---------------------x----|
+- *	  ^-next	^-limit	   				^-MAX_ASID
+- *
+- * All asid manipulation & context loading/unloading is protected by the
+- * gs_lock.
+- */
+-
+-/* Hit the asid limit. Start over */
+-static int gru_wrap_asid(struct gru_state *gru)
+-{
+-	gru_dbg(grudev, "gid %d\n", gru->gs_gid);
+-	STAT(asid_wrap);
+-	gru->gs_asid_gen++;
+-	return MIN_ASID;
+-}
+-
+-/* Find the next chunk of unused asids */
+-static int gru_reset_asid_limit(struct gru_state *gru, int asid)
+-{
+-	int i, gid, inuse_asid, limit;
+-
+-	gru_dbg(grudev, "gid %d, asid 0x%x\n", gru->gs_gid, asid);
+-	STAT(asid_next);
+-	limit = MAX_ASID;
+-	if (asid >= limit)
+-		asid = gru_wrap_asid(gru);
+-	gru_flush_all_tlb(gru);
+-	gid = gru->gs_gid;
+-again:
+-	for (i = 0; i < GRU_NUM_CCH; i++) {
+-		if (!gru->gs_gts[i] || is_kernel_context(gru->gs_gts[i]))
+-			continue;
+-		inuse_asid = gru->gs_gts[i]->ts_gms->ms_asids[gid].mt_asid;
+-		gru_dbg(grudev, "gid %d, gts %p, gms %p, inuse 0x%x, cxt %d\n",
+-			gru->gs_gid, gru->gs_gts[i], gru->gs_gts[i]->ts_gms,
+-			inuse_asid, i);
+-		if (inuse_asid == asid) {
+-			asid += ASID_INC;
+-			if (asid >= limit) {
+-				/*
+-				 * empty range: reset the range limit and
+-				 * start over
+-				 */
+-				limit = MAX_ASID;
+-				if (asid >= MAX_ASID)
+-					asid = gru_wrap_asid(gru);
+-				goto again;
+-			}
+-		}
+-
+-		if ((inuse_asid > asid) && (inuse_asid < limit))
+-			limit = inuse_asid;
+-	}
+-	gru->gs_asid_limit = limit;
+-	gru->gs_asid = asid;
+-	gru_dbg(grudev, "gid %d, new asid 0x%x, new_limit 0x%x\n", gru->gs_gid,
+-					asid, limit);
+-	return asid;
+-}
+-
+-/* Assign a new ASID to a thread context.  */
+-static int gru_assign_asid(struct gru_state *gru)
+-{
+-	int asid;
+-
+-	gru->gs_asid += ASID_INC;
+-	asid = gru->gs_asid;
+-	if (asid >= gru->gs_asid_limit)
+-		asid = gru_reset_asid_limit(gru, asid);
+-
+-	gru_dbg(grudev, "gid %d, asid 0x%x\n", gru->gs_gid, asid);
+-	return asid;
+-}
+-
+-/*
+- * Clear n bits in a word. Return a word indicating the bits that were cleared.
+- * Optionally, build an array of chars that contain the bit numbers allocated.
+- */
+-static unsigned long reserve_resources(unsigned long *p, int n, int mmax,
+-				       signed char *idx)
+-{
+-	unsigned long bits = 0;
+-	int i;
+-
+-	while (n--) {
+-		i = find_first_bit(p, mmax);
+-		if (i == mmax)
+-			BUG();
+-		__clear_bit(i, p);
+-		__set_bit(i, &bits);
+-		if (idx)
+-			*idx++ = i;
+-	}
+-	return bits;
+-}
+-
+-unsigned long gru_reserve_cb_resources(struct gru_state *gru, int cbr_au_count,
+-				       signed char *cbmap)
+-{
+-	return reserve_resources(&gru->gs_cbr_map, cbr_au_count, GRU_CBR_AU,
+-				 cbmap);
+-}
+-
+-unsigned long gru_reserve_ds_resources(struct gru_state *gru, int dsr_au_count,
+-				       signed char *dsmap)
+-{
+-	return reserve_resources(&gru->gs_dsr_map, dsr_au_count, GRU_DSR_AU,
+-				 dsmap);
+-}
+-
+-static void reserve_gru_resources(struct gru_state *gru,
+-				  struct gru_thread_state *gts)
+-{
+-	gru->gs_active_contexts++;
+-	gts->ts_cbr_map =
+-	    gru_reserve_cb_resources(gru, gts->ts_cbr_au_count,
+-				     gts->ts_cbr_idx);
+-	gts->ts_dsr_map =
+-	    gru_reserve_ds_resources(gru, gts->ts_dsr_au_count, NULL);
+-}
+-
+-static void free_gru_resources(struct gru_state *gru,
+-			       struct gru_thread_state *gts)
+-{
+-	gru->gs_active_contexts--;
+-	gru->gs_cbr_map |= gts->ts_cbr_map;
+-	gru->gs_dsr_map |= gts->ts_dsr_map;
+-}
+-
+-/*
+- * Check if a GRU has sufficient free resources to satisfy an allocation
+- * request. Note: GRU locks may or may not be held when this is called. If
+- * not held, recheck after acquiring the appropriate locks.
+- *
+- * Returns 1 if sufficient resources, 0 if not
+- */
+-static int check_gru_resources(struct gru_state *gru, int cbr_au_count,
+-			       int dsr_au_count, int max_active_contexts)
+-{
+-	return hweight64(gru->gs_cbr_map) >= cbr_au_count
+-		&& hweight64(gru->gs_dsr_map) >= dsr_au_count
+-		&& gru->gs_active_contexts < max_active_contexts;
+-}
+-
+-/*
+- * TLB manangment requires tracking all GRU chiplets that have loaded a GSEG
+- * context.
+- */
+-static int gru_load_mm_tracker(struct gru_state *gru,
+-					struct gru_thread_state *gts)
+-{
+-	struct gru_mm_struct *gms = gts->ts_gms;
+-	struct gru_mm_tracker *asids = &gms->ms_asids[gru->gs_gid];
+-	unsigned short ctxbitmap = (1 << gts->ts_ctxnum);
+-	int asid;
+-
+-	spin_lock(&gms->ms_asid_lock);
+-	asid = asids->mt_asid;
+-
+-	spin_lock(&gru->gs_asid_lock);
+-	if (asid == 0 || (asids->mt_ctxbitmap == 0 && asids->mt_asid_gen !=
+-			  gru->gs_asid_gen)) {
+-		asid = gru_assign_asid(gru);
+-		asids->mt_asid = asid;
+-		asids->mt_asid_gen = gru->gs_asid_gen;
+-		STAT(asid_new);
+-	} else {
+-		STAT(asid_reuse);
+-	}
+-	spin_unlock(&gru->gs_asid_lock);
+-
+-	BUG_ON(asids->mt_ctxbitmap & ctxbitmap);
+-	asids->mt_ctxbitmap |= ctxbitmap;
+-	if (!test_bit(gru->gs_gid, gms->ms_asidmap))
+-		__set_bit(gru->gs_gid, gms->ms_asidmap);
+-	spin_unlock(&gms->ms_asid_lock);
+-
+-	gru_dbg(grudev,
+-		"gid %d, gts %p, gms %p, ctxnum %d, asid 0x%x, asidmap 0x%lx\n",
+-		gru->gs_gid, gts, gms, gts->ts_ctxnum, asid,
+-		gms->ms_asidmap[0]);
+-	return asid;
+-}
+-
+-static void gru_unload_mm_tracker(struct gru_state *gru,
+-					struct gru_thread_state *gts)
+-{
+-	struct gru_mm_struct *gms = gts->ts_gms;
+-	struct gru_mm_tracker *asids;
+-	unsigned short ctxbitmap;
+-
+-	asids = &gms->ms_asids[gru->gs_gid];
+-	ctxbitmap = (1 << gts->ts_ctxnum);
+-	spin_lock(&gms->ms_asid_lock);
+-	spin_lock(&gru->gs_asid_lock);
+-	BUG_ON((asids->mt_ctxbitmap & ctxbitmap) != ctxbitmap);
+-	asids->mt_ctxbitmap ^= ctxbitmap;
+-	gru_dbg(grudev, "gid %d, gts %p, gms %p, ctxnum %d, asidmap 0x%lx\n",
+-		gru->gs_gid, gts, gms, gts->ts_ctxnum, gms->ms_asidmap[0]);
+-	spin_unlock(&gru->gs_asid_lock);
+-	spin_unlock(&gms->ms_asid_lock);
+-}
+-
+-/*
+- * Decrement the reference count on a GTS structure. Free the structure
+- * if the reference count goes to zero.
+- */
+-void gts_drop(struct gru_thread_state *gts)
+-{
+-	if (gts && refcount_dec_and_test(&gts->ts_refcnt)) {
+-		if (gts->ts_gms)
+-			gru_drop_mmu_notifier(gts->ts_gms);
+-		kfree(gts);
+-		STAT(gts_free);
+-	}
+-}
+-
+-/*
+- * Locate the GTS structure for the current thread.
+- */
+-static struct gru_thread_state *gru_find_current_gts_nolock(struct gru_vma_data
+-			    *vdata, int tsid)
+-{
+-	struct gru_thread_state *gts;
+-
+-	list_for_each_entry(gts, &vdata->vd_head, ts_next)
+-	    if (gts->ts_tsid == tsid)
+-		return gts;
+-	return NULL;
+-}
+-
+-/*
+- * Allocate a thread state structure.
+- */
+-struct gru_thread_state *gru_alloc_gts(struct vm_area_struct *vma,
+-		int cbr_au_count, int dsr_au_count,
+-		unsigned char tlb_preload_count, int options, int tsid)
+-{
+-	struct gru_thread_state *gts;
+-	struct gru_mm_struct *gms;
+-	int bytes;
+-
+-	bytes = DSR_BYTES(dsr_au_count) + CBR_BYTES(cbr_au_count);
+-	bytes += sizeof(struct gru_thread_state);
+-	gts = kmalloc(bytes, GFP_KERNEL);
+-	if (!gts)
+-		return ERR_PTR(-ENOMEM);
+-
+-	STAT(gts_alloc);
+-	memset(gts, 0, sizeof(struct gru_thread_state)); /* zero out header */
+-	refcount_set(&gts->ts_refcnt, 1);
+-	mutex_init(&gts->ts_ctxlock);
+-	gts->ts_cbr_au_count = cbr_au_count;
+-	gts->ts_dsr_au_count = dsr_au_count;
+-	gts->ts_tlb_preload_count = tlb_preload_count;
+-	gts->ts_user_options = options;
+-	gts->ts_user_blade_id = -1;
+-	gts->ts_user_chiplet_id = -1;
+-	gts->ts_tsid = tsid;
+-	gts->ts_ctxnum = NULLCTX;
+-	gts->ts_tlb_int_select = -1;
+-	gts->ts_cch_req_slice = -1;
+-	gts->ts_sizeavail = GRU_SIZEAVAIL(PAGE_SHIFT);
+-	if (vma) {
+-		gts->ts_mm = current->mm;
+-		gts->ts_vma = vma;
+-		gms = gru_register_mmu_notifier();
+-		if (IS_ERR(gms))
+-			goto err;
+-		gts->ts_gms = gms;
+-	}
+-
+-	gru_dbg(grudev, "alloc gts %p\n", gts);
+-	return gts;
+-
+-err:
+-	gts_drop(gts);
+-	return ERR_CAST(gms);
+-}
+-
+-/*
+- * Allocate a vma private data structure.
+- */
+-struct gru_vma_data *gru_alloc_vma_data(struct vm_area_struct *vma, int tsid)
+-{
+-	struct gru_vma_data *vdata = NULL;
+-
+-	vdata = kmalloc_obj(*vdata);
+-	if (!vdata)
+-		return NULL;
+-
+-	STAT(vdata_alloc);
+-	INIT_LIST_HEAD(&vdata->vd_head);
+-	spin_lock_init(&vdata->vd_lock);
+-	gru_dbg(grudev, "alloc vdata %p\n", vdata);
+-	return vdata;
+-}
+-
+-/*
+- * Find the thread state structure for the current thread.
+- */
+-struct gru_thread_state *gru_find_thread_state(struct vm_area_struct *vma,
+-					int tsid)
+-{
+-	struct gru_vma_data *vdata = vma->vm_private_data;
+-	struct gru_thread_state *gts;
+-
+-	spin_lock(&vdata->vd_lock);
+-	gts = gru_find_current_gts_nolock(vdata, tsid);
+-	spin_unlock(&vdata->vd_lock);
+-	gru_dbg(grudev, "vma %p, gts %p\n", vma, gts);
+-	return gts;
+-}
+-
+-/*
+- * Allocate a new thread state for a GSEG. Note that races may allow
+- * another thread to race to create a gts.
+- */
+-struct gru_thread_state *gru_alloc_thread_state(struct vm_area_struct *vma,
+-					int tsid)
+-{
+-	struct gru_vma_data *vdata = vma->vm_private_data;
+-	struct gru_thread_state *gts, *ngts;
+-
+-	gts = gru_alloc_gts(vma, vdata->vd_cbr_au_count,
+-			    vdata->vd_dsr_au_count,
+-			    vdata->vd_tlb_preload_count,
+-			    vdata->vd_user_options, tsid);
+-	if (IS_ERR(gts))
+-		return gts;
+-
+-	spin_lock(&vdata->vd_lock);
+-	ngts = gru_find_current_gts_nolock(vdata, tsid);
+-	if (ngts) {
+-		gts_drop(gts);
+-		gts = ngts;
+-		STAT(gts_double_allocate);
+-	} else {
+-		list_add(&gts->ts_next, &vdata->vd_head);
+-	}
+-	spin_unlock(&vdata->vd_lock);
+-	gru_dbg(grudev, "vma %p, gts %p\n", vma, gts);
+-	return gts;
+-}
+-
+-/*
+- * Free the GRU context assigned to the thread state.
+- */
+-static void gru_free_gru_context(struct gru_thread_state *gts)
+-{
+-	struct gru_state *gru;
+-
+-	gru = gts->ts_gru;
+-	gru_dbg(grudev, "gts %p, gid %d\n", gts, gru->gs_gid);
+-
+-	spin_lock(&gru->gs_lock);
+-	gru->gs_gts[gts->ts_ctxnum] = NULL;
+-	free_gru_resources(gru, gts);
+-	BUG_ON(test_bit(gts->ts_ctxnum, &gru->gs_context_map) == 0);
+-	__clear_bit(gts->ts_ctxnum, &gru->gs_context_map);
+-	gts->ts_ctxnum = NULLCTX;
+-	gts->ts_gru = NULL;
+-	gts->ts_blade = -1;
+-	spin_unlock(&gru->gs_lock);
+-
+-	gts_drop(gts);
+-	STAT(free_context);
+-}
+-
+-/*
+- * Prefetching cachelines help hardware performance.
+- * (Strictly a performance enhancement. Not functionally required).
+- */
+-static void prefetch_data(void *p, int num, int stride)
+-{
+-	while (num-- > 0) {
+-		prefetchw(p);
+-		p += stride;
+-	}
+-}
+-
+-static inline long gru_copy_handle(void *d, void *s)
+-{
+-	memcpy(d, s, GRU_HANDLE_BYTES);
+-	return GRU_HANDLE_BYTES;
+-}
+-
+-static void gru_prefetch_context(void *gseg, void *cb, void *cbe,
+-				unsigned long cbrmap, unsigned long length)
+-{
+-	int i, scr;
+-
+-	prefetch_data(gseg + GRU_DS_BASE, length / GRU_CACHE_LINE_BYTES,
+-		      GRU_CACHE_LINE_BYTES);
+-
+-	for_each_cbr_in_allocation_map(i, &cbrmap, scr) {
+-		prefetch_data(cb, 1, GRU_CACHE_LINE_BYTES);
+-		prefetch_data(cbe + i * GRU_HANDLE_STRIDE, 1,
+-			      GRU_CACHE_LINE_BYTES);
+-		cb += GRU_HANDLE_STRIDE;
+-	}
+-}
+-
+-static void gru_load_context_data(void *save, void *grubase, int ctxnum,
+-				  unsigned long cbrmap, unsigned long dsrmap,
+-				  int data_valid)
+-{
+-	void *gseg, *cb, *cbe;
+-	unsigned long length;
+-	int i, scr;
+-
+-	gseg = grubase + ctxnum * GRU_GSEG_STRIDE;
+-	cb = gseg + GRU_CB_BASE;
+-	cbe = grubase + GRU_CBE_BASE;
+-	length = hweight64(dsrmap) * GRU_DSR_AU_BYTES;
+-	gru_prefetch_context(gseg, cb, cbe, cbrmap, length);
+-
+-	for_each_cbr_in_allocation_map(i, &cbrmap, scr) {
+-		if (data_valid) {
+-			save += gru_copy_handle(cb, save);
+-			save += gru_copy_handle(cbe + i * GRU_HANDLE_STRIDE,
+-						save);
+-		} else {
+-			memset(cb, 0, GRU_CACHE_LINE_BYTES);
+-			memset(cbe + i * GRU_HANDLE_STRIDE, 0,
+-						GRU_CACHE_LINE_BYTES);
+-		}
+-		/* Flush CBE to hide race in context restart */
+-		mb();
+-		gru_flush_cache(cbe + i * GRU_HANDLE_STRIDE);
+-		cb += GRU_HANDLE_STRIDE;
+-	}
+-
+-	if (data_valid)
+-		memcpy(gseg + GRU_DS_BASE, save, length);
+-	else
+-		memset(gseg + GRU_DS_BASE, 0, length);
+-}
+-
+-static void gru_unload_context_data(void *save, void *grubase, int ctxnum,
+-				    unsigned long cbrmap, unsigned long dsrmap)
+-{
+-	void *gseg, *cb, *cbe;
+-	unsigned long length;
+-	int i, scr;
+-
+-	gseg = grubase + ctxnum * GRU_GSEG_STRIDE;
+-	cb = gseg + GRU_CB_BASE;
+-	cbe = grubase + GRU_CBE_BASE;
+-	length = hweight64(dsrmap) * GRU_DSR_AU_BYTES;
+-
+-	/* CBEs may not be coherent. Flush them from cache */
+-	for_each_cbr_in_allocation_map(i, &cbrmap, scr)
+-		gru_flush_cache(cbe + i * GRU_HANDLE_STRIDE);
+-	mb();		/* Let the CL flush complete */
+-
+-	gru_prefetch_context(gseg, cb, cbe, cbrmap, length);
+-
+-	for_each_cbr_in_allocation_map(i, &cbrmap, scr) {
+-		save += gru_copy_handle(save, cb);
+-		save += gru_copy_handle(save, cbe + i * GRU_HANDLE_STRIDE);
+-		cb += GRU_HANDLE_STRIDE;
+-	}
+-	memcpy(save, gseg + GRU_DS_BASE, length);
+-}
+-
+-void gru_unload_context(struct gru_thread_state *gts, int savestate)
+-{
+-	struct gru_state *gru = gts->ts_gru;
+-	struct gru_context_configuration_handle *cch;
+-	int ctxnum = gts->ts_ctxnum;
+-
+-	if (!is_kernel_context(gts))
+-		zap_special_vma_range(gts->ts_vma, UGRUADDR(gts), GRU_GSEG_PAGESIZE);
+-	cch = get_cch(gru->gs_gru_base_vaddr, ctxnum);
+-
+-	gru_dbg(grudev, "gts %p, cbrmap 0x%lx, dsrmap 0x%lx\n",
+-		gts, gts->ts_cbr_map, gts->ts_dsr_map);
+-	lock_cch_handle(cch);
+-	if (cch_interrupt_sync(cch))
+-		BUG();
+-
+-	if (!is_kernel_context(gts))
+-		gru_unload_mm_tracker(gru, gts);
+-	if (savestate) {
+-		gru_unload_context_data(gts->ts_gdata, gru->gs_gru_base_vaddr,
+-					ctxnum, gts->ts_cbr_map,
+-					gts->ts_dsr_map);
+-		gts->ts_data_valid = 1;
+-	}
+-
+-	if (cch_deallocate(cch))
+-		BUG();
+-	unlock_cch_handle(cch);
+-
+-	gru_free_gru_context(gts);
+-}
+-
+-/*
+- * Load a GRU context by copying it from the thread data structure in memory
+- * to the GRU.
+- */
+-void gru_load_context(struct gru_thread_state *gts)
+-{
+-	struct gru_state *gru = gts->ts_gru;
+-	struct gru_context_configuration_handle *cch;
+-	int i, err, asid, ctxnum = gts->ts_ctxnum;
+-
+-	cch = get_cch(gru->gs_gru_base_vaddr, ctxnum);
+-	lock_cch_handle(cch);
+-	cch->tfm_fault_bit_enable =
+-	    (gts->ts_user_options == GRU_OPT_MISS_FMM_POLL
+-	     || gts->ts_user_options == GRU_OPT_MISS_FMM_INTR);
+-	cch->tlb_int_enable = (gts->ts_user_options == GRU_OPT_MISS_FMM_INTR);
+-	if (cch->tlb_int_enable) {
+-		gts->ts_tlb_int_select = gru_cpu_fault_map_id();
+-		cch->tlb_int_select = gts->ts_tlb_int_select;
+-	}
+-	if (gts->ts_cch_req_slice >= 0) {
+-		cch->req_slice_set_enable = 1;
+-		cch->req_slice = gts->ts_cch_req_slice;
+-	} else {
+-		cch->req_slice_set_enable =0;
+-	}
+-	cch->tfm_done_bit_enable = 0;
+-	cch->dsr_allocation_map = gts->ts_dsr_map;
+-	cch->cbr_allocation_map = gts->ts_cbr_map;
+-
+-	if (is_kernel_context(gts)) {
+-		cch->unmap_enable = 1;
+-		cch->tfm_done_bit_enable = 1;
+-		cch->cb_int_enable = 1;
+-		cch->tlb_int_select = 0;	/* For now, ints go to cpu 0 */
+-	} else {
+-		cch->unmap_enable = 0;
+-		cch->tfm_done_bit_enable = 0;
+-		cch->cb_int_enable = 0;
+-		asid = gru_load_mm_tracker(gru, gts);
+-		for (i = 0; i < 8; i++) {
+-			cch->asid[i] = asid + i;
+-			cch->sizeavail[i] = gts->ts_sizeavail;
+-		}
+-	}
+-
+-	err = cch_allocate(cch);
+-	if (err) {
+-		gru_dbg(grudev,
+-			"err %d: cch %p, gts %p, cbr 0x%lx, dsr 0x%lx\n",
+-			err, cch, gts, gts->ts_cbr_map, gts->ts_dsr_map);
+-		BUG();
+-	}
+-
+-	gru_load_context_data(gts->ts_gdata, gru->gs_gru_base_vaddr, ctxnum,
+-			gts->ts_cbr_map, gts->ts_dsr_map, gts->ts_data_valid);
+-
+-	if (cch_start(cch))
+-		BUG();
+-	unlock_cch_handle(cch);
+-
+-	gru_dbg(grudev, "gid %d, gts %p, cbrmap 0x%lx, dsrmap 0x%lx, tie %d, tis %d\n",
+-		gts->ts_gru->gs_gid, gts, gts->ts_cbr_map, gts->ts_dsr_map,
+-		(gts->ts_user_options == GRU_OPT_MISS_FMM_INTR), gts->ts_tlb_int_select);
+-}
+-
+-/*
+- * Update fields in an active CCH:
+- * 	- retarget interrupts on local blade
+- * 	- update sizeavail mask
+- */
+-int gru_update_cch(struct gru_thread_state *gts)
+-{
+-	struct gru_context_configuration_handle *cch;
+-	struct gru_state *gru = gts->ts_gru;
+-	int i, ctxnum = gts->ts_ctxnum, ret = 0;
+-
+-	cch = get_cch(gru->gs_gru_base_vaddr, ctxnum);
+-
+-	lock_cch_handle(cch);
+-	if (cch->state == CCHSTATE_ACTIVE) {
+-		if (gru->gs_gts[gts->ts_ctxnum] != gts)
+-			goto exit;
+-		if (cch_interrupt(cch))
+-			BUG();
+-		for (i = 0; i < 8; i++)
+-			cch->sizeavail[i] = gts->ts_sizeavail;
+-		gts->ts_tlb_int_select = gru_cpu_fault_map_id();
+-		cch->tlb_int_select = gru_cpu_fault_map_id();
+-		cch->tfm_fault_bit_enable =
+-		  (gts->ts_user_options == GRU_OPT_MISS_FMM_POLL
+-		    || gts->ts_user_options == GRU_OPT_MISS_FMM_INTR);
+-		if (cch_start(cch))
+-			BUG();
+-		ret = 1;
+-	}
+-exit:
+-	unlock_cch_handle(cch);
+-	return ret;
+-}
+-
+-/*
+- * Update CCH tlb interrupt select. Required when all the following is true:
+- * 	- task's GRU context is loaded into a GRU
+- * 	- task is using interrupt notification for TLB faults
+- * 	- task has migrated to a different cpu on the same blade where
+- * 	  it was previously running.
+- */
+-static int gru_retarget_intr(struct gru_thread_state *gts)
+-{
+-	if (gts->ts_tlb_int_select < 0
+-	    || gts->ts_tlb_int_select == gru_cpu_fault_map_id())
+-		return 0;
+-
+-	gru_dbg(grudev, "retarget from %d to %d\n", gts->ts_tlb_int_select,
+-		gru_cpu_fault_map_id());
+-	return gru_update_cch(gts);
+-}
+-
+-/*
+- * Check if a GRU context is allowed to use a specific chiplet. By default
+- * a context is assigned to any blade-local chiplet. However, users can
+- * override this.
+- * 	Returns 1 if assignment allowed, 0 otherwise
+- */
+-static int gru_check_chiplet_assignment(struct gru_state *gru,
+-					struct gru_thread_state *gts)
+-{
+-	int blade_id;
+-	int chiplet_id;
+-
+-	blade_id = gts->ts_user_blade_id;
+-	if (blade_id < 0)
+-		blade_id = uv_numa_blade_id();
+-
+-	chiplet_id = gts->ts_user_chiplet_id;
+-	return gru->gs_blade_id == blade_id &&
+-		(chiplet_id < 0 || chiplet_id == gru->gs_chiplet_id);
+-}
+-
+-/*
+- * Unload the gru context if it is not assigned to the correct blade or
+- * chiplet. Misassignment can occur if the process migrates to a different
+- * blade or if the user changes the selected blade/chiplet.
+- */
+-int gru_check_context_placement(struct gru_thread_state *gts)
+-{
+-	struct gru_state *gru;
+-	int ret = 0;
+-
+-	/*
+-	 * If the current task is the context owner, verify that the
+-	 * context is correctly placed. This test is skipped for non-owner
+-	 * references. Pthread apps use non-owner references to the CBRs.
+-	 */
+-	gru = gts->ts_gru;
+-	/*
+-	 * If gru or gts->ts_tgid_owner isn't initialized properly, return
+-	 * success to indicate that the caller does not need to unload the
+-	 * gru context.The caller is responsible for their inspection and
+-	 * reinitialization if needed.
+-	 */
+-	if (!gru || gts->ts_tgid_owner != current->tgid)
+-		return ret;
+-
+-	if (!gru_check_chiplet_assignment(gru, gts)) {
+-		STAT(check_context_unload);
+-		ret = -EINVAL;
+-	} else if (gru_retarget_intr(gts)) {
+-		STAT(check_context_retarget_intr);
+-	}
 -
 -	return ret;
 -}
 -
--void
--xpc_exit_uv(void)
+-
+-/*
+- * Insufficient GRU resources available on the local blade. Steal a context from
+- * a process. This is a hack until a _real_ resource scheduler is written....
+- */
+-#define next_ctxnum(n)	((n) <  GRU_NUM_CCH - 2 ? (n) + 1 : 0)
+-#define next_gru(b, g)	(((g) < &(b)->bs_grus[GRU_CHIPLETS_PER_BLADE - 1]) ?  \
+-				 ((g)+1) : &(b)->bs_grus[0])
+-
+-static int is_gts_stealable(struct gru_thread_state *gts,
+-		struct gru_blade_state *bs)
 -{
--	xpc_destroy_gru_mq_uv(xpc_notify_mq_uv);
--	xpc_destroy_gru_mq_uv(xpc_activate_mq_uv);
+-	if (is_kernel_context(gts))
+-		return down_write_trylock(&bs->bs_kgts_sema);
+-	else
+-		return mutex_trylock(&gts->ts_ctxlock);
 -}
 -
--module_param(xpc_mq_node, int, 0);
--MODULE_PARM_DESC(xpc_mq_node, "Node number on which to allocate message queues.");
-diff --git a/drivers/misc/sgi-xp/xpnet.c b/drivers/misc/sgi-xp/xpnet.c
+-static void gts_stolen(struct gru_thread_state *gts,
+-		struct gru_blade_state *bs)
+-{
+-	if (is_kernel_context(gts)) {
+-		up_write(&bs->bs_kgts_sema);
+-		STAT(steal_kernel_context);
+-	} else {
+-		mutex_unlock(&gts->ts_ctxlock);
+-		STAT(steal_user_context);
+-	}
+-}
+-
+-void gru_steal_context(struct gru_thread_state *gts)
+-{
+-	struct gru_blade_state *blade;
+-	struct gru_state *gru, *gru0;
+-	struct gru_thread_state *ngts = NULL;
+-	int ctxnum, ctxnum0, flag = 0, cbr, dsr;
+-	int blade_id;
+-
+-	blade_id = gts->ts_user_blade_id;
+-	if (blade_id < 0)
+-		blade_id = uv_numa_blade_id();
+-	cbr = gts->ts_cbr_au_count;
+-	dsr = gts->ts_dsr_au_count;
+-
+-	blade = gru_base[blade_id];
+-	spin_lock(&blade->bs_lock);
+-
+-	ctxnum = next_ctxnum(blade->bs_lru_ctxnum);
+-	gru = blade->bs_lru_gru;
+-	if (ctxnum == 0)
+-		gru = next_gru(blade, gru);
+-	blade->bs_lru_gru = gru;
+-	blade->bs_lru_ctxnum = ctxnum;
+-	ctxnum0 = ctxnum;
+-	gru0 = gru;
+-	while (1) {
+-		if (gru_check_chiplet_assignment(gru, gts)) {
+-			if (check_gru_resources(gru, cbr, dsr, GRU_NUM_CCH))
+-				break;
+-			spin_lock(&gru->gs_lock);
+-			for (; ctxnum < GRU_NUM_CCH; ctxnum++) {
+-				if (flag && gru == gru0 && ctxnum == ctxnum0)
+-					break;
+-				ngts = gru->gs_gts[ctxnum];
+-				/*
+-			 	* We are grabbing locks out of order, so trylock is
+-			 	* needed. GTSs are usually not locked, so the odds of
+-			 	* success are high. If trylock fails, try to steal a
+-			 	* different GSEG.
+-			 	*/
+-				if (ngts && is_gts_stealable(ngts, blade))
+-					break;
+-				ngts = NULL;
+-			}
+-			spin_unlock(&gru->gs_lock);
+-			if (ngts || (flag && gru == gru0 && ctxnum == ctxnum0))
+-				break;
+-		}
+-		if (flag && gru == gru0)
+-			break;
+-		flag = 1;
+-		ctxnum = 0;
+-		gru = next_gru(blade, gru);
+-	}
+-	spin_unlock(&blade->bs_lock);
+-
+-	if (ngts) {
+-		gts->ustats.context_stolen++;
+-		ngts->ts_steal_jiffies = jiffies;
+-		gru_unload_context(ngts, is_kernel_context(ngts) ? 0 : 1);
+-		gts_stolen(ngts, blade);
+-	} else {
+-		STAT(steal_context_failed);
+-	}
+-	gru_dbg(grudev,
+-		"stole gid %d, ctxnum %d from gts %p. Need cb %d, ds %d;"
+-		" avail cb %ld, ds %ld\n",
+-		gru->gs_gid, ctxnum, ngts, cbr, dsr, hweight64(gru->gs_cbr_map),
+-		hweight64(gru->gs_dsr_map));
+-}
+-
+-/*
+- * Assign a gru context.
+- */
+-static int gru_assign_context_number(struct gru_state *gru)
+-{
+-	int ctxnum;
+-
+-	ctxnum = find_first_zero_bit(&gru->gs_context_map, GRU_NUM_CCH);
+-	__set_bit(ctxnum, &gru->gs_context_map);
+-	return ctxnum;
+-}
+-
+-/*
+- * Scan the GRUs on the local blade & assign a GRU context.
+- */
+-struct gru_state *gru_assign_gru_context(struct gru_thread_state *gts)
+-{
+-	struct gru_state *gru, *grux;
+-	int i, max_active_contexts;
+-	int blade_id = gts->ts_user_blade_id;
+-
+-	if (blade_id < 0)
+-		blade_id = uv_numa_blade_id();
+-again:
+-	gru = NULL;
+-	max_active_contexts = GRU_NUM_CCH;
+-	for_each_gru_on_blade(grux, blade_id, i) {
+-		if (!gru_check_chiplet_assignment(grux, gts))
+-			continue;
+-		if (check_gru_resources(grux, gts->ts_cbr_au_count,
+-					gts->ts_dsr_au_count,
+-					max_active_contexts)) {
+-			gru = grux;
+-			max_active_contexts = grux->gs_active_contexts;
+-			if (max_active_contexts == 0)
+-				break;
+-		}
+-	}
+-
+-	if (gru) {
+-		spin_lock(&gru->gs_lock);
+-		if (!check_gru_resources(gru, gts->ts_cbr_au_count,
+-					 gts->ts_dsr_au_count, GRU_NUM_CCH)) {
+-			spin_unlock(&gru->gs_lock);
+-			goto again;
+-		}
+-		reserve_gru_resources(gru, gts);
+-		gts->ts_gru = gru;
+-		gts->ts_blade = gru->gs_blade_id;
+-		gts->ts_ctxnum = gru_assign_context_number(gru);
+-		refcount_inc(&gts->ts_refcnt);
+-		gru->gs_gts[gts->ts_ctxnum] = gts;
+-		spin_unlock(&gru->gs_lock);
+-
+-		STAT(assign_context);
+-		gru_dbg(grudev,
+-			"gseg %p, gts %p, gid %d, ctx %d, cbr %d, dsr %d\n",
+-			gseg_virtual_address(gts->ts_gru, gts->ts_ctxnum), gts,
+-			gts->ts_gru->gs_gid, gts->ts_ctxnum,
+-			gts->ts_cbr_au_count, gts->ts_dsr_au_count);
+-	} else {
+-		gru_dbg(grudev, "failed to allocate a GTS %s\n", "");
+-		STAT(assign_context_failed);
+-	}
+-
+-	return gru;
+-}
+-
+-/*
+- * gru_nopage
+- *
+- * Map the user's GRU segment
+- *
+- * 	Note: gru segments alway mmaped on GRU_GSEG_PAGESIZE boundaries.
+- */
+-vm_fault_t gru_fault(struct vm_fault *vmf)
+-{
+-	struct vm_area_struct *vma = vmf->vma;
+-	struct gru_thread_state *gts;
+-	unsigned long paddr, vaddr;
+-	unsigned long expires;
+-
+-	vaddr = vmf->address;
+-	gru_dbg(grudev, "vma %p, vaddr 0x%lx (0x%lx)\n",
+-		vma, vaddr, GSEG_BASE(vaddr));
+-	STAT(nopfn);
+-
+-	/* The following check ensures vaddr is a valid address in the VMA */
+-	gts = gru_find_thread_state(vma, TSID(vaddr, vma));
+-	if (!gts)
+-		return VM_FAULT_SIGBUS;
+-
+-again:
+-	mutex_lock(&gts->ts_ctxlock);
+-
+-	if (gru_check_context_placement(gts)) {
+-		mutex_unlock(&gts->ts_ctxlock);
+-		gru_unload_context(gts, 1);
+-		return VM_FAULT_NOPAGE;
+-	}
+-
+-	if (!gts->ts_gru) {
+-		STAT(load_user_context);
+-		if (!gru_assign_gru_context(gts)) {
+-			mutex_unlock(&gts->ts_ctxlock);
+-			set_current_state(TASK_INTERRUPTIBLE);
+-			schedule_timeout(GRU_ASSIGN_DELAY);  /* true hack ZZZ */
+-			expires = gts->ts_steal_jiffies + GRU_STEAL_DELAY;
+-			if (time_before(expires, jiffies))
+-				gru_steal_context(gts);
+-			goto again;
+-		}
+-		gru_load_context(gts);
+-		paddr = gseg_physical_address(gts->ts_gru, gts->ts_ctxnum);
+-		remap_pfn_range(vma, vaddr & ~(GRU_GSEG_PAGESIZE - 1),
+-				paddr >> PAGE_SHIFT, GRU_GSEG_PAGESIZE,
+-				vma->vm_page_prot);
+-	}
+-
+-	mutex_unlock(&gts->ts_ctxlock);
+-
+-	return VM_FAULT_NOPAGE;
+-}
+-
+diff --git a/drivers/misc/sgi-gru/gruprocfs.c b/drivers/misc/sgi-gru/gruprocfs.c
 deleted file mode 100644
-index 1533b72d57b1..000000000000
---- a/drivers/misc/sgi-xp/xpnet.c
+index 97b8b38ab47d..000000000000
+--- a/drivers/misc/sgi-gru/gruprocfs.c
 +++ /dev/null
-@@ -1,599 +0,0 @@
+@@ -1,308 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
+- * SN Platform GRU Driver
 - *
-- * (C) Copyright 2020 Hewlett Packard Enterprise Development LP
-- * Copyright (C) 1999-2009 Silicon Graphics, Inc. All rights reserved.
+- *              PROC INTERFACES
+- *
+- * This file supports the /proc interfaces for the GRU driver
+- *
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
+- */
+-
+-#include <linux/proc_fs.h>
+-#include <linux/device.h>
+-#include <linux/seq_file.h>
+-#include <linux/uaccess.h>
+-#include "gru.h"
+-#include "grulib.h"
+-#include "grutables.h"
+-
+-#define printstat(s, f)		printstat_val(s, &gru_stats.f, #f)
+-
+-static void printstat_val(struct seq_file *s, atomic_long_t *v, char *id)
+-{
+-	unsigned long val = atomic_long_read(v);
+-
+-	seq_printf(s, "%16lu %s\n", val, id);
+-}
+-
+-static int statistics_show(struct seq_file *s, void *p)
+-{
+-	printstat(s, vdata_alloc);
+-	printstat(s, vdata_free);
+-	printstat(s, gts_alloc);
+-	printstat(s, gts_free);
+-	printstat(s, gms_alloc);
+-	printstat(s, gms_free);
+-	printstat(s, gts_double_allocate);
+-	printstat(s, assign_context);
+-	printstat(s, assign_context_failed);
+-	printstat(s, free_context);
+-	printstat(s, load_user_context);
+-	printstat(s, load_kernel_context);
+-	printstat(s, lock_kernel_context);
+-	printstat(s, unlock_kernel_context);
+-	printstat(s, steal_user_context);
+-	printstat(s, steal_kernel_context);
+-	printstat(s, steal_context_failed);
+-	printstat(s, nopfn);
+-	printstat(s, asid_new);
+-	printstat(s, asid_next);
+-	printstat(s, asid_wrap);
+-	printstat(s, asid_reuse);
+-	printstat(s, intr);
+-	printstat(s, intr_cbr);
+-	printstat(s, intr_tfh);
+-	printstat(s, intr_spurious);
+-	printstat(s, intr_mm_lock_failed);
+-	printstat(s, call_os);
+-	printstat(s, call_os_wait_queue);
+-	printstat(s, user_flush_tlb);
+-	printstat(s, user_unload_context);
+-	printstat(s, user_exception);
+-	printstat(s, set_context_option);
+-	printstat(s, check_context_retarget_intr);
+-	printstat(s, check_context_unload);
+-	printstat(s, tlb_dropin);
+-	printstat(s, tlb_preload_page);
+-	printstat(s, tlb_dropin_fail_no_asid);
+-	printstat(s, tlb_dropin_fail_upm);
+-	printstat(s, tlb_dropin_fail_invalid);
+-	printstat(s, tlb_dropin_fail_range_active);
+-	printstat(s, tlb_dropin_fail_idle);
+-	printstat(s, tlb_dropin_fail_fmm);
+-	printstat(s, tlb_dropin_fail_no_exception);
+-	printstat(s, tfh_stale_on_fault);
+-	printstat(s, mmu_invalidate_range);
+-	printstat(s, mmu_invalidate_page);
+-	printstat(s, flush_tlb);
+-	printstat(s, flush_tlb_gru);
+-	printstat(s, flush_tlb_gru_tgh);
+-	printstat(s, flush_tlb_gru_zero_asid);
+-	printstat(s, copy_gpa);
+-	printstat(s, read_gpa);
+-	printstat(s, mesq_receive);
+-	printstat(s, mesq_receive_none);
+-	printstat(s, mesq_send);
+-	printstat(s, mesq_send_failed);
+-	printstat(s, mesq_noop);
+-	printstat(s, mesq_send_unexpected_error);
+-	printstat(s, mesq_send_lb_overflow);
+-	printstat(s, mesq_send_qlimit_reached);
+-	printstat(s, mesq_send_amo_nacked);
+-	printstat(s, mesq_send_put_nacked);
+-	printstat(s, mesq_qf_locked);
+-	printstat(s, mesq_qf_noop_not_full);
+-	printstat(s, mesq_qf_switch_head_failed);
+-	printstat(s, mesq_qf_unexpected_error);
+-	printstat(s, mesq_noop_unexpected_error);
+-	printstat(s, mesq_noop_lb_overflow);
+-	printstat(s, mesq_noop_qlimit_reached);
+-	printstat(s, mesq_noop_amo_nacked);
+-	printstat(s, mesq_noop_put_nacked);
+-	printstat(s, mesq_noop_page_overflow);
+-	return 0;
+-}
+-
+-static ssize_t statistics_write(struct file *file, const char __user *userbuf,
+-				size_t count, loff_t *data)
+-{
+-	memset(&gru_stats, 0, sizeof(gru_stats));
+-	return count;
+-}
+-
+-static int mcs_statistics_show(struct seq_file *s, void *p)
+-{
+-	int op;
+-	unsigned long total, count, max;
+-	static char *id[] = {"cch_allocate", "cch_start", "cch_interrupt",
+-		"cch_interrupt_sync", "cch_deallocate", "tfh_write_only",
+-		"tfh_write_restart", "tgh_invalidate"};
+-
+-	seq_puts(s, "#id                        count   aver-clks    max-clks\n");
+-	for (op = 0; op < mcsop_last; op++) {
+-		count = atomic_long_read(&mcs_op_statistics[op].count);
+-		total = atomic_long_read(&mcs_op_statistics[op].total);
+-		max = mcs_op_statistics[op].max;
+-		seq_printf(s, "%-20s%12ld%12ld%12ld\n", id[op], count,
+-			   count ? total / count : 0, max);
+-	}
+-	return 0;
+-}
+-
+-static ssize_t mcs_statistics_write(struct file *file,
+-			const char __user *userbuf, size_t count, loff_t *data)
+-{
+-	memset(mcs_op_statistics, 0, sizeof(mcs_op_statistics));
+-	return count;
+-}
+-
+-static int options_show(struct seq_file *s, void *p)
+-{
+-	seq_printf(s, "#bitmask: 1=trace, 2=statistics\n");
+-	seq_printf(s, "0x%lx\n", gru_options);
+-	return 0;
+-}
+-
+-static ssize_t options_write(struct file *file, const char __user *userbuf,
+-			     size_t count, loff_t *data)
+-{
+-	int ret;
+-
+-	ret = kstrtoul_from_user(userbuf, count, 0, &gru_options);
+-	if (ret)
+-		return ret;
+-
+-	return count;
+-}
+-
+-static int cch_seq_show(struct seq_file *file, void *data)
+-{
+-	long gid = *(long *)data;
+-	int i;
+-	struct gru_state *gru = GID_TO_GRU(gid);
+-	struct gru_thread_state *ts;
+-	const char *mode[] = { "??", "UPM", "INTR", "OS_POLL" };
+-
+-	if (gid == 0)
+-		seq_puts(file, "#  gid  bid  ctx#   asid      pid  cbrs dsbytes    mode\n");
+-	if (gru)
+-		for (i = 0; i < GRU_NUM_CCH; i++) {
+-			ts = gru->gs_gts[i];
+-			if (!ts)
+-				continue;
+-			seq_printf(file, " %5d%5d%6d%7d%9d%6d%8d%8s\n",
+-				   gru->gs_gid, gru->gs_blade_id, i,
+-				   is_kernel_context(ts) ? 0 : ts->ts_gms->ms_asids[gid].mt_asid,
+-				   is_kernel_context(ts) ? 0 : ts->ts_tgid_owner,
+-				   ts->ts_cbr_au_count * GRU_CBR_AU_SIZE,
+-				   ts->ts_cbr_au_count * GRU_DSR_AU_BYTES,
+-				   mode[ts->ts_user_options &
+-					GRU_OPT_MISS_MASK]);
+-		}
+-
+-	return 0;
+-}
+-
+-static int gru_seq_show(struct seq_file *file, void *data)
+-{
+-	long gid = *(long *)data, ctxfree, cbrfree, dsrfree;
+-	struct gru_state *gru = GID_TO_GRU(gid);
+-
+-	if (gid == 0) {
+-		seq_puts(file, "#  gid  nid    ctx   cbr   dsr     ctx   cbr   dsr\n");
+-		seq_puts(file, "#             busy  busy  busy    free  free  free\n");
+-	}
+-	if (gru) {
+-		ctxfree = GRU_NUM_CCH - gru->gs_active_contexts;
+-		cbrfree = hweight64(gru->gs_cbr_map) * GRU_CBR_AU_SIZE;
+-		dsrfree = hweight64(gru->gs_dsr_map) * GRU_DSR_AU_BYTES;
+-		seq_printf(file, " %5d%5d%7ld%6ld%6ld%8ld%6ld%6ld\n",
+-			   gru->gs_gid, gru->gs_blade_id, GRU_NUM_CCH - ctxfree,
+-			   GRU_NUM_CBE - cbrfree, GRU_NUM_DSR_BYTES - dsrfree,
+-			   ctxfree, cbrfree, dsrfree);
+-	}
+-
+-	return 0;
+-}
+-
+-static void seq_stop(struct seq_file *file, void *data)
+-{
+-}
+-
+-static void *seq_start(struct seq_file *file, loff_t *gid)
+-{
+-	if (*gid < gru_max_gids)
+-		return gid;
+-	return NULL;
+-}
+-
+-static void *seq_next(struct seq_file *file, void *data, loff_t *gid)
+-{
+-	(*gid)++;
+-	if (*gid < gru_max_gids)
+-		return gid;
+-	return NULL;
+-}
+-
+-static const struct seq_operations cch_seq_ops = {
+-	.start	= seq_start,
+-	.next	= seq_next,
+-	.stop	= seq_stop,
+-	.show	= cch_seq_show
+-};
+-
+-static const struct seq_operations gru_seq_ops = {
+-	.start	= seq_start,
+-	.next	= seq_next,
+-	.stop	= seq_stop,
+-	.show	= gru_seq_show
+-};
+-
+-static int statistics_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, statistics_show, NULL);
+-}
+-
+-static int mcs_statistics_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, mcs_statistics_show, NULL);
+-}
+-
+-static int options_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, options_show, NULL);
+-}
+-
+-/* *INDENT-OFF* */
+-static const struct proc_ops statistics_proc_ops = {
+-	.proc_open	= statistics_open,
+-	.proc_read	= seq_read,
+-	.proc_write	= statistics_write,
+-	.proc_lseek	= seq_lseek,
+-	.proc_release	= single_release,
+-};
+-
+-static const struct proc_ops mcs_statistics_proc_ops = {
+-	.proc_open	= mcs_statistics_open,
+-	.proc_read	= seq_read,
+-	.proc_write	= mcs_statistics_write,
+-	.proc_lseek	= seq_lseek,
+-	.proc_release	= single_release,
+-};
+-
+-static const struct proc_ops options_proc_ops = {
+-	.proc_open	= options_open,
+-	.proc_read	= seq_read,
+-	.proc_write	= options_write,
+-	.proc_lseek	= seq_lseek,
+-	.proc_release	= single_release,
+-};
+-
+-static struct proc_dir_entry *proc_gru __read_mostly;
+-
+-int gru_proc_init(void)
+-{
+-	proc_gru = proc_mkdir("sgi_uv/gru", NULL);
+-	if (!proc_gru)
+-		return -1;
+-	if (!proc_create("statistics", 0644, proc_gru, &statistics_proc_ops))
+-		goto err;
+-	if (!proc_create("mcs_statistics", 0644, proc_gru, &mcs_statistics_proc_ops))
+-		goto err;
+-	if (!proc_create("debug_options", 0644, proc_gru, &options_proc_ops))
+-		goto err;
+-	if (!proc_create_seq("cch_status", 0444, proc_gru, &cch_seq_ops))
+-		goto err;
+-	if (!proc_create_seq("gru_status", 0444, proc_gru, &gru_seq_ops))
+-		goto err;
+-	return 0;
+-err:
+-	remove_proc_subtree("sgi_uv/gru", NULL);
+-	return -1;
+-}
+-
+-void gru_proc_exit(void)
+-{
+-	remove_proc_subtree("sgi_uv/gru", NULL);
+-}
+diff --git a/drivers/misc/sgi-gru/grutables.h b/drivers/misc/sgi-gru/grutables.h
+deleted file mode 100644
+index 640daf1994df..000000000000
+--- a/drivers/misc/sgi-gru/grutables.h
++++ /dev/null
+@@ -1,659 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/*
+- * SN Platform GRU Driver
+- *
+- *            GRU DRIVER TABLES, MACROS, externs, etc
+- *
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
+- */
+-
+-#ifndef __GRUTABLES_H__
+-#define __GRUTABLES_H__
+-
+-/*
+- * GRU Chiplet:
+- *   The GRU is a user addressible memory accelerator. It provides
+- *   several forms of load, store, memset, bcopy instructions. In addition, it
+- *   contains special instructions for AMOs, sending messages to message
+- *   queues, etc.
+- *
+- *   The GRU is an integral part of the node controller. It connects
+- *   directly to the cpu socket. In its current implementation, there are 2
+- *   GRU chiplets in the node controller on each blade (~node).
+- *
+- *   The entire GRU memory space is fully coherent and cacheable by the cpus.
+- *
+- *   Each GRU chiplet has a physical memory map that looks like the following:
+- *
+- *   	+-----------------+
+- *   	|/////////////////|
+- *   	|/////////////////|
+- *   	|/////////////////|
+- *   	|/////////////////|
+- *   	|/////////////////|
+- *   	|/////////////////|
+- *   	|/////////////////|
+- *   	|/////////////////|
+- *   	+-----------------+
+- *   	|  system control |
+- *   	+-----------------+        _______ +-------------+
+- *   	|/////////////////|       /        |             |
+- *   	|/////////////////|      /         |             |
+- *   	|/////////////////|     /          | instructions|
+- *   	|/////////////////|    /           |             |
+- *   	|/////////////////|   /            |             |
+- *   	|/////////////////|  /             |-------------|
+- *   	|/////////////////| /              |             |
+- *   	+-----------------+                |             |
+- *   	|   context 15    |                |  data       |
+- *   	+-----------------+                |             |
+- *   	|    ......       | \              |             |
+- *   	+-----------------+  \____________ +-------------+
+- *   	|   context 1     |
+- *   	+-----------------+
+- *   	|   context 0     |
+- *   	+-----------------+
+- *
+- *   Each of the "contexts" is a chunk of memory that can be mmaped into user
+- *   space. The context consists of 2 parts:
+- *
+- *  	- an instruction space that can be directly accessed by the user
+- *  	  to issue GRU instructions and to check instruction status.
+- *
+- *  	- a data area that acts as normal RAM.
+- *
+- *   User instructions contain virtual addresses of data to be accessed by the
+- *   GRU. The GRU contains a TLB that is used to convert these user virtual
+- *   addresses to physical addresses.
+- *
+- *   The "system control" area of the GRU chiplet is used by the kernel driver
+- *   to manage user contexts and to perform functions such as TLB dropin and
+- *   purging.
+- *
+- *   One context may be reserved for the kernel and used for cross-partition
+- *   communication. The GRU will also be used to asynchronously zero out
+- *   large blocks of memory (not currently implemented).
+- *
+- *
+- * Tables:
+- *
+- * 	VDATA-VMA Data		- Holds a few parameters. Head of linked list of
+- * 				  GTS tables for threads using the GSEG
+- * 	GTS - Gru Thread State  - contains info for managing a GSEG context. A
+- * 				  GTS is allocated for each thread accessing a
+- * 				  GSEG.
+- *     	GTD - GRU Thread Data   - contains shadow copy of GRU data when GSEG is
+- *     				  not loaded into a GRU
+- *	GMS - GRU Memory Struct - Used to manage TLB shootdowns. Tracks GRUs
+- *				  where a GSEG has been loaded. Similar to
+- *				  an mm_struct but for GRU.
+- *
+- *	GS  - GRU State 	- Used to manage the state of a GRU chiplet
+- *	BS  - Blade State	- Used to manage state of all GRU chiplets
+- *				  on a blade
+- *
+- *
+- *  Normal task tables for task using GRU.
+- *  		- 2 threads in process
+- *  		- 2 GSEGs open in process
+- *  		- GSEG1 is being used by both threads
+- *  		- GSEG2 is used only by thread 2
+- *
+- *       task -->|
+- *       task ---+---> mm ->------ (notifier) -------+-> gms
+- *                     |                             |
+- *                     |--> vma -> vdata ---> gts--->|		GSEG1 (thread1)
+- *                     |                  |          |
+- *                     |                  +-> gts--->|		GSEG1 (thread2)
+- *                     |                             |
+- *                     |--> vma -> vdata ---> gts--->|		GSEG2 (thread2)
+- *                     .
+- *                     .
+- *
+- *  GSEGs are marked DONTCOPY on fork
+- *
+- * At open
+- * 	file.private_data -> NULL
+- *
+- * At mmap,
+- * 	vma -> vdata
+- *
+- * After gseg reference
+- * 	vma -> vdata ->gts
+- *
+- * After fork
+- *   parent
+- * 	vma -> vdata -> gts
+- *   child
+- * 	(vma is not copied)
+- *
+- */
+-
+-#include <linux/refcount.h>
+-#include <linux/rmap.h>
+-#include <linux/interrupt.h>
+-#include <linux/mutex.h>
+-#include <linux/wait.h>
+-#include <linux/mmu_notifier.h>
+-#include <linux/mm_types.h>
+-#include "gru.h"
+-#include "grulib.h"
+-#include "gruhandles.h"
+-
+-extern struct gru_stats_s gru_stats;
+-extern struct gru_blade_state *gru_base[];
+-extern unsigned long gru_start_paddr, gru_end_paddr;
+-extern void *gru_start_vaddr;
+-extern unsigned int gru_max_gids;
+-
+-#define GRU_MAX_BLADES		MAX_NUMNODES
+-#define GRU_MAX_GRUS		(GRU_MAX_BLADES * GRU_CHIPLETS_PER_BLADE)
+-
+-#define GRU_DRIVER_ID_STR	"SGI GRU Device Driver"
+-#define GRU_DRIVER_VERSION_STR	"0.85"
+-
+-/*
+- * GRU statistics.
+- */
+-struct gru_stats_s {
+-	atomic_long_t vdata_alloc;
+-	atomic_long_t vdata_free;
+-	atomic_long_t gts_alloc;
+-	atomic_long_t gts_free;
+-	atomic_long_t gms_alloc;
+-	atomic_long_t gms_free;
+-	atomic_long_t gts_double_allocate;
+-	atomic_long_t assign_context;
+-	atomic_long_t assign_context_failed;
+-	atomic_long_t free_context;
+-	atomic_long_t load_user_context;
+-	atomic_long_t load_kernel_context;
+-	atomic_long_t lock_kernel_context;
+-	atomic_long_t unlock_kernel_context;
+-	atomic_long_t steal_user_context;
+-	atomic_long_t steal_kernel_context;
+-	atomic_long_t steal_context_failed;
+-	atomic_long_t nopfn;
+-	atomic_long_t asid_new;
+-	atomic_long_t asid_next;
+-	atomic_long_t asid_wrap;
+-	atomic_long_t asid_reuse;
+-	atomic_long_t intr;
+-	atomic_long_t intr_cbr;
+-	atomic_long_t intr_tfh;
+-	atomic_long_t intr_spurious;
+-	atomic_long_t intr_mm_lock_failed;
+-	atomic_long_t call_os;
+-	atomic_long_t call_os_wait_queue;
+-	atomic_long_t user_flush_tlb;
+-	atomic_long_t user_unload_context;
+-	atomic_long_t user_exception;
+-	atomic_long_t set_context_option;
+-	atomic_long_t check_context_retarget_intr;
+-	atomic_long_t check_context_unload;
+-	atomic_long_t tlb_dropin;
+-	atomic_long_t tlb_preload_page;
+-	atomic_long_t tlb_dropin_fail_no_asid;
+-	atomic_long_t tlb_dropin_fail_upm;
+-	atomic_long_t tlb_dropin_fail_invalid;
+-	atomic_long_t tlb_dropin_fail_range_active;
+-	atomic_long_t tlb_dropin_fail_idle;
+-	atomic_long_t tlb_dropin_fail_fmm;
+-	atomic_long_t tlb_dropin_fail_no_exception;
+-	atomic_long_t tfh_stale_on_fault;
+-	atomic_long_t mmu_invalidate_range;
+-	atomic_long_t mmu_invalidate_page;
+-	atomic_long_t flush_tlb;
+-	atomic_long_t flush_tlb_gru;
+-	atomic_long_t flush_tlb_gru_tgh;
+-	atomic_long_t flush_tlb_gru_zero_asid;
+-
+-	atomic_long_t copy_gpa;
+-	atomic_long_t read_gpa;
+-
+-	atomic_long_t mesq_receive;
+-	atomic_long_t mesq_receive_none;
+-	atomic_long_t mesq_send;
+-	atomic_long_t mesq_send_failed;
+-	atomic_long_t mesq_noop;
+-	atomic_long_t mesq_send_unexpected_error;
+-	atomic_long_t mesq_send_lb_overflow;
+-	atomic_long_t mesq_send_qlimit_reached;
+-	atomic_long_t mesq_send_amo_nacked;
+-	atomic_long_t mesq_send_put_nacked;
+-	atomic_long_t mesq_page_overflow;
+-	atomic_long_t mesq_qf_locked;
+-	atomic_long_t mesq_qf_noop_not_full;
+-	atomic_long_t mesq_qf_switch_head_failed;
+-	atomic_long_t mesq_qf_unexpected_error;
+-	atomic_long_t mesq_noop_unexpected_error;
+-	atomic_long_t mesq_noop_lb_overflow;
+-	atomic_long_t mesq_noop_qlimit_reached;
+-	atomic_long_t mesq_noop_amo_nacked;
+-	atomic_long_t mesq_noop_put_nacked;
+-	atomic_long_t mesq_noop_page_overflow;
+-
+-};
+-
+-enum mcs_op {cchop_allocate, cchop_start, cchop_interrupt, cchop_interrupt_sync,
+-	cchop_deallocate, tfhop_write_only, tfhop_write_restart,
+-	tghop_invalidate, mcsop_last};
+-
+-struct mcs_op_statistic {
+-	atomic_long_t	count;
+-	atomic_long_t	total;
+-	unsigned long	max;
+-};
+-
+-extern struct mcs_op_statistic mcs_op_statistics[mcsop_last];
+-
+-#define OPT_DPRINT		1
+-#define OPT_STATS		2
+-
+-
+-#define IRQ_GRU			110	/* Starting IRQ number for interrupts */
+-
+-/* Delay in jiffies between attempts to assign a GRU context */
+-#define GRU_ASSIGN_DELAY	((HZ * 20) / 1000)
+-
+-/*
+- * If a process has it's context stolen, min delay in jiffies before trying to
+- * steal a context from another process.
+- */
+-#define GRU_STEAL_DELAY		((HZ * 200) / 1000)
+-
+-#define STAT(id)	do {						\
+-				if (gru_options & OPT_STATS)		\
+-					atomic_long_inc(&gru_stats.id);	\
+-			} while (0)
+-
+-#ifdef CONFIG_SGI_GRU_DEBUG
+-#define gru_dbg(dev, fmt, x...)						\
+-	do {								\
+-		if (gru_options & OPT_DPRINT)				\
+-			printk(KERN_DEBUG "GRU:%d %s: " fmt, smp_processor_id(), __func__, x);\
+-	} while (0)
+-#else
+-#define gru_dbg(x...)
+-#endif
+-
+-/*-----------------------------------------------------------------------------
+- * ASID management
+- */
+-#define MAX_ASID	0xfffff0
+-#define MIN_ASID	8
+-#define ASID_INC	8	/* number of regions */
+-
+-/* Generate a GRU asid value from a GRU base asid & a virtual address. */
+-#define VADDR_HI_BIT		64
+-#define GRUREGION(addr)		((addr) >> (VADDR_HI_BIT - 3) & 3)
+-#define GRUASID(asid, addr)	((asid) + GRUREGION(addr))
+-
+-/*------------------------------------------------------------------------------
+- *  File & VMS Tables
+- */
+-
+-struct gru_state;
+-
+-/*
+- * This structure is pointed to from the mmstruct via the notifier pointer.
+- * There is one of these per address space.
+- */
+-struct gru_mm_tracker {				/* pack to reduce size */
+-	unsigned int		mt_asid_gen:24;	/* ASID wrap count */
+-	unsigned int		mt_asid:24;	/* current base ASID for gru */
+-	unsigned short		mt_ctxbitmap:16;/* bitmap of contexts using
+-						   asid */
+-} __attribute__ ((packed));
+-
+-struct gru_mm_struct {
+-	struct mmu_notifier	ms_notifier;
+-	spinlock_t		ms_asid_lock;	/* protects ASID assignment */
+-	atomic_t		ms_range_active;/* num range_invals active */
+-	wait_queue_head_t	ms_wait_queue;
+-	DECLARE_BITMAP(ms_asidmap, GRU_MAX_GRUS);
+-	struct gru_mm_tracker	ms_asids[GRU_MAX_GRUS];
+-};
+-
+-/*
+- * One of these structures is allocated when a GSEG is mmaped. The
+- * structure is pointed to by the vma->vm_private_data field in the vma struct.
+- */
+-struct gru_vma_data {
+-	spinlock_t		vd_lock;	/* Serialize access to vma */
+-	struct list_head	vd_head;	/* head of linked list of gts */
+-	long			vd_user_options;/* misc user option flags */
+-	int			vd_cbr_au_count;
+-	int			vd_dsr_au_count;
+-	unsigned char		vd_tlb_preload_count;
+-};
+-
+-/*
+- * One of these is allocated for each thread accessing a mmaped GRU. A linked
+- * list of these structure is hung off the struct gru_vma_data in the mm_struct.
+- */
+-struct gru_thread_state {
+-	struct list_head	ts_next;	/* list - head at vma-private */
+-	struct mutex		ts_ctxlock;	/* load/unload CTX lock */
+-	struct mm_struct	*ts_mm;		/* mm currently mapped to
+-						   context */
+-	struct vm_area_struct	*ts_vma;	/* vma of GRU context */
+-	struct gru_state	*ts_gru;	/* GRU where the context is
+-						   loaded */
+-	struct gru_mm_struct	*ts_gms;	/* asid & ioproc struct */
+-	unsigned char		ts_tlb_preload_count; /* TLB preload pages */
+-	unsigned long		ts_cbr_map;	/* map of allocated CBRs */
+-	unsigned long		ts_dsr_map;	/* map of allocated DATA
+-						   resources */
+-	unsigned long		ts_steal_jiffies;/* jiffies when context last
+-						    stolen */
+-	long			ts_user_options;/* misc user option flags */
+-	pid_t			ts_tgid_owner;	/* task that is using the
+-						   context - for migration */
+-	short			ts_user_blade_id;/* user selected blade */
+-	signed char		ts_user_chiplet_id;/* user selected chiplet */
+-	unsigned short		ts_sizeavail;	/* Pagesizes in use */
+-	int			ts_tsid;	/* thread that owns the
+-						   structure */
+-	int			ts_tlb_int_select;/* target cpu if interrupts
+-						     enabled */
+-	int			ts_ctxnum;	/* context number where the
+-						   context is loaded */
+-	refcount_t		ts_refcnt;	/* reference count GTS */
+-	unsigned char		ts_dsr_au_count;/* Number of DSR resources
+-						   required for contest */
+-	unsigned char		ts_cbr_au_count;/* Number of CBR resources
+-						   required for contest */
+-	signed char		ts_cch_req_slice;/* CCH packet slice */
+-	signed char		ts_blade;	/* If >= 0, migrate context if
+-						   ref from different blade */
+-	signed char		ts_force_cch_reload;
+-	signed char		ts_cbr_idx[GRU_CBR_AU];/* CBR numbers of each
+-							  allocated CB */
+-	int			ts_data_valid;	/* Indicates if ts_gdata has
+-						   valid data */
+-	struct gru_gseg_statistics ustats;	/* User statistics */
+-	unsigned long		ts_gdata[];	/* save area for GRU data (CB,
+-						   DS, CBE) */
+-};
+-
+-/*
+- * Threaded programs actually allocate an array of GSEGs when a context is
+- * created. Each thread uses a separate GSEG. TSID is the index into the GSEG
+- * array.
+- */
+-#define TSID(a, v)		(((a) - (v)->vm_start) / GRU_GSEG_PAGESIZE)
+-#define UGRUADDR(gts)		((gts)->ts_vma->vm_start +		\
+-					(gts)->ts_tsid * GRU_GSEG_PAGESIZE)
+-
+-#define NULLCTX			(-1)	/* if context not loaded into GRU */
+-
+-/*-----------------------------------------------------------------------------
+- *  GRU State Tables
 - */
 -
 -/*
-- * Cross Partition Network Interface (XPNET) support
-- *
-- *	XPNET provides a virtual network layered on top of the Cross
-- *	Partition communication layer.
-- *
-- *	XPNET provides direct point-to-point and broadcast-like support
-- *	for an ethernet-like device.  The ethernet broadcast medium is
-- *	replaced with a point-to-point message structure which passes
-- *	pointers to a DMA-capable block that a remote partition should
-- *	retrieve and pass to the upper level networking layer.
-- *
+- * One of these exists for each GRU chiplet.
+- */
+-struct gru_state {
+-	struct gru_blade_state	*gs_blade;		/* GRU state for entire
+-							   blade */
+-	unsigned long		gs_gru_base_paddr;	/* Physical address of
+-							   gru segments (64) */
+-	void			*gs_gru_base_vaddr;	/* Virtual address of
+-							   gru segments (64) */
+-	unsigned short		gs_gid;			/* unique GRU number */
+-	unsigned short		gs_blade_id;		/* blade of GRU */
+-	unsigned char		gs_chiplet_id;		/* blade chiplet of GRU */
+-	unsigned char		gs_tgh_local_shift;	/* used to pick TGH for
+-							   local flush */
+-	unsigned char		gs_tgh_first_remote;	/* starting TGH# for
+-							   remote flush */
+-	spinlock_t		gs_asid_lock;		/* lock used for
+-							   assigning asids */
+-	spinlock_t		gs_lock;		/* lock used for
+-							   assigning contexts */
+-
+-	/* -- the following are protected by the gs_asid_lock spinlock ---- */
+-	unsigned int		gs_asid;		/* Next availe ASID */
+-	unsigned int		gs_asid_limit;		/* Limit of available
+-							   ASIDs */
+-	unsigned int		gs_asid_gen;		/* asid generation.
+-							   Inc on wrap */
+-
+-	/* --- the following fields are protected by the gs_lock spinlock --- */
+-	unsigned long		gs_context_map;		/* bitmap to manage
+-							   contexts in use */
+-	unsigned long		gs_cbr_map;		/* bitmap to manage CB
+-							   resources */
+-	unsigned long		gs_dsr_map;		/* bitmap used to manage
+-							   DATA resources */
+-	unsigned int		gs_reserved_cbrs;	/* Number of kernel-
+-							   reserved cbrs */
+-	unsigned int		gs_reserved_dsr_bytes;	/* Bytes of kernel-
+-							   reserved dsrs */
+-	unsigned short		gs_active_contexts;	/* number of contexts
+-							   in use */
+-	struct gru_thread_state	*gs_gts[GRU_NUM_CCH];	/* GTS currently using
+-							   the context */
+-	int			gs_irq[GRU_NUM_TFM];	/* Interrupt irqs */
+-};
+-
+-/*
+- * This structure contains the GRU state for all the GRUs on a blade.
+- */
+-struct gru_blade_state {
+-	void			*kernel_cb;		/* First kernel
+-							   reserved cb */
+-	void			*kernel_dsr;		/* First kernel
+-							   reserved DSR */
+-	struct rw_semaphore	bs_kgts_sema;		/* lock for kgts */
+-	struct gru_thread_state *bs_kgts;		/* GTS for kernel use */
+-
+-	/* ---- the following are used for managing kernel async GRU CBRs --- */
+-	int			bs_async_dsr_bytes;	/* DSRs for async */
+-	int			bs_async_cbrs;		/* CBRs AU for async */
+-	struct completion	*bs_async_wq;
+-
+-	/* ---- the following are protected by the bs_lock spinlock ---- */
+-	spinlock_t		bs_lock;		/* lock used for
+-							   stealing contexts */
+-	int			bs_lru_ctxnum;		/* STEAL - last context
+-							   stolen */
+-	struct gru_state	*bs_lru_gru;		/* STEAL - last gru
+-							   stolen */
+-
+-	struct gru_state	bs_grus[GRU_CHIPLETS_PER_BLADE];
+-};
+-
+-/*-----------------------------------------------------------------------------
+- * Address Primitives
+- */
+-#define get_tfm_for_cpu(g, c)						\
+-	((struct gru_tlb_fault_map *)get_tfm((g)->gs_gru_base_vaddr, (c)))
+-#define get_tfh_by_index(g, i)						\
+-	((struct gru_tlb_fault_handle *)get_tfh((g)->gs_gru_base_vaddr, (i)))
+-#define get_tgh_by_index(g, i)						\
+-	((struct gru_tlb_global_handle *)get_tgh((g)->gs_gru_base_vaddr, (i)))
+-#define get_cbe_by_index(g, i)						\
+-	((struct gru_control_block_extended *)get_cbe((g)->gs_gru_base_vaddr,\
+-			(i)))
+-
+-/*-----------------------------------------------------------------------------
+- * Useful Macros
 - */
 -
+-/* Given a blade# & chiplet#, get a pointer to the GRU */
+-#define get_gru(b, c)		(&gru_base[b]->bs_grus[c])
+-
+-/* Number of bytes to save/restore when unloading/loading GRU contexts */
+-#define DSR_BYTES(dsr)		((dsr) * GRU_DSR_AU_BYTES)
+-#define CBR_BYTES(cbr)		((cbr) * GRU_HANDLE_BYTES * GRU_CBR_AU_SIZE * 2)
+-
+-/* Convert a user CB number to the actual CBRNUM */
+-#define thread_cbr_number(gts, n) ((gts)->ts_cbr_idx[(n) / GRU_CBR_AU_SIZE] \
+-				  * GRU_CBR_AU_SIZE + (n) % GRU_CBR_AU_SIZE)
+-
+-/* Convert a gid to a pointer to the GRU */
+-#define GID_TO_GRU(gid)							\
+-	(gru_base[(gid) / GRU_CHIPLETS_PER_BLADE] ?			\
+-		(&gru_base[(gid) / GRU_CHIPLETS_PER_BLADE]->		\
+-			bs_grus[(gid) % GRU_CHIPLETS_PER_BLADE]) :	\
+-	 NULL)
+-
+-/* Scan all active GRUs in a GRU bitmap */
+-#define for_each_gru_in_bitmap(gid, map)				\
+-	for_each_set_bit((gid), (map), GRU_MAX_GRUS)
+-
+-/* Scan all active GRUs on a specific blade */
+-#define for_each_gru_on_blade(gru, nid, i)				\
+-	for ((gru) = gru_base[nid]->bs_grus, (i) = 0;			\
+-			(i) < GRU_CHIPLETS_PER_BLADE;			\
+-			(i)++, (gru)++)
+-
+-/* Scan all GRUs */
+-#define foreach_gid(gid)						\
+-	for ((gid) = 0; (gid) < gru_max_gids; (gid)++)
+-
+-/* Scan all active GTSs on a gru. Note: must hold ss_lock to use this macro. */
+-#define for_each_gts_on_gru(gts, gru, ctxnum)				\
+-	for ((ctxnum) = 0; (ctxnum) < GRU_NUM_CCH; (ctxnum)++)		\
+-		if (((gts) = (gru)->gs_gts[ctxnum]))
+-
+-/* Scan each CBR whose bit is set in a TFM (or copy of) */
+-#define for_each_cbr_in_tfm(i, map)					\
+-	for_each_set_bit((i), (map), GRU_NUM_CBE)
+-
+-/* Scan each CBR in a CBR bitmap. Note: multiple CBRs in an allocation unit */
+-#define for_each_cbr_in_allocation_map(i, map, k)			\
+-	for_each_set_bit((k), (map), GRU_CBR_AU)			\
+-		for ((i) = (k)*GRU_CBR_AU_SIZE;				\
+-				(i) < ((k) + 1) * GRU_CBR_AU_SIZE; (i)++)
+-
+-#define gseg_physical_address(gru, ctxnum)				\
+-		((gru)->gs_gru_base_paddr + ctxnum * GRU_GSEG_STRIDE)
+-#define gseg_virtual_address(gru, ctxnum)				\
+-		((gru)->gs_gru_base_vaddr + ctxnum * GRU_GSEG_STRIDE)
+-
+-/*-----------------------------------------------------------------------------
+- * Lock / Unlock GRU handles
+- * 	Use the "delresp" bit in the handle as a "lock" bit.
+- */
+-
+-/* Lock hierarchy checking enabled only in emulator */
+-
+-/* 0 = lock failed, 1 = locked */
+-static inline int __trylock_handle(void *h)
+-{
+-	return !test_and_set_bit(1, h);
+-}
+-
+-static inline void __lock_handle(void *h)
+-{
+-	while (test_and_set_bit(1, h))
+-		cpu_relax();
+-}
+-
+-static inline void __unlock_handle(void *h)
+-{
+-	clear_bit(1, h);
+-}
+-
+-static inline int trylock_cch_handle(struct gru_context_configuration_handle *cch)
+-{
+-	return __trylock_handle(cch);
+-}
+-
+-static inline void lock_cch_handle(struct gru_context_configuration_handle *cch)
+-{
+-	__lock_handle(cch);
+-}
+-
+-static inline void unlock_cch_handle(struct gru_context_configuration_handle
+-				     *cch)
+-{
+-	__unlock_handle(cch);
+-}
+-
+-static inline void lock_tgh_handle(struct gru_tlb_global_handle *tgh)
+-{
+-	__lock_handle(tgh);
+-}
+-
+-static inline void unlock_tgh_handle(struct gru_tlb_global_handle *tgh)
+-{
+-	__unlock_handle(tgh);
+-}
+-
+-static inline int is_kernel_context(struct gru_thread_state *gts)
+-{
+-	return !gts->ts_mm;
+-}
+-
+-/*
+- * The following are for Nehelem-EX. A more general scheme is needed for
+- * future processors.
+- */
+-#define UV_MAX_INT_CORES		8
+-#define uv_cpu_socket_number(p)		((cpu_physical_id(p) >> 5) & 1)
+-#define uv_cpu_ht_number(p)		(cpu_physical_id(p) & 1)
+-#define uv_cpu_core_number(p)		(((cpu_physical_id(p) >> 2) & 4) |	\
+-					((cpu_physical_id(p) >> 1) & 3))
+-/*-----------------------------------------------------------------------------
+- * Function prototypes & externs
+- */
+-struct gru_unload_context_req;
+-
+-extern const struct vm_operations_struct gru_vm_ops;
+-extern struct device *grudev;
+-
+-extern struct gru_vma_data *gru_alloc_vma_data(struct vm_area_struct *vma,
+-				int tsid);
+-extern struct gru_thread_state *gru_find_thread_state(struct vm_area_struct
+-				*vma, int tsid);
+-extern struct gru_thread_state *gru_alloc_thread_state(struct vm_area_struct
+-				*vma, int tsid);
+-extern struct gru_state *gru_assign_gru_context(struct gru_thread_state *gts);
+-extern void gru_load_context(struct gru_thread_state *gts);
+-extern void gru_steal_context(struct gru_thread_state *gts);
+-extern void gru_unload_context(struct gru_thread_state *gts, int savestate);
+-extern int gru_update_cch(struct gru_thread_state *gts);
+-extern void gts_drop(struct gru_thread_state *gts);
+-extern void gru_tgh_flush_init(struct gru_state *gru);
+-extern int gru_kservices_init(void);
+-extern void gru_kservices_exit(void);
+-extern irqreturn_t gru0_intr(int irq, void *dev_id);
+-extern irqreturn_t gru1_intr(int irq, void *dev_id);
+-extern irqreturn_t gru_intr_mblade(int irq, void *dev_id);
+-extern int gru_dump_chiplet_request(unsigned long arg);
+-extern long gru_get_gseg_statistics(unsigned long arg);
+-extern int gru_handle_user_call_os(unsigned long address);
+-extern int gru_user_flush_tlb(unsigned long arg);
+-extern int gru_user_unload_context(unsigned long arg);
+-extern int gru_get_exception_detail(unsigned long arg);
+-extern int gru_set_context_option(unsigned long address);
+-extern int gru_check_context_placement(struct gru_thread_state *gts);
+-extern int gru_cpu_fault_map_id(void);
+-extern struct vm_area_struct *gru_find_vma(unsigned long vaddr);
+-extern void gru_flush_all_tlb(struct gru_state *gru);
+-extern int gru_proc_init(void);
+-extern void gru_proc_exit(void);
+-
+-extern struct gru_thread_state *gru_alloc_gts(struct vm_area_struct *vma,
+-		int cbr_au_count, int dsr_au_count,
+-		unsigned char tlb_preload_count, int options, int tsid);
+-extern unsigned long gru_reserve_cb_resources(struct gru_state *gru,
+-		int cbr_au_count, signed char *cbmap);
+-extern unsigned long gru_reserve_ds_resources(struct gru_state *gru,
+-		int dsr_au_count, signed char *dsmap);
+-extern vm_fault_t gru_fault(struct vm_fault *vmf);
+-extern struct gru_mm_struct *gru_register_mmu_notifier(void);
+-extern void gru_drop_mmu_notifier(struct gru_mm_struct *gms);
+-
+-extern int gru_ktest(unsigned long arg);
+-extern void gru_flush_tlb_range(struct gru_mm_struct *gms, unsigned long start,
+-					unsigned long len);
+-
+-extern unsigned long gru_options;
+-
+-#endif /* __GRUTABLES_H__ */
+diff --git a/drivers/misc/sgi-gru/grutlbpurge.c b/drivers/misc/sgi-gru/grutlbpurge.c
+deleted file mode 100644
+index a8121d40be68..000000000000
+--- a/drivers/misc/sgi-gru/grutlbpurge.c
++++ /dev/null
+@@ -1,316 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * SN Platform GRU Driver
+- *
+- * 		MMUOPS callbacks  + TLB flushing
+- *
+- * This file handles emu notifier callbacks from the core kernel. The callbacks
+- * are used to update the TLB in the GRU as a result of changes in the
+- * state of a process address space. This file also handles TLB invalidates
+- * from the GRU driver.
+- *
+- *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
+- */
+-
+-#include <linux/kernel.h>
+-#include <linux/list.h>
+-#include <linux/spinlock.h>
+-#include <linux/mm.h>
 -#include <linux/slab.h>
--#include <linux/module.h>
--#include <linux/netdevice.h>
--#include <linux/etherdevice.h>
--#include "xp.h"
+-#include <linux/device.h>
+-#include <linux/hugetlb.h>
+-#include <linux/delay.h>
+-#include <linux/timex.h>
+-#include <linux/srcu.h>
+-#include <asm/processor.h>
+-#include "gru.h"
+-#include "grutables.h"
+-#include <asm/uv/uv_hub.h>
 -
--/*
-- * The message payload transferred by XPC.
+-#define gru_random()	get_cycles()
+-
+-/* ---------------------------------- TLB Invalidation functions --------
+- * get_tgh_handle
 - *
-- * buf_pa is the physical address where the DMA should pull from.
+- * Find a TGH to use for issuing a TLB invalidate. For GRUs that are on the
+- * local blade, use a fixed TGH that is a function of the blade-local cpu
+- * number. Normally, this TGH is private to the cpu & no contention occurs for
+- * the TGH. For offblade GRUs, select a random TGH in the range above the
+- * private TGHs. A spinlock is required to access this TGH & the lock must be
+- * released when the invalidate is completes. This sucks, but it is the best we
+- * can do.
 - *
-- * NOTE: for performance reasons, buf_pa should _ALWAYS_ begin on a
-- * cacheline boundary.  To accomplish this, we record the number of
-- * bytes from the beginning of the first cacheline to the first useful
-- * byte of the skb (leadin_ignore) and the number of bytes from the
-- * last useful byte of the skb to the end of the last cacheline
-- * (tailout_ignore).
+- * Note that the spinlock is IN the TGH handle so locking does not involve
+- * additional cache lines.
 - *
-- * size is the number of bytes to transfer which includes the skb->len
-- * (useful bytes of the senders skb) plus the leadin and tailout
 - */
--struct xpnet_message {
--	u16 version;		/* Version for this message */
--	u16 embedded_bytes;	/* #of bytes embedded in XPC message */
--	u32 magic;		/* Special number indicating this is xpnet */
--	unsigned long buf_pa;	/* phys address of buffer to retrieve */
--	u32 size;		/* #of bytes in buffer */
--	u8 leadin_ignore;	/* #of bytes to ignore at the beginning */
--	u8 tailout_ignore;	/* #of bytes to ignore at the end */
--	unsigned char data;	/* body of small packets */
--};
--
--/*
-- * Determine the size of our message, the cacheline aligned size,
-- * and then the number of message will request from XPC.
-- *
-- * XPC expects each message to exist in an individual cacheline.
-- */
--#define XPNET_MSG_SIZE		XPC_MSG_PAYLOAD_MAX_SIZE
--#define XPNET_MSG_DATA_MAX	\
--		(XPNET_MSG_SIZE - offsetof(struct xpnet_message, data))
--#define XPNET_MSG_NENTRIES	(PAGE_SIZE / XPC_MSG_MAX_SIZE)
--
--#define XPNET_MAX_KTHREADS	(XPNET_MSG_NENTRIES + 1)
--#define XPNET_MAX_IDLE_KTHREADS	(XPNET_MSG_NENTRIES + 1)
--
--/*
-- * Version number of XPNET implementation. XPNET can always talk to versions
-- * with same major #, and never talk to versions with a different version.
-- */
--#define _XPNET_VERSION(_major, _minor)	(((_major) << 4) | (_minor))
--#define XPNET_VERSION_MAJOR(_v)		((_v) >> 4)
--#define XPNET_VERSION_MINOR(_v)		((_v) & 0xf)
--
--#define	XPNET_VERSION _XPNET_VERSION(1, 0)	/* version 1.0 */
--#define	XPNET_VERSION_EMBED _XPNET_VERSION(1, 1)	/* version 1.1 */
--#define XPNET_MAGIC	0x88786984	/* "XNET" */
--
--#define XPNET_VALID_MSG(_m)						     \
--   ((XPNET_VERSION_MAJOR(_m->version) == XPNET_VERSION_MAJOR(XPNET_VERSION)) \
--    && (msg->magic == XPNET_MAGIC))
--
--#define XPNET_DEVICE_NAME		"xp0"
--
--/*
-- * When messages are queued with xpc_send_notify, a kmalloc'd buffer
-- * of the following type is passed as a notification cookie.  When the
-- * notification function is called, we use the cookie to decide
-- * whether all outstanding message sends have completed.  The skb can
-- * then be released.
-- */
--struct xpnet_pending_msg {
--	struct sk_buff *skb;
--	atomic_t use_count;
--};
--
--static struct net_device *xpnet_device;
--
--/*
-- * When we are notified of other partitions activating, we add them to
-- * our bitmask of partitions to which we broadcast.
-- */
--static unsigned long *xpnet_broadcast_partitions;
--/* protect above */
--static DEFINE_SPINLOCK(xpnet_broadcast_lock);
--
--/*
-- * Since the Block Transfer Engine (BTE) is being used for the transfer
-- * and it relies upon cache-line size transfers, we need to reserve at
-- * least one cache-line for head and tail alignment.  The BTE is
-- * limited to 8MB transfers.
-- *
-- * Testing has shown that changing MTU to greater than 64KB has no effect
-- * on TCP as the two sides negotiate a Max Segment Size that is limited
-- * to 64K.  Other protocols May use packets greater than this, but for
-- * now, the default is 64KB.
-- */
--#define XPNET_MAX_MTU (0x800000UL - L1_CACHE_BYTES)
--/* 68 comes from min TCP+IP+MAC header */
--#define XPNET_MIN_MTU 68
--/* 32KB has been determined to be the ideal */
--#define XPNET_DEF_MTU (0x8000UL)
--
--/*
-- * The partid is encapsulated in the MAC address beginning in the following
-- * octet and it consists of two octets.
-- */
--#define XPNET_PARTID_OCTET	2
--
--/* Define the XPNET debug device structures to be used with dev_dbg() et al */
--
--static struct device_driver xpnet_dbg_name = {
--	.name = "xpnet"
--};
--
--static struct device xpnet_dbg_subname = {
--	.init_name = "",	/* set to "" */
--	.driver = &xpnet_dbg_name
--};
--
--static struct device *xpnet = &xpnet_dbg_subname;
--
--/*
-- * Packet was recevied by XPC and forwarded to us.
-- */
--static void
--xpnet_receive(short partid, int channel, struct xpnet_message *msg)
+-static inline int get_off_blade_tgh(struct gru_state *gru)
 -{
--	struct sk_buff *skb;
--	void *dst;
--	enum xp_retval ret;
+-	int n;
 -
--	if (!XPNET_VALID_MSG(msg)) {
+-	n = GRU_NUM_TGH - gru->gs_tgh_first_remote;
+-	n = gru_random() % n;
+-	n += gru->gs_tgh_first_remote;
+-	return n;
+-}
+-
+-static inline int get_on_blade_tgh(struct gru_state *gru)
+-{
+-	return uv_blade_processor_id() >> gru->gs_tgh_local_shift;
+-}
+-
+-static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
+-							 *gru)
+-{
+-	struct gru_tlb_global_handle *tgh;
+-	int n;
+-
+-	if (uv_numa_blade_id() == gru->gs_blade_id)
+-		n = get_on_blade_tgh(gru);
+-	else
+-		n = get_off_blade_tgh(gru);
+-	tgh = get_tgh_by_index(gru, n);
+-	lock_tgh_handle(tgh);
+-
+-	return tgh;
+-}
+-
+-static void get_unlock_tgh_handle(struct gru_tlb_global_handle *tgh)
+-{
+-	unlock_tgh_handle(tgh);
+-}
+-
+-/*
+- * gru_flush_tlb_range
+- *
+- * General purpose TLB invalidation function. This function scans every GRU in
+- * the ENTIRE system (partition) looking for GRUs where the specified MM has
+- * been accessed by the GRU. For each GRU found, the TLB must be invalidated OR
+- * the ASID invalidated. Invalidating an ASID causes a new ASID to be assigned
+- * on the next fault. This effectively flushes the ENTIRE TLB for the MM at the
+- * cost of (possibly) a large number of future TLBmisses.
+- *
+- * The current algorithm is optimized based on the following (somewhat true)
+- * assumptions:
+- * 	- GRU contexts are not loaded into a GRU unless a reference is made to
+- * 	  the data segment or control block (this is true, not an assumption).
+- * 	  If a DS/CB is referenced, the user will also issue instructions that
+- * 	  cause TLBmisses. It is not necessary to optimize for the case where
+- * 	  contexts are loaded but no instructions cause TLB misses. (I know
+- * 	  this will happen but I'm not optimizing for it).
+- * 	- GRU instructions to invalidate TLB entries are SLOOOOWWW - normally
+- * 	  a few usec but in unusual cases, it could be longer. Avoid if
+- * 	  possible.
+- * 	- intrablade process migration between cpus is not frequent but is
+- * 	  common.
+- * 	- a GRU context is not typically migrated to a different GRU on the
+- * 	  blade because of intrablade migration
+- *	- interblade migration is rare. Processes migrate their GRU context to
+- *	  the new blade.
+- *	- if interblade migration occurs, migration back to the original blade
+- *	  is very very rare (ie., no optimization for this case)
+- *	- most GRU instruction operate on a subset of the user REGIONS. Code
+- *	  & shared library regions are not likely targets of GRU instructions.
+- *
+- * To help improve the efficiency of TLB invalidation, the GMS data
+- * structure is maintained for EACH address space (MM struct). The GMS is
+- * also the structure that contains the pointer to the mmu callout
+- * functions. This structure is linked to the mm_struct for the address space
+- * using the mmu "register" function. The mmu interfaces are used to
+- * provide the callbacks for TLB invalidation. The GMS contains:
+- *
+- * 	- asid[maxgrus] array. ASIDs are assigned to a GRU when a context is
+- * 	  loaded into the GRU.
+- * 	- asidmap[maxgrus]. bitmap to make it easier to find non-zero asids in
+- * 	  the above array
+- *	- ctxbitmap[maxgrus]. Indicates the contexts that are currently active
+- *	  in the GRU for the address space. This bitmap must be passed to the
+- *	  GRU to do an invalidate.
+- *
+- * The current algorithm for invalidating TLBs is:
+- * 	- scan the asidmap for GRUs where the context has been loaded, ie,
+- * 	  asid is non-zero.
+- * 	- for each gru found:
+- * 		- if the ctxtmap is non-zero, there are active contexts in the
+- * 		  GRU. TLB invalidate instructions must be issued to the GRU.
+- *		- if the ctxtmap is zero, no context is active. Set the ASID to
+- *		  zero to force a full TLB invalidation. This is fast but will
+- *		  cause a lot of TLB misses if the context is reloaded onto the
+- *		  GRU
+- *
+- */
+-
+-void gru_flush_tlb_range(struct gru_mm_struct *gms, unsigned long start,
+-			 unsigned long len)
+-{
+-	struct gru_state *gru;
+-	struct gru_mm_tracker *asids;
+-	struct gru_tlb_global_handle *tgh;
+-	unsigned long num;
+-	int grupagesize, pagesize, pageshift, gid, asid;
+-
+-	/* ZZZ TODO - handle huge pages */
+-	pageshift = PAGE_SHIFT;
+-	pagesize = (1UL << pageshift);
+-	grupagesize = GRU_PAGESIZE(pageshift);
+-	num = min(((len + pagesize - 1) >> pageshift), GRUMAXINVAL);
+-
+-	STAT(flush_tlb);
+-	gru_dbg(grudev, "gms %p, start 0x%lx, len 0x%lx, asidmap 0x%lx\n", gms,
+-		start, len, gms->ms_asidmap[0]);
+-
+-	spin_lock(&gms->ms_asid_lock);
+-	for_each_gru_in_bitmap(gid, gms->ms_asidmap) {
+-		STAT(flush_tlb_gru);
+-		gru = GID_TO_GRU(gid);
+-		asids = gms->ms_asids + gid;
+-		asid = asids->mt_asid;
+-		if (asids->mt_ctxbitmap && asid) {
+-			STAT(flush_tlb_gru_tgh);
+-			asid = GRUASID(asid, start);
+-			gru_dbg(grudev,
+-	"  FLUSH gruid %d, asid 0x%x, vaddr 0x%lx, vamask 0x%x, num %ld, cbmap 0x%x\n",
+-			      gid, asid, start, grupagesize, num, asids->mt_ctxbitmap);
+-			tgh = get_lock_tgh_handle(gru);
+-			tgh_invalidate(tgh, start, ~0, asid, grupagesize, 0,
+-				       num - 1, asids->mt_ctxbitmap);
+-			get_unlock_tgh_handle(tgh);
+-		} else {
+-			STAT(flush_tlb_gru_zero_asid);
+-			asids->mt_asid = 0;
+-			__clear_bit(gru->gs_gid, gms->ms_asidmap);
+-			gru_dbg(grudev,
+-	"  CLEARASID gruid %d, asid 0x%x, cbtmap 0x%x, asidmap 0x%lx\n",
+-				gid, asid, asids->mt_ctxbitmap,
+-				gms->ms_asidmap[0]);
+-		}
+-	}
+-	spin_unlock(&gms->ms_asid_lock);
+-}
+-
+-/*
+- * Flush the entire TLB on a chiplet.
+- */
+-void gru_flush_all_tlb(struct gru_state *gru)
+-{
+-	struct gru_tlb_global_handle *tgh;
+-
+-	gru_dbg(grudev, "gid %d\n", gru->gs_gid);
+-	tgh = get_lock_tgh_handle(gru);
+-	tgh_invalidate(tgh, 0, ~0, 0, 1, 1, GRUMAXINVAL - 1, 0xffff);
+-	get_unlock_tgh_handle(tgh);
+-}
+-
+-/*
+- * MMUOPS notifier callout functions
+- */
+-static int gru_invalidate_range_start(struct mmu_notifier *mn,
+-			const struct mmu_notifier_range *range)
+-{
+-	struct gru_mm_struct *gms = container_of(mn, struct gru_mm_struct,
+-						 ms_notifier);
+-
+-	STAT(mmu_invalidate_range);
+-	atomic_inc(&gms->ms_range_active);
+-	gru_dbg(grudev, "gms %p, start 0x%lx, end 0x%lx, act %d\n", gms,
+-		range->start, range->end, atomic_read(&gms->ms_range_active));
+-	gru_flush_tlb_range(gms, range->start, range->end - range->start);
+-
+-	return 0;
+-}
+-
+-static void gru_invalidate_range_end(struct mmu_notifier *mn,
+-			const struct mmu_notifier_range *range)
+-{
+-	struct gru_mm_struct *gms = container_of(mn, struct gru_mm_struct,
+-						 ms_notifier);
+-
+-	/* ..._and_test() provides needed barrier */
+-	(void)atomic_dec_and_test(&gms->ms_range_active);
+-
+-	wake_up_all(&gms->ms_wait_queue);
+-	gru_dbg(grudev, "gms %p, start 0x%lx, end 0x%lx\n",
+-		gms, range->start, range->end);
+-}
+-
+-static struct mmu_notifier *gru_alloc_notifier(struct mm_struct *mm)
+-{
+-	struct gru_mm_struct *gms;
+-
+-	gms = kzalloc_obj(*gms);
+-	if (!gms)
+-		return ERR_PTR(-ENOMEM);
+-	STAT(gms_alloc);
+-	spin_lock_init(&gms->ms_asid_lock);
+-	init_waitqueue_head(&gms->ms_wait_queue);
+-
+-	return &gms->ms_notifier;
+-}
+-
+-static void gru_free_notifier(struct mmu_notifier *mn)
+-{
+-	kfree(container_of(mn, struct gru_mm_struct, ms_notifier));
+-	STAT(gms_free);
+-}
+-
+-static const struct mmu_notifier_ops gru_mmuops = {
+-	.invalidate_range_start	= gru_invalidate_range_start,
+-	.invalidate_range_end	= gru_invalidate_range_end,
+-	.alloc_notifier		= gru_alloc_notifier,
+-	.free_notifier		= gru_free_notifier,
+-};
+-
+-struct gru_mm_struct *gru_register_mmu_notifier(void)
+-{
+-	struct mmu_notifier *mn;
+-
+-	mn = mmu_notifier_get_locked(&gru_mmuops, current->mm);
+-	if (IS_ERR(mn))
+-		return ERR_CAST(mn);
+-
+-	return container_of(mn, struct gru_mm_struct, ms_notifier);
+-}
+-
+-void gru_drop_mmu_notifier(struct gru_mm_struct *gms)
+-{
+-	mmu_notifier_put(&gms->ms_notifier);
+-}
+-
+-/*
+- * Setup TGH parameters. There are:
+- * 	- 24 TGH handles per GRU chiplet
+- * 	- a portion (MAX_LOCAL_TGH) of the handles are reserved for
+- * 	  use by blade-local cpus
+- * 	- the rest are used by off-blade cpus. This usage is
+- * 	  less frequent than blade-local usage.
+- *
+- * For now, use 16 handles for local flushes, 8 for remote flushes. If the blade
+- * has less tan or equal to 16 cpus, each cpu has a unique handle that it can
+- * use.
+- */
+-#define MAX_LOCAL_TGH	16
+-
+-void gru_tgh_flush_init(struct gru_state *gru)
+-{
+-	int cpus, shift = 0, n;
+-
+-	cpus = uv_blade_nr_possible_cpus(gru->gs_blade_id);
+-
+-	/* n = cpus rounded up to next power of 2 */
+-	if (cpus) {
+-		n = 1 << fls(cpus - 1);
+-
 -		/*
--		 * Packet with a different XPC version.  Ignore.
+-		 * shift count for converting local cpu# to TGH index
+-		 *      0 if cpus <= MAX_LOCAL_TGH,
+-		 *      1 if cpus <= 2*MAX_LOCAL_TGH,
+-		 *      etc
 -		 */
--		xpc_received(partid, channel, (void *)msg);
--
--		xpnet_device->stats.rx_errors++;
--
--		return;
+-		shift = max(0, fls(n - 1) - fls(MAX_LOCAL_TGH - 1));
 -	}
--	dev_dbg(xpnet, "received 0x%lx, %d, %d, %d\n", msg->buf_pa, msg->size,
--		msg->leadin_ignore, msg->tailout_ignore);
+-	gru->gs_tgh_local_shift = shift;
 -
--	/* reserve an extra cache line */
--	skb = dev_alloc_skb(msg->size + L1_CACHE_BYTES);
--	if (!skb) {
--		dev_err(xpnet, "failed on dev_alloc_skb(%d)\n",
--			msg->size + L1_CACHE_BYTES);
+-	/* first starting TGH index to use for remote purges */
+-	gru->gs_tgh_first_remote = (cpus + (1 << shift) - 1) >> shift;
 -
--		xpc_received(partid, channel, (void *)msg);
--
--		xpnet_device->stats.rx_errors++;
--
--		return;
--	}
--
--	/*
--	 * The allocated skb has some reserved space.
--	 * In order to use xp_remote_memcpy(), we need to get the
--	 * skb->data pointer moved forward.
--	 */
--	skb_reserve(skb, (L1_CACHE_BYTES - ((u64)skb->data &
--					    (L1_CACHE_BYTES - 1)) +
--			  msg->leadin_ignore));
--
--	/*
--	 * Update the tail pointer to indicate data actually
--	 * transferred.
--	 */
--	skb_put(skb, (msg->size - msg->leadin_ignore - msg->tailout_ignore));
--
--	/*
--	 * Move the data over from the other side.
--	 */
--	if ((XPNET_VERSION_MINOR(msg->version) == 1) &&
--	    (msg->embedded_bytes != 0)) {
--		dev_dbg(xpnet, "copying embedded message. memcpy(0x%p, 0x%p, "
--			"%lu)\n", skb->data, &msg->data,
--			(size_t)msg->embedded_bytes);
--
--		skb_copy_to_linear_data(skb, &msg->data,
--					(size_t)msg->embedded_bytes);
--	} else {
--		dst = (void *)((u64)skb->data & ~(L1_CACHE_BYTES - 1));
--		dev_dbg(xpnet, "transferring buffer to the skb->data area;\n\t"
--			"xp_remote_memcpy(0x%p, 0x%p, %u)\n", dst,
--					  (void *)msg->buf_pa, msg->size);
--
--		ret = xp_remote_memcpy(xp_pa(dst), msg->buf_pa, msg->size);
--		if (ret != xpSuccess) {
--			/*
--			 * !!! Need better way of cleaning skb.  Currently skb
--			 * !!! appears in_use and we can't just call
--			 * !!! dev_kfree_skb.
--			 */
--			dev_err(xpnet, "xp_remote_memcpy(0x%p, 0x%p, 0x%x) "
--				"returned error=0x%x\n", dst,
--				(void *)msg->buf_pa, msg->size, ret);
--
--			xpc_received(partid, channel, (void *)msg);
--
--			xpnet_device->stats.rx_errors++;
--
--			return;
--		}
--	}
--
--	dev_dbg(xpnet, "<skb->head=0x%p skb->data=0x%p skb->tail=0x%p "
--		"skb->end=0x%p skb->len=%d\n", (void *)skb->head,
--		(void *)skb->data, skb_tail_pointer(skb), skb_end_pointer(skb),
--		skb->len);
--
--	skb->protocol = eth_type_trans(skb, xpnet_device);
--	skb->ip_summed = CHECKSUM_UNNECESSARY;
--
--	dev_dbg(xpnet, "passing skb to network layer\n"
--		"\tskb->head=0x%p skb->data=0x%p skb->tail=0x%p "
--		"skb->end=0x%p skb->len=%d\n",
--		(void *)skb->head, (void *)skb->data, skb_tail_pointer(skb),
--		skb_end_pointer(skb), skb->len);
--
--	xpnet_device->stats.rx_packets++;
--	xpnet_device->stats.rx_bytes += skb->len + ETH_HLEN;
--
--	netif_rx(skb);
--	xpc_received(partid, channel, (void *)msg);
 -}
--
--/*
-- * This is the handler which XPC calls during any sort of change in
-- * state or message reception on a connection.
-- */
--static void
--xpnet_connection_activity(enum xp_retval reason, short partid, int channel,
--			  void *data, void *key)
--{
--	DBUG_ON(partid < 0 || partid >= xp_max_npartitions);
--	DBUG_ON(channel != XPC_NET_CHANNEL);
--
--	switch (reason) {
--	case xpMsgReceived:	/* message received */
--		DBUG_ON(data == NULL);
--
--		xpnet_receive(partid, channel, (struct xpnet_message *)data);
--		break;
--
--	case xpConnected:	/* connection completed to a partition */
--		spin_lock_bh(&xpnet_broadcast_lock);
--		__set_bit(partid, xpnet_broadcast_partitions);
--		spin_unlock_bh(&xpnet_broadcast_lock);
--
--		netif_carrier_on(xpnet_device);
--
--		dev_dbg(xpnet, "%s connected to partition %d\n",
--			xpnet_device->name, partid);
--		break;
--
--	default:
--		spin_lock_bh(&xpnet_broadcast_lock);
--		__clear_bit(partid, xpnet_broadcast_partitions);
--		spin_unlock_bh(&xpnet_broadcast_lock);
--
--		if (bitmap_empty(xpnet_broadcast_partitions,
--				 xp_max_npartitions)) {
--			netif_carrier_off(xpnet_device);
--		}
--
--		dev_dbg(xpnet, "%s disconnected from partition %d\n",
--			xpnet_device->name, partid);
--		break;
--	}
--}
--
--static int
--xpnet_dev_open(struct net_device *dev)
--{
--	enum xp_retval ret;
--
--	dev_dbg(xpnet, "calling xpc_connect(%d, 0x%p, NULL, %ld, %ld, %ld, "
--		"%ld)\n", XPC_NET_CHANNEL, xpnet_connection_activity,
--		(unsigned long)XPNET_MSG_SIZE,
--		(unsigned long)XPNET_MSG_NENTRIES,
--		(unsigned long)XPNET_MAX_KTHREADS,
--		(unsigned long)XPNET_MAX_IDLE_KTHREADS);
--
--	ret = xpc_connect(XPC_NET_CHANNEL, xpnet_connection_activity, NULL,
--			  XPNET_MSG_SIZE, XPNET_MSG_NENTRIES,
--			  XPNET_MAX_KTHREADS, XPNET_MAX_IDLE_KTHREADS);
--	if (ret != xpSuccess) {
--		dev_err(xpnet, "ifconfig up of %s failed on XPC connect, "
--			"ret=%d\n", dev->name, ret);
--
--		return -ENOMEM;
--	}
--
--	dev_dbg(xpnet, "ifconfig up of %s; XPC connected\n", dev->name);
--
--	return 0;
--}
--
--static int
--xpnet_dev_stop(struct net_device *dev)
--{
--	xpc_disconnect(XPC_NET_CHANNEL);
--
--	dev_dbg(xpnet, "ifconfig down of %s; XPC disconnected\n", dev->name);
--
--	return 0;
--}
--
--/*
-- * Notification that the other end has received the message and
-- * DMA'd the skb information.  At this point, they are done with
-- * our side.  When all recipients are done processing, we
-- * release the skb and then release our pending message structure.
-- */
--static void
--xpnet_send_completed(enum xp_retval reason, short partid, int channel,
--		     void *__qm)
--{
--	struct xpnet_pending_msg *queued_msg = (struct xpnet_pending_msg *)__qm;
--
--	DBUG_ON(queued_msg == NULL);
--
--	dev_dbg(xpnet, "message to %d notified with reason %d\n",
--		partid, reason);
--
--	if (atomic_dec_return(&queued_msg->use_count) == 0) {
--		dev_dbg(xpnet, "all acks for skb->head=-x%p\n",
--			(void *)queued_msg->skb->head);
--
--		dev_kfree_skb_any(queued_msg->skb);
--		kfree(queued_msg);
--	}
--}
--
--static void
--xpnet_send(struct sk_buff *skb, struct xpnet_pending_msg *queued_msg,
--	   u64 start_addr, u64 end_addr, u16 embedded_bytes, int dest_partid)
--{
--	u8 msg_buffer[XPNET_MSG_SIZE];
--	struct xpnet_message *msg = (struct xpnet_message *)&msg_buffer;
--	u16 msg_size = sizeof(struct xpnet_message);
--	enum xp_retval ret;
--
--	msg->embedded_bytes = embedded_bytes;
--	if (unlikely(embedded_bytes != 0)) {
--		msg->version = XPNET_VERSION_EMBED;
--		dev_dbg(xpnet, "calling memcpy(0x%p, 0x%p, 0x%lx)\n",
--			&msg->data, skb->data, (size_t)embedded_bytes);
--		skb_copy_from_linear_data(skb, &msg->data,
--					  (size_t)embedded_bytes);
--		msg_size += embedded_bytes - 1;
--	} else {
--		msg->version = XPNET_VERSION;
--	}
--	msg->magic = XPNET_MAGIC;
--	msg->size = end_addr - start_addr;
--	msg->leadin_ignore = (u64)skb->data - start_addr;
--	msg->tailout_ignore = end_addr - (u64)skb_tail_pointer(skb);
--	msg->buf_pa = xp_pa((void *)start_addr);
--
--	dev_dbg(xpnet, "sending XPC message to %d:%d\n"
--		"msg->buf_pa=0x%lx, msg->size=%u, "
--		"msg->leadin_ignore=%u, msg->tailout_ignore=%u\n",
--		dest_partid, XPC_NET_CHANNEL, msg->buf_pa, msg->size,
--		msg->leadin_ignore, msg->tailout_ignore);
--
--	atomic_inc(&queued_msg->use_count);
--
--	ret = xpc_send_notify(dest_partid, XPC_NET_CHANNEL, XPC_NOWAIT, msg,
--			      msg_size, xpnet_send_completed, queued_msg);
--	if (unlikely(ret != xpSuccess))
--		atomic_dec(&queued_msg->use_count);
--}
--
--/*
-- * Network layer has formatted a packet (skb) and is ready to place it
-- * "on the wire".  Prepare and send an xpnet_message to all partitions
-- * which have connected with us and are targets of this packet.
-- *
-- * MAC-NOTE:  For the XPNET driver, the MAC address contains the
-- * destination partid.  If the destination partid octets are 0xffff,
-- * this packet is to be broadcast to all connected partitions.
-- */
--static netdev_tx_t
--xpnet_dev_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
--{
--	struct xpnet_pending_msg *queued_msg;
--	u64 start_addr, end_addr;
--	short dest_partid;
--	u16 embedded_bytes = 0;
--
--	dev_dbg(xpnet, ">skb->head=0x%p skb->data=0x%p skb->tail=0x%p "
--		"skb->end=0x%p skb->len=%d\n", (void *)skb->head,
--		(void *)skb->data, skb_tail_pointer(skb), skb_end_pointer(skb),
--		skb->len);
--
--	if (skb->data[0] == 0x33) {
--		dev_kfree_skb(skb);
--		return NETDEV_TX_OK;	/* nothing needed to be done */
--	}
--
--	/*
--	 * The xpnet_pending_msg tracks how many outstanding
--	 * xpc_send_notifies are relying on this skb.  When none
--	 * remain, release the skb.
--	 */
--	queued_msg = kmalloc_obj(struct xpnet_pending_msg, GFP_ATOMIC);
--	if (queued_msg == NULL) {
--		dev_warn(xpnet, "failed to kmalloc %ld bytes; dropping "
--			 "packet\n", sizeof(struct xpnet_pending_msg));
--
--		dev->stats.tx_errors++;
--		dev_kfree_skb(skb);
--		return NETDEV_TX_OK;
--	}
--
--	/* get the beginning of the first cacheline and end of last */
--	start_addr = ((u64)skb->data & ~(L1_CACHE_BYTES - 1));
--	end_addr = L1_CACHE_ALIGN((u64)skb_tail_pointer(skb));
--
--	/* calculate how many bytes to embed in the XPC message */
--	if (unlikely(skb->len <= XPNET_MSG_DATA_MAX)) {
--		/* skb->data does fit so embed */
--		embedded_bytes = skb->len;
--	}
--
--	/*
--	 * Since the send occurs asynchronously, we set the count to one
--	 * and begin sending.  Any sends that happen to complete before
--	 * we are done sending will not free the skb.  We will be left
--	 * with that task during exit.  This also handles the case of
--	 * a packet destined for a partition which is no longer up.
--	 */
--	atomic_set(&queued_msg->use_count, 1);
--	queued_msg->skb = skb;
--
--	if (skb->data[0] == 0xff) {
--		/* we are being asked to broadcast to all partitions */
--		for_each_set_bit(dest_partid, xpnet_broadcast_partitions,
--			     xp_max_npartitions) {
--
--			xpnet_send(skb, queued_msg, start_addr, end_addr,
--				   embedded_bytes, dest_partid);
--		}
--	} else {
--		dest_partid = (short)skb->data[XPNET_PARTID_OCTET + 1];
--		dest_partid |= (short)skb->data[XPNET_PARTID_OCTET + 0] << 8;
--
--		if (dest_partid >= 0 &&
--		    dest_partid < xp_max_npartitions &&
--		    test_bit(dest_partid, xpnet_broadcast_partitions) != 0) {
--
--			xpnet_send(skb, queued_msg, start_addr, end_addr,
--				   embedded_bytes, dest_partid);
--		}
--	}
--
--	dev->stats.tx_packets++;
--	dev->stats.tx_bytes += skb->len;
--
--	if (atomic_dec_return(&queued_msg->use_count) == 0) {
--		dev_kfree_skb(skb);
--		kfree(queued_msg);
--	}
--
--	return NETDEV_TX_OK;
--}
--
--/*
-- * Deal with transmit timeouts coming from the network layer.
-- */
--static void
--xpnet_dev_tx_timeout(struct net_device *dev, unsigned int txqueue)
--{
--	dev->stats.tx_errors++;
--}
--
--static const struct net_device_ops xpnet_netdev_ops = {
--	.ndo_open		= xpnet_dev_open,
--	.ndo_stop		= xpnet_dev_stop,
--	.ndo_start_xmit		= xpnet_dev_hard_start_xmit,
--	.ndo_tx_timeout		= xpnet_dev_tx_timeout,
--	.ndo_set_mac_address 	= eth_mac_addr,
--	.ndo_validate_addr	= eth_validate_addr,
--};
--
--static int __init
--xpnet_init(void)
--{
--	u8 addr[ETH_ALEN];
--	int result;
--
--	if (!is_uv_system())
--		return -ENODEV;
--
--	dev_info(xpnet, "registering network device %s\n", XPNET_DEVICE_NAME);
--
--	xpnet_broadcast_partitions = bitmap_zalloc(xp_max_npartitions,
--						   GFP_KERNEL);
--	if (xpnet_broadcast_partitions == NULL)
--		return -ENOMEM;
--
--	/*
--	 * use ether_setup() to init the majority of our device
--	 * structure and then override the necessary pieces.
--	 */
--	xpnet_device = alloc_netdev(0, XPNET_DEVICE_NAME, NET_NAME_UNKNOWN,
--				    ether_setup);
--	if (xpnet_device == NULL) {
--		bitmap_free(xpnet_broadcast_partitions);
--		return -ENOMEM;
--	}
--
--	netif_carrier_off(xpnet_device);
--
--	xpnet_device->netdev_ops = &xpnet_netdev_ops;
--	xpnet_device->mtu = XPNET_DEF_MTU;
--	xpnet_device->min_mtu = XPNET_MIN_MTU;
--	xpnet_device->max_mtu = XPNET_MAX_MTU;
--
--	memset(addr, 0, sizeof(addr));
--	/*
--	 * Multicast assumes the LSB of the first octet is set for multicast
--	 * MAC addresses.  We chose the first octet of the MAC to be unlikely
--	 * to collide with any vendor's officially issued MAC.
--	 */
--	addr[0] = 0x02;     /* locally administered, no OUI */
--
--	addr[XPNET_PARTID_OCTET + 1] = xp_partition_id;
--	addr[XPNET_PARTID_OCTET + 0] = (xp_partition_id >> 8);
--	eth_hw_addr_set(xpnet_device, addr);
--
--	/*
--	 * ether_setup() sets this to a multicast device.  We are
--	 * really not supporting multicast at this time.
--	 */
--	xpnet_device->flags &= ~IFF_MULTICAST;
--
--	/*
--	 * No need to checksum as it is a DMA transfer.  The BTE will
--	 * report an error if the data is not retrievable and the
--	 * packet will be dropped.
--	 */
--	xpnet_device->features = NETIF_F_HW_CSUM;
--
--	result = register_netdev(xpnet_device);
--	if (result != 0) {
--		free_netdev(xpnet_device);
--		bitmap_free(xpnet_broadcast_partitions);
--	}
--
--	return result;
--}
--
--module_init(xpnet_init);
--
--static void __exit
--xpnet_exit(void)
--{
--	dev_info(xpnet, "unregistering network device %s\n",
--		 xpnet_device[0].name);
--
--	unregister_netdev(xpnet_device);
--	free_netdev(xpnet_device);
--	bitmap_free(xpnet_broadcast_partitions);
--}
--
--module_exit(xpnet_exit);
--
--MODULE_AUTHOR("Silicon Graphics, Inc.");
--MODULE_DESCRIPTION("Cross Partition Network adapter (XPNET)");
--MODULE_LICENSE("GPL");
 -- 
 2.43.0
 
