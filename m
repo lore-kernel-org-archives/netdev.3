@@ -1,110 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CF83B05B0
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:42:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6631939A80E
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785483755; cv=none; b=WJPPVrCoOEDViLff0UT3+h1v9oLrVXda1J+tYRQF07VR4vRiI3EC4a/7W3+v63s3KS8IE89Bvi+iTjf1N0SAo8kX860vetf12yHkJPbJ3UpqQbEAM/l/xXuKYy02vv7Qq8b44twxPRvzesmH6+rtekWF0OY+50orqwUgv+WHt6g=
+	t=1785484161; cv=none; b=Ti3oWvRcpQz2lP6YC9fgCIvNGqys5rnuR7vWXJXHAkwOZYD4zCUUg9sbMBaoF7Zk+bNUjcsgGGEdNfGvSuPUxoiQdcls0fgMDgqSr9j87GtSWOPz8wR+SZ3vYpAXoNziVe4fi/rvrK2nbBODLoAuHkdSIH3sYhJRpMJEu4kxToE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785483755; c=relaxed/simple;
-	bh=q8XpgHCUOvT3D/2ywHlOhi5pXNd87Ng5kB+Y/RltCu0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ota4xstZsvOyby4Cze+pJzrRycPbp0YFVpdZ2cmnbfUJTIcYdgsFUIuyrykIvVsZtiOpLE1k6LM8xwtxY2CwTuIJe5+3SzL2QXQkgaj+W6XFvfJ5pCDPei5vm2R/t0HaZgb1k2h46mZk77ecjNQho3up6nuhy19n4nZowOEy6y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iG2cYPrS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785484161; c=relaxed/simple;
+	bh=bS/CRKVVoQdAkaStuerHlYKMhi3opFXvVsPmcBA81Yk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kfn8MAquBwwRCRSS5GiYjUrEpn3RiPnx+XGyBTMRXaDiHB/2C26gvNmmkkSfrZ3G9O+DjaSBzug+apGUw6klu01RGr7BSXcSCs5dNSQa9oEeJA5v+Wkmb1jI227VxAfw570LmeLWO0zxmGR4J33dn77rH9n05B3A7L9vjwG4+eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qizLkiWa; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iG2cYPrS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456A71F00A3A;
-	Fri, 31 Jul 2026 07:42:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785483751;
-	bh=FFaIEiqXOswkD09MczFoBFv4NcZyzjzVaslzhiJM1+o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iG2cYPrSQTmIoIiXxlGyq/dr1E65vN8rmQ2biXIScv20KLIrl88oYuA/44ZeYKgng
-	 KbXm5tfQx8X8EQ2WM3EBPsEBoQAQxKfkOOfAop31WAC7urz5exYh2Ds1XqKgdc3q+f
-	 6436hx5knnraXPlWjMJCb7VMzcrrPbqfQ3f1a2/56ofwaqHVd65kfVvEPhcvBt+A11
-	 hC09HOD0evhsxl5meqULrLvsROI5DgptRiDR1XXVwBcoBVqriH5x6AyqV3geYtci+d
-	 rTv7JWmeoqM3kaCX54rnaB5Cl8ju3d1LgcUQuJA7uKMGDhJWMYgBXZCEZV50V4IOyK
-	 G49fUzZzZVZ0g==
-Date: Fri, 31 Jul 2026 09:42:28 +0200
-From: Antoine Tenart <atenart@kernel.org>
-To: Kenneth Lee <kennethbwlee@snu.ac.kr>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, rhkrqnwk98@gmail.com
-Subject: Re: [PATCH net] net: ip_gre: use checksum-aware trim for ERSPAN
-Message-ID: <amxPmrfUFbSUNmgE@kwain>
-References: <20260730085220.985948-1-kennethbwlee@snu.ac.kr>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qizLkiWa"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4798bea72f9so464570f8f.1
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 00:49:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785484156; x=1786088956; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bS/CRKVVoQdAkaStuerHlYKMhi3opFXvVsPmcBA81Yk=;
+        b=qizLkiWagGmgDoYyTiHBpoXcCTYUx1geCpzWbBsiNKf7xI+YGVk8diW73nhHsrDfJn
+         0VY44aPFiwpa1uTPXGSQM6x7y0789c03k6dM5gcSMZtNp/fD3KaOUS6Ylb+jCgHcqtNP
+         kUhIuZVVeuW0B/yLXjBvOG0ntH59XZiQK6zUTd2zKxS9OxCmZ4N1DuEfnxEBSQuOgEKz
+         ifDoTf7eD6FtoPESF4tpCXVPT1t4qsNR59RzIBZv4hbMsqY8xhMcXRtkrYoZcTW4FP8f
+         bJQA1nODMVQm+U0SCO+Wo0liGeSJQDyUxacs+ZPXB+X2HUQARGAU+Dt3ItFoamuDMNq9
+         rRRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785484156; x=1786088956;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bS/CRKVVoQdAkaStuerHlYKMhi3opFXvVsPmcBA81Yk=;
+        b=Ij6Xu5SbhQRkdcpLar9pGu3GqMOd/DtP5GGg5rmU+sy/033p7TkOjUuMqSID0iDUnR
+         pWAZ0Q8fOCTHqIjh9pDOoZmnsbkJVCHG/FRhXWuB6Mayj3X63JFg2cSSwGIR3Vrz2Ewf
+         rTI5o2IoQK9WzKfWTryDEboq5uYxIyGleUbM7/6Mb/zkRePtnSJAcHSKEdm5s1u7uXV5
+         2QphS7+EJUllICMqzIF/PDI23cyJ+zIaKCQBc2CpYNyC6IQgVoJE9YOSnNN2My8taRyh
+         gwMcsdKN7oDvCI9bevTnQ5v6HmwUX2cVEqB1qtm9rgScJuKrQMcSSu5YUxvJ+nqajbTS
+         Hlyw==
+X-Forwarded-Encrypted: i=1; AHgh+RoT2lBlEqvI7wH7qJ6UOBfXoPn3XV1iQFHaxGAM0ixckacCuD+YZq4t7NSTKKOl6JUojsAvIKU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxL9MEsbusqPEKOOHIgTArkUS898aKDgPCrPfb8cbT7MjAJ+/Cx
+	pwABj2oK9uh3v4ycOgvpM87BAkDbC4rnSf6+KA/5aS3zEOu4UtB7loWA
+X-Gm-Gg: AR+sD11si24QJng42xMMCo1gy1cjEOB7LIAkAuyAKkyWARLOtBLzBI5wA2PfVZhb7B2
+	Nfe+rEs2C0SRBvhsCy6pMthU7E9qXrZrEWugEKfYEhiaA4l0386LEut4URdtg97xukbdaby5KaC
+	9LhxZCihww3eRqnvZYSXb039CIDO6aOGlPaCbFJqvBjFD/lzI2h1CKB2vaLkjtH3efnd5FIRin+
+	SLCXD+FCpbjpolDt3TgrgiR9m22SZ26CZZR8dk54Z0QpxHjrN6gzEMbYNGTVSDRZAEXD4L0RQCZ
+	Q5SSZqbtc+qXCF7oXny3GtChVxw4ZyqErUaqOGt0hPRhD4JJeERtErBYhVdKzp09t3hlX/T5C4s
+	ZsU1vLofBBlSZ4fPxaoRF5Z0KCtkLyO00gTTXOmD5oY+tw33ezMp0ycOgU6rPROYn6FVhDPfIoi
+	vJFP7YIJZzLxGlrOtOr4XC59tqFPjEVS8IqbWGo0mEih9DRVkI8X03lAe1fPLQmXzL5jn5x++WR
+	tgwTquIqC6rV0WVLJERQW0a1l5ji22pFU8b0Wqg
+X-Received: by 2002:a05:6000:1ac5:b0:47e:aa3e:e75e with SMTP id ffacd0b85a97d-47fd2abbb6amr2533204f8f.10.1785484155487;
+        Fri, 31 Jul 2026 00:49:15 -0700 (PDT)
+Received: from INBSWN167928.ad.harman.com (bba-86-96-6-50.alshamil.net.ae. [86.96.6.50])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd41cfdc6sm2009280f8f.8.2026.07.31.00.49.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 00:49:15 -0700 (PDT)
+From: Abid Ali <dev.taqnialabs@gmail.com>
+To: qingfang.deng@linux.dev
+Cc: alexandre.torgue@foss.st.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	dev.taqnialabs@gmail.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	mcoquelin.stm32@gmail.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCH v2] net: stmmac: enable MAC rx/tx after DMA start
+Date: Fri, 31 Jul 2026 07:49:01 +0000
+Message-ID: <20260731074901.1163-1-dev.taqnialabs@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <507ad6a6-52a2-4c68-9ba2-5cc4f92e192d@linux.dev>
+References: <507ad6a6-52a2-4c68-9ba2-5cc4f92e192d@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260730085220.985948-1-kennethbwlee@snu.ac.kr>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 30, 2026 at 05:52:20PM +0900, Kenneth Lee wrote:
-> ERSPAN currently uses pskb_trim() when truncating packets to the device
-> MTU.  For a CHECKSUM_PARTIAL skb, that helper can leave csum_start and
-> csum_offset pointing at a checksum field outside the new packet length.
-> The skb can then reach skb_checksum_help() during transmit validation,
-> which warns when the checksum offset is beyond skb_headlen().
-> 
-> Use pskb_trim_rcsum() in both ERSPAN transmit paths.  It rejects a
-> CHECKSUM_PARTIAL skb whose checksum field is no longer in the trimmed
-> linear data and returns -EINVAL.  The existing error paths then free the
-> skb instead of transmitting inconsistent checksum metadata.
+On Fri, 31 Jul 2026 10:11:40 +0800 Qingfang Deng wrote:
+> This is _not_ correct. Instead it's a bit more complicated, according to
+> their programming guidelines:
+>
+> So the correct order is: stop TX DMA -> stop MAC RX/TX -> stop RX DMA.
 
-Can you include a description of the MTU and kind of packet that
-triggers this?
+You're right, the XGMAC TRM with me documents the same
+sequence.
 
-> Fixes: f192970de860 ("ip_gre: check packet length and mtu correctly in erspan tx")
-> 
+IMO this looks like a fix on its own as the current teardown logic
+doesn't take care of any of this. The proper shutdown sequence is
+a larger change that needs per-channel status polling and timeout
+handling.
 
-Extra empty line.
-
-Wasn't pskb_trim called before this commit?
-
-> Found-by: Sechang Lim <rhkrqnwk98@gmail.com>
-
-This is not a known tag,
-https://docs.kernel.org/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes
-
-(You should used Reported-by: here).
-
-> Signed-off-by: Kenneth Lee <kennethbwlee@snu.ac.kr>
-> ---
->  net/ipv4/ip_gre.c | 4 ++--
-
-Looks like the IPv6 counterpart has the same construction, can you
-check?
-
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-> index 169e2921a851..16f80620f6d1 100644
-> --- a/net/ipv4/ip_gre.c
-> +++ b/net/ipv4/ip_gre.c
-> @@ -576,7 +576,7 @@ static void erspan_fb_xmit(struct sk_buff *skb, struct net_device *dev)
->  		goto err_free_skb;
->  
->  	if (skb->len > dev->mtu + dev->hard_header_len) {
-> -		if (pskb_trim(skb, dev->mtu + dev->hard_header_len))
-> +		if (pskb_trim_rcsum(skb, dev->mtu + dev->hard_header_len))
->  			goto err_free_skb;
->  		truncate = true;
->  	}
-> @@ -723,7 +723,7 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
->  		goto free_skb;
->  
->  	if (skb->len > dev->mtu + dev->hard_header_len) {
-> -		if (pskb_trim(skb, dev->mtu + dev->hard_header_len))
-> +		if (pskb_trim_rcsum(skb, dev->mtu + dev->hard_header_len))
->  			goto free_skb;
->  		truncate = true;
->  	}
-> -- 
-> 2.53.0
-> 
+I'll remove the teardown change from v3 if that makes sense and keep
+only the startup reorder addressing the RX hang.
