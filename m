@@ -1,58 +1,53 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7774C351C04
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 19:23:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785525799; cv=none; b=UyG62S/Mw6DK0IpujThdnaVL/G4pj5aHQB4jXBBlinwNzRBlEzIuLmqUz5H3RtKtZpxb2q/9uspPoj+PGSWGolT9chl+MEvS+HNZ4qfvcuIxp8BWa9wRsBFhSawypn+zHIfPipQY0M1+ewfC+Nre6SfciLDBrYGu0x2DAZYu96I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785525799; c=relaxed/simple;
-	bh=X61QJmakFvghyjzpYKP6SHPMX/LziTfFqpAQgTxYfxM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=beOGFiNOP8RzG7CuBQQCiWeoN/lWMv43sbAhCV5dGuWPEq1Q27lYWO2bUsk0FbKR58mtrHRK0mWVjtr9vK7TAFOWGPHSaHMDppOLl6/IRDIwSJ//8l1h7dnZ2/k4ik4Uw/fuEl6qiqBp8v3SVTjqsxSGXvrvOZ4tyLUXRhj7VBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=CFQkq0HJ; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BA83B637A
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 19:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785525992; cv=pass; b=eAXsGLkbZD8hWOj/76rojdOTi19iuRkAFskzdQM9AgbPToptYMoFgk4OiaEWpAjV8IdMa4KXMGiHdqmYWG8eBqDLJsG3NcGMwRBQDUl0Oj0Kq6PBq5kV1hvFcPCuVz95f0eRQID0aMDMG7GcforWmw3KNAHn0KstsspRVwkXHkQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785525992; c=relaxed/simple;
+	bh=73pWa1BlX5RpNJhwInFUJ18btopb328zkDMMQ6IUiC4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=okeOQ8JL2NRbxGVX/E8jB52MajRHpoZN/eCNjc4UmWtBdo5OuZ70Ksp1ZvKiG3d4rhHZek8wgOKj5uNRUfYoxRpjkGPFMd3zIMS/mHFEIyUfiLue2M1F1S//dFEDbYYJ3UjdONqErxH7DxLjAfz52ni3U1M8LW2/LY5MsEG+zbw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iusegentoo.com; spf=pass smtp.mailfrom=iusegentoo.com; dkim=pass (1024-bit key) header.d=iusegentoo.com header.i=ali@iusegentoo.com header.b=nuXDQ15W; arc=pass smtp.client-ip=136.143.169.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iusegentoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iusegentoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="CFQkq0HJ"
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66VH8Xvl4139375;
-	Fri, 31 Jul 2026 19:23:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=qzWXRII5lMnyqpCmXP8qKG42zrfZZ
-	s/JLxLGf9vusGU=; b=CFQkq0HJ9dZk6Sqy/ffouddLp9nVlZ3hf+k0GsFa7yPNh
-	AKYTuClivvW/kQnvglk8M9orwnfiZGG/TeVEFBf/3jfgN26eX9dW7+ZLliFKOrwh
-	JYcXP3NphStbvviccS/E4N6lZoz9Kcpzj/cc7FXJ9sgiYxM7OrxLesS1xdo4w7SL
-	QrGZGKf3tNBS0jDVQFzn6PK+j/b4IWBY20r2BbQZvCpWxAHshx82D1i7p2YMBjFv
-	5+Cg8aYgT3RWdiyl+pmw4euG7DbkEJGDsAmC9X43cnRZTDz4j1I4vU1rihuOAgzZ
-	ijAKGYOWSeUhBN+Up8iA5RCya+5mim5Ndb4yhOCTA==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4fmr01bp5d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 Jul 2026 19:23:05 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 66VJKBDM034199;
-	Fri, 31 Jul 2026 19:23:04 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4frtugt6tm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 Jul 2026 19:23:04 +0000 (GMT)
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 66VJN4rQ004422;
-	Fri, 31 Jul 2026 19:23:04 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4frtugt6sy-1;
-	Fri, 31 Jul 2026 19:23:04 +0000 (GMT)
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
-To: leon@kernel.org, siva.kallam@broadcom.com, vikas.gupta@broadcom.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
-Cc: alok.a.tiwari@oracle.com, alok.a.tiwarilinux@gmail.com
-Subject: [PATCH net] bnge: Fix NULL pointer dereference in aux device release
-Date: Fri, 31 Jul 2026 12:22:59 -0700
-Message-ID: <20260731192301.1427645-1-alok.a.tiwari@oracle.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (1024-bit key) header.d=iusegentoo.com header.i=ali@iusegentoo.com header.b="nuXDQ15W"
+ARC-Seal: i=1; a=rsa-sha256; t=1785525958; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=in8HxxLgJjCXoDRIa4cCLwjY1UoxO1RFGyw+SFVstFDAqUD642wRFCLHMNHK6B69VvnU6q5WbKrploVngXapJA24EPqAQ201KlYbqdPlsCuIdMeyg4L0//C7l9KSuft4UbBaLRjtfTyLw6Oqk0DNez0p7QSZcb2Dos9kG9Pdt+k=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1785525958; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=+1MEG93QTr2RoYK3YV/UK/c3NShlE3HAOJF+xBCkrUk=; 
+	b=DJwdmEzkCvZv+dMDKq7h48bQp5Eo3nMvJuSg1evbWWF1osC67kNf+xzGyGAWNUZ/EtsBvPFxo82jcElgwoRcS1oBeZNixTeCinuqVJGDZKwTMYbuAajFT1JPr4vad/hRsXMVRUL8kEEd3kb1hrFFKkB9MwsxLfo3N3LWDWQC23U=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=iusegentoo.com;
+	spf=pass  smtp.mailfrom=ali@iusegentoo.com;
+	dmarc=pass header.from=<ali@iusegentoo.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785525958;
+	s=zmail; d=iusegentoo.com; i=ali@iusegentoo.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=+1MEG93QTr2RoYK3YV/UK/c3NShlE3HAOJF+xBCkrUk=;
+	b=nuXDQ15WpC6YtNp7GRwpQCEpdrtwpwWBUP3SEcwReUrJ2FbuSVzd5/vHfrTnsLei
+	vRO3haKDllhoxhTBzv3RG1UklBRlz3EBdF3Liu+8/k+a7BZBGGXGjUSZrc1XZI1ueD+
+	j2OyqicmRjqhOE3JcGHK+QrYIGTNzfa63CYvcT/w=
+Received: by mx.zoho.eu with SMTPS id 1785525956388972.9501036438804;
+	Fri, 31 Jul 2026 21:25:56 +0200 (CEST)
+From: Ali Ahmet Memis <ali@iusegentoo.com>
+To: netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: hsr: wait for pending node-free RCU callbacks on module exit
+Date: Fri, 31 Jul 2026 22:25:43 +0300
+Message-ID: <20260731192545.176969-1-ali@iusegentoo.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,73 +55,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-31_06,2026-07-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- phishscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0 mlxlogscore=999
- spamscore=0 bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2606160000 definitions=main-2607310147
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDE0NiBTYWx0ZWRfXzVQLQrRJDg0h
- CEOyDzEcPKjh38q/fnYgbIPTpexqU0J/XWOXnL0q2pFn9u1SKh0UrH5EpmDvEunXMwABCjUHBKQ
- fjscggMyRWkl7w2iXW3Jsj0Byt8i93SgASIV9wB5LL3sSbVaPHIb
-X-Proofpoint-GUID: q8uu1DAAqj1UA6Mpwehzd4CTv62qbBde
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDE0NiBTYWx0ZWRfXz9JvyBKpbn6z
- oCH7ve/KEqF6omoflFqVXcPkATsaYKPqFkeIXp5wPKxEZdGH/EjsBDBv4CckJYilEKGkRZuh7v7
- y8EVvZCISjFiDda94JUks2gfFsReiQSBPic6l/gI2vduTw3tHQPFqA8ai5TTkQi9rfBVUecBKjq
- 7ilPCHIaGY7zXT1I5oHfaED/w5L8outP5MGOwgwxulhPsR3i2ZvdOW4kJ9W/4g/V5SlPbtFr/UP
- FoSN3g2IDY79090PxmdXmJ7xQU8g4BA0vKS7faTapz4dwqR1HrA2qvPfHGEc/ruuN4YzuYudhwb
- iBOqO8xIttTPIA+3WopXCRioVMjSLeBK5ktk/BchIGjgqNfSw1PEVttcGCGV2r89ShRwCgZoFwk
- ervlIiwBln9aI3XxJSRYRhB4Pab2dWQM0afNoEWt7GarQck5U14GvcIa+fhHAnWn5DYQBeF440i
- OnBiAns1mP4MbRJwEDw==
-X-Authority-Analysis: v=2.4 cv=KL1qylFo c=1 sm=1 tr=0 ts=6a6cf619 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=x0eKOSpe3m1H3M0S9YoZ:22 a=yPCof4ZbAAAA:8 a=iK-9IKd76Cp9_lFYzUwA:9
-X-Proofpoint-ORIG-GUID: q8uu1DAAqj1UA6Mpwehzd4CTv62qbBde
+X-ZohoMailClient: External
 
-If allocation of auxr_dev fails during auxiliary device setup, the error
-path calls auxiliary_device_uninit(), which eventually invokes
-bnge_aux_dev_release().
+HSR/PRP node teardown and the prune paths queue node frees with
+call_rcu(&node->rcu_head, hsr_free_node_rcu). hsr_free_node_rcu() lives
+in the hsr module text.
 
-The release callback unconditionally dereferences aux_priv->auxr_dev->pdev
-to retrieve the parent bnge_dev. Since auxr_dev has not yet been allocated
-on this failure path, the dereference results in a NULL pointer exception
+hsr_exit() tears down netlink, debugfs and the netdev notifier, but it
+never calls rcu_barrier(). If a node-free callback is still pending when
+the module is unloaded, RCU can invoke hsr_free_node_rcu() after the
+module text has been freed, branching into freed memory.
 
-Retrieve the parent bnge_dev from the auxiliary device's parent instead of
-auxr_dev, and free auxr_dev only when it was successfully allocated. This
-allows the release callback to correctly clean up partially initialized
-auxiliary devices.
+Per Documentation/RCU/checklist.rst, a module that registers callbacks
+with call_rcu() must call rcu_barrier() in its exit path before it is
+unloaded; synchronize_rcu() is not sufficient because it only waits for
+a grace period, not for the queued callbacks to actually run.
 
-Fixes: 8ac050ec3b1c ("bng_en: Add RoCE aux device support")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Add rcu_barrier() at the end of hsr_exit(), after netlink/link teardown
+has stopped any new callbacks from being queued.
+
+Fixes: 415e6367512b ("hsr: Implement more robust duplicate discard for PRP")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ali Ahmet Memis <ali@iusegentoo.com>
 ---
- drivers/net/ethernet/broadcom/bnge/bnge_auxr.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/hsr/hsr_main.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_auxr.c b/drivers/net/ethernet/broadcom/bnge/bnge_auxr.c
-index 67e93e17d4d9..0955b488b6fe 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_auxr.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_auxr.c
-@@ -141,12 +141,15 @@ static void bnge_aux_dev_release(struct device *dev)
- {
- 	struct bnge_auxr_priv *aux_priv =
- 			container_of(dev, struct bnge_auxr_priv, aux_dev.dev);
--	struct bnge_dev *bd = pci_get_drvdata(aux_priv->auxr_dev->pdev);
-+	struct bnge_auxr_dev *auxr_dev = aux_priv->auxr_dev;
-+	struct bnge_dev *bd = pci_get_drvdata(to_pci_dev(dev->parent));
- 
- 	ida_free(&bnge_aux_dev_ids, aux_priv->id);
--	kfree(aux_priv->auxr_dev->auxr_info);
-+	if (auxr_dev) {
-+		kfree(auxr_dev->auxr_info);
-+		kfree(auxr_dev);
-+	}
- 	bd->auxr_dev = NULL;
--	kfree(aux_priv->auxr_dev);
- 	kfree(aux_priv);
- 	bd->aux_priv = NULL;
+diff --git a/net/hsr/hsr_main.c b/net/hsr/hsr_main.c
+index 33951d9bd..05d2e5750 100644
+--- a/net/hsr/hsr_main.c
++++ b/net/hsr/hsr_main.c
+@@ -179,6 +179,13 @@ static void __exit hsr_exit(void)
+ 	hsr_netlink_exit();
+ 	hsr_debugfs_remove_root();
+ 	unregister_netdevice_notifier(&hsr_nb);
++
++	/* Node teardown queues frees via call_rcu(hsr_free_node_rcu), whose
++	 * callback lives in this module. Wait for any still-pending callback
++	 * before the module text is freed. synchronize_rcu() is not enough:
++	 * it waits for a grace period, not for the callbacks to run.
++	 */
++	rcu_barrier();
  }
+ 
+ module_init(hsr_init);
 -- 
-2.52.0
+2.54.0
 
