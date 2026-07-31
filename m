@@ -1,170 +1,311 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8220842E8FB
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 15:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785511312; cv=pass; b=BruefQg8iCLQaG1il8VqTkKekZBEoj0rtlPFGDIwMFWm2h+QC4NDj0cyLSTLHLOkzZ4dFkucqjjnbZ0TLUe8gX93EzuzeOSdp/ml1RplQ87CkrfH5bUKWhbR51BVlVWjOcdA4iDeffHgsjnQG7q60zhKD2Gm111yZvoQRjiqbg8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785511312; c=relaxed/simple;
-	bh=v+WL3XoOwQikXd2JtezOQGH92bijGZnMB9gOFI0vCIY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uj8WL62Sw0QuCUILN+GpqNSjRtJ0SIOk6Iz7TMBsE9jDBNEAeTsNHxga/99EiDfnp/05v/8IaOoNTGKCtN9qUWrX4WF6XsWA+H4WGTlbwsW9SW64ztjBKsxSXbifNXtQga0ZH5+ZUqfEel9YT0XfhfV8QAq7w1vAlHmv6LIS+LI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MQeqDpEH; arc=pass smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCE84398F2
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 15:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785511360; cv=none; b=cEue0B1NLGNiOXcKSUaD1PesMUQQ8uMF1pgaGtcWSR9lg+Orocc1PlqkgrQln557ZHGBi9qlPHPL/pn/iXzyNbEA3mIB1O0jM0DkcfR0VS787akTAmtnP1TcfyFU8wArXxqb53ZOW8K6T4oGpQZ4mUl/ZdReHq02J1kHLBGVmE0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785511360; c=relaxed/simple;
+	bh=DnP+lq4p4HmVtUtvlCxM9l2AHfwTrOC0MBXJAnbcP0M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MWUf8HGY83kP7lmNm8C8XrcIwjNXC+rzW6utsrUHF4XyIFTI3gietpjCvEcG5zl8zIXCGLdYy9Fq0F/9S9hKxsHTADX64aX5o12wbLdi/wwL0xZbb5X3bzJVDgTKFZ5lPPeQEoD++ftHBphuV0VC5Koc3r5vfR0FmdGsfbG1mtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nxBGOJEm; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MQeqDpEH"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-84e04df8c46so1235746b3a.2
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 08:21:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785511305; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ku/EZIL4KFef/xeAEVmD/CncESsrn8iqu9EPUvJMWCff9YsSvbgomP1hQmkHTDmtCX
-         OwvdOh/ShDJ4xAmnl7Oau8fZKzGJEmP85MQK7lr97ulLF4Vae4+W36P62QWiPyncmOQh
-         4qYtvidYSwRz3rSTisAoFQ/8eY8+aJCmquKqZgNW4uEYwnvbs/xW8l84Uok6vpcmpbUL
-         sp0iO/lweCDx84Bm4CPk9Hru+94pJ1Y9Vxe+quImbX6cpPZ10NfI5LL+ZK8C3TdbtM7Y
-         FgLT573daXOnOCCyuE7Bc2fPJPiph0SKlHHBoLhcRoTZ2+/mRzEvh6h3P7RGy65958OD
-         LrZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=p9+LRn/SvSrh7d6/E5JqQArA7jl7jdT+NZc32lFMXxY=;
-        fh=oFeODAPr0SedgqM1eHfoyKnUYleTy4XTUungB3p+1zw=;
-        b=IBJct+SM6bk4/KPI9RsqA9L1rFLe/CYV8g+D4LMod4IlbfVm06bjSVTuy+DykpOp5A
-         dQR0c1pYVfOTgPPUjUjY27MDRUzjpMEazsidy8daPpsrZ3bLvUYmVasjRwhN++fA1fva
-         wviI73vVfLjv4LGBpNcfkAZYpkw1WADLfDq9JlD6ErS/3WcQJKo5NSX/TbhvF3ZFRDf2
-         UYRjmtE2C4A0oQLYoLX8zLLe5jsgN44GmtWnXM5fGLbQhdWfyBqdtEGvdQntSTbmnjLR
-         3dEtl0vsmYEQQ9UHTVqSNh3+4oy1X1vI2rDa5twv5GxfOcsNhAK1TKySM2rj6EqBurK0
-         kCmg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nxBGOJEm"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38e69bdb0fcso827401a91.1
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 08:22:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785511305; x=1786116105; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=p9+LRn/SvSrh7d6/E5JqQArA7jl7jdT+NZc32lFMXxY=;
-        b=MQeqDpEHId0AWi0fgHZhE1c71pI0bvQX5eTFev+whg/QuqGJdhQX8ac8o/w2I91UTm
-         MGkSTswyKgaeoFfVRoSOLX/4EAbb2u0vq/rqvhvbSOzlU1u7hGsyJN8oeQHcIDYxQ/Su
-         61hScehPZXmT9xHG0S5L/LePjdMg2ogk3DTyPKzbhI/j+5ZC+tztzfFqdL4Cgbyiu+U7
-         MF6soGGw+PeXaMxAji8TpP5tZmiWTMTqT7qc3G33uGv0xX3Bu2LX2V4X1ZJNUvlHUDyl
-         vwv9CxogyV2tqUquBhiBZPY0E3Btq+QcLYoeYUFc/kAJC/KKmSNxgq3lCERZw6qAEbD8
-         mAfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785511305; x=1786116105;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1785511356; x=1786116156; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=p9+LRn/SvSrh7d6/E5JqQArA7jl7jdT+NZc32lFMXxY=;
-        b=LF0yUJxqSTFXZDSh940zvlc2QPwOdZtYV7giIxt5HvvmqmGK3aNtI3tIKidgh38dab
-         Iod8Sym1OWLdArXNKpAVX99yvaCPZz1bIqTby7LBrffaVH7RJyH0z7BV4x7JcjeDMDl6
-         OVa7tU34tL9W/Yo1QxUKA2OWXTv1WBOPx8cEIyAbibdbMVREQIEBuhs8K3EcAtR1hUzW
-         +0NZoobuH99keHO+DWmm9XZXhYWmoXPG6ZDsbP7PgwRma1HT0SpnvJ3e9lAPJgglBjvx
-         vEa+kXXOwiCKPQIHI/gVT7JOBOgcsTCUnjkD4YkJiqjAYO1dqm4hSrnrQIoqo6dclOjN
-         N9Zg==
-X-Forwarded-Encrypted: i=1; AHgh+RqD3t4w1TfPMTBJ1w+jQoRhYGJV4HOogNDS7tMLnsNgZmr6Lt1NQkIErf+dpFZTNtyw8h+XK7Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxn/pDlZdCOEF92tDhC9zjQGDI+9cvtVJ7DXPHutAZoz18R1VOT
-	pt7xxYTwMxlF852n2HzZ2m8wgXdd1s20unizcCtESQgF6awVEH5VhLnRfyTbSijDChbMUMp3Ak9
-	8w5e0kZp/ylWtkxFmhNOuaVoZTmV8zac=
-X-Gm-Gg: AR+sD12AiNLRHQ5xV35rp3PoPvYfRIj+wPjABJ6nkGEzOMBcSyNq7nSfLfYLTEysWS2
-	5Yh+QHPixQqoH1EwT+ZlieOata1pWE7TiNbRcfhcbDgMjdKNmnLzJsPrLf5fKna0q8HThpX+lvY
-	v6x+fRKTQ173Gm0vdOlXpy0zc4WAjOJqYJIZQfiG+hW01f6V9V/PCiPX3Ug9qNaF8PE19Qq/l2k
-	YTOhQbyISXrEQ1SOmNnh96tnBLMNvetZAFe5kNYj7L+2DtFBVTFlIhkquUYtuQDvf1i96KA201m
-	zscTf7dAyKRHI+Btx06Pi0T9vN5LKsgQiLCjPKNsWvFYEuyBOiCnopjrsjj2L1wEEio28u3ufNq
-	csOhkJORWIkIU3Lcbe9Y/cT841g==
-X-Received: by 2002:a05:6a00:418d:b0:848:2f77:e2dc with SMTP id
- d2e1a72fcca58-84ee49aa19bmr73028b3a.69.1785511304566; Fri, 31 Jul 2026
- 08:21:44 -0700 (PDT)
+        bh=jfQPKQUvEhVM07DV/Ae6sTs9WmmayzZHa3H3lJ+JhOc=;
+        b=nxBGOJEmlmqHI6XXggS6b+esuRjhC0Afihcv+mQL7/AjlDO39ayNXnhU8AyAgv4OmI
+         HvznDDIyH4veaHP09KWJX8RDTGjxwsSPiqjRKgY9DnIHxsjWv/MsjkrNmLt/QpgKVCzF
+         IzX7Q+XqtzPakGje2nX86UW3LcosmUGLtgguqWWjGNVENHXPQvtoMb8GQkqhBaCnWnxr
+         rmefNzACp9c4rQUVWviA6dU/L7LmqnX5QGaAMhEK4AQWcY8GtevbOBniK6azGZiiKrOu
+         kCS3pP60e7srh/4V0uyxE4Q0YdB6t5T0r2eF2b3Y+G5UwctQD2LKTXbO2PkZ2g/mlCGX
+         F6mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785511356; x=1786116156;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jfQPKQUvEhVM07DV/Ae6sTs9WmmayzZHa3H3lJ+JhOc=;
+        b=gyLxUCJ9dzTqMVyvB/+7tH8Spozyt+ybHp/mIg05JRmPianURM/89NhFOh9mvua7Wv
+         eHAsRjiPo39bN75uQ3H7U9/TXAAGxHWdwgJgMy+RW0QH8qS/UX4AvaiHfEE2GI2/9Xzv
+         /fskPAuSVhHgy9/LsnGbWLbYwxtbdpwlFpXWKP54MNFxUyBdUsI69mo8ESMuZiJVJYLk
+         QapqkLE56i6d/1dzQkFcs9BpOiy37HfcPvismBLeYEKqu8/heNvcZNN+wQAl9oEysqdf
+         2kNJ+utXe6v/Dzw9q6MqFsAQ2xUIFSv0fZpbqIQqF+n2jfaa6Agfdnf9z2K3WLMGS7E+
+         HQkw==
+X-Forwarded-Encrypted: i=1; AHgh+Rok0GchrC3LFIPoV7EAtQqdxGx61F5+KmooZAU6zMVy/SMIgjldnCQXykE7hzF/fUT+mZ8U6x4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhWElPRaQQ2TijW89LxvsdMs/HrU4JtQIbnqDYBYf9s6t9eDBC
+	pen3jqwZdL21noMcQ/cGPib3gE8saLlc1tMxKg6VdFgTUgLw8H5al8id
+X-Gm-Gg: AR+sD10waJGO3NfBWWKAgoPMmNoWFkKx6n9q+sMTGtpZ+IYly1R6UORbQ3PF79Ifrhh
+	P2yEioRzLTB6vOffBrWAH5pE24QuM+AyOydhrdNvwMEFEEAui6jHNnJ0Iaa9O439eKnoMUOQfMF
+	IyEe3V54AXCVaPWyQCcGx4lEL9Q7ZfsHef9azPq5fU2AbIgALCvJe1WToIASzSxK6lsIX+k+dKG
+	PM2nC1N4SBX9CYby34I/ZSAkMZmHzsjv4tZ18SWXEeh9USlCNN9jKIiRZPtuHiTqzZSaOc/xE07
+	nLVIGdCn3jrRtE6kr3wwLizRPvLGw5Z7Ce6ogUhesuVRFAn5lzkHZtZgeuG+XZQpjo4B9pl+u+p
+	qlxynLkVJ3mbgX2wxWRmEtAuALzrLsgMixIfeijINjXdzrdqCcvcizYoqdH943pcPvIFF8MiLfF
+	JCycOzsaxe/fVw/Z1kNiiSKqsGEOBP+CBuvT6jdrNO4JPanyvNgnyg5WN2CtDS6CqEm5MsfpCDM
+	ho+q4z8+uiA4pc0nYSw/fOH6Tog9NF2WyuDt5uXgs4kUkCobZSEL7QSy0c=
+X-Received: by 2002:a17:90b:5648:b0:38e:76f8:fcbf with SMTP id 98e67ed59e1d1-38fbc55256bmr286165a91.31.1785511356037;
+        Fri, 31 Jul 2026 08:22:36 -0700 (PDT)
+Received: from ?IPV6:2601:646:8f02:5350:ce4:701d:f6e3:3a6b? ([2601:646:8f02:5350:ce4:701d:f6e3:3a6b])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3153e044912sm8250572eec.15.2026.07.31.08.22.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Jul 2026 08:22:35 -0700 (PDT)
+Message-ID: <34c8d95f-3897-498a-921c-df7c6868af61@gmail.com>
+Date: Fri, 31 Jul 2026 08:22:33 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260725132624.78373-1-leon.hwang@linux.dev> <CAEf4BzaoQaODE4F1wfrp37=83bePY=gKpunacKr3rmO230+B3Q@mail.gmail.com>
- <66eaf62b-202b-45b9-8934-fbbc80caa84a@linux.dev>
-In-Reply-To: <66eaf62b-202b-45b9-8934-fbbc80caa84a@linux.dev>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Fri, 31 Jul 2026 08:21:32 -0700
-X-Gm-Features: AUfX_mwX1Lnn-oFVg3jgqe6P4ofXoWURmDZdlHg78-NJyoQdPMHudZHx9cqdijU
-Message-ID: <CAEf4BzbjmW0e6DqFLUAyV+m_usHSkHpux3AdS72bJtsmYQC_LA@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v2 0/2] bpf: Fix sleepable check for tracing prog
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	Shuah Khan <shuah@kernel.org>, Sechang Lim <rhkrqnwk98@gmail.com>, 
-	Varun R Mallya <varunrmallya@gmail.com>, Viktor Malik <vmalik@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] i40e: xsk: use xdp_build_skb_from_zc() for
+ XDP_PASS
+To: Chenguang Zhao <chenguang.zhao@linux.dev>, anthony.l.nguyen@intel.com,
+ przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ kerneljasonxing@gmail.com, Chenguang Zhao <zhaochenguang@kylinos.cn>
+References: <20260731020736.170485-1-chenguang.zhao@linux.dev>
+Content-Language: en-US
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
+In-Reply-To: <20260731020736.170485-1-chenguang.zhao@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 30, 2026 at 10:20=E2=80=AFPM Leon Hwang <leon.hwang@linux.dev> =
-wrote:
->
-> On 31/7/26 08:07, Andrii Nakryiko wrote:
-> > On Sat, Jul 25, 2026 at 6:27=E2=80=AFAM Leon Hwang <leon.hwang@linux.de=
-v> wrote:
-> >>
-> >> When CONFIG_FUNCTION_ERROR_INJECTION is disabled, a sleepable tracing =
-prog
-> >> is allowed to attach to '__x64_'-alike prefix symbols.
-> >>
-> >> It is because the verifier does not verify whether the symbol is a ker=
-nel
-> >> function or a bpf prog. That said, a sleepable tracing prog is allowed=
- to
-> >> attach to a bpf prog target whose name has '__x64_'-alike prefix.
-> >>
-> >> For example, a sleepable fentry prog attaches to a '__x64_sys_nop' XDP
-> >
-> > we do have addr, so we should be able to distinguish between attaching
-> > to kernel function vs BPF program, no?
->
->
-> Yes, we can distinguish a bpf prog from a kernel function by addr.
->
-> I'd prefer passing 'tgt_prog' to btf_id_allow_sleepable() as a simple
-> change.
->
 
-I don't think there is a need for new tgt_prog argument, we can just
-check that supplied btf is not kernel/module BTF (see btf_is_kernel())
 
-> >
-> >> prog, and copies buffer from a user pointer with bpf_copy_from_user()
-> >> helper. After attaching the XDP prog to lo interface, the kernel BUG
-> >> could be triggered by 'ping -c 1 -W 1 127.0.0.1':
-> >>
-> >> [    3.460756] BUG: sleeping function called from invalid context at k=
-ernel/bpf/trampoline.c:1324
-> >>
-> >> Fix it by disallowing sleepable tracing prog always when its target is
-> >> bpf prog.
-> >
-> > what happens when we freplace sleepable BPF program/subprogram with
-> > another sleepable BPF subprogram? And same question for sleepable
-> > fentry/fexit program attaching to sleepable BPF program? Is it
-> > something that just cannot work or we can actually allow that?
->
->
-> Currently, sleepable freplace/fentry/fexit progs are already disallowed
-> from attaching to bpf prog, because btf_id_allow_sleepable() returns
-> -EINVAL for them (except for this BUG).
->
-> Since no one has proposed relaxing the restriction, I'd like to keep it
-> as-is when fixing this BUG.
->
-> I'm not sure whether allowing it would introduce any issue.
->
-> Thanks,
-> Leon
->
-> > [...]
->
->
+On 7/30/26 7:07 PM, Chenguang Zhao wrote:
+> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+> 
+> Replace the driver-local i40e_construct_skb_zc() with the common
+> helper xdp_build_skb_from_zc(). On failure, free the xdp buff in
+> the caller.
+> 
+> xdp_build_skb_from_zc() already calls skb_record_rx_queue() and
+> eth_type_trans(), so pull the remaining descriptor field setup into
+> __i40e_process_skb_fields() and use that on the XDP_PASS path.
+> 
+> Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+> ---
+> v3:
+>   As suggested by Larysa:
+>   - Drop eth_skb_pad() on the XDP_PASS path, along with the
+>     temporary __skb_push()/__skb_pull() around it. The stack
+>     handles short skbs and other vendors do not pad on Rx.
+> 
+> v2:
+>   - https://lore.kernel.org/all/20260729054916.720750-1-chenguang.zhao@linux.dev/
+> 
+> v1:
+>   - https://lore.kernel.org/all/20260724020125.246333-1-chenguang.zhao@linux.dev/
+> ---
+>   drivers/net/ethernet/intel/i40e/i40e_txrx.c   | 32 ++++++--
+>   .../ethernet/intel/i40e/i40e_txrx_common.h    |  2 +
+>   drivers/net/ethernet/intel/i40e/i40e_xsk.c    | 79 ++-----------------
+>   3 files changed, 33 insertions(+), 80 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> index ef5e657816f0..87553b14d34a 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> @@ -1833,17 +1833,17 @@ static inline void i40e_rx_hash(struct i40e_ring *ring,
+>   }
+>   
+>   /**
+> - * i40e_process_skb_fields - Populate skb header fields from Rx descriptor
+> + * __i40e_process_skb_fields - Populate skb fields from Rx descriptor
+>    * @rx_ring: rx descriptor ring packet is being transacted on
+>    * @rx_desc: pointer to the EOP Rx descriptor
+>    * @skb: pointer to current skb being populated
+>    *
+> - * This function checks the ring, descriptor, and packet information in
+> - * order to populate the hash, checksum, VLAN, protocol, and
+> - * other fields within the skb.
+> + * Populate hash, checksum, PTP timestamp and VLAN from @rx_desc. Does not
+> + * call skb_record_rx_queue() or eth_type_trans(); callers that already got
+> + * those from xdp_build_skb_from_zc() should use this helper.
+>    **/
+> -void i40e_process_skb_fields(struct i40e_ring *rx_ring,
+> -			     union i40e_rx_desc *rx_desc, struct sk_buff *skb)
+> +void __i40e_process_skb_fields(struct i40e_ring *rx_ring,
+> +			       union i40e_rx_desc *rx_desc, struct sk_buff *skb)
+>   {
+>   	u64 qword = le64_to_cpu(rx_desc->wb.qword1.status_error_len);
+>   	u32 rx_status = FIELD_GET(I40E_RXD_QW1_STATUS_MASK, qword);
+> @@ -1858,14 +1858,30 @@ void i40e_process_skb_fields(struct i40e_ring *rx_ring,
+>   
+>   	i40e_rx_checksum(rx_ring->vsi, skb, rx_desc);
+>   
+> -	skb_record_rx_queue(skb, rx_ring->queue_index);
+> -
+>   	if (qword & BIT(I40E_RX_DESC_STATUS_L2TAG1P_SHIFT)) {
+>   		__le16 vlan_tag = rx_desc->wb.qword0.lo_dword.l2tag1;
+>   
+>   		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q),
+>   				       le16_to_cpu(vlan_tag));
+>   	}
+> +}
+> +
+> +/**
+> + * i40e_process_skb_fields - Populate skb header fields from Rx descriptor
+> + * @rx_ring: rx descriptor ring packet is being transacted on
+> + * @rx_desc: pointer to the EOP Rx descriptor
+> + * @skb: pointer to current skb being populated
+> + *
+> + * This function checks the ring, descriptor, and packet information in
+> + * order to populate the hash, checksum, VLAN, protocol, and
+> + * other fields within the skb.
+> + **/
+> +void i40e_process_skb_fields(struct i40e_ring *rx_ring,
+> +			     union i40e_rx_desc *rx_desc, struct sk_buff *skb)
+> +{
+> +	__i40e_process_skb_fields(rx_ring, rx_desc, skb);
+> +
+> +	skb_record_rx_queue(skb, rx_ring->queue_index);
+>   
+>   	/* modifies the skb - consumes the enet header */
+>   	skb->protocol = eth_type_trans(skb, rx_ring->netdev);
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h b/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
+> index e26807fd2123..3c52e0e60487 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
+> @@ -9,6 +9,8 @@
+>   int i40e_xmit_xdp_tx_ring(struct xdp_buff *xdp, struct i40e_ring *xdp_ring);
+>   void i40e_clean_programming_status(struct i40e_ring *rx_ring, u64 qword0_raw,
+>   				   u64 qword1);
+> +void __i40e_process_skb_fields(struct i40e_ring *rx_ring,
+> +			       union i40e_rx_desc *rx_desc, struct sk_buff *skb);
+>   void i40e_process_skb_fields(struct i40e_ring *rx_ring,
+>   			     union i40e_rx_desc *rx_desc, struct sk_buff *skb);
+>   void i40e_xdp_ring_update_tail(struct i40e_ring *xdp_ring);
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+> index 9f47388eaba5..dfa519c30a0d 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+> @@ -3,6 +3,7 @@
+>   
+>   #include <linux/bpf_trace.h>
+>   #include <linux/unroll.h>
+> +#include <net/xdp.h>
+>   #include <net/xdp_sock_drv.h>
+>   #include "i40e_txrx_common.h"
+>   #include "i40e_xsk.h"
+> @@ -277,70 +278,6 @@ bool i40e_alloc_rx_buffers_zc(struct i40e_ring *rx_ring, u16 count)
+>   	return count == nb_buffs;
+>   }
+>   
+> -/**
+> - * i40e_construct_skb_zc - Create skbuff from zero-copy Rx buffer
+> - * @rx_ring: Rx ring
+> - * @xdp: xdp_buff
+> - *
+> - * This functions allocates a new skb from a zero-copy Rx buffer.
+> - *
+> - * Returns the skb, or NULL on failure.
+> - **/
+> -static struct sk_buff *i40e_construct_skb_zc(struct i40e_ring *rx_ring,
+> -					     struct xdp_buff *xdp)
+> -{
+> -	unsigned int totalsize = xdp->data_end - xdp->data_meta;
+> -	unsigned int metasize = xdp->data - xdp->data_meta;
+> -	struct skb_shared_info *sinfo = NULL;
+> -	struct sk_buff *skb;
+> -	u32 nr_frags = 0;
+> -
+> -	if (unlikely(xdp_buff_has_frags(xdp))) {
+> -		sinfo = xdp_get_shared_info_from_buff(xdp);
+> -		nr_frags = sinfo->nr_frags;
+> -	}
+> -	net_prefetch(xdp->data_meta);
+> -
+> -	/* allocate a skb to store the frags */
+> -	skb = napi_alloc_skb(&rx_ring->q_vector->napi, totalsize);
+> -	if (unlikely(!skb))
+> -		goto out;
+> -
+> -	memcpy(__skb_put(skb, totalsize), xdp->data_meta,
+> -	       ALIGN(totalsize, sizeof(long)));
+> -
+> -	if (metasize) {
+> -		skb_metadata_set(skb, metasize);
+> -		__skb_pull(skb, metasize);
+> -	}
+> -
+> -	if (likely(!xdp_buff_has_frags(xdp)))
+> -		goto out;
+> -
+> -	for (int i = 0; i < nr_frags; i++) {
+> -		struct skb_shared_info *skinfo = skb_shinfo(skb);
+> -		skb_frag_t *frag = &sinfo->frags[i];
+> -		struct page *page;
+> -		void *addr;
+> -
+> -		page = dev_alloc_page();
+> -		if (!page) {
+> -			dev_kfree_skb(skb);
+> -			return NULL;
+> -		}
+> -		addr = page_to_virt(page);
+> -
+> -		memcpy(addr, skb_frag_page(frag), skb_frag_size(frag));
+> -
+> -		__skb_fill_page_desc_noacc(skinfo, skinfo->nr_frags++,
+> -					   addr, 0, skb_frag_size(frag));
+> -	}
+> -
+> -out:
+> -	xsk_buff_free(xdp);
+> -	return skb;
+> -}
+> -
+>   static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
+>   				      struct xdp_buff *xdp_buff,
+>   				      union i40e_rx_desc *rx_desc,
+> @@ -372,21 +309,19 @@ static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
+>   		 * BIT(I40E_RXD_QW1_ERROR_SHIFT). This is due to that
+>   		 * SBP is *not* set in PRT_SBPVSI (default not set).
+>   		 */
+> -		skb = i40e_construct_skb_zc(rx_ring, xdp_buff);
+> +		skb = xdp_build_skb_from_zc(xdp_buff);
+>   		if (!skb) {
+> +			xsk_buff_free(xdp_buff);
+>   			rx_ring->rx_stats.alloc_buff_failed++;
+>   			*rx_packets = 0;
+>   			*rx_bytes = 0;
+>   			return;
+>   		}
+>   
+> -		if (eth_skb_pad(skb)) {
+> -			*rx_packets = 0;
+> -			*rx_bytes = 0;
+> -			return;
+> -		}
+> -
+> -		i40e_process_skb_fields(rx_ring, rx_desc, skb);
+> +		/* xdp_build_skb_from_zc() already ran eth_type_trans() and
+> +		 * skb_record_rx_queue().
+> +		 */
+> +		__i40e_process_skb_fields(rx_ring, rx_desc, skb);
+>   		napi_gro_receive(&rx_ring->q_vector->napi, skb);
+>   		return;
+>   	}
+
+The cleanup makes sense. I think you would also need to update kconfig. 
+xdp_build_skb_from_zc() verifies page pool support and if 
+CONFIG_PAGE_POOL=n, it would return NULL. In that case, we would end-up 
+dropping packets in XDP_PASS.
+
+With that addressed:
+Reviewed-by: Mohsin Bashir <hmohsin@meta.com>
