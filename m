@@ -1,61 +1,63 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372FA26AE5
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:05:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5048364045
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785481528; cv=none; b=SYLKN1nrKOyusnZLQwPfXOtdp/+y5v65raEqY2/LMOdS3XtVSM4nNpfaqpVhnZppfHnO3m+W1/hTnaPpA77D2OOuHqFpGexmyoVyi7/BoMF/l3wpU8tcmeqx029l+ayLJ643YW00+7u7WQlTj4LKNkDIzb+RaYDFCK5U4/xPimg=
+	t=1785481531; cv=none; b=OMYZkxTY8uGZ0b1ZovxzhlDtuXkxsV2sbu3CJmiezyPKw1bmZ+t2guD4bvQis+JwvT6gej+LPk4PChYBkgqZ/UAMUvo3xbxjEosE+0jbUWCtT+rOvAb28FT3I5ZXNqlkDD9R+dE1GsK/uitinwYGCzgmDjFDLYnooFYGjxP7N3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785481528; c=relaxed/simple;
-	bh=NqOoRdyRQwEnHaciOW1Lo15WOzVkPW8i+CqT++jomdk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KGdwvtkpqJP81jF4bJCeX7mNx+yzIsXcR1CXsJtHwPO92832I/1SAj2BNSlM41UTuCNHPynNCH9wBKKbnqDBboH3s0ddOuPZUH4RRJKVJiTxFcBISMUQiLwdxKElO2bdc06e9Bie2p4EiSJpoUaNtZCy+BDEC6z2uK38Vl4pevk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=c0GuwMPd; arc=none smtp.client-ip=209.85.210.180
+	s=arc-20240116; t=1785481531; c=relaxed/simple;
+	bh=q5UEPjHCTM3HJeezdrQHBgApF6M5fV7Fh+3R+qmBDNI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PnmEPurTrLFHSsYhQ3O0aI2iS3cpTETfKSe1gVn36Gik3Bd+Ce3JKVcYTh/3NOOTu4U1BrpbYM9jNuQdCYlaLMT5TuR9Pr/O0DTPqpfwVVLE9K9+FpbC4esMo79ZQGOah70nM19+tN0+WSXG/Ky+f4ElE0zmJ1/7csE/bgSU9uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=ynu04UYV; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="c0GuwMPd"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-84862b0d5f8so598092b3a.3
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 00:05:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="ynu04UYV"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8486672f03cso850068b3a.0
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 00:05:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1785481524; x=1786086324; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MXV9qH7UyhntE49tPsJBkiOVAaJG6JngpHeIAflWXR4=;
-        b=c0GuwMPdOzqJUAGYdqnoaooYfpNFhiXhzAtOfICyJYNDQ0N9GjM/XAyjhTCF9HuiCe
-         RYDC1I5LShs4tKGl9fMRjq0JQxROozcHjbT0gQKIi4GeHo1k7IT4N1Wif8CrzqmoaSgw
-         lzf0KoAO3KpFlhOyK3gmptoTwOMyR7v2DOXyLS+tDG6KrUZLC86Kh4gry1FEq6gt4HKi
-         qZi2cWJcgDtZVKDcueW91EWq8PYtjDkBoRYi8l+M4D0Sd0gODHh9UkGsGAhNBn9jtFpP
-         Hgi8sgqDJpVT0Ms45t+OTAcI/RqVnZXZm30rfjIc+LeBPwUZrG/+nu2K5PMZOW5B7i2i
-         TRwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785481524; x=1786086324;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1785481529; x=1786086329; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=MXV9qH7UyhntE49tPsJBkiOVAaJG6JngpHeIAflWXR4=;
-        b=lX8/fHkM4jnTDsPNj7GNbCHmRIQRJJP8v+losmjFYQfDWnW2Y/SH1H8cFztw0okQIY
-         j9TKvGzqI0Kr5ZhnbgCr+mRgOyP9H+MEDk7n7jU85fi/h49aT0sDSLN+ciDx6PyP7rb9
-         hKjNpcSonKLpcZxtnH/MkfxGtdgGdlhx/iE/gGpuXFugalsyGh6fKpWwGEEUDe3zEYFo
-         F1zrycOYgyo6Fss3uR1bNkSYaZQNFsx+YD16lc2iHfXlnBYS3ELNWvyc0oLJFKW6BfEI
-         FG0q+7v/7XFqckfF4hxbR2ZmuM6ZjuhwuQStVnH0lCaZgRqdaeUXmODye75Xmcc2/soW
-         IxiQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrOKVwS7THvwZK5LF52AjEgaednyeLgTs5AMO5Z5F2xRA7uYy99cCFjR4CwySpB03LU3Hft9hs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRQgO6XWc3DRG01NgBZ5Oo1yWVJIlZUmMWP7p+6KuEpLLMzgZX
-	VQMRWeG7eoXxU1zMhuhzZbyS7tLAmuvizB6QhgYPrRv7u/ScXGGP9xxOLojNNl1oXY8=
-X-Gm-Gg: AR+sD13Vx9Q27K3tBhCAuWUMzOAaTYI1Uw7VN6q7Y78GSzMmMS5yKB6clEML2hW424M
-	xpx0bVXf+YZKCaxGbIvE7ebgFnPCgs/qUESOmcREZGL92o/bbKLVgipfOsT9OwvosJxx6E9fPkv
-	0Qvgyv/PEIRfS3lv7RmrdHPNt55aLdsUD8xx3SFs5rkbhhz4WOPXs+3zW37Pde8wHFc/50QLoL2
-	SoQs88gRyxClsPJQAprzrU7l1mjUyPOqB6d0mqIYYQas/mD8AwExBTeNMO9ut/05WNS3IFDQa+v
-	RiV9aHogfa59awNLqh8u4vyaAxtKo8/PkS4Uy32WpGlHOPO3eeA8bE9jZ//m9YXh0DOx79566T4
-	HUM/Zh+J94DwqQUR0jU5DJ7MelpEKYO/YnmE1WNxR1frw48vhbtHIPz7n1z8Dqf/s7N0j4iancS
-	lxgIf4uEJGAodpNnXZ/xvq5jbtmul60cuKMkrcbizckj0VUIQUJPfgQ3LVWo0y31Mw98hj
-X-Received: by 2002:a05:6a00:3e1e:b0:848:5935:2e11 with SMTP id d2e1a72fcca58-84ed7266716mr671512b3a.48.1785481524374;
-        Fri, 31 Jul 2026 00:05:24 -0700 (PDT)
+        bh=yz1oRNcg19iVfX+eVJWelaG34L/oIKLecIITUvBw3oY=;
+        b=ynu04UYV36bcpXgFNnAm7cnc4cagUawnHr4WtmAI0nh4Sbhdorvf65UnVDq5LOODii
+         URC8pvbePcfFUwdhxYnE+uHBf3hcTxiUwKmffhl6dkwIKQveltFLPWtUPg5Cnm8FUZU7
+         TExmRZzEn/lUsWOsr8XRHxlhU9U2M0EAErYvC22mMId5W39fqP2bDsMMs5mCqJiU0+YQ
+         4X3vp5XTvP0Rg/p072uPzb67g5md+xPQRgx+SFZAaCoTeMLIK0nAo8MoW89gViFloh0R
+         qtOqgUKRihJrJc+zGPiVTev18X973uYWLU5I1idaAulXi4BU33qGatUV4bgJyp3aXJzK
+         t35Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785481529; x=1786086329;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yz1oRNcg19iVfX+eVJWelaG34L/oIKLecIITUvBw3oY=;
+        b=nmU+0OGeUDiwVJCjmZ5uMvJDll1t+rSPI2xWcld/dJpBHVCcswcbwRQKliGGrvWxbP
+         ZQpgfykV1LFgCWWEXbUZq/BQMwTql3UVVGDztBViSpeTdo2BtOHBeWjLXXtFDZTJX4Vn
+         60YpDjEpu0G4pVtArV9qsoPaZh7cWqWkro0TFhX5ahxWd61sUbX1nBwawdd66dHe7/gc
+         pGWZUNJZRG4Wp+iYpoBABN4cSMX19QNLNYFJYuRVdpQ0sLY43u+/eE7EaCHo3YsgDMHi
+         titM0qDcJnoX8dmT8bMbdD7OktaBwUdycxzBySNVyL2g6vmv6O3fBGhb0GjjpazRCTtX
+         bRBg==
+X-Forwarded-Encrypted: i=1; AHgh+RpkGV1kAEwqAhlK3BKAs7CNSAXs/W3B5A6GVxCyFz5sD887ZRNPY3oAZMv+LLiM4i8Rs1Z8qos=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSaKSapWJQroUZ12QN+wOmhWuPyd9vN39+lN8/p32YE3JoNOVi
+	GH4gJHKNEfPlSHyIWosOFg5RKO63N/67Ll0X/rw0lBhTfFQ5XP2lf3i8GkgCHKqYikY=
+X-Gm-Gg: AR+sD12VI/fFNjEEGr6ub8wTqXyxDDbvAcu9cV+CG6S+3ZFhIvdCvx3IEqXRr8d0Rj0
+	SSqCkqDofyJrbnpwZxwehXENU9UjRWkEQaGLuT8LabfCHltsR1iRrzAQLBXwryfSPLO95es9uNw
+	aA+9o/YbLJxLNX5Kr6vi9gr6I9qmdzjpLpvyikMMeECWmXiiCrkSdbTQFQC5PUN+8YzYnI2ZaeM
+	3gbxTrd5jwbtbXGaZDsf/zqrGmiYz0cCHlayMLqQkeWAkTgncyJiLyzqdL8IXasabaN/TGd2F/C
+	kna+M0K8QComThMpEi8+jaJhhUvV+1rpEyFJqrxxTk4Zd++HhdFmwGl2NQoD2k+AVYhOmvm7g/p
+	yZYKs4HZFwIjaItMOblsRQTczCAotd5Ql89spREpS7ezmlmVnpFKdCO8Nc7h8TWpso1R/F8D+f+
+	slzjUJjjb2TkRNq9GdC+bizlEie7krt90KeBwvgxvPpmvNpA5PTlMU/QcOcu4ZvYrwb/MV
+X-Received: by 2002:a05:6a00:990:b0:848:2f7a:2e57 with SMTP id d2e1a72fcca58-84ed722d703mr744876b3a.70.1785481529132;
+        Fri, 31 Jul 2026 00:05:29 -0700 (PDT)
 Received: from yhlee-960QFG.. ([125.131.91.97])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edc2d4473sm39233b3a.40.2026.07.31.00.05.20
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edc2d4473sm39233b3a.40.2026.07.31.00.05.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 00:05:24 -0700 (PDT)
+        Fri, 31 Jul 2026 00:05:28 -0700 (PDT)
 From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
 To: alibuda@linux.alibaba.com,
 	dust.li@linux.alibaba.com,
@@ -77,11 +79,14 @@ Cc: horms@kernel.org,
 	linux-s390@vger.kernel.org,
 	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-Subject: [PATCH net v4 0/3] net/smc: fix out-of-bounds and use-after-free in SMC-Rv2 LLC processing
-Date: Fri, 31 Jul 2026 16:05:06 +0900
-Message-ID: <20260731070509.1818665-1-yhlee@isslab.korea.ac.kr>
+	Yehyeong Lee <yhlee@isslab.korea.ac.kr>,
+	stable@vger.kernel.org
+Subject: [PATCH net v4 1/3] net/smc: fix use-after-free of the LLC qentry in smc_llc_srv_add_link()
+Date: Fri, 31 Jul 2026 16:05:07 +0900
+Message-ID: <20260731070509.1818665-2-yhlee@isslab.korea.ac.kr>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260731070509.1818665-1-yhlee@isslab.korea.ac.kr>
+References: <20260731070509.1818665-1-yhlee@isslab.korea.ac.kr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,32 +95,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Split of the single v3 patch, in the order Jakub asked for:
+smc_llc_srv_add_link() keeps add_llc pointing into the queue entry:
 
-  1/3 frees the LLC queue entry in smc_llc_srv_add_link() only after the
-      last use of the pointer into it.
-  2/3 bounds the peer-declared rkey counts in smc_llc_save_add_link_rkeys()
-      and smc_llc_rmt_delete_rkey() by the buffer they read from.
-  3/3 copies an oversized SMC-Rv2 LLC message into the queue entry and
-      declares the rkeys that fit inline, so both consumers stop
-      reconstructing the layout themselves.
+  add_llc = &qentry->msg.add_link;			smc_llc.c:1482
+  ...
+  smc_llc_save_add_link_info(link_new, add_llc);	smc_llc.c:1494
+  smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);		smc_llc.c:1495
+  ...
+  u8 *llc_msg = smc_link_shared_v2_rxbuf(link) ?
+	(u8 *)lgr->wr_rx_buf_v2 : (u8 *)add_llc;	smc_llc.c:1504
+  smc_llc_save_add_link_rkeys(link, link_new, llc_msg);	smc_llc.c:1506
 
-1/3 and 2/3 are tagged for stable.  3/3 is not: it does not fix a crash on
-its own, and it changes a structure layout and a static function signature.
+smc_llc_flow_qentry_del() kfree()s the entry, so on a link without a shared
+v2 receive buffer the pointer handed to smc_llc_save_add_link_rkeys() is
+already freed.  Before the Fixes: commit that branch always used
+lgr->wr_rx_buf_v2 and add_llc was not used after the free.
 
+Detach the entry instead of freeing it there, and free it explicitly on
+both exit paths.  The reject path has to detach as well, otherwise it would
+be freed twice.
 
+Fixes: 27ef6a9981fe ("net/smc: support SMC-R V2 for rdma devices with max_recv_sge equals to 1")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
 ---
-v3: https://lore.kernel.org/all/20260727095833.1079618-1-yhlee@isslab.korea.ac.kr/
+Reproduced on an unpatched tree over rxe, with KASAN, kasan_multi_shot and a
+link forced to max_recv_sge == 1: the entry is freed and read by the same
+call, and the freeing frame is smc_llc_srv_add_link() itself.
 
-Yehyeong Lee (3):
-  net/smc: fix use-after-free of the LLC qentry in
-    smc_llc_srv_add_link()
-  net/smc: bound the peer rkey counts in SMC-Rv2 LLC messages
-  net/smc: carry oversized SMC-Rv2 LLC messages in the queue entry
+  BUG: KASAN: slab-use-after-free in smc_llc_save_add_link_rkeys+0x333/0x350
+  Read of size 2 at addr ffff8880052194de by task kworker/0:1/11
+  Workqueue: smc_hs_wq smc_listen_work
+   smc_llc_save_add_link_rkeys+0x333/0x350
+   smc_llc_srv_add_link+0xaa2/0x1e50
+   smc_listen_work+0x489e/0x4d00
+  Allocated by task 48:
+   smc_llc_enqueue+0x72/0x560
+   smc_wr_rx_tasklet_fn+0x474/0xa80
+  Freed by task 11:
+   kfree+0x121/0x380
+   smc_llc_srv_add_link+0x9a8/0x1e50
+   smc_listen_work+0x489e/0x4d00
+  The buggy address is located 94 bytes inside of
+   freed 96-byte region [ffff888005219480, ffff8880052194e0)
 
- net/smc/smc_llc.c | 101 ++++++++++++++++++++++++++++++++++------------
- 1 file changed, 76 insertions(+), 25 deletions(-)
+The offset is past the 72-byte queue entry because the out-of-bounds read
+fixed by the next patch is on the same line; what this patch removes is the
+free at smc_llc_srv_add_link+0x9a8 happening before the read at +0xaa2.
 
+ net/smc/smc_llc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
+index 954b2ff1815c..90746cd1e29a 100644
+--- a/net/smc/smc_llc.c
++++ b/net/smc/smc_llc.c
+@@ -1481,7 +1481,7 @@ int smc_llc_srv_add_link(struct smc_link *link,
+ 	}
+ 	add_llc = &qentry->msg.add_link;
+ 	if (add_llc->hd.flags & SMC_LLC_FLAG_ADD_LNK_REJ) {
+-		smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
++		smc_llc_flow_qentry_clr(&lgr->llc_flow_lcl);
+ 		rc = -ENOLINK;
+ 		goto out_err;
+ 	}
+@@ -1492,7 +1492,8 @@ int smc_llc_srv_add_link(struct smc_link *link,
+ 		lgr_new_t = SMC_LGR_ASYMMETRIC_PEER;
+ 	}
+ 	smc_llc_save_add_link_info(link_new, add_llc);
+-	smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
++	/* add_llc still points into qentry, so only detach it here */
++	smc_llc_flow_qentry_clr(&lgr->llc_flow_lcl);
+ 
+ 	rc = smc_ib_ready_link(link_new);
+ 	if (rc)
+@@ -1512,6 +1513,7 @@ int smc_llc_srv_add_link(struct smc_link *link,
+ 	rc = smc_llc_srv_conf_link(link, link_new, lgr_new_t);
+ 	if (rc)
+ 		goto out_err;
++	kfree(qentry);
+ 	kfree(ini);
+ 	return 0;
+ out_err:
+@@ -1520,6 +1522,7 @@ int smc_llc_srv_add_link(struct smc_link *link,
+ 		smcr_link_clear(link_new, false);
+ 	}
+ out:
++	kfree(qentry);
+ 	kfree(ini);
+ 	if (send_req_add_link_resp)
+ 		smc_llc_send_req_add_link_response(req_qentry);
 -- 
 2.43.0
 
