@@ -1,46 +1,34 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473AF2E6CB8;
-	Fri, 31 Jul 2026 14:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C6F2D060D;
+	Fri, 31 Jul 2026 14:24:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785507622; cv=none; b=AWLwwTnvLxLcSrNV07Rce87w87jo3/XrBvBbmqSNJuRfp5j+00dlsd2+UXi6TjdHmw4vB7zZxmYyeBQKQZJncDCYNziTl3tAI/aRA3NRhDZAGB/9u931q4ibz5JdxcdEPBRAE1Usn15IfteI+KriF/HqSxCfV74KrRythZU5ewg=
+	t=1785507886; cv=none; b=l8hQ22BxFyKBJH0W1BmR3BTp5q2uCEgB1/B7qi1OLDZRmRMdiKsgVJ6i8nuSZGm4fFJay2N5jP84edj/ROMkLHOOMlDxJ8P5SGh/D0UHe/oYbZ5IrlATda2GpbzPzPYE4BN9ISR/8qQuW4dEGbBSOioTQO3yjkiD7awS8j2UVmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785507622; c=relaxed/simple;
-	bh=wMin3KJ0aPPNmBSLV9r7hz5EDoI0uDRXnakFch1RhJc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QaWH/DguBccli5csToFcAQGjHSgbxEoCR3RGai+89yj24K7tYIyvZUq7i0BIpJapRwGh61BXVwL0WCFuNXUQdK22V73TZgfy5MLPhJ76H2j+xsLPK57lmeK0rSyusv6GPfRFyCOxVehHwvgfoDYzSzw2V/6uI+I0Nb81IZWtrCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SZRXvn82; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WeZlsi3f; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1785507886; c=relaxed/simple;
+	bh=pPuAPZBOTad69egfVrBpUtU+lJoZGsJ5U6c0dOWoR4w=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EeeAgkBTX4cWOvUTHEFIiuKwEIhnLI1pVpox/uS3enbtMd7YFChONi9GgjEWtzJPD7/ylAHmu8SdXHxrRqUErgZTlS/C1jVKAU0y761TyhRXJmNZEQPpwO0nPxN9XBBJfk1Thms3tXZTXHv1eqxqhG9/86BhZ7JYGO6eoJFhT8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hzFnvpa3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SZRXvn82";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WeZlsi3f"
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh_=28Schneider_Electric=29?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1785507618;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LWDlHXXVddCcYCT037cFxDN1q4w7agXJWRgt4HwA/tI=;
-	b=SZRXvn82APLW+PHcqRI9qbYqpmVMRR/gLJfKD4S7jOvYV0tSDzvD2ARia+xZ3Ry2sLGSjy
-	vcR9RAyPLP2IZliCxLcoBXi0skUrNBMGvnkS1xPYsaVCdVo3ZF54wJYvgThjl98TBH/G9Y
-	NGmfq8yfNcwuZHsvxVMwv66cbq5M8ApGmmrrKi713c3fPMmOdWWN94Q8y9j7n4vW2LQCOQ
-	ZCS3CopwbvwsVHnhUxCdElmCmX6ZZ1jPpFNUg5ycwpmLlSihtST2s++PuNaCcjSzKNj2Wu
-	AZV24K2gPtj7+7KPQDC2tNZfMjp9ESVkRQodOezjp/sBpOKRshgXHUvuWYGS3Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1785507618;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LWDlHXXVddCcYCT037cFxDN1q4w7agXJWRgt4HwA/tI=;
-	b=WeZlsi3fy7GmRIV4ab8IqWaUlqJFmt7ySq2JrqmStIiAOvbYn0MxQveoMCx3m9zK7d1EML
-	SFILXRh6GdZeWvCw==
-Date: Fri, 31 Jul 2026 16:20:14 +0200
-Subject: [PATCH 1/2] timekeeping: Remove the unused ktime_get_clock_ts64()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hzFnvpa3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61751F000E9;
+	Fri, 31 Jul 2026 14:24:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785507884;
+	bh=l1FFNgewqmo5lJDRgOb+ULKjpIIQmRuZwzOlDJQI7YQ=;
+	h=From:Subject:Date:To:Cc;
+	b=hzFnvpa3jAcJ/mQ3cgMCplJ2RXgZjdyHbeDR+AGQgHyz8WvDosGeyfA6DLjf9+x02
+	 9TQG0XhX/ZCpzHqlgWNfWdlMKqNc1RcjhiT74G6hEAnecP9Y6IYnWbVc7eSy1EAtCp
+	 esAmwoDxLj2r9KQCwW+Gq+vFnUWT1/8ccp4iOqJpS6E6uBClmovoh+m7ihhK55dlNh
+	 bEzvmljI7TL5BAHfxBQEg044BaY1NrF1ixy4zpbdaKooY/F6ItDKEfJ4RD7I5B38HB
+	 zahS36f2IfF+A27fF/c63G14udeFsE50erjAm1uomcVxSikHOSE6tGHv+WMTlrQgXu
+	 32k98TT00S92g==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net-next v2 0/5] mptcp: out-of-order queue pruning
+Date: Fri, 31 Jul 2026 16:24:16 +0200
+Message-Id: <20260731-net-next-mptcp-oooq-pruning-v2-0-24838164fa21@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,90 +36,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260731-timekeeping-aux-must-check-v1-1-11ae93068497@linutronix.de>
-References: <20260731-timekeeping-aux-must-check-v1-0-11ae93068497@linutronix.de>
-In-Reply-To: <20260731-timekeeping-aux-must-check-v1-0-11ae93068497@linutronix.de>
-To: John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>, 
- Stephen Boyd <sboyd@kernel.org>, Richard Cochran <richardcochran@gmail.com>, 
- Miroslav Lichvar <mlichvar@redhat.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh_=28Schneider_Electric=29?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785507617; l=2218;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=wMin3KJ0aPPNmBSLV9r7hz5EDoI0uDRXnakFch1RhJc=;
- b=9o0KdoXqAGSTdFiMOl+Nt5Cl/BrSEXs/G2rY5aRURqF81gDg1WKqOST2fnHtbTYjS16b5PZEf
- RtiO3JQHpjmChe3ysy0VzD64zahf8yacTlDe5N+TRCzv88IdoadHvvr
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42OzQ7CIBCEX8Xs2TUUKRpPvofpoYW1xR9AoE1N0
+ 3eX1nj3MIfJ7Hw7E0QKhiKcNhMEGkw0zmbDtxtQXW1bQqOzB864ZAcu0FLKGhM+fVIenXMv9KG
+ 3xrYojqWUumC60QwywQe6mnGlX+BXhOqbxL65kUoLfLntTEwuvNchQ7E2/vo5FMiw1FpoUnJfl
+ +J8p2DpsXOhhWqe5w+lECPL4wAAAA==
+X-Change-ID: 20260724-net-next-mptcp-oooq-pruning-48566d10dbd0
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ Gang Yan <yangang@kylinos.cn>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1657; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=pPuAPZBOTad69egfVrBpUtU+lJoZGsJ5U6c0dOWoR4w=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLJyNqhU7E6XjlUt5fp8n/PGKpGSsI8vhE64Trmfa7Jnm
+ T37LPknHaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABPpWM7IsCDfd+nd5dYLHiwp
+ PJSW6f05vZ3/j2Vs5EyFq8uvhHjJhjMyPL9dcPTbE9VEfcfW3ik9IZVnJ9rfLd1+JPq10IqD68P
+ CGQA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-The last user was removed in commit a6d799608e6a ("ptp: Switch to
-ktime_get_snapshot_id() for pre/post timestamps").
+Under memory pressure, a pruning of the MPTCP-level OoO queue might be
+required as last resort, to avoid too long recoveries, or even stalls.
+Geliang and Gang managed to reproduce this behaviour, and Paolo
+improved the situation thanks to the following patches:
 
-Signed-off-by: Thomas Weißschuh (Schneider Electric) <thomas.weissschuh@linutronix.de>
+- Patches 1-2: improve the MPTCP-level retransmission schema to make
+  recoveries from memory pressure/after MPTCP-level drop significantly
+  faster.
+
+- Patches 3-4: make the admission check way stricter for incoming
+  packets exceeding the memory limits, with some exceptions for fallback
+  sockets.
+
+- Patch 5: implement OoO queue pruning for MPTCP.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- include/linux/timekeeping.h |  1 -
- kernel/time/timekeeping.c   | 34 ----------------------------------
- 2 files changed, 35 deletions(-)
+Changes in v2:
+- Address comments from Clashiko.
+- Patch 3: typo, comment, bump TCP MIB counter.
+- Patch 5: uniform MIB counter name.
+- Rebased.
+- Link to v1: https://patch.msgid.link/20260724-net-next-mptcp-oooq-pruning-v1-0-5dd4dec63a54@kernel.org
 
-diff --git a/include/linux/timekeeping.h b/include/linux/timekeeping.h
-index b4191a873c39..ca4a881e622f 100644
---- a/include/linux/timekeeping.h
-+++ b/include/linux/timekeeping.h
-@@ -44,7 +44,6 @@ extern void ktime_get_ts64(struct timespec64 *ts);
- extern void ktime_get_real_ts64(struct timespec64 *tv);
- extern void ktime_get_coarse_ts64(struct timespec64 *ts);
- extern void ktime_get_coarse_real_ts64(struct timespec64 *ts);
--extern void ktime_get_clock_ts64(clockid_t id, struct timespec64 *ts);
- 
- /* Multigrain timestamp interfaces */
- extern void ktime_get_coarse_real_ts64_mg(struct timespec64 *ts);
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index 97db2e9393f9..29b2a38b27b4 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -1937,40 +1937,6 @@ void ktime_get_raw_ts64(struct timespec64 *ts)
- }
- EXPORT_SYMBOL(ktime_get_raw_ts64);
- 
--/**
-- * ktime_get_clock_ts64 - Returns time of a clock in a timespec
-- * @id:		POSIX clock ID of the clock to read
-- * @ts:		Pointer to the timespec64 to be set
-- *
-- * The timestamp is invalidated (@ts->sec is set to -1) if the
-- * clock @id is not available.
-- */
--void ktime_get_clock_ts64(clockid_t id, struct timespec64 *ts)
--{
--	/* Invalidate time stamp */
--	ts->tv_sec = -1;
--	ts->tv_nsec = 0;
--
--	switch (id) {
--	case CLOCK_REALTIME:
--		ktime_get_real_ts64(ts);
--		return;
--	case CLOCK_MONOTONIC:
--		ktime_get_ts64(ts);
--		return;
--	case CLOCK_MONOTONIC_RAW:
--		ktime_get_raw_ts64(ts);
--		return;
--	case CLOCK_AUX ... CLOCK_AUX_LAST:
--		if (IS_ENABLED(CONFIG_POSIX_AUX_CLOCKS))
--			ktime_get_aux_ts64(id, ts);
--		return;
--	default:
--		WARN_ON_ONCE(1);
--	}
--}
--EXPORT_SYMBOL_GPL(ktime_get_clock_ts64);
--
- /**
-  * timekeeping_valid_for_hres - Check if timekeeping is suitable for hres
-  */
+---
+Paolo Abeni (5):
+      mptcp: move the retrans loop to a separate helper
+      mptcp: let the retrans scheduler do its job
+      mptcp: explicitly drop over memory limits
+      mptcp: enforce hard limit on backlog flushing
+      mptcp: implemented OoO queue pruning
 
--- 
-2.55.0
+ net/mptcp/mib.c      |   3 +
+ net/mptcp/mib.h      |   3 +
+ net/mptcp/options.c  |  32 ++++++-
+ net/mptcp/protocol.c | 251 +++++++++++++++++++++++++++++++++++++--------------
+ 4 files changed, 219 insertions(+), 70 deletions(-)
+---
+base-commit: 2fbade66245059c78daeaccfce13ecf499fffb51
+change-id: 20260724-net-next-mptcp-oooq-pruning-48566d10dbd0
+
+Best regards,
+--  
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
