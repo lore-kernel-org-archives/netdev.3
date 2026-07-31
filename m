@@ -1,138 +1,157 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5A8453A44;
-	Fri, 31 Jul 2026 16:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391E231714B
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785514875; cv=none; b=JTmJ5kINVQVa52Yx7Fw/4Zbl/rg3i/WmcYgX/H0MzGvlzrDLpKCJe+BGQSrK9rZOYdu9aJ6UvV+861f5RSTXs37MyoEcKLI0+cX+XNBp0VtlM1IrXEJzHCu9sMWzgdGLn8EQTdyCCLdwCD8j8hVh24Hl9fsuHpK8M1JdsiRi0Hs=
+	t=1785515019; cv=none; b=sH/qBmfYEnFdIbNtIWQq+E1HHkovX2An2uyfFACFpEiv00trTRcnGsFg7n0Fg71AZ0v1pc85WyX8HN5Oop6VJBtNO/xkb0vctgXMNYgsd01tJ3VI+7v9JN+Jo7VmaJS40iWBH4kvPKlyJ4C4seCtKepvzkPM57dvO4APG5r0AdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785514875; c=relaxed/simple;
-	bh=vLZuZ0bPYtVDsdGoYRjjMdmvdHT9O/TBnkF6nUNffw8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=V5BVdheax8mqdhO+89RRYBpA/BcE6YpongtqvbIWJut6NPIu+OOGEDcUexq3p4N+UYPP2Fli4tA6zuL7r72pP49Ic8gGBq+r5t3i6QVcOsyvSGRQfffJ7AYtdSKshNddSBK5bwhE/IJkhZei8517nfExtZjD6iZUYYa+XluFuYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ztORXrgg; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785515019; c=relaxed/simple;
+	bh=eZfWFgX/f0ZijcToz6G/tsXHbupH+mczotaSXjdDLkA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=m5vaM8Mmfpn7InOKUzMJ2qS2XJtxKeQeMdRCbBaJw97WNnP7h7T2fQaFUCN1ZM2lf8SOpX8HX/EvQv/921gYJ11/2rZL9n57pN9B1BpAOx9h60O8IeJf2LDXc8bkRmZ/YkVb0ckUavNJsQjJMO0IDgDaetGM/OSh/05VpOvgwTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cS95cLpy; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ztORXrgg"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 662491A1366;
-	Fri, 31 Jul 2026 16:21:10 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 367E06039A;
-	Fri, 31 Jul 2026 16:21:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 600DA11C16A9C;
-	Fri, 31 Jul 2026 18:21:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785514868; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=hl4GXjd/Cg8VT0kpm417nRugGjVEQrxWCQ4gwmm81f4=;
-	b=ztORXrgggePeNfLe7poZlpmUV22JOSiKP+f2Kx+/3V1N1HcsKZlUXEgjxBhQy7SpfCC4a3
-	PpMHRFSGjSEoPxo0Pj0TRQETX9tF4Txb9P2sBWeLNEUJv6d1JwUjxGHOlgGQ//LuBof3uk
-	JXt8W+YzCugz55Lpf8ulWSFi26EuQ+nDvtUb+VYcqlH5mCedxXxLY0bY8vvq/OUdLwTP9q
-	jZ/zAhRr76B3CK9X9w/iQbAcGnWRYBBW4y79s9pD1IyN/WklT7Z6anGc8XU0f7ImjWdK+k
-	pWo4Tv/rU7/Poax0TbhTX3dt9QLPbz4y834shRNjAuCqcoG46QeHDoAXqlWyTA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cS95cLpy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785515013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eZfWFgX/f0ZijcToz6G/tsXHbupH+mczotaSXjdDLkA=;
+	b=cS95cLpyM+lmDj3NUbwMGE27YNHzZhycD//fIhRbkcIyO8lSUUP3snNKEIdBttb+IFFb1C
+	Ut7lf5UUo+kSiqmcyDBGUk9K5eVoWUVDgyGrgcxVps1DVttT4T/UbVKzq3/7g5rFYBJ7mI
+	tPgh5jWYhiFK1v0SlKd8E8cb8BHkiBA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-q1befVfVM9muiMwevabm-Q-1; Fri,
+ 31 Jul 2026 12:23:32 -0400
+X-MC-Unique: q1befVfVM9muiMwevabm-Q-1
+X-Mimecast-MFC-AGG-ID: q1befVfVM9muiMwevabm-Q_1785515010
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 298AB180044F;
+	Fri, 31 Jul 2026 16:23:30 +0000 (UTC)
+Received: from [10.44.32.30] (unknown [10.44.32.30])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5610242A;
+	Fri, 31 Jul 2026 16:23:26 +0000 (UTC)
+Message-ID: <b9175d00-7580-45d0-95f2-325f19a9aa89@redhat.com>
+Date: Fri, 31 Jul 2026 18:23:24 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 31 Jul 2026 18:21:04 +0200
-Message-Id: <DKCW7184EDH0.2HX1G8K8J44C@bootlin.com>
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Nicolas
- Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Paolo Valerio" <pvalerio@redhat.com>, "Nicolai
- Buchwitz" <nb@tipi-net.de>, "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
- <maxime.chevallier@bootlin.com>
-To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, "Conor Dooley"
- <conor.dooley@microchip.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Richard Cochran" <richardcochran@gmail.com>, "Russell King"
- <linux@armlinux.org.uk>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next v5 15/15] net: macb: use context swapping in
- .ndo_change_mtu()
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260724-macb-context-v5-0-569b1852bc7f@bootlin.com>
- <20260724-macb-context-v5-15-569b1852bc7f@bootlin.com>
-In-Reply-To: <20260724-macb-context-v5-15-569b1852bc7f@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 3/3] dpll: zl3073x: add PTP clock support
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+ Chris du Quesnay <Chris.duQuesnay@microchip.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Prathosh Satish <Prathosh.Satish@microchip.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org
+References: <20260730132150.371376-1-ivecera@redhat.com>
+ <20260730132150.371376-4-ivecera@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260730132150.371376-4-ivecera@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Replying to sashiko.dev reviews.
-https://sashiko.dev/#/patchset/20260724-macb-context-v5-0-569b1852bc7f%40bo=
-otlin.com
+Replies to Sashiko's findings:
 
-> > @@ -3496,11 +3496,29 @@ static int macb_close(struct net_device *netdev=
-)
-> >
-> >  static int macb_change_mtu(struct net_device *netdev, int new_mtu)
-> >  {
-> > -   if (netif_running(netdev))
-> > -      return -EBUSY;
-> > +   struct macb *bp =3D netdev_priv(netdev);
-> > +   bool running =3D netif_running(netdev);
-> > +   struct macb_context *new_ctx;
-> > +
-> > +   if (running) {
-> > +      /* Context swapping is not supported for AT91. */
-> > +      if (bp->caps & MACB_CAPS_MACB_IS_EMAC)
-> > +         return -EBUSY;
-> > +
-> > +      new_ctx =3D macb_context_alloc(bp, new_mtu,
-> > +                    bp->configured_rx_ring_size,
-> > +                    bp->configured_tx_ring_size);
-> > +      if (IS_ERR(new_ctx))
-> > +         return PTR_ERR(new_ctx);
-> > +
-> > +      macb_context_swap_start(bp);
-> > +   }
-> >
-> >     WRITE_ONCE(netdev->mtu, new_mtu);
-> >
-> > +   if (running)
-> > +      macb_context_swap_end(bp, new_ctx);
->
-> [Severity: High]
-> When macb_context_swap_end() unconditionally re-enables interrupts, sets =
-MAC
-> RX/TX back on (RE/TE in NCR), and calls netif_tx_start_all_queues(), does
-> this override the phylink state machine by fully activating the MAC witho=
-ut
-> checking netif_carrier_ok()?
->
-> If the interface is administratively UP but the physical link is DOWN,
-> macb_mac_link_down() is called by phylink, which disables MAC RX/TX (RE/T=
-E
-> bits) and stops the TX queues.
->
-> If an MTU change is requested in this state, does this sequence bypass ca=
-rrier
-> state validation and activate the MAC while the physical link is still do=
-wn?
+ > Is a hard dependency on PTP_1588_CLOCK required here?
+ > ...
+ > Would "depends on NET && PTP_1588_CLOCK_OPTIONAL" work instead?
 
-Yes, agreed. Reported in [14/15] and discussed there.
-https://lore.kernel.org/netdev/DKCVYZ69KGSM.2R1ELFSWRG5HM@bootlin.com/
+This was changed from OPTIONAL to a hard dependency at Jakub's
+explicit request in v2 review [1]. His rationale is that OPTIONAL is
+meant for NICs where PTP is truly a side-feature, while this is a
+dedicated DPLL/PTP device. Non-PTP chip variants simply skip PTP
+clock registration.
 
- - Adding netif_carrier_ok() check.
- - Grabbing bp->mac_cfg_lock from macb_hresp_error_task() which also
-   edits the carrier state (so risks conflicting).
- - However we don't condition netif_tx_start_all_queues() on
-   netif_carrier_ok() because macb_open() is the one doing the call,
-   not link-up.
+[1] https://lore.kernel.org/netdev/20260727125921.2e16bed9@kernel.org/
+
+ > does the kernel-doc match the implementation?
+ > The body has a third gating condition ... zl3073x_chan_is_out_stepped()
+ >
+ > Can two perout channels end up aliasing the same physical output?
+ > ...
+ > Related: for single-ended N-divided formats, is the P-pin channel
+ > usable at all? ... out.esync_n_period ... truncates to 0
+ >
+ > Is reporting success for a disable request that does nothing the
+ > intended behaviour?
+ >
+ > How are the two userspace interfaces that can now program this output
+ > pin meant to coordinate?
+
+Will drop perout from this series entirely. The current pin-based
+design has the P/N aliasing and N-divided truncation issues you
+identified, and the disable path needs rework to use the hardware's
+glitchless stop mechanism (output_ctrl stop bit). Will rework perout
+as a follow-up with an output-based design: one perout channel per
+physical output, eligibility checks in the enable callback, proper
+stop/start via output_ctrl, and output divisor restore on disable.
+
+ > Does settime64 need to compensate for the next-1 Hz load latency?
+
+This is a known hardware characteristic. settime64 is used for large
+absolute time sets (boot, initial synchronization) where sub-second
+precision is not critical. The PTP servo uses adjtime/adjphase for
+fine control, both of which handle the 1 Hz boundary correctly. This
+matches the behavior of other I2C/SPI-attached PHC drivers (e.g.
+ptp_clockmatrix) that have the same HW constraint.
+
+ > Can delta * synth_freq overflow s64 here?
+ > For delta == S64_MIN the negation wraps, so abs() returns S64_MIN
+
+Real bug. abs(S64_MIN) is undefined behavior and wraps to S64_MIN
+on two's complement, bypassing the >= NSEC_PER_SEC split. Will add
+an explicit guard at the top of adjtime.
+
+ > Should a partial phase step really report success?
+ > ...
+ > There, clock_adjtime(ADJ_SETOFFSET) reports success while up to
+ > ~999 ms of the requested step was never applied.
+
+This is intentional. The seconds part is already committed via ToD
+read-modify-write and cannot be rolled back. Reporting an error
+would cause the PTP servo to retry the full delta, applying the
+seconds adjustment again. The sub-second residual self-corrects in
+the next servo cycle. A dev_warn is emitted so the condition is not
+silent.
+
+The same reasoning applies to the partial phase step case: the ToD
+counter and some output groups are already stepped, so reporting
+success with a warning is the lesser evil compared to a retry that
+doubles the seconds adjustment.
+
+ > Does first_synth_freq match what the comment describes?
+ > ...
+ > On a multi-channel device those can be different synths
+
+The code is correct - first_synth_freq is the lowest-ID synth
+assigned to this DPLL channel, which is the one the firmware uses
+for the ToD-only conversion. Will clarify the comment.
+
+Regarding the empty output mask with tod_step: this is a documented
+firmware feature. When output mask is 0 and tod_step is set, the
+firmware steps only the ToD counter using the first assigned synth's
+clock period for the cycle-to-time conversion.
 
 Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Ivan
 
