@@ -1,98 +1,468 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE713D7D88
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 08:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF753DAAAA;
+	Fri, 31 Jul 2026 08:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785487253; cv=none; b=PFO8XZs1e8ag2LO4UM/k6MdOoW8jbCAurOy1DS4ZmKLFXKHoHZ0DYcxSxhSYv5WEWKteak2hcVuzHW5HHPML3K4KLCXlTvJOK6qB+S9+dB2BKfSPdoJUj/g7iSUKjqjfsMEQq5QbWdJxsNfd9v4qep+DrqHdJe1GWVsW9szJVJU=
+	t=1785487293; cv=none; b=K4CKpwkpwPT2YzzQkCKPqOEwJ9QelqLZygVaZpWzOPUlNRaHv+iQCKrA/p/Uz4c2ehUcc3B/0yXv4prlybn3/7mPLJGBnz5E8SZJPbJNPazp3Kx+KsRaMv4k/dl66h5rpX5mXWqJmlzkvWJfEpjgUohtlUlUB8IH+fgPPski7ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785487253; c=relaxed/simple;
-	bh=xQJfCIYx7YtBoHGSdPxLID9UpP7U21GdSDr2MFYu7TQ=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rmyvTRA4M3R8NVwGVx/mzuCeyXHfhNUdc+VMvfUpONx/77ovcAdaS/AoeL2CXu4xvwJojX+ksUIyvIajIHaOXsOvKPY6ratPPj3+G3SFwXF10msEljl3k8e3F7qorKoBQ3JStIa8kc9qq2brxCRqDvca7RviDlMYjnWekSHSsZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aU7b6+lG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785487293; c=relaxed/simple;
+	bh=L5ggLVkKvtyNqlpTKHfFnUC4UUqWDuBULTkycPPfA9Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r9P2jt0qVzBtvhvNypSCoScqZ2aypCEGAk61dueQbm5jRDT/11TeAv8jOsm+bWrzWIPpY5rCUrZvVTvFp/cH8SUsPw+Gr4K5UZFO+Qg7+kMTFJ0E2WjOGo3Oebw0eo5OFyxKZVPDfCqDF88M01vEqmyWo+N5Bgr6hVI4Ho3vxc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zpMQYBsU; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aU7b6+lG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC301F00ADB
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 08:40:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785487251;
-	bh=xQJfCIYx7YtBoHGSdPxLID9UpP7U21GdSDr2MFYu7TQ=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=aU7b6+lGFkvei3Qenni7Ts3ynzCIDnFCIEEq2DDi9fPD5q7FO86BbwGtuzu3sk+eI
-	 fcApUNn7PlABHixqudHKWCU9e05d+voFJKxFZwMuU/KGnXQtQJMiQHkMZyGekWf6qB
-	 6OJOEoLCTxZRR4lWfM+kAw4WmC50cAEGH0XlcIIxr0m9nSodeIjaHh8UbvsQ2w89t4
-	 gvkurEsAFZuvDllBjDhfmkuH7ibapIBD8I9+h7cBLjxtrrIiVCIwYrVk6KLrqDDEQO
-	 2rryHmYhquV5/ydU4cOEjxQz57WxQFYFkfbZhIp9tZRf2JxqSvEesNE7HW+RvuzNwx
-	 3xzWVqM/YBguA==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-39c95395230so6660181fa.2
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 01:40:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rp5vOduiSPVeEn/vU7jRigtu4sfPuucXCa7qUs7aRbmdu2riDiszrKFW9iS23cjOiRc2fChpLw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8MfQiAQBPxEdpAk//+pDPQvXmgXzEgmSKxTS9TACIA2rty+6p
-	OaXIej+l2H+ypO8RVtmm4l6v+FujgqgcI+aqf6cRM5hM3e7bq5n3kW9WX7A96yN2xKk+oAw7ZJ6
-	7MqHC/FGipzLKoJ33RZLAJoP0x6LoX8rVMlLYf5R/yw==
-X-Received: by 2002:a05:651c:a20d:20b0:39c:650c:454e with SMTP id
- 38308e7fff4ca-39f7e352fbcmr1943041fa.13.1785487250229; Fri, 31 Jul 2026
- 01:40:50 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 31 Jul 2026 01:40:48 -0700
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 31 Jul 2026 01:40:48 -0700
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260730-block-as-nvmem-v9-5-f72935817dbf@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zpMQYBsU"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 7E7561A1347;
+	Fri, 31 Jul 2026 08:41:23 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 50B8A6039A;
+	Fri, 31 Jul 2026 08:41:23 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 32F7411C16585;
+	Fri, 31 Jul 2026 10:41:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785487278; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=/GmhN0SP3z+0okO9C3SqrJSTcvem2D+k+3S7HW8IA1k=;
+	b=zpMQYBsUa1mmPkxEbssHmyn5oVIYT+4V2Vdz5ll+g0a5QP36Lyw62LLPllmcuh0MNu0tP8
+	rEA5qg4Cf1ARi2gBW7mY7x27zAVGADyvoFO0KGhNFLeRGl57GPAinhj745HoN3v2klyLY5
+	4FbaEM2c5bCd1cBAF2Wd5hUngc+6RUgND/sppnql+bWmdFm/lBaLILSGuYKr8d6rRyvTtT
+	c1tdf1VRzh/s1joSRIZcVPRbEB5IFjd9QFlXsO21lym4hgbyn6yy5UuHVRpvf1lITW/tnf
+	/BV5SxJmcoOp8wV+xBDAJ1fsLaBpXw3SJk71Qm7IHzfT3sroSGKLHnCXxq6Bqg==
+Message-ID: <772b825f-a57f-4c81-a93f-f6866d73ef63@bootlin.com>
+Date: Fri, 31 Jul 2026 10:41:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260730-block-as-nvmem-v9-0-f72935817dbf@oss.qualcomm.com> <20260730-block-as-nvmem-v9-5-f72935817dbf@oss.qualcomm.com>
-Date: Fri, 31 Jul 2026 01:40:48 -0700
-X-Gmail-Original-Message-ID: <CAMRc=MdXFDFw_oHSGk5=RgLJAfTixuUNYTY62Dpcdb4nqcg7ig@mail.gmail.com>
-X-Gm-Features: AUfX_my0BSuN_dmw9PAQ3RKVVzPb03vWf8SlnwYWcd8wsPsuOu4arihpRTxh5pc
-Message-ID: <CAMRc=MdXFDFw_oHSGk5=RgLJAfTixuUNYTY62Dpcdb4nqcg7ig@mail.gmail.com>
-Subject: Re: [PATCH v9 05/10] block: partitions: of: Attach partition fwnode
- to the block device
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, daniel@makrotopia.org, Ulf Hansson <ulfh@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Jens Axboe <axboe@kernel.dk>, Johannes Berg <johannes@sipsolutions.net>, 
-	Jeff Johnson <jjohnson@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Rocky Liao <quic_rjliao@quicinc.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Saravana Kannan <saravanak@kernel.org>, Christian Marangi <ansuelsmth@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 04/10] net: dsa: microchip: add PTP interrupt
+ handling for KSZ8463
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, richardcochran@gmail.com, linux@armlinux.org.uk,
+ horms@kernel.org, maxime.chevallier@bootlin.com, pascal.eberhard@se.com,
+ miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260727-ksz-new-ptp-v3-4-caba39e680e3@bootlin.com>
+ <20260731022341.800305-1-kuba@kernel.org>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260731022341.800305-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, 30 Jul 2026 18:00:35 +0200, Loic Poulain
-<loic.poulain@oss.qualcomm.com> said:
-> The OF partition parser reads offset, size and label from each
-> "fixed-partitions" child node but does not associate that node with the
-> resulting partition block device. As a result a partition has no
-> of_node, unlike the whole-disk device which gets its firmware node via
-> add_disk_fwnode().
->
-> Carry the partition's device tree node through the parser and attach it
-> to the partition's block device with device_set_node(), mirroring the
-> whole-disk case. This lets consumers describe per-partition properties
-> in the device tree (for example an NVMEM layout on a partition node) and
-> look them up through the partition device.
->
-> No functional change for existing users, partitions without a matching
-> device tree node simply get a NULL fwnode.
->
-> Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Hi,
+
+On 7/31/26 4:23 AM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 > ---
+> --- Patch [4]: [PATCH net-next v3 04/10] net: dsa: microchip: add PTP interrupt handling for KSZ8463 ---
+> commit 0135c84c1b18f8d3665107436a050b472916ca2f
+> Author: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+> 
+> net: dsa: microchip: add PTP interrupt handling for KSZ8463
+> 
+> This adds a KSZ8463-specific global interrupt domain (16-bit enable
+> register, one shared status register, only the high byte used) and
+> KSZ8463-specific PTP interrupt setup/teardown that reuse the existing
+> interrupt handlers. A .teardown callback is added to release the
+> interrupts.
+> 
+>> diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
+>> index 3bbca6f9cfc5a..c099a7005808b 100644
+>> --- a/drivers/net/dsa/microchip/ksz8.c
+>> +++ b/drivers/net/dsa/microchip/ksz8.c
+>> @@ -36,6 +36,13 @@
+>>   #include "ksz8_reg.h"
+>>   #include "ksz8.h"
+>>   
+>> +/*
+>> + * We use only the high-byte (so odd addresses) of the 16-bits registers to fit
+>> + * in the common IRQ framework
+>> + */
+>> +#define KSZ8463_REG_ISR			0x191
+>> +#define KSZ8463_REG_IER			0x193
+>> +
+>>   /* ksz88x3_drive_strengths - Drive strength mapping for KSZ8863, KSZ8873, ..
+>>    *			     variants.
+>>    * This values are documented in KSZ8873 and KSZ8863 datasheets.
+>> @@ -181,6 +188,58 @@ static int ksz8_pme_pwrite8(struct ksz_device *dev, int port, int offset, u8 dat
+>>   	return ksz8_ind_write8(dev, table, (u8)(offset), data);
+>>   }
+>>   
+> 
+> [ ... ]
+> 
+>> +static int ksz8463_girq_setup(struct ksz_device *dev)
+>> +{
+>> +	struct ksz_irq *girq = &dev->girq;
+>> +
+>> +	girq->nirqs = 8;
+>> +	girq->reg_mask = KSZ8463_REG_IER;
+>> +	girq->reg_status = KSZ8463_REG_ISR;
+>> +	girq->masked = 0;
+>> +	snprintf(girq->name, sizeof(girq->name), "ksz8463-girq");
+>> +
+>> +	girq->irq_num = dev->irq;
+>> +
+>> +	return ksz_irq_common_setup(dev, girq, &ksz8463_irq_domain_ops);
+>> +}
+> 
+> [Severity: Medium]
+> ksz_irq_common_setup() requests the generic ksz_irq_thread_fn(), which only
+> reads the status register and dispatches nested IRQs:
+> 
+> 	ret = ksz_read8(dev, kirq->reg_status, &data);
+> 	...
+> 	for (n = 0; n < kirq->nirqs; ++n) {
+> 		if (data & BIT(n)) {
+> 			sub_irq = irq_find_mapping(kirq->domain, n);
+> 			handle_nested_irq(sub_irq);
+> 			++nhandled;
+> 
+> It never writes reg_status back. That is fine for KSZ9477/LAN937x, where
+> REG_SW_PORT_INT_STATUS__1 is a read-only aggregation of the per-port status
+> registers. Is the KSZ8463 global status register latched write-1-to-clear
+> instead? The driver's own handler for the sibling register on this chip> treats it that way, in ksz_ptp_irq_thread_fn():
+> 
+> 	/* Clear the interrupts W1C */
+> 	ret = ksz_write16(dev, ptpirq->reg_status, data);
+> 
+> If the global bit is latched, is there anything in the new path that
+> acknowledges it? The level-triggered IRQF_ONESHOT parent would stay asserted
+> and the threaded handler re-entered indefinitely over SPI.
+> 
 
-Makes sense.
+No, the global KSZ8463_REG_ISR register works the same way than the 
+other switches, it's a read-only aggregation of other interrupt status 
+registers. There is no need to acknowledge the global bit.
 
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+
+> Related to that: girq->nirqs = 8 creates mappings for all eight high-byte
+> bits while only bit 4 ever gets an action. handle_nested_irq() on a virq
+> without an action returns immediately, yet nhandled is still incremented, so
+> the parent always returns IRQ_HANDLED and the "nobody cared" spurious
+> interrupt detection can never fire. Should the mapping count be limited to
+> the bits that are actually used?
+> 
+
+So far only bit 4 is used but others could be used later.
+
+>>   static int ksz8463_reset_switch(struct ksz_device *dev)
+>>   {
+>>   	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET, true);
+>> @@ -2407,21 +2466,50 @@ static int ksz8463_setup(struct dsa_switch *ds)
+>>   	p = &dev->ports[dev->cpu_port];
+>>   	p->learning = true;
+>>   
+>> +	if (dev->irq > 0) {
+>> +		ret = ksz8463_girq_setup(dev);
+>> +		if (ret)
+>> +			return ret;
+>> +
+>> +		ret = ksz8463_ptp_irq_setup(ds);
+>> +		if (ret)
+>> +			goto free_girq;
+>> +	}
+>> +
+> 
+> [Severity: High]
+> The PTP interrupt path is enabled here, but the KSZ8463 entry in
+> ksz_switch_chips[] has no .ptp_capable and ksz8463_setup() never calls
+> ksz_ptp_clock_register(). Is the PTP state these handlers consume ever
+> initialized?
+> 
+> ksz_ptp_clock_register() is the only place that runs:
+> 
+> 	mutex_init(&ptp_data->lock);
+> 	spin_lock_init(&ptp_data->clock_lock);
+> 	...
+> 	ret = ksz_ptp_start_clock(dev);
+> 	...
+> 	ptp_data->clock = ptp_clock_register(&ptp_data->caps, dev->dev);
+> 
+> The handler requested below, ksz_ptp_msg_thread_fn(), calls
+> ksz_tstamp_reconstruct(), which does:
+> 
+> 	spin_lock_bh(&ptp_data->clock_lock);
+> 	ptp_clock_time = ptp_data->clock_time;
+> 	spin_unlock_bh(&ptp_data->clock_lock);
+> 
+> For KSZ8463 that spinlock is never initialized (spinlock bad magic with
+> CONFIG_DEBUG_SPINLOCK, "trying to register non-static key" with lockdep) and
+> clock_time is never advanced by an aux worker, so timestamps produced by the
+> new interrupt path come from an all-zero clock time.
+> 
+> In the same configuration ptp_data->clock stays NULL while
+> ksz8463_switch_ops still exports .port_hwtstamp_set = ksz_hwtstamp_set, and
+> ksz_set_hwtstamp_config() ends in ksz_ptp_enable_mode():
+> 
+> 	if (tag_en) {
+> 		ptp_schedule_worker(ptp_data->clock, 0);
+> 	} else {
+> 		ptp_cancel_worker_sync(ptp_data->clock);
+> 	}
+> 
+> ptp_schedule_worker() dereferences ptp->kworker unconditionally, so does a
+> SIOCSHWTSTAMP on a KSZ8463 user port oops here? Should this hunk also set
+> .ptp_capable for KSZ8463 and call ksz_ptp_clock_register(), as
+> ksz8_setup()/ksz9477_setup() do?
+> 
+
+ptp_clock_register() not being called is intended at that stage. It 
+prevents from exposing PTP clocks to userspace until the proper support 
+is completely there. Because the PTP clocks aren't exposed, the PTP 
+interrupt won't get enabled so the issue described above won't happen.
+
+>>   	ret = ksz_mdio_register(dev);
+>>   	if (ret < 0) {
+>>   		dev_err(dev->dev, "failed to register the mdio");
+>> -		return ret;
+>> +		goto free_ptp_irq;
+>>   	}
+>>   
+>>   	ret = ksz_dcb_init(dev);
+>>   	if (ret)
+>> -		return ret;
+>> +		goto free_ptp_irq;
+> 
+> [Severity: Medium]
+> Making dev->irq > 0 a supported configuration for KSZ8463 also makes
+> ksz_mdio_register() -> ksz_irq_phy_setup() reachable, and that function does:
+> 
+> 	irq = irq_find_mapping(dev->ports[port].pirq.domain,
+> 			       PORT_SRC_PHY_INT);
+> 	if (!irq) {
+> 		ret = -EINVAL;
+> 
+> ksz8463_setup() never calls ksz_pirq_setup(), so dev->ports[].pirq.domain
+> stays NULL. __irq_resolve_mapping() substitutes irq_default_domain when the
+> domain pointer is NULL. On platforms without a default domain the lookup
+> returns 0 and KSZ8463 setup fails with -EINVAL for every device tree that has
+> both an interrupts property and an mdio node with internal PHY handles. On
+> platforms that install a default host, doesn't the returned virq belong to an
+> unrelated interrupt controller, which is then stored in
+> ds->user_mii_bus->irq[phy], request_irq()'ed by phylib and later disposed by
+> ksz_irq_phy_free()?
+> 
+> Separately, the goto free_ptp_irq taken when ksz_dcb_init() fails runs after
+> ksz_mdio_register() has succeeded. Does that path leak the PHY IRQ mappings
+> acquired inside ksz_mdio_register(), since ksz_irq_phy_free() is not called?
+> 
+
+This is true, I didn't pay attention to that because I don't have any 
+MDIO node in my device-tree. KSZ8463 doesn't support PHY irqs so it 
+feels like a good thing to return -EINVAL here.
+
+There is a real issue on platforms that define a irq_default_domain 
+though. I can fix this by creating ksz8463_mdio_register(), any thoughts 
+about this ?
+
+>>   
+>>   	/* start switch */
+>>   	regmap_update_bits(ksz_regmap_8(dev), regs[S_START_CTRL],
+>>   			   SW_START, SW_START);
+>>   
+>>   	return 0;
+>> +
+>> +free_ptp_irq:
+>> +	if (dev->irq > 0)
+>> +		ksz8463_ptp_irq_free(ds);
+>> +free_girq:
+>> +	if (dev->irq > 0)
+>> +		ksz_irq_free(&dev->girq);
+>> +
+>> +	return ret;
+>> +}
+> 
+> [ ... ]
+> 
+>> diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+>> index 8b98039320add..89fbc1253f252 100644
+>> --- a/drivers/net/dsa/microchip/ksz_ptp.c
+>> +++ b/drivers/net/dsa/microchip/ksz_ptp.c
+> 
+> [ ... ]
+> 
+>> @@ -1129,6 +1138,128 @@ static int ksz_ptp_msg_irq_setup(struct ksz_port *port, u8 n)
+>>   	return ret;
+>>   }
+>>   
+>> +static int ksz8463_ptp_port_irq_setup(struct ksz_irq *ptpirq,
+>> +				      struct ksz_port *port, int hw_irq)
+>> +{
+>> +	u16 ts_reg[] = {KSZ8463_REG_PORT_SYNC_TS, KSZ8463_REG_PORT_DREQ_TS};
+>> +	static const char * const name[] = {"sync-msg", "delay-msg"};
+> 
+> [Severity: Medium]
+> This gives ptpmsg_irq[] different index semantics than the rest of the
+> driver: slot 0 is sync-msg and slot 1 is delay-msg here, and only slots 0 and
+> 1 are mapped. But ksz_ptp_reg.h defines:
+> 
+> 	#define KSZ_SYNC_MSG			2
+> 	#define KSZ_XDREQ_MSG			1
+> 	#define KSZ_PDRES_MSG			0
+> 
+> and the shared ksz_set_hwtstamp_config(), reachable for KSZ8463 because
+> ksz8463_switch_ops sets .port_hwtstamp_set = ksz_hwtstamp_set, indexes the
+> same array with those constants:
+> 
+> 	prt->ptpmsg_irq[KSZ_SYNC_MSG].ts_en  = false;
+> 	prt->ptpmsg_irq[KSZ_XDREQ_MSG].ts_en = true;
+> 	prt->ptpmsg_irq[KSZ_PDRES_MSG].ts_en = false;
+> 
+> So on KSZ8463 the Sync handler in slot 0 is gated by the Pdelay_Resp flag,
+> and every write to ptpmsg_irq[KSZ_SYNC_MSG] lands in slot 2, which has no
+> mapping, no handler and no port back-pointer.
+> 
+> In the two TX modes currently accepted for this chip both of those flags end
+> up false, so no wrong timestamp is observable today. Should KSZ8463-specific
+> index constants be added, or the shared code taught about this layout, so the
+> gating does not silently go to the wrong handler once two-step TX
+> timestamping is supported?
+> 
+
+.ts_en flags need to be handled differently on the KSZ8463 anyway, this 
+is done on PATCH 10.
+>> +	const struct ksz_dev_ops *ops = port->ksz_dev->dev_ops;
+>> +	struct ksz_ptp_irq *ptpmsg_irq;
+>> +	int ret;
+>> +	int i;
+>> +
+>> +	init_completion(&port->tstamp_msg_comp);
+> 
+> [Severity: High]
+> This isn't a bug introduced by this patch, but the initialization of
+> port->tstamp_msg_comp now happens only on the dev->irq > 0 path. Before this
+> series it was never initialized for KSZ8463 at all, and a KSZ8463 without an
+> interrupt keeps that behaviour while ksz8463_switch_ops exports
+> .port_hwtstamp_set/.port_txtstamp and ksz_set_hwtstamp_config() checks
+> neither ptp_capable, nor the clock, nor dev->irq.
+> 
+> After HWTSTAMP_TX_ONESTEP_P2P is accepted, the transmit path runs:
+> 
+> ksz_port_deferred_xmit()
+> 	reinit_completion(&prt->tstamp_msg_comp);
+> 	dsa_enqueue_skb(skb, skb->dev);
+> 	ksz_ptp_txtstamp_skb(dev, prt, clone);
+> 
+> ksz_ptp_txtstamp_skb()
+> 	ret = wait_for_completion_timeout(&prt->tstamp_msg_comp,
+> 					  msecs_to_jiffies(100));
+> 
+> on an all-zero struct completion, where x->wait.head has NULL next/prev, so
+> __add_wait_queue_entry_tail() inside do_wait_for_common() dereferences NULL.
+> 
+> Could the completion be initialized unconditionally, or the hwtstamp
+> configuration be rejected when the PTP interrupt infrastructure was not set
+> up?
+> 
+
+The PTP clock isn't registered so far so this won't happen. Proper PTP 
+support is added on PATCH 10.
+
+>> +
+>> +	for (i = 0; i < 2; i++) {
+>> +		ptpmsg_irq = &port->ptpmsg_irq[i];
+>> +		ptpmsg_irq->num = irq_create_mapping(ptpirq->domain,
+>> +						     hw_irq + i);
+>> +		if (!ptpmsg_irq->num) {
+>> +			ret = -EINVAL;
+>> +			goto release_msg_irq;
+>> +		}
+>> +
+>> +		ptpmsg_irq->port = port;
+>> +		ptpmsg_irq->ts_reg = ops->get_port_addr(port->num, ts_reg[i]);
+> 
+> [Severity: Medium]
+> The commit message says "xdelay_req and pdresp timestamps share one single
+> interrupt bit on the KSZ8463", but the single delay-msg handler bound to that
+> shared bit has its ts_reg hard-wired to KSZ8463_REG_PORT_DREQ_TS, and the
+> newly added KSZ8463_REG_PORT_DRESP_TS has no user anywhere in the tree.
+> 
+> ksz_ptp_msg_thread_fn() cannot distinguish the two events:
+> 
+> 	if (ptpmsg_irq->ts_en) {
+> 		ret = ksz_read_ts(port, ptpmsg_irq->ts_reg, &tstamp_raw);
+> 		...
+> 		complete(&port->tstamp_msg_comp);
+> 
+> In HWTSTAMP_TX_ONESTEP_P2P, ksz_port_txtstamp() returns early for
+> PTP_MSGTYPE_PDELAY_RESP (correction field update, no clone, no waiter), while
+> ptpmsg_irq[KSZ_XDREQ_MSG].ts_en stays true. If a transmitted Pdelay_Resp
+> raises the shared bit inside the window opened by reinit_completion() in
+> ksz_port_deferred_xmit() and the wait in ksz_ptp_txtstamp_skb(), does the
+> Pdelay_Req waiter then return early with the value read from DREQ_TS for an
+> unrelated event?
+> 
+> Since ts_en has to stay true for Delay_Req in the only supported TX mode, is
+> there any way to filter the pdresp event in software here?
+> 
+
+It won't be an issue until PTP clock is registered, it's properly 
+handled in PATCH 10 with the last_tx_is_pdelayresp flag>> +
+>> +		strscpy(ptpmsg_irq->name, name[i]);
+>> +
+>> +		ret = request_threaded_irq(ptpmsg_irq->num, NULL,
+>> +					   ksz_ptp_msg_thread_fn, IRQF_ONESHOT,
+>> +					   ptpmsg_irq->name, ptpmsg_irq);
+>> +		if (ret) {
+>> +			irq_dispose_mapping(ptpmsg_irq->num);
+>> +			goto release_msg_irq;
+>> +		}
+>> +	}
+>> +
+>> +	return 0;
+>> +
+>> +release_msg_irq:
+>> +	while (i--)
+>> +		ksz_ptp_msg_irq_free(port, i);
+>> +
+>> +	return ret;
+>> +}
+>> +
+> 
+> [ ... ]
+> 
+>> +int ksz8463_ptp_irq_setup(struct dsa_switch *ds)
+>> +{
+>> +	struct ksz_device *dev = ds->priv;
+>> +	struct ksz_port *port1, *port2;
+>> +	struct ksz_irq *ptpirq;
+>> +	int ret;
+>> +
+>> +	port1 = &dev->ports[0];
+>> +	port2 = &dev->ports[1];
+>> +	ptpirq = &port1->ptpirq;
+> 
+> [Severity: Low]
+> This isn't a bug, but the domain and all of its bookkeeping (irq_num, nirqs,
+> reg_mask, reg_status, irq0_offset, name) are switch-global for the KSZ8463
+> while being stored in dev->ports[0].ptpirq, and both this function and
+> ksz8463_ptp_irq_free() hardcode port indices 0 and 1 instead of iterating
+> with dsa_switch_for_each_user_port(), which is what
+> ksz8_setup()/ksz9477_setup()/lan937x_setup() use.
+> 
+> dev->ports[1].ptpirq stays all-zero while ports[1].ptpmsg_irq[] is populated
+> from a domain owned by port 0, so struct ksz_port::ptpirq means something
+> different depending on the chip, and generic code that assumed it was valid
+> per port would end up calling irq_domain_remove(NULL) or free_irq(0).
+> 
+> Would placing the shared domain in struct ksz_device next to girq, and
+> iterating user ports for the per-port message IRQs, be preferable?
+> That would mean putting in ksz_device an attribute that only the KSZ8463 
+uses. I would prefer not to.
+
+
+Best regards,
+Bastien
