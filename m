@@ -1,274 +1,206 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azolkn19010023.outbound.protection.outlook.com [52.103.23.23])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB8F34AB01;
-	Fri, 31 Jul 2026 15:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.23.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785512784; cv=fail; b=LgVrPo/6xuLlnNNRN+WEIi2eSDCACa5SnX+rR6DZvdj1L1zUbuCiArwd0tCFpjXp+DP+HTTtpPae7N7pCI4PyrqBqI/lkpnJc3ZInUeVP81BhnQ/39n/d6REbCRtks4uY+e/NY11XVkhAOTB0T1L2GAib7zqvDbnOMQLnATWlxg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785512784; c=relaxed/simple;
-	bh=fg4U4H4DQ/Tmt/DaEO+xHyjVxx/bbsjUerR81zb/Gcs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=DPNI3tg7SEW7iFcbU6Zm7j0hUO3vFn+gPJybmwPJovAnVgRrTB3rY+5RF6nwKQVofIW/LBDVXnx6ov+rfuFPJ6UeCeTXjKUaZOnxKm0xYQIFLhdTflpO0tG+ZQVOFZ/qikumESoIjbpM/L+YQhUCpxBPaipHCy7Osd+Unxu6Ubc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=HNoEKJjH; arc=fail smtp.client-ip=52.103.23.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F556437452;
+	Fri, 31 Jul 2026 15:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785512799; cv=none; b=lUa72iZ5Tm/ONt8PK0D8VCB+iZmykAheCCcPCAL5fY0eUE51EDjUvmBhIaZ/2gdJfXF6dT/kNgWPjPMujBswa4E8Dl4svrQDbvfCqRvYmh5IVGJc6bta9g+FVsBo3wdnJH0CPX6UwQivlnJ48XHKIZmKj4Lkfs56ONlEqsRa64Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785512799; c=relaxed/simple;
+	bh=MD9a4OcmbhugiNYlfmAkxZ5XVh6TqtLUn7h9BWYxL4A=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=IaqgRl29wyLR94eYOpLIb7jTphJB7OUEuQg+7gVvmd1JqniMvfl8sy/CtdORZgc9BO9NsCdcFZ7sgVlzwc1w72T9TUK1NI93dF3TL22+sC7UhviYtOdVFk8S2i1ySbJjxzQPUiev281dcy1Tkv1fK5HWM96yXQXzZy2yiik3SGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=r2nhWypA; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="HNoEKJjH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gAPv0clX6yBG/Aw1znTyijbkSfTSUJIrKPJzss5W4wQHxVWvoVcmLDGOpusxR7S3Y9zitx+mggY0DSCF17vDBFqpmfPwZArEHeG2/e32FNU10HjRz/NfA+lGS3QAZtoRll5cIl1vVG97+4z7So3/md9gYSFxRSTN+Q6jHxXTXcKS3XLltsbPNxVRhq4rrgo5me/mV6biQppiHEekC0jxMph6VruJfUdZ+N8BR5T3sOcWtmPCfc8y9qe1WtzXX7EODIxjx8bNaEBWPFStHyO9XTi89Jd2viCnuEYwoorWxdXGVrs8sA+nilACM5q0kNUZl0UOwTHGRnDf3D6ppcftCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0PtCaO6azyHl0YgDOclcarQtYz7qudoy8HuoSLECte4=;
- b=xxUX8isnXvjNgjE+aE3GW/ux+JdeO1XIdI7O72gqEagskYaYrsfviu+7iLUmYWQhy42L+9NWaT9V6y7IZ4/qX9V1Hp1h9En4Fa6GmcLBnFzv1towgM5IVHBLKfsi6nT9+KAgdE7aiohqgzHCCKd92pIEvddTYGmmPF6He6G+yTJvM0W9q7cpVTCUH/EefVP26a93Il0qBaWNGQc6fiSQwmn/yhw3sOyfEwm/5M7Ka5pR9/EOeYjf6p9W5FRGDbckxDVqE92kzwFUW43Leg6PW6V2g3hXcJB0yQw6p4+hTfJqvSYSdnAnkR8o1qqQYC4ek547OWPDHAnvX/7dH3PDGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0PtCaO6azyHl0YgDOclcarQtYz7qudoy8HuoSLECte4=;
- b=HNoEKJjHsO8MYqIs2cVihl/ETi8hIy6pQjDk6hOuBTcBkp/XkDyhSw/y/CMJ63OvVtmwyGozA8zNg9kv4tHYUhq8SbdKsI/0aIt+RGg1ezsDQdnnE/eLY7TqMipSZEkQakz2EcuwXLBARwYDk6so0ky5gaLkK2V7li9sHH5i7ETY6nwLzbTX05u6b6WLOEkz2b3GTgsWf0TSGHzJ8rFJhbVm47PsYf4oRpxpKcsUyQUG+zk8jzAaJLAsyq8TF+G8lYLutqAwR0azOS9wHXrU82bmMSSmSPGql9PMI9RrnUPo5VhGNSWOeLR7cvRp+5d8CXD6CVCjLkyRN55Y6cLOdw==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by IA1PR02MB9465.namprd02.prod.outlook.com (2603:10b6:208:3fd::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.16; Fri, 31 Jul
- 2026 15:46:20 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::900:1ccf:2b1e:52b6]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::900:1ccf:2b1e:52b6%3]) with mapi id 15.21.0270.012; Fri, 31 Jul 2026
- 15:46:20 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Kameron Carr <kameroncarr@linux.microsoft.com>, "decui@microsoft.com"
-	<decui@microsoft.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
-	"kys@microsoft.com" <kys@microsoft.com>, "longli@microsoft.com"
-	<longli@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>, Michael
- Kelley <mhklinux@outlook.com>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [PATCH v2 1/2] Drivers: hv: vmbus: add
- vmbus_establish_gpadl_caller_decrypted()
-Thread-Topic: [PATCH v2 1/2] Drivers: hv: vmbus: add
- vmbus_establish_gpadl_caller_decrypted()
-Thread-Index: AQHdIHwAL6NKvG3VSkGEjSTjwqhAlLaHxnvg
-Date: Fri, 31 Jul 2026 15:46:19 +0000
-Message-ID:
- <SN6PR02MB4157F701FD4592A34D893E96D4C82@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20260730233359.3850612-1-kameroncarr@linux.microsoft.com>
- <20260730233359.3850612-2-kameroncarr@linux.microsoft.com>
-In-Reply-To: <20260730233359.3850612-2-kameroncarr@linux.microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|IA1PR02MB9465:EE_
-x-ms-office365-filtering-correlation-id: 1841f4f2-400a-4fad-e7c3-08deef1adda9
-x-ms-exchange-slblob-mailprops:
- WaIXnCbdHrO+2YmbT5jW+WUSUt4IT5vR/v3JdPldgLi0scLZ7cROUFyCOJ6pYbPt5F8YRF+7kKiJlCsWqs8q12CUQHH1E29uSip5fEdEztywXtdC5CLoyXiQdkBEBplQ/E+kIufyd/t82ANWfFBHDm3Uwfdn+UPUs4qfTolZxLlscN6ibefZrp2ZRWPG9uaqxD3WY5PXxQ4yLIvxaHw2yvDFGX+D0D3hR++7SP0y8azldCLE1jus9Fj+9eHe6TIJWh+A3Ic+bkiS3ph/7bWnA1qwhXn7pO1bjmuL5fS2GkNq9WbhnhJoj6jYp93DXqSOv8TPmlFULjDRSIO3U+bNVLBFyMmawioTpqTlp0sprS6Cest2VFnyowF6MXAFo9OpF60CjSTGlEDVpwjHGSmOkFCCKgBhJ7/kclT1NvTN6xsfoCVj30RoOtYlCPYJIKv5WFLZEV/cr6tN5iOFJJwAEkwd4JvW/Tjo0c7ZOGHGffXUmXln4YranbxJvOVqD8ycZ0440EFp9vu501fZBTvw6Phf0inzNZ07gBSxERRIF6o3nMizec0wTPhEf8arQBSykZIrShqcwo+dTsO69mGXM5ATZgk7+tr0aw7KdEp58baW0SfO/dXVvrYadVijwodD2Iek4tWP1wg3tTabfYDssvHuzDXcysy48LUhLc3UjYivARMzexnw8ZfreNjnKRcKNKrl0AYYtxw401duVKRhG66ZdAbfpPw0QdOA8N8XVoV26APzBQ3omWGUeyBAR6FQyRQNLA626sY=
-x-microsoft-antispam:
- BCL:0;ARA:14566002|37011999003|51005399006|13091999003|41001999006|55001999006|24021099003|2604032031799003|31061999003|19110799012|8062599012|8060799015|15080799012|25010399006|40105399003|2607281247196008|102099032|3412199025|440099028|1710799026;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?OvLOfG8Wp7Yz6/8jS/3CysiXJd+xvE56mbXfF76l4D6n7VggiXkKCvySoTOc?=
- =?us-ascii?Q?SHxSXdvpAcHm0kNrYNbnX2tCNMFGSyohOnD4WGgPEpGGbeu2P8qOfAXrclEr?=
- =?us-ascii?Q?HfFXdc8hAdqJYSURgYeahnBDUkqk6MlKAvQUrjwiyWZCa8F2sjeF9ZKmiHq2?=
- =?us-ascii?Q?88OTNsjwW3rmk1JHxpIBG2GDdXj/PPUV/Z9UyCwV74GCz/BX0O46llggcxnq?=
- =?us-ascii?Q?/1AiYWVapLWJK/ynpAvt3QZ1RRkgKErPefRq30bVMFfq9EzSMVdL0y0HeYZr?=
- =?us-ascii?Q?O9C5E3DAJ4+XcLneVO4aFiVywXzVAYjEybJIqrjRskA3CwRDLBmxh0GUsigS?=
- =?us-ascii?Q?2cHb6UsiGZLcupyItdThs/rx6BUg7skKrtHnRuBYWuaMHRA9a6XTwjSp5MBw?=
- =?us-ascii?Q?0uX9y3uraWw8loPxYJsZfvUh/Lm7PtvDAlJHwOKR525LoCpqamIMQpWLNEtl?=
- =?us-ascii?Q?HKKdy4riaMQinIJA7dmAIvLaRNm9TEogDorOY+dnpdS3liXt3c201KMUqbPP?=
- =?us-ascii?Q?OWZJ2YgR1pLIGw1Kow4PL3sLtAxBdvpxvxuluCsyHbClMpUw8B1Q4AAQScqf?=
- =?us-ascii?Q?475xvtWClJGpbkaBlPu6bvDUuliW3O4lSaxu273XUIC2RpXlK+TMZdjL8fPd?=
- =?us-ascii?Q?I9kvuMvT2CHD1lONliEMf6n4kXlPTu0wT4fNWEUo5q83b4jh/fN7tB/TQENT?=
- =?us-ascii?Q?DoG+0/xP+RTQAA8V2uXXk5p8ldRtg3ffT2ni9ga8aMcb85wdrMAmWRPHQHhX?=
- =?us-ascii?Q?OLRkcXpJ6TBXwLsUCgrFZhhPZJjIjGO4Pxs/Fhv8IgtzbXVnXpnarXPKjkiv?=
- =?us-ascii?Q?u9uFgGmKawRHXyx7x2NAJy8uqUOyNlZFZ0oH2Mwg9wr44i+Jh7Xf/ZvTr2wq?=
- =?us-ascii?Q?1ltq4YA9NOpdzUWrfDdHLvDoyRrp+KGriuzbXMdROrWtiE6MUYfNlfCepd9e?=
- =?us-ascii?Q?6FEP0kAAOco9Ifr5UDXYxc/CYiF+NNWH1DPRhDlg7giCy6TV7GoY6ZXol2lX?=
- =?us-ascii?Q?VL4Lx5yKuV1F1PpfYy8csNM/mTJwhdLfezy0Ey2ds0rTsV/MInX2nTyU+ywf?=
- =?us-ascii?Q?j8aQguEOZTCPpi9qBcm8phrhyfa7P25dUlqZ4JnAewZxC6LKg/f/3rKUtdfa?=
- =?us-ascii?Q?y56sPTberMWrrH4djHEA8bQ2AjjS/OAhGA=3D=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?1LVvuonFcbcSwJuMyJRzJQidusf0ZEuMzlTmDvBe9AN7Ny2sb0TXpqRTu4B9?=
- =?us-ascii?Q?HFeIHBSyUI8gO2krLWDWdGNEzyKYo74ScMfHhVujBzc5H4v5lirAg7mlWaL0?=
- =?us-ascii?Q?Zgis2uo5c8xxaurGEfXobHqvbqcBkB45rJrPrNNWZrpml1x31bA9gtgzxPtT?=
- =?us-ascii?Q?MRQV3TN9rZiBQpoZmb81nf/sKITER/rCt68yWdp+5zvJRv059jHkpDKwTXLo?=
- =?us-ascii?Q?ZcUA45RAzEly30+KOE8/eeREhPShpA6ibHi9cvQz8hxLPi77OxQk+eX3maem?=
- =?us-ascii?Q?hIzzzpTAX4iNpRZRzKlcB/B/KaP/V/gepynGlvCVTq/6byW1tUJw76kIJqFC?=
- =?us-ascii?Q?sH5cKIGAGtxvdypC+UQdNWZYl1ilo/qpq00a8H8PfSsRz2DjwjPIpmAAsBHv?=
- =?us-ascii?Q?+P7m9p9u6pg3I43xxko5dbUM3pXcdsaPjkfj/qmNnZmaOkOco0WvlLD8wEEq?=
- =?us-ascii?Q?RSWdqlmm5SYPZTbg0gVbgeWUnQIw9zg2Qmr42FaH8R+0RKAOOTVtUmf/mL8x?=
- =?us-ascii?Q?oB9dTof4roN/2cCrc/tkVMC6jDwBTf+Of/1n6CRl80Kilq3lGfGsI2uwg0z+?=
- =?us-ascii?Q?THPQIOtmXs0Rq4i7ErsmFRgccoCvfCb7X3eNF+x35KAXnB0arYfyNn5VEWOm?=
- =?us-ascii?Q?uH5ixon0qU68/TIkfB0otwmkrMcq0mg6UYXTrYn9uPUjh+sw7/j7hMkpiCnN?=
- =?us-ascii?Q?obGZJG+xo2ZlWAXQegpos+XRkUYvR8QuM0kXr4LONnyBzoIFYXVx/cNALvPH?=
- =?us-ascii?Q?lc7M98MzZRGTJ7Jm/YBLHGzornJwKLIrbVUpyueWzw/esZssIlpiGX5DSSBO?=
- =?us-ascii?Q?uAa4BhN2eSE1xIxrz6GMYbS3wUO+5ZgoNYUjoYqxRbd8wEL9FHYIdrhJICVk?=
- =?us-ascii?Q?tFYlCtyOa0VytYE3bhFn0M8GIvsktolRs+t3nsxnLJQAtcOPVO5tXr9Bpvpo?=
- =?us-ascii?Q?JSBQKOzOAcc3FfXZp4Aez4SSJHL6coE7Wvi1RCv3hDVSJoPWg1wiMb1Zxe0v?=
- =?us-ascii?Q?uQRA+/cv/cA07Jccnlio9sIn1tRT9wI4xOtGHEJ1JZWiK26El/v+N7tuN73M?=
- =?us-ascii?Q?waPqSTqnuxPt3+wOPe2V/hC/4IQCnsmycv/M1udnTyiWhWdHDwO7gl2HqrQP?=
- =?us-ascii?Q?zWei2y3o3usW9SbamQzT1jXoshUdAgh0l19+k/2GoBL1JfEjV6PceEuhII3x?=
- =?us-ascii?Q?7KIOdEfkswolJH+ov5XhbczpzPpYl2PKPqgMEaXSExII4letr8Z7s65CtrC/?=
- =?us-ascii?Q?VHHRpn6L9bt87pfiTL7D9qSzwR67sWkE5Mopcv5ZMjqj2zp32WTcET0hukDp?=
- =?us-ascii?Q?ymJOpi85hd/KHJmkQ0AwvDWjga4p2MTHRbvmnQN6R7C3Rvs9snQXtGoTf1kv?=
- =?us-ascii?Q?2Lo7DLI=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="r2nhWypA"
+Received: by dvalin.narfation.org (Postfix) id 71A2A20CB8;
+	Fri, 31 Jul 2026 15:46:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1785512791;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PS8O6gdxc7+G01I46NmGoVN0gyWZvVlcYIPx5sNGNVs=;
+	b=r2nhWypAlmjHRfoxiQIBoEbMV9+1cl+CsFK87rM2rk7CnLvVn+rfZSjJUlMb192GjvZzaa
+	j0IHBececJQpw6t0Cmv8IbfAzRz8UXC0po7VZx349RtyoTrFrheKESHz0pBo3CHW0aFoVT
+	5ffOz6odyuwpdFYjXfds6uspwf8BBjk=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1841f4f2-400a-4fad-e7c3-08deef1adda9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jul 2026 15:46:19.9133
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR02MB9465
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] batman-adv: reject unrepresentable multicast TVLV
+ offsets
+From: Sven Eckelmann <sven@narfation.org>
+To: marek.lindner@mailbox.org, sw@simonwunderlich.de, antonio@mandelbit.com, 
+ sven@narfation.org
+Cc: David Lee <david.lee@trailofbits.com>, Kyle Zeng <kylebot@openai.com>, 
+ Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>, 
+ b.a.t.m.a.n@lists.open-mesh.org, linux-kernel@vger.kernel.org, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ netdev@vger.kernel.org, 
+ =?utf-8?q?Linus_L=C3=BCssing?= <linus.luessing@c0d3.blue>
+In-Reply-To: <20260731135222.566367-1-david.lee@trailofbits.com>
+References: <20260731135222.566367-1-david.lee@trailofbits.com>
+Date: Fri, 31 Jul 2026 17:46:08 +0200
+Message-Id: <178551276854.62695.15966621050711216654.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4888; i=sven@narfation.org;
+ h=from:subject:message-id; bh=MD9a4OcmbhugiNYlfmAkxZ5XVh6TqtLUn7h9BWYxL4A=;
+ b=owGbwMvMwCXmy1+ufVnk62nG02pJDFk5h30VMv7IT1hx+Kkhz/eKuOffAnbc2C69nKHDRIDnU
+ LlJpOODjlIWBjEuBlkxRZY9V/LPb2Z/K/952sejMHNYmUCGMHBxCsBEPkxiZLhv/+zq60fhLc8Z
+ RFYXap8L9J0izxvPYfD2lt7+bIXV5aGMDM+Mthzu0bgdcG9W64RJ9RYpy2Z8/XA7NmsXi23uvG1
+ X5zADAA==
+X-Developer-Key: i=sven@narfation.org; a=openpgp;
+ fpr=522D7163831C73A635D12FE5EC371482956781AF
 
-From: Kameron Carr <kameroncarr@linux.microsoft.com> Sent: Thursday, July 3=
-0, 2026 4:34 PM
->=20
-> Add a new vmbus_establish_gpadl_caller_decrypted() for callers that want =
-to
-> decrypt their own buffers. Add a new hv_gpadl_type,
-> HV_GPADL_BUFFER_DECRYPTED, to communicate the decryption status of the
-> buffer.
->=20
-> No functional change for existing callers.
->=20
-> Signed-off-by: Kameron Carr <kameroncarr@linux.microsoft.com>
+On Fri, 31 Jul 2026 13:52:22 +0000, David Lee <david.lee@trailofbits.com> wrote:
+> The network and transport header fields in struct sk_buff are 16-bit
+> offsets from skb->head, and U16_MAX is reserved as the unset transport
+> header value. batadv_tvlv_call_handler() sets both fields without checking
+> that the end of a received multicast TVLV is representable.
+> 
+> A sufficiently large TVLV therefore wraps the transport header offset.
+> skb_network_header_len() then returns a bogus large length, allowing
+> batadv_mcast_forw_packet() to access memory beyond the skb data.
 
-Looks good to me.
+Ok, we end up here with transport_header < network_header. This is then
+wrapping in
 
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+static inline u32 skb_network_header_len(const struct sk_buff *skb)
+{
+	DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
+	return skb->transport_header - skb->network_header;
+}
 
-> ---
->  drivers/hv/channel.c   | 27 +++++++++++++++++++++++++--
->  include/linux/hyperv.h |  8 +++++++-
->  2 files changed, 32 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
-> index 6821f225248b1..4782f5070bba9 100644
-> --- a/drivers/hv/channel.c
-> +++ b/drivers/hv/channel.c
-> @@ -40,6 +40,7 @@ static inline u32 hv_gpadl_size(enum hv_gpadl_type type=
-, u32 size)
->  {
->  	switch (type) {
->  	case HV_GPADL_BUFFER:
-> +	case HV_GPADL_BUFFER_DECRYPTED:
->  		return size;
->  	case HV_GPADL_RING:
->  		/* The size of a ringbuffer must be page-aligned */
-> @@ -100,6 +101,7 @@ static inline u64 hv_gpadl_hvpfn(enum hv_gpadl_type t=
-ype, void *kbuffer,
->=20
->  	switch (type) {
->  	case HV_GPADL_BUFFER:
-> +	case HV_GPADL_BUFFER_DECRYPTED:
->  		break;
->  	case HV_GPADL_RING:
->  		if (i =3D=3D 0)
-> @@ -460,7 +462,8 @@ static int __vmbus_establish_gpadl(struct vmbus_chann=
-el *channel,
->  	}
->=20
->  	gpadl->decrypted =3D !((channel->co_external_memory && type =3D=3D HV_G=
-PADL_BUFFER) ||
-> -		(channel->co_ring_buffer && type =3D=3D HV_GPADL_RING));
-> +		(channel->co_ring_buffer && type =3D=3D HV_GPADL_RING) ||
-> +		(type =3D=3D HV_GPADL_BUFFER_DECRYPTED));
->  	if (gpadl->decrypted) {
->  		/*
->  		 * The "decrypted" flag being true assumes that set_memory_decrypted()=
- succeeds.
-> @@ -575,7 +578,7 @@ static int __vmbus_establish_gpadl(struct vmbus_chann=
-el *channel,
->   * @channel: a channel
->   * @kbuffer: from kmalloc or vmalloc
->   * @size: page-size multiple
-> - * @gpadl_handle: some funky thing
-> + * @gpadl: output gpadl
->   */
->  int vmbus_establish_gpadl(struct vmbus_channel *channel, void *kbuffer,
->  			  u32 size, struct vmbus_gpadl *gpadl)
-> @@ -585,6 +588,26 @@ int vmbus_establish_gpadl(struct vmbus_channel *chan=
-nel, void *kbuffer,
->  }
->  EXPORT_SYMBOL_GPL(vmbus_establish_gpadl);
->=20
-> +/*
-> + * vmbus_establish_gpadl_caller_decrypted - Establish a GPADL for a buff=
-er
-> + * that has already been decrypted by the caller.
-> + *
-> + * @channel: a channel
-> + * @kbuffer: from kmalloc or vmalloc; must already be decrypted by the c=
-aller
-> + * @size: page-size multiple
-> + * @gpadl: output gpadl
-> + *
-> + * The caller is responsible for re-encrypting the buffer before freeing=
- it.
-> + */
-> +int vmbus_establish_gpadl_caller_decrypted(struct vmbus_channel *channel=
-,
-> +					   void *kbuffer, u32 size,
-> +					   struct vmbus_gpadl *gpadl)
-> +{
-> +	return __vmbus_establish_gpadl(channel, HV_GPADL_BUFFER_DECRYPTED,
-> +				       kbuffer, size, 0U, gpadl);
-> +}
-> +EXPORT_SYMBOL_GPL(vmbus_establish_gpadl_caller_decrypted);
+to a really large value.
+
+And as result, following allows larger tvlv_lens than are actually practical
+possible:
+
+	/* check if full tracker tvlv is within skb length */
+	tvlv_len = sizeof(*mcast_tracker) + ETH_ALEN * num_dests;
+	if (tvlv_len > skb_network_header_len(skb))
+		return -EINVAL;
+
+Just because tvlv_len is insane large, correct?
+
+
+@netdev: Just to sidetrack a little bit: I am wondering if `transport_header <
+network_header` should also be handled in skb_network_header_len() (and similar
+functions)? And if the return value of u32 should be reduced to u16.
+
+In this specific case, a return value of u16 would have returned the correct
+result instead of the insane large length - but trigger and WARN_ON_ONCE for
+transport_header == U16_MAX case.
+
+> 
+> Reject multicast TVLVs whose absolute end offset cannot be represented
+> before changing either header field.
+> 
+> Fixes: 07afe1ba288c ("batman-adv: mcast: implement multicast packet reception and forwarding")
+> Bug found and triaged by OpenAI Security Research and
+> validated by Trail of Bits.
+> 
+> Assisted-by: Codex:gpt-5.6-sol gpt-5.5-cyber
+
+This is not how we write the tags section of a commit message. The "Bug
+found..." looks like it was accidentally added and doesn't belong here. And it
+seems like this was only added by you for the patches you've send out today:
+
+https://lore.kernel.org/all/?q=Bug%20found%20and%20triaged%20by%20OpenAI%20Security%20Research%20and
+
+
+See https://docs.kernel.org/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
+for more documentation how you can document such things.
+
+How do you want to procede here? Because the rest looks good.
+
+>
+>
+> diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+> index 5600aaf00627c..8354c62bd86a7 100644
+> --- a/net/batman-adv/tvlv.c
+> +++ b/net/batman-adv/tvlv.c
+> @@ -437,6 +437,9 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
+>  			return NET_RX_SUCCESS;
+>  
+>  		tvlv_offset = (unsigned char *)tvlv_value - skb->data;
+> +		if (skb_headroom(skb) + tvlv_offset + tvlv_value_len >= U16_MAX)
+> +			return -EINVAL;
 > +
->  /**
->   * request_arr_init - Allocates memory for the requestor array. Each slo=
-t
->   * keeps track of the next available slot in the array. Initially, each
-> diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
-> index 964f1be8150c5..1146addbb42c4 100644
-> --- a/include/linux/hyperv.h
-> +++ b/include/linux/hyperv.h
-> @@ -70,7 +70,8 @@
->   */
->  enum hv_gpadl_type {
->  	HV_GPADL_BUFFER,
-> -	HV_GPADL_RING
-> +	HV_GPADL_RING,
-> +	HV_GPADL_BUFFER_DECRYPTED
->  };
->=20
->  /* Single-page buffer */
-> @@ -1205,6 +1206,11 @@ extern int vmbus_establish_gpadl(struct vmbus_chan=
-nel *channel,
->  				      u32 size,
->  				      struct vmbus_gpadl *gpadl);
->=20
-> +extern int vmbus_establish_gpadl_caller_decrypted(struct vmbus_channel *=
-channel,
-> +						  void *kbuffer,
-> +						  u32 size,
-> +						  struct vmbus_gpadl *gpadl);
-> +
->  extern int vmbus_teardown_gpadl(struct vmbus_channel *channel,
->  				     struct vmbus_gpadl *gpadl);
->=20
-> --
-> 2.45.4
->=20
 
+Just for documentation purposes:
+
+This is (skb->data - skb->head) + tvlv_offset + tvlv_value_len
+
+The calculation in skb_set_transport_header():
+
+offset = skb->data - skb->head
+offset += (tvlv_offset + tvlv_value_len)
+
+>  		skb_set_network_header(skb, tvlv_offset);
+>  		skb_set_transport_header(skb, tvlv_offset + tvlv_value_len);
+>  
+
+Just a lazy way to show that the return value u16 returns more sane results:
+
+ #include <stdint.h>
+ #include <stdio.h>
+
+// #define RETURN_TEST_TYPE uint32_t
+ #define RETURN_TEST_TYPE uint16_t
+
+uint16_t network_header(unsigned long headroom, const int offset)
+{
+	return headroom + offset;
+}
+
+uint16_t transport_header(unsigned long headroom, const int offset)
+{
+	return headroom + offset;
+}
+
+RETURN_TEST_TYPE network_header_len(uint16_t network_header, uint16_t transport_header)
+{
+	// ignore this for now: DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
+	return transport_header - network_header;
+}
+
+int main(void)
+{
+        unsigned int tvlv_value_len;
+        unsigned int tvlv_offset;
+	unsigned int headroom;
+	uint16_t transport;
+	uint16_t network;
+	unsigned int t;
+
+	for (headroom = 0; headroom < 65535; headroom++) {
+		for (tvlv_offset = 0; tvlv_offset < 65535; tvlv_offset++) {
+			for (tvlv_value_len = 0; tvlv_value_len < 65535; tvlv_value_len++) {
+				network = network_header(headroom, tvlv_offset);
+				transport = transport_header(headroom,
+                                                             tvlv_offset + tvlv_value_len);
+				t = network_header_len(network, transport);
+
+				if (t != tvlv_value_len)
+					printf("Failed for headroom %u tvlv_offset %u, expected %u, seen %u\n",
+					       headroom, tvlv_offset, tvlv_value_len, t);
+			}
+		}
+	}
+
+	return 0;
+}
+
+-- 
+Sven Eckelmann <sven@narfation.org>
