@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAA827FD76;
-	Fri, 31 Jul 2026 01:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA2F78F26;
+	Fri, 31 Jul 2026 01:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785461437; cv=none; b=ib1ji60CAp77wQW1bSpZ+jUGC0wDyj3T+qX17YBuRfKHyM1SItE8DWOYNGYRdlHQjz9JGddJU5HATt934xHZgza8TiC1nkGkagXGYJgHurI9jnCtTamW7m3rwlW9O3CyFxzKl6KZ3qwJimDGZbm/6uzLwl/fCtrz4Qkbdl2jZuQ=
+	t=1785461437; cv=none; b=aXYDx+y+1495LdqPgHCRrK/KJ5tmEMMWtm0lhXil5O4FOgyKJNhygv4XjkWfbImdJKx8KarMRNi83EIDWI8LjCnCkslzkCsZrCigMNLCVkhgUWJifas+kg9TDpnbmbQ4ay6TUqFV9Pp4YFQZ6qo1IcnGCfObv9E9SXr24w8683g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785461437; c=relaxed/simple;
-	bh=Sa0BJCzf3ubd5TRLcUcTuHkdqep5uI3oK474E7bTYtE=;
+	bh=ZFqP/KfCXmtjDMwiRdgvlE7+AX2g+C7ZwlE+lyTxyIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ew+O7Co5o0coVmUH8qvsFmsDOmx86KZewdog9/ZaADfONwD3nylEEtSQC0dU+58BbVR0HEqpSm46jdv/j+wmLFKv6kqOZJdsdfQ1BppYA2iEkpxuccphBsSov/Fgexf5L6OBfmGFCPD8usSb5dBdut6ZJfBJGtFKuxiZ+A3kDSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HbhHSAYL; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=In22HxBif6bwTvPObNYTcxHM0KBlmd3ngiL1CtPnvQsh7T9lRyCs11P2gkRjkKY9V4JpyQ4ojodv03UFTiZBnLA6NaGpnpV2R3nRbOH7gD/ouXESoSha3sCnz4O4NTVRA1MKWag6sGeRj32WbJiewBaJA5SMUBdvYyYzGb1oFWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2jy/4lm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HbhHSAYL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932761F00A3D;
-	Fri, 31 Jul 2026 01:30:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2jy/4lm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3745C1F000E9;
+	Fri, 31 Jul 2026 01:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785461435;
-	bh=qdjPkg/SoqQZO9+3CeYQJ72QbSWE0/dC0WwCzLbrFNw=;
+	s=k20260515; t=1785461433;
+	bh=5UHDMfLJSsEF+ILuCqHZMAytaReLNBZgFZZwHcYKGH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HbhHSAYLC41vlRsNz/3VvLPI000yPYIt1PVWnhtF+pgIH9dABERXx7RyAsFE1/wlJ
-	 ja8ihTuxvhYRGJE/DLzMwmq9Adp4k/bwnDscC012XUKaVfN1B/x8BZKq0Kr6P3b3pj
-	 s5PhOxH1uroTZOSgNSaaRLFnAfQaTACuS68wCrVf+MqPrplpNOlemR5QOj1vJFEQYN
-	 BqqFGU+Ibw+v5cy0spJ5S1ydyXlhL+BOUx5/raRc54vPcL5cTETm7hJvPErKUJLX/0
-	 kgd0I7ozvWHaxaf4JiKwDclCmW6PRi78rfgpJ9qIgFw19ks9i8GxjdydZPJboLLHXT
-	 QaLB+rGJnBsuA==
+	b=a2jy/4lmTBm5isfWHryZlsV2mlUm4I1IQs/fSe1EJ+gmU+UqKJftdn8fCjIYuVBCy
+	 aUMJcTFM+mL7ry29hNs8TnoxtIEA/DJcFUIaqmGacc5lNM1eFxLoYGlaxOue/jODec
+	 v/TX3wVzhxiwi7xGBUD5gGgLoW5u7UsxBSRHw3c/TLMcnDYxZAK9UPmP67MOOyqngf
+	 ANxjkN72lpi7zcm3rYYU0zcsgKBJXlodjh57FX/LocYVv65QNYtPrgF98o87RCjYI1
+	 H4WLqwNRpRFdXKi46EKlfr5mwPP7SRg+jmeEvIY+SKrX4jW3NFAFZZrNFVV1jXQCZu
+	 aYLDwtymJ4N8A==
 From: Jakub Kicinski <kuba@kernel.org>
 To: illusion.wang@nebula-matrix.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -45,12 +45,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	skhan@linuxfoundation.org,
 	hkallweit1@gmail.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v22 net-next 09/12] net/nebula-matrix: dispatch: add cross-version channel message framework
-Date: Thu, 30 Jul 2026 18:30:33 -0700
-Message-ID: <20260731013033.745204-1-kuba@kernel.org>
+Subject: Re: [PATCH v22 net-next 07/12] net/nebula-matrix: add chip-wide hardware init/deinit implementation
+Date: Thu, 30 Jul 2026 18:30:32 -0700
+Message-ID: <20260731013032.745167-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260723040110.91410-10-illusion.wang@nebula-matrix.com>
-References: <20260723040110.91410-10-illusion.wang@nebula-matrix.com>
+In-Reply-To: <20260723040110.91410-8-illusion.wang@nebula-matrix.com>
+References: <20260723040110.91410-8-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,105 +62,73 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
---- Patch [9]: [PATCH v22 net-next 09/12] net/nebula-matrix: dispatch: add cross-version channel message framework ---
-commit d32035d9a9bd3114eb253cf0283172847c233d7d
+--- Patch [7]: [PATCH v22 net-next 07/12] net/nebula-matrix: add chip-wide hardware init/deinit implementation ---
+commit c620485c32e37b926b2895bd18463f304a29e084
 Author: illusion wang <illusion.wang@nebula-matrix.com>
 
-net/nebula-matrix: dispatch: add cross-version channel message framework
-    
-Implement bidirectional channel request/response RPC handlers for 5 dispatch
-resource operations: get_vsi_id, get_eth_id, configure_msix_map,
-destroy_msix_map, set_mailbox_irq.
+net/nebula-matrix: add chip-wide hardware init/deinit implementation
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-> index 8116643859c79..c82c336f50e5e 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+This commit adds Leonis chip-wide hardware initialization and
+deinitialization logic to setup the full datapath pipeline.
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+> index 1c136b9e30b2a..22690cb9cc32b 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+
 [ ... ]
-> +static int nbl_disp_configure_msix_map(struct nbl_dispatch_mgt *disp_mgt,
-> +				       u16 num_net_msix, u16 num_others_msix,
-> +				       bool net_msix_mask_en)
+
+> +static int nbl_shaping_eth_init(struct nbl_hw_mgt *hw_mgt, u8 eth_id, u8 speed)
 > +{
-> +	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
-> +	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
-> +	struct nbl_common_info *common = disp_mgt->common;
-> +
-> +	return NBL_OPS_CALL_RET(res_ops->configure_msix_map, (p,
-> +				common->mgt_pf, num_net_msix,
-> +				num_others_msix, net_msix_mask_en));
-> +}
+> +	union nbl_shaping_dvn_dport_u dvn_dport = { 0 };
+> +	union nbl_shaping_dport_u dport = { 0 };
+
+[ ... ]
+
+> +	/* 2. write config words (valid=0, safe) */
+> +	dport.info.low = FIELD_PREP(DPORT_CIR_MASK, rate) |
+> +			 FIELD_PREP(DPORT_PIR_MASK, rate) |
+> +			 FIELD_PREP(DPORT_DEPTH_MASK, depth) |
+> +			 FIELD_PREP(DPORT_CBS_MASK_LOW, depth & 0x3F);
+> +	dport.info.high = FIELD_PREP(DPORT_CBS_MASK_HIGH, depth >> 6) |
+> +			  FIELD_PREP(DPORT_PBS_MASK, depth);
+
+[ ... ]
+
+> +	nbl_hw_wr_regs(hw_mgt, NBL_SHAPING_DPORT_REG(eth_id), dport.data,
+> +		       sizeof(dport));
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+> index 1d6d614be7d69..8e59b9d2ab3b0 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+
+[ ... ]
+
+> +union nbl_shaping_dport_u {
+> +	struct nbl_shaping_dport {
+> +		u64 low;
+> +		u64 high;
+> +	} info;
+> +	u32 data[NBL_SHAPING_DPORT_DWLEN];
+> +};
 
 [Severity: High]
-Does nbl_disp_configure_msix_map() need to take a mutex lock before invoking
-res_ops->configure_msix_map()?
+Will this union alias cause corrupted hardware writes on big-endian
+architectures?
 
-Calling this resource operation without synchronization might lead to data races
-and hardware state corruption if multiple requests arrive simultaneously.
+When fields are populated using native u64 in nbl_shaping_eth_init(), for
+example:
 
-[ ... ]
-> +static void nbl_disp_chan_configure_msix_map_resp(void *priv, u16 src_id,
-> +						  u16 msg_id, void *data,
-> +						  u32 data_len)
-> +{
-[ ... ]
-> +	if (!res_ops->configure_msix_map) {
-> +		err = NBL_CHAN_RESP_UNIMPLEMENTED;
-> +	} else {
-> +		ret = NBL_OPS_CALL_RET(res_ops->configure_msix_map,
-> +				       (p, src_id,
-> +					le16_to_cpu(param.num_net_msix),
-> +					le16_to_cpu(param.num_others_msix),
-> +					le16_to_cpu(param.msix_mask_en)));
-> +		if (ret)
-> +			err = NBL_CHAN_RESP_ERR;
-> +		}
+        dport.info.low = FIELD_PREP(DPORT_CIR_MASK, rate) | ...
 
-[Severity: High]
-Should nbl_disp_chan_configure_msix_map_resp() also use locking when invoking
-res_ops->configure_msix_map()?
+And then written via the u32 array alias:
 
-Since this response handler can run from a workqueue context concurrently with
-other operations, this might also lead to hardware state corruption.
+        nbl_hw_wr_regs(hw_mgt, NBL_SHAPING_DPORT_REG(eth_id), dport.data,
+                       sizeof(dport));
 
-[ ... ]
-> +static void nbl_disp_chan_set_mailbox_irq_resp(void *priv, u16 src_id,
-> +					       u16 msg_id, void *data,
-> +					       u32 data_len)
-> +{
-[ ... ]
-> +	if (!res_ops->set_mailbox_irq) {
-> +		err = NBL_CHAN_RESP_UNIMPLEMENTED;
-> +	} else {
-> +		ret = NBL_OPS_CALL_RET(res_ops->set_mailbox_irq,
-> +				       (p, src_id, vector_id, enable_msix));
-> +		if (ret)
-
-[Severity: High]
-Similarly, should nbl_disp_chan_set_mailbox_irq_resp() be protected by a lock
-when modifying the mailbox IRQ hardware state?
-
-[ ... ]
-> @@ -126,6 +562,10 @@ int nbl_disp_init(struct nbl_adapter *adapter)
->  	adapter->core.disp_mgt = disp_mgt;
->  	adapter->intf.dispatch_ops_tbl = disp_ops_tbl;
->  
-> +	ret = nbl_disp_setup_msg(disp_mgt);
-> +	if (ret)
-> +		return ret;
-> +
->  	if (common->has_ctrl)
->  		nbl_disp_setup_ctrl_lvl(disp_mgt, NBL_DISP_CTRL_LVL_MGT);
->  
-
-[Severity: High]
-Does the dispatch operations table remain uninitialized for non-control PFs
-here?
-
-Since nbl_disp_setup_ctrl_lvl() is responsible for populating the disp_ops
-table (including setting up the remote message request handlers as fallbacks
-when testing control levels), skipping this step when common->has_ctrl is false
-might leave the function pointers as NULL.
-
-Could this lead to a NULL pointer dereference when a regular non-control PF
-subsequently attempts to invoke a dispatch operation like get_vsi_id or
-get_eth_id?
+On big-endian systems, the upper 32 bits of the 64-bit integer will map to
+data[0] instead of the lower 32 bits. Does this result in malformed hardware
+configuration for traffic shaping?
