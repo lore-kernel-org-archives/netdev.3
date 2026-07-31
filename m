@@ -1,116 +1,89 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222264582DE;
-	Fri, 31 Jul 2026 19:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83589455188;
+	Fri, 31 Jul 2026 19:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785524736; cv=none; b=QWho5dEiyjyEBOro8cgGqanlXwZXAzK5UOsRYt4SqePQwZFau4d/pNAWzbr976lD40P5u+p8BSnfh88X4QCyhQKYd7CLZS+Ki052Ob9Ba69Ze/BTeODRsNsVscdpKD1d7oy14PkwsHsgJpNYEx3cgJwQBfXbAMTmU3MECqhc7CY=
+	t=1785524789; cv=none; b=Kuy87x9czVBEkY3pW0W8YVZr7oZWVq7sZdQOvbp0l6AG780b9Ylf3erBoItNpgFuW5nHSVTN2eOy4xjNSRwgvR8SsR/QRoLL1NS32lQ7tqJzeA0gO3a95jUdvZ9mI58imY5lSCGaJeYKrl0VlRJ9zLqYTJdxde87sWldgTi2tzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785524736; c=relaxed/simple;
-	bh=Ny2yTuX01F4NKzf5GLq9Qz3MWfpApebxl9ztTvdn+Pk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gj70fxqNx0zAxe7R5paGgT5EHZeRz9ieIhg+WWRSZvLltG8Vw3h+seg0dsQVZP6SwMrOY5MjS9Vxl9QunwSXs1pQ8VupdPZjICEqmsGnkwe9/K7sTajmZbebZctasbf6SrYFVcUcegwo20yv54/knuWmj5Xtccdth0MTXSSh+wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=q/W4w3zD; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1785524789; c=relaxed/simple;
+	bh=A6V6WrLAH+qzv7PfbFNPI7KUxm2YXMn4UjGkCHaXK+g=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cuAmwvDjLo9FTMRcjhbMN2dIv5F1b9T/cIkQqp0z+rwZsrxqAVYyAl//kMtMDzaAjUxeSvOpEG7spF2h2Nx8HDbtl1+gRI8owqHTqM+FkJCgpzQPlx7cp3FBNZG1lG5JH6jrFS8coiwbXb3pvLm5xI/2vkd3dMgp73N0JaGJEJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=UJCnfacx; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="q/W4w3zD"
-Received: by dvalin.narfation.org (Postfix) id A141A20268;
-	Fri, 31 Jul 2026 19:05:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1785524728;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8es6j2T4uWDHkN9zn7twbC0XdaR/06DY9gMYm9pk8LQ=;
-	b=q/W4w3zDpVkKCeXSPREu4f1Jgx4+yneXOmba9fT9f2MlyDqFREKVgsS7lbNZHvWdBF8Ouh
-	SNr7euBXcM4yvROD8O34Wb/IHNV03VDCQff/WY/AzvH3WN6Bv0/k6fVDHGplEUeROvnKEF
-	zwetPyUi+BcprZJl1gPKf0c4/c6RKdk=
-From: Sven Eckelmann <sven@narfation.org>
-To: marek.lindner@mailbox.org, sw@simonwunderlich.de, antonio@mandelbit.com
-Cc: David Lee <david.lee@trailofbits.com>, Kyle Zeng <kylebot@openai.com>,
- Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
- b.a.t.m.a.n@lists.open-mesh.org, linux-kernel@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org,
- Linus =?UTF-8?B?TMO8c3Npbmc=?= <linus.luessing@c0d3.blue>
-Subject: Re: [PATCH] batman-adv: reject unrepresentable multicast TVLV offsets
-Date: Fri, 31 Jul 2026 21:05:22 +0200
-Message-ID: <4820667.LvFx2qVVIh@sven-desktop>
-In-Reply-To: <178551276854.62695.15966621050711216654.b4-review@b4>
-References:
- <20260731135222.566367-1-david.lee@trailofbits.com>
- <178551276854.62695.15966621050711216654.b4-review@b4>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="UJCnfacx"
+Received: from DairyQueen (unknown [52.172.102.253])
+	by linux.microsoft.com (Postfix) with ESMTPSA id BE16B20B7166;
+	Fri, 31 Jul 2026 12:06:03 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BE16B20B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1785524770;
+	bh=Buow5ich3ZiFzKXHDpEEZtNLq0R4+a5F2MMhRGRYcIs=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:From;
+	b=UJCnfacxHqDa1Px0lD2QQnNja70YGAGXyFHqCm58LY3DDA65tvRh46gJT7jHSJ2uH
+	 NMLJzCvapsgFGdml3tA0wgNxpEd+n2C44lpCEl973vpi8EqOsvxA1HdngRi6P+fV1C
+	 kYnpYMG6gzznanipRi6ELJKPDLFdIFXu3Cl97ljg=
+From: "Kameron Carr" <kameroncarr@linux.microsoft.com>
+To: "'Michael Kelley'" <mhklinux@outlook.com>,
+	<decui@microsoft.com>,
+	<haiyangz@microsoft.com>,
+	<kys@microsoft.com>,
+	<longli@microsoft.com>,
+	<wei.liu@kernel.org>
+Cc: <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<kuba@kernel.org>,
+	<pabeni@redhat.com>,
+	<linux-hyperv@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>
+References: <20260721195633.1438361-1-kameroncarr@linux.microsoft.com> <20260721195633.1438361-3-kameroncarr@linux.microsoft.com> <SN6PR02MB41576F1E9A4F0AC3D6AB8C18D4CF2@SN6PR02MB4157.namprd02.prod.outlook.com>
+In-Reply-To: <SN6PR02MB41576F1E9A4F0AC3D6AB8C18D4CF2@SN6PR02MB4157.namprd02.prod.outlook.com>
+Subject: RE: [RFC PATCH 2/2] hv_netvsc: back GPADL buffers with kmalloc + decrypt + vmap
+Date: Fri, 31 Jul 2026 12:06:18 -0700
+Message-ID: <000901dd211f$b119be20$134d3a60$@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2488068.ElGaqSPkdT";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQNRsRip/0GPmGqK2zS6hqfVzZeToQIbF+Y6AtauNauzd0L48A==
+Content-Language: en-us
 
---nextPart2488068.ElGaqSPkdT
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-Date: Fri, 31 Jul 2026 21:05:22 +0200
-Message-ID: <4820667.LvFx2qVVIh@sven-desktop>
-In-Reply-To: <178551276854.62695.15966621050711216654.b4-review@b4>
-MIME-Version: 1.0
-
-On Friday, 31 July 2026 17:46:08 CEST Sven Eckelmann wrote:
-> >
-> >
-> > diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-> > index 5600aaf00627c..8354c62bd86a7 100644
-> > --- a/net/batman-adv/tvlv.c
-> > +++ b/net/batman-adv/tvlv.c
-> > @@ -437,6 +437,9 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
-> >                        return NET_RX_SUCCESS;
-> >  
-> >                tvlv_offset = (unsigned char *)tvlv_value - skb->data;
-> > +              if (skb_headroom(skb) + tvlv_offset + tvlv_value_len >= U16_MAX)
-> > +                      return -EINVAL;
-> > +
+On Friday, July 24, 2026 12:37 PM, Michael Kelley wrote:
+> From: Kameron Carr <kameroncarr@linux.microsoft.com> Sent: Tuesday, July
+21, 2026 12:57 PM
+[...]
+> > +	/*
+> > +	 * @order monotonically decreases across iterations
+> > +	 *
+> > +	 * Use __GFP_NORETRY | __GFP_NOWARN to avoid OOM-killing, but try
+> > +	 * harder at order 0 since that is the final fallback.
+> > +	 */
+> > +	order = min_t(unsigned int, MAX_PAGE_ORDER, ilog2(nr_pages));
 > 
-> Just for documentation purposes:
-> 
-> This is (skb->data - skb->head) + tvlv_offset + tvlv_value_len
-> 
-> The calculation in skb_set_transport_header():
-> 
-> offset = skb->data - skb->head
-> offset += (tvlv_offset + tvlv_value_len)
-> 
-> >                skb_set_network_header(skb, tvlv_offset);
-> >                skb_set_transport_header(skb, tvlv_offset + tvlv_value_len);
-> >  
+> Prefer using min() instead of min_t(). For normal integer values,
+> min() should work correctly.
 
-I've checked a little bit further and it might not be the preferred solution. 
-Please check Eric Dumazet's
-https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/commit/?id=d45cf1e7d7180256e17c9ce88e32e8061a7887fe 
-for a similar problem in IPv6. It is basically the same but without the 
-additional offset parameter which skb_set_transport_header_careful would need.
+Using min() compiled fine on ARM, but x86 is throwing a compile error.
 
-Regards,
-	Sven
---nextPart2488068.ElGaqSPkdT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+    drivers/hv/channel.c: In function 'vmbus_alloc_buffer':
+    ././include/linux/compiler_types.h:699:45: error: call to
+    '__compiletime_assert_518' declared with attribute error: min(order, (
+    __builtin_constant_p(remaining) ? ((remaining) < 2 ? 0 : 63 -
+    __builtin_clzll(remaining)) : (sizeof(remaining) <= 4) ?
+    __ilog2_u32(remaining) : __ilog2_u64(remaining) )) signedness error
 
------BEGIN PGP SIGNATURE-----
+In my v3 I may go back to using min_t. Please let me know if a cast (or
+some other method) is preferred.
 
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCamzx8gAKCRBND3cr0xT1
-y8qbAQCAJpC+N8gtVp1zcu3oovIeDC71peKFSUsrUOGbgZZ34QD+NI1obkaTjFbq
-liSohRms8Aq8bavyjqWupQ04BcSR4Ac=
-=dZpi
------END PGP SIGNATURE-----
-
---nextPart2488068.ElGaqSPkdT--
-
-
+-Kameron
 
