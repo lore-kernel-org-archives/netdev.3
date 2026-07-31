@@ -1,146 +1,360 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E00734389B
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 06:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785480382; cv=pass; b=po+ZxYh2R0jijjK2a8I/azIzExZsmeOagjCiXYor/1Z6ucLzamdiNzRZMvqbTN4A5NF5/XnlxLXdyvtQRNKq4NE3ILgEMhDV9HzRMFajrQ7Rqa+2Bk9g3LdgjOGkJh8N+vBsfxsH/yypPUWi/qlDFvNJ23MPKhRQHtZR3GmHJEA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785480382; c=relaxed/simple;
-	bh=qSWRSbOj71BNGeOr+HBxtLFfbntXDiooltzuw+HXglM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hcg1xjDOhmkPt8msz+vLPOA4eeZugodliLLSInkMZke0ig42/j3lJ6CVqOrD7fPlcHGyb8hczWVxkrdbyFkL1bMbcp3vW42npoRu3IJwBmidz+BXakeScipaA+M4gZGXrndZPTfxGLnIT8vFZchJ6ur/KYvd+P2naYdDMKiR+zs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QHnR1d8I; arc=pass smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8153101C0
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 06:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785481088; cv=none; b=bQwSFUskRtgb6JjtrYxJG/Cn5Okn9HsmuTWd1xAQR/NlQevffOh0xwP8HQ72YHzuUhdSdaKw1QBCeq1XesdwjD1k1ujGjxUGW7T5j0b7V4x5JZeG8RgPvOJRvqrdg3zwexZ5adPOB2+eal3Ce/6nEq2RUFE35VHYZl1ee6kOP+4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785481088; c=relaxed/simple;
+	bh=dzK1wq0l9GvGMZT/rX31L4aEMPndVSEYFJIpI45CqTM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j+rP0Q7vNxmONdbVkRt04ZvfjIk+S74CoVo5ro1EUwgVW8/hCqljgeIF08AbPl4wj2aYM0Xvo5/PUYJOsY2cDEktX4MRjYxj2CsagUTGLInwxxfFO2SW00dlKjc/M3ye52GFzGsUCNEEnIVXhuVOBjf8GjtuBdqBHWCFO7x184k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SYhs8LKJ; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QHnR1d8I"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84a3323d858so117738b3a.3
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 23:46:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785480380; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QTvmEo0gnmyhTe++PiHxrQMM24Xrqx8ic/ETtL9CqZe5q6OjehOUoOWgTm9cZq9kuY
-         CaCfGQsE09ZZYQGbCVET6VAcCzNh6r/ZNVzxyzSO+qfr/TUEWcRPwIzvA2BcHk3uTTwz
-         3lOJl2PTayQ/UiaN/99y8vtn0WcFR5GBkUBRf50Mo6vhXxj6hp3z8XxL3DXwZLiUnIOX
-         DvuorqRzIpmM3NSM9PaymCVmH6WY2CRz6ooE4J0+JQKt3y9eFDfh89XqzmYGSfS53CE1
-         Q+4kQqIC5jb2/mVs5XN/PnKTlRapW3B6f7KzZhDlYY7j1X9LMlufFRYeGyR4uB7o01a5
-         CP8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qSWRSbOj71BNGeOr+HBxtLFfbntXDiooltzuw+HXglM=;
-        fh=GE6JYRhDYusauA0sjyod+LVxRmny94zEztpiS6A1UIA=;
-        b=rRdbzfZtXiFYKT4W371q01tL5qblX9EP4dOM0mrJAG9s16aLuDJTCPHBT/lfp1swXZ
-         1gjajyfrC4Mjzkh9vDIouT1hZLsUS8SjfJueGrYutYUhM8BDQZQ/vGoD5NnTZJcEDz+8
-         IigrxuuED57W6mgGkHaL7IyIzGiVQ7NvhNzxFldYkA1vZFSwMUTpb8RmE0VTW+rskDM0
-         WuzGG0a9st6v5222pb/siKmd7h817exevfmL0xyyP2mhQP9Jb+OFRy0+LBEeeNIvfA5/
-         pbkdC3Qy6kxZQNIJZcy1vfTNOKnzawW1W0ZfCy0Ix3AU6XRDSC7adDICDmfdSRjjfiHt
-         A7VA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785480380; x=1786085180; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qSWRSbOj71BNGeOr+HBxtLFfbntXDiooltzuw+HXglM=;
-        b=QHnR1d8I/TMMKJbGJJ3aw8izZ7RG5URa+aA4KhAZbDqkJRLAM5u4XN+gTfEheCPRqB
-         2KMZipuxAp4b/k4FTiHsqZKYgtPVQyY5mBzOSij4/2JFMQyMisjb8doiJWaGsIkBKgOu
-         svJaHDM83vcM4tByZM0OZxbgwcmf1awtATooPE03M8/RPgJGUd4Lj2eT14WW2vHwl8uJ
-         54X3B3SOEB9R7nncrk8sPxZC9BeDLB4h2nFts0jSJTlrjZa3D+Deu3V+97jE4J1CfZ/K
-         YZFqt1ZbXILwW6MbA2Z2rvJxKWwpkWpyYduUHgls1FbIhiNDInIIo0WBGPyiY8nRozVO
-         4VKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785480380; x=1786085180;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qSWRSbOj71BNGeOr+HBxtLFfbntXDiooltzuw+HXglM=;
-        b=D4WCTspiMvE1TPinU3j6d2uZBPQcQM3WHg6d2YssOR465yT8LQvwX21VfM3COVDy9G
-         oF5Zs2hPpg9IhFqjDl47lZG2+xO1WmxjfkSc9bLRNQAHISAHjrVkWQ+/tFevQw534LKl
-         nF/E5AOPrIokwZlRaK81WSMNql7b0Qwe4HUFhCgzX7fblFT2h4HqnfBJnaLBia3NrRdt
-         EUo7ybtoLUmKtfDhcFlywoxVBR9aPLRSJrzdFaUhn6jUy4U16baziFpuh2GpAC/BH4Ea
-         St3mqeLrrB3x37y6lYcj29OhslehD7rG+kBkdiVTjj1BGky+iYJOKc2ENIDrZz0a+7Ty
-         OMGQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro+8VJX6ZzeK9YKPvQvN3wA1c2D7hQAVcXAmziEGAiCX75ivlfyL8Dj5DXD14PBccS6Br7lj84=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTRz4ZTgfAJKvQyEkW20TAbbqtMCezq/EqqOkDt05zVLjBummr
-	pweziYCxoWJFnD2lRxquX7wrFlMMBIF8BlpQTKZKgdGiLuZrjUrZhvKYA/2uijbL3bE7iZ52TFp
-	WMfWUv2waEnrmyuhaVjgq2umKCK1lK10=
-X-Gm-Gg: AR+sD12Hjqle6QGdi/jUPFLmClEd5c59uEHIE/iTRUfMkIB7lLKDKOnCFHLwy4slCcQ
-	UaXCRtnkXVWYAawZwdKcmN3FyPvjtZKBwn/JE1v3AOtHxeo6l4Y44IU1xcn68GMl1tzmXr7wgbr
-	4kB+gUO+53QO5miw/Rj0jEwTLLEnLcTINfBuCwoQ9fbMaFtz0F4mFfDRTqB0I2X0ccqqu7vkyfw
-	bFvY7XupVpLdeAEUGHdIG3BtsEqhRqTZS/wscoY97JU/doSBqR26tpSCkMQgrx+FVy5N1gSNf8Y
-	AwCWSqQgZNc3FXRcUMcQVOO0mVAu0QuBoOLrsgbNAIph1LFRy4p2O75vBK9aVGcGT8ZztNnEbHC
-	TPeoEn/z+oXSich+EW61H+c27lDPtLTSUF2gMyi2W5DgnsU1sPWIwbVDWkBK3
-X-Received: by 2002:a17:902:ce08:b0:2c9:b96a:2855 with SMTP id
- d9443c01a7336-2d046b459b3mr15748155ad.0.1785480380480; Thu, 30 Jul 2026
- 23:46:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SYhs8LKJ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 0A1581A1342;
+	Fri, 31 Jul 2026 06:58:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D08AB6039A;
+	Fri, 31 Jul 2026 06:58:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 949DB11C16461;
+	Fri, 31 Jul 2026 08:57:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785481077; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=gUJ8XlSStb8zUOIsWjNUBfCduY6+D61GY9wEhxLgOgI=;
+	b=SYhs8LKJunNDyE3jC1GEkneeQSAtDYeJu8qewt5C/Fd50AaguyzmlwpKotLZHIth4P2mcZ
+	XeDnBj+Q7x0Xfn46rMFCdO6B5t2RKM7Waljv+Ujm6qKOKQ5UlEEBmnDJy1vpAc8Y/FUSsf
+	uSdZLSS2a9865HIjk1fxNLRKNvD8DV40b3WKWAW5qXkFPTBrvt1VqgdLlbVGyd9WhyEFl8
+	8BxReJT1sFPwDLNUeuSVLIEwI6SIL2bd5sX186nzvNiRN5EZkaDegrs/i6AUFFJzEGLG5x
+	NXzl6ExMMLb6x5JYstn5yMFu9OE+/lJFGkuAcNiuaUJteBwaIjQiY+0bybMgtg==
+Message-ID: <95872f9e-4261-4cb0-b9f0-a82e3bf64fbc@bootlin.com>
+Date: Fri, 31 Jul 2026 08:57:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev>
-In-Reply-To: <20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 31 Jul 2026 08:46:07 +0200
-X-Gm-Features: AUfX_my5gmBTyBxP6uEcBbaVDtTCrtAGlQbEryzjfR6FoeX2UBUc_vHFPgNtGlo
-Message-ID: <CANiq72m59O-ruHUvUcZC7yCvu0KV0w_m5vMO4e0rxyHdRmihJw@mail.gmail.com>
-Subject: Re: [PATCH v9 00/10] Fix missing fops.owner in Rust DRM/misc abstractions
-To: Alvin Sun <alvin.sun@linux.dev>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
-	Rae Moar <raemoar63@gmail.com>, Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, 
-	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Igor Korotin <igor.korotin@linux.dev>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-modules@vger.kernel.org, driver-core@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 01/10] net: dsa: microchip: implement
+ ksz8463_setup()
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, richardcochran@gmail.com, linux@armlinux.org.uk,
+ horms@kernel.org, maxime.chevallier@bootlin.com, pascal.eberhard@se.com,
+ miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260727-ksz-new-ptp-v3-1-caba39e680e3@bootlin.com>
+ <20260731022340.800270-1-kuba@kernel.org>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260731022340.800270-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Jul 23, 2026 at 4:11=E2=80=AFAM Alvin Sun <alvin.sun@linux.dev> wro=
-te:
+Hi,
+
+On 7/31/26 4:23 AM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> --- Patch [1]: [PATCH net-next v3 01/10] net: dsa: microchip: implement ksz8463_setup() ---
+> commit 095ca74374f60de415fb4e79da7940e5e376827a
+> Author: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+> 
+> net: dsa: microchip: implement ksz8463_setup()
+> 
+> This splits the KSZ8463 out of ksz8_setup()/ksz8_reset_switch() into a
+> dedicated ksz8463_setup() and ksz8463_reset_switch(), dropping drive
+> strength configuration, the KSZ87xx global errata workaround and the IRQ
+> initialization for that chip.  It also removes .teardown from
+> ksz8463_switch_ops.
+> 
+> A few questions below.
+> 
+>> diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
+>> index c4c769028a20c..5ed63f4250136 100644
+>> --- a/drivers/net/dsa/microchip/ksz8.c
+>> +++ b/drivers/net/dsa/microchip/ksz8.c
+>> @@ -181,6 +181,14 @@ static int ksz8_pme_pwrite8(struct ksz_device *dev, int port, int offset, u8 dat
+>>   	return ksz8_ind_write8(dev, table, (u8)(offset), data);
+>>   }
+>>   
+>> +static int ksz8463_reset_switch(struct ksz_device *dev)
+>> +{
+>> +	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET, true);
+>> +	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET,
+>> +		false);
+>> +	return 0;
+>> +}
+>> +
+> 
+> [Severity: Low]
+> Can ksz8463_reset_switch() ever return anything but 0?  ksz_cfg() throws the
+> register write status away:
+> 
+> drivers/net/dsa/microchip/ksz8.c:ksz_cfg() {
+> 	ksz_rmw8(dev, addr, bits, set ? bits : 0);
+> }
+> 
+> So the error handling added in ksz8463_setup() is dead code:
+> 
+> 	ret = ksz8463_reset_switch(dev);
+> 	if (ret) {
+> 		dev_err(ds->dev, "failed to reset switch\n");
+> 		return ret;
+> 	}
+> 
+> If the SPI/regmap access to KSZ8463_REG_SW_RESET fails, ksz8463_setup()
+> continues on to the storm/aging/VLAN-boundary programming and finally sets
+> SW_START on a switch that was never reset, without any message.
+> 
+> Since this helper is new, would it make sense to either declare it void, or
+> use ksz_rmw8() directly and propagate the error the way the REG_SW_CTRL_1
+> and REG_SW_CTRL_2 writes in ksz8463_setup() already do?
+> 
+> The same always-return-0 shape exists in ksz8_reset_switch(), so this is not
+> a new behaviour, only newly duplicated.
+> 
+
+As it says, the behaviour is the same in ksz8_reset_switch(), I only 
+extracted the functions from it to have a better split between KSZ8463 
+and others KSZ8.
+IMO, the real issue here is that the ksz_cfg() helper ignores the 
+ksz_rmw8() return value.
+
+>>   static int ksz8_reset_switch(struct ksz_device *dev)
+>>   {
+>>   	if (ksz_is_ksz88x3(dev)) {
+> 
+> [ ... ]
+> 
+>> @@ -2300,6 +2303,110 @@ static void ksz88xx_r_mib_stats64(struct ksz_device *dev, int port)
+>>   	spin_unlock(&mib->stats64_lock);
+>>   }
+>>   
+>> +static int ksz8463_setup(struct dsa_switch *ds)
+>> +{
+> 
+> [Severity: Low]
+> This isn't a bug, but ksz8463_setup() is a near-verbatim copy of
+> ksz8_setup(): the vlan_cache allocation, broadcast storm programming,
+> ksz8_config_cpu_port(), ksz8_enable_stp_addr(), ds->num_tx_queues, the
+> multicast storm disable, ksz_init_mib_timer(), all the ds->* flag
+> assignments, the S_LINK_AGING_CTRL / REG_SW_CTRL_1 / REG_SW_CTRL_2 /
+> S_REPLACE_VID_CTRL / S_MIRROR_CTRL writes, the ksz8_r_vlan_entries() loop,
+> the CPU port learning setting, ksz_mdio_register(), ksz_dcb_init() and the
+> final SW_START write are identical.  Only four things differ.
+> 
+> The rest of this family uses one setup function with small chip predicates
+> (ksz_is_ksz88x3()/ksz_is_ksz8463()).  Could the shared body be factored into
+> a common helper instead, so a later fix or a new DSA flag does not have to be
+> applied in two places?
+> 
+
+The goal of this patch is to introduce a dedicated ksz8463_setup() 
+function so that its specific IRQ configuration (and, in an upcoming 
+series, its specific periodic output configuration) can be handled 
+without adding ksz8463-specific branches to the common ksz8_setup() 
+function.
+Indeed it comes with some code duplication. I considered adding some 
+'sub-setup()' helpers shared between the ksz8xxx_setup() to avoid the 
+copies. However, the differences are spread accross the setups(). At the 
+beginning, the reset() and the storm configuration differ; in the 
+middle, the ksz87xx()/ksz_is_ksz88x3() belong only to ksz8_setup(); at 
+the end, the IRQ setup (added in PATCH 4) is completely different. So I 
+came to the conclusion that the ksz8463_setup() could live a bit of code 
+duplication.
+
+>> +	struct ksz_device *dev = ds->priv;
+>> +	u16 storm_mask, storm_rate;
+>> +	struct ksz_port *p;
+>> +	const u16 *regs;
+>> +	int i, ret;
+>> +
+>> +	regs = dev->info->regs;
+>> +
+>> +	dev->vlan_cache = devm_kcalloc(dev->dev, sizeof(struct vlan_table),
+>> +				       dev->info->num_vlans, GFP_KERNEL);
+> 
+> [Severity: Low]
+> The count and size arguments look exchanged here.  The prototype is
+> devm_kcalloc(dev, n, size, gfp), so this reads as
+> sizeof(struct vlan_table) elements of dev->info->num_vlans bytes.  The
+> resulting byte count is the same, so nothing misbehaves, but would
+> devm_kcalloc(dev->dev, dev->info->num_vlans, sizeof(struct vlan_table),
+> GFP_KERNEL) be the intended order?
+> 
+> The same swap is present in ksz8_setup(), and this patch copies it into the
+> new function, which seems like a good moment to correct it.
 >
-> base-commit: b7e5ac83cb16f7ffd11dc23736f84276602100ed
 
-Was this old tag used for some reason?
+Yes once again, I only copied what was needed from ksz8_setup() so this 
+kind of tiny mistakes are copied.
+>> +	if (!dev->vlan_cache)
+>> +		return -ENOMEM;
+>> +
+>> +	ret = ksz8463_reset_switch(dev);
+>> +	if (ret) {
+>> +		dev_err(ds->dev, "failed to reset switch\n");
+>> +		return ret;
+>> +	}
+>> +
+> 
+> [ ... ]
+> 
+>> +	/* Start with learning disabled on standalone user ports, and enabled
+>> +	 * on the CPU port. In lack of other finer mechanisms, learning on the
+>> +	 * CPU port will avoid flooding bridge local addresses on the network
+>> +	 * in some cases.
+>> +	 */
+>> +	p = &dev->ports[dev->cpu_port];
+>> +	p->learning = true;
+>> +
+>> +	ret = ksz_mdio_register(dev);
+> 
+> [Severity: Medium]
+> ksz8463_setup() deliberately creates no interrupt domains (no
+> ksz_girq_setup()/ksz_pirq_setup()), but ksz_mdio_register() still runs the
+> PHY interrupt setup whenever dev->irq is set:
+> 
+> drivers/net/dsa/microchip/ksz_common.c:ksz_mdio_register() {
+> 	...
+> 	if (dev->irq > 0) {
+> 		ret = ksz_irq_phy_setup(dev);
+> 		if (ret)
+> 			goto put_mdio_node;
+> 	}
+> 	...
+> }
+> 
+> and ksz_irq_phy_setup() resolves the PHY interrupt through the per-port
+> domain that ksz_pirq_setup() used to create:
+> 
+> 			irq = irq_find_mapping(dev->ports[port].pirq.domain,
+> 					       PORT_SRC_PHY_INT);
+> 			if (!irq) {
+> 				ret = -EINVAL;
+> 
+> For KSZ8463 dev->ports[port].pirq.domain is now always NULL, and a NULL
+> domain is not rejected:
+> 
+> kernel/irq/irqdomain.c:__irq_resolve_mapping() {
+> 	/* Look for default domain if necessary */
+> 	if (domain == NULL)
+> 		domain = irq_default_domain;
+> 
+> On platforms that install an irq_default_domain, can this hand a virq owned
+> by an unrelated interrupt controller (hwirq 1 of the default domain) to
+> phylib via ds->user_mii_bus->irq[phy]?
+> 
+> And if devm_of_mdiobus_register() then fails, does ksz_irq_phy_free() call
+> irq_dispose_mapping() on that foreign virq, tearing down a mapping this
+> driver never created?
+> 
+> This needs a KSZ8463 node with both an 'interrupts' property (dev->irq =
+> spi->irq) and an 'mdio' child node with PHY sub-nodes.  On platforms without
+> a default domain the lookup returns 0 and probe fails with -EINVAL instead;
+> that outcome matches the pre-patch behaviour, since the KSZ8463 chip entry
+> sets no .port_nirqs and no per-port mappings were ever created.
+> 
+> Would gating ksz_irq_phy_setup() on the per-port domain actually existing be
+> preferable to relying on dev->irq alone?
+> 
 
-> prerequisite-change-id: 20260519-miscdev-use-format-9ab7e83b1c11:v3
-> prerequisite-patch-id: 405b334ff0d48ad350014f05a2321bdbaa025400
-> prerequisite-patch-id: 604b631c81d5423f4ebb2e12ba2d22e9ce371bfc
-> prerequisite-patch-id: cb550d94cefe01920e0d3ced2b2bcbecd76f3907
-> prerequisite-patch-id: 3bc830839742591460cb86d9472c04f4686dc600
-> prerequisite-patch-id: 571058244bc8c7088638d2e3225713011246c7e9
-> prerequisite-patch-id: 347c5a3c6dbef9832bfce8419fc23e6e08ba477f
-> prerequisite-patch-id: 3e202d988b56b88446f7535e90d3f00cf5f15701
+Proper IRQ handling for the KSZ8463 is added in PATCH 4. Current IRQ 
+framework doesn't work for the KSZ8463 anyway, so IMO this patch doesn't 
+introduce any regression.
 
-Are all these actually needed? Some seem unrelated (some were already
-applied too). The only one that seems needed has Andreas' Acked-by, so
-I guess it is fine.
+>> +	if (ret < 0) {
+>> +		dev_err(dev->dev, "failed to register the mdio");
+>> +		return ret;
+>> +	}
+>> +
+>> +	ret = ksz_dcb_init(dev);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	/* start switch */
+>> +	regmap_update_bits(ksz_regmap_8(dev), regs[S_START_CTRL],
+>> +			   SW_START, SW_START);
+>> +
+>> +	return 0;
+>> +}
+>> +
+> 
+> [ ... ]
+> 
+>> @@ -2889,8 +2992,7 @@ const struct ksz_dev_ops ksz88xx_dev_ops = {
+>>   const struct dsa_switch_ops ksz8463_switch_ops = {
+>>   	.get_tag_protocol	= ksz8463_get_tag_protocol,
+>>   	.connect_tag_protocol   = ksz8463_connect_tag_protocol,
+>> -	.setup			= ksz8_setup,
+>> -	.teardown		= ksz_teardown,
+>> +	.setup			= ksz8463_setup,
+> 
+> [Severity: High]
+> This isn't a bug introduced by this patch, but since the commit message says
+> "PTP and interrupts aren't setup" and this hunk is rewriting exactly this ops
+> table, it seems worth raising: ksz8463_switch_ops keeps advertising the PTP
+> callbacks
+> 
+> 	.get_ts_info		= ksz_get_ts_info,
+> 	.port_hwtstamp_get	= ksz_hwtstamp_get,
+> 	.port_hwtstamp_set	= ksz_hwtstamp_set,
+> 	.port_txtstamp		= ksz_port_txtstamp,
+> 	.port_rxtstamp		= ksz_port_rxtstamp,
+> 
+> while no PTP clock is ever registered for this chip: the KSZ8463 entry in
+> ksz_switch_chips[] does not set .ptp_capable, and ksz8463_setup() calls
+> neither ksz_ptp_clock_register() nor ksz_ptp_irq_setup().  Those are the only
+> places that run mutex_init(&ptp_data->lock), spin_lock_init(&ptp_data->
+> clock_lock) and init_completion(&port->tstamp_msg_comp), so dev->ptp_data.
+> clock stays NULL and those objects stay all-zero.
+> 
+> ksz_get_ts_info() checks for this, but ksz_hwtstamp_set() does not:
+> 
+> drivers/net/dsa/microchip/ksz_ptp.c:ksz_set_hwtstamp_config() {
+> 	...
+> 	return ksz_ptp_enable_mode(dev);
+> }
+> 
+> drivers/net/dsa/microchip/ksz_ptp.c:ksz_ptp_enable_mode() {
+> 	...
+> 	if (tag_en) {
+> 		ptp_schedule_worker(ptp_data->clock, 0);
+> 	} else {
+> 		ptp_cancel_worker_sync(ptp_data->clock);
+> 	}
+> 
+> 	tagger_data->hwtstamp_set_state(dev->ds, tag_en);
+> }
+> 
+> With CONFIG_NET_DSA_MICROCHIP_KSZ_PTP=y, does a SIOCSHWTSTAMP on a KSZ8463
+> user port reach ptp_cancel_worker_sync(NULL) here, even for the
+> HWTSTAMP_TX_OFF / FILTER_NONE combination, followed by an indirect call
+> through the NULL tagger_data->hwtstamp_set_state (ksz8463_connect_tag_
+> protocol() only assigns xmit_work_fn)?
+> 
+> Similarly, does the RX path take spin_lock_bh(&ptp_data->clock_lock) in
+> ksz_tstamp_reconstruct() on a spinlock that was never initialized for this
+> chip?
+> 
+> Would it make sense to drop these callbacks from ksz8463_switch_ops, or gate
+> them on dev->info->ptp_capable, while this table is being restructured?  The
+> same stale callbacks are present in ksz87xx_switch_ops.
+> 
+As it says, this isn't introduced by this patch and it will be fixed on 
+PTP support is added on PATCH 10.
 
-(By the way, I will use this second message to take this chance to
-move the modules maintainers in the To: in case it helps, since I
-didn't do it in my previous message)
 
-Thanks!
-
-Cheers,
-Miguel
+Best regards,
+Bastien
