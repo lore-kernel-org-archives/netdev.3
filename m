@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1812A149DF1;
-	Fri, 31 Jul 2026 02:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE4430C148;
+	Fri, 31 Jul 2026 02:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785464625; cv=none; b=QC/s5QCvHE7IsbAx5Rv0rRFAQJ5xlJszHnyuBESjNXM1kecwQ+9B6x4F/AigX5CU2jh+HcZxXDboyJASSnX9kfACqfUCgr6cQNhwz4zWH/6vMxX4LFaqsxkLE41kFjy4LJZFZf9BovIZE2RjDnx3U1iwN/hQOD7GR5EOwgNMHss=
+	t=1785464626; cv=none; b=F31Pv9ijYn0DOZc/gP34RVqwKnm+3/y+nJg6iUOy00bszxYuKa1HgGDMybSk+YbDNxSLWlwWY9kWmO0WVHCjc6N7uh2IELeKFdK7JhNeAzm80IVV32l/N+cESVQnSTt8btXk3bS27VzW/q+fvhL3ueghofMCrdmayHFvYNdxQzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785464625; c=relaxed/simple;
-	bh=i7ifSDD3e1LoqIYdfA2avENf1KEudBS4xjA+sVYORO4=;
+	s=arc-20240116; t=1785464626; c=relaxed/simple;
+	bh=8BRHcmistHDBmIiaTRcrhBqPcrM2kuzsc7XQj8Zodu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtKOgaAIVM7pzcQXof++qJxIuZwBUvUdq5q0rG/c+Ksx6rcf8/6mRYo5J39xtP8AVSOwGY9Z0E0Eo9SRVvv/M36ip086KezfVCrAobE1dsJviaOd/VyAHHPy3ywUPnkZLQRaC1zdhoczJg58YFjO4janj5uwBgWg0pGFytIqwvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TzBfDnI6; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=m6Qk0KZ7Fxvn1o9lRbDFOP2X43tjL7Xxkq3+fasJHeHN1I19EL/wRnEGPjyf/3CGYTweR3tOLKDxXDwEZK24ySv2pQfbe7Vdfye0wInzYbw3UZOG5MUUY4H6ENuw7QmL4fRY7qffFtxIGioOrgH0yEMAk+de9yLI478dp/x6/lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YXSvxZrQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TzBfDnI6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B411F000E9;
-	Fri, 31 Jul 2026 02:23:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YXSvxZrQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086971F00A3D;
+	Fri, 31 Jul 2026 02:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785464621;
-	bh=7HQKsaLdfKJ6zjFXiB3Q/tUE2fzQh9inUQFVP5GxDaA=;
+	s=k20260515; t=1785464624;
+	bh=r0PEGKw9UGz84oi3O40dpzd9p7ghj/PbbGurjUD3kLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TzBfDnI6VWTek2rPuSUxzXiECnqbXVqNZh5PeLP2PLOYn2KlA93skpgzs4LqdLkUd
-	 yQ7BVPzQpZnyJfQrQAnzaEoW6EOn9iwdiEit1DCb/fWiPuOn033Dp03NIFEIm13R83
-	 UnmjpDEqvGst7xRFGMOu/pxbURe5Fsg1gsvDv+QIHeXi7ApXgUsGYdbqEpuN+OOKCR
-	 Spy3taZLHg/gA/ynjCFzgLHZpzYRS/+PDEJY4qjNC0gRoOPhIM2xbJahQQPAG6Ozjw
-	 78GLYovqEBvMg28XKKwfgSM967ipbD8aag5mbzM2FC0f9PNJB2fwdb+kan4s/hPy6B
-	 ShGAOvXuFUthg==
+	b=YXSvxZrQyOecuSIV7ok42pjZvkJfaTmkfEuSgS0T+5AU1GGPDNV4jOOYAbTEE4mmh
+	 lOY1NMFhuFfMRMswanvw+Js3pYsCax4qEsnAU+cL6ZDG1RRWu11OE0dYnhFYbSHQAc
+	 z3VJH+gVpXQXLm4tiljPi77qTiXi8sfAYn+Vcl9a/5warrpE2lI7PoXqoCiQv9ES5e
+	 T8/6YX4mG8owYwF5lPSM9VTXDhmQFe69BNWmMU0XRElkwqQX4Wy5p5V+UGdytSbSWd
+	 JdxNA/GLST2/XDoYPihEeEIa84yYmVh61qEw+YhK4KiVnigzkljR5Ld/gydFmIELCo
+	 twJNzlIvbiYmg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: bastien.curutchet@bootlin.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -45,12 +45,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	thomas.petazzoni@bootlin.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 01/10] net: dsa: microchip: implement ksz8463_setup()
-Date: Thu, 30 Jul 2026 19:23:40 -0700
-Message-ID: <20260731022340.800270-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v3 07/10] net: dsa: tag_ksz: share code for KSZ8795 and KSZ9893 xmit operations
+Date: Thu, 30 Jul 2026 19:23:43 -0700
+Message-ID: <20260731022343.800348-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260727-ksz-new-ptp-v3-1-caba39e680e3@bootlin.com>
-References: <20260727-ksz-new-ptp-v3-1-caba39e680e3@bootlin.com>
+In-Reply-To: <20260727-ksz-new-ptp-v3-7-caba39e680e3@bootlin.com>
+References: <20260727-ksz-new-ptp-v3-7-caba39e680e3@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,262 +62,168 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
---- Patch [1]: [PATCH net-next v3 01/10] net: dsa: microchip: implement ksz8463_setup() ---
-commit 095ca74374f60de415fb4e79da7940e5e376827a
+--- Patch [7]: [PATCH net-next v3 07/10] net: dsa: tag_ksz: share code for KSZ8795 and KSZ9893 xmit operations ---
+commit 801d0cdc8ef18f0fbd60b1d666b46b36437fd06e
 Author: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 
-net: dsa: microchip: implement ksz8463_setup()
+net: dsa: tag_ksz: share code for KSZ8795 and KSZ9893 xmit operations
 
-This splits the KSZ8463 out of ksz8_setup()/ksz8_reset_switch() into a
-dedicated ksz8463_setup() and ksz8463_reset_switch(), dropping drive
-strength configuration, the KSZ87xx global errata workaround and the IRQ
-initialization for that chip.  It also removes .teardown from
-ksz8463_switch_ops.
+This factors the duplicated tail-tag encoding of ksz8795_xmit() and
+ksz9893_xmit() into a new ksz_common_xmit() helper parameterized by
+do_tstamp, prio and override_mask.  As a side effect ksz8795_xmit() now
+returns through ksz_defer_xmit() instead of returning the skb directly.
 
-A few questions below.
-
-> diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-> index c4c769028a20c..5ed63f4250136 100644
-> --- a/drivers/net/dsa/microchip/ksz8.c
-> +++ b/drivers/net/dsa/microchip/ksz8.c
-> @@ -181,6 +181,14 @@ static int ksz8_pme_pwrite8(struct ksz_device *dev, int port, int offset, u8 dat
->  	return ksz8_ind_write8(dev, table, (u8)(offset), data);
+> diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
+> index f58ce0f0e9e42..f8b40437c5fa4 100644
+> --- a/net/dsa/tag_ksz.c
+> +++ b/net/dsa/tag_ksz.c
+> @@ -218,6 +218,37 @@ static struct sk_buff *ksz_defer_xmit(struct dsa_port *dp, struct sk_buff *skb)
+>  	return NULL;
 >  }
 >  
-> +static int ksz8463_reset_switch(struct ksz_device *dev)
+> +static struct sk_buff *ksz_common_xmit(struct sk_buff *skb,
+> +				       struct net_device *dev,
+> +				       bool do_tstamp,
+> +				       u8 prio,
+> +				       u8 override_mask)
 > +{
-> +	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET, true);
-> +	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET,
-> +		false);
-> +	return 0;
-> +}
+> +	struct dsa_port *dp = dsa_user_to_port(dev);
+> +	struct ethhdr *hdr;
+> +	u8 *tag;
 > +
-
-[Severity: Low]
-Can ksz8463_reset_switch() ever return anything but 0?  ksz_cfg() throws the
-register write status away:
-
-drivers/net/dsa/microchip/ksz8.c:ksz_cfg() {
-	ksz_rmw8(dev, addr, bits, set ? bits : 0);
-}
-
-So the error handling added in ksz8463_setup() is dead code:
-
-	ret = ksz8463_reset_switch(dev);
-	if (ret) {
-		dev_err(ds->dev, "failed to reset switch\n");
-		return ret;
-	}
-
-If the SPI/regmap access to KSZ8463_REG_SW_RESET fails, ksz8463_setup()
-continues on to the storm/aging/VLAN-boundary programming and finally sets
-SW_START on a switch that was never reset, without any message.
-
-Since this helper is new, would it make sense to either declare it void, or
-use ksz_rmw8() directly and propagate the error the way the REG_SW_CTRL_1
-and REG_SW_CTRL_2 writes in ksz8463_setup() already do?
-
-The same always-return-0 shape exists in ksz8_reset_switch(), so this is not
-a new behaviour, only newly duplicated.
-
->  static int ksz8_reset_switch(struct ksz_device *dev)
->  {
->  	if (ksz_is_ksz88x3(dev)) {
-
-[ ... ]
-
-> @@ -2300,6 +2303,110 @@ static void ksz88xx_r_mib_stats64(struct ksz_device *dev, int port)
->  	spin_unlock(&mib->stats64_lock);
->  }
->  
-> +static int ksz8463_setup(struct dsa_switch *ds)
-> +{
-
-[Severity: Low]
-This isn't a bug, but ksz8463_setup() is a near-verbatim copy of
-ksz8_setup(): the vlan_cache allocation, broadcast storm programming,
-ksz8_config_cpu_port(), ksz8_enable_stp_addr(), ds->num_tx_queues, the
-multicast storm disable, ksz_init_mib_timer(), all the ds->* flag
-assignments, the S_LINK_AGING_CTRL / REG_SW_CTRL_1 / REG_SW_CTRL_2 /
-S_REPLACE_VID_CTRL / S_MIRROR_CTRL writes, the ksz8_r_vlan_entries() loop,
-the CPU port learning setting, ksz_mdio_register(), ksz_dcb_init() and the
-final SW_START write are identical.  Only four things differ.
-
-The rest of this family uses one setup function with small chip predicates
-(ksz_is_ksz88x3()/ksz_is_ksz8463()).  Could the shared body be factored into
-a common helper instead, so a later fix or a new DSA flag does not have to be
-applied in two places?
-
-> +	struct ksz_device *dev = ds->priv;
-> +	u16 storm_mask, storm_rate;
-> +	struct ksz_port *p;
-> +	const u16 *regs;
-> +	int i, ret;
-> +
-> +	regs = dev->info->regs;
-> +
-> +	dev->vlan_cache = devm_kcalloc(dev->dev, sizeof(struct vlan_table),
-> +				       dev->info->num_vlans, GFP_KERNEL);
-
-[Severity: Low]
-The count and size arguments look exchanged here.  The prototype is
-devm_kcalloc(dev, n, size, gfp), so this reads as
-sizeof(struct vlan_table) elements of dev->info->num_vlans bytes.  The
-resulting byte count is the same, so nothing misbehaves, but would
-devm_kcalloc(dev->dev, dev->info->num_vlans, sizeof(struct vlan_table),
-GFP_KERNEL) be the intended order?
-
-The same swap is present in ksz8_setup(), and this patch copies it into the
-new function, which seems like a good moment to correct it.
-
-> +	if (!dev->vlan_cache)
-> +		return -ENOMEM;
-> +
-> +	ret = ksz8463_reset_switch(dev);
-> +	if (ret) {
-> +		dev_err(ds->dev, "failed to reset switch\n");
-> +		return ret;
+> +	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
+> +		kfree_skb(skb);
+> +		return NULL;
 > +	}
 > +
-
-[ ... ]
-
-> +	/* Start with learning disabled on standalone user ports, and enabled
-> +	 * on the CPU port. In lack of other finer mechanisms, learning on the
-> +	 * CPU port will avoid flooding bridge local addresses on the network
-> +	 * in some cases.
-> +	 */
-> +	p = &dev->ports[dev->cpu_port];
-> +	p->learning = true;
+> +	/* Tag encoding */
+> +	if (do_tstamp)
+> +		ksz_xmit_timestamp(dp, skb);
 > +
-> +	ret = ksz_mdio_register(dev);
+> +	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
+> +	hdr = skb_eth_hdr(skb);
+> +
+> +	*tag = dsa_xmit_port_mask(skb, dev);
+> +	*tag |= prio;
+> +
+> +	if (is_link_local_ether_addr(hdr->h_dest))
+> +		*tag |= override_mask;
+> +
+> +	return ksz_defer_xmit(dp, skb);
+> +}
+> +
 
 [Severity: Medium]
-ksz8463_setup() deliberately creates no interrupt domains (no
-ksz_girq_setup()/ksz_pirq_setup()), but ksz_mdio_register() still runs the
-PHY interrupt setup whenever dev->irq is set:
+Can this dereference NULL for the KSZ8795 tagger?  ksz_defer_xmit() reads
+ds->tagger_data and the tagger private data before using them:
 
-drivers/net/dsa/microchip/ksz_common.c:ksz_mdio_register() {
+net/dsa/tag_ksz.c:ksz_defer_xmit() {
+	struct ksz_tagger_data *tagger_data = ksz_tagger_data(dp->ds);
+	struct ksz_tagger_private *priv = ksz_tagger_private(dp->ds);
 	...
-	if (dev->irq > 0) {
-		ret = ksz_irq_phy_setup(dev);
-		if (ret)
-			goto put_mdio_node;
-	}
+	if (!clone)
+		return skb;  /* no deferred xmit for this packet */
+
+	xmit_work_fn = tagger_data->xmit_work_fn;
+	xmit_worker = priv->xmit_worker;
 	...
 }
 
-and ksz_irq_phy_setup() resolves the PHY interrupt through the per-port
-domain that ksz_pirq_setup() used to create:
+Both pointers are only populated by ksz_connect(), and ksz8795_netdev_ops
+does not install it:
 
-			irq = irq_find_mapping(dev->ports[port].pirq.domain,
-					       PORT_SRC_PHY_INT);
-			if (!irq) {
-				ret = -EINVAL;
+static const struct dsa_device_ops ksz8795_netdev_ops = {
+	.name	= KSZ8795_NAME,
+	.proto	= DSA_TAG_PROTO_KSZ8795,
+	.xmit	= ksz8795_xmit,
+	.rcv	= ksz8795_rcv,
+	.needed_tailroom = KSZ_INGRESS_TAG_LEN,
+};
 
-For KSZ8463 dev->ports[port].pirq.domain is now always NULL, and a NULL
-domain is not rejected:
+compared with ksz9893_netdev_ops which has .connect = ksz_connect and
+.disconnect = ksz_disconnect.  ksz87xx_connect_tag_protocol() and
+ksz88xx_connect_tag_protocol() in drivers/net/dsa/microchip/ksz8.c also
+just return 0 for DSA_TAG_PROTO_KSZ8795, so ds->tagger_data stays NULL for
+these switches.
 
-kernel/irq/irqdomain.c:__irq_resolve_mapping() {
-	/* Look for default domain if necessary */
-	if (domain == NULL)
-		domain = irq_default_domain;
+So after this change the only thing keeping ksz8795_xmit() from a NULL
+dereference is KSZ_SKB_CB(skb)->clone always being NULL.
 
-On platforms that install an irq_default_domain, can this hand a virq owned
-by an unrelated interrupt controller (hwirq 1 of the default domain) to
-phylib via ds->user_mii_bus->irq[phy]?
-
-And if devm_of_mdiobus_register() then fails, does ksz_irq_phy_free() call
-irq_dispose_mapping() on that foreign virq, tearing down a mapping this
-driver never created?
-
-This needs a KSZ8463 node with both an 'interrupts' property (dev->irq =
-spi->irq) and an 'mdio' child node with PHY sub-nodes.  On platforms without
-a default domain the lookup returns 0 and probe fails with -EINVAL instead;
-that outcome matches the pre-patch behaviour, since the KSZ8463 chip entry
-sets no .port_nirqs and no per-port mappings were ever created.
-
-Would gating ksz_irq_phy_setup() on the per-port domain actually existing be
-preferable to relying on dev->irq alone?
-
-> +	if (ret < 0) {
-> +		dev_err(dev->dev, "failed to register the mdio");
-> +		return ret;
-> +	}
-> +
-> +	ret = ksz_dcb_init(dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* start switch */
-> +	regmap_update_bits(ksz_regmap_8(dev), regs[S_START_CTRL],
-> +			   SW_START, SW_START);
-> +
-> +	return 0;
-> +}
-> +
-
-[ ... ]
-
-> @@ -2889,8 +2992,7 @@ const struct ksz_dev_ops ksz88xx_dev_ops = {
->  const struct dsa_switch_ops ksz8463_switch_ops = {
->  	.get_tag_protocol	= ksz8463_get_tag_protocol,
->  	.connect_tag_protocol   = ksz8463_connect_tag_protocol,
-> -	.setup			= ksz8_setup,
-> -	.teardown		= ksz_teardown,
-> +	.setup			= ksz8463_setup,
-
-[Severity: High]
-This isn't a bug introduced by this patch, but since the commit message says
-"PTP and interrupts aren't setup" and this hunk is rewriting exactly this ops
-table, it seems worth raising: ksz8463_switch_ops keeps advertising the PTP
-callbacks
-
-	.get_ts_info		= ksz_get_ts_info,
-	.port_hwtstamp_get	= ksz_hwtstamp_get,
-	.port_hwtstamp_set	= ksz_hwtstamp_set,
-	.port_txtstamp		= ksz_port_txtstamp,
-	.port_rxtstamp		= ksz_port_rxtstamp,
-
-while no PTP clock is ever registered for this chip: the KSZ8463 entry in
-ksz_switch_chips[] does not set .ptp_capable, and ksz8463_setup() calls
-neither ksz_ptp_clock_register() nor ksz_ptp_irq_setup().  Those are the only
-places that run mutex_init(&ptp_data->lock), spin_lock_init(&ptp_data->
-clock_lock) and init_completion(&port->tstamp_msg_comp), so dev->ptp_data.
-clock stays NULL and those objects stay all-zero.
-
-ksz_get_ts_info() checks for this, but ksz_hwtstamp_set() does not:
+Is that invariant actually enforced anywhere?  The ksz87xx/ksz88xx
+dsa_switch_ops export .port_hwtstamp_set = ksz_hwtstamp_set and
+.port_txtstamp = ksz_port_txtstamp unconditionally, dsa_user_hwtstamp_set()
+adds no capability gate, and ksz_set_hwtstamp_config() sets the flag before
+the register write and returns the error without reverting it, with no
+dev->info->ptp_capable check:
 
 drivers/net/dsa/microchip/ksz_ptp.c:ksz_set_hwtstamp_config() {
 	...
-	return ksz_ptp_enable_mode(dev);
-}
+		prt->hwts_tx_en = true;
 
-drivers/net/dsa/microchip/ksz_ptp.c:ksz_ptp_enable_mode() {
+		ret = ksz_rmw16(dev, regs[PTP_MSG_CONF1], PTP_1STEP, PTP_1STEP);
+		if (ret)
+			return ret;
 	...
-	if (tag_en) {
-		ptp_schedule_worker(ptp_data->clock, 0);
-	} else {
-		ptp_cancel_worker_sync(ptp_data->clock);
-	}
-
-	tagger_data->hwtstamp_set_state(dev->ds, tag_en);
 }
 
-With CONFIG_NET_DSA_MICROCHIP_KSZ_PTP=y, does a SIOCSHWTSTAMP on a KSZ8463
-user port reach ptp_cancel_worker_sync(NULL) here, even for the
-HWTSTAMP_TX_OFF / FILTER_NONE combination, followed by an indirect call
-through the NULL tagger_data->hwtstamp_set_state (ksz8463_connect_tag_
-protocol() only assigns xmit_work_fn)?
+For these chips regs[] is ksz8795_regs, whose last initialized index is
+REG_PORT_PME_CTRL (23) while PTP_MSG_CONF1 is 28, so regs[PTP_MSG_CONF1] is
+an out-of-bounds read and the write can well be rejected, which is exactly
+the path that leaves hwts_tx_en latched.
 
-Similarly, does the RX path take spin_lock_bh(&ptp_data->clock_lock) in
-ksz_tstamp_reconstruct() on a spinlock that was never initialized for this
-chip?
+Once hwts_tx_en is set on such a port, ksz_port_txtstamp() attaches a clone
+based on that flag alone:
 
-Would it make sense to drop these callbacks from ksz8463_switch_ops, or gate
-them on dev->info->ptp_capable, while this table is being restructured?  The
-same stale callbacks are present in ksz87xx_switch_ops.
+drivers/net/dsa/microchip/ksz_ptp.c:ksz_port_txtstamp() {
+	...
+	KSZ_SKB_CB(skb)->clone = clone;
+	...
+}
 
->  	.phy_read		= ksz8463_phy_read16,
->  	.phy_write		= ksz8463_phy_write16,
->  	.phylink_get_caps	= ksz8_phylink_get_caps,
+and then dsa_user_xmit() -> ksz8795_xmit() -> ksz_common_xmit() ->
+ksz_defer_xmit() gets past the "if (!clone)" early exit and loads
+tagger_data->xmit_work_fn from a NULL pointer.  Before this patch
+ksz8795_xmit() returned the skb directly and never touched ds->tagger_data,
+so the same misconfiguration only leaked the clone.
+
+The commit message states:
+
+    Clones are only created by the KSZ driver when the PTP feature is
+    enabled. Since KSZ8795 doesn't support PTP, returning the SKB directly
+    or ksz_defer_xmit() is the same.
+
+Could this assumption be expressed in the code, for instance by keying the
+ksz_defer_xmit() call off do_tstamp, or by adding a DEBUG_NET_WARN_ON()
+for a clone on a tagger without tagger_data?  Note also that
+ksz8795_netdev_ops uses .needed_tailroom = KSZ_INGRESS_TAG_LEN only, so
+there is no room for the 4 byte PTP tag if a future user of this helper
+passes do_tstamp = true with that tailroom.
+
+>  static struct sk_buff *ksz9477_xmit(struct sk_buff *skb,
+>  				    struct net_device *dev)
+>  {
+> @@ -308,23 +339,7 @@ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ9477, KSZ9477_NAME);
+>  
+>  static struct sk_buff *ksz8795_xmit(struct sk_buff *skb, struct net_device *dev)
+>  {
+> -	struct ethhdr *hdr;
+> -	u8 *tag;
+> -
+> -	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
+> -		kfree_skb(skb);
+> -		return NULL;
+> -	}
+> -
+> -	/* Tag encoding */
+> -	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
+> -	hdr = skb_eth_hdr(skb);
+> -
+> -	*tag = dsa_xmit_port_mask(skb, dev);
+> -	if (is_link_local_ether_addr(hdr->h_dest))
+> -		*tag |= KSZ8795_TAIL_TAG_OVERRIDE;
+> -
+> -	return skb;
+> +	return ksz_common_xmit(skb, dev, false, 0, KSZ8795_TAIL_TAG_OVERRIDE);
+>  }
+
+[ ... ]
