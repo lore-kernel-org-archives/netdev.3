@@ -1,127 +1,131 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f228.google.com (mail-qt1-f228.google.com [209.85.160.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FFA47989C
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C1344A710
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785515727; cv=none; b=t692pjqT44G/CWL4FEU1wK15GBYdmxqVcC0fh/tGO4jp0fZg1hTN1pIb7goXZpb/N7xZ0FZ6MaFxL9iTR1lzibjRu5bq5pMDX7ZZL/B1riKATJMTuUKzMk9vPAfHgbxBeKVKekJi83IU+8KBGbSpbpisDJ6uDvoiehQ6sn7pfnU=
+	t=1785515846; cv=none; b=SAEULFNo/9G1ddDsxNjpnJ1sZ9++oxJrY7RAtVyKACY8MjPpyc1ZUSuIQDvQrgsPIB6TDFD6L8Mie3qFfFvsAnQd8QebUlhrfurN1Opf6Rs9C5XP0EI7XgNg0oEjlIdSH6y3qpki6e2RvjnzuhzDrk/yiaSCzg2akEU0duRGKEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785515727; c=relaxed/simple;
-	bh=BvCsxCLJBBfxnq5z3PpT+x3lhAoEKUwcM/wsM7VwDrw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DKgvH8zu3R4/GH6BlCjgbvn7aXeRc89grDWexesP8zBKMyK7pKb9jPNW56oXyqAz6CiYCrTMHlL/DVPS4QilnH8qJkr+4k2cIW3LoQooNsMHwwFZpC3WUAyDx9FpxPTYrxfyC/9Fl59IbVDQ7k/gvcFBS6xDH3e0U99ukJv5QAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bbWRN7Q5; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785515846; c=relaxed/simple;
+	bh=qY6aPKpX+OxWw+UAI55wtyPh1DaWz8WHgumy1dU/8ZM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YfVf5HCBVklQfXdoWpdZGaX26NQon6jjO5gzyKT3U7mYQ3ioMG2kQI68THQgP56gpRcADsz4Etp85CfBuTMf1K5EwBj1tZZzSh8tNr9CBxDt/8ooZdwJUl27sAnKQJ96GwUSDxA0F5Zqnp7q+2feOfqD9IjaNyIGRENiQOT8NHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=PUzb5aFB; arc=none smtp.client-ip=209.85.160.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bbWRN7Q5"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3B42E1A1369;
-	Fri, 31 Jul 2026 16:35:24 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0EF1B6039A;
-	Fri, 31 Jul 2026 16:35:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B8EC411C16AE7;
-	Fri, 31 Jul 2026 18:35:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785515722; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=u73Vv75CV8LVR49MHimCfixAL+ut62dVAWYLX/w5ptA=;
-	b=bbWRN7Q5sP5VuGf0Qbl7Po2MBcLfMeR9n8AAy+wgrzObROMoVwnb4RySIEx+ilvxwmR8B1
-	11yfEg1NoJMkbF6BYnB9DwDUbfnpMPz7e5FotNGtYqC1G44tx72L5Ehiq88LQob+biCAqM
-	vVH6X7qlCqEBUJF4bIpMlKk+onHMAMJercSRydJs792oU1mmHFL14wyx3oSqrLv6dztmWT
-	KB2av2O7g0KC3eWGY5RLOcnDEvenw5UyKArbid5kxRvUh/6GgteoH7wN3YgRhsyVw/P0Th
-	Rr/6iiS4lL17wssXFYyKKCHG/0diNJ+/ULPIPiA0oDZ+fQWRJji6HwA7XRAJ7g==
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Fri, 31 Jul 2026 18:34:26 +0200
-Subject: [PATCH net-next v6 16/16] net: macb: use context swapping in
- .ndo_change_mtu()
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PUzb5aFB"
+Received: by mail-qt1-f228.google.com with SMTP id d75a77b69052e-51e4ba1cfb4so7171151cf.0
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:37:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785515844; x=1786120644;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=S0mL7LdNZpr9btSXfODZh7CXj2sMytdsJEG0jRgwtnw=;
+        b=s3mqZnO53OoLzlfVPxWfoEQU6vgPIJtpCToy+mFPmknvTbBU1E385DHlRD+kxfp2lG
+         I3KisZT3JRo7+gVey1PZJkkenOCFlFxhq0d5NriDmt7spy9USbP1s7MsMkINewpvTiFy
+         JrlrE7u6a2SNgJQqHLM41S08GWbsv94tSaOfcbFmk34r2jx2it4kRVn9lF7xrLotri5c
+         QV5AHTXzSJqQjYjNRmSKlcxqZxCGGxZXU0BQVFsENCjXn/97TYMdsmkV3wdlXb9ZONv0
+         +bWIk+rdDydC5Cw+D4JaKkiIHqOgMtDtIRmWMoK6SofAS81k0bf8B3WB2QZ74RD5v2i1
+         NVCg==
+X-Gm-Message-State: AOJu0Yxj6iCtK914dZL53lrzMz1dZZ1dS/z1pTvJvkRzCeV4tbrnPPHR
+	wwEJncnE703IFRbGicigYrN0JvX2riZAtNpwmRl43hmT3lrZkf/L4UwyUoeEBIzC92r0ZCY5Jkn
+	5AtYdL8ZFXvIYT59SKFgMfv+5mbnUovxWiq0BOJL7sDqTAUpwoRq2Ar6isFa876yjdS5zIBeEp9
+	TMfPXR0CXlm+ApVf/bfh7oPLfFxULUKasImmFxksFR6hNrluli5qQEvu1ZRM3Kn1RVCmIv9Kdw0
+	voA46Tc3Q==
+X-Gm-Gg: AR+sD11X1mEEBGTqILHMzcfjDnxRcVZedgUgnYG/jRU2Jp1i3OuNKfh6hHk+g7u39aO
+	81gRk5ZZDrtUXoWZ0B7gaf/nM2vLGm64WUa0PLDY/8XWCAVCP57w4v/50ZfsYdxb6+tS67JLkHK
+	BQ+iyCRuo7H02v/4vCQ9CtItOO2EYjkv26YCip6G09bqPirBPkTil0tBmLHNWwkkJNnajtG4OjD
+	rcwgg4yZ1JlqUI/MhYImaPVAMlVTq8GX2lSFLtevQ10Ml5Ooteb1DoV+Zlky5PvkTPRPQ92Nnce
+	Y6PVE96azTQJYjZof9KftrPUu5TQig4nuf1qe+P+L/7tv2H8VAfxZBEsmzdY4Azmta54OTw6UV3
+	UMXMqCTOTbdrSHc16E7F9ZfdU6CDRnbswvS7pjGtb8Dwlk0VPVKLq/YS8LCamAzQd6MW2OFR6bU
+	3Fd79T2Y2vekuJ8ugJ4DfWV0XaOj3PMoFqCg==
+X-Received: by 2002:a05:622a:4cce:b0:51b:efbb:fbf with SMTP id d75a77b69052e-52b566b52e9mr19328541cf.18.1785515843591;
+        Fri, 31 Jul 2026 09:37:23 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
+        by smtp-relay.gmail.com with ESMTPS id d75a77b69052e-52b4e7eba8esm769951cf.1.2026.07.31.09.37.23
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 31 Jul 2026 09:37:23 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8484ba00601so1488402b3a.1
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:37:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1785515842; x=1786120642; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=S0mL7LdNZpr9btSXfODZh7CXj2sMytdsJEG0jRgwtnw=;
+        b=PUzb5aFB3EchgsED5ewy4PQMOX8rb19CN7x0CIPOigTR2Xzju4v7LasFKoJ5OhAE6M
+         3Szg7zyieyZaHGpiNL9v072XQ41zUca4trga0rFXdHMh+O6ulhdNXcYQzmmy4z3KE6Up
+         yYECIs17URA2AbXPLHDpCsbke+JFsX7V9GPqA=
+X-Received: by 2002:a05:6a00:4fce:b0:848:2f74:d8d2 with SMTP id d2e1a72fcca58-84ee49269a8mr301142b3a.67.1785515842264;
+        Fri, 31 Jul 2026 09:37:22 -0700 (PDT)
+X-Received: by 2002:a05:6a00:4fce:b0:848:2f74:d8d2 with SMTP id d2e1a72fcca58-84ee49269a8mr301117b3a.67.1785515841760;
+        Fri, 31 Jul 2026 09:37:21 -0700 (PDT)
+Received: from localhost.localdomain ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edbe57020sm690127b3a.17.2026.07.31.09.37.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 09:37:21 -0700 (PDT)
+From: Vikas Gupta <vikas.gupta@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bhargava.marreddy@broadcom.com,
+	rahul-rg.gupta@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	rajashekar.hudumula@broadcom.com,
+	dharmender.garg@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	Vikas Gupta <vikas.gupta@broadcom.com>
+Subject: [net-next, v2 0/3] bnge: add more functionality
+Date: Fri, 31 Jul 2026 22:07:09 +0530
+Message-ID: <20260731163712.3463362-1-vikas.gupta@broadcom.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260731-macb-context-v6-16-49d5a1439d48@bootlin.com>
-References: <20260731-macb-context-v6-0-49d5a1439d48@bootlin.com>
-In-Reply-To: <20260731-macb-context-v6-0-49d5a1439d48@bootlin.com>
-To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- Conor Dooley <conor.dooley@microchip.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Paolo Valerio <pvalerio@redhat.com>, Nicolai Buchwitz <nb@tipi-net.de>, 
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, 
- =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
- Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Last-TLS-Session-Version: TLSv1.3
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Use newly introduced context buffer management to implement
-.ndo_change_mtu() as a context swap: allocate new context ->
-reconfigure HW -> free old context.
+Hi,
 
-This resists memory pressure well by failing without closing the
-interface and it is much faster by avoiding PHY reinit.
+This patch series adds a few functionality for bnge driver:
 
-AT91 EMAC is handled differently as their buffer management is separate
-and they don't do NAPI. We refuse them (-EBUSY) to avoid implementing
-context swapping for them.
+Patch 1-2: Implements ndo_set_rx_mode_async().
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
----
- drivers/net/ethernet/cadence/macb_main.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+Patch 3: Adds a dedicated HWRM (Hardware Resource Management) command
+         sequence to handle explicit interface down and up transitions cleanly.
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index c4818216ab70..30efe46ee0d3 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -3507,11 +3507,29 @@ static int macb_close(struct net_device *netdev)
- 
- static int macb_change_mtu(struct net_device *netdev, int new_mtu)
- {
--	if (netif_running(netdev))
--		return -EBUSY;
-+	struct macb *bp = netdev_priv(netdev);
-+	bool running = netif_running(netdev);
-+	struct macb_context *new_ctx;
-+
-+	if (running) {
-+		/* Context swapping is not supported for AT91. */
-+		if (bp->caps & MACB_CAPS_MACB_IS_EMAC)
-+			return -EBUSY;
-+
-+		new_ctx = macb_context_alloc(bp, new_mtu,
-+					     bp->configured_rx_ring_size,
-+					     bp->configured_tx_ring_size);
-+		if (IS_ERR(new_ctx))
-+			return PTR_ERR(new_ctx);
-+
-+		macb_context_swap_start(bp);
-+	}
- 
- 	WRITE_ONCE(netdev->mtu, new_mtu);
- 
-+	if (running)
-+		macb_context_swap_end(bp, new_ctx);
-+
- 	return 0;
- }
- 
+Thanks,
+Vikas
+
+v1->v2:
+1)  Addressed review comments from Sashiko.
+    https://sashiko.dev/#/patchset/20260724142954.3101980-2-vikas.gupta@broadcom.com
+    https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260724142954.3101980-2-vikas.gupta@broadcom.com
+
+2) Removed a patch (bnge shutdown callback implementation) from the series, bringing
+   the patch count down to 3. The implementation shall be pushed in a separate series.
+
+Vikas Gupta (3):
+  bnge: refactor rx mode helpers to accept explicit address lists
+  bnge: add ndo_set_rx_mode_async support
+  bnge: send hwrm for interface down/up transitions
+
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 132 ++++++++++++++----
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  |   6 +
+ 2 files changed, 112 insertions(+), 26 deletions(-)
 
 -- 
-2.55.0
+2.47.1
 
