@@ -1,105 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2346F3DA7D6;
-	Fri, 31 Jul 2026 10:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADF340927F
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 10:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785492936; cv=none; b=gaU0W50XBhA7PL4ATUmkwN0S3cNU0DR8FlmomN1kfDvNuOoRQ69e1xidKoWXz0D1DN6hTDzUMAuI2nKuqzi60DGfbDZw5+4gT7AJBSdkOIE4JOWqNFoY+IYP1VNXskIEL7yZrMdrozuT3V9DdlMoUNFMxQTIKSJUc4IYe2MwEIo=
+	t=1785493036; cv=none; b=aLtb2TyqjGMEQ1CJiE4H2FKiSRsSgKW9bidCpfb8/V+pXt8AMUkcFEg5kkEbccOe1nC0wjV9TaJC6O78ExAt+Y0oZFHlGmcYz3e9pqtqTEWiaZRq/C/R7EZLb/yEo+xP0+53GNUYrZHbNvgpsPSuwp64Ke2iZE7J0N+czfYXEIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785492936; c=relaxed/simple;
-	bh=iKGZZoPiLZbpP6fqsFth6A6aZtjn2VQzfx5vDbpAxLA=;
-	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=NiRs0jC0i7X5aOIpUN0CGPPmPbGwbFevOTjdbk5M0LiQEp6znOrrsUzrx2dGG3JNf9adOBizM9uF/SvE8fY6KzPEjKLelFwXrpiBF4bdjf76PAe0i39gVMXKkQjDVvPpu4MhSG+9jnuvMdwQ6uG+F4LfZxWDohoXDGh9ML0D10g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nl+rJ6Gy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785493036; c=relaxed/simple;
+	bh=zvnzDL5jc91mCpziI/WkXoqIm6A9BOrC0ngqHkuasv0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uwUDVtpkaWb1RQXaE/X5vANR/V9fYXrahH13BkBOToRqlQ7lrmM6NMEbuoP3wqczGqnGTZP9LCaUAstnb0qwLuKIMfptJDv+3iJh0kP5x73Y6YJmQsV1VyIqh1zysj+omm5f6Kq8iLbOL6SkVvBZomTjD/IYY/bPDTHWi+7VI7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PdXhqWR+; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nl+rJ6Gy"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id A57751F000E9;
-	Fri, 31 Jul 2026 10:15:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785492921;
-	bh=igCGcuVr3RVFJK8/Uk1UFFC3NA0FBLSNwlzVaDvkXzA=;
-	h=From:To:Cc:Subject:Date;
-	b=Nl+rJ6GyKZ8ba+2bqo7MGDCHI6P2EgJHg3evd07ZnjdThA+IyhB9/ajWpjgi2SaAD
-	 a+EiGm3E3f7rGgJXCK1NOLFZtlyjgvoVZ5yvW/Yw/Y42JWKE3Iv0OWgwi9xeV3vctO
-	 T+v49hvwnyiMlBPij8iMIqDjTwEkuLl+D5+KlP5mR1/5mu/S8vpfwOZmKyk36irpTa
-	 Q5miiZgEQIvHTlNuHCXJE8/HiJzm/62vzT0VW/Jpj2XnbGvzJ0OrCfOAbxfTSYwVE3
-	 neQ1fTw4ywM2c+uAicwJOx/H19runwL4ednFQ4KH5zGzcYRnFNlkciauRcLac6KdpJ
-	 L56hXNuQqPdlQ==
-From: "syzbot" <syzbot@kernel.org>
-To: syzkaller-bugs@googlegroups.com, Aleksandr Nogikh <nogikh@google.com>, "Chas Williams" <3chas3@gmail.com>, <accessrunner-general@lists.sourceforge.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, <linux-atm-general@lists.sourceforge.net>, <linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>, "Duncan Sands" <duncan.sands@math.u-psud.fr>
-Cc: linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
-Subject: [PATCH] usb: atm: cxacru: properly kill rcv_urb on error in cxacru_cm()
-Message-ID: <91edfa4c-a63d-400c-9f00-31f3e1f98c00@mail.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PdXhqWR+"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cc891373e0so7894285ad.2
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 03:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785493026; x=1786097826; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jYPlNC3zN2lWfLh36G6tN8zz1VZu57wO9xdzsz1WXLc=;
+        b=PdXhqWR+evCSlfrYoGbA+nNHf2AC+cDOlpLkIMwKs2DxXwe8zfc0FctDcYG5gXm/Eo
+         6CniObB3V8+taFHxePLDBvIEDmDxr92PVdokDLWUccaCCSj53KNsOgEaR/hNfoyy4uOm
+         Ol/QCWkM3pPNkvQam8yB9dxOLojEJ0NBLbvQJHnNoytRE7A1dmQ+PJ4Df7cxXyvXkfyo
+         FYcRO5K03M3thVVwV89eZREV6yp///TSHcD+juNpQEbdm1jPDal28TYpl9JeQbYok8we
+         xjGuHPlWsc+TR74p45ZjWgO1t9XsKZiz3HyS38Ie++99HewvUXaL/3ba9iVGhKPPdlPN
+         XTDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785493026; x=1786097826;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jYPlNC3zN2lWfLh36G6tN8zz1VZu57wO9xdzsz1WXLc=;
+        b=O9YRagqJcbTugKviCCyaBKsl0mZFBCFgJFwfy7oCeBRdeexeZVzcQuf+sSXMwb4sk1
+         t6aWuQFqIErS/05Ept5wREu/qc4jRLNiDknxDlrzSOQg0wYqJrRsosiQVgs8P6ZSdDu4
+         4NghRH2C5ZlwqLWBgiNW6f9L0T9QSGU+nbLdqOjP5xJdIqKGwjZW1/Ic4Mu9BZPAyWsL
+         td9FPmRNzMHRNMjuIFHzFs54xFEuSc5vge1w30d23yEiqEgVs7cM9DqgPRSpf1C+4z6a
+         FVkdmGjtOJaiG96ROX2q0FSiY5L04oItnzZJMZU4Dly6owsSeaFjjUFcm56OxQGDDfdj
+         e7BA==
+X-Gm-Message-State: AOJu0Yx/OlEYvHvIfsNfm3yoMSAg9sZid8YdROqDE3aDVeAR8GSn4jFJ
+	jkkZBx0FofQx79CAwUbeM6++Hf14h9ZwOw1kHlyLPhbezjyaVfRhiWMsYfGLuaIRgTiAGVJN
+X-Gm-Gg: AR+sD12eBhbFht0nxOx/G+iUG6YsaQwzFnOV2Fr+WDq7/ctVHZXjrlPTWPV0eDTpAMM
+	uuu7vHT//TTGKLFyB6o5t8+lWKJ/2qY/zYx/0/+ETjDFoAKBzfSVqFKyEXZ+XA2SzR5fH/mdWw0
+	xEJ3RrD9kqNObJ25ds4QCD49eioSnhBOs2L5B72Zj3Wd5zhat/np6ikrQokPEvdr3BofIB9o3wV
+	GyRNtUwbuGiBErhpOyOwiM/7mQKW0mt/6AC49rF1TYFW3BrHenI17lP3U2mwoNYE7U21IKvaOIG
+	rbp8BFZkWSS9f+Fa/RqgZKdxe9XUTVNjWJRYxNPIikV+hpxGVu11+4wkq/cIu+Vw7J7r/IOUVbJ
+	iHfBugIeM67TafaXdjf2vMmY+bDKYCOz2v2kTdU1Y+d8jHq0nyH6yj3uhhPahEExKep/F3hOsfe
+	EmwZfT+MAlXf12xEO/4V+AghfUR1yvl296/NpovrHpWufw/V46UtqSfIfg5ulMXD8lp+m/8kPsA
+	XXiPVZ4d9b+r11wsQ/Gs63eLTU=
+X-Received: by 2002:a17:903:1968:b0:2cc:a853:1311 with SMTP id d9443c01a7336-2d046ef0be8mr14436195ad.47.1785493026001;
+        Fri, 31 Jul 2026 03:17:06 -0700 (PDT)
+Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b15db1esm3436485ad.81.2026.07.31.03.17.03
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 31 Jul 2026 03:17:05 -0700 (PDT)
+From: Jun Yang <juny24602@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Jun Yang <junvyyang@tencent.com>,
+	stable@kernel.org,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	Jon Maloy <jmaloy@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] tipc: reject name table updates with invalid origin node
+Date: Fri, 31 Jul 2026 18:16:37 +0800
+Message-ID: <20260731101657.29119-1-juny24602@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Date: Fri, 31 Jul 2026 10:15:20 +0000 (UTC)
 
-From: Aleksandr Nogikh <nogikh@google.com>
+From: Jun Yang <junvyyang@tencent.com>
 
-If cxacru_cm() encounters an error while submitting or waiting for snd_urb,
-it aborts and returns the error without killing the already submitted
-rcv_urb. This leaves the rcv_urb active.
+tipc_update_nametbl() trusts the origin node carried in a received
+NAME_DISTRIBUTOR message. For a WITHDRAWAL it removes and frees the
+matching publication with tipc_nametbl_remove_publ() (a {key,ref}
+wildcard match that ignores the node), then calls
+tipc_node_unsubscribe() to unlink the publication from the advertising
+node's publ_list.
 
-When this happens during initialization (e.g., in cxacru_atm_start()), the
-driver may ignore the error and proceed to call cxacru_poll_status(), which
-invokes cxacru_cm() again. Attempting to submit the still-active rcv_urb
-triggers a warning in usb_submit_urb():
+tipc_node_unsubscribe() is a no-op when in_own_node(net, node) is true,
+and in_own_node() treats node 0 as "own" (addr == own || !addr). So a
+WITHDRAWAL with orignode == 0 frees the publication via kfree_rcu()
+while the paired unsubscribe silently does nothing, leaving the freed
+publication linked on the owning peer's publ_list through its
+binding_node.
 
-cxacru 1-1:1.0: send of cm 0x84 failed (-104)
-ATM dev 0: cxacru_atm_start: CHIP_ADSL_LINE_START returned -104
-------------[ cut here ]------------
-URB ffff88812658d200 submitted while active
-WARNING: drivers/usb/core/urb.c:379 at usb_submit_urb+0x79/0x18b0
-drivers/usb/core/urb.c:379
-...
-Call Trace:
- <TASK>
- cxacru_cm+0x21a/0xf10 drivers/usb/atm/cxacru.c:631
- cxacru_cm_get_array drivers/usb/atm/cxacru.c:722 [inline]
- cxacru_poll_status+0x178/0x1110 drivers/usb/atm/cxacru.c:828
- cxacru_atm_start+0x185/0x360 drivers/usb/atm/cxacru.c:814
- usbatm_atm_init+0x144/0x3a0 drivers/usb/atm/usbatm.c:927
- usbatm_usb_probe+0x15cb/0x1db0 drivers/usb/atm/usbatm.c:1178
- cxacru_usb_probe+0x17f/0x220 drivers/usb/atm/cxacru.c:1370
-...
+A subsequent legitimate WITHDRAWAL for a neighbouring publication that
+the same peer advertised then performs list_del() across the freed
+object, writing a kernel pointer into freed memory (use-after-free
+write) and corrupting the live publ_list head. The whole sequence is
+attacker-driven from received packets and is reachable by an
+unprivileged local user, who can gain CAP_NET_ADMIN in a new network
+namespace via unshare(CLONE_NEWUSER|CLONE_NEWNET), enable a TIPC UDP
+bearer, and emulate a peer over loopback UDP.
 
-To fix this, ensure that rcv_urb is properly killed if cxacru_cm() aborts
-early. We can safely call usb_kill_urb() on rcv_urb in the error path, as
-it is safe to call even if the URB is not active (e.g., if it failed to
-submit in the first place, or if it already completed).
+A name table update must always originate from a real peer node, never
+from our own address or from node 0. Reject such updates up front:
+in_own_node() already covers both cases, so a single guard at the top
+of tipc_update_nametbl() drops the malformed update before any
+publication is removed or freed.
 
-Fixes: 1b0e61465234 ("[PATCH] USB ATM: driver for the Conexant AccessRunner chipset cxacru")
-Assisted-by: Gemini:gemini-3.5-flash Gemini:gemini-3.1-pro-preview syzbot
-Reported-by: syzbot+c9dff578c3a41775176a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c9dff578c3a41775176a
-Link: https://syzkaller.appspot.com/ai_job?id=75fec6f2-c8a6-43b1-b184-4d26baba86cc
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-
+Fixes: 37922ea4a310 ("tipc: permit overlapping service ranges in name table")
+Cc: stable@kernel.org
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Signed-off-by: Jun Yang <junvyyang@tencent.com>
 ---
-diff --git a/drivers/usb/atm/cxacru.c b/drivers/usb/atm/cxacru.c
-index f1900c567..429ac20a8 100644
---- a/drivers/usb/atm/cxacru.c
-+++ b/drivers/usb/atm/cxacru.c
-@@ -700,6 +700,8 @@ static int cxacru_cm(struct cxacru_data *instance, enum cxacru_cm_request cm,
- 	ret = offd;
- 	usb_dbg(instance->usbatm, "cm %#x\n", cm);
- fail:
-+	if (ret < 0)
-+		usb_kill_urb(instance->rcv_urb);
- 	mutex_unlock(&instance->cm_serialize);
- err:
- 	return ret;
+ net/tipc/name_distr.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-
-base-commit: f5098b6bae761e346ebcd9da7f95622c04733cff
+diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c
+index ba4f4906e13b..a496e2e9ef62 100644
+--- a/net/tipc/name_distr.c
++++ b/net/tipc/name_distr.c
+@@ -286,6 +286,9 @@ static bool tipc_update_nametbl(struct net *net, struct distr_item *i,
+ 	u32 key = ntohl(i->key);
+ 	struct tipc_uaddr ua;
+ 
++	if (in_own_node(net, node))
++		return false;
++
+ 	/* A peer-advertised binding with lower > upper can never be matched
+ 	 * or withdrawn and would leak the publication; the local bind path
+ 	 * rejects such ranges, so reject ranges learned from the network too.
 -- 
-See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
-You can comment on the patch as usual, syzbot will try to address
-the comments and send a new version of the patch if necessary.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+2.55.0
+
