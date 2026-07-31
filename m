@@ -1,195 +1,272 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CCC352015
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:34:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785515652; cv=pass; b=eDKHo60qOt6vDD8+rSZQEf2LNgN4TWSZl+7/v4TkiOM13Yn3M1M3gkxh2Du4GJ6fUIZACNlPWPjIY3OwDZ39byI3f7bnFhKhgVnawXmyOrk+YbabQMQmzbAflxbEFbsf1U7+dP8nzmsuXM1V4w9ingsw54ImlQYirXsvyX6xjww=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785515652; c=relaxed/simple;
-	bh=okHwXQSOYRv/EX6kAKl/uikenhAdgox5qe1/tlHCQtY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EQdqleINzsnWgvvI6sEk33sVvu0skAhAWD9M6MRvWcaAzxEr9manGxlxgGxu5r9hs3ORGuLAZSnTtbmVFBmguj71UVplsY49OGygvJhMv2fTuM9LdoB/Y00KPx/cGSRimDQ6ZtCc7y+NwPQ0pQyIHVxnjS3XTxHJcngHW1ylBj0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=qcqIdadu; arc=pass smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F232B4503F2;
+	Fri, 31 Jul 2026 16:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785515670; cv=none; b=ibHiaTZep8nL09Qmpa4fC6dSDQH9kZ6+m31Gepp9poLW5NGczoMSanGRuO/s7AXpPW/3DwfuqzYzuauj9RYmF02TF+uPGYdwKr6YQY59LlbjsZkrCCxB4snjHerGMVHdi7WWXCtyRSFrJSYxnW7+DRSHEu0AvLVnfF7yJXv+4Uo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785515670; c=relaxed/simple;
+	bh=zrw1VIy6mdI0cTBxZ5Ht+hRT5mkho3hK6hkBzM+pXrQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EWPAotErSWzSrK/wIJzS89r4m2A83EyF0+/hl5ZrwIS90r1kcCLoKlZWoFsKEmM/YUmVW8z4jBoRfAPr5WmhmlTBxAS+MVwxrJOSl5AsuGG5YMVTjg5vxq6mU86vFrNhmEkKGcXiG35kkMRAIQ6oGq3GJLfxXyA1Ok9IChDM1Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=an3Xq+57; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="qcqIdadu"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso1021730b3a.1
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:34:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785515649; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iUdpL5VPvsvxOUSRKq69/8BRagALTSt9nTIykrdBs4MWgXEtyoiTVzL2kxoLWd+gFk
-         4kg84uEwTFWJEoO0+gsq0xRu67thecDE4IoallDSgjv6/bl9QFKSfn5uPwCzw6rWzsg9
-         WrvvZP16CSuVh/TuEN2QZ1zDumqo2JVKoVkyFGmNG97ZHveI8O28RDWswoP34pzYZFfy
-         WI9xKejfn9V9Dsn4CI/cncl2J2lW1qCZ7ofWzV/q4Cv65tre9/+OaDDrN/tzcjS/k/r1
-         tM2Lr1+Oq+n+7ZcS1q2bK90KzbjA7K86VfNBXBgYbQopCm41EHaOOkfayft5igZFfrL3
-         ZXbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=U/cFb4+9Yfk7EEvP7BR+ieCVi0Z844OEPZlHDt2nv7o=;
-        fh=Iq8sixuyhpWophDSdzBZhMFWeWCQA5yKpNi/LOrsxp0=;
-        b=N4OcK+bqohHhmL9NIODYBMNro+lquUTMOgCr36kKQycgqA1vYflq1hEC7S0LFzgHQM
-         mqStOTZL7aiYuzzqaJKy+On/vZ/WhrumIVt5M3tVWGMNNZtBBzo2moJFfcSQQQFtjCmH
-         DvSfzSrGYGJMM8hbnkoSehcgSWWOJqT39SBdvZYKCMasMEHLWuVUfcVnCgSxKKYi8uln
-         NlKfa2H+eg8RWy6YCsRdT8z9VAClnVTQVRy6X2OMIHxDW/kKLecYLwvKVdElntKs+vPo
-         YjP0EANBR6hwC6ryexmouMPRx+WDaGwf8KVm2/OP9YjTPKM7fsrHyrq8AHF+WumDO6lf
-         dLyA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1785515649; x=1786120449; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=U/cFb4+9Yfk7EEvP7BR+ieCVi0Z844OEPZlHDt2nv7o=;
-        b=qcqIdaduX3RIF4vIElnRwjAJXV0m7ygIPu02yQ+BFyTY5DZALjkWa2LzYO/qPVbUbP
-         nTBgTRYngvvHndp527YNUiB4ZlUDz/sIyz2Xein2HM78RQpSeFskJht3qAMFEyvotISN
-         njX2IGllh9gcmDhpiyqF/6a4G/LN8CiRTDHeA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785515649; x=1786120449;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=U/cFb4+9Yfk7EEvP7BR+ieCVi0Z844OEPZlHDt2nv7o=;
-        b=QjQCj2uYGeUrKExhhb6VN9L0SISD2sBIv81GJoDGSvc8YotcCeoNEykqJC/DO3+Pk8
-         agIpB4KxgSWwEh4kiM+OAxBBJDJP21d7SCAvl8SW4WYmz2CFE93ZZ7Tl1AYiAWpdL17v
-         5qXU+aivRtLVsNqc8/vPdNi7dibnXfGBJuN1qSJgKicJH4JwxYQnBA7+gQTWyse4uG86
-         SvPO9kSbHS5girl+fidjp30BJwikj+p3jjc7h8AlgF00A+5tsTZbAmIQA6DIyWYDVi0c
-         YCqwhdGUUNVp453EfQ1248MVE1qDmcbhjHDXaJ5p4fnqoLmW0mv6+jFojG7RaY/YOqA/
-         FGAw==
-X-Forwarded-Encrypted: i=1; AHgh+RoyKvJeRkUXLDxPovu7KaDuK37K0veRlV3B18vym3PtFZL1+iiY93e5++643EI25cErvHiEQkk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynGLDlIXv3PTsMu7SulDkX1QwVdLguv7vNnLKKE70zF+L0q1Dj
-	HAoLKuCrwDODvs3t+eW2iOUktvT/J5/CKd5VjYI8rWoG60AXWhor41ZaXeAsYq99CNiJVTEiUio
-	10rspnx5kifKfd742ZPA4dPlLYEqJympexp5iTToO
-X-Gm-Gg: AR+sD11CnsMB/qQGuVIV1CzcFl3In/IpGVPehjT9DCmssgqulXqJjgFgBWnA1J65jln
-	3PGbi9WI1HbqihayRBPqbAogmkblG8cwCJU4rBFJPDEFnl+7ur+TNRC1Ab7TYDis79sJHCjLkLT
-	fcsXpu47P+V/FXL0bIzjVm1tHSItp9lDn3/uIY+4TkD3X15HThxuTzvbpJrRqCI8jrUvdepj8vL
-	ir68EO0kvQcZrmYV2kM23XSWM87NnlTZUWStSNf7dqmzjsUxGsYOA++0mF/mnXUD0sP0tgzZd/5
-	FMtR1VHERAKledkIO7jQ+5ErIuTQf97uyYAbPpQrQnPnTQ4e6Y/P7j3MMJEp9L/K3Roq
-X-Received: by 2002:a05:6a00:430d:b0:848:2ef5:50dc with SMTP id
- d2e1a72fcca58-84ee49a3159mr240282b3a.36.1785515648841; Fri, 31 Jul 2026
- 09:34:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="an3Xq+57"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 4F36A4E4104D;
+	Fri, 31 Jul 2026 16:34:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 182B36039A;
+	Fri, 31 Jul 2026 16:34:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D7D711C16AEE;
+	Fri, 31 Jul 2026 18:34:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785515659; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=e1gRTreynDc+SK3/vJNyyRPBvyuxetKZhznFkAwk8/s=;
+	b=an3Xq+57BH41ECd4DX+XV8O/xqanNF9ra0ui6mfwFp6rYrTx66UWEUQBfkYF3uiT2pq51H
+	Y/GXCBcNEFCE8SWdx2LVS9Rqhws7sdpey8yw2+U/H/tz+BZOYicFMdJxHX5TVFdGs4T1jZ
+	pa1/6x13E41Y1OYDJ/vkaruihlR8xr8+zijNIO/TN6ZPEyRpGsmR54m02DqD1yXoRXf+31
+	bXy8C+Y0lRPgxwv5XrNigHWC2xwwVpIihIsxdjiYQmCai/w8kgnQeBvOkCLhev7nzBBAIn
+	nww1Bm+V4WQX6jZKwBGeJHruIvuMlT7zFeF4baryVg0oFqKmNhDXIcZjRbFPoA==
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: [PATCH net-next v6 00/16] net: macb: implement context swapping
+Date: Fri, 31 Jul 2026 18:34:10 +0200
+Message-Id: <20260731-macb-context-v6-0-49d5a1439d48@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260731153031.3201165-1-nicoyip.dev@gmail.com>
-In-Reply-To: <20260731153031.3201165-1-nicoyip.dev@gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Fri, 31 Jul 2026 12:33:57 -0400
-X-Gm-Features: AUfX_mzWP3nhr226FdASueIw6k8K3-HTeoneL27FCRHreI6GF6mzQr2bcITxGdw
-Message-ID: <CAM0EoM=2Yqg2FqCpxvn7teM8E1m6oF6nebyvXA+JBKuwpowSQA@mail.gmail.com>
-Subject: Re: [PATCH net] net/sched: keep tcf block alive during offload unbind
-To: Chengfeng Ye <nicoyip.dev@gmail.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Vlad Buslov <vladbu@mellanox.com>, 
-	Stefano Brivio <sbrivio@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23Ny07DMBAF0F+pvMZoxrHjhhX/gbrI+EGNqI1iN
+ yqq8u84YUFIupzHuffOshuCy+zlcGeDG0MOKdahfTowc+7ju+PB1pkJEC1IQH7pDXGTYnG3wsm
+ C6b0AidKySr4G58NtiXtj0RUe6xc7/V7ylT6cKXPa/HsOuaThe2kecRGPS0bkwDvVgVE9aaHFK
+ 6VUPkN8NumyhI9ixRE2XFTe+6bzGq0Eave8+eN6195UDvV0tIpQwYN2ueKoN1zOvG6c9gjG0p6
+ rFRdyw1Xlqu0Ij0qQ0f4/n6bpB7Q+vtrCAQAA
+X-Change-ID: 20260401-macb-context-bd0caf20414d
+To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Paolo Valerio <pvalerio@redhat.com>, Nicolai Buchwitz <nb@tipi-net.de>, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
+ Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Jul 31, 2026 at 11:30=E2=80=AFAM Chengfeng Ye <nicoyip.dev@gmail.co=
-m> wrote:
->
-> An RTNL-unlocked filter request can race with qdisc teardown on a shared
-> tcf block.  The filter request takes a temporary block reference before
-> teardown drops the qdisc owner's reference.  Teardown then enters
-> tcf_block_offload_unbind() without retaining a reference of its own.
->
-> The following interleaving can occur:
->
->   filter request                   qdisc teardown
->   tcf_block_refcnt_get(): 1 -> 2
->                                    __tcf_block_put(): 2 -> 1
->                                    tcf_block_offload_unbind()
->   tcf_block_refcnt_put(): 1 -> 0
->   tcf_block_destroy()
->                                    access block->nooffloaddevcnt
->
-> The unbind path may sleep in flow_indr_dev_setup_offload(), allowing the
-> RCU grace period to expire and the block to be reclaimed.  It then
-> continues using block->cb_lock and block->nooffloaddevcnt.
->
-> KASAN reported:
->
->   BUG: KASAN: slab-use-after-free in tcf_block_offload_unbind
->   Read of size 4 at addr ffff88811ae590a4
->   Call Trace:
->    tcf_block_offload_unbind+0x158/0x190
->    clsact_destroy+0xd6/0x690
->    __qdisc_destroy+0xdf/0x290
->    qdisc_graft+0x5d7/0x1560
->    tc_get_qdisc+0x415/0xd50
->    rtnetlink_rcv_msg+0x367/0xa40
->   Allocated by task 85:
->    tcf_block_get_ext+0x803/0x1570
->    clsact_init+0x1ff/0xb50
->    qdisc_create+0x392/0xde0
->   Freed by task 88:
->    __kasan_slab_free+0x43/0x70
->    __rcu_free_sheaf_prepare+0x5c/0x220
->    rcu_free_sheaf+0x1a/0x100
->
-> Keep the qdisc owner's reference until offload unbind completes by moving
-> the unbind before the refcount decrement.  A concurrent temporary
-> reference release can no longer destroy the block while unbind uses it.
->
+MACB has a pretty primitive approach to buffer management. They are all
+stored in `struct macb *bp`. On operations that require buffer realloc
+(set_ringparam & change_mtu at the moment), the only option is to close
+the interface, change our global state and re-open the interface.
 
-Please always send a reproducer - either as a tdc test case or if it
-is sensitive send it privately to me and Cc the other maintainers.
-I will not look at it without a repro.
+Two issues:
+- It doesn't fly on memory pressured systems; we free our precious
+  buffers and don't manage to reallocate fully, meaning our machine
+  just lost its network access.
+- Anecdotally, it is pretty slow because it implies a full PHY reinit.
 
-cheers,
-jamal
-> Fixes: 92149190067d ("net: sched: flower: set unlocked flag for flower pr=
-oto ops")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-> ---
->  net/sched/cls_api.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
->
-> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-> index fee4524adc98..d3b2506d87cf 100644
-> --- a/net/sched/cls_api.c
-> +++ b/net/sched/cls_api.c
-> @@ -1312,6 +1312,9 @@ static struct tcf_block *__tcf_block_find(struct ne=
-t *net, struct Qdisc *q,
->  static void __tcf_block_put(struct tcf_block *block, struct Qdisc *q,
->                             struct tcf_block_ext_info *ei, bool rtnl_held=
-)
->  {
-> +       if (q)
-> +               tcf_block_offload_unbind(block, q, ei);
-> +
->         if (refcount_dec_and_mutex_lock(&block->refcnt, &block->lock)) {
->                 /* Flushing/putting all chains will cause the block to be
->                  * deallocated when last chain is freed. However, if chai=
-n_list
-> @@ -1325,15 +1328,10 @@ static void __tcf_block_put(struct tcf_block *blo=
-ck, struct Qdisc *q,
->                 if (tcf_block_shared(block))
->                         tcf_block_remove(block, block->net);
->
-> -               if (q)
-> -                       tcf_block_offload_unbind(block, q, ei);
-> -
->                 if (free_block)
->                         tcf_block_destroy(block);
->                 else
->                         tcf_block_flush_all_chains(block, rtnl_held);
-> -       } else if (q) {
-> -               tcf_block_offload_unbind(block, q, ei);
->         }
->  }
->
-> --
-> 2.43.0
->
+Instead, we shall:
+ - allocate a new context (including buffers) first
+ - if it fails, early return without any impact to the interface
+ - stop interface
+ - update global state (bp, netdev, etc)
+ - pass newly allocated buffer pointers to the hardware
+ - start interface
+ - free old context
+
+This is what we implement here. Both .set_ringparam() and
+.ndo_change_mtu() are covered by this series. In the future,
+at least .set_channels() [0], XDP [1] and XSK [2] would benefit.
+
+The change is super intrusive so conflicts will be major. Sorry!
+
+Thanks,
+Have a nice day,
+Théo
+
+[0]: https://lore.kernel.org/netdev/20260317-macb-set-channels-v4-0-1bd4f4ffcfca@bootlin.com/
+[1]: https://lore.kernel.org/netdev/20260323221047.2749577-1-pvalerio@redhat.com/
+[2]: https://lore.kernel.org/netdev/20260304-macb-xsk-v1-0-ba2ebe2bdaa3@bootlin.com/
+[3]: https://lore.kernel.org/all/DJXGIM9EGPT8.4UHNYP2Y0GOP@bootlin.com/
+
+---
+Changes in v6:
+- Non Sashiko based:
+  - Take 3x Reviewed-By: Nicolai.
+  - Silence checkpatch warnings in [02/15] about printk(..., __func__).
+  - Rebase to latest net-next/main (a5c6ae8de11e), nothing to report.
+- Fix netconsole/netpoll deadlock coming from macb_tx_error_task()
+  calling printk() inside the bp->lock critical section.
+- Move at91ether synchronize_irq() on close to protect more kfree().
+- Clarify commit message for [11/15]: functions operating on the
+  interface have no risk of using the wrong interface.
+- On swap end, only re-enable the interface if !netif_carrier_ok().
+- macb_hresp_error_task() grabs bp->mac_cfg_lock as it toggles the
+  carrier state, to avoid race with context swap.
+- On swap end, move netif_tx_start_all_queues() into bp->mac_cfg_lock.
+- Link to v5: https://patch.msgid.link/20260724-macb-context-v5-0-569b1852bc7f@bootlin.com
+
+Changes in v5:
+- Fix build on [PATCH 02/15]; `bp->dev` got renamed to `bp->netdev`.
+- Fix one word in commit message of [PATCH 07/15].
+- Move bp->ctx->info assignment in at91ether_open() from [PATCH 12/15]
+  to [PATCH 09/15].
+- In [PATCH 14/15], reset DQL (dynamic queue limits) after tx disable,
+  not before.
+- Take 7 Reviewed-by: Nicolai (weirdly not all detected by b4).
+- Rebase on latest net-next/main (89d8006259b8), nothing to report.
+- Link to v4: https://patch.msgid.link/20260717-macb-context-v4-0-0acbe7f10cdb@bootlin.com
+
+Changes in v4:
+- Disable tx_error_task then disable NAPI because error task does a
+  napi_disable() which deadlocks if NAPI is already disabled.
+- Disable NAPI then disable tx_lpi_work, because NAPI might re-arm the
+  latter.
+- Last iteration did mask-irqs then disable-and-wait-for-bh then
+  disable-hw. This is flawed because BH rearm IRQs once done. We don't
+  have a good way to signal to them they shouldn't do so (we don't want
+  to lock from NAPI context). So instead we add a bp->ctx_swap flag,
+  shielded by bp->lock, to indicate to our IRQ handler to ignore IRQs
+  and self-disarm.
+- at91ether_close(): synchronize_irq() before freeing context.
+- macb_interrupt(): drop double ISR read (outside & inside bp->lock).
+- Rebase on latest net-next/main (f6f3b36c15ed). macb_free() since
+  commit 27f575836cfe ("net: macb: drop in-flight Tx SKBs on close")
+  needs access to queue stats => add them to macb_info.
+- Take trailers.
+- I did NOT init ctx->rx_ring_size/tx_ring_size/rx_buffer_size from
+  at91ether_open(), as recommended by the netdev LLM. They are not the
+  first fields in MACB that are present in both instances and that are
+  uninitialised in one case. AT91 is almost a different driver. [3]
+- Link to v3: https://patch.msgid.link/20260701-macb-context-v3-0-00268d5b1502@bootlin.com
+
+Changes in v3:
+- Use `const struct macb_info *info` instead of bare `u32 caps` as
+  helper arguments, for type safety.
+- macb_interrupt(): the pre-lock readl(ISR) to detect spurious
+  interrupts is only done if CLEAR_ON_WRITE.
+- Don't forget allocating context in at91ether_open().
+- swap:
+  - Refuse swap for EMAC HW; it would crash because codepaths are so
+    different.
+  - Grab new bp->mac_cfg_lock to serialise with phylink MAC callbacks.
+    We cannot rely on phydev->lock because it isn't present in the SFP
+    or fixed-link cases. We also want to avoid phylink_stop() which
+    triggers a slow PHY retrain.
+- swap start:
+  - We used to do disable-irqs-and-hw then drain-all-bh-features, but
+    then HW might be raced against. Instead we disable-irqs then
+    drain-all-bh then disable-hw which means at disable-hw step no BH
+    context can be active.
+  - Use macb_halt_tx() helper to properly stop HW.
+  - Disable BH features before netif_tx_disable() call to avoid queue
+    wakeup races.
+  - Use macb_queue_isr_clear() helper instead of manual if-then-writel.
+- swap end:
+  - Grab bp->lock for the hardware reinit sequence composed of DMACFG
+    and NCR writes.
+  - Drop now useless EMAC check (we refuse EMAC HW before swapping).
+- nits:
+  - New patch to rename macb_{alloc,free}_consistent() which don't only
+    allocate consistent buffers since a long time ago.
+  - Fix the start_xmit verbose netdev_vdbg() format string from %hu to %u
+    because the queue index type changed.
+  - Strong commit reword from "unify `struct macb *` naming convention"
+    to "unify variable naming convention in at91ether functions" which
+    was underselling the changes.
+- Rebase upon latest net-next/main (1c664ec4b9ea).
+- Link to v2: https://patch.msgid.link/20260410-macb-context-v2-0-af39f71d40b6@bootlin.com
+
+Changes in v2:
+- Patch "add subset of `struct macb` to `struct macb_context`" was
+  messed up. It contained much more than what the name implied. Split
+  into three commits (I caused trouble by rebase reordering).
+- Fix tieoff; V1 allocated it without initialisation.
+- Fix NULL pointer dereference on context in mab_get_regs() and
+  macb_get_ringparam() when interface is offline.
+- Patch "unify device pointer naming convention":
+  - Fix build issue when CONFIG_NETCONSOLE=y.
+  - Rename `struct net_device *dev` to `netdev` in macb.h.
+  - Rename `struct phy_device *phy` to `phydev` in macb_main.c.
+- On swap, call netdev_tx_reset_queue() to reset all DQL counters.
+- At end of swap, add missing kfree(old_ctx).
+- During HW disabling in swap, grab bp->lock to protect against IRQ
+  handler.
+- On swap, cancel the three BH features MACB has:
+  bp->hresp_err_bh_work, bp->tx_lpi_work and queue->tx_error_task.
+- On swap, call macb_configure_dma() which writes buffer size to
+  hardware registers. This is important because the change_mtu codepath
+  changes the buffer size.
+- Rebase onto latest net-next/main (58dd34dbd5b0) & resolve conflicts.
+- Link to v1: https://patch.msgid.link/20260401-macb-context-v1-0-9590c5ab7272@bootlin.com
+
+To: Théo Lebrun <theo.lebrun@bootlin.com>
+To: Conor Dooley <conor.dooley@microchip.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Richard Cochran <richardcochran@gmail.com>
+To: Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: Paolo Valerio <pvalerio@redhat.com>
+Cc: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
+Cc: Gregory CLEMENT <gregory.clement@bootlin.com>
+Cc: Benoît Monin <benoit.monin@bootlin.com>
+Cc: Tawfik Bayouk <tawfik.bayouk@mobileye.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+
+---
+Théo Lebrun (16):
+      net: macb: drop "consistent" from alloc/free function names
+      net: macb: unify device pointer naming convention
+      net: macb: unify variable naming convention in at91ether functions
+      net: macb: unify queue index variable naming convention and types
+      net: macb: enforce reverse christmas tree (RCT) convention
+      net: macb: allocate tieoff descriptor once across device lifetime
+      net: macb: introduce macb_context struct for buffer management
+      net: macb: avoid macb_init_rx_buffer_size() modifying state
+      net: macb: make `struct macb` subset reachable from macb_context struct
+      net: macb: change caps helpers signatures
+      net: macb: change function signatures to take contexts
+      net: macb: introduce macb_context_alloc() helper
+      net: macb: move printk() calls out of bp->lock critical section
+      net: macb: read ISR inside bp->lock critical section
+      net: macb: use context swapping in .set_ringparam()
+      net: macb: use context swapping in .ndo_change_mtu()
+
+ drivers/net/ethernet/cadence/macb.h      |  129 +-
+ drivers/net/ethernet/cadence/macb_main.c | 1917 ++++++++++++++++++------------
+ drivers/net/ethernet/cadence/macb_pci.c  |   46 +-
+ drivers/net/ethernet/cadence/macb_ptp.c  |   26 +-
+ 4 files changed, 1250 insertions(+), 868 deletions(-)
+---
+base-commit: 19aefc19c1cbd5753b33e5959200c398779dc446
+change-id: 20260401-macb-context-bd0caf20414d
+
+Best regards,
+--  
+Théo Lebrun <theo.lebrun@bootlin.com>
+
