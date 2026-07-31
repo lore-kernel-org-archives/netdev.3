@@ -1,40 +1,51 @@
-Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1970833F59A;
-	Fri, 31 Jul 2026 02:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F125931F9BD;
+	Fri, 31 Jul 2026 02:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785465979; cv=none; b=d/nizp1qTCZuEEGriigoudFCGY5eFx0lgBJeKorGJgn+U++lb74ajGzenfNpOXbbI3XL9jE4k1d0T5H8hv5CR8gPKuN8NUE9PbFSKiOt4+mgMmD0aDWP1sERNplb0w/cmm1H19g9xsCOB8Pq2HFTzvsNGPe1UIFyJ3CAEawHsjk=
+	t=1785466385; cv=none; b=NACR4u6EZecVNfWdaqE+cwX7wFAyC9gGJg6rfDkT+hSXEvihDBkVUOXdl1mmYYO0G7qJaWrHW8Q/DPhzU1jgPYa3tGr1jP6tCd/UHfjCE1TzhAP4qq+VxdojX4pikHxGf4bdj9uDZ2UNmSiitybyI0kGWfGl7xMP1KdORq3xhsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785465979; c=relaxed/simple;
-	bh=w0KlrMO9P/MJZBucv1ynNv1CArXsmfi4apzicOb3kB4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XFQoPprH2VMKAsyH0xc56rKsKKziTRUEjeXxGP4cf56r7LZEZOYzD3aOyCj7tAP5tkHVzlcx5LF9KiNyUBeDxnhEvLS5I82vxB24dFKl8LywoYK27tXxekoZu8I53Rjxs9RRLpep2+GoGFlYNavT45cAc3LLlZXQtjbNQJ6noFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=206.189.79.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wDHGtQXDGxqViNSAA--.7644S3;
-	Fri, 31 Jul 2026 10:44:40 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app2 (Coremail) with SMTP id zC_KCgCH9coXDGxq1EJjAw--.19349S2;
-	Fri, 31 Jul 2026 10:44:39 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	david@ixit.cz,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuniyu@google.com,
-	christophe.ricard@gmail.com,
-	sameo@linux.intel.com,
-	oe-linux-nfc@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 0/2] nfc: st-nci: drain SE timers before NCI teardown
-Date: Fri, 31 Jul 2026 02:43:42 +0000
-Message-Id: <20260731024344.317793-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1785466385; c=relaxed/simple;
+	bh=7Rqhg++on5uznFdRUImExOavpvo9WaJ/P8R7OHvzbBM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tV8mt5kIZQZ/ur2mJoFhNKEbLQdrDQ8BLv+HXt2iNlYC/0WR+/QkoZQk8ITB9t9j7BChcvuZwWwfbyVteAlGUOnbgDmS4DRVr4aSNoWds/++ZSVtcWTHfEADDV0bLcfKol1fzpPbv5/+g1d5KCVZFiB4uAi7aMfYpo0T5VQ1vIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: ee9a78d08c8a11f1aa26b74ffac11d73-20260731
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:49789ac1-c614-42c4-902d-f2969add941b,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-25
+X-CID-META: VersionHash:e7bac3a,CLOUDID:4c001bb45a3e360b866626ede072f9f0,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|850|865|898,TC:nil,Content:0|15|
+	50,EDM:-19|2,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+	,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: ee9a78d08c8a11f1aa26b74ffac11d73-20260731
+X-User: heminhong@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <heminhong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1947232340; Fri, 31 Jul 2026 10:52:56 +0800
+From: Minhong He <heminhong@kylinos.cn>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2] ipv4: nexthop: handle errors in nexthop_init()
+Date: Fri, 31 Jul 2026 10:52:49 +0800
+Message-Id: <20260731025249.80026-1-heminhong@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,72 +53,56 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zC_KCgCH9coXDGxq1EJjAw--.19349S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?QL9qwgXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfncGSG+szpQCInt5Y8rbJUI0gCzlebqh2Vq8BSwVe27bE5XDDVYGTb/X7qfj0EuaAm7OZ
-	w1GPJhkomEWw1jVE3rSp9E6mavGmQbzmcFsnzP86
-X-Coremail-Antispam: 1Uk129KBj93XoW7Kw43tr15Wr4DJF4xJw4fWFX_yoW8tr48p3
-	ySg34fKFyktryIqanFvr47ZFWF9Fs5WFW7u34Ikry09r15KFyFkr9Yyr40vFWUC3s5G3y2
-	9FZ8Jw1kWr4kJabCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Cr1j6rxdM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6x
-	kI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v2
-	6r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2
-	Ij64vIr41lF7xvr2IYc2Ij64vIr40E4x8a64kEw24lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
-	42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJV
-	WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAK
-	I48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F
-	4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY
-	6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7rcfUUUUU
 
-This is v2 of the st-nci SE-timer use-after-free fix.  v1 was reviewed by
-Simon Horman, who raised two concerns about draining the
-timers while userspace operations may be in flight.  v2 resolves both and
-is restructured as two patches so the drain runs behind an admission
-barrier instead of before the device is unregistered.
+nexthop_init() ignores errors from register_pernet_subsys() and
+register_netdevice_notifier(), so a partial initialization can appear
+successful.
 
-1/2 adds the barrier pieces to the NFC core:
-  - nfc_se_io() is the only secure-element entry point missing the
-    dev->shutting_down check the other SE operations have; add it.
-  - an optional nci_ops::pre_unregister hook, called in
-    nci_unregister_device() after nfc_unregister_rfkill() (the barrier is
-    up) and before nci_close_device()/destroy_workqueue() (the NCI core
-    still exists).
-  This follows the barrier-first teardown ordering from d2492688bb9f.
+Check those steps and unwind prior registrations on failure.
 
-2/2 registers st_nci_se_deinit() as that hook so the two orphaned se_info
-timers are drained after the barrier and before the NCI core is torn down.
-It also completes an in-flight SE enable/disable and resolves a pending
-APDU with -ENODEV, using bwi_active as an xchg() ownership token so the
-callback fires exactly once.
+Do not check rtnl_register_many(): for built-in code it panics on
+failure, so the call cannot return an error to nexthop_init().
 
-The two patches are a pair: 2/2 assigns the pre_unregister hook that 1/2
-adds to struct nci_ops, so 2/2 will not build without 1/2.  Please take
-both, in order.
-
-v1 handled operations pending at the drain, but a new SE I/O could install
-callback state afterward; with the timer shut down and the PHY closed, that
-context was never resolved.  The barrier added by 1/2 closes the window.
-
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
 ---
+v2:
+- Drop rtnl_register_many() error handling; built-in registration panics
+  on failure
+- Retarget to net-next
+v1: https://lore.kernel.org/all/20260728031055.76708-1-heminhong@kylinos.cn/
 
-v1: <20260722034729.3254078-1-fanwu01@zju.edu.cn>
+ net/ipv4/nexthop.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-Changes since v1:
-  - restructure into this 2-patch series (admission barrier + hook drain)
-    instead of a direct deinit call in st_nci_remove();
-  - complete req_completion so an in-flight SE enable/disable holding the
-    device lock is not left waiting (concern 1);
-  - invoke the pending APDU callback with -ENODEV (concern 2);
-  - bwi_active as an xchg() ownership token (callback exactly once);
-  - Fixes: 8ae01f796771 (the orphaned deinit predates the rename).
-
-Tested: builds as a 2-patch series on netdev/net (st-nci.ko, x86_64);
-        applies cleanly in order.
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 6205bd57aa85..aa2fa17391e7 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -4192,12 +4192,22 @@ static const struct rtnl_msg_handler nexthop_rtnl_msg_handlers[] __initconst = {
+ 
+ static int __init nexthop_init(void)
+ {
+-	register_pernet_subsys(&nexthop_net_ops);
++	int err;
+ 
+-	register_netdevice_notifier(&nh_netdev_notifier);
++	err = register_pernet_subsys(&nexthop_net_ops);
++	if (err)
++		return err;
++
++	err = register_netdevice_notifier(&nh_netdev_notifier);
++	if (err)
++		goto err_unregister_pernet;
+ 
+ 	rtnl_register_many(nexthop_rtnl_msg_handlers);
+ 
+ 	return 0;
++
++err_unregister_pernet:
++	unregister_pernet_subsys(&nexthop_net_ops);
++	return err;
+ }
+ subsys_initcall(nexthop_init);
+-- 
+2.25.1
 
