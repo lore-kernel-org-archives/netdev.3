@@ -1,120 +1,436 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9221427A03
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 14:08:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E173342A179
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 14:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785506918; cv=none; b=plb4i+PaZ8r76sE2QMJ/vr+XiIvgCE0tmdauUheaCej/k6fpXxKcAdpmdliTh40MY18TBF2p35dB7HrMoq1Z42kXry0fWYXopk0LU6wue0CU0JZnO6AHjRHwLlBJtGiUFTHmVywnJhSvJ/j2XQmKBMpfO+sygEMG7WRgeNMhZhk=
+	t=1785507126; cv=none; b=la5vRzI2GQBOIkbo45jpW6jWMSNoWHcNvLrhtIYsghHImX5JJjA3xGiicjLYLwfGnpFANtjFHnTuN/wyohs+SedxI4W7u+ZoIf0RAC1AQz38mLcWEk1wy8TYqH6FNzyTjdvmipe4eHyJl0ROqEODEyrj6DuHIt2Lb0h2VigoTGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785506918; c=relaxed/simple;
-	bh=TNAiRhb5EcxjzXOjZApnIdLZOKqLv0olTBWt6Lo9Edk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ts3cXsdmkTrRWh6YL/SHiw87k3LRbVPI0d/k2ANVM0OyRXEB+GhTXKnkayTEqfEFJ8UwkUYAddPJu0GObeIW/iWkzUzlQJfIYvJDBAzlV2ul4sFyKD3Y6d/iRYbYsB2H1sd0vAD6U0JJOXHSNrYY5G65RZkg68ZmxvOJbzMkOo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=iLFP7Zsl; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1785507126; c=relaxed/simple;
+	bh=enNRhGJ6LJ6JFHDokHh0ipfDU2jBy4SHll0iyBP9LJo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RJVBTSx790Xi/ZrgkxckePBgya8NtS1hPNEKORiBvnonYCNwEkedvi50Qo08qV45R/ASax4AXPL/MMNV6TZt+4TsUT1kRTAl91u32h9AhDG0X16XeN8slr56RHCF+jtano9Sb3577pvp20dCNtImr4WS/hfvVvSN0lTRR1M5ooo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fcizGRbg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="iLFP7Zsl"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92f03daaa97so59596785a.2
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:08:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1785506914; x=1786111714; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=x9N5ruiliFC0RRzq0cPs5f4pBlnCCs4Mh2s6pulHCe0=;
-        b=iLFP7ZsluxzwyxyK+5H3oVM1WNobdGls2YjW+AZMWQaTzWc1VqYQWt1Nz2kqSPdnEm
-         KByoHUjB76hFITEkNrz9QPFm9UsUSZzk/915Dp+iSnc1fLcamLzQ6eNIHm4sKFHA93PG
-         Mtq1oE7MV8DTjEXshFRfxFHaEg6k2yzlZRLwlKiTzhDdwylcGzu6i4+N8ecnGXfsuhp9
-         8FnpRJKr9mula6lPgrPOB14c0NXIWFpCW3DRe/fno2KghGjUnf5nPxkImx1Zn4o8lcHy
-         dZLKZWMl/B2BYHwBUs9NvoF3r39KHoWFdWbMUcdOG8DT+8wQWtlfqZiRDH1V6l6optm+
-         ZYjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785506914; x=1786111714;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=x9N5ruiliFC0RRzq0cPs5f4pBlnCCs4Mh2s6pulHCe0=;
-        b=MJhUdWRuMhBq7VfoDpTZs6OqadgUkl2bkCSyMsOHok1ibdHneceqt1a7E2lrg9HUvn
-         +0+1R/aMnsbZ80hPCu7f+wgOICz0Czd3YnMsIyjNtbZjwekGicSMBwbCSryOtqGTTj1l
-         /DNgPHjHyxDTndVq0HuFmWDM7eUHc0d3yufJhHdlDHrUbhEwonufivNKN8SXi7aPbOhD
-         2FvyIUT4dvoxqn6HjsmG4XpTW5Xp9vIepEQ/jBMUKbmdYm8HrFJdreSSxN8vo9vlbBrm
-         RmIG2Qb+hyM2JP8TMGwhi73amJXjw1xWGBTEyRwK6e/T3ku07HDxscxNJ/71fxy902Oo
-         yHUw==
-X-Forwarded-Encrypted: i=1; AHgh+RpZAHYwUP1xb/yx43+y3wotNCospvdseDngSCvt2mG2Kzt+ZK+BsdLfbN1nLEP2LA3jFURMHq0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJDbjdsh4eIlxYSrHdkOGUNycr5E7FXCO30F0LjybjLOhaUVMR
-	C997zd5zvO6E5/1UsJ5S2rTyEDc0sj2X1FA5nT4wswtmBnOrN7/HBwGBrAAnYp9mpgc=
-X-Gm-Gg: AR+sD11tvqxdEFaphoFToxKQ2Wyq7LkbYKFYBzYdMMdS/ad2uTm5LMEDxA28U5opvTO
-	x0HRdJzL32Ba3UYaiwA/4k0vYriph2WdKe3E863npXmFe2R03bT9MoD2Im8WThm5hzF0Gtk/jmx
-	AFeJPE+TuBMSKPAjjIPdsWjkX89tFJTaeGVMiqIt3lyjCr427AFthw2y53RkmboTQZUyNnf1r4W
-	pk8HWpqSS/EQl/Wf97ogKdvigo9aEvrZvpTIWBAw7sjLPKeaHJlC6ABYlppE1k+uB19tHS7b/5S
-	FQeKUA5w2BC62v9bwkjJVsVr/rxVS/vO9j9KZzhFmEHVRWCdr3C+9bIgzEf6qrI39MNoLktY+uD
-	tkT0J0zpSsm9+dcvzCX4p8U+ehPRHpeHajPArIUXfVcyt9g7IK2Ap4cH95St0GHSEfHp5RSm2p3
-	1RDyuydo9W5Qnth3zp79Mlg0Y1tbRwO3ekZcgLa+xRkjO4NqnY6HJRh1ekjavO2vAJcw==
-X-Received: by 2002:a05:620a:2792:b0:92e:e125:55bb with SMTP id af79cd13be357-934a0750096mr20709385a.4.1785506914065;
-        Fri, 31 Jul 2026 07:08:34 -0700 (PDT)
-Received: from localhost ([146.190.222.192])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-9349bb03912sm64752485a.0.2026.07.31.07.08.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jul 2026 07:08:33 -0700 (PDT)
-From: David Lee <david.lee@trailofbits.com>
-To: andrea.mayer@uniroma2.it,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: David Lee <david.lee@trailofbits.com>,
-	Kyle Zeng <kylebot@openai.com>,
-	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ipv6: seg6: clear IPv4 control block in End.DT4
-Date: Fri, 31 Jul 2026 14:08:32 +0000
-Message-ID: <20260731140832.567669-1-david.lee@trailofbits.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fcizGRbg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785507119;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=hNOE7YHp9xdBvibv9lIiDPG0NJUw7pQuuuzdptNlm30=;
+	b=fcizGRbg4Qvk3zAtFag3Dld0DZrPyHqS1xuloGhKi0CKFqRu/H/BGliPPdSGHRrlQi3x7R
+	3b5qTuIHB/CCcCoySXanZekQqq/uTOsD4d6RTuBRmZkvIJz3DGKj2ZX3fPnj41F5+wQdBc
+	Go2N/rfck4YlPQE8WeErmliCxSmYdzs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-CQx-MEL-N4aPoJ-RTJIZ9g-1; Fri,
+ 31 Jul 2026 10:11:53 -0400
+X-MC-Unique: CQx-MEL-N4aPoJ-RTJIZ9g-1
+X-Mimecast-MFC-AGG-ID: CQx-MEL-N4aPoJ-RTJIZ9g_1785507112
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D995C195608E;
+	Fri, 31 Jul 2026 14:11:51 +0000 (UTC)
+Received: from p16v.bos2.lab (unknown [10.44.33.222])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8EEEC30002E9;
+	Fri, 31 Jul 2026 14:11:48 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Richard Cochran <richardcochran@gmail.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next] dpll: use pin owner's dpll ref for pin-level attribute setting
+Date: Fri, 31 Jul 2026 16:11:45 +0200
+Message-ID: <20260731141146.1119147-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-The End.DT4 input path decapsulates an IPv4 packet and sends it
-directly to ip_route_input() and dst_input(). It therefore bypasses
-ip_rcv_core(), which normally clears IPCB. The skb still contains
-IP6CB data from the outer packet, and IPv6 extension-header offsets
-overlap the IPv4 option fields. This can make __ip_options_echo()
-copy beyond the allocation for saved options.
+Pin-level attributes (frequency, phase adjust, embedded sync, reference
+sync) are properties of the pin itself, not of a particular DPLL device.
+The get callbacks already use only the pin owner's DPLL reference
+(via dpll_pin_own_dpll_ref_first()), but the set callbacks iterate over
+all registered DPLL references and invoke the set operation on each one.
 
-Clear IPCB after validating the inner IPv4 header and preserve the
-ingress interface as ip_rcv_core() does. This prevents outer IPv6
-metadata from being interpreted as inner IPv4 options.
+This is redundant because a pin is a single physical entity — setting
+its frequency or phase adjust once through the owner's ops is sufficient.
+Calling set on every registered DPLL just results in duplicate HW writes
+for drivers that share a pin across multiple DPLL devices (e.g. ice
+registers each input pin with both the EEC and PPS DPLL, zl3073x
+registers input pins with every DPLL channel).
 
-Fixes: 664d6f86868b ("seg6: add support for the SRv6 End.DT4 behavior")
-Bug found and triaged by OpenAI Security Research and 
-validated by Trail of Bits.
+Simplify dpll_pin_freq_set(), dpll_pin_esync_set(),
+dpll_pin_ref_sync_state_set() and dpll_pin_phase_adj_set() to call the
+set callback only through the owner's DPLL reference, matching the
+existing get-side behavior. This removes the xa_for_each iteration
+loops, the now-unnecessary rollback logic, and several local variables.
 
-Assisted-by: Codex:gpt-5.6-sol gpt-5.5-cyber
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
+No existing driver is affected:
+  - ptp_ocp and mlx5 register each pin with a single DPLL.
+  - ice registers input pins with two DPLLs (EEC and PPS) using
+    identical ops and pin_priv; the set callbacks address the HW by
+    pin index, not by DPLL, so the second call was a no-op.
+  - zl3073x registers input pins with every DPLL channel; the set
+    callbacks also address HW by pin/ref ID regardless of DPLL.
+
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
-Trail of Bits has a reproducer for this bug that triggers a KASAN
-slab-out-of-bounds write in __ip_options_echo() and can share if needed.
+ drivers/dpll/dpll_netlink.c | 213 +++++++++---------------------------
+ 1 file changed, 50 insertions(+), 163 deletions(-)
 
- net/ipv6/seg6_local.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index 2b41e4c0d..d03b377f5 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -1186,6 +1186,9 @@ static int input_action_end_dt4(struct sk_buff *skb,
- 	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
- 		goto drop;
+diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
+index afb31c0040382c..a909cd4451b008 100644
+--- a/drivers/dpll/dpll_netlink.c
++++ b/drivers/dpll/dpll_netlink.c
+@@ -1079,10 +1079,9 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
+ 		  struct netlink_ext_ack *extack)
+ {
+ 	u64 freq = nla_get_u64(a), old_freq;
+-	struct dpll_pin_ref *ref, *failed;
+ 	const struct dpll_pin_ops *ops;
++	struct dpll_pin_ref *ref;
+ 	struct dpll_device *dpll;
+-	unsigned long i;
+ 	int ret;
  
-+	memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
-+	IPCB(skb)->iif = skb->skb_iif;
+ 	if (!dpll_pin_is_freq_supported(pin, freq)) {
+@@ -1090,22 +1089,17 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
+ 		return -EINVAL;
+ 	}
+ 
+-	xa_for_each(&pin->dpll_refs, i, ref) {
+-		ops = dpll_pin_ops(ref);
+-		if ((!ops->frequency_set || !ops->frequency_get) &&
+-		    ref->dpll->module == pin->module &&
+-		    ref->dpll->clock_id == pin->clock_id) {
+-			NL_SET_ERR_MSG(extack,
+-				       "frequency set not supported by the device");
+-			return -EOPNOTSUPP;
+-		}
+-	}
+ 	ref = dpll_pin_own_dpll_ref_first(pin);
+ 	if (!ref) {
+ 		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
+ 		return -ENODEV;
+ 	}
+ 	ops = dpll_pin_ops(ref);
++	if (!ops->frequency_set || !ops->frequency_get) {
++		NL_SET_ERR_MSG(extack,
++			       "frequency set not supported by the device");
++		return -EOPNOTSUPP;
++	}
+ 	dpll = ref->dpll;
+ 	ret = ops->frequency_get(pin, dpll_pin_on_dpll_priv(dpll, pin), dpll,
+ 				 dpll_priv(dpll), &old_freq, extack);
+@@ -1116,68 +1110,42 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
+ 	if (freq == old_freq)
+ 		return 0;
+ 
+-	xa_for_each(&pin->dpll_refs, i, ref) {
+-		ops = dpll_pin_ops(ref);
+-		if (!ops->frequency_set)
+-			continue;
+-		dpll = ref->dpll;
+-		ret = ops->frequency_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
+-					 dpll, dpll_priv(dpll), freq, extack);
+-		if (ret) {
+-			failed = ref;
+-			NL_SET_ERR_MSG_FMT(extack, "frequency set failed for dpll_id:%u",
+-					   dpll->id);
+-			goto rollback;
+-		}
++	ret = ops->frequency_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
++				 dpll, dpll_priv(dpll), freq, extack);
++	if (ret) {
++		NL_SET_ERR_MSG_FMT(extack,
++				   "frequency set failed for dpll_id:%u",
++				   dpll->id);
++		return ret;
+ 	}
+ 	__dpll_pin_change_ntf(pin);
+ 
+ 	return 0;
+-
+-rollback:
+-	xa_for_each(&pin->dpll_refs, i, ref) {
+-		if (ref == failed)
+-			break;
+-		ops = dpll_pin_ops(ref);
+-		if (!ops->frequency_set)
+-			continue;
+-		dpll = ref->dpll;
+-		if (ops->frequency_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
+-				       dpll, dpll_priv(dpll), old_freq, extack))
+-			NL_SET_ERR_MSG(extack, "set frequency rollback failed");
+-	}
+-	return ret;
+ }
+ 
+ static int
+ dpll_pin_esync_set(struct dpll_pin *pin, struct nlattr *a,
+ 		   struct netlink_ext_ack *extack)
+ {
+-	struct dpll_pin_ref *ref, *failed;
+ 	const struct dpll_pin_ops *ops;
+ 	struct dpll_pin_esync esync;
+ 	u64 freq = nla_get_u64(a);
++	struct dpll_pin_ref *ref;
+ 	struct dpll_device *dpll;
+ 	bool supported = false;
+-	unsigned long i;
+-	int ret;
++	int ret, i;
+ 
+-	xa_for_each(&pin->dpll_refs, i, ref) {
+-		ops = dpll_pin_ops(ref);
+-		if ((!ops->esync_set || !ops->esync_get) &&
+-		    ref->dpll->module == pin->module &&
+-		    ref->dpll->clock_id == pin->clock_id) {
+-			NL_SET_ERR_MSG(extack,
+-				       "embedded sync feature is not supported by this device");
+-			return -EOPNOTSUPP;
+-		}
+-	}
+ 	ref = dpll_pin_own_dpll_ref_first(pin);
+ 	if (!ref) {
+ 		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
+ 		return -ENODEV;
+ 	}
+ 	ops = dpll_pin_ops(ref);
++	if (!ops->esync_set || !ops->esync_get) {
++		NL_SET_ERR_MSG(extack,
++			       "embedded sync feature is not supported by this device");
++		return -EOPNOTSUPP;
++	}
+ 	dpll = ref->dpll;
+ 	ret = ops->esync_get(pin, dpll_pin_on_dpll_priv(dpll, pin), dpll,
+ 			     dpll_priv(dpll), &esync, extack);
+@@ -1196,44 +1164,17 @@ dpll_pin_esync_set(struct dpll_pin *pin, struct nlattr *a,
+ 		return -EINVAL;
+ 	}
+ 
+-	xa_for_each(&pin->dpll_refs, i, ref) {
+-		void *pin_dpll_priv;
+-
+-		ops = dpll_pin_ops(ref);
+-		if (!ops->esync_set)
+-			continue;
+-		dpll = ref->dpll;
+-		pin_dpll_priv = dpll_pin_on_dpll_priv(dpll, pin);
+-		ret = ops->esync_set(pin, pin_dpll_priv, dpll, dpll_priv(dpll),
+-				      freq, extack);
+-		if (ret) {
+-			failed = ref;
+-			NL_SET_ERR_MSG_FMT(extack,
+-					   "embedded sync frequency set failed for dpll_id: %u",
+-					   dpll->id);
+-			goto rollback;
+-		}
++	ret = ops->esync_set(pin, dpll_pin_on_dpll_priv(dpll, pin), dpll,
++			     dpll_priv(dpll), freq, extack);
++	if (ret) {
++		NL_SET_ERR_MSG_FMT(extack,
++				   "embedded sync frequency set failed for dpll_id: %u",
++				   dpll->id);
++		return ret;
+ 	}
+ 	__dpll_pin_change_ntf(pin);
+ 
+ 	return 0;
+-
+-rollback:
+-	xa_for_each(&pin->dpll_refs, i, ref) {
+-		void *pin_dpll_priv;
+-
+-		if (ref == failed)
+-			break;
+-		ops = dpll_pin_ops(ref);
+-		if (!ops->esync_set)
+-			continue;
+-		dpll = ref->dpll;
+-		pin_dpll_priv = dpll_pin_on_dpll_priv(dpll, pin);
+-		if (ops->esync_set(pin, pin_dpll_priv, dpll, dpll_priv(dpll),
+-				   esync.freq, extack))
+-			NL_SET_ERR_MSG(extack, "set embedded sync frequency rollback failed");
+-	}
+-	return ret;
+ }
+ 
+ static int
+@@ -1241,14 +1182,12 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin,
+ 			    unsigned long ref_sync_pin_idx,
+ 			    const enum dpll_pin_state state,
+ 			    struct netlink_ext_ack *extack)
+-
+ {
+-	struct dpll_pin_ref *ref, *failed;
+ 	const struct dpll_pin_ops *ops;
+ 	enum dpll_pin_state old_state;
+ 	struct dpll_pin *ref_sync_pin;
++	struct dpll_pin_ref *ref;
+ 	struct dpll_device *dpll;
+-	unsigned long i;
+ 	int ret;
+ 
+ 	ref_sync_pin = xa_find(&pin->ref_sync_pins, &ref_sync_pin_idx,
+@@ -1282,42 +1221,20 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin,
+ 	}
+ 	if (state == old_state)
+ 		return 0;
+-	xa_for_each(&pin->dpll_refs, i, ref) {
+-		ops = dpll_pin_ops(ref);
+-		if (!ops->ref_sync_set)
+-			continue;
+-		dpll = ref->dpll;
+-		ret = ops->ref_sync_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
+-					ref_sync_pin,
+-					dpll_pin_on_dpll_priv(dpll,
+-							      ref_sync_pin),
+-					state, extack);
+-		if (ret) {
+-			failed = ref;
+-			NL_SET_ERR_MSG_FMT(extack, "reference sync set failed for dpll_id:%u",
+-					   dpll->id);
+-			goto rollback;
+-		}
 +
- 	skb = end_dt_vrf_core(skb, slwt, AF_INET);
- 	if (!skb)
- 		/* packet has been processed and consumed by the VRF */
++	ret = ops->ref_sync_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
++				ref_sync_pin,
++				dpll_pin_on_dpll_priv(dpll, ref_sync_pin),
++				state, extack);
++	if (ret) {
++		NL_SET_ERR_MSG_FMT(extack,
++				   "reference sync set failed for dpll_id:%u",
++				   dpll->id);
++		return ret;
+ 	}
+ 	__dpll_pin_change_ntf(pin);
+ 
+ 	return 0;
+-
+-rollback:
+-	xa_for_each(&pin->dpll_refs, i, ref) {
+-		if (ref == failed)
+-			break;
+-		ops = dpll_pin_ops(ref);
+-		if (!ops->ref_sync_set)
+-			continue;
+-		dpll = ref->dpll;
+-		if (ops->ref_sync_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
+-				      ref_sync_pin,
+-				      dpll_pin_on_dpll_priv(dpll, ref_sync_pin),
+-				      old_state, extack))
+-			NL_SET_ERR_MSG(extack, "set reference sync rollback failed");
+-	}
+-	return ret;
+ }
+ 
+ static int
+@@ -1478,11 +1395,10 @@ static int
+ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
+ 		       struct netlink_ext_ack *extack)
+ {
+-	struct dpll_pin_ref *ref, *failed;
+ 	const struct dpll_pin_ops *ops;
+ 	s32 phase_adj, old_phase_adj;
++	struct dpll_pin_ref *ref;
+ 	struct dpll_device *dpll;
+-	unsigned long i;
+ 	int ret;
+ 
+ 	phase_adj = nla_get_s32(phase_adj_attr);
+@@ -1499,21 +1415,16 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
+ 		return -EINVAL;
+ 	}
+ 
+-	xa_for_each(&pin->dpll_refs, i, ref) {
+-		ops = dpll_pin_ops(ref);
+-		if ((!ops->phase_adjust_set || !ops->phase_adjust_get) &&
+-		    ref->dpll->module == pin->module &&
+-		    ref->dpll->clock_id == pin->clock_id) {
+-			NL_SET_ERR_MSG(extack, "phase adjust not supported");
+-			return -EOPNOTSUPP;
+-		}
+-	}
+ 	ref = dpll_pin_own_dpll_ref_first(pin);
+ 	if (!ref) {
+ 		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
+ 		return -ENODEV;
+ 	}
+ 	ops = dpll_pin_ops(ref);
++	if (!ops->phase_adjust_set || !ops->phase_adjust_get) {
++		NL_SET_ERR_MSG(extack, "phase adjust not supported");
++		return -EOPNOTSUPP;
++	}
+ 	dpll = ref->dpll;
+ 	ret = ops->phase_adjust_get(pin, dpll_pin_on_dpll_priv(dpll, pin),
+ 				    dpll, dpll_priv(dpll), &old_phase_adj,
+@@ -1525,41 +1436,17 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
+ 	if (phase_adj == old_phase_adj)
+ 		return 0;
+ 
+-	xa_for_each(&pin->dpll_refs, i, ref) {
+-		ops = dpll_pin_ops(ref);
+-		if (!ops->phase_adjust_set)
+-			continue;
+-		dpll = ref->dpll;
+-		ret = ops->phase_adjust_set(pin,
+-					    dpll_pin_on_dpll_priv(dpll, pin),
+-					    dpll, dpll_priv(dpll), phase_adj,
+-					    extack);
+-		if (ret) {
+-			failed = ref;
+-			NL_SET_ERR_MSG_FMT(extack,
+-					   "phase adjust set failed for dpll_id:%u",
+-					   dpll->id);
+-			goto rollback;
+-		}
++	ret = ops->phase_adjust_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
++				    dpll, dpll_priv(dpll), phase_adj, extack);
++	if (ret) {
++		NL_SET_ERR_MSG_FMT(extack,
++				   "phase adjust set failed for dpll_id:%u",
++				   dpll->id);
++		return ret;
+ 	}
+ 	__dpll_pin_change_ntf(pin);
+ 
+ 	return 0;
+-
+-rollback:
+-	xa_for_each(&pin->dpll_refs, i, ref) {
+-		if (ref == failed)
+-			break;
+-		ops = dpll_pin_ops(ref);
+-		if (!ops->phase_adjust_set)
+-			continue;
+-		dpll = ref->dpll;
+-		if (ops->phase_adjust_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
+-					  dpll, dpll_priv(dpll), old_phase_adj,
+-					  extack))
+-			NL_SET_ERR_MSG(extack, "set phase adjust rollback failed");
+-	}
+-	return ret;
+ }
+ 
+ static int
+
+base-commit: 2fbade66245059c78daeaccfce13ecf499fffb51
+-- 
+2.54.0
+
