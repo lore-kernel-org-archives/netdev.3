@@ -1,140 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C15953E0B;
-	Fri, 31 Jul 2026 00:12:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2702222D0
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 00:18:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785456765; cv=none; b=qHI73CfDmjHAng5gp3RJ1mxbbDazTFfaW61wjtKdDzo0GzzpevFniNeQfAqZngS0nAp4V327SeIqT8wbdfYuc1An+f6k3VoJ+eJwK9g9DIjIoh7eF5wNw2Su8xy+bobCnuUJnP9A9pLr1BX/ZWvuCNMX7ya1+Gp4yD9yh6cnKZs=
+	t=1785457083; cv=none; b=HXNQQGZg6gXLKP9p4Ije1reyincT9Q0bZMgjQs3CuIoXtKIK3cozo/j9K+kpy5YDMsdvyNmC2NTYMUPZybcQFEgBL8b8TFxBkV+Q+EzSj+ypWYp6RJglTWUo14t0g+jfiN7RI2y+AHlvneMlX/kMFSI3MCDs1sBc9uM/qzyQfKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785456765; c=relaxed/simple;
-	bh=A8Dj6H7QzH3XzHeD7yOzZoPzQdbmNshpi6BLWTalVCQ=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=mw3mUdS/V7hkPnWiuH0n+qjYMh+JA1sbNYtC6VqC1ncz4ggdnnYVaEzE50n0s/TR0MXultltFP81flD/UD1ao1cICvXhFp+agtDSoyVVz8l/fKi6wqXa1Cnnev6oqmQ6vt7PrncGqnmV0vvWpHKh94+87sUnvy9zBg9Qey4LwCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vm9xHL5H; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785457083; c=relaxed/simple;
+	bh=szGFnTCsakcmVQdQfLLQUpOJjjCAEkdLGZEZAc2bHME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vGnLZq5n1G2am26lFxXwKZMj/hrvaeG30zhLLiKXqhg7wSHUOC0PieR1Qd5WJcotZUIyhY7F5UvqIeplQW+9lMM2KSUCR4HmmcajH9KmdjOHYTM/F99c1jhw/OASoqWhwz0DGtJ+qLB7C2TAiOGaJj8IMTSI/icXD4GjrKJdYPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wv6zoMeH; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vm9xHL5H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA67E1F000E9;
-	Fri, 31 Jul 2026 00:12:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785456764;
-	bh=sUInQQ+TXDPnLDaLaENRUylWtDaYSByt9K6puYMzCzM=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=Vm9xHL5HWNuIIBzPxfchac/y48lbB/ddbpjw6TTydr5FWsKFAD/BYwiexUamR9i+/
-	 yBLuggo2llIz4KA5UIpZ00a2TAeQ8CfHB7Z79/1uW2oW1XICJTnQzPHN5crv5Qpllq
-	 WkNppqxZd8kI3Qz99SjcYcSOmqXpBixPegD7puCzb6mh1aDNcnsIb89B9m/n1TyuiT
-	 FAM4RF18y0zsqyOEYShRdRCdoR1JRr/dbTkPj3+eXDWS2Alk/wZ2Lz128NRWvfNmDE
-	 qIc1t/6EYp6m3fVAhLDjidc6wQAtfyWY42xcHlBOwoUPje41aFQWRbjUR9zitwiXK6
-	 2q3utl1v3K+Mw==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D85EEF40066;
-	Thu, 30 Jul 2026 20:12:42 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Thu, 30 Jul 2026 20:12:42 -0400
-X-ME-Sender: <xms:euhravmq5PVctrIbTX-2lxPG5dorAB-rPfzTGRZrQSQv98A6tFUr4w>
-    <xme:euhratpVE4uQ1_DuLL4XPG6FFtwQrWKaIGFdEpjRkTo9cXP0jyQRo2N5-WB3HQQv2
-    PH-_TdnlV9CrR4Frp77xijEjQ9obVSzu91B6xplEkt2A5TaD--vSjg>
-X-ME-Proxy-Cause: dmFkZTFJrgQabfdF4mKP0DSqrKv5jkS8cmKlfITPUYHi7fDJO7sdUGKzMonyawgBbwMKfZ
-    gBvgxuGLmVsz5UuxTWinmfqbBZDk7lNHH9BbNrb/UYvai1QgC6G/JCpuJJHeS6ErT7YUsd
-    euvZLqM6bx27hotayrsFr8B7Gw2cRKoFbm81WgAeL2EDYqJ6rM9b3OzYYs+rDLGSOLbsbZ
-    6oI8IgDmijSO/qgLOGlHJEBh/pG8+ugYZY2YOAlTmguiw72Z0IgrDSku1lenfjY7Lp055m
-    sCDwq3a3pO8IS40L7IcwKNomUxxGPz2UApY408Nxep4l/zEVNTeSx3UgPBdfsgxeSqZUhT
-    A/JBaxYMtSU5ryGmEwZUregUwYtWOirReVZWjvkhYglg/L847/NF4K6qNO8zFsQZhbgMbv
-    AGPE0k44G8RFcFC9hJifpHYXvfIwKIQTWVGQbqsyetFZ2z8hyUIxC7Vfb32H2V3e0grp5M
-    2x0QO+r+oUZyfl5iT5xkD4IFJNn+5yhb7Fmjn9TT7ZMf7Nim5q201vgBgYLsNFuJtg6as3
-    QbhWhamu9g+DRNa8iumLda3bZEI3ENqkjX8CishTedJsCxtFaZ/0067aX6TAHMTxYQPeva
-    wNPumOGC/Cm3B85sLuC/+axDZlfhsHzfwl33c3URC9Fd8drjzbc0bzSOpPIg
-X-ME-Proxy: <xmx:euhrakcKeR6-bB2f-BTfo8mpqOD_Y556TRTrWSgLDd_3cwXpUccSGg>
-    <xmx:euhratz5yhr-bYSN4XduCgY93TtnjIFPiAIzcQ87PB1MP7hneTQY6g>
-    <xmx:euhralIVY_7zMh4Pg4fcpgk9okivZ9_9m_UrU_SaLFYfJe0qrdeaIg>
-    <xmx:euhramsfo8ysNqErIQg5oy9v9I6Bg-4KDZlW0Hx00-AogSIQZi_9cQ>
-    <xmx:euhranQKpISpdYBqmFreDBcWTFQC7LtNFusZ5iaYOcPaaTHnm_KuFXq9>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id B1B2C780076; Thu, 30 Jul 2026 20:12:42 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wv6zoMeH"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ce87c7e3bbso3555435ad.1
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 17:18:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785457079; x=1786061879; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LBitaL1RUUQqXSfqSECtyVEDWdgVsoCHsw/mJvM7Qu8=;
+        b=Wv6zoMeHF+IhWXRw8nHC9HMzFWrtIHGy/ISdE7yIGDPSRfEUQrXXTmmb3b+n/Zr7RX
+         IC56t6eFGPlBdh2maiUx1VESxsvy0a9EFzzgvfBnRwfz3OgaUVVwU4SE63RTD1KtSjnx
+         8J9Dnip4cmvzMDTVa0dbrmPFzcaoy+HB8btQdyic0uTGjcLcOd6cf/8HyeQtyJBWZ9Em
+         x/Lxzx4pq3BvBqignqnUbo25NKyDMi8o2Xu1SVAzFgDtkYb1KW9enJFh+h9hEwsjIjy5
+         IrzKoO/ETSWai9oCAwVv9fgZWIFfQCaFqmMcvk2OhSo/SFLYTZRroLHiEUga86Rot5Na
+         VfIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785457079; x=1786061879;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LBitaL1RUUQqXSfqSECtyVEDWdgVsoCHsw/mJvM7Qu8=;
+        b=TMHocBGW+cT2qYKyKVxbzSEP2cv6d6jJzH6BiU8xNp7vR6jPxl1DFUCIVb/dXImohd
+         vzjpRfsC5qYr/kI4vFDW4bEV3umP8ZHAMMvwJTjYAItxIubDNgm6MGq5SWVKJ1thKacM
+         50G0/JKLMt/tqVyFXgAcw0raton0XiElknsL3DLPfi6o95X99yMYfOg9DdMj1mLuerSO
+         yVtQUjQrfjQ7PG/FAvm5FBKV0bkMsYFVt3fbxURp2UUTTbBhVhr2hMtlALRjNdl+2fAJ
+         0ToS3LkwNy4PGzWXt3x0v8nLK3J9BLzSnJfxFu3C1DFO+vgkSc6iG7ypluGbbgWBeQ8m
+         ZCnw==
+X-Forwarded-Encrypted: i=1; AHgh+RqUHW9B+ffJVo3rra7cx2HXi3HzillTuJiFZWzSyqMG0UMO3sxyoGlctx6t6SawDT2JRDzLF50=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziRLRw6iOqpskGnz+NsqZuqwQ7/bxGEkp5PtNG4bqKnF6Y/Uyg
+	MFLUICK5MDZkXK6+igbtRzvqiHTG/V7LEComyv1PokvB5jlFRqkUegQW
+X-Gm-Gg: AR+sD10E8Q4zX8BMpM6xETDQOMgTYjsYWOTpR2OKF4omUeTvBiXjH7F0wT4hmd2IBIZ
+	1/Zszo2XqjL7ypnvoHIozZxMmAdP9+ApAPRcoMwQHRG1anSu8YqxMP60O/vaRnkCI66odtQ0CCc
+	5uDgRf0S7TKcF0UiCR9VejRXITJy9SU5LaWL1Y9RlmRkQ1XtosBb1E8H5Wup6vCe7MS8E5fv9bo
+	ounzR+34iOEKciUhKLMV4IwGFdKpXIM/4MqMKXLlcoGaFr9GNJpJtL7l+xB6nu6nWST0Q44lOvw
+	wdEvqZjQB7KRYPfv61m1LQjBusk6i8u+aOsZuzbH4kARvNyh+2XoskqZqkVsraX1Ixzwhn8/VrE
+	c1K5/BD0PQQRKxjJz7kw0T7nECevSQn3CRQDt3O9YbNpvRJ6+WvanScz8i20e3PgYFGfe1w6NZm
+	FGYgzFWqbQiA8Qh5niJSC8FoPlYDsMdItsTSeoQmEZg3g8Azmq6vrtlvYQ2/SxDw5wcs3a3IipD
+	1TynJmQMlE=
+X-Received: by 2002:a17:903:4585:b0:2cf:bfbb:61e2 with SMTP id d9443c01a7336-2d046eadd5emr478805ad.39.1785457079096;
+        Thu, 30 Jul 2026 17:17:59 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:70::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022c8b9aasm32885005ad.50.2026.07.30.17.17.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 17:17:57 -0700 (PDT)
+Date: Thu, 30 Jul 2026 17:17:55 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Donald Hunter <donald.hunter@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-kselftest@vger.kernel.org, sdf@fomichev.me,
+	razor@blackwall.org, daniel@iogearbox.net, almasrymina@google.com,
+	matttbe@kernel.org, skhawaja@google.com, dw@davidwei.uk,
+	Joe Damato <joe@dama.to>, Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v6 3/3] selftests/net: devmem.py: add
+ check_rx_large_niov
+Message-ID: <amvps7AAHxjvxbhQ@devvm29614.prn0.facebook.com>
+References: <20260724-tcpdm-large-niovs-v6-0-7975f62cdfbb@meta.com>
+ <20260724-tcpdm-large-niovs-v6-3-7975f62cdfbb@meta.com>
+ <20260729191649.55ab7942@kernel.org>
+ <amvEJVio9XtCn+YT@devvm29614.prn0.facebook.com>
+ <20260730151433.6f71258e@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 30 Jul 2026 20:12:22 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Jakub Kicinski" <kuba@kernel.org>, "Sabrina Dubroca" <sd@queasysnail.net>
-Cc: "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "John Fastabend" <john.fastabend@gmail.com>, "Shuah Khan" <shuah@kernel.org>,
- "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
- "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
- "Tom Talpey" <tom@talpey.com>, netdev@vger.kernel.org,
- kernel-tls-handshake@lists.linux.dev, linux-kselftest@vger.kernel.org,
- linux-nfs@vger.kernel.org
-Message-Id: <6deaada6-b916-4232-9df9-fff27472e98c@app.fastmail.com>
-In-Reply-To: <20260730143556.4a8463fd@kernel.org>
-References: <20260720-tcp-read-sock-v2-0-29545d034f3c@kernel.org>
- <20260720-tcp-read-sock-v2-2-29545d034f3c@kernel.org>
- <20260728185124.72e421c8@kernel.org>
- <480a8337-a91e-40e5-8dbd-d165599fba4b@app.fastmail.com>
- <20260728193058.7f6b453b@kernel.org>
- <a6fb364d-8344-408e-bcd5-0cee4ffabdc3@app.fastmail.com>
- <20260729163142.4f41484f@kernel.org> <amtcwSO24GGq_qd0@krikkit>
- <20260730143556.4a8463fd@kernel.org>
-Subject: Re: [PATCH net-next v2 2/6] net: Introduce read_sock_rectype proto_ops for
- control record delivery
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260730151433.6f71258e@kernel.org>
 
+On Thu, Jul 30, 2026 at 03:14:33PM -0700, Jakub Kicinski wrote:
+> On Thu, 30 Jul 2026 14:39:37 -0700 Bobby Eshleman wrote:
+> > Poking around, it looks like 231.1.167.0 and above should support
+> > everything, so fw should be okay AFAICT.
+> > 
+> > Looks like the config is missing CONFIG_NET_DEVMEM and CONFIG_UDMABUF?
+> 
+> Ah, damn, you're right. I grepped for DEVMEM and didn't look closely on
+> a hit. Turns out there's a non-NET DEVMEM, too.
 
+Ha yeah, I kind of did the same at first too, had to grep for
+CONFIG.*DEVMEM in net/ to convince myself.
 
-On Thu, Jul 30, 2026, at 5:35 PM, Jakub Kicinski wrote:
-> On Thu, 30 Jul 2026 16:16:33 +0200 Sabrina Dubroca wrote:
->> 2026-07-29, 16:31:42 -0700, Jakub Kicinski wrote:
+> 
+> Could you send a patch to add the missing config options to 
+> tools/testing/selftests/drivers/net/hw/config ?
+> 
+> Can be separate or part of this series, doesn't matter.
 
->> > Off the top of my head I think a setsockopt which pre-seeds the con=
-tent
->> > type so that the read returns an errno if the queued content type is
->> > different could be a simple fix. You'd configure that on your socke=
-ts
->> > to DATA and once you see a EWHATEVER you'd assume that some special
->> > record arrived and the socket has to be handed back over to the TLS
->> > control path. This is literally the first thing that comes to mind,
->> > IDK how ugly it will look in reality so no promises. =20
->>=20
->> But then you're back to "read_sock stopped, caller has to take some
->> special action to handle the next bit of payload". It's not better
->> than "read_sock, and do a recvmsg when read_sock says it's not DATA".
+SGTM.
 
-But the =E2=80=9Crecover the control type with a separate operation=E2=80=
-=9D is strictly
-better than =E2=80=9Cpass a CMSG buffer to every I/O operation just in c=
-ase=E2=80=9D ;-)
+> 
+> > Sorry, took me a while... was certain it was a bug in my code.
+> > 
+> > Not the failure here, but wondering if this was on ARM led to seeing
+> > that 16K hardcoded rx_page_size in run_rx_large_niov() may fail on ARM
+> > with 64K pages because it will fail the IS_ALIGN(16K, 64K) check...
+> 
+> Ah, good thought. We've been meaning to get an ARM64 server for NIPA
+> (our current server supplier is out). If it's not too hard could be nice
+> to guard against that. But also not a huge deal for HW tests if they
+> fail instead of skipping.
 
+Sounds good, I'll throw in a skip into require_devmem() if rx_page_size
+is passed in and doesn't pass the alignment check.
 
-> My bad, I replied without looking at the code.
-> We already constrain control records in the way I proposed.
-> rcvmsg (w/o cmsg) and read_sock will error out if the next
-> record is control.
-
-Almost.
-
-There is no API contract for ->read_sock, but the TLS read_sock
-implementation itself will return -EINVAL for two unrelated reasons:
-
-  - net/tls/tls_sw.c:2068-2072 =E2=80=94 entry gate: sk_psock_get(sk) re=
-turns
-    non-NULL, so the socket is under sockmap/BPF. Drop the ref and
-    refuse before even acquiring the reader.
-
-  - net/tls/tls_sw.c:2111-2115 =E2=80=94 per-record: tlm->control !=3D
-    TLS_RECORD_TYPE_DATA. The record is requeued rather than consumed.
-
-As far as I can tell, no other socket provider that implements read_sock
-will return -EINVAL. But this isn=E2=80=99t a documented guarantee that a
-socket consumer can depend on, currently.
-
-What would make this just a little friendlier is having distinct errnos
-for these two conditions, and a kdoc API contract that documents them.
-
-
---=20
-Chuck Lever
+Best,
+Bobby
