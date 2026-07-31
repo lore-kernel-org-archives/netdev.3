@@ -1,227 +1,212 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FC830C158
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785489261; cv=fail; b=JUrnRRlfymlwG3y07haoEDhKbAqRctuZZ5CECGgMXy3+dZSO4CUIuOT6QQic6w+0xW29RyOlmGCmEYNUpQxRAintyJOSGDLe6LAzMs1cAcogJW1zF5879dJMHqMa8FcPkJbTZ3bgtjBlPEN1qXp4xsIkZIecG1YHnq4dNLzn4yc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785489261; c=relaxed/simple;
-	bh=bAWlBzkdq2TKwLtUWMokDS42/BFYQzpXJYjFS2UVwL0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=fVjd/UlbNw0mO7uekAltxu6CbVzh4jCmJBIE3B8vGL+sNXMqCCqRhMh2WgdOuDe12+u54CghgOu0xCrlqm904nkT7ERXmBgZnLx6dj1dxANGmt/wl6NGbmdDc496l5f6qbs3/tyOQKbqibU1BPZRJRgqqJfFYtm3rbuRoIWY0Vo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NynWh/GV; arc=fail smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D41E30E82E
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785489289; cv=none; b=ZIfNWenWsZcpnrmxhITPN/aWvgxP1auK+XhqkozKsgBy868tixt8MPL0/ke6iX7Gk50DYMTbIvcE0Wb/2TB+xHuSUI0GdGZrpY4+EoIq8U5T/NjtkNw5mTjP8vPyTE0/MMsY3/RWpfo5R9/ZmJPralRQz7t9TDhdkBLUIrgZjNY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785489289; c=relaxed/simple;
+	bh=LyPU3cVgB8ps1x+jq5pUDWO6wzV0UHL9GSirgsT1Luk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X/+lJKBainJPFyxNY/Q6+suqEcn0sGkfDkeLm4JR3ummfuqCBS+LnVQ2urc/JHjseEQbiIEgKVav7mXrTWXZ46AxuYhHZmd5Td155pYHV1e++MJ8EOMYkzU/6Fh+p0bgSahGuRBjT1PYO89fTzP29+8S9Ea7pH7MGt383ns/V+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vsKPut+S; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NynWh/GV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785489260; x=1817025260;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=bAWlBzkdq2TKwLtUWMokDS42/BFYQzpXJYjFS2UVwL0=;
-  b=NynWh/GVR6iKZTp7PJbWWqsmbxU5DlPFj7Ig8+y1EsO0yq1xqNzUD0Dx
-   Gxq9UKftvPvvSlb4g5VFZQdoOu7VrahpmQ0Qw88JjMK4o5YvYAnitXqeB
-   femXNXsFD1qaPoswuPwqjCA3AF7tzMNIXXOfzBpsP8Qt/bUeFhcurZ4+C
-   j2j1IkZptPa936Cepti6tA6VP9epr2xqTSkZbwiWWNYljCcsv8sAmXdEh
-   AnJq/1VEW4FbTZDTNKgnSVAcNzRTiuA0R3ZmfSrQufnpaa/DVqpWXB9Dd
-   oR4bODpdBqBjE5+dGHvfpUgIDk5E753icovO3u2pFv07/itlcu67Yzuoj
-   g==;
-X-CSE-ConnectionGUID: U8KwFSJXRReMFLiW6u+fYA==
-X-CSE-MsgGUID: 4rdjaMh3TZm0rv6CJYVEAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="96701363"
-X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; 
-   d="scan'208";a="96701363"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 02:14:19 -0700
-X-CSE-ConnectionGUID: 8K49HdDhRt6vBXwR5Fh7Pw==
-X-CSE-MsgGUID: Nmzvj5zwRiaxJ1kJtsMu4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; 
-   d="scan'208";a="261141130"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 02:14:19 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 31 Jul 2026 02:14:18 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Fri, 31 Jul 2026 02:14:18 -0700
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.64) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 31 Jul 2026 02:14:17 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jyPF4YoHCH0eEbwBui5tqjSUAnb7+dbtor8UKCA8DudZ/1DHdhMj4Oyo8mNrF1VO38/Z6JwM1vUZhlfDe00Q2oYXu7+ZUEect9lbCRIsXZVDoGYBWZhfEMtwxlPHlhf5QrxW7qWbgzIl0yKPs55x2O+Plvwhd7HDGX/gzd1Wt68IqI5MWqMGh+D2D7TqfB5Q7RzUD8BRsO0/63zNrrGuDydNPGPXMlDzMl5XvVd9mkiJp94mUJiz7Cau9fRvdA7Sx5TJBxyl7zKYouDIUZeGrecEu/tYQfPfFXgyHKEunxsA567O/wd9XB/0eSgoE8/2zcfZ0CpiieGtXYw9esuf2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bAWlBzkdq2TKwLtUWMokDS42/BFYQzpXJYjFS2UVwL0=;
- b=HsoNl/ew8WuyFvRtgVSWyfXAy9pdJg5BkunjhI6XLSCpDzg6kicIGgpWIdJm88l/1NuaRjwMDsYTXoTzf/E5Evn9Hnpy58QP+DrGs9uQoe6mKjLdZaxS/JRuhLJhQSlrp4zzK5E1x4pPaV+ytaKxq0+bSGcT8ELvRg+9eJ2CMk67DF3w7vc4bw4VCyoq+RMNtM2wea5MjrsRPXs9QKUBkbL3kjxkdxJj/UNIyo+dShOcQJE6CPzaBmzTzsIZ4pepm/nwqfGNCmFzdha0An6N99Q/K22njPUG/H+0HE0ec8p5nApD5rcm8XKC+i9ptI/6rHx31qQzl09mJEGWycbwIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8985.namprd11.prod.outlook.com (2603:10b6:208:575::17)
- by DS7PR11MB6064.namprd11.prod.outlook.com (2603:10b6:8:77::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Fri, 31 Jul
- 2026 09:14:13 +0000
-Received: from IA3PR11MB8985.namprd11.prod.outlook.com
- ([fe80::355c:96ca:a45:dd5d]) by IA3PR11MB8985.namprd11.prod.outlook.com
- ([fe80::355c:96ca:a45:dd5d%3]) with mapi id 15.21.0270.009; Fri, 31 Jul 2026
- 09:14:13 +0000
-From: "Romanowski, Rafal" <rafal.romanowski@intel.com>
-To: Simon Horman <horms@kernel.org>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>
-CC: "Kwapulinski, Piotr" <piotr.kwapulinski@intel.com>, Paolo Abeni
-	<pabeni@redhat.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>, "Loktionov, Aleksandr"
-	<aleksandr.loktionov@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "Eric
- Dumazet" <edumazet@google.com>, Marcin Szycik
-	<marcin.szycik@linux.intel.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, Jakub Kicinski <kuba@kernel.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>, "David
- S. Miller" <davem@davemloft.net>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-net v2 2/2] ice: fix stats array
- overflow via proper realloc
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-net v2 2/2] ice: fix stats array
- overflow via proper realloc
-Thread-Index: AQHdDZurOD1PBoE/Tk6Umc3NKd7+5LZrhcMAgBv43mA=
-Date: Fri, 31 Jul 2026 09:14:13 +0000
-Message-ID: <IA3PR11MB89850D895D80A4B77D4C81598FC82@IA3PR11MB8985.namprd11.prod.outlook.com>
-References: <20260706224346.22546-1-przemyslaw.kitszel@intel.com>
- <20260706224346.22546-2-przemyslaw.kitszel@intel.com>
- <20260713140416.GG1364329@horms.kernel.org>
-In-Reply-To: <20260713140416.GG1364329@horms.kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8985:EE_|DS7PR11MB6064:EE_
-x-ms-office365-filtering-correlation-id: 7a66c6c6-c53b-4a97-8000-08deeee4168f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|4143699003|10067099003|11063799006|6133799003|56012099006|18002099003|22082099003|38070700021;
-x-microsoft-antispam-message-info: 9NJHOXe3pdKQ6kQMgvYFnUU8j7J3Z5yAfhOCLx5FFJ85ipn7HSRDG/3MvWyTghhh2dg9rw02rpj/u680gk5kZjj/N5F/9MRuU6ETNQPJQl5knwfhiK9vQdDW2B9S4zQhotMJbd4wheGyWURyTaG5LYQN42VQ0RSZ436X+ex/tQ0XYI/sKoM3hKVvPKD9zo4oN99WkYddrb95Ouo4njATbgmDL7KEEVJrgdQUYDRcLfS2dlbCzwTIWbkr5ZFEPzaZCp1mnBKO8PgXPmmUSPI+YQUpAieuScmnDQkq/JzxnZX5qDdEppPWvmPUmL3DrxfrafxcqzpJEGIYswGLj49XizARlt/siI8EXymm5ZEsfMH9nLzG4lyz7NgXqUu5adcHSt2BeRFTRHCbcigdAab4MIAx279fWoI+lGiFIT0VsV5OygEA4KPoqdrs1kQfAlbcfZhjeADIoWRAmcSScnqz2TDF4bqyLJ0HLV/w3RvE1kvLrdUociASnEEPHbqYx2F3EUuXt6BtMFC4cx49Ayr87UpyWMSR/qGKETP6lT+8/5NIvUHjl0j/KsaDHJprNxSNXnnHG0W7So+pv71q63bRhBQKBj09MZC1GRFw4DdAw0V7z2+CJN8eLcX68InP+bg4CyWS5JgbOtKh2D45KHn1nDGjJ3gz7YuwixhpqDaZ3F+O6r+KxgYTi830YOgW41oynLJAd3mJoOYqSK4M6dXwd5E+tYPQM6qfqdP9/9tlwzY=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8985.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(4143699003)(10067099003)(11063799006)(6133799003)(56012099006)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?80WVVNBlKRD3FheUExbCL0cCkHzGMOC+d46zBQ8OvIur9GgeGQaOmBGyRWxn?=
- =?us-ascii?Q?uPBsjBbRB5tTktVR9gNagUJiPYY7MaRM6a7Rz5Ulqb2iByQTMxjuIGUT1td/?=
- =?us-ascii?Q?RJXUcl/A9P5OcYR+LyyjKgGXgxZns04tN05/ubrlxSK6A15Z9ywlAZyaBvcL?=
- =?us-ascii?Q?g5NJm2YGhPAKSISZjPP5J7BUWTzZUtFFAOLrmEdV4x2QLpSuW5QkPX2E88SL?=
- =?us-ascii?Q?+Kr9JzApbln1qleASAERX5sayqGIzqLcOsJX651QiHQxl7OSDYbFiS+IKzId?=
- =?us-ascii?Q?ZRyS92vIhlqpj4pXdXcRHa7glKAGIXC4M8VKZhwudqU36ZPcskpS8vHdFWuN?=
- =?us-ascii?Q?UHu2l5T4GxAYsRAQg5e3lyQtI46kmP6fBBy0epxxxY7AJSJjfrzFTjKTqNDb?=
- =?us-ascii?Q?KZX4uCwotnZs/BI6d+KahfYPDW67SPKaJ/tGIdkcVOGplPNyUVv337NdUDAG?=
- =?us-ascii?Q?mmxLtK9roKxEOZRI+oo6MCzkTW0rjdhymSv7xEyAdQ3YTl5/6rrLQX1+0JFQ?=
- =?us-ascii?Q?gc4NNWiDJ/c2oWbvXOeRyZuFoBeLykF56uL4++ZWuX1JBAygHs3nKOAgazwF?=
- =?us-ascii?Q?LuKlsiudIniySly4SoZLk0LWPjuMqDqKdNrUvE8O1jDcZTmRNRvSqbGuFTn6?=
- =?us-ascii?Q?4JL5IGbc3XmHK4TmrOpYYxnsnPBR6yd4ENLDw6G1hjUKwyms4CrnS85+TyIa?=
- =?us-ascii?Q?IXwnC0bePl7bidPot+sLZPbv8LKiqzkVqEhA/vmFLLRuL1WbmTuapNuxofcV?=
- =?us-ascii?Q?+v+WWgN6z47/vUKwy6rs31aAo/Z8trGd5KAEOvFVIPS0uJO8skvZM/Er9gnf?=
- =?us-ascii?Q?JKnJtVwqtxYFvHzsEOf81YmNDmwK86fG8tIgOwFkR6AGXA65P6i2TWzPqFf3?=
- =?us-ascii?Q?9QZxmqSTh0JoquyvbWz2Yr4YZdP8QHjpIexQzkF54x3DxquudLqLNuGDtibV?=
- =?us-ascii?Q?8Fe4wdy/hhCOsBRQEx7nFZ8qieF3YbpyiJtgUCHBq++yCcy6RFcLpMP4O/ES?=
- =?us-ascii?Q?oIjnbz15GdWTUB0O/qRy7wnRjCD4qMUujtTT8GMOF2Q6VRiyxJS9APatp25s?=
- =?us-ascii?Q?7WoyuK1rekt9w7yxQAB9qe9maMHqwUPtqpeFXbDzo/8XDTZWrQzKAHv/z8br?=
- =?us-ascii?Q?tv9mrnfB04gBNWrJ8hv3/o4c+jn1ixAg/sx+TjLczlOL0rA4NzhdR7yxFWhP?=
- =?us-ascii?Q?GlPk6gpzmCZTu0XO9B8yArs5zwq6l/K6i/2IcJ99xcm4EZWq6qladegR2+rU?=
- =?us-ascii?Q?Al3MrnRTFHf3h42omdCh+vCwGThGdX4hM/w94gT7/qivta0LPKH/az7VHOwO?=
- =?us-ascii?Q?nCY3J+BAkqMlNKryA2T2vYlstTnaN2pRmULsUugShQ/bM5rxi84qPPt6czJI?=
- =?us-ascii?Q?dRCG8Jk4wM3sFsgFZ7V4cE9FAXMSfu1XxuKltJ32tFP3eApqXSs8WZezBSd4?=
- =?us-ascii?Q?4k8qUr+TEec4N1osTeA9/sAjRdhhP+GXQhCeUU7TIcyZuOtxjdQH3TNZ47uV?=
- =?us-ascii?Q?2MuT1m4zSr9FG+TjyylvJZ3c+IpGcY8SfK6nIRkLDrIxDv6tckMnNbPngqIL?=
- =?us-ascii?Q?7c9XcdusCjCAEQTs2A9vc7IL15olXOy++iMdGXANkEdDhEpNBO0ZpJXPv8TL?=
- =?us-ascii?Q?GNVXfbaIZ7q7PbnGxfP/4yPHVcglB2MLw5WgT+owIOww/z/xe+q01j8tg3G0?=
- =?us-ascii?Q?/wy30a2DPbnLhY1/orwSk4P0GkPP2sbm3LkMEKgCdGPIE3GKu1b3OTPypvfT?=
- =?us-ascii?Q?gVhiXdrYQw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vsKPut+S"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 63C634E41046;
+	Fri, 31 Jul 2026 09:14:45 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1BF7E6039A;
+	Fri, 31 Jul 2026 09:14:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D669911C165CA;
+	Fri, 31 Jul 2026 11:14:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785489280; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=DGhLkBvrWnVfWTJbUOLebyuvDjP6w/Eu2+LttHJfyN4=;
+	b=vsKPut+S9VIXNXhLZeCzKCvmqOir+CcXlsEb0oVTH3HWAwyqSpGlTxLZSwACUi8T7HyPPm
+	fFQWan1BZWDJJklSiO+95pVG+4+kJ3cp5XMadXz1keUxIGi1pQx9HC6fqKM2qJCfVbPS1a
+	D8Ynpyx6vUHmKloTv/X8Hp+jaAoACCxddSGkCcuKrR31etmd0WkAPwaNeNWJh0Kk4Q8IT8
+	gWyh0ZNj/fUthTsXmPC74060fst2gTnbOWrHN47wu5TnFwZrhc0uiWM06nJ/OJY4XKkI1e
+	RYufi1yG9NhLkRCeOTXh3yAxfEe3MjCTF7eR99HXK3d2uR23IMOPFwnNlFhD7w==
+Message-ID: <7f14eb72-37fb-4bc9-9361-230bc79c6806@bootlin.com>
+Date: Fri, 31 Jul 2026 11:14:34 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: QDpwt27/rofrG0qhH4G8mU6JL1a5w27otkckS4xZiExCXODcMfJ86XpcZRWElJodWJCSOJAXODY+VjMAgbGhgvoXHVjwOPipcaOpf95PaFDZUd+oLyCYKQr8IwQ5F1D6lhg+zS74n6dsiaerGbJ9djddvPtiDeXjH47KkPcfsU3vl5zEh2VUWc+PLiuSKNy2KJ58p3OcgFLf8e1NT80eRE6pT/tbZZlzfrXQo7ooIaYVLDcAeq0JZLTwETu4+bzTdUyYufEYWvAweqsIP5ok5Rr2ywZzECLPbRQjqIYSgckr0qZwwvbgqd5W3rj6knenwAOADH4+tE9Jgo+vqeJW4Q==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8985.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a66c6c6-c53b-4a97-8000-08deeee4168f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jul 2026 09:14:13.1041
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qAKLPKKrAUERdSkAhRtYmONnbAoqAF8qUdRHVZfS6qMP0dwzecEu9TEq94GCRCcVgwv2XrAy4uAfaV6YZ1Qllps5Is5smyIMVBfxU2A+mpA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6064
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 07/10] net: dsa: tag_ksz: share code for
+ KSZ8795 and KSZ9893 xmit operations
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, richardcochran@gmail.com, linux@armlinux.org.uk,
+ horms@kernel.org, maxime.chevallier@bootlin.com, pascal.eberhard@se.com,
+ miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260727-ksz-new-ptp-v3-7-caba39e680e3@bootlin.com>
+ <20260731022343.800348-1-kuba@kernel.org>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260731022343.800348-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of S=
-imon
-> Horman
-> Sent: Monday, July 13, 2026 4:04 PM
-> To: Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>
-> Cc: Kwapulinski, Piotr <piotr.kwapulinski@intel.com>; Paolo Abeni
-> <pabeni@redhat.com>; netdev@vger.kernel.org; Jagielski, Jedrzej
-> <jedrzej.jagielski@intel.com>; Loktionov, Aleksandr
-> <aleksandr.loktionov@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>; Eri=
-c
-> Dumazet <edumazet@google.com>; Marcin Szycik
-> <marcin.szycik@linux.intel.com>; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>; Jakub Kicinski <kuba@kernel.org>; intel-wir=
-ed-
-> lan@lists.osuosl.org; David S. Miller <davem@davemloft.net>
-> Subject: Re: [Intel-wired-lan] [PATCH iwl-net v2 2/2] ice: fix stats arra=
-y overflow
-> via proper realloc
->=20
-> On Tue, Jul 07, 2026 at 12:43:31AM +0200, Przemek Kitszel wrote:
-> > Integrate ice_vsi_alloc_stat_arrays() with realloc variant.
-> >
-> > Instead of keeping two functions for stat arrays allocation, change
-> > the
-> > ice_vsi_realloc_stat_arrays() to handle initial condition (no vsi_stat
-> > entry) and replace ice_vsi_alloc_stat_arrays() by the more generic
-> > ice_vsi_realloc_stat_arrays().
-> >
-> > Note that VSIs of ICE_VSI_CHNL type are ignored in realloc variant as
-> > they were in the replaced ice_vsi_alloc_stat_arrays().
-> >
-> > This is a fix for stats array overflow that occurs when VF is given
-> > more queues (an operation that will be more frequent, and by bigger
-> > increase, when we will merge my "XLVF" series).
-> >
-> > Splat for increasing number of queues thanks to Michal Schmidt:
-> > KASAN detects the bug:
->=20
-> ...
->=20
-> > Fixes: 2a2cb4c6c181 ("ice: replace ice_vf_recreate_vsi() with
-> > ice_vf_reconfig_vsi()")
-> > Closes: https://redhat.atlassian.net/browse/RHEL-164321
-> > Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-> > Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> > ---
-> > This is an alternative to the fix [1] by Michal Schmidt, which were
-> > blocked due to AI feedback. My fix was already developed before
-> > Michal's, just not public back then. We have agreed to go on with my ve=
-rsion.
-> >
-> > [1]
-> > https://lore.kernel.org/netdev/20260520183501.3360810-3-anthony.l.nguy
-> > en@intel.com
->=20
-> Reviewed-by: Simon Horman <horms@kernel.org>
->=20
-> ...
+Hi
 
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+On 7/31/26 4:23 AM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> --- Patch [7]: [PATCH net-next v3 07/10] net: dsa: tag_ksz: share code for KSZ8795 and KSZ9893 xmit operations ---
+> commit 801d0cdc8ef18f0fbd60b1d666b46b36437fd06e
+> Author: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+> 
+> net: dsa: tag_ksz: share code for KSZ8795 and KSZ9893 xmit operations
+> 
+> This factors the duplicated tail-tag encoding of ksz8795_xmit() and
+> ksz9893_xmit() into a new ksz_common_xmit() helper parameterized by
+> do_tstamp, prio and override_mask.  As a side effect ksz8795_xmit() now
+> returns through ksz_defer_xmit() instead of returning the skb directly.
+> 
+>> diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
+>> index f58ce0f0e9e42..f8b40437c5fa4 100644
+>> --- a/net/dsa/tag_ksz.c
+>> +++ b/net/dsa/tag_ksz.c
+>> @@ -218,6 +218,37 @@ static struct sk_buff *ksz_defer_xmit(struct dsa_port *dp, struct sk_buff *skb)
+>>   	return NULL;
+>>   }
+>>   
+>> +static struct sk_buff *ksz_common_xmit(struct sk_buff *skb,
+>> +				       struct net_device *dev,
+>> +				       bool do_tstamp,
+>> +				       u8 prio,
+>> +				       u8 override_mask)
+>> +{
+>> +	struct dsa_port *dp = dsa_user_to_port(dev);
+>> +	struct ethhdr *hdr;
+>> +	u8 *tag;
+>> +
+>> +	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
+>> +		kfree_skb(skb);
+>> +		return NULL;
+>> +	}
+>> +
+>> +	/* Tag encoding */
+>> +	if (do_tstamp)
+>> +		ksz_xmit_timestamp(dp, skb);
+>> +
+>> +	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
+>> +	hdr = skb_eth_hdr(skb);
+>> +
+>> +	*tag = dsa_xmit_port_mask(skb, dev);
+>> +	*tag |= prio;
+>> +
+>> +	if (is_link_local_ether_addr(hdr->h_dest))
+>> +		*tag |= override_mask;
+>> +
+>> +	return ksz_defer_xmit(dp, skb);
+>> +}
+>> +
+> 
+> [Severity: Medium]
+> Can this dereference NULL for the KSZ8795 tagger?  ksz_defer_xmit() reads
+> ds->tagger_data and the tagger private data before using them:
+> 
+> net/dsa/tag_ksz.c:ksz_defer_xmit() {
+> 	struct ksz_tagger_data *tagger_data = ksz_tagger_data(dp->ds);
+> 	struct ksz_tagger_private *priv = ksz_tagger_private(dp->ds);
+> 	...
+> 	if (!clone)
+> 		return skb;  /* no deferred xmit for this packet */
+> 
+> 	xmit_work_fn = tagger_data->xmit_work_fn;
+> 	xmit_worker = priv->xmit_worker;
+> 	...
+> }
+> 
+> Both pointers are only populated by ksz_connect(), and ksz8795_netdev_ops
+> does not install it:
+> 
+> static const struct dsa_device_ops ksz8795_netdev_ops = {
+> 	.name	= KSZ8795_NAME,
+> 	.proto	= DSA_TAG_PROTO_KSZ8795,
+> 	.xmit	= ksz8795_xmit,
+> 	.rcv	= ksz8795_rcv,
+> 	.needed_tailroom = KSZ_INGRESS_TAG_LEN,
+> };
+> 
+> compared with ksz9893_netdev_ops which has .connect = ksz_connect and
+> .disconnect = ksz_disconnect.  ksz87xx_connect_tag_protocol() and
+> ksz88xx_connect_tag_protocol() in drivers/net/dsa/microchip/ksz8.c also
+> just return 0 for DSA_TAG_PROTO_KSZ8795, so ds->tagger_data stays NULL for
+> these switches.
+> 
+> So after this change the only thing keeping ksz8795_xmit() from a NULL
+> dereference is KSZ_SKB_CB(skb)->clone always being NULL.
+> 
 
+I think it's safe to assume that ksz8795 will never use a clone as it 
+doesn't support PTP, am I wrong here ?
+
+> Is that invariant actually enforced anywhere?  The ksz87xx/ksz88xx
+> dsa_switch_ops export .port_hwtstamp_set = ksz_hwtstamp_set and
+> .port_txtstamp = ksz_port_txtstamp unconditionally, dsa_user_hwtstamp_set()
+> adds no capability gate, and ksz_set_hwtstamp_config() sets the flag before
+> the register write and returns the error without reverting it, with no
+> dev->info->ptp_capable check:
+> 
+> drivers/net/dsa/microchip/ksz_ptp.c:ksz_set_hwtstamp_config() {
+> 	...
+> 		prt->hwts_tx_en = true;
+> 
+> 		ret = ksz_rmw16(dev, regs[PTP_MSG_CONF1], PTP_1STEP, PTP_1STEP);
+> 		if (ret)
+> 			return ret;
+> 	...
+> }
+> 
+> For these chips regs[] is ksz8795_regs, whose last initialized index is
+> REG_PORT_PME_CTRL (23) while PTP_MSG_CONF1 is 28, so regs[PTP_MSG_CONF1] is
+> an out-of-bounds read and the write can well be rejected, which is exactly
+> the path that leaves hwts_tx_en latched.
+> 
+> Once hwts_tx_en is set on such a port, ksz_port_txtstamp() attaches a clone
+> based on that flag alone:
+> 
+> drivers/net/dsa/microchip/ksz_ptp.c:ksz_port_txtstamp() {
+> 	...
+> 	KSZ_SKB_CB(skb)->clone = clone;
+> 	...
+> }
+> 
+> and then dsa_user_xmit() -> ksz8795_xmit() -> ksz_common_xmit() ->
+> ksz_defer_xmit() gets past the "if (!clone)" early exit and loads
+> tagger_data->xmit_work_fn from a NULL pointer.  Before this patch
+> ksz8795_xmit() returned the skb directly and never touched ds->tagger_data,
+> so the same misconfiguration only leaked the clone.
+> 
+> The commit message states:
+> 
+>      Clones are only created by the KSZ driver when the PTP feature is
+>      enabled. Since KSZ8795 doesn't support PTP, returning the SKB directly
+>      or ksz_defer_xmit() is the same.
+> 
+> Could this assumption be expressed in the code, for instance by keying the
+> ksz_defer_xmit() call off do_tstamp, or by adding a DEBUG_NET_WARN_ON()
+> for a clone on a tagger without tagger_data?  Note also that
+> ksz8795_netdev_ops uses .needed_tailroom = KSZ_INGRESS_TAG_LEN only, so
+> there is no room for the 4 byte PTP tag if a future user of this helper
+> passes do_tstamp = true with that tailroom.
+> 
+
+Best regards,
+Bastien
