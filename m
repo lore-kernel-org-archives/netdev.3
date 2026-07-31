@@ -1,145 +1,392 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F443C9EE9;
-	Fri, 31 Jul 2026 09:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0713E9C3A;
+	Fri, 31 Jul 2026 09:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785491812; cv=none; b=EJMKL3pbHZmCHDQrY0YMvcT3l5JGnmORknFu2wEkLZnryfT88696Erwoyv25dPh4g5IDAJgincptKj/BJRUVB0RrGGrVm8t5O0e2V4mqy5rZNuaZZ/fBCt8OEmyJP1iQJh/5GSm8HJXvYdkThrJ5OFjw3vbjDj+b5jm7jaXBClI=
+	t=1785492013; cv=none; b=mZwKEj8BXrxDQHIwc9juwuiJXv+XjO6AR176wOrlDI8H91v8P7LLPpTXH9vNyfOD6UAZA6IXuzjloclfqJw/wYsICp8pkNLaCfnri/RplGuSWpkUwE/VQBTl0ikCUrA5vQR1/xuOZwGRKc5M/tzaF+k6uXn1DbHdxWO2kVkqXI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785491812; c=relaxed/simple;
-	bh=DOwwg71Kekju6qLnmGfhTqtRNRbfyVhmg9zsJnHZLgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AX5adfLfN3uG0IQXIiXWMIZxwcNOGEGtJYrIroSHcSB3iYCJ5iUXG+YjnF7lL/oLeSFIoZO0CKTflhszilBEPxZfWenXBy8C/wmjfXz6otrSqHy2a2dFoQ5/yVgc2VQWzchktTWgQ30bWPhQrbZPIltOovA+xexgTLN3z/Kb4OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hINXc30n; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785492013; c=relaxed/simple;
+	bh=KLdkvScg6islOW/75IhxbDswh7MbVq0V8pkrPXV9QUQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XOnCFxQLPSuye2BGbn22qQxrZGL5XJOkAVvIOR0l6gA8cUStD2DECuD3ANzcef6ExeYgz67FwgWdcF08cQMDcWp4RYtVvE8B17IP0tmCGLLCY4b8pgxEeUMSTsQs+PGU1qM8C8VgmLfn0b5bgBa7mKqEWUNPLkRMkWQjl3YZcos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=tuigUrY3; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hINXc30n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE51C1F000E9;
-	Fri, 31 Jul 2026 09:56:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785491800;
-	bh=UJzatnBRREcF0bQmpNpCCB0NZsjOpJ4uKmlxw9TORHA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hINXc30n0nbQqQo9tuwXgBfCoCBC3SwoZ7cfl/1LfbwEoZZd0eNlUseLRNl8vHPgm
-	 XvIiiwJkwiEE9zAwIqlPTc0s3IXxdIRk4Hp4Mnt+GJKaSBG9Hw87FIesYgGHsaCzgf
-	 k5esBgQMr3SyQ7jJwS7TCooU9pj7LCwNqb+SB3VHQvfJkTBZUo9BEtJ0ADUKZsd9Mk
-	 1kuKcdSHftCWakbFVtYSf32BrM3g7PygJZ5gmiTpLuoDA1csONhHKfN2fOeZrsuijE
-	 xDVqYZvH5M3k23JEU5zNhLHdyn/Frz0EorVYtdEhqHVqKXIh8MMlOZ6aWbn7QcxTyN
-	 QpRSXOULspGzA==
-Date: Fri, 31 Jul 2026 10:56:35 +0100
-From: Simon Horman <horms@kernel.org>
-To: "Hemendra M. Naik" <hemendranaik@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, jiri@resnulli.us,
-	jhs@mojatatu.com, shuah@kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, vishy0777@gmail.com,
-	tahiliani@nitk.edu.in
-Subject: Re: [PATCH net-next v4 1/3] net/sched: sch_fq_pie: add per-flow
- statistics via class ops
-Message-ID: <20260731095635.GG51943@horms.kernel.org>
-References: <20260727164056.106203-1-hemendranaik@gmail.com>
- <20260727164056.106203-2-hemendranaik@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="tuigUrY3"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D7C794E4104A;
+	Fri, 31 Jul 2026 09:59:41 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A4D456039A;
+	Fri, 31 Jul 2026 09:59:41 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E48C411C1666D;
+	Fri, 31 Jul 2026 11:59:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785491980; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=raBoZ89IApKiV/nd1pXC3oObKTzeERCTv3RqTgrik+M=;
+	b=tuigUrY3iAAap55AAHc8lkykrB19rpQrVRbu9a0ygqmkOkDNatIcsWK/by51oEoqtiDEsV
+	lNwopGVYj0M2rnW28f52C9VvS7voEGJMoyMaI71Pq2/YhK5G03eVgdRhX44AJmWipyGe5m
+	EWBFsn1wtBI2cwWjGgnvkblPcv4H35MwSAs4dZuNPeioJ8j4nlpg1gpXcXAnIVEElOhCKU
+	Fzw/+RK5wIN5+pWsxfD6fv9hZnq9gTWce26IhDizBTuRtm8QMlfPHZuLMzEI69xFhypx/j
+	Ic71dBiSdR+cPS6LeoFcZqt3ODp7zNAfcVXFMFpKF/Vrvi1ul3/igMIsI08nhg==
+Message-ID: <f5184c4c-de97-4da3-8b98-aae00b8b9a3b@bootlin.com>
+Date: Fri, 31 Jul 2026 11:59:35 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260727164056.106203-2-hemendranaik@gmail.com>
-
-On Mon, Jul 27, 2026 at 10:10:54PM +0530, Hemendra M. Naik wrote:
-
-...
-
-> +static struct tcf_block *fq_pie_tcf_block(struct Qdisc *sch, unsigned long cl,
-> +					  struct netlink_ext_ack *extack)
-> +{
-> +	struct fq_pie_sched_data *q = qdisc_priv(sch);
-> +
-> +	if (cl)
-> +		return NULL;
-> +	return q->block;
-> +}
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 08/10] net: dsa: microchip: add KSZ8463 tail
+ tag handling
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, richardcochran@gmail.com, linux@armlinux.org.uk,
+ horms@kernel.org, maxime.chevallier@bootlin.com, pascal.eberhard@se.com,
+ miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260727-ksz-new-ptp-v3-8-caba39e680e3@bootlin.com>
+ <20260731022344.800383-1-kuba@kernel.org>
+Content-Language: en-US
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+In-Reply-To: <20260731022344.800383-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
 Hi,
 
-The AI-generated review of this patch on netdev-ai [1] reports several
-findings. And while I'd appreciate it if you could look over each of them
-the one below seems to warrant highlighting here.
+On 7/31/26 4:23 AM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> --- Patch [8]: [PATCH net-next v3 08/10] net: dsa: microchip: add KSZ8463 tail tag handling ---
+> commit 20a43ca1297a3640a458d9df2837f23e6b9191ea
+> Author: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+> 
+> net: dsa: microchip: add KSZ8463 tail tag handling
+> 
+> This adds a KSZ8463-specific DSA tag driver so that RX timestamps can be
+> taken from the reserved2 field of the PTP header instead of from the tail
+> tag, and switches ksz8463_get_tag_protocol() over to the new
+> DSA_TAG_PROTO_KSZ8463.  A few questions below about the new receive and
+> transmit paths.
+> 
+>> diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
+>> index 5e5bfc5cae2d..ac9e8ef5774a 100644
+>> --- a/drivers/net/dsa/microchip/ksz8.c
+>> +++ b/drivers/net/dsa/microchip/ksz8.c
+>> @@ -2966,7 +2966,7 @@ static enum dsa_tag_protocol ksz8463_get_tag_protocol(struct dsa_switch *ds,
+>>   						      int port,
+>>   						      enum dsa_tag_protocol mp)
+>>   {
+>> -	return DSA_TAG_PROTO_KSZ9893;
+>> +	return DSA_TAG_PROTO_KSZ8463;
+>>   }
+>>   
+>>   static int ksz8463_connect_tag_protocol(struct dsa_switch *ds,
+>> @@ -2974,7 +2974,7 @@ static int ksz8463_connect_tag_protocol(struct dsa_switch *ds,
+>>   {
+>>   	struct ksz_tagger_data *tagger_data;
+>>   
+>> -	if (proto != DSA_TAG_PROTO_KSZ9893)
+>> +	if (proto != DSA_TAG_PROTO_KSZ8463)
+>>   		return -EPROTONOSUPPORT;
+> 
+> [Severity: Low]
+> This changes the user-visible tagging protocol name for KSZ8463 boards,
+> which is reachable both through the conduit's sysfs "tagging" attribute and
+> through the "dsa-tag-protocol" device tree property.
+> 
+> A board that currently pins the previous default:
+> 
+> 	dsa-tag-protocol = "ksz9893";
+> 
+> now hits the -EPROTONOSUPPORT return in ksz8463_connect_tag_protocol()
+> instead of degrading to the old behaviour.  Would it be worth mentioning
+> this compatibility aspect in the commit message?
+>
 
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260727164056.106203-1-hemendranaik%40gmail.com?part=1
+I don't have any strong opinion on this.
 
-   Is the side effect of making fq_pie filter-capable intended, and should
-   it be described in the commit message?
+>>   
+>>   	tagger_data = ksz_tagger_data(ds);
+> 
+> [ ... include/net/dsa.h hunks snipped ... ]
+> 
+>> diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
+>> index f8b40437c5fa..b4d70ba930dc 100644
+>> --- a/net/dsa/tag_ksz.c
+>> +++ b/net/dsa/tag_ksz.c
+> 
+> [ ... ]
+> 
+>> @@ -396,6 +397,70 @@ static const struct dsa_device_ops ksz9893_netdev_ops = {
+>>   DSA_TAG_DRIVER(ksz9893_netdev_ops);
+>>   MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ9893, KSZ9893_NAME);
+>>   
+>> +#define KSZ8463_TAIL_TAG_PRIO		GENMASK(4, 3)
+>> +#define KSZ8463_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
+>> +
+>> +static struct sk_buff *ksz8463_xmit(struct sk_buff *skb,
+>> +				    struct net_device *dev)
+>> +{
+>> +	u16 queue_mapping = skb_get_queue_mapping(skb);
+>> +	u8 prio = netdev_txq_to_tc(dev, queue_mapping);
+>> +
+>> +	return ksz_common_xmit(skb, dev, false,
+>> +			       FIELD_PREP(KSZ8463_TAIL_TAG_PRIO, prio),
+>> +			       0);
+>> +}
+> 
+> [Severity: Medium]
+> Is the loss of the tail tag override bit intentional here?
+> 
 
-   Before this patch fq_pie_qdisc_ops had no .cl_ops, so filter attachment
-   was rejected in net/sched/cls_api.c:__tcf_qdisc_find():
+Yes it is, it doesn't exist on KSZ8463.
 
-	cops = (*q)->ops->cl_ops;
-	if (!cops) {
-		NL_SET_ERR_MSG(extack, "Qdisc not classful");
-		err = -EINVAL;
+> Until this patch KSZ8463 used ksz9893_xmit(), which passes
+> KSZ9893_TAIL_TAG_OVERRIDE (BIT(5)) as the override_mask argument, and
+> ksz8795_xmit() likewise passes KSZ8795_TAIL_TAG_OVERRIDE.  ksz8463_xmit()
+> passes 0, which makes this branch of ksz_common_xmit() dead for the new
+> tagger:
+> 
+> 	if (is_link_local_ether_addr(hdr->h_dest))
+> 		*tag |= override_mask;
+> 
+> Does that mean CPU-injected link-local frames (STP BPDUs, peer delay
+> multicast, LLDP) are now subject to normal port state filtering, so a port
+> in BLOCKING or LISTENING state drops them?
+> 
+> KSZ8463_TAIL_TAG_PRIO is GENMASK(4, 3), i.e. the same layout as the KSZ9893
+> tail tag, which suggests the override bit does exist at BIT(5) on this part.
+> The KSZ8463 tail tag layout is not documented anywhere in the driver, so if
+> BIT(5) is in fact reserved on this chip, could the change (and the now
+> constant override_mask argument) get an explicit note?
+> 
+> [Severity: Medium]
+> The do_tstamp = false argument means ksz_xmit_timestamp() never runs for
+> KSZ8463, and that is the only consumer of
+> KSZ_SKB_CB(skb)->update_correction:
+> 
+> net/dsa/tag_ksz.c:ksz_xmit_timestamp() {
+> 	...
+> 	/* Set correction field to 0 and update UDP checksum */
+> 	ptp_header_update_correction(skb, ptp_type, ptp_hdr, 0);
+> 	...
+> }
+> 
+> ksz_port_txtstamp() in drivers/net/dsa/microchip/ksz_ptp.c still sets that
+> field and returns without cloning, expecting the tagger to do the work:
+> 
+> 	case PTP_MSGTYPE_PDELAY_RESP:
+> 		if (prt->tstamp_config.tx_type == HWTSTAMP_TX_ONESTEP_P2P) {
+> 			KSZ_SKB_CB(skb)->ptp_type = type;
+> 			KSZ_SKB_CB(skb)->update_correction = true;
+> 			return;
+> 		}
+> 
+> ksz_get_ts_info() also keeps advertising the mode for this chip:
+> 
+> 	ts->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ONESTEP_P2P);
+> 
+> 	if (is_lan937x(dev))
+> 		ts->tx_types |= BIT(HWTSTAMP_TX_ON);
+> 
+> So user space can select HWTSTAMP_TX_ONESTEP_P2P on a KSZ8463 port while the
+> tag driver performs no correction field handling at all, and
+> ksz_port_rxtstamp() still subtracts the ingress timestamp from the
+> PDelay_Req correction in that mode.  Is the correction field expected to be
+> handled entirely in hardware here?  If so, could the commit message say so,
+> since the xmit side behaviour change is not mentioned?
+> 
 
-   q->filter_list was therefore always NULL and the filter branch of
-   fq_pie_classify() was unreachable since fq_pie was added.  With .cl_ops
-   present and fq_pie_tcf_block() returning q->block, 'tc filter add ...
-   parent <fq_pie handle>' now succeeds and classifier verdicts plus
-   classid-driven flow selection become live in the enqueue fast path.
+This series only adds support for two step PTP, that's why 
+ksz_xmit_timestamp() isn't called by the KSZ8463 code path.
 
-   That newly reachable code does not handle TC_ACT_CONSUMED:
+>> +
+>> +static struct sk_buff *ksz8463_rcv(struct sk_buff *skb, struct net_device *dev)
+>> +{
+>> +	unsigned int len = KSZ_EGRESS_TAG_LEN;
+>> +	struct ptp_header *ptp_hdr;
+>> +	unsigned int ptp_class;
+>> +	unsigned int port;
+>> +	ktime_t ts;
+>> +	u8 *tag;
+>> +
+>> +	if (skb_linearize(skb)) {
+>> +		kfree_skb(skb);
+>> +		return NULL;
+>> +	}
+>> +
+>> +	KSZ_SKB_CB(skb)->tstamp = 0;
+>> +
+>> +	/* Tag decoding */
+>> +	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+>> +	port = tag[0] & KSZ8463_TAIL_TAG_EG_PORT_M;
+>> +
+>> +	__skb_push(skb, ETH_HLEN);
+>> +	ptp_class = ptp_classify_raw(skb);
+>> +	__skb_pull(skb, ETH_HLEN);
+> 
+> [Severity: Low]
+> This isn't a bug, but the DSA core runs the same classifier a few
+> instructions later and hands the result to the driver:
+> 
+> net/dsa/tag.c:dsa_skb_defer_rx_timestamp() {
+> 	...
+> 	__skb_push(skb, ETH_HLEN);
+> 	type = ptp_classify_raw(skb);
+> 	__skb_pull(skb, ETH_HLEN);
+> 	if (type == PTP_CLASS_NONE)
+> 		return false;
+> 	return ds->ops->port_rxtstamp(ds, p->dp->index, skb, type);
+> }
+> 
+> and ksz_port_rxtstamp() already calls ptp_parse_header() itself.  So every
+> received frame on a KSZ8463 conduit now runs the PTP BPF classifier in the
+> tagger, even with hardware timestamping disabled, and PTP frames are
+> classified twice.
+> 
+> Unlike KSZ9477/KSZ9893, where the timestamp sits in the tail tag and has to
+> be consumed before ksz_common_rcv() trims it, ptp_hdr->reserved2 survives
+> into ksz_port_rxtstamp() untouched.  Could the reserved2 extraction live in
+> ksz_port_rxtstamp() instead, where the PTP class is already available?
+> 
 
-   net/sched/sch_fq_pie.c:fq_pie_classify() {
-	result = tcf_classify_qdisc(skb, filter, &res, false);
-	if (result >= 0) {
-		switch (result) {
-		case TC_ACT_STOLEN:
-		case TC_ACT_QUEUED:
-		case TC_ACT_TRAP:
-			*qerr = NET_XMIT_SUCCESS | __NET_XMIT_STOLEN;
-			fallthrough;
-		case TC_ACT_SHOT:
-			return 0;
-		}
-		if (TC_H_MIN(res.classid) <= q->flows_cnt)
-			return TC_H_MIN(res.classid);
-	}
+That would mean adding ksz8463-specific handling in the common 
+ksz_port_rxtstamp() or create a ksz8463_port_rxtstamp() with once again 
+its load of code duplication.
 
-   TC_ACT_CONSUMED is TC_ACT_VALUE_MAX + 1, so it is >= 0 and matches no
-   case arm, and control reaches the classid path.  act_ct produces it
-   after the skb ownership has already been handed away:
+>> +	if (ptp_class == PTP_CLASS_NONE)
+>> +		goto common_rcv;
+>> +
+>> +	ptp_hdr = ptp_parse_header(skb, ptp_class);
+> 
+> [Severity: Medium]
+> Only PTP_CLASS_NONE is filtered here, but the code below interprets the
+> frame with the PTPv2 struct ptp_header layout.  ptp_classify_raw() also
+> returns PTP_CLASS_V1_IPV4/PTP_CLASS_V1_IPV6, as documented in
+> include/linux/ptp_classify.h:
+> 
+>   * PTP_CLASS_V1_IPV{4,6}, PTP_CLASS_V2_IPV{4,6} or
+>   * PTP_CLASS_V2_{L2,VLAN}, depending on the packet content.
+> 
+> and the classifier program simply masks the version nibble, so any value
+> 1..15 comes back ORed with the encapsulation bits:
+> 
+> net/core/ptp_classifier.c:
+> 	{ 0x48, 0, 0, 0x0016 },	/* ldh [22] */
+> 	{ 0x54, 0, 0, 0x000f },	/* and #0xf */
+> 	{ 0x44, 0, 0, 0x0010 },	/* or #0x10 */
+> 
+> ptp_parse_header() does no version filtering either, it only skips
+> VLAN/IP/UDP headers and bounds-checks sizeof(struct ptp_header).  For a
+> PTPv1 frame, offsets 8..11 are inside the 16-byte subdomain field rather
+> than a reserved field, so real header content would be read as a timestamp
+> and then zeroed.  Should there be a "if (!(ptp_class & PTP_CLASS_V2))" gate
+> before the reserved2 access?
+> 
 
-   net/sched/act_ct.c:tcf_ct_act() {
-   out_frag:
-	if (err != -EINPROGRESS)
-		tcf_action_inc_drop_qstats(&c->common);
-	return TC_ACT_CONSUMED;
+ksz8463_set_hwtstamp_config() in PATCH 10 refuses PTP V1 so we 
+explicitly tell userspace that V1 isn't supported.
 
-   tcf_action_exec() propagates any value != TC_ACT_PIPE and
-   __tcf_classify() returns it verbatim.  For a filter such as
-	tc filter add dev eth0 parent 1: matchall action ct
+>> +	if (ptp_hdr) {
+>> +		ts = ksz_decode_tstamp(get_unaligned_be32(&ptp_hdr->reserved2));
+>> +		KSZ_SKB_CB(skb)->tstamp = ts;
+>> +		ptp_hdr->reserved2 = 0;
+>> +	}
+> 
+> [Severity: Medium]
+> Is there anything that keeps this from running while the switch PTP unit is
+> disabled?  The tagger never looks at KSZ_HWTS_EN here, and does not even
+> fetch ksz_tagger_private(), while the transmit side in the same file does
+> gate on it:
+> 
+> net/dsa/tag_ksz.c:ksz_xmit_timestamp() {
+> 	...
+> 	if (!test_bit(KSZ_HWTS_EN, &priv->state))
+> 		return;
+> 	...
+> }
+> 
+> That bit is set together with PTP_ENABLE in ksz_ptp_enable_mode():
+> 
+> 	tagger_data->hwtstamp_set_state(dev->ds, tag_en);
+> 
+> 	return ksz_rmw16(dev, regs[PTP_MSG_CONF1], PTP_ENABLE,
+> 			 tag_en ? PTP_ENABLE : 0);
+> 
+> so "PTP disabled" is the default state, in which the hardware never wrote
+> anything into reserved2.  In that state, does this code destroy 4 bytes of a
+> genuine remote frame (messageTypeSpecific in IEEE 1588-2019) and build
+> KSZ_SKB_CB(skb)->tstamp out of remote bytes?  ksz_port_rxtstamp() then
+> publishes it with no prt->hwts_rx_en test:
+> 
+> drivers/net/dsa/microchip/ksz_ptp.c:ksz_port_rxtstamp() {
+> 	...
+> 	tstamp = KSZ_SKB_CB(skb)->tstamp;
+> 	memset(hwtstamps, 0, sizeof(*hwtstamps));
+> 	hwtstamps->hwtstamp = ksz_tstamp_reconstruct(dev, tstamp);
+> 	...
+> }
+> 
+> ksz9477_rcv() only trusts the timestamp when the hardware sets
+> KSZ9477_PTP_TAG_INDICATION, and the commit message says KSZ8463 provides no
+> such indication.  For comparison, hellcreek gates on the enable bit before
+> touching reserved2, in hellcreek_should_tstamp():
+> 
+> 	if (!test_bit(HELLCREEK_HWTSTAMP_ENABLED, &ps->state))
+> 		return NULL;
+> 
+> Would the same gating be appropriate here?
+> 
 
-   with no flowid, res.classid is 0, TC_H_MIN(0) <= flows_cnt holds and 0
-   is returned, so fq_pie_qdisc_enqueue() frees the consumed skb a second
-   time:
+This is only done when we receive PTP frames because otherwise ptp_hdr 
+is NULL. I think it's not a big deal to zero-out the reserved area of 
+PTP frames we received even if the PTP is disabled, this area is very 
+likely already set to 0 by the peer. Then ksz_port_rxtstamp indeed 
+reconstructs the timestamp but it also does it for the other switches, 
+not only for the KSZ8463.
 
-	idx = fq_pie_classify(skb, sch, &ret);
-	if (idx == 0) {
-		if (ret & __NET_XMIT_BYPASS)
-			qdisc_qstats_drop(sch);
-		__qdisc_drop(skb, to_free);
+> [Severity: Medium]
+> Does the "ptp_hdr->reserved2 = 0" store need checksum bookkeeping?  For PTP
+> over UDP (advertised by ksz_get_ts_info() through
+> HWTSTAMP_FILTER_PTP_V2_L4_EVENT) these 4 bytes are covered by the UDP
+> checksum, but neither the checksum field nor skb->csum / skb->ip_summed are
+> updated.
+> 
+> On a conduit reporting CHECKSUM_COMPLETE, skb->csum then still describes the
+> unmodified bytes and is carried forward by ksz_common_rcv():
+> 
+> 	if (pskb_trim_rcsum(skb, skb->len - len)) {
+> 
+> In HWTSTAMP_TX_ONESTEP_P2P mode, ksz_port_rxtstamp() additionally calls
+> ptp_header_update_correction() on the same frame, which does:
+> 
+> include/linux/ptp_classify.h:ptp_header_update_correction() {
+> 	...
+> 	uhdr->check = csum_fold(ptp_check_diff8(correction_old, hdr->correction,
+> 						~csum_unfold(uhdr->check)));
+> 	...
+> 	skb->ip_summed = CHECKSUM_NONE;
+> }
+> 
+> so the stack recomputes the UDP checksum over data whose reserved2 delta was
+> never accounted for.  If the switch updates the UDP checksum when it inserts
+> the timestamp, would PDelay_Req frames then be dropped in udp_rcv()?  The
+> same file already uses ptp_header_update_correction() from
+> ksz_xmit_timestamp() for in-place PTP header edits.
+> 
+This series adds support for two-step PTP on the L2 layer so the IP 
+checksums won't be involved in the transactions.
 
-   and with 'flowid 1:N' a valid flow index is returned instead, so
-   flow_queue_add() links the already freed skb into q->flows[idx].  Can
-   fragmented traffic hitting that qdisc then cause a double free or
-   use-after-free?
 
-   That TC_ACT_CONSUMED is expected from qdisc-attached filter chains is
-   also visible in net/sched/cls_api.c:tcf_qevent_handle(), which has an
-   explicit case TC_ACT_CONSUMED: arm that must not free the skb.
-
-   fq_codel, sfq and cake have the same missing arm, but for fq_pie the
-   path only becomes reachable with this patch.
-
-...
+Best regards,
+Bastien
