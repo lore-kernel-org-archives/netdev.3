@@ -1,157 +1,105 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C2C3E1729
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 10:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2346F3DA7D6;
+	Fri, 31 Jul 2026 10:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785492808; cv=none; b=EywNyNE2OOoP36HCYuTr7DpKXgPAGd/2czgO7ct/KTdd/4/vZliMvQr16/h04iJTBA2GhVEU5l/r+VWmZqmcA0s35uemuoAmHjZwf2b2UBS9FdPdUJkEROA6xALjYtuz8EJYgS1EGfQBIpgW2OoosEXS024jZJg7oaX1m1yC1tU=
+	t=1785492936; cv=none; b=gaU0W50XBhA7PL4ATUmkwN0S3cNU0DR8FlmomN1kfDvNuOoRQ69e1xidKoWXz0D1DN6hTDzUMAuI2nKuqzi60DGfbDZw5+4gT7AJBSdkOIE4JOWqNFoY+IYP1VNXskIEL7yZrMdrozuT3V9DdlMoUNFMxQTIKSJUc4IYe2MwEIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785492808; c=relaxed/simple;
-	bh=869HNCfp+r1RYyh03dhFh8Ehn4/mRguRJHaV6q+2I8o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PUJzppqJgdItVp7aPAsu9afqQaSIZMiZNMQSGwca/svfBBlTl2ASprwa9mPoV3rA+dN6oWqsa4nYcf9mwDqO40X4azCYq5IP1cuuXAWSvuEFtHOolumldsx+fzL5MfDswHKkuAtSMG+JATiqASYc26D7X24JuHvBH25axqZStP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yLwMA7iy; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785492936; c=relaxed/simple;
+	bh=iKGZZoPiLZbpP6fqsFth6A6aZtjn2VQzfx5vDbpAxLA=;
+	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=NiRs0jC0i7X5aOIpUN0CGPPmPbGwbFevOTjdbk5M0LiQEp6znOrrsUzrx2dGG3JNf9adOBizM9uF/SvE8fY6KzPEjKLelFwXrpiBF4bdjf76PAe0i39gVMXKkQjDVvPpu4MhSG+9jnuvMdwQ6uG+F4LfZxWDohoXDGh9ML0D10g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nl+rJ6Gy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yLwMA7iy"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id E30051A1353;
-	Fri, 31 Jul 2026 10:12:59 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AD7BC6039A;
-	Fri, 31 Jul 2026 10:12:59 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C3DC511C1668F;
-	Fri, 31 Jul 2026 12:12:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785492774; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=LaN13+7CpsbYTP/3/mBgmUw3PgfcWiL1ZfNR8mI434I=;
-	b=yLwMA7iyqgonpMGSYH9xJ1iK6F3trUXsGDkd3e6REYkL8WnvFAeIBRbV2K9utGY6DEuswU
-	a7qd/1sqgHCq+g9j0SRtnR+XcmSXkmbQEA7GLutHqCRoRagCh2EydQ+lVHP3C2hcOwo3rP
-	P2Kb07JyIxdwNY0gNhyuTHoBTaSKH/u0y+cjz772tYObuiou1HlkFpuQYd/PpMR2qBRAuO
-	MXHyermOE355ZIS78NJ3U889fdJPMLiuwh4+3V0WZzslfwifs+Mh6adZQEo9Xg10IceBRU
-	PgsP23Kw0BdsoswPmrRrTeJ5vLdv+QDR8VFFqnu5BEHO0SIA3FL5D20hVEJq/Q==
-Message-ID: <a31ca086-5feb-4602-9c5b-f0e74487c094@bootlin.com>
-Date: Fri, 31 Jul 2026 12:12:48 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nl+rJ6Gy"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id A57751F000E9;
+	Fri, 31 Jul 2026 10:15:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785492921;
+	bh=igCGcuVr3RVFJK8/Uk1UFFC3NA0FBLSNwlzVaDvkXzA=;
+	h=From:To:Cc:Subject:Date;
+	b=Nl+rJ6GyKZ8ba+2bqo7MGDCHI6P2EgJHg3evd07ZnjdThA+IyhB9/ajWpjgi2SaAD
+	 a+EiGm3E3f7rGgJXCK1NOLFZtlyjgvoVZ5yvW/Yw/Y42JWKE3Iv0OWgwi9xeV3vctO
+	 T+v49hvwnyiMlBPij8iMIqDjTwEkuLl+D5+KlP5mR1/5mu/S8vpfwOZmKyk36irpTa
+	 Q5miiZgEQIvHTlNuHCXJE8/HiJzm/62vzT0VW/Jpj2XnbGvzJ0OrCfOAbxfTSYwVE3
+	 neQ1fTw4ywM2c+uAicwJOx/H19runwL4ednFQ4KH5zGzcYRnFNlkciauRcLac6KdpJ
+	 L56hXNuQqPdlQ==
+From: "syzbot" <syzbot@kernel.org>
+To: syzkaller-bugs@googlegroups.com, Aleksandr Nogikh <nogikh@google.com>, "Chas Williams" <3chas3@gmail.com>, <accessrunner-general@lists.sourceforge.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, <linux-atm-general@lists.sourceforge.net>, <linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>, "Duncan Sands" <duncan.sands@math.u-psud.fr>
+Cc: linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
+Subject: [PATCH] usb: atm: cxacru: properly kill rcv_urb on error in cxacru_cm()
+Message-ID: <91edfa4c-a63d-400c-9f00-31f3e1f98c00@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: stmmac: resume PHY before hardware setup when
- opening the interface
-To: Stefan Agner <stefan@agner.ch>, Paolo Abeni <pabeni@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, regressions@lists.linux.dev
-References: <message-id-of-your-v1-mail>
- <20260707195425.405989-1-stefan@agner.ch>
- <c8cbf359-e224-44c6-8692-9e1d1527ae0c@bootlin.com>
- <2946c0f7-1c79-4890-a4b3-94141f42bc1a@redhat.com>
- <2f7fc28f777ce870e30e400640418c71@agner.ch>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <2f7fc28f777ce870e30e400640418c71@agner.ch>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Date: Fri, 31 Jul 2026 10:15:20 +0000 (UTC)
 
-Hi,
+From: Aleksandr Nogikh <nogikh@google.com>
 
-On 7/31/26 12:03, Stefan Agner wrote:
-> Hi Paolo, hi Maxime,
-> 
-> On 2026-07-21 10:12, Paolo Abeni wrote:
->> Hi,
->>
->> On 7/8/26 11:16 AM, Maxime Chevallier wrote:
->>> On 7/7/26 21:54, Stefan Agner wrote:
->>>> Since the referenced commit, changing the MTU on a running interface no
->>>> longer disconnects and reconnects the PHY; __stmmac_release() merely
->>>> stops phylink, which also suspends the PHY (BMCR power-down) when WoL
->>>> is not enabled. __stmmac_open() then performs the DMA software reset in
->>>> stmmac_hw_setup() before phylink_start() resumes the PHY again.
->>>>
->>>> IEEE 802.3 22.2.4.1.5 allows a PHY to stop its receive clock while
->>>> powered down, and stmmac requires a running receive clock for the DMA
->>>> software reset to complete (the phylink config sets mac_requires_rxc).
->>>> On such setups, e.g. the RK3566-based Home Assistant Green with an
->>>> RTL8211F-VD PHY in RGMII mode, any runtime MTU change now times out and
->>>> leaves the interface dead:
->>>>
->>>>   rk_gmac-dwmac fe010000.ethernet end0: Failed to reset the dma
->>>>   rk_gmac-dwmac fe010000.ethernet end0: stmmac_hw_setup: DMA engine initialization failed
->>>>   rk_gmac-dwmac fe010000.ethernet end0: __stmmac_open: Hw setup failed
->>>>   rk_gmac-dwmac fe010000.ethernet end0: failed reopening the interface after MTU change
->>>>
->>>> In the field this is triggered by NetworkManager applying an MTU while
->>>> activating the connection, breaking networking entirely.
->>>>
->>>> Resume the PHY in __stmmac_open() before the hardware setup, making it
->>>> the counterpart of the phylink_stop() in __stmmac_release(), like
->>>> stmmac_resume() already does for the same reason. phylink_start() also
->>>> resumes the PHY, but only after stmmac_hw_setup(), and it cannot be
->>>> moved before the hardware setup since it may bring the link up
->>>> immediately from a workqueue, racing with the initialization (see the
->>>> comment in stmmac_resume()). For the regular ndo_open path the PHY has
->>>> just been attached and is not suspended, in which case
->>>> phylink_prepare_resume() does nothing.
->>>>
->>>> Fixes: db299a0c09e9 ("net: stmmac: move PHY handling out of __stmmac_open()/release()")
->>>> Link: https://github.com/home-assistant/operating-system/issues/4858
->>>> Signed-off-by: Stefan Agner <stefan@agner.ch>
->>>
->>> I was able to reproduce the issue on imx8mp and socfpga. Adding this case to
->>> my periodic test list...
->>>
->>> Indeed the assymetry isn't very nice, OTOH there's not phylink counterpart
->>> for phylink_prepare_resume(). This helper was added for the suspend/resume
->>> case, and only for it as the doc states, it just happens to do exactly
->>> what we need to fix the issue :
->>>
->>> /**
->>>  * phylink_prepare_resume() - prepare to resume a network device
->>>  * @pl: a pointer to a &struct phylink returned from phylink_create()
->>>  *
->>>  * Optional, but if called must be called prior to phylink_resume().
->>>  *
->>>  * Prepare to resume a network device, preparing the PHY as necessary.
->>>  */
->>> void phylink_prepare_resume(struct phylink *pl)
->>>
->>> I think this helper should be renamed and the doc updated, stmmac is the
->>> sole user, and it's really about controlling that rxc and not about
->>> suspend / resume. Resuming from suspend is just one of the cases where we
->>> need that RXC early on.
->>>
->>> So either something like 'phylink_prepare_start_or_resume' but it's long,
->>> or maybe we can be more explicit about it and simply call it:
->>>
->>> phylink_start_rxc(pl)
->>>
->>> (without a corresponding stop)
->> I read the above as a possible follow-up more than actual changes
->> requested to this patch, am I correct?
-> 
-> Since this fixes a bug, I'd prefer to keep the patch minimal to make it
-> easier to backport. Therefor I would prefer to do make such structural
-> changes as a follow-up change rather than part of this patch.
-> 
-> Does that work for you, Maxime?
+If cxacru_cm() encounters an error while submitting or waiting for snd_urb,
+it aborts and returns the error without killing the already submitted
+rcv_urb. This leaves the rcv_urb active.
 
-That works for me yeah, I agree we need that fixed.
+When this happens during initialization (e.g., in cxacru_atm_start()), the
+driver may ignore the error and proceed to call cxacru_poll_status(), which
+invokes cxacru_cm() again. Attempting to submit the still-active rcv_urb
+triggers a warning in usb_submit_urb():
 
-Thanks Stefan,
+cxacru 1-1:1.0: send of cm 0x84 failed (-104)
+ATM dev 0: cxacru_atm_start: CHIP_ADSL_LINE_START returned -104
+------------[ cut here ]------------
+URB ffff88812658d200 submitted while active
+WARNING: drivers/usb/core/urb.c:379 at usb_submit_urb+0x79/0x18b0
+drivers/usb/core/urb.c:379
+...
+Call Trace:
+ <TASK>
+ cxacru_cm+0x21a/0xf10 drivers/usb/atm/cxacru.c:631
+ cxacru_cm_get_array drivers/usb/atm/cxacru.c:722 [inline]
+ cxacru_poll_status+0x178/0x1110 drivers/usb/atm/cxacru.c:828
+ cxacru_atm_start+0x185/0x360 drivers/usb/atm/cxacru.c:814
+ usbatm_atm_init+0x144/0x3a0 drivers/usb/atm/usbatm.c:927
+ usbatm_usb_probe+0x15cb/0x1db0 drivers/usb/atm/usbatm.c:1178
+ cxacru_usb_probe+0x17f/0x220 drivers/usb/atm/cxacru.c:1370
+...
 
-Maxime
+To fix this, ensure that rcv_urb is properly killed if cxacru_cm() aborts
+early. We can safely call usb_kill_urb() on rcv_urb in the error path, as
+it is safe to call even if the URB is not active (e.g., if it failed to
+submit in the first place, or if it already completed).
 
+Fixes: 1b0e61465234 ("[PATCH] USB ATM: driver for the Conexant AccessRunner chipset cxacru")
+Assisted-by: Gemini:gemini-3.5-flash Gemini:gemini-3.1-pro-preview syzbot
+Reported-by: syzbot+c9dff578c3a41775176a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c9dff578c3a41775176a
+Link: https://syzkaller.appspot.com/ai_job?id=75fec6f2-c8a6-43b1-b184-4d26baba86cc
+Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+
+---
+diff --git a/drivers/usb/atm/cxacru.c b/drivers/usb/atm/cxacru.c
+index f1900c567..429ac20a8 100644
+--- a/drivers/usb/atm/cxacru.c
++++ b/drivers/usb/atm/cxacru.c
+@@ -700,6 +700,8 @@ static int cxacru_cm(struct cxacru_data *instance, enum cxacru_cm_request cm,
+ 	ret = offd;
+ 	usb_dbg(instance->usbatm, "cm %#x\n", cm);
+ fail:
++	if (ret < 0)
++		usb_kill_urb(instance->rcv_urb);
+ 	mutex_unlock(&instance->cm_serialize);
+ err:
+ 	return ret;
+
+
+base-commit: f5098b6bae761e346ebcd9da7f95622c04733cff
+-- 
+See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
+You can comment on the patch as usual, syzbot will try to address
+the comments and send a new version of the patch if necessary.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
