@@ -1,57 +1,57 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958083A450F
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70C83A7F48
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785483625; cv=none; b=hE7R/T56+Sz3pXFC9qRaZxJ4wz2Mg+BawjedglbZSobfgahji6WztSlgOFFokSUhv8JpYKLXA6AcI5cc3288E7aSwVetSEwRBdFGlDRhHhN5tgPRSMJhwyXzcVhKnE+FPiy+CWYEajNgdHukn6NOCJCVR/wT8Z3wQrvSkejXhoI=
+	t=1785483626; cv=none; b=p22CWBrpmqwpIkX84sR26sOnGU+6+EN/bZBMDwpBTa1edZKFcoBB71l5ZWlKKQ9zRhzakHCQczGQIIys/LPpcFDA/lOacRWdRFsPjl1IMCziObz+PAFIf/JUb+ERmvqqNlJfO5x4pcJtFBo6vaoaW3+1YfXEo6jWiIiBEe/ECIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785483625; c=relaxed/simple;
-	bh=+Hg6Iz/qPGAVH2HXuUmTFvQO5eCaZ1xoDi2W/S1TLHk=;
+	s=arc-20240116; t=1785483626; c=relaxed/simple;
+	bh=5rqepiO8H/jQD63hUvebUuG+WYdg8lRlvQZj8xW2EVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A520/YfaZMMXVhCeV416VVDKQBX+hjJCtpl/sCmr22urcZDfAYda7IwwgMbiY2W3ZKnZHvtnxxtDZ9g8fOADMpHVPKv3s/U3yywnYQ2NTJAg6kyzC/D+5WSOAvpcJ9kNn8x323p8LYbkFBMbqWAJK+tJuXUVeqXh7FJtjZIMGf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=B5KX7M9X; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=d2+Mz/d7fpkPn1giTVeQBK5tA1sTgB7qBVm8U1P2g6EdwJ3UDTMlmAqWPQ/1fQjvHid8juntMJAOChdfNeUfBCIR6J0sRj/0GHypqpaKvAtL9n+MbhLEtsJyUce7RxPJ7OAE4u1zvO8UmkJTjy+YZnVtNnRYBI84gGkuqwgc2JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Rzay8pSZ; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="B5KX7M9X"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66V5I4N2975229;
-	Fri, 31 Jul 2026 07:39:58 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Rzay8pSZ"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66V5Iia2855565;
+	Fri, 31 Jul 2026 07:40:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=fTjgA/m4QpVivZiMo
-	QzC1lgl6oU+D76RO43IbLRSvdk=; b=B5KX7M9XvyfZk7NPNB0KH2ob5dTHfca8W
-	TCjdOXV8sPsUOEQSePa6uT9UNiV6sEtxlSHJTgtIPjXJttMUK5SfG038DfDvv1JD
-	kaTEyWvxibiEs5EzX32zMgEAzpTEyE4bVn4Gyk4q+aczuI0b+ZJBV7wMlu0jC0ea
-	kwwY/RzpMLAsjO6Eu8+JMHem/hvggTsezvwrkvCIZAK8boqGy02ANs+Sgb9oMNUc
-	edgWuTnbzXL+usheGFUtmxf7vqX/RhnvJYO9kO88yG5oGfAjZD+DnZPEqikfJh/I
-	TRbSbbRhVlY7nAEMpUdyNSAT2pE10QRS2bksjuR/uN2NfaLprXytw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuwdawsr-1
+	:mime-version:references:subject:to; s=pp1; bh=2Q1W1L6YOHCAsJpGE
+	z/+PtUNR5hYgPocfjM3AQzUa6g=; b=Rzay8pSZ/8fUL+7ch0Hkf3LddqpfbVCIj
+	bGUMqX6yzf/tuFFGYp8R8RzS7hLQ1rk+xWjYmOCstLPWMJKWT+SAe8NqCAwu363y
+	t3sIfEIfa4Lc/5jnYZhTxeDTSDxhsc1IUzJ3PyvU6nPU8uKSDNQclqi32z8xq0ng
+	mSjz79h6+a9GvN0KtUsYhIvi6VsBHUAQU1cfDu2T5Z3z9rbZExfuJO6IVmimrXOZ
+	P5DTxkMNuGzIP88epRuw2o5apcVhJNBHX1BFFZmi79aP8yTi/vDzsrQ2YR1ya4i7
+	3ixcuwYd7tLnZcgccqca65fsr8FRE+qOqcAvIQ8LJB6hh09YX7KEA==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0p2vuh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Jul 2026 07:39:57 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66V7QJ1M002143;
-	Fri, 31 Jul 2026 07:39:56 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8yhpwff-1
+	Fri, 31 Jul 2026 07:40:00 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66V7QJMi021514;
+	Fri, 31 Jul 2026 07:40:00 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8fkf0jy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Jul 2026 07:39:56 +0000 (GMT)
+	Fri, 31 Jul 2026 07:40:00 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66V7dqg617432880
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66V7duK630998992
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 Jul 2026 07:39:52 GMT
+	Fri, 31 Jul 2026 07:39:56 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 69ED920043;
+	by IMSVA (Postfix) with ESMTP id 2173820043;
+	Fri, 31 Jul 2026 07:39:56 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BF3D720040;
 	Fri, 31 Jul 2026 07:39:52 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0409720040;
-	Fri, 31 Jul 2026 07:39:49 +0000 (GMT)
 Received: from li-a84c74cc-2b13-11b2-a85c-acdd023f0674.ibm.com.com (unknown [9.43.125.83])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 31 Jul 2026 07:39:48 +0000 (GMT)
+	Fri, 31 Jul 2026 07:39:52 +0000 (GMT)
 From: Nilay Shroff <nilay@linux.ibm.com>
 To: kbusch@kernel.org, hch@lst.de, hare@suse.de, sagi@grimberg.me,
         chaitanyak@nvidia.com, gjoyce@linux.ibm.com, kuba@kernel.org,
@@ -59,9 +59,9 @@ To: kbusch@kernel.org, hch@lst.de, hare@suse.de, sagi@grimberg.me,
         horms@kernel.org
 Cc: linux-nvme@lists.infradead.org, netdev@vger.kernel.org,
         Nilay Shroff <nilay@linux.ibm.com>
-Subject: [RESEND PATCH v2 3/4] nvme: add debugfs helpers for NVMe drivers
-Date: Fri, 31 Jul 2026 13:09:07 +0530
-Message-ID: <20260731073918.614014-4-nilay@linux.ibm.com>
+Subject: [RESEND PATCH v2 4/4] nvme: expose queue information via debugfs
+Date: Fri, 31 Jul 2026 13:09:08 +0530
+Message-ID: <20260731073918.614014-5-nilay@linux.ibm.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260731073918.614014-1-nilay@linux.ibm.com>
 References: <20260731073918.614014-1-nilay@linux.ibm.com>
@@ -74,221 +74,240 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: 5kj2F2b-JWg5B9vd_rT2RJBVKwZtd734
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDA1MCBTYWx0ZWRfX729/xgJLbFA8
- 0UgYV55OBRDjtS7d6wUegI00HST0fK+v1pH4uvMPcIHTrGLM0FLvTDAeNQLuAbhzDfQPVY5q9C6
- acuwjv0hLGZIEVdsa/RUcdcA6UfRC5Q=
-X-Authority-Analysis: v=2.4 cv=E/z9Y6dl c=1 sm=1 tr=0 ts=6a6c514d cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDA1MCBTYWx0ZWRfX4HtJuoicjy9z
+ JIA73GdJUVQoxgIVoZRUZmbH/CxWozPIXmDGQvmD/+T8CrO1wttF4KhPIDu5K+dW4b6VukiPq/9
+ bSnpUndDosw8ftGo5W/0mKdid+oEzYU=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDA1MCBTYWx0ZWRfX/pq+t8B4/hKH
+ 7I/DJTvuS4ayvVSY9kz4sHM/mcYmIvqJYi1CN7zvCe3ZNwbZRes6w2CgV4WTAs/Kk9rYNjQpamL
+ q0hiHzz6y6vlkXWJ3Hp/MEAB8wRR0q+rH2EtHLm+BEo1VoojTLaSXHfS87+3S+LnvQpNUX13g0n
+ wrgo2lWvPDaWpFv6gZ7TnD/XNfPyIEVqOGXo5cgyOkkKD094Owrhqdc68QNSi99OqDNw9CchsFX
+ rObXp5rO5fpGN43jiBBvrKlmLuvtiX9CE1hRjjF876bFsa3Zs71Gi+tA6vLSTa2QmMLy51e+oMQ
+ 4vbun+48/fcWbWn+RtvgcWZp5/qL9h5pat2HLvEKlBbdO3h9Qn2cYUhVDADaiLEG0KSf9TFRm50
+ gpGno7CaQThMh4lv+ACrd1TBE5PV3nWFIftcfJLykyo+ecJwfYsU1skyqgTpFLTrtc5/vkZ98qE
+ U9i2ij/k7W7SeInMPIA==
+X-Authority-Analysis: v=2.4 cv=b5WCJNGx c=1 sm=1 tr=0 ts=6a6c5151 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=ooCht5J9LIHKhMPangUA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDA1MCBTYWx0ZWRfX1hnVJ17AarAT
- tpcD1lgePmoG/AZKcq54h2n5doUDCNKifIPSh7OP94ZlzbIgfwTapQi8g+4VhTVilSqjkPZzwQ5
- yxdxrGdLixoA+0oHx7lbNwSqcNIPub2OqUWK/7EV1BqyUD2Wktsx2Iwx2aOxe2dQAmFg2t93HnM
- obV6KMmHsuEuYs9QaGbZ4LvIR5qvVrJd34uwhdOf0GjHdx+DB8JlWaj640fDar/LREl606uAJ4Z
- oNAcmVnB3dWCXAQbGXfozwoBiEflpADAVOIe+L61VwBR/Bmhb7EMOLGrpKHvKs2k8hOp8vFo683
- J7QL0u+xKXJPKtsgb/1X07rjwblsTAd2p5HJn75mkEB+glmZyWBKF+fRTrXqsPxgFRPfgleNsgq
- twwtHp/Cn6BdhvHXNgc89iWSZU1CDktW0EQ84NsAk+zQJaYv0nFukSvSJ5QaB7zrdK2Q9bKTkv3
- wm9GriEMKYMtpcAZb8Q==
-X-Proofpoint-GUID: 7Op3_dPUT4IPvPTLgazjwCitPPHcalz9
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=LWIoN9EnsF6OxIflJ4MA:9
+X-Proofpoint-GUID: hwzmbAy2EvZUu42IE_X8TbrFfzqeqMYY
+X-Proofpoint-ORIG-GUID: R2CT-wKH-A9tUPm6yhLoGQSJ4yQW8pjC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-31_02,2026-07-30_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 spamscore=0 clxscore=1015 phishscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0 impostorscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607310050
 
-Introduce helper APIs that allow NVMe drivers to register and unregister
-debugfs entries, along with a reusable attribute structure for defining
-new debugfs files.
+Add a new debugfs attribute "io_queue_info" to expose per-queue
+information for NVMe controllers. For NVMe-TCP, this includes the
+CPU handling each I/O queue and the associated TCP flow (source and
+destination address/port).
 
-The implementation uses seq_file interfaces to safely expose per-
-namespace or per-path statistics, while supporting both simple show
-callbacks and full seq_operations.
+This information can be useful for understanding and tuning the
+interaction between NVMe-TCP I/O queues and network stack components,
+such as IRQ affinity, RPS/RFS, XPS, or NIC flow steering (ntuple).
 
-This will be used by subsequent patches to expose NVMe-TCP queue
-and flow information for tuning NVMe TCP I/O workqueue and network stack
-components.
+The data is exported using seq_file interfaces to allow iteration
+over all controller queues.
 
 Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
 ---
- drivers/nvme/host/Makefile  |   2 +-
- drivers/nvme/host/debugfs.c | 129 ++++++++++++++++++++++++++++++++++++
- drivers/nvme/host/nvme.h    |  10 +++
- 3 files changed, 140 insertions(+), 1 deletion(-)
- create mode 100644 drivers/nvme/host/debugfs.c
+ drivers/nvme/host/core.c    |  3 ++
+ drivers/nvme/host/debugfs.c | 64 ++++++++++++++++++++++++++++++++++++-
+ drivers/nvme/host/nvme.h    |  2 ++
+ drivers/nvme/host/tcp.c     | 54 +++++++++++++++++++++++++++++++
+ 4 files changed, 122 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/Makefile b/drivers/nvme/host/Makefile
-index 6414ec968f99..7962dfc3b2ad 100644
---- a/drivers/nvme/host/Makefile
-+++ b/drivers/nvme/host/Makefile
-@@ -10,7 +10,7 @@ obj-$(CONFIG_NVME_FC)			+= nvme-fc.o
- obj-$(CONFIG_NVME_TCP)			+= nvme-tcp.o
- obj-$(CONFIG_NVME_APPLE)		+= nvme-apple.o
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 453c1f0b2dd0..50e81892a9d6 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4264,6 +4264,8 @@ static void nvme_alloc_ns(struct nvme_ctrl *ctrl, struct nvme_ns_info *info)
+ 	if (device_add_disk(ctrl->device, ns->disk, nvme_ns_attr_groups))
+ 		goto out_cleanup_ns_from_list;
  
--nvme-core-y				+= core.o ioctl.o sysfs.o pr.o
-+nvme-core-y				+= core.o ioctl.o sysfs.o pr.o debugfs.o
- nvme-core-$(CONFIG_NVME_VERBOSE_ERRORS)	+= constants.o
- nvme-core-$(CONFIG_TRACING)		+= trace.o
- nvme-core-$(CONFIG_NVME_MULTIPATH)	+= multipath.o
++	nvme_debugfs_register(ns->disk);
++
+ 	if (!nvme_ns_head_multipath(ns->head))
+ 		nvme_add_ns_cdev(ns);
+ 
+@@ -4344,6 +4346,7 @@ static void nvme_ns_remove(struct nvme_ns *ns)
+ 
+ 	nvme_mpath_remove_sysfs_link(ns);
+ 
++	nvme_debugfs_unregister(ns->disk);
+ 	del_gendisk(ns->disk);
+ 
+ 	mutex_lock(&ns->ctrl->namespaces_lock);
 diff --git a/drivers/nvme/host/debugfs.c b/drivers/nvme/host/debugfs.c
-new file mode 100644
-index 000000000000..b4802ea3bd48
---- /dev/null
+index b4802ea3bd48..6146f33bc586 100644
+--- a/drivers/nvme/host/debugfs.c
 +++ b/drivers/nvme/host/debugfs.c
-@@ -0,0 +1,129 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2026 IBM Corporation
-+ *	Nilay Shroff <nilay@linux.ibm.com>
-+ */
-+
-+#include <linux/debugfs.h>
-+#include <linux/seq_file.h>
-+#include <linux/slab.h>
-+
-+#include "nvme.h"
-+
-+struct nvme_debugfs_attr {
-+	const char *name;
-+	umode_t mode;
-+	int (*show)(void *data, struct seq_file *m);
-+	const struct seq_operations *seq_ops;
-+	bool (*get)(void *data);
-+	void (*put)(void *data);
-+};
-+
-+struct nvme_debugfs_ctx {
-+	void *data;
-+	struct nvme_debugfs_attr *attr;
-+};
-+
-+static int nvme_debugfs_show(struct seq_file *m, void *v)
-+{
-+	struct nvme_debugfs_ctx *ctx = m->private;
-+	void *data = ctx->data;
-+	struct nvme_debugfs_attr *attr = ctx->attr;
-+
-+	return attr->show(data, m);
-+}
-+
-+static int nvme_debugfs_open(struct inode *inode, struct file *file)
-+{
-+	void *data = inode->i_private;
-+	struct nvme_debugfs_attr *attr = debugfs_get_aux(file);
-+	struct nvme_debugfs_ctx *ctx;
-+	struct seq_file *m;
-+	int ret;
-+
-+	if (attr->get && !attr->get(data))
-+		return -ENODEV;
-+
-+	ctx = kzalloc_obj(*ctx);
-+	if (WARN_ON_ONCE(!ctx)) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	ctx->data = data;
-+	ctx->attr = attr;
-+
-+	if (attr->seq_ops) {
-+		ret = seq_open(file, attr->seq_ops);
-+		if (ret)
-+			goto out_free;
-+
-+		m = file->private_data;
-+		m->private = ctx;
-+		return ret;
-+	}
-+
-+	if (WARN_ON_ONCE(!attr->show)) {
-+		ret = -EPERM;
-+		goto out_free;
-+	}
-+
-+	ret = single_open(file, nvme_debugfs_show, ctx);
-+	if (!ret)
-+		return ret;
-+
-+out_free:
-+	kfree(ctx);
-+out:
-+	if (attr->put)
-+		attr->put(data);
-+	return ret;
-+}
-+
-+static int nvme_debugfs_release(struct inode *inode, struct file *file)
-+{
-+	struct seq_file *m = file->private_data;
-+	struct nvme_debugfs_ctx *ctx = m->private;
-+	struct nvme_debugfs_attr *attr = ctx->attr;
-+	int ret;
-+
-+	if (attr->seq_ops)
-+		ret = seq_release(inode, file);
-+	else
-+		ret = single_release(inode, file);
-+
-+	if (attr->put)
-+		attr->put(ctx->data);
-+
-+	kfree(ctx);
-+	return ret;
-+}
-+
-+static const struct file_operations nvme_debugfs_fops = {
-+	.owner   = THIS_MODULE,
-+	.open    = nvme_debugfs_open,
-+	.read    = seq_read,
-+	.llseek  = seq_lseek,
-+	.release = nvme_debugfs_release,
-+};
-+
-+static const struct nvme_debugfs_attr nvme_ns_debugfs_attrs[] = {
-+	{},
-+};
-+
-+static void nvme_debugfs_create_files(struct request_queue *q,
-+		const struct nvme_debugfs_attr *attr, void *data)
-+{
-+	if (WARN_ON_ONCE(!q->debugfs_dir))
-+		return;
-+
-+	for (; attr->name; attr++)
-+		debugfs_create_file_aux(attr->name, attr->mode, q->debugfs_dir,
-+				data, (void *)attr, &nvme_debugfs_fops);
-+}
-+
-+void nvme_debugfs_register(struct gendisk *disk)
-+{
-+	nvme_debugfs_create_files(disk->queue, nvme_ns_debugfs_attrs,
-+			disk->private_data);
-+}
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 824651cc898d..72f9d9c668a1 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -474,6 +474,16 @@ struct nvme_ctrl {
- 	u16			awupf; /* 0's based value. */
+@@ -24,6 +24,61 @@ struct nvme_debugfs_ctx {
+ 	struct nvme_debugfs_attr *attr;
  };
  
-+void nvme_debugfs_register(struct gendisk *disk);
-+static inline void nvme_debugfs_unregister(struct gendisk *disk)
++static void *nvme_io_queue_info_start(struct seq_file *m, loff_t *pos)
 +{
++	struct nvme_debugfs_ctx *ctx = m->private;
++	struct nvme_ns *ns = ctx->data;
++	struct nvme_ctrl *ctrl = ns->ctrl;
++
 +	/*
-+	 * Nothing to do for now. When the request queue is unregistered,
-+	 * all files under q->debugfs_dir are recursively deleted.
-+	 * This is just a placeholder; the compiler will optimize it out.
++	 * IO queues starts at offset 1.
 +	 */
++	return (++*pos < ctrl->queue_count) ? pos : NULL;
 +}
 +
- static inline enum nvme_ctrl_state nvme_ctrl_state(struct nvme_ctrl *ctrl)
++static void *nvme_io_queue_info_next(struct seq_file *m, void *v, loff_t *pos)
++{
++	struct nvme_debugfs_ctx *ctx = m->private;
++	struct nvme_ns *ns = ctx->data;
++	struct nvme_ctrl *ctrl = ns->ctrl;
++
++	return (++*pos < ctrl->queue_count) ? pos : NULL;
++}
++
++static void nvme_io_queue_info_stop(struct seq_file *m, void *v)
++{
++	/* nothing to be done */
++}
++
++static int nvme_io_queue_info_show(struct seq_file *m, void *v)
++{
++	struct nvme_debugfs_ctx *ctx = m->private;
++	struct nvme_ns *ns = ctx->data;
++	struct nvme_ctrl *ctrl = ns->ctrl;
++
++	if (ctrl->ops->print_io_queue_info)
++		return ctrl->ops->print_io_queue_info(m, ctrl, *(loff_t *)v);
++
++	return 0;
++}
++
++const struct seq_operations nvme_io_queue_info_seq_ops = {
++	.start = nvme_io_queue_info_start,
++	.next = nvme_io_queue_info_next,
++	.stop = nvme_io_queue_info_stop,
++	.show = nvme_io_queue_info_show
++};
++
++static bool nvme_debugfs_get_ns(void *data)
++{
++	return nvme_get_ns(data);
++}
++
++static void nvme_debugfs_put_ns(void *data)
++{
++	nvme_put_ns(data);
++}
++
+ static int nvme_debugfs_show(struct seq_file *m, void *v)
  {
- 	return READ_ONCE(ctrl->state);
+ 	struct nvme_debugfs_ctx *ctx = m->private;
+@@ -108,7 +163,14 @@ static const struct file_operations nvme_debugfs_fops = {
+ };
+ 
+ static const struct nvme_debugfs_attr nvme_ns_debugfs_attrs[] = {
+-	{},
++	{
++		.name    = "io_queue_info",
++		.mode    = 0400,
++		.seq_ops = &nvme_io_queue_info_seq_ops,
++		.get     = nvme_debugfs_get_ns,
++		.put     = nvme_debugfs_put_ns
++	},
++	{}
+ };
+ 
+ static void nvme_debugfs_create_files(struct request_queue *q,
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 72f9d9c668a1..430971c56406 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -663,6 +663,8 @@ struct nvme_ctrl_ops {
+ 	void (*print_device_info)(struct nvme_ctrl *ctrl);
+ 	bool (*supports_pci_p2pdma)(struct nvme_ctrl *ctrl);
+ 	unsigned long (*get_virt_boundary)(struct nvme_ctrl *ctrl, bool is_admin);
++	int (*print_io_queue_info)(struct seq_file *m, struct nvme_ctrl *ctrl,
++			int qid);
+ };
+ 
+ /*
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index a2110287099e..e98f025ce99f 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -2651,6 +2651,59 @@ static void nvme_tcp_free_ctrl(struct nvme_ctrl *nctrl)
+ 	kfree(ctrl);
+ }
+ 
++static int nvme_tcp_print_io_queue_info(struct seq_file *m,
++		struct nvme_ctrl *ctrl, int qid)
++{
++	int cpu;
++	struct sockaddr_storage src, dst;
++	struct nvme_tcp_ctrl *tctrl = to_tcp_ctrl(ctrl);
++	struct nvme_tcp_queue *queue = &tctrl->queues[qid];
++	int ret = -EINVAL;
++
++	if (!qid || qid >= ctrl->queue_count)
++		return -EINVAL;
++
++	if (!test_bit(NVME_TCP_Q_LIVE, &queue->flags))
++		return 0;
++
++	mutex_lock(&queue->queue_lock);
++	if (!queue->sock)
++		goto unlock;
++
++	ret = kernel_getsockname(queue->sock, (struct sockaddr *)&src);
++	if (ret <= 0)
++		goto unlock;
++
++	ret = kernel_getpeername(queue->sock, (struct sockaddr *)&dst);
++	if (ret <= 0)
++		goto unlock;
++
++	cpu = (queue->io_cpu == WORK_CPU_UNBOUND) ? -1 : queue->io_cpu;
++
++	if (src.ss_family == AF_INET) {
++		struct sockaddr_in *sip = (struct sockaddr_in *)&src;
++		struct sockaddr_in *dip = (struct sockaddr_in *)&dst;
++
++		seq_printf(m, "qid=%d cpu=%d src_ip=%pI4 src_port=%u dst_ip=%pI4 dst_port=%u\n",
++				qid, cpu,
++				&sip->sin_addr.s_addr, ntohs(sip->sin_port),
++				&dip->sin_addr.s_addr, ntohs(dip->sin_port));
++		ret = 0;
++	} else if (src.ss_family == AF_INET6) {
++		struct sockaddr_in6 *sip6 = (struct sockaddr_in6 *)&src;
++		struct sockaddr_in6 *dip6 = (struct sockaddr_in6 *)&dst;
++
++		seq_printf(m, "qid=%d cpu=%d src_ip=%pI6c src_port=%u dst_ip=%pI6c dst_port=%u\n",
++				qid, cpu,
++				&sip6->sin6_addr, ntohs(sip6->sin6_port),
++				&dip6->sin6_addr, ntohs(dip6->sin6_port));
++		ret = 0;
++	}
++unlock:
++	mutex_unlock(&queue->queue_lock);
++	return ret;
++}
++
+ static void nvme_tcp_set_sg_null(struct nvme_command *c)
+ {
+ 	struct nvme_sgl_desc *sg = &c->common.dptr.sgl;
+@@ -2951,6 +3004,7 @@ static const struct nvme_ctrl_ops nvme_tcp_ctrl_ops = {
+ 	.get_address		= nvme_tcp_get_address,
+ 	.stop_ctrl		= nvme_tcp_stop_ctrl,
+ 	.get_virt_boundary	= nvmf_get_virt_boundary,
++	.print_io_queue_info	= nvme_tcp_print_io_queue_info,
+ };
+ 
+ static bool
 -- 
 2.53.0
 
