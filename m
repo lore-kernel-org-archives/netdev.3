@@ -1,155 +1,274 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azolkn19010023.outbound.protection.outlook.com [52.103.23.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1040443A89
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 15:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785512714; cv=none; b=nHHI1FXNRMyUmMOvXmGOt7MeE1vCLIa2ceX6r7MSOtvNRFe3Xhcc4xDjQHX483MFmd7+XJb33ZlMFdjjDug1j4UdfNR35zAUPE2w0QSF2+fBGwhs+7Ly5EquQCfXXr+dHSRnMt56OS2S91tYDleJbwC1Q6ndssRtYDQFVwTuI5c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785512714; c=relaxed/simple;
-	bh=QljyVPFlAv4h/ZzcE8C+5GE8/id8T+aE6aMhZzBAF/Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lt765kq3fsF+q1eDyPnvAKvp3HDih87TntEgvS25JLLb3vx5wcqzTM4noE7ULxBG1gIK5TjV3v5kIKhYg10ir7yza/3zDYbhKJG2IvcP1yVIAVM2I1guGJGznfBrJEvsxKhdXMhAzgHzqttl0r1utc2RllKI5FLllXLK2GX08pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n3QvJhLH; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB8F34AB01;
+	Fri, 31 Jul 2026 15:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.23.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785512784; cv=fail; b=LgVrPo/6xuLlnNNRN+WEIi2eSDCACa5SnX+rR6DZvdj1L1zUbuCiArwd0tCFpjXp+DP+HTTtpPae7N7pCI4PyrqBqI/lkpnJc3ZInUeVP81BhnQ/39n/d6REbCRtks4uY+e/NY11XVkhAOTB0T1L2GAib7zqvDbnOMQLnATWlxg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785512784; c=relaxed/simple;
+	bh=fg4U4H4DQ/Tmt/DaEO+xHyjVxx/bbsjUerR81zb/Gcs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DPNI3tg7SEW7iFcbU6Zm7j0hUO3vFn+gPJybmwPJovAnVgRrTB3rY+5RF6nwKQVofIW/LBDVXnx6ov+rfuFPJ6UeCeTXjKUaZOnxKm0xYQIFLhdTflpO0tG+ZQVOFZ/qikumESoIjbpM/L+YQhUCpxBPaipHCy7Osd+Unxu6Ubc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=HNoEKJjH; arc=fail smtp.client-ip=52.103.23.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n3QvJhLH"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cb5a6aa8760so621050a12.1
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 08:45:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785512712; x=1786117512; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tTr+FVEJek8HJ3HeYCgl63RHoNH7nCzt1TWIIYAYrB0=;
-        b=n3QvJhLHSax0EIgAg31zVsyiaA3GFTOThr/sKnIwk1AlNJYzy703rz1ByL5pGsEAAb
-         KnZNUfLuX28RGcJq3klfQbDv+JPv7DUVp0L83hTf/3o992ceY4u/wQo3H5vOr0f2IH18
-         G0h1/U7AIBhqotS6F2zMBzIhCCFUugoMc5L0S4uSBe6PPL6XReLHlCwndBE+21iXW4YZ
-         SHaU3OnRa70Qfkcg/aadOPBOhtqOh6IBWEpKKM844v0RUR8DY81ig7B7mZqk4yeB0d5X
-         hXGSY41kXXDS0RyvRvgEIV3pWLYXfsB4AAr79YNlqOTBYhAOxTzep2yj9yWU6Y9UFn8v
-         w/3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785512712; x=1786117512;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tTr+FVEJek8HJ3HeYCgl63RHoNH7nCzt1TWIIYAYrB0=;
-        b=tXqkxobulSDCJniYYL1KFKNLg8Mmp5Eo6iVTkj0Ir9bMsmTT6P8jsHnUQoVQQkRUDU
-         A6N9Aid+0Wri9ZfG/zxzW8GFqzuKcLpruSHs27KgMIYzmOj55UAiBf/7OHENOtut/3Hf
-         cfqISTZvwvZ95iY4sA2wwJkcQEE7NnBxwaG8/tv1TGp449NfMamrspYFwhV4xSFWulbn
-         uhe5zYzWcDw3PR1iA6rIBtezAXLKN6lrP+VOWDZ4cibNlDUfXyomy2UqNdf97tKHhHrJ
-         9HBVyu3gDrAvvSWz9bFq0EjzLr9HAkDXQfbe+L6g/b7PqI/vS4rCtJxiV4MwD5+82Smp
-         ZGBQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoRj+9z/dAWxQ7DpYIvk3ff8IXTl0+R/SJ8K8oR2wgNeWECjC9TAifDyI5E64rTYKF37Hrr+o0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrCrfPftBAty4dxcyqherPI9TWBChUu68jtaydgQS9QW7fWqzy
-	3tKXHjvY77rqMQazRdEaEdU+MeXJmkMaK40gb8ljxbd/Aqz3GPVXgFIS
-X-Gm-Gg: AR+sD11wqIgJc2qvvxpHnrXEcbL4lV/qLRbUQ33uNlpbpkflcVtnNYIDybUXMgM4ReH
-	MISBBiJgHjEztBTaGdNedol/VZAAhYUJj2fqjbtiExngy/zsfXS7TL+FigN5d3PZBfe9FI/uU56
-	L2voKsvmspQWWGA2TctxPJM/GFySADnG7+Uivl2rrdBs0BjEkZiNwEitwZCa44YC5mCWB9H8Hmr
-	p21kzXzL414gUPJEPzL7dFgQvbkyNyOay2W9AvMWV7WELTVLrJR9NQAF1bTJvhyWue10Sl8+Hhl
-	amFo2eheaZ5IUPyz+rejTJeCe7nU9AZ7I5ONHrd/imh42UiMiZ/KJzqpH5ZKp3HUrYKEzQeZLLy
-	2Y+PXfqw2aqRxJf8NY/yL+BzcIO5pvlO/zxdeBK71mC3Ox3l5geQ+TrKvcxV9ZKLJj0O4dqJN2N
-	N/xcYqGOmPG3RWJAkxZet0imFpmlMuWq+EQV1UQ7/6y+Ai9gO/t2s1/VLiwOjoqOnuDd+QtucoD
-	2RS3rob8OO5f7wNna0y+O/JjTXjrOCVAeks/2Xl3JBzc8ok9Jb7n9V+vTg=
-X-Received: by 2002:a05:6a20:6a21:b0:3b4:5ff3:45cb with SMTP id adf61e73a8af0-3c92a75b25cmr258440637.8.1785512711706;
-        Fri, 31 Jul 2026 08:45:11 -0700 (PDT)
-Received: from ?IPV6:2601:646:8f02:5350:ce4:701d:f6e3:3a6b? ([2601:646:8f02:5350:ce4:701d:f6e3:3a6b])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3153e29a126sm7821146eec.31.2026.07.31.08.45.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jul 2026 08:45:11 -0700 (PDT)
-Message-ID: <6fe86a50-34ec-45aa-b2b4-52429a72369c@gmail.com>
-Date: Fri, 31 Jul 2026 08:45:09 -0700
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="HNoEKJjH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gAPv0clX6yBG/Aw1znTyijbkSfTSUJIrKPJzss5W4wQHxVWvoVcmLDGOpusxR7S3Y9zitx+mggY0DSCF17vDBFqpmfPwZArEHeG2/e32FNU10HjRz/NfA+lGS3QAZtoRll5cIl1vVG97+4z7So3/md9gYSFxRSTN+Q6jHxXTXcKS3XLltsbPNxVRhq4rrgo5me/mV6biQppiHEekC0jxMph6VruJfUdZ+N8BR5T3sOcWtmPCfc8y9qe1WtzXX7EODIxjx8bNaEBWPFStHyO9XTi89Jd2viCnuEYwoorWxdXGVrs8sA+nilACM5q0kNUZl0UOwTHGRnDf3D6ppcftCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0PtCaO6azyHl0YgDOclcarQtYz7qudoy8HuoSLECte4=;
+ b=xxUX8isnXvjNgjE+aE3GW/ux+JdeO1XIdI7O72gqEagskYaYrsfviu+7iLUmYWQhy42L+9NWaT9V6y7IZ4/qX9V1Hp1h9En4Fa6GmcLBnFzv1towgM5IVHBLKfsi6nT9+KAgdE7aiohqgzHCCKd92pIEvddTYGmmPF6He6G+yTJvM0W9q7cpVTCUH/EefVP26a93Il0qBaWNGQc6fiSQwmn/yhw3sOyfEwm/5M7Ka5pR9/EOeYjf6p9W5FRGDbckxDVqE92kzwFUW43Leg6PW6V2g3hXcJB0yQw6p4+hTfJqvSYSdnAnkR8o1qqQYC4ek547OWPDHAnvX/7dH3PDGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0PtCaO6azyHl0YgDOclcarQtYz7qudoy8HuoSLECte4=;
+ b=HNoEKJjHsO8MYqIs2cVihl/ETi8hIy6pQjDk6hOuBTcBkp/XkDyhSw/y/CMJ63OvVtmwyGozA8zNg9kv4tHYUhq8SbdKsI/0aIt+RGg1ezsDQdnnE/eLY7TqMipSZEkQakz2EcuwXLBARwYDk6so0ky5gaLkK2V7li9sHH5i7ETY6nwLzbTX05u6b6WLOEkz2b3GTgsWf0TSGHzJ8rFJhbVm47PsYf4oRpxpKcsUyQUG+zk8jzAaJLAsyq8TF+G8lYLutqAwR0azOS9wHXrU82bmMSSmSPGql9PMI9RrnUPo5VhGNSWOeLR7cvRp+5d8CXD6CVCjLkyRN55Y6cLOdw==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by IA1PR02MB9465.namprd02.prod.outlook.com (2603:10b6:208:3fd::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.16; Fri, 31 Jul
+ 2026 15:46:20 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::900:1ccf:2b1e:52b6]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::900:1ccf:2b1e:52b6%3]) with mapi id 15.21.0270.012; Fri, 31 Jul 2026
+ 15:46:20 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Kameron Carr <kameroncarr@linux.microsoft.com>, "decui@microsoft.com"
+	<decui@microsoft.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"kys@microsoft.com" <kys@microsoft.com>, "longli@microsoft.com"
+	<longli@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>, Michael
+ Kelley <mhklinux@outlook.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: [PATCH v2 1/2] Drivers: hv: vmbus: add
+ vmbus_establish_gpadl_caller_decrypted()
+Thread-Topic: [PATCH v2 1/2] Drivers: hv: vmbus: add
+ vmbus_establish_gpadl_caller_decrypted()
+Thread-Index: AQHdIHwAL6NKvG3VSkGEjSTjwqhAlLaHxnvg
+Date: Fri, 31 Jul 2026 15:46:19 +0000
+Message-ID:
+ <SN6PR02MB4157F701FD4592A34D893E96D4C82@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20260730233359.3850612-1-kameroncarr@linux.microsoft.com>
+ <20260730233359.3850612-2-kameroncarr@linux.microsoft.com>
+In-Reply-To: <20260730233359.3850612-2-kameroncarr@linux.microsoft.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|IA1PR02MB9465:EE_
+x-ms-office365-filtering-correlation-id: 1841f4f2-400a-4fad-e7c3-08deef1adda9
+x-ms-exchange-slblob-mailprops:
+ WaIXnCbdHrO+2YmbT5jW+WUSUt4IT5vR/v3JdPldgLi0scLZ7cROUFyCOJ6pYbPt5F8YRF+7kKiJlCsWqs8q12CUQHH1E29uSip5fEdEztywXtdC5CLoyXiQdkBEBplQ/E+kIufyd/t82ANWfFBHDm3Uwfdn+UPUs4qfTolZxLlscN6ibefZrp2ZRWPG9uaqxD3WY5PXxQ4yLIvxaHw2yvDFGX+D0D3hR++7SP0y8azldCLE1jus9Fj+9eHe6TIJWh+A3Ic+bkiS3ph/7bWnA1qwhXn7pO1bjmuL5fS2GkNq9WbhnhJoj6jYp93DXqSOv8TPmlFULjDRSIO3U+bNVLBFyMmawioTpqTlp0sprS6Cest2VFnyowF6MXAFo9OpF60CjSTGlEDVpwjHGSmOkFCCKgBhJ7/kclT1NvTN6xsfoCVj30RoOtYlCPYJIKv5WFLZEV/cr6tN5iOFJJwAEkwd4JvW/Tjo0c7ZOGHGffXUmXln4YranbxJvOVqD8ycZ0440EFp9vu501fZBTvw6Phf0inzNZ07gBSxERRIF6o3nMizec0wTPhEf8arQBSykZIrShqcwo+dTsO69mGXM5ATZgk7+tr0aw7KdEp58baW0SfO/dXVvrYadVijwodD2Iek4tWP1wg3tTabfYDssvHuzDXcysy48LUhLc3UjYivARMzexnw8ZfreNjnKRcKNKrl0AYYtxw401duVKRhG66ZdAbfpPw0QdOA8N8XVoV26APzBQ3omWGUeyBAR6FQyRQNLA626sY=
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|37011999003|51005399006|13091999003|41001999006|55001999006|24021099003|2604032031799003|31061999003|19110799012|8062599012|8060799015|15080799012|25010399006|40105399003|2607281247196008|102099032|3412199025|440099028|1710799026;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?OvLOfG8Wp7Yz6/8jS/3CysiXJd+xvE56mbXfF76l4D6n7VggiXkKCvySoTOc?=
+ =?us-ascii?Q?SHxSXdvpAcHm0kNrYNbnX2tCNMFGSyohOnD4WGgPEpGGbeu2P8qOfAXrclEr?=
+ =?us-ascii?Q?HfFXdc8hAdqJYSURgYeahnBDUkqk6MlKAvQUrjwiyWZCa8F2sjeF9ZKmiHq2?=
+ =?us-ascii?Q?88OTNsjwW3rmk1JHxpIBG2GDdXj/PPUV/Z9UyCwV74GCz/BX0O46llggcxnq?=
+ =?us-ascii?Q?/1AiYWVapLWJK/ynpAvt3QZ1RRkgKErPefRq30bVMFfq9EzSMVdL0y0HeYZr?=
+ =?us-ascii?Q?O9C5E3DAJ4+XcLneVO4aFiVywXzVAYjEybJIqrjRskA3CwRDLBmxh0GUsigS?=
+ =?us-ascii?Q?2cHb6UsiGZLcupyItdThs/rx6BUg7skKrtHnRuBYWuaMHRA9a6XTwjSp5MBw?=
+ =?us-ascii?Q?0uX9y3uraWw8loPxYJsZfvUh/Lm7PtvDAlJHwOKR525LoCpqamIMQpWLNEtl?=
+ =?us-ascii?Q?HKKdy4riaMQinIJA7dmAIvLaRNm9TEogDorOY+dnpdS3liXt3c201KMUqbPP?=
+ =?us-ascii?Q?OWZJ2YgR1pLIGw1Kow4PL3sLtAxBdvpxvxuluCsyHbClMpUw8B1Q4AAQScqf?=
+ =?us-ascii?Q?475xvtWClJGpbkaBlPu6bvDUuliW3O4lSaxu273XUIC2RpXlK+TMZdjL8fPd?=
+ =?us-ascii?Q?I9kvuMvT2CHD1lONliEMf6n4kXlPTu0wT4fNWEUo5q83b4jh/fN7tB/TQENT?=
+ =?us-ascii?Q?DoG+0/xP+RTQAA8V2uXXk5p8ldRtg3ffT2ni9ga8aMcb85wdrMAmWRPHQHhX?=
+ =?us-ascii?Q?OLRkcXpJ6TBXwLsUCgrFZhhPZJjIjGO4Pxs/Fhv8IgtzbXVnXpnarXPKjkiv?=
+ =?us-ascii?Q?u9uFgGmKawRHXyx7x2NAJy8uqUOyNlZFZ0oH2Mwg9wr44i+Jh7Xf/ZvTr2wq?=
+ =?us-ascii?Q?1ltq4YA9NOpdzUWrfDdHLvDoyRrp+KGriuzbXMdROrWtiE6MUYfNlfCepd9e?=
+ =?us-ascii?Q?6FEP0kAAOco9Ifr5UDXYxc/CYiF+NNWH1DPRhDlg7giCy6TV7GoY6ZXol2lX?=
+ =?us-ascii?Q?VL4Lx5yKuV1F1PpfYy8csNM/mTJwhdLfezy0Ey2ds0rTsV/MInX2nTyU+ywf?=
+ =?us-ascii?Q?j8aQguEOZTCPpi9qBcm8phrhyfa7P25dUlqZ4JnAewZxC6LKg/f/3rKUtdfa?=
+ =?us-ascii?Q?y56sPTberMWrrH4djHEA8bQ2AjjS/OAhGA=3D=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?1LVvuonFcbcSwJuMyJRzJQidusf0ZEuMzlTmDvBe9AN7Ny2sb0TXpqRTu4B9?=
+ =?us-ascii?Q?HFeIHBSyUI8gO2krLWDWdGNEzyKYo74ScMfHhVujBzc5H4v5lirAg7mlWaL0?=
+ =?us-ascii?Q?Zgis2uo5c8xxaurGEfXobHqvbqcBkB45rJrPrNNWZrpml1x31bA9gtgzxPtT?=
+ =?us-ascii?Q?MRQV3TN9rZiBQpoZmb81nf/sKITER/rCt68yWdp+5zvJRv059jHkpDKwTXLo?=
+ =?us-ascii?Q?ZcUA45RAzEly30+KOE8/eeREhPShpA6ibHi9cvQz8hxLPi77OxQk+eX3maem?=
+ =?us-ascii?Q?hIzzzpTAX4iNpRZRzKlcB/B/KaP/V/gepynGlvCVTq/6byW1tUJw76kIJqFC?=
+ =?us-ascii?Q?sH5cKIGAGtxvdypC+UQdNWZYl1ilo/qpq00a8H8PfSsRz2DjwjPIpmAAsBHv?=
+ =?us-ascii?Q?+P7m9p9u6pg3I43xxko5dbUM3pXcdsaPjkfj/qmNnZmaOkOco0WvlLD8wEEq?=
+ =?us-ascii?Q?RSWdqlmm5SYPZTbg0gVbgeWUnQIw9zg2Qmr42FaH8R+0RKAOOTVtUmf/mL8x?=
+ =?us-ascii?Q?oB9dTof4roN/2cCrc/tkVMC6jDwBTf+Of/1n6CRl80Kilq3lGfGsI2uwg0z+?=
+ =?us-ascii?Q?THPQIOtmXs0Rq4i7ErsmFRgccoCvfCb7X3eNF+x35KAXnB0arYfyNn5VEWOm?=
+ =?us-ascii?Q?uH5ixon0qU68/TIkfB0otwmkrMcq0mg6UYXTrYn9uPUjh+sw7/j7hMkpiCnN?=
+ =?us-ascii?Q?obGZJG+xo2ZlWAXQegpos+XRkUYvR8QuM0kXr4LONnyBzoIFYXVx/cNALvPH?=
+ =?us-ascii?Q?lc7M98MzZRGTJ7Jm/YBLHGzornJwKLIrbVUpyueWzw/esZssIlpiGX5DSSBO?=
+ =?us-ascii?Q?uAa4BhN2eSE1xIxrz6GMYbS3wUO+5ZgoNYUjoYqxRbd8wEL9FHYIdrhJICVk?=
+ =?us-ascii?Q?tFYlCtyOa0VytYE3bhFn0M8GIvsktolRs+t3nsxnLJQAtcOPVO5tXr9Bpvpo?=
+ =?us-ascii?Q?JSBQKOzOAcc3FfXZp4Aez4SSJHL6coE7Wvi1RCv3hDVSJoPWg1wiMb1Zxe0v?=
+ =?us-ascii?Q?uQRA+/cv/cA07Jccnlio9sIn1tRT9wI4xOtGHEJ1JZWiK26El/v+N7tuN73M?=
+ =?us-ascii?Q?waPqSTqnuxPt3+wOPe2V/hC/4IQCnsmycv/M1udnTyiWhWdHDwO7gl2HqrQP?=
+ =?us-ascii?Q?zWei2y3o3usW9SbamQzT1jXoshUdAgh0l19+k/2GoBL1JfEjV6PceEuhII3x?=
+ =?us-ascii?Q?7KIOdEfkswolJH+ov5XhbczpzPpYl2PKPqgMEaXSExII4letr8Z7s65CtrC/?=
+ =?us-ascii?Q?VHHRpn6L9bt87pfiTL7D9qSzwR67sWkE5Mopcv5ZMjqj2zp32WTcET0hukDp?=
+ =?us-ascii?Q?ymJOpi85hd/KHJmkQ0AwvDWjga4p2MTHRbvmnQN6R7C3Rvs9snQXtGoTf1kv?=
+ =?us-ascii?Q?2Lo7DLI=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/2] net: fix skb length accounting after generic
- XDP frag adjustment
-To: Sun Jian <sun.jian.kdev@gmail.com>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Kuniyuki Iwashima <kuniyu@google.com>,
- Hangbin Liu <liuhangbin@gmail.com>, Krishna Kumar <krikku@gmail.com>,
- Samiullah Khawaja <skhawaja@google.com>,
- Martin Karsten <mkarsten@uwaterloo.ca>, Lorenzo Bianconi
- <lorenzo@kernel.org>, =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?=
- <toke@redhat.com>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- maciej.fijalkowski@intel.com, stable@vger.kernel.org
-References: <20260731032357.6114-1-sun.jian.kdev@gmail.com>
- <20260731032357.6114-2-sun.jian.kdev@gmail.com>
-Content-Language: en-US
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-In-Reply-To: <20260731032357.6114-2-sun.jian.kdev@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1841f4f2-400a-4fad-e7c3-08deef1adda9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jul 2026 15:46:19.9133
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR02MB9465
 
+From: Kameron Carr <kameroncarr@linux.microsoft.com> Sent: Thursday, July 3=
+0, 2026 4:34 PM
+>=20
+> Add a new vmbus_establish_gpadl_caller_decrypted() for callers that want =
+to
+> decrypt their own buffers. Add a new hv_gpadl_type,
+> HV_GPADL_BUFFER_DECRYPTED, to communicate the decryption status of the
+> buffer.
+>=20
+> No functional change for existing callers.
+>=20
+> Signed-off-by: Kameron Carr <kameroncarr@linux.microsoft.com>
 
+Looks good to me.
 
-On 7/30/26 8:23 PM, Sun Jian wrote:
-> Generic XDP exposes non-linear skb fragments through an xdp_buff. If an
-> XDP program adjusts the fragment area, bpf_prog_run_generic_xdp() copies
-> xdp_frags_size back to skb->data_len but leaves skb->len containing the
-> old fragment contribution.
-> 
-> After a fragment shrink, this makes skb_headlen() larger than the actual
-> linear area. In the reproduced UDP receive path, __skb_datagram_iter()
-> copied 1024 bytes past the actual linear tail to userspace, starting at
-> struct skb_shared_info. The copied bytes included the affected skb's
-> nr_frags, xdp_frags_size and a kernel pointer from
-> skb_shinfo(skb)->frags[0]. Real packet data was displaced by the same
-> amount and truncated at the end.
-> 
-> Subtract the old data_len before replacing it and add the new data_len
-> afterwards, keeping skb->len and skb->data_len synchronized.
-> 
-> A 60000-byte UDP datagram on a veth pair with MTU 64000 was shortened by
-> 1024 bytes from its fragment area. Before the fix, all 10 runs produced
-> corrupted payloads. After the fix, all 10 runs matched the expected
-> payload exactly.
-> 
-> Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in generic mode")
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/bpf/al9T9Eto%2FhRIzP5W@boxer/
-> Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+
 > ---
->   net/core/dev.c | 10 +++++++---
->   1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index 5933c5dab09e..5c37cf6c4aa1 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -5517,12 +5517,16 @@ u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
->   	}
->   
->   	/* XDP frag metadata (e.g. nr_frags) are updated in eBPF helpers
-> -	 * (e.g. bpf_xdp_adjust_tail), we need to update data_len here.
-> +	 * (e.g. bpf_xdp_adjust_tail). Remove the old fragment contribution
-> +	 * from skb->len before updating data_len, then add the new one back.
->   	 */
-> -	if (xdp_buff_has_frags(xdp))
-> +	skb->len -= skb->data_len;
-> +	if (xdp_buff_has_frags(xdp)) {
->   		skb->data_len = skb_shinfo(skb)->xdp_frags_size;
-> -	else
-> +		skb->len += skb->data_len;
-> +	} else {
->   		skb->data_len = 0;
-> +	}
->   
->   	/* check if XDP changed eth hdr such SKB needs update */
->   	eth = (struct ethhdr *)xdp->data;
+>  drivers/hv/channel.c   | 27 +++++++++++++++++++++++++--
+>  include/linux/hyperv.h |  8 +++++++-
+>  2 files changed, 32 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
+> index 6821f225248b1..4782f5070bba9 100644
+> --- a/drivers/hv/channel.c
+> +++ b/drivers/hv/channel.c
+> @@ -40,6 +40,7 @@ static inline u32 hv_gpadl_size(enum hv_gpadl_type type=
+, u32 size)
+>  {
+>  	switch (type) {
+>  	case HV_GPADL_BUFFER:
+> +	case HV_GPADL_BUFFER_DECRYPTED:
+>  		return size;
+>  	case HV_GPADL_RING:
+>  		/* The size of a ringbuffer must be page-aligned */
+> @@ -100,6 +101,7 @@ static inline u64 hv_gpadl_hvpfn(enum hv_gpadl_type t=
+ype, void *kbuffer,
+>=20
+>  	switch (type) {
+>  	case HV_GPADL_BUFFER:
+> +	case HV_GPADL_BUFFER_DECRYPTED:
+>  		break;
+>  	case HV_GPADL_RING:
+>  		if (i =3D=3D 0)
+> @@ -460,7 +462,8 @@ static int __vmbus_establish_gpadl(struct vmbus_chann=
+el *channel,
+>  	}
+>=20
+>  	gpadl->decrypted =3D !((channel->co_external_memory && type =3D=3D HV_G=
+PADL_BUFFER) ||
+> -		(channel->co_ring_buffer && type =3D=3D HV_GPADL_RING));
+> +		(channel->co_ring_buffer && type =3D=3D HV_GPADL_RING) ||
+> +		(type =3D=3D HV_GPADL_BUFFER_DECRYPTED));
+>  	if (gpadl->decrypted) {
+>  		/*
+>  		 * The "decrypted" flag being true assumes that set_memory_decrypted()=
+ succeeds.
+> @@ -575,7 +578,7 @@ static int __vmbus_establish_gpadl(struct vmbus_chann=
+el *channel,
+>   * @channel: a channel
+>   * @kbuffer: from kmalloc or vmalloc
+>   * @size: page-size multiple
+> - * @gpadl_handle: some funky thing
+> + * @gpadl: output gpadl
+>   */
+>  int vmbus_establish_gpadl(struct vmbus_channel *channel, void *kbuffer,
+>  			  u32 size, struct vmbus_gpadl *gpadl)
+> @@ -585,6 +588,26 @@ int vmbus_establish_gpadl(struct vmbus_channel *chan=
+nel, void *kbuffer,
+>  }
+>  EXPORT_SYMBOL_GPL(vmbus_establish_gpadl);
+>=20
+> +/*
+> + * vmbus_establish_gpadl_caller_decrypted - Establish a GPADL for a buff=
+er
+> + * that has already been decrypted by the caller.
+> + *
+> + * @channel: a channel
+> + * @kbuffer: from kmalloc or vmalloc; must already be decrypted by the c=
+aller
+> + * @size: page-size multiple
+> + * @gpadl: output gpadl
+> + *
+> + * The caller is responsible for re-encrypting the buffer before freeing=
+ it.
+> + */
+> +int vmbus_establish_gpadl_caller_decrypted(struct vmbus_channel *channel=
+,
+> +					   void *kbuffer, u32 size,
+> +					   struct vmbus_gpadl *gpadl)
+> +{
+> +	return __vmbus_establish_gpadl(channel, HV_GPADL_BUFFER_DECRYPTED,
+> +				       kbuffer, size, 0U, gpadl);
+> +}
+> +EXPORT_SYMBOL_GPL(vmbus_establish_gpadl_caller_decrypted);
+> +
+>  /**
+>   * request_arr_init - Allocates memory for the requestor array. Each slo=
+t
+>   * keeps track of the next available slot in the array. Initially, each
+> diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
+> index 964f1be8150c5..1146addbb42c4 100644
+> --- a/include/linux/hyperv.h
+> +++ b/include/linux/hyperv.h
+> @@ -70,7 +70,8 @@
+>   */
+>  enum hv_gpadl_type {
+>  	HV_GPADL_BUFFER,
+> -	HV_GPADL_RING
+> +	HV_GPADL_RING,
+> +	HV_GPADL_BUFFER_DECRYPTED
+>  };
+>=20
+>  /* Single-page buffer */
+> @@ -1205,6 +1206,11 @@ extern int vmbus_establish_gpadl(struct vmbus_chan=
+nel *channel,
+>  				      u32 size,
+>  				      struct vmbus_gpadl *gpadl);
+>=20
+> +extern int vmbus_establish_gpadl_caller_decrypted(struct vmbus_channel *=
+channel,
+> +						  void *kbuffer,
+> +						  u32 size,
+> +						  struct vmbus_gpadl *gpadl);
+> +
+>  extern int vmbus_teardown_gpadl(struct vmbus_channel *channel,
+>  				     struct vmbus_gpadl *gpadl);
+>=20
+> --
+> 2.45.4
+>=20
 
-Reviewed-by: Mohsin Bashir <hmohsin@meta.com>
