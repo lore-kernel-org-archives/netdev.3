@@ -1,135 +1,176 @@
-Received: from mail-pj2-f0.google.com (mail-pj2-f0.google.com [74.125.227.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA6036998C
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 20:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7650537C0E2;
+	Fri, 31 Jul 2026 20:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785528183; cv=none; b=eQ2V7n6UL83THEx3q99O/aUk0OAy1vZTu/TLkFIDbLKEMTuazNST4q5l08xcdm/zfmjoMIRDme9kXtNUUPNdH5GN2727v3FDU15tu5KNxexZ5ngLUKKUMDALO9g3BYhxVkibRkUzbTmD0jHQ3AmLyXBPNaSlI3rRqlzq9AVe+5A=
+	t=1785530467; cv=none; b=Es7dvHH49v8zbJcLGATVHDUzd3euZZdZp+lcXAHYCIiYloV4QNf5zcoIAnInCSdk/TVj0NVSo8zw4Wa5efSkWrVb/GWk5U6dUhD4iLyQ8XBi9YxRv54HFlFNZcVadbr8leE79WPdVU889rJ46y52nuFFRIjVmxOD3YTdLJYNYFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785528183; c=relaxed/simple;
-	bh=CJE8GVvkniAQqCaYsAR2gmJYmQ8gaUT7KofGyLTuXh0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rmDcAdsz2SkmQdK8nLTdIFyZaWomj53kqYFCsb0YJQRj800RK+7sZU73elWvQDz0kNt/9wYnMfzyIwOa2Jtq84AqwdOFrRvbLJcVzfOc0tG8VVzqlmhP4Fyz0ZPhdNbycfXDgNTL2h/e75XHnwmNMoXKyeKK0P0+5u+8CugOPCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MYOOdbQY; arc=none smtp.client-ip=74.125.227.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785530467; c=relaxed/simple;
+	bh=PDqm1BKGgoM3pk4RNgtQUD4jhgJoC0QQhLQEsVH1pls=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=dFka5vkszDZzqRtqjQugkGZd3XAgb5C5kAhbQKYL89R20IvXsDL00a4WjA66q8owoFPyjzGwYSS0M3Ow87Z26rBIO+QjTYKTiD/K4+o89Ql+8g6jpPQP9xL6jrsteyxeruEGvbB+cMvZpsglWORlKkrZOql0W/oMxcos/MqjHM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RMG7W+R/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MYOOdbQY"
-Received: by mail-pj2-f0.google.com with SMTP id d9443c01a7336-2cc2c6e0688so9716255ad.0
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 13:03:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785528181; x=1786132981; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4O9q9bJyh69H6ktbFtFylGU/5hkkYd5RvJo0zQWtYpM=;
-        b=MYOOdbQYkmHfDjb86sAl03Q1PFN9QMgoK4mFLpQhcKgLz9xNsp5cYBrWmNjocBWZFu
-         GamQuaULQ3W9J2GNviac2s4g4iF2iWd4h1Um6HBjnBr342paVcJ83Zyw6gO7iQdBV9wS
-         EJ9iWwxNHSbp8qsy3gBRIihTh1aoEn9mzDImjfo4KvElc4Hg/HDesWyFeTOC7fsEzL0n
-         vyDHMIIuBaupb9beZ/sZG5c4c+M11PK9dFYEsIkfhZwdBN6QNlmhkPr9eY7gSI+4nH2h
-         C6GFGTQRXcBUzMa5Zm3WYa5QXHJM/MNWtJoHcFPIfT0Bu2eT0QWDymZrh5YYRlRp8qNI
-         vx1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785528181; x=1786132981;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4O9q9bJyh69H6ktbFtFylGU/5hkkYd5RvJo0zQWtYpM=;
-        b=bQhh4EZFmUY1mZDl4WdKZUMDWf7sKC5zaShPzfZ+iH2THfej8WHisTmSuOIuJpkhHG
-         NenhMWogAhujcakg4m+29ggbFqKRS+VwXdglR0S4QNo6veZfr2Puq69p2akJC2GTWYe4
-         beH3pQodnXgh7vEaIHkbJEH5h5EVyTs+dHS7Bwo2uJomnJ8VtLBPJO6DBXFYM1UA94bU
-         B8iX/vNEz4ulM35/7IQ64ZZ4wvi1x7lOZ9je2IJH61/UeeJSJf8zKRY2cz4nW8nSI5Kb
-         3XDrwFndGC0+UXrz+XETvnFLmmiFs2QkjEYByOpIJbSInllSK0Pv8MV4jTj2fzVJzQsN
-         /H+Q==
-X-Gm-Message-State: AOJu0YyMm88mUmPAlx5rFi6uN4ClF6q2CfbF/56ENNdQi2OXgEIU35FV
-	f6v1wdghj5WZ0HNwjiluoOkYr++c0hjnhMnTd1cV6LBuF0YFG9jhWfgJ
-X-Gm-Gg: AR+sD12CREd4/yyCTCIVsGSjtA1ZBHa5lgg2xRkOfLvAydXn2460WdxnmT2vLgIbOh5
-	rrNysJH4VJ0zS8iBcXADdGm/fB3bTjB0PVGZ/4IocH6YeXLFh8JZMb+Na7np/tfKE+ipEcFNgdK
-	2P9Q5MudPxJ3KNzlf17gU0fuJPPfDEwZn9dhLRxW+4GqivFq+hQivra7tOyKzP3CuvgFh3W9Ivy
-	Xo2Tlkb977mxGcTiGcRzXAGrIa1uqDX2RGhPpGAOEt0cSPbrnCQlD4x3c+EFiB3cN9BvRQrQVWl
-	KsYEwRfr7nWU3wdsGt2vo2hXcBKLM1540s4JGhpDKxL4iV7xr8XD7g6kQzg9o6xAWBD3/D4F1/o
-	uGLnBLCe6y7tvs1enfeiLbhm1IxY8oiMbv1zXM3aAyMETRVZRvhDLLQm9W5Oq8whQ4OQywMtRf+
-	mn3pX10Psewg8e/VMxhb4ZFBBFXoLhxaflalLUPxL8aUQ3RFF/hKRtgg==
-X-Received: by 2002:a17:902:dac4:b0:2cf:8131:75e8 with SMTP id d9443c01a7336-2d05221d386mr11733105ad.13.1785528181495;
-        Fri, 31 Jul 2026 13:03:01 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:43::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae19b9asm10138675ad.1.2026.07.31.13.03.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 13:03:01 -0700 (PDT)
-Date: Fri, 31 Jul 2026 13:02:53 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Zihan Xi <zihanx@nebusec.ai>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com, 
-	maciej.fijalkowski@intel.com, sdf@fomichev.me, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, horms@kernel.org, ast@kernel.org, daniel@iogearbox.net, 
-	hawk@kernel.org, john.fastabend@gmail.com, vega@nebusec.ai
-Subject: Re: [PATCH net v3 1/1] xsk: account ring allocations to memcg
-Message-ID: <amz-5UfOV4OZuj3C@devvm7509.cco0.facebook.com>
-References: <20260731164623.4694-1-zihanx@nebusec.ai>
- <20260731164623.4694-2-zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RMG7W+R/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5B61F00AC4;
+	Fri, 31 Jul 2026 20:41:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785530466;
+	bh=S2K80QHmc0EJh1Wwtw3sYRTZiKW46eHenny2khjEGhw=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=RMG7W+R/esmpt/pNqiNSACppYYWKpAvQuYw6l1HwGcbPkjGPY9UlcmXy6iyPX6Hwg
+	 y52L73lPTpZQOIfHK2pmcNSCWt6buc1at/nVmhEbRI1oqwec/9rHWc/bdyVID6k8AK
+	 A1Yn5B35w3+3NIc5UaFVN95hykL32yeVZyCszdtT25BD6v6HDJY+aIJlUK65zZ6Pzv
+	 qzPwMRUIOGsCDhr9Nge4onHidNwdxUj18tHK1Qb0Tvf6kUh6jdEVIjJBZaxpCmIhrY
+	 pca0Tg+hyYgpzQmS/puO5ZLICzJgVvjzLC8VEOfSxvpTGp/aB7B7PSX/RC2Z77qw5J
+	 SqVavI9dx318w==
+Content-Type: multipart/mixed; boundary="===============7093018806644806532=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260731164623.4694-2-zihanx@nebusec.ai>
+Message-Id: <1617752d86587cdab81d79caeab2cbbffb3ca997fd18cb68c56bf5f8214d7127@mail.kernel.org>
+In-Reply-To: <20260731160921.3245840-1-nicoyip.dev@gmail.com>
+References: <20260731160921.3245840-1-nicoyip.dev@gmail.com>
+Subject: Re: [PATCH bpf v3] bpf: Fix netns reference imbalance in conntrack kfuncs
+From: bot+bpf-ci@kernel.org
+To: nicoyip.dev@gmail.com,pablo@netfilter.org,fw@strlen.de,phil@nwl.cc,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,ast@kernel.org,daniel@iogearbox.net,hawk@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,memxor@gmail.com,lorenzo@kernel.org
+Cc: netfilter-devel@vger.kernel.org,coreteam@netfilter.org,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,nicoyip.dev@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Fri, 31 Jul 2026 20:41:04 +0000 (UTC)
 
-On 07/31, Zihan Xi wrote:
-> AF_XDP rings are allocated from setsockopt() and can be mapped into user
-> space.  The shared xskq_create() helper allocates the ring backing memory,
-> but the user-controlled and long-lived allocation is not charged as kmem
-> to the allocating memory cgroup.
-> 
-> The current implementation uses vmalloc_user(), which allocates the
-> backing pages with GFP_KERNEL | __GFP_ZERO.  Use the same VM_USERMAP
-> vmalloc path, but pass GFP_KERNEL_ACCOUNT so the ring backing pages are
-> attributed to memcg/kmem and can be constrained by existing cgroup memory
-> limits.  This keeps the existing zeroing and mmap semantics while avoiding
-> AF_XDP-specific optmem or RLIMIT_MEMLOCK accounting.
-> 
-> Fixes: 423f38329d26 ("xsk: add umem fill queue support and mmap")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: Codex:gpt-5.4
-> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
-> ---
-> changes in v3:
->   - drop the v2 RLIMIT_MEMLOCK / user->locked_vm accounting approach
->     after review feedback
->   - switch the AF_XDP ring backing allocation to the memcg/kmem model by
->     using a VM_USERMAP vmalloc path with GFP_KERNEL_ACCOUNT
->   - include <asm/shmparam.h> explicitly for SHMLBA, matching the
->     vmalloc implementation's dependency
->   - retarget Fixes to 423f38329d26, the original mmapable queue
->     allocation that introduced the missing accounting root-cause fact
->   - v2 Link: https://lore.kernel.org/all/20260730153832.11238-1-zihanx@nebusec.ai/
-> changes in v2:
->   - replace the socket optmem limit proposal with RLIMIT_MEMLOCK /
->     user->locked_vm accounting via mm_account_pinned_pages()
->   - drop the earlier socket/pool lifetime coupling changes and keep the
->     final code diff limited to xsk_queue.c and xsk_queue.h
->   - retarget Fixes to 423f38329d26, the original mmapable queue
->     allocation that introduced the missing resource boundary
->   - v1 Link: https://lore.kernel.org/all/cover.1785313094.git.zihanx@nebusec.ai/
->  net/xdp/xsk_queue.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
+--===============7093018806644806532==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+> diff --git a/net/netfilter/nf_conntrack_bpf.c b/net/netfilter/nf_conntrack_bpf.c
+> --- a/net/netfilter/nf_conntrack_bpf.c
+> +++ b/net/netfilter/nf_conntrack_bpf.c
+> @@ -122,42 +122,54 @@ __bpf_nf_ct_alloc_entry(struct net *net, struct bpf_sock_tuple *bpf_tuple,
+>  	struct nf_conntrack_tuple otuple, rtuple;
+>  	struct nf_conntrack_zone ct_zone;
+>  	struct nf_conn *ct;
+> +	u8 ct_zone_dir = 0;
+> +	u16 ct_zone_id;
+> +	s32 netns_id;
+> +	u8 l4proto;
+>  	int err;
+>
+>  	if (!(opts_len == NF_BPF_CT_OPTS_SZ || opts_len == 12))
+>  		return ERR_PTR(-EINVAL);
+> +
+> +	netns_id = READ_ONCE(opts->netns_id);
+> +	l4proto = READ_ONCE(opts->l4proto);
+> +	ct_zone_id = READ_ONCE(opts->ct_zone_id);
+>  	if (opts_len == NF_BPF_CT_OPTS_SZ) {
+> -		if (opts->reserved[0] || opts->reserved[1] || opts->reserved[2])
+> +		ct_zone_dir = READ_ONCE(opts->ct_zone_dir);
+> +		if (READ_ONCE(opts->reserved[0]) ||
+> +		    READ_ONCE(opts->reserved[1]) ||
+> +		    READ_ONCE(opts->reserved[2]))
+>  			return ERR_PTR(-EINVAL);
+>  	} else {
+> -		if (opts->ct_zone_id)
+> +		if (ct_zone_id)
+>  			return ERR_PTR(-EINVAL);
+>  	}
+>
+> -	if (unlikely(opts->netns_id < BPF_F_CURRENT_NETNS))
+> +	if (unlikely(netns_id < BPF_F_CURRENT_NETNS))
+>  		return ERR_PTR(-EINVAL);
 
-From Documentation/core-api/memory-allocation.rst:
+[ ... ]
 
-  * Untrusted allocations triggered from userspace should be a subject
-    of kmem accounting and must have ``__GFP_ACCOUNT`` bit set. There
-    is the handy ``GFP_KERNEL_ACCOUNT`` shortcut for ``GFP_KERNEL``
-    allocations that should be accounted.
+>  	if (opts_len == NF_BPF_CT_OPTS_SZ) {
+> -		if (opts->ct_zone_dir == 0)
+> -			opts->ct_zone_dir = NF_CT_DEFAULT_ZONE_DIR;
+> -		nf_ct_zone_init(&ct_zone,
+> -				opts->ct_zone_id, opts->ct_zone_dir, 0);
+> +		if (ct_zone_dir == 0) {
+> +			ct_zone_dir = NF_CT_DEFAULT_ZONE_DIR;
+> +			opts->ct_zone_dir = ct_zone_dir;
+> +		}
+> +		nf_ct_zone_init(&ct_zone, ct_zone_id, ct_zone_dir, 0);
+>  	} else {
+>  		ct_zone = nf_ct_zone_dflt;
+>  	}
 
-I don't like that we are calling (seemingly) low level
-__vmalloc_node_range, but commit 041de93ff86f ("mm: remove
-vmalloc_user_node_flags") removed the previous wrapper and open-coded
-it in bpf verifier, so I'm assuming calling __vmalloc_node_range here
-is ok as well.
+[ ... ]
+
+> @@ -186,46 +198,58 @@ static struct nf_conn *__bpf_nf_ct_lookup(struct net *net,
+>  	struct nf_conntrack_tuple tuple;
+>  	struct nf_conntrack_zone ct_zone;
+>  	struct nf_conn *ct;
+> +	u8 ct_zone_dir = 0;
+> +	u16 ct_zone_id;
+> +	s32 netns_id;
+> +	u8 l4proto;
+>  	int err;
+>
+>  	if (!opts || !bpf_tuple)
+>  		return ERR_PTR(-EINVAL);
+>  	if (!(opts_len == NF_BPF_CT_OPTS_SZ || opts_len == 12))
+>  		return ERR_PTR(-EINVAL);
+> +
+> +	netns_id = READ_ONCE(opts->netns_id);
+> +	l4proto = READ_ONCE(opts->l4proto);
+> +	ct_zone_id = READ_ONCE(opts->ct_zone_id);
+>  	if (opts_len == NF_BPF_CT_OPTS_SZ) {
+> -		if (opts->reserved[0] || opts->reserved[1] || opts->reserved[2])
+> +		ct_zone_dir = READ_ONCE(opts->ct_zone_dir);
+> +		if (READ_ONCE(opts->reserved[0]) ||
+> +		    READ_ONCE(opts->reserved[1]) ||
+> +		    READ_ONCE(opts->reserved[2]))
+>  			return ERR_PTR(-EINVAL);
+>  	} else {
+> -		if (opts->ct_zone_id)
+> +		if (ct_zone_id)
+>  			return ERR_PTR(-EINVAL);
+>  	}
+> -	if (unlikely(opts->l4proto != IPPROTO_TCP && opts->l4proto != IPPROTO_UDP))
+> +	if (unlikely(l4proto != IPPROTO_TCP && l4proto != IPPROTO_UDP))
+>  		return ERR_PTR(-EPROTO);
+> -	if (unlikely(opts->netns_id < BPF_F_CURRENT_NETNS))
+> +	if (unlikely(netns_id < BPF_F_CURRENT_NETNS))
+>  		return ERR_PTR(-EINVAL);
+
+[ ... ]
+
+>  	if (opts_len == NF_BPF_CT_OPTS_SZ) {
+> -		if (opts->ct_zone_dir == 0)
+> -			opts->ct_zone_dir = NF_CT_DEFAULT_ZONE_DIR;
+> -		nf_ct_zone_init(&ct_zone,
+> -				opts->ct_zone_id, opts->ct_zone_dir, 0);
+> +		if (ct_zone_dir == 0) {
+> +			ct_zone_dir = NF_CT_DEFAULT_ZONE_DIR;
+> +			opts->ct_zone_dir = ct_zone_dir;
+> +		}
+> +		nf_ct_zone_init(&ct_zone, ct_zone_id, ct_zone_dir, 0);
+>  	} else {
+>  		ct_zone = nf_ct_zone_dflt;
+>  	}
+
+This isn't a bug, but both __bpf_nf_ct_alloc_entry() and
+__bpf_nf_ct_lookup() now snapshot and validate the same five opts fields
+in the same order with the same declarations (u8 ct_zone_dir = 0; u16
+ct_zone_id; s32 netns_id; u8 l4proto;), and both carry the identical
+zone-init block. The two functions now share about 25 lines of duplicated
+code, and the patch grows each copy from roughly 8 lines to roughly 14.
+
+Would it be worth factoring the snapshot and validation into a shared
+helper so a future opts field only has to be handled once?  One of the
+Fixes targets, aed8ee7feb44, was itself a de-duplication of similar code
+in this file, so the direction of travel here has been toward sharing
+rather than copying.
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/30647492237
+--===============7093018806644806532==--
