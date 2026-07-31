@@ -1,315 +1,265 @@
-Received: from mail-oi1-f206.google.com (mail-oi1-f206.google.com [209.85.167.206])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FE93E121A
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 17:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.206
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785518205; cv=none; b=Fh8tFvieCT8RQiutgudzvMRyBTTjc+Eq2V9LJxX35jsGc4dD7JoJtk95sFVWAMJUFCF8neYsSLEdtEE9Tir0sc2xXEXQvxmUJy4I6VE8MkIWNjj4+e4yEw6GFfoNfzlnrkMHyWH/8casBOijTgAOunasEYA8Qe4mMWMoFnfOPWw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785518205; c=relaxed/simple;
-	bh=HcoN/dVuE/4XPHJq74MO/5+SlJNel9J55+Ojn5RjR68=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=azxkogRp4Jf9UhPxC2OzKPX/X50naGYb011Oab4vat56AOvMUZxNjd86aTQr/j8gecgPipD3xoSkYZRJjWvuUhXxCIlIJBKMfNxDkCP0FbI/qbtihZgd3LcOAtZgZj+moJaEq0LD1mP6RtpXdsRNtHM7TpqPcMmQKRnpSCz6E+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f206.google.com with SMTP id 5614622812f47-4a7de733fa9so1402227b6e.3
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 10:16:43 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80032442FAA
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 17:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785519494; cv=pass; b=fXIOFQI+nAtGkbfax82RPrGi17Fsgx92RcY/yzsb0CLyB9N+sZ0FgzptIgKWkQNJBRnR1w3VhKIXB2aS40B/7YyDz0JgQha2KK4fFB1Zp3Tl0lcjUB3oZ0zEU19uS/kTdTsB408bpdQpwtRalvGIgi4d+n/Xn2AWaXPTzgjjim0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785519494; c=relaxed/simple;
+	bh=8z1uncO2iPJRaVkYgA4xzh0g/jehiPBKOcONt5AmRjA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CsAVPHY98R7dB82SVcGY+q990FkwE9VbUvPVKhbAOQK2pZkEKC70ZDxQCuSBPwaOcHhOmsnoBn9k0yTL90S4tsfi0XNdKy3iVg7ugjYvfjriwLXc+jufr+t8G9dltAyxMe0mFX1hMgyTzOEzvAkexSllSW0qNapGOeOd0dMzsO8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kIuxrt6j; arc=pass smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kIuxrt6j"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cab97c86bdso5545ad.1
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 10:38:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785519492; cv=none;
+        d=google.com; s=arc-20260327;
+        b=muPvD6aQfQZ3ge76h8joNe80QulBw1hYpa2Ecv50LOZaRpwHx7WnBKP87E1rgugVGo
+         rGb3vs2cx37dAR23WW76rZrDj/XViHT0M6Oku3TJegDxcPKBvC56iXrtomSKy1tvd+fE
+         Lg45VE2tiCxPtSjx4PhoVaM8xD1P1WhQarTNPbMg0XCcXfO+ltYnXlISoS/xjqt1WDxC
+         0HRk2Y6NtKScMzNt7inaPVhGiiaOleDlmDPjApjfUjlP5nsRtsdUv0SYQJG/2dSff1LB
+         cjjPEMlf7NBkwk0Gc3QsP7cPlnZE86UpBFGr5pndkcoNgmE1YGdJNVHcr5MrCGG8DztI
+         hAwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=oKPVUf7EVDMbHf/8PQ7nMv6+CDZsaC7bYwhGdSGtE/o=;
+        fh=LxrS9yZb/n5DLENjcFyDsxBo587qdelHwNg0eyqXHtg=;
+        b=Ttf9ouqxFPirVY3aYctNqIerZ3ghlqxWqVLEkBRxOxS8PDl2WmMtcs6X+NqNQQUoo/
+         B+EpthsujRMX6401EhAmgiRYN+7p0ebNEfg5vhKXLcoS7quTIBx5jBoYdm5GOlyJLwet
+         7BtUyhmNhXUg3YiQf8R+F2jE+rEnUOELKIT/OTpPNo7qJqw6BusCHFxGZti6UQmBylIv
+         vjZnvP7uYNBE82HC+qXzpWmAq2Y/hFAi6necqxyG5xqVN+lQ95d/mBuIEtauZD6WWqm3
+         yBtlu5Dg1BSProBAeBJAuYtJ3tXF/iRjqcbG0xSAojavtGR+i4YbtZFWxg2wAh7lqWxv
+         AhdQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785519492; x=1786124292; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oKPVUf7EVDMbHf/8PQ7nMv6+CDZsaC7bYwhGdSGtE/o=;
+        b=kIuxrt6jTHZLkrLsLeM5MGs8ai3JU8XQlmT4lbfgzziet8VdV3XOI4MEG9hRbQpCjV
+         fHnil+/iq0Rqree9SuG0OlNqjKgXnfP6K0I/tccqyKbf02mWwbd9lDlMMTlyBDUmHOLG
+         I0Q4JIGr+n0h5j5I2tyZu4ojQoI9iG+8V1twRYR6+m3TYJs0y3wD8PsLXxxhxW2BkRqU
+         hjQR9MvlGFRG5rUSoRL/HUiYuEqf5Y/8G/90kEhSI1aSJArsjKgMnywSdman3U01EQS0
+         TheuEILHFqAYQBkmBYi69fw2WGQegK70JmbkQKWMfZCYuPPT0tYxzNXN0+7JolVXdSr8
+         XMDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785518203; x=1786123003;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20251104; t=1785519492; x=1786124292;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MtCLywQgZEAejrQViXAgHXw3FleG9I5MXHcT3eIY65U=;
-        b=W9IqDEmstsZNNhMcUw4XY8jhMYWrF+OrZDkeu4gv0O7Jy/FBhFlyGTCo00MQ13MOhJ
-         Jb6i9hbMzAZZJ2dHLEpOQXZzQ8uZHCsm2aSDZgUBt3T4h2AupC/5+7+9FSM0WeANqNUI
-         8WoCTDehAddUj5KPUTm8eMmJUos1A0SN0OkaUZobavrfF5vxbMddfxBuq+mNo0n7066Z
-         MUpZsC65furIuoLC5kaSW9MabJ47lBeys/e4L+p13ozLaxpu/2p2p2cmcRnlN2SQOCUD
-         tfYCKi7pQ3tckMolpugNfUVI9kFUEB5tcLgmPHX9LbqvKNxcLo7ywJW3YkffZyAHQrnH
-         7OwA==
-X-Forwarded-Encrypted: i=1; AHgh+RpgpTGP7Phn+96Etrc3UJ+UPxhPg+8ATrE/Fd1qgHLr9efbeZPHgO5rEcOdt6diDlOlupBfMx8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywa/AIjERKLz/sBhmivEHCuHg0wlHuB6kzPECbQRT/CmGQZpqMG
-	AVt/biLFh//7sE704Ug1g0qXi76R289QAiKAQMIPR7qiKDExav0FIPInzqqz6axefrYJriMtoy5
-	XuDz+DQqMg6tDJuD/MhTx8kFPXMf3X1bq2NktPTgkMQVpeJejdVkIZbAJl2M=
+        bh=oKPVUf7EVDMbHf/8PQ7nMv6+CDZsaC7bYwhGdSGtE/o=;
+        b=qQTuEfgJlDMDdBBoFDx7djOi8j/kKLZvqBZ4Ymovl3Mhj/qjz9lt5rxffKyuIfOqLF
+         4bd36OchmMI/7t0wBd4aUr+3vKfZDAYRElS7M8XhZVhCTlN6AmfVF4aq1kPK33frgBsv
+         Qbffq0M2B37M9dximEUFZN71+h2h3g/6fotxcHYZ9M7t28D9EjoUtEagqEkXuxbIyUt+
+         1v4yp24lBmqpEL/vy1sLG/lXU1uhUhcIHq+3qGhg3VASMbU9ZDx9g9DWvRAOg4HF4t3v
+         noLJap4MV3hKh3Ngdd4HRd+JXllvqu+L/eM03w9yNxDKFrvBPEagU55J4Re7NzwOClMA
+         Pzmw==
+X-Forwarded-Encrypted: i=1; AHgh+RpvPz7lr3ACwEbnSrlVJI4ZFfQ0jySMUoYjKiQlkNTtCw6TGLaPkBLy5NFec4POg3+Hp60Jz1c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTUfHgN8CT1UyfoS8NxbnM22ms0yzJA6wrsPFawp/EVUUksF49
+	oT3LT/LWspKBCRh+e7gFp5zpH7Tqdpb6O5NxE4V+j3oRVAzyiCuRZSF23IOF//6oI3yD2sY2d+K
+	bSVJEB0kMcdqB/2Y2Ca5lE6DBD24SMPqI3DyCb6e9
+X-Gm-Gg: AR+sD12nC/CedTlzytOBJ/PjPLBbWm+3EJsh8D5wvo1AzAlAMmi42DnFw6hildHQL+Y
+	+uGUSjTlm4I4px8vpG6L7PDoGbtrmdRiveZ9j6bvKnmT0ndgJEmAJLS/9ip/qISs+/F6h53u+RD
+	UYdKTePLvcTFXzQLWzrKPfVMNMa25SoOPl/T4clTtUZdFjGZql4xl4pu8mmkpxdXBPoA31VJtFa
+	6Yrg8eAYEn9SiOW17p5yp14iOrcgay87BOsJPXCpf7fskTJzQK3VhOHnxOGAEFQ6uRnDGEFR7hH
+	3W03an2vBnfYClcwmRb0tKqCxMbRltAP+l3O99lXnZFjvBXsTpG1UN8+asCxJ+ptcJLSUMTkh7k
+	=
+X-Received: by 2002:a17:903:2685:b0:2ce:b436:272a with SMTP id
+ d9443c01a7336-2d05494ad4fmr249025ad.3.1785519490949; Fri, 31 Jul 2026
+ 10:38:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:198d:b0:485:48da:133d with SMTP id
- 5614622812f47-4af5e29c73bmr1452812b6e.10.1785518202879; Fri, 31 Jul 2026
- 10:16:42 -0700 (PDT)
-Date: Fri, 31 Jul 2026 10:16:42 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a6cd87a.2d659fcc.1d46f5.019b.GAE@google.com>
-Subject: [syzbot] [usb?] KASAN: slab-use-after-free Read in cxacru_poll_status
-From: syzbot <syzbot+24eb38c789655fc43663@syzkaller.appspotmail.com>
-To: 3chas3@gmail.com, accessrunner-general@lists.sourceforge.net, 
-	gregkh@linuxfoundation.org, linux-atm-general@lists.sourceforge.net, 
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+References: <20260731111507.2355601-1-shaojijie@huawei.com>
+In-Reply-To: <20260731111507.2355601-1-shaojijie@huawei.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 31 Jul 2026 10:37:58 -0700
+X-Gm-Features: AUfX_mxgw25NfYWaFBOLznJYyWoUvQPTy5BDheVxee4aMCT7LUAm_Rrvjy1z3ps
+Message-ID: <CAHS8izPpwz=swSXJZhnVFvTeu43WBhtRv7PmC_OQ0XzG8no8bQ@mail.gmail.com>
+Subject: Re: [PATCH v4 net] net: page_pool: fix UAF in __page_pool_release_netmem_dma
+ on xa_cmpxchg race
+To: Jijie Shao <shaojijie@huawei.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, hawk@kernel.org, 
+	ilias.apalodimas@linaro.org, toke@redhat.com, shenjian15@huawei.com, 
+	liuyonglong@huawei.com, chenhao418@huawei.com, yangshuaisong@h-partners.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Fri, Jul 31, 2026 at 4:15=E2=80=AFAM Jijie Shao <shaojijie@huawei.com> w=
+rote:
+>
+> page_pool_scrub() iterates pool->dma_mapped via xa_for_each() with no
+> page ref held. __page_pool_release_netmem_dma() currently reads and
+> writes netmem fields (dma_addr, DMA index bits in pp_magic) after
+> xa_cmpxchg() returns. The unref path calls put_page() unconditionally
+> regardless of the cmpxchg outcome; when it loses the cmpxchg, it still
+> frees the page before the scrub winner finishes these netmem accesses,
+> so scrub touches a freed page -- a Use-After-Free.
+>
+> Fix this by splitting the DMA release into two functions:
+>
+> 1. __page_pool_unmap_netmem_dma() caches dma_addr before xa_cmpxchg(),
+>    does the cmpxchg to remove the DMA mapping, and calls dma_unmap on
+>    the cached address. It never touches netmem fields after the cmpxchg,
+>    making it safe for the scrub path which holds no page ref.
+>
+> 2. __page_pool_release_netmem_dma() wraps the above and additionally
+>    clears dma_addr and DMA index bits in netmem fields. This is safe
+>    only when the caller holds a page ref, so it is used by the return
+>    path (page_pool_return_netmem).
+>
+> The scrub path calls __page_pool_unmap_netmem_dma() directly; the return
+> path calls __page_pool_release_netmem_dma().
+>
+> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them wh=
+en destroying the pool")
+> Suggested-by: Mina Almasry <almasrymina@google.com>
+> Assisted-by: OhMyOpenCode:GLM-5.2
+> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 
-syzbot found the following issue on:
+Gemini provided no feedback and to my eye the code looks great too.
 
-HEAD commit:    11028ab62899 Merge tag 'probes-fixes-v7.2-rc5' of git://gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1243d9b9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
-dashboard link: https://syzkaller.appspot.com/bug?extid=24eb38c789655fc43663
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10ca948e580000
+Reviewed-by: Mina Almasry <almasrymina@google.com>
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/dbf4cb7b4116/disk-11028ab6.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/77761f1559a8/vmlinux-11028ab6.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/bb1ed2bbff0e/bzImage-11028ab6.xz
+> ---
+> Changes in v4:
+> - Restructure per Mina's review: merge page_pool_remove_dma_mapping()
+>   into __page_pool_unmap_netmem_dma() with dma_unmap inlined via goto
+>   label; simplify __page_pool_release_netmem_dma() to a thin wrapper.
+> - Link to v3: https://lore.kernel.org/r/20260729110249.2824835-1-shaojiji=
+e@huawei.com
+>
+> Changes in v3:
+> - Fix unlikely() to likely() for PP_DMA_INDEX_BITS to match
+>   file convention.
+> - Link to v2: https://lore.kernel.org/r/20260727132612.3277927-1-shaojiji=
+e@huawei.com
+>
+> Changes in v2:
+> - Redesign the fix per Mina's review: v1's unconditional
+>   netmem_set_dma_index() introduced a UAF when the scrub path
+>   (no page ref) writes to a page freed by the unref path.
+> - Cache dma_addr before xa_cmpxchg; move dma_addr/DMA index
+>   cleanup to page_pool_return_netmem() which holds a page ref.
+> - Rename page_pool_release_dma_index() to
+>   page_pool_remove_dma_mapping() to reflect its new role as a
+>   pure cmpxchg wrapper.
+> - Link to v1: https://lore.kernel.org/r/20260724092135.414699-1-shaojijie=
+@huawei.com
+> ---
+>  net/core/page_pool.c | 46 ++++++++++++++++++++++----------------------
+>  1 file changed, 23 insertions(+), 23 deletions(-)
+>
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index 21dc4a9c8714..497bb1906fc3 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -500,29 +500,40 @@ static int page_pool_register_dma_index(struct page=
+_pool *pool,
+>         return err;
+>  }
+>
+> -static int page_pool_release_dma_index(struct page_pool *pool,
+> -                                      netmem_ref netmem)
+> +static void __page_pool_unmap_netmem_dma(struct page_pool *pool,
+> +                                        netmem_ref netmem)
+>  {
+>         struct page *old, *page =3D netmem_to_page(netmem);
+>         unsigned long id;
+> +       dma_addr_t dma;
+> +
+> +       if (!pool->dma_map)
+> +               return;
+> +
+> +       /* Cache dma_addr before xa_cmpxchg. The scrub path holds no page=
+ ref;
+> +        * the unref path calls put_page() regardless of cmpxchg outcome,=
+ so
+> +        * after the cmpxchg we cannot safely touch netmem fields.
+> +        */
+> +       dma =3D page_pool_get_dma_addr_netmem(netmem);
+>
+>         if (unlikely(!PP_DMA_INDEX_BITS))
+> -               return 0;
+> +               goto unmap;
+>
+>         id =3D netmem_get_dma_index(netmem);
+>         if (!id)
+> -               return -1;
+> +               return;
+>
+>         if (in_softirq())
+>                 old =3D xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
+>         else
+>                 old =3D xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, =
+0);
+>         if (old !=3D page)
+> -               return -1;
+> -
+> -       netmem_set_dma_index(netmem, 0);
+> +               return;
+>
+> -       return 0;
+> +unmap:
+> +       dma_unmap_page_attrs(pool->p.dev, dma,
+> +                            PAGE_SIZE << pool->p.order, pool->p.dma_dir,
+> +                            DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDER=
+ING);
+>  }
+>
+>  static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem,=
+ gfp_t gfp)
+> @@ -728,24 +739,13 @@ void page_pool_clear_pp_info(netmem_ref netmem)
+>  static __always_inline void __page_pool_release_netmem_dma(struct page_p=
+ool *pool,
+>                                                            netmem_ref net=
+mem)
+>  {
+> -       dma_addr_t dma;
+> -
+>         if (!pool->dma_map)
+> -               /* Always account for inflight pages, even if we didn't
+> -                * map them
+> -                */
+>                 return;
+>
+> -       if (page_pool_release_dma_index(pool, netmem))
+> -               return;
+> -
+> -       dma =3D page_pool_get_dma_addr_netmem(netmem);
+> -
+> -       /* When page is unmapped, it cannot be returned to our pool */
+> -       dma_unmap_page_attrs(pool->p.dev, dma,
+> -                            PAGE_SIZE << pool->p.order, pool->p.dma_dir,
+> -                            DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDER=
+ING);
+> +       __page_pool_unmap_netmem_dma(pool, netmem);
+>         page_pool_set_dma_addr_netmem(netmem, 0);
+> +       if (likely(PP_DMA_INDEX_BITS))
+> +               netmem_set_dma_index(netmem, 0);
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+24eb38c789655fc43663@syzkaller.appspotmail.com
+I now notice that maybe another cleanup we could have done is open
+code __page_pool_unmap_netmem_dma() in this function to cut down 1
+helper, and just have the scrub function call
+__page_pool_release_netmem_dma() to reduce some code. But this is more
+than fine too I think, especially since this is a fix the stable trees
+are going to want I guess.
 
-ATM dev 0: poll status: error -71
-ATM dev 0: polling disabled, set adsl_state to 'start' or 'poll' to resume
-==================================================================
-BUG: KASAN: slab-use-after-free in __mutex_lock_common kernel/locking/mutex.c:625 [inline]
-BUG: KASAN: slab-use-after-free in __mutex_lock+0x15ca/0x1bd0 kernel/locking/mutex.c:821
-Read of size 8 at addr ffff88807d29c218 by task kworker/0:0/9
-
-CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-Workqueue: events cxacru_poll_status
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x13d/0x4b0 mm/kasan/report.c:482
- kasan_report+0xdf/0x1c0 mm/kasan/report.c:595
- __mutex_lock_common kernel/locking/mutex.c:625 [inline]
- __mutex_lock+0x15ca/0x1bd0 kernel/locking/mutex.c:821
- cxacru_poll_status+0x55b/0xdc0 drivers/usb/atm/cxacru.c:920
- process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
- process_scheduled_works kernel/workqueue.c:3405 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-Allocated by task 9:
- kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
- kasan_save_track+0x14/0x30 mm/kasan/common.c:78
- poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
- __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:415
- kasan_kmalloc include/linux/kasan.h:263 [inline]
- __kmalloc_cache_noprof+0x2e5/0x6c0 mm/slub.c:5489
- _kmalloc_noprof include/linux/slab.h:988 [inline]
- _kzalloc_noprof include/linux/slab.h:1309 [inline]
- cxacru_bind+0xac/0x1440 drivers/usb/atm/cxacru.c:1133
- usbatm_usb_probe+0x378/0x1b50 drivers/usb/atm/usbatm.c:1058
- cxacru_usb_probe+0x101/0x200 drivers/usb/atm/cxacru.c:1370
- usb_probe_interface+0x303/0x8f0 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:628 [inline]
- really_probe+0x241/0xa60 drivers/base/dd.c:706
- __driver_probe_device+0x20e/0x450 drivers/base/dd.c:868
- driver_probe_device+0x4a/0x140 drivers/base/dd.c:898
- __device_attach_driver+0x1df/0x320 drivers/base/dd.c:1026
- bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
- __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1098
- device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1153
- bus_probe_device+0x64/0x160 drivers/base/bus.c:620
- device_add+0x121d/0x1970 drivers/base/core.c:3772
- usb_set_configuration+0xd97/0x1c60 drivers/usb/core/message.c:2268
- usb_generic_driver_probe+0xa1/0xe0 drivers/usb/core/generic.c:250
- usb_probe_device+0xef/0x400 drivers/usb/core/driver.c:291
- call_driver_probe drivers/base/dd.c:628 [inline]
- really_probe+0x241/0xa60 drivers/base/dd.c:706
- __driver_probe_device+0x20e/0x450 drivers/base/dd.c:868
- driver_probe_device+0x4a/0x140 drivers/base/dd.c:898
- __device_attach_driver+0x1df/0x320 drivers/base/dd.c:1026
- bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
- __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1098
- device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1153
- bus_probe_device+0x64/0x160 drivers/base/bus.c:620
- device_add+0x121d/0x1970 drivers/base/core.c:3772
- usb_new_device.cold+0x685/0x115c drivers/usb/core/hub.c:2695
- hub_port_connect drivers/usb/core/hub.c:5567 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5707 [inline]
- port_event drivers/usb/core/hub.c:5871 [inline]
- hub_event+0x30a3/0x4a60 drivers/usb/core/hub.c:5953
- process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
- process_scheduled_works kernel/workqueue.c:3405 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Freed by task 10:
- kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
- kasan_save_track+0x14/0x30 mm/kasan/common.c:78
- kasan_save_free_info+0x3b/0x70 mm/kasan/generic.c:584
- poison_slab_object mm/kasan/common.c:253 [inline]
- __kasan_slab_free+0x5f/0x80 mm/kasan/common.c:285
- kasan_slab_free include/linux/kasan.h:235 [inline]
- slab_free_hook mm/slub.c:2677 [inline]
- slab_free mm/slub.c:6377 [inline]
- kfree+0x22b/0x6c0 mm/slub.c:6692
- cxacru_unbind+0x1fc/0x3d0 drivers/usb/atm/cxacru.c:1266
- usbatm_usb_disconnect+0x449/0x7e0 drivers/usb/atm/usbatm.c:1255
- usb_unbind_interface+0x1dd/0x9e0 drivers/usb/core/driver.c:458
- device_remove drivers/base/dd.c:618 [inline]
- device_remove+0x12a/0x180 drivers/base/dd.c:610
- __device_release_driver drivers/base/dd.c:1349 [inline]
- device_release_driver_internal+0x44e/0x620 drivers/base/dd.c:1372
- bus_remove_device+0x2bc/0x560 drivers/base/bus.c:664
- device_del+0x376/0x9b0 drivers/base/core.c:3961
- usb_disable_device+0x367/0x810 drivers/usb/core/message.c:1478
- usb_disconnect+0x2e2/0x9a0 drivers/usb/core/hub.c:2345
- hub_port_connect drivers/usb/core/hub.c:5407 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5707 [inline]
- port_event drivers/usb/core/hub.c:5871 [inline]
- hub_event+0x1c4f/0x4a60 drivers/usb/core/hub.c:5953
- process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
- process_scheduled_works kernel/workqueue.c:3405 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Last potentially related work creation:
- kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
- kasan_record_aux_stack+0xa7/0xc0 mm/kasan/generic.c:556
- insert_work+0x36/0x230 kernel/workqueue.c:2226
- __queue_work+0x9bc/0x12b0 kernel/workqueue.c:2401
- call_timer_fn+0x19a/0x610 kernel/time/timer.c:1748
- expire_timers kernel/time/timer.c:1794 [inline]
- __run_timers+0x570/0xb00 kernel/time/timer.c:2374
- __run_timer_base kernel/time/timer.c:2386 [inline]
- __run_timer_base kernel/time/timer.c:2378 [inline]
- run_timer_base+0x114/0x190 kernel/time/timer.c:2395
- run_timer_softirq+0x1a/0x50 kernel/time/timer.c:2405
- handle_softirqs+0x1ea/0x9b0 kernel/softirq.c:622
- __do_softirq kernel/softirq.c:656 [inline]
- invoke_softirq kernel/softirq.c:496 [inline]
- __irq_exit_rcu+0x162/0x210 kernel/softirq.c:735
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:752
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
- sysvec_apic_timer_interrupt+0xa3/0xc0 arch/x86/kernel/apic/apic.c:1062
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
-
-The buggy address belongs to the object at ffff88807d29c000
- which belongs to the cache kmalloc-1k of size 1024
-The buggy address is located 536 bytes inside of
- freed 1024-byte region [ffff88807d29c000, ffff88807d29c400)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x7d298
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 00fff00000000040 ffff88813fe23dc0 dead000000000100 dead000000000122
-raw: 0000000000000000 0000000800100010 00000000f5000000 0000000000000000
-head: 00fff00000000040 ffff88813fe23dc0 dead000000000100 dead000000000122
-head: 0000000000000000 0000000800100010 00000000f5000000 0000000000000000
-head: 00fff00000000003 fffffffffffffe01 00000000ffffffff 00000000ffffffff
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5629, tgid 5629 (syz-executor), ts 69989088439, free_ts 68776617028
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0xfd/0x120 mm/page_alloc.c:1859
- prep_new_page mm/page_alloc.c:1867 [inline]
- get_page_from_freelist+0xf48/0x3530 mm/page_alloc.c:3946
- __alloc_frozen_pages_noprof+0x299/0x2dc0 mm/page_alloc.c:5304
- alloc_slab_page mm/slub.c:3266 [inline]
- allocate_slab mm/slub.c:3380 [inline]
- new_slab+0xa2/0x640 mm/slub.c:3426
- refill_objects+0xe3/0x410 mm/slub.c:7310
- refill_sheaf mm/slub.c:2804 [inline]
- __pcs_replace_empty_main+0x376/0x680 mm/slub.c:4675
- alloc_from_pcs mm/slub.c:4773 [inline]
- slab_alloc_node mm/slub.c:4905 [inline]
- __kmalloc_cache_noprof+0x479/0x6c0 mm/slub.c:5485
- _kmalloc_noprof include/linux/slab.h:988 [inline]
- _kzalloc_noprof include/linux/slab.h:1309 [inline]
- afs_alloc_call+0x51/0x640 fs/afs/rxrpc.c:171
- afs_charge_preallocation+0x14e/0x360 fs/afs/rxrpc.c:755
- afs_open_socket+0x31e/0x3f0 fs/afs/rxrpc.c:112
- afs_net_init+0x825/0xb00 fs/afs/main.c:116
- ops_init+0x1e2/0x5f0 net/core/net_namespace.c:137
- setup_net+0x118/0x3a0 net/core/net_namespace.c:446
- copy_net_ns+0x46f/0x7c0 net/core/net_namespace.c:579
- create_new_namespaces+0x3ea/0xac0 kernel/nsproxy.c:132
- unshare_nsproxy_namespaces+0xf2/0x220 kernel/nsproxy.c:234
-page last free pid 5618 tgid 5618 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- __free_pages_prepare mm/page_alloc.c:1406 [inline]
- __free_frozen_pages+0x79f/0x1090 mm/page_alloc.c:2950
- __folio_put+0x3b4/0x5f0 mm/swap.c:112
- folio_put include/linux/mm.h:2124 [inline]
- put_page include/linux/mm.h:2193 [inline]
- put_netmem include/net/netmem.h:394 [inline]
- skb_page_unref include/linux/skbuff_ref.h:43 [inline]
- __skb_frag_unref include/linux/skbuff_ref.h:56 [inline]
- skb_release_data+0x649/0x8e0 net/core/skbuff.c:1110
- skb_release_all net/core/skbuff.c:1191 [inline]
- __kfree_skb+0x4f/0x70 net/core/skbuff.c:1205
- tcp_wmem_free_skb include/net/tcp.h:334 [inline]
- tcp_rtx_queue_unlink_and_free include/net/tcp.h:2321 [inline]
- tcp_clean_rtx_queue net/ipv4/tcp_input.c:3698 [inline]
- tcp_ack+0x2079/0x7650 net/ipv4/tcp_input.c:4400
- tcp_rcv_established+0x84f/0x3990 net/ipv4/tcp_input.c:6678
- tcp_v4_do_rcv+0xbb6/0x1260 net/ipv4/tcp_ipv4.c:1854
- sk_backlog_rcv include/net/sock.h:1190 [inline]
- __release_sock+0x35a/0x440 net/core/sock.c:3261
- release_sock+0x1e5/0x280 net/core/sock.c:3860
- tcp_sendmsg+0x38/0x50 net/ipv4/tcp.c:1452
- inet_sendmsg+0xb9/0x140 net/ipv4/af_inet.c:865
- sock_sendmsg_nosec net/socket.c:775 [inline]
- __sock_sendmsg net/socket.c:790 [inline]
- sock_write_iter+0x4ea/0x5b0 net/socket.c:1241
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x6ac/0x1050 fs/read_write.c:687
- ksys_write+0x1f8/0x250 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Memory state around the buggy address:
- ffff88807d29c100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88807d29c180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff88807d29c200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                            ^
- ffff88807d29c280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88807d29c300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+--=20
+Thanks,
+Mina
