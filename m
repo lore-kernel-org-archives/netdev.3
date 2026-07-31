@@ -1,160 +1,100 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB1B35C68D
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 21:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785534179; cv=pass; b=cwyRMkbuMSzcE2ZZ7crEswrCDcCAnzXxvOO7oYJuMyq4ufbLzQ0wmT434wIWP1aMBCN17J2BL6KUVta5qpJlMHWlGdS3LxQIftI7B7h2tv0Q7xJPDL0OFHP+rqE4JlF84Lov0XVL2uE0/n9mn6NBsX/Ho/Eszr3mCMh62N8cCIw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785534179; c=relaxed/simple;
-	bh=fJm5iExLLNg2dOOnBGa1utNmL4mzcQtyLXlrQky6wCk=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D450C2E03EA
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 21:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785534885; cv=none; b=G85X/WY0fWiKUXolhlrgqrTi/x8uY/lN1R2lM+6uiD+6aPTqm3oganXcxX5mcN2lVLLdtE4DyFAD4CC4cV9miT3fuROrXlI9TF82GIL+yve8ke1THhNFXJK46+7y6oiml9BYbr2+yvHOXeOXpOnUHqH6LXFY6vZPdQluTApgJrI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785534885; c=relaxed/simple;
+	bh=kltJ9Qp9GBYlFGd/R581DdOCJEczuDIMPii8eXULGr4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mdmQSbYyFGGktiI72BtYHE98r1DE+BD2REaogHqIbDj4SvgwzIoWCwKeoKySBMz7CrAK/7hsOZwJvxif94NOKmNbbFeZSAM50dKofFJgvG2ZyksFNciLHQ2u8O8Zgb2f5nxIsEY9L5AG+lio7zhnuyrQz+FpXswnyJ3TAw3VGrE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fZ6NFMox; arc=pass smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=moN+eV2MUX7Hh7HjmRkWeXGiUZfuK1wKnO3awMI/WGcdWzdYTl3nqC51XvZfy4JhDo3FXwFTOmTISGpM6IuZmsIBdJw+BUlp9ytym1CG812EBDD5TcaUpWTzoCnqDGz2UqBsDtb7U1sN+4x/WhhunvcJB7V66nkMuPCMFEARSUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jniIetz8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fZ6NFMox"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c1677c91969so186114466b.1
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 14:42:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785534175; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ef7UY6o7XfstrAYi1yGKMARFGhvCKpgD9ltFOJmM/ps9hO9k/Z5Fj/7iO8IMhSHPtZ
-         0nu74BFl+Rlr49my+aA3cJhF7pU1PGbTnrTEqO5/fcUgotVAThgPcuqylYcHayIOyNTd
-         rEiDu5czGGUElOcwyMPfJ4tv/1EkC75VbCPx2SRy/K7ZjYbPZBT+0uI8TKDWddKglMb/
-         /7A2kduZHbWSbB+Wz3A6sES7b+rc6W5BO1Mj8qX3SiCwzyvb2NYEGyGJsu+ZiQJLxvWf
-         N0PNP0H7bavK4veCp7onBAyyp6z/prZHd9BY5yDEMQ5aND2pKuHwFXuCfTkLsZnBfoMo
-         CJ4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2w0TLt9QH7s0lqrlMH/OvUd0WbfPEFOdoqJKDBnB5Sw=;
-        fh=lxcvVcstduAq+DV4YXUyKjvjB6de3D80WOxEXrupYJQ=;
-        b=XjqEcaADVBHFbqjo8bT2LXIQ5hdrKBribdsW0v6YRDICSzDmBQjBjp9MynTPkO5nGq
-         zFGYVvNCexP8IzB9Qgybj3j5PB+dcDHb+LXe1mTmTM3D64VdRcrhZzlvA+FRBpY22LLM
-         +xCW4HJbKQMVjhs5Fi48S+E0tRNMM35JvwwCyI8EGoaJgjJUDAjQFJ8m0odUBFm2R0Zh
-         gxbnsYnP78bydEscSuT35XFQya4QIXbDSUJYgQbHw43Xw+5R7jXNQQqDSKvPJs1UcGLf
-         TWeB+rCq3sdetUKv1/QV6jh/yUtbvKAaERg4Y1MXfe2iejt487fKkdSNhwB0H2etrnk0
-         OmqQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785534175; x=1786138975; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2w0TLt9QH7s0lqrlMH/OvUd0WbfPEFOdoqJKDBnB5Sw=;
-        b=fZ6NFMoxv1qj8ywFdEG8j0qJ3z1vkQEcIHTRjpbSgu6UfPOMhdo2tCNk5S0QrWLrmG
-         hnB4hVOe4IYVkkfGbhuC5Z1AOROqOrJ6WrHGhP+CsylctwAkpxJ4D7LTEoMH9erfXixu
-         +BSVViq0Xau9KJ/oiCjfLCcDvucuPjURkz0rWOXN7pinBl0awXIGOU6w0vc6Z3XhadQG
-         YtiiYJntJFm6O/yAmN2VuGYVhka7/+Vh2blriRET6xK4/dJKthtwRHR0Ppa2P1/HloLC
-         wksQvaguNhfWHgW/03wDdqnvgI0duidERvmiqtMoij0sRocU0R4/bjIpdgTFdOhnNrD2
-         gPbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785534175; x=1786138975;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2w0TLt9QH7s0lqrlMH/OvUd0WbfPEFOdoqJKDBnB5Sw=;
-        b=XCHN2LEnJnBQfpE0U1DcIjZlpjgvfgNy8kWmkcup7+WZfvJCpGO26YLSdK/OgKGs6d
-         IOsDoo4N6NFhZjPK3O6PLniHcxvPYOWxvrFntLEk76W3UFI0I4APc6hmW7ZuDQA4Z7wC
-         Nx1Y+ZgeLBD6KYSUSXbL5sVUbelS8pb7ZXVWD0KcGYkPqDTnZ5JFoaMjbRcuqr4ze3yt
-         jjQLQhuOwz4mHrvyZQPk0/ZsuZZWcWDFcAqO1AQXqHJo+b0mREdTd2lVFdwmrghB97rC
-         g6gKCbgO4fJLuR8npJSY5x3pK7mvrUvgLC6vrMJ4oYnPmVQSZzndA2G1BzNZMcAhun8w
-         MapQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqX3hOhRx4g63O5R22MwOuYpLMefuiWBWZiVthyreoWTihYBON0rYsWbdL693kev+2VHHZsBtc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywp14JoeQjsuMWrNRBHblsQHk4L3cPZxfExRc+bYls8azquh/Ee
-	0lBgZaThC+k5myJcCpMoYE2gzTXs1cPBmpTC8U+jfCUA/SOpghQz6uoLHYPzdRCXwSBV474rYGs
-	3KQXmiWJzK2Mo8yBBUzJ9Y4ZZP4UAnVdMGR+DuWDj
-X-Gm-Gg: AR+sD11QbGY/R0xcru0CW/iy+eTCEHyBUlaxJVQvPZWqCjgNkMYEvzW+iPKpT4DhoxX
-	ajKYBSPeWaMjrVAbdZv1n1V1qPosbpQ2SH0z3X4twCJCLmiJO81hv0+osyWHt+m16tH9RAymcAi
-	FQx0qtZ7qDs0nPzRKU3AlY0v9bSNTUb9gdikcX1Uv4CZnYPwBFIiwCxfoaMxoe3QbyvdOfJvIKe
-	2Sdaee5oKT9oYe1Au9e4UOEHNjw+KcsuGsgUvstyQPCytzXfwVWY0iAw/arMynHYFCyUAscx6gE
-	96iuSrf1gm6keSS5XReykrwlmpjhrg7BfOiuEHqqJbmHjcFxy5ccr8DaN4hlUiBmCl8rA1DeVWi
-	L+FbIBzBHyJziwlFjdjYuA9cXTo2nTt5BbHI82Lshw667MSRBnL1gHIQQeMk=
-X-Received: by 2002:a17:907:961a:b0:c16:8aed:cec3 with SMTP id
- a640c23a62f3a-c1fe8315915mr71437266b.58.1785534174731; Fri, 31 Jul 2026
- 14:42:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jniIetz8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790FE1F00ACA
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 21:54:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785534884;
+	bh=r4VMEywjEJ56Lxg18ykvw6IH2jo9qwA3FksJFNXTd3Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=jniIetz8xIpeZvf+cKdk94AenGIjwsIcViJaaZODS7PAjRmchz5qN5G4vmak3MoH8
+	 WDMybgBNcKySdSpJ5xbikzsu4o9AasB6TUNeO9jpa5C5Lhqiy+l1x6Gz4cMt9EjCvp
+	 eP+pwFc5z2/gisOwXFeLETcMhVh1J/v7AAotoESlupxLjGa+h7zXqq320gnefaFQL+
+	 jLi/JYF4uBbkDDMsshfkCJroyOF3gO5PbS983n/7WpkUAF2XXGW7sypjFOlEIjwSW2
+	 c/Z9x1bR84F5m2y1UjKnb1IXalE2kOaXvGIeOPuEbZMhWtTSGiAz7xwEm+cBIMOtsx
+	 /zhiHkfCKZFLQ==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5aeb59d54b1so1439240e87.1
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 14:54:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rrn3Qjr/H2WJSiCgeYvEWJ/2iwyhtM1hLaVFbQy4X7whjdsEGbyVu8NmHcCLlXDwywqMggWbO4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy510A5zCSlnbtT0t6AtDAclxD0Pe0Tc5QiPsTsJ2QZQaZHhO0E
+	HVPe6r8rQWPofdBtv5kG1rKo4MZ0TV6mBJpLsmBdfarWBmDWQBdsNtrBtm9iieaqVmXQ+Qtqlfd
+	sFqsoTLwa3hrTJ+flPE4lkbQ6eYLio8g=
+X-Received: by 2002:a05:6512:23a9:b0:5b2:dba5:806f with SMTP id
+ 2adb3069b0e04-5b2e4f76d66mr230287e87.31.1785534883280; Fri, 31 Jul 2026
+ 14:54:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260731-airoha-spinlock-array-fix-v1-1-863a7e239a5f@kernel.org>
-In-Reply-To: <20260731-airoha-spinlock-array-fix-v1-1-863a7e239a5f@kernel.org>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Fri, 31 Jul 2026 14:42:42 -0700
-X-Gm-Features: AUfX_mxeDK0UjkpXMoBLEays-SsJvXAu7pPwCo_E4Ldx0HgqctY1Xwd1UgDCFnY
-Message-ID: <CAKwvOdm0NpX9LXO9J=u4+S3-VzJN0_jxBMy=aDf6zUi9r5L=qQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: airoha: fix ARRAY_SIZE() division by zero
- on UP builds
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Simon Horman <horms@kernel.org>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
-	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, kernel test robot <lkp@intel.com>
+References: <20260725-rtl8366rb-fixes-v3-1-57557b39aaa5@kernel.org> <20260730154834.07038c8d@kernel.org>
+In-Reply-To: <20260730154834.07038c8d@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 31 Jul 2026 23:54:30 +0200
+X-Gmail-Original-Message-ID: <CAD++jLmF8K-Ys8eeBmRZTn4pyxzJtAFF6dPRTxDE_E4697SOew@mail.gmail.com>
+X-Gm-Features: AUfX_mxaCBWBPhJDe3afpwIDmIGs7l6aNB-fW-C76VFhjdSIVuNY-nkhGA84Cm4
+Message-ID: <CAD++jLmF8K-Ys8eeBmRZTn4pyxzJtAFF6dPRTxDE_E4697SOew@mail.gmail.com>
+Subject: Re: [PATCH net-next v3] net: dsa: realtek: rtl8366rb: Fix up port isolation
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 31, 2026 at 8:48=E2=80=AFAM Lorenzo Bianconi <lorenzo@kernel.or=
-g> wrote:
->
-> airoha_alloc_gdm_device() initializes the txq_lock[] array iterating
-> over ARRAY_SIZE(dev->txq_lock). ARRAY_SIZE() expands to
-> sizeof(dev->txq_lock) / sizeof((dev->txq_lock)[0]), but on UP builds
-> (CONFIG_SMP unset, CONFIG_DEBUG_SPINLOCK unset) arch_spinlock_t is an
-> empty struct, so sizeof(spinlock_t) is zero and the expression is a
-> compile-time division by zero (undefined behavior), reported by clang
-> as "division by zero is undefined [-Wdivision-by-zero]".
->
-> Since the array is statically sized with AIROHA_NUM_NETDEV_TX_RINGS,
-> use the named constant as loop bound instead of ARRAY_SIZE().
->
-> Fixes: 78a35725e533 ("net: airoha: defer GDM3/GDM4 WAN mode and GDM2 loop=
-back to QoS offload")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202607311850.6p0ZUVq4-lkp@i=
-ntel.com/
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Hi Jakub,
 
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+On Fri, Jul 31, 2026 at 12:48=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
+rote:
 
-> ---
->  drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
-net/airoha/airoha_eth.c
-> index dba7c52c0896..64619e9a704d 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-> @@ -3467,7 +3467,7 @@ static int airoha_alloc_gdm_device(struct airoha_et=
-h *eth,
->         netdev->dev.of_node =3D of_node_get(np);
->         dev =3D netdev_priv(netdev);
->         u64_stats_init(&dev->stats.syncp);
-> -       for (i =3D 0; i < ARRAY_SIZE(dev->txq_lock); i++)
-> +       for (i =3D 0; i < AIROHA_NUM_NETDEV_TX_RINGS; i++)
->                 spin_lock_init(&dev->txq_lock[i]);
->         dev->port =3D port;
->         dev->eth =3D eth;
->
-> ---
-> base-commit: 2fbade66245059c78daeaccfce13ecf499fffb51
-> change-id: 20260731-airoha-spinlock-array-fix-d239f7841cb8
->
-> Best regards,
-> --
-> Lorenzo Bianconi <lorenzo@kernel.org>
->
+> Sorry to report that both Sashikos remain skeptical.
 
+No worries, I'm used to it :D
 
---=20
-Thanks,
-~Nick Desaulniers
+> https://sashiko.dev/#/patchset/20260725-rtl8366rb-fixes-v3-1-57557b39aaa5=
+@kernel.org
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260725-rtl8366rb-fi=
+xes-v3-1-57557b39aaa5@kernel.org
+>
+> The mask is the allowed mask so the write of 0 was correct,
+> but we want EN + mask(0) ? The problem being that
+> rtl8366rb_port_set_isolation() does:
+>
+>  if (mask)
+>         reg |=3D EN
+>
+> so with mask of 0 we can't enable.
+>
+> Maybe pass
+>
+>         rtl8366rb_port_set_isolation(priv, dp->index, BIT(dp->index));
+>
+> ?
+>
+> Of course neither I nor the LLMs actually know this HW :S
+> But comments on other calls to rtl8366rb_port_set_isolation()
+> suggest that indeed the mask is for allowed ports.
+
+I went back to the vendor code drop which all code is derived from (previou=
+s
+OpenWrt switchdev driver and the new DSA driver), and the code seems
+to support this. I just drop the if (mask) clause so we enable complete
+isolation as intended, I think this works. Sent a v4!
+
+Yours,
+Linus Walleij
