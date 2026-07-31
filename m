@@ -1,114 +1,163 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1375635DA6D;
-	Fri, 31 Jul 2026 05:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785477215; cv=none; b=qjGi4Iu+gFkPrxkm68+ZtYSxugor76SCSE1IhbetQBmPyrdCz2PbZHkhKWwC3Jv8kANMiZpqtXpGZvn1Ez7SvalK3z/lE7Z9lGjlpxesAWzf/r9SkExqxeZJVL6Ik/Po7DvMDAuTVc7msC+lot/zCYcnTXTl/hpOYWz1k/QrbL8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785477215; c=relaxed/simple;
-	bh=GrLpewsVD0ngU0v61GtlQ5aXw0Zfb/+Rg18exnX0PPo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W3TQm/jjELuFEX4iF1oSOaJO3nHqUL60f+wmuBgQ4GborVOTEiiSwx3pzavCrQm8elJxbm1JwgNkE7KAp6MAx7qHQNqKLpB3riGbOjk6YPZSKtG+vi/kl71VplQDjxMUXInjkMp18w0YF2gcaWqIOOJCTCRgjin9y12yRmhWUlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=hLDOsla0; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72BF35DA6D
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 05:54:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785477254; cv=pass; b=kS9FYcJSMpEPH5KfpjiBLcomVA7hVhKYCMnx0UB5WlmYXUTJNjRJZPFQAGWrcu+xl/i3MVD5omTOKzI4MUB/EM4gXJBuw9M8CFivkuipLJ+KzNhhAvdwGYMcUXQHMvRbtCtoGSeql4ZhYXI5jhZccqDmf5S/sHGQE1xRochXIX4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785477254; c=relaxed/simple;
+	bh=XHNlV19Q7ml2a2pJDaT8s/3fB3WCjJvCUV5nREXZKk8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IKnDoEUszvoFkd1ZOgrw7dE7f/ehLkzdPu5r31xIG6Ya1KB2hAFwHFHXsIdae7bzZUlLrRn6cy/FSBuqDGUrxDitY48LJOMobU9EhkMo+NqDEuQPXEbyIoCtCcTUfsX2dMvXgewQQWhmwCRLls+lC7hp1BancJ+uzjSTparuto8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cc6geEsl; arc=pass smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="hLDOsla0"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66V4xobT398454;
-	Thu, 30 Jul 2026 22:53:26 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=Q
-	dn7mEm1Bg0Q2BJpeM1VoLMJPeg5M8TBw3uZ2ZQaWUo=; b=hLDOsla0A6oZsNoqY
-	wGAU8KFGlZMWNCrQYfVNbGemjDriORG/6nps+ws6aOHcvIvVn5f1paiRPR+ZBRV8
-	SO0xFqXxfcrh8rnU3dME1t7JsR127j9GMo3BlS7nlM+wKR8rO4Alv4UW2AoV0VvO
-	s0GYay9gHqNhu55Qg6xzrNl04D5g/rHn+naWI1lRVGLos/LG6OCfIkOsBqXJlxHD
-	L+C20sMc0U8xQpVEDGkHMFxApN2Yz+aBep86/Y2B0chshGp3U/LEugpKnw9cUqzS
-	yii7/OA2HR5H1Od0xfUnzdcTGB+RXxtMhaqozeQAHQSHyDu08jrjEMfTGQTGIz4j
-	LzXXQ==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fqu7c5drq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jul 2026 22:53:25 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 30 Jul 2026 22:53:24 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 30 Jul 2026 22:53:24 -0700
-Received: from numbat.caveonetworks.com (unknown [10.29.36.45])
-	by maili.marvell.com (Postfix) with ESMTP id CB11B3F7072;
-	Thu, 30 Jul 2026 22:53:20 -0700 (PDT)
-From: Subrat Pandey <subratp@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <pabeni@redhat.com>, <kuba@kernel.org>, <edumazet@google.com>,
-        <davem@davemloft.net>, <andrew+netdev@lunn.ch>, <sbhatta@marvell.com>,
-        <rkannoth@marvell.com>, <gakula@marvell.com>, <sgoutham@marvell.com>,
-        <subratp@marvell.com>
-Subject: [PATCH net v2 2/2] octeontx2-af: mcs: Fix SC resource cleanup loop
-Date: Fri, 31 Jul 2026 11:23:10 +0530
-Message-ID: <20260731055310.1229213-3-subratp@marvell.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260731055310.1229213-1-subratp@marvell.com>
-References: <20260731055310.1229213-1-subratp@marvell.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cc6geEsl"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cc73e322dbso4839575ad.1
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 22:54:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785477252; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WGiPQQR8elcsiEAg7uA1DLLRAl7x5QdTLIQhHU5plAEtkn4SK/atYGgQC4rrQoGw+w
+         DpLXXWO/CyS9DY2fQTWwSk/NLI3fApmiYxT4qkEV2cNRHQQLIVB5wmaOqEUFcX+zkivz
+         1DT8PHaXr0UuI2N/5RGBX/VeEJ6XcN8bt3uZ1/hIt0kl9ICc1cO6t2QaApXjLnBuvZN3
+         fwcOSZJLCnYzpg28nkmqZqJFJuwXto6Zj+5ayLvuYwjhkdlrVZgoTaqfITH3A0YLw/B1
+         SnkI012FafJ+UVnHpYQX7P/1OZw1qZ5ow8wV1bhhd/iiunpI+qVf52C0rM2WROXOXlTv
+         WLNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UmCP+stc0u5tGezIQuklmcGnHK4QDUd8Q+1LBzW0BG8=;
+        fh=trhsGPz9qmtpheqLDwTMTml0nVKeYpHZZ6jlUs6mUSA=;
+        b=nVN/yNCVblsW6RLpS9moV5A76wZaigqtWy8yXfduh4iQ2fVuUqJK6LoT7h9NnlUf/g
+         JI4w6qsj1Ak8X0pRJhIURsaXzcQW2H24e6qOu3LnICCnZ49M7eRzRk6xzupWxTYlFYhu
+         vU/lpZNVnzVLN2Ia34vMyPm7DsaTHMDiuVlbPQlEng5ZpM30rLQ2mdaXRvbeMxRsNjVc
+         C05qEuxLBpsWJlVmc8+OdhJWyMrA/1HGM/fCF7LoQOXN2WU4d3bTnvVD6dUiQgkpJHKY
+         7y/cdkYpltm0UhCsxRxxphM3ZGrZ6UtD0tm0G07/qEEzps7FX09epVcEvvo+c0GDtf/b
+         mJfg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785477252; x=1786082052; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UmCP+stc0u5tGezIQuklmcGnHK4QDUd8Q+1LBzW0BG8=;
+        b=cc6geEsldfN+TNRpTF1uMSM1aiGq5MusGVZDS02rsy2/z4VMdCD8uN3EbJFI68Dl1o
+         lPfLg6WvXen23onyZEzIZkQCQgItH2QPi9ocUq1XE0PMcUXGuTYPatVIpbnMWzHwx0eC
+         Fhy/oBz9Ype6tQnkexpaQHqerIWp+spf4h4UTafA5vHZ1EHt2Ir1NkeIhMLBUMnp0HzY
+         fLKNAwS7OLLb0+boU9O05LOwWLg3kOchtbpOt5gPa1RLLB9UuppbM2VEM0UjmpOuStuL
+         ZHYxfYnvgf/d5vWKtK2sJXQNd0LmXfZE7+w2NhidkErQazGFLn2RJpechmQZXKIfyivD
+         HxrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785477252; x=1786082052;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UmCP+stc0u5tGezIQuklmcGnHK4QDUd8Q+1LBzW0BG8=;
+        b=hz4pPL0PLA/C3U1tkcNVPNHXpAzJJFoKPfSiEUd6vix2jIzmCugmQv+bIQpeT6Tnxx
+         zoleQMHP85b0I1lY3HxA0tEo180mUmFcIQHjOjLzTVjrs2zSrfKY3bi+4GNS3aI2Z8Nb
+         X7WL4SwtJdN7HW0AVeNOks1MGCa1A2GsYWa0CvsfnmBKXMp3lHS2u141Htm0yF+PKmBX
+         vHqRhBTxIgr3cNB6F1gLMWLDocbD/+SRV85EByof2DrwwFBCROnRUBHkAgIiEyDVLbFU
+         e0j7cceCZb4wzGvwsvGSL1oHdOZy1WmikLG7p0fwRLSufvrPcpM1ReXAK5g83usQHJZR
+         f1YA==
+X-Forwarded-Encrypted: i=1; AHgh+RpwwtUInHW3vIVsXHPPXD+h2b+Vt8S7kiTS96STy6RgBtIoUxYjJ0SD2EPyvJNnPhzFufrJKj8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymrVIx+zzzfCuPqiteNK4Hw75x/qkoD7eb1e1SL3n4Bpp8Yn18
+	M3O5PSF4uVAHW999MsIwTh8a1ytCC8AtBHQxDDPYbfTppUk6ZRdY/9vUv85nY7h15q8lRvvV6sc
+	1beADD3EwVj7XMkDYW9WIyJg/eQHvCsoKlqSizpScjSDY52zwxww9AfzAtBcX2g==
+X-Gm-Gg: AR+sD10DvjH8kMlm4qchmPxDh0/1ywWpdm1rTwUcUOPQJwCiihwVFs5Q86vqqWIUDF3
+	CQCj0uXE9T1ah/YeqkKLwgztU4WEns4IRMlFChyKf0pwpqCisTiHblmiuFmYyN/4pjgpk6MyOsw
+	8pNXAo7ZR3ijkKbdIqXuMn4SqmT1giddgwfPhbG9PEV9URpT8qhebhZ3Cl1JTgzph5L6TM858GG
+	Dg78cd/ouwI0NvlwRY8Ej1GTVOsdjsMoMSb2zLxxFwHULpvGTP2YKDkTxTeiYSmZseQMADEnCpJ
+	Lw+A7VvaTwk/vv7uM4vj88/tW7qX6pGbtH5BFgpNxcF6gACH55l0kVVgW4B3yttFgn42hDXbS1Z
+	lSL9ZBadTh6Yeh6Fiq47hSkiF7eI1J9a0kLdTSAMpX5fMVpZ+TZxc/IIB8yYDlPFuQY0sscZdD+
+	c9344CgaZUrhIzfPQSfsrJfcK6edC3+x2WalvX
+X-Received: by 2002:a05:6a21:6f15:b0:3c4:3321:4fe9 with SMTP id
+ adf61e73a8af0-3c91b0665b7mr652070637.7.1785477251652; Thu, 30 Jul 2026
+ 22:54:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDAzOCBTYWx0ZWRfX6N1k9LhXLECp
- hIIVCpw5WVcrE3M6xHFb50Cz341RqsjB8VVDoOPt+0fKjNDU79SABoPLzxCPsk6KYXyaoCSiE/P
- jgwquF8BQGutaBsh6XBRxcBtRKSZOXo=
-X-Proofpoint-GUID: KVyXunXV0q-PUt7r-b2XGyLLksla1VYp
-X-Proofpoint-ORIG-GUID: KVyXunXV0q-PUt7r-b2XGyLLksla1VYp
-X-Authority-Analysis: v=2.4 cv=HtRG3UTS c=1 sm=1 tr=0 ts=6a6c3855 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=9qxNCY_qAAAA:8 a=M5GUcnROAAAA:8
- a=XZlTPdtiicSm3vu_L_sA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDAzOCBTYWx0ZWRfXx38pItrJfEVg
- +xbS4rOlkzMFYImY/BZ+U87Vdzv420SHgJ0+8T71y+xmFNBJQSnSLycHkFGyg5r7UPZhoL8WHWC
- /VyHSRDekhfDYgCIRmUZ5pSxshIBZqZoXXnH0raI5GKONCiBZsiPdo3Ro9XvPSfGT0oeO1mZB/y
- f18f20ZMI+K6LzBvUJoR6ojywRMfOTZD4Meo4E70WvCHZMYoLatiUE9+3g4CHXVXADtl4tK2nLn
- ARvdjnoPbCgsLczmb2KTILhT845Zc5AsoA07DerUu2nR7ae9mZsXut50NY8TSdNtHttiaf3LDHz
- c1iSQIIpfgJg/smgn/5V7mNhvkiKwD4pxZljBZYGCY8wC9tWMukQlO2/UGHYgmO+crIuhKrMxGe
- So2ONHhEZuTC0gDZcCPYD5Yw201b0k5zorOSN5ytgQIXgR1ry1p/BHJbjRPaYiqgVrgwJNtZkWx
- QqbXhBSWNSjkVfip3cg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-31_02,2026-07-30_01,2025-10-01_01
+References: <20260730144652.5715-1-sebastian.chlad@suse.com>
+ <CAAVpQUCkKUa55gJTqObD_6RNLDVdXqaak7Wst8o20X4RDnSmQw@mail.gmail.com> <CAJR+Y9J8d2uCN08+VYmsa4tKC7G5joM+DwN+PbskVDjf==A0=w@mail.gmail.com>
+In-Reply-To: <CAJR+Y9J8d2uCN08+VYmsa4tKC7G5joM+DwN+PbskVDjf==A0=w@mail.gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Fri, 31 Jul 2026 07:53:59 +0200
+X-Gm-Features: AUfX_myToYb7rGPnToADD5lUFwNvUNL-Bmm3V54srCmsQZ0xQkDmokDft60kLwY
+Message-ID: <CAAVpQUC3L9aUdq7M2bReCEZ5MPLPSHgC+VjzFboWdTbG=CMV=w@mail.gmail.com>
+Subject: Re: [PATCH net] selftests: af_unix: skip scm_inq tests when SO_INQ is unsupported
+To: Sebastian Chlad <sebastian.chlad@suse.com>
+Cc: Sebastian Chlad <sebastianchlad@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Baha Mesleh <baha.mesleh@nokia.com>
+On Fri, Jul 31, 2026 at 7:41=E2=80=AFAM Sebastian Chlad
+<sebastian.chlad@suse.com> wrote:
+>
+> On Thu, Jul 30, 2026 at 8:28=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.=
+com> wrote:
+> >
+> > On Thu, Jul 30, 2026 at 4:46=E2=80=AFPM Sebastian Chlad
+> > <sebastianchlad@gmail.com> wrote:
+> > >
+> > > SO_INQ was added in df30285b3670 ("af_unix: Introduce SO_INQ."). On
+> > > older kernels this returns -ENOPROTOOPT for SOCK_STREAM too, which
+> > > scm_inq.basic/partial_read currently treat as a failure.
+> > >
+> > > Enabling SO_INQ here is only a precondition for the actual test: the
+> > > SCM_INQ/ioctl(SIOCINQ) consistency checks that follow. SKIP when the
+> > > precondition itself isn't met, rather than asserting it succeeds.
+> > >
+> > > Signed-off-by: Sebastian Chlad <sebastian.chlad@suse.com>
+> > > ---
+> > >  tools/testing/selftests/net/af_unix/scm_inq.c | 7 +++++++
+> > >  1 file changed, 7 insertions(+)
+> > >
+> > > diff --git a/tools/testing/selftests/net/af_unix/scm_inq.c b/tools/te=
+sting/selftests/net/af_unix/scm_inq.c
+> > > index 6268b5bf50be..2868cce61a9a 100644
+> > > --- a/tools/testing/selftests/net/af_unix/scm_inq.c
+> > > +++ b/tools/testing/selftests/net/af_unix/scm_inq.c
+> > > @@ -111,6 +111,9 @@ TEST_F(scm_inq, basic)
+> > >                 return;
+> > >         }
+> > >
+> > > +       if (err && errno =3D=3D ENOPROTOOPT)
+> > > +               SKIP(return, "SO_INQ is not supported");
+> > > +
+> >
+> > It seems you missed this in the few lines above.
+> >
+> >         if (variant->type !=3D SOCK_STREAM) {
+> >                 ASSERT_EQ(-ENOPROTOOPT, -errno);
+> >                 return;
+> >         }
+>
+> Isn't that just a guard for not exercising the tests against dgram and
+> seqpacket?
+> So the if condition I proposed is for SOCK_STREAM where SO_INQ isn't supp=
+orted.
+> When I run af_unix against 6.12 with no SO_INQ, I get both
+> scm_inq.stream.basic and scm_inq.stream.partial_read failing. With the
+> patch, both tests are skipped.
 
-The SC resource cleanup loop was incorrectly iterating over secy.max
-instead of sc.max. This patch fixes to use correct value.
+Why is this selftest backported to the kernel without the
+functional changes ?  That's the problem.
 
-Signed-off-by: Baha Mesleh <baha.mesleh@nokia.com>
-Signed-off-by: Subrat Pandey <subratp@marvell.com>
----
- drivers/net/ethernet/marvell/octeontx2/af/mcs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-index a07e0b3d8d00..88658c07c391 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-@@ -738,7 +738,7 @@ int mcs_free_all_rsrc(struct mcs *mcs, int dir, u16 pcifunc)
- 	}
- 
- 	/* free sc entries */
--	for (id = 0; id < map->secy.max; id++) {
-+	for (id = 0; id < map->sc.max; id++) {
- 		if (map->sc2pf_map[id] != pcifunc)
- 			continue;
- 		mcs_free_rsrc(&map->sc, map->sc2pf_map, id, pcifunc);
--- 
-2.43.0
-
+>
+> Albeit I agree, if this test is run for stream af_unix not having
+> SO_INQ, it should be excluded altogether. After all the point of the
+> test is to test behaviour of SO_INQ.
+> Still marking the tests as skipped instead of failed for older kernels
+> is somewhat useful.
+>
+> >
+> > ---
+> > pw-bot: cr
