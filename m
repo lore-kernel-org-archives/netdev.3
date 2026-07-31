@@ -1,75 +1,73 @@
-Received: from arkamax.eu (128-116-240-228.dyn.eolo.it [128.116.240.228])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1174436729D
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 08:21:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.116.240.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA913489878;
+	Fri, 31 Jul 2026 08:25:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785486074; cv=none; b=ZmyFaWQYxVSjn+0hTltfn6Gmhjmw6b+5qLro1GVaa4GW4NXTChkFFdT5R3UjNg/VMHY87ZhrBOpX0xKicbZJ35X1nF723MKMTguUuNkm9UoZiKYykwb0LHmjaGawmQ/kvZwYYBoMAZmYzkkhAQncsDyhmvsxuug65ZmCvvjbYgI=
+	t=1785486337; cv=none; b=irmPVxjDUayQX3Gs+4Gyb1ksdQALPx1zVWyoqpuoIbgc9J+a/Udk/mm3eNDiKG4tALvMgPkaCwZaIOGeBfzQi5wGQ8ogaVVG+jsQ0oXcbkGUdKDOa5C2ZXILf1fcpfKTBFVjDhiZuSmGuygXROZUoW4JBtk9d/SX/+8APofheYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785486074; c=relaxed/simple;
-	bh=RNoa/guj+h++8IkZvb2F6gHdY2uJXx8VET2Qj8a4VlQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=tr0Lhk4jNbCBJe1p1a6f5QFm2vI17tfeW5Iz5HzYwhjFC47LxPqdWuoV7J2MG3MA5AAJnOF1u18XFNWV71yprAv3L4dFHbLxd0C0P6b5u0i0fcF+PPPnXp8tY65dB8l56zzr6I4+zCNnabVKEbTSL2oadIlxe+siemELv7JGdXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arkamax.eu; spf=pass smtp.mailfrom=arkamax.eu; dkim=pass (2048-bit key) header.d=arkamax.eu header.i=@arkamax.eu header.b=MCV7BlsX; arc=none smtp.client-ip=128.116.240.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arkamax.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arkamax.eu
+	s=arc-20240116; t=1785486337; c=relaxed/simple;
+	bh=toQGT/zy1pItrcboI/TL/RRYM1uULt6AY9cmIRyJcZ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uecW9wumwS+2j4cUwwIepIEBdWs6oDE/7R3fCti0uSVEjQpNy67vpGVvy1rdA2Qwh03HIu6+l/55OoO0En8jNBDEnXBBNhaGGHBF2VfC0qnoO7+rJuL+SMIKJz/oRvuWqGR6Sd4SRaQEnDejJFhyROKlbcRAkXoywVF6iPOGmIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R3/dq3pJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arkamax.eu header.i=@arkamax.eu header.b="MCV7BlsX"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=mail1; bh=RNoa/guj+h++8I
-	kZvb2F6gHdY2uJXx8VET2Qj8a4VlQ=; h=in-reply-to:references:to:from:
-	subject:cc:date; d=arkamax.eu; b=MCV7BlsXs2wYbuQtoetBVr0jY/uc7b4N1dm+v
-	U9OzCUqaK3HUTEPTNps7sM9FMV5dRw8NZw9DrbcRCtDKbLewtzwK9Hs6WxkoH8PPGQVzSA
-	OJD9sHVvgpFzG0IJWGVUBkR4fPuqVd3kV3b5ul5RBR3FACs2eEGRl3zmu+i0Nxf2ITgNPI
-	IZT37vBoAoUY95CFZ6FGztp8C55o3do/PEILmoLqelRTplCSwXBMMSh1AcB2K1hMvLKPcL
-	oE54JlP85ABuS0bYjS6NVV/iXVsicC9rIHj0YhS+s92eJ3ea/zTL8s5V3GOb6+CMPm3CpR
-	eltPBh/llBuuFepP84CmXWggQ==
-Received: from localhost (<unknown> [193.207.98.130])
-	by arkamax.eu (OpenSMTPD) with ESMTPSA id 5010176f (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Fri, 31 Jul 2026 10:14:28 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R3/dq3pJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B202F1F000E9;
+	Fri, 31 Jul 2026 08:25:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785486332;
+	bh=2jrNS/3BKn3yfUgnoF6T2QqsfjfKQsBmz4AL8EtE+YY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=R3/dq3pJJW7Wvs/1rk3w/7xsyZ73u7/LxlygJVeobUBwAHApTn7eq097IXWEEa3Et
+	 KPEkG2R9TsmXaIu98DpsEmO7i6trQJLLHqWQJ5QJ8pwR/DcQsZZS43Qjmt2psygTIR
+	 1okBWL4VhEvs1P0G45/tv/Hvce/2CM+Nc5wdpS3qVMvHIkX8BLVTUKOsZKmnZO1C73
+	 PWEYu3/I8hxDPf3JQTmAikN4anYvB0WY4y12ZI0O5yaoVBV8/XWijf9W0oXPMbPrnE
+	 aOA1a/7p40WOkhnGuaGKQSsrrote5XlkxO6hdhXSW5uSM2+ej7yxHv8TRXUa8eR2hX
+	 QtI77yoMAgCnw==
+Date: Fri, 31 Jul 2026 09:25:26 +0100
+From: Simon Horman <horms@kernel.org>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com,
+	Satha Rao <skoteshwar@marvell.com>
+Subject: Re: [PATCH v3 net-next] octeontx2-af: add new mbox to support sync
+ cycle on rx path
+Message-ID: <20260731082526.GF51943@horms.kernel.org>
+References: <20260727101608.300290-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 31 Jul 2026 10:14:26 +0200
-Message-Id: <DKCLUFJYS7HH.2EBXAQNUPN5B2@arkamax.eu>
-Cc: <linux-nvme@lists.infradead.org>, <netdev@vger.kernel.org>
-Subject: Re: [RESEND PATCH v2 3/4] nvme: add debugfs helpers for NVMe
- drivers
-From: "Maurizio Lombardi" <mlombard@arkamax.eu>
-To: "Nilay Shroff" <nilay@linux.ibm.com>, <kbusch@kernel.org>, <hch@lst.de>,
- <hare@suse.de>, <sagi@grimberg.me>, <chaitanyak@nvidia.com>,
- <gjoyce@linux.ibm.com>, <kuba@kernel.org>, <davem@davemloft.net>,
- <edumazet@google.com>, <pabeni@redhat.com>, <horms@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260731073918.614014-1-nilay@linux.ibm.com>
- <20260731073918.614014-4-nilay@linux.ibm.com>
-In-Reply-To: <20260731073918.614014-4-nilay@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260727101608.300290-1-rkannoth@marvell.com>
 
-On Fri Jul 31, 2026 at 9:39 AM CEST, Nilay Shroff wrote:
-> +static int nvme_debugfs_open(struct inode *inode, struct file *file)
-> +{
-> +	void *data =3D inode->i_private;
-> +	struct nvme_debugfs_attr *attr =3D debugfs_get_aux(file);
-> +	struct nvme_debugfs_ctx *ctx;
-> +	struct seq_file *m;
-> +	int ret;
-> +
-> +	if (attr->get && !attr->get(data))
-> +		return -ENODEV;
-> +
-> +	ctx =3D kzalloc_obj(*ctx);
-> +	if (WARN_ON_ONCE(!ctx)) {
-> +		ret =3D -ENOMEM;
-> +		goto out;
-> +	}
+On Mon, Jul 27, 2026 at 03:46:08PM +0530, Ratheesh Kannoth wrote:
+> From: Satha Rao <skoteshwar@marvell.com>
+> 
+> sync ensures that all packets that were in flight are flushed out to
+> memory. This can be used to assist in the tearing down of an active RQ.
+> 
+> To complete disabling RQs or disabling SMQ and its SQs, LF software
+> send mbox to AF to complete RX_SW_SYNC.
+> 
+> Both VF and PF and invoke this mbox.
+> 
+> Signed-off-by: Satha Rao <skoteshwar@marvell.com>
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+> 
+> ---
+> v2 -> v3: Addressed Simon comments
+> 	https://lore.kernel.org/netdev/20260715041239.2052888-1-rkannoth@marvell.com/
+> v1 -> v2: https://lore.kernel.org/netdev/20260715041239.2052888-1-rkannoth@marvell.com/
 
-Just a nit, I don't think that raising a warning just because
-kzalloc() returned NULL is a good idea as failures can naturally
-occur under OOM conditions and aren't bugs.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Maurizio
+I see that Sashiko still flags a number of issues.
+However, and while I don't believe they should block progress of this patch,
+I would appreciate it if you could check over them.
