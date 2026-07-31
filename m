@@ -1,250 +1,198 @@
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2800931353B
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 02:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A36123EAA6
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 02:30:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785464996; cv=none; b=qim8CFPdzMbmE8ARSlylQmUyAkqSVxRFKxpWfAr1FqqRpLEzmahL3F0ELKZFC5lChsP+v1rQ67VMNYwSfQpmrcRYiYAJdv+p73mv4vhTJJZctCtZZS6TP9pcXGrU+uDQkMl/TMTz8Snba5eRR7tyPtu6hNjmznNLXCokXvX+S4s=
+	t=1785465059; cv=none; b=mVyvbwVBAVYbIz//lBEEpQhwhKoiEITrY/vdos6/ytSFKXg/UXo0F3LX299QJUzNVCl4G5/WScDRBrO1G+rN0WmR3QqOfD+aM+MjsjV9aArOmaXvnu6dmUL89ktdWeJ7IOsqAshKDmA7a/wR5CNmHhl6//l/7dPPZo4HG9UC+uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785464996; c=relaxed/simple;
-	bh=P3mprWukiaXHTbkBDNZZyDnb/7KCSNTuZU4OBWrp550=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=CeCoBPcSDxY0RwQ7KAMJhs9UQiip9Hw0ENUfHBfLmYGpeTLUZ8sxFUWCKv75NA2S0RH16w/Ym7KnPn/Nj0Jftf5NZjAjDWdg5QrU6JFlFPJyqNo/NaJhLIqW7lkwYjyZ9l8Y7ZNSw0zqzodPbqPaDoVXBEBVbbFkQzAKhurtqi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:tivesync9t1785464941td87c0158
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [122.235.139.83])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 11070488493498952182
-To: "'Simon Horman'" <horms@kernel.org>
-Cc: <netdev@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Richard Cochran'" <richardcochran@gmail.com>,
-	"'Russell King'" <linux@armlinux.org.uk>,
-	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
-	"'Michal Swiatkowski'" <michal.swiatkowski@linux.intel.com>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>,
-	"'Kees Cook'" <kees@kernel.org>,
-	"'Joe Damato'" <joe@dama.to>,
-	"'Larysa Zaremba'" <larysa.zaremba@intel.com>,
-	"'Rongguang Wei'" <weirongguang@kylinos.cn>,
-	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
-	"'Chenguang Zhao'" <zhaochenguang@kylinos.cn>,
-	"'Fabio Baltieri'" <fabio.baltieri@gmail.com>
-References: <20260724101309.23472-1-jiawenwu@trustnetic.com> <20260724101309.23472-6-jiawenwu@trustnetic.com> <20260730131908.GB51943@horms.kernel.org>
-In-Reply-To: <20260730131908.GB51943@horms.kernel.org>
-Subject: RE: [PATCH net-next v12 5/5] net: wangxun: add pcie error handler
-Date: Fri, 31 Jul 2026 10:29:00 +0800
-Message-ID: <04ee01dd2094$589e7050$09db50f0$@trustnetic.com>
+	s=arc-20240116; t=1785465059; c=relaxed/simple;
+	bh=ejpyYt4546LU4xMKbv8fm7Cy4hOfgg3onTGsqmXyqBg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YE4xkEhpYgdDzsmJS8jXQZ1LIvj/O3C5U3QUlmUlDxl7rSXl6Xe2vEsqOOSrkHffpa9Y55LRRjBIe6yMb5secbVhwd8CSg5HdJHRm6i8ifv9TA1gaRSlSbd0+E16lyK/47eQn4/uJSNADJ9gnAycxyE2K9LgIHkcG/cKT8RgNiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=icHnhB+b; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="icHnhB+b"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-37f9e2642deso93014a91.1
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 19:30:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785465057; x=1786069857; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=D7ShXbAC867fAplXCwsR00hNj/xQSZRNxWu7qPWzdew=;
+        b=icHnhB+bVPW3rr55D5ctysrfYeZXeQ0uzf8gdQi0JZtprRkE5g8ZGFHh3wek7MeoT9
+         baeZsv2MdtDe893B/wQBNMHWWA3WAcIdl6dGieiAGyo5fXe7F/YSStaNIRwRgk7YPsAR
+         pymjN//d/hlU8uxKl3AoyEzSYk38CzPpwshosPoXVloIivhRnhzMJ57RncNpVmMG90aD
+         CLTP5q4+/0gDff6qtzUX+JbIVkI3gzBCEq4uicyohSy09CBaDnLj4blo2JZ2kPLto8wS
+         pkVeSp+dRMGimu54wn6WzzSODc0iWZGQ1VfKksmRqKZoMsgDAUVlgSeEqPcSa1QisKvF
+         NLOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785465057; x=1786069857;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=D7ShXbAC867fAplXCwsR00hNj/xQSZRNxWu7qPWzdew=;
+        b=BaBZ34ZSe8Kdwz6KecPYm5hSc3B0VoLUJxhW6D9GgiZvRHOct/LlDqDV0sbHqv5CvH
+         h8g3hRY6gn2JpYX1bR+1pSgZ0YZZ/ZGxIVx4ASSzVXGqBw0wbj7ERaMkhW0oerTQXLAS
+         CrDS63R983s/6LNLAr0PEMyf5czme0aaQwcZr9FFjoXtS0VHWFlBOUKujQVz1bQGjOyQ
+         8D8703IIPlYEuF+Nu2kWiw006RM15fleMaeJDad9Yvpdarf+hUml7y4UnAuARP/lYX3t
+         LIpgG5T1bQPXYm7gF1YlL6JWDYaL7hPv/HIm0f1gf1wT89gmoVOIe2C2yovbUWgR3NSW
+         CVgw==
+X-Forwarded-Encrypted: i=1; AHgh+RrhCb4g7wFH70Nv74aoxuxQZ0YILbiORQW8S1TQSYQKUp6Pv7Y1braCRmdumt9F93i8ttqY2Xs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywct1QHtDDsfwawFzN7YgpGTxD34zMJ3g3EyMnKXYm/lYSKDLCi
+	GeoOMjaMKabb1jAbx514I8tr9BSy+UuYBkTQN45iFCUZvia9IiEmflqG
+X-Gm-Gg: AR+sD12hRHG2uX9oc2HvEnfbKf2Trn9AF3c31nCgfFaVlynhm4dasbnHTHzZFsw5V7e
+	K9+XFrKmRgErWZ+nA09IsYPvDUAWs9O4Ph6kDwStF2V0nK6Iw+zNpyVHJT4vZxIN05kfJRy8vSJ
+	hial6/jRbnq5jGbLZ+0BCv1y9tDPVII/SVt6R80BGwlwkf8qZil7xwBLtWeAVBrSuk+JVeob3cK
+	5VY65DQBuMtQfheBPFQXY0w4rwjCcKezoN12/8yCqNZFn00x/IQ38/BUMabE6cJcT0izrVyNuNR
+	CQYlBsDUrXTsKuj+X/3sp275EDXGSKcwbZOzeGGQ0OjvoTtFIAMFBNP7g7jSYDPdti9ILBpJkk7
+	cg0wLnH28NQqCgDizM+fXra1OT8saTf1HKUPfOHC+P6ScHg/3gmrFldu+c2w3ubxGToub5Q0ZZ0
+	zGaEt16prj7pm7DVAnqqEEla6s2hKEfto96g+e7JtKTsssKB1dGQw+r++p0U8kQs41FjOl5Loa0
+	oLYr9hSvjwJ9GbXUeQIriqohaw1FQ==
+X-Received: by 2002:a17:903:298d:b0:2ca:ecf6:9115 with SMTP id d9443c01a7336-2d046e36580mr5158035ad.2.1785465056523;
+        Thu, 30 Jul 2026 19:30:56 -0700 (PDT)
+Received: from localhost.localdomain ([189.1.242.96])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d047abbf6csm416545ad.39.2026.07.30.19.30.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 19:30:56 -0700 (PDT)
+From: Yiqi Sun <sunyiqixm@gmail.com>
+To: jk@codeconstruct.com.au,
+	matt@codeconstruct.com.au
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yiqi Sun <sunyiqixm@gmail.com>
+Subject: [PATCH] net: mctp: hold route device before source address lookup
+Date: Fri, 31 Jul 2026 10:29:26 +0800
+Message-Id: <20260731022926.913865-1-sunyiqixm@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQIS+4v0YnBoeMVdPoCsylDHc5O5qgHQvQ9rAQboc/i2BGdVYA==
-X-QQ-SENDSIZE: 520
-Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NHvnCg/hm5B0McGl6/SAh1Edh+X6rRFmGmHmhsJ45ZBpZj+EKv1ruWja
-	p9kldXZi+NZkUSQU5Yyo/98a/++wTPyw5UVW4HZLdsT/63MC8uGAdXtRbLmxxESAFWPb9JQ
-	iX9SVJiThBY8UTUVWIcOIWalhR12pRbhAfKTJtOk1EipNCxcC3YIoj36aTp3m8wU1/WeYPC
-	Oc+7TjPLrPVpbyNdYuraNAxMf9l0CIuJ6IB+Ad9oAqb6Q9mrR11VNsDPV8hke9L0V4uaZ2U
-	8I3U0ZDwvv8c+HcikyeedusmUGk4zNo1Wnb4i64Cq57cWqPNgU90lzslQsGyvETL1nYGD7G
-	L0s7LzP8+Zuboh0oZd3e+Y7cup557qhUhobitfib0wL25+7+O11Tvc9FoKMUjSM+RAJzoiw
-	ZHepetGJ2cr6EjZZfjIRjG2tA4ZYmiX8jPX9kcQb2endCp7o6rlq+LXxCHXQlxlTpPPEzvM
-	l2+SxzwnkRb83+NQa2sZPDUHa7JZ/5aTOFzLq4h1N+WEBSTmD7a+grrGHaJ0pvrcyNCTJAb
-	gCF/7yrWvFk3kQ+9MwAm77Az5eHXcqhlT6jR/iNlRNtdg+ftOfPuTBDW996oPL/efNFD4vq
-	8V56Y50MFYEjve8bWq76FsDfrv1RVU600a5tNFwj/VbfPE0pX+r9FxkeJQ9OoCR5aArv+k4
-	vXpFRbBPTl7EVyjjf36IuD+ROsr80R2S1YVXEDPaR4gg1nMdW6JQ1wzvrxoH7RqU/SRW2u5
-	7mrqlRqlmPkwA4deCLVVFxOxK0UI3rzUVTBNEiE9cOgffOZDHY0fcOW4k7D2k/9b4WivBlf
-	40bCxOeZb/O2Hc44LD/ljdh/C2R/3u+Z0jMZPF4RFLS8DruWEME6juQVVEZlQ2WH8OQm3E1
-	ZmTy88MSQvQ/kYgE1PA15mgmfb0UF+WFPU6lLe7TZxDhJSeHvzs4+OLlROlMvCLnLRcJb+V
-	hNyw8A/mFH44RZuGUw3FZcuxVCCPKywWdMNJNHGvD0tYY8rcZ2cUi5EZsmBTR3qR2SRhSlK
-	QVuLJ3ISz44ga7UlpnACL2Kd8WaFaH7aeXeh94vdqVRQZEjUNdt1m/xo9ZnmKTg4lJs++W+
-	SWQSAUvglhzakzGo3iAmimKtLzvDYPCRQ==
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-QQ-RECHKSPAM: 0
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 30, 2026 9:19 PM, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://sashiko.dev/#/patchset/20260724101309.23472-2-jiawenwu@trustnetic.com?part=5
-> ---
-> --- Patch [5]: [PATCH net-next v12 5/5] net: wangxun: add pcie error handler ---
-> commit bbdaff8533430e43d4fe6382b836808684487044
-> Author: Jiawen Wu <jiawenwu@trustnetic.com>
-> 
-> net: wangxun: add pcie error handler
-> 
-> Support AER driver to handle the PCIe errors. Sometimes netdev watchdog
-> Tx timeout happens before the AER error report when a PCIe error occurs,
-> CPU blocking would be caused by MMIO during the reset process. To
-> prevent it, check PCIe error status in .ndo_tx_timeout. The current
-> function of ngbe is not yet fully developed, it will be completed in the
-> future.
-> 
-> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > index ee27f96735dc7..7936845c2894c 100644
-> > --- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > +++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> 
-> [ ... ]
-> 
-> > @@ -139,6 +253,33 @@ void wx_check_hang_subtask(struct wx *wx)
-> >  }
-> >  EXPORT_SYMBOL(wx_check_hang_subtask);
-> >
-> > +static bool wx_check_pcie_error(struct wx *wx)
-> > +{
-> > +	u16 vid, pci_cmd;
-> > +
-> > +	pci_read_config_word(wx->pdev, PCI_VENDOR_ID, &vid);
-> > +	pci_read_config_word(wx->pdev, PCI_COMMAND, &pci_cmd);
-> > +
-> > +	/* PCIe link loss or memory space can't access */
-> > +	if (vid == U16_MAX || !(pci_cmd & PCI_COMMAND_MEMORY))
-> > +		return true;
-> > +
-> > +	return false;
-> > +}
-> > +
-> > +static void wx_tx_timeout_recovery(struct wx *wx)
-> > +{
-> > +	/*
-> > +	 * When a PCIe hardware error occurs, the driver should initiate a PCIe
-> > +	 * recovery mechanism. However, this recovery flow relies on the AER
-> > +	 * driver for current kernel policy. Therefore, a self-contained
-> > +	 * recovery mechanism is not implemented yet.
-> > +	 */
-> > +	set_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags);
-> > +	wx_err(wx, "PCIe error detected during tx timeout\n");
-> > +	queue_work(wx->reset_wq, &wx->reset_task);
-> > +}
-> 
-> [Severity: Medium]
-> Can a race condition between this timeout handler and concurrent AER recovery
-> permanently disable the device?
-> 
-> If the timeout handler detects an error but is delayed, AER recovery might
-> complete in the meantime, clearing the recovery flag and restoring the
-> device.
-> 
-> When this delayed handler resumes, it would blindly set
-> WX_FLAG_NEED_PCIE_RECOVERY and queue the reset task. This would cause
-> wx_reset_task() to unconditionally call wx_soft_quiesce() on the freshly
-> recovered device, leaving it permanently unresponsive.
+mctp_route_lookup() walks the route table under RCU and may find a direct
+route whose route-table reference to rt->dev is being removed concurrently
+by NETDEV_UNREGISTER.
 
-I believe the window for this race condition is extremely small and the probability
-of hitting it is very low. But I'll add a double-check mechanism in wx_reset_task()
-to verify the PCIe error status before calling wx_soft_quiesce().
+Since commit 22cb45afd221 ("net: mctp: perform source address lookups
+when we populate our dst"), the direct-route lookup path reads the source
+address with mctp_dev_saddr(rt->dev) before mctp_dst_from_route() takes the
+dst's own mctp_dev reference. If device teardown wins that race,
+mctp_route_remove_dev() can delete the route and mctp_route_release() can
+drop the route's mctp_dev reference to zero. mctp_dev_put() frees
+mdev->addrs synchronously, while only the mctp_dev body is deferred with
+kfree_rcu().
 
-> 
-> > +
-> >  static void wx_tx_timeout_reset(struct wx *wx)
-> >  {
-> 
-> [ ... ]
-> 
-> > diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> > index 92895f5035118..56d4b63387fd6 100644
-> > --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> > +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> 
-> [ ... ]
-> 
-> > @@ -529,12 +548,16 @@ static int ngbe_close(struct net_device *netdev)
-> >  {
-> >  	struct wx *wx = netdev_priv(netdev);
-> >
-> > +	if (test_bit(WX_STATE_RES_FREED, wx->state))
-> > +		goto out;
-> > +
-> 
-> Simon says: I believe the issue below this was raised in the review of an
-> 	    earlier version, and changes were made to address it. But could
-> 	    you take another look?
-> 
-> [Severity: High]
-> Does bypassing wx_ptp_stop() here leak the PTP clock device and cause a
-> use-after-free?
-> 
-> When an AER error triggers a slot reset, wx_io_slot_reset() invokes
-> ngbe_down_suspend() which sets WX_STATE_RES_FREED but does not call
-> wx_ptp_stop().
+That leaves the lookup side able to read freed mdev->addrs in
+mctp_dev_saddr(), or later increment a zero refcount in mctp_dev_hold().
 
-wx_ptp_quiesce() was invoked in wx_io_error_detected(), which destroys clock device.
-I think wx_io_error_detected() is called first when an AER error occurs.
+Add a try-hold helper for mctp_dev and use it before reading the source
+address from a direct route. mctp_dst_from_route() now consumes that held
+reference when it populates dst. If no dst is requested, drop the temporary
+reference in mctp_route_lookup(). Do the same when the route cannot be used
+for a gateway path without a source address.
 
-> 
-> If the device is subsequently closed, this check causes the driver to skip
-> wx_ptp_stop(). The driver memory is then freed while the kernel PTP subsystem
-> retains a dangling pointer to the destroyed clock device, which will panic
-> upon any subsequent userspace access.
-> 
-> >  	wx_ptp_stop(wx);
-> >  	ngbe_down(wx);
-> 
-> [ ... ]
-> 
-> > diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> > index 11ac4b04f5ee3..582ee567e6b9c 100644
-> > --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> > +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> 
-> [ ... ]
-> 
-> > @@ -538,12 +557,16 @@ static int txgbe_close(struct net_device *netdev)
-> >  {
-> >  	struct wx *wx = netdev_priv(netdev);
-> >
-> > +	if (test_bit(WX_STATE_RES_FREED, wx->state))
-> > +		goto out;
-> 
-> Simon says: ditto
-> 
-> [Severity: High]
-> Similarly, does bypassing wx_ptp_stop() here leak the PTP clock device
-> and cause a use-after-free?
-> 
-> Just like in ngbe_close(), if an AER error triggers a slot reset,
-> wx_io_slot_reset() invokes txgbe_down_suspend() which sets
-> WX_STATE_RES_FREED without calling wx_ptp_stop().
-> 
-> If the device is then closed, this bypasses the cleanup, leaving the
-> kernel PTP subsystem with a dangling pointer to the destroyed clock device.
-> 
-> Simon says: I think the issue below can be looked at in the context
->             of possible follow-up.
+Fixes: 22cb45afd221 ("net: mctp: perform source address lookups when we populate our dst")
+Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
+---
+ include/net/mctpdevice.h |  1 +
+ net/mctp/device.c        |  5 +++++
+ net/mctp/route.c         | 28 ++++++++++++++++++++--------
+ 3 files changed, 26 insertions(+), 8 deletions(-)
 
-I'll consider handling this in another patch.
-
-> 
-> [Severity: High]
-> This is a pre-existing issue, but does failing to open the device in
-> txgbe_open() lead to a NULL pointer dereference on subsequent open attempts?
-> 
-> If txgbe_open() encounters an error, the error path calls
-> wx_reset_interrupt_capability(), which frees wx->msix_q_entries and sets
-> it to NULL.
-> 
-> If a user subsequently attempts to bring the interface up again,
-> txgbe_request_queue_irqs() is called, which dereferences the NULL
-> wx->msix_q_entries array.
-> 
-> >  	wx_ptp_stop(wx);
-> >  	txgbe_down(wx);
-> 
+diff --git a/include/net/mctpdevice.h b/include/net/mctpdevice.h
+index 957d9ef924c5..1d052f11127c 100644
+--- a/include/net/mctpdevice.h
++++ b/include/net/mctpdevice.h
+@@ -50,6 +50,7 @@ int mctp_register_netdev(struct net_device *dev,
+ void mctp_unregister_netdev(struct net_device *dev);
+ 
+ void mctp_dev_hold(struct mctp_dev *mdev);
++bool mctp_dev_try_hold(struct mctp_dev *mdev);
+ void mctp_dev_put(struct mctp_dev *mdev);
+ 
+ void mctp_dev_set_key(struct mctp_dev *dev, struct mctp_sk_key *key);
+diff --git a/net/mctp/device.c b/net/mctp/device.c
+index 2c84df674669..18b192bbfaa7 100644
+--- a/net/mctp/device.c
++++ b/net/mctp/device.c
+@@ -303,6 +303,11 @@ void mctp_dev_hold(struct mctp_dev *mdev)
+ 	refcount_inc(&mdev->refs);
+ }
+ 
++bool mctp_dev_try_hold(struct mctp_dev *mdev)
++{
++	return mdev && refcount_inc_not_zero(&mdev->refs);
++}
++
+ void mctp_dev_put(struct mctp_dev *mdev)
+ {
+ 	if (mdev && refcount_dec_and_test(&mdev->refs)) {
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 1f3dccbb7aed..3d0737030917 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -897,15 +897,16 @@ static mctp_eid_t mctp_dev_saddr(struct mctp_dev *dev)
+ 	return addr;
+ }
+ 
+-/* must only be called on a direct route, as the final output hop */
++/* must only be called on a direct route, as the final output hop, with a
++ * reference already held on route->dev.
++ */
+ static void mctp_dst_from_route(struct mctp_dst *dst, mctp_eid_t eid,
+ 				mctp_eid_t saddr, unsigned int mtu,
+-				struct mctp_route *route)
++				struct mctp_route *route, struct mctp_dev *dev)
+ {
+-	mctp_dev_hold(route->dev);
+ 	dst->nexthop = eid;
+-	dst->dev = route->dev;
+-	dst->mtu = READ_ONCE(dst->dev->dev->mtu);
++	dst->dev = dev;
++	dst->mtu = READ_ONCE(dev->dev->mtu);
+ 	if (mtu)
+ 		dst->mtu = min(dst->mtu, mtu);
+ 	dst->halen = 0;
+@@ -998,14 +999,25 @@ int mctp_route_lookup(struct net *net, unsigned int dnet,
+ 			mtu = mtu ?: rt->mtu;
+ 
+ 		if (rt->dst_type == MCTP_ROUTE_DIRECT) {
+-			mctp_eid_t saddr = mctp_dev_saddr(rt->dev);
++			struct mctp_dev *dev = rt->dev;
++			mctp_eid_t saddr;
++
++			if (!mctp_dev_try_hold(dev))
++				break;
++
++			saddr = mctp_dev_saddr(dev);
+ 
+ 			/* cannot do gateway-ed routes without a src  */
+-			if (saddr == MCTP_ADDR_NULL && depth != 0)
++			if (saddr == MCTP_ADDR_NULL && depth != 0) {
++				mctp_dev_put(dev);
+ 				break;
++			}
+ 
+ 			if (dst)
+-				mctp_dst_from_route(dst, daddr, saddr, mtu, rt);
++				mctp_dst_from_route(dst, daddr, saddr, mtu, rt,
++						    dev);
++			else
++				mctp_dev_put(dev);
+ 			rc = 0;
+ 			break;
+ 
+-- 
+2.34.1
 
