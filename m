@@ -1,159 +1,270 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02777428474
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 12:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CEB427A10;
+	Fri, 31 Jul 2026 13:11:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785502186; cv=none; b=ALCR+4s2/mua5ET89cbPfLtwwgpyUdj2sZUx+4AySYL0VIXN17HCvfUNbygGS/Ke4FbJLMFYh4XB1SYG9AIxnWqFjLkQMWFJpPwjKTqPGwxNwkAdhhSrgVQFztJa3EPObpLsXtaSVeCzEb4xQOWceg5ZxFQKDP0II72/eQNnXQQ=
+	t=1785503507; cv=none; b=sWqgXP0XVY/54HGDMx3wgwM9rC5uPfEOV8K0yWKJdjUBMufNvz4stXZigVHnOAARAdZxRLjTV3z7g04ttx/r6rvA8mlGjhIIWexb5qcdHl1GdxpQ8OoC77sRdlVbQDSTSUOuVi5B+vK11hLDoEl4jWmnYQnAI6G4lIASiJtmm6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785502186; c=relaxed/simple;
-	bh=9P0WpGY72xMhlB4Udj2rQ82OrLDkKvAS4z6Gv+1k6i4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YShkRv1Fom/3aWVcFecqpIfef5znW4eHaTXOVOMHAwFMMTj9lM2KyUaiR/3kVgHDD8fsnNyJAhJQElI8JfKNNyvE99H6iuGUH3cxgMt+b5FS/Y375NDBCOPA9lFbWFfUttxi8Z6KqLZl/TeFE59F8f+aY6s9mHxHsulQ38v5NQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xca6Ga2t; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785503507; c=relaxed/simple;
+	bh=cdVFN5+AJoKFcNRze2Moihk7gMMfozZteDphDsr4YOE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pEyguVIfUB9xamfQ19ehV+5f3scNqVGdEK5d3RJKVvnIr4vlJf3LpfMfqFVrye516S7QxRQyYJKoxUR+GA7sAb96byF1eXz60l8JhMJ9xWlPzHoA/b9a15Cc/lfz/eIu+NWrZkXg/8+T+vs1NM3t1ScAV7BCag8ntiHazYiA4Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l1rjptIk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xca6Ga2t"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8143daf89c7so9065147b3.1
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 05:49:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785502184; x=1786106984; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OMT9YR+Z2gS6Eh7vbnulZB5ih8XO9hWY1MpWR6T+nYA=;
-        b=Xca6Ga2tJScuSlmKm+nbmNria8pJ72Gn5autHpxMnJokzaNsQFjUr3dEbij2kgjIZV
-         V2y2rPS93lFCaRjnyGQwMHVr8ZZuVWjznMLDhzBWvyVBLwIujBN8xYsKBiq8ApHD3uqt
-         uKz6wCN+DiOojl9UcQzXCrvx4j4T1ln/v3OAqrJQl3km5ptEeVGtYC4dtHQTiTro663E
-         6FqQ0XmKWupxMxuPpBZtEzWwZpVDP9v5kxUeTrRR9y/vC7cJ7Rz/cObw/Zrj+hmQKVvZ
-         6VgaMoowqF5w4tIy63CCZgYoGGzQZuOPEQ4AQiVH1E87Jwue8QNfAFp//udY+c0LrLNn
-         zjUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785502184; x=1786106984;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OMT9YR+Z2gS6Eh7vbnulZB5ih8XO9hWY1MpWR6T+nYA=;
-        b=HXDRaya1xxus/J0iEqrp1LI5uxCZI+ONcurOI/9T4xusS2ZRJUVpEXiwYKiT+//5cQ
-         zNIpS11CILg15N0QsxYL/+tAv2UU6oM9oTVBFBiQdPw0ANWr1pCtI16rjtYYyIealyT6
-         o75/fS+mXgyJMNiNPPMIxkCpNPdnGfBezVAkBIG8hWklL8on0NQKIqjGtmpX2rGhYx14
-         Obs3/rtrGf6VFshX85RkGxJJJA7FNs1BeycN0sbwcoCpV587TkHH94/RM6stSSXhoPvj
-         +AEXSBDT9p6vZcKAH58gfSO6CSehDbXnN9s+tFjCR2qFt/5h4fm7lzo7VlnMFycgHVs6
-         7fvQ==
-X-Gm-Message-State: AOJu0YxrgSXJ6c6nzPRASE68JKciDTMPtJZFm7/B9d4SGZ27IhOVXJuN
-	St02Kg5FRoeuPlOuILCoy1oXxVKlmbvRXu/B4941tFMIkoqzzot00S1+
-X-Gm-Gg: AR+sD111TlpKQJ7omXIfbL1oE1RLAQ1872DuidqFercv3YMr5D648gJe5SJAKCKSUYo
-	ZYq/+Mx8VBITBgC9UlVnlsJgDJ6x2pOCOti+FXfasU6B/C8Q/qTvfExVTYcx3VIUv+zMhO9E2HR
-	Y5Ef1bLDB0d9ioK+0GbgrBXNgbArJjpipbMFmz151XWj887pV5RiwWaNXGYF+rXj2owDP8e9Ofy
-	1k2aIXHgwhbOwfTNeOWh0XygGE5nfRMW7IcFZdjOpmsniPW36mnu0ekT+O/LiZvm73IlcveyLbo
-	S5i8EEBGO71TIZP4x3pU5ES3xmBZg9BQplUhYffGF/bahXGDggdH3Au0v+t/k/ocwJvS5nG+zf/
-	LwgBqFgm6ANoHmppnG0V9vWKP3F84Umfs/1TFGLn8lDn9SOZwhbCNpTt5Or5oyikag1kF7cvx96
-	kLt2LczfYN2aLsEJPvy52jUkfoelPYVq3syasLeLRJ5bhLY2cXa9bin/vehkQ2/Ys=
-X-Received: by 2002:a05:690c:318:b0:81d:c233:aea0 with SMTP id 00721157ae682-81fcbab8b90mr16379287b3.18.1785502183999;
-        Fri, 31 Jul 2026 05:49:43 -0700 (PDT)
-Received: from devobuntu.lan ([2600:6c5c:6b00:316::23])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fcd108f0bsm5695367b3.35.2026.07.31.05.49.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 05:49:43 -0700 (PDT)
-From: Matt Vollrath <tactii@gmail.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Matt Vollrath <tactii@gmail.com>
-Subject: [PATCH iwl-next 3/3] iavf: use cached page_pool ref in skb helpers
-Date: Fri, 31 Jul 2026 08:41:09 -0400
-Message-ID: <20260731124109.99065-4-tactii@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260731124109.99065-1-tactii@gmail.com>
-References: <20260731124109.99065-1-tactii@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l1rjptIk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913151F000E9;
+	Fri, 31 Jul 2026 13:11:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785503505;
+	bh=njAxdslaCwu+qgiLQg8pHyf0IOr9kMNfF7OhA7OHY3E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=l1rjptIkxhdCbx0SBIgY4e11Qr3HBWAv0gGsQ7GR6k5tk5F56P2OgNoKJJfyV5lm6
+	 O+T7YAvwieoIhRX+K5sivTHg9VW5AZJmY/FU43xpSI0zfVBFoAj3u03qEDR6Xj2g4Y
+	 csLcnOhvmuOvpslR1oAPeSAKKKFwroeF6H8eRFA6zCDNYoj8zXmSzhraz0wbNMddIy
+	 XXo2declF8ropp8q6rObtJkIkLneOtNdcsD9GdqV9mkqsitM3Oybm+9H2KDGSe4jsD
+	 PJwDrsmv15rezD/7GBA8UIBNDCIv05MYwUz4GhrrjFTi/yHl6pT2S0ml9SxUFf7wAE
+	 awUVudkdTH6Kw==
+Date: Fri, 31 Jul 2026 14:11:41 +0100
+From: Simon Horman <horms@kernel.org>
+To: Fan Wu <fanwu01@zju.edu.cn>
+Cc: netdev@vger.kernel.org, david@ixit.cz, mgreer@animalcreek.com,
+	oe-linux-nfc@lists.linux.dev, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] nfc: trf7970a: drain timeout_work and keep
+ trf->lock valid across teardown
+Message-ID: <20260731131141.GH51943@horms.kernel.org>
+References: <20260728030716.230626-1-fanwu01@zju.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260728030716.230626-1-fanwu01@zju.edu.cn>
 
-Deriving a reference to the page pool from netmem_desc requires loading
-the struct. We already have a cached reference to the pool, so use that
-instead.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260728030716.230626-1-fanwu01@zju.edu.cn?part=1
 
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Assisted-by: Claude:claude-5-fable
+Simon says; Thanks for the updates in v2. It seems that Sashiko
+            has some more feedback, I'd appreciate it if you could
+	    look over it.
 ---
- drivers/net/ethernet/intel/iavf/iavf_txrx.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+--- Patch [1]: [PATCH net v2] nfc: trf7970a: drain timeout_work and keep trf->lock valid across teardown ---
+commit 759d465c2a36b8aecb984c2dddb7b2b408b93082
+Author: Fan Wu <fanwu01@zju.edu.cn>
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-index 3ae2f0a0ee4d..9dc5f0761d8b 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-@@ -1184,6 +1184,7 @@ static bool iavf_cleanup_headers(struct iavf_ring *rx_ring, struct sk_buff *skb)
- 
- /**
-  * iavf_add_rx_frag - Add contents of Rx buffer to sk_buff
-+ * @pp: page pool the buffer was allocated from
-  * @skb: sk_buff to place the data into
-  * @rx_buffer: buffer containing page to add
-  * @size: packet length from rx_desc
-@@ -1193,11 +1194,11 @@ static bool iavf_cleanup_headers(struct iavf_ring *rx_ring, struct sk_buff *skb)
-  *
-  * The function will then update the page offset.
-  **/
--static void iavf_add_rx_frag(struct sk_buff *skb,
-+static void iavf_add_rx_frag(const struct page_pool *pp, struct sk_buff *skb,
- 			     const struct libeth_fqe *rx_buffer,
- 			     unsigned int size)
- {
--	u32 hr = netmem_get_pp(rx_buffer->netmem)->p.offset;
-+	u32 hr = pp->p.offset;
- 
- 	skb_add_rx_frag_netmem(skb, skb_shinfo(skb)->nr_frags,
- 			       rx_buffer->netmem, rx_buffer->offset + hr,
-@@ -1206,17 +1207,19 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
- 
- /**
-  * iavf_build_skb - Build skb around an existing buffer
-+ * @pp: page pool the buffer was allocated from
-  * @rx_buffer: Rx buffer to pull data from
-  * @size: size of buffer to add to skb
-  *
-  * This function builds an skb around an existing Rx buffer, taking care
-  * to set up the skb correctly and avoid any memcpy overhead.
-  */
--static struct sk_buff *iavf_build_skb(const struct libeth_fqe *rx_buffer,
-+static struct sk_buff *iavf_build_skb(const struct page_pool *pp,
-+				      const struct libeth_fqe *rx_buffer,
- 				      unsigned int size)
- {
- 	struct page *buf_page = __netmem_to_page(rx_buffer->netmem);
--	u32 hr = pp_page_to_nmdesc(buf_page)->pp->p.offset;
-+	u32 hr = pp->p.offset;
- 	struct sk_buff *skb;
- 	void *va;
- 
-@@ -1430,9 +1433,9 @@ static int iavf_clean_rx_irq(struct iavf_ring *rx_ring, int budget)
- 
- 		/* retrieve a buffer from the ring */
- 		if (skb)
--			iavf_add_rx_frag(skb, rx_buffer, fields.len);
-+			iavf_add_rx_frag(pp, skb, rx_buffer, fields.len);
- 		else
--			skb = iavf_build_skb(rx_buffer, fields.len);
-+			skb = iavf_build_skb(pp, rx_buffer, fields.len);
- 
- 		/* exit if we failed to retrieve a buffer */
- 		if (!skb) {
--- 
-2.43.0
+nfc: trf7970a: drain timeout_work and keep trf->lock valid across teardown
 
+The patch adds cancel_delayed_work_sync(&trf->timeout_work) to
+trf7970a_remove() (between nfc_digital_unregister_device() and
+nfc_digital_free_device()) and to the probe error path, and it drops
+mutex_destroy(&trf->lock) from both paths so the mutex stays valid until
+devm releases the threaded IRQ.
+
+A few questions below.
+
+> diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+> index 60883001fa5d..37d543fd5913 100644
+> --- a/drivers/nfc/trf7970a.c
+> +++ b/drivers/nfc/trf7970a.c
+> @@ -2207,13 +2207,13 @@ static int trf7970a_probe(struct spi_device *spi)
+>  err_shutdown:
+>  	trf7970a_shutdown(trf);
+>  err_free_ddev:
+> +	cancel_delayed_work_sync(&trf->timeout_work);
+>  	nfc_digital_free_device(trf->ddev);
+>  err_disable_vddio_regulator:
+>  	regulator_disable(trf->vddio_regulator);
+>  err_disable_vin_regulator:
+>  	regulator_disable(trf->vin_regulator);
+>  err_destroy_lock:
+> -	mutex_destroy(&trf->lock);
+>  	return ret;
+>  }
+
+[Severity: Low]
+With mutex_destroy() gone, err_destroy_lock: is now an empty label sitting
+directly in front of return ret;, while its name still says a lock is
+destroyed there:
+
+	err_destroy_lock:
+		return ret;
+
+The two remaining users are the devm_regulator_get("vin") failure and the
+regulator_enable(vin) failure paths.  Would it be cleaner to turn those two
+gotos into plain return ret; statements, or to rename the label to something
+like err_out?
+
+>  
+> @@ -2228,12 +2228,11 @@ static void trf7970a_remove(struct spi_device *spi)
+>  	mutex_unlock(&trf->lock);
+>  
+>  	nfc_digital_unregister_device(trf->ddev);
+> +	cancel_delayed_work_sync(&trf->timeout_work);
+
+[Severity: High]
+Can the handler this drain waits for still complete upstream into the
+already-torn-down digital core?  This isn't a bug introduced by this patch
+(before it, the same handler could run even later, after remove() returned),
+but the commit message argues that this placement makes freeing the digital
+device safe, and that part looks incomplete.
+
+Consider a timeout handler that already started and is blocked in
+mutex_lock(&trf->lock) in trf7970a_timeout_work_handler() while remove()
+holds the lock.  trf7970a_shutdown() completes the command once through
+trf7970a_send_err_upstream(), which uses the non-blocking cancel:
+
+drivers/nfc/trf7970a.c:trf7970a_send_err_upstream() {
+	...
+	cancel_delayed_work(&trf->timeout_work);
+	...
+}
+
+For an already-executing handler that returns false, and the return value is
+discarded, so trf->ignore_timeout stays false.  Neither
+trf7970a_send_upstream() nor trf7970a_shutdown() clears trf->cb or
+trf->cb_arg.
+
+The handler is then released by the mutex_unlock() just above and, with
+state TRF7970A_ST_PWR_OFF and ignore_timeout false, takes the final else
+branch and does a second, stale completion:
+
+drivers/nfc/trf7970a.c:trf7970a_send_err_upstream() {
+	...
+	trf->cb(trf->ddev, trf->cb_arg, ERR_PTR(errno));
+}
+
+trf->cb is digital_send_cmd_complete() and trf->cb_arg is the digital_cmd
+that nfc_digital_unregister_device() just freed:
+
+net/nfc/digital_core.c:nfc_digital_unregister_device() {
+	...
+	cancel_work_sync(&ddev->cmd_complete_work);
+
+	list_for_each_entry_safe(cmd, n, &ddev->cmd_queue, queue) {
+		list_del(&cmd->queue);
+		...
+		kfree(cmd);
+	}
+}
+
+net/nfc/digital_core.c:digital_send_cmd_complete() {
+	struct digital_cmd *cmd = arg;
+
+	cmd->resp = resp;
+	...
+	schedule_work(&ddev->cmd_complete_work);
+}
+
+So the stale completion writes cmd->resp into freed memory and re-queues
+ddev->cmd_complete_work after the core already did its single
+cancel_work_sync(), and nfc_digital_free_device() frees ddev on the next
+line.  __cancel_work_sync() re-enables the work after flushing, so nothing
+blocks the re-queue.
+
+Would neutralising the upstream completion during teardown help here, for
+example clearing trf->cb/trf->cb_arg (or setting ignore_timeout / a
+"removing" flag) under trf->lock in the shutdown path, or draining both
+before and after nfc_digital_unregister_device()?
+
+[Severity: High]
+Is this drain the last event that can arm timeout_work?  This is also a
+pre-existing problem rather than something the patch introduces, but the
+TRF7970A_ST_LISTENING_MD state seems to escape the new drain.
+
+trf7970a_shutdown() does not handle that state:
+
+drivers/nfc/trf7970a.c:trf7970a_shutdown() {
+	switch (trf->state) {
+	...
+	case TRF7970A_ST_IDLE:
+	case TRF7970A_ST_IDLE_RX_BLOCKED:
+		trf7970a_switch_rf_off(trf);
+		break;
+	default:
+		break;
+	}
+	...
+}
+
+TRF7970A_ST_LISTENING_MD, set by _trf7970a_tg_listen(), falls into
+default:, so RF is never switched off and trf7970a_power_down() bails out
+(its return value is discarded):
+
+drivers/nfc/trf7970a.c:trf7970a_power_down() {
+	if (trf->state != TRF7970A_ST_RF_OFF) {
+		dev_dbg(trf->dev, "Can't power down - not RF_OFF state (%d)\n", trf->state);
+		return -EBUSY;
+	}
+	...
+}
+
+The chip stays enabled and its threaded IRQ stays registered until devm runs
+devm_free_irq() after .remove() returns.  trf7970a_irq() only short-circuits
+on TRF7970A_ST_RF_OFF, so an interrupt in that window reaches:
+
+drivers/nfc/trf7970a.c:trf7970a_irq() {
+	...
+	case TRF7970A_ST_LISTENING_MD:
+		if (status & TRF7970A_IRQ_STATUS_SRX) {
+			trf->ignore_timeout = !cancel_delayed_work(&trf->timeout_work);
+			ret = trf7970a_mode_detect(trf, &trf->md_rf_tech);
+			...
+				trf7970a_drain_fifo(trf, status);
+	...
+}
+
+and trf7970a_drain_fifo() re-arms the work:
+
+	schedule_delayed_work(&trf->timeout_work,
+			   msecs_to_jiffies(TRF7970A_WAIT_FOR_RX_DATA_TIMEOUT));
+
+Nothing drains it a second time, so the re-armed work can fire after devm
+frees the devm_kzalloc()'d trf, and the same IRQ path dereferences
+trf->ddev, which nfc_digital_free_device() freed on the next line.
+
+Separately, the same shutdown gap looks like it leaks a VIN enable
+reference: probe enables vin once and trf7970a_power_up() enables it again,
+against the single regulator_disable(trf->vin_regulator) in remove().
+
+Should TRF7970A_ST_LISTENING_MD be added to the shutdown switch (and the
+power_down() failure be handled) so the drain is really the last arming
+opportunity?
+
+>  	nfc_digital_free_device(trf->ddev);
+>  
+>  	regulator_disable(trf->vddio_regulator);
+>  	regulator_disable(trf->vin_regulator);
+> -
+> -	mutex_destroy(&trf->lock);
+>  }
+
+Simon says: I believe the issue below was discussed indirectly in the
+            review of v1. And the behaviour described below is expected.
+
+[Severity: Low]
+This isn't a bug, but the correctness of dropping mutex_destroy() now rests
+on an invariant that is not recorded anywhere in the file: devm reverse-order
+release must run devm_free_irq() (registered in trf7970a_probe() after the
+devm_kzalloc() of trf) before trf itself is freed.  The ordering as written
+today is fine, but a future change that moves devm_request_threaded_irq()
+ahead of the devm_kzalloc(), or converts trf to a non-devm allocation,
+silently brings back the use-after-free with no comment and no build-time
+check.  Removing mutex_destroy() also drops the CONFIG_DEBUG_MUTEXES
+use-after-destroy check for this lock.
+
+Would an explicit devm_free_irq()/disable_irq() at the top of
+trf7970a_remove() (which synchronises the handler and lets mutex_destroy()
+stay), or devm_mutex_init() so the mutex teardown is itself devm-ordered, be
+preferable to relying on the implicit order?  Either way, the threaded IRQ
+handler can still run during and after .remove(), taking trf->lock and
+driving a device that trf7970a_shutdown() already powered down and
+pm_runtime_disable()'d.
+
+>  
+>  #ifdef CONFIG_PM_SLEEP
