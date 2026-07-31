@@ -1,227 +1,167 @@
-Received: from mail-ed2-f11.google.com (mail-ed2-f11.google.com [74.125.228.75])
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015F8428472
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 13:43:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.75
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785505418; cv=none; b=VJXaPJ11tmRY76LCT9lgRlCsLrB9js9K20ltXrhpYddjx8qwUD8BKvxQPz5gDFLxvBzSKFKROhoN4s8kYBhPw9MgNHYLjdyeI5Db1eK3PX25b77I0frNq2FI7SHojd17ID1xZiBySsY0HsVK9qwFjDYrOVjhPMgTMkOxXpk34NE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785505418; c=relaxed/simple;
-	bh=EqdU4u+6Ft1dVu3bgY5wxogDQ6jHRutxwSheAxUaOyc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nw646NyoYjt5+LVtlfPniRPoILvBxap7J2phoLcAnaNSkZNb03s4loI/R9p2kQj7v3SeBMk03WgQE4+P0d0mVF8OGxWKM4gsLWf56PA0CdnUkOBuywJ1EiRo1bLeMC93UxsA9iuIW4ld8+35j9OV1jp3dxubBwkYtbXzt7XgQdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.228.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3893030C60F
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 13:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785505785; cv=pass; b=QWoxtLM++EqzInQ5KuBzbDZjk2yZkZ99pyityRR8fXx8t9reuxJ/WoWcSfjQZmdB6N1n3M+flkc3IihzMOsjoTCjCETLCjWQ9LDHYbZjMuWkhvGzUcm9NW8OR5e+oEvJ7ukuJ1hEsiFvu9Y9kj+74T+oGvwP2tvUDyGEorbuZQ8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785505785; c=relaxed/simple;
+	bh=YZ9CkSlTlrJLbh1WOVmHl9IAHWd1C2X3EZjHD0e7Bls=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UQVQzo6oacdEP3EAxEgyADAKeZHbUVMA2qzhBpU919blAkoUhLeM7takf9L05Vlw7WqS7DgMnHtYVtf+AFhg9jSXg91ILoloDxrEP8eP9lqe1NWgM0DJ/PsOgymvyAJI0pjgBpy7ZuaJHWfpKMi1mKx44HZ5AJgfRZCUWwUwcGE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qg2MeH0a; arc=pass smtp.client-ip=209.85.167.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed2-f11.google.com with SMTP id 4fb4d7f45d1cf-69f4b000237so401130a12.0
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 06:43:36 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qg2MeH0a"
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-4ab47c40e7eso406075b6e.3
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 06:49:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785505779; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WQiVOKJHGrPI44baxXAxgwAPUOVPwU5/PUlMqQYg+r+6SQLEUM20qeoS5yE7CYlSB1
+         YhfIw+QDiOoTdZ0bzjiL0NwXy2kusfyRDyI92WzqNOyeHWzWWGZOzCP9L0HHT0OzQYHI
+         6g7DJ+uD0uaCBshsGUSA71q6R5Ot6OTOvR+a6tRRD/Oh+k1UW/oL/icSzdtzTDLTHx94
+         3rm9DfPdJUVSKJMJOg+tVW+hDzhxFpmnP0tFPxz+0huqBKr/9ZNYDReU/xrMrrsoKB8T
+         s20xY5Q3xKHkpNnL2kH6MVjp1UbimrXd/Tn7B3msWSuSuZ2SInipZW9mjzVk3KgpEtoV
+         sEgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sCROSErOvst+rw5J7GR2giK0/Qqz2Z7mQAMi+70946Y=;
+        fh=sB2nt6D219ubEkZ6UHorFi8YGC2jjW9Uv9lyWG/hwO0=;
+        b=FvOu87ISr7fvs5VppfsGoZoclOhES15HUbGo9TB0k2dIsijJL7NkGFeUdNRMTEx2/X
+         n7bNJxHOaX8klVvfYDDG731dYR0kkkQOl2V2RW3ss2wtsF3GSeIl9h8Pnsl05lN5QVaJ
+         MfTiL0u/fztEO3wqU1h0ThYPxQRQNHM16opZaDuApK8SahmuiidVrjsT80UpvAB5XG8/
+         utHs7M67/3cgdqeBvgUAqQekpWPv4NwUfCQ93XNrQQp2adaz9MUKc5cywBzS/wOzAbzV
+         GcWvGL8doo4YQ2OcTX7vmv7nPnBzpJrbw6RbfeJZAvempaR25GRIVUuzZu9ORLw7fg8J
+         vU8w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785505779; x=1786110579; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sCROSErOvst+rw5J7GR2giK0/Qqz2Z7mQAMi+70946Y=;
+        b=Qg2MeH0ar3dUWrbDhSdYL1mOObW9k9LRK0A3OVYEpDmZ9FnXWsT7igVPlFGgqvvulC
+         SEU4FNfXsgm/aXDMO9ovfvPlpzJRkcy9/o815pDSQCXZqDkJV0FN4O2IUBHMohHcQA+b
+         uXfK7p+v7QG/SLw8/VpRTna5SbfT1DUP3s23k37LnJ80wOdbyXF9Z9zkabP5oA6hvra9
+         QXKfbbu22Vml+oBs0T7o7oSwMO1pU5vw4uLUarpDlH2PUqyWgUASyo4FI/x3MXLKlRun
+         6ccLa0rUo9ig8Yz5+DSB/CIOkfgXgMtsJ5FAfWI+aO35Z1BRDxGqSMnzJ+wQNLJsvyh4
+         zryg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785505415; x=1786110215;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7gekbEKMahqrq477slabtPXrcasFqXXP5wGWUbow2GI=;
-        b=fjkOndQQu2PXM0IdEoZbLL7UYSbZntsLqFFUivLbCPQ4RrpU5OlML21F+ZRzSr9yZR
-         32xg8eTBgl8LAig+svAJG9LrJsHUzwWuHha1aBIbzK5f+kQ2Uy3RN3d7D7pO1/AI3l5Z
-         gqU745+hfYbMaaxUs2vHWCK94ZpJG4iAXaevxce0HXIt3E2pOXJIxec9acqjDqFndoWE
-         OHQXYQLgFl6fOgTB9vtUjsJZpJM83k+pPvo6o7cYpuXKBlA2Db367nq+qvgmaV/fFweG
-         HLrlJo2jxQBOw+sC+2U8HZlNdCGggEyCRUKU3FfCYUB+N/gZmo170dkxhSOSQeb/sYcE
-         i6bQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrv/zQkNul6jzVjM+6kiecYKFsk58y8rGd+E64YC27RqW3vAt5ClQquYy9jL43XXAZXCalgelI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGr7wvGg0Hug7+mgaScUMmL3iN+nSom++4Sq/o/FHcyVATqwEx
-	fp8Cj+o5ePuaSAxroGSFckRWaWWBIzmNpR0mKxaMThU4HXTS/N9opbQI
-X-Gm-Gg: AR+sD11GgNDdH3jfyXWQGWE2Y5LuOhKcbr8vVmT1HDbHwmUrwxeDgoK0AdrY0K9EXdg
-	1qL51jYIVu9CqsUJyplsuvWdSag2T4Igf52eqhdvRQ0/uEukcAQAsLdOR88cmCz4OHYvUZsUYle
-	8maKt1IagGJ/0fDE5lEVxn1BvZtC8oZrN6RHhPhDB4ygMTSd+jG8YB8y/VYlpUtUt3i+aMwFEui
-	Tr3Zhkvpi2hJ3XoKoCrqM+HI6BFv897YNlyNmeTC6YiMUCxHHmWYNnSkIvn1xi3klmzvtjISls5
-	pJhIg6AT/hRXIbRaYQeInmdE9bZC3c9H/Vsv8c2fztEEx09icx6BpBEYGuWxbDKqC1lgDwqHfpz
-	soqTIZRrlTUntvfr52vbQ+Gl5eFaeKZqDpm64uNnHYkTU34z8LQ1Jpsa1OTuAI+qLJeThbLWGQd
-	XdOGZApAi8iJfDI0ffQ6KUBaCxMkUMo36E+dwdPPsfu5FdSDZhvvs5h8wcz26rvCqr2JxwI+bcj
-	8xGUbLK9aBjbvKZ1OL+ssQMXw==
-X-Received: by 2002:a05:6402:518e:b0:698:50ea:2d97 with SMTP id 4fb4d7f45d1cf-6a098d097dcmr1272142a12.20.1785505415057;
-        Fri, 31 Jul 2026 06:43:35 -0700 (PDT)
-Received: from [192.168.88.241] (78-80-108-129.customers.tmcz.cz. [78.80.108.129])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a09c63d9aesm2053241a12.19.2026.07.31.06.43.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jul 2026 06:43:34 -0700 (PDT)
-Message-ID: <82d57a4c-297e-42e4-baac-5ea431c32447@ovn.org>
-Date: Fri, 31 Jul 2026 15:43:33 +0200
+        d=1e100.net; s=20251104; t=1785505779; x=1786110579;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sCROSErOvst+rw5J7GR2giK0/Qqz2Z7mQAMi+70946Y=;
+        b=eSeoLG6aaPmqo3S/g2u3CSqsgdXlvXxqnucesfD3szeGuPtJ/bvadaoZ/8IwExMbtb
+         7bQVkJLYELaFwOdSTn2qJy4kKJgUdK8FUZtv708aGFSDR9zBqdpP7BnbeecZNlErbpJT
+         2uc1jAuzHAVTztMOLbBL67TX6djtfsx0r+EWyKwAZzyzGear8UpSFAook0BaN6wrf1vg
+         SNh5uHeK3eFE9VvYxxSSCMxtPw4gG2m9bljhiXapsa9bn8Y8CHBpK6BBeXlZfCAmlu0n
+         8yMGkVhRr5zbFjdcUqo0Db+ufn3lADZ5hNCJcflhCRvntemDiwo4dbb0iMGhk88V1Ozn
+         +Ewg==
+X-Forwarded-Encrypted: i=1; AHgh+RqE4z7cKohtQkgSnKWxBqoXsPgwjqqPVP2jOZNPYkVgKwWQNb+TZpZ9UOoO2NiNn/YXO9KPrRo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLfyoGTwS9mWlEXFsSDYk3ktSJ7/P6XB/SxnZhSA8ghscB7LIc
+	b76tiUNlEFscgScmVI2TFhrWruYNhss/XicUKueOmp5fW8O6vxQPRI6K4FaMhb83dbj/9ZslB4I
+	tSZpRN9UwbEJD/FygmDZIz9bpp49CFek=
+X-Gm-Gg: AR+sD13hqjS07Gj3RjpERFt1P74eMhom0iVwbKcaDChgynP2FU8IMXRvkZa4NF3qlil
+	r/wfxblamfUl1cmrDUTfwKEIPYw1E6jW4QdwVOTyri0tC0LMOvQelFxLIMywu+WftgfF8fn/ymY
+	v/4RVlR8KlC9LLCwuSA56Z4ooT5JsPVsok9w0iEVNVGna0V00YNWDK9R1fuk9ZVGQW7OZRS/A2G
+	pcFIBagbaMSCiWsDgp8t2P4YxC7rv9ZnBsk6e6GkRvhTtNy5BL9dyIzDojS+s4ioU6ub9cqB1es
+	vtY/0zgWnFOq8wclcxHaRamyuhqfTxbtslCgMGaeajU07qsgHxPBxOAIhkpqEytQDQYSHLVWWRG
+	m
+X-Received: by 2002:a05:6808:344c:b0:4ab:2abe:f031 with SMTP id
+ 5614622812f47-4ae4c42b8a4mr2564917b6e.6.1785505779353; Fri, 31 Jul 2026
+ 06:49:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 1/1] net: openvswitch: reallocate update replies
- for mismatched IDs
-To: Zhiling Zou <zhilinz@nebusec.ai>, netdev@vger.kernel.org,
- dev@openvswitch.org
-Cc: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai
-References: <c773b2726dda8d90eed6d42b2f9741810a7a46e1.1785288876.git.zhilinz@nebusec.ai>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <c773b2726dda8d90eed6d42b2f9741810a7a46e1.1785288876.git.zhilinz@nebusec.ai>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260730100006.3547944-1-reshmaisat@gmail.com>
+ <20260730100006.3547944-2-reshmaisat@gmail.com> <CANn89iLqLYAE_ZbK8F1HNop7nVPAR8AaMD2ojk+XuCNomJPEUg@mail.gmail.com>
+In-Reply-To: <CANn89iLqLYAE_ZbK8F1HNop7nVPAR8AaMD2ojk+XuCNomJPEUg@mail.gmail.com>
+From: Reshma Sreekumar <reshmaisat@gmail.com>
+Date: Fri, 31 Jul 2026 15:49:28 +0200
+X-Gm-Features: AUfX_myxRyw9a1CIwOvJkIMGVH30iSlpFvC5hopR2ZmA55gPHYfsi0yrgbcYxtc
+Message-ID: <CAGwYyQmtvyKd-NiA0-3fgB0FAjnExF+svd5CRaNzUvvMLemzfw@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] net/sched: flag inconsistent qdisc dumps
+To: Eric Dumazet <edumazet@google.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/29/26 3:53 PM, Zhiling Zou wrote:
-> ovs_flow_cmd_new() preallocates the optional reply skb before it takes
-> ovs_mutex and before it knows which existing flow will be updated.
-> 
-> That is normally fine because the skb is sized from the request flow
-> identifier.  That identifier also becomes the inserted flow's identifier.
-> For updates, however, a request with a UFID may miss the UFID lookup and
-> then fall back to the flow key lookup.  That lookup can legitimately find
-> an existing key-identified flow.  UFIDs are optional and the flow key is
-> the primary identifier.
-> 
-> For echoed replies, ovs_flow_cmd_fill_info() writes the matched flow's
-> identifier, not the request identifier used for the preallocation.  A short
-> request UFID can therefore leave too little room for the key identifier.
-> The fill can then fail with -EMSGSIZE and hit the BUG_ON(error < 0) in the
-> update path.
-> 
-> Once the update target has been resolved, reallocate the reply skb if the
-> matched flow needs a larger reply than the request identifier allowed.  Do
-> this before replacing the actions so the request can still fail cleanly if
-> the rare extra allocation fails.
-> 
-> Fixes: 74ed7ab9264c ("openvswitch: Add support for unique flow IDs.")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
-> ---
-> changes in v3:
-> - Compare computed reply sizes instead of UFID contents.
-> - Inline the rare reallocation check and add spacing around the update checks.
-> - v2 Link: https://lore.kernel.org/all/71380bcfbf3aed9a6a8a9daeef6592fa5a4fb245.1785211788.git.zhilinz@nebusec.ai/
-> 
-> changes in v2:
-> - Preserve valid key/UFID mixed flow updates as requested by Ilya Maximets.
-> - Reallocate the echoed reply skb with the matched flow identifier before replacing actions.
-> - v1 Link: https://lore.kernel.org/all/fa4f85fe7becb164a8a1849aa77ceeb1c08b078c.1784881178.git.zhilinz@nebusec.ai/
-> 
->  net/openvswitch/datapath.c | 24 +++++++++++++++++++++---
->  1 file changed, 21 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-> index eaf332b156d73..3007d75b42145 100644
-> --- a/net/openvswitch/datapath.c
-> +++ b/net/openvswitch/datapath.c
-> @@ -1113,9 +1113,8 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
->  			error = -EEXIST;
->  			goto err_unlock_ovs;
->  		}
-> -		/* The flow identifier has to be the same for flow updates.
-> -		 * Look for any overlapping flow.
-> -		 */
-> +
-> +		/* Look for any overlapping flow. */
->  		if (unlikely(!ovs_flow_cmp(flow, &match))) {
->  			if (ovs_identifier_is_key(&flow->id))
->  				flow = ovs_flow_tbl_lookup_exact(&dp->table,
-> @@ -1127,6 +1126,25 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
->  				goto err_unlock_ovs;
->  			}
->  		}
-> +
-> +		if (unlikely(reply &&
-> +			     ovs_flow_cmd_msg_size(acts, &new_flow->id,
-> +						   ufid_flags) <
-> +			     ovs_flow_cmd_msg_size(acts, &flow->id,
-> +						   ufid_flags))) {
+On Thu, Jul 30, 2026 at 1:24 PM Eric Dumazet <edumazet@google.com> wrote:
+  > I dislike this patch; it will force dump operations to restart on
+busy netns.
+  >
+  > Most devices are created with a new ifindex (dev_index_reserve() is
+  > called with ifindex =3D=3D 0)
+  >
+  > Forcing a given ifindex is rather unusual.
 
-This version seems fine too me code-wise, but this construct is hard to
-read.  There isn't a particularly good way to format this, but maybe
-something like the following will be easier on the eyes:
+  Agreed.
 
-		if (unlikely(reply)) {
-			size_t current, desired;
+  For context on why I went looking: we hit this on production hosts runnin=
+g
+  kernels predating 748bbef5fc6a. An agent that reconciles tc configuration
+  against a qdisc dump saw qdiscs that did exist as absent, tried to create=
+ them
+  again (-EEXIST), and tore down configuration it believed had gone stale.
+  Because nothing sets cb->seq there, a truncated reply is indistinguishabl=
+e
+  from a complete one, so there was no way to detect it and retry.
 
-			current = ovs_flow_cmd_msg_size(acts, &new_flow->id,
-							ufid_flags);
-			desired = ovs_flow_cmd_msg_size(acts, &flow->id,
-							ufid_flags);
-			if (current < desired) {
-				struct sk_buff *resized;
+  748bbef5fc6a makes that far less likely, and I have not been able to repr=
+oduce
+  the missing-qdisc case on 7.2-rc5. One case does remain, which this patch
+  would not have fixed either: ctx->q_idx is a position within the per-devi=
+ce
+  qdisc_hash walk, so a qdisc added or removed on the device at a batch bou=
+ndary
+  misaligns the skip count.
 
-				resized = ovs_flow_cmd_alloc_info(acts,
-								  &flow->id,
-								  info, false,
-								  ufid_flags);
-				if (IS_ERR(resized)) {
-					error = PTR_ERR(resized);
-					goto err_unlock_ovs;
-				}
-				kfree_skb(reply);
-				reply = resized;
-			}
-		}
+  Is that worth reporting to userspace, and how would you want it detected?
 
-Best regards, Ilya Maximets.
 
-> +			struct sk_buff *new_reply;
-> +
-> +			new_reply = ovs_flow_cmd_alloc_info(acts, &flow->id,
-> +							    info, false,
-> +							    ufid_flags);
-> +			if (IS_ERR(new_reply)) {
-> +				error = PTR_ERR(new_reply);
-> +				goto err_unlock_ovs;
-> +			}
-> +			kfree_skb(reply);
-> +			reply = new_reply;
-> +		}
-> +
->  		/* Update actions. */
->  		old_acts = ovsl_dereference(flow->sf_acts);
->  		rcu_assign_pointer(flow->sf_acts, acts);
-
+On Thu, Jul 30, 2026 at 12:25=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
+ wrote:
+>
+> On Thu, Jul 30, 2026 at 12:00=E2=80=AFPM Reshma Sreekumar <reshmaisat@gma=
+il.com> wrote:
+> >
+> > tc_dump_qdisc() walks every netdev in the netns and can span many netli=
+nk
+> > batches.  RTNL is only held while a single batch is filled, so devices =
+can
+> > be registered or unregistered in between.  Since 748bbef5fc6a ("net/sch=
+ed:
+> > switch tc_dump_qdisc() to for_each_netdev_dump()") the walk resumes on =
+an
+> > ifindex rather than a list position, but ifindexes are reused: a device
+> > created between two batches can be given an ifindex the dump has alread=
+y
+> > walked past, and is then missed entirely.  Before that commit the resum=
+e
+> > used a position in the device list, so any unregister shifted every lat=
+er
+> > device and silently dropped a run of qdiscs from the reply.
+>
+> I dislike this patch; it will force dump operations to restart on busy ne=
+tns.
+>
+> Most devices are created with a new ifindex (dev_index_reserve() is
+> called with ifindex =3D=3D 0)
+>
+> Forcing a given ifindex is rather unusual.
+>
+> I suggest detecting this specific use case instead of slowing down everyt=
+hing.
