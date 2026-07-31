@@ -1,339 +1,170 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D071043CEF4;
-	Fri, 31 Jul 2026 15:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785511108; cv=none; b=aGclmzUbIdX8Xm0eR71+3luecBpLNnTgTWU38AYPujO0twWE2ejq0V7s/jjEKs1xkKQ9IMcNePVt0GI5lQ43tGNOtmLmCI4Tbm9zaBIJvqS+NYDki+P8jxqrgz9cG5GkzWtq1o/ciZ6d8rRQECAaASOqgvKyKv0LPYX3pIV8egE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785511108; c=relaxed/simple;
-	bh=JJmAhK8tumR/okTi0PHddYkfrofRBf6zqg/al6oq/3Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uin2e9OJz20pORn5o7+H3j52ndr4lfc0wx4O999d3OHwAkrTiL9Jukhifr3VVp+D2zcuLPVaWLcNPSSmrtEuFO1KPYZrI3eKRjtzw3BkYdp5UfdEOmgBkstTFbz/SPmCNIWk38ToucDnZwRR9HW1dTfkWZ/IzOZOU3zLXolKAbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=FonQ6yA6; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8220842E8FB
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 15:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785511312; cv=pass; b=BruefQg8iCLQaG1il8VqTkKekZBEoj0rtlPFGDIwMFWm2h+QC4NDj0cyLSTLHLOkzZ4dFkucqjjnbZ0TLUe8gX93EzuzeOSdp/ml1RplQ87CkrfH5bUKWhbR51BVlVWjOcdA4iDeffHgsjnQG7q60zhKD2Gm111yZvoQRjiqbg8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785511312; c=relaxed/simple;
+	bh=v+WL3XoOwQikXd2JtezOQGH92bijGZnMB9gOFI0vCIY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uj8WL62Sw0QuCUILN+GpqNSjRtJ0SIOk6Iz7TMBsE9jDBNEAeTsNHxga/99EiDfnp/05v/8IaOoNTGKCtN9qUWrX4WF6XsWA+H4WGTlbwsW9SW64ztjBKsxSXbifNXtQga0ZH5+ZUqfEel9YT0XfhfV8QAq7w1vAlHmv6LIS+LI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MQeqDpEH; arc=pass smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="FonQ6yA6"
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 4C4896018F;
-	Fri, 31 Jul 2026 17:18:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1785511104;
-	bh=AfxrTSCvaAjlHCWmTWDGlJEkUVaLrEF39FJn6nJkdXs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FonQ6yA6t2ht3EBsvW2Nx63NfSbCa9HNDdbsZC1nPfy8bcDEQ/c5QQVWmSSN3/1EI
-	 SiCYM65Ahyfhd3egRocYxfYkV8hkODXn1bujIZho/cbIirupMoapfRmk7/d69RGLwy
-	 nrR929u/BK/niqXpDsG6aV+v0CoED+96GPOOgW0qW5A8gv0PcfQ+Cz7C0xMYgiL9xr
-	 C+uxGLLQLhFzBgh+XGmLjn7BNIKCaXijtLu/cwNZ0/QoVf87ftaqX6NnEE81DAPTUC
-	 Fv9kXitRulGOnckUpVe8jvElnS/XF4PrNh+b8+qhj8H8VBcjYuEfDN4lHN2Mith6Cj
-	 HMKnF/cZXUYVw==
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	fw@strlen.de,
-	horms@kernel.org
-Subject: [PATCH net 10/10] netfilter: nft_ct: move custom expectation support to helper
-Date: Fri, 31 Jul 2026 17:18:06 +0200
-Message-ID: <20260731151806.849724-11-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260731151806.849724-1-pablo@netfilter.org>
-References: <20260731151806.849724-1-pablo@netfilter.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MQeqDpEH"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-84e04df8c46so1235746b3a.2
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 08:21:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785511305; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ku/EZIL4KFef/xeAEVmD/CncESsrn8iqu9EPUvJMWCff9YsSvbgomP1hQmkHTDmtCX
+         OwvdOh/ShDJ4xAmnl7Oau8fZKzGJEmP85MQK7lr97ulLF4Vae4+W36P62QWiPyncmOQh
+         4qYtvidYSwRz3rSTisAoFQ/8eY8+aJCmquKqZgNW4uEYwnvbs/xW8l84Uok6vpcmpbUL
+         sp0iO/lweCDx84Bm4CPk9Hru+94pJ1Y9Vxe+quImbX6cpPZ10NfI5LL+ZK8C3TdbtM7Y
+         FgLT573daXOnOCCyuE7Bc2fPJPiph0SKlHHBoLhcRoTZ2+/mRzEvh6h3P7RGy65958OD
+         LrZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=p9+LRn/SvSrh7d6/E5JqQArA7jl7jdT+NZc32lFMXxY=;
+        fh=oFeODAPr0SedgqM1eHfoyKnUYleTy4XTUungB3p+1zw=;
+        b=IBJct+SM6bk4/KPI9RsqA9L1rFLe/CYV8g+D4LMod4IlbfVm06bjSVTuy+DykpOp5A
+         dQR0c1pYVfOTgPPUjUjY27MDRUzjpMEazsidy8daPpsrZ3bLvUYmVasjRwhN++fA1fva
+         wviI73vVfLjv4LGBpNcfkAZYpkw1WADLfDq9JlD6ErS/3WcQJKo5NSX/TbhvF3ZFRDf2
+         UYRjmtE2C4A0oQLYoLX8zLLe5jsgN44GmtWnXM5fGLbQhdWfyBqdtEGvdQntSTbmnjLR
+         3dEtl0vsmYEQQ9UHTVqSNh3+4oy1X1vI2rDa5twv5GxfOcsNhAK1TKySM2rj6EqBurK0
+         kCmg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785511305; x=1786116105; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=p9+LRn/SvSrh7d6/E5JqQArA7jl7jdT+NZc32lFMXxY=;
+        b=MQeqDpEHId0AWi0fgHZhE1c71pI0bvQX5eTFev+whg/QuqGJdhQX8ac8o/w2I91UTm
+         MGkSTswyKgaeoFfVRoSOLX/4EAbb2u0vq/rqvhvbSOzlU1u7hGsyJN8oeQHcIDYxQ/Su
+         61hScehPZXmT9xHG0S5L/LePjdMg2ogk3DTyPKzbhI/j+5ZC+tztzfFqdL4Cgbyiu+U7
+         MF6soGGw+PeXaMxAji8TpP5tZmiWTMTqT7qc3G33uGv0xX3Bu2LX2V4X1ZJNUvlHUDyl
+         vwv9CxogyV2tqUquBhiBZPY0E3Btq+QcLYoeYUFc/kAJC/KKmSNxgq3lCERZw6qAEbD8
+         mAfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785511305; x=1786116105;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=p9+LRn/SvSrh7d6/E5JqQArA7jl7jdT+NZc32lFMXxY=;
+        b=LF0yUJxqSTFXZDSh940zvlc2QPwOdZtYV7giIxt5HvvmqmGK3aNtI3tIKidgh38dab
+         Iod8Sym1OWLdArXNKpAVX99yvaCPZz1bIqTby7LBrffaVH7RJyH0z7BV4x7JcjeDMDl6
+         OVa7tU34tL9W/Yo1QxUKA2OWXTv1WBOPx8cEIyAbibdbMVREQIEBuhs8K3EcAtR1hUzW
+         +0NZoobuH99keHO+DWmm9XZXhYWmoXPG6ZDsbP7PgwRma1HT0SpnvJ3e9lAPJgglBjvx
+         vEa+kXXOwiCKPQIHI/gVT7JOBOgcsTCUnjkD4YkJiqjAYO1dqm4hSrnrQIoqo6dclOjN
+         N9Zg==
+X-Forwarded-Encrypted: i=1; AHgh+RqD3t4w1TfPMTBJ1w+jQoRhYGJV4HOogNDS7tMLnsNgZmr6Lt1NQkIErf+dpFZTNtyw8h+XK7Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxn/pDlZdCOEF92tDhC9zjQGDI+9cvtVJ7DXPHutAZoz18R1VOT
+	pt7xxYTwMxlF852n2HzZ2m8wgXdd1s20unizcCtESQgF6awVEH5VhLnRfyTbSijDChbMUMp3Ak9
+	8w5e0kZp/ylWtkxFmhNOuaVoZTmV8zac=
+X-Gm-Gg: AR+sD12AiNLRHQ5xV35rp3PoPvYfRIj+wPjABJ6nkGEzOMBcSyNq7nSfLfYLTEysWS2
+	5Yh+QHPixQqoH1EwT+ZlieOata1pWE7TiNbRcfhcbDgMjdKNmnLzJsPrLf5fKna0q8HThpX+lvY
+	v6x+fRKTQ173Gm0vdOlXpy0zc4WAjOJqYJIZQfiG+hW01f6V9V/PCiPX3Ug9qNaF8PE19Qq/l2k
+	YTOhQbyISXrEQ1SOmNnh96tnBLMNvetZAFe5kNYj7L+2DtFBVTFlIhkquUYtuQDvf1i96KA201m
+	zscTf7dAyKRHI+Btx06Pi0T9vN5LKsgQiLCjPKNsWvFYEuyBOiCnopjrsjj2L1wEEio28u3ufNq
+	csOhkJORWIkIU3Lcbe9Y/cT841g==
+X-Received: by 2002:a05:6a00:418d:b0:848:2f77:e2dc with SMTP id
+ d2e1a72fcca58-84ee49aa19bmr73028b3a.69.1785511304566; Fri, 31 Jul 2026
+ 08:21:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260725132624.78373-1-leon.hwang@linux.dev> <CAEf4BzaoQaODE4F1wfrp37=83bePY=gKpunacKr3rmO230+B3Q@mail.gmail.com>
+ <66eaf62b-202b-45b9-8934-fbbc80caa84a@linux.dev>
+In-Reply-To: <66eaf62b-202b-45b9-8934-fbbc80caa84a@linux.dev>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Fri, 31 Jul 2026 08:21:32 -0700
+X-Gm-Features: AUfX_mwX1Lnn-oFVg3jgqe6P4ofXoWURmDZdlHg78-NJyoQdPMHudZHx9cqdijU
+Message-ID: <CAEf4BzbjmW0e6DqFLUAyV+m_usHSkHpux3AdS72bJtsmYQC_LA@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v2 0/2] bpf: Fix sleepable check for tracing prog
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
+	Shuah Khan <shuah@kernel.org>, Sechang Lim <rhkrqnwk98@gmail.com>, 
+	Varun R Mallya <varunrmallya@gmail.com>, Viktor Malik <vmalik@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Originally, the ct expectation support called nf_ct_helper_ext_add() for
-confirmed conntracks, which is invalid, triggering a splat. This was
-fixed by commit 1710eb913bdc ("netfilter: nft_ct: skip expectations for
-confirmed conntrack") which restricted it to confirmed conntracks.
+On Thu, Jul 30, 2026 at 10:20=E2=80=AFPM Leon Hwang <leon.hwang@linux.dev> =
+wrote:
+>
+> On 31/7/26 08:07, Andrii Nakryiko wrote:
+> > On Sat, Jul 25, 2026 at 6:27=E2=80=AFAM Leon Hwang <leon.hwang@linux.de=
+v> wrote:
+> >>
+> >> When CONFIG_FUNCTION_ERROR_INJECTION is disabled, a sleepable tracing =
+prog
+> >> is allowed to attach to '__x64_'-alike prefix symbols.
+> >>
+> >> It is because the verifier does not verify whether the symbol is a ker=
+nel
+> >> function or a bpf prog. That said, a sleepable tracing prog is allowed=
+ to
+> >> attach to a bpf prog target whose name has '__x64_'-alike prefix.
+> >>
+> >> For example, a sleepable fentry prog attaches to a '__x64_sys_nop' XDP
+> >
+> > we do have addr, so we should be able to distinguish between attaching
+> > to kernel function vs BPF program, no?
+>
+>
+> Yes, we can distinguish a bpf prog from a kernel function by addr.
+>
+> I'd prefer passing 'tgt_prog' to btf_id_allow_sleepable() as a simple
+> change.
+>
 
-However, early insertion of expectations into the expectations list when
-the conntrack is unconfirmed leads to stale entries pointing to the
-wrong hlist_head through .pprev due to ct extension reallocation.
+I don't think there is a need for new tgt_prog argument, we can just
+check that supplied btf is not kernel/module BTF (see btf_is_kernel())
 
-Commit 7c9664351980 ("netfilter: move nat hlist_head to nf_conn") moved
-the nat hlist_head to nf_conn for this reason:
-
-     1. ...
-     2. When reallocation of extension area occurs we need to fixup the
-        bysource hash head via hlist_replace_rcu.
-
-But I'd rather not increase the size of the struct nf_conn for this
-feature, it only supports for creating expectations in the other
-direction and it was broken with DNAT too.
-
-The existing feature has very limited scope because of a pre-existing
-issue: two different connections can create the same expectation leading
-to expect_clash(), resulting in packet drops.
-
-To address this issue, add an internal ct helper and attach it to the
-conntrack entry to streamline the custom ct expectation support with
-existing ct helpers.
-
-Expose a new nf_conntrack_helper_free() function to safely release the
-internal helper that is allocated and attached to the conntrack entry to
-create the custom expectations.
-
-Fixes: 857b46027d6f ("netfilter: nft_ct: add ct expectations support")
-Reported-by: Jaeyeong Lee <iostreampy@proton.me>
-Link: https://patch.msgid.link/20260715144755.00ea7dfcd9f@proton.me
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- include/net/netfilter/nf_conntrack_helper.h |   2 +
- net/netfilter/nf_conntrack_helper.c         |  18 ++-
- net/netfilter/nft_ct.c                      | 127 +++++++++++++++-----
- 3 files changed, 114 insertions(+), 33 deletions(-)
-
-diff --git a/include/net/netfilter/nf_conntrack_helper.h b/include/net/netfilter/nf_conntrack_helper.h
-index c761cd8158b2..4420846e41f2 100644
---- a/include/net/netfilter/nf_conntrack_helper.h
-+++ b/include/net/netfilter/nf_conntrack_helper.h
-@@ -114,6 +114,8 @@ int nf_conntrack_helpers_register(struct nf_conntrack_helper *, unsigned int,
- void nf_conntrack_helpers_unregister(struct nf_conntrack_helper **,
- 				     unsigned int);
- 
-+void nf_conntrack_helper_free(struct nf_conntrack_helper *me);
-+
- #define nf_conntrack_helper_deprecated(name) \
- 	pr_warn("The %s conntrack helper is scheduled for removal.\n"	\
- 		"Please contact the netfilter-devel mailing list if you still need this.\n", name)
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index 500509b17663..1197e8793494 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -456,13 +456,8 @@ static bool expect_iter_me(struct nf_conntrack_expect *exp, void *data)
- 	return this == me;
- }
- 
--void nf_conntrack_helper_unregister(struct nf_conntrack_helper *me)
-+void nf_conntrack_helper_free(struct nf_conntrack_helper *me)
- {
--	mutex_lock(&nf_ct_helper_mutex);
--	hlist_del_rcu(&me->hnode);
--	nf_ct_helper_count--;
--	mutex_unlock(&nf_ct_helper_mutex);
--
- 	/* This helper is going away, disable it. */
- 	rcu_assign_pointer(me->help, NULL);
- 
-@@ -476,6 +471,17 @@ void nf_conntrack_helper_unregister(struct nf_conntrack_helper *me)
- 	if (refcount_dec_and_test(&me->ct_refcnt))
- 		kfree_rcu(me, rcu);
- }
-+EXPORT_SYMBOL_GPL(nf_conntrack_helper_free);
-+
-+void nf_conntrack_helper_unregister(struct nf_conntrack_helper *me)
-+{
-+	mutex_lock(&nf_ct_helper_mutex);
-+	hlist_del_rcu(&me->hnode);
-+	nf_ct_helper_count--;
-+	mutex_unlock(&nf_ct_helper_mutex);
-+
-+	nf_conntrack_helper_free(me);
-+}
- EXPORT_SYMBOL_GPL(nf_conntrack_helper_unregister);
- 
- void nf_ct_helper_init(struct nf_conntrack_helper *helper,
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index 03a88c77e0f0..30c9358dbf48 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -1213,6 +1213,8 @@ struct nft_ct_expect_obj {
- 	u8		l4proto;
- 	u8		size;
- 	u32		timeout;
-+
-+	struct nf_conntrack_helper *helper;
- };
- 
- static int nft_ct_expect_timeout_get(const struct nlattr *attr, u32 *val)
-@@ -1226,6 +1228,73 @@ static int nft_ct_expect_timeout_get(const struct nlattr *attr, u32 *val)
- 	return 0;
- }
- 
-+struct nft_ct_expect_data {
-+	struct nft_ct_expect_obj	obj;
-+	enum ip_conntrack_dir		dir;
-+	atomic_t			num_expects;
-+};
-+
-+static int ct_expect_help(struct sk_buff *skb, unsigned int protoff,
-+			  struct nf_conn *ct, enum ip_conntrack_info ctinfo)
-+{
-+	enum ip_conntrack_dir dir = CTINFO2DIR(ctinfo);
-+	struct nft_ct_expect_data *expect_data;
-+	struct nf_conntrack_expect *exp;
-+	int ret = NF_ACCEPT;
-+
-+	expect_data = nfct_help_data(ct);
-+	if (!expect_data)
-+		return NF_ACCEPT;
-+
-+	if (expect_data->dir != dir)
-+		return NF_ACCEPT;
-+
-+	if (!atomic_add_unless(&expect_data->num_expects, 1, expect_data->obj.size))
-+		return NF_ACCEPT;
-+
-+	exp = nf_ct_expect_alloc(ct);
-+	if (!exp) {
-+		atomic_dec(&expect_data->num_expects);
-+		return NF_DROP;
-+	}
-+
-+	nf_ct_expect_init(exp, NF_CT_EXPECT_CLASS_DEFAULT, nf_ct_l3num(ct),
-+			  &ct->tuplehash[!dir].tuple.src.u3,
-+			  &ct->tuplehash[!dir].tuple.dst.u3,
-+			  expect_data->obj.l4proto, NULL, &expect_data->obj.dport);
-+	exp->timeout += expect_data->obj.timeout;
-+
-+	if (nf_ct_expect_related(exp, 0) != 0) {
-+		atomic_dec(&expect_data->num_expects);
-+		ret = NF_DROP;
-+	}
-+
-+	nf_ct_expect_put(exp);
-+
-+	return ret;
-+}
-+
-+static int nft_ct_expect_helper_alloc(struct nft_ct_expect_obj *priv)
-+{
-+	struct nf_conntrack_helper *ct_expect_helper;
-+
-+	ct_expect_helper = kzalloc_obj(struct nf_conntrack_helper);
-+	if (!ct_expect_helper)
-+		return -ENOMEM;
-+
-+	snprintf(ct_expect_helper->name, sizeof(ct_expect_helper->name), "%s",
-+		 "nft_ct_expect");
-+	ct_expect_helper->me = THIS_MODULE;
-+	ct_expect_helper->expect_policy[NF_CT_EXPECT_CLASS_DEFAULT].max_expected = priv->size;
-+	rcu_assign_pointer(ct_expect_helper->help, ct_expect_help);
-+	refcount_set(&ct_expect_helper->ct_refcnt, 1);
-+
-+	/* No need to register this helper, this is internal. */
-+	priv->helper = ct_expect_helper;
-+
-+	return 0;
-+}
-+
- static int nft_ct_expect_obj_init(const struct nft_ctx *ctx,
- 				  const struct nlattr * const tb[],
- 				  struct nft_object *obj)
-@@ -1233,6 +1302,8 @@ static int nft_ct_expect_obj_init(const struct nft_ctx *ctx,
- 	struct nft_ct_expect_obj *priv = nft_obj_data(obj);
- 	int err;
- 
-+	NF_CT_HELPER_BUILD_BUG_ON(sizeof(struct nft_ct_expect_data));
-+
- 	if (!tb[NFTA_CT_EXPECT_L4PROTO] ||
- 	    !tb[NFTA_CT_EXPECT_DPORT] ||
- 	    !tb[NFTA_CT_EXPECT_TIMEOUT] ||
-@@ -1273,13 +1344,26 @@ static int nft_ct_expect_obj_init(const struct nft_ctx *ctx,
- 	priv->dport = nla_get_be16(tb[NFTA_CT_EXPECT_DPORT]);
- 	priv->size = nla_get_u8(tb[NFTA_CT_EXPECT_SIZE]);
- 
--	return nf_ct_netns_get(ctx->net, ctx->family);
-+	err = nf_ct_netns_get(ctx->net, ctx->family);
-+	if (err < 0)
-+		return err;
-+
-+	err = nft_ct_expect_helper_alloc(priv);
-+	if (err < 0) {
-+		nf_ct_netns_put(ctx->net, ctx->family);
-+		return err;
-+	}
-+
-+	return err;
- }
- 
- static void nft_ct_expect_obj_destroy(const struct nft_ctx *ctx,
--				       struct nft_object *obj)
-+				      struct nft_object *obj)
- {
-+	const struct nft_ct_expect_obj *priv = nft_obj_data(obj);
-+
- 	nf_ct_netns_put(ctx->net, ctx->family);
-+	nf_conntrack_helper_free(priv->helper);
- }
- 
- static int nft_ct_expect_obj_dump(struct sk_buff *skb,
-@@ -1302,50 +1386,39 @@ static void nft_ct_expect_obj_eval(struct nft_object *obj,
- 				   const struct nft_pktinfo *pkt)
- {
- 	const struct nft_ct_expect_obj *priv = nft_obj_data(obj);
--	struct nf_conntrack_expect *exp;
-+	struct nft_ct_expect_data *expect_data;
- 	enum ip_conntrack_info ctinfo;
- 	struct nf_conn_help *help;
--	enum ip_conntrack_dir dir;
--	u16 l3num = priv->l3num;
- 	struct nf_conn *ct;
- 
- 	ct = nf_ct_get(pkt->skb, &ctinfo);
--	if (!ct || nf_ct_is_confirmed(ct) || nf_ct_is_template(ct)) {
-+	if (!ct || nf_ct_is_template(ct) || nf_ct_is_confirmed(ct)) {
- 		regs->verdict.code = NFT_BREAK;
- 		return;
- 	}
--	dir = CTINFO2DIR(ctinfo);
- 
- 	help = nfct_help(ct);
--	if (!help)
--		help = nf_ct_helper_ext_add(ct, GFP_ATOMIC);
--	if (!help) {
--		regs->verdict.code = NF_DROP;
--		return;
--	}
--
--	if (help->expecting[NF_CT_EXPECT_CLASS_DEFAULT] >= priv->size) {
-+	if (help) {
- 		regs->verdict.code = NFT_BREAK;
- 		return;
- 	}
--	if (l3num == NFPROTO_INET)
--		l3num = nf_ct_l3num(ct);
- 
--	exp = nf_ct_expect_alloc(ct);
--	if (exp == NULL) {
-+	help = nf_ct_helper_ext_add(ct, GFP_ATOMIC);
-+	if (!help) {
- 		regs->verdict.code = NF_DROP;
- 		return;
- 	}
--	nf_ct_expect_init(exp, NF_CT_EXPECT_CLASS_DEFAULT, l3num,
--		          &ct->tuplehash[!dir].tuple.src.u3,
--		          &ct->tuplehash[!dir].tuple.dst.u3,
--		          priv->l4proto, NULL, &priv->dport);
--	exp->timeout += priv->timeout;
- 
--	if (nf_ct_expect_related(exp, 0) != 0)
--		regs->verdict.code = NF_DROP;
-+	expect_data = nfct_help_data(ct);
-+	if (!expect_data) {
-+		regs->verdict.code = NFT_BREAK;
-+		return;
-+	}
-+	expect_data->obj = *priv;
-+	expect_data->dir = CTINFO2DIR(ctinfo);
- 
--	nf_ct_expect_put(exp);
-+	if (help && refcount_inc_not_zero(&priv->helper->ct_refcnt))
-+		rcu_assign_pointer(help->helper, priv->helper);
- }
- 
- static const struct nla_policy nft_ct_expect_policy[NFTA_CT_EXPECT_MAX + 1] = {
--- 
-2.47.3
-
+> >
+> >> prog, and copies buffer from a user pointer with bpf_copy_from_user()
+> >> helper. After attaching the XDP prog to lo interface, the kernel BUG
+> >> could be triggered by 'ping -c 1 -W 1 127.0.0.1':
+> >>
+> >> [    3.460756] BUG: sleeping function called from invalid context at k=
+ernel/bpf/trampoline.c:1324
+> >>
+> >> Fix it by disallowing sleepable tracing prog always when its target is
+> >> bpf prog.
+> >
+> > what happens when we freplace sleepable BPF program/subprogram with
+> > another sleepable BPF subprogram? And same question for sleepable
+> > fentry/fexit program attaching to sleepable BPF program? Is it
+> > something that just cannot work or we can actually allow that?
+>
+>
+> Currently, sleepable freplace/fentry/fexit progs are already disallowed
+> from attaching to bpf prog, because btf_id_allow_sleepable() returns
+> -EINVAL for them (except for this BUG).
+>
+> Since no one has proposed relaxing the restriction, I'd like to keep it
+> as-is when fixing this BUG.
+>
+> I'm not sure whether allowing it would introduce any issue.
+>
+> Thanks,
+> Leon
+>
+> > [...]
+>
+>
