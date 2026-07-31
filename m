@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A5346984C;
-	Fri, 31 Jul 2026 23:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08584479873;
+	Fri, 31 Jul 2026 23:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785541245; cv=none; b=NhxpU6Bv2UnjTNL0l3mt4vyiRPbtitlVWz9bq/Q/zA5F2NttGG2V73/HhNYJ8P1L6qmjw0xpFBEHl2CbKIG7X/WXYGK5Hwm5sFgNGZBaNtIPtldKM8064DqPU7MWsuZa/G9l6gm0i4gfqb3ymLczTLlmWClmvuX6v6zEIsMH49k=
+	t=1785541247; cv=none; b=Y5YuntadumqGNTrjfSSyVd1NrEltGOWfhx+6scatp2RZN7HzQnQBnRhmCyyB7ROYbo4eHMBXDYy2r6UC5o0OA12QOBaKMvlbIvrNylVRVVUtdKvTgJiwtli1Ds3X5hjZknzjFolrfn5FhSeRkrSJ1LDdVS6/vw4hbdDprtXk0pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785541245; c=relaxed/simple;
-	bh=XRTxxKWzYXVhzKB5EJGHyX69r9lyo5VCFc6G5kgpZZY=;
+	s=arc-20240116; t=1785541247; c=relaxed/simple;
+	bh=/tnOcJlUu3HTyfOd8NtmThhDh9F02Evyd1mJGYlcCTc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YbSwnYjraXYmXLmw3HWvo0mtpw7YnZnckyGJGxZNJmVJaGjf/uSQklh/zLI6SPVCYH8zOAwah2sDL3kwMUhWlLnbLAF+lUPElfZ80h8MEdV/tj/HJfhDWsbynUA4M8Y+j+rsc5mKp+gYNHIIN4DtyyCQaBcIDMiNTgEsmYZTKm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ObREuibM; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=tnuEh8trwRybTxrjq9xYJouxuaqlj9AX64iDzFM2UsPfpP0WoDv8wNEZFrRWCUZdQxV1WXgmcm36wGwPTEba8Y21ndPbRDIBNGgSawLws/vACYlpqB8RRE1qetwtCWVLoaaMDdW3+nu3lJOIaxxYznXJqpMJejmWBy0qgGXpFs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ateVAUWG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ObREuibM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DF11F00AC4;
-	Fri, 31 Jul 2026 23:40:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ateVAUWG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E111F00AC4;
+	Fri, 31 Jul 2026 23:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785541244;
-	bh=hZSAmr8CC7cFdKREjp/PS4yN8Aon/mFMCFm/muWH+ko=;
+	s=k20260515; t=1785541245;
+	bh=j4ljSAYseqtpPgeA7I4xE3UCbNvewZstwDijy6KcpUA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ObREuibMaqfFDQeA/nA3ig4vlr86zMccCGlwUr6Y3pLOOOB4yTW/ISlIl1/KTMwuS
-	 KrPVMODThL0VxhR6FN7gV0/PjiyMBVr7tGzGAFMIss+/nLiWmJ6peLlJOQqldtbVCd
-	 FYCF1tzCucRr9UMYxSb+Gzj78lubJnpVZ+/f+0jNRyHGGLhI+UAXPBN754y1qMeIBi
-	 yCXrLosmieDl+xrng5hC3Y5fOtd56ophU1s00O365fLGXz3S/Exy5YZxxUGkW4tYm1
-	 5ySJZmnEpiPNREsdrGjGnt7NxvBNbEPMffgiEmtliiQf5HP/YrVu/UY5ICHTBn+1ob
-	 77VcPDwqpzYIg==
+	b=ateVAUWGQpN6XJwOa+AJwpYPzF1Nhn4SmrjMwL9IHL6ZZX4n7hiaXLD7l7eyyQpwf
+	 63v9wYopnnmG0KDz7oKnUTKX+H7pWQ7doOBs4RDHMsx4zySZZ3omtrhFVYm7Lh7GKD
+	 msA7+/BO4cbqYRV31X4s/12bR3sRBQLkeXVbNEv3nepeKA8MXflSqZnO3qywPhC4nK
+	 XQ6bKGW2bdfPcd/rAJ3KF+vcHopeQO06zWil4bG/c0weE2kLL/P3g6TXziyK7/2h+X
+	 aicf+q76z2v66P1/JeABx6cjWEaxFEK9rdsEfhWTsOQ7Bb6fW3FwWXJ/iTW+9+a6Ix
+	 Emw2P6FC7xZHA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568E4392665D;
-	Fri, 31 Jul 2026 23:40:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0995392665D;
+	Fri, 31 Jul 2026 23:40:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/smc: fix qentry overwrite for CONFIRM_LINK and
- ADD_LINK_CONT in smc_llc_event_handler()
+Subject: Re: [PATCH net v2] net: bridge: mrp: fix uninitialised bytes on the
+ wire
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178554120689.949682.10784934094137290193.git-patchwork-notify@kernel.org>
-Date: Fri, 31 Jul 2026 23:40:06 +0000
-References: <20260729130153.970800-1-mjambigi@linux.ibm.com>
-In-Reply-To: <20260729130153.970800-1-mjambigi@linux.ibm.com>
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
- dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
- pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
- guwen@linux.alibaba.com, netdev@vger.kernel.org, linux-s390@vger.kernel.org
+ <178554120838.949682.13580127258909324306.git-patchwork-notify@kernel.org>
+Date: Fri, 31 Jul 2026 23:40:08 +0000
+References: <20260729131941.10254-1-baul.lee@xbow.com>
+In-Reply-To: <20260729131941.10254-1-baul.lee@xbow.com>
+To: Baul Lee <baul.lee@xbow.com>
+Cc: netdev@vger.kernel.org, bridge@lists.linux.dev,
+ linux-kernel@vger.kernel.org, razor@blackwall.org, idosch@nvidia.com,
+ andrew@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 29 Jul 2026 15:01:53 +0200 you wrote:
-> The SMC_LLC_CONFIRM_LINK / SMC_LLC_ADD_LINK_CONT branch in
-> smc_llc_event_handler() stores an incoming qentry into the local LLC flow
-> without first checking whether a qentry is already pending. If a malicious or
-> buggy peer sends a second CONFIRM_LINK or ADD_LINK_CONT request while a flow is
-> active and flow->qentry is already set, smc_llc_flow_qentry_set() overwrites the
-> pointer without freeing the previous allocation, leaking one kmalloc-96 object
-> per spurious message.
+On Wed, 29 Jul 2026 22:19:41 +0900 you wrote:
+> br_mrp_alloc_test_skb() builds MRP test frames on an skb from
+> dev_alloc_skb(), which does not clear the linear data area.  On the MRA
+> ring-role branch the sub-option TLV header is appended with
+> 
+> 	sub_tlv = skb_put(skb, sizeof(*sub_tlv));
+> 	sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net/smc: fix qentry overwrite for CONFIRM_LINK and ADD_LINK_CONT in smc_llc_event_handler()
-    https://git.kernel.org/netdev/net/c/976245094925
+  - [net,v2] net: bridge: mrp: fix uninitialised bytes on the wire
+    https://git.kernel.org/netdev/net/c/63488dba65ef
 
 You are awesome, thank you!
 -- 
