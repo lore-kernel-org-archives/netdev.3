@@ -1,115 +1,122 @@
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7179D413230
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 10:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64FF3D8115;
+	Fri, 31 Jul 2026 10:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785493917; cv=none; b=spm01VPvHG2oOOZxCkECWWliwxMHs/i44XHPiKCDVNI/tn4wkkaTeUVQyWntMcLq8n1VvejTzKPoCVysci0R8Hrb1/ZLzgrCaHbDzKhEIMW+o6KwQWivtoUcaMyFLmqz09fzQrgzQJZltvfvcqih8UHbRMf7dnHQ/7kWFOE8RHU=
+	t=1785494013; cv=none; b=UW7uyd8G/WFmhuLIcHDJSbnLGFg4p7BFAyizBj+nN6ZMIe72+fUfK0+rCkFwspleKgTGsZnBeFMhwomuRaDVcq9YM9SE8l7uoigq4qig533/AeFSw7aj4oH98bhLEon/mjH2kCmGwVKFkD8+s2dcRyLYKsIUhTOUx08FKr3+D68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785493917; c=relaxed/simple;
-	bh=l2XmKyEnKKH86Y+s9uBbehwwYoRt7UZIO0J7VYolSoM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jSsgDw/8NyxzPLFbnqw3SNvpvqIF7/FA9cQsEUIvI/4oTlV+lG/P3aPiMQQtq4F0YmYFdjtXBNoT15kI8/4QY4Icnwf84yi8MzMH9/iSmgnbM6sdAZ1m2bnfb18qWyNLTUYxrG3KjAgLTlr1H3e6Ps0Y1FrQN8Ld4/Be4WN7HVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T5aQ77XH; arc=none smtp.client-ip=74.125.224.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785494013; c=relaxed/simple;
+	bh=lg1W+14p/dbYu6+/0qsIx1se9B4QGspSqqLSW4ptzL4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EQxrztnEppENZ8ljqb3KTtRZAia10h9OZEI6DXVC2WxCiPNuJ6stJqcdYI9YlJSU9+0HorFpLbEQa6+kGtTfXS1smi5NlUzA17OfAJ/AUtPV8QO/UgBuvTmfC2zg30IseOT/r2WQp8PRtGHdIbC4HZYry6I+Wm/hfN8Bm/lv61U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=qEIChmlE; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T5aQ77XH"
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-66899fe9077so1116590d50.1
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 03:31:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785493903; x=1786098703; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hyei7gDfbeKUSdPExGhWNp37mXR1uDMA2E8msTrFFIY=;
-        b=T5aQ77XHKp/7fxG+GE3rv47632zu63YC6TjqM8VuTBOobU+YrOYvTGHVLEiLDqIo9P
-         Xoih5fkvF/hTkM7yqQAinG1v+qaOHIrD7olkg8TLIjUsF0qLis/uCpiVRBNa0S3E/wi4
-         8j0A62BIHsU198/Z+HBkahUQY/xGC56luDjt2IiHz3gdND3TuMBID0mCzFeGKZLEcF3o
-         nGdZ0VgWB+A4mzltaJn1Bp7hsE9s193RFGD+TEY0/hxSQFgXXBii3p/oMJuhABQTR24E
-         AIPttCGm3A5PZDu8o3R67haM5ri32NhF+M/AOS4jF3WXlwSDFjkzL4YGzY8lQ0LhLzTj
-         n1/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785493903; x=1786098703;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hyei7gDfbeKUSdPExGhWNp37mXR1uDMA2E8msTrFFIY=;
-        b=VUgAQQWUXDWs0RDRSDhkkGYwXv/hX2PlGmaXQNu/bcc/g0XZPw/qPFJkXyyw46xDVn
-         GuO+Xgx1UYzQA4GjHKjoP3dL8shn/hask+GtO5Er523VsV+zj5+rnTsp4E8QM0BmFqhR
-         +kMoAe3MaCGzs+5DlwPc5vgkTBipY6+DRgrU60uOk6wZ3oTDxZeUn6U8W2rwTGcJtL6X
-         CilUMYRiXlk89VIGeMuUrrsMtdSAP3ObJe8AQai1XbOxhYBwgZGzQn9mId4Sdhwar0vL
-         icrNd3ZWOZKg5BERFIsULE5Ef9vjxGUoZQGFI7GC7BIJ3QuVgUSyB0D5rAPccwTRIErg
-         kH8A==
-X-Gm-Message-State: AOJu0YwyNvBxUrFfC6LNKr4HsrWiQIeNFdr6IpreOtoM5VHBVup4lqP3
-	VdKDGHPsp3PuQ8Dcanb0DD913sg/VCQ+aqwMRnMe0bBD2EG+zXXgdj9UOWzV1KMR
-X-Gm-Gg: AR+sD109ld8kqx5IhUGmLRjrHcsth+VeccezX9Iylw0s2ny69heFHZObi1j7HN+kGFW
-	6ATvmP4LZyjoNsEHpo9QdEMBUL0fZ8rlL/Bnvkh8nl/IBIj7yF9AhfWJzClLSveJF4a/6v7WCHq
-	J+ZowYd+fPurL4XjPuU4CNMM7Bw0D4u4H7gHvtjir+Tx4EJKMQ1Jv+1VSDCfMa6VktN7RglmWAF
-	mDFr3L5/YA3jFIP8vhQgTZ50IW5QKYXn8QtPrHMz4BNsoa15gma7KOr950vB3eATQKsNlHAVM6e
-	5CUXefTKDbDia61cTPB3cRxhcos+IUq2an3u917+lliTZd8PV9wJlqePp23NJjazK57Yfqw1EMr
-	NpLa15t5RoLk9guCas7nZruZk1AY9wt25I65rEsHuFOYS+8ZR4pd+lGL7QDEnbNQyULE+Adu6fD
-	RtVz449uST5m5qiMBwRXW99pY0FpKrmUZC97JqAK3Rx8t70LlNyeEbXwlTqPx2jmOWq0gpf5I3F
-	h5q2L52kqCT6yJKfSJf1QZyfRSgcbwAoemMfK1eRxk1wosVsUyBB9mZzuU=
-X-Received: by 2002:a05:690e:4401:b0:667:8495:9604 with SMTP id 956f58d0204a3-66945231726mr858505d50.25.1785493903283;
-        Fri, 31 Jul 2026 03:31:43 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66948ff8a79sm338530d50.16.2026.07.31.03.31.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 03:31:41 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: anthony.l.nguyen@intel.com,
-	joshua.a.hay@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH iwl-net] idpf: add missing cpu_to_le32 in idpf_tx_splitq_build_flow_desc
-Date: Fri, 31 Jul 2026 06:31:14 -0400
-Message-ID: <20260731103137.4000876-1-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="qEIChmlE"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 26D44601A5;
+	Fri, 31 Jul 2026 12:33:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1785494003;
+	bh=LqekADnHQRu9/VRdBdO1Czahfx/0OfCGP11ku6HDC5A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qEIChmlENuIt/40gWHOS+K9RNHfeh4CKlRAb2Jd1X18MO9x9A6twGjg5dJOJPi0uQ
+	 KR4x5xM9Q2Fcxepa4/+z7Mtf8r9mzYm2QMc6jytGrtfbiDEV9zI3iNlUNsJT+pcw/P
+	 /wT8ex2JoS6zwuTGJfeCa9+t4mWE+kO8Jog5SXRDf7FRzefLnzHMslqukdOsfZ6m/P
+	 B31WuEeQKf7uDLCuD31zLv9HlZ02EyDJfcAi/j19gsCYhrJhbRo+SRkhWLZ5Q9c2+h
+	 73dqirup2dCB5RLE8EBQENAbBFlvwwnWZb/BurZGVWaYdug5+3f2hkjpwuzKVuw2oM
+	 AqDNWItwRQ/pg==
+Date: Fri, 31 Jul 2026 12:33:20 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: netfilter-devel@vger.kernel.org, Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, coreteam@netfilter.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>
+Subject: Re: [PATCH nf] netfilter: conntrack: sctp: verify vtag before state
+ changes
+Message-ID: <amx58O5Jb6B29XDJ@chamomile>
+References: <20260728073507.30635-1-zhaoyz24@mails.tsinghua.edu.cn>
+ <amkCbQ1UDRKcZBez@chamomile>
+ <AD2FFF7F-7EC3-4205-BB44-508B31BC2620@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <AD2FFF7F-7EC3-4205-BB44-508B31BC2620@mails.tsinghua.edu.cn>
 
-From: Willem de Bruijn <willemb@google.com>
+On Wed, Jul 29, 2026 at 12:56:39PM +0800, Yizhou Zhao wrote:
+> Hi Pablo,
+> 
+> Thank you for the review.
+> 
+> > On Jul 29, 2026, at 03:26, Pablo Neira Ayuso <pablo@netfilter.org> wrote:
+> > 
+> > Hi,
+> > 
+> > On Tue, Jul 28, 2026 at 03:35:06PM +0800, Yizhou Zhao wrote:
+> >> The packet-wide vtag check in nf_conntrack_sctp_packet() is skipped when
+> >> the bundle map contains any chunk type with special vtag handling.  The
+> >> per-chunk path re-checks INIT, ABORT, SHUTDOWN_COMPLETE, and
+> >> COOKIE_ECHO, but other state-changing chunks still fall through to
+> >> sctp_new_state() without validating sh->vtag.
+> >> 
+> >> This lets a wrong-vtag packet bundle HEARTBEAT with COOKIE_ACK, ERROR,
+> >> SHUTDOWN, or SHUTDOWN_ACK and still advance conntrack state.  That can
+> >> desynchronize conntrack from the real SCTP association and cause denial
+> >> of service for SCTP traffic behind a stateful firewall.
+> > 
+> > Are you assuming a specific policy in place? The connection tracking
+> > does not police packets, it just provides tracking.
+> 
+> You are right, I overstated the impact.  Conntrack only tracks packet
+> state, and whether a packet is dropped depends on a firewall rule that
+> uses that state.
+> 
+> > 
+> > Can you provide a more specific scenario?
+> 
+> The issue I reproduced is that a wrong-vtag [SHUTDOWN, HEARTBEAT] bundle
+> changes SCTP conntrack state from ESTABLISHED to SHUTDOWN_SENT, while the
+> SCTP endpoints discard the packet because of the invalid vtag.  This can
+> therefore desynchronize conntrack from the association.
+> 
+> For example, a stateful policy that drops INVALID, accepts
+> ESTABLISHED/RELATED, and accepts new SCTP only for INIT will see the
+> conntrack timeout change from 210 seconds to 3 seconds.  If the entry
+> expires while the real association remains established, a later DATA
+> packet is invalid and that policy drops it.  This requires an attacker
+> that can inject a matching SCTP 4-tuple into the firewall path, and it does
+> not require knowing the correct vtag.
+> 
+> > 
+> > We are seeing several reports related to the connection tracking from
+> > your university lately.
+> > 
+> >> Check sh->vtag before processing those chunks when conntrack already
+> >> knows the expected direction vtag.  This keeps the existing
+> >> HEARTBEAT/HEARTBEAT_ACK learning and connection-reuse behavior for the
+> >> `vtag == 0` cases.
+> > 
+> > Proposed patches to hardening the connection tracking state machine
+> > should be targeted at nf-next.
+> 
+> I agree this is better treated as SCTP conntrack state-machine hardening.
+> If you agree, I will respin the patch for nf-next without Fixes or stable Cc.
 
-idpf_tx_splitq_build_flow_desc performs a 32-bit store to &cmd_dtype
-to set the 8-bit cmd_dtype and zero the adjacent 3-byte timestamp
-field in a single operation.
+Yes, repurpose this patch to nf-next without Fixes tag and stable for review.
 
-Descriptors are in little endian. Add missing cpu_to_le32 and cast to
-__le32 to ensure the fields are written correctly also on big endian
-platforms.
-
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-
----
-
-A follow-up so_txtime patch will initialize ts[] from params. At that
-point the 32-bit cast can be removed entirely and replaced with a
-straightforward u8 store to cmd_dtype.
-
-https://lore.kernel.org/netdev/20260726202902.760552-4-willemdebruijn.kernel@gmail.com/
----
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index c724d429a7aa..91ca75e45463 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -2408,7 +2408,7 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
- 				    struct idpf_tx_splitq_params *params,
- 				    u16 td_cmd, u16 size)
- {
--	*(u32 *)&desc->flow.qw1.cmd_dtype = (u8)(params->dtype | td_cmd);
-+	*(__le32 *)&desc->flow.qw1.cmd_dtype = cpu_to_le32((u8)(params->dtype | td_cmd));
- 	desc->flow.qw1.rxr_bufsize = cpu_to_le16((u16)size);
- 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
- }
--- 
-2.55.0.508.g3f0d502094-goog
-
+Thanks.
