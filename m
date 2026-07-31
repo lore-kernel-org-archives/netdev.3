@@ -1,87 +1,79 @@
-Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83557366054
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 06:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B7535F185
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 06:27:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785478923; cv=none; b=Ga8/WgkbRYw/B2Xz+qtInwNxozrPVWKOzY6OIshd3LT0YLG7FSOgjBIqLIiAlFdvgBGQzY40E49hYwFCRkQkzGCxlSm0txyNXQxznbWMa9+yA+gPx/VQoC9cDvSc77JCsgJUVliKN4GPKN26Oy7a769JiB49itx7hRdfXJDaneg=
+	t=1785479232; cv=none; b=Sjemkk7KCmfswjssTBBKXt70j5ExV4A6/GQgQh4F/8oreOJx1HBd7oe05T0vTQqKUHLJWyQuabZ1JiTSdfe1omKi8i78me7BUMq3uy/CSdyn01a/CU2WWj62J2npZSiGq/nsdOrw4U/3xaJXs65FToYpF7CKcd55E/gwMqtwPDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785478923; c=relaxed/simple;
-	bh=nPKboyd59q6zKuiDUV4Q6HkuhovxWt2tkPrXASBc8+c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d5jtpmwF+ZPVyAMRW6WAwIGKb0M0YjVkFzcgDXb0SgkpGWvC2AiFQdK5d15AYKaxR7RQLGNj8+OVPPgf2v6OM4arAlGroCav88T847IYfudkgsr7lwlNER/rAOp9In08aXXnGcwMO0Z98twA8DBSiYysNYk7mL+iMU0nNTYrNhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=J2txtWpl; arc=none smtp.client-ip=74.125.227.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1785479232; c=relaxed/simple;
+	bh=qlP1Ss2+iQRQZGMU3GyCe6quBisBEuRYCxF7tBPIKKU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ouTV/vsidBTIgZD+hC0QZXIf7MnApw5lt03lBxtAYcgAebSx5jQ2ajoEJfxR4ZubZUNMjbQLFkgQxOktugaBtRfhW3LHpyP2bQEBIW/vbQnDYKm0qbpASuu7wPqOkwG7gzIxpCJdoYHAYaXoBlOnJFT8LHcn0naS2XcHD8OrSMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dYLRqDS1; arc=none smtp.client-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="J2txtWpl"
-Received: by mail-pj2-f5.google.com with SMTP id d9443c01a7336-2d0344e1ce9so2385325ad.1
-        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 23:22:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dYLRqDS1"
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5bfaf91daa2so186444e0c.0
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 23:27:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785478921; x=1786083721; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785479230; x=1786084030; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aA/LiyJzEP6luazmq5MF2VDFG+Y6mIgTBGcPWqORlJE=;
-        b=J2txtWpl3zpCAq9i20RY53UUX5tUqrNeOIehZe96D4djdhXETX3XI99tB/qOmu/pTQ
-         zzXtf7+muwRS5DYt4j7XKUTrcEQoBFwSd93mZEXab3sBfMnQueiVnl7na7dEvd7uWnv/
-         R2y+qOWegrt1TKGh8d7XIwbuDTbhSxHnuRx3Rq+vKxA6QmOua1aMDJwjKms4+HY7lF2p
-         o534jEMNc8PWn0bGyqqXWx81C3WZ55SpTa7AS5UGlzm1Rz+MiSwOW4BzHyxSNX7/UlA1
-         Hv9g2WJmryhy5cvewkAHWL+6MdnKWPKIBnBgzQ0lwOjwkjrV+6hcl76YN72Q1+8KTpEH
-         Jh3w==
+        bh=Fm1589V0FXrNea29MR1Diml5jD8aBSSRQXiX/5Cuv98=;
+        b=dYLRqDS1qoVxwydd4nxsHzof09+q/r0Hr8np22ayfn9XbS6HVaB3Uc3LuNO/j2UBDi
+         mkjvSHNp4IrESl5Z0U6buhTqWNPDyYxX+djrUHS6HqDMFz5ZvQWiWcOroPzpZe8BhY3M
+         EDkhvDQbIx0dNhPUTbGcn5mc0xo3eC3dcAjA1zwlzROVICWd/5ajmg41i7ao+givv/c5
+         eHKGYCjpmgPjqqzH9JBUA+B2crfirvJFtUTYmyOOIhS5aUIpH3feaFfIf58GuY6g4Tqb
+         xuvEPBiXBRTrdU8/1cqgZNEb1ji5So8nn5p65HbDzituLqJJS7WGd28G5GuJx699VVUN
+         X7vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785478921; x=1786083721;
+        d=1e100.net; s=20251104; t=1785479230; x=1786084030;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aA/LiyJzEP6luazmq5MF2VDFG+Y6mIgTBGcPWqORlJE=;
-        b=ny0SSadNBVGQaISN+C+Na2pt8xwPysZgqnTvmDyVCR6K6O0a+1hzNlCBel/HewHoOq
-         4xBD0h4VhhEPINj0HuDyBzHXUipdqChHpN3Z5VZJ/mc5/RvG7BLVyQJlmvVzXAbkh0/N
-         r2DmaX99shmV0daRgPnbym6FT5FONRIvXKvbKQ7wFI+Xjt12zFdFoRF/o0vyHm2srCTP
-         hXQBKg4B7+3kIGT4YayHWJyOcjv8aEgcYJXkp//EkElE5AcCV7n/nyIFMm3wUSm+4WzI
-         5PpW2JvdC/yI/I4rZX3jyaQISz+ol3TLK8w3yeF8rwRLIfm5Cc6uQZqCxagXMk6b9mLF
-         7+dA==
-X-Forwarded-Encrypted: i=1; AHgh+RoKL5SLKT6J6uxeb1opbMx+r2U1XuZ8HwM911xNdvRH/Z05eWI9hN9opg+GGbyYisBOSsm9sDg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3tHBDvgcnsQ+nAfABZq5yh/1ThAwo6vgWZ2qu1oHTe/iTuVPX
-	HF1gMmTm3hFCBxebVvOq4zTWU3uRvasfcDiatdrNDztYxyNFD9w39u0Jv7pEREV4MD9m
-X-Gm-Gg: AR+sD12QzHpfg26lWp3EJ3gx+QvEdBpb0hf7Je9/qr0eQJRtJwZdQY1rkvIn+MPb8Rf
-	DU0eRZCWyGr+LGW9P1y3CQA47xklT18VdOfZLD3qJWhR5bhlYVm9oZJ40hXB6EaDDXP8X07/5AR
-	hojHBKcO7i2+JUOoNgl/jDWehDr65E3YysYgz6RyEaOZBNWukIBlHaq6OIkrZ0ubnRKY1RWCYG5
-	UXnUsXgvgipOUAg+x232ec7xRWtXbJa1L8V0viAyHFX6nT9MGHsiRxpDjw5WDPhISxae7ntiGYx
-	HO1xnbR14ULL9FO96jGHtRtcwYGWxmYmu6YNjhObavXdu5ISHhcC4uUJUIFylnx+W35fLRchS6g
-	R3Fl+vdsY9IFaw/SUmnfqM2IfaZGGATIZIhRnYlEhrHhypStI5rzvV66ZCFAgRDT9xb/IO8oKNd
-	Cdx4pVSnQi7FpUIedaIT16us4Y3wm1BSuIL4la0PFNyeUtT7sl8HsmmYE9dnocHbwT4ip4ZC++P
-	h+J
-X-Received: by 2002:a17:902:d4ca:b0:2cf:bf32:ba6c with SMTP id d9443c01a7336-2d046e8699emr9077365ad.26.1785478920646;
-        Thu, 30 Jul 2026 23:22:00 -0700 (PDT)
-Received: from Roxy.localdomain ([203.175.14.58])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b165e99sm827565ad.83.2026.07.30.23.21.54
+        bh=Fm1589V0FXrNea29MR1Diml5jD8aBSSRQXiX/5Cuv98=;
+        b=DuEQu985xC9IJSlQbc3S5+ueQMxFva8SNPbVzj1g6/vKLNJPd4YOdymg0xN49n8Xc0
+         Eh6sQfrlYg5BMkF5QZKq0aAX/BGEY2mTqLmxo0Recmo0o9PaMyWm+qb9ZRkv4lwCblj0
+         8Ctyxet99QuZWkIWy32ZWdylLly51uD/bC/HsCyliTTL87XnlUYkfN61pAt4ctkW2V2w
+         3YkXuT2ZCF0DmT0clsp0j3vZhK2MQKVX1l9wNYSyBRkCXWeeDi1Pa3Voex5AdS9EonD5
+         U9qQJz9c/hQ4jKfey83nRiR90kVG3C0Khmh4k0KoXi5iuEMB+tcD2emuV9vzNUqPlE6Q
+         rgbA==
+X-Gm-Message-State: AOJu0YyfyKW7Y/j7CoYSeM08K6/tEVn2Jx+dvqGaSDz8ISoao3Hu8wG5
+	uaZS0+Z1L6PP2jTxQFwHTqMAsPu8BEEzNqGn6nLXIPg3lGgjVx7nrq+fMww0Idjszsw=
+X-Gm-Gg: AR+sD12qitRI5c7CWZ8gdWY8C+31zCPOWX1hRBERbGyAjTab+pJxqjmwI0M2uENX2e4
+	tKxXMYzzocNZMLczDGhxyEIBNsDZvNGu8e37JCWUMItY2pyAXHBkz0ofeFXgSqjxr4AxfbaPw0P
+	jlb31OAM+FMnYI594r6qTC9xrOpiXh96x/eVCjrtbbSEUFhDTpOSI3BSoNSFomj9gWk1AiXISPv
+	affCQR5C1irQahV8AQNbHzO6vyAza4ugig2p6g0APILQigz+AsUcheLaObuziT4hZj40lAK7oZC
+	cHj0+OXVLX1B0BmOQik6SwBz4Z1EvXhM7aN3gEr95G8bn/khCB8ipzcvl+MKOC+BoKTx4FRWbfu
+	AIYJPDuS+DY43EbGK4skYTLFAD8MyGQaqoC3FGqp3qflPtnFTnoRSVTLMDDogszmJj3vhY6YtFO
+	qPPe6RTymMiLiiuyF1Gg+ncbMl4n31k+d3LIURhzFBy7H+zZjYC2Wb9Zk=
+X-Received: by 2002:a05:6122:6586:b0:5c1:332f:b40a with SMTP id 71dfb90a1353d-5c37e353177mr177673e0c.9.1785479229512;
+        Thu, 30 Jul 2026 23:27:09 -0700 (PDT)
+Received: from houminxi ([104.167.197.198])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c37eac0b38sm420304e0c.2.2026.07.30.23.27.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 23:21:59 -0700 (PDT)
-From: Zhiling Zou <zhilinz@nebusec.ai>
-To: idosch@nvidia.com,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: daniel@iogearbox.net,
-	razor@blackwall.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
+        Thu, 30 Jul 2026 23:27:09 -0700 (PDT)
+From: Minxi Hou <houminxi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	dsahern@kernel.org,
+	aconole@redhat.com,
+	echaudro@redhat.com,
+	i.maximets@ovn.org,
+	dev@openvswitch.org,
+	linux-kselftest@vger.kernel.org,
+	shuah@kernel.org,
 	horms@kernel.org,
-	yuehaibing@huawei.com,
-	kuniyu@google.com,
-	aleksander.lobakin@intel.com,
-	maoyixie.tju@gmail.com,
-	thorsten.blum@linux.dev,
-	kees@kernel.org,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: [PATCH net v2 1/1] net: cap advertised device headroom
-Date: Fri, 31 Jul 2026 14:21:43 +0800
-Message-ID: <0ae4aa29223b89049727aec4d36f144bad41537e.1785476387.git.zhilinz@nebusec.ai>
-X-Mailer: git-send-email 2.43.0
+	linux-kernel@vger.kernel.org,
+	Minxi Hou <houminxi@gmail.com>
+Subject: [PATCH net-next v8] selftests/net/openvswitch: add SCTP flow key support and test
+Date: Fri, 31 Jul 2026 02:26:55 -0400
+Message-ID: <20260731062655.4088575-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,148 +82,207 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-IP tunnel and netkit devices can publish headroom values that are derived
-from user-created stacked devices or directly supplied netlink attributes.
-These values are later used by IP output paths when reserving link-layer
-space before storing skb header offsets, which are 16-bit fields.
+The ovskey flow-string parser has no OVS_KEY_ATTR_SCTP entry, so a
+flow string containing sctp(src=.../dst=...) parses without error but
+silently drops the L4 key. The resulting flow carries only
+ipv4(proto=132), and the kernel rejects it: match_validate() in
+flow_netlink.c requires OVS_KEY_ATTR_SCTP when the IP protocol is
+IPPROTO_SCTP and returns -EINVAL for the missing key.
 
-The dynamic tunnel transmit path already caps growing needed_headroom at
-512. Apply the same limit when tunnel link configuration publishes
-needed_headroom or hard_header_len from an underlying route, and reject
-netkit devices created with IFLA_NETKIT_HEADROOM above that value.
+Register OVS_KEY_ATTR_SCTP in the parse table and add a matching
+selftest that verifies SCTP flow key matching (sctp src/dst port).
 
-Keep bogus device headroom out of the control path instead of checking
-every affected IP send path.
+Also enable CONFIG_IP_SCTP in the selftest kernel config.
 
-Fixes: 1a37e412a022 ("net: Use 16bits for *_headers fields of struct skbuff")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+Signed-off-by: Minxi Hou <houminxi@gmail.com>
 ---
-changes in v2:
-- Move the fix from IP send paths to tunnel and netkit device control paths.
-- Cap advertised IP tunnel headroom at 512 and reject netkit headroom
-  values above that limit at device creation.
-- v1 Link: https://lore.kernel.org/all/0c6c64e9bbd71a0decc8504a384061e0e631be13.1785054561.git.zhilinz@nebusec.ai/
+Changes from v7:
+  - Drop all unit tests per Ilya's feedback (tests for test code
+    feels excessive); merge patches back into one.
+  - Enable CONFIG_IP_SCTP in the selftest kernel config.
+  - Rebase onto latest net-next; add base-commit header.
+v7: https://lore.kernel.org/netdev/20260729064549.3647518-1-houminxi@gmail.com/
+v6: https://lore.kernel.org/netdev/20260724150624.3457427-1-houminxi@gmail.com/
+v5: https://lore.kernel.org/netdev/20260723215630.2502169-1-houminxi@gmail.com/
+v4: https://lore.kernel.org/netdev/20260723162503.1790998-1-houminxi@gmail.com/
+v3: https://lore.kernel.org/netdev/20260722214915.4128292-1-houminxi@gmail.com/
+v2: https://lore.kernel.org/netdev/20260721190648.2713156-1-houminxi@gmail.com/
+v1: https://lore.kernel.org/netdev/20260718215437.3257200-1-houminxi@gmail.com/
 
- drivers/net/netkit.c     |  5 ++++-
- include/net/ip_tunnels.h | 11 +++++++++--
- net/ipv4/ip_tunnel.c     |  2 +-
- net/ipv6/ip6_gre.c       |  6 ++++--
- net/ipv6/ip6_tunnel.c    |  5 +++--
- net/ipv6/sit.c           |  2 +-
- 6 files changed, 22 insertions(+), 9 deletions(-)
+ .../testing/selftests/net/openvswitch/config  |   1 +
+ .../selftests/net/openvswitch/openvswitch.sh  | 121 ++++++++++++++++++
+ .../selftests/net/openvswitch/ovs-dpctl.py    |   5 +
+ 3 files changed, 127 insertions(+)
 
-diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
-index a3931cd821321..d8e9ce1c659d0 100644
---- a/drivers/net/netkit.c
-+++ b/drivers/net/netkit.c
-@@ -25,6 +25,8 @@
- #define NETKIT_NUM_RX_QUEUES_REAL 1
- #define NETKIT_NUM_TX_QUEUES_REAL 1
+diff --git a/tools/testing/selftests/net/openvswitch/config b/tools/testing/selftests/net/openvswitch/config
+index c659749cd086..754297b1644e 100644
+--- a/tools/testing/selftests/net/openvswitch/config
++++ b/tools/testing/selftests/net/openvswitch/config
+@@ -1,6 +1,7 @@
+ CONFIG_GENEVE=m
+ CONFIG_INET_DIAG=y
+ CONFIG_IPV6=y
++CONFIG_IP_SCTP=y
+ CONFIG_NETFILTER=y
+ CONFIG_NET_IPGRE=m
+ CONFIG_NET_IPGRE_DEMUX=m
+diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+index 853dbc1b00d7..b448324527d8 100755
+--- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
++++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+@@ -34,6 +34,7 @@ tests="
+ 	action_set				set: SET action rewrites fields
+ 	trunc					trunc: output truncation
+ 	icmpv6					icmpv6: ICMPv6 echo type match
++	sctp_connect_v4				sctp: SCTP flow key matching
+ 	psample					psample: Sampling packets with psample"
  
-+#define NETKIT_HEADROOM_MAX 512
-+
- struct netkit {
- 	__cacheline_group_begin(netkit_fastpath);
- 	struct net_device __rcu *peer;
-@@ -1244,7 +1246,8 @@ static const struct nla_policy netkit_policy[IFLA_NETKIT_MAX + 1] = {
- 	[IFLA_NETKIT_MODE]		= NLA_POLICY_MAX(NLA_U32, NETKIT_L3),
- 	[IFLA_NETKIT_POLICY]		= { .type = NLA_U32 },
- 	[IFLA_NETKIT_PEER_POLICY]	= { .type = NLA_U32 },
--	[IFLA_NETKIT_HEADROOM]		= { .type = NLA_U16 },
-+	[IFLA_NETKIT_HEADROOM]		= NLA_POLICY_MAX(NLA_U16,
-+							 NETKIT_HEADROOM_MAX),
- 	[IFLA_NETKIT_TAILROOM]		= { .type = NLA_U16 },
- 	[IFLA_NETKIT_SCRUB]		= NLA_POLICY_MAX(NLA_U32, NETKIT_SCRUB_DEFAULT),
- 	[IFLA_NETKIT_PEER_SCRUB]	= NLA_POLICY_MAX(NLA_U32, NETKIT_SCRUB_DEFAULT),
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index d708b66e55cda..85e3455cea259 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -629,8 +629,7 @@ struct metadata_dst *iptunnel_metadata_reply(struct metadata_dst *md,
- int skb_tunnel_check_pmtu(struct sk_buff *skb, struct dst_entry *encap_dst,
- 			  int headroom, bool reply);
+ info() {
+@@ -611,6 +612,126 @@ test_icmpv6() {
+ 	return 0
+ }
  
--static inline void ip_tunnel_adj_headroom(struct net_device *dev,
--					  unsigned int headroom)
-+static inline unsigned int ip_tunnel_limit_headroom(unsigned int headroom)
- {
- 	/* we must cap headroom to some upperlimit, else pskb_expand_head
- 	 * will overflow header offsets in skb_headers_offset_update().
-@@ -640,6 +639,14 @@ static inline void ip_tunnel_adj_headroom(struct net_device *dev,
- 	if (headroom > max_allowed)
- 		headroom = max_allowed;
- 
-+	return headroom;
++# Check for an SCTP endpoint via /proc, which works without sctp_diag.
++sctp_eps_has() {
++	ip netns exec "$1" awk -v p="$2" '$6==p' /proc/net/sctp/eps | grep -q .
 +}
 +
-+static inline void ip_tunnel_adj_headroom(struct net_device *dev,
-+					  unsigned int headroom)
-+{
-+	headroom = ip_tunnel_limit_headroom(headroom);
++# sctp_connect_v4 test
++# - sctp(dst=4443) matches client-to-server INIT
++# - sctp(src=4443) matches server-to-client INIT-ACK
++# - remove flows and verify connection fails, reinstall and recover
++test_sctp_connect_v4() {
++	local t="test_sctp_connect_v4"
++	local srv_ip=172.31.110.20
 +
- 	if (headroom > READ_ONCE(dev->needed_headroom))
- 		WRITE_ONCE(dev->needed_headroom, headroom);
- }
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 9d114bd575f92..5b1f180485d42 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -317,7 +317,7 @@ static int ip_tunnel_bind_dev(struct net_device *dev)
- 		mtu = min(tdev->mtu, IP_MAX_MTU);
- 	}
- 
--	dev->needed_headroom = t_hlen + hlen;
-+	dev->needed_headroom = ip_tunnel_limit_headroom(t_hlen + hlen);
- 	mtu -= t_hlen + (dev->type == ARPHRD_ETHER ? dev->hard_header_len : 0);
- 
- 	if (mtu < IPV4_MIN_MTU)
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index b843116e9b703..04ac007ebcc87 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -1137,8 +1137,10 @@ static void ip6gre_tnl_link_config_route(struct ip6_tnl *t, int set_mtu,
- 			return;
- 
- 		if (rt->dst.dev) {
--			unsigned short dst_len = rt->dst.dev->hard_header_len +
--						 t_hlen;
-+			unsigned int dst_len;
++	modprobe -q sctp 2>/dev/null || return "$ksft_skip"
++	socat -V 2>&1 | grep -q "define WITH_SCTP" || return "$ksft_skip"
 +
-+			dst_len = ip_tunnel_limit_headroom(rt->dst.dev->hard_header_len +
-+							   t_hlen);
- 
- 			if (t->dev->header_ops)
- 				dev->hard_header_len = dst_len;
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index bf8e40af60b08..403995273cbae 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1522,8 +1522,9 @@ static void ip6_tnl_link_config(struct ip6_tnl *t)
- 			tdev = __dev_get_by_index(t->net, p->link);
- 
- 		if (tdev) {
--			dev->needed_headroom = tdev->hard_header_len +
--				tdev->needed_headroom + t_hlen;
-+			dev->needed_headroom = ip_tunnel_limit_headroom(tdev->hard_header_len +
-+									tdev->needed_headroom +
-+									t_hlen);
- 			mtu = min_t(unsigned int, tdev->mtu, IP6_MAX_MTU);
- 
- 			mtu = mtu - t_hlen;
-diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
-index a38b24fb83842..19b7fa8d1a2a0 100644
---- a/net/ipv6/sit.c
-+++ b/net/ipv6/sit.c
-@@ -1131,7 +1131,7 @@ static void ipip6_tunnel_bind_dev(struct net_device *dev)
- 		WRITE_ONCE(dev->mtu, mtu);
- 		hlen = tdev->hard_header_len + tdev->needed_headroom;
- 	}
--	dev->needed_headroom = t_hlen + hlen;
-+	dev->needed_headroom = ip_tunnel_limit_headroom(t_hlen + hlen);
- }
- 
- static void ipip6_tunnel_update(struct ip_tunnel *t,
++	sbx_add "$t" || return $?
++	ovs_add_dp "$t" sctp4 || return 1
++
++	info "create namespaces"
++	for ns in client server; do
++		ovs_add_netns_and_veths "$t" "sctp4" "$ns" \
++		    "${ns:0:1}0" "${ns:0:1}1" || return 1
++	done
++
++	ip netns exec client ip addr add 172.31.110.10/24 dev c1
++	ip netns exec client ip link set c1 up
++	ip netns exec server ip addr add "${srv_ip}/24" dev s1
++	ip netns exec server ip link set s1 up
++
++	# Probe: check if kernel supports sctp flow key.
++	ovs_add_flow "$t" sctp4 \
++	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
++	    '2' &>/dev/null
++	if [ $? -ne 0 ]; then
++		info "no support for sctp key - skipping"
++		ovs_exit_sig
++		return $ksft_skip
++	fi
++	ovs_del_flows "$t" sctp4
++
++	# ARP forwarding
++	ovs_add_flow "$t" sctp4 \
++	    'in_port(1),eth(),eth_type(0x0806),arp()' \
++	    '2' || return 1
++	ovs_add_flow "$t" sctp4 \
++	    'in_port(2),eth(),eth_type(0x0806),arp()' \
++	    '1' || return 1
++
++	# SCTP port matching: dst for request, src for reply
++	ovs_add_flow "$t" sctp4 \
++	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
++	    '2' || return 1
++	ovs_add_flow "$t" sctp4 \
++	    'in_port(2),eth(),eth_type(0x0800),ipv4(proto=132),sctp(src=4443)' \
++	    '1' || return 1
++
++	ovs_netns_spawn_daemon "$t" "server" \
++	    socat -u SCTP4-LISTEN:4443 STDOUT
++	local server_pid="$pid"
++	ovs_wait sctp_eps_has server 4443 || return 1
++
++	info "verify SCTP association with port-keyed flows"
++	ovs_sbx "$t" ip netns exec client \
++	    timeout 3 socat -u STDIN "SCTP4-CONNECT:${srv_ip}:4443" </dev/null \
++	    || return 1
++
++	ovs_del_flows "$t" sctp4
++
++	info "verify connection fails without flows"
++	ovs_add_flow "$t" sctp4 \
++	    'in_port(1),eth(),eth_type(0x0806),arp()' \
++	    '2' || return 1
++	ovs_add_flow "$t" sctp4 \
++	    'in_port(2),eth(),eth_type(0x0806),arp()' \
++	    '1' || return 1
++
++	kill -TERM "$server_pid" 2>/dev/null
++	local i=0
++	while kill -0 "$server_pid" 2>/dev/null && [ "$i" -lt 5 ]; do
++	    sleep 0.2
++	    i=$((i + 1))
++	done
++	ovs_netns_spawn_daemon "$t" "server" \
++	    socat -u SCTP4-LISTEN:4443 STDOUT
++	server_pid="$pid"
++	ovs_wait sctp_eps_has server 4443 || return 1
++
++	ovs_sbx "$t" ip netns exec client \
++	    timeout 3 socat -u STDIN "SCTP4-CONNECT:${srv_ip}:4443" </dev/null \
++	    >/dev/null 2>&1 \
++	    && { info "connection should fail without flows"
++	         return 1; }
++
++	info "reinstall flows and verify recovery"
++	ovs_add_flow "$t" sctp4 \
++	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
++	    '2' || return 1
++	ovs_add_flow "$t" sctp4 \
++	    'in_port(2),eth(),eth_type(0x0800),ipv4(proto=132),sctp(src=4443)' \
++	    '1' || return 1
++
++	kill -TERM "$server_pid" 2>/dev/null
++	i=0
++	while kill -0 "$server_pid" 2>/dev/null && [ "$i" -lt 5 ]; do
++	    sleep 0.2
++	    i=$((i + 1))
++	done
++	ovs_netns_spawn_daemon "$t" "server" \
++	    socat -u SCTP4-LISTEN:4443 STDOUT
++	server_pid="$pid"
++	ovs_wait sctp_eps_has server 4443 || return 1
++
++	ovs_sbx "$t" ip netns exec client \
++	    timeout 3 socat -u STDIN "SCTP4-CONNECT:${srv_ip}:4443" </dev/null \
++	    || return 1
++
++	return 0
++}
++
+ # psample test
+ # - use psample to observe packets
+ test_psample() {
+diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+index f3edd198223f..ce790d936832 100644
+--- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
++++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+@@ -1984,6 +1984,11 @@ class ovskey(nla):
+                 "udp",
+                 ovskey.ovs_key_udp,
+             ),
++            (
++                "OVS_KEY_ATTR_SCTP",
++                "sctp",
++                ovskey.ovs_key_sctp,
++            ),
+             (
+                 "OVS_KEY_ATTR_ICMP",
+                 "icmp",
+
+base-commit: 2fbade66245059c78daeaccfce13ecf499fffb51
 -- 
-2.43.0
+2.55.0
+
