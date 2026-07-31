@@ -1,258 +1,171 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566933876B8;
-	Fri, 31 Jul 2026 16:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B12C348C4C;
+	Fri, 31 Jul 2026 16:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785514245; cv=none; b=jqkR5pyOQmRVc5vmQOPQrxVLw0UgXUTnkxl5QyNEP4y1pcRvzkvAdGBMlGHNr1UXiJfuUOArYpM4iZaen1VntxdJj7CWy8jvJhPG57MyW/ob1ihgL7hw5S4Kb+qQG2NEBAiN9xjU2F3f78D+/vj1/mTnAKAOIj0L1pf1WRog9uM=
+	t=1785514323; cv=none; b=ZsNgtpiZMee/ZyJXHpUYslBpms+KmS+Q/+DnTTJy+EhyKQPtAfruG876GNLBWdZb7HDzUuMtfVwxAJurPanlXi0WlPQfG5z7POOGpohIYYB7Hk+t7jpjoPGd10Zyj0X7+CROlvpXGUKIUyZ3y+4h3An6vg8RoGAPSAMKpBthsfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785514245; c=relaxed/simple;
-	bh=ZxEP6TgNv88WrJYxtaAQ3YoF12sS69sflBFNb/8mCWA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=IlzgO5ymLpt03KlpHUhA/+BVTgV67zGdIK67djQ/HG6Y3iwqGZrZgltKObRayPR0zpC93Ejx8cy5ClDpxzrASlc20yBrfz3kT4M//YyyP3vsfh/jc3PytNya/U8tvtkH3MoOWQTzy82CBeYGDY4uVw9h10yam8Bu+oHy2itnVCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Dyh/4mJ7; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785514323; c=relaxed/simple;
+	bh=ui8VDtI5yOAFU3S8ye/n7ySA6W76JGnaC2JuarKKSug=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GL6OLGs+lei0eic/IrmDz8Melnx2egWBFwWfJ0IPPFykrH7rfAq8vX81LS8kMC3g5QnqCTUCTWvp44oQuOrI2zvycMOYmtWJaK6KNRf3O44QO1jNz+zzjninxk3QXNwhzLXwhE9y2ftvPWN7iwG41eZLqO1aDxvub1HTZ4I5rUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J5+VHPiv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Dyh/4mJ7"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 844981A1364;
-	Fri, 31 Jul 2026 16:10:39 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4F8946039A;
-	Fri, 31 Jul 2026 16:10:39 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C6F111C16A6A;
-	Fri, 31 Jul 2026 18:10:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785514238; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=0Dk4kbWvOzGTPH7S8Q20Ht91668Q07e4E6M0K+X69HM=;
-	b=Dyh/4mJ7FDTBoJWEj8AtPIsqha4gFPhCpb4x6ZHppg0m834bTFw0KdfaAUdgeIXett7uOY
-	LV9EJTHDBgbRNTdtJIJgoJnHteOKyf5dva9xqf0IzWGM5siY2EyIanbv4TBmSVFnmPLrue
-	Qv2BR0YyM/544ztI7ByXtWkYaXZdarh7U1BUJocXeUt3URS6G7y4AfskL0RGpk3o0cN9fQ
-	3tbWv52kk9iS0tTe2FvmnWaMe+UxBonoRs6zC1S4yA4LuwhYCEeR2cuGdQb2ZS+CfHp42z
-	Bu/0GOUtBbGQ3XwgBCBibkn3jTxJd6J+ZWAMke7QZa2L/pPWXvbuU5jGZZzuUA==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J5+VHPiv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5B31F00AC4;
+	Fri, 31 Jul 2026 16:11:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785514321;
+	bh=+aY16cQD1yi/fI/iYzD2yH9asZaD/+RJNulXbhKPIL4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=J5+VHPivrFG08eNk6jh85FQbBiRLs+GBo+x95+l61naVKO3k6qkgOGHlYzTzvq9LQ
+	 c6RrJyw8TM2kMYdwe6bKJZRXZ+aaD3RK+E09W86CSjhzlr7SZylKMhsCzR+fcOBrJX
+	 4JRs7vtkSELCKH2DcR3r3Z6OkbIouGAeQnVUQa8J7H9lUJ0nK1IcPj4ZhyQHIRPC6q
+	 fYwUnX6InUkLpQ2464gk1ELegKQRzXVsEWXMAFuI3cMn/WlwpY5AsO/oISjeLQytmQ
+	 LppNW7pmoGnuNt0wkTybBy5pLUI4kb3GbS4yPCpml9KjY79RtOG1CvOaCD/PczuW/j
+	 WcWUVONYA1/xw==
+From: Simon Horman <horms@kernel.org>
+To: mhun512@gmail.com
+Cc: Simon Horman <horms@kernel.org>,
+	qiang.zhao@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	ae878000@gmail.com
+Subject: Re: [PATCH net] net: wan: fsl_ucc_hdlc: release HDLC device on remove
+Date: Fri, 31 Jul 2026 17:10:00 +0100
+Message-ID: <20260731161000.334673-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260728171545.49247-1-mhun512@gmail.com>
+References: <20260728171545.49247-1-mhun512@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 31 Jul 2026 18:10:33 +0200
-Message-Id: <DKCVYZ69KGSM.2R1ELFSWRG5HM@bootlin.com>
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Nicolas
- Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Paolo Valerio" <pvalerio@redhat.com>, "Nicolai
- Buchwitz" <nb@tipi-net.de>, "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
- <maxime.chevallier@bootlin.com>
-To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, "Conor Dooley"
- <conor.dooley@microchip.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Richard Cochran" <richardcochran@gmail.com>, "Russell King"
- <linux@armlinux.org.uk>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next v5 14/15] net: macb: use context swapping in
- .set_ringparam()
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260724-macb-context-v5-0-569b1852bc7f@bootlin.com>
- <20260724-macb-context-v5-14-569b1852bc7f@bootlin.com>
-In-Reply-To: <20260724-macb-context-v5-14-569b1852bc7f@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Sashiko replies.
-
-Both sashiko.dev and sashiko-netdev has comments on this patch.
-https://sashiko.dev/#/patchset/20260724-macb-context-v5-0-569b1852bc7f%40bo=
-otlin.com
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260724-macb-context-v=
-5-0-569b1852bc7f%40bootlin.com?patch=3D8011
-
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260728171545.49247-1-mhun512@gmail.com?part=1
 ---
+--- Patch [1]: [PATCH net] net: wan: fsl_ucc_hdlc: release HDLC device on remove ---
+commit 345f90c3e598219f0faf6e99ee38f97b8bd6452d
+Author: Myeonghun Pak <mhun512@gmail.com>
 
-sashiko.dev:
+net: wan: fsl_ucc_hdlc: release HDLC device on remove
 
-> > +static void macb_context_swap_end(struct macb *bp,
-> > +              struct macb_context *new_ctx)
-> > +{
-> [ ... ]
-> > +   ctrl =3D macb_readl(bp, NCR);
-> > +   macb_writel(bp, NCR, ctrl | MACB_BIT(RE) | MACB_BIT(TE));
-> > +
-> > +   spin_unlock_irqrestore(&bp->lock, flags);
-> > +
-> > +   mutex_unlock(&bp->mac_cfg_lock);
-> > +
-> > +   netif_tx_start_all_queues(bp->netdev);
+The remove path previously freed the ucc_hdlc_private object without
+unregistering or freeing the HDLC netdev. This patch adds
+unregister_hdlc_device() at the start of ucc_hdlc_remove() and
+free_netdev() before kfree(priv).
+
+> diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+> index 809f21fb93f5..4c843c94cf43 100644
+> --- a/drivers/net/wan/fsl_ucc_hdlc.c
+> +++ b/drivers/net/wan/fsl_ucc_hdlc.c
+> @@ -1255,6 +1255,8 @@ static void ucc_hdlc_remove(struct platform_device *pdev)
+>  {
+>  	struct ucc_hdlc_private *priv = dev_get_drvdata(&pdev->dev);
 >
-> [Severity: High]
-> Does unconditionally enabling the MAC receiver, transmitter, and TX queue=
-s
-> here risk overriding phylink's link-down state?
+> +	unregister_hdlc_device(priv->ndev);
+> +
+
+[Severity: High]
+The commit message says this "closes an active interface through ndo_stop,
+which disables NAPI, stops the UCC, and frees its IRQ".  Is ndo_stop really
+reached here?
+
+unregister_hdlc_device() detaches the protocol before unregistering:
+
+drivers/net/wan/hdlc.c:unregister_hdlc_device() {
+	rtnl_lock();
+	detach_hdlc_protocol(dev);
+	unregister_netdevice(dev);
+	rtnl_unlock();
+}
+
+and detach_hdlc_protocol() ends with an unconditional hdlc_setup_dev(),
+which assigns dev->flags rather than or-ing into it:
+
+drivers/net/wan/hdlc.c:hdlc_setup_dev() {
+	dev->flags		 = IFF_POINTOPOINT | IFF_NOARP;
+	...
+}
+
+So IFF_UP is cleared while the interface is still running.  Both the
+unregister path and netif_close_many() in net/core/dev.c then gate the
+close on that flag:
+
+	if (!(dev->flags & IFF_UP))
+		continue;
+...
+	list_for_each_entry_safe(dev, tmp, head, close_list)
+		if (!(dev->flags & IFF_UP))
+			list_del_init(&dev->close_list);
+
+Doesn't that mean uhdlc_close() never runs, so none of napi_disable(), the
+QE_GRACEFUL_STOP_TX/QE_CLOSE_RX_BD sequence, ucc_fast_disable() or
+free_irq(priv->ut_info->uf_info.irq, priv) happen on the remove path when
+the link was brought up with "ip link set hdlc0 up"?
+
+>  	uhdlc_memclean(priv);
 >
-> If a user changes ring parameters via ethtool on an administratively up
-> interface that currently has no physical carrier, could this forcefully
-> enable the hardware and violate the phylink state machine contract?
+>  	if (priv->utdm && priv->utdm->si_regs) {
+> @@ -1266,6 +1268,7 @@ static void ucc_hdlc_remove(struct platform_device *pdev)
+>  		iounmap(priv->utdm->siram);
+>  		priv->utdm->siram = NULL;
+>  	}
+> +	free_netdev(priv->ndev);
+>  	kfree(priv);
 
-Yes. We need to check for that using netif_carrier_ok(). We already have
-our bp->mac_cfg_lock mutex delaying the conflicting phylink ops.
+[Severity: High]
+Following on from the above: if uhdlc_close() is skipped, can this sequence
+free memory that the hardware and the IRQ handler are still using?
 
-Note: we'll add the mutex lock in macb_hresp_error_task() which toggles
-the carrier state.
+uhdlc_open() installs the handler with priv as dev_id and enables NAPI:
 
->
-> > +
-> > +   /* Free old context. */
-> > +
-> > +   macb_free(old_ctx);
-> > +   kfree(old_ctx);
-> > +}
+drivers/net/wan/fsl_ucc_hdlc.c:uhdlc_open() {
+	if (request_irq(priv->ut_info->uf_info.irq,
+			ucc_hdlc_irq_handler, 0, "hdlc", priv))
+		return -ENODEV;
+	...
+	napi_enable(&priv->napi);
+	...
+}
 
----
+With no free_irq() anywhere else in the driver, the handler stays installed
+after kfree(priv), and the first thing it does is dereference dev_id:
 
-sashiko-netdev:
+drivers/net/wan/fsl_ucc_hdlc.c:ucc_hdlc_irq_handler() {
+	struct ucc_hdlc_private *priv = (struct ucc_hdlc_private *)dev_id;
+	struct net_device *dev = priv->ndev;
+	...
+			__napi_schedule(&priv->napi);
+	...
+}
 
-> > +static void macb_context_swap_end(struct macb *bp,
-> > +              struct macb_context *new_ctx)
-> > +{
-> > +   struct macb_context *old_ctx;
-> > +   struct macb_queue *queue;
-> > +   unsigned long flags;
-> > +   unsigned int q;
-> > +   u32 ctrl;
-> > +
-> > +   lockdep_assert_held(&bp->mac_cfg_lock);
-> > +
-> > +   /* Swap contexts & give buffer pointers to HW. */
-> > +
-> > +   old_ctx =3D bp->ctx;
-> > +   bp->ctx =3D new_ctx;
-> > +   macb_init_buffers(bp);
-> > +
-> > +   /* Start NAPI, HW Tx/Rx and software Tx. */
-> > +
-> > +   for (q =3D 0, queue =3D bp->queues; q < bp->num_queues; ++q, ++queu=
-e) {
-> > +      napi_enable(&queue->napi_rx);
-> > +      napi_enable(&queue->napi_tx);
-> > +   }
-> > +
-> > +   spin_lock_irqsave(&bp->lock, flags);
-> > +
-> > +   /* Re-arm normal interrupt processing before enabling IRQs. */
-> > +   bp->ctx_swap =3D false;
-> > +
-> > +   macb_configure_dma(bp);
-> > +
-> > +   for (q =3D 0, queue =3D bp->queues; q < bp->num_queues; ++q, ++queu=
-e) {
-> > +      queue_writel(queue, IER,
-> > +              bp->rx_intr_mask |
-> > +              MACB_TX_INT_FLAGS |
-> > +              MACB_BIT(HRESP));
-> > +   }
-> > +
-> > +   ctrl =3D macb_readl(bp, NCR);
-> > +   macb_writel(bp, NCR, ctrl | MACB_BIT(RE) | MACB_BIT(TE));
-> > +
-> > +   spin_unlock_irqrestore(&bp->lock, flags);
-> > +
-> > +   mutex_unlock(&bp->mac_cfg_lock);
-> > +
-> > +   netif_tx_start_all_queues(bp->netdev);
->
-> [Medium]
-> Can there be a window between mutex_unlock(&bp->mac_cfg_lock) and
-> netif_tx_start_all_queues(bp->netdev) where phylink_resolve runs
-> macb_mac_link_down(), which now also takes mac_cfg_lock and calls
-> netif_tx_stop_all_queues()?
->
-> If mac_link_down runs in that window:
->
->     static void macb_mac_link_down(...)
->     {
->         mutex_lock(&bp->mac_cfg_lock);
->         ...
->         netif_tx_stop_all_queues(netdev);
->         mutex_unlock(&bp->mac_cfg_lock);
->     }
->
-> then the subsequent netif_tx_start_all_queues() in macb_context_swap_end(=
-)
-> would clear __QUEUE_STATE_DRV_XOFF and undo the stop that mac_link_down
-> just performed.
->
-> For comparison, macb_mac_link_up() calls netif_tx_wake_all_queues() while
-> still holding mac_cfg_lock, and macb_mac_link_down() calls
-> netif_tx_stop_all_queues() while still holding it. Would moving the
-> netif_tx_start_all_queues() call above mutex_unlock() here match that
-> pattern and close the window?
+Is that a use-after-free of priv, of the uccf freed by ucc_fast_free() in
+uhdlc_memclean(), and of the already deleted napi_struct?
 
-Agreed. netif_tx_start_all_queues() will move one line up.
+Also, since napi_disable() never ran, does free_netdev(priv->ndev) ->
+netdev_napi_exit() -> __netif_napi_del_locked() trip its
+WARN_ON(!test_bit(NAPI_STATE_SCHED, &napi->state)) and tear down a NAPI that
+may still be scheduled or polling?
 
->
-> > +
-> > +   /* Free old context. */
-> > +
-> > +   macb_free(old_ctx);
-> > +   kfree(old_ctx);
-> > +}
->
-> > @@ -3816,9 +3953,10 @@ static int macb_set_ringparam(struct net_device =
-*netdev,
-> >                 struct kernel_ethtool_ringparam *kernel_ring,
-> >                 struct netlink_ext_ack *extack)
-> >  {
-> > +   unsigned int new_rx_size, new_tx_size;
-> >     struct macb *bp =3D netdev_priv(netdev);
-> > -   u32 new_rx_size, new_tx_size;
-> > -   unsigned int reset =3D 0;
-> > +   bool running =3D netif_running(netdev);
-> > +   struct macb_context *new_ctx;
-> >
-> >     if ((ring->rx_mini_pending) || (ring->rx_jumbo_pending))
-> >        return -EINVAL;
-> > @@ -3837,16 +3975,24 @@ static int macb_set_ringparam(struct net_device=
- *netdev,
-> >        return 0;
-> >     }
-> >
-> > -   if (netif_running(bp->netdev)) {
-> > -      reset =3D 1;
-> > -      macb_close(bp->netdev);
-> > +   if (running) {
-> > +      /* Context swapping is not supported for AT91. */
-> > +      if (bp->caps & MACB_CAPS_MACB_IS_EMAC)
-> > +         return -EBUSY;
->
-> [Medium]
-> Before this change, ethtool --set-ring on an administratively up AT91
-> EMAC interface went through the macb_close()/macb_open() path and
-> succeeded. After this change AT91 EMAC returns -EBUSY when the interface
-> is up, so users must now bring the link down, adjust ring sizes, and
-> bring it back up.
->
-> Should this user-visible behavior change be called out in the commit
-> message, or would it be preferable to keep the previous close/reopen
-> sequence as an AT91-only fallback so existing management scripts continue
-> to work?
+And with the UCC left enabled, can it keep DMAing into the coherent RX/TX
+rings and buffers that uhdlc_memclean() already returned via
+dma_free_coherent()?
 
-No we don't want the fallback.
-Yes I'll mention this in the commit message.
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
-
-
+Would forcing the interface down before the protocol is detached, for
+example netif_close()/dev_close() under rtnl, or an explicit
+napi_disable()/UCC stop/free_irq() sequence in remove, address this?
