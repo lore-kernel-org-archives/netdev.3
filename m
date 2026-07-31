@@ -1,157 +1,163 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F99D348C4C
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:17:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A6E43802C;
+	Fri, 31 Jul 2026 16:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785514680; cv=none; b=swRtXvdIfw6o3s5CX3yX7ufg9EJ8rlQVogxGFmfsCyy6RbbbzlxxV7LXW7RgC9QHJq5zQLX3618msChCNPfJKFCch/puiskWlPdQmQqkRYvVa6lcyEZ+IJVSCi1zDSFyh9scsW3wkcrBwMXev/LXdriDEGNrG0FkZzkoDr0TJQs=
+	t=1785514748; cv=none; b=hsVy+A44RgdFPttMQHdv6lK2f53knymHcM9bpyXajrVBEPVME8fIQI8tmjrN9HUEhLPhXcdpb9IoyUlywral4iA/e9vjSURrdZ7NoEz4llxPBXeWZcFgsvyjavup6r8J5d0ex8gfCs8S+K1hUapPh8Z0hPHG48Poez9pX+3rCAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785514680; c=relaxed/simple;
-	bh=XiHTps66n/ucoodnksehaJ774Zj8/m6/5WilQKWcYtA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=onJXAUT8NdHWxZvFV3d3O00fPt/0YDrpvj8XGP/V/1dW8xEdFjQXmo4PNOGz1AOSYjh3vxfbBxcOTdG+gWJsRf6YcL1iYKvRrRycQ1XXJViTGDiWqPKfU78t5cobNp3x22zBBoMAzsK8DJNx/qnWtJndkBZ2a5yQk8xJbFInR4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oo5UZn3+; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785514748; c=relaxed/simple;
+	bh=77dPU3aCVLiyLZPqpkAAbRzsa6LcmIYFGd9fJND0R4E=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mXgV+uJdpjNJ+Cbea/CtAslxp36sQtEPis7sRznwvxPPfIcNI7lRX4vmPXBijV89Ax06wp2toMTPk3HL9wyme8rDr4Oa2eNNmBigf/lGGPTa1K3rofbpmCu5W3nIPzl4JzKDpZ5Bg9yQ20tb/DQ5+GDx+F8X2hPl2lnv3IQtOqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=t9nHkfaU; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=b2+THnQu; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oo5UZn3+"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-384930ca5e2so1157413a91.3
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:17:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785514676; x=1786119476; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3fpbCGUKoDP5+AiSkirbnxfIufZXR99E39vUIbtAqi4=;
-        b=Oo5UZn3+s/Clcl35L0i27lCyCVRQs4rNgvsX4jWn9B63BU4Cfiev6E38xXtaotn24V
-         klPvlLCVASNsz/qWHRKdPaqj0WfSfn2xjfRsxY/FFpRdcLa+5ukWSVAazMZaw3DxyuB7
-         lKAkF65rucM2QX3nEbKQm4WcVZ/ZYmWxRwrYy7HWM6hhJv/VFMAEyvjz8EMU6jRYBtW0
-         W1gwnQMgu70yTMMXnAnKnIYBapLvWDM1hPcEA9Y7dbe2nVR9WD+M1qDIP7XH1bKz6YP+
-         fNPnEfSm4y/nV5ytL9oXlALzUHKnTLO58RnV/1iLFx+1quqwKbXCUZkrswXfELG/af9S
-         fhHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785514676; x=1786119476;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3fpbCGUKoDP5+AiSkirbnxfIufZXR99E39vUIbtAqi4=;
-        b=PAAVjPGZHDN48zITLCRL7SDo0rGTjfrAvBIooEYaWMzy95et3tgfwk6QsZJ0BnpSJp
-         LrsIxwZEsMN5y5hJidomlxmy278z/nNxeyDYFS3U/dT9elY0cG5Oy/XUz/64Kj/XvFns
-         6ouaK8C2ij2wyX1W9SHXfUuE/7BTEVKGaR4iuNgcHQL2sqgUA8SUQE/+hbYg2299MzLg
-         tw6ofwKKCdbKG0yRFy8o2WGbZoKsQtnyV1vlJiG3dtqesqpbK48Xf82rYpYLrvAor4/K
-         FT4I8NIcI3YXIsd+e2UKNJpzHDMzEkLPF7xtonBMFajkr8FpKqoiHCq7REazjr1A7qQ4
-         pVlQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrBu2+VpKH/vcz8DdF4o1xVo6LsZxXXxPJEJK9aQA6frBHeGx9H1LTQV8VQTHIplhJXAJDD57c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmZKhUgkkq7BPg0MiTYN1zGWxgfO7I4DUTB/xwHpz4pGCARfXy
-	x6/NeZwuSqQCsKPXRU0bFT3hU5aFV/qKUXrSFcRB3KNFHjnc8GMOhpY=
-X-Gm-Gg: AR+sD12wBjdzvMrXDuXaP6//lvYC/kcPQORFchaHeXkZuLUhd+Z8XEnIJvEYh737A3A
-	PSc1rmDIdssirjjS/PCdP4ABYuJV7KHhMlWwlx6nd1k7G/JuWuW1N9gLAb96YHtpApNBoI2nxLJ
-	47DA3sFtUkgXFkE9VokqFfzETUeKP4AhjGm1Vpgn4Uv+282mXgcaYSawodpryEMqn4GBMIHnd55
-	9RufeglDOwzsPEonzOip8QcBNwoT2qkEun7UztOYnCwaEtCFLuWetpp7zxdu0AeAXmKckB7CZjr
-	8nZfyLwzfzYL+1SWJLLREckGx+zq6DEVomEMJ0IkgGYTHn46MXj6slQovIRGfH3z4f5K4Cdp43S
-	PZWWLcXkmhtMgtfII0Z8gN/my6ijM4Z47EcAZsPqj2BhsvPRpedA2FL0iL6OsIzATIfRhLFOxRs
-	Awb3943osOMmkmNTtYccaXfkAtl4EIxC4/erp+9xFzlt1ZF63MjPugVJ2XVNf8kUqNIs6xh/BXh
-	qtsPiq9oLYJTVAELKQPGQCH7HDxjqlEz6pws00czcnkWP6dq9n3Iwi0SIIHk05oIFZm/03nOmwE
-	ksRSBKnRbxUxoz/Ya9a9+yI=
-X-Received: by 2002:a17:90b:5824:b0:381:9028:5945 with SMTP id 98e67ed59e1d1-38fbc43a847mr445709a91.14.1785514676249;
-        Fri, 31 Jul 2026 09:17:56 -0700 (PDT)
-Received: from localhost.localdomain ([1.226.165.54])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb2ce1778sm923096a91.15.2026.07.31.09.17.53
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 31 Jul 2026 09:17:55 -0700 (PDT)
-From: Myeonghun Pak <mhun512@gmail.com>
-To: Dominik Brodowski <linux@dominikbrodowski.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Myeonghun Pak <mhun512@gmail.com>,
-	Ijae Kim <ae878000@gmail.com>
-Subject: [PATCH] net: 8390: pcnet_cs: release PCMCIA window on setup_shmem_window() error
-Date: Sat,  1 Aug 2026 01:17:40 +0900
-Message-ID: <20260731161740.44955-1-mhun512@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="t9nHkfaU";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="b2+THnQu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1785514743;
+	bh=77dPU3aCVLiyLZPqpkAAbRzsa6LcmIYFGd9fJND0R4E=;
+	h=From:Subject:Date:To:Cc:From;
+	b=t9nHkfaUh09OjX+aQyObImJlIiM5sC9L4NgPXC3sbb9+BVptSk9ZvfzNvIL1Devvh
+	 wQp0TT+d7HdXpSC8fuUA3m+cHLgZPk4fPBlQiibnVKtIbWqloRT2DniP+8YVHddrG0
+	 FV9xHVvA9HLdMGO1pfF8OgrV0KFEphELa9OXi9hHqArdksdkl0oUQD0rcnJdqrHQTp
+	 PplBMihnoFWx+gDakxMB4FgmCkXYq9HKoHO+/BVwUYdoVIelBMJsBTh1PQcwwI9Zvo
+	 A9cTWzN37XbZr1mWGTYUq1HegJw7xddWSIbN+sCwxbO7abwR2mFcWDCTtwom5NJHT4
+	 ve68xfAZqkgGg==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id A3830494FA; Fri, 31 Jul 2026 16:19:03 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1785514742;
+	bh=77dPU3aCVLiyLZPqpkAAbRzsa6LcmIYFGd9fJND0R4E=;
+	h=From:Subject:Date:To:Cc:From;
+	b=b2+THnQu3xt6xaDBZzYMJGsd5irTvSNW2zX1MCMaBUEF/nkfGH3pKdEJ6REOmFkSp
+	 lpTS8D5bKDOnqbY4DjFkqEZJat7KqdnD/MgCgttY+699MdMGo7kjMg/KKDIGEpTgKK
+	 F+kO0F3IuTFTYEyUAS78GdzRmqQfwiD1ti4qS/nV477Umn6E65WNsHZSbuPfmgLgMZ
+	 Uch5sdTiU28R4qxD4RPSm+5Jcm/XeUdVEtzE9AMzKtRxSS6PGthvBET60wjkAA/GRQ
+	 TvqqPWp3b1uwKsUtybUhn2tfgAUddFWaBKTpnhfCGRUorhJ6GoqyXUMaKlXEFFNZ7w
+	 YCADVVYImEKdg==
+Received: from ThinkPadAMD.lan (unknown [82.99.30.195])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 1D791494ED;
+	Fri, 31 Jul 2026 16:19:02 +0000 (UTC)
+From: Birger Koblitz <mail@birger-koblitz.de>
+Subject: [PATCH net-next v4 00/12] ax88179_178a: Add support for
+ AX88179A-based chips
+Date: Fri, 31 Jul 2026 18:19:00 +0200
+Message-Id: <20260731-ax88179a-v4-0-2cf1f71b1dd2@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPTKbGoC/3XNQQ6CMBQE0KuQrq35v6WluPIexkWxv9BowBRCU
+ MLdbbqRhS4nM3mzspFioJGdipVFmsMYhj6F8lCwW2f7lnhwKTMBQoOWwO1iDFa15RadqT0JrCS
+ wNH9G8mHJ1IX1NPGeloldU9OFcRriK3/MmPvMVYBfbkYOHKU2ynldKVTnJsSWIr8PzSNM76Ojj
+ M1iD5gdIBIABsCTawSh/gfIHSDKHSAT0DhHpa9BGSN/Adu2fQBcLkqxNAEAAA==
+X-Change-ID: 20260630-ax88179a-a1d89fe21730
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>, 
+ Jianhui Xu <neuromoments@gmail.com>
+X-Mailer: b4 0.14.2
 
-setup_shmem_window() acquires a PCMCIA memory window with
-pcmcia_request_window() and only releases it on the buffer-verification
-failure path. If pcmcia_map_mem_page() or the subsequent ioremap()
-fails, the function jumps straight to the "failed" label, which returns
-without calling pcmcia_release_window(). The requested window is leaked.
+This adds support for the current generation of ASIX network adapter chips,
+which are based on the AX88179A. This includes the AX88179A/B (1GBit-PHY),
+AX88772D/E (100MBit) and AX88279 (2.5GBit).
 
-This is reachable in practice: pcnet_config() treats a
-setup_shmem_window() failure as non-fatal and falls back to
-setup_dma_config(), so probe can continue and even succeed while the
-requested shared-memory window is left allocated.
+The AX179A-based chips all provide both a CDC-NCM compatible USB interface,
+and a proprietary vendor interface with more features. By default, the
+proprietary vendor interface is not active and Linux will load the CDC-NCM
+driver to support the devices. If the ax88179_178a module is configured by
+the OS to have precedence over CDC-NCM, then this driver will switch the
+device to use the vendor interface, and the device will be controlled by
+the ax88179_178a driver when the device is probed again after an automatic
+reset of the device bringing up the vendor interface.
 
-Route the post-request error paths through a new "release" label that
-calls pcmcia_release_window() before returning, and fold the existing
-buffer-verification cleanup into it. iounmap() is still performed before
-the release where an ioremap() mapping exists, preserving the original
-teardown order. The pcmcia_request_window() failure path still returns
-directly, as no window is held there.
+The following hardware was tested:
+Delock 66046 2.5GBit adapter (AX88279, FW: 1.2.0.0)
+TP-Link UE306 1GBit adapter (AX88179B, FW: 1.3.0.0)
+Renkforce RF-4708614 1GBit adapter (AX88179A, FW: 1.0.4.0)
+UGREEN CR110 100MBit adapter (AX88722E, FW: 1.3.0.0)
 
-This issue was identified during our ongoing static-analysis research while
-reviewing kernel code.
+The driver supports the following features
+- EEE
+- TCP segmentation offload
+- VLAN filtering/tagging offload 
+  (NETIF_F_HW_VLAN_CTAG_FILTER, NETIF_F_HW_VLAN_CTAG_RX/TX)
+- RX/TX checksum offload
+- FC/Pause configuration
+- EEPROM read access
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+The code is based on the ASIX 4.1.0 out-of-tree driver published under
+the GPL,, the aqc111 driver which provides support for the AX88279A,
+and some tracing of USB-transfers of the Windows-driver.
+
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+Tested-by: Jianhui Xu <neuromoments@gmail.com>
 ---
- drivers/net/ethernet/8390/pcnet_cs.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+Changes in v4:
+- Split driver into library part and part2 for AX88179 and AX88179A-based
+  controllers
+- Driver renamed ax88179
+- Improved phylink use: use phylink standard functions for speed and EEE-settings,
+  correct MAC capabilities, removed ax88179_status() irq-urb callback
+- Fixes in PHY driver for AX88179A integrated PHYs
+- Link to v3: https://lore.kernel.org/r/20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de
 
-diff --git a/drivers/net/ethernet/8390/pcnet_cs.c b/drivers/net/ethernet/8390/pcnet_cs.c
-index 19f9c5db3f3b..e2081d493749 100644
---- a/drivers/net/ethernet/8390/pcnet_cs.c
-+++ b/drivers/net/ethernet/8390/pcnet_cs.c
-@@ -1434,14 +1434,14 @@ static int setup_shmem_window(struct pcmcia_device *link, int start_pg,
-     offset -= offset % window_size;
-     ret = pcmcia_map_mem_page(link, link->resource[3], offset);
-     if (ret)
--	    goto failed;
-+	goto release;
- 
-     /* Try scribbling on the buffer */
-     info->base = ioremap(link->resource[3]->start,
- 			resource_size(link->resource[3]));
-     if (unlikely(!info->base)) {
- 	    ret = -ENOMEM;
--	    goto failed;
-+	goto release;
-     }
- 
-     for (i = 0; i < (TX_PAGES<<8); i += 2)
-@@ -1452,9 +1452,8 @@ static int setup_shmem_window(struct pcmcia_device *link, int start_pg,
-     pcnet_reset_8390(dev);
-     if (i != (TX_PAGES<<8)) {
- 	iounmap(info->base);
--	pcmcia_release_window(link, link->resource[3]);
- 	info->base = NULL;
--	goto failed;
-+	goto release;
-     }
- 
-     ei_status.mem = info->base + offset;
-@@ -1475,6 +1474,8 @@ static int setup_shmem_window(struct pcmcia_device *link, int start_pg,
-     info->flags |= USE_SHMEM;
-     return 0;
- 
-+release:
-+	pcmcia_release_window(link, link->resource[3]);
- failed:
-     return 1;
- }
+Changes in v3:
+- Add PHY drivers for the PHYs of the AX88179A-based controllers
+- Use phylink for the AX88179A-based chips
+- Link to v2: https://lore.kernel.org/r/20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de
+
+Changes in v2:
+- Correctly use net-next prefix
+- Fix compilation issue in HW support patch
+- Split MMD support patch into patches for EEE/new chip support
+- Do not use ADVERTISE_RESV but private flag definition
+- Fix pause configuration to keep track of settings when autoneg disabled
+- Fix issue with unitialized variable reported by kernel test robot <lkp@intel.com>
+- Avoid white-space changes
+
+- Link to v1: https://lore.kernel.org/r/20260701-ax88179a-v1-0-13685df67515@birger-koblitz.de
+
+---
+Birger Koblitz (12):
+      ax88179_178a: Fix endianness of pause watermark register
+      ax88179_178a: Split driver into library and device specific code
+      ax88179_178a: Add HW support for AX179A-based chips
+      ax88179_178a: Add EEE configuration support for AX88179A MACs
+      ax88179_178a: Add EEE configuration support for AX88179A PHYs
+      ax88179_178a: Add VLAN offload support for AX88179A
+      ax88179_178a: Add AX179A/AX279 multicast configuration
+      ax88179_178a: Add Suspend/resume support for AX88179A/772D/279
+      ax88179_178a: Add ethtool get_drvinfo
+      ax88179_178a: update driver information
+      ax88179_178a: Add support for AX88179A/772D/279 EEPROM access
+      ax88796b: Add support for AX88772D, AX88179A and AX88279
+
+ drivers/net/phy/ax88796b.c         |  192 ++++++
+ drivers/net/usb/Kconfig            |    9 +-
+ drivers/net/usb/Makefile           |    3 +-
+ drivers/net/usb/ax88179_178a.c     |  664 ++-----------------
+ drivers/net/usb/ax88179_lib.c      |  508 +++++++++++++++
+ drivers/net/usb/ax88179_lib.h      |  357 +++++++++++
+ drivers/net/usb/ax88179a_devices.c | 1245 ++++++++++++++++++++++++++++++++++++
+ 7 files changed, 2355 insertions(+), 623 deletions(-)
+---
+base-commit: 1a9edf8be190decb17227e3cba540513d93ebb85
+change-id: 20260630-ax88179a-a1d89fe21730
+
+Best regards,
 -- 
-2.47.1
+Birger Koblitz <mail@birger-koblitz.de>
+
