@@ -1,233 +1,71 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFEE3BBA0E
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 23:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221243D3CF2;
+	Fri, 31 Jul 2026 23:15:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785539380; cv=none; b=CrBjN6dejhs7b7RVGCp9BiX5yfu6loIDJOtslV3h+Ea+r6nOKAV5Wy5HcSOxkscbdTzez4WVo9ENfz/IyeH7l8hr6iltgQsajXlvQTBJ+jPKl9q7a6yYCLSCnhihLN1LOdU6z7q7sSzKfyFgcQ9/ymc/3Uc8O2dlsxIH9SEvIoY=
+	t=1785539746; cv=none; b=QCzCjhGUQUOvkS9rjRewp25lBfhr6z+DApLfSqk32/vBdzWQXrbSY2nOsYjRKB02TPc/hd+K/1yqsgMUe1HFkjeV/DIyEOIwsU+mqxzJrhJGkJq51+aIOvXeeQNoexNijXkE3mu+KdmsrScMTqOhpwcmJQtn8Z9gd1fnEmdIj6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785539380; c=relaxed/simple;
-	bh=3/Y7DTe/blm0ls3HJgTgqBWahpKf4hGOsDhRJ4rLJ+Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cpcEY9D3XX07Jmaz3A6rSIe+eYaPmAd0vqHfbWR2HnGa48AToNarWLjYhK/nw3zZXAkrimjat7Yzo+Rh2hrRo9dKEvWooFrROegDCHYmk6w6BMX1JKwe3TGKDItd8lu6Zz/HGS6BGjoTbujlUg9c1U2mIjm/nldsO9LPMqqPht0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d/S7TDTc; arc=none smtp.client-ip=209.85.216.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1785539746; c=relaxed/simple;
+	bh=So6Ub7VcEdURIC9Cw1Po+tU+Mmci/s0GtxtldO16gnA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fvvz5a9Tl5CMWtuXSS4Qicxel8u4cLtwA/TCU2UCnfHgm4E9GFvDveibPFb3MpEkxfqba7MKNGuEKoiLzTOd1g3iOLyoOmDcpnVQyAHaSTL19k+Up9E2UXMLxOe5zpJ4xgL55lXxGiT/o4d1VCxYqmmwebnSw5XkeKifkt4ZkyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X7NKCP8e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d/S7TDTc"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38ce7fabf76so2480239a91.2
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:09:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785539377; x=1786144177; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=L2Atkz5KaRe9+m0/qO7+29NEyBrGyd/EfwQ1Im0dujw=;
-        b=d/S7TDTc/BcwFn5B1NznofWbAepRahNMo8I1R+XzHr+jMssD2YRJlM+4nuDmugl7/u
-         +j57Xog9ShEUYgsH/gCzeOnM12BtdaDtlrUES0YAwPnp6/APHL1ehP1vcqb35RP4kkB6
-         KE9Q3o4ukYDh7a1NY0EnrxFWFfgoMfPpvMUgZ/vCOjZvColrXo31l0WR5eHOEODqp/37
-         GZDV2zXZ2YJ4ALewIPnqzfcAmdUoP7Cyd46FrMvfFssN91r5w6trMDIYNPtwJ6KLk8SO
-         scWB9St1YOrYivN1VFuaGFgi07GiAaf1lHLRaGmhc8ofIh1ttnnpzHpSOJz6FfyO6UkQ
-         XbiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785539377; x=1786144177;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=L2Atkz5KaRe9+m0/qO7+29NEyBrGyd/EfwQ1Im0dujw=;
-        b=qMBM1x589Zs1oVX2QFxibUzeilym815pLyccOVXx55uLo1ioXOZeqhvkQCPNk3iVrd
-         qN/JL21E9AOdfYlx79w3XGnCy119cldcd7u1BbZ9CuV+GbROq8ga62oAfO89nAms5oal
-         NEQrVff46E/QzJkZQqG/MOWO+bax+Ov3e0hWabyrxTv9bjlLUmVw4TTeMYOaZI1CMv5x
-         ObodfU6dM4Weg+Y5iDo+YJERGZBLIKEw530/xTaClFYwFee4/4O893tqJMqlFMrKL++R
-         j1MNZDEojXCxctMXJErv+OCwvr6gnz5nQRrwgHH83Q8CTDC6K2K3/JlYxsOk2TEX3+iu
-         UoWQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpXneWgpMUl1vGQW+6n/8p0BQQGDL1uiwjcrGaBv7c74OZoZ1jWvCW1VDOROhpLWFShOIbm7TM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCsAbGEt3uScOBL4cVLZLyoG2qvgVQ7mBcncmOdLRVYMn5RsUm
-	bjEcUQavSMBexhLgeo+JKdu7csymxH1QEVX4igzj3D/fUb8KlcmovI2AdbrON19SObigas+DDlu
-	8OmCkXg==
-X-Received: from pjblx7.prod.google.com ([2002:a17:90b:4b07:b0:387:9b6c:b940])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:58c7:b0:381:a766:efcb
- with SMTP id 98e67ed59e1d1-38fbc409439mr1394795a91.4.1785539377218; Fri, 31
- Jul 2026 16:09:37 -0700 (PDT)
-Date: Fri, 31 Jul 2026 23:05:51 +0000
-In-Reply-To: <20260731160942.3245965-1-nicoyip.dev@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X7NKCP8e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAE91F00AC4;
+	Fri, 31 Jul 2026 23:15:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785539744;
+	bh=So6Ub7VcEdURIC9Cw1Po+tU+Mmci/s0GtxtldO16gnA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=X7NKCP8eGnSgR29+BXGYD2BtwXHJ/0jdqD+vQXsyaMkPow6unBAkKM/UiPhFBf1ty
+	 I8FlbywNJ+hbsORmA8bnJRnkyNQZ9SkSO02v6Sy0lYgt+8DT2AkJcqPe4C1sHD2OYS
+	 sLpi/u+vdPVRomEr+M8XJG8lNp/yKsCed1LfDIFlNcbLcoiHDc+MR9PvvBXOvIY7C0
+	 6ntSW39bny4CgjaA1JFRHekq9zfDTj0wDeibcsr2dl/7Z0Kk87lQrGmEtmAAAYwmhZ
+	 mPXfD426+b+brRL+JN7wJDlYcQrX3LSz61xMGkFkGZ8uoiJA42oIzWUaahLOTDbkP6
+	 IPbM/iikIOelg==
+Date: Fri, 31 Jul 2026 16:15:43 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Donald Hunter <donald.hunter@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Gerd Hoffmann <kraxel@redhat.com>, Vivek Kasireddy
+ <vivek.kasireddy@intel.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Shuah Khan
+ <shuah@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org,
+ sdf@fomichev.me, razor@blackwall.org, daniel@iogearbox.net,
+ almasrymina@google.com, matttbe@kernel.org, skhawaja@google.com,
+ dw@davidwei.uk, Joe Damato <joe@dama.to>, Bobby Eshleman
+ <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v6 3/3] selftests/net: devmem.py: add
+ check_rx_large_niov
+Message-ID: <20260731161543.1021caed@kernel.org>
+In-Reply-To: <am0bHSeJqcgdm3vn@devvm29614.prn0.facebook.com>
+References: <20260724-tcpdm-large-niovs-v6-0-7975f62cdfbb@meta.com>
+	<20260724-tcpdm-large-niovs-v6-3-7975f62cdfbb@meta.com>
+	<20260729191649.55ab7942@kernel.org>
+	<amvEJVio9XtCn+YT@devvm29614.prn0.facebook.com>
+	<20260730151433.6f71258e@kernel.org>
+	<am0bHSeJqcgdm3vn@devvm29614.prn0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260731160942.3245965-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260731230936.2463714-1-kuniyu@google.com>
-Subject: Re: [PATCH net-next v3] rds: synchronize info callbacks with module unload
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: nicoyip.dev@gmail.com
-Cc: achender@kernel.org, davem@davemloft.net, edumazet@google.com, 
-	error27@gmail.com, horms@kernel.org, ka-cheong.poon@oracle.com, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, rds-devel@oss.oracle.com, 
-	santosh.shilimkar@oracle.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-Date: Sat,  1 Aug 2026 00:09:42 +0800
-> rds_info_getsockopt() reads a callback from rds_info_funcs and invokes it
-> without protecting the callback's lifetime.  Transport modules register
-> functions stored in this array.  For example, rds_tcp.ko registers
-> rds_tcp_tc_info() for RDS_INFO_TCP_SOCKETS.
-> 
-> This permits the following interleaving:
-> 
->   CPU0                             CPU1
->   rds_info_getsockopt()
->     func = rds_tcp_tc_info
->                                    rmmod rds_tcp
->                                      rds_tcp_exit()
->                                        rds_info_deregister_func()
->                                          rds_info_funcs[offset] = NULL
->                                      free rds_tcp module text
->     func()
-> 
-> The reader can therefore branch to an address in unloaded module text.
-> 
-> Protect callback invocation with SRCU.  Enter the SRCU read-side critical
-> section before loading the callback and leave it only after the callback
-> returns.  Clear the callback with release semantics and call
-> synchronize_srcu() before deregistration returns, preventing module unload
-> from freeing its text while an old reader is still executing it.  SRCU is
-> required because callbacks such as RDS_INFO_COUNTERS can sleep.
-> 
-> Keep the callback array unannotated and use acquire and release operations
-> for publication so sparse does not have to apply __rcu through the
-> function-pointer typedef.  Replace the two callback-slot BUG_ON() checks
-> with WARN_ON_ONCE() and return without changing the slot on mismatch.
-> 
-> Link: https://lore.kernel.org/netdev/20260720184955.3008978-1-nicoyip.dev@gmail.com/
-> Suggested-by: Allison Henderson <achender@kernel.org>
-> Reviewed-by: Allison Henderson <achender@kernel.org>
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-> ---
-> 
-> Changes in v3:
-> - Use ordinary loads for callback-slot validation under rds_info_lock;
->   retain acquire semantics only for the lockless reader.
-> - Drop the Fixes tag because this patch targets net-next.
-> - Add Allison Henderson's Reviewed-by tag.
-> 
-> Link: https://lore.kernel.org/netdev/20260727174826.135662-1-nicoyip.dev@gmail.com/ [v2]
-> 
-> Changes in v2:
-> - Split the info callback/module-unload race from the independent
->   inc->i_conn lifetime bug.
-> - Keep the callback array unannotated and use smp_load_acquire() and
->   smp_store_release() to resolve the sparse errors.
-> - Replace the two touched callback-slot BUG_ON() checks with
->   WARN_ON_ONCE() error paths.
-> - Rewrite the commit message for the callback race and omit the unrelated
->   inc->i_conn KASAN report.
-> 
-> Link: https://lore.kernel.org/netdev/20260720184955.3008978-1-nicoyip.dev@gmail.com/ [v1]
-> 
->  net/rds/info.c | 26 +++++++++++++++++++++-----
->  1 file changed, 21 insertions(+), 5 deletions(-)
-> 
-> diff --git a/net/rds/info.c b/net/rds/info.c
-> index 21b32eb16559..385fefbfa07f 100644
-> --- a/net/rds/info.c
-> +++ b/net/rds/info.c
-> @@ -32,6 +32,7 @@
->   */
->  #include <linux/percpu.h>
->  #include <linux/seq_file.h>
-> +#include <linux/srcu.h>
->  #include <linux/slab.h>
->  #include <linux/proc_fs.h>
->  #include <linux/export.h>
-> @@ -68,6 +69,7 @@ struct rds_info_iterator {
->  	unsigned long offset;
->  };
->  
-> +DEFINE_STATIC_SRCU(rds_info_srcu);
->  static DEFINE_SPINLOCK(rds_info_lock);
->  static rds_info_func rds_info_funcs[RDS_INFO_LAST - RDS_INFO_FIRST + 1];
->  
-> @@ -78,8 +80,12 @@ void rds_info_register_func(int optname, rds_info_func func)
->  	BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
->  
->  	spin_lock(&rds_info_lock);
-> -	BUG_ON(rds_info_funcs[offset]);
-> -	rds_info_funcs[offset] = func;
-> +	if (WARN_ON_ONCE(rds_info_funcs[offset])) {
-> +		spin_unlock(&rds_info_lock);
-> +		return;
-> +	}
-> +	/* Pair with lockless callback lookup. */
-> +	smp_store_release(&rds_info_funcs[offset], func);
+On Fri, 31 Jul 2026 15:01:01 -0700 Bobby Eshleman wrote:
+> Meanwhile, do we want drivers/net/hw/config to workaround by carrying
+> something like SYNC_FILE or DMABUF_HEAPS, or wait and see about the
+> udmabuf kconfig change?
 
-Why is smp_store_release() necessary here ? and same for
-smp_load_acquire() on the reader.
-
-I think just WRITE_ONCE() / READ_ONCE() should be enough.
-
-It's just a function pointer, not struct, and the reader
-does not require any partial ordering, no ?
-
-
->  	spin_unlock(&rds_info_lock);
->  }
->  EXPORT_SYMBOL_GPL(rds_info_register_func);
-> @@ -91,9 +97,14 @@ void rds_info_deregister_func(int optname, rds_info_func func)
->  	BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
->  
->  	spin_lock(&rds_info_lock);
-> -	BUG_ON(rds_info_funcs[offset] != func);
-> -	rds_info_funcs[offset] = NULL;
-> +	if (WARN_ON_ONCE(rds_info_funcs[offset] != func)) {
-> +		spin_unlock(&rds_info_lock);
-> +		return;
-> +	}
-> +	/* Hide the callback before waiting for old readers. */
-> +	smp_store_release(&rds_info_funcs[offset], NULL);
->  	spin_unlock(&rds_info_lock);
-> +	synchronize_srcu(&rds_info_srcu);
->  }
->  EXPORT_SYMBOL_GPL(rds_info_deregister_func);
->  
-> @@ -165,6 +176,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, sockopt_t *opt)
->  	int npages = 0;
->  	int ret;
->  	int len;
-> +	int srcu_idx;
-
-nit: please keep the reverse xmas tree order.
-
-
->  	int total;
->  
->  	len = opt->optlen;
-> @@ -214,8 +226,11 @@ int rds_info_getsockopt(struct socket *sock, int optname, sockopt_t *opt)
->  	rdsdebug("len %d nr_pages %lu\n", len, nr_pages);
->  
->  call_func:
-> -	func = rds_info_funcs[optname - RDS_INFO_FIRST];
-> +	srcu_idx = srcu_read_lock(&rds_info_srcu);
-> +	/* Pair with callback slot publication and removal. */
-> +	func = smp_load_acquire(&rds_info_funcs[optname - RDS_INFO_FIRST]);
->  	if (!func) {
-> +		srcu_read_unlock(&rds_info_srcu, srcu_idx);
->  		ret = -ENOPROTOOPT;
->  		goto out;
->  	}
-> @@ -225,6 +240,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, sockopt_t *opt)
->  	iter.offset = offset0;
->  
->  	func(sock, len, &iter, &lens);
-> +	srcu_read_unlock(&rds_info_srcu, srcu_idx);
->  	BUG_ON(lens.each == 0);
->  
->  	total = lens.nr * lens.each;
-> -- 
-> 2.43.0
-> 
+Let's enable SYNC_FILE for now and pursue the UDMABUF change in
+parallel. It will land in another tree if at all, so we'll have
+to wait a while before it propagates to us.
