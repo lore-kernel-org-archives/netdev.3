@@ -1,269 +1,224 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74F13B993F;
-	Fri, 31 Jul 2026 10:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785492313; cv=none; b=KKfZ2+m7L/bUL6F06jJKPVoDvy698m4WAFh1gNpMBHDVxO+fZ9d+Jz3DRy0zKl/fXpPikA6qDT1MSnq1isp3PfLU6HYcrvBGW/QmW8D71DOn5tRB1fG1BrJxZzh0PXWMTwvnxfl+yvvTJisRoe5cxb87j1x9/J969N/yB4Jklxk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785492313; c=relaxed/simple;
-	bh=q7Y9ualYVmyDVCnf/GOhgUr1C87Lvn2uHjeOpqU1XFw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gmYfwGX9HIvmr1uwn7PV9ALSYHnGNLOM0gWO1ehar7reI1Ihwciq5SVRyG7JCu25JXzn4v14OsdyhT7UOFpFMF2v0YPeY0Tsk7VkVMAh+cskZnB0qZOzR09lngy6J8PgLfgIV2IUarrVZ/qyD/KWURviBW3WAyBtdeHQCPeNzAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ZljWTeFP; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D7B3DEFF3
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 10:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785492345; cv=pass; b=d9ycE7Ukede7NOv0ANaEo2GxUeyyZakrG6+xWyJ0B/9exwp/vuBGdjZ3EUe9QPTwe+E++rMauS7Yn5V6CBeBZe394B1Li8O6vvMcdkBfbdZIFTJ1YhFNKBMzjVoAQQEQtbHbtqfgKc5JYYT+9ze2EYlgf+Zjo1IyPMwomhSF9gk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785492345; c=relaxed/simple;
+	bh=0CuqD7jt0HdVg6PDjWSiv0dLdkF9omhY0jFBOqSru/U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bz/MLWuY7lslZPVemXh6K8lUhRSTkO+MbakQE2ne3ynnATohPPILP+2D/JBHFyu3ZVDJN1rwa5bxHnPJ51ue5OXE9xOSPFE+VF1HmKU62Xf9uoncmqhdm4REyMjqxQxYkdPyciYCAKU60UQXjMbS9TwsuNda8hzt1UZgvwp2Dd0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xtw1wd6h; arc=pass smtp.client-ip=209.85.160.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ZljWTeFP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1785492290;
-	bh=q7Y9ualYVmyDVCnf/GOhgUr1C87Lvn2uHjeOpqU1XFw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZljWTeFPbh+GZAPLCO8Hq+ytm1LR0AbgVzcQUQwlLfaUDsVTiFhtxooguurTDxAE/
-	 bYpwwFaJgKoZu6IKHGzGp++ZO0fevAj7ry630QkS7RDbx37GKbYQ2eZeBhOC1DEP7E
-	 xrDLnn4vZD0diTKPRRTDgzhLtMbNH6XisuehRMLGCmAHeCrE6feq96bmvvBuGTWE4Q
-	 XYVobpkDamJNeLLQwg+MmgC5V+bEyQzvcfJw3ATBDWy6TcZ8VAKDwFfDMiDO+VrBcg
-	 4kYtoVBUKXUfZU3w4w/k2pP04PxA1iAzzWfvuFU2c3sk1WIxXiUvgHMGCRVIyZXZul
-	 gE2gvKZeZQYTw==
-Received: from [100.64.1.21] (unknown [100.64.1.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1ED4F17E051A;
-	Fri, 31 Jul 2026 12:04:50 +0200 (CEST)
-Message-ID: <1f6bdf69-c3fe-4e1d-8ff8-0e36d9f4e063@collabora.com>
-Date: Fri, 31 Jul 2026 12:04:49 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xtw1wd6h"
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-446f87b6de1so499876fac.3
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 03:05:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785492330; cv=none;
+        d=google.com; s=arc-20260327;
+        b=r3pVIH7LBaJCrVIfGyGgiAe1RXZd6dyxf4ozY71z+QY+xwHp9RyY5QgPMffWjW45Zg
+         dIOwNIlMLqee+c+LglbtAr5K6w8xWQUvKcS+39qvJDx1BKf40vAXKCIEzfSE26oqu6j0
+         4hJGStbzxqQSypsfQip3zzPZOOMREUEA9DiTyHwkZKJNwdaTOGqCmUwd05R1JC6IhFHC
+         9H0y+cuxo4sGIYpLC2WNxd8vgbxAFcImW4Mn8EJWo/kkDUtcBvKgRrdm8LyQDZugFTDk
+         OM4MUsGlYavV+f3wXlvitlvxO8xm/QAFifAmWxtr+lud7QieF08R2gxQXqpEZMQuHHgz
+         j/cQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=apxky0PDlzP73VOyUuezKm8vZikLqeFxDlMTo8vJy+c=;
+        fh=YP5TxM9OpBsgQqz/wyNSxbgFzqTcFyPU9XfcTLxaM2Y=;
+        b=NKO2owXZ4dYW875yNi0DV9rZYTQGFD0UaAmFOPQ4UwK+hXdrEzVw+EfEWeFEhrzcso
+         4uLOUI2DkQJKCcNxIJb2zsHDnNXr1LoQHOx3mCgqTwr7ClGyajwksZE4ewAQN8NeoX4w
+         Hjdm+axw4zmRvM+l8olvSOb1BoOJxCm6Ww5bj5+SrpjecWN5nXsImtISFkUTL4AGLXKd
+         Hhau4LHmkklinkfmLt1o5d/GWpYwdkWVHYVgp4kOpHOGkxuan7q67zk+ad1N2II3BfLM
+         ROpxm3GpXL3xBzOx2GOFxFvs07BiE0dUI7XssxJaEh7LiC517Uf1GNYEZCkXchPJRIPG
+         c6Fg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785492330; x=1786097130; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=apxky0PDlzP73VOyUuezKm8vZikLqeFxDlMTo8vJy+c=;
+        b=Xtw1wd6hkFnW4lSm4sJMLGF7aNbG/yng/em8jfmzzb/kMT0aDtRiRkfk4IhT9HZZfi
+         7c6q4oP5iG05Ep6s9KMfwj/hyma3bJMDZxI88uLyYonAvtfXGFMt1npe0CeUZ177bJIa
+         KwR8l5iZY5obTBdxusj8zhMRzg0MShXRYlpEzk4K1cg19AFNbNVvPyhjEbrqxok0JVl3
+         GcSQy32+JK9Dgm2g7hoDHpKeaxPcTnz5cN4rrVjjlQc2iqxJVE0aRNV9CYT/LQKXrE/9
+         B/JfFQ/w9ztsD/gT0INZu6ZaGlDz9RKLRrvG0CJ9eOf8z/bm6nlEuI3MWOE3PPuXz4US
+         mXtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785492330; x=1786097130;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=apxky0PDlzP73VOyUuezKm8vZikLqeFxDlMTo8vJy+c=;
+        b=KkmL9A4moF9pQi7TYfFyYGLGYRclFqqMToKhco4/BapHXRXAKVrKJntmWwpK0P1myq
+         xjLcxYz0SUAwIDniuMg6zCCW6Rq3fqPIq2hqM+Y8ntnTSbcPOZLu6KOywHskC8btK1AT
+         c7Ejeoj5sd/s+4Ei2P7Hkixi4pSxcQlkFJeIBWg91hhVdMDX8ecJu6maKXJjOBOkiG5k
+         QRWtW7s04ZL/8azO5b8pOUSne5AnlBiGoV+PIfI0+EoY9udLWht9oAkk0LKhdjXBWPwh
+         298/GD5/9zPnv+AerGOlOFi68ZrhVO2+E5lRLxsXawRBhPdG84ljMmz7vBDd+aTv3iU4
+         /S5A==
+X-Forwarded-Encrypted: i=1; AHgh+RrBfzUg5GWKC7PVC+jYKGO1RTRWXV/uekPBg5SyzjRbdhlxUE2F7c50GohE6tACkrZovmIln6M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvHybzFOJwRFE4o2zj3JOKhKJmzTJ7QN5vSqTgtqyo1oyMH2Bm
+	cQTY6Ol9QuNA4pLMaJdyP8qSb+ZvrHdXgeoTTKuc3iIY3mFLgLN72gxAWd1qu++jXncHKd++cW3
+	iOtQZ8w8B0+OGQdAdaLWhkVnBoYNWwfxPT5BalMjw
+X-Gm-Gg: AR+sD119Zl/dyNZSDTm4ZPHLQCyeFIn+G6RHYk54kdJiqfX1lebZP32z+gPrqkkN2dD
+	ihpirsffb3tcIS4UK1x0Vv2vUmflNx+dHOFdPJfcMZbs4Djjyxxr5gQbdj/cTaVTnytbsgFYb01
+	M6id0pphqSMSI9d6f9xrWDLU3CD+/GhlI9nR+wSeXMVg0ONQkvKmWff0c0cXFg6KhomwzSCTi5Q
+	gEiiB70v2tyo/D3V2YAqwRCakWF9UUSS83R6WvwbCD9MH+k8hjqNDHyuNmJtuAp/iNInahHnlFV
+	QjiCjVezIt/5FtsLZ0InJj9ZtUhxe/TOhEa9Qq/RpY8TlOv7067MAIt5Up3VAW75RxLeLDUSKLY
+	wRkI82P8FNTmqJxdl2tARyAwR8fSzm1W70T/SZ4XSj0VVK86IWKSqwG1mNksipMG/MAvW0vsJc5
+	AUZxIuquP/kAkq
+X-Received: by 2002:a05:6808:3023:b0:48a:ddd4:d36f with SMTP id
+ 5614622812f47-4ae4c42efbemr1339060b6e.8.1785492329774; Fri, 31 Jul 2026
+ 03:05:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/24] MT8189: Add support for system and base clock
- controllers
-To: Brian Masney <bmasney@redhat.com>,
- Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Cc: Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- Chun-Jie Chen <chun-jie.chen@mediatek.com>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Edward-JW Yang <edward-jw.yang@mediatek.com>,
- Richard Cochran <richardcochran@gmail.com>, Chen-Yu Tsai
- <wenst@chromium.org>, kernel@collabora.com, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
- Irving-CH Lin <irving-ch.lin@mediatek.com>
-References: <20260729-mt8189-clocks-system-base-v4-0-e356b813a64c@collabora.com>
- <amuWdRD-TBQtFT_4@redhat.com>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <amuWdRD-TBQtFT_4@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <6a6c4cb6.77639fcc.3d4fd0.0021.GAE@google.com>
+In-Reply-To: <6a6c4cb6.77639fcc.3d4fd0.0021.GAE@google.com>
+From: Aleksandr Nogikh <nogikh@google.com>
+Date: Fri, 31 Jul 2026 12:05:18 +0200
+X-Gm-Features: AUfX_mwgsI_Fcfph-ij3sCJvBRiqP-uGhSy1se2zfFMMbPJoOpaPv3e2s1EsBXs
+Message-ID: <CANp29Y6-ZrGVQqndAvkqZ01o9i2H6SVZteHiqH9WXAU1OqSfCw@mail.gmail.com>
+Subject: Re: [syzbot] [net?] WARNING: suspicious RCU usage in xfrm_send_migrate_state
+To: syzbot <syzbot+b9e97485773456b16a4a@syzkaller.appspotmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, herbert@gondor.apana.org.au, 
+	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, steffen.klassert@secunet.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/30/26 20:22, Brian Masney wrote:
-> On Wed, Jul 29, 2026 at 12:02:44PM +0200, Louis-Alexis Eyraud wrote:
->> This series is a continuation by AngeloGioacchino Del Regno and I of a
->> previous series ([1]), that adds the clock controller support for
->> the Mediatek MT8189 SoC and its variants (MT8371, MT8391).
->>
->> The first major changes is the split of the series in two:
->> - one for all basic clock controllers including system ones (this
->> series)
->> - one for the multimedia and graphics related clock controllers (to be
->> send in the future)
->>
->> We chose to separate the multimedia clock drivers from the base system
->> ones, as there is currently an unsolvable inter-dependency between the
->> power domains and multimedia clocks; the power domains need a
->> dual-stage bring-up, where only a part of the multimedia clocks are
->> accessible in the first power domain powerup stage, and the rest when
->> the second stage (SRAM enablement) is done.
->> The current workarounds for this issue, such as removing the is_enabled
->> operation from the impacted clock controllers clk_ops table or
->> let the multimedia power domain always on, were quickly discarded
->> for upstream.
->>
->> The second major change is the dt-bindings patch ([2]) that got heavily
->> reworked, not only because of the split choice. We took the opportunity
->> to regroup in the MT8186 clock and system clock dt-bindings the
->> description of several other Mediatek SoC (MT8188, MT8192 and MT8195)
->> and add in them the MT8189 new ones.
->> The rationale is to ease maintainability and have common files for
->> several currently supported SoC or new future ones, that have the same
->> kind of clock controller design.
->>
->> Finally the pending remarks from peer reviews on the v6 revision of [1]
->> were also taken into account and new fixes and cleanups were also
->> added.
->>
->> A more detailed changelog between [1] and this series:
->> - Removed multimedia and graphics related clock controllers code and
->>    definitions from series
->> - Added new dt-bindings patches to factorise existing MT8188, MT8192
->>    and MT8195 in MT8186 clock dt-bindings
->> - Heavily modified the MT8189 dt-bindings to add new compatibles
->>    in MT8186 clock dt-bindings
->> - Created a new dt-bindings include for the MT8189 reset controller
->>    definitions (include/dt-bindings/reset/mediatek,mt8189-resets.h)
->> - Removed unnecessary `syscon` compatible fallback from MT8189 base
->>    clock controllers
->> - Added missing 'mediatek,mt8189-fhctl' compatible declaration in
->>    dt-bindings
->> - Modified Kconfig to COMMON_CLK_MT8189 be tristate (and not bool) to
->>    allow all MT8189 clock controller drivers to be built as modules (it
->>    was partial)
->> - Fix pll unregisters in clk_mt8189_apmixed_probe error case
->> - Reparent several clocks to correct 26M references in clk-mt8189-bus.c,
->>    clk-mt8189-topckgen.c and clk-mt8189-vlpckgen.c
->> - Removed CLK_SET_RATE_NO_REPARENT flag from mfg_sel_mfgpll
->> - Rename TOPCKGEN_fmipi_csi_up26m clock to fmipi_csi_up26m to remove caps usage
->> - Implemented reset controllers in clk-mt8189-ufs.c
->> - Updated all file headers to update copyrights and add all authors
->> - Added all co-developed-by trailers
->>
->> The series is based on linux-next tree (tag: next-20260728) and has
->> been tested on Mediatek Genio 520-EVK (MT8371) and 720-EVK (MT8391)
->> boards, with hardware enablement patch series ([3]), and on Genio
->> 510-EVK (MT8370, variant of MT8188) and Genio 1200-EVK (MT8395,
->> variant of MT8195).
->>
->> [1]: https://lore.kernel.org/linux-mediatek/20260309120512.3624804-1-irving-ch.lin@mediatek.com/
->> [2]: https://lore.kernel.org/linux-mediatek/20260309120512.3624804-2-irving-ch.lin@mediatek.com/
->> [3]: https://lore.kernel.org/linux-mediatek/20260701-add-mediatek-genio-520-720-evk-v2-0-19d5da4ef984@collabora.com/
->>
->> ---
->> Changes in v4:
->> - Rebased on next-20260728 tag
->> - Added patches 9 to 14 to add new clock ops data set for PLL and
->>    PLL-FHCTL to handle a new PLL switch logic for PLL control and BAR
->>    reset, supported by MT8189 SoC
->> - Patch 15:
->>    - Removed useless includes (B. Masney)
->>    - Fixed variable declaration order in clk_mt8189_apmixed_probe (B.
->>      Masney)
->>    - Added missing pwr_reg setting setting in PLL_SETCLR macro (B.
->>      Masney, Sashiko)
->>    - Added en_set_reg, en_clr_reg, rst_bar_reg, rst_bar_set_reg and
->>      rst_bar_clr_reg fixed offsets and new mtk_pll_setclr_ops ops
->>      setting in PLL_SETCLR macro
->>    - Added pwr_reg offset values in apmixed_plls array
->>    - Fixed rst_bar_mask for mainpll univpll, and mmpll in apmixed_plls
->>      array to match rst_bar set/clr reg settings
->> - Fixed factor ratio for mainpll_d4_d8, tvdpll1_d16, tvdpll2_d16 and
->>    osc_d16 clocks (Sashiko)
->> - Link to v3: https://lore.kernel.org/r/20260720-mt8189-clocks-system-base-v3-0-8e6d99ab3ad2@collabora.com
->>
->> Changes in v3:
->> - Rebased on next-20260717 tag
->> - Added Fixes tags to patches 1, 2 and 3
->> - Reworded patch 8 subject and description messages
->> - Updated Reviewed-by and Acked-by trailers
->> - Link to v2: https://lore.kernel.org/r/20260709-mt8189-clocks-system-base-v2-0-2926da3db6cf@collabora.com
->>
->> Changes in v2:
->> - Rebased on next-20260708 tag
->> - Added patch 1,2 and 3 to make the #clock-cells a required property in
->>    MT8186, MT8192 and MT8195 clock controller dt-bindings
->> - Patch 5:
->>    - Removed conditional blocks to check clock-cells property presence
->>      for MT8188 clock controller compatible
->>    - Reworded commit message to remove the note (no more applicable)
->>    - Fixed incorrect property value in else block for #reset-cells
->>      property check.
->> _ Removed from patch 9 conditional blocks to check clock-cells property
->>    presence for MT8189 clock controller compatible
->> - Fixed missing MODULE_DEVICE_TABLE in patches 10, 11 and 12.
->> - Added devicetree series link in cover letter
->> - Link to v1: https://lore.kernel.org/r/20260701-mt8189-clocks-system-base-v1-0-2b048feea50a@collabora.com
->>
->> ---
->> Louis-Alexis Eyraud (24):
->>        dt-bindings: clock: mediatek: Make '#clock-cells' required for MT8186
->>        dt-bindings: clock: mediatek: Make '#clock-cells' required for MT8192
->>        dt-bindings: clock: mediatek: Make '#clock-cells' required for MT8195
->>        dt-bindings: clock: mediatek: reorder MT8186 compatibles
->>        dt-bindings: clock: mediatek: regroup MT8188 dt-bindings into MT8186
->>        dt-bindings: clock: mediatek: regroup MT8192 dt-bindings into MT8186
->>        dt-bindings: clock: mediatek: regroup MT8195 dt-bindings into MT8186
->>        dt-bindings: clock: mediatek: Add MT8189 system/base clocks and resets
->>        clk: mediatek: Harmonize mtk_pll_fenc related symbol names
->>        clk: mediatek: pll: Add BAR reset register offsets
->>        clk: mediatek: pll: split default prepare/unprepare callbacks
->>        clk: mediatek: pll: Add ops for PLLs using set/clr regs
->>        clk: mediatek: pllfh: Add configurable clock ops to mtk_pllfh_data
->>        clk: mediatek: pllfh: Add ops for PLLs using set/clr regs
->>        clk: mediatek: Add MT8189 apmixedsys clock support
->>        clk: mediatek: Add MT8189 topckgen clock support
->>        clk: mediatek: Add MT8189 vlpckgen clock support
->>        clk: mediatek: Add MT8189 vlpcfg clock support
->>        clk: mediatek: Add MT8189 bus clock support
->>        clk: mediatek: Add MT8189 dbgao clock support
->>        clk: mediatek: Add MT8189 dvfsrc clock support
->>        clk: mediatek: Add MT8189 i2c clock support
->>        clk: mediatek: Add MT8189 scp clock support
->>        clk: mediatek: Add MT8189 ufs clock support
->>
->>   .../bindings/clock/mediatek,mt8186-clock.yaml      |  128 ++-
->>   .../bindings/clock/mediatek,mt8186-fhctl.yaml      |    1 +
->>   .../bindings/clock/mediatek,mt8186-sys-clock.yaml  |   24 +-
->>   .../bindings/clock/mediatek,mt8188-clock.yaml      |   93 --
->>   .../bindings/clock/mediatek,mt8188-sys-clock.yaml  |   58 --
->>   .../bindings/clock/mediatek,mt8192-clock.yaml      |  191 ----
->>   .../bindings/clock/mediatek,mt8192-sys-clock.yaml  |   68 --
->>   .../bindings/clock/mediatek,mt8195-clock.yaml      |  238 -----
->>   .../bindings/clock/mediatek,mt8195-sys-clock.yaml  |   76 --
->>   drivers/clk/mediatek/Kconfig                       |   79 ++
->>   drivers/clk/mediatek/Makefile                      |    8 +
->>   drivers/clk/mediatek/clk-mt8189-apmixedsys.c       |  203 ++++
->>   drivers/clk/mediatek/clk-mt8189-bus.c              |  200 ++++
->>   drivers/clk/mediatek/clk-mt8189-dbgao.c            |   98 ++
->>   drivers/clk/mediatek/clk-mt8189-dvfsrc.c           |   58 ++
->>   drivers/clk/mediatek/clk-mt8189-iic.c              |  122 +++
->>   drivers/clk/mediatek/clk-mt8189-scp.c              |   77 ++
->>   drivers/clk/mediatek/clk-mt8189-topckgen.c         | 1025 ++++++++++++++++++++
->>   drivers/clk/mediatek/clk-mt8189-ufs.c              |  133 +++
->>   drivers/clk/mediatek/clk-mt8189-vlpcfg.c           |  116 +++
->>   drivers/clk/mediatek/clk-mt8189-vlpckgen.c         |  285 ++++++
->>   drivers/clk/mediatek/clk-mt8196-apmixedsys.c       |    2 +-
->>   drivers/clk/mediatek/clk-mt8196-vlpckgen.c         |    2 +-
->>   drivers/clk/mediatek/clk-pll.c                     |  135 ++-
->>   drivers/clk/mediatek/clk-pll.h                     |   13 +-
->>   drivers/clk/mediatek/clk-pllfh.c                   |   15 +-
->>   drivers/clk/mediatek/clk-pllfh.h                   |    3 +
->>   include/dt-bindings/clock/mediatek,mt8189-clk.h    |  433 +++++++++
->>   include/dt-bindings/reset/mediatek,mt8189-resets.h |   17 +
->>   29 files changed, 3135 insertions(+), 766 deletions(-)
-> 
-> Should there be a new MAINTAINERS entry added? There's currently 221
-> files under drivers/clk/mediatek/ and there's currently only one
-> mediatek maintainer entry:
-> 
->      MEDIATEK MT6735 CLOCK & RESET DRIVERS.
-> 
-> Is there anyone from mediatek (or elsewhere) that could act as a clk
-> subsystem maintainer similar to what the other SoC vendors do? Help with
-> reviews, send in pulls, etc?
-> 
+#syz dup: WARNING: suspicious RCU usage in xfrm_nlmsg_multicast
 
-I may be able to step in, but I have to check if it's feasible, time-wise, on
-my side.
 
-Though, that won't happen until mid-September... because, well, I'm about to go
-on holiday (in a few days from now).
-
-> I'll review this one in a bit but this subsystem is big enough that it
-> really should have some support from the vendor (or via a consulting
-> company) in some form.
-
-Thanks for that.
-
-Cheers,
-Angelo
-
+On Fri, Jul 31, 2026 at 9:20=E2=80=AFAM syzbot
+<syzbot+b9e97485773456b16a4a@syzkaller.appspotmail.com> wrote:
+>
+> Hello,
+>
+> syzbot found the following issue on:
+>
+> HEAD commit:    365f9c7a6b81 Merge branches 'for-next/core' and 'for-next=
+/..
+> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux=
+.git for-kernelci
+> console output: https://syzkaller.appspot.com/x/log.txt?x=3D1486363258000=
+0
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D72c97575381ce=
+c47
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3Db9e97485773456b=
+16a4a
+> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e25=
+5-1~exp1~20260613092250.77), Debian LLD 22.1.8
+> userspace arch: arm64
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D12863632580=
+000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D11b0e49e58000=
+0
+>
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/eafe0adb7386/dis=
+k-365f9c7a.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/29422d607579/vmlinu=
+x-365f9c7a.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/98ca955a8b54/I=
+mage-365f9c7a.gz.xz
+>
+> IMPORTANT: if you fix the issue, please add the following tag to the comm=
+it:
+> Reported-by: syzbot+b9e97485773456b16a4a@syzkaller.appspotmail.com
+>
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+> WARNING: suspicious RCU usage
+> syzkaller #0 Not tainted
+> -----------------------------
+> net/xfrm/xfrm_user.c:1630 suspicious rcu_dereference_check() usage!
+>
+> other info that might help us debug this:
+>
+>
+> rcu_scheduler_active =3D 2, debug_locks =3D 1
+> 1 lock held by syz.0.17/4942:
+>  #0: ffff0000d8a19c50 (&net->xfrm.xfrm_cfg_mutex){+.+.}-{4:4}, at: xfrm_n=
+etlink_rcv+0x70/0x9c net/xfrm/xfrm_user.c:3928
+>
+> stack backtrace:
+> CPU: 0 UID: 0 PID: 4942 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
+oogle 07/02/2026
+> Call trace:
+>  show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:499 (C)
+>  __dump_stack+0x30/0x40 lib/dump_stack.c:94
+>  dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
+>  dump_stack+0x1c/0x28 lib/dump_stack.c:129
+>  lockdep_rcu_suspicious+0x168/0x26c kernel/locking/lockdep.c:6876
+>  xfrm_nlmsg_multicast net/xfrm/xfrm_user.c:1630 [inline]
+>  xfrm_send_migrate_state+0x6b0/0x958 net/xfrm/xfrm_user.c:3340
+>  xfrm_do_migrate_state+0x1114/0x1728 net/xfrm/xfrm_user.c:3507
+>  xfrm_user_rcv_msg+0x4e0/0x950 net/xfrm/xfrm_user.c:3907
+>  netlink_rcv_skb+0x238/0x414 net/netlink/af_netlink.c:2556
+>  xfrm_netlink_rcv+0x80/0x9c net/xfrm/xfrm_user.c:3929
+>  netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+>  netlink_unicast+0x600/0x7f8 net/netlink/af_netlink.c:1345
+>  netlink_sendmsg+0x648/0x948 net/netlink/af_netlink.c:1900
+>  sock_sendmsg_nosec net/socket.c:775 [inline]
+>  __sock_sendmsg+0xc8/0x17c net/socket.c:790
+>  ____sys_sendmsg+0x3d0/0x6c8 net/socket.c:2684
+>  ___sys_sendmsg+0x198/0x224 net/socket.c:2738
+>  __sys_sendmsg+0x158/0x204 net/socket.c:2770
+>  __do_sys_sendmsg net/socket.c:2775 [inline]
+>  __se_sys_sendmsg net/socket.c:2773 [inline]
+>  __arm64_sys_sendmsg+0x80/0x94 net/socket.c:2773
+>  __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+>  invoke_syscall+0x98/0x244 arch/arm64/kernel/syscall.c:49
+>  el0_svc_common+0xec/0x23c arch/arm64/kernel/syscall.c:121
+>  do_el0_svc+0x4c/0x5c arch/arm64/kernel/syscall.c:140
+>  el0_svc+0x64/0x260 arch/arm64/kernel/entry-common.c:736
+>  el0t_64_sync_handler+0x48/0x148 arch/arm64/kernel/entry-common.c:755
+>  el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:594
+>
+>
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+>
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+>
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
+>
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+>
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+>
+> If you want to undo deduplication, reply with:
+> #syz undup
+>
+> --
+> You received this message because you are subscribed to the Google Groups=
+ "syzkaller-bugs" group.
+> To unsubscribe from this group and stop receiving emails from it, send an=
+ email to syzkaller-bugs+unsubscribe@googlegroups.com.
+> To view this discussion visit https://groups.google.com/d/msgid/syzkaller=
+-bugs/6a6c4cb6.77639fcc.3d4fd0.0021.GAE%40google.com.
