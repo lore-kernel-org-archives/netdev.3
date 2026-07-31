@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82961C28E
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 23:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1E73812D2;
+	Fri, 31 Jul 2026 23:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785541449; cv=none; b=CIiAQkRxeGtmFNGZWQlaAuREJP0gXKQoVpC+TNPP/0zPZQ+nUPvZQ86fKtlUjg5pY0iA4vTCaKV3Qaz6WhSokOkgzy2X97clrmSp+oF9/OCcYFRQ/wCrxfU+A6HVnLpkg23KyPKZrFOs6J9VfyAk/7JZNd+/oF7MfleeTJJJLwg=
+	t=1785541722; cv=none; b=kpKz4RtLmeHbyS9tAA3+ONb+XSwXA91F3mk2HhYWP/DagEMic7s2z1S+Wd3rf7o91zXZ+FWXKo+I53xm3vhqxpJFYH9TrGl1+GrxWQwhfdZMzx8KMmR0G+OxZxfceBi9G3czWrMUJx+9CBvqtRm5Pfo4V8FJiyD4SCgwcCYeLSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785541449; c=relaxed/simple;
-	bh=H+1vVSMb+7p1IXf3HHteCMYkYbXE7D2+H2KFUFvld5Q=;
+	s=arc-20240116; t=1785541722; c=relaxed/simple;
+	bh=Zt/brRx2WhrKDhVf6UNXQhf3aprRllAC5j9QI3kbKto=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LlPEqu3aMYnz5vPSq2nt6TQcKK2wtDOyUoPvx8rEHYWRA3R/BRCC9zpnGgY/mBXaIsvVIT+8pqhTJEMtJNHyXLyJouscNg3TG8KiyYAZcql0hZV/xKdSnY9HmlZX/X/Yl1rDt6ZzFaIfKKL+JBX+bTEQCzPFzMnB3dzIZ2Zsox8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gkViP6Dz; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Rib3ZxP9Q13pRJhiEWkWmXiaaPBvEnDzmI9KlPesjOYsEkDWNvvjrbXCgBdt3B3vs9W47zkFe4tvL0MI6ASFxHH2vc9ZtuOHnpyvLBdR+ScvNSK/zBxNT71pPNKPBWbWO+77wXyrAsLNQ9Qm9hEHbBHWy5bOKlmtXNWD64/KFzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DW4vgSqa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gkViP6Dz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC781F00AC4;
-	Fri, 31 Jul 2026 23:44:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DW4vgSqa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D8F1F00AC4;
+	Fri, 31 Jul 2026 23:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785541448;
-	bh=H+1vVSMb+7p1IXf3HHteCMYkYbXE7D2+H2KFUFvld5Q=;
+	s=k20260515; t=1785541721;
+	bh=LbSFirBXbG34eFxWRtBpQZ0x3LqqqbKzaBXUfzDEIg0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=gkViP6DzcUlzFp70muUyvMV2Qq7WFVQylLtVpmlqA1Eg2L8lMsNPjV4lgMQ2F7G9z
-	 zA6FeSSwvOA6Y46Q5zAmViMzJYfmsR4UAHMBaxQZRBMZxGOhUuAL+p8lgg6Lsb5aOk
-	 Yn7ZRfeVbdKataGc6YP8Wxi9TcLEAmJhxgz06pfLwlQJdKuNgWyUckLjL5PHzNdUuE
-	 W6UqUjOPNVyDLRP4YtuqaB9gBQ4AzwD37YVmeEqn7tkoaY+DoKEqOWxXbhYt4JVVfA
-	 cvrYk8tnklB0aXqK8TnmSN9RoSxinnI5x0Mui4u8vrdm5UjTdvQSERnWobw/mvN6z4
-	 HU56P7hMydvqA==
-Date: Fri, 31 Jul 2026 16:44:07 -0700
+	b=DW4vgSqaH1tXxVyDTtj00S5pU2Daqy3jOwrbTc4pf1L9eU49+6GffPjPjLQ8xlyYn
+	 S2FB9IiJV+6xxwdhCPl2YSshbn9fUzm3Ji9YdvBfUbeL0x3au54JW3zTyjvVEvyKP6
+	 kxjWBhQijlqCE8Tesss/f6+jeGZcbK4kY55mdrUAMsJONeIe520AQCcjg4mUAyEbxK
+	 gLFaPMRovQ2/Sy2cJ+lkcyfWA5T8GBq9K4RvlKjXZlJxGKntbjHzfOJW0SneMW5jOa
+	 HajgKKuX+32Bek5kpNNzYWRXoQUzA9qTdleCJhNfoWWDARYaDCm6HvnZk5CbZP80bW
+	 eaavSPyl9dsnQ==
+Date: Fri, 31 Jul 2026 16:48:40 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Mengyuan Lou <mengyuanlou@net-swift.com>
-Cc: netdev@vger.kernel.org, jiawenwu@trustnetic.com,
- duanqiangwen@net-swift.com, linglingzhang@net-swift.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com
-Subject: Re: [PATCH net-next 0/5] net: wangxun: improve statistics support
-Message-ID: <20260731164407.4ca13f14@kernel.org>
-In-Reply-To: <20260731074958.19333-1-mengyuanlou@net-swift.com>
-References: <20260731074958.19333-1-mengyuanlou@net-swift.com>
+To: David Lee <david.lee@trailofbits.com>
+Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, Kyle Zeng <kylebot@openai.com>, Dominik 'Disconnect3d'
+ Czarnota <dominik.czarnota@trailofbits.com>, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ipv6: seg6: clear IPv4 control block in End.DT4
+Message-ID: <20260731164840.511f6a3d@kernel.org>
+In-Reply-To: <20260731140832.567669-1-david.lee@trailofbits.com>
+References: <20260731140832.567669-1-david.lee@trailofbits.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,17 +46,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 31 Jul 2026 15:49:53 +0800 Mengyuan Lou wrote:
-> This series improves statistics support for Wangxun drivers.
-> Currently, VF drivers do not periodically refresh software statistics,
-> do not expose per-queue statistics through the generic netdev statistics
-> interface, and do not provide ndo_get_stats64().
-> The first patch fixes the suspend/resume flow for wxvf so the service
-> task and device lifecycle are handled correctly. The second patch makes
-> wx_update_stats() safe for VF drivers by allowing it to cope with
-> temporarily missing queue pointers during queue reconfiguration.
-> Once periodic statistics updates are available, libwx can implement
-> netdev_stat_ops, allowing Wangxun drivers to expose standard per-queue
-> statistics through the generic netdev qstats infrastructure.
+On Fri, 31 Jul 2026 14:08:32 +0000 David Lee wrote:
+> Bug found and triaged by OpenAI Security Research and 
+> validated by Trail of Bits.
 
-Were you able to run the qstats-related selftests against these devices?
+Please delete this ad from the commit msg.
+Maybe you want to put Reported-by: Kyle .. @open.ai>
+And you are sending the patch so that will be the trailofbits.
+
+Please learn to use correct authorship tags (From vs SoB).
+-- 
+pw-bot: cr
