@@ -1,47 +1,46 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B368942C4FE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473AF2E6CB8;
 	Fri, 31 Jul 2026 14:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785507622; cv=none; b=S4aMAVyX8EZRFtMJ3dIcWSD6TVjBi7lthHcbJ+qSG+hLZWOEKRa8XxlxBgQ6XNkDgo9IIBDVWKg8M35ScX0p1oLDa4RR8QzfsanOp2YOl3MOOEQYsUb8eowkNd2nZzHSJSrpFEtHvISPu3S+yTBSCSdoLofJOKer+4TV6DKsWuc=
+	t=1785507622; cv=none; b=AWLwwTnvLxLcSrNV07Rce87w87jo3/XrBvBbmqSNJuRfp5j+00dlsd2+UXi6TjdHmw4vB7zZxmYyeBQKQZJncDCYNziTl3tAI/aRA3NRhDZAGB/9u931q4ibz5JdxcdEPBRAE1Usn15IfteI+KriF/HqSxCfV74KrRythZU5ewg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785507622; c=relaxed/simple;
-	bh=UcYY9jdkkRWZzcyn2v+5QU24qfIZsp1gpbuwyITlB0Q=;
+	bh=wMin3KJ0aPPNmBSLV9r7hz5EDoI0uDRXnakFch1RhJc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eqrS8ACJWMZ3vB6d2awFyNXiYg4V+Id6OxgrUAYFqCuFoai7d2D8reCPKnGURZ9oDdOZmfJ9eOgJUzNFNG4IZol9j7xxB67Oo2ENOJS6Iuun+O38xrBCgozfoJTFCHtbwH3w4FZ8h24eOi2NB5fGfk62mfxukrnWztwsu4gBsHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=khygl73M; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9TaSsd7W; arc=none smtp.client-ip=193.142.43.55
+	 In-Reply-To:To:Cc; b=QaWH/DguBccli5csToFcAQGjHSgbxEoCR3RGai+89yj24K7tYIyvZUq7i0BIpJapRwGh61BXVwL0WCFuNXUQdK22V73TZgfy5MLPhJ76H2j+xsLPK57lmeK0rSyusv6GPfRFyCOxVehHwvgfoDYzSzw2V/6uI+I0Nb81IZWtrCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SZRXvn82; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WeZlsi3f; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="khygl73M";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9TaSsd7W"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SZRXvn82";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WeZlsi3f"
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh_=28Schneider_Electric=29?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1785507619;
+	s=2020; t=1785507618;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=68d3evjLPRaeFDQ1lOLGdyv0uGksE9tFBPgLbdNMwYE=;
-	b=khygl73M9mhCcoRKKmscySXKhUF05pS9zJ1/lri5yOaP/46GgIui8KbDouWhJYva40mOMi
-	7opJsak+kPcqVfniTR4DGn+B3kJGCNPZUZ3i+P/XJ8BDJSVZU3o3DWA0FuLAs49P38Wu6b
-	UV7PCxHdfiGRH2BJPL6m0fddlKiDXVGSIx9cUzMr92FzkPE4sVHZHruXhd1xExaYlFBplG
-	z76t8OXgDuyT2vsstUGzaAy9B9rj0PYm/epy2Z2AYHbhoIpWOuQ3i+691oHairIgCwQ7Iw
-	k1JVEUoxKS8CkxEZmHosX1SgA/aVCdQ8qRUBl4/6ZvMyieKt5Gp9ERNSb+JJyQ==
+	bh=LWDlHXXVddCcYCT037cFxDN1q4w7agXJWRgt4HwA/tI=;
+	b=SZRXvn82APLW+PHcqRI9qbYqpmVMRR/gLJfKD4S7jOvYV0tSDzvD2ARia+xZ3Ry2sLGSjy
+	vcR9RAyPLP2IZliCxLcoBXi0skUrNBMGvnkS1xPYsaVCdVo3ZF54wJYvgThjl98TBH/G9Y
+	NGmfq8yfNcwuZHsvxVMwv66cbq5M8ApGmmrrKi713c3fPMmOdWWN94Q8y9j7n4vW2LQCOQ
+	ZCS3CopwbvwsVHnhUxCdElmCmX6ZZ1jPpFNUg5ycwpmLlSihtST2s++PuNaCcjSzKNj2Wu
+	AZV24K2gPtj7+7KPQDC2tNZfMjp9ESVkRQodOezjp/sBpOKRshgXHUvuWYGS3Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1785507619;
+	s=2020e; t=1785507618;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=68d3evjLPRaeFDQ1lOLGdyv0uGksE9tFBPgLbdNMwYE=;
-	b=9TaSsd7Wj5Bkaw42xQvwCi57ZT/I0Pb0DgbkaHPxeVafetn7dBKLiTl7lKaG98kUqKlaeW
-	LiBs9bVDeAu2YhAQ==
-Date: Fri, 31 Jul 2026 16:20:15 +0200
-Subject: [PATCH 2/2] timekeeping: Annotate auxiliary clock accessors with
- __must_check
+	bh=LWDlHXXVddCcYCT037cFxDN1q4w7agXJWRgt4HwA/tI=;
+	b=WeZlsi3fy7GmRIV4ab8IqWaUlqJFmt7ySq2JrqmStIiAOvbYn0MxQveoMCx3m9zK7d1EML
+	SFILXRh6GdZeWvCw==
+Date: Fri, 31 Jul 2026 16:20:14 +0200
+Subject: [PATCH 1/2] timekeeping: Remove the unused ktime_get_clock_ts64()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,7 +49,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260731-timekeeping-aux-must-check-v1-2-11ae93068497@linutronix.de>
+Message-Id: <20260731-timekeeping-aux-must-check-v1-1-11ae93068497@linutronix.de>
 References: <20260731-timekeeping-aux-must-check-v1-0-11ae93068497@linutronix.de>
 In-Reply-To: <20260731-timekeeping-aux-must-check-v1-0-11ae93068497@linutronix.de>
 To: John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>, 
@@ -58,47 +57,80 @@ To: John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>,
  Miroslav Lichvar <mlichvar@redhat.com>
 Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh_=28Schneider_Electric=29?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785507617; l=1378;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785507617; l=2218;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=UcYY9jdkkRWZzcyn2v+5QU24qfIZsp1gpbuwyITlB0Q=;
- b=qfkYfL9We1QK8gU6Ls8OR2gO1mNIdW+INGvLyDZ2G7oXHZOMgtcy4aShOvUrp/RXJ+86xi21S
- Kn4iZ3FCfaUAi1g7xVbnInNpAe8IZW+T2CetiX5U1VJsV2a5nHS9GP9
+ bh=wMin3KJ0aPPNmBSLV9r7hz5EDoI0uDRXnakFch1RhJc=;
+ b=9o0KdoXqAGSTdFiMOl+Nt5Cl/BrSEXs/G2rY5aRURqF81gDg1WKqOST2fnHtbTYjS16b5PZEf
+ RtiO3JQHpjmChe3ysy0VzD64zahf8yacTlDe5N+TRCzv88IdoadHvvr
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-In contrast to the classic time accessors, the ones for auxiliary clocks
-can fail.
-
-Make sure the callers check for this.
+The last user was removed in commit a6d799608e6a ("ptp: Switch to
+ktime_get_snapshot_id() for pre/post timestamps").
 
 Signed-off-by: Thomas Weißschuh (Schneider Electric) <thomas.weissschuh@linutronix.de>
 ---
- include/linux/timekeeping.h | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ include/linux/timekeeping.h |  1 -
+ kernel/time/timekeeping.c   | 34 ----------------------------------
+ 2 files changed, 35 deletions(-)
 
 diff --git a/include/linux/timekeeping.h b/include/linux/timekeeping.h
-index ca4a881e622f..561313b5cb6d 100644
+index b4191a873c39..ca4a881e622f 100644
 --- a/include/linux/timekeeping.h
 +++ b/include/linux/timekeeping.h
-@@ -267,11 +267,14 @@ extern void timekeeping_inject_sleeptime64(const struct timespec64 *delta);
-  * Auxiliary clock interfaces
-  */
- #ifdef CONFIG_POSIX_AUX_CLOCKS
--extern bool ktime_get_aux(clockid_t id, ktime_t *kt);
--extern bool ktime_get_aux_ts64(clockid_t id, struct timespec64 *kt);
-+extern bool __must_check ktime_get_aux(clockid_t id, ktime_t *kt);
-+extern bool __must_check ktime_get_aux_ts64(clockid_t id, struct timespec64 *kt);
- #else
--static inline bool ktime_get_aux(clockid_t id, ktime_t *kt) { return false; }
--static inline bool ktime_get_aux_ts64(clockid_t id, struct timespec64 *kt) { return false; }
-+static inline bool __must_check ktime_get_aux(clockid_t id, ktime_t *kt) { return false; }
-+static inline bool __must_check ktime_get_aux_ts64(clockid_t id, struct timespec64 *kt)
-+{
-+	return false;
-+}
- #endif
+@@ -44,7 +44,6 @@ extern void ktime_get_ts64(struct timespec64 *ts);
+ extern void ktime_get_real_ts64(struct timespec64 *tv);
+ extern void ktime_get_coarse_ts64(struct timespec64 *ts);
+ extern void ktime_get_coarse_real_ts64(struct timespec64 *ts);
+-extern void ktime_get_clock_ts64(clockid_t id, struct timespec64 *ts);
  
+ /* Multigrain timestamp interfaces */
+ extern void ktime_get_coarse_real_ts64_mg(struct timespec64 *ts);
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 97db2e9393f9..29b2a38b27b4 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -1937,40 +1937,6 @@ void ktime_get_raw_ts64(struct timespec64 *ts)
+ }
+ EXPORT_SYMBOL(ktime_get_raw_ts64);
+ 
+-/**
+- * ktime_get_clock_ts64 - Returns time of a clock in a timespec
+- * @id:		POSIX clock ID of the clock to read
+- * @ts:		Pointer to the timespec64 to be set
+- *
+- * The timestamp is invalidated (@ts->sec is set to -1) if the
+- * clock @id is not available.
+- */
+-void ktime_get_clock_ts64(clockid_t id, struct timespec64 *ts)
+-{
+-	/* Invalidate time stamp */
+-	ts->tv_sec = -1;
+-	ts->tv_nsec = 0;
+-
+-	switch (id) {
+-	case CLOCK_REALTIME:
+-		ktime_get_real_ts64(ts);
+-		return;
+-	case CLOCK_MONOTONIC:
+-		ktime_get_ts64(ts);
+-		return;
+-	case CLOCK_MONOTONIC_RAW:
+-		ktime_get_raw_ts64(ts);
+-		return;
+-	case CLOCK_AUX ... CLOCK_AUX_LAST:
+-		if (IS_ENABLED(CONFIG_POSIX_AUX_CLOCKS))
+-			ktime_get_aux_ts64(id, ts);
+-		return;
+-	default:
+-		WARN_ON_ONCE(1);
+-	}
+-}
+-EXPORT_SYMBOL_GPL(ktime_get_clock_ts64);
+-
  /**
+  * timekeeping_valid_for_hres - Check if timekeeping is suitable for hres
+  */
 
 -- 
 2.55.0
