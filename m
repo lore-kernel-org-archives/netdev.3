@@ -1,132 +1,145 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC0A45DF77
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 19:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51AE459AD0
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 19:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785525995; cv=none; b=RE3ne6SU3a1hAILFRDDyxD+uTULeWyhMrSbvfO+WML+ouGTVRnOdyC+o/DrwwTE3zGEM9eX99lTZBTGljovIxcm5Fh+pMienllTYiA1LcDMkm6iYtMWKq0W3Ft81ApyPwgD3jcZBA2+kT5jJF8WxInofOimNyb0eh+Ri+cgJDzs=
+	t=1785526061; cv=none; b=NidqzUYYFCXNLxsjoWmNAzElgLZgMuMZC6esxmN1JRvK16bDImlAHY/SRaiUDoC8FnXzphUcO7Tpkt8BBsI93xZPOwXA6tfxppIJw1bjBnhsOU9GXu9c4cxRYLEBz+bdj7akrx5IolzjoHO66MMTkuhZcgFM4kkf9ZFvo8QLxNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785525995; c=relaxed/simple;
-	bh=KkF5Nke1QJHyg8FJ5OsLAEE7JZPzkufAokSHnEISuKY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MbjpSRzo19zWiTs8+aOLEIs76LfdyLroBrQh/bMKMZ0LWPO7nVHHvGx81rQJ8F8QN7WzjDe2jDCFV8bnIbG8oggUmO9CfXDjT+ielREdZwGGlGH4m8yto4YW3ipiR6IdIAl3aqNFWmObilhb3scD5y4FVGDLbqOGyyVWZvw1ipM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e4Uz/U/p; arc=none smtp.client-ip=209.85.221.51
+	s=arc-20240116; t=1785526061; c=relaxed/simple;
+	bh=WlYH4h1EO+QhPQs8N1wR1kmbirn4A94e5IuEBHI1C1s=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=uB4a4Td2hKyUBNY0+OY86fCUaljJ6VUo0i/Q2O/JCLRfjRoaOFrPyIZUsWRhmnK7H5zmcUs+RT9dOEoDAwXHDh6tdjKiFlUPO66FhQqdX/3DE9NNrNiXtKOeR630Tmptr1mt5IT7cCzsc15GpnLZMrN8Gnuu7hgYoGUstNzBghg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g2ZJZCiT; arc=none smtp.client-ip=209.85.128.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e4Uz/U/p"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-471eeac43bfso1489443f8f.3
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 12:26:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g2ZJZCiT"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-81e83f1f15aso16776447b3.1
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 12:27:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785525992; x=1786130792; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qto0P01IO3CrmBO6x4tfgO5l9DTkXSKTrk6PtYpQaHs=;
-        b=e4Uz/U/pWX6IZHurxJRR0uNlWsjpNhjjwuf9tLgg2x6OxxS3QMmX1iUTNfQJlc1zl4
-         uOb1WkJ+DkHK7z1PQBLl50B0TTmZ2BJ2xPX9UpbQfsCtJ3A1xfBh91aZ0o8STrGPixUo
-         JXQnXfcIUgQr//zSkidl+kSNA927hyddaRi0BNOwEfvHm03zjCpe4H5Wrtnk4TbMvb70
-         79yFNHceEDbjOgqV7ocJIXF2ELjRBFO2AQmG8XN0bChrJNQXY5AaBp+ieAqVIUZ+w2Ym
-         67z3sCNXRbZE4FC/ZP6sU7xyEaU//mmVly6bcJgGF8eUhZwfsfC5vABgobsowoyU1j0S
-         ZQ8Q==
+        d=gmail.com; s=20251104; t=1785526058; x=1786130858; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=P/71Eqm6eZkyzzsysSAa7b8sFQPr1CSpNZAPUkARlTM=;
+        b=g2ZJZCiT+3OitEOoZJdirmYltmwwwLYw3eW1MgMs0CvuMDzxcXJF7ZVDah/oszVTo4
+         Dbv6ju4syawuFmQ4ZYLM9n4kTGilJa2qhe3KDBrPQss66YIF1xggiucEs2V3S0RKo8e9
+         iMzjrH6IinY0wQC7t5tDJvZiHSxH8pUymJvq+MMhpzjBQvqws7tg6yYmU0+DvGAAOJqr
+         ulWRejs6VourOFzzhGY18/Cn0fG/VevJR05XsvJbSnnzMUOQJRr67iRGytAjKyiLfz9k
+         9bCTnu6UhBqONA4jJD0GQ/AYHiEA8V1tplVp2YS7yz8KBUsTMIhWykfeqn5ffsRV8X4D
+         UBKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785525992; x=1786130792;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qto0P01IO3CrmBO6x4tfgO5l9DTkXSKTrk6PtYpQaHs=;
-        b=WH/sNN9cBVBQeOJIm9CNI0y3uVcMxIpBn5Lb9bdkdQbUyswTO3wcVCCI6ttwwZL0bs
-         EZMdgQGLC2eAITCMZ3GiLVmWSAG8wQvv6PMMAoK29U6WG1eKfgCaz/HB7eXKs/xIjJ7F
-         yRQe8/SDXdyivUGPWlq3AtjcQudJnYBmiMwtDhezZwqVYDtb67Cfjubp5gz2tt5Ag+/0
-         Pmbg0qWesse/JoaAGnXp8SSibjP2ataDzHf8YuRzt2n5jjz/mI2lXjY5LCpQe7Vf8iUv
-         7OO0uwFKItFgnVsOogSLcD9jSYcG/KNuWSWjMR7oEaYjgAfB7KdhCrvgZhrRVfACQoZn
-         hyjQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrxbRA2HhoohWe0deu+zKLwb3k0Q5fA0O2Aw1OjTvNlgPXxUzqPtlzbh9oRu4SfCw7Bu7RfLuU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxg4AB5Eo10ShaNE9PN9b68ZSbOn2T+XXibTCrzku9UPNLM6zA/
-	bNd6xp/CFd9y8Z2XeCvoigotOSTLY4L1rjI9XqvvkX6SqCCDvA8bxrg+
-X-Gm-Gg: AR+sD1212UD9E+w0mtn/zyyaZ3ZGmfTqLKBH/mlPlu64zKueR7p3NDLvZhJqRfo/1O2
-	OJW9RDDOP0DQbsF1sbzPvGUgJ/x6BEtUPy+uTgPI7yYNzI+wr7TqnMyODF7hfzwhQWQa3eJ/8K/
-	jZrBIHG10/Uax1+xPxnGTGuQY7XHxmVIP0Nj9wJ2LRzmE3ZbHTBudG1jF5+zbq4bcO1TI8Hc+iR
-	XG3ZovS9FAJ12G9cZQfuMvbWSXk1ostMFuKHzcCuN/w9s5HdgeEuBB5xAKwO9oMlwA1f/bIgIoo
-	Yexe1P/FdOIgHzDzGiLK43NLCZCH+4BL9MeBpTxXepma55J8PFrO6A6YGcuLIySLUpNQDs2RYAd
-	+6hIoKDFDfR+ZEAa6VBlKiXMcHJ4aoBn7lm9tqL92NjpGelgdEtTIfT0A870yIJp4Ue/MqEvtjO
-	JA06Cpj8kXu1Gx1nVrWBUfGj0pcLAb5pjhkOI+QMdiCiK+4KgMcnoisPbcy9CelRnzxl3n4t8pk
-	/Li0RxvsflzrfPX3B8udaMCNQ==
-X-Received: by 2002:a05:6000:2489:b0:475:3a97:8e2c with SMTP id ffacd0b85a97d-47fd72a8634mr1849874f8f.16.1785525991497;
-        Fri, 31 Jul 2026 12:26:31 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd456262bsm7841993f8f.17.2026.07.31.12.26.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 12:26:31 -0700 (PDT)
-Date: Fri, 31 Jul 2026 20:26:29 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Pablo =?UTF-8?B?VmFsbGVzcMOtbg==?= Aranguren <pablopva014@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "open list:TULIP
- NETWORK DRIVERS" <netdev@vger.kernel.org>, "open list:TULIP NETWORK
- DRIVERS" <linux-parisc@vger.kernel.org>, open list
- <linux-kernel@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] net: tulip: xircom_cb: drop runt frames before skb copy
-Message-ID: <20260731202629.10ff97e6@pumpkin>
-In-Reply-To: <amzqfjeo0Yo1p0Rd@ThinkPad-P15>
-References: <amzqfjeo0Yo1p0Rd@ThinkPad-P15>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20251104; t=1785526059; x=1786130859;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=P/71Eqm6eZkyzzsysSAa7b8sFQPr1CSpNZAPUkARlTM=;
+        b=idSlTi0TJQLF814wmqYcSiHGwMI+1B3jvklaDkAoUR/Mzq7GmW9nQgYpxsQYdnxzTy
+         kU3qx9wwPksWqBcix51NWc8zrOSAg5gTucs2iIz551QXvaO11sZygYigQ9dJf59VBRZQ
+         KkZrqWOjyldeGQPRxoNhi8mAeCK+AhW/0f3jG8qOdLKknphDvylWZ9Pylpx9Ar4m0cN3
+         vpckleLyzI9XZFx1UUwbVwgLvPhp2S39DetBJx/cUFt+BswcUz1MbUvHmu5FJ1UW/H7J
+         0pJYv7MvYHCyrubwOYI7H6N/SEghU9UcNHvkEnYrh1Kfr6fKcHpY+OW5anDLjp9a/fpv
+         kZeg==
+X-Forwarded-Encrypted: i=1; AHgh+Ro5gA+o9FPnR0xMaHkBtVRR5JP79gzdcZ/Y3iJ/eO4+QLYNGW1M7FYZRz6DHlirRSFoVP/Ma+w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6JWitH5/4zht2kipAfiKT9FrzgeFbTwpJIGP2zzBdeZn3eukJ
+	dVYKUtxJSl0KJAFxoJgQUYl5zRbEmHKt3wTJ04OdjaDPyMxDoEk91u/n
+X-Gm-Gg: AR+sD109u2L/2Q+B7eAkRPH3ePLKIZ3U60iLniOqtAPRcpM8i/B/NyvveShjxP81ZET
+	Ytn62gjNb+fQyOTkwCY3o43l3o0frG8kPt/NjbUj2KsAhnTs+K5VLHVnVgeG64YXiKb4QU7dUzH
+	Gg7OVj0C57+cXciOrDs7FetYpu6MPrTKa/0vlP4EC14qpEPzyzp992kfTNlvKzVyQFxT//GGdoa
+	Eb1S/fK2WuDiFoyPqAd2BYlIggJPeqMcUxMBzu/t/w7KuKZMUW1MongWuUsGR28b8hmkZ8ruB/V
+	J/k+8BKBJ8z10SKsbHF7JRDla6dId+M7WM9PMqWwzk2JjJ48QytsjRqBO7o84ox9lcUxP/PImWG
+	d1uXY5eZZYcN9KP9hoeOeWCattktYWlsK1aIHf0mYYbD7Z2qbAwSJ453BObJLIm58RwEvSJtgTm
+	M+dbucxCwbCb180qgtmwI5jPeyWdYka60NatNrMyqW5axMywsIn2m648LaimtJUw==
+X-Received: by 2002:a05:690c:b86:b0:81e:4acb:c0a with SMTP id 00721157ae682-81fd4d31d4bmr14405067b3.2.1785526058615;
+        Fri, 31 Jul 2026 12:27:38 -0700 (PDT)
+Received: from ?IPV6:2600:6c5c:6b00:316::23? ([2600:6c5c:6b00:316::23])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fcd164474sm13204967b3.48.2026.07.31.12.27.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Jul 2026 12:27:38 -0700 (PDT)
+Message-ID: <e62e8603-a61d-489c-8df0-2c9ff98a1c02@gmail.com>
+Date: Fri, 31 Jul 2026 15:27:37 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+From: Matt Vollrath <tactii@gmail.com>
+Subject: Re: [PATCH iwl-next 0/3] iavf: defer loading netmem_desc
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+References: <20260731124109.99065-1-tactii@gmail.com>
+ <7e9a5228-d257-4adb-b472-b110f60e3618@intel.com>
+Content-Language: en-US
+In-Reply-To: <7e9a5228-d257-4adb-b472-b110f60e3618@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, 31 Jul 2026 20:33:34 +0200
-Pablo Vallesp=C3=ADn Aranguren <pablopva014@gmail.com> wrote:
+On 7/31/26 11:13, Alexander Lobakin wrote:
+> From: Matt Vollrath <tactii@gmail.com>
+> Date: Fri, 31 Jul 2026 08:41:06 -0400
+> 
+>> In a few places libeth and the iavf driver inspect which page pool is
+>> attached to a netmem_ref. This forces an immediate load of the
+>> netmem_desc struct for each buffer in the Rx loop.
+>>
+>> Defer or eliminate these loads of netmem_desc from the driver fast path
+>> by using the page_pool ref in the first cache line of iavf_ring instead.
+> 
+> I was thinking of this when implementing the current design, but:
+> 
+> Do you have any data to prove this actually helps performance?
 
-> investigate_read_descriptor() takes the 11-bit packet length straight
-> from the device-written descriptor and subtracts 4 for the CRC. A
-> length below 4 underflows pkt_len to a negative value, which is then
-> passed to skb_put_data() as a huge unsigned length and corrupts memory
-> past the end of the freshly allocated skb.
+The optimization was profile-driven, but not on an iavf. I was working on
+a libeth port of e1000e, because I'm an obsessive optimizer, and this quirk
+of the interface fell out. I'm working with a Xeon E3-1240 v3 and I218-V.
 
-Have you checked that that hardware can actually set a short value?
-I'd expect that packets shorter than 64 bytes (including the crc) are
-dropped as 'runts' and probably don't even use a ring entry.
+With a mirror of the changes in this patch series, on my platform, it's a
+net zero overall change in Rx performance. This is not surprising, because
+the cold read is just deferred until later. The time saved in
+eth_type_trans (where the payload is first read) is instead spent in
+skb_gro_receive and pool puts.
 
-Of course, if you think the device might lie all bets are off.
-(Without an iommu is can write anywhere in host memory...)
+The additional thing that does make an improvement, which was omitted from
+this series, is prefetching netmem_desc early in the loop. This makes about
+22 cycles/packet, 3% difference.
 
-	David
+I left it where it is because I don't have hardware to perf this on, and
+didn't know if anyone would even be interested in looking at something that
+I can't produce data for on the actual hardware. For iavf the prefetch
+would be conditional, only when the EOP flag is set, because in this case
+netmem_desc will always be needed either for GRO merge or pool put.
 
->=20
-> Drop the frame as a length error if pkt_len is negative after CRC
-> removal.
->=20
-> Signed-off-by: Pablo Vallesp=C3=ADn Aranguren <pablopva014@gmail.com>
-> Assisted-by: gkh_clanker_t1000
-> ---
->  drivers/net/ethernet/dec/tulip/xircom_cb.c | 5 +++++
->  1 file changed, 5 insertions(+)
->=20
-> diff --git a/drivers/net/ethernet/dec/tulip/xircom_cb.c b/drivers/net/eth=
-ernet/dec/tulip/xircom_cb.c
-> index e5d2ede13845..62c64da1c8fa 100644
-> --- a/drivers/net/ethernet/dec/tulip/xircom_cb.c
-> +++ b/drivers/net/ethernet/dec/tulip/xircom_cb.c
-> @@ -1110,6 +1110,11 @@ investigate_read_descriptor(struct net_device *dev=
-, struct xircom_private *card,
->  					/* minus 4, we don't want the CRC */
->  		struct sk_buff *skb;
-> =20
-> +		if (pkt_len < 0) {
-> +			dev->stats.rx_length_errors++;
-> +			goto out;
-> +		}
-> +
->  		if (pkt_len > 1518) {
->  			netdev_err(dev, "Packet length %i is bogus\n", pkt_len);
->  			pkt_len =3D 1518;
+I can't guarantee that this will be worth 3% on an iavf platform. In any
+case, it'll be a couple weeks before I can work on this again.
+
+> 
+>>
+>> There are only two paths out of the Rx loop where netmem_desc needs to
+>> be consumed:
+>> * The "very rare" case of libeth_rx_sync_for_cpu calling
+>>    libeth_rx_recycle_slow and indicating that there was no data. This
+>>    could be similarly factored out, but not by this series.
+>> * GRO merging a frame into an existing aggregate stream. In this case,
+>>    the cold load of netmem_desc may overlap the payload prefetch started
+>>    by iavf_build_skb, which is now no longer dependent on netmem_desc to
+>>    start.
+
+I see now this isn't right, anything going to GRO will end up back in the
+pool in the same iteration, and netmem_desc will be loaded. It just
+happens later.
+
+> 
+> Thanks,
+> Olek
 
