@@ -1,164 +1,183 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013007.outbound.protection.outlook.com [40.107.159.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f78.google.com (mail-ot1-f78.google.com [209.85.210.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3512BE05A;
-	Fri, 31 Jul 2026 17:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.7
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785517864; cv=fail; b=JrE1mwNwmMHr9HmDg4gnFRMokU1lMK9LvFcv5PXV/N5FIuPLSwmQrE0DTfQpJwNrFIwTm8FcKN+SGXPaMUVYR434SGwrhk7PhYfON+Kmz8Y23sxtsAv+hOkfWJ2JfO57Ka2IBX6xoMvFnuwhQoIDmkJbUxpt//MWf+MYctOT2dw=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785517864; c=relaxed/simple;
-	bh=E+HoAFyDwTMgpewmTTZJQ9hlk92RkRaYWn7LxvJVX1I=;
-	h=Message-ID:Date:Cc:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=dywATkkQKXsQ32k1NEWLvdTo7LCaAqFj1l13u4lP6tfL+R9rd0EJ1Wi4sEqBorWjKeavEgI9LnOGiBZt2uafkXGCi4w5L+EZGRadp5xhD5JE3GjcEngJZ6Yq//GYDG0aS2AroUlkjmVuI8d/rrbbh7bXVJLDHEMI4a8xPCfKeXo=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kLoOipH0; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kLoOipH0; arc=fail smtp.client-ip=40.107.159.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kLoOipH0";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kLoOipH0"
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=y8akWaIvDEOdqE+GnyX9blq/Eq7sAI08qxtCkCU6a/0R5f0qe1M5ouw3r527LwVkiDGpHo1WG/wHpcRB+HiD3f3WY34eYNZ5M/TLTGPZcNnP1hlp80hxOYwQ5iul7TRaJ5BtHUal3DX6mXLGTBIGYXaNwu694jt4pgWWJJL5Q1ZIrFlyblpqt5qQnVP6w1ZhljxyXC8zBLD64+HfsXJIx9dGCEwdu7VNjok1L8qAo/qsG7yW98TUY5LWp2G8U5im+1iSaaZBlPzJZPvLT0/EE4A8sQVBOg0Ow9mjP6hSHIt9RRTI604TiRogdJtCQhUrKijOdhSZ0v/ruCjixQSa4w==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=twqmqFfg7xQjIhvS1lslIDpp9TU99Ff1L5SaF6cx8p8=;
- b=PNSnp8p6httThDArl6fWu/9kPd2qfnif46db3r5fbgor28NfpLE5b+OH9Ab3Wft9CbB6msDjJj355P9hq6UsVr2Ulw8SIzcpTjNqdJa3OSZCUO2XOAX8W3HFGDjzmi/vkQjr5+UnEVzhKLqzuHGsnaQKk0gRWrF4/hG8st0YqB6U0Bxu+gvQWOnA6ZoxnA9xQIAx29L21IhDWS2XEd7joz3A5LiJ+7lM24VYB7Vx/3CM721fZZmeMH4U4W0wQDq7n0QqOT+KBjvxH5aqBGCF6O1ak0ACERenSXzkN8d5PR5ezfXSP1h8XLnGOAqD7PsJKuX9+9f2CMNrPXlZUeytRA==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=hpe.com smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=twqmqFfg7xQjIhvS1lslIDpp9TU99Ff1L5SaF6cx8p8=;
- b=kLoOipH0BlhRgZ7Uop2HiQoystvKh8mUbxAclzxnW28GTXknOqRZFG4Y9saPO8KsmUf4cVP+laktm7A4lvZ6rMFpZqONTBdu+WRHm3KIAo2xBtacr/n1uKDbGA51tl+NTeT/FSb2yAFZWnOY7OPgyamojMq93grxoeIjZBMTEAo=
-Received: from AM8P191CA0002.EURP191.PROD.OUTLOOK.COM (2603:10a6:20b:21a::7)
- by GV1PR08MB8475.eurprd08.prod.outlook.com (2603:10a6:150:83::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Fri, 31 Jul
- 2026 17:10:54 +0000
-Received: from AM3PEPF0000A794.eurprd04.prod.outlook.com
- (2603:10a6:20b:21a:cafe::8d) by AM8P191CA0002.outlook.office365.com
- (2603:10a6:20b:21a::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.15 via Frontend Transport; Fri,
- 31 Jul 2026 17:10:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AM3PEPF0000A794.mail.protection.outlook.com (10.167.16.123) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.8
- via Frontend Transport; Fri, 31 Jul 2026 17:10:53 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AobdSuaHglBhwrNz00itU8SbtE0jlINIYPmEuxCKVYCBrCv5UNRjPIs0WQ7zIJMqGd5a7NZr4+DnnTjWhSvz6GgxYapCG8k0XztKcLH2k/L3qe3ghU7BzVCvezQoX4nEw/sBI8icZW1DsFV6Y3TYn9x4EXfKKnO91eScy8sqxAwEFO6E28hE4AaUncjWSxo0BxCfaHGRftVvrPd9QNcL1rvXog0LmqVSDTeHjbKSOH+yUElaWXa/cSrohNVqetlnq7Ot3MHLgWdwEzbXSldlSzN6JXV5m9+rD/eh7/4LZ1+Eq2JtgwqLOX5iT9UXEWsor2fohkjrNGDJ8cdSqYwvlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=twqmqFfg7xQjIhvS1lslIDpp9TU99Ff1L5SaF6cx8p8=;
- b=SiiBcnISl32n+gsdMaqDlapYDBiAceSlp/AhqnBEIaA8IG5ztZxi32eXXojZZdTamPeayw9kGGp8kaOJXdPc9jEMmfroDwRZ48SRQEPcAjruiDCCvDyS3lwtDE77t4VyHhCsEFLWFCJ9eovOwEUiL2wxXyc8vp4TMm/oxKzVIPM9uZMoG0jOCsY/O23z7OFC0XNjUA7JQUeK9/Im35y7prHpxfE4+fGP+7LicxR34ziv6BnEw46+CnSI2hYyI9H3VVaKLCku5yqvE9uRkOXHsIrO4QCmezYxnAXieEPFPLgyc9WDX8KH0VHpkLLVPeLTyVxmNBmppUFLrpNct3K3bA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=twqmqFfg7xQjIhvS1lslIDpp9TU99Ff1L5SaF6cx8p8=;
- b=kLoOipH0BlhRgZ7Uop2HiQoystvKh8mUbxAclzxnW28GTXknOqRZFG4Y9saPO8KsmUf4cVP+laktm7A4lvZ6rMFpZqONTBdu+WRHm3KIAo2xBtacr/n1uKDbGA51tl+NTeT/FSb2yAFZWnOY7OPgyamojMq93grxoeIjZBMTEAo=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
- by DB3PR08MB9010.eurprd08.prod.outlook.com (2603:10a6:10:42b::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.16; Fri, 31 Jul
- 2026 17:09:50 +0000
-Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
- ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
- ([fe80::e079:6bd:fbe0:89b4%3]) with mapi id 15.21.0270.009; Fri, 31 Jul 2026
- 17:09:50 +0000
-Message-ID: <c08b7cb7-9b53-4a47-abc6-ae6c7d67d91d@arm.com>
-Date: Fri, 31 Jul 2026 18:09:48 +0100
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@arm.com, Steve Wahl <steve.wahl@hpe.com>,
- "Anderson, Russ" <russ.anderson@hpe.com>, Robin Holt <robinmholt@gmail.com>,
- Arnd Bergmann <arnd@arndb.de>, Kees Cook <kees@kernel.org>,
- Russell King <linux@armlinux.org.uk>,
- Andrew Morton <akpm@linux-foundation.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] misc: sgi-gru: Remove SGI GRU driver
-To: Dimitri Sivanich <sivanich@hpe.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <amywpyZgGWyhzBjZ@hpe.com> <amyzGw1-MVLpNH-d@hpe.com>
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
-Content-Language: en-US
-In-Reply-To: <amyzGw1-MVLpNH-d@hpe.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0118.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:192::15) To VI1PR08MB3421.eurprd08.prod.outlook.com
- (2603:10a6:803:80::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D22449B27
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 17:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.78
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785518073; cv=none; b=aQcU+g1Z70/y9uKSAGbvJuhm77/tBPaPWE02KpUBwbsc0ZoI+3hCpvX9q6zCPqnmDIemc9Hv7eBKuNh32oxZqs4uk0So+d+c2PNiai8Pn9vNBXDM8SH63lXbn3ticnKRlNHg41h8kBOiqxScFBkBZilNrlQy80aBfl40g67x42g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785518073; c=relaxed/simple;
+	bh=MaEk9IhYqtSp5p8XQpWZpSgVOWuSjHZoEn9KLCOdXmg=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=fVP0Pv64m7BUXLTzFRT3ZAuIjHj0X8gNWs0OM7rD7PaT4Z5XPhEMbrtX5Byva+fOW7tLJ3m3Bt9sCOm8qt3Hf2MCQyfRb2DV1zO5Yv/AqMC5MAIAdmhD3eKYatmZdxH9QHd3dlnG2iKJufdm0aars/1l6c+AAlOZkPzg6eH2y6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f78.google.com with SMTP id 46e09a7af769-7e9f686e18cso1560737a34.0
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 10:14:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785518070; x=1786122870;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lWAzJCFBg4uy8Bt5Hyp9HNfzqLV/NPZfyz7dBiNQs4E=;
+        b=Vl9GNnazbtWiJrwetyc9IKrvZfKdOx1RTEVSE4eOX32c6UqRUViWXsRjyszruJ53JC
+         qGY42GLs2QlA41ZgHz6x8CPL29GIG2BFidaB30IleT6fA7kyzpngiBaUJ6zrtgUP3XHu
+         0vaGs9zRfTHJcXiPZhhpJ9IuqdaCGfst5XQo8CF3Xo/IZBhaUa8HJGVWCFSVM1tiMdG7
+         ceL3cqd0aRDwFuI7cOO55pLtE9Kt6Mt/hkQv55LIs2R138/LAgu44LHyJgL3dmARZtck
+         9UfNqOb8hZvYFzn1GVP8XU/npA4pvyFBNNJW8bApsAY9nnRM9QG/UvxspSisarCi6gsS
+         XxRw==
+X-Forwarded-Encrypted: i=1; AHgh+RrY3s4MyR1LWmjLCbkXBUOFpHGH74ATnphG/LP1+BLo0YImpv9KiTpANDlxtCPyf1uik6mEW+M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTXX/31HmkV5kV08Bu6BsZVek5pX2W4JVqTnZsevgQkzNEw1ha
+	lsVXt3sOUEbePuOoEF5J53EOGyC7JfJLC5cxOalcYKn+y5fYJPfBkTELGIJZiz7sTD7NuTUewCc
+	rkb1oPpnAvzIVf3Ewlr66zWTVMJSLLYD7D1RUzCJ+5rsyTtEQ+bNWfj1S9F8=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	VI1PR08MB3421:EE_|DB3PR08MB9010:EE_|AM3PEPF0000A794:EE_|GV1PR08MB8475:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71f5798c-42f4-4f21-1764-08deef26add6
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|376014|1800799024|7416014|23010399003|56012099006|4143699003|11063799006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info-Original:
- Ys0+AEQV/LB3TOS0mRgaWDpTpYTo+Hi9MJuQ4pKXwn2cgsNRUkLYigoGwfDypkyd00YXbquwyzkj5NmhTuozPMm/Cha31fv78Ur4dpTLV4Fl9VhT7qVl1QKe2puu7xHK/N1fBIwxDBPPDp/Kf6Agox1XqlCdm4qBxnsiEX8shiEiMBuq8FNent1TgijhBir+Hu24FUPn/X1D/TZ6Ka5eqXbFAEk/BsLfGvdNZg1sOh3a1W2b429BfIYQ7geDUds5GE7fRbcb+AgRBsIYL0orPP31HD8XmK0nLCeTab+Lg9tc8FjHSMlIsleqgBDXWCnoPaTXgMUIart+FB2jOfeLjHhCLCXXBzrQps6Gzxhq3j+WNyNy5B6t3aoMjClqiUESYPx8qJOSvmL8fJ07U7rmmlUeMOzbyCPthRjtPLO3bLUEmbiya1gW5WEFGJ7LZZG7pGzYxGYbljF8od0mo7rKokafHvZmVJmMuX452oAiCfMVCnSMqJqVHwM/O0x5jOyIGLmKFOfaW+BN8AEgkVwhmtUwrbXa/6pSupljWfHnN6apySxtJTQAvvJmI8QO0CjZ6jhEJV3xm74uiA0VfotE6RRkZ/HWE3ezHe8bhV9ydOZr5eZzblt3+fBEq3FwSNJOsB/TOORNeaLpviFylAkPCsKinbuk1B/B31zBXKqSSf0=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(23010399003)(56012099006)(4143699003)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- CJy9X60EQncUHhf5YygF1Mso3/ctWHweiQYIFYwrW2TPwAiVAm26ZC9qY0MVSMsjIhFYYDgwrvujALo1kSz96x3IPJA8Iq2fARDRj6XOk5fkV4ifiX5Rhl2PGSxpFItHUDkKs/MBzCwK3qoZ2dsON/whUrCCJArCjVoga2f18ASh3IOXBPWQ61IHw6g1bs9FooL/bJ/NX3dfUL/54NjJB9jQS3wp/CpLIpZKycGEwLi4qoDHHkVL+4Q2QO+c1moK9Q+JdrWSpJovVUXHtq0sYB3gBmPq7hIIzAHZhM376dKux+KO7Gw1EtxYS1su+zDOCLkYKzRom8bd3/YYAn3dHg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR08MB9010
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AM3PEPF0000A794.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	d3313251-ec9f-4def-2f56-08deef2687d3
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|35042699022|36860700016|14060799003|23010399003|82310400026|1800799024|376014|7416014|56012099006|10067099003|18002099003|22082099003|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	z9Jdt1YBL9Qbyr5qKv1Lv3NGzgTDxuZQVRVgOgVcubMIZPIuzqLZDkw0iPE/pQ9MmiiPORC8/Hvkyg+w/JBHQ9fN2oCyw0eicFYzThX2N/naFRtXIW19YEZQh0TZ8cYLESPNmzZVkRs9VO8X+t9WkdqCjZ/PY9TnLSxPJzBsJx7QhsRAAPuRl8GzzRw4Yip91+Vvd3hnCyFTbv26ixgXapvSWNu3tsAcAOJIJJB2QhmAFQk0WJR2HxLCUQyLMiSuyFfyJOGeObUPU+OoWajeNGAiPBr/JTPB2/zPN460vu5sbR50v7MWaVF3OOfE7OJ7cZaEHAehGGqci5F5g/gCI2lc63pi/6rvQ+3NZQL68lUsCKhvmMXk3yiBW74Y3Qbu7DLmTmFvuYLooNExe+O0IufcFG4PFDVZ5LJatgfdZWtz17jlIte4pbJY7LQduBU4KA6cTx7KHxo30EM+ebSrkuNYCCraOXM/IJzl+AEC2+YUxQDhR/WSQoNEFnbLlf4DYo3qd2TcnVOqK7lz5Q57Ll3L0lGs9KmOfbZdggo16DN/v8nbOtJNpZUIPG+9gdcEIjNp6V0XMR0sYKEa8KoLX2ysxCOqnccplEIWFM6qE5cby8Aw618rQhlNmRLRVhAzdoFnAN1CdRdO0WEd0f+7qhhFhxiGKOzGvUM6nDSlMqDHelmh30fzerDLRo3pcMtMug7pqOr7P/bn7Qnv7PaDvQ==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(36860700016)(14060799003)(23010399003)(82310400026)(1800799024)(376014)(7416014)(56012099006)(10067099003)(18002099003)(22082099003)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	IlSD2FNJd09DK3j8VwkVkr6oXkwejKvc00JA2Pm4tNWacUk5AYdWCrT2djCvCPcVqMO0rOj/dyo/7enSzLLMh9wJGNy8Kz7rTzkw4UQZfYcPXX+NSQCGDMbXTXtFUmnLWruFxO+1gCLXz26db9NPyklSoYMlx5B5Sb0zJyn08FotbC5VPqWGnmlB/qIdCftjzdq/N79MvSJYIjha+lFS6a+r3ycirUzw5+tPmyryMjupdbhR7feHyfEaGzJucEUC8b890FVK8Vq/3UZJ8hQcN91gVp1Vzyf1rCGxrF2GmtWtauDjC7S8QyTcvXw14tud+eT8oLwR/s2rlg1QX78jke07GXbU6b6tIyl/8G8c9lVY4CksafgYvnIgYt371Eszfu592NETdT2fS85ri2CuU/vVzKAojcDPF7SnGqOPolKA0lYiYWZddBr237zvDo7Q
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2026 17:10:53.6606
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71f5798c-42f4-4f21-1764-08deef26add6
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM3PEPF0000A794.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB8475
+X-Received: by 2002:a05:6808:1a0c:b0:4a3:ec8e:2052 with SMTP id
+ 5614622812f47-4af5e18ac5amr1294243b6e.8.1785518070536; Fri, 31 Jul 2026
+ 10:14:30 -0700 (PDT)
+Date: Fri, 31 Jul 2026 10:14:30 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a6cd7f6.2d659fcc.1d46f5.0198.GAE@google.com>
+Subject: [syzbot] [usb?] WARNING in cxacru_cm/usb_submit_urb (3)
+From: syzbot <syzbot+f254240f0da61e58c9ef@syzkaller.appspotmail.com>
+To: 3chas3@gmail.com, accessrunner-general@lists.sourceforge.net, 
+	gregkh@linuxfoundation.org, linux-atm-general@lists.sourceforge.net, 
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 31/07/2026 3:37 pm, Dimitri Sivanich wrote:
-> Due to security concerns, remove the SGI GRU driver, which cannot be used
-> on anything newer than the long time unsupported UV2 platform.
-> 
-> Signed-off-by: Dimitri Sivanich <sivanich@hpe.com>
-Acked-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+Hello,
 
--- 
-Thanks,
-Usama
+syzbot found the following issue on:
 
+HEAD commit:    5d5fd841c346 Merge 7.2-rc5 into usb-next
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=14ebcaea580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=6ec4d592e55f7960
+dashboard link: https://syzkaller.appspot.com/bug?extid=f254240f0da61e58c9ef
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=157ca5b9580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16a77a49580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/2ed536ae4daf/disk-5d5fd841.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/ab40098ccbf1/vmlinux-5d5fd841.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/66d5c395f47c/bzImage-5d5fd841.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+f254240f0da61e58c9ef@syzkaller.appspotmail.com
+
+cxacru 4-1:1.0: send of cm 0x84 failed (-104)
+ATM dev 0: cxacru_atm_start: CHIP_ADSL_LINE_START returned -104
+------------[ cut here ]------------
+URB ffff8881136a1a00 submitted while active
+WARNING: drivers/usb/core/urb.c:379 at usb_submit_urb+0x1689/0x19b0 drivers/usb/core/urb.c:379, CPU#0: kworker/0:2/1122
+Modules linked in:
+CPU: 0 UID: 0 PID: 1122 Comm: kworker/0:2 Not tainted syzkaller #0 PREEMPT(lazy) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_submit_urb+0x168c/0x19b0 drivers/usb/core/urb.c:379
+Code: 00 48 8b 04 24 48 8b 90 b0 00 00 00 e9 70 ff ff ff bb ed ff ff ff e9 ac f1 ff ff e8 ae c8 ba fc 48 8d 3d 97 28 01 06 48 89 de <67> 48 0f b9 3a bb f0 ff ff ff e9 8e f1 ff ff c7 44 24 30 00 00 00
+RSP: 0018:ffffc900030deb98 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff8881136a1a00 RCX: 0000000000000000
+RDX: ffff88810df81e00 RSI: ffff8881136a1a00 RDI: ffffffff8afa6430
+RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000000
+R10: ffffc900030dec20 R11: 0000000000000000 R12: 0000000000000040
+R13: ffff88811dc98000 R14: ffff8881129a3000 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff888268636000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055ae16b61948 CR3: 0000000115e52000 CR4: 00000000003506f0
+Call Trace:
+ <TASK>
+ cxacru_cm+0x202/0x950 drivers/usb/atm/cxacru.c:631
+ cxacru_cm_get_array drivers/usb/atm/cxacru.c:722 [inline]
+ cxacru_poll_status+0x147/0xdc0 drivers/usb/atm/cxacru.c:828
+ cxacru_atm_start+0x203/0x240 drivers/usb/atm/cxacru.c:814
+ usbatm_atm_init+0x196/0x360 drivers/usb/atm/usbatm.c:927
+ usbatm_usb_probe+0x147e/0x1b50 drivers/usb/atm/usbatm.c:1178
+ cxacru_usb_probe+0x101/0x200 drivers/usb/atm/cxacru.c:1370
+ usb_probe_interface+0x386/0x9b0 drivers/usb/core/driver.c:399
+ call_driver_probe drivers/base/dd.c:628 [inline]
+ really_probe+0x241/0xa60 drivers/base/dd.c:706
+ __driver_probe_device+0x20e/0x450 drivers/base/dd.c:868
+ driver_probe_device+0x4a/0x140 drivers/base/dd.c:898
+ __device_attach_driver+0x1df/0x320 drivers/base/dd.c:1026
+ bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
+ __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1098
+ device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1153
+ bus_probe_device+0x64/0x160 drivers/base/bus.c:620
+ device_add+0x121d/0x1970 drivers/base/core.c:3772
+ usb_set_configuration+0xd97/0x1c60 drivers/usb/core/message.c:2268
+ usb_generic_driver_probe+0xa1/0xe0 drivers/usb/core/generic.c:250
+ usb_probe_device+0xef/0x400 drivers/usb/core/driver.c:293
+ call_driver_probe drivers/base/dd.c:628 [inline]
+ really_probe+0x241/0xa60 drivers/base/dd.c:706
+ __driver_probe_device+0x20e/0x450 drivers/base/dd.c:868
+ driver_probe_device+0x4a/0x140 drivers/base/dd.c:898
+ __device_attach_driver+0x1df/0x320 drivers/base/dd.c:1026
+ bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
+ __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1098
+ device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1153
+ bus_probe_device+0x64/0x160 drivers/base/bus.c:620
+ device_add+0x121d/0x1970 drivers/base/core.c:3772
+ usb_new_device.cold+0x685/0x115c drivers/usb/core/hub.c:2700
+ hub_port_connect drivers/usb/core/hub.c:5572 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5712 [inline]
+ port_event drivers/usb/core/hub.c:5876 [inline]
+ hub_event+0x314d/0x4af0 drivers/usb/core/hub.c:5958
+ process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
+ process_scheduled_works kernel/workqueue.c:3405 [inline]
+ worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x69a/0xc80 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	00 48 8b             	add    %cl,-0x75(%rax)
+   3:	04 24                	add    $0x24,%al
+   5:	48 8b 90 b0 00 00 00 	mov    0xb0(%rax),%rdx
+   c:	e9 70 ff ff ff       	jmp    0xffffff81
+  11:	bb ed ff ff ff       	mov    $0xffffffed,%ebx
+  16:	e9 ac f1 ff ff       	jmp    0xfffff1c7
+  1b:	e8 ae c8 ba fc       	call   0xfcbac8ce
+  20:	48 8d 3d 97 28 01 06 	lea    0x6012897(%rip),%rdi        # 0x60128be
+  27:	48 89 de             	mov    %rbx,%rsi
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	bb f0 ff ff ff       	mov    $0xfffffff0,%ebx
+  34:	e9 8e f1 ff ff       	jmp    0xfffff1c7
+  39:	c7                   	.byte 0xc7
+  3a:	44 24 30             	rex.R and $0x30,%al
+  3d:	00 00                	add    %al,(%rax)
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
