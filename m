@@ -1,112 +1,133 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f0.google.com (mail-pz2-f0.google.com [74.125.228.0])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D557E3672AA;
-	Fri, 31 Jul 2026 16:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27D32135AD
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.0
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785516023; cv=none; b=Jfilf3EWfKcY70e3HEf4KipF0+KvacznCaeJv9V5uqAJkdu3dUO0B42baZS308NNlo8eAKyVCJ55SyjB/kq4egEuQ2lZh3n80HepmjVg2BrnT7w2ARVxky9ykoA4VisV8qGAxf2ep4oNIHUcIk3heNd284n9auD+8wN7cQ+LWvQ=
+	t=1785516070; cv=none; b=k6pBa3XQzCCF+xVg1wmd62AzRnL/21wMcVeIIkPyozjbXwxTaZvyr8koUU3cDBg7zo4ZTbVp1u2Ff1Wy1EQGprMwrsxmiBiObQYdSFEZ6eHOMFPxDagRZRgik96c/EIM4H/KHin0eDNlQWev99eD2VrR2O+y3BpP5o5WQuYn9kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785516023; c=relaxed/simple;
-	bh=8ZGf5vRUnUqC870F0s4WnUUOcFp6C6GYdjG7cRrTPnU=;
+	s=arc-20240116; t=1785516070; c=relaxed/simple;
+	bh=4mRfFvi9VVma0iwirFcjYoapEWF2puTDZ6iEiOrn14k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sl9b3gJewCJnYAUPPc2h8iWnxKaFkf02zOnhZVfpryvseCwiJIw85CIoiid8VfjlyhX/aKoKBuWH2jjDF600PWEZcnEqTMTBNObMJLX+KzJOdcPKpQHruJhiV3AvYA4MEiNc5+23j/xx60b5M7cvLAEXqlydXTIykw4dkQp1D3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=HzLAGim5; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=B17rWodxyrHdmoZ5Y49lYrhmNUYwFy1sxohs+uRt5TmdP4JmHXDaDs7M0KMNUdx2VBpDw51t8B3bsfofVOyYE78EWGDpH9bLzW1qQeQr9LRda3YZXLO6ziHGvBKQX2UuBkFaVuJhRpq1fOL/j/zmp4EwttDJX0Z7ive9q1JlrGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JTSa+dwI; arc=none smtp.client-ip=74.125.228.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="HzLAGim5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ZqXUW4OA0js/1Ov1kD+K705QFih50FrYbTw/pIg22fY=; b=HzLAGim58B3GgAj2a7ojYV0bs8
-	k0Rx7AfwEhRs+yjzA73oZuR1BMGmArT7neo1WMmUDrk+kMgUm5ioBzKo7rNV3fVj0cr3+q4ljwrbX
-	/kdU1O8xrme0lKrSEl7Zv9qqZi7+gxLHKKe04xnH/j3bSLU3G8t2WfBt5g/aEHXlcCx8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wpqHD-00FGhd-Tz; Fri, 31 Jul 2026 18:40:03 +0200
-Date: Fri, 31 Jul 2026 18:40:03 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>, linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 13/13] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
-Message-ID: <251845b9-e477-4d00-b162-097b92c583a2@lunn.ch>
-References: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
- <20260724-ax88179a-v3-13-bdde4f905883@birger-koblitz.de>
- <d4f745df-715a-45c9-88a7-337b1dffd2ac@lunn.ch>
- <7d40cce5-6f82-4c40-8c94-ee674b5d0cfa@birger-koblitz.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JTSa+dwI"
+Received: by mail-pz2-f0.google.com with SMTP id 41be03b00d2f7-cb221a59829so48323a12.1
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:41:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785516068; x=1786120868; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=axVwyepzuz5vs7KCy+kgdXSLK2Fq5ai7WRMb+rYqcNE=;
+        b=JTSa+dwINgEVUWQEw/0177r7VRnjYZ2DVnDfNuJq3VK1YHUe7AiLERVdeilLyMuEPe
+         2VgeWF3lQWdXvtuPo//5MEchDmBnZvmNXefJsDQ7mlNFId1VONRsWN5n4tcMlmzG9Luv
+         D/23mKwVvwke4Bf7fXUOv44QBD8WSTP9ydzfSYqAauP9fjn0K1YugZ7W10MTx9kr+F4i
+         zen/JFfz+JVFv6u0c8/YSnoJi0Rccre4jqj2m4PmvDwalKi1zEjGFKMEbKEnB/fKOB5k
+         4k0y7RhByaKeykjKIMASetGsPM+aBoC7PeTFVxCvOXYYZZ/lo2qt9PaxI53SW6c3oIHp
+         /wNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785516068; x=1786120868;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=axVwyepzuz5vs7KCy+kgdXSLK2Fq5ai7WRMb+rYqcNE=;
+        b=djwlRep83Mv+J98rLAgPrY8spePKeOhZ/wEyCNUFIceGTOUCwcWqykUnQAZhN5ecxv
+         ydUzvjMRt6n3yInpYNp5Sjo22sAWU3DVGHQjcTj7AACFuAM7WvsoT531/wj4jCBOFRlk
+         pDfVsC+2+uy+QWXcxZNmrNvTyZ33kLTe2lt/Y2OAj0wvYghVpCndmexHMH0whUqhhF0r
+         Z9dU7QvTBqm8Sna204PVE9aHGwxUY4o69aLC6FPz1Wt289IYg/5g/TlQX9J45Uv7Rkbl
+         9O5g4orwKcvQKpX83PfY9zgmL9PbL/QV6CdnWCu1pzGlo2YSf36ZpYvUJjRzu000mwK5
+         OKiA==
+X-Forwarded-Encrypted: i=1; AHgh+RoajcTnhAivRXFIDDaBQejkm5PuAwYw6r4xgOIwiAOJ7D2LlersNV4Un3VTjKmlL+dBySjBfRA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhyMpRmj1cYXq2GgH09Iey7n42ERWqU7ms2ixwRgHnOCh+OcJ6
+	wpXiSMyJ9xks4iUI65C8XmTTXYfS2rg1zREGGAbmOYnRXCeGM94Zw80E
+X-Gm-Gg: AR+sD11XUCH4Jby1FlYTkqm1HvZoA4kD6OX8vVK4dtQIxUia0aJnNN0PrSSLybyGKVM
+	tmdIqNSmSbzpIydkx+vbOZOruuxf8hsncXHnkGwlQj1mxRj82kf6KC/iO3StkTn3XVMofbVehOU
+	rwD/jYr9v9By031k8m9yHwXoRF0X9rw/VFb8RwctiGDHrdwhj8oJnOu+aKFcCFL4SFnk/n0ELMZ
+	XSONgpV0n/D2P4806DyW2cPv+kGOGmhDYOjqrnBlDOOjJPD4zVDMobQZ9291FzYfqqppN4g8VSM
+	NmmKiWypf5s0MuoZase63Z0Q2HiD+vazBxtLy3qJ/AGjOn9J/AgPd6ktr9tM0MOmXvm4bpu+OzQ
+	wp53oRoYBKqkR6TqZDT36JN/uC1QRrkZkMELuq849KFMr6tFyxC1P1doR2+WTvGToxRf8X2bfTT
+	JhwSBrPnQWVjH3L0feiH/tOskUwlExiBKJU1K1GE5W6QGdsFdr5M+FH2h5JGaUnZ/e
+X-Received: by 2002:a05:6a00:a254:b0:847:9d6c:a56d with SMTP id d2e1a72fcca58-84ee4844d1dmr300123b3a.12.1785516067920;
+        Fri, 31 Jul 2026 09:41:07 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4d::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edbe7a243sm687490b3a.24.2026.07.31.09.41.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 09:41:07 -0700 (PDT)
+Date: Fri, 31 Jul 2026 09:39:19 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Nilay Shroff <nilay@linux.ibm.com>
+Cc: kbusch@kernel.org, hch@lst.de, hare@suse.de, sagi@grimberg.me, 
+	chaitanyak@nvidia.com, gjoyce@linux.ibm.com, kuba@kernel.org, davem@davemloft.net, 
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
+	linux-nvme@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [RESEND PATCH v2 0/4] nvme-tcp: NIC topology aware I/O queue
+ scaling and queue info export
+Message-ID: <amzPgFs4whuvrnUW@devvm7509.cco0.facebook.com>
+References: <20260731073918.614014-1-nilay@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <7d40cce5-6f82-4c40-8c94-ee674b5d0cfa@birger-koblitz.de>
+In-Reply-To: <20260731073918.614014-1-nilay@linux.ibm.com>
 
-On Fri, Jul 31, 2026 at 06:14:50PM +0200, Birger Koblitz wrote:
-> On 24/07/2026 19:18, Andrew Lunn wrote:
-> > > +static int asix_ax88279_read_status(struct phy_device *phydev)
-> > > +{
-> > 
-> > > +	val = phy_read(phydev, MII_ADVERTISE);
-> > > +	if (val < 0)
-> > > +		return val;
-> > > +
-> > > +	linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
-> > > +			 phydev->advertising, val & AX_ADVERTISE_2500);
-> > 
-> > This looks wrong. A PHY driver should configure the hardware to
-> > advertise what is in phydev->advertising. The PHY driver itself should
-> > never change this value, especially in _read_status(). It is up to
-> > user space to decide on what is advertised, and the phylib core will
-> > sanitise the value to ensure it is within the PHYs capabilities.
-> > 
-> This looks wrong, because the PHY uses the wrong bit for configuring
-> advertising 2500_FD. Since phylink does not know about this behaviour
-> the PHY driver needs to decipher this additional bit and then set it
-> in advertising based on the value in the PHY register. But maybe
-> I miss something?
+On 07/31, Nilay Shroff wrote:
+> Hi,
+> 
+> This is a resend of the previous series to include the networking maintainers
+> and mailing list. There are no code or commit message changes since the
+> previous posting.
+> 
+> This series has been updated based on the feedback received during LSFMM.
+> The changelog is updated accordingly.
+> 
+> The NVMe/TCP host driver currently provisions I/O queues primarily based
+> on CPU availability rather than the capabilities and topology of the
+> underlying network interface.
+> 
+> On modern systems with many CPUs but fewer NIC hardware queues, this can
+> lead to multiple NVMe/TCP I/O workers contending for the same TX/RX queue,
+> resulting in increased lock contention, cacheline bouncing, and degraded
+> throughput.
+> 
+> This RFC proposes a set of changes to better align NVMe/TCP I/O queues
+> with NIC queue resources, and to expose queue/flow information to enable
+> more effective system-level tuning.
+> 
+> Key ideas
+> ---------
+> 
+> 1. Scale NVMe/TCP I/O queues based on NIC queue count
+>    Instead of relying solely on CPU count, limit the number of I/O workers
+>    to:
+>        min(num_online_cpus, netdev->real_num_{tx,rx}_queues)
+> 
+> 2. Improve CPU locality
+>    Align NVMe/TCP I/O workers with CPUs associated with NIC IRQ affinity
+>    to reduce cross-CPU traffic and improve cache locality.
+> 
+> 3. Expose queue and flow information via debugfs
+>    Export per-I/O queue information including:
+>        - queue id (qid)
+>        - CPU affinity
+>        - TCP flow (src/dst IP and ports)
 
-We have two bitmaps.
+[..]
 
-phydev->supported lists all the modes the device supports. Generally,
-that is filled out during probe, when genphy_read_abilities() or
-genphy_c45_pma_read_abilities() is called, which looks at register
-values which indicate what the PHY actually supports. If those
-registers are wrong, because it breaks the standard, you can provide a
-.get_features() callback in the PHY driver. That typically calls
-genphy_read_abilities() and/or genphy_c45_pma_read_abilities(), and
-them fixes up what they have discovered to fit what the device really
-does.
+>    This enables userspace tools to configure:
+>        - IRQ affinity
+>        - RPS/XPS
+>        - ntuple steering
+>        - or any other scaling as deemed feasible
 
-phylink will also mask phydev->supported with what the MAC actually
-supports. So the PHY might indicate it supported 1G Half, but the MAC
-does not, and so it will be removed.
-
-phydev->supported is then copied into phydev->advertised. The user can
-modify phydev->advertised, but phydev->supported is fixed.
-
-When the link is configured up, the .config_aneg() driver method is
-called. It needs to push the bits in phydev->advertised into the
-hardware, so it actually advertises those link modes.
-
-If the hardware is broken and puts the bits in the wrong place, you
-cannot use the helper. So the drive needs to do the interpretation and
-write the correct bits in the registers. Depending on how it is
-broken, you might be able to call genphy_config_aneg() to do
-10/100/1G, and then do 2.5G manually in the driver.
-
-The PHY driver should consider phydev->advertised read only.
-
-	Andrew
+Can you expand on this a bit? What specifically helped the most for your
+tuned case?
