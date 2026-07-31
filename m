@@ -1,95 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.kmu-office.ch (mail.kmu-office.ch [178.209.48.109])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EA83CB565;
-	Fri, 31 Jul 2026 10:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2042F489869
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 10:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.209.48.109
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785492403; cv=none; b=LwoD3wJpHVuA/hjg8V0IRN/7WU+aasc/drQCWoGSlqv58A4LCeSr99TIzBFdLcgiJn/vlijRT1/rFu8OWXarmjgAhrpFqs0QmmbNRqLI1Dfe5sJYnTZbC5GK8aLxEc2Aox8XKiW5TUBPfijWffyGjAJCWLm3UqBTSslE/r63whM=
+	t=1785492727; cv=none; b=JrCtMIemwcDM1ctAV4RfJiGiK2bk6uYqZkL7jLLJ+3LowSD4hLanCJpT+wNnmV2UfE2RHal3j7g8lf8yiYJfIVEM7sJeFW+f51TE19VNbzy1Z3OYW39R/qswowGRDFB4czAA4fyHLSktfm20dxWwDDUuJ/4JQh3uUY06U3bJAN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785492403; c=relaxed/simple;
-	bh=wx4kngmNrTo/NSw75ebXXyzUURVJejqXFLaIDkBKXqo=;
-	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=i7zjbN4PrEI5gb2/uPU9DmfbkxUp6bdi987SemI67TiuoFBRwIS1oH8+lXbrbaro9CuqqHuvojoENBhsJcQnO+veDKESPOEVzt3nZXAvs+mcHFKj8xjuvMhSo/iYJUYdOFXkUhpveOYJcjitNgSqzttQam7khj8+6mVTMnGW9tM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rou5vz6Q; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785492727; c=relaxed/simple;
+	bh=MDlWcEN8ePAWl0ImVmpKftA/rOFRQ2OFc/O3nioXEng=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=PQHwdS1yhl7/7gI4hTAY4q0ic0YTze6Grbl3c32aAg2moUMsUufhag9WLdFNCqvEKradphS2xNAMJMbOYRIzQPGPdCuN9zfp92ZbenABx4yGvqInwAAISeM9CJ9kfmsdWdknywdh16/kVUjHuBU1TtLXJd3QcLnz4Hqtwoan1Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=agner.ch; spf=pass smtp.mailfrom=agner.ch; dkim=pass (1024-bit key) header.d=agner.ch header.i=@agner.ch header.b=BIYYK5bN; arc=none smtp.client-ip=178.209.48.109
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=agner.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=agner.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rou5vz6Q"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id A05E41F00A3A;
-	Fri, 31 Jul 2026 10:06:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785492381;
-	bh=1PAjhfiJGNKE7o1Y+80U2ZTuRF/fFH0ZTMJo/XOsbh8=;
-	h=From:To:Cc:Subject:Date;
-	b=Rou5vz6QmgO1xtAD5B/GAXzPW0AYW7cXXf8RLp7YJhnwmBkEBE1AA/SopkBs2gCEL
-	 PPQ2NXzRhrN9VfLOqQONHzQ/+9YDKUlkC69+FZbw4VSekfQFlk5+66meWCR3qeP9i0
-	 9OYzLSfiTtn9UTf9DmD0ozYPJe5xmqlKJsy5ygdDZMYt82ElsGzIf4+pjBci6FOZ0I
-	 m5jXSbn5bLeQYcaS5sWIQyJZPKwwPQ6t+NqRE92FzmWOctC/8TQOqw12s8D9EdYPig
-	 /NEzggSmpW6d+HHZXw9BSHXTZC5qOec8yNRlU8uXN2Or5VpYPfxHPjAGfwzu77hTJ0
-	 Yvsn6NFUcRR+Q==
-From: "syzbot" <syzbot@kernel.org>
-To: syzkaller-bugs@googlegroups.com, Aleksandr Nogikh <nogikh@google.com>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Herbert Xu" <herbert@gondor.apana.org.au>, "Jakub Kicinski" <kuba@kernel.org>, <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Steffen Klassert" <steffen.klassert@secunet.com>, "Antony Antony" <antony.antony@secunet.com>
-Cc: horms@kernel.org, linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
-Subject: [PATCH] xfrm: add missing RCU read lock in xfrm_send_migrate_state()
-Message-ID: <2f866679-25c2-4b17-9fa6-086d4c3b593f@mail.kernel.org>
+	dkim=pass (1024-bit key) header.d=agner.ch header.i=@agner.ch header.b="BIYYK5bN"
+Received: from webmail.kmu-office.ch (unknown [IPv6:2a02:418:6a02::a3])
+	by mail.kmu-office.ch (Postfix) with ESMTPSA id 0CE995C3173;
+	Fri, 31 Jul 2026 12:03:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agner.ch; s=dkim;
+	t=1785492188;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Egrzgru4rqzIVjakh/U1vCIEpyofNys52v5eb3pOQpY=;
+	b=BIYYK5bNBZm5aNWO5x+yb4BytXI/n4VIxD+AGZVlP9wNtJS9MzJyXeNwLbV8GF6QISw6QE
+	hI04U3GxvBAKNSojaby9x0FO0PiOISdYYw+AeiANQB5SEGjygnHwSprS4lWlNO/NbV2z54
+	8VQf7fkPY4/pKyAN/M2vSx8ldueLnIw=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Date: Fri, 31 Jul 2026 10:06:20 +0000 (UTC)
+Date: Fri, 31 Jul 2026 12:03:07 +0200
+From: Stefan Agner <stefan@agner.ch>
+To: Paolo Abeni <pabeni@redhat.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "Russell King (Oracle)"
+ <rmk+kernel@armlinux.org.uk>, Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, regressions@lists.linux.dev
+Subject: Re: [PATCH net v2] net: stmmac: resume PHY before hardware setup when
+ opening the interface
+In-Reply-To: <2946c0f7-1c79-4890-a4b3-94141f42bc1a@redhat.com>
+References: <message-id-of-your-v1-mail>
+ <20260707195425.405989-1-stefan@agner.ch>
+ <c8cbf359-e224-44c6-8692-9e1d1527ae0c@bootlin.com>
+ <2946c0f7-1c79-4890-a4b3-94141f42bc1a@redhat.com>
+Message-ID: <2f7fc28f777ce870e30e400640418c71@agner.ch>
+X-Sender: stefan@agner.ch
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Aleksandr Nogikh <nogikh@google.com>
+Hi Paolo, hi Maxime,
 
-xfrm_nlmsg_multicast() requires the RCU read lock to be held because it
-safely dereferences the net->xfrm.nlsk pointer using rcu_dereference().
-When it is called from xfrm_send_migrate_state(), the RCU read lock is not
-held, which triggers a suspicious RCU usage warning:
+On 2026-07-21 10:12, Paolo Abeni wrote:
+> Hi,
+> 
+> On 7/8/26 11:16 AM, Maxime Chevallier wrote:
+>> On 7/7/26 21:54, Stefan Agner wrote:
+>>> Since the referenced commit, changing the MTU on a running interface no
+>>> longer disconnects and reconnects the PHY; __stmmac_release() merely
+>>> stops phylink, which also suspends the PHY (BMCR power-down) when WoL
+>>> is not enabled. __stmmac_open() then performs the DMA software reset in
+>>> stmmac_hw_setup() before phylink_start() resumes the PHY again.
+>>>
+>>> IEEE 802.3 22.2.4.1.5 allows a PHY to stop its receive clock while
+>>> powered down, and stmmac requires a running receive clock for the DMA
+>>> software reset to complete (the phylink config sets mac_requires_rxc).
+>>> On such setups, e.g. the RK3566-based Home Assistant Green with an
+>>> RTL8211F-VD PHY in RGMII mode, any runtime MTU change now times out and
+>>> leaves the interface dead:
+>>>
+>>>   rk_gmac-dwmac fe010000.ethernet end0: Failed to reset the dma
+>>>   rk_gmac-dwmac fe010000.ethernet end0: stmmac_hw_setup: DMA engine initialization failed
+>>>   rk_gmac-dwmac fe010000.ethernet end0: __stmmac_open: Hw setup failed
+>>>   rk_gmac-dwmac fe010000.ethernet end0: failed reopening the interface after MTU change
+>>>
+>>> In the field this is triggered by NetworkManager applying an MTU while
+>>> activating the connection, breaking networking entirely.
+>>>
+>>> Resume the PHY in __stmmac_open() before the hardware setup, making it
+>>> the counterpart of the phylink_stop() in __stmmac_release(), like
+>>> stmmac_resume() already does for the same reason. phylink_start() also
+>>> resumes the PHY, but only after stmmac_hw_setup(), and it cannot be
+>>> moved before the hardware setup since it may bring the link up
+>>> immediately from a workqueue, racing with the initialization (see the
+>>> comment in stmmac_resume()). For the regular ndo_open path the PHY has
+>>> just been attached and is not suspended, in which case
+>>> phylink_prepare_resume() does nothing.
+>>>
+>>> Fixes: db299a0c09e9 ("net: stmmac: move PHY handling out of __stmmac_open()/release()")
+>>> Link: https://github.com/home-assistant/operating-system/issues/4858
+>>> Signed-off-by: Stefan Agner <stefan@agner.ch>
+>> 
+>> I was able to reproduce the issue on imx8mp and socfpga. Adding this case to
+>> my periodic test list...
+>> 
+>> Indeed the assymetry isn't very nice, OTOH there's not phylink counterpart
+>> for phylink_prepare_resume(). This helper was added for the suspend/resume
+>> case, and only for it as the doc states, it just happens to do exactly
+>> what we need to fix the issue :
+>> 
+>> /**
+>>  * phylink_prepare_resume() - prepare to resume a network device
+>>  * @pl: a pointer to a &struct phylink returned from phylink_create()
+>>  *
+>>  * Optional, but if called must be called prior to phylink_resume().
+>>  *
+>>  * Prepare to resume a network device, preparing the PHY as necessary.
+>>  */
+>> void phylink_prepare_resume(struct phylink *pl)
+>> 
+>> I think this helper should be renamed and the doc updated, stmmac is the
+>> sole user, and it's really about controlling that rxc and not about
+>> suspend / resume. Resuming from suspend is just one of the cases where we
+>> need that RXC early on.
+>> 
+>> So either something like 'phylink_prepare_start_or_resume' but it's long,
+>> or maybe we can be more explicit about it and simply call it:
+>> 
+>> phylink_start_rxc(pl)
+>> 
+>> (without a corresponding stop)
+> I read the above as a possible follow-up more than actual changes
+> requested to this patch, am I correct?
 
-WARNING: suspicious RCU usage
-net/xfrm/xfrm_user.c:1630 suspicious rcu_dereference_check() usage!
+Since this fixes a bug, I'd prefer to keep the patch minimal to make it
+easier to backport. Therefor I would prefer to do make such structural
+changes as a follow-up change rather than part of this patch.
 
-Call Trace:
- lockdep_rcu_suspicious+0x13f/0x1d0 kernel/locking/lockdep.c:6876
- xfrm_nlmsg_multicast+0x1d8/0x1f0 net/xfrm/xfrm_user.c:1630
- xfrm_send_migrate_state+0x870/0xae0 net/xfrm/xfrm_user.c:3340
- xfrm_do_migrate_state+0x1749/0x1e90 net/xfrm/xfrm_user.c:3507
- xfrm_user_rcv_msg+0x7a8/0xf30 net/xfrm/xfrm_user.c:3907
+Does that work for you, Maxime?
 
-Fix this by wrapping the xfrm_nlmsg_multicast() call in
-xfrm_send_migrate_state() with rcu_read_lock() and rcu_read_unlock().
-
-Fixes: a9d155ea9b44 ("xfrm: add XFRM_MSG_MIGRATE_STATE for single SA migration")
-Assisted-by: Gemini:gemini-3.5-flash Gemini:gemini-3.1-pro-preview syzbot
-Reported-by: syzbot+c0e99a1aa85a286d7a3b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c0e99a1aa85a286d7a3b
-Link: https://syzkaller.appspot.com/ai_job?id=8977f559-3a7e-4bb5-b4d6-1196956260b6
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-
----
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index d6db63304..0ba0614d6 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3337,7 +3337,11 @@ static int xfrm_send_migrate_state(struct net *net,
- 		return err;
- 	}
- 
--	return xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_MIGRATE);
-+	rcu_read_lock();
-+	err = xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_MIGRATE);
-+	rcu_read_unlock();
-+
-+	return err;
- }
- 
- static int xfrm_do_migrate_state(struct sk_buff *skb, struct nlmsghdr *nlh,
-
-
-base-commit: f5098b6bae761e346ebcd9da7f95622c04733cff
--- 
-See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
-You can comment on the patch as usual, syzbot will try to address
-the comments and send a new version of the patch if necessary.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+--
+Stefan
