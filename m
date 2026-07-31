@@ -1,360 +1,150 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8153101C0
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 06:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A2B3101C0
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 06:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785481088; cv=none; b=bQwSFUskRtgb6JjtrYxJG/Cn5Okn9HsmuTWd1xAQR/NlQevffOh0xwP8HQ72YHzuUhdSdaKw1QBCeq1XesdwjD1k1ujGjxUGW7T5j0b7V4x5JZeG8RgPvOJRvqrdg3zwexZ5adPOB2+eal3Ce/6nEq2RUFE35VHYZl1ee6kOP+4=
+	t=1785481104; cv=none; b=aS+3djSFLRltyGaPzRORGFvlfWMGpoFz3WtrLFoqV7CmsvijiH+H6U7tgHmgryYGklb+aCCKGZDX/67wVbRRo2jYpzAR7ANXaPl/bT8fsZ9/Y3ApuYdNBR38aWAmEqbPuBEtRwdG6ZLc99oQy6CSV91DJTVJGqlEztAKER/hE5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785481088; c=relaxed/simple;
-	bh=dzK1wq0l9GvGMZT/rX31L4aEMPndVSEYFJIpI45CqTM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j+rP0Q7vNxmONdbVkRt04ZvfjIk+S74CoVo5ro1EUwgVW8/hCqljgeIF08AbPl4wj2aYM0Xvo5/PUYJOsY2cDEktX4MRjYxj2CsagUTGLInwxxfFO2SW00dlKjc/M3ye52GFzGsUCNEEnIVXhuVOBjf8GjtuBdqBHWCFO7x184k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SYhs8LKJ; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SYhs8LKJ"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0A1581A1342;
-	Fri, 31 Jul 2026 06:58:02 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D08AB6039A;
-	Fri, 31 Jul 2026 06:58:01 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 949DB11C16461;
-	Fri, 31 Jul 2026 08:57:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785481077; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=gUJ8XlSStb8zUOIsWjNUBfCduY6+D61GY9wEhxLgOgI=;
-	b=SYhs8LKJunNDyE3jC1GEkneeQSAtDYeJu8qewt5C/Fd50AaguyzmlwpKotLZHIth4P2mcZ
-	XeDnBj+Q7x0Xfn46rMFCdO6B5t2RKM7Waljv+Ujm6qKOKQ5UlEEBmnDJy1vpAc8Y/FUSsf
-	uSdZLSS2a9865HIjk1fxNLRKNvD8DV40b3WKWAW5qXkFPTBrvt1VqgdLlbVGyd9WhyEFl8
-	8BxReJT1sFPwDLNUeuSVLIEwI6SIL2bd5sX186nzvNiRN5EZkaDegrs/i6AUFFJzEGLG5x
-	NXzl6ExMMLb6x5JYstn5yMFu9OE+/lJFGkuAcNiuaUJteBwaIjQiY+0bybMgtg==
-Message-ID: <95872f9e-4261-4cb0-b9f0-a82e3bf64fbc@bootlin.com>
-Date: Fri, 31 Jul 2026 08:57:50 +0200
+	s=arc-20240116; t=1785481104; c=relaxed/simple;
+	bh=U/aUJssbFDVShhs3jI/L1wEPdHplGQXWwAdRRKJarH0=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=GK5HBNIepZ6qFHXg6qKOBPVPhGWOoxCSNl6PJaZIjoTrANoYDDwMAD4E2NamzuR/RvXsdbOH9Xg8dLdonhnNyIqQL9Vxus5pTWWXFZyfLzm0jM/3EJ8I6FteAHtaqr+pkdUbn588vR+2owJ5sJWo6hsMV2pXIlW0shn9oEgytOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-49f3a97f1caso435775b6e.0
+        for <netdev@vger.kernel.org>; Thu, 30 Jul 2026 23:58:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785481102; x=1786085902;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lHauDrZbyLbJNwi2kBXhjYQh1jMBcJwNHp/E6dnN5vo=;
+        b=DYLJfn5u9XQIa1k+vT01a3hb/QGKxKI0o+WKkLciSdCTYplf+XZ9FduxxwwSG6mYq+
+         8RN/BkKAUtO2dV04cCw9Jmbkf0rqkWKYi3d3RjhiX+cZPcq0pkCQCX6GcsNbJ57ZUo4s
+         ZRpmK7FBpiqpJTeP+UuJtmyDy0oyARcBkhCMLHJWhHfnUZltZ7MQhrgI2saAMxyTu/vB
+         Jxl1osJaoRwx2KG/LXnqmO0kuH7uDrpPS68eDqjMXv6Sh0xipXWmCbxWs0O0Anf7JUIQ
+         Aq0ZqeL6oJiJMAS3bJjvxLZmqSJW84AQ8/wKqUstZ48M0HM1MbXSgGccGPhwhZ62+tCv
+         6t5w==
+X-Forwarded-Encrypted: i=1; AHgh+RoLjhqEvtmq7B91x/xidoUSL2t4PDqyXe58YyYD7k1DZBrT/Z/5lzcoWoiev1hXrBf8qxH26IY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGNbAwOMCHJPeVYIrGPt1v15svqOY4ebpqJYQKW//2kHQyDzSO
+	JhoN8slsL9hI/U/WF8hbmEiXq6HiG7IQUtn0w08mfjYYCgH0ISXCechg83UdkZazXrhdMxrdpi5
+	vbOz0eEpG8zF0pysS5NF8my+e0+dIYp4iSEUZjZy3mgdAOz7uhb9G2o+HNFo=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 01/10] net: dsa: microchip: implement
- ksz8463_setup()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, richardcochran@gmail.com, linux@armlinux.org.uk,
- horms@kernel.org, maxime.chevallier@bootlin.com, pascal.eberhard@se.com,
- miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260727-ksz-new-ptp-v3-1-caba39e680e3@bootlin.com>
- <20260731022340.800270-1-kuba@kernel.org>
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260731022340.800270-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-Received: by 2002:a05:6808:1994:b0:4a4:af7f:83d3 with SMTP id
+ 5614622812f47-4ae5ab9ef78mr727757b6e.20.1785481101937; Thu, 30 Jul 2026
+ 23:58:21 -0700 (PDT)
+Date: Thu, 30 Jul 2026 23:58:21 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a6c478d.b5e7dbf9.21bf3.0007.GAE@google.com>
+Subject: [syzbot] [net?] WARNING: suspicious RCU usage in xfrm_nlmsg_multicast
+From: syzbot <syzbot+c0e99a1aa85a286d7a3b@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, herbert@gondor.apana.org.au, 
+	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, steffen.klassert@secunet.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Hello,
 
-On 7/31/26 4:23 AM, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> --- Patch [1]: [PATCH net-next v3 01/10] net: dsa: microchip: implement ksz8463_setup() ---
-> commit 095ca74374f60de415fb4e79da7940e5e376827a
-> Author: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
-> 
-> net: dsa: microchip: implement ksz8463_setup()
-> 
-> This splits the KSZ8463 out of ksz8_setup()/ksz8_reset_switch() into a
-> dedicated ksz8463_setup() and ksz8463_reset_switch(), dropping drive
-> strength configuration, the KSZ87xx global errata workaround and the IRQ
-> initialization for that chip.  It also removes .teardown from
-> ksz8463_switch_ops.
-> 
-> A few questions below.
-> 
->> diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
->> index c4c769028a20c..5ed63f4250136 100644
->> --- a/drivers/net/dsa/microchip/ksz8.c
->> +++ b/drivers/net/dsa/microchip/ksz8.c
->> @@ -181,6 +181,14 @@ static int ksz8_pme_pwrite8(struct ksz_device *dev, int port, int offset, u8 dat
->>   	return ksz8_ind_write8(dev, table, (u8)(offset), data);
->>   }
->>   
->> +static int ksz8463_reset_switch(struct ksz_device *dev)
->> +{
->> +	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET, true);
->> +	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET,
->> +		false);
->> +	return 0;
->> +}
->> +
-> 
-> [Severity: Low]
-> Can ksz8463_reset_switch() ever return anything but 0?  ksz_cfg() throws the
-> register write status away:
-> 
-> drivers/net/dsa/microchip/ksz8.c:ksz_cfg() {
-> 	ksz_rmw8(dev, addr, bits, set ? bits : 0);
-> }
-> 
-> So the error handling added in ksz8463_setup() is dead code:
-> 
-> 	ret = ksz8463_reset_switch(dev);
-> 	if (ret) {
-> 		dev_err(ds->dev, "failed to reset switch\n");
-> 		return ret;
-> 	}
-> 
-> If the SPI/regmap access to KSZ8463_REG_SW_RESET fails, ksz8463_setup()
-> continues on to the storm/aging/VLAN-boundary programming and finally sets
-> SW_START on a switch that was never reset, without any message.
-> 
-> Since this helper is new, would it make sense to either declare it void, or
-> use ksz_rmw8() directly and propagate the error the way the REG_SW_CTRL_1
-> and REG_SW_CTRL_2 writes in ksz8463_setup() already do?
-> 
-> The same always-return-0 shape exists in ksz8_reset_switch(), so this is not
-> a new behaviour, only newly duplicated.
-> 
+syzbot found the following issue on:
 
-As it says, the behaviour is the same in ksz8_reset_switch(), I only 
-extracted the functions from it to have a better split between KSZ8463 
-and others KSZ8.
-IMO, the real issue here is that the ksz_cfg() helper ignores the 
-ksz_rmw8() return value.
+HEAD commit:    4235cb24ec1e Merge tag 'vfs-7.2-rc5.fixes' of git://git.ke..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=126091b9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=cb17729fb04b1e3a
+dashboard link: https://syzkaller.appspot.com/bug?extid=c0e99a1aa85a286d7a3b
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16f16499580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14d5e6b9580000
 
->>   static int ksz8_reset_switch(struct ksz_device *dev)
->>   {
->>   	if (ksz_is_ksz88x3(dev)) {
-> 
-> [ ... ]
-> 
->> @@ -2300,6 +2303,110 @@ static void ksz88xx_r_mib_stats64(struct ksz_device *dev, int port)
->>   	spin_unlock(&mib->stats64_lock);
->>   }
->>   
->> +static int ksz8463_setup(struct dsa_switch *ds)
->> +{
-> 
-> [Severity: Low]
-> This isn't a bug, but ksz8463_setup() is a near-verbatim copy of
-> ksz8_setup(): the vlan_cache allocation, broadcast storm programming,
-> ksz8_config_cpu_port(), ksz8_enable_stp_addr(), ds->num_tx_queues, the
-> multicast storm disable, ksz_init_mib_timer(), all the ds->* flag
-> assignments, the S_LINK_AGING_CTRL / REG_SW_CTRL_1 / REG_SW_CTRL_2 /
-> S_REPLACE_VID_CTRL / S_MIRROR_CTRL writes, the ksz8_r_vlan_entries() loop,
-> the CPU port learning setting, ksz_mdio_register(), ksz_dcb_init() and the
-> final SW_START write are identical.  Only four things differ.
-> 
-> The rest of this family uses one setup function with small chip predicates
-> (ksz_is_ksz88x3()/ksz_is_ksz8463()).  Could the shared body be factored into
-> a common helper instead, so a later fix or a new DSA flag does not have to be
-> applied in two places?
-> 
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/34e9a122d3c0/disk-4235cb24.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/f5c47e8d86e0/vmlinux-4235cb24.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/b287db60160f/bzImage-4235cb24.xz
 
-The goal of this patch is to introduce a dedicated ksz8463_setup() 
-function so that its specific IRQ configuration (and, in an upcoming 
-series, its specific periodic output configuration) can be handled 
-without adding ksz8463-specific branches to the common ksz8_setup() 
-function.
-Indeed it comes with some code duplication. I considered adding some 
-'sub-setup()' helpers shared between the ksz8xxx_setup() to avoid the 
-copies. However, the differences are spread accross the setups(). At the 
-beginning, the reset() and the storm configuration differ; in the 
-middle, the ksz87xx()/ksz_is_ksz88x3() belong only to ksz8_setup(); at 
-the end, the IRQ setup (added in PATCH 4) is completely different. So I 
-came to the conclusion that the ksz8463_setup() could live a bit of code 
-duplication.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c0e99a1aa85a286d7a3b@syzkaller.appspotmail.com
 
->> +	struct ksz_device *dev = ds->priv;
->> +	u16 storm_mask, storm_rate;
->> +	struct ksz_port *p;
->> +	const u16 *regs;
->> +	int i, ret;
->> +
->> +	regs = dev->info->regs;
->> +
->> +	dev->vlan_cache = devm_kcalloc(dev->dev, sizeof(struct vlan_table),
->> +				       dev->info->num_vlans, GFP_KERNEL);
-> 
-> [Severity: Low]
-> The count and size arguments look exchanged here.  The prototype is
-> devm_kcalloc(dev, n, size, gfp), so this reads as
-> sizeof(struct vlan_table) elements of dev->info->num_vlans bytes.  The
-> resulting byte count is the same, so nothing misbehaves, but would
-> devm_kcalloc(dev->dev, dev->info->num_vlans, sizeof(struct vlan_table),
-> GFP_KERNEL) be the intended order?
-> 
-> The same swap is present in ksz8_setup(), and this patch copies it into the
-> new function, which seems like a good moment to correct it.
->
+=============================
+WARNING: suspicious RCU usage
+syzkaller #0 Not tainted
+-----------------------------
+net/xfrm/xfrm_user.c:1630 suspicious rcu_dereference_check() usage!
 
-Yes once again, I only copied what was needed from ksz8_setup() so this 
-kind of tiny mistakes are copied.
->> +	if (!dev->vlan_cache)
->> +		return -ENOMEM;
->> +
->> +	ret = ksz8463_reset_switch(dev);
->> +	if (ret) {
->> +		dev_err(ds->dev, "failed to reset switch\n");
->> +		return ret;
->> +	}
->> +
-> 
-> [ ... ]
-> 
->> +	/* Start with learning disabled on standalone user ports, and enabled
->> +	 * on the CPU port. In lack of other finer mechanisms, learning on the
->> +	 * CPU port will avoid flooding bridge local addresses on the network
->> +	 * in some cases.
->> +	 */
->> +	p = &dev->ports[dev->cpu_port];
->> +	p->learning = true;
->> +
->> +	ret = ksz_mdio_register(dev);
-> 
-> [Severity: Medium]
-> ksz8463_setup() deliberately creates no interrupt domains (no
-> ksz_girq_setup()/ksz_pirq_setup()), but ksz_mdio_register() still runs the
-> PHY interrupt setup whenever dev->irq is set:
-> 
-> drivers/net/dsa/microchip/ksz_common.c:ksz_mdio_register() {
-> 	...
-> 	if (dev->irq > 0) {
-> 		ret = ksz_irq_phy_setup(dev);
-> 		if (ret)
-> 			goto put_mdio_node;
-> 	}
-> 	...
-> }
-> 
-> and ksz_irq_phy_setup() resolves the PHY interrupt through the per-port
-> domain that ksz_pirq_setup() used to create:
-> 
-> 			irq = irq_find_mapping(dev->ports[port].pirq.domain,
-> 					       PORT_SRC_PHY_INT);
-> 			if (!irq) {
-> 				ret = -EINVAL;
-> 
-> For KSZ8463 dev->ports[port].pirq.domain is now always NULL, and a NULL
-> domain is not rejected:
-> 
-> kernel/irq/irqdomain.c:__irq_resolve_mapping() {
-> 	/* Look for default domain if necessary */
-> 	if (domain == NULL)
-> 		domain = irq_default_domain;
-> 
-> On platforms that install an irq_default_domain, can this hand a virq owned
-> by an unrelated interrupt controller (hwirq 1 of the default domain) to
-> phylib via ds->user_mii_bus->irq[phy]?
-> 
-> And if devm_of_mdiobus_register() then fails, does ksz_irq_phy_free() call
-> irq_dispose_mapping() on that foreign virq, tearing down a mapping this
-> driver never created?
-> 
-> This needs a KSZ8463 node with both an 'interrupts' property (dev->irq =
-> spi->irq) and an 'mdio' child node with PHY sub-nodes.  On platforms without
-> a default domain the lookup returns 0 and probe fails with -EINVAL instead;
-> that outcome matches the pre-patch behaviour, since the KSZ8463 chip entry
-> sets no .port_nirqs and no per-port mappings were ever created.
-> 
-> Would gating ksz_irq_phy_setup() on the per-port domain actually existing be
-> preferable to relying on dev->irq alone?
-> 
-
-Proper IRQ handling for the KSZ8463 is added in PATCH 4. Current IRQ 
-framework doesn't work for the KSZ8463 anyway, so IMO this patch doesn't 
-introduce any regression.
-
->> +	if (ret < 0) {
->> +		dev_err(dev->dev, "failed to register the mdio");
->> +		return ret;
->> +	}
->> +
->> +	ret = ksz_dcb_init(dev);
->> +	if (ret)
->> +		return ret;
->> +
->> +	/* start switch */
->> +	regmap_update_bits(ksz_regmap_8(dev), regs[S_START_CTRL],
->> +			   SW_START, SW_START);
->> +
->> +	return 0;
->> +}
->> +
-> 
-> [ ... ]
-> 
->> @@ -2889,8 +2992,7 @@ const struct ksz_dev_ops ksz88xx_dev_ops = {
->>   const struct dsa_switch_ops ksz8463_switch_ops = {
->>   	.get_tag_protocol	= ksz8463_get_tag_protocol,
->>   	.connect_tag_protocol   = ksz8463_connect_tag_protocol,
->> -	.setup			= ksz8_setup,
->> -	.teardown		= ksz_teardown,
->> +	.setup			= ksz8463_setup,
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but since the commit message says
-> "PTP and interrupts aren't setup" and this hunk is rewriting exactly this ops
-> table, it seems worth raising: ksz8463_switch_ops keeps advertising the PTP
-> callbacks
-> 
-> 	.get_ts_info		= ksz_get_ts_info,
-> 	.port_hwtstamp_get	= ksz_hwtstamp_get,
-> 	.port_hwtstamp_set	= ksz_hwtstamp_set,
-> 	.port_txtstamp		= ksz_port_txtstamp,
-> 	.port_rxtstamp		= ksz_port_rxtstamp,
-> 
-> while no PTP clock is ever registered for this chip: the KSZ8463 entry in
-> ksz_switch_chips[] does not set .ptp_capable, and ksz8463_setup() calls
-> neither ksz_ptp_clock_register() nor ksz_ptp_irq_setup().  Those are the only
-> places that run mutex_init(&ptp_data->lock), spin_lock_init(&ptp_data->
-> clock_lock) and init_completion(&port->tstamp_msg_comp), so dev->ptp_data.
-> clock stays NULL and those objects stay all-zero.
-> 
-> ksz_get_ts_info() checks for this, but ksz_hwtstamp_set() does not:
-> 
-> drivers/net/dsa/microchip/ksz_ptp.c:ksz_set_hwtstamp_config() {
-> 	...
-> 	return ksz_ptp_enable_mode(dev);
-> }
-> 
-> drivers/net/dsa/microchip/ksz_ptp.c:ksz_ptp_enable_mode() {
-> 	...
-> 	if (tag_en) {
-> 		ptp_schedule_worker(ptp_data->clock, 0);
-> 	} else {
-> 		ptp_cancel_worker_sync(ptp_data->clock);
-> 	}
-> 
-> 	tagger_data->hwtstamp_set_state(dev->ds, tag_en);
-> }
-> 
-> With CONFIG_NET_DSA_MICROCHIP_KSZ_PTP=y, does a SIOCSHWTSTAMP on a KSZ8463
-> user port reach ptp_cancel_worker_sync(NULL) here, even for the
-> HWTSTAMP_TX_OFF / FILTER_NONE combination, followed by an indirect call
-> through the NULL tagger_data->hwtstamp_set_state (ksz8463_connect_tag_
-> protocol() only assigns xmit_work_fn)?
-> 
-> Similarly, does the RX path take spin_lock_bh(&ptp_data->clock_lock) in
-> ksz_tstamp_reconstruct() on a spinlock that was never initialized for this
-> chip?
-> 
-> Would it make sense to drop these callbacks from ksz8463_switch_ops, or gate
-> them on dev->info->ptp_capable, while this table is being restructured?  The
-> same stale callbacks are present in ksz87xx_switch_ops.
-> 
-As it says, this isn't introduced by this patch and it will be fixed on 
-PTP support is added on PATCH 10.
+other info that might help us debug this:
 
 
-Best regards,
-Bastien
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by syz.0.17/5947:
+ #0: ffff888029cda048 (&net->xfrm.xfrm_cfg_mutex){+.+.}-{4:4}, at: xfrm_netlink_rcv+0x6a/0x90 net/xfrm/xfrm_user.c:3928
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 5947 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ lockdep_rcu_suspicious+0x13f/0x1d0 kernel/locking/lockdep.c:6876
+ xfrm_nlmsg_multicast+0x1d8/0x1f0 net/xfrm/xfrm_user.c:1630
+ xfrm_send_migrate_state+0x870/0xae0 net/xfrm/xfrm_user.c:3340
+ xfrm_do_migrate_state+0x1749/0x1e90 net/xfrm/xfrm_user.c:3507
+ xfrm_user_rcv_msg+0x7a8/0xf30 net/xfrm/xfrm_user.c:3907
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+ xfrm_netlink_rcv+0x79/0x90 net/xfrm/xfrm_user.c:3929
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x7f5/0x990 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+ __sock_sendmsg net/socket.c:790 [inline]
+ ____sys_sendmsg+0x565/0x870 net/socket.c:2684
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
+ __sys_sendmsg net/socket.c:2770 [inline]
+ __do_sys_sendmsg net/socket.c:2775 [inline]
+ __se_sys_sendmsg net/socket.c:2773 [inline]
+ __x64_sys_sendmsg+0x1b7/0x290 net/socket.c:2773
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fb235fede99
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffc10a8b768 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007fb236275fa0 RCX: 00007fb235fede99
+RDX: 0000000000000000 RSI: 0000200000000500 RDI: 0000000000000003
+RBP: 00007fb236083eaf R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fb236275fac R14: 00007fb236275fa0 R15: 00007fb236275fa0
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
