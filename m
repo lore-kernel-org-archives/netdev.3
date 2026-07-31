@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA2F78F26;
-	Fri, 31 Jul 2026 01:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2299305679;
+	Fri, 31 Jul 2026 01:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785461437; cv=none; b=aXYDx+y+1495LdqPgHCRrK/KJ5tmEMMWtm0lhXil5O4FOgyKJNhygv4XjkWfbImdJKx8KarMRNi83EIDWI8LjCnCkslzkCsZrCigMNLCVkhgUWJifas+kg9TDpnbmbQ4ay6TUqFV9Pp4YFQZ6qo1IcnGCfObv9E9SXr24w8683g=
+	t=1785461438; cv=none; b=CKi+vQEKyR+nsncvWz3CN1ofJ4dSe3CvxXjAAKvPeIkxDYIXOqS3EMsBpifuiUWfEfm262nm9t+PLYc0lQkgxwxX4JpaR2cYvLacXitL+GGNU++wvpsRpDaDs3KL0wf2ZaUm7e0H/1uyVbxfSkefrU7oxU2RfaHNgMAXuiE+ik0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785461437; c=relaxed/simple;
-	bh=ZFqP/KfCXmtjDMwiRdgvlE7+AX2g+C7ZwlE+lyTxyIA=;
+	s=arc-20240116; t=1785461438; c=relaxed/simple;
+	bh=sGSvvSj1edFc8KNo83G1+m35hpQsaTtdWLUflg6MecU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=In22HxBif6bwTvPObNYTcxHM0KBlmd3ngiL1CtPnvQsh7T9lRyCs11P2gkRjkKY9V4JpyQ4ojodv03UFTiZBnLA6NaGpnpV2R3nRbOH7gD/ouXESoSha3sCnz4O4NTVRA1MKWag6sGeRj32WbJiewBaJA5SMUBdvYyYzGb1oFWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2jy/4lm; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=GKzh4qYEKbpBrlAM9zF2NoQcDomyAWBjGoJqcal8r3rtCLuK5mMWQMV77cWVt0uwQLvi7txtxKYrPgD5JzAdiY+8ttfNvWEh0rhaM6IgFGCyhzzrLBXIIU4QyX5yTlUbqySOqM0FZUfP4jfPD7B4n8uuKgPGswTowtAmHVQE5Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OQrXYGs7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2jy/4lm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3745C1F000E9;
-	Fri, 31 Jul 2026 01:30:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OQrXYGs7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDCF1F00A3E;
+	Fri, 31 Jul 2026 01:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785461433;
-	bh=5UHDMfLJSsEF+ILuCqHZMAytaReLNBZgFZZwHcYKGH8=;
+	s=k20260515; t=1785461436;
+	bh=o3vgH8nxPMXThhusGaMt88XABY8jEPdTMHFLqOQyTUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=a2jy/4lmTBm5isfWHryZlsV2mlUm4I1IQs/fSe1EJ+gmU+UqKJftdn8fCjIYuVBCy
-	 aUMJcTFM+mL7ry29hNs8TnoxtIEA/DJcFUIaqmGacc5lNM1eFxLoYGlaxOue/jODec
-	 v/TX3wVzhxiwi7xGBUD5gGgLoW5u7UsxBSRHw3c/TLMcnDYxZAK9UPmP67MOOyqngf
-	 ANxjkN72lpi7zcm3rYYU0zcsgKBJXlodjh57FX/LocYVv65QNYtPrgF98o87RCjYI1
-	 H4WLqwNRpRFdXKi46EKlfr5mwPP7SRg+jmeEvIY+SKrX4jW3NFAFZZrNFVV1jXQCZu
-	 aYLDwtymJ4N8A==
+	b=OQrXYGs7tCwoRacNHv2bPlqqUDZcvZQImEI1oSH3sKvPv3WRdUL5T3j9e4vzI7Ec7
+	 8M8yUPBcsWgtoy0AS4ZRhL8sZ+mNBVe1HjBoXyY86yvr6wvGCTU5CkCjffWQZIT06s
+	 0oK3KfojqgFAHjz96sM3r2b9moqbwghxaQ778q/T0g2CJD6J2FKasbWVklSDhcSg0Y
+	 yB7zDrF9ZmENEGHqm/xOeL41ohXu5+IEpqHSscAseBU0zP9Dnh9F5MPzpqqM3zx9P7
+	 BQlrZaxUJCwj6XNMYVKSxcfVR06Yfsx5KhdaPCrQTcwqTJbD6hx1hdiGqD5XRUZ9b+
+	 tXsspVqYspQCg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: illusion.wang@nebula-matrix.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -45,12 +45,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	skhan@linuxfoundation.org,
 	hkallweit1@gmail.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v22 net-next 07/12] net/nebula-matrix: add chip-wide hardware init/deinit implementation
-Date: Thu, 30 Jul 2026 18:30:32 -0700
-Message-ID: <20260731013032.745167-1-kuba@kernel.org>
+Subject: Re: [PATCH v22 net-next 10/12] net/nebula-matrix: dispatch: add mutual exclusion lock for shared hardware resource ops
+Date: Thu, 30 Jul 2026 18:30:35 -0700
+Message-ID: <20260731013035.745239-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260723040110.91410-8-illusion.wang@nebula-matrix.com>
-References: <20260723040110.91410-8-illusion.wang@nebula-matrix.com>
+In-Reply-To: <20260723040110.91410-11-illusion.wang@nebula-matrix.com>
+References: <20260723040110.91410-11-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,73 +62,83 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
---- Patch [7]: [PATCH v22 net-next 07/12] net/nebula-matrix: add chip-wide hardware init/deinit implementation ---
-commit c620485c32e37b926b2895bd18463f304a29e084
+--- Patch [10]: [PATCH v22 net-next 10/12] net/nebula-matrix: dispatch: add mutual exclusion lock for shared hardware resource ops ---
+commit 629ed395b64ead7623f563c4a19ea0794f996cf1
 Author: illusion wang <illusion.wang@nebula-matrix.com>
 
-net/nebula-matrix: add chip-wide hardware init/deinit implementation
+net/nebula-matrix: dispatch: add mutual exclusion lock for shared hardware resource ops
+    
+Add ops_mutex_lock to serialize concurrent hardware-modifying dispatch
+resource operations, preventing race conditions between PF local calls
+and remote mailbox message handlers that manipulate MSI-X mapping and
+mailbox IRQ state.
 
-This commit adds Leonis chip-wide hardware initialization and
-deinitialization logic to setup the full datapath pipeline.
+> 4. Fix cleanup ordering: unregister all channel message handlers before
+>    hardware resource teardown to avoid lockdep splats and invalid mutex
+>    access after destruction.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> index 1c136b9e30b2a..22690cb9cc32b 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+Does this cleanup ordering actually prevent the invalid mutex access?
 
-[ ... ]
+Looking at the driver teardown path in nbl_core_remove() and
+nbl_chan_remove_common(), it appears the channel workqueue is never cancelled
+via teardown_queue(). 
 
-> +static int nbl_shaping_eth_init(struct nbl_hw_mgt *hw_mgt, u8 eth_id, u8 speed)
-> +{
-> +	union nbl_shaping_dvn_dport_u dvn_dport = { 0 };
-> +	union nbl_shaping_dport_u dport = { 0 };
+If a remote PF sends mailbox messages while the local PF driver is being
+unloaded, won't the uncancelled work item still process it?
 
-[ ... ]
-
-> +	/* 2. write config words (valid=0, safe) */
-> +	dport.info.low = FIELD_PREP(DPORT_CIR_MASK, rate) |
-> +			 FIELD_PREP(DPORT_PIR_MASK, rate) |
-> +			 FIELD_PREP(DPORT_DEPTH_MASK, depth) |
-> +			 FIELD_PREP(DPORT_CBS_MASK_LOW, depth & 0x3F);
-> +	dport.info.high = FIELD_PREP(DPORT_CBS_MASK_HIGH, depth >> 6) |
-> +			  FIELD_PREP(DPORT_PBS_MASK, depth);
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+> index c82c336f50e5e..175250f952506 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
 
 [ ... ]
 
-> +	nbl_hw_wr_regs(hw_mgt, NBL_SHAPING_DPORT_REG(eth_id), dport.data,
-> +		       sizeof(dport));
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-> index 1d6d614be7d69..8e59b9d2ab3b0 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-
-[ ... ]
-
-> +union nbl_shaping_dport_u {
-> +	struct nbl_shaping_dport {
-> +		u64 low;
-> +		u64 high;
-> +	} info;
-> +	u32 data[NBL_SHAPING_DPORT_DWLEN];
-> +};
+> @@ -227,14 +228,15 @@ static void nbl_disp_chan_configure_msix_map_resp(void *priv, u16 src_id,
+>  	if (!res_ops->configure_msix_map) {
+>  		err = NBL_CHAN_RESP_UNIMPLEMENTED;
+>  	} else {
+> -		ret = NBL_OPS_CALL_RET(res_ops->configure_msix_map,
+> -				       (p, src_id,
+> -					le16_to_cpu(param.num_net_msix),
+> -					le16_to_cpu(param.num_others_msix),
+> -					le16_to_cpu(param.msix_mask_en)));
+> +		ret = NBL_OPS_CALL_LOCK_RET(disp_mgt,
+> +					    res_ops->configure_msix_map, p,
+> +					    src_id,
+> +					    le16_to_cpu(param.num_net_msix),
+> +					    le16_to_cpu(param.num_others_msix),
+> +					    le16_to_cpu(param.msix_mask_en));
 
 [Severity: High]
-Will this union alias cause corrupted hardware writes on big-endian
-architectures?
+If the inflight work item runs after handler unregistration, will it attempt
+to acquire the newly added ops_mutex_lock here via NBL_OPS_CALL_LOCK_RET?
 
-When fields are populated using native u64 in nbl_shaping_eth_init(), for
-example:
+Since this mutex is initialized via devm_mutex_init and destroyed
+automatically on device detach, could this result in a use-after-free crash
+on the destroyed lock?
 
-        dport.info.low = FIELD_PREP(DPORT_CIR_MASK, rate) | ...
+[ ... ]
 
-And then written via the u32 array alias:
+This is a pre-existing issue, but while looking at the MSI-X resource
+operations I noticed a potential problem in nbl_res_intr_configure_msix_map()
+in drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c:
 
-        nbl_hw_wr_regs(hw_mgt, NBL_SHAPING_DPORT_REG(eth_id), dport.data,
-                       sizeof(dport));
+release_net_bits:
+        while (i--) {
+                intr_index = tmp_interrupts[i];
+                ...
+        }
+        i = num_net_msix;
+release_all_bits:
+        while (i--) {
 
-On big-endian systems, the upper 32 bits of the 64-bit integer will map to
-data[0] instead of the lower 32 bits. Does this result in malformed hardware
-configuration for traffic shaping?
+[Severity: High]
+Does this error path intentionally fall through to release_all_bits?
+
+When devm_kcalloc or find_first_zero_bit fails during net interrupt
+allocation, the code jumps to release_net_bits. Without a goto free_prealloc
+before the i = num_net_msix assignment, it falls through into release_all_bits.
+
+Because tmp_interrupts is unpopulated and contains zeros, will this loop
+unconditionally clear bit 0 in interrupt_others_bitmap, corrupting the
+MSI-X allocator state?
