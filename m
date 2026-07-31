@@ -1,106 +1,90 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40A448987E
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 23:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785542271; cv=none; b=CZQmhw6MFWDZ95iYegoJg/BwScNJSU4W7gYNusEHzy5VprgfOsk68hc5lJvdWfDbySxXBm3acmPitwrLt+lOCJgSQXip57sdh3rLx5hueLrUR2e0ukhjEh4BgznT3m5OVPaPmyDFl4WIvLfwpc8uphbpvz0NOzaKVvnUL1NZUbc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785542271; c=relaxed/simple;
-	bh=2yPy2lwImdzXlnaIIADxQvlhSpPsElLYfLNDwONh+9E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oat2b3/haxTnS2TJmo7iSvkR7jCOaI1PMQkM5hWKAL0KTIYNlRUol2OLLGAAbFimjeg+7+pzcvuac7XdxlrenOZWTaOJE4YYSLf761iHOrYlNlUN0LFlX3YGFiLdhRZzNN8LPjP5SUsz/mScwXwC7Dsfy9736/69GnyccNYFir0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hjV+uYRP; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7423546E2;
+	Fri, 31 Jul 2026 23:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785542315; cv=pass; b=Pj/CyqyexIpLFLXqUHiaRqYaGc9uLIGCeoMl9tGBD5n3loDWwgO7FydowVhJA/MyfzH/I4++YNkUR9z55StueWgV2awPgswAmCUZZnhlION+UfvCTNqQVDiWk8nUpyHjCV2734097Js2jEvpOMYo34jKJHukS2TBl0dlLq8xCak=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785542315; c=relaxed/simple;
+	bh=l1vrpNqgWN83YNMcggHN1LJ1I8uOJOLaMBeiiGtetSQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=S20IiUD+eDFBdgLpepDo30a0IvQJ0aFEYIE+qjUwEH5l/DKqTKg7iJF6VLcjKf8AFMuiWaZiwAcB0NYMbb83ucohzpNxayjmgYo7TUqPDfiUwq83Va3UnzSKo3iMlN2sn6CEEYEBwgubsnwDUtpiP97KCNasdScr2u/Xpm6IOlg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iusegentoo.com; spf=pass smtp.mailfrom=iusegentoo.com; dkim=pass (1024-bit key) header.d=iusegentoo.com header.i=ali@iusegentoo.com header.b=AzMdvKwz; arc=pass smtp.client-ip=136.143.169.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iusegentoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iusegentoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hjV+uYRP"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c998fd549a8so1224077a12.2
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:57:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785542269; x=1786147069; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=I0b5Ll4iU7DLkvHNP8rAK1aY82cSAlE6Ck3PhBMpbkM=;
-        b=hjV+uYRPwcicrzwF/gqN6Z4SH/hTRFIMUy+WWSAIdWNVGE1mn4ZfBY/GU69daQfdo4
-         SBj4FLMyx/mz2zunE+VlraGej5t+YpM3cASWJJGwX50pP9MY2LBgSRDpu51aI3GC+1CS
-         TkPCautH2YQcz8nc8t7RXld8sdSjbSw3SdP/MFVAU7pxW3yhRuh28cas/E9ia33fnuEG
-         /pDipqos8+ufMaKuAbT39RQ4TFIBS9TXOdRnK3/x8BlEZ9zVV75dPWYL+F8DKNx00Jmh
-         SLZHHv3O1PhRuuU+kwETDm8JkA1o+z7HGJuzwoiRuhGWWE4MPWevUHXVqr13TMKQ3kGY
-         mFZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785542269; x=1786147069;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=I0b5Ll4iU7DLkvHNP8rAK1aY82cSAlE6Ck3PhBMpbkM=;
-        b=WAWAc2ya+kIAAEOUGoT4/H2kW3QwFj+tDTGV7pAwfyeyOSTVI61/DUbAse8e68xRup
-         Orhn93NcEXBQ6w4AERZT3pkga1tw0TzpO8x88IALjU3sxm6qFndDfbd1iccFou05yVsp
-         0hl6Ru/kDxnSgj7zNd2Mt6xYdqFRBhDAvCFxocOQWttjElbSAcerut3y6D+7LNXyB5Mk
-         mcWlshovR00WEYZ3LBrVynT/AkHun/iP78TDMtC+GHN1xFl7VOZ57itSpq5J5szlMySa
-         Pfgrdy9t/fv2a0eDVKTMFntQg60KMzmvuKoe/JYR0dNAK2IqpZzWtcuTZEFse/5JJ7Ht
-         jzzg==
-X-Forwarded-Encrypted: i=1; AHgh+RrMLPDfmdoJ7e3WxG9BFjQFhtjBvpFGJ35bu6S5nAYL90b9XlDFqwVogu6iADk9vipbLZetC+c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzC9yW+KsywYQg0QlcGeDHSfuJxmI+iORlmE49Qh113OLytsF1V
-	XycvxpzkEgj0tKG2RbWJbBSD3vnlHXTknCShxVkNYrdL9PXQz0M4+WS0uc42oXbX
-X-Gm-Gg: AR+sD10QS8J6dC53r3s8DV2B9T5KYnetElDGR/JaSgGD2K/fWN87t3Unh8Ag4GyTvIK
-	oiMZD5Y9kVFRSZr9mRKI9qI2lY3eSUJNrGk5BSKDfEKDPq9FQ0WFp2C79mUc1WRM0cPm9RjwKi3
-	smd6MsoJY2XzL0UoZaZn8W5xf5DO+o7o3YRHmz/sBkQEsLho9bTinKBKv7/NmOvLHShvrQgrOHC
-	q02jEf76lANcN0MLzhHaOBwENn+T+7bILqzG4YK0llPNOijRhDbweLBnZJatfrxMi70TUC0ZELQ
-	g8aD8cIeSVI09Pe50jyVHnlsyr4PG/W0btHNFT7K4G+byyrMpVXZdcZ42w8CwaKVEjc2KMprZe4
-	LI4oT3xGuB3GPwDi2oT0zLoBJIoq8aTpVHVnT90vO82vaBFrRApx/Xt9OzcaOs8o/Ew6IbVFYLU
-	uldwwTOvDZ4MzydzOHGc1jg6KoGY562GD7QxFe69CsxC8tTUVmEGFGQic=
-X-Received: by 2002:a05:6a21:2d44:b0:3c3:7edc:3103 with SMTP id adf61e73a8af0-3c92a8d1636mr1387023637.62.1785542269013;
-        Fri, 31 Jul 2026 16:57:49 -0700 (PDT)
-Received: from fedora ([203.175.12.241])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe39eb13dbsm1157909a12.29.2026.07.31.16.57.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 16:57:48 -0700 (PDT)
-Date: Sat, 1 Aug 2026 07:57:41 +0800
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Xiang Mei <xmei5@asu.edu>
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
-	tgopinath@linux.microsoft.com, kys@microsoft.com
-Subject: Re: [PATCH net] bonding: fix skb_under_panic in bond_ns_send() over
- stacked VLANs
-Message-ID: <am01LskdPIN8yU2C@fedora>
-References: <20260719232153.1405569-1-xmei5@asu.edu>
- <2820549.1784570299@famine>
- <CAPpSM+RkHO7uEVrEbqgfundSbiLU67enaSXhtk6mL8bXzC17xQ@mail.gmail.com>
- <amrIbBqpw9Ol5wPJ@fedora>
+	dkim=pass (1024-bit key) header.d=iusegentoo.com header.i=ali@iusegentoo.com header.b="AzMdvKwz"
+ARC-Seal: i=1; a=rsa-sha256; t=1785542297; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=WX5XyM4fTvhxDNXXaVuVrjfgqmlns1mzH9lGwyU3a3dd2NX9hsRdyYhWeEZUuNqopePLvu+TgBxA3uDvOIomHCZNQA2KsdNjvU+M27uPsQBnBq4S+q7llHsB9o5QMf8tOyfJt7nphPEiZ5eWI8kl1f1njn5wuZ8G79kkHMmgSB8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1785542297; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=l1vrpNqgWN83YNMcggHN1LJ1I8uOJOLaMBeiiGtetSQ=; 
+	b=e6AESJiNslyuLLgWlE398Gc7Box+MaDrJ+m2o8Wbtu43BGqefj2ePJldjdFAyWuLRaejujVlOaMTP1ru98GF4obRsXeuRe3dtpaHf3kUtZAf7HluUpscs40y0WB5LBymCQrO/EcE1i/vE9gpxR06c0vas33nHRrR+W16y48XqGs=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=iusegentoo.com;
+	spf=pass  smtp.mailfrom=ali@iusegentoo.com;
+	dmarc=pass header.from=<ali@iusegentoo.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785542297;
+	s=zmail; d=iusegentoo.com; i=ali@iusegentoo.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=l1vrpNqgWN83YNMcggHN1LJ1I8uOJOLaMBeiiGtetSQ=;
+	b=AzMdvKwzZoyhPfldWQo9Jn/ceYgS9yJI62Uux/muh8FMK4y/p8h6u6PeIxM8O7N9
+	Qxwz4l4pWJJrMwfxrUCKhhb4IWXYnH3+BDwzYTXjjaxXiPD3t3MUVXvO0R0xZ533qQu
+	C7P6JIZZ+YUzkuGedriPyBv6kVyeAu+MqJn2/qNc=
+Received: by mx.zoho.eu with SMTPS id 1785542295141313.1768707530664;
+	Sat, 1 Aug 2026 01:58:15 +0200 (CEST)
+From: Ali Ahmet Memis <ali@iusegentoo.com>
+To: xiexinet@gmail.com
+Cc: netdev@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	shuah@kernel.org
+Subject: Re: [PATCH net v3 0/4] net: hsr: fix GRO/GSO super-packet handling
+Date: Sat,  1 Aug 2026 02:57:27 +0300
+Message-ID: <20260731235727.204167-1-ali@iusegentoo.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260731090224.18-1-xiexinet@gmail.com>
+References: <20260731090224.18-1-xiexinet@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-In-Reply-To: <amrIbBqpw9Ol5wPJ@fedora>
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On 30.07.2026 11:50, Hangbin Liu wrote:
->Hi Xiang,
->
->On 29.07.2026 16:30, Xiang Mei wrote:
->>>        Does adding one or two more nested VLANs move the panic into the
->>>above call path?
->>>
->>
->>No, for both of the reasons above: there is no room to add more
->>(-EMLINK at N = 7), and skb_cow_head() would absorb it if there were.
->
->What about the scenario that involves nested VLANs? For example:
->
->vlan.1 - vlan.1.2 ... vlan.1..6 - bond - bond.1 - bond.1.2 ... bond.1..6?
+On Fri, Jul 31, 2026 at 11:02:19AM +0200, Xin Xie wrote:
+> [PATCH net v3 0/4] net: hsr: fix GRO/GSO super-packet handling
 
-Oh, I just remember that the MAX_NEST_DEV is 8. So there could be only 1
-VLAN slave with this topology.
+I tested the series on top of net under virtme-ng (QEMU/KVM, x86_64).
 
-Thanks
-Hangbin
+selftests/net/hsr/hsr_gro_superpacket.sh passes: the SAN emits TSO
+super-packets (TX frame-size average around 41 kB, well over the 2048
+byte threshold) while both DUT LAN legs stay per-frame (average around
+1497 bytes, under the 1514 byte guard), and the test reports success.
+For contrast, without the series the same topology leaks oversized,
+HSR-tagged frames onto the LAN legs (up to roughly 28 kB, ethertype
+0x88fb), which this work eliminates. hsr_ping, prp_ping and hsr_redbox
+still pass.
+
+I also went through the code. Patch 1 mirrors netif_disable_lro() and
+dev_disable_lro() faithfully, and clearing both NETIF_F_GRO and
+NETIF_F_GRO_HW matches the changelog intent. For patch 2 I audited all
+seqnr_lock users; after the change it guards only the sequence counter
+updates, so dropping the outer lock around hsr_forward_skb() cannot race
+any other state. For patch 3 the __skb_gso_segment() dispatch and the
+consume_skb() and kfree_skb() paths look correct, and the port type gate
+keeps LAN and tagged aggregates out of software segmentation.
+
+Per-patch Reviewed-by for patches 1 to 3 sent separately.
+
+Tested-by: Ali Ahmet Memis <ali@iusegentoo.com>
