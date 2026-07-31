@@ -1,103 +1,87 @@
-Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD26840242B;
-	Fri, 31 Jul 2026 14:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673D3432BE6
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 14:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785509947; cv=none; b=hSRTWWiyXxsrg4BXHe8EqEJOFHickEoXRWVp/vd0VEDK5GcXIoajgzT3uQOGC9zaEr4TpN3X1AoQMpfdWLxFfvm9eRoU4iga4eKRgW2C7Tj1bXH+iuL5TF35xRuTpF5IgPJsB6X5vZj1otY0ERqGthklM2qccezWsLdgHs2tn98=
+	t=1785509965; cv=none; b=s+w8G+RIKNSdB9RUNjlSoHv/9PVeHPeYRaaqq7CP1HdetHAqAughvZron23uF37Zr2LTJzV0NzA4QCZyjTs+2vSZoGJsnJIDzWRpeZh2RDE7UDnNoHmmsAX99d4wGaN2cE14wwTVBT7LNchlE+cX4TdpiyasH7RiEQls+cRvncw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785509947; c=relaxed/simple;
-	bh=wHUAmpND+DI3KmeIldKd2YsRDR99VNDRNYR7EzHamuY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=QcfWl3VKrIPRtIH6L/NOgIPf7AhdGrCF7+YHDDzkF9pn/2KIZlrE5AUBH+RghlAy544ziJZd3I8N6WCMD9pwHBbe2Hj2Ugnqf9hJiuC0mAKhZ3qUlT3UIBoWIDxQG+DD8oqvY4+J76ufOIU+9KGRjJZngZSSGc6lGWKTmqVuz8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=XA/UA8Zh; arc=none smtp.client-ip=206.189.79.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1785509965; c=relaxed/simple;
+	bh=c6cPb7PSp3JUeUhUO4+oAzTADEyNQE4jXFaaHyq4WQQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ils9lodOq7m6FFSWkgV0y0rOxEAuY431sk2funj445maNPGnrGpaAJf1jNyGqgBHICDmAXFg7zLeegWKXjlWlemSJN9AP731gODPmkyQCIOjr1yUqZHpY6j0+EBYn3oLr59vZsfCb2BHJclScLVXxfSXPfE61ubmLwR0LKs8eI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SdMw5GNx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="XA/UA8Zh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:Content-Type:
-	Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	Content-Transfer-Encoding:Message-Id:References:To; bh=wHUAmpND+
-	DI3KmeIldKd2YsRDR99VNDRNYR7EzHamuY=; b=XA/UA8ZhTbrGoX46bRTCaQnJU
-	pK2TZHHenRKblAHBd0sZOPl/yDGvHbR/4uD0e7zPC7vd9X8iuUEI63jx4lo4/Gfl
-	dDGXyoXDh45UUE6jSjxoU4O0nB4u1UJYdcLPrYBiPLf3fI6miGG4tg1aUY7Sh5NM
-	g+XbwryPmGm84NvMb4=
-Received: from smtpclient.apple (unknown [106.111.19.240])
-	by web1 (Coremail) with SMTP id yAQGZQB3F8cquGxq8yHfAA--.53903S2;
-	Fri, 31 Jul 2026 22:58:51 +0800 (CST)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SdMw5GNx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785509962;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Zfzl5161juAkmaNitF1Hm5SCf0UuByVgyEH28WzLNRA=;
+	b=SdMw5GNxLDuYQ855kHR4fwxz7uKSHOhQW0qDJUk5dNFVp+Z1DQ152pbtrP22MUHtSOh8yX
+	WUS7M9z1+BBhNLi5pBlr5CI/11xJPuxOtSG5oTOGud3I+9VMdXnDVtalWxU0O9VjYIAeqM
+	nxmartclkfWl7ek/fM/DUJ0khz10hP8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-ELLellS0MraqB44IboUyNQ-1; Fri,
+ 31 Jul 2026 10:59:18 -0400
+X-MC-Unique: ELLellS0MraqB44IboUyNQ-1
+X-Mimecast-MFC-AGG-ID: ELLellS0MraqB44IboUyNQ_1785509957
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AA97F1956088;
+	Fri, 31 Jul 2026 14:59:17 +0000 (UTC)
+Received: from bgrech-thinkpadp1gen3.rmtustx.csb (unknown [10.2.16.27])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B5A6D42A;
+	Fri, 31 Jul 2026 14:59:16 +0000 (UTC)
+From: Brian Grech <bgrech@redhat.com>
+To: netdev@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org,
+	shuah@kernel.org,
+	Brian Grech <bgrech@redhat.com>
+Subject: [PATCH] selftests/net: fin_ack_lat: fix latency threshold typo
+Date: Fri, 31 Jul 2026 09:59:14 -0500
+Message-ID: <20260731145914.4014912-1-bgrech@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH nf] netfilter: conntrack: sctp: verify vtag before state
- changes
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-In-Reply-To: <amx58O5Jb6B29XDJ@chamomile>
-Date: Fri, 31 Jul 2026 22:58:40 +0800
-Cc: netfilter-devel@vger.kernel.org,
- Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- coreteam@netfilter.org,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
- Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
- Ao Wang <wangao@seu.edu.cn>,
- Xuewei Feng <fengxw06@126.com>,
- Qi Li <qli01@tsinghua.edu.cn>,
- Ke Xu <xuke@tsinghua.edu.cn>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D67DAA07-B087-4BE9-8446-A746FC21EF01@mails.tsinghua.edu.cn>
-References: <20260728073507.30635-1-zhaoyz24@mails.tsinghua.edu.cn>
- <amkCbQ1UDRKcZBez@chamomile>
- <AD2FFF7F-7EC3-4205-BB44-508B31BC2620@mails.tsinghua.edu.cn>
- <amx58O5Jb6B29XDJ@chamomile>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
-X-CM-TRANSID:yAQGZQB3F8cquGxq8yHfAA--.53903S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYJ7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcV
-	AFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280
-	aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwV
-	AKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6x8ErcxFaVAv8VW8Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrw
-	ACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK67AK
-	6ry5MxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCF54CYxVCY1x
-	0262kKe7AKxVW8ZVWrXwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j
-	6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64
-	vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0x
-	vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUIMKuUUUUU
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQEFAWprzrTmFQABsN
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Hi Pablo,
+The FIN-ACK latency threshold was written as 100000 (100ms) instead
+of the intended 1000000 (1 second). Connections completing between
+100ms and 1 second were incorrectly flagged as high-latency outliers
+and printed as failures on loaded systems.
 
-> On Jul 31, 2026, at 18:33, Pablo Neira Ayuso <pablo@netfilter.org> =
-wrote:
->=20
-> Yes, repurpose this patch to nf-next without Fixes tag and stable for =
-review.
->=20
-> Thanks.
+Add the missing zero to restore the intended 1 second threshold.
 
-Thank you for your suggestion.
+Signed-off-by: Brian Grech <bgrech@redhat.com>
+---
+ tools/testing/selftests/net/fin_ack_lat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-We have posted an nf-next patch at =
-https://lore.kernel.org/netfilter-devel/20260731145342.56890-1-zhaoyz24@ma=
-ils.tsinghua.edu.cn/T/#u
-following your suggestion.
-
-Regards,
-Yizhou
-
+diff --git a/tools/testing/selftests/net/fin_ack_lat.c b/tools/testing/selftests/net/fin_ack_lat.c
+index 70187494b57a..4117332eb1a9 100644
+--- a/tools/testing/selftests/net/fin_ack_lat.c
++++ b/tools/testing/selftests/net/fin_ack_lat.c
+@@ -69,7 +69,7 @@ static void client(int port)
+ 		lat = timediff(start, end);
+ 		sum_lat += lat;
+ 		nr_lat++;
+-		if (lat < 100000)
++		if (lat < 1000000)
+ 			goto close;
+ 
+ 		if (getsockname(sock, (struct sockaddr *)&laddr, &len) == -1)
+-- 
+2.55.0
 
