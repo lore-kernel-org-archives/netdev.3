@@ -1,78 +1,77 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA4D3E63B2
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 14:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C6B3DD50F
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 14:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785506718; cv=none; b=Yym5zOPMb5vmgC/xvQU8TOVcdmmmyoZSeTbzKjqjUnEWopYhhR5AJ7izNcN1o8FvjXjYyc3FB3WIyFipqArGOi6uImhtD0VAk4IC6kSpic98F9lBkHskr6SzwIDd3xV0iiUuaoovR/Xy6CZEIoZL2SpjTR1es+1qvmc4aaUacQ4=
+	t=1785506737; cv=none; b=VouIKyXInP/Vvgzxtv59dwnd9nTdY3zjvmwM2ISXcSER/ZcACF6YHtK003Yvqa0zmTZexc4S0s3ySSUZiBNPobjyK8CHRWl4FK8VCAJSQCCnTVomTnJVvvlqOj8nfKObgl2kzykxfwSvRPcjoq0RW3kd0JS2f3Dt2VzYZpNMb5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785506718; c=relaxed/simple;
-	bh=DJaYyC6I0eeyH0VOiP3H/RmtqxMs3E0alLK7QJv8A1Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j1eVK7OeGBimOWxBwuteTS9V91QwubNg6I89/+HW8v9HLcXvK49XlVlhWehAEosW7AkdxuK8gK3m23w7/XDdRrDq+Q/EY03yJ8cty3/8HZVQhZ/OITYrKWJiD++M0O7ggCMNmgBsRzWON8P1JEi5obBHoAl0A6JA/LFrQ+Mfwj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=Jw6tNxcd; arc=none smtp.client-ip=209.85.219.41
+	s=arc-20240116; t=1785506737; c=relaxed/simple;
+	bh=WFThtS01zuWi9Z/ZY42l8xKEAvRkhPojWTIq0tlSJtU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oxygFjYSxKMGWRcIB9XnbPTsO3O+CDS7CbitUzh03W22rlkdyxw5jopfOoK9OofJlROkMHxvIVr/O4npFvtqZiegunqcP1hpCJD5LNdWKll8XOVIoxeEBl91tIFkkT3UiyTcUT260yW5q1TSalzwKguDPX0SpKC4Jj9Q1uhwctg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=TX6n7CEZ; arc=none smtp.client-ip=209.85.222.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="Jw6tNxcd"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8f23e851626so6982306d6.3
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:05:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="TX6n7CEZ"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e6391b114so74965885a.3
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 07:05:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1785506714; x=1786111514; darn=vger.kernel.org;
+        d=trailofbits.com; s=google; t=1785506735; x=1786111535; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=X8TedcA+moJqV+IYfTUJ+9XUuKwi4pJEzGmzELAhbYo=;
-        b=Jw6tNxcdLw7YHz2NMVwDfSy3Y1CeuWtXdx2j8CdFNx/rn2tTrlwfRf9YcB4q/miofI
-         WteDB06GeRAj+0I6lDCzBpGnrf+36PxwMnGW5wqI66zcMP+G2fRn+RCHTS5vtJEdseRy
-         eOZpSrB3ky7IJVF1+SkLn/ZphhZEgZhujmIiqqNk5XZ7Aq8zCtCQLFq4MLYU//2pDAd/
-         UXwlofJ3Na7V4b6gC6ga/Cmw8JF3T0s/2c/RVvB6O0nn1bXRjEJsEXGoEqApPvDqIlgb
-         zVuvvzpVQESiCIB/V5NtWS6vhAJRP5clIjJs/JEGfz5MUdjamBdLOtGdcF8Ol7QYIgaO
-         eFLw==
+        bh=76hei+yKv+rozwlkxCZSaL8AFRKjftE/3gkCFmdDrGk=;
+        b=TX6n7CEZy+PioxHxRxOtkeX4I9pT8UOtYDTX9DP2ReV4WPwWtqQmvvDuSycbvKfS8o
+         2JvRvbrpmiz+Go83gdSQEZ58TsV5t1QL9k5eY2YJkBFiNaomvesgOh/as5MXiv0UxeSv
+         ZCJSMCo9zVsUOKV5oJVVoGtSIWk6QV5/n17/kOd9oqkltupK50T0ND8AO3GoFVQjQtLb
+         MtAHP0DpU6yRuax9+lUx01xrPIIDf0GhQjZojXz79gqr576PmUx445FqXlV5EVWRFYJA
+         C0lwb5+Kb4mnqMn4W15c9OyKoHAc+h+5Zl7ibcXidm671K16TzxgJB23PtJIYLI2sLhh
+         xOSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785506714; x=1786111514;
+        d=1e100.net; s=20251104; t=1785506735; x=1786111535;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=X8TedcA+moJqV+IYfTUJ+9XUuKwi4pJEzGmzELAhbYo=;
-        b=TdxKlNevXmRcM7JKlcs962Sgpd5k97fsNOxImFyPiYVKTmeh7+ACViOMpzbNCG0vqM
-         GOEVar2z1Iye3EzwSQBuuBgUCZHIBSSRvEz+bEawh1Eq8QQIEWV5mZa6wA3mqoVr/bkz
-         W5rSUsf9h/tvOaX3u8vtJl2DxHfK/cLc+bXGiJDt0DUx3WrQw42zW63RQvijaXsVR0B8
-         snH6YLRdV6wuzHA5P64zC5VwUVSJ2fwF3p3VCcba10qY8/mM6b/lINFjChTenOEuHiIC
-         X3lNIV2MktQ2BXztnmg11E913Mxu+I0o2MSdh2zbXJ4tVcPf0JF0uYNYstrdLxND+YMz
-         AvDg==
-X-Forwarded-Encrypted: i=1; AHgh+RpLdpv4EOreNFoELenkQzYtALICrucN7AxAdXWeKp/Zrbvx6ZgxbO62Qo6l7k4P6617+pj0l8U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+fOLhcWUioDtlyDkhiYOjUwo20lpdMvy43+8SPgNYJSW4KqkN
-	ZnTZApzYEZDXYzpN3GVRiP29uaz/a4hfbV6Jw5iMiLMyPtCRhOOPrEesH5ttSFNeaZE=
-X-Gm-Gg: AR+sD13rXr9msin/6qS/UqcjvOpK3RdSEK1FB/pqou9CiWH9KmaoM6i6QmdNVyAZuan
-	iPmyAbZtQgjzJGxb1u3R8ZKT8M4iixBEes8qVQayKY7VFmObdQLwmUALA1NjuTuYNNsUQy4DTNf
-	WGLfbUKB+JwC/Sbx3rbm7oOESanB/oOcYBPgxt25i27osWvm+POFBQsqs5OsbgPewmMuNBirRfA
-	Uqw9NcTRlUPOQRXuHC60vQoVGQgAcsj+HGFvrR6nrSYZuISYjLUWQIXAawxXPo9z5N0ozFg6J+H
-	Uit16x3HXXlgv6c9TXHg8rFtgg0kEu30N2F++RFI1UxHG9eT7o/jgqdIZuzsR7aS21wyTEE923U
-	VjWLEjJ2tdgtfggly04NGEVGvT+ZtzzrgDisriyNteroRVAA9NAsOUjaFkdOpxxnkD9M5SGtcDX
-	+Gk2hjs2jwFPUbnhnsiSnUs4KmXwqlT/h/RWMxPbvRxVNixqSCOREqE0y15ZQ2rdprUx3WehXVc
-	Kq8
-X-Received: by 2002:a05:6214:3a02:b0:8e7:8d53:2417 with SMTP id 6a1803df08f44-90842242e52mr44508206d6.27.1785506714177;
-        Fri, 31 Jul 2026 07:05:14 -0700 (PDT)
+        bh=76hei+yKv+rozwlkxCZSaL8AFRKjftE/3gkCFmdDrGk=;
+        b=KCAe+gGBHEZHebq7KV8LTKf+mvtcy5xJavUk2ZYxopgDhdnBRxaQXH+5dHWUtYZu8A
+         46sW+sAMBIx7q4Xsz7CBs/xQlTcpaeklLVq3WLuFthNi63TzDBvkjufCpFR00xLEUaDZ
+         /AVxr3Y8bhGqkjJFBRWmn2DDJ2Y4fsitN9+2a5HUZc7IRgBOnCr5e9dmRZtFBKSOZ/6G
+         HMF6OupUhhqXHkV0kA824z6ddY7hypbYQ03jy8ogqRogTGNWjUhzz1qYrOLQozFVeqSP
+         3MFoUi1h3O+9wAruIZDYcr4WpCOK3AFn48essvYDEe94777SVZ0fYsn7Q6GkM+9atzBA
+         4wbA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0FZNZYTXW8azmkLsls449WWWWvdSdjFKePI8q9uCuzXBDZNdDVb3/HgbRO5sal8cFKTaXCf4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKQSrnlFnn3gvh2voGbpjY9UCavxpNTNY+gOB+DgedSDx3JnUC
+	OpHgTyfcicyieIhwqObD8hWuzXivOopdKWJyGKbgSwOq/k0Supasn2TsXofxMWtsirE=
+X-Gm-Gg: AR+sD10Pwt/DRMGbiYzoZIdoB+Y9UCj3waFjmvIxPI5fEZcMVZCA/ZkwtDxuws+T56p
+	uwd/b7tUNZsU3nEiMgoVRDIlFIZfoTFuy9UPW7HqiEdqirpo2MmbTYwElWaQgF700nwrkkKEPvg
+	kD+feWM+KQ8Ce/RJj691pB0102PsHrxt/dltFbRP5TrIa+GFz02Ya/60uN32a8SxbpocWPTvV3y
+	f+yMELKPx25NQqqfh2x3bYWKS2sg3tNJCxwBwgkeLrnwp6NgdpbdSWbCUZyfCGTSoeUoHPvofVE
+	nM9lPk7nVGMUo88+9Zcv896FC/LP3qjufky7MrSUyQwWwODeNFIkSJRzyf3wta+klkAOQ7JkdUT
+	lC9BSwziEU4bhu+v/nCeOjkGJV1F48MxXqE73cNXKD6JdJRneBWuucA/bQ8Xc7evvXT22Xvff8Z
+	NZiP3Gns6FwS2YnV+fOmlHX+Ndl2HMQvC+utEzEy0WCXte8923CIYsCAzg81XoNoueXA==
+X-Received: by 2002:a05:620a:4154:b0:92b:641f:ea5e with SMTP id af79cd13be357-934a0581ac2mr21594885a.0.1785506734705;
+        Fri, 31 Jul 2026 07:05:34 -0700 (PDT)
 Received: from localhost ([146.190.222.192])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-908434bb4efsm11018806d6.21.2026.07.31.07.05.13
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-9349bc2653asm62043085a.4.2026.07.31.07.05.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jul 2026 07:05:13 -0700 (PDT)
+        Fri, 31 Jul 2026 07:05:34 -0700 (PDT)
 From: David Lee <david.lee@trailofbits.com>
-To: edumazet@google.com,
-	ncardwell@google.com,
+To: jhs@mojatatu.com,
+	jiri@resnulli.us,
 	davem@davemloft.net,
+	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com
 Cc: David Lee <david.lee@trailofbits.com>,
 	Kyle Zeng <kylebot@openai.com>,
 	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
-	kuniyu@google.com,
 	horms@kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: inet: prevent lhash2 lookups from escaping into ehash
-Date: Fri, 31 Jul 2026 14:05:12 +0000
-Message-ID: <20260731140512.566464-1-david.lee@trailofbits.com>
+Subject: [PATCH] net/sched: sch_qfq: prevent aggregate self-replacement
+Date: Fri, 31 Jul 2026 14:05:32 +0000
+Message-ID: <20260731140533.566493-1-david.lee@trailofbits.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -82,23 +81,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The lhash2 and ehash tables share sk_nulls_node. When a listening
-socket is unhashed and rehashed as a connected socket while an RCU
-listener lookup is walking it, the reader can follow the node's new
-next pointer into ehash. inet_lhash2_lookup() and
-inet6_lhash2_lookup() do not validate the terminal nulls marker, so
-they can return an ehash entry under the listener lookup's
-unreferenced ownership contract.
+qfq_change_class() snapshots the current aggregate settings while
+holding the qdisc tree lock, but drops the lock before selecting the
+destination aggregate. During that gap, qfq_enqueue() can move the
+class to an aggregate matching the requested settings.
 
-In particular, returning a TIME_WAIT socket makes the TCP receive
-path consume a reference that the lookup never acquired. Repeated
-races can free the object while it remains linked in the hash tables.
+When qfq_change_class() resumes, qfq_find_agg() then returns cl->agg.
+If it is a singleton, qfq_deact_rm_from_agg() frees the aggregate
+before qfq_add_to_agg() immediately accesses the same pointer, causing
+a use-after-free.
 
-Skip non-listening sockets before scoring them. Also restart the walk
-when its terminal nulls marker does not match the expected lhash2 slot,
-as the established lookup already does.
+While holding the tree lock, skip the replacement when the destination
+is already the current aggregate. Any estimator replacement has already
+completed, so the class change can finish normally.
 
-Fixes: cae3873c5b3a ("net: inet: Retire port only listening_hash")
+Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
 Bug found and triaged by OpenAI Security Research and 
 validated by Trail of Bits.
 
@@ -108,127 +105,27 @@ Signed-off-by: Kyle Zeng <kylebot@openai.com>
 Trail of Bits has a reproducer for this bug that triggers a
 KASAN use-after-free and can share if needed.
 
- net/ipv4/inet_hashtables.c  | 20 ++++++++++++++++----
- net/ipv6/inet6_hashtables.c | 20 ++++++++++++++++----
- 2 files changed, 32 insertions(+), 8 deletions(-)
+ net/sched/sch_qfq.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index ba0faa9ae..563c8af44 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -415,16 +415,23 @@ EXPORT_SYMBOL_GPL(inet_lookup_reuseport);
- /* called with rcu_read_lock() : No refcount taken on the socket */
- static struct sock *inet_lhash2_lookup(const struct net *net,
- 				struct inet_listen_hashbucket *ilb2,
-+				unsigned int slot,
- 				struct sk_buff *skb, int doff,
- 				const __be32 saddr, __be16 sport,
- 				const __be32 daddr, const unsigned short hnum,
- 				const int dif, const int sdif)
- {
--	struct sock *sk, *result = NULL;
-+	struct sock *sk, *result;
- 	struct hlist_nulls_node *node;
--	int score, hiscore = 0;
-+	int score, hiscore;
- 
-+begin:
-+	result = NULL;
-+	hiscore = 0;
- 	sk_nulls_for_each_rcu(sk, node, &ilb2->nulls_head) {
-+		if (READ_ONCE(sk->sk_state) != TCP_LISTEN)
-+			continue;
-+
- 		score = compute_score(sk, net, hnum, daddr, dif, sdif);
- 		if (score > hiscore) {
- 			result = inet_lookup_reuseport(net, sk, skb, doff,
-@@ -437,6 +444,9 @@ static struct sock *inet_lhash2_lookup(const struct net *net,
- 		}
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index 6f3b7273c..e900890e9 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -517,11 +517,14 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 		sch_tree_lock(sch);
+ 		qfq_init_agg(q, new_agg, lmax, weight);
  	}
++	if (existing && new_agg == cl->agg)
++		goto unlock;
+ 	if (existing)
+ 		qfq_deact_rm_from_agg(q, cl);
+ 	else
+ 		qdisc_class_hash_insert(&q->clhash, &cl->common);
+ 	qfq_add_to_agg(q, new_agg, cl);
++unlock:
+ 	sch_tree_unlock(sch);
+ 	qdisc_class_hash_grow(sch, &q->clhash);
  
-+	if (get_nulls_value(node) != slot + LISTENING_NULLS_BASE)
-+		goto begin;
-+
- 	return result;
- }
- 
-@@ -486,7 +496,8 @@ struct sock *__inet_lookup_listener(const struct net *net,
- 	hash2 = ipv4_portaddr_hash(net, daddr, hnum);
- 	ilb2 = inet_lhash2_bucket(hashinfo, hash2);
- 
--	result = inet_lhash2_lookup(net, ilb2, skb, doff,
-+	result = inet_lhash2_lookup(net, ilb2,
-+				    hash2 & hashinfo->lhash2_mask, skb, doff,
- 				    saddr, sport, daddr, hnum,
- 				    dif, sdif);
- 	if (result)
-@@ -496,7 +507,8 @@ struct sock *__inet_lookup_listener(const struct net *net,
- 	hash2 = ipv4_portaddr_hash(net, htonl(INADDR_ANY), hnum);
- 	ilb2 = inet_lhash2_bucket(hashinfo, hash2);
- 
--	result = inet_lhash2_lookup(net, ilb2, skb, doff,
-+	result = inet_lhash2_lookup(net, ilb2,
-+				    hash2 & hashinfo->lhash2_mask, skb, doff,
- 				    saddr, sport, htonl(INADDR_ANY), hnum,
- 				    dif, sdif);
- done:
-diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
-index b111b51d6..a9dfd47dd 100644
---- a/net/ipv6/inet6_hashtables.c
-+++ b/net/ipv6/inet6_hashtables.c
-@@ -184,16 +184,23 @@ EXPORT_SYMBOL_GPL(inet6_lookup_reuseport);
- /* called with rcu_read_lock() */
- static struct sock *inet6_lhash2_lookup(const struct net *net,
- 		struct inet_listen_hashbucket *ilb2,
-+		unsigned int slot,
- 		struct sk_buff *skb, int doff,
- 		const struct in6_addr *saddr,
- 		const __be16 sport, const struct in6_addr *daddr,
- 		const unsigned short hnum, const int dif, const int sdif)
- {
--	struct sock *sk, *result = NULL;
-+	struct sock *sk, *result;
- 	struct hlist_nulls_node *node;
--	int score, hiscore = 0;
-+	int score, hiscore;
- 
-+begin:
-+	result = NULL;
-+	hiscore = 0;
- 	sk_nulls_for_each_rcu(sk, node, &ilb2->nulls_head) {
-+		if (READ_ONCE(sk->sk_state) != TCP_LISTEN)
-+			continue;
-+
- 		score = compute_score(sk, net, hnum, daddr, dif, sdif);
- 		if (score > hiscore) {
- 			result = inet6_lookup_reuseport(net, sk, skb, doff,
-@@ -206,6 +213,9 @@ static struct sock *inet6_lhash2_lookup(const struct net *net,
- 		}
- 	}
- 
-+	if (get_nulls_value(node) != slot + LISTENING_NULLS_BASE)
-+		goto begin;
-+
- 	return result;
- }
- 
-@@ -260,7 +270,8 @@ struct sock *inet6_lookup_listener(const struct net *net,
- 	hash2 = ipv6_portaddr_hash(net, daddr, hnum);
- 	ilb2 = inet_lhash2_bucket(hashinfo, hash2);
- 
--	result = inet6_lhash2_lookup(net, ilb2, skb, doff,
-+	result = inet6_lhash2_lookup(net, ilb2,
-+				     hash2 & hashinfo->lhash2_mask, skb, doff,
- 				     saddr, sport, daddr, hnum,
- 				     dif, sdif);
- 	if (result)
-@@ -270,7 +281,8 @@ struct sock *inet6_lookup_listener(const struct net *net,
- 	hash2 = ipv6_portaddr_hash(net, &in6addr_any, hnum);
- 	ilb2 = inet_lhash2_bucket(hashinfo, hash2);
- 
--	result = inet6_lhash2_lookup(net, ilb2, skb, doff,
-+	result = inet6_lhash2_lookup(net, ilb2,
-+				     hash2 & hashinfo->lhash2_mask, skb, doff,
- 				     saddr, sport, &in6addr_any, hnum,
- 				     dif, sdif);
- done:
+-- 
+2.53.0
