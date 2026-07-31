@@ -1,214 +1,227 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f11.google.com (mail-ed2-f11.google.com [74.125.228.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA46427A10;
-	Fri, 31 Jul 2026 13:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015F8428472
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 13:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785505391; cv=none; b=m9wRSGjpl/Rzy6r4puGu26wut/yIBnylsQZcXJ32gQ/DNx5MqBDrTzlxoKCUTuHd+vhpfvRtAiS97umNLFbpCfIXRrSnDXqGd316QIwRBR38jeRRU/OaJjKaMJ+IdxCaKWaxlToXsYbUw0HnlHHKDYk4VQkbPLUmJyIWFlRMJlc=
+	t=1785505418; cv=none; b=VJXaPJ11tmRY76LCT9lgRlCsLrB9js9K20ltXrhpYddjx8qwUD8BKvxQPz5gDFLxvBzSKFKROhoN4s8kYBhPw9MgNHYLjdyeI5Db1eK3PX25b77I0frNq2FI7SHojd17ID1xZiBySsY0HsVK9qwFjDYrOVjhPMgTMkOxXpk34NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785505391; c=relaxed/simple;
-	bh=AEScCkDmCcgAflb4s9jaU0iJstTng+rW0KnSTfrcLVg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IzWDywSO5ufUmT+6ByMsRJ2hlAT5tuiwZYb4NqvT40UyKy/8Z4ExaJK02Hg8QB2E+seSHUOEeGhR7liWn0htjA5pM71+j4HJ8gE6Bpyd9zDTdRc7Dgzf7y4gPeqr1gd7kSvY8OUsaOcNc+jCKrHyErE7Zl24ug7f6tR0f28Pe1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=f3lix.dev@gmx.de header.b=LBaWNgDt; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=f3lix.dev@gmx.de header.b="LBaWNgDt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1785505386; x=1786110186; i=f3lix.dev@gmx.de;
-	bh=XCmjSixO+4gtIRU3U+nWyeLFjP8QTUg8B/5vfX/DgbY=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=LBaWNgDt6tYOOI5dd3ibYreLXfIGE1B06/xioqxqa3PYrYr5cR+9+98kUrHn4G5F
-	 Gu8jJD7YiJGpHI0wZU4SrIWbicSKI59+0lfIQzJYovwDsb+D3TC/gu5pKMX2q7kUb
-	 9Tc9BGsfVhEvydGvhv8u3VJtC+vgebanA/uHVsyoxymrBX3KA+anTboBdU7FkKz51
-	 to71OEJ7YIn77N7V7dawND219ywdHDaQZvLhbJaVcdjKufG4ppnf5y4WTQGFTP96n
-	 azXKYYCoBsVqtHJsJ72cWQhMQ24E6zjRUoO/hGWe6iSrIBz5Z2sWpeFmV7yHz/RFX
-	 punamqvh60Vwy9b5yg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1McY8T-1xLq4t1aSz-00bIRX; Fri, 31
- Jul 2026 15:43:06 +0200
-From: Felix Hoffmann <f3lix.dev@gmx.de>
-To: linux-can@vger.kernel.org,
-	Robin van der Gracht <robin@protonic.nl>,
-	Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: netdev@vger.kernel.org,
-	kernel@pengutronix.de,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] can: j1939: avoid address-claim timer deadlock
-Date: Fri, 31 Jul 2026 15:42:55 +0200
-Message-ID: <20260731134255.1002902-1-f3lix.dev@gmx.de>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1785505418; c=relaxed/simple;
+	bh=EqdU4u+6Ft1dVu3bgY5wxogDQ6jHRutxwSheAxUaOyc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nw646NyoYjt5+LVtlfPniRPoILvBxap7J2phoLcAnaNSkZNb03s4loI/R9p2kQj7v3SeBMk03WgQE4+P0d0mVF8OGxWKM4gsLWf56PA0CdnUkOBuywJ1EiRo1bLeMC93UxsA9iuIW4ld8+35j9OV1jp3dxubBwkYtbXzt7XgQdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.228.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed2-f11.google.com with SMTP id 4fb4d7f45d1cf-69f4b000237so401130a12.0
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 06:43:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785505415; x=1786110215;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7gekbEKMahqrq477slabtPXrcasFqXXP5wGWUbow2GI=;
+        b=fjkOndQQu2PXM0IdEoZbLL7UYSbZntsLqFFUivLbCPQ4RrpU5OlML21F+ZRzSr9yZR
+         32xg8eTBgl8LAig+svAJG9LrJsHUzwWuHha1aBIbzK5f+kQ2Uy3RN3d7D7pO1/AI3l5Z
+         gqU745+hfYbMaaxUs2vHWCK94ZpJG4iAXaevxce0HXIt3E2pOXJIxec9acqjDqFndoWE
+         OHQXYQLgFl6fOgTB9vtUjsJZpJM83k+pPvo6o7cYpuXKBlA2Db367nq+qvgmaV/fFweG
+         HLrlJo2jxQBOw+sC+2U8HZlNdCGggEyCRUKU3FfCYUB+N/gZmo170dkxhSOSQeb/sYcE
+         i6bQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrv/zQkNul6jzVjM+6kiecYKFsk58y8rGd+E64YC27RqW3vAt5ClQquYy9jL43XXAZXCalgelI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGr7wvGg0Hug7+mgaScUMmL3iN+nSom++4Sq/o/FHcyVATqwEx
+	fp8Cj+o5ePuaSAxroGSFckRWaWWBIzmNpR0mKxaMThU4HXTS/N9opbQI
+X-Gm-Gg: AR+sD11GgNDdH3jfyXWQGWE2Y5LuOhKcbr8vVmT1HDbHwmUrwxeDgoK0AdrY0K9EXdg
+	1qL51jYIVu9CqsUJyplsuvWdSag2T4Igf52eqhdvRQ0/uEukcAQAsLdOR88cmCz4OHYvUZsUYle
+	8maKt1IagGJ/0fDE5lEVxn1BvZtC8oZrN6RHhPhDB4ygMTSd+jG8YB8y/VYlpUtUt3i+aMwFEui
+	Tr3Zhkvpi2hJ3XoKoCrqM+HI6BFv897YNlyNmeTC6YiMUCxHHmWYNnSkIvn1xi3klmzvtjISls5
+	pJhIg6AT/hRXIbRaYQeInmdE9bZC3c9H/Vsv8c2fztEEx09icx6BpBEYGuWxbDKqC1lgDwqHfpz
+	soqTIZRrlTUntvfr52vbQ+Gl5eFaeKZqDpm64uNnHYkTU34z8LQ1Jpsa1OTuAI+qLJeThbLWGQd
+	XdOGZApAi8iJfDI0ffQ6KUBaCxMkUMo36E+dwdPPsfu5FdSDZhvvs5h8wcz26rvCqr2JxwI+bcj
+	8xGUbLK9aBjbvKZ1OL+ssQMXw==
+X-Received: by 2002:a05:6402:518e:b0:698:50ea:2d97 with SMTP id 4fb4d7f45d1cf-6a098d097dcmr1272142a12.20.1785505415057;
+        Fri, 31 Jul 2026 06:43:35 -0700 (PDT)
+Received: from [192.168.88.241] (78-80-108-129.customers.tmcz.cz. [78.80.108.129])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a09c63d9aesm2053241a12.19.2026.07.31.06.43.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Jul 2026 06:43:34 -0700 (PDT)
+Message-ID: <82d57a4c-297e-42e4-baac-5ea431c32447@ovn.org>
+Date: Fri, 31 Jul 2026 15:43:33 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cYF27y5r7s+xYzq+Os21XoK/OZTg3VOVMblCL5lGvYWhrRo/O1u
- 80QkOMP8ChQ5+tW8p9hh4+LtANNESdiINd55J4BumLqskPI7qUehN84zEH6j0X5Zx+BuCIy
- bspZk1wo/sQDP/sObPWBB5ueGc3NZgmj6yQEfNZmrpuceBVSJt1wGCPUBTqBwteUuVKqocf
- FFRk9OuKqcBlI8kEoOIiA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:NlfZG61cReQ=;zPMvzMKq8lOzB/3rYd71HVLKT7z
- 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
- ol4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 1/1] net: openvswitch: reallocate update replies
+ for mismatched IDs
+To: Zhiling Zou <zhilinz@nebusec.ai>, netdev@vger.kernel.org,
+ dev@openvswitch.org
+Cc: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai
+References: <c773b2726dda8d90eed6d42b2f9741810a7a46e1.1785288876.git.zhilinz@nebusec.ai>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <c773b2726dda8d90eed6d42b2f9741810a7a46e1.1785288876.git.zhilinz@nebusec.ai>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-j1939_ac_process() holds priv->lock while synchronously canceling an
-ECU's address-claim hrtimer. The timer callback takes the same lock. If th=
-e
-callback starts on another CPU after the receive path takes the lock, the
-callback waits for priv->lock while hrtimer_cancel() waits for the callbac=
-k
-to finish. This deadlocks both CPUs and makes the system unresponsive.
+On 7/29/26 3:53 PM, Zhiling Zou wrote:
+> ovs_flow_cmd_new() preallocates the optional reply skb before it takes
+> ovs_mutex and before it knows which existing flow will be updated.
+> 
+> That is normally fine because the skb is sized from the request flow
+> identifier.  That identifier also becomes the inserted flow's identifier.
+> For updates, however, a request with a UFID may miss the UFID lookup and
+> then fall back to the flow key lookup.  That lookup can legitimately find
+> an existing key-identified flow.  UFIDs are optional and the flow key is
+> the primary identifier.
+> 
+> For echoed replies, ovs_flow_cmd_fill_info() writes the matched flow's
+> identifier, not the request identifier used for the preallocation.  A short
+> request UFID can therefore leave too little room for the key identifier.
+> The fill can then fail with -EMSGSIZE and hit the BUG_ON(error < 0) in the
+> update path.
+> 
+> Once the update target has been resolved, reallocate the reply skb if the
+> matched flow needs a larger reply than the request identifier allowed.  Do
+> this before replacing the actions so the request can still fail cleanly if
+> the rare extra allocation fails.
+> 
+> Fixes: 74ed7ab9264c ("openvswitch: Add support for unique flow IDs.")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+> ---
+> changes in v3:
+> - Compare computed reply sizes instead of UFID contents.
+> - Inline the rare reallocation check and add spacing around the update checks.
+> - v2 Link: https://lore.kernel.org/all/71380bcfbf3aed9a6a8a9daeef6592fa5a4fb245.1785211788.git.zhilinz@nebusec.ai/
+> 
+> changes in v2:
+> - Preserve valid key/UFID mixed flow updates as requested by Ilya Maximets.
+> - Reallocate the echoed reply skb with the matched flow identifier before replacing actions.
+> - v1 Link: https://lore.kernel.org/all/fa4f85fe7becb164a8a1849aa77ceeb1c08b078c.1784881178.git.zhilinz@nebusec.ai/
+> 
+>  net/openvswitch/datapath.c | 24 +++++++++++++++++++++---
+>  1 file changed, 21 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+> index eaf332b156d73..3007d75b42145 100644
+> --- a/net/openvswitch/datapath.c
+> +++ b/net/openvswitch/datapath.c
+> @@ -1113,9 +1113,8 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
+>  			error = -EEXIST;
+>  			goto err_unlock_ovs;
+>  		}
+> -		/* The flow identifier has to be the same for flow updates.
+> -		 * Look for any overlapping flow.
+> -		 */
+> +
+> +		/* Look for any overlapping flow. */
+>  		if (unlikely(!ovs_flow_cmp(flow, &match))) {
+>  			if (ovs_identifier_is_key(&flow->id))
+>  				flow = ovs_flow_tbl_lookup_exact(&dp->table,
+> @@ -1127,6 +1126,25 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
+>  				goto err_unlock_ovs;
+>  			}
+>  		}
+> +
+> +		if (unlikely(reply &&
+> +			     ovs_flow_cmd_msg_size(acts, &new_flow->id,
+> +						   ufid_flags) <
+> +			     ovs_flow_cmd_msg_size(acts, &flow->id,
+> +						   ufid_flags))) {
 
-Do not wait for priv->lock from the soft hrtimer callback. If
-address-claim processing currently owns it, move the expiry forward by 1 m=
-s
-and restart the timer. This lets a concurrent hrtimer_cancel() finish and
-remove the requeued timer. Without a cancellation, mapping is retried
-shortly.
+This version seems fine too me code-wise, but this construct is hard to
+read.  There isn't a particularly good way to format this, but maybe
+something like the following will be easier on the eyes:
 
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:GPT5.6-Sol
-Signed-off-by: Felix Hoffmann <f3lix.dev@gmx.de>
-=2D--
+		if (unlikely(reply)) {
+			size_t current, desired;
 
-The deadlock was reproduced three times on a 2-vCPU kernel with KASAN
-and lockdep. Cross-CPU GDB stacks showed hrtimer_cancel() and the timer
-callback waiting on the same j1939_priv lock and hrtimer.
+			current = ovs_flow_cmd_msg_size(acts, &new_flow->id,
+							ufid_flags);
+			desired = ovs_flow_cmd_msg_size(acts, &flow->id,
+							ufid_flags);
+			if (current < desired) {
+				struct sk_buff *resized;
 
-With this change, the reproducer completed 420 stress rounds, and the
-patched CAN J1939 syzkaller campaign remained operational. The trigger
-drops to UID and GID 65534 before opening its CAN sockets. A minimal
-reproducer and the complete stack capture are available privately on
-request.
+				resized = ovs_flow_cmd_alloc_info(acts,
+								  &flow->id,
+								  info, false,
+								  ufid_flags);
+				if (IS_ERR(resized)) {
+					error = PTR_ERR(resized);
+					goto err_unlock_ovs;
+				}
+				kfree_skb(reply);
+				reply = resized;
+			}
+		}
 
- net/can/j1939/bus.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+Best regards, Ilya Maximets.
 
-diff --git a/net/can/j1939/bus.c b/net/can/j1939/bus.c
-index cdc3c0a71937..ac654dc8872e 100644
-=2D-- a/net/can/j1939/bus.c
-+++ b/net/can/j1939/bus.c
-@@ -131,7 +131,17 @@ static enum hrtimer_restart j1939_ecu_timer_handler(s=
-truct hrtimer *hrtimer)
- 		container_of(hrtimer, struct j1939_ecu, ac_timer);
- 	struct j1939_priv *priv =3D ecu->priv;
-=20
--	write_lock_bh(&priv->lock);
-+	/*
-+	 * j1939_ac_process() cancels this timer while holding priv->lock.
-+	 * Don't block here, otherwise the timer and receive paths can deadlock
-+	 * waiting for each other on different CPUs. Retry shortly if address
-+	 * claim processing currently owns the lock.
-+	 */
-+	if (!write_trylock(&priv->lock)) {
-+		hrtimer_forward_now(hrtimer, ms_to_ktime(1));
-+		return HRTIMER_RESTART;
-+	}
-+
- 	/* TODO: can we test if ecu->addr is unicast before starting
- 	 * the timer?
- 	 */
-@@ -141,7 +151,7 @@ static enum hrtimer_restart j1939_ecu_timer_handler(st=
-ruct hrtimer *hrtimer)
- 	 * j1939_ecu_timer_start().
- 	 */
- 	j1939_ecu_put(ecu);
--	write_unlock_bh(&priv->lock);
-+	write_unlock(&priv->lock);
-=20
- 	return HRTIMER_NORESTART;
- }
-=2D-=20
-2.43.0
+> +			struct sk_buff *new_reply;
+> +
+> +			new_reply = ovs_flow_cmd_alloc_info(acts, &flow->id,
+> +							    info, false,
+> +							    ufid_flags);
+> +			if (IS_ERR(new_reply)) {
+> +				error = PTR_ERR(new_reply);
+> +				goto err_unlock_ovs;
+> +			}
+> +			kfree_skb(reply);
+> +			reply = new_reply;
+> +		}
+> +
+>  		/* Update actions. */
+>  		old_acts = ovsl_dereference(flow->sf_acts);
+>  		rcu_assign_pointer(flow->sf_acts, acts);
+
