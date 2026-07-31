@@ -1,62 +1,62 @@
 Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA68428463
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 12:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02777428474
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 12:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785502184; cv=none; b=NY2thhseSEjCnfSqlR+IydY5BSwz4aJdtHoIO+k68h/Ocw5a01d9m/LzV48Ytf+jv1nlfLtMpQkbeHLYC3KfRwZxjGH3xKmmnex7eklIlpby7RiFhU2LC6JVwp20J1XuGHLSEfZ+cNbLdPrmzUVDMwcrsuyxzNHANeLN3QC36Jo=
+	t=1785502186; cv=none; b=ALCR+4s2/mua5ET89cbPfLtwwgpyUdj2sZUx+4AySYL0VIXN17HCvfUNbygGS/Ke4FbJLMFYh4XB1SYG9AIxnWqFjLkQMWFJpPwjKTqPGwxNwkAdhhSrgVQFztJa3EPObpLsXtaSVeCzEb4xQOWceg5ZxFQKDP0II72/eQNnXQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785502184; c=relaxed/simple;
-	bh=GIKN6MRFDPaW0jRKKs1FxX7l8vahLILnPz8DeWbGX68=;
+	s=arc-20240116; t=1785502186; c=relaxed/simple;
+	bh=9P0WpGY72xMhlB4Udj2rQ82OrLDkKvAS4z6Gv+1k6i4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+MnMnP2TcudDg45gBiE/yHoZfJsISvskv62ljkqib0vP6q9zmjXVqU1SipacEibfutTdEsKgvF0ox1N9nopFctQQKd+RIlcwgBZEXx5pSoSEfRos4OACsRCU1HeiGK5LrQSRt+smhF8ad3jIKpLJWj2Sk4jBSZAJhtGLqZ3awM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aSK2AM9P; arc=none smtp.client-ip=209.85.128.177
+	 MIME-Version; b=YShkRv1Fom/3aWVcFecqpIfef5znW4eHaTXOVOMHAwFMMTj9lM2KyUaiR/3kVgHDD8fsnNyJAhJQElI8JfKNNyvE99H6iuGUH3cxgMt+b5FS/Y375NDBCOPA9lFbWFfUttxi8Z6KqLZl/TeFE59F8f+aY6s9mHxHsulQ38v5NQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xca6Ga2t; arc=none smtp.client-ip=209.85.128.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aSK2AM9P"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8143daf89c7so9064837b3.1
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 05:49:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xca6Ga2t"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8143daf89c7so9065147b3.1
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 05:49:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785502182; x=1786106982; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785502184; x=1786106984; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=jG6/m0wFIS3acCnXY9BG108ect7Vn9Ccjk8vk1+isvU=;
-        b=aSK2AM9PeqXmdMSAHKs/yN3Ue20NOtSROxqhjbCO5p7PQ7VCLFjs3Eqn2SOrbVOil9
-         jweM1BOoXhjAh4lwmcAsHrg2oB/EtODXQoXA4fKI2jqvNcp67ozdE51PBdPBqNn+Abrk
-         JF8gCb8kfsUpcSaIz6gaEhrY45IMQDru8FHxWO+vRFC2h+TDFYvz3sVp1J7HpTAQkzfm
-         lGNC3w7h1DfFQnXlxI33dVZUe8Utu90HEf2cXzME4+HUy7C9HJYbgRLldNRXiKgOzM68
-         ev2cWH0sW9MrkqcKzm/TdUX66iQ/QDtzfflF6M0derreAW+BxG0VylfLG/SmOvG4c/tq
-         MDfw==
+        bh=OMT9YR+Z2gS6Eh7vbnulZB5ih8XO9hWY1MpWR6T+nYA=;
+        b=Xca6Ga2tJScuSlmKm+nbmNria8pJ72Gn5autHpxMnJokzaNsQFjUr3dEbij2kgjIZV
+         V2y2rPS93lFCaRjnyGQwMHVr8ZZuVWjznMLDhzBWvyVBLwIujBN8xYsKBiq8ApHD3uqt
+         uKz6wCN+DiOojl9UcQzXCrvx4j4T1ln/v3OAqrJQl3km5ptEeVGtYC4dtHQTiTro663E
+         6FqQ0XmKWupxMxuPpBZtEzWwZpVDP9v5kxUeTrRR9y/vC7cJ7Rz/cObw/Zrj+hmQKVvZ
+         6VgaMoowqF5w4tIy63CCZgYoGGzQZuOPEQ4AQiVH1E87Jwue8QNfAFp//udY+c0LrLNn
+         zjUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785502182; x=1786106982;
+        d=1e100.net; s=20251104; t=1785502184; x=1786106984;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jG6/m0wFIS3acCnXY9BG108ect7Vn9Ccjk8vk1+isvU=;
-        b=TxPNimTgOopJdi5T2v8FLjspfOih7kCzenyJ5Uw5gSXA8BcN3dnbsd3s7Ifri2i4Fi
-         u80rw7c07pFQXdDWkhII5TjVdZvIG9kC5JitkTOa6zVpO/UGf2yKrNnecbX6JEg7ZxIo
-         KR5fj3y35ATodvKRljdqx6r0d9VNGFDmnSJnKLtyI6ZPfbOcFj6MkX3oBnKtByYnY/Lk
-         jcwC1rSRuy6ILy6C0k/RlBnv6KdnkdZeJJexpejVv3auIYTTbN5bmVudJt5zxq98R2BO
-         vCI5sRo8N4aIcAzaQmkmLGGCKegStkWJOD0UuNGJKHR2JSWw3aEBppqV15dYt61Tmy1B
-         dREg==
-X-Gm-Message-State: AOJu0Yz3NC0VL3VYRBsrfZdPskh9kc1yUyQiuyK/1ruBlh5M3JFjpkvz
-	bkSXlbT1FDS14R+MI1d+GZ5aFUn66tKUXQtySwR01r/IUpfSwRGngvvT2iKI6dPP
-X-Gm-Gg: AR+sD1318iwua4kRFBVh5oJi+yGblJvZBxEw22uvyTpyHWyxSbYwAkqFaybsJdjCrtf
-	v9iIppPSeOJqfgxW6HgJInHm5ciIFQ7cugERLFCMa3NiMqhYyN6P2/ttCUA/J8wi98yMD3CqLCg
-	6QoowOk8KuogUVpKZjG9gIhy/nSCb66s1aUzMNgQLT0P+PvD98WbPpsoHzg/Q/E0ESY07jV2iV5
-	Uk/+E2pc+3L0u+shI2YiwNklHw7581EAnvgDQjq5uibccvxbBrwhXhEzinabq0d7ySbsYCoC6Hs
-	uMoVFWLWfgwzZsGqgtk0nTnux2wCFX8qn8PaSn9MgaKL1CIX7WiTbAvrQSKl3AjpxS3/BnwfkNC
-	nIUN51S+FmtE3sbIKl83hWmAcp9DcIU33+5+Nie1rvUKqn9EBRVTLJYIAU1zk5gDhELsjl8JUaV
-	2rFm0m1UsLGap250DwYEDiU1iA8/v4cnxIizi4J61c
-X-Received: by 2002:a05:690c:61c2:b0:814:4755:2b2b with SMTP id 00721157ae682-81fcba55a69mr16655277b3.3.1785502182259;
-        Fri, 31 Jul 2026 05:49:42 -0700 (PDT)
+        bh=OMT9YR+Z2gS6Eh7vbnulZB5ih8XO9hWY1MpWR6T+nYA=;
+        b=HXDRaya1xxus/J0iEqrp1LI5uxCZI+ONcurOI/9T4xusS2ZRJUVpEXiwYKiT+//5cQ
+         zNIpS11CILg15N0QsxYL/+tAv2UU6oM9oTVBFBiQdPw0ANWr1pCtI16rjtYYyIealyT6
+         o75/fS+mXgyJMNiNPPMIxkCpNPdnGfBezVAkBIG8hWklL8on0NQKIqjGtmpX2rGhYx14
+         Obs3/rtrGf6VFshX85RkGxJJJA7FNs1BeycN0sbwcoCpV587TkHH94/RM6stSSXhoPvj
+         +AEXSBDT9p6vZcKAH58gfSO6CSehDbXnN9s+tFjCR2qFt/5h4fm7lzo7VlnMFycgHVs6
+         7fvQ==
+X-Gm-Message-State: AOJu0YxrgSXJ6c6nzPRASE68JKciDTMPtJZFm7/B9d4SGZ27IhOVXJuN
+	St02Kg5FRoeuPlOuILCoy1oXxVKlmbvRXu/B4941tFMIkoqzzot00S1+
+X-Gm-Gg: AR+sD111TlpKQJ7omXIfbL1oE1RLAQ1872DuidqFercv3YMr5D648gJe5SJAKCKSUYo
+	ZYq/+Mx8VBITBgC9UlVnlsJgDJ6x2pOCOti+FXfasU6B/C8Q/qTvfExVTYcx3VIUv+zMhO9E2HR
+	Y5Ef1bLDB0d9ioK+0GbgrBXNgbArJjpipbMFmz151XWj887pV5RiwWaNXGYF+rXj2owDP8e9Ofy
+	1k2aIXHgwhbOwfTNeOWh0XygGE5nfRMW7IcFZdjOpmsniPW36mnu0ekT+O/LiZvm73IlcveyLbo
+	S5i8EEBGO71TIZP4x3pU5ES3xmBZg9BQplUhYffGF/bahXGDggdH3Au0v+t/k/ocwJvS5nG+zf/
+	LwgBqFgm6ANoHmppnG0V9vWKP3F84Umfs/1TFGLn8lDn9SOZwhbCNpTt5Or5oyikag1kF7cvx96
+	kLt2LczfYN2aLsEJPvy52jUkfoelPYVq3syasLeLRJ5bhLY2cXa9bin/vehkQ2/Ys=
+X-Received: by 2002:a05:690c:318:b0:81d:c233:aea0 with SMTP id 00721157ae682-81fcbab8b90mr16379287b3.18.1785502183999;
+        Fri, 31 Jul 2026 05:49:43 -0700 (PDT)
 Received: from devobuntu.lan ([2600:6c5c:6b00:316::23])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fcd108f0bsm5695367b3.35.2026.07.31.05.49.41
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fcd108f0bsm5695367b3.35.2026.07.31.05.49.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 05:49:41 -0700 (PDT)
+        Fri, 31 Jul 2026 05:49:43 -0700 (PDT)
 From: Matt Vollrath <tactii@gmail.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
@@ -70,9 +70,9 @@ Cc: netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	Matt Vollrath <tactii@gmail.com>
-Subject: [PATCH iwl-next 2/3] iavf: use __libeth_rx_sync_for_cpu
-Date: Fri, 31 Jul 2026 08:41:08 -0400
-Message-ID: <20260731124109.99065-3-tactii@gmail.com>
+Subject: [PATCH iwl-next 3/3] iavf: use cached page_pool ref in skb helpers
+Date: Fri, 31 Jul 2026 08:41:09 -0400
+Message-ID: <20260731124109.99065-4-tactii@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260731124109.99065-1-tactii@gmail.com>
 References: <20260731124109.99065-1-tactii@gmail.com>
@@ -84,37 +84,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Rx ring already has a reference to its page pool adjacent to fields
-touched every iteration. Avoid loading the netmem_desc for sync by
-taking the shortcut.
+Deriving a reference to the page pool from netmem_desc requires loading
+the struct. We already have a cached reference to the pool, so use that
+instead.
 
 Signed-off-by: Matt Vollrath <tactii@gmail.com>
 Assisted-by: Claude:claude-5-fable
 ---
- drivers/net/ethernet/intel/iavf/iavf_txrx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/iavf/iavf_txrx.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-index c30abf17cf5d..3ae2f0a0ee4d 100644
+index 3ae2f0a0ee4d..9dc5f0761d8b 100644
 --- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
 +++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-@@ -1387,6 +1387,7 @@ static int iavf_clean_rx_irq(struct iavf_ring *rx_ring, int budget)
- {
- 	bool flex = rx_ring->rxdid == VIRTCHNL_RXDID_2_FLEX_SQ_NIC;
- 	unsigned int total_rx_bytes = 0, total_rx_packets = 0;
-+	const struct page_pool *pp = rx_ring->pp;
- 	struct sk_buff *skb = rx_ring->skb;
- 	u16 cleaned_count = IAVF_DESC_UNUSED(rx_ring);
- 	bool failure = false;
-@@ -1424,7 +1425,7 @@ static int iavf_clean_rx_irq(struct iavf_ring *rx_ring, int budget)
- 		iavf_trace(clean_rx_irq, rx_ring, rx_desc, skb);
+@@ -1184,6 +1184,7 @@ static bool iavf_cleanup_headers(struct iavf_ring *rx_ring, struct sk_buff *skb)
  
- 		rx_buffer = &rx_ring->rx_fqes[rx_ring->next_to_clean];
--		if (!libeth_rx_sync_for_cpu(rx_buffer, fields.len))
-+		if (!__libeth_rx_sync_for_cpu(pp, rx_buffer, fields.len))
- 			goto skip_data;
+ /**
+  * iavf_add_rx_frag - Add contents of Rx buffer to sk_buff
++ * @pp: page pool the buffer was allocated from
+  * @skb: sk_buff to place the data into
+  * @rx_buffer: buffer containing page to add
+  * @size: packet length from rx_desc
+@@ -1193,11 +1194,11 @@ static bool iavf_cleanup_headers(struct iavf_ring *rx_ring, struct sk_buff *skb)
+  *
+  * The function will then update the page offset.
+  **/
+-static void iavf_add_rx_frag(struct sk_buff *skb,
++static void iavf_add_rx_frag(const struct page_pool *pp, struct sk_buff *skb,
+ 			     const struct libeth_fqe *rx_buffer,
+ 			     unsigned int size)
+ {
+-	u32 hr = netmem_get_pp(rx_buffer->netmem)->p.offset;
++	u32 hr = pp->p.offset;
+ 
+ 	skb_add_rx_frag_netmem(skb, skb_shinfo(skb)->nr_frags,
+ 			       rx_buffer->netmem, rx_buffer->offset + hr,
+@@ -1206,17 +1207,19 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
+ 
+ /**
+  * iavf_build_skb - Build skb around an existing buffer
++ * @pp: page pool the buffer was allocated from
+  * @rx_buffer: Rx buffer to pull data from
+  * @size: size of buffer to add to skb
+  *
+  * This function builds an skb around an existing Rx buffer, taking care
+  * to set up the skb correctly and avoid any memcpy overhead.
+  */
+-static struct sk_buff *iavf_build_skb(const struct libeth_fqe *rx_buffer,
++static struct sk_buff *iavf_build_skb(const struct page_pool *pp,
++				      const struct libeth_fqe *rx_buffer,
+ 				      unsigned int size)
+ {
+ 	struct page *buf_page = __netmem_to_page(rx_buffer->netmem);
+-	u32 hr = pp_page_to_nmdesc(buf_page)->pp->p.offset;
++	u32 hr = pp->p.offset;
+ 	struct sk_buff *skb;
+ 	void *va;
+ 
+@@ -1430,9 +1433,9 @@ static int iavf_clean_rx_irq(struct iavf_ring *rx_ring, int budget)
  
  		/* retrieve a buffer from the ring */
+ 		if (skb)
+-			iavf_add_rx_frag(skb, rx_buffer, fields.len);
++			iavf_add_rx_frag(pp, skb, rx_buffer, fields.len);
+ 		else
+-			skb = iavf_build_skb(rx_buffer, fields.len);
++			skb = iavf_build_skb(pp, rx_buffer, fields.len);
+ 
+ 		/* exit if we failed to retrieve a buffer */
+ 		if (!skb) {
 -- 
 2.43.0
 
