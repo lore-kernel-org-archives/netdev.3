@@ -1,97 +1,145 @@
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271053DB64A
-	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F443C9EE9;
+	Fri, 31 Jul 2026 09:56:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785491753; cv=none; b=IszyXxZleF9qZsaJEauad+qSxSXwlsMHxsRpZvKPyZsqofSB+McBh0CMAUWzD/62n3PNYk2Ul2HVA7usImxTOOH2BOy3XJjlNDysBU8z4VFbMJV9ywSKGQLN7vylIVCempjOA4N81pS3ZWyhASVEeoijcg1VEcihKHEbfaFWqsE=
+	t=1785491812; cv=none; b=EJMKL3pbHZmCHDQrY0YMvcT3l5JGnmORknFu2wEkLZnryfT88696Erwoyv25dPh4g5IDAJgincptKj/BJRUVB0RrGGrVm8t5O0e2V4mqy5rZNuaZZ/fBCt8OEmyJP1iQJh/5GSm8HJXvYdkThrJ5OFjw3vbjDj+b5jm7jaXBClI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785491753; c=relaxed/simple;
-	bh=AsOIUmBy9HF3ILMPFXG1NXAVzPffNyGO3+vQ8IyYHiU=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=I9gLbEiQXNUKdqVMp/CpmqNMhUZ+P79tPPf67uxl6GFTl1Ov0znURakMV395pSfB41oJ/3XC19gEjtetjsITxfE5HjqmueMe/TYz1arHwWWlGCJByyv4EouBXHZJvncYxx3Gl5QF4eNZMf0eGxtCZsV15o7unWynPYs+G9V9Khg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:tivesync1t1785491701t3ee9e442
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [122.235.139.83])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 7302125335014293527
-To: "'Breno Leitao'" <leitao@debian.org>
-Cc: <netdev@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Richard Cochran'" <richardcochran@gmail.com>,
-	"'Russell King'" <linux@armlinux.org.uk>,
-	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>,
-	"'Simon Horman'" <horms@kernel.org>,
-	"'Kees Cook'" <kees@kernel.org>,
-	"'Rongguang Wei'" <weirongguang@kylinos.cn>,
-	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
-	"'Joe Damato'" <joe@dama.to>,
-	"'Larysa Zaremba'" <larysa.zaremba@intel.com>,
-	"'Chenguang Zhao'" <zhaochenguang@kylinos.cn>,
-	"'Fabio Baltieri'" <fabio.baltieri@gmail.com>
-References: <20260731061837.12672-1-jiawenwu@trustnetic.com> <20260731061837.12672-3-jiawenwu@trustnetic.com> <amxs3A1lC7ijwE8W@gmail.com>
-In-Reply-To: <amxs3A1lC7ijwE8W@gmail.com>
-Subject: RE: [PATCH net-next v13 2/5] net: wangxun: add Tx timeout process
-Date: Fri, 31 Jul 2026 17:55:00 +0800
-Message-ID: <04f801dd20d2$a6fc5a80$f4f50f80$@trustnetic.com>
+	s=arc-20240116; t=1785491812; c=relaxed/simple;
+	bh=DOwwg71Kekju6qLnmGfhTqtRNRbfyVhmg9zsJnHZLgg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AX5adfLfN3uG0IQXIiXWMIZxwcNOGEGtJYrIroSHcSB3iYCJ5iUXG+YjnF7lL/oLeSFIoZO0CKTflhszilBEPxZfWenXBy8C/wmjfXz6otrSqHy2a2dFoQ5/yVgc2VQWzchktTWgQ30bWPhQrbZPIltOovA+xexgTLN3z/Kb4OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hINXc30n; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hINXc30n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE51C1F000E9;
+	Fri, 31 Jul 2026 09:56:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785491800;
+	bh=UJzatnBRREcF0bQmpNpCCB0NZsjOpJ4uKmlxw9TORHA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hINXc30n0nbQqQo9tuwXgBfCoCBC3SwoZ7cfl/1LfbwEoZZd0eNlUseLRNl8vHPgm
+	 XvIiiwJkwiEE9zAwIqlPTc0s3IXxdIRk4Hp4Mnt+GJKaSBG9Hw87FIesYgGHsaCzgf
+	 k5esBgQMr3SyQ7jJwS7TCooU9pj7LCwNqb+SB3VHQvfJkTBZUo9BEtJ0ADUKZsd9Mk
+	 1kuKcdSHftCWakbFVtYSf32BrM3g7PygJZ5gmiTpLuoDA1csONhHKfN2fOeZrsuijE
+	 xDVqYZvH5M3k23JEU5zNhLHdyn/Frz0EorVYtdEhqHVqKXIh8MMlOZ6aWbn7QcxTyN
+	 QpRSXOULspGzA==
+Date: Fri, 31 Jul 2026 10:56:35 +0100
+From: Simon Horman <horms@kernel.org>
+To: "Hemendra M. Naik" <hemendranaik@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, jiri@resnulli.us,
+	jhs@mojatatu.com, shuah@kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, vishy0777@gmail.com,
+	tahiliani@nitk.edu.in
+Subject: Re: [PATCH net-next v4 1/3] net/sched: sch_fq_pie: add per-flow
+ statistics via class ops
+Message-ID: <20260731095635.GG51943@horms.kernel.org>
+References: <20260727164056.106203-1-hemendranaik@gmail.com>
+ <20260727164056.106203-2-hemendranaik@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQGvKca1hNpLUk5TH4rh01kaL1lr8AIUgh3gAkP9jXS2wI1iMA==
-X-QQ-SENDSIZE: 520
-Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MdTuaOGnZwiPJyN4dChWjTbguWZ09y+JCfHC/72zSttXMmN6dLbgrvOc
-	KLyN8Dh/rXQYDUSnhtPnqTE8IDJKlO1byMdKZEV+xVR70irWlj15EZQAH3DCXo4cI3yd4TR
-	iwK81z3vsjW9dNF6CiRk+tw3byYedQJfyDrWlivNBhgnDOSpfspryU4nkj2yL9nAjW1U29j
-	A37W+kfxjxHf0iYF3zhrlLp0D+RVFfxeBz6aCWNnS11aM71UMHOEQcvSkRIovQeel+j8oUD
-	QAJV14a+bfqAbNUG8Gkab+j/NzhU7VUKMI+0GPeSHDcGVQmjW7oMnqjl+9TttG+81S34M+S
-	HhUKT74fk4K1Knwi4QSI0NjPZ/4aXuhnJmusIjMME2l7FzFk5e0e1Xbvq/KfL+7HTdYcquY
-	8lR8E/vVGAA9g/aluuVkM12ED2sW1NgYSHj+XsXd1dyeX9CPcB9URRvmUtKIupPCADUD6/G
-	YPYNYgDl0ctFSFHJyG3Vy84Z8NzkozfstPyrOfcD67/W5FfenOJa91E05pmR2ZNOyMb/MLV
-	eFShgu6tavqhHHC3zzHZHXENT00zpxmX/gGs14je3yoPemcb7U6x/N8QzPeRHDZEjQSilCd
-	66K0xitkFnLP2GQVIJyZyn1xdBjBWfpSWZFoFI+XkcLlyrzTa6GLK4DfeZt+tvVxfAsN2tn
-	o4IBpeo2GNKllxleH6/fc/ACVIhA3LrDTtMlOdwKqrtAmoKX/dgQsc21OJPIci/VYYJjwjA
-	cdKpU4z4ktqqJxn8Gvv5bJeNja5D2pqqYhJu6vlGIW067mr+h1ANTFRBc9pT8fByua6jcSN
-	4s8RxNZMde9BJk1jARoWjsWvZy+R5CO+KL8O199WzX7Ya7M/LYuDiUZ/TDIGHmpgokw8Zt6
-	+VXvs4Tv5JZ39zUu+vyr8Luy7A6oQmTlwexF3AamdFngLCG/UWXrMeioQlVupcVL06jDswj
-	HCktY5vZ9JZAGr3+31T0jAyVfv20EsuwRIKa068CEUMWznwglPLQWPUJMqKXku5NKuavu+4
-	Cd+0hfm555hje2GJzl8HgUyv0u5x9fvNv04qL6PJdS09oBacK4emRcCEW7KtdifGckr+alV
-	j8GiStOkLsW
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260727164056.106203-2-hemendranaik@gmail.com>
 
-On Fri, Jul 31, 2026 5:43 PM, Breno Leitao wrote:
-> On Fri, Jul 31, 2026 at 02:18:34PM +0800, Jiawen Wu wrote:
-> 
-> > +	netdev->watchdog_timeo = 5 * HZ;
-> 
-> Is this needed?  netdev_watchdog_up() already does it, no?
-> 
-> 	void netdev_watchdog_up(struct net_device *dev)
-> 	{
-> 		if (!dev->netdev_ops->ndo_tx_timeout)
-> 			return;
-> 		if (dev->watchdog_timeo <= 0)
-> 			dev->watchdog_timeo = 5*HZ;
-> 
+On Mon, Jul 27, 2026 at 10:10:54PM +0530, Hemendra M. Naik wrote:
 
-Right, I'll remove it.
+...
 
+> +static struct tcf_block *fq_pie_tcf_block(struct Qdisc *sch, unsigned long cl,
+> +					  struct netlink_ext_ack *extack)
+> +{
+> +	struct fq_pie_sched_data *q = qdisc_priv(sch);
+> +
+> +	if (cl)
+> +		return NULL;
+> +	return q->block;
+> +}
+
+Hi,
+
+The AI-generated review of this patch on netdev-ai [1] reports several
+findings. And while I'd appreciate it if you could look over each of them
+the one below seems to warrant highlighting here.
+
+[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260727164056.106203-1-hemendranaik%40gmail.com?part=1
+
+   Is the side effect of making fq_pie filter-capable intended, and should
+   it be described in the commit message?
+
+   Before this patch fq_pie_qdisc_ops had no .cl_ops, so filter attachment
+   was rejected in net/sched/cls_api.c:__tcf_qdisc_find():
+
+	cops = (*q)->ops->cl_ops;
+	if (!cops) {
+		NL_SET_ERR_MSG(extack, "Qdisc not classful");
+		err = -EINVAL;
+
+   q->filter_list was therefore always NULL and the filter branch of
+   fq_pie_classify() was unreachable since fq_pie was added.  With .cl_ops
+   present and fq_pie_tcf_block() returning q->block, 'tc filter add ...
+   parent <fq_pie handle>' now succeeds and classifier verdicts plus
+   classid-driven flow selection become live in the enqueue fast path.
+
+   That newly reachable code does not handle TC_ACT_CONSUMED:
+
+   net/sched/sch_fq_pie.c:fq_pie_classify() {
+	result = tcf_classify_qdisc(skb, filter, &res, false);
+	if (result >= 0) {
+		switch (result) {
+		case TC_ACT_STOLEN:
+		case TC_ACT_QUEUED:
+		case TC_ACT_TRAP:
+			*qerr = NET_XMIT_SUCCESS | __NET_XMIT_STOLEN;
+			fallthrough;
+		case TC_ACT_SHOT:
+			return 0;
+		}
+		if (TC_H_MIN(res.classid) <= q->flows_cnt)
+			return TC_H_MIN(res.classid);
+	}
+
+   TC_ACT_CONSUMED is TC_ACT_VALUE_MAX + 1, so it is >= 0 and matches no
+   case arm, and control reaches the classid path.  act_ct produces it
+   after the skb ownership has already been handed away:
+
+   net/sched/act_ct.c:tcf_ct_act() {
+   out_frag:
+	if (err != -EINPROGRESS)
+		tcf_action_inc_drop_qstats(&c->common);
+	return TC_ACT_CONSUMED;
+
+   tcf_action_exec() propagates any value != TC_ACT_PIPE and
+   __tcf_classify() returns it verbatim.  For a filter such as
+	tc filter add dev eth0 parent 1: matchall action ct
+
+   with no flowid, res.classid is 0, TC_H_MIN(0) <= flows_cnt holds and 0
+   is returned, so fq_pie_qdisc_enqueue() frees the consumed skb a second
+   time:
+
+	idx = fq_pie_classify(skb, sch, &ret);
+	if (idx == 0) {
+		if (ret & __NET_XMIT_BYPASS)
+			qdisc_qstats_drop(sch);
+		__qdisc_drop(skb, to_free);
+
+   and with 'flowid 1:N' a valid flow index is returned instead, so
+   flow_queue_add() links the already freed skb into q->flows[idx].  Can
+   fragmented traffic hitting that qdisc then cause a double free or
+   use-after-free?
+
+   That TC_ACT_CONSUMED is expected from qdisc-attached filter chains is
+   also visible in net/sched/cls_api.c:tcf_qevent_handle(), which has an
+   explicit case TC_ACT_CONSUMED: arm that must not free the skb.
+
+   fq_codel, sfq and cake have the same missing arm, but for fq_pie the
+   path only becomes reachable with this patch.
+
+...
