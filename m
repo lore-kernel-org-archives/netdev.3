@@ -1,131 +1,157 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A843B2D0F;
-	Fri, 31 Jul 2026 16:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F99D348C4C
+	for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 16:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785514498; cv=none; b=oYUG0C070GbCs39AHSXEKyouB0UQrLMmFcRSTC0hB2oOVek5wHIaBzCvUSQEc7VWh1YGo8nNSHD4QW8O1hMDFIJVLGD2+Gijs4XCKWUlv7PAccHbQX6nGk9PyXaMwsOJH6vkOLfVMSYj//xsMKMBXJx9SOXng6SMeRKBd6p3VVU=
+	t=1785514680; cv=none; b=swRtXvdIfw6o3s5CX3yX7ufg9EJ8rlQVogxGFmfsCyy6RbbbzlxxV7LXW7RgC9QHJq5zQLX3618msChCNPfJKFCch/puiskWlPdQmQqkRYvVa6lcyEZ+IJVSCi1zDSFyh9scsW3wkcrBwMXev/LXdriDEGNrG0FkZzkoDr0TJQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785514498; c=relaxed/simple;
-	bh=JAkRTaTRx/kErhr5i5QJ0ZVMOx9oGWgVOYx7W/K5M3U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OcPyCMz0jU+8d+Zvo1ApCfdSrhIXgP0qSrqvTA8NCqgWZ/Ryz+FVvBop+ZHU5QVvU/h/Fbzem4y7mGiXdcGvQKFd3Fk12tyIerR9gGRqT2pRDuQW701/GMJ+A3p/05NJaJ+jQQy6XaF5SzQwfh6n/RR150SCVeLhkY3+7UVcysg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=P/nK5zq5; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=JabXCq8C; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1785514680; c=relaxed/simple;
+	bh=XiHTps66n/ucoodnksehaJ774Zj8/m6/5WilQKWcYtA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=onJXAUT8NdHWxZvFV3d3O00fPt/0YDrpvj8XGP/V/1dW8xEdFjQXmo4PNOGz1AOSYjh3vxfbBxcOTdG+gWJsRf6YcL1iYKvRrRycQ1XXJViTGDiWqPKfU78t5cobNp3x22zBBoMAzsK8DJNx/qnWtJndkBZ2a5yQk8xJbFInR4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oo5UZn3+; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="P/nK5zq5";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="JabXCq8C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1785514492;
-	bh=JAkRTaTRx/kErhr5i5QJ0ZVMOx9oGWgVOYx7W/K5M3U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=P/nK5zq5632bX+p2379bE+ZmqB/TWwyasBHYPP0I2bWOBsJ/2IsdaDCnYwO8HPBEm
-	 ddWoxHc/ceuXyThjETrMadUtzO7i+vvzBpMiGWZom6doqbtq2gvX/NqY5N6R37Hhl/
-	 wRTAJolfRrFLVZ8YHLR0g1Nks6YcP13pwKVDHL/b8GNezOqRBuqq81PFxC+CnhaSip
-	 5JyyxIbhyaqM+WDv0Y7U0MCDus6U66be4pNM7nrjfierfEEHdQ66Gc+4T0AdK1QRE1
-	 +CNIMcKYdemFowjXGH9HhZjyQfYDWqDW9BPhvVw7rGFYbxBczmfLbUAjIuSZIWCjk7
-	 xDDrWBTPviqOw==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 5F383494F6; Fri, 31 Jul 2026 16:14:52 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1785514491;
-	bh=JAkRTaTRx/kErhr5i5QJ0ZVMOx9oGWgVOYx7W/K5M3U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JabXCq8CUMXf7hkrLqAh7l9qfru/gy7MI3aVGZSZyA11IY8iNTCHV9Ogl6h/4EFOS
-	 OL6dcvNGZNQwzvuduUW/KLAZl7dLU0j/1ddgNuJEzMtSmgLsjtP/A+B6nUiLgsbd4A
-	 byrqdrqQtSxELmrxbLLrQ/nV9938WcJBc3/aea/HwBX+FjnH5l0cpnqLAJdxPbTgpj
-	 z286EDF8eVGXVDV8GV9nvTYTQm4OS2oTqvbda66vZy91btWYWwSxtU+5P4LNCfVHa6
-	 JlxwruAMk5DEtOX0C5si0D7nVg0f7+XA8bx8rbSN3bWLbR3I2DQpKxPGI/zwbL3T1l
-	 zk3+bvb+AGoiQ==
-Received: from [10.99.12.190] (unknown [82.99.30.195])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 49708494ED;
-	Fri, 31 Jul 2026 16:14:51 +0000 (UTC)
-Message-ID: <7d40cce5-6f82-4c40-8c94-ee674b5d0cfa@birger-koblitz.de>
-Date: Fri, 31 Jul 2026 18:14:50 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oo5UZn3+"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-384930ca5e2so1157413a91.3
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 09:17:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785514676; x=1786119476; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3fpbCGUKoDP5+AiSkirbnxfIufZXR99E39vUIbtAqi4=;
+        b=Oo5UZn3+s/Clcl35L0i27lCyCVRQs4rNgvsX4jWn9B63BU4Cfiev6E38xXtaotn24V
+         klPvlLCVASNsz/qWHRKdPaqj0WfSfn2xjfRsxY/FFpRdcLa+5ukWSVAazMZaw3DxyuB7
+         lKAkF65rucM2QX3nEbKQm4WcVZ/ZYmWxRwrYy7HWM6hhJv/VFMAEyvjz8EMU6jRYBtW0
+         W1gwnQMgu70yTMMXnAnKnIYBapLvWDM1hPcEA9Y7dbe2nVR9WD+M1qDIP7XH1bKz6YP+
+         fNPnEfSm4y/nV5ytL9oXlALzUHKnTLO58RnV/1iLFx+1quqwKbXCUZkrswXfELG/af9S
+         fhHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785514676; x=1786119476;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3fpbCGUKoDP5+AiSkirbnxfIufZXR99E39vUIbtAqi4=;
+        b=PAAVjPGZHDN48zITLCRL7SDo0rGTjfrAvBIooEYaWMzy95et3tgfwk6QsZJ0BnpSJp
+         LrsIxwZEsMN5y5hJidomlxmy278z/nNxeyDYFS3U/dT9elY0cG5Oy/XUz/64Kj/XvFns
+         6ouaK8C2ij2wyX1W9SHXfUuE/7BTEVKGaR4iuNgcHQL2sqgUA8SUQE/+hbYg2299MzLg
+         tw6ofwKKCdbKG0yRFy8o2WGbZoKsQtnyV1vlJiG3dtqesqpbK48Xf82rYpYLrvAor4/K
+         FT4I8NIcI3YXIsd+e2UKNJpzHDMzEkLPF7xtonBMFajkr8FpKqoiHCq7REazjr1A7qQ4
+         pVlQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrBu2+VpKH/vcz8DdF4o1xVo6LsZxXXxPJEJK9aQA6frBHeGx9H1LTQV8VQTHIplhJXAJDD57c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmZKhUgkkq7BPg0MiTYN1zGWxgfO7I4DUTB/xwHpz4pGCARfXy
+	x6/NeZwuSqQCsKPXRU0bFT3hU5aFV/qKUXrSFcRB3KNFHjnc8GMOhpY=
+X-Gm-Gg: AR+sD12wBjdzvMrXDuXaP6//lvYC/kcPQORFchaHeXkZuLUhd+Z8XEnIJvEYh737A3A
+	PSc1rmDIdssirjjS/PCdP4ABYuJV7KHhMlWwlx6nd1k7G/JuWuW1N9gLAb96YHtpApNBoI2nxLJ
+	47DA3sFtUkgXFkE9VokqFfzETUeKP4AhjGm1Vpgn4Uv+282mXgcaYSawodpryEMqn4GBMIHnd55
+	9RufeglDOwzsPEonzOip8QcBNwoT2qkEun7UztOYnCwaEtCFLuWetpp7zxdu0AeAXmKckB7CZjr
+	8nZfyLwzfzYL+1SWJLLREckGx+zq6DEVomEMJ0IkgGYTHn46MXj6slQovIRGfH3z4f5K4Cdp43S
+	PZWWLcXkmhtMgtfII0Z8gN/my6ijM4Z47EcAZsPqj2BhsvPRpedA2FL0iL6OsIzATIfRhLFOxRs
+	Awb3943osOMmkmNTtYccaXfkAtl4EIxC4/erp+9xFzlt1ZF63MjPugVJ2XVNf8kUqNIs6xh/BXh
+	qtsPiq9oLYJTVAELKQPGQCH7HDxjqlEz6pws00czcnkWP6dq9n3Iwi0SIIHk05oIFZm/03nOmwE
+	ksRSBKnRbxUxoz/Ya9a9+yI=
+X-Received: by 2002:a17:90b:5824:b0:381:9028:5945 with SMTP id 98e67ed59e1d1-38fbc43a847mr445709a91.14.1785514676249;
+        Fri, 31 Jul 2026 09:17:56 -0700 (PDT)
+Received: from localhost.localdomain ([1.226.165.54])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb2ce1778sm923096a91.15.2026.07.31.09.17.53
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 31 Jul 2026 09:17:55 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Dominik Brodowski <linux@dominikbrodowski.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Myeonghun Pak <mhun512@gmail.com>,
+	Ijae Kim <ae878000@gmail.com>
+Subject: [PATCH] net: 8390: pcnet_cs: release PCMCIA window on setup_shmem_window() error
+Date: Sat,  1 Aug 2026 01:17:40 +0900
+Message-ID: <20260731161740.44955-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 13/13] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
- <20260724-ax88179a-v3-13-bdde4f905883@birger-koblitz.de>
- <d4f745df-715a-45c9-88a7-337b1dffd2ac@lunn.ch>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <d4f745df-715a-45c9-88a7-337b1dffd2ac@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 24/07/2026 19:18, Andrew Lunn wrote:
->> +static int asix_ax88279_read_status(struct phy_device *phydev)
->> +{
-> 
->> +	val = phy_read(phydev, MII_ADVERTISE);
->> +	if (val < 0)
->> +		return val;
->> +
->> +	linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
->> +			 phydev->advertising, val & AX_ADVERTISE_2500);
-> 
-> This looks wrong. A PHY driver should configure the hardware to
-> advertise what is in phydev->advertising. The PHY driver itself should
-> never change this value, especially in _read_status(). It is up to
-> user space to decide on what is advertised, and the phylib core will
-> sanitise the value to ensure it is within the PHYs capabilities.
-> 
-This looks wrong, because the PHY uses the wrong bit for configuring
-advertising 2500_FD. Since phylink does not know about this behaviour
-the PHY driver needs to decipher this additional bit and then set it
-in advertising based on the value in the PHY register. But maybe
-I miss something?
+setup_shmem_window() acquires a PCMCIA memory window with
+pcmcia_request_window() and only releases it on the buffer-verification
+failure path. If pcmcia_map_mem_page() or the subsequent ioremap()
+fails, the function jumps straight to the "failed" label, which returns
+without calling pcmcia_release_window(). The requested window is leaked.
 
->> +
->> +	ret = phy_modify_mmd_changed(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_CTRL,
->> +				     MDIO_AN_10GBT_CTRL_ADV2_5G, adv);
-> 
-> Can genphy_c45_an_config_aneg() be used here?
-I tried and it did not work. 2500MBit was always advertised. The
-same code is also used in en8811h_config_aneg(), which has some
-of the same quirks as the AX88279-PHY.
+This is reachable in practice: pcnet_config() treats a
+setup_shmem_window() failure as non-fatal and falls back to
+setup_dma_config(), so probe can continue and even succeed while the
+requested shared-memory window is left allocated.
 
-> 
->> +static int asix_ax88279_get_features(struct phy_device *phydev)
->> +{
->> +	int ret;
->> +	__ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = {};
->> +
->> +	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
->> +	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-> 
-> I would do this in probe. If you do this early, phylib might be able
-> to call genphy_c45_pma_read_abilities() on its own. Maybe, i don't
-> know.
-  left it there. Putting it into probe did not make phylib do anything
-magically on its own. When left by itself in probe() there is
-an additional function needed and here it is where one understands what
-it is needed for.
+Route the post-request error paths through a new "release" label that
+calls pcmcia_release_window() before returning, and fold the existing
+buffer-verification cleanup into it. iounmap() is still performed before
+the release where an ioremap() mapping exists, preserving the original
+teardown order. The pcmcia_request_window() failure path still returns
+directly, as no window is held there.
 
-> 
->> +	/* AX88279 does not support reported 100baseT-half duplex mode */
->> +	linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT, mask);
->> +	linkmode_andnot(phydev->supported, phydev->supported, mask);
-> 
-> If you are only changing one bit, it is simpler to use
-> linkmode_set_bit()/linkmode_clear_bit()
-Fixed in v4.
+This issue was identified during our ongoing static-analysis research while
+reviewing kernel code.
 
-Birger
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+---
+ drivers/net/ethernet/8390/pcnet_cs.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/8390/pcnet_cs.c b/drivers/net/ethernet/8390/pcnet_cs.c
+index 19f9c5db3f3b..e2081d493749 100644
+--- a/drivers/net/ethernet/8390/pcnet_cs.c
++++ b/drivers/net/ethernet/8390/pcnet_cs.c
+@@ -1434,14 +1434,14 @@ static int setup_shmem_window(struct pcmcia_device *link, int start_pg,
+     offset -= offset % window_size;
+     ret = pcmcia_map_mem_page(link, link->resource[3], offset);
+     if (ret)
+-	    goto failed;
++	goto release;
+ 
+     /* Try scribbling on the buffer */
+     info->base = ioremap(link->resource[3]->start,
+ 			resource_size(link->resource[3]));
+     if (unlikely(!info->base)) {
+ 	    ret = -ENOMEM;
+-	    goto failed;
++	goto release;
+     }
+ 
+     for (i = 0; i < (TX_PAGES<<8); i += 2)
+@@ -1452,9 +1452,8 @@ static int setup_shmem_window(struct pcmcia_device *link, int start_pg,
+     pcnet_reset_8390(dev);
+     if (i != (TX_PAGES<<8)) {
+ 	iounmap(info->base);
+-	pcmcia_release_window(link, link->resource[3]);
+ 	info->base = NULL;
+-	goto failed;
++	goto release;
+     }
+ 
+     ei_status.mem = info->base + offset;
+@@ -1475,6 +1474,8 @@ static int setup_shmem_window(struct pcmcia_device *link, int start_pg,
+     info->flags |= USE_SHMEM;
+     return 0;
+ 
++release:
++	pcmcia_release_window(link, link->resource[3]);
+ failed:
+     return 1;
+ }
+-- 
+2.47.1
