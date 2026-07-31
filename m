@@ -1,330 +1,536 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from out28-173.mail.aliyun.com (out28-173.mail.aliyun.com [115.124.28.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670E732B124;
-	Fri, 31 Jul 2026 09:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D69353A86;
+	Fri, 31 Jul 2026 09:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785490876; cv=none; b=oxo22y2EUYOUNNNkZJSo6qNJOU3JxgVniWY+5gzA6+eNKGHK0+6h6TPwjfNKzRjjidipYBJUoDh90/7YJ6J5VwQpHHI3u8RFzt534yySyGQK8WRe5Plk3DwwpmkOXyuUHGMAOFRkbirtUxiO/Mo9sfvKxKTqKOZfjP4pbi6osAc=
+	t=1785490976; cv=none; b=nPrvPnHYvgq7ERLNBK9RmyPYoAyVSnVKrRf8XZPQHdUDlbYd8X5eS70MweYCkCOzIDIXKUYmXL2xgQyGabwTZDR5QKtKkaBpC0wkVgr9XNFBQHhbu5spbGw2ujTM7go8Y1v/3Qof8kzSz2v/ren+S4yaoBkUI6CELi7zhHT5SeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785490876; c=relaxed/simple;
-	bh=zpMWS0lWEZKswGbL8Rg9YIb+gH0JEhhO8L8RjB/52Ng=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=JDEiAlTmQ1CmjNLnfcsJVGMrV5yWoKkAYOBZxEoNGXzodNOMC4xby6EZm78uBlk4DWd2UBIQeMZuAGoTOL3MhvwZqCk8BuGFcZ6fFYAw2RAA7UhDgZ7MMuWCsgNnfCh9E/KytPXWllyzwtsMDM+Y4fX3oBpbzMt3KQ0MsNNuYDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fbwBMo/V; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fbwBMo/V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785490875; x=1817026875;
-  h=date:from:to:cc:subject:message-id;
-  bh=zpMWS0lWEZKswGbL8Rg9YIb+gH0JEhhO8L8RjB/52Ng=;
-  b=fbwBMo/Vieisc5AsBnXZrgPqkwz0ooH+wRNtn7CU+Cycf3D6Uzonlh+3
-   VFRwynTmNn1xmn4ZP3ruD4VcDkZdYXBlF/0wsbK8qEgkbxmYrNSQ2kiDQ
-   iDxXMzEJF6hK5Y4K4RK44b72nmOwcIHAb6pfh2FPP/ovCc0+8/GGST8Rt
-   iRu7xE963gT9nflUzNNmDKNgF50uHC/DoEW0g/o3/03etp89T1dX/9PjC
-   TzQNbVVkliv/SWcM88P1ynx+MLYtOV37r9o/lf7WNravTIzYcuXMODr9z
-   WBlg2HZQKLiG0HJJJPlUbLERLBW7AaXmF9hIrRsCFNoEmYAPR8Rt/17jg
-   g==;
-X-CSE-ConnectionGUID: P6uv5q1RQ4G3tC/grWtpKw==
-X-CSE-MsgGUID: i2LgAqSySKO7uycsNX95LQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="96473623"
-X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; 
-   d="scan'208";a="96473623"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 02:41:14 -0700
-X-CSE-ConnectionGUID: /HdLCivGTIelcrDvxQsvgA==
-X-CSE-MsgGUID: /F3aW5znRP2mlS9q9NEsUQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; 
-   d="scan'208";a="259295178"
-Received: from igk-lkp-server01.igk.intel.com (HELO 3cba2a188a06) ([10.211.93.152])
-  by orviesa010.jf.intel.com with ESMTP; 31 Jul 2026 02:41:11 -0700
-Received: from kbuild by 3cba2a188a06 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wpjjp-000000002iO-24ZS;
-	Fri, 31 Jul 2026 09:41:09 +0000
-Date: Fri, 31 Jul 2026 11:41:02 +0200
-From: kernel test robot <lkp@intel.com>
-To: Alexandre Courbot <gnurou@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Brian Daniels <briandaniels@google.com>
-Subject: [mst-vhost:linux-next 16/73]
- tools/include/linux/types.h:13:10: fatal error: asm/types.h: No such file or
- directory
-Message-ID: <202607311151.aaQcykcR-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1785490976; c=relaxed/simple;
+	bh=yq8FKjyGHEWIz7G4zdYZnfS/IK6cb8GZUzvkBd4edCs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Pfhaw8xDo6VBKTnQi18omcZDCuQHDQ9PIE3rSpkjhQR8hUfeB8P2FsrnAPaL08V5v0cTUOBSfiYMUQRIK9luNgdxeJHZgMdm5vDWyIkcySLf4Us65n7IZZkDBf2PBepLO4SOwyFtV+SlUR8qIKE9HRIEDf4RTn1Q5azN3C9r7ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00317702-0.00211957-0.994703;FP=16635848681652356758|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037017159;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.iaIzMeu_1785490966;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.iaIzMeu_1785490966 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 31 Jul 2026 17:42:47 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	horms@kernel.org,
+	linux-doc@vger.kernel.org,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	enelsonmoore@gmail.com,
+	skhan@linuxfoundation.org,
+	hkallweit1@gmail.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v23 net-next 02/12] net/nebula-matrix: add core driver architecture and HW layer initialization
+Date: Fri, 31 Jul 2026 17:42:25 +0800
+Message-ID: <20260731094242.2655-3-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260731094242.2655-1-illusion.wang@nebula-matrix.com>
+References: <20260731094242.2655-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git linux-next
-head:   a8a2a266a5d6d5a9e839422eea6ba3986e25801b
-commit: cbd7147ab405921843903c72ff7b7e2066d9ba78 [16/73] media: virtio: Add skeleton virtio-media driver
-config: arm64-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260731/202607311151.aaQcykcR-lkp@intel.com/config)
-compiler: aarch64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260731/202607311151.aaQcykcR-lkp@intel.com/reproduce)
+From: illusion wang <illusion.wang@nebula-matrix.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202607311151.aaQcykcR-lkp@intel.com/
+Add the fundamental driver architecture framework and Leonis hardware
+layer initialization for NBL NIC family.
 
-All errors (new ones prefixed by >>):
+- nbl_adapter/nbl_core/nbl_common_info core device context
+- PCI probe/remove entry and basic device capability parsing
+- 64/32-bit DMA mask fallback and PCI master setup
+- Leonis hardware BAR resource request and ioremap logic
 
-   testcases/testcases.c: In function 'validate_reserved':
->> testcases/testcases.c:201:22: error: 'GCS_MAGIC' undeclared (first use in this function); did you mean 'ZT_MAGIC'?
-     201 |                 case GCS_MAGIC:
-         |                      ^~~~~~~~~
-         |                      ZT_MAGIC
-   testcases/testcases.c:201:22: note: each undeclared identifier is reported only once for each function it appears in
->> testcases/testcases.c:204:50: error: invalid application of 'sizeof' to incomplete type 'struct gcs_context'
-     204 |                         if (head->size != sizeof(struct gcs_context))
-         |                                                  ^~~~~~
---
-   testcases/gcs_frame.c: In function 'gcs_regs':
->> testcases/gcs_frame.c:53:33: error: 'GCS_MAGIC' undeclared (first use in this function); did you mean 'ZA_MAGIC'?
-      53 |         head = get_header(head, GCS_MAGIC, GET_BUF_RESV_SIZE(context),
-         |                                 ^~~~~~~~~
-         |                                 ZA_MAGIC
-   testcases/gcs_frame.c:53:33: note: each undeclared identifier is reported only once for each function it appears in
->> testcases/gcs_frame.c:64:16: error: invalid use of undefined type 'struct gcs_context'
-      64 |         if (gcs->features_enabled != expected) {
-         |                ^~
-   testcases/gcs_frame.c:66:28: error: invalid use of undefined type 'struct gcs_context'
-      66 |                         gcs->features_enabled, expected);
-         |                            ^~
-   testcases/gcs_frame.c:70:16: error: invalid use of undefined type 'struct gcs_context'
-      70 |         if (gcs->gcspr != gcspr) {
-         |                ^~
-   testcases/gcs_frame.c:72:28: error: invalid use of undefined type 'struct gcs_context'
-      72 |                         gcs->gcspr, gcspr);
-         |                            ^~
-   testcases/testcases.c: In function 'validate_reserved':
->> testcases/testcases.c:201:22: error: 'GCS_MAGIC' undeclared (first use in this function); did you mean 'ZT_MAGIC'?
-     201 |                 case GCS_MAGIC:
-         |                      ^~~~~~~~~
-         |                      ZT_MAGIC
-   testcases/testcases.c:201:22: note: each undeclared identifier is reported only once for each function it appears in
->> testcases/testcases.c:204:50: error: invalid application of 'sizeof' to incomplete type 'struct gcs_context'
-     204 |                         if (head->size != sizeof(struct gcs_context))
-         |                                                  ^~~~~~
---
-   mte_common_util.c: In function 'mte_default_setup':
->> mte_common_util.c:376:39: error: 'HWCAP3_MTE_FAR' undeclared (first use in this function); did you mean 'HWCAP2_MTE'?
-     376 |         mtefar_support = !!(hwcaps3 & HWCAP3_MTE_FAR);
-         |                                       ^~~~~~~~~~~~~~
-         |                                       HWCAP2_MTE
-   mte_common_util.c:376:39: note: each undeclared identifier is reported only once for each function it appears in
->> mte_common_util.c:378:23: error: 'HWCAP3_MTE_STORE_ONLY' undeclared (first use in this function); did you mean 'PR_MTE_STORE_ONLY'?
-     378 |         if (hwcaps3 & HWCAP3_MTE_STORE_ONLY)
-         |                       ^~~~~~~~~~~~~~~~~~~~~
-         |                       PR_MTE_STORE_ONLY
---
->> check_prctl.c:112:79: error: 'HWCAP3_MTE_STORE_ONLY' undeclared here (not in a function); did you mean 'PR_MTE_STORE_ONLY'?
-     112 |         { PR_MTE_TCF_SYNC | PR_MTE_STORE_ONLY,                    HWCAP2_MTE, HWCAP3_MTE_STORE_ONLY, "SYNC+STONLY" },
-         |                                                                               ^~~~~~~~~~~~~~~~~~~~~
-         |                                                                               PR_MTE_STORE_ONLY
-   mte_common_util.c: In function 'mte_default_setup':
->> mte_common_util.c:376:39: error: 'HWCAP3_MTE_FAR' undeclared (first use in this function); did you mean 'HWCAP2_MTE'?
-     376 |         mtefar_support = !!(hwcaps3 & HWCAP3_MTE_FAR);
-         |                                       ^~~~~~~~~~~~~~
-         |                                       HWCAP2_MTE
-   mte_common_util.c:376:39: note: each undeclared identifier is reported only once for each function it appears in
->> mte_common_util.c:378:23: error: 'HWCAP3_MTE_STORE_ONLY' undeclared (first use in this function); did you mean 'PR_MTE_STORE_ONLY'?
-     378 |         if (hwcaps3 & HWCAP3_MTE_STORE_ONLY)
-         |                       ^~~~~~~~~~~~~~~~~~~~~
-         |                       PR_MTE_STORE_ONLY
---
->> hwcap.c:720:30: error: 'HWCAP_CMPBR' undeclared here (not in a function)
-     720 |                 .hwcap_bit = HWCAP_CMPBR,
-         |                              ^~~~~~~~~~~
->> hwcap.c:781:30: error: 'HWCAP_F8MM8' undeclared here (not in a function); did you mean 'HWCAP_FCMA'?
-     781 |                 .hwcap_bit = HWCAP_F8MM8,
-         |                              ^~~~~~~~~~~
-         |                              HWCAP_FCMA
->> hwcap.c:788:30: error: 'HWCAP_F8MM4' undeclared here (not in a function); did you mean 'HWCAP2_F8DP4'?
-     788 |                 .hwcap_bit = HWCAP_F8MM4,
-         |                              ^~~~~~~~~~~
-         |                              HWCAP2_F8DP4
->> hwcap.c:795:30: error: 'HWCAP3_F16MM' undeclared here (not in a function); did you mean 'HWCAP_FCMA'?
-     795 |                 .hwcap_bit = HWCAP3_F16MM,
-         |                              ^~~~~~~~~~~~
-         |                              HWCAP_FCMA
->> hwcap.c:802:30: error: 'HWCAP3_F16F32DOT' undeclared here (not in a function)
-     802 |                 .hwcap_bit = HWCAP3_F16F32DOT,
-         |                              ^~~~~~~~~~~~~~~~
->> hwcap.c:809:30: error: 'HWCAP3_F16F32MM' undeclared here (not in a function); did you mean 'HWCAP2_SVEF32MM'?
-     809 |                 .hwcap_bit = HWCAP3_F16F32MM,
-         |                              ^~~~~~~~~~~~~~~
-         |                              HWCAP2_SVEF32MM
->> hwcap.c:838:30: error: 'HWCAP_FPRCVT' undeclared here (not in a function); did you mean 'HWCAP_JSCVT'?
-     838 |                 .hwcap_bit = HWCAP_FPRCVT,
-         |                              ^~~~~~~~~~~~
-         |                              HWCAP_JSCVT
->> hwcap.c:904:30: error: 'HWCAP3_LSFE' undeclared here (not in a function); did you mean 'HWCAP_SVE'?
-     904 |                 .hwcap_bit = HWCAP3_LSFE,
-         |                              ^~~~~~~~~~~
-         |                              HWCAP_SVE
->> hwcap.c:998:30: error: 'HWCAP_SME2P2' undeclared here (not in a function); did you mean 'HWCAP2_SME2P1'?
-     998 |                 .hwcap_bit = HWCAP_SME2P2,
-         |                              ^~~~~~~~~~~~
-         |                              HWCAP2_SME2P1
->> hwcap.c:1005:30: error: 'HWCAP3_SME2P3' undeclared here (not in a function); did you mean 'HWCAP2_SME2P1'?
-    1005 |                 .hwcap_bit = HWCAP3_SME2P3,
-         |                              ^~~~~~~~~~~~~
-         |                              HWCAP2_SME2P1
->> hwcap.c:1012:30: error: 'HWCAP_SME_AES' undeclared here (not in a function); did you mean 'HWCAP2_SVEAES'?
-    1012 |                 .hwcap_bit = HWCAP_SME_AES,
-         |                              ^~~~~~~~~~~~~
-         |                              HWCAP2_SVEAES
->> hwcap.c:1061:30: error: 'HWCAP3_SME_LUT6' undeclared here (not in a function); did you mean 'HWCAP2_SME_LUTV2'?
-    1061 |                 .hwcap_bit = HWCAP3_SME_LUT6,
-         |                              ^~~~~~~~~~~~~~~
-         |                              HWCAP2_SME_LUTV2
->> hwcap.c:1075:30: error: 'HWCAP_SME_SBITPERM' undeclared here (not in a function); did you mean 'HWCAP2_SVEBITPERM'?
-    1075 |                 .hwcap_bit = HWCAP_SME_SBITPERM,
-         |                              ^~~~~~~~~~~~~~~~~~
-         |                              HWCAP2_SVEBITPERM
->> hwcap.c:1103:30: error: 'HWCAP_SME_SFEXPA' undeclared here (not in a function); did you mean 'HWCAP2_SME_SF8FMA'?
-    1103 |                 .hwcap_bit = HWCAP_SME_SFEXPA,
-         |                              ^~~~~~~~~~~~~~~~
-         |                              HWCAP2_SME_SF8FMA
->> hwcap.c:1110:30: error: 'HWCAP_SME_SMOP4' undeclared here (not in a function); did you mean 'HWCAP2_SME_SF8DP4'?
-    1110 |                 .hwcap_bit = HWCAP_SME_SMOP4,
-         |                              ^~~~~~~~~~~~~~~
-         |                              HWCAP2_SME_SF8DP4
->> hwcap.c:1117:30: error: 'HWCAP_SME_STMOP' undeclared here (not in a function); did you mean 'HWCAP2_SME_SF8DP2'?
-    1117 |                 .hwcap_bit = HWCAP_SME_STMOP,
-         |                              ^~~~~~~~~~~~~~~
-         |                              HWCAP2_SME_SF8DP2
->> hwcap.c:1146:30: error: 'HWCAP_SVE2P2' undeclared here (not in a function); did you mean 'HWCAP2_SVE2P1'?
-    1146 |                 .hwcap_bit = HWCAP_SVE2P2,
-         |                              ^~~~~~~~~~~~
-         |                              HWCAP2_SVE2P1
->> hwcap.c:1153:30: error: 'HWCAP3_SVE2P3' undeclared here (not in a function); did you mean 'HWCAP2_SVE2P1'?
-    1153 |                 .hwcap_bit = HWCAP3_SVE2P3,
-         |                              ^~~~~~~~~~~~~
-         |                              HWCAP2_SVE2P1
->> hwcap.c:1167:30: error: 'HWCAP_SVE_AES2' undeclared here (not in a function); did you mean 'HWCAP2_SVEAES'?
-    1167 |                 .hwcap_bit = HWCAP_SVE_AES2,
-         |                              ^~~~~~~~~~~~~~
-         |                              HWCAP2_SVEAES
->> hwcap.c:1174:30: error: 'HWCAP3_SVE_B16MM' undeclared here (not in a function); did you mean 'HWCAP2_SVE_B16B16'?
-    1174 |                 .hwcap_bit = HWCAP3_SVE_B16MM,
-         |                              ^~~~~~~~~~~~~~~~
-         |                              HWCAP2_SVE_B16B16
-   hwcap.c:1181:30: error: 'HWCAP_SVE_BFSCALE' undeclared here (not in a function)
-    1181 |                 .hwcap_bit = HWCAP_SVE_BFSCALE,
-         |                              ^~~~~~~~~~~~~~~~~
-   hwcap.c:1188:30: error: 'HWCAP_SVE_ELTPERM' undeclared here (not in a function); did you mean 'HWCAP2_SVEBITPERM'?
-    1188 |                 .hwcap_bit = HWCAP_SVE_ELTPERM,
-         |                              ^~~~~~~~~~~~~~~~~
-         |                              HWCAP2_SVEBITPERM
-   hwcap.c:1195:30: error: 'HWCAP_SVE_F16MM' undeclared here (not in a function); did you mean 'HWCAP2_SVEF32MM'?
-    1195 |                 .hwcap_bit = HWCAP_SVE_F16MM,
-         |                              ^~~~~~~~~~~~~~~
-         |                              HWCAP2_SVEF32MM
-   hwcap.c:1202:30: error: 'HWCAP3_SVE_LUT6' undeclared here (not in a function); did you mean 'HWCAP2_SME_LUTV2'?
-    1202 |                 .hwcap_bit = HWCAP3_SVE_LUT6,
-         |                              ^~~~~~~~~~~~~~~
-         |                              HWCAP2_SME_LUTV2
-   hwcap.c:1286:30: error: 'HWCAP3_MTE_FAR' undeclared here (not in a function); did you mean 'HWCAP2_MTE'?
-    1286 |                 .hwcap_bit = HWCAP3_MTE_FAR,
-         |                              ^~~~~~~~~~~~~~
-         |                              HWCAP2_MTE
-   hwcap.c:1292:30: error: 'HWCAP3_MTE_STORE_ONLY' undeclared here (not in a function); did you mean 'PR_MTE_STORE_ONLY'?
-    1292 |                 .hwcap_bit = HWCAP3_MTE_STORE_ONLY,
-         |                              ^~~~~~~~~~~~~~~~~~~~~
-         |                              PR_MTE_STORE_ONLY
-   hwcap.c:1298:30: error: 'HWCAP3_LS64' undeclared here (not in a function); did you mean 'HWCAP_SM4'?
-    1298 |                 .hwcap_bit = HWCAP3_LS64,
-         |                              ^~~~~~~~~~~
-         |                              HWCAP_SM4
---
-   In file included from ./../../../../include/nolibc/std.h:19,
-                    from ./../../../../include/nolibc/nolibc.h:95,
-                    from <command-line>:
->> tools/include/linux/types.h:13:10: fatal error: asm/types.h: No such file or directory
-      13 | #include <asm/types.h>
-         |          ^~~~~~~~~~~~~
-   compilation terminated.
---
-   libc-gcs.c: In function 'ptrace_read_write':
->> libc-gcs.c:143:25: error: storage size of 'child_gcs' isn't known
-     143 |         struct user_gcs child_gcs;
-         |                         ^~~~~~~~~
-   libc-gcs.c:143:25: warning: unused variable 'child_gcs' [-Wunused-variable]
---
->> arm64/hypercalls.c:48:21: error: 'KVM_REG_ARM_VENDOR_HYP_BMAP_2' undeclared here (not in a function); did you mean 'KVM_REG_ARM_VENDOR_HYP_BMAP'?
-      48 |         FW_REG_INFO(KVM_REG_ARM_VENDOR_HYP_BMAP_2),
-         |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arm64/hypercalls.c:39:24: note: in definition of macro 'FW_REG_INFO'
-      39 |                 .reg = r,                       \
-         |                        ^
-   cc1: note: unrecognized command-line option '-Wno-gnu-variable-sized-type-not-at-end' may have been intended to silence earlier diagnostics
---
-   In file included from include/kvm_util.h:8,
-                    from arm64/psci_test.c:18:
-   arm64/psci_test.c: In function 'host_test_system_off2':
->> arm64/psci_test.c:264:57: error: 'KVM_SYSTEM_EVENT_SHUTDOWN_FLAG_PSCI_OFF2' undeclared (first use in this function); did you mean 'KVM_SYSTEM_EVENT_RESET_FLAG_PSCI_RESET2'?
-     264 |                 TEST_ASSERT(run->system_event.data[0] & KVM_SYSTEM_EVENT_SHUTDOWN_FLAG_PSCI_OFF2,
-         |                                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/test_util.h:60:22: note: in definition of macro 'TEST_ASSERT'
-      60 |         test_assert((e), #e, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
-         |                      ^
-   arm64/psci_test.c:264:57: note: each undeclared identifier is reported only once for each function it appears in
-     264 |                 TEST_ASSERT(run->system_event.data[0] & KVM_SYSTEM_EVENT_SHUTDOWN_FLAG_PSCI_OFF2,
-         |                                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/test_util.h:60:22: note: in definition of macro 'TEST_ASSERT'
-      60 |         test_assert((e), #e, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
-         |                      ^
-   At top level:
-   cc1: note: unrecognized command-line option '-Wno-gnu-variable-sized-type-not-at-end' may have been intended to silence earlier diagnostics
---
-   arm64/vgic_v5.c: In function 'test_vgic_v5_ppis':
->> arm64/vgic_v5.c:124:29: error: 'KVM_DEV_ARM_VGIC_USERSPACE_PPIS' undeclared (first use in this function); did you mean 'KVM_DEV_ARM_VGIC_GRP_CPU_REGS'?
-     124 |                             KVM_DEV_ARM_VGIC_USERSPACE_PPIS, &user_ppis);
-         |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |                             KVM_DEV_ARM_VGIC_GRP_CPU_REGS
-   arm64/vgic_v5.c:124:29: note: each undeclared identifier is reported only once for each function it appears in
-   At top level:
-   cc1: note: unrecognized command-line option '-Wno-gnu-variable-sized-type-not-at-end' may have been intended to silence earlier diagnostics
---
-   arm64/vpmu_counter_access.c: In function 'test_create_vpmu_vm_with_nr_counters':
->> arm64/vpmu_counter_access.c:476:38: error: 'KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS' undeclared (first use in this function); did you mean 'KVM_ARM_VCPU_PMU_V3_SET_PMU'?
-     476 |                                      KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS, &nr_counters);
-         |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |                                      KVM_ARM_VCPU_PMU_V3_SET_PMU
-   arm64/vpmu_counter_access.c:476:38: note: each undeclared identifier is reported only once for each function it appears in
-   arm64/vpmu_counter_access.c: In function 'kvm_supports_nr_counters_attr':
-   arm64/vpmu_counter_access.c:619:45: error: 'KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS' undeclared (first use in this function); did you mean 'KVM_ARM_VCPU_PMU_V3_SET_PMU'?
-     619 |                                             KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS);
-         |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |                                             KVM_ARM_VCPU_PMU_V3_SET_PMU
-   At top level:
-   cc1: note: unrecognized command-line option '-Wno-gnu-variable-sized-type-not-at-end' may have been intended to silence earlier diagnostics
-..
+This patch establishes the lowest HW layer and core infrastructure,
+preparing for subsequent device implementations.
 
+Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
+---
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |   3 +-
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |  18 +++
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  | 152 ++++++++++++++++++
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h  |  14 ++
+ .../nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h     |  33 ++++
+ .../nbl/nbl_include/nbl_def_common.h          |  32 ++++
+ .../nbl/nbl_include/nbl_def_hw.h              |  17 ++
+ .../nbl/nbl_include/nbl_include.h             |   9 ++
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  90 ++++++++++-
+ 9 files changed, 366 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
 
-vim +13 tools/include/linux/types.h
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+index b90fba239401..caa863d3a582 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
++++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+@@ -3,4 +3,5 @@
+ 
+ obj-$(CONFIG_NBL) := nbl.o
+ 
+-nbl-objs +=      nbl_main.o
++nbl-objs +=       nbl_hw/nbl_hw_leonis/nbl_hw_leonis.o \
++				nbl_main.o
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+index 59f5b92944cc..e2e33fbb848a 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+@@ -6,8 +6,26 @@
+ #ifndef _NBL_CORE_H_
+ #define _NBL_CORE_H_
+ 
++#include <linux/pci.h>
++#include "nbl_include/nbl_include.h"
++#include "nbl_include/nbl_def_common.h"
++
+ enum {
+ 	NBL_CAP_HAS_NET_BIT,
+ };
+ 
++struct nbl_core {
++	struct nbl_hw_mgt *hw_mgt;
++};
++
++struct nbl_adapter {
++	struct pci_dev *pdev;
++	struct nbl_core core;
++	struct nbl_common_info common;
++};
++
++struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
++				  struct nbl_init_param *param);
++void nbl_core_remove(struct nbl_adapter *adapter);
++
+ #endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+new file mode 100644
+index 000000000000..d66d7ca8a2bb
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+@@ -0,0 +1,152 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ */
++#include <linux/device.h>
++#include <linux/pci.h>
++#include <linux/bits.h>
++#include <linux/io.h>
++#include <linux/spinlock.h>
++#include <linux/bitfield.h>
++#include "nbl_hw_leonis.h"
++
++/* Structure starts here, adding an op should not modify anything below */
++static struct nbl_hw_mgt *nbl_hw_setup_hw_mgt(struct nbl_common_info *common)
++{
++	struct device *dev = common->dev;
++	struct nbl_hw_mgt *hw_mgt;
++
++	hw_mgt = devm_kzalloc(dev, sizeof(*hw_mgt), GFP_KERNEL);
++	if (!hw_mgt)
++		return ERR_PTR(-ENOMEM);
++
++	hw_mgt->common = common;
++
++	return hw_mgt;
++}
++
++static int nbl_pcim_request_selected_bars(struct pci_dev *pdev, u32 mask,
++					  const char *name)
++{
++	int bar;
++	int ret;
++
++	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++) {
++		if (!(mask & BIT(bar)))
++			continue;
++		ret = pcim_request_region(pdev, bar, name);
++		if (ret)
++			return ret;
++	}
++	return 0;
++}
++
++int nbl_hw_init_leonis(struct nbl_adapter *adapter)
++{
++	struct nbl_common_info *common = &adapter->common;
++	struct pci_dev *pdev = common->pdev;
++	struct nbl_hw_mgt *hw_mgt = NULL;
++	resource_size_t bar_len;
++	u32 bar_mask;
++	int ret;
++
++	hw_mgt = nbl_hw_setup_hw_mgt(common);
++	if (IS_ERR(hw_mgt)) {
++		ret = PTR_ERR(hw_mgt);
++		goto setup_mgt_fail;
++	}
++	bar_mask = BIT(NBL_MEMORY_BAR) | BIT(NBL_MAILBOX_BAR);
++	ret = nbl_pcim_request_selected_bars(pdev, bar_mask, NBL_DRIVER_NAME);
++	if (ret) {
++		dev_err(&pdev->dev,
++			"Request memory bar failed, err = %d\n",
++			ret);
++		goto setup_mgt_fail;
++	}
++
++	bar_len = pci_resource_len(pdev, NBL_MEMORY_BAR);
++	if (!(pci_resource_flags(pdev, NBL_MEMORY_BAR) & IORESOURCE_MEM)) {
++		dev_err(&pdev->dev, "MEMORY BAR is not memory resource\n");
++		ret = -EINVAL;
++		goto setup_mgt_fail;
++	}
++	if (common->has_ctrl) {
++		/*
++		 * Hardware layout: MEMORY BAR total size is 64M.
++		 * The front NBL_HW_REG_SPACE_SIZE (32M) holds module
++		 * registers and table entries. The trailing NBL_RDMA_NOTIFY_LEN
++		 * bytes within this 32M region are reserved exclusively for
++		 * RDMA notification hardware logic.
++		 * Ethernet driver must avoid mapping this reserved range to
++		 * prevent x86 PAT attribute aliasing conflict between eth UC
++		 * mapping and RDMA driver WC mapping.
++		 * Mapping range starts at offset 0, length equals
++		 * NBL_HW_REG_SPACE_SIZE - NBL_RDMA_NOTIFY_LEN.
++		 */
++		if (bar_len < NBL_HW_REG_SPACE_SIZE) {
++			dev_err(&pdev->dev,
++				"MEMORY BAR len %pa too small for ctrl reg space\n",
++				&bar_len);
++			ret = -EINVAL;
++			goto setup_mgt_fail;
++		}
++		/*
++		 * Spec: Front 32MiB of 64M MEM BAR contains register space.
++		 * Skip trailing NBL_RDMA_NOTIFY_LEN bytes inside 32M boundary
++		 * never map that RDMA exclusive partition to avoid PAT conflict
++		 */
++		hw_mgt->hw_size = NBL_HW_REG_SPACE_SIZE  - NBL_RDMA_NOTIFY_LEN;
++		hw_mgt->hw_addr =
++			pcim_iomap(pdev, NBL_MEMORY_BAR,
++				   hw_mgt->hw_size);
++	} else {
++		if (bar_len < NBL_REG_NET_ONLY_LEN) {
++			dev_err(&pdev->dev,
++				"MEMORY BAR len %pa too small for net only reg space\n",
++				&bar_len);
++			ret = -EINVAL;
++			goto setup_mgt_fail;
++		}
++		hw_mgt->hw_size = NBL_REG_NET_ONLY_LEN;
++		hw_mgt->hw_addr = pcim_iomap(pdev, NBL_MEMORY_BAR,
++					     hw_mgt->hw_size);
++	}
++	if (!hw_mgt->hw_addr) {
++		dev_err(&pdev->dev, "MEMORY BAR pcim_iomap failed\n");
++		ret = -EIO;
++		goto setup_mgt_fail;
++	}
++
++	bar_len = pci_resource_len(pdev, NBL_MAILBOX_BAR);
++	if (!(pci_resource_flags(pdev, NBL_MAILBOX_BAR) & IORESOURCE_MEM)) {
++		dev_err(&pdev->dev, "MAILBOX BAR is not memory resource\n");
++		ret = -EINVAL;
++		goto setup_mgt_fail;
++	}
++	if (bar_len == 0) {
++		dev_err(&pdev->dev, "MAILBOX BAR length is zero\n");
++		ret = -EINVAL;
++		goto setup_mgt_fail;
++	}
++	hw_mgt->mailbox_bar_hw_addr = pcim_iomap(pdev, NBL_MAILBOX_BAR,
++						 bar_len);
++	if (!hw_mgt->mailbox_bar_hw_addr) {
++		dev_err(&pdev->dev, "MAILBOX BAR pcim_iomap failed\n");
++		ret = -EIO;
++		goto setup_mgt_fail;
++	}
++
++	adapter->core.hw_mgt = hw_mgt;
++
++	return 0;
++
++setup_mgt_fail:
++	return ret;
++}
++
++void nbl_hw_remove_leonis(struct nbl_adapter *adapter)
++{
++	/* All BAR mappings & PCI regions are managed by pcim/devres,
++	 * no manual iounmap / release required
++	 */
++}
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+new file mode 100644
+index 000000000000..77c67b67ba31
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_HW_LEONIS_H_
++#define _NBL_HW_LEONIS_H_
++
++#include <linux/types.h>
++
++#include "../../nbl_include/nbl_include.h"
++#include "../nbl_hw_reg.h"
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
+new file mode 100644
+index 000000000000..1a199357e85f
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
+@@ -0,0 +1,33 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_HW_REG_H_
++#define _NBL_HW_REG_H_
++
++#include <linux/types.h>
++
++#include "../nbl_include/nbl_def_hw.h"
++#include "../nbl_include/nbl_def_common.h"
++#include "../nbl_core.h"
++
++#define NBL_MEMORY_BAR				0
++#define NBL_MAILBOX_BAR				2
++#define NBL_RDMA_NOTIFY_LEN			(8ULL << 10)
++#define NBL_REG_NET_ONLY_LEN			(8ULL << 10)
++/*
++ * PCI MEMORY BAR total size: 64MiB.
++ * First 32MiB: module registers + table entry address range.
++ * Region after 32MiB is unused for ethernet driver.
++ */
++#define NBL_HW_REG_SPACE_SIZE			(32ULL << 20)
++
++struct nbl_hw_mgt {
++	struct nbl_common_info *common;
++	u8 __iomem *hw_addr;
++	u8 __iomem *mailbox_bar_hw_addr;
++	resource_size_t hw_size;
++};
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
+new file mode 100644
+index 000000000000..5b7ec68d620b
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_DEF_COMMON_H_
++#define _NBL_DEF_COMMON_H_
++
++#include <linux/types.h>
++#include <linux/pci.h>
++#include <linux/device.h>
++#include "nbl_include.h"
++
++struct nbl_common_info {
++	struct pci_dev *pdev;
++	struct device *dev;
++	u32 msg_enable;
++	u16 vsi_id;
++	u8 eth_id;
++	u8 logic_eth_id;
++	u8 eth_num;
++
++	u8 function;
++	u8 devid;
++	u8 bus;
++	u8 hw_bus;
++
++	u8 has_ctrl;
++	u8 has_net;
++};
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
+new file mode 100644
+index 000000000000..517cfa5c755e
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_DEF_HW_H_
++#define _NBL_DEF_HW_H_
++
++#include <linux/types.h>
++
++struct nbl_hw_mgt;
++struct nbl_adapter;
++
++int nbl_hw_init_leonis(struct nbl_adapter *adapter);
++void nbl_hw_remove_leonis(struct nbl_adapter *adapter);
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+index cd99f96e1568..70f4f4b4c49c 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+@@ -10,5 +10,14 @@
+ 
+ /*  ------  Basic definitions  -------  */
+ #define NBL_DRIVER_NAME					"nbl"
++struct nbl_func_caps {
++	u32 has_ctrl:1;
++	u32 has_net:1;
++	u32 rsv:30;
++};
++
++struct nbl_init_param {
++	struct nbl_func_caps caps;
++};
+ 
+ #endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+index 7c969c854bdc..1c13ff3bfee8 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+@@ -8,16 +8,104 @@
+ #include <linux/module.h>
+ #include <linux/bits.h>
+ #include "nbl_include/nbl_include.h"
++#include "nbl_include/nbl_def_hw.h"
++#include "nbl_include/nbl_def_common.h"
+ #include "nbl_core.h"
+ 
++struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
++				  struct nbl_init_param *param)
++{
++	struct nbl_common_info *common;
++	struct nbl_adapter *adapter;
++	int ret;
++
++	adapter = devm_kzalloc(&pdev->dev, sizeof(*adapter), GFP_KERNEL);
++	if (!adapter)
++		return ERR_PTR(-ENOMEM);
++
++	adapter->pdev = pdev;
++	common = &adapter->common;
++
++	common->pdev = pdev;
++	common->dev = &pdev->dev;
++	common->has_ctrl = param->caps.has_ctrl;
++	common->has_net = param->caps.has_net;
++	common->function = PCI_FUNC(pdev->devfn);
++	common->devid = PCI_SLOT(pdev->devfn);
++	common->bus = pdev->bus->number;
++
++	ret = nbl_hw_init_leonis(adapter);
++	if (ret)
++		goto hw_init_fail;
++
++	return adapter;
++hw_init_fail:
++	return ERR_PTR(ret);
++}
++
++void nbl_core_remove(struct nbl_adapter *adapter)
++{
++	nbl_hw_remove_leonis(adapter);
++}
++
++static void nbl_get_func_param(struct pci_dev *pdev, kernel_ulong_t driver_data,
++			       struct nbl_init_param *param)
++{
++	param->caps.has_net = !!(driver_data & BIT(NBL_CAP_HAS_NET_BIT));
++
++	/*
++	 * Only PF0 possesses ctrl capability; all PFs share identical PCI
++	 * device ID, so we handle this via special function ID judgement.
++	 */
++	if ((PCI_FUNC(pdev->devfn) == 0) && !pdev->is_virtfn)
++		param->caps.has_ctrl = 1;
++}
++
+ static int nbl_probe(struct pci_dev *pdev,
+ 		     const struct pci_device_id *id)
+ {
+-	return -ENODEV;
++	struct nbl_init_param param = { { 0 } };
++	struct device *dev = &pdev->dev;
++	struct nbl_adapter *adapter;
++	int err;
++
++	err = pcim_enable_device(pdev);
++	if (err) {
++		dev_err(&pdev->dev, "Failed to enable PCI dev, err=%d\n", err);
++		return err;
++	}
++
++	nbl_get_func_param(pdev, id->driver_data, &param);
++
++	err = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
++	if (err) {
++		dev_dbg(dev, "Configure DMA 64 bit mask failed, err = %d\n",
++			err);
++		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32));
++	}
++	pci_set_master(pdev);
++
++	adapter = nbl_core_init(pdev, &param);
++	if (IS_ERR(adapter)) {
++		dev_err(dev, "Nbl adapter init fail: %pe\n", adapter);
++		err = PTR_ERR(adapter);
++		goto adapter_init_err;
++	}
++	pci_set_drvdata(pdev, adapter);
++	return 0;
++adapter_init_err:
++	pci_clear_master(pdev);
++	return err;
+ }
+ 
+ static void nbl_remove(struct pci_dev *pdev)
+ {
++	struct nbl_adapter *adapter = pci_get_drvdata(pdev);
++
++	if (adapter)
++		nbl_core_remove(adapter);
++
++	pci_clear_master(pdev);
+ }
+ 
+ /*
+-- 
+2.47.3
 
-190d1c921ad086 tools/include/linux/types.h              Tiezhu Yang              2021-01-25  12  
-5634bd7d2ab14f tools/lib/lockdep/uinclude/linux/types.h Sasha Levin              2013-06-13 @13  #include <asm/types.h>
-67ef28794d7e30 tools/include/linux/types.h              Arnaldo Carvalho de Melo 2017-03-30  14  #include <asm/posix_types.h>
-5634bd7d2ab14f tools/lib/lockdep/uinclude/linux/types.h Sasha Levin              2013-06-13  15  
-
-:::::: The code at line 13 was first introduced by commit
-:::::: 5634bd7d2ab14fbf736b62b0788fb68e2cb0fde2 liblockdep: Wrap kernel/locking/lockdep.c to allow usage from userspace
-
-:::::: TO: Sasha Levin <sasha.levin@oracle.com>
-:::::: CC: Ingo Molnar <mingo@kernel.org>
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
