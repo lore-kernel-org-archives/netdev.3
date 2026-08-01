@@ -1,137 +1,60 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA5D2848BE
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 13:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D152C2DC789;
+	Sat,  1 Aug 2026 13:55:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785592115; cv=none; b=jl4xQmYNU0wm7I1iryVlPfoA/FGHYL6xlTyqq5pyF9EkN0wBYIskqU3delfvl+PVUItQWvYPmFgm7GaCie1NZBGt8ILfH9km22MA1N58XjQ6d5PRvakJt0aRdXj/UnqwU9iqnHC57vjjOvKrtJzkufyqDlAcuCBuYdnIAtnuN/I=
+	t=1785592547; cv=none; b=YvBHGTGlUtkunrj2ePArDnHi+iCSQtTMH3NLUZCb0yaexN55KrNdClKgCMfQ3HA4YDIO0oByCKpmgJZ5IfAnCJIUGnbTQomY8G90cBjsK6VtA8Sb/IBvadWOaDmiQOLfkMDxeX72L31FYuy+Jez/B9lwStKS4boRarnhuuUR3TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785592115; c=relaxed/simple;
-	bh=8fStiVRmEcXBn/0LYRREktT9bS2YSGijuVFy8NU5w2g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vB1LSMZcDDFmm0xGypAbnJ1nno8IUKCz+RcWbv47r4JUGbZRfMV6ltO7YvV3XreSU24ihGJ57kwj4Sw9SuhN2yLZiYjOzQQaNFjZ4og9zINXo+cpPGNJA7Yt2lCuF5KG62xbyg5M5wYsyxtAl1UNsBkYnvgcIpqaCF7XZA3snK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=f18uuSLK; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="f18uuSLK"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 671CljR1587818;
-	Sat, 1 Aug 2026 13:48:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=4KaR25
-	d7I/tB+vdjFKdyZCTPnseo5TYPvyf6WvU1BwA=; b=f18uuSLKD8L8afwgjoQA/w
-	GhxeVDTaqponEgun1Dj5DKn5F4Pn+Eljv1pUOsi2NGqY09brZsHb7jmhcTH3pDwc
-	ciexZW7FV1LdVaYnzhZWjfszVN/J8+VSYg2rIi4/QYQYGC647yTz8cxK3vGrIY9p
-	Ce8+Tw6GKhyoWXO8FNWxY7QfIOdfLJS3ahAOc+yxpFOmwm0qdhmB2FTNyGR3OONA
-	c/2BGfMQKFatT9Bmdfu7bBpauuIEBEZDfAnyw5PQ5tCYt8unKgSw+JQVNSYQHVJK
-	Tx1xNiXrKWFyChrpjgd4FlS9tKn6nVuPjqTDc2USkw9CCWzsg4qvSvoDtPsrNEzA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a3hfks-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 01 Aug 2026 13:48:03 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 671DfKsF003982;
-	Sat, 1 Aug 2026 13:48:02 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fna5yktwf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 01 Aug 2026 13:48:02 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 671DlOrc5898994
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 1 Aug 2026 13:47:24 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7506F5805C;
-	Sat,  1 Aug 2026 13:48:01 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C6EDA58051;
-	Sat,  1 Aug 2026 13:47:56 +0000 (GMT)
-Received: from [9.43.78.15] (unknown [9.43.78.15])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Sat,  1 Aug 2026 13:47:56 +0000 (GMT)
-Message-ID: <16986c93-097f-46ec-be40-7e4b6aeb42da@linux.ibm.com>
-Date: Sat, 1 Aug 2026 19:17:55 +0530
+	s=arc-20240116; t=1785592547; c=relaxed/simple;
+	bh=tc2qu4Upiy9N+pG5Gn3G0mr2NcOvtwfomhmvsbYg6i4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qy8IW24fRrj2Cr08iL3/tM/guQiClkQCwNMOXRABNuMvVKH97P3vSF/OKQTXFJFmap9r2S6sakbwA/LhahBmW2xsm/r6Co+VXeoYE1BhygkFbC4K2CjQKNcU3hIHGsRHxXUCOYel2ZeUngecmh66Jem0DO0myZxAq88/rj3Vwv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id A815660952; Sat, 01 Aug 2026 15:55:42 +0200 (CEST)
+Date: Sat, 1 Aug 2026 15:55:42 +0200
+From: Florian Westphal <fw@strlen.de>
+To: Zhiling Zou <zhilinz@nebusec.ai>
+Cc: netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
+	pablo@netfilter.org, phil@nwl.cc, kadlec@netfilter.org,
+	den@openvz.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, xmei5@asu.edu,
+	kees@kernel.org, sbrivio@redhat.com, vega@nebusec.ai
+Subject: Re: [PATCH nf 1/1] netfilter: ipset: serialize kernel-side
+ put-byindex with swap
+Message-ID: <am363vHJsdnL3Ja-@strlen.de>
+References: <cover.1785583673.git.zhilinz@nebusec.ai>
+ <df40376603e2a53a311d5ceea63240bedc11bdfc.1785583673.git.zhilinz@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH v2 3/4] nvme: add debugfs helpers for NVMe drivers
-To: Maurizio Lombardi <mlombard@arkamax.eu>, kbusch@kernel.org, hch@lst.de,
-        hare@suse.de, sagi@grimberg.me, chaitanyak@nvidia.com,
-        gjoyce@linux.ibm.com, kuba@kernel.org, davem@davemloft.net,
-        edumazet@google.com, pabeni@redhat.com, horms@kernel.org
-Cc: linux-nvme@lists.infradead.org, netdev@vger.kernel.org
-References: <20260731073918.614014-1-nilay@linux.ibm.com>
- <20260731073918.614014-4-nilay@linux.ibm.com>
- <DKCLUFJYS7HH.2EBXAQNUPN5B2@arkamax.eu>
-Content-Language: en-US
-From: Nilay Shroff <nilay@linux.ibm.com>
-In-Reply-To: <DKCLUFJYS7HH.2EBXAQNUPN5B2@arkamax.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a6df913 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=4b_1iKFbeTtuySlefewA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: _xZa8TTlHa74HiU1CbokRxsbbZWTdfYN
-X-Proofpoint-GUID: pTbYDd_ei5kMUaRr688voIQfNjtYQJx6
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAxMDExMCBTYWx0ZWRfX6eBjVHkmrOWL
- LM12Mtn6QpuqQV+8SRI/dV82qUgwGhE0EJegbHUnE1tFOljvOYdAs8pmbJqBut+k8S6NC+rGDT9
- MeeHstvSY2Tv/it+0yqojQZmUmEzOpA=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAxMDExMCBTYWx0ZWRfX22UZnumTjjDX
- nnmSSL9QWx7JSyeeUvDSAkMqVImhWFZQByvNI6fiI65geTvYVML74yRLm4+LGunpETQ5Y9brYVr
- zcWJYOBrn9Q2+MhiMqq0ypwsQaVMt88P+IAiLbXdgOVG+hzJ+KvVeHy+R7UhFwGPGsHrwbbl+/0
- cCmqnkgRV3DdDVI9Tm0ErqZpJAfYo/ZdXecJqFZALrz3nHbN+iec6UHWT0x+HC512vPqGM4GPdE
- tBNWhhfLnzsdPlHa5pWG/OsRt5e3YSyW5E2A+aPy+NqRtjNfmVPlFyoA0wW7DSLIrBO6AupXeDP
- JVjx7YT2iqzGKuLD4OP9ACz8PCaxWFkwVHR2jjo/f7NPK6CgI+q5WHTaz71i+BJQzruy5+zU6vJ
- 0q1u8YGTXXnFW92g40yE2u4gZUeXdhbwoATH85khUGdgxjBdQl63NnIkHscL5rraCgxP1vVnuNA
- /trxQ8INHTnZ2xAb4wg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-01_01,2026-07-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1011 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608010110
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <df40376603e2a53a311d5ceea63240bedc11bdfc.1785583673.git.zhilinz@nebusec.ai>
 
-On 7/31/26 1:44 PM, Maurizio Lombardi wrote:
-> On Fri Jul 31, 2026 at 9:39 AM CEST, Nilay Shroff wrote:
->> +static int nvme_debugfs_open(struct inode *inode, struct file *file)
->> +{
->> +	void *data = inode->i_private;
->> +	struct nvme_debugfs_attr *attr = debugfs_get_aux(file);
->> +	struct nvme_debugfs_ctx *ctx;
->> +	struct seq_file *m;
->> +	int ret;
->> +
->> +	if (attr->get && !attr->get(data))
->> +		return -ENODEV;
->> +
->> +	ctx = kzalloc_obj(*ctx);
->> +	if (WARN_ON_ONCE(!ctx)) {
->> +		ret = -ENOMEM;
->> +		goto out;
->> +	}
+Zhiling Zou <zhilinz@nebusec.ai> wrote:
+> list:set garbage collection drops member set references through
+> ip_set_put_byindex(), which resolves inst->ip_set_list[index] before
+> __ip_set_put() takes ip_set_ref_lock. ip_set_swap() swaps both the set
+> pointers and the corresponding refcounts while holding that same lock.
 > 
-> Just a nit, I don't think that raising a warning just because
-> kzalloc() returned NULL is a good idea as failures can naturally
-> occur under OOM conditions and aren't bugs.
+> If garbage collection looks up the old set pointer for an index and then
+> loses the lock race to ip_set_swap(), it decrements the old object after
+> its refcount has already been swapped away. This can trigger BUG_ON(ref
+> == 0) when the other set had no references, or otherwise under-reference
+> a set that is still reachable through the swapped index.
 > 
+> Fix this by holding ip_set_ref_lock across the kernel-side lookup and
+> refcount decrement. This keeps ip_set_put_byindex() paired with the same
+> set/ref state that ip_set_swap() publishes, without changing normal
+> list:set deletion or swap behaviour.
 
-Alright, I'll change it to just return -ENOMEM without producing
-a warning, in case kzalloc fails.
-
-Thanks,
---Nilay
+Looks like a duplicate of
+https://patchwork.ozlabs.org/project/netfilter-devel/patch/20260722223832.3524006-1-xmei5@asu.edu/
