@@ -1,81 +1,79 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC25304BB3
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 21:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14FA381AE5
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 22:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785620019; cv=none; b=Gy+8Y0pbJhMLTnKR2Z++fY/8QwPOV5pM/Re8TT7N4NzohW9XebEPv6Apfsc2FNvFTTdt1u0yP7UNxys/IiC8eqx59ACT0XxXNxYBcMb7oPlnHu1I14fx+A6j0CtBCvfxuaBXO3AIDsZisEKFuieSmGPks71Q6eGs0M26O+cB5Sw=
+	t=1785622132; cv=none; b=anvT6+Uhx2kYCVxeTrRjiNBRWvjQ5T0WbljOH2TMLqKArpwdQNAIddfpvjqTfsyIkIjcYDilUkXJDCF95nU2gdCm8CpSANuXBy8AHoCKZ281xx0fi2tVRuQzhaQanbEr+xLXvT75A39X9YoeiTFwNhBqDdQkS4dZk41h9+MJ4RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785620019; c=relaxed/simple;
-	bh=+0AJrwcciyplcwEV9pWiYWOy0FhAYa1rWOLN8c1/P80=;
+	s=arc-20240116; t=1785622132; c=relaxed/simple;
+	bh=NoXcdRooBIPIanQ647b061elFHa9QZWXVs6RX2LpHV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o8D0qo2FpJIMWNw+tdRB2RZgmcyZr+s0XdpPPPVSiakF8f0pWdky3bpedByMFvwNXDBVoXjsr8jQcEK0gxg+zWz0koIHyZs7z9EQzJgk8XvWjt8CnFxx8RnYamoGO40FoHRTDWoQ6tHv2uy9c0ZlFdA9YYzCF9ngauu5q2qZXUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RGv0S/mV; arc=none smtp.client-ip=209.85.167.45
+	 MIME-Version; b=TNuJD/Q5fWyJgkZGVptNG1qwK+HJCoW0dED4QxLI0WRiUIbhngzR6/mpRSHRIAEUNN6FKJD861lvsw3HKu5yKrtc835ri+dm8S4Qjj9/epW5d+ostPrEh8RaeLVIpyNyWWJFYqGlB+Olk+RbonOshFHSRfKkPn6ipMu29Cj4gH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JozBL6ol; arc=none smtp.client-ip=209.85.219.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RGv0S/mV"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5b2a44a3b66so2203637e87.1
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 14:33:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JozBL6ol"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8f23e851626so13992956d6.3
+        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 15:08:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785620016; x=1786224816; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785622128; x=1786226928; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Zl3deXJpTEpLGVmA801R0WemyMlV5n2MzzWnIi52BN8=;
-        b=RGv0S/mVGhjkCR//ZEGXw2Wt1WOoMQlhnkGm8vc/l2qjiU8ytYarAJcFbmWafuH2HJ
-         SxomoZMbhjKewrWFrqxn1noECzG/wKSjqTeMehAuvpNIzqq3craHg6k1M4b2oCCyoCM+
-         hUlNeV+g8MYWhLpKucxa42ztGwMNFvMPQXvfaxsCyjNLd9at5TAgNWJwvQm+rSCdm+rP
-         MmeDjJtZS7Z7AKHccjmBSskfCZjyAbjenwzkPY3zw9Uw+O2UzepmLuNqL15U2qUWFFTB
-         DM5kmTZi2JjTdUhaW9bXP4Jhdz9a77uptpmdR99Vhu8BKNqB4clhUHEJRyLbogdCOUKX
-         ZsmQ==
+        bh=NoXcdRooBIPIanQ647b061elFHa9QZWXVs6RX2LpHV4=;
+        b=JozBL6ol9P/HemSKaSQFHOPAW0o5AyDB1RK4oepwrWU5dJkhJDP+rNY3zffXivkZ6y
+         4Q6qNdsHvbNNI4UsuATSetNbXaFhEzHIA3NZpju+UCttgCW8Kj9U2NewefU1cDq5KlyK
+         eW4ZpvlO+z+BbFDoLGp7RTwOdCSvnAn+3RQ71y+TQaU3hdtOOuavUUXFYmyl4Y2je1Nd
+         clHbVE2C40aanh9FNzG6fiha6TypexJVsp2O9wIKyO+ZNhktdtghDPaGRGM9ueW0MjbS
+         5CF3xTw2MeYod2PNEdaWsE8nq2YvgS/uFIEwulYJdC6XpxWYRBO2D8NlIjrTNCgfEENk
+         K6+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785620016; x=1786224816;
+        d=1e100.net; s=20251104; t=1785622128; x=1786226928;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Zl3deXJpTEpLGVmA801R0WemyMlV5n2MzzWnIi52BN8=;
-        b=fMs0/j92hx8nCn8cvSvzjBXJIh+E3hcagLlshe+bNfPKeXnxjCoDl5ja+v7ZrzTc6o
-         +Rayq7f6hkUauXANlIV6jqG/C3Nqgar8mPDiZw1jMC0bbkMv/zJQhB1voixFng+N/BdA
-         bjhcKuha/T6ErQ8qJOEGrLgBK7VPN6mKebwFR/H79z2fhsA75DhVaUNfZuoVm6vOXTpN
-         gWJHvjUr/PC8Szzp1knnGvXtqWbtnnXpK+HvAlV4GcXA7Io/Pua6TcvMwBHFelQNte8X
-         hL4XOpTWyhUDRa74rsRGnvxpnlvjA717rAI3G2loiSc6nDzofNABUAvfZNaSSKkFlF/w
-         arhw==
-X-Forwarded-Encrypted: i=1; AHgh+RoaJjZoXQP1CtxtShkZ8yBGzbjw1izLu8FXwIjN9jeCXojW0aa6c3/alf407hxvs7SYVFISly8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynmcV6reQP/bCNJv/KMXc4edUa/cNa0j/eKq0gcQ8P9MOaVOuE
-	rzoFJ5hqyXtxGUFX2txdAIpjatfH5NhOI3aodoAaGpjZc41yV86NCcin
-X-Gm-Gg: AR+sD13xUpVcVNeiPL0Wr7H0eQtQAaw0y2xPlvvnCiQPDEUnzAKEJo7U1yKB3Bwh62W
-	SgAmDD8+vSaHD/sVO6snaVtHGTeajnI0HM21R9GI4oKm6PFd54UG+vYMW0+7BzGE2i52JdhWVVk
-	j5w3hwWBic3U7Qpp+3yh3OSTmH+525j/hUMhro5TVQUzQBr16GDkWms+eJ3GznIufJmSylp5/v2
-	nSXrKfFYOMcyNzxwBkNHIkxH0HELwiTv8lLwIrU61ACuZMfKIzrZXK9s8PEyEXUhrPXn25pLt2K
-	1qIShNxl2KPAZJW7AC3+eyMUEXEdPH+PTedkYfwbJBWGKQYlH5yOYFdF/t5adaB5y66/ZMMfZMD
-	R/pBU4cbzHzyxF0kp9UjAzesa83P7Eq8uemfaIzV8pa66zKxpIKdZ52AI9L6p41j/L3Jh/ferEg
-	s8/+c4PJQsYsE4EUiuErDyG74GYQ93x9zC2BhRwmnCK64oHTJ96AqhWa2VxzW2h4+SfyInaEifA
-	5XHsu6kGSoe9NmNSdgwsODDl2lJiLfvANXP8wEvefQI
-X-Received: by 2002:a05:6512:68f:b0:5ae:bbe4:f4b9 with SMTP id 2adb3069b0e04-5b2e4f8e4a5mr714351e87.55.1785620015827;
-        Sat, 01 Aug 2026 14:33:35 -0700 (PDT)
-Received: from pc.tail250202.ts.net ([87.110.86.243])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b2e23cb687sm1117475e87.19.2026.08.01.14.33.33
+        bh=NoXcdRooBIPIanQ647b061elFHa9QZWXVs6RX2LpHV4=;
+        b=YLfKLFeLRst5YvGCJl3U3CC/250xaVKxnbX/AJ0UzrKkaivD4Q1y11X5TVx+qdS56Q
+         y81MwqOf4nTgXufnPTSTIJbxv2j/nI9ptxcPeOdOBdM2h4js5znH9zDTEbMR0oGxN0ap
+         za7P5L2p9FRsB3mRtdID5xvlZlEk/90tngLgWmfhPFur/wxcaYVbsLsq3DXEa1o1OYq0
+         n/fINXFle+aQIG9EjWYjCJ90uhgUuN23bjcjpUsLV3wL4Fc2Tit9ReieJFrMV9/8r26x
+         Y9oDATFqyzZxc2ydPJn+DTS7YVoAEyNmNin/l5b3jFwwmzEny8P7Pdt5EQkEziKIrke2
+         uWQw==
+X-Gm-Message-State: AOJu0YwH7543k3TFTL5A0I6JDd20aDOo546KmJsnU2qC2O7Wcy+wsoIj
+	OC/OLAA2N4HWVnWcT/orKr8DRrF3vlFZCGjT9ITtv15IpYyvmnzbvfsl
+X-Gm-Gg: AR+sD10q0KLmQAsvFYtECLbQG+Vy5UikuaEBoxDqc+aM59s42ZgHrKvMbbpd3s9Twm3
+	sKdc0LnfgT7ucD3N136IBazVtvY8fwCoSDoTEm5SNK96ZClRnFJ/AuGzkmSVa1Uc8272nVYSxSv
+	Zen+30/yTK3vBzYOmlxzXAX6V589qS9A5rd84DVUl1HlPcN4zoTcfxHnNpS6ih9k8fMH4KSf85P
+	gp8UuI34//5lZ+I9aZde2BVCAwz7MBxepu4o2Jeo0mUWFeT1aTAAOKhfD4TKokuT1xzE9NCdekL
+	RNrWkw4PLLYiICRnMEzR6No9LuN7J2kR3wHxlkEkI4f3GVaA0VAR3beq1oOybwHe3ErqafmXIiG
+	8wKrPcqZ8zg5ZlBq1XN2Set6Mon3Q4Wm1qb0r7UDkm16C9/ZRiSWDzBcS3bxJxlilzxoT0seM2n
+	zABS3KgcK6ueUHSHB9pAIZcFZa13WxN1tUPIwWJ2dJ/i0orqV9Li2pt+fw3GoVDMdoCHN/y+oMn
+	Cdz4yegmggvLh/vO65Dd7hW1KuhW0LBSU63iNKabCAZPB0l408Hl5F54nWIrDz2SG9iFsQUUGe6
+	WVkIhEJqo5lfwPP+HpLbT0VIsA==
+X-Received: by 2002:a05:6214:4a88:b0:8cc:d588:4523 with SMTP id 6a1803df08f44-9084957b982mr116150616d6.13.1785622128022;
+        Sat, 01 Aug 2026 15:08:48 -0700 (PDT)
+Received: from ip-172-31-15-253.ec2.internal (ec2-32-195-55-166.compute-1.amazonaws.com. [32.195.55.166])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-908435dee46sm41358536d6.36.2026.08.01.15.08.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2026 14:33:34 -0700 (PDT)
-From: Janis Edvarts Lacis <janislacis06@gmail.com>
-To: andrew@lunn.ch
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	hkallweit1@gmail.com,
-	krishanmohan298@gmail.com,
-	kuba@kernel.org,
+        Sat, 01 Aug 2026 15:08:47 -0700 (PDT)
+From: Deep Shah <deepshah146@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux@armlinux.org.uk,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com
-Subject: Re: [PATCH] net: sfp: fix hwmon_name leak on hwmon registration failure
-Date: Sun,  2 Aug 2026 00:33:15 +0300
-Message-ID: <20260801213315.536335-1-janislacis06@gmail.com>
+	Richard Cochran <richardcochran@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Subject: Re: [PATCH v2 net 1/2] ptp: reject frequency adjustments that overflow scaled_ppm_to_ppb()
+Date: Sat,  1 Aug 2026 22:08:46 +0000
+Message-ID: <20260801220846.28467-1-deepshah146@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <66ac9090-fdb6-404d-aa75-bd3adf8578ea@lunn.ch>
-References: <66ac9090-fdb6-404d-aa75-bd3adf8578ea@lunn.ch>
+In-Reply-To: <20260727132259.3837774c@kernel.org>
+References: <20260727132259.3837774c@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,17 +82,4 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-I have looked into the code for sfp_hwmon_remove calls to the 
-best of my abilities and Andrew is right that sfp_hwmon_remove 
-is called on every sfp device. 
-
-If sfp_hwmon_probe fails in hwmon_device_register_with_info function call,
-it leaves sfp->hwmon_dev as an error pointer. When sfp_check_state detects 
-that SFP_F_PRESENT has changed, it sends SFP_E_REMOVE which leads to sfp_hwmon_remove  
-call. In sfp_hwmon_remove sfp->hwmon_name is not freed because
-!IS_ERR_OR_NULL(sfp->hwmon_dev) is false therefore the whole cleanup block is skipped.
-
-So, as Andrew suggested, freeing sfp->hwmon_name if it is not NULL
-and it is not an error pointer (hwmon_sanitize_name can return an error 
-pointer) instead of freeing only when sfp->hwmon_dev is valid seems
-to be the correct approach.
+That's fair. I'll resend to net-next without the Fixes tag.
