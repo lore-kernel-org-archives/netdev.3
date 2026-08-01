@@ -1,236 +1,231 @@
-Received: from mail-ed2-f11.google.com (mail-ed2-f11.google.com [74.125.228.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3852ED141
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 19:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785611988; cv=pass; b=AdTVkcLBY6rCVof5lix8jXOBmJpBD5N5GSW7FsnzSb0imm7rCkiDv1ihapMPTB5i0HlF2HH2w57Scparl8K84de8udg10gY035yZ4LuO2f5jEwGdWut4UmPa7rTn18yZzkmeEDOkv7wXxxh9XKX/+F7xM1eMeXjrQ55D4/DDDAw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785611988; c=relaxed/simple;
-	bh=xMvoIasJmU6rvejNbR2b8pxLU/mmd1jsnCBevW1xB+s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IDWnRckfiyhknImCM+QeRfO4E84Fm0geE9j9Jz+ChXIBwzIJ5V6PMivYmFackLfRtifiCMilSMo6MMEI3UM3pEgva1QpfXa91oxpKgXsnqApDll2urcuwVCXGbmv6Y3tQXjRbRrWl/W7F9FN0yuSlOjy5ayTycRmkIB61vlAt+o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YDQolbSL; arc=pass smtp.client-ip=74.125.228.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20213C09E4
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 19:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785614116; cv=none; b=rHbDktuw+UCcJf3+vA2tjdUc9grHpyGck/CGBrUR9rQ7UDaFAUaKr1XdHm+gMzjLaZheu27GVmp3okmKkbr4jgaTn3q7/AYwjVi36RZg6hd6Xpar7HSyySYtthoi+oDJGtRdIw8hJQzr3VDhgvzLBXk3d+uzlE1Kv78hpaii8m8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785614116; c=relaxed/simple;
+	bh=6Rnuy0ZI9LSwFMu2N/BxYj84Vjuk07JT+SeI1Do0w+I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=trXw3ORTtSL629bQFZwKkkGpP8pk+3DKS4RGgjxQK09LP5DntFNALDe/rWaJJ4kxmoGSyYQXN3m2k7sD4FNHJFXuXhrNfSGTFn6XRpQwq50SA3D8DyGgWxHGIx2FVIk54P5FXmsMd/CRvEDiODLj7PTUjJapX1IO6glWLx/iHWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bxk1d3HS; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=asi6xf5U; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YDQolbSL"
-Received: by mail-ed2-f11.google.com with SMTP id 4fb4d7f45d1cf-69e9826d38aso838613a12.1
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 12:19:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785611985; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RDb1oHCDoNCtoMK73Sd5TuRgQ7TBFOGToAaAFttw7U0JFf+KmFFZWXITZ71R7JSNsT
-         y/9axpUVu3NVaYO1DPy05l+6zazHfJsIZHKG/KyF213u+rmXi+9Wq89valbh9IOONggz
-         m6ILrai2mS789P1xSRHRW1+J/ElqXs0tQ1Hj4HZHCCP1hLQOVukel3CaIlskN0Ope+BX
-         WjgiGmp2qMRaBa3mrg9R97yOf6C2S1JxOCOW3bihuM8C8vDkajNKF0b+pRWK7wRgcjPM
-         K2sILthjrZfg7NoHm6IkTDjeTepBgpFqRzYD5ra99GPAwixma2xLMhN2/W1A/nzNnLNN
-         MhRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SCQm3Q/ph03r/XdeQCWy2Yw7OKUkw0PP1SQeQ3TZ+Pw=;
-        fh=gMNP1tcC1eXsf+lp1HdcmzMaGVzyV1cFJPGMatT9uBE=;
-        b=SgNsIPpxL9jVfM61B5zIq/SbzVu7Rai2Eu+gLcwDkOYsMCSA4NgLgu/UXiYcg5hlBI
-         +8SkmyRJf2N1m3wv6MlipUr/+tD8c3pZpRLwVz3HbDOllZ8a/7HEQZQLXKIaonN6sJi/
-         imA6wS9bLGIStbQ3022qLd727z0gJ5FQR7UNn50Bxp/QQZXiQpJbfttIKBwgWoVncOWl
-         st+mexKjn/dVopm+bKajTPgYij5uqz1aWX/JP1GVQtEbJA/CZO0wvDm43zlR22Rqs9dy
-         nTRRQy+4cvxA0uADvpcjlrlBP2DNeteqs4oATea7BrR1XviFn2MRILNiKjtIdagHhLxq
-         nzyA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bxk1d3HS";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="asi6xf5U"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 671Ixbkh3525405
+	for <netdev@vger.kernel.org>; Sat, 1 Aug 2026 19:55:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=/rSauAHR+KQh253IKg19esceySLhpM+RP7e
+	7oNr6Drc=; b=bxk1d3HSzXw4PYZJ+uKaYZNyejgZKcZhLt7NP5ImKWAUnYl858y
+	cVs794u2NL0KdOrPDkR6KmOMn6WTFTi4gy6nktmtWFN6GeUe+zeF5RbcZpNbl7HW
+	je0KNkXaLf/Jol2sitnBsuJk7lRyyY4WlT5mBHPb92NSuFJy2qNT5xC0u+Gd2m3j
+	StltJThwmL1K7eJu0I3Goz2ceWjhtJeRunV3d0E5YqDf2a5SHkJyBVO34sqfiKho
+	Pc5L6+N/kqVe8NX6W1yZ8mMyK+wLdmv0b9QQb+gzI98AJYvPZ2kVhRAunjNKUd2h
+	aYRLgQMg88WOgbVVdEqGmQ4UUZPWjWrflNw==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fsa381e21-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 19:55:14 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51c20762d21so23648411cf.0
+        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 12:55:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785611985; x=1786216785; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SCQm3Q/ph03r/XdeQCWy2Yw7OKUkw0PP1SQeQ3TZ+Pw=;
-        b=YDQolbSLvcKW3PmlbCdNuRM1F3fJieiCmt9/fdP9GWFwrweEpvP0/6Lqu9rabJAPmw
-         D//rGYZD3/2j0iOGQvLpgnWvF0xtqyInO/19CMs1aO3HEOLC/iIfVjDuItsvK2I4KG0n
-         bEk6jpAbqvHPnwubK1Furla9u2kaosTveIjXIxVnk9iQkgFnJ6dE6znvfPqCJbjlHYuM
-         F2miucV5axP1/24hc7ve1i4nmQb8Dhk5Ee/csj/0krHn8fiOdMNXBKdIeUBr+lHc+ccg
-         04MzJ47NedLrKsVq9oZ8gicPRtYMg273OSXYXIqDvJXJ9u7/V9mjcVMaxDmD7K/aWD/0
-         X/Jg==
+        d=oss.qualcomm.com; s=google; t=1785614113; x=1786218913; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/rSauAHR+KQh253IKg19esceySLhpM+RP7e7oNr6Drc=;
+        b=asi6xf5UA6pKNRPL3CJCyQpbYws5oZ6E2SR0UZMBDHcRBr/FYW/72AUB9jazNNXRlL
+         mD6b+L6/F0Yj8nwTlMyqGy2KdLSJY3LOX5BDeG9e8tlm3uJB3JLQMFmTIaY9geza1tCO
+         KcENjdapuSE99C4HjWsUhqiFzrY/IbnKxX87ec/3b4lWXj/jsD6VxYuGvF83bXcgHg/k
+         FwXSrBPXQiXqCzP+Hl1jdYFjtkTtCX8KlSY/mE16rYiSuLiHsUAk+U8EPiAG+bLIqKIn
+         d8UoGVR1A3ujWU+TRoky8WWyqu6QrdZa8RGqj7poOnLSNQruGRDi9biKYLVtCPTsyTfI
+         nu1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785611985; x=1786216785;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SCQm3Q/ph03r/XdeQCWy2Yw7OKUkw0PP1SQeQ3TZ+Pw=;
-        b=I7M8nab/6Fvpvi2T88UNp/DHsiCzkHB2WQQCQY83eS01ub6VkTEZgyT4H/kx3WudZA
-         dOEWldtycrdDrlqRQXyW1qVDjcQJbsCRznAwMzr4mPOxfOp8E1ILco5mX+bh2RbgJWfZ
-         GsvoymOzWHXtalVDN3+oQkqv4QHSpSJ4c5uHtmBIpzG+5vR1QXaGGkkrqua7iLYb94a9
-         4j323CKBTRCObTgpsSvB8nqHxWPjZw1JEaXtBmbd4/zQ4GJpq9fdTo8ZM7seN7uLNwER
-         jss1Zif6iGvB/9OTwsKM4PyjRWOxo7yvX0IUN4fKrtyTKqMvDY76ilHQVTLCR0lKj8WO
-         2U1w==
-X-Forwarded-Encrypted: i=1; AHgh+Rpzv2qf70jfcISvTF4QGEKYPnGI1OSse75j/MlHKeQZwjoLucQ/VQ1c56YGzoNRtDl5O073/WU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyde7x9zY4gWfQdZpgTnuh+kYol2lBcQCuU8MEEZqO2ZerYR2Vt
-	4cu5rgN8H5/IbxjYoemsmCRt/JyzObzoIDd3iA/+9AVSzlu22QY1l+4mxF3Mp90+hfSw0hOym2J
-	So7ENJKe+Rn8cR+NW/tFLOTLu2N0bSGc=
-X-Gm-Gg: AR+sD11RQTKjZKtiMADvC/gN3hVzqld4zLCK6BqXrd2sQfu34aGfW81k2cPZFRuciTJ
-	TEgVqmR95USKkrDHa6NGx2/VJB1xgaATLD6bLbIYcMakVscoy5Da8tcrvbqnAemQUpgWcrOvrdR
-	7qOUOXj1Uh+tR2NqJ2k4eJaDi4kQAZHGhjqXsrZhmt90klZ5a272Wu/9AHVhcbKx+Ez/9AqdS4m
-	xgu8R6WKGgcwFN7/N99wTrHQIe/Z9iVJL0UGJZ3BVBor2dMM1RF8BFnw9IYk9mOIi3rZ0oWlW8O
-	v1F2y93riTjBn4BiEk2uvseGwgWzhlUoP99eF10oFtoJOtJopLTTSf8cZUoh
-X-Received: by 2002:a05:6402:440e:b0:697:f70f:8238 with SMTP id
- 4fb4d7f45d1cf-6a0a7c6b76amr3103144a12.4.1785611984460; Sat, 01 Aug 2026
- 12:19:44 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785614113; x=1786218913;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/rSauAHR+KQh253IKg19esceySLhpM+RP7e7oNr6Drc=;
+        b=AyYgisGwdF+o50Ow6BO0/9klfb2E3FkWwMmZ+huwmuOEeSZVWYkaNRx+DzBLfpLSc8
+         cXZrP3D8Q4eCZGHuwV+FJq10s48sbbkfB88zHW0p3MxHIuaq4wABcmZjeUjbWCoENeXT
+         GHghwfiTYz2f7+Gyu1h//Dp7B74/+DEee9c/JjrHTlxNaNmGHaSFPURdAyVgTr6dB88g
+         /YVV6iJXYfqez290vMD5cnXMiKX5KXFXWS+tgaJGAfk+zCfd9/lKQp03sKkuAP5wns8K
+         GvsroT4yRe+GRWxvM+1ytRw8lFlaCn6qjV0XRGuaHDlptzlREkU6NFyzGfZuaTB7tUx0
+         IWiA==
+X-Forwarded-Encrypted: i=1; AHgh+RrEEAqI6aBv15t8FrhUK8UFXPVTMVp1lWIBZ0B/anww707wQw4QcHZOo0mPIWbLf1ujPuraNWM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMdmU7VsMA4r8IOcaDnvk9XCPAv5q44wdxZYEJCH7QdcBLl1Vo
+	9hhzNvBAlgu0KBP5YACdn6YbuxZQAdBEegw9EwJXn9LWdSKs2IVRXBNUr7t2ROBgAFGUKqWg+Qi
+	qAXWX9Zu2EU0C/kCiBhcjJqOvAPACO6dD+bbCc1US5cdZ94QS1U6UAV8nHn8=
+X-Gm-Gg: AR+sD13PAU3xVPVmsPqjtyTxIuTrVwn8MuWBLUz3G0a+98LwyngraoGwq19g9ebuf7R
+	46Qfftk6/G1u93UH43hLt67/2Cjaf4cO5AlhtXB5RpnQHrq+KJEud1RYBNu15L5t5q5cwhYdJPF
+	2wp3AeBSIirMd/18zeF63zVCFKNn/Pc03DLvsMhXyqbLDnSGRF9HUB32ug3iZmByaHV64SsCPvT
+	pzQN4TV5oH56N+qcuVs9WUQrNE/aS/CMEif1atGxebNaLzM2nxTcQIl+ZJ6q+3KRbmz2jQHJk94
+	i4alTZEPm3/rg9UUWrr5/Zt+Lz0QU2xQrm+F3cNX+8730iTlWnnCpGRXS4NzkuA5BDiMY68KNta
+	w8C9bl45HyICK3YK1
+X-Received: by 2002:a05:622a:4110:b0:51c:1ec5:d0f with SMTP id d75a77b69052e-52b567d8136mr105345891cf.40.1785614113065;
+        Sat, 01 Aug 2026 12:55:13 -0700 (PDT)
+X-Received: by 2002:a05:622a:4110:b0:51c:1ec5:d0f with SMTP id d75a77b69052e-52b567d8136mr105345741cf.40.1785614112553;
+        Sat, 01 Aug 2026 12:55:12 -0700 (PDT)
+Received: from quoll ([178.197.223.174])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807b917efsm128193295e9.11.2026.08.01.12.55.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Aug 2026 12:55:09 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Steen Hegelund <Steen.Hegelund@microchip.com>,
+        Daniel Machon <daniel.machon@microchip.com>,
+        UNGLinuxDriver@microchip.com,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        =?UTF-8?q?J=2E=20Neusch=C3=A4fer?= <j.ne@posteo.net>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Lars Povlsen <lars.povlsen@microchip.com>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH net-next] dt-bindings: net: Correct white-space style
+Date: Sat,  1 Aug 2026 21:55:06 +0200
+Message-ID: <20260801195505.235099-2-krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260801142244.679437-2-coiaprant@gmail.com> <20260801142244.679437-7-coiaprant@gmail.com>
- <2847036.GUH7pLUipS@diego>
-In-Reply-To: <2847036.GUH7pLUipS@diego>
-From: Coia Prant <coiaprant@gmail.com>
-Date: Sun, 2 Aug 2026 03:19:37 +0800
-X-Gm-Features: AUfX_mxTVYa8KO_KHMFv70Oru7_6E2Erl1Ah7ifU-aGIuPNS6S04bHqAgUqfw5o
-Message-ID: <CALj3r0gqvFZPb2SKRMPwf9chCx076rwCnXEoOMFch_V-fOKV6w@mail.gmail.com>
-Subject: Re: [PATCH v2 05/10] arm64: dts: rockchip: rk3568: add XPCS and
- fixed-clock nodes
-To: =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Vinod Koul <vkoul@kernel.org>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	Romain Gantois <romain.gantois@bootlin.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Russell King <linux@armlinux.org.uk>, 
-	Shawn Lin <shawn.lin@rock-chips.com>, David Heidelberg <david@ixit.cz>, netdev@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4002; i=krzysztof.kozlowski@oss.qualcomm.com;
+ h=from:subject; bh=6Rnuy0ZI9LSwFMu2N/BxYj84Vjuk07JT+SeI1Do0w+I=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBqbk8ZKVWCf9nvvQMsjQrgQMoA4KcejpZi78q/j
+ VOwWhJcUBWJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCam5PGQAKCRDBN2bmhouD
+ 146aD/9Hde+I7H0ivjXHPZ5b9k6hkmSCAV4vjAAtOWDjp7HgakkRrMonmUpVDzANgYlpxs2AgQM
+ +oKERpdW0VPFD5v1bTz/R1/1/tmqxyQQEl6QV7LSxg+pbKhNQyaPMIbM/DSFGmvjC8q9SCDdeYF
+ VIMKQ589KOQVG4wy3D2H1zuhWMzNu+f9Ad7mNqnncm2yMQ4VG0hWq9FpzWlR/QY/N/+4BFez726
+ 3RMx93kUZRkk2m+qQ0l8G3igPPCX8HsUyXLDyWxcwB3IeIVU62/ZXSjQy6NepU5xXUVzCk7F/1Q
+ 1MVPOrKjiROqlY51Bvvh0K9qIFAE/9OTRU0tH6g1JXHzaGYOXL0/z7xcclf6phUBLm3PdSX/sgA
+ IyzM6uelvgjqGomscWHze58dHLWsr7YwJScTwgQwAK+7tf1mHCxz1awaOZ7GbfcsNDfb4KKEurw
+ JFjcm9MGCowsPHDqJKJyw8pqUbi6yzCkO4MHObDCYOFQf9WbR+QlqvvQoTERxBn2z2R8F2DVHmP
+ Vs8nx/tjluWA35KSDYnho3uiLIjTWccW4KhAkxcql206yCVBcDohEWkh1el7aqBokjO3g12ICYe
+ p3g3IzrJWTH80gCaMA3uEpVMvpdFD0X4xP5b5h9LDWWcAjwYa9wC+wkgMEsoH9DgUg/1uLbbXGW jBDXJrsZQyjzfQQ==
+X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=KezidwYD c=1 sm=1 tr=0 ts=6a6e4f22 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=N6niishs+lR9UBL1FN3Qrw==:17
+ a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=EUspDBNiAAAA:8
+ a=mxJljgaHxS3Sv8GYpwQA:9 a=0bXxn9q0MV6snEgNplNhOjQmxlI=:19
+ a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODAxMDE2MCBTYWx0ZWRfX4qW9+TFFZ1gO
+ EUKyVWn/g0Vl/ySBdJSWAT41ZDW85bGaIgoDmhq/s5yRsEvPjLzfOxGAqxiAJjg4C7H559kETFt
+ Ufrr4cjGKJg3OgJnIm3ZCTNHg19YQAo=
+X-Proofpoint-ORIG-GUID: TTArRPQLMCoQZXNOPOBN9WFFkUVODZoB
+X-Proofpoint-GUID: TTArRPQLMCoQZXNOPOBN9WFFkUVODZoB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAxMDE2MCBTYWx0ZWRfX+kr7LG5rtLIc
+ mQymGaAh4biuPWiQIwnlxWpKqM19ekTkqJOUrzK8ZmY2VDGsA61v21KbkWJ0HN/lSeQODhnZQMx
+ 8lMBcNjr+W0ju4crcNI3v1bFLZ5+n2Frpd9COCv82p9BC9flcLW1/dMVq3i51kyP2Z701EGqUmR
+ n4iJDwobGYWtag0k0jBkQIcspIl8Go83wb79Up3dcOPr47Xn52gNakagohWcnB49aWjOQ9gbBGr
+ zaHcvp+Po1vIhAQGVGdQcuIaUYCo2YFzlN3SbJANuoDwPHHxD+6AsTxmsjjzUmSLqxSvPEgIUZC
+ 8giv9OEaLa/RqDPkUNZJoHXx4P94QaXjS/l9HgG0C6FYo8DtrzCrzhaIUHhkvNOOyd/hWIDt4Oh
+ ug1UT5CHql7s4Qytm5SdQDgfAKjPamvq+Yf7e528/O4rGsOkW2bB7vp3IDw9wQYuxfFcvTxlcpH
+ SyrwQn+R+CUtqjDnX1g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-01_03,2026-07-30_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 impostorscore=0 phishscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608010160
 
-Heiko St=C3=BCbner <heiko@sntech.de> =E4=BA=8E2026=E5=B9=B48=E6=9C=882=E6=
-=97=A5=E5=91=A8=E6=97=A5 00:28=E5=86=99=E9=81=93=EF=BC=9A
->
-> Am Samstag, 1. August 2026, 16:22:29 Mitteleurop=C3=A4ische Sommerzeit sc=
-hrieb Coia Prant:
-> > The RK3568 SoC integrates a Synopsys DesignWare XPCS that provides
-> > the Physical Coding Sublayer for 1000BASE-X, SGMII, and QSGMII
-> > interfaces via its four MII ports.  Add the XPCS device node and
-> > its pcs-mii sub-nodes to the SoC device tree.
-> >
-> > The XPCS device is accessed via the APB3 bus at 0xfda00000 and
-> > requires the CSR clock (PCLK_XPCS) for register access and the EEE
-> > clock (CLK_XPCS_EEE) for Energy Efficient Ethernet operation.  The
-> > PD_PIPE power domain must be enabled before any register access.
-> >
-> > Also add two fixed-clock nodes (xpcs_gmac0_clk and xpcs_gmac1_clk)
-> > providing the 125 MHz reference clock for the GMACs when operating
-> > with XPCS.  These clocks are used as the assigned-clock-parents
-> > for the respective GMAC nodes in board-level device trees.
-> >
-> > The XPCS node and its pcs-mii sub-nodes are disabled by default and
-> > must be enabled at the board level when 1000BASE-X/SGMII/QSGMII is
-> > in use.  The fixed-clock nodes are always present and do not have a
-> > status property, as they are static clock sources.
-> >
-> > The XPCS node also requires a reference to the appropriate Naneng
-> > Combo PHY via the phys property at the board level.
-> >
-> > Signed-off-by: Coia Prant <coiaprant@gmail.com>
-> > ---
-> >  arch/arm64/boot/dts/rockchip/rk3568.dtsi | 45 ++++++++++++++++++++++++
-> >  1 file changed, 45 insertions(+)
-> >
-> > diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot=
-/dts/rockchip/rk3568.dtsi
-> > index 3bc653f027f1f..989e164c0eb39 100644
-> > --- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> > +++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> > @@ -110,6 +110,51 @@ sata0: sata@fc000000 {
-> >               status =3D "disabled";
-> >       };
-> >
-> > +     xpcs: pcs@fda00000 {
-> > +             compatible =3D "rockchip,rk3568-xpcs";
-> > +             #address-cells =3D <1>;
-> > +             #size-cells =3D <0>;
-> > +             reg =3D <0x0 0xfda00000 0x0 0x200000>;
-> > +             clocks =3D <&cru PCLK_XPCS>, <&cru CLK_XPCS_EEE>;
-> > +             clock-names =3D "csr", "eee";
-> > +             power-domains =3D <&power RK3568_PD_PIPE>;
-> > +             status =3D "disabled";
-> > +
-> > +             xpcs_mii0: pcs-mii@0 {
-> > +                     reg =3D <0>;
-> > +                     status =3D "disabled";
-> > +             };
-> > +
-> > +             xpcs_mii1: pcs-mii@1 {
-> > +                     reg =3D <1>;
-> > +                     status =3D "disabled";
-> > +             };
-> > +
-> > +             xpcs_mii2: pcs-mii@2 {
-> > +                     reg =3D <2>;
-> > +                     status =3D "disabled";
-> > +             };
-> > +
-> > +             xpcs_mii3: pcs-mii@3 {
-> > +                     reg =3D <3>;
-> > +                     status =3D "disabled";
-> > +             };
-> > +     };
-> > +
-> > +     xpcs_gmac0_clk: xpcs-gmac0-clock {
-> > +             compatible =3D "fixed-clock";
-> > +             clock-frequency =3D <125000000>;
-> > +             clock-output-names =3D "clk_gmac0_xpcs_mii";
-> > +             #clock-cells =3D <0>;
-> > +     };
-> > +
-> > +     xpcs_gmac1_clk: xpcs-gmac1-clock {
-> > +             compatible =3D "fixed-clock";
-> > +             clock-frequency =3D <125000000>;
-> > +             clock-output-names =3D "clk_gmac1_xpcs_mii";
-> > +             #clock-cells =3D <0>;
-> > +     };
->
-> I don't fully believe those clocks are "just there" inside the SoC.
-> Instead I _assume_ they are generated by some oscillator on the
-> individual boards?
->
-> Because as described there, they would be just magically be there.
->
-> So please aim for a real clock description (likely on a board-level)
->
->
-> Heiko
+Correct a few white-space issues, like double space after '=' or before
+bracket '{' characters, which will be flagged by dt-check-style.  No
+functional changes.
 
-Hi Heiko,
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+---
+ Documentation/devicetree/bindings/net/fsl,gianfar.yaml    | 2 +-
+ .../devicetree/bindings/net/microchip,lan966x-switch.yaml | 4 ++--
+ .../devicetree/bindings/net/microchip,sparx5-switch.yaml  | 6 +++---
+ .../devicetree/bindings/net/renesas,rzv2h-gbeth.yaml      | 8 ++++----
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
-Thanks for the review.
+diff --git a/Documentation/devicetree/bindings/net/fsl,gianfar.yaml b/Documentation/devicetree/bindings/net/fsl,gianfar.yaml
+index 0d8909770ccb..e2543b683bd4 100644
+--- a/Documentation/devicetree/bindings/net/fsl,gianfar.yaml
++++ b/Documentation/devicetree/bindings/net/fsl,gianfar.yaml
+@@ -234,7 +234,7 @@ examples:
+                              <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>;
+             };
+ 
+-            queue-group@2d14000  {
++            queue-group@2d14000 {
+                 reg = <0x0 0x2d14000 0x0 0x1000>;
+                 interrupts = <GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>,
+                              <GIC_SPI 148 IRQ_TYPE_LEVEL_HIGH>,
+diff --git a/Documentation/devicetree/bindings/net/microchip,lan966x-switch.yaml b/Documentation/devicetree/bindings/net/microchip,lan966x-switch.yaml
+index 0f0f35865ef4..b4efa2f6036a 100644
+--- a/Documentation/devicetree/bindings/net/microchip,lan966x-switch.yaml
++++ b/Documentation/devicetree/bindings/net/microchip,lan966x-switch.yaml
+@@ -140,8 +140,8 @@ examples:
+     #include <dt-bindings/interrupt-controller/arm-gic.h>
+     switch: ethernet-switch@e0000000 {
+       compatible = "microchip,lan966x-switch";
+-      reg =  <0xe0000000 0x0100000>,
+-             <0xe2000000 0x0800000>;
++      reg = <0xe0000000 0x0100000>,
++            <0xe2000000 0x0800000>;
+       reg-names = "cpu", "gcb";
+       interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>;
+       interrupt-names = "xtr";
+diff --git a/Documentation/devicetree/bindings/net/microchip,sparx5-switch.yaml b/Documentation/devicetree/bindings/net/microchip,sparx5-switch.yaml
+index 75c7c8d1f411..9de8eeb8c6a4 100644
+--- a/Documentation/devicetree/bindings/net/microchip,sparx5-switch.yaml
++++ b/Documentation/devicetree/bindings/net/microchip,sparx5-switch.yaml
+@@ -210,9 +210,9 @@ examples:
+     #include <dt-bindings/interrupt-controller/arm-gic.h>
+     switch: switch@600000000 {
+       compatible = "microchip,sparx5-switch";
+-      reg =  <0 0x401000>,
+-             <0x10004000 0x7fc000>,
+-             <0x11010000 0xaf0000>;
++      reg = <0 0x401000>,
++            <0x10004000 0x7fc000>,
++            <0x11010000 0xaf0000>;
+       reg-names = "cpu", "devices", "gcb";
+       interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>;
+       interrupt-names = "xtr";
+diff --git a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
+index 2125b5ddf73d..c8f76c8e7584 100644
+--- a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
++++ b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
+@@ -254,10 +254,10 @@ examples:
+     ethernet@15c30000 {
+         compatible = "renesas,r9a09g057-gbeth", "renesas,rzv2h-gbeth", "snps,dwmac-5.20";
+         reg = <0x15c30000 0x10000>;
+-        clocks =  <&cpg CPG_MOD 0xbd>, <&cpg CPG_MOD 0xbc>,
+-                  <&ptp_clock>, <&cpg CPG_MOD 0xb8>,
+-                  <&cpg CPG_MOD 0xb9>, <&cpg CPG_MOD 0xba>,
+-                  <&cpg CPG_MOD 0xbb>;
++        clocks = <&cpg CPG_MOD 0xbd>, <&cpg CPG_MOD 0xbc>,
++                 <&ptp_clock>, <&cpg CPG_MOD 0xb8>,
++                 <&cpg CPG_MOD 0xb9>, <&cpg CPG_MOD 0xba>,
++                 <&cpg CPG_MOD 0xbb>;
+         clock-names = "stmmaceth", "pclk", "ptp_ref",
+                       "tx", "rx", "tx-180", "rx-180";
+         resets = <&cpg 0xb0>;
+-- 
+2.53.0
 
-During my tests, I found that the 125 MHz clocks (`xpcs_gmac0_clk` /
-`xpcs_gmac1_clk`) are actually outputs of the Naneng Combo PHY
-(SerDes) when it's initialized for SGMII/QSGMII mode, rather than
-independent board-level oscillators.
-
-Since these clocks are part of the SoC's internal design and
-consistent across all RK3568 boards, I think keeping them in the SoC
-dtsi makes sense to avoid unnecessary duplication. However, I also
-understand your concern that they might appear to be "magically there"
-without any explicit dependency.
-
-To address this, I'm considering adding `status =3D "disabled"` to both
-clock nodes in the dtsi, so boards that actually use SGMII/QSGMII can
-explicitly enable them together with the XPCS node and the
-corresponding Combo PHY reference. This would make the dependency and
-activation requirements clearer.
-
-What's your thought on this? Would you prefer adding `status =3D
-"disabled"` to clarify the dependency, or do you think the nodes
-should be moved to board-level dts entirely? I'm open to either
-direction.
-
-Thanks,
-Coia
