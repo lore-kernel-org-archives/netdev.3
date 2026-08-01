@@ -1,266 +1,176 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D64E43DA21;
-	Sat,  1 Aug 2026 11:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055A030D418
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 11:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785583297; cv=none; b=dVl6SvqavNReys0Z2x8yuZ3IxVu3qV7xruivGzBpil2vt/X68d1jsyLvTW0ZJDIABoJd86PfcQw8qatLESuuhUii66gwNHc3Itq2NqdbgvQ/Diz6FPwj5na4F0m/DiKBZFZjxifsE9I+556F/N0mZJEI4BJ/eTeEJ1pv1T3wWBc=
+	t=1785583528; cv=none; b=elsDn48MILAns8KoJxkwofhAcd4MWLqUL4XIQAKZJ9Q3stBcpe4EfbdEtf1vr6JkFVtETpVVTWr1k728zgpksN6iBI4C5H48Hip6TAqcSBsQhjlWY/JUezReMdvvEh5qmIk9GQjKLF7z8hEezMsdAar3CZrbkxrbopzeMnbAUek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785583297; c=relaxed/simple;
-	bh=Zh06wlUmAIC1iukSKooFVWp0hF17e98otRnRFvdgrT0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=G3Y7jA4qoI2K6dGDXS5LVokkY+lzjBERGjjfVXo0It7OAUgLL7S2zGndpDH9WhBX5YVdLmOMxSx13fJDFlIXyNzmzYDP0pfg7cWSubbbb4R7QxRLgnSh8U0vUHdnDYPLNaM18mWjK/scGHL2ynV5zx5RNLnh1oqkGlUqT8MOY48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Nn/yOgRy; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1785583528; c=relaxed/simple;
+	bh=kmX//yY22ltsPj8ErGwTI/4OMCj6FvyTxQgwFX2hais=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ggwmTXc1J+nUfU/3dR6RJhyoI/RKLk8K0mnHSXtyV4oQ1FSSKR38bNLN+IBxVBrqWFn9Qebv5FVBWkWPzmL6ph9hgxD7ogf42RR5RM0dMCZ1JYKrc+EYUIBH22KUZjwpU6STxJPhpygkDScpklPKWY8g/auixJn8GxgsVB7HNaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=i+Dc3Qnx; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Nn/yOgRy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1785583293;
-	bh=Zh06wlUmAIC1iukSKooFVWp0hF17e98otRnRFvdgrT0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Nn/yOgRyBcqemTJVZkvCKtdi+Mn1ouoEGCkRENReu01Cz5c1o9ZorYHWunCrGA0aS
-	 qAvzp+KIhD4QASXWBo3AeredgcK9wbIaQXNZ4454safxw5vUlZzlotFZ/ykHm9zkYN
-	 Gn85F4bE+P5ITFbSfRxjkxC00CIxDZuWFdx2TsIhXyTssmxMzUQrdywzXOlqSxn+lR
-	 MWHZV8QiV14TqJQDK4bEVQRc9xjGEqzV5ZBneUeQvEIw3VIMu07jpmAjjC6kZwU76a
-	 bOcKHBGenP8Jx2I65JOCf9P1NVn0ihMtw6+gyFGfbC2wvs/S0ZMUDXetUQ3wi+sG5J
-	 ljxko75xF6BzA==
-Received: from yukiji.home (unknown [100.64.0.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laeyraud)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 55F7617E092C;
-	Sat, 01 Aug 2026 13:21:32 +0200 (CEST)
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Date: Sat, 01 Aug 2026 13:21:11 +0200
-Subject: [PATCH v5 25/25] clk: mediatek: Add MT8189 ufs clock support
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="i+Dc3Qnx"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so1401005a91.2
+        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 04:25:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1785583526; x=1786188326; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=32NZgRNlEbT3guIjD5/RDgNkUshJ4zqsmgaTUWXVuEU=;
+        b=i+Dc3Qnx2cH39XJBz/C5RDKmmHrGXLm/ctc0XQpgyn9sdZFaP5H/GGAhtRgdiJTPLc
+         uV8JfL0osFCa6uphU6i58GbkBR5qAASttRbPoMM1StaTrb9PlbRcikhYflq8PhnO+lO8
+         sOmHJsqSEw/XK6KH3alaQrtTe4SSO/XCVJZpzElhhGqA9HwPtxjSK2fJPfYJpX6W+9z5
+         aoSyxQxwpg9ZoWIoAO3x87xgx5N6RJ/fsreyjY8PW1yTbpnhMdjV8fVvpaphuh1qUSE7
+         7GJniwGf4EQD7l/vWUsEEi0Bl1blBBGcbYLTyyhE65lLL/aa7czGTaMHlYZ8iy4NmExN
+         EBBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785583526; x=1786188326;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=32NZgRNlEbT3guIjD5/RDgNkUshJ4zqsmgaTUWXVuEU=;
+        b=ZSxH4kA/iovV5oa9PVdwuTDel9C5gSkWpU+sqD1iM5iQ7TOUtoMe4pRoN1syDQy+d/
+         vosFJa8plUbdkPSq6ev9whZoLnrgn9jpLgfxA5WBj/XXE4ZXLPA6j3JTOJNnGaWY4+gL
+         VWB6/vEGa5uWTkuDYf1o9HC5dwcnv1ogJiWGQ6ooxQd181AyrsE23v3rKPR9Qn7cPtsD
+         P4XPCza9heSA/+JM3EldTflABNyXN3FcxoAz4aNvztMCQsPEQ4I5n8fBLBrGI9XEQoVl
+         Felx++TmQyvlPVN1Y8GczT7Io4fZU+4VgW0GMFwqOzenmbJ87+ASZTcYT7KZ8iMnnm0c
+         UqeQ==
+X-Gm-Message-State: AOJu0Yxc0aOKX62nsXDAd1GWcUJL6QXsgCDgKT9CKN73NnJ86maZGktZ
+	HJ4CCvKOSkPX08tGPdF4p+ajTITNg3eLFO8fNBWXr1cnuz5JG0Q+IIYl3zTDgt9gUvS+YujiVNS
+	L9XyPzdHi7z5A6A==
+X-Gm-Gg: AR+sD102MsjaE0Xn7Iz9q05y4tNBFMdp30MMfLgEpJY8He9QNbxHICUhUNmRQkcvK1C
+	V0GwBUWtPWLmcEnuWxVj0ZNvYtKSqyK4ojblz8A1cIk6hxQne+2hw8ii+kd/lyV8BktWIsjUmBU
+	0DmJ8ub1yesy/OmSPyuh1Ce7+l2s6GattX3gD0YeKNECR5NszEigxp305UoPjOqMbDxz7B9KDEi
+	5q/w8a0wS2S2VRu6QRCYgpyw94XcBPdr7/KOImx8l9///Crz7fTiZUMH/Z3A2MKKG0x8iCTxE2z
+	14EkNSKIV7eOXNUbUzigW+ans+UBkWAS6aqwVnWxt4yEnIxDyVlY3VCmiSDCnfut7CW4A254bQK
+	DcNgWBPkyvt20RGIttiBRLM2498GFbjOMAja4Sy90jp0PwxvChTCF0w2wYnKU84Kks+LXBN2SbV
+	crAvwzcF8Qy//hLkcKcF0QxqudkIH6UkKFSmr4eD6B1TjnDCc4DhmR/IEgrjPfjmRwRT6N44ktH
+	YzNh4jjdKsm
+X-Received: by 2002:a17:90b:5605:b0:387:e0db:bc23 with SMTP id 98e67ed59e1d1-38fbc50f6c1mr2974477a91.35.1785583526103;
+        Sat, 01 Aug 2026 04:25:26 -0700 (PDT)
+Received: from Roxy.localdomain ([202.8.9.242])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb2e0f409sm1837885a91.4.2026.08.01.04.25.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Aug 2026 04:25:25 -0700 (PDT)
+From: Zhiling Zou <zhilinz@nebusec.ai>
+To: netdev@vger.kernel.org,
+	dev@openvswitch.org,
+	i.maximets@ovn.org
+Cc: aconole@redhat.com,
+	echaudro@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: [PATCH net v4 1/1] net: openvswitch: reallocate update replies for mismatched IDs
+Date: Sat,  1 Aug 2026 19:25:11 +0800
+Message-ID: <3b76cbe50252a5650c3b69c789ed36481d0bbee4.1785583308.git.zhilinz@nebusec.ai>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260801-mt8189-clocks-system-base-v5-25-ac4410697cc2@collabora.com>
-References: <20260801-mt8189-clocks-system-base-v5-0-ac4410697cc2@collabora.com>
-In-Reply-To: <20260801-mt8189-clocks-system-base-v5-0-ac4410697cc2@collabora.com>
-To: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Chun-Jie Chen <chun-jie.chen@mediatek.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Edward-JW Yang <edward-jw.yang@mediatek.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Chen-Yu Tsai <wenst@chromium.org>
-Cc: kernel@collabora.com, linux-clk@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- netdev@vger.kernel.org, Irving-CH Lin <irving-ch.lin@mediatek.com>, 
- Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785583261; l=7242;
- i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
- bh=Zh06wlUmAIC1iukSKooFVWp0hF17e98otRnRFvdgrT0=;
- b=d3sRYvU03PTPb1z11ieG/EmTz/8tjmEsIEkvczuBu9uMslU7E+IcvrifXVQOErEVzdhqIDndf
- Rb3yWhFrUrHC3jd6NmImC1Kllqc0PTkIix+uPqvJM8qwsB7L7UbwOaA
-X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
- pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
+Content-Transfer-Encoding: 8bit
 
-Add support for the MT8189 ufs clock controller,
-which provides clock gate control for Universal Flash Storage.
+ovs_flow_cmd_new() preallocates the optional reply skb before it takes
+ovs_mutex and before it knows which existing flow will be updated.
 
-Co-developed-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
-Signed-off-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
-Co-developed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+That is normally fine because the skb is sized from the request flow
+identifier.  That identifier also becomes the inserted flow's identifier.
+For updates, however, a request with a UFID may miss the UFID lookup and
+then fall back to the flow key lookup.  That lookup can legitimately find
+an existing key-identified flow.  UFIDs are optional and the flow key is
+the primary identifier.
+
+For echoed replies, ovs_flow_cmd_fill_info() writes the matched flow's
+identifier, not the request identifier used for the preallocation.  A short
+request UFID can therefore leave too little room for the key identifier.
+The fill can then fail with -EMSGSIZE and hit the BUG_ON(error < 0) in the
+update path.
+
+Once the update target has been resolved, reallocate the reply skb if the
+matched flow needs a larger reply than the request identifier allowed.  Do
+this before replacing the actions so the request can still fail cleanly if
+the rare extra allocation fails.
+
+Fixes: 74ed7ab9264c ("openvswitch: Add support for unique flow IDs.")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
 ---
- drivers/clk/mediatek/Kconfig          |  12 +++
- drivers/clk/mediatek/Makefile         |   1 +
- drivers/clk/mediatek/clk-mt8189-ufs.c | 133 ++++++++++++++++++++++++++++++++++
- 3 files changed, 146 insertions(+)
+changes in v4:
+- Split the reply size comparison into current and desired variables as
+  requested by Ilya Maximets.
+- v3 Link: https://lore.kernel.org/all/c773b2726dda8d90eed6d42b2f9741810a7a46e1.1785288876.git.zhilinz@nebusec.ai/
 
-diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
-index 919a916f1f4f..34a270a377cc 100644
---- a/drivers/clk/mediatek/Kconfig
-+++ b/drivers/clk/mediatek/Kconfig
-@@ -882,6 +882,18 @@ config COMMON_CLK_MT8189_SCP
- 	  management for SCP-related features, ensuring proper clock
- 	  distribution and gating for power efficiency and functionality.
- 
-+config COMMON_CLK_MT8189_UFS
-+	tristate "Clock driver for MediaTek MT8189 ufs"
-+	depends on COMMON_CLK_MT8189
-+	default COMMON_CLK_MT8189
-+	help
-+	  Enable this to support the clock management for the Universal Flash
-+	  Storage (UFS) interface on MediaTek MT8189 SoCs. This includes
-+	  clock sources, dividers, and gates that are specific to the UFS
-+	  feature of the MT8189 platform. It is recommended to enable this
-+	  option if the system includes a UFS device that relies on the MT8189
-+	  SoC for clock management.
-+
- config COMMON_CLK_MT8192
- 	tristate "Clock driver for MediaTek MT8192"
- 	depends on ARM64 || COMPILE_TEST
-diff --git a/drivers/clk/mediatek/Makefile b/drivers/clk/mediatek/Makefile
-index a3a93a16b369..1aa9f4265225 100644
---- a/drivers/clk/mediatek/Makefile
-+++ b/drivers/clk/mediatek/Makefile
-@@ -130,6 +130,7 @@ obj-$(CONFIG_COMMON_CLK_MT8189_DBGAO) += clk-mt8189-dbgao.o
- obj-$(CONFIG_COMMON_CLK_MT8189_DVFSRC) += clk-mt8189-dvfsrc.o
- obj-$(CONFIG_COMMON_CLK_MT8189_IIC) += clk-mt8189-iic.o
- obj-$(CONFIG_COMMON_CLK_MT8189_SCP) += clk-mt8189-scp.o
-+obj-$(CONFIG_COMMON_CLK_MT8189_UFS) += clk-mt8189-ufs.o
- obj-$(CONFIG_COMMON_CLK_MT8192) += clk-mt8192-apmixedsys.o clk-mt8192.o
- obj-$(CONFIG_COMMON_CLK_MT8192_AUDSYS) += clk-mt8192-aud.o
- obj-$(CONFIG_COMMON_CLK_MT8192_CAMSYS) += clk-mt8192-cam.o
-diff --git a/drivers/clk/mediatek/clk-mt8189-ufs.c b/drivers/clk/mediatek/clk-mt8189-ufs.c
-new file mode 100644
-index 000000000000..85afab04420f
---- /dev/null
-+++ b/drivers/clk/mediatek/clk-mt8189-ufs.c
-@@ -0,0 +1,133 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2025-2026 MediaTek Inc.
-+ *                    Qiqi Wang <qiqi.wang@mediatek.com>
-+ *                    Irving-CH Lin <irving-ch.lin@mediatek.com>
-+ * Copyright (C) 2026 Collabora Ltd.
-+ *                    AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-+ *                    Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-+ */
-+
-+#include <linux/clk-provider.h>
-+#include <linux/module.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+
-+#include "clk-mtk.h"
-+#include "clk-gate.h"
-+
-+#include <dt-bindings/clock/mediatek,mt8189-clk.h>
-+#include <dt-bindings/reset/mediatek,mt8189-resets.h>
-+
-+#define MT8189_UFSCFG_AO_RST0_SET_OFFSET	0x48
-+#define MT8189_UFSCFG_PDN_RST0_SET_OFFSET	0x48
-+
-+static const struct mtk_gate_regs ufscfg_ao_reg_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0xc,
-+	.sta_ofs = 0x4,
-+};
-+
-+#define GATE_UFSCFG_AO_REG(_id, _name, _parent, _shift)		\
-+	GATE_MTK(_id, _name, _parent, &ufscfg_ao_reg_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
-+
-+static const struct mtk_gate ufscfg_ao_reg_clks[] = {
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_UNIPRO_TX_SYM,
-+			   "ufscfg_ao_unipro_tx_sym", "clk26m", 1),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_UNIPRO_RX_SYM0,
-+			   "ufscfg_ao_unipro_rx_sym0", "clk26m", 2),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_UNIPRO_RX_SYM1,
-+			   "ufscfg_ao_unipro_rx_sym1", "clk26m", 3),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_UNIPRO_SYS,
-+			   "ufscfg_ao_unipro_sys", "ufs_sel", 4),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_U_SAP_CFG,
-+			   "ufscfg_ao_u_sap_cfg", "clk26m", 5),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_U_PHY_TOP_AHB_S_BUS,
-+			   "ufscfg_ao_u_phy_ahb_s_bus", "axi_u_sel", 6),
-+};
-+
-+static u16 ufscfg_ao_rst_ofs[] = {
-+	MT8189_UFSCFG_AO_RST0_SET_OFFSET,
-+};
-+
-+static u16 ufscfg_ao_rst_idx_map[] = {
-+	[MT8189_UFSAO_RST_UFS_MPHY] = 8,
-+};
-+
-+static const struct mtk_clk_rst_desc ufscfg_ao_rst_desc = {
-+	.version = MTK_RST_SET_CLR,
-+	.rst_bank_ofs = ufscfg_ao_rst_ofs,
-+	.rst_bank_nr = ARRAY_SIZE(ufscfg_ao_rst_ofs),
-+	.rst_idx_map = ufscfg_ao_rst_idx_map,
-+	.rst_idx_map_nr = ARRAY_SIZE(ufscfg_ao_rst_idx_map),
-+};
-+
-+static const struct mtk_clk_desc ufscfg_ao_reg_mcd = {
-+	.clks = ufscfg_ao_reg_clks,
-+	.num_clks = ARRAY_SIZE(ufscfg_ao_reg_clks),
-+	.rst_desc = &ufscfg_ao_rst_desc,
-+};
-+
-+static const struct mtk_gate_regs ufscfg_pdn_reg_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0xc,
-+	.sta_ofs = 0x4,
-+};
-+
-+#define GATE_UFSCFG_PDN_REG(_id, _name, _parent, _shift)	\
-+	GATE_MTK(_id, _name, _parent, &ufscfg_pdn_reg_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
-+
-+static const struct mtk_gate ufscfg_pdn_reg_clks[] = {
-+	GATE_UFSCFG_PDN_REG(CLK_UFSCFG_REG_UFSHCI_UFS,
-+			    "ufscfg_ufshci_ufs", "ufs_sel", 0),
-+	GATE_UFSCFG_PDN_REG(CLK_UFSCFG_REG_UFSHCI_AES,
-+			    "ufscfg_ufshci_aes", "aes_ufsfde_sel", 1),
-+	GATE_UFSCFG_PDN_REG(CLK_UFSCFG_REG_UFSHCI_U_AHB,
-+			    "ufscfg_ufshci_u_ahb", "axi_u_sel", 3),
-+	GATE_UFSCFG_PDN_REG(CLK_UFSCFG_REG_UFSHCI_U_AXI,
-+			    "ufscfg_ufshci_u_axi", "mem_sub_u_sel", 5),
-+};
-+
-+static u16 ufscfg_pdn_rst_ofs[] = {
-+	MT8189_UFSCFG_PDN_RST0_SET_OFFSET,
-+};
-+
-+static u16 ufscfg_pdn_rst_idx_map[] = {
-+	[MT8189_UFSPDN_RST_UFS_UNIPRO] = 0,
-+	[MT8189_UFSPDN_RST_UFS_CRYPTO] = 1,
-+	[MT8189_UFSPDN_RST_UFS_HCI] = 2,
-+};
-+
-+static const struct mtk_clk_rst_desc ufscfg_pdn_rst_desc = {
-+	.version = MTK_RST_SET_CLR,
-+	.rst_bank_ofs = ufscfg_pdn_rst_ofs,
-+	.rst_bank_nr = ARRAY_SIZE(ufscfg_pdn_rst_ofs),
-+	.rst_idx_map = ufscfg_pdn_rst_idx_map,
-+	.rst_idx_map_nr = ARRAY_SIZE(ufscfg_pdn_rst_idx_map),
-+};
-+
-+static const struct mtk_clk_desc ufscfg_pdn_reg_mcd = {
-+	.clks = ufscfg_pdn_reg_clks,
-+	.num_clks = ARRAY_SIZE(ufscfg_pdn_reg_clks),
-+	.rst_desc = &ufscfg_pdn_rst_desc,
-+};
-+
-+static const struct of_device_id of_match_clk_mt8189_ufs[] = {
-+	{ .compatible = "mediatek,mt8189-ufscfg-ao", .data = &ufscfg_ao_reg_mcd },
-+	{ .compatible = "mediatek,mt8189-ufscfg-pdn", .data = &ufscfg_pdn_reg_mcd },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, of_match_clk_mt8189_ufs);
-+
-+static struct platform_driver clk_mt8189_ufs_drv = {
-+	.probe = mtk_clk_simple_probe,
-+	.remove = mtk_clk_simple_remove,
-+	.driver = {
-+		.name = "clk-mt8189-ufs",
-+		.of_match_table = of_match_clk_mt8189_ufs,
-+	},
-+};
-+module_platform_driver(clk_mt8189_ufs_drv);
-+
-+MODULE_DESCRIPTION("MediaTek MT8189 ufs clocks driver");
-+MODULE_LICENSE("GPL");
+changes in v3:
+- Compare computed reply sizes instead of UFID contents.
+- Inline the rare reallocation check and add spacing around the update checks.
+- v2 Link: https://lore.kernel.org/all/71380bcfbf3aed9a6a8a9daeef6592fa5a4fb245.1785211788.git.zhilinz@nebusec.ai/
 
+changes in v2:
+- Preserve valid key/UFID mixed flow updates as requested by Ilya Maximets.
+- Reallocate the echoed reply skb with the matched flow identifier before replacing actions.
+- v1 Link: https://lore.kernel.org/all/fa4f85fe7becb164a8a1849aa77ceeb1c08b078c.1784881178.git.zhilinz@nebusec.ai/
+
+ net/openvswitch/datapath.c | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
+
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index eaf332b156d73..d73d729176e1f 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -1113,9 +1113,8 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
+ 			error = -EEXIST;
+ 			goto err_unlock_ovs;
+ 		}
+-		/* The flow identifier has to be the same for flow updates.
+-		 * Look for any overlapping flow.
+-		 */
++
++		/* Look for any overlapping flow. */
+ 		if (unlikely(!ovs_flow_cmp(flow, &match))) {
+ 			if (ovs_identifier_is_key(&flow->id))
+ 				flow = ovs_flow_tbl_lookup_exact(&dp->table,
+@@ -1127,6 +1126,29 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
+ 				goto err_unlock_ovs;
+ 			}
+ 		}
++
++		if (unlikely(reply)) {
++			size_t current, desired;
++
++			current = ovs_flow_cmd_msg_size(acts, &new_flow->id,
++							ufid_flags);
++			desired = ovs_flow_cmd_msg_size(acts, &flow->id,
++							ufid_flags);
++			if (current < desired) {
++				struct sk_buff *resized;
++
++				resized = ovs_flow_cmd_alloc_info(acts, &flow->id,
++								  info, false,
++								  ufid_flags);
++				if (IS_ERR(resized)) {
++					error = PTR_ERR(resized);
++					goto err_unlock_ovs;
++				}
++				kfree_skb(reply);
++				reply = resized;
++			}
++		}
++
+ 		/* Update actions. */
+ 		old_acts = ovsl_dereference(flow->sf_acts);
+ 		rcu_assign_pointer(flow->sf_acts, acts);
 -- 
-2.55.0
-
+2.43.0
