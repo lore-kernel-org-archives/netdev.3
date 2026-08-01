@@ -1,215 +1,122 @@
-Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95D71C69D;
-	Sat,  1 Aug 2026 06:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.161.220
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF72C34EF1F
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 06:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785567424; cv=none; b=S9P33yOIxF9r4atYlKe4octhpUbJZ5/R+DKibBAEa0W5QB0KbStWQWuOBqxKAN5qzKSZAqC0dwFMsesI/jwgm2pTHFOJDvFdOTB64t22CzWNapu0KD2unTke7QjreHTCCh7waN1fOAsbuVt4oPR/giwmx2C/fuUaPmJS/HcLPYo=
+	t=1785567440; cv=none; b=uFoz7gOvMy2N/xCXoqQ6KqLhlCTZIFpr1Wh4yjD6y4BdxNtZK5cTE5tK8BO7JSbTECbD7YDYfsO74ILYOG1XHDBCSEg6G00+Xb82rDXfh9rFSTbYDbT1uMm9EPSu9IoKj1JDGJVMrUaLVbhTJQVKMgLbVk1LJAgBAM2XZnl1NaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785567424; c=relaxed/simple;
-	bh=F+BilUocuxi0JNb46ZqOJ+lA2P7SnmzVpiojai9cuTw=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=PqxEjFT/TK0GQJ9jAqFdl/kn0116dSVUDKjpMFjo+7s92/7lGSLMk2nbclgidNydJB+dLbukOhLhK5mc59OmuG2O7m1KpIEjPZj3uQYmRdI5ILOBTpLzDmLAZsLRB4t4m5asyLggfOTOP9+ttW+ernkFeCUwF9AOQzjd6OVdRnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=OS7Bizrk; arc=none smtp.client-ip=162.243.161.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1785567440; c=relaxed/simple;
+	bh=J6l//22lfe6VaitbfG5t+W+LsoGh3SZrvhf291APJJs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EP4WmdxVSdze8pni5DIremsw2NkWXmwCdAwjPQa3kDDCSkVeYH3KrM3Y+b8NyWbWSpKUoOYatRyjWlzMm/FPOzx5waazo03KlAo1g870OvSws1TOAA5VWM/74uYM374fh62Pok0UknvVLUHaEN6d9YaJhxi3ApLczgt1xaHiywA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g/WxoIMm; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="OS7Bizrk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g/WxoIMm"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2caed617615so22840205ad.3
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 23:57:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:Content-Type:
-	Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	Content-Transfer-Encoding:Message-Id:References:To; bh=oTtkQFC8Y
-	ovmfFstiEd3u82C3Q7pgIcYvgndMBf2Itg=; b=OS7BizrkH2mgV6rgf9qaHJv24
-	PzSPNeI8KLc9DajDXqPOy2vTxrl6mu6KwUrMljOzKnnqioFJeAUrPP7cbsLMw15N
-	+hsgJjgroiOGK+ek9avU46ezTaUBlBSxaumXxcdOdQiM8DijG/Hk+H0Rjxv1FyT8
-	qL5U19Uh8BaOaOfQR0=
-Received: from smtpclient.apple (unknown [106.111.19.250])
-	by web1 (Coremail) with SMTP id yAQGZQB3FMSnmG1qa6nnAA--.57075S2;
-	Sat, 01 Aug 2026 14:56:40 +0800 (CST)
-Content-Type: text/plain;
-	charset=us-ascii
+        d=gmail.com; s=20251104; t=1785567438; x=1786172238; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eX0Ogtu+yr7SwyEN2U3st9d3s1j8WEIsbSfxpUKZtik=;
+        b=g/WxoIMmnPT3LgszSVvVkz+8bIbTI2mO7V58oWKbh3Q3ziyhSU5uVYDLXlaX2Po0Fs
+         YcM5o5K0IB/4q6L0ayPt5MWAtiXJxp7J9/Qr9MZEpq/WZEIh0ZtNdqh7ODfiYCFi7Fsl
+         t3JBNqtqww7UZzRYQF5orMPHQGbLCgg245dLR+UNcvnu3kr7K8lfrqxXkW9SZAdXqTMg
+         VSy6N9rG79osR2a7EtcTvcX7eEE8+W6CnrRtOMGj/0Xek2PfBCaJFboF0BRdzaqYyyj5
+         /tp0Rf0KCn+J+yq6RD0b0e8Mp5FQaFOR5z3c7EEEl9jpMEeN3UWYHF9FKaJdwOCBVTTN
+         5z7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785567438; x=1786172238;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eX0Ogtu+yr7SwyEN2U3st9d3s1j8WEIsbSfxpUKZtik=;
+        b=C/N1gOBXb2CcssJZTlo5G4Iolf+NvkbZtMdsZDE9B+P/WflRFYmYy4C9Qh+lxgOSo2
+         nlkNhRIvyii471kGbx6vLbkCcUWPHQ07DeBj/dvwG7/OMQ7UIhgUPTnioVIQ71saFrI9
+         TCdLbKlgkEUMNF2NeB9QilgLlqWP5/ycogJ2PVuocwDWxYGS+4v+t2ay/yFg0kEFSfdF
+         ER7/+SUAhgtSJeMhzsBQZ9ih7FpZvsE9Uo1vkdktbGaEqr6VwV3b+79iVzua3iqsfk4d
+         SlQVvlKuAixBS4qTYySA8l5om6dtVMG9ZR9VgBTr6vAcc3Wke45mO/pg7VpW1TpL6xMe
+         WFlw==
+X-Forwarded-Encrypted: i=1; AHgh+Rpp9NyuYt7OOVEqiys5JqukoWfRusFPc/eH3wuswlnnf+adxkYspn5qdoFcvEzee5bF1M6/Qf4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTC+B+YyPwsmQJmkbqilxXd3Pb/vEna0LxNbu/PtEDiV44bC6Q
+	56hN/6m3C9WCTMLQW1a1ml5vKNii6YZ2UkLRGwj2mjNGdJXtKAaKKdFXCSOwU42p1UuPHQ==
+X-Gm-Gg: AR+sD12to/3ipafBkBgiI+x82j9rgkDvSe5dMLvztviJ3OKx/w+874oUyZEXdcwH7RC
+	+EacKwE5QyVixlhABWOCMStAvpn/RnvlytGPhijoGcJWeiks77e3GzTkdWaLOUlJ9qUxeYRtfXO
+	n6P/qb+8RITbxyyyKmxVS9W7XurC1glyD0PATQCAeeJz3FjHp/JawkRx9Qg7gWj6GaWdnlyMEtc
+	f4+9/SMXvnRNhTUOIv7YxG7ZN06jEk6UEbYf2slbhTDyBKkGxdrPt7+QGUIM/5RL3UwIf9vgpb9
+	HNYmeiJe9SwcMwgVZPfREHbkL/CABHmvo5ObOGVjyADNhgY1MuVhrQ19VfdEsO7QwAJhIlMdeoS
+	R2avMmhqGri5GKrAWa3CVadhXk1758qBAgcuLJjFP3BLIHmubkfEynt1bP/XG/XH8WsPG3jyjVW
+	NJWkRTMBybDcRfrcEPeXEU0BCYbSUw71no37rCaxidr5WvryxXVRYXksfKgrkfF3QWxWyJcxehK
+	+JJj0ARp7Hz/UfIE9sxhvxrmxo=
+X-Received: by 2002:a17:902:c40b:b0:2cc:f7c6:8353 with SMTP id d9443c01a7336-2d052437b14mr24479315ad.41.1785567438061;
+        Fri, 31 Jul 2026 23:57:18 -0700 (PDT)
+Received: from localhost.localdomain ([152.59.182.249])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3153dd4e666sm19494177eec.4.2026.07.31.23.57.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 23:57:17 -0700 (PDT)
+From: Krishan Singh <krishanmohan298@gmail.com>
+To: linux@armlinux.org.uk
+Cc: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Krishan Singh <krishanmohan298@gmail.com>
+Subject: [PATCH] net: sfp: fix hwmon_name leak on hwmon registration failure
+Date: Sat,  1 Aug 2026 12:27:03 +0530
+Message-Id: <20260801065703.43896-1-krishanmohan298@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH net] nexthop: account nexthop allocations to memcg
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-In-Reply-To: <20260730003845.4166255-1-kuba@kernel.org>
-Date: Sat, 1 Aug 2026 14:56:29 +0800
-Cc: dsahern@kernel.org,
- idosch@nvidia.com,
- davem@davemloft.net,
- edumazet@google.com,
- pabeni@redhat.com,
- horms@kernel.org,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- yangyx22@mails.tsinghua.edu.cn,
- wangao@seu.edu.cn,
- fengxw06@126.com,
- qli01@tsinghua.edu.cn,
- xuke@tsinghua.edu.cn,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C62F834F-2E10-423F-9A2D-F5454184237B@mails.tsinghua.edu.cn>
-References: <20260728060112.30367-1-zhaoyz24@mails.tsinghua.edu.cn>
- <20260730003845.4166255-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
-X-CM-TRANSID:yAQGZQB3FMSnmG1qa6nnAA--.57075S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAFWkur4kWw47AF13Zr45Awb_yoWrXrWrpF
-	Z5tas0yFsrJ34kZaykta1jga4Y9w48Kr9rCanak3yvvwn8Xr1FyFW7KF1jva9ruF4fC3WF
-	vrWjqF1UGa1qk37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l
-	84ACjcxK6I8E87Iv6xkF7I0E14v26F4UJVW0owAac4AC62xK8xCEY4vEwIxC4wAS0I0E0x
-	vYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VCjz48v1sIEY20_
-	GrWkJr1UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zV
-	CS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkI
-	ecxEwVAFwVW8AwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4rKr1UJr1l4I
-	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-	4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUx0tCDUUUU
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQIGAWptIDRUrAAAsv
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Jakub,
+When hwmon_device_register_with_info() fails in sfp_hwmon_probe(),
+the string allocated by hwmon_sanitize_name() is not freed, leaking
+memory on repeated hotplug/probe attempts.
 
-Thank you for both reviews. This is the reply for the first one.
+Also, sfp_hwmon_remove() only freed hwmon_name inside the
+IS_ERR_OR_NULL(hwmon_dev) block, so a partial-init failure could
+leave the name allocation behind.
 
-> On Jul 30, 2026, at 08:38, Jakub Kicinski <kuba@kernel.org> wrote:
->=20
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> --- Patch [1]: [PATCH net] nexthop: account nexthop allocations to =
-memcg ---
-> commit 186a5b6499e65039b5037906ec518baac2833b1d
-> Author: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
->=20
->    nexthop: account nexthop allocations to memcg
->=20
->    The nexthop creation path allocates struct nexthop, struct nh_info,
->    group storage, resilient bucket tables, transient notifier tables =
-and
->    per-group stats without memcg accounting. As a result, a task with
->    CAP_NET_ADMIN can create nexthops and resilient groups whose kernel
->    memory is not charged to the task's memory cgroup, so memory.max =
-does
->    not constrain this part of the workload.
->=20
->> diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
->> index 44fe75004cacb..c8685c5835794 100644
->> --- a/net/ipv4/nexthop.c
->> +++ b/net/ipv4/nexthop.c
-> [ ... ]
->> @@ -2943,7 +2945,7 @@ static struct nexthop *nexthop_create(struct =
-net *net, struct nh_config *cfg,
->> if (!nh)
->> return ERR_PTR(-ENOMEM);
->>=20
->> - nhi =3D kzalloc_obj(*nhi);
->> + nhi =3D kzalloc_obj(*nhi, GFP_KERNEL_ACCOUNT);
->=20
-> [Severity: High]
-> This is a pre-existing issue, but does this patch miss some per-CPU
-> allocations in the nexthop creation path?
+Fix by freeing hwmon_name and clearing both pointers on registration
+failure, and by freeing hwmon_name unconditionally in remove while
+still only unregistering hwmon_dev when it is valid.
 
-Yes. I confirmed that the original patch misses these allocations.
+Fixes: 3f118c449c8e ("net: sfp: use hwmon_sanitize_name()")
+Signed-off-by: Krishan Singh <krishanmohan298@gmail.com>
+---
+ drivers/net/phy/sfp.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-With only the persistent nexthop objects accounted, IPv4 and IPv6 =
-nexthop
-creation can still allocate nhc_pcpu_rth_output and rt6i_pcpu without =
-memcg
-accounting, so memory.max does not constrain that memory.
-
-We will fix this in the next revision by passing GFP_KERNEL_ACCOUNT =
-through
-fib_nh_init() and fib6_nh_init() for persistent nexthop creation, while
-leaving regular route creation with GFP_KERNEL.
-
-Please let me know if you would prefer a different split.
-
->=20
-> When creating IPv4 and IPv6 nexthops, nh_create_ipv6() and =
-fib_nh_init()
-> explicitly pass GFP_KERNEL without __GFP_ACCOUNT down to the =
-initialization
-> functions:
->=20
-> net/ipv4/nexthop.c:nh_create_ipv6() {
->    ...
->    err =3D fib6_nh_init(net, fib6_nh, &fib6_cfg, GFP_KERNEL, extack);
->    ...
-> }
->=20
-> This results in unaccounted per-CPU allocations:
->=20
-> net/ipv6/route.c:fib6_nh_init() {
->    ...
->    fib6_nh->rt6i_pcpu =3D alloc_percpu_gfp(struct rt6_info *, =
-gfp_flags);
->    ...
-> }
->=20
-> A similar missing accounting happens for IPv4 in fib_nh_common_init():
->=20
-> net/ipv4/fib_semantics.c:fib_nh_common_init() {
->    ...
->    nhc->nhc_pcpu_rth_output =3D alloc_percpu_gfp(struct rtable __rcu =
-*,
->                                                gfp_flags);
->    ...
-> }
->=20
-> Could an unprivileged user with CAP_NET_ADMIN still bypass memcg =
-limits by
-> exhausting memory through these per-CPU allocations?
->=20
-
-Yes. I confirmed this in the QEMU/KVM Docker reproduction.
-
->=20
-> [Severity: High]
-> This is a pre-existing issue, but do we also need to account for =
-Lightweight
-> Tunnel (LWT) state allocations?
->=20
-> During nexthop creation with encapsulation attributes, =
-fib_nh_common_init()
-> triggers LWT state allocation:
->=20
-> net/ipv4/fib_semantics.c:fib_nh_common_init() {
->    ...
->    err =3D lwtunnel_build_state(net, encap_type, encap,
->                               nhc->nhc_family, cfg, &lwtstate,
->                               extack);
->    ...
-> }
->=20
-> The allocation unconditionally uses GFP_ATOMIC without __GFP_ACCOUNT:
->=20
-> net/core/lwtunnel.c:lwtunnel_state_alloc() {
->    ...
->    lws =3D kzalloc(sizeof(*lws) + encap_len, GFP_ATOMIC);
->    ...
-> }
->=20
-> Could a task in a container bypass memory.max limits by creating many =
-nexthops
-> with encapsulation attributes?
-
-Yes. I reproduced this with an SRv6 NHA_ENCAP nexthop workload in a
-QEMU/KVM guest running Docker with memory.max=3D128M.
-
->=20
->> if (!nhi) {
->> kfree(nh);
->> return ERR_PTR(-ENOMEM);
-
-Regards,
-Yizhou
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index f52020673..f605fb399 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -1895,9 +1895,13 @@ static void sfp_hwmon_probe(struct work_struct *work)
+ 							 sfp->hwmon_name, sfp,
+ 							 &sfp_hwmon_chip_info,
+ 							 NULL);
+-	if (IS_ERR(sfp->hwmon_dev))
++	if (IS_ERR(sfp->hwmon_dev)) {
+ 		dev_err(sfp->dev, "failed to register hwmon device: %ld\n",
+ 			PTR_ERR(sfp->hwmon_dev));
++		kfree(sfp->hwmon_name);
++		sfp->hwmon_name = NULL;
++		sfp->hwmon_dev  = NULL;
++	 }
+ }
+ 
+ static int sfp_hwmon_insert(struct sfp *sfp)
+-- 
+2.34.1
 
