@@ -1,319 +1,275 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A970937FF53
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 10:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561FB30D418;
+	Sat,  1 Aug 2026 11:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785580024; cv=none; b=n/UpBmsckBeqXXy/Xmt6z1c8yaS1VEe0OvjSiQAzKNKWX1ZGJ7ixKC1QmnifJGP5/ln+2x+iGY+yBo+KecF9AWxKPw/a1lhisc4TZKFnp3MTeIcMmCzUB0GSv0vtI4xhLNK93hfoJR0bWOQJpkfohDy8YxymF64/6j9syHn+yYY=
+	t=1785583272; cv=none; b=S5uRKHj38gmtJ8q/5dDioKXewqECvHyZtXS0uF4dHxjJvDl8Bq0+vo7JFEN+ZC3y1MLm51MFIVUFZVW9OmEsl7aJxhdiCZ+uFReJdIfCnevGhZ1osWsL7rRCQcf22JuV4Q/4MvVEr1eFRw7OfxCCJGl8qIucWEGzxFhTZTmg0Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785580024; c=relaxed/simple;
-	bh=UGaXKViydcNHgiIYJqkogJCCwyxdJr51ddIZCkZf78c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XnAZlhcwUjyvZkybpcQzVFHOfwncS0LXV2a2TN+TLbxhTTPgbpcjBW6KX2xeS9C739P2GXZ0dVspSpC9gpBhSfrMMkgUk0+F3eCR+MNY/NIRN6/FouympFDDwjcjm7I04Dq8F4ek81dhZARdLAI3aFDLbAu1U2fyvxNGUYV9lXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pQU4W2wn; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785583272; c=relaxed/simple;
+	bh=7NqZ641Wi4z2iuU3US26dszHh7fyRC6NIM/JYQcPenQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CLFFo9ZiFUyW3L4rjM4Kj36Zhn+OJm1vKVZXB/hSUFon2RUqAxTWgujD2WszW1zXygBLy9pMr32ejYT5tr3j6j6s/jAK/z0PHKcGoJE8hDVcfkZdV5TLan6fTSBBDpQ3Ox1bk7FouvfzDpdUb9AzFdBI8OjnodvMbIbLm2wtTBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=V57LpmzG; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pQU4W2wn"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84e27035206so2186426b3a.3
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 03:27:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785580022; x=1786184822; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Bm6tU6uRMhMFMi+BnhXh/n8qQcLZIiln365T8/pycxA=;
-        b=pQU4W2wn02nUIRwKm+okywFas6jfqzAZV/KNEQDXKeTQvJgYn4wOsjvrv3wUyJCniI
-         zCTDGX//qMlZrNeEzcXz03rrKPfteFNZq88nvlEvkStc5lxJna6sByDwItCqg4w6Vdvr
-         NmiiCDO2nMlEm/w7Ckgh9BERs15k0F8tuq9RSnwG8Uh1hlvpGdZSLZF4zvKIWYudsW0F
-         A2eKeJlRyOSmIDTisWccc3NWEk9vDlI0n5s4eY5WwLc8Vk/sh/d1bxeHHHN9BxwctyFy
-         dpDavudRRjqoKRaS+adJSxnMtTVtjQRtO1w7PlBRkl6qHw52/ZhVSKNAEkESmijy9x/Y
-         6CpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785580022; x=1786184822;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Bm6tU6uRMhMFMi+BnhXh/n8qQcLZIiln365T8/pycxA=;
-        b=i4662iW8tCrEi5brxG37mWv8QJNHbKMdCUBFBpKSPUBW8UWWZ7XEXjHt4xQk0jQizS
-         3WjQYb56ckSzxZsdQ8S8RbBnlv0+JkKvXVKr5/jNW5wCeYETTbE5fyijV6vQNNszqrOo
-         LIKfHpWoozPQ0cMs2QSk/R/ICOvbc/qxwaASMai4nYo+LfVeOMmh2MKCckB8P7bxUFoz
-         Ge20at6h+pSwZJTyC1t/i+8T6vldw8o44hj3oyPEnUWtbYeXjsaqPiJoEQlGzbnKxQpI
-         GOd36pHqgaysAy1035zMmTRg9vqpySW9ZhnpwnurI6ryVdTzJuMBoVN1byEdBa6KNbTS
-         I6EQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro+x9IVoN8mRkzGemHz2AC0oGzZ9u1SuLoBXqC3dwknFWB5h4jigmYBbkZYY2CxY8GbhwvQmsg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRKk2tdq9Nxe9t6AIt8jX/2v7qHlrrY5pEtgHXN16lAb6Tmdax
-	xKiPBDSD0ZNQyU9/8Bt3rVzHg860eKIPwr2KRk83bki00V6FqwKZOEI9
-X-Gm-Gg: AR+sD13JxtNq33kCMxbGl0mIkKHu61JvXhX1i38NOwEM14W/wC5D8SD1kd0jbk5AJmu
-	nFfGig6Izk0Wcm9s0ISSlK9tbCIlOBpCtdxapkGBjF2wmudkeZdAP1Gb739wU02MV2vXKvEljWH
-	VMtbTLM0Pk9vwGTvwXxFVSEnkR2QmMbTZ9inrU9E/AuHcg103UWcsga7EmP3RbzmhKchNhR0b9+
-	X/+GsLWp1A/HD173apprJ/6MQ4M68yJ8yBjU7w980EMyjFPLxTb76K9eICuIXCgLtmtSj6za2n7
-	JH0FZ1zYTWxmxptXO2N1W4czuaYPzKoWe2+OKAYZ7vo1qeW2R7/8RVgI5o2THeSmD7pBD2GQoNn
-	unHpCkki+tWZnGfrmdNsrG8/o7fO9IZRFO8eRNOAs4jbkGRUT0goKSi+fkco2hS0C1bmfM5V8Ir
-	iaK3eer84AuEYid4jO0YhV2S6c8RNRLWxHL4YiUfqfqT6rw46tW1qKgHM=
-X-Received: by 2002:a05:6a00:410a:b0:848:2f84:739 with SMTP id d2e1a72fcca58-84ee4960de6mr2519444b3a.76.1785580021850;
-        Sat, 01 Aug 2026 03:27:01 -0700 (PDT)
-Received: from omen-arch ([147.46.174.207])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edc51cca2sm1526886b3a.61.2026.08.01.03.26.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2026 03:27:01 -0700 (PDT)
-From: Junseo Lim <zirajs7@gmail.com>
-To: John Fastabend <john.fastabend@gmail.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Sechang Lim <rhkrqnwk98@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Junseo Lim <zirajs7@gmail.com>
-Subject: [PATCH bpf v2 2/2] selftests/bpf: Cover strparser self-pass forward allocation
-Date: Sat,  1 Aug 2026 19:26:33 +0900
-Message-ID: <20260801102633.1872012-3-zirajs7@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260801102633.1872012-1-zirajs7@gmail.com>
-References: <20260801102633.1872012-1-zirajs7@gmail.com>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="V57LpmzG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1785583262;
+	bh=7NqZ641Wi4z2iuU3US26dszHh7fyRC6NIM/JYQcPenQ=;
+	h=From:Subject:Date:To:Cc:From;
+	b=V57LpmzG8Me7hTGxfwmjeJ6H2yPI/j2fBGawDOXcUlqgmVSAscCDB/+CtXv/hN68q
+	 kmTuZKKKu8jSkw0B8RyeFO9TTk5aDGgziN0TN2qZSjkY9Fo8+nxCm7nJPIxJKE1GQ7
+	 0rVjGUCdvKtWCEz12aHTThR8P5MvFxAg2ix7ovQ6nKNbKvCe0kao3P8LWKwVZOe+t1
+	 T+m1h6e8HCY5T+9DQFwI61hOZIPOCOsy5IlZJOGE/BnSUBTyJ7644XEePblL6L+X9v
+	 fE9U1PuZkGS8eNz8ilECWLqNHq+iHbOw5I5d9kpCLBCGt2ZdHRrVDioibS7JvVVr/c
+	 aQtVPJbO0d2fQ==
+Received: from yukiji.home (unknown [100.64.0.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laeyraud)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1E45517E015B;
+	Sat, 01 Aug 2026 13:21:01 +0200 (CEST)
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Subject: [PATCH v5 00/25] MT8189: Add support for system and base clock
+ controllers
+Date: Sat, 01 Aug 2026 13:20:46 +0200
+Message-Id: <20260801-mt8189-clocks-system-base-v5-0-ac4410697cc2@collabora.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33QTW6DMBAF4Ksgr+vKfxjIqveoshibobEKuLUdl
+ Cji7nXMBlURy7H1vnmaB4kYHEZyqh4k4OKi83Me6reK2AvMX0hdn2cimNBMS0an1PK2o3b09jv
+ SeI8JJ2ogIm1YwxWqYRAAJOd/Ag7uVuzP8zYH/L3mFWl7JCVm/TS5dKpmvCVa1jSSkWfg4mLy4
+ V66Lbwktn/GD2osnDIqDFPtgAg1gw/rxxGMD/CedxV5EXutO9LEU+uE7kH2RtvhlSZ3mjg60SK
+ z1qLuuw6MhF680tReO+ymsoay1qblErSy/7V1Xf8AIUAbDeEBAAA=
+X-Change-ID: 20260630-mt8189-clocks-system-base-70714e4ff2aa
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Chun-Jie Chen <chun-jie.chen@mediatek.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Edward-JW Yang <edward-jw.yang@mediatek.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Chen-Yu Tsai <wenst@chromium.org>
+Cc: kernel@collabora.com, linux-clk@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ netdev@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
+ Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>, 
+ Irving-CH Lin <irving-ch.lin@mediatek.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785583260; l=10279;
+ i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
+ bh=7NqZ641Wi4z2iuU3US26dszHh7fyRC6NIM/JYQcPenQ=;
+ b=mRJgDjGkvCi5jsc/JuU5pvkHcg7A0j6p+jyAmKy0++qdHVSUmSXEIDDKzUTfHb939kxyYUb/E
+ +AqFx0KcnQPDrbqdn+nMoDSiYbZZIvvIgu+O6G4rDgf7hRQTa+31+2s
+X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
+ pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
 
-Add a sockmap_strp regression test for strparser SK_PASS delivery to the
-same socket. A one-byte stream parser splits a single write into many
-messages, repeatedly exercising receive ownership transitions while the
-skbs remain queued.
+This series is a continuation by AngeloGioacchino Del Regno and I of a
+previous series ([1]), that adds the clock controller support for
+the Mediatek MT8189 SoC and its variants (MT8371, MT8391).  
 
-Verify through INET_DIAG_MEMINFO that sk_forward_alloc does not become
-negative after the self-pass path is exercised.
+The first major changes is the split of the series in two:
+- one for all basic clock controllers including system ones (this
+series)
+- one for the multimedia and graphics related clock controllers (to be
+send in the future)
 
-Signed-off-by: Junseo Lim <zirajs7@gmail.com>
+We chose to separate the multimedia clock drivers from the base system
+ones, as there is currently an unsolvable inter-dependency between the
+power domains and multimedia clocks; the power domains need a
+dual-stage bring-up, where only a part of the multimedia clocks are
+accessible in the first power domain powerup stage, and the rest when
+the second stage (SRAM enablement) is done.
+The current workarounds for this issue, such as removing the is_enabled
+operation from the impacted clock controllers clk_ops table or
+let the multimedia power domain always on, were quickly discarded
+for upstream.
+
+The second major change is the dt-bindings patch ([2]) that got heavily
+reworked, not only because of the split choice. We took the opportunity
+to regroup in the MT8186 clock and system clock dt-bindings the
+description of several other Mediatek SoC (MT8188, MT8192 and MT8195)
+and add in them the MT8189 new ones.
+The rationale is to ease maintainability and have common files for
+several currently supported SoC or new future ones, that have the same
+kind of clock controller design.
+
+Finally the pending remarks from peer reviews on the v6 revision of [1]
+were also taken into account and new fixes and cleanups were also
+added.
+
+A more detailed changelog between [1] and this series:
+- Removed multimedia and graphics related clock controllers code and
+  definitions from series
+- Added new dt-bindings patches to factorise existing MT8188, MT8192
+  and MT8195 in MT8186 clock dt-bindings
+- Heavily modified the MT8189 dt-bindings to add new compatibles 
+  in MT8186 clock dt-bindings
+- Created a new dt-bindings include for the MT8189 reset controller
+  definitions (include/dt-bindings/reset/mediatek,mt8189-resets.h)
+- Removed unnecessary `syscon` compatible fallback from MT8189 base
+  clock controllers
+- Added missing 'mediatek,mt8189-fhctl' compatible declaration in
+  dt-bindings
+- Modified Kconfig to COMMON_CLK_MT8189 be tristate (and not bool) to 
+  allow all MT8189 clock controller drivers to be built as modules (it
+  was partial) 
+- Fix pll unregisters in clk_mt8189_apmixed_probe error case
+- Reparent several clocks to correct 26M references in clk-mt8189-bus.c,
+  clk-mt8189-topckgen.c and clk-mt8189-vlpckgen.c
+- Removed CLK_SET_RATE_NO_REPARENT flag from mfg_sel_mfgpll
+- Rename TOPCKGEN_fmipi_csi_up26m clock to fmipi_csi_up26m to remove caps usage
+- Implemented reset controllers in clk-mt8189-ufs.c
+- Updated all file headers to update copyrights and add all authors
+- Added all co-developed-by trailers
+
+The series is based on linux-next tree (tag: next-20260730) and has
+been tested on Mediatek Genio 520-EVK (MT8371) and 720-EVK (MT8391)
+boards, with hardware enablement patch series ([3]), and on Genio
+510-EVK (MT8370, variant of MT8188) and Genio 1200-EVK (MT8395,
+variant of MT8195).
+
+[1]: https://lore.kernel.org/linux-mediatek/20260309120512.3624804-1-irving-ch.lin@mediatek.com/
+[2]: https://lore.kernel.org/linux-mediatek/20260309120512.3624804-2-irving-ch.lin@mediatek.com/
+[3]: https://lore.kernel.org/linux-mediatek/20260701-add-mediatek-genio-520-720-evk-v2-0-19d5da4ef984@collabora.com/
+
 ---
- .../selftests/bpf/prog_tests/sockmap_strp.c   | 171 ++++++++++++++++++
- .../selftests/bpf/progs/test_sockmap_strp.c   |   6 +
- 2 files changed, 177 insertions(+)
+Changes in v5:
+- Rebased on next-20260730 tag
+- Dropped "clk: mediatek: pll: split default prepare/unprepare callbacks"
+  patch and added  "clk: mediatek: pll: Factorise pll power on/off sequence"
+  and "clk: mediatek: pll: Add PLL stabilization delay definition"
+  patches in replacement.
+- patch 13:
+  - reworded commit message to show this new clocks ops use specific pll
+    enablement rather powering
+  - reworked mtk_pll_prepare_setclr and mtk_pll_unprepare_setclr
+    sequence to handle properly specific enable/disable sequence
+    using en_set/clr register (Sashiko)
+  - fixed timeout management in mtk_pll_prepare_setclr and
+    mtk_pll_unprepare_setclr (Sashiko)
+- Link to v4: https://lore.kernel.org/r/20260729-mt8189-clocks-system-base-v4-0-e356b813a64c@collabora.com
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_strp.c b/tools/testing/selftests/bpf/prog_tests/sockmap_strp.c
-index 1d7231728eaf..c7ad21d0bbf4 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_strp.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_strp.c
-@@ -1,5 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <error.h>
-+#include <linux/inet_diag.h>
-+#include <linux/netlink.h>
-+#include <linux/rtnetlink.h>
-+#include <linux/sock_diag.h>
- #include <netinet/tcp.h>
- #include <test_progs.h>
- #include "sockmap_helpers.h"
-@@ -460,6 +464,171 @@ static void test_sockmap_strp_parser_reject(void)
- 	test_sockmap_strp__destroy(strp);
- }
- 
-+/* Read sk_forward_alloc through inet_diag meminfo. */
-+static int sockmap_strp_get_fwd_alloc(int sock, int *fwd_alloc)
-+{
-+	struct sockaddr_storage local = {}, peer = {};
-+	struct sockaddr_in *local_in, *peer_in;
-+	socklen_t addr_len = sizeof(local);
-+	char buf[1024];
-+	struct {
-+		struct nlmsghdr nlh;
-+		struct inet_diag_req_v2 req;
-+	} req = {
-+		.nlh = {
-+			.nlmsg_len = sizeof(req),
-+			.nlmsg_type = SOCK_DIAG_BY_FAMILY,
-+			.nlmsg_flags = NLM_F_REQUEST,
-+			.nlmsg_seq = 1,
-+		},
-+		.req = {
-+			.sdiag_family = AF_INET,
-+			.sdiag_protocol = IPPROTO_TCP,
-+			.idiag_ext = 1 << (INET_DIAG_MEMINFO - 1),
-+			.idiag_states = ~0U,
-+			.id.idiag_cookie = {
-+				INET_DIAG_NOCOOKIE,
-+				INET_DIAG_NOCOOKIE,
-+			},
-+		},
-+	};
-+	int diag_fd, ret, err = -ENOENT;
-+
-+	if (getsockname(sock, (struct sockaddr *)&local, &addr_len))
-+		return -errno;
-+	addr_len = sizeof(peer);
-+	if (getpeername(sock, (struct sockaddr *)&peer, &addr_len))
-+		return -errno;
-+
-+	local_in = (struct sockaddr_in *)&local;
-+	peer_in = (struct sockaddr_in *)&peer;
-+	req.req.id.idiag_sport = local_in->sin_port;
-+	req.req.id.idiag_dport = peer_in->sin_port;
-+	req.req.id.idiag_src[0] = local_in->sin_addr.s_addr;
-+	req.req.id.idiag_dst[0] = peer_in->sin_addr.s_addr;
-+
-+	diag_fd = socket(AF_NETLINK, SOCK_RAW | SOCK_CLOEXEC,
-+			 NETLINK_SOCK_DIAG);
-+	if (diag_fd < 0)
-+		return -errno;
-+
-+	ret = send(diag_fd, &req, sizeof(req), 0);
-+	if (ret < 0) {
-+		err = -errno;
-+		goto out;
-+	}
-+	if (ret != sizeof(req)) {
-+		err = -EIO;
-+		goto out;
-+	}
-+
-+	ret = recv(diag_fd, buf, sizeof(buf), 0);
-+	if (ret < 0) {
-+		err = -errno;
-+		goto out;
-+	}
-+
-+	for (struct nlmsghdr *nlh = (struct nlmsghdr *)buf;
-+	     NLMSG_OK(nlh, ret); nlh = NLMSG_NEXT(nlh, ret)) {
-+		struct inet_diag_msg *msg = NLMSG_DATA(nlh);
-+		struct rtattr *attr;
-+		int len;
-+
-+		if (nlh->nlmsg_type == NLMSG_ERROR) {
-+			err = -EINVAL;
-+			goto out;
-+		}
-+		if (nlh->nlmsg_type == NLMSG_DONE)
-+			break;
-+
-+		len = nlh->nlmsg_len - NLMSG_LENGTH(sizeof(*msg));
-+		for (attr = (struct rtattr *)(msg + 1); RTA_OK(attr, len);
-+		     attr = RTA_NEXT(attr, len)) {
-+			struct inet_diag_meminfo *minfo;
-+
-+			if (attr->rta_type != INET_DIAG_MEMINFO)
-+				continue;
-+			minfo = RTA_DATA(attr);
-+			*fwd_alloc = (__s32)minfo->idiag_fmem;
-+			err = 0;
-+			goto out;
-+		}
-+	}
-+
-+out:
-+	close(diag_fd);
-+	return err;
-+}
-+
-+/* Test strparser SK_PASS delivery to the same socket. */
-+static void test_sockmap_strp_self_pass_fwd_alloc(void)
-+{
-+	struct test_sockmap_strp *strp = NULL;
-+	char snd[4 * 1024];
-+	int c = -1, p = -1;
-+	int fwd_alloc;
-+	int sndbuf = sizeof(snd);
-+	int zero = 0;
-+	char rcv;
-+	int sent, recvd;
-+	int map;
-+	int err;
-+
-+	memset(snd, 0xa5, sizeof(snd));
-+
-+	strp = test_sockmap_strp__open_and_load();
-+	if (!ASSERT_OK_PTR(strp, "test_sockmap_strp__open_and_load"))
-+		return;
-+
-+	map = bpf_map__fd(strp->maps.sock_map);
-+	err = xbpf_prog_attach(bpf_program__fd(strp->progs.prog_skb_parser_one),
-+			       map, BPF_SK_SKB_STREAM_PARSER, 0);
-+	if (err)
-+		goto out_destroy;
-+
-+	err = xbpf_prog_attach(bpf_program__fd(strp->progs.prog_skb_verdict_pass),
-+			       map, BPF_SK_SKB_STREAM_VERDICT, 0);
-+	if (err)
-+		goto out_destroy;
-+
-+	err = create_pair(AF_INET, SOCK_STREAM, &c, &p);
-+	if (!ASSERT_OK(err, "create_pair"))
-+		goto out_destroy;
-+
-+	err = xsetsockopt(c, SOL_SOCKET, SO_SNDBUF, &sndbuf, sizeof(sndbuf));
-+	if (err)
-+		goto out_destroy;
-+
-+	err = xsetsockopt(p, SOL_SOCKET, SO_RCVBUF, &sndbuf, sizeof(sndbuf));
-+	if (err)
-+		goto out_destroy;
-+
-+	err = xbpf_map_update_elem(map, &zero, &p, BPF_NOEXIST);
-+	if (err)
-+		goto out_destroy;
-+
-+	sent = send(c, snd, sizeof(snd), MSG_DONTWAIT);
-+	if (!ASSERT_EQ(sent, sizeof(snd), "send"))
-+		goto out_destroy;
-+
-+	recvd = recv_timeout(p, &rcv, sizeof(rcv), MSG_DONTWAIT,
-+			     IO_TIMEOUT_SEC);
-+	if (!ASSERT_EQ(recvd, sizeof(rcv), "recv_timeout") ||
-+	    !ASSERT_EQ(rcv, snd[0], "data mismatch"))
-+		goto out_destroy;
-+
-+	err = sockmap_strp_get_fwd_alloc(p, &fwd_alloc);
-+	if (!ASSERT_OK(err, "sockmap_strp_get_fwd_alloc") ||
-+	    !ASSERT_GE(fwd_alloc, 0, "sk_forward_alloc"))
-+		goto out_destroy;
-+out_destroy:
-+	test_sockmap_strp__destroy(strp);
-+	if (c >= 0)
-+		close(c);
-+	if (p >= 0)
-+		close(p);
-+}
-+
- void test_sockmap_strp(void)
- {
- 	if (test__start_subtest("sockmap strp tcp pass"))
-@@ -482,4 +651,6 @@ void test_sockmap_strp(void)
- 		test_sockmap_strp_dispatch_pkt(AF_INET, SOCK_STREAM);
- 	if (test__start_subtest("sockmap strp parser reject pkt mod"))
- 		test_sockmap_strp_parser_reject();
-+	if (test__start_subtest("sockmap strp self pass fwd alloc"))
-+		test_sockmap_strp_self_pass_fwd_alloc();
- }
-diff --git a/tools/testing/selftests/bpf/progs/test_sockmap_strp.c b/tools/testing/selftests/bpf/progs/test_sockmap_strp.c
-index fe88fa6d40bc..682e53d40751 100644
---- a/tools/testing/selftests/bpf/progs/test_sockmap_strp.c
-+++ b/tools/testing/selftests/bpf/progs/test_sockmap_strp.c
-@@ -50,6 +50,12 @@ int prog_skb_parser_partial(struct __sk_buff *skb)
- 	return 10;
- }
- 
-+SEC("sk_skb/stream_parser")
-+int prog_skb_parser_one(struct __sk_buff *skb)
-+{
-+	return 1;
-+}
-+
- SEC("sk_skb/stream_parser")
- int prog_skb_parser_resize(struct __sk_buff *skb)
- {
+Changes in v4:
+- Rebased on next-20260728 tag
+- Added patches 9 to 14 to add new clock ops data set for PLL and
+  PLL-FHCTL to handle a new PLL switch logic for PLL control and BAR
+  reset, supported by MT8189 SoC
+- Patch 15:
+  - Removed useless includes (B. Masney)
+  - Fixed variable declaration order in clk_mt8189_apmixed_probe (B.
+    Masney)
+  - Added missing pwr_reg setting setting in PLL_SETCLR macro (B. 
+    Masney, Sashiko)
+  - Added en_set_reg, en_clr_reg, rst_bar_reg, rst_bar_set_reg and
+    rst_bar_clr_reg fixed offsets and new mtk_pll_setclr_ops ops
+    setting in PLL_SETCLR macro
+  - Added pwr_reg offset values in apmixed_plls array
+  - Fixed rst_bar_mask for mainpll univpll, and mmpll in apmixed_plls
+    array to match rst_bar set/clr reg settings
+- Fixed factor ratio for mainpll_d4_d8, tvdpll1_d16, tvdpll2_d16 and
+  osc_d16 clocks (Sashiko)
+- Link to v3: https://lore.kernel.org/r/20260720-mt8189-clocks-system-base-v3-0-8e6d99ab3ad2@collabora.com
+
+Changes in v3:
+- Rebased on next-20260717 tag
+- Added Fixes tags to patches 1, 2 and 3
+- Reworded patch 8 subject and description messages
+- Updated Reviewed-by and Acked-by trailers
+- Link to v2: https://lore.kernel.org/r/20260709-mt8189-clocks-system-base-v2-0-2926da3db6cf@collabora.com
+
+Changes in v2:
+- Rebased on next-20260708 tag
+- Added patch 1,2 and 3 to make the #clock-cells a required property in
+  MT8186, MT8192 and MT8195 clock controller dt-bindings
+- Patch 5:
+  - Removed conditional blocks to check clock-cells property presence
+    for MT8188 clock controller compatible
+  - Reworded commit message to remove the note (no more applicable)
+  - Fixed incorrect property value in else block for #reset-cells
+    property check.
+_ Removed from patch 9 conditional blocks to check clock-cells property
+  presence for MT8189 clock controller compatible
+- Fixed missing MODULE_DEVICE_TABLE in patches 10, 11 and 12.
+- Added devicetree series link in cover letter
+- Link to v1: https://lore.kernel.org/r/20260701-mt8189-clocks-system-base-v1-0-2b048feea50a@collabora.com
+
+---
+Louis-Alexis Eyraud (25):
+      dt-bindings: clock: mediatek: Make '#clock-cells' required for MT8186
+      dt-bindings: clock: mediatek: Make '#clock-cells' required for MT8192
+      dt-bindings: clock: mediatek: Make '#clock-cells' required for MT8195
+      dt-bindings: clock: mediatek: reorder MT8186 compatibles
+      dt-bindings: clock: mediatek: regroup MT8188 dt-bindings into MT8186
+      dt-bindings: clock: mediatek: regroup MT8192 dt-bindings into MT8186
+      dt-bindings: clock: mediatek: regroup MT8195 dt-bindings into MT8186
+      dt-bindings: clock: mediatek: Add MT8189 system/base clocks and resets
+      clk: mediatek: Harmonize mtk_pll_fenc related symbol names
+      clk: mediatek: pll: Add BAR reset register offsets
+      clk: mediatek: pll: Factorise pll power on/off sequences
+      clk: mediatek: pll: Add PLL stabilization delay definition
+      clk: mediatek: pll: Add ops for PLLs using set/clr regs
+      clk: mediatek: pllfh: Add configurable clock ops to mtk_pllfh_data
+      clk: mediatek: pllfh: Add ops for PLLs using set/clr regs
+      clk: mediatek: Add MT8189 apmixedsys clock support
+      clk: mediatek: Add MT8189 topckgen clock support
+      clk: mediatek: Add MT8189 vlpckgen clock support
+      clk: mediatek: Add MT8189 vlpcfg clock support
+      clk: mediatek: Add MT8189 bus clock support
+      clk: mediatek: Add MT8189 dbgao clock support
+      clk: mediatek: Add MT8189 dvfsrc clock support
+      clk: mediatek: Add MT8189 i2c clock support
+      clk: mediatek: Add MT8189 scp clock support
+      clk: mediatek: Add MT8189 ufs clock support
+
+ .../bindings/clock/mediatek,mt8186-clock.yaml      |  128 ++-
+ .../bindings/clock/mediatek,mt8186-fhctl.yaml      |    1 +
+ .../bindings/clock/mediatek,mt8186-sys-clock.yaml  |   24 +-
+ .../bindings/clock/mediatek,mt8188-clock.yaml      |   93 --
+ .../bindings/clock/mediatek,mt8188-sys-clock.yaml  |   58 --
+ .../bindings/clock/mediatek,mt8192-clock.yaml      |  191 ----
+ .../bindings/clock/mediatek,mt8192-sys-clock.yaml  |   68 --
+ .../bindings/clock/mediatek,mt8195-clock.yaml      |  238 -----
+ .../bindings/clock/mediatek,mt8195-sys-clock.yaml  |   76 --
+ drivers/clk/mediatek/Kconfig                       |   79 ++
+ drivers/clk/mediatek/Makefile                      |    8 +
+ drivers/clk/mediatek/clk-mt8189-apmixedsys.c       |  203 ++++
+ drivers/clk/mediatek/clk-mt8189-bus.c              |  200 ++++
+ drivers/clk/mediatek/clk-mt8189-dbgao.c            |   98 ++
+ drivers/clk/mediatek/clk-mt8189-dvfsrc.c           |   58 ++
+ drivers/clk/mediatek/clk-mt8189-iic.c              |  122 +++
+ drivers/clk/mediatek/clk-mt8189-scp.c              |   77 ++
+ drivers/clk/mediatek/clk-mt8189-topckgen.c         | 1025 ++++++++++++++++++++
+ drivers/clk/mediatek/clk-mt8189-ufs.c              |  133 +++
+ drivers/clk/mediatek/clk-mt8189-vlpcfg.c           |  116 +++
+ drivers/clk/mediatek/clk-mt8189-vlpckgen.c         |  285 ++++++
+ drivers/clk/mediatek/clk-mt8196-apmixedsys.c       |    2 +-
+ drivers/clk/mediatek/clk-mt8196-vlpckgen.c         |    2 +-
+ drivers/clk/mediatek/clk-pll.c                     |  130 ++-
+ drivers/clk/mediatek/clk-pll.h                     |   13 +-
+ drivers/clk/mediatek/clk-pllfh.c                   |   15 +-
+ drivers/clk/mediatek/clk-pllfh.h                   |    3 +
+ include/dt-bindings/clock/mediatek,mt8189-clk.h    |  433 +++++++++
+ include/dt-bindings/reset/mediatek,mt8189-resets.h |   17 +
+ 29 files changed, 3136 insertions(+), 760 deletions(-)
+---
+base-commit: 958ffd63100e10949c8f39e8c4e6e9f1aff140f2
+change-id: 20260630-mt8189-clocks-system-base-70714e4ff2aa
+
+Best regards,
 -- 
-2.55.0
+Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
