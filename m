@@ -1,36 +1,38 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678AB36197C
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 07:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B350B3AE187;
+	Sat,  1 Aug 2026 07:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785570235; cv=none; b=Z1aKA1SkYo909FtR5NisF93fzwAYo8N00ei4VYWMitD//IJIvvrH2Ca9kmyAfq964vyV15EKD04Qov2Npbf5eJ2bVFOUXgw897d8a41HaLHyLQYJS/O8NoCA7b3AaVINRR/nW6uWG8flbJH/+8OsEqP4J1l7n/UjZTy/iUdb8PA=
+	t=1785570239; cv=none; b=Qcd7+VtbzEQLVimkuEnei7H3J7x/r8oKJZcWgyfJErsISb3Q8jJWsyFbFgiWlqQ1HlzN0azK+KmRxDSAmqodjlM02E9LgEYqup/55z07qU5rVmVJKN39mzMgd7fekJ1NWtmnnMUoVExEZuPGg4ErmIN1FDeuLayQ+oIGx36HS/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785570235; c=relaxed/simple;
-	bh=AIEoVp5MJ1Dz0KECMEs29oyU0bkvw9gCkeuhtfebzkA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u3Mlo/V+EI4g7jIpTZuvSmK3bB+v0w19Rns3bPpMaCcjfGfK0Scy36NDlJX0rqn7grLTjn4RbvCcsRS00O4LFpvi58ybIQvefzYMKGvLrooo3ogkYiKqdhSmyCY5DcnwlCywKXj5C1+sz7UvlqFQzLPfOvEDzND0DVQcq+PZnqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bbGLW76D; arc=none smtp.client-ip=185.246.85.4
+	s=arc-20240116; t=1785570239; c=relaxed/simple;
+	bh=ciiuwFmi2IhqAusW6jRNSMGmELJIVl8SDj0EkrVYJJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HNwoCy5SV8B/OZL/9aPyAUhbjG5IGQBDk79Tw2LBUrHaa2opYN2l5a6z+cn99DNqvuVbU9mIUbeYvK/Uoi63+q6qNJtt6ZlXMaZd1/JDeGplNm0JLOcUcHAo/aPk2iks7yRIYzEaws6/4utxTFejHx0Qrcigdi8bSdiNSXhb+RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XNqs9hD1; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bbGLW76D"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XNqs9hD1"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 5374D4E4107B;
-	Sat,  1 Aug 2026 07:43:48 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 50AF94E4107D;
+	Sat,  1 Aug 2026 07:43:55 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 160F8603C2;
-	Sat,  1 Aug 2026 07:43:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C11D211C16FFC;
-	Sat,  1 Aug 2026 09:43:33 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1CAA8603C2;
+	Sat,  1 Aug 2026 07:43:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7A78B11C16FFD;
+	Sat,  1 Aug 2026 09:43:47 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785570222; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=cWouN2SpTNyWUAJYesgrlKpHko4sPM703EelVLIbRPc=;
-	b=bbGLW76DATFSgxtq9GaeGsHyBRjhglp0lKwesw3NBXzoWHeLD0tqugRT2aNmTTX23bqfMa
-	fqEDogd4m3MQwD1clGk27LiwsVtGNumnrVltC0rhdFBv0SUVfYaDiLnFevbYR7SSdULLy4
-	NNn2mTJyKHQs4i/jquNam20456TdTYYwfW4XgeiUYDOPcWGep1QSVnKa4Ot/STrdGyWeTu
-	7LUih1JK3lrmB9V4LmPs9hT9upX4esQMZXUVKhWlFx0WyKqU/Ir+xYZJocCBxshCK8J649
-	gt86GJKj+IyrgsHHWJRH3YfAvUDmRkBRbKfW22LNRqW9L07/28qR8aCs+xD1eA==
+	t=1785570229; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=XSR4AXfcggq59Amttf4xMYQ/vlxyk3YLKhyoCNzbXMs=;
+	b=XNqs9hD1W+++t/QErwnMkOS6u3o7r7358/rObEFm/1D8BJCFD3TD9sp69jFzcwjwhU8Vcz
+	KnQ4ULoFmzBE3biGkW17hGIgEr6pGzz1DB/Om1N8rWBeeAzkOe0ISqn3ZGxRH0sNiFyrI1
+	9gzrTnnPAfd/KuSRPNuhfdpgpT+sxslMtUpy2B+f7nlQUEK19VvhOc677Z9wYq0R6bDYZ7
+	j//Lnb3IpzYzCGWAqIBCZrFzF2a5eWTpt86/4rpYSxB6mBnYNmNI9K9qxOojqBmnpdtm47
+	tj2WxsCY03turh/hIPmUjJ5jC2V+ZqljvNyyvenfGqskxR4RPuP/2FhVaDPhEQ==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -58,10 +60,12 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
 	Frank Wunderlich <frank.wunderlich@linux.dev>,
 	Pietro Ameruoso <p.ameruoso@live.it>
-Subject: [PATCH net-next v15 00/10] net: phy_port: SFP modules representation and phy_port listing
-Date: Sat,  1 Aug 2026 09:43:21 +0200
-Message-ID: <20260801074332.98755-1-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v15 01/10] net: phy: phy_link_topology: Add a helper for opportunistic alloc
+Date: Sat,  1 Aug 2026 09:43:22 +0200
+Message-ID: <20260801074332.98755-2-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260801074332.98755-1-maxime.chevallier@bootlin.com>
+References: <20260801074332.98755-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,256 +75,82 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hello everyone,
+The phy_link_topology structure stores information about the PHY-related
+components connected to a net_device. It is opportunistically allocated,
+when we add the first item to the topology, as this is not relevant for
+all kinds of net_devices.
 
-Here's V15 for the phy_port improved SFP support and netlink interface.
+In preparation for the addition of phy_port tracking in the topology,
+let's make a dedicated helper for that allocation sequence.
 
-V15 addresses more sashiko reports, by improving the locking scheme for
-ops-locked devices as well as better handling of port upstream tracking
-by storing a pointer to phy_port instead of the index.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/phy/phy_link_topology.c | 40 +++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 8 deletions(-)
 
-This work extends on the recent addition of phy_port representation to enable
-listing the front-facing ports of an interface. For now, we don't control
-these ports, we merely list their presence and their capabilities.
-
-As the most common use-case of multi-port interfaces is combo-ports that
-provide both RJ45 and SFP connectors on a single MAC, there's a lot of
-SFP stuff in this series.
-
-This series is in 2 main parts. The first one aims at representing the
-SFP cages and modules using phy_port, as combo-ports with RJ45 + SFP are
-by far the most common cases for multi-connector setups.
-
-The second part is the netlink interface to list those ports, now that
-most use-cases are covered.
-
-Let's see what we can do with some examples of the new ethtool API :
-
-- Get MII interfaces supported by an empty SFP cage :
-
-# ethtool --show-ports eth3
-
-Port for eth3:
-	Port id: 1
-	Supported MII interfaces : sgmii, 1000base-x, 2500base-x
-	Port type: sfp
-
-- Get Combo-ports supported modes, on each port :
-
-# ethtool --show-ports eth1
-
-Port for eth1:
-	Port id: 1
-	Supported link modes:  10baseT/Half 10baseT/Full
-	                       100baseT/Half 100baseT/Full
-	                       1000baseT/Full
-	                       10000baseT/Full
-	                       2500baseT/Full
-	                       5000baseT/Full
-
-	Port type: mdi
-
-Port for eth1:
-	Port id: 2
-	Supported MII interfaces : 10gbase-r
-	Port type: sfp
-
-- Get Achievable linkmodes on a SFP module (combo port with a DAC in the
-SFP cage)
-
-# ethtool --show-ports eth1
-
-Port for eth1:
-	Port id: 1
-	Supported link modes:  10baseT/Half 10baseT/Full
-	                       100baseT/Half 100baseT/Full
-	                       1000baseT/Full
-	                       10000baseT/Full
-	                       2500baseT/Full
-	                       5000baseT/Full
-	Port type: mdi
-
-Port for eth1:
-	Port id: 2
-	Supported MII interfaces : 10gbase-r
-	Port type: sfp
-
-Port for eth1:
-	Port id: 3
-	Upstream id: 2
-	Supported link modes:  10000baseCR/Full
-	Port type: mdi
-
-Note that here, we have 3 ports :
- - The Copper port
- - The SFP Cage itself, marked as 'occupied'
- - The SFP module
-
-This series builds on top of phy_port and phy_link_topology to allow
-tracking the ports of an interface. We maintain a list of supported
-linkmodes/interfaces on each port, which allows for fine-grained
-reporting of each port's capability.
-
-What this series doesn't do :
- - We don't support selecting which port is active. This is the next step.
- - We only support PHY-driven combo ports. The end-goal of this whole
-   journey that started with phy_link_topology is to get support for MII
-   muxes, such as the one we have on the Turris Omnia. This will eventually
-   be upstreamed as well.
-
-If you want to play around with it, here's [1] the patched ethtool that I've
-been using to produce the outputs above.
-
-Thanks !
-
-Maxime
-
-[1] : https://github.com/minimaxwell/ethtool/tree/mc/ethtool_port
-
-Changelog :
-
-Changes in v15:
- - Fail on port access for ops-locked devices
- - Use a direct phy_port pointer for upstream tracking
- - Addressed the kdoc issues
-
-Changes in v14:
-https://lore.kernel.org/netdev/20260720174808.139573-1-maxime.chevallier@bootlin.com/
- - Added a big comment on the first patch for the topo alloc potential
-   races
- - Fixed the multi-buff DUMP on last patch with a separate iterator for
-   dumps
- - Fixed some typos in the documentation
-
-Changes in V13:
-V13: https://lore.kernel.org/r/20260701110427.143945-1-maxime.chevallier@bootlin.com
- - Rebase on net-next
- - Fix the SFP bus cleanup path in patch 5
-
-Changes in V12:
-V12: https://lore.kernel.org/r/20260615153907.862987-1-maxime.chevallier@bootlin.com
- - Rebased on net-next, including fixes on the phy probing and cleanup
-   paths
- - Rebased on Jakub's netdev_ops_locked changes in phy_link_topology
- - Fixed some typos reported by Andrew and sashiko in the documentation
-
-Changes in v11:
-V11:https://lore.kernel.org/r/20260521121040.1199622-1-maxime.chevallier@bootlin.com
- - Aggregated Andrew's reviews :)
- - Removed the "vacant" field, replaced it with "upstream_port"
-
-Changes in V10:
-V10: https://lore.kernel.org/r/20260513130521.1064094-1-maxime.chevallier@bootlin.com
- - Rebase on net-next
- - Rename phylink/phy_device sfp_bus_port to sfp_cage_port
- - Sashiko's reviews were mostly unrealistic or wrong :(
-
-Changes in V9:
-V9: https://lore.kernel.org/r/20260403123755.175742-1-maxime.chevallier@bootlin.com
- - Added missing netlink doc updates for u8->u32 conversion
- - Removed dead code with a condition that can never be true in
-   phylink's mod_port code
- - Fixed the error path in phy_sfp_connect_phy
-
-Changes in v8:
-V8: https://lore.kernel.org/r/20260325081937.571115-1-maxime.chevallier@bootlin.com
- - Set the new phydev.has_sfp_mod_phy field when we're sure that no
-   errors occured
- - Fix formatting of the copyright info in ethnl port
- - Use a policy to validate the range of port_id
- - Use GENL_REQ_ATTR_CHECK
- - alpha-sort headers
- - use u32 in netlink messages
- - return better error codes
- - don't check the skb len, the core does that
-
-Changes in V7:
-V7: https://lore.kernel.org/all/20260309152747.702373-1-maxime.chevallier@bootlin.com/
- - Changed the port cleanup path to use list_for_each_entry_continue_reverse
- - Adjusted the cleanup path in phylink for the port vacant state
- - Pass the right cmd for the netlink dump message
-
-Changes in V6:
-V6: https://lore.kernel.org/r/20260304145444.442334-1-maxime.chevallier@bootlin.com
- - Added some comments in th mod_port cleanup
- - changed some kmalloc to kmalloc_obj
- - Removed some phy_link_topo_del_port that wasn't needed
-
-Changes in V5:
-V5: https://lore.kernel.org/r/20260205092317.755906-1-maxime.chevallier@bootlin.com
- - Fixed a check on a potentially un-initialized pointer, reported by
-   Simon
- - Fixed a documentation formatting issue
- - Remove a stray pr_info
- - Rebased on net-next
-
-Changes in V4:
-V4 : https://lore.kernel.org/netdev/20260203172839.548524-1-maxime.chevallier@bootlin.com/
- - Add a cleanup patch for the of port parsing
- - Added a match to sync the port's linkmodes with the PHY's for OF
-   ports
- - Added RTNL assert in the port_get topo helper
- - nullify the bus port for phylink support
- - Fix some typos
-
-Changes in V3:
-V3: https://lore.kernel.org/netdev/20260201151249.642015-1-maxime.chevallier@bootlin.com/
- - Remove the sfp bus ops for nophy, and use .module_start() as
-   suggested by Russell
- - Added missing cleanup for the topology, as per AI review
- - Fixed a few typos as per Romain's review
- - Changed "occupied" to "vacant" as per Romain's review
- - Added missing checks for null ports, per AI review
-
-Changes in V2:
-V2: https://lore.kernel.org/netdev/20260128204526.170927-1-maxime.chevallier@bootlin.com/
- - Fix the cleanup path of phy_link_topo_add_phy, as per AI review
- - Fix the cleanup path of phy_sfp_probe, as per AI review
- - Fix the call-site of the disconnect_nophy sfp bus ops, per AI review
- - Fix the netdev-less case uin phylink, per AI review
- - Fix the prototype of phy_link_topo_get_port for the stubs
- - Dropped patch 11. It ended-up breaking 'allnoconfig', so instead we
-   built a phy_interface_names array in net/ethtool/netlink.c
- - Fix an ethool-netlink spec discrepancy with the type of an attribute
- - Fix the size computation in the netlink port API
- - Fix the cleanup path in the netlink port API
-
-V1: https://lore.kernel.org/netdev/20260127134202.8208-1-maxime.chevallier@bootlin.com/
-
-Maxime Chevallier (10):
-  net: phy: phy_link_topology: Add a helper for opportunistic alloc
-  net: phy: phy_link_topology: Track ports in phy_link_topology
-  net: phylink: Register a phy_port for MAC-driven SFP cages
-  net: phy: Create SFP phy_port before registering upstream
-  net: phy: Represent PHY-less SFP modules with phy_port
-  net: phy: phy_port: Store information about a port's upstream
-  net: phy: phy_link_topology: Add a helper to retrieve ports
-  netlink: specs: Add ethernet port listing with ethtool
-  net: ethtool: Introduce ethtool command to list ports
-  Documentation: networking: Update the phy_port infrastructure
-    description
-
- Documentation/netlink/specs/ethtool.yaml      |  54 +++
- Documentation/networking/ethtool-netlink.rst  |  34 ++
- Documentation/networking/phy-port.rst         |  26 +-
- MAINTAINERS                                   |   1 +
- drivers/net/phy/phy-caps.h                    |   2 +
- drivers/net/phy/phy_caps.c                    |  26 ++
- drivers/net/phy/phy_device.c                  | 181 ++++++++-
- drivers/net/phy/phy_link_topology.c           | 101 ++++-
- drivers/net/phy/phylink.c                     | 128 +++++-
- include/linux/phy.h                           |  10 +
- include/linux/phy_link_topology.h             |  44 ++
- include/linux/phy_port.h                      |   5 +
- .../uapi/linux/ethtool_netlink_generated.h    |  19 +
- net/core/dev.c                                |   1 +
- net/ethtool/Makefile                          |   2 +-
- net/ethtool/netlink.c                         |  25 ++
- net/ethtool/netlink.h                         |   8 +
- net/ethtool/port.c                            | 375 ++++++++++++++++++
- 18 files changed, 1008 insertions(+), 34 deletions(-)
- create mode 100644 net/ethtool/port.c
-
+diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
+index 4134de7ae313..dadeb8def7ea 100644
+--- a/drivers/net/phy/phy_link_topology.c
++++ b/drivers/net/phy/phy_link_topology.c
+@@ -28,11 +28,39 @@ static int netdev_alloc_phy_link_topology(struct net_device *dev)
+ 	return 0;
+ }
+ 
++static struct phy_link_topology *phy_link_topo_get_or_alloc(struct net_device *dev)
++{
++	int ret;
++
++	if (dev->link_topo)
++		return dev->link_topo;
++
++	/* The topology is allocated the first time we add an object to it.
++	 * It is freed alongside the netdev. It can be called on multiple
++	 * contexts:
++	 *  - It can be called from .probe() : No rtnl, no netdev_lock
++	 *  - .ndo_open() : rtnl and possibly netdev_lock
++	 *  - SFP state machine : rtnl held or not
++	 *
++	 *  However, we can't really have races :
++	 *  - If we have a PHY, phy_link_topo_add_phy() will always run first
++	 *    and trigger the alloc. Only then the ports can be added through
++	 *    phylib of sfp.
++	 *  - If we don't, the SFP port for the cage is registered first, and
++	 *    only then other ports/PHYs can be registered.
++	 */
++	ret = netdev_alloc_phy_link_topology(dev);
++	if (ret)
++		return ERR_PTR(ret);
++
++	return dev->link_topo;
++}
++
+ int phy_link_topo_add_phy(struct net_device *dev,
+ 			  struct phy_device *phy,
+ 			  enum phy_upstream upt, void *upstream)
+ {
+-	struct phy_link_topology *topo = dev->link_topo;
++	struct phy_link_topology *topo;
+ 	struct phy_device_node *pdn;
+ 	int ret;
+ 
+@@ -45,13 +73,9 @@ int phy_link_topo_add_phy(struct net_device *dev,
+ 	if (WARN_ON_ONCE(netdev_need_ops_lock(dev)))
+ 		return -EOPNOTSUPP;
+ 
+-	if (!topo) {
+-		ret = netdev_alloc_phy_link_topology(dev);
+-		if (ret)
+-			return ret;
+-
+-		topo = dev->link_topo;
+-	}
++	topo = phy_link_topo_get_or_alloc(dev);
++	if (IS_ERR(topo))
++		return PTR_ERR(topo);
+ 
+ 	pdn = kzalloc_obj(*pdn);
+ 	if (!pdn)
 -- 
 2.55.0
 
