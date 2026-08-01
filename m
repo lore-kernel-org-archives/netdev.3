@@ -1,87 +1,79 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFAA31B828
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 05:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387562139C9
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 06:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785563740; cv=none; b=UZ1GqqjdU6mS/61x8xA1QPz5pzVMCNWYUfo91czweAERn80CeMy07nQtSW2uOsLfQ/5/Q7nxyrhqdltFVk+2ySTbuV3hVGYxXPi27FrRvvvS2jl5YOYAGT9CqsMdITYh9yQh30qxlxGrES8iy1SiP1gwHNsYVYjyByKrw1aQQxs=
+	t=1785564156; cv=none; b=gzV3YVUgaOAPjl/O3ackBwtAQMlh+tCPZIA0f7YoUfyD3h8rdzvyzUNq3BJzvdBJ6GXm1J0ePZn/vYpgO5TMu2RPipM9/atQ10BgNPd87GJuTEJaM0aTOWDjiTcjfiUQntwKoYFjI6wpz0PQgBHS09iYURLESXJdgf2Yo0Hms7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785563740; c=relaxed/simple;
-	bh=ZHdedNPcudEcVol+83qSYMha4eWY9xZ3jg45Y9HOidY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tWdYIdaVNKe4kdmunl22xeCcB8RMJYYieCUlhGo0+972+VjuY2s46B/uTiAqIhq1CCylXXzjGJ8FFcw85g2A5JbzJN6Ql8/WNUHsbHqP3IYmA0GCRLlJhxMNjiM9qQPK0FcbP5yyVT2HVXQ5Jj6W0TX8rJEBFPfGQj6gGVcTqFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=bq0Lksk1; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
+	s=arc-20240116; t=1785564156; c=relaxed/simple;
+	bh=cCRUw9Tymj8WgwK1j3rS3w2OZiOMdK3gIoxQR8pYLGM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EpyT+u6WH0FqyeaUMHMM0MPW3rKraEaAUoseBDkAxhQsG/KH28RUIufMJFJ46Fh8zSsbomicyxnjHKuInsuPJVGrkz3j3Rv/dlWiOzrmnyreAsqszX0nQNcuLVwLri/3ubrg8gTQKl7HJyb5WLjTOl5vD/kwBoGOMgw6sCbgYqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=POIogbOn; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b="bq0Lksk1"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38759bcd877so1590198a91.2
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 22:55:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="POIogbOn"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cecdc24b1cso1852935ad.1
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 23:02:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1785563735; x=1786168535; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785564155; x=1786168955; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=d0YoODerQIzEOVN20KJQiVnY06JcnNCgCt2bly7t1Fo=;
-        b=bq0Lksk1Lv0zrJjlb4BgOI/7ySE/jGJyriPfZutvDqXQiBzkprJuBByFyJFedLq79I
-         AJID9AJf9FOn118dIH6qYNIWqX0xtMS8U7EK2rgHMOOWXk2Mu+Q7RqtitrqGriBSDucL
-         cD2XhI+dLpOehAGKLI8z7yU+ygf1KT0Kpa5xrAzhMmGXwuj8XoElt7yWVp1tUE/KILhZ
-         ottEQqyo7UD5yZQYKl24m4zeQRlGR6PF+BN20/3+knvO44+jbrVs9Jt2qfHaZn5gGdFq
-         nwfwcQoqimYZ5XkTQu2dTZXzw7opAAEjeCv3na8bkuEvdwXXqmSu9D4JExD2pZ2cYJNh
-         L+IQ==
+        bh=wG08jLgdCXnGeCo9TntB3GpQ3NVQXE5hVvOabkH8znA=;
+        b=POIogbOnw9X+TMqiJ4lECbJyXuvQ27W8u561fswtnkQTMk1u1NnTLbw30X6DV7KrSE
+         MGA8iQs6zhzRlnyRlA+FdpvQd/upyxOt8pAMtGM9RserjFf6tzA+eQPoxziIRWmVgbsr
+         NLwZJasZGriMmw4wvNwKOHAuezP7cRmsuB3UgdP/rn56GcP7OUs7McyHTzRsGZ2raQtr
+         vD8nE2xVpq4Qd6t9MSOJSGOCSDVRXM0EAa3H+CVqVEfSJSe6MQvtC+os3l88VycmCfig
+         YiftZKHIJq20X+NrGMXPR8ZJIa4EydU6XtCdiygK6c3QG2rjparOnysWZvxquCLuf5ex
+         JY/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785563735; x=1786168535;
+        d=1e100.net; s=20251104; t=1785564155; x=1786168955;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=d0YoODerQIzEOVN20KJQiVnY06JcnNCgCt2bly7t1Fo=;
-        b=jYQSGWpGAkFsL5Uh5AKFzkp/MENEZ1/AZHX8GyS+57H4odCD7Kq79HLUZgiXSETWgm
-         72trKlDrNI6yY2xZr487Wcz/O21ORPDKHzFkxP1+fFnNE0lkLhYsVo1EA2TAenhJT5+j
-         ysd/zFmbs2W+W7Mz0A4fO+N3KjAG4sGEFR9krspxtF6SpJeS39fWHpZSo8KMdUtXFulD
-         LtBeMJ0fEpn9W8I5AogPqFaZzDLsY3sVBT9FnsUDvuKgiOzaCZZqswS5F4rohOq5JNzX
-         fMlphBy0w++1QP9VIQZWdR/YEkrmifMf5l5ILBdaZvgocPKk3hRerMMCOKpxZ57b8ez6
-         ppHg==
-X-Forwarded-Encrypted: i=1; AHgh+RoGC/hKUkJPsOP4x0f7HmwFJtJhQ1WcnV6rO/f7CfAMRI3X+VoC3aWu7F/7Hib0tOCQ+978/u4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJF1/Bzr53LrVaJjXxKFhpgjFrztzPjVnTkynk/8wUdQdopuma
-	CdJdJAlFwsf57HdzHnrKBRm9ydZ2XopHLP04nsn5ShNCvTELtSo/OF3pHR/TjioOdfA=
-X-Gm-Gg: AR+sD10Gch942j3rYeH3Q9xsz5mRTocUlqpATmsrAnb4XcJ+K89WLyTFgpFHi5PBhHA
-	ohStIZcXgq32fzAB0jUnY0oN89FLIhImN5y4ab23Gl6yGDX1cbdPJP5Qy6dJNQpm12qBAvvZjXj
-	AJrDZWnL8M/hFE+84/DrFId8xL4ZcK+jhxgO+LpDqPFn8EX/fHHvWTpAMZUHyqrOO1t88G7AmlE
-	N1LIcQsEIzpaHdqc6S30QnB/3vdO4IQxzJ/UuJF9Ocm3pjMFF5eVi5KUnSOasYThz3Dx4POulpn
-	vOb5wsS60fn1o9nF1AfQdv6ITFTGOuxeFgbrXkVfvnSHsfzQGOxuNAMXBDagGp7GEhsv8DOpPgL
-	81nrIWPTwFy9a8BRJGjNOU89eQd8KveBQvz7f3yWRYgUBMuwRJsKF1bM4/raCJ41j6bTOKTASao
-	uZvKvNDTbFwL+5jQ/igw0kMpI/uzOCGx7k/OL2Hrq/+S22+4r4Y0QfzsrrVdI9nmz0DZUAm8yxK
-	B/WKney0xzlekkf11wMi6zmW9iZasT1MYP8NQ8lMOHjoezzkq74Qm0YEjuOhCtchtjamPY/TRSJ
-	dE+NFV1bjjIxlOY=
-X-Received: by 2002:a05:6a21:9995:b0:3c3:b4e8:5565 with SMTP id adf61e73a8af0-3c92a8f301emr2512911637.61.1785563735027;
-        Fri, 31 Jul 2026 22:55:35 -0700 (PDT)
-Received: from Metius.iitm.ac.in ([103.158.43.43])
-        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-13fab050d8csm16502537c88.0.2026.07.31.22.55.28
+        bh=wG08jLgdCXnGeCo9TntB3GpQ3NVQXE5hVvOabkH8znA=;
+        b=sSuHVZ87GMYAZ9OAHA347+KXTRq8NMF/Io9kUIjGdZj/Fc0XC957tOU21ZQAPDXLvP
+         NHv6g8tmKjY3zBAG5nPOapqt+GoFdYAgc66AC4/X3+Ie3pLo54ZRlj2xINydCSnVpVwX
+         jA2f7yrU5hlbMKLkTNMmEcX5gJArdS2EZLHXMS3seYLbbYKhvFxzQyVsr8AxYdz57R/m
+         k96MgB2aKEiAjC/XVlXVmlMUPAfu5vT21NQD+CATioI2qDnh5AlqAkAKBJbtrR7yOqs6
+         LwrhtcPk48uSOUIdf/JLQvwXFPyBLkDanuPj8+rXEX5onHn5jkhyS8mSjRb6mtFKdVBA
+         dz8g==
+X-Gm-Message-State: AOJu0YxaJG87QvCY3up8h5J+fVjwuqCbIiI7sZhWrH0HnjJcAjbz0Qil
+	Kb1KWrslFgK7mvu88Wl2kQ5GywOeVsuM5eF0vYsT2Ek0iy0MkBiWtMtL
+X-Gm-Gg: AR+sD1274ZobGaOTxbE55Nd3ltsjv8ykBZiIFgn1IQhA8g6gjJaWgUHEvzmga/I0OaY
+	ttSRLS6Hfoxz9lGkoRjUyHxonKjMm5IAKnnbIFTqMPuh8PZ7zVP1Py04wUD2drbAEVhyntOGJAL
+	WpmAXf5KtQ4vuhh9V0hnxdztFuprEuqvwtD+9GSoccvuWHBVq0+YpoUtlaNd1/ICuMBZceuxc1k
+	oQbUsYLdlmpqi7BjM6cwPPCOP81v444+XS73eMN1q/9GHIIH0MGLKzxIYU5dJhFmqs8fkVJAusq
+	p9VxKIC989UE21nGhxglwwg3rv+gmmMg1pvouIHmkhULxR13/wnhsRJe0c0B1bYsBWVRiMIXwdK
+	/I8ClCbMrLXzhH7J1FfoNRxHD/7hrmyolNKZjtM2nF99TtL7yg2hBMSIdUg4ewSfGUyJIc9CvpT
+	g53EDLtAy98eXG2oZe7iSP0mL3ek2SYkl6SGf+NiP0rEeqyq9Km7HcHoVcS7uR1yf1YU8YBbHSD
+	E4ZpecQHwrpFzYjWc7aWNYW56fHNKE0g7LIy8JbEXqU30v/A10G7p8=
+X-Received: by 2002:a17:903:46cf:b0:2ca:ecf6:9115 with SMTP id d9443c01a7336-2d0523bcf3amr36902565ad.2.1785564154559;
+        Fri, 31 Jul 2026 23:02:34 -0700 (PDT)
+Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3153e18e114sm22462138eec.28.2026.07.31.23.02.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 22:55:34 -0700 (PDT)
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: Steen.Hegelund@microchip.com
-Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	daniel.machon@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	morbo@google.com,
-	justinstitt@google.com,
-	linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org,
+        Fri, 31 Jul 2026 23:02:34 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Richard Gobert <richardbgobert@gmail.com>,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	William Tu <u9012063@gmail.com>
+Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	joe@dama.to,
-	horatiu.vultur@microchip.com,
 	stable@vger.kernel.org
-Subject: [PATCH v3 net] net: microchip: vcap api: Fix possible memory leak in vcap_decode_rule()
-Date: Sat,  1 Aug 2026 11:25:05 +0530
-Message-ID: <20260801055507.47534-1-nihaal@cse.iitm.ac.in>
+Subject: [PATCH net] fou: ensure GUE headers have enough headroom
+Date: Sat,  1 Aug 2026 14:01:15 +0800
+Message-ID: <20260801060115.3538849-1-nicoyip.dev@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -91,64 +83,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The memory allocated for struct vcap_rule_internal, keyfields and
-actionfields inside vcap_dup_rule() are not freed in some of the error
-paths in vcap_decode_rule(). Fix that by calling vcap_free_rule().
+ipgre_changelink() installs GUE encapsulation before it publishes the
+new GRE header length and updates dev->needed_headroom.  The transmit
+path does not serialize with RTNL, so it can interleave as follows:
 
-Compile tested only. Issue found using a prototype static analysis tool
-built on top of the LLVM compiler infrastructure.
+  CPU 0 (ipgre_changelink)        CPU 1 (ipgre_xmit)
+  install GUE encapsulation
+                                  reserve the old needed_headroom
+  publish larger GRE flags
+  update tunnel->tun_hlen
+                                  push the larger GRE header
+                                  push the GUE and UDP headers
+  update dev->needed_headroom
 
-Fixes: 610c32b2ce66 ("net: microchip: vcap: Add vcap_get_rule")
+With REMCSUM, the new layout can push 16 bytes of GRE and 20 bytes of
+GUE/UDP headers into an skb with only 32 bytes of actual headroom.  The
+final UDP push writes four bytes before skb->head.
+
+With the update window widened, the kernel reported:
+
+  skbuff: skb_under_panic: ... len:128 put:8 ... dev:gre0poc
+  kernel BUG at net/core/skbuff.c:214!
+  Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+  Call Trace:
+   skb_push
+   fou_build_udp
+   gue_build_header
+   ip_tunnel_xmit
+   __gre_xmit
+   ipgre_xmit
+
+Make __gue_build_header() ensure space for both the GUE header it is
+about to push and the UDP header that follows.  On normally sized skbs
+the check is a no-op.  If configuration changes race with transmission,
+skb_cow_head() expands the head before either GUE write, or returns an
+error without modifying the packet.
+
+Fixes: dd9d598c6657 ("ip_gre: add the support for i/o_flags update via netlink")
 Cc: stable@vger.kernel.org
-Reviewed-by: Joe Damato <joe@dama.to>
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Assisted-by: Codex:gpt-5
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 ---
+ net/ipv4/fou_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v2->v3:
-- Rename the error label to "err_free_rule" to denote the first action
-  being undone, as suggested by Jakub Kicinski
-- Move the information about compile tested only, and how the issue was
-  found to the commit message, as suggested by Jakub Kicinski.
-
-v1->v2:
-- Convert the error labels from "err" to "out_err" to avoid confusion
-  with the err variable, as suggested by Joe Damato.
-
-Link to v1: https://patchwork.kernel.org/project/netdevbpf/patch/20260727125757.134611-1-nihaal@cse.iitm.ac.in/
-Link to v2: https://patchwork.kernel.org/project/netdevbpf/patch/20260728114253.196398-1-nihaal@cse.iitm.ac.in/
-
- drivers/net/ethernet/microchip/vcap/vcap_api.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/microchip/vcap/vcap_api.c b/drivers/net/ethernet/microchip/vcap/vcap_api.c
-index ff86cde11a32..788c0728d763 100644
---- a/drivers/net/ethernet/microchip/vcap/vcap_api.c
-+++ b/drivers/net/ethernet/microchip/vcap/vcap_api.c
-@@ -2427,18 +2427,21 @@ struct vcap_rule *vcap_decode_rule(struct vcap_rule_internal *elem)
+diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
+index ab09dfcdecbd..8cf0d43acb41 100644
+--- a/net/ipv4/fou_core.c
++++ b/net/ipv4/fou_core.c
+@@ -980,6 +980,8 @@ int __gue_build_header(struct sk_buff *skb, struct ip_tunnel_encap *e,
+ 						skb, 0, 0, false);
  
- 	err = vcap_read_rule(ri);
- 	if (err)
--		return ERR_PTR(err);
-+		goto err_free_rule;
+ 	hdrlen = sizeof(struct guehdr) + optlen;
++	if (skb_cow_head(skb, hdrlen + sizeof(struct udphdr)))
++		return -ENOMEM;
  
- 	err = vcap_decode_keyset(ri);
- 	if (err)
--		return ERR_PTR(err);
-+		goto err_free_rule;
+ 	skb_push(skb, hdrlen);
  
- 	err = vcap_decode_actionset(ri);
- 	if (err)
--		return ERR_PTR(err);
-+		goto err_free_rule;
- 
- out:
- 	return &ri->data;
-+err_free_rule:
-+	vcap_free_rule(&ri->data);
-+	return ERR_PTR(err);
- }
- 
- struct vcap_rule *vcap_get_rule(struct vcap_control *vctrl, u32 id)
 -- 
 2.43.0
 
