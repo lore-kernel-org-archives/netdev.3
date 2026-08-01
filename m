@@ -1,657 +1,282 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+Received: from mail-pj2-f0.google.com (mail-pj2-f0.google.com [74.125.227.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C172F7EE8
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 14:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785593617; cv=pass; b=Zop3GvreJ2354dfwSjMwtaOqFX17Osjdjn2vkJlh08rCw49w67Gfsyjnp2FSiaVtNSezrneO63tZbf/Zi8ORfZDwoBei6f3ffw//8lR9wmJji87dan7h0fhyOVvdq2gWZEMUvCph7VN4Fx+uH/qKZX4ryo3ba/Qq8neCEFIHsoQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785593617; c=relaxed/simple;
-	bh=Rh/JNHjj8cf8VgquoWg3Cla0DQgqrRN+evFBzbm5pMI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=syIJB8uMHLY0RY3+dx2xtl6ZOPgfALsZO++bfLhE/1E/LdIXiDkm/gb49L5dZB0SZYcAg2+cJb2BEsE7yp9YtlstMnBAIue0/SVlantF1D6xzKdwZF4dGu5FST9Nl4Zldacxs+t0N/Xq0Mwn4r1EphHzKRnfxA3fQRLknEGoDoM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=fIWamvqk; arc=pass smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79F5356773
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 14:23:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.128
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785594202; cv=none; b=ubOChIH6hiZO0P7LJSLePMG6I1pvDnAhVFVj5fisRFggNx5YiYXU+XG/wwZRZflb08nKQIzZYauWiAYdMTZgfkza0YEFeD1vChgPY6qv9PO/Br0K7hUWjgUKhghYsuWvukSht1EU5sMDFlXG8byE0Lg2ck3P200lplEKTfGrMDA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785594202; c=relaxed/simple;
+	bh=yfzH03Zpfn3qqQcJ//TofgsfNJygcYN7t4VAVJQKlMY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lPdtp/ilxomdaPgFB5pUpuo73HpyR69Zk7oIN8dNwb06hKOIxupeHoJWunfMgWG7n3oJManYlaugoyFpQ2gFXo9TwgA+9fxZtP5n3Kz7sdYVOONeNgaJDgcJzaGIne186iVr1OtBMaIjmn6Gu64d0+dZcTyuwKkSaO73l7JdQYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLXAkM3F; arc=none smtp.client-ip=74.125.227.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="fIWamvqk"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-81e69a2db34so28627677b3.0
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 07:13:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785593613; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TNTjIJPjGTxBM2dBUXwVG6CD4aU2GWmYed7V251cqEFtz0YLAFlmYoSMEniribHoRK
-         pByn4jVCej7VU3QrVpq361LRef+n9PURCh45wh10MOwvs4cQP6++j6SZpUD7FS71v0+X
-         Ma0J9k7TTxdW06F+fdA2AMI1nZ2dKSlLN+aTU+n89nyO0eBZ0d/KSUcOMAhnoNMmAEed
-         Oe781FnvygY0pJBuDyNLiFGj3LWJ316sQ7bxfb+sFH6Zc0Ef05Z+CKDYumUnb4j9QQKo
-         N7kNZadHsH1DWYCoe+/Fqlgvvzr1kR/3rS7212oIDACSPAnQzQvqD9cKTR6LHgD8AlG5
-         fLeQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Bwq3HqSkCLN6NQzYxB/VHyuDKV3GNDbNs6qQf/PdDDM=;
-        fh=2b/p8eILayIRMMhi4EcYALq6aHx0HHIpXO9DKD5N0bU=;
-        b=OmlXgDtIvWJWd+M4HI5vzSdwHp2rZHcWlr0FFeDjCJ+K8H+8b3RZgFiqhOtUkCMvoU
-         VTtAeUUPRVf2FUTSUT0c7q0MIpRPJ+U20U64LGklhDjOuMpSj7KtemTMu133ssRJEOJv
-         WY2fnxJxVAkqOfV/voNPMBox4acDEzpwmPYy369e7HAi1CbIIitGNyYT38c9k1bwYDm4
-         7Bz/N9AjxDvd0eSjZ3OO0gAbWEMC9EkG3y8wEa5onvnQYDZqWgRTFK6Ia4Y6aoeoXAWK
-         fCbLitcFvRkXotU/sLHnxSTlppPhm5Ay4qZg52z68Em7mAgtQyyMH4lR8bhSzQb4VVv4
-         QcDA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLXAkM3F"
+Received: by mail-pj2-f0.google.com with SMTP id d9443c01a7336-2cc6bb7476dso2655325ad.0
+        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 07:23:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1785593613; x=1786198413; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Bwq3HqSkCLN6NQzYxB/VHyuDKV3GNDbNs6qQf/PdDDM=;
-        b=fIWamvqkYOSkRqBUTwTRXKhX6ng6bvL1/dvev1tPR8yhjAzgZW4uJF18zXzPgS3dho
-         4I1IVrBjZMLztEHCS/xFxpwQygzuTfSDzVNENfmZKr4t4ZgXGZjHOqE1dovrB4kzG75M
-         V85unARqN9F9yG9gxw5noJhSyq7eDpEsPF8ZI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785593613; x=1786198413;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1785594194; x=1786198994; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Bwq3HqSkCLN6NQzYxB/VHyuDKV3GNDbNs6qQf/PdDDM=;
-        b=BJZLFKUKOd7CI7N1MTv+Y9xBjZ0A7d1DQZF3vzF/wXQUXnkPg0usaUkbQyXjaMbTyu
-         cM/YlUExObwmb7Jynxuh+KZSj7QxxXQxx2az7x/17s0oc/w6FGlNDfsAchesjynZfsAY
-         1BU6RqB1dNFDtQ0uaAC60mI/6/PxXkBX7wtNP5ArOt/HYzlmFLXGLkaTIj/RzFetfz88
-         Arb5zA9u5Z+9zB1a+kXK9HcYyrX41Mjgrb5MA2JgLHF2JXM1wUd9PRG/ESCNga+eSs19
-         bb7vjdu4aVtSbz9YtNomzJljOJuLuJxCSZjTkFnc8o4CCjyvpmBcyekWDSHA1EMqZqKY
-         AIHw==
-X-Gm-Message-State: AOJu0Yy1gsHhDkSkfmZMhcdwqoa11pC5XF+LfU6cO5rV+A7W3L9IW3W3
-	W0Ppxo/T75GJxQGOK9ipK4v4ad4+W/OiWoCczBlut/pMTQC50bghx8ROaQGWcZ9yl/l458sIMPY
-	s/I5FGR9zCWk01ZE8RP/GhNRahrNu+QZneBaLzVR/
-X-Gm-Gg: AR+sD11gOjDurB/hkEHQgGhKtqKkXcmJS8fkoLTUd4bXYc7zXITCJ1wT06SNRXj5fjn
-	+RI5ad50svaTsNxznuxBtFcHhtBWE1qW8nXwSW2yOLlLkLcAvvo8lW2R1pBm8mtmYyHTrvWifsW
-	bTTt+a85mhIs42NA4LersLbYLhGMwMFKj+m4Z9StUMhbCKBNIhDlwW33lDVAYWMogL/dvIE/VUq
-	IbU0zSJmoXED8JkIWHljUFeRn8D7q0dKp7+tiyakmtFE0s+SOVhieL9HGUWShkDjMgxNMryLwmF
-	BDHaQZ/zdFrS1Z5DczjCvshCGkohkTBPSTtmQK06/6S39w==
-X-Received: by 2002:a05:690c:c507:b0:81d:ff0a:2cfe with SMTP id
- 00721157ae682-81fd4a086a9mr54478567b3.8.1785593612783; Sat, 01 Aug 2026
- 07:13:32 -0700 (PDT)
+        bh=p2cmtp3VyguNZ1YwnWT1LsNqPKC7k3AOpkhFk6RHh98=;
+        b=BLXAkM3FkCQ2cUT+gAe2TOBcgziSYRBWtxrGKtI+Xv8282cPyqyNBNwZwCjN0Qnr/b
+         5VUIJ8eCDWegqsNS+it63zv1kD4Ym5XnRQsyKkA4fkiCrx3a6qskyfEGAQ5y6GkSMENW
+         sOO1JwXhmBlf8XGHhUn1YP7kwzGljG0CJrZeqs/vx2jaM5PQTvuLfPyvCpNtpjb+/15Z
+         M4glmO5pTWvGIsSu/HT+vIrPYBYGBRrtjOZBEP5qfPliqn9iB4Jt4IyN4KY6FlkjrySF
+         Q6NG9oV6SnmjVZ0oLUhe7XMv2GosjdAoP0Qn/jl95wvLBV5yDUQjBZ8CLvxZfTYIzi9o
+         RE3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785594194; x=1786198994;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=p2cmtp3VyguNZ1YwnWT1LsNqPKC7k3AOpkhFk6RHh98=;
+        b=VyWCDBom8194t2Lo4+FThmOka0nRBNJN5fCFoo3DKfpecz0r+Lxab6HgCIGDBHxqFl
+         KAjB6NbCbvOVrK464QIlODLWlV6zLKhTj0dmfDnu9/9CUWgWuDN6NMvsC2jmrW5azNZ3
+         TOAduxkbBV8HiIS8+j4RsAcOii7zqiKhSwMaZ1XZI9J6QJKFi6kHqW1no5KHsOG+79xj
+         dmLUB/oMdzuOCd8ESrM0bTHoiR+K3xd59+S6wAEeUaglJ1KIu5luPt5wmVJyWYT+wEBy
+         7GdkgflTtwm/56VirfPxBNR83/qXEzYe/s8VY5goojWAsAbk7vTXje4PHe2SdrKpjeFq
+         H2dQ==
+X-Forwarded-Encrypted: i=1; AHgh+RquSJwILcX53t7QGlAkSG1EUSifhhBxa+AsRnO98jtuS9tYfBeOqPoWKih7xWiptEVxVK2LA8Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOOn7dzfxd0hs5POuDr+WcHsRMvTD7nqdtoA0+Zj5zjdZ+0j5w
+	SKLuuegeKsG0qhaN4ZCC3H1gaRG4tcwWeJ91ee4biJerTe3uhVu2vCcT
+X-Gm-Gg: AR+sD10G2QZkz6MFIyd7EJAgSWDLttDD7RmKWMEcr0ZI914VAPGBVcDk6ckWTeBT1fA
+	rp4cUwGJxR1aUCpk/OENG5sCdDQMahDWF/rlu0T41/yQLya7Y/JcoftgWdRSEAiVcTv2bbwuynm
+	ouhzv4b3U036CrqsM0rbvJJPJHB+BJgKEH9A34cuuHbIz0WeXpAEXOBC8OKOfIxuOjmvyUoNiS5
+	Gy88oviD+yr2BUR5pPVbDRRaJhj+8r6P1thtOm9uogyXHRTDyoDueKtee6IfVYwVG06lF/pfrBG
+	z5bLVm45BZj9MbndlPy5e9WGGq8DJFoetRwtWvr/T819tc44vjccBryaHCq6FWbvliQLinGHXG9
+	cFs0DQK3qtPDTpEoMN7Ecj4ojfsGuy61neEL3S6sc6mMww9ZPLl1XGki/0LmmdSj3VBTyVaqt29
+	XDl+eH9uKu1MMl8labLPwqvapV9B9OSDQ6z6GqfOzPaDosauXyX09iQYU=
+X-Received: by 2002:a17:903:3905:b0:2cc:80d6:b72 with SMTP id d9443c01a7336-2d0536caf12mr31901555ad.20.1785594193454;
+        Sat, 01 Aug 2026 07:23:13 -0700 (PDT)
+Received: from server.lan ([103.213.4.16])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae5ac3dsm18043845ad.23.2026.08.01.07.23.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Aug 2026 07:23:11 -0700 (PDT)
+From: Coia Prant <coiaprant@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Vinod Koul <vkoul@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Coia Prant <coiaprant@gmail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	David Heidelberg <david@ixit.cz>,
+	netdev@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-renesas-soc@vger.kernel.org
+Subject: [PATCH v2 00/10] net-next: add basic support for RK3568 XPCS
+Date: Sat,  1 Aug 2026 22:22:24 +0800
+Message-ID: <20260801142244.679437-2-coiaprant@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1785434373.git.milkory@outlook.com>
-In-Reply-To: <cover.1785434373.git.milkory@outlook.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Sat, 1 Aug 2026 10:13:21 -0400
-X-Gm-Features: AUfX_mx2m1c33NDDZRLf8ch34Ns3mVSkh7OIW2kkfSlq0KzfsOr-4gn3rloT7IY
-Message-ID: <CAM0EoMnn7abbVjA=oHHR-fGO8VUeBoTPb9npBKgS69r5H3S3Tw@mail.gmail.com>
-Subject: Re: [PATCH net v2 0/2] net/sched: fix qdisc graft hierarchy validation
-To: Ren Wei <enjou1224z@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us, 
-	vega@nebusec.ai, milkory@outlook.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, Aug 1, 2026 at 9:42=E2=80=AFAM Ren Wei <enjou1224z@gmail.com> wrote=
-:
->
-> From: Zijie Huang <milkory@outlook.com>
->
-> Hi Linux kernel maintainers,
->
-> We found and validated a issue in net/sched/sch_api.c. The bug is reachab=
-le
-> by a non-root user via user and net namespace. We've tested it, and it
-> should not affect any other functionality.
->
-> We will provide detailed information about the bug in this email, along
-> with a PoC to trigger it.
->
+Changes since v1:
 
-I should have said thanks for the tdc test. For the series:
+Patch 2 (dt-bindings: phy: naneng-combphy)
+- Changed `rockchip,sgmii-mac-sel` default from 0 to 1 to match
+  hardware reset value (GMAC1)
+- Added `if-then` conditional in `allOf` to restrict the property
+  to `rockchip,rk3568-naneng-combphy` only
+- Updated commit message to reflect hardware default
 
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Patch 3 (phy: rockchip: naneng-combphy)
+- Changed `priv->sgmii_mac_sel` initial value from 0 to 1 to match
+  hardware default
+- Updated commit message to align with binding changes
 
-cheers,
-jamal
-> ---- details below ----
->
-> Bug details:
->
-> The qdisc create-and-graft path allows users to keep attaching new classf=
-ul
-> qdiscs under an already deep parent hierarchy. Such a hierarchy can later
-> be walked recursively and exhaust the kernel stack.
->
-> This series stores the qdisc hierarchy depth in struct Qdisc and checks i=
-t
-> when a qdisc is grafted. New child qdiscs are rejected once the parent is
-> already at the maximum allowed depth. It also adds tdc coverage for the
-> maximum allowed depth and rejection above it.
->
-> Reproducer:
->
->     chmod +x ./poc.sh
->     ./poc.sh namespace
->
-> We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
->
-> ------BEGIN poc.sh------
->
-> #!/bin/sh
-> set -eu
-> PATH=3D/usr/sbin:/usr/bin:/sbin:/bin
->
-> DEPTH=3D"${DEPTH:-200}"
-> IFACE0=3D"${IFACE0:-veth0}"
-> IFACE1=3D"${IFACE1:-veth1}"
-> MODE=3D"${1:-root}"
->
-> setup_and_trigger() {
->         ip link del "$IFACE0" 2>/dev/null || true
->         ip link add "$IFACE0" type veth peer name "$IFACE1"
->
->         sysctl -q -w "net.ipv6.conf.$IFACE0.disable_ipv6=3D1"
->         sysctl -q -w "net.ipv6.conf.$IFACE1.disable_ipv6=3D1"
->
->         ip addr add 10.0.0.1/24 dev "$IFACE0"
->         ip addr add 10.0.0.2/24 dev "$IFACE1"
->
->         tc qdisc add dev "$IFACE0" root handle 1: prio
->
->         i=3D1
->         while [ "$i" -le "$DEPTH" ]; do
->                 parent_major=3D"$(printf '%x' "$i")"
->                 child_major=3D"$(printf '%x' $((i + 1)))"
->                 tc qdisc add dev "$IFACE0" parent "${parent_major}:2" han=
-dle "${child_major}:" prio
->                 i=3D$((i + 1))
->         done
->
->         ip link set "$IFACE0" up
->         ip link set "$IFACE1" up
->
->         ping -c 1 -W 1 -I "$IFACE0" 10.0.0.2 >/dev/null
-> }
->
-> case "$MODE" in
-> root)
->         setup_and_trigger
->         ;;
-> namespace)
->         exec unshare -Urn sh "$0" inner
->         ;;
-> inner)
->         setup_and_trigger
->         ;;
-> *)
->         echo "usage: $0 [root|namespace]" >&2
->         exit 1
->         ;;
-> esac
->
-> ------END poc.sh--------
->
-> ----BEGIN crash log----
->
-> [  192.465021][    C0] BUG: TASK stack guard page was hit at ffffc9000dbd=
-7fd8 (stack is ffffc9000dbd8000..ffffc9000dbe0000)
-> [  192.465084][    C0] Oops: stack guard page: 0000 [#1] SMP KASAN NOPTI
-> [  192.465127][    C0] CPU: 0 UID: 1001 PID: 10556 Comm: ping Not tainted=
- 7.2.0-rc4-00413-ge095f249e220 #1 PREEMPT(full)
-> [  192.465149][    C0] Hardware name: QEMU Standard PC (i440FX + PIIX, 19=
-96), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-> [  192.465153][    C0] RIP: 0010:prio_enqueue+0x2e/0x7c0
-> [  192.465254][    C0] Code: 55 48 89 e5 41 57 41 56 41 55 49 bd 00 00 00=
- 00 00 fc ff df 41 54 49 89 fc 53 48 89 f3 48 83 e4 f0 48 83 c4 80 4c 8d 74=
- 24 20 <48> 89 54 24 18 48 c7 44 24 20 b3 8a b5 41 49 c1 ee 03 48 c7 44 24
-> [  192.465260][    C0] RSP: 0018:ffffc9000dbd7fe0 EFLAGS: 00010283
-> [  192.465274][    C0] RAX: ffffffff89a12450 RBX: ffff88804c17cc00 RCX: f=
-fffffff89a1298d
-> [  192.465278][    C0] RDX: ffffc9000dbdf380 RSI: ffff88804c17cc00 RDI: f=
-fff88803c2ca580
-> [  192.465282][    C0] RBP: ffffc9000dbd8090 R08: 0000000000000005 R09: 0=
-00000000000ffff
-> [  192.465286][    C0] R10: 0000000000000000 R11: 0000000000000001 R12: f=
-fff88803c2ca580
-> [  192.465289][    C0] R13: dffffc0000000000 R14: ffffc9000dbd8000 R15: f=
-fff88804c179280
-> [  192.465293][    C0] FS:  00007f69fe54f000(0000) GS:ffff8880d62af000(00=
-00) knlGS:0000000000000000
-> [  192.465306][    C0] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [  192.465310][    C0] CR2: ffffc9000dbd7fd8 CR3: 000000004b49e000 CR4: 0=
-000000000352ef0
-> [  192.465314][    C0] Call Trace:
-> [  192.465316][    C0]  <TASK>
-> [  192.465319][    C0]  ? tcf_classify+0x3db/0x1250
-> [  192.465343][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465349][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465356][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465363][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465370][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465376][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465384][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465390][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465398][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465404][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465411][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465417][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465425][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465431][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465439][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465445][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465453][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465459][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465467][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465473][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465480][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465486][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465494][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465500][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465507][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465513][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465520][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465527][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465562][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465656][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465665][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465673][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465682][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465690][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465699][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465707][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465716][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465735][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465744][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465753][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465779][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465807][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465816][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465824][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465834][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465843][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465851][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465858][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465865][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465871][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465879][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465885][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465893][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465899][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465907][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465913][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465921][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465927][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465935][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465941][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465949][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465955][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465962][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465969][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465976][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465983][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.465990][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.465996][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466004][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466011][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466018][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466025][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466032][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466039][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466046][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466053][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466060][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466066][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466074][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466080][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466088][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466094][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466102][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466108][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466116][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466122][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466130][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466136][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466144][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466150][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466158][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466164][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466172][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466178][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466186][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466192][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466200][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466206][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466228][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466235][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466243][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466249][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466258][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466264][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466272][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466278][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466285][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466291][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466299][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466305][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466312][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466319][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466326][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466333][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466340][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466347][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466354][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466360][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466367][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466373][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466380][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466387][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466395][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466401][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466409][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466415][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466422][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466428][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466436][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466442][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466449][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466455][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466471][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466477][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466484][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466490][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466498][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466504][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466512][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466518][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466525][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466532][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466539][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466545][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466553][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466559][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466567][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466573][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466581][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466587][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466594][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466600][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466608][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466614][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466621][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466628][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466635][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466641][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466649][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466655][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466662][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466668][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466675][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466682][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466690][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466696][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466703][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466709][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466716][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466722][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466730][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466736][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466743][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466749][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466757][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466763][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466770][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466776][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466784][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466790][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466797][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466803][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466810][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466816][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466824][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466830][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466837][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466844][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466851][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466857][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466865][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466871][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466878][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466884][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466892][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466898][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466905][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466911][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466919][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466925][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466932][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466939][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466946][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466952][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466959][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466965][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466973][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466979][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.466986][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.466992][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467000][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467014][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467022][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467028][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467035][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467043][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467050][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467056][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467063][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467070][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467077][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467083][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467091][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467097][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467104][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467111][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467118][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467124][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467132][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467138][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467145][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467152][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467159][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467165][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467174][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467180][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467188][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467194][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467201][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467207][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467215][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467221][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467228][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467235][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467242][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467248][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467256][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467262][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467269][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467275][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467283][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467289][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467297][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467303][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467310][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467317][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467324][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467330][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467338][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467344][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467351][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467357][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467365][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467371][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467379][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467385][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467392][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467398][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467406][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467412][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467419][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467425][    C0]  ? __pfx_stack_trace_save+0x10/0x10
-> [  192.467432][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467439][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467445][    C0]  ? vma_complete+0x9f4/0xf70
-> [  192.467472][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467478][    C0]  ? __lock_acquire+0x49f/0x1a40
-> [  192.467487][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467493][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467500][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467506][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467513][    C0]  ? __pfx_stack_trace_consume_entry+0x10/0x10
-> [  192.467520][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467526][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467533][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467539][    C0]  ? stack_trace_save+0x8e/0xc0
-> [  192.467545][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467551][    C0]  ? stack_depot_save_flags+0x27/0x9d0
-> [  192.467577][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467583][    C0]  ? mas_wr_split+0x1c23/0x3960
-> [  192.467613][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467619][    C0]  ? mprotect_fixup+0x27a/0xe30
-> [  192.467629][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467635][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467642][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467648][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467655][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467661][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467668][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467675][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467680][    C0]  ? __lock_acquire+0x49f/0x1a40
-> [  192.467688][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467695][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467702][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467708][    C0]  ? __pfx_stack_trace_consume_entry+0x10/0x10
-> [  192.467715][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467721][    C0]  ? kernel_text_address+0x8d/0x100
-> [  192.467738][    C0]  ? unwind_get_return_address+0x59/0xa0
-> [  192.467753][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467760][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467767][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467774][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467781][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467787][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467795][    C0]  prio_enqueue+0x209/0x7c0
-> [  192.467801][    C0]  ? __pfx_prio_enqueue+0x10/0x10
-> [  192.467807][    C0]  ? __pfx_do_raw_spin_lock+0x10/0x10
-> [  192.467816][    C0]  __dev_queue_xmit+0x2ffa/0x4970
-> [  192.467840][    C0]  ? kmalloc_reserve+0x148/0x350
-> [  192.467855][    C0]  ? __pfx___dev_queue_xmit+0x10/0x10
-> [  192.467863][    C0]  ? lock_acquire+0x180/0x370
-> [  192.467870][    C0]  ? find_held_lock+0x2b/0x80
-> [  192.467875][    C0]  ? nf_hook.constprop.0+0x2f0/0x760
-> [  192.467884][    C0]  ? nf_hook.constprop.0+0x2f0/0x760
-> [  192.467894][    C0]  ? nf_hook.constprop.0+0x2fa/0x760
-> [  192.467902][    C0]  ? __pfx_arp_xmit_finish+0x10/0x10
-> [  192.467911][    C0]  ? __pfx_nf_hook.constprop.0+0x10/0x10
-> [  192.467920][    C0]  ? lock_acquire+0x1b9/0x370
-> [  192.467928][    C0]  arp_xmit+0x106/0x2e0
-> [  192.467937][    C0]  arp_send_dst+0x200/0x280
-> [  192.467945][    C0]  arp_solicit+0x672/0x1070
-> [  192.467951][    C0]  ? trace_kmem_cache_alloc+0xdd/0x100
-> [  192.467959][    C0]  ? __kasan_slab_alloc+0x89/0x90
-> [  192.467966][    C0]  ? __pfx_arp_solicit+0x10/0x10
-> [  192.467972][    C0]  ? neigh_probe+0x72/0x110
-> [  192.467988][    C0]  ? __pfx_arp_solicit+0x10/0x10
-> [  192.467993][    C0]  neigh_probe+0xce/0x110
-> [  192.468001][    C0]  __neigh_event_send+0xabe/0x13d0
-> [  192.468009][    C0]  neigh_resolve_output+0x550/0x8f0
-> [  192.468015][    C0]  ? __pfx____neigh_create+0x10/0x10
-> [  192.468022][    C0]  ip_finish_output2+0x851/0x2400
-> [  192.468032][    C0]  ? __pfx_ip_finish_output2+0x10/0x10
-> [  192.468039][    C0]  ? __pfx_ip_dst_mtu_maybe_forward+0x10/0x10
-> [  192.468048][    C0]  ? find_held_lock+0x2b/0x80
-> [  192.468053][    C0]  __ip_finish_output.part.0+0x444/0x6f0
-> [  192.468062][    C0]  ip_output+0x39b/0xc10
-> [  192.468070][    C0]  ? __pfx_ip_output+0x10/0x10
-> [  192.468077][    C0]  ? __ip_make_skb+0x111e/0x1f90
-> [  192.468086][    C0]  ? __pfx_ip_finish_output+0x10/0x10
-> [  192.468094][    C0]  ? __pfx_ip_output+0x10/0x10
-> [  192.468102][    C0]  ip_push_pending_frames+0x284/0x300
-> [  192.468111][    C0]  raw_sendmsg+0x1509/0x3590
-> [  192.468117][    C0]  ? __pfx_raw_sendmsg+0x10/0x10
-> [  192.468123][    C0]  ? avc_has_perm+0x135/0x1e0
-> [  192.468148][    C0]  ? __pfx_avc_has_perm+0x10/0x10
-> [  192.468157][    C0]  ? __pfx_tomoyo_check_inet_address+0x10/0x10
-> [  192.468177][    C0]  ? __pfx_raw_sendmsg+0x10/0x10
-> [  192.468183][    C0]  inet_sendmsg+0x11c/0x140
-> [  192.468192][    C0]  __sys_sendto+0x453/0x4e0
-> [  192.468214][    C0]  ? __pfx_inet_sendmsg+0x10/0x10
-> [  192.468223][    C0]  ? __pfx___sys_sendto+0x10/0x10
-> [  192.468231][    C0]  ? count_memcg_events_mm.constprop.0+0xfa/0x2a0
-> [  192.468241][    C0]  __x64_sys_sendto+0xe0/0x1c0
-> [  192.468249][    C0]  ? do_syscall_64+0x90/0x860
-> [  192.468257][    C0]  ? lockdep_hardirqs_on+0x78/0x100
-> [  192.468266][    C0]  do_syscall_64+0x10b/0x860
-> [  192.468275][    C0]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> [  192.468281][    C0] RIP: 0033:0x7f69fe7cf046
-> [  192.468295][    C0] Code: 0e 0d 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff=
- eb b8 0f 1f 00 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 11 b8 2c 00 00 00=
- 0f 05 <48> 3d 00 f0 ff ff 77 72 c3 90 55 48 83 ec 30 44 89 4c 24 2c 4c 89
-> [  192.468301][    C0] RSP: 002b:00007ffdb7ccbf98 EFLAGS: 00000246 ORIG_R=
-AX: 000000000000002c
-> [  192.468307][    C0] RAX: ffffffffffffffda RBX: 00007ffdb7ccd720 RCX: 0=
-0007f69fe7cf046
-> [  192.468311][    C0] RDX: 0000000000000040 RSI: 000055becbf95950 RDI: 0=
-000000000000003
-> [  192.468315][    C0] RBP: 000055becbf95950 R08: 00007ffdb7ccf99c R09: 0=
-000000000000010
-> [  192.468319][    C0] R10: 0000000000000000 R11: 0000000000000246 R12: 0=
-000000000000040
-> [  192.468322][    C0] R13: 00007ffdb7ccd6e0 R14: 00007ffdb7ccbfa0 R15: 0=
-000001d00000001
-> [  192.468338][    C0]  </TASK>
-> [  192.468349][    C0] Modules linked in:
-> [  192.468370][    C0] ---[ end trace 0000000000000000 ]---
-> [  192.468381][    C0] RIP: 0010:prio_enqueue+0x2e/0x7c0
-> [  192.468388][    C0] Code: 55 48 89 e5 41 57 41 56 41 55 49 bd 00 00 00=
- 00 00 fc ff df 41 54 49 89 fc 53 48 89 f3 48 83 e4 f0 48 83 c4 80 4c 8d 74=
- 24 20 <48> 89 54 24 18 48 c7 44 24 20 b3 8a b5 41 49 c1 ee 03 48 c7 44 24
-> [  192.468394][    C0] RSP: 0018:ffffc9000dbd7fe0 EFLAGS: 00010283
-> [  192.468399][    C0] RAX: ffffffff89a12450 RBX: ffff88804c17cc00 RCX: f=
-fffffff89a1298d
-> [  192.468410][    C0] RDX: ffffc9000dbdf380 RSI: ffff88804c17cc00 RDI: f=
-fff88803c2ca580
-> [  192.468414][    C0] RBP: ffffc9000dbd8090 R08: 0000000000000005 R09: 0=
-00000000000ffff
-> [  192.468418][    C0] R10: 0000000000000000 R11: 0000000000000001 R12: f=
-fff88803c2ca580
-> [  192.468422][    C0] R13: dffffc0000000000 R14: ffffc9000dbd8000 R15: f=
-fff88804c179280
-> [  192.468426][    C0] FS:  00007f69fe54f000(0000) GS:ffff8880d62af000(00=
-00) knlGS:0000000000000000
-> [  192.468437][    C0] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [  192.468442][    C0] CR2: ffffc9000dbd7fd8 CR3: 000000004b49e000 CR4: 0=
-000000000352ef0
-> [  192.468455][    C0] Kernel panic - not syncing: Fatal exception in int=
-errupt
-> [  192.469576][    C0] Kernel Offset: disabled
->
-> -----END crash log-----
->
-> Best regards,
-> Zijie Huang
->
->
-> Zijie Huang (2):
->   net/sched: reject overly deep qdisc hierarchies
->   selftests/tc-testing: add qdisc hierarchy depth tests
->
->  include/net/sch_generic.h                     |  1 +
->  net/sched/sch_api.c                           |  9 +++
->  .../tc-testing/tc-tests/qdiscs/depth.json     | 74 +++++++++++++++++++
->  3 files changed, 84 insertions(+)
->  create mode 100644 tools/testing/selftests/tc-testing/tc-tests/qdiscs/de=
-pth.json
->
-> --
-> 2.47.2
->
+Patch 4 (dt-bindings: net: pcs: rockchip-dwxpcs)
+- Fixed `reg` format in example to pass `dt_binding_check`
+- Added missing `#include <dt-bindings/phy/phy.h>` in example
+
+Patch 5 (arm64: dts: rockchip: rk3568)
+- Clarified commit message: "all nodes disabled" refers to XPCS
+  device nodes, not fixed-clock nodes
+- Noted that `assigned-clock-parents` are applied at board level
+  (Patch 9), not in SoC dtsi
+
+Patch 6 (net: pcs: xpcs: add ANRESTART support for SGMII link recovery)
+- Split the original RFC patch into two: the SGMII state reading fix was
+  sent separately to the net tree and has been merged. This patch now
+  only adds the ANRESTART functionality as a new feature for net-next.
+- Removed unintentional `BMCR_ANRESTART` change in c37_1000basex
+  (this was not tested and should not have been included)
+- Kept SGMII path changes for RK3568 only
+
+Patch 7 (net: pcs: xpcs: add Rockchip RK3568 platform glue driver)
+- Added `.remove` callback with `pm_runtime_force_suspend()` to fix
+  potential CSR clock leak on device removal
+- Added compatible string validation in `xpcs_rk_create()` before
+  dereferencing drvdata (using `of_match_node(xpcs_rk_of_ids, pcs_np)`)
+- Removed `__maybe_unused` from PM runtime callbacks
+- Add `depends on PM` in Kconfig to ensure `CONFIG_PM` is enabled for 
+  this driver
+
+Patch 8 (net: stmmac: dwmac-rk)
+- Moved `gmac_clk_enable()` call before SGMII check to ensure clocks are
+  enabled before register access in SGMII mode
+- Added unified error handling (`clk_disable` label) for all failure paths
+- Added error handling for default (unhandled interface) case
+
+===
+
+This series adds proper SGMII support for the Rockchip RK3568 SoC
+using the integrated Synopsys DesignWare XPCS, along with necessary
+fixes and refactoring in the stmmac core and XPCS driver.
+
+Motivation
+==========
+The RK3568 integrates a DW XPCS accessed via APB3 and connected to
+a Naneng Combo SerDes PHY.  Several boards (e.g., Ariaboard
+Photonicat) use this interface for Gigabit Ethernet.  However, the
+current upstream stmmac driver does not support this configuration,
+and the XPCS driver has issues in SGMII poll mode that cause the
+link to be reported incorrectly.
+
+This series addresses these issues by:
+- Fixing the XPCS driver's SGMII AN state handling
+- Refactoring stmmac PCS lifetime management to allow platform drivers
+  full control over PCS creation/destruction
+- Adding a Rockchip XPCS platform glue driver and wiring it up in
+  dwmac-rk
+
+Series overview
+===============
+
+Generic:
+  Patch 1: move XPCS lifetime management to platform drivers
+           (introduces pcs_init/pcs_exit callbacks)
+
+PHY:
+  Patch 2: DT binding for Naneng Combo PHY SGMII MAC selection
+  Patch 3: implement the PHY SGMII MAC selection in driver
+
+RK3568 XPCS/SGMII:
+  Patch 4: DT binding for Rockchip RK3568 XPCS
+  Patch 5: add XPCS and fixed-clock nodes to rk3568.dtsi
+  Patch 6: add ANRESTART support for SGMII link recovery
+  Patch 7: implement the Rockchip XPCS platform glue driver
+  Patch 8: wire up SGMII support in dwmac-rk
+  Patch 10: update MAINTAINERS
+
+Board enablement:
+  Patch 9: enable SGMII LAN port on Photonicat board
+
+Key design decisions
+====================
+- The stmmac core now delegates XPCS creation entirely to platform
+  drivers via pcs_init/pcs_exit.  This is necessary because the
+  generic XPCS creation logic would override any XPCS set up by the
+  platform driver.
+
+- The Rockchip XPCS driver creates a virtual MDIO bus over the APB3
+  registers and implements address remapping.  The generic XPCS core
+  handles all PCS configuration via phylink_pcs_ops.
+
+- On RK3568 in SGMII mode, the MAC clock is fixed at 125 MHz and
+  cannot be dynamically changed.  In-band mode is used, and the
+  generic stmmac set_clk_tx_rate callback is disabled to prevent
+  incorrect clock updates that would break RX.
+
+- The SerDes and power domain are attached to the XPCS device tree
+  node rather than the MAC node. This reflects the actual hardware
+  topology and simplifies the dwmac-rk driver by keeping all PCS-related
+  resources self-contained. It also prepares for possible future QSGMII
+  support, where a single SerDes serves multiple MACs and would be
+  more naturally managed under the XPCS node.
+
+Testing
+=======
+Board: Ariaboard Photonicat (RK3568)
+OS: Armbian (trixie)
+Kernel: 6.18 (backports)
+Result: The SGMII interface obtains an IP address, SSH works, and
+        ping traffic passes without loss.
+
+Notes
+=====
+- When testing out-band mode with set_clk_tx_rate, only 1000Mbps
+  works on both TX/RX; 10/100Mbps only works on TX side.
+
+Dependencies
+============
+None. All patches apply cleanly on top of torvalds master tree (v7.2).
+
+Acknowledgments
+===============
+This work was inspired by and builds upon the excellent work of others:
+- Serge Semin's Synopsys DesignWare XPCS platform driver (pcs-xpcs-plat.c)
+- Clément Léger's Renesas MIIC driver (pcs-rzn1-miic.c)
+- The Rockchip TRM and downstream OEM drivers
+
+Thanks in advance,
+Coia Prant
+---
+Coia Prant (10):
+  net: stmmac: move XPCS lifetime management to platform drivers
+  dt-bindings: phy: rockchip: naneng-combphy: add rockchip,sgmii-mac-sel
+    property
+  phy: rockchip: naneng-combphy: add SGMII MAC selection for RK3568
+  dt-bindings: net: pcs: add rockchip,rk3568-xpcs binding
+  arm64: dts: rockchip: rk3568: add XPCS and fixed-clock nodes
+  net: pcs: xpcs: add ANRESTART support for SGMII link recovery
+  net: pcs: xpcs: add Rockchip RK3568 platform glue driver
+  net: stmmac: dwmac-rk: add SGMII support for RK3568
+  arm64: dts: rockchip: rk3568-photonicat: enable SGMII LAN port
+  MAINTAINERS: add entry for Rockchip XPCS driver
+
+ .../bindings/net/pcs/rockchip-dwxpcs.yaml     | 127 +++++
+ .../phy/phy-rockchip-naneng-combphy.yaml      |  13 +
+ MAINTAINERS                                   |   9 +
+ .../boot/dts/rockchip/rk3568-photonicat.dts   |  77 ++-
+ arch/arm64/boot/dts/rockchip/rk3568.dtsi      |  45 ++
+ drivers/net/ethernet/stmicro/stmmac/Kconfig   |   1 +
+ .../net/ethernet/stmicro/stmmac/dwmac-intel.c |  44 +-
+ .../stmicro/stmmac/dwmac-renesas-gbeth.c      |   7 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-rk.c    | 121 +++-
+ .../net/ethernet/stmicro/stmmac/dwmac-rzn1.c  |   7 +-
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |   7 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_mdio.c |  37 +-
+ drivers/net/pcs/Kconfig                       |  23 +
+ drivers/net/pcs/Makefile                      |   7 +-
+ drivers/net/pcs/pcs-xpcs-rk.c                 | 538 ++++++++++++++++++
+ drivers/net/pcs/pcs-xpcs.c                    |  17 +-
+ .../rockchip/phy-rockchip-naneng-combphy.c    |   8 +
+ include/linux/pcs/pcs-xpcs-rk.h               |  11 +
+ 18 files changed, 1030 insertions(+), 69 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/pcs/rockchip-dwxpcs.yaml
+ create mode 100644 drivers/net/pcs/pcs-xpcs-rk.c
+ create mode 100644 include/linux/pcs/pcs-xpcs-rk.h
+
+-- 
+2.47.3
+
