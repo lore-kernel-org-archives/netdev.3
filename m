@@ -1,143 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f207.google.com (mail-oi1-f207.google.com [209.85.167.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AEA288BA;
-	Sat,  1 Aug 2026 00:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5675156F45
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 00:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785542445; cv=none; b=VzbFkcWGajdI3MTk9Tk3dEUgcGpJDF3SlTviT27VoZwJ3nuVE7PyXVYUrxua65KCEWl0F2brM9f0HKWrQcf0ylhnhEREJJOCjR9oQkNlpEMI2bkeLQDjjvVIaRzI9fz8VYgJoMGiZ/5P+Y05X8PaIpqMGAlt9SKB0qi4JueXFvs=
+	t=1785542556; cv=none; b=pnxugIXr51diqws6q9gkfbM3mmki0Gv8OI7EjEdkYRT+xMrkbnrD2X/uvaoMmAePSNDablBOSvPFvpUvYplJiDDlmHcND2Vbc2O9NZiKWsNcYSCae/GaamD7f3TPM+pml8xWBf0arw1t+MNh2IOEeUSpHBZKbyVtK87POJivZ7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785542445; c=relaxed/simple;
-	bh=S0VWoZGcaimIZLdJ0bY+pvtJf+RUpknhPlieoL+sHnA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZV8XgQp8b+rLIORIzzxCV0EB3Mnb2LXTa6l2yqRHvdnlLrVsNMnASG2VybywLBqCRoQNLeuZVQquozNfQfcRCx1i+s0qvN3KPx6FzHmjyFW66DJfWYLLsGbVvEFMse1vSA86k/gnMt8eG4P2JG51xdWJEX5k+T+Yf4jnjdGPADY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHujfMiF; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHujfMiF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A456E1F00AC4;
-	Sat,  1 Aug 2026 00:00:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785542442;
-	bh=yMSl9nxxy6ecn8SS8SUYw2J4FDB9e4+TO2lJG/lK4+U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UHujfMiFMUE4RvXA65JvdK8rj7QoTSV9voUwwrMUgqfR6y/64yF08xTCvIWxncPhl
-	 p3xNOKuGv6xHt/Rzjf7EN1ki1mVyEINj5gci+D6pBzfCvT+xe1WRUKmp7iRqtGxg7B
-	 iesQmE9qezhlqn64Vai+BaYt4SOAHhP/tJgQH5P4NkS7PyqOaP/TpvqR9bTh3ULNGj
-	 fvtjs7BpdIa3PwbwBsezY81gV+itNyzGw9pIBEApaP9z8W1hNoQB2ADRD82jJTe1f4
-	 o5nXPCyAAWYR4IqDk+i/IzhqNaVIanW7JI/gBQfCaRFqV6tDSARU4zfrllLPxAYLM8
-	 IltbxLnw5is5w==
-From: Jakub Kicinski <kuba@kernel.org>
-To: mhun512@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	ae878000@gmail.com
-Subject: Re: [PATCH net] ptp: fc3: unregister PTP clock on probe failure
-Date: Fri, 31 Jul 2026 17:00:40 -0700
-Message-ID: <20260801000040.1274739-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260729021750.49181-1-mhun512@gmail.com>
-References: <20260729021750.49181-1-mhun512@gmail.com>
+	s=arc-20240116; t=1785542556; c=relaxed/simple;
+	bh=JaU3caxFVFwMyom75rwMTb7LERFctV23hSea/iGphe0=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=QRDPXYASUyPdMWjWvPNeuzHqMh3qfGgPV4lclMazlo0urIUa1c0R+8qgz7A9fgRRtE2w9OxytatCY5Mz7+z+8kE5f5t+lhZVcz153zUnMZN1U4mTuOe3+v/uatPGCJ0hdGodCx6SpY/kaRGn7V905C+4ao3e1PFpr3w2Mruv1PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f207.google.com with SMTP id 5614622812f47-495b0cf250dso1029093b6e.3
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 17:02:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785542553; x=1786147353;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rFyCpefvMGzPrpmSLpCr1pgbbopabY4nKezDrskUMLM=;
+        b=VaKj2V952GLP/4p2I0V3iPHoZhZnbbjyXaq+P1infko+vgWPhDRiVe7o0ALfu/bwj+
+         KpvkcUJtIzMFOeCd3KzuTtwTZTLpHUcMa0UWuHtOE/kl8R4LHT86/EbTH5E5tmSlHPCp
+         W04oDD+WFnleqgeBhQXAYLcowTskx6GffHGUXGu557p/Bd7Lk8RLkw5wcoqUt/CpQVkN
+         la0I0HIkdEu9Mfh3YOJvUZtSfgHjnySntIv4qVo2Z0MI3NQBvnZm6a+nfbrbbJ3emJqt
+         vK6qTd4ZDPZXSGcP0qd7EDxLHY9tovSKAFjRKqfmk4Br8DKDxdz0QycQ+9bJFcur6jpK
+         JBDQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoLObwKniMYs1fa8cL/F2yDa8RHJ0HEci2gPaJZHZMJSly6ZajJbk1LJSSsDzuGrflE2BZf2QU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuDu57ToAnJrCP0+7kOkZdAQbKi0jLPpvs7azymVR8egz4W/HN
+	TYxgcTjX6Qeeippi6zQMMyI/lO6QaniglFyMyaEwCTrHTYZru3XoY6kH4oiKHNhKb5Prml9vJZh
+	gHsxS1wZ1lNCqam+FyLBoDiCX3Z/CkSsKaTq4l6c9wg6Olq/4YZ+ElYAa7xg=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:17aa:b0:487:530f:5754 with SMTP id
+ 5614622812f47-4af5e2f59b4mr4105953b6e.20.1785542553628; Fri, 31 Jul 2026
+ 17:02:33 -0700 (PDT)
+Date: Fri, 31 Jul 2026 17:02:33 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a6d3799.2d659fcc.1d46f5.01a6.GAE@google.com>
+Subject: [syzbot] [afs?] [net?] BUG: using smp_processor_id() in preemptible
+ code in radix_tree_node_alloc (2)
+From: syzbot <syzbot+86abcd2aa855d0add658@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-afs@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, marc.dionne@auristor.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    11028ab62899 Merge tag 'probes-fixes-v7.2-rc5' of git://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=130cec99580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c05be6c9b0d36cb9
+dashboard link: https://syzkaller.appspot.com/bug?extid=86abcd2aa855d0add658
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-11028ab6.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/511647651d7f/vmlinux-11028ab6.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1c76180d0109/bzImage-11028ab6.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+86abcd2aa855d0add658@syzkaller.appspotmail.com
+
+BUG: using smp_processor_id() in preemptible [00000000] code: krxrpcio/0/5331
+caller is radix_tree_node_alloc+0x1b3/0x3a0 lib/radix-tree.c:263
+CPU: 0 UID: 0 PID: 5331 Comm: krxrpcio/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ check_preemption_disabled+0xd3/0xe0 lib/smp_processor_id.c:47
+ radix_tree_node_alloc+0x1b3/0x3a0 lib/radix-tree.c:263
+ idr_get_free+0x28f/0xa10 lib/radix-tree.c:1506
+ idr_alloc_u32+0x18a/0x330 lib/idr.c:48
+ idr_alloc_cyclic+0x9c/0x1b0 lib/idr.c:127
+ rxrpc_alloc_client_connection net/rxrpc/conn_client.c:165 [inline]
+ rxrpc_add_conn_to_bundle net/rxrpc/conn_client.c:353 [inline]
+ rxrpc_bundle_has_space net/rxrpc/conn_client.c:404 [inline]
+ rxrpc_connect_client_calls+0x74f/0x12c0 net/rxrpc/conn_client.c:524
+ rxrpc_io_thread+0x2d9a/0x3290 net/rxrpc/io_thread.c:536
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+
 ---
---- Patch [1]: [PATCH net] ptp: fc3: unregister PTP clock on probe failure ---
-commit b2adefd142cc562a99e7438a6d4b4f057c1bebfa
-Author: Myeonghun Pak <mhun512@gmail.com>
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-ptp: fc3: unregister PTP clock on probe failure
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-This patch unregisters the PTP clock in idtfc3_enable_ptp() on failure
-paths. It ensures that the registered clock doesn't refer to freed memory
-if post-registration operations fail during probe.
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-> diff --git a/drivers/ptp/ptp_fc3.c b/drivers/ptp/ptp_fc3.c
-> index f0e000428a3f4..32b61bb09b892 100644
-> --- a/drivers/ptp/ptp_fc3.c
-> +++ b/drivers/ptp/ptp_fc3.c
-> @@ -835,16 +835,20 @@ static int idtfc3_enable_ptp(struct idtfc3 *idtfc3)
->  
->  	err = idtfc3_set_overhead(idtfc3);
->  	if (err)
-> -		return err;
-> +		goto err_unregister_clock;
->  
->  	err = idtfc3_init_timecounter(idtfc3);
->  	if (err)
-> -		return err;
-> +		goto err_unregister_clock;
->  
->  	dev_info(idtfc3->dev, "TIME_SYNC_CHANNEL registered as ptp%d",
->  		 idtfc3->ptp_clock->index);
->  
->  	return 0;
-> +
-> +err_unregister_clock:
-> +	ptp_clock_unregister(idtfc3->ptp_clock);
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-[Severity: High]
-Can calling ptp_clock_unregister() here introduce an AB-BA deadlock?
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-Looking at idtfc3_probe(), it acquires idtfc3->lock and calls
-idtfc3_enable_ptp():
-
-drivers/ptp/ptp_fc3.c:idtfc3_probe() {
-    ...
-    mutex_lock(idtfc3->lock);
-    err = idtfc3_check_device_compatibility(idtfc3);
-    ...
-    err = idtfc3_enable_ptp(idtfc3);
-    ...
-}
-
-Once ptp_clock_register() completes earlier in idtfc3_enable_ptp(), the
-device is exposed to userspace. If a service like udev immediately tries
-to read the clock, the POSIX clock core acquires a read lock on the
-clock's rwsem and calls into the driver callback, which waits for
-idtfc3->lock:
-
-kernel/time/posix-clock.c:pc_clock_gettime() {
-    down_read(&clk->rwsem);
-    ...
-    err = clk->ops.clock_gettime(clk, ts);
-} ->
-drivers/ptp/ptp_fc3.c:idtfc3_gettime() {
-    ...
-    mutex_lock(idtfc3->lock);
-    ...
-}
-
-If the probe thread then fails in idtfc3_set_overhead() or
-idtfc3_init_timecounter(), it reaches this new error path and calls
-ptp_clock_unregister() while still holding idtfc3->lock.
-
-ptp_clock_unregister() attempts to acquire the write lock on the clock's
-rwsem:
-
-kernel/time/posix-clock.c:posix_clock_unregister() {
-    ...
-    down_write(&clk->rwsem);
-    ...
-}
-
-Would this result in an indefinite deadlock where the probe thread waits
-for the rwsem and the userspace thread waits for the driver mutex?
-
-> +	return err;
->  }
--- 
-pw-bot: cr
+If you want to undo deduplication, reply with:
+#syz undup
