@@ -1,59 +1,83 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07691432BD9
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 10:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86E837A856
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 10:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785578983; cv=none; b=ucRDx116p9Jpp91vVJA8gj5eizeM6citor0gL4ugxjhjjQBF4fMfjiHXxlmYJTTIgQE+AXewC0OwZXzSYN8XtkyVlITic1VIeBDgj1ktcle33vkVN3808Z6xq/TRyOaDBrNCsloPEjTOsbcdoL1pb0AhLjeA56LOkREUeAmc4o0=
+	t=1785580006; cv=none; b=I8xCAeGdG7m0PSTjTw00GGmnv2N0bihtioNbTIXiSfKI6kwIy4DYqAKJHcZ4mJtZP9cjNCtqLmsTCdTFC2izuoqSk42+7keyrvef4UTY2fLVdPvi0jrttq3oeFK2JQLzYPbaPyn2mmTKkknBqaqv3EkirRGzY9HvNOAEH2h04qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785578983; c=relaxed/simple;
-	bh=nbhO8ao3ySptXDKq2nua/MJiCu7VlbT87yHkv/IMa1A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hMTe+sElzcVXgFzB27KY4pwCs/cynTq3Mx3sMPVrnhxb3i57YhasTL8r/cqTWSRSB0nCu5ABJRsFAmIhpvNhKESxlCDlm2ynso7caVX711cglK7tLIl7OnM0XjCyaD1bC1lOVbYXsHCICU/EHgGUJJKCzXIW/4bQDsQGw+FWhyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=YSkn/VnY; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1785580006; c=relaxed/simple;
+	bh=Zwc86HUtruMG/EmLSrSa+RpCw92UAOseOeQ8S/PILIo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ws0R5TxJczU4rMXf6ZVmOi0mfdgpJmHp0oKvdKudiy6/scguqHIROAvudRhRX+pJtX2fJt5YqXbaDvKXu6sPdT7N22mHFrgDmYC/VcaeB/d1wf6hE6xk0DsS1+8JMAlgiLTGVTvfksKvNOt+mV/z2C9cqmnneBsarWuhcDmNWw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SUQkvjJF; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="YSkn/VnY"
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 671A5j4G1889309;
-	Sat, 1 Aug 2026 10:09:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=8x2cmk1B1sG88oQqpQBLaHJX0GZG+
-	kX9glaNlLhNBQg=; b=YSkn/VnYp1Lyvj/CY0ypLB7KAdxYhm52EnuZe/oGaOv9T
-	eRLf4zIpGlUk56HYKuZFcUuGCHIIwPuPCT/OOGZtWEldF6X/vJYQTsdJmQvB9t0q
-	Vzwn0+vYBbABfUBbmneuuzDoqZDX0cwDDcxwiJN/2DeQJW5345LSy6B5xuq1xs5M
-	c3jpYTZ6gySlnp5iJT2mNf8VnrS+OhAZpkwC4Pw1nyvBEgfEveRfGXWSkHubsEqA
-	0aQKdgWOdBuETN2R2watqZi8fPg4Uyq82MsfA4EmYa7ePn36Ia1IU5ojL/VYFoAZ
-	/3zXfZbawDI0faYvMo21ragp96APgHLPSN/pen01A==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4fs77ehdmj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 01 Aug 2026 10:09:29 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 671A5W6n001432;
-	Sat, 1 Aug 2026 10:09:29 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4fs78r1sar-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 01 Aug 2026 10:09:28 +0000 (GMT)
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 671A9SVZ012121;
-	Sat, 1 Aug 2026 10:09:28 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4fs78r1sa0-1;
-	Sat, 01 Aug 2026 10:09:28 +0000 (GMT)
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
-To: rajashekar.hudumula@broadcom.com, bhargava.marreddy@broadcom.com,
-        vikas.gupta@broadcom.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        netdev@vger.kernel.org
-Cc: alok.a.tiwari@oracle.com, alok.a.tiwarilinux@gmail.com
-Subject: [PATCH net] bnge: use int for bnge_fix_rings_count() return value
-Date: Sat,  1 Aug 2026 03:09:20 -0700
-Message-ID: <20260801100923.1498570-1-alok.a.tiwari@oracle.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SUQkvjJF"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84830c774a0so1860390b3a.1
+        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 03:26:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785580004; x=1786184804; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=loteGSmf6bFZ3Hf8K/Dm/4Iq7ljKU7ceZ3pBEFBprz4=;
+        b=SUQkvjJFqCXD9tXAOjgkk/NpkBzbJ+uhGzhebIE+nFMOPYJKTR4zQ184dtdTQHHrCB
+         hMpOxOsDuihQ5lUUIpcvulgbt/o+DHqnBdkV7/w1US38ivyrj5/n/qwdC94smNV3ysEY
+         qHM9fYj4XkJILIlt4v/SkA/HP1r4RX5qBAUbmVwUdMTS9qne4ZjazLmRkrO4EPB+8uCd
+         5mtqNLjQZ5Oh82x1nVUDiawScqSVWgkDFupbuu9i/yOKLzTSr+f4OL+xcfV4/J1SXhaf
+         Gs1sKNlH3omYRIBouRzfB4WOCAA3eN3GU5Uf/IuUy6id4xXtkYR9d2wnXH73vkpciq9X
+         y7oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785580004; x=1786184804;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=loteGSmf6bFZ3Hf8K/Dm/4Iq7ljKU7ceZ3pBEFBprz4=;
+        b=nKXvjPuA+HA16Xhkbexufx9GjOScyS8e8qzuMsVFypQLQ8wY1Jl/f8YmiLF4shaZio
+         8dzYcBS+Xb5C7OurM8szxqQv35JXwrrL7eeXV3LqXOxRFUyE0FDEIC/CY+e3nnREC4Dw
+         ZBPtOmQMZlENgpXm6qfvOzHoMGUqpn1Pzskjo6k7PyqndOCplsUuPEaZK+EMsDl4pEYg
+         u04LKWM39ISWZI5GwddYsDSfZwmoVyEqoVdSou0CEpVGFMbm+Uat8PQWQ9mX14zxUTTh
+         yruermGpm5NxDDTdabxoB/ZQ1XxRrYZzhfPoSaEAFIE6TrkDIUA4VVV6BnT/gjFw/vEK
+         hggg==
+X-Forwarded-Encrypted: i=1; AHgh+RoBwSbMVPzSWfUubKbDtMIRFGoJ6Ee2D0iDGvrR2AM8P3IPJI0YYyYn2lloYXaFlKM/bmctdlY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6SliaG2PnXHmYkcuBa1xytMLCUsw/hfJNwMi764LHEMCeS2UC
+	12GNDz6b73oLGNSQrA5fD3I96/S0z26cg5SzIgp3irk3YgZE8JaXb3sB
+X-Gm-Gg: AR+sD10q+VS958gAOFV9Yxsn/umtlszEjGIeAkuIHdxn+GSntMllReTp7NnWdr5ESla
+	OodzleM9CPMe/wD+3SG+XwXGMP94b08sGfNAhTzhvdUpi6NQcTYOiH6vIilEUq2cV3tRpZIrF0p
+	H2xxxQxQmhLfXZLaGCxPKM7BpNmmL8eRbBELkg32/JVVYypgWjo+879FEh4yOUHRvvu9zhQtPKr
+	0qo0RYza5JE2ARXo9Po8reYPgZNCP7bdmxa4cf2jtbk5P/OG9ysVdzJx7EPknueO5mVRofnEhae
+	FQg1s8DFMuQR4eQeg4jCQ/rSNiu1Av3OKHqXcEa1dIWgwpqFW6sDfr2eBIitsMilJsYo+7rgzgm
+	VFvLVa3Fg7xdCI1GcZhaCyIyIhWirITlDg+aHNiidNLXZFRvoLo3fMYTE7vDqJaSrVuWsXfL0Nu
+	5ox2igrqdCdMFP7O+Ivo5SzulmBwheOWbMlma4LfFF/kKGP/6Sviih6lm+7ZDDykc6Cw==
+X-Received: by 2002:a05:6a00:8d1:b0:847:9c06:2bef with SMTP id d2e1a72fcca58-84ee47f2c8fmr2410929b3a.29.1785580004050;
+        Sat, 01 Aug 2026 03:26:44 -0700 (PDT)
+Received: from omen-arch ([147.46.174.207])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edc51cca2sm1526886b3a.61.2026.08.01.03.26.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Aug 2026 03:26:43 -0700 (PDT)
+From: Junseo Lim <zirajs7@gmail.com>
+To: John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Sechang Lim <rhkrqnwk98@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Junseo Lim <zirajs7@gmail.com>
+Subject: [PATCH bpf v2 0/2] bpf, sockmap: fix forward allocation accounting in strparser self-pass path
+Date: Sat,  1 Aug 2026 19:26:31 +0900
+Message-ID: <20260801102633.1872012-1-zirajs7@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,60 +85,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-31_07,2026-07-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- mlxlogscore=975 bulkscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
- malwarescore=0 suspectscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2606160000 definitions=main-2608010076
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAxMDA3NyBTYWx0ZWRfX3uwR14mc+O4z
- ncKusX4Hvj9xy4du47I3I3kYCOGbCuCH3HLU94yoBlQzF0JuPs2qSJ5RwY5cgFNlz2zv1GQChS0
- WZFQlGlgvbf5xMz2wzTJ2NYlKKmL4E7qPS9Z15FvpovJgwtEwmu5L0kFefhMVfxr7dwVBZGWzt7
- KoU8ke5eoxkTuwOgcWBrbWQHF9x/fVWuVHMvQttg12fQE50t07JBZrLkNKxy8C85SGyOEQ6NNCh
- BlnwdSmfT71//zYnama6GxNWr4lg3Igu0PZdw5jc0PUTOmWNclQ0QGOEb8x9HUmcOIyq2rAQeTZ
- wRfITr8dGbJ1qSaEQDnfSNaoWK+6t7jSpetgdJ29unAoMipQVczFlPc23nAuY2rEhKfM8HX4KY8
- HieqYwUWBpbONqwnTFLIdYyb9lLjHloweNS7hdeMYp4H01A3QrfNQUdzV9B3/Ld4dqKXZTrYwMx
- A60xBJgkiaFyM5xWbSl+JN0rbJLuj0xTxa7LOdTo=
-X-Proofpoint-GUID: zVwmiMgnuHDN0Za7By7o5m5DQ0ScS9w1
-X-Authority-Analysis: v=2.4 cv=OqZ/DS/t c=1 sm=1 tr=0 ts=6a6dc5d9 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=x4eqshVgHu-cdnggieHk:22 a=yPCof4ZbAAAA:8 a=oyV_HcrR-YwniT-pQw8A:9
- a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:12106
-X-Proofpoint-ORIG-GUID: zVwmiMgnuHDN0Za7By7o5m5DQ0ScS9w1
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAxMDA3NyBTYWx0ZWRfX+SXo8fugaJKd
- AzwVBChhAKeBdESexcbF4ccAV64Gz8+gZBm3OPRiWsFyzkF2p+Grh5SBc5SKhRQmzMu+DPbeSau
- ZBaR3dgq+aUsmSOD4i+l/us1aZxMrEgXe2tvFMt4QknUG0v5Lv4J
 
-bnge_fix_rings_count() returns 0 on success or a negative errno on failure
-However, bnge_adjust_rings() stores its return value in a u16 variable,
-causing negative error codes such as -ENOMEM to be converted to a large
-positive value.
+The strparser SK_PASS path can queue cloned skbs back to the same socket.
+When one TCP receive skb is split into many strparser messages, repeated
+receive-owner transitions can leave sk_forward_alloc in deficit before
+the next skb_set_owner_r() charge. Teardown can then uncharge more memcg
+pages than were reserved and trigger a page_counter underflow warning.
 
-Use an int for the return code variable so that error values are
-preserved and propagated correctly.
+Fix this by settling any existing sk_forward_alloc deficit with
+sk_rmem_schedule(sk, skb, 0) before skb_set_owner_r() for strparser
+self-pass skbs. The same handling is used when retrying from the psock
+backlog.
 
-Fixes: 627c67f038d2 ("bng_en: Add resource management support")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
----
- drivers/net/ethernet/broadcom/bnge/bnge_resc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Patch 2 adds a sockmap_strp selftest using a one-byte stream parser and
+an SK_PASS verdict program. The test checks INET_DIAG_MEMINFO to verify
+that sk_forward_alloc does not go negative after exercising the self-pass
+delivery path.
 
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-index 0e94f092813e..4711dd4945ff 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-@@ -163,7 +163,8 @@ static int bnge_adjust_rings(struct bnge_dev *bd, u16 *rx,
- 	u16 tx_chunks = bnge_num_tx_to_cp(bd, *tx);
- 
- 	if (tx_chunks != *tx) {
--		u16 tx_saved = tx_chunks, rc;
-+		u16 tx_saved = tx_chunks;
-+		int rc;
- 
- 		rc = bnge_fix_rings_count(rx, &tx_chunks, max_nq, sh);
- 		if (rc)
+Changelog:
+v1 -> v2:
+- Keep skb_set_owner_r() and use sk_rmem_schedule(sk, skb, 0) to settle
+  sk_forward_alloc instead of skipping the owner transition.
+  (Emil Tsalapatis)
+- Apply the same handling to psock backlog retries.
+- Add a sockmap_strp selftest based on the reproducer.
+- Add a Reported-by tag.
+- Change the Fixes tag to point to the commit that introduced the issue.
+
+v1: https://lore.kernel.org/bpf/20260723065244.186916-1-zirajs7@gmail.com/T/
+
+Junseo Lim (2):
+  bpf, sockmap: settle sk_forward_alloc for strparser SK_PASS
+  selftests/bpf: Cover strparser self-pass forward allocation
+
+ net/core/skmsg.c                              |  33 ++--
+ .../selftests/bpf/prog_tests/sockmap_strp.c   | 171 ++++++++++++++++++
+ .../selftests/bpf/progs/test_sockmap_strp.c   |   6 +
+ 3 files changed, 199 insertions(+), 11 deletions(-)
+
 -- 
-2.52.0
+2.55.0
 
