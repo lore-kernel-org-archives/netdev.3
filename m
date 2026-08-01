@@ -1,42 +1,63 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F5F3CA491;
-	Sat,  1 Aug 2026 19:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E197145B11;
+	Sat,  1 Aug 2026 20:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785614238; cv=none; b=naU1i/9sObRFSCRP8qu4v1gTahcAJpw02YYREZ5BviB6tvEpeCAs1wgaqqMZL3rWspewxXD5g9pB8cz/z2ra+mU1aDP51Xsb7Xv5MiJOTeTygIgnHrJ6kEoW9t5dOn5Fkr/r5PYzlQ3iAQkvDfwL6xjgNbp7KM15wpZRt1/6IhM=
+	t=1785617949; cv=none; b=nG4Y22srN2ARjf4CeEWY5egoeozGRukAHi6i9q8AOCG/ofuhk85CTCL3tYlrfmw+yZyfEVrXz95XarkRQl+RV3iAUNiOH4oMTokQYogOA5OO74o7TAMabb+MH1M4lM1HqOi8NoGILXR43tUmok8v/bM8RXcnrvf3M+VkjaiNzHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785614238; c=relaxed/simple;
-	bh=7YzByDeDwfy1oCkA4XWwIGYYzx8uIIGGG5ebfgDp8VI=;
+	s=arc-20240116; t=1785617949; c=relaxed/simple;
+	bh=XguoDNauWy0D7G85//Wbhk3WM9XZjBuSVI+T4ztMu3Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sRMFSMvQbmDZzIyjEjNri8qtvNoCs09C3ttOUCwv/eCPFbqS679sRYYkzxdRbURAuJqf0EeN/XlUuRCwCmCQqf0rmaaOBeuEyyb33nerF9HO0hjTJ/zrVGdNxoE707vsWp4Xayu9M7/SGhxOauaVQYh4KVQen19Ug4s1C/sYd1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=NxHypoqA; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=ReDpdlE9YTVX3tz9ftPfxKEA7+Y4dEKQdnSAXr6YZt1d0TtYFIJeNnAIzD2vp+oX4IUumuJYIJquGct3IGKzYaA2VW/2EWMRgey+6BXwpGg9cj4HRKW6IKvccZjk+xRv5ZKNufIV5j6K1nbQqNbGi7eGzBmSg3b5rw/n0bM0WlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cQmZ48EP; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="NxHypoqA"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cQmZ48EP"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xb/urTpnzm5JoYoECLFkeAftdKis9kjvktyD9YpaF1U=; b=NxHypoqAww9nO5Eu+LZ3jckQ74
-	uVFS/aIgQeF3hpIyN5/ngyqjlcTekN/i8mRLrnbO015jQqsD05JtgvxrU6Yp3KZAM/DACFgCMDPNc
-	etacymxwAshwgCDAUmnt5ut/FIcjV7qeBFlY9rwM9+KJ0TEDDq+/t/Im6zmkMeQjnVls=;
+	bh=cZuc4JfzKuG/55z+yA9PYJfiUrL8fDWjW2wegwlHAM0=; b=cQmZ48EPkSZ0QTdYvDVqBI/uQ5
+	F/8TgqYqXXyVhtpYlxJ4MbOZ6twF0anleKi67Vbe/PSpU3AVcVnacvaEDEEDEemFXfwUV05531Qb8
+	/C4Y0ac+s/YLGd7KpPuVoXTDwAuV0JtpmZxgJ6F90/nBCVLq2FehLsw6tkuDrxg7M2w8=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wqFpH-00FPiI-QL; Sat, 01 Aug 2026 21:56:55 +0200
-Date: Sat, 1 Aug 2026 21:56:55 +0200
+	id 1wqGn1-00FQCq-K1; Sat, 01 Aug 2026 22:58:39 +0200
+Date: Sat, 1 Aug 2026 22:58:39 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Krishan Singh <krishanmohan298@gmail.com>
-Cc: linux@armlinux.org.uk, hkallweit1@gmail.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: sfp: fix hwmon_name leak on hwmon registration
- failure
-Message-ID: <66ac9090-fdb6-404d-aa75-bd3adf8578ea@lunn.ch>
-References: <20260801065703.43896-1-krishanmohan298@gmail.com>
+To: Coia Prant <coiaprant@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>, Vinod Koul <vkoul@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	David Heidelberg <david@ixit.cz>, netdev@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2 03/10] phy: rockchip: naneng-combphy: add SGMII MAC
+ selection for RK3568
+Message-ID: <0cf1f734-69d4-471f-aa22-e1a2e7d0341b@lunn.ch>
+References: <20260801142244.679437-2-coiaprant@gmail.com>
+ <20260801142244.679437-5-coiaprant@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,24 +66,24 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260801065703.43896-1-krishanmohan298@gmail.com>
+In-Reply-To: <20260801142244.679437-5-coiaprant@gmail.com>
 
-On Sat, Aug 01, 2026 at 12:27:03PM +0530, Krishan Singh wrote:
-> When hwmon_device_register_with_info() fails in sfp_hwmon_probe(),
-> the string allocated by hwmon_sanitize_name() is not freed, leaking
-> memory on repeated hotplug/probe attempts.
+On Sat, Aug 01, 2026 at 10:22:27PM +0800, Coia Prant wrote:
+> On RK3568, the SGMII interface can be routed to either GMAC0 or
+> GMAC1 via the GRF register pipe_sgmii_mac_sel.
+> 
+> Add support for this selection by introducing
+> the "rockchip,sgmii-mac-sel" DT property.
+> 
+> The hardware reset value is GMAC1 (1). If the property is set to 0,
+> the driver routes SGMII to GMAC0; if set to 1 (or omitted), it
+> remains at GMAC1.
+> 
+> This is necessary for boards such as the Ariaboard Photonicat, which
+> uses the SGMII interface connected to GMAC0.
 
-Have you actually seen this, or is this theoretical?
+If SGMII is not selected, what MII is used? RGMII?
 
-I'm not too familiar with this code, but what i find interesting is
-that sfp_hwmon_probe() is a void function. It has no way to say the
-probe has failed. So how does the caller know it failed, and it should
-not call sfp_hwmon_remove()? I suspect sfp_hwmon_remove() is always
-called. So sfp_hwmon_remove() should be changed to release the
-hwmon_name if it is not NULL.
+Can this setting be implied from phy-mode?
 
-
-    Andrew
-
----
-pw-bot: cr
+	Andrew
