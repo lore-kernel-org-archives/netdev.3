@@ -1,127 +1,199 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C6E331ED2
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 09:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2B7247291;
+	Sat,  1 Aug 2026 09:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785575559; cv=none; b=nTBjFhoP1069T5mDQ6lQg3GGje8JuG/AujWEP/aN9K8HQjFCpHcoW3Y3J35xt81YTfa4VZGSG2GNClJivvGeVY8mdbpCzhDp0evGrI4if6ry2Z7ZxaQ5OcqnuskwpZUBhOHb6BGigsKWEzTre72Crzr/zO7CfZhkJygVpLDDJ4E=
+	t=1785576939; cv=none; b=m2JP+yoaZo7HA1M1bgUrL4Vh0OWPdRsf+tGBETaLz0BAJnSe4lOkCwyk6ODcb6zWJfZogOzX+Q3ujuOvQLwkGpJoH4elvr3reFLbzbn8mxjN2/GBW/x/+eJ50RkZud0ZaycUBvy3R9cTPEumNDfHLX1pS9U38Aa8EAbbHxPdkVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785575559; c=relaxed/simple;
-	bh=WtKwboX1I6TACBp1mPchjcTdLWsllHrSvbiZnJsT49c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJyTxdera6MSM8m64EjULcBLo9aJlialls983oGdRP6g0CIZR2ezfEezogXmXW1xVSEPn9hD0a7ItvyYeW1kWDAx1bQ5B6XB84803fD/oST6N6MO/+/OQjBpKhVdK2WkpGzAcvNX6jlMCZ9gowYv2f5Y738XGQ9Zb0Wgy7XCQHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=kSvakdbn; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
+	s=arc-20240116; t=1785576939; c=relaxed/simple;
+	bh=YN0NRpX7g1R1WmNpLP+XH2cx9GPrlCuz/OHnjEdIehU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GBvR7lVcplxpHqb1OPHrxjBhOS7KEMu5gTwcjFBe/5iDzb9AY3VloedgXRe5Z5A+V75kEb/3SE4zUn4RlvJdysGT//1F1QTedQdabKH5ncfoN+E7XB1VHFNTlfvU0sPihgvnYpfexjhI8QKgrZXNo9VmerUQ+qkcZ0NHxCaYhww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=wbCL6n+M; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fMlujpuU; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="kSvakdbn"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d01663d816so13933525ad.1
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 02:12:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1785575558; x=1786180358; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=diW7eq1K5OgM1EddS3mEle0ywoNtUEUmAHB/nUoYXXI=;
-        b=kSvakdbnTPxX13Fpn/tWdUQm/L1zgBFHeQP+9rBJ/Z+5GVEdk6SEZ9AUkVzTCLt50v
-         oC2Kaf1hsHNNfuGi0CfdOAWueL2qUo8A+NAVW4PZaMfAQ2tnU1/OR9zkbkfh9eawkpu9
-         KHEe7kU0bhSP7msuvbpaIwbvLt/fITbGxzFrft+07FVLADbJ3gQBsyJBDbHT/ipDRqmB
-         OMkuU2kES6d00ESeMVUwO2lxvoHpj05ERSql8jhl4EpRCoTEBesPBhNTeATpryL2d7cM
-         IrJ6XY1vLztQ3Zeg2uyTV8ZjnD/nwZBaQbjT4xQnSjzTeQ3RXawZATKQXMyCytRJBk43
-         TbRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785575558; x=1786180358;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=diW7eq1K5OgM1EddS3mEle0ywoNtUEUmAHB/nUoYXXI=;
-        b=L68uGf0ivyrIfFZllWbF1iLkm8gK9LOkg8/Nt7dro4z5/mIarvYgnCNhr+KiXiERqa
-         JuUpzWIqTgSd2W1CdvdHPkW2x3431cMV456l4DreIBYex35ikPO14dfethoCOOpSYgqc
-         rnleeaEgsaQobNwrs/GRvsmY6Zj/bssoqr9nRpExm1WEC8Qw7ixwLZ3eekulwEwFhJEV
-         9E1MJOBiZzIQItzufzCm2GM2m1wpnm5XEyyjGwry3OO8FGQE8ruFMmiA8dnBBcT7vqwz
-         R45+Jp8UQ/2dQoIk5TkxCdSzn5ngNjpFtVGo6eSC87DobySsCsSCKmiIlHo8Pd3kTl86
-         0IEg==
-X-Forwarded-Encrypted: i=1; AHgh+Roee5aIjyx9cc+ivnDbTrZX56w3Mogo8OhAaHLUQpnght1LbsF05Gu/x85dF1C+oXm/4LF4z3I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy5c2WCshx6uEV7XsYnVLsiQiMI+yZUm0FDYH4USFt0H0C8H6U
-	IyHD/rxRNkuxd5bW7Vf1fwvPtgeig+CEKBqinGw+7LpwvLr8gp3IfKfLypad49pRTdA=
-X-Gm-Gg: AR+sD1063U44nF8oAEH+fnL+Z3AfpsZ9GLMLl5ixUjzHapCuYAcnZvy2lGafAxL8Hmv
-	mKdLdd+N4SP/5p4pGpdLGyXCsjLP7dg4Ik3Dtw34BCV10WvzePU9JlSsibRznleRbicQYTSbzyb
-	VfjBBWgETxF2EhB3PvWMgeDIPEhWHAmvKdgdq7EDralUGvGMnPr8dN64b9FWWswGEYvxY+xzRDF
-	c2/KnRt5RkELRUaMTkN0nIGKUpK9tmPSF17vSmPsJMFqwnEG2iVJdN9+DKKlJqjdGxP7EwaoE5s
-	QTQsq70yaDKvOlOlQSQaKuqiWAON0ttIEjV0154Wf+R9GeQ8S+Ny08bPGTldVq6bvoiDv2GK1if
-	ptq6rH4VkLlGyq6VNa3LJbkDhX768kUbE1kUDbU9NW36/NkToLDYKh1/CSXxY0So4QJFBFlP75x
-	zSg64XdO5f4xJepgh2tAhtQjKCGJbl+dKrDzgMkScSbadQpLXmMRc8jW4PFpOF0EmbEWXdBZFzm
-	uZW/8FtPuQ=
-X-Received: by 2002:a17:902:ebc2:b0:2cf:bf32:b754 with SMTP id d9443c01a7336-2d05219f1cfmr29858925ad.8.1785575557981;
-        Sat, 01 Aug 2026 02:12:37 -0700 (PDT)
-Received: from localhost.localdomain ([2406:5900:1044:110c:c329:7b28:fe02:5dc8])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae60139sm16175285ad.29.2026.08.01.02.12.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2026 02:12:37 -0700 (PDT)
-From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-To: alibuda@linux.alibaba.com,
-	dust.li@linux.alibaba.com,
-	sidraya@linux.ibm.com,
-	wenjia@linux.ibm.com,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com
-Cc: Yehyeong Lee <yhlee@isslab.korea.ac.kr>,
-	sashiko-reviews@lists.linux.dev,
-	horms@kernel.org,
-	mjambigi@linux.ibm.com,
-	tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com,
-	guangguan.wang@linux.alibaba.com,
-	kees@kernel.org,
-	gustavoars@kernel.org,
-	gor@linux.ibm.com,
-	hca@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4 2/3] net/smc: bound the peer rkey counts in SMC-Rv2 LLC messages
-Date: Sat,  1 Aug 2026 18:10:47 +0900
-Message-ID: <20260801091109.1933145-1-yhlee@isslab.korea.ac.kr>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260801070548.365231F00AC4@smtp.kernel.org>
-References: <20260731070509.1818665-1-yhlee@isslab.korea.ac.kr> <20260731070509.1818665-3-yhlee@isslab.korea.ac.kr> <20260801070548.365231F00AC4@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="wbCL6n+M";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fMlujpuU"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 7BF8EEC01D8;
+	Sat,  1 Aug 2026 05:35:36 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Sat, 01 Aug 2026 05:35:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1785576936;
+	 x=1785663336; bh=lV7v7qvDIpbqiesAWok5EwqyRm8gVGxEQVDcMFj9euY=; b=
+	wbCL6n+MHTEyVs9QTzhcXKdpCFFZ6WmuLPEepdIYI0F2lVpVWzMJ+C8pzFzxhWYn
+	hFPjHoZBk5a3zxQWzNQrOS2CqYb33Sx/g6229mTIfj0HnJdEchg+DVsaWPrysytd
+	iza1Gi5InwIy+RU+3QXKzo06OTlI9FECJMYkLh61a9KbQPCq1On/NrtmVo2v/Uyh
+	MKTcuV8M0hZ+mN9E0D8cifgoTKTg60AGW0Yg3Z9k5j6ujwaULaAVGdOyicVEKWD4
+	OmV64kHLBrtZiBMkzvIe/5//wl3f5lbzRw8DKpKW2DvYnwneIn0x0ah2RoTd2WTo
+	AwrftYSvcqvyO9RarLM6iA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785576936; x=
+	1785663336; bh=lV7v7qvDIpbqiesAWok5EwqyRm8gVGxEQVDcMFj9euY=; b=f
+	MlujpuURz/aPkuLOYjzG8nqNd/fP1ieXDXUoHGwEvMP3M112Ud4++V+KURe+Wcd+
+	zBHsbau+Qyx5PbDNHfTE7ew0Soq0hsX5+CcTTeUPrU5AH6aFSAjUr6suRa7q1gHx
+	Oc09pMYZYS253GvrHNJ2hwjkOgxPzgWzTJteDjs4G1GfWihOAWr4wqtcZTMTgWVF
+	t99luQtLlplFwbPys6vUEr7l0m7jkxf0v//faqm/mncQg3V1vRIe24jsd1ZX6afT
+	Bm7NZPbz7/L5VBygPBUAn+onWAGfKFgt6cYiNUq2xdFNj49BzEQwEVCRUdwEn76k
+	Jmdy6QGHX0wa0Pm23dRhQ==
+X-ME-Sender: <xms:5r1tajtbRtPdGQ9shtOBj5Pj0doyEpj7GD9oG6JxJeNjrfBpDMjexw>
+    <xme:5r1takAZbg0dLq-YjtTM6XIu71yRdWGFPoMcZOtQ3OXs8BSKo9CG85XwpCdqaxIZZ
+    jFbv6vNWPsM48YdUhAFGW9JWcnZexs52fe7xX4c9rl5Py2VWQspdyo>
+X-ME-Received: <xmr:5r1tarHTC0yC_saos7vxjdRMIbI_a8I-HD9KQtWyTTW7DRhJl13jn7IXHdYEzE5kY_iBJf_onKOAnBCcL2t9n-O0FD2WbAM>
+X-ME-Proxy-Cause: dmFkZTGbKF2PRo9FfpWpVdhZCi7KBOIwxI9XHTMtJqmhDSS4I1657VvthdxXJ7nDVPwBYo
+    /eVV+dkQP+p7DwT+jI9nlujtbJvF7cmnGBgI/ZH5UfH3BRhUrHH5ifuR0uZ88EJnGlFdfj
+    1q/UYJ+vXCWR50ZklOM/VQCUKy7FWPtYlsPJp8FWCkq+mH5rj8lwOUBA7rd50lqqzYwrKd
+    HDx79d6GI0/kZEtXXvSh87h1Acu3/9hMJ8S1UkjNsZjj27HT4N6NtUOZFgoN6UIZ8KSGlE
+    Vv6lBIAaSavp5rhgTSoVw1oyg+sBw0XFihRAtcdaJ9VlEz/No79ISqgvT1rdmGWBYt/5Un
+    +xRuBUiGQcdk788QgPjnJctCnTI8h/D2zb60AVrQXbpVHJ1oquprVcUaPfLKNg7Lxbx1sV
+    P2r/cPRUv/4YaaJ7JeCHikEvffLXcFAVZoBjwPnE8HuPUmWP7N5XhoERO9lpViKGVh/7QS
+    xqdLjO2pFo+rAPKZNJCDJBH1Zzv4nNkNgG86N2+wyiT62RFbacMKudXK6hiyM+jXauzWcL
+    ExjnLn9QnVNgrY4Ayiaah5dmBzz37bGo0Ybu+fc+8fY3cgn8lvBvGzivpZ2VL8cgYjHRU8
+    ZH1b3u1Ix6c2i5NNPRxQsBV17Y45QhpnzMa6G3SyRa/gMaht59VcGYB3x5xQ
+X-ME-Proxy: <xmx:5r1takuoRudHtPRRhvHMXaSlWOP_KSWKJXW8t7eE5wgbovWhT-aIVw>
+    <xmx:5r1tahmbKGarjUZyMqz1hweEaLBXsbUQ01TOvYqgnxqQB4CjoOK98g>
+    <xmx:5r1tanOU4yolUZYrfpaB9RJsqqNjKN5iOMm5dYTM0DcUhh5prSVjAQ>
+    <xmx:5r1tatwmEPusHiryWHWuAhzObUTAuwXI6_HJ9aOsNeXCnHlFEG-mgg>
+    <xmx:6L1taoFRKJTF6GvdIRjVQg4mWVTgVlqPoILgapSYs3tZtj1XtLEarcnf>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 1 Aug 2026 05:35:34 -0400 (EDT)
+Date: Sat, 1 Aug 2026 11:35:32 +0200
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
+To: luoxuanqiang <xuanqiang.luo@linux.dev>
+Cc: linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
+	paul@pbarker.dev, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	richardcochran@gmail.com, masaru.nagai.vx@renesas.com,
+	sergei.shtylyov@cogentembedded.com,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH net v1] net: ravb: fix use-after-free in ravb_get_ts_info
+Message-ID: <20260801093532.GC3091634@ragnatech.se>
+References: <20260731063254.71260-1-xuanqiang.luo@linux.dev>
+ <20260731182550.GA3091634@ragnatech.se>
+ <4f8e09bb-b6b0-4036-af0c-89306b48493d@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <4f8e09bb-b6b0-4036-af0c-89306b48493d@linux.dev>
 
-sashiko-bot@kernel.org wrote:
-> Does this early return cause a permanent protocol failure for devices
-> with a single receive SGE?
+Hello Xuanqiang,
 
-The buffer part is right, but smc_llc_save_add_link_rkeys() does not
-read that buffer.  Without a shared v2 rxbuf its llc_msg argument is
-&qentry->msg.add_link, and smc_llc_enqueue() copies only
-sizeof(union smc_llc_msg) into the qentry -- 44 bytes, which is where
-the extension starts.  Same for the delete side.
+On 2026-08-01 09:56:30 +0800, luoxuanqiang wrote:
+> 
+> 在 2026/8/1 02:25, Niklas Söderlund 写道:
+> > Hello Xuanqiang,
+> > 
+> > Thanks for your work.
+> > 
+> > On 2026-07-31 14:32:54 +0800, xuanqiang.luo@linux.dev wrote:
+> > > From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> > > 
+> > > The PHC is registered by ravb_open() and unregistered by ravb_close().
+> > > However, ravb_ptp_stop() leaves priv->ptp.clock pointing at the freed
+> > > clock. Since the netdev remains registered after ndo_stop, get_ts_info
+> > > can still pass the dangling pointer to ptp_clock_index(), resulting in a
+> > > use-after-free.
+> > > 
+> > > Clear the pointer after unregistering the clock and only query the index
+> > > while a clock is registered.
+> > > 
+> > > Fixes: a0d2f20650e8 ("Renesas Ethernet AVB PTP clock driver")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> > > ---
+> > > I don't have access to RAVB hardware to reproduce the issue. To aid
+> > > review, see the similar PHC lifetime fix merged as commit 8da13e6d63c1
+> > > ("net: macb: fix use-after-free access to PTP clock").
+> > > 
+> > >   drivers/net/ethernet/renesas/ravb_main.c | 3 ++-
+> > >   drivers/net/ethernet/renesas/ravb_ptp.c  | 5 ++++-
+> > >   2 files changed, 6 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+> > > index 5f88733094d0f..3a9d9f8718216 100644
+> > > --- a/drivers/net/ethernet/renesas/ravb_main.c
+> > > +++ b/drivers/net/ethernet/renesas/ravb_main.c
+> > > @@ -1779,7 +1779,8 @@ static int ravb_get_ts_info(struct net_device *ndev,
+> > >   			(1 << HWTSTAMP_FILTER_NONE) |
+> > >   			(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
+> > >   			(1 << HWTSTAMP_FILTER_ALL);
+> > > -		info->phc_index = ptp_clock_index(priv->ptp.clock);
+> > > +		if (priv->ptp.clock)
+> > > +			info->phc_index = ptp_clock_index(priv->ptp.clock);
+> > While this avoids the lifetime issue, the fix is incomplete. The info
+> > structure will still report HW clock support but there is no PTP clock
+> > index.
+> > 
+> > I have a pending series which cleans up most, if not all, of this issue.
+> > Could you check [1] and see if that covers your concern? I will post a
+> > new version of that series as soon as vacation time is over and the Gen4
+> > PTP driver itself is merged.
+> > 
+> > 1.  https://lore.kernel.org/all/20260610102432.3538432-1-niklas.soderlund+renesas@ragnatech.se/
+> > 
+> Hello Niklas,
+> 
+> Thanks for taking the time to reply while on vacation.
+> 
+> You are right that my current patch is incomplete: it fills in the
+> hardware timestamping capabilities before checking priv->ptp.clock.
+> 
+> This should be straightforward to fix:
+> @@
+> -    if (hw_info->gptp || hw_info->ccc_gac) {
+> +    if ((hw_info->gptp || hw_info->ccc_gac) &&
+> +        priv->ptp.clock) {
+>          ...
+> -        if (priv->ptp.clock)
+> -            info->phc_index = ptp_clock_index(priv->ptp.clock);
+> +        info->phc_index = ptp_clock_index(priv->ptp.clock);
+>      }
+> 
+> I also checked patch 7/9 of your series. In the currently posted
+> version, ravb_ptp_stop() still does not clear priv->ptp.clock after
+> unregistering the PHC, while ravb_gen2_ptp_clock_index() calls
+> ptp_clock_index(priv->ptp.clock) unconditionally. Therefore, as
+> currently posted, the series does not appear to fully cover the UAF for
+> the Gen2/Gen3 paths.
+> 
+> As this issue predates the Gen4 work, if you agree that a small
+> standalone patch would be useful for fixing the UAF in stable kernels,
+> I would be happy to send a v2 including the change above.
 
-I logged what smc_llc_fill_ext_v2() writes on the sender against what
-smc_rtoken_set() gets on the receiver, over rxe with max_recv_sge
-forced to 1.  Unpatched, the sender wrote four distinct rkeys and the
-receiver called smc_rtoken_set() 427 times, not once with one of them.
-With 1/3 and 2/3 the path is not entered; with 3/3 as well it registers
-six values, all the sender's.
+Ahh, yes you are correct. Clearing priv->ptp.clock after the clock have 
+been unregistered, and checking it before use, is not introduced in that 
+series. And as you do here that should be fixed.
 
-So nothing is lost -- what mainline registers there is heap past a
-72-byte kmalloc, which is the out-of-bounds 2/3 fixes.
+I have no strong opinion if this is done before or after the PTP rework 
+series. If you want to send a v2 and have it go in before I will rebase 
+on top of your work. Else adding this on-top of the rework is trivial as 
+the locations where it needs to be checked are abstracted out to  
+callbacks.
 
-The changelog is wrong to say "nothing beyond the 44 inline bytes was
-received": it is received, it just never reaches the queue entry.  I
-will fix the wording in a v5.
+> 
+> Enjoy your vacation!
+> 
+> Best regards,
+> Xuanqiang
+> 
 
-Best regards,
-Yehyeong Lee
+-- 
+Kind Regards,
+Niklas Söderlund
