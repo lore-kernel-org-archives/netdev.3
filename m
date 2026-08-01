@@ -1,62 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720F12F7478;
-	Sat,  1 Aug 2026 00:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312D23546E2
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 00:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785543401; cv=none; b=DTHO2eBOKWc/vzJGsJfPsSc3VUEAQBPw8l0uvBJwz/10weTefjCzD7TiFxS2ZuT/tIjPw4dkXcGFhhnm5gstqOSAASdpxx+wjYRhlsXcxIJQj68Pyp/XK12YBpIyNcWAU28dXkaaXcXkO0q1U90DHdevPFtYErHo8ALShpy++JY=
+	t=1785543646; cv=none; b=XHzrwzL/gHouVsCF9otBqjF9USMIJ0QWT9FlWMY7utypPKzn53tfe0TL5wHegSxRKrIAh/QCO7dJX/F1MF8RrIlUZQdHn3EV02qdv2Q8R3rPlRbkdFXpE7s28MSEOnBO8ZVwmSQL8Xtr1X8k0I0vuYNXzerrYVKUSJtXuTkbsiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785543401; c=relaxed/simple;
-	bh=5ympF4m57kediFqkdLx+xv+HBkW0kxLLtwV+MP/ZGrM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HZaVobzVZjnBur4J5KJBOKbKne8d3glofRELyCRc82dh2MgVzUeK+OfYSolc0Y0mJ3G0tC2S3Xk0CCp9gOmQM9beZUMzYfdwhv+pMTAux6sBu51q4f7iAC5t5LSKmzBnC6d+FOBs0WVOHvdedQiG+xjipSNOUGJHBl9FRh3Mkzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xle3Senn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785543646; c=relaxed/simple;
+	bh=ExTfHv0XymBEoYYlPRBtrzfnlw467wjziisJxp4n9wc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=aTSecng53Bdu7fBiswhebc7JLJDr7FoKRxfLTsaNnM6hjilOF0WwkpuMWK5Dd5YblC5qbXpw5jSp+soADnPmGwQaHJ8m3DFieyMKa4UgX+Avy57B3pH2mp9+yKbbEUgwR+uSfPwn+0+cB72aSWqyB7vuWHmXvP9vN2tbw4u27qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vm08id2p; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xle3Senn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B2F1F00AC4;
-	Sat,  1 Aug 2026 00:16:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vm08id2p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE301F00AC4;
+	Sat,  1 Aug 2026 00:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785543400;
-	bh=ggfiduJULkwHSlvhD0llWVjFB9n9+YZkRsTBXCYfNxM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Xle3SenngOCjCXMFLagXxV6Xl8GVw+jsn+SQgq5kMqq12hpEunsxSLDD37cHuLxTh
-	 K41y6Pte6CH5xFyx7jXkwuRhoA9g9q8imzNVWIEqaSoYLbUXupboJ6UIDYvJ8FW2ye
-	 /1H+f9So/VcbbuDIT4xxpwhFd1hHDCSnCmXB7NwaXnVMOgSMsVve6S2CUSISlgIOQ9
-	 dnKz2v/d8QB/sZP/dPpC4txyLz2h+atW8zGxGTLUYQo3oXclpgnly8xDKC3tPZC5Q1
-	 moJCKZluH3GI4iq0TzlnrlUUdiHqntX0HRJF7O11Ju8c8wn+II6RMiinjGsT1qWxLD
-	 TBkhdOhBFm4vg==
-Date: Fri, 31 Jul 2026 17:16:39 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jonas Jelonek <jelonek.jonas@gmail.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Kory Maincent
- <kory.maincent@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S
- . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Daniel Golle <daniel@makrotopia.org>,
- =?UTF-8?B?QmrDuHJu?= Mork <bjorn@mork.no>
-Subject: Re: [PATCH net-next v10 1/4] dt-bindings: net: pse-pd: add bindings
- for Realtek PSE MCU
-Message-ID: <20260731171639.1baec9e5@kernel.org>
-In-Reply-To: <20260728084307.2129515-2-jelonek.jonas@gmail.com>
-References: <20260728084307.2129515-1-jelonek.jonas@gmail.com>
-	<20260728084307.2129515-2-jelonek.jonas@gmail.com>
+	s=k20260515; t=1785543643;
+	bh=RGFCzrdI6wOQmclPbAe7TM2+R/lGvKkZ7d8zid7c1zE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Vm08id2pTZJZ3ejMq4mx1y32OKFwCdyolNI8PNiEHEhEUxB9CjlokMOMZ05ge+B+e
+	 pLEfUcBHYBLM68ypTZTFLdIncZfCMX+hDK19NFd4JQiSyqTRyD/8GaY6J9IJo90tD7
+	 Nty65B6rXMvl2SyfGEfe2c+nIP0sqTHu+457jEVS01+DBG88XZUplSuFp6fjbm9Kj9
+	 0YuyLcFeUnZXcCM93inRWsTmDJvHohmWpqEWhlRaoPUIsNjSnEqskdO86iUWocFqG/
+	 ZyoSMLokcXx+wbdTCs7ljzA2ZSr9VOHtiTvdhwHLRKN081jvOVvuuIOYhUPuYC0fDb
+	 PpKFHQroEigfA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198B1392665D;
+	Sat,  1 Aug 2026 00:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/1] inet: frags: publish queues before arming timer
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178554360589.959828.7486774393820349436.git-patchwork-notify@kernel.org>
+Date: Sat, 01 Aug 2026 00:20:05 +0000
+References: <cover.1784948849.git.zhilinz@nebusec.ai>
+In-Reply-To: <cover.1784948849.git.zhilinz@nebusec.ai>
+To: Ren Wei <enjou1224z@gmail.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, vega@nebusec.ai, zhilinz@nebusec.ai
 
-The second patch conflicts on MAINTAINERS so unfortunately a rebase
-will be needed.
+Hello:
 
-On Tue, 28 Jul 2026 08:43:03 +0000 Jonas Jelonek wrote:
-> diff --git a/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml 
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-While you rebase -- the AI points out that the binding is called
-...-gen1 but it documents gen2 as well. Should the -gen1 be dropped?
+On Tue, 28 Jul 2026 01:23:28 +0800 you wrote:
+> From: Zhiling Zou <zhilinz@nebusec.ai>
+> 
+> Hi Linux kernel maintainers,
+> 
+> We found and validated an issue in net/ipv4/inet_fragment.c. The bug is
+> reachable by a non-root user after creating user and net namespaces with
+> namespace-local CAP_NET_ADMIN and CAP_NET_RAW.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,1/1] inet: frags: publish queues before arming timer
+    https://git.kernel.org/netdev/net/c/653d7ddf6cba
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
