@@ -1,172 +1,105 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19E92D061D
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 12:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13DA25B090
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 12:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785587422; cv=none; b=nmpPx3b2JPS74dOfSqZkH9XSJIfBNRQ+OUd0fA/3R8Sz4VX5teVxJuFRFp8bv5CiYtRvv3ExkAw0shZV0JAT9WDsy/BKQ1QzxhQ+IQN7GQukpmN7iSe0n1KlS3fYSKxyIUqWPdyRZy8ceqeX+6ino2a9rtFX5RBZlM1nyX5PFJg=
+	t=1785588791; cv=none; b=kvdTbXTRSxyFkPlPaHZGw4aeBqnEYO/y6P2El8Kz0qjdr5lHXmbKnS726VQZLNfFbU4LEZoRhjvYpjhwJErW2sJSwab3IknWqmNk20jiLDO8sZaLVILES+nhzf557njdZ9eRiZZnHBXj4j84X4th37J4FbJx5CijLV6E8l7j5X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785587422; c=relaxed/simple;
-	bh=EixTu8F/XmrqpGkUc1ZAKwt7Ik8fS3oCoez4NHHuAPA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FJzqbkti8enwIQGSvXKI0muXMIe1Y/qzm6nlqRumz3eoMz0g2kYl7JhrmtcSY3zihW43uGXRxrin4H/1OabQFsUdKa+YyQPnGc/ff7ltbTvTIhNi3Rklzbhg37NISnCvSsdmb9tgHKj2vlNu+yxGoHi9pVvFHVT9fdXOT+G3Qqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WOZXSgOJ; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785588791; c=relaxed/simple;
+	bh=PhLR4+qn453F+QIwU0DsbC1PeRAX3ITCmQFBqjZMZ5k=;
+	h=Date:Mime-Version:Message-ID:Subject:From:Cc:Content-Type; b=hTeJfcibvTsI4P/671K2eXsaylTIi4jVu+FpR447lsMv1tHUnIR+1aeESiHz/GPzDgKItRHsswzK0JBXYpPUgCJh+7etnaS5yAgZYzb85gvA5P34ZvEA6FAOwBefq9qCX/2Z387UFzmx6Q4k8By9dGGtFwo4ckHeM/VZWjOcCYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fvP38ZBF; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WOZXSgOJ"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cbb973e6749so2122928a12.1
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 05:30:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fvP38ZBF"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cc7e86e7c5so36342305ad.3
+        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 05:53:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785587417; x=1786192217; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IZXu4hUthVdVMyzR8sBV5EnxrSahb+P4A553ME38qa0=;
-        b=WOZXSgOJjx0ZjmIkfuQtj9T2AZd6qh8Qb92UvfH/s2Is+c6PdtqSAZUxDgNyKW4rwT
-         iEorZDSztXrZSeSfhNADDRAQDPanOsW6vbqjP+CDgp1XmpyP0yoT1zQi0F2M2EExXkoh
-         Vcw+7ebWm8EGjjpgzSTjzoZn3JX+ZLOUViE4P+cp+rw50AvsbmsomGyg4sZSnDuo0r8b
-         4xxWXmq4frmkQAxk4eXetKgQ8dlhOZ0OgmFiJykbcq/YnfNO97buUlaEmkdFn5grlSGo
-         pogW7QU/3JOv+0w6FTQSrH/h2hiuTmnhZOUtbHOAbp2B/jK6dlKVlCEyHC35umSzB1u0
-         KMKA==
+        d=google.com; s=20251104; t=1785588789; x=1786193589; darn=vger.kernel.org;
+        h=content-type:cc:from:subject:message-id:mime-version:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=BD+pUsKKpLLfVgUegmrxzd2L72D2X2rHT5PiZiLd4oo=;
+        b=fvP38ZBFbweL2IwaWU3Xnhw+jVvhURa/CKYS4ttDq8Q/TRv7T3NW7LVop9z5625iFi
+         InBDUHTVZUNWQ+hN1BKHkg7m3/hWhZFtGTvs8FbyuXpS8drsnUysIXjBfHWAwWHw8cXP
+         xnte6aXMbFjDJN8to/WM0TkkYR997o9XeGNhW1WMK+yyDpvsu9+19VjSZkUbHrcjoBXL
+         0TFXDxuNaynLVnArKhnyye1isqKHbnyo/Ys5ido4ecd250q88LcQjvKstVDPazKBSZl3
+         2OO1aIOfDDDcgCHJY0JJRTeuZ7IX5FEVYWS92J1bcelEXA2VPsX0dRQ1VepkjEI67R3X
+         JpWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785587417; x=1786192217;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1785588789; x=1786193589;
+        h=content-type:cc:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=IZXu4hUthVdVMyzR8sBV5EnxrSahb+P4A553ME38qa0=;
-        b=I0hLDPqy8ncCWFE/EjH/UE5Dv7cXvohy7lmTZar7WW/thDIhtOqPkk3zwqjCK5cu9e
-         t0C0SM6s13GIr/LJsfi3ih/8UugJW/vcLO6EHdP6zVACpIi50Bg1jeXlSU4eDkVo02eF
-         DJNyoFkXzFlJHOz1pFNYJ5XU+km59NA+kiimPCkEd6sVYb5SHoJeTOtW0FPYPR8j/XbM
-         ArYt7W3bwHw4Vjx1Yk+bDy3vvqiKWhgAus1MtW4N408ZpV4xPoVLNwnNFIeofjKztrNn
-         +qGa/jIbNMefSec+GDhD5xEfjAzSdNGoUfSSxtm3K6yDypo3ucJrtd82yJKqGMSjU9Y+
-         2/LQ==
-X-Forwarded-Encrypted: i=1; AHgh+RreYBWwZnX7J89SDiRuI9bJCnVbLbN64f2IsmCy/33+yUhTnbEDAZQLOB1Os8FTEj/NsK0G8l0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yym67Kt83YLx/M5Fok8cUkAq15SCwwtH8e8NagXIg/APGXs+vVN
-	yQ6xsS2qg1wNmM3UdIIhLAhJgXBEJPESq4KsuEEHsAs3jEONe/1qKdW2
-X-Gm-Gg: AR+sD11dVg8UUC4Wxm1IXYzTE+0dS8OeHN3cU8ZImv/gyw+l8GPWfqwp8Wg6U4Ok0N0
-	QWtsO2O0EWzci01VxRSmTf93T8EL8aR+s0QjsNqjp3Ol7IQUqHFbDalE9kjSvK7W+blGOOq3AKF
-	cE1GjMXlQ730sP+3l8z32+JhQF/2+C6I087FjFiphvWqmippyEUJ9o9K8/YVroPbD7leR4kckyZ
-	9KGfF48b+aGFchYeiefLhYH21tUjBG5Coot12UqeqvF7Pj+5KSKhluriiuGN/9J9dlJ0eWF6s72
-	gn8ndchhavDiLJBoQYND7ii9pq9zFZTRbIKV3KiCXxjAcvjfv+DzgJDDYAEGhI9t8RkNw1Yt/+W
-	TvMBQn+Fz9cN1eHzQeCbo79xKaeMO35+bzDHGeSp3C7754iQgDPTDNDk+4hykf84+/9yVy0w9fq
-	Z8IiymaEgcvZsgrLyKVWdBdzEKgpCBSmjoWQHQnlGS3LBzCuUAxOfibN2+nGcqaZURWRL+JB4WU
-	FY=
-X-Received: by 2002:a05:6a20:d809:b0:3c4:2eb6:c3a0 with SMTP id adf61e73a8af0-3c92a63ad0bmr3140772637.30.1785587416840;
-        Sat, 01 Aug 2026 05:30:16 -0700 (PDT)
-Received: from [127.0.1.1] ([2404:f801:8028:3:9df5:1cd1:f108:c202])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3153e045022sm16174086eec.18.2026.08.01.05.30.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2026 05:30:16 -0700 (PDT)
-From: Subasri S <subasris1210@gmail.com>
-Date: Sat, 01 Aug 2026 17:59:52 +0530
-Subject: [PATCH v2 3/3] usb: typec: Use %pe to print error pointers
+        bh=BD+pUsKKpLLfVgUegmrxzd2L72D2X2rHT5PiZiLd4oo=;
+        b=oTibmrlHwZRyUH5E/VYBNcdzn4gshxqi5iwzxCEYuKnWVsncOsBQ7TDJYpQJxN4LvP
+         2azfXS1jff1lBjr1gr/N52d+V1tRjTs7j/9N3zm+TD45L4myFkyygnSgmBDUTQExH3h/
+         DlfFDv+qqE5pXA7PdJWvo9Up56W7Oaj8aLJ1O7HXXNl/TF9HtbgB9G/NCqGnSn5UdYJP
+         FRB0KlFoFwVeJEqIqokBVVVecoyQna7jJiSCftRdsVypNCh6Es0Dc6m094Xpf8JLgVgT
+         GF4d/6Ra9PWYdqNY5O1XDscEL/jg6YpW8U1pWkbcEaf5myu9WJYZuFU4M7BgvwMzQYXV
+         Ie5Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rr+q/LmaJQTDivKVLCRGkOtHKsgdt6OxVQrTw/r5i+B0LiXK0A8EX2C0wVtXwsuzFdht+EOshM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztMKEw52NNFXfZgw8gQzW5hSMWIHPLXoBSNuBFR2BjkTMXaS2S
+	7XbIs2uP5ICtw3AEQIJ9yu84mnl3zdUoAbAoCZnjOpUf9zlId0E0j8jX0G+U+SQXs2u/3JF7dom
+	MNgU364TwkHicgWmNRCWrxQkMpg==
+X-Received: from dyjh34.prod.google.com ([2002:a05:7300:5622:b0:313:c814:320f])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:390c:b0:2cc:d6de:d597 with SMTP id d9443c01a7336-2d05219bb84mr32050535ad.7.1785588788682;
+ Sat, 01 Aug 2026 05:53:08 -0700 (PDT)
+Date: Sat,  1 Aug 2026 12:52:19 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260801-usb-ptr_err_patchset-v2-3-1698e298c1e3@gmail.com>
-References: <20260801-usb-ptr_err_patchset-v2-0-1698e298c1e3@gmail.com>
-In-Reply-To: <20260801-usb-ptr_err_patchset-v2-0-1698e298c1e3@gmail.com>
-To: Peter Chen <peter.chen@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Duncan Sands <duncan.sands@free.fr>, 
- Chas Williams <3chas3@gmail.com>, Minas Harutyunyan <hminas@synopsys.com>, 
- Hans de Goede <hansg@kernel.org>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Badhri Jagan Sridharan <badhri@google.com>
-Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org, 
- Subasri S <subasris1210@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785587393; l=2871;
- i=subasris1210@gmail.com; s=20260709; h=from:subject:message-id;
- bh=EixTu8F/XmrqpGkUc1ZAKwt7Ik8fS3oCoez4NHHuAPA=;
- b=y9rlU0Bar73W/79icXHYY1Za1xqYHDFPlcRNAyzBdU9DLsdx5ZFdZAtAfdQnYCacrmDjy37bN
- 67dNNmpkRFUB7JSMQ26Hj03dv6oZIIwgFS5fqDwVdYCNRhAPyYsGqab
-X-Developer-Key: i=subasris1210@gmail.com; a=ed25519;
- pk=6C4wavGFy/OsR8yQQKNWuDXoYPHp2L3sfgNfyzTruTk=
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
+Message-ID: <20260801125308.1342897-1-almasrymina@google.com>
+Subject: [PATCH net v1 1/3] net: core: propagate unreadable flag in skb_zerocopy
+From: Mina Almasry <almasrymina@google.com>
+Cc: Mina Almasry <almasrymina@google.com>, Pavel Begunkov <asml.silence@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Bobby Eshleman <bobbyeshleman@gmail.com>, 
+	Florian Westphal <fw@strlen.de>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jason Xing <kerneljasonxing@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?=" <bjorn@kernel.org>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
+	Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>, 
+	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Use the %pe format specifier instead of %ld with PTR_ERR() for printing
-error pointers in various typec drivers. This prints symbolic
-error names (e.g.-ENOMEM) instead of errno numbers (e.g. -12),
-making error logs more readable.
+When skb_zerocopy() copies devmem payload fragments, it fails to update
+the target skb's unreadable flag. This causes the target to appear as
+readable memory.
 
-Fix coccinelle reported warning:
-WARNING: Consider using %pe to print PTR_ERR()
+Propagate the unreadable flag if any devmem fragments were copied from
+the source.
 
-Compile tested only.
-
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Signed-off-by: Subasri S <subasris1210@gmail.com>
+Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+Cc: Stanislav Fomichev <sdf@fomichev.me>
+Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Florian Westphal <fw@strlen.de>
+Signed-off-by: Mina Almasry <almasrymina@google.com>
 ---
- drivers/usb/typec/mux/pi3usb30532.c | 6 ++----
- drivers/usb/typec/tcpm/tcpm.c       | 2 +-
- drivers/usb/typec/wusb3801.c        | 4 ++--
- 3 files changed, 5 insertions(+), 7 deletions(-)
+ net/core/skbuff.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/typec/mux/pi3usb30532.c b/drivers/usb/typec/mux/pi3usb30532.c
-index 985683fe49e9..b32f4c433de9 100644
---- a/drivers/usb/typec/mux/pi3usb30532.c
-+++ b/drivers/usb/typec/mux/pi3usb30532.c
-@@ -139,8 +139,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
- 
- 	pi->sw = typec_switch_register(dev, &sw_desc);
- 	if (IS_ERR(pi->sw)) {
--		dev_err(dev, "Error registering typec switch: %ld\n",
--			PTR_ERR(pi->sw));
-+		dev_err(dev, "Error registering typec switch: %pe\n", pi->sw);
- 		return PTR_ERR(pi->sw);
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index ba3dbac80fb49..aebe8ea74776a 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -3928,6 +3928,9 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
  	}
+ 	skb_shinfo(to)->nr_frags = j;
  
-@@ -151,8 +150,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
- 	pi->mux = typec_mux_register(dev, &mux_desc);
- 	if (IS_ERR(pi->mux)) {
- 		typec_switch_unregister(pi->sw);
--		dev_err(dev, "Error registering typec mux: %ld\n",
--			PTR_ERR(pi->mux));
-+		dev_err(dev, "Error registering typec mux: %pe\n", pi->mux);
- 		return PTR_ERR(pi->mux);
- 	}
- 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 89eec20a2064..ad10470ea73b 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4796,7 +4796,7 @@ static void tcpm_typec_connect(struct tcpm_port *port)
- 			port->partner_desc.accessory = TYPEC_ACCESSORY_NONE;
- 		partner = typec_register_partner(port->typec_port, &port->partner_desc);
- 		if (IS_ERR(partner)) {
--			dev_err(port->dev, "Failed to register partner (%ld)\n", PTR_ERR(partner));
-+			dev_err(port->dev, "Failed to register partner (%pe)\n", partner);
- 			return;
- 		}
- 
-diff --git a/drivers/usb/typec/wusb3801.c b/drivers/usb/typec/wusb3801.c
-index 6062875fb04a..86d13ab41670 100644
---- a/drivers/usb/typec/wusb3801.c
-+++ b/drivers/usb/typec/wusb3801.c
-@@ -277,8 +277,8 @@ static void wusb3801_hw_update(struct wusb3801 *wusb3801)
- 		if (partner_type != WUSB3801_STAT_PARTNER_STANDBY) {
- 			wusb3801->partner = typec_register_partner(port, &desc);
- 			if (IS_ERR(wusb3801->partner))
--				dev_err(dev, "Failed to register partner: %ld\n",
--					PTR_ERR(wusb3801->partner));
-+				dev_err(dev, "Failed to register partner: %pe\n",
-+					wusb3801->partner);
- 		}
- 
- 		data_role = pwr_role == TYPEC_SOURCE ? TYPEC_HOST : TYPEC_DEVICE;
-
++	if (i > 0 && from->unreadable)
++		to->unreadable = 1;
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(skb_zerocopy);
 -- 
-2.43.0
+2.55.0.571.g244d577d93-goog
 
