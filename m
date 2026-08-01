@@ -1,162 +1,137 @@
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f0.google.com (mail-wr2-f0.google.com [74.125.225.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053E4271456;
-	Sat,  1 Aug 2026 16:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F8E39448F
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 16:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785601730; cv=none; b=gb8kRJ9oPNU7JJhoG56E51ueIwAt6O7vcC1JLveinx1sAjLgL+eFuQsVIQPUUJ/KS0R7FKqxMPExx3MCuyHwsCPYiMo56VzP3Ou87exQZbR5PkrX4LBEumlgOdFiNSSyOEiJMLYBE/he/SUU98TMDim47Is8l5TdKlYRMQNGsnE=
+	t=1785601778; cv=none; b=cSzSMQPxhsMv031ECmCwnym6ptKB/+JVA4kTTKGQM+C33cAa8Ye6lYMrZQTgbD9etpzVir96aa6UUUINTReKpkbPgRKk7WYI53tEE1I7uj8/gyiauJcKwkyOvcp1IkOGev0uH9rUgOv6DGx03Z6YFv5qnWX1XylfL0YrbxCuY1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785601730; c=relaxed/simple;
-	bh=IkVjWSBBiuOLsbPEFfnehNUTyZsRPGGxxctkNh5DZAU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ttnz6mCExjYd5BE8upRGfqDNOQzAPMrMUGzVmGi+Oghk3teRC0oog+eDAAD2w3XrXNUhzKVqCxd8+RGjwgYC6oPj4q6DayyUHkOifRO2ePT/NFRhr0QFs+cdFAr1wT3S7CA5lOn4tmsBp93yDr7feHGD0hFpD6fI01mtFcCp7zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=GkspQDxI; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+	s=arc-20240116; t=1785601778; c=relaxed/simple;
+	bh=GsaH64zwrQdKJ5gPv+eZ5EA1gUTGduKA+kjlJCpWnLM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=X2LJVRY/ReZL0izuEM6U5pgWO53RF9RlTWRj8NpQBIn/Ytrs0bqobR5O7oyL1v8d2SSTZBu0A0QM0WKw2dPyvAmuT4w7KJdA8zQaVmJw4onk2y6P+XIvMaHhoQYTStNn8xcixgXe8tjpPcIk79fzLNQ93nzCPrr84blS3uUqy08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NUFxAt5C; arc=none smtp.client-ip=74.125.225.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="GkspQDxI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=V06eygovF9pqY3vHyXKEpDH3PhLpNuC5Yjsi32fVPNY=; b=GkspQDxIH8XQuNGEPi3OaHsWVb
-	MWqmQLy8kUKXVbYdQCn+ie/STVzV3V1s7aPOK5PK5RjrA5Wiyz8hXdbdIEgc6WcPFfAa21KBC40+n
-	tiyw0Mn+j6oxgkEwMCeuve4BVeBfqLtB2EPeZ7wTyUU4mSmU1sLPii9wSHsjQ5BuPbhAuQtRTEjA5
-	n8pZMtkAH/FxaT++U1I8L6londMFmfOBCEtEEp2HcNsc6P3S1esk+oUHFDqac/TtiB/qTngEgeWVx
-	vxh6+0AgQRrVMtC7TkoRzlWwcomWycXXPeveXnhe6HMtGaMMJNgHU/uwXIYS2D1qggPlKOWmYdUmd
-	HqiZeHug==;
-From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Romain Gantois <romain.gantois@bootlin.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, Coia Prant <coiaprant@gmail.com>,
- Coia Prant <coiaprant@gmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
- Russell King <linux@armlinux.org.uk>, Shawn Lin <shawn.lin@rock-chips.com>,
- David Heidelberg <david@ixit.cz>, netdev@vger.kernel.org,
- linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-renesas-soc@vger.kernel.org
-Subject:
- Re: [PATCH v2 05/10] arm64: dts: rockchip: rk3568: add XPCS and fixed-clock
- nodes
-Date: Sat, 01 Aug 2026 18:28:11 +0200
-Message-ID: <2847036.GUH7pLUipS@diego>
-In-Reply-To: <20260801142244.679437-7-coiaprant@gmail.com>
-References:
- <20260801142244.679437-2-coiaprant@gmail.com>
- <20260801142244.679437-7-coiaprant@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NUFxAt5C"
+Received: by mail-wr2-f0.google.com with SMTP id ffacd0b85a97d-47f4c92d1b3so542342f8f.0
+        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 09:29:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785601775; x=1786206575; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=GsaH64zwrQdKJ5gPv+eZ5EA1gUTGduKA+kjlJCpWnLM=;
+        b=NUFxAt5C9fg0ZRuuR72ZO+PNH242D3Mzy/OAUSqS4xo3p0I94udWuFccSt0FFLnxMg
+         +eurv7zCpBsEaz+kdRfNwygvFmLzZkTujFs5bClwCov9cdfgLTxTp5RGzm8p1MJg+6w4
+         q6zbduE2Ht79x4yHM+47pJeTac6ICkmT07FBjj4Mq4A+Qjzx0GkF6SWT7rwItug2PRCp
+         HOVTpsvh1H71kI57POLaYxu9cMWsg0z5vyRUwzTEUCGX0Ovjc8FH4kLyTeD9j2gsiwmF
+         3v6xZzLvOHB3pSirgMg0AcFe7MRswMsBovInsTqHYkeFV/xHYWf/oVwXUngwjgTmO3cB
+         l4cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785601775; x=1786206575;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GsaH64zwrQdKJ5gPv+eZ5EA1gUTGduKA+kjlJCpWnLM=;
+        b=e8P/ojPVxhrAOXtQkewRska4UDTwgdit6oVV4Bbj+AnolhSV3Z7mGevLngQ/q2nyt0
+         GyvGNjACzeGBY8yhYZWsKxHZIyvXxQL7VYJOYZRQc/MxpXcW3PbMsDVpKajAz6cwHRtg
+         X5KWt/ny/py4lv84JFOEyRtv+CZL8ImJ7OzloL6rX6Y1tSY1WQKb557hKEAX7FUMzLiO
+         Mn20spe5c5i+idCJDcTJe3LOiJvULHyCau1Ig8mnrBAutmj2YAq3OaLCCdTDVL+Yh7DG
+         HFe4WLyXXpfKIycTy2IKLfRKJ/+vHs0ZDw4fX2tFnDNYNdgqFJ4Fu5Q3qXbjok9Cn7XP
+         d/VQ==
+X-Gm-Message-State: AOJu0YwCQfZf61igmJYXtgWZeOXJ5vlSuJtVj6Kj2Phjr7y8wfqIzVkB
+	2yulpHC3aWpo664LcjIYkp2JRq5eqliskWVzTOWUNL2QoQsmSerZQfi7
+X-Gm-Gg: AR+sD13t7yny+NNyH/RuXmvfy00tinZLKubC/JdhoGHQ/6s48n1jfkqJPy7U+jgz77e
+	Taz2O/AJhOMbTvYm+ghTrj3rizaGKTQhfmZGg7+/KfmsqzMgAyo/MhQO7M69FvKqaRili3qa4S+
+	aQcpwM5KD9LKG6k9m5Cfy5snqoJsUntWAXC4xXJttEIfQ5IiIzSMyNQ2w7ueH+jp9AuPJ3YEmIk
+	auUYSmcfGxcdlFMkxWErzg4lf2jS6+4SZ09sKbfmah5GrPJOjykkXz/X1FQshmytENpFYATSaG8
+	RfnZMFZnPEi/zfervjvkoQjuNCq47vd/dq1HGSq+ybW032SdigQL5bRNCbRsen+NVAYXzgcyrhx
+	uumvK/PQFGfgsjmFYyPI/jmY7XjDM7e/9n0pqkidsDEz7WZcvY5yOSM7ddSCXCUFQaHsBtB8KBF
+	CxbhFGI8bMiHqt/jCzAJ9fMB0v7u9sB+OxyKzWkCvToi9YcI1y/Wcb8I2nYEQuVSX+E6Tm/3bEp
+	F+Kjl5Qttj0vWQxR/+n579v5lr45Qbv24/fJg4qmiQb/mCYmloW7WbYqWfFb9IaB+ORArd3pQvE
+	EwWZEiMnbT5a6wR1EGP3osQ8MXXknvq5SBl6LQ==
+X-Received: by 2002:a5d:6347:0:b0:47f:7b75:9dfe with SMTP id ffacd0b85a97d-47fd72ba981mr7747375f8f.8.1785601775189;
+        Sat, 01 Aug 2026 09:29:35 -0700 (PDT)
+Received: from localhost (nat-icclus-192-26-29-3.epfl.ch. [192.26.29.3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd41e296csm15589245f8f.12.2026.08.01.09.29.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Aug 2026 09:29:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 01 Aug 2026 18:29:34 +0200
+Message-Id: <DKDR02T36EVT.ODA2A3LW6MC2@gmail.com>
+Cc: <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Sashiko" <sashiko-bot@kernel.org>
+Subject: Re: [PATCH bpf 3/3] bpf: Unconditionally take socket references in
+ lookup helpers
+From: "Kumar Kartikeya Dwivedi" <memxor@gmail.com>
+To: "Michal Luczaj" <mhal@rbox.co>, "Emil Tsalapatis"
+ <emil@etsalapatis.com>, "Eric Dumazet" <edumazet@google.com>, "Kuniyuki
+ Iwashima" <kuniyu@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Willem
+ de Bruijn" <willemb@google.com>, "John Fastabend"
+ <john.fastabend@gmail.com>, "Jakub Sitnicki" <jakub@cloudflare.com>,
+ "Jiayuan Chen" <jiayuan.chen@linux.dev>, "David S. Miller"
+ <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Simon Horman"
+ <horms@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Stanislav
+ Fomichev" <sdf@fomichev.me>, "Martin KaFai Lau" <martin.lau@linux.dev>,
+ "Alexei Starovoitov" <ast@kernel.org>, "Andrii Nakryiko"
+ <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Song Liu"
+ <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
+ <jolsa@kernel.org>, "Joe Stringer" <joe@wand.net.nz>
+X-Mailer: aerc 0.21.0
+References: <20260723-sockmap-lookup-tcp-leak-v1-0-1bbdc58ce514@rbox.co>
+ <20260723-sockmap-lookup-tcp-leak-v1-3-1bbdc58ce514@rbox.co>
+ <DKBCACHGQHYB.194JPC04N9WT0@etsalapatis.com>
+ <591fd57e-d006-4e51-af5c-fea65a071819@rbox.co>
+In-Reply-To: <591fd57e-d006-4e51-af5c-fea65a071819@rbox.co>
 
-Am Samstag, 1. August 2026, 16:22:29 Mitteleurop=C3=A4ische Sommerzeit schr=
-ieb Coia Prant:
-> The RK3568 SoC integrates a Synopsys DesignWare XPCS that provides
-> the Physical Coding Sublayer for 1000BASE-X, SGMII, and QSGMII
-> interfaces via its four MII ports.  Add the XPCS device node and
-> its pcs-mii sub-nodes to the SoC device tree.
->=20
-> The XPCS device is accessed via the APB3 bus at 0xfda00000 and
-> requires the CSR clock (PCLK_XPCS) for register access and the EEE
-> clock (CLK_XPCS_EEE) for Energy Efficient Ethernet operation.  The
-> PD_PIPE power domain must be enabled before any register access.
->=20
-> Also add two fixed-clock nodes (xpcs_gmac0_clk and xpcs_gmac1_clk)
-> providing the 125 MHz reference clock for the GMACs when operating
-> with XPCS.  These clocks are used as the assigned-clock-parents
-> for the respective GMAC nodes in board-level device trees.
->=20
-> The XPCS node and its pcs-mii sub-nodes are disabled by default and
-> must be enabled at the board level when 1000BASE-X/SGMII/QSGMII is
-> in use.  The fixed-clock nodes are always present and do not have a
-> status property, as they are static clock sources.
->=20
-> The XPCS node also requires a reference to the appropriate Naneng
-> Combo PHY via the phys property at the board level.
->=20
-> Signed-off-by: Coia Prant <coiaprant@gmail.com>
-> ---
->  arch/arm64/boot/dts/rockchip/rk3568.dtsi | 45 ++++++++++++++++++++++++
->  1 file changed, 45 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/d=
-ts/rockchip/rk3568.dtsi
-> index 3bc653f027f1f..989e164c0eb39 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> @@ -110,6 +110,51 @@ sata0: sata@fc000000 {
->  		status =3D "disabled";
->  	};
-> =20
-> +	xpcs: pcs@fda00000 {
-> +		compatible =3D "rockchip,rk3568-xpcs";
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +		reg =3D <0x0 0xfda00000 0x0 0x200000>;
-> +		clocks =3D <&cru PCLK_XPCS>, <&cru CLK_XPCS_EEE>;
-> +		clock-names =3D "csr", "eee";
-> +		power-domains =3D <&power RK3568_PD_PIPE>;
-> +		status =3D "disabled";
-> +
-> +		xpcs_mii0: pcs-mii@0 {
-> +			reg =3D <0>;
-> +			status =3D "disabled";
-> +		};
-> +
-> +		xpcs_mii1: pcs-mii@1 {
-> +			reg =3D <1>;
-> +			status =3D "disabled";
-> +		};
-> +
-> +		xpcs_mii2: pcs-mii@2 {
-> +			reg =3D <2>;
-> +			status =3D "disabled";
-> +		};
-> +
-> +		xpcs_mii3: pcs-mii@3 {
-> +			reg =3D <3>;
-> +			status =3D "disabled";
-> +		};
-> +	};
-> +
-> +	xpcs_gmac0_clk: xpcs-gmac0-clock {
-> +		compatible =3D "fixed-clock";
-> +		clock-frequency =3D <125000000>;
-> +		clock-output-names =3D "clk_gmac0_xpcs_mii";
-> +		#clock-cells =3D <0>;
-> +	};
-> +
-> +	xpcs_gmac1_clk: xpcs-gmac1-clock {
-> +		compatible =3D "fixed-clock";
-> +		clock-frequency =3D <125000000>;
-> +		clock-output-names =3D "clk_gmac1_xpcs_mii";
-> +		#clock-cells =3D <0>;
-> +	};
+On Thu Jul 30, 2026 at 1:55 PM CEST, Michal Luczaj wrote:
+> On 7/29/26 22:32, Emil Tsalapatis wrote:
+>> On Thu Jul 23, 2026 at 7:33 AM EDT, Michal Luczaj wrote:
+>>> Lookup helpers gate whether to acquire a socket reference on
+>>> sk_is_refcounted(), a check re-evaluated at release. An established soc=
+ket
+>>> refcounted at acquire time can gain SOCK_RCU_FREE via
+>>> connect(AF_UNSPEC)+listen() before release runs; the release-side re-ch=
+eck
+>>> then reads sk_is_refcounted() =3D=3D false and skips the put. The refer=
+ence
+>>> leaks.
+>>>
+>>> Make acquire and release unconditional and symmetric: always take a
+>>> reference, always put it. Adapt sk_select_reuseport().
+>>
+>> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+>
+> Thanks!
+>
+>> The bot's concern about the comment style is obviously invalid here.
+>
+> Are the prompts incorrect?
+> https://github.com/masoncl/review-prompts/blob/59469708305eca305cbd9eb94e=
+5aa0ee3627529c/kernel/subsystem/bpf.md#bpf-comment-style
+>
 
-I don't fully believe those clocks are "just there" inside the SoC.
-Instead I _assume_ they are generated by some oscillator on the
-individual boards?
+The prompt is correct, but we don't bother for existing comments, if you ad=
+d a
+new one, you can use the new style.
 
-Because as described there, they would be just magically be there.
+Overall, looks like the set is pretty close. You can respin targeting bpf-n=
+ext
+as John suggested (and we can wait for his ack before landing) so it can go
+through CI again.
 
-So please aim for a real clock description (likely on a board-level)
+pw-bot: cr
 
-
-Heiko
-
-
+> Michal
 
