@@ -1,589 +1,246 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340CF2D5C7A
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 02:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785552059; cv=none; b=IvwcdSD0rOxKqBz2tb4swx3BBqg9x9lJAgsuMdFw+/74/Ma9K7RwvWJOgsd3AJLdd2o1VEgLgCWqbgAaeWpV2j9khRO1KEpfdIqgNEpsBBuxa7swJ8TBBicijNgwa9bxg9IB6QM3Z5Gd73xtq6kTI1UQqCzMAMcT1w2yvZ/47rs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785552059; c=relaxed/simple;
-	bh=bW/5cee2PMVaG7kTiYg+ZQNY7ZzKj+y6HNnrNNihhTY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pAEat4NxmnyzSjasRsbu8O/2TdBxjNJIci9XEjOn0jD11q/Nt4M+y1wcprombj/mUV4qjF+pQEEpP0oB+0j/xfnTyGUqHci8GrIj+6+GMhf4Wy6F4egDT4ehsvRq8fluoIADpdDEe0ZOHxkxpdMnwfzx++iKVKpCTj7I3nFKPNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAWvH7JS; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B7039A05D
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 03:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785554029; cv=pass; b=IOnV+x7RMbFkYBgaEpGP3PIPNj+uMjKazu7S5esDZal1InI5MBJ135B65XpXGADjt2a0DU3ou5rHopiMFxqUyrsSm7ZUcZdnKYytnPt9fhDmK2l9Cc90jG9lK1sRuoo2FPsHk4SyqKjwGtwYS4lohjIU+Uvj0WMYXFeB7eSwAsU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785554029; c=relaxed/simple;
+	bh=95QCJbuFW0DJ4I2GQ9WngTVOHrimeZjlLTACZfyrPGs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qgGU4H3SD1rWAi7/yWFTvUtQ2v4rI05FxjrKOeN89tSBdYnkOTHXh74/vr3QoZsnjKfb2t7W7IU4yx7uZFzY+8usQv6tfAnglRdPNLwjzVJdaX060nizOUyXXhy28H5+cxgoVxsS2jsGb8W9RNzpxNvFrVsXR8K29hedZrsgcxU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=debian.or.jp; spf=pass smtp.mailfrom=gmail.com; arc=pass smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=debian.or.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAWvH7JS"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-908239232adso8994676d6.1
-        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 19:40:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785552056; x=1786156856; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=r6f/OshbbwtV54V3T+ezmBV1Vtln+ExRpJyRLbR7NRY=;
-        b=FAWvH7JSNXf7B5LHDuB4ocxo/pskw7RljNKDDXYWgOBeSsla5TRI1ytqh4kLhA2uyx
-         5D/D3hUQOBmMuuYcIqM+yaaVqX/4LxD6Usrz6+BkE/gmWDRMiWJroKzTpeH+wgae5Kda
-         xh1dpZ7KUIDWyE1l4m0biTGPRz/EJU8xt2eD7zHAqYyxatq9WGHSIsNVMAhIOdsHhjYl
-         L/vYYo9qny87lkMfDHuegOT7K1jniBS7fNb88qZ4Me0y9NVtl8I9/9V1PsTIp7kprWTB
-         sF0M+3Ovh+VxvsyYroie6YxIV2eKLjas/inCagSYvVkz2s5RNSTeJhOSslA0xrDYdaXn
-         uhMA==
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-81ed000b507so15858767b3.0
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 20:13:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785554027; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BGKJfjuMvMekURuOZ+B1YEFX1KiExPWIy9Jk4sX7AxBZ43CSkcpK2DuId4LfsC4nCC
+         4AmJDB9PYiArrSxi2r7zWafwRK8SPSdmWgeJ9m0gN8zR4z4ZngXJoJt+bM2X37NVwIPY
+         HUmiSSbbSbgGQmcytwPSXFa+8Gmd4LycSSIkbdAblbydRKn0PS+bjSXSz9uCbtdETVhE
+         A1akfUyn/jH5GZnI3Xc4LIGuN1vnBIonSIW1GF6ngays3dCLDVnvw9LxcCOJB7exAkxb
+         wXqDUqkcsLn7F7awYO5qYLPqSatJgLziBrOyit4oHGQo4HcvIQC1eFBFt8eveNNTsV8v
+         SelA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=SeAZ9LnHsy3/NLwDMK5sclw7WS1BzURw2kr/GeL6nEM=;
+        fh=/IVd7mwAfdyg9J92AsHPQheNJWL5ubVA2oGkVM88vS8=;
+        b=KYwp8sERVA4H1JM9ZHfpTYHO2oqChnPZPHtRuOHy8A93lw8OdorG1MNFhvQl6qVemQ
+         wn9C6MBWisO3vL7GVtd1oi9yef4SjXrlTJ5t9jbs/MfW1Pg0qJlkQwohJgYEnsSYSwpo
+         IYCUqMXDErkVf7rUmAk0okZy7QcBXMPuJ1PowqDt64KCxhz19k5UK1tIgd6klhyyes4v
+         3PUCqK/GT6/JUWsM5ritOHnGbsKRZg7pIthaDdcVxAKYzAS7K8uIwp28mdX7SXtvTqWq
+         5iAuo+piNE9EMQkqE3o7qI1C+NCF1YtGSmKs88j1Dj/NIxZxy1Lg/Yrj2NWhv6dW/alh
+         Q6BA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785552056; x=1786156856;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=r6f/OshbbwtV54V3T+ezmBV1Vtln+ExRpJyRLbR7NRY=;
-        b=GTHXcJ7EuiswLEdRBy3nk2d3ZL9AwiO18/TruyotVljrHYtcV8Odly7KO3MyZYR9p6
-         UZTYkY2hGJtIIP5uI4JiUAo2bQxZiGLdUqhMy7eitG7ogi1pFXFjNQned+Ywp5eoCLNU
-         ONxUmjFwP/FqU3HAlLFOVL4+S/qRDpBH750SdITm3QRvipMKpUohWDJWiGOoTlIP4S+A
-         ksfiKAR+4HicQgYQsP7MxiTPYzcglF++7tPQpzHoYHt98U0kOt511UMAmhtHCj+jiG7a
-         v/eyo/1xInepaYJ+aiaEi+p2PQDEc87VAmAQSvDoudMgIYiKIqTZqRaeelGhkhamLT9p
-         C/rQ==
-X-Gm-Message-State: AOJu0YxcRUXmdjzJPPowQHSaYxy1z0KaLGjjfsT4NnfphjOho6dTq6vP
-	37nQeqgXnnMrYLsL9c5IHRiVV7QNCZcySijCv/YAHELSXHlfpaTP48PCwBuoK+/c
-X-Gm-Gg: AR+sD13golxQq+Iltm10Pq9bznehJzlqmzjvZSaJ+gZIH9+x2lnwbCZ1Ae2/zbhBGdo
-	qkYXwnkY0Zn5w9jR1ouLTyPfFmaAvJQ8N+6KM5cx+6Bt7hTclCPSHynQjHepHD/fAXivqEW2gjo
-	BVmr3iKEhqyZof3xLsxp5y0r9d/3CuJUSUpOU+OctJRINfz4yQsKpfbi/CROp4ABujqibqVHp5i
-	/7Oj1vG9SES98b0dnRiavNvoMx7tgVkdiv2TKQVcICrZSoB+EGxcwW9k+AbiIal6aba8I4ey42P
-	IyQ5eT0vEkUQiciMuC3ICiShwpakehhkJ0eXlrs1kY242Vn64QtTZt48cfiSnlNYr1+KuvZERQS
-	mk12EHl+IDz+j1yMvMvpxtS/ePzjlBrAB8BSvYODbVzKOdErioVniJzRDEz6wyr4M7xdtotVMFP
-	uAyfR0qlwyzN6O24OPspNhnAjrnCKUb5EnTyFWh5uT23Psf5BapdPdN9Ul2Te9d9chNI1HYTNSp
-	2akXGCm9zQnemF6myT7Iz4otn21FpkC+WD7pzgU104vJXsnL+8/pOLqR17b2HMITtgI1Ui252xW
-	4iiALw==
-X-Received: by 2002:a05:6214:1253:b0:8e0:c0f3:a2cb with SMTP id 6a1803df08f44-90842f45e39mr82282716d6.0.1785552055914;
-        Fri, 31 Jul 2026 19:40:55 -0700 (PDT)
-Received: from localhost.localdomain ([163.5.171.20])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-908432a1688sm24395856d6.4.2026.07.31.19.40.55
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 31 Jul 2026 19:40:55 -0700 (PDT)
-From: William Gonzalez <gonzalez.williamalexander1@gmail.com>
-To: netdev@vger.kernel.org
-Cc: stephen@networkplumber.org,
-	William Gonzalez <gonzalez.williamalexander1@gmail.com>
-Subject: [PATCH] bridge: tighten VLAN parsing
-Date: Fri, 31 Jul 2026 22:40:51 -0400
-Message-Id: <20260801024051.10581-1-gonzalez.williamalexander1@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-145)
+        d=1e100.net; s=20251104; t=1785554027; x=1786158827;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SeAZ9LnHsy3/NLwDMK5sclw7WS1BzURw2kr/GeL6nEM=;
+        b=q+ULwsY1CdxFzIZSvBZK6PliObHuR/kn7SVbgGZw58UPRr7wkCAwkOoxOtpIAqMDcF
+         q2TRq/4KrTWI4li0yOsgChx1vU4mtO+ijJEZKmH8mNJHm69Vub/yZg7IatNrYjnmfTXQ
+         4oCclEz/1Dfk273cRcEGqcladqA3/uYdRZsfsqv1SivCB9lci6NBQGIgPSvQ3c89+CnO
+         MokkLBM6wBfXguBbH7FpDr/ZAmZYxPHYRzkcX6P7jiO0HueqoA5tqjGvEcFwHBT1BfhQ
+         aFp138+HRJ9TvyM2fm0UuHJczP8zIObiQyvzlBjtkq7cMlXZ7YuSRL8w+xG0n6qYMMaI
+         GhZA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro6WogPZ3U5mas+TfZPWb7bvZsylVBf6Gr3CKbPp2QPlmx2WydbcwC/iEsUl47vF1MVmP5801Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmYhWZkDudyy01WgZ7OUf8STQkc4dM5YgoXMMLhf/ieK9cxnRC
+	7W/efMSE4LShFaTJFn3ojzsslchCrWnH4VrVx6Fip/z2den7DigykP55yLuUF6g3rOVkPs3cS84
+	X1Bz9GzeX0AF2k+pvI+WkfKUTUrCbNLY=
+X-Gm-Gg: AR+sD11lxoiTXxke3dZp1QtBLPxcNB7uQVFogdjf1qI+JMet4va1uVPIB3rBUbk0+Ot
+	UAjhcRrq1w/1GIDrvlvE6YUJ90d6yX5G1+7/kbVzKOgEv15aeE9t2PDRWyybuQRsMQ1Sz38Rr6i
+	tbR3viiG+4EzlPPkqdhllHNdDH1yxH2+nTojRZdTyNZ9FHkn+qFEwwau8NDeHgf5B8d1CUj/Ki1
+	WgfIvbN24/F7yCv5NR/ft2nmqZ7soXyGlnDVWZokq27fiC6uX7P8jWuscE7sVkiYU21GGtFVQ81
+	Oevvfn274li2jKcpeu/YmmqG0Nb+3SFb+y8bo7SasOuWo59FGBd+qDUg6orxNAy3lCCT+de689b
+	Jsw==
+X-Received: by 2002:a05:690c:278a:b0:81c:b865:2231 with SMTP id
+ 00721157ae682-81fd4bf88ecmr32651387b3.33.1785554025363; Fri, 31 Jul 2026
+ 20:13:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260723-pci_id_fix-v4-0-3580726844e1@garyguo.net> <20260728162538.GA1325438@bhelgaas>
+In-Reply-To: <20260728162538.GA1325438@bhelgaas>
+From: Masanori Goto <gotom@debian.or.jp>
+Date: Sat, 1 Aug 2026 12:13:18 +0900
+X-Gm-Features: AUfX_mz7siEIuZSDLGecSdNp4xhgCzEOOClyi0oT7r0lmGspOzwc1eUhhS3W20M
+Message-ID: <CALZLnaEmm5Zi=30n4i7ioX9ii4KMAePnZTAhAcNScSZFSNB7UA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/9] PCI: Fix UAF and TOCTOU related to dynamic ID
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Zhenzhong Duan <zhenzhong.duan@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, 
+	Niklas Cassel <cassel@kernel.org>, YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Vaibhav Gupta <vaibhavgupta40@gmail.com>, 
+	Jens Taprogge <jens.taprogge@taprogge.org>, Ido Schimmel <idosch@nvidia.com>, 
+	Petr Machata <petrm@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Airlie <airlied@redhat.com>, 
+	linux-pci@vger.kernel.org, driver-core@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, industrypack-devel@lists.sourceforge.net, 
+	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	Sashiko <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
----
- bridge/fdb.c    |  45 +++++++++++--------
- bridge/mdb.c    |  21 ++++++---
- bridge/vlan.c   | 113 ++++++++++++++++++------------------------------
- include/utils.h |   2 +
- lib/utils.c     |  51 ++++++++++++++++++++++
- 5 files changed, 136 insertions(+), 96 deletions(-)
+I'm a "nsp32 folk", which patch version should I take a look at?
 
-diff --git a/bridge/fdb.c b/bridge/fdb.c
-index 05f093b5..fadd82ae 100644
---- a/bridge/fdb.c
-+++ b/bridge/fdb.c
-@@ -364,10 +364,14 @@ static int fdb_show(int argc, char **argv)
- 			NEXT_ARG();
- 			br = *argv;
- 		} else if (strcmp(*argv, "vlan") == 0) {
-+			__u16 vid;
-+
- 			NEXT_ARG();
- 			if (filter_vlan)
- 				duparg("vlan", *argv);
--			filter_vlan = atoi(*argv);
-+			if (get_vlan(&vid, *argv))
-+				invarg("invalid vlan", *argv);
-+			filter_vlan = vid;
- 		} else if (strcmp(*argv, "state") == 0) {
- 			unsigned int state;
- 
-@@ -474,7 +478,8 @@ static int fdb_modify(int cmd, int flags, int argc, char **argv)
- 	unsigned long src_vni = ~0;
- 	unsigned int via = 0;
- 	char *endptr;
--	short vid = -1;
-+	__u16 vid = 0;
-+	bool vid_set = false;
- 	__u32 nhid = 0;
- 
- 	while (argc > 0) {
-@@ -537,10 +542,12 @@ static int fdb_modify(int cmd, int flags, int argc, char **argv)
- 			req.ndm.ndm_state |= NUD_REACHABLE;
- 			req.ndm.ndm_state &= ~NUD_NOARP;
- 		} else if (matches(*argv, "vlan") == 0) {
--			if (vid >= 0)
-+			if (vid_set)
- 				duparg2("vlan", *argv);
- 			NEXT_ARG();
--			vid = atoi(*argv);
-+			if (get_vlan(&vid, *argv))
-+				invarg("invalid vlan", *argv);
-+			vid_set = true;
- 		} else if (matches(*argv, "use") == 0) {
- 			req.ndm.ndm_flags |= NTF_USE;
- 		} else if (matches(*argv, "extern_learn") == 0) {
-@@ -595,7 +602,7 @@ static int fdb_modify(int cmd, int flags, int argc, char **argv)
- 	if (dst_ok)
- 		addattr_l(&req.n, sizeof(req), NDA_DST, &dst.data, dst.bytelen);
- 
--	if (vid >= 0)
-+	if (vid_set)
- 		addattr16(&req.n, sizeof(req), NDA_VLAN, vid);
- 	if (nhid > 0)
- 		addattr32(&req.n, sizeof(req), NDA_NH_ID, nhid);
-@@ -644,7 +651,8 @@ static int fdb_get(int argc, char **argv)
- 	char abuf[ETH_ALEN];
- 	int br_ifindex = 0;
- 	char *addr = NULL;
--	short vlan = -1;
-+	__u16 vlan = 0;
-+	bool vlan_set = false;
- 	char *endptr;
- 	int ret;
- 
-@@ -669,10 +677,12 @@ static int fdb_get(int argc, char **argv)
- 		} else if (matches(*argv, "master") == 0) {
- 			req.ndm.ndm_flags |= NTF_MASTER;
- 		} else if (matches(*argv, "vlan") == 0) {
--			if (vlan >= 0)
-+			if (vlan_set)
- 				duparg2("vlan", *argv);
- 			NEXT_ARG();
--			vlan = atoi(*argv);
-+			if (get_vlan(&vlan, *argv))
-+				invarg("invalid vlan", *argv);
-+			vlan_set = true;
- 		} else if (matches(*argv, "dynamic") == 0) {
- 			filter_dynamic = 1;
- 		} else {
-@@ -702,7 +712,7 @@ static int fdb_get(int argc, char **argv)
- 
- 	addattr_l(&req.n, sizeof(req), NDA_LLADDR, abuf, ETH_ALEN);
- 
--	if (vlan >= 0)
-+	if (vlan_set)
- 		addattr16(&req.n, sizeof(req), NDA_VLAN, vlan);
- 
- 	if (vni != ~0)
-@@ -758,7 +768,9 @@ static int fdb_flush(int argc, char **argv)
- 	};
- 	unsigned short ndm_state_mask = 0;
- 	unsigned short ndm_flags_mask = 0;
--	short vid = -1, brport_ifidx = -1;
-+	short brport_ifidx = -1;
-+	__u16 vid = 0;
-+	bool vid_set = false;
- 	char *d = NULL, *brport = NULL;
- 	unsigned short ndm_flags = 0;
- 	unsigned short ndm_state = 0;
-@@ -832,10 +844,12 @@ static int fdb_flush(int argc, char **argv)
- 			NEXT_ARG();
- 			brport = *argv;
- 		} else if (strcmp(*argv, "vlan") == 0) {
--			if (vid >= 0)
-+			if (vid_set)
- 				duparg2("vlan", *argv);
- 			NEXT_ARG();
--			vid = atoi(*argv);
-+			if (get_vlan(&vid, *argv))
-+				invarg("invalid vlan", *argv);
-+			vid_set = true;
- 		} else if (strcmp(*argv, "src_vni") == 0) {
- 			NEXT_ARG();
- 			src_vni = strtoul(*argv, &endptr, 0);
-@@ -901,11 +915,6 @@ static int fdb_flush(int argc, char **argv)
- 		}
- 	}
- 
--	if (vid >= 4096) {
--		fprintf(stderr, "Invalid VLAN ID \"%hu\"\n", vid);
--		return -1;
--	}
--
- 	/* if self and master were not specified assume self */
- 	if (!(ndm_flags & (NTF_SELF | NTF_MASTER)))
- 		ndm_flags |= NTF_SELF;
-@@ -914,7 +923,7 @@ static int fdb_flush(int argc, char **argv)
- 	req.ndm.ndm_state = ndm_state;
- 	if (brport_ifidx > -1)
- 		addattr32(&req.n, sizeof(req), NDA_IFINDEX, brport_ifidx);
--	if (vid > -1)
-+	if (vid_set)
- 		addattr16(&req.n, sizeof(req), NDA_VLAN, vid);
- 	if (src_vni != ~0)
- 		addattr32(&req.n, sizeof(req), NDA_SRC_VNI, src_vni);
-diff --git a/bridge/mdb.c b/bridge/mdb.c
-index 112deeb9..b1d6ec28 100644
---- a/bridge/mdb.c
-+++ b/bridge/mdb.c
-@@ -452,10 +452,14 @@ static int mdb_show(int argc, char **argv)
- 				duparg("dev", *argv);
- 			filter_dev = *argv;
- 		} else if (strcmp(*argv, "vid") == 0) {
-+			__u16 vid;
-+
- 			NEXT_ARG();
- 			if (filter_vlan)
- 				duparg("vid", *argv);
--			filter_vlan = atoi(*argv);
-+			if (get_vlan(&vid, *argv))
-+				invarg("invalid vlan", *argv);
-+			filter_vlan = vid;
- 		}
- 		argc--; argv++;
- 	}
-@@ -706,7 +710,7 @@ static int mdb_modify(int cmd, int flags, int argc, char **argv)
- 	char *src_list = NULL, *proto = NULL, *dst = NULL;
- 	struct br_mdb_entry entry = {};
- 	bool set_attrs = false;
--	short vid = 0;
-+	__u16 vid = 0;
- 
- 	while (argc > 0) {
- 		if (strcmp(*argv, "dev") == 0) {
-@@ -725,7 +729,8 @@ static int mdb_modify(int cmd, int flags, int argc, char **argv)
- 			;/* nothing */
- 		} else if (strcmp(*argv, "vid") == 0) {
- 			NEXT_ARG();
--			vid = atoi(*argv);
-+			if (get_vlan(&vid, *argv))
-+				invarg("invalid vlan", *argv);
- 		} else if (strcmp(*argv, "src") == 0) {
- 			NEXT_ARG();
- 			src = *argv;
-@@ -868,7 +873,7 @@ static int mdb_get(int argc, char **argv)
- 	struct br_mdb_entry entry = {};
- 	struct nlmsghdr *answer;
- 	bool get_attrs = false;
--	short vid = 0;
-+	__u16 vid = 0;
- 	int ret = 0;
- 
- 	while (argc > 0) {
-@@ -880,7 +885,8 @@ static int mdb_get(int argc, char **argv)
- 			grp = *argv;
- 		} else if (strcmp(*argv, "vid") == 0) {
- 			NEXT_ARG();
--			vid = atoi(*argv);
-+			if (get_vlan(&vid, *argv))
-+				invarg("invalid vlan", *argv);
- 		} else if (strcmp(*argv, "src") == 0) {
- 			NEXT_ARG();
- 			src = *argv;
-@@ -963,7 +969,7 @@ static int mdb_flush(int argc, char **argv)
- 	struct br_mdb_entry entry = {};
- 	unsigned short state_mask = 0;
- 	bool set_attrs = false;
--	short vid = 0;
-+	__u16 vid = 0;
- 
- 	while (argc > 0) {
- 		if (strcmp(*argv, "dev") == 0) {
-@@ -974,7 +980,8 @@ static int mdb_flush(int argc, char **argv)
- 			p = *argv;
- 		} else if (strcmp(*argv, "vid") == 0) {
- 			NEXT_ARG();
--			vid = atoi(*argv);
-+			if (get_vlan(&vid, *argv))
-+				invarg("invalid vlan", *argv);
- 		} else if (strcmp(*argv, "src_vni") == 0) {
- 			NEXT_ARG();
- 			src_vni = *argv;
-diff --git a/bridge/vlan.c b/bridge/vlan.c
-index 09c01153..0f0c8333 100644
---- a/bridge/vlan.c
-+++ b/bridge/vlan.c
-@@ -165,8 +165,10 @@ static int vlan_modify(int cmd, int argc, char **argv)
- 		.ifm.ifi_family = PF_BRIDGE,
- 	};
- 	char *d = NULL;
--	short vid = -1;
--	short vid_end = -1;
-+	__u16 vid = 0;
-+	__u16 vid_end = 0;
-+	bool vid_set = false;
-+	bool vid_range = false;
- 	struct rtattr *afspec;
- 	struct bridge_vlan_info vinfo = {};
- 	bool tunnel_info_set = false;
-@@ -179,19 +181,15 @@ static int vlan_modify(int cmd, int argc, char **argv)
- 			NEXT_ARG();
- 			d = *argv;
- 		} else if (strcmp(*argv, "vid") == 0) {
--			char *p;
--
- 			NEXT_ARG();
--			p = strchr(*argv, '-');
--			if (p) {
--				*p = '\0';
--				p++;
--				vid = atoi(*argv);
--				vid_end = atoi(p);
-+			if (vid_set)
-+				duparg2("vid", *argv);
-+			if (get_vlan_range(&vid, &vid_end, *argv))
-+				invarg("invalid vlan", *argv);
-+			vid_set = true;
-+			vid_range = vid_end != vid;
-+			if (vid_range)
- 				vinfo.flags |= BRIDGE_VLAN_INFO_RANGE_BEGIN;
--			} else {
--				vid = atoi(*argv);
--			}
- 		} else if (strcmp(*argv, "self") == 0) {
- 			flags |= BRIDGE_FLAGS_SELF;
- 		} else if (strcmp(*argv, "master") == 0) {
-@@ -213,7 +211,7 @@ static int vlan_modify(int cmd, int argc, char **argv)
- 		argc--; argv++;
- 	}
- 
--	if (d == NULL || vid == -1) {
-+	if (d == NULL || !vid_set) {
- 		fprintf(stderr, "Device and VLAN ID are required arguments.\n");
- 		return -1;
- 	}
-@@ -224,13 +222,8 @@ static int vlan_modify(int cmd, int argc, char **argv)
- 		return -1;
- 	}
- 
--	if (vid < 1 || vid > 4094) {
--		fprintf(stderr, "Invalid VLAN ID \"%d\"\n", vid);
--		return -1;
--	}
--
--	if (vinfo.flags & BRIDGE_VLAN_INFO_RANGE_BEGIN) {
--		if (vid_end == -1 || vid_end >= 4096 || vid >= vid_end) {
-+	if (vid_range) {
-+		if (vid_end <= vid) {
- 			fprintf(stderr, "Invalid VLAN range \"%hu-%hu\"\n",
- 				vid, vid_end);
- 			return -1;
-@@ -248,10 +241,12 @@ static int vlan_modify(int cmd, int argc, char **argv)
- 		addattr16(&req.n, sizeof(req), IFLA_BRIDGE_FLAGS, flags);
- 
- 	if (tunnel_info_set)
--		add_tunnel_info_range(&req.n, sizeof(req), vid, vid_end,
-+		add_tunnel_info_range(&req.n, sizeof(req), vid,
-+				      vid_range ? vid_end : -1,
- 				      tun_id_start, tun_id_end);
- 	else
--		add_vlan_info_range(&req.n, sizeof(req), vid, vid_end,
-+		add_vlan_info_range(&req.n, sizeof(req), vid,
-+				    vid_range ? vid_end : -1,
- 				    vinfo.flags);
- 
- 	addattr_nest_end(&req.n, afspec);
-@@ -277,7 +272,7 @@ static int vlan_option_set(int argc, char **argv)
- 	struct bridge_vlan_info vinfo = {};
- 	struct rtattr *afspec;
- 	char *d = NULL;
--	short vid = -1;
-+	__u16 vid = 0;
- 
- 	afspec = addattr_nest(&req.n, sizeof(req), BRIDGE_VLANDB_ENTRY);
- 	afspec->rta_type |= NLA_F_NESTED;
-@@ -293,35 +288,19 @@ static int vlan_option_set(int argc, char **argv)
- 				return -1;
- 			}
- 		} else if (strcmp(*argv, "vid") == 0) {
--			short vid_end = -1;
--			char *p;
-+			__u16 vid_end = 0;
-+			bool vid_range = false;
- 
- 			NEXT_ARG();
--			p = strchr(*argv, '-');
--			if (p) {
--				*p = '\0';
--				p++;
--				vid = atoi(*argv);
--				vid_end = atoi(p);
--				if (vid >= vid_end || vid_end >= 4096) {
--					fprintf(stderr, "Invalid VLAN range \"%hu-%hu\"\n",
--						vid, vid_end);
--					return -1;
--				}
--			} else {
--				vid = atoi(*argv);
--			}
--			if (vid >= 4096) {
--				fprintf(stderr, "Invalid VLAN ID \"%hu\"\n",
--					vid);
--				return -1;
--			}
-+			if (get_vlan_range(&vid, &vid_end, *argv))
-+				invarg("invalid vlan", *argv);
-+			vid_range = vid_end != vid;
- 
- 			vinfo.flags = BRIDGE_VLAN_INFO_ONLY_OPTS;
- 			vinfo.vid = vid;
- 			addattr_l(&req.n, sizeof(req), BRIDGE_VLANDB_ENTRY_INFO,
- 				  &vinfo, sizeof(vinfo));
--			if (vid_end != -1)
-+			if (vid_range)
- 				addattr16(&req.n, sizeof(req),
- 					  BRIDGE_VLANDB_ENTRY_RANGE, vid_end);
- 		} else if (strcmp(*argv, "state") == 0) {
-@@ -400,9 +379,9 @@ static int vlan_global_option_set(int argc, char **argv)
- 		.bvm.family = PF_BRIDGE,
- 	};
- 	struct rtattr *afspec;
--	short vid_end = -1;
-+	__u16 vid_end = 0;
- 	char *d = NULL;
--	short vid = -1;
-+	__u16 vid = 0;
- 	__u64 val64;
- 	__u32 val32;
- 	__u16 val16;
-@@ -422,31 +401,15 @@ static int vlan_global_option_set(int argc, char **argv)
- 				return -1;
- 			}
- 		} else if (strcmp(*argv, "vid") == 0) {
--			char *p;
-+			bool vid_range = false;
- 
- 			NEXT_ARG();
--			p = strchr(*argv, '-');
--			if (p) {
--				*p = '\0';
--				p++;
--				vid = atoi(*argv);
--				vid_end = atoi(p);
--				if (vid >= vid_end || vid_end >= 4096) {
--					fprintf(stderr, "Invalid VLAN range \"%hu-%hu\"\n",
--						vid, vid_end);
--					return -1;
--				}
--			} else {
--				vid = atoi(*argv);
--			}
--			if (vid >= 4096) {
--				fprintf(stderr, "Invalid VLAN ID \"%hu\"\n",
--					vid);
--				return -1;
--			}
-+			if (get_vlan_range(&vid, &vid_end, *argv))
-+				invarg("invalid vlan", *argv);
-+			vid_range = vid_end != vid;
- 			addattr16(&req.n, sizeof(req), BRIDGE_VLANDB_GOPTS_ID,
- 				  vid);
--			if (vid_end != -1)
-+			if (vid_range)
- 				addattr16(&req.n, sizeof(req),
- 					  BRIDGE_VLANDB_GOPTS_RANGE, vid_end);
- 		} else if (strcmp(*argv, "mcast_snooping") == 0) {
-@@ -1102,10 +1065,14 @@ static int vlan_show(int argc, char **argv, int subject)
- 				duparg("dev", *argv);
- 			filter_dev = *argv;
- 		} else if (strcmp(*argv, "vid") == 0) {
-+			__u16 vid;
-+
- 			NEXT_ARG();
- 			if (filter_vlan)
- 				duparg("vid", *argv);
--			filter_vlan = atoi(*argv);
-+			if (get_vlan(&vid, *argv))
-+				invarg("invalid vlan", *argv);
-+			filter_vlan = vid;
- 		}
- 		argc--; argv++;
- 	}
-@@ -1219,10 +1186,14 @@ static int vlan_global_show(int argc, char **argv)
- 				duparg("dev", *argv);
- 			filter_dev = *argv;
- 		} else if (strcmp(*argv, "vid") == 0) {
-+			__u16 vid;
-+
- 			NEXT_ARG();
- 			if (filter_vlan)
- 				duparg("vid", *argv);
--			filter_vlan = atoi(*argv);
-+			if (get_vlan(&vid, *argv))
-+				invarg("invalid vlan", *argv);
-+			filter_vlan = vid;
- 		}
- 		argc--; argv++;
- 	}
-diff --git a/include/utils.h b/include/utils.h
-index e4e318e2..06d5242f 100644
---- a/include/utils.h
-+++ b/include/utils.h
-@@ -151,6 +151,8 @@ int get_u32(__u32 *val, const char *arg, int base);
- int get_s32(__s32 *val, const char *arg, int base);
- int get_u16(__u16 *val, const char *arg, int base);
- int get_u8(__u8 *val, const char *arg, int base);
-+int get_vlan(__u16 *val, const char *arg);
-+int get_vlan_range(__u16 *start, __u16 *end, const char *arg);
- int get_be64(__be64 *val, const char *arg, int base);
- int get_be32(__be32 *val, const char *arg, int base);
- int get_be16(__be16 *val, const char *arg, int base);
-diff --git a/lib/utils.c b/lib/utils.c
-index 1215fe31..debba751 100644
---- a/lib/utils.c
-+++ b/lib/utils.c
-@@ -387,6 +387,57 @@ int get_u16(__u16 *val, const char *arg, int base)
- 	return 0;
- }
- 
-+int get_vlan(__u16 *val, const char *arg)
-+{
-+	if (get_u16(val, arg, 10))
-+		return -1;
-+
-+	if (*val < 1 || *val > 4094)
-+		return -1;
-+
-+	return 0;
-+}
-+
-+int get_vlan_range(__u16 *start, __u16 *end, const char *arg)
-+{
-+	char *start_arg;
-+	const char *sep;
-+	size_t len;
-+	int ret;
-+
-+	if (!arg)
-+		return -1;
-+
-+	sep = strchr(arg, '-');
-+	if (!sep) {
-+		ret = get_vlan(start, arg);
-+		if (!ret)
-+			*end = *start;
-+		return ret;
-+	}
-+
-+	len = sep - arg;
-+	if (!len || !sep[1])
-+		return -1;
-+
-+	start_arg = malloc(len + 1);
-+	if (!start_arg)
-+		return -1;
-+
-+	memcpy(start_arg, arg, len);
-+	start_arg[len] = '\0';
-+
-+	ret = get_vlan(start, start_arg) || get_vlan(end, sep + 1);
-+	free(start_arg);
-+	if (ret)
-+		return -1;
-+
-+	if (*start >= *end)
-+		return -1;
-+
-+	return 0;
-+}
-+
- int get_u8(__u8 *val, const char *arg, int base)
- {
- 	unsigned long res;
--- 
-2.39.3 (Apple Git-145)
+Best regards,
+Masanori
 
+
+2026=E5=B9=B47=E6=9C=8829=E6=97=A5(=E6=B0=B4) 1:27 Bjorn Helgaas <helgaas@k=
+ernel.org>:
+>
+> On Thu, Jul 23, 2026 at 11:00:39PM +0100, Gary Guo wrote:
+> > While working on improving the Rust abstractions [1], Sashiko reported =
+that
+> > an existing UAF issue related to dynamic ID, which I find to be genuine=
+.
+> > When taking a look at the code I also find a TOCTOU issue where the
+> > existence check of dynamic ID happens in a separate critical section as=
+ the
+> > actual insertion. This series fix both issues.
+> >
+> > There are two exported functions pci_match_id() and pci_add_dynid() whi=
+ch I
+> > have to tweak to implement this cleanly; I created separate "do_xxx"
+> > functions to keep the existing APIs because they all have multiple user=
+s.
+> >
+> > There're a few existing users which stores their pci_device_id argument=
+ in
+> > probe callback. This is a bad pattern because nothing except driver_dat=
+a
+> > inside pci_device_id is what they want; actual ID information can be
+> > retrieved from pci_dev instead.
+> >
+> > There are two users that performs pointer arithmetic on the pci_device_=
+id;
+> > these are also problematic with dynamic ID and driver_override, so fix =
+them
+> > as well.
+> >
+> > I've used the following coccinelle script to flag all cases where the
+> > pci_device_id is used other than reading its fields.
+> >
+> > @usage@
+> > identifier fn, id;
+> > position p;
+> > @@
+> >   fn(..., struct pci_device_id *id, ...)
+> >   {
+> >     ...
+> >     id@p
+> >     ...
+> >   }
+> >
+> > // Due to cocci isomorphism this needs to be explicit
+> > @bad@
+> > identifier fn, id;
+> > type T;
+> > position usage.p;
+> > @@
+> >   fn(..., struct pci_device_id *id, ...)
+> >   {
+> >     ...
+> >     (T*)id@p
+> >     ...
+> >   }
+> >
+> > // Good use cases
+> > @good@
+> > identifier fn, id, fld;
+> > expression E;
+> > position usage.p;
+> > @@
+> >   fn(..., struct pci_device_id *id, ...)
+> >   {
+> >     ...
+> > (
+> >     id@p->fld
+> > |
+> >     E(..., id@p, ...)
+> > |
+> > // Redundant checks, but ignore
+> >     !id@p
+> > |
+> > // Redundant checks, but ignore
+> >     id ? ... : ...
+> > )
+> >     ...
+> >   }
+> >
+> > @script:python depends on usage && (bad || !good)@
+> > p << usage.p;
+> > @@
+> > coccilib.report.print_report(p[0], "suspicious use of pci_device_id")
+> >
+> > Link: https://lore.kernel.org/all/20260618-id_info-v1-0-96af1e559ef9@ga=
+ryguo.net/ [1]
+> > Link: https://lore.kernel.org/all/20260619170503.518F61F00A3A@smtp.kern=
+el.org/ [2]
+> >
+> > ---
+> > Changes in v4:
+> > - Code and commit message style fixes (Bjorn)
+> > - Link to v3: https://patch.msgid.link/20260706-pci_id_fix-v3-0-2d48fc0=
+25acc@garyguo.net
+> >
+> > Changes in v3:
+> > - Fix users which uses pci_device_id for pointer arithmetic. (Sashiko)
+> > - Convert to scoped_guard. (Danilo)
+> > - For static IDs, still give out static pointers and avoid making a cop=
+y.
+> > - Link to v2: https://patch.msgid.link/20260630-pci_id_fix-v2-0-b834a98=
+c0af2@garyguo.net
+> >
+> > Changes in v2:
+> > - Fix users which store pci_device_id.
+> > - Clarify in probe documentation about the lifetime of pci_device_id
+> >   parameter.
+> > - Dynamic ID conflict check now ignores override_only. (Sashiko)
+> > - Link to v1: https://patch.msgid.link/20260626-pci_id_fix-v1-0-a35c803=
+f1b95@garyguo.net
+> >
+> > ---
+> > Gary Guo (9):
+> >       ata: ata_generic: don't store pci_device_id
+> >       scsi: nsp32: don't store pci_device_id
+> >       ipack: tpci200: don't store pci_device_id
+> >       mlxsw: pci: don't store pci_device_id
+> >       agp/via: Don't rely on address of pci_device_id
+> >       agp/amd-k7: Don't rely on address of pci_device_id
+> >       PCI: Make pci_match_one_device() match on ID instead of device
+> >       PCI: Fix dyn_id add TOCTOU
+> >       PCI: Fix UAF when probe runs concurrent to dyn ID removal
+> >
+> >  drivers/ata/ata_generic.c                 |   6 +-
+> >  drivers/char/agp/amd-k7-agp.c             |  26 +--
+> >  drivers/char/agp/via-agp.c                | 308 +++++++---------------=
+--------
+> >  drivers/ipack/carriers/tpci200.c          |   1 -
+> >  drivers/ipack/carriers/tpci200.h          |   1 -
+> >  drivers/net/ethernet/mellanox/mlxsw/pci.c |  11 +-
+> >  drivers/pci/pci-driver.c                  | 194 ++++++++++---------
+> >  drivers/pci/pci.h                         |  43 +++--
+> >  drivers/pci/search.c                      |   8 +-
+> >  drivers/scsi/nsp32.c                      |   8 +-
+> >  drivers/scsi/nsp32.h                      |   8 +-
+> >  include/linux/pci.h                       |   1 +
+> >  12 files changed, 237 insertions(+), 378 deletions(-)
+>
+> I put this on pci/enumeration and plan it for v7.3, hopefully with
+> acks from the AGP, tpci200, and nsp32 folks.
