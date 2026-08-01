@@ -1,58 +1,49 @@
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B15B45A2A4;
-	Fri, 31 Jul 2026 23:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785542378; cv=pass; b=O9Pojydr31gfQQQXyDM9gV6rrbOCfO6tBAZgQ989z7GYUpAjoUOyaDtc+KZcoWn/7R1hyK3/X3ANYyla6hjPqfrosECJp5yuQ/14F/StDXHb9xLvuxZmQu4aRBUBEM30qJjq9ps6bUMWYhqd3LrglTrTwWKf4xgA3loJKM3e8as=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785542378; c=relaxed/simple;
-	bh=VPHQbDALnYKS7N43+ET9wHLrmRaPdi+7heTTk9VLHg8=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AEA288BA;
+	Sat,  1 Aug 2026 00:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785542445; cv=none; b=VzbFkcWGajdI3MTk9Tk3dEUgcGpJDF3SlTviT27VoZwJ3nuVE7PyXVYUrxua65KCEWl0F2brM9f0HKWrQcf0ylhnhEREJJOCjR9oQkNlpEMI2bkeLQDjjvVIaRzI9fz8VYgJoMGiZ/5P+Y05X8PaIpqMGAlt9SKB0qi4JueXFvs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785542445; c=relaxed/simple;
+	bh=S0VWoZGcaimIZLdJ0bY+pvtJf+RUpknhPlieoL+sHnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GfKr+djkS9vaVXQLUhLlNLwh4lMWjM7pYP8QDHj7vF2lBFIPE0IzIDYtsKb/o4gy/OX0TMoqd2G42xARE3XN1Qa+LgTr9g0Di37LX4UhLYAV6VgwWq0LhnCdyzLJyBCZVVs59PBGL4w1HSVAUzsAmLjl6njT1bjLSOlFMKDKQ2U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iusegentoo.com; spf=pass smtp.mailfrom=iusegentoo.com; dkim=pass (1024-bit key) header.d=iusegentoo.com header.i=ali@iusegentoo.com header.b=DZ91gz7Y; arc=pass smtp.client-ip=136.143.169.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iusegentoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iusegentoo.com
+	 MIME-Version; b=ZV8XgQp8b+rLIORIzzxCV0EB3Mnb2LXTa6l2yqRHvdnlLrVsNMnASG2VybywLBqCRoQNLeuZVQquozNfQfcRCx1i+s0qvN3KPx6FzHmjyFW66DJfWYLLsGbVvEFMse1vSA86k/gnMt8eG4P2JG51xdWJEX5k+T+Yf4jnjdGPADY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHujfMiF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iusegentoo.com header.i=ali@iusegentoo.com header.b="DZ91gz7Y"
-ARC-Seal: i=1; a=rsa-sha256; t=1785542362; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=GinOe8bML+u28wYVUfXzt1t0lzzk1GD/9HeeqLYmwaKjfvD1WplNilP5t07ia1cxHsy5IGLFk+6m0qlEop47wpascpsSn+tf2jss0yjHPyutZjLui0yqz2jcqAYC6fYcLI96QB10QoSC9EyI4G9SHmlA4vqXiHJR2IhzYfvgka8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1785542362; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=VPHQbDALnYKS7N43+ET9wHLrmRaPdi+7heTTk9VLHg8=; 
-	b=XU48SUooZiDoWBhFTZqNAhAZfDu5uMGpT9TId42YOLCINTpBtW3fennSd5nfkYYc5rcsMnOSTiLy6VsVxFg591rFF+u1oTaR5OG4y++BL5JGenKGWPJ4ENoEn/Cf4n5di46H6Vs4/I63Xd9AEtLuVBouj1mOaQKNV+Hng6isojI=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=iusegentoo.com;
-	spf=pass  smtp.mailfrom=ali@iusegentoo.com;
-	dmarc=pass header.from=<ali@iusegentoo.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785542362;
-	s=zmail; d=iusegentoo.com; i=ali@iusegentoo.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=VPHQbDALnYKS7N43+ET9wHLrmRaPdi+7heTTk9VLHg8=;
-	b=DZ91gz7Yxziam/IdXdCoRdyxvAEdliJKJ1I26mfHadrPkV2uakiOF1QMGeNdJPJo
-	KsdkqPVXaELHt2N2kUyU/O3fn5OH79H8DORUH7n0tX+IueMuy+7TmtNrJTL+aSoE+hY
-	JhgJnTo6wcra/b8urFHPXgOKYv6G9OaK6UUEqlC8=
-Received: by mx.zoho.eu with SMTPS id 1785542359399426.66247028501107;
-	Sat, 1 Aug 2026 01:59:19 +0200 (CEST)
-From: Ali Ahmet Memis <ali@iusegentoo.com>
-To: xiexinet@gmail.com
-Cc: netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHujfMiF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A456E1F00AC4;
+	Sat,  1 Aug 2026 00:00:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785542442;
+	bh=yMSl9nxxy6ecn8SS8SUYw2J4FDB9e4+TO2lJG/lK4+U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=UHujfMiFMUE4RvXA65JvdK8rj7QoTSV9voUwwrMUgqfR6y/64yF08xTCvIWxncPhl
+	 p3xNOKuGv6xHt/Rzjf7EN1ki1mVyEINj5gci+D6pBzfCvT+xe1WRUKmp7iRqtGxg7B
+	 iesQmE9qezhlqn64Vai+BaYt4SOAHhP/tJgQH5P4NkS7PyqOaP/TpvqR9bTh3ULNGj
+	 fvtjs7BpdIa3PwbwBsezY81gV+itNyzGw9pIBEApaP9z8W1hNoQB2ADRD82jJTe1f4
+	 o5nXPCyAAWYR4IqDk+i/IzhqNaVIanW7JI/gBQfCaRFqV6tDSARU4zfrllLPxAYLM8
+	 IltbxLnw5is5w==
+From: Jakub Kicinski <kuba@kernel.org>
+To: mhun512@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	richardcochran@gmail.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	shuah@kernel.org
-Subject: Re: [PATCH net v3 4/4] selftests: net: hsr: add GRO super-packet forwarding test
-Date: Sat,  1 Aug 2026 02:59:07 +0300
-Message-ID: <20260731235907.204522-1-ali@iusegentoo.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260731090224.18-5-xiexinet@gmail.com>
-References: <20260731090224.18-5-xiexinet@gmail.com>
+	stable@vger.kernel.org,
+	ae878000@gmail.com
+Subject: Re: [PATCH net] ptp: fc3: unregister PTP clock on probe failure
+Date: Fri, 31 Jul 2026 17:00:40 -0700
+Message-ID: <20260801000040.1274739-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260729021750.49181-1-mhun512@gmail.com>
+References: <20260729021750.49181-1-mhun512@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,14 +51,93 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 
-I ran this under virtme-ng (QEMU/KVM). It passes on the patched kernel:
-the SAN TX frame-size average is around 41 kB, well over the 2048 byte
-threshold, both DUT LAN legs average around 1497 bytes, under the 1514
-byte guard, and it reports success. On an unpatched kernel it correctly
-fails, where oversized HSR-tagged frames reach the LAN legs, so the test
-discriminates the fix. The topology setup and the counter delta
-thresholds look sound.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+--- Patch [1]: [PATCH net] ptp: fc3: unregister PTP clock on probe failure ---
+commit b2adefd142cc562a99e7438a6d4b4f057c1bebfa
+Author: Myeonghun Pak <mhun512@gmail.com>
 
-Reviewed-by: Ali Ahmet Memis <ali@iusegentoo.com>
+ptp: fc3: unregister PTP clock on probe failure
+
+This patch unregisters the PTP clock in idtfc3_enable_ptp() on failure
+paths. It ensures that the registered clock doesn't refer to freed memory
+if post-registration operations fail during probe.
+
+> diff --git a/drivers/ptp/ptp_fc3.c b/drivers/ptp/ptp_fc3.c
+> index f0e000428a3f4..32b61bb09b892 100644
+> --- a/drivers/ptp/ptp_fc3.c
+> +++ b/drivers/ptp/ptp_fc3.c
+> @@ -835,16 +835,20 @@ static int idtfc3_enable_ptp(struct idtfc3 *idtfc3)
+>  
+>  	err = idtfc3_set_overhead(idtfc3);
+>  	if (err)
+> -		return err;
+> +		goto err_unregister_clock;
+>  
+>  	err = idtfc3_init_timecounter(idtfc3);
+>  	if (err)
+> -		return err;
+> +		goto err_unregister_clock;
+>  
+>  	dev_info(idtfc3->dev, "TIME_SYNC_CHANNEL registered as ptp%d",
+>  		 idtfc3->ptp_clock->index);
+>  
+>  	return 0;
+> +
+> +err_unregister_clock:
+> +	ptp_clock_unregister(idtfc3->ptp_clock);
+
+[Severity: High]
+Can calling ptp_clock_unregister() here introduce an AB-BA deadlock?
+
+Looking at idtfc3_probe(), it acquires idtfc3->lock and calls
+idtfc3_enable_ptp():
+
+drivers/ptp/ptp_fc3.c:idtfc3_probe() {
+    ...
+    mutex_lock(idtfc3->lock);
+    err = idtfc3_check_device_compatibility(idtfc3);
+    ...
+    err = idtfc3_enable_ptp(idtfc3);
+    ...
+}
+
+Once ptp_clock_register() completes earlier in idtfc3_enable_ptp(), the
+device is exposed to userspace. If a service like udev immediately tries
+to read the clock, the POSIX clock core acquires a read lock on the
+clock's rwsem and calls into the driver callback, which waits for
+idtfc3->lock:
+
+kernel/time/posix-clock.c:pc_clock_gettime() {
+    down_read(&clk->rwsem);
+    ...
+    err = clk->ops.clock_gettime(clk, ts);
+} ->
+drivers/ptp/ptp_fc3.c:idtfc3_gettime() {
+    ...
+    mutex_lock(idtfc3->lock);
+    ...
+}
+
+If the probe thread then fails in idtfc3_set_overhead() or
+idtfc3_init_timecounter(), it reaches this new error path and calls
+ptp_clock_unregister() while still holding idtfc3->lock.
+
+ptp_clock_unregister() attempts to acquire the write lock on the clock's
+rwsem:
+
+kernel/time/posix-clock.c:posix_clock_unregister() {
+    ...
+    down_write(&clk->rwsem);
+    ...
+}
+
+Would this result in an indefinite deadlock where the probe thread waits
+for the rwsem and the userspace thread waits for the driver mutex?
+
+> +	return err;
+>  }
+-- 
+pw-bot: cr
