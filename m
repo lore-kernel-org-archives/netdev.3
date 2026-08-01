@@ -1,33 +1,46 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006902F3614;
-	Sat,  1 Aug 2026 21:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785618946; cv=none; b=m+bQ2qT2bNrt/wtdcsrRsYXwJOMZKQN+/wwUV4ul/UmIkjsIrZjxSe+LJcd/NSoU4LrWuNLiUzBQj19SrKBkWdmrTdPWgOfTpEEudSfQ+xhH4utaIeIEKQDxzg/pzn+qj4Eujh5tVWdB27SJOiGnaOW7ms1BXy0lddvveGio8KQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785618946; c=relaxed/simple;
-	bh=yw+MLqi6kPElwJpEjcpjKLSULkrOxxXPtHNEfOiqU90=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=aDdUGcwU73c6xUwTAEk0ZHP0RkC/8990AoYSmFBu0aTx2jJUntQKyPPg4GxQkacfe2F7W9OtaPqT6lsn/YiY8ouYqZr2dtGAtIrSWCK2D2EKEwK0a+VGol3v00mLhJEBEi17/TZVY5km8uvdDfr8EKARfqyS+dcFcVxqSVof5CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iu2suDeR; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1C32DF719
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 21:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785619664; cv=pass; b=seevx0Z436BY87V4I8wNIiDDNQqam5T3UWCaU0GmAZg1YQs8vbcRl1NU9OBPJ2Y88MkGKMnGPMzDq6JtZV03W7KBNtshQeYA2Bdco70NQ38tkuD3PkDwCSXMTg/v4ZV9hsn/XmgQTPe1KfSl0sM1qj6N8KGOMsxLFGfmmvjJlJs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785619664; c=relaxed/simple;
+	bh=COpMihg+02wPOtii9fR01pxJ43jvQUmCztAjLfLkc0k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IHLdKVAPL+AdNBxNi0D9w6Zk8ptPAhj52IAZHZyn/Fi2Qe2ovaoicoSc3AITbT1mWuNOJHQMQXgG3PDGfosJ88Ws5AaGcFQu/VxZ71bx8NckOeb5HW0DdU2Oh07oAS/2RUEyVn4GkL+5vBZnuTScJBPN3PTfClTLQYUv1LgTLJs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net; spf=pass smtp.mailfrom=machnikowski.net; dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b=GBQAXjvR; arc=pass smtp.client-ip=136.143.188.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=machnikowski.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iu2suDeR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1621F00AC4;
-	Sat,  1 Aug 2026 21:15:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785618944;
-	bh=ALbadrPlzW4YdLs9fKrKevLx7dPEsNFJd83WcTvC4co=;
-	h=Date:Subject:To:References:From:In-Reply-To;
-	b=iu2suDeRu/dT8WnlAiU+FK9hRedcQZ3iPHg2hYKJN80fk09m4XzYI9nVyPNEaqZxa
-	 REtFtLP5uBVTM+EjII/Pq2mthEdWYqGKeYz9v18FgcbvdJOyzkV3dO7ahaaJsaneZo
-	 Nj/lmFrmw2GUo3yDwd4GcPvXOPAIaYWm1+JE387Q1t17HQeh+thY7ma+gtsatcMRSW
-	 fxImTGZJ9SmQAxQNHKBBgGEZfmaq1RkbFe6VWm2eskesrtnAAqVi8GKAMpnMrGrin3
-	 HZmaSHy271wjIwRn71y/FeeZXnOA3FtU2qpJbZpU43UWLquFFKChIveXiKBHXb9WCD
-	 nOCOrht2bkZ2g==
-Message-ID: <4b763098-a91e-46f0-88c9-d08670d31328@kernel.org>
-Date: Sat, 1 Aug 2026 14:15:40 -0700
+	dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b="GBQAXjvR"
+ARC-Seal: i=1; a=rsa-sha256; t=1785619651; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=a1WOIOsq2aLguUajG9rIL6uHxw1Q0/fj1r/fmLg2R6W5qTZa1eDHIDMZpf0yNbmDUVuMzN/la9sadg4foCRNYAdK5Kz7voYm161U88fBVcHOjb8AhcrOPyhrlt46cevASgGsyWrTTjSntoyJ3/Eq2MLaM+m5peAH3SahyydVNVk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1785619651; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=XD+8eNuBzZtY+IdT33YsCnlswPhkg5kQOFsV1EKo1vE=; 
+	b=XdPsI3m3QfG7lVqTe2thAgGIEvfJ9pJSZ7D0m8ZAn8d0i2okNRghrafIpspsXFpy+9dItQ7UcsEzWNjBy5Wcu6GTrRloFZXl8/ZX79bw0LYA6BJUgPRYVV12xr4OLyrUU1DsDoF3a+4JOCKQc08BO53przXleUv1rJRWOM8642s=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=machnikowski.net;
+	spf=pass  smtp.mailfrom=maciek@machnikowski.net;
+	dmarc=pass header.from=<maciek@machnikowski.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785619651;
+	s=zoho; d=machnikowski.net; i=maciek@machnikowski.net;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=XD+8eNuBzZtY+IdT33YsCnlswPhkg5kQOFsV1EKo1vE=;
+	b=GBQAXjvRappB4p7y/PWmsTvyDIWqtXAKCf5C08Go0tGtzatY1hCZHu8Pvmyx8iSp
+	NJ87oNzpJlj6CkejJSuN6KpAk+AZPfopO38SprZxJ1eCFamQrKYJ82DT5WSN2zGWnhm
+	e04zepOpDcIRWNciauUIvXb9xd4KWWNd8IgoLJaeCBGgXmPCzzVx2WOp5ejgt13+pPR
+	7AiyLw4mtOnnyWO4Dw0orKv9uxjz0ItXlkuy3WuYCbPKQ33O/x0iDOxmGDlIEX31mrU
+	nuM7A7+7x8KtwLftNBZOmZUojjCLfJAqWKU0ZW2r9SQtjjaKefV0aZlvMb9nPdINr3H
+	jf4uFsQQ2A==
+Received: by mx.zohomail.com with SMTPS id 1785619648751825.7035204177052;
+	Sat, 1 Aug 2026 14:27:28 -0700 (PDT)
+Message-ID: <03ca755b-a585-4fcd-95a8-d7248846eed3@machnikowski.net>
+Date: Sat, 1 Aug 2026 23:27:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,62 +48,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: Correct white-space style
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Mike Leach <mike.leach@arm.com>,
- James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>,
- Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
- Jyri Sarha <jyri.sarha@iki.fi>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
- Patrice Chotard <patrice.chotard@foss.st.com>,
- Andi Shyti <andi.shyti@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>,
- Lee Jones <lee@kernel.org>, Johannes Berg <johannes@sipsolutions.net>,
- Jeff Johnson <jjohnson@kernel.org>, Viresh Kumar <vireshk@kernel.org>,
- Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>,
- Yangbo Lu <yangbo.lu@nxp.com>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
- <ukleinek@kernel.org>, Paul Walmsley <pjw@kernel.org>,
- Samuel Holland <samuel.holland@sifive.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Richard Cochran <richardcochran@gmail.com>,
- Jens Wiklander <jenswi@kernel.org>,
- Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>,
- YC Hung <yc.hung@mediatek.com>, Svyatoslav Ryhel <clamor95@gmail.com>,
- Sean Wang <sean.wang@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Peter Ujfalusi <peter.ujfalusi@gmail.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- coresight@lists.linaro.org, linux-arm-msm@vger.kernel.org,
- linux-ide@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org,
- linux-i2c@vger.kernel.org, mfd@lists.linux.dev,
- linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
- linux-pm@vger.kernel.org, netdev@vger.kernel.org, linux-pwm@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-usb@vger.kernel.org
-References: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
-From: Jeff Johnson <jjohnson@kernel.org>
+Subject: Re: [PATCH v7 net-next 2/3] netdevsim: Implement basic ptp support
+To: Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, richardcochran@gmail.com, milena.olech@intel.com,
+ willemdebruijn.kernel@gmail.com, andrew@lunn.ch, vadim.fedorenko@linux.dev
+References: <20260720181113.3293-1-maciek@machnikowski.net>
+ <20260720181113.3293-3-maciek@machnikowski.net>
+ <20260727094344.GM418547@horms.kernel.org>
+ <20260727132049.397d3d1d@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
+From: Maciek Machnikowski <maciek@machnikowski.net>
+In-Reply-To: <20260727132049.397d3d1d@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-On 8/1/2026 12:56 PM, Krzysztof Kozlowski wrote:
-> Correct a few white-space issues, like double space after '=' or before
-> bracket '{' characters, which will be flagged by dt-check-style.  No
-> functional changes.
+
+
+On 27/07/2026 22:20, Jakub Kicinski wrote:
+> On Mon, 27 Jul 2026 10:43:44 +0100 Simon Horman wrote:
+>> Simon says: I believe the issue raised below has already been discussed.
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Rings a bell but I don't recall the conclusion ;D
 > 
-> ---
->  .../bindings/net/wireless/qcom,ath10k.yaml    | 34 +++----
+> Maciek, please fix or beef up the commit msg to explain your thinking
 
-Acked-by: Jeff Johnson <jjohnson@kernel.org> # qcom,ath10k.yaml
+Sure. The copy is required, because the stack will return the same
+timestamp for both Tx and Rx packet if the same SKB was used.
 
+So - in the "working" scenario the code will copy the SKB and return Tx
+timestamp to the Tx netdevsim, and Rx to the Rx netdevsim, while in case
+of failing copy - the same (Rx) timestamp will be returned to both.
 
+I believe it is a better approach than dropping the packet, as that
+should be a very rare event resulting in a "perfect sync" for a short time
