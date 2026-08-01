@@ -1,103 +1,162 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1815F489863
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 16:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053E4271456;
+	Sat,  1 Aug 2026 16:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785601677; cv=none; b=hTnBe2VO7RRp8Y+0Lq22co5MVAmxg8M2WkiGxi02b+uns4G/dkdTzuX/0NNFl9l1XCdQdTYmeJ2dAej+4qV0edZ6ynpNBzoDgjZPKltXMsjI4hbk5Qe1wfiqVB3BwaUJlqeFRDyvt6g/vCFJxxJ47ynfKnn6ChNMmCk4FtjJiHU=
+	t=1785601730; cv=none; b=gb8kRJ9oPNU7JJhoG56E51ueIwAt6O7vcC1JLveinx1sAjLgL+eFuQsVIQPUUJ/KS0R7FKqxMPExx3MCuyHwsCPYiMo56VzP3Ou87exQZbR5PkrX4LBEumlgOdFiNSSyOEiJMLYBE/he/SUU98TMDim47Is8l5TdKlYRMQNGsnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785601677; c=relaxed/simple;
-	bh=N4jwfZtGyKvIYXLG6f2s6xYg8+MeESB7wKlX2azzSno=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XWo2v43RhKyyirS3HH8SnhYpHAjlYmUb0qNAEEzmzfjBCmHutNj//KSoL5QQpokKzJUTe984AvXO8R315nz83Lmlzw2pY0oYTMBhGpEfMQzHHBMmhnVskF/E5VHsYbffAFI2GeZQdKwFqYxQcLuHd0pchrdTTVn8AfUnURdIH+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=BULtA/nj; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1785601730; c=relaxed/simple;
+	bh=IkVjWSBBiuOLsbPEFfnehNUTyZsRPGGxxctkNh5DZAU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ttnz6mCExjYd5BE8upRGfqDNOQzAPMrMUGzVmGi+Oghk3teRC0oog+eDAAD2w3XrXNUhzKVqCxd8+RGjwgYC6oPj4q6DayyUHkOifRO2ePT/NFRhr0QFs+cdFAr1wT3S7CA5lOn4tmsBp93yDr7feHGD0hFpD6fI01mtFcCp7zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=GkspQDxI; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="BULtA/nj"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-caf45fc5202so1306268a12.1
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 09:27:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1785601675; x=1786206475; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zZYiUKxvF9GtOjEd/h2m4MxUMezPtkYsLarGGm+pGsA=;
-        b=BULtA/nj+l2BFZTAqutuDaSL/rd4a1mDX2jdKApM+JfQVGEjuBV6Ng1nAFQxWeNLq6
-         Zdc0OsGFn0MfaOCwhjv8gmftsi6CXhmXKAG9HP3GKWGgRfbF8MO1me24oSXEWkVFYwbj
-         eRkKrH//3oPtjq698BZ2ykBQDN5bbEp+NLRbY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785601675; x=1786206475;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zZYiUKxvF9GtOjEd/h2m4MxUMezPtkYsLarGGm+pGsA=;
-        b=XY09pXKA8qMLPCj4lUhruZTkxkAcI2UkbLs5xifgzyQaL1nUXR/2Q/4Rg26eWEx11k
-         KD61wpW1OPno7i/1ns4/wDWhSYo19HAJVwRIp8TObr5LAdPTdf9OHgTIH0jpjhFjfxqE
-         PZYLfA7NSC0yAZRzvnyAlSS8c6ot9rDKNymJwSE9cgAhyrpwC77qS2NHwE60oOcwwsu2
-         SZNHQzqiyqTkLKWeAXqjQGIUsMefANwZ+CxseTMEO/rRNWqx7/yXjlXYsKmjOMr2hGeP
-         OpNYnk+m++1z8eZjawEJuYfTH4qpTGXuyuikFQ4BoxiGLc39wpox0FGOGdhAc10k16u/
-         8xsw==
-X-Forwarded-Encrypted: i=1; AHgh+RpDPQSQYEOYO8/800tNVWsXhK6TlOTFXH/Lxcz6Tj/nzLwcuZ8gbQDAua73FkrsskG81XxUwsA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXit71I7LOjOqoryJ2vkQzy37ARPMXlH5ZvFkkOmJSQr68KURB
-	ClLOi53DpK3dQIqzpkywsRIp+JSoEz8zDHzbYXzeSO6MOvyJv2m3WvRWHGeXeLwUSA==
-X-Gm-Gg: AR+sD11mkp04aRiu9rX5HRpAOeWsdvCbPuuLorUqjiZAL6rSe5fX9I3CAEtQxjb0/4P
-	IT5ZId46ivUJsAOkOnSvZLGQ2eWjt0Z3olVaX0tgFxSw1x42GqLERpkerYplV0j+dLRkbal/XYw
-	zywsBmw2/PqzGXq/YdrIsTSkpV7c1+noE7EDbdXV9ESYlkaDHQtxt9ecit4g3gZY2NzOEQiNR3U
-	rv71Ufw1x8VM+5phOrPppXvmlHXhZxTlYLI/7KJ2cErdaGOOyBpJ8eumsrImO6UlVkLiy9Kyts8
-	KLdTybV/OM8XUEQrNqEmoBm39C5l/RW+Q4njjb0luH0l5dfRpl1kTVTU/GVFn1wwkkoAbwEC46h
-	Oy0tRXywE35yIY0Seo3JHX+cG3vvvOS3sA+1zKdQf0YqSt3Z6dVYcyI3WaCA3tGnw6ggp/it5Il
-	4VQBIWuiOMtNtGMvp1gpXW3Sk7LakYn8L7rHOICUV9xAkfiMzpjWjUeCaR/7lYXEumDyoHKA==
-X-Received: by 2002:a05:6a21:4e02:b0:3c3:a722:59cc with SMTP id adf61e73a8af0-3c92a53edccmr4024344637.22.1785601675338;
-        Sat, 01 Aug 2026 09:27:55 -0700 (PDT)
-Received: from ?IPV6:2804:14d:5c54:4d67::2000? ([2804:14d:5c54:4d67::2000])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3153dd4e5c7sm21682784eec.5.2026.08.01.09.27.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Aug 2026 09:27:54 -0700 (PDT)
-Message-ID: <7a0d6b21-a10d-4310-9202-4262bb50c354@mojatatu.com>
-Date: Sat, 1 Aug 2026 13:27:50 -0300
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="GkspQDxI"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
+	bh=V06eygovF9pqY3vHyXKEpDH3PhLpNuC5Yjsi32fVPNY=; b=GkspQDxIH8XQuNGEPi3OaHsWVb
+	MWqmQLy8kUKXVbYdQCn+ie/STVzV3V1s7aPOK5PK5RjrA5Wiyz8hXdbdIEgc6WcPFfAa21KBC40+n
+	tiyw0Mn+j6oxgkEwMCeuve4BVeBfqLtB2EPeZ7wTyUU4mSmU1sLPii9wSHsjQ5BuPbhAuQtRTEjA5
+	n8pZMtkAH/FxaT++U1I8L6londMFmfOBCEtEEp2HcNsc6P3S1esk+oUHFDqac/TtiB/qTngEgeWVx
+	vxh6+0AgQRrVMtC7TkoRzlWwcomWycXXPeveXnhe6HMtGaMMJNgHU/uwXIYS2D1qggPlKOWmYdUmd
+	HqiZeHug==;
+From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Romain Gantois <romain.gantois@bootlin.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Coia Prant <coiaprant@gmail.com>,
+ Coia Prant <coiaprant@gmail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+ Russell King <linux@armlinux.org.uk>, Shawn Lin <shawn.lin@rock-chips.com>,
+ David Heidelberg <david@ixit.cz>, netdev@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-renesas-soc@vger.kernel.org
+Subject:
+ Re: [PATCH v2 05/10] arm64: dts: rockchip: rk3568: add XPCS and fixed-clock
+ nodes
+Date: Sat, 01 Aug 2026 18:28:11 +0200
+Message-ID: <2847036.GUH7pLUipS@diego>
+In-Reply-To: <20260801142244.679437-7-coiaprant@gmail.com>
+References:
+ <20260801142244.679437-2-coiaprant@gmail.com>
+ <20260801142244.679437-7-coiaprant@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/2] net/sched: reject overly deep qdisc
- hierarchies
-To: Ren Wei <enjou1224z@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- vega@nebusec.ai, milkory@outlook.com
-References: <cover.1785434373.git.milkory@outlook.com>
- <1e9ab39597423fd5d13cfaaf52279b8ee3d9fc3c.1785434373.git.milkory@outlook.com>
-Content-Language: en-US
-From: Victor Nogueira <victor@mojatatu.com>
-In-Reply-To: <1e9ab39597423fd5d13cfaaf52279b8ee3d9fc3c.1785434373.git.milkory@outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On 01/08/2026 10:42, Ren Wei wrote:
-> From: Zijie Huang <milkory@outlook.com>
-> 
-> Deep qdisc hierarchies can lead to excessive recursion in qdisc tree
-> walkers and exhaust the kernel stack. The existing loop check does not
-> cover the create-and-graft path, so a hierarchy can still be extended by
-> creating a new child qdisc below an already deep parent.
-> 
-> Store the hierarchy depth in struct Qdisc and update it when qdiscs are
-> grafted. Reject new child qdiscs once the parent is already at the maximum
-> allowed depth.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: Codex:gpt-5.4
-> Signed-off-by: Zijie Huang <milkory@outlook.com>
-> Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+Am Samstag, 1. August 2026, 16:22:29 Mitteleurop=C3=A4ische Sommerzeit schr=
+ieb Coia Prant:
+> The RK3568 SoC integrates a Synopsys DesignWare XPCS that provides
+> the Physical Coding Sublayer for 1000BASE-X, SGMII, and QSGMII
+> interfaces via its four MII ports.  Add the XPCS device node and
+> its pcs-mii sub-nodes to the SoC device tree.
+>=20
+> The XPCS device is accessed via the APB3 bus at 0xfda00000 and
+> requires the CSR clock (PCLK_XPCS) for register access and the EEE
+> clock (CLK_XPCS_EEE) for Energy Efficient Ethernet operation.  The
+> PD_PIPE power domain must be enabled before any register access.
+>=20
+> Also add two fixed-clock nodes (xpcs_gmac0_clk and xpcs_gmac1_clk)
+> providing the 125 MHz reference clock for the GMACs when operating
+> with XPCS.  These clocks are used as the assigned-clock-parents
+> for the respective GMAC nodes in board-level device trees.
+>=20
+> The XPCS node and its pcs-mii sub-nodes are disabled by default and
+> must be enabled at the board level when 1000BASE-X/SGMII/QSGMII is
+> in use.  The fixed-clock nodes are always present and do not have a
+> status property, as they are static clock sources.
+>=20
+> The XPCS node also requires a reference to the appropriate Naneng
+> Combo PHY via the phys property at the board level.
+>=20
+> Signed-off-by: Coia Prant <coiaprant@gmail.com>
+> ---
+>  arch/arm64/boot/dts/rockchip/rk3568.dtsi | 45 ++++++++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/d=
+ts/rockchip/rk3568.dtsi
+> index 3bc653f027f1f..989e164c0eb39 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+> +++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+> @@ -110,6 +110,51 @@ sata0: sata@fc000000 {
+>  		status =3D "disabled";
+>  	};
+> =20
+> +	xpcs: pcs@fda00000 {
+> +		compatible =3D "rockchip,rk3568-xpcs";
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +		reg =3D <0x0 0xfda00000 0x0 0x200000>;
+> +		clocks =3D <&cru PCLK_XPCS>, <&cru CLK_XPCS_EEE>;
+> +		clock-names =3D "csr", "eee";
+> +		power-domains =3D <&power RK3568_PD_PIPE>;
+> +		status =3D "disabled";
+> +
+> +		xpcs_mii0: pcs-mii@0 {
+> +			reg =3D <0>;
+> +			status =3D "disabled";
+> +		};
+> +
+> +		xpcs_mii1: pcs-mii@1 {
+> +			reg =3D <1>;
+> +			status =3D "disabled";
+> +		};
+> +
+> +		xpcs_mii2: pcs-mii@2 {
+> +			reg =3D <2>;
+> +			status =3D "disabled";
+> +		};
+> +
+> +		xpcs_mii3: pcs-mii@3 {
+> +			reg =3D <3>;
+> +			status =3D "disabled";
+> +		};
+> +	};
+> +
+> +	xpcs_gmac0_clk: xpcs-gmac0-clock {
+> +		compatible =3D "fixed-clock";
+> +		clock-frequency =3D <125000000>;
+> +		clock-output-names =3D "clk_gmac0_xpcs_mii";
+> +		#clock-cells =3D <0>;
+> +	};
+> +
+> +	xpcs_gmac1_clk: xpcs-gmac1-clock {
+> +		compatible =3D "fixed-clock";
+> +		clock-frequency =3D <125000000>;
+> +		clock-output-names =3D "clk_gmac1_xpcs_mii";
+> +		#clock-cells =3D <0>;
+> +	};
 
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+I don't fully believe those clocks are "just there" inside the SoC.
+Instead I _assume_ they are generated by some oscillator on the
+individual boards?
+
+Because as described there, they would be just magically be there.
+
+So please aim for a real clock description (likely on a board-level)
+
+
+Heiko
+
+
+
