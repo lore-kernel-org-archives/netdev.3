@@ -1,335 +1,326 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21E438CFED;
-	Sat,  1 Aug 2026 07:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678AB36197C
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 07:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785568454; cv=none; b=VMzJYQHY95q3xI1PBXaG+jyiWbARI+1WBitFTdg8Kz2KkZV8DDhBVrMMCoC6S+r0FEWDo2ttp7TBKjjNhFxCS7kH8PgDvBhsYOOjXL1BNpq2AF7AwSYoer3jB8zjSqarwYRPCyG/HDdb9QS9WCvV4fifzHKVDWpzwn3ldUkF0jY=
+	t=1785570235; cv=none; b=Z1aKA1SkYo909FtR5NisF93fzwAYo8N00ei4VYWMitD//IJIvvrH2Ca9kmyAfq964vyV15EKD04Qov2Npbf5eJ2bVFOUXgw897d8a41HaLHyLQYJS/O8NoCA7b3AaVINRR/nW6uWG8flbJH/+8OsEqP4J1l7n/UjZTy/iUdb8PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785568454; c=relaxed/simple;
-	bh=Y3SXvYfPngUH0OI73XvKvr2m/UXdHiuIq4pD5re/+To=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=l0mzsLTWQbnC5LZvjEKNFvZXiRURX9LFvoyBY3eB7/z7Y8cXkmDJtufW+FFahv7UG5zgJM9y3kJC1++xGmkBfIycm4yV6KnxIziFVNo/2vLZ7pbHTQXAbLocatbHCXF4m3kFP5fE2HILY3mYGMYKZprHgvHHlVw1isQtBNS1KGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=dJTZ6HVx; arc=none smtp.client-ip=207.46.229.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1785570235; c=relaxed/simple;
+	bh=AIEoVp5MJ1Dz0KECMEs29oyU0bkvw9gCkeuhtfebzkA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u3Mlo/V+EI4g7jIpTZuvSmK3bB+v0w19Rns3bPpMaCcjfGfK0Scy36NDlJX0rqn7grLTjn4RbvCcsRS00O4LFpvi58ybIQvefzYMKGvLrooo3ogkYiKqdhSmyCY5DcnwlCywKXj5C1+sz7UvlqFQzLPfOvEDzND0DVQcq+PZnqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bbGLW76D; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="dJTZ6HVx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:Content-Type:
-	Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	Content-Transfer-Encoding:Message-Id:References:To; bh=fM6uD0E87
-	jFBk1aRIQdaABJS6fgMDzXywzwEo1KmMMY=; b=dJTZ6HVxVSOTSSbVg34J4btxA
-	iArzdbNSu89wBjwhZqumyU3WUCUs2md8eGMGIZSXOLrKirkVMzBTwgt679T/IIoP
-	sRyy25ONRe3nrTcUBputwrYHGUblTXVk0Aa10cR3LQ7WqKoIagZ2xMnCLqmE+9AM
-	4A/VghpWQPiwa17qDQ=
-Received: from smtpclient.apple (unknown [106.111.19.250])
-	by web1 (Coremail) with SMTP id yAQGZQAHp8a2nG1q88PnAA--.65165S2;
-	Sat, 01 Aug 2026 15:13:59 +0800 (CST)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bbGLW76D"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 5374D4E4107B;
+	Sat,  1 Aug 2026 07:43:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 160F8603C2;
+	Sat,  1 Aug 2026 07:43:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C11D211C16FFC;
+	Sat,  1 Aug 2026 09:43:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785570222; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=cWouN2SpTNyWUAJYesgrlKpHko4sPM703EelVLIbRPc=;
+	b=bbGLW76DATFSgxtq9GaeGsHyBRjhglp0lKwesw3NBXzoWHeLD0tqugRT2aNmTTX23bqfMa
+	fqEDogd4m3MQwD1clGk27LiwsVtGNumnrVltC0rhdFBv0SUVfYaDiLnFevbYR7SSdULLy4
+	NNn2mTJyKHQs4i/jquNam20456TdTYYwfW4XgeiUYDOPcWGep1QSVnKa4Ot/STrdGyWeTu
+	7LUih1JK3lrmB9V4LmPs9hT9upX4esQMZXUVKhWlFx0WyKqU/Ir+xYZJocCBxshCK8J649
+	gt86GJKj+IyrgsHHWJRH3YfAvUDmRkBRbKfW22LNRqW9L07/28qR8aCs+xD1eA==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	mwojtas@chromium.org,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Frank Wunderlich <frank.wunderlich@linux.dev>,
+	Pietro Ameruoso <p.ameruoso@live.it>
+Subject: [PATCH net-next v15 00/10] net: phy_port: SFP modules representation and phy_port listing
+Date: Sat,  1 Aug 2026 09:43:21 +0200
+Message-ID: <20260801074332.98755-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH net] nexthop: account nexthop allocations to memcg
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-In-Reply-To: <20260730003902.4166545-1-kuba@kernel.org>
-Date: Sat, 1 Aug 2026 15:13:46 +0800
-Cc: dsahern@kernel.org,
- idosch@nvidia.com,
- davem@davemloft.net,
- edumazet@google.com,
- pabeni@redhat.com,
- horms@kernel.org,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- yangyx22@mails.tsinghua.edu.cn,
- wangao@seu.edu.cn,
- fengxw06@126.com,
- qli01@tsinghua.edu.cn,
- xuke@tsinghua.edu.cn,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <85095CE8-F0E1-450A-8D9D-A991D28333D6@mails.tsinghua.edu.cn>
-References: <20260728060112.30367-1-zhaoyz24@mails.tsinghua.edu.cn>
- <20260730003902.4166545-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
-X-CM-TRANSID:yAQGZQAHp8a2nG1q88PnAA--.65165S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3Gr4xGF1DZFW7JrW3uFykXwb_yoWfuFyxpF
-	Z5KrZ8GF4DJ348CFs2vF40vFyYk3y8CryUAF4xK34FkwnxKr1SgrW2ka4jva48CF1ruF1F
-	vF4jvwnruay5AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9m1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l
-	84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcx
-	kEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VW8
-	Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6I
-	AqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xS
-	Y4AK67AK6r4xMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCFx2
-	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
-	6r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
-	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
-	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
-	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JjsuciUUUUU=
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgAGAWptISFXOQABst
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Jakub,
+Hello everyone,
 
-Thank you for both reviews. This is the reply for the second review.
+Here's V15 for the phy_port improved SFP support and netlink interface.
 
-> On Jul 30, 2026, at 08:39, Jakub Kicinski <kuba@kernel.org> wrote:
->=20
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> --- Patch [1]: [PATCH net] nexthop: account nexthop allocations to =
-memcg ---
-> commit 1014ad1eb712722973916d53a1c5348624a80550
-> Author: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
->=20
-> nexthop: account nexthop allocations to memcg
->=20
-> This adds GFP_KERNEL_ACCOUNT / __GFP_ACCOUNT to the nexthop creation =
-path
-> allocations (struct nexthop, struct nh_info, group storage, resilient
-> bucket table, per-group stats) and to the transient resilient-table
-> notifier buffer in nh_notifier_res_table_info_init().  The stated goal =
-is
-> to make memory.max constrain nexthop creation by a CAP_NET_ADMIN task =
-in
-> a container.
->=20
-> A couple of questions below about the notifier-table hunk and about =
-the
-> tags.
->=20
->> nexthop: account nexthop allocations to memcg
->>=20
->> Fixes: ab84be7e54fc ("net: Initial nexthop code")
->> Fixes: f4676ea74b85 ("net: nexthop: Add nexthop group entry stats")
->> Cc: stable@vger.kernel.org
->=20
-> [Severity: Low]
-> Are the Fixes: tags and the stable Cc appropriate here?  Switching
-> allocations to GFP_KERNEL_ACCOUNT does not fix an incorrect result, it
-> changes the success/failure profile of an existing uAPI operation.
->=20
-> After a stable backport, RTM_NEWNEXTHOP can start returning -ENOMEM
-> inside a memory.max-constrained cgroup on kernels where it previously
-> succeeded, which looks like a functional change for routing daemons
-> running in containers.
->=20
-> The operation still requires CAP_NET_ADMIN in the netns owner's user
-> namespace, so no privilege boundary is being closed - only accounting
-> accuracy changes.  Would net-next without the Fixes:/Cc: stable tags =
-be a
-> better target, with the transient notifier hunk split out?
+V15 addresses more sashiko reports, by improving the locking scheme for
+ops-locked devices as well as better handling of port upstream tracking
+by storing a pointer to phy_port instead of the index.
 
-I agree that the fix changes the point at which RTM_NEWNEXTHOP can fail
-under memory.max. However, I view that failure as the intended =
-enforcement
-of memory.max: the current uncharged allocations let a cgroup retain =
-kernel
-memory outside its configured hard limit.
+This work extends on the recent addition of phy_port representation to enable
+listing the front-facing ports of an interface. For now, we don't control
+these ports, we merely list their presence and their capabilities.
 
-For that reason, I had considered this a bug fix suitable for net, and
-possibly stable once the patches are properly split and validated. Do =
-you
-prefer net-next because of the breadth and regression risk of the =
-allocation
-changes, rather than the -ENOMEM behavior itself? I will follow your
-guidance on the target and tags.
+As the most common use-case of multi-port interfaces is combo-ports that
+provide both RJ45 and SFP connectors on a single MAC, there's a lot of
+SFP stuff in this series.
 
->=20
->> The nexthop creation path allocates struct nexthop, struct nh_info,
->> group storage, resilient bucket tables, transient notifier tables and
->> per-group stats without memcg accounting.
->=20
-> [Severity: Low]
-> The changelog says "transient notifier tables" in the plural, but only
-> one of the five transient notifier allocations in net/ipv4/nexthop.c =
-is
-> converted.  These remain on plain GFP_KERNEL:
->=20
->  nh_notifier_single_info_init()
-> info->nh =3D kzalloc_obj(*info->nh);
->=20
->  nh_notifier_mpath_info_init()
-> info->nh_grp =3D kzalloc_flex(*info->nh_grp, nh_entries, num_nh);
->=20
->  nh_notifier_res_bucket_info_init()
-> info->nh_res_bucket =3D kzalloc_obj(*info->nh_res_bucket);
->=20
->  nh_notifier_grp_hw_stats_init()
-> info->nh_grp_hw_stats =3D kzalloc_flex(*info->nh_grp_hw_stats, stats,
->     nhg->num_nh);
->=20
-> Since nh_notifier_grp_info_init() dispatches to
-> nh_notifier_mpath_info_init() for hash_threshold (MPATH) groups, a =
-group
-> created through the exact path described in the changelog gets no
-> notifier-table accounting at all, and =
-call_nexthop_res_table_notifiers()
-> also builds an unaccounted num_nh-sized mpath table during resilient
-> group replace.
->=20
-> Could the policy be made all-or-nothing here, and the changelog =
-adjusted
-> to match what the code does?
+This series is in 2 main parts. The first one aims at representing the
+SFP cages and modules using phy_port, as combo-ports with RJ45 + SFP are
+by far the most common cases for multi-connector setups.
 
-Agreed. The partial notifier conversion and the corresponding changelog
-wording are both incorrect.
+The second part is the netlink interface to list those ports, now that
+most use-cases are covered.
 
-After reviewing the lifetime and call contexts, I will make the policy =
-here
-"none": I will drop the notifier hunk rather than convert the remaining
-notifier allocations or split it into a separate patch. These buffers =
-are
-temporary notification payloads, freed after the callback, rather than
-persistent nexthop state. They can also be allocated during notifier =
-replay
-or deletion, where GFP_KERNEL_ACCOUNT would charge the current context
-rather than the nexthop creator and could make notification delivery =
-fail.
+Let's see what we can do with some examples of the new ethtool API :
 
-I will remove "transient notifier tables" from the commit message. The
-revised patch will describe and account only persistent nexthop =
-allocations.
+- Get MII interfaces supported by an empty SFP cage :
 
->=20
->> diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
->> index 44fe75004cac..c8685c583579 100644
->> --- a/net/ipv4/nexthop.c
->> +++ b/net/ipv4/nexthop.c
->> @@ -169,7 +169,7 @@ static int nh_notifier_res_table_info_init(struct =
-nh_notifier_info *info,
->> info->type =3D NH_NOTIFIER_INFO_TYPE_RES_TABLE;
->> size =3D struct_size(info->nh_res_table, nhs, num_nh_buckets);
->> info->nh_res_table =3D __vmalloc(size, GFP_KERNEL | __GFP_ZERO |
->> -       __GFP_NOWARN);
->> +       __GFP_NOWARN | __GFP_ACCOUNT);
->> if (!info->nh_res_table)
->> return -ENOMEM;
->=20
-> [Severity: Medium]
-> Should this particular allocation be accounted at all?  It is not on =
-the
-> nexthop creation path the changelog describes.  The buffer only exists =
-to
-> hand resilient-group state to notifier listeners and is released =
-before
-> the notifier call returns:
->=20
-> net/ipv4/nexthop.c:nh_notifier_grp_info_fini() {
-> if (nhg->hash_threshold)
-> kfree(info->nh_grp);
-> else if (nhg->resilient)
-> vfree(info->nh_res_table);
-> }
->=20
-> So it cannot accumulate, and charging it does not add containment.  =
-Two
-> side effects come with it though.
->=20
-> First, whose memcg gets charged?  The notifier paths run in the =
-context
-> of whoever triggers the notification, not the creator of the nexthop:
->=20
->  remove_nexthop() -> call_nexthop_notifiers(NEXTHOP_EVENT_DEL)
-> (also reached via nh_netdev_event -> nexthop_flush_dev)
->  replace_nexthop_single() err_notify -> =
-call_nexthop_notifiers(REPLACE)
->  remove_nh_grp_entry() -> call_nexthop_notifiers(REPLACE)
->  register_nexthop_notifier() / __unregister_nexthop_notifier()
-> -> nexthops_dump() -> nh_notifier_info_init() for every
->   existing nexthop
->=20
-> Can a cgroup end up charged here for nexthops belonging to other
-> cgroups, for example when a driver module registers a nexthop notifier
-> and the replay loop walks every resilient nexthop in the netns?
->=20
-> Second, does this make notifier delivery fail on demand?  =
-__GFP_ACCOUNT
-> is honoured for vmalloc pages, so with a memcg at memory.max this
-> __vmalloc() can now fail while the system is globally healthy, and
-> __GFP_NOWARN keeps it quiet.  The failure happens before the chain is
-> called:
->=20
-> net/ipv4/nexthop.c:call_nexthop_notifiers() {
-> err =3D nh_notifier_info_init(&info, nh);
-> if (err) {
-> NL_SET_ERR_MSG(extack, "Failed to initialize nexthop notifier info");
-> return err;
-> }
->=20
-> and the callers do not stop on that error:
->=20
-> net/ipv4/nexthop.c:remove_nexthop() {
-> call_nexthop_notifiers(net, NEXTHOP_EVENT_DEL, nh, NULL);
->=20
-> /* remove from the tree */
-> rb_erase(&nh->rb_node, &net->nexthop.rb_root);
->=20
-> The return value is discarded and the nexthop is erased and freed
-> anyway.  replace_nexthop_single()'s err_notify path also discards it,
-> remove_nh_grp_entry() only pr_err()s, and =
-__unregister_nexthop_notifier()
-> ignores nexthops_dump()'s status while nexthops_dump() breaks out at =
-the
-> first error, skipping DEL for all remaining nexthops.
->=20
-> The fail-silent error handling in those callers is pre-existing and =
-not
-> introduced by this patch, but does this change turn it into something =
-a
-> task can trigger at will from inside a constrained cgroup?  With an
-> offload listener such as mlxsw or netdevsim registered, that would =
-leave
-> driver state for nexthops the kernel has already freed, and would let
-> register_nexthop_notifier() be made to fail for the whole netns.
->=20
-> Would keeping nh_notifier_res_table_info_init() on plain GFP_KERNEL =
-and
-> accounting only the persistent objects (struct nexthop, struct =
-nh_info,
-> struct nh_group, res_table, per-group stats) avoid all of this?
+# ethtool --show-ports eth3
 
-I agree that this allocation should remain on plain GFP_KERNEL.
+Port for eth3:
+	Port id: 1
+	Supported MII interfaces : sgmii, 1000base-x, 2500base-x
+	Port type: sfp
 
-__GFP_ACCOUNT would charge the vmalloc backing pages to the current =
-memcg,
-not to the cgroup which created the resilient nexthop. Therefore =
-notifier
-replay or deletion could charge an unrelated cgroup while walking =
-existing
-nexthops in the netns.
+- Get Combo-ports supported modes, on each port :
 
-It could also make nh_notifier_info_init() fail before the notifier =
-chain is
-called when the current cgroup is at memory.max. Since some callers =
-discard
-that error and continue, this could skip notification for an object =
-which is
-then removed or otherwise changed.
+# ethtool --show-ports eth1
 
-I will remove this hunk rather than account the other notifier =
-allocations,
-and remove the notifier-table wording from the changelog. The revised =
-patch
-will account only persistent nexthop state, for which the allocation =
-context
-and lifetime are directly attributable to the nexthop operation.
+Port for eth1:
+	Port id: 1
+	Supported link modes:  10baseT/Half 10baseT/Full
+	                       100baseT/Half 100baseT/Full
+	                       1000baseT/Full
+	                       10000baseT/Full
+	                       2500baseT/Full
+	                       5000baseT/Full
 
->=20
-> [ ... ]
-> --=20
-> pw-bot: cr
+	Port type: mdi
 
-Please let me know if further changes are needed.
+Port for eth1:
+	Port id: 2
+	Supported MII interfaces : 10gbase-r
+	Port type: sfp
 
-Thanks,
-Yizhou=
+- Get Achievable linkmodes on a SFP module (combo port with a DAC in the
+SFP cage)
+
+# ethtool --show-ports eth1
+
+Port for eth1:
+	Port id: 1
+	Supported link modes:  10baseT/Half 10baseT/Full
+	                       100baseT/Half 100baseT/Full
+	                       1000baseT/Full
+	                       10000baseT/Full
+	                       2500baseT/Full
+	                       5000baseT/Full
+	Port type: mdi
+
+Port for eth1:
+	Port id: 2
+	Supported MII interfaces : 10gbase-r
+	Port type: sfp
+
+Port for eth1:
+	Port id: 3
+	Upstream id: 2
+	Supported link modes:  10000baseCR/Full
+	Port type: mdi
+
+Note that here, we have 3 ports :
+ - The Copper port
+ - The SFP Cage itself, marked as 'occupied'
+ - The SFP module
+
+This series builds on top of phy_port and phy_link_topology to allow
+tracking the ports of an interface. We maintain a list of supported
+linkmodes/interfaces on each port, which allows for fine-grained
+reporting of each port's capability.
+
+What this series doesn't do :
+ - We don't support selecting which port is active. This is the next step.
+ - We only support PHY-driven combo ports. The end-goal of this whole
+   journey that started with phy_link_topology is to get support for MII
+   muxes, such as the one we have on the Turris Omnia. This will eventually
+   be upstreamed as well.
+
+If you want to play around with it, here's [1] the patched ethtool that I've
+been using to produce the outputs above.
+
+Thanks !
+
+Maxime
+
+[1] : https://github.com/minimaxwell/ethtool/tree/mc/ethtool_port
+
+Changelog :
+
+Changes in v15:
+ - Fail on port access for ops-locked devices
+ - Use a direct phy_port pointer for upstream tracking
+ - Addressed the kdoc issues
+
+Changes in v14:
+https://lore.kernel.org/netdev/20260720174808.139573-1-maxime.chevallier@bootlin.com/
+ - Added a big comment on the first patch for the topo alloc potential
+   races
+ - Fixed the multi-buff DUMP on last patch with a separate iterator for
+   dumps
+ - Fixed some typos in the documentation
+
+Changes in V13:
+V13: https://lore.kernel.org/r/20260701110427.143945-1-maxime.chevallier@bootlin.com
+ - Rebase on net-next
+ - Fix the SFP bus cleanup path in patch 5
+
+Changes in V12:
+V12: https://lore.kernel.org/r/20260615153907.862987-1-maxime.chevallier@bootlin.com
+ - Rebased on net-next, including fixes on the phy probing and cleanup
+   paths
+ - Rebased on Jakub's netdev_ops_locked changes in phy_link_topology
+ - Fixed some typos reported by Andrew and sashiko in the documentation
+
+Changes in v11:
+V11:https://lore.kernel.org/r/20260521121040.1199622-1-maxime.chevallier@bootlin.com
+ - Aggregated Andrew's reviews :)
+ - Removed the "vacant" field, replaced it with "upstream_port"
+
+Changes in V10:
+V10: https://lore.kernel.org/r/20260513130521.1064094-1-maxime.chevallier@bootlin.com
+ - Rebase on net-next
+ - Rename phylink/phy_device sfp_bus_port to sfp_cage_port
+ - Sashiko's reviews were mostly unrealistic or wrong :(
+
+Changes in V9:
+V9: https://lore.kernel.org/r/20260403123755.175742-1-maxime.chevallier@bootlin.com
+ - Added missing netlink doc updates for u8->u32 conversion
+ - Removed dead code with a condition that can never be true in
+   phylink's mod_port code
+ - Fixed the error path in phy_sfp_connect_phy
+
+Changes in v8:
+V8: https://lore.kernel.org/r/20260325081937.571115-1-maxime.chevallier@bootlin.com
+ - Set the new phydev.has_sfp_mod_phy field when we're sure that no
+   errors occured
+ - Fix formatting of the copyright info in ethnl port
+ - Use a policy to validate the range of port_id
+ - Use GENL_REQ_ATTR_CHECK
+ - alpha-sort headers
+ - use u32 in netlink messages
+ - return better error codes
+ - don't check the skb len, the core does that
+
+Changes in V7:
+V7: https://lore.kernel.org/all/20260309152747.702373-1-maxime.chevallier@bootlin.com/
+ - Changed the port cleanup path to use list_for_each_entry_continue_reverse
+ - Adjusted the cleanup path in phylink for the port vacant state
+ - Pass the right cmd for the netlink dump message
+
+Changes in V6:
+V6: https://lore.kernel.org/r/20260304145444.442334-1-maxime.chevallier@bootlin.com
+ - Added some comments in th mod_port cleanup
+ - changed some kmalloc to kmalloc_obj
+ - Removed some phy_link_topo_del_port that wasn't needed
+
+Changes in V5:
+V5: https://lore.kernel.org/r/20260205092317.755906-1-maxime.chevallier@bootlin.com
+ - Fixed a check on a potentially un-initialized pointer, reported by
+   Simon
+ - Fixed a documentation formatting issue
+ - Remove a stray pr_info
+ - Rebased on net-next
+
+Changes in V4:
+V4 : https://lore.kernel.org/netdev/20260203172839.548524-1-maxime.chevallier@bootlin.com/
+ - Add a cleanup patch for the of port parsing
+ - Added a match to sync the port's linkmodes with the PHY's for OF
+   ports
+ - Added RTNL assert in the port_get topo helper
+ - nullify the bus port for phylink support
+ - Fix some typos
+
+Changes in V3:
+V3: https://lore.kernel.org/netdev/20260201151249.642015-1-maxime.chevallier@bootlin.com/
+ - Remove the sfp bus ops for nophy, and use .module_start() as
+   suggested by Russell
+ - Added missing cleanup for the topology, as per AI review
+ - Fixed a few typos as per Romain's review
+ - Changed "occupied" to "vacant" as per Romain's review
+ - Added missing checks for null ports, per AI review
+
+Changes in V2:
+V2: https://lore.kernel.org/netdev/20260128204526.170927-1-maxime.chevallier@bootlin.com/
+ - Fix the cleanup path of phy_link_topo_add_phy, as per AI review
+ - Fix the cleanup path of phy_sfp_probe, as per AI review
+ - Fix the call-site of the disconnect_nophy sfp bus ops, per AI review
+ - Fix the netdev-less case uin phylink, per AI review
+ - Fix the prototype of phy_link_topo_get_port for the stubs
+ - Dropped patch 11. It ended-up breaking 'allnoconfig', so instead we
+   built a phy_interface_names array in net/ethtool/netlink.c
+ - Fix an ethool-netlink spec discrepancy with the type of an attribute
+ - Fix the size computation in the netlink port API
+ - Fix the cleanup path in the netlink port API
+
+V1: https://lore.kernel.org/netdev/20260127134202.8208-1-maxime.chevallier@bootlin.com/
+
+Maxime Chevallier (10):
+  net: phy: phy_link_topology: Add a helper for opportunistic alloc
+  net: phy: phy_link_topology: Track ports in phy_link_topology
+  net: phylink: Register a phy_port for MAC-driven SFP cages
+  net: phy: Create SFP phy_port before registering upstream
+  net: phy: Represent PHY-less SFP modules with phy_port
+  net: phy: phy_port: Store information about a port's upstream
+  net: phy: phy_link_topology: Add a helper to retrieve ports
+  netlink: specs: Add ethernet port listing with ethtool
+  net: ethtool: Introduce ethtool command to list ports
+  Documentation: networking: Update the phy_port infrastructure
+    description
+
+ Documentation/netlink/specs/ethtool.yaml      |  54 +++
+ Documentation/networking/ethtool-netlink.rst  |  34 ++
+ Documentation/networking/phy-port.rst         |  26 +-
+ MAINTAINERS                                   |   1 +
+ drivers/net/phy/phy-caps.h                    |   2 +
+ drivers/net/phy/phy_caps.c                    |  26 ++
+ drivers/net/phy/phy_device.c                  | 181 ++++++++-
+ drivers/net/phy/phy_link_topology.c           | 101 ++++-
+ drivers/net/phy/phylink.c                     | 128 +++++-
+ include/linux/phy.h                           |  10 +
+ include/linux/phy_link_topology.h             |  44 ++
+ include/linux/phy_port.h                      |   5 +
+ .../uapi/linux/ethtool_netlink_generated.h    |  19 +
+ net/core/dev.c                                |   1 +
+ net/ethtool/Makefile                          |   2 +-
+ net/ethtool/netlink.c                         |  25 ++
+ net/ethtool/netlink.h                         |   8 +
+ net/ethtool/port.c                            | 375 ++++++++++++++++++
+ 18 files changed, 1008 insertions(+), 34 deletions(-)
+ create mode 100644 net/ethtool/port.c
+
+-- 
+2.55.0
 
