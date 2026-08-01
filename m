@@ -1,166 +1,80 @@
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A090C23C8A0;
-	Sat,  1 Aug 2026 06:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=103.117.158.91
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785565103; cv=pass; b=lQL5n8ERfkj/nWLch7lPgQB49vGVM2JTi5B/tKibQdHaWV5NsIljkwt/0g7IdOq35FeCxn6XpwLEgap36+HFUV7ON64MXmWE/JvP96uuFWhKmMxtmJoD+vYWvWPPRt1Ci1XEYi4AULwC8ll5NRctBE4hW5BTGD83rOKE1MwdBR8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785565103; c=relaxed/simple;
-	bh=oGYvvQikBH14ZONijqlO3Jbf9L0KrsfpRvWgu28KQCk=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:Subject:MIME-Version:
-	 Content-Type; b=TWu0Dz7tyRgxyKP3RGJNSxI83bGfkwiFJMddfr+ELCE0od+56Y3NnkfLKr23jkhUNv82/mNEluWztcfjXHeeFQD4u19pTdeMH0wuPEidDZzT64w4OYByZ41I9/iHvRdBtYIm4hwWCD9QSS0bmMaSCPRGfUA4SqXbiAxZUYIGQV0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in; spf=pass smtp.mailfrom=zohomail.in; dkim=pass (1024-bit key) header.d=zohomail.in header.i=linuxuser509@zohomail.in header.b=KrbcLu5x; arc=pass smtp.client-ip=103.117.158.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.in
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CCE32BF24;
+	Sat,  1 Aug 2026 06:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785566588; cv=none; b=hTle4A+bsrYwDGqJWY9Kv2gz+WL0mhtOFFcioxJ2/ISCmvi5CW+BiIqdqYAlEr+5nCTWcLnYP8kqa/SQ7vsDsggBroRlnzUBwhmVMnAFU+ppCyZYXeL/B6Vwi0JIVXcrBoy0HkqyIp5fK+9C99Gq0AM/JlU3BS41zvGF6/eC4L0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785566588; c=relaxed/simple;
+	bh=osnwDph6MFi26DQIRJSBGI20rTtm56C8CjH0+T3M0zI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y8rb9bV6rMqft9q7jCHKfnFi2kEzDnNjvhgi2A1uMuv29XU/hKUTy+LkpYCEd+nMOCntmBp9qrOcHxdfqNs1eXfGH2b8Ql9BB5O84JSdd6aOmLGzKUxJNvIiSIzts+/eDpBMbiFgh5STPmMNP/0ydgRz/4S0oWnSScu75MbCqNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=QQT66JbS; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=EInCbrWS; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.in header.i=linuxuser509@zohomail.in header.b="KrbcLu5x"
-ARC-Seal: i=1; a=rsa-sha256; t=1785565084; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=LVCTN7/xVGiHVl136YjHpN8aasz1Z9aT4W1CQRZF6Jz75Fas29XQCcPGGi2wBcivIt61pWrAS8XjdEY0qII2L/No1SF+YYRBmKkmiLX128S92IzwfLte7PNabE+0PUyAJqHAFyokWUGy3k8OK0c+O5Mq/7Ko86NQYzy7BDi3yoo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1785565084; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=CdMtqZTTqOu7lA+oaN9MwhF3m0vVaz/0NXiEodKQB3I=; 
-	b=TOr0DLq/H5jg9z5blUbLlmcO9ftfVBdowp+7NKQuQo1gU10w9DoNkUcBtGRwYs8Dqh0z453G0P4jjaJoIdkV8n+OrqFsEQyev7UAqkPd+xdoCpLOcFez7xPgGdvTuSSu8bFRPkSsB0kTT2NNfoi3dH/zK8u+JpZpZtL9KW0e1M4=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=linuxuser509@zohomail.in;
-	dmarc=pass header.from=<linuxuser509@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785565084;
-	s=zoho; d=zohomail.in; i=linuxuser509@zohomail.in;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=CdMtqZTTqOu7lA+oaN9MwhF3m0vVaz/0NXiEodKQB3I=;
-	b=KrbcLu5xJ/4VjEnkuuTm7GeR/E2MkfLXKE17043wWR7ENHvGwM/KOAhSJcf6F9SI
-	73N5vr+XjuXel2tsErmk10KC3ntz8VLWgpTHGc0kP6l+MkrYsQpWRxVHzMu2G70KDja
-	zfv0kLC1T3S0A2sOy9JQjXSyD/EJUaf57iKs0yv0=
-Received: from mail.zoho.in by mx.zoho.in
-	with SMTP id 1785565080878496.60349065102923; Sat, 1 Aug 2026 11:48:00 +0530 (IST)
-Received: from  [152.59.198.84] by mail.zoho.in
-	with HTTP;Sat, 1 Aug 2026 11:48:00 +0530 (IST)
-Date: Sat, 01 Aug 2026 11:48:00 +0530
-From: Ashwin Gundarapu <linuxuser509@zohomail.in>
-To: "netdev" <netdev@vger.kernel.org>
-Cc: "linux-usb" <linux-usb@vger.kernel.org>,
-	"linux-kernel" <linux-kernel@vger.kernel.org>,
-	"andrew" <andrew@lunn.ch>
-Message-ID: <19fbbf8ed26.728dd0e313328.44864015181634544@zohomail.in>
-In-Reply-To: 
-Subject: [PATCH v3 1/2] net: usb: net1080: cleanups and error handling
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="QQT66JbS";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="EInCbrWS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1785566585;
+	bh=osnwDph6MFi26DQIRJSBGI20rTtm56C8CjH0+T3M0zI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QQT66JbS1OOIrbqUlbxu/Y1UeTOTXDgp5h7dt0Ko2treuTGEqu/N2fEYy0pb+E7zc
+	 jeSGs3kdi5OJ20VdlOiH49NyLnWutqoDlZ6GWIcRja4mKdCAF+umlG3XfdRT0UZDTD
+	 GpV8TF5jDde1Y/pnuRxPuxlj7HUMdHSFyLSSN8O3w8tCjym0bur6gxjSqmMoW39BJH
+	 wHEpZ8TKhvdP3/wL84u65f0QGY6s0+iKBXN72rlfHeePOz3cBXVyZrnyiRtKK9eAap
+	 Pl/BpfMLtHL+M7fZHylzhUIvNJ5alVTiMd0HEo+JdvkKp6ONxXk8ie+Q8pMVN/kzXG
+	 ynDm3drBEt4nA==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 097D2494FD; Sat,  1 Aug 2026 06:43:05 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1785566579;
+	bh=osnwDph6MFi26DQIRJSBGI20rTtm56C8CjH0+T3M0zI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EInCbrWSE1bp2lVNDK5f2tnC+ZkD0kVLplD4CufVLiAPYSNhtTzpVdZhIhQFssvex
+	 FBm1NOx6GtQk4Oxmawwc+bxgeT8ybUhblCWNugu/4uGh2yR+lE6SluhxUp2jXSLaBK
+	 aYtKU+oZ/5ffYq24Zl203JSe7CgXEc8WU2m8/FJiqPh0G4fYoyBrhZrKGQw6050InQ
+	 66hI6WtEoi/GvRHLW8ZBL7oYC89bjFhEImZ9DRZWq9Gex2GiX10Obp6YUViMdPalQC
+	 4TxjgZWC1/m1XTv5Z85N0sheCezqQGS1MXabRyWZoUHKyMbwFEe1YnEsqKfuNutrNm
+	 VAnEpJLdu2nYA==
+Received: from [10.99.12.190] (unknown [82.99.30.195])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 5032C494F6;
+	Sat,  1 Aug 2026 06:42:59 +0000 (UTC)
+Message-ID: <a4dc8989-1576-4b40-86d8-6ea1ae4ee778@birger-koblitz.de>
+Date: Sat, 1 Aug 2026 08:42:56 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 03/12] ax88179_178a: Add HW support for
+ AX179A-based chips
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
+References: <20260731-ax88179a-v4-0-2cf1f71b1dd2@birger-koblitz.de>
+ <20260731-ax88179a-v4-3-2cf1f71b1dd2@birger-koblitz.de>
+ <3eb5691a-4a84-487e-8d5e-f91a646c03c1@lunn.ch>
+From: Birger Koblitz <mail@birger-koblitz.de>
+Content-Language: en-US
+In-Reply-To: <3eb5691a-4a84-487e-8d5e-f91a646c03c1@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
 
-From 9be346e3f926ada0af0714edbadb34b192b98891 Mon Sep 17 00:00:00 2001
-From: Ashwin Gundarapu <linuxuser509@zohomail.in>
-Date: Sat, 1 Aug 2026 11:45:28 +0530
-Subject: [PATCH 1/2] net: usb: net1080: remove unused #if 0 block
+On 31/07/2026 21:37, Andrew Lunn wrote:
+> 
+> Overall, this is looking a lot better.
+> I'll answer to the rest in detail once the code is written, but thanks
+already, Andrew, for reviewing the code and providing so many helpful suggestions for
+improving the code. In in retrospect it was rather immature at the beginning.
 
-Signed-off-by: Ashwin Gundarapu <linuxuser509@zohomail.in>
----
- drivers/net/usb/net1080.c | 55 +++++++++++++--------------------------
- 1 file changed, 18 insertions(+), 37 deletions(-)
-
-diff --git a/drivers/net/usb/net1080.c b/drivers/net/usb/net1080.c
-index 19f6e1222d93..87848f6e8e01 100644
---- a/drivers/net/usb/net1080.c
-+++ b/drivers/net/usb/net1080.c
-@@ -113,49 +113,22 @@ nc_register_read(struct usbnet *dev, u8 regnum, u16 *retval_ptr)
- 	return nc_vendor_read(dev, REQUEST_REGISTER, regnum, retval_ptr);
- }
- 
--static void
-+static int
- nc_vendor_write(struct usbnet *dev, u8 req, u8 regnum, u16 value)
- {
--	usbnet_write_cmd(dev, req,
--			 USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
--			 value, regnum, NULL, 0);
-+	return usbnet_write_cmd(dev, req,
-+				USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
-+				value, regnum, NULL, 0);
- }
- 
--static inline void
-+static inline int
- nc_register_write(struct usbnet *dev, u8 regnum, u16 value)
- {
--	nc_vendor_write(dev, REQUEST_REGISTER, regnum, value);
-+	return nc_vendor_write(dev, REQUEST_REGISTER, regnum, value);
- }
- 
- 
--#if 0
--static void nc_dump_registers(struct usbnet *dev)
--{
--	u8	reg;
--	u16	*vp = kmalloc(sizeof (u16));
--
--	if (!vp)
--		return;
- 
--	netdev_dbg(dev->net, "registers:\n");
--	for (reg = 0; reg < 0x20; reg++) {
--		int retval;
--
--		// reading some registers is trouble
--		if (reg >= 0x08 && reg <= 0xf)
--			continue;
--		if (reg >= 0x12 && reg <= 0x1e)
--			continue;
--
--		retval = nc_register_read(dev, reg, vp);
--		if (retval < 0)
--			netdev_dbg(dev->net, "reg [0x%x] ==> error %d\n",
--				   reg, retval);
--		else
--			netdev_dbg(dev->net, "reg [0x%x] = 0x%x\n", reg, *vp);
--	}
--	kfree(vp);
--}
- #endif
- 
- 
-@@ -279,8 +252,12 @@ static int net1080_reset(struct usbnet *dev)
- 	usbctl = vp;
- 	nc_dump_usbctl(dev, usbctl);
- 
--	nc_register_write(dev, REG_USBCTL,
--			USBCTL_FLUSH_THIS | USBCTL_FLUSH_OTHER);
-+	retval = nc_register_write(dev, REG_USBCTL,
-+				   USBCTL_FLUSH_THIS | USBCTL_FLUSH_OTHER);
-+	if (retval < 0) {
-+		netdev_dbg(dev->net, "can't write USBCTL: %d\n", retval);
-+		goto done;
-+	}
- 
- 	if ((retval = nc_register_read(dev, REG_TTL, &vp)) < 0) {
- 		netdev_dbg(dev->net, "can't read TTL, %d\n", retval);
-@@ -288,8 +265,12 @@ static int net1080_reset(struct usbnet *dev)
- 	}
- 	ttl = vp;
- 
--	nc_register_write(dev, REG_TTL,
--			MK_TTL(NC_READ_TTL_MS, TTL_OTHER(ttl)) );
-+	retval = nc_register_write(dev, REG_TTL,
-+				   MK_TTL(NC_READ_TTL_MS, TTL_OTHER(ttl)));
-+	if (retval < 0) {
-+		netdev_dbg(dev->net, "can't write TTL: %d\n", retval);
-+		goto done;
-+	}
- 	netdev_dbg(dev->net, "assigned TTL, %d ms\n", NC_READ_TTL_MS);
- 
- 	netif_info(dev, link, dev->net, "port %c, peer %sconnected\n",
--- 
-2.53.0
-
-
-
+Birger
