@@ -1,94 +1,39 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B168630C37C
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 14:00:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF712F28FC;
+	Sat,  1 Aug 2026 14:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785592814; cv=none; b=uuO4qfo21z2wERG5I5vdic6wAyHWbKiCn14dsQW97L9LNWAGjsmjBr+rClY072boPqb55Ym2dQsL+/HG18w2F3G+vgPS4nTR4ZUBrfgqfy6wn53v5xzfuEoZHRqAnUptKw+1uX5yxNe1XtuH1/l3r3/RmVDE9epOQ+xqJ9ICoac=
+	t=1785593214; cv=none; b=eEiLITMP9HJ3Gcuh059oKXqDvyHil8fYCniybHU44PrVB3JDzTKMhYWLljfrv+KMck1KTJyUr23/ZEgOPuKsHyVu1LWhDKYemWcn/RvRRvOMMlbGig0Cts4iu4IIuPceuOCR2meII0uucROtXGLW5EQ3BZ/LKCGGa5yYHTPNx+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785592814; c=relaxed/simple;
-	bh=TLKVpsxTAiz0l4w695xmNw52fMhFEdpB6KuSW5hRE8Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M9iOq93yWt6WvuX2eYZtA/6GD3ZxjjRFym4Obqx3By/eQTi9pEhFzfD3+F+EP9BTbFqyB5hgm0UhXbFE0714wCGbWFUxzfsKxsTYMKQcadDxsOJeJIYCDePuCKehKomT4vkSvpov9r7sIWiHFJFNRrBCSZmi/vEA9+5N2oAPrjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R9P+sPYY; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785593214; c=relaxed/simple;
+	bh=0BQaIjrZiQjdWH/z//9tLwTT2L87qHOu66aNbP2ca6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pe+HA8U1nBy3y0c0MzrV7qPmH6e0hDp8ACZHDDv6oSd0LqHqYygOQDmWHE3A9njzFBx9ZBeFE9/KziM5xJIpfkWYfTaQiRqYEtUMYmKJz9lmQ8G4h9pnFoF5Yhh+zEKdq8HXVu/5u+eCl7OfX/MJxdWmLVCI/2Izg0/PKzX9T5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=id3eb6kC; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R9P+sPYY"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c9ef3e1337fso1401583a12.2
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 07:00:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785592812; x=1786197612; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ij3qVcBl3D2Fgt+3IhYwcypP53Zfir6uLkrmNSB7KuM=;
-        b=R9P+sPYY0ZGYyQBqz1couX2RV2P4D+HbaOpyH7TyGedE1IQfxeP+Waai7OEFu6dKKV
-         0fNFN9w40hQyEd+q5chP3+8COCJXKCJ05rycBkjpGRFPVLUO3Vs/kvhAVvzKqchkBKAM
-         G/P03mQvyY7UfARqTaFmEqWX2oJNnFqbnXH0zfy6iwjfI0OJwafaGxSBQjc3VMltdznh
-         1FEJP1nBZm2cY23IrEtNtQj7st0wNMqOXEd5stDR5xa/OeB67Z9ZsxxPucS9960ed6IK
-         226Kc+MO5YDbmWdq/gIGx5PmQB0AvWpNGs4sZw2pLtGKhhncF9Z6mjw47MErKA22pbES
-         dJdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785592812; x=1786197612;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ij3qVcBl3D2Fgt+3IhYwcypP53Zfir6uLkrmNSB7KuM=;
-        b=JmlfFcANasafYB27eRT0xi6uQkVakZNO59ysDB6xi6Ecxh5r/2/y7flG+iPDp4X6lw
-         o8uTLw8NFVIuGLsRnRd8xPN/RV2TkXxjNb3XYFPp8Y0vRHIgXAu3GUXQ2FRFMGgAJn9n
-         wAXG9Cdu0mvmyySUwHqaGWM9G6b4Lxrtfv6rdCnDGG4H5VvYWIqd1rnEtmwh6Q/NgOMV
-         mo0mJ7mOQZBwx9oncpKvj5UnNyHUDZ0LTqlAU0b1JQqbTVi/DdTBmwmkTjz3wBmELws4
-         qb71+qM8DUti5YbP7uDlyYJnl4FteVQfeZomeHe894qzeE1Dv7dzAopg66l+aXQUGKKa
-         bQ7A==
-X-Forwarded-Encrypted: i=1; AHgh+Rov6rsskunU2g2BXir/Z+ydfEHhuYxFI8lnLQ4IqsSPFmiz0c5VfuHefzqnB15KVunU4C6LdgM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8gbfmH9qIiRGo3TIID10rJRp2RfECz0xzKycYVuNH9P9TFNY8
-	5XSCn0EsFo0SOnklyJC6sPkZAXS29dtM8U1bcUh5wHBZcX6bmNgorJKP
-X-Gm-Gg: AR+sD11nHFUcn+ds4KLP8JQF5SJnRpJ++pLvJJnInkRo1hAmuNTcDdbG1v7rmjxphY9
-	rElIMAznU2YBiicFpqh4wYlzBgTjIRTUHAJrpXLVjn8DBJxkC/p+SNH7seqrm0mnK0uKD2opJBj
-	dCSBQbRNlCHldaiuO4LPu1iZ5kbXeHACgJ9UYfOaTIPxFjYf5SNFRCGGCHVYk5FVG0zqAQZpKEK
-	FtYy72wN6cgCSmmkwoe49DQylmfTTulH9vTIyKpqInrK/AzSxDV1rDhXUXn6FfrKRN4gJzD2puG
-	ZZ35Z6cwYyiWi5L8vy9n94lSocZNx+TZFGmoHKubfbyzRhmq/Gn5/uokHNTfO0xT6dkl+ZrouWX
-	gwbsHzTK9C3+CudyXeqbBaehJbc3DxTB1NlsX2rPPfRPjiamuTyg6ljy7ah6edMAtVBpDouTM5i
-	dAXs8LwjCETg9jRjOWbHRnIMlbZN0YGtvg0BwC2W5QaxHkqZVtgNFPqnUg08wtVzdoz3WnOv0j2
-	khJ
-X-Received: by 2002:a05:6a21:6112:b0:3c3:a3fd:db0a with SMTP id adf61e73a8af0-3c92a62d724mr3112934637.16.1785592811080;
-        Sat, 01 Aug 2026 07:00:11 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([165.232.167.5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3153e18d9c6sm18493764eec.30.2026.08.01.07.00.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2026 07:00:10 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	martin.lau@linux.dev,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	emil@etsalapatis.com,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="id3eb6kC"
+Received: from LAPTOP-99KJFSET (unknown [211.69.128.50])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 486a5481d;
+	Sat, 1 Aug 2026 22:06:45 +0800 (GMT+08:00)
+From: Hongyan Xu <getshell@seu.edu.cn>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	lmb@cloudflare.com,
-	vega@nebusec.ai,
-	rakukuip@gmail.com,
-	enjou1224z@gmail.com
-Subject: [PATCH 1/1] bpf: Check sk_fullsock() in bpf_tcp_*_syncookie
-Date: Sat,  1 Aug 2026 21:59:39 +0800
-Message-ID: <ca8d8c570509b02355bb4bd4e56859f3e2564c9c.1785576172.git.rakukuip@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1785576172.git.rakukuip@gmail.com>
-References: <cover.1785576172.git.rakukuip@gmail.com>
+	pabeni@redhat.com
+Cc: Hongyan Xu <getshell@seu.edu.cn>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn
+Subject: [PATCH net-next v4] net: phy: nxp-tja11xx: cancel registration work on remove
+Date: Sat,  1 Aug 2026 22:06:43 +0800
+Message-ID: <20260801140643.1871-1-getshell@seu.edu.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -96,56 +41,76 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9fbda60ff603a1kunm35d1f6081a7d49
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaSh5JVh8aGR9OGk4dSB9KSFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSkpVTUJVSklDVU5LWVdZFhoPEhUdFFlBWU9LSFVKS0lCQ0
+	NMVUpLS1VLWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=id3eb6kCfZ1EMKAWgrKUBjxe2BK0EtZ/kucFV5HPyPeVNjARAANB75V0wgXFnRkD12x4pHufvqb83XB8rUQHLrSFKwDwUq/ZJxvuHVpCBY72ZUe86r+kJMReQNnaqgqKC7bBaC5egwFZ8snHay2P3Va51/TBm0lhU/t7Fa8HCOA=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=lui740vOdfCKf22Uf2HUM/cjd6TI1l3obVrqiFR+cJM=;
+	h=date:mime-version:subject:message-id:from;
 
-From: Luxiao Xu <rakukuip@gmail.com>
+tja1102_p0_probe() schedules work to register the second port. That work
+uses the Port 0 private data and phydev. The private data is
+devm-allocated, but the driver does not wait for the pending work on
+remove.
 
-bpf_tcp_gen_syncookie and bpf_tcp_check_syncookie accept a socket pointer
-'sk' with argument type ARG_PTR_TO_BTF_ID_SOCK_COMMON. However, they access
-sk->sk_protocol without validating whether 'sk' represents a full socket.
+Store the Port 0 private data in phydev->priv and add a remove callback.
+The callback cancels the registration work before devres teardown frees
+the state.
 
-When a BPF program passes a mini-socket (such as struct request_sock or
-struct inet_timewait_sock obtained via bpf_skc_lookup_tcp), sk_protocol
-is located beyond the memory boundary allocated for mini-sockets.
-Directly dereferencing sk->sk_protocol leads to a slab-out-of-bounds
-kernel read.
+This issue was found by a static analysis tool.
 
-Fix this issue by adding a sk_fullsock(sk) check at the start of both
-bpf_tcp_gen_syncookie and bpf_tcp_check_syncookie before inspecting
-fullsock-specific fields.
-
-Fixes: c0df236e1394 ("bpf: Change bpf_tcp_*_syncookie to accept ARG_PTR_TO_BTF_ID_SOCK_COMMON")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Hongyan Xu <getshell@seu.edu.cn>
 ---
- net/core/filter.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+v4:
+- post as a new independent thread after the required 24-hour interval
+- no code changes
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b446aa8be5c3..afdcfdf41489 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7678,6 +7678,9 @@ BPF_CALL_5(bpf_tcp_check_syncookie, struct sock *, sk, void *, iph, u32, iph_len
- 	if (unlikely(!sk || th_len < sizeof(*th)))
- 		return -EINVAL;
+v3: https://lore.kernel.org/netdev/20260729155322.319-1-getshell@seu.edu.cn/
+- drop the Fixes tag and target net-next instead of net
+v2: https://lore.kernel.org/netdev/20260729091621.1726-1-getshell@seu.edu.cn/
+v1: https://lore.kernel.org/netdev/20260728123423.781-1-getshell@seu.edu.cn/
+
+ drivers/net/phy/nxp-tja11xx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/net/phy/nxp-tja11xx.c b/drivers/net/phy/nxp-tja11xx.c
+index 07e94a247..68062a4c5 100644
+--- a/drivers/net/phy/nxp-tja11xx.c
++++ b/drivers/net/phy/nxp-tja11xx.c
+@@ -620,6 +620,7 @@ static int tja1102_p0_probe(struct phy_device *phydev)
+ 		return -ENOMEM;
  
-+	if (!sk_fullsock(sk))
-+		return -EINVAL;
+ 	priv->phydev = phydev;
++	phydev->priv = priv;
+ 	INIT_WORK(&priv->phy_register_work, tja1102_p1_register);
+ 
+ 	ret = tja11xx_hwmon_register(phydev, priv);
+@@ -631,6 +632,13 @@ static int tja1102_p0_probe(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++static void tja1102_p0_remove(struct phy_device *phydev)
++{
++	struct tja11xx_priv *priv = phydev->priv;
 +
- 	/* sk_listener() allows TCP_NEW_SYN_RECV, which makes no sense here. */
- 	if (sk->sk_protocol != IPPROTO_TCP || sk->sk_state != TCP_LISTEN)
- 		return -EINVAL;
-@@ -7752,6 +7755,9 @@ BPF_CALL_5(bpf_tcp_gen_syncookie, struct sock *, sk, void *, iph, u32, iph_len,
- 	if (unlikely(!sk || th_len < sizeof(*th) || th_len != th->doff * 4))
- 		return -EINVAL;
- 
-+	if (!sk_fullsock(sk))
-+		return -EINVAL;
++	cancel_work_sync(&priv->phy_register_work);
++}
 +
- 	if (sk->sk_protocol != IPPROTO_TCP || sk->sk_state != TCP_LISTEN)
- 		return -EINVAL;
- 
+ static int tja1102_match_phy_device(struct phy_device *phydev, bool port0)
+ {
+ 	int ret;
+@@ -847,6 +855,7 @@ static struct phy_driver tja11xx_driver[] = {
+ 		.features       = PHY_BASIC_T1_FEATURES,
+ 		.flags          = PHY_POLL_CABLE_TEST,
+ 		.probe		= tja1102_p0_probe,
++		.remove		= tja1102_p0_remove,
+ 		.soft_reset	= tja11xx_soft_reset,
+ 		.config_aneg	= tja11xx_config_aneg,
+ 		.config_init	= tja11xx_config_init,
 -- 
-2.43.0
+2.50.1.windows.1
