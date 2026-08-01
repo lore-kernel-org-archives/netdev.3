@@ -1,62 +1,63 @@
-Received: from mail-pj2-f0.google.com (mail-pj2-f0.google.com [74.125.227.128])
+Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79F5356773
-	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 14:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D383546C7
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 14:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785594202; cv=none; b=ubOChIH6hiZO0P7LJSLePMG6I1pvDnAhVFVj5fisRFggNx5YiYXU+XG/wwZRZflb08nKQIzZYauWiAYdMTZgfkza0YEFeD1vChgPY6qv9PO/Br0K7hUWjgUKhghYsuWvukSht1EU5sMDFlXG8byE0Lg2ck3P200lplEKTfGrMDA=
+	t=1785594208; cv=none; b=Rn9tZI9tbbJWE7LE3M61ubthcE64bCDxMgWiHAZZqWG6TFCjbYVBQEcYZpX310hFwwWti9uqqn0eCTXX4iN6SylTDlnIf+xy9RvIuP5zS4wiO21JiWUL86086bZSaJoeQn/sjn/KAwLCdGt9bGVC+i2vOrxxjACU7R9b5iA+dgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785594202; c=relaxed/simple;
-	bh=yfzH03Zpfn3qqQcJ//TofgsfNJygcYN7t4VAVJQKlMY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lPdtp/ilxomdaPgFB5pUpuo73HpyR69Zk7oIN8dNwb06hKOIxupeHoJWunfMgWG7n3oJManYlaugoyFpQ2gFXo9TwgA+9fxZtP5n3Kz7sdYVOONeNgaJDgcJzaGIne186iVr1OtBMaIjmn6Gu64d0+dZcTyuwKkSaO73l7JdQYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLXAkM3F; arc=none smtp.client-ip=74.125.227.128
+	s=arc-20240116; t=1785594208; c=relaxed/simple;
+	bh=pS1/CITihywVSKHNqnrBKiFGwk4P1DfllgPl1XWuPCg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oOI8t0UN9SXVS3Qloc6ViqgmHwRZweHOQOQqvo8RphKsTe+mR3ChicSEu8Fn7FAKO6lTyh8vgwOKfazO/2TYJB7Z7b65W1erT3KcyP6ffCQt5f0rGmfMv+ZdN4YGTutHuveHXLhqzOwL8zU01pFFlYmnAeZM3oobHeuUW2E1R0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e/BroLD1; arc=none smtp.client-ip=74.125.227.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLXAkM3F"
-Received: by mail-pj2-f0.google.com with SMTP id d9443c01a7336-2cc6bb7476dso2655325ad.0
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 07:23:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e/BroLD1"
+Received: by mail-pj2-f3.google.com with SMTP id d9443c01a7336-2ccb0e85312so11214895ad.0
+        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 07:23:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785594194; x=1786198994; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p2cmtp3VyguNZ1YwnWT1LsNqPKC7k3AOpkhFk6RHh98=;
-        b=BLXAkM3FkCQ2cUT+gAe2TOBcgziSYRBWtxrGKtI+Xv8282cPyqyNBNwZwCjN0Qnr/b
-         5VUIJ8eCDWegqsNS+it63zv1kD4Ym5XnRQsyKkA4fkiCrx3a6qskyfEGAQ5y6GkSMENW
-         sOO1JwXhmBlf8XGHhUn1YP7kwzGljG0CJrZeqs/vx2jaM5PQTvuLfPyvCpNtpjb+/15Z
-         M4glmO5pTWvGIsSu/HT+vIrPYBYGBRrtjOZBEP5qfPliqn9iB4Jt4IyN4KY6FlkjrySF
-         Q6NG9oV6SnmjVZ0oLUhe7XMv2GosjdAoP0Qn/jl95wvLBV5yDUQjBZ8CLvxZfTYIzi9o
-         RE3g==
+        d=gmail.com; s=20251104; t=1785594200; x=1786199000; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6YxJTLfbFLaJQNrdCTWQsfkF0vgcKN1ElhQsDv7wQJw=;
+        b=e/BroLD1xw9exXINxN3P3b9tdMjfJg8OHroEgmMTC9d8yGXKDXUYBej02FiILgtBLs
+         tEOVsc0JoLzhXbELBrQ6/RhfObaI1ikCMuqEyDQfQ/rLpOWBELdkWKBDJCcawJ2aAwm3
+         sBnj2C1Xdul/9tUxZ6ZRcgohSgnD7COVDgJnxTYyWG1SVnJm2wT1hANbsjbIcAjKcaNi
+         dV9PZiocUaXyXvCWFcRC8EigwUBDe4webV68ejHqhKNoI8QQFOiKDuh6z/aTBrkXnrVO
+         tBnvpsU+OTcRhlny0El96M9nffSGZxcm1r+/Q4SA5Q1slM9NH0HQEL5z5UsEkIPacBGo
+         XfpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785594194; x=1786198994;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=p2cmtp3VyguNZ1YwnWT1LsNqPKC7k3AOpkhFk6RHh98=;
-        b=VyWCDBom8194t2Lo4+FThmOka0nRBNJN5fCFoo3DKfpecz0r+Lxab6HgCIGDBHxqFl
-         KAjB6NbCbvOVrK464QIlODLWlV6zLKhTj0dmfDnu9/9CUWgWuDN6NMvsC2jmrW5azNZ3
-         TOAduxkbBV8HiIS8+j4RsAcOii7zqiKhSwMaZ1XZI9J6QJKFi6kHqW1no5KHsOG+79xj
-         dmLUB/oMdzuOCd8ESrM0bTHoiR+K3xd59+S6wAEeUaglJ1KIu5luPt5wmVJyWYT+wEBy
-         7GdkgflTtwm/56VirfPxBNR83/qXEzYe/s8VY5goojWAsAbk7vTXje4PHe2SdrKpjeFq
-         H2dQ==
-X-Forwarded-Encrypted: i=1; AHgh+RquSJwILcX53t7QGlAkSG1EUSifhhBxa+AsRnO98jtuS9tYfBeOqPoWKih7xWiptEVxVK2LA8Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOOn7dzfxd0hs5POuDr+WcHsRMvTD7nqdtoA0+Zj5zjdZ+0j5w
-	SKLuuegeKsG0qhaN4ZCC3H1gaRG4tcwWeJ91ee4biJerTe3uhVu2vCcT
-X-Gm-Gg: AR+sD10G2QZkz6MFIyd7EJAgSWDLttDD7RmKWMEcr0ZI914VAPGBVcDk6ckWTeBT1fA
-	rp4cUwGJxR1aUCpk/OENG5sCdDQMahDWF/rlu0T41/yQLya7Y/JcoftgWdRSEAiVcTv2bbwuynm
-	ouhzv4b3U036CrqsM0rbvJJPJHB+BJgKEH9A34cuuHbIz0WeXpAEXOBC8OKOfIxuOjmvyUoNiS5
-	Gy88oviD+yr2BUR5pPVbDRRaJhj+8r6P1thtOm9uogyXHRTDyoDueKtee6IfVYwVG06lF/pfrBG
-	z5bLVm45BZj9MbndlPy5e9WGGq8DJFoetRwtWvr/T819tc44vjccBryaHCq6FWbvliQLinGHXG9
-	cFs0DQK3qtPDTpEoMN7Ecj4ojfsGuy61neEL3S6sc6mMww9ZPLl1XGki/0LmmdSj3VBTyVaqt29
-	XDl+eH9uKu1MMl8labLPwqvapV9B9OSDQ6z6GqfOzPaDosauXyX09iQYU=
-X-Received: by 2002:a17:903:3905:b0:2cc:80d6:b72 with SMTP id d9443c01a7336-2d0536caf12mr31901555ad.20.1785594193454;
-        Sat, 01 Aug 2026 07:23:13 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785594200; x=1786199000;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6YxJTLfbFLaJQNrdCTWQsfkF0vgcKN1ElhQsDv7wQJw=;
+        b=Hy5GQiZsopD7a2Y6S5IyEjTJgDJ5BvQZwuSzL561DTlJiDeqtEyUIqt8vN2548d0Us
+         h+UG/A9p0sl7uPVCvJuNpql+4QTiVhqf0dm4J+PDk/EtIWQRRuvGf6LEY9I+um2QHRzN
+         fmDD2HZ69lylajRIN3/iH6w1ysBnR3mxJLKP1ERcyhx5Ux6FPcKmUkxYPm8dEDGwMjAA
+         IHj5l7Vtl6GYRH+lIqkIxUBoldOP18vQK4bcVWjfO0kLmlQ53pF/2Pr6ObdCmM4tXlQh
+         /lksL4nlg3QKz3nJYDQAmd8z/84PGZE3ZIlem/sTaip8EGWe1P7r0FxzZ/DOVPc6a9ps
+         IIcg==
+X-Forwarded-Encrypted: i=1; AHgh+RpbrbOzMw+1sw8Ncq97xFd0L06vl/9439aYmqy4kcOHV4dYaBDwtTH/EP4NRWR81SwxyHoP5Vs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVkkovUAWi+KN+b2g+jUNnv54nZDvmnZFVFaZwxF0HKAvgsp6r
+	CTwXoE0VSpg3oCicQJrsKPheA/ui9BnkclmYaR5Skozsf1Eaj7HZEdV2
+X-Gm-Gg: AR+sD129tjiYO7dF+hA3fXuJYa7qsYx8tTGz4Xt9xK9zGpq0PUTVvDsvSAdLVpbPfoi
+	Tm48BUdnN+PW4M3WbzCpFcOv21ToBYgBVfHR4R7zbCPR4ZG+RSfS/gkfgwNgB1j4WSSBNTkm11l
+	1EneoNulSPGU/A1XrY6cFpjgsFAplrNfN1x9KoKguzVhFQDcj956LnXDZFHldz8zqXzPaQCM3Aw
+	XZiMbdScSlZsgtOWtRlcVzvmAu28ARyTtJoRLx/8kQGka6AYyyJjRp0rwssIo9thFBFeqAJ21V2
+	vGewgRsOU3q/nF+2hkzE1+TNH4hA9XQFstzy1rqZaupXFyeaAYNTb4MskoP3kZh7oinHSf1FMNR
+	xLIbY9walGiqMQ/uQOUEY7FGonpa1YLxz9s69X8FMGVF15MKBL9aBq38ARjQNCOEVANkz3HvLv6
+	qdPgsvgqiU+YutMXVNUz427CueqLVu4YqiaNN+ubyShHaEBZi+LjG0MXo=
+X-Received: by 2002:a17:903:22c3:b0:2cc:9473:97c8 with SMTP id d9443c01a7336-2d0521bc958mr36797725ad.15.1785594200194;
+        Sat, 01 Aug 2026 07:23:20 -0700 (PDT)
 Received: from server.lan ([103.213.4.16])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae5ac3dsm18043845ad.23.2026.08.01.07.23.05
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae5ac3dsm18043845ad.23.2026.08.01.07.23.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2026 07:23:11 -0700 (PDT)
+        Sat, 01 Aug 2026 07:23:19 -0700 (PDT)
 From: Coia Prant <coiaprant@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
@@ -87,196 +88,256 @@ Cc: Neil Armstrong <neil.armstrong@linaro.org>,
 	linux-phy@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-renesas-soc@vger.kernel.org
-Subject: [PATCH v2 00/10] net-next: add basic support for RK3568 XPCS
-Date: Sat,  1 Aug 2026 22:22:24 +0800
-Message-ID: <20260801142244.679437-2-coiaprant@gmail.com>
+Subject: [PATCH v2 01/10] net: stmmac: move XPCS lifetime management to platform drivers
+Date: Sat,  1 Aug 2026 22:22:25 +0800
+Message-ID: <20260801142244.679437-3-coiaprant@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260801142244.679437-2-coiaprant@gmail.com>
+References: <20260801142244.679437-2-coiaprant@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Changes since v1:
+The current XPCS creation logic in stmmac_pcs_setup() is problematic
+for several reasons.
 
-Patch 2 (dt-bindings: phy: naneng-combphy)
-- Changed `rockchip,sgmii-mac-sel` default from 0 to 1 to match
-  hardware reset value (GMAC1)
-- Added `if-then` conditional in `allOf` to restrict the property
-  to `rockchip,rk3568-naneng-combphy` only
-- Updated commit message to reflect hardware default
+First, if a device tree specifies a "pcs-handle" but no select_pcs()
+callback is provided by the platform driver, the created XPCS is never
+used. The phylink framework requires select_pcs() to actually return
+the PCS to the core, so the pcs-handle property becomes effectively
+useless without the matching callback. This is confusing for developers
+who expect that specifying a pcs-handle in their device tree should be
+sufficient to enable the PCS.
 
-Patch 3 (phy: rockchip: naneng-combphy)
-- Changed `priv->sgmii_mac_sel` initial value from 0 to 1 to match
-  hardware default
-- Updated commit message to align with binding changes
+Second, and more critically, when stmmac_pcs_setup() fails to create
+an XPCS (either because no pcs-handle is present and no pcs_mask is
+configured), it falls through to the else branch and leaves
+priv->hw->xpcs as NULL. This will silently override any XPCS that a
+platform driver may have already set up during its own initialization,
+for example in a pcs_init() callback or during probe. The platform
+driver has no way to prevent this override because the common code
+runs unconditionally after the platform-specific initialization.
 
-Patch 4 (dt-bindings: net: pcs: rockchip-dwxpcs)
-- Fixed `reg` format in example to pass `dt_binding_check`
-- Added missing `#include <dt-bindings/phy/phy.h>` in example
+After commit 93f84152e4ae ("net: stmmac: clean up
+stmmac_mac_select_pcs()"), the common code no longer falls back to
+priv->hw->phylink_pcs if select_pcs() is not set. This change
+reinforces that each platform must manage its own PCS life cycle
+explicitly, but the XPCS creation code in stmmac_pcs_setup() was not
+updated to match this new expectation, leaving a gap where platform
+drivers have no clean way to take control of XPCS creation.
 
-Patch 5 (arm64: dts: rockchip: rk3568)
-- Clarified commit message: "all nodes disabled" refers to XPCS
-  device nodes, not fixed-clock nodes
-- Noted that `assigned-clock-parents` are applied at board level
-  (Patch 9), not in SoC dtsi
+Address all of these issues by introducing pcs_init() and pcs_exit()
+callbacks in plat_stmmacenet_data. These callbacks give platform
+drivers full control over when and how the XPCS is created, configured,
+and destroyed. The common stmmac_pcs_setup() and stmmac_pcs_clean()
+functions are simplified to just call these callbacks, removing the
+confusing and error-prone XPCS creation logic from the common code.
 
-Patch 6 (net: pcs: xpcs: add ANRESTART support for SGMII link recovery)
-- Split the original RFC patch into two: the SGMII state reading fix was
-  sent separately to the net tree and has been merged. This patch now
-  only adds the ANRESTART functionality as a new feature for net-next.
-- Removed unintentional `BMCR_ANRESTART` change in c37_1000basex
-  (this was not tested and should not have been included)
-- Kept SGMII path changes for RK3568 only
+Platforms that do not need an XPCS simply leave the callbacks as NULL
+and no change in behavior occurs. Platforms that do need an XPCS can
+now create it with the exact configuration they require, including
+wrapping it with custom phylink_pcs_ops when necessary.
 
-Patch 7 (net: pcs: xpcs: add Rockchip RK3568 platform glue driver)
-- Added `.remove` callback with `pm_runtime_force_suspend()` to fix
-  potential CSR clock leak on device removal
-- Added compatible string validation in `xpcs_rk_create()` before
-  dereferencing drvdata (using `of_match_node(xpcs_rk_of_ids, pcs_np)`)
-- Removed `__maybe_unused` from PM runtime callbacks
-- Add `depends on PM` in Kconfig to ensure `CONFIG_PM` is enabled for 
-  this driver
+Existing platform drivers (intel, rzn1, socfpga) are updated to use
+the new callbacks by moving their XPCS creation and cleanup logic into
+pcs_init() and pcs_exit(). In their pcs_exit() implementations, the
+pointer to the destroyed PCS is explicitly set to NULL to avoid
+dangling pointer references.
 
-Patch 8 (net: stmmac: dwmac-rk)
-- Moved `gmac_clk_enable()` call before SGMII check to ensure clocks are
-  enabled before register access in SGMII mode
-- Added unified error handling (`clk_disable` label) for all failure paths
-- Added error handling for default (unhandled interface) case
-
-===
-
-This series adds proper SGMII support for the Rockchip RK3568 SoC
-using the integrated Synopsys DesignWare XPCS, along with necessary
-fixes and refactoring in the stmmac core and XPCS driver.
-
-Motivation
-==========
-The RK3568 integrates a DW XPCS accessed via APB3 and connected to
-a Naneng Combo SerDes PHY.  Several boards (e.g., Ariaboard
-Photonicat) use this interface for Gigabit Ethernet.  However, the
-current upstream stmmac driver does not support this configuration,
-and the XPCS driver has issues in SGMII poll mode that cause the
-link to be reported incorrectly.
-
-This series addresses these issues by:
-- Fixing the XPCS driver's SGMII AN state handling
-- Refactoring stmmac PCS lifetime management to allow platform drivers
-  full control over PCS creation/destruction
-- Adding a Rockchip XPCS platform glue driver and wiring it up in
-  dwmac-rk
-
-Series overview
-===============
-
-Generic:
-  Patch 1: move XPCS lifetime management to platform drivers
-           (introduces pcs_init/pcs_exit callbacks)
-
-PHY:
-  Patch 2: DT binding for Naneng Combo PHY SGMII MAC selection
-  Patch 3: implement the PHY SGMII MAC selection in driver
-
-RK3568 XPCS/SGMII:
-  Patch 4: DT binding for Rockchip RK3568 XPCS
-  Patch 5: add XPCS and fixed-clock nodes to rk3568.dtsi
-  Patch 6: add ANRESTART support for SGMII link recovery
-  Patch 7: implement the Rockchip XPCS platform glue driver
-  Patch 8: wire up SGMII support in dwmac-rk
-  Patch 10: update MAINTAINERS
-
-Board enablement:
-  Patch 9: enable SGMII LAN port on Photonicat board
-
-Key design decisions
-====================
-- The stmmac core now delegates XPCS creation entirely to platform
-  drivers via pcs_init/pcs_exit.  This is necessary because the
-  generic XPCS creation logic would override any XPCS set up by the
-  platform driver.
-
-- The Rockchip XPCS driver creates a virtual MDIO bus over the APB3
-  registers and implements address remapping.  The generic XPCS core
-  handles all PCS configuration via phylink_pcs_ops.
-
-- On RK3568 in SGMII mode, the MAC clock is fixed at 125 MHz and
-  cannot be dynamically changed.  In-band mode is used, and the
-  generic stmmac set_clk_tx_rate callback is disabled to prevent
-  incorrect clock updates that would break RX.
-
-- The SerDes and power domain are attached to the XPCS device tree
-  node rather than the MAC node. This reflects the actual hardware
-  topology and simplifies the dwmac-rk driver by keeping all PCS-related
-  resources self-contained. It also prepares for possible future QSGMII
-  support, where a single SerDes serves multiple MACs and would be
-  more naturally managed under the XPCS node.
-
-Testing
-=======
-Board: Ariaboard Photonicat (RK3568)
-OS: Armbian (trixie)
-Kernel: 6.18 (backports)
-Result: The SGMII interface obtains an IP address, SSH works, and
-        ping traffic passes without loss.
-
-Notes
-=====
-- When testing out-band mode with set_clk_tx_rate, only 1000Mbps
-  works on both TX/RX; 10/100Mbps only works on TX side.
-
-Dependencies
-============
-None. All patches apply cleanly on top of torvalds master tree (v7.2).
-
-Acknowledgments
-===============
-This work was inspired by and builds upon the excellent work of others:
-- Serge Semin's Synopsys DesignWare XPCS platform driver (pcs-xpcs-plat.c)
-- Clément Léger's Renesas MIIC driver (pcs-rzn1-miic.c)
-- The Rockchip TRM and downstream OEM drivers
-
-Thanks in advance,
-Coia Prant
+Signed-off-by: Coia Prant <coiaprant@gmail.com>
 ---
-Coia Prant (10):
-  net: stmmac: move XPCS lifetime management to platform drivers
-  dt-bindings: phy: rockchip: naneng-combphy: add rockchip,sgmii-mac-sel
-    property
-  phy: rockchip: naneng-combphy: add SGMII MAC selection for RK3568
-  dt-bindings: net: pcs: add rockchip,rk3568-xpcs binding
-  arm64: dts: rockchip: rk3568: add XPCS and fixed-clock nodes
-  net: pcs: xpcs: add ANRESTART support for SGMII link recovery
-  net: pcs: xpcs: add Rockchip RK3568 platform glue driver
-  net: stmmac: dwmac-rk: add SGMII support for RK3568
-  arm64: dts: rockchip: rk3568-photonicat: enable SGMII LAN port
-  MAINTAINERS: add entry for Rockchip XPCS driver
+ .../net/ethernet/stmicro/stmmac/dwmac-intel.c | 44 +++++++++++++++++--
+ .../stmicro/stmmac/dwmac-renesas-gbeth.c      |  7 ++-
+ .../net/ethernet/stmicro/stmmac/dwmac-rzn1.c  |  7 ++-
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |  7 ++-
+ .../net/ethernet/stmicro/stmmac/stmmac_mdio.c | 37 +++-------------
+ 5 files changed, 61 insertions(+), 41 deletions(-)
 
- .../bindings/net/pcs/rockchip-dwxpcs.yaml     | 127 +++++
- .../phy/phy-rockchip-naneng-combphy.yaml      |  13 +
- MAINTAINERS                                   |   9 +
- .../boot/dts/rockchip/rk3568-photonicat.dts   |  77 ++-
- arch/arm64/boot/dts/rockchip/rk3568.dtsi      |  45 ++
- drivers/net/ethernet/stmicro/stmmac/Kconfig   |   1 +
- .../net/ethernet/stmicro/stmmac/dwmac-intel.c |  44 +-
- .../stmicro/stmmac/dwmac-renesas-gbeth.c      |   7 +-
- .../net/ethernet/stmicro/stmmac/dwmac-rk.c    | 121 +++-
- .../net/ethernet/stmicro/stmmac/dwmac-rzn1.c  |   7 +-
- .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |   7 +-
- .../net/ethernet/stmicro/stmmac/stmmac_mdio.c |  37 +-
- drivers/net/pcs/Kconfig                       |  23 +
- drivers/net/pcs/Makefile                      |   7 +-
- drivers/net/pcs/pcs-xpcs-rk.c                 | 538 ++++++++++++++++++
- drivers/net/pcs/pcs-xpcs.c                    |  17 +-
- .../rockchip/phy-rockchip-naneng-combphy.c    |   8 +
- include/linux/pcs/pcs-xpcs-rk.h               |  11 +
- 18 files changed, 1030 insertions(+), 69 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/pcs/rockchip-dwxpcs.yaml
- create mode 100644 drivers/net/pcs/pcs-xpcs-rk.c
- create mode 100644 include/linux/pcs/pcs-xpcs-rk.h
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+index 4d207f41a43b3..221b3203a81ed 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+@@ -603,13 +603,47 @@ static void common_default_data(struct plat_stmmacenet_data *plat)
+ 	plat->mdio_bus_data->needs_reset = true;
+ }
+ 
++static int intel_mgbe_pcs_init(struct stmmac_priv *priv)
++{
++	struct fwnode_handle *devnode, *pcsnode;
++	struct dw_xpcs *xpcs = NULL;
++	int addr;
++
++	devnode = dev_fwnode(priv->device);
++
++	if (fwnode_property_present(devnode, "pcs-handle")) {
++		pcsnode = fwnode_find_reference(devnode, "pcs-handle", 0);
++		xpcs = xpcs_create_fwnode(pcsnode);
++		fwnode_handle_put(pcsnode);
++	} else {
++		addr = ffs(priv->plat->mdio_bus_data->pcs_mask) - 1;
++		xpcs = xpcs_create_mdiodev(priv->mii, addr);
++	}
++
++	if (IS_ERR(xpcs))
++		return PTR_ERR(xpcs);
++
++	xpcs_config_eee_mult_fact(xpcs, priv->plat->mult_fact_100ns);
++
++	priv->hw->xpcs = xpcs;
++	return 0;
++}
++
++static void intel_mgbe_pcs_exit(struct stmmac_priv *priv)
++{
++	if (!priv->hw->xpcs)
++		return;
++
++	xpcs_destroy(priv->hw->xpcs);
++	priv->hw->xpcs = NULL;
++}
++
+ static struct phylink_pcs *intel_mgbe_select_pcs(struct stmmac_priv *priv,
+ 						 phy_interface_t interface)
+ {
+-	/* plat->mdio_bus_data->has_xpcs has been set true, so there
+-	 * should always be an XPCS. The original code would always
+-	 * return this if present.
+-	 */
++	if (!priv->hw->xpcs)
++		return NULL;
++
+ 	return xpcs_to_phylink_pcs(priv->hw->xpcs);
+ }
+ 
+@@ -733,6 +767,8 @@ static int intel_mgbe_common_data(struct pci_dev *pdev,
+ 	    plat->phy_interface == PHY_INTERFACE_MODE_1000BASEX) {
+ 		plat->mdio_bus_data->pcs_mask = BIT_U32(INTEL_MGBE_XPCS_ADDR);
+ 		plat->default_an_inband = true;
++		plat->pcs_init = intel_mgbe_pcs_init;
++		plat->pcs_exit = intel_mgbe_pcs_exit;
+ 		plat->select_pcs = intel_mgbe_select_pcs;
+ 	}
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
+index 19f34e18bfef2..9af32c26f9c14 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
+@@ -81,8 +81,11 @@ static int renesas_gmac_pcs_init(struct stmmac_priv *priv)
+ 
+ static void renesas_gmac_pcs_exit(struct stmmac_priv *priv)
+ {
+-	if (priv->hw->phylink_pcs)
+-		miic_destroy(priv->hw->phylink_pcs);
++	if (!priv->hw->phylink_pcs)
++		return;
++
++	miic_destroy(priv->hw->phylink_pcs);
++	priv->hw->phylink_pcs = NULL;
+ }
+ 
+ static struct phylink_pcs *renesas_gmac_select_pcs(struct stmmac_priv *priv,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rzn1.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rzn1.c
+index 13634965bc19a..01df4776edb3f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rzn1.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rzn1.c
+@@ -35,8 +35,11 @@ static int rzn1_dwmac_pcs_init(struct stmmac_priv *priv)
+ 
+ static void rzn1_dwmac_pcs_exit(struct stmmac_priv *priv)
+ {
+-	if (priv->hw->phylink_pcs)
+-		miic_destroy(priv->hw->phylink_pcs);
++	if (!priv->hw->phylink_pcs)
++		return;
++
++	miic_destroy(priv->hw->phylink_pcs);
++	priv->hw->phylink_pcs = NULL;
+ }
+ 
+ static struct phylink_pcs *rzn1_dwmac_select_pcs(struct stmmac_priv *priv,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+index 1d7f0a57d2889..6d4bc1fe8f751 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+@@ -539,8 +539,11 @@ static int socfpga_dwmac_pcs_init(struct stmmac_priv *priv)
+ 
+ static void socfpga_dwmac_pcs_exit(struct stmmac_priv *priv)
+ {
+-	if (priv->hw->phylink_pcs)
+-		lynx_pcs_destroy(priv->hw->phylink_pcs);
++	if (!priv->hw->phylink_pcs)
++		return;
++
++	lynx_pcs_destroy(priv->hw->phylink_pcs);
++	priv->hw->phylink_pcs = NULL;
+ }
+ 
+ static struct phylink_pcs *socfpga_dwmac_select_pcs(struct stmmac_priv *priv,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+index afe98ff5bdcb0..d2f77f0c223a7 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+@@ -426,36 +426,15 @@ int stmmac_mdio_reset(struct mii_bus *bus)
+ int stmmac_pcs_setup(struct net_device *ndev)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(ndev);
+-	struct fwnode_handle *devnode, *pcsnode;
+-	struct dw_xpcs *xpcs = NULL;
+-	int addr, ret;
+-
+-	devnode = dev_fwnode(priv->device);
+-
+-	if (priv->plat->pcs_init) {
+-		ret = priv->plat->pcs_init(priv);
+-	} else if (fwnode_property_present(devnode, "pcs-handle")) {
+-		pcsnode = fwnode_find_reference(devnode, "pcs-handle", 0);
+-		xpcs = xpcs_create_fwnode(pcsnode);
+-		fwnode_handle_put(pcsnode);
+-		ret = PTR_ERR_OR_ZERO(xpcs);
+-	} else if (priv->plat->mdio_bus_data &&
+-		   priv->plat->mdio_bus_data->pcs_mask) {
+-		addr = ffs(priv->plat->mdio_bus_data->pcs_mask) - 1;
+-		xpcs = xpcs_create_mdiodev(priv->mii, addr);
+-		ret = PTR_ERR_OR_ZERO(xpcs);
+-	} else {
++	int ret;
++
++	if (!priv->plat->pcs_init)
+ 		return 0;
+-	}
+ 
++	ret = priv->plat->pcs_init(priv);
+ 	if (ret)
+ 		return dev_err_probe(priv->device, ret, "No xPCS found\n");
+ 
+-	if (xpcs)
+-		xpcs_config_eee_mult_fact(xpcs, priv->plat->mult_fact_100ns);
+-
+-	priv->hw->xpcs = xpcs;
+-
+ 	return 0;
+ }
+ 
+@@ -463,14 +442,10 @@ void stmmac_pcs_clean(struct net_device *ndev)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(ndev);
+ 
+-	if (priv->plat->pcs_exit)
+-		priv->plat->pcs_exit(priv);
+-
+-	if (!priv->hw->xpcs)
++	if (!priv->plat->pcs_exit)
+ 		return;
+ 
+-	xpcs_destroy(priv->hw->xpcs);
+-	priv->hw->xpcs = NULL;
++	priv->plat->pcs_exit(priv);
+ }
+ 
+ struct stmmac_clk_rate {
 -- 
 2.47.3
 
