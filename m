@@ -1,102 +1,117 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379D126B971;
-	Sat,  1 Aug 2026 05:12:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2361631715D
+	for <netdev@vger.kernel.org>; Sat,  1 Aug 2026 05:13:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785561133; cv=none; b=J84ZFeWNEAnuKQ7/q0vNw5TmDUstBanSANgA/ecfZ2EfGiXq5n4mgjbHCgKfaZY9WdCApASIwS2ORILrPsDlICyMddfmWqBElGxQOmEUdaQGjlWq0xFW/EAbU1iGTH01nKH0jjBBMwXe6uEhGfoGLJuvdQQAnf/sWwLIE+EbLJs=
+	t=1785561192; cv=none; b=GXy3XxT2FyB9DrBL9KsCiC6gpU8cyCVLQ08TigEqUc4VwE1cfaom/MdUaUBOqdSGueOo35XWg2r5D+4urBnw5ZnRy99sUaKYFXLjQ0SmXoG6ujtNswZPeDA7QpvUFhuD68wYGQlO06PrpZZ7ybfOHQG0swM1c6I5EVZOer/V6Fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785561133; c=relaxed/simple;
-	bh=emLeZnw4OIjThaxhqA/LDyYQqQAnTWcFZ2CC2sUoLC8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pHnE7cC1l/GSNhwlgWlKSEegPCITcXhorjOR7dbum/VmvY8Cq6640NO0020k0KaTGan8DxyT+h88V3qy6jOGYWlNeXfPlutnJ7atK0+H54SaZvFrUYXxpEgiX9TKG8bLpGuyqAQe0HhT/2d+oQVENxxXto0/OcP1nEhXD5hOPpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=207.46.229.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wC3HzwbgG1qXSpWAA--.9036S3;
-	Sat, 01 Aug 2026 13:11:56 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app4 (Coremail) with SMTP id zi_KCgAX_DQZgG1q8hjIAg--.52348S2;
-	Sat, 01 Aug 2026 13:11:53 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	david@ixit.cz,
-	mgreer@animalcreek.com,
-	oe-linux-nfc@lists.linux.dev,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Fan Wu <fanwu01@zju.edu.cn>
-Subject: [PATCH net v3 0/2] nfc: trf7970a: fix lifetime ordering around IRQ setup and teardown
-Date: Sat,  1 Aug 2026 05:10:56 +0000
-Message-Id: <20260801051058.354165-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1785561192; c=relaxed/simple;
+	bh=25QkIyti4jfl2dpoGtxp57JIya14rWwPoMAhxmEB9A8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=E3pm6UkT3QpQANjshl3wQWxTJunVcXu9so3BItfmLc0VpxT/70hJpfO8zRXjGkODgoRVYiPNNSO3B6EWV0vp3TlWgPzt7j5L8CodjLXb7LHawFtZ3O3O1G4QEYbGO+3JOKq5f6nLsPxpMv+P0fBuvqZN418l8XkRfsyjT9/2bxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--shivajikant.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ncUqAk0M; arc=none smtp.client-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--shivajikant.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ncUqAk0M"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38dc085b0a7so3017869a91.2
+        for <netdev@vger.kernel.org>; Fri, 31 Jul 2026 22:13:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785561190; x=1786165990; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mZyjRsYLJLAU7i/3YxTAQp7fjMphrbBH834dIHuncHY=;
+        b=ncUqAk0MGWv1nsUYA3UU/CH5HH2kCoGjSOep/Db5Kvs6XYzXHZW64ZX9F6n/qTEmfp
+         lBmoO/1ey72co7qQwr9tJEzr01lvs8wEq2aBkmWuQuWlWL3mOYXiVqTJTppd+41mRueF
+         UaVXBl08mH/6QEUmSI8s/3TQU2IR9qXYJDbkkoPcomzdYAdRNcrC1POirOhS0US55TQ/
+         aodZTwajK2giG44/NtPqsm/f1EZmE5UnS0Ab3KAolZ7tgusJldqR2AC8tX66yav/mh71
+         lUdVKFigW8/egj58dJx8zB+HIxAlDeI2PBSlgj8fTOqqvJxBvAKInRoWNePWjVDC5p75
+         XW0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785561190; x=1786165990;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mZyjRsYLJLAU7i/3YxTAQp7fjMphrbBH834dIHuncHY=;
+        b=T8qqTet4Q+k8WSwoj+To1yoxBzVvGMtI/yw6wW+rYkyl3xNgBxOR4SSLFqRlNIosP0
+         5/ePj+hvMUvXTUM35BgQrKlm/ZDVptgM9qSfUqQCm6C9SLHzW9IddX+GeHak49PwbJBv
+         cDV/KPH1OTX2RNIda7xmj2bz6M66CqZx+sfOzI9EsUHgRunbwMk/os+rmc58KeM4AS9e
+         Ac6izDfRN71hY6I6Alc92aXtJ1pAa4tkZtzcygVmmX0Z9awjL/Uxw0rBylWZMF13b1m+
+         QhRwXD7WQWkjxR8CTprHacuamBG0ah5KWC6SJ2Ac18S+Y60QquXoCcza9eerKgRfJpPC
+         rjTQ==
+X-Gm-Message-State: AOJu0YxOVick2jiV1g7IsW6h9YqP1KX7Q+XiZjh4CkxI+T98ak2Njstf
+	S/fQj0RhoZwah67Y5R6hjPRuMs4MjcqNYqHIG9Y0uBD9XaMY1mNQMSI+MNonaxB2qFEXrajZp1X
+	iQtMwTCQMUJkWw5cF2HK2pTrMag==
+X-Received: from pjv15.prod.google.com ([2002:a17:90b:564f:b0:38e:b851:fec5])
+ (user=shivajikant job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:2d4c:b0:381:23d5:693f with SMTP id 98e67ed59e1d1-38fbc4ea9f8mr2221027a91.28.1785561190254;
+ Fri, 31 Jul 2026 22:13:10 -0700 (PDT)
+Date: Sat,  1 Aug 2026 05:12:59 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zi_KCgAX_DQZgG1q8hjIAg--.52348S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?dDTSsAXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfnXz+g1OQfMo27QHy5TwQyZyI29s4XPrUUoM/I4cEgQRhL2gcCEq3jlm1XGvHysDteGCc
-	gEgLry6tynhUH1djB5ep9E6mavGmQbzmcFsnzP86
-X-Coremail-Antispam: 1Uk129KBj93XoWxJr18Cr1ftw17Xw4fXFyxZwc_yoW8XFyDpa
-	15ta1UKrWvyrnF9w43u3WxXFyrAa1rXw47uwn3Wa4xCFZ8CFnayr10g3y5ZF17Gr4fC3WI
-	yFyvvFy8Wa4DJwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
-	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
-	xVWUAVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
-	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s02
-	6xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_Jr
-	I_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v2
-	6r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj4
-	0_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8
-	JbIYCTnIWIevJa73UjIFyTuYvjxU7ID7DUUUU
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+Message-ID: <20260801051307.478469-1-shivajikant@google.com>
+Subject: [PATCH bpf-next v2 1/2] bpf: Allow IP_TRANSPARENT and
+ IPV6_TRANSPARENT in bpf_{set,get}sockopt()
+From: Shivaji Kant <shivajikant@google.com>
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org, kuniyu@google.com, anubhavsinggh@google.com, 
+	Shivaji Kant <shivajikant@google.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Two lifetime-ordering fixes for the trf7970a NFC digital driver.
+Currently, bpf_setsockopt() and bpf_getsockopt() for SOL_IP and SOL_IPV6
+only allow a small subset of socket options (such as IP_TOS,
+IPV6_TCLASS, and IPV6_AUTOFLOWLABEL). Calling bpf_setsockopt() with
+IP_TRANSPARENT or IPV6_TRANSPARENT fails with -EINVAL.
 
-Patch 1 sets up the lock and timeout work before the threaded IRQ is
-registered, and moves the lock to devm_mutex_init() so its teardown is
-part of the devres lifetime.
+Transparent proxying (TPROXY) and related networking components often
+rely on IP_TRANSPARENT and IPV6_TRANSPARENT to enable binding sockets
+to non-local IP addresses.
 
-Patch 2 depends on patch 1 and drains the timeout work across removal:
-it marks a running handler to skip completion, handles LISTENING_MD in
-shutdown, and cancels the work after the digital core stops issuing
-commands and before the digital device is freed.
+Allow IP_TRANSPARENT for SOL_IP in sol_ip_sockopt() and
+IPV6_TRANSPARENT for SOL_IPV6 in sol_ipv6_sockopt().
 
-These were previously sent as standalone patches. Per review feedback
-from Simon Horman they are respun as a series.
-
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Tested-by: Anubhav Singh <anubhavsinggh@google.com>
+Signed-off-by: Shivaji Kant <shivajikant@google.com>
 ---
+ net/core/filter.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v3:
-  - Respun as a 2-patch series with an explicit dependency.
-  - Patch 1: switch to devm_mutex_init(); remove the explicit
-    mutex_destroy() calls and the now-empty err_destroy_lock label.
-  - Patch 2: set ignore_timeout before send_err_upstream; handle
-    TRF7970A_ST_LISTENING_MD in shutdown.
-  - Patch 1 was previously sent standalone.
-
-init-order v1: https://lore.kernel.org/netdev/20260728031021.230831-1-fanwu01@zju.edu.cn/
-teardown v2:   https://lore.kernel.org/netdev/20260728030716.230626-1-fanwu01@zju.edu.cn/
-teardown v1:   https://lore.kernel.org/netdev/20260721133539.3195899-1-fanwu01@zju.edu.cn/
-
-
-Fan Wu (2):
-  nfc: trf7970a: set up lock and timeout work before requesting IRQ
-  nfc: trf7970a: quiesce timeout work before teardown
-
- drivers/nfc/trf7970a.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
-
+diff --git a/net/core/filter.c b/net/core/filter.c
+index c21c1daecf9d..04a9f9d8d07b 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -5645,6 +5645,7 @@ static int sol_ip_sockopt(struct sock *sk, int optname,
+ 
+ 	switch (optname) {
+ 	case IP_TOS:
++	case IP_TRANSPARENT:
+ 		if (*optlen != sizeof(int))
+ 			return -EINVAL;
+ 		break;
+@@ -5671,6 +5672,7 @@ static int sol_ipv6_sockopt(struct sock *sk, int optname,
+ 	switch (optname) {
+ 	case IPV6_TCLASS:
+ 	case IPV6_AUTOFLOWLABEL:
++	case IPV6_TRANSPARENT:
+ 		if (*optlen != sizeof(int))
+ 			return -EINVAL;
+ 		break;
 -- 
-2.34.1
+2.55.0.508.g3f0d502094-goog
 
