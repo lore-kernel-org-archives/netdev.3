@@ -1,89 +1,96 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228023C1D73;
-	Sat,  1 Aug 2026 21:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006902F3614;
+	Sat,  1 Aug 2026 21:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785618658; cv=none; b=tEVHeemsYLfoyMjqBpLgR+4+OBCGopqWu3xymSJ8sDpJixwMqM83pS+G6KJqTyJCIPc3LtXRKGDtPOTJxALH0QiAt751cwX17cQGp0E+CKYh814h+exHXu+rGDe5iaFPW1J0NesXHhyT0G6cogR+mDyoRRJ5sXRGFuvW5WSIefI=
+	t=1785618946; cv=none; b=m+bQ2qT2bNrt/wtdcsrRsYXwJOMZKQN+/wwUV4ul/UmIkjsIrZjxSe+LJcd/NSoU4LrWuNLiUzBQj19SrKBkWdmrTdPWgOfTpEEudSfQ+xhH4utaIeIEKQDxzg/pzn+qj4Eujh5tVWdB27SJOiGnaOW7ms1BXy0lddvveGio8KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785618658; c=relaxed/simple;
-	bh=7ytS59q/d1LZxpTExwmoFhufllkMrTSSOJBL4YuTu1M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RtSXbz5Ia8pZIU5EBrBopB/F5KPS4+Dv9pLMs294ItJ7KaiEke8tQSExroJM+V5ykAyp0ySszBCmvsMANTCMIsXSFD+c5X/XVTOui2iqjn8g4qD3a85OslH+uKp8Rog3d9WQCiThY6RgjTHxAhg9m39L+PLJN89zuNV5+IuUUaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=h+Ye2Y2i; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785618946; c=relaxed/simple;
+	bh=yw+MLqi6kPElwJpEjcpjKLSULkrOxxXPtHNEfOiqU90=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=aDdUGcwU73c6xUwTAEk0ZHP0RkC/8990AoYSmFBu0aTx2jJUntQKyPPg4GxQkacfe2F7W9OtaPqT6lsn/YiY8ouYqZr2dtGAtIrSWCK2D2EKEwK0a+VGol3v00mLhJEBEi17/TZVY5km8uvdDfr8EKARfqyS+dcFcVxqSVof5CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iu2suDeR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="h+Ye2Y2i"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=WpmQys7H6hIxilHgeHZVd3jnJ+OeJANKYZDRzFLoH74=; b=h+Ye2Y2iLLUJ1QQlXmbh01ySri
-	9yuVBIQd6pnPs5s0P+r9KLT8oxLoZP8qHe7FSbIzmlvoXmQ80G7C0BaKFZOK67HRwRPly03vRf6x9
-	A6zZK7VTniRo+CG2RmmvB5hifM1AhL526L4BKAw1DFdwZLRhxxirKHr7SnjCG35ahrE4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wqGyd-00FQOU-R5; Sat, 01 Aug 2026 23:10:39 +0200
-Date: Sat, 1 Aug 2026 23:10:39 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Coia Prant <coiaprant@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>, Vinod Koul <vkoul@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	David Heidelberg <david@ixit.cz>, netdev@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-renesas-soc@vger.kernel.org,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: Re: [PATCH v2 06/10] net: pcs: xpcs: add ANRESTART support for SGMII
- link recovery
-Message-ID: <cfddb747-11d0-476d-8402-e0886cca582e@lunn.ch>
-References: <20260801142244.679437-2-coiaprant@gmail.com>
- <20260801142244.679437-8-coiaprant@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iu2suDeR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1621F00AC4;
+	Sat,  1 Aug 2026 21:15:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785618944;
+	bh=ALbadrPlzW4YdLs9fKrKevLx7dPEsNFJd83WcTvC4co=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=iu2suDeRu/dT8WnlAiU+FK9hRedcQZ3iPHg2hYKJN80fk09m4XzYI9nVyPNEaqZxa
+	 REtFtLP5uBVTM+EjII/Pq2mthEdWYqGKeYz9v18FgcbvdJOyzkV3dO7ahaaJsaneZo
+	 Nj/lmFrmw2GUo3yDwd4GcPvXOPAIaYWm1+JE387Q1t17HQeh+thY7ma+gtsatcMRSW
+	 fxImTGZJ9SmQAxQNHKBBgGEZfmaq1RkbFe6VWm2eskesrtnAAqVi8GKAMpnMrGrin3
+	 HZmaSHy271wjIwRn71y/FeeZXnOA3FtU2qpJbZpU43UWLquFFKChIveXiKBHXb9WCD
+	 nOCOrht2bkZ2g==
+Message-ID: <4b763098-a91e-46f0-88c9-d08670d31328@kernel.org>
+Date: Sat, 1 Aug 2026 14:15:40 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260801142244.679437-8-coiaprant@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: Correct white-space style
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Mike Leach <mike.leach@arm.com>,
+ James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>,
+ Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+ Jyri Sarha <jyri.sarha@iki.fi>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+ Patrice Chotard <patrice.chotard@foss.st.com>,
+ Andi Shyti <andi.shyti@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>,
+ Lee Jones <lee@kernel.org>, Johannes Berg <johannes@sipsolutions.net>,
+ Jeff Johnson <jjohnson@kernel.org>, Viresh Kumar <vireshk@kernel.org>,
+ Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>,
+ Yangbo Lu <yangbo.lu@nxp.com>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
+ <ukleinek@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+ Samuel Holland <samuel.holland@sifive.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Jens Wiklander <jenswi@kernel.org>,
+ Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>,
+ YC Hung <yc.hung@mediatek.com>, Svyatoslav Ryhel <clamor95@gmail.com>,
+ Sean Wang <sean.wang@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Peter Ujfalusi <peter.ujfalusi@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ coresight@lists.linaro.org, linux-arm-msm@vger.kernel.org,
+ linux-ide@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org,
+ linux-i2c@vger.kernel.org, mfd@lists.linux.dev,
+ linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-pm@vger.kernel.org, netdev@vger.kernel.org, linux-pwm@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-usb@vger.kernel.org
+References: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
+From: Jeff Johnson <jjohnson@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> -	/* Clear AN complete status or interrupt */
-> -	if (state->an_complete)
-> +	if (state->an_complete) {
-> +		/* Clear AN complete status or interrupt */
->  		xpcs_write(xpcs, MDIO_MMD_VEND2, DW_VR_MII_AN_INTR_STS, 0);
->  
-> +		/* Initiate the next round of AN */
-> +		xpcs_modify(xpcs, MDIO_MMD_VEND2, MII_BMCR, BMCR_ANRESTART,
-> +				    BMCR_ANRESTART);
-> +	}
-> +
+On 8/1/2026 12:56 PM, Krzysztof Kozlowski wrote:
+> Correct a few white-space issues, like double space after '=' or before
+> bracket '{' characters, which will be flagged by dt-check-style.  No
+> functional changes.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> 
+> ---
+>  .../bindings/net/wireless/qcom,ath10k.yaml    | 34 +++----
 
-This probably needs more wide spread testing. I would be afraid that
-if you kick off an AN cycle, you loose the link until it completes?
-You would of noticed that on your hardware, but other hardware
-obviously behaves differently...
+Acked-by: Jeff Johnson <jjohnson@kernel.org> # qcom,ath10k.yaml
 
-   Andrew
+
