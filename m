@@ -1,67 +1,64 @@
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CBB3905F9;
-	Sun,  2 Aug 2026 08:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205343921FA;
+	Sun,  2 Aug 2026 08:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785660264; cv=none; b=mWlM9PTpebBCLcyQAMUyRMII70mQCoz29eZBt4GVRZTbysR3Z4NphL8GvDgFpN1S3yObyT9X09nIj1BtTWsd8I9w+x4u4M5In/XSGbpcJMxdMUsVUcOPdFOl1DlMLYCyShgPEWqlXJIThd1BK4XKbUCvW5HKWFmHiFp7USncGNg=
+	t=1785660377; cv=none; b=RSU4DhBm6foF9Nyou9FVGKSvqcqvYP3fJAWBINbgAZy7ZCIO0Yt4II8UpZ9Utufd6ppDrhmMt+KMcUTCR5V+oYHxIvsLBWUzF0rLb9B9q3bSw86S7hhvU/DVD0XABWS5hVluAE7dgTcnSQ194xW0Eq64Tfci9CV6AslxOacGxCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785660264; c=relaxed/simple;
-	bh=WPvNJ9OfqPBXgIaK4+bgM+pCfrhZbsmVBB2ZXSRoPZE=;
+	s=arc-20240116; t=1785660377; c=relaxed/simple;
+	bh=o3LeybA06lYiSr6bJJ1QdBAom8CkwEsciaADoEdDPDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oqjNgMJU7n8cDoFlZIiRJwW0GShpkKTWnwf/fri9EN89CJbtpH3BuSVFjGRl5d91+aOJbldTF9JmbjaRPzcI7jLYYRoh1avOgU2SYDyAAt+ash4EDusd1n0ZmMlazoHetFMUFe8uZCmOH4FbTiGC9n+v6vz+AuSoYmI4V46vRxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=KHK3/zjo; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version:Content-Type; b=khb59slHIyqcZaA20p+rqokiZlNl2vjHlPHj9z/rYJ1YiXotxji3GXDTKp7UblgZK8L08VEwftMopO8B/1fZiDLTgWW1eUtZjSPHlg38Be+UhmEYfK4p+1xPZ16lgvZ1edYVTX+Pb7HqdRTTcjsL9l26XY3bhh68ExXzZwUpeIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=TjDJ5vhm; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="KHK3/zjo"
-Received: by dvalin.narfation.org (Postfix) id 89F75207F7;
-	Sun, 02 Aug 2026 08:44:17 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="TjDJ5vhm"
+Received: by dvalin.narfation.org (Postfix) id 6EB0D1FFF2;
+	Sun, 02 Aug 2026 08:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1785660257;
+	s=20121; t=1785660367;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DoRGegAQrMXVj9vfjdYtiiDqXPNn8IszMcPROOA/1qE=;
-	b=KHK3/zjoEG8YV2a8JG6qhxXi9vAllC4+5XwQ+hfMmBpxRgx7u0cE79P4EtuNxLfDyZr4zi
-	AQVBqXAGeyGWVGhRWK1f1Dc5EiFexzBwQdvPGZdR7zyT7vWcprSu+wfPyVrlQ28AjG6ws7
-	4ecHCytqkp0xP8do3NutG4pu3vfe4xo=
+	bh=jaWkTsruOUYnQJYEKZyhk1rUbK2SnP3vO1ZzJwOZd9M=;
+	b=TjDJ5vhm+U8yvYsJwm5dhP4stlAEpYt5lG7oJjUZWWlyhvhcBBYlioL/VSBPWpwssbMXaJ
+	gTjjBUry8wkkOeVVHzfoKTnWjfH110y8y5opWhT9WykOVzYcVtEebcTgp96XzCC8rSdvQV
+	jJvFoHfn+5LaW/QU+QjrCw7ItK4u2Dg=
 From: Sven Eckelmann <sven@narfation.org>
-To: horms@verge.net.au, ja@ssi.bg, pablo@netfilter.org, fw@strlen.de,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- David Lee <david.lee@trailofbits.com>, Kyle Zeng <kylebot@openai.com>
-Cc: Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
- phil@nwl.cc, netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject:
- Re: [PATCH] ipvs: clear IPv4 options after rebasing tunnel ICMP errors
-Date: Sun, 02 Aug 2026 10:44:15 +0200
-Message-ID: <23471153.EfDdHjke4D@sven-desktop>
-In-Reply-To: <20260731140822.567128-1-david.lee@trailofbits.com>
-References: <20260731140822.567128-1-david.lee@trailofbits.com>
+To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, David Lee <david.lee@trailofbits.com>
+Cc: Kyle Zeng <kylebot@openai.com>,
+ Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] vxlan: keep the last remote linked during FDB flush
+Date: Sun, 02 Aug 2026 10:46:05 +0200
+Message-ID: <3985450.iIbC2pHGDl@sven-desktop>
+In-Reply-To: <20260731141311.570187-1-david.lee@trailofbits.com>
+References: <20260731141311.570187-1-david.lee@trailofbits.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart8252458.EvYhyI6sBW";
+Content-Type: multipart/signed; boundary="nextPart9932979.CDJkKcVGEf";
  micalg="pgp-sha512"; protocol="application/pgp-signature"
 
---nextPart8252458.EvYhyI6sBW
+--nextPart9932979.CDJkKcVGEf
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
 From: Sven Eckelmann <sven@narfation.org>
-Date: Sun, 02 Aug 2026 10:44:15 +0200
-Message-ID: <23471153.EfDdHjke4D@sven-desktop>
-In-Reply-To: <20260731140822.567128-1-david.lee@trailofbits.com>
-References: <20260731140822.567128-1-david.lee@trailofbits.com>
+Date: Sun, 02 Aug 2026 10:46:05 +0200
+Message-ID: <3985450.iIbC2pHGDl@sven-desktop>
+In-Reply-To: <20260731141311.570187-1-david.lee@trailofbits.com>
+References: <20260731141311.570187-1-david.lee@trailofbits.com>
 MIME-Version: 1.0
 
-On Friday, 31 July 2026 16:08:22 CEST David Lee wrote:
-> Fixes: f2edb9f7706d ("ipvs: implement passive PMTUD for IPIP packets")
+On Friday, 31 July 2026 16:13:10 CEST David Lee wrote:
+> Fixes: c499fccb71cb ("vxlan: vxlan_core: Support FDB flushing by destination VNI")
 > Cc: stable@vger.kernel.org
 > Bug found and triaged by OpenAI Security Research and 
 > validated by Trail of Bits.
@@ -86,20 +83,20 @@ On Friday, 31 July 2026 16:08:22 CEST David Lee wrote:
 
 Regards,
 	Sven
---nextPart8252458.EvYhyI6sBW
+--nextPart9932979.CDJkKcVGEf
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part.
 Content-Transfer-Encoding: 7Bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCam8DXwAKCRBND3cr0xT1
-y23mAQCRh61gIcZEFMdnDMpxQKnLNejoyvremhxy//miWt93KwD/fmuizOlqmkKk
-G9YMwTMDuJWK7btMKLTt2q1CK7f37wg=
-=Kisi
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCam8DzQAKCRBND3cr0xT1
+y/+qAQCYO4/lgKSB5RXFbhwe2OfZJ8YYWHysLHcT8VcoxUvMEQEAgAhp3V7DH+ri
+07OdGLw0XpRnWcRbJs/1+Ey+DckTvgY=
+=yCaE
 -----END PGP SIGNATURE-----
 
---nextPart8252458.EvYhyI6sBW--
+--nextPart9932979.CDJkKcVGEf--
 
 
 
