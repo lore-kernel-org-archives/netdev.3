@@ -1,36 +1,38 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D122F3AC0FD;
-	Sun,  2 Aug 2026 11:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489633AB288;
+	Sun,  2 Aug 2026 11:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785670849; cv=none; b=NfATbCzlAUGX49rxg6PtimyuTkNpB+T482mrxtcPH8dqb0Ra/hQeoFk2VTFw4rO4g1g7ZxKFCreL9ZeM8IQDBURF2wk6CculiCwwrqfDWn8SKdJ6DOhitCkS3c6B9jPtU4Zh7V1QESQtfwjjX1da5Osz1WF4UQSqOhbpDLBm0R4=
+	t=1785670851; cv=none; b=SXriTCphkmCKruYVFnlNo6gIv3219NeU1GIcjA4scai5RO8A1xSf6urMK7qt2NTNLMJ+19ZiBlnv6+zDPMQ+mhqW47uPbFR9pUYcMFfWjh33jvdu+4G+HEZ6SGM7Q1s4DBiDwfBXf6JYf1lhMgnO/qYLuwAzO+ukADbl2A+Qyc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785670849; c=relaxed/simple;
-	bh=Vjy6vcEm26EQ3ME0NeL54LP3nL8x1XKhpziD1b0fIbw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OSMU+e0f0/3ivPcXjbCcwgGH1u7or1SfOFLA19CjXskG/6sNyUgRc1Auxr5VRW9e9eO+T2JGcMaYubdwseDZkAtv6M3EGCPl2P8jOTkn2pk8NXZmyOhF/zb6Vk84wpE7q0Vb3EG3KJJNB6H0+H5b5x2SwpP7zSSG3AxmvXGKhMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JaqMTTBD; arc=none smtp.client-ip=185.246.85.4
+	s=arc-20240116; t=1785670851; c=relaxed/simple;
+	bh=vKGg0kS4TUfyvcodHT4FDT6TFON7J/kjxXYGomKvL/g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HCyZ5Lt1o55Gd5XHryXlR8CGN5C7K/Lrm3pNC6MfbDF/jnf25gPupsncKRAqd15qtnT+jtOGsQX7VhQHVNuzNaL47P5FFAjhxt6XjmSiwRvX6tKQ1Ptz+jA91MstA0kq25psRB6Tqz1buX1t0BXF5cqQEEsh/Ta995DYg5k0RU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Q6v6jRA/; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JaqMTTBD"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Q6v6jRA/"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id BEFF44E4109E;
-	Sun,  2 Aug 2026 11:40:30 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 72C0E4E410A1;
+	Sun,  2 Aug 2026 11:40:42 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 73C526029B;
-	Sun,  2 Aug 2026 11:40:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 71A1311C1757D;
-	Sun,  2 Aug 2026 13:40:17 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3FDA96029B;
+	Sun,  2 Aug 2026 11:40:42 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 009DF11C1757F;
+	Sun,  2 Aug 2026 13:40:35 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785670825; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=VxVdnKc+/FhAvBYsYt2BDF3N409QLaiV2tmViDCNuLY=;
-	b=JaqMTTBDcaKTn/CzASTnwfG/jYpGkbF/IzGwgYv7uZOk7FDd8hwdoly7MQFTI+rZ/gM46B
-	2Af2aKmlqwDp7jVFpFMXQ3TQGCjG9iazVMW/Kwc2QsEVwHQgAafKlV9OxeHzQFjf+fNzPI
-	HKywCTO814Ka+P5rw5JbrxHikVI2N8bgzVpwy4IHvIsXaZSJJXLRoLnWZ4+eNvDoOdVXt4
-	yjDiNddKZ57mBUGH6sTSRs4errjxeYl+fmW3eNKOc1lo4L3VmkMntTIvNsTpHhGdltgMaJ
-	sGl/2tbfcBgETDq9GdPnzMRGy8ltOGI7gbiaHM00zpmL7H/FFQ+b/mH5zc/jrQ==
+	t=1785670837; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=r4QXIQCdFZb4CzT4aVD2qApaTNEzh2KXvqhEKJ0aoFA=;
+	b=Q6v6jRA/qLormalEK99NvV0UHWZVCUQOouW2uqL7p6onWkt5R/ER9DoKWBPCsCnvF5pC1K
+	iK+1yfjTHKe6s8ZlIrO2uaa9AsHQddf2w+khDWy6mU3g2k4cF7jkkoS13HDB6iQD8T/l5B
+	5CKqDRaK/DYX6CYvUF6gnUKedp3kRnE/0eKplg/RBylucgx9r95rRVh1v/f4Ka0zgH3ZPm
+	1wWn4E4b9BaMsTtgX4eIccZAP7sYCcihEkD6b56+2xgzfFqIHmLi27sLiuoqgE6FfqqPYS
+	c7CQxxRbGqEBUd1pM+ayk6xEL7lsL2JRu+vE0ixkSULQi9vY3WYPXcaz8AkYlA==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -48,10 +50,12 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH net-next 0/2] net: stmmac: Cleanup rx coalescing computation when using RIWT
-Date: Sun,  2 Aug 2026 13:40:12 +0200
-Message-ID: <20260802114015.214212-1-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next 2/2] net: stmmac: ethtool: Address off-by-one when reading the coal rx-usecs
+Date: Sun,  2 Aug 2026 13:40:14 +0200
+Message-ID: <20260802114015.214212-3-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260802114015.214212-1-maxime.chevallier@bootlin.com>
+References: <20260802114015.214212-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,44 +65,60 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Currently when configuring interrupt coalescing on devices that relies
-on the Receive Interrupt Watchdog Timer feature of dwmac, the
-computation of the RIWT timings leads to off-by-one values when
-reporting the timings back to userspace.
+When reading the rx-usecs coalescing parameters on a dwmac variant that
+uses the RIWT for RX interrupt coalescing, we convert the riwt value to
+usecs :
+ - One riwt cycle is 256 clock ticks, we compute how many ticks in $riwt
+   cycles
+ - divide that by how many ticks in a microsecond, and we get the
+   rx-usecs.
 
-RIWT works by arming a watchdog timer upon receiving frames with the RI
-bit not set in the descriptor. The timer duration is expressed in units
-of 256 stmmac clock ticks, and therefore requires a bit of computation
-to derive it :
+The opposite computation is done when setting the rx-usecs param.
 
-riwt = (rx_usecs * n_clk_ticks_per_usec) / 256
+Because of the 256 ratio, we're subjected to off-by-one errors in the
+value read-back, which can be reliably measured on i.mx8MP :
 
-and conversely
+$ ethtool -C eth1 rx-usecs 102
 
-rx_usecs = (riwt * 256) / n_clk_ticks_per_usec
+$ ethtool -c eth1
+  Coalesce parameters for eth1:
+  [...]
+  rx-usecs: 101
 
-This computation as-is leads to a consistent off-by-one when setting
-then getting back the rx-usecs value due to rounding errors (by truncation):
+Let's be more explicit about the rounding for the riwt to usec
+computations by using DIV_ROUND_CLOSEST, which solves the off-by-one.
 
-ethtool -C eth1 rx-usecs 42
-ethtool -c eth1
- -> reports rx-usecs: 41
+This does change the boundaries of accepted rx-usecs parameters, as the
+previously accepted values were in the 16-246 us range, and now fall
+into the 15-245 range on imx8mp.
 
-Let's use DIV_ROUND_CLOSEST instead for the computations. It does have
-one side effect, the accepted boundaries for rx-usecs also shifts by one
-now, going from [16us, 246us] to [15us, 245us]. For that reason, I'm not
-targeting the net tree here, and it's overall a very small issue.
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Maxime
-
-Maxime Chevallier (2):
-  net: stmmac: ethtool: Comment the magic numbers in RIWT computation
-  net: stmmac: ethtool: Address off-by-one when reading the coal
-    rx-usecs
-
- drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+index eebfd6976aaa..154cc0c7623d 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+@@ -762,7 +762,7 @@ static u32 stmmac_usec2riwt(u32 usec, struct stmmac_priv *priv)
+ 	/* Receive Interrupt Watchdog Timer (riwt) has a resolution of 256
+ 	 * ticks.
+ 	 */
+-	return (usec * (clk / USEC_PER_SEC)) / 256;
++	return DIV_ROUND_CLOSEST(usec * (clk / USEC_PER_SEC), 256);
+ }
+ 
+ static u32 stmmac_riwt2usec(u32 riwt, struct stmmac_priv *priv)
+@@ -775,7 +775,7 @@ static u32 stmmac_riwt2usec(u32 riwt, struct stmmac_priv *priv)
+ 			return 0;
+ 	}
+ 
+-	return (riwt * 256) / (clk / USEC_PER_SEC);
++	return DIV_ROUND_CLOSEST(riwt * 256, clk / USEC_PER_SEC);
+ }
+ 
+ static int __stmmac_get_coalesce(struct net_device *dev,
 -- 
 2.55.0
 
