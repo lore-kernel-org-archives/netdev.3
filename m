@@ -1,15 +1,16 @@
 Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C847489888;
-	Sun,  2 Aug 2026 08:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122D221C16A;
+	Sun,  2 Aug 2026 08:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785657670; cv=none; b=HBA3u266np15+EzHPO2wh2+n/TjStNRaNggKDNO2BAkA630PGYsqvquKRzc9G1UAxUpHgWb1Ry8/Ubp+7u1r9fXEwr+1z0lePK2jN3otKvHSaCjiYqpo6l53y07HqWHKbAgFuEePo3f76bt9OYcxnFXTnVFbQoZQy7z/E7r6l2Q=
+	t=1785658877; cv=none; b=kVsGI997MFws7gyD8DwLE54cAMB8n2JakYPRsQGV4FXJ1pz1qcv9bMDtvZLnLOFvmvpTCHoBmJY1L2bDBEQtC3pqbEDN+qryZJrXrYGMnQQOahNp/S2JV33ZIOZxeQ/S1BWGKyIzgdysIfzADBDlP3lKzdqngT1W3XvO4cYVM+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785657670; c=relaxed/simple;
-	bh=SgdfmILvwbI7N3IJIronXWz6+BAgkXZ0nKuzwxEACKc=;
-	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=NsgUd+Ims0aOE+SRHuTY6CyUPGM8/t+cQiGfZWuKHpUVRphYOQWvojKY8L1EOaVGuqiguAOeMlEroF8XwmkClFfXLYEBeOUS7VnHsHSYfHHEVagMAnLAQrfTv3UiQv/VP3vCMCoAHFd+DcfZo3+wKyE69llL/60KxJJJmA8Cnpk=
+	s=arc-20240116; t=1785658877; c=relaxed/simple;
+	bh=HG9A6NY1tvh9TrmCGlsZylls0emvvxd/8Z9geZLiY0Y=;
+	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
+	 Subject:Content-Type; b=g+P6GQybX0WdFdMKqTxiGlHBbW2eNQgjl4b5G4hJ5vqizBTOSE96+egdweq0wYEMsQRbX1zFl1UbiD7jFLyA4xi2uJ/pu1jCy7F2HLJDGy1mCsPbxqtxRqeMXUXoHRxdS6vf1ixEkiQHvGCtbmDClfN56IZezxjRYfx3DWr60c0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
@@ -17,19 +18,21 @@ Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4hCXLG0fVyz55YBJ;
-	Sun, 02 Aug 2026 16:00:54 +0800 (CST)
-Received: from njb2app06.zte.com.cn ([10.55.23.119])
-	by mse-fl2.zte.com.cn with SMTP id 67280k7N027856;
-	Sun, 2 Aug 2026 16:00:46 +0800 (+08)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4hCXnd3wHRz55y22;
+	Sun, 02 Aug 2026 16:21:09 +0800 (CST)
+Received: from njy2app02.zte.com.cn ([10.40.13.116])
+	by mse-fl2.zte.com.cn with SMTP id 6728L2Sd036287;
+	Sun, 2 Aug 2026 16:21:02 +0800 (+08)
 	(envelope-from han.junyang@zte.com.cn)
-Received: from mapi (njy2app01[null])
+Received: from mapi (njb2app07[null])
 	by mapi (Zmail) with MAPI id mid204;
-	Sun, 2 Aug 2026 16:00:48 +0800 (CST)
-X-Zmail-TransId: 2af96a6ef930a91-a06d6
+	Sun, 2 Aug 2026 16:21:04 +0800 (CST)
+X-Zmail-TransId: 2aff6a6efdf0866-914ba
 X-Mailer: Zmail v1.0
-Message-ID: <20260802160048653KdUvSUgDsEs4zwYF9Ey0q@zte.com.cn>
-Date: Sun, 2 Aug 2026 16:00:48 +0800 (CST)
+Message-ID: <202608021621043761zZMwCny1e6y0TRFLQHxx@zte.com.cn>
+In-Reply-To: <20260802160048653KdUvSUgDsEs4zwYF9Ey0q@zte.com.cn>
+References: 20260802160048653KdUvSUgDsEs4zwYF9Ey0q@zte.com.cn
+Date: Sun, 2 Aug 2026 16:21:04 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,207 +45,383 @@ To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
         <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHYxMCAwLzJdIEFkZCBaVEUgRGluZ0hhaSBFdGhlcm5ldCBQRiBkcml2ZXI=?=
+Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHYxMCAxLzJdIGRpbmdoYWk6IGFkZCBaVEUgbmV0d29yayBkcml2ZXIgc3VwcG9ydA==?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 67280k7N027856
+X-MAIL:mse-fl2.zte.com.cn 6728L2Sd036287
 X-TLS: YES
 X-ENVELOPE-SENDER: han.junyang@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Sun, 02 Aug 2026 16:00:54 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Sun, 02 Aug 2026 16:21:09 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A6EF936.000/4hCXLG0fVyz55YBJ
+X-Fangmail-MID-QID: 6A6EFDF5.000/4hCXnd3wHRz55y22
 
 From: Junyang Han <han.junyang@zte.com.cn>
 
-This series adds initial support for the ZTE DingHai Ethernet controller,
-a high-performance PCIe Ethernet device supporting SR-IOV, hardware
-offloading, and advanced virtualization features.
+Add basic framework for ZTE DingHai ethernet PF driver, including
+Kconfig/Makefile build support and PCIe device probe/remove skeleton.
 
-Changes from v9:
-- Makefile: remove unnecessary ccflags-y -I$(src).
-- zxdh_pf_pci_init(): dma_set_mask_and_coherent() never fails for
-  DMA_BIT_MASK(64).Just call it once.
-- zxdh_pf_probe(): reorder local variable declarations in reverse
-  xmas tree order.Don't print dev_err on devlink_alloc() failure.
-- Remove redundant initialization of fields in kzalloc'ed structs
-  (bar_chan_valid, vepa).
-- en_pf.h: drop unused includes,forward declaration of struct
-  devlink, unused enum zxdh_coredev_type, and unused struct fields
-  (bar_chan_valid, vepa, irq_lock, lock mutex, coredev_type).
-- Reply to Sashiko's review comments:
-  (1) zxdh_pf_map_capability(): validate the BAR index against
-      ZXDH_PF_MAX_BAR_VAL right after re-reading it from config space.
-  (2) zxdh_pf_map_capability(): bound-check length + offset (instead of
-      minlen + offset) against the BAR size before mapping, so the reported
-      *len never exceeds the actually mapped region and later MMIO accesses
-      cannot run past the pci_iomap_range() boundary.
-  (3) Search capabilities with IORESOURCE_MEM only (common/notify/device
-      cfg), matching the pci_request_selected_regions(IORESOURCE_MEM) call,
-      so a capability located in an I/O BAR is never mapped without having
-      been requested.
-  (4) zxdh_pf_notify_cfg_init(): rewrite 
-      "if (notify_length + (notify_offset % PAGE_SIZE) <= PAGE_SIZE)" as a
-      subtraction: notify_length <= PAGE_SIZE - (notify_offset % PAGE_SIZE).
-      This removes the addition, so there is no integer wrap a
-      malicious length could exploit to bypass the check.
-
-
-Changes from v8:
-- Unify the three prefix variants (dh_core* / dh_pf* / zxdh_pf*)
-  on the vendor namespace zxdh_* .
-- Address the _dev / _device suffix inconsistency: zxdh_pf_device
-  -> zxdh_pf_dev, matching zxdh_core_dev and the upstream
-  pci_dev / net_dev / usb_dev convention.
-- Keep struct zxdh_core_dev and struct zxdh_pf_dev split, with
-  zxdh_pf_dev hung off zxdh_core_dev::priv via the container-of
-  pattern. The same zxdh_core_dev handle will be shared by the
-  SF (Sub-Function) driver queued for the next merge window,
-  and by MPF drivers further out. Each device type hangs its own
-  private struct off priv: PF -> zxdh_pf_dev, SF -> zxdh_sf_dev (planned).
-  Merging now would force a re-split when SF lands.
-- Address v8 review comment "introduce functions yet you never use
-  them".
-- Wire up zxdh_pf_modern_cfg_init() into the probe path and
-  zxdh_pf_modern_cfg_uninit() into the remove path.
-- Drop the ZXDH_CONFIG_S_* and ZXDH_MSI_NO_VECTOR macros from
-  dh_queue.h.
-
-Changes from v7:
-- Remove the redundant depends on NET_VENDOR_ZTE
-  since it's already implied by the enclosing if NET_VENDOR_ZTE 
-  block in the parent Kconfig.
-- Check BAR 0 is an IORESOURCE_MEM resource before ioremap().
-- Rework .shutdown to quiesce hardware only. 
-- Add NULL guards in zxdh_set_mac() and zxdh_get_mac().
-- Zero the output buffer in zxdh_pf_get_vf_mac() up front.
-
-- Two further AI-review points were investigated and require no
-  code change:
-
-  (1) *len is written before the bounds check inside
-      zxdh_pf_map_capability. The two fields written through
-      *len and *bar_off are pf_dev->notify_len and
-      pf_dev->dev_cfg_bar_off, both populated from this
-      function. pf_dev->notify_len is only consulted when
-      pf_dev->notify_base != NULL, which only happens when
-      the corresponding map_capability() call returned a
-      non-NULL pointer; pf_dev->dev_cfg_bar_off is only
-      consumed by zxdh_pf_get_vf_mac and
-      zxdh_pf_set_vf_mac_reg, both of which gate their
-      access on pf_dev->pf_sriov_cap_base. So the early
-      *len / *bar_off writes cannot produce values that
-      end up consumed.
-
-  (2) The expression off * notify_offset_multiplier is
-      u16 * u32; the overflow only triggers when
-      notify_offset_multiplier exceeds UINT_MAX / 65535
-      (≈ 65537), which is well beyond any value a PCI
-      config register would carry for this field. A
-      malformed multiplier of that magnitude would also
-      fail sane probing of the rest of the cap layout, so
-      it cannot reach this arithmetic. The boundaries in
-      practice are enforced by the 64-bit comparison at
-      the top of zxdh_pf_map_vq_notify's notify_base
-      branch, where off is promoted to u64 before the
-      multiply. The three subsequent 32-bit multiplies in
-      that function only feed pointer arithmetic against
-      pf_dev->notify_base; a wrong offset would resolve
-      to an address outside the mapped region and fail on
-      access rather than corrupt kernel state.
-
-
-Changes from v6:
-- Clean up PCI device ID table (drop `, 0`, use `{ }` sentinel)
-- Move dh_core_alloc_priv/dh_core_free_priv from header to .c,
-  they don't need to be `static inline`
-- Use `if (!x)` and drop the "%i, x" dev_err() messages in
-  common/notify cfg init.
-
-Changes from v5:
-- Drop dev_info() log spam.
-- Propagate the real error code from dh_pf_pci_init() in
-  dh_pf_probe() instead of hard-coding -ENOMEM.
-- Register devlink only after dh_pf_pci_init() succeeds, and
-  in dh_pf_remove()/dh_pf_shutdown() unregister devlink
-  before tearing down PCI/mutex/priv.
-- Drop the "dh_dev->priv = NULL" assignment from
-  dh_core_free_priv().
-
-Changes from v4:
-- Fix sparse warning: add __iomem annotation to priv pointer
-- Fix Clang format warning
-- Use "dinghai:" as patch subject prefix
-- Ensure proper patch threading
-
-Note: Sent manually due to temporary git send-email unavailability
-in our environment. Will use git send-email or b4 for future
-submissions. Apologies for any inconvenience.
-
-Changes from v3:
-- Merged patches 1 and 2: 
-  Combined initial framework with logging infrastructure
-  for better code organization and reduced patch count. This was done because
-  the logging infrastructure now uses Linux's built-in dev_err(), dev_info(),
-  dev_warn(), etc. macros instead of a custom logging system.
-- Removed unnecessary variable initialization: 
-  Fixed "don't initialise variables".
-- Fixed variable declaration order: 
-  Applied "Reverse Christmas tree" ordering with variables
-  declared from longest to shortest line length.
-- Code quality improvements:
-  Fixed all checkpatch.pl issues (alignment, formatting, etc.).
-
-Changes from v2:
-- Address maintainer feedback from v2 review:
-  * Remove meaningless initialization
-  * Change dh_pf_pci_table to static const for better encapsulation
-  * Simplify MODULE_DESCRIPTION for brevity
-- Coding style improvements:
-  * Ensure all lines are within 80-column limit
-  * Use kernel types (u32/u8) consistently throughout
-  * Improve code readability with better formatting
-
-
-Changes from v1 (addressing feedback from AndrewLunn):
-- Update copyright years to 2022-2026
-- Remove DRV_VERSION, MODULE_VERSION and related boilerplate
-- Fix MODULE_AUTHOR to use person with email address
-- Use module_pci_driver() instead of manual init/exit
-- Remove empty suspend/resume callbacks
-- Replace char priv[] flexible array with void *priv + kzalloc
-- Switch logging from printk wrappers to dev_*() based macros
-- Remove dh_helper.h and dh_log.c, simplify to dh_log.h only
-- Fix variable declaration ordering (reverse Christmas tree)
-- Remove unnecessary NULL check in remove and pf_dev=NULL in probe
-- Fix indentation and remove unnecessary type casts
-- Use kernel idiomatic "if (ret)" style
-
-This is the initial submission and only includes the PF (Physical Function)
-driver. The VF (Virtual Function) driver will be submitted separately.
-
-Junyang Han (2):
-  dinghai: add ZTE network driver support
-  dinghai: add hardware register access and PCI capability scanning
-
- MAINTAINERS                                 |   6 +
- drivers/net/ethernet/Kconfig                |   1 +
- drivers/net/ethernet/Makefile               |   1 +
- drivers/net/ethernet/zte/Kconfig            |  20 +
- drivers/net/ethernet/zte/Makefile           |   6 +
- drivers/net/ethernet/zte/dinghai/Kconfig    |  34 ++
- drivers/net/ethernet/zte/dinghai/Makefile   |   7 +
- drivers/net/ethernet/zte/dinghai/dh_queue.h |  56 +++
- drivers/net/ethernet/zte/dinghai/en_pf.c    | 449 ++++++++++++++++++++
- drivers/net/ethernet/zte/dinghai/en_pf.h    |  75 ++++
- 10 files changed, 655 insertions(+)
+Signed-off-by: Junyang Han <han.junyang@zte.com.cn>
+---
+ MAINTAINERS                               |   6 +
+ drivers/net/ethernet/Kconfig              |   1 +
+ drivers/net/ethernet/Makefile             |   1 +
+ drivers/net/ethernet/zte/Kconfig          |  20 +++
+ drivers/net/ethernet/zte/Makefile         |   6 +
+ drivers/net/ethernet/zte/dinghai/Kconfig  |  34 +++++
+ drivers/net/ethernet/zte/dinghai/Makefile |   7 +
+ drivers/net/ethernet/zte/dinghai/en_pf.c  | 174 ++++++++++++++++++++++
+ drivers/net/ethernet/zte/dinghai/en_pf.h  |  29 ++++
+ 9 files changed, 278 insertions(+)
  create mode 100644 drivers/net/ethernet/zte/Kconfig
  create mode 100644 drivers/net/ethernet/zte/Makefile
  create mode 100644 drivers/net/ethernet/zte/dinghai/Kconfig
  create mode 100644 drivers/net/ethernet/zte/dinghai/Makefile
- create mode 100644 drivers/net/ethernet/zte/dinghai/dh_queue.h
  create mode 100644 drivers/net/ethernet/zte/dinghai/en_pf.c
  create mode 100644 drivers/net/ethernet/zte/dinghai/en_pf.h
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2fb1c75afd16..73692b09bf7b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -29440,6 +29440,12 @@ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git
+ F:	sound/hda/codecs/senarytech.c
+
++ZTE DINGHAI ETHERNET DRIVER
++M:	Junyang Han <han.junyang@zte.com.cn>
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	drivers/net/ethernet/zte/
++
+ THE REST
+ M:	Linus Torvalds <torvalds@linux-foundation.org>
+ L:	linux-kernel@vger.kernel.org
+diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
+index b8f70e2a1763..c2b6996b0cfe 100644
+--- a/drivers/net/ethernet/Kconfig
++++ b/drivers/net/ethernet/Kconfig
+@@ -188,5 +188,6 @@ source "drivers/net/ethernet/wangxun/Kconfig"
+ source "drivers/net/ethernet/wiznet/Kconfig"
+ source "drivers/net/ethernet/xilinx/Kconfig"
+ source "drivers/net/ethernet/xircom/Kconfig"
++source "drivers/net/ethernet/zte/Kconfig"
+
+ endif # ETHERNET
+diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
+index 57344fec6ce0..a34bcbd4df4e 100644
+--- a/drivers/net/ethernet/Makefile
++++ b/drivers/net/ethernet/Makefile
+@@ -104,3 +104,4 @@ obj-$(CONFIG_NET_VENDOR_XIRCOM) += xircom/
+ obj-$(CONFIG_NET_VENDOR_SYNOPSYS) += synopsys/
+ obj-$(CONFIG_NET_VENDOR_PENSANDO) += pensando/
+ obj-$(CONFIG_OA_TC6) += oa_tc6.o
++obj-$(CONFIG_NET_VENDOR_ZTE) += zte/
+diff --git a/drivers/net/ethernet/zte/Kconfig b/drivers/net/ethernet/zte/Kconfig
+new file mode 100644
+index 000000000000..b95c2fc7db77
+--- /dev/null
++++ b/drivers/net/ethernet/zte/Kconfig
+@@ -0,0 +1,20 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# ZTE driver configuration
++#
++
++config NET_VENDOR_ZTE
++    bool "ZTE devices"
++    default y
++    help
++      If you have a network (Ethernet) card belonging to this class, say Y.
++      Note that the answer to this question doesn't directly affect the
++      kernel: saying N will just cause the configurator to skip all
++      the questions about Zte cards. If you say Y, you will be asked
++      for your specific card in the following questions.
++
++if NET_VENDOR_ZTE
++
++source "drivers/net/ethernet/zte/dinghai/Kconfig"
++
++endif # NET_VENDOR_ZTE
+diff --git a/drivers/net/ethernet/zte/Makefile b/drivers/net/ethernet/zte/Makefile
+new file mode 100644
+index 000000000000..cd9929b61559
+--- /dev/null
++++ b/drivers/net/ethernet/zte/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Makefile for the ZTE device drivers
++#
++
++obj-$(CONFIG_DINGHAI) += dinghai/
+diff --git a/drivers/net/ethernet/zte/dinghai/Kconfig b/drivers/net/ethernet/zte/dinghai/Kconfig
+new file mode 100644
+index 000000000000..121be3bf7707
+--- /dev/null
++++ b/drivers/net/ethernet/zte/dinghai/Kconfig
+@@ -0,0 +1,34 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# ZTE DingHai Ethernet driver configuration
++#
++
++config DINGHAI
++    bool "ZTE DingHai Ethernet driver"
++    depends on PCI
++    select NET_DEVLINK
++    help
++      This driver supports ZTE DingHai Ethernet devices.
++
++      DingHai is a high-performance Ethernet controller that supports
++      multiple features including hardware offloading, SR-IOV, and
++      advanced virtualization capabilities.
++
++      If you say Y here, you can select specific driver variants below.
++
++      If unsure, say N.
++
++if DINGHAI
++
++config DINGHAI_PF
++    tristate "ZTE DingHai PF (Physical Function) driver"
++    help
++      This driver supports ZTE DingHai PCI Express Ethernet
++      adapters (PF).
++
++      To compile this driver as a module, choose M here. The module
++      will be named dinghai10e.
++
++      If unsure, say N.
++
++endif # DINGHAI
+diff --git a/drivers/net/ethernet/zte/dinghai/Makefile b/drivers/net/ethernet/zte/dinghai/Makefile
+new file mode 100644
+index 000000000000..e2f4da33df59
+--- /dev/null
++++ b/drivers/net/ethernet/zte/dinghai/Makefile
+@@ -0,0 +1,7 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Makefile for ZTE DingHai Ethernet driver
++#
++
++obj-$(CONFIG_DINGHAI_PF) += dinghai10e.o
++dinghai10e-y := en_pf.o
+diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
+new file mode 100644
+index 000000000000..e7ff6954e745
+--- /dev/null
++++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
+@@ -0,0 +1,174 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * ZTE DingHai Ethernet driver
++ * Copyright (c) 2022-2026, ZTE Corporation.
++ */
++
++#include <linux/module.h>
++#include <linux/pci.h>
++#include <net/devlink.h>
++#include <linux/dma-mapping.h>
++#include "en_pf.h"
++
++MODULE_AUTHOR("Junyang Han <han.junyang@zte.com.cn>");
++MODULE_DESCRIPTION("ZTE DingHai series Ethernet driver");
++MODULE_LICENSE("GPL");
++
++static const struct devlink_ops zxdh_pf_devlink_ops = {};
++
++static const struct pci_device_id zxdh_pf_pci_table[] = {
++	{ PCI_DEVICE(ZXDH_PF_VENDOR_ID, ZXDH_PF_DEVICE_ID) },
++	{ PCI_DEVICE(ZXDH_PF_VENDOR_ID, ZXDH_VF_DEVICE_ID) },
++	{ }
++};
++
++MODULE_DEVICE_TABLE(pci, zxdh_pf_pci_table);
++
++void *zxdh_core_alloc_priv(struct zxdh_core_dev *zxdh_dev, size_t size)
++{
++	void *priv = kzalloc(size, GFP_KERNEL);
++
++	if (priv)
++		zxdh_dev->priv = priv;
++	return priv;
++}
++
++void zxdh_core_free_priv(struct zxdh_core_dev *zxdh_dev)
++{
++	kfree(zxdh_dev->priv);
++}
++
++static int zxdh_pf_pci_init(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
++	int ret;
++
++	pci_set_drvdata(zxdh_dev->pdev, zxdh_dev);
++
++	ret = pci_enable_device(zxdh_dev->pdev);
++	if (ret) {
++		dev_err(zxdh_dev->device, "pci_enable_device failed: %d\n", ret);
++		return ret;
++	}
++
++	dma_set_mask_and_coherent(zxdh_dev->device, DMA_BIT_MASK(64));
++
++	ret = pci_request_selected_regions(zxdh_dev->pdev,
++					   pci_select_bars(zxdh_dev->pdev, IORESOURCE_MEM),
++					   "dh-pf");
++	if (ret) {
++		dev_err(zxdh_dev->device, "pci_request_selected_regions failed: %d\n", ret);
++		goto err_pci;
++	}
++
++	pci_set_master(zxdh_dev->pdev);
++	ret = pci_save_state(zxdh_dev->pdev);
++	if (ret) {
++		dev_err(zxdh_dev->device, "pci_save_state failed: %d\n", ret);
++		goto err_pci_save_state;
++	}
++
++	if (!(pci_resource_flags(zxdh_dev->pdev, 0) & IORESOURCE_MEM)) {
++		ret = -ENODEV;
++		dev_err(zxdh_dev->device, "BAR 0 is not an MMIO resource\n");
++		goto err_pci_save_state;
++	}
++
++	pf_dev->pci_ioremap_addr[0] =
++		ioremap(pci_resource_start(zxdh_dev->pdev, 0),
++			pci_resource_len(zxdh_dev->pdev, 0));
++	if (!pf_dev->pci_ioremap_addr[0]) {
++		ret = -ENOMEM;
++		dev_err(zxdh_dev->device, "dh pf pci ioremap failed\n");
++		goto err_pci_save_state;
++	}
++
++	return 0;
++
++err_pci_save_state:
++	pci_release_selected_regions(zxdh_dev->pdev,
++				     pci_select_bars(zxdh_dev->pdev, IORESOURCE_MEM));
++err_pci:
++	pci_disable_device(zxdh_dev->pdev);
++	return ret;
++}
++
++void zxdh_pf_pci_close(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
++
++	iounmap(pf_dev->pci_ioremap_addr[0]);
++	pci_release_selected_regions(zxdh_dev->pdev,
++				     pci_select_bars(zxdh_dev->pdev, IORESOURCE_MEM));
++	pci_disable_device(zxdh_dev->pdev);
++}
++
++static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	struct zxdh_core_dev *zxdh_dev;
++	struct zxdh_pf_dev *pf_dev;
++	struct devlink *devlink;
++	int ret;
++
++	devlink = devlink_alloc(&zxdh_pf_devlink_ops, sizeof(struct zxdh_core_dev),
++				&pdev->dev);
++	if (!devlink)
++		return -ENOMEM;
++
++	zxdh_dev = devlink_priv(devlink);
++	zxdh_dev->device = &pdev->dev;
++	zxdh_dev->pdev = pdev;
++	zxdh_dev->devlink = devlink;
++
++	pf_dev = zxdh_core_alloc_priv(zxdh_dev, sizeof(*pf_dev));
++	if (!pf_dev) {
++		dev_err(&pdev->dev, "zxdh_pf_dev alloc failed\n");
++		ret = -ENOMEM;
++		goto err_pf_dev;
++	}
++
++	ret = zxdh_pf_pci_init(zxdh_dev);
++	if (ret) {
++		dev_err(&pdev->dev, "zxdh_pf_pci_init failed: %d\n", ret);
++		goto err_pci_init;
++	}
++
++	devlink_register(devlink);
++
++	return 0;
++
++err_pci_init:
++	zxdh_core_free_priv(zxdh_dev);
++err_pf_dev:
++	devlink_free(devlink);
++	return ret;
++}
++
++static void zxdh_pf_remove(struct pci_dev *pdev)
++{
++	struct zxdh_core_dev *zxdh_dev = pci_get_drvdata(pdev);
++	struct devlink *devlink = priv_to_devlink(zxdh_dev);
++
++	devlink_unregister(devlink);
++	zxdh_pf_pci_close(zxdh_dev);
++	zxdh_core_free_priv(zxdh_dev);
++	devlink_free(devlink);
++	pci_set_drvdata(pdev, NULL);
++}
++
++static void zxdh_pf_shutdown(struct pci_dev *pdev)
++{
++	if (system_state == SYSTEM_POWER_OFF)
++		pci_set_power_state(pdev, PCI_D3hot);
++	pci_disable_device(pdev);
++}
++
++static struct pci_driver zxdh_pf_driver = {
++	.name = "dinghai10e",
++	.id_table = zxdh_pf_pci_table,
++	.probe = zxdh_pf_probe,
++	.remove = zxdh_pf_remove,
++	.shutdown = zxdh_pf_shutdown,
++};
++
++module_pci_driver(zxdh_pf_driver);
+diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.h b/drivers/net/ethernet/zte/dinghai/en_pf.h
+new file mode 100644
+index 000000000000..f6b9dc94a57d
+--- /dev/null
++++ b/drivers/net/ethernet/zte/dinghai/en_pf.h
+@@ -0,0 +1,29 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * ZTE DingHai Ethernet driver - PF header
++ * Copyright (c) 2022-2026, ZTE Corporation.
++ */
++
++#ifndef __ZXDH_EN_PF_H__
++#define __ZXDH_EN_PF_H__
++
++#define ZXDH_PF_VENDOR_ID	0x1cf2
++#define ZXDH_PF_DEVICE_ID	0x8040
++#define ZXDH_VF_DEVICE_ID	0x8041
++
++struct zxdh_core_dev {
++	struct device *device;
++	struct pci_dev *pdev;
++	struct devlink *devlink;
++	void *priv;
++};
++
++struct zxdh_pf_dev {
++	void __iomem *pci_ioremap_addr[6];
++};
++
++void *zxdh_core_alloc_priv(struct zxdh_core_dev *zxdh_dev, size_t size);
++void zxdh_core_free_priv(struct zxdh_core_dev *zxdh_dev);
++void zxdh_pf_pci_close(struct zxdh_core_dev *zxdh_dev);
++
++#endif /* __ZXDH_EN_PF_H__ */
 -- 
 2.27.0
