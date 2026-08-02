@@ -1,160 +1,104 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C027E3939D0;
-	Sun,  2 Aug 2026 11:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D122F3AC0FD;
+	Sun,  2 Aug 2026 11:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785670253; cv=none; b=e2OBUkddFRUJctkV9dMsQzQAjM1a5bF9ecTmhIIGBhbKahgtcGhhilZ4aSFu07nlADrTIOrA/rAbI328XG7xCAExEQQKbKe6d8Jt3kNnToZL+di/VcHkxjQXd/deaxKOGiJ1sSTdWSSLyVv1XFbSCpJD54HKH26d9CS9njwxE5E=
+	t=1785670849; cv=none; b=NfATbCzlAUGX49rxg6PtimyuTkNpB+T482mrxtcPH8dqb0Ra/hQeoFk2VTFw4rO4g1g7ZxKFCreL9ZeM8IQDBURF2wk6CculiCwwrqfDWn8SKdJ6DOhitCkS3c6B9jPtU4Zh7V1QESQtfwjjX1da5Osz1WF4UQSqOhbpDLBm0R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785670253; c=relaxed/simple;
-	bh=SgBU/KkozBWGGjb89Fun/guW5kcjbZnKroGc3We92nY=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=XRF1v7Pg1CzqEFkQAW4Z54aZ8BZwFA2M8cwSAn6hrc3L1Rw3PIVQC4V/R9Iz7zuw3UqpXKfstyH5oHPGoE/HQSs0uOBW7ChXEfApDt7p4EnQ92Q7UxeCFfZF0HoFg9CuqIWWB9w74KA+28tAnSkgOaaH41tnw3y/0IebhTCrHVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=IaemgW8p; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	s=arc-20240116; t=1785670849; c=relaxed/simple;
+	bh=Vjy6vcEm26EQ3ME0NeL54LP3nL8x1XKhpziD1b0fIbw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OSMU+e0f0/3ivPcXjbCcwgGH1u7or1SfOFLA19CjXskG/6sNyUgRc1Auxr5VRW9e9eO+T2JGcMaYubdwseDZkAtv6M3EGCPl2P8jOTkn2pk8NXZmyOhF/zb6Vk84wpE7q0Vb3EG3KJJNB6H0+H5b5x2SwpP7zSSG3AxmvXGKhMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JaqMTTBD; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="IaemgW8p"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id DE41B21B56;
-	Sun, 02 Aug 2026 14:30:38 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=IQPYlM2qwGICHNbBZA72KJ8VQ4h3Va3c5RUfm2xlr8s=; b=IaemgW8pumvO
-	JZrsXTRRR5nd+4/Ii4XFW2JSH0rFht86bFhEsmRRKLu05q6xbyiesS0+OO8eMy4p
-	sP5hzcZtZa7fCwXzGa+2qyE9/iIUhcuAuN5SAqHTsx0P/DglFTFK2ZVqR4v1U/6B
-	P9Pk2uj+FUKjSDKQIhf3e5EMez8PPi0/1RAehhXdlLVJuQ2vpe5bj/8Rq8TVQdpx
-	d6ak/cy3ILIvNK+7LQv0DyXZ8Ivu4lm0sR8qqgT8YTD8EbhffUv6un+c1GYCOM0v
-	2oNb9Nw/2wKTgKzYU6nO0c0nN+HXsMu6cxaucHgzh7tjwzA3rlSKD0wUja4pACGR
-	44JRnYkW2VblLOx6OVpoxSKKkvAZo3dFBMbED5z1xvBYbh7GVg0ZTYlKs1JBQHp0
-	ZTHEcc0pNFXbW1BKhj33sFQp2MSOOxdvO2Z8uHdzBfLzsGq04pAGBmcwsCc86RmH
-	IRyRLxB5M8rIXglQ9T7Y6/Fer1mGNRHhOcwnDWAKKhMX1iLrq1KCaaEqqMXiAOBS
-	kznqjzWGDj+p/kphaH92sgP1Wca3zI6BL+MqE8ZCd/Vvt1G8LLwDL6cW0bVPjgOh
-	ixhWr7P1U6bd3MMW+fy+tN/53YtcrbL9ATXQgSJk0ATG9WFC6K4AGhSxzH6MCgrx
-	a/Q13SCNBNGKKN/IZI9K9gaoGs2Tnzg=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Sun, 02 Aug 2026 14:30:38 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id 175AA6087A;
-	Sun,  2 Aug 2026 14:30:39 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 672BULK5020376;
-	Sun, 2 Aug 2026 14:30:23 +0300
-Date: Sun, 2 Aug 2026 14:30:21 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-        Simon Horman <horms@verge.net.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-        netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, stable@vger.kernel.org,
-        Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-        Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
-        Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>
-Subject: Re: [PATCH nf v4 0/3] ipvs: fix destination overload state updates
-In-Reply-To: <20260731142748.56545-1-zhaoyz24@mails.tsinghua.edu.cn>
-Message-ID: <78bfa99d-a1fa-93d9-36b6-90c590a093f2@ssi.bg>
-References: <20260731142748.56545-1-zhaoyz24@mails.tsinghua.edu.cn>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JaqMTTBD"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id BEFF44E4109E;
+	Sun,  2 Aug 2026 11:40:30 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 73C526029B;
+	Sun,  2 Aug 2026 11:40:30 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 71A1311C1757D;
+	Sun,  2 Aug 2026 13:40:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785670825; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=VxVdnKc+/FhAvBYsYt2BDF3N409QLaiV2tmViDCNuLY=;
+	b=JaqMTTBDcaKTn/CzASTnwfG/jYpGkbF/IzGwgYv7uZOk7FDd8hwdoly7MQFTI+rZ/gM46B
+	2Af2aKmlqwDp7jVFpFMXQ3TQGCjG9iazVMW/Kwc2QsEVwHQgAafKlV9OxeHzQFjf+fNzPI
+	HKywCTO814Ka+P5rw5JbrxHikVI2N8bgzVpwy4IHvIsXaZSJJXLRoLnWZ4+eNvDoOdVXt4
+	yjDiNddKZ57mBUGH6sTSRs4errjxeYl+fmW3eNKOc1lo4L3VmkMntTIvNsTpHhGdltgMaJ
+	sGl/2tbfcBgETDq9GdPnzMRGy8ltOGI7gbiaHM00zpmL7H/FFQ+b/mH5zc/jrQ==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	thomas.petazzoni@bootlin.com,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH net-next 0/2] net: stmmac: Cleanup rx coalescing computation when using RIWT
+Date: Sun,  2 Aug 2026 13:40:12 +0200
+Message-ID: <20260802114015.214212-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+Currently when configuring interrupt coalescing on devices that relies
+on the Receive Interrupt Watchdog Timer feature of dwmac, the
+computation of the RIWT timings leads to off-by-one values when
+reporting the timings back to userspace.
 
-	Hello,
+RIWT works by arming a watchdog timer upon receiving frames with the RI
+bit not set in the descriptor. The timer duration is expressed in units
+of 256 stmmac clock ticks, and therefore requires a bit of computation
+to derive it :
 
-On Fri, 31 Jul 2026, Yizhou Zhao wrote:
+riwt = (rx_usecs * n_clk_ticks_per_usec) / 256
 
-> IPVS schedulers read destination overload state while connection accounting
-> and destination configuration can update it concurrently.
-> 
-> The first patch adds a single total connection counter. The second patch
-> uses it to identify threshold crossings precisely, and updates OVERLOAD at
-> the crossings and on a threshold edit under dst_lock. The third patch moves
-> configuration-controlled AVAILABLE to a separate cflags word, so it cannot
-> clobber OVERLOAD through an unrelated read-modify-write update.
-> 
-> Readers can still observe stale destination state. This series does not
-> provide a cross-field consistent snapshot.
-> 
-> Changes in v4:
-> - Add the total connection counter and threshold-crossing overload updates.
-> - Update OVERLOAD under dst_lock at threshold crossings and destination edits.
-> - Keep OVERLOAD in dest->flags; drop the flags2/bitops approach.
-> - Move AVAILABLE to the separate cflags word, avoiding RMW interference
->   between availability and overload updates.
-> - Link to v3: https://lore.kernel.org/netfilter-devel/cover.1783931964.git.zhaoyz24@mails.tsinghua.edu.cn/
-> 
-> Julian Anastasov (2):
->   ipvs: add totalconns for dest
->   ipvs: properly update the overload flag on dest edit
-> 
-> Yizhou Zhao (1):
->   ipvs: separate destination availability state
+and conversely
 
-	The patchset looks good to me, thanks!
+rx_usecs = (riwt * 256) / n_clk_ticks_per_usec
 
-	My
+This computation as-is leads to a consistent off-by-one when setting
+then getting back the rx-usecs value due to rounding errors (by truncation):
 
-Acked-by: Julian Anastasov <ja@ssi.bg>
+ethtool -C eth1 rx-usecs 42
+ethtool -c eth1
+ -> reports rx-usecs: 41
 
-	is needed only for patch 3
+Let's use DIV_ROUND_CLOSEST instead for the computations. It does have
+one side effect, the accepted boundaries for rx-usecs also shifts by one
+now, going from [16us, 246us] to [15us, 245us]. For that reason, I'm not
+targeting the net tree here, and it's overall a very small issue.
 
-	As for the comments from Sashiko:
+Maxime
 
-https://sashiko.dev/#/patchset/20260731142748.56545-1-zhaoyz24%40mails.tsinghua.edu.cn
+Maxime Chevallier (2):
+  net: stmmac: ethtool: Comment the magic numbers in RIWT computation
+  net: stmmac: ethtool: Address off-by-one when reading the coal
+    rx-usecs
 
-Patch 1:
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-- 8-bit shift and overflow: this is exsiting formula that can be
-changed separately
-
-- non-atomic update for dest->flags: we fix the write access in patch 3
-
-Patch 2:
-
-- the update of the OVERLOAD flag is serialized in patch 2
-and the non-atomic write access fixed in patch 3
-
-Patch 3:
-
-- placing cflags in different cacheline is not our goal,
-only separating the flags because while the flags are
-alone in their field we do not need bitops for now
-
->  include/net/ip_vs.h                   | 27 +++++++--
->  include/uapi/linux/ip_vs.h            |  6 --
->  net/netfilter/ipvs/ip_vs_conn.c       | 45 +++++----------
->  net/netfilter/ipvs/ip_vs_core.c       |  6 +-
->  net/netfilter/ipvs/ip_vs_ctl.c        | 81 ++++++++++++++++++++++-----
->  net/netfilter/ipvs/ip_vs_dh.c         |  4 +-
->  net/netfilter/ipvs/ip_vs_lblc.c       |  2 +-
->  net/netfilter/ipvs/ip_vs_lblcr.c      |  8 +--
->  net/netfilter/ipvs/ip_vs_lc.c         |  4 +-
->  net/netfilter/ipvs/ip_vs_proto_sctp.c |  2 -
->  net/netfilter/ipvs/ip_vs_proto_tcp.c  |  2 -
->  net/netfilter/ipvs/ip_vs_sync.c       |  7 +--
->  net/netfilter/ipvs/ip_vs_xmit.c       |  4 +-
->  13 files changed, 118 insertions(+), 80 deletions(-)
-> 
-> 
-> base-commit: 2195424c3da2ef1829a63b807e3a900a90e57d85
-> -- 
-> 2.34.1
-
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
+-- 
+2.55.0
 
