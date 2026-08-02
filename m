@@ -1,66 +1,64 @@
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FAB390613;
-	Sun,  2 Aug 2026 08:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4435E390610;
+	Sun,  2 Aug 2026 08:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785660015; cv=none; b=CXkijgar9eW2BGsml+r9FrsmAAOdv4ghi9NpiqAeWkNmUvG3cDHV3RelP4kEWKUhbDx97I9r6zON2w+v73+GyFnaC/R9PtWNxqlfcmfYwmRAV0KoB4JN5c+3Q71EcH2R6rgauIk8dqnh9lu6CjvIOX+5ZggYXgo3XQcXQ/x2eMQ=
+	t=1785660076; cv=none; b=g3EZpwtXGKDR2N+W+OVzj/xTm/WDFchL2XJm/A4MXg7QcjSdm8iqAcKQ4dTwaTlBADUYaaqqP4uteBAlNj07U6VjXudYsP/l9so8PxrYicKTjXwqAYYEMii3zJQTxk4twRNOnw8VV3bRpgVxn9wbt4/NEWlxZt3drW/C4MBO9B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785660015; c=relaxed/simple;
-	bh=B4oSW0+aFH2TYkFzG+zf+CXc+/DylHWeVGsJ9OsJlzs=;
+	s=arc-20240116; t=1785660076; c=relaxed/simple;
+	bh=p0HwN4A/ORP61ZRsf6KHBx2XmfDWnGI8g3UBBswDrSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d2t4EsCILcJzEucvcNZ7b3sgJuic9fBECEtGJ6L6cUHMfFlOQOcXL+ntY3zPvP+afcf5dbIe5XI6wrMzid4H/I7aBe5aBP1gzJbVl7yCY2P2SUKtbGsggVOCtJbBiiwGfislgh9pJL94yuPrxhG3r1xECD+Qm2+3rWVKbDPFZes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=r1HtCvcU; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version:Content-Type; b=Ex+dEA7ljIMBGwTbqIuchHapojeNAozO30wjKPIu1XQr82q4hUIZW0qMJdg/sX3iysshTUBeqH5WsUzGUqfVHmsr+OeVkvTKqf+1I1lvk2w51r5tcpeQC87IOgRqu/SKH0P1WNwsL/EQDZH6DsJMePdhGzhyCDlNPNUY0u0g3Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=BLXvzTxX; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="r1HtCvcU"
-Received: by dvalin.narfation.org (Postfix) id 738921FFF2;
-	Sun, 02 Aug 2026 08:40:08 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="BLXvzTxX"
+Received: by dvalin.narfation.org (Postfix) id F2ABC1FFF2;
+	Sun, 02 Aug 2026 08:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1785660008;
+	s=20121; t=1785660069;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hvhU5sAz6cMtVXpWPWNXHtK5nHtehW2ESCRRnI+XHM8=;
-	b=r1HtCvcUfts40KxIENnTrN1IpW/1oyG4mt0Nb/CPFF/x5oCHNMnId7BZ7Wpemngr1Wsl6G
-	5gOm5rKQTOCcQnoHxmyQynasukhBxlZuMN7/CHCk9iIsxpLzJCIsqimSSZTjzw9mt7dTQE
-	O0vdsxclL9Ma3NW6fiW3b6ZUBULWAno=
+	bh=rM1aeNZMyQRpF4jiSBs0VLi6i20VrJER8mp6wrtcKUE=;
+	b=BLXvzTxXH3cOzGOq74EotgsZotLb/DSaRv8A11bOodA/Ls43o3cuN2lRljwX8fUvhFZ9HY
+	7eq89qLgBepeIABBdRen8rCKpcaRRFgwYFo/U45GbYN1ajdRNvRo41hh129WInlznQ21fd
+	JDLrv5WnpqwzU8eLKQ2dVM50k7FMKBI=
 From: Sven Eckelmann <sven@narfation.org>
-To: edumazet@google.com, ncardwell@google.com, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, David Lee <david.lee@trailofbits.com>
-Cc: Kyle Zeng <kylebot@openai.com>,
- Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
- kuniyu@google.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH] net: inet: prevent lhash2 lookups from escaping into ehash
-Date: Sun, 02 Aug 2026 10:40:06 +0200
-Message-ID: <2549706.irdbgypaU6@sven-desktop>
-In-Reply-To: <20260731140512.566464-1-david.lee@trailofbits.com>
-References: <20260731140512.566464-1-david.lee@trailofbits.com>
+To: jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ David Lee <david.lee@trailofbits.com>, Kyle Zeng <kylebot@openai.com>
+Cc: Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net/sched: sch_qfq: prevent aggregate self-replacement
+Date: Sun, 02 Aug 2026 10:41:06 +0200
+Message-ID: <3701565.aeNJFYEL58@sven-desktop>
+In-Reply-To: <20260731140533.566493-1-david.lee@trailofbits.com>
+References: <20260731140533.566493-1-david.lee@trailofbits.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart14341076.uLZWGnKmhe";
+Content-Type: multipart/signed; boundary="nextPart3708131.44csPzL39Z";
  micalg="pgp-sha512"; protocol="application/pgp-signature"
 
---nextPart14341076.uLZWGnKmhe
+--nextPart3708131.44csPzL39Z
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
 From: Sven Eckelmann <sven@narfation.org>
-Date: Sun, 02 Aug 2026 10:40:06 +0200
-Message-ID: <2549706.irdbgypaU6@sven-desktop>
-In-Reply-To: <20260731140512.566464-1-david.lee@trailofbits.com>
-References: <20260731140512.566464-1-david.lee@trailofbits.com>
+Date: Sun, 02 Aug 2026 10:41:06 +0200
+Message-ID: <3701565.aeNJFYEL58@sven-desktop>
+In-Reply-To: <20260731140533.566493-1-david.lee@trailofbits.com>
+References: <20260731140533.566493-1-david.lee@trailofbits.com>
 MIME-Version: 1.0
 
-On Friday, 31 July 2026 16:05:12 CEST David Lee wrote:
-> Fixes: cae3873c5b3a ("net: inet: Retire port only listening_hash")
+On Friday, 31 July 2026 16:05:32 CEST David Lee wrote:
+> Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
 > Bug found and triaged by OpenAI Security Research and 
 > validated by Trail of Bits.
 > 
@@ -84,20 +82,20 @@ On Friday, 31 July 2026 16:05:12 CEST David Lee wrote:
 
 Regards,
 	Sven
---nextPart14341076.uLZWGnKmhe
+--nextPart3708131.44csPzL39Z
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part.
 Content-Transfer-Encoding: 7Bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCam8CZgAKCRBND3cr0xT1
-y37VAP98KN2wVjbADKjPlOPIuSRo6suqfQdiN3qvCuztIkFxrAEAqEUxkJrpKdeG
-cLKgiCVbbPLWBZs0V+3Emp8soWnu8Ac=
-=BHo8
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCam8CogAKCRBND3cr0xT1
+y/WOAQCD5oxnOiko7omA94ZMcx43V8fYncLriBumWMuOD6igJQEAsVgOK0HUZFsz
+MeZm/MKeNUUDM3BCJEnU9My6SGIo1wY=
+=5BTr
 -----END PGP SIGNATURE-----
 
---nextPart14341076.uLZWGnKmhe--
+--nextPart3708131.44csPzL39Z--
 
 
 
