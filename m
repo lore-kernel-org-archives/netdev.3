@@ -1,129 +1,117 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0712A28643A
-	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 06:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813D42C11E2;
+	Sun,  2 Aug 2026 06:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785652180; cv=none; b=tDyj2VnOsERHnRE8W9o91HHpwdTZNZMnW0OuD41B2SNvCzTwndOTGU4pZO5jVnw6ISpn8t0diB3Sz8nGgqpdfrYXmA4ogFDccyCj5iwjNAcnLAGmAR5azd/ZUXhEC67J2d5lweMLZxbjuvSJ/5gtBOh4kFAlc/z2eBd6wpMFc2Q=
+	t=1785653272; cv=none; b=R86eid5v03E5D6iXfQtnKtWKDH3L8pl3LreihdktbCd9KoiVhwR+cNqSsSZtm/QxBDk7UqikLLQGpr5P8Nv2N8TovDQMF4u3wNdgUO9VBja/uxjHmxIotmguLwVKJFtZb8pucLtegfW5bftIrPD4+3+7ZLVZtvhHhA7dhXk9x4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785652180; c=relaxed/simple;
-	bh=W2h+lQJkGidGNrRAMME1It/pdjA7OM5p9qeNYRTFJl0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZUjwg9rcO5J0djXhULBxqoaK3GaOf/bMMsdmqaP6ckzqkp+UVImZZpRXwTQa8z7o893dTK121LzJMu0OFn7tRPtWS6xkyW44ERu6z95mHYlK9nmwm4SGdKKCUJD3N92rqIOwvtVmwCxoXQAe9VFVhiSNLGw14P6eEY4GkmlN/vM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hl5VLjWY; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785653272; c=relaxed/simple;
+	bh=SBQRFcrBpdAwXQXYx355w+v2AgYgQvanSpIEWH+ofl4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KE8noeOpRw8BAmv88oRNA8h/OjYltljvHq92+OeUrn6mDTSyAhqaCjMvK4C/itbLXpwnkdfmLPh7S2ry/rPFGLCbFM0HnfSwWi7Ys6h6iqEKYEJhPiKi1c7IvKJ69YAxLH261SXNbLuvYL7Qoj53K+YQa/kIeOQzoWYkbP7t18g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBg5ydY1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hl5VLjWY"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cacb8416a1so22866545ad.1
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 23:29:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785652178; x=1786256978; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=n9MAKt4rWHUHzsXYDtBo+1j3/AQOYJvXcXJiTFW0dqg=;
-        b=Hl5VLjWYlUSjTSSITYtLHuBSL2O6ejXzl/oNTfIXqzKSMpAlZKWFWpRVTubAMexbeo
-         /6gvJAKOSg8Kk7itucZTHoH9ojqc8vosAiJIqP0x9FzKsgbSDkARlkZViq48rEk+mvup
-         P+JcbMd+FL1HB8HKvrzDhlHT+LY/zOc+1zXaj4LIV4IhUAfmvUSCHirUwrbDqyNEJgz4
-         52p8eyznKg068tiwTbSpeDNsYZzV+wGxbpogRFLwcvYh1h/1iryjd/Sn8F+fgQlXNb29
-         84u8ALUKa6EVGOEtQoAnlIOjzNqLalKZde+5azsxHgybUePbK2rF5nzJ3hg79pZZPY9Y
-         YBYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785652178; x=1786256978;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=n9MAKt4rWHUHzsXYDtBo+1j3/AQOYJvXcXJiTFW0dqg=;
-        b=i2yn2T12wvkDPWkAuQm0C+2zi+FiJ6QBqd0WJ0PKp1ISXR1bz5kwNkluAK2P7F7nxF
-         r+2Bubk7qX9Q2g/SflcbzpUWs7pPzXO/clrzUFTwwfsB7i0geBThfNXxiQfE3Q31Qnrg
-         2gkP+8xttUpalYjeXeCZKrY2WEKcBhaYfHzrE/lJg01GPY3XaXLfM9o3YQkWpxrHQuqU
-         sOJwzCkYEA9PBu7kLau/pCnnAsHetfYzQdYLoWZYfbdX+4N4HWXpjM1Xrpr3Qoa7Keuu
-         2FsHY9OJuWiUUZ8GvhtDuoDhLoOQQenneQL5hOAZ8H5e+MMCIZ3oAlEan9+hoJg9BVdF
-         bYmg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr8lrMl53+opOQsE/bDP6zvScXlzpWN5qNJj9BUk4X7mj6ZLD9Ts6nuI4+ZC9QDlSXC4kJTOOY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxR5YxCyLRAujcdadPxomiIZWUu+RNMLEvPldDfOpHFiAEx1K5I
-	t0IFKH/Wu8nq4mwutc1HC+r9f4zbMSOiRbltatQEFOrLJEWm7mrpfP8F
-X-Gm-Gg: AR+sD10inkGQNBZUfqqggozGYGef8xGlpEx35whWNZVavXIwOr+x9VSky0A1MBgN92G
-	4lzkG0gMeR4CDJZknKcRzMeE43HjFOhyfIq52wd3a7LERQ0p+0bOgaiFNaZpot0VC8ngNvanQ4Q
-	KTwohEAVj8bzBSOAlXINb+5Pm+Sr92Ks5InxrfkReTWT/91icPgJR/6UQuoMRwOmEQeIz2UXbc9
-	ey01vs6TuA2e4a0xmO4/yYx+xBa0Dhu8a80y4GtT1JUzzwy6Q1bxywfNjnS9MmnyaYngTunUPG3
-	xewZyHy9MhfsMDTjXw9vkthGY5p6/yL3qvw4C87sYyx/higy8Yy+K2nfwvzP0WX0kxjZLt4NCHX
-	4E2ZOYrqm2NZeKHVbaVvSdxJ4TgPk7605dSecDDUXpZAm4bdHt92OTnP6NqjcswGaWbx2EggpVd
-	c4gO+zAxX4kfcm7qFe9HObZv1cE+9AGKae0Nd+1SUCQT23+RzOCWZPe89AhQ7WMHfJm8QF+kmR1
-	A==
-X-Received: by 2002:a05:6a20:7f82:b0:3c1:d78:6457 with SMTP id adf61e73a8af0-3c92a796742mr5995213637.32.1785652178272;
-        Sat, 01 Aug 2026 23:29:38 -0700 (PDT)
-Received: from [127.0.1.1] ([2404:f801:8028:1:1e00:d9cc:7c6a:c60f])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3153e1886e7sm26969346eec.26.2026.08.01.23.29.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2026 23:29:37 -0700 (PDT)
-From: Subasri S <subasris1210@gmail.com>
-Date: Sun, 02 Aug 2026 11:59:24 +0530
-Subject: [PATCH] usb: atm: ueagle-atm: fix array-index-out-of-bounds in
- uea_bind()
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBg5ydY1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9D01F00AC4;
+	Sun,  2 Aug 2026 06:47:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1785653269;
+	bh=d4tzf5OI2ty69S9e+u6dfdqhLKOYD2qDn1wkoiLc5Qc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=zBg5ydY1wX1rbPEx6zS4lr2WPZ2W6TAE2n5W74eqj8OznJjLOyuRL1cJ+Jk8PQPsA
+	 z0ip5R0D3rD1ro6ziNgVNsWEcoSkdYcjRlOW4oa2+Nqe2M7xo/UVBitf0P1zVriEga
+	 qrpPscuLwxtITkywEZWzQZNwwNUaHE++BFIW/LqM=
+Date: Sun, 2 Aug 2026 08:46:20 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Mike Leach <mike.leach@arm.com>,
+	James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>, Jyri Sarha <jyri.sarha@iki.fi>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>, Lee Jones <lee@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>, Yangbo Lu <yangbo.lu@nxp.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jens Wiklander <jenswi@kernel.org>,
+	Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>,
+	YC Hung <yc.hung@mediatek.com>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Sean Wang <sean.wang@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
+	linux-arm-msm@vger.kernel.org, linux-ide@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+	mfd@lists.linux.dev, linux-wireless@vger.kernel.org,
+	ath10k@lists.infradead.org, linux-pm@vger.kernel.org,
+	netdev@vger.kernel.org, linux-pwm@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Correct white-space style
+Message-ID: <2026080211-marauding-twerp-1f8f@gregkh>
+References: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260802-usb-ueagble-atm-v1-1-340f085b04aa@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAMPjbmoC/x3MTQqAIBBA4avErBuwISK7SrTQnGygPzQjiO6et
- PwW7z0QOQhH6IoHAl8SZd8yqrKAcTabZxSXDaSoUa0iTNFiYuPtwmjOFUdD2pF1ddVqyNUReJL
- 7P/bD+37oDALyYQAAAA==
-To: Matthieu CASTET <castet.matthieu@free.fr>, 
- Stanislaw Gruszka <stf_xl@wp.pl>, Chas Williams <3chas3@gmail.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Andrew Morton <akpm@osdl.org>
-Cc: Greg Kroah-Hartman <gregkh@suse.de>, 
- linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org, 
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
- syzbot+92f5bf49bf4ac75223ca@syzkaller.appspotmail.com, 
- Subasri S <subasris1210@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785652174; l=1353;
- i=subasris1210@gmail.com; s=20260709; h=from:subject:message-id;
- bh=W2h+lQJkGidGNrRAMME1It/pdjA7OM5p9qeNYRTFJl0=;
- b=bYH0tFfdO3Yg0q0KTykVH5y6JfEaEjoGUvyjOG5ioIBHfBp8wBtf0vM/WXDyfGyZMDbFevx7/
- kqY08IvHH/YDxLbqMEqH6EiR08J5sZtr9KstuRZaClgOkyM+k9kAdka
-X-Developer-Key: i=subasris1210@gmail.com; a=ed25519;
- pk=6C4wavGFy/OsR8yQQKNWuDXoYPHp2L3sfgNfyzTruTk=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
 
-Add a bounds check on the global variable modem_index before
-using it as an index in sync_wait[] array whose size is NB_MODEM.
+On Sat, Aug 01, 2026 at 09:56:14PM +0200, Krzysztof Kozlowski wrote:
+> Correct a few white-space issues, like double space after '=' or before
+> bracket '{' characters, which will be flagged by dt-check-style.  No
+> functional changes.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> 
+> ---
+> 
+> Patch applies on Rob's for-next branch.
+> ---
+>  .../arm/firmware/linaro,optee-tz.yaml         |  8 +-
+>  .../devicetree/bindings/arm/psci.yaml         | 18 ++--
+>  .../bindings/arm/qcom,coresight-tnoc.yaml     |  2 +-
+>  .../devicetree/bindings/ata/st,ahci.yaml      | 22 ++---
+>  .../bindings/display/ti/ti,am65x-dss.yaml     | 12 +--
+>  .../bindings/display/ti/ti,j721e-dss.yaml     | 96 +++++++++----------
+>  .../bindings/display/ti/ti,k2g-dss.yaml       | 36 +++----
+>  .../bindings/dsp/mediatek,mt8195-dsp.yaml     |  2 +-
+>  .../bindings/gpio/st,nomadik-gpio.yaml        |  2 +-
+>  .../devicetree/bindings/i2c/st,sti-i2c.yaml   |  2 +-
+>  .../bindings/mailbox/st,sti-mailbox.yaml      |  2 +-
+>  .../bindings/mfd/maxim,max77620.yaml          |  2 +-
+>  .../bindings/net/wireless/qcom,ath10k.yaml    | 34 +++----
+>  .../devicetree/bindings/opp/opp-v2.yaml       | 28 +++---
+>  .../pinctrl/mediatek,mt7988-pinctrl.yaml      |  2 +-
+>  .../devicetree/bindings/ptp/fsl,ptp.yaml      | 12 +--
+>  .../devicetree/bindings/pwm/pwm-sifive.yaml   |  2 +-
+>  .../bindings/usb/ti,twl4030-usb.yaml          |  2 +-
+>  18 files changed, 142 insertions(+), 142 deletions(-)
 
-Reported-by: syzbot+92f5bf49bf4ac75223ca@syzkaller.appspotmail.com
-Tested-by: syzbot+92f5bf49bf4ac75223ca@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=92f5bf49bf4ac75223ca
-Fixes: b72458a80c75 ("[PATCH] USB: Eagle and ADI 930 usb adsl modem driver")
-Signed-off-by: Subasri S <subasris1210@gmail.com>
----
- drivers/usb/atm/ueagle-atm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/atm/ueagle-atm.c b/drivers/usb/atm/ueagle-atm.c
-index 4266a0cb7e3b..61723e7ab351 100644
---- a/drivers/usb/atm/ueagle-atm.c
-+++ b/drivers/usb/atm/ueagle-atm.c
-@@ -2463,7 +2463,8 @@ static int uea_bind(struct usbatm_data *usbatm, struct usb_interface *intf,
- 	if (ifnum != UEA_INTR_IFACE_NO)
- 		return -ENODEV;
- 
--	usbatm->flags = (sync_wait[modem_index] ? 0 : UDSL_SKIP_HEAVY_INIT);
-+	usbatm->flags = (modem_index < NB_MODEM && sync_wait[modem_index]) ?
-+			 0 : UDSL_SKIP_HEAVY_INIT;
- 
- 	/* interface 1 is for outbound traffic */
- 	ret = claim_interface(usb, usbatm, UEA_US_IFACE_NO);
-
----
-base-commit: f5098b6bae761e346ebcd9da7f95622c04733cff
-change-id: 20260802-usb-ueagble-atm-ca29d2bd4189
-
-Best regards,
--- 
-Subasri S <subasris1210@gmail.com>
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
