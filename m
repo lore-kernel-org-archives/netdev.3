@@ -1,93 +1,218 @@
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5AA2F39AB
-	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 00:00:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB4024E4C3
+	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 00:52:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785628839; cv=none; b=qEAa6h0OE2dr/yjhP3GfB7z5M0lTfHoCpX6rc4InQ4cAxF+ZB3sNZ0RQNJOm7TjHcQ0bPWsuIsSX/IRFEwzMxckvwJbd/sBOJaI2Z6MhUrBeIx0nMulSFKvC/h+w3s9DRlfNVAoWL8rxXOvxp2JDvXpk/P8kUnSFe05AsmoASAI=
+	t=1785631958; cv=none; b=jIKojmIG838vK73Q7oH6TcuHcFNJ9RAQzCgDZFwai/U15GuHPLWHoXWAKVFMLKebS2CuddANapP61/vytHN7lNGMaMUno0XD8jRsl59p/7NoZInmUho2gzHr32KD4gijWTQ7WTwms9TOBJg/YjfAx0pH/oCjDFqCkND7h17AraU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785628839; c=relaxed/simple;
-	bh=FkvwcGmPaYjEJ8j6+nz1j8HFd4IzNdzqUCflb2OtZN4=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=JZjo6RPK0RXxPcG3ZEBX1c+TDaIRnd/5D8mMzDVc9Yi1KfPQQhN7PM17F4o5SiUf64pZHDPHw2Boerquszwv2ueSIxcnZCHRnf0Fp4ZC5tcfw+xHGaCl3SURpso/f1uSONxev9v0WWjnj16ygXnAdbmXehyxo1NWyPRCidq3L5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-49aa4525b82so3046154b6e.1
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 17:00:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785628836; x=1786233636;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DApPQPDvyDynAHjSaKvCCTdiu7dQn53eMBYw3i2c5ks=;
-        b=A50V+8+wXP9ltouiguhpNRLkbnHGIqPifLYbw78zr0MHJev1YlmUPdNbzn7QmDUpjU
-         il+0kZouEIieZuKU8kcfTZApbENnWOxPeUTD0ASpWtoFTMd38kUcbho/J+tZ9Z2DVD2n
-         z637qMj8Hc4XYtqTa61teraWwKJ7LBTz0luoXZ1ylN7NH0B399vcz7lGFA+vJKjEOcyh
-         T1YFcF1OsdlmCMff2/MyFgGOdYgMm5gEOjn/YclJaYk6MTaBLoLSDY50PD3icakm7spk
-         vojZvRPRG+qHSLmBPWKxGVa5rByuYT7k3KCnj30Ae5canugq/ICHE2hIcSaKBfuhdCTa
-         HoNw==
-X-Forwarded-Encrypted: i=1; AHgh+RrKG/GQoyuBeIFNAGKB8Ag4AO4KpjmP6Wsg4PXV5vOTg6GyxJ3tjEC5hjblSeW/a13MlsSneP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfSr1/W7JZCNNYpnkICePvXboGP8j3Q1Y0dJ4ELmxrCUaEJlEL
-	JpSkyN0nOqwX7EHw8nSEWLveGnxFUT9rRJobX1/U8O9EinG0oMSFj4SA2Y8aDC8kwo6ot3Y+O0O
-	CecdUtwX/ZogJpYkGuXSi3bGPgeAUWZWAhvSptC0KSSBN3CumL1B+AihrIJ4=
+	s=arc-20240116; t=1785631958; c=relaxed/simple;
+	bh=HchlqJvbJYmgEf8zNMJx/aH1mCF2j1w5x1nHZEAylDA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TBNM0ZVWMdcIy9Uo8pcAxxBPdLW8FL7M9tI/jfXDOcTnwFAkHeFUfrgnnwpVW7rguW2XpPjOUdSmllqdhd3Txa/GNbtNmprwDVf859fMSGBgcVewKQMehjnKg5rzXH4nVnwqa9QsZx/Q71TPDKB04c+W9pLrU+LtJub/9yKfQa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=D3NTGI/L; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="D3NTGI/L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1785631946; x=1785891146;
+	bh=Tr1J5/Sv0mAr7gaD8iu0l6T6sz/kl7ZnUg8iM+otgaY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=D3NTGI/LIteLAgSF6qj03Fo/v2thvshWyUvVcVFSnZISvC7jVgCA3m9WmpMCLpkCs
+	 b9FPzPinAuysELivumu1Kf2mjRUqkIdUBM7RD0AYmp3HK8IqnKBVbAOA7W7WLFnUsL
+	 IQ67cvo58KD15QYzav23VnsTbwbfBG+p8MqJF8MgGt0bpXmDEIXnj4OakLuDU536fl
+	 EFMbby/OjZm3UaL/b2t4nITbTWHOyE93Ulo2SlIcF3/dz5PZUdB34vxAgu11AcPzSH
+	 hX96EXBQ0YxpUzSVWzU70EIYRhSqQ98zlC0pbYLitvaloCZ44HWE7DoubullZxwrGN
+	 v6jgmO21fHymA==
+Date: Sun, 02 Aug 2026 00:52:20 +0000
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+From: manizada <manizada@pm.me>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com
+Subject: Re: [PATCH net] tun: prevent underflow in rx headroom calculation
+Message-ID: <xPAgsryD7ZWPCp4djQ2-FNguiK-v4wu_PDQFjCQ22hABd2Y8C8lIXzAskbJ3S_yJDysh9izzb82ELATvewS2RD0o2VH3q7yirg9HH_mrHd8=@pm.me>
+In-Reply-To: <willemdebruijn.kernel.296b127eabe3c@gmail.com>
+References: <20260721014117.2234892-1-manizada@pm.me> <20260723171437.784955-1-kuba@kernel.org> <YzGdhAUpdIBVpl5kEwszNWBTaolCS34_1OLI3kj9BiUkrxJsgcpIlsQKi2LnuvGQy76ugEGsZvZdB2Fgbmq1_QMpAel2h--RFpYe2ZIX7aE=@pm.me> <willemdebruijn.kernel.296b127eabe3c@gmail.com>
+Feedback-ID: 37265593:user:proton
+X-Pm-Message-ID: c511778349f44c771590ad050ce7ef08f8a1e2a6
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:3c4a:b0:4a4:e11c:7b56 with SMTP id
- 5614622812f47-4af5e05c3ecmr8972357b6e.8.1785628835992; Sat, 01 Aug 2026
- 17:00:35 -0700 (PDT)
-Date: Sat, 01 Aug 2026 17:00:35 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a6e88a3.13bfb6d0.1ecdd5.0267.GAE@google.com>
-Subject: [syzbot] Monthly netfilter report (Aug 2026)
-From: syzbot <syzbot+listae8a20fd53e9b2a3905f@syzkaller.appspotmail.com>
-To: fw@strlen.de, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	netfilter-devel@vger.kernel.org, pablo@netfilter.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello netfilter maintainers/developers,
 
-This is a 31-day syzbot report for the netfilter subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/netfilter
 
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 11 issues are still open and 198 have already been fixed.
-There are also 3 low-priority issues.
 
-Some of the still happening issues:
 
-Ref Crashes Repro Title
-<1> 10      Yes   WARNING in nf_ct_bridge_post
-                  https://syzkaller.appspot.com/bug?extid=a8ba738fe2db6b4bb27f
-<2> 1777    Yes   INFO: task hung in addrconf_dad_work (5)
-                  https://syzkaller.appspot.com/bug?extid=82ccd564344eeaa5427d
-<3> 704     Yes   INFO: rcu detected stall in addrconf_rs_timer (6)
-                  https://syzkaller.appspot.com/bug?extid=fecf8bd19c1f78edb255
-<4> 157     Yes   INFO: rcu detected stall in br_handle_frame (6)
-                  https://syzkaller.appspot.com/bug?extid=f8850bc3986562f79619
-<5> 143     Yes   INFO: rcu detected stall in NF_HOOK (2)
-                  https://syzkaller.appspot.com/bug?extid=34c2df040c6cfa15fdfe
-<6> 80      No    INFO: task hung in nfnetlink_rcv_msg (5)
-                  https://syzkaller.appspot.com/bug?extid=c4b20b80ee6a7a2f5012
-<7> 3       No    WARNING in nf_conntrack_cleanup_net_list (2)
-                  https://syzkaller.appspot.com/bug?extid=122256c3e2bf6ec9f928
+On Saturday, July 25th, 2026 at 2:37 PM, Willem de Bruijn <willemdebruijn.k=
+ernel@gmail.com> wrote:
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+> manizada wrote:
+> >
+> >
+> >
+> >
+> > On Thursday, July 23rd, 2026 at 10:14 AM, Jakub Kicinski <kuba@kernel.o=
+rg> wrote:
+> >
+> > > This is an AI-generated review of your patch. The human sending this
+> > > email has considered the AI review valid, or at least plausible.
+> > > ---
+> > > tun: prevent underflow in rx headroom calculation
+> > >
+> > > This patch clamps good_linear to zero in tun_get_user() so that a lar=
+ge
+> > > tun->align value coming from ndo_set_rx_headroom() does not cause
+> > > SKB_MAX_HEAD(align) to underflow into a huge size_t when assigned to =
+the
+> > > linear variable, and later cause the skb data pointer to end up outsi=
+de
+> > > the allocated head.
+> > >
+> > > > diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> > > > index ffbe6f13fb1f..d3be0f2d5df8 100644
+> > > > --- a/drivers/net/tun.c
+> > > > +++ b/drivers/net/tun.c
+> > > > @@ -1780,6 +1780,7 @@ static ssize_t tun_get_user(struct tun_struct=
+ *tun, struct tun_file *tfile,
+> > > >  =09}
+> > > >
+> > > >  =09good_linear =3D SKB_MAX_HEAD(align);
+> > > > +=09good_linear =3D max(good_linear, 0);
+> > >
+> > > [High]
+> > > Does this fully cover the IFF_TAP path when align is large enough tha=
+t
+> > > SKB_MAX_HEAD(align) is <=3D 0?
+> > >
+> > > With the clamp, good_linear becomes 0, and later in tun_get_user() th=
+e
+> > > non-zerocopy path does:
+> > >
+> > >     copylen =3D len;
+> > >     linear =3D min(hdr_len, good_linear);
+> > >     ...
+> > >     if (!linear)
+> > >         linear =3D min_t(size_t, good_linear, copylen);
+> > >     skb =3D tun_alloc_skb(tfile, align, copylen, linear, noblock);
+> > >
+> > > so linear ends up 0 and the resulting skb has skb_headlen(skb) =3D=3D=
+ 0.
+> > >
+> > > For IFF_TAP without IFF_NAPI_FRAGS the code then calls:
+> > >
+> > >     skb->protocol =3D eth_type_trans(skb, tun->dev);
+> > >
+> > > eth_type_trans() -> eth_skb_pull_mac() -> __skb_pull(skb, ETH_HLEN),
+> > > and __skb_pull() has:
+> > >
+> > >     if (unlikely(skb->len < skb->data_len))
+> > >         BUG();
+> > >
+> > > Since skb->len and skb->data_len both start at the packet length and
+> > > skb->len is decremented by ETH_HLEN in the pull, would this reach the
+> > > BUG() when a user writes to /dev/net/tun with tun->align pushed above
+> > > the SKB_MAX_HEAD threshold via the OVS/netkit/VXLAN stacking describe=
+d
+> > > in the commit message?
+> > >
+> > > The pre-existing behavior at align =3D=3D 3776 appears to hit the sam=
+e
+> > > BUG() and align > 3776 pre-patch corrupted memory before reaching it,
+> > > so this change is an improvement, but would forcing linear >=3D ETH_H=
+LEN
+> > > in the IFF_TAP path (or calling pskb_may_pull() before eth_type_trans=
+()
+> > > regardless of the frags flag) be needed to close the remaining panic?
+> >
+> > Oh this is a good catch. But while making the TAP pskb_may_pull
+> > (ETH_HLEN) check unconditional would address the eth_type_trans() case,
+> > raw TUN with IFF_NO_PI also directly reads the first protocol byte from
+> > skb->data, so we'd have the same issue there.
+> >
+> > Rather than add consumer-side handling for a fully nonlinear skb state
+> > introduced by the repair, maybe the cleanest is preventing TUN from
+> > creating this state?
+> >
+> > =09#define TUN_MAX_HEADROOM 512
+> >
+> > =09tun->align =3D clamp(new_hr, NET_SKB_PAD, TUN_MAX_HEADROOM);
+> >
+> > This fixes the original SKB_MAX_HEAD() arithmetic issue, and also prese=
+rves
+> > linear space for both the raw-TUN protocol byte and the TAP Ethernet
+> > header. The 512-byte value matches the existing ceiling in
+> > ip_tunnel_adj_headroom(), so requests above the cap can require later
+>=20
+> Is that a ceiling specific to ip_tunnel or universal for tuntap? I
+> suspect only the second. In which case this would add a new condition.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+Yeah you're right, that was specific to ip_tunnel_adj_headroom(), not unive=
+rsal.
+Sorry for the delay here, the more I look into this the more potential issu=
+es
+I find (including couple more I'll send a patch for separately):
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+>=20
+> > skb expansion instead of unsafe preallocation by TUN.
+> >
+> > Does this sound reasonable? If so, I can post v2 using the TUN-side cap=
+.
+>=20
+> Why NET_SKB_PAD, aside from that it happens to be larger than both
+> IFF_TAP and IFF_NO_PI cases?  (good catch on that NO_PI btw.)
+>=20
+> The IFF_TAP case already has a pskb_may_pull, but only for frags.
+> Perhaps we should just always enable that. And a similar check before
+> the NO_PI case reads skb->data[0]. That is in line with standard rx
+> protocol parsing logic.
+>=20
+> Alternatively indeed clamp, but to the true minimum required values in
+> these cases, which coincide with the values tested in pskb_may_pull.
+>=20
 
-You may send multiple commands in a single email message.
+With NET_SKB_PAD I just meant to preserve the existing lower-bound behavior=
+ in
+tun_set_headroom() for negative/very small requests, not set a protocol
+minimum for either side.=20
+
+RE: pull-based alternative, it sounds reasonable, and making pskb_may_pull(=
+skb, ETH_HLEN)
+unconditional and pulling 1 byte before the IFF_NO_PI read would fix the
+immediate fully non-linear skb. But, those pulls would still leave
+skb_headroom() unbounded. mac_header and network_header are stored as 16-bi=
+t
+offsets from skb->head, so a large-enough headroom can still truncate
+those offsets, so just pulling the packet bytes linear would not prevent an
+overflow from excessive headroom value.
+
+How about this instead?
+
+  max_headroom =3D min_t(size_t, SKB_MAX_HEAD(0), U16_MAX - 1);
+ =20
+  if ((tun->flags & TUN_TYPE_MASK) =3D=3D IFF_TAP)
+          max_headroom -=3D ETH_HLEN + NET_IP_ALIGN;
+  else
+          max_headroom -=3D 1;
+
+  tun->align =3D clamp_t(int, new_hr, NET_SKB_PAD, max_headroom);
+
+This leaves 1 linear byte for the IFF_NO_PI version check, or a complete Et=
+hernet
+header for TAP, while accounting for the NET_IP_ALIGN added later via TAP.
+It also keeps the requested headroom within both the usable 1-page skb head=
+ and
+the largest valid skb header offset. The 16 bit limit would constrain just =
+the initial
+headroom reserved by TUN, not any packet-relative offsets added in later el=
+sewhere.
+
+Would this make sense?
+
