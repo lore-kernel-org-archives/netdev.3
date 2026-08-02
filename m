@@ -1,65 +1,65 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274663128DF
-	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 20:25:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A9E337107
+	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 20:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785702311; cv=none; b=rgxMW2YwGL4bjB56Q86BUuEnf6Rxyu/lhENqDjXOeBJjtxt+4F+Yi96gQCQO2fbw6Vn/Dx1PPuSBC2hH/BpNF3ZH3yriES3mu0cJLu0RNiBaA/syksSO+YR2EYtaZ5FEo4f+ZEGETgYMdKRntBVQ57A9cuwn2SbHp3xQzUOdgd8=
+	t=1785702313; cv=none; b=Djdm8g8IIDHy07OE2PrnIVpKfS+k1f/i0K1k7YA4UgK6V4YdHWxGRh6esx0wbteUE9/6UQnBWzp/ugNoaSTXkS/1151417ocuzRnvefIOCRm1cqPF3dkN0TfFyCqd/3irALw2/z714Rj+K5AReoM9w+ZtGaJYW+EiK1uNEbMMvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785702311; c=relaxed/simple;
-	bh=t+wNgK5pWkodZMpENG/HFFh/wGgVK+guUXkQGCLdJe8=;
+	s=arc-20240116; t=1785702313; c=relaxed/simple;
+	bh=8D/LnP6iwLqOWvltAMKdDDJiZBKI5yS6vx9tWazWWQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qaqlHGOueyhonXwLYmo9s1czGtB3ZbKJAKHfFGbqnpmyBzD93tpsK+lJYGr1EtmD48b1+w2PqEwpLWQ4NhqgY6MbMH8XBm70TgVb5Nqo/0UuwtQtI/VOViOiSQU7JQKs6DJTKtFkcZyR7/lp4Zbw3vLWtVSDdi2K3ATwjcezmac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=loVyY7KU; arc=none smtp.client-ip=209.85.221.43
+	 MIME-Version; b=g9PzrYZa/95lPxnB1GQY2iyjpJW8mdGWA9Cw+uDgwT/pN8QcxTChBtsCw1cjYi9S83R2Qe07c7CVwy4X/GDckJQ7AVl/7CSazdm2PKyIpZUgzp6hlB+XfwS8AmlaNGmqm31EO8e1RDFBGvaOSLs+EupKkFD3mMm0RVVv8+6N/No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bjUSS3IG; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="loVyY7KU"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47fe45db360so2990f8f.2
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 13:25:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bjUSS3IG"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-495502852d1so1589685e9.2
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 13:25:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785702308; x=1786307108; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785702310; x=1786307110; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=BOTNDYCh7zvkHHeJw6yM0wB8e5xxO6pLFuXcfQFg8Ms=;
-        b=loVyY7KUAdssF1LXALCNvvI2I+OF48YKZmcyZCfmEzLN5UlkBIN9lZRdof5T7PVTlC
-         VqAqrW9grKRCbhMv+7l4SDG6wLAZ2TRU25L9WUFSPFM7Fd6pI0xybYeZgSNQVLEGcAJx
-         CUgMZNtVkA0Mu298JwTsRLtiKSZ7Oyg/aVCusD9yCAqbUUcMLTtECY9ZlmRs+jSdOErs
-         MwJMjT0qdZzL5NDcWdMI0KJ0gonyxtnEdCCA4BDcpSPZPK8STdxKMb5y5mcCfBCQYDdj
-         kbCcsTqE4qN0XZilvPStGcMkGgd5aYxk9nPXfzGEkmht9WJAXN5bAp/q/DXLV5qgzjG3
-         Ch/w==
+        bh=uFZdABfXyxNiQyQgXmRGyPiZSHUapp++D7AxsRp/yCg=;
+        b=bjUSS3IGZTlOoRcqrwnhYoA/gvLKMK5c8bDjTWDNCfYDZNgBaZSSO90C5iHqvS3PuD
+         R3Gcq9KQNV7r8+nkvVbdmt3tgGFZUZidrpQBuA+4r2FbCtscA0/rSxB49iFBwCUThRr1
+         qJxne4RoV60yMxOI8H43NM1EPXMpfRXm+M79iikgRazrYp9Y9c6zLAlSbbnFbP3sUU2o
+         NfjvIPWgxH1tjVhXfbM/hA5zRLTHtCEjWZT0PYFV3nxZPOgMevS7zLJee8XalSFTb493
+         PtQjrV2e+pbg9jvs1a7f1AZnP4987vfC3u8BBazNR8CbEKG8bEWqRnFT+R7hiX8Jz1fO
+         1Xuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785702308; x=1786307108;
+        d=1e100.net; s=20251104; t=1785702310; x=1786307110;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BOTNDYCh7zvkHHeJw6yM0wB8e5xxO6pLFuXcfQFg8Ms=;
-        b=eg0Hm3vJLLa25VhMgZ6FmCvtsY6PGbzFanIZ/zVyVKxAEREvXcii+Liht54W/41uw6
-         awwsMGZ6Y7v5sO6N1PWcogz3pNfgZBCa8p0LbN1SiQG+3y4WOI8qh0LTrYjeH9sBqEz8
-         GNm/L8fLJnEgnbfxwGjHuF5VlxiUzgf0J+gdYmUopJAQeKxoGLe29+3mJU1eOHQvT0t8
-         26TAR9LtzHqhnnjWv7bU3rPPxgciVxFsspCXkLsjBGF8Fj9U5oWfrfQghnL3rTksv44p
-         bb1kFFEN6fcjdjxH9X1Qxtizrvw9qKco1VpsFHHY6ApkCFQCrDYjL8FaQVim7zLrG6ra
-         6NNw==
-X-Forwarded-Encrypted: i=1; AHgh+RpT+sQ4cg7TwgYMw1WIArtQxc77763BFgWosCtO1yCKVEk16v9DmakRQSJGDviPegQzA1C4rXQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGXiKxVLbpVWLne6BwBkSyf1C+lnqYCjxOUVA6HuARzNq5y73a
-	aXdDWnzGjHcq4tcFW4yLaL3rL//xKiVIBHHeH27H+cjJzvjYlFI0etZB
-X-Gm-Gg: AR+sD10zsH1jNZVAmXqrD5gKTy8rS3N4ILqJXEy7CWMKmJplTUPfc5K/Qji5IfnRFAZ
-	zRTuSxSiwrhSqgt/hMV/X1GiQv96PRDz0JyGqyzgOb9c8Bs9sLABavBIaHA90m02W4xKGFsoMkU
-	tDleLAbDDtqVzzvxCR7UNbWMDu/lPOJts+2Fg0LblcQZhZC4ucf6s3fu5aCFKHPwf7Ok5Os9kPE
-	ILS+//gBp0L1LcF2XVRHot9fdTdAdOM3OusqzsfVTx0mZwUMC44fIS2S+YrFfxciRKECBZjDOcD
-	5ayICjC1IYJu7iPO3Ya17WG4Lxoraj9n7cUoj6ReZXFOCr82EZ8P/vUssbNMIp2Xm6qu6ndvhkh
-	Oyea/WBJoKP1QExJTKvwaZkLG44/sSQYsxlsUjloIjBOuJ6p9NjquyJZaNghB1E5xxVJhzn2oQG
-	82ziNL5CzAK+5mMh1+RzwJy72MPVrj4jEtIfwMjelrLKHLrJ9zvw20mqC44qEf2RhqJ0wwPIHSF
-	tCW4SamjrMfwo9byYmtogN+1HnBMX8CNH+vsAx6KAI7Hqv4ExZ89jN4Mr8uCHOjfVpDJ78NBOeP
-	F59ubWGkIeiNkoipKRNM
-X-Received: by 2002:a05:600c:c494:b0:498:8e6:d463 with SMTP id 5b1f17b1804b1-4980c657c57mr75721695e9.1.1785702308193;
-        Sun, 02 Aug 2026 13:25:08 -0700 (PDT)
+        bh=uFZdABfXyxNiQyQgXmRGyPiZSHUapp++D7AxsRp/yCg=;
+        b=PYBwxTJOfRYR+xdNcRqR7JbEsHOsiRd0UhWF+EZxO3S0Xz9TY6AG7Si2eGiQW/un5d
+         wXLTE2OIIogmlu5mhbw3n9uxal/9LSq5PWHC/70PFU9e+U1LVet0PXuPblIHcUo29ov1
+         4Iaqt3UfSEWAZGYFGkY7r0tFTBe8KBQjCg6mrPYHmYfhcgORE6CSO3cZZLciWeqWPHG1
+         zKxww3QFZ6BFRk58joUUPuUPXjagDY2/xIr1UOueA0nBx1FKEWTy8ZSq1Q9OXhCt06KC
+         CQc8yIDflfevSEopjgK7zP0LnbKujHGaZjM/SSEDXFc8OY4gcjMwvGmHu5X0kX9huZIj
+         Iyfg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrj+GZhpEsYaPR0bCqvF/371d9FXXXJLAy1LlhSekNctZOz4QlhuG3tGA84eU/oj2CI/4nThbE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1V9YcjT7HC3jQTAMRK3PnwG/VTpHQ+X4EJRbcBuYWb08zApPl
+	iiQoJIUvHrdD85vxx4L9DOLiRjch0NLPmRS344w5rnl2P+bg6OUBir8f
+X-Gm-Gg: AR+sD101i35IDq1k5EdwC5G7G5CZGfqAbz8h8yS55zyNj6A/Oak+VIDQ2BRASNgJcHf
+	44mic3pF9Ho64OFPsHQa8kU2z5OZ/aNFa3LsouaaoYEFerA98CSbbLU4afykoymiwbrqF8NNhPp
+	qdngqoc/wA/udiNtjBT+lHs9yUjJn/sRXfjb9XGrPcI1EWSA0N6xcH7KGWv9eoqAIaxqaa1T4/k
+	wPqvsqQzUGBSO6xL/Ckjn8OpbilMN0tiukhb3LJ4wMAl2/TqUYJ8ZrnoJzD4uJT/TDOXCebL6Wp
+	UHvQu2n+y7XIAbO46n+9/ay4jQYfKycObHxZEmfFTNLYC/0uWHZDrNvY5eaqPu8wUqSHipMIxD/
+	0oOp7riRhFbNq0iCq4tIHIZxHWabjt8ay8l2MbkcqyzBGJEYoMNFCV0QrGFwmvg+BnJY2BKtoTJ
+	r6bcf5GvYSi51Kh6xDZRxvGLP4chLdZfbEkaDxP/eDlLRtW2SikZU3q6gui6YSWTQQsVXjObH7Q
+	JLJV7ospQXbVGuZqUGr6hl9jM3U609ew4GseVHIfEJKGZ2si4MUbML9Ji2M1BUZy8x5aVmPb3jX
+	h7d3oFjENp2WewdMY+wF
+X-Received: by 2002:a05:600c:3b20:b0:495:3eb4:3c6d with SMTP id 5b1f17b1804b1-4980c69d93cmr75435045e9.2.1785702309906;
+        Sun, 02 Aug 2026 13:25:09 -0700 (PDT)
 Received: from L-022584.energy.envision.com (dynamic-078-051-143-142.78.51.pool.telefonica.de. [78.51.143.142])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807b23f6fsm132234365e9.0.2026.08.02.13.25.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807b23f6fsm132234365e9.0.2026.08.02.13.25.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 13:25:07 -0700 (PDT)
+        Sun, 02 Aug 2026 13:25:09 -0700 (PDT)
 From: Xin Xie <xiexinet@gmail.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -76,9 +76,9 @@ Cc: edumazet@google.com,
 	netdev@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Xin Xie <xiexinet@gmail.com>
-Subject: [PATCH net v2 1/3] net: hsr: privatize interlink-bound skbs before address mutation
-Date: Sun,  2 Aug 2026 22:25:02 +0200
-Message-ID: <20260802202504.2962-2-xiexinet@gmail.com>
+Subject: [PATCH net v2 2/3] net: hsr: clone before updating path and LAN IDs in tagged frames
+Date: Sun,  2 Aug 2026 22:25:03 +0200
+Message-ID: <20260802202504.2962-3-xiexinet@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260802202504.2962-1-xiexinet@gmail.com>
 References: <20260802202504.2962-1-xiexinet@gmail.com>
@@ -90,77 +90,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On an HSR RedBox, frames forwarded to the interlink go through
-hsr_get_untagged_frame() and arrive in hsr_xmit() as
-skb_clone(frame->skb_std). Two reachable alias cases make the writes
-there unsafe:
+hsr_create_tagged_frame() and prp_create_tagged_frame() update the
+path/LAN ID in the received skb data buffer and then skb_clone() it
+for the egress port. When the same frame is forwarded to both slave
+ports, the second port ID update lands in the same shared buffer the
+first port clone still points at; if that clone is still queued
+(qdisc backlog, NETEM, BQL), it is transmitted with the second port
+ID - a silent on-wire corruption.
 
-(a) A tagged multicast or broadcast frame received on a slave is
-    also delivered to the master through another clone of the same
-    buffer: hsr_deliver_master() writes the node MAC and hsr_xmit()
-    writes hsr->macaddress_redbox into the same six source bytes, so
-    the local stack receives the RedBox MAC instead of the
-    originating node's - deterministic without backpressure.
+One always-available trigger is the master transmit path: a
+pre-tagged frame transmitted on the master (for example injected
+locally via AF_PACKET with a valid RCT) passes prp_fill_frame_info()
+with frame->skb_prp set, the master-origin gate lets it through to
+both slaves, and both slaves run prp_set_lan_id() + skb_clone() on
+the same buffer. Tagged frames arriving on an HSR RedBox interlink
+take the analogous path through hsr_create_tagged_frame(). Normal
+traffic tests do not expose the race: the window between the first
+dev_queue_xmit() and the second ID write is only a few instructions
+and opens only under egress backpressure. With a 200 ms netem delay
+on one slave, all 200 injected frames left that slave carrying the
+other slave LAN ID in testing.
 
-(b) A master-originated frame forwarded to the interlink aliases the
-    original TX skb, which packet taps or the TX path may still hold.
-    The master-origin substitutions (hsr_addr_subst_dest() and the
-    outgoing-slave source write) and the RedBox rewrite would all
-    modify that shared data.
+Reorder both helpers: clone first, privatize the clone with
+skb_cow(), reacquire the header/trailer pointer, then update the ID.
+skb_cow() is used rather than skb_cow_head() because privacy is
+needed for the whole linear area, not only the header: the HSR tag
+sits in the head, but the PRP RCT sits at the linear tail.
+skb_get_PRP_rct() computes the trailer from skb_tail_pointer(), so
+the returned pointer is always inside the linear area that
+pskb_expand_head() copies; frames with a nonlinear tail are
+mis-parsed by the existing helper regardless and are out of scope
+here. (Both wrappers currently reach pskb_expand_head(); they differ
+in the cloned-data predicate, and correctness here needs full data
+privacy, not only header privacy.) This adds one linear-head copy
+per tagged egress; untagged master traffic keeps the existing
+__pskb_copy() path and pays nothing from this patch.
 
-Privatize the interlink-bound skb with skb_cow() before any address
-mutation whenever it can alias a live consumer: for all
-master-originated frames, and for ring frames the master also
-consumes (is_local_dest && !is_local_exclusive - the exact inverse
-of the port loop's master skip rules, so the condition does not
-depend on port order). Every interlink skb reaching hsr_xmit() is a
-clone from get_untagged_frame(), so the selected cases always pay
-one private copy. On the hardware tag-insertion path, the selected
-master-originated and locally consumed ring frames are now isolated
-before the interlink address write: the interlink write can no
-longer change an already queued clone of the same frame. Ring frames
-the master does not consume (is_local_dest == false, e.g. unicast
-ring-to-SAN) keep the zero-copy path; aliases that already exist
-there - for example between the interlink clone and a peer slave's
-hardware-tag-insertion clone - are pre-existing and unchanged by
-this patch. On allocation failure the frame is dropped with the same
-accounting as a tagged-frame creation failure.
-
-Fixes: 5055cccfc2d1 ("net: hsr: Provide RedBox support (HSR-SAN)")
+Fixes: 451d8123f897 ("net: prp: add packet handling support")
 Reviewed-by: Ali Ahmet Memis <ali@iusegentoo.com>
 Tested-by: Ali Ahmet Memis <ali@iusegentoo.com>
 Signed-off-by: Xin Xie <xiexinet@gmail.com>
 ---
- net/hsr/hsr_forward.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ net/hsr/hsr_forward.c | 35 ++++++++++++++++++++++++++++++-----
+ 1 file changed, 30 insertions(+), 5 deletions(-)
 
 diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 0774981a65c1..67aaf5a8622b 100644
+index 67aaf5a8622b..974b55f24882 100644
 --- a/net/hsr/hsr_forward.c
 +++ b/net/hsr/hsr_forward.c
-@@ -420,6 +420,22 @@ static void hsr_deliver_master(struct sk_buff *skb, struct net_device *dev,
- static int hsr_xmit(struct sk_buff *skb, struct hsr_port *port,
- 		    struct hsr_frame_info *frame)
- {
-+	/* An interlink-bound skb from get_untagged_frame() can still alias
-+	 * another live consumer: for master-originated frames the clone
-+	 * shares the original TX skb (which taps or the TX path may still
-+	 * hold); for ring frames the master also consumes them when they
-+	 * are destined to the local node without being exclusive to it.
-+	 * Privatize before any address mutation.
-+	 */
-+	if (port->type == HSR_PT_INTERLINK &&
-+	    (frame->port_rcv->type == HSR_PT_MASTER ||
-+	     (frame->is_local_dest && !frame->is_local_exclusive)) &&
-+	    skb_cow(skb, 0)) {
-+		frame->port_rcv->dev->stats.rx_dropped++;
-+		kfree_skb(skb);
-+		return NET_XMIT_DROP;
-+	}
-+
- 	if (frame->port_rcv->type == HSR_PT_MASTER) {
- 		hsr_addr_subst_dest(frame->node_src, skb, port);
+@@ -336,12 +336,24 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_frame_info *frame,
+ 	int movelen;
  
+ 	if (frame->skb_hsr) {
+-		struct hsr_ethhdr *hsr_ethhdr =
+-			(struct hsr_ethhdr *)skb_mac_header(frame->skb_hsr);
++		struct hsr_ethhdr *hsr_ethhdr;
++
++		/* The original skb data may be shared with another egress
++		 * clone. Make the clone data private before updating the
++		 * path id so the update cannot corrupt the other copy.
++		 */
++		skb = skb_clone(frame->skb_hsr, GFP_ATOMIC);
++		if (!skb)
++			return NULL;
++		if (skb_cow(skb, 0)) {
++			kfree_skb(skb);
++			return NULL;
++		}
+ 
+ 		/* set the lane id properly */
++		hsr_ethhdr = (struct hsr_ethhdr *)skb_mac_header(skb);
+ 		hsr_set_path_id(frame, hsr_ethhdr, port);
+-		return skb_clone(frame->skb_hsr, GFP_ATOMIC);
++		return skb;
+ 	} else if (port->dev->features & NETIF_F_HW_HSR_TAG_INS) {
+ 		return skb_clone(frame->skb_std, GFP_ATOMIC);
+ 	}
+@@ -377,15 +389,28 @@ struct sk_buff *prp_create_tagged_frame(struct hsr_frame_info *frame,
+ 	struct sk_buff *skb;
+ 
+ 	if (frame->skb_prp) {
+-		struct prp_rct *trailer = skb_get_PRP_rct(frame->skb_prp);
++		struct prp_rct *trailer;
+ 
++		/* Same sharing hazard as above: privatize the clone data
++		 * before updating the LAN id.
++		 */
++		skb = skb_clone(frame->skb_prp, GFP_ATOMIC);
++		if (!skb)
++			return NULL;
++		if (skb_cow(skb, 0)) {
++			kfree_skb(skb);
++			return NULL;
++		}
++
++		trailer = skb_get_PRP_rct(skb);
+ 		if (trailer) {
+ 			prp_set_lan_id(trailer, port);
+ 		} else {
+ 			WARN_ONCE(!trailer, "errored PRP skb");
++			kfree_skb(skb);
+ 			return NULL;
+ 		}
+-		return skb_clone(frame->skb_prp, GFP_ATOMIC);
++		return skb;
+ 	} else if (port->dev->features & NETIF_F_HW_HSR_TAG_INS) {
+ 		return skb_clone(frame->skb_std, GFP_ATOMIC);
+ 	}
 -- 
 2.43.0
 
