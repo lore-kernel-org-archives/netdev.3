@@ -1,128 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C25733938C;
-	Sun,  2 Aug 2026 12:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F76FDDA9
+	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 12:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785673760; cv=none; b=qO/rcRAFnXWUWQa341URwKoj+uLscP9GrkSPKxZkoNdwcmCN8pkW95QJdsliHDIbo0P3HGI7oI04CspwLrYFILyJ22H4SgRPshtdSN+8kcwkiGC09DKA2Fb+earvHYjBTHHZBGm9whHuiv5uGKdmGySmAQAx99ydDsYeP2ipHp4=
+	t=1785673994; cv=none; b=gJFjy7YNGP0/ltGU8LBUbYGlj4GcKECc1MdjOPfasY0ox9r05Rp2bWRuv1pPnAWY7HDz+FDnmOeMg3l+6ziDRJAIlE9rR1sFQF3ACey2cWA74GM7gTwS4wARuA7FhBbxgduoJnTX3ezAdGAl8K0tXhc2UFhUFuCfRZtnze6mhWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785673760; c=relaxed/simple;
-	bh=Oc+Pf6P+wet7UHezAuJRNaKASH+UQW2bFsWGp3UkczE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mf6Fm0hvQAAJI/h04j0SzTVXjWRPswwTU27YOyhlujQ7ZrDNjgplkL+GDpzp9b6k+m4xH/0IQuJl8+yhfwf4G8iWpdan3u1w46NCn+rwFND3hL21/ucXdoIw6hOSUu1VmJTdFK211Wbo9aCInysHqXes8SmoV6c62l1WL3IOzWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H2OmZJER; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785673994; c=relaxed/simple;
+	bh=CqvVGKLWOhQZg6fkJf8NGKO+3amSVHYQ5JV3a8CpshY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oZKnAqWP1NrP2XEuT0RagaFp77YalUpVejQx02xkTkz60lSSltl9MVHgKza2mFG8y/ePOzMcCiWUizMZJXtngQaOy3RK6v9gsSeG2FCnv2wI/M+It7ptO1Zae62fosdfz4ORweNdqfz7r0lrzG2wCogZyboD2tpxtSGfRSBobIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O22K2qWE; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H2OmZJER"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id C46541F000E9;
-	Sun,  2 Aug 2026 12:29:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785673758;
-	bh=SHSGsM0vu6t3zdEJHGFOqvnDDQ/hs9cDuA8s50LeKfA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=H2OmZJERCYxtrOOph6nrStzZdf9Px2+Qu52EKRUMyRnmj4QfSbClOGXvOwLQl/4aA
-	 QXrUGppcGBhRWhY9tW992RTQ83AkGGQJozNyGViEgllW7DJ8ayJ1pfg/mDZfKLYM+O
-	 iaCJu9ozHHoC9OJbqbp8GE2FXVc48vGCq9wTtZKsOYsPdu40/jveDStEa4FnAS8dvh
-	 eBwmazAysE+S1N5/1Od2as8vkHZiBiRzJzW/3NReG/Vr6BQSlyRO9SCgOFK91LoO0Z
-	 4Wat2UmYU94tkzX5l86TF3Srukt7Yi+4nQ/P5F5pqFRu3Ol3LaLh9TJ1K2EelnS/lt
-	 PpuVHx/cRwcTg==
-Date: Sun, 2 Aug 2026 14:29:15 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Mike Leach <mike.leach@arm.com>, 
-	James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>, Damien Le Moal <dlemoal@kernel.org>, 
-	Niklas Cassel <cassel@kernel.org>, Jyri Sarha <jyri.sarha@iki.fi>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Linus Walleij <linusw@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Patrice Chotard <patrice.chotard@foss.st.com>, 
-	Andi Shyti <andi.shyti@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>, 
-	Lee Jones <lee@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, 
-	Jeff Johnson <jjohnson@kernel.org>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Yangbo Lu <yangbo.lu@nxp.com>, Paul Walmsley <pjw@kernel.org>, 
-	Samuel Holland <samuel.holland@sifive.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Richard Cochran <richardcochran@gmail.com>, Jens Wiklander <jenswi@kernel.org>, 
-	Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>, YC Hung <yc.hung@mediatek.com>, 
-	Svyatoslav Ryhel <clamor95@gmail.com>, Sean Wang <sean.wang@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org, linux-arm-msm@vger.kernel.org, 
-	linux-ide@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	mfd@lists.linux.dev, linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
-	linux-pm@vger.kernel.org, netdev@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Correct white-space style
-Message-ID: <am83ac93gyowUgSQ@monoceros>
-References: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O22K2qWE"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84e27035206so2821985b3a.3
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 05:33:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785673993; x=1786278793; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zLPXOlMQ3I1IqUDcfkevWnBWFBV8QBbEkwHgFssZeNM=;
+        b=O22K2qWED4XFpp1RJWDgISeOObXVtblxrXQIpLGmOla3j/lhJ3t+lnfEXK00/4lo2q
+         nbV/ioqMg4ohrDprFzu0otK/ONk6uTMqjPY2NDA6Pp88YhI6qXzcNpWqlgjq+6VzWypA
+         1IXOkymK1iDSG2xVIrJa5TCKsvs2rkIt+Wr1VBUXk6PVuSrenc9BU/ftStB92OnUNycz
+         b0b2plq/0xE8NDOVGZBy1lCEBis1oNHUz6lcKqy/i3be0JQSjMLbTnVD4ry4A2xkE8lb
+         YlJfuJR4jMRM0LQhp6Nv7/E/7GyWXnsLDxwuJWq8YnXFiupotTtBy30iRmcTuVMlpYpF
+         xKDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785673993; x=1786278793;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zLPXOlMQ3I1IqUDcfkevWnBWFBV8QBbEkwHgFssZeNM=;
+        b=nHgGct8V3FrVsXiG9Ma8kI7WTc03vHqZucDxX896iSCNVJMCrTXWMIS9O3Com65CwQ
+         s5oGOIwKd//8LabES9fjCk+RleBRAtWb5ntbis+69rA04vjSaTMRAc49EpNqwWNpUmDu
+         te/YvgzlkhOgHsFDIoKL4orcsOSRYwj+3TIx87EzvDyKyMpYLQ8S4v+h8QtqxGpNJ53B
+         MYKNKPvV2j1q46qL8gSqkMqgRiJvZ9gQXzyS7FHvF9pEpQtdxW2epGxlxRmxeSd8brFO
+         llmkIeKGI6ILPIPYPrpME7WGWzFSVPi6xKFfy7Jog9ADzQyAf9kYVi6MBuqbbdivR71O
+         ZsaA==
+X-Forwarded-Encrypted: i=1; AHgh+RrZJAs7oPWYVMLF5HAatY8q8Ven+bSyp2227lGC48e36ZUqbmIwpQDRGFSbD83V71cSxarWPyM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwI6HYLR4AaNFop67OSiOE6JreJujB/yPD26xIlcbZ9sckbOy0U
+	chB8kvTlGaCopjX05ZNnsNlRLbvCYnumHRrM5UFeKBiXoFQCnPXNuRMR
+X-Gm-Gg: AR+sD12VsATYdYwvk6WtiU3X4FNIFEdzicullsQIewSzXR+J88XyNUJjW+Klw5eZBxQ
+	MLz7TnOLBYlrbcX46MEPuFzejDtujDCvRtV6BNwuPG/9ok+fk6oNRKMLySsdRLeHH+Y3REEzs0K
+	eDi8+LtS6E7rOok+lz+VVqLTmYSlAoaBsqTDeDQ2nvjrTr0I157aguZTBZmvGrbRB0BmMyuT/gr
+	enRcRHZ0w4C3918vR5nlsGGTZBvi1ookNRzX9rHLlJessJhZWfu+qV95o9zJgJrD/ouVjJp+kxr
+	gKuSObfi3dhM3LcWTuJfVzVhxK8WH/cPgFDi/CVsprwHMGGSWvb5jyei/cB9rGMmxTcGOrP+qha
+	+RCCWLqpTUhYUYbSHS2gZLSKI6mCCvFcemQuL4rqEpatRnjd6XZj4+CLFciInMzDYgdb7sIpxOp
+	ry1M/3fmSAZdCugCH+9UljE9pHcx7Y5uHzUaoVZIKQqricRKNzDnsniW5U7t4gXDi6t5Gb7WLgT
+	2BwObv94z3zEuCT/7h93FUGduCqO/gR7LxHJafDXwUuL9xgP5Oep9GV/1BW64OZtMA8Bx5Ob5gP
+	o4pive0BOkKJIdkYUpra
+X-Received: by 2002:a05:6a00:1da7:b0:846:2f5b:c00 with SMTP id d2e1a72fcca58-84ee4903b73mr5347240b3a.54.1785673992675;
+        Sun, 02 Aug 2026 05:33:12 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:b123])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edbd3a4b6sm2475959b3a.4.2026.08.02.05.33.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Aug 2026 05:33:11 -0700 (PDT)
+Message-ID: <11a640b6-46b1-44d6-aee6-872107f7f570@gmail.com>
+Date: Sun, 2 Aug 2026 13:33:02 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ynduf7ixmtnk7fvw"
-Content-Disposition: inline
-In-Reply-To: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v1 1/3] net: core: propagate unreadable flag in
+ skb_zerocopy
+To: Mina Almasry <almasrymina@google.com>
+Cc: Stanislav Fomichev <sdf@fomichev.me>,
+ Bobby Eshleman <bobbyeshleman@gmail.com>, Florian Westphal <fw@strlen.de>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Jiayuan Chen <jiayuan.chen@linux.dev>,
+ Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>,
+ "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20260801125308.1342897-1-almasrymina@google.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20260801125308.1342897-1-almasrymina@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 8/1/26 13:52, Mina Almasry wrote:
+> When skb_zerocopy() copies devmem payload fragments, it fails to update
+> the target skb's unreadable flag. This causes the target to appear as
+> readable memory.
+> 
+> Propagate the unreadable flag if any devmem fragments were copied from
+> the source.
 
---ynduf7ixmtnk7fvw
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] dt-bindings: Correct white-space style
-MIME-Version: 1.0
+ From a quick look, it doesn't seem like the function would work reliably
+with netmems even with this patch, but that's a different kind of issue
+we can return to later. Curious, did you hit this in prod?
 
-On Sat, Aug 01, 2026 at 09:56:14PM +0200, Krzysztof Kozlowski wrote:
-> Correct a few white-space issues, like double space after '=3D' or before
-> bracket '{' characters, which will be flagged by dt-check-style.  No
-> functional changes.
->=20
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> [...]
-> diff --git a/Documentation/devicetree/bindings/pwm/pwm-sifive.yaml b/Docu=
-mentation/devicetree/bindings/pwm/pwm-sifive.yaml
-> index bae993128981..40397bdf2d69 100644
-> --- a/Documentation/devicetree/bindings/pwm/pwm-sifive.yaml
-> +++ b/Documentation/devicetree/bindings/pwm/pwm-sifive.yaml
-> @@ -62,7 +62,7 @@ additionalProperties: false
-> =20
->  examples:
->    - |
-> -    pwm:  pwm@10020000 {
-> +    pwm@10020000 {
->        compatible =3D "sifive,fu540-c000-pwm", "sifive,pwm0";
->        reg =3D <0x10020000 0x1000>;
->        clocks =3D <&tlclk>;
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
 
-I'm ok with this change (as &pwm is unused in the example), I also don't
-care much about this not being a whitespace only change and thus not
-really matching the commit log.
+> Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
+> Cc: Pavel Begunkov <asml.silence@gmail.com>
+> Cc: Stanislav Fomichev <sdf@fomichev.me>
+> Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
+> Cc: Florian Westphal <fw@strlen.de>
+> Signed-off-by: Mina Almasry <almasrymina@google.com>
+> ---
+>   net/core/skbuff.c | 3 +++
+>   1 file changed, 3 insertions(+)
+-- 
+Pavel Begunkov
 
-Acked-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org> # for Documentation/devi=
-cetree/bindings/pwm
-
-Best regards
-Uwe
-
---ynduf7ixmtnk7fvw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmpvOBgACgkQj4D7WH0S
-/k5+WQf8CivH89faKCp48CBlupnrahHpA3qdaBm48BnUdJduo4BaximYlTqDGSxO
-NXL529LwysgvuiHkOxrg9bUdk/Lx68V5xZboTmO5BFwMGnqiXaazc9iWfyHrau7M
-YVderOTLj5yWcB/0FkMdHb59nmaH6H3DTA7lTyzhEH2rK1e56Xe0bWxXn5wPx//K
-Fg6BzFpjoO28RLKp88OCsgzFiu3Y6yaJNenCx2MeV0T15/L721ZmHJDKsQqu5iDJ
-iXzPSntzwtR7HAs/3NUW1jSaAV2Jq41LUqlqjX4CeZDwSDaX6iquowVSJDhJvYuK
-ZtKTkgqchOdbv2qhQEqje3UkwK9pWQ==
-=9CRH
------END PGP SIGNATURE-----
-
---ynduf7ixmtnk7fvw--
