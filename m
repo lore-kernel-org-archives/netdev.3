@@ -1,83 +1,65 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A15330B01;
-	Sun,  2 Aug 2026 20:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8C6363C50;
+	Sun,  2 Aug 2026 21:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785702582; cv=none; b=IIGivMBii50QPV/rKGLQ6jA86jyBrF6oGcBz1nHX4607Dz8eNpH9WO7JXXX0adeGKpaHkEuNCxouQ59crrtSiXtkYRu1ppgl1uM4aUqnBsTfp3W1Q8BvItY97ceXes2w1Cs1Z5DoQ5NnH3LaCSfqlspgKNmFVcswiY1MrSWZCaU=
+	t=1785705090; cv=none; b=PAyX7NSoOuypz9bVh6c/rxOTJFfGMDXRM/eJYHTh8Zd9ibmfLMBFBjXQo6rG73cal5n9UTvJsoGPuxiYnGvQPUC90zkQ57TaLaaYQnAwZtPnEnjYlFQbNZRDjegUAKf+rLujNKUdppyKxxWpMwkEFml4Enn8mhY93aJXrNRCa4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785702582; c=relaxed/simple;
-	bh=j/qnisZo7vXZsAMvvAJfrAw1ufzzSgviDPikJR/yof8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZTbfNd2cVLQeBtBOspn79n8hWK0OrXU8JZS8ce66gYsoFwW9hseQns3QxqryFK4HPuvssgaOcLNEAx6QydvNd6z1eoREvqlFH0vq08RN9iMvgd6us+0GtbMxWKT8iuMcLHA9dS4nFsk6WT0KSElQf9HpNX14VMg+UBzV97GFmY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jOih4Cbk; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785705090; c=relaxed/simple;
+	bh=NchiXIrDFhoqTJKjahtVQ5kQg39AAGkgbWMd1+E5cuA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WfrH0sbdBSPOKd8CpFJDMmDghqG7zIk4c3lJZCx/t+sL6Mp9zZ8gXW3JrvyiEiUiqbbVmr1h0KamLATAlWyydylZ5Y4s6YQwO3LO7Rh+VlvPB/gnT5c3FPYTByoyTmMhsB9z8koNDBKf8G4mrGPjOJAd5Hg5JvkrXvUmecgxsQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rfhMLwRe; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jOih4Cbk"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 8A6CA4E410B0;
-	Sun,  2 Aug 2026 20:29:36 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 466906029B;
-	Sun,  2 Aug 2026 20:29:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0F5CB11C1786D;
-	Sun,  2 Aug 2026 22:29:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785702571; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=ese7NYKIqP4YMH14PHh8lmNgkBXMS5Kp6vJnbvuy/80=;
-	b=jOih4CbkXugJF6FC6RbTX5XB3kv6TO+ZxzBEzAb+mdJ3dJvGOBsZ1AHWNSmJn/W7Qn3tRG
-	eswvecQAkpQxkjgvFNRsfxWsCnKK12ohDFrsfobUp+eZeLz3ik5ymkDomBYO6aHvr3KGuS
-	IM0KzU9qCYkp+MDN89+xwfKTWS44KLTdqgNHoP6uH65FDZxCdxFPxbA6t0ehr8Cz6Wp+AT
-	+h3xPNyXcYmX5BTwceeLv3wOUTMA9Slr3PnGlenxfjXyTwqZ+CCyBkWF1ODqShPSD5YGEL
-	8absHHEBqga42R7Jm2pDx5/4e74/2X9W4LVHhcUFzE17aYx8frrKKrD4pA+klQ==
-Message-ID: <5f2f0e3c-cc4e-4110-ad4c-180abba5356d@bootlin.com>
-Date: Sun, 2 Aug 2026 22:29:22 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rfhMLwRe"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=wYLlNp1JOU4HeytwIaMB6PQNnf3NDTYX8Q+Ak0ohmRA=; b=rfhMLwReSy5FHhy7NdzIcshkPY
+	lqyqrgdHd9PTJCZECNL1L7aeirRaZ/GsiJc/STbbIiENNQNQOIpr7gzXkCpdsOo0Wc5y5Q6HrpHLO
+	ykMTld0H/ocSHIhFQnCNoqE2G9lyyT3ocgiVPil1+mOVpNit8StS8HTeugJMc/ajnAK4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wqdSH-00FcAg-95; Sun, 02 Aug 2026 23:10:45 +0200
+Date: Sun, 2 Aug 2026 23:10:45 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Birger Koblitz <mail@birger-koblitz.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>, linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jianhui Xu <neuromoments@gmail.com>
+Subject: Re: [PATCH net-next v5 03/13] ax88179_178a: Add netdev2data()
+ convenience function
+Message-ID: <632d6101-fb2f-41f5-9cfa-7d0617a1801b@lunn.ch>
+References: <20260802-ax88179a-v5-0-dcb9fea4acd4@birger-koblitz.de>
+ <20260802-ax88179a-v5-3-dcb9fea4acd4@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/2] net: stmmac: ethtool: Address off-by-one
- when reading the coal rx-usecs
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Russell King <linux@armlinux.org.uk>, thomas.petazzoni@bootlin.com,
- =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20260802114015.214212-1-maxime.chevallier@bootlin.com>
- <20260802114015.214212-3-maxime.chevallier@bootlin.com>
- <4e76d7c1-0052-4689-be7c-9c31dc24516a@lunn.ch>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <4e76d7c1-0052-4689-be7c-9c31dc24516a@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260802-ax88179a-v5-3-dcb9fea4acd4@birger-koblitz.de>
 
-Hi Andrew,
-
-On 8/2/26 17:05, Andrew Lunn wrote:
->> This does change the boundaries of accepted rx-usecs parameters, as the
->> previously accepted values were in the 16-246 us range, and now fall
->> into the 15-245 range on imx8mp.
+On Sun, Aug 02, 2026 at 06:32:01PM +0200, Birger Koblitz wrote:
+> Add a convenience function for the ethtool ops that use
+> phylink and need to retrieve the ax88179_data structure from
+> net_device.
 > 
-> With this change in place, what happens when trying to set 246?
-> EINVAL?
+> Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 
-Yes indeed :
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-# ethtool -C eth1 rx-usecs 246
-netlink error: Invalid argument
-
-Maxime
+    Andrew
