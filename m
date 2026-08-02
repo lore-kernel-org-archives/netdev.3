@@ -1,16 +1,16 @@
 Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122D221C16A;
-	Sun,  2 Aug 2026 08:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE87280338;
+	Sun,  2 Aug 2026 08:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785658877; cv=none; b=kVsGI997MFws7gyD8DwLE54cAMB8n2JakYPRsQGV4FXJ1pz1qcv9bMDtvZLnLOFvmvpTCHoBmJY1L2bDBEQtC3pqbEDN+qryZJrXrYGMnQQOahNp/S2JV33ZIOZxeQ/S1BWGKyIzgdysIfzADBDlP3lKzdqngT1W3XvO4cYVM+g=
+	t=1785659088; cv=none; b=CS50dsurlZ7quDl/PkGWZHYg9fjsJLGqAAtIV+0WHsZ/pjwj6NVxEQ5jGXTynzwcViUeW5dar7FjADm94bpBwH95MSWEqWx/ZtWhIYsAcEhKCIbMEcYjF0zsWDhUCMja1oSzRNCAFEnfa/p2i+SaLZgdoa3IyWMs+CWB/hXsBJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785658877; c=relaxed/simple;
-	bh=HG9A6NY1tvh9TrmCGlsZylls0emvvxd/8Z9geZLiY0Y=;
+	s=arc-20240116; t=1785659088; c=relaxed/simple;
+	bh=fbPvxX9LA+zXmIgH9ZJThIng3gUKl64W05dfg8RyHNA=;
 	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=g+P6GQybX0WdFdMKqTxiGlHBbW2eNQgjl4b5G4hJ5vqizBTOSE96+egdweq0wYEMsQRbX1zFl1UbiD7jFLyA4xi2uJ/pu1jCy7F2HLJDGy1mCsPbxqtxRqeMXUXoHRxdS6vf1ixEkiQHvGCtbmDClfN56IZezxjRYfx3DWr60c0=
+	 Subject:Content-Type; b=eYrfzeQWYdcGE5fs6nGcOeVlwGdoRyednWI0zbydwNp7zPW5pqTroWiCrMctormzF+1eOcf7ZvB70B+FGJZM49VNGu1C4cr/GwVpoIGEkqCG1wUuOnvvi7DEPkUdh1SaMHmpVcPrg6TSRy//18rFIzwsVElC22v19BzTc/gonr8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
@@ -18,21 +18,21 @@ Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4hCXnd3wHRz55y22;
-	Sun, 02 Aug 2026 16:21:09 +0800 (CST)
-Received: from njy2app02.zte.com.cn ([10.40.13.116])
-	by mse-fl2.zte.com.cn with SMTP id 6728L2Sd036287;
-	Sun, 2 Aug 2026 16:21:02 +0800 (+08)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4hCXsd1bcPz55y2J;
+	Sun, 02 Aug 2026 16:24:37 +0800 (CST)
+Received: from njb2app05.zte.com.cn ([10.55.22.121])
+	by mse-fl2.zte.com.cn with SMTP id 6728OT39037105;
+	Sun, 2 Aug 2026 16:24:29 +0800 (+08)
 	(envelope-from han.junyang@zte.com.cn)
 Received: from mapi (njb2app07[null])
 	by mapi (Zmail) with MAPI id mid204;
-	Sun, 2 Aug 2026 16:21:04 +0800 (CST)
-X-Zmail-TransId: 2aff6a6efdf0866-914ba
+	Sun, 2 Aug 2026 16:24:31 +0800 (CST)
+X-Zmail-TransId: 2aff6a6efebfc0e-9485f
 X-Mailer: Zmail v1.0
-Message-ID: <202608021621043761zZMwCny1e6y0TRFLQHxx@zte.com.cn>
+Message-ID: <20260802162431577drvxMSbP6kiUmTAMh_Jwb@zte.com.cn>
 In-Reply-To: <20260802160048653KdUvSUgDsEs4zwYF9Ey0q@zte.com.cn>
 References: 20260802160048653KdUvSUgDsEs4zwYF9Ey0q@zte.com.cn
-Date: Sun, 2 Aug 2026 16:21:04 +0800 (CST)
+Date: Sun, 2 Aug 2026 16:24:31 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,383 +45,476 @@ To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
         <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHYxMCAxLzJdIGRpbmdoYWk6IGFkZCBaVEUgbmV0d29yayBkcml2ZXIgc3VwcG9ydA==?=
+Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHYxMCAyLzJdIGRpbmdoYWk6IGFkZCBoYXJkd2FyZSByZWdpc3RlciBhY2Nlc3MgYW5kwqBQQ0kgY2FwYWJpbGl0eSBzY2FubmluZw==?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 6728L2Sd036287
+X-MAIL:mse-fl2.zte.com.cn 6728OT39037105
 X-TLS: YES
 X-ENVELOPE-SENDER: han.junyang@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Sun, 02 Aug 2026 16:21:09 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Sun, 02 Aug 2026 16:24:37 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A6EFDF5.000/4hCXnd3wHRz55y22
+X-Fangmail-MID-QID: 6A6EFEC5.000/4hCXsd1bcPz55y2J
 
 From: Junyang Han <han.junyang@zte.com.cn>
 
-Add basic framework for ZTE DingHai ethernet PF driver, including
-Kconfig/Makefile build support and PCIe device probe/remove skeleton.
+Implement PCI configuration space access, BAR mapping, capability
+scanning (common/notify/device), and hardware queue register
+definitions for DingHai PF device.
 
 Signed-off-by: Junyang Han <han.junyang@zte.com.cn>
 ---
- MAINTAINERS                               |   6 +
- drivers/net/ethernet/Kconfig              |   1 +
- drivers/net/ethernet/Makefile             |   1 +
- drivers/net/ethernet/zte/Kconfig          |  20 +++
- drivers/net/ethernet/zte/Makefile         |   6 +
- drivers/net/ethernet/zte/dinghai/Kconfig  |  34 +++++
- drivers/net/ethernet/zte/dinghai/Makefile |   7 +
- drivers/net/ethernet/zte/dinghai/en_pf.c  | 174 ++++++++++++++++++++++
- drivers/net/ethernet/zte/dinghai/en_pf.h  |  29 ++++
- 9 files changed, 278 insertions(+)
- create mode 100644 drivers/net/ethernet/zte/Kconfig
- create mode 100644 drivers/net/ethernet/zte/Makefile
- create mode 100644 drivers/net/ethernet/zte/dinghai/Kconfig
- create mode 100644 drivers/net/ethernet/zte/dinghai/Makefile
- create mode 100644 drivers/net/ethernet/zte/dinghai/en_pf.c
- create mode 100644 drivers/net/ethernet/zte/dinghai/en_pf.h
+ drivers/net/ethernet/zte/dinghai/dh_queue.h |  56 ++++
+ drivers/net/ethernet/zte/dinghai/en_pf.c    | 275 ++++++++++++++++++++
+ drivers/net/ethernet/zte/dinghai/en_pf.h    |  46 ++++
+ 3 files changed, 377 insertions(+)
+ create mode 100644 drivers/net/ethernet/zte/dinghai/dh_queue.h
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2fb1c75afd16..73692b09bf7b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -29440,6 +29440,12 @@ S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git
- F:	sound/hda/codecs/senarytech.c
-
-+ZTE DINGHAI ETHERNET DRIVER
-+M:	Junyang Han <han.junyang@zte.com.cn>
-+L:	netdev@vger.kernel.org
-+S:	Maintained
-+F:	drivers/net/ethernet/zte/
-+
- THE REST
- M:	Linus Torvalds <torvalds@linux-foundation.org>
- L:	linux-kernel@vger.kernel.org
-diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
-index b8f70e2a1763..c2b6996b0cfe 100644
---- a/drivers/net/ethernet/Kconfig
-+++ b/drivers/net/ethernet/Kconfig
-@@ -188,5 +188,6 @@ source "drivers/net/ethernet/wangxun/Kconfig"
- source "drivers/net/ethernet/wiznet/Kconfig"
- source "drivers/net/ethernet/xilinx/Kconfig"
- source "drivers/net/ethernet/xircom/Kconfig"
-+source "drivers/net/ethernet/zte/Kconfig"
-
- endif # ETHERNET
-diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
-index 57344fec6ce0..a34bcbd4df4e 100644
---- a/drivers/net/ethernet/Makefile
-+++ b/drivers/net/ethernet/Makefile
-@@ -104,3 +104,4 @@ obj-$(CONFIG_NET_VENDOR_XIRCOM) += xircom/
- obj-$(CONFIG_NET_VENDOR_SYNOPSYS) += synopsys/
- obj-$(CONFIG_NET_VENDOR_PENSANDO) += pensando/
- obj-$(CONFIG_OA_TC6) += oa_tc6.o
-+obj-$(CONFIG_NET_VENDOR_ZTE) += zte/
-diff --git a/drivers/net/ethernet/zte/Kconfig b/drivers/net/ethernet/zte/Kconfig
+diff --git a/drivers/net/ethernet/zte/dinghai/dh_queue.h b/drivers/net/ethernet/zte/dinghai/dh_queue.h
 new file mode 100644
-index 000000000000..b95c2fc7db77
+index 000000000000..5b63895c1ea1
 --- /dev/null
-+++ b/drivers/net/ethernet/zte/Kconfig
-@@ -0,0 +1,20 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# ZTE driver configuration
-+#
-+
-+config NET_VENDOR_ZTE
-+    bool "ZTE devices"
-+    default y
-+    help
-+      If you have a network (Ethernet) card belonging to this class, say Y.
-+      Note that the answer to this question doesn't directly affect the
-+      kernel: saying N will just cause the configurator to skip all
-+      the questions about Zte cards. If you say Y, you will be asked
-+      for your specific card in the following questions.
-+
-+if NET_VENDOR_ZTE
-+
-+source "drivers/net/ethernet/zte/dinghai/Kconfig"
-+
-+endif # NET_VENDOR_ZTE
-diff --git a/drivers/net/ethernet/zte/Makefile b/drivers/net/ethernet/zte/Makefile
-new file mode 100644
-index 000000000000..cd9929b61559
---- /dev/null
-+++ b/drivers/net/ethernet/zte/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Makefile for the ZTE device drivers
-+#
-+
-+obj-$(CONFIG_DINGHAI) += dinghai/
-diff --git a/drivers/net/ethernet/zte/dinghai/Kconfig b/drivers/net/ethernet/zte/dinghai/Kconfig
-new file mode 100644
-index 000000000000..121be3bf7707
---- /dev/null
-+++ b/drivers/net/ethernet/zte/dinghai/Kconfig
-@@ -0,0 +1,34 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# ZTE DingHai Ethernet driver configuration
-+#
-+
-+config DINGHAI
-+    bool "ZTE DingHai Ethernet driver"
-+    depends on PCI
-+    select NET_DEVLINK
-+    help
-+      This driver supports ZTE DingHai Ethernet devices.
-+
-+      DingHai is a high-performance Ethernet controller that supports
-+      multiple features including hardware offloading, SR-IOV, and
-+      advanced virtualization capabilities.
-+
-+      If you say Y here, you can select specific driver variants below.
-+
-+      If unsure, say N.
-+
-+if DINGHAI
-+
-+config DINGHAI_PF
-+    tristate "ZTE DingHai PF (Physical Function) driver"
-+    help
-+      This driver supports ZTE DingHai PCI Express Ethernet
-+      adapters (PF).
-+
-+      To compile this driver as a module, choose M here. The module
-+      will be named dinghai10e.
-+
-+      If unsure, say N.
-+
-+endif # DINGHAI
-diff --git a/drivers/net/ethernet/zte/dinghai/Makefile b/drivers/net/ethernet/zte/dinghai/Makefile
-new file mode 100644
-index 000000000000..e2f4da33df59
---- /dev/null
-+++ b/drivers/net/ethernet/zte/dinghai/Makefile
-@@ -0,0 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Makefile for ZTE DingHai Ethernet driver
-+#
-+
-+obj-$(CONFIG_DINGHAI_PF) += dinghai10e.o
-+dinghai10e-y := en_pf.o
-diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
-new file mode 100644
-index 000000000000..e7ff6954e745
---- /dev/null
-+++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
-@@ -0,0 +1,174 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/net/ethernet/zte/dinghai/dh_queue.h
+@@ -0,0 +1,56 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
-+ * ZTE DingHai Ethernet driver
++ * ZTE DingHai Ethernet driver - PCI capability definitions
 + * Copyright (c) 2022-2026, ZTE Corporation.
 + */
 +
-+#include <linux/module.h>
-+#include <linux/pci.h>
-+#include <net/devlink.h>
-+#include <linux/dma-mapping.h>
-+#include "en_pf.h"
++#ifndef __DH_QUEUE_H__
++#define __DH_QUEUE_H__
 +
-+MODULE_AUTHOR("Junyang Han <han.junyang@zte.com.cn>");
-+MODULE_DESCRIPTION("ZTE DingHai series Ethernet driver");
-+MODULE_LICENSE("GPL");
++#include <linux/types.h>
 +
-+static const struct devlink_ops zxdh_pf_devlink_ops = {};
-+
-+static const struct pci_device_id zxdh_pf_pci_table[] = {
-+	{ PCI_DEVICE(ZXDH_PF_VENDOR_ID, ZXDH_PF_DEVICE_ID) },
-+	{ PCI_DEVICE(ZXDH_PF_VENDOR_ID, ZXDH_VF_DEVICE_ID) },
-+	{ }
++/* This is the PCI capability header: */
++struct zxdh_pf_pci_cap {
++	__u8 cap_vndr;		/* Generic PCI field: PCI_CAP_ID_VNDR */
++	__u8 cap_next;		/* Generic PCI field: next ptr. */
++	__u8 cap_len;		/* Generic PCI field: capability length */
++	__u8 cfg_type;		/* Identifies the structure. */
++	__u8 bar;		/* Where to find it. */
++	__u8 id;		/* Multiple capabilities of the same type */
++	__u8 padding[2];		/* Pad to full dword. */
++	__le32 offset;		/* Offset within bar. */
++	__le32 length;		/* Length of the structure, in bytes. */
 +};
 +
-+MODULE_DEVICE_TABLE(pci, zxdh_pf_pci_table);
++/* Fields in ZXDH_PF_PCI_CAP_COMMON_CFG: */
++struct zxdh_pf_pci_common_cfg {
++	/* About the whole device. */
++	__le32 device_feature_select; /* read-write */
++	__le32 device_feature;	/* read-only */
++	__le32 guest_feature_select; /* read-write */
++	__le32 guest_feature;		/* read-write */
++	__le16 msix_config;		/* read-write */
++	__le16 num_queues;		/* read-only */
++	__u8 device_status;		/* read-write */
++	__u8 config_generation;	/* read-only */
 +
-+void *zxdh_core_alloc_priv(struct zxdh_core_dev *zxdh_dev, size_t size)
++	/* About a specific virtqueue. */
++	__le16 queue_select;		/* read-write */
++	__le16 queue_size;		/* read-write, power of 2. */
++	__le16 queue_msix_vector;	/* read-write */
++	__le16 queue_enable;		/* read-write */
++	__le16 queue_notify_off;	/* read-only */
++	__le32 queue_desc_lo;		/* read-write */
++	__le32 queue_desc_hi;		/* read-write */
++	__le32 queue_avail_lo;		/* read-write */
++	__le32 queue_avail_hi;		/* read-write */
++	__le32 queue_used_lo;		/* read-write */
++	__le32 queue_used_hi;		/* read-write */
++};
++
++struct zxdh_pf_pci_notify_cap {
++	struct zxdh_pf_pci_cap cap;
++	__le32 notify_off_multiplier; /* Multiplier for queue_notify_off. */
++};
++
++#endif /* __DH_QUEUE_H__ */
+diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
+index e7ff6954e745..86d437408820 100644
+--- a/drivers/net/ethernet/zte/dinghai/en_pf.c
++++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
+@@ -9,6 +9,7 @@
+ #include <net/devlink.h>
+ #include <linux/dma-mapping.h>
+ #include "en_pf.h"
++#include "dh_queue.h"
+
+ MODULE_AUTHOR("Junyang Han <han.junyang@zte.com.cn>");
+ MODULE_DESCRIPTION("ZTE DingHai series Ethernet driver");
+@@ -103,6 +104,271 @@ void zxdh_pf_pci_close(struct zxdh_core_dev *zxdh_dev)
+ 	pci_disable_device(zxdh_dev->pdev);
+ }
+
++int zxdh_pf_pci_find_capability(struct pci_dev *pdev, u8 cfg_type,
++				u32 ioresource_types, int *bars)
 +{
-+	void *priv = kzalloc(size, GFP_KERNEL);
++	int pos;
++	u8 type;
++	u8 bar;
 +
-+	if (priv)
-+		zxdh_dev->priv = priv;
-+	return priv;
++	for (pos = pci_find_capability(pdev, PCI_CAP_ID_VNDR); pos > 0;
++	     pos = pci_find_next_capability(pdev, pos, PCI_CAP_ID_VNDR)) {
++		pci_read_config_byte(pdev,
++				     pos + offsetof(struct zxdh_pf_pci_cap,
++							cfg_type), &type);
++		pci_read_config_byte(pdev,
++				     pos + offsetof(struct zxdh_pf_pci_cap, bar), &bar);
++
++		/* ignore structures with reserved BAR values */
++		if (bar > ZXDH_PF_MAX_BAR_VAL)
++			continue;
++
++		if (type == cfg_type) {
++			if (pci_resource_len(pdev, bar) &&
++			    pci_resource_flags(pdev, bar) & ioresource_types) {
++				*bars |= (1 << bar);
++				return pos;
++			}
++		}
++	}
++
++	return 0;
 +}
 +
-+void zxdh_core_free_priv(struct zxdh_core_dev *zxdh_dev)
++void __iomem *zxdh_pf_map_capability(struct zxdh_core_dev *zxdh_dev, int off,
++				     size_t minlen, u32 align,
++				     u32 start, u32 size,
++				     size_t *len, resource_size_t *pa,
++				     u32 *bar_off)
 +{
-+	kfree(zxdh_dev->priv);
++	struct pci_dev *pdev = zxdh_dev->pdev;
++	void __iomem *p;
++	u32 offset;
++	u32 length;
++	u8 bar;
++
++	pci_read_config_byte(pdev,
++			     off + offsetof(struct zxdh_pf_pci_cap, bar), &bar);
++
++	if (bar > ZXDH_PF_MAX_BAR_VAL) {
++		dev_err(zxdh_dev->device, "invalid bar %u\n", bar);
++		return NULL;
++	}
++
++	pci_read_config_dword(pdev,
++			      off + offsetof(struct zxdh_pf_pci_cap,
++						offset), &offset);
++	pci_read_config_dword(pdev,
++			      off + offsetof(struct zxdh_pf_pci_cap,
++						length), &length);
++
++	if (bar_off)
++		*bar_off = offset;
++
++	if (length <= start) {
++		dev_err(zxdh_dev->device, "bad capability len %u (>%u expected)\n",
++			length, start);
++		return NULL;
++	}
++
++	if (length - start < minlen) {
++		dev_err(zxdh_dev->device, "bad capability len %u (>=%zu expected)\n",
++			length, minlen);
++		return NULL;
++	}
++
++	length -= start;
++	if (start + offset < offset) {
++		dev_err(zxdh_dev->device, "map wrap-around %u+%u\n", start, offset);
++		return NULL;
++	}
++
++	offset += start;
++	if (offset & (align - 1)) {
++		dev_err(zxdh_dev->device, "offset %u not aligned to %u\n", offset, align);
++		return NULL;
++	}
++
++	if (length > size)
++		length = size;
++
++	if (len)
++		*len = length;
++
++	if (length + offset < offset ||
++	    length + offset > pci_resource_len(pdev, bar)) {
++		dev_err(zxdh_dev->device,
++			"map %u@%u out of range on bar %u length %lu\n",
++			length, offset, bar,
++			(unsigned long)pci_resource_len(pdev, bar));
++		return NULL;
++	}
++
++	p = pci_iomap_range(pdev, bar, offset, length);
++	if (!p) {
++		dev_err(zxdh_dev->device, "unable to map custom queue %u@%u on bar %u\n",
++			length, offset, bar);
++	} else if (pa) {
++		*pa = pci_resource_start(pdev, bar) + offset;
++	}
++
++	return p;
 +}
 +
-+static int zxdh_pf_pci_init(struct zxdh_core_dev *zxdh_dev)
++int zxdh_pf_common_cfg_init(struct zxdh_core_dev *zxdh_dev)
 +{
 +	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
++	struct pci_dev *pdev = zxdh_dev->pdev;
++	int common;
++
++	/* check for a common config: if not, use legacy mode (bar 0). */
++	common = zxdh_pf_pci_find_capability(pdev, ZXDH_PCI_CAP_COMMON_CFG,
++					     IORESOURCE_MEM,
++					     &pf_dev->modern_bars);
++	if (!common) {
++		dev_err(zxdh_dev->device,
++			"missing capabilities, leaving for legacy driver\n");
++		return -ENODEV;
++	}
++
++	pf_dev->common = zxdh_pf_map_capability(zxdh_dev, common,
++						sizeof(struct zxdh_pf_pci_common_cfg),
++						ZXDH_PF_ALIGN4, 0,
++						sizeof(struct zxdh_pf_pci_common_cfg),
++						NULL, NULL, NULL);
++	if (!pf_dev->common) {
++		dev_err(zxdh_dev->device, "pf_dev->common is null\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++int zxdh_pf_notify_cfg_init(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
++	struct pci_dev *pdev = zxdh_dev->pdev;
++	u32 notify_length;
++	u32 notify_offset;
++	int notify;
++
++	/* If common is there, these should be too... */
++	notify = zxdh_pf_pci_find_capability(pdev, ZXDH_PCI_CAP_NOTIFY_CFG,
++					     IORESOURCE_MEM,
++					     &pf_dev->modern_bars);
++	if (!notify) {
++		dev_err(zxdh_dev->device, "missing notify cfg capability\n");
++		return -EINVAL;
++	}
++
++	pci_read_config_dword(pdev,
++			      notify + offsetof(struct zxdh_pf_pci_notify_cap,
++				notify_off_multiplier),
++		&pf_dev->notify_offset_multiplier);
++	pci_read_config_dword(pdev,
++			      notify + offsetof(struct zxdh_pf_pci_notify_cap,
++				cap.length), &notify_length);
++	pci_read_config_dword(pdev,
++			      notify + offsetof(struct zxdh_pf_pci_notify_cap,
++				cap.offset), &notify_offset);
++
++	/* We don't know how many VQs we'll map, ahead of the time.
++	 * If notify length is small, map it all now. Otherwise,
++	 * map each VQ individually later.
++	 */
++	if (notify_length <= PAGE_SIZE - (notify_offset % PAGE_SIZE)) {
++		pf_dev->notify_base = zxdh_pf_map_capability(zxdh_dev, notify,
++							     ZXDH_PF_MAP_MINLEN2,
++							    ZXDH_PF_ALIGN2, 0,
++							    notify_length,
++							    &pf_dev->notify_len,
++							    &pf_dev->notify_pa, NULL);
++		if (!pf_dev->notify_base) {
++			dev_err(zxdh_dev->device, "pf_dev->notify_base is null\n");
++			return -EINVAL;
++		}
++	} else {
++		pf_dev->notify_map_cap = notify;
++	}
++
++	return 0;
++}
++
++int zxdh_pf_device_cfg_init(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
++	struct pci_dev *pdev = zxdh_dev->pdev;
++	int device;
++
++	/* Device capability is only mandatory for
++	 * devices that have device-specific configuration.
++	 */
++	device = zxdh_pf_pci_find_capability(pdev, ZXDH_PCI_CAP_DEVICE_CFG,
++					     IORESOURCE_MEM,
++					     &pf_dev->modern_bars);
++
++	/* we don't know how much we should map,
++	 * but PAGE_SIZE is more than enough for all existing devices.
++	 */
++	if (device) {
++		pf_dev->device = zxdh_pf_map_capability(zxdh_dev, device, 0,
++							ZXDH_PF_ALIGN4, 0, PAGE_SIZE,
++						       &pf_dev->device_len, NULL,
++						       &pf_dev->dev_cfg_bar_off);
++		if (!pf_dev->device) {
++			dev_err(zxdh_dev->device, "pf_dev->device is null\n");
++			return -EINVAL;
++		}
++	}
++	return 0;
++}
++
++void zxdh_pf_modern_cfg_uninit(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
++	struct pci_dev *pdev = zxdh_dev->pdev;
++
++	if (pf_dev->device)
++		pci_iounmap(pdev, pf_dev->device);
++	if (pf_dev->notify_base)
++		pci_iounmap(pdev, pf_dev->notify_base);
++	pci_iounmap(pdev, pf_dev->common);
++}
++
++int zxdh_pf_modern_cfg_init(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
++	struct pci_dev *pdev = zxdh_dev->pdev;
 +	int ret;
 +
-+	pci_set_drvdata(zxdh_dev->pdev, zxdh_dev);
-+
-+	ret = pci_enable_device(zxdh_dev->pdev);
++	ret = zxdh_pf_common_cfg_init(zxdh_dev);
 +	if (ret) {
-+		dev_err(zxdh_dev->device, "pci_enable_device failed: %d\n", ret);
++		dev_err(zxdh_dev->device, "zxdh_pf_common_cfg_init failed: %d\n", ret);
 +		return ret;
 +	}
 +
-+	dma_set_mask_and_coherent(zxdh_dev->device, DMA_BIT_MASK(64));
-+
-+	ret = pci_request_selected_regions(zxdh_dev->pdev,
-+					   pci_select_bars(zxdh_dev->pdev, IORESOURCE_MEM),
-+					   "dh-pf");
++	ret = zxdh_pf_notify_cfg_init(zxdh_dev);
 +	if (ret) {
-+		dev_err(zxdh_dev->device, "pci_request_selected_regions failed: %d\n", ret);
-+		goto err_pci;
++		dev_err(zxdh_dev->device, "zxdh_pf_notify_cfg_init failed: %d\n", ret);
++		goto err_map_notify;
 +	}
 +
-+	pci_set_master(zxdh_dev->pdev);
-+	ret = pci_save_state(zxdh_dev->pdev);
++	ret = zxdh_pf_device_cfg_init(zxdh_dev);
 +	if (ret) {
-+		dev_err(zxdh_dev->device, "pci_save_state failed: %d\n", ret);
-+		goto err_pci_save_state;
-+	}
-+
-+	if (!(pci_resource_flags(zxdh_dev->pdev, 0) & IORESOURCE_MEM)) {
-+		ret = -ENODEV;
-+		dev_err(zxdh_dev->device, "BAR 0 is not an MMIO resource\n");
-+		goto err_pci_save_state;
-+	}
-+
-+	pf_dev->pci_ioremap_addr[0] =
-+		ioremap(pci_resource_start(zxdh_dev->pdev, 0),
-+			pci_resource_len(zxdh_dev->pdev, 0));
-+	if (!pf_dev->pci_ioremap_addr[0]) {
-+		ret = -ENOMEM;
-+		dev_err(zxdh_dev->device, "dh pf pci ioremap failed\n");
-+		goto err_pci_save_state;
++		dev_err(zxdh_dev->device, "zxdh_pf_device_cfg_init failed: %d\n", ret);
++		goto err_map_device;
 +	}
 +
 +	return 0;
 +
-+err_pci_save_state:
-+	pci_release_selected_regions(zxdh_dev->pdev,
-+				     pci_select_bars(zxdh_dev->pdev, IORESOURCE_MEM));
-+err_pci:
-+	pci_disable_device(zxdh_dev->pdev);
++err_map_device:
++	if (pf_dev->notify_base)
++		pci_iounmap(pdev, pf_dev->notify_base);
++err_map_notify:
++	pci_iounmap(pdev, pf_dev->common);
 +	return ret;
 +}
 +
-+void zxdh_pf_pci_close(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
-+
-+	iounmap(pf_dev->pci_ioremap_addr[0]);
-+	pci_release_selected_regions(zxdh_dev->pdev,
-+				     pci_select_bars(zxdh_dev->pdev, IORESOURCE_MEM));
-+	pci_disable_device(zxdh_dev->pdev);
-+}
-+
-+static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+{
-+	struct zxdh_core_dev *zxdh_dev;
-+	struct zxdh_pf_dev *pf_dev;
-+	struct devlink *devlink;
-+	int ret;
-+
-+	devlink = devlink_alloc(&zxdh_pf_devlink_ops, sizeof(struct zxdh_core_dev),
-+				&pdev->dev);
-+	if (!devlink)
-+		return -ENOMEM;
-+
-+	zxdh_dev = devlink_priv(devlink);
-+	zxdh_dev->device = &pdev->dev;
-+	zxdh_dev->pdev = pdev;
-+	zxdh_dev->devlink = devlink;
-+
-+	pf_dev = zxdh_core_alloc_priv(zxdh_dev, sizeof(*pf_dev));
-+	if (!pf_dev) {
-+		dev_err(&pdev->dev, "zxdh_pf_dev alloc failed\n");
-+		ret = -ENOMEM;
-+		goto err_pf_dev;
-+	}
-+
-+	ret = zxdh_pf_pci_init(zxdh_dev);
+ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+ 	struct zxdh_core_dev *zxdh_dev;
+@@ -133,10 +399,18 @@ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		goto err_pci_init;
+ 	}
+
++	ret = zxdh_pf_modern_cfg_init(zxdh_dev);
 +	if (ret) {
-+		dev_err(&pdev->dev, "zxdh_pf_pci_init failed: %d\n", ret);
-+		goto err_pci_init;
++		dev_err(&pdev->dev, "zxdh_pf_modern_cfg_init failed: %d\n", ret);
++		goto err_cfg_init;
 +	}
 +
-+	devlink_register(devlink);
-+
-+	return 0;
-+
-+err_pci_init:
-+	zxdh_core_free_priv(zxdh_dev);
-+err_pf_dev:
-+	devlink_free(devlink);
-+	return ret;
-+}
-+
-+static void zxdh_pf_remove(struct pci_dev *pdev)
-+{
-+	struct zxdh_core_dev *zxdh_dev = pci_get_drvdata(pdev);
-+	struct devlink *devlink = priv_to_devlink(zxdh_dev);
-+
-+	devlink_unregister(devlink);
+ 	devlink_register(devlink);
+
+ 	return 0;
+
++err_cfg_init:
 +	zxdh_pf_pci_close(zxdh_dev);
-+	zxdh_core_free_priv(zxdh_dev);
-+	devlink_free(devlink);
-+	pci_set_drvdata(pdev, NULL);
-+}
-+
-+static void zxdh_pf_shutdown(struct pci_dev *pdev)
-+{
-+	if (system_state == SYSTEM_POWER_OFF)
-+		pci_set_power_state(pdev, PCI_D3hot);
-+	pci_disable_device(pdev);
-+}
-+
-+static struct pci_driver zxdh_pf_driver = {
-+	.name = "dinghai10e",
-+	.id_table = zxdh_pf_pci_table,
-+	.probe = zxdh_pf_probe,
-+	.remove = zxdh_pf_remove,
-+	.shutdown = zxdh_pf_shutdown,
-+};
-+
-+module_pci_driver(zxdh_pf_driver);
+ err_pci_init:
+ 	zxdh_core_free_priv(zxdh_dev);
+ err_pf_dev:
+@@ -150,6 +424,7 @@ static void zxdh_pf_remove(struct pci_dev *pdev)
+ 	struct devlink *devlink = priv_to_devlink(zxdh_dev);
+
+ 	devlink_unregister(devlink);
++	zxdh_pf_modern_cfg_uninit(zxdh_dev);
+ 	zxdh_pf_pci_close(zxdh_dev);
+ 	zxdh_core_free_priv(zxdh_dev);
+ 	devlink_free(devlink);
 diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.h b/drivers/net/ethernet/zte/dinghai/en_pf.h
-new file mode 100644
-index 000000000000..f6b9dc94a57d
---- /dev/null
+index f6b9dc94a57d..7373dee8d1a9 100644
+--- a/drivers/net/ethernet/zte/dinghai/en_pf.h
 +++ b/drivers/net/ethernet/zte/dinghai/en_pf.h
-@@ -0,0 +1,29 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * ZTE DingHai Ethernet driver - PF header
-+ * Copyright (c) 2022-2026, ZTE Corporation.
-+ */
+@@ -7,10 +7,28 @@
+ #ifndef __ZXDH_EN_PF_H__
+ #define __ZXDH_EN_PF_H__
+
++#include <linux/types.h>
 +
-+#ifndef __ZXDH_EN_PF_H__
-+#define __ZXDH_EN_PF_H__
+ #define ZXDH_PF_VENDOR_ID	0x1cf2
+ #define ZXDH_PF_DEVICE_ID	0x8040
+ #define ZXDH_VF_DEVICE_ID	0x8041
+
++/* Common configuration */
++#define ZXDH_PCI_CAP_COMMON_CFG	1
++/* Notifications */
++#define ZXDH_PCI_CAP_NOTIFY_CFG	2
++/* ISR access */
++#define ZXDH_PCI_CAP_ISR_CFG		3
++/* Device specific configuration */
++#define ZXDH_PCI_CAP_DEVICE_CFG	4
++/* PCI configuration access */
++#define ZXDH_PCI_CAP_PCI_CFG		5
 +
-+#define ZXDH_PF_VENDOR_ID	0x1cf2
-+#define ZXDH_PF_DEVICE_ID	0x8040
-+#define ZXDH_VF_DEVICE_ID	0x8041
++#define ZXDH_PF_MAX_BAR_VAL		0x5
++#define ZXDH_PF_ALIGN4			4
++#define ZXDH_PF_ALIGN2			2
++#define ZXDH_PF_MAP_MINLEN2		2
 +
-+struct zxdh_core_dev {
-+	struct device *device;
-+	struct pci_dev *pdev;
-+	struct devlink *devlink;
-+	void *priv;
-+};
-+
-+struct zxdh_pf_dev {
-+	void __iomem *pci_ioremap_addr[6];
-+};
-+
-+void *zxdh_core_alloc_priv(struct zxdh_core_dev *zxdh_dev, size_t size);
-+void zxdh_core_free_priv(struct zxdh_core_dev *zxdh_dev);
-+void zxdh_pf_pci_close(struct zxdh_core_dev *zxdh_dev);
-+
-+#endif /* __ZXDH_EN_PF_H__ */
+ struct zxdh_core_dev {
+ 	struct device *device;
+ 	struct pci_dev *pdev;
+@@ -19,11 +37,39 @@ struct zxdh_core_dev {
+ };
+
+ struct zxdh_pf_dev {
++	struct zxdh_pf_pci_common_cfg __iomem *common;
++	/* Device-specific data (non-legacy mode)  */
++	/* Base of vq notifications (non-legacy mode). */
++	void __iomem *device;
++	void __iomem *notify_base;
++	/* Physical base of vq notifications */
++	resource_size_t notify_pa;
++	/* So we can sanity-check accesses. */
++	size_t notify_len;
++	size_t device_len;
++	/* Capability for when we need to map notifications per-vq. */
++	s32 notify_map_cap;
++	u32 notify_offset_multiplier;
++	/* Multiply queue_notify_off by this value. (non-legacy mode). */
++	s32 modern_bars;
+ 	void __iomem *pci_ioremap_addr[6];
++	u32 dev_cfg_bar_off;
+ };
+
+ void *zxdh_core_alloc_priv(struct zxdh_core_dev *zxdh_dev, size_t size);
+ void zxdh_core_free_priv(struct zxdh_core_dev *zxdh_dev);
+ void zxdh_pf_pci_close(struct zxdh_core_dev *zxdh_dev);
++int zxdh_pf_pci_find_capability(struct pci_dev *pdev, u8 cfg_type,
++				u32 ioresource_types, int *bars);
++void __iomem *zxdh_pf_map_capability(struct zxdh_core_dev *zxdh_dev, int off,
++				     size_t minlen, u32 align,
++				     u32 start, u32 size,
++				     size_t *len, resource_size_t *pa,
++				     u32 *bar_off);
++int zxdh_pf_common_cfg_init(struct zxdh_core_dev *zxdh_dev);
++int zxdh_pf_notify_cfg_init(struct zxdh_core_dev *zxdh_dev);
++int zxdh_pf_device_cfg_init(struct zxdh_core_dev *zxdh_dev);
++void zxdh_pf_modern_cfg_uninit(struct zxdh_core_dev *zxdh_dev);
++int zxdh_pf_modern_cfg_init(struct zxdh_core_dev *zxdh_dev);
+
+ #endif /* __ZXDH_EN_PF_H__ */
 -- 
 2.27.0
