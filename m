@@ -1,172 +1,299 @@
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8114E237180;
-	Sun,  2 Aug 2026 15:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7855395DBF
+	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 15:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785685612; cv=none; b=qUHq4Nlp+kqbCqbviax1tpNdNBlQHjvL5EASw098k+WDHor+vPGLqhlXD54WrUytGr+fxHEj5SbPdRjZRxoioSiIlrCVp2auMoPeeOIeFyr9rPB7LB94tNRCahrrVQWuqd5oL84c80T2e77G8eaNwIK/HlwzEtJLxLFyePEi2kA=
+	t=1785685870; cv=none; b=io+qUEE1KwYEoGP8Dk5hduuUbF0oZUq+uDlVfIl9SFWZ+jdtq/VqjHVDynfKwIAnoqxutPHhg4oMhzc/6x1b2O8ynQP13xG7TXNGNCwqV+7zh4ZQ5KKqNqNE7LHsQHpbgGYhFXCq4YTMb2OinBv9RVV7BXMww1UY75uP1zUvRHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785685612; c=relaxed/simple;
-	bh=IfrwjOpzPnpV9Q+Tru6a26fgTY45Egp/KC1PG3FiSs0=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=J7orzNbVci+x5Y+dHFm9bYT10KJ4OKUewgEUqTn4XTLeoRkA5TuMmwbsYb4suRSHo2p2M3d53MXZIVxHJz/YJ3PmHl98fabuImTTXyttIC9k2K/Gbpcs/cP5VAWSDdz8/8DPWQ+H6GAsBZ8TqWX1gQAurNEyFaEYw2Ej4t+TXtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cyyself.name; spf=pass smtp.mailfrom=cyyself.name; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=tZ48CzR0; arc=none smtp.client-ip=162.62.57.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cyyself.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyyself.name
+	s=arc-20240116; t=1785685870; c=relaxed/simple;
+	bh=iVoXS/MCfZMGKW6zjNFDH3PZcbm/bTlAERaqpSEasl0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Sr6Qk0aP0YmHVkorxs6vS2OwVfw+4U8idOF6yJuut1rGay3jka4oBBaFE/3wXF1iUUyIdgmOiQhO988oVhj46tgilheUznzrARjXzyI1jz2ZJ0hAyEXdCfUy0wFjQEZlalMInJpEtVUXifcsUuQvS2N33yCHSLl/uBPikKkhG08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g2smPlnS; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="tZ48CzR0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1785685604; bh=J4VqWLfvWNBX30FARDgxlRiuvqFbIs6GXH5ot/8285s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tZ48CzR0S8U1Ex6XrH5R9lrA5dKl4bytBCDo4XMR2R04lPslSe41JZFs/cb+jZc/b
-	 DDMT8OsB77X+m3rL3ut12+jC71Cxa1PAxCusEgApvJJSesfKskDkRGJRmpkHNCy5ok
-	 +ggWZDt8rjj7a93OEmvqX27CI/KJJH/k86m0yYZs=
-Received: from halo.lan ([240e:379:2238:cc00:262b:8ebc:c000:80a0])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id BA820436; Sun, 02 Aug 2026 23:46:40 +0800
-X-QQ-mid: xmsmtpt1785685600t8z39glaz
-Message-ID: <tencent_607CBA8237DA438E36B844318B21538DE008@qq.com>
-X-QQ-XMAILINFO: MIB/1UGyXKa7T8S0WAGwz5545nqgzT3DySR5JVCmudQCDCEhls3oawacPvze7B
-	 1UD2Y0+5Gt/t3gUSK7PRsE2XkvL2JSIk7AuVmI0WjKYFhAZ4U7DVhhLa6OTSvS4bB+97kmOvzmGS
-	 oCItJTU5/m0/vuz4DRmuDvKD0YkNrRu9XGEs20w5eV64aZclAIQAGVln62rHk1G4wteZMW1aSlqL
-	 OoSsC84tO3SWltdhpfJsToUvKkLbxhgrAlf8K4jErE52MnRnMPWsYWt5MrH+okgvHOyLrKAHGCcf
-	 t22s8rtDxaGCaLcXK6s3mZ764U9REXO/9E/0mT/8H4jjDnilk8Oomm5D8pqJqMnPoPP2Z36dwknp
-	 ChVqiRO9hMxsX2Nt2v9SZ36iPr7yaU1unT9oX4EiRGN9+wkxmsSChd9xOH5s6Suj3zHaVwUuRful
-	 LwEk4haMuJTfz6kf4lqEAsAeG89gKlm/iDT0mfj2rz0E9i1PKGt5cPN2ENNGCKGrmODWpoBNL2Lx
-	 8fNys0wx3heCoOvWVToORWzcbwy/G/PZc3IAos/Z6qhYmC4ZRfZoz9lc4DF+l7Q/cHxbE3nLYDUJ
-	 QP3MI2GvkMOVvhvNjm8ziFIl35mJ/Ae5iQRMYRNjxGnKJp1wJLbqU/kXWz7T3d+wMaeh5VxxBMVk
-	 rw0Xm06nAWlnBL6snbxyjiUmNxDW3Xq7ConHyVLF1NsGTIXfL3tGcPE4niDDNv0irMiEDsTx2u/6
-	 WE92GxSG+9j07d81uDyloPF4X5E9K7EjQvCt0Gyh7S4FFYbN0VM5JdTKXA09xGhN8pHer0qFFxqH
-	 Mh1OkMtM1bC004Op3sELeyR0IEGiKY0FjIfRsY6kJ08zGyvCvqwgL2f65gIdg+M4C/IWeYJSeJnG
-	 b56GYpIrrY3iDMMfRWcQ1Zo3Cofg3mTPljucXyjzr2RQpqx+/NY40+pJwFk3SilxKusRaSTCCcJP
-	 K3elLgB+D274qcoKu4fwxy6ZQnkLV0thDWl/jU7IhDx0ozJP9JPNVGbrupnKVlddxbRsrARbs23Q
-	 skmfgiOcWe/be+Pg98K7Od4WydbJq34u+UJUdU1ccO0Gxq8/b1KzdH3NsmCdxj2c1unitAgnORou
-	 BSkR9xp1gV0N/HVJ9g3WKa5Oj997QQCGxlzT77vNtU1mrqZwGtNqzJ3sKPuQ==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Yangyu Chen <cyy@cyyself.name>
-To: Sukhdeep Singh <sukhdeeps@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Mina Almasry <almasrymina@google.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Lino Sanfilippo <LinoSanfilippo@gmx.de>,
-	Igor Russkikh <irusskikh@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Yangyu Chen <cyy@cyyself.name>
-Subject: [PATCH net 2/2] net: atlantic: free RX pages of consumed but not refilled buffers
-Date: Sun,  2 Aug 2026 23:46:38 +0800
-X-OQ-MSGID: <20260802154638.40342-1-cyy@cyyself.name>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <tencent_29B860317921D68DE77C718242DA418EB608@qq.com>
-References: <tencent_29B860317921D68DE77C718242DA418EB608@qq.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g2smPlnS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785685867;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vOfM0yeJzY4si1w7/5HxuvGeapeHoMF6WCh6/reuF7g=;
+	b=g2smPlnS4/dXHmnKOk24wObe30LxMKtGeSAdlCVPUnO9olfGuI7WNCP300xTcINKIN1Ax0
+	0IHdEib59efKnsEppDZWGXnoHNqb/fLmfzaAaDCiGdd8shZfYdBuul3pNVhB74lsJuSNHE
+	MWGEkjr5esupE7peOQWZwBRcQGoFd8c=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-416-1eGIdxt_PMaigfKBNkCZGg-1; Sun,
+ 02 Aug 2026 11:51:04 -0400
+X-MC-Unique: 1eGIdxt_PMaigfKBNkCZGg-1
+X-Mimecast-MFC-AGG-ID: 1eGIdxt_PMaigfKBNkCZGg_1785685862
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 72F5C195608E;
+	Sun,  2 Aug 2026 15:51:02 +0000 (UTC)
+Received: from RHTRH0061144 (unknown [10.22.89.32])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7B5491956044;
+	Sun,  2 Aug 2026 15:51:00 +0000 (UTC)
+From: Aaron Conole <aconole@redhat.com>
+To: Minxi Hou <houminxi@gmail.com>
+Cc: netdev@vger.kernel.org,  davem@davemloft.net,  edumazet@google.com,
+  kuba@kernel.org,  pabeni@redhat.com,  echaudro@redhat.com,
+  i.maximets@ovn.org,  dev@openvswitch.org,
+  linux-kselftest@vger.kernel.org,  shuah@kernel.org,  horms@kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v8] selftests/net/openvswitch: add SCTP flow
+ key support and test
+In-Reply-To: <20260731062655.4088575-1-houminxi@gmail.com> (Minxi Hou's
+	message of "Fri, 31 Jul 2026 02:26:55 -0400")
+References: <20260731062655.4088575-1-houminxi@gmail.com>
+Date: Sun, 02 Aug 2026 11:50:59 -0400
+Message-ID: <f7tzez4v7vg.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-aq_ring_rx_deinit() only walks [sw_head, sw_tail), the region posted to
-hardware. Since the page reuse strategy was added, a cleaned RX buffer
-keeps its page (and its DMA mapping) in the ring for reuse, and refill
-is batched: aq_ring_rx_fill() returns early until AQ_CFG_RX_REFILL_THRES
-slots are free. Slots that were consumed but not yet reposted therefore
-sit in the complementary [sw_tail, sw_head) gap with a live page, and
-the deinit walk never visits them: up to a refill batch worth of pages
-and DMA mappings leak on every interface down.
+Hi Minxi,
 
-Walk the whole ring instead and release whatever is still there. Also
-bail out if the buffer ring is already gone: a partial
-aq_ptp_ring_alloc() failure frees the ring but leaves aq_nic set, so
-aq_ptp_ring_deinit() still gets here on the unwind path.
+Minxi Hou <houminxi@gmail.com> writes:
 
-Fixes: 46f4c29d9de6 ("net: aquantia: optimize rx performance by page reuse strategy")
-Cc: stable@vger.kernel.org # v5.2+
-Reviewed-by: Sukhdeep Singh <sukhdeeps@marvell.com>
-Assisted-by: Claude:claude-fable-5
-Signed-off-by: Yangyu Chen <cyy@cyyself.name>
----
+> The ovskey flow-string parser has no OVS_KEY_ATTR_SCTP entry, so a
+> flow string containing sctp(src=.../dst=...) parses without error but
+> silently drops the L4 key. The resulting flow carries only
+> ipv4(proto=132), and the kernel rejects it: match_validate() in
+> flow_netlink.c requires OVS_KEY_ATTR_SCTP when the IP protocol is
+> IPPROTO_SCTP and returns -EINVAL for the missing key.
+>
+> Register OVS_KEY_ATTR_SCTP in the parse table and add a matching
+> selftest that verifies SCTP flow key matching (sctp src/dst port).
+>
+> Also enable CONFIG_IP_SCTP in the selftest kernel config.
+>
+> Signed-off-by: Minxi Hou <houminxi@gmail.com>
+> ---
+>
+> Changes from v7:
+>   - Drop all unit tests per Ilya's feedback (tests for test code
+>     feels excessive); merge patches back into one.
+>   - Enable CONFIG_IP_SCTP in the selftest kernel config.
+>   - Rebase onto latest net-next; add base-commit header.
+> v7: https://lore.kernel.org/netdev/20260729064549.3647518-1-houminxi@gmail.com/
+> v6: https://lore.kernel.org/netdev/20260724150624.3457427-1-houminxi@gmail.com/
+> v5: https://lore.kernel.org/netdev/20260723215630.2502169-1-houminxi@gmail.com/
+> v4: https://lore.kernel.org/netdev/20260723162503.1790998-1-houminxi@gmail.com/
+> v3: https://lore.kernel.org/netdev/20260722214915.4128292-1-houminxi@gmail.com/
+> v2: https://lore.kernel.org/netdev/20260721190648.2713156-1-houminxi@gmail.com/
+> v1: https://lore.kernel.org/netdev/20260718215437.3257200-1-houminxi@gmail.com/
+>
+>  .../testing/selftests/net/openvswitch/config  |   1 +
+>  .../selftests/net/openvswitch/openvswitch.sh  | 121 ++++++++++++++++++
+>  .../selftests/net/openvswitch/ovs-dpctl.py    |   5 +
+>  3 files changed, 127 insertions(+)
+>
+> diff --git a/tools/testing/selftests/net/openvswitch/config b/tools/testing/selftests/net/openvswitch/config
+> index c659749cd086..754297b1644e 100644
+> --- a/tools/testing/selftests/net/openvswitch/config
+> +++ b/tools/testing/selftests/net/openvswitch/config
+> @@ -1,6 +1,7 @@
+>  CONFIG_GENEVE=m
+>  CONFIG_INET_DIAG=y
+>  CONFIG_IPV6=y
+> +CONFIG_IP_SCTP=y
+>  CONFIG_NETFILTER=y
+>  CONFIG_NET_IPGRE=m
+>  CONFIG_NET_IPGRE_DEMUX=m
+> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> index 853dbc1b00d7..b448324527d8 100755
+> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> @@ -34,6 +34,7 @@ tests="
+>  	action_set				set: SET action rewrites fields
+>  	trunc					trunc: output truncation
+>  	icmpv6					icmpv6: ICMPv6 echo type match
+> +	sctp_connect_v4				sctp: SCTP flow key matching
+>  	psample					psample: Sampling packets with psample"
+>  
+>  info() {
+> @@ -611,6 +612,126 @@ test_icmpv6() {
+>  	return 0
+>  }
+>  
+> +# Check for an SCTP endpoint via /proc, which works without sctp_diag.
+> +sctp_eps_has() {
+> +	ip netns exec "$1" awk -v p="$2" '$6==p' /proc/net/sctp/eps | grep -q .
+> +}
+> +
+> +# sctp_connect_v4 test
+> +# - sctp(dst=4443) matches client-to-server INIT
+> +# - sctp(src=4443) matches server-to-client INIT-ACK
+> +# - remove flows and verify connection fails, reinstall and recover
+> +test_sctp_connect_v4() {
+> +	local t="test_sctp_connect_v4"
+> +	local srv_ip=172.31.110.20
+> +
+> +	modprobe -q sctp 2>/dev/null || return "$ksft_skip"
+> +	socat -V 2>&1 | grep -q "define WITH_SCTP" || return "$ksft_skip"
 
-Notes:
-    Without this fix, the page_pool conversion posted for net-next turns the missed
-    pages into fragments that page_pool_destroy() waits for forever.
-    Reproduced on an AQC100 with the conversion applied and this fix
-    reverted -- ordinary small received frames (<= 256 byte header-only
-    packets, e.g. ping replies or pure TCP ACKs) are enough to populate
-    the [sw_tail, sw_head) gap:
-    
-      ping -c 200 -i 0.005 <peer>%enp99s0
-      ip link set enp99s0 down
-    
-    One short ping flow left three of the eight RX rings' pools with
-    stranded fragments, and page_pool_release_retry() warns for each of
-    them every 60 seconds, indefinitely:
-    
-      [278084.929092] page_pool_release_retry() stalled pool shutdown: id 123, 1 inflight 60 sec
-      [278084.961064] page_pool_release_retry() stalled pool shutdown: id 126, 1 inflight 60 sec
-      [278084.961087] page_pool_release_retry() stalled pool shutdown: id 125, 6 inflight 60 sec
-      [278145.346737] page_pool_release_retry() stalled pool shutdown: id 123, 1 inflight 120 sec
-      [278145.378745] page_pool_release_retry() stalled pool shutdown: id 125, 6 inflight 120 sec
-      [278145.378759] page_pool_release_retry() stalled pool shutdown: id 126, 1 inflight 120 sec
-    
-    With this patch the whole ring is walked at deinit, the pages are
-    released, and the pools drain immediately. On the current code the
-    same gap leaks the pages and their DMA mappings silently.
-    
-    Applies and was build- and runtime-tested independently of the
-    page_pool conversion, against the current page reuse scheme.
+socat has the option to run the listener with ',fork' option, which I'll
+talk about below.
 
- .../net/ethernet/aquantia/atlantic/aq_ring.c  | 22 +++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+> +	sbx_add "$t" || return $?
+> +	ovs_add_dp "$t" sctp4 || return 1
+> +
+> +	info "create namespaces"
+> +	for ns in client server; do
+> +		ovs_add_netns_and_veths "$t" "sctp4" "$ns" \
+> +		    "${ns:0:1}0" "${ns:0:1}1" || return 1
+> +	done
+> +
+> +	ip netns exec client ip addr add 172.31.110.10/24 dev c1
+> +	ip netns exec client ip link set c1 up
+> +	ip netns exec server ip addr add "${srv_ip}/24" dev s1
+> +	ip netns exec server ip link set s1 up
+> +
+> +	# Probe: check if kernel supports sctp flow key.
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
+> +	    '2' &>/dev/null
+> +	if [ $? -ne 0 ]; then
+> +		info "no support for sctp key - skipping"
+> +		ovs_exit_sig
+> +		return $ksft_skip
+> +	fi
+> +	ovs_del_flows "$t" sctp4
+> +
+> +	# ARP forwarding
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(1),eth(),eth_type(0x0806),arp()' \
+> +	    '2' || return 1
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(2),eth(),eth_type(0x0806),arp()' \
+> +	    '1' || return 1
+> +
+> +	# SCTP port matching: dst for request, src for reply
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
+> +	    '2' || return 1
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(2),eth(),eth_type(0x0800),ipv4(proto=132),sctp(src=4443)' \
+> +	    '1' || return 1
+> +
+> +	ovs_netns_spawn_daemon "$t" "server" \
+> +	    socat -u SCTP4-LISTEN:4443 STDOUT
+> +	local server_pid="$pid"
+> +	ovs_wait sctp_eps_has server 4443 || return 1
+> +
+> +	info "verify SCTP association with port-keyed flows"
+> +	ovs_sbx "$t" ip netns exec client \
+> +	    timeout 3 socat -u STDIN "SCTP4-CONNECT:${srv_ip}:4443" </dev/null \
+> +	    || return 1
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-index 81685a4dc5a6..e1193c6719d9 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-@@ -950,15 +950,29 @@ int aq_ring_rx_fill(struct aq_ring_s *self)
- 
- void aq_ring_rx_deinit(struct aq_ring_s *self)
- {
--	if (!self)
-+	unsigned int i;
-+
-+	if (!self || !self->buff_ring)
- 		return;
- 
--	for (; self->sw_head != self->sw_tail;
--		self->sw_head = aq_ring_next_dx(self, self->sw_head)) {
--		struct aq_ring_buff_s *buff = &self->buff_ring[self->sw_head];
-+	/* Release every page still owned by the ring.
-+	 *
-+	 * Walking [sw_head, sw_tail) is not enough: refill is batched
-+	 * (aq_ring_rx_fill() waits for AQ_CFG_RX_REFILL_THRES free slots),
-+	 * so slots that were cleaned but not yet reposted accumulate in the
-+	 * [sw_tail, sw_head) gap, and they keep their page for reuse. Walk
-+	 * the whole ring and release whatever is left.
-+	 */
-+	for (i = 0; i < self->size; i++) {
-+		struct aq_ring_buff_s *buff = &self->buff_ring[i];
-+
-+		if (!buff->rxdata.page)
-+			continue;
- 
- 		aq_free_rxpage(&buff->rxdata, aq_nic_get_dev(self->aq_nic));
- 	}
-+
-+	self->sw_head = self->sw_tail;
- }
- 
- void aq_ring_free(struct aq_ring_s *self)
--- 
-2.47.3
+We spawn a socat instance to listen, and then after we determine the
+connection has succeeded, we kill everything, and create new flows.
+BUT, as sashiko points out, we do this multiple times, and don't even
+check whether the listen socket successfully comes up in the second /
+third ones.
+
+I think we could use a single SCTP listen instance with the fork option
+as an optimization.  In that case, it would better test that the flows
+are working versus just colliding on some possible listener race issue.
+What I mean is the pattern:
+
+ -- setup flows
+ -- connect
+ -- tear down flows
+
+seems fine to me, but the respawning of the listen side feels excessive.
+
+Sashiko seems to imply that we could also do the wait-test with longer
+timeout, in the case that we respawn the listener.  There again I'd
+argue that it's better just not restarting all of the listening side
+each time.
+
+> +	ovs_del_flows "$t" sctp4
+> +
+> +	info "verify connection fails without flows"
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(1),eth(),eth_type(0x0806),arp()' \
+> +	    '2' || return 1
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(2),eth(),eth_type(0x0806),arp()' \
+> +	    '1' || return 1
+> +
+> +	kill -TERM "$server_pid" 2>/dev/null
+> +	local i=0
+> +	while kill -0 "$server_pid" 2>/dev/null && [ "$i" -lt 5 ]; do
+> +	    sleep 0.2
+> +	    i=$((i + 1))
+> +	done
+> +	ovs_netns_spawn_daemon "$t" "server" \
+> +	    socat -u SCTP4-LISTEN:4443 STDOUT
+> +	server_pid="$pid"
+> +	ovs_wait sctp_eps_has server 4443 || return 1
+> +
+> +	ovs_sbx "$t" ip netns exec client \
+> +	    timeout 3 socat -u STDIN "SCTP4-CONNECT:${srv_ip}:4443" </dev/null \
+> +	    >/dev/null 2>&1 \
+> +	    && { info "connection should fail without flows"
+> +	         return 1; }
+> +
+> +	info "reinstall flows and verify recovery"
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
+> +	    '2' || return 1
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(2),eth(),eth_type(0x0800),ipv4(proto=132),sctp(src=4443)' \
+> +	    '1' || return 1
+> +
+> +	kill -TERM "$server_pid" 2>/dev/null
+> +	i=0
+> +	while kill -0 "$server_pid" 2>/dev/null && [ "$i" -lt 5 ]; do
+> +	    sleep 0.2
+> +	    i=$((i + 1))
+> +	done
+> +	ovs_netns_spawn_daemon "$t" "server" \
+> +	    socat -u SCTP4-LISTEN:4443 STDOUT
+> +	server_pid="$pid"
+> +	ovs_wait sctp_eps_has server 4443 || return 1
+> +
+> +	ovs_sbx "$t" ip netns exec client \
+> +	    timeout 3 socat -u STDIN "SCTP4-CONNECT:${srv_ip}:4443" </dev/null \
+> +	    || return 1
+> +
+> +	return 0
+> +}
+> +
+>  # psample test
+>  # - use psample to observe packets
+>  test_psample() {
+> diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+> index f3edd198223f..ce790d936832 100644
+> --- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+> +++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+> @@ -1984,6 +1984,11 @@ class ovskey(nla):
+>                  "udp",
+>                  ovskey.ovs_key_udp,
+>              ),
+> +            (
+> +                "OVS_KEY_ATTR_SCTP",
+> +                "sctp",
+> +                ovskey.ovs_key_sctp,
+> +            ),
+>              (
+>                  "OVS_KEY_ATTR_ICMP",
+>                  "icmp",
+>
+> base-commit: 2fbade66245059c78daeaccfce13ecf499fffb51
 
