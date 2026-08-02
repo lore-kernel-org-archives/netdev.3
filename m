@@ -1,95 +1,89 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C97B171B1;
-	Sun,  2 Aug 2026 19:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992BB320393
+	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 19:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785697261; cv=none; b=um7cLqi2Y1nDxu5YSiuY9Aedp+bn6qvttYGcYjkSgjvB0HgQhKl8kyOY0V/tm2R2HIvtvm+LDXFCUeNOFnt/j7Upi8TM8TgcpfcTbEtVRbT6YLIU/Dlu7k6IlCr9VBHRsV8yOuX4BA1jfEdrKm3wEMA5Ut5m0xi09rZzglwomGM=
+	t=1785698902; cv=none; b=QVxjWmGPEs2Dk49naySuUTIQnB/vIu/P6QMTWSOtxSk0CyeVzvSLOdp29wa55p7d5VagdnyrWfo0CXytRGYIWD0lJzXdBxaPNBuliK2pycO5pflGZKqezBauIO53cVO3wnN4aiTC+gU2yszOcfMGEYQEu/Rw+7wfFJQB2mZRMFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785697261; c=relaxed/simple;
-	bh=EfT06c4bUG5RM6uvwUF2MIPaWAlOHTsViLXf2tLbKGI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GhJbi/TSTSypRLmFr4VhtgOAqkhlirFrm6iy7dah0qNGpeWhEO78OgX35QzmBf5AZT4aTgA4Mur9m9XryFRE3Q4r3qzsCvHLzulfxdZY3COQxhl6CWt4iq954bHBOmTTxFWxaU2cjG67uEZDHKddAF9/5HhzUKOjncYVvewrbo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fXRZGqyY; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785698902; c=relaxed/simple;
+	bh=ih17u19AEzHyVVPvha5pFDpYhRKd9u+uawUawKr9oxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XJb5EiZ+/GW0iZK8rwJrbkI0+7qTJm8zxU6seIti9JDQi7PeJyA55eIMKsg9nijdsxP60Lvm47H2mJnMCmEabEejxZH/37YdkKGAEGrfxpGTZilpXd4mSC0HOCHgKYqjzjIJ/uRrXzbMR9TkVzuF6ToZr6HakRxWBE3pcKX4kMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HH4I9Pcm; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fXRZGqyY"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=3ShKaSqVzpoKTOwv2WVILmoiM0sd7wX/pCkyn8buCZc=; b=fXRZGqyY1gL41dRfLIFcq8Dokz
-	GcgcZXVeYXq1zbgcc5ZyBAmzbC0u5hqrStplnQZ+iEp3PSZv6NSCpp4rA/5VTitgS30L+YNtgrGUO
-	x5bt2Yd5UN+G+vh9LuyONS2h6wd3zjmS5kL3nfrgY3k8KYHafnC4x7RR5ggbjSC9pUfk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wqbQM-00FbXo-49; Sun, 02 Aug 2026 21:00:38 +0200
-Date: Sun, 2 Aug 2026 21:00:38 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Coia Prant <coiaprant@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>, Vinod Koul <vkoul@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	David Heidelberg <david@ixit.cz>, netdev@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v2 07/10] net: pcs: xpcs: add Rockchip RK3568 platform
- glue driver
-Message-ID: <ba5522ab-1e77-4236-89cd-9483ed1f2da0@lunn.ch>
-References: <20260801142244.679437-2-coiaprant@gmail.com>
- <20260801142244.679437-9-coiaprant@gmail.com>
- <23d8e994-8552-466f-98e6-c47d5783525b@lunn.ch>
- <CALj3r0i5yVcJY8V75y0Hm5xjtZSBpH0DXSAWKsAUqguChVcxYA@mail.gmail.com>
- <302c67b0-6729-4930-a409-a2408dde33fc@lunn.ch>
- <58C6FD30-02CF-4DC8-BE7F-4E2AAC5985E4@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HH4I9Pcm"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785698887;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ih17u19AEzHyVVPvha5pFDpYhRKd9u+uawUawKr9oxY=;
+	b=HH4I9Pcm/SBcXwV76O4Zr3TEewgiBxIxBBXpqQM8Bxx6pbnHqmdspVGXVoRm/tgt+ZRxhP
+	Wkq2QgEeZnDBB73o9s4NOq1KfotlJUZUu9J7K8JDW1REDwfinGozamxxiHbS4lLkZI2pCQ
+	7/57U/olWMrrVRTQ9kGqYX0jVopHcEs=
+From: Igor Korotin <igor.korotin@linux.dev>
+To: Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?utf-8?q?=C3=96zkan?= <work@onurozkan.dev>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>,
+ Krzysztof =?utf-8?q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Robin Murphy <robin.murphy@arm.com>, Dave Ertman <david.m.ertman@intel.com>,
+ Ira Weiny <iweiny@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+ Len Brown <lenb@kernel.org>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Michal Wilczynski <m.wilczynski@samsung.com>,
+ Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>,
+ Fu Wei <wefu@redhat.com>,
+ Uwe =?utf-8?q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: Re: (subset) [PATCH v2 00/11] rust: driver: use pointers instead of
+ indices for ID info
+Date: Sun, 02 Aug 2026 20:27:50 +0100
+Message-ID: <178569887068.1652.14450480404285948832@linux.dev>
+In-Reply-To: <20260730210149.1117242-2-dakr@kernel.org>
+References: <20260629-id_info-v2-0-56fccbe9c5ef@garyguo.net>
+ <20260730210149.1117242-2-dakr@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <58C6FD30-02CF-4DC8-BE7F-4E2AAC5985E4@gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-> Hi Andrew,
-> 
-> You're right that the xpcs core uses C45 exclusively, and modern kernels
-> no longer require C22 callbacks for mdiobus_register().
-> 
-> However, I'd prefer to keep them for two reasons:
-> 1. Debugging tools (mdio-tools, ethtool, etc.) often use C22 reads to
->    inspect PHY/PCS registers. Having these callbacks makes debugging
->    much easier without having to patch the driver.
-> 2. It keeps the driver consistent with pcs-xpcs-plat.c, which also
->    provides both C22 and C45 callbacks even though the xpcs core
->    only uses C45.
-> 
-> If you strongly prefer removing them to keep the code minimal, I can do
-> that in v3. But I think the debug benefit justifies keeping them.
+Hi Danilo,
 
-Keep them. I was thinking it side steps the issue of accidentally
-mixing up C22 registers and C45 registers. But there are useful use
-cases for C22.
+Sorry for the silence -- I was offline for personal reasons for about two
+weeks from the 16th, and missed this before it got applied.
 
-      Andrew
+Checked 6-9/11 now: the i2c bits are correct. Unlike PCI/USB, i2c has no
+dynamic-ID (new_id) mechanism, so i2c_match_id() can only ever return a
+pointer that IdArray::new() actually populated -- the plain
+info_unchecked() (not _opt) in i2c_id_info() is the right call, not an
+oversight.
+
+Cheers
+Igor
