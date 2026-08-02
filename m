@@ -1,108 +1,128 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F1E13D503
-	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 12:26:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C25733938C;
+	Sun,  2 Aug 2026 12:29:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785673604; cv=none; b=KTos9HI9GCZxi4rq96YD2dapcVwPFUcGtQfuyygL+d/ZqVZJmrIuSaAp3YCpeSBB8C73yW/N13btxV3+H5V0opkSzh58KcSXLNMQIiz8bQisgEntm5xCpQvSgeYmXC0cJ+g5dFL3XW8ewJWT8REXOKuhRl4sHIk8vCmk1i3ZcBQ=
+	t=1785673760; cv=none; b=qO/rcRAFnXWUWQa341URwKoj+uLscP9GrkSPKxZkoNdwcmCN8pkW95QJdsliHDIbo0P3HGI7oI04CspwLrYFILyJ22H4SgRPshtdSN+8kcwkiGC09DKA2Fb+earvHYjBTHHZBGm9whHuiv5uGKdmGySmAQAx99ydDsYeP2ipHp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785673604; c=relaxed/simple;
-	bh=GzoXTgtycPrr14JRRohK+X5LqcrEe+6y3sxJXbrD4uo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ca3+L6qpAmoDdiFbgWxOTqNUnCySXFKVBBS/3f+QhKsi/38/FIPVk4DZ+SWX5Tp+H9E4ETb7Yw+EbDVL5GEwXo60dsIxJmZMkuq1hntY8n3+vCYHDLyX8hWkMXkeYPXl4vW/QTelM84n1j5AE+EZdSJoqse6kpZCO5/N83Ih96E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pa24+HNk; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785673760; c=relaxed/simple;
+	bh=Oc+Pf6P+wet7UHezAuJRNaKASH+UQW2bFsWGp3UkczE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mf6Fm0hvQAAJI/h04j0SzTVXjWRPswwTU27YOyhlujQ7ZrDNjgplkL+GDpzp9b6k+m4xH/0IQuJl8+yhfwf4G8iWpdan3u1w46NCn+rwFND3hL21/ucXdoIw6hOSUu1VmJTdFK211Wbo9aCInysHqXes8SmoV6c62l1WL3IOzWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H2OmZJER; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pa24+HNk"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cfff5f88dbso27846615ad.3
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 05:26:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785673603; x=1786278403; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JEYzfjesqzY4vv80ibO0+ZIF242Ka1A8GW29K+EWrpA=;
-        b=pa24+HNkVZffOle3mJN2Y3PwJF1GV+8EQkVp7GpKxVtCMYO3w1OHlJy/GcxtFtGbFY
-         BP/BC2Hk6I+Bf4QoOVA+EfnWhahZ5gcRRdvsSKOqqdskPLNm7czeH9gKbhrx416eg4T9
-         7JN2D9OlwbPeGtZaJdSVd1uUV18rakD9HUXPNZjsIIPDsqNs1efG2FaYldHAR/XXHiPY
-         +TMzSzxNMnFoavjHKBAtcfnWzDP3QN6clreif05ayieaSbNm7rRhArnwEadOUVkT65u9
-         Is2LzlAlwBmnuWH9MOFHcSQX7zOjLCgNeuDzJIbEkgUUBAqfNbS+boixAvh3PANSXuvt
-         Mr0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785673603; x=1786278403;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JEYzfjesqzY4vv80ibO0+ZIF242Ka1A8GW29K+EWrpA=;
-        b=cHUHVBTPs4WFV+0TRCLRRXuwG92KKy3RyyRXIUAoaQmm0SXsxWFQz6KGUj22EDM5Us
-         VpYp3r9rL+RUjSwl26tIQMUHkPv7B1zomSXWPBoPjykRlfNHHqg4sPVYhi78P3bOjtjw
-         RsGhtaFM+lPnT6OoQ6fICqEUzj3wfq8FhKjatakmX+xzaMtGjcxS+eKphDMg5Y0t39cl
-         l6Df2O7E00pkbAosmetZ2PDWVtzwLLzwh9lnxocFUy+CJruE5kmca38erb4MvZh/4MmK
-         1gh+dqwDWsbemT+pxUH2chU3oFe/HXDd/s5kcgDKvKQVCdfj35KaDLuTDoC081ZsbkTo
-         Vo7Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rry/xSPA0pIDgX10dixeExtxUNfU6hTZcT42bfrW8dtCxqjpC7hl3Z+kxo+WqwVnvXK3YqYXMs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEfZVqQmat2Nb0dM7PQ5P9zG0QZvyQHEGFAsu9ZJ13trX0E2qr
-	ldIhOQjFI5PkchIyxM5q33VjsoxWV9GEM9WuaQo/mrFYVuu0zeKsvgdP
-X-Gm-Gg: AR+sD11Gh4uDQNjrZAesfabkdy+NQq+kCTROTCJxrew0dcKOqEEEXzJDzKyQTdOGjTL
-	HJ+ce7+V4rppWdCIaIKUjIEcYqoEik5WG4/Q2tPGv9jPtXXl6RK3X5c/8HsoJHNwhOeYrcIRDgV
-	E3Gu65cp39AwtxsdQkB7UsuGFsoBCdAdh/rqHnPh4bx4iHimH1RxNaJwBJenxxvraqBHfJAassW
-	SzuPZg8ZBl62hIL/XaeVEeKbN78EAQ8bCSDU62pykHydbGSF1bJXjfN0NmgZt1hBLykOVbJfEaH
-	Q2CFj89+P/oHvFuWYv9ne4CsgK7tkoRnvZUjRUyYihUFHPUXF/g9g46szdEw5AJrog3jr9wNabW
-	qFnxshHrbRmJ2AwIEFJoeiCb4EajX29LaWtJphAP0cTCv63Wzfv46JYy4K6wCCDvZhlMA5R2Ojs
-	R+9TEqiRdtbPMhMSnMs2WgpvcId8rXY3Wu5YSGWh8RGdQ4yxRSjXAEsn+JlV6rG9J4wx/BoyM09
-	AcaGlwt/HsUmwgDwmoEAzMWOpDCazocrCoEQF4ZUhgu5NgJqgHOcmjWakPGmF5vCUmxCMeHG64A
-	lay4BIk5QbPhayzcgJ+K
-X-Received: by 2002:a17:903:124e:b0:2cc:f5b8:4c2e with SMTP id d9443c01a7336-2d0521cd890mr64490745ad.9.1785673602642;
-        Sun, 02 Aug 2026 05:26:42 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:b123])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b15d26esm25625075ad.76.2026.08.02.05.26.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Aug 2026 05:26:41 -0700 (PDT)
-Message-ID: <96c485cb-d169-420e-96f2-108ec6ba7081@gmail.com>
-Date: Sun, 2 Aug 2026 13:26:34 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H2OmZJER"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id C46541F000E9;
+	Sun,  2 Aug 2026 12:29:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785673758;
+	bh=SHSGsM0vu6t3zdEJHGFOqvnDDQ/hs9cDuA8s50LeKfA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=H2OmZJERCYxtrOOph6nrStzZdf9Px2+Qu52EKRUMyRnmj4QfSbClOGXvOwLQl/4aA
+	 QXrUGppcGBhRWhY9tW992RTQ83AkGGQJozNyGViEgllW7DJ8ayJ1pfg/mDZfKLYM+O
+	 iaCJu9ozHHoC9OJbqbp8GE2FXVc48vGCq9wTtZKsOYsPdu40/jveDStEa4FnAS8dvh
+	 eBwmazAysE+S1N5/1Od2as8vkHZiBiRzJzW/3NReG/Vr6BQSlyRO9SCgOFK91LoO0Z
+	 4Wat2UmYU94tkzX5l86TF3Srukt7Yi+4nQ/P5F5pqFRu3Ol3LaLh9TJ1K2EelnS/lt
+	 PpuVHx/cRwcTg==
+Date: Sun, 2 Aug 2026 14:29:15 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Mike Leach <mike.leach@arm.com>, 
+	James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>, Damien Le Moal <dlemoal@kernel.org>, 
+	Niklas Cassel <cassel@kernel.org>, Jyri Sarha <jyri.sarha@iki.fi>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Linus Walleij <linusw@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>, 
+	Lee Jones <lee@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, 
+	Jeff Johnson <jjohnson@kernel.org>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Yangbo Lu <yangbo.lu@nxp.com>, Paul Walmsley <pjw@kernel.org>, 
+	Samuel Holland <samuel.holland@sifive.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Richard Cochran <richardcochran@gmail.com>, Jens Wiklander <jenswi@kernel.org>, 
+	Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>, YC Hung <yc.hung@mediatek.com>, 
+	Svyatoslav Ryhel <clamor95@gmail.com>, Sean Wang <sean.wang@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org, linux-arm-msm@vger.kernel.org, 
+	linux-ide@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	mfd@lists.linux.dev, linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+	linux-pm@vger.kernel.org, netdev@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Correct white-space style
+Message-ID: <am83ac93gyowUgSQ@monoceros>
+References: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v1 2/3] net: devmem: return EMSGSIZE on type mismatch
-To: Mina Almasry <almasrymina@google.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>,
- Bobby Eshleman <bobbyeshleman@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Will Deacon <will@kernel.org>,
- Antonio Quartulli <antonio@openvpn.net>, Ralf Lici <ralf@mandelbit.com>,
- Kaiyuan Zhang <kaiyuanz@google.com>,
- "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20260801125308.1342897-1-almasrymina@google.com>
- <20260801125308.1342897-2-almasrymina@google.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <20260801125308.1342897-2-almasrymina@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ynduf7ixmtnk7fvw"
+Content-Disposition: inline
+In-Reply-To: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
 
-On 8/1/26 13:52, Mina Almasry wrote:
-> When a devmem payload mixes with a standard page payload, return
-> -EMSGSIZE instead of -EFAULT. This enables tcp_sendmsg to seamlessly
-> fall back to creating a new segment instead of failing the socket send.
-> 
-> Fixes: bd61848900bff ("net: devmem: Implement TX path")
-> Cc: Pavel Begunkov <asml.silence@gmail.com>
-> Cc: Stanislav Fomichev <sdf@fomichev.me>
-> Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
-> Signed-off-by: Mina Almasry <almasrymina@google.com>
 
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+--ynduf7ixmtnk7fvw
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] dt-bindings: Correct white-space style
+MIME-Version: 1.0
 
--- 
-Pavel Begunkov
+On Sat, Aug 01, 2026 at 09:56:14PM +0200, Krzysztof Kozlowski wrote:
+> Correct a few white-space issues, like double space after '=3D' or before
+> bracket '{' characters, which will be flagged by dt-check-style.  No
+> functional changes.
+>=20
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> [...]
+> diff --git a/Documentation/devicetree/bindings/pwm/pwm-sifive.yaml b/Docu=
+mentation/devicetree/bindings/pwm/pwm-sifive.yaml
+> index bae993128981..40397bdf2d69 100644
+> --- a/Documentation/devicetree/bindings/pwm/pwm-sifive.yaml
+> +++ b/Documentation/devicetree/bindings/pwm/pwm-sifive.yaml
+> @@ -62,7 +62,7 @@ additionalProperties: false
+> =20
+>  examples:
+>    - |
+> -    pwm:  pwm@10020000 {
+> +    pwm@10020000 {
+>        compatible =3D "sifive,fu540-c000-pwm", "sifive,pwm0";
+>        reg =3D <0x10020000 0x1000>;
+>        clocks =3D <&tlclk>;
 
+I'm ok with this change (as &pwm is unused in the example), I also don't
+care much about this not being a whitespace only change and thus not
+really matching the commit log.
+
+Acked-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org> # for Documentation/devi=
+cetree/bindings/pwm
+
+Best regards
+Uwe
+
+--ynduf7ixmtnk7fvw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmpvOBgACgkQj4D7WH0S
+/k5+WQf8CivH89faKCp48CBlupnrahHpA3qdaBm48BnUdJduo4BaximYlTqDGSxO
+NXL529LwysgvuiHkOxrg9bUdk/Lx68V5xZboTmO5BFwMGnqiXaazc9iWfyHrau7M
+YVderOTLj5yWcB/0FkMdHb59nmaH6H3DTA7lTyzhEH2rK1e56Xe0bWxXn5wPx//K
+Fg6BzFpjoO28RLKp88OCsgzFiu3Y6yaJNenCx2MeV0T15/L721ZmHJDKsQqu5iDJ
+iXzPSntzwtR7HAs/3NUW1jSaAV2Jq41LUqlqjX4CeZDwSDaX6iquowVSJDhJvYuK
+ZtKTkgqchOdbv2qhQEqje3UkwK9pWQ==
+=9CRH
+-----END PGP SIGNATURE-----
+
+--ynduf7ixmtnk7fvw--
