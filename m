@@ -1,244 +1,206 @@
-Received: from mail-oi1-f206.google.com (mail-oi1-f206.google.com [209.85.167.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11021097.outbound.protection.outlook.com [52.101.62.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065431C6FF5
-	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 03:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.206
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785642404; cv=none; b=ViiNgJIuNtLCZOz7VCGTFy1JK8uPaWy+F3NNYMe7cduoBgp+C23el9Nt6902u756cGwkcM5z6lPhr5PrTl+qE3xLZO03oXvj7m4sk4vgj6IzpUl/eq+6trI7Ii+1lyFZJzmuXOktVhH46wqZrn9AKldpEM4ehx9soaIrJZrbS9M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785642404; c=relaxed/simple;
-	bh=sezgLEyBC9Es3UETpH3+MuabYW/HD/PBrBBUJMwZj0s=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=LVZYQdOCuPyuJmZrfkTEO/H8mDPjwhfciUxcJbsMqsZAOJcZX1njBluWf2l4yrfFkNmvBZHnLZLvVNoPwVPBjaLlr74t1AZXRR52mwAleTn0edrwkM0TZH68CEf0FvjdO6UfvNJapuM8eNIfpZthTtDIf/CvApjq2fTSu9BeEhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f206.google.com with SMTP id 5614622812f47-49ce04870f8so2990275b6e.0
-        for <netdev@vger.kernel.org>; Sat, 01 Aug 2026 20:46:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785642399; x=1786247199;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kL/Ml9iryEkMC+wj+LqPNtEaj4DBg6U2aownFArWlo4=;
-        b=CJ1J13PxAtCgcMxDoYlhXbUXXpdy0//TRyLqZ4kNWqLs2l8jqEntrSOkMDlKL/rpGn
-         +FlZJnqCNp3dhn5ET/cIQ9NqGIw0YwWgnkXJJ+nHUP5+4z4KiKEmv3ioabG6G+kdT3rJ
-         k3IcmgW0njrWrzvb3OfDsOUALJsteALZYQygZwTkRShz1Inwxrwi13tnjev6aJ+3Xbi5
-         Yaxynu7X5io73Q0XsiyFa/V71KI6JBnGz/POWe+kYY3i8fxRB/DYdq4/+7f8mHIfhC0J
-         XWJgdm+J9Fmxjqh36zd/GbrVhLOYn3CLz3UBIsLmwNUjF6omHLfe1YwlJaGBq8VexbUZ
-         EoJw==
-X-Forwarded-Encrypted: i=1; AHgh+RoxYAZdyvZMgNqj1za6R8JOYjrw6uQyJGy9+FwgOhvm5+8t+Ccjdb/v+d8A6z7fasoFpyQQJ7c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnKeVrLQ5QT5pU2Wqhh9DwxGQcltDfkrocI8+MKtEAMsZMENKT
-	M2E9pkLRABxoZBdrkC+hosa/Wj5YG7sCJmqhayL5NQGpiscOa0EkBqLeWVCj5ZqJ+HTzoW/02Xe
-	F5Pe8jCg6ARzTvyIN7PKpYGW5r/JZ4vOTbDb8kO0Ge7XZ3NTaqBCyxdRJG8I=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BE7CA4E;
+	Sun,  2 Aug 2026 03:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.97
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785642437; cv=fail; b=PwW2OpZHRSM/c0SnEMzemns0Jsn2hr0DiqkNbDnpS32zg453leisq7EQDuyW/g1bnshMnsoftw+obOJvhbVqXGzVC3vSv8iXCDVKA2/DjrqvgFjTcEBlfyN7opxri0LT8wDBLy+cdzrSzWKyyToyFxQsxr766P3Y90c0zh0l8VE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785642437; c=relaxed/simple;
+	bh=3L0Sp9mkkq9ac1vyAdR55O4XZf1tlgSwDejP7hzRsd0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=oUtImc9KXR+aHSepFBVHh5IbVN1Vfj0WcOHokowyF38UiaR1o4kvQ15/M2bzQD2axmd3UuCJnqPQrYXxWf5vkVt7BPA7BSYGhSd1+HMVOjrsWgPJxAZ31uC5RIN4SQKrnFucNnniFyNISUelvOn/VYwr+VDfxNwcV96mLkI+39E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Mahcom.com; spf=pass smtp.mailfrom=Mahcom.com; dkim=pass (2048-bit key) header.d=Mahcom.com header.i=@Mahcom.com header.b=KrDfpbNV; arc=fail smtp.client-ip=52.101.62.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Mahcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Mahcom.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Mahcom.com header.i=@Mahcom.com header.b="KrDfpbNV"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sh6f5xPtg9P69II0YKLAHRpdOBwdhJXBbp8B/1izca4LhFQ+kb2/igrwpFUBp9jrRe60w+z2KrIWdqHQpM3le0cMOjTjRV2JFfjYWFMNGqTmoJpu8Kvt84TIThdasU71bFKigIJROfTvFY8wSXQ00veCnHffER8sR7Z3aisK57O87UNITD+Omn7mEro216MtAyG7ck9qD/wrJR5FwxbcfBvDcYtAv6//NqAhEuXl1AcH9YP8xsSxga7bozLKfPGW0jvkXvxLlk/ic/gbBe47FhGKtJCVP9mb3Xv44JrfOqNefoSo8r0gFJ9t9gESZTDUOYIEyDJpsHdTjSoEjuyeiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GyUku7UnvStC+jClZd5vnS+ca5yGBt5OfSH5Qx9TCG4=;
+ b=JOI1hCLb/Npkbog8eZpiMQ+f5KrUGBCkW0rinUnTHXFofz9ui1latPhuXYhejHcG0rQQNYcXAvckhlZkqcmgJbMspn2bZhEZERdIK7RI/9K+RIsbFIgZBAjgVUwAVihwTSq/Gw6KRE+cD8ZOiHEcC4w6Y63leJhYd5gnd+zMIQMJlx1w7JLqcypCF9lkkug10m6A8LfinZhZzFZymX3x2hVu/jnnpQ5v/O4DyzThszsHUni+jVb7WoV+E5oU6Ez9TOV2Ne75Aby/Er1RKjWsYo697Wx8IQF1qL98yBjvB+PRx0n1/l22Jr8pesvZU+lGdefFu68r4RR1LV9hdgL5Nw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mahcom.com; dmarc=pass action=none header.from=mahcom.com;
+ dkim=pass header.d=mahcom.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mahcom.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GyUku7UnvStC+jClZd5vnS+ca5yGBt5OfSH5Qx9TCG4=;
+ b=KrDfpbNVYtAlhXc0Q0Br8hXsIXHngLtHIm5C9mm1NMuO0BpZXLm13MyOILazWHO8Qd0Fm9DsfU8UdPvSUiy1q/r1iStIrzQi5MWvFQlDoHWkBKpbJWvTIOYyiZ3+iNXSXtoD0vb6CVnq7eTaVEDRlMFJYuL1Dpkag+hmcqgg2pzCgHqR0SqHH6d7gAsQ8yh4W7ZjP6Hk9zaAljkx7Ujz0sJ3zOfKurpXfJ1clXLv1EfDHFoftBNvdnRH2uVsRCMp6PWzZu34VSKvJffmLEBM7xvMWPeZvqOJM7HiXAOj28TG1mlxjzssse5PtcX2joGFY0yIkPaGCgmTDdv4HHjPAw==
+Received: from IA0PPF42224DB53.namprd20.prod.outlook.com
+ (2603:10b6:20f:fc02::19) by SA1PR20MB4298.namprd20.prod.outlook.com
+ (2603:10b6:806:235::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Sun, 2 Aug
+ 2026 03:47:11 +0000
+Received: from IA0PPF42224DB53.namprd20.prod.outlook.com
+ ([fe80::8f44:a6f3:9ef6:1e97]) by IA0PPF42224DB53.namprd20.prod.outlook.com
+ ([fe80::8f44:a6f3:9ef6:1e97%8]) with mapi id 15.21.0270.016; Sun, 2 Aug 2026
+ 03:47:11 +0000
+From: Brandon Mahdavi <Brandon.mahdavi@Mahcom.com>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "andrew@lunn.ch" <andrew@lunn.ch>, "olteanv@gmail.com"
+	<olteanv@gmail.com>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"ansuelsmth@gmail.com" <ansuelsmth@gmail.com>, "hzyitc@outlook.com"
+	<hzyitc@outlook.com>, "lists@marzocchi.net" <lists@marzocchi.net>
+Subject: [RFC PATCH net-next v2 0/6] net: dsa: qca8k: support multiple CPU
+ conduits
+Thread-Topic: [RFC PATCH net-next v2 0/6] net: dsa: qca8k: support multiple
+ CPU conduits
+Thread-Index: AQHdIjGZXbDTPeALAEexVKCKhbSWqQ==
+Date: Sun, 2 Aug 2026 03:47:10 +0000
+Message-ID: <20260802034701.3339052-1-brandon.mahdavi@mahcom.com>
+References: <20260725032159.421627-1-brandon.mahdavi@mahcom.com>
+In-Reply-To: <20260725032159.421627-1-brandon.mahdavi@mahcom.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=Mahcom.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA0PPF42224DB53:EE_|SA1PR20MB4298:EE_
+x-ms-office365-filtering-correlation-id: 4089e99d-fe88-4345-2ca9-08def048bbae
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|38070700021|6133799003|56012099006|10067099003|5023799004|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ wvnnDzhCX4XQNBeuQFBSt+6/hejRbBtwWJDgbXhvF8JdpkXaehYnqbFKiDPoTHoK6HqjB+Eg/O9y5Xh/Xizv3wN6LB6Fx4SpCKjHJlNswXg/xAXAOfcVDyVtw4f2oLNEjdV9HGjtS4Y6ZxHFXqU8zve8LNfNXwFrxFMt6ym47vDeR6onzLfFdi1m6wR5Xcd66O9P/jJSfzYHP5tTy96kqhv8kdLSFldhFonifvOqJVyGA5kA9opJLie2EmyTwRYT+1aTJFTZHXGFyufxNTGR3FPvjDyvcPngCS1O45o8STQyIIFpF4/ZZgBZglBCFppkBodpGlbGq2IPXjrYouplLLQgdcpBDt+05L9kfv/rEnRwIRFw1nb1DU0b6Vr5Vqi3bLi/3+nnZd/vX0vSTT8hymYUqKWvQwo3x7QIy6K8ez4ADlgL8Nffnk8bJ7e7lRzfQkIwQLoajspsoE1zRdPtexFm3kFTvSd1H4fyChF350YMUl/25kr1iQOYBWMz2cfxewWSovlE8yMnESm46ZNL2Ul/ehztt3VEI5gc12PnuoFDWEFHB6IHB4TBJH935TXZXmh/nX26/1XnujIbNQC7cz891Qx0MQ1M4SH1G3cZ8tWOop08qbNK0B5deoQ+jR1x9UCWJ4K4d+WpeUb7QOBERXiH8N/0oEb0mtOUKayKIPJRtj6pjyyOGOX6Y2IvzGhWE+CJbqFmzCerd0W+qKYEHDekerxvSLID9O+YSH0VWq4=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PPF42224DB53.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(38070700021)(6133799003)(56012099006)(10067099003)(5023799004)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?boDeFx4GWAooFotnP18eR0wWaUh0tY2Hg03C5hcV7giMvYlXo1aZYah6Ll?=
+ =?iso-8859-1?Q?9l7zYJLyADJbRh61IsgFiHwyO/da2+AO0ZRtjUE5nnmYKuSZIggG8avsrC?=
+ =?iso-8859-1?Q?o+OxcjYNhykOdIS9c+2/2sCBveNdqT+uRmKFEKyJz8xfzQtwhd0jW32xkD?=
+ =?iso-8859-1?Q?vyQLP6gACfoqhZ435ZdVgEtt/ef02q2LS+nFklS5lMshcbKqWbVzBEEJiS?=
+ =?iso-8859-1?Q?FHxqRxL0iT8cDPXOZdMpD7yHnRVNR6F+WFdoAMJxn6YuVtX+saFQzgi/xV?=
+ =?iso-8859-1?Q?hzRF5Pzls2Uhybyry2F8tQ6oe3iTM/iHkvN+MldBuOZUsU39Ior/ugnvNv?=
+ =?iso-8859-1?Q?R0b7W8H0XOWjGEpsm6R4Sx7MpcwEqTqvJDlCgQ9frXDkJwCtJHSBzlufT0?=
+ =?iso-8859-1?Q?N4sdXIZ61mZg9Uunf7v69CjDo22tztm01H9kDcKmWx+0FlSVs02o9x0Im8?=
+ =?iso-8859-1?Q?Hn6IOQ6V8UwZWOttj4vfuoqF9Qz8F4ofGXOwxw6y/Y8ak/OEkNxUe1Yd26?=
+ =?iso-8859-1?Q?boXDtTnOJOBTEkXJYwnO+frUmlDYRpKonFm9fpsvAXskb7bVq37eK89v3D?=
+ =?iso-8859-1?Q?ct/OdSU3Ys8Z1TN0KDynw2EDN8anFo25QMyPx40y3SVfnL0s0CqGJ6Cgk1?=
+ =?iso-8859-1?Q?Dmjhzy/CPaZZvzPMwDeciNd/OYPQgosDuKlD0a+hnG4Dhkmm++U2n+Yrir?=
+ =?iso-8859-1?Q?DYufL+1h3k+9JtiqpUkLSqTPi/ixdaU/3ChTJycl/CSNKV4eO8zViJSJwk?=
+ =?iso-8859-1?Q?iBvSmMAFGlewKUDO9Jn3ejffiuWaZqKxT8nHR8OclnJZrtyKnPUAqTCNx6?=
+ =?iso-8859-1?Q?o+OIRTFHW6abt8ZMp5XKYxonPEZkSC/Fw8kTkcbh7AxYmchWEJu8G5WskQ?=
+ =?iso-8859-1?Q?tafAFiD4DhtnHoPlIsIVsPZNqGi14TjU+zzQ7ENufqov/VxLpSRiWFxWPR?=
+ =?iso-8859-1?Q?SdzWQoBBaTsewIbg0JkgoDS3/VtwL8AlJfImK3qCvMWffVguEOpA3FnEye?=
+ =?iso-8859-1?Q?nZHF4idNZdq5PriK0M4JOQfKYi1uo+LgnSE8peEUwDMUfIWLg5snZ0dllh?=
+ =?iso-8859-1?Q?H4fbRQjuixpQ8hNt/FhOv3HFCYv67gIX12MVz+JzjkvphCWUUyYdBMiZ2x?=
+ =?iso-8859-1?Q?8B4eRbkr+6L946YETPLwlg/OauGlnItGOGj5qROHVgmC3GK04Bpf0I703c?=
+ =?iso-8859-1?Q?pKYAoNituPdxoxLSU7IBkFboSNRL3qg3Mbpwzj8UekTXdd/t02iNx8qre7?=
+ =?iso-8859-1?Q?HBSjlOjIl22XEbrKjoisANt/crQb7mv/29euq+OeSjPFIPE/kHteabrqQj?=
+ =?iso-8859-1?Q?XKSk7DFtHRXMFiHDsamkHzNVJFd8Qpy2hF48hKNz+k2qd6LwiWC/mvSEcL?=
+ =?iso-8859-1?Q?qiuf9Fef54NKa2ArVpnnNTCV41ODfQJTLG5HsPAWoZlHIlToxTAmxOU+jf?=
+ =?iso-8859-1?Q?cTJO+nIhcWbHooyH7Due3d6UvKDNIyCGbClJsA3sRT2QlsLCaLdWQVLRCR?=
+ =?iso-8859-1?Q?LLkEHmEcMcGtmGk/RgUDayKjKSjCAx1wIiCnKp9GRllNpozUu2SPJ56aYc?=
+ =?iso-8859-1?Q?vFfoz15EC8IyzaZQiFfVRWrl1K3nmdmACvpp5rh9UkvwihJ0P9K12zwxYE?=
+ =?iso-8859-1?Q?QCqgY/vfXJo0bHw4JFqDC4Fq3idMPGiBQJgcuX+Hbe3Lvu03ac48kM94AV?=
+ =?iso-8859-1?Q?UPtalC42O+5jN9P58+/nV2GSWNIVhu2aLsgxDdV+Ja+GCJnJ+0QFXBhhUI?=
+ =?iso-8859-1?Q?LCvibfAgvzKwrNChyx4O6PB2vII5mEBYt8sA1Rwlev82zqkWoYXu1q6SzY?=
+ =?iso-8859-1?Q?YBAgohv2TA=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:150c:b0:4ab:32ea:95f6 with SMTP id
- 5614622812f47-4af5e1b215amr9515583b6e.13.1785642399119; Sat, 01 Aug 2026
- 20:46:39 -0700 (PDT)
-Date: Sat, 01 Aug 2026 20:46:39 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a6ebd9f.2d659fcc.1d46f5.01cd.GAE@google.com>
-Subject: [syzbot] [libertas?] INFO: task hung in lbs_remove_card (2)
-From: syzbot <syzbot+a88c826d548437310a57@syzkaller.appspotmail.com>
-To: libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: Mahcom.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA0PPF42224DB53.namprd20.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4089e99d-fe88-4345-2ca9-08def048bbae
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Aug 2026 03:47:10.9828
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 92901e00-cf2e-4465-88d5-f158582648a6
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KI4aeJz8s3JWMTpWQ0K1rIGeTLaf3RHGY0vzlPgqQ5Bx4FA1VsGn2P80rFyuO19NeevE8XH60/08BzF2sDNpymo6bNWQ0MeRwtB5cpJYdmo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR20MB4298
 
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    5d5fd841c346 Merge 7.2-rc5 into usb-next
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=13539499580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6ec4d592e55f7960
-dashboard link: https://syzkaller.appspot.com/bug?extid=a88c826d548437310a57
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/2ed536ae4daf/disk-5d5fd841.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/ab40098ccbf1/vmlinux-5d5fd841.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/66d5c395f47c/bzImage-5d5fd841.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+a88c826d548437310a57@syzkaller.appspotmail.com
-
-INFO: task kworker/1:3:5238 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/1:3     state:D stack:20968 pid:5238  tgid:5238  ppid:2      task_flags:0x4288060 flags:0x00080000
-Workqueue: events request_firmware_work_func
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x1325/0x47d0 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- schedule+0xdd/0x2c0 kernel/sched/core.c:7326
- lbs_wait_for_firmware_load+0x11e/0x1e0 drivers/net/wireless/marvell/libertas/firmware.c:117
- lbs_remove_card+0x84/0x390 drivers/net/wireless/marvell/libertas/main.c:913
- if_usb_disconnect+0xc5/0x270 drivers/net/wireless/marvell/libertas/if_usb.c:317
- usb_unbind_interface+0x1dd/0x9e0 drivers/usb/core/driver.c:461
- device_remove drivers/base/dd.c:618 [inline]
- device_remove+0x12a/0x180 drivers/base/dd.c:610
- __device_release_driver drivers/base/dd.c:1349 [inline]
- device_release_driver_internal+0x44e/0x620 drivers/base/dd.c:1372
- usb_driver_release_interface drivers/usb/core/driver.c:643 [inline]
- usb_forced_unbind_intf+0x1a4/0x240 drivers/usb/core/driver.c:1137
- usb_reset_device+0x411/0xaa0 drivers/usb/core/hub.c:6409
- if_usb_reset_device.isra.0+0x21e/0x290 drivers/net/wireless/marvell/libertas/if_usb.c:400
- if_usb_prog_firmware.cold+0x161/0x192 drivers/net/wireless/marvell/libertas/if_usb.c:918
- lbs_fw_loaded drivers/net/wireless/marvell/libertas/firmware.c:23 [inline]
- helper_firmware_cb drivers/net/wireless/marvell/libertas/firmware.c:80 [inline]
- helper_firmware_cb+0x1f7/0x2d0 drivers/net/wireless/marvell/libertas/firmware.c:64
- request_firmware_work_func+0x13f/0x440 drivers/base/firmware_loader/main.c:1164
- process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
- process_scheduled_works kernel/workqueue.c:3405 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x69a/0xc80 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-Showing all locks held in the system:
-5 locks held by kworker/0:1/11:
-5 locks held by kworker/1:0/23:
- #0: ffff888106684540 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: process_one_work+0x12b1/0x1940 kernel/workqueue.c:3297
- #1: ffffc9000018fd18 ((work_completion)(&hub->events)){+.+.}-{0:0}, at: process_one_work+0x988/0x1940 kernel/workqueue.c:3298
- #2: ffff88810b7441d8 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:1102 [inline]
- #2: ffff88810b7441d8 (&dev->mutex){....}-{4:4}, at: hub_event+0x1bd/0x4af0 drivers/usb/core/hub.c:5904
- #3: ffff8881360491d8 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:1102 [inline]
- #3: ffff8881360491d8 (&dev->mutex){....}-{4:4}, at: usb_disconnect+0x10a/0x9a0 drivers/usb/core/hub.c:2341
- #4: ffff888104e921a0 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:1102 [inline]
- #4: ffff888104e921a0 (&dev->mutex){....}-{4:4}, at: device_del+0xa0/0x9b0 drivers/base/core.c:3923
-1 lock held by khungtaskd/29:
- #0: ffffffff896e2b40 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #0: ffffffff896e2b40 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
- #0: ffffffff896e2b40 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x3d/0x184 kernel/locking/lockdep.c:6775
-8 locks held by kworker/1:1/40:
-2 locks held by getty/2917:
- #0: ffff888112a280a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x24/0x80 drivers/tty/tty_ldisc.c:243
- #1: ffffc900000452e8 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x419/0x14e0 drivers/tty/n_tty.c:2211
-3 locks held by kworker/1:3/5238:
- #0: ffff88810006b140 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x12b1/0x1940 kernel/workqueue.c:3297
- #1: ffffc90001fffd18 ((work_completion)(&fw_work->work)){+.+.}-{0:0}, at: process_one_work+0x988/0x1940 kernel/workqueue.c:3298
- #2: ffff888104e921a0 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:1102 [inline]
- #2: ffff888104e921a0 (&dev->mutex){....}-{4:4}, at: __device_driver_lock drivers/base/dd.c:1171 [inline]
- #2: ffff888104e921a0 (&dev->mutex){....}-{4:4}, at: device_release_driver_internal+0xb2/0x620 drivers/base/dd.c:1369
-3 locks held by kworker/1:4/5243:
- #0: ffff8881f57397a0 (&rq->__lock){-.-.}-{2:2}, at: raw_spin_rq_lock_nested kernel/sched/core.c:667 [inline]
- #0: ffff8881f57397a0 (&rq->__lock){-.-.}-{2:2}, at: raw_spin_rq_lock kernel/sched/sched.h:1653 [inline]
- #0: ffff8881f57397a0 (&rq->__lock){-.-.}-{2:2}, at: rq_lock kernel/sched/sched.h:1991 [inline]
- #0: ffff8881f57397a0 (&rq->__lock){-.-.}-{2:2}, at: __schedule+0x2dc/0x47d0 kernel/sched/core.c:7108
- #1: ffffc9000203fd18 ((work_completion)(&hub->events)){+.+.}-{0:0}, at: process_one_work+0x988/0x1940 kernel/workqueue.c:3298
- #2: ffff8881f5728d28 (lock#5){..-.}-{3:3}, at: local_lock_acquire include/linux/local_lock_internal.h:46 [inline]
- #2: ffff8881f5728d28 (lock#5){..-.}-{3:3}, at: kcov_remote_stop+0x77/0x540 kernel/kcov.c:1040
-5 locks held by kworker/0:6/5376:
- #0: ffff888106684540 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: process_one_work+0x12b1/0x1940 kernel/workqueue.c:3297
- #1: ffffc90004327d18 ((work_completion)(&hub->events)){+.+.}-{0:0}, at: process_one_work+0x988/0x1940 kernel/workqueue.c:3298
- #2: ffff88810bb1c1d8 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:1102 [inline]
- #2: ffff88810bb1c1d8 (&dev->mutex){....}-{4:4}, at: hub_event+0x1bd/0x4af0 drivers/usb/core/hub.c:5904
- #3: ffff888123b8a1d8 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:1102 [inline]
- #3: ffff888123b8a1d8 (&dev->mutex){....}-{4:4}, at: __device_attach+0x7e/0x4d0 drivers/base/dd.c:1073
- #4: ffff88813c9131a0 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:1102 [inline]
- #4: ffff88813c9131a0 (&dev->mutex){....}-{4:4}, at: __device_attach+0x7e/0x4d0 drivers/base/dd.c:1073
-
-=============================================
-
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 29 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT(lazy) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- nmi_cpu_backtrace.cold+0x12d/0x151 lib/nmi_backtrace.c:122
- nmi_trigger_cpumask_backtrace+0x21c/0x2a0 lib/nmi_backtrace.c:65
- trigger_all_cpu_backtrace include/linux/nmi.h:162 [inline]
- __sys_info lib/sys_info.c:157 [inline]
- sys_info+0x141/0x190 lib/sys_info.c:165
- check_hung_uninterruptible_tasks kernel/hung_task.c:353 [inline]
- watchdog+0xcb1/0x1030 kernel/hung_task.c:561
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x69a/0xc80 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 9946 Comm: syz.5.678 Not tainted syzkaller #0 PREEMPT(lazy) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-RIP: 0010:io_serial_in+0x87/0xb0 drivers/tty/serial/8250/8250_port.c:402
-Code: 82 88 fe 48 8d 7d 40 44 89 e1 48 b8 00 00 00 00 00 fc ff df 48 89 fa d3 e3 48 c1 ea 03 80 3c 02 00 75 1a 66 03 5d 40 89 da ec <5b> 0f b6 c0 5d 41 5c e9 cd 85 53 04 e8 38 e8 f0 fe eb a2 e8 c1 e8
-RSP: 0018:ffffc9001299f8b0 EFLAGS: 00000002
-RAX: dffffc0000000000 RBX: 00000000000003fd RCX: 0000000000000000
-RDX: 00000000000003fd RSI: ffffffff832b8160 RDI: ffffffff94249da0
-RBP: ffffffff94249d60 R08: 0000000000000001 R09: 000000000000001f
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: 0000000000000020 R14: fffffbfff2849406 R15: dffffc0000000000
-FS:  00007f0e216776c0(0000) GS:ffff888268636000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000110c38e08b CR3: 00000001350e0000 CR4: 00000000003506f0
-Call Trace:
- <TASK>
- serial_in drivers/tty/serial/8250/8250.h:128 [inline]
- serial_lsr_in drivers/tty/serial/8250/8250.h:150 [inline]
- wait_for_lsr+0x13a/0x210 drivers/tty/serial/8250/8250_port.c:1982
- serial8250_fifo_wait_for_lsr_thre drivers/tty/serial/8250/8250_port.c:3235 [inline]
- serial8250_console_fifo_write drivers/tty/serial/8250/8250_port.c:3300 [inline]
- serial8250_console_write+0xdfd/0x1a50 drivers/tty/serial/8250/8250_port.c:3385
- console_emit_next_record kernel/printk/printk.c:3183 [inline]
- console_flush_one_record+0x790/0xe50 kernel/printk/printk.c:3269
- console_flush_all kernel/printk/printk.c:3343 [inline]
- __console_flush_and_unlock kernel/printk/printk.c:3373 [inline]
- console_unlock+0x103/0x260 kernel/printk/printk.c:3413
- vprintk_emit+0x407/0x6b0 kernel/printk/printk.c:2479
- _printk+0xcf/0x110 kernel/printk/printk.c:2504
- usb_gadget_register_driver_owner.cold+0x58/0xd0 drivers/usb/gadget/udc/core.c:1762
- raw_ioctl_run drivers/usb/gadget/legacy/raw_gadget.c:596 [inline]
- raw_ioctl+0x1a85/0x2b80 drivers/usb/gadget/legacy/raw_gadget.c:1307
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x10b/0x7f0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f0e22c1dc2b
-Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1c 48 8b 44 24 18 64 48 2b 04 25 28 00 00
-RSP: 002b:00007f0e21674f00 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000006 RCX: 00007f0e22c1dc2b
-RDX: 0000000000000000 RSI: 0000000000005501 RDI: 0000000000000006
-RBP: 00007f0e21675fd0 R08: 0000000000000001 R09: 00000000ffffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000200000000000 R14: 0000000000000000 R15: 00000000000010d0
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+The v1 RFC contained only the host FDB handling change. Andrew noted=0A=
+that it had no mainline user without the QCA8K multi-conduit work and=0A=
+asked that it be submitted together with those prerequisites. This v2=0A=
+brings the minimal dependency chain to current net-next.=0A=
+=0A=
+QCA8K can use ports 0 and 6 as CPU ports, but the current setup path=0A=
+selects one port for the hardware topology even when DSA assigns user=0A=
+ports to different CPU conduits. Host FDB entries are also unsuitable=0A=
+for that topology because the ATU has only one destination mask per=0A=
+{MAC, VID}: successive CPU-port entries overwrite each other, while a=0A=
+combined mask duplicates host-bound traffic.=0A=
+=0A=
+The series first supplies LAG FDB callbacks and makes the host FDB path=0A=
+safe. It then floods unknown traffic to every CPU port, honors each user=0A=
+port's DSA conduit assignment, supports live conduit changes including=0A=
+a CPU-port LAG, and enables assisted learning. Live changes snapshot and=0A=
+restore both directions of lookup membership on register errors, and=0A=
+bridge reconfiguration preserves the complete CPU-LAG mask.=0A=
+=0A=
+This is a current-mainline rework of QCA8K patches carried by OpenWrt,=0A=
+principally from Christian Marangi and Ziyang Huang, together with the=0A=
+host FDB handling developed by Brandon Mahdavi from an approach suggested=
+=0A=
+by Olaf Marzocchi.=0A=
+=0A=
+The scope is intentionally limited to the two CPU-capable ports already=0A=
+supported by mainline QCA8K, ports 0 and 6. It does not include OpenWrt's=
+=0A=
+PHY-to-PHY CPU links, DT node-name fallback, preferred-CPU selection, or=0A=
+unrelated LED changes.=0A=
+=0A=
+The complete series and every intermediate commit were compile-tested=0A=
+with GCC 13.3 using a focused ARM64 configuration. The build linked a=0A=
+minimal vmlinux and the bridge, bonding, DSA core, QCA tagger, QCA8K,=0A=
+phylink, PHYLIB and MDIO modules with W=3D1.=0A=
+=0A=
+The non-LAG host FDB purge path was tested on a downstream IPQ4019=0A=
+qca8k-common user with assisted learning enabled. A stale entry was=0A=
+removed when a wireless station associated and downstream traffic=0A=
+recovered immediately. The multiple-conduit and CPU-conduit-LAG paths=0A=
+have not yet been tested on hardware.=0A=
+=0A=
+Changes in v2:=0A=
+- expand the host FDB RFC into the complete six-patch prerequisite series=
+=0A=
+- add LAG FDB operations and CPU-conduit-LAG host handling=0A=
+- configure and change multiple CPU conduits using current DSA APIs=0A=
+- preserve bridge membership for a CPU LAG and roll back failed changes=0A=
+- enable assisted learning on CPU ports=0A=
+- limit the host FDB exception to CPU ports=0A=
+- rebase onto current net-next=0A=
+=0A=
+Link: https://lore.kernel.org/netdev/20260725032159.421627-1-brandon.mahdav=
+i@mahcom.com/=0A=
+=0A=
+Brandon Mahdavi (1):=0A=
+  net: dsa: qca8k: skip host FDB entries on CPU conduits=0A=
+=0A=
+Christian Marangi (4):=0A=
+  net: dsa: qca8k: implement LAG FDB operations=0A=
+  net: dsa: qca8k: flood unknown frames to all CPU ports=0A=
+  net: dsa: qca8k: support changing the CPU conduit=0A=
+  net: dsa: qca8k: enable assisted learning on CPU ports=0A=
+=0A=
+Ziyang Huang (1):=0A=
+  net: dsa: qca8k: use each user port's CPU conduit=0A=
+=0A=
+ drivers/net/dsa/qca/qca8k-8xxx.c   | 203 ++++++++++++++++++++++-------=0A=
+ drivers/net/dsa/qca/qca8k-common.c | 157 +++++++++++++++++++++-=0A=
+ drivers/net/dsa/qca/qca8k.h        |  10 ++=0A=
+ 3 files changed, 325 insertions(+), 45 deletions(-)=0A=
+=0A=
+=0A=
+base-commit: 69963a0678a347d57c4ac8b16939dba216eb95ce=0A=
+-- =0A=
+2.43.0=0A=
