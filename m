@@ -1,63 +1,65 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1702333122A
-	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 20:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274663128DF
+	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 20:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785702310; cv=none; b=DzAdztKffxg5FlQ8vcj9eJK3pingcCdIqmd4zyyFOzf21Prfdxxaj9CT2QguuXZxRxRfp1Lx96FBkRV0+iHxSa3YbfJE+Gge0NyVQoVwHycIyhJll0TdcxtZOxg0XVleCJnYDbzzu8q9osVDwqMzsAeC/ErF5c6Btc7sjaw4DfE=
+	t=1785702311; cv=none; b=rgxMW2YwGL4bjB56Q86BUuEnf6Rxyu/lhENqDjXOeBJjtxt+4F+Yi96gQCQO2fbw6Vn/Dx1PPuSBC2hH/BpNF3ZH3yriES3mu0cJLu0RNiBaA/syksSO+YR2EYtaZ5FEo4f+ZEGETgYMdKRntBVQ57A9cuwn2SbHp3xQzUOdgd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785702310; c=relaxed/simple;
-	bh=+QqG82HTr1gD1Wo/F1BUi4MNI6MZZMgjFyonBzjlVD8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VfFiV0tXDX9V/0JRuc2neV3xeEeQvIVpgiKxBg7t0PpMdLjXnqzVJ2VnJ0UXiMaLqpwC+2TifAfjrqeg+Tsal2vLPqp0XFjtLkIfMShU/WzMsodaVPx5rUZFe0rGrYc8Z9qCqMnutcEVZBd6Rc3Usu/ply+pDWQatSYXmEOdy2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TKyQeHEV; arc=none smtp.client-ip=209.85.221.45
+	s=arc-20240116; t=1785702311; c=relaxed/simple;
+	bh=t+wNgK5pWkodZMpENG/HFFh/wGgVK+guUXkQGCLdJe8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qaqlHGOueyhonXwLYmo9s1czGtB3ZbKJAKHfFGbqnpmyBzD93tpsK+lJYGr1EtmD48b1+w2PqEwpLWQ4NhqgY6MbMH8XBm70TgVb5Nqo/0UuwtQtI/VOViOiSQU7JQKs6DJTKtFkcZyR7/lp4Zbw3vLWtVSDdi2K3ATwjcezmac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=loVyY7KU; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TKyQeHEV"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47df6a5655aso335686f8f.1
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 13:25:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="loVyY7KU"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47fe45db360so2990f8f.2
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 13:25:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785702307; x=1786307107; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rZMIgVcvE7FnWcucx12joSA06YbiyH69EY/cN15w71Y=;
-        b=TKyQeHEVAcYD14/k/6i+/N+d+xRryGP1/RGw5BBz7eu+DTlApvNLWfjj/pEbZAlWCw
-         bV+DqRJSRhphN/lxjCSaMY1srsPhytiuLnjLgvamOd44mvGUSzMrjRO0jtx5K8m/OYey
-         6uWB+HB1+J3BvPhzeR6ypUXrUXjsPr4h2bejroK9jkgLJbzTM1ICt0CAfcuuk+01dfU1
-         mtr3PTRq7Cf5eEFrTOZ6niDI11NHAtK8XLlQcdU9C0tIWEL62Ksn8S+cmlezajnG0CY+
-         c8dT1MMXiZwPPQszxfgqHAaoxIzrf6LGSZG6I8JPUsSPwlgT3JPODIh6lo705yiPTgmv
-         y4qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785702307; x=1786307107;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1785702308; x=1786307108; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rZMIgVcvE7FnWcucx12joSA06YbiyH69EY/cN15w71Y=;
-        b=EBlsfSYjn6tRwrfOPTI8zQ++Vx1LLHn5imUqUvSVUpFKE+0P4U/AKgwR4hS5jfdtAZ
-         phDGxWVJM1DkFAjJcExNNcorif6puggksxkoHLvsoRpmPLoSePTMLYK8OgfpACJwb1D1
-         wccwTBctysQdOos1490G95L+lcjfNfYk7rm09qeZB2tPKfkSYa7i7WE+WWZgyDHDzCN5
-         6L/yyS7IBxXhynEMRIc6Mxhn+34B/WeyBI7fKZ32mVqnHpoSr/p0Eh7/6YmtkToUNTR0
-         HndK+JfXkvs1JjWZNgvyi7F9JJz3OttPw54yNJQWuQDVgjlanmbXMTeGVs96TquxGiLA
-         shKA==
-X-Forwarded-Encrypted: i=1; AHgh+Rpn6+Ei0AWKpXLvrHnOncPHsxTtlu4fdQAVs5gelnhuKmfyZJarM9Yj5cFp52m5oq4gTvV5E/c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNTyuEMLP+U/i9e4ELEPdCu1CAW5Kh+MURBjXL+cOaEMzKH0TS
-	bi4XTM4wQLVOjU2qLymO9QRbcD1xH6OEUiFjttkYGypr0/7Whl91dlh2
-X-Gm-Gg: AR+sD107D50MYDnvH0ysP3JVnHVGdqzySDz7eEfdUYb24M7mwFG/54M3vwzBs8qY209
-	CzQPQ8rz+eOTR0spCmuXssrD8hOutXz0JzKQs+Wxjx7rDTMeCP9WUHQlRVhmFYsmHfoSasjgHKl
-	Q3cC1FESN+wDh5N87leq+wgmbmcIVoe1H0ntzbBgjPE+iHu8v4mkRZH6/8E5sgYP+I0AJaQFs/e
-	x8VXMGqVjiEVNbPTxBX06pnbCvynrE4In6zJ6Qqbj0+k9DPfCb6pG97UDlF+B+Va/B1Z1iCFOj8
-	gsgt+rlMoLhVRP6OoMIG2XOczEPSbwO5lbpW67pVOai4p/sOmwNyzVY1VBpUOam/Rpijl756MGk
-	XISAdYxMJF6AOqPfOkKGSLii3o4KDcgXzKDJtUEmcXOJiT246vuxfk0I1E2+R48QUjWxmclNy85
-	0RgZ/0TNv7a9HZMTCpMaZUuYFk34FHy/fL9MhezmY+XivoJU4l7kTMOeiwvlgjkhW/SMuVh35o9
-	yUxgVjXJ3fY77AssVpS2+UdLvHI8VNzt97EwaFNIrRsQjx2f59M7uN/ZtyPdxuYh2OCcf54DPOp
-	gNxhNMDXQUWF8TxAb08eMlhIRS0Z1aw=
-X-Received: by 2002:a05:600c:4687:b0:495:650b:4c61 with SMTP id 5b1f17b1804b1-4980c68e3f1mr80054415e9.3.1785702306979;
-        Sun, 02 Aug 2026 13:25:06 -0700 (PDT)
+        bh=BOTNDYCh7zvkHHeJw6yM0wB8e5xxO6pLFuXcfQFg8Ms=;
+        b=loVyY7KUAdssF1LXALCNvvI2I+OF48YKZmcyZCfmEzLN5UlkBIN9lZRdof5T7PVTlC
+         VqAqrW9grKRCbhMv+7l4SDG6wLAZ2TRU25L9WUFSPFM7Fd6pI0xybYeZgSNQVLEGcAJx
+         CUgMZNtVkA0Mu298JwTsRLtiKSZ7Oyg/aVCusD9yCAqbUUcMLTtECY9ZlmRs+jSdOErs
+         MwJMjT0qdZzL5NDcWdMI0KJ0gonyxtnEdCCA4BDcpSPZPK8STdxKMb5y5mcCfBCQYDdj
+         kbCcsTqE4qN0XZilvPStGcMkGgd5aYxk9nPXfzGEkmht9WJAXN5bAp/q/DXLV5qgzjG3
+         Ch/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785702308; x=1786307108;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BOTNDYCh7zvkHHeJw6yM0wB8e5xxO6pLFuXcfQFg8Ms=;
+        b=eg0Hm3vJLLa25VhMgZ6FmCvtsY6PGbzFanIZ/zVyVKxAEREvXcii+Liht54W/41uw6
+         awwsMGZ6Y7v5sO6N1PWcogz3pNfgZBCa8p0LbN1SiQG+3y4WOI8qh0LTrYjeH9sBqEz8
+         GNm/L8fLJnEgnbfxwGjHuF5VlxiUzgf0J+gdYmUopJAQeKxoGLe29+3mJU1eOHQvT0t8
+         26TAR9LtzHqhnnjWv7bU3rPPxgciVxFsspCXkLsjBGF8Fj9U5oWfrfQghnL3rTksv44p
+         bb1kFFEN6fcjdjxH9X1Qxtizrvw9qKco1VpsFHHY6ApkCFQCrDYjL8FaQVim7zLrG6ra
+         6NNw==
+X-Forwarded-Encrypted: i=1; AHgh+RpT+sQ4cg7TwgYMw1WIArtQxc77763BFgWosCtO1yCKVEk16v9DmakRQSJGDviPegQzA1C4rXQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGXiKxVLbpVWLne6BwBkSyf1C+lnqYCjxOUVA6HuARzNq5y73a
+	aXdDWnzGjHcq4tcFW4yLaL3rL//xKiVIBHHeH27H+cjJzvjYlFI0etZB
+X-Gm-Gg: AR+sD10zsH1jNZVAmXqrD5gKTy8rS3N4ILqJXEy7CWMKmJplTUPfc5K/Qji5IfnRFAZ
+	zRTuSxSiwrhSqgt/hMV/X1GiQv96PRDz0JyGqyzgOb9c8Bs9sLABavBIaHA90m02W4xKGFsoMkU
+	tDleLAbDDtqVzzvxCR7UNbWMDu/lPOJts+2Fg0LblcQZhZC4ucf6s3fu5aCFKHPwf7Ok5Os9kPE
+	ILS+//gBp0L1LcF2XVRHot9fdTdAdOM3OusqzsfVTx0mZwUMC44fIS2S+YrFfxciRKECBZjDOcD
+	5ayICjC1IYJu7iPO3Ya17WG4Lxoraj9n7cUoj6ReZXFOCr82EZ8P/vUssbNMIp2Xm6qu6ndvhkh
+	Oyea/WBJoKP1QExJTKvwaZkLG44/sSQYsxlsUjloIjBOuJ6p9NjquyJZaNghB1E5xxVJhzn2oQG
+	82ziNL5CzAK+5mMh1+RzwJy72MPVrj4jEtIfwMjelrLKHLrJ9zvw20mqC44qEf2RhqJ0wwPIHSF
+	tCW4SamjrMfwo9byYmtogN+1HnBMX8CNH+vsAx6KAI7Hqv4ExZ89jN4Mr8uCHOjfVpDJ78NBOeP
+	F59ubWGkIeiNkoipKRNM
+X-Received: by 2002:a05:600c:c494:b0:498:8e6:d463 with SMTP id 5b1f17b1804b1-4980c657c57mr75721695e9.1.1785702308193;
+        Sun, 02 Aug 2026 13:25:08 -0700 (PDT)
 Received: from L-022584.energy.envision.com (dynamic-078-051-143-142.78.51.pool.telefonica.de. [78.51.143.142])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807b23f6fsm132234365e9.0.2026.08.02.13.25.05
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807b23f6fsm132234365e9.0.2026.08.02.13.25.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 13:25:06 -0700 (PDT)
+        Sun, 02 Aug 2026 13:25:07 -0700 (PDT)
 From: Xin Xie <xiexinet@gmail.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -74,10 +76,12 @@ Cc: edumazet@google.com,
 	netdev@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Xin Xie <xiexinet@gmail.com>
-Subject: [PATCH net v2 0/3] net: hsr: fix shared-skb mutations in the forwarding path
-Date: Sun,  2 Aug 2026 22:25:01 +0200
-Message-ID: <20260802202504.2962-1-xiexinet@gmail.com>
+Subject: [PATCH net v2 1/3] net: hsr: privatize interlink-bound skbs before address mutation
+Date: Sun,  2 Aug 2026 22:25:02 +0200
+Message-ID: <20260802202504.2962-2-xiexinet@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260802202504.2962-1-xiexinet@gmail.com>
+References: <20260802202504.2962-1-xiexinet@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,104 +90,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-During the review of the PRP RedBox v4 series (Simon Horman forwarding
-the sashiko AI review), shared-skb-data mutation issues in the
-existing HSR/PRP forwarding code were raised. They concern
-pre-existing code, and we promised independent fixes for net. An
-independent source audit then confirmed two distinct defect classes.
-This series fixes both.
+On an HSR RedBox, frames forwarded to the interlink go through
+hsr_get_untagged_frame() and arrive in hsr_xmit() as
+skb_clone(frame->skb_std). Two reachable alias cases make the writes
+there unsafe:
 
-Patch 1/3 (interlink address mutations): on an HSR RedBox, frames
-forwarded to the interlink arrive in hsr_xmit() as clones of a shared
-skb. A tagged multicast or broadcast from a slave is also delivered
-to the master through another clone of the same buffer, so the node
-MAC written by hsr_deliver_master() and the RedBox MAC written by
-hsr_xmit() land in the same six bytes; the local stack receives the
-RedBox MAC instead of the originating node's. Master-originated
-frames alias the original TX skb (taps may hold it), so the
-master-origin substitutions and the RedBox rewrite would share data
-too. The interlink-bound skb is now privatized with skb_cow() before
-any address mutation: for all master-originated frames, and for ring
-frames the master also consumes. On the hardware tag-insertion path,
-the selected master-originated and locally consumed ring frames are
-now isolated before the interlink address write. Ring frames the
-master does not consume retain their existing zero-copy behavior and
-pre-existing aliases; the pre-existing slave-side packet-tap alias is
-explicitly not addressed here.
+(a) A tagged multicast or broadcast frame received on a slave is
+    also delivered to the master through another clone of the same
+    buffer: hsr_deliver_master() writes the node MAC and hsr_xmit()
+    writes hsr->macaddress_redbox into the same six source bytes, so
+    the local stack receives the RedBox MAC instead of the
+    originating node's - deterministic without backpressure.
 
-Patch 2/3 (path/LAN ID alias): hsr_create_tagged_frame() and
-prp_create_tagged_frame() wrote the path/LAN ID into the received
-skb's shared buffer and then skb_clone()d it per slave, so the
-second slave's ID landed in the first slave's still-queued clone.
-With a 200 ms netem delay, all 200 injected frames left slave A
-carrying slave B's LAN ID. The helpers now clone first, privatize
-with skb_cow(), reacquire the pointer, then write.
+(b) A master-originated frame forwarded to the interlink aliases the
+    original TX skb, which packet taps or the TX path may still hold.
+    The master-origin substitutions (hsr_addr_subst_dest() and the
+    outgoing-slave source write) and the RedBox rewrite would all
+    modify that shared data.
 
-Patch 3/3 adds a regression selftest covering both classes:
-pre-tagged PRP injection (base: 200/200 wrong-lan; patched:
-isolated) and an HSR RedBox tagged-multicast case (base: the master
-receives the RedBox MAC; patched: the master keeps the node MAC and
-the interlink keeps the RedBox MAC).
+Privatize the interlink-bound skb with skb_cow() before any address
+mutation whenever it can alias a live consumer: for all
+master-originated frames, and for ring frames the master also
+consumes (is_local_dest && !is_local_exclusive - the exact inverse
+of the port loop's master skip rules, so the condition does not
+depend on port order). Every interlink skb reaching hsr_xmit() is a
+clone from get_untagged_frame(), so the selected cases always pay
+one private copy. On the hardware tag-insertion path, the selected
+master-originated and locally consumed ring frames are now isolated
+before the interlink address write: the interlink write can no
+longer change an already queued clone of the same frame. Ring frames
+the master does not consume (is_local_dest == false, e.g. unicast
+ring-to-SAN) keep the zero-copy path; aliases that already exist
+there - for example between the interlink clone and a peer slave's
+hardware-tag-insertion clone - are pre-existing and unchanged by
+this patch. On allocation failure the frame is dropped with the same
+accounting as a tagged-frame creation failure.
 
-Each code patch carries its own independently identified Fixes:
-commit (5055cccfc2d1, RedBox introduction, v6.10; 451d8123f897, PRP
-support, v5.9). The PRP RedBox v4 feature series is unaffected and
-benefits when rebased.
+Fixes: 5055cccfc2d1 ("net: hsr: Provide RedBox support (HSR-SAN)")
+Reviewed-by: Ali Ahmet Memis <ali@iusegentoo.com>
+Tested-by: Ali Ahmet Memis <ali@iusegentoo.com>
+Signed-off-by: Xin Xie <xiexinet@gmail.com>
+---
+ net/hsr/hsr_forward.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-Relationship with the in-flight GRO/GSO series ("net: hsr: fix
-GRO/GSO super-packet handling", currently at v3,
-https://lore.kernel.org/all/20260731090224.18-1-xiexinet@gmail.com/):
-both series touch net/hsr/hsr_forward.c and the HSR selftest
-Makefile; they verify as independent - full series applied in both
-orders on current net (and the v2 selftest Makefile entry merges
-with GRO's at their respective sorted positions); no textual or
-semantic dependency.
-
-Apply note: on net the series applies cleanly with plain git am. On
-net-next, which already contains hsr_prp_redbox.sh in the HSR
-selftest Makefile, the Makefile hunk of patch 3 needs git am's
-three-way fallback (git am -3); the automatic merge inserts
-hsr_shared_mutation.sh at its sorted position and the merged result
-passes the upstream Makefile format validation.
-
-Validation:
-
-- both shared-skb mutation tests: the frozen v2 script (SHA-256
-  9096d2c9050b052bc0355bce969fdea248382c90d92103f17b5e3cc32102a852),
-  which differs from v1 only by the behavior-preserving CI edits
-  listed in the changelog, failed on the base kernel and passed on the
-  patched kernel
-- independently reproduced and tagged on the v1 thread by Ali Ahmet
-  Memis (Tested-by on the series, Reviewed-by on both code patches)
-
-Changelog:
-
-v1 -> v2 (patches 1/3 and 2/3 C payloads and technical descriptions
-unchanged; identical patch-ids):
-- carried trailers from the v1 thread: Reviewed-by and Tested-by of
-  Ali Ahmet Memis <ali@iusegentoo.com> on both code patches;
-- patch 3/3 selftest CI fixes only (no behavior change):
-  - two SC2181 rewrites to direct exit-code checks,
-  - register the new test at its sorted TEST_PROGS position,
-  - rewrap the twelve >80-column lines reported by NIPA checkpatch;
-- Cc the hsr_forward.c area authors and the v1 reviewer.
-
-Previous postings (newest first):
-v1: https://lore.kernel.org/all/20260728143604.26-1-xiexinet@gmail.com/
-
-Xin Xie (3):
-  net: hsr: privatize interlink-bound skbs before address mutation
-  net: hsr: clone before updating path and LAN IDs in tagged frames
-  selftests: net: hsr: add shared-mutation regression test
-
- net/hsr/hsr_forward.c                         |  51 +++-
- tools/testing/selftests/net/hsr/Makefile      |   1 +
- .../selftests/net/hsr/hsr_shared_mutation.sh  | 223 ++++++++++++++++++
- 3 files changed, 270 insertions(+), 5 deletions(-)
- create mode 100755 tools/testing/selftests/net/hsr/hsr_shared_mutation.sh
-
-
-base-commit: 2195424c3da2ef1829a63b807e3a900a90e57d85
+diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+index 0774981a65c1..67aaf5a8622b 100644
+--- a/net/hsr/hsr_forward.c
++++ b/net/hsr/hsr_forward.c
+@@ -420,6 +420,22 @@ static void hsr_deliver_master(struct sk_buff *skb, struct net_device *dev,
+ static int hsr_xmit(struct sk_buff *skb, struct hsr_port *port,
+ 		    struct hsr_frame_info *frame)
+ {
++	/* An interlink-bound skb from get_untagged_frame() can still alias
++	 * another live consumer: for master-originated frames the clone
++	 * shares the original TX skb (which taps or the TX path may still
++	 * hold); for ring frames the master also consumes them when they
++	 * are destined to the local node without being exclusive to it.
++	 * Privatize before any address mutation.
++	 */
++	if (port->type == HSR_PT_INTERLINK &&
++	    (frame->port_rcv->type == HSR_PT_MASTER ||
++	     (frame->is_local_dest && !frame->is_local_exclusive)) &&
++	    skb_cow(skb, 0)) {
++		frame->port_rcv->dev->stats.rx_dropped++;
++		kfree_skb(skb);
++		return NET_XMIT_DROP;
++	}
++
+ 	if (frame->port_rcv->type == HSR_PT_MASTER) {
+ 		hsr_addr_subst_dest(frame->node_src, skb, port);
+ 
 -- 
 2.43.0
 
