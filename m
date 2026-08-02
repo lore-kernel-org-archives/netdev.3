@@ -1,122 +1,221 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D462931C0
-	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 12:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FEE37646A
+	for <netdev@vger.kernel.org>; Sun,  2 Aug 2026 13:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785674663; cv=none; b=iL6lPzN0dMv15XkqkyJM+g6aC9gqsXMETJcfRnoeeR6Fa/ryFSkIkuEQtQBrOyxMWKfgpiQTnVGO5MUtTWRzLdxMRm7MEGISqzrwFnscOdv7PQeifZ09pVMCa4VgPM3SBqCo+bSWl/k2D8unXJjf8fJujUqhr7hypOvBxu5tigI=
+	t=1785675703; cv=none; b=MoYizjDewMxKBqfR8UnWgijOnd+UX6zSMHNRo1Y/NumFK8WF7ZncRJTDx7bw23qFH+9dURu+bKULI2N0IQ3r7BEpzOGxVrH636K1wl0pwcxPriDadwbA/l79CJZJXZz6bmjubThbp+f0EHP/QuOeMWz3VJd3lI7l4Ws8JJ04VwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785674663; c=relaxed/simple;
-	bh=XcszAyQS9veKAD+wJnA86waCq2jX238QhXL7VZfqklI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=eGNH45jf5fwhWW8pJAey9B4/NonCvs1s6tWtk1fFYwFf8p7wJ6GUU8Th//vYyXPHkTGC1VC6wvMqdTZ1sp+ffj2iGl2Mbw0MPmDO22qlnDown+P4eBv0OU73rxSQ7cVvxwXYuGTPYpReg+Yxf5uwIOlOb4QsXzacn79SqgFXiQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X5Y5TjIv; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785675703; c=relaxed/simple;
+	bh=D7SDYRd//qEp8Zuv8R8oqY3XIrvPozA6HvQnSnYh2Vc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yb1Z68ETp4ZwD7reUQa5InRzWDnp0kmv2+mwxJS8DjeYK9++ZnS7wihxOiDn7m6o7DWibiehhk/esIemzETt5lGWH1VU/zeoMQ/od9OnnnBQM9nVQmCyyeIRs/xSttDICKrvelIdjfrMnRk7DQxaPtxPD/2fqbyMNsLiGuqlOfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=qqVAXJxG; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X5Y5TjIv"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84e04df8c46so2434786b3a.2
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 05:44:22 -0700 (PDT)
+	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="qqVAXJxG"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47df43bfb07so969729f8f.1
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 06:01:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785674661; x=1786279461; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YEzxytw4Rn+F+IHbaXW6sovp8fEtrN7cu+sf8aGga40=;
-        b=X5Y5TjIvxy7q+AYyeJk1d5fUTgVgfGXhhHHm3z1esTlAPjR9FSmaEBxUpQQN7EsT7I
-         tBa5bdA7inDbwV+7gY73l8mtJVuf1QlSCCYkj8U23nHdaHP7joFvKb4WlDDUuB/FjuGe
-         BeoM+I9/L2rezwsvC2myNIvus7DGcPI0L8b0CKesPu0TS+abzRHxxpBLbAoK6wlJ4N06
-         qerdBxeShJfsMloMo17OvQ3jKn049HLwRQeieiLXmsf/hajeaqf32VdHGtm2zC31Wa5c
-         oeI/gTK1h0lT54NpCIsfjo880pc6YWXKUH9Nrp0NeHwB8fXAX44tSawwkqOORsoHGclc
-         iYxg==
+        d=0sec.ai; s=google; t=1785675700; x=1786280500; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zTOztzpZ5vklCGPe6uHGZOcBDSWwpb+ZPeyegaSuA3E=;
+        b=qqVAXJxGlyHLhhbhKLOQK+rloA94A51QHYcQwXdvJtC6sPywWrGPC0haSdB7QDoJEW
+         84+/z3uBwDYkuJJRCmwvWuy0mz0wp8xMzBpR9eLv1sbKFuPZIpMapNjy0yHN60VQp6Xb
+         0dDHrDuioGJmFVl9d1j6OOHIdQdyxjuR4wCuC8GWs/NXELt01APovoHIcJkTVAJSHFqi
+         havtQLCM6SaiLArZnxt/xheyv6SDpRScTok8L7MCkDy2WfC1qtlBJhsZeAffRBafzHq4
+         TrD5IGTfMrxqxHjxsq1uFZqlmQpFil78RT+9SAk4Qg2sfgrCJTE5fxtEBKknmOzPvEPk
+         6Skg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785674661; x=1786279461;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1785675700; x=1786280500;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=YEzxytw4Rn+F+IHbaXW6sovp8fEtrN7cu+sf8aGga40=;
-        b=ILJb/lHihiF6aT41DeE1yt9uMvp59KGjTo17/7ZYvuFr270+T2eiG+T4k4JGKk2FJj
-         BXItDcDlQ4Rbm9TjWAPo5Z6Mzsih2Uv1DaR7ub97gBvKE/fn+WmMBmHPZeMM1IpSaaxy
-         HZR9XztAaGKWfRZN3EqQ2SytmMl4pWbLRUAObD04ROzGxB0pbWcvjAk0A5y8v47Z2HZf
-         4cPsJpOcf43chfU3ShyjcCwCrWGPAS4415aIPgt1rqMcSnUeEr/CbDiiBefPPiyzGWFY
-         K0f2EMI6OuYYwR2r9cT7xWlqQZS5J64F725wY63Ry8NDmSV2kbjyp/m0ojlveH8Sun+e
-         80eQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqbMD5GddXfSY2Z5g/xJEhLceTaBQ52MUs1UdkecZuAdCg4fTvWkKlwB7o8ZcAgG0AOluR2Q04=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMqrmzonJEJ0tPmId70HyG9e3x9OfRqzF7zEWI2JSaO7nO6l5q
-	+mb15emi9EICSolHdcGMGHJax2CXMps3RmCl2+7x7A9NRJWloCRLUFAn
-X-Gm-Gg: AR+sD1331qR/UPgnfaZBJCkf6+rEHsWWtfLau9pSjE0f4Qtnh3HVioNCMQcORXbHLgS
-	UxvfU2HZ9SrW+pEEbIm+FCRYQ2e09JGIv6isCzOgovMlvjeUJTiHL9lCF87whtjDlmfV5pR5Yye
-	aZ/8iFTZtd2HqoDV5AwAr53sX4qcbSOFLZUWFZfQDn8SZS5eXn6f68+xKfopueMoLdMxB5Q+mRN
-	Qcj4c6ixnXi55W683wn4zUbe6QbX4qkEH2PaUZPx9OrgwUT1EKC6FzttluaDr9ffmgXSWTDi4xC
-	JKGtEoSiKjewuj8dkVh9CAFBcTcQBo4Id54jIOxL5OBoO+OikrP6wvTn+YhBWO7Fex2GosaZe0f
-	sNCy4kp9Bie7Q4aoahR1f6YdFGqUBMTNj3Bw3SD/Mq42HW5QOG5dECu9mvcjSgcy3BBaGyvqrLo
-	fOK1Zv12ZSK9YaJLDloyQ8+HmaK1phpbyAsz8amTWOwYKrxGQRisGsDB5wyChgCgF2Fbhft3bqK
-	nnRheQW8Vjl68Q84AOK8jTJBXr+ed7V0WHZqZNaHVHYu2N0N92cErKUGAKqDr5rrv7Xu7CIQvX+
-	YmNi4kxEPaPcHdYen6/o
-X-Received: by 2002:a05:6a00:812:b0:848:487c:ce05 with SMTP id d2e1a72fcca58-84ee47e4308mr5848339b3a.7.1785674661623;
-        Sun, 02 Aug 2026 05:44:21 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:b123])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe3963da88sm2563070a12.1.2026.08.02.05.44.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Aug 2026 05:44:21 -0700 (PDT)
-Message-ID: <81e18535-e66a-498f-b293-3cb1c090fb9f@gmail.com>
-Date: Sun, 2 Aug 2026 13:44:11 +0100
+        bh=zTOztzpZ5vklCGPe6uHGZOcBDSWwpb+ZPeyegaSuA3E=;
+        b=X9JSotziN5rNOpxe6UxcnKHoggF3AtKj1KpvPCZDR8HFrt4qMNfse0Hu5r0TL4GdYA
+         Bytj+scOtDYK8j2rKpZOk92lxXnhsx+R7JERbtvg9JjIGvAuNpE4ObZURGea+h7xZIiL
+         UwOXFebmk6jC/epBwqf7OtiJiHQxK3AY8SMR2LIf/1ZMNeVHCRz81rmIMrH3hx99uDUg
+         38ECONLYjnOz+sFd8SjCj4LzJr+SxEsqy8us2iMHSKZgTzEvudwBiTg0LE+qzXPJlTUu
+         jBzJUjZyFpsXXtm2jz7c+aXutBQYcinExgU4U3twqRZZTZzSYbK7BRozGh2VxkfOQEX1
+         y3+A==
+X-Forwarded-Encrypted: i=1; AHgh+RrHOXUsrA1HExmezUvbU9bZIdn4hb7Wiaxd6nmBk67eZWP2IQH5cMDYAKVT+7L15NF0Fksf4gQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcIS8Y3vJ0N6BBgUcTxftE5b6n1TqyLLYa9cyqe4ieW7fr7yVE
+	tSJSnAQBDqI0wtcktDec4bhbhM0ARmEVEDGWSNjdkwbaLjkNl0NK8+3Vw3xlDCrHN/kr
+X-Gm-Gg: AR+sD113G3QLkogagv3nGb+vCI1OYGZFN/Q+w+T540cXkGKlpORtEBL/UeQq8oZ3DAr
+	cI4AeFEz4wmMSoMBvwxVSCAFzVMr1sZsiZLu5ws3t1QHY2qF9lIbNMMtX8Rse1vZN5W/k0jbZVi
+	rDVeSu2qUojazWPKoNyXCxcWP6AMqxoqeYCPMg0qRU8UcSYdeyo58x6Hny++aNXpON3qaWb0hPS
+	pxoK15xu3I5srcSrJKfp0OtZHXDDguKUckDTx4siutw5qShsPcTVBYB4h0IIgEC19cSTXqb4Yi2
+	xbSjfSg04dlb1i+9c7AwTPuibYkQfPqtw4tyfsjHy9IPb61A1LATsIWegooxt853Ib8eydVQSy4
+	KF5SsCisL5EMIrI8mvxf3lS0bo37ef49WxQiUSIUtNd2dVv8ZizHWted6m3dnGm4a4mf3nbIT2U
+	YcIiBKFaOhdHWDMAFaFvfHoqrqJ33Kr67aSZlbMA6v0e7Pa6fFWRArocEchEBbTle1kXCZk9yj4
+	coReyg2VjKSaNPCnhlA4I7lchb8cWiqphCJZddSf8lvru4t3v53yTnZwl23t+vDXyXQyV1BXlP/
+	70eDLBg=
+X-Received: by 2002:a05:6000:41ec:b0:474:3b3b:5e5f with SMTP id ffacd0b85a97d-47fd72c4d4dmr14468804f8f.16.1785675699784;
+        Sun, 02 Aug 2026 06:01:39 -0700 (PDT)
+Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.158])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd42d91b3sm25669896f8f.14.2026.08.02.06.01.38
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 02 Aug 2026 06:01:39 -0700 (PDT)
+From: Doruk Tan Ozturk <doruk@0sec.ai>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: xmei5@asu.edu,
+	thomas.karlsson@paneda.se,
+	herbert@gondor.apana.org.au,
+	daniel@iogearbox.net,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] macvlan: require lower-netns admin for shared port settings
+Date: Sun,  2 Aug 2026 15:01:37 +0200
+Message-ID: <20260802130137.98105-1-doruk@0sec.ai>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v1 1/3] net: core: propagate unreadable flag in
- skb_zerocopy
-From: Pavel Begunkov <asml.silence@gmail.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>,
- Bobby Eshleman <bobbyeshleman@gmail.com>, Florian Westphal <fw@strlen.de>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Jiayuan Chen <jiayuan.chen@linux.dev>,
- Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>,
- "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20260801125308.1342897-1-almasrymina@google.com>
- <11a640b6-46b1-44d6-aee6-872107f7f570@gmail.com>
-Content-Language: en-US
-In-Reply-To: <11a640b6-46b1-44d6-aee6-872107f7f570@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/2/26 13:33, Pavel Begunkov wrote:
-> On 8/1/26 13:52, Mina Almasry wrote:
->> When skb_zerocopy() copies devmem payload fragments, it fails to update
->> the target skb's unreadable flag. This causes the target to appear as
->> readable memory.
->>
->> Propagate the unreadable flag if any devmem fragments were copied from
->> the source.
-> 
->  From a quick look, it doesn't seem like the function would work reliably
-> with netmems even with this patch, but that's a different kind of issue
-> we can return to later. Curious, did you hit this in prod?
+struct macvlan_port is per lower device and is shared by every macvlan
+upper on it, including uppers that live in other network namespaces.
+Two of its fields are settable over rtnetlink by any upper on the port:
+port->bc_cutoff, written by IFLA_MACVLAN_BC_CUTOFF, and
+port->bc_queue_len_used, recomputed from IFLA_MACVLAN_BC_QUEUE_LEN.
+(port->flags and port->perm_addr are also rtnetlink-settable, but only
+in passthru mode, which requires port->count == 0 and so cannot be
+reached from a second upper.)
 
-  	skb_shinfo(to)->nr_frags = j;
-  
-+	if (i > 0 && from->unreadable)
-+		to->unreadable = 1;
+rtnetlink checks CAP_NET_ADMIN against the network namespace the
+configured device lives in and nothing else, so once a macvlan has been
+moved into a child network namespace, an administrator of that namespace
+alone reaches macvlan_changelink(), which applies both attributes
+without considering who owns the lower device.
 
-Taking another look, if j != i, it'd also have the mixing problem,
-and that can happen if it hits that head-to-frag copy.
+The create path has the same gap. macvlan_common_newlink() resolves a
+lower device that is itself a macvlan to the real lower device:
 
-if (!skb_frags_readable(from) && j > 0 && len)
-	// goto fault;
+	if (netif_is_macvlan(lowerdev))
+		lowerdev = macvlan_dev_real_dev(lowerdev);
 
-Maybe add sth like this before the frag assignment loop?
+That real device may sit in a network namespace that was never
+capability-checked. The new upper then joins its macvlan_port and runs
+update_port_bc_queue_len() on it, and, when IFLA_MACVLAN_BC_CUTOFF is
+present, update_port_bc_cutoff().
 
+port->bc_cutoff is not a local tuning knob. update_port_bc_cutoff()
+recomputes port->bc_filter, which macvlan_handle_frame() tests to decide
+whether a multicast frame is deferred to the port broadcast work queue
+or flooded inline from the RX softirq, and a negative cutoff clears
+bc_filter outright. A namespace that administers none of the other
+uppers can therefore change how all of them receive multicast.
+
+Reproduced on 6.8 with a dummy lower device and two macvlan uppers, one
+left in the initial namespace and one moved into a child user and
+network namespace. From the child, both a changelink and a nested
+newlink carrying IFLA_MACVLAN_BC_CUTOFF were accepted, and the value
+read back on the initial-namespace sibling followed them, changing from
+1 to -7 and then to -42.
+
+Require CAP_NET_ADMIN in the lower device network namespace before
+applying a shared port setting or creating a macvlan on a flattened
+lower device. rtnl_dev_link_net_capable() short-circuits when the lower
+device shares the macvlan network namespace, so an ordinary
+single-namespace configuration is unaffected, and per-upper settings
+such as mode and flags stay available to an administrator of the
+macvlan's own namespace. This is the model ipvlan has used since
+commit 7cc9f7003a96 ("ipvlan: disallow userns cap_net_admin to change
+global mode/flags").
+
+Found by 0sec automated security-research tooling (https://0sec.ai).
+
+The newlink gate is unconditional rather than keyed on a BC attribute
+being present, because joining another namespace's macvlan_port is
+itself a mutation of shared state; ipvlan gates ipvlan_link_new() the
+same way.
+
+IFLA_MACVLAN_BC_QUEUE_LEN is gated here as well as by any magnitude
+check, because the two address different things: a magnitude check
+bounds how large a value any caller may request, while this bounds who
+may write the shared port at all. update_port_bc_queue_len() takes the
+maximum across uppers, so a cross-namespace lowering has no security
+effect and this over-rejects it; that is accepted in exchange for one
+rule covering every writer of the shared struct.
+
+Fixes: d4bff72c8401 ("macvlan: Support for high multicast packet rate")
+Fixes: 954d1fa1ac93 ("macvlan: Add netlink attribute for broadcast cutoff")
+Cc: stable@vger.kernel.org
+Assisted-by: 0sec:multi-model
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+---
+v2:
+ - Drop the Reported-by: and Closes: naming Xiang Mei. Xiang confirmed
+   this is a real issue but a different bug from the broadcast-backlog
+   OOM reported in
+   https://lore.kernel.org/r/20260706212556.3199234-1-xmei5@asu.edu ,
+   and demonstrated it by reproducing that OOM on a kernel carrying v1.
+   The two differ in who the caller is: there the caller administers
+   everything it uses, here it does not administer the lower device.
+   Thanks to Xiang for separating them. Bounding the backlog is a
+   separate fix, and this patch neither replaces nor competes with it.
+ - Rewrite the commit message around what this patch alone covers,
+   cross-namespace mutation of shared macvlan_port state, with
+   IFLA_MACVLAN_BC_CUTOFF and the nested-newlink path as the parts
+   nothing else addresses.
+ - Add a second Fixes: tag for the commit that introduced
+   IFLA_MACVLAN_BC_CUTOFF.
+ - Add extack messages on both rejections.
+ - Add the cross-namespace bc_cutoff reproduction described above.
+
+The permission check itself is unchanged from v1.
+
+v1: https://lore.kernel.org/netdev/20260726125447.32244-1-doruk@0sec.ai/
+
+ drivers/net/macvlan.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index c40fa331836bb..19c599b676076 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -1479,8 +1479,14 @@ int macvlan_common_newlink(struct net_device *dev,
+ 	/* When creating macvlans or macvtaps on top of other macvlans - use
+ 	 * the real device as the lowerdev.
+ 	 */
+-	if (netif_is_macvlan(lowerdev))
++	if (netif_is_macvlan(lowerdev)) {
+ 		lowerdev = macvlan_dev_real_dev(lowerdev);
++		if (!rtnl_dev_link_net_capable(dev, dev_net(lowerdev))) {
++			NL_SET_ERR_MSG(extack,
++				       "Creating a macvlan on a lower device in another network namespace requires CAP_NET_ADMIN in that namespace");
++			return -EPERM;
++		}
++	}
+ 
+ 	if (!tb[IFLA_MTU])
+ 		dev->mtu = lowerdev->mtu;
+@@ -1619,6 +1625,14 @@ static int macvlan_changelink(struct net_device *dev,
+ 	enum macvlan_macaddr_mode macmode;
+ 	int ret;
+ 
++	if (data &&
++	    (data[IFLA_MACVLAN_BC_QUEUE_LEN] || data[IFLA_MACVLAN_BC_CUTOFF]) &&
++	    !rtnl_dev_link_net_capable(dev, dev_net(vlan->lowerdev))) {
++		NL_SET_ERR_MSG(extack,
++			       "Changing shared macvlan port settings requires CAP_NET_ADMIN in the lower device network namespace");
++		return -EPERM;
++	}
++
+ 	/* Validate mode, but don't set yet: setting flags may fail. */
+ 	if (data && data[IFLA_MACVLAN_MODE]) {
+ 		set_mode = true;
 -- 
-Pavel Begunkov
+2.43.0
 
