@@ -1,176 +1,202 @@
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D57345CA1
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785773356; cv=pass; b=AWoAyE5w4LWdEhG0geLPNtB/zcPHbkElu31AQb5C703bzZawhO4MXm46lj+Q90h/HfZlTsExKnJkcb/+WyJJ6IXm7Q3m8RVnAV4b3rDu1uYn3CN9VMqm8PK77+iTxZP1WQSQDycOX7sLJwySeWwIEm5ViTveHpmLfYxYWLOxQak=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785773356; c=relaxed/simple;
-	bh=WkleEX41KDLCmTlkLZWoFZUTVoGZM+SKri5I4gXE6so=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=acMQ2/1Q0ga0IMoI9Pt1b+x512texww8J/bgBqeEh3yWS2HNcJLi6HZFGTCbNshmr+8Y5PsKOI/GKLZeFu9Rj5Ka9ej/vlaF5gqyZWB5ZkpCw1vpcKHpgKGmz/3izGdq/jYpRfhXtLzIomYCzsnQaF/+Dx6p9bOwZbdZdfAI2EE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R6sr13ph; arc=pass smtp.client-ip=209.85.217.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09953361948
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785773665; cv=none; b=RTlqxj7TRC1mqDW3JXoAp5PrNLrtM6sugs6/bpYkOmQVX25dsTx58F2Kn+s3mBDv4IE8ONUVv9N3Tn9dpUQiudC9lcx0J0dveBYtAvWhi183+iRsuQqpJOdwJ0193BrDSNGi2jp9lLKF9r1xETfHLKRMg9soyHLxrt4uDyXYgUg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785773665; c=relaxed/simple;
+	bh=05zUD1DqX//LGId/b0JLgygyPbfAgN6l4FTF+WdnVNg=;
+	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:In-Reply-To:
+	 References:MIME-Version; b=m8AlyWMGXBNK4/4Exe/HfnrjmtOA69A8VT3IJZtDZysZIZtYINBMLurUn1zfGNyTBW0YoY9olb/yw0chKBVNZAc7DLHg1sMCefdep5QDt6fejS9VfRwBmCBXW8d3tMAtN6ecC1zWHS4hhhl0HBTqEqvSionreYTFL/ULsVB1DqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LiKMYZvj; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R6sr13ph"
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-74ab6c88052so1150493137.2
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 09:09:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785773354; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nTw/Tnh4cjrGwf3Qp+RS8KFI/zVLBQ6/Cwrt+9jGR+ajXGzc20kzQoFaG82uf13QhE
-         XNjU3h2o1kJN0TAxwnCgn0EvFrjarw/RQixfPBzpJq5kd639hri3EzM5U6VBLRYT0fL+
-         XijRroQ5Hd3aGeMmN5DJ03AxWkYZZsufB9+VgZ0iWiBl2HpGcRZ8r1v5i390kA5czB8y
-         pIn/IAHeEMmcWiat0EwpDXCmFSxjB0o8EeCVlp8SLNBCJSylw6Z3X5RibMLhwKvqA71E
-         thn+r9k8KCnBGVcmNX1vuuuXxK7Xk3gMUooMX2hTqeOXJLOfpeV7IDCk+9yE2fTbIVmK
-         7EvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kPUuUdXNlj9HGEt2H/gq9i9+yKMP/RfrBRw+r1bpfmE=;
-        fh=J1adolm2ObY5jwVjycIYR0+K5fzRt2NnIscY8CnDyfI=;
-        b=FHHx5QX/O3pLxeCchDGqo9EA/E2MP6wLW0Whs4IsiokT6SOF9cQYXR+JsCxeRgj09i
-         7vB35Yf24UDVBMljBXB+pYjjdJRBjXu+Wq82IhNy5O8eMIA/H4YEdgZQXyf40gBN4nu1
-         OW+ojjGqHGNrN+OiwJMNgujIfoaGDMf09E7FhSRgs4dPn4ZmSjtpV8RSfhPAoojHo0v+
-         8kOtNQQM9C3y+LK0GV+la/uu3wKqJBq2EegBEgie0C9v/wmIa3e3FvrwA4qZszpUB3za
-         s7lDKX6BvB3yYigswJaEKMnbMLoiqAn92L2mXOycS+PrHzlxGSmgI/kNlwxLOj1123k2
-         2rCw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785773354; x=1786378154; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kPUuUdXNlj9HGEt2H/gq9i9+yKMP/RfrBRw+r1bpfmE=;
-        b=R6sr13phygwg8sm4AgcW/fH3c9JPj5LLySV4hsZjUglHapiB8edOJHzLXh3YrVMV07
-         pWw9I2WDMlGvDN2EHiDUp7NEhqTKFn0HMZR4+6Lgm0z49UM2MTd3CHsk3sOp25lpI/dC
-         wYQtVcr1VH2SX8EwM/oNYlvSPmtWLef6SfakCVllq2Jy133EpHbS/UO9AfczCD4W8ime
-         E0kDhxNWkz8PXx6Ds790P+LR9oKuoTx65JlmT8JrZ8ARJsqrU5Iy90f/sGvwnQIlBiW2
-         myqHA1yurRQblMHLOdXW26XZQynCIMYaBICyyXyrsqH3zfvp0bq6LxbSlGNozc+Uypum
-         V9Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785773354; x=1786378154;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kPUuUdXNlj9HGEt2H/gq9i9+yKMP/RfrBRw+r1bpfmE=;
-        b=Hg2AwFDjwYVRqjs9uEo2RA7NtrfFdJtxHaojiOKplv1eZx2/wodoyiroiEoZSwsvmA
-         UdA7PwcCY3JaAfOCcYHS05UpkndNYbjUKsREALQaZXw621Wkva6tyUMTR/qiWR8f6FPP
-         PXWOEIDJH4oTJxx8OMIxv0OPh6W1Af6JZqj8/AdiaZZD6Fh8xEL4GZ78gid03U1eOxWi
-         mrEzlfedwTilFRc8PhnC7i99N19ryTrT+waIz2fmEO/pVv1WypxNgWzTl9kbTZGL1Xfc
-         3phRiTYUFraoX8GejvUujHTvgXKOpgizZEHBb+lukpkWlnE6+awGYsPZhM/fNFto6BJB
-         XcAw==
-X-Forwarded-Encrypted: i=1; AHgh+Rrbb8VbzzINcMlCGuMRaWxjWKS6tekbgR68rEnQ2uO2dSC4ZUIX1bXAbXRS6rVVySyf6agsdfY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywu6IljPqX+SUaNU7mqLlEEE3H2x3ZI2pXD0+IHgjYZSvAQqO9m
-	tpPkkxRPnSKY5mD+S1AioC5NN9k7j1b7D35hIe8FKDCDFGraii4LbLB3+duTNxD4NAeCPxjS/mk
-	w8eb+HNWIqVdYEKAsfwsOxsbbnT4trNQ=
-X-Gm-Gg: AR+sD13QGYln1bNo5EhStiVvUBMWGj3Jtxg0hgYTnKnLJ/6p8dbaxSAMZPn9F3nprVU
-	0UAmr/gIwGjmvb21ZFvUsbEbuB0TLA9QYZOwerjVi3k2OG2Zd1zFLNrgQc6YwJy86P6Xbm0GnC3
-	DfjDI4CJvfSJp/pcWIB7VaHW4eJtItyQ3Y5Edz2aDdZyuoz013h5nttR0hrCpSw+hXUbpoEoFkH
-	AnVMNr+hTMyECU304l55MRmZhtnLEJTOgdwtLUfTv+wF9JIKGP2H5Fv4ClHGCQWg7Y/C+G+qOJu
-	D5Ibsqp/BdPRyHn2V7RE2WfpbDN5hBftHe9atUmjPgTeaunJiTQdujr5T17OLN/c7Z1Q7U6Uw9R
-	kghTblJMRVlTxRv/6ODIHjl4+DJhgTC6lVNs4LKDkzFS9k12RJmM7dmlcZs7vUmqSCB2XVlSXRz
-	bWWiyoyRzhAR4KE1v/rn6eUaaOgdXPHYBhR+Zy
-X-Received: by 2002:a05:6102:15a3:b0:738:be73:55e0 with SMTP id
- ada2fe7eead31-75b237677ffmr7059647137.12.1785773353603; Mon, 03 Aug 2026
- 09:09:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LiKMYZvj"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id DAA371A13C3;
+	Mon,  3 Aug 2026 16:14:16 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AAE876029B;
+	Mon,  3 Aug 2026 16:14:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7EAA011C31208;
+	Mon,  3 Aug 2026 18:14:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785773651; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Y4JgK5NUlRyN3S8WjIMJEXYYt8qj05KpzjPaRCWnPYU=;
+	b=LiKMYZvjePZJiaia2zjWJq5QWY3oEIVDa8mIEG2MUkMnAX84kEraHwqPghC3CUZH6n7lco
+	ndrs1B7s9cz+vBpNZIPIN+Rpdor7lZMIkqCbOGkQ/3aYvF4qS/40x3Dvunh8ViLxXea/b9
+	Up9vm1m/PcljBzN1z1IaZMPvFa7ykfyolukW4zUUxgED8QY6lC7bT/JRGHBNg/asQljNVx
+	7NWUaHHDyd4X22zUk+/kgRAMXlIZeTmnCmpNC9Q5CC9rVr5COkK3yJEeb+dd0EOlvXyUu2
+	d0vuBzM+sICj2Zmk9pv4PM0xlZKG/N4e3CZaxgNFODwJIn/RocSoyBGepRJrtA==
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 03 Aug 2026 18:14:06 +0200
+Message-Id: <DKFFXBM6VKXZ.22PW13MLAXSF@bootlin.com>
+Subject: Re: [PATCH net-next v6 13/16] net: macb: move printk() calls out of
+ bp->lock critical section
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Nicolas
+ Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
+ <claudiu.beznea@tuxon.dev>, "Paolo Valerio" <pvalerio@redhat.com>, "Nicolai
+ Buchwitz" <nb@tipi-net.de>, "Vladimir Kondratiev"
+ <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
+ <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
+ <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
+ "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
+ <maxime.chevallier@bootlin.com>
+To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, "Conor Dooley"
+ <conor.dooley@microchip.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Richard Cochran" <richardcochran@gmail.com>, "Russell King"
+ <linux@armlinux.org.uk>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+In-Reply-To: <20260731-macb-context-v6-13-49d5a1439d48@bootlin.com>
+References: <20260731-macb-context-v6-13-49d5a1439d48@bootlin.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <20260802-submit-acx00-of-dynamic-v1-v1-10-0a53cd9e21cc@gmail.com> <05b1e6a2-725e-4b8e-8629-249637bbcb81@lunn.ch>
-In-Reply-To: <05b1e6a2-725e-4b8e-8629-249637bbcb81@lunn.ch>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Mon, 3 Aug 2026 10:09:01 -0600
-X-Gm-Features: AUfX_mx9mt9dbVrMmCFnN7qHq2KVIXtx4IDcN-1su1pyV_2ANjujEXVMup0YQWo
-Message-ID: <CADvTj4o0JdjoO+FC4pO=qnjEQ8MRyzQdKp2Hxy9NsPU-gym5OQ@mail.gmail.com>
-Subject: Re: [PATCH 10/21] net: phy: add X-Powers AC200 EPHY control driver
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Andre Przywara <andre.przywara@arm.com>, 
-	Richard Genoud <richard.genoud@bootlin.com>, Maxime Ripard <mripard@kernel.org>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-TUID: rsbB8rKmzlrJ
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Aug 3, 2026 at 7:51=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > +static int
-> > +ac200_ephy_ctl_set_led_outputs(struct acx00_ephy_control *control,
-> > +                            unsigned long outputs)
-> > +{
-> > +}
->
-> > +static int
-> > +ac200_ephy_ctl_set_led_polarity(struct acx00_ephy_control *control,
-> > +                             bool active_low)
-> > +{
-> > +}
->
-> I've not looked into the details, but these look like pinmux. Does
-> this I2C device have a GPIO controller? Can these pins be used for
-> other things than LEDs? Maybe you should be implementing a GPIO and
-> pinmux driver. The Ethernet PHY driver can then just select the
-> correct pinmux configuration.
+Replying to net sashiko
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260731-macb-context-v=
+6-0-49d5a1439d48%40bootlin.com
 
-These do not appear to be GPIO or muxable pins. The AC200
-documentation describes them as three dedicated EPHY LED
-outputs: link/activity, speed, and duplex. The bits in SYS_EPHY_CTL1
-enable those output pads, while EPHY_CTL provides their shared
-polarity setting. I have not found any documented GPIO data
-registers or alternative functions for these pins.
+> commit 99f5236ffcf1506bce8a08773b0456e50c57986e
+> Author: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
+>
+> net: macb: move printk() calls out of bp->lock critical section
+>
+> The two netdev_err() calls in macb_tx_error_task() are deferred until aft=
+er
+> the spin_unlock_irqrestore(&bp->lock, flags), using the existing
+> halt_timeout flag plus a new buggy_driver flag. The stated goal is to
+> guarantee that netpoll can never be entered while bp->lock is held.
+>
+> > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/eth=
+ernet/cadence/macb_main.c
+> > index 987fafb2bf40d..65d5ff8a5e230 100644
+> > --- a/drivers/net/ethernet/cadence/macb_main.c
+> > +++ b/drivers/net/ethernet/cadence/macb_main.c
+> > @@ -1358,9 +1358,6 @@ static void macb_tx_error_task(struct work_struct=
+ *work)
+> >  			 * since it's the only one written back by the hardware
+> >  			 */
+> >  			if (!(ctrl & MACB_BIT(TX_BUF_EXHAUSTED))) {
+> > -				netdev_vdbg(bp->netdev, "txerr skb %u (data %p) TX complete\n",
+> > -					    macb_tx_ring_wrap(ctx, tail),
+> > -					    skb->data);
+> >  				bp->netdev->stats.tx_packets++;
+> >  				queue->stats.tx_packets++;
+> >  				packets++;
+>
+> [Severity: Low]
+> [Finding: main-1-1]
+> [Sources: opus-5]
+> This isn't a bug, but the commit message only describes deferring the
+> netdev_err() calls, while this hunk deletes the per-descriptor
+> netdev_vdbg() trace outright rather than moving it. Its arguments are
+> per-descriptor (macb_tx_ring_wrap(ctx, tail) and skb->data) and cannot be
+> reproduced after the loop, so VERBOSE_DEBUG builds lose that TX error
+> recovery trace. Could the commit message mention this removal?
 
-Therefore, implementing a GPIO controller would expose capabilities
-the hardware does not have, and a pinmux driver would only provide
-a single fixed function. The callbacks exist because the LED function
-belongs to the PHY, while the pad-enable and polarity registers are
-reached through the AC200 I2C regmap rather than the PHY=E2=80=99s MDIO
-registers.
+See below.
 
 >
-> > +static int ac200_ephy_ctl_power_off_locked(struct ac200_ephy_ctl *priv=
-)
-> > +{
-> > +}
+> > @@ -1374,8 +1371,7 @@ static void macb_tx_error_task(struct work_struct=
+ *work)
+> >  			 * those. Statistics are updated by hardware.
+> >  			 */
+> >  			if (ctrl & MACB_BIT(TX_BUF_EXHAUSTED))
+> > -				netdev_err(bp->netdev,
+> > -					   "BUG: TX buffers exhausted mid-frame\n");
+> > +				buggy_driver =3D true;
+> > =20
+> >  			desc->ctrl =3D ctrl | MACB_BIT(TX_USED);
+> >  		}
+>
+> [Severity: Low]
+> [Finding: main-1-1]
+> [Sources: opus-5]
+> Same finding as above: this also converts a per-descriptor message into o=
+ne
+> aggregated message per invocation, so the number of affected descriptors =
+is
+> no longer visible. Worth a line in the commit message as well?
+
+Yes! Mentioned in cover letter but not enough in commit message.
+
+> > @@ -1412,6 +1408,13 @@ static void macb_tx_error_task(struct work_struc=
+t *work)
+> >  	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
+> > =20
+> >  	spin_unlock_irqrestore(&bp->lock, flags);
 > > +
-> > +static int ac200_ephy_ctl_power_off(struct acx00_ephy_control *control=
-)
-> > +{
->
-> > +}
+> > +	if (halt_timeout)
+> > +		netdev_err(bp->netdev, "BUG: halt tx timed out, we ignored it\n");
 > > +
-> > +static int ac200_ephy_ctl_power_on(struct acx00_ephy_control *control,
-> > +                                unsigned int phy_addr)
-> > +{
-> > +}
+> > +	if (buggy_driver)
+> > +		netdev_err(bp->netdev, "BUG: TX buffers exhausted mid-frame\n");
+> > +
+> >  	napi_enable(&queue->napi_tx);
+> >  }
 >
-> These look like a regulator? The phylib core has support for
-> regulators.
-
-The external supplies are already represented as regulators. These callback=
-s
-do more than enable a supply: they sequence the package clock, reset and
-shutdown controls, then program the PHY address, calibration and interface
-state required before the normal Clause 22 endpoint becomes usable.
-
-> Maybe take a step back and look at the overall architecture, and how
-> Linux can represent these blocks.
+> [Severity: High]
+> [Finding: main-1-0]
+> [Sources: opus-5]
+> The commit message says the goal is "to ensure we can never netpoll under
+> bp->lock's reign". Is that invariant actually established, given the
+> netdev_err() still present in macb_interrupt_misc()?
 >
->         Andrew
+> 	if (status & MACB_BIT(HRESP)) {
+> 		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
+> 		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
+> 		macb_queue_isr_clear(bp, queue, MACB_BIT(HRESP));
+> 	}
+>
+> macb_interrupt() holds the lock across the whole status loop, including t=
+hat
+> call:
+>
+> 	spin_lock(&bp->lock);
+> 	while (status) {
+> 		...
+> 		if (unlikely(status & MACB_INT_MISC_FLAGS))
+> 			if (macb_interrupt_misc(queue, status))
+> 				break;
+> 		status =3D queue_readl(queue, ISR);
+> 	}
+> 	spin_unlock(&bp->lock);
+>
+> [...]
+
+Argh, yes. I had seen this printk() following the last review iteration
+but I couldn't think of a way to land in the interrupt handler while
+netpoll was doing its job. But actually it's the other way around: we
+might be in the IRQ handler and call our printk that triggers netpoll
+mode, re-entering into macb_interrupt_misc().
+
+Let's drop that netdev_err() in macb_interrupt_misc(). I've checked
+again, it's the only non-debug printk I could find potentially in a
+bp->lock section.
+
+If you have debug prints active AND you land in this race, you have your
+hands in the engine anyway. This isn't hurting any real driver user. So
+I explicitely ignore them.
+
+(Note: I will re-add the netdev_vdbg() in macb_tx_error_task().)
+
+Thanks,
+
+--=20
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
