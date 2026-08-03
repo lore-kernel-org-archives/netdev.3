@@ -1,125 +1,126 @@
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7606305662
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 06:51:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C16E39CCF0;
+	Mon,  3 Aug 2026 07:00:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785739922; cv=none; b=NsocsF04r5G8HsepMoTkxfbtwgZD15p4oGmsfRXiesGctzIYYhV/nKh0E8Da9737uk5EGNFvpLZvZBNlpKwCNp9+7F3vrKmIUieOkbiv+MSusiudaMf8y8rFydS8q43uD+T59tbOvvgVgSBYlW4aE785gW+54kwb88WGgrgkKFc=
+	t=1785740453; cv=none; b=YglCCDcb8W/O/E81itMerpj/gDsjgtRIdkYnABjL7Snob/hYQI6xamcs1vPgxs8urqutvWtx5ZJd6JnuE6KYUE/amR0x3qCa+NV9pc7n70dKtx639paevUTjpSDqryJ03f6bE+O76hG9IufTCIpdkt69xVpLmXT+RlYTzF2lnRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785739922; c=relaxed/simple;
-	bh=EAHW5pPFzgIgGV0kJ7gY4NqFSH5cYtlM7VTmL2y/W2s=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=eMP0mR0OxOlxA9Nt8KcgFagW4QroapAPA6Jr771/r29jJ0vPzPsdIDNhwPd/aVHAzb54fvKF0Xq5Cs8I+pCJVfxU0lZghYUIPjEDspXEECrllCV5JxCfxrfSzbcOAUG/ZVzSrzfEyEHbHxipKiMU81ns2I+MD+GthqexTFe7EgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.92.39.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: esmtpsz19t1785739857t71ce3514
-X-QQ-Originating-IP: R+9mc1hBE4LlDdnxqDWrpEtnDrNqxZ3iNope8Q99NKc=
-Received: from smtpclient.apple ( [122.235.139.83])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 03 Aug 2026 14:50:55 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 16887319841127991852
-EX-QQ-RecipientCnt: 10
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1785740453; c=relaxed/simple;
+	bh=i9qxjczYBRKPFMbdEg2F+nl3jGUbygT/ra3t8nb+SDE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tgVNd6VNiP0qsO9qLoEKmKs661iH7X4MyfzHWaiFOJPeo/ghr15q5AhqemznP8SWrpNj0JhG/LlMIhom6/8O9TAE0qcMZniIfQlf441iyxF3WMgjODgOIoLow01+Lp6gSJXprphEKiufq4O/5T7vThT1Nbfy/Ay8ow7DpR0op6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vc3KiDz+; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vc3KiDz+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACB21F000E9;
+	Mon,  3 Aug 2026 07:00:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785740451;
+	bh=i9qxjczYBRKPFMbdEg2F+nl3jGUbygT/ra3t8nb+SDE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Vc3KiDz+kOPho8ipDObQbJnd+sfhPt1yM4VAlgpMkh4am7UlnaTS/ns4G0Fxey4eX
+	 cUWpmvh10hEJQUG9dRZiG9qtsDQp5IXibuGF2MB4tGzx2CBodAHqFG9NY6aETr/njE
+	 JO1NahwCREFXXuEDBUHIVbpo0RXNG0KBk4beakpx2KRQocsVv5hrYbGi6Jh+zqGbXk
+	 PpjoVxCbgikTM0F3ZlVnbE3a5aixvU75hgilC+xjUztDT+0ByCS7hrUXJNI573iTB/
+	 UNH5lJ95eeHoQ83VLruPpmSUqxA37imuZ/30QeiC2yHZ8VsAPbbeZZpXVCHa8gBAld
+	 BCwzzg+IO2ueQ==
+Message-ID: <c3171c59-bc83-4be5-beb4-e93bfb4d05a2@kernel.org>
+Date: Mon, 3 Aug 2026 09:00:37 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH net-next 5/5] net: wangxun: add ndo_get_stats64 support
-From: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
-In-Reply-To: <amyfgDYpSwj1cyQf@gmail.com>
-Date: Mon, 3 Aug 2026 14:50:45 +0800
-Cc: netdev@vger.kernel.org,
- jiawenwu@trustnetic.com,
- duanqiangwen@net-swift.com,
- linglingzhang@net-swift.com,
- andrew+netdev@lunn.ch,
- davem@davemloft.net,
- edumazet@google.com,
- kuba@kernel.org,
- pabeni@redhat.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E750E47C-BECC-49FC-9B47-8B942C1A2D5E@net-swift.com>
-References: <20260731074958.19333-1-mengyuanlou@net-swift.com>
- <20260731074958.19333-6-mengyuanlou@net-swift.com>
- <amxh3Ef6FnHNnZQ5@gmail.com>
- <3F8CB138-3F3C-42A2-986E-36E33B0B4F3A@net-swift.com>
- <amyfgDYpSwj1cyQf@gmail.com>
-To: Breno Leitao <leitao@debian.org>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: MTDLVpTOglk4b0NwE/TYXhXSRPKjcvpNguVzW9HJ+3Ny9GOjl+MjHqTn
-	lQBajG+1VuNVGn7k0J3VYPkg0xJqudZQVTYntpbPcyHbZ3hBCxpPKJvOcp0XjA14fF9682O
-	Wu2JbhxE7R0Hb/ydnt2RBgIq4iM/S0ciypqLQ6BNn0qX2Cz/67SiE0inaYBHr+8t+P/XCDz
-	7acAaRQ1G6tJGh+gueaEhx4Tt1+R4LtpGwxGraoZgadq7RKmMTd2zDJfzcLQDfM3PHiCKH9
-	3rt8taODbpWyq9ozvLBPaSYTSfti6t6xFpd+jAUma7JGoTqC1huX4p63wSPOrzaDmOKu6Cm
-	GwvnZfKSrSPSR3y9+cnJ9U/a/7KzXb6PMDvNA68mojiMAaVQ9KeKMioLfmO1ybz1qzBEjJt
-	byvX7qiR0NpBH1N/0rhBr/sWIFtnGx95aw58k9+SayuAVRt57GbaoaLd4miuUpE+hvTbCKY
-	K6mcydmSSorkZxPAjhFbJgCKUxRo6Bj0U6trA9D44t6W9s2+XQoSXOpMzIQCvh5Tyu9fAgH
-	AtH7rDvBW+EceDoudTSuXkBBLMxxtqrlpy5i9o3t6aNfbrX4spqZDyNOgzlW7VEn/hOP5eB
-	U1IcgktNfu7q3UobLE7I/9rRIyHueCKJnlWsSOOpORhgbrSDI8vLzY06JVEhWfqRH53fK99
-	rErSuCV7payQRVgbJmUNqrOkzzNdlq5XGeWdtRwJpqbrLWE1jMaJstbLG3HsQJXSMMFbtWd
-	GePQ3Hf8muwBhzFLvMiRCsx65QHZr+TDZIqMeAF/KktXYSDx2KSyH3bYOgj5xt/A/PYj77G
-	zxczvCVKbdDUQpLkvxuSBCtxpKIF+NGzylt6Mx0moLYd7rmrS4z6uIK+03XH7+6mqtrNsSV
-	yOVQzP+jkEqXlV1BG9Gt5s0Tu6BxgJy4ffNAd874uv0xGuhOStzNDkXqqCez2sm4f4OXmIM
-	7bzOzwhAAV7v0JFipsZUfq6Iz+qhvzGTfFR2+ezk9KXxXzVdIQaC6mEYG9I60B8ok9jh1Rl
-	Zcsyfj8DbI8z4to9fxbHUkVlsCB6lJ/YUN9ktvQJ5DNZntQu4i2lAlM9UCC3GBQ7JOKuuF2
-	q4Yi+LtFCbEgNUBkL78iX4x5GdHPGAK6PAqMAcP3otov0kLEfwJ13s=
-X-QQ-XMRINFO: MSVp+SPm3vtS5BuHeOwZxcAyuZQE6F3n+w==
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 21/21] arm64: defconfig: enable X-Powers ACx00 Ethernet
+ support
+To: James Hilliard <james.hilliard1@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Andre Przywara
+ <andre.przywara@arm.com>, Richard Genoud <richard.genoud@bootlin.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Jose Abreu <joabreu@synopsys.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Saravana Kannan <saravanak@kernel.org>,
+ Lee Jones <lee@kernel.org>, Heiko Stuebner <heiko@sntech.de>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
+References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
+ <20260802-submit-acx00-of-dynamic-v1-v1-21-0a53cd9e21cc@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20260802-submit-acx00-of-dynamic-v1-v1-21-0a53cd9e21cc@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+On 03/08/2026 07:14, James Hilliard wrote:
+> Build the H616 PWM clock provider, AC200 MFD, both variant-specific
+
+Use full names. Is it Samsung H616 PWM clock controller?
+
+> EPHY control drivers and the shared link-PHY driver as modules. Enable the
+> netdev LED trigger as a module so DT-described PHY LEDs can use hardware
+> offload.
+
+Why? IOW, which upstream board needs all of these?
 
 
-
-> 2026=E5=B9=B47=E6=9C=8831=E6=97=A5 21:14=EF=BC=8CBreno Leitao =
-<leitao@debian.org> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On Fri, Jul 31, 2026 at 05:41:33PM +0800, mengyuanlou@net-swift.com =
-wrote:
->>=20
->>=20
->>> 2026=E5=B9=B47=E6=9C=8831=E6=97=A5 16:52=EF=BC=8CBreno Leitao =
-<leitao@debian.org> =E5=86=99=E9=81=93=EF=BC=9A
->>>=20
->>> On Fri, Jul 31, 2026 at 03:49:58PM +0800, Mengyuan Lou wrote:
->>>> Expose network statistics for Wangxun VF drivers by registering the
->>>> callback.
->>>>=20
->>>> Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
->>>> ---
->>>> drivers/net/ethernet/wangxun/libwx/wx_lib.c         | 2 ++
->>>> drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c   | 1 +
->>>> drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c | 1 +
->>>> 3 files changed, 4 insertions(+)
->>>>=20
->>>> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c =
-b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
->>>> index ae20733c703d..a4ca01c18c6a 100644
->>>> --- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
->>>> +++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
->>>> @@ -3092,6 +3092,8 @@ void wx_get_stats64(struct net_device =
-*netdev,
->>>> }
->>>>=20
->>>> rcu_read_unlock();
->>>> + if (wx->pdev->is_virtfn)
->>>> + return;
->>>=20
->>> Why you don't want to populate the other entries?
->>=20
->> The hardware does not provide the err counts on the vf.
->=20
-> Right, but hwstats fields will be zero, right?
->=20
-> Does this early return buys us anything?
->=20
-
-You're right. I write the code based on the hardware concept, in fact, =
-this is really unnecessary.
-
+Best regards,
+Krzysztof
