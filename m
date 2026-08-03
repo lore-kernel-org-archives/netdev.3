@@ -1,64 +1,64 @@
 Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F37D41D20F
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 14:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D9741D20C
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 14:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785766699; cv=none; b=RmK19Pv4uGeqfV5TGz0F6VKm/vCg3wkUmHCdluh8ZC7HI95jbMLCKvVjK+Xr6AQcWZqxFWNUWhcDVF8wB2mVUBt4Ig70JnHOVIwFTq0D3B186BwOkpPsf2kfs/2ZYSLG6ohmgubv0nY1rD2gi9/aiS2MZiIo7z4fbZ+uND1fbps=
+	t=1785766703; cv=none; b=e6tGgmn9vkoFYkBpG1mhjtVRheWGWmLmppppj0m5+zYUb6jNba23cTv/qynQtcpzPb6FzHOnJ97SdBqY0fsDGGd8SP4QZbTIx2CKav2SspgB27qAUEtXTxOr/LybkbUzvSWG08ynNXCRdtY6qU+/TYW519jVXhsEEN50npa4Vso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785766699; c=relaxed/simple;
-	bh=MXdYkoJOWU7nHQn0EZ6AYJo6j4YPL0512kkd9ogUwIY=;
+	s=arc-20240116; t=1785766703; c=relaxed/simple;
+	bh=7Rica5RmypV66knB6rG/hTQtNi7fIHz5aUFNX0twg9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E758JKZqelr+l5p1pQkatMgE/+j+EQTQ+B9zJP0eq4GIjuovyMF00EYDp2myZmL3uQ86+KbXwX1RG7P0l/fPRl6A8b/K0RbLRpZpI9hvlNxspyMm1c0MHl/RPw2+B2dCSuB+59cAncK/7KE4oN+F4yaSJ+4Fxc6hxwlVOxEmjl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GJMBTMA8; arc=none smtp.client-ip=209.85.216.43
+	 MIME-Version; b=qCOHsxWulk2PKSM0+deEygzaQxJWUMq6tG54YiHkv+NeykOg8g5pWK6cE2XTwAr+ly3RSqdu+I+uUT/Wi5+0Yps7n/pWrAdwWbY/c8u3EWJmq6v6GEe/Al6omRvr/9fGws4DDgQbtXTVx6hAjjTobbranxymIZBukcWGLskB8yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Va9cee8n; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GJMBTMA8"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38e58034d05so3407415a91.2
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 07:18:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Va9cee8n"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38fdeaed181so849695a91.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 07:18:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785766697; x=1786371497; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785766701; x=1786371501; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LDSgzdM6Me9LLVj79/WXjjcDnuicd8z67Cux6+E8JMA=;
-        b=GJMBTMA8X+gqZB1NPVsAO2/G1KZI/g4AqbS2hEUUx1+bRI9+1Vnycai7uxCDVIgcj8
-         4X6tb8IBbXgk0j4C9mtES6LzrA9NaUWJjRRl74xiNVkCxYVc1Lfa0k67UvPR47NG/f/5
-         uGsAPGh28Mz5jwasnTVO5132Sq1LDKP2zgRRBJZu+o8xZIj+p4d/9u/oazjvtKj+xUKI
-         Igh+/8y1gygARYYss1TRAwNiqZE9mw+JvmPKdVrfAhPa6D4iagTJZZHXGWEXwQJ5Ql+P
-         TqKdeaxVFh8LDRpRUMkQj1ym7J2lriXmNlGugN2M80sOsXEYWJ8abA/Hf1AHwDR0FGj5
-         2f4A==
+        bh=BtdT0P59ZGr7qTzol1F8y7zPoONH1lkMlm/Fi5J6b9s=;
+        b=Va9cee8nP1DA+GN0G5QuB0DKK+nnbFlRgU1qhxCY3j/MW+eKm42S2mnzb5SilQUyXp
+         Fre+9j530CqYHum4MoRuluGoxuXkfqPxaSdvTN5d/CdAXJsODfQwa0ZmC8v34PXKpx9Q
+         8i9zb7bET6ZpZLcwxavcY8SwLAwYn7bZOGQd4/LpJ06MvRr5KVMiwif40QWITtB3h72n
+         xUeDqZmwdkat36akvzPwO606H8mmVvgHAHxFxdGyxvNLgENPy0vq9t5L3xgnPL9pLXy5
+         ZqdKZMPijkmtEd2B58Wh5HCZNRBMvbK4BwwkATEPwDKXRFwsU9gBSjIEKyshaGu/+HxP
+         srkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785766697; x=1786371497;
+        d=1e100.net; s=20251104; t=1785766701; x=1786371501;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LDSgzdM6Me9LLVj79/WXjjcDnuicd8z67Cux6+E8JMA=;
-        b=nHTcZWm9uipsWvis8i6NIyniTI+JRtftmfNjoEOhSEvULO+jKoH9qC5+GssVP5cXj2
-         eXinvpyeMYoBJQMkJs2OISeeb2CBT9zttN8Ua24VQK/nJDOi8aLwm3Cv2OBK05LiO7ch
-         nAAYXU9We6Hw7fSrdP6LHQa7eR7TYhoZO4GyHBeJPdGfx5Va+ocBMmy86QY1NKUAHQLQ
-         l3gKG8SMrQgva9d9H+KnH6t9kNYNGSOsPwLwHu50MrsuhWKxmoYcRR8B8Gnm2eOItxdr
-         UFDyrLYU01TRtksD7Qf0oEOL1sNqzDm6tRyN22vKL8m8QLIHxU1i9UHwriy0++56Y7ge
-         Ue7g==
-X-Forwarded-Encrypted: i=1; AHgh+RoX9Zc6oImz2Zv2ZLD7ISq7TcYGZ+P7BiTFtRz9c5p3wu5V8gw02/ie+ApmbsUgvr+EWztgiUQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJJd6c8KEpyzu2CBSuckv4je9kgVodxo8w8X4MT1SdIfI4fu2Y
-	rBRO0gNFEHM9FMAVQsVmbo6l88dW63Kll3DwmlL5i7+nTyWw9SaYGSnz
-X-Gm-Gg: AR+sD11xoNWIa46AfjZviW7DizA4CJkzCpCVDvr8rn12GWdEKjMOhmp3QK/2qLx40sQ
-	6G6LHNk2cFxTsuLJOsHLh4kAAowHovb1KNR5w+EyGM129DBx0uvO6X8E7cTY79zyTHusiFURQV8
-	JBSGMm3+zB86nSPOwlSy2ArHBg6v1oIfOkDMw9GnwVoSTcEpiGaKyVK+l1hIZ1vBTzQLCPTIB4c
-	/0mNyz44ANbhgVeicYbcS7o+9tqDIycQd28hCzEZHZ1+pBo6nc+EdEQx0i0YUJOIG8hD7eE7Z83
-	Y0U0XykH2SetF0MRlRttgmlkTPj3OBH0yllrVj3rQHd6UuYyh59IVZp2Oxd/q+nv0PoNCuJsibW
-	j82yNo4CbYxLyiIN6sh1XtKxtif+8yZG4yidUazatmPPC5odGIVCkyxvT1g3auEvFH50zYsxRD0
-	X8pj+rVPt99berbOQgl9GXANTpaoSMG0klc5mf1U1vT36UqHvwmsSDaNQWaZkOYmihwHtBDm0Fv
-	wkRneggPuLecbAd3r+z
-X-Received: by 2002:a17:90a:d004:b0:380:873:49cb with SMTP id 98e67ed59e1d1-38fbc4d615emr9615843a91.21.1785766696772;
-        Mon, 03 Aug 2026 07:18:16 -0700 (PDT)
+        bh=BtdT0P59ZGr7qTzol1F8y7zPoONH1lkMlm/Fi5J6b9s=;
+        b=YmnfPM88kAT2hWKQJNvEF4TLt49NHTLo2ZV6vNEg9yK7SOYhH7DuvZ5Knj3Ec9JdEo
+         v0fn6zx3BQrZZ5KmPLARknT5+ji1cFgIY2kSSUodLFzl8covLoNoCu0nP6ultBhRabse
+         ScbKHktO/0L7SzQsPSyku+NLWzpH4xQZLs7h7qqUtKZBLhjclLulk+b0IwiKG9da2Jro
+         +M8+BUs2p2cBDzyGnQfuPwt1GC5NqxTpEMmJikmeyAhGQ6aib1cXOSDvCMaLgYPOuxCd
+         5UosNHjX8A13QrxsVKvRZ1s5QA2d0M/Fl1+XU/YPpdn4XnSgIdANmgBlOmSLiTCpIQLf
+         58yQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0r6yiIrwDKn4I+NE7+pHOLzMmc/QRLjvaTNgnH6VI4gjb0SbjKa0qtnlGSMg6L44EzyP8n48=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0t3H3NEr8cN91vpXuuZ98uMyqVOmiQNpcp2g5Sb+7OHwDpZT9
+	6unwZhKSOL8kLSTN0Zqq1VlFweaOkFipXiyCGjdi95Xiqf3Pw5HA+XB5
+X-Gm-Gg: AR+sD10XoZfCLhPl3yQkIlT2+Doku7SVtBQQTLFd06mzZ0gKSy6tjz/1/CHFu+1Glxb
+	y8I6m9JPRgWTlU10jqPj5lndp7UYqI5wKyp22VE4qiwWgjR5QK83oz9K1Cyv3mupLASDctIQf/y
+	dB1KPrgOU/L0xMS5qtZo2n3QT8RGRh5OMjrhakNm3GqpPm351tNvlMyARDFXRfxfom7bcnxsETD
+	Sq9jZLR/ydHVc/pSUsi6g7PCxaSK/8l0H1WGoMNV+2ytMs3ELV4L1fjbhA5kYr7p6P/yjWhcs20
+	rgUzbVwsoVAxz0D7AoMIgBk7eX3CS3mNi0uggbmqILFh3Rd+Dh8ADjijtzlRfy3iQXM4W42wlyQ
+	WI6yMjquAccTAt+9LVwZuA42KielOhJNKFJe3CixCCPUe/KGQTDhrzp9Esby/GSVZAFBcK0tk86
+	YuBYKkFCj9l0TwcinFB2EuFXoJPRrXcWNXxAtQ3DddW7v3C8APDTSym4M+lDB59sOfgayMC0vUO
+	7Bn3acV7l8NIi1Uie70
+X-Received: by 2002:a17:90b:55c8:b0:381:152b:d596 with SMTP id 98e67ed59e1d1-38fbc441942mr9078794a91.11.1785766701390;
+        Mon, 03 Aug 2026 07:18:21 -0700 (PDT)
 Received: from buffalo-ssd (M014013071096.v4.enabler.ne.jp. [14.13.71.96])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb30dff2esm4078462a91.13.2026.08.03.07.18.12
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb30dff2esm4078462a91.13.2026.08.03.07.18.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 07:18:16 -0700 (PDT)
+        Mon, 03 Aug 2026 07:18:21 -0700 (PDT)
 From: Akari Tsuyukusa <akkun11.open@gmail.com>
 To: Michael Turquette <mturquette@baylibre.com>,
 	Stephen Boyd <sboyd@kernel.org>,
@@ -88,9 +88,9 @@ Cc: Laura Nao <laura.nao@collabora.com>,
 	linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC support),
 	netdev@vger.kernel.org (open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:\b|_)ptp(?:\b|_)),
 	stable@vger.kernel.org
-Subject: [PATCH 11/32] clk: mediatek: Add auto-population of sub-devices support in simple probe
-Date: Mon,  3 Aug 2026 23:16:38 +0900
-Message-ID: <20260803141659.559129-12-akkun11.open@gmail.com>
+Subject: [PATCH 12/32] clk: mediatek: Add pllfh support to common probe/remove helpers
+Date: Mon,  3 Aug 2026 23:16:39 +0900
+Message-ID: <20260803141659.559129-13-akkun11.open@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260803141659.559129-1-akkun11.open@gmail.com>
 References: <20260803141659.559129-1-akkun11.open@gmail.com>
@@ -102,55 +102,114 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-MediaTek audio clock drivers call devm_of_platform_populate() after
-mtk_clk_simple_probe(). Extend __mtk_clk_simple_probe() to run
-devm_of_platform_populate() when the new 'populate_children' flag is
-set, reducing boilerplate.
-
-Note that explicit of_platform_depopulate() calls in remove functions
-are unnecessary because devm_of_platform_populate() is managed by
-devres and cleans up automatically.
+Extend __mtk_clk_simple_probe() and __mtk_clk_simple_remove() to
+support pll freqhoppings.
+This reduces boilerplate code in apmixedsys drivers with pllfh support.
 
 Signed-off-by: Akari Tsuyukusa <akkun11.open@gmail.com>
 ---
- drivers/clk/mediatek/clk-mtk.c | 7 +++++++
- drivers/clk/mediatek/clk-mtk.h | 1 +
- 2 files changed, 8 insertions(+)
+ drivers/clk/mediatek/clk-mtk.c | 44 ++++++++++++++++++++++++++++++----
+ drivers/clk/mediatek/clk-mtk.h |  6 +++++
+ 2 files changed, 45 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
-index c3369a04cdec..71d70b5a9990 100644
+index 71d70b5a9990..e80ae497fadd 100644
 --- a/drivers/clk/mediatek/clk-mtk.c
 +++ b/drivers/clk/mediatek/clk-mtk.c
-@@ -12,6 +12,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
-+#include <linux/of_platform.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/slab.h>
-@@ -609,6 +610,12 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
- 	if (mcd->need_runtime_pm)
- 		pm_runtime_put(&pdev->dev);
+@@ -23,6 +23,10 @@
+ #include "clk-cpumux.h"
+ #include "clk-pll.h"
  
-+	if (mcd->populate_children) {
-+		r = devm_of_platform_populate(&pdev->dev);
-+		if (r)
-+			goto unregister_clks;
++#if IS_ENABLED(CONFIG_COMMON_CLK_MEDIATEK_FHCTL)
++#include "clk-fhctl.h"
++#endif
++
+ const struct mtk_gate_regs cg_regs_dummy = { 0, 0, 0 };
+ EXPORT_SYMBOL_GPL(cg_regs_dummy);
+ 
+@@ -525,8 +529,19 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 	}
+ 
+ 	if (mcd->plls) {
+-		r = mtk_clk_register_plls(&pdev->dev, mcd->plls,
++		if (mcd->fhctl_node) {
++#if IS_ENABLED(CONFIG_COMMON_CLK_MEDIATEK_FHCTL)
++			fhctl_parse_dt(mcd->fhctl_node, mcd->pllfhs,
++				       mcd->num_pllfhs);
++			r = mtk_clk_register_pllfhs(&pdev->dev, mcd->plls,
++						    mcd->num_plls, mcd->pllfhs,
++						    mcd->num_pllfhs, clk_data);
++#endif
++		} else {
++			r = mtk_clk_register_plls(&pdev->dev, mcd->plls,
+ 					  mcd->num_plls, clk_data);
++		}
++
+ 		if (r)
+ 			goto free_data;
+ 	}
+@@ -646,8 +661,17 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 		mtk_clk_unregister_fixed_clks(mcd->fixed_clks,
+ 					      mcd->num_fixed_clks, clk_data);
+ unregister_plls:
+-	if (mcd->plls)
+-		mtk_clk_unregister_plls(mcd->plls, mcd->num_plls, clk_data);
++	if (mcd->plls) {
++		if (mcd->fhctl_node)
++#if IS_ENABLED(CONFIG_COMMON_CLK_MEDIATEK_FHCTL)
++			mtk_clk_unregister_pllfhs(mcd->plls, mcd->num_plls,
++						  mcd->pllfhs, mcd->num_pllfhs,
++						  clk_data);
++#endif
++		else
++			mtk_clk_unregister_plls(mcd->plls, mcd->num_plls,
++						clk_data);
++	}
+ free_data:
+ 	mtk_free_clk_data(clk_data);
+ free_base:
+@@ -686,8 +710,18 @@ static void __mtk_clk_simple_remove(struct platform_device *pdev,
+ 	if (mcd->fixed_clks)
+ 		mtk_clk_unregister_fixed_clks(mcd->fixed_clks,
+ 					      mcd->num_fixed_clks, clk_data);
+-	if (mcd->plls)
+-		mtk_clk_unregister_plls(mcd->plls, mcd->num_plls, clk_data);
++	if (mcd->plls) {
++		if (mcd->fhctl_node)
++#if IS_ENABLED(CONFIG_COMMON_CLK_MEDIATEK_FHCTL)
++			mtk_clk_unregister_pllfhs(mcd->plls, mcd->num_plls,
++						  mcd->pllfhs, mcd->num_pllfhs,
++						  clk_data);
++#endif
++		else
++			mtk_clk_unregister_plls(mcd->plls, mcd->num_plls,
++						clk_data);
 +	}
 +
- 	return r;
+ 	mtk_free_clk_data(clk_data);
+ }
  
- unregister_clks:
 diff --git a/drivers/clk/mediatek/clk-mtk.h b/drivers/clk/mediatek/clk-mtk.h
-index b6504b3e77ed..11939e3e0b38 100644
+index 11939e3e0b38..4e959ec68da0 100644
 --- a/drivers/clk/mediatek/clk-mtk.h
 +++ b/drivers/clk/mediatek/clk-mtk.h
-@@ -265,6 +265,7 @@ struct mtk_clk_desc {
- 	unsigned int mfg_clk_idx;
+@@ -15,6 +15,8 @@
+ 
+ #include "reset.h"
+ 
++#include "clk-fhctl.h"
++
+ #define MAX_MUX_GATE_BIT	31
+ #define INVALID_MUX_GATE_BIT	(MAX_MUX_GATE_BIT + 1)
+ 
+@@ -266,6 +268,10 @@ struct mtk_clk_desc {
  
  	bool need_runtime_pm;
-+	bool populate_children;
+ 	bool populate_children;
++
++	const u8 *fhctl_node;
++	struct mtk_pllfh_data *pllfhs;
++	size_t num_pllfhs;
  };
  
  int mtk_clk_pdev_probe(struct platform_device *pdev);
