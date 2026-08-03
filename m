@@ -1,87 +1,79 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526FC414DC9
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 13:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D770422536
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 13:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785765562; cv=none; b=rq8S3HywuP7iM8xKutCjKP7H+t+vjKlQyXHtb6CCr0n4tQltla4AU8wkat7KMtixRt/v+3yS3J+NLdaZjdZ4oyYbFvrIhalLm4n0GAsKLt1rTF9fM6JPoih4Tss9dofC73pCWnAQC+DmYs0g7zFduzrMV0K0M8HcxVQlwNTdzSI=
+	t=1785765595; cv=none; b=pBe/6jTye6u20WRd7DxxiXAoPM4XFX0bSig/XlN+i3alK7IByBj8ElxoPnE4PtX/YxQKmlJpj6YrVFlq6TlBYm6yEeG9qYyBcEsKQvuz8V6w/BtKwhztAheTsQHwdflpHliwaQQyX49s8hAfGs7e2fsAqoJgNc1dsXxlQgTAuzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785765562; c=relaxed/simple;
-	bh=h1cPNjRA/0r6gNoruyluM5SfZi1K6x5n92plUA+GKx8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M7+E4DufYwFc/eeIc93A+jjZ2JJDE0F3KxpTtFFs+3+W5/FMAPBu5h0rEpv7hJ75B6y0kNKQzWe9Tw/vXOvJSzIxkq0jz1ICTzBv0rX/7s5L58LOGAI7GpT1ZA2UQQoS0oj0jPb3R3j7dzLI/IEXXwQhLh7OK98ov1TAcJvKXSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Py69VPX3; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1785765595; c=relaxed/simple;
+	bh=Xm/7DtiEMg1IjVRIDD0Dmnqy+tWy/4RQwD2wLYgsQ1U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MPPCrBIjCo03cchZM2KqGYAVhnuHCy6oy+n+noCe/4owQtRIhHIb2l6GrH8IQKoCt3nIVimUw5vrEWS7T/WwVeM6CPUsJUNhAyBR03E/HwrZd0OkiCRvpnuZhxfsCyya2Zdcj2f0amaTlzkzN0qOi/A5L/rGfjMgC6Kh7HZJ+Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a/mbDd7b; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Py69VPX3"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2caf228a910so24839855ad.2
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 06:59:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a/mbDd7b"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38759bcd877so3027354a91.2
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 06:59:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785765560; x=1786370360; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=h1cPNjRA/0r6gNoruyluM5SfZi1K6x5n92plUA+GKx8=;
-        b=Py69VPX31Vw+i+BdHdAX31VjutgUXIWSPj1zbNJRFFvRUxNuh51OqmzjDYPFeyb6sV
-         Pg85rBnXCSDlMCp71BI4m+m5Pa1K/enCZyh5TIcbzq4KtW5IN/t+bvvRJg7p6Kes/FWi
-         oe4wHrc2R/Nqy4jXhp7AubKt8il2FHQvNsxHnMke/ITASMtqLotc8G5WiQ/zDQSe74gb
-         BEmkiVdlDhUZxh2nOkNsFbpWXfceabwBLrBV1UfHkhwkahPMVqNPTRW/3IlBpCtoJqTz
-         7g00zB7aGas+0itOBg8N9ri7UzCPvTIEPUBurTCsP8Z3XMA4fpFgMhyQjweky0Gkh3aW
-         SdNw==
+        d=gmail.com; s=20251104; t=1785765594; x=1786370394; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=r+pksryrxLXLGb/sclyi3ItCIZaPNjNevdntxR0DkJM=;
+        b=a/mbDd7bmFL43HNAgNHEUc1w4UxVNQekw3kRIPkcmw0jd4czbJM3qGRb00uLFJ2DQp
+         CxMzHB0py5bQwn1wmtmLnEpRlJ66ba6Z6Q33NXYSM8eHKaiCfsDMo/2wPIRRmB5hel7O
+         z5KoVMFQEV+/PY4RB1VPh3Rys//oGNwFRyIXJlcfiOhUSAlrgHvw6Dft8jxI7A7X3H7u
+         LJqOdP8Ibu/9xdN4YuV/oc36AxSosWrH8PrAkvT0+bzVfzJH9bE+mV9Qgr5Flb3iqRPK
+         szgUs33uuKpWraDYCaplasMQGkNfOd7tnPn2f1aegzWzJE4ZLI7CHxxnliq9i0REMH8k
+         MYjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785765560; x=1786370360;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=h1cPNjRA/0r6gNoruyluM5SfZi1K6x5n92plUA+GKx8=;
-        b=MsxyTQR/CBFgg8HV6vgVHqmH3jdWETmCcCw5u7+E/EM9lG4pKJOMFanDk2YGzyZ1tv
-         1VMaeueokmrW0FlcT6N8szcKnB7JfyUOAynLBiQwhHlQHAXbUVvCXHsW21WY5It3bGZK
-         MYYlbGttnRxCQ3kA2fCycdwhKaVi+lzX0JBQRa4jtXyXmbmLftszcW3U6wqq9jOeNnJF
-         IhtXpcjB5jO13s3wwmNySQ/5bBR+CuHOXwejIF1bdNTB/wUhYwodeYXzdvCaO2F3/mS7
-         xXzFF1ZuHGtVqVuHsyK/6CUvaubns0pEKJ2qxD0eRbzU970Zkjegzgcu1w84Q2/mP/Bn
-         4HPw==
-X-Forwarded-Encrypted: i=1; AHgh+RrS6hLlmzJ1/oCH03d0YmSNJSwUFyYMPFZrRclrgpPhnk5jphRrcR+vobx1hUvZlFaanwim7jE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzR9yzsUFxhZzjFebt/6QEw02j0Xg/YakQnC3Rvus1IM/qO44ER
-	Zd5JRDUu88a3eBwt8UXj77k/sppYeLqlvwQEUUx6z75D9cDy7GTMBzdx
-X-Gm-Gg: AR+sD12A9VssyfUaThedptNUrfu2Tv9pVGLsrV4zLV9oDt/y7S8Ck4kMBSlpDmJFKHK
-	NTkHCfbgW7x1505RVFf4hg2hp+OV2Vkq2U2fn03RNRxio7siu0gPQBnNXehp69ZbagF2GjOgL3+
-	8zijm1i6Rk473dPSNFmpnClNxWglM8AH3UWWCOhujOJ4DJdd0vig8xhDmfQ21DCSov4FdJNhrmR
-	BBX56aD4o0z97xFMX85XW2D5Ru6XiZeeMsm/52iGhdGOlUWjLMnfDNiLMWPIsXCC0nDaxgb8W9L
-	9w5SG6RnYov+uCEZhAWJQifz/4QV8+goiYraZdVKxjKpT5rjWsiL9SA1gjbRzTvtKISzgRLkubu
-	VbHAf03EyTolJGz9jcvbL0qnHn8hmAYa5K+S5kyT4KM/XaYl6yDKffqYgINyQYGSaoS0d7+V9EJ
-	LtTtdq/z9xvJLu62RVQpyaMRic2xloITdghDfGof0S6YWajpjJNI64M+V7POwYlgP4OQvUa+Mju
-	iXggPk=
-X-Received: by 2002:a17:902:e5cd:b0:2ca:d7a0:1312 with SMTP id d9443c01a7336-2d05229a2a8mr101594235ad.25.1785765560531;
-        Mon, 03 Aug 2026 06:59:20 -0700 (PDT)
-Received: from LAPTOP-83ECOPAB.localdomain ([167.220.149.180])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04aea2514sm38586875ad.37.2026.08.03.06.59.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 06:59:20 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: maciej.fijalkowski@intel.com
-Cc: AutonomousCodeSecurity@microsoft.com,
-	blbllhy@gmail.com,
-	bpf@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kerneljasonxing@gmail.com,
-	kuba@kernel.org,
-	kys@microsoft.com,
-	linux-kernel@vger.kernel.org,
-	magnus.karlsson@intel.com,
+        d=1e100.net; s=20251104; t=1785765594; x=1786370394;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=r+pksryrxLXLGb/sclyi3ItCIZaPNjNevdntxR0DkJM=;
+        b=bsg0tKFyPog1Wt+3C2tG10sa/lp/jmoDtY4DUG55o3HvL1XlarwBtQuKbGXn0GJIve
+         AkdMx1sb+b6EnKIvhsSTX4XQw1Qu1PlxiD53benFbkInPM2lGiFFjtnCU7/yHZ8VfFy7
+         NwkUeeowAsCRhXf6lEGkgFx8HJFlyHAbNqREXY1rJU3bCgbWozrf4tFPaIsVGM+vqpwb
+         CIiZ87pSZCNpKmtbNpS//FfonV+Jje+/bxRDvyy1gZ3mPYuADbPheDw1BXHR0x5kkmRx
+         b0Nn4Ir2Vrnl9Xh7gHqT53UaAquOJPmORMxAlR41aI6EgbGwhNAC2FrWMHpC25pd/NMC
+         Jj9Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rr61OOtEmW+6d25PBqWb58/AtkRxxaRUwTmEphaPd7GSXN0E/qcKV1Jh8GeA+r3zyU1UzNe+EY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSbMjxtdwDMZpFG1hTVoEnXYhQW6dgTQ6abpt4IJtHdSF8U3WD
+	1aO0BmKEpWChMgFg1ds6iRIhbGeBMw97PPTZ7f/sSwFPmzKqSa4lauM=
+X-Gm-Gg: AR+sD11uQ1NfbO2JxVwZjAZ9A4JeU+y3itfSkII5CZxFbieEupzt0gIv7GlMCni5b9T
+	lNhn8e7uX3ZQDzNg/X5Gn2SaYgArCsHIx1V/eKG7k6aygLnUPkKQjpF0u8G8pEn72U7WWxIhfyj
+	pHkClMPr2YOr2U9J9bVyC3/HVNQ7j1oG367/wD+kI91E9I0Z8a61S4MeCagFBFm4ioZHYp+MXWs
+	5sFYlrw7rIUseKnaM6/cxcdnoHMiqGBzPff6pN/zyuFI3EU/q5ERRnHg1xuzSX5cNANcqDGgCBR
+	T124U8snVUhfTcj8d2inZHspCNzbX94ZlTVuvXpN6VAe+G1p0w1UCDP5/XkWNwI9iDI2FamTW2L
+	qMeufopexfI8/QVNSc+ZVVuIrU8r4IFIG6fwEMBovT8vAnUMWR2GKafb5b7xDO6o+41OrOCoipj
+	D9BjqotJpVxRS8ZUlhy33bP+fAeIpO2ibJG+epo4wXX3Znd+5AFjugM+tfHqB8B9+2La5OGD5W9
+	pa4+y8hlgdW5/WoGZ8OGJidtUgSkDdBfxttorYeR4pUJZixXl7ptgrYaaq5NLiFf4zOkQW2fNh9
+	NJgjQNe1ouDmpb/X5qz3Mlc=
+X-Received: by 2002:a17:90b:1d52:b0:380:540:d499 with SMTP id 98e67ed59e1d1-38fbc3fb64cmr8689147a91.6.1785765593692;
+        Mon, 03 Aug 2026 06:59:53 -0700 (PDT)
+Received: from localhost.localdomain ([1.226.165.54])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb2ce1778sm4068946a91.15.2026.08.03.06.59.50
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 03 Aug 2026 06:59:53 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Richard Cochran <richardcochran@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sdf@fomichev.me,
-	tgopinath@linux.microsoft.com
-Subject: Re: [PATCH net v2] xsk: fix NULL pointer dereference in __xsk_rcv()
-Date: Mon,  3 Aug 2026 09:59:15 -0400
-Message-ID: <20260803135915.1615-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <amnJiQHa9s5PtLek@boxer>
-References: <amnJiQHa9s5PtLek@boxer>
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Myeonghun Pak <mhun512@gmail.com>,
+	Ijae Kim <ae878000@gmail.com>
+Subject: [PATCH net v2] ptp: fc3: register PTP clock after initialization
+Date: Mon,  3 Aug 2026 22:59:42 +0900
+Message-ID: <20260803135942.48383-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,4 +82,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Thanks for the suggestions. I am back and will prepare and send v3 in the next few days.
+ptp_clock_register() exposes the clock to userspace. If either following
+initialization operation fails, probe returns and devres frees idtfc3 while
+the registered clock still refers to the clock information embedded in it.
+
+Complete the fallible initialization before registering the clock. Schedule
+the worker after registration because it requires the registered clock.
+This removes post-registration failures and avoids exposing a partially
+initialized clock.
+
+Fixes: 1ddfecafabf7 ("ptp: add FemtoClock3 Wireless as ptp hardware clock")
+Cc: stable@vger.kernel.org
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+---
+Changes in v2:
+- Register the PTP clock after initialization instead of unregistering it
+  while holding idtfc3->lock, which could deadlock with a concurrent clock
+  operation holding the POSIX clock rwsem.
+
+ drivers/ptp/ptp_fc3.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/ptp/ptp_fc3.c b/drivers/ptp/ptp_fc3.c
+index f0e0004..02b9739 100644
+--- a/drivers/ptp/ptp_fc3.c
++++ b/drivers/ptp/ptp_fc3.c
+@@ -665,8 +665,6 @@ static int idtfc3_init_timecounter(struct idtfc3 *idtfc3)
+ 	if (err)
+ 		return err;
+ 
+-	ptp_schedule_worker(idtfc3->ptp_clock, idtfc3->tc_update_period);
+-
+ 	return 0;
+ }
+ 
+@@ -825,6 +823,14 @@ static int idtfc3_enable_ptp(struct idtfc3 *idtfc3)
+ 
+ 	idtfc3->caps = idtfc3_caps;
+ 	snprintf(idtfc3->caps.name, sizeof(idtfc3->caps.name), "IDT FC3W");
++	err = idtfc3_set_overhead(idtfc3);
++	if (err)
++		return err;
++
++	err = idtfc3_init_timecounter(idtfc3);
++	if (err)
++		return err;
++
+ 	idtfc3->ptp_clock = ptp_clock_register(&idtfc3->caps, NULL);
+ 
+ 	if (IS_ERR(idtfc3->ptp_clock)) {
+@@ -833,13 +839,7 @@ static int idtfc3_enable_ptp(struct idtfc3 *idtfc3)
+ 		return err;
+ 	}
+ 
+-	err = idtfc3_set_overhead(idtfc3);
+-	if (err)
+-		return err;
+-
+-	err = idtfc3_init_timecounter(idtfc3);
+-	if (err)
+-		return err;
++	ptp_schedule_worker(idtfc3->ptp_clock, idtfc3->tc_update_period);
+ 
+ 	dev_info(idtfc3->dev, "TIME_SYNC_CHANNEL registered as ptp%d",
+ 		 idtfc3->ptp_clock->index);
+-- 
+2.50.1
