@@ -1,179 +1,192 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010035.outbound.protection.outlook.com [52.101.56.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C545039C649;
-	Mon,  3 Aug 2026 07:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785740730; cv=fail; b=KedbnZXchLtu3ZwefBKJYn9N1J9K0jx3HdlPGo8Y+KjpfllbrFjNExxe7is9k3d8KU1fhSMhM1hg6U/K+JhcDzOIxuSczHuEoiQlQxK+ahLeKyzXphyXTUmENdxuA1JiVZmyXsrXs7lsS20sRw2WXWSG8PJUqDW0epArJsGgs9U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785740730; c=relaxed/simple;
-	bh=39nW+I17FgHiw66/ydBIPW2qleUSC4w6S1ukrZqryPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KgMHfufZjZnsIkch5P/nGelRuZwshnST3Xlkx7VOfK7XnHd1qp/PzjrBi+ql3s1ez4FNGe54Cg8ZEKGwS83bSaCaQdK2JVhmMv7gPAeNHXTZ34W0vHUm/6IqK78aeFjw3uHF1m8AyoHXKMlR960KUtf5TxvFPAdhx7jDUKU2r20=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=geDJgfcr; arc=fail smtp.client-ip=52.101.56.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D4E39479B;
+	Mon,  3 Aug 2026 07:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785740852; cv=none; b=YTZENG7lOIXgH0n67uOJC/tsv2ACKJf3fXNCtwVvB6pXPyUJOv6N7EusADpkvOosULOEe0YK2plC5B5W/kvLmYGlrFW5ybQfKrdadcebgGlG+QxeE1h6ehmwaXOamG/iQbw+jT8CsWqR016xh1J6ABWb+TSwPxYPz73cNyewvQY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785740852; c=relaxed/simple;
+	bh=fT96Vm5ZuQZE0nYWI2Z4sAsL76nJCkNJcI/OIzhENfY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EMTG2jhkBDmsvKtkQQ2PKrElkcn8gTVlyaIiBtquHTXMuWcZeW1LYkU5JzdIcBzEbczXjmbQR6PTyPhlJkbxECeSYOP/Vj8jkRPIs1hbr9wduy+5YkwlQw2dfXGHBqbo9gs3CfRFVO6NorxkI7VPnrGfb2EZv5kqHQCrvBPFAxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fSk4kBSv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="geDJgfcr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k68oi/14GYpDRwbnu4Hu5q3/vqQz89d1m1qJM04oJfWA+wwcFstWJoMDBK0lanvymOCAwHIGHzDr62enW/1ApkvHCcvPACIBwveJS/xVcHmwR1So4ddWGrwdznVMW/XikJWWYtENBNKJNgML6af19j2Xl9ny3a/gGEl4W8aGJmRivQROfZmOolWEV/o604Ffo5iM4gi48PluTLZHOIphIm4oY8+Sm0Dyy2NmwlUpPsOoC/n6YHYsxvr8SgtCMogmPlyrxQx3Sz33/TvNt8Jsv/yoIntIT86GhbpZ9KwaLX55VjFTnNGJDbtFoxvrlsmANeT8mI36d4Fexxak8rV3fQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9I3rxKoy5/dXB1KU88+vpCEhS6/ObhPU/teGTbu4Lxs=;
- b=UX/MrupTcjDXDK3ty2JdQ3YDO3denwXlZnW+7PyTPJoPfFUaNvXyuCL9zyX2D3vB5XSDxba2/ATZxFl+QeRAlwskd1sWGCHYgeC4hY07+hKKYJSK77Ojx0m9sHg81dHFPJiTQITEqMva5n7pasXVbdaJk2vbOhEuXiU4knfrQbNUyFufJUqAxDXN5DVyt9/uP6IQQIhHHAXKTkfgeZpBSmCroVCBcDC7fPbosSebJ5NcJLOzBlR78oIn4A52fouxdugDOfr/52syzyjW6TU2ifpu62FEnBiYj/XBCtc1WCN2IGrv2AlorILdMV+IOg4Eq/27rRUHGcCzC5Vf2ndV5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
- dkim=pass header.d=altera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9I3rxKoy5/dXB1KU88+vpCEhS6/ObhPU/teGTbu4Lxs=;
- b=geDJgfcrHRurbnaz6pAi1DExE+8PJ75XxFIfmLVPym+UtMO6L6v3xRCb/ZE0Bn0JbbHSYRx3aTgzTqg/Alh7LsWq4NTv8FHu7SB3VVTm4c61kIKx9sbQLO4CvEuVIKvaFuiVRiTooGd4gfuUcrbkVUqeS9LYsF+ATp32z3OfFmBHwNsN/tPX0GyQVHToltkMfXnNmFsMGn6X2cfZEYnngvKR6JU6dzcWZsyVMI0dku8XrQyqpsrAc3jc6Y2LRm5+R//upJbPdrAX/y+m2/Py6uD0pAWx/y8047mPi2N+5koESf5C7I44veeqpu2mrqiASEXTBd0Ly0L1pbWEO+Axqw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=altera.com;
-Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
- by PH0PR03MB989258.namprd03.prod.outlook.com (2603:10b6:510:3bf::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Mon, 3 Aug
- 2026 07:05:16 +0000
-Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
- ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
- ([fe80::b965:bfa8:58fb:e775%4]) with mapi id 15.21.0270.017; Mon, 3 Aug 2026
- 07:05:16 +0000
-From: muhammad.nazim.amirul.nazle.asmade@altera.com
-To: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	dinguyen@kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	alexandre.torgue@foss.st.com,
-	peppe.cavallaro@st.com,
-	joabreu@synopsys.com,
-	mcoquelin.stm32@gmail.com,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] arm64: dts: agilex5: Enable pagepool Tx buffer quirk
-Date: Mon,  3 Aug 2026 00:05:13 -0700
-Message-ID: <20260803070513.4657-4-muhammad.nazim.amirul.nazle.asmade@altera.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260803070513.4657-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-References: <20260803070513.4657-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY1P220CA0023.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:5c3::11) To SJ0PR03MB6964.namprd03.prod.outlook.com
- (2603:10b6:a03:432::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fSk4kBSv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04ADD1F000E9;
+	Mon,  3 Aug 2026 07:07:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785740851;
+	bh=ypK3jGgUKK3dY6+nlQbF3+GlhwH+CAiV8k4/9ULVqiU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fSk4kBSvaHyUrEitakkNQHlGnB82L4TJT+1rk9vp34NQQZ0qMp9B89gDSj8OJvEtb
+	 dCO3xbE9eecQiQ7+TSo/UdR7nQA0EKT0UCQSfUNYnpsEemtUQpJd4Li+6T82ngHPXh
+	 umf8HtssFG8L6qf5IA0jxHqYwSZErY+bvigzSPT+ChqxwQy61yd4rn7pcypFd3m7ik
+	 M+MDUJRrVNrGVnJvSDtc8+WL3oGoQ/RRTfchN38yz9Gj5bm6RylARGPrlGnoXUcwuG
+	 G8Lucm+OT9ai+k4SEEyIWwZpz2z3oJqCyVYsXfjsmOlN3iOJn11gkXDRKAF8og4/dZ
+	 hKFzNiUQWe5iA==
+Message-ID: <f2cc3c90-060f-40c1-a55e-e2ed91e65487@kernel.org>
+Date: Mon, 3 Aug 2026 09:07:16 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR03MB6964:EE_|PH0PR03MB989258:EE_
-X-MS-Office365-Filtering-Correlation-Id: 29a69a94-2da8-41d5-10d3-08def12d9246
-X-MS-Exchange-AtpMessageProperties: SA
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|11063799006|56012099006|10067099003|55112099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	gs0RjApFVf6TNdLe+NRzQ0VW1lE+QOWNatiuaJz+i9IWHUB8njDtdwIFVIBzi0N8qNSNrkau2YYJQVbQPV/ttcxJrFp2f1uWqrlZggD19Kbt+Tw2uQaSJvJ+mqfqoBbRJtQhr21sxj1hUUxuWJpkXE7mlVuAgx9qGYR2JqV7BmUyw6bRqP6U7c+oQpBxKYUizI//2jGr8hLz8ngGd6pJhszaPD/UFzRzEzuKlbxIapKtX2AoBrtEHRaApGZQVC2J2QJV00XYQp2sSWRP0C4bqMCQB7BjCGXR4pUUvjJNJYRPvv8/6Q8NsBsZn4+G/Clk7kGaAHU6vrIcxjI+O+ToRR8E/M8w2ix+OeMJ57VL6NzYmk3Yp5r93eqIsspnkyVAfPgx2h5g2dGvc/pSbYz42wlyg9dCw7/0hktjdAVkM1At9W5i09zSqMgOhg0Vl7sISf2+nK4dJsGovbfM6bZv0HaU/QCuRcNiqEiI1Aj/qBFFucGxlVE6nJtyYv/GVpwn5h9um5fKDdUHYc2QGSPe2B9bvlyjx86A2EdFcIrwnc1sFnuJPHYaLoTzXEuIFX6uaL1OQQKv3EzcPfrBopb3A0TY88x70OODcdgB29+VdKcBnzs13AhuOyQDPYwL12tT2GfQF5g15iEV8XXv2TU7VlBrl450DCGlOzaby3d/lUg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(11063799006)(56012099006)(10067099003)(55112099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ntp5rJJ7Dv6FgYI12OXISB14p8QGck6J1mcyOVOpu0K0DSNtRoJnEuxJvkjK?=
- =?us-ascii?Q?1cfyz1xnvn3Jrv2NIvs3FdCU41hTL1/rwttCztqiadEUMwDaKZ5BG8Vs3q6b?=
- =?us-ascii?Q?kJs8NjpxKNTqlSBxS/MuIrZ4d1U+z+YZYilwNmaJbwKs1jmws8xpT61DdSMA?=
- =?us-ascii?Q?vpoCY2kKMdW0aJNDn1n5MOwkFxMbZGjQb0J9Qw3+C5uddfPViflaDHdNkVTd?=
- =?us-ascii?Q?znX6xM6MUPBZGlOpmPHmqndmq2dzUaccbSjErBAo8g7ph5eSnK2R8q2H58Kx?=
- =?us-ascii?Q?ivB0YexzHLNWjwZF5uvVX3MYh/veg8dPW91wIi0cJOmyc6sac946S+qSfsEy?=
- =?us-ascii?Q?tLadernE/+CYfdy0XixRoer1bWsCWbfFDbl/SHMu1KF5o0lSsPRhLW3aktzq?=
- =?us-ascii?Q?3ugw+Sa5Bh1aEASn+M9KtH4HWQLGMHC+QsukV72dRyoxj+mOq0cwJO5wu7pT?=
- =?us-ascii?Q?Q51l5gNxTrM+rhqmobk3Bn5DgO5uArK7PSo0d1IzGeG4+F22AAXibmsLBnYe?=
- =?us-ascii?Q?5MsvlQ3AUlDit35myhkwWf70EuktkkyoMnHep0BCJH+wQmatj5PZVlCnRqjG?=
- =?us-ascii?Q?rFOQfJh6QHNkpncTZCYfeOB8BWKY1GF6ZyGgRWmdxjLE7ptxaNpL+bpjFlUo?=
- =?us-ascii?Q?O2GgDNaSfEeHiBtyDTG+oj/06IxgsAi4czxofoiS6K6GzDAYc7mKAl8jIbUJ?=
- =?us-ascii?Q?DK1qW4IU0j/hcGNmKYYeAT/4tvQTOhYt73nAZeQiWGdXeC3BGo6G28gMthWH?=
- =?us-ascii?Q?+bxGLvW+wFW1cAqTMroxAQlIvlP2wlHH3h0Hcno+5vRJKJy7gAkxKlVMM7uM?=
- =?us-ascii?Q?ugcdxihtDbzAjT1chFyWcLPySHrVN6EWPezJb+DA/UO0XBKHkBfbMHqrDABX?=
- =?us-ascii?Q?OWqBZuh+cE84l6ijCX0QOVcTxRsiA3HMwPbM4jTOxTVuGp3t9DIzrZFX2tWh?=
- =?us-ascii?Q?aoa2ddG8RuUrogbyaxfk+V3W+U+G9x/sVjBenaf5Lm1fTTiPR8qWTkocw+AP?=
- =?us-ascii?Q?Hd2LG7WwQY9SlpCmuTF+Bw6YyKUO153YCRejs+1YDDH4z1qt6Bs09tFnGKM5?=
- =?us-ascii?Q?QgEQDDu1zmYFtAc/QJgmgiedMzv0fCxVj/ZfklhI8WnuDqpKNdwk7Dnq0awO?=
- =?us-ascii?Q?HdSA5FrFZSoISY+j8xrR6oERI34/0ZpZ+AMpUzhDSEsdE6NVVNJ7AyBHY4UH?=
- =?us-ascii?Q?Jy4+rToIj2XXKTsUmsDS4MX8LneZuRvlYRL2/I7nHJcKj6h68OhpAwXRF0VX?=
- =?us-ascii?Q?bXsgFDHjDPxJs4A3kelkdSd9wGRW1SyuF2rO+U4yda/Sxle5Whu46cuXrYRL?=
- =?us-ascii?Q?yBcDBIgEBDks0Ql9mHeIcTV/iyk4DCV36FrWscdHdMevtTaSG14Xzod5f1fl?=
- =?us-ascii?Q?Ah98lAgjIHpp70Q0h3of+/pszfw5gDzt/ZT0DEkPqBentzBJDes5/XVk0tpV?=
- =?us-ascii?Q?hXt1IiLCEJm3lXvKsbhJRTzRTMNWSheeqOSq0wnOEQscMrMlQztyP4LgQcUz?=
- =?us-ascii?Q?gSBPQiBVmz3e9dkCpNjBFeCzXxjU0qwRmMd7NeHIDm705G3Kb1UfMX2AZBzj?=
- =?us-ascii?Q?10y2Qhn33i1yvvVSGvVN04MaH6l1cl/0bU/C47poioJJOErVDQLYhRKA8hf5?=
- =?us-ascii?Q?TA3vX50dsCTwU7Q8hSUJmq7ZEjzeaCM/+NmNrp3BdSy3p/mxegKun5YNUSY9?=
- =?us-ascii?Q?/NyNFZUMIQNXajD2Ia4RngIriLLd/w+shUxMgkHFz6D75BltvCPKCGyRiy4v?=
- =?us-ascii?Q?QGh53JY07TMe1C5lbq0nh8sf6830DGRrCYUN9dzw/FkOHk5dNBnHE7maPVsk?=
-X-MS-Exchange-AntiSpam-MessageData-1: SBfA0HP7QruyEw==
-X-OriginatorOrg: altera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29a69a94-2da8-41d5-10d3-08def12d9246
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 07:05:16.3944
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: F4tE9qk5+9DruQKxcD0wFHXoo+DF1lLMminOEYCxa1rICD1S+toIN/RMfQCOZkTqBTeDqEx4GS5z1DQryk02rRSUIC4kXqzrNsztxQrXCF5rwTVmzyp4lNujyLCCImZSxH7ZEE6A12X3C+dnAhftWQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB989258
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/21] dt-bindings: mfd: x-powers: add AC200
+To: James Hilliard <james.hilliard1@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Andre Przywara
+ <andre.przywara@arm.com>, Richard Genoud <richard.genoud@bootlin.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Jose Abreu <joabreu@synopsys.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Saravana Kannan <saravanak@kernel.org>,
+ Lee Jones <lee@kernel.org>, Heiko Stuebner <heiko@sntech.de>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
+References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
+ <20260802-submit-acx00-of-dynamic-v1-v1-8-0a53cd9e21cc@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20260802-submit-acx00-of-dynamic-v1-v1-8-0a53cd9e21cc@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+On 03/08/2026 07:14, James Hilliard wrote:
+> The AC200 is an I2C-controlled mixed-signal companion IC containing
+> audio, video, RTC and Fast Ethernet PHY functions.
 
-Enable snps,pagepool-tx-buf-quirk for Agilex5 gmac0/1/2. These ports
-use an IOMMU, where avoiding per-packet dma map/unmap invalidate cost
-improves Tx performance.
+This fails when applied, because you did not explain the
+dependencies/merging of this patchset.
 
-Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
----
- arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+This is THE MOST important information of cover letter. The first thing
+to explain.
 
-diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi b/arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi
-index f54767d1526e..4ce4fa091385 100644
---- a/arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi
-+++ b/arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi
-@@ -605,6 +605,7 @@ gmac0: ethernet@10810000 {
- 			snps,mtl-tx-config = <&mtl_tx_emac0_setup>;
- 			snps,pbl = <32>;
- 			snps,tso;
-+			snps,pagepool-tx-buf-quirk;
- 			altr,sysmgr-syscon = <&sysmgr 0x44 0>;
- 			snps,clk-csr = <0>;
- 			iommus = <&smmu 1>;
-@@ -751,6 +752,7 @@ gmac1: ethernet@10820000 {
- 			snps,mtl-tx-config = <&mtl_tx_emac1_setup>;
- 			snps,pbl = <32>;
- 			snps,tso;
-+			snps,pagepool-tx-buf-quirk;
- 			altr,sysmgr-syscon = <&sysmgr 0x48 0>;
- 			snps,clk-csr = <0>;
- 			iommus = <&smmu 2>;
-@@ -897,6 +899,7 @@ gmac2: ethernet@10830000 {
- 			snps,mtl-tx-config = <&mtl_tx_emac2_setup>;
- 			snps,pbl = <32>;
- 			snps,tso;
-+			snps,pagepool-tx-buf-quirk;
- 			altr,sysmgr-syscon = <&sysmgr 0x4c 0>;
- 			snps,clk-csr = <0>;
- 			iommus = <&smmu 3>;
--- 
-2.43.7
+> 
+> Describe the parent device, its input clock, required function supplies,
+> the optional SID bandgap calibration cell used by the vendor initialization
+> sequence, and its optional Ethernet PHY control child. Document the 24 and
+> 27 MHz rates encoded by the public EPHY clock selector.
+> 
 
+...
+
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - ac-ldoin-supply
+> +  - ephy-vcc-supply
+> +  - rtc-vcc-supply
+> +  - tv-vcc-supply
+> +
+> +dependencies:
+> +  interrupts: [ interrupt-controller ]
+> +  interrupt-controller: [ '#interrupt-cells', interrupts ]
+> +  '#interrupt-cells': [ interrupt-controller ]
+> +  nvmem-cells: [ nvmem-cell-names ]
+> +  nvmem-cell-names: [ nvmem-cells ]
+
+Why do you need all these dependencies? What are you trying to express?
+
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        mixed-signal@10 {
+
+...
+
+> +...
+> diff --git a/include/dt-bindings/mfd/x-powers,ac200.h b/include/dt-bindings/mfd/x-powers,ac200.h
+> new file mode 100644
+> index 000000000000..cc59e2ab4912
+> --- /dev/null
+> +++ b/include/dt-bindings/mfd/x-powers,ac200.h
+> @@ -0,0 +1,13 @@
+> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
+> +/*
+> + * Interrupt numbers of the X-Powers AC200 interrupt controller.
+> + */
+> +
+> +#ifndef _DT_BINDINGS_MFD_X_POWERS_AC200_H
+> +#define _DT_BINDINGS_MFD_X_POWERS_AC200_H
+> +
+> +#define AC200_IRQ_TVE			0
+> +#define AC200_IRQ_EPHY			1
+> +#define AC200_IRQ_RTC			2
+
+Hardware constants are not really bindings, even though you use them in
+the driver.
+
+> +
+> +#endif /* _DT_BINDINGS_MFD_X_POWERS_AC200_H */
+> 
+
+
+Best regards,
+Krzysztof
