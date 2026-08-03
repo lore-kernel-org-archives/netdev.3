@@ -1,189 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC57334F24E;
-	Mon,  3 Aug 2026 16:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC2D34AB14;
+	Mon,  3 Aug 2026 16:03:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785772959; cv=none; b=sPdnGVQLz15FsH4LLLx9CvHaEhzGHYSsuFDQTFWfcCQ+/wIHkKt+x6gHh79bHnS4xxeZx0AyIUedsDPULWeV6gbKawMYBLhpkQrdEElIwHgA4vuPCnJHEofUzjIc6T33QMGk1qOYRKangLPKWbVbAFV/IWrJtNPt1becWdBjPNs=
+	t=1785773012; cv=none; b=tn/flahol6u+JsdHGD+gmzfNVDHiN0qaADdVmwGG/oGrBbfSliqEDhwpeqd76N+DWjySk4i2UlO9HFZOclbw8+nSa60JaaoJ2o1R8g+sVSxma7RUoC/9qhtRtvEZOKhbaFilPuVSkS1EEhYQoYSipU6i6EtHhDnBAiHEHqbdMzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785772959; c=relaxed/simple;
-	bh=N96wF4XNaIaQtJGZdj2TvPBJLxAlZaNMmeSkxEfxJyg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmTNbiY2375zSCsVLMFU7f/eYKntF4pcbnS22CwQZ2JrQG5bRxIDbQSyMm1OnKlZYMPTfHXQEJjSJqtbvvWA7col7HMX6MwKUBqDDXc7AGbv1K8g3n6r90yKDqpqP4JO+MYk1Thv5DJjO4B4vrApTVKyr6LTTUH1JuBs92pay40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WZylOpHM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785773012; c=relaxed/simple;
+	bh=3gtX+hr0G5gi0545QEYadIbHcRKukj1TTU5v2Wu3hUE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jwUcdUhNBSkrd5jdQLCJasx5fDi9MJu3lltRu8CnFYfmYLlaH0DZpBxiYJ6leVWZEIITd3QdBdPMi2GyhTVQxCu8b2uMCG9+X2Pyscc9QbIz1+LRTqXNfY+uNorshd/KLrLCFsINqmATtyIMQu0cHrXIHWnlfVOJf/sv+8WPKeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IPb+9pTJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8EhXwcUc; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WZylOpHM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EF91F00A3A;
-	Mon,  3 Aug 2026 16:02:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785772957;
-	bh=SbqQLr7YJqJFe6LXMewN3oPY0av70bdVVJ1dwv14AyA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WZylOpHM8yKebEXGwxuFVd7YEmFZgJTN9QntJmmp/4NbR73V1iMhL2LAGpa4h9UA/
-	 l779JvEZOfp1Opy1WnsvsKbgS4IDUp7UjVN2e6zzXmM5ZlHjudJd1Fizwu8jSEO5z0
-	 rUXgGzbmXMrRQ1bVoGyeGVQljwaFxyxfym3zs0F9k0mRjyOcXn6KZgVS/CvAeETuDp
-	 Ln8TXvrFSK6KohNMuB+utJQI5M4WPZsjTXYRSRkr7Wjo2dp78Jg4QATihM6hKLpOh7
-	 0wni5e1j+lhGm1Qm2EWPgXMno+rgnLHg4YUVI1HeJpiPwr1qPL+ZIWuPnv42cY+Dng
-	 PyxtcHYFe8zZw==
-From: Simon Horman <horms@kernel.org>
-To: dhowells@redhat.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	marc.dionne@auristor.com,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	jaltman@auristor.com,
-	jarkko@kernel.org,
-	keyrings@vger.kernel.org,
-	stable@kernel.org
-Subject: Re: [PATCH net v5 02/10] rxrpc: Fix packet encryption error handling
-Date: Mon,  3 Aug 2026 17:02:24 +0100
-Message-ID: <20260803160224.431797-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260729160108.2031453-3-dhowells@redhat.com>
-References: <20260729160108.2031453-3-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IPb+9pTJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8EhXwcUc"
+Message-ID: <7ae5b44aca9c478f9273422f84faf27700558c57.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1785773009;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3gtX+hr0G5gi0545QEYadIbHcRKukj1TTU5v2Wu3hUE=;
+	b=IPb+9pTJNa498shCZTsdeLuFbzMyXosmA6tU16ncV7Y3qd7rCo9xCJ4UIaswnNPvLuI3lr
+	0+2cDB/fbHLrxubSHCzbhQDttVqSsx+l9PGJAuhWYmSpGQWRFuuK1mCxEIcsNhxv+A6RhU
+	Fxig4xS7x/8NWl6lGdUNUTsCzFWQpxXV6OGEFEqRo5ZZX/cDEyOrDHoiGgR9uhWtow40TY
+	uTYgCtLyJ36jB1fYY4BWrZab+zfkfvQPZb28mQ7zlvq+jRlois0ms+T0je9MxiTZRHjkOc
+	nr4rAXGXnCzS42/xW5na88vigI0d5QVx787oNzFxD9fNsx/kkHBh9G4PIGNL1g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1785773009;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3gtX+hr0G5gi0545QEYadIbHcRKukj1TTU5v2Wu3hUE=;
+	b=8EhXwcUcjD5iKD3Z4U5g8QMUEi6fif47pMTyRlhGDg48PThkGoA/7u1PY2yNIj2OfHyAYg
+	ZLMkBh/WxdOt/7DA==
+Subject: Re: [PATCH 1/4] dt-bindings: vendor-prefixes: Add soce
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Vladimir
+ Oltean <olteanv@gmail.com>,  "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
+ <martin.kaistra@linutronix.de>
+Date: Mon, 03 Aug 2026 18:03:28 +0200
+In-Reply-To: <20260730-aquamarine-worm-of-contentment-bfbb9d@quoll>
+References: 
+	<20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+	 <20260729-devel-vstrassheim-soce-dsa-ml-v1-1-be569dae1b20@linutronix.de>
+	 <20260730-aquamarine-worm-of-contentment-bfbb9d@quoll>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/#/patchset/20260729160108.2031453-2-dhowells@redhat.com?part=2
----
---- Patch [2]: [PATCH net v5 02/10] rxrpc: Fix packet encryption error handling ---
-commit 59ddcd5fc94e6b2d9346d2e5e32c548184c0070b
-Author: David Howells <dhowells@redhat.com>
+On Thu, 2026-07-30 at 10:50 +0200, Krzysztof Kozlowski wrote:
+> On Wed, Jul 29, 2026 at 06:36:54PM +0200, Vasilij Strassheim wrote:
+> > Add the soce vendor prefix for System-On-Chip Engineering, S.L.
+> >=20
+> > This prefix is used by the new SoC-e Ethernet switch DT bindings.
+>=20
+> Drop, implied. You explain here things which are not obvious. You can
+> also look at git history to see how this is done.
+>=20
+I see. I will fix that before re-submitting.
 
-rxrpc: Fix packet encryption error handling
+> Best regards,
+> Krzysztof
 
-This commit changes the error handling in rxrpc_send_data() when
-secure_packet() fails. It adds logic to rewind the buffer by one byte on
-retryable -ENOMEM errors and sets a new RXRPC_CALL_TX_ERROR flag for terminal
-errors to prevent further sends.
-
-Closes: https://sashiko.dev/#/patchset/20260702144919.172295-1-dhowells%40redhat.com
-
-> diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-> index 4c754f78ece9a..d117a25b031dd 100644
-> --- a/net/rxrpc/sendmsg.c
-> +++ b/net/rxrpc/sendmsg.c
-> @@ -330,12 +330,18 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
->  	bool more = msg->msg_flags & MSG_MORE;
->  	int ret, copied = 0;
->  
-> -	if (test_bit(RXRPC_CALL_TX_NO_MORE, &call->flags)) {
-> +	if (unlikely(test_bit(RXRPC_CALL_TX_NO_MORE, &call->flags))) {
->  		trace_rxrpc_abort(call->debug_id, rxrpc_sendmsg_late_send,
->  				  call->cid, call->call_id, call->rx_consumed,
->  				  0, -EPROTO);
->  		return -EPROTO;
->  	}
-> +	if (unlikely(test_bit(RXRPC_CALL_TX_ERROR, &call->flags))) {
-> +		trace_rxrpc_abort(call->debug_id, rxrpc_sendmsg_tx_error,
-> +				  call->cid, call->call_id, call->rx_consumed,
-> +				  0, -EIO);
-> +		return -EIO;
-> +	}
-
-[Severity: High]
-Does this check get bypassed after waiting for transmit space?
-
-If the transmit window is full, rxrpc_send_data() jumps to wait_for_space
-where it drops call->user_mutex and sleeps:
-
-	ret = rxrpc_wait_for_tx_window(rx, call, &timeo,
-				       msg->msg_flags & MSG_WAITALL);
-    ...
-	if (call->interruptibility == RXRPC_INTERRUPTIBLE) {
-    ...
-	} else {
-		mutex_lock(&call->user_mutex);
-	}
-	goto reload;
-
-When it reacquires the lock, it jumps to the reload label, which is located
-after the RXRPC_CALL_TX_ERROR check.
-
-If another thread encounters a terminal crypto error during the lock-drop
-window and sets RXRPC_CALL_TX_ERROR, won't this thread blindly reuse the
-corrupted call->tx_pending buffer when it wakes up?
-
-[ ... ]
-
-> @@ -440,12 +446,21 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
->  		/* add the packet to the send queue if it's now full */
->  		if (!txb->space ||
->  		    (msg_data_left(msg) == 0 && !more)) {
-> -			if (msg_data_left(msg) == 0 && !more)
-> -				txb->flags |= RXRPC_LAST_PACKET;
-> -
-> +			/* Do any required crypto.  If this fails, it could
-> +			 * have corrupted the txbuf content with a partial
-> +			 * encrypt.  Assume that ENOMEM is retryable, but
-> +			 * everything else is terminal.
-> +			 */
->  			ret = call->security->secure_packet(call, txb);
-> -			if (ret < 0)
-> +			if (ret < 0) {
-> +				if (ret == -ENOMEM)
-> +					goto maybe_error_rewind;
-
-[ ... ]
-
-> @@ -463,6 +478,20 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
->  	_leave(" = %d", call->error);
->  	return call->error;
->  
-> +maybe_error_rewind:
-> +	/* If we got a retryable error after copying all the supplied data into
-> +	 * the last packet, we need to rewind the buffer by one byte so the
-> +	 * caller knows they need to retry.
-> +	 */
-> +	if (copied && !more && !msg_data_left(msg)) {
-> +		txb->space  += 1;
-> +		txb->len    -= 1;
-> +		txb->offset -= 1;
-> +		copied      -= 1;
-> +		if (call->tx_total_len != -1)
-> +			call->tx_total_len += 1;
-> +		iov_iter_revert(&msg->msg_iter, 1);
-> +	}
->  maybe_error:
-
-[Severity: High]
-Does this error path drop the -ENOMEM error code and incorrectly return
-success?
-
-When secure_packet() fails with -ENOMEM on the final packet, it jumps to
-maybe_error_rewind, and falls through to maybe_error.
-
-If data was copied prior to the failure (copied > 0), maybe_error jumps
-to success:
-
-maybe_error:
-	if (copied) {
-		if (rxrpc_call_is_complete(call) &&
-		    call->error < 0) {
-			ret = call->error;
-			goto out_txb;
-		}
-		goto success;
-	}
-
-Will this cause kernel callers like AFS (which use MSG_WAITALL) to see a
-positive return value, assume the send succeeded, and hang forever waiting
-for a server reply that will never arrive because the final packet was
-dropped?
-
->  	if (copied) {
->  		if (rxrpc_call_is_complete(call) &&
->  		    call->error < 0) {
+Thanks,
+Vasilij
