@@ -1,152 +1,203 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D770422536
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 13:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3834641A4F8;
+	Mon,  3 Aug 2026 14:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785765595; cv=none; b=pBe/6jTye6u20WRd7DxxiXAoPM4XFX0bSig/XlN+i3alK7IByBj8ElxoPnE4PtX/YxQKmlJpj6YrVFlq6TlBYm6yEeG9qYyBcEsKQvuz8V6w/BtKwhztAheTsQHwdflpHliwaQQyX49s8hAfGs7e2fsAqoJgNc1dsXxlQgTAuzw=
+	t=1785765702; cv=none; b=dH7mzDK+7MZvca55evsA2WlYF5+30Du2ua2mYW3b9Dv2YrtToYPdfPg1HpRPUiJaVmzmModO8rRf7aTRy1WWDGNU+KUw4JOpRghlvhJxkIQyeVX9IAEt8f7Q1tZ1cgM11wJbvfbxs9qPsDHKkeaLInJglU8s3isYPdmleYQ8CPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785765595; c=relaxed/simple;
-	bh=Xm/7DtiEMg1IjVRIDD0Dmnqy+tWy/4RQwD2wLYgsQ1U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MPPCrBIjCo03cchZM2KqGYAVhnuHCy6oy+n+noCe/4owQtRIhHIb2l6GrH8IQKoCt3nIVimUw5vrEWS7T/WwVeM6CPUsJUNhAyBR03E/HwrZd0OkiCRvpnuZhxfsCyya2Zdcj2f0amaTlzkzN0qOi/A5L/rGfjMgC6Kh7HZJ+Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a/mbDd7b; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785765702; c=relaxed/simple;
+	bh=JRKovnC0HT5YJMg0mX4D682OqDcAUpsQSFHI79pEAzw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GMTLndziNUfdANDHp8fGPHnadme41UZCBwn5wTj0XtpAD1lGvs5FWby/UrHQPG2E6bq1s+auPwJAYgMBtrWyzIvaFmWwOI0awZz8SwhzERCHmGJC/9CQKxDJ8PihYRVyVe+6W5YkAGxTzIO2BgjKmupIdizTGfTe7yO1VkmDW9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=npJot8k/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a/mbDd7b"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38759bcd877so3027354a91.2
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 06:59:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785765594; x=1786370394; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=r+pksryrxLXLGb/sclyi3ItCIZaPNjNevdntxR0DkJM=;
-        b=a/mbDd7bmFL43HNAgNHEUc1w4UxVNQekw3kRIPkcmw0jd4czbJM3qGRb00uLFJ2DQp
-         CxMzHB0py5bQwn1wmtmLnEpRlJ66ba6Z6Q33NXYSM8eHKaiCfsDMo/2wPIRRmB5hel7O
-         z5KoVMFQEV+/PY4RB1VPh3Rys//oGNwFRyIXJlcfiOhUSAlrgHvw6Dft8jxI7A7X3H7u
-         LJqOdP8Ibu/9xdN4YuV/oc36AxSosWrH8PrAkvT0+bzVfzJH9bE+mV9Qgr5Flb3iqRPK
-         szgUs33uuKpWraDYCaplasMQGkNfOd7tnPn2f1aegzWzJE4ZLI7CHxxnliq9i0REMH8k
-         MYjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785765594; x=1786370394;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=r+pksryrxLXLGb/sclyi3ItCIZaPNjNevdntxR0DkJM=;
-        b=bsg0tKFyPog1Wt+3C2tG10sa/lp/jmoDtY4DUG55o3HvL1XlarwBtQuKbGXn0GJIve
-         AkdMx1sb+b6EnKIvhsSTX4XQw1Qu1PlxiD53benFbkInPM2lGiFFjtnCU7/yHZ8VfFy7
-         NwkUeeowAsCRhXf6lEGkgFx8HJFlyHAbNqREXY1rJU3bCgbWozrf4tFPaIsVGM+vqpwb
-         CIiZ87pSZCNpKmtbNpS//FfonV+Jje+/bxRDvyy1gZ3mPYuADbPheDw1BXHR0x5kkmRx
-         b0Nn4Ir2Vrnl9Xh7gHqT53UaAquOJPmORMxAlR41aI6EgbGwhNAC2FrWMHpC25pd/NMC
-         Jj9Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rr61OOtEmW+6d25PBqWb58/AtkRxxaRUwTmEphaPd7GSXN0E/qcKV1Jh8GeA+r3zyU1UzNe+EY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSbMjxtdwDMZpFG1hTVoEnXYhQW6dgTQ6abpt4IJtHdSF8U3WD
-	1aO0BmKEpWChMgFg1ds6iRIhbGeBMw97PPTZ7f/sSwFPmzKqSa4lauM=
-X-Gm-Gg: AR+sD11uQ1NfbO2JxVwZjAZ9A4JeU+y3itfSkII5CZxFbieEupzt0gIv7GlMCni5b9T
-	lNhn8e7uX3ZQDzNg/X5Gn2SaYgArCsHIx1V/eKG7k6aygLnUPkKQjpF0u8G8pEn72U7WWxIhfyj
-	pHkClMPr2YOr2U9J9bVyC3/HVNQ7j1oG367/wD+kI91E9I0Z8a61S4MeCagFBFm4ioZHYp+MXWs
-	5sFYlrw7rIUseKnaM6/cxcdnoHMiqGBzPff6pN/zyuFI3EU/q5ERRnHg1xuzSX5cNANcqDGgCBR
-	T124U8snVUhfTcj8d2inZHspCNzbX94ZlTVuvXpN6VAe+G1p0w1UCDP5/XkWNwI9iDI2FamTW2L
-	qMeufopexfI8/QVNSc+ZVVuIrU8r4IFIG6fwEMBovT8vAnUMWR2GKafb5b7xDO6o+41OrOCoipj
-	D9BjqotJpVxRS8ZUlhy33bP+fAeIpO2ibJG+epo4wXX3Znd+5AFjugM+tfHqB8B9+2La5OGD5W9
-	pa4+y8hlgdW5/WoGZ8OGJidtUgSkDdBfxttorYeR4pUJZixXl7ptgrYaaq5NLiFf4zOkQW2fNh9
-	NJgjQNe1ouDmpb/X5qz3Mlc=
-X-Received: by 2002:a17:90b:1d52:b0:380:540:d499 with SMTP id 98e67ed59e1d1-38fbc3fb64cmr8689147a91.6.1785765593692;
-        Mon, 03 Aug 2026 06:59:53 -0700 (PDT)
-Received: from localhost.localdomain ([1.226.165.54])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb2ce1778sm4068946a91.15.2026.08.03.06.59.50
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 03 Aug 2026 06:59:53 -0700 (PDT)
-From: Myeonghun Pak <mhun512@gmail.com>
-To: Richard Cochran <richardcochran@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Myeonghun Pak <mhun512@gmail.com>,
-	Ijae Kim <ae878000@gmail.com>
-Subject: [PATCH net v2] ptp: fc3: register PTP clock after initialization
-Date: Mon,  3 Aug 2026 22:59:42 +0900
-Message-ID: <20260803135942.48383-1-mhun512@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="npJot8k/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AE41F000E9;
+	Mon,  3 Aug 2026 14:01:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785765699;
+	bh=WncJv2kkcU64xKPGNQ9beukr0q+5pv5G1Ub8Qx4hfik=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=npJot8k/nrdn2nthtMpZON/6+VLaq8SVi8n+4nzYI0Jk2DSK5qwvIOA2D3oOkYQh1
+	 f3q1+vu33VbW5bjt0uiNre4iWtGzntus2qu1QxZJLVnfpM00USX/UMGDHcMBYLJLh+
+	 SCyj29wXRdSdHv5CHVJ1eTDd8wADiAo1t+EUvGN97K98lm32Sopdid6Do79v2v61Qw
+	 3Tw+Tf1ERJbiE/d2ZmuATr9wgacAy9Thola6shj+ZwFFKh044KBuin47utz8u6lh12
+	 Gos65PSTbKmdBKNI+sc/kNiy4T9a71yIJeOheQjkcjeeEpu5z25UvfgP7UraGMPldT
+	 bg/fIPFuUsPDg==
+Message-ID: <d01d461b-6af0-4ac6-8e5f-c7c4dfe6234d@kernel.org>
+Date: Mon, 3 Aug 2026 16:01:34 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/5] mm: Make per-VMA locks available universally
+Content-Language: en-US
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
+ david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev,
+ jannh@google.com, aliceryhl@google.com, arve@android.com,
+ cmllamas@google.com, christian@brauner.io, tkjos@android.com,
+ dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
+References: <20260802215459.2769283-1-surenb@google.com>
+ <20260802215459.2769283-2-surenb@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260802215459.2769283-2-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-ptp_clock_register() exposes the clock to userspace. If either following
-initialization operation fails, probe returns and devres frees idtfc3 while
-the registered clock still refers to the clock information embedded in it.
+On 8/2/26 23:54, Suren Baghdasaryan wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
+> 
+> The per-VMA locks have been around for several years. They've had some
+> bugs worked out of them and have seen quite wide use. However, they
+> are still only available when architectures explicitly enable them.
+> Remove the conditional compilation around the per-VMA locks, making
+> them available on all architectures and configs.
+> 
+> The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LOCK
+> when the architecture started using per-VMA locks in the fault
+> handler. But, contrary to the naming, the Kconfig option does not
+> really indicate whether the architecture supports per-VMA locks or
+> not. It is more of a marker for whether the architecture is likely to
+> benefit from per-VMA locks.
+> 
+> To me, the most important thing side-effect of universal availability
+> is letting per-VMA locks be used in SMP=n configs. This lets us use
+> per-VMA locking in all x86 code without fallbacks.
+> 
+> Overall, this just generally makes the kernel simpler. Just look at
+> the diffstat. It also opens the door to users that want to use the
+> per-VMA locks in common code. Doing *that* brings additional
+> simplifications.
+> 
+> The downside of this is adding some fields to vm_area_struct and
+> mm_struct. There are likely ways to optimize this, especially for
+> things like SMP=n configs. For now, do the simplest thing: use the
+> same implementation everywhere.
+> 
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 
-Complete the fallible initialization before registering the clock. Schedule
-the worker after registration because it requires the registered clock.
-This removes post-registration failures and avoids exposing a partially
-initialized clock.
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Fixes: 1ddfecafabf7 ("ptp: add FemtoClock3 Wireless as ptp hardware clock")
-Cc: stable@vger.kernel.org
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
----
-Changes in v2:
-- Register the PTP clock after initialization instead of unregistering it
-  while holding idtfc3->lock, which could deadlock with a concurrent clock
-  operation holding the POSIX clock rwsem.
+Nits:
 
- drivers/ptp/ptp_fc3.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 060190e12bce..77103b46b679 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1425,19 +1425,6 @@ config LRU_GEN_STATS
+>  config LRU_GEN_WALKS_MMU
+>  	def_bool y
+>  	depends on LRU_GEN && ARCH_HAS_HW_PTE_YOUNG
+> -# }
 
-diff --git a/drivers/ptp/ptp_fc3.c b/drivers/ptp/ptp_fc3.c
-index f0e0004..02b9739 100644
---- a/drivers/ptp/ptp_fc3.c
-+++ b/drivers/ptp/ptp_fc3.c
-@@ -665,8 +665,6 @@ static int idtfc3_init_timecounter(struct idtfc3 *idtfc3)
- 	if (err)
- 		return err;
- 
--	ptp_schedule_worker(idtfc3->ptp_clock, idtfc3->tc_update_period);
--
- 	return 0;
- }
- 
-@@ -825,6 +823,14 @@ static int idtfc3_enable_ptp(struct idtfc3 *idtfc3)
- 
- 	idtfc3->caps = idtfc3_caps;
- 	snprintf(idtfc3->caps.name, sizeof(idtfc3->caps.name), "IDT FC3W");
-+	err = idtfc3_set_overhead(idtfc3);
-+	if (err)
-+		return err;
-+
-+	err = idtfc3_init_timecounter(idtfc3);
-+	if (err)
-+		return err;
-+
- 	idtfc3->ptp_clock = ptp_clock_register(&idtfc3->caps, NULL);
- 
- 	if (IS_ERR(idtfc3->ptp_clock)) {
-@@ -833,13 +839,7 @@ static int idtfc3_enable_ptp(struct idtfc3 *idtfc3)
- 		return err;
- 	}
- 
--	err = idtfc3_set_overhead(idtfc3);
--	if (err)
--		return err;
--
--	err = idtfc3_init_timecounter(idtfc3);
--	if (err)
--		return err;
-+	ptp_schedule_worker(idtfc3->ptp_clock, idtfc3->tc_update_period);
- 
- 	dev_info(idtfc3->dev, "TIME_SYNC_CHANNEL registered as ptp%d",
- 		 idtfc3->ptp_clock->index);
--- 
-2.50.1
+I think either leave this in place, or remove the line above with "#
+multi-gen LRU {" as well?
+
+> -
+> -config ARCH_SUPPORTS_PER_VMA_LOCK
+> -       def_bool n
+> -
+> -config PER_VMA_LOCK
+> -	def_bool y
+> -	depends on ARCH_SUPPORTS_PER_VMA_LOCK && MMU && SMP
+> -	help
+> -	  Allow per-vma locking during page fault handling.
+> -
+> -	  This feature allows locking each virtual memory area separately when
+> -	  handling page faults instead of taking mmap_lock.
+>  
+>  config LOCK_MM_AND_FIND_VMA
+>  	bool
+
+...
+
+> diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+> index 4764d7b68f2a..2633e704c83d 100644
+> --- a/rust/kernel/mm.rs
+> +++ b/rust/kernel/mm.rs
+> @@ -174,26 +174,20 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings::mm_struct) -> &'a MmWithUser {
+>      /// When per-vma locks are disabled, this always returns `None`.
+>      #[inline]
+>      pub fn lock_vma_under_rcu(&self, vma_addr: usize) -> Option<VmaReadGuard<'_>> {
+> -        #[cfg(CONFIG_PER_VMA_LOCK)]
+>          {
+>              // SAFETY: Calling `bindings::lock_vma_under_rcu` is always okay given an mm where
+>              // `mm_users` is non-zero.
+>              let vma = unsafe { bindings::lock_vma_under_rcu(self.as_raw(), vma_addr) };
+> -            if !vma.is_null() {
+> -                return Some(VmaReadGuard {
+> -                    // SAFETY: If `lock_vma_under_rcu` returns a non-null ptr, then it points at a
+> -                    // valid vma. The vma is stable for as long as the vma read lock is held.
+> -                    vma: unsafe { VmaRef::from_raw(vma) },
+> -                    _nts: NotThreadSafe,
+> -                });
+> +            if vma.is_null() {
+> +                return None;
+>              }
+> +            Some(VmaReadGuard {
+> +                // SAFETY: If `lock_vma_under_rcu` returns a non-null ptr, then it points at a
+> +                // valid vma. The vma is stable for as long as the vma read lock is held.
+> +                vma: unsafe { VmaRef::from_raw(vma) },
+> +                _nts: NotThreadSafe,
+> +            })
+>          }
+
+With the "#[cfg(CONFIG_PER_VMA_LOCK)]" does this still need to be in a { }
+block?
+
+> -
+> -        // Silence warnings about unused variables.
+> -        #[cfg(not(CONFIG_PER_VMA_LOCK))]
+> -        let _ = vma_addr;
+> -
+> -        None
+>      }
+>  
+>      /// Lock the mmap read lock.
