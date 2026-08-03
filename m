@@ -1,63 +1,64 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5BC43304C
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 20:50:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FF343712B
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 20:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785790236; cv=none; b=i/UNvN320GHf9mEpG+nume1l5qqYWU2ag7J2tHJ/8x1aTbrudY/piE+uhINby1dVQ3IeBUoRvenSVqtvH5gysNcpsNI/iEdMN9MnUzUZqNI9zG2cbg7ns4XYT9X/sUyzTW9DtUSFDlz1SDqq6V0NfzQ8LbH/n3hRG3z7t/8eJZ0=
+	t=1785790236; cv=none; b=ZRKi9H8EPtr7LtEG+t5Kqkq1dCvZOfgL6TFreHhQJvA3vgqKTeTStBpQe8k/LpBiNAT8JyR7WJP6Kg/FgUvnLhWmIoHDEqi2bjGnfDHV7us5jqCsL9tf6n/oBS87zj++Y9kBxcNjCMrDO78Qn1is3cLOtbBWTCngrxsRSDiGjZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785790236; c=relaxed/simple;
-	bh=PuTxehw/+oG0R+AUeP1S0jJfWF/Fu/L6ssD+zcOM2zY=;
+	bh=Mv2fB5QTMgzygfKi4oX9eQwPWNNkjLy2vCUnRHb4K0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqxFgmgCQGusmwvlsvQcgsRB5rFracGwlQIOTZkhysjLSH10AotYi0KNwQFYOUjCLmSQ/6iJLwCCLby6gwJnvt01aKtv83wsNBIZWLUj/egqr+Aue+r5YKaj1la9fCeuhFLwhTVeoMzaxx0SVmqUaKrDiknWTJWgm3mY4iFC0IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VblUMTIK; arc=none smtp.client-ip=209.85.216.41
+	 MIME-Version; b=SeCjnjHb4fdHsuNZBh33LF1nIaY9kRI7zQeaBgpgoyHJYoMWV++l3/2CfYNuI5biPATc5yRMoE+beL1ZvyXWEdHpb3oRfySOFRguHm9HPEKAmGf7EO0pXkurjTWl2SuwowgMUVEqfZsd7in3amiZ8dxsJ5YDNTvy2rOEL5MMkEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R5/NJ34K; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VblUMTIK"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38e3efab7e0so267609a91.0
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 13:50:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R5/NJ34K"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38e071ed6aeso2899499a91.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 13:50:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785790233; x=1786395033; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785790230; x=1786395030; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gcnfcYJ16OlC/FCeHSIUYdGv8WlSuwcbHtR9yqY3EXk=;
-        b=VblUMTIKXDgt/FYOzdKV8CxFYreBf1imFvjbTciNdXpEVoYT6evIVDoFVcVa8TxNLb
-         Os8VC7HNGV1zToIQuTx38zg3bOGGdUhbdKsMYiNdGYbRVnRDq/nzrVieSr4WAhB5a62j
-         WGUBH9SnpdQRu2JTsrIK0oKeqb+uC6im13PGHNusT1nuDdvF6KOi/Hx4aZmTc9uJHGjF
-         wWNXpBTWY2OtEnigx80RLf4xXLV56ZHuIhgWKiY/v7RXoLlhuxj1yiKuMrxF289M5gEs
-         P/qWGkkxnVh8BNrMWlwHUrfNy4+4Z+nkfbKvCh6NTv7J6gbvtGh3KzKhscZluPuKuDmA
-         Wc0w==
+        bh=jXjf3n6y2o2sUp9ziyNWD3SU5x1Q1/QeHjG5pG2QUDY=;
+        b=R5/NJ34KbgbSSSwP/mL7/dZ/mxx+64Oj39jF8LRMthrCM21JJAEe9emil60hag8QPu
+         nVAiKqVQ5JkM893S+WpcxRS8TZpKxim9FquWzc9SyaIB8Ijh3lXCr4+vDyq5CerCcgrw
+         LZg75+PfFwImIuT/JAOZMFSdKyMb1rhviawBF7V73lMvl2JUbcNchdVxqde8bhe1tbj5
+         rrxbhvvh1dTpyHdVhQoC6rY6jHOmNsDuR14gQXJqsZVfEK4Oly3LWWQz68rIgapkToDf
+         vfDnp5I4EsbeeViocd1l3xMKGjNGzs4YBBUPH/xeeWOd6tLHBhih0ZjLxtZaiDDd+FLk
+         C2+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785790233; x=1786395033;
+        d=1e100.net; s=20251104; t=1785790230; x=1786395030;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gcnfcYJ16OlC/FCeHSIUYdGv8WlSuwcbHtR9yqY3EXk=;
-        b=mpe2IvnNXlzMaVxVJ5taU/PDyCCo/bKWxrzXC4xNhpsX52+SJCcjJkhXgdo8ckA0sH
-         92Rgpdu00U7UIeULM370lXN18w4ThJSRtGid8qh0Qhg6vCBi1Ea+deeiy779WxS/fgIA
-         PcYK9LY6GQdzBJNOAgGy+MC81FDPNsuudlZxCXk6VUhj1VfmVX8IFDIe9oe4ZM6dIk4Z
-         Wk5o2JnXMBznqgGc3UGEijQKwL1SkTgtyNJOzfQpC6H/PKfn8EjkLLlKlPjRVYSSEmq7
-         Al5u5Vhky7K6L/AxZ4E5/2u71XefADVzPyN8UfUxTqZbLyCITNAFY0ADHhLyiLzUBl0r
-         T0Jg==
-X-Forwarded-Encrypted: i=1; AHgh+RoIx4XcNdKqcERhh4hagrT9z4J9D15aGr71HKO2uG7nrhC0EgQ8Xnq6d9vBUdGR0EwrJV2VMN8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6pBiWvBfUOjImhi88R93ktlKfu6nrHBgCJ4v4+IvZ55yA4/Vw
-	zBy6kwcnDGeqE8wf7ZjWAimvTPqqotBbje7LATyH/v64rMxi60Kp+u3qzZArmUTg
-X-Gm-Gg: AR+sD10h82Fz0gpzUxdG+c6KuCXvFpvWrw1k5gv2/+qy4uGZa6z2Ucp2Kl5R2s/YiLS
-	cka3kzqkvsBioYSWPhAS5w0tRB843+wXTNiv8mBoCdB8/YDxcMc+4YLMMwJGjUeZQHMSSmjYGr2
-	6nm1pNpSdCvAL46KgPcahZTPayv8jr9j9KjQyolreNKU+llnBa5g5Uy2LBOwd9UA6BxDPdElUHg
-	3fvnLv/pBRNLe/VQziYEHjkHyyAW6Uw9IH+MR6vvX5t5APEtNbLEHoovyccqd2qhmiyEigR8bMM
-	PBYRPD/iqnk846z1z58xIbP8sy1ZLWypMgnJgeVpz4DBNRbjWfIJZuICTcDEQEyO4tSibQ32WIA
-	bLGmKy3GhDq+4gCxci5fjSvbAh+wBj/NFnZdZ3g3flX7Ztv1pKwAFmBMRMVIAVYnKusJIyiEoWT
-	z/0LvdzdmEZ2kWB+xq6IDcIEt9ZJrsuv0mCjiqZc8soATkX/EMJHDXURyC7tVe1UjZIv0=
-X-Received: by 2002:a17:90a:d885:b0:38e:9784:dd47 with SMTP id 98e67ed59e1d1-38febf7117amr885915a91.1.1785790233222;
-        Mon, 03 Aug 2026 13:50:33 -0700 (PDT)
+        bh=jXjf3n6y2o2sUp9ziyNWD3SU5x1Q1/QeHjG5pG2QUDY=;
+        b=chFp2y+2qbp8uNLDa5ons4W8LP4h8H15CzLzj400gr1LdM3jc0d7DpuzJqQBwND5W+
+         COy3RoeN5QMmWR+rP5NGy4huF7HIbQywiwAAXldFu9ssZQA4WRuVkcijnchlPajZs2L6
+         lOIyT1/+QIMmvKyATHG5LH+4K+IEp2YDw8+FYKz5DUpRHUYjUDBGO3pC7Hjm6/bbfURM
+         MJUl9Dxudz9y0m9K8/hwh0HpEFFWof+JCmaZ71qygrZhT4TzRh3H2AD1ZTyM+3Ql72Hw
+         +VpzdwQK6cnBG8zTx84JmMKaR/LH/1hiwxhF6jjicxgBOsulG2LM/dOgYBaVAlesEyC3
+         nsmQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpJPLRY0Wp+cvi3TetpJoJOojsTvw57moiaiX918FEP3rJp5yXyah8v4A3QtQuJHUNuFRIZkVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPlZAoUeMWV2yRfCYIQ2v9wyp7fVTkUpAl0zKmCFSoAwoDz9VM
+	AGY0G+5B+FTXtd95WAvOM73jJPVEdeX7Vc3q0JEq6aHGYgNDQzVVXC4a
+X-Gm-Gg: AR+sD125lvq2PGIicZx40vnxVEFu99XnW3Nvlmm9JbssDZGqzHG1SS3Z1AmbFK6wA1p
+	W4+yln2v8YXMdILp8xh7npqc80Mu1xSdskSig24C4433+DMipuTmoWeAd8UAYCTK+P5aG1hK4TQ
+	VNIisnQnP9ZOTpyTurGTTeUkanC5Bs+fQ7Kpg9mMPAf/SdfKX+j7IMvukd2NQh5susenCd1EC4c
+	SHHUmYyZtApinLdGOBzbC8xeWqC4DICDK/vgX9rL2JHn9EDXU6AZXbJdnfwk8gwHvIXEY5LMrFh
+	hK702UfQlV+izBVFGrJqis40RB4tKH2bkfmliM0A/ttmqBU0ixfO8DyyOxUd3/JkKhqXWRxn80p
+	Dd4ukk8w0ncIU7f1JWhZWYrXs4mj8Y2EF9v5AE1l4Z7hyl1pgy/ziaH78jv13cUr+M/9n4u97mx
+	7Brx+Qo0KroS0rBy9Z3DgvqJPqjNPUEy8EyTxo0pDpa8hEJwS7RfV23MlIb/dCYeG8s+tgnw/tE
+	+SGAA==
+X-Received: by 2002:a17:90b:53c7:b0:38d:a150:ee04 with SMTP id 98e67ed59e1d1-38fbc4ef153mr9786906a91.30.1785790229767;
+        Mon, 03 Aug 2026 13:50:29 -0700 (PDT)
 Received: from Mac.net ([12.162.234.74])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fab4d10bbsm33112324c88.11.2026.08.03.13.50.29
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fab4d10bbsm33112324c88.11.2026.08.03.13.50.26
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 03 Aug 2026 13:50:32 -0700 (PDT)
+        Mon, 03 Aug 2026 13:50:28 -0700 (PDT)
 From: Ahmad Byagowi <ahmadexp@gmail.com>
 To: linux-leds@vger.kernel.org,
 	devicetree@vger.kernel.org,
@@ -81,11 +82,10 @@ Cc: Lee Jones <lee@kernel.org>,
 	Kees Cook <kees@kernel.org>,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	linux-hardening@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [RFC net-next v2 4/6] ptp: ocp: Validate EEPROM board IDs
-Date: Mon,  3 Aug 2026 13:50:09 -0700
-Message-ID: <20260803205011.1249-5-ahmadexp@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: [RFC net-next v2 3/6] i2c: mux: Propagate software nodes to channel adapters
+Date: Mon,  3 Aug 2026 13:50:08 -0700
+Message-ID: <20260803205011.1249-4-ahmadexp@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260803205011.1249-1-ahmadexp@gmail.com>
 References: <20260803205011.1249-1-ahmadexp@gmail.com>
@@ -97,149 +97,119 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The EEPROM board ID is a fixed 13-byte field. It is stored without room
-for a terminator and passed to devlink as a C string. An erased EEPROM
-therefore exposes 0xff bytes and can make devlink read beyond the field
-while formatting board.id.
+Device Tree channel nodes are associated with the adapters created by
+i2c-mux, but equivalent software-node descriptions are not.
 
-Reserve a trailing byte, classify erased and malformed contents, and
-publish board.id only when the field contains printable text with valid
-padding. Continue reporting the serial number when the board ID is
-absent.
+Find the software-node child whose reg value matches the channel and
+assign it to the new adapter. Keep a reference for the adapter lifetime
+so downstream clients can find the channel by firmware node.
 
-Fixes: 0cfcdd1ebcfe1a9b262f6ad8419580720dc843c4 ("ptp: ocp: add nvmem interface for accessing eeprom")
-Cc: stable@vger.kernel.org
 Signed-off-by: Ahmad Byagowi <ahmadexp@gmail.com>
 ---
- drivers/ptp/ptp_ocp.c | 69 +++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 66 insertions(+), 3 deletions(-)
+ drivers/i2c/i2c-mux.c | 55 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 35e911f1a..cec936bd1 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -347,6 +347,13 @@ struct ptp_ocp_serial_port {
- #define OCP_SIGNAL_NUM			4
- #define OCP_FREQ_NUM			4
+diff --git a/drivers/i2c/i2c-mux.c b/drivers/i2c/i2c-mux.c
+index 681a201c2..1e587ea4e 100644
+--- a/drivers/i2c/i2c-mux.c
++++ b/drivers/i2c/i2c-mux.c
+@@ -25,6 +25,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/property.h>
+ #include <linux/slab.h>
+ #include <linux/sysfs.h>
  
-+enum ptp_ocp_board_id_state {
-+	OCP_BOARD_ID_UNREAD,
-+	OCP_BOARD_ID_VALID,
-+	OCP_BOARD_ID_ERASED,
-+	OCP_BOARD_ID_INVALID,
-+};
-+
- enum {
- 	PORT_GNSS,
- 	PORT_GNSS2,
-@@ -401,8 +408,9 @@ struct ptp_ocp {
- 	bool			fw_loader;
- 	u8			fw_tag;
- 	u16			fw_version;
--	u8			board_id[OCP_BOARD_ID_LEN];
-+	char			board_id[OCP_BOARD_ID_LEN + 1];
- 	u8			serial[OCP_SERIAL_LEN];
-+	enum ptp_ocp_board_id_state board_id_state;
- 	bool			has_eeprom_data;
- 	u32			pps_req_map;
- 	int			flash_start;
-@@ -472,18 +480,23 @@ struct ptp_ocp_eeprom_map {
- 	.len = sizeof_field(struct ptp_ocp, member),		\
- 	.bp_offset = offsetof(struct ptp_ocp, member)
- 
-+#define EEPROM_ENTRY_LEN(addr, member, entry_len)		\
-+	.off = addr,						\
-+	.len = entry_len,					\
-+	.bp_offset = offsetof(struct ptp_ocp, member)
-+
- #define BP_MAP_ENTRY_ADDR(bp, map) ({				\
- 	(void *)((uintptr_t)(bp) + (map)->bp_offset);		\
- })
- 
- static struct ptp_ocp_eeprom_map fb_eeprom_map[] = {
--	{ EEPROM_ENTRY(0x43, board_id) },
-+	{ EEPROM_ENTRY_LEN(0x43, board_id, OCP_BOARD_ID_LEN) },
- 	{ EEPROM_ENTRY(0x00, serial), .tag = "mac" },
- 	{ }
+@@ -264,6 +265,49 @@ static const struct i2c_lock_operations i2c_parent_lock_ops = {
+ 	.unlock_bus =  i2c_parent_unlock_bus,
  };
  
- static struct ptp_ocp_eeprom_map art_eeprom_map[] = {
--	{ EEPROM_ENTRY(0x200 + 0x43, board_id) },
-+	{ EEPROM_ENTRY_LEN(0x200 + 0x43, board_id, OCP_BOARD_ID_LEN) },
- 	{ EEPROM_ENTRY(0x200 + 0x63, serial) },
- 	{ }
- };
-@@ -1969,6 +1982,52 @@ ptp_ocp_nvmem_device_put(struct nvmem_device **nvmemp)
- 	*nvmemp = NULL;
- }
- 
-+static enum ptp_ocp_board_id_state
-+ptp_ocp_classify_board_id(char *board_id)
++static struct fwnode_handle *
++i2c_mux_get_channel_swnode(struct i2c_mux_core *muxc, u32 chan_id)
 +{
-+	bool all_zero = true;
-+	bool all_ones = true;
-+	bool terminated = false;
-+	unsigned int i;
++	struct fwnode_handle *dev_node = dev_fwnode(muxc->dev);
++	struct fwnode_handle *mux_node, *child = NULL;
++	u32 reg;
 +
-+	board_id[OCP_BOARD_ID_LEN] = '\0';
-+	for (i = 0; i < OCP_BOARD_ID_LEN; i++) {
-+		u8 value = board_id[i];
++	if (!is_software_node(dev_node))
++		return NULL;
 +
-+		all_zero &= value == 0;
-+		all_ones &= value == 0xff;
-+	}
++	if (muxc->arbitrator)
++		mux_node = fwnode_get_named_child_node(dev_node, "i2c-arb");
++	else if (muxc->gate)
++		mux_node = fwnode_get_named_child_node(dev_node, "i2c-gate");
++	else
++		mux_node = fwnode_get_named_child_node(dev_node, "i2c-mux");
 +
-+	if (all_zero || all_ones) {
-+		board_id[0] = '\0';
-+		return OCP_BOARD_ID_ERASED;
-+	}
-+
-+	for (i = 0; i < OCP_BOARD_ID_LEN; i++) {
-+		u8 value = board_id[i];
-+
-+		if (terminated) {
-+			if (value)
-+				goto invalid;
-+			continue;
++	if (mux_node) {
++		/* A "reg" property indicates an old-style firmware entry. */
++		if (!fwnode_property_read_u32(mux_node, "reg", &reg)) {
++			fwnode_handle_put(mux_node);
++			mux_node = NULL;
 +		}
-+
-+		if (!value) {
-+			terminated = true;
-+			continue;
-+		}
-+		if (value < 0x20 || value > 0x7e)
-+			goto invalid;
 +	}
 +
-+	if (board_id[0])
-+		return OCP_BOARD_ID_VALID;
++	if (!mux_node)
++		mux_node = fwnode_handle_get(dev_node);
++	else if (muxc->arbitrator || muxc->gate)
++		child = fwnode_handle_get(mux_node);
 +
-+invalid:
-+	board_id[0] = '\0';
-+	return OCP_BOARD_ID_INVALID;
++	if (!child) {
++		fwnode_for_each_child_node(mux_node, child) {
++			if (fwnode_property_read_u32(child, "reg", &reg))
++				continue;
++			if (chan_id == reg)
++				break;
++		}
++	}
++
++	fwnode_handle_put(mux_node);
++	return child;
 +}
 +
- static void
- ptp_ocp_read_eeprom(struct ptp_ocp *bp)
+ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+ 			u32 force_nr, u32 chan_id)
  {
-@@ -2001,6 +2060,7 @@ ptp_ocp_read_eeprom(struct ptp_ocp *bp)
- 			goto fail;
+@@ -364,6 +408,12 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+ 
+ 		priv->adap.dev.of_node = child;
+ 		of_node_put(mux_node);
++	} else {
++		struct fwnode_handle *fwnode;
++
++		fwnode = i2c_mux_get_channel_swnode(muxc, chan_id);
++		if (fwnode)
++			device_set_node(&priv->adap.dev, fwnode);
  	}
  
-+	bp->board_id_state = ptp_ocp_classify_board_id(bp->board_id);
- 	bp->has_eeprom_data = true;
+ 	/*
+@@ -408,6 +458,8 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+ 	return 0;
  
- out:
-@@ -2177,6 +2237,9 @@ ptp_ocp_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
- 	if (err)
- 		return err;
+ err_free_priv:
++	if (is_software_node(dev_fwnode(&priv->adap.dev)))
++		fwnode_handle_put(dev_fwnode(&priv->adap.dev));
+ 	kfree(priv);
+ 	return ret;
+ }
+@@ -420,6 +472,7 @@ void i2c_mux_del_adapters(struct i2c_mux_core *muxc)
+ 	while (muxc->num_adapters) {
+ 		struct i2c_adapter *adap = muxc->adapter[--muxc->num_adapters];
+ 		struct i2c_mux_priv *priv = adap->algo_data;
++		struct fwnode_handle *fwnode = dev_fwnode(&adap->dev);
+ 		struct device_node *np = adap->dev.of_node;
  
-+	if (bp->board_id_state != OCP_BOARD_ID_VALID)
-+		return 0;
-+
- 	err = devlink_info_version_fixed_put(req,
- 			DEVLINK_INFO_VERSION_GENERIC_BOARD_ID,
- 			bp->board_id);
+ 		muxc->adapter[muxc->num_adapters] = NULL;
+@@ -430,6 +483,8 @@ void i2c_mux_del_adapters(struct i2c_mux_core *muxc)
+ 
+ 		sysfs_remove_link(&priv->adap.dev.kobj, "mux_device");
+ 		i2c_del_adapter(adap);
++		if (is_software_node(fwnode))
++			fwnode_handle_put(fwnode);
+ 		of_node_put(np);
+ 		kfree(priv);
+ 	}
 -- 
 2.50.1 (Apple Git-155)
 
