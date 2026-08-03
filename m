@@ -1,115 +1,117 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D736375F65;
-	Mon,  3 Aug 2026 03:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8627372056
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 03:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785728019; cv=none; b=QO8lzTvgz96a/pFbtKXclk3+3pliXoq6nZ19rH0hR1uQLfWOUrYayIpWvBAx/zTe3QjkQhDISYfWfOcfS1tLONyKHIWGK14wwNxNbS6yhvYZeEgGU3Uo2w0sB8YLLfeirnMezwViAoX8e6GHaFWTP54S5RoDb0//4ZCLCLXHEp8=
+	t=1785728484; cv=none; b=KWHZgkQRQSjksrbIIuouSE0ZWqdg/iK7X65bTHqxNBTfnApeEapuUgPTYpYNaKppY6rXqox3/ujns3kOvCViLnhIZVwYBqiejzNTOrGXvzKAW1JSJgxQwwDUmq/AyCGOKX78DnJHOMhVuXd+8co2E9PlmbAebsDYpFxMSYmRGq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785728019; c=relaxed/simple;
-	bh=3tr1cdtwUZcGsGnAkNE2W32XReu7tEZGQtl8jz/KkiQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=r3s6ZAM/uA/YiYOKb0yv7QY7R9u+NVSbMGHmM3RQIu5rnA2Wg79FWxOZ730ln9tuvLUWivSTobG64r713lF/AzssMoen5UPXo5gAw+gsI7ofVIiEY65Z3kZAw6aDkqRdx6w5Am151cCF2wnnJ0sgWvOg6+qUmxu9s6nWsEmyhpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=P6ZyMYwL; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1785728484; c=relaxed/simple;
+	bh=NCMW4kQRyBWSj2E3oOTBkzWRrKKMpt0eKzLDMpatx9c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LHCJ1g/PhQwe3sdbMJ0fXcS7lxEGnASxNIdGnsAG8D3P8qgDRh/IGXtq2cdF82uuiKwAgOBOU4R+401KKAJ6ZC8gtqvTjphM7X7tp76e63GbXxklq9xTmMDhdFy6MCefoYQqBc0xDv3IZzVOtxG1HzgdVMU2DSu7fSWlUE/tJG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=xnK6PMTq; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="P6ZyMYwL"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6733WBplC3871711, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1785727932;
-	bh=rWszaDzIZOV88AL+zVRTO6AmHfilyQN6RMeq13BwIW4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=P6ZyMYwLUFAU/NQalJYqF3YKQ10HrKubRWdvJIJF7hqKvfxCJghgt0O4W/40avZ7q
-	 Hw1h3VUEovkXPiLxlWdDMAb8dPAFB4IF9hyZkauTAYmOfFRLfXEEBDdC6ExPB3iYJ3
-	 IpANAGDm2FgV5m8wkPr7JphxM9eS+A1rchwZC9eFrfZ7qxqWaNxVDgxnCb4HTmfO/2
-	 e3hOPEB+ZYW+mGrYnhIPfvNckitpnQDRxhwP/IluYJpHTs4j7HgBKrTVhhKE6rJROK
-	 p7Eq7y/rt3/yUTdkq9CHeSviWnR41Ge1IZFByq/6tdLkOS+bSWc3/pKEqAr6uWt31j
-	 97FavAAoEHuiA==
-Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6733WBplC3871711
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 3 Aug 2026 11:32:12 +0800
-Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
- RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 3 Aug 2026 11:32:12 +0800
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
- RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.043; Mon,
- 3 Aug 2026 11:32:12 +0800
-From: Javen <javen_xu@realsil.com.cn>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "nic_swsd@realtek.com"
-	<nic_swsd@realtek.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "maxime.chevallier@bootlin.com"
-	<maxime.chevallier@bootlin.com>, "horms@kernel.org" <horms@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"daniel@makrotopia.org" <daniel@makrotopia.org>, "linux@armlinux.org.uk"
-	<linux@armlinux.org.uk>, "enelsonmoore@gmail.com" <enelsonmoore@gmail.com>,
-	"daniel@thingy.jp" <daniel@thingy.jp>
-Subject: RE: [PATCH net-next v8 3/7] r8169: add support for phylink
-Thread-Topic: [PATCH net-next v8 3/7] r8169: add support for phylink
-Thread-Index: AQHdH++uiKR31q7P6ECrRxr8Kj4WuraKV/oAgAFWRmA=
-Date: Mon, 3 Aug 2026 03:32:12 +0000
-Message-ID: <4338caa7b5d244e1b0d9a6713ed8fce3@realsil.com.cn>
-References: <20260730065014.883-1-javen_xu@realsil.com.cn>
- <20260730065014.883-4-javen_xu@realsil.com.cn>
- <cfcf87aa-3d4d-411a-9af0-5a5b78c9ae89@lunn.ch>
-In-Reply-To: <cfcf87aa-3d4d-411a-9af0-5a5b78c9ae89@lunn.ch>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="xnK6PMTq"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38e071ed6aeso2226653a91.0
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 20:41:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1785728482; x=1786333282; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NCMW4kQRyBWSj2E3oOTBkzWRrKKMpt0eKzLDMpatx9c=;
+        b=xnK6PMTqK146IzXA4PJD65/xzUYMlsQsTRsM3vQHESajUrVka74oq2zKaSAZHhWR6u
+         Hi5tCIhz1hqbjkScLbKtyvYa8YPscLTwibI/tYHhhTMxMqgipa+xRdtVU9/yB0ThvIk3
+         XP0HqvWIXZ1PWlAO3GsUkmaPQzBVGfnjFMc8FLDYmdmkuzYkcQD7wMzYgC1pt0018/P6
+         SfRrtP5oP73JWVdYmVZp9/e004xJgJQWl3WKR2ft3FT2oBxuoN8kXV9SzpbWyu1nRmWv
+         cJ+ZZlYmJOz6/GaCiJAoFphm8qQj5yV9NyLTp6UOa6XmiGrQen1Fg6YLV9marLubqsFY
+         jEfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785728482; x=1786333282;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NCMW4kQRyBWSj2E3oOTBkzWRrKKMpt0eKzLDMpatx9c=;
+        b=KPTSId4pwcW2Go68warRzndqSPNhRN66N3aw2GK9bKkrrQPRjiCiFQWRLmg42Il4yM
+         vyEWHE1IUEhtQZG/2pv5ygQU8L3uPcrx5SxkBBR1g9fU1DHZ58bAivvSwLvjyFZoL6yw
+         CEMt3edNK8RFGKgISXFKqJeIzl9vEmYSghULeyEh3V/LPRzp32tt9XJ+eSo1W1zk9dDg
+         Ru94XjXNWLLFmtwPR5apSWAU6pIqKVa2+tYzZeL0qwLd89DcMM0XJOFREF9+HoRLw4op
+         OO6pQlh8XVek/M6uFRMEGkGi9WO3xKnbwdiWXiGZpd4rURI2GUEQJqcnR0Y0OXpikNOV
+         2XHw==
+X-Forwarded-Encrypted: i=1; AHgh+RrEr2f0SQz2meEgoM4oi72QC+6vAnF14JtVkgEsyvj4mr5GyDPwqDEBIJW2dmzRarHIgDBfcGg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylL7qugIG4UdrvipCUwWURJHQSuLBaOdM6SnjXLrq0oAl/Jpk4
+	qUanVoBPbUBgJc1hLwz1qia/7o31E3p+YXY5qnMXGd5Tsmb6UIjQztf45VNEAqIAUk4=
+X-Gm-Gg: AR+sD13wgx2hGpUEiCB+JFlOI0HHGLXeUJmXAN0FA6WG1Hcj0qytcWK+G+hS8OLxyN3
+	GDpVze5YHaK7D3k2Nyb3fwezzNMdskOf46q3ayDlF9gIsmG2yFlBQjfWP104Y9VABM+Ztc92TCd
+	48YQSMNwDBY9PxZfuxZJ1zEsCI1nq73eGEET3NeXJgHvvyWOuimeZYSJukxkdscDiUXucYA0dK5
+	+kZydH8KjJPyWy4FwdWyYkpw6dXkIu90a9kdi3jKpBe4BJAtpMAXzvh7eu+LxDuvdWYDY3ku/Lp
+	jkx0oIckg3vLO4j0z1LSFstxEqZVVYfGJh/FRkimj1VBG4zUJ/HXh32ReezQNpXkK8amD5mQRcD
+	oV5SBQ/tl2568vOU1fNvPxXsszXAGKUv2N/tGMyJtiALohg+upmbu6P+RgLWNTljG6SOz5kik8J
+	XYAtaP/wxMsPsbrJGvxCXuj5b8OQ8gcIqDIhAK1thUce8fHYUIpfPkdjCmHcf2NETNgKfc
+X-Received: by 2002:a17:90b:50c4:b0:38e:447c:9a15 with SMTP id 98e67ed59e1d1-38fbc516655mr7151775a91.36.1785728481711;
+        Sun, 02 Aug 2026 20:41:21 -0700 (PDT)
+Received: from yhlee-960QFG.. ([125.131.91.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb2bac654sm3299609a91.10.2026.08.02.20.41.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Aug 2026 20:41:21 -0700 (PDT)
+From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+To: alibuda@linux.alibaba.com,
+	dust.li@linux.alibaba.com,
+	sidraya@linux.ibm.com,
+	wenjia@linux.ibm.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	mjambigi@linux.ibm.com,
+	tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com,
+	guangguan.wang@linux.alibaba.com,
+	kees@kernel.org,
+	gustavoars@kernel.org,
+	sashiko-reviews@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+Subject: Re: [PATCH net v5 2/3] net/smc: bound the peer rkey counts in SMC-Rv2 LLC messages
+Date: Mon,  3 Aug 2026 12:41:05 +0900
+Message-ID: <20260803034105.2051552-1-yhlee@isslab.korea.ac.kr>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260801094208.1937951-3-yhlee@isslab.korea.ac.kr>
+References: <20260801094208.1937951-3-yhlee@isslab.korea.ac.kr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
->
->> +static void rtl_mac_link_up(struct phylink_config *config, struct phy_d=
-evice
->*phydev,
->> +                         unsigned int mode, phy_interface_t interface,
->> +                         int speed, int duplex, bool tx_pause, bool
->> +rx_pause) {
->> +     struct rtl8169_private *tp =3D container_of(config, struct rtl8169=
-_private,
->phylink_config);
->> +     struct device *d =3D tp_to_dev(tp);
->> +
->> +     tp->speed =3D speed;
->> +     rtl_link_chg_patch(tp, speed);
->> +
->> +     pm_request_resume(d);
->
->This does nothing with rx_pause and tx_pause. How is the MAC getting
->configured for flow control?
+> Does this bounds check allow processing of stale memory?
 
-To actually generate pause frames, the MAC needs Rx FIFO "Near Full" and "N=
-ear Empty" thresholds. The driver configures these statically during hardwa=
-re initialization (rtl_hw_start_xxx) by writing to ERI registers 0xCC (RFIF=
-ONFULL_TH) and 0xD0 (RFIFOEMPTY_TH) via rtl8168g_set_pause_thresholds().
+It does, and 3/3 of this series stops it. This patch bounds by the size
+of the buffer the message landed in; 3/3 copies the tail of the message
+into the queue entry and bounds by its length instead.
 
-Software enables/disables flow control by setting the Local PHY registers p=
-hy_set_asym_pause(). After auto-negotiation with the Link Partner, the PHY =
-resolves the flow control capabilities. Once the link is up and flow contro=
-l is negotiated, the integrated Realtek MAC hardware automatically reads th=
-e PHY result.
+The bound in this patch never fires on a link with a shared v2 receive
+buffer. It works out at 507 rkeys for ADD_LINK and 2046 for
+DELETE_RKEY, and the min_t() above it has already capped both at 255.
+I measured a 44-byte DELETE_RKEY_V2 declaring 255 rkeys: mainline and
+this patch draw the same response, and in two of the four exchanges an
+rkey read past the message was live and was deleted. With 3/3 applied
+the response reports 9.
 
-Therefore, we don't need to do anything with tx_pause and rx_pause in mac_l=
-ink_up.
+It does fire on a link without that buffer, where it becomes 9. That is
+the out-of-bounds read this patch fixes, and why it carries Cc: stable
+while 3/3 does not.
 
-Thanks,
-Javen
->
->    Andrew
->
->---
->pw-bot: cr
+Best regards,
+Yehyeong Lee
