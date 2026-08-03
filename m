@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C16E39CCF0;
-	Mon,  3 Aug 2026 07:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CC32EEE80;
+	Mon,  3 Aug 2026 07:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785740453; cv=none; b=YglCCDcb8W/O/E81itMerpj/gDsjgtRIdkYnABjL7Snob/hYQI6xamcs1vPgxs8urqutvWtx5ZJd6JnuE6KYUE/amR0x3qCa+NV9pc7n70dKtx639paevUTjpSDqryJ03f6bE+O76hG9IufTCIpdkt69xVpLmXT+RlYTzF2lnRk=
+	t=1785740521; cv=none; b=cJdHh9kd7GYnnSAuT1dNQyPvb/+6VSXvBJxAdMevabmjeMI1FHN+5B5lyWoZBwBvBynLhB4EcCuSnuDYruWTWF1Xag3G8T4H9vi73m1inXxP7XctMKiw1FSDKjEiLyfhZ0qZivSZ5iqldbyNK84DVUkRNchUytCsiIS6YnENwTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785740453; c=relaxed/simple;
-	bh=i9qxjczYBRKPFMbdEg2F+nl3jGUbygT/ra3t8nb+SDE=;
+	s=arc-20240116; t=1785740521; c=relaxed/simple;
+	bh=IIp6nv6hircunG/DWiSc4Wx0oZf2WsoI0ofMg0TQDlU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tgVNd6VNiP0qsO9qLoEKmKs661iH7X4MyfzHWaiFOJPeo/ghr15q5AhqemznP8SWrpNj0JhG/LlMIhom6/8O9TAE0qcMZniIfQlf441iyxF3WMgjODgOIoLow01+Lp6gSJXprphEKiufq4O/5T7vThT1Nbfy/Ay8ow7DpR0op6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vc3KiDz+; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=TFVYuc2OmCDFTbdwJsPVx6iqRKLUYRGEedQD0w8CLi8ikDU0c1tkH2qoqwWIhBUitiUL4CWVIHCYM10B7hbBsYqRC6Rt6l51vH44FHLmrOKEJqh0NYCLdbE1Gr1+l8MD0W9hdAdjqA6aX3Om7CiXqAo4Q4QQy/ukGT+cjyFkrtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h3lJwpv3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vc3KiDz+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACB21F000E9;
-	Mon,  3 Aug 2026 07:00:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h3lJwpv3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180691F000E9;
+	Mon,  3 Aug 2026 07:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785740451;
-	bh=i9qxjczYBRKPFMbdEg2F+nl3jGUbygT/ra3t8nb+SDE=;
+	s=k20260515; t=1785740520;
+	bh=mXNkCmOUo1oKrupKXDyg7SQqpOCYFMJaA9C9xGO5N/0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Vc3KiDz+kOPho8ipDObQbJnd+sfhPt1yM4VAlgpMkh4am7UlnaTS/ns4G0Fxey4eX
-	 cUWpmvh10hEJQUG9dRZiG9qtsDQp5IXibuGF2MB4tGzx2CBodAHqFG9NY6aETr/njE
-	 JO1NahwCREFXXuEDBUHIVbpo0RXNG0KBk4beakpx2KRQocsVv5hrYbGi6Jh+zqGbXk
-	 PpjoVxCbgikTM0F3ZlVnbE3a5aixvU75hgilC+xjUztDT+0ByCS7hrUXJNI573iTB/
-	 UNH5lJ95eeHoQ83VLruPpmSUqxA37imuZ/30QeiC2yHZ8VsAPbbeZZpXVCHa8gBAld
-	 BCwzzg+IO2ueQ==
-Message-ID: <c3171c59-bc83-4be5-beb4-e93bfb4d05a2@kernel.org>
-Date: Mon, 3 Aug 2026 09:00:37 +0200
+	b=h3lJwpv3br2UpB/4mMn2G4DE3xFXYtrZj4Wgw+WpJZJYSpWkkZUxX3HVi2TQUZdC9
+	 3b7tenh8+5g2f3RSFteeCXagHz9EqL1re/bXc33MNEmyQpxAMFDf/ZZ8IY8VVBKOXe
+	 HtiMsxA6aH/R6qXl3mvIaDI8JaBF5biqTjvncEv/d8lmSMtmLKLAFhGf0am701h6ud
+	 m8eZYnaKfN/qjVaLOdxI3Qvy7qHPaVZhc2Vjzq0eGF/BER2HQa/h6R9WJB3v6IMEro
+	 4TVLYhPyogV8POeobe02Vdww3e8QqnTQPIc2oWJGilSjYEaFJZJC2lqXcSWJphxU1V
+	 4W7CUG88WDO2Q==
+Message-ID: <fe4572df-98d2-44a6-818c-1c2d6ca2bba7@kernel.org>
+Date: Mon, 3 Aug 2026 09:01:48 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,8 +35,7 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 21/21] arm64: defconfig: enable X-Powers ACx00 Ethernet
- support
+Subject: Re: [PATCH 03/21] arm64: dts: allwinner: h616: add EMAC1 controller
 To: James Hilliard <james.hilliard1@gmail.com>,
  Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -60,7 +59,7 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
  mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
 References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <20260802-submit-acx00-of-dynamic-v1-v1-21-0a53cd9e21cc@gmail.com>
+ <20260802-submit-acx00-of-dynamic-v1-v1-3-0a53cd9e21cc@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,21 +105,31 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <20260802-submit-acx00-of-dynamic-v1-v1-21-0a53cd9e21cc@gmail.com>
+In-Reply-To: <20260802-submit-acx00-of-dynamic-v1-v1-3-0a53cd9e21cc@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 03/08/2026 07:14, James Hilliard wrote:
-> Build the H616 PWM clock provider, AC200 MFD, both variant-specific
+> From: Richard Genoud <richard.genoud@bootlin.com>
+> 
+> The H616 has a secondary EMAC controller that supports only RMII at
+> 10/100 Mbps. It connects through PA0-PA9 to an EPHY in a companion
+> AC200 or AC300 package.
+> 
+> Add the EMAC1 controller and RMII pin group. Leave the controller
+> disabled for boards to enable when the companion Ethernet hardware
+> is present.
+> 
+> Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
+> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+> ---
 
-Use full names. Is it Samsung H616 PWM clock controller?
+You order patches quite odd. DTS cannot be in the middle of drivers,
+because it suggests dependency.
 
-> EPHY control drivers and the shared link-PHY driver as modules. Enable the
-> netdev LED trigger as a module so DT-described PHY LEDs can use hardware
-> offload.
+You cannot have such dependency.
 
-Why? IOW, which upstream board needs all of these?
-
+Please read submitting patches in DT dir.
 
 Best regards,
 Krzysztof
