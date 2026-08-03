@@ -1,349 +1,299 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B343161A1;
-	Mon,  3 Aug 2026 16:23:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6460A36F428;
+	Mon,  3 Aug 2026 16:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785774215; cv=none; b=CwBr5tKfMKIKxE9sou+bMKvPPEulTberLRuw3APH2Hb1ldikmSMfdiTM84j7uAcJZYrjsmf/fkc6O71Id1DNWMW1froCOOirLgSA/asaovq+SJgJsbaUYJDQHWsM7Y0VlGWpTZz3nBA3wZ5kW2+HdNDNiK3rN3TyG3LmoTCSaOY=
+	t=1785774283; cv=none; b=Tyd/4+xehabKIpJagsvFzupxr9lbeNmrt29SLoj8SyfVBMfsRD5zFhUd2+FahK4iGPZJMBKPDZ0K3DvH1WAJ7ukRUGZQigEHPQEmBED1suPG/sFGPLCMNe1oKsayC0SlZAbkviSQuLo6xQxAde8pfFCi/ljBG8deKJ0WPILipD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785774215; c=relaxed/simple;
-	bh=U4bgqk2SbU2hMLu2vQzXMdHlguP9PmemA8O5dwa57Fw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D3GbggPkcpfz+hv3oi4LyLhyysXALH8rzJ7pi0fVZ2iOPS9gZgppB3VRvduj/MH9RH5QLzTyFAu03DNRCuwpIN0G8XlutEW2h00lP+KyrsghPZmYjrbvqYUQxMdiBGWJh/Y1KwG1c1cO6vChszvRLcbAh+a4+PRnF9asmmg62RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Vd5/xvfG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IENqR0O8; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1785774283; c=relaxed/simple;
+	bh=SYqJMIvFxCI0sKLHVv37oSeVV32rQAQnS7vRxmitb1Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qsIIZgXz2SYhY/nAEETN1YVGue0ST4SJEJ1Bzcg/HgeCWEIGwOjvZQ9ogIkmv5+IUeiZOW5RqTuHM/AlAh2jzIJET+g88TwY0KMKkxja8HPRrgHEWpMA8/Th/OsHlrm91EK/9o0+BrVzGA48Gx4nKhQ/5KQYRiMUfHR+BfTBQKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RMIaew9z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Vd5/xvfG";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IENqR0O8"
-Message-ID: <ef6c7f16f041fc05098e9c2dc75f5d8f99a4c515.camel@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1785774212;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J9+2z4K7Z6oHtge3Jfpr6Mn1+pAcz55kshcDPQONNlU=;
-	b=Vd5/xvfGMvkcCXgTKm3GQW+4B7knN/mO4YMJ12gFZvAcDJkZ7chkmljU8EQWlb4ntTGX2J
-	qYCVjJCgY5pMWnOIMUVoASrB6xkz+L//bbOI+l5MnAFTMvcJM7JaMpBhArCV9iLluGbKnX
-	OkOxb9gDvzYiw3ehzUwIkZUZUdijzH++vX4NXnQ35LpQdMN+YRox84BTuqyNjC+gqOVraQ
-	TG6N0LU4SylksFG41AJ1TlgYgE0Zka1devnojYG9Zw3D2vXgyCG9uGJvoqEWJTepwG/T1W
-	+gvo3RqlRhAIA3SY3RPhTeRagFc4/HuDsoSlCNcUc+CHsRc1kSvJvdVifLbDMw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1785774212;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J9+2z4K7Z6oHtge3Jfpr6Mn1+pAcz55kshcDPQONNlU=;
-	b=IENqR0O8ypceurrik6cY1k/5Ucfx5kttALeRygpOt3PkS1VErzNWui6+TA5FG5l7so1zpr
-	ry/to/7mdoK0EgBg==
-Subject: Re: [PATCH 4/4] net: dsa: soce: Add initial driver support for MRS
- switches
-From: Vasilij Strassheim <v.strassheim@linutronix.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Vladimir
- Oltean <olteanv@gmail.com>,  "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
- <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
- <martin.kaistra@linutronix.de>
-Date: Mon, 03 Aug 2026 18:23:31 +0200
-In-Reply-To: <20260730-prophetic-ordinary-crane-0ebedf@quoll>
-References: 
-	<20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
-	 <20260729-devel-vstrassheim-soce-dsa-ml-v1-4-be569dae1b20@linutronix.de>
-	 <20260730-prophetic-ordinary-crane-0ebedf@quoll>
-Organization: Linutronix GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RMIaew9z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C15A1F00A3A;
+	Mon,  3 Aug 2026 16:24:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785774280;
+	bh=UaWM6XXtJGdQmUu+RcuODJPgGZbx++WzLFBvcXy6xMo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RMIaew9zOxzKi0Y3dMz/0IBcJIzmZwS7Xhcx9AB7kpMqm85gpkVKkdP/kwf6IpTgd
+	 oOJDyJ3iqF94C/6XN9A0xmh9d4EnC2VcZ2OHujhkh89rLu7I8bpbHRxwDxaM2qW98S
+	 YcVHVyqORyu5xwQxU4GYvxbb5pg7dj0khCyUvPOuy3cG5oWud5h0blNdVZxC7vn+9k
+	 RTns84a8LU7KHif/ELVMPszx/NXl3z8WVoMQ2F7Kg0nM839g0WGD3GJUuc/lUl77tc
+	 uBU2+HK8Zms/38xhMS78WJr4rPnoUnvSdPB9LFZalIvY1Se5rWh5scUqxCQAI2uuRt
+	 f/RK+3dMm9zOA==
+Message-ID: <9c301dd5-76cc-40dc-bbab-a79559d6db1a@kernel.org>
+Date: Mon, 3 Aug 2026 18:24:34 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/5] mm: Add RCU-based VMA lookup helper that waits for
+ writers
+Content-Language: en-US
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
+ dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@redhat.com,
+ willy@infradead.org, shakeel.butt@linux.dev, jannh@google.com,
+ aliceryhl@google.com, arve@android.com, cmllamas@google.com,
+ christian@brauner.io, tkjos@android.com, dsahern@kernel.org,
+ davem@davemloft.net, gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
+References: <20260802215459.2769283-1-surenb@google.com>
+ <20260802215459.2769283-4-surenb@google.com>
+ <152ee467-b5e4-470c-ad95-c638aa9986bc@kernel.org> <anCst8u7ybHf39n8@lucifer>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <anCst8u7ybHf39n8@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2026-07-30 at 11:01 +0200, Krzysztof Kozlowski wrote:
-> On Wed, Jul 29, 2026 at 06:36:57PM +0200, Vasilij Strassheim wrote:
-> > +static const struct soce_variant_desc soce_variants[] =3D {
-> > +	{
-> > +		.compatible		=3D "soce,mrs-21-01",
-> > +		.mdio_master_offset	=3D SOCE_MRS_21_01_MDIO_MASTER_OFFSET,
-> > +		.layout			=3D &soce_mrs_21_01_layout,
-> > +		.mdio_ops		=3D &soce_mdio_ops_20_03,
-> > +	},
-> > +	{
-> > +		.compatible		=3D "soce,mrs-23-02",
-> > +		.mdio_master_offset	=3D SOCE_MRS_21_01_MDIO_MASTER_OFFSET,
-> > +		.layout			=3D &soce_mrs_24_01_layout,
-> > +		.mdio_ops		=3D &soce_mdio_ops_c22_c45,
-> > +	},
-> > +	{
-> > +		.compatible		=3D "soce,mrs-24-01",
-> > +		.mdio_master_offset	=3D SOCE_MRS_21_01_MDIO_MASTER_OFFSET,
-> > +		.layout			=3D &soce_mrs_24_01_layout,
-> > +		.mdio_ops		=3D &soce_mdio_ops_c22_c45,
-> > +	},
-> > +	{ /* sentinel */ },
-> > +};
-> > +
-> > +static const struct soce_variant_desc *
-> > +soce_match_variant(const char *compatible)
-> > +{
-> > +	int i;
-> > +
-> > +	for (i =3D 0; soce_variants[i].compatible; i++) {
-> > +		if (!strcmp(compatible, soce_variants[i].compatible))
-> > +			return &soce_variants[i];
->=20
-> Do not re-invent OF matching. This is supposed to be of_device_id table.
+On 8/3/26 17:00, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Aug 03, 2026 at 04:55:19PM +0200, Vlastimil Babka (SUSE) wrote:
+>> On 8/2/26 23:54, Suren Baghdasaryan wrote:
+>> > From: Dave Hansen <dave.hansen@linux.intel.com>
+>> >
+>> > == Background ==
+>> >
+>> > There are basically two parallel ways to look up a VMA: the
+>> > traditional way, which is protected by mmap_read_lock, and the RCU-based
+>> > per-VMA lock way which is based on RCU and refcounts.
+>> >
+>> > == Problem ==
+>> >
+>> > The mmap_lock one is more straightforward to use but it has a big
+>> > disadvantage in that it can not be mixed with page faults since those
+>> > can take mmap_lock for read, which can deadlock when mixed with nested
+>> > page faults and parallel writers.
+>> > For example:
+>> >
+>> > 	mmap_read_lock(mm);
+>> > 	// Another thread does mmap_write_lock().
+>> > 	// New mmap_lock readers are blocked.
+>> > 	vma = vma_lookup(mm, address);
+>> > 	// This deadlocks on mmap_read_lock() if it faults:
+>> > 	copy_from_user(address);
+>> > 	mmap_read_unlock(mm);
+>> >
+>> > The per-VMA lock can be mixed with faults, but they can fail and need to
+>> > be able to fall back to the traditional way.
+>> >
+>> > == Solution ==
+>> >
+>> > Add a variant of the RCU-based lookup that waits for writers. This is
+>> > basically the same as the existing RCU-based lookup, but on a failure to
+>> > lock it temporarily takes mmap_lock for read and waits for writers
+>> > to finish before locking the VMA, dropping the mmap_lock and returning
+>> > the locked VMA. This has some advantages:
+>>
+>> Maybe mention that the helper is called vma_start_read_unlocked()?
+>>
+>> >
+>> >  1. Callers do not need to have a fallback path for when they
+>> >     collide with writers.
+>> >  2. It can be used in contexts where page faults can happen because
+>> >     it can take the mmap_lock for read but never *holds* it.
+>> >  3. Its fast path does not require taking mmap_lock for read.
+>> >
+>> > Basically, when applied correctly, this approach results in faster
+>> > *and* simpler code.
+>> >
+>> > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+>> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+>> > Cc: Suren Baghdasaryan <surenb@google.com>
+>> > Cc: Andrew Morton <akpm@linux-foundation.org>
+>> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+>> > Cc: Lorenzo Stoakes <ljs@kernel.org>
+>> > Cc: Vlastimil Babka <vbabka@kernel.org>
+>> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
+>> > Cc: linux-mm@kvack.org
+>> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> > Cc: Arve Hjønnevåg <arve@android.com>
+>> > Cc: Todd Kjos <tkjos@android.com>
+>> > Cc: Christian Brauner <christian@brauner.io>
+>> > Cc: Carlos Llamas <cmllamas@google.com>
+>> > Cc: Alice Ryhl <aliceryhl@google.com>
+>> > Cc: "David S. Miller" <davem@davemloft.net>
+>> > Cc: David Ahern <dsahern@kernel.org>
+>> > Cc: netdev@vger.kernel.org
+>> > ---
+>> >  include/linux/mmap_lock.h | 15 +++++++++++----
+>> >  mm/mmap_lock.c            | 29 +++++++++++++++++++++++++++++
+>> >  mm/userfaultfd.c          |  6 ++++--
+>> >  3 files changed, 44 insertions(+), 6 deletions(-)
+>> >
+>> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+>> > index eb32b482434e..fdd8f5cf5722 100644
+>> > --- a/include/linux/mmap_lock.h
+>> > +++ b/include/linux/mmap_lock.h
+>> > @@ -228,10 +228,12 @@ static inline void vma_refcount_put(struct vm_area_struct *vma)
+>> >  }
+>> >
+>> >  /*
+>> > - * Use only while holding mmap read lock which guarantees that locking will not
+>> > - * fail (nobody can concurrently write-lock the vma). vma_start_read() should
+>> > + * Use only while holding mmap read lock which guarantees that vma lock is not
+>> > + * contended (nobody can concurrently write-lock the vma). vma_start_read() should
+>> >   * not be used in such cases because it might fail due to mm_lock_seq overflow.
+>> >   * This functionality is used to obtain vma read lock and drop the mmap read lock.
+>> > + * VMA can't be detached while we are holding mmap lock, therefore in practice this
+>> > + * function can fail only when there are so many readers that vm_refcnt overflows.
+>> >   */
+>> >  static inline bool vma_start_read_locked_nested(struct vm_area_struct *vma, int subclass)
+>> >  {
+>> > @@ -247,16 +249,21 @@ static inline bool vma_start_read_locked_nested(struct vm_area_struct *vma, int
+>> >  }
+>> >
+>> >  /*
+>> > - * Use only while holding mmap read lock which guarantees that locking will not
+>> > - * fail (nobody can concurrently write-lock the vma). vma_start_read() should
+>> > + * Use only while holding mmap read lock which guarantees that vma lock is not
+>> > + * contended (nobody can concurrently write-lock the vma). vma_start_read() should
+>> >   * not be used in such cases because it might fail due to mm_lock_seq overflow.
+>> >   * This functionality is used to obtain vma read lock and drop the mmap read lock.
+>> > + * VMA can't be detached while we are holding mmap lock, therefore in practice this
+>> > + * function can fail only when there are so many readers that vm_refcnt overflows.
+>> >   */
+>> >  static inline bool vma_start_read_locked(struct vm_area_struct *vma)
+>> >  {
+>> >  	return vma_start_read_locked_nested(vma, 0);
+>> >  }
+>> >
+>> > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
+>> > +					       unsigned long address);
+>> > +
+>> >  static inline void vma_end_read(struct vm_area_struct *vma)
+>> >  {
+>> >  	vma_refcount_put(vma);
+>> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+>> > index e20d01e8d38f..6ff05e68e61b 100644
+>> > --- a/mm/mmap_lock.c
+>> > +++ b/mm/mmap_lock.c
+>> > @@ -338,6 +338,35 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>> >  	return NULL;
+>> >  }
+>> >
+>> > +/*
+>> > + * Find the VMA covering 'address' and lock it for reading. Waits for writers to
+>> > + * finish if the VMA is being modified. Returns NULL if there is no VMA covering
+>> > + * 'address'.
+>>
+>> Hm but it can also return NULL when vm_refcnt overflows, in theory.
+>> Should we also return -EAGAIN (like uffd_lock_vma() below), or just retry in
+>> here and hope for the best? The latter would be simpler for the users.
+>> (AFAICS due to VM_REFCNT_LIMIT we never end up triggering the refcount
+>> saturation)
+> 
+> The problem is everything's unlocked so 'didn't find a VMA' doesn't really mean
+> much more than 'something went wrong' because hey maybe if you check again now
+> you'll find something :)
 
-I will change that.
+Well there might be use cases where you know that either there's a vma with
+your address and then you need to do something with it, or there's not and
+then you don't. And it can't suddenly appear after you check.
 
->=20
-> > +	}
-> > +
-> > +	return NULL;
-> > +}
-> > +
-> > +static int soce_sw_parse_port_mdio_config(struct soce_dsa_local *local=
-,
-> > +					  struct device *dev,
-> > +					  struct device_node *port_node,
-> > +					  u32 port)
-> > +{
-> > +	struct device_node *phy_node;
-> > +	u32 val;
-> > +	int ret;
-> > +
-> > +	if (of_find_property(port_node, "ethernet", NULL) ||
-> > +	    of_find_property(port_node, "link", NULL)) {
-> > +		if (of_find_property(port_node, "phy-handle", NULL)) {
-> > +			dev_err(dev,
-> > +				"phy-handle not allowed on CPU/DSA port %u\n",
-> > +				port);
-> > +			return -EINVAL;
-> > +		}
-> > +
-> > +		return 0;
-> > +	}
-> > +
-> > +	phy_node =3D of_parse_phandle(port_node, "phy-handle", 0);
-> > +	if (!phy_node) {
-> > +		if (of_phy_is_fixed_link(port_node))
-> > +			return 0;
-> > +
-> > +		dev_err(dev, "user port %u requires phy-handle or fixed-link\n",
-> > +			port);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	ret =3D of_property_read_u32(phy_node, "soce,mdio-output", &val);
-> > +	if (ret) {
-> > +		dev_err(dev,
-> > +			"missing soce,mdio-output in %pOF referenced by port %u\n",
-> > +			phy_node, port);
-> > +		goto out_put_phy;
-> > +	}
-> > +	local->mdio_info[port].mdio_output =3D val;
-> > +
-> > +	ret =3D of_property_read_u32(phy_node, "soce,phy-addr", &val);
-> > +	if (ret) {
-> > +		dev_err(dev,
-> > +			"missing soce,phy-addr in %pOF referenced by port %u\n",
-> > +			phy_node, port);
-> > +		goto out_put_phy;
-> > +	}
-> > +	local->mdio_info[port].phy_addr =3D val;
-> > +
-> > +out_put_phy:
-> > +	of_node_put(phy_node);
-> > +	return ret;
-> > +}
-> > +
-> > +static int soce_sw_parse_port_mdio(struct soce_priv *priv, struct devi=
-ce *dev,
-> > +				   u32 numports)
-> > +{
-> > +	struct soce_dsa_local *local =3D &priv->local;
-> > +	struct device_node *ports_node;
-> > +	struct device_node *port_node;
-> > +	u32 port;
-> > +	int ret;
-> > +
-> > +	ports_node =3D of_get_child_by_name(dev->of_node, "ports");
-> > +	if (!ports_node) {
-> > +		dev_err(dev, "missing ports node\n");
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	for_each_available_child_of_node(ports_node, port_node) {
->=20
-> Why not scoped?
+So in that case treating that spurious NULL as "there's no vma so I don't
+need to do anything" would be wrong.
 
-I will change it to scoped.
+The usages in 4/5 and 5/5 seem like they are not this case though. So it's
+fine. But perhaps worth just mentioning it in the comment then.
 
->=20
-> > +		if (of_property_read_u32(port_node, "reg", &port))
-> > +			continue;
-> > +
-> > +		if (port >=3D numports || port >=3D SOCE_MAX_NUM_PORTS) {
-> > +			dev_warn(dev,
-> > +				 "ignoring invalid port index %u in %pOF\n",
-> > +				 port, port_node);
-> > +			continue;
-> > +		}
-> > +
-> > +		ret =3D soce_sw_parse_port_mdio_config(local, dev, port_node,
-> > +						     port);
-> > +		if (ret) {
-> > +			of_node_put(port_node);
-> > +			of_node_put(ports_node);
-> > +			return ret;
-> > +		}
-> > +	}
-> > +
-> > +	of_node_put(ports_node);
-> > +	return 0;
-> > +}
-> > +
-> > +static int soce_sw_probe(struct mdio_device *mdiodev)
-> > +{
-> > +	const struct soce_variant_desc *variant;
-> > +	struct device *dev =3D &mdiodev->dev;
-> > +	struct device_node *switch_node;
-> > +	struct soce_dsa_local *local;
-> > +	const char *soce_compatible;
-> > +	struct soce_priv *priv;
-> > +	u32 numports;
-> > +	int ret;
-> > +
-> > +	priv =3D devm_kzalloc(&mdiodev->dev, sizeof(*priv), GFP_KERNEL);
-> > +	if (!priv)
-> > +		return -ENOMEM;
-> > +
-> > +	priv->ds =3D devm_kzalloc(&mdiodev->dev, sizeof(*priv->ds), GFP_KERNE=
-L);
-> > +	if (!priv->ds)
-> > +		return -ENOMEM;
-> > +
-> > +	priv->ds->dev =3D dev;
-> > +	priv->ds->priv =3D priv;
-> > +	local =3D &priv->local;
-> > +
-> > +	switch_node =3D of_parse_phandle(dev->of_node, "soce,switch-ip", 0);
-> > +	if (!switch_node) {
-> > +		dev_err(dev, "missing or invalid switch IP reference\n");
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	ret =3D of_property_read_string(switch_node, "compatible",
-> > +				      &soce_compatible);
-> > +	if (ret) {
-> > +		dev_err(dev, "missing compatible property in %pOF\n",
-> > +			switch_node);
-> > +		of_node_put(switch_node);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	variant =3D soce_match_variant(soce_compatible);
-> > +	if (!variant) {
-> > +		dev_err(dev, "unsupported compatible '%s' in %pOF\n",
-> > +			soce_compatible, switch_node);
-> > +		of_node_put(switch_node);
->=20
-> Use proper error handling exit paths with goto.
-
-I will do it.
-
->=20
-> > +		return -ENODEV;
-> > +	}
-> > +
-> > +	ret =3D of_property_read_u32(switch_node, "soce,num-ports", &numports=
-);
-> > +	if (ret) {
-> > +		dev_err(dev, "missing soce,num-ports in %pOF\n", switch_node);
-> > +		of_node_put(switch_node);
-> > +		return -EINVAL;
-> > +	}
-> > +	if (numports =3D=3D 0 || numports > SOCE_MAX_NUM_PORTS) {
-> > +		dev_err(dev, "invalid soce,num-ports %u (max %d)\n", numports,
-> > +			SOCE_MAX_NUM_PORTS);
-> > +		of_node_put(switch_node);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	local->base_addr =3D devm_of_iomap(dev, switch_node, 0, NULL);
-> > +	if (IS_ERR(local->base_addr)) {
-> > +		dev_err(dev, "failed to map switch register space for %pOF\n",
-> > +			switch_node);
-> > +		of_node_put(switch_node);
-> > +		return PTR_ERR(local->base_addr);
-> > +	}
-> > +
-> > +	priv->ds->ops =3D &soce_switch_ops;
-> > +	local->mdio_ops =3D variant->mdio_ops;
-> > +	local->mdio_master_addr =3D
-> > +		local->base_addr + variant->mdio_master_offset;
-> > +	local->layout =3D variant->layout;
-> > +	of_node_put(switch_node);
-> > +
-> > +	priv->ds->num_ports =3D numports;
-> > +	ret =3D soce_sw_parse_port_mdio(priv, dev, numports);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	dev_set_drvdata(&mdiodev->dev, priv);
-> > +
-> > +	dev_info(dev, "soce %s SDSA driver probed.\n", soce_compatible);
->=20
-> Drop, driver should be silent on success.
-
-Does this really apply to DSA drivers? I see some corresponding dev_info()
-entries in mainlined drivers. See for example mv88e6060_probe(),
-gswip_probe_common() and sja1105_probe().
-And there are others as well, especially if you consider the _detect()
-functions that are called from _probe().
-I also find it very helpful for troubleshooting, so I'd like to keep it alo=
-ng
-with some additional information about the hardware, just like other driver=
-s.
-
->=20
-> > +
-> > +	return dsa_register_switch(priv->ds);
-> > +}
-> > +
-> > +static void soce_sw_remove(struct mdio_device *mdiodev)
-> > +{
-> > +	struct soce_priv *priv =3D dev_get_drvdata(&mdiodev->dev);
-> > +
-> > +	dsa_unregister_switch(priv->ds);
-> > +}
-> > +
-> > +static const struct of_device_id soce_of_match[] =3D {
-> > +	{ .compatible =3D "soce,switch-dsa" },
-> > +	{ /* sentinel */ },
-> > +};
-> > +
-> > +static struct mdio_driver soce_mdio_driver =3D {
-> > +	.mdiodrv.driver =3D {
-> > +		.name =3D "soce-switch-dsa",
-> > +		.of_match_table =3D soce_of_match,
-> > +	},
-> > +	.probe  =3D soce_sw_probe,
-> > +	.remove =3D soce_sw_remove,
-> > +};
->=20
-> Best regards,
-> Krzysztof
->=20
-
-Thanks,
-Vasilij
+> So I think this might be a feature more than a bug, especially given overflow is
+> not exactly likely.
+> 
+>>
+>> > + *
+>> > + * Use only in code paths where no mmap_lock and no VMA lock is held.
+>> > + *
+>> > + * The fast path does not take mmap_lock.
+>> > + */
+>> > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
+>> > +					       unsigned long address)
+>> > +{
+>> > +	struct vm_area_struct *vma;
+>> > +
+>> > +	/* Fast path: return stable VMA covering 'address': */
+>> > +	vma = lock_vma_under_rcu(mm, address);
+>> > +	if (vma)
+>> > +		return vma;
+>> > +
+>> > +	/* Slow path: preclude VMA writers by temporarily getting mmap read lock. */
+>> > +	mmap_read_lock(mm);
+>> > +	vma = vma_lookup(mm, address);
+>> > +	if (vma && !vma_start_read_locked(vma))
+>> > +		vma = NULL;
+>> > +	mmap_read_unlock(mm);
+>> > +
+>> > +	return vma;
+>> > +}
+>> > +
+>> >  static struct vm_area_struct *lock_next_vma_under_mmap_lock(struct mm_struct *mm,
+>> >  							    struct vma_iterator *vmi,
+>> >  							    unsigned long from_addr)
+>> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+>> > index edd90892f8cc..c3a0c38a3dc3 100644
+>> > --- a/mm/userfaultfd.c
+>> > +++ b/mm/userfaultfd.c
+>> > @@ -129,8 +129,10 @@ struct vm_area_struct *find_vma_and_prepare_anon(struct mm_struct *mm,
+>> >   *
+>> >   * Should be called without holding mmap_lock.
+>> >   *
+>> > - * Return: A locked vma containing @address, -ENOENT if no vma is found, or
+>> > - * -ENOMEM if anon_vma couldn't be allocated.
+>> > + * Return: A locked vma containing @address, -ENOENT if no vma is found,
+>> > + * -ENOMEM if anon_vma couldn't be allocated, or -EAGAIN if vma refcount
+>> > + * overflow happened due to high number of readers and the caller should
+>> > + * retry later.
+>> >   */
+>> >  static struct vm_area_struct *uffd_lock_vma(struct mm_struct *mm,
+>> >  				       unsigned long address)
+>>
+> 
+> --
+> Cheers, Lorenzo
 
