@@ -1,167 +1,348 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012015.outbound.protection.outlook.com [40.107.200.15])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6109411A01;
-	Mon,  3 Aug 2026 15:12:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785769924; cv=fail; b=G8/71Nd6jbym0+eTl+rc1g1B09EB4ZH8Nr98F/mIrBj5pH/9+BTklZ1F/wAkkezDZGef4V8dqrjOanPm060yt0Lzv8a7E1JpvwaxEM1TGQ/VtrEuXNVyhwwLzoQNyQIXon8qRAkuN101Bfdu9wjIUWoznoq+BQedZYolfRpwWYg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785769924; c=relaxed/simple;
-	bh=7Z+BwRqz478XU2CGN05ze/zLEiUdZn5J7Va9yHiLM2k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=p3CLEifxU58hxOPJhpJk8v0kUYwLe32/Bjme6ryafqRMVCGOc9mHmBMmz28fyOEGg3eQfdo8rPgQ5Y1bCoZGTTZOQS2qokywOsin9/IC9IseVO7mkcpouROAvaRs1gsXLhzdOZFRAavQYnhmZBfKXuKTjApIXN1AAYKWiTj9VmI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GR3bCcr9; arc=fail smtp.client-ip=40.107.200.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2ECC409283
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 15:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785769947; cv=none; b=BWo5mlWHVfPNIid91iy2WWRXm9wTucHUpasLoB9MGK77oxdisyCgUMgZXj/svKtLabu/lvUk7ShdUvTm+hONM+n+XiMsn6Be8xe5jF4u6lzpXMnl0N8gZCgVRqTKp529/iaTdvXkL5BYDy2LJQcVB6kXjMXpSaN7yJg6AqWmGUI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785769947; c=relaxed/simple;
+	bh=iexzmFB8KQHgucwZjKyJV/HshQ3jw4C884ppX1S0bMo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iCo2hoY/rYiazgxRnFebYgwOBW67F1rULj09llq6ie+a7ZeDexR8dsEDoh4WNDrvtKdLCqUA6DT6H0+XWy7ELP9OqdKDIBWE7jmEP9GqnzF9PwKsid8PZIIemlt3f/dpF1cs/Ac0i16XyVi0f20TDpwtmDpQri2Qh0CloIXGWkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F/r/QcP7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XshItDJc; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GR3bCcr9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DVqGYYmE0A6uMiP3G0S5oRvNlu6u+T8GBxzO7IOBmswtfDKaTTSOdfgc6VL+RjxpzAIk7FZoIhhrAAjSiv/m2cf/7aHrFPjllAWfKpopvCNjSB21wvjBk+/hDZCT8U2g8DqSH97gYJGrIq5TteWDftm0AFcNKSRrIPfJ6D6NgrVSZowfho0Vzxrc1HPpqGWxmMgUDJTOE8Ox3vTK5nhQSRhsYK1tdKyokZ0I73BAIfcHTuBStznymJ73bC4jWQfhQ5gEfb1UyQjh+VmtzKhB1Tj1UpNp4Qt9pSdF0YUj7+nRPCvgwr/Aa1dAflZJONbQ7RCunrU9UoAWIT5n4OOmqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6ndcYIqgEDDxg3Dri9H9BChwA93tXe0rdYrnm+7uNjU=;
- b=zM3pOkeHdhEjBQ61FUiMa2QVABbNWxcnuEBXqotxIGp1MiCCXv73EdHr+6+m5kujJrBWsxhgnPupJv+p8tdS0iFjMgH1bRcaa8f3L9BB0EZOBG2AD3ShT59RVZZbMhEvzBZIuD1MoyCfDfBSfAFCXWivIU5ayQWQNR/l2A29wk2r1yKXlY1cHdqbT7QYvssNtGi4T0KBJn/mf5tbqpUlbmGv0YL1vtfiykKwRwtBuFuexvfEuR6pn8N7wkovkcoXHnfvc0IyUJabVHxeP6rSFtipGRnKxxZ4OWmU6Lw7YjvhiQqevSVazyAZ6yupDobUlH0EOkyBTsJYDTvzGDkE8A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6ndcYIqgEDDxg3Dri9H9BChwA93tXe0rdYrnm+7uNjU=;
- b=GR3bCcr9ABKJsoPD1kkWiAyNWOcNIIFXuWKpW3g5FFVOU1Sn9HeU9lmoaEUXL1a8sQPgCyenpPTa9M2kY5QuWzR2LKy/4fZL2NtkAN4wJFa+pODFmSK9BhJblle3IBpnpsG57P9MFPVx0Nj9thygKHwo/nr1BLcnArRgHfWo2J2hmzRqvz03Aky6B88mpd1Uc7Of3OPEFbDhUXXzc83gsYZ1c6iOZiV+nWzyuBX+55efZh3NGdNucBhkg8GRpZkx1HkEGNGkFmSgXfMqgY7ToVYH3hIrDWPFVMTQX7kIcxDeYQlPVwqjESyp6kSPoQ3ZwB8I1BtrRPP4fq94Es0UeA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by LV2PR12MB999098.namprd12.prod.outlook.com (2603:10b6:408:353::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Mon, 3 Aug
- 2026 15:11:58 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0270.016; Mon, 3 Aug 2026
- 15:11:58 +0000
-Date: Mon, 3 Aug 2026 18:11:46 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Yun Zhou <yun.zhou@windriver.com>, edumazet@google.com
-Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3] net: erspan: set lltx to avoid sch_direct_xmit
- deadlock
-Message-ID: <20260803151146.GA766007@shredder>
-References: <20260730082238.676845-1-yun.zhou@windriver.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260730082238.676845-1-yun.zhou@windriver.com>
-X-ClientProxiedBy: FR2P281CA0032.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:14::19) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F/r/QcP7";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XshItDJc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785769944;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jF3MmI86y2BChVqhm8vdVAw/xAkrV44X6MqoOsmdA58=;
+	b=F/r/QcP7TS7g8mkZrqfcy+CDL4BOHJeqBD2L0j6qIHc8N3Nlm6fv3VKZ+dvTmDn+9y4z6h
+	br2kt2NEJ11RxoZk/x8EBDmFOm11pe040cr9gp9EbLrDbsVyWeA6klUBEhTWoUjdv4C61F
+	C8DbOYPh9jGRNR/5XSlPzJgMKXPtluw=
+Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
+ [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-694-hGguzlgZNBGWmMkDw9M1RQ-1; Mon, 03 Aug 2026 11:12:23 -0400
+X-MC-Unique: hGguzlgZNBGWmMkDw9M1RQ-1
+X-Mimecast-MFC-AGG-ID: hGguzlgZNBGWmMkDw9M1RQ_1785769942
+Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-668095be86aso5289088d50.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 08:12:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785769942; x=1786374742; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=jF3MmI86y2BChVqhm8vdVAw/xAkrV44X6MqoOsmdA58=;
+        b=XshItDJcrw4c+tZSk/O6v22qTJF6qczk3jmhYQy1ypfRNdVflu1t+uypnN+zoCKdZ3
+         lRhxqxIjzwTRrCHE81Flfy2Pw1EfvcG+pKjggtS3WIckFtANVsKq87rdpq4LttPOcnE9
+         6zkqEveYQDBdm+8CsZ5ZXU+HbJWr9RSKtis+bgiv0ITM21UcQqLV70qXVbC6TDCIpwXZ
+         kJ7cSbEj76uUS8RHB10mIhmQocwfxb8RTTwJH5vePYzr35qwkEGx4Hspt45P0storPPe
+         jA6iDdQGbHN/Tf2HI2DbYJqBGn3YqIH2SQ7+wGFWcfnHK4RGGcxJNu/qtg65losUMM5D
+         ZZnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785769942; x=1786374742;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jF3MmI86y2BChVqhm8vdVAw/xAkrV44X6MqoOsmdA58=;
+        b=hTgMYV+FlWVhA0xeqB3mHpqc7HYgZsjiCEpP3b6F/d4rJSXCvCJtucM6UYJPEO2nXx
+         gS2RmJUXd6hNK5G47EYrAmXuifZUeLXfskYFP1fl6GZGtyfm50higx6iR7xiVzvR/7Fc
+         u1D69SHRy2XBakxhu/ZV0gGCZO55XJ7JJS2+60/m/r2dxTiMqoy2hEoyQ9uBGLLRthsE
+         iYtTU0bfWZP3GbPZgBhLw2Md9CNsbkWjwnXdXlZYx+1nn9ZppJh+RYg0RPJ/Hx/kTwSn
+         a1vwNgkDViLIJUU48pxka9SYEcl4MbpmdMfxI8+GsWpJE+rVvEetfODG+TYGlqcLx+0l
+         vZWQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqAQLFvvs7uXRMy4Le3nmgEmDDha9oUB3QdAVcFHMOtHxwv9HvN5rTzxFKmqnJKtoJCI6epvEo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzn3u57ih16yHXNGzKVsCKtln7foA0y1ITN6n46QXgOEylrReTo
+	3xEZhcGoPgBpvd6cPL9ObsAYNXocRFxZChog+E2z2EMSLZIDZU2K9DFWmKMGtZNerZgT3jWkacS
+	SpPL0QaXpbX+9B5ofqp3TRnhEt+ctyL8ZQSs55RUPzF5Xp3ijHxqmmDB5LQ==
+X-Gm-Gg: AR+sD13In706GCmPETX24g0e16xaL6LGTmZbmyVnFwn1sHhce+1njprnw2NK+apOtXp
+	hk4z/4CwVhjkRNnfvX6h6xNL+FRFA55qyz8mFbSRNQTfaLfWPUeIkUnJl6pyrnXRXEkxHnCQXL5
+	NFYBr85LUXGeB9BXbd4D/cEP1UO0OvRiZ9ph/XbtcJ0ruVf3+MvG+22Wqpra+xNoNeTpuhyY2p3
+	njP1Nhn6krtIEwhSd9su/L9+6aHbhbmXo70/l5DZUehzOp6iOkNzbGwIUpHK8Zs0xFCgApaOaLv
+	4W0rblEMPOnOmT1TvdvxxQmjZV5HGM5aUNJ+yDutsEnWlVw09efy7/mhZ40bAjOM98kXlYXCmuM
+	ka9T1panj5aiGMRBfDHntXPBtGhdtWqRz0/0=
+X-Received: by 2002:a05:690e:2244:b0:663:9a0a:7b80 with SMTP id 956f58d0204a3-6694f08c75fmr9214962d50.19.1785769942513;
+        Mon, 03 Aug 2026 08:12:22 -0700 (PDT)
+X-Received: by 2002:a05:690e:2244:b0:663:9a0a:7b80 with SMTP id 956f58d0204a3-6694f08c75fmr9214934d50.19.1785769942042;
+        Mon, 03 Aug 2026 08:12:22 -0700 (PDT)
+Received: from redhat.com (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66948fc7ef2sm5945641d50.13.2026.08.03.08.12.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 08:12:21 -0700 (PDT)
+Date: Mon, 3 Aug 2026 11:12:18 -0400
+From: Brian Masney <bmasney@redhat.com>
+To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Jie Chen <chun-jie.chen@mediatek.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Edward-JW Yang <edward-jw.yang@mediatek.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Chen-Yu Tsai <wenst@chromium.org>, kernel@collabora.com,
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	Irving-CH Lin <irving-ch.lin@mediatek.com>
+Subject: Re: [PATCH v5 16/25] clk: mediatek: Add MT8189 apmixedsys clock
+ support
+Message-ID: <anCv0ga226obZg2g@redhat.com>
+References: <20260801-mt8189-clocks-system-base-v5-0-ac4410697cc2@collabora.com>
+ <20260801-mt8189-clocks-system-base-v5-16-ac4410697cc2@collabora.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|LV2PR12MB999098:EE_
-X-MS-Office365-Filtering-Correlation-Id: 75ef445f-4ace-4f19-b927-08def1718fed
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|10067099003|56012099006|11063799006|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	jJKtU6IR8hlOFxx8w1098iHL7Ffr8z4zCEvVAoCHZ95sDKChZkkh/6g6kegBpnCNdZDz4GL6BX8pIEZiegG4G4VKe4im1mOE4DY17h9aTJYmwXkWEi/JOjc/iidJfs6SzQ9YlXrHHFZgxJo77A3vH2tZ6yViADgFz2MgaXnRyLJAORMeMA5mJjhiE/hKcAxI80UBH5amtgyHBrIuWUcz/9ZBthBeyvV2nfDsyAhw7JDFRhtcJOURKc/yrmSszHc0/U29ZeKj5FFik6NxZuOxJrK+LgSOZ8V+OmfcqLLbZU6669yl8ZdKNaKmKWvMQonxwuv5DgoL2lV7Vg+Bddi/+90lN5FzLAclxXxzEg7NwxB/fcwgciZffJffNYRP1l+AjsA95H6PqYki+UH1m5/tO/K288UMvHDpZM7kAQo3vO4YkEqSpFJBi1FrOjxf7LnWc/dz3SG6uSokGYIeYYTqfRbwObxS5DzdDKCTj5hr2Z6V2yBdXSrdfd5Utn15Bt3MsY/iJbaXvmPGuyZJ8FZu+qNZfLpb3e9+bNh0z/ftpiz96R0jq1ua6S5TxPSRUUCVhQqkxpTTAkqzT6CtjkdEkRtJDPmcJaR607GzIbBlCou/urgeHzZgV46lvy5zTJ8wTEc4ZHpq2C3ZJdGiq9BiUjJNDQe37S5cCW/M7GjOB/E=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?d2wGZAr/fdSIxTRmoka8HiOCRYo1chRV8JzwmIdzoNv6Kjm6mY2ER6SG8CWB?=
- =?us-ascii?Q?w6MIDDg7cGXoQyhQ2a80zKQnKQ51SovNKMlT6MwvymvYYt5igDIZeD3O7R8+?=
- =?us-ascii?Q?pHlTzfFqxMLfyr8GwTeUhs+NgXVlC6yeGaxuwM0oUphGH2tdftgBbqUzciY8?=
- =?us-ascii?Q?zz1h3VHtdXpvXez5rSuK5TmYfJ6vdZFyLeQ4GCm+Rg64Te3T8vIxxKJpGw6R?=
- =?us-ascii?Q?Pw1A/fRKsuM2Qq6W5XEXwr/34+ZAjOawsdVBzZ5WhJrQoljaynX1np6rKaZi?=
- =?us-ascii?Q?o4IlvsDZOAy0F3TVPqoGL77KoGg+D1uQcI0FRHGIf5wEZGNBCPPAeLLhVsaY?=
- =?us-ascii?Q?JJAp9JEtUdNpIZ3aCNQi1eCGxYyt8RT67I8zW0uHxa+9nN3A2Rg359o43pIg?=
- =?us-ascii?Q?wAJ1a/R1lR66lcmrrJSuqn+ns0J9sr6irQOgkcsk8jlYktOfmMZIrwlIamJL?=
- =?us-ascii?Q?EmxlivlrX0Fgxmt3LoJFqgvx4mONGLHk2HiZF2uuPNqAItBsX/1c7dPZS4/G?=
- =?us-ascii?Q?R8ow7d0YDhw43c67Ng4U0pobtIxLCL8jURP/uTfWr/sKPJoLXNd61NHTzOOP?=
- =?us-ascii?Q?mKIoHn6d4bzDC5Nm+4adPRFSaD7Wykym0bnwdqjgRLlNaG8b2gWzXx3JFtNY?=
- =?us-ascii?Q?35iwuknqHXHbyblJXt+pN9QcUjpIhy/qWxz+6TexnylqPkGX9GuTWXC/P1IL?=
- =?us-ascii?Q?Kszfu9xfXQ+SEgmhH6aFlA/mAB/7i76Kxx7FUdYNTIpoQJ5+YdkCV1DXHtgc?=
- =?us-ascii?Q?h/5hpRMZhFwgPOHBdOTxeBwHh52EQoS5rb07AECUeN8L1tBvyRE6xJocukbr?=
- =?us-ascii?Q?IiImBHFkhAD0anI2uFPu5Vscn1N3lOXFnb+QhY36tMsC83E87dtQB6n7xcZQ?=
- =?us-ascii?Q?In6ivXYCznBGedMwP631SPSythnadLcTG1P55zH4pLVasz/GkZx1wBbY6Ar1?=
- =?us-ascii?Q?CAd0sx2Dw3dy4jilHB1VdnW/JT7TrL0f0k6IXGtDiqc9EUeMC3SATZgnKalz?=
- =?us-ascii?Q?HAmaaLSlinYePrAZx3fw509hcCYURHpGZeHM8MfQoYbN7/8p0x5/ErJbwjVE?=
- =?us-ascii?Q?IBX+EXyBkIRP3RMFb/hdHu5vQe2Bg6DxqCpOH45424him/yOUl/IW/iN5zlF?=
- =?us-ascii?Q?/vepB28S8OFYCBP1HYr+9qDqgC/DG2k2EDx2zUp4RBCB8EuKoJA7r1GhjKcm?=
- =?us-ascii?Q?ZT2MJuWmwYKIQ2XRp6TN2Nmmg/gkYnlqAF/Vj5YCiZ5RjTq6hlGv462WBQGF?=
- =?us-ascii?Q?S1n92np0TxLYSv28qiMct9l+8aC6WaO44xpltMpon2fvrF95NdqkoWvcXDJ5?=
- =?us-ascii?Q?e/nLmGtqKiuDP40mdPXMMQH1lSflmVg5YURfV/Z0fpdVaZdc0ttvBQKtYxUn?=
- =?us-ascii?Q?QBnUoZAR4uD4AOurRZ5ZwlzXPysccMeKao6kYhtSlpD9lNfws3jO2dx/JZgf?=
- =?us-ascii?Q?Itm9ikkDIuPDNdLf74sFeiZSJ5CaWTZvRjl1zFwNcGNwAD+56vfyDjNlpBru?=
- =?us-ascii?Q?WlzbE62dQ+z2E1u/EE2OEK9l/zhuQ0Ksw7815ajXkTOwmEhEEd64raRTwxYs?=
- =?us-ascii?Q?Gm8oEG288o5UPHOjdFylrpyv3FYau+vgHkU970peuREKTLhNmooL5lqkhDHe?=
- =?us-ascii?Q?KcnOTzKW7EA39EbPnZroNWgna8QRmiPvz2E+mOOAQ/Jp3cSH890qLc00SPeW?=
- =?us-ascii?Q?EhYLYbCAwhvP1OdvzNkcCHRbL7fE2XNuWjEvQGn/1m4303N90ZqYEbkcrCG/?=
- =?us-ascii?Q?/QOqHLaCng=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 75ef445f-4ace-4f19-b927-08def1718fed
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 15:11:58.4202
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FYAOOnFNpfn6AcMQT4x/XXO5ENoWwmfog1cZr9naVAxFJXjChRV5yp8ZkJJSpxVyfsNv0nXrprDmGLBqGjxmdw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB999098
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260801-mt8189-clocks-system-base-v5-16-ac4410697cc2@collabora.com>
+User-Agent: Mutt/2.4.0 (2026-06-19)
 
-On Thu, Jul 30, 2026 at 04:22:38PM +0800, Yun Zhou wrote:
-> erspan_xmit() re-enters the network stack via ip_tunnel_xmit(), causing
-> nested acquisition of _xmit_lock on the underlay device while already
-> holding the ERSPAN device's _xmit_lock. Both are ARPHRD_ETHER and share
-> the same lockdep class, creating an ABBA deadlock:
+On Sat, Aug 01, 2026 at 01:21:02PM +0200, Louis-Alexis Eyraud wrote:
+> Add support for the MT8189 apmixedsys clock controller, which provides
+> PLLs generated from SoC 26m.
 > 
->   sch_direct_xmit [lock erspan] -> erspan_xmit -> ip_tunnel_xmit ->
->   ip_output -> __dev_queue_xmit -> sch_direct_xmit [lock underlay]
-
-Sashiko complains that this is not accurate. Clarify that both the
-overlay and underlay devices are of the same type (both erspan or both
-ip6erspan). Not erspan and some Ethernet device in the underlay. See:
-
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260730082238.676845-1-yun.zhou%40windriver.com
-
-And:
-
-https://lore.kernel.org/all/83360de7addb13a3b5f4d5e722148f248fdb2ae0.1784884817.git.pabeni@redhat.com/
-
-> 
-> Set dev->lltx = true so HARD_TX_LOCK() skips the spinlock for ERSPAN.
-> This is safe as erspan_xmit() has no shared mutable state: o_seqno is
-> atomic, stats use atomic_long_inc, and dst_cache is per-CPU. GRETAP,
-> the sibling device with identical xmit structure, already sets lltx.
-
-This is still not safe and in v2 I asked to wait for Eric's patch to be
-accepted:
-
-https://lore.kernel.org/netdev/20260720075352.GA2233846@shredder/
-
-And it's still WIP:
-
-https://lore.kernel.org/netdev/20260720135132.3957146-1-edumazet@google.com/
-
-> 
-> Closes: https://syzkaller.appspot.com/bug?extid=9bda1b9fbb7fbdf9b62b
-> Reported-by: syzbot+9bda1b9fbb7fbdf9b62b@syzkaller.appspotmail.com
-> Fixes: 84e54fe0a5ea ("gre: introduce native tunnel support for ERSPAN")
-> Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
+> Co-developed-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
+> Signed-off-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
+> Co-developed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 > ---
-> v3:
->   - add fix for IPv6
+>  drivers/clk/mediatek/Kconfig                 |  13 ++
+>  drivers/clk/mediatek/Makefile                |   1 +
+>  drivers/clk/mediatek/clk-mt8189-apmixedsys.c | 203 +++++++++++++++++++++++++++
+>  3 files changed, 217 insertions(+)
+> 
+> diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
+> index 2c09fd729bab..f67dfb6cd019 100644
+> --- a/drivers/clk/mediatek/Kconfig
+> +++ b/drivers/clk/mediatek/Kconfig
+> @@ -815,6 +815,19 @@ config COMMON_CLK_MT8188_WPESYS
+>  	help
+>  	  This driver supports MediaTek MT8188 Warp Engine clocks.
+>  
+> +config COMMON_CLK_MT8189
+> +	tristate "Clock driver for MediaTek MT8189"
+> +	depends on ARM64 || COMPILE_TEST
+> +	select COMMON_CLK_MEDIATEK
+> +	select COMMON_CLK_MEDIATEK_FHCTL
+> +	default ARCH_MEDIATEK
+> +	help
+> +	  Enable this option to support the clock management for MediaTek MT8189 SoC. This
+> +	  includes handling of all primary clock functions and features specific to the MT8189
+> +	  platform. Enabling this driver ensures that the system's clock functionality aligns
+> +	  with the MediaTek MT8189 hardware capabilities, providing efficient management of
+> +	  clock speeds and power consumption.
+> +
+>  config COMMON_CLK_MT8192
+>  	tristate "Clock driver for MediaTek MT8192"
+>  	depends on ARM64 || COMPILE_TEST
+> diff --git a/drivers/clk/mediatek/Makefile b/drivers/clk/mediatek/Makefile
+> index d8736a060dbd..66577ccb9b93 100644
+> --- a/drivers/clk/mediatek/Makefile
+> +++ b/drivers/clk/mediatek/Makefile
+> @@ -123,6 +123,7 @@ obj-$(CONFIG_COMMON_CLK_MT8188_VDOSYS) += clk-mt8188-vdo0.o clk-mt8188-vdo1.o
+>  obj-$(CONFIG_COMMON_CLK_MT8188_VENCSYS) += clk-mt8188-venc.o
+>  obj-$(CONFIG_COMMON_CLK_MT8188_VPPSYS) += clk-mt8188-vpp0.o clk-mt8188-vpp1.o
+>  obj-$(CONFIG_COMMON_CLK_MT8188_WPESYS) += clk-mt8188-wpe.o
+> +obj-$(CONFIG_COMMON_CLK_MT8189) += clk-mt8189-apmixedsys.o
+>  obj-$(CONFIG_COMMON_CLK_MT8192) += clk-mt8192-apmixedsys.o clk-mt8192.o
+>  obj-$(CONFIG_COMMON_CLK_MT8192_AUDSYS) += clk-mt8192-aud.o
+>  obj-$(CONFIG_COMMON_CLK_MT8192_CAMSYS) += clk-mt8192-cam.o
+> diff --git a/drivers/clk/mediatek/clk-mt8189-apmixedsys.c b/drivers/clk/mediatek/clk-mt8189-apmixedsys.c
+> new file mode 100644
+> index 000000000000..a50a8979b849
+> --- /dev/null
+> +++ b/drivers/clk/mediatek/clk-mt8189-apmixedsys.c
+> @@ -0,0 +1,203 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2025-2026 MediaTek Inc.
+> + *                    Qiqi Wang <qiqi.wang@mediatek.com>
+> + *                    Irving-CH Lin <irving-ch.lin@mediatek.com>
+> + * Copyright (C) 2026 Collabora Ltd.
+> + *                    AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> + *                    Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+> + */
+> +
+> +#include <linux/clk-provider.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +
+> +#include "clk-fhctl.h"
+> +#include "clk-mtk.h"
+> +#include "clk-pll.h"
+> +
+> +#include <dt-bindings/clock/mediatek,mt8189-clk.h>
+> +
+> +#define MT8189_PLL_FMAX		(3800UL * MHZ)
+> +#define MT8189_PLL_FMIN		(1500UL * MHZ)
+> +#define MT8189_PLLEN_OFS	0x70
+> +#define MT8189_PLLEN_SET_OFS	0x74
+> +#define MT8189_PLLEN_CLR_OFS	0x78
+> +#define MT8189_RSTBAR_OFS	0x80
+> +#define MT8189_RSTBAR_SET_OFS	0x84
+> +#define MT8189_RSTBAR_CLR_OFS	0x88
+> +#define MT8189_INTEGER_BITS	8
+> +
+> +#define PLL_SETCLR(_id, _name, _reg, _pwr_reg, _en_setclr_bit,		\
+> +			_rstb_setclr_bit, _flags, _pd_reg,	\
+> +			_pd_shift, _tuner_reg, _tuner_en_reg,	\
+> +			_tuner_en_bit, _pcw_reg, _pcw_shift,	\
+> +			_pcwbits) {				\
+> +		.id = _id,					\
+> +		.name = _name,					\
+> +		.en_reg = MT8189_PLLEN_OFS,			\
+> +		.en_set_reg = MT8189_PLLEN_SET_OFS,		\
+> +		.en_clr_reg = MT8189_PLLEN_CLR_OFS,		\
+> +		.reg = _reg,					\
+> +		.pwr_reg = _pwr_reg,				\
+> +		.pll_en_bit = _en_setclr_bit,			\
+> +		.rst_bar_reg = MT8189_RSTBAR_OFS,		\
+> +		.rst_bar_set_reg = MT8189_RSTBAR_SET_OFS,	\
+> +		.rst_bar_clr_reg = MT8189_RSTBAR_CLR_OFS,	\
+> +		.rst_bar_mask = BIT(_rstb_setclr_bit),		\
+> +		.flags = _flags,				\
+> +		.fmax = MT8189_PLL_FMAX,			\
+> +		.fmin = MT8189_PLL_FMIN,			\
+> +		.pd_reg = _pd_reg,				\
+> +		.pd_shift = _pd_shift,				\
+> +		.tuner_reg = _tuner_reg,			\
+> +		.tuner_en_reg = _tuner_en_reg,			\
+> +		.tuner_en_bit = _tuner_en_bit,			\
+> +		.pcw_reg = _pcw_reg,				\
+> +		.pcw_shift = _pcw_shift,			\
+> +		.pcwbits = _pcwbits,				\
+> +		.pcwibits = MT8189_INTEGER_BITS,		\
+> +		.ops = &mtk_pll_setclr_ops,			\
+> +	}
+> +
+> +static const struct mtk_pll_data apmixed_plls[] = {
+> +	PLL_SETCLR(CLK_APMIXED_ARMPLL_LL, "armpll-ll", 0x204, 0x210, 18,
+> +		   0, PLL_AO, 0x208, 24, 0, 0, 0, 0x208, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_ARMPLL_BL, "armpll-bl", 0x214, 0x220, 17,
+> +		   0, PLL_AO, 0x218, 24, 0, 0, 0, 0x218, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_CCIPLL, "ccipll", 0x224, 0x230, 16,
+> +		   0, PLL_AO, 0x228, 24, 0, 0, 0, 0x228, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_MAINPLL, "mainpll", 0x304, 0x310, 15,
+> +		   2, HAVE_RST_BAR | PLL_AO,
+> +		   0x308, 24, 0, 0, 0, 0x308, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_UNIVPLL, "univpll", 0x314, 0x320, 14,
+> +		   1, HAVE_RST_BAR, 0x318, 24, 0, 0, 0, 0x318, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_MMPLL, "mmpll", 0x324, 0x330, 13,
+> +		   0, HAVE_RST_BAR, 0x328, 24, 0, 0, 0, 0x328, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_MFGPLL, "mfgpll", 0x504, 0x510, 7,
+> +		   0, 0, 0x508, 24, 0, 0, 0, 0x508, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_APLL1, "apll1", 0x404, 0x414, 11,
+> +		   0, 0, 0x408, 24, 0x040, 0x00c, 0, 0x40c, 0, 32),
+> +	PLL_SETCLR(CLK_APMIXED_APLL2, "apll2", 0x418, 0x428, 10,
+> +		   0, 0, 0x41c, 24, 0x044, 0x00c, 1, 0x420, 0, 32),
+> +	PLL_SETCLR(CLK_APMIXED_EMIPLL, "emipll", 0x334, 0x340, 12,
+> +		   0, PLL_AO, 0x338, 24, 0, 0, 0, 0x338, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_APUPLL2, "apupll2", 0x614, 0x620, 2,
+> +		   0, 0, 0x618, 24, 0, 0, 0, 0x618, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_APUPLL, "apupll", 0x604, 0x610, 3,
+> +		   0, 0, 0x608, 24, 0, 0, 0, 0x608, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_TVDPLL1, "tvdpll1", 0x42c, 0x438, 9,
+> +		   0, 0, 0x430, 24, 0, 0, 0, 0x430, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_TVDPLL2, "tvdpll2", 0x43c,  0x448, 8,
+> +		   0, 0, 0x440, 24, 0, 0, 0, 0x440, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_ETHPLL, "ethpll", 0x514, 0x520, 6,
+> +		   0, 0, 0x518, 24, 0, 0, 0, 0x518, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_MSDCPLL, "msdcpll", 0x524, 0x530, 5,
+> +		   0, 0, 0x528, 24, 0, 0, 0, 0x528, 0, 22),
+> +	PLL_SETCLR(CLK_APMIXED_UFSPLL, "ufspll", 0x534, 0x540, 4,
+> +		   0, 0, 0x538, 24, 0, 0, 0, 0x538, 0, 22),
+> +};
+> +
+> +#define FH(_pllid, _fhid, _offset) {				\
+> +		.data = {					\
+> +			.pll_id = _pllid,			\
+> +			.fh_id = _fhid,				\
+> +			.fh_ver = FHCTL_PLLFH_V2,		\
+> +			.fhx_offset = _offset,			\
+> +			.dds_mask = GENMASK(21, 0),		\
+> +			.slope0_value = 0x6003c97,		\
+> +			.slope1_value = 0x6003c97,		\
+> +			.sfstrx_en = BIT(2),			\
+> +			.frddsx_en = BIT(1),			\
+> +			.fhctlx_en = BIT(0),			\
+> +			.tgl_org = BIT(31),			\
+> +			.dvfs_tri = BIT(31),			\
+> +			.pcwchg = BIT(31),			\
+> +			.dt_val = 0x0,				\
+> +			.df_val = 0x9,				\
+> +			.updnlmt_shft = 16,			\
+> +			.msk_frddsx_dys = GENMASK(23, 20),	\
+> +			.msk_frddsx_dts = GENMASK(19, 16),	\
+> +			.ops = &mtk_pllfh_setclr_ops,		\
+> +		},						\
+> +	}
+> +
+> +static struct mtk_pllfh_data pllfhs[] = {
+> +	FH(CLK_APMIXED_ARMPLL_LL, 0, 0x003C),
+> +	FH(CLK_APMIXED_ARMPLL_BL, 1, 0x0050),
+> +	FH(CLK_APMIXED_CCIPLL, 2, 0x0064),
+> +	FH(CLK_APMIXED_MAINPLL, 3, 0x0078),
+> +	FH(CLK_APMIXED_MMPLL, 4, 0x008C),
+> +	FH(CLK_APMIXED_MFGPLL, 5, 0x00A0),
+> +	FH(CLK_APMIXED_EMIPLL, 6, 0x00B4),
+> +	FH(CLK_APMIXED_TVDPLL1, 7, 0x00C8),
+> +	FH(CLK_APMIXED_TVDPLL2, 8, 0x00DC),
+> +	FH(CLK_APMIXED_MSDCPLL, 9, 0x00F0),
+> +	FH(CLK_APMIXED_UFSPLL, 10, 0x0104),
+> +	FH(CLK_APMIXED_APUPLL, 11, 0x0118),
+> +	FH(CLK_APMIXED_APUPLL2, 12, 0x012c),
+> +};
+> +
+> +static const struct of_device_id of_match_clk_mt8189_apmixed[] = {
+> +	{ .compatible = "mediatek,mt8189-apmixedsys" },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, of_match_clk_mt8189_apmixed);
+> +
+> +static int clk_mt8189_apmixed_probe(struct platform_device *pdev)
+> +{
+> +	const u8 *fhctl_node = "mediatek,mt8189-fhctl";
+> +	struct device_node *node = pdev->dev.of_node;
+> +	struct clk_hw_onecell_data *clk_data;
+> +	int r;
+> +
+> +	clk_data = mtk_alloc_clk_data(ARRAY_SIZE(apmixed_plls));
+> +	if (!clk_data)
+> +		return -ENOMEM;
+> +
+> +	fhctl_parse_dt(fhctl_node, pllfhs, ARRAY_SIZE(pllfhs));
 
-The commit message doesn't mention the ip6erspan fix.
+So I know this is how the existing drivers are written. This calls
+of_iomap(), and the iounmap is called by mtk_clk_unregister_pllfhs().
+I usually like to see things in pairs to make it easier to review
+where there's some register, and an unregister with the same name.
+
+Could the fhctl_parse_dt() call be moved into
+mtk_clk_register_pllfhs() ?
+
+Additionally fhctl_parse_dt() sets some state variables that are never
+cleared in the unregister:
+
+                pllfh->state.fh_enable = 1;
+                pllfh->state.ssc_rate = ssc_rate;
+                pllfh->state.base = base;
+
+Just a quick glance though I think this is fine.
+
+Brian
+
