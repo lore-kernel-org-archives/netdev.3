@@ -1,153 +1,148 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9544C401A08
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 13:31:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4D035C183;
+	Mon,  3 Aug 2026 13:32:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785763868; cv=none; b=YlIE/cbZBNLGxCM8SRe/2Js7F82NEkr+cLOpdtJU+98cpyAdwMJ9QL+sMrZNdz5NHm43BKiZ8+e7RYcEDdTuhnb6Cg5af+e/cbn5bOzTpV7vX9wc1FlPYb41s+lQf7G9lOMPdKaESAax1LuzHQaPjyB82ybUGK5cykMKcAyJkyo=
+	t=1785763927; cv=none; b=YQFwSZZs4br8RrVCzwYTWNvaOqino+2TsQgZkeDc1SWC0OgEJN4Ug5vB9OvWdRwu0wtqwKaV3KYqrJ3Y/pHo5vobfZ8Twac7O1sLZW/Nt3FTyukhSRMjrpF6EdhINEjdEo5Xu32gObkzLCVA5dF1/RvQBAkIo/2gJOGByvRP5U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785763868; c=relaxed/simple;
-	bh=s7sVT5nQKfhO1MYQ+cpOMkikgu6fjfHMzycska5FUMk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bBZpGFbmjEoNt424avaujIjmFkhe6CiFgCjsWFgWJS4JSYpJihzwYgyZMNPNylwqppBPC/esVYa0LEG46enQD9DEBXvTN8wlJp8q6a28X5SZOuN0nuuiovRtqN1ZI0jdCg3ha9AZwad44yd4z/hKmpFS4XLBJzXMm1RsT+USuB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZLcmUBA; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785763927; c=relaxed/simple;
+	bh=9ff33wS8IPyJtj9+LwYLWA+CchM0/9Kcw0hwBUzW+G4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gfVfvha8bVlyH8wP1KrYMiZJLhBgUW5ciUyvouFRtaUv+dp57eCcTBze90Gaq26hMqMhigNKqis5MmAS0qAlJSjcLc/vKydw7L44EzorW2kgMBjUT9ZfYM/wdpfksY0Mu2aqDD8NBmFYfHNjtQFDQU6os79PV1NyF4u8ArE0Uy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=C8vOmgBW; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZLcmUBA"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so2245762a91.2
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 06:31:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785763861; x=1786368661; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NaH5rfBTvvJEbq+DmDZKDP4NbrrXRvHP/DgwMEdPwTA=;
-        b=eZLcmUBAWfCzhIdeH6fNswwvhJSuwlsTVOX3tAzn+2tvQdbqDH5+SXplD09H6kd2Wg
-         YdOVkLjdSzzqIHV2mlf3d95lLLmfvzqkk5rxjfwiboeF3FlrKtgKo+h3+bPRi1HkkIg0
-         QJVIFQwGq+NYQh7qvAL5HwCpEOKkli1kosPW5ihIdqFgeHDsltcCIpObfVSmB6XytIHB
-         0FfaQM9CyHpAaJgW5qIC4iOH4EvjSHiSXAWOF47ZRuw000cJnAIXX1OLt52Jsp8bfL6v
-         /hK6K60QYJb+zSeB6IsytGKCU7CVFKqRYwxxBczU7X0do2m82AWnZ+nsYp0Nottz3Nkm
-         gPbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785763861; x=1786368661;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NaH5rfBTvvJEbq+DmDZKDP4NbrrXRvHP/DgwMEdPwTA=;
-        b=D4j4BtPk27qvvPrEF0ZI7BSfTfpsmJJd/DeljE/w89JYApIFg4r7iuEcJP2VzfzlNy
-         yRwMcVUDAVB/eFQCl824g9mnX6/HYFOexbSizAg1TuxSjbsDTNzqGAru04njwLbEfisb
-         0bAE1T5ogBWwNiO2iwoJwzJMfA3iykX7+ubKUEkpGFQZxQLyZMJBs11plmi2Aq2AVGTi
-         +pbPCOLUhkuW6Ob+Gdk21l23t+XBtQ+A0g49+gQWhF1F5VYRwxb2/RaqLXaZ94yhD9Rv
-         iGm5/lcqVAeWKmm+tapqOgELJA/F30syor6ixILiiIJJQmcp+/Q0N8rXLTERjAIQTjdb
-         w8RA==
-X-Forwarded-Encrypted: i=1; AHgh+RooHQ+V/urMu1pDo9BcMbOYoUcAbCnPZW9UJmTaQxpuNFoNf3OucfqE3euwXOuvCraaE9xroBM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyyrCpHsb1eHKkfHTI+J6gY1q/OMDHyt+CZlIkq97AReo1/v1K
-	cPv8/c6cU/gVSGqMKpnVm6bv+QdOXC/cIFfkFw4DIYe9vRxojDAGSVs=
-X-Gm-Gg: AR+sD12YRbUuhi9DMSUr/TWatGmgfM8SXCIkteSGXUHxXyoEnhqgk979pZ1uXPeDFh/
-	PY6rZJYGtg4evYfXmdkN8XwrbTaD8Px//e3diEjf6fHUpifaLEBZXtLuglF2mM6TQIXxQbBFDBn
-	LQNbPnXtd4MjkJ+4PFjo+0XOffYdEGpOClvoGTrh2dR5Gwy8t7BN4cwUJ/RNC32pk34EmmYW4yR
-	Dr98Fgi581qoeOVzAqN0HYbYrUKo2ASoER8FHTHvqSeIQlu7k8+tjY35+e8A0TooOqjb9wzsdUy
-	zQsv02128M3tXRn+9rPE/aB8ZgaKwUJQ393OEiFdVYl9K52NHAgcJwcqfJPtKlAIBmFyZSmEPZT
-	8VhpXBxwNPhAGAeA891GZY6bnqwu+DM7fxNd6KOEFOVA4sqc6VmHBDOU1keErmafPeuzw9tDkPg
-	S70jYd4BVHVj7Nk105OcGB7y+6Q44qKlK2Yu4D5NJ37EAdjmn73BZV9ROpbRgQOLf5RSEZrk+6n
-	3oC5s41CKJJHOv/GyJiyI2AnN/4VQRj8/eU55D2YcSE/tU/+nU3uWX9AEwEZOVzoo07Wc8T3x9Q
-	aLdpuCJ5G6B9/DjWTA2rNPSlUBBfPGFycQ==
-X-Received: by 2002:a17:90b:3947:b0:366:10f1:3d91 with SMTP id 98e67ed59e1d1-38fbc3f246fmr8665430a91.1.1785763860528;
-        Mon, 03 Aug 2026 06:31:00 -0700 (PDT)
-Received: from localhost.localdomain ([1.226.165.54])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb259000bsm2531459a91.0.2026.08.03.06.30.56
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 03 Aug 2026 06:30:59 -0700 (PDT)
-From: Myeonghun Pak <mhun512@gmail.com>
-To: Zhao Qiang <qiang.zhao@nxp.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Halasa <khc@pm.waw.pl>,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Myeonghun Pak <mhun512@gmail.com>,
-	Ijae Kim <ae878000@gmail.com>
-Subject: [PATCH net v2] net: wan: fsl_ucc_hdlc: release HDLC device on remove
-Date: Mon,  3 Aug 2026 22:30:48 +0900
-Message-ID: <20260803133048.42650-1-mhun512@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="C8vOmgBW"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CAD751476;
+	Mon,  3 Aug 2026 06:31:56 -0700 (PDT)
+Received: from [192.168.178.24] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7A1033F66F;
+	Mon,  3 Aug 2026 06:31:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785763920; bh=9ff33wS8IPyJtj9+LwYLWA+CchM0/9Kcw0hwBUzW+G4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=C8vOmgBWumd/IrLAX0iAMZNyUPVhapYAbmX/j/z0X+O/FFMQD5S4wn8udWgUFFsEp
+	 m/+quoEE+D3Yar9eKUcmRijRxITURBtedLeh8WzPSTQ3vEVB//l5JHCm18FBVrMDRc
+	 Bk+KSaIRtckB745grmz9/GWcJd4/MWY4R1nPYrH0=
+Message-ID: <2635661d-4be2-4abf-84aa-c3024941f787@arm.com>
+Date: Mon, 3 Aug 2026 15:31:56 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 0/2] net: phy: Add Maxio MAE0621A support
+To: Liu Changjie <liucj1228@outlook.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org
+Cc: Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Luo Jie <jie.luo@oss.qualcomm.com>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <MN0PR19MB609154F210DF84DCB29D3696ACC62@MN0PR19MB6091.namprd19.prod.outlook.com>
+Content-Language: en-GB
+From: Andre Przywara <andre.przywara@arm.com>
+In-Reply-To: <MN0PR19MB609154F210DF84DCB29D3696ACC62@MN0PR19MB6091.namprd19.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-ucc_hdlc_probe() registers an HDLC netdev whose private pointer refers to
-the separately allocated ucc_hdlc_private object. The remove path frees
-that private object without unregistering or freeing the netdev, leaving
-a registered device with a dangling private pointer.
+Hi,
 
-Unregister and free the HDLC device before releasing its private object.
-An active device must be closed before detach_hdlc_protocol(), because
-the detach path resets dev->flags and clears IFF_UP. Otherwise the later
-unregister_netdevice() skips ndo_stop, leaving NAPI, the UCC and its IRQ
-active while their backing resources are freed.
+thanks for sending this, one question and an update below ...
 
-Close the device inside unregister_hdlc_device() while RTNL is held and
-the HDLC protocol is still attached. This lets uhdlc_close() disable NAPI,
-stop the UCC and free the IRQ before the remove path releases the DMA and
-private resources.
+On 7/17/26 05:39, Liu Changjie wrote:
+> Add a binding and PHY driver for the Maxio MAE0621A Gigabit Ethernet
+> PHY. The driver matches the exact PHY ID and optionally selects a
+> 125 MHz clock on CLKOUT. When the property is absent, the driver
+> preserves the hardware strap or bootloader setting.
+> 
+> This was tested on the LCKFB Taishan Pi 3M. With the PHY's default
+> CLKOUT configuration, the RK3576 GMAC negotiated a 1 Gbit/s link but
+> the data path did not work. A read-modify-write of page 0xa43,
+> register 0x19, setting bits 0 and 11 produced a readback value of
+> 0x0823 and restored the data path without changing the RGMII delays.
+> The readback also confirmed that the unrelated set bits were
+> preserved.
+> 
+> Only the 125 MHz setting has been exercised on hardware and only that
+> value is exposed by this series. The 0 and 25 MHz choices from the
+> initial draft have been removed.
 
-Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
-Cc: stable@vger.kernel.org
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
----
-Changes in v2:
-- Close an active HDLC device before detaching its protocol so ndo_stop
-  performs the NAPI, UCC and IRQ teardown noted by Simon Horman's review.
-- Link to v1: https://lore.kernel.org/netdev/20260728171545.49247-1-mhun512@gmail.com/
+So what is this clock for, exactly? Is that the RXC clock, supposed to 
+depend on the line speed? Then it would need to change if a 100MBit/s 
+link is negotiated?
+Or is this something else entirely, and merely used as an optional 
+auxiliary clock, to support a switch or other network chips?
 
- drivers/net/wan/fsl_ucc_hdlc.c | 3 +++
- drivers/net/wan/hdlc.c         | 1 +
- 2 files changed, 4 insertions(+)
+If I read the schematic of that Taishan board correctly, it's the 
+former? But it's odd that both on the Radxa Cubie A5E (sporting the same 
+-Q3C variant) and the X96QPro+ box (-Q2C) don't need any extra setting, 
+and the clock there looks like the normal PHY controlled RXC clock.
 
-diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index 809f21fb93..4c843c94cf 100644
---- a/drivers/net/wan/fsl_ucc_hdlc.c
-+++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -1255,6 +1255,8 @@ static void ucc_hdlc_remove(struct platform_device *pdev)
- {
- 	struct ucc_hdlc_private *priv = dev_get_drvdata(&pdev->dev);
- 
-+	unregister_hdlc_device(priv->ndev);
-+
- 	uhdlc_memclean(priv);
- 
- 	if (priv->utdm && priv->utdm->si_regs) {
-@@ -1266,6 +1268,7 @@ static void ucc_hdlc_remove(struct platform_device *pdev)
- 		iounmap(priv->utdm->siram);
- 		priv->utdm->siram = NULL;
- 	}
-+	free_netdev(priv->ndev);
- 	kfree(priv);
- 
- 	dev_info(&pdev->dev, "UCC based hdlc module removed\n");
-diff --git a/drivers/net/wan/hdlc.c b/drivers/net/wan/hdlc.c
-index cbed10b1d8..a38f90d300 100644
---- a/drivers/net/wan/hdlc.c
-+++ b/drivers/net/wan/hdlc.c
-@@ -263,6 +263,7 @@ EXPORT_SYMBOL(alloc_hdlcdev);
- void unregister_hdlc_device(struct net_device *dev)
- {
- 	rtnl_lock();
-+	dev_close(dev);
- 	detach_hdlc_protocol(dev);
- 	unregister_netdevice(dev);
- 	rtnl_unlock();
--- 
-2.47.1
+> Public documentation for the MAE0621A register is not available. The
+
+There seems to be now a datasheet, explaining all the non-standard 
+registers, including the one for the 125MHz clock out register:
+
+https://www.lcsc.com/datasheet/C49308069.pdf
+
+If the link doesn't work (in the future), just find the PHY in the LCSC 
+catalogue, it should have a link to the datasheet there.
+
+Cheers,
+Andre
+
+> exact definitions of page 0xa43, register 0x19 bits 0 and 11, their
+> reset defaults, and whether a soft reset is required after changing
+> them still need confirmation from Maxio. The register programming in
+> this series is therefore supported by the hardware A/B result, not by
+> a public datasheet citation.
+> 
+> Hardware tests with the 125 MHz setting:
+> - all supported 10/100/1000 Mbit/s link modes
+> - 100 ICMP packets in each direction with no loss
+> - 936/934 Mbit/s host-to-board iperf3, no retransmits
+> - 943/941 Mbit/s board-to-host iperf3, no retransmits
+> - link unplug/replug and a normal reboot, followed by another 100 ICMP
+>    packets in each direction with no loss
+> - no RX errors, missed packets, carrier errors or collisions
+> 
+> Static tests on net-next commit f6f3b36c15ed:
+> - dt_binding_check with dtschema 2026.6
+> - W=1 arm64 defconfig build of drivers/net/phy/maxio.o with GCC 10.3
+> - W=1 arm64 allmodconfig build of drivers/net/phy/maxio.o with GCC 10.3
+> - git diff --check and checkpatch.pl
+> 
+> Changes in v2:
+> - Extend hardware validation to all supported 10/100/1000 Mbit/s link
+>    modes.
+> - Keep the binding limited to the tested 125 MHz setting. CLKOUT-disable
+>    support can be added later after its register behavior is documented
+>    and tested.
+> - No binding or driver code changes.
+> 
+> Link: https://lore.kernel.org/r/MN0PR19MB6091CD5A84D2DA5DACF434DAACF92@MN0PR19MB6091.namprd19.prod.outlook.com [v1]
+> 
+> Liu Changjie (2):
+>    dt-bindings: net: Add Maxio MAE0621A PHY
+>    net: phy: Add support for the Maxio MAE0621A
+> 
+>   .../bindings/net/maxio,mae0621a.yaml          |  38 +++++++
+>   .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+>   drivers/net/phy/Kconfig                       |   8 ++
+>   drivers/net/phy/Makefile                      |   1 +
+>   drivers/net/phy/maxio.c                       | 103 ++++++++++++++++++
+>   5 files changed, 152 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/net/maxio,mae0621a.yaml
+>   create mode 100644 drivers/net/phy/maxio.c
+> 
+> 
+> base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
+
