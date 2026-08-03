@@ -1,45 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649993446B9;
-	Mon,  3 Aug 2026 23:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196B333F385;
+	Mon,  3 Aug 2026 23:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785800257; cv=none; b=mWESzrUlgouqMlhbmvkB0YhylgHaW+IVOxcDwQusQjB0MJvFfI5/khBiG53iWh+PxNWK1AODWqc1YuCc4/+FSfjSKz+d1SA6LpsLy/62gFTOETI/1MA46mSXvATOBBrk8dN3fY3n9S9RsqGPCTJyAUUvUq73t+UG0VL9Esl3EsA=
+	t=1785800661; cv=none; b=KK7XVtsfby/p3tBJpv8cUmP9XxZkxh/nRVVoZRJd4QN2lgXq7kqeQU++LkpYuYekPd+zLRiYQrrDeYw+zEHNP8sczbN11PO774A+DbZ5CQsZV6P/Fm+PObqKlYqx+1Ed+wLc5F1N9au7bHJxVivCkWvLtZTgQUy+y8WVAJHh8PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785800257; c=relaxed/simple;
-	bh=f4r+OA1YXFzxcVZDEagM7bsXcOeHfDvXh4Hm4TZliwM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OGEmrYcC+RSm42hniBdGpMd8V1jLNj2IC4Qlp4rWoKn8hw6FU6xBKwrPFgsBofd6o4sqLpif41lDKFTZikQMPa6X7mQjrbe++RuwUyUrqQvOtssKiPxLyyJQ+pZBQJOp9XDgWWj56SJwWqoinuN4XuT07HnR2V+tL93qd/kclys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PSRF9FEV; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PSRF9FEV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EBE1F000E9;
-	Mon,  3 Aug 2026 23:37:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785800255;
-	bh=ptPCPkekjvqSpOCYieRgFnA5RnLa/tU7Dy8rwBETuI8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PSRF9FEVSh5kqD5Td2G4E+hebPod8mRDoP52TcEruGsTCquX6TsSVYI3pAQF9eK4o
-	 isFNN7eLxH375x2yOYfHfQJiED163pzSqb0vnSKlDTrzhN9prmj0bCZrMsfxcpbzyr
-	 Abl60jTI+CrinAODEfbxGk80tPuhwiUwu5z71V2Vovm9eqxuC03LdvWzoTbInn0vvg
-	 DOx7u5EMEY0DsC3PDYqP7je+2uoISOtQ7wImk1BsQIoyK2L1EXfJfab/suUT8UiZxr
-	 qdW/1R0uFS+qyZ9gOUZxCUElskar/8Z42RAt2NBVb0vGIOfHPfUsq6x9d+vlQqhBCZ
-	 CCm0wzV6lpd3Q==
-From: Jakub Kicinski <kuba@kernel.org>
-To: omeux327@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] sctp: diag: fix uninitialized stack leak via INET_DIAG_LOCALS/PEERS
-Date: Mon,  3 Aug 2026 16:37:19 -0700
-Message-ID: <20260803233718.2336399-2-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260730023309.21654-1-omeux327@gmail.com>
-References: <20260730023309.21654-1-omeux327@gmail.com>
+	s=arc-20240116; t=1785800661; c=relaxed/simple;
+	bh=m+wlDPn2LisdKsE2afpwiUccvd1hJDTn7fephGbh6vQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M2hkVeMj2Krt5Eh1WG1UPP8Z+XM7MuJ/aWwvc7CQI+9eVZ9hKNmTvqc8KqwuDR20COMTpIJ3SQO1Anz5g+VIqS1mWppkYMV8d5uGy84a2G6l+Npg/WHqNwcqAOQDb4hCGvV0rP+C7N4mOQG0zXDpGwzNnmDduQBO1xNDbUxEGz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id 2314220B7167; Mon,  3 Aug 2026 16:44:00 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2314220B7167
+From: Long Li <longli@microsoft.com>
+To: Long Li <longli@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	shradhagupta@linux.microsoft.com,
+	Simon Horman <horms@kernel.org>,
+	ernis@linux.microsoft.com,
+	stephen@networkplumber.org
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3 0/6] net: mana: HW channel reliability and hardening fixes
+Date: Mon,  3 Aug 2026 16:43:38 -0700
+Message-ID: <20260803234355.636038-1-longli@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,160 +48,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email says "AI seems to have spotted another related stack leak, and
-suggests an alternative fix."
----
-sctp: diag: fix uninitialized stack leak via INET_DIAG_LOCALS/PEERS
+This series fixes a set of latent bugs and robustness gaps in the MANA
+Hardware Channel (HWC), the control path the driver uses to talk to the
+device.  The issues range from a use-after-free of completion queues
+during teardown to buffer mis-sizing, unsafe teardown ordering, missing
+validation of device-supplied RX metadata, and stale-response handling
+after a command timeout.
 
-The patch changes inet_diag_msg_sctpladdrs_fill() and
-inet_diag_msg_sctpaddrs_fill() to zero the whole sockaddr_storage slot
-first and then copy only the family-dependent prefix of the stored
-union sctp_addr, so the sockaddr_in6-only tail of an AF_INET address is
-no longer exported through the netlink attributes.
+Patch overview:
 
-A few questions about the changelog and the placement of the fix.
+  1  RCU-protect gc->cq_table lookups against concurrent CQ destroy
+     The EQ interrupt handler dereferences CQ pointers from gc->cq_table
+     while teardown can free them.  Put the table under RCU and wait a
+     grace period before freeing, closing the use-after-free.
 
-[Severity: Low]
-[Finding: main-1-2]
-[Sources: opus-5]
-The changelog says:
+  2  fix HWC RQ/SQ buffer size swap
+     init_queues() sized the RQ with max_req_msg_size and the SQ with
+     max_resp_msg_size -- backwards.  A large response could overflow the
+     RQ buffer and the RX slot-index divide used the wrong stride.  Also
+     store the queue dimensions before creating the CQ so the RX handler
+     never sees an uninitialised divisor.
 
->     inet_diag_msg_sctpladdrs_fill() copies sizeof(union sctp_addr) (28 bytes,
->     the size of sockaddr_in6) from each sctp_sockaddr_entry.a into the netlink
->     INET_DIAG_LOCALS attribute and then only zeroes the bytes from offset 28 to
->     sizeof(sockaddr_storage).  The same pattern is used by
->     inet_diag_msg_sctpaddrs_fill() for INET_DIAG_PEERS.
+  3  free HWC comp_buf after destroying the EQ
+     Reorder teardown so the CQ/EQ are torn down (readers quiesced)
+     before comp_buf is freed, preventing a late EQ-handler access to
+     freed memory.
 
-Can the INET_DIAG_PEERS path actually leak anything?  transport->ipaddr
-is allocated zeroed and only ever written with sockaddr_len bytes:
+  4  validate hardware-supplied values in the HWC RX path
+     Bounds-check the SGE, verify the recovered slot index and SGE
+     address, and validate response length and msg_id before use, so
+     malformed or hostile DMA metadata cannot cause wrong-slot completion
+     or out-of-bounds access.
 
-net/sctp/transport.c:sctp_transport_new() {
-	transport = kzalloc_obj(*transport, gfp);
-	...
-}
+  5  fix HWC teardown safety with setup_active flag and destroy ordering
+     Track setup activation explicitly, tear the CQ down before the
+     TXQ/RXQ, and on an unrecoverable teardown failure leak the HWC
+     resources rather than free memory the device may still DMA into.
 
-net/sctp/transport.c:sctp_transport_init() {
-	peer->af_specific = sctp_get_af_specific(addr->sa.sa_family);
-	memcpy(&peer->ipaddr, addr, peer->af_specific->sockaddr_len);
-	...
-}
+  6  fix stale HWC response after command timeout
+     Replace the inflight-slot semaphore with a bitmap + waitqueue and
+     per-slot refcount/lock; latch the channel on timeout so no new slots
+     are handed out, drop duplicate/late responses, and ignore a zero
+     firmware-supplied timeout.
 
-So bytes 16..27 of from->ipaddr look guaranteed to be zero for AF_INET,
-which would make the inet_diag_msg_sctpaddrs_fill() change hardening
-rather than a fix.  Should the changelog say that instead?
+Follow-up feature work (net-next, sent separately)
+--------------------------------------------------
+The original series also contained two patches that are improvements, not
+fixes:
 
-The changelog also says:
+  net: mana: support concurrent HWC requests
+  net: mana: add dynamic HWC queue depth with reinit path
 
->     region) are left uninitialized.  Those bytes are propagated verbatim through
->     sctp_add_bind_addr() (which copies sizeof(union sctp_addr)=28 bytes) and then
+Per the netdev tree rules, fixes go to 'net' and features/improvements go
+to 'net-next', and the two must not be combined in a single submission.
+Those two patches build on the locking and teardown groundwork in this
+series, so they will be posted as a separate net-next series only after
+these fixes have propagated from net into net-next through the usual
+periodic merge.
 
-sctp_add_bind_addr() copies a caller-supplied length:
+Changes since v2
+----------------
+ - Per maintainer feedback, split the original combined series: the six
+   fixes here target 'net'; the two feature patches now go to 'net-next'
+   and are sent separately (see above).  Rebased the fixes onto net.
+ - Dropped the pcie_flr()-based reset fallback from the teardown path.
+   pcie_flr() resets device config without the save/restore that
+   pci_reset_function() provides, and cannot be used as a drop-in here.
+   On an unrecoverable teardown failure the driver now leaks the HWC
+   resources instead of touching memory the device may still DMA into.
+ - patch 2: store the HWC queue dimensions before creating the CQ so the
+   RX completion handler can never observe a zero max_resp_msg_size
+   divisor or a stale num_inflight_msg bound.
+ - Assorted commit-message and comment clarifications.
 
-net/sctp/bind_addr.c:sctp_add_bind_addr() {
-	memcpy(&addr->a, new, min_t(size_t, sizeof(*new), new_size));
-	...
-}
+Long Li (6):
+  net: mana: RCU-protect gc->cq_table lookups against concurrent CQ
+    destroy
+  net: mana: fix HWC RQ/SQ buffer size swap
+  net: mana: free HWC comp_buf after destroying the EQ
+  net: mana: validate hardware-supplied values in the HWC RX path
+  net: mana: fix HWC teardown safety with setup_active flag and destroy
+    ordering
+  net: mana: fix stale HWC response after command timeout
 
-Callers such as sctp_do_bind() pass af->sockaddr_len and store nothing
-uninitialized; only the callers that pass sizeof(union sctp_addr) do.
-Could that be spelled out so the scope of the stable backport is clear?
+ drivers/infiniband/hw/mana/cq.c               |  46 +-
+ .../net/ethernet/microsoft/mana/gdma_main.c   |  25 +-
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 402 +++++++++++++++---
+ drivers/net/ethernet/microsoft/mana/mana_en.c |  22 +-
+ include/net/mana/gdma.h                       |  29 +-
+ include/net/mana/hw_channel.h                 |  35 +-
+ 6 files changed, 475 insertions(+), 84 deletions(-)
 
-> diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-> index c2a0de2adf6fd..610c937deffd7 100644
-> --- a/net/sctp/diag.c
-> +++ b/net/sctp/diag.c
-> @@ -85,8 +85,12 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
->  	info = nla_data(attr);
->  	rcu_read_lock();
->  	list_for_each_entry_rcu(laddr, address_list, list) {
-> -		memcpy(info, &laddr->a, sizeof(laddr->a));
-> -		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
-> +		size_t copy_len = laddr->a.sa.sa_family == AF_INET ?
-> +				  sizeof(struct sockaddr_in) :
-> +				  sizeof(struct sockaddr_in6);
 
-[Severity: Low]
-[Finding: main-1-1]
-[Sources: opus-5]
-This isn't a bug, but the AF_INET/AF_INET6 to length mapping already
-exists as struct sctp_af::sockaddr_len, and the exact "zero a
-sockaddr_storage, then copy only the valid part" idiom is already in the
-tree:
-
-net/sctp/ulpevent.c:sctp_ulpevent_notify_peer_addr_change() {
-	memset(&addr, 0, sizeof(struct sockaddr_storage));
-	memcpy(&addr, &transport->ipaddr,
-	       transport->af_specific->sockaddr_len);
-	...
-}
-
-Would sctp_get_af_specific(laddr->a.sa.sa_family)->sockaddr_len in
-inet_diag_msg_sctpladdrs_fill(), and from->af_specific->sockaddr_len in
-inet_diag_msg_sctpaddrs_fill(), work here?
-
-Also, the else branch hardcodes sizeof(struct sockaddr_in6) as a stand-in
-for "the whole union", so an unexpected sa_family copies the maximum
-length rather than the minimum, and the constant silently diverges if
-union sctp_addr ever grows a larger member.
-
-> +
-> +		memset(info, 0, addrlen);
-> +		memcpy(info, &laddr->a, copy_len);
->  		info += addrlen;
->  
->  		if (!--addrcnt)
-
-[Severity: Low]
-[Finding: main-1-0]
-[Sources: opus-5]
-Does this leave the uninitialized tail sitting in the bind address list
-itself?  The residue is stored by the producers, and this hunk only stops
-one consumer from exporting it:
-
-net/sctp/socket.c:sctp_send_asconf_add_ip() {
-	memcpy(&saveaddr, addr, af->sockaddr_len);
-	retval = sctp_add_bind_addr(bp, &saveaddr,
-				    sizeof(saveaddr),
-				    SCTP_ADDR_NEW, GFP_ATOMIC);
-	...
-}
-
-net/sctp/bind_addr.c:sctp_raw_to_bind_addrs() {
-	union sctp_addr addr;
-	...
-	!af->from_addr_param(&addr, rawaddr, htons(port), 0)
-	...
-	retval = sctp_add_bind_addr(bp, &addr, sizeof(addr),
-				    SCTP_ADDR_SRC, gfp);
-}
-
-In both cases only 16 bytes of the 28-byte stack union are written for
-AF_INET, and sctp_add_bind_addr() then persists all 28 bytes into the
-kzalloc'ed entry, so offsets 16..27 of the stored address stay as stack
-residue after this patch.  The second path is driven by peer-supplied
-INIT/INIT-ACK address parameters.
-
-Would zeroing the union in sctp_v4_from_skb() / sctp_v4_from_sk() /
-sctp_v4_from_addr_param(), or clamping sctp_add_bind_addr() to
-af->sockaddr_len, close this for every present and future consumer?  That
-seems worth considering given the Cc: stable tag.
-
-> @@ -114,9 +118,12 @@ static int inet_diag_msg_sctpaddrs_fill(struct sk_buff *skb,
->  	info = nla_data(attr);
->  	list_for_each_entry(from, &asoc->peer.transport_addr_list,
->  			    transports) {
-> -		memcpy(info, &from->ipaddr, sizeof(from->ipaddr));
-> -		memset(info + sizeof(from->ipaddr), 0,
-> -		       addrlen - sizeof(from->ipaddr));
-> +		size_t copy_len = from->ipaddr.sa.sa_family == AF_INET ?
-> +				  sizeof(struct sockaddr_in) :
-> +				  sizeof(struct sockaddr_in6);
-> +
-> +		memset(info, 0, addrlen);
-> +		memcpy(info, &from->ipaddr, copy_len);
->  		info += addrlen;
->  	}
->
+base-commit: af39eb111ce6b5eba9c08513b62c4868eb7e7fd5
 -- 
-pw-bot: cr
+2.43.0
+
