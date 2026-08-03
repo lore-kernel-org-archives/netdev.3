@@ -1,111 +1,106 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58C63E5A38
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 11:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1E63368B2
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 12:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785757902; cv=none; b=pqoziWjoLye7p/dzn2WLhWQ+UcPdZOVY6GOLWM976vTudjuQVOEofX4jjydNQmtWw7n7ppdMDc4JFqs36ibbz1EPt6O+vnJxmdLaRZhYbh9fu5OcFtClGcXwNODxf54AoTj8CJfS0CMIayi6SjUd3MH7s1Cjbn7mq2GxDxgnHsE=
+	t=1785758577; cv=none; b=PQ1opb5Y5tW0fLFJe1ea5gLYsJK4qayPlFbKR2yQCJ2zYThYWY9LU1ihisjluBGypwlT0vEBBZlmmHTpf8eL/MKKpiapOXWN/R6Meun+edx5u3kgU0RjPLATlQtZp4vb+YZr1gfrthi8hFqu8aOKbmg4RDmdxHG9aqgrnsuBh3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785757902; c=relaxed/simple;
-	bh=Gt4TTDkgbjgDqdzkkX8XFlaBL23bU2EzA0Ftl8TbBTs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OArsBC2dhRWwUMdu9aAadHqMH3xQ2MUBNO3Lv59Gk1+0C02kKb9htsSjUIRxtofPXkOaKlYaFitZL+e8EtSITsoFaWB91e+KSN4nmQPLSeZ/rIczhBQeNdE5ty+b2EPsHoGLzCx7pODdz4LSJnwCJFOD3oJanqUML4vxn+yMXS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PThF+Nns; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1785758577; c=relaxed/simple;
+	bh=y/KHBEoLZ7Z5Pbrb3AkUkUiGgdxRRVZKCX5PraFPT44=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OjK2yITIuplB6gGaQjYC+cJ2kH47LIXbNvybX5X0NN/IuYoDHJ/3ak2DmEWUIeQTm3CRRwe4YK+XqPsov8ZEzcxHTBLyWnNNuvbctwmeg0V9Hse71pcsBkMbtFg1fvzCAAydin8Qv/W4LSwBxTFYio+5cfAikB/wKfPY5hYqbgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BDjTiw11; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PThF+Nns"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BDjTiw11"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785757899;
+	s=mimecast20190719; t=1785758575;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AUAOQMzjYiynO138/0Rtw/7oG5P6xr2MxjpkKxKIOJU=;
-	b=PThF+NnsO+ytPGtvFk/71i2SCQhHLiBv874eWs1icyWe7ryrxWbr0GVmEVMI67c2AlSLqB
-	3W/FFnuxAB6l71vgAP8Jz2i1aVkmOBJUm5aXxDCFX/ZeLM7XdZK8j3+M9/gGbbE3Wf6HC0
-	UgpondmPf7m5mJckgaYioAPgrsW4anc=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=hAIlAET9Pe/rO9zc5zB+hdrx3XmBErEfm3n+MiQ1T88=;
+	b=BDjTiw118ZotTes5HkW5FSs1rj4LwMuElFxCX1i2qbIiiNbl5SO04Pujm9tlCROjkf1g3r
+	uEhBn5CUcMLg1A16KPahyYOOysnmgEK6JgVqwIqhnNlCuPf4vawYxJO6qO363uSzDXab1M
+	aUp/Y8XfeSvbghgq4B/F5AS/b4Fk8IA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-8IXOUgSANjC1aCqnaXoGtA-1; Mon,
- 03 Aug 2026 07:51:31 -0400
-X-MC-Unique: 8IXOUgSANjC1aCqnaXoGtA-1
-X-Mimecast-MFC-AGG-ID: 8IXOUgSANjC1aCqnaXoGtA_1785757889
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-117-sssIOecNOiuskB6TR9JIMQ-1; Mon,
+ 03 Aug 2026 08:02:53 -0400
+X-MC-Unique: sssIOecNOiuskB6TR9JIMQ-1
+X-Mimecast-MFC-AGG-ID: sssIOecNOiuskB6TR9JIMQ_1785758571
 Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1EB5619560AA;
-	Mon,  3 Aug 2026 11:51:29 +0000 (UTC)
-Received: from [10.44.33.235] (unknown [10.44.33.235])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A357E414;
-	Mon,  3 Aug 2026 11:51:25 +0000 (UTC)
-Message-ID: <760d9664-14f6-4cf8-af55-699ea3021b47@redhat.com>
-Date: Mon, 3 Aug 2026 13:51:24 +0200
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BB6AE1954B09;
+	Mon,  3 Aug 2026 12:02:50 +0000 (UTC)
+Received: from p16v.redhat.com (unknown [10.44.33.235])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3367241C;
+	Mon,  3 Aug 2026 12:02:46 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Petr Oros <poros@redhat.com>,
+	Prathosh Satish <Prathosh.Satish@microchip.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/2] dpll: use pin owner's dpll ref for pin-level set callbacks
+Date: Mon,  3 Aug 2026 14:02:43 +0200
+Message-ID: <20260803120245.56046-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] dpll: zl3073x: add ZL30643 chip support
-To: Vincent Jardin <vjardin@free.fr>
-Cc: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260724-for-upstream-zl30643-v1-0-ea93ba4d85c8@free.fr>
- <20260724-for-upstream-zl30643-v1-2-ea93ba4d85c8@free.fr>
- <4CCA3CCC-C687-4658-8ACD-BC0CB3294A39@redhat.com>
- <amuE9yIaBsFSgRhL@L30177.local>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <amuE9yIaBsFSgRhL@L30177.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-On 7/30/26 7:08 PM, Vincent Jardin wrote:
-> Hi Ivan,
-> 
->> Hi Vincent,
->> I'm not sure that all driver's functionality is supported by ZL3064x. Did you test everything?
->>
->> I need to check datasheets for this chip models, maybe some device flags will be needed.
-> 
-> I checked both datasheets. They are the same registers:
-> 
->    - the register descriptions are verbatim identical
-> 
->    - same chip-ID encoding (base / A +0x1000 / B +0x2000 / 7x7 +0x8000)
-> 
-> So ZL_CHIP_INFO(0x0E3B, 3, ZL3073X_FLAG_REF_PHASE_COMP_32) is correct
-> and no new device flag is needed: the ref-phase mechanism the flag
-> governs is identical between the families.
-> 
-> The only differences seem to be non-register related: line card vs
-> central system and the min input-frequency spec (1 kHz vs 0.5 Hz).
+Pin-level attributes (frequency, phase adjust, embedded sync, reference
+sync) are properties of the pin itself. The get callbacks already use
+only the pin owner's DPLL reference, but the set callbacks iterate over
+all registered DPLL devices — resulting in redundant HW writes for
+drivers that share a pin across multiple DPLLs.
 
-Hi Vincent,
+This series simplifies the set side to match the get side: call the set
+callback only through the owner's reference.
 
-Yes, minimal reference frequency for zl3064x is 1000Hz and also
-supported bandwidth range is different (not relevant now).
+Patch 1 prepares the zl3073x driver whose ref_sync_set callback had
+per-channel behavior (setting priority on a single DPLL channel). It now
+iterates all channels internally so it remains correct when invoked only
+once.
 
-So, we need to
-- add new field into zl3073x_chip_info that will describe minimal input
-   reference frequency
-- add a check into zl3073x_pin_check_freq()
+Patch 2 drops the xa_for_each loops from dpll_pin_freq_set(),
+dpll_pin_esync_set(), dpll_pin_ref_sync_state_set() and
+dpll_pin_phase_adj_set(), along with the rollback logic and the per-ref
+-EOPNOTSUPP validation scan. The dpll.rst documentation is updated to
+reflect the new behavior.
 
-Let me know if you want to do it yourself or if I should do it (I would
-send it along with your two patches).
+v2:
+  - Split zl3073x ref_sync_set fix into a separate preparation patch
+  - Update dpll.rst documentation to match the new behavior
+  - Expand commit message to describe the -EOPNOTSUPP check change
 
-Thanks,
-Ivan
+Ivan Vecera (2):
+  dpll: zl3073x: update all DPLL channels on ref_sync_set
+  dpll: use pin owner's dpll ref for pin-level attribute setting
+
+ Documentation/driver-api/dpll.rst |  10 +-
+ drivers/dpll/dpll_netlink.c       | 213 +++++++-----------------------
+ drivers/dpll/zl3073x/dpll.c       |  46 +++++--
+ 3 files changed, 89 insertions(+), 180 deletions(-)
+
+
+base-commit: 69963a0678a347d57c4ac8b16939dba216eb95ce
+-- 
+2.54.0
 
