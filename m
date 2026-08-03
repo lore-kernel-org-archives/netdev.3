@@ -1,182 +1,168 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-wr2-f1.google.com (mail-wr2-f1.google.com [74.125.225.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E827262B
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 00:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E979026ED33
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 00:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785716998; cv=none; b=hF71epkqAQegFYvhYKe643j/jTcRC7qf+R6U5KPDYEJHig6QSfYZoAozI+D9ebl+LcNdRwQFTRIT4G9sWLxjpCuwTKOXtqz/865bqAsx68Npz43XvqenJyUbWTVA1al3NEu19Iy2WAXd8x8qMWvqiSOGecu7+obbFuf7WYBejbo=
+	t=1785717011; cv=none; b=MhT+rjhZudAlDKLmIO2/e/e4ynhRU01zh1pKosQXgW2LBxBKODnBWqizYyLENUoR5odFrXQ8lXci3npMWJwmY6Ce0QEIO+JxUHnoPnkBmXTv4IK79uloTH+9+wZnfsR6XQavHmllyL1RtCVRsrz/dsm5xvI3ac5YRhsncfzZcpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785716998; c=relaxed/simple;
-	bh=NEgRZTi/F3VisdQag3yj5uF528e4rPxDtR9tU7XeSoo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mS/zCTB9WpE2BOYNLVWDFJPGIUyebr8DDfG6+tEp1CZxHPYekkZVeQa9gaI/dgCn7RaaaEmEOZhBMuOJuJ6vbWRh9v2V3yc9Hel3aY1WQiFjD+3qzm0gG7VQNORc1L58tlDHcUUyX4o+/9SlrYA/gzHLgOQn5gL6AE7ll5nqP4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=Kpn8hYI2; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1785717011; c=relaxed/simple;
+	bh=MgL/A1OL5VxKOy8fuemacuOQqMhbRsRzexGTXwULKm8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=XGerPPZqN7x2J6Ha5nNUnzid7egqDK3chIGu6AkPK1UlhsrXQUQPBO9x3ovyA9tYRu4jdGBxsYd0ifxuO6//TdQ/d71eBsZbHtJU1/MXi3t0reCYt9TKTO6syFXmldkF6sWXow8USt8tKGW2RtaVcKEUPbxRW0D1eLStFKUi6MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zj6Bta+D; arc=none smtp.client-ip=74.125.225.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="Kpn8hYI2"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d004f135b1so27269245ad.3
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 17:29:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zj6Bta+D"
+Received: by mail-wr2-f1.google.com with SMTP id ffacd0b85a97d-473b8c0fd5aso581639f8f.1
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 17:30:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785716996; x=1786321796; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WgMK5SmIyPmdgTVlHflZu0Jvy4B4i4OS8zrQ8Z1YyeY=;
-        b=Kpn8hYI2fKczrvwnty0KelG5gjyd8dcrnrYsD1sjIvYlhAk+ro3LIA34zCnfsJrv28
-         IC2kF7MOePn/FvIUlXAAOT7bZDcnqChZGaIch1JH6pzAEd40fvJhCUHoAxvc6wbVAkV9
-         k2LfXzTxXrvFonYNmJgtgL6iR9yMSaRluIQMUWI9ZIti7OsrTxBUKAjJSnAs1C0dTS2+
-         yIvjQiOsmYRXptkBkehLaHO2ryFMBAulaD8FZfvinbl8q98vKsmRKpfZs0/oAztqaO4w
-         zUulpf6reEclQChOW64ahCzKixphp2KTjiCPAP/NUgMWCm+GmvthCYAPhC49WaD5jnxo
-         5cIg==
+        d=gmail.com; s=20251104; t=1785717008; x=1786321808; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=XJtB3G2q64cgAdmsXjeDVMSjpj2t0iKFamiuOTeDEY0=;
+        b=Zj6Bta+DkFDTmctquAgTKQwH0Zj3b4jieGW2yCMX1nWYz59eEbGWrb9f2rLkIWV2EU
+         M/ZQDc3ERkr0/CVXZHlrupH/YUBafnnXeeEQjPEUBnQV+nfMAdFllgzfWMgX+XFh+mc2
+         Ij97L6psvikHVqSoYxlJuZAqRkLX/41CmCYk3OqeuOk7AdFRnwrXnu2zdppHbS5eS4gx
+         NfOcZBxvMJKyseq9A6fIH7y3BEk1L6ZCYoF9PxUUpXH8otU8Wn3s3a5Py1Nxh91aE3TV
+         LIGxtAmsjGusF4lXVAS/lkBNmjRdTsBZ+CWT9FZ9kuviuOWZeeZ3t5bFe+V9+IzOikFw
+         deRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785716996; x=1786321796;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WgMK5SmIyPmdgTVlHflZu0Jvy4B4i4OS8zrQ8Z1YyeY=;
-        b=oGVIVbgpiB2iKJEYizEVv2SDevLaNAY02dxGcmqFJxtLmYhyE+yjmLpvLpgL2pnVz9
-         88YwEIgyaajBd4SZIbyJBOI3l0kNUjgiMTmDGEoLEWm+Yz2Gu/G6NoS80DGsrAOiYf8d
-         CPt/1kfiAvM1nguRR0HLWHsqO+y/Ha0ay4o8/IbQXpyjLqN+68hWGh6R7eZZ5tQYMA8/
-         yOt2DJEWIs0a0TqNRlUxmo5Sgcj6qphPKM+dM+aHunqNMqUPMXd6luZn6tD7uA5JPRGr
-         E5ZLmC3Rt7OK1KXoZp7tCx4ja/3TIfDNbuzJpwG9QjWiPoJwieZxqzMU4uDStFh4E+Nl
-         LhlQ==
-X-Gm-Message-State: AOJu0YzTdYjocUkVuikDnsob1REz8REC1mWUtbJ/rXr+WgD1OdKW+MH/
-	ynaEYGSL3DZIdTfsugrwbMNwQ+zKavo6tSxaXCK7Teca4jX/68sIUKcFRED0JyXvuqg7rCHpPhD
-	ahIyyjrd2S3RzpQ==
-X-Gm-Gg: AR+sD13roSWRhep/NcDAga/JfUK/wqKreza+/U8YQmR7im4BAsA+XTVloDXTIzAYFLN
-	taQseR2DU+0rGLtpXR6itBvglCxz3xWdal7IvcdICGlsgRf6Mzd+EaarmwEH/a3TIuPYR4zWpYw
-	LSO/9XSOTDxELrU0nN+cnOkBPWRqoRl+Gzeq8EIVEHX4tOTEru1c6wcwh5Cd3a45v/Axt333H1p
-	NEh+/VUKr5L7w8D5AwELyFFM3gD9hkPy7uTHa8Y1/NGnaXWnVEGFeufrqdD6+MKLSAgMAS38DN9
-	avgnia4e9ZCzxMmOejDB7kL9irnqzqSIm1R5KuW2tcRCoQm4j5IW8oo7lkJgjBrRy77hmEELmDb
-	B10NDdNNOuQX2ZP3SPSJC5b7mJi2uNF2ay5oHtJNqUb3STSoloVS5AKF6xXa9E34R3gcZ8rWjQA
-	u7jXXX5um5C7kt9f7+uDXE6wOJ5FV/sXxXifh3zkN9/tXw5TK9ilMJeOh9NcA51J3xOkL3w7ed8
-	Q==
-X-Received: by 2002:a17:903:3510:b0:2ce:b096:e50b with SMTP id d9443c01a7336-2d0524b4428mr81322715ad.47.1785716995729;
-        Sun, 02 Aug 2026 17:29:55 -0700 (PDT)
-Received: from Roxy.localdomain ([202.8.9.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b1594b0sm29378145ad.71.2026.08.02.17.29.51
+        d=1e100.net; s=20251104; t=1785717008; x=1786321808;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XJtB3G2q64cgAdmsXjeDVMSjpj2t0iKFamiuOTeDEY0=;
+        b=rx4wGBrf8f/yi1IH2N47l8tlTfTTPHtAQ4JlZOLQt+2nBNk2WeuqIcYDGO9/uWkGIE
+         MJ0xMaNbsrTV0R0E+kzO1LKaI2PCM0wHjqNOgz/dtQQ9+syx7w8MgsG855f29R1oaMKo
+         24x6tJBfouW1iBrv7N8huq32jL+XQg512LQktqXZv4EjYa9yP3H9UxrDrDwKPBiLy3hy
+         zbYEVZ8ys/Vso8MUa33wN/sOQ/SRSLj8uV6KlJ2NTYDXMtUTDD3tvmS/VMPjgIHTX3FY
+         9G6rMrW4XfMkbm+qOblj3y2eaO/QsTRK9+01TNIn++dbSwn5kiBTUNeTPzXKMRCA6Jdq
+         vU/Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqfeqsnaptA/Wfuo+aTp2/q5uYJtudjp7WIDWqJpxQzOlyDEwUqaPed/35ayKlf+KEz46vvObU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbFckLDyrF4p30/iK4LblB5JR1bEKnmAGljhcq3WvPh7HCWWJR
+	w0KvDnGEEAd6v9yUmvmtDWu+UnqOC8BmHMSei8zA5lN4HJ3xi+qnvJeD
+X-Gm-Gg: AR+sD10pdM7IlEKI7vESP6bOnGNmD2xYvVrWJhqzMAF43t/fV4t9B6HykWkmC/w8Fkl
+	nzJXfhhKE686YF4Q/rGKyEOa3e7SAsuxmbrZTYP1CQRJ803B26xOwBUg1MocWOTJ0hydNmYrBAH
+	EtM++nGNeMlxqKcA24KT2kvSBooVJJS1iQZ/LzVq7YZbTi5hJDY/gQTrS3yMV9vMVvOkirOAYgs
+	RLMyzYJxRm4xRtZt7S64NpnIG+8LTHI4B85nMVUyYTekV4UkHOGtBpuT3sNeHHkmzcJqYTg7n2m
+	SN7KurPBnSvTu0wKblN/v+H6L3cHTMZFNjE7HhLU/kSc+P/AR4AiGn+m89IW4jhdiueC9BlcMjs
+	ubo86deK4pqCxaMQng3aXQyOGFxAadJfrZ3T9k/tF31aJBZdAkmZ2C1H+kZuqMs5REawbhBl1bv
+	v12oEA7OqA2IC/hLwCabYKtP22BecozCxAvqeGJSpXwW6UQlzvwUjvzQrYoVWcuUluzL5CoCj36
+	P21ytp8WhViDtSD09XTGYfg29JrmBUS02JVhNPHQl5mgpAPt5yQhfkSVGafiMp9wJy08PlfJ6Ts
+	CJQYKHNYp10IF1y1Uq6CWC3K6zpYbkO38TON+w==
+X-Received: by 2002:a5d:5f42:0:b0:47f:90a4:ff42 with SMTP id ffacd0b85a97d-47fd72ba4dfmr20398387f8f.5.1785717008087;
+        Sun, 02 Aug 2026 17:30:08 -0700 (PDT)
+Received: from localhost (nat-icclus-192-26-29-3.epfl.ch. [192.26.29.3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd458b05fsm27676880f8f.28.2026.08.02.17.30.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 17:29:54 -0700 (PDT)
-From: Zhiling Zou <zhilinz@nebusec.ai>
-To: netdev@vger.kernel.org,
-	dev@openvswitch.org,
-	i.maximets@ovn.org
-Cc: aconole@redhat.com,
-	echaudro@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: [PATCH net v5 1/1] net: openvswitch: reallocate update replies for mismatched IDs
-Date: Mon,  3 Aug 2026 08:29:36 +0800
-Message-ID: <f7bbd3c30ce81a39156e226b3872d73abed21d2f.1785644623.git.zhilinz@nebusec.ai>
-X-Mailer: git-send-email 2.43.0
+        Sun, 02 Aug 2026 17:30:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 03 Aug 2026 02:30:05 +0200
+Message-Id: <DKEVUJFTGKN5.HQGLRFLQMISY@gmail.com>
+Cc: "Eric Dumazet" <edumazet@google.com>, "Neal Cardwell"
+ <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, "Andrii Nakryiko" <andrii@kernel.org>,
+ "Yonghong Song" <yonghong.song@linux.dev>, "Martin KaFai Lau"
+ <martin.lau@linux.dev>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Jiayuan Chen" <jiayuan.chen@linux.dev>, "Emil
+ Tsalapatis" <emil@etsalapatis.com>
+Subject: Re: [PATCH bpf v3] bpf: tcp: Fix use-after-free in
+ bpf_iter_tcp_established_batch()
+From: "Kumar Kartikeya Dwivedi" <memxor@gmail.com>
+To: "Kuniyuki Iwashima" <kuniyu@google.com>, "Jose Fernandez (Anthropic)"
+ <jose.fernandez@linux.dev>
+X-Mailer: aerc 0.21.0
+References: <20260730-bpf-iter-tcp-refcnt-v3-1-754b9c8a6717@linux.dev>
+ <CAAVpQUAoxyhmfbfCGeMUyQK7F4RifMsFDM0XyDqO9SOMZmASvA@mail.gmail.com>
+In-Reply-To: <CAAVpQUAoxyhmfbfCGeMUyQK7F4RifMsFDM0XyDqO9SOMZmASvA@mail.gmail.com>
 
-ovs_flow_cmd_new() preallocates the optional reply skb before it takes
-ovs_mutex and before it knows which existing flow will be updated.
+On Fri Jul 31, 2026 at 7:39 AM CEST, Kuniyuki Iwashima wrote:
+> On Fri, Jul 31, 2026 at 12:33=E2=80=AFAM Jose Fernandez (Anthropic)
+> <jose.fernandez@linux.dev> wrote:
+>>
+>> reqsk_queue_hash_req() publishes a TCP_NEW_SYN_RECV request_sock onto
+>> the ehash chain, drops the bucket lock, and only afterwards sets
+>> rsk_refcnt to 3.
+>>
+>> Lockless readers such as __inet_lookup_established() handle this with
+>> refcount_inc_not_zero(), but bpf_iter_tcp_established_batch() uses plain
+>> sock_hold() while holding the bucket lock, on the assumption that the
+>> lock guarantees sk_refcnt > 0. That assumption does not hold for
+>> request_sock:
+>>
+>>   CPU 0                                CPU 1
+>>   -----                                -----
+>>   tcp_conn_request()
+>>    reqsk_queue_hash_req()
+>>     inet_ehash_insert(req)
+>>      spin_lock(bucket)
+>>      __sk_nulls_add_node_rcu(req)      // rsk_refcnt =3D=3D 0
+>>      spin_unlock(bucket)
+>>                                        bpf_iter_tcp_established_batch()
+>>                                         spin_lock(bucket)
+>>                                         sock_hold(req)   <-- addition on=
+ 0
+>>                                         spin_unlock(bucket)
+>>     refcount_set(&req->rsk_refcnt, 3)  // clobbers saturated value
+>>
+>> which surfaces as:
+>>
+>>   refcount_t: addition on 0; use-after-free.
+>>   WARNING: lib/refcount.c:25 at refcount_warn_saturate+0x48/0x90, CPU#1
+>>   Call Trace:
+>>    bpf_iter_tcp_established_batch+0x14e/0x170
+>>    bpf_iter_tcp_batch+0x53/0x200
+>>    bpf_iter_tcp_seq_next+0x27/0x70
+>>    bpf_seq_read+0x107/0x410
+>>    vfs_read+0xb9/0x380
+>>
+>> The iterator's stolen reference is lost when the publishing CPU's
+>> refcount_set() overwrites the count, leaving the socket one reference
+>> short. When the last legitimate owner drops its reference the reqsk is
+>> freed while still reachable, leading to use-after-free.
+>>
+>> This reproduces in seconds with tcp_syncookies=3D0, a handful of threads
+>> doing connect()/close() to a local listener while others read an
+>> iter/tcp link in a tight loop.
+>>
+>> Use refcount_inc_not_zero() and skip the socket on failure. A skipped
+>> socket is still part of the bucket, so keep counting it in expected.
+>> The reallocations are sized from expected, and a request sock whose
+>> refcount gets published while the lock is held across the last realloc
+>> must already have room.
+>>
+>> A skipped socket is counted in expected but never batched, so end_sk
+>> can be short of expected on a batch that is actually complete. Decide
+>> completeness by whether the walk left any socket behind instead. The
+>> WARN after the locked realloc checks the same, replacing an
+>> end_sk =3D=3D expected check that could not hold on that path since
+>> commit cdec67a489d4 ("bpf: tcp: Make sure iter->batch always
+>> contains a full bucket snapshot").
+>>
+>> If every matching socket in a bucket is mid-init (refcount 0), end_sk
+>> stays 0. Advance to the next bucket rather than returning a batch entry
+>> that was never filled this round.
+>>
+>> Fixes: 04c7820b776f ("bpf: tcp: Bpf iter batching and lock_sock")
+>> Assisted-by: Claude:unspecified
+>> Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+>
+> Thanks !
 
-That is normally fine because the skb is sized from the request flow
-identifier.  That identifier also becomes the inserted flow's identifier.
-For updates, however, a request with a UFID may miss the UFID lookup and
-then fall back to the flow key lookup.  That lookup can legitimately find
-an existing key-identified flow.  UFIDs are optional and the flow key is
-the primary identifier.
-
-For echoed replies, ovs_flow_cmd_fill_info() writes the matched flow's
-identifier, not the request identifier used for the preallocation.  A short
-request UFID can therefore leave too little room for the key identifier.
-The fill can then fail with -EMSGSIZE and hit the BUG_ON(error < 0) in the
-update path.
-
-Once the update target has been resolved, reallocate the reply skb if the
-matched flow needs a larger reply than the request identifier allowed.  Do
-this before replacing the actions so the request can still fail cleanly if
-the rare extra allocation fails.
-
-Fixes: 74ed7ab9264c ("openvswitch: Add support for unique flow IDs.")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
----
-changes in v5:
-- Rename current and desired to cur and req to avoid the kernel current macro.
-- Split the ovs_flow_cmd_alloc_info() call so no added line exceeds 80 columns.
-- v4 Link: https://lore.kernel.org/all/3b76cbe50252a5650c3b69c789ed36481d0bbee4.1785583308.git.zhilinz@nebusec.ai/
-
-changes in v4:
-- Split the reply size comparison into current and desired variables as
-  requested by Ilya Maximets.
-- v3 Link: https://lore.kernel.org/all/c773b2726dda8d90eed6d42b2f9741810a7a46e1.1785288876.git.zhilinz@nebusec.ai/
-
-changes in v3:
-- Compare computed reply sizes instead of UFID contents.
-- Inline the rare reallocation check and add spacing around the update checks.
-- v2 Link: https://lore.kernel.org/all/71380bcfbf3aed9a6a8a9daeef6592fa5a4fb245.1785211788.git.zhilinz@nebusec.ai/
-
-changes in v2:
-- Preserve valid key/UFID mixed flow updates as requested by Ilya Maximets.
-- Reallocate the echoed reply skb with the matched flow identifier before replacing actions.
-- v1 Link: https://lore.kernel.org/all/fa4f85fe7becb164a8a1849aa77ceeb1c08b078c.1784881178.git.zhilinz@nebusec.ai/
-
- net/openvswitch/datapath.c | 29 ++++++++++++++++++++++++++---
- 1 file changed, 26 insertions(+), 3 deletions(-)
-
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index eaf332b156d73..ae69b2cabab9e 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -1113,9 +1113,8 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
- 			error = -EEXIST;
- 			goto err_unlock_ovs;
- 		}
--		/* The flow identifier has to be the same for flow updates.
--		 * Look for any overlapping flow.
--		 */
-+
-+		/* Look for any overlapping flow. */
- 		if (unlikely(!ovs_flow_cmp(flow, &match))) {
- 			if (ovs_identifier_is_key(&flow->id))
- 				flow = ovs_flow_tbl_lookup_exact(&dp->table,
-@@ -1127,6 +1126,30 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
- 				goto err_unlock_ovs;
- 			}
- 		}
-+
-+		if (unlikely(reply)) {
-+			size_t cur, req;
-+
-+			cur = ovs_flow_cmd_msg_size(acts, &new_flow->id,
-+						    ufid_flags);
-+			req = ovs_flow_cmd_msg_size(acts, &flow->id,
-+						    ufid_flags);
-+			if (cur < req) {
-+				struct sk_buff *resized;
-+
-+				resized = ovs_flow_cmd_alloc_info(acts,
-+								  &flow->id,
-+								  info, false,
-+								  ufid_flags);
-+				if (IS_ERR(resized)) {
-+					error = PTR_ERR(resized);
-+					goto err_unlock_ovs;
-+				}
-+				kfree_skb(reply);
-+				reply = resized;
-+			}
-+		}
-+
- 		/* Update actions. */
- 		old_acts = ovsl_dereference(flow->sf_acts);
- 		rcu_assign_pointer(flow->sf_acts, acts);
--- 
-2.43.0
+pw-bot is asleep. Applied to bpf.
