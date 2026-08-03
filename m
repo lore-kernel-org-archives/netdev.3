@@ -1,185 +1,239 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8337633F5A5
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 15:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109DB2F8E96;
+	Mon,  3 Aug 2026 16:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785772761; cv=none; b=jMywi7nh0R4o692i7zMkP6dDwhc96gtq/r4Qmc8ZDofamW+QFWVxjIdcv+UG48fgUkwrS4RDTjM9NYTQtLfDkgxTiRcvKxMBKuyPBQIxpqIuRVA3YGAVvDa29QHSPHil9WOJZOms7ADGYxTiptYhfCWTa/g4gtBPdVIJddy30P0=
+	t=1785772887; cv=none; b=Rfj1V7G5u0MAnoqMvkJdiY1ieuWhISQN6QtGpoWmBAR7lOBV2JYcOOtEQd3s7+fECkf16aCZxHdgnjtDotSTvGupomHMSaISTOIb8tzpM/W+heOtCtD1g2W7l0G6WByyj4dD8PUDGdxfbSyHmLqVs/glS8wL8gaXEfyKADmA9R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785772761; c=relaxed/simple;
-	bh=HKQ49Q+y0fHa0axoY1Gzw3algxTgziFVoosMR2RzR94=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jtpRSfZpHfd31jBAbdDAwdWTPgWhHFlQZKcnIz+XmtX5mK2UVCeXNbR/JodFIGLKfKDT1o3UUvna6TUnlXetCHe//Hz1KFZp1+D0oievPUVgQyVssB1i4Ta4n/JHVy+ZKlppS6zJ9ZhB7KcAtfNjcmSf24l72N12dXb9P3zkyKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=avBiExNp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SkIle99n; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785772887; c=relaxed/simple;
+	bh=/6SC4853A0hdynqBxXGhnjTONP+X1lIr8xUj8gNWjXM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZtgC+wc5GXmRcfiq2Y0hN33L7Zg2v3mxP3eRD/jyrHwPwXkfhgkhLDRH3ZhC82o1wbY5SOenmkMtJ9OX2uikIliDXL60/qY98knPn/ar4TVElXqPL5maSJDiKBuxMpqBZp8NG6slSuakEQ+bXOWTguqKeyt8wXQdRCunk/Tb4rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=21NMZNiE; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iWUI0C66; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="avBiExNp";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SkIle99n"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785772759;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="21NMZNiE";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iWUI0C66"
+Message-ID: <cee2e05d931a977d0db938ada0964d05885949a5.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1785772884;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Qcr8lbIWdqcfVMMmUoW0rBUoTTmgc4FAMwlbi4adWtY=;
-	b=avBiExNpv6LtKL9ag5swvPMsMZ/UpCwzyLaNFyqkm5WBL6/9+BjFsqv3bA4Ig8D4Y+yJ+v
-	8hLJohmXmcU/EYHaNWO9G0KLDNExezzVDhllXyLvSPVyrotruSgcocUa5261biuo31h0IN
-	JUC3toICGlhh355juCSnfIOhxQ/kbHo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-498-j7Mby2NjP3yDYYs1JxhgIA-1; Mon, 03 Aug 2026 11:59:18 -0400
-X-MC-Unique: j7Mby2NjP3yDYYs1JxhgIA-1
-X-Mimecast-MFC-AGG-ID: j7Mby2NjP3yDYYs1JxhgIA_1785772757
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-475e540a0ffso2320439f8f.3
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 08:59:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785772757; x=1786377557; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Qcr8lbIWdqcfVMMmUoW0rBUoTTmgc4FAMwlbi4adWtY=;
-        b=SkIle99nxPn3LITnO7R3Wl9eb5STNgDJ+3oaVsuldiU3JkTdqt8TKyznhOMMZQsw3A
-         rno88OO5y3xhKbgHYMfHnCDO4ZoHgiUIsUaB/gPSyp5L+oenyUADqsc59f0uOW2Nqtnw
-         l6Cq3ABD2hYqg7mWEE/yddAhOyOeFmk2kDPLDpGDHgweMov3RMxlVvfd3wL1uteG/0+R
-         0FlLKDmN87ZvUWL5Lb70wfoXWbs3VptkaSDkgUe1jTMPVrru5s1Sdwz+ji+zJvx+RIvn
-         n5P0ibGBwVWB8KkCcp1BwYVmhCQrm2jyOHnKtOT4ihiVyzOESfpT3BKeWcb25DhTftzj
-         4GQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785772757; x=1786377557;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Qcr8lbIWdqcfVMMmUoW0rBUoTTmgc4FAMwlbi4adWtY=;
-        b=M+rCeMOX4YnsNAUKn6i2TgkrPnSM7twM2lQFYW9nyY2ADx96mmFbdJSdXg2trLb0yP
-         Qtm0RIbNCQczvnZWIXp9ztq2vo83c855vLBjmSHVIegNNWZHkSeceLv2cIcscAF3golY
-         sINXxbh1iscUAtgE9xlyQ69gez1qRKN7Mk4RycPjLg2xquBvpio7dtMV7YjvstDG4T4z
-         w3shVH482xPRzLR8VF0dzcdSm9eIifeXIldJDOZBwZfQjIMsnAS+bYvi9V8yIkGBmnda
-         +tFa4Pxm9mj8MR06mTBbVwQL5VdVLMPK0nd1REgiN7SuflEyOtWyEODQBxsbx/c7x5Pe
-         QDtA==
-X-Gm-Message-State: AOJu0YxB+QAcDfGTmw6+KDsRO/PyDVxepJknmpeY/Mlra6Eao3eOoDcS
-	BCcX4QsWGM3NaAgsJWAfXqldtYRzB58skxUYJLItPU4Gs4FX8AfyCPsP1mMf5lQe5PpPDgyPbkD
-	nFZYTN2MiHH2sGYAc5hjFmXuOwCj+TGLcH/0fyWBLWQpta2gmMlgHyKe/lskxxsyzDQ==
-X-Gm-Gg: AR+sD10WmQf+sdMLRYq+pEvR+ddBzie0VDFWcvTyH7N9zz1z7fLmVJAM6rAW7PmYsze
-	rIkkCAxQ3VPyMInfoF/Be0/4mFACgotdFOdORDO2ra1xnmm+Z4e7//5po9fstErWg0AjF8afAkk
-	7m+8muebkSvSYPdUk1jwYMHjbx6W7bLKTMQ1epVD6vPBtmjgnAttoJtIhltxWC7G+7D2GcCiUHi
-	b75nVBmtFpsjnzPtq8nc0olNC6Gmzd+52y6PPHuZef1hOTjYn0KwERxF5G/psiQavv59hPTPxLB
-	ggHnDxSTdvmd69dc6bvswGFm6wFSsuOxKeYI63RCbs3DXhaLhadx5kW5m9ABlKwzk2Vi3RerZL2
-	Epb7Ugm4MYxot6qpB+kjzAg==
-X-Received: by 2002:a05:6000:4615:b0:47f:918b:fa07 with SMTP id ffacd0b85a97d-47fd72d4500mr29228307f8f.22.1785772756836;
-        Mon, 03 Aug 2026 08:59:16 -0700 (PDT)
-X-Received: by 2002:a05:6000:4615:b0:47f:918b:fa07 with SMTP id ffacd0b85a97d-47fd72d4500mr29228215f8f.22.1785772756323;
-        Mon, 03 Aug 2026 08:59:16 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-28-14.inter.net.il. [80.230.28.14])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd41d0064sm33017363f8f.5.2026.08.03.08.59.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 08:59:15 -0700 (PDT)
-Date: Mon, 3 Aug 2026 11:59:12 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Shahar Shitrit <shshitrit@nvidia.com>
-Cc: netdev@vger.kernel.org, jasowang@redhat.com, pabeni@redhat.com,
-	virtualization@lists.linux.dev, parav@nvidia.com, yohadt@nvidia.com,
-	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, jgg@ziepe.ca,
-	kevin.tian@intel.com, kuba@kernel.org, andrew+netdev@lunn.ch,
-	edumazet@google.com, danielj@nvidia.com
-Subject: Re: [PATCH net-next v21 01/13] virtio_pci: Remove supported_cap size
- build assert
-Message-ID: <20260803115219-mutt-send-email-mst@kernel.org>
-References: <20260803140721.1871678-1-shshitrit@nvidia.com>
- <20260803140721.1871678-2-shshitrit@nvidia.com>
+	bh=ySmtU3pkYZUuotVPA1jLe8VSFpas5QtatAndD2IpiDU=;
+	b=21NMZNiElD9wKbgt/Gy4DZX3c0xFlDBub7zU2RKJCeG3SYW3RX0c3G5Tmg4k69ghowTxgH
+	rJjGgpf32gYQBMJnHxoJpV9V9tYv1uKFSPv4rzLaGe0L1/E/KAT8IZdxghhLZm2FencYPE
+	tB6F0/dhlYRvn0CkD1j1i6yBh9OBLr9hDtep/lt0aCz/Er7234m7ZcRA5avh9a+jVJnc98
+	m3HL6LvNyavyj91kv/gxo6vru7jVLsEDA69xsLr8PcJuuemrQJuyslDvh79UrnIzEWGx6A
+	hzVKBF9nnAktvqR26u/KsM8HXI40LtBA4nF5Trfl0DMLp+me9Bf0FaBUFeoEdw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1785772884;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ySmtU3pkYZUuotVPA1jLe8VSFpas5QtatAndD2IpiDU=;
+	b=iWUI0C66q0rk9cyewpyxm4LPIVifQtphSECU7+yGRCJDZkWwZLezpiryUqJxcQP5emgL5C
+	YCG0Z6sRK6NZt2CA==
+Subject: Re: [PATCH 4/4] net: dsa: soce: Add initial driver support for MRS
+ switches
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
+ <martin.kaistra@linutronix.de>
+Date: Mon, 03 Aug 2026 18:01:23 +0200
+In-Reply-To: <f17d3a62-456f-4580-90bd-c54a30dceddc@lunn.ch>
+References: 
+	<20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+	 <20260729-devel-vstrassheim-soce-dsa-ml-v1-4-be569dae1b20@linutronix.de>
+	 <f17d3a62-456f-4580-90bd-c54a30dceddc@lunn.ch>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260803140721.1871678-2-shshitrit@nvidia.com>
 
-patch is ok. commit log isnt:
+On Wed, 2026-07-29 at 22:05 +0200, Andrew Lunn wrote:
+> > +static u8 soce_map_stp_state(u8 state)
+> > +{
+> > +	switch (state) {
+> > +	case BR_STATE_DISABLED:
+> > +	case BR_STATE_BLOCKING:
+> > +	case BR_STATE_LISTENING:
+> > +		return 0;
+> > +	case BR_STATE_LEARNING:
+> > +		return 1;
+> > +	case BR_STATE_FORWARDING:
+> > +	default:
+> > +		return 3;
+>=20
+> #defines for 0, 1 and 3.
+>=20
+> What does 2 mean?
+>=20
+> Since you don't implement bridge offload, i'm not sure having STP
+> states makes any sense.
 
+I tested bridge and STP and observed the callback calls with something like
+this (reduced setup):
+# ip link add name br0 type bridge
+# ip link set dev port0 master br0
+# ip link set dev port1 master br0
+# brctl stp br0 on
 
-supported_cap is not a thing.
+That probably wasn't enough. I'll take a closer look at it and either fix i=
+t
+or remove it for the next version.
 
-better subj:
+>=20
+> > +static void soce_fast_age(struct dsa_switch *ds, int port,
+> > +			  const struct soce_layout *layout)
+> > +{
+> > +	struct soce_priv *priv =3D ds->priv;
+> > +	struct soce_dsa_local *local;
+> > +	void __iomem *p_mes_ctrl;
+> > +	u32 val;
+>=20
+> Does aging make any sense without bridge offload?
 
- remove supported_caps cache and build assert
+Same as above. I'll take a closer look at it and either fix it or remove it
+for the next version.
 
+>=20
+> > +/* Bridge membership is handled by the switch forwarding model directl=
+y. */
+> > +int soce_port_bridge_join(struct dsa_switch *ds, int port,
+> > +			  struct dsa_bridge bridge, bool *tx_fwd_offload,
+> > +			  struct netlink_ext_ack *extack)
+> > +{
+> > +	return 0;
+> > +}
+> > +
+> > +void soce_port_bridge_leave(struct dsa_switch *ds, int port,
+> > +			    struct dsa_bridge bridge)
+> > +{
+> > +}
+>=20
+> If you don't support bridge offload, you should not need these.
 
-On Mon, Aug 03, 2026 at 05:07:09PM +0300, Shahar Shitrit wrote:
-> From: Daniel Jurgens <danielj@nvidia.com>
-> 
-> The cap ID list can be more than 64 bits.
+Also here. I'll take a closer look at it and either fix it or remove it for
+the next version.
 
-what does "can be" mean? I think what u mean
-following patches make ....
+>=20
+> > +static void soce_phylink_get_caps(struct dsa_switch *ds, int port,
+> > +				  struct phylink_config *config)
+> > +{
+> > +	if (dsa_is_cpu_port(ds, port)) {
+> > +		__set_bit(PHY_INTERFACE_MODE_GMII,
+>=20
+> Is that really true? What is part of the IP core, and what is to do
+> with integration of the core into the system as a whole? It seems like
+> RGMII is also supported, so why cannot i instantiate a RGMII MII blob
+> for the CPU port as well?
 
-> Remove the build assert.
+No it's wrong, I will adjust that.
 
+>=20
+> > +			  config->supported_interfaces);
+> > +		config->mac_capabilities =3D MAC_10 | MAC_100 | MAC_1000 |
+> > +					   MAC_SYM_PAUSE | MAC_ASYM_PAUSE;
+> > +		return;
+> > +	}
+> > +
+> > +	phy_interface_set_rgmii(config->supported_interfaces);
+>=20
+> And flipping that around, if the core supports GMII, could i
+> instantiate a GMII user port?
 
-> Also
-> remove caching of the supported caps, it wasn't used.
+Will also be fixed in the next version.
 
-it's not "also". in fact we remove supported_caps and then
-the rest of the code handles data->supported_caps of any
-size, transparently.
+>=20
+> > +static const struct dsa_switch_ops soce_switch_ops =3D {
+> > +	.get_tag_protocol	=3D soce_get_tag_protocol,
+> > +	.setup			=3D soce_setup,
+> > +	.teardown		=3D soce_teardown,
+> > +	.phylink_get_caps	=3D soce_phylink_get_caps,
+> > +	.phy_read		=3D soce_phy_read,
+> > +	.phy_write		=3D soce_phy_write,
+>=20
+> phy_read and phy_write are legacy. Instantiate a Linux MDIO bus and
+> don't list anything here.
 
+I will do it.
 
-> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-> Reviewed-by: Parav Pandit <parav@nvidia.com>
-> Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-> ---
->  drivers/virtio/virtio_pci_common.h |  1 -
->  drivers/virtio/virtio_pci_modern.c | 10 +++-------
->  2 files changed, 3 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/virtio/virtio_pci_common.h b/drivers/virtio/virtio_pci_common.h
-> index 8cd01de27baf..fc26e035e7a6 100644
-> --- a/drivers/virtio/virtio_pci_common.h
-> +++ b/drivers/virtio/virtio_pci_common.h
-> @@ -48,7 +48,6 @@ struct virtio_pci_admin_vq {
->  	/* Protects virtqueue access. */
->  	spinlock_t lock;
->  	u64 supported_cmds;
-> -	u64 supported_caps;
->  	u8 max_dev_parts_objects;
->  	struct ida dev_parts_ida;
->  	/* Name of the admin queue: avq.$vq_index. */
-> diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
-> index 6d8ae2a6a8ca..ef4a64eb9982 100644
-> --- a/drivers/virtio/virtio_pci_modern.c
-> +++ b/drivers/virtio/virtio_pci_modern.c
-> @@ -304,10 +304,10 @@ virtio_pci_admin_cmd_dev_parts_objects_enable(struct virtio_device *virtio_dev)
->  
->  static void virtio_pci_admin_cmd_cap_init(struct virtio_device *virtio_dev)
->  {
-> -	struct virtio_pci_device *vp_dev = to_vp_device(virtio_dev);
->  	struct virtio_admin_cmd_query_cap_id_result *data;
->  	struct virtio_admin_cmd cmd = {};
->  	struct scatterlist result_sg;
-> +	u64 caps;
->  	int ret;
->  
->  	data = kzalloc_obj(*data);
-> @@ -323,12 +323,8 @@ static void virtio_pci_admin_cmd_cap_init(struct virtio_device *virtio_dev)
->  	if (ret)
->  		goto end;
->  
-> -	/* Max number of caps fits into a single u64 */
-> -	BUILD_BUG_ON(sizeof(data->supported_caps) > sizeof(u64));
-> -
-> -	vp_dev->admin_vq.supported_caps = le64_to_cpu(data->supported_caps[0]);
-> -
-> -	if (!(vp_dev->admin_vq.supported_caps & (1 << VIRTIO_DEV_PARTS_CAP)))
-> +	caps = le64_to_cpu(data->supported_caps[0]);
-> +	if (!(caps & BIT_ULL(VIRTIO_DEV_PARTS_CAP)))
->  		goto end;
->  
->  	virtio_pci_admin_cmd_dev_parts_objects_enable(virtio_dev);
-> -- 
-> 2.49.0
+>=20
+> > +static const struct soce_variant_desc *
+> > +soce_match_variant(const char *compatible)
+> > +{
+> > +	int i;
+> > +
+> > +	for (i =3D 0; soce_variants[i].compatible; i++) {
+> > +		if (!strcmp(compatible, soce_variants[i].compatible))
+> > +			return &soce_variants[i];
+> > +	}
+> > +
+> > +	return NULL;
+>=20
+> This kind of looks like a reinvention of of_device_get_match_data()
+
+I will update this in the next version.
+
+>=20
+> > +static int soce_sw_parse_port_mdio_config(struct soce_dsa_local *local=
+,
+> > +					  struct device *dev,
+> > +					  struct device_node *port_node,
+> > +					  u32 port)
+> > +{
+> > +	struct device_node *phy_node;
+> > +	u32 val;
+> > +	int ret;
+> > +
+> > +	if (of_find_property(port_node, "ethernet", NULL) ||
+> > +	    of_find_property(port_node, "link", NULL)) {
+> > +		if (of_find_property(port_node, "phy-handle", NULL)) {
+> > +			dev_err(dev,
+> > +				"phy-handle not allowed on CPU/DSA port %u\n",
+> > +				port);
+> > +			return -EINVAL;
+> > +		}
+> > +
+> > +		return 0;
+> > +	}
+>=20
+> Why is all of this parsing of DT needed? These should all be standard
+> properties which the DSA core handles.
+
+I will make greater adjustments to the driver here and in other places for
+the next version.
+
+>=20
+> This currently has the feel of being a "vendor crap" driver. Please
+> spend some time to clean this driver up, bring it up to Mainline
+> standards.
+
+This is actually already the cleaner version.
+Thank you for the feedback. This will allow me to reorganize the project
+accordingly and adapt the code more closely to already mainlined drivers.
+It looks like Lantiq provides a good example.
+
+>=20
+> 	Andrew
+
+Thanks,
+Vasilij
 
