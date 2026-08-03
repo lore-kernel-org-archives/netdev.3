@@ -1,45 +1,46 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04E0306D3F;
-	Mon,  3 Aug 2026 15:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2AB1DDC33;
+	Mon,  3 Aug 2026 15:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785771450; cv=none; b=UKMRdbPl8ttw62BQ3NNtejXLNVf0kVOz5BZJLoA9/7AN3RL+mBczAT9rW33wYGVJaHzLD5dGSz2Wl3SGpmh1QHUtcW70YkXxPEuIWQavEm6U8UeUJMeXuFgGQgxsiWIjWHkoyLdtNoziY8TuvxtqlPbBSVuEbywTX81zsA88P2w=
+	t=1785771618; cv=none; b=WUqIIKsnJ9BsfsD4pjhU1t1HGRE3SUEeZNg/zzKsIJn6glchY8JV5lCiXWUqlZyYv/AE6lMznEppV9O80G+ydqul0GRhhzISg3doFyiijY9uSTz98v6CdT/0z9Le9IAQ9POenuviOHFLaYjollBxtOz7zAujRwlPKvW08i5Ob+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785771450; c=relaxed/simple;
-	bh=LZrSE2PN024uA2UcijIaogZJZK2bOeqBNiLqx3yz+kA=;
+	s=arc-20240116; t=1785771618; c=relaxed/simple;
+	bh=+JEMFlA0tZQQJiqkQ2wp+tZYaDpytJsDY9c0Ncz26b8=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cbyHSeN/JYYfLxD9MKuv+9TDOXsjfrTmAjcABhEheuFzsrxu0i2RRQpQgcOSzvzKXAKw/+aoazdV+n2cFVebFiGIMSJ8u4M6itxz8oEDVP8AxT8JR9fQYqM8P4iQzJpTyHEzeyNEMHvYkP6RckhOS2wvdXx0DzzzyuK4vCYitKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=d13k/nMY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tqxU8rLP; arc=none smtp.client-ip=193.142.43.55
+	 Content-Type:MIME-Version; b=PAeA7A2cNaNFEiwmEfssCXqSD2p70Fsr+SXT7eoTq5Y6D5zO+kFVD50cZNm9kubsXWkqDSUEXlMcMNqkeYnnYloNHWmm4hJ4/kjft4hYOZYW/otupMonHszTximdmuV7OHPSzq+mUPn56D4uIu+dOhwlZ4OB8lVOSO2PLd6wcq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OugSSp3w; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=smouIGlk; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="d13k/nMY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tqxU8rLP"
-Message-ID: <723a256eb9d5aa64e7037f98eabeeb99257f03f2.camel@linutronix.de>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OugSSp3w";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="smouIGlk"
+Message-ID: <a07a7b214990ff4229b4d7ef35897e4270d980f4.camel@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1785771447;
+	s=2020; t=1785771614;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tL4fRz/EBUxL1gXqJ/ZWGHPI53NDoMq1GoW/7FU3J6E=;
-	b=d13k/nMYCRN8X7w4FQpY+VVtpcHZJUkpc3ky/kwV2VPe7Y/xKCllbDnHLv8Wxh/6tlC9qS
-	Pb9zXSB7FtwcU8kQaags8oOSTGxNJ9meZ7Gv/0obhuu5riHyuV+RElf3o0HGI+5zB1ASG0
-	7bCmI6R6FGuMTqSaf085pTGU+hJzu/ggKfqNzSiQQeRxEbFu4DvkTdC+ecyUsBR9Q7Q3Uy
-	RpOQRunnU3ofEJMq0edXiWItfJEVsA1BPOjWH1Odt6EBOUrYlliBToN/C6MwvOOFOmA4Qb
-	19zcCOYXnzNg0t4dOafDy5J9g1iyLU9x2mkkFOnHK9dNlArx4SvYRw0Lw+l+5g==
+	bh=fNZSVXzoyv+dWhCXq9CjgS7x5AqjRILFFWKkNCGIa2k=;
+	b=OugSSp3wclAiDcKtohk3A9e2Ks9W0PHLS8MVeg+xT1p1NM4Bu0Af5i6LleSsgNRyLxTU/C
+	1nwY7xZS0++64MztevJuZ8++BZUoHVyyyfTb1IN+ONdsyiujBJvkzzoq6pMvFLgAmOqIXp
+	uu63ceYKsRy2mMcKssl/1p/nDayXp6GzKL9VZoUkj1PbTU+EJqve8XEC6TFCOfoUxgYahh
+	OOOhcCQb55xarhjiNeB77e/4JMptLpWM0z/K3K5raOt0STGrRaip4rilpist30mDvRLm8T
+	cShUUDv2k8xS5lQ4hSXF3TfjIG2KsKySFMTuAC+KXeNexAZSs5k6N3DUN/1r0Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1785771447;
+	s=2020e; t=1785771614;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tL4fRz/EBUxL1gXqJ/ZWGHPI53NDoMq1GoW/7FU3J6E=;
-	b=tqxU8rLPXOBZ+04ZUjv3pt9t69h1ZpKYsSesu+mYpNTc1OI/No27NogylZZbNs959yBQNT
-	AYt/dE1kQbB9ybAQ==
-Subject: Re: [PATCH 3/4] net: dsa: Add support for SoC-e SDSA tags
+	bh=fNZSVXzoyv+dWhCXq9CjgS7x5AqjRILFFWKkNCGIa2k=;
+	b=smouIGlkLCvRwUJ/RI+bG1qHDUeUMyBjskIHbeooz2fvTiqbpMmYzEVzYj80ejFP6Fg8Kt
+	h6JU0OYYYcmSjFAQ==
+Subject: Re: [PATCH 4/4] net: dsa: soce: Add initial driver support for MRS
+ switches
 From: Vasilij Strassheim <v.strassheim@linutronix.de>
 To: Andrew Lunn <andrew@lunn.ch>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -50,12 +51,12 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
  <martin.kaistra@linutronix.de>
-Date: Mon, 03 Aug 2026 17:37:26 +0200
-In-Reply-To: <df7e7e04-80fc-4b80-9afd-0e9bc14a759f@lunn.ch>
+Date: Mon, 03 Aug 2026 17:40:13 +0200
+In-Reply-To: <b45edf4e-3312-4e73-8967-39b9b1e0701b@lunn.ch>
 References: 
 	<20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
-	 <20260729-devel-vstrassheim-soce-dsa-ml-v1-3-be569dae1b20@linutronix.de>
-	 <df7e7e04-80fc-4b80-9afd-0e9bc14a759f@lunn.ch>
+	 <20260729-devel-vstrassheim-soce-dsa-ml-v1-4-be569dae1b20@linutronix.de>
+	 <b45edf4e-3312-4e73-8967-39b9b1e0701b@lunn.ch>
 Organization: Linutronix GmbH
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -66,107 +67,100 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Wed, 2026-07-29 at 19:22 +0200, Andrew Lunn wrote:
-> > @@ -98,6 +98,12 @@ config NET_DSA_TAG_EDSA
-> > =C2=A0	  Say Y or M if you want to enable support for tagging frames fo=
-r the
-> > =C2=A0	  Marvell switches which use EtherType DSA headers.
-> > =C2=A0
-> > +config NET_DSA_TAG_SDSA
-> > +	tristate "Tag driver for SoC-e switches using EtherType SDSA headers"
-> > +	help
-> > +	  Say Y or M if you want to enable support for tagging frames for the
-> > +	  SoC-e switches.
-> > +
->=20
-> These entries are sorted, so it probably should be between
-> NET_DSA_TAG_RZN1_A5PSW and NET_DSA_TAG_LAN9303.
-
-I will insert it as suggested. To better understand, what is the sort order=
-?
-To me, it seems like there's also a good spot between
-NET_DSA_TAG_LAN9303 and NET_DSA_TAG_SJA1105.
-
->=20
-> > @@ -23,6 +23,7 @@ dsa_core-y +=3D \
-> > =C2=A0obj-$(CONFIG_NET_DSA_TAG_AR9331) +=3D tag_ar9331.o
-> > =C2=A0obj-$(CONFIG_NET_DSA_TAG_BRCM_COMMON) +=3D tag_brcm.o
-> > =C2=A0obj-$(CONFIG_NET_DSA_TAG_DSA_COMMON) +=3D tag_dsa.o
-> > +obj-$(CONFIG_NET_DSA_TAG_SDSA) +=3D tag_sdsa.o
-> > =C2=A0obj-$(CONFIG_NET_DSA_TAG_GSWIP) +=3D tag_gswip.o
->=20
-> Also sorted, and this is the wrong spot.
-
-Oh yes, I'll place it between tag_rzn1_a5psw and tag_sja1105.
-
->=20
-> > +#define SDSA_HLEN	8
-> > +
-> > +#define SDSA_NAME	"sdsa"
->=20
-> Does SDSA mean anything? Or have you taken net/dsa/tag_dsa.c, and just
-> changed edsa to sdsa?
-
-The "S" stands for Soc-e. I don't have any preferences and just took it
-from the original code.
-
->=20
-> > +static struct sk_buff *sdsa_xmit(struct sk_buff *skb, struct net_devic=
-e *dev)
+On Wed, 2026-07-29 at 19:31 +0200, Andrew Lunn wrote:
+> > +static int soce_sw_probe(struct mdio_device *mdiodev)
 > > +{
-> > +	struct dsa_port *dp =3D dsa_user_to_port(dev);
-> > +	u8 *sdsa_header;
+> > +	const struct soce_variant_desc *variant;
+> > +	struct device *dev =3D &mdiodev->dev;
+> > +	struct device_node *switch_node;
+> > +	struct soce_dsa_local *local;
+> > +	const char *soce_compatible;
+> > +	struct soce_priv *priv;
+> > +	u32 numports;
+> > +	int ret;
 > > +
-> > +	if (skb_cow_head(skb, SDSA_HLEN) < 0)
-> > +		return NULL;
+> > +	priv =3D devm_kzalloc(&mdiodev->dev, sizeof(*priv), GFP_KERNEL);
+> > +	if (!priv)
+> > +		return -ENOMEM;
 > > +
-> > +	skb_push(skb, SDSA_HLEN);
-> > +	dsa_alloc_etype_header(skb, SDSA_HLEN);
+> > +	priv->ds =3D devm_kzalloc(&mdiodev->dev, sizeof(*priv->ds), GFP_KERNE=
+L);
+> > +	if (!priv->ds)
+> > +		return -ENOMEM;
 > > +
-> > +	/* Construct the FROM_CPU DSA tag. */
->=20
-> Is FROM_CPU a concept for this device? Are there other types of tag?
-
-Yes, the documentation describes two types of tagging headers for frames fr=
-om
-the switch to the CPU and from the CPU to the switch. The tags differ in so=
-me
-bits.
-
->=20
-> > +	sdsa_header =3D dsa_etype_header_pos_tx(skb);
-> > +	sdsa_header[0] =3D (ETH_P_SDSA >> 8) & 0xff;
-> > +	sdsa_header[1] =3D ETH_P_SDSA & 0xff;
-> > +	sdsa_header[2] =3D 0x00; /* reserved */
-> > +	sdsa_header[3] =3D 0x00; /* reserved */
-> > +	sdsa_header[4] =3D FIELD_PREP(SDSA_TAG_FRAME_TYPE_MASK, 1) |
-> > +			 FIELD_PREP(SDSA_TAG_PORT_HI_MASK, dp->index >> 5);
-> > +	sdsa_header[5] =3D FIELD_PREP(SDSA_TAG_PORT_MASK, dp->index);
-> > +	sdsa_header[6] =3D 0x00; /* VLAN not supported */
-> > +	sdsa_header[7] =3D 0x00; /* VLAN not supported */
+> > +	priv->ds->dev =3D dev;
+> > +	priv->ds->priv =3D priv;
+> > +	local =3D &priv->local;
 > > +
-> > +	return skb;
+> > +	switch_node =3D of_parse_phandle(dev->of_node, "soce,switch-ip", 0);
+> > +	if (!switch_node) {
+> > +		dev_err(dev, "missing or invalid switch IP reference\n");
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	ret =3D of_property_read_string(switch_node, "compatible",
+> > +				      &soce_compatible);
+> > +	if (ret) {
+> > +		dev_err(dev, "missing compatible property in %pOF\n",
+> > +			switch_node);
+> > +		of_node_put(switch_node);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	variant =3D soce_match_variant(soce_compatible);
+> > +	if (!variant) {
+> > +		dev_err(dev, "unsupported compatible '%s' in %pOF\n",
+> > +			soce_compatible, switch_node);
+> > +		of_node_put(switch_node);
+> > +		return -ENODEV;
+> > +	}
+> > +
+> > +	ret =3D of_property_read_u32(switch_node, "soce,num-ports", &numports=
+);
+> > +	if (ret) {
+> > +		dev_err(dev, "missing soce,num-ports in %pOF\n", switch_node);
+> > +		of_node_put(switch_node);
+> > +		return -EINVAL;
+> > +	}
+> > +	if (numports =3D=3D 0 || numports > SOCE_MAX_NUM_PORTS) {
+> > +		dev_err(dev, "invalid soce,num-ports %u (max %d)\n", numports,
+> > +			SOCE_MAX_NUM_PORTS);
+> > +		of_node_put(switch_node);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	local->base_addr =3D devm_of_iomap(dev, switch_node, 0, NULL);
+> > +	if (IS_ERR(local->base_addr)) {
+> > +		dev_err(dev, "failed to map switch register space for %pOF\n",
+> > +			switch_node);
+> > +		of_node_put(switch_node);
+> > +		return PTR_ERR(local->base_addr);
+> > +	}
+> > +
+> > +	priv->ds->ops =3D &soce_switch_ops;
+> > +	local->mdio_ops =3D variant->mdio_ops;
+> > +	local->mdio_master_addr =3D
+> > +		local->base_addr + variant->mdio_master_offset;
+> > +	local->layout =3D variant->layout;
+> > +	of_node_put(switch_node);
+> > +
+> > +	priv->ds->num_ports =3D numports;
+> > +	ret =3D soce_sw_parse_port_mdio(priv, dev, numports);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	dev_set_drvdata(&mdiodev->dev, priv);
+> > +
+> > +	dev_info(dev, "soce %s SDSA driver probed.\n", soce_compatible);
+> > +
+> > +	return dsa_register_switch(priv->ds);
 > > +}
-> > +
-> > +static struct sk_buff *sdsa_rcv(struct sk_buff *skb, struct net_device=
- *dev)
-> > +{
-> > +	u8 *sdsa_header;
-> > +	int source_port;
-> > +	u8 frame_type;
-> > +
-> > +	if (unlikely(!pskb_may_pull(skb, SDSA_HLEN)))
-> > +		return NULL;
-> > +
-> > +	sdsa_header =3D dsa_etype_header_pos_rx(skb);
-> > +
-> > +	/* Check that the frame type is TO_CPU. */
-> > +	frame_type =3D FIELD_GET(SDSA_TAG_FRAME_TYPE_MASK, sdsa_header[4]);
-> > +	if (frame_type !=3D 0)
 >=20
-> #define for TO_CPU?
+> Looking at this struct mdio_device *mdiodev is not used, other than
+> for ->dev. Is this device actually on an MDIO bus?
 
-I will add definitions for both TO_CPU and FROM_CPU.
+I only have a memory-mapped version to test. I will remove this *mdiodev in
+the next version.
 
 >=20
 > 	Andrew
