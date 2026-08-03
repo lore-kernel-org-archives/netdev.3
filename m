@@ -1,110 +1,155 @@
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679A62BDC2A;
-	Mon,  3 Aug 2026 03:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28475383333;
+	Mon,  3 Aug 2026 03:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785728926; cv=none; b=MN+cVIcRCfB53ul2xZsb3e98CJqtuNMHM1wNx4NY3Fj/0KNuwP7FuEYR60Ku79bkQjh2gErBEtxfApGyw6NG8BympCDn3QuU6qdt1eW239EPedCCijbafrjxEngwB8BKj5bQQXUPOpr8uIz/L/JNBIfzyHLbgI7pmPXt4Wf0sd8=
+	t=1785729129; cv=none; b=md6IPMcR8Pm27mO4QR7lMxHxlKj14cbZDvZL8WmHSiWxjeO9vWy51QxaXLZiUzbF3Vqpg2NU/iKBZcWDoJ7pHUbEGmcfDVO/qsticCEiMuXdGBYZ+3DKDPnu/zlIZLTyA+8ttRyk+VUYQm+IP6V+wW/QZYGXEPnAA3mm0ks47Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785728926; c=relaxed/simple;
-	bh=GBICTxO68ctK0qxSO4rbiJHbBfVH/xHObtghTcDnGfo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eKKxyFy15G0ooayOpEjkB0NC+W07Y8S9wR9INV6zxs48s6XZgr+vvFKFHlKbEpyRQW3Hn7V3oEZPxVt5VTZeWo+4V5cE6HocGmkt2bxfW8GHeptvHmWFonetELZeFlF1RoFALpKEJBLs/pyD7wHycGMIXwdkWHjnmDSR/VXwmM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=FkBlm2r9; arc=none smtp.client-ip=113.46.200.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="FkBlm2r9"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=8yAzjnPdaYmvNGhyrQI0M30tMEwws2uNkWvAevHQykk=;
-	b=FkBlm2r9HPvasXYhYKeCVQavydmcnQ0Gw8oy6LX+bZjLatDjzaTapSdQz1pUkdiGWhkwCg+q7
-	cnGP4rH7B9Hy+GI916QYaE3AjdXziMttfmCI2QRD8MruiC8XbE5atpzaC03vbe7BEkSH/BbltGL
-	p7MZ6bOBCEqa8EkxMAcSI88=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hD2Tj3nCnzRhR0;
-	Mon,  3 Aug 2026 11:39:05 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2EE8D4056D;
-	Mon,  3 Aug 2026 11:48:34 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 3 Aug 2026 11:48:33 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: Fan Gong <gongfan1@huawei.com>, Teng Peisen <tengpeisen@huawei.com>,
-	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Larysa Zaremba <larysa.zaremba@intel.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Chen Anwen
-	<chenanwen@huawei.com>, He Wei <august.hewei@huawei.com>, luosifu
-	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
-	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
-	<shijing34@huawei.com>, Wu Di <wudi234@huawei.com>
-Subject: [PATCH net 1/2] hinic3: Fix skb_checksum_help() failure handling in Tx path
-Date: Mon, 3 Aug 2026 11:48:24 +0800
-Message-ID: <16ed10bb3470f17fe78b0803a8a550c2c720f3e6.1785727595.git.tengpeisen@huawei.com>
-X-Mailer: git-send-email 2.50.1.windows.1
+	s=arc-20240116; t=1785729129; c=relaxed/simple;
+	bh=ApnYtRjXNLq3OsGzWDOd0FDUoMK5LZlHpvzW8Vd+tbA=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EmXBExOLAoENBWr+rUrp63T7ghbquSmf4PFqV+/LqGXOkesRWUqlzmUIC2ePZ6wioYHTlD4dvBKtCyQcYY6vzJvf9kqePNME7qgNbWCAOUNXiEHtbb6rVP+UV+O42YlO03h4PS8k3j9faz4TjkqbsEWAZed9Lcb6Lxztv/OWKkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wqjia-000000004cd-2PpN;
+	Mon, 03 Aug 2026 03:52:00 +0000
+Date: Mon, 3 Aug 2026 04:51:57 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v9 2/5] net: dsa: mxl862xx: add SMDIO clause-22
+ register access
+Message-ID: <fbaa6f53c89a05dc63c02df27eaf2e76475e7f98.1785728574.git.daniel@makrotopia.org>
+References: <cover.1785728574.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemf100013.china.huawei.com (7.202.181.12)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1785728574.git.daniel@makrotopia.org>
 
-From: Teng Peisen <tengpeisen@huawei.com>
+Add mxl862xx_smdio_read() and mxl862xx_smdio_write() for clause-22
+SMDIO register access. The switch's MCUboot bootloader exposes only
+clause-22 registers; the clause-45 MMD interface needs the running
+firmware and is unavailable while the switch is in MCUboot. The MDIO
+bus lock is held per-transaction (not across polls) so that SB PDI
+polling during flash erase does not starve other non-switch users of
+the same MDIO bus, such as separate PHYs providing WAN or management
+interfaces.
 
-From: Fan Gong <gongfan1@huawei.com>
+Unlike mxl862xx_api_wrap(), which takes the bus lock with
+MDIO_MUTEX_NESTED because it can be entered from the accessors of
+the switch-internal MDIO bus while that bus's lock of the same lock
+class is already held, the SMDIO helpers take it with a plain
+mutex_lock(). They are only called from probe and devlink flash
+contexts where no other MDIO bus lock can be held.
 
-hinic3_tx_csum() falls back to skb_checksum_help() for unsupported VXLAN
-packets, but ignores its return value. On failure, this can cause packets
-with uncalculated or corrupted checksums to be transmitted.
-
-Fix this by returning the error status of skb_checksum_help() and marking
-the offload as HINIC3_TX_OFFLOAD_INVALID in hinic3_tx_offload() so that the
-packet is properly dropped.
-
-Fixes: 17fcb3dc12bb ("hinic3: module initialization and tx/rx logic")
-Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
-Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
-Signed-off-by: Fan Gong <gongfan1@huawei.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/ethernet/huawei/hinic3/hinic3_tx.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+v9: no changes, picked up Andrew's v5 Reviewed-by
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-index 9306bf0020ca..53c065194136 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-@@ -261,8 +261,7 @@ static int hinic3_tx_csum(struct hinic3_txq *txq, struct hinic3_sq_task *task,
- 		    ((struct udphdr *)skb_transport_header(skb))->dest !=
- 		    VXLAN_OFFLOAD_PORT_LE) {
- 			/* Unsupported tunnel packet, disable csum offload */
--			skb_checksum_help(skb);
--			return 0;
-+			return skb_checksum_help(skb);
- 		}
- 	}
+v8: document the paged register window and the per-transaction bus
+    locking next to the helpers, rather than only in this changelog
+    (found by Sashiko AI review)
+
+v7: no changes
+
+v6: no changes
+
+v5: no changes
+
+v4: no changes
+
+v3: explain the plain mutex_lock() vs MDIO_MUTEX_NESTED choice in
+    the commit message
+
+v2: clarify in the commit message that the per-transaction bus
+    locking is about unrelated non-switch devices on the same MDIO
+    bus (Andrew Lunn)
+
+ drivers/net/dsa/mxl862xx/mxl862xx-host.c | 40 ++++++++++++++++++++++++
+ drivers/net/dsa/mxl862xx/mxl862xx-host.h |  2 ++
+ 2 files changed, 42 insertions(+)
+
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+index 4acd216f7cc0..11759fa6069b 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+@@ -495,6 +495,46 @@ int mxl862xx_reset(struct mxl862xx_priv *priv)
+ 	return ret;
+ }
  
-@@ -412,6 +411,10 @@ static u32 hinic3_tx_offload(struct sk_buff *skb, struct hinic3_sq_task *task,
- 		offload |= HINIC3_TX_OFFLOAD_TSO;
- 	} else {
- 		tso_cs_en = hinic3_tx_csum(txq, task, skb);
-+		if (tso_cs_en < 0) {
-+			offload = HINIC3_TX_OFFLOAD_INVALID;
-+			return offload;
-+		}
- 		if (tso_cs_en)
- 			offload |= HINIC3_TX_OFFLOAD_CSUM;
- 	}
-
-base-commit: 2195424c3da2ef1829a63b807e3a900a90e57d85
++#define MXL862XX_SMDIO_ADDR_REG		0x1f
++#define MXL862XX_SMDIO_PAGE_MASK	0xfff0
++#define MXL862XX_SMDIO_OFF_MASK		0x000f
++
++/* Paged clause-22 window: the page goes into MII register 0x1f, the low nibble
++ * of addr selects one of the 16 registers within it. Both helpers take the MDIO
++ * bus lock per transaction, so callers must not already hold it -- unlike
++ * mxl862xx_api_wrap(), which holds it across a whole firmware command.
++ */
++int mxl862xx_smdio_read(struct mxl862xx_priv *priv, u32 addr)
++{
++	struct mii_bus *bus = priv->mdiodev->bus;
++	int phy = priv->mdiodev->addr;
++	int ret;
++
++	mutex_lock(&bus->mdio_lock);
++	ret = __mdiobus_write(bus, phy, MXL862XX_SMDIO_ADDR_REG,
++			      addr & MXL862XX_SMDIO_PAGE_MASK);
++	if (ret >= 0)
++		ret = __mdiobus_read(bus, phy, addr & MXL862XX_SMDIO_OFF_MASK);
++	mutex_unlock(&bus->mdio_lock);
++	return ret;
++}
++
++int mxl862xx_smdio_write(struct mxl862xx_priv *priv, u32 addr, u16 val)
++{
++	struct mii_bus *bus = priv->mdiodev->bus;
++	int phy = priv->mdiodev->addr;
++	int ret;
++
++	mutex_lock(&bus->mdio_lock);
++	ret = __mdiobus_write(bus, phy, MXL862XX_SMDIO_ADDR_REG,
++			      addr & MXL862XX_SMDIO_PAGE_MASK);
++	if (ret >= 0)
++		ret = __mdiobus_write(bus, phy, addr & MXL862XX_SMDIO_OFF_MASK,
++				      val);
++	mutex_unlock(&bus->mdio_lock);
++	return ret;
++}
++
+ void mxl862xx_host_init(struct mxl862xx_priv *priv)
+ {
+ 	INIT_WORK(&priv->crc_err_work, mxl862xx_crc_err_work_fn);
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.h b/drivers/net/dsa/mxl862xx/mxl862xx-host.h
+index 66d6ae198aff..4e054c6e4c0e 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-host.h
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.h
+@@ -18,5 +18,7 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *data, u16 size,
+ 	mxl862xx_api_wrap(dev, cmd, &(data), sizeof((data)), true, true)
+ 
+ int mxl862xx_reset(struct mxl862xx_priv *priv);
++int mxl862xx_smdio_read(struct mxl862xx_priv *priv, u32 addr);
++int mxl862xx_smdio_write(struct mxl862xx_priv *priv, u32 addr, u16 val);
+ 
+ #endif /* __MXL862XX_HOST_H */
 -- 
-2.54.0
-
+2.55.0
