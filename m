@@ -1,27 +1,26 @@
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC9123BD1B
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 06:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB1123BD1B
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 06:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785739472; cv=none; b=IUysXNsfpSSduAWjoTj3tVLXwYZQRinWpSrQa2m6UvpsRtNnLzKLJIKT3+KAy6ZhcC57ZF6DDIkyZG0lFZcYMwDdSxZkko/vptWzrV/lLUgUaJbubfDhF+AqoIU7Yg4IzONNhTALqCJaqrkN5LWzL60aFjHhCfG6b7YndKFOY1M=
+	t=1785739476; cv=none; b=j4zBS7NEnvn2AmlpGuRKkAAoBbr8mXNJi/lhHPLmNN/vHS+7SZ1P66WifIPreEnGDioD0qrHlIzhZiwVLIox6JXg5AW1h6Wve2ZWt+P3p02Q8Y3N/6cICyTtpiIPNWku05dXcK6vuCuZ+1CNB2ceUTpJJ1Ip9sfjS/nm6mZrXB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785739472; c=relaxed/simple;
-	bh=3xAvrvi9wlFd+oMKjoUrwRgoHRix1jZx2yPb/WKyS1I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uDsE89+i9nzd5F+2MD0XpiUJXobtDGNh2JUlkhgd2t2ahrVshdGC2VzCch5jiZQvkUo+UbON7cqh+R8oLyjsFB1Ym7Qe0oxcVNVqq6V65P2JFRVcr4OoJYSIlcFu7rHQ17+ZFGO6Qiiol32uEUSnmyCtUIA9QESTQQVh1HNOtpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.19.206
+	s=arc-20240116; t=1785739476; c=relaxed/simple;
+	bh=jbkllnn9yRzQcGeWQzUE8S0N33L8sMiHise/wXQjXJM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uVzDeH+VDHeV2AMB0TnSJX4XsE/VTcJn2L/xPz1FNPMiFjDCyNzl/4C3/HnR4SkjVuZvWjmI3lzawAXgKwArraATOdaZ526eezEMP82MUzu8BtJsVutpBY4syK5y5h+gZL9iPHZCN6tcF6UIrAKPvTshKUM0GA93fD2TXeSJArw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.34.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpgz10t1785739426t835b0c39
-X-QQ-Originating-IP: +DKex+xZXM9TxUTrLO2PD3LrO0vowje+rctXQAAhSeg=
+X-QQ-mid: esmtpgz10t1785739420t255e00ce
+X-QQ-Originating-IP: K4OZG8TPTvNG/nx5jsWGnK+8psf2wEGV0ZapM0F4zTI=
 Received: from lap-jiawenwu.trustnetic.com ( [122.235.139.83])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 03 Aug 2026 14:43:44 +0800 (CST)
+	id ; Mon, 03 Aug 2026 14:43:36 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 2777709407499582131
+X-BIZMAIL-ID: 14223874660558241921
 EX-QQ-RecipientCnt: 21
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org
@@ -45,12 +44,10 @@ Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Chenguang Zhao <zhaochenguang@kylinos.cn>,
 	Fabio Baltieri <fabio.baltieri@gmail.com>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v14 2/5] net: wangxun: add Tx timeout process
-Date: Mon,  3 Aug 2026 14:43:31 +0800
-Message-Id: <20260803064334.21876-3-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v14 0/5] net: wangxun: timeout and error
+Date: Mon,  3 Aug 2026 14:43:29 +0800
+Message-Id: <20260803064334.21876-1-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20260803064334.21876-1-jiawenwu@trustnetic.com>
-References: <20260803064334.21876-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,562 +57,138 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: McoPngcDBvM5mwGKMGTCTubPrPzNLFwJAutD1u+zeSIO3zQ6aJYRuEhr
-	ZjLu2oImK8OlBNIhAd6BcAtT8iXd6DViGFURVCM0Vl8kxZHYhmX//Qn/tJHcd5y4eedu6Yn
-	8P48tfmKrQVXx3XTVHlb+qXvFn707CWK4NDX9AgzSvEg5yQ81Hla0tLVCNnDlPM0kbpA5IX
-	9FPRkm5OaigfrQsKOvjfLyLRtuLzGBxkvdJhMgmX2fFu8MiHqCU+b/RaVdU0zeNmDL8OnR/
-	/lTaeQrKeKChyW5+WbLrzwRj/GDx6V5GKQOJBueI1p9W4rkRS62sAVBUekfl4VfnvzX/yIr
-	3j+kVHe5UDIpTdLBoOuvp6V0hsGdJwfUqleF+6EPD9o0Ue/vUYOuponZ9NJBWWLU5JdxuBN
-	4dNSYjUwXpCOtCB34n56JSOAraBU3A4s2kj1Ll28HM0J6wbyymC18YVlBOyr8gm6etH7Atp
-	jkw5JN4KwCng0LDqSbAtMQ5j5BITrb3pGwuSXy/KKme9Esldwb03+bOowP2/OtAbmsbFIU2
-	vrCwi9DqLJxzfsh7twyERm4HmHPXsEnICm+NwT6j77VfOk8vfiW35MidV7gVaNrRrJnFlDB
-	UrkSK9ryfTqL0J0r2ygK5iPNkwDWrofTI/ukNzw2b0wPhV3qphhH9IRVt067zdeYG12nrHR
-	Ln8Ceeg8jQwyYcHOwl6jM8wsRg3H+THLhrGja3Oid4TVwPi5YFUjO5zeXMZgznp0mhfb6EP
-	PoOV8K6jE50guI1DSTAf8KijoSHJ1z8Gm+3xIDuuWup0ey4MfpolHPhlsz3niAkFdVZfxNU
-	2z7rLjWnovaThP1f0SRkPm4qt7oRECGHLbPmF/22OfPuC1z4Ue6hPzoHCcqD2B6nHuhcS7l
-	fTk62PxNj1bMlHTd4zMX7508A4eXzylGleeCn+L+FpMFSc2/vARFVuip250oalSHSrJAydG
-	nlGB2HP1+pA6iYXczuvfV3BGERGvrcd1Ot6PAfOhHKmrBUqM7Ns9yGZL2lfki/PVaoPD/bc
-	mpF5VqEN7SHLOQVeysvlS9zsIVmpxnr0dVDY1CF4lWMdzTjwi+58xNGQEtRFWBWPDfgW9+P
-	eXfyIcVuFxPPN7WYk/VWTo=
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-XMAILINFO: OWISOlifo4HyoZVsC9NqkMBqxaUgS9alAfF4pB/YJMUJom+STyqf+MME
+	+eqGq2baJZGBKsDGVGzW1NGieu1Oqgn66PiVy6XqKpyZXUOYfLP9OcC3HSk0xg4RucJiJs4
+	sQf5lraWrU9Z3LsydH/b7CGYWeGpxJ2L6+MVpkTLkIe9CfSAbaLvsnSCOhGGYDVdS9FzdgE
+	IlIdpnp9DxrVosAkFP+7yiIWIImg27Roz5XLECdaXkeAwI/U2nnl9/Razxq5izzXvF0qgPs
+	6u+WuQO5VSdbpkMMq9CjqdAEaky2s/n/d4CZXahO6hvEfoey+7izXlUvMDg5+2FXhASX96X
+	5qBph4q4WtJ6CMRtccwCfCSHbpVoS5yLEsZAcG+La7QTyumI8AbmdaNw0m7iPPZBanIop0i
+	lJCGzr7eKaey7HddK0s4H2qeRomB1l+0WPC7FlPZF5JfX8FC4SC9xhkCjW9PJLn3ilIV24O
+	kz5rB8GaHQLrznS2V/dIBewmw+80Punu9rouLePApV76iH86wXhtjeeImhmwYxdQv0c5XqG
+	cMrsKxVsKFkxAmVJhL/W6rFMzP5Oqtd7YMOpuIaH9nmeDKn3raXPYhunrU13ZYtObt8QpC/
+	xk8myWZurq1hwjcvx/gvmn2WavdAdOy16ku2q4wqCYQmLpxO4Du/mtU0Cem4TKIz4rV2Z26
+	YRwjPa0YMWPbnUTSVVDFcQWOgn6XM4BYHEE8vtnTdi1ax3DP2xM93ms5k4w84K3/T3J1G7k
+	VTjIEq3fyfj4dzWvez9Amr4iLys1Y711EF9lprFaMw5fSSrZFXJs3iatsdhM/v2GCm9m463
+	h4kPwga/A1Yq2thgZ4WD3KLFUHPMKLqJ3nngSQ1mx1+MKH57qPHgC3exIq8uMqZzn98JxHW
+	eqbFaP+l75fuIPxXj9xm8Ata/sRtfPBNGk866jeE9re14BUFoum/JC9mJ9R8Z6RDMkzHfz5
+	Qr/5kRpnNz55AEwhe5cou2tJ7V3aoG/5ZcxzQbhV98V/w/fSoix8sfWBXagCRfDUU3YPd/w
+	y5rt0QVxpnTAlQpVggORJzwUCxRvPMIC0LFob5x8pGL+iRS2qy0crYDRIYlR0QL8pksvOV2
+	v03bZ8ltRZSsitaxMDyJZWlGmVNzyMZg78xr/0SRekq
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
 X-QQ-RECHKSPAM: 0
 
-Implement .ndo_tx_timeout to handle Tx side timeout event. When a Tx
-timeout event occur, it will trigger driver into reset process. And
-allocate a separate work queue for reset process.
-
-The WX_HANG_CHECK_ARMED bit is set to indicate a potential hang. It will
-be cleared if a pause frame is received to avoid false hang detection
-caused by pause frames.
-
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+It is about adding the Tx timeout process and pci_error_handlers.
+When a PCIe error occurs, the txgbe device is able to recover on platform
+that support AER interrupt. And for Tx timeout, the txgbe driver can
+recover the device by reset process.
+For ngbe devices, due to the absence of the current function, it cannot
+br fully recovered once there is a PCIe error or Tx timeout. Its
+function will be completed in the future.
 ---
+Changes log:
+v14:
+- Remove flag WX_FLAG_NEED_PF_RESET and reuse WX_FLAG_NEED_DO_RESET for it.
+- Remove redundant 'watchdog_timeo = 5 * HZ'.
+- Not clear flags when device has been detached in wx_reset_task().
+
+v13: https://lore.kernel.org/all/20260731061837.12672-1-jiawenwu@trustnetic.com
+- Double check PCIe error in wx_reset_task().
+
+v12: https://lore.kernel.org/all/20260724101309.23472-1-jiawenwu@trustnetic.com
+- Perform device teardown before pci_channel_io_perm_failure return.
+
+v11: https://lore.kernel.org/all/20260716073822.24356-1-jiawenwu@trustnetic.com
+- Destroy ptp_clock in wx_ptp_quiesce().
+- Re-check down/resetting state flag after time sleep in module
+  detection subtask.
+
+v10: https://lore.kernel.org/all/20260707061455.39564-1-jiawenwu@trustnetic.com
+- Remove pci_aer_clear_nonfatal_status().
+
+v9: https://lore.kernel.org/all/20260701072357.33984-1-jiawenwu@trustnetic.com
+- Add calling ptp_cancel_worker_sync() in wx_ptp_quiesce().
+- Fix the typo of 'out' for wx_control_hw().
+
+v8: https://lore.kernel.org/all/20260630031016.19820-1-jiawenwu@trustnetic.com
+- Not destroying PTP clock in wx_soft_quiesce(), and keeping the PTP worker
+  alive but idle during PCIe recovery.
+- Move wx_soft_quiesce() after wx_napi_disable_all().
+- Use PCI_COMMAND_MEMORY and U16_MAX instead of magic number.
+- Fix the leak of wx_control_hw() when WX_STATE_RES_FREED is set.
+
+v7: https://lore.kernel.org/all/20260615065016.21672-1-jiawenwu@trustnetic.com
+- Move ptp_clock_unregister() to be executed before free wx->ptp_tx_skb.
+
+v6: https://lore.kernel.org/all/20260610060917.23980-1-jiawenwu@trustnetic.com
+- Move the check of device status inside wx_soft_quiesce().
+- Reverse the error return of txgbe_disable_device().
+- Add PCIe error check in tx_timeout.
+- Add WX_STATE_RES_FREED flag to avoid double-free of resources.
+
+v5: https://lore.kernel.org/all/20260604085631.12720-1-jiawenwu@trustnetic.com
+- Avoid the same name on two functions.
+- Encode the device identity into the name of reset work queue.
+- Change pr_err() to wx_err().
+- Check WX_STATE_DOWN and WX_STATE_RESETTING at the entry of every work item.
+- Implement wx_ptp_quiesce().
+- Add netif_carrier_off() and netif_tx_disable() in soft_quiesce.
+- Move resource free operations after PCIe recovery.
+- Return error code in down path.
+
+v4: https://lore.kernel.org/all/20260601072221.2952-1-jiawenwu@trustnetic.com
+- Create a separate work queue for the reset task.
+- Gate wx_watchdog_flush_tx() on netif_running().
+- Add rtnl_lock() around wx->do_reset() in wx_io_slot_reset().
+- Change .close_suspend() to .soft_quiesce() to avoid MMIO when PCI
+  channel is frozen.
+
+v3: https://lore.kernel.org/all/20260509100540.32612-1-jiawenwu@trustnetic.com
+- Merge the multiple string line into one in wx_handle_tx_hang().
+- Remove the redundant warn messages.
+- Use test_and_clear_bit() instead of checking the flag bit then clear it.
+- Drop the Tx hang check in tx_timeout.
+- Call wx_update_stats() before wx_check_tx_hang().
+- Add Tx flush when link lost.
+- Move wx_ptp_stop() into wx->close_suspend().
+- Drop V2 patch 5/6 because WOL packets are handled before DMA ring.
+- Check wx NULL pointer in wx_io_error_detected().
+- Check perm failure before hardware teardown.
+
+v2: https://lore.kernel.org/all/20260430082517.19612-1-jiawenwu@trustnetic.com
+- Add the missing rtnl_unlock() at early return in wx_reset_subtask().
+- Replace ngbe_close() with ngbe_close_suspend() in ngbe_dev_shutdown().
+- Add a patch to clear stored DMA addresses.
+
+v1: https://lore.kernel.org/r/20260428021156.13564-1-jiawenwu@trustnetic.com
+---
+
+Jiawen Wu (5):
+  net: ngbe: implement libwx reset ops
+  net: wangxun: add Tx timeout process
+  net: wangxun: add reinit parameter to wx->do_reset callback
+  net: wangxun: implement soft quiesce for PCIe error recovery
+  net: wangxun: add pcie error handler
+
  drivers/net/ethernet/wangxun/libwx/Makefile   |   2 +-
- drivers/net/ethernet/wangxun/libwx/wx_err.c   | 175 ++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_err.h   |  16 ++
+ drivers/net/ethernet/wangxun/libwx/wx_err.c   | 332 ++++++++++++++++++
+ drivers/net/ethernet/wangxun/libwx/wx_err.h   |  18 +
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   |   2 +-
  drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  17 +-
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  37 ++++
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  18 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  13 ++
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  13 ++
- 8 files changed, 286 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  59 +++-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.h   |   1 +
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.c   |  27 ++
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.h   |   1 +
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  24 +-
+ .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |   1 -
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  82 ++++-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |   1 +
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  64 +++-
+ .../net/ethernet/wangxun/txgbe/txgbe_type.h   |   2 +-
+ 15 files changed, 614 insertions(+), 19 deletions(-)
  create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.c
  create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.h
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/Makefile b/drivers/net/ethernet/wangxun/libwx/Makefile
-index a71b0ad77de3..c8724bb129aa 100644
---- a/drivers/net/ethernet/wangxun/libwx/Makefile
-+++ b/drivers/net/ethernet/wangxun/libwx/Makefile
-@@ -4,5 +4,5 @@
- 
- obj-$(CONFIG_LIBWX) += libwx.o
- 
--libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o
-+libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o wx_err.o
- libwx-objs += wx_vf.o wx_vf_lib.o wx_vf_common.o
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-new file mode 100644
-index 000000000000..4c45e97bf9e3
---- /dev/null
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-@@ -0,0 +1,175 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2015 - 2026 Beijing WangXun Technology Co., Ltd. */
-+/* Copyright (c) 1999 - 2026 Intel Corporation. */
-+
-+#include <linux/netdevice.h>
-+#include <linux/pci.h>
-+
-+#include "wx_type.h"
-+#include "wx_lib.h"
-+#include "wx_err.h"
-+
-+static void wx_pf_reset_subtask(struct wx *wx)
-+{
-+	if (!test_and_clear_bit(WX_FLAG_NEED_DO_RESET, wx->flags))
-+		return;
-+
-+	wx_warn(wx, "Reset adapter.\n");
-+	if (wx->do_reset)
-+		wx->do_reset(wx->netdev);
-+}
-+
-+static void wx_reset_task(struct work_struct *work)
-+{
-+	struct wx *wx = container_of(work, struct wx, reset_task);
-+
-+	rtnl_lock();
-+
-+	if (test_bit(WX_STATE_DOWN, wx->state) ||
-+	    test_bit(WX_STATE_RESETTING, wx->state))
-+		goto out;
-+
-+	wx_pf_reset_subtask(wx);
-+
-+out:
-+	rtnl_unlock();
-+}
-+
-+void wx_check_err_subtask(struct wx *wx)
-+{
-+	if (test_bit(WX_FLAG_NEED_DO_RESET, wx->flags))
-+		queue_work(wx->reset_wq, &wx->reset_task);
-+}
-+EXPORT_SYMBOL(wx_check_err_subtask);
-+
-+int wx_init_err_task(struct wx *wx)
-+{
-+	wx->reset_wq = alloc_workqueue("%s_reset_wq_%x", WQ_UNBOUND | WQ_HIGHPRI,
-+				       1, wx->driver_name, pci_dev_id(wx->pdev));
-+	if (!wx->reset_wq) {
-+		wx_err(wx, "Failed to create wx_reset_wq workqueue\n");
-+		return -ENOMEM;
-+	}
-+
-+	INIT_WORK(&wx->reset_task, wx_reset_task);
-+	return 0;
-+}
-+EXPORT_SYMBOL(wx_init_err_task);
-+
-+static bool wx_ring_tx_pending(struct wx *wx)
-+{
-+	int i;
-+
-+	for (i = 0; i < wx->num_tx_queues; i++) {
-+		struct wx_ring *tx_ring = wx->tx_ring[i];
-+
-+		if (tx_ring->next_to_use != tx_ring->next_to_clean)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static bool wx_vf_tx_pending(struct wx *wx)
-+{
-+	struct wx_ring_feature *vmdq = &wx->ring_feature[RING_F_VMDQ];
-+	u32 q_per_pool = __ALIGN_MASK(1, ~vmdq->mask);
-+	u32 i, j;
-+
-+	if (!wx->num_vfs)
-+		return false;
-+
-+	for (i = 0; i < wx->num_vfs; i++) {
-+		for (j = 0; j < q_per_pool; j++) {
-+			u32 h, t;
-+
-+			h = rd32(wx, WX_PX_TR_RP_PV(q_per_pool, i, j));
-+			t = rd32(wx, WX_PX_TR_WP_PV(q_per_pool, i, j));
-+
-+			if (h != t)
-+				return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
-+static void wx_watchdog_flush_tx(struct wx *wx)
-+{
-+	if (!netif_running(wx->netdev))
-+		return;
-+	if (netif_carrier_ok(wx->netdev))
-+		return;
-+
-+	if (wx_ring_tx_pending(wx) || wx_vf_tx_pending(wx)) {
-+		/* We've lost link, so the controller stops DMA,
-+		 * but we've got queued Tx work that's never going
-+		 * to get done, so reset controller to flush Tx.
-+		 * (Do the reset outside of interrupt context).
-+		 */
-+		wx_warn(wx, "initiating reset due to lost link with pending Tx work\n");
-+		set_bit(WX_FLAG_NEED_DO_RESET, wx->flags);
-+	}
-+}
-+
-+static void wx_detect_tx_hang(struct wx *wx)
-+{
-+	int i;
-+
-+	/* If we're down or resetting, just bail */
-+	if (!netif_running(wx->netdev) ||
-+	    test_bit(WX_STATE_RESETTING, wx->state))
-+		return;
-+
-+	/* Force detection of hung controller */
-+	if (netif_carrier_ok(wx->netdev)) {
-+		for (i = 0; i < wx->num_tx_queues; i++)
-+			set_bit(WX_TX_DETECT_HANG, wx->tx_ring[i]->state);
-+	}
-+}
-+
-+void wx_check_hang_subtask(struct wx *wx)
-+{
-+	if (test_bit(WX_STATE_DOWN, wx->state) ||
-+	    test_bit(WX_STATE_RESETTING, wx->state))
-+		return;
-+
-+	wx_watchdog_flush_tx(wx);
-+	wx_detect_tx_hang(wx);
-+}
-+EXPORT_SYMBOL(wx_check_hang_subtask);
-+
-+static void wx_tx_timeout_reset(struct wx *wx)
-+{
-+	if (test_bit(WX_STATE_DOWN, wx->state))
-+		return;
-+
-+	set_bit(WX_FLAG_NEED_DO_RESET, wx->flags);
-+	wx_warn(wx, "initiating reset due to tx timeout\n");
-+	wx_service_event_schedule(wx);
-+}
-+
-+void wx_tx_timeout(struct net_device *netdev, unsigned int __always_unused txqueue)
-+{
-+	struct wx *wx = netdev_priv(netdev);
-+
-+	wx_tx_timeout_reset(wx);
-+}
-+EXPORT_SYMBOL(wx_tx_timeout);
-+
-+void wx_handle_tx_hang(struct wx_ring *tx_ring, unsigned int next)
-+{
-+	struct wx *wx = netdev_priv(tx_ring->netdev);
-+
-+	wx_warn(wx,
-+		"Detected Tx Unit Hang: Queue %d, TDH %x, TDT %x, ntu %x, ntc %x, ntc.time_stamp %lx, jiffies %lx\n",
-+		tx_ring->queue_index,
-+		rd32(wx, WX_PX_TR_RP(tx_ring->reg_idx)),
-+		rd32(wx, WX_PX_TR_WP(tx_ring->reg_idx)),
-+		tx_ring->next_to_use, next,
-+		tx_ring->tx_buffer_info[next].time_stamp, jiffies);
-+
-+	netif_stop_subqueue(tx_ring->netdev, tx_ring->queue_index);
-+
-+	wx_tx_timeout_reset(wx);
-+}
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.h b/drivers/net/ethernet/wangxun/libwx/wx_err.h
-new file mode 100644
-index 000000000000..1eed13e48095
---- /dev/null
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_err.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * WangXun Gigabit PCI Express Linux driver
-+ * Copyright (c) 2015 - 2026 Beijing WangXun Technology Co., Ltd.
-+ */
-+
-+#ifndef _WX_ERR_H_
-+#define _WX_ERR_H_
-+
-+void wx_check_err_subtask(struct wx *wx);
-+int wx_init_err_task(struct wx *wx);
-+void wx_check_hang_subtask(struct wx *wx);
-+void wx_tx_timeout(struct net_device *netdev, unsigned int txqueue);
-+void wx_handle_tx_hang(struct wx_ring *tx_ring, unsigned int next);
-+
-+#endif /* _WX_ERR_H_ */
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 260e14d5d541..122c4952d203 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -1932,6 +1932,7 @@ static void wx_configure_tx_ring(struct wx *wx,
- 	else
- 		ring->atr_sample_rate = 0;
- 
-+	bitmap_zero(ring->state, WX_RING_STATE_NBITS);
- 	/* reinitialize tx_buffer_info */
- 	memset(ring->tx_buffer_info, 0,
- 	       sizeof(struct wx_tx_buffer) * ring->count);
-@@ -2851,16 +2852,26 @@ EXPORT_SYMBOL(wx_fc_enable);
- static void wx_update_xoff_rx_lfc(struct wx *wx)
- {
- 	struct wx_hw_stats *hwstats = &wx->stats;
-+	u64 data;
-+	int i;
- 
- 	if (wx->fc.mode != wx_fc_full &&
- 	    wx->fc.mode != wx_fc_rx_pause)
- 		return;
- 
- 	if (wx->mac.type >= wx_mac_aml)
--		hwstats->lxoffrxc += rd32_wrap(wx, WX_MAC_LXOFFRXC_AML,
--					       &wx->last_stats.lxoffrxc);
-+		data = rd32_wrap(wx, WX_MAC_LXOFFRXC_AML,
-+				 &wx->last_stats.lxoffrxc);
- 	else
--		hwstats->lxoffrxc += rd64(wx, WX_MAC_LXOFFRXC);
-+		data = rd64(wx, WX_MAC_LXOFFRXC);
-+	hwstats->lxoffrxc += data;
-+
-+	/* refill credits (no tx hang) if we received xoff */
-+	if (!data)
-+		return;
-+
-+	for (i = 0; i < wx->num_tx_queues; i++)
-+		clear_bit(WX_HANG_CHECK_ARMED, wx->tx_ring[i]->state);
- }
- 
- /**
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index 476b71049f7e..633ab5c61a05 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -14,6 +14,7 @@
- 
- #include "wx_type.h"
- #include "wx_lib.h"
-+#include "wx_err.h"
- #include "wx_ptp.h"
- #include "wx_hw.h"
- #include "wx_vf_lib.h"
-@@ -742,6 +743,37 @@ static struct netdev_queue *wx_txring_txq(const struct wx_ring *ring)
- 	return netdev_get_tx_queue(ring->netdev, ring->queue_index);
- }
- 
-+static u32 wx_get_tx_pending(struct wx_ring *ring)
-+{
-+	unsigned int head, tail;
-+
-+	head = ring->next_to_clean;
-+	tail = ring->next_to_use;
-+
-+	return ((head <= tail) ? tail : tail + ring->count) - head;
-+}
-+
-+static bool wx_check_tx_hang(struct wx_ring *ring)
-+{
-+	u32 tx_done_old = ring->tx_stats.tx_done_old;
-+	u32 tx_pending = wx_get_tx_pending(ring);
-+	u32 tx_done = ring->stats.packets;
-+
-+	if (!test_and_clear_bit(WX_TX_DETECT_HANG, ring->state))
-+		return false;
-+
-+	if (tx_done_old == tx_done && tx_pending)
-+		/* make sure it is true for two checks in a row */
-+		return test_and_set_bit(WX_HANG_CHECK_ARMED, ring->state);
-+
-+	/* update completed stats and continue */
-+	ring->tx_stats.tx_done_old = tx_done;
-+	/* reset the countdown */
-+	clear_bit(WX_HANG_CHECK_ARMED, ring->state);
-+
-+	return false;
-+}
-+
- /**
-  * wx_clean_tx_irq - Reclaim resources after transmit completes
-  * @q_vector: structure containing interrupt and ring information
-@@ -866,6 +898,11 @@ static bool wx_clean_tx_irq(struct wx_q_vector *q_vector,
- 	netdev_tx_completed_queue(wx_txring_txq(tx_ring),
- 				  total_packets, total_bytes);
- 
-+	if (wx_check_tx_hang(tx_ring)) {
-+		wx_handle_tx_hang(tx_ring, i);
-+		return true;
-+	}
-+
- #define TX_WAKE_THRESHOLD (DESC_NEEDED * 2)
- 	if (unlikely(total_packets && netif_carrier_ok(tx_ring->netdev) &&
- 		     (wx_desc_unused(tx_ring) >= TX_WAKE_THRESHOLD))) {
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 65e3e55db1cf..f0ebc0acf0f3 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -450,6 +450,11 @@ enum WX_MSCA_CMD_value {
- #define WX_PX_TR_CFG_THRE_SHIFT      8
- #define WX_PX_TR_CFG_HEAD_WB         BIT(27)
- 
-+#define WX_PX_TR_RP_PV(q_per_pool, vf_number, vf_q_index) \
-+		(WX_PX_TR_RP((q_per_pool) * (vf_number) + (vf_q_index)))
-+#define WX_PX_TR_WP_PV(q_per_pool, vf_number, vf_q_index) \
-+		(WX_PX_TR_WP((q_per_pool) * (vf_number) + (vf_q_index)))
-+
- /* Receive DMA Registers */
- #define WX_PX_RR_BAL(_i)             (0x01000 + ((_i) * 0x40))
- #define WX_PX_RR_BAH(_i)             (0x01004 + ((_i) * 0x40))
-@@ -1040,6 +1045,7 @@ struct wx_queue_stats {
- struct wx_tx_queue_stats {
- 	u64 restart_queue;
- 	u64 tx_busy;
-+	u32 tx_done_old;
- };
- 
- struct wx_rx_queue_stats {
-@@ -1055,6 +1061,12 @@ struct wx_rx_queue_stats {
- #define wx_for_each_ring(posm, headm) \
- 	for (posm = (headm).ring; posm; posm = posm->next)
- 
-+enum wx_ring_state {
-+	WX_TX_DETECT_HANG,
-+	WX_HANG_CHECK_ARMED,
-+	WX_RING_STATE_NBITS
-+};
-+
- struct wx_ring_container {
- 	struct wx_ring *ring;           /* pointer to linked list of rings */
- 	unsigned int total_bytes;       /* total bytes processed this int */
-@@ -1074,6 +1086,7 @@ struct wx_ring {
- 		struct wx_tx_buffer *tx_buffer_info;
- 		struct wx_rx_buffer *rx_buffer_info;
- 	};
-+	DECLARE_BITMAP(state, WX_RING_STATE_NBITS);
- 	u8 __iomem *tail;
- 	dma_addr_t dma;                 /* phys. address of descriptor ring */
- 	dma_addr_t headwb_dma;
-@@ -1423,6 +1436,8 @@ struct wx {
- 
- 	struct timer_list service_timer;
- 	struct work_struct service_task;
-+	struct work_struct reset_task;
-+	struct workqueue_struct *reset_wq;
- 	struct mutex reset_lock; /* mutex for reset */
- };
- 
-@@ -1505,7 +1520,8 @@ rd32_wrap(struct wx *wx, u32 reg, u32 *last)
- 
- #define wx_err(wx, fmt, arg...) \
- 	dev_err(&(wx)->pdev->dev, fmt, ##arg)
--
-+#define wx_warn(wx, fmt, arg...) \
-+	dev_warn(&(wx)->pdev->dev, fmt, ##arg)
- #define wx_dbg(wx, fmt, arg...) \
- 	dev_dbg(&(wx)->pdev->dev, fmt, ##arg)
- 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index bbbec9b43bc2..33d4a40442d3 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -14,6 +14,7 @@
- #include "../libwx/wx_type.h"
- #include "../libwx/wx_hw.h"
- #include "../libwx/wx_lib.h"
-+#include "../libwx/wx_err.h"
- #include "../libwx/wx_ptp.h"
- #include "../libwx/wx_mbx.h"
- #include "../libwx/wx_sriov.h"
-@@ -148,6 +149,8 @@ static void ngbe_service_task(struct work_struct *work)
- 	struct wx *wx = container_of(work, struct wx, service_task);
- 
- 	wx_update_stats(wx);
-+	wx_check_hang_subtask(wx);
-+	wx_check_err_subtask(wx);
- 
- 	wx_service_event_complete(wx);
- }
-@@ -393,6 +396,7 @@ static void ngbe_disable_device(struct wx *wx)
- 	netif_tx_stop_all_queues(netdev);
- 	netif_tx_disable(netdev);
- 
-+	clear_bit(WX_FLAG_NEED_DO_RESET, wx->flags);
- 	timer_delete_sync(&wx->service_timer);
- 	cancel_work_sync(&wx->service_task);
- 
-@@ -644,6 +648,7 @@ static const struct net_device_ops ngbe_netdev_ops = {
- 	.ndo_stop               = ngbe_close,
- 	.ndo_change_mtu         = wx_change_mtu,
- 	.ndo_start_xmit         = wx_xmit_frame,
-+	.ndo_tx_timeout         = wx_tx_timeout,
- 	.ndo_set_rx_mode        = wx_set_rx_mode,
- 	.ndo_set_features       = wx_set_features,
- 	.ndo_fix_features       = wx_fix_features,
-@@ -829,6 +834,10 @@ static int ngbe_probe(struct pci_dev *pdev,
- 	eth_hw_addr_set(netdev, wx->mac.perm_addr);
- 	wx_mac_set_default_filter(wx, wx->mac.perm_addr);
- 
-+	err = wx_init_err_task(wx);
-+	if (err)
-+		goto err_free_mac_table;
-+
- 	ngbe_init_service(wx);
- 
- 	err = wx_init_interrupt_scheme(wx);
-@@ -856,6 +865,8 @@ static int ngbe_probe(struct pci_dev *pdev,
- err_cancel_service:
- 	timer_delete_sync(&wx->service_timer);
- 	cancel_work_sync(&wx->service_task);
-+	cancel_work_sync(&wx->reset_task);
-+	destroy_workqueue(wx->reset_wq);
- err_free_mac_table:
- 	kfree(wx->rss_key);
- 	kfree(wx->mac_table);
-@@ -887,6 +898,8 @@ static void ngbe_remove(struct pci_dev *pdev)
- 
- 	timer_shutdown_sync(&wx->service_timer);
- 	cancel_work_sync(&wx->service_task);
-+	cancel_work_sync(&wx->reset_task);
-+	destroy_workqueue(wx->reset_wq);
- 
- 	phylink_destroy(wx->phylink);
- 	pci_release_selected_regions(pdev,
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index c277863baf67..9fac2369a55c 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -14,6 +14,7 @@
- 
- #include "../libwx/wx_type.h"
- #include "../libwx/wx_lib.h"
-+#include "../libwx/wx_err.h"
- #include "../libwx/wx_ptp.h"
- #include "../libwx/wx_hw.h"
- #include "../libwx/wx_mbx.h"
-@@ -123,6 +124,8 @@ static void txgbe_service_task(struct work_struct *work)
- 	txgbe_module_detection_subtask(wx);
- 	txgbe_link_config_subtask(wx);
- 	wx_update_stats(wx);
-+	wx_check_hang_subtask(wx);
-+	wx_check_err_subtask(wx);
- 
- 	wx_service_event_complete(wx);
- }
-@@ -224,6 +227,7 @@ static void txgbe_disable_device(struct wx *wx)
- 	wx_irq_disable(wx);
- 	wx_napi_disable_all(wx);
- 
-+	clear_bit(WX_FLAG_NEED_DO_RESET, wx->flags);
- 	timer_delete_sync(&wx->service_timer);
- 	cancel_work_sync(&wx->service_task);
- 
-@@ -654,6 +658,7 @@ static const struct net_device_ops txgbe_netdev_ops = {
- 	.ndo_stop               = txgbe_close,
- 	.ndo_change_mtu         = wx_change_mtu,
- 	.ndo_start_xmit         = wx_xmit_frame,
-+	.ndo_tx_timeout         = wx_tx_timeout,
- 	.ndo_set_rx_mode        = wx_set_rx_mode,
- 	.ndo_set_features       = wx_set_features,
- 	.ndo_fix_features       = wx_fix_features,
-@@ -814,6 +819,10 @@ static int txgbe_probe(struct pci_dev *pdev,
- 	eth_hw_addr_set(netdev, wx->mac.perm_addr);
- 	wx_mac_set_default_filter(wx, wx->mac.perm_addr);
- 
-+	err = wx_init_err_task(wx);
-+	if (err)
-+		goto err_free_mac_table;
-+
- 	txgbe_init_service(wx);
- 
- 	err = wx_init_interrupt_scheme(wx);
-@@ -916,6 +925,8 @@ static int txgbe_probe(struct pci_dev *pdev,
- err_cancel_service:
- 	timer_delete_sync(&wx->service_timer);
- 	cancel_work_sync(&wx->service_task);
-+	cancel_work_sync(&wx->reset_task);
-+	destroy_workqueue(wx->reset_wq);
- err_free_mac_table:
- 	kfree(wx->rss_key);
- 	kfree(wx->mac_table);
-@@ -949,6 +960,8 @@ static void txgbe_remove(struct pci_dev *pdev)
- 
- 	timer_shutdown_sync(&wx->service_timer);
- 	cancel_work_sync(&wx->service_task);
-+	cancel_work_sync(&wx->reset_task);
-+	destroy_workqueue(wx->reset_wq);
- 
- 	txgbe_remove_phy(txgbe);
- 	wx_free_isb_resources(wx);
 -- 
 2.51.0
+
 
