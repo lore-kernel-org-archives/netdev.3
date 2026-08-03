@@ -1,159 +1,195 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA76E9463
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 08:01:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B70B3AB498
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 08:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785744081; cv=none; b=AF/O0/nlnIwFvndI07xFakWs8dI8ySRpDYB5uLcrATR34okOcIQ4Oovtrd0pDHbcPDUzl9oKrTGL7wfdM6akxGF8nFPWjUhfbM8p1CRbnTgBCrxhzENDE8sQU2bVrYSKYnwF3u7FlXjqDGiYAPFaYM7WhNe0RbVjT2FDmOqb94Y=
+	t=1785744182; cv=none; b=TNJM/khe2AhkfKiKsI7LMmGGdJeL0Nf6pmG6i7OhjWjPIylu0X8piUKU6knZtbuJyhTJ2Jp8G6O2WnMYsXJzKPvYzjtZRca+EbLKYzLSvtO+7x6RIUQsjHqmBHJJDOxcJ73ReI2r6ZjCfTY1mTBAJIenRtuafr1tYe8YXFVF0Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785744081; c=relaxed/simple;
-	bh=Y6Iobmfjdv2QPyopt8ifpiNvIE3fl2snHzpGNT44/Xo=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=twSNqvlVrwn3H0lkY4BWAoflp6joO3XKAo3boQ1TzNKH8RZbC/W6/ihmA+bHWWRQWQdf93yP1OOrn4UePPcua9Kqejct/6pR/v5dJKC97GkKB849p/3KK0r3d7JLt+GEylMAXj8W1BuqL6fHh/TWJ9tEKH6rPQzm2PfTx4YHR10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: zesmtpgz4t1785744027t5b428cb5
-X-QQ-Originating-IP: MhhT18gcvevJf047QMn9HuexwxcF8yxWrq/8Yry1DbE=
-Received: from smtpclient.apple ( [122.235.139.83])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 03 Aug 2026 16:00:25 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 216033531120402893
-EX-QQ-RecipientCnt: 9
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1785744182; c=relaxed/simple;
+	bh=e0BG+pJE+hg9ad13uORYq52K3Lc469BDks34Ro3IRB0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=h/aQfqnIWdAeswZ55sfp1prKECpk4FULvkm2aRGb2YmpzubHGNeaIAaeXoYAl5/aODypfXyxMQygYm6uGgS//8roooUPYrdd4vDDjVntUHSyNN8adQnh/mF35Uo41Gbw9G1+T5v8vj+ufawK6ZQ84DHhubQfcmQo1S3elAciP+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=23uwmkxG; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="23uwmkxG"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4956242332dso15762355e9.2
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 01:03:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1785744179; x=1786348979; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=vc9B/yx3888mzr7CTqfaAlTdFjWQOBw2cbII84IGS9Q=;
+        b=23uwmkxGxJpjT5yBvDTde5vnWx9cQe7DWTKVI5G7Kh6Tdi7HbCuP87l3Ybcjrcn6hx
+         bRaYMP/7OkbbxHTz5aHOxMGJcy+egIyfwZDYsTmrVN70Jsw0gDwCgf7HBhRKx+j17c6X
+         Rmnb0kFFtGn6nBTnIvi8v9JLjKVAl8AK2sCvDS0xD4pKX/vttg5wkzeuO3n2aSNiOXF/
+         c2TRoXCSE6IVh+le1Yk05DYrdHNqe4GtP1gXuNZev700kfaatLgrGPvtOJGeUnLyVX97
+         2rDs2+6f2X5pY5jAz2bHuWl1Flqt+k+YvrxHpxHZRIavosdp8Lu3ozkW7HPX4UulPi/+
+         LPYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785744179; x=1786348979;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vc9B/yx3888mzr7CTqfaAlTdFjWQOBw2cbII84IGS9Q=;
+        b=jp5o91RqREOVCfnweVuN7JtRmRikmc9Gp91zLD7I3nzOg2Mr+T3kALEpvX6Kkr/krr
+         c6paC/E7DfHtVpn346wOcnI75W73luiEQAYT8VGB++s6wIct0MC8buAjyPHyTmwCDKdE
+         J5+GLCB8u45pR+FanHjtnHqzafoDR7b6sRno5xNX1SqrGabU7JQgg+mJu1lBUf8gsg34
+         ue5GjSYyS6DoeXAt5VIhl21uAOM27KaZH/LN46fRY7jj5yrgCt/Pg6WKMit21/8gyxCU
+         GdlhDeD8AlJk0sbQRQljGmE27EIFovABDiHU1SaS1bnAMGL44rsAslNjXcZpz/mh0xTn
+         8/wQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpRN6XoYIMSy/ej99rGUXbXFrUmvNtiub8nqXQ1sT6/r3mMDHZRmYumZO49/M6dbWfl/PN4FpI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7QX4fbTan/PleMwDHrE4ZxT+1mKBFcJocXQz8X/BS8Y+ecbRb
+	OPD+mvdndCh8LdNRHw/apI6wuv7Qj/EI99980urkqcPn8uSJ0uKgVbDi2fAwXYeUhHQ=
+X-Gm-Gg: AR+sD12z/qyU1LcQ/C6/CqA9qamHBA5uyohmlF+TUxgVIH4/RfqS1v8Z4NKffny2sEm
+	c5YwcE2mlblQmKlYMBcCU/pL0bJqN3E9hLQ5JGxH2OSyjdux/CXPfbNo99HywJB3lqCZ9nVlP6s
+	MUYxuCMi42AiGz2cXahfhcdw1WyarS3r28etup6BdwXN6g8+3LMP7JS4nXwMjL2Wj1B8BgZ5bSi
+	6gf71zzubIC3ZVSJaiZzHh7ABJFXNvGsJ1I2Q50Gg+9WXmcN7z9pJASQ3jAaR3SzuRRnt0TUfnf
+	LSK8P15xNfqELtiND0hGhX4RoPbcWP9K1Qa90XtyQlVdka1xzl5c2vHM3b/n1rIICyGxQJbl6IU
+	UgxG23han9Y/0/pDAwTvcSUtAL1OmtyEG5iD96ZLFTU/uF9ztzbCcn41y7rnGL2hC1AIbhqfdst
+	WTjfx89BrzDdFfTRG40bTU+hfzYfKHkL/YLxa8QCdw34I4P860xqKfVMhgb895coYHxA==
+X-Received: by 2002:a05:600c:840f:b0:493:c42e:5be0 with SMTP id 5b1f17b1804b1-4980c60705amr179044905e9.0.1785744178527;
+        Mon, 03 Aug 2026 01:02:58 -0700 (PDT)
+Received: from localhost ([213.208.155.167])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49808691014sm211742535e9.11.2026.08.03.01.02.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Aug 2026 01:02:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH net-next 0/5] net: wangxun: improve statistics support
-From: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
-In-Reply-To: <20260731164407.4ca13f14@kernel.org>
-Date: Mon, 3 Aug 2026 16:00:15 +0800
-Cc: netdev@vger.kernel.org,
- jiawenwu@trustnetic.com,
- duanqiangwen@net-swift.com,
- linglingzhang@net-swift.com,
- andrew+netdev@lunn.ch,
- davem@davemloft.net,
- edumazet@google.com,
- pabeni@redhat.com
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <5FB351D7-A14F-4B30-A172-6D81417E4E69@net-swift.com>
-References: <20260731074958.19333-1-mengyuanlou@net-swift.com>
- <20260731164407.4ca13f14@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: MIBXG9KNq+3G9ErhWerfn7D6fIz16RcEdP+aVIpRTSfPGS1QckatPfwK
-	4/hYX6+djUCxg3/NeOYDoD0kq7fVZnLs6zNQ2LQpgLuyodRP/ymTRtEMM+hi2/Ev32VqmZ1
-	DpfWYRdAb/x0zPn/P3DDT3Zu8SFELUTYDuqRc14SbKYEOZe90UqBB3GVugtLb60QSZsxWSf
-	lVgFJE3PdQjq0yteIa+/aZTb4y+45Eq44ly1M7yriusNE5QLX4VuyP/iZQAO85wk5EIBtrz
-	H3lnfEaLIMWJXZ+Bf3I070cpBdjQDVpHf9umEtDFE8XDtg6SeZQGCbCM9wmJiUDMb4jbMIN
-	ZGQIExzTI+LEc7gon+NoWOzDRDKm2iGADsIiRUnLLfA/N5B0DjPMAahSrReoEaMx54Bf9ro
-	7+73hq2vgwTBEhJVq5y+2KXIEoFvCmgKvtnDQPGrOnEi9QZYwyUHJecZDJApL3ZIxnkdYx7
-	VTwqNA8my3GjP783rNqWZc8tblRPG9LrvW34VglEG5kGhBNYH3XIXtHy7G9SglEb9gcft7r
-	VxqjDkOZCzub1CJ2zOkiDboe2TvFICpUobbvdB9Bmi1I+Gnr8C32R6HGqmii38NvzpmbvGQ
-	jbU7RgVtqfb4pw4buEjVj8XJgiGEWt6MxhPP7nWINWZsUi+G+OspbpV27LZ0DSoLvOBtEes
-	rL57RSUkveYAktIaPPBTOLx4SOJkhgyXCXzVVYlWqKVCfBehkAMEp5zZqrhw/IoGRVLDnRw
-	UmH2QYeohwSETAyFSJnoPJuXYAlCDyLd6q2CAJXgs220CNJtytGoUqmADcPC4YspnXgUD6S
-	RhnMAruVMOLNPWw7JxtRydRn9HT8oxWnpM0BthbzgftjGAR27PUiy/rwSEJxSxUt01Tqn1o
-	GwsAlhO15Z6ltyKYI/BxgJgZCg+uwfCUBVMJwEBrixZMTDNwiju9iKI1Skhcj3mlwVaMmx3
-	hO4GnKVi6o48DaIdlK/O22ZmPx3ZPF3qeUhBITfCOUcXElEWi04WCo6lu+ejq60HN5TtJGz
-	6yMABdVIqchIwSwaFXiPmQCj69w+f8NPcbNte493vhdkT0ba9HhWpDwT+DaNZL3ouSvA40k
-	b6Zu0dTZjwKFT5njT/eR720B0v3ZgVNhy/0T4KYIl78a6fu322IeVtOmp0kpCDLN7UZfv65
-	Zo/cfiNGbZx5NTM=
-X-QQ-XMRINFO: MPJ6Tf5t3I/yszlkyYblB6BTkL4Q6eR+Bw==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 03 Aug 2026 10:02:45 +0200
+Message-Id: <DKF5H4I2VHSD.HZXLHCU4TDXV@fairphone.com>
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Jorijn van der Graaf" <jorijnvdgraaf@catcrafts.net>, "David Heidelberg"
+ <david@ixit.cz>, "Krzysztof Kozlowski" <krzk@kernel.org>
+Cc: "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Rob
+ Herring" <robh@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Bjorn
+ Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konradybcio@kernel.org>, "Luca Weiss" <luca.weiss@fairphone.com>,
+ <oe-linux-nfc@lists.linux.dev>, <netdev@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 5/5] arm64: dts: qcom: milos-fairphone-fp6: Add NFC
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260726222405.153008-1-jorijnvdgraaf@catcrafts.net>
+ <20260726222405.153008-6-jorijnvdgraaf@catcrafts.net>
+In-Reply-To: <20260726222405.153008-6-jorijnvdgraaf@catcrafts.net>
 
-Hi,
+Hi Jorijn,
 
-=E2=9E=9C PF
-python3 -m pyynl.cli \ --spec =
-/root/Work/mirror-net-next/Documentation/netlink/specs/netdev.yaml \ =
---dump qstats-get \ --json '{"ifindex":160,"scope":"queue"}' =
-[{'ifindex': 160, 'queue-id': 0, 'queue-type': 'rx', 'rx-alloc-fail': 0, =
-'rx-bytes': 16737, 'rx-csum-bad': 0, 'rx-csum-complete': 28, =
-'rx-packets': 61}, {'ifindex': 160, 'queue-id': 1, 'queue-type': 'rx', =
-'rx-alloc-fail': 0, 'rx-bytes': 1507, 'rx-csum-bad': 0, =
-'rx-csum-complete': 28, 'rx-packets': 11}, {'ifindex': 160, 'queue-id': =
-2, 'queue-type': 'rx', 'rx-alloc-fail': 0, 'rx-bytes': 0, 'rx-csum-bad': =
-0, 'rx-csum-complete': 28, 'rx-packets': 0}, {'ifindex': 160, =
-'queue-id': 3, 'queue-type': 'rx', 'rx-alloc-fail': 0, 'rx-bytes': 5831, =
-'rx-csum-bad': 0, 'rx-csum-complete': 28, 'rx-packets': 17}, {'ifindex': =
-160, 'queue-id': 0, 'queue-type': 'tx', 'tx-bytes': 880, 'tx-packets': =
-8}, {'ifindex': 160, 'queue-id': 1, 'queue-type': 'tx', 'tx-bytes': =
-4672, 'tx-packets': 36}, {'ifindex': 160, 'queue-id': 2, 'queue-type': =
-'tx', 'tx-bytes': 6860, 'tx-packets': 20}, {'ifindex': 160, 'queue-id': =
-3, 'queue-type': 'tx', 'tx-bytes': 992, 'tx-packets': 16}]
+On Mon Jul 27, 2026 at 12:24 AM CEST, Jorijn van der Graaf wrote:
+> Add the Samsung S3NRN4V NCI NFC controller on i2c1. Its XI clock is
+> provided by the RF_CLK2 PMIC buffer and gated through the controller's
+> CLK_REQ line on tlmm GPIO6. PVDD is fed from PM7550 LDO20, the rail the
+> downstream driver switches for this chip.
+>
+> The enable line is routed to the chip's power-down input, which is
+> asserted high to turn the chip off (the downstream driver treats VEN as
+> active-low on this design) -- hence GPIO_ACTIVE_HIGH, unlike the
+> exynos5433-tm2 wiring of the same driver. The pin is pulled up so the
+> chip stays off while the line is not driven.
+>
+> Assisted-by: Claude:claude-opus-4-8
+> Assisted-by: Claude:claude-fable-5
+> Signed-off-by: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
+> ---
+>  .../boot/dts/qcom/milos-fairphone-fp6.dts     | 49 ++++++++++++++++++-
+>  1 file changed, 47 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm6=
+4/boot/dts/qcom/milos-fairphone-fp6.dts
+> index ebdca0e2d2f3..a1b86e4092fe 100644
+> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+> @@ -601,9 +601,29 @@ &gcc {
+>  };
+> =20
+>  &i2c1 {
+> -	/* Samsung NFC @ 0x27 */
+> -
+>  	status =3D "okay";
+> +
+> +	/*
+> +	 * Samsung S3NRN4V NFC controller. XI is driven by the RF_CLK2 PMIC
+> +	 * buffer; the chip has no oscillator of its own and gates the clock
+> +	 * via its CLK_REQ line, so the clock must be voted on in response
+> +	 * to it.
+> +	 */
 
-=E2=9E=9C VF
-python3 -m pyynl.cli --spec =
-/root/Work/mirror-net-next/Documentation/netlink/specs/netdev.yaml =
---dump qstats-get --json '{"ifindex":236,"scope":"queue"}' [{'ifindex': =
-236, 'queue-id': 0, 'queue-type': 'rx', 'rx-alloc-fail': 0, 'rx-bytes': =
-16836, 'rx-csum-bad': 0, 'rx-csum-complete': 0, 'rx-packets': 58}, =
-{'ifindex': 236, 'queue-id': 1, 'queue-type': 'rx', 'rx-alloc-fail': 0, =
-'rx-bytes': 1507, 'rx-csum-bad': 0, 'rx-csum-complete': 0, 'rx-packets': =
-11}, {'ifindex': 236, 'queue-id': 2, 'queue-type': 'rx', =
-'rx-alloc-fail': 0, 'rx-bytes': 3448, 'rx-csum-bad': 0, =
-'rx-csum-complete': 0, 'rx-packets': 24}, {'ifindex': 236, 'queue-id': =
-3, 'queue-type': 'rx', 'rx-alloc-fail': 0, 'rx-bytes': 7546, =
-'rx-csum-bad': 0, 'rx-csum-complete': 0, 'rx-packets': 22}, {'ifindex': =
-236, 'queue-id': 0, 'queue-type': 'tx', 'tx-bytes': 0, 'tx-packets': 0}, =
-{'ifindex': 236, 'queue-id': 1, 'queue-type': 'tx', 'tx-bytes': 2750, =
-'tx-packets': 25}, {'ifindex': 236, 'queue-id': 2, 'queue-type': 'tx', =
-'tx-bytes': 12671, 'tx-packets': 53}, {'ifindex': 236, 'queue-id': 3, =
-'queue-type': 'tx', 'tx-bytes': 1670, 'tx-packets': 25}]
+I don't think this comment deserves to be in the dtsi, having these
+details in the commit message is enough imo.
 
-=EF=8C=9B root @roy-System-Product-Name =E2=9E=9C =
-=E2=80=A6/mirror-net-next/tools/testing/selftests =EF=87=91 =EE=9C=82  =
-=EE=82=B6=EF=90=98 main=EE=82=B4 ?3  =EF=90=BA 15:54:46=20
-=E2=9C=98  python3 ./drivers/net/stats.py
-TAP version 13
-1..8
-ok 1 stats.check_pause
-ok 2 stats.check_fec
-ok 3 stats.check_fec_hist
-ok 4 stats.pkt_byte_sum
-ok 5 stats.qstat_by_ifindex
-ok 6 stats.check_down
-ok 7 stats.procfs_hammer
-# completed up/down cycles: 76
-ok 8 stats.procfs_downup_hammer
-# Totals: pass:8 fail:0 xfail:0 xpass:0 skip:0 error:0
+> +	nfc@27 {
+> +		compatible =3D "samsung,s3nrn4v";
+> +		reg =3D <0x27>;
+> +
+> +		clk-req-gpios =3D <&tlmm 6 GPIO_ACTIVE_HIGH>;
+> +		clocks =3D <&rpmhcc RPMH_RF_CLK2>;
 
+I'm not sure about these, the NFC chip is connected to PMK7635 CLK7_LN
+which is part of the LNBB clocks, CLK1_RF - CLK5_RF are the RF clks,
+CLK6_LN - CLK9_LN are the LNBB clocks so shouldn't this be <&rpmhcc
+RPMH_LN_BB_CLK2>? But I honestly couldn't find anything in the
+downstream dts so maybe either these clocks are always on anyways or
+something else is going on there?
 
-> 2026=E5=B9=B48=E6=9C=881=E6=97=A5 07:44=EF=BC=8CJakub Kicinski =
-<kuba@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On Fri, 31 Jul 2026 15:49:53 +0800 Mengyuan Lou wrote:
->> This series improves statistics support for Wangxun drivers.
->> Currently, VF drivers do not periodically refresh software =
-statistics,
->> do not expose per-queue statistics through the generic netdev =
-statistics
->> interface, and do not provide ndo_get_stats64().
->> The first patch fixes the suspend/resume flow for wxvf so the service
->> task and device lifecycle are handled correctly. The second patch =
-makes
->> wx_update_stats() safe for VF drivers by allowing it to cope with
->> temporarily missing queue pointers during queue reconfiguration.
->> Once periodic statistics updates are available, libwx can implement
->> netdev_stat_ops, allowing Wangxun drivers to expose standard =
-per-queue
->> statistics through the generic netdev qstats infrastructure.
->=20
-> Were you able to run the qstats-related selftests against these =
-devices?
->=20
- I have tested these devices with netdev.yaml for pf/vf devices.
+Regards
+Luca
 
-
+> +		en-gpios =3D <&tlmm 56 GPIO_ACTIVE_HIGH>;
+> +		interrupt-parent =3D <&tlmm>;
+> +		interrupts =3D <31 IRQ_TYPE_EDGE_RISING>;
+> +		pinctrl-0 =3D <&nfc_clk_req_default>, <&nfc_irq_default>,
+> +			    <&nfc_pd_default>;
+> +		pinctrl-names =3D "default";
+> +		pvdd-supply =3D <&vreg_l20b>;
+> +		wake-gpios =3D <&tlmm 7 GPIO_ACTIVE_HIGH>;
+> +	};
+>  };
+> =20
+>  &i2c3 {
+> @@ -825,6 +845,31 @@ &tlmm {
+>  			       <13 1>, /* NC */
+>  			       <63 2>; /* WLAN UART */
+> =20
+> +	nfc_clk_req_default: nfc-clk-req-default-state {
+> +		pins =3D "gpio6";
+> +		function =3D "gpio";
+> +		drive-strength =3D <2>;
+> +		bias-disable;
+> +	};
+> +
+> +	nfc_irq_default: nfc-irq-default-state {
+> +		pins =3D "gpio31";
+> +		function =3D "gpio";
+> +		drive-strength =3D <2>;
+> +		bias-disable;
+> +	};
+> +
+> +	/*
+> +	 * Pulled up so the NFC chip stays powered down while the line is
+> +	 * not driven (it is the chip's active-high power-down input).
+> +	 */
+> +	nfc_pd_default: nfc-pd-default-state {
+> +		pins =3D "gpio56";
+> +		function =3D "gpio";
+> +		drive-strength =3D <2>;
+> +		bias-pull-up;
+> +	};
+> +
+>  	sdc2_card_det_n: sdc2-card-det-state {
+>  		pins =3D "gpio65";
+>  		function =3D "gpio";
 
