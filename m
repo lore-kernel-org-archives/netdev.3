@@ -1,156 +1,144 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9269F277035;
-	Mon,  3 Aug 2026 01:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668023043DB
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 01:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785721710; cv=none; b=oQ1jrfVerDGBUd34Gp8/ezimfOdiNRgFrlLOEC7138zsvkGUkztfUCT7EnKMzcoFeawSXrddOuKy8AI41kpY72lguGsCvtpoegunuQ5vU0afF4UFEeS3ai7xcZ3zoE9d/M8HasclfUfghTxy+KgXs3/2v91U49Amccc+9sW/7Rg=
+	t=1785721712; cv=none; b=gDVUFm0VNbQhoIMByB2ZsrH49fnJbQnDMLhHkWsZml1wa7QmkrHFmiK1W84PWuqadAN7Otr0BQj4GJJngOKJMTDCnkUeVwU06CX/5eqUuNxwFXsWmcLfiFjGPLBgwXjY6dXfSESgw9i4dhua7Zhfnyf94z9nIyE8VWv0r38oMCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785721710; c=relaxed/simple;
-	bh=0D60OAFZS0pHsEF3mRUjGQUfRFQesoh4XoWWFbp+njU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=N4YOC88js8g2++KtRmNIHgHwWWRc8EXNPYvv+fTdta+K0rfcNYZXwOlBxP6mVdJlBbMDzCtQ+DCpzcSOG+pdsfwbTDjD1X5N1+DlUoXdQQB9HaWq/BtLAMvlFiERYkujE3kUqzxtdkTG8isnnaTewhTTI+7VGxQDfdxuN82ps/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=JXZkcoYh; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1785721712; c=relaxed/simple;
+	bh=F5jjXvOUykyUu9zaFjniBFZS1TJ9Ywm2mqV/IlHg49A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U4yokzS7QlQHAn20WfZOJExwn8OtyxBh0ODdpU0K7c68L64BWUf6HpmZHVFZDGIlWTjMVTNlA+NN7DG9WGDrzy1dpkc3jo0RPuSuZ7UIHQigeE1Mi0MRM46B8Le2WtKOtbp1ePzbkN+S2y8luIfujoT76eW+UkwbXRHJ5m52+nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iBx2Ne9s; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="JXZkcoYh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iBx2Ne9s"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cad8076b01so32013405ad.2
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 18:48:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1785721204;
-	bh=oE7uPS84rSpgE0ni9IOO8HgaNujh320gvuSNqcIFKN0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=JXZkcoYhdP4wQ8rk0b7KSvcLBNnm9iL3BDXs5bb/g/C/7jo069HuDO3gLd0euy8Mf
-	 Rd6WHdFXuoj5bJNnqzdwMO9PZdnzAHwGGf7gH/0g1KqkGdaHwsYHck5ui2BDRsgrYW
-	 HeYusjq2HspMnZ77704SLvYG6G5EiPmSrqjGXrTIA8uDCB3jYfavdx1QjLBx9m/B0/
-	 NeNdSJ7uv3nGfsRVwOrFCg1awpI+3bhec5Jd/AeLisCpJ5tyOQP+fNVen6BTEDAySB
-	 t7pqb9HAGJ2974YwhSTVZd3KZ+gSX/fgVlMsv9G+Kay0yEJkxtbe2n5SPJygtyBIdH
-	 RHdkqKyUs9zSQ==
-Received: from pecola.lan (unknown [159.196.93.152])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 27CC6655A9;
-	Mon,  3 Aug 2026 09:40:03 +0800 (AWST)
-Message-ID: <4f46ee4a8a0c389ca03dfab5d90cf53eb24a0cdb.camel@codeconstruct.com.au>
-Subject: Re: [PATCH] net: mctp: hold route device before source address
- lookup
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-To: Yiqi Sun <sunyiqixm@gmail.com>, matt@codeconstruct.com.au
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, 	horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 03 Aug 2026 09:40:02 +0800
-In-Reply-To: <20260731022926.913865-1-sunyiqixm@gmail.com>
-References: <20260731022926.913865-1-sunyiqixm@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+        d=gmail.com; s=20251104; t=1785721711; x=1786326511; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0HsrDyLiG2SqFngrsM9H92PhXRSraWTBf1HxDTa+ur0=;
+        b=iBx2Ne9swTp6Bma3PYPm/5tO6vrXYIn59TbHwbGyzYQNGxRsr0X6/H8Qujj6GbhXXX
+         YRHFSSDFA56DZP85QmuUhxt/KZNoa7pSBVzZcE6hIlQM9I8EBQFekkO5Ix5Acac7kLG5
+         BBP4Q7EA0SB0et7lhPxPHFL8C/EgTANcSUBf+GkwjaLbxZZ9kReodvvBnYiQxt4yR1na
+         lDPx2yVYjlCUnF8JOzaJcFCO64IeihLAT+X7gM3WsTcw7IHZJAODUjcnc00yqQcMhuPI
+         EUucZMkl39oOPVbnKBye9MI0Ns7HnxA8rXwR3sjdpJOHADj5//524qyYPx8+t2RLLJ+J
+         qsYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785721711; x=1786326511;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0HsrDyLiG2SqFngrsM9H92PhXRSraWTBf1HxDTa+ur0=;
+        b=hOpWTejemfwz8tZZv+g8epHiKJITaQuPNM/Sq7OwWU8ayDGU1Jxm8C3jULA6YOkmu5
+         jnLzkhzqViY/cMS9opflLuB0WWdskRMD7Vc0ftWCAiG0Y5XlzX4AdOUdAqtrT0riDsJe
+         0Yeai+ATCmn/SxSojGyTmYZg7eF/X8JEtkCw7d1fn5s5/cNOBho+vg2JdLxH1S7+RJ2p
+         dUZZE4xICQvxMzf4TnN2dCpWuC8OEy3SmipiKEjexbRHAl0CM11FdPickp1aMWPNuyIA
+         +hQZny9KBsM/Mcs7GwAiwYPvHm3FF1WWMpmN0usjItjJ0ssdQvZj2UCRXNjGVD7eyVwk
+         A2Pg==
+X-Gm-Message-State: AOJu0Yz8M0vo7JunzkamaJxf/+J16bV6SIFxJbAu61NaBdQY+I6Z9YGA
+	8ZRv0J8EEsyiuqiZ8s02L6x6+yNwUYBZUrbN/Zg5eUrv4PebxQQ+WwDarO6hUP63NhWwTPJj
+X-Gm-Gg: AR+sD11idcP+udHJ2T+u/R5oL3ZeuLk8IUEZgzQYRfGFNQ0Z2OfCiRMBwkqzLZw1oPk
+	hUymQZyWWn5N6esonqFNbtPLmks3sqKP2N/lgPejewmqDeocnUMol1XqD7ZxX4u/p3sJMc8/3tC
+	mzMWWW2B2sbOonabuWcdysIFjfFq09ayM3RAF7G9dziEFJQRH/bK7qeDTG/FfVCTLKnoe35+u70
+	SCuWG/RhQTw9Vv86Z8phatZxxFimVJLOxFWTdKRkrpmVHg7h4aSp5yjc9syxu6xm5wTdDHSaOA+
+	SBS8mF/mwYfnvb97sf3nlZGMonpV/vqt0WAQcGqUDREqeANdGLeQun9p+qUclIVr7bl4TxGUkqv
+	yls5xVbaOv0/qPmLjIJRFi9bo+SCMmNm5BAvtDWCJrEAq7Sno5RMdpeuNA6WSX5Ucr7+8PEaoxw
+	A/iZMMdVCebWakHNLfijFkdc6ZRb5+sqJCcWDgEJJiY47zagPp6G87KB6TaIVpLYxckPfMyBu2z
+	I4PTj0slp6pTDPuhzfm8qpY/Ft5Jf9m8jCY+rWvay0K4EAKHw==
+X-Received: by 2002:a17:903:1a4d:b0:2cc:df15:91de with SMTP id d9443c01a7336-2d0524a2b59mr81446775ad.42.1785721710586;
+        Sun, 02 Aug 2026 18:48:30 -0700 (PDT)
+Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.20])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b0eb491sm30422855ad.42.2026.08.02.18.48.27
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 02 Aug 2026 18:48:30 -0700 (PDT)
+From: Jun Yang <juny24602@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Jun Yang <junvyyang@tencent.com>,
+	stable@kernel.org,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] vhost: reset the vring metadata cache on vring reconfiguration
+Date: Mon,  3 Aug 2026 09:45:14 +0800
+Message-ID: <20260803014823.68623-1-juny24602@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Yiqi Sun,
+From: Jun Yang <junvyyang@tencent.com>
 
-> mctp_route_lookup() walks the route table under RCU and may find a direct
-> route whose route-table reference to rt->dev is being removed concurrentl=
-y
-> by NETDEV_UNREGISTER.
->=20
-> Since commit 22cb45afd221 ("net: mctp: perform source address lookups
-> when we populate our dst"), the direct-route lookup path reads the source
-> address with mctp_dev_saddr(rt->dev) before mctp_dst_from_route() takes t=
-he
-> dst's own mctp_dev reference. If device teardown wins that race,
-> mctp_route_remove_dev() can delete the route and mctp_route_release() can
-> drop the route's mctp_dev reference to zero. mctp_dev_put() frees
-> mdev->addrs synchronously, while only the mctp_dev body is deferred with
-> kfree_rcu().
->=20
-> That leaves the lookup side able to read freed mdev->addrs in
-> mctp_dev_saddr(), or later increment a zero refcount in mctp_dev_hold().
->=20
-> Add a try-hold helper for mctp_dev and use it before reading the source
-> address from a direct route. mctp_dst_from_route() now consumes that held
-> reference when it populates dst. If no dst is requested, drop the tempora=
-ry
-> reference in mctp_route_lookup(). Do the same when the route cannot be us=
-ed
-> for a gateway path without a source address.
+vq->meta_iotlb[] caches the vhost_iotlb_map that backs each vring
+metadata region, and iotlb_access_ok() returns early on a cache hit,
+taking the hit as proof that the region has already been validated:
 
-Good find, thank you. Just a couple of comments on the fix though:
+	if (vhost_vq_meta_fetch(vq, addr, len, type))
+		return true;
 
-> index 1f3dccbb7aed..3d0737030917 100644
-> --- a/net/mctp/route.c
-> +++ b/net/mctp/route.c
-> @@ -897,15 +897,16 @@ static mctp_eid_t mctp_dev_saddr(struct mctp_dev *d=
-ev)
-> =C2=A0	return addr;
-> =C2=A0}
-> =C2=A0
-> -/* must only be called on a direct route, as the final output hop */
-> +/* must only be called on a direct route, as the final output hop, with =
-a
-> + * reference already held on route->dev.
-> + */
-> =C2=A0static void mctp_dst_from_route(struct mctp_dst *dst, mctp_eid_t ei=
-d,
-> =C2=A0				mctp_eid_t saddr, unsigned int mtu,
-> -				struct mctp_route *route)
-> +				struct mctp_route *route, struct mctp_dev *dev)
-> =C2=A0{
-> -	mctp_dev_hold(route->dev);
-> =C2=A0	dst->nexthop =3D eid;
-> -	dst->dev =3D route->dev;
-> -	dst->mtu =3D READ_ONCE(dst->dev->dev->mtu);
-> +	dst->dev =3D dev;
-> +	dst->mtu =3D READ_ONCE(dev->dev->mtu);
-> =C2=A0	if (mtu)
-> =C2=A0		dst->mtu =3D min(dst->mtu, mtu);
-> =C2=A0	dst->halen =3D 0;
+The cache is reset on VHOST_IOTLB_UPDATE and VHOST_IOTLB_INVALIDATE, on
+device IOTLB (re)initialisation and on vq reset, but not when
+VHOST_SET_VRING_ADDR replaces vq->desc, vq->avail and vq->used, nor when
+VHOST_SET_VRING_NUM changes the region sizes.
 
-I don't see the need to pass the dev argument separately here, it's
-duplicating route->dev; all we need is to drop the mctp_dev_hold(), and
-update the comment, as you have done.
+With a device IOTLB attached both ioctls are accepted while the vq is
+live, and neither validates the addresses at ioctl time: vq_access_ok()
+and vq_log_used_access_ok() return true early because the addresses are
+GIOVAs, deferring validation to prefetch time.  Once the cache has been
+populated that deferred validation no longer runs -- vq_meta_prefetch()
+hits the stale entry and returns true -- and vhost_vq_meta_fetch() keeps
+translating through the old mapping as
 
-> @@ -998,14 +999,25 @@ int mctp_route_lookup(struct net *net, unsigned int=
- dnet,
-> =C2=A0			mtu =3D mtu ?: rt->mtu;
-> =C2=A0
-> =C2=A0		if (rt->dst_type =3D=3D MCTP_ROUTE_DIRECT) {
-> -			mctp_eid_t saddr =3D mctp_dev_saddr(rt->dev);
-> +			struct mctp_dev *dev =3D rt->dev;
-> +			mctp_eid_t saddr;
-> +
-> +			if (!mctp_dev_try_hold(dev))
-> +				break;
+	map->addr + addr - map->start
 
-I would also be fine with using refcount_inc_not_zero() directly, but
-adding the helper is good too.
+for an address the mapping no longer covers.  vhost_copy_to_user() and
+vhost_copy_from_user() consume the result with __copy_to_user() and
+__copy_from_user(), which do not check it either, so a subsequent used
+ring update or descriptor fetch accesses memory outside the region the
+IOTLB actually maps.
 
-> +
-> +			saddr =3D mctp_dev_saddr(dev);
-> =C2=A0
-> =C2=A0			/* cannot do gateway-ed routes without a src=C2=A0 */
-> -			if (saddr =3D=3D MCTP_ADDR_NULL && depth !=3D 0)
-> +			if (saddr =3D=3D MCTP_ADDR_NULL && depth !=3D 0) {
-> +				mctp_dev_put(dev);
-> =C2=A0				break;
-> +			}
-> =C2=A0
-> =C2=A0			if (dst)
-> -				mctp_dst_from_route(dst, daddr, saddr, mtu, rt);
-> +				mctp_dst_from_route(dst, daddr, saddr, mtu, rt,
-> +						=C2=A0=C2=A0=C2=A0 dev);
-> +			else
-> +				mctp_dev_put(dev);
-> =C2=A0			rc =3D 0;
-> =C2=A0			break;
+Reset the metadata cache whenever the vring is reconfigured, so the new
+addresses are pushed back through iotlb_access_ok()'s slow path.
 
-If you end up doing a v2, don't forget the `[PATH net]` subject prefix,
-to indicate the net (vs. net-next) tree.
+Fixes: f88949138058 ("vhost: introduce O(1) vq metadata cache")
+Cc: stable@kernel.org
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Signed-off-by: Jun Yang <junvyyang@tencent.com>
+---
+ drivers/vhost/vhost.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Cheers,
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 4c525b3e16ea..77c96993100b 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2126,6 +2126,14 @@ static long vhost_vring_set_num_addr(struct vhost_dev *d,
+ 		BUG();
+ 	}
+ 
++	/*
++	 * The metadata cache holds the IOTLB mapping that backed the previous
++	 * desc/avail/used addresses and vring size, both of which are being
++	 * replaced here.  iotlb_access_ok() takes a cache hit as proof that the
++	 * region was validated, so the stale entries have to go.
++	 */
++	__vhost_vq_meta_reset(vq);
++
+ 	mutex_unlock(&vq->mutex);
+ 
+ 	return r;
+-- 
+2.55.0
 
-
-Jeremy
