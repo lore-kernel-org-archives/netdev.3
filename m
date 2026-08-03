@@ -1,80 +1,77 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103E819D89E
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 01:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B7E8634C
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 01:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785719497; cv=none; b=sc/JpVO3KtfCvudQCpH09d9Co3x13D6LEwXmPYUhnnUKvelcC04O7XRxzygtbPiBPbWgQ04BdY8ebxJkBop/zPxAV1Y6fIXQimvuNb16YNd3XKPoy8HLSi5uk5tlk/CLNk/XSsxwt8OdkWDL7LlYbUzD5izpm0X0Vah212pduiU=
+	t=1785719891; cv=none; b=X1NRl/RPo9S3LWDCOBK3O9leVm6ntmFyi5joiUoJLRNf+URXviJRCkETOSl6VjBwmFPBJEDtu7C3fRd4YCq5sg0j1DHJnof6pHdxo+q4pGQToN1A4FvixX19idtPRPnQV6cQIgv5HRtdCZFRuqNiKU2yuwI3eQ9ZMfDk/vuMmwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785719497; c=relaxed/simple;
-	bh=wm8mob0keFoY2LhZVi3xYt5kiMlqNcqGMUBMU4ucHU4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kRhRy4DaSJAJKYHjFNzhq550g7Vg5XqUrD7Y/5eXm8NsCopXlajdbuvHV/Z+yWiPX1sGH2FhKa3mlmPhbhszye/iDriVaJ7nDZG1PoIOpDKKeoHZlMVKQ1YcSVHVAGmxiJFopivsrQyPlceTyqXJoSqfkN2ZKVbFq4mRpWbmQiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=Cj8dTRcw; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1785719891; c=relaxed/simple;
+	bh=CH2yPRvu7YdIUvb5xE1pfDe3mbwUquBCkl5cmjeONsw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l5UQWW/ykvNiDzMiI8M7BdFEefxH0nDBkna1HHDdHUphLbixqbgZf1Zj/ou0FlFt7YmFHSQJSc3seDwTM4xwMxHak/4F2ftAPVx03N6Mvdqt9Sf1BDSlBuEt3Nhll+3cUm/TPTIF5oT8uPlOvg1DuwwAO9bd3jY28bZfk0Ijg2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=K1gMHckQ; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="Cj8dTRcw"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso26031455ad.2
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 18:11:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="K1gMHckQ"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38e347638adso3295766a91.0
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 18:18:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785719495; x=1786324295; darn=vger.kernel.org;
+        d=nebusec.ai; s=google; t=1785719890; x=1786324690; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+G1bAolgU6V5zxUlfeklEuaZufwIFq/LpVrW8Hvs89U=;
-        b=Cj8dTRcwBVguWlAaj99IGQt9PQG3T/N89S3F1jBuDlj3EbnmV/aznBqgMyZvyl0rvw
-         eumwi9cW1MExowGfYy5X5Ru6QPVmLbIfkt6lh0urGEsg0XT2RoILlDt9bRNM8s8UUrKq
-         ijofX3bb+VuVoCvZQeZujAEjI2O2wTfC2fPKr0sP1Itl1zEADZ/2uBj3y5vnxhnDSDzJ
-         kM5c1OAOY7Tuglao9bS/VDEAz6zOx2Kgj7ns5GPqG2nBhMPQ5b7Ixwc6Crpw1oW5dA49
-         n/QZWBpYYFtHb42/R7YbKG/+DwhpvGRWbGXqew3jqueGzKZQGCjKGXUkzD3JigfWDh8p
-         t6KA==
+        bh=tN1AhzaCERTFN6UDp5A+RMuVWhHwcSrtAn50QqE/2+g=;
+        b=K1gMHckQyU6KJ7eI45JNgWID4uH0E92JZen1FYEFjaxC9V9CPE/AH/Gya3CTcTBVBX
+         HqeQ5neaxR1LVUQrmIls38iOfe6qCbmC+1/UeZhnkx8rx+ivksR1MDrdTm3BBDRqrRQo
+         IVjq72V52mdD/Y2RC/JIi16JrtPDzSmLuEdWAJG5WRA4zVP4mo52GaMJXTqAuM5HUqp7
+         B+IFz2rsmJa42XRCfS41Nceug5uTQh2d83Yhkznk8gz3aH9VcmTrwcoe1qGWWqZ9T5AY
+         MF/RAVZLo/4iLmTvmORiTeBDgyL6xPHZifDhFiDWIY6HKCHGJPRO/DRuVVmEyqOj+Fww
+         dY4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785719495; x=1786324295;
+        d=1e100.net; s=20251104; t=1785719890; x=1786324690;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+G1bAolgU6V5zxUlfeklEuaZufwIFq/LpVrW8Hvs89U=;
-        b=jMa5lKFJRY3+F8GsHpEU2RUPKFuEGVpN5galHQOrbsEyYS7irhBK0jkX50+Sk0T1Ol
-         7roDSlq8j69h+66AW1Y+ZNa9SWYiAz/z2QvG3mCxJyThyNEwSqnioMOij8xO0z2FRVSd
-         LZr567GNdnfJThVzzdPpVipjg9Pa7p/TSWB6U2aRbeAB2JKDeFyayUxRPKykAdWBgB3q
-         /KRtZb4OkWX1ORCqQChliOvFWNX7gXnYkZo9RCmm2+XW+4cXKITy0m0Zc68u+TToQ4qk
-         tcId7dZzM1UzqgtcsZ/6D2Il7jqM52WjINUODmJuuqMgB3SYBUEiRzjlWBVY5tMqY/CL
-         V8Bg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp0dtRboYDagB4um4P7yQikrYzMYNnaiWGEGJ/lOhXPKfUl7GDFF3mTA4/ob4Otb4/5dmkQirE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3r6xRierdnuXxZqwL6RYw7KR8LWwBpY+us0ESg9j2V8hNS2OV
-	IHDTBden4UAEVh9uaKaqJasCXj2QyQGbibjYnUrVqTCrPyeY88O3eblI2iL5/x8V2bfPogqHN9D
-	t0bSmsmTORIhRXQ==
-X-Gm-Gg: AR+sD13GrciUpemCTEZI0g+PNdbYAfeEANroEs1vVNRc6+4+p8fEFAMe2eGRwOgeC2D
-	yYG/Z6tCfhqm6iBSbHFecynHAJbDU+5xHSo76eZ2QgzlCCBPlu1fWLG9pvVtzrBffOgg0lD2jsY
-	JsSK0LiyFbs3HAykmQekxwHff5eyz2x/XLPnopsAAq9GyF208HN3ng2RZ2403vicJdHP/x6CHuO
-	Xw0aMuLYh3eVd6aowKI0B15vzP0KLTEGDk4TBPFZP/2dSZR9n4QIoKY0ASyIwPmAg3luzc4j7Lj
-	y+tgyEfyC9z9aM6+wBXWceBIQMHACwgw3E2jg96Y9x05pLK4LY75T7DNdrHciQKMG7X25X3yGP0
-	J8gtkVyGq+wz3foAJQ5aPQ35EdxtT9A2NY6hK6K4beWsjsqaCjcTBOal/SOFYv8ZDnvLB4G09tr
-	WFlqlJuPl3dsTcmv65rDKk4Dx7Ukzu364F+uwKXW/8pMnoRSs0hSeFl+Kel4O8TreNBke99IL1g
-	Q==
-X-Received: by 2002:a17:902:f612:b0:2cf:8131:75f3 with SMTP id d9443c01a7336-2d05219f296mr80661705ad.7.1785719495294;
-        Sun, 02 Aug 2026 18:11:35 -0700 (PDT)
+        bh=tN1AhzaCERTFN6UDp5A+RMuVWhHwcSrtAn50QqE/2+g=;
+        b=TGQKaX+262t/rs5GC2Qy+PMvGIfzHhmHb63pOM1sZ5twkB8IV+rOzyku3Xc81T/FaF
+         fN9RXnJkkO7ImmuBRP61E+XLO4c27cgvEE+NrCvMeZIPIOX6InUhgGPD9FOFlAh3vtFU
+         HBHGY5c7j0/AiAusw6MhXRqVnj7/oIf2Avh4RhhGaoF4kKnVlC45bWejw5uPetvq+zkT
+         MOCxHGjTAmQhKkhfqJSrUh4AlV7R0MxAa31qnATdibFNPBQqmgjRnN1gSu7F1dVBW/4u
+         4zqrlEt1davreEuzl2UOU1tkdXdcJOLXe7Z6Y+VTWtIqy8HCRBxKlEBXFhIUO01LWbv7
+         Va/g==
+X-Gm-Message-State: AOJu0Yyf09MhesF1ZejWTnS7xf2KUVr9OQ+p+a02s6KtEglOx4jS43ZR
+	B4WFoRyT/hbb1YD4ElkVcgPhuqo087sy1Kk2CIqBsNPUgS20eVP5ee5ZLEOzJJaiJHHGFr2K0IR
+	zbrn7FANCxX83Kg==
+X-Gm-Gg: AR+sD10elimhnONBrlgVW6jS55+Fx4fZak5jzxN8hBxdC3LNIyPzUvVfgAgA6XfK+4l
+	w6DrP5zXeGQCUZ4foWIcnUsJFmcRBy9xIYgmHXl3D3DX5pC4fT/NzFSl+INawhbuc/1SA14g+a3
+	CmkGQOv0mrtFEkRcPJci5pL1k3rXbwS0ghSGkWwXtJdcgoYClvVtUzeF6UqepVUNIHuog46nOf5
+	6PXQ5sWmGA+kmWw6jnZMicZJCLZZbjLVqTnJXQEmqEJ1ESqLZVoqBb7vIKrdILTXqL6zR72JdrO
+	MES2wYLoats0uF0clq9l5WED+RT7JxxlqnN7UKj1LfnubrE7+ZGd4S0MZdA+eo7Ny++b1iUB7Yj
+	CVASpcGJgmdSwEa6kO5gITo477Z0RtgswInquJhj5X3FcjzmP+M2GrB73OWVJmg/Mf/Oa0BOgqZ
+	/KyOD0cTtQLrsVDEr0DlojTmQgzLcoxfv1gtAD93Gcca5KElLNnT2qZz662zuFjhBjB2EJz3obF
+	OdzTt33xGD8sQ==
+X-Received: by 2002:a17:90b:51c2:b0:38e:79f:76ad with SMTP id 98e67ed59e1d1-38fbc4ff4c1mr7142205a91.23.1785719889487;
+        Sun, 02 Aug 2026 18:18:09 -0700 (PDT)
 Received: from Roxy.localdomain ([202.8.9.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b0eb491sm30170585ad.42.2026.08.02.18.11.30
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb30e381esm3072186a91.15.2026.08.02.18.18.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 18:11:34 -0700 (PDT)
+        Sun, 02 Aug 2026 18:18:08 -0700 (PDT)
 From: Zhiling Zou <zhilinz@nebusec.ai>
-To: pablo@netfilter.org,
-	fw@strlen.de,
-	netfilter-devel@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: phil@nwl.cc,
+To: netdev@vger.kernel.org,
+	idosch@nvidia.com
+Cc: dsahern@kernel.org,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	kaber@trash.net,
+	leone4fernando@gmail.com,
 	vega@nebusec.ai,
 	zhilinz@nebusec.ai
-Subject: [PATCH nf v4 1/1] netfilter: validate L4 headers after userspace packet writes
-Date: Mon,  3 Aug 2026 09:11:23 +0800
-Message-ID: <399a88004d250334f85f78144f4427b586c7b424.1785718969.git.zhilinz@nebusec.ai>
+Subject: [PATCH net v3 1/1] ipmr: only copy pktinfo to cache reports
+Date: Mon,  3 Aug 2026 09:17:55 +0800
+Message-ID: <e93d0d2fa5725ddd06b20e3e4223ab68b93b48d1.1785719031.git.zhilinz@nebusec.ai>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -84,219 +81,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-NFQUEUE and nft_payload can hand packet data modified by userspace back
-to the stack. Recent restrictions keep link and network headers stable,
-but transport header fields can still be changed.
+ipmr_cache_report() builds short IGMP reports for mrouted from a packet
+that may be a synthetic RTM_GETROUTE query. That query skb stores the
+netlink requester portid in NETLINK_CB(), but the report is delivered to
+a raw IPv4 socket, whose receive path interprets skb->cb as IPCB().
 
-A packet can therefore keep the same network header and conntrack entry
-while changing the transport header layout. For TCP, increasing doff can
-make later helper or NAT code use a different transport-header base than
-the parser used, and can make offsets point past skb->tail.
+Commit bb7403655b3c ("ipmr: support IP_PKTINFO on cache report IGMP
+msg") added IP_PKTINFO support by calling ipv4_pktinfo_prepare() on the
+original packet and then copying the entire 48-byte skb control block to
+the report skb. For synthetic route-query packets, this copies
+NETLINK_CB() bytes into IPCB() and lets a controlled portid corrupt
+IPCB(skb)->opt. With IP_RECVOPTS or IP_RETOPTS enabled, the raw socket
+receive path can then copy past the short report packet or overflow the
+stack option buffer.
 
-Extend NFQUEUE payload validation to check the final L4 protocol and
-known base headers after IPv4 options or IPv6 extension headers. Reject
-packets whose L4 protocol no longer matches an attached non-template
-conntrack entry, and reject IP fragments that already have such a
-conntrack entry before trying to validate transport headers. Unknown L4
-protocols are left to their normal protocol handlers.
+Keep the IP_PKTINFO support, but copy only the pktinfo fields prepared
+by ipv4_pktinfo_prepare().
 
-For nft payload writes, reject transport-header stores that overlap TCP
-doff. nft_nh_write_ok() already rejects network-header protocol changes,
-so keeping doff stable prevents nft payload writes from changing the TCP
-header length underneath conntrack and helper users.
+This changes the accidental IP_RECVOPTS/IP_RETOPTS behavior for these
+short cache reports, but that behavior was only a side effect of
+copying the entire control block and was never intended to work.
 
-Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
+Fixes: bb7403655b3c ("ipmr: support IP_PKTINFO on cache report IGMP msg")
 Cc: stable@vger.kernel.org
 Reported-by: Vega <vega@nebusec.ai>
 Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
 ---
-changes in v4:
-- Reject IP fragments that already have an attached non-template conntrack.
-- v3 Link: https://lore.kernel.org/all/587830a57a593c4b621f7e8e94b2ddc73e6becb0.1785468829.git.zhilinz@nebusec.ai
-
 changes in v3:
-- Allow unknown L4 protocols in NFQUEUE payload validation.
-- Add explicit AH and ESP minimum base-header validation.
-- v2 Link: https://lore.kernel.org/all/f0efaa7d67a580488fc5e32a09683c992db35742.1785392716.git.zhilinz@nebusec.ai
-
+- go back to the v1 scope and stop changing the common path
+- remove memset(), since alloc_skb() already clears the control block
+- v2 Link: https://lore.kernel.org/all/1b809975e5bd9c0a1dd6fdd1db534e701fe5a4b6.1785379072.git.zhilinz@nebusec.ai/
 changes in v2:
-- Replace the H.323-specific NAT/helper-only fix with generic validation
-  for userspace packet writes.
-- Validate NFQUEUE payload replacements after IPv4 option and IPv6
-  extension-header validation, including TCP data offset and attached
-  non-template conntrack L4 protocol consistency.
-- Reject nft_payload transport-header writes that overlap TCP doff.
-- v1 Link: https://lore.kernel.org/all/68faab5bf406aad612233e76994c649fbc547b8d.1785133455.git.zhilinz@nebusec.ai
+- reword the commit message to say the entire 48-byte skb control block is copied
+- mention that IP_RECVOPTS/IP_RETOPTS on the mrouted socket was never intended
+- move the pktinfo copy to the common path so both report branches are covered
+- v1 Link: https://lore.kernel.org/all/5bc7cd71c2d671b305f25497d88ae8a0aa663c08.1784894076.git.zhilinz@nebusec.ai/
 
- net/netfilter/nfnetlink_queue.c | 72 +++++++++++++++++++++++++++++++--
- net/netfilter/nft_payload.c     | 13 ++++++
- 2 files changed, 82 insertions(+), 3 deletions(-)
+ net/ipv4/ipmr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index b8aaf39cb4d8e..e135ed762b5c8 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -28,10 +28,17 @@
- #include <linux/netfilter/nfnetlink.h>
- #include <linux/netfilter/nfnetlink_queue.h>
- #include <linux/netfilter/nf_conntrack_common.h>
-+#include <linux/icmp.h>
-+#include <linux/icmpv6.h>
-+#include <linux/ip.h>
- #include <linux/list.h>
-+#include <linux/sctp.h>
- #include <linux/cgroup-defs.h>
- #include <linux/rhashtable.h>
- #include <linux/jhash.h>
-+#include <linux/tcp.h>
-+#include <linux/udp.h>
-+#include <net/gre.h>
- #include <net/gso.h>
- #include <net/sock.h>
- #include <net/tcp_states.h>
-@@ -1206,9 +1213,61 @@ static bool nfqnl_validate_ipopts(const struct iphdr *iph_new,
- 	return memcmp(iph_new + 1, ip_hdr(e->skb) + 1, ihl - sizeof(*iph_orig)) == 0;
- }
- 
-+static bool nfqnl_validate_l4(const u8 *data, unsigned int data_len,
-+			      const struct nf_queue_entry *e, u8 proto,
-+			      bool fragment)
-+{
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	enum ip_conntrack_info ctinfo;
-+	const struct nf_conn *ct;
-+
-+	ct = nf_ct_get(e->skb, &ctinfo);
-+	if (ct && !nf_ct_is_template(ct)) {
-+		if (fragment || nf_ct_protonum(ct) != proto)
-+			return false;
-+	}
-+#endif
-+
-+	if (fragment)
-+		return true;
-+
-+	switch (proto) {
-+	case IPPROTO_TCP: {
-+		const struct tcphdr *th = (const struct tcphdr *)data;
-+		unsigned int thlen;
-+
-+		if (data_len < sizeof(*th))
-+			return false;
-+
-+		thlen = __tcp_hdrlen(th);
-+		if (thlen < sizeof(*th) || data_len < thlen)
-+			return false;
-+
-+		return true;
-+	}
-+	case IPPROTO_UDP:
-+		return data_len >= sizeof(struct udphdr);
-+	case IPPROTO_ICMP:
-+		return data_len >= sizeof(struct icmphdr);
-+	case IPPROTO_ICMPV6:
-+		return data_len >= sizeof(struct icmp6hdr);
-+	case IPPROTO_SCTP:
-+		return data_len >= sizeof(struct sctphdr);
-+	case IPPROTO_GRE:
-+		return data_len >= sizeof(struct gre_base_hdr);
-+	case IPPROTO_AH:
-+		return data_len >= sizeof(struct ip_auth_hdr);
-+	case IPPROTO_ESP:
-+		return data_len >= sizeof(struct ip_esp_hdr);
-+	}
-+
-+	return true;
-+}
-+
- static bool nfqnl_validate_ip4(const struct iphdr *iph, unsigned int data_len,
- 			       const struct nf_queue_entry *e)
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index 1d9a4ac14fcef..56dfa43406c2d 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -1058,6 +1058,7 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 			     struct sk_buff *pkt, vifi_t vifi, int assert)
  {
-+	bool fragment;
- 	unsigned int ihl;
- 
- 	if (data_len < sizeof(*iph))
-@@ -1226,10 +1285,14 @@ static bool nfqnl_validate_ip4(const struct iphdr *iph, unsigned int data_len,
- 	if (ntohs(iph->tot_len) != data_len)
- 		return false;
- 
-+	fragment = iph->frag_off & htons(IP_MF | IP_OFFSET);
-+
- 	/* support for ipopts mangling would require
- 	 * recompile + skb transport header update.
- 	 */
--	return nfqnl_validate_ipopts(iph, e);
-+	return nfqnl_validate_ipopts(iph, e) &&
-+	       nfqnl_validate_l4((const u8 *)iph + ihl, data_len - ihl, e,
-+				 iph->protocol, fragment);
- }
- 
- static bool nfqnl_validate_one_exthdr(const u8 *data,
-@@ -1273,6 +1336,7 @@ static bool nfqnl_validate_exthdr(const struct ipv6hdr *ip6_new,
- 	const u8 *data = (const u8 *)ip6_new;
- 	u8 orig_nexthdr = ip6_orig->nexthdr;
- 	u8 new_nexthdr = ip6_new->nexthdr;
-+	bool fragment = false;
- 
- 	if (new_nexthdr != orig_nexthdr)
- 		return false;
-@@ -1286,7 +1350,8 @@ static bool nfqnl_validate_exthdr(const struct ipv6hdr *ip6_new,
- 		int hdrlen;
- 
- 		if (orig_nexthdr == NEXTHDR_NONE)
--			return true;
-+			return nfqnl_validate_l4(data, data_len, e,
-+						 new_nexthdr, fragment);
- 
- 		if (unlikely(exthdr_cnt++ >= IP6_MAX_EXT_HDRS_CNT))
- 			return false;
-@@ -1297,6 +1362,7 @@ static bool nfqnl_validate_exthdr(const struct ipv6hdr *ip6_new,
- 
- 		switch (orig_nexthdr) {
- 		case NEXTHDR_FRAGMENT:
-+			fragment = true;
- 			hdrlen = sizeof(struct frag_hdr);
- 			break;
- 		case NEXTHDR_AUTH:
-@@ -1323,7 +1389,7 @@ static bool nfqnl_validate_exthdr(const struct ipv6hdr *ip6_new,
- 		data += hdrlen;
- 	}
- 
--	return true;
-+	return nfqnl_validate_l4(data, data_len, e, new_nexthdr, fragment);
- }
- 
- static bool nfqnl_validate_ip6(const struct ipv6hdr *ip6, unsigned int data_len,
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index 8a4472fd77d9f..e315d35f73d4a 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -1067,6 +1067,17 @@ static bool nft_payload_csum_write_ok(const struct nft_pktinfo *pkt,
- 	return false;
- }
- 
-+static bool nft_th_write_ok(const struct nft_pktinfo *pkt,
-+			    const struct nft_payload_set *priv)
-+{
-+	unsigned int doff = offsetof(struct tcphdr, ack_seq) + sizeof(__be32);
-+
-+	if (pkt->tprot != IPPROTO_TCP)
-+		return true;
-+
-+	return priv->offset > doff || priv->offset + priv->len <= doff;
-+}
-+
- static void nft_payload_set_eval(const struct nft_expr *expr,
- 				 struct nft_regs *regs,
- 				 const struct nft_pktinfo *pkt)
-@@ -1105,6 +1116,8 @@ static void nft_payload_set_eval(const struct nft_expr *expr,
- 	case NFT_PAYLOAD_TRANSPORT_HEADER:
- 		if (!(pkt->flags & NFT_PKTINFO_L4PROTO) || pkt->fragoff)
- 			goto err;
-+		if (!nft_th_write_ok(pkt, priv))
-+			goto err;
- 		offset = nft_thoff(pkt);
- 		break;
- 	case NFT_PAYLOAD_INNER_HEADER:
+ 	const int ihl = ip_hdrlen(pkt);
++	struct in_pktinfo *info;
+ 	struct sock *mroute_sk;
+ 	struct igmphdr *igmp;
+ 	struct igmpmsg *msg;
+@@ -1113,7 +1114,9 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 		msg->im_vif = vifi;
+ 		msg->im_vif_hi = vifi >> 8;
+ 		ipv4_pktinfo_prepare(mroute_sk, pkt, false);
+-		memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
++		info = PKTINFO_SKB_CB(skb);
++		info->ipi_ifindex = PKTINFO_SKB_CB(pkt)->ipi_ifindex;
++		info->ipi_spec_dst = PKTINFO_SKB_CB(pkt)->ipi_spec_dst;
+ 		/* Add our header.
+ 		 * Note that code, csum and group fields are cleared.
+ 		 */
 -- 
 2.43.0
