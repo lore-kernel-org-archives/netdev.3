@@ -1,94 +1,92 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D9E383338
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFDB3845C1
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785775079; cv=none; b=E5UezoqqryGVDpt9N4v7v3GciPUHOUN4HgQS9qJ5OvPPos76b/P8+Gczhz5gIoosOesSCt18qREwNQDkL6KaXhjbb7xAIt1eEZ2GPfXnIlAbwruGMi1lWokKwKrL1JAoe/0LsmXyuSnhzhM3aTk3fsJw/S0UtI9fsuTxUVf9QaU=
+	t=1785775128; cv=none; b=hIUAuMgJVwxWkaU+YnALgI2nhuXHhLHO6zstj9S03aTwHmw4Nh0Ilu4BP0MdT3kMrm2m7NZBpHQyoWm+LWZ7dkZYnri/RzHhmqwlHFeqDSs8mjf32kaKiGpTbChlNpXO4D2ocFCJfs0gwvJczMA+tDmLbVrtAgIYTYkfU6U0UtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785775079; c=relaxed/simple;
-	bh=jX3Az3+fX99ZWH+Ur9rGdltR5hWBIyl4+x/apMK8G+4=;
+	s=arc-20240116; t=1785775128; c=relaxed/simple;
+	bh=kwouVj/whNGoRrlAp+DEkWyUuUJZO3rqH6VKtO+C8uc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o4ZLK4dc23XWTzrOXNLsRWj5QFCQoi4lf84CG1kwA8CoCE6JrPozDbr3B0uptc9Fj0FEDRs534bNDCYudOK5kxKCPNNJCAQkesOHFIi0JvR+RvTkJRbZyorjZP8dHrJbcxYWvl4ShY/iWPehE1rrQBVUScMX5ctkB3Q2hFwEImc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GzKVfFIS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rhhmpZ+Z; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=j8pku962+fbbpl4ra6uoxm4lmR644qp53qjCzXbmGjFanfGYHmSwMFBOL5i5oM6p3lDLqotfmBA2X6D0yGbrN/9E5MrUCx+p0KXMDIUpqrfLibGy3ghFGn+ofBCxC457dGBH81qXVhmaNVoXAFI6+YHtosjMZXYhhxYEUVmBSQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RloCrJ2V; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=auUQb242; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GzKVfFIS";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rhhmpZ+Z"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RloCrJ2V";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="auUQb242"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785775076;
+	s=mimecast20190719; t=1785775125;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x8FCHZBZLrk/TMZLPtJVaBIhiotGy01B8YQOZQmpfV4=;
-	b=GzKVfFISokBjJ2DYzGvr/6lcsbn984P5pZ9haDgQ27CgxNDCc26UnsPjJnJncQANm0RPAT
-	v1eTie4XQubjjszZXHCm2Ao8XpCBR4EnCHXMCMr5jEY4ZQOUxU064QUBiIPvpxjlqr08ai
-	SPqL06zS9GjHHNUUxE5rNY1doTFv4Qc=
+	bh=oDA30YrY/+OQRC6WLrG9g3BJdigc9XVLeVtgvYlueZI=;
+	b=RloCrJ2VBZgsDfOyE6LP3N1Wx/5wwZBid4KgTUpCK/P7ehBUa6jI3CWeEteUOhBG7qWMKd
+	/7q2Whpi/yCMh8oR98BL06c8SM1vScTdU1svOUDnt1gOeH7lsX8oNTbw0MrDQ2jsEOR7PN
+	L2jMDXqcZyK+frHYQ2eXV1plSwO4iTM=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-323-EcplRssFNUiXohqCC0ScFQ-1; Mon, 03 Aug 2026 12:37:55 -0400
-X-MC-Unique: EcplRssFNUiXohqCC0ScFQ-1
-X-Mimecast-MFC-AGG-ID: EcplRssFNUiXohqCC0ScFQ_1785775074
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-473ac08a6a4so2860513f8f.0
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 09:37:55 -0700 (PDT)
+ us-mta-322-_Y-4e_XnNc2NOfEnd6gm-w-1; Mon, 03 Aug 2026 12:38:42 -0400
+X-MC-Unique: _Y-4e_XnNc2NOfEnd6gm-w-1
+X-Mimecast-MFC-AGG-ID: _Y-4e_XnNc2NOfEnd6gm-w_1785775121
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47fd4ee0ac0so2736532f8f.2
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 09:38:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785775074; x=1786379874; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1785775121; x=1786379921; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=x8FCHZBZLrk/TMZLPtJVaBIhiotGy01B8YQOZQmpfV4=;
-        b=rhhmpZ+ZA4DlLJzvCuZhZqrNvh+DAIYsQXWJ683KSqCZEnFCjynDGYPLE8v1eg7MMq
-         6nYtkU4CcfP+NUnqqF6fVScEP9VszA1FNmzWCTGvEHNKgumxpOWBvN451wd97fddjkF6
-         ULwGvalyHxpeAtgc0rMhYKO2yTxYMA1ci4wfFqSL0q1CyI2lWXd3o7Fvr+axugXKDveA
-         VBbBzi3NQTVPPtYd9ihQLP1oiLM/lEnyl9yfJUmIbRnBd5CrIEI3qkFrEskuohbkfmP9
-         +nD5zo2SVEwq2HdSOl7PSFs6790Q+7B2OJ5McQil57zVZxu94JoMObinERek659qXZSj
-         vNBQ==
+        bh=oDA30YrY/+OQRC6WLrG9g3BJdigc9XVLeVtgvYlueZI=;
+        b=auUQb242c1jPMALwRvIflzRwGOSCvGDS89yWZJUjp80oYLBjnxQkiKEMm9NXh4N9DA
+         D0BOkxWZAITmUdogR4XY3Om+lLBPp0bCMXKGPsAbme1v9wtn9do8vLTWYk9VzyFD8faW
+         52Z4ngD6za8ogGGHQxIHnTBNfguorh+E+rcfMDRhS5H6X0NflK2o1is91/CYpBnLwl9h
+         E+LY4tAQzDFSZpauPORgmD8q/iai5x+dDNQJUFCgzEM2/UeX+/y573o0Adg2T/NE5RVQ
+         6/210qrvIhVehh3h1XSvCwymHrwNgNOLa67cfExCZGEIVIv3Mz5kJpDmGekT5t+ataJO
+         oVXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785775074; x=1786379874;
+        d=1e100.net; s=20251104; t=1785775121; x=1786379921;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=x8FCHZBZLrk/TMZLPtJVaBIhiotGy01B8YQOZQmpfV4=;
-        b=ebf9T64Fw2ghISlCEknmO3TXQirlY4knp/tmv9SZ3KRL9WIpP64B26lPQbO4AblOjO
-         +QkgR+pEJsCDyTVjdqv6PIJ3+abO+uxlakXlmLlwTk5pl+faw3gMaDcZqG61qkxnmVhe
-         /JyTMkvWHltEP2pCjt9DZJnXvkk5Bn0tfYDyuJ9nOGlYWxTrtm/LJEZLuG+CmXGsA4D4
-         xLyxZjmyvTpSMrWq/gR7mPHpB4UBXbpKtnjA+r1+FcUkjZH7+nGCNdbvoNd00VYB5YDS
-         yfRaDzOv3ttQKISdWDysCvqPqII06GYkJFAIfZwW9ByFe8FR03x1WmaJD+DddbRVbnn2
-         gOOA==
-X-Gm-Message-State: AOJu0YwhYp/JbTvM8Xje3NEhs8/GsQjbj/kQN9APZkDXz/EjAaNTyEuv
-	JOaYI6zJwU3nvEhmwnVAaGNiNkatJ7GFm5Cv6j1/3FKaykB5dkOg3OiWJ68OgAskjDAwinMKYN/
-	oaLvOz0QN79OdRQ7VnyPI7HuXTfODftWTt+n7+ze0HnvBHUPV3XUM7yPPOw==
-X-Gm-Gg: AR+sD13glfa6Z+7b80JSwOb6liMwvuPzowx9FiAug78Qo0KPEd3Bty6r7HWr4X9PYy4
-	w2IvIUVPwNYOr+DuSwrL59gkffp5iTJHGk2IF2Sbjc3QWB8Gpcg+0/P+VmhSTVkqC3LemyvMuBq
-	l3h6Rty2uyXm2oDxE48tNRd4wHk/9gvdgI0K5PVXyfRNrdmEiihaNF64O97efBeQdBcIxIJeiNM
-	DFvYzRNLW22Vjbh3LAsjmMu8twUgQ2XQ5DnPE+5G+yf8ibji/B40ld5LE7AE/94Us3nJdO8cMW5
-	Gm4w6IJzco2Ybmb9e2vwe1rBQM6kqKnGCAznhGANl392bV8anFk54pxcn5m2fVqkJ0GMNGcJFod
-	eiCovMFRfAUQz6wjknow9EQ==
-X-Received: by 2002:a05:600c:4e89:b0:495:5e3d:15e1 with SMTP id 5b1f17b1804b1-4980c6788f8mr221835675e9.16.1785775074224;
-        Mon, 03 Aug 2026 09:37:54 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e89:b0:495:5e3d:15e1 with SMTP id 5b1f17b1804b1-4980c6788f8mr221835075e9.16.1785775073758;
-        Mon, 03 Aug 2026 09:37:53 -0700 (PDT)
+        bh=oDA30YrY/+OQRC6WLrG9g3BJdigc9XVLeVtgvYlueZI=;
+        b=VZaJwEQqz7Spd1Y35W5+1NtmaG5ALsXBh/egQMAX+60XlSbyErtEqLszNZieS8wfJU
+         63XTDNtWmNtGlmxZXjEEIc7UigCTZcXZQzkEExYJoAmo0wsis3YUv5qqPfA0s2i+yjhz
+         +PzXk9VhAy4NmUEJ1czOoV/32ZMbjOOIvRx2I3YZ6ddPWe0FIEYONs9iOy4YWrZ+mZU6
+         5G4B4v6OiVwN0l9SZH+dtsbxpoVdOTbU+wxklE1bg5IYotCeRKHMAr1trdo7hRwxmoAS
+         2Xn+Zls+Zu+RBybPVj8G/sfZ5RC8vc+i/gfTvsssJfWTh/mKilZIvE6OGXG9G6BNCCtX
+         OEPw==
+X-Gm-Message-State: AOJu0YwQZWLkHBolJWOvrXpD0wIxwZJ9yKsaXDKi8GnFaheXq1Y8bkvj
+	9Bn816jZkEXBCG9R/YSXDIGtubsk7dIqEGq5qzkkm4pC5gT8ArdmiAeOtLHNZ/Q2lqsiUGz1ReG
+	F2nN6hVHlYzHzCz7eJwuS73JkfThrCTnv2pO5mBWYUj1y2wy6nLb0SuiXiA==
+X-Gm-Gg: AR+sD10Qj0zJOsHrM3vn6uboYxdnYDQAwhOwEHivYvzGI/hiUvqY9MakILTQkPRvNC0
+	L9eAgXjAg2aMxc3qJJMV2ZkS0CUEqeX2tzHj5JXcMyb27DC/nZinRyYZVNZK3HVPu44z7oyml89
+	NfU6InNHf7x7kjSdb5m98HHIy4vs4uipuPER0BsfL8SC9kO4skd8RKShMWen/73rX1llx02G87X
+	FA12ynraZKRkB0lXCZtoAkk06aTWCB/2ojSpB6v93iLI95PdZidyUE9bHrOgTXxwk5BcJPuIp2i
+	8g21cFZYH0EW4ANpql5iYCqWkObHa3AZtnkeSAMc1zXkiLcla4lE63EIWVpB+xuJgRSWDv5l7O1
+	8qlND01n1qv8ZMKEB8dBgDQ==
+X-Received: by 2002:a05:6000:40e1:b0:47f:8b1f:efa2 with SMTP id ffacd0b85a97d-47fd729e88bmr28790597f8f.8.1785775121016;
+        Mon, 03 Aug 2026 09:38:41 -0700 (PDT)
+X-Received: by 2002:a05:6000:40e1:b0:47f:8b1f:efa2 with SMTP id ffacd0b85a97d-47fd729e88bmr28790527f8f.8.1785775120500;
+        Mon, 03 Aug 2026 09:38:40 -0700 (PDT)
 Received: from redhat.com (IGLD-80-230-28-14.inter.net.il. [80.230.28.14])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49949f68f95sm6288115e9.0.2026.08.03.09.37.51
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd64eef60sm29573432f8f.16.2026.08.03.09.38.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 09:37:53 -0700 (PDT)
-Date: Mon, 3 Aug 2026 12:37:49 -0400
+        Mon, 03 Aug 2026 09:38:40 -0700 (PDT)
+Date: Mon, 3 Aug 2026 12:38:37 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Shahar Shitrit <shshitrit@nvidia.com>
-Cc: netdev@vger.kernel.org, jasowang@redhat.com, pabeni@redhat.com,
-	virtualization@lists.linux.dev, parav@nvidia.com, yohadt@nvidia.com,
-	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, jgg@ziepe.ca,
-	kevin.tian@intel.com, kuba@kernel.org, andrew+netdev@lunn.ch,
-	edumazet@google.com, danielj@nvidia.com
-Subject: Re: [PATCH net-next v21 13/13] virtio_net: Add get ethtool flow
- rules ops
-Message-ID: <20260803123507-mutt-send-email-mst@kernel.org>
-References: <20260803140721.1871678-1-shshitrit@nvidia.com>
- <20260803140721.1871678-14-shshitrit@nvidia.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com,
+	jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	denis.pilipchuk@oracle.com, joe.jin@oracle.com
+Subject: Re: [PATCH 1/1] net: tap: set skb->dev before parsing virtio net
+ header in tap_get_user_xdp()
+Message-ID: <20260803123808-mutt-send-email-mst@kernel.org>
+References: <20260802224612.264563-1-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,158 +95,83 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260803140721.1871678-14-shshitrit@nvidia.com>
+In-Reply-To: <20260802224612.264563-1-dongli.zhang@oracle.com>
 
-On Mon, Aug 03, 2026 at 05:07:21PM +0300, Shahar Shitrit wrote:
-> From: Daniel Jurgens <danielj@nvidia.com>
+On Sun, Aug 02, 2026 at 03:46:12PM -0700, Dongli Zhang wrote:
+> The commit 4f61f133f354 ("net: tap: NULL pointer derefence in
+> dev_parse_header_protocol when skb->dev is null") fixed a crash in
+> tap_get_user() by assigning skb->dev before calling tun_vnet_hdr_to_skb().
+> This is required because virtio_net_hdr_to_skb() may invoke
+> dev_parse_header_protocol(), which dereferences skb->dev. Without the
+> assignment, a NULL pointer dereference can occur.
 > 
-> - Get total number of rules. There's no user interface for this.
+> However, tap_get_user_xdp() still parses the virtio-net header before
+> assigning skb->dev. When the vhost TX path passes an XDP buffer containing
+> a GSO virtio-net header but the protocol is set to zero on purpose,
+> tun_vnet_hdr_to_skb() can reach dev_parse_header_protocol() while skb->dev
+> is still NULL, resulting in a crash.
+> 
+> Fix this by looking up the tap device and assigning skb->dev before calling
+> tun_vnet_hdr_to_skb(), matching the ordering already used in
+> tap_get_user(). Preserve the existing RCU read-side critical section across
+> dev_queue_xmit().
+> 
+> Fixes: 924a9bc362a5 ("net: check if protocol extracted by virtio_net_hdr_set_proto is correct")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Codex:GPT-5.5
+> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
 
-For what? Isn't this ETHTOOL_GRXCLSRLCNT ?
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-
-> It is
->   used to allocate an appropriately sized buffer for getting all the
->   rules.
-> 
-> - Get specific rule
-> $ ethtool -u ens9 rule 0
-> 	Filter: 0
-> 		Rule Type: UDP over IPv4
-> 		Src IP addr: 0.0.0.0 mask: 255.255.255.255
-> 		Dest IP addr: 192.168.5.2 mask: 0.0.0.0
-> 		TOS: 0x0 mask: 0xff
-> 		Src port: 0 mask: 0xffff
-> 		Dest port: 4321 mask: 0x0
-> 		Action: Direct to queue 16
-> 
-> - Get all rules:
-> $ ethtool -u ens9
-> 31 RX rings available
-> Total 2 rules
-> 
-> Filter: 0
->         Rule Type: UDP over IPv4
->         Src IP addr: 0.0.0.0 mask: 255.255.255.255
->         Dest IP addr: 192.168.5.2 mask: 0.0.0.0
-> ...
-> 
-> Filter: 1
->         Flow Type: Raw Ethernet
->         Src MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
->         Dest MAC addr: 08:11:22:33:44:54 mask: 00:00:00:00:00:00
-> 
-> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-> Reviewed-by: Parav Pandit <parav@nvidia.com>
-> Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
 > ---
->  drivers/net/virtio_net.c | 75 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 75 insertions(+)
+>  drivers/net/tap.c | 24 ++++++++++++++----------
+>  1 file changed, 14 insertions(+), 10 deletions(-)
 > 
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index 236887c7976d..3d5eb716361a 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -6552,6 +6552,58 @@ static int virtnet_ethtool_flow_remove(struct virtnet_ff *ff, int location)
->  	return err;
->  }
+> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+> index fae115915c8e..5d2d34d24ce8 100644
+> --- a/drivers/net/tap.c
+> +++ b/drivers/net/tap.c
+> @@ -1074,10 +1074,21 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
+>  	skb_reset_mac_header(skb);
+>  	skb->protocol = eth_hdr(skb)->h_proto;
 >  
-> +static int virtnet_ethtool_get_flow_count(struct virtnet_ff *ff,
-> +					  struct ethtool_rxnfc *info)
-> +{
-> +	if (!ff->ff_supported)
-> +		return -EOPNOTSUPP;
-> +
-> +	info->rule_cnt = ff->ethtool.num_rules;
-> +	info->data = le32_to_cpu(ff->ff_caps->rules_limit) | RX_CLS_LOC_SPECIAL;
-
-maybe check rules_per_group_limit too? they are all in 1 group ..
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int virtnet_ethtool_get_flow(struct virtnet_ff *ff,
-> +				    struct ethtool_rxnfc *info)
-> +{
-> +	struct virtnet_ethtool_rule *eth_rule;
-> +
-> +	if (!ff->ff_supported)
-> +		return -EOPNOTSUPP;
-> +
-> +	eth_rule = xa_load(&ff->ethtool.rules, info->fs.location);
-> +	if (!eth_rule)
-> +		return -ENOENT;
-> +
-> +	info->fs = eth_rule->flow_spec;
-> +
-> +	return 0;
-> +}
-> +
-> +static int
-> +virtnet_ethtool_get_all_flows(struct virtnet_ff *ff,
-> +			      struct ethtool_rxnfc *info, u32 *rule_locs)
-> +{
-> +	struct virtnet_ethtool_rule *eth_rule;
-> +	unsigned long i = 0;
-> +	int idx = 0;
-> +
-> +	if (!ff->ff_supported)
-> +		return -EOPNOTSUPP;
-> +
-> +	xa_for_each(&ff->ethtool.rules, i, eth_rule) {
-> +		if (idx == info->rule_cnt)
-> +			return -EMSGSIZE;
-> +		rule_locs[idx++] = i;
+> +	rcu_read_lock();
+> +	tap = rcu_dereference(q->tap);
+> +	if (!tap) {
+> +		kfree_skb(skb);
+> +		rcu_read_unlock();
+> +		return 0;
 > +	}
+> +	skb->dev = tap->dev;
 > +
-> +	info->data = le32_to_cpu(ff->ff_caps->rules_limit);
-> +	info->rule_cnt = idx;
-> +
-> +	return 0;
-> +}
-> +
->  static size_t get_mask_size(u16 type)
->  {
->  	switch (type) {
-> @@ -6570,6 +6622,28 @@ static size_t get_mask_size(u16 type)
+>  	if (vnet_hdr_len) {
+>  		err = tun_vnet_hdr_to_skb(q->flags, skb, gso);
+> -		if (err)
+> +		if (err) {
+> +			rcu_read_unlock();
+>  			goto err_kfree;
+> +		}
+>  	}
+>  
+>  	/* Move network header to the right position for VLAN tagged packets */
+> @@ -1085,15 +1096,8 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
+>  	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
+>  		skb_set_network_header(skb, depth);
+>  
+> -	rcu_read_lock();
+> -	tap = rcu_dereference(q->tap);
+> -	if (tap) {
+> -		skb->dev = tap->dev;
+> -		skb_probe_transport_header(skb);
+> -		dev_queue_xmit(skb);
+> -	} else {
+> -		kfree_skb(skb);
+> -	}
+> +	skb_probe_transport_header(skb);
+> +	dev_queue_xmit(skb);
+>  	rcu_read_unlock();
+>  
 >  	return 0;
->  }
->  
-> +static int virtnet_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info, u32 *rule_locs)
-> +{
-> +	struct virtnet_info *vi = netdev_priv(dev);
-> +	int rc;
-> +
-> +	switch (info->cmd) {
-> +	case ETHTOOL_GRXCLSRLCNT:
-> +		rc = virtnet_ethtool_get_flow_count(&vi->ff, info);
-> +		break;
-> +	case ETHTOOL_GRXCLSRULE:
-> +		rc = virtnet_ethtool_get_flow(&vi->ff, info);
-> +		break;
-> +	case ETHTOOL_GRXCLSRLALL:
-> +		rc = virtnet_ethtool_get_all_flows(&vi->ff, info, rule_locs);
-> +		break;
-> +	default:
-> +		rc = -EOPNOTSUPP;
-> +	}
-> +
-> +	return rc;
-> +}
-> +
->  static int virtnet_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info)
->  {
->  	struct virtnet_info *vi = netdev_priv(dev);
-> @@ -6611,6 +6685,7 @@ static const struct ethtool_ops virtnet_ethtool_ops = {
->  	.get_rxfh_fields = virtnet_get_hashflow,
->  	.set_rxfh_fields = virtnet_set_hashflow,
->  	.get_rx_ring_count = virtnet_get_rx_ring_count,
-> +	.get_rxnfc = virtnet_get_rxnfc,
->  	.set_rxnfc = virtnet_set_rxnfc,
->  };
->  
 > -- 
-> 2.49.0
+> 2.43.5
 
