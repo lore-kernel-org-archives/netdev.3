@@ -1,115 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0607E345EB4
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201DD3451A7
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785775934; cv=none; b=G+3QNUD2zKCj2JDOqE0G9TWrwpcWmsqDQ8j0he3kbA1hgaFLzipv+X43DVwcn+ntlsSsvKSCJL+aj0gXOLPQfkOfBiZJudSVczFXujbICPOMnbOQ4q8aeMfuqsNgIL9KkL232rH14hnwpRIfW9qQHvT1rGK0EhgC2matPka72x4=
+	t=1785776110; cv=none; b=eUc8GLG4b+pFSOvfCN9UdDb1Cu8Xwe2f6yk+XiB87+i3j+gqIap4/y1DAPW+gPRfiA/ZZZzRL23El0e8FsZ62aYW0yN2oZwYmrIjDVbH5SmCOoU+mKuNnbXiwpA+fdboBTCnNpKFZdb1DYozw7U30KGcLDl1V0d8MgLFy83KiXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785775934; c=relaxed/simple;
-	bh=9hFWHpMr6667KTRSWMmWOov01VOWplUFcHlU43Po8Bo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l/pFDKteN9oVsuV9zf4pltrJMFIEdmR5qmz5PRdX8S+BqNrMY8poecWGGUL7as6caf/Y/Gt/O0Q7g22FC5CiTOOhdD3RnrgLlztvSqOx2Q3mpRGnuyXgRMW4+wmhSBa5SoLdPb5CypM6PVzyFHmZijfCO+8LlZMu7up+1+aDmk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W4ObqZm1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785776110; c=relaxed/simple;
+	bh=Bl2pe78URcd9ZE3Dy8IPpVzatiGe59ftG2oHfhzILKo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BYb1xZVL8acOGyoxs3tz2feCrxCJWO9QV+AYXPh0FB3KYXz90xmqUurCsL8jFGGw+T1QZX6u7B4+YYKFkUv6I9Z82NmsqXqvS+U5N00+wHhNhyBvZjoMe6qM03CCJ0c4YRw4oohnmAYfHL8NW6WU/mp8azU8gCoSsP70AQgZJ6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=ZXWhe+TV; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W4ObqZm1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FAA31F00A3A
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:52:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785775932;
-	bh=ktJ1TUfqLx16vP/MAvZ075WUJwVncZtbcK2MP7W0fJA=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc;
-	b=W4ObqZm1721yih5Cc72KTg1SNORcLauLEAeTR/pQvfulljFV1MY786WAqOG+xn40r
-	 Nm6krj9Zt3xk+1UjcfnwqMXNgD5eKdkTOopLe6stmk4hDhhDo+pnbC9woAg+LNhCEU
-	 rfOXG8bFLRNqvzlg52wWAsCZKeZXzzsFdGKuftIB4RdoErFBA6IpAs8GvfEfVtD0yT
-	 DhNz6Rmwo19vJ3v461khXi2B3D+UUxZ8Sr0FXMUTiYY9fXY8So5/RbjYmIoC3rlDmt
-	 zeYYhcpO9uCkfPhrdg0r6h8cpqA0QbjEIp0DoSaTgZbDBaLOxjRM7OGX/eWpQiklrP
-	 fO7+/JOLtU5hA==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5aeb59d54b1so3416771e87.1
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 09:52:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoRbc/aiVGf34pp4vwuuquUqt6sPrLnnrfH7lGB52Wlb7iQZXa/SFqTtY/X/ZiJGNJiq2WJqN8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBiPtDA6OU8oA4eCHZd1Cdqme07XibCESM07i/OjKUHtOdMxvn
-	yJggkAUXK2w7K0NMjmnbU4eyNHKp9p3gw3EM/C2X7tQ86IuJxZ6WRvkLKLpw8yZRjAidIy6TfwE
-	SxuCLny6zWRdAnWu0TWcbAzItuOQkjiI=
-X-Received: by 2002:ac2:5218:0:b0:5b2:9c0e:a2d9 with SMTP id
- 2adb3069b0e04-5b2e4f9dd16mr1400790e87.65.1785775931139; Mon, 03 Aug 2026
- 09:52:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="ZXWhe+TV"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 6D7DD2068C;
+	Mon,  3 Aug 2026 18:54:59 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id tiE2h0heeIJq; Mon,  3 Aug 2026 18:54:59 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id E60A72067A;
+	Mon,  3 Aug 2026 18:54:58 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com E60A72067A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1785776098;
+	bh=sKNXtv7SE2Bo+hOC3o83Cp5bup5szlMBSs8A0VgDa88=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=ZXWhe+TVX0VLXbHWnm1UbsIlihoRjQm5G3piuSa8rF0bcB00RcYkyoHFuNWC2zSMw
+	 P8PNVU7cAG88gFVI88JsES+Ye5DeuXDJHN3lNsVqLjfKfu9U5pPwDGoippyoCHdz8k
+	 z8/nS0/2seFkLLYJEsyPz10z3ggBXRFsAK30rVsGKUBHKopzKfaauTCOvj3W3zWTpf
+	 fBkuQNcBPTaXDV7jBfmjD5/GVx6/d1oKvssUuuXcEM+mnzuEjWNozMK7+c1wIbYYWf
+	 RZjUYI8+oY6ykXX5KdoNsjBUi4zv5vZjn16kDICbjmow6sVFBVO7UCPQAmO7qJyqcR
+	 LEwC4SsKz5k2w==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 3 Aug
+ 2026 18:54:58 +0200
+Received: (nullmailer pid 2442231 invoked by uid 1000);
+	Mon, 03 Aug 2026 16:54:58 -0000
+Date: Mon, 3 Aug 2026 18:54:58 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: David Miller <davem@davemloft.net>, Herbert Xu
+	<herbert@gondor.apana.org.au>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH 0/8] pull request (net): ipsec 2026-07-29
+Message-ID: <anDH4o5N4-VRowu_@secunet.com>
+References: <20260729065035.1591985-1-steffen.klassert@secunet.com>
+ <20260730191720.2b585d44@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <20260802-submit-acx00-of-dynamic-v1-v1-8-0a53cd9e21cc@gmail.com>
- <2c0210b3-2c68-41f1-aa33-3f1693454849@lunn.ch> <CADvTj4pfNFVGrQV86T7X+nZQYUamxEYLLWuxVXk=av0da_XocQ@mail.gmail.com>
-In-Reply-To: <CADvTj4pfNFVGrQV86T7X+nZQYUamxEYLLWuxVXk=av0da_XocQ@mail.gmail.com>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Tue, 4 Aug 2026 00:51:57 +0800
-X-Gmail-Original-Message-ID: <CAGb2v67Wo+WG47jF_vBUOwv0Vw1SDygXMdBgpsy3R1AQ_LLfHw@mail.gmail.com>
-X-Gm-Features: AUfX_my4aoD19Jk3-8CcfeDfaoI0T_9zWEBW-1SE8UXOLwMz9Yfo_iLW9hIPcwI
-Message-ID: <CAGb2v67Wo+WG47jF_vBUOwv0Vw1SDygXMdBgpsy3R1AQ_LLfHw@mail.gmail.com>
-Subject: Re: [PATCH 08/21] dt-bindings: mfd: x-powers: add AC200
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Andre Przywara <andre.przywara@arm.com>, Richard Genoud <richard.genoud@bootlin.com>, 
-	Maxime Ripard <mripard@kernel.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260730191720.2b585d44@kernel.org>
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-On Tue, Aug 4, 2026 at 12:45=E2=80=AFAM James Hilliard
-<james.hilliard1@gmail.com> wrote:
->
-> On Mon, Aug 3, 2026 at 7:18=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote=
-:
-> >
-> > > +            ethernet-phy-control {
-> > > +                compatible =3D "x-powers,ac200-ephy-ctl";
-> > > +                nvmem-cells =3D <&ephy_calibration>;
-> > > +                nvmem-cell-names =3D "calibration";
-> > > +                phy-mode =3D "rmii";
-> > > +            };
-> >
-> > What do you mean by an ethernet PHY control?
-> >
-> > I assume this is not an actual Ethernet PHY, but some control logic
-> > around it? Where is the ethernet PHY itself?
->
-> Correct, this is not the Ethernet PHY itself. It is the package-specific
-> sideband control block that must be configured before the normal Clause 2=
-2
-> PHY registers become usable. For AC200, this control block is accessed
-> through the parent AC200 I2C regmap. For AC300, the equivalent control bl=
-ock
-> is accessed through a separate non-PHY Clause 22 address.
+On Thu, Jul 30, 2026 at 07:17:20PM -0700, Jakub Kicinski wrote:
+> On Wed, 29 Jul 2026 08:50:10 +0200 Steffen Klassert wrote:
+> > Please pull or let me know if there are problems.
+> 
+> Sorry for the delay, patch overload and Sashiko found some issues.
+> I haven't had time today to investigate either, so I just sent them
+> out as is - LMK if they are not real but AFAICT both models said
+> the same thing here.
 
-Basically, all the PHY behavior that is normally configured using strapping
-pins on a discrete PHY is done over this I2C channel.
+I don't know why I've not seen this issues when I've applied the
+patches. Looks like they were there already in the original
+submittions.
 
-> The actual Ethernet PHY is a separate device on the MAC's MDIO bus. The
-> shared PHY driver for that device is added in patch 16:
->
-> https://lore.kernel.org/linux-sunxi/20260802-submit-acx00-of-dynamic-v1-v=
-1-16-0a53cd9e21cc@gmail.com/
->
-> The later board DTS patches instantiate it as an ethernet-phy node beneat=
-h
-> the MAC's MDIO bus and reference the appropriate sideband control provide=
-r.
->
-> >
-> >        Andrew
+All I can do for now know is to revert them and send the pull
+request again.
