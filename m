@@ -1,69 +1,69 @@
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A22394788
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 05:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DAB395AFE
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 05:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785734127; cv=none; b=lnl+4fxaDIZeV5MXOqJIvEZj1Edd7ohBIBKz+ckqc+mYYp+caD9TTV24GAxg+ipLPq/Ds5yodBoMlLixhDEKe1O2jAmnmobSV4Yq66plTX4DSljJSDBNATH5hE5WdgYkOK6zR6yuNZNyFu9eBOj3fWiOoM5ek1RTHSkHgSyEt7M=
+	t=1785734129; cv=none; b=kmLQj5hO1Dgw0mL03Wbwco69pYfT18ZaaaFPBP5wUJr0IOiwcRA48wfmf89Dp9GjT5smUe9Hj1UPql7GoKafV6NkJekWUPl0pMC0y/sty7/mm27rCHs2p3fZZWCgQA4d/77C8NNIvS1/DogJ1kRtav+28oR2lmbsG71Nu/4LfMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785734127; c=relaxed/simple;
-	bh=zKmrq4Io78YBlcSoFkA6zgzyWtU0hC2kx2tv6Vt1nvQ=;
+	s=arc-20240116; t=1785734129; c=relaxed/simple;
+	bh=APfgpJTVA4pOI91gbDaanL4SMg80qg6DwGibNA5NVGQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KNoM80efZesYcxLmB5SdwWrtzvX9lMcb5tLRnb88gCNG7ZxEk2Uu3PvnEgGKgBpnJTAzu48BOfU/YK2ZDkSPtNBq962d+Abzd3UYnAyrTfpZ8yq3iGz0OocHDnRu3w7w0yUG2SBEADjjQxB/3RixhA+4oEq0lnZfF073ptmvPfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OcUyBTb+; arc=none smtp.client-ip=209.85.210.48
+	 In-Reply-To:To:Cc; b=sksvJ78MXQiwpyzpaiY2FuO8S5nAbAb/yv0voN/fzxFs9aL+Lcmp4UQdNS+OVWUPrsw7oxL5JZpwymo+OfaEYuYQSc73GHAWYD5iA1paUU6coRK/aRMdlIwbYoIaYSA+e6BoBZlewURjqN8pVUK3Cg7iVtcFal6IpGBnMdXA5bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XDHdkEZd; arc=none smtp.client-ip=209.85.210.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OcUyBTb+"
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7e9f1f24cbcso2864739a34.0
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 22:15:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XDHdkEZd"
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7ebd88be784so1889290a34.2
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 22:15:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785734125; x=1786338925; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785734126; x=1786338926; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gb4LPnphqc1DtduXOsyl640sXOpfiOxS2LbjD6EtoY4=;
-        b=OcUyBTb+IsVTddm4rsemLEj85G6IrBXOL6D10illYE2gPVN2e9VhriVSKAf0Kgm9PK
-         A5Wks3/evRitsX/YBXGdlB1Ax5lAVpPLH2ovk+oArWH5ccIsVPp8aIE+pvr/1+SU0ZPd
-         NeDg6jocHG0LyQtI5CT4HDvc108ubt7KP+NGUsU5VPg0y8001yibPvbwH72iT3JmUVPp
-         GlR5hA99dv/1VUHUUP737b4ZKOuk2ueTvm4PYvJr0S+sqD0FdZhkEVssBMRR2dlI/Vu+
-         jUDJxMwr4wJRqftTfElMM4Hy64M2NiLg3J+PYOny18JcEPb+E7lBnaCcTm2Xstljw8kl
-         JYRw==
+        bh=fkDHET87UFExhpdvkNx3ant78q307rzdUT3zfbIoItk=;
+        b=XDHdkEZdvzQfxCnplBGuU+kQYf1S11Qng9ussEFMuE6mG9NJC441s1IJ3/SCFYLhQB
+         ZgO2nEVzP1zrlkPSRTEvT2TDCb0hGA3Gb+FwvQGfR+RaSJRIRPJGQfp6997KVl7xvqMH
+         Ic7CHVR6Q9VFTJRI9IzSRLsbs+5pQSO46cVxxoTiwdZFA4eUgdnqTjrZBR9j2AKaNPdM
+         59CrBpYTvY0jn+oX5axSmDtWM0BUWyouYsLwhTGjYrAxedPjNFjir2bE92hLptkE2YHn
+         QMjT0YElC5xkoEGHUombxzE6wPsSrFmNCL7IgXlXhzUPsDY3qYJffjlW4/pTs0f5vrv4
+         qyug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785734125; x=1786338925;
+        d=1e100.net; s=20251104; t=1785734126; x=1786338926;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gb4LPnphqc1DtduXOsyl640sXOpfiOxS2LbjD6EtoY4=;
-        b=XTugJsxm4tQ+rKjnJPdXE1c4ZeTW5A5HXTBNMDo9nqtkndjCdDO34zxNmfTEAgt4YA
-         +b2bRwU3sU0JiwaDwFVf+c0u7fjIWWR4cySMStZYECEQyD8I9ZiuQ4p9dTJJTdIQm443
-         WVmjxUiSYidWSSLubM2QuQCWlCQZE41RkYpPLnAVPdd2Kry42cs7N+HBx+6mrUxVuEJi
-         aANlr6U2eJlVsqHGFo4TQ5sHJb8gh8vD2eEAiOvFsTALQDirV60WJ0u9qjoKyigNni2h
-         4CY6FRAKcbaC/TV9kkO3rgaLUkQwwxj+AN/8LOJBEAHc+YOLeU+HHeaDJuUW4DlpLVQj
-         RKwQ==
-X-Gm-Message-State: AOJu0Yw0Xd7N64lLKOBj/pxfcGjJK8fRxtcUn6GpGTiO5STkNSn/PMvL
-	b7S7T7lKdyVY/Chb9WQorJtAFmj15ISqUtLu4m/3w5QQ5zT7sj0YN1wc
-X-Gm-Gg: AR+sD13UxHiIQP7sxSJYUdo0Jx98SN654nfMMQDaRH/YJWGBoDShDAkw//2gtBkVYXp
-	feS5spD4fLYBa01PVAFrsVw2eqwunQgHmHz0emgscJF9Iyy2Wgq4BN5abg6Fh9I+jVukE9rka2i
-	depsXbYOSyazLtCO/9eLMTdDAHQDxbhdKQfMOjENi5IvVEsiBIt8PVsdovojjMqHS3wKAziu7wM
-	1aPdXw5vqH4drrH6mxOVX4tlu0W1t9mFa8O2AkSTftZCm+rf/Ju/JGVCrI3Y14VlYnzxhUZfv2T
-	x4V5KL4VSXXjdtaxyl0r14rEehQukNVog1VZegkbaTw2OECx/UoARc1hTuYiXLA+JucIeBYfWHm
-	mP7Och/S53/wHUYWj8NM1/SmjmrsGeEMHjgnxcrQtfwqCch5y09P5QwuFzkGxIc/3jixQLJtb78
-	YeJAjXL/OCJShR71CzBqyzYN8QO88Z7NCkjBykILwq/btpJw6mWSXS4Yl68nvL+xFCOtRcSYi3K
-	+x5w3mcK6u/4gykAHhmOeppf+4Vo69EzYM1FmBFT3C0czjgBb/Mn9ULysU+Y16Xj3QBda2SrT/h
-	2ZelLJMbzfntJQEeqlfvG0ne7BSZOUHigPfqiUGumXzUuIGqQ3apb1oFEYvVTtgmkWGSO3Jw6Ss
-	SFfLs4eYLX1gSyRKmpDakd4/HGg==
-X-Received: by 2002:a05:6830:7086:10b0:7db:a297:9e62 with SMTP id 46e09a7af769-7f1892c8017mr4283606a34.8.1785734124209;
-        Sun, 02 Aug 2026 22:15:24 -0700 (PDT)
+        bh=fkDHET87UFExhpdvkNx3ant78q307rzdUT3zfbIoItk=;
+        b=rfXTLgSBzg4wJCv4BAuaSbpAPmtv5Z4woQqGGpjJpLYUYu7SnRpxa5Xt14b7b4fQZi
+         Jw6/0cWz71uW7AV2JgorP8EdbgneRQPFdaYheM+J4pWxAECPQDP6lnPya12oSWnhEmAw
+         7vydsvhbgJWBNuufG+ek6fYs4uc6MbceA31y49i1TP89vCB4a2lfoR9bVa4SEIYQG4fd
+         1QZRhlS+eqsAb55cNb0/hFLpofi6lMpSKhGh144BNKahjwwORO7JfOjwVc7V5TkMk6Sr
+         m2rHcLJpe3KSIjkg/qgtTiigyMsCYcosEzAOgfaEgpFGOqiQ9nYcedq0pLkZY3z3XXrQ
+         IfhQ==
+X-Gm-Message-State: AOJu0Yy8M/ocUxNPXNZLutDW9NHEBM6/3pgsYlRggConGc0rFajOA70n
+	OGY99gh0qGYgxSl2/kyWhoK7IW3BRWnthTnM3AA+STyT7Gm4NKVyKKDj
+X-Gm-Gg: AR+sD10tqNmaO6PEuAOlM8oZZyGkZIyHTPOE1BQtwwzxziZCDBhtyQCrsQCwrIX/Zib
+	d7Nkm5EP3iZ46XydLsVI+QS2SO0Fc7+KwJDJfzRua1mH/QynAreVUMmLXknM/lo5Hoo79AZnHAN
+	MLhjMrWu1M0877FcA0jsdn12TIlfKkmgbW1QSsFDf4zrUNRikBx/U0RKyyAGDWWM0+6/MsO/INR
+	nm8IQJeb1FYQb7mItwDO/+4pRy4hQYOO22uS+pLiJgzTyduWb5bWD6+pp9BKPocCsVWcP0XCxg7
+	xMXF5CGefz4SCcZh4xnchmgoe7myrycRCYKAnOK1DpuEA6pJAKWSWUYukM9HnxvjFPi+uHthkP2
+	IOt5rebeFOnq0tLjgF69OB2Hm2pQZTkpFSyWVw5RYk6dNxOPxnmf4QOY0YJnndK2QMo9Ra+UIas
+	4//TysIT/azFDR0NopSGEnIx/PA5C9esJPF7YQcXBoGSmaakgluFbIGV757SM2RCFhKQwbXnVGM
+	Et3QCM/HOTn39UbyrKIewXXZrVhXYvkK6MzUsOfU2B7HI/S2GEdQ1YMiLo10WbJkIwuQdpVmou0
+	Onv1vOV9byPoITDiRncVlTYvbtAtAQdCm8Kk10eKO2V89jvbEX/ShmDc+hump1RiKhWv9+eYNF0
+	IEEYud58pZwhDvD5+q4CI0BtuBFR1u4U1/rJRvw==
+X-Received: by 2002:a05:6830:8389:b0:7e9:e709:44f6 with SMTP id 46e09a7af769-7f196ea3b40mr13694676a34.12.1785734125552;
+        Sun, 02 Aug 2026 22:15:25 -0700 (PDT)
 Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f18f07a5e3sm6787108a34.15.2026.08.02.22.15.22
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f18f07a5e3sm6787108a34.15.2026.08.02.22.15.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 22:15:23 -0700 (PDT)
+        Sun, 02 Aug 2026 22:15:25 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sun, 02 Aug 2026 23:14:13 -0600
-Subject: [PATCH 03/21] arm64: dts: allwinner: h616: add EMAC1 controller
+Date: Sun, 02 Aug 2026 23:14:14 -0600
+Subject: [PATCH 04/21] net: mdio: factor out OF child registration helpers
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,7 +72,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260802-submit-acx00-of-dynamic-v1-v1-3-0a53cd9e21cc@gmail.com>
+Message-Id: <20260802-submit-acx00-of-dynamic-v1-v1-4-0a53cd9e21cc@gmail.com>
 References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
 In-Reply-To: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -101,70 +101,126 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  James Hilliard <james.hilliard1@gmail.com>
 X-Mailer: b4 0.15.2
 
-From: Richard Genoud <richard.genoud@bootlin.com>
+Live OF reconfiguration needs to create the same PHY and generic MDIO
+devices as initial bus population, including legacy PHY nodes that need
+address scanning.
 
-The H616 has a secondary EMAC controller that supports only RMII at
-10/100 Mbps. It connects through PA0-PA9 to an EPHY in a companion
-AC200 or AC300 package.
+Factor fixed-address child registration and PHY address scanning into
+helpers. The old scan loop also visited every free address for a child
+without a reg property even when the child was not a PHY. Reject that case
+before scanning while preserving enumeration of valid PHY and generic MDIO
+children.
 
-Add the EMAC1 controller and RMII pin group. Leave the controller
-disabled for boards to enable when the companion Ethernet hardware
-is present.
-
-Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
- arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi | 30 ++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/net/mdio/of_mdio.c | 66 ++++++++++++++++++++++++++++------------------
+ 1 file changed, 40 insertions(+), 26 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
-index 90fe56a1d3cd..6879f27c2b2b 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
-@@ -432,6 +432,14 @@ pwm5_pin: pwm5-pin {
- 				function = "pwm5";
- 			};
+diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
+index b8d298c04d3f..051e449bbe7c 100644
+--- a/drivers/net/mdio/of_mdio.c
++++ b/drivers/net/mdio/of_mdio.c
+@@ -77,6 +77,15 @@ static int of_mdiobus_register_device(struct mii_bus *mdio,
+ 	return 0;
+ }
  
-+			/omit-if-no-ref/
-+			rmii_emac1_pins: rmii-emac1-pins {
-+				pins = "PA0", "PA1", "PA2", "PA3", "PA4",
-+					"PA5", "PA6", "PA7", "PA8", "PA9";
-+				function = "emac1";
-+				drive-strength = <40>;
-+			};
++static int of_mdiobus_register_child(struct mii_bus *mdio,
++				     struct device_node *child, u32 addr)
++{
++	if (of_mdiobus_child_is_phy(child))
++		return of_mdiobus_register_phy(mdio, child, addr);
 +
- 			/omit-if-no-ref/
- 			spi0_pins: spi0-pins {
- 				pins = "PC0", "PC2", "PC4";
-@@ -789,6 +797,28 @@ mdio0: mdio {
- 			};
- 		};
++	return of_mdiobus_register_device(mdio, child, addr);
++}
++
+ /* The following is a list of PHY compatible strings which appear in
+  * some DTBs. The compatible string is never matched against a PHY
+  * driver, so is pointless. We only expect devices which are not PHYs
+@@ -136,6 +145,32 @@ bool of_mdiobus_child_is_phy(struct device_node *child)
+ }
+ EXPORT_SYMBOL(of_mdiobus_child_is_phy);
  
-+		emac1: ethernet@5030000 {
-+			compatible = "allwinner,sun50i-h616-emac1";
-+			reg = <0x05030000 0x10000>;
-+			interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "macirq";
-+			clocks = <&ccu CLK_BUS_EMAC1>;
-+			clock-names = "stmmaceth";
-+			resets = <&ccu RST_BUS_EMAC1>;
-+			reset-names = "stmmaceth";
-+			syscon = <&syscon>;
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&rmii_emac1_pins>;
-+			phy-mode = "rmii";
-+			status = "disabled";
++static int of_mdiobus_scan_phy(struct mii_bus *mdio,
++			       struct device_node *child)
++{
++	int addr, rc;
 +
-+			mdio1: mdio {
-+				compatible = "snps,dwmac-mdio";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+			};
-+		};
++	if (!of_mdiobus_child_is_phy(child))
++		return -ENODEV;
 +
- 		gpadc: adc@5070000 {
- 			compatible = "allwinner,sun50i-h616-gpadc",
- 				     "allwinner,sun20i-d1-gpadc";
++	for (addr = 0; addr < PHY_MAX_ADDR; addr++) {
++		if (mdiobus_is_registered_device(mdio, addr))
++			continue;
++
++		dev_info(&mdio->dev, "scan phy %pOFn at address %i\n",
++			 child, addr);
++
++		/* -ENODEV means that scanning should continue. */
++		rc = of_mdiobus_register_child(mdio, child, addr);
++		if (!rc)
++			return 0;
++		if (rc != -ENODEV)
++			return rc;
++	}
++
++	return -ENODEV;
++}
++
+ static int __of_mdiobus_parse_phys(struct mii_bus *mdio, struct device_node *np,
+ 				   bool *scanphys)
+ {
+@@ -164,10 +199,7 @@ static int __of_mdiobus_parse_phys(struct mii_bus *mdio, struct device_node *np,
+ 			continue;
+ 		}
+ 
+-		if (of_mdiobus_child_is_phy(child))
+-			rc = of_mdiobus_register_phy(mdio, child, addr);
+-		else
+-			rc = of_mdiobus_register_device(mdio, child, addr);
++		rc = of_mdiobus_register_child(mdio, child, addr);
+ 
+ 		if (rc == -ENODEV)
+ 			dev_err(&mdio->dev,
+@@ -197,7 +229,7 @@ int __of_mdiobus_register(struct mii_bus *mdio, struct device_node *np,
+ {
+ 	struct device_node *child;
+ 	bool scanphys = false;
+-	int addr, rc;
++	int rc;
+ 
+ 	if (!np)
+ 		return __mdiobus_register(mdio, owner);
+@@ -238,27 +270,9 @@ int __of_mdiobus_register(struct mii_bus *mdio, struct device_node *np,
+ 		    of_node_name_eq(child, "ethernet-phy-package"))
+ 			continue;
+ 
+-		for (addr = 0; addr < PHY_MAX_ADDR; addr++) {
+-			/* skip already registered PHYs */
+-			if (mdiobus_is_registered_device(mdio, addr))
+-				continue;
+-
+-			/* be noisy to encourage people to set reg property */
+-			dev_info(&mdio->dev, "scan phy %pOFn at address %i\n",
+-				 child, addr);
+-
+-			if (of_mdiobus_child_is_phy(child)) {
+-				/* -ENODEV is the return code that PHYLIB has
+-				 * standardized on to indicate that bus
+-				 * scanning should continue.
+-				 */
+-				rc = of_mdiobus_register_phy(mdio, child, addr);
+-				if (!rc)
+-					break;
+-				if (rc != -ENODEV)
+-					goto put_unregister;
+-			}
+-		}
++		rc = of_mdiobus_scan_phy(mdio, child);
++		if (rc && rc != -ENODEV)
++			goto put_unregister;
+ 	}
+ 
+ 	return 0;
 
 -- 
 2.53.0
