@@ -1,141 +1,160 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011055.outbound.protection.outlook.com [40.93.194.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B23B3AFD19
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 09:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785747676; cv=fail; b=WMz20hMkdngDRATJNGZea8+LZKvw3MBSoeEDhTTmOBKYPwS3jVuqCAp4m+jkgrk2t2RCsJ2w2czpfcacEQUB9dashSb9g/bFBMHW8JHlap5uKO3bys869kE9azn8tRVD2Sy4XO+Tbr91P4+NFCbOTsp8CknkFxZoYw4Otb2SSl0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785747676; c=relaxed/simple;
-	bh=cvJeP/wQg0NsfcUjfCADyj8GqNQgC4//t6HwiPc4GSQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gaCNOGJqiDPLURwaaY1idY0M8No1vKuDLgaNJymi7z6uc1wHlphdKdNmX4NtHS7ieZtZjo7N07H+Lx7FXHJ/o0WeKnjzWJAwfLQJ8ygVsCXaD4AjqHCZ2mmqQKHR6CTNi69DdOyLkC6SUAF+xLRnv93AY8px+emDaNOfKr98lBE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ugos3IkX; arc=fail smtp.client-ip=40.93.194.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1049B3B9DA1
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 09:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785747682; cv=none; b=JPn1jQgcgiE11gA6YIqN2/byKtHVD/I3gSFh/2GTwnK8DMKzFNQqyOCT5bgIUUZ4Jyj4WHS476QwSIK1aw/RibtMQMf/1gzNaLERuXHPVfJ+yWbTEZWoy7sMfNTb6vaj+/cHS19kuVAc97mbVOq9oXe8uhCLU5ZfBI8Sw39xezk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785747682; c=relaxed/simple;
+	bh=A6jrGJQtDJIL30mxb3XxVFNiY/hbrxZT0aR9eyUYw4A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZgmxgJ8hrUdwi5cO3ZsYYYM3lPdMKE1VXskTfFTin7Dee0MPxKSeM2+pT9lAJJRO4Rk6ORhqbDKntV3mTm+0jCI+FdXmTnbwBvc6m0bw8gsyiqgH/ODSq+GXj96RcAHdCbwcRErU+35sAb9E4puYN6doZDvFyYeA2EYJAmaD8lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=dXmt8Plc; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ugos3IkX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a+iOkih7+1XbAxmgXCx55OcmGBJTg0xrOS9aJWFveoXeM+N4qQUYPuu7Gft2bE4UlO6xbctvBuEI2wfE7UU2Mdo8C5tuReUTf5J7shj4WwFP6lrJwEakHWmbDWfrqehzIduGzxEQv9SvlrpMgemiClsy6GyiOl5LbNo9NmoF/nqhuJ260w3zut9ikYdr156FR8Wa4dFiIF+6IYQ5JAiPVrFkWUivUDGBDYrd05ePn2eW6Phr4tQMpq0C1Do/UxCjkrIBhllstsqXtZAGDuAjgHcaIiiG6XCejO+fSBT7uEcDluwAXEdSj+alSV300OGtKV23dJqS0T7JjfliiIHbxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0qRgX3V5ajGHJI//9n0a2DlxG9nDbUrhJ0Fe/tV0dNA=;
- b=uDvJdsxzNDnf8HuNC11uoF6IMlcmi26XDZrMc9Ud4wqO4eXSFwu+8r3x3exypcT3eGV8anWRjPX1VnnP1eniAIHGgkx/r9WLNL1djejBjiU8Bsjg/rD3+E7v1sui2IjJt6AZhcI3mB8pDCQrugXREEsKtpOThEp+lVZ5092Z2vyaUF15J2hwViloZ7c0u9hPalnqbf/Dg7tL1SEU5zGBvjFailvGN1TmJTkDYOd/dJ2afVW6jypuPyLOPJJGzZIwnmZs7Q5YQkMVb4/6xWdvvvrf5FOOi3YGEugINu2m4/pK5ePBiwKK/TyHbDPfVktwei9SelOxfYbw+NvHQuEXQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0qRgX3V5ajGHJI//9n0a2DlxG9nDbUrhJ0Fe/tV0dNA=;
- b=ugos3IkX47vtdUlkt7N/Ocw6ThSiI+RwEjqpok11FgDuxyUcs0X6LufiWQfDc5jeuUGemBIg6RkGwLI/XpW2TZzCKRgw5zdXuZzgUiDFcWBXwZ0X/HWYvhKREBNvw/JFOrj1kWWj6dC6ukOF2rjdpamJItc6twI5NEGdfV+7pJ6dwsI0lbG0YDyVueVqW4qyaipxXpmxN1sTzNKpWojx3RU5nPwsoWWYj0DpXKe4Qunuo9/A9eRPZSs0IoThb/d0lGjijYDQ8xvb/ZhVcFHtExrbZLgqV+UrdLJI/PcmXhsUgmHCLPRn2z40Pw8SzSAyzal8IvWCeHIhIy8g3vMaug==
-Received: from MW3PR05CA0020.namprd05.prod.outlook.com (2603:10b6:303:2b::25)
- by DM6PR12MB4043.namprd12.prod.outlook.com (2603:10b6:5:216::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Mon, 3 Aug
- 2026 09:01:11 +0000
-Received: from CO1PEPF000075ED.namprd03.prod.outlook.com
- (2603:10b6:303:2b:cafe::66) by MW3PR05CA0020.outlook.office365.com
- (2603:10b6:303:2b::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.15 via Frontend Transport; Mon, 3
- Aug 2026 09:01:11 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CO1PEPF000075ED.mail.protection.outlook.com (10.167.249.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.292.8 via Frontend Transport; Mon, 3 Aug 2026 09:01:10 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 3 Aug
- 2026 02:00:50 -0700
-Received: from nps-server-23.mtl.nbulabs.nvidia.com (10.126.231.37) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Mon, 3 Aug 2026 02:00:46 -0700
-From: Shay Drory <shayd@nvidia.com>
-To: <netdev@vger.kernel.org>, <jiri@resnulli.us>, <kuba@kernel.org>,
-	<edumazet@google.com>, <davem@davemloft.net>, <pabeni@redhat.com>,
-	<horms@kernel.org>
-CC: Shay Drory <shayd@nvidia.com>, Parav Pandit <parav@nvidia.com>
-Subject: [PATCH net] devlink: Expose external flag for PCI SF ports
-Date: Mon, 3 Aug 2026 12:00:12 +0300
-Message-ID: <20260803090012.257242-1-shayd@nvidia.com>
-X-Mailer: git-send-email 2.38.1
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="dXmt8Plc"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47f96c5b722so1801038f8f.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 02:01:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1785747677; x=1786352477; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7c8ajU7Bc5fO7IMCQU0cwsLx5uJDTGm1qTHU9/J8vs4=;
+        b=dXmt8Plc4V8OFjKUyT1OcliVle3n2TVjN0Vu2NntFGVmm51aEyF1EyTQr6tGG/s8Dd
+         UX4qnmfCUOJa9Y4heC1+/lbLnntTZcGrz+3Tk3cL/EMbA21G5H0J0YRi/2ZADaOIagRv
+         O4js0Qd1wgFT79ID7AmY8ubZhbm3jqMw8JHg8/gsXcUOkKm1SdSoH0BRT2YObncQzny9
+         QqDGtNlURng41GZHIXh4Ke3IY1pd/wGsViVzZXCMIgbQkK3ccLsivVGnA0VqhQo99Lxc
+         KId99/VBnGAYIEoKC4Bv62PO8tDdCiGzYZmOPqU0BjNx7Ra2v96fDoHv3IhVU5GI6InB
+         GREA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785747677; x=1786352477;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7c8ajU7Bc5fO7IMCQU0cwsLx5uJDTGm1qTHU9/J8vs4=;
+        b=QwP4fmY9D/HLhnP10jtDuhxvFnxchk30/lLyxKQp7ZLoOeowYtlPkn13sOV8ZynQlS
+         q0kig/QFTD5MlD34P9hR8A+LrbE17WaMXFd8zociQxHzu/WEWmC/TNcpDH7BwiCsiaWQ
+         joHoudOjX1nK7ZCZYBMaMB1wEwjHDW8cyMrhEDz0xEaZeOOFz16v76X/Xh4m35rT7Hog
+         ZwmcFrWrImazDET34iYyYxMnoiILznX9QfzIBi4se3TOZDSlHqbF12EkmUTfJz3jvPEW
+         jHNZYs3cP9xwoUWHMwvsXmLRzhDwvtX+PWyeFSO3brTYtriy9OENNuMXo+BHsaF07vLb
+         XB6g==
+X-Forwarded-Encrypted: i=1; AHgh+Rr7uyf+QDJbW9Ta0AV7eOlPEAqxFM1rK0ODT9LCIyXGJ51vBOzYsORKQug+3LHDQvsKQNbJB0M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiNVQNiHh2yO8YwjgGP4JckAOh0yWQUiIgol1e5fyRU+jpFiK7
+	1ER19DwTM5A9xgY4QRMAtnTkJ9DRLE5vd8PPNnuOZug0h7Cmw/wCftJvzmJd+XF1ZIk=
+X-Gm-Gg: AR+sD12FCr08nmxXaCVx/h+s8kC1N3DopbMHg9yNg8Ys+0/GpY4+Lf4TUhE6J4/hxsf
+	Q64mz565pc5xdgwRx3f5LuRbPXI8G+hck6QEtCfAh3in71ESilDceZlsAqkG8Gcjr4a5WPfjQ0I
+	SBT98jmPqei7IcWrOO1JrBNglmofi/G8nkrlAZsB2oha9M9WX2vpV5W4tCsFKkerKeiMi7GR/Tl
+	AAvm6XJw+cHSC6Z2Mbjpp8FMKSxP+g/v7PCwTc7IoRLSjbhJnde37LdnuYTJ+loFyyzBJuuIbsT
+	FfYWIhQ850siv4CcZjpPa5/uepUWMHXURv+wXell1J2LcdLvy9pKP21k6KY+bHs8mdFUdqOMsv5
+	nXT/jx5VwuQlZMoSpH19zoK04lfTomPBEbyxeiodjjawLB+gm4P8A4mIu+O67i+ApXdLOMpqhRA
+	/4qXc/fJd4HpqvdDtJ5LZ1G92zbYimwghnWHpUUFWdQuuruQFgqjuVUIYG/d0hjnjklCzUkg6UY
+	MEr4rfXjEqBPy4w3gWaEr7qnp8mN1IH2PTjFZ02a/LbDMBvSdszMBStNe2Hk0+Mfz4JzYZBijdc
+	rt3/GB4ulnMl/jqg4QvpTqRo1kS+nb8=
+X-Received: by 2002:a05:6000:481c:b0:47f:8ac0:ccd3 with SMTP id ffacd0b85a97d-47fd9fa5e61mr20758749f8f.2.1785747677195;
+        Mon, 03 Aug 2026 02:01:17 -0700 (PDT)
+Received: from ?IPV6:2a00:1028:838d:271e:8e3b:4aff:fe4c:a100? (dynamic-2a00-1028-838d-271e-8e3b-4aff-fe4c-a100.ipv6.o2.cz. [2a00:1028:838d:271e:8e3b:4aff:fe4c:a100])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd458b73asm29125053f8f.29.2026.08.03.02.01.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Aug 2026 02:01:16 -0700 (PDT)
+Message-ID: <7b24e554-0f13-40fb-bc04-dd64cdb93528@suse.com>
+Date: Mon, 3 Aug 2026 11:01:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000075ED:EE_|DM6PR12MB4043:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2394f4cf-4e72-41bc-5dfe-08def13dc3a3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|376014|1800799024|56012099006|10067099003|11063799006|6133799003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	SP+OJtYwfApcE5LnrX0gG+VW3LVNPe1r3TkBs2etav7WN6YM8Q/TRwfkI5PVw/xwiCa3JLnXCGUKho9xDb0H1f7yuoHtFJpL2eZfWbl2fTQmukfptPeHB0TghW1SH3rhJO7KJB9SdUSfoFd9aI25oe6X6pdUg2qccHsneSR+/nEZQYpu4IKuMG8pMElQJ/GB1cIc2vZSJxMG0amLsWPb4nhZ2w5GWOCqS6eZZ/ozDD9rmhwzuGoy5KtxgKFLuzJqXlN8p9XUWkSenRlv0pjulmU9ePkOSGa1ExMnvKeeULRXulleE88sXye8T7eygxxswEj1AY6Q8etZdjfL5JkjYOi+bVjN/HsCWn4+p+VfJXwPcMy4RKybiMSKxEhFCaDs9CP6BZRIXh5PQx4GFLAySBSONelPH/9co0k6Tu/RNlweZpVw16UMgKgo/a/Eer/Dj/APqwReVCDaqLIQ4XJcdLKDJTZuP+Yt1tjQdl96nHmFkrsUDoN+PdNdYKjVOVCWucHtxWAI0LhT15k17jAaVvoNfi+AIF9dqjVyslDWaJDKyFnsV8jNczPp9BJ+m2tZi4dpsHCi/4+arohbtGxw1f3OzeKrA4AiC40VST324cZ1BJdYhCCH+zpdFUQYDwLXcD5ajte9FMov0+OyapTz8FXnm1aqQZ/0hE3O+gR5trspRM8VAvnV5I1HUnebbihS7g+7pHxP25WOKpIS4HDZvQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(376014)(1800799024)(56012099006)(10067099003)(11063799006)(6133799003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	fZfTFfVFIrQh0pYuZmqA1zGb/THzouJPcw1zoLDOEzeOvOOqRSz3Gh1wycLTMJKgAGURXjsJlh7TBSIIDWvg1MunzoUEiQwgA6zcEsvEWp4rqBwAzjWcLo3Du18AKS84EBUVDmeX3PCdfXb+skt7PqAP+lj3OX4Ef6GXKCxKPsFyXfXs/btXHWZRxy0ajMGSYczpCL1lq7EjzeT+iE4ymtxqAszSlmeuapDSRdATp3AXSmhsvTs27KIjWGej6E65071MggA6H03ts24az/oPXiCCY+IHAHgDuJrjUyLK87FLqpj8pmx46gZfBL6bK5M8huq8YCKcDB2i1o/6TI7Wvvm850bjBxQygcenmNQ2T6EyubJaMhSEe4q0OV+GkDl0HCsc5OIhLScdatsrdAXzijYfJ4mrazpd27c4NXc7jwGC7PYOkhgHkR/DjBsCg4Jm
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 09:01:10.9280
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2394f4cf-4e72-41bc-5dfe-08def13dc3a3
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000075ED.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4043
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 09/10] rust: macros: remove `THIS_MODULE` static from
+ `module!`
+To: Alvin Sun <alvin.sun@linux.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann
+ <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>,
+ David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
+ Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>,
+ Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>,
+ Igor Korotin <igor.korotin@linux.dev>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org,
+ linux-modules@vger.kernel.org, driver-core@lists.linux.dev,
+ dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-pci@vger.kernel.org
+References: <20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev>
+ <20260723-fix-fops-owner-v9-9-c1c3af7f7bcb@linux.dev>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260723-fix-fops-owner-v9-9-c1c3af7f7bcb@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The external flag is part of the PCI SF port attributes, but unlike the
-PCI PF and PCI VF flavours it was never filled into the port dump, so
-userspace could not query it directly.
+On 7/23/26 4:10 AM, Alvin Sun wrote:
+> All users have been migrated to `ModuleMetadata::THIS_MODULE` const or
+> `this_module::<LocalModule>()` helper. The `static THIS_MODULE`
+> generated by the `module!` macro is no longer referenced anywhere,
+> so remove it to avoid having two sources of the same `ThisModule`
+> pointer.
+> 
+> Assisted-by: opencode:glm-5.2
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Acked-by: Danilo Krummrich <dakr@kernel.org>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 
-Reporting of the external flag was missed for SF ports. Hence, put
-DEVLINK_ATTR_PORT_EXTERNAL for the PCI SF flavour as well, matching what
-PCI PF and PCI VF ports already report.
+Acked-by: Petr Pavlu <petr.pavlu@suse.com>
 
-$ devlink port show pci/0033:01:00.0/163840
- pci/0033:01:00.0/163840: type eth netdev eth1 flavour pcisf controller 1 pfnum 0 sfnum 77 external true splittable false
-
-Fixes: a1ab3e4554b5 ("devlink: Extend SF port attributes to have external attribute")
-Reviewed-by: Parav Pandit <parav@nvidia.com>
-Signed-off-by: Shay Drory <shayd@nvidia.com>
----
- net/devlink/port.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/devlink/port.c b/net/devlink/port.c
-index dc82cac68e7d..1528f2d148df 100644
---- a/net/devlink/port.c
-+++ b/net/devlink/port.c
-@@ -267,6 +267,8 @@ static int devlink_nl_port_attrs_put(struct sk_buff *msg,
- 		    nla_put_u32(msg, DEVLINK_ATTR_PORT_PCI_SF_NUMBER,
- 				attrs->pci_sf.sf))
- 			return -EMSGSIZE;
-+		if (nla_put_u8(msg, DEVLINK_ATTR_PORT_EXTERNAL, attrs->pci_sf.external))
-+			return -EMSGSIZE;
- 		break;
- 	case DEVLINK_PORT_FLAVOUR_PHYSICAL:
- 	case DEVLINK_PORT_FLAVOUR_CPU:
--- 
-2.38.1
+> ---
+>  rust/macros/module.rs | 16 ----------------
+>  1 file changed, 16 deletions(-)
+> 
+> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+> index aa9a618d5d19e..23b6a1b456b80 100644
+> --- a/rust/macros/module.rs
+> +++ b/rust/macros/module.rs
+> @@ -497,22 +497,6 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
+>          /// Used by the printing macros, e.g. [`info!`].
+>          const __LOG_PREFIX: &[u8] = #name_cstr.to_bytes_with_nul();
+>  
+> -        // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
+> -        // freed until the module is unloaded.
+> -        #[cfg(MODULE)]
+> -        static THIS_MODULE: ::kernel::ThisModule = unsafe {
+> -            extern "C" {
+> -                static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
+> -            };
+> -
+> -            ::kernel::ThisModule::from_ptr(__this_module.get())
+> -        };
+> -
+> -        #[cfg(not(MODULE))]
+> -        static THIS_MODULE: ::kernel::ThisModule = unsafe {
+> -            ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
+> -        };
+> -
+>          /// The `LocalModule` type is the type of the module created by `module!`,
+>          /// `module_pci_driver!`, `module_platform_driver!`, etc.
+>          type LocalModule = #type_;
+> 
 
