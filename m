@@ -1,81 +1,153 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25B61FCF41;
-	Mon,  3 Aug 2026 13:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9544C401A08
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 13:31:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785763847; cv=none; b=Klq3ZiCaHI/nsNpbEPKpo0a5lHPn455liN4P28SWjgtqMTQRAlHTrmoSWhe6hROeALIB3Sa2/NTDmAuV9cDgOMoKxWC4xZFXK0GqZNeea84RhmlhasUoT4klJFD1+CT2FrpGNrv/rGR/sBoJIiV/O0LGVM5eMFsaYCjbeLzVUok=
+	t=1785763868; cv=none; b=YlIE/cbZBNLGxCM8SRe/2Js7F82NEkr+cLOpdtJU+98cpyAdwMJ9QL+sMrZNdz5NHm43BKiZ8+e7RYcEDdTuhnb6Cg5af+e/cbn5bOzTpV7vX9wc1FlPYb41s+lQf7G9lOMPdKaESAax1LuzHQaPjyB82ybUGK5cykMKcAyJkyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785763847; c=relaxed/simple;
-	bh=kO8Br3YMLtRFslGCiQwZo+9kGlBMhC8lw66HVFjVC38=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=twNB6WRCdjXSc3Exq8KE+iQpvvNOhb1X1yHxg2C5T7o3EEdLgp83j+I9pGRuwcegeG49BZr7iGqcWs8LvlnIgN39/ByDXUHf9Sl441e5Vr+9Opi0CDAVNnU3n3oWs5qcAf774oMDuwpazw0BQMXoMU18JBwxKBiCgI3bTSl83dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=DFsKnY+g; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785763868; c=relaxed/simple;
+	bh=s7sVT5nQKfhO1MYQ+cpOMkikgu6fjfHMzycska5FUMk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bBZpGFbmjEoNt424avaujIjmFkhe6CiFgCjsWFgWJS4JSYpJihzwYgyZMNPNylwqppBPC/esVYa0LEG46enQD9DEBXvTN8wlJp8q6a28X5SZOuN0nuuiovRtqN1ZI0jdCg3ha9AZwad44yd4z/hKmpFS4XLBJzXMm1RsT+USuB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZLcmUBA; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="DFsKnY+g"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=s0Nn8hdIgXmWzmhcG99Oh2fhpDgLrw7IOOOOFJwYqeY=; b=DFsKnY+gVEOvTe+do19wn9YHgk
-	jRtADcklHMwQYphjMhoDQN3im0vzjhJqZ+cZcdQM2GvtsYAPRMsh0XeCmjR+RO9EVWjPvFEyPxI3L
-	mV4GVOWX7lPAQ81k17dC9bRNcl+WjRpzx1/y0tvhwiSHxj9sDpNY3vCz1EMcEb8ZaSwc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wqskO-00FjGe-HJ; Mon, 03 Aug 2026 15:30:28 +0200
-Date: Mon, 3 Aug 2026 15:30:28 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Andre Przywara <andre.przywara@arm.com>
-Cc: James Hilliard <james.hilliard1@gmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZLcmUBA"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so2245762a91.2
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 06:31:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785763861; x=1786368661; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NaH5rfBTvvJEbq+DmDZKDP4NbrrXRvHP/DgwMEdPwTA=;
+        b=eZLcmUBAWfCzhIdeH6fNswwvhJSuwlsTVOX3tAzn+2tvQdbqDH5+SXplD09H6kd2Wg
+         YdOVkLjdSzzqIHV2mlf3d95lLLmfvzqkk5rxjfwiboeF3FlrKtgKo+h3+bPRi1HkkIg0
+         QJVIFQwGq+NYQh7qvAL5HwCpEOKkli1kosPW5ihIdqFgeHDsltcCIpObfVSmB6XytIHB
+         0FfaQM9CyHpAaJgW5qIC4iOH4EvjSHiSXAWOF47ZRuw000cJnAIXX1OLt52Jsp8bfL6v
+         /hK6K60QYJb+zSeB6IsytGKCU7CVFKqRYwxxBczU7X0do2m82AWnZ+nsYp0Nottz3Nkm
+         gPbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785763861; x=1786368661;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NaH5rfBTvvJEbq+DmDZKDP4NbrrXRvHP/DgwMEdPwTA=;
+        b=D4j4BtPk27qvvPrEF0ZI7BSfTfpsmJJd/DeljE/w89JYApIFg4r7iuEcJP2VzfzlNy
+         yRwMcVUDAVB/eFQCl824g9mnX6/HYFOexbSizAg1TuxSjbsDTNzqGAru04njwLbEfisb
+         0bAE1T5ogBWwNiO2iwoJwzJMfA3iykX7+ubKUEkpGFQZxQLyZMJBs11plmi2Aq2AVGTi
+         +pbPCOLUhkuW6Ob+Gdk21l23t+XBtQ+A0g49+gQWhF1F5VYRwxb2/RaqLXaZ94yhD9Rv
+         iGm5/lcqVAeWKmm+tapqOgELJA/F30syor6ixILiiIJJQmcp+/Q0N8rXLTERjAIQTjdb
+         w8RA==
+X-Forwarded-Encrypted: i=1; AHgh+RooHQ+V/urMu1pDo9BcMbOYoUcAbCnPZW9UJmTaQxpuNFoNf3OucfqE3euwXOuvCraaE9xroBM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyyrCpHsb1eHKkfHTI+J6gY1q/OMDHyt+CZlIkq97AReo1/v1K
+	cPv8/c6cU/gVSGqMKpnVm6bv+QdOXC/cIFfkFw4DIYe9vRxojDAGSVs=
+X-Gm-Gg: AR+sD12YRbUuhi9DMSUr/TWatGmgfM8SXCIkteSGXUHxXyoEnhqgk979pZ1uXPeDFh/
+	PY6rZJYGtg4evYfXmdkN8XwrbTaD8Px//e3diEjf6fHUpifaLEBZXtLuglF2mM6TQIXxQbBFDBn
+	LQNbPnXtd4MjkJ+4PFjo+0XOffYdEGpOClvoGTrh2dR5Gwy8t7BN4cwUJ/RNC32pk34EmmYW4yR
+	Dr98Fgi581qoeOVzAqN0HYbYrUKo2ASoER8FHTHvqSeIQlu7k8+tjY35+e8A0TooOqjb9wzsdUy
+	zQsv02128M3tXRn+9rPE/aB8ZgaKwUJQ393OEiFdVYl9K52NHAgcJwcqfJPtKlAIBmFyZSmEPZT
+	8VhpXBxwNPhAGAeA891GZY6bnqwu+DM7fxNd6KOEFOVA4sqc6VmHBDOU1keErmafPeuzw9tDkPg
+	S70jYd4BVHVj7Nk105OcGB7y+6Q44qKlK2Yu4D5NJ37EAdjmn73BZV9ROpbRgQOLf5RSEZrk+6n
+	3oC5s41CKJJHOv/GyJiyI2AnN/4VQRj8/eU55D2YcSE/tU/+nU3uWX9AEwEZOVzoo07Wc8T3x9Q
+	aLdpuCJ5G6B9/DjWTA2rNPSlUBBfPGFycQ==
+X-Received: by 2002:a17:90b:3947:b0:366:10f1:3d91 with SMTP id 98e67ed59e1d1-38fbc3f246fmr8665430a91.1.1785763860528;
+        Mon, 03 Aug 2026 06:31:00 -0700 (PDT)
+Received: from localhost.localdomain ([1.226.165.54])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb259000bsm2531459a91.0.2026.08.03.06.30.56
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 03 Aug 2026 06:30:59 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Zhao Qiang <qiang.zhao@nxp.com>
+Cc: Simon Horman <horms@kernel.org>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com, mfd@lists.linux.dev,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH 00/21] net: phy: add X-Powers AC200/AC300 EPHY support
-Message-ID: <19241d58-1a69-4776-8d91-012de9fc421c@lunn.ch>
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <aaec8809-8218-4412-a60d-931406dbf287@arm.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Halasa <khc@pm.waw.pl>,
+	netdev@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Myeonghun Pak <mhun512@gmail.com>,
+	Ijae Kim <ae878000@gmail.com>
+Subject: [PATCH net v2] net: wan: fsl_ucc_hdlc: release HDLC device on remove
+Date: Mon,  3 Aug 2026 22:30:48 +0900
+Message-ID: <20260803133048.42650-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aaec8809-8218-4412-a60d-931406dbf287@arm.com>
+Content-Transfer-Encoding: 8bit
 
-> Just to bring that shallow discussion we had on IRC to the list: I wonder if
-> this is the right solution? Alternatively I was wondering if just patching
-> the DT in U-Boot would simplify things, and also help other DT users like
-> *BSD or U-Boot (proper) itself, to not boil the ocean, but just allowing
-> them to follow a standard DT description.
+ucc_hdlc_probe() registers an HDLC netdev whose private pointer refers to
+the separately allocated ucc_hdlc_private object. The remove path frees
+that private object without unregistering or freeing the netdev, leaving
+a registered device with a dangling private pointer.
 
-I've not looked into the MDIO bus probing changes in detail yet, but
-that was also what i was thinking.
+Unregister and free the HDLC device before releasing its private object.
+An active device must be closed before detach_hdlc_protocol(), because
+the detach path resets dev->flags and clears IFF_UP. Otherwise the later
+unregister_netdevice() skips ndo_stop, leaving NAPI, the UCC and its IRQ
+active while their backing resources are freed.
 
-     Andrew
+Close the device inside unregister_hdlc_device() while RTNL is held and
+the HDLC protocol is still attached. This lets uhdlc_close() disable NAPI,
+stop the UCC and free the IRQ before the remove path releases the DMA and
+private resources.
+
+Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
+Cc: stable@vger.kernel.org
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+---
+Changes in v2:
+- Close an active HDLC device before detaching its protocol so ndo_stop
+  performs the NAPI, UCC and IRQ teardown noted by Simon Horman's review.
+- Link to v1: https://lore.kernel.org/netdev/20260728171545.49247-1-mhun512@gmail.com/
+
+ drivers/net/wan/fsl_ucc_hdlc.c | 3 +++
+ drivers/net/wan/hdlc.c         | 1 +
+ 2 files changed, 4 insertions(+)
+
+diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+index 809f21fb93..4c843c94cf 100644
+--- a/drivers/net/wan/fsl_ucc_hdlc.c
++++ b/drivers/net/wan/fsl_ucc_hdlc.c
+@@ -1255,6 +1255,8 @@ static void ucc_hdlc_remove(struct platform_device *pdev)
+ {
+ 	struct ucc_hdlc_private *priv = dev_get_drvdata(&pdev->dev);
+ 
++	unregister_hdlc_device(priv->ndev);
++
+ 	uhdlc_memclean(priv);
+ 
+ 	if (priv->utdm && priv->utdm->si_regs) {
+@@ -1266,6 +1268,7 @@ static void ucc_hdlc_remove(struct platform_device *pdev)
+ 		iounmap(priv->utdm->siram);
+ 		priv->utdm->siram = NULL;
+ 	}
++	free_netdev(priv->ndev);
+ 	kfree(priv);
+ 
+ 	dev_info(&pdev->dev, "UCC based hdlc module removed\n");
+diff --git a/drivers/net/wan/hdlc.c b/drivers/net/wan/hdlc.c
+index cbed10b1d8..a38f90d300 100644
+--- a/drivers/net/wan/hdlc.c
++++ b/drivers/net/wan/hdlc.c
+@@ -263,6 +263,7 @@ EXPORT_SYMBOL(alloc_hdlcdev);
+ void unregister_hdlc_device(struct net_device *dev)
+ {
+ 	rtnl_lock();
++	dev_close(dev);
+ 	detach_hdlc_protocol(dev);
+ 	unregister_netdevice(dev);
+ 	rtnl_unlock();
+-- 
+2.47.1
