@@ -1,121 +1,115 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB925423EAE
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 17:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABA7424D47;
+	Mon,  3 Aug 2026 17:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785778547; cv=none; b=AYwG9BjQNXmhSjrZZK9fCq/Z3iCxy5RzO+9fLw2vhm2F9V43ev/wP+rBV6caNbPSwJtzjHzzwPixcEH90S6/euYT5LW2NpOUUPalqXr8RUjYbIGDgZYiyZ17YHgE5IWUe4Z/UIoHZxRfBFULh9PLTp8Yj/O3iILNILYfjHHO/OU=
+	t=1785778832; cv=none; b=rWbZg+hsAfPfnsg2ACqvDHHTLhiO04skqHAvHtswWTzrp+/M4f9B4TKfqiTir08YZI/5m2HSeRv8tCci4+sFYH/VLFE5su5mBHwrRUNvqIb9pvlDxaW/M5EoQYz5/At6DrtM+3KwoYtprR8NUplhO2Froc/uuTWOEzeei7bdIKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785778547; c=relaxed/simple;
-	bh=FiUBM3pyIcZWxYa30PKi/+pHT/nkYBTk3tEfQdUPHco=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ioVDNhqbLMg7VezHtEG7lq0k4DLk2XygPbrL3FEO3/KZyAUJQfH4hHCoUQsXdkMLZxcVfM3izckG2oYvzWlFQyFeXtH9MBd6J5S2MFCr/N2YYegZuogAOppDlHsTF53QUONRGICNOpjE5qgTFD4LWkcpl787cUkIvtZ13m+wR6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GzfsdrqY; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785778832; c=relaxed/simple;
+	bh=fe59GmNACVKikdBjgmFthWGSMAHunRLdqLS/2aKylYw=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=NHTWJZK3yeDtk9pKgPgh1yTn7aPsCUuR9MNI65ACrW1TvTiHBWaippJLu/TjHS7xRio60MY7+qjK2Xu/NTD+CO00v8dtKeC7Mst3ZMadElL9PB+5YVs7AEtyCeIpcFE7k4J6CZAwu045ZDK3X1t4pWACNChsbompGkgFfXB4cUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=G2Iz0Kn6; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GzfsdrqY"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84a652535dcso2451662b3a.3
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 10:35:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785778545; x=1786383345; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aDzXObStBW/XIcDpadk6T5ga3cktgWOfpSl9mIernRA=;
-        b=GzfsdrqYhvtH0N8pUWntDajwlN8/5MHe8AO8R1OY7kPs6P6hfCiUiRsKJpWYJ55r+C
-         D/lGTvsO+Oco554wvJ5lnmKv6Efoffw+31TqwjKYeKbt3tGKeeccGJvj/wOKqI4tdMDv
-         FYG1qW8T6aEy3TwZV8v5Oy/9sTJOo073moujcKZxO6UuhfwdtreOvLWS9rYH/+TAjonz
-         dqk1F0joS9LUfBcihc0R3X2Vk0CeMijkiuz5+kbB1HNJj07xobETUfseQsOmwyHB6Q0v
-         4hagTaaXKf1qYljvdH20Qx3F9JTtLsyMFfbDK9F9eD9MAmazcF6p1BcyVOVc6srSbumZ
-         TSag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785778545; x=1786383345;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aDzXObStBW/XIcDpadk6T5ga3cktgWOfpSl9mIernRA=;
-        b=jsUB0NDeXOVUDHeGyDsx9oTQSu4wCqkTotH6Axs/yzqQyXI72CZc3bzMqv6HfGV8rX
-         4uUBB9eTUFQdTO51cCGk03X1hjhI6PPGw5bZMsHPYsIBTm6B9zjgKaoOObEXgCP20FeZ
-         L7wZ6/6STpvjxAVYlIpF0ftiqlhhx0aTseosmpbCLVXcQJeIXvtqd9cJVMyXaJxMA0KW
-         jWb7LDcreYzeiUHAyzcQcTMCVZqoDMkcdEntTRnG9CA/m8KFtseRRlpLp2lhYboYeyaH
-         Ie1+yBaLoiB71MlVs4U8D73/1PzBAl9ux2vUv3LVKcrJA2bEtK4eavhb7542z3vDr4tI
-         Xncg==
-X-Gm-Message-State: AOJu0YxZCHuQyRKIw3/p5uMtl9bSjYwv/obuGWU9R0vddTjB+MHWWT7P
-	beO+rrJjNyq1RSH4tySLVlI0dtkkPP/inD/RzbemUSphN9yCy1X/2tAV
-X-Gm-Gg: AR+sD13nz9IjsP0LjUaRkaPOKApgI26Fd64WhmnXgl9PFaTf6vaEBv8+4FMkwsJgIgX
-	sayDsoW3x1jnxSgKdA9JOY0NP1v7kZamNev/lpaVGXya6evMsJSrJ0cKYoBHuCBGxIFL01RtvFI
-	WiiVf/jneQbGeTapT8BdI5xZKXBAKAPQF1tcstcTexkCGme0HKWj8uud2n1FPE3e8npcVHBOydA
-	XAz8oQXUtCEr2bDPcScxkeu/GUWxk3HSfE0qaAq5SAZq+uNQ8g8tgMFQ+tMnZ7IRdjV/lcpHdpQ
-	c/NNNNoSBbRJGc1NSejwWDMhf+dMohxPORb2DV8T41IN+HAzWM+PtH4WHlloBtQKsm21OFFx3B1
-	aOzaXnUiyp5CCnJKyPylHBd0JkZ9sRci+5LLeK0pMC7bqdTyPaZkNUdbQ7wMX6kILMggBO8Ckhb
-	h2uPM/iAtwztM5pVwc3lotx5wjAiDHX1w3T0SYgC53WQAF85+IvPG/6T8LJ7VlEDPRizbXwzKFb
-	nXnA2B6MQ==
-X-Received: by 2002:a05:6a00:180f:b0:845:ebe2:c656 with SMTP id d2e1a72fcca58-84ee49549eemr9286454b3a.47.1785778545099;
-        Mon, 03 Aug 2026 10:35:45 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:54::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edbd3a4b6sm3994017b3a.4.2026.08.03.10.35.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 10:35:44 -0700 (PDT)
-Date: Mon, 3 Aug 2026 10:35:42 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, kerneljasonxing@gmail.com,
-	kuniyu@google.com, bjorn@kernel.org, jiayuan.chen@linux.dev,
-	kaiyuanz@google.com, willemb@google.com, asml.silence@gmail.com,
-	sdf@fomichev.me, fw@strlen.de, Neal Cardwell <ncardwell@google.com>,
-	Ralf Lici <ralf@mandelbit.com>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH net v2 3/3] net: tcp: block standard payload injection
- into devmem skbs
-Message-ID: <anDRbtwxp8vEMORA@devvm29614.prn0.facebook.com>
-References: <20260803171441.408014-1-almasrymina@google.com>
- <20260803171441.408014-3-almasrymina@google.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="G2Iz0Kn6"
+Received: from DairyQueen (unknown [4.194.122.144])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 0AC4720B7168;
+	Mon,  3 Aug 2026 10:39:59 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0AC4720B7168
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1785778805;
+	bh=AOV9zgbKbOdSHEACWlIc1MgQl9ltnlZ/5pkEXRffwDQ=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:From;
+	b=G2Iz0Kn6dLsSl7xkWDCNsV0gNQQcRlfE/2a9iEkzDai8V+I0bI5pkz84M5q2FFSY/
+	 yuOTvmanLgxTXOXY69YieKIj+hHuIU3H7CM8eEi214O7JcZEGxMyQvTx4Ye79kFNiq
+	 RV78d5R4/8dozbgdfHoUr9mWSkImYn75C3YZn07s=
+From: "Kameron Carr" <kameroncarr@linux.microsoft.com>
+To: "'Michael Kelley'" <mhklinux@outlook.com>,
+	<decui@microsoft.com>,
+	<haiyangz@microsoft.com>,
+	<kys@microsoft.com>,
+	<longli@microsoft.com>,
+	<wei.liu@kernel.org>
+Cc: <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<kuba@kernel.org>,
+	<pabeni@redhat.com>,
+	<linux-hyperv@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>
+References: <20260721195633.1438361-1-kameroncarr@linux.microsoft.com> <20260721195633.1438361-3-kameroncarr@linux.microsoft.com> <SN6PR02MB41576F1E9A4F0AC3D6AB8C18D4CF2@SN6PR02MB4157.namprd02.prod.outlook.com> <000901dd211f$b119be20$134d3a60$@linux.microsoft.com> <SN6PR02MB4157514D8AFB06FB6F2ED9BED4D62@SN6PR02MB4157.namprd02.prod.outlook.com>
+In-Reply-To: <SN6PR02MB4157514D8AFB06FB6F2ED9BED4D62@SN6PR02MB4157.namprd02.prod.outlook.com>
+Subject: RE: [RFC PATCH 2/2] hv_netvsc: back GPADL buffers with kmalloc + decrypt + vmap
+Date: Mon, 3 Aug 2026 10:40:15 -0700
+Message-ID: <000a01dd236f$2a24f4f0$7e6eded0$@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260803171441.408014-3-almasrymina@google.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQNRsRip/0GPmGqK2zS6hqfVzZeToQIbF+Y6AtauNasB7oqiJQJivrRjs1lPuRA=
+Content-Language: en-us
 
-On Mon, Aug 03, 2026 at 05:14:41PM +0000, Mina Almasry wrote:
-> Protect tcp_sendmsg_locked() from mistakenly appending non-zerocopy
-> page fragments to unreadable devmem skbs. Create a new segment instead.
+On Saturday, August 1, 2026 9:17 PM, Michael Kelley wrote:
+> From: Kameron Carr <kameroncarr@linux.microsoft.com> Sent: Friday, July
+31, 2026 12:06 PM
+> >
+> > On Friday, July 24, 2026 12:37 PM, Michael Kelley wrote:
+> > > From: Kameron Carr <kameroncarr@linux.microsoft.com> Sent: Tuesday,
+July 21, 2026 12:57 PM
+> > [...]
+> > > > +	/*
+> > > > +	 * @order monotonically decreases across iterations
+> > > > +	 *
+> > > > +	 * Use __GFP_NORETRY | __GFP_NOWARN to avoid OOM-killing,
+but try
+> > > > +	 * harder at order 0 since that is the final fallback.
+> > > > +	 */
+> > > > +	order = min_t(unsigned int, MAX_PAGE_ORDER,
+ilog2(nr_pages));
+> > >
+> > > Prefer using min() instead of min_t(). For normal integer values,
+> > > min() should work correctly.
+> >
+> > Using min() compiled fine on ARM, but x86 is throwing a compile error.
+> >
+> >     drivers/hv/channel.c: In function 'vmbus_alloc_buffer':
+> >     ././include/linux/compiler_types.h:699:45: error: call to
+> >     '__compiletime_assert_518' declared with attribute error: min(order,
+(
+> >     __builtin_constant_p(remaining) ? ((remaining) < 2 ? 0 : 63 -
+> >     __builtin_clzll(remaining)) : (sizeof(remaining) <= 4) ?
+> >     __ilog2_u32(remaining) : __ilog2_u64(remaining) )) signedness error
+> >
+> > In my v3 I may go back to using min_t. Please let me know if a cast (or
+> > some other method) is preferred.
 > 
-> Fixes: bd61848900bff ("net: devmem: Implement TX path")
-> Cc: Pavel Begunkov <asml.silence@gmail.com>
-> Cc: Stanislav Fomichev <sdf@fomichev.me>
-> Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
-> Signed-off-by: Mina Almasry <almasrymina@google.com>
-> Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-> ---
->  net/ipv4/tcp.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index 455441f1b6949..186a36c698798 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -1278,6 +1278,11 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
->  		if (copy > msg_data_left(msg))
->  			copy = msg_data_left(msg);
->  
-> +		if (zc != MSG_ZEROCOPY && unlikely(!skb_frags_readable(skb))) {
-> +			tcp_mark_push(tp, skb);
-> +			goto new_segment;
-> +		}
-> +
->  		if (zc == 0) {
->  			bool merge = true;
->  			int i = skb_shinfo(skb)->nr_frags;
-> -- 
-> 2.55.0.571.g244d577d93-goog
-> 
+> Hmmm. I don't get the same compile error on x86/x64. Maybe it is
+> related to compiler and version, or the kernel code base against which
+> the patch is being built. Probably you didn't see a problem on arm64
+> because of some such difference. FWIW, I built with gcc 11.4.0 against
+> linux-next20260726.  What is the compiler and base kernel info where
+> you saw the error and on arm64 where you didn't?
 
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+In both cases, I built against hyperv-next (a4ffc59).
+On ARM64 I used gcc 13.2.0; on x86 I used 13.3.0.
+
+To do a fair comparison, I
+ * downgraded my x86 environment to gcc 13.2.0
+ * started with `make defconfig`
+ * enabled Hyper-V and NetVSC in the config (=y)
+
+I saw the same behavior where there was no error on ARM and compile failure
+on x86.
+
+Regards,
+Kameron
+
