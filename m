@@ -1,96 +1,115 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE97237713;
-	Mon,  3 Aug 2026 16:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0607E345EB4
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785775771; cv=none; b=Qrnsx1PW2HBVIcwhZ7YECQtbeQvT2nqTkGOdaTrWy1vSQCjrcZ90GNscQlBkfhZmlMaJPZrbGemFlzOmY9kyRx09ecr20FtX0cY/fQoIP8ETHb4juhl90Yd1oZj+tMY+KEOsB9jpisVCHMkdx3CHcw90q/fJOXX0icrmwhMrhAs=
+	t=1785775934; cv=none; b=G+3QNUD2zKCj2JDOqE0G9TWrwpcWmsqDQ8j0he3kbA1hgaFLzipv+X43DVwcn+ntlsSsvKSCJL+aj0gXOLPQfkOfBiZJudSVczFXujbICPOMnbOQ4q8aeMfuqsNgIL9KkL232rH14hnwpRIfW9qQHvT1rGK0EhgC2matPka72x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785775771; c=relaxed/simple;
-	bh=XRslH+ds/XEmRs/mI27Lty7v5b9whUZvYbha/qDkt6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gGVBRPK8ZUgiy+RaI3FpZcPQw3HSIQUrpy1sAA92LmiHoNHvXpXHlr7C88+VYNQ2ZDdLvYtLm618CZhBXsz+xWlTUeO3BiSLNNCp7ymI3UO8NDFBTnb9Tuc7n9zrlW5MzyWEByJEVQoP7+djsH4YH9VAxeqyIPiOrdZ212f3sNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=19i8IK/c; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785775934; c=relaxed/simple;
+	bh=9hFWHpMr6667KTRSWMmWOov01VOWplUFcHlU43Po8Bo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l/pFDKteN9oVsuV9zf4pltrJMFIEdmR5qmz5PRdX8S+BqNrMY8poecWGGUL7as6caf/Y/Gt/O0Q7g22FC5CiTOOhdD3RnrgLlztvSqOx2Q3mpRGnuyXgRMW4+wmhSBa5SoLdPb5CypM6PVzyFHmZijfCO+8LlZMu7up+1+aDmk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W4ObqZm1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="19i8IK/c"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=YQ7ugXHM89P+ZpYBYZd1EkFIhNDujOCisPw+4orVrxw=; b=19i8IK/cMs0rIkjtGJAvvhzsvk
-	LEmOaOpnwyd+brsGoXqlDYZYXk/FcTW3u6tqMgbMEI4dc9fV2MZtYeeHoMj+Uw+Ms9a6Pva7yknth
-	uvsFa141Xj8vadBeTSffof4t91/PDDP/GU3FtOrhW6GRs2GnUpj83qtdNGpFQQtDt5OM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wqvqr-00Fm97-9D; Mon, 03 Aug 2026 18:49:21 +0200
-Date: Mon, 3 Aug 2026 18:49:21 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vasilij Strassheim <v.strassheim@linutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Martin Kaistra <martin.kaistra@linutronix.de>
-Subject: Re: [PATCH 4/4] net: dsa: soce: Add initial driver support for MRS
- switches
-Message-ID: <653d9c23-6087-4e7f-ac01-fcb01ade405c@lunn.ch>
-References: <20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
- <20260729-devel-vstrassheim-soce-dsa-ml-v1-4-be569dae1b20@linutronix.de>
- <f17d3a62-456f-4580-90bd-c54a30dceddc@lunn.ch>
- <cee2e05d931a977d0db938ada0964d05885949a5.camel@linutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W4ObqZm1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FAA31F00A3A
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:52:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785775932;
+	bh=ktJ1TUfqLx16vP/MAvZ075WUJwVncZtbcK2MP7W0fJA=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc;
+	b=W4ObqZm1721yih5Cc72KTg1SNORcLauLEAeTR/pQvfulljFV1MY786WAqOG+xn40r
+	 Nm6krj9Zt3xk+1UjcfnwqMXNgD5eKdkTOopLe6stmk4hDhhDo+pnbC9woAg+LNhCEU
+	 rfOXG8bFLRNqvzlg52wWAsCZKeZXzzsFdGKuftIB4RdoErFBA6IpAs8GvfEfVtD0yT
+	 DhNz6Rmwo19vJ3v461khXi2B3D+UUxZ8Sr0FXMUTiYY9fXY8So5/RbjYmIoC3rlDmt
+	 zeYYhcpO9uCkfPhrdg0r6h8cpqA0QbjEIp0DoSaTgZbDBaLOxjRM7OGX/eWpQiklrP
+	 fO7+/JOLtU5hA==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5aeb59d54b1so3416771e87.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 09:52:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoRbc/aiVGf34pp4vwuuquUqt6sPrLnnrfH7lGB52Wlb7iQZXa/SFqTtY/X/ZiJGNJiq2WJqN8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBiPtDA6OU8oA4eCHZd1Cdqme07XibCESM07i/OjKUHtOdMxvn
+	yJggkAUXK2w7K0NMjmnbU4eyNHKp9p3gw3EM/C2X7tQ86IuJxZ6WRvkLKLpw8yZRjAidIy6TfwE
+	SxuCLny6zWRdAnWu0TWcbAzItuOQkjiI=
+X-Received: by 2002:ac2:5218:0:b0:5b2:9c0e:a2d9 with SMTP id
+ 2adb3069b0e04-5b2e4f9dd16mr1400790e87.65.1785775931139; Mon, 03 Aug 2026
+ 09:52:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cee2e05d931a977d0db938ada0964d05885949a5.camel@linutronix.de>
+References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
+ <20260802-submit-acx00-of-dynamic-v1-v1-8-0a53cd9e21cc@gmail.com>
+ <2c0210b3-2c68-41f1-aa33-3f1693454849@lunn.ch> <CADvTj4pfNFVGrQV86T7X+nZQYUamxEYLLWuxVXk=av0da_XocQ@mail.gmail.com>
+In-Reply-To: <CADvTj4pfNFVGrQV86T7X+nZQYUamxEYLLWuxVXk=av0da_XocQ@mail.gmail.com>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Tue, 4 Aug 2026 00:51:57 +0800
+X-Gmail-Original-Message-ID: <CAGb2v67Wo+WG47jF_vBUOwv0Vw1SDygXMdBgpsy3R1AQ_LLfHw@mail.gmail.com>
+X-Gm-Features: AUfX_my4aoD19Jk3-8CcfeDfaoI0T_9zWEBW-1SE8UXOLwMz9Yfo_iLW9hIPcwI
+Message-ID: <CAGb2v67Wo+WG47jF_vBUOwv0Vw1SDygXMdBgpsy3R1AQ_LLfHw@mail.gmail.com>
+Subject: Re: [PATCH 08/21] dt-bindings: mfd: x-powers: add AC200
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Andre Przywara <andre.przywara@arm.com>, Richard Genoud <richard.genoud@bootlin.com>, 
+	Maxime Ripard <mripard@kernel.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 03, 2026 at 06:01:23PM +0200, Vasilij Strassheim wrote:
-> On Wed, 2026-07-29 at 22:05 +0200, Andrew Lunn wrote:
-> > > +static u8 soce_map_stp_state(u8 state)
-> > > +{
-> > > +	switch (state) {
-> > > +	case BR_STATE_DISABLED:
-> > > +	case BR_STATE_BLOCKING:
-> > > +	case BR_STATE_LISTENING:
-> > > +		return 0;
-> > > +	case BR_STATE_LEARNING:
-> > > +		return 1;
-> > > +	case BR_STATE_FORWARDING:
-> > > +	default:
-> > > +		return 3;
-> > 
-> > #defines for 0, 1 and 3.
-> > 
-> > What does 2 mean?
-> > 
-> > Since you don't implement bridge offload, i'm not sure having STP
-> > states makes any sense.
-> 
-> I tested bridge and STP and observed the callback calls with something like
-> this (reduced setup):
-> # ip link add name br0 type bridge
-> # ip link set dev port0 master br0
-> # ip link set dev port1 master br0
-> # brctl stp br0 on
-> 
-> That probably wasn't enough. I'll take a closer look at it and either fix it
-> or remove it for the next version.
+On Tue, Aug 4, 2026 at 12:45=E2=80=AFAM James Hilliard
+<james.hilliard1@gmail.com> wrote:
+>
+> On Mon, Aug 3, 2026 at 7:18=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote=
+:
+> >
+> > > +            ethernet-phy-control {
+> > > +                compatible =3D "x-powers,ac200-ephy-ctl";
+> > > +                nvmem-cells =3D <&ephy_calibration>;
+> > > +                nvmem-cell-names =3D "calibration";
+> > > +                phy-mode =3D "rmii";
+> > > +            };
+> >
+> > What do you mean by an ethernet PHY control?
+> >
+> > I assume this is not an actual Ethernet PHY, but some control logic
+> > around it? Where is the ethernet PHY itself?
+>
+> Correct, this is not the Ethernet PHY itself. It is the package-specific
+> sideband control block that must be configured before the normal Clause 2=
+2
+> PHY registers become usable. For AC200, this control block is accessed
+> through the parent AC200 I2C regmap. For AC300, the equivalent control bl=
+ock
+> is accessed through a separate non-PHY Clause 22 address.
 
-For a really minimal DSA driver, look at mv88e6060. But it is also
-really old, and does not always follow best practices, e.g. .phy_read
-and .phy_write which should be replaced by a Linux MDIO driver.
+Basically, all the PHY behavior that is normally configured using strapping
+pins on a discrete PHY is done over this I2C channel.
 
-	Andrew
+> The actual Ethernet PHY is a separate device on the MAC's MDIO bus. The
+> shared PHY driver for that device is added in patch 16:
+>
+> https://lore.kernel.org/linux-sunxi/20260802-submit-acx00-of-dynamic-v1-v=
+1-16-0a53cd9e21cc@gmail.com/
+>
+> The later board DTS patches instantiate it as an ethernet-phy node beneat=
+h
+> the MAC's MDIO bus and reference the appropriate sideband control provide=
+r.
+>
+> >
+> >        Andrew
