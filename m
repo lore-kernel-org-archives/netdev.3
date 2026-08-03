@@ -1,252 +1,116 @@
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D212D377574
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 10:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785752089; cv=pass; b=oW5/JvIzqhlKuSATdayqdXLac5AVDmshDafPd0dW+1DcVFPeQPly375mMwe2i5tDA/uh7y/HvI6zo+LSsrw8j+7mwz8hwwwHIMq6uhfMzBqhjoPXdQDV8cYkqtXaWHda5S5Uok50XCRjlpwtW8QYia7CZJxIg3qhU4Wjj8SU2Uw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785752089; c=relaxed/simple;
-	bh=gAGAUv0xZN3unMadQ+Q0yg6cGFB8E+F+y+wNougceUU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l7LvC5AwV43wTjHeaGHzmXrCVT0swnbFlzgQ3O1tHn9y/PLyb4hg9z60V4jKgMfZHdSuBbdQHyAE6RjdPPuBj0YHCaQid737QixfC1gYcMzJfocBGfqMGzuM/QmBz0KKmUqh84UcEIupr0ZQN1xPQX/WrO5eRqy5NrD+wrDlGKk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eJf/F4UL; arc=pass smtp.client-ip=74.125.224.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607C0377ED7;
+	Mon,  3 Aug 2026 10:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785752106; cv=none; b=Mi1VXeIk5NeVtHSDe5hK1AWL0q+rycNrikSb79U3yioyqcSUqNhYw55H5iOXgykmH6YQneXSLFZAg/twSAjzt7cSwLmWWF0+F5LlG6ZsKh1aTmPg3m1fyQZCk8N8monETjUzbbEX2PsTwiEUzETD+MDhBvzwumMO8BxRyfTIJEM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785752106; c=relaxed/simple;
+	bh=Nqis0AhewKay1mWAEqC0vpbdPsm8FDS2/zO5ZoQx0sA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rpJDD8mEyAzbCdWXV3+WE+6K8aI8NVeO8CWhu9Ax38K7ZYcpo2Ly8WU9XpvQlYeTccJihHsELuqO3qIUul1fnEomeM9LVlXouwTSJr0+IzS+5Ndazw78eBQEHGe7NvAAskKbNMu9qgyQSQIPox9QTu7cwQJpq2s3AW7jOnaOrZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=OjMlDi8J; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eJf/F4UL"
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-66807ba2f0fso4562808d50.3
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 03:14:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785752086; cv=none;
-        d=google.com; s=arc-20260327;
-        b=g7iMyRwryKPYrG3OKHFwpOYy/v3O7RtluEDYWTcun2Qt8MLjE/MUApPMV1XHUhJoGp
-         yXL4LdTCJLtLAzB9JooXqBEH+fGqT9Js0+iM2Hnurs6+5fEaofcPepR5joqftmkOqjIq
-         TI1zVezXIlKTVsvaPA1OoVKyvnTIlNyfLGkUvnAq3Y6GGgWoGhhPvbNUYuqrP+muV9GI
-         dDmMg0+pOxSMof3kcDaB/UVE6jAKuC9szS8fnKrkWCP5/mAqhOds2YfMIZvJWBlV7Z07
-         wmTklABVspA7KN013W8gWIkLPijgD/GhW9hQUIv7buNPHBuDAWvwtvg0ukBA/9Os3tff
-         Dtxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BzmVrf3A5yS5pBlOOrTATRIeczmTdyqSxUxktv0y96U=;
-        fh=ji24XnrXSvQIowberQ8dNbEj5FMOHR7Z7N1AVv7wHsg=;
-        b=Du3Fe+Z9yaCA2NmVpBfpxgEaA3Cj0MRw77/4wvqvEJWB68Gz1m40GeTbzleHdi1kAT
-         kHW3B2OdlbsCJhKCHCxwmTsWHzRpnLqd7nKIpnBJb0Rbyxn2TCXbpF66pi0ADKaq7ObC
-         ymPZnbBIGEIfcVS8ul8UZgIpJrnBamJq1wViGWPTcOUNv22qfvar93XT93d4/33eQPcl
-         cHQQc9GKSLXf/H8v2vOOg1+tz43S+h8cWU88f7if/AxEs4MVXrZPV6l5zR871pQtSgu1
-         gXQZj+fCUrHpJIjSZlmJu4rserYr3ezfqkYWYK28LMwYBzXifF0oNAivReMdPdnVmWAK
-         pICg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785752086; x=1786356886; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BzmVrf3A5yS5pBlOOrTATRIeczmTdyqSxUxktv0y96U=;
-        b=eJf/F4ULf+4f76f8Q/NN/yD7rLBvEv6Zim1LMt8046dW/OeU1xjUtqrIZfVlSERmN1
-         7Qd1Z4Z+KWEHVv7clMkcwonP6sygNbnTfNd31lx0Jbl1Qiav/Ldkf4kFXsyIrbI7foMk
-         lFsWnV7XotIMAR/1rB7mU/0RcQ0PBWerMI4W+HVREg7CwIy+tXXtbD4S8IVMcr47/BIX
-         2sBWNzQMWbnbYIUncUzhfCYnxWm9bxzba6xqwp65Qs676u78TUfgNNbED8WePG5DiaID
-         nLdpMDWL9u77jl8sEubLn0dCZP9V3S7Sgkt5LQewzr4vDY/9fVZTcT42g+suUham/e07
-         KJ/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785752086; x=1786356886;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BzmVrf3A5yS5pBlOOrTATRIeczmTdyqSxUxktv0y96U=;
-        b=EHWyg0wDps1NIdD87P/3Ipz8Ss4cSbyFhym9CtXPUpAP5QyBjAysnDJ5HR/ufEg2ar
-         jmuqRIJUP3qK0oY5cqSpJhOQxk0q3ScqRuOwWAighbwUGYqOeY0nHLR3GRUt1fbVcqdG
-         f6lWxMnq7GpGDzM6GBWM43qWT14t0A6hrXpVkNtURzcsW/AB9ot8CC83kXTB4ml+gvsq
-         ow8EjjPZb4u3hGj3rQOePqgAnCwEDBhtN6IuOggVJn7BwM/wGTrXAevKg0s7iO5k8vEa
-         4PGN4BqhFVE/vO7TMqpkZL723CdKnz+Kynbsux/sHXo6gb1ykjqLQtGGdt/QdyvigWnR
-         LdmQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoMlklxvCRPuvQpN7jYR08SgK0smHjhuk79tUu0L6zpwTPQT6vs1v1LAkzu+iukqmtOWVN6q08=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRkYkyTA8WhH8j05UfEt37Xsoy9XsbArP6mzaFDLl1Ou8G0Qua
-	BAvKj6SZe5/QQzrXHgy+0TV0mziLrbMMU+WF5CCYy3R2R4KCJFMJ5ZbtF5v5F/k6en4z3Be9Rtk
-	sh0A1n5DIxAAj6kcu1IvEgNnAZpNCah8=
-X-Gm-Gg: AR+sD10lvOjbC4inIZm8spT/ve0tuxMK3a9q1KxdTPVkTq27X1qjRd1V49lywz3/zA+
-	vhpiYMWCcbbpsUNffymIUQ9j5xZqyk0sn9ZMD9wm0UFrn0adMhMt0pEI4a/xnYQucmW4agg+lEM
-	FZpQKtxQrQT6Fccod2sN6T73PLZ80zQGPMisMTZMilvYDUnBvMQgUHrroy+GePjLCc6uv6cHYgL
-	j26Wzw2AH9+ID2gTGjtRSbTS6AURIzZSz/2/MLRSK6axM88JSH2y4369WCkJ2BtLQ7jf/QnaFdW
-	oRj4I14EU92DT+qdPs/WnUszN3orwJVrGsTkkUKt2Km+JcqVGz2G5iyIMXG/hgvH0Xjz7tAI7k+
-	ed9sOq89RNpIX61BojLJXcX8=
-X-Received: by 2002:a05:690e:4810:b0:664:f064:f663 with SMTP id
- 956f58d0204a3-6694f15a12cmr8115341d50.28.1785752085633; Mon, 03 Aug 2026
- 03:14:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="OjMlDi8J"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AD61F143D;
+	Mon,  3 Aug 2026 03:14:58 -0700 (PDT)
+Received: from e142021.fritz.box (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4E9793F632;
+	Mon,  3 Aug 2026 03:14:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785752102; bh=Nqis0AhewKay1mWAEqC0vpbdPsm8FDS2/zO5ZoQx0sA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OjMlDi8JHKJvNrw1Ik34MDmGLWNRT8F76LVrZmVRN2K7vekVXN7TLR36it838n1Dv
+	 Gd/kjdGQrNqbdlnOm3SRGA+1ZJMtKxa7ymt+v4ppvWbd36NQ/E3mnxDZHREaRfyfDM
+	 OSSiRbQrJp9tg0jndOFgk6iZPt3BP6P3UU4aY6Mk=
+From: Andre Przywara <andre.przywara@arm.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Liu Changjie <liucj1228@outlook.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-sunxi@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 0/6] sunxi: net: add Ethernet support for X96QPro+
+Date: Mon,  3 Aug 2026 12:14:46 +0200
+Message-ID: <20260803101452.2993721-1-andre.przywara@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260731032357.6114-1-sun.jian.kdev@gmail.com>
- <20260731032357.6114-3-sun.jian.kdev@gmail.com> <80687d9c-9c27-494c-b3f2-efd0230b1895@gmail.com>
- <CABFUUZGTJptpOKKAeU3ThibmPpXize4Eud2=EBX-vqaX3YH4pg@mail.gmail.com> <anBUWIxmURvbr04i@lore-desk>
-In-Reply-To: <anBUWIxmURvbr04i@lore-desk>
-From: sun jian <sun.jian.kdev@gmail.com>
-Date: Mon, 3 Aug 2026 18:14:34 +0800
-X-Gm-Features: AUfX_mzdeHrInwG6bTPBGc0xnW3lweBnwEFe9T99a8tN3R763lJ6zfwZrV1QoDY
-Message-ID: <CABFUUZGYauuj1EpwzfhwWrqQY8zaE7SFk-UAbwxy3qCbEDWKjg@mail.gmail.com>
-Subject: Re: [PATCH net v2 2/2] veth: fix skb length accounting after XDP frag adjustment
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Mohsin Bashir <mohsin.bashr@gmail.com>, netdev@vger.kernel.org, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Hangbin Liu <liuhangbin@gmail.com>, 
-	Krishna Kumar <krikku@gmail.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Martin Karsten <mkarsten@uwaterloo.ca>, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	maciej.fijalkowski@intel.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 3, 2026 at 4:42=E2=80=AFPM Lorenzo Bianconi <lorenzo@kernel.org=
-> wrote:
->
-> > On Sat, Aug 1, 2026 at 12:14=E2=80=AFAM Mohsin Bashir <mohsin.bashr@gma=
-il.com> wrote:
-> > >
-> > >
-> > >
-> > > On 7/30/26 8:23 PM, Sun Jian wrote:
-> > > > veth exposes non-linear skb fragments through an xdp_buff. If an XD=
-P
-> > > > program adjusts the fragment area, veth_xdp_rcv_skb() copies
-> > > > xdp_frags_size back to skb->data_len but leaves skb->len containing=
- the
-> > > > old fragment contribution.
-> > > >
-> > > > After a fragment shrink, this makes skb_headlen() larger than the a=
-ctual
-> > > > linear area. In the reproduced UDP receive path, __skb_datagram_ite=
-r()
-> > > > copied 1024 bytes past the actual linear tail to userspace, startin=
-g at
-> > > > struct skb_shared_info. The copied bytes included the affected skb'=
-s
-> > > > nr_frags, xdp_frags_size and a kernel pointer from
-> > > > skb_shinfo(skb)->frags[0]. Real packet data was displaced by the sa=
-me
-> > > > amount and truncated at the end.
-> > > >
-> > > > Subtract the old data_len before replacing it and add the new data_=
-len
-> > > > afterwards, keeping skb->len and skb->data_len synchronized.
-> > > >
-> > > > The fragment accounting must run before the linear tail adjustment:
-> > > > when bpf_xdp_adjust_tail() shrinks the packet into the linear area =
-it
-> > > > releases all fragments, and __skb_put() requires skb->data_len =3D=
-=3D 0
-> > > > by that point.
-> > > >
-> > > > A 60000-byte UDP datagram on a veth pair with MTU 64000 was shorten=
-ed by
-> > > > 1024 bytes from its fragment area. Before the fix, all 10 runs prod=
-uced
-> > > > corrupted payloads. After the fix, all 10 runs matched the expected
-> > > > payload exactly.
-> > > >
-> > > > Fixes: 718a18a0c8a6 ("veth: Rework veth_xdp_rcv_skb in order to acc=
-ept non-linear skb")
-> > > > Cc: stable@vger.kernel.org
-> > > > Link: https://lore.kernel.org/bpf/al9T9Eto%2FhRIzP5W@boxer/
-> > > > Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
-> > > > ---
-> > > >   drivers/net/veth.c | 23 +++++++++++++++--------
-> > > >   1 file changed, 15 insertions(+), 8 deletions(-)
-> > > >
-> > > > diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-> > > > index 00e34afd858e..348391e87e14 100644
-> > > > --- a/drivers/net/veth.c
-> > > > +++ b/drivers/net/veth.c
-> > > > @@ -865,18 +865,25 @@ static struct sk_buff *veth_xdp_rcv_skb(struc=
-t veth_rq *rq,
-> > > >
-> > > >       skb_reset_mac_header(skb);
-> > > >
-> > > > -     /* check if bpf_xdp_adjust_tail was used */
-> > > > -     off =3D xdp->data_end - orig_data_end;
-> > > > -     if (off !=3D 0)
-> > > > -             __skb_put(skb, off); /* positive on grow, negative on=
- shrink */
-> > > > -
-> > > >       /* XDP frag metadata (e.g. nr_frags) are updated in eBPF help=
-ers
-> > > > -      * (e.g. bpf_xdp_adjust_tail), we need to update data_len her=
-e.
-> > > > +      * (e.g. bpf_xdp_adjust_tail). Remove the old fragment contri=
-bution
-> > > > +      * from skb->len before updating data_len, then add the new o=
-ne back.
-> > > > +      * This must precede the linear tail adjustment below: a chan=
-ged
-> > > > +      * data_end implies that no fragments remain, and __skb_put()=
- requires
-> > > > +      * a linear skb.
-> > > >        */
-> > > > -     if (xdp_buff_has_frags(xdp))
-> > > > +     skb->len -=3D skb->data_len;
-> > > > +     if (xdp_buff_has_frags(xdp)) {
-> > > >               skb->data_len =3D skb_shinfo(skb)->xdp_frags_size;
-> > > > -     else
-> > > > +             skb->len +=3D skb->data_len;
-> > > > +     } else {
-> > > >               skb->data_len =3D 0;
-> > > > +     }
-> > > > +
-> > > > +     /* check if bpf_xdp_adjust_tail was used */
-> > > > +     off =3D xdp->data_end - orig_data_end;
-> > > > +     if (off !=3D 0)
-> > > > +             __skb_put(skb, off); /* positive on grow, negative on=
- shrink */
-> > > >
-> > > >       skb->protocol =3D eth_type_trans(skb, rq->dev);
-> > > >
-> > >
-> > > I am most likely missing something here but what happens if we have
-> > > frags and we attempt to advance data_end while leaving some frags
-> > > present (e.g., bpf_xdp_pull_data())? Looks like, in that case we woul=
-d
-> > > issue __skb_put(skb, off) with off > 0 and we would hit
-> > > SKB_LINEAR_ASSERT() because skb is still non-linear?
-> >
-> > Hi Mohsin,
-> >
-> > Thanks for catching this. You're right that bpf_xdp_pull_data() can adv=
-ance
-> > data_end while leaving frags present. I'll investigate this path and fo=
-llow up.
-> >
-> > Thanks,
-> > Sun Jian
->
-Hi Lorenzo,
+The X96QPro+ is a TV box with an Allwinner H728 SoC (the same die as the
+Allwinner A523). The Ethernet connection is using the secondary GMAC,
+connected to a MAXIO MAE0621A-Q2C PHY. The setup is a bit special, as it's
+not using a crystal oscillator to clock the PHY, but instead a clock
+fanout pin from the SoC.
+To make Ethernet work on this device, we need this clock, we need to
+adjust the PHY-ID, and we need the devicetree bits:
 
-> I guess we should implement the same approach used in
-> bpf_prog_run_generic_xdp(), something like:
->
->         if (off) {
->                 skb_set_tail_pointer();
->                 skb->len +=3D off;
->         }
-Yes, that makes sense. I confirmed Mohsin's case: bpf_xdp_pull_data()
-can advance data_end while keeping frags, so the current v2 can hit
-SKB_LINEAR_ASSERT() through __skb_put() on a non-linear skb.
+- To make the PHY operational, the PHY driver needs to enable the fanout
+clock. The generic PHY DT binding describes such a clock already, so
+the binding needs no addition in this respect, but it's in each PHY
+driver's responsibility to take care of that clock enablement, which
+is done in the first two patches.
 
-I tested the skb_set_tail_pointer() + skb->len update approach locally
-with a forced-tailroom reproducer, and it fixes that path. I will fold
-this into v3.
+- Also the MAXIO PHY used on the board is the -Q2C variant, which uses a
+slightly different PHY-ID than the Q3C variant described in the current
+version of the driver. Add this new PHY-ID to the driver, but also
+allow it in the DT binding, since we need to use that PHY-ID compatible
+string version, to skip the MDIO probing process, which wouldn't work
+without the clock. This is done in patches 3 and 4.
 
-Thanks,
-Sun Jian
->
-> Regards,
-> Lorenzo
+- Lastly we need to describe the config in the board's devicetree. Patch
+5 adds clock fanout pins to the .dtsi, which the final patch 6 enables
+the MAC and PHY nodes and connects them together.
+
+This enables the box' Ethernet functionality, made possible by the new
+MAXIO PHY driver. The MAC part is already supported for a few releases.
+
+This is based on v7.2-rc1, plus version 2 of the MAXIO PHY driver as
+sent by Liu Changjie. Since those two patches have been reviewed already
+some weeks back, I assume they are ready to go. Please let me know if
+that is not the case and if I can help with anything there.
+
+Cheers,
+Andre
+
+
+Andre Przywara (6):
+  net: phy: maxio: prepare for more DT properties
+  net: phy: maxio: parse and enable PHY clock from generic DT binding
+  dt-bindings: net: Maxio PHY: add PHY-ID for -Q2C variant
+  net: phy: maxio: extend PHY ID matching
+  arm64: dts: allwinner: a523: add EPHY 25MHz clock fanout pins
+  arm64: dts: allwinner: a523: x96qpro+: enable Ethernet support
+
+ .../bindings/net/maxio,mae0621a.yaml          |  4 ++-
+ .../arm64/boot/dts/allwinner/sun55i-a523.dtsi | 14 ++++++++++
+ .../dts/allwinner/sun55i-h728-x96qpro+.dts    | 28 +++++++++++++++++++
+ drivers/net/phy/maxio.c                       | 27 +++++++++++-------
+ 4 files changed, 62 insertions(+), 11 deletions(-)
+
+
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+prerequisite-patch-id: aa3058cd68d68f361088b39cac0b12fb96be8b55
+prerequisite-patch-id: 90f19ec9993e373e39efda42984c88d7b51151e5
+-- 
+2.43.0
+
