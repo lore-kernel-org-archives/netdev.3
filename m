@@ -1,163 +1,116 @@
 Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7113BCD29
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 09:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A60E3B9920
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 09:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785747710; cv=none; b=TzuuWLrvnQt4wch8U1gXpnrgmvyPDpIP0IsVhIN5fT6gR30PemumoJqeouOe/jqUN463vvi1P2fWDNz+gP+Jdj7c7Q/wTYRDGrkk2Y3R6nyPA7Qd9KFBnqVU+ieEHNzD0gLm/qBWJ3VRpGWPUWpHcpV+tuw/zU+ffjsB3iQNSqw=
+	t=1785748103; cv=none; b=g9dmLzKhPC13Qu8MKSK0DVHsRYxqZeXSN/H2TSJGUm18Zp0ff/EAaoNdTKp9SiuU/fBDWwLEayW/JYjbzw5JgrKL2GPzQdhJxJDqQcfgKscLkIod3pgMsxGCIqAoJxN1rTeE3Inj6BcUloqrdsMjYmjPI7R8VH86rckfyPHazF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785747710; c=relaxed/simple;
-	bh=OYQWZ1Rq3jJDct9MnaqzOWQDNdnk8i34MWsJ7KFrCYk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BSl/gkiyZNL4+1xwgMXfozrQsB6IPWS5aWvZObFRRpEbmqtgklbxa79YiVLgVkt+elgCDLTZG2zViQWXuPzwgEoUwn81jaJK+I4x8cS301VPAKC2unPDY1+lJrySIzuBDH68kgrljFnAQjVFo2zBaZ1/UMb+2IbrJMpfcS0uIWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=nOshWfSJ; arc=none smtp.client-ip=185.226.149.37
+	s=arc-20240116; t=1785748103; c=relaxed/simple;
+	bh=1jQsz17UW5IXD+YZ94eMQI7v3boiVWtOQIrTjRdTuYc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=YtAvnaumTBzr9kslvmP0h6ioyj27toimz5Ir8JotDoSA55dt1VEbdRTjrzgDq5kYBh+jEPk+tOpnQYA7d5yIX5d/wh/4ejMhknpWZjX6L+TIZ0Ugeruu2amCiV1eMx4L9Zf8ilsfj5U6ks+4bljJnlSjy7S6/YoDciXS26EV0no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=uDeZ6/PC; arc=none smtp.client-ip=185.226.149.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="nOshWfSJ"
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="uDeZ6/PC"
 Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
 	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1wqoYE-001fLQ-Lt; Mon, 03 Aug 2026 11:01:38 +0200
+	id 1wqoeX-001g4j-MY; Mon, 03 Aug 2026 11:08:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-Id:Date:Subject:From; bh=rBy6bqDwvwo9+dG2U6PXcupUrsrlG336xuKDiR0Q/LM=
-	; b=nOshWfSJDyPGKs6iqNmK0KHGfw89v64HrebFPiLVpiBoUPrJWfOi9tagw3vpDysaJ4y5n6iI2
-	Yf+hAzIfRzClQxn9Bz8f0gTNg4Mjqms1318cwnsXUe2KqgrtfA4aAV9KiB8UGxx7rjKVaTS3Fi1s8
-	08PwwvjI5E3t5pISkKiweZ8Yn+WXtz3g8ApxQyEdVKjadP0TQpORZDcpBuaACGOiRPdN+9czO7Bjt
-	OmK5CmMRDrtme70swq+73jNgx+EMoTbOitfvkyQ5mCg+Is1un1wSbt5NtWqpZtfE+yiip5r9SW7di
-	MFUE6Mv8VP4uosMRyeTH+cuDeVyRVjFEonV1fA==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
+	bh=ZYYHi9h+gS1ijRVonZP/RUIa+2ondSf6v0ir0GDMNtc=; b=uDeZ6/PC2pchAWB0D6RVfRfrrq
+	DnK0Dh/8ayufWUQOGIgT9YsVJ/d9rMhIWG7Esj99XVTTQBgbh95t6p+eRLTribvdFTFcZIK0w1psv
+	A0vzUM43ghUWwJGuY+qly5KuKmrJsL7wb0vGzyjjgpdgFY827DWgMLwrPwd7uhL5tuGEG0UvjaIKa
+	k+c5Pory/iuPYGNChZvnFdOs+YMuLDVkM3yLLhxLFaUxQtOkMzTrd4sA+DipQC17sfGXXNV3/ax4j
+	Cuu6f0I+AnIMVa1tEoDwq0BBpqSIoj6STAA0kJct01QbAdqzeuSOO2hemlACUheTToLZlOTpW7CeC
+	s8Acj8KA==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
 	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1wqoYE-0003xs-32; Mon, 03 Aug 2026 11:01:38 +0200
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	id 1wqoeX-0004SU-7o; Mon, 03 Aug 2026 11:08:09 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.95)
-	id 1wqoXr-00GDCj-Bq;
-	Mon, 03 Aug 2026 11:01:15 +0200
-From: Michal Luczaj <mhal@rbox.co>
-Subject: [PATCH bpf v2 0/2] bpf: Fix socket leaks around
- connect(AF_UNSPEC)+listen()
-Date: Mon, 03 Aug 2026 11:00:41 +0200
-Message-Id: <20260803-sockmap-lookup-tcp-leak-v2-0-306e025bfe66@rbox.co>
+	id 1wqoeN-00Fsjp-Uv;
+	Mon, 03 Aug 2026 11:08:00 +0200
+Message-ID: <e9e7e534-80d5-4597-b340-e7f34ca08d8f@rbox.co>
+Date: Mon, 3 Aug 2026 11:07:53 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+From: Michal Luczaj <mhal@rbox.co>
+Subject: Re: [PATCH bpf 3/3] bpf: Unconditionally take socket references in
+ lookup helpers
+To: Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Emil Tsalapatis <emil@etsalapatis.com>, Eric Dumazet <edumazet@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Willem de Bruijn <willemb@google.com>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Jakub Sitnicki <jakub@cloudflare.com>, Jiayuan Chen
+ <jiayuan.chen@linux.dev>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Stanislav Fomichev
+ <sdf@fomichev.me>, Martin KaFai Lau <martin.lau@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Joe Stringer <joe@wand.net.nz>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
+References: <20260723-sockmap-lookup-tcp-leak-v1-0-1bbdc58ce514@rbox.co>
+ <20260723-sockmap-lookup-tcp-leak-v1-3-1bbdc58ce514@rbox.co>
+ <DKBCACHGQHYB.194JPC04N9WT0@etsalapatis.com>
+ <591fd57e-d006-4e51-af5c-fea65a071819@rbox.co>
+ <DKDR02T36EVT.ODA2A3LW6MC2@gmail.com>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <DKDR02T36EVT.ODA2A3LW6MC2@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNQQ6CMBREr0L+2pq2CBJX3MOwaD8fqShtWiAYw
- t0tde1uZjIzb4NA3lCAW7aBp8UEY8do5CkD7NX4IGba6EFyWfJSVixYHN7KsZe1w+zYhFGSGph
- ulVY58SrHAuLaeerMmp7voF0HzS8Ms34STsfnUetNmKz/JP4iUjmhrjL/i1oE40xo3WJRIRXiU
- ntt1zNaaPZ9/wLqkJjs0wAAAA==
-X-Change-ID: 20260628-sockmap-lookup-tcp-leak-bdaba3e083c5
-To: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
- Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Emil Tsalapatis <emil@etsalapatis.com>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
- Willem de Bruijn <willemb@google.com>, 
- Jakub Sitnicki <jakub@cloudflare.com>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>, Joe Stringer <joe@wand.net.nz>
-Cc: Michal Luczaj <mhal@rbox.co>, bpf@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Sashiko <sashiko-bot@kernel.org>
-X-Mailer: b4 0.15.2
 
-This is a follow-up to Sashiko's report[1].
+On 8/1/26 18:29, Kumar Kartikeya Dwivedi wrote:
+> On Thu Jul 30, 2026 at 1:55 PM CEST, Michal Luczaj wrote:
+>> On 7/29/26 22:32, Emil Tsalapatis wrote:
+>>> On Thu Jul 23, 2026 at 7:33 AM EDT, Michal Luczaj wrote:
+>>>> Lookup helpers gate whether to acquire a socket reference on
+>>>> sk_is_refcounted(), a check re-evaluated at release. An established socket
+>>>> refcounted at acquire time can gain SOCK_RCU_FREE via
+>>>> connect(AF_UNSPEC)+listen() before release runs; the release-side re-check
+>>>> then reads sk_is_refcounted() == false and skips the put. The reference
+>>>> leaks.
+>>>>
+>>>> Make acquire and release unconditional and symmetric: always take a
+>>>> reference, always put it. Adapt sk_select_reuseport().
+>>>
+>>> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+>>
+>> Thanks!
+>>
+>>> The bot's concern about the comment style is obviously invalid here.
+>>
+>> Are the prompts incorrect?
+>> https://github.com/masoncl/review-prompts/blob/59469708305eca305cbd9eb94e5aa0ee3627529c/kernel/subsystem/bpf.md#bpf-comment-style
+>>
+> 
+> The prompt is correct, but we don't bother for existing comments, if you add a
+> new one, you can use the new style.
+> 
+> Overall, looks like the set is pretty close. You can respin targeting bpf-next
+> as John suggested (and we can wait for his ack before landing) so it can go
+> through CI again.
 
-Several BPF socket helpers acquire a socket reference only when
-sk_is_refcounted() == true, and release it, independently, by
-re-evaluating sk_is_refcounted() again at the time the release runs. TCP
-connect(AF_UNSPEC)+listen() sets SOCK_RCU_FREE on an established socket.
-If that happens while a reference is outstanding, the release side sees
-sk_is_refcounted() == false and skips the put; the socket is leaked.
+Sure, here's v2 with patch 1 dropped (I'll repost it targeting bpf-next
+later):
+https://lore.kernel.org/bpf/20260803-sockmap-lookup-tcp-leak-2-0-306e025bfe66@rbox.co/
 
-unreferenced object 0xffff88811617ce00 (size 3200):
-  comm "softirq", pid 0, jiffies 4294848512
-  hex dump (first 32 bytes):
-    7f 00 00 01 7f 00 00 01 4d 43 02 f6 00 00 00 00  ........MC......
-    02 00 07 41 00 00 00 00 00 00 00 00 00 00 00 00  ...A............
-  backtrace (crc fb5bd4c8):
-    kmem_cache_alloc_noprof+0x53e/0x640
-    sk_prot_alloc+0x69/0x240
-    sk_clone+0x79/0x1230
-    inet_csk_clone_lock+0x30/0x760
-    tcp_create_openreq_child+0x34/0x2750
-    tcp_v4_syn_recv_sock+0x12e/0x1080
-    tcp_check_req+0x447/0x2310
-    tcp_v4_rcv+0x1026/0x3c90
-    ip_protocol_deliver_rcu+0x93/0x340
-    ip_local_deliver_finish+0x356/0x5c0
-    ip_local_deliver+0x184/0x4a0
-    ip_rcv+0x4f4/0x5b0
-    __netif_receive_skb_one_core+0x153/0x1b0
-    process_backlog+0x28d/0x1190
-    __napi_poll+0xab/0x520
-    net_rx_action+0x3f0/0xca0
-
-The approach taken is to make acquire and release unconditional and
-symmetric.
-
-[1]: https://lore.kernel.org/bpf/20260701235552.2B0AA1F00A3F@smtp.kernel.org/
-
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
-Changes in v2:
-- Defer "Use sock_hold() instead of refcount_inc_not_zero() in lookup" to
-  bpf-next [John]
-- Fix comment style [Sashiko]
-- Link to v1: https://patch.msgid.link/20260723-sockmap-lookup-tcp-leak-v1-0-1bbdc58ce514@rbox.co
-
-To: Alexei Starovoitov <ast@kernel.org>
-To: Daniel Borkmann <daniel@iogearbox.net>
-To: Andrii Nakryiko <andrii@kernel.org>
-To: Eduard Zingerman <eddyz87@gmail.com>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-To: Martin KaFai Lau <martin.lau@linux.dev>
-To: Song Liu <song@kernel.org>
-To: Yonghong Song <yonghong.song@linux.dev>
-To: Jiri Olsa <jolsa@kernel.org>
-To: Emil Tsalapatis <emil@etsalapatis.com>
-To: John Fastabend <john.fastabend@gmail.com>
-To: Stanislav Fomichev <sdf@fomichev.me>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Simon Horman <horms@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-To: Willem de Bruijn <willemb@google.com>
-To: Jakub Sitnicki <jakub@cloudflare.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: Joe Stringer <joe@wand.net.nz>
-Cc: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-
----
-Michal Luczaj (2):
-      bpf: Extract shared reqsk-to-listener upgrade
-      bpf: Unconditionally take socket references in lookup helpers
-
- net/core/filter.c   | 83 +++++++++++++++++++++++++++--------------------------
- net/core/sock_map.c |  4 +--
- 2 files changed, 45 insertions(+), 42 deletions(-)
----
-base-commit: e5fd3f514e27db1f05fbd72ba615d74941e23c51
-change-id: 20260628-sockmap-lookup-tcp-leak-bdaba3e083c5
-
-Best regards,
---  
-Michal Luczaj <mhal@rbox.co>
+thanks,
+Michal
 
