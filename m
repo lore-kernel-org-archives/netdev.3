@@ -1,45 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909552F12D4;
-	Mon,  3 Aug 2026 22:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F5D346A14;
+	Mon,  3 Aug 2026 22:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785796747; cv=none; b=qu/vh/nthIcstWDHI+YP7L9WwkfGmlmhtxBcxz4nh998dYMH3ihNiizrT4A/EwM6AyeVmMb26yx07IfrbUB3WNihkBEQwgM8xVLPSmz/8Ya4f4DRr8mLFBleXCAi66kc6OuBigaIbao4vhyBZQM9jVWByrVOc9942VqNl7ICqK4=
+	t=1785797231; cv=none; b=nkZg7Ng7VqOOSmYZlOUUDsGGSB3YGXKvzbBs1tVjgtCfiBXslJvUI/cAZLTWH5efL188aUG2fOxx9iXa/0ngI4MoeW7XZedhHxF0ncpAKauVd0qI/Ni9oDjtKyTjavtLbBADO92z/DbmGBDnhpNPe8boQ0JR+UA7oGSdTStqxdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785796747; c=relaxed/simple;
-	bh=JYLpK2RLwXx3J7tIEi0X7VbNKnQmO0ohjTBD1Ifb93U=;
+	s=arc-20240116; t=1785797231; c=relaxed/simple;
+	bh=6uq0XjCoKYWHBXRg0OAG5t8zks6jbW5gu3lzCHMsKRY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AyUHaWKAcwf951ySM54cdePbSzbu0Orz1/iiD3JhtVW5pUuwTAFjPgWJYpiodW8sIytxekMETAJzRgmK/9IIhOglfHUIVZ8LrtMPi3Q6r54145ZjiU6y8WuE8aj8+Em0P1eZolqaXEW8UtZc6nFCs3BzUrIHM5Vzx1Vrrr08bIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TVb/JgEQ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=ddRzTHijA/ITh7cS0bB22J8lLty8kWTUt9/urnMfIvq2JAq4O5hJOc5B2FY+WJyOD1AD4DPvU/cWI65d+IxB2fUWniRZn6i6b2qrA45qb7NYOcFHiMFyFg60RcK2qv+AuV/9ZEEBfLSEafV1xfKPUKMtlYQpk6F8U6raJLGLmEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QkR5+ED4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TVb/JgEQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2F21F000E9;
-	Mon,  3 Aug 2026 22:39:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QkR5+ED4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942141F000E9;
+	Mon,  3 Aug 2026 22:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785796746;
-	bh=NEGciP0VpHF7NNx2H3k0pGo/GG53AY+AzCRZltiFtgY=;
+	s=k20260515; t=1785797227;
+	bh=vDjqRM9qhKEVmzTZtdAk2U10hpdPMllWx0PYXjxdp0s=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=TVb/JgEQa5xUMPG/F5acI3nRG8WG61yAjn6ZBW7rKf7l+Z8iShcU44GNgtd41xN6p
-	 2WtTlFYVRm8NQF3FOmtOjFdAeKYWvu2rg2KcAkyRbUGeZiAA4gK5ebxABz1/vbABx3
-	 +XIDcUWeo53tXthFWb93rW9ifescV+3rX+145Z83rj9zLHCuL7wEDaMM79SsWG0iex
-	 spZWt8HavQQ79GTo4K36kcxCNhysRba/kxf02pRjOtED4ejbikgB4XFBr/YlvEfpFc
-	 V31r7tVTrsLps8B51qpz6FVMlsA2x+0Cjco4bBwvSxpATs0jRcvrlI59emiyjhIvq+
-	 KGienQCZwezBA==
-Date: Mon, 3 Aug 2026 15:39:05 -0700
+	b=QkR5+ED4gegbtsjxmaTaCKEtlAH8n59RxXr+M5+Sow+yzza8B/k9lUMl69tx3ij6G
+	 DjQByqkNAc++fC7An0vvLF0yFUir2suvRCNoQDqRZezLOF/3w5bh7FNJKLVCGmf5ES
+	 3HEBc+SJe1+DPn+1KNTiZ23+uaxYMdwNZFQM0McUKXiUADGij0g2b50nt8vdhiAcKy
+	 jNLePUBwI0hs8n9npY06flmPPKIxrLwuRp8vArJX0NIC46w4GPg+9YUOKSNorse4c3
+	 GT1oqY4BzXYy7m0coP2W0kDeKd+K7dgWTy97Fuq6iZeiMkQ6ZrdnU9xpqQdPZDo/Uw
+	 OwkU7fHgYXLRg==
+Date: Mon, 3 Aug 2026 15:47:07 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Chuck Lever <cel@kernel.org>
 Cc: John Fastabend <john.fastabend@gmail.com>, Sabrina Dubroca
  <sd@queasysnail.net>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
  <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net 1/9] net/tls: Bound time spent on no-data records in
- tls_sw_read_sock()
-Message-ID: <20260803153905.09f1ba0b@kernel.org>
-In-Reply-To: <20260726-tls-follow-on-v1-1-99bf4cc1c729@kernel.org>
+ <horms@kernel.org>, Dave Watson <davejwatson@fb.com>, Shuah Khan
+ <shuah@kernel.org>, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net 5/9] net/tls: Consume empty data records in
+ tls_sw_recvmsg()
+Message-ID: <20260803154707.6dc9171f@kernel.org>
+In-Reply-To: <20260726-tls-follow-on-v1-5-99bf4cc1c729@kernel.org>
 References: <20260726-tls-follow-on-v1-0-99bf4cc1c729@kernel.org>
-	<20260726-tls-follow-on-v1-1-99bf4cc1c729@kernel.org>
+	<20260726-tls-follow-on-v1-5-99bf4cc1c729@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,12 +49,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 26 Jul 2026 20:33:29 -0400 Chuck Lever wrote:
-> +/* Bound the time that consecutive empty ingress data records keep
-> + * the socket lock held without releasing it.
-> + */
-> +#define TLS_RX_NODATA_NS NSEC_PER_MSEC
+On Sun, 26 Jul 2026 20:33:33 -0400 Chuck Lever wrote:
+> -		/* Do not use async mode if record is non-data */
+> +		/* Do not use async mode if record is non-data, or if it
+> +		 * is empty: the receive loop frees an empty record's skb,
+> +		 * so its decryption must have completed.
+> +		 */
+>  		if (tlm->control == TLS_RECORD_TYPE_DATA)
+> -			darg.async = ctx->async_capable;
+> +			darg.async = ctx->async_capable && to_decrypt;
 
-A time bound is a bad idea in the kernel, a softirq can easily 
-take >1msec and turn 2 consecutive zero length records into
-a fatal error for the connection.
+I vaguely recall that we depend on all records being async
+uniformly within a single recvmsg call
