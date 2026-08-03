@@ -1,72 +1,59 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender-of-o59.zoho.eu (sender-of-o59.zoho.eu [136.143.169.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2F73B388C
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 21:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785791238; cv=none; b=qFhHuEodzLA+x88ae+Wro3D2jy9ohB7rqz/ehPrgghEvQKLdlMNsIe3HqRn7Ps+dOOeJTqfpwfHn0H9PpJxNB3zpJU91WJOoe/R/bH1FDAipjs0l7+oC+m24Qj+TteRV/YxG9W7FZYBu91iqiOtScAKwqjdMLsE3LJHXilR8l/E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785791238; c=relaxed/simple;
-	bh=OsgVlzmVLr5/kXYHJ8ZBVZQNm4yXod30WMwFCvSIo0Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E8L5Onl6dEdPMLBL10cZe6l3UYGXMvOGRuB7h2TQB6BDDwV+f3/0CW++ytcHm7k7egv3VN4pcYgw3K3k1cDymU6rAuV324tNz2e2lNbIfRgseW/Dn/fWwt4BawxPJao1/dvHQrePsXMhLznXo5a6FladkbCb4Nze93QATChKYnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VM8p+FEC; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53983B3888;
+	Mon,  3 Aug 2026 21:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785791278; cv=pass; b=qRpoDK2tahqdaQz4WnLSV3eCZaBYEr8yWy9itWNwmWU3kwItelxmR766CYLWWclpWQHqZbMa7JTqp55p8MhdiAKpu4rrq3cjfhWREBSaumEiqTNee1W3NoVUHxVo/yMsiayGry3YxervJP3oIlD2k83ouY4Gmg1ZN25I9z6KNIg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785791278; c=relaxed/simple;
+	bh=AxkWzGW3Qi3bk4Vv3PFysuGtJqfZ5f3EgOZpIL0TTSU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BeEe2/SvAmUZB1RRxT358X7ty8yDOHUUBIQKu3XGAFh/kaMapkmHKEDAfzvXOw9/mZQe98iFfbhC80GwoxFdupCnAEtp6vLrnPuyRnY+9rzCRz7zYKiAaWLJZ/Y2iscrvn86Btzrx+YBwmSA7afl7NXaiwiC5U5BrMtvJRHFzHU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iusegentoo.com; spf=pass smtp.mailfrom=iusegentoo.com; dkim=pass (1024-bit key) header.d=iusegentoo.com header.i=ali@iusegentoo.com header.b=dIscssv0; arc=pass smtp.client-ip=136.143.169.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iusegentoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iusegentoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VM8p+FEC"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-80bb41f7f3cso38023817b3.2
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 14:07:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785791236; x=1786396036; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xs6AeFC6wzPPBL4PftXRtu7W3n9YFR5yhGm6HKUzTww=;
-        b=VM8p+FECQe2j/7JD8H1c8+Owj4eJ+8kYK29edLfbQ00nJLKqTv2TQ9uK0FASQkjdhg
-         2dMNXYNWO9e8HbtyFq0xwdLlPk2Vgd/eBNkKMfCJX+jZM2Z0SKvO+FCnMXaRfjQkXrz0
-         Wj2ED/K89fOscHBw49Q2Lpq/NYpdI8jAYuXsm743utHTrAdgQWnaysKDy4SybalczOug
-         AljE/vfdf/9RRh1HT4ZWXSnQdXRAjR4L184pQKRaS8quQw3Z8Z1lSfZ7kowgH88vfxzI
-         Bmw1fnmzDk7v5hrqTeQ4gxdOnCfuI9uBzQbtUgqjK0Bs2qm4XfH4SVdxj79BBGVwCWh/
-         KAng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785791236; x=1786396036;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xs6AeFC6wzPPBL4PftXRtu7W3n9YFR5yhGm6HKUzTww=;
-        b=lcPOjCRIXcN3dXpAk6XWmTkZhqPpMwaqSqCfJA/0qBe5mQwrQSaGIHPoY4m8K7mvBI
-         MCMBr34KR6klfOl8wJrAR7DCqeNse4bbRL1Deflk0QSi7hIOL7YzME7b8Jjv3j8kQMVh
-         Vw8I127fXcAFjyxmT4VBcG4oEdEp6SaG59KKIYZII7uwOSmt1bkkpet2mPKSTuK9nO2r
-         jOjC37Lo1krkMfkR1neguvxR7YE+uG1ZW79+joXgex7M6qFI1xwyZFIA+WDB4j5kMTfr
-         MWtxnYe4Va0YNPkex8n7DyAVxRHXfZrsG3rssML4hPpB8ZUXH043ApxdXWDAIY+qh5yw
-         bL7Q==
-X-Gm-Message-State: AOJu0YxFlbLsnyx3ni5H4QhHDcJoquWNBhuCSubbUTGL+iLBM/QYbzb7
-	snWrJfML3xHmV9qMMDfinJTdIYvX2eCCSR8bsJDkOUknVOxukivYK2653ZgWQQ==
-X-Gm-Gg: AR+sD12WfCAnFxD5iP3X9QN6KhhzeVN9N/cNRnSVsBcOia4wkbMQaUL/lSIRA3xnHT5
-	1K156x+FvI7kEQDUKzf1JWKnE7bO0sWl33mC9u2BFKhui5dJbxZhS7Dqg+1URk+5bq///5d6IHZ
-	sUV0/AqKWoQfApNTSJz7mMDkTLu6b/HxOtEJRGrIDRc0SN4y1BVdDULKp5w4u7RuOX1PStnpuLy
-	ZQWEoC43CC4+CTIj+L4kCHEvZTYPxpgA/eKxgCv3Q89pGfHl7cEpEWWAnqlmeyR47KDqn6uuTI8
-	I/Vxf8Tg4dzuzY20HTdTK5N30OqF2kKr2SlX48Yv/vKCGBbkGFZPlPaernbMVVJxCi5XmrfuF+1
-	rG1ws4Z3qJGXPZoc7foWSjamGxc9BxHxGK2TTZo2DrJ/DuRfIthXKL6UyjMjwTlx/OEF5fH0nbh
-	cgJzfgwPH5ref28ZCnpsYaS41NzIvGIl7dat22U4V4YFFFBe9VxfoHH24yukphJZQhfLWzsOGdq
-	PdfBy7YnbfJ05kemgGW9lLbhnc2ykdc7wnS8Wm6Nhbo0z4ZZpaSiJJtfbU=
-X-Received: by 2002:a05:690c:c91:b0:81e:abe2:e01b with SMTP id 00721157ae682-81fd4b8c96emr131532957b3.26.1785791235798;
-        Mon, 03 Aug 2026 14:07:15 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fcd0f87efsm62099257b3.33.2026.08.03.14.07.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 14:07:14 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: intel-wired-lan@lists.osuosl.org,
-	anthony.l.nguyen@intel.com,
-	joshua.a.hay@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH iwl-net v2] idpf: add missing cpu_to_le32 in idpf_tx_splitq_build_flow_desc
-Date: Mon,  3 Aug 2026 17:06:23 -0400
-Message-ID: <20260803210707.1912217-1-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.55.0.629.g250fe7f194-goog
+	dkim=pass (1024-bit key) header.d=iusegentoo.com header.i=ali@iusegentoo.com header.b="dIscssv0"
+ARC-Seal: i=1; a=rsa-sha256; t=1785791252; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=M0B0a+/jPJf2Grf4znhZUx+JnrNn5Jwp3oRMaa3b+179O+qhSCcD7GGsB+9TgEdt8fRzTZocmpdMTh3NYZwFBYgpbPUBkIIVWxK07mfA9Lj4O6E0NHbGF9zaeAC/gHOh9GFX41qeWXWU4ccHH1kI8cGOn/fJqEk8McHJYRd7tDo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1785791252; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=VwBlIHBKfXlDFS7S3c02nz0U+3hDwxWqpf4Q4qmWM6I=; 
+	b=EABPEMiJ0OzH2R/wPJGu0Wbj40ogtZb0RusQ90z6IZaA0LPi9fMpliHiwttqpgnvj5bl+gV+Nl+ZvjoM3fPAwFt4EtafWB93FDhochrBWCPZZS31/HkUWfjMxJeJNgt0NVxDGQi8EbXJF35oncFvdgztYsYCsIwlDLH6OCQwn38=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=iusegentoo.com;
+	spf=pass  smtp.mailfrom=ali@iusegentoo.com;
+	dmarc=pass header.from=<ali@iusegentoo.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785791252;
+	s=zmail; d=iusegentoo.com; i=ali@iusegentoo.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=VwBlIHBKfXlDFS7S3c02nz0U+3hDwxWqpf4Q4qmWM6I=;
+	b=dIscssv0HYFGyl9CumEW8/5UFD55UAfWN6aYhLwGUg7FJDDXWrmz9/JIb2BHe2SB
+	rObpmmd7uNSiTpwaJnoTzhVo6NVyXxHNYjR5bpnyy4tYzfIX3YF1FFgc0KS2aUdNBCp
+	xLwLL8bGcrFyG6vvj/z8v5mjIP8yobnsELJcu12A=
+Received: by mx.zoho.eu with SMTPS id 178579125042968.12080696502551;
+	Mon, 3 Aug 2026 23:07:30 +0200 (CEST)
+From: Ali Ahmet Memis <ali@iusegentoo.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: xiexinet@gmail.com,
+	netdev@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	lukma@denx.de,
+	m-karicheri2@ti.com,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net 1/3] net: hsr: privatize interlink-bound skbs before address mutation
+Date: Mon,  3 Aug 2026 21:05:41 +0000
+Message-ID: <20260803210717.123417-1-ali@iusegentoo.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260803124305.09e0da44@kernel.org>
+References: <20260728143604.26-2-xiexinet@gmail.com> <20260801002931.241238-1-ali@iusegentoo.com> <20260803124305.09e0da44@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,44 +61,34 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-From: Willem de Bruijn <willemb@google.com>
+On Mon, 3 Aug 2026 12:43:05 -0700 Jakub Kicinski wrote:
+> How are you producing this review?
+> I've never seen this sort of blurb human-written.
 
-idpf_tx_splitq_build_flow_desc performs a 32-bit store to &cmd_dtype
-to set the 8-bit cmd_dtype and zero the adjacent 3-byte timestamp
-field in a single operation.
+I write them myself. English is not my first language, so I draft a comment
+and then keep cutting and rearranging it until it says exactly what I mean.
+What comes out is denser than how people normally write on a list, and I can
+see how that reads as machine output.
 
-Descriptors are in little endian. Add missing cpu_to_le32 and cast to
-__le32 to ensure the fields are written correctly also on big endian
-platforms.
+The content is what I went through in hsr_forward.c. hsr_deliver_master()
+calls hsr_addr_subst_source(), which writes into the header, so the copy has
+to happen before that call rather than after it. It only matters when the
+master can be looking at the same skb as another consumer, and in
+hsr_forward_do() that is decided by these two:
 
-Fixes: 1a49cf814fe1 ("idpf: add Tx timestamp flows")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+	if (port->type == HSR_PT_MASTER && !frame->is_local_dest)
+		continue;
+	if (port->type != HSR_PT_MASTER && frame->is_local_exclusive)
+		continue;
 
----
+so a ring frame reaches the master and a slave port together only when
+is_local_dest is set and is_local_exclusive is not. That is the case I meant
+by the skb aliasing a live consumer. The accounting remark was about the
+create_tagged_frame() failure just below, which does
+frame->port_rcv->dev->stats.rx_dropped++, and the new failure path does the
+same.
 
-Changes
-  v1 -> v2
-  - add Fixes tag, Tony's Reviewed-by and Cc: intel-wired-lan@lists.osuosl.org
-  v1: https://lore.kernel.org/netdev/20260731103137.4000876-1-willemdebruijn.kernel@gmail.com/
----
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index c724d429a7aa..91ca75e45463 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -2408,7 +2408,7 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
- 				    struct idpf_tx_splitq_params *params,
- 				    u16 td_cmd, u16 size)
- {
--	*(u32 *)&desc->flow.qw1.cmd_dtype = (u8)(params->dtype | td_cmd);
-+	*(__le32 *)&desc->flow.qw1.cmd_dtype = cpu_to_le32((u8)(params->dtype | td_cmd));
- 	desc->flow.qw1.rxr_bufsize = cpu_to_le16((u16)size);
- 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
- }
--- 
-2.55.0.629.g250fe7f194-goog
-
+If the phrasing is what bothers you I can write these plainly from now on.
+I only tag patches I have read through myself.
