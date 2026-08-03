@@ -1,81 +1,81 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62173421226
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 17:41:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2101A40DB2D
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 17:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785778907; cv=pass; b=jCteUjOS67HSEoLmFF4oHbY8U3KeLogA2YK41kSbYnDu8tI9xjZCG2/oH9RrZ/tASm81pQAkmOpS2tbZAbwVyTMe2tF1tymHLgwmBo24dgYPX1zH1cDy6n3usEz9Fu81OLUq7l5sJMnDuB156ZeNu2VKJqPTW2HQyer3QdhGFpI=
+	t=1785779117; cv=pass; b=lG5PYgrAjm317JR54ZWb7YYIvOirC+V6zFWehI4SQtXV0H0scagMNofurtzLo73U1wH4b0wubacWcjImpT7qqCxNeaR3939V57yd6LDdJHG4LDgIp0htcU+yX2g/N9Md3T06Z1Mot1Vk72R7l4tHooBCGGmUNz66CId2s45Ktlw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785778907; c=relaxed/simple;
-	bh=m+s/NpsJ2vxd6nQf9mYbVKAEJ7bH7qIbDORr9taCqPo=;
+	s=arc-20240116; t=1785779117; c=relaxed/simple;
+	bh=pcaqbwXbbgtya7su1KF5hkBcYz1hpu+5KQQa0CxMdOU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eNWaShd2UfWfxPtQBnR3WJvGh+j0tQGoMOJ4Dkfrhwk+VVgnD8Mfe4zYVZKcOgxtvINhMaHhVxHpnKxkg3uMzW3fQUVSFLSUksM2jN4uJHOPyZUeOyyw2X6Ls7LJ3RiE3+Xys88ilvx5ABqbN1jSeroX4dsYsqTHYM1gDPQxzSs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rh93a9y6; arc=pass smtp.client-ip=209.85.160.178
+	 To:Cc:Content-Type; b=AsXfJzLvNJw63O//ZR0k1HSwemHmK97pZS0FNRVOgLLQRhU83puWPPoV40CGdDt9QmRN+UonfhqhY4WTxNo+6HuaBAVrXs1iroP3wF6YEhFG+zzWEcPaBVw/ullR5o0jVwdCqMvMAtsihKNm5ZhMfRi5Ubrqq4nC7/gQncwO2u0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TYuwah5X; arc=pass smtp.client-ip=209.85.160.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rh93a9y6"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51c10e86e52so15411cf.1
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 10:41:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785778904; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TYuwah5X"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c15a5b265so16511cf.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 10:45:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785779113; cv=none;
         d=google.com; s=arc-20260327;
-        b=A1FT8SJPuim1n5me4V8QSwE97V7k67jsSUtTQhhrBLt4guoSXafTLETnV71BJaqZbD
-         /7U3SD994vYIwikLvz3OXb7jbKw5NJGoELeUjQLzpjLTPagVZOjzA47ivvjlmjXy/iD7
-         L3fa6Xnmvzbsz8Y0vt/pvrtvxC4Uy4Aq8us8OIwmgvVaAjh8x/MErcYPNZdLOXFfJMii
-         U1Gyabvm3a7D8NebEi+e2elEBFESua2yKjk9L/pVaSYzm6hJUtAJzJgpNBmGg1awtjg/
-         w0Cari6rzozcueZvvoTYLdW097qxS+rwmfz7gzzoXFBNkDXHkd/dW4/ki8qqOSbKBiJJ
-         Fefg==
+        b=WFx+20NqkYOsDOWhUhfYryr33tGvjgq6b9mO8FMGTBlhxGz+0yFUQyLY80NHdjRmyw
+         G8yge1vSxicn6aURxAVoh5juSXvo2ZqUdjD6iib8lLpPnKeSuQso/7Ht9G0R+bgFrUUO
+         hex8aRTvgpDaWkf7d3KrCkLNll3EBCx8azBkib+lh77BOPZTaQRE1xxVqIuz4TH5mz9j
+         onGxSVMsI5igB9BE5fht9ZrgFoaHcfxx4Vvg6KV+8AwCn50UWOV4D2DqtBBqwmjVCbRK
+         5IZnVIz2AMtfW4yHJu75CA8tDF1QdUTr7UY2n5sO+f2ACx8qGdebD6p62/HJXX3nic6M
+         Vcpg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=m+s/NpsJ2vxd6nQf9mYbVKAEJ7bH7qIbDORr9taCqPo=;
-        fh=RkANrRtI9Ht120op+T2tXICK93+YClE4CFe2Sy6mkv8=;
-        b=XWre8Hy41OtAv8fTRIe1DNRUSZfywXF2IYpVCCauUCKc61G8mwOZLkHP3YShy9dx4R
-         5/Rx9brj9/VxEHsM5B6gpmcujp9YxtNq6dv39fjHlyzGWnceiesVgkGHNVu7qo+V0swB
-         6XSwBiWFAaAU9R5E0wgG7uN/pI38XoFTPjc9cPdp09zUJZ3G4VYsKdQ8BmzE8kbWDewm
-         8kH71YQ8JRrA7JFe3zgtzsA6H3dcvuamZjqIJI4jwEkeXKeN3GUzVBzdpvpdbTIi0Fam
-         KilhZCvC5F0DcSSXumsuwBc4DVqog5Mw6oAP6CYhgWjtTmdX5bgaPp/OTf3GoJItE8yL
-         mGpw==;
+        bh=dzPyuOh4D8LB8f5KYlnObQrd/WHhEUKx52+e4JaPcOc=;
+        fh=5HCirRTRM4wDETPUDkXTrBB7BRzNMTn0xMVf0PbGQf0=;
+        b=JTYg/WMb0iZpm+8I7FsZQn+iQ9XJ67tkVJ3/bgzi/SDegqFJHUb65MxL5mbF67FX2O
+         BXn1gVLRcdiLN655vnpWm5bqOxCElL5xsOWKAFuHvq/upNZDM0fRbLYC1eQwUYsZ8wOs
+         6NMcQB4baCBv8OpxFxf7wKv5AA+KpUBDS2xoDTB2xZ27ewYySOq8i78TSyqVvZuBY/65
+         +4+KOGBiASwqcsar2wh9F6eXSSbVkEtGBcWehtjg6vIMrbvDc8wHfeQ+57aswr9NG/yx
+         d29a1fmbp1OOGnjJ2zDOqnPJXD6LwAE1Hw7o9kP1H1RUPLxmWMhcm84XVjW67OW85wEF
+         ITpQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785778904; x=1786383704; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785779113; x=1786383913; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=m+s/NpsJ2vxd6nQf9mYbVKAEJ7bH7qIbDORr9taCqPo=;
-        b=rh93a9y6zBS86Fagg0lJWIxpT1rkfPcSM36S37loj9Z9F2Qfmo0rEYLcgPyiXr33L4
-         Rk9agM2r8ghMjC8+KjlNE1nqY/sQn+jhgY76DqFPSFkwEgUcjuvCwu/7kdIK1dT/S2US
-         LQ+8gg/u7h1kLa7zXdc9tW7wvprYThR3zsZwHSs4u5735erBZwqgiEmT/8jflK8kaY7w
-         VwGIm5xKvR//dMXxAzkKPnX6vA4IIoMzp/FnJ+RmPlvHMe6OkrgMYHuievaYQIVS22G4
-         JVfuYGPFm4I6UyY7jtqJj2aY66wp3cL7iP+mquvZSKIP1SPWFQJzd0aNazVtm7jnzxJs
-         Vwew==
+        bh=dzPyuOh4D8LB8f5KYlnObQrd/WHhEUKx52+e4JaPcOc=;
+        b=TYuwah5X0TlhLx/B8SHXB5/0Nq+YXh76u9PaQqbo16Ef7kTr4tuIp7K3drxBWNTpJs
+         S1bTDevWv6PS2IxIG0gdvcG+BsUY2P5KXeTn8OD+4yhm/vW1OGGiFemdypq+JrEyAKW/
+         zm0VDxy1lqoIuWytWt61g5dOrYov308s2tCiG8f/eRfb5rpKXenXFIh7WtaQipySB0C6
+         m6eqFJkX0fb9FZgdcO9wRPsPAt6GAXmp1N7uwuar+ebQcZ+yUpfVuK4jExpJotOzjWiD
+         bZCE+coyxealhG58vpdp8l5FfOQlEyshXJLuvf2ZPkZC3uK0rr01sdjIcwVD8UYMkTck
+         mTsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785778904; x=1786383704;
+        d=1e100.net; s=20251104; t=1785779113; x=1786383913;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=m+s/NpsJ2vxd6nQf9mYbVKAEJ7bH7qIbDORr9taCqPo=;
-        b=qzZfWpMkT6ESMIZAMWvYjYTLuKSVF7/ZAzk431au7sGrb4oKSbajuk7He+AAkUaSng
-         lhBtGND+Vi14q+0MiVIrUcVI5632mu5pwuI3OuWC5OVwXY6QYSFKklZ1j6FaArQ/H81I
-         lVN5W5YNdgS1wJrBAU3EhkVMNBTQAB8Mg7yvltesvPiSf+EOTS90f7bAjUGs/4vsN12H
-         84F/mtXy2DrzpaJOnw9t9zj8B6ohwcYdKF5AHquybfvDXTtcrTuSzaw15CnC6ZUirahH
-         ivm9X/Fu1eWfjg7gzpR6618K+651nQTTjSt4y8cNGkDAxg6wvc2feDcuY3XppfCFgP+7
-         7F4g==
-X-Forwarded-Encrypted: i=1; AHgh+RqsnbOb6GIoHCznTbz6nV6MJHhgzysee0QLKMQpT7aRgsm+GIMPabHHhwjnrjaWngOpIAjKsV4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQZHIfPGBzartRp0+rEJS8b2yxf44CYFTSCqZILYk8BI3KhS4K
-	VxxbBdwMuWfWqWaZpaHtxMWIj6+t8NmBnGQtXXDb/5WtJaFSV00W3MCFqCiQsb2rg3z/P2nk6D/
-	HWgocuEy0jke7hDWj1sS/6XWYL33Q+7esdhcoP1eC
-X-Gm-Gg: AR+sD11DYXwMaANUoXotlooUFbmZzXxE9frXccCEcc8GGQIoV/SYgCvP2P/W/8owPwX
-	q3ttbHMtRKwTxAyB8p0B/bkkweYTk3LacCxhSW5K5Bj6z3S9mQP3zaNhlquZ5EDryy3cFiStV9X
-	HHoFqXmL18hkhy0/tF78uEk78hOBv4qoFxP0cVNqWU+Tm9aZjrbTMEfga5dM+r8JvLHeuP+TXsE
-	UqeQYLmfrLRTnNGxN3O6HJYq3mqwf44N+mRWyZlxVhORMx/yfcTiojgGJUfoiQvyDL6Z0n4Na1v
-	AqM47URhOtGVWmlONdukj9FzbMOUJ1MHgKlnopIsTJo+CmjUxmtKkg==
-X-Received: by 2002:ac8:5907:0:b0:516:3f51:81cb with SMTP id
- d75a77b69052e-52cd52bfef5mr290051cf.13.1785778901815; Mon, 03 Aug 2026
- 10:41:41 -0700 (PDT)
+        bh=dzPyuOh4D8LB8f5KYlnObQrd/WHhEUKx52+e4JaPcOc=;
+        b=kOwtxbVTEQho2KbaVQcdzr2McTq5XR8YtWZpaGy0NPMPDK6qzMT7TDYyFTUfIm4nxv
+         NGc4et7ecTR11Q/fesVDyzDnqYdUMOkooK1EiKnwLGxh0uI5nF+5BrHsllTSKUu+YYVz
+         Kb4aCDjlXMOFIGLJNG0LEaojzDISOVFtQpzCOp7pZijdy4BZDEvd5TsPMRBvXGzYHQTD
+         apKAxNLgtCSFmUp/9i5xm+01mw5ExtHeteSzPgVYZguJjTBZ7APbkBF3tnshXZtjG1bM
+         9KaOIoplZc4A8ZMGQJOl4mCInr0gVVNFnSw57PnshhLvIu9nnf39lpc1drtLkMsSSH+Z
+         S4wQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoZh791zScSBR40CfmXZOp41lJd6wFq8oTtCOba04BIPnoa1huwHGyGKK16h5/HKw/pou6ZDbA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhR5xn8r7pPc3i5BYbM1r3wwkJv05/SouvAYq3EXEQF2FA3DfC
+	2RK12PcloF8Scjg4XBlSuz5xC81db5pZL4m6TCU3YIgjDpWh2ulHV909D5AuFzkcdGHPjdjfPIJ
+	Kd7nZU5q5MbWg5aw4COo98LM4YwNVW96sT9F+FvXS
+X-Gm-Gg: AR+sD12TX+D5XSdcTukQbn0fDC5w1MRRZjflz53u7Yr+P9Od4vwyQxkNd2qtl8xPEuW
+	D6iGu0B6JsBinbpuwliAmFbyv9qtOXYxJy8raio+VWQdLS7O947eoZWPF4lO3tb630tvtmjQKY6
+	ooysQuhEKWGIUylfijEn6RaqWdlrY5od00iKQyTt09yMaTlIPgapLhmrHtCcGMoF3D80UfXlZq4
+	F03VBZ3XVQSFUqqF2fBqCbOQlWJbj85NgS9Lq/BzyYGLl2sD5ee5aKrDZSVJ+r2an/XUU1lXDxE
+	c/pwSbHe/NbF+JpLjz9JWiKi20TQITRqojuQS4l+1Og=
+X-Received: by 2002:a05:622a:258c:b0:517:6010:7c71 with SMTP id
+ d75a77b69052e-52cd4e7f426mr791711cf.4.1785779111866; Mon, 03 Aug 2026
+ 10:45:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,17 +83,17 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20260802215459.2769283-1-surenb@google.com> <20260802215459.2769283-2-surenb@google.com>
- <CAJuCfpGezxdaSme_QpHVq-QVeZAUaF360_Ajvkrn3QqDcSQVog@mail.gmail.com> <anC1iE21eonDK06n@lucifer>
-In-Reply-To: <anC1iE21eonDK06n@lucifer>
+ <d01d461b-6af0-4ac6-8e5f-c7c4dfe6234d@kernel.org>
+In-Reply-To: <d01d461b-6af0-4ac6-8e5f-c7c4dfe6234d@kernel.org>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 3 Aug 2026 10:41:28 -0700
-X-Gm-Features: AUfX_mz51-1HJtZcwW0CSKHbqGIW5hvrnHOcHh2u8Z-lL_RgDncrj5lYR4-cybc
-Message-ID: <CAJuCfpHNMHKgmP=JLPKY65e6gO6MRpGE5MjUtjd_-2+LHr2Gpg@mail.gmail.com>
+Date: Mon, 3 Aug 2026 10:45:00 -0700
+X-Gm-Features: AUfX_mx9KknoN81NByxAvEeCqA6zpO4fjrQ68YNnLK8NO8HX9nqbtSToSg_mc3U
+Message-ID: <CAJuCfpFWSW0Pwh=qtFk14_0=6M9DsY_o8qQn2iFk8Fy2TW9abA@mail.gmail.com>
 Subject: Re: [PATCH v3 1/5] mm: Make per-VMA locks available universally
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
-	Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
-	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, 
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@redhat.com, 
+	willy@infradead.org, shakeel.butt@linux.dev, jannh@google.com, 
 	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
 	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
 	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
@@ -101,105 +101,134 @@ Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 3, 2026 at 9:08=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
+On Mon, Aug 3, 2026 at 7:01=E2=80=AFAM Vlastimil Babka (SUSE) <vbabka@kerne=
+l.org> wrote:
 >
-> On Mon, Aug 03, 2026 at 08:24:44AM -0700, Suren Baghdasaryan wrote:
-> > On Sun, Aug 2, 2026 at 2:55=E2=80=AFPM Suren Baghdasaryan <surenb@googl=
-e.com> wrote:
-> > >
-> > > From: Dave Hansen <dave.hansen@linux.intel.com>
-> > >
-> > > The per-VMA locks have been around for several years. They've had som=
-e
-> > > bugs worked out of them and have seen quite wide use. However, they
-> > > are still only available when architectures explicitly enable them.
-> > > Remove the conditional compilation around the per-VMA locks, making
-> > > them available on all architectures and configs.
-> > >
-> > > The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LOCK
-> > > when the architecture started using per-VMA locks in the fault
-> > > handler. But, contrary to the naming, the Kconfig option does not
-> > > really indicate whether the architecture supports per-VMA locks or
-> > > not. It is more of a marker for whether the architecture is likely to
-> > > benefit from per-VMA locks.
-> > >
-> > > To me, the most important thing side-effect of universal availability
-> > > is letting per-VMA locks be used in SMP=3Dn configs. This lets us use
-> > > per-VMA locking in all x86 code without fallbacks.
-> > >
-> > > Overall, this just generally makes the kernel simpler. Just look at
-> > > the diffstat. It also opens the door to users that want to use the
-> > > per-VMA locks in common code. Doing *that* brings additional
-> > > simplifications.
-> > >
-> > > The downside of this is adding some fields to vm_area_struct and
-> > > mm_struct. There are likely ways to optimize this, especially for
-> > > things like SMP=3Dn configs. For now, do the simplest thing: use the
-> > > same implementation everywhere.
-> > >
-> > > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > Cc: Suren Baghdasaryan <surenb@google.com>
-> > > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > > Cc: Vlastimil Babka <vbabka@kernel.org>
-> > > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> > > Cc: linux-mm@kvack.org
-> > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-> > > Cc: Todd Kjos <tkjos@android.com>
-> > > Cc: Christian Brauner <christian@brauner.io>
-> > > Cc: Carlos Llamas <cmllamas@google.com>
-> > > Cc: Alice Ryhl <aliceryhl@google.com>
-> > > Cc: "David S. Miller" <davem@davemloft.net>
-> > > Cc: David Ahern <dsahern@kernel.org>
-> > > Cc: netdev@vger.kernel.org
-> > > ---
->
-> <snip>
->
-> > > -#endif /* CONFIG_PER_VMA_LOCK */
+> On 8/2/26 23:54, Suren Baghdasaryan wrote:
+> > From: Dave Hansen <dave.hansen@linux.intel.com>
 > >
-> > Now that I'm looking closer into this, I think we would break NOMMU
-> > case because nommu.c does not take VMA write locks at all. So,
-> > lock_vma_under_rcu() for example would always succeed.
+> > The per-VMA locks have been around for several years. They've had some
+> > bugs worked out of them and have seen quite wide use. However, they
+> > are still only available when architectures explicitly enable them.
+> > Remove the conditional compilation around the per-VMA locks, making
+> > them available on all architectures and configs.
+> >
+> > The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LOCK
+> > when the architecture started using per-VMA locks in the fault
+> > handler. But, contrary to the naming, the Kconfig option does not
+> > really indicate whether the architecture supports per-VMA locks or
+> > not. It is more of a marker for whether the architecture is likely to
+> > benefit from per-VMA locks.
+> >
+> > To me, the most important thing side-effect of universal availability
+> > is letting per-VMA locks be used in SMP=3Dn configs. This lets us use
+> > per-VMA locking in all x86 code without fallbacks.
+> >
+> > Overall, this just generally makes the kernel simpler. Just look at
+> > the diffstat. It also opens the door to users that want to use the
+> > per-VMA locks in common code. Doing *that* brings additional
+> > simplifications.
+> >
+> > The downside of this is adding some fields to vm_area_struct and
+> > mm_struct. There are likely ways to optimize this, especially for
+> > things like SMP=3Dn configs. For now, do the simplest thing: use the
+> > same implementation everywhere.
+> >
+> > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 >
-> I don't think anything's broken actually.
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 >
-> Per-VMA locks was gated on CONFIG_MMU so nothing there assumes per-VMA fl=
-ags,
-> but now you have stuff that happens that didn't before but:
+> Nits:
 >
-> * vm_area_free() -> vma_assert_detached() - fine - it's always detached i=
-n nommu.
-> * vm_area_dup() -> vma_lock_init() - no asserts, just sets refcount to 0 =
-(correct).
+> > diff --git a/mm/Kconfig b/mm/Kconfig
+> > index 060190e12bce..77103b46b679 100644
+> > --- a/mm/Kconfig
+> > +++ b/mm/Kconfig
+> > @@ -1425,19 +1425,6 @@ config LRU_GEN_STATS
+> >  config LRU_GEN_WALKS_MMU
+> >       def_bool y
+> >       depends on LRU_GEN && ARCH_HAS_HW_PTE_YOUNG
+> > -# }
 >
-> AFAICT nothing else.
->
-> So seems fine to me?
+> I think either leave this in place, or remove the line above with "#
+> multi-gen LRU {" as well?
 
-One place that needs fixing is in BPF iterators. They use
-lock_vma_under_rcu() which would always succeeds even if the VMA is
-being modified. Instead of removing !IS_ENABLED(CONFIG_PER_VMA_LOCK)
-check in bpf_iter_task_vma_new() I'll need to change it to
-!IS_ENABLED(CONFIG_MMU).
-I'll look into other parts and try to verify they do not affect NOMMU
-but ultimately I would like to run some tests with this config, which
-is not trivial...
+Ah, missed it. I'll keep it in place.
 
 >
+> > -
+> > -config ARCH_SUPPORTS_PER_VMA_LOCK
+> > -       def_bool n
+> > -
+> > -config PER_VMA_LOCK
+> > -     def_bool y
+> > -     depends on ARCH_SUPPORTS_PER_VMA_LOCK && MMU && SMP
+> > -     help
+> > -       Allow per-vma locking during page fault handling.
+> > -
+> > -       This feature allows locking each virtual memory area separately=
+ when
+> > -       handling page faults instead of taking mmap_lock.
 > >
-> > Extra per_VMA lock-related fields in the vm_area_struct and mm_struct
-> > would also inflate NOMMU structure sizes without them being used. I'm
-> > not sure if this is an issue we should consider.
+> >  config LOCK_MM_AND_FIND_VMA
+> >       bool
 >
-> As nommu co-maintainer, no it's not :) I won't have that stuff blocking
-> important changes for real arches.
+> ...
 >
-> Go ahead! :)
+> > diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+> > index 4764d7b68f2a..2633e704c83d 100644
+> > --- a/rust/kernel/mm.rs
+> > +++ b/rust/kernel/mm.rs
+> > @@ -174,26 +174,20 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings::=
+mm_struct) -> &'a MmWithUser {
+> >      /// When per-vma locks are disabled, this always returns `None`.
+> >      #[inline]
+> >      pub fn lock_vma_under_rcu(&self, vma_addr: usize) -> Option<VmaRea=
+dGuard<'_>> {
+> > -        #[cfg(CONFIG_PER_VMA_LOCK)]
+> >          {
+> >              // SAFETY: Calling `bindings::lock_vma_under_rcu` is alway=
+s okay given an mm where
+> >              // `mm_users` is non-zero.
+> >              let vma =3D unsafe { bindings::lock_vma_under_rcu(self.as_=
+raw(), vma_addr) };
+> > -            if !vma.is_null() {
+> > -                return Some(VmaReadGuard {
+> > -                    // SAFETY: If `lock_vma_under_rcu` returns a non-n=
+ull ptr, then it points at a
+> > -                    // valid vma. The vma is stable for as long as the=
+ vma read lock is held.
+> > -                    vma: unsafe { VmaRef::from_raw(vma) },
+> > -                    _nts: NotThreadSafe,
+> > -                });
+> > +            if vma.is_null() {
+> > +                return None;
+> >              }
+> > +            Some(VmaReadGuard {
+> > +                // SAFETY: If `lock_vma_under_rcu` returns a non-null =
+ptr, then it points at a
+> > +                // valid vma. The vma is stable for as long as the vma=
+ read lock is held.
+> > +                vma: unsafe { VmaRef::from_raw(vma) },
+> > +                _nts: NotThreadSafe,
+> > +            })
+> >          }
 >
-> --
-> Cheers, Lorenzo
+> With the "#[cfg(CONFIG_PER_VMA_LOCK)]" does this still need to be in a { =
+}
+> block?
+
+I don't think it needs to be. I'll remove the extra braces.
+Thanks!
+
+>
+> > -
+> > -        // Silence warnings about unused variables.
+> > -        #[cfg(not(CONFIG_PER_VMA_LOCK))]
+> > -        let _ =3D vma_addr;
+> > -
+> > -        None
+> >      }
+> >
+> >      /// Lock the mmap read lock.
