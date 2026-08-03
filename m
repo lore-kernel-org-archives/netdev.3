@@ -1,64 +1,64 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF5342AF9D
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 14:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB4F42BC2B
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 14:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785766744; cv=none; b=TtpxKg20UNT4UPHgl2AdsH0KrvJZvnl4RGNE7LojzHDR/FLLA3wySANt90piR+nQq1GLuwzrcgfsveH7fnNIUS004gMO7IT7+mDtwBfP/vlVBDZ7HUoocYH89el0p5xsUPHGUl/R9ZjwmK/ECOhS2OnShOHQ3KKDW1dPKoKBKk4=
+	t=1785766749; cv=none; b=I+Iy2+aMcqHksjeP05DWdhkLnAmY6qIrfu/Aq6xlJSAdHkEC61Svl0Z5uy/6QmhFTrQLJi+HUIIYeOIW/QJ5xeHppbAgJG5ZdlM0XXtmG3eMquk0DyNAYOZXF5w2CT7Ir+9v/sniWRu6F24FcTUxw3eozsp9xT09Mk7jnAKW3hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785766744; c=relaxed/simple;
-	bh=V+xiIh8ybmCYAvwYMo5Mm6jhKxCUQbprWmuQ6vVtMh8=;
+	s=arc-20240116; t=1785766749; c=relaxed/simple;
+	bh=36nhEK+XUWu4cXSvoZoTcXr0d9SkWYU9//2aFuA+2gA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ccg/HxEN1qPpIQV5lA4y9mkbV9Ob6GQMdMsqLmcpL12u9ZNhzRevR+lUUpLsOYgUdcOATXq8kVMEJNOP448iXAnIDL9LR3f0b3VZ8ReUvJVevnuFNAZNIeYi19tRWiQwhEr2rtJ4CLJHc8oi/MnR1lfrddlPB7oSP1wgyDpVdAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IrBg/Tyl; arc=none smtp.client-ip=209.85.216.51
+	 MIME-Version; b=t+QRMuomPN3NZJ1MYwVuzzqWT0dnMvxck91sbwcXMaxhZEKSmrMdXKJvKUfGIbi8HeM/4KyBmome0GVQI+Gu7VylWhcAFuDrA2qY8b7g1znNgiAc7m3TfSema1t8jTf74a++Jjo5Pzqi8s4UaqeKUYVyoy41tEoQHyGcFCDNviM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cu9uq0Qc; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IrBg/Tyl"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38fdeaed181so851014a91.1
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 07:19:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cu9uq0Qc"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso4211479a91.2
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 07:19:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785766743; x=1786371543; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785766747; x=1786371547; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=m4Z5pWHAYmt7m7KtNfIU1rNnfqDpY05zeAJJ5XpoEVA=;
-        b=IrBg/TylTUJZOjlcVpy+GrG3Wb8HJ3ahGe0a3qtcfVH5Z/SFOgCOMMGQuHnD/OqfCL
-         PP/lvecXMhEXRvu+l2soEFy3qF0XwZvBAhS89EIiPEEjGg23KACiejaLdkPEXibStrOh
-         Mt+ZyHvCN3Wg6jmi8/65upeQhiDakdiHLePLI3yd3XJ586+JIiDTPWR/HW0sMBGalqzI
-         M3m30OyvtyARMCBKWosiMleIvXpauksD886fYz36K5Vj9ALZTbVmLbgVh2OgK5U5HLjc
-         X/kwgys1w+l6GyNo5q4eQ0qdcDZ1gXxnkap3MkftT7tubkzW5M97PfvCv0wRGgYxkKUT
-         LHCA==
+        bh=yBdhWQzJRHYryE9WZhMb9eq0tPTuw8+xNI5NcLDCCxE=;
+        b=Cu9uq0Qc+FszB2bOH19bzP+1x8umthmn1+bky+x7pag4Gl1yk1urOnZLMsFXAwDzwL
+         aTgQFpCm/72e4f5fPgsHjose8/Ne+rRBmQCqE1vF7nGrhG8sDNQEYAFJmiMGBSaZgs37
+         ADriOCxrcFmSbZ3DIU0MzFjT5SPBsUC/qztZppLMVQm7BMvLv+/xZ15K2v61VryuoWrF
+         YVP4S3lmtbR41/AeQlMKef6+IYNy/aPyGyiVPczKlD5eOEPLvDEiknXbzwn0tKTqWbVz
+         EOngLqbM7k22REd2eyqjsuiLIV++ZMqa5dJPJtf74UFPEPDd50xjb6u3TBbzVK3a04Lg
+         W+GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785766743; x=1786371543;
+        d=1e100.net; s=20251104; t=1785766747; x=1786371547;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=m4Z5pWHAYmt7m7KtNfIU1rNnfqDpY05zeAJJ5XpoEVA=;
-        b=l3lw3FYaDD5FMU40Yy5vQL71jD5uDT8+JF+c68DN0ae0+MNCRX0Gl1DgZCy2UeAEss
-         W0/ec3p8x9KmzKD5YAdXHYD/IJ/r0JRDbK+orhwAmVquralCUFM8OXaUHWLr/WkSrzTB
-         ecPDrLFzfYNeEpjMNzXlPUr4s9cKrSSVgu71JSVXJP7BsIhFckqE3hYruQK18P1AGlJC
-         oc0N5WqWKhni+PJrqK/oY1mZChV3/MZGRBRpRv4uV786Y1PRrkSZRDoZ29161DppVaac
-         j/RBu7iQWXPnygVZBpGn/3q9vx37OTQ39rR1Y56H9lFdL1RvljP5B89MHyI8KZFpIVr8
-         BKuA==
-X-Forwarded-Encrypted: i=1; AHgh+RqbzwU2CqwKay0Wp3OAQv162eXFJ2YoqnDHC2e8dF+RuVXs8cp3yt/a482EzVru6MNcB+ljNYA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjDPckhrnvzzpjnF9Yza6wtgoRWenL0PMClXNrkB+tlXqVkBlP
-	Db6d1CIBuIx3ODIZ6wI385c6F6IHyVZH2LQY5IPWJ4NU/t+WFhwo5q6O
-X-Gm-Gg: AR+sD12XwWafPknCkVrSqNuYtlvfugLawrn1EMeOZ0SeqU6TDMRgSPyuxlj2XbVP/aN
-	t0fnP/doKz4uc0THeivgALAfh10r+8kJYFIayCbR92CaJmv+7MClKykNyQ709elcvrBDU0G0V68
-	RJjEx0MsWluPvcjkx1QN8pDxwmwCE/TSY6prMygpCd1DN91yiBqOsW7UzYXUChEOFQ5/fjVJUwy
-	lYJcUs2f6MFtuP0Z53iWm3B51yRoY/8lGPssdqBuCNohIUoipZLIG32w8RkLuwFb5cLOLe2LKsA
-	WsYp9QVbxq03spDN6mDSAyejlRmxomYMf7QPgapAdoEpvH0PhMaS3ocvbTW6QqHmceB25kjf5dZ
-	tWaHcGja6eBoEGNOSDrxPCS09D9biuDGM275UW7RM03gLARzf4Mb4zdKaj9YiOJceofrFsdzE3B
-	tLIJsoRwDw00owWSQs8FnkrFUi0kTQwDolDtf3sC0bEUvrGwlufmcM+tR+iMaKofjo/RG0VzLJf
-	Pg30THnb19N9XancctX
-X-Received: by 2002:a17:90b:4b41:b0:38d:e658:595a with SMTP id 98e67ed59e1d1-38fbc409a24mr9805618a91.2.1785766742716;
-        Mon, 03 Aug 2026 07:19:02 -0700 (PDT)
+        bh=yBdhWQzJRHYryE9WZhMb9eq0tPTuw8+xNI5NcLDCCxE=;
+        b=mbXddlTC7hwf1O+DOcYYG1COIx2Rz6CeMU/Fc6otLuK14hQXuSaRmgxp4tE7elkPXS
+         VMyXhr6SJ1b9lHFLPZ54NIWR0f1KxaTwhktORd21bL1cNNl9zzFBBuaER/1ZL/3Mnxks
+         wkyL2xkFAJr8Mo5pQckFTEj3d5yA09Wn3zryzA7IvlEvKjnYEfPw1lo4whkTGVL7vF1B
+         oKuyFt6AWzfBcshRvx7nNBwj99rZDrNqXmQoi6i8lHT7WF9jVHy+j87trFyRmV1XdXpG
+         pPs0cSycC3g3SAhMbnPj2YwoW+BAJnbx6DSkFW+mSVRTq2LSHSrNYi3D2FGtHb4BvJ8b
+         ngjA==
+X-Forwarded-Encrypted: i=1; AHgh+RoX/BSdWsJX1UE6OV8tzF/aSdZcHrNy3nhkRCF00CRQVNafsFecLDMT21x4qmgbjrET81Tl9Yg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJbqoPBovqXUsBPPwN2nmzSGWBl9LQIXP9VgJ2TX/2aWcGTj4r
+	2xu6BR44KkUOQlyzBqsMsqN2HGsNNSaqgL9ivPMFoMEo2CuzUYHZyRs/
+X-Gm-Gg: AR+sD1100b5WDh4hjsiVy8nxc2Ony3mUIoU5i43HtHNanCcHdS9MZIbEsZxzz0vY/T5
+	y1FX/4WybxRKCdrBStA/DzSRNmHKygrfNYYm8j925nixj8vfkANOJLx3CsywIJFCLygEGw70ivc
+	kTb6+L9rplX4q3z9ZHgm861pEMwkUIXOcpzGIEmGESNDHVid9hDXCC58OCyQhvgh/AZKuVWHH1I
+	GcAMaJOmdcTQNo6Pn15HddKe044RNheivaQhjqr5UA4P5rDxs6d0OmE1Snbv1JEoi146zPTAYYm
+	LePMI5YsZ2lAwd2GrBBcevJQhg2dp6GDKufh9XqVXLQrflfPG6LP4X1aO/lUCi9/sYULC2IdN2S
+	cyXi3X/66hQ2Kl1TUrmAGPRDSM1u+t8bv4UxkUlQGH1+r1dOIYRQUOYxh1vjacvCJAkF3ixAChM
+	G78Az5kb9XsW47uqpv9UxkCrLGjXmNPsi3mq3k+jvZxfAuUZ/pO8TnprK0f6iHc/5VvQ73Nu3ml
+	j1hTHbL1ZPGqHUMgO8h
+X-Received: by 2002:a17:90b:2ecf:b0:38f:e6cf:4d6a with SMTP id 98e67ed59e1d1-38fe6cf4e03mr949891a91.41.1785766747241;
+        Mon, 03 Aug 2026 07:19:07 -0700 (PDT)
 Received: from buffalo-ssd (M014013071096.v4.enabler.ne.jp. [14.13.71.96])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb30dff2esm4078462a91.13.2026.08.03.07.18.58
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38fb30dff2esm4078462a91.13.2026.08.03.07.19.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 07:19:02 -0700 (PDT)
+        Mon, 03 Aug 2026 07:19:06 -0700 (PDT)
 From: Akari Tsuyukusa <akkun11.open@gmail.com>
 To: Michael Turquette <mturquette@baylibre.com>,
 	Stephen Boyd <sboyd@kernel.org>,
@@ -88,9 +88,9 @@ Cc: Laura Nao <laura.nao@collabora.com>,
 	linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC support),
 	netdev@vger.kernel.org (open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:\b|_)ptp(?:\b|_)),
 	stable@vger.kernel.org
-Subject: [PATCH 21/32] clk: mediatek: mt7986-apmixed: Switch to common probe/remove helpers
-Date: Mon,  3 Aug 2026 23:16:48 +0900
-Message-ID: <20260803141659.559129-22-akkun11.open@gmail.com>
+Subject: [PATCH 22/32] clk: mediatek: mt7988-apmixed: Switch to common probe/remove helpers
+Date: Mon,  3 Aug 2026 23:16:49 +0900
+Message-ID: <20260803141659.559129-23-akkun11.open@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260803141659.559129-1-akkun11.open@gmail.com>
 References: <20260803141659.559129-1-akkun11.open@gmail.com>
@@ -102,22 +102,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The MT7986 apmixed driver can use the MediaTek clock framework common
+The MT7988 apmixed driver can use the MediaTek clock framework common
 initialization sequence. Reduce boilerplate code by creating
 struct mtk_clk_desc and using the mtk_clk_simple_probe/remove helpers.
-Also, add a remove callback to properly support module unloading.
 
 Signed-off-by: Akari Tsuyukusa <akkun11.open@gmail.com>
 ---
- drivers/clk/mediatek/clk-mt7986-apmixed.c | 37 ++++++-----------------
- 1 file changed, 9 insertions(+), 28 deletions(-)
+ drivers/clk/mediatek/clk-mt7988-apmixed.c | 39 ++++++-----------------
+ 1 file changed, 9 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mt7986-apmixed.c b/drivers/clk/mediatek/clk-mt7986-apmixed.c
-index af3e002bbfb7..6df3e9555e4e 100644
---- a/drivers/clk/mediatek/clk-mt7986-apmixed.c
-+++ b/drivers/clk/mediatek/clk-mt7986-apmixed.c
-@@ -57,45 +57,26 @@ static const struct mtk_pll_data plls[] = {
- 	    0x0278, 4, 0, 0x027c, 0),
+diff --git a/drivers/clk/mediatek/clk-mt7988-apmixed.c b/drivers/clk/mediatek/clk-mt7988-apmixed.c
+index 24f4e7b87a31..f7bb00e7d17a 100644
+--- a/drivers/clk/mediatek/clk-mt7988-apmixed.c
++++ b/drivers/clk/mediatek/clk-mt7988-apmixed.c
+@@ -71,47 +71,26 @@ static const struct mtk_pll_data plls[] = {
+ 	    0, 0x0318, 0, 0x0314),
  };
  
 +static const struct mtk_clk_desc apmixed_desc = {
@@ -125,14 +124,14 @@ index af3e002bbfb7..6df3e9555e4e 100644
 +	.num_plls = ARRAY_SIZE(plls),
 +};
 +
- static const struct of_device_id of_match_clk_mt7986_apmixed[] = {
--	{ .compatible = "mediatek,mt7986-apmixedsys", },
-+	{ .compatible = "mediatek,mt7986-apmixedsys", .data = &apmixed_desc },
- 	{ }
+ static const struct of_device_id of_match_clk_mt7988_apmixed[] = {
+-	{ .compatible = "mediatek,mt7988-apmixedsys" },
++	{ .compatible = "mediatek,mt7988-apmixedsys", .data = &apmixed_desc },
+ 	{ /* sentinel */ }
  };
- MODULE_DEVICE_TABLE(of, of_match_clk_mt7986_apmixed);
+ MODULE_DEVICE_TABLE(of, of_match_clk_mt7988_apmixed);
  
--static int clk_mt7986_apmixed_probe(struct platform_device *pdev)
+-static int clk_mt7988_apmixed_probe(struct platform_device *pdev)
 -{
 -	struct clk_hw_onecell_data *clk_data;
 -	struct device_node *node = pdev->dev.of_node;
@@ -142,34 +141,36 @@ index af3e002bbfb7..6df3e9555e4e 100644
 -	if (!clk_data)
 -		return -ENOMEM;
 -
--	mtk_clk_register_plls(&pdev->dev, plls, ARRAY_SIZE(plls), clk_data);
+-	r = mtk_clk_register_plls(&pdev->dev, plls, ARRAY_SIZE(plls), clk_data);
+-	if (r)
+-		goto free_apmixed_data;
 -
 -	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
--	if (r) {
--		pr_err("%s(): could not register clock provider: %d\n",
--		       __func__, r);
--		goto free_apmixed_data;
--	}
+-	if (r)
+-		goto unregister_plls;
+-
 -	return r;
 -
+-unregister_plls:
+-	mtk_clk_unregister_plls(plls, ARRAY_SIZE(plls), clk_data);
 -free_apmixed_data:
 -	mtk_free_clk_data(clk_data);
 -	return r;
 -}
 -
- static struct platform_driver clk_mt7986_apmixed_drv = {
--	.probe = clk_mt7986_apmixed_probe,
+ static struct platform_driver clk_mt7988_apmixed_drv = {
+-	.probe = clk_mt7988_apmixed_probe,
 +	.probe = mtk_clk_simple_probe,
 +	.remove = mtk_clk_simple_remove,
  	.driver = {
- 		.name = "clk-mt7986-apmixed",
- 		.of_match_table = of_match_clk_mt7986_apmixed,
+ 		.name = "clk-mt7988-apmixed",
+ 		.of_match_table = of_match_clk_mt7988_apmixed,
  	},
  };
--builtin_platform_driver(clk_mt7986_apmixed_drv);
-+module_platform_driver(clk_mt7986_apmixed_drv);
+-builtin_platform_driver(clk_mt7988_apmixed_drv);
++module_platform_driver(clk_mt7988_apmixed_drv);
  
- MODULE_DESCRIPTION("MediaTek MT7986 apmixedsys clocks driver");
+ MODULE_DESCRIPTION("MediaTek MT7988 apmixedsys clocks driver");
  MODULE_LICENSE("GPL");
 -- 
 2.55.0
