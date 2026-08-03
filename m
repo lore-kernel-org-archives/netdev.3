@@ -1,197 +1,141 @@
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F374334BB
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 18:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785782723; cv=pass; b=eliquu99/C5Wl+l28ubX7yjPDW1lrPFiTBMj5ZeGmabk5fxUpO21c4GDdYUoKTPwj9cuqSII12I8X92lCKlOgA5bN3CwszKGNVdmaYQLjokiK1BAiYiHRb4rXQ3C6XB/wTnVtFt8hoP4HbwhpKqgkfca6cXy/zNpjDZt/YdRWRw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785782723; c=relaxed/simple;
-	bh=m2f7hLEA6HUqRGyrwkI9sBkGWy9QLT2mm+A3bdgIjyw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z/O2Uj36rsSVdrPINoFVTHe+pfooYkb8J4t1jGa8QikU9iOk1K+RY2upMMzoCCvClL76m6niC1ehFL6KEAhUo1tvaS97oqYoRLGiUXteXhnN/iFB3WWUFIOyJLeqYKzdt4ZAu2CG0sPXmFF1TtnQ8s6FFmIEySDjZPBoNZLiokk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XT1FwG+x; arc=pass smtp.client-ip=209.85.221.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7723D2D23A6
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 18:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785782794; cv=none; b=VNsVFXcx2+phOQnIc+4BA+g2UbnStemJqBvTAX9scN4WBzjxfYvdY5tLXL6bvCzuk4FYD8CNdx8XOUB/q2Z+5qdqUiiisjEs8doCj4adVRK+bEzcyD0zXP40dP1KZEDvl3Ka9pYk4CeRmCl3x2Ifxnqtwih6FsWKodkZXSj1h5I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785782794; c=relaxed/simple;
+	bh=qdnMi5UKmgwLH3Yxi/4yylk2ifjbYPC1D6DDNsZGTnE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gB3S4u6hIGWhjGIWFXvTkGMV8XivjaaqmWARg4QrhVzbzTnv2MddthlFuisrPK5v0Z+p1Un9684NzM0BY2XMSROxhR3WexuUkp8Jz2NDmcfal0WrOPyqQkN8pd5Q9toH6Wdv4UHsmOuPrndV3XU9M/tEpFwSbV2gdjNff7Y/hW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fN+gSSww; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XT1FwG+x"
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5bfa6766cf6so2047042e0c.3
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 11:45:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785782720; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bKgk38JdeNoudcHExY/Ye9lunYQxtvdlxL9+nQFGob08ETPwe7KL05WEbs9FtoeSme
-         F+PB0RKAqmsDlDp9b1apYPwtiIDEEacGtA3dqk08T7MyIrQ4ecXJHzpR37AvZ3BNR6LI
-         cDI5+uIXBKmif7Hhy6chWdcr/4lTZPzRAhSbm7J8NyKSG7iYn3WKv6UcJ/ySMPVE1y/2
-         Ed/Pmf83A5l96sbE3h35QZaIILYoRFajGdTbTYe1k7iNEsuogINhrzs9Nu7dHW6Sy8By
-         wTOLMdSQrdMzliz7mvV75FMJ9zudDaKnR+ZnKaYIqDL5sCOJyyWUCkta4PeQFF5A6wkM
-         66XA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lhCHZs/g7TB5oMS7PG09o+GsecOnKpnv54KT75DfOGo=;
-        fh=xXIdPKFLBI1MjViGYBn+jqkEKSxnlPLHFs6Qolm9loU=;
-        b=FROBbK+2ZtM+VftFbVtF1d1qLSktw3HpbOFfgtSq6agWmkwXb2B+y10OUSvEK/YMQP
-         r1/qwp0aPdrJq3EUhmGxcMBzUCQlHB2wPVuqM/2bzreEsOY5w9BeXW7jPkRDwpmQgRBt
-         Y+qiuynR8YWZU5EZLurnWwwzoWxe9nKtYnraMLf6dLvqsQViJRd+PNuac/OJZ7E7RTaA
-         Tp3jpLmWUZGTA4sEVsO3f1R8ondJge8xEGqcpRPfMqzAVjF0PS4zk8IyS4ORylQTAVsW
-         JFRNQL0GCEcYNGNdShjZh0SUiIsWdsxNvKsGS2nEnrQ5n7TXuNJyost/ZqiIma3zCz5D
-         bSpg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fN+gSSww"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c85798977dcso6297931a12.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 11:46:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785782720; x=1786387520; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lhCHZs/g7TB5oMS7PG09o+GsecOnKpnv54KT75DfOGo=;
-        b=XT1FwG+x4c32drXubKav55DlmMm4WM2L2JfdP41qYfrgkotDtaNU0mCDsGGbS0KlVW
-         oeUQHm+BQTUS6P9vL2sdNosBWmY0kUddgkcXUN9UPuyoxIshlc1p5YWs/1j2xgP6bgcT
-         lxcEKp49RTR2teIZUsU6fcZXhfX/47VYXI8jw4md6dwqU6m4Ouk9mRpNe7VkL8NqTibc
-         X/BcHLfPCNy5irYP/gBD1QjJvkDS342flrdiOaBtaV2jicuISfg+dXlzcjfDs2asv0wc
-         E9afExLz98jElPOHJWBx6+sHBaQRPK43518Zmra6j7OFYSZN3XGPAPtlB5zrjUDCIvqL
-         bbKQ==
+        d=google.com; s=20251104; t=1785782793; x=1786387593; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=v2GbAn1mai/t41mi3VJpzRReRyT0xUGHdjiq3a6bBNg=;
+        b=fN+gSSwwaznRreLjWz0RFNxG/wuY2FiYwSTL1bvm6edZUXQztTWpEvPhvvPxUm8Gia
+         4mpvvivS6Pso/muyH/RLHVJSevK0YjikEER4j1OnNq2JFk6PANegTo5WZCkgbW39zFSN
+         88nOcEfY2UUwrFBvQiT8uzYbdWJggk4JOA4EqC5c5EouZw+getrWvt4veFOTl2B8W60W
+         J98SVJDmpftpT7FcbNkBizme2ZCpTn2YyQEirbaFy8vXJxVGbN5g9KIpnyC/4ejOVjV7
+         M1c8zUu6yai0Zb2FDTEjYqprXCrOToZkgIgKOSq1NqwzKlGbd2/eYee3dRk3twUTjVdh
+         HLLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785782720; x=1786387520;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1785782793; x=1786387593;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=lhCHZs/g7TB5oMS7PG09o+GsecOnKpnv54KT75DfOGo=;
-        b=tMmOeO9l9CptBhnbbQ3et0nrJdz81h0DLm/UONbFSwtlAPL1c70d602kMgXSQpKCK0
-         Dj+SeLKDzkArUTXOFReL1KaXRjK/yg61anVL+4gF3wrWvOyNtDSVgfAU7B7LElPf2IAT
-         X/UHC43LoiL8/P2zC2Uob70DxW9eFmKlz0P5FNgEYGtYMcrG9OTVmtbQCKDKCz2kwbAy
-         9hwLNyD0wqwSUAUAx5nqhCnZ2OWRx5HTVBhfJUo6yXJma8nWlAgyqAy5CW4yd8DcFPEj
-         ppcSwXWalWQ+fRgiAy+w82R6X6R2DLm6h/oHIWjhyjz8alclpvWLAQkoaE8c1e1dXT3/
-         /YFA==
-X-Forwarded-Encrypted: i=1; AHgh+RoxE5El6EPRfAZ/6mZ0fovOEjBAt9JzhDx+P2p/xZ/2ba9E1BYeSrTXiP3bML4WzN03cuzFpQQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwY4vmQNUMUVYJHIcoEPp+AV+YEWfdCs+yfvON9GOJ8M/NX5cw+
-	14q78EPycd48FDpM+W8cZA06om37w2PrUYEbToBJhmrHuRAnQyQhafKs1qnABjVy6pkWA80ZJoq
-	FOKEAvh02m9RzNC+QVgUzG3KumRHFI8U=
-X-Gm-Gg: AR+sD13lU3IE7NpD4ZVibuESMVLcCL10hFX9wMj2aXOdS56wOMI8DY3H494bAuAGjNg
-	HgtgZBKETRUfFpjd1m7FOVNt0Bi2lbs+lQyPojWVJiOuZMSAOiDwo3bSVoeQDfJLc7EIPS/x1o8
-	FjhNzjt7dOgNy5vQGU5dZ1WNLD4ifDNdU2UZdmWfqfR6N5lX7P8pALTvNBFIqgFYWNLvMasLkSw
-	5/p2Z7l+vIItuoe+Jw8j8Dl/wLThZsd1jQZA7achPyyjA6NBVpwlnsuAslAHGOSkCMfgnWcsMqL
-	ZnoTrsmjL+CpjVKV+F5/akGy3WlGZY9vAJT4IuwLyqTlvuK6m82s/Kgaugz1OTGrIRm2lEfAtRW
-	EfwmYkHYIja8XbSdomdJh8jFnMGB1Z+dBJrgm+QYX9+JyH7Eu40GY9eiqGIJVi39d8IBM/+0Uh8
-	xDMbD4cZI4T7rox/tx6BsagUGuTbLAyegb3tay
-X-Received: by 2002:a05:6102:fa5:b0:74a:b492:3a62 with SMTP id
- ada2fe7eead31-75b21e6b74emr8853495137.4.1785782720194; Mon, 03 Aug 2026
- 11:45:20 -0700 (PDT)
+        bh=v2GbAn1mai/t41mi3VJpzRReRyT0xUGHdjiq3a6bBNg=;
+        b=eX8AQ4j5j5LMGGABzMvNeiuqbN+KqlZesUVDCE+X9qjQn5KbsmK5SJuc+fuyYiSNrx
+         w5qU5VuL/+fUzAI7UhQHg3CXGRE9G0gYHLqFOGpiqgz+nsmrK/JSFLqnpTOsPtxeI2pA
+         hmSIgXoqBc9yH8zdhkIkgd4+YloXnsXE+EH8SGd+MobySlfrWxJbwujcNnPaqmp0ulXv
+         /B7Ynz6eZaPUfVBRPg3JeAaU23gd3Jfc8a5pItXe/43C8Dwz7aj9pyKTcJarEHW6dlpj
+         0NwU8TI7/FBCoLJVanKWBoL2ixsEml9O8dX0x+pbwT2rmatQTPjkBMHNaGcvxLZ4MnwQ
+         8MOA==
+X-Gm-Message-State: AOJu0YwXs5n1WmrhWmtzxXYsrKTSYS4VNe7Wy9MzOpWXINKjyUHoAbKT
+	bB3RD75fzg23jvPqF8P0SXarBb5TT7SOlDVNxj+XpOWu/X3M2MVgnv4AHg8kznKObD4sObwOgAd
+	8jzhwlbtmHCln98Wey7ncvdQ2bEHLw6Fw6jMKrK7Y/gT5iRbm0RJQ5/Bi8D/g83btqeKWgK/e7k
+	RncDJezyIak3e5V15mv/1Bbltn946523Xr79ssRU80yYqLPmCOWjXPz9v8i5PCGp4=
+X-Received: from pglg5.prod.google.com ([2002:a63:1105:0:b0:cbe:408a:5061])
+ (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:4cc5:b0:3c3:a140:938a with SMTP id adf61e73a8af0-3c92a83766emr10702634637.45.1785782792425;
+ Mon, 03 Aug 2026 11:46:32 -0700 (PDT)
+Date: Mon,  3 Aug 2026 18:46:15 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <20260802-submit-acx00-of-dynamic-v1-v1-10-0a53cd9e21cc@gmail.com>
- <05b1e6a2-725e-4b8e-8629-249637bbcb81@lunn.ch> <CADvTj4o0JdjoO+FC4pO=qnjEQ8MRyzQdKp2Hxy9NsPU-gym5OQ@mail.gmail.com>
- <9b8be475-1fde-409c-a82e-be4b2e402650@lunn.ch>
-In-Reply-To: <9b8be475-1fde-409c-a82e-be4b2e402650@lunn.ch>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Mon, 3 Aug 2026 12:45:07 -0600
-X-Gm-Features: AUfX_mxrC1O9cxNBLhvxxOGulQcP38PJEIX9XeOzWBEdBf_aYCt8UZQ5evY-RxY
-Message-ID: <CADvTj4pBovti19MXgQjFpxm=7aRm0sYQz9jxfo8bu3txH94THQ@mail.gmail.com>
-Subject: Re: [PATCH 10/21] net: phy: add X-Powers AC200 EPHY control driver
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Andre Przywara <andre.przywara@arm.com>, 
-	Richard Genoud <richard.genoud@bootlin.com>, Maxime Ripard <mripard@kernel.org>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
+Message-ID: <20260803184630.3813311-1-hramamurthy@google.com>
+Subject: [PATCH net-next v3 00/15] gve: AdminQ mode related refactors
+From: Harshitha Ramamurthy <hramamurthy@google.com>
+To: netdev@vger.kernel.org
+Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
+	john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com, 
+	willemb@google.com, nktgrg@google.com, maolson@google.com, thostet@google.com, 
+	jacob.e.keller@intel.com, debarghyak@google.com, kees@kernel.org, 
+	bpf@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 3, 2026 at 11:57=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Mon, Aug 03, 2026 at 10:09:01AM -0600, James Hilliard wrote:
-> > On Mon, Aug 3, 2026 at 7:51=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wro=
-te:
-> > >
-> > > > +static int
-> > > > +ac200_ephy_ctl_set_led_outputs(struct acx00_ephy_control *control,
-> > > > +                            unsigned long outputs)
-> > > > +{
-> > > > +}
-> > >
-> > > > +static int
-> > > > +ac200_ephy_ctl_set_led_polarity(struct acx00_ephy_control *control=
-,
-> > > > +                             bool active_low)
-> > > > +{
-> > > > +}
-> > >
-> > > I've not looked into the details, but these look like pinmux. Does
-> > > this I2C device have a GPIO controller? Can these pins be used for
-> > > other things than LEDs? Maybe you should be implementing a GPIO and
-> > > pinmux driver. The Ethernet PHY driver can then just select the
-> > > correct pinmux configuration.
-> >
-> > These do not appear to be GPIO or muxable pins. The AC200
-> > documentation describes them as three dedicated EPHY LED
-> > outputs: link/activity, speed, and duplex. The bits in SYS_EPHY_CTL1
-> > enable those output pads, while EPHY_CTL provides their shared
-> > polarity setting. I have not found any documented GPIO data
-> > registers or alternative functions for these pins.
->
-> So what i'm trying to do with both of these is make it look more like
-> standard Linux building blocks.
->
-> If that is not possible, i would actually put all this code into the
-> PHY driver. You then have a regmap property to gain access to the I2C
-> registers.
+This series is preparing the driver for the addition of a new control
+plane mode(MailboxQ) by commonizing and reusing as much code as possible.
+MailboxQ is a new control plane infrastructure which uses mailbox queues.
+This is a new control plane to communicate with the device when the driver
+is running on bare-metal instances as well as newer versions of the device.
 
-I understand the goal of using standard Linux building blocks where they
-fit, but I do not think folding these control paths into the common PHY
-driver gives the right device model here.
+This series contains 2 main changes to the gve driver's existing control
+plane(AdminQ):
+1) refactor some initialization/teardown path methods to make it work for
+   both control planes.
+2) add gve_ctrl_ops structure to the driver for various control plane
+   operations
 
-The AC200 and AC300 expose the same Clause 22 PHY interface, but their
-control functions are separate devices with different transports and
-lifetimes. The AC200 control function is an MFD child accessed through
-the parent I2C regmap. The AC300 control function is a separately
-addressed non-PHY MDIO device. A regmap reference only describes the
-AC200 transport; it does not represent the AC300 control device.
+The refactors are mainly around the init, reset and recover paths so that
+functionalities could be moved into the control ops like 'set_num_queues',
+'set_num_ntfy_blks' etc.
 
-Folding both implementations into the common PHY driver would make that
-driver manage AC200 MFD registers and resources as well as an AC300 MDIO
-control endpoint. That would mix the package-specific control transports
-with the otherwise common Clause 22 implementation.
+This patch series only sets the control ops for AdminQ mode. This is
+intended as a preparation for adding MailboxQ mode in upcoming series
+which will add the new control plane infrastructure and then introduce
+the corresponding control ops for MailboxQ mode.
 
-The current split uses standard subsystems wherever they provide a
-matching abstraction: MFD, regmap, MDIO devices, clocks, regulators,
-NVMEM, device links, and the PHY LED framework. The narrow private
-interface covers only the compound operation which those frameworks
-cannot express: calibrating, addressing, configuring, and sequencing the
-package control block before the Clause 22 interface becomes usable.
+The entire list of future patches can be found here for reference:
+https://github.com/hramamurthy12/linux/commits/gve-mailbox-queues/
 
-The link address is an important example. It is defined once by
-phydev->mdio.addr. AC200 must program that value through its I2C control
-interface, while AC300 must validate it against the address of its MDIO
-control endpoint. Generic PHY operations do not carry a consumer MDIO
-address. Encoding it in a phys specifier or control-node property would
-duplicate the PHY node's reg value. Giving the common PHY driver a raw
-regmap avoids passing the address only by moving the provider-specific
-implementation across the driver boundary.
+Changes in v3:
+- Fix driver compatibility verification in the reset and recovery paths (patches 2, 8).
+- Mark gve_adminq_get_device_properties() with __maybe_unused ahead of its usage (patch 7).
+- Refine error handling and resource cleanup in reset, probe, and queue creation paths (patches 8, 9, 11, 14).
+- Keep IRQ doorbell allocation/release in control plane resource helpers (patch 12).
+- Minor fixes: fix TOCTOU issue for link speed, correct kdoc comments, and remove redundant teardown calls (patches 4, 11, 15). 
+- v2: https://lore.kernel.org/netdev/20260602235900.3050782-1-hramamurthy@google.com/
 
-The LED pad-enable and polarity bits are similarly part of the package
-control function. They control dedicated EPHY outputs rather than GPIOs
-or muxable pins. The common PHY driver still owns the PHY LED semantics,
-while the selected control driver performs the package-specific register
-access.
+Changes in v2:
+- Rebased against latest net-next to resolve apply failure for patch 5
+- Fixed a few typos in commit messages of patch 9 and 14
+- Fixed a kdoc warning in patch 9
+- v1: https://lore.kernel.org/netdev/20260601175437.3767283-1-hramamurthy@google.com/
 
-For those reasons, I think keeping the transport-specific control drivers
-and the common Clause 22 PHY driver separate is the cleaner division.
+Harshitha Ramamurthy (9):
+  gve: don't pass in unused parameter to gve_adminq_free
+  gve: refactor initialization with helper functions
+  gve: add a few helper functions to set device properties
+  gve: add struct gve_device_info to hold device properties
+  gve: introduce control plane operations structure
+  gve: introduce ctrl ops to set vectors and Qs
+  gve: introduce gve_adminq_get_device_properties()
+  gve: refactor gve_init_priv for reset path
+  gve: add ctrl ops to for queue operations
 
->
->        Andrew
->
+Joshua Washington (6):
+  gve: simplify reset logic
+  gve: add gve_ctrl_ops for gve initialization/teardown sequences
+  gve: split up notify block allocation and setup paths
+  gve: introduce new methods to handle IRQ doorbells
+  gve: setup and teardown management interrupts
+  gve: add link status/speed ctrl ops
+
+ drivers/net/ethernet/google/gve/gve.h         |  88 +-
+ drivers/net/ethernet/google/gve/gve_adminq.c  | 432 ++++++--
+ drivers/net/ethernet/google/gve/gve_adminq.h  |  25 +-
+ drivers/net/ethernet/google/gve/gve_dqo.h     |   2 +-
+ drivers/net/ethernet/google/gve/gve_ethtool.c |   5 +-
+ .../net/ethernet/google/gve/gve_flow_rule.c   |  15 +-
+ drivers/net/ethernet/google/gve/gve_main.c    | 936 +++++++++---------
+ 7 files changed, 947 insertions(+), 556 deletions(-)
+
+-- 
+2.55.0.571.g244d577d93-goog
+
