@@ -1,183 +1,127 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6AA3C3C0E
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 17:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB4538A717
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 17:14:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785776762; cv=none; b=ETsm77cWk3w3QDe9OSx4mNxaQe6q4FZ4K9h9/NvP2Mp+BO+A+1fYf0IYVBnnRsw0V0i2avIt9jsLXupHR1kRrqmbgExQ/RjDiSN5pwxRn/ZPB6afg/nPJNvGUVjcaHf9CqQqKaIUD7xKNba/NNAuhUoRyRb+NlznjM6xJZju5O4=
+	t=1785777291; cv=none; b=Zu2OehtrNNj/GJbO5oamvNw1u0q87UqSw5STLn3g+Y9H/qwQW1c9PRdP0UPCUriimmZxeuFsDhUSlbkdynjhIruF2k9XVDzmrKPojTxxtWnc4g1saQg8Y4pDt7VsN6vY1FhFRKGVC3mJL1AAMlB+SqM1eqSjfwpXeJ9oY1ZmHwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785776762; c=relaxed/simple;
-	bh=ptxOntIFwPlljFAuNIhhXdjtH2CSVaiI5tnXedt+VNk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JHUqd+C6kPTKntr8JL4XRHT5SXj0FtlO/pObbpMUS8iMUC8V+TP5Z3bSatVhy7Jkams3doamiRVfYwv9AejzDyXl9/StoRZlIRpdtdNui5GJRbDi9mCiqbYjMMGEfxEyiy5lzU86bmyugWwVVWbMrrzt+sJ+Dk1F8dTQTWvgOhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dHIdLIBv; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785777291; c=relaxed/simple;
+	bh=lKizjzbX306AsZcOuKlswc5fA6mSPnfijXJ0Y7oZ2tQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rAgLIylkXwnGvRJWLyEbPMP/uVK7yCWADdPdEaG22zJ/VjzLnXSoQ2IUDRw9hcWEBBmanMDUd0hyR5htKIblb+I5tpSY8TzMfUyKRx7Ak7QxgFsDAxbR8YFi52GyEsd7RdRpiQhW8PUsSB5K/melamDtqQ3MqePNoeRYlmebNWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r2R7+fOi; arc=none smtp.client-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dHIdLIBv"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47fde295992so88387f8f.0
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 10:06:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r2R7+fOi"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb7d6ba548eso4619470a12.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 10:14:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785776759; x=1786381559; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5Bba4gcbhmr4SK0bvCYEbGznO8O2RUuHHW+hHe/3QmM=;
-        b=dHIdLIBvZtaQSbMfG6pZZYxSxtO6XbFqzpRyIH7LCjS6OmAcHY7WkODA0I7q5GQdZ/
-         g5YQ6Ce7tQRAJ0GvW2Dh5Xhj8j4w1MUKPqm3WGcruolHjnqXtw4BE9AVVBHZqr1Ej9EA
-         N1IU7vvoKLmUuJNYayK5w2rV+1pt8QGmLgjnCwAOHh3tBWQvU4N4C9oMHaMwkyi3FWSV
-         5a62W3SEUiwoaQMMObWCiLdZOD8r8KRa3XFDF+eTiuz6TYgO+qOVw+lzwJLmhoFIt7Zj
-         hw8n/2XfDJZPPQYatINmRDnSlfMWRNqkzEt55BBqZhLpJG4gR+P42brFekQIu85xv4jQ
-         4biw==
+        d=google.com; s=20251104; t=1785777289; x=1786382089; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Lfjv8btm7SM4nYiUku46hVA8+1TFQKBzNlJiSqVfZCI=;
+        b=r2R7+fOibDzfYrrV9xOJWaicYVFaC0eZECt8mBPTxMyy+cBoSbgBBc2BnAKzaf7r6M
+         hwz6mz/mFAmoLPC56N5N/Mi8ZPc6E36v9J22h8SIv9BmvFyDIHar5BZRiQZ8YCXy4ws/
+         xYTJcWj0okgmnnIqcZ3R3ZZMFzR0OEDBRffNt4kUHC4LIn52gWCxpwez689Soa/nmqIa
+         oxpB75/05HbwTXRafZiEIDwUHzfnAD2dOqkyUUazTT2duR0qexL2DMYCucS4HhTXXYTC
+         DqhhCykIgPTZKSiX3MUutGD5/qP2U8MmUxDg0O2YQ/1vpmjDzDGOobcfk8bXdURZcoDf
+         ZOyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785776759; x=1786381559;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5Bba4gcbhmr4SK0bvCYEbGznO8O2RUuHHW+hHe/3QmM=;
-        b=KZyHm2FArulSaJBdlxBT5hHImPgVnQGWp5ec4hxqaoDNwZ3iLHj8qrzrCdWm7Nia2l
-         7HyhAtMiUYwLoG/GFWuiQ0y1KF5/epGiUfcIJ4grlFtDjZHg1P8WTd4eNQwZQyCbDA1o
-         ucvBpVZizF3sOsgTmSaiWsxpZjQQOypSc/vlc0CZ+zKrN1q90lEx5ib/+6LM2b1/nKJ9
-         jx2mgcpVxkAG8InsihnmAl6I7QGCBq2hatIizr6n3DDlInycVPE2OCdtS4lDk9BXaMdU
-         qQzcCjkjL1Jct+hNaCc9zFvUcZO75bjsGCrC4hCj44k4kp6njsMP8itrqy+r4QIJCSiL
-         +3vA==
-X-Forwarded-Encrypted: i=1; AHgh+RrCkia/TNb38jNVG5PyXJuHFiO2UAvhV3qhLptATfVukjdiqadok4MZxOFapCQCfaUHeP+UG4M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiHblM1QwuQl0D1IKqDdei1DOhuis8RCXCdNmqP1QNiLaKHBCG
-	n+WoKNLMRE/uMYsST4JJHT/GYlasoc9ohDq9Ps0v1EgdcfZeGOkX+uw+
-X-Gm-Gg: AR+sD11ifY/AYrYG7vM6U+dIg0ZHhaRrp4gH4IGx+L9dKysNzou+7OMwTsPnJ7zdrAl
-	IDiFN5bHwEYYUGdz4PB/kg7wD7BG1S3gbOF2ifV0XLSA/JXETTLhNLGUAaoZUBXuf74bET2APSs
-	92D3lw4FD2AF7wbwolZPcq1Pgn1049x5aPSnzIykItANhds43lwPb4tK8Eb4Tkc8nHN8F4Tkjoh
-	ENC8nAazPZM1V0xnfp9UKAfbtqZoJGMjM7cdCLmShmmyU8svhruJ9LyEIjLQke/CPOaMqZGICMX
-	uEs3E37kxpFU+BK+Bdd7Z60UJ3+b803v/keZQtG/TEDsSmd94y3KwbAaldmtlgF1aqwgUB5S/wY
-	q5B1LOzm7QLQNbt32RjxbOG7qtuk7MyzSXHlQXNshuG6/5/nsPeUalDdExLRRDPMi/QhwO9AsXR
-	i1yDw5eIA64necQrrbUN3rrsCtFhNVhpgxJ8WDR+L1CIpID/cEfLfPGmRwDT61QBuWqLmqnuM=
-X-Received: by 2002:a05:6000:310a:b0:45e:dd32:92fa with SMTP id ffacd0b85a97d-47fe81cb7ccmr577898f8f.12.1785776759310;
-        Mon, 03 Aug 2026 10:05:59 -0700 (PDT)
-Received: from metepc ([46.197.185.197])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd456a6cbsm30855921f8f.23.2026.08.03.10.05.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 10:05:58 -0700 (PDT)
-From: =?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>,
-	syzbot+d3bc2f2eb498a0175940@syzkaller.appspotmail.com
-Subject: [PATCH] xfrm: fix suspicious RCU usage in xfrm_nlmsg_multicast
-Date: Mon,  3 Aug 2026 20:05:25 +0300
-Message-ID: <20260803170525.1767734-1-omermetekaya0@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1785777289; x=1786382089;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Lfjv8btm7SM4nYiUku46hVA8+1TFQKBzNlJiSqVfZCI=;
+        b=Ny8bdTMlM1iv2dlD7wVeWgRlkzH4TwEQplnIFMoLT4jry4G9la3JRG7cDKz41gKyXj
+         LXeTPdLwUQV05iMi+PVD0U+m9ZTMUuwFWa063omFFHuPXEW+rs0UQEJ2NcxMfTP6d32b
+         NZRQM1WhnQCbTecTcBEILJbX5y8y2hmxq0EDlrlLkpbfzci5dcRoDZo4yYLoHtAIK2f/
+         Q9knjFTfyolbclBRUIVQhaQBrzD9HBz1xU2hgUbElPcOMPjpvdhkPA4gyizM1Jr7h1WT
+         +gD8lAWhVwBWnsKn7ta/Ie30FeMgC5joT9CnkzyifI+wr16CW8gh3MZQ7BIXnHWmpayn
+         6TFA==
+X-Gm-Message-State: AOJu0YxLsfoDCiKpcd7nkE9HWMex21qfZXnTSVE/gyD4KYXMdaWtoFZ6
+	rO7PQFgT4qzg2seH79UV5o/LSavdJ+c1sfgfs7a4f+JsQrgh2VjATsHsxxtcHV75Xj7CGaqayjV
+	g9LnDAqkXk0wmXCISzdCxFBN9tayWeyww8e6FZDoEafdQHOHf4ijatTVcDhfwASrk2orTElDw/N
+	tS98ounzBIdzWXnY+h+fPN0l68fUpaLq9K6wMLK7RbFCYCK/ISvfy/u/Mzg4W0+Ks=
+X-Received: from dyng4.prod.google.com ([2002:a05:7300:7f04:b0:314:f751:f881])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:93a1:b0:3c4:2cf9:2896 with SMTP id adf61e73a8af0-3c92a8af306mr11281485637.45.1785777289000;
+ Mon, 03 Aug 2026 10:14:49 -0700 (PDT)
+Date: Mon,  3 Aug 2026 17:14:39 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
+Message-ID: <20260803171441.408014-1-almasrymina@google.com>
+Subject: [PATCH net v2 1/3] net: core: propagate unreadable flag in skb_zerocopy
+From: Mina Almasry <almasrymina@google.com>
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, kerneljasonxing@gmail.com, 
+	kuniyu@google.com, bjorn@kernel.org, jiayuan.chen@linux.dev, 
+	kaiyuanz@google.com, willemb@google.com, asml.silence@gmail.com, 
+	sdf@fomichev.me, bobbyeshleman@gmail.com, fw@strlen.de, 
+	Mina Almasry <almasrymina@google.com>, Neal Cardwell <ncardwell@google.com>, 
+	Ralf Lici <ralf@mandelbit.com>, Will Deacon <will@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-xfrm_nlmsg_multicast() dereferences net->xfrm.nlsk via
-rcu_dereference() and is documented as requiring the RCU read
-lock, but 11 of its 12 call sites in this file do not hold it.
+When skb_zerocopy() copies devmem payload fragments, it fails to update
+the target skb's unreadable flag. This causes the target to appear as
+readable memory.
 
-Move the RCU read-side critical section inside
-xfrm_nlmsg_multicast() itself instead of adding it to each call
-site individually. This is safe: xfrm_get_translator() takes its
-own nested RCU read lock internally, and nlmsg_multicast() is
-called with GFP_ATOMIC, whose only conditional yield() in
-netlink_broadcast_filtered() is gated on blocking being allowed,
-which GFP_ATOMIC never permits.
+Propagate the unreadable flag if any devmem fragments were copied from
+the source.
 
-The redundant rcu_read_lock()/rcu_read_unlock() pair in
-xfrm_notify_userpolicy(), the one caller that already took the
-lock, is removed accordingly.
+Additionally, to prevent memory corruption, explicitly return -EFAULT
+if standard payload from the head is mixed into the same skb alongside
+unreadable devmem fragments during a head-to-frag extraction.
 
-Reported-by: syzbot+d3bc2f2eb498a0175940@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d3bc2f2eb498a0175940
-Signed-off-by: Ömer Mete Kaya <omermetekaya0@gmail.com>
+Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+Cc: Stanislav Fomichev <sdf@fomichev.me>
+Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Florian Westphal <fw@strlen.de>
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+
 ---
-This patch intentionally centralizes the RCU read-side critical
-section in xfrm_nlmsg_multicast() rather than adding
-rcu_read_lock()/rcu_read_unlock() to each of the 11 affected call
-sites, since every caller has the same requirement.
+v2:
+- Return -EFAULT when mixing head-to-frag unreadable/readable frags to prevent memory corruption (Pavel).
+v1: https://lore.kernel.org/r/20260801125308.1342897-1-almasrymina@google.com
+---
+ net/core/skbuff.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-If keeping the locking at each call site better matches the
-subsystem's conventions, I'm happy to rework the patch accordingly.
-
-Reproduced and verified on a locally built upstream kernel
-(v7.2.0-rc5) under QEMU/KVM, using the syzbot-provided .config and
-C reproducer: the warning triggered on every run before this patch,
-and did not trigger over 30+ runs after. xfrm_notify_userpolicy()
-(exercised via "ip xfrm policy getdefault") was also verified to
-still work correctly after removing its now-redundant RCU lock pair.
-
- net/xfrm/xfrm_user.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
-
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index d6db63304..1f683516f 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -1622,31 +1622,35 @@ static struct sk_buff *xfrm_state_netlink(struct sk_buff *in_skb,
- }
- 
- /* A wrapper for nlmsg_multicast() checking that nlsk is still available.
-- * Must be called with RCU read lock.
-+ * Takes the RCU read lock internally around the multicast.
-  */
- static inline int xfrm_nlmsg_multicast(struct net *net, struct sk_buff *skb,
--				       u32 pid, unsigned int group)
-+				      u32 pid, unsigned int group)
- {
--	struct sock *nlsk = rcu_dereference(net->xfrm.nlsk);
-+	struct sock *nlsk;
- 	struct xfrm_translator *xtr;
-+	int err;
- 
-+	rcu_read_lock();
-+	nlsk = rcu_dereference(net->xfrm.nlsk);
- 	if (!nlsk) {
-+		rcu_read_unlock();
- 		kfree_skb(skb);
- 		return -EPIPE;
- 	}
--
- 	xtr = xfrm_get_translator();
- 	if (xtr) {
--		int err = xtr->alloc_compat(skb, nlmsg_hdr(skb));
--
-+		err = xtr->alloc_compat(skb, nlmsg_hdr(skb));
- 		xfrm_put_translator(xtr);
- 		if (err) {
-+			rcu_read_unlock();
- 			kfree_skb(skb);
- 			return err;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index ba3dbac80fb49..8bacc6c4e16e1 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -3905,6 +3905,9 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
  		}
  	}
--
--	return nlmsg_multicast(nlsk, skb, pid, group, GFP_ATOMIC);
-+	err = nlmsg_multicast(nlsk, skb, pid, group, GFP_ATOMIC);
-+	rcu_read_unlock();
-+	return err;
+ 
++	if (!skb_frags_readable(from) && j > 0 && len)
++		return -EFAULT;
++
+ 	skb_len_add(to, len + plen);
+ 
+ 	if (unlikely(skb_orphan_frags(from, GFP_ATOMIC))) {
+@@ -3928,6 +3931,9 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
+ 	}
+ 	skb_shinfo(to)->nr_frags = j;
+ 
++	if (i > 0 && from->unreadable)
++		to->unreadable = 1;
++
+ 	return 0;
  }
- 
- static inline unsigned int xfrm_spdinfo_msgsize(void)
-@@ -2536,9 +2540,7 @@ static int xfrm_notify_userpolicy(struct net *net)
- 
- 	nlmsg_end(skb, nlh);
- 
--	rcu_read_lock();
- 	err = xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_POLICY);
--	rcu_read_unlock();
- 
- 	return err;
- }
+ EXPORT_SYMBOL_GPL(skb_zerocopy);
+
+base-commit: af39eb111ce6b5eba9c08513b62c4868eb7e7fd5
 -- 
-2.55.0
+2.55.0.571.g244d577d93-goog
 
