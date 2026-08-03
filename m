@@ -1,123 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87EF34C9A6;
-	Mon,  3 Aug 2026 22:29:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3892DA756;
+	Mon,  3 Aug 2026 22:33:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.218.115.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785796165; cv=none; b=XfAB5YSKZ/YdlhksyyS7bNV4PDFqtMhPRhIpFLWg5a+m2IvFhpGaWQNERtWtc6f2353a/eGgdkoEo+KnIoP48Ki8G1Yyp4mQBT+6wI6qq01CzoRCXgn/+4yeQMWHli3YK3IHcUVUeiWFgGaFtQ09uxbqarAhx3uz3okNLszkQ38=
+	t=1785796432; cv=none; b=GfeMzIaVd3M0rqUJICeAw+LNKVzjtw094MHQbOS7U75T2KVAompB2v907oE7G1qlWWjb7kNXcRsdWc5sQQceAUNP77/AIE4zrYDBUnoDRMTVr2dZl9jlchapF/tF4HfpJHcJ9LFyZ/03ithwLZ9UHq/04UDW8SkKDUp8Ps3MKgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785796165; c=relaxed/simple;
-	bh=i7cMKEmETI4J41H82pVYQpERljqoFtdp+n0moMiGl6I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KkanWlmGiKvYhO5mFl8u8S4bBXiGXd8KTLhk0UUlS59DRN8Ylju2QmpSyF0BAEdokbb8Kvqw8x3LqCC+6rHXKiD82HRznTdwdq+TnqbB0fdDZSBvcRJOInvsWLJ2u93BVMJmY15wefTodxjXYRqpt33wNxhQGPzKIXTS7HZpWYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DmKJiF5i; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785796432; c=relaxed/simple;
+	bh=TShZzFxii34SU1iNvtiC2pWxeIEKDZ5nTuEAr8CoEJY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=u+SYbxXbd8jt9Gt9h+09g5zcnLOCFJIqW9mZttSB9iXzyCRQ3zInA0oQ5sRY2CVy7PHCFPadEoKQJzDJQQfIOr9nOGfdsbS9VWPdgyGXCNert4xvzgMP8p9K+FcfnA3R8bvWiO2wVTwO6X9auB8Q7hN/c5y2MAp4qyeC8u9PxAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Vbd88ax5; arc=none smtp.client-ip=34.218.115.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DmKJiF5i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293B21F000E9;
-	Mon,  3 Aug 2026 22:29:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785796163;
-	bh=oLU6AvVAmTV2ZbC3IT+O0inRa1mJRdKCmd2hcYx6gBI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DmKJiF5i+Dfn7N3QvT8zUoxcutcqjN7pUT5d+Wik/cBCviAK4LQniuFMsTgQWn+fj
-	 zuyLSLmwLlp9X8MftTFYCdCowTuBQAGeJCgc2k2cbLebPEKduXBPV/l9jvXsOzV4Mf
-	 /5cuVInqu1m+Mw1pqRNm8WYLvzZ4W1D25R+PnQOCg4ON8t9IFPfa3n80DFMifwLI6q
-	 juq06h7PtZgnS/E75ewvu4NA+W5GYYbv0OpO6kWjvcvDpKPmxP9GSGv9NGdxHLWHW9
-	 h0QBhf+2j23nHj4p0tiymkluxKk7GYFn3QnRsPdMpVK9+ztCKRw8Z082N6q8JFVtik
-	 WPFmBUNSlo/Sg==
-Date: Mon, 3 Aug 2026 17:29:22 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: linux-pwm@vger.kernel.org, linux-pm@vger.kernel.org,
-	Sean Wang <sean.wang@kernel.org>, Nishanth Menon <nm@ti.com>,
-	Conor Dooley <conor+dt@kernel.org>, YC Hung <yc.hung@mediatek.com>,
-	Yangbo Lu <yangbo.lu@nxp.com>, Maxime Ripard <mripard@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jyri Sarha <jyri.sarha@iki.fi>, Lee Jones <lee@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	Viresh Kumar <vireshk@kernel.org>, linux-wireless@vger.kernel.org,
-	Linus Walleij <linusw@kernel.org>,
-	James Clark <james.clark@linaro.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	linux-usb@vger.kernel.org, David Airlie <airlied@gmail.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	linux-ide@vger.kernel.org, ath10k@lists.infradead.org,
-	Richard Cochran <richardcochran@gmail.com>,
-	linux-riscv@lists.infradead.org, linux-gpio@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Niklas Cassel <cassel@kernel.org>, Simona Vetter <simona@ffwll.ch>,
-	Paul Walmsley <pjw@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Mike Leach <mike.leach@arm.com>, linux-arm-msm@vger.kernel.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	coresight@lists.linaro.org, devicetree@vger.kernel.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	mfd@lists.linux.dev, Andi Shyti <andi.shyti@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Jens Wiklander <jenswi@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	linux-i2c@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
-	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>,
-	linux-kernel@vger.kernel.org, Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: Re: [PATCH] dt-bindings: Correct white-space style
-Message-ID: <178579615849.757032.17209099883451822613.robh@kernel.org>
-References: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Vbd88ax5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1785796431; x=1817332431;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=TShZzFxii34SU1iNvtiC2pWxeIEKDZ5nTuEAr8CoEJY=;
+  b=Vbd88ax5MYTNS4c6FM661Ywym9WWmYm9uYtDzB7akMjvIFXSRVZ0Wg6B
+   c3ktdeA0yQjjnOYiS/DCseFIeSSf/US6e+ktYVKCQQYXO7isms+R0y02g
+   PE6o7smdEF0AiglBcaCkxIZfnBSCEm1dzEjUzvROA8HDAXOkCmPUvPUlS
+   JVrqfw9F+5dfZUBjcRVk4UZxKBaJhhav/6FfatIN9n2AiymonickBiGYD
+   +VzS6bg8ajI9vqa6q3lO+a67dCBlMFnck+2ZQSxXAVzkEbNQdF5RDoH41
+   ofEt5Kuzk+45dqHgM1DYJRyzqlK6Df5j7A3llXGny/qeCk0QFg8SmYImp
+   Q==;
+X-CSE-ConnectionGUID: O+j+rxpeQse4otd2Hd7A/Q==
+X-CSE-MsgGUID: xaw3hMl/S0GWpFQs2uPM0Q==
+X-IronPort-AV: E=Sophos;i="6.25,203,1779148800"; 
+   d="scan'208";a="24795596"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 22:33:51 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:22278]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.10.68:2525] with esmtp (Farcaster)
+ id 44dd6d21-1f63-4e06-a321-3040c4701093; Mon, 3 Aug 2026 22:33:51 +0000 (UTC)
+X-Farcaster-Flow-ID: 44dd6d21-1f63-4e06-a321-3040c4701093
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
+ Mon, 3 Aug 2026 22:33:51 +0000
+Received: from 6c7e67c92ceb.amazon.com (10.187.171.59) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
+ Mon, 3 Aug 2026 22:33:50 +0000
+From: Nathan Gao <zcgao@amazon.com>
+To: <zcgao@amazon.com>
+CC: <davem@davemloft.net>, <edumazet@google.com>, <horms@kernel.org>,
+	<kuba@kernel.org>, <kuniyu@google.com>, <linux-kernel@vger.kernel.org>,
+	<ncardwell@google.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>
+Subject: Re: [PATCH net] tcp: do not change rcv_ssthresh in tcp_measure_rcv_mss()
+Date: Mon, 3 Aug 2026 15:33:44 -0700
+Message-ID: <20260803223344.91621-1-zcgao@amazon.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260725030806.28135-1-zcgao@amazon.com>
+References: <20260725030806.28135-1-zcgao@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D038UWC002.ant.amazon.com (10.13.139.238) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
+Thanks for the review! I will try to come up with a packetdrill test
+and send it to net-next.
 
-On Sat, 01 Aug 2026 21:56:14 +0200, Krzysztof Kozlowski wrote:
-> Correct a few white-space issues, like double space after '=' or before
-> bracket '{' characters, which will be flagged by dt-check-style.  No
-> functional changes.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> 
-> ---
-> 
-> Patch applies on Rob's for-next branch.
-> ---
->  .../arm/firmware/linaro,optee-tz.yaml         |  8 +-
->  .../devicetree/bindings/arm/psci.yaml         | 18 ++--
->  .../bindings/arm/qcom,coresight-tnoc.yaml     |  2 +-
->  .../devicetree/bindings/ata/st,ahci.yaml      | 22 ++---
->  .../bindings/display/ti/ti,am65x-dss.yaml     | 12 +--
->  .../bindings/display/ti/ti,j721e-dss.yaml     | 96 +++++++++----------
->  .../bindings/display/ti/ti,k2g-dss.yaml       | 36 +++----
->  .../bindings/dsp/mediatek,mt8195-dsp.yaml     |  2 +-
->  .../bindings/gpio/st,nomadik-gpio.yaml        |  2 +-
->  .../devicetree/bindings/i2c/st,sti-i2c.yaml   |  2 +-
->  .../bindings/mailbox/st,sti-mailbox.yaml      |  2 +-
->  .../bindings/mfd/maxim,max77620.yaml          |  2 +-
->  .../bindings/net/wireless/qcom,ath10k.yaml    | 34 +++----
->  .../devicetree/bindings/opp/opp-v2.yaml       | 28 +++---
->  .../pinctrl/mediatek,mt7988-pinctrl.yaml      |  2 +-
->  .../devicetree/bindings/ptp/fsl,ptp.yaml      | 12 +--
->  .../devicetree/bindings/pwm/pwm-sifive.yaml   |  2 +-
->  .../bindings/usb/ti,twl4030-usb.yaml          |  2 +-
->  18 files changed, 142 insertions(+), 142 deletions(-)
-> 
-
-Applied, thanks!
-
+Nathan
