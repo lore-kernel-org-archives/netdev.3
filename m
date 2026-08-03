@@ -1,218 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D832D9780;
-	Mon,  3 Aug 2026 14:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B50E30D3F8
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 14:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785767931; cv=none; b=g5GYZ5TXK1UZJd1df4qrN7CIOupc7CXo7AB3wFOvZoIbBCcDt1dhsyDrWbDKt46glEwA70z5SFyq7wDUfA9gdv7MfQqvCZBdipwEVxG4vrHpyrJgGNPhrIJCSnoXWxRIzhyhm5sOq/w0WnAu92b/8/zDYVvNzfA9zhaBpFk+N5U=
+	t=1785767967; cv=none; b=HgoF320d87AG9yc9MVQaO9rFPV+plWT3RkmKR8ZiBjqDD1bNMSIb0vAGLsG7J7LmrWMcZVUCSHPqRdWm1Pyfixci+STcycfjFHbjSv+2PUMhosvyZrEblnYScV5PsjmHhwKn8Bh/BbNAOYJzooWpCspYomRGo/vnzXSi5fDRkjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785767931; c=relaxed/simple;
-	bh=VlJrDlV0/4pChOLduGROgPCiwY13oied8OmtEHar5/s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HCXgRH38TeY5zxzewc9v5AkRx6si0PwHPGoXObe93j0uJ9e8QWJDQ/LkT2yNsruwfQp9vnPuMpKFh7Zb6w3l0vt+yr88SAygBS0RG3Mu1kE74UHcer9/plolrXqAtygfZtwcwkO3XkP1y0MzqtCe0KNE5JVvO9nqJJM4qb8izRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KhXc72J6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1785767967; c=relaxed/simple;
+	bh=DhELizj98R/lR2a2ctjeOkiNuCTenIyitx+zvL/TJvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CF4l/zEFcPhDJQJ1Vo1b87GcUtzMG/FoJegVv7UkjksDThcxsbq6NcjPNKOwnjEdvgqWZxmXeuVyXyYX6CpiO5sJC9Yx1lh4YEJSb03rJ3v6RHmiIrXN72g/dLp6aUpXVLnngz9kaiYazhrL6NEvVOyHSNyBMvmtL/TLV2DN7H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gIPgeP/b; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y5X0jC0k; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KhXc72J6"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 00A44C2BCF4;
-	Mon,  3 Aug 2026 14:38:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785767931;
-	bh=VlJrDlV0/4pChOLduGROgPCiwY13oied8OmtEHar5/s=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=KhXc72J6nGqpdl4f/OcGjnYEfFuE21ticabBFTUbloDgAdJD7LVy+dvCv0s2P9qlu
-	 dQgxhP6HqBK0+o0EyF7tQEVc+WWJe7vVoKp5TqQkUPfGELUXshhsqaJBYjKI4SJ5KG
-	 PkmyF5pQ0DItRyv8mT++zWRTgG8+hP2Mi1ulCXn4OrGk1ycxy0zkmFye6v++u3hE7N
-	 tVjY7ea1dFxaQJRGjbUSb2EZrN1z/B5UQPs9B/Sleam8/eWVYEaxWbP1V9bZC9bQTC
-	 w7FLYvnr1xj/jTKiLZodXrTYQVERqZJ4qurGJ82789I+0ooqwm0aR6wiN0NlCzrfCu
-	 tNpuPdT6a7FoA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DAF48C55184;
-	Mon,  3 Aug 2026 14:38:50 +0000 (UTC)
-From: Fan XinRan via B4 Relay <devnull+shinjiangjiang.gmail.com@kernel.org>
-Date: Mon, 03 Aug 2026 14:38:50 +0000
-Subject: [PATCH net v2] net: thunderbolt: Tear down DMA paths before
- stopping the rings
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gIPgeP/b";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y5X0jC0k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785767965;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/JwikhXmMiyptngbwEJz5XWlF1hdjeBqdvWFYDWbslQ=;
+	b=gIPgeP/bUTuNWfnBbPqTnQim+MKK4kZeKPqaYqr7CuNTh+0nI+OfwaEDKf8hCNZo3GyjCs
+	ruAKnpp332GLgPsp4m9ZfE7Ld+hJhY64iZXRfxI0rxiOsNISRSOuTs50Ra5MfTZxPm0cTj
+	bgRJ0btBUpMrUokJksQG9M5eoVrKS0A=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-313-UutJMjR7PcGaBgMeJPC59A-1; Mon, 03 Aug 2026 10:39:23 -0400
+X-MC-Unique: UutJMjR7PcGaBgMeJPC59A-1
+X-Mimecast-MFC-AGG-ID: UutJMjR7PcGaBgMeJPC59A_1785767962
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-81e71be771cso121686537b3.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 07:39:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785767962; x=1786372762; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=/JwikhXmMiyptngbwEJz5XWlF1hdjeBqdvWFYDWbslQ=;
+        b=Y5X0jC0kZM+YgMQJHcgPeeEFyoRNjuz4ikW4QmXO73vOk07H4TUI4V5tSywgIE9wM2
+         TcYtkwQC+sTm7etUem9SetLS5T1RWv7hCf3l1wJNarsHkZvTIm2ikTvdd/QiEXFTmqnO
+         C72b6vJbBAjkeYY4IMUJWm4on8PPaKtjl9T6E4VvcudmynIfORg+XzxBCG0zBD6D64tn
+         W+ao0XnS/7rfGVu5j73U2XQhVDEbyWrHoGFdJeC7qJbmDWAPBj7hR9Z1t3Pc/6y0Uuzd
+         8MouKok1H3Zmpxp5WBLdihmsTQevO/MSfI/1h5ADl3HmiKT6CxH6MKsYaTu0+CDTAAwx
+         vlwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785767962; x=1786372762;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/JwikhXmMiyptngbwEJz5XWlF1hdjeBqdvWFYDWbslQ=;
+        b=Y2L7bjV73cjVsn9+zW3nOg7auUVij+gSPyAwF1jcGzk8iaFHuGuizo/7eMyDbNQ1Vl
+         8fD6H8ubCTsPpDickeRnUi/q6KzROPYPJst1xkjsUwDfsCUAOji71WGzTi5rf9Lplyqa
+         Gw0uW1cGasoPuY+CodrlWyTqNGgcvPtv2jFLMlmlYNmLsMmkIFsEX8b3hjFrLajWPjq6
+         4LejbzoRRt5GVjtXAgr4fe1Kk64VIpHh3dnKwljlpFvW5vuMM/zFbAMfpifQ0VE32YWw
+         uIHUeGLZ2QsnwlysvZIeKXrf3DEoyreci4AzjawCdHiZ+cZw12ueQaDTaPCrIrjiW8Cx
+         U/hQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoG+dgWQVN3n9X0ho6Qhl0GuO399VpoCd0q+9UuR86rIDylHE9nNeFXR7DrdyFqyDR3Yn9wOtc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+Jpnw45DKe1v4ODYfKt7N+2BEJ2HJqjD9Bo0aT0STTy/XEfF/
+	26xK6EmBgA0gCMivKsT73zeblEIQtTUiw+HCCJkf8aK08+4t/FuYhNqiCil3MbLw58RKBz0sJ7U
+	Kvn6Y6a2VRq67u6A9DwpNueIG7ZMM4qtGZUHJgY9J2YmEg/FugxVyt9Z9Yw==
+X-Gm-Gg: AR+sD108bStchHY+1qMOxjd+nKvp/3gxodgscOz0q/lrgNlp2g767NgarlpqF/55Mhq
+	YQAoFG9ZHduGOthUPkqTnhtHvXSGuxWTukAB6kKikbaFSktpn6EmHCcvapCT8iAAjun1aw7k6Ug
+	I0W3qCy5E6tsrr+gW/j9o769OC75JG0q48Y2+xpE06CzPFidEnC5B/zgCtzxY4+HhJWeM2etZO2
+	e0gwz8zoRvjnCzvWdUxjYpXFlarZ4M6m10/L1dZ+MdEGaBWszr6M7h8tBgEKo9Qg7xnfNFcgZe3
+	lvhF28Gz1APdHJEaG/nRqRiSZEt0bNtAqfJeb5X3/daNrK+oOmzZ6ydGztqv67IGEdvKZBspqM2
+	hy+Ca2bMBCkfWlodoaKketTcEgNTfIEBmTrM=
+X-Received: by 2002:a05:690c:e3c6:b0:81f:69a:3739 with SMTP id 00721157ae682-81fcbd4e504mr154831697b3.18.1785767962426;
+        Mon, 03 Aug 2026 07:39:22 -0700 (PDT)
+X-Received: by 2002:a05:690c:e3c6:b0:81f:69a:3739 with SMTP id 00721157ae682-81fcbd4e504mr154831257b3.18.1785767961867;
+        Mon, 03 Aug 2026 07:39:21 -0700 (PDT)
+Received: from redhat.com (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fccf9555dsm57109317b3.20.2026.08.03.07.39.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 07:39:21 -0700 (PDT)
+Date: Mon, 3 Aug 2026 10:39:19 -0400
+From: Brian Masney <bmasney@redhat.com>
+To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Jie Chen <chun-jie.chen@mediatek.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Edward-JW Yang <edward-jw.yang@mediatek.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Chen-Yu Tsai <wenst@chromium.org>, kernel@collabora.com,
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v5 11/25] clk: mediatek: pll: Factorise pll power on/off
+ sequences
+Message-ID: <anCoF9SJ9nDHqaa5@redhat.com>
+References: <20260801-mt8189-clocks-system-base-v5-0-ac4410697cc2@collabora.com>
+ <20260801-mt8189-clocks-system-base-v5-11-ac4410697cc2@collabora.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260803-b4-tbnet-teardown-v2-1-27de6a13ca2d@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAPmncGoC/yWMQQrCMBBFr1L+2oEhnYp4FXHRJFMdF6kksQqld
- zfa5fv891YUzaYF525F1sWKzamBO3QI9zHdlCw2hmN35BP35IWqT1qp6pjj/E40ycC9CAcfBc1
- 7Zp3s829e0J647mN5+YeG+qth276z7DSFegAAAA==
-X-Change-ID: 20260803-b4-tbnet-teardown-f4503440cbd4
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com, andrew+netdev@lunn.ch, edumazet@google.com, 
- kuba@kernel.org, linux-kernel@vger.kernel.org, 
- mika.westerberg@linux.intel.com, davem@davemloft.net, YehezkelShB@gmail.com, 
- westeri@kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785767930; l=6902;
- i=shinjiangjiang@gmail.com; s=tbnet2; h=from:subject:message-id;
- bh=2VEx2vZrGgzuxegRvN8HTWMc/FlSK3Z7MurSRiJTFQE=;
- b=7hdtWsP7DHmZW/4LuPw3ncxiuNPd8G5/P5QBd48M6wIJZe2QtA6Q5+WDn92eOeKQvo7eM71jt
- y2j1gUDp/2MBHfsovhTHYhOmbUQxQR8zXuJ0nhTUqu+IyRJS2Ul0lET
-X-Developer-Key: i=shinjiangjiang@gmail.com; a=ed25519;
- pk=S5b5AWBlS1MzhQto3bSxuygfVWGoX1K7saZNT5wGWeY=
-X-Endpoint-Received: by B4 Relay for shinjiangjiang@gmail.com/tbnet2 with
- auth_id=915
-X-Original-From: Fan XinRan <shinjiangjiang@gmail.com>
-Reply-To: shinjiangjiang@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260801-mt8189-clocks-system-base-v5-11-ac4410697cc2@collabora.com>
+User-Agent: Mutt/2.4.0 (2026-06-19)
 
-From: Fan XinRan <shinjiangjiang@gmail.com>
+On Sat, Aug 01, 2026 at 01:20:57PM +0200, Louis-Alexis Eyraud wrote:
+> In order to prepare the MT8189 SoC support, that requires different
+> registers to control PLL status and perform reset BAR, and so a
+> different sets of clock operations, split the pll power on and off
+> sequences from mtk_pll_prepare/unprepare functions into private
+> subfunctions.
+> 
+> Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-tbnet_tear_down() stops both rings and frees their frame buffers before
-calling tb_xdomain_disable_paths().  tb_ring_stop() zeroes the ring's
-descriptor base and tbnet_free_buffers() unmaps and frees the pages the
-frames sit in, so by the time __tb_path_deactivate_hop() polls the hop's
-'pending' bit, anything still in flight has nowhere to drain to.
-
-The teardown sequence has been in this order since the driver was added.
-The setup path has not: commit ff7cd07f3064 ("net: thunderbolt: Enable
-DMA paths only after rings are enabled") moved the path enable to the end
-of tbnet_connected_work() and documented why:
-
-	/* Both logins successful so enable the rings, high-speed DMA
-	 * paths and start the network device queue.
-	 *
-	 * Note we enable the DMA paths last to make sure we have primed
-	 * the Rx ring before any incoming packets are allowed to
-	 * arrive.
-	 */
-
-Teardown was never updated to match, so the rings and the paths now come
-down in the same order they go up instead of in reverse.
-
-On an ASMedia ASM4242 host router the 'pending' bit then never clears:
-every teardown burns the full 500 ms timeout and
-__tb_path_deactivate_hop() returns -ETIMEDOUT.  Raising the timeout to
-5 s does not help, so the hop is not slow to drain, it never drains
-at all.
-
-The failure is invisible above the thunderbolt core.
-__tb_path_deactivate_hops() is void and only calls tb_port_warn();
-tb_path_deactivate(), tb_tunnel_deactivate() and
-__tb_disconnect_xdomain_paths() are void as well, and
-tb_disconnect_xdomain_paths() ends in an unconditional "return 0".  So
-tb_xdomain_disable_paths() reports success and the netdev_warn() below
-it never fires.  Repeated teardowns eventually take the XDomain control
-channel down, after which the peer node is gone and only a power cycle
-brings the controller back.
-
-Deactivating the paths first fixes it.  Measured with kretprobes on a
-stock v6.17 tree with no other patches applied, on a link that was up
-and had just carried traffic:
-
-  before: __tb_path_deactivate_hop() returns 0 for the first hop, then
-          -ETIMEDOUT for the second 500335 us later
-  after:  0 for both, 525 us apart
-
-Alternating the two orderings ABBA over three load levels, four
-teardowns per arm: every teardown failed before the change (21 of 21
-that ran), none failed after (0 of 24).  The before arms ran short
-because the link died partway through.  The same split shows up when
-the interface is enslaved to a bond instead of just brought down, which
-is how I ran into this in the first place.  Throughput and latency after
-the change are unchanged.
-
-Hosts whose routers drain the hop despite the stale descriptor base see
-no functional difference, since the paths end up deactivated either way.
-
-Fixes: e69b6c02b4c3 ("net: Add support for networking over Thunderbolt cable")
-Signed-off-by: Fan XinRan <shinjiangjiang@gmail.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
----
-Mika, thank you for running this on Intel hosts.  Not having one to test
-a regression against was the one gap I could not close myself, and I am
-grateful you closed it for me.
-
-Sorry about the wrong Fixes tag in v1.  That was careless of me - I
-should have checked the tag against the driver's own history before
-sending rather than making you catch it.
-
-v2:
-- Fix the Fixes: tag.  v1 pointed at 4944269305df ("thunderbolt: Properly
-  disable path").  That one lives in drivers/thunderbolt/path.c, is
-  correct in itself and is not what this patch changes; it is only what
-  makes the failure visible, being what added the 'pending' poll and its
-  500 ms timeout.
-
-  I went with the driver-add commit rather than ff7cd07f3064 ("net:
-  thunderbolt: Enable DMA paths only after rings are enabled", v6.1),
-  which is what actually introduced the asymmetry with the setup path.
-  tbnet_tear_down() has stopped the rings and freed the buffers before
-  deactivating the paths ever since e69b6c02b4c3, unchanged, and that is
-  the sequence the hardware objects to; how the paths were brought up
-  does not change the state the hop is in by the time teardown runs.
-  Tagging ff7cd07f3064 would limit this to v6.1+ when the same teardown
-  code is in every tree from v4.15 on.  Happy to switch if you read it
-  the other way.
-
-  Two things that bear on the backport range whichever tag is used.
-  Nothing before v5.2 can show the -ETIMEDOUT, since that is when
-  4944269305df actually landed - its author date is 2017 but its commit
-  date is 2019-04-18.  And 4.19.y, 5.4.y and 5.10.y never took
-  ff7cd07f3064, so on those trees this change makes teardown stop
-  mirroring setup rather than start mirroring it; it still closes the
-  stopped-ring window, but you may want to trim the range there.
-- Rework the second paragraph accordingly.  v1 implied teardown had
-  always been the mirror of setup, which only became true in v6.1.
-- Pick up Mika's Acked-by.  No code change from v1.
-
-v1: https://lore.kernel.org/netdev/20260731170442.45530-1-shinjiangjiang@gmail.com/
----
- drivers/net/thunderbolt/main.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
-index 02a916505..a04c0901c 100644
---- a/drivers/net/thunderbolt/main.c
-+++ b/drivers/net/thunderbolt/main.c
-@@ -386,11 +386,16 @@ static void tbnet_tear_down(struct tbnet *net, bool send_logout)
- 				break;
- 		}
- 
--		tb_ring_stop(net->rx_ring.ring);
--		tb_ring_stop(net->tx_ring.ring);
--		tbnet_free_buffers(&net->rx_ring);
--		tbnet_free_buffers(&net->tx_ring);
--
-+		/* Tear the paths down before stopping the rings.  This mirrors
-+		 * tbnet_connected_work(), which enables the paths last so the
-+		 * Rx ring is primed before packets can arrive.  Stopping a
-+		 * ring zeroes its descriptor base and tbnet_free_buffers()
-+		 * unmaps and frees the frame buffers, leaving anything still
-+		 * in flight with nowhere to drain to;
-+		 * __tb_path_deactivate_hop() then waits for the hop's
-+		 * 'pending' bit, which on some host routers never clears in
-+		 * that state.
-+		 */
- 		ret = tb_xdomain_disable_paths(net->xd,
- 					       net->local_transmit_path,
- 					       net->tx_ring.ring->hop,
-@@ -399,6 +404,11 @@ static void tbnet_tear_down(struct tbnet *net, bool send_logout)
- 		if (ret)
- 			netdev_warn(net->dev, "failed to disable DMA paths\n");
- 
-+		tb_ring_stop(net->rx_ring.ring);
-+		tb_ring_stop(net->tx_ring.ring);
-+		tbnet_free_buffers(&net->rx_ring);
-+		tbnet_free_buffers(&net->tx_ring);
-+
- 		tb_xdomain_release_in_hopid(net->xd, net->remote_transmit_path);
- 		net->remote_transmit_path = 0;
- 	}
-
----
-base-commit: 4539944e515183668109bdf4d0c3d7d228383d88
-change-id: 20260803-b4-tbnet-teardown-f4503440cbd4
-
-Best regards,
---  
-Fan XinRan <shinjiangjiang@gmail.com>
-
+Reviewed-by: Brian Masney <bmasney@redhat.com>
 
