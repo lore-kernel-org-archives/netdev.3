@@ -1,186 +1,144 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012037.outbound.protection.outlook.com [52.101.48.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0DD2F49F6;
-	Mon,  3 Aug 2026 06:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785738517; cv=none; b=nsiKgb/pl+MQyKEnX7mYgho5R3fvmM0fNhyrDqKmL/fyvr4Wv918/mqEDeWSMA4J7N+jW4DXoResBdN45NPTw+KC25P3prTvIauaOcg/qGiXHABh2vC9fMfrQTbmyavIyPundXmpeAXJWuDgEEsQ2Bop7UkejdX+JOG6NI2MAdo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785738517; c=relaxed/simple;
-	bh=j6wNZYALu5Rd2HxZ6z42jCXmMubMzwNM/+fU64vBMp8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pXpkXFk0NIT7G9O+KNLHQVp3g6x25bM8jY79s3K5BcSRWrsyWPMaa6p//CCLMT2DsLvIsX6mrPNBzs/SWpXd8Dku3NmsAwiOadVWfVEwccO/v9fuq+VKsKDACcP0hfig+E8R3VfwfyYd477lZAL/iDFitgSvprrfmpdfXnWeqe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=q3NXIigV; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7734397E92;
+	Mon,  3 Aug 2026 06:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785738527; cv=fail; b=inCNRaxTpGqKjHfFLmMu+vG+sZ4vneXJeS2yoe1iu6+wUVRXMnj+5P0d8waaviV8LtHWR8ZSvJW8WzkzqRBYBGjZGL0PASB1lROk/rwcY2LMdH7+y5ihc97p3kVexZ3/NWiH2bBKI7jmxsg1JOc0Mw7RE/sEd146uGcENZEqucw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785738527; c=relaxed/simple;
+	bh=rw5PYLZMhj0i4b5mAOvHWlrNjuwrYmMsIXsdGacR0hc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CCDUGQah5loMWOz1H/Z/4MMl58TczJh93ysatL1h2l3uEf0PsFGLLGUX+57FpzUP3vEoP/x8UJmyuTUsCI95k6UCQbuImXhJEiCl9ysQJUpeZV88MRe8+DvqJzT4kjcSW/fuyy7Xj5fi5rYXd6GWnG/2pFNaEipOt/HYd+YtNKI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CADRkWsk; arc=fail smtp.client-ip=52.101.48.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="q3NXIigV"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 672NgEK8380027;
-	Mon, 3 Aug 2026 06:28:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=grwUhx
-	kUCrNPHqyBF0X6Wki2lSXMtyrWH9yMkxLVMT0=; b=q3NXIigV3epglhyIfrY6IQ
-	ToZ3rD67cRjQqwd5I/Y5f+bJdIBlu/PRmiJceFswbwdpYk/B4AHAG/Yu2EuhNnDv
-	3LMTVerktSy8q9JVGHuMEXNJju+9vd7f0NcXtV09m8jhtI12U971l/vKHHfr94bz
-	65JjBpC5YGl/iz4gNb/yuCIBUaG0J1OWH7elWKxcELJvTfxz8+0zMKN0NwgtMkNw
-	qarDEgSmIdz9ca2XQUs0oPlEPLZl3PSADltB0QjO+ej/NKv2rdAwGKz15jjv91ID
-	N2hSI/ZmOqSMUOPI0DQ09XVwazB26Uc7XsQFA+SRjXrfbtz7E2UURdsA0GOuLfMw
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs67hf6ps-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 06:28:24 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6736QHms031713;
-	Mon, 3 Aug 2026 06:28:23 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmh40ac-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 06:28:23 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6736SMt713304400
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Aug 2026 06:28:22 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4F1A558054;
-	Mon,  3 Aug 2026 06:28:22 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 61A325803F;
-	Mon,  3 Aug 2026 06:28:16 +0000 (GMT)
-Received: from [9.123.0.155] (unknown [9.123.0.155])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Aug 2026 06:28:16 +0000 (GMT)
-Message-ID: <d861388f-0a03-4994-9470-534f4cf4f14c@linux.ibm.com>
-Date: Mon, 3 Aug 2026 11:58:14 +0530
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CADRkWsk"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wOTtyM9W7H/5axfsR5UbeBrX5KR5sl6zTQUc2sx6FhjAdU3OikRGz2J47c8pmsU6/8Y+x6paZOjWsblWIZBLs5iQiz91Mye27KLO1LTRZzoYxKZ+SDBsEouaYiXd8oBaIzhDbRIGXfaUF24YGGX8uD3c7NmGzwyQKxyUFbvq+6Mvaiwr03HnNeSsDtPoQJocv70S0ENjiiByls8Ms156hMmIFcxe9OPSZTY0nXmQjFqv6M86OoPuJ8435N0bdbrwbgh49dsQxCZjiYHPlUr7X3sWNyMYc15ovjLxZSmhYUvqFeS0liHdJXpQlsvyCNfEW5F3t8h1JAkUMkkJk6ZWkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RrqXku1fvNa6WSQmk9wRr2lmr2FJ+moa+DVjWToUKi4=;
+ b=TZtswhWfowkTCi/QVxDE3wZ0LZnPUCp4GxWVbvOlqvQNubE6DcVn3xaHCvaAOHMQ0pIeyjlTnZ98SXlOjvIH5eiDcSItuZvUDBOfPtU8/sG4Hd1lde1cIovkPp+gIlI2PMGUtYrXXaGijsRWy2wropa1J3TeHyV7Vy2PVU3vAxnW+KIvZN985TYn7fBM+kVwzVjw7ZDxRZNejLo1jm5ssXtJnoms3fY0DtiVQrNEoSKbTNXLMpZsM51SdmpjQVq43W+ABFb8dxu+S/3LqKfNc7wrqW0ek4KYLv84+w48/tvAYB5RIIYPi1rj/Bl8e97IevDlp2vxSeBdSpZA0AFUDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=bootlin.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RrqXku1fvNa6WSQmk9wRr2lmr2FJ+moa+DVjWToUKi4=;
+ b=CADRkWskVAPBnDUpap2yblgC0iXpoY7GVKyLiU1otu/z5RGajDQYTXITQOyOxTALCt01TvxuyiJJxT+DMf1mx7qHxnAxSKQcO4jLeKLoZ10fGBA8fqtCD/0yeQNUcT6CCm7GNeLqTT3u16itiS+gTS0CtGo2n6YpFgNXYRZ+1F4=
+Received: from BY5PR04CA0013.namprd04.prod.outlook.com (2603:10b6:a03:1d0::23)
+ by SN7PR12MB6885.namprd12.prod.outlook.com (2603:10b6:806:263::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Mon, 3 Aug
+ 2026 06:28:42 +0000
+Received: from SJ1PEPF00001CE2.namprd05.prod.outlook.com
+ (2603:10b6:a03:1d0:cafe::ac) by BY5PR04CA0013.outlook.office365.com
+ (2603:10b6:a03:1d0::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.17 via Frontend Transport; Mon, 3
+ Aug 2026 06:28:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF00001CE2.mail.protection.outlook.com (10.167.242.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.8 via Frontend Transport; Mon, 3 Aug 2026 06:28:40 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 3 Aug
+ 2026 01:28:38 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 3 Aug
+ 2026 01:28:37 -0500
+Received: from xhdvineethc40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Mon, 3 Aug 2026 01:28:34 -0500
+From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+To: <theo.lebrun@bootlin.com>, <conor.dooley@microchip.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>
+CC: <vineeth.karumanchi@amd.com>, <git@amd.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next v2] net: macb: remove unused ENST Q0/Q1 time register defines
+Date: Mon, 3 Aug 2026 11:58:34 +0530
+Message-ID: <20260803062834.3865755-1-vineeth.karumanchi@amd.com>
+X-Mailer: git-send-email 2.44.4
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/smc: validate peer CDC cursor against RMBE size
- before accepting it
-To: Bryam Vargas <hexlabsecurity@proton.me>,
-        Ibrahim Hashimov <security@auditcode.ai>,
-        Dust Li
- <dust.li@linux.alibaba.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>,
-        "D. Wythe" <alibuda@linux.alibaba.com>,
-        Sidraya Jayagond <sidraya@linux.ibm.com>,
-        Tony Lu
- <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <amA9XGOWH3z4Z1fu@linux.alibaba.com>
- <20260722102929.38218-1-security@auditcode.ai>
- <20260723230647.138311-1-hexlabsecurity@proton.me>
-Content-Language: en-GB
-From: Hidayathulla Khan I <hidayath@linux.ibm.com>
-In-Reply-To: <20260723230647.138311-1-hexlabsecurity@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDA1NCBTYWx0ZWRfX8sfwO3ScL3DW
- LXSYZPMSHPYYfKHRaFyQyqupUeGrU30Ai93VevAopFXkTjIw4eAn30+m+gHAP0ctK+HObY6Rx1O
- ic3oY74jAuy4f4orJowxSmIlqvuNo38=
-X-Authority-Analysis: v=2.4 cv=I7VVgtgg c=1 sm=1 tr=0 ts=6a703509 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=yQ0VBZUCRUxF-LYgn2kA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDA1NCBTYWx0ZWRfX5P+mslCepaAa
- F/Xj5JlIuCRlKMPnRR0xnpmt+9HO3GxMyShK4eQjZ7jJv+Gl5lWYK6Rt74uZL4VvsKlDeEqdtyu
- wO5F0hzZ9X2jsc8exuQjDwbpEpkDbibIc3vGVhPBrLUy/rMW4YzyfRUTtl4C9luytf/15iSpHUz
- /ijK3W9QRonEmkNO3LPrOtNUjjIHMp7Oh6kF449WJCXE59v4f9fXNkUH70WmxrIG940860YRGXT
- ancMCxZCAO3H4UrRgps3jfaSU9gqfvsqnwi0pS2pDPO4W2ZbsZQeuzmus+6npd76x2k7UbmyxLW
- 0vt2WfYCDYiwooSWjF3MV/xYFW9XSINVmP1/wAoIKhSv0JsnVKG158c5qSxn6+FRSJ03sWm/Nyt
- ULfjbLMlAGd3deh6UcnfuBTevtzQKWNZ8LPo7IIiv2NAyek9VYACndEWkXrd5LI9Iy/qwSPcmX7
- ynt3yJ/52Pya/odR//g==
-X-Proofpoint-ORIG-GUID: 4xOFp8dqCfk60xbB6IW_V_BQlhgSNg5k
-X-Proofpoint-GUID: cysbySCLSsFRZy8_v0LnwTuq0UFsZcft
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-02_06,2026-07-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 clxscore=1011 priorityscore=1501 suspectscore=0
- malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608030054
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE2:EE_|SN7PR12MB6885:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb201970-9b58-4253-1f54-08def128757e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|23010399003|376014|18002099003|11063799006|10067099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	30BtDpsE5SWMg2z3n9NABCXoxc8UDO/knF1yl6fqxlefRLju6MkfutenEx9MdTyX5KUU8k5l1kx1EfXSfncTslGaAAsNrs0fEURcFA9T8whpx4bk9UBX7sRZLD6mTbttguziWRElfZF4DGSQHkwihrCcuOH4XvQWMJ2XN0lEYgE4jRdys4PDVT0ydg03Z4mYdVWenDWTm4+VGoizRvEOrAZsamqiU5Mtw0qIyNvv43NIeCCNgvBW8d9r5Z+OO4kvPM7i89M2+adnwpw0vLklUFV7TUtJ4iY/MK9AJYAbHTm6IYVzfHU1wGhNiL6AB9NmRV7dj272L6umGLstnfQBgGd6whCIYYnCVsqL3VHXV0k+PMznJsOJq75vVXxjxraWtvuVLJJe1mpWXlWcfxLEEGKZXaHv+eninmBoqaq/rTtNeALMjacALG95MegbRWhlJjo/ej+xBkqFzpKMMjcGn5regg8mNSGNIMQ66scuFv4bPl4xepqskvH5dwbMISB/5y9Sbetd4a8c4YmQ3gplzROy3eVyv4NgSA+L9kq+DVtQIIL5kTrXODDKe/K8BsUMtRYAdopvw9QrFi6QP8pik42nWRK9yTSrgtOICwnDty9hGYGeKl8ak+fsVHVZBE8dY28bPpxWlrL4x+w1qyCNy0UFRYpQW899n8kcu+twjhiNU3MxEFAoWZzfa7O1NAapFypQi83w+U3dvgP5H1Fetw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(23010399003)(376014)(18002099003)(11063799006)(10067099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	75JHs/DNf7D7vXuX6QYteg1DYHpQo4Wine/xwEzIrwn3jyZ9zAihJwZd4yYFA5fa7qtOpnvahy69uRHebd69o9XblGIP/sQ3Eismo9v3fF4zwhdvopf92MmiyCchW/x/b5oPgsGlcI894iV+n/L9VVIoXXkR934QMuXGxB447UDI8XE/n/1N5DhO3CeHebbVbEcy9wOBLxYgWUsnJ4vHQWYQ6o/anOaMgp91bIPwy1hVd5WH32OrbDR9lnKudDRMQb7u1pUfKgFQDjysF0+VDIK7CMvAPyeT6iOl+qnCDvKxen28gGvw04n7Vnb3zV9RvwlFug3Rfg3CviVEWX/kjbJVT1KYn7pQIeHc1xbMdE+8LHEI3QXyBsVIr7TDtSEqAhNlUK/FQrOnYKwlXUwLXuqiWMpYAFNbrQjSvOyVMX0stxQK9dUrg5E9kQG1NDSi
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 06:28:40.4682
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb201970-9b58-4253-1f54-08def128757e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00001CE2.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6885
 
-Hi Bryam,
+The ENST start/on/off time register definitions for Q0 and Q1 are not
+referenced anywhere in the driver. The driver calculates these register
+addresses from the ENST base offset and the queue index instead of using
+fixed defines, removing the unused macros.
 
-I have a standalone net-next patch that aborts the connection when
-bytes_to_rcv + diff_prod exceeds rmb_desc->len.  The check sits before
-the atomic_add(), so the accumulator is never written with an out-of-range
-value:
+Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+Changes in v2:
+- Split the patches for net and net-next.
+- Link to v1 : https://lore.kernel.org/netdev/20260724043257.2221030-1-vineeth.karumanchi@amd.com/
+---
+ drivers/net/ethernet/cadence/macb.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-     if (atomic_read(&conn->bytes_to_rcv) + diff_prod >
-         conn->rmb_desc->len) {
-         smc_cdc_abort_conn(smc, NULL);
-         return;
-     }
-     smp_mb__before_atomic();
-     atomic_add(diff_prod, &conn->bytes_to_rcv);
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index 2de56017ee0d..a11052565436 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -184,12 +184,6 @@
+ #define GEM_DCFG8		0x029C /* Design Config 8 */
+ #define GEM_DCFG10		0x02A4 /* Design Config 10 */
+ #define GEM_DCFG12		0x02AC /* Design Config 12 */
+-#define GEM_ENST_START_TIME_Q0	0x0800 /* ENST Q0 start time */
+-#define GEM_ENST_START_TIME_Q1	0x0804 /* ENST Q1 start time */
+-#define GEM_ENST_ON_TIME_Q0	0x0820 /* ENST Q0 on time */
+-#define GEM_ENST_ON_TIME_Q1	0x0824 /* ENST Q1 on time */
+-#define GEM_ENST_OFF_TIME_Q0	0x0840 /* ENST Q0 off time */
+-#define GEM_ENST_OFF_TIME_Q1	0x0844 /* ENST Q1 off time */
+ #define GEM_ENST_CONTROL	0x0880 /* ENST control register */
+ #define GEM_USX_CONTROL		0x0A80 /* High speed PCS control register */
+ #define GEM_USX_STATUS		0x0A88 /* High speed PCS status register */
+-- 
+2.44.4
 
-The patch also moves the open-coded abort sequence in
-smc_cdc_msg_validate() into a new smc_cdc_abort_conn() helper, which
-the overflow check above then reuses.
-
-It is currently in internal review. I will post it to netdev shortly.
-
-Thanks,
-Hidayath
-
-On 24/07/26 4:36 am, Bryam Vargas wrote:
-> Agreed, and thanks for dropping the competing one.
->
-> Patch 1/3 bounds only the cursor count, not the advance: smc_curs_diff()'s
-> differing-wrap branch returns (len - old.count) + new.count, so prod(W,0) then
-> prod(W+1,len) is diff_prod == 2*len with both counts in range, and
-> smc_cdc_msg_recv_action() adds that to bytes_to_rcv unclamped. wrap++/count==0 does the
-> same over several CDCs, so a per-cursor bound can't catch it.
->
-> The out-of-bounds copy you point at is closed by patch 2/3, though. It bounds the
-> derived readable length at the consumer:
->
-> 	if (readable < 0 || readable > conn->rmb_desc->len)
-> 		readable = conn->rmb_desc->len;
->
-> so copylen <= rmb_desc->len and smc_rx_recvmsg()'s second chunk (copylen - first,
-> offset 0) stays within the ring no matter how large bytes_to_rcv grew. I ran your
-> wrap++/count=0 vector end to end on the real SMC-D path under KASAN: with 1/3 alone it
-> trips slab-out-of-bounds in smc_rx_recvmsg (bytes_to_rcv reaches 6*len, read of size
-> 5*len); with 2/3 applied recv() is bounded to rmb_desc->len and it is clean.
->
-> What 2/3 does not fix is the accounting: bytes_to_rcv is left > rmb_desc->len (and can
-> sign-overflow negative over many messages), so the documented
-> 0 <= bytes_to_rcv <= rmb_desc->len invariant is still violated at the producer even
-> though the copy is now bounded. I have a net-next follow-up that records and aborts on
-> that. Your
->
-> 	if (smc_curs_diff(size, &old, &temp) > size)
-> 		return;
->
-> catches the single-CDC 2*len advance cleanly; the wrap++/count==0 form slips it, since
-> each CDC advances exactly len (diff == len, not > len) and it is the accumulated
-> bytes_to_rcv that overruns. So I'll pair your advance-bound as an early catch with a
-> check on bytes_to_rcv after the atomic_add and abort+record there, which covers both.
-> The insight is yours either way -- may I add your Suggested-by (or Co-developed-by)?
->
-> The v4 series otherwise stands as reviewed; I'll repost it for the netdev queue and
-> keep the accounting bound as the net-next follow-up.
->
-> Thanks,
-> Bryam
->
->
