@@ -1,84 +1,71 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800B02D7DC6;
-	Mon,  3 Aug 2026 13:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44975257855;
+	Mon,  3 Aug 2026 13:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785763120; cv=none; b=vD2TVyGH14g/2gPNxae8Uyn0IMJdwAmHxlS0gsuRaD6GCXOadNSECQ2YZZNaLo8MsOmTrV+DHDw4j21DyB6YLy0iyyW/e1UhTKxK+Y7ovm1nMtRGxiroX63S+pZEEejDWOK81MYAyQTInIQ+YKzRcvzMq7PObnk+7cKOvZIwQEk=
+	t=1785763168; cv=none; b=qn093ac2QiWveGJI8jqs1or4a1HlcHgGGP8aGtqhdv7UIphx0AJ/u/zfvFcH8aKGZHlIP2ynp8RA6HtaYsYnHeSt5i4OBJ29qIzdPjAwqj2QJ9ir7oW1dZUSNGrie9C3e+Vunf5RtcjsbbC7zz34vMQQpfyc6vZbRTa6wHykzJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785763120; c=relaxed/simple;
-	bh=0NBQ6OmnVkshijDTag1ptbCbxjUJCZAznkh7+PNqoAY=;
+	s=arc-20240116; t=1785763168; c=relaxed/simple;
+	bh=Ax0JclV9lBJSpt9yrcSnNhityxu0lRUfIckVcvx86y8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZBY1DYo3paRaPQ8LnG/hVagswbIL2OFpR4EUPhzXjEdBlwLZnd6A18ODJbPAzbdJI1ib71yxAsjEy4Wm4gR3fA5w1Q7IOvkA2q+pY5IV339fvXtzn3GEI0z5zU/vAiFFdDez4h5Z9T9zF5BZ6MysooeR5XOJgUrBPn9Htt0xWyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kQJttqGZ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=XI4zMs/rRR0taFSnaXlCyf5WCia4Nv2824ryIw5q5BGq2wpnnkysACRRfnNFNMA1FPJ6I1QtgIog8vHkDfEOLoVV7MgAgUN2SHi+5h8Ot/U/BQtkmyv0083GMkLgVk+RI6gX5qr/rTdDDFUYTbIxBPt9W7NYh2Ku6XC2oRQaO0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=vvroB6fn; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kQJttqGZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=sGCA27J1RZvjUlK3E9SH2P4D/KVWpuWhx1p43t3600U=; b=kQJttqGZ+ACvj+vhsflTd3u+V7
-	ICoA1kjQYe4VGN9nEJm+zwywXrmrTv2//34ng4VEOdHX5Ba5Ml2+IxkTBDfMCPUZCJVEAdmDWnw17
-	5kKZgsSVqE7AhkTsl3IxdZeNF/wcV/3qquqR3+cJpbA9MqmcEp7mnpMCpOLMzYoBCgg8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wqsYU-00Fj9P-5h; Mon, 03 Aug 2026 15:18:10 +0200
-Date: Mon, 3 Aug 2026 15:18:10 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com, mfd@lists.linux.dev,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH 08/21] dt-bindings: mfd: x-powers: add AC200
-Message-ID: <2c0210b3-2c68-41f1-aa33-3f1693454849@lunn.ch>
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <20260802-submit-acx00-of-dynamic-v1-v1-8-0a53cd9e21cc@gmail.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="vvroB6fn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=Ax0JclV9lBJSpt9yrcSnNhityxu0lRUfIckVcvx86y8=; b=vvroB6fnrTimG034vwrLmJghE4
+	reSPD1LosE0S9NKy7XhQ6h+X7B9UXst88ZSsJT6nDP8BuW1OU4rI5VUhSRlQXTj7NPS4wUbcgYWEr
+	QJsc+PSPH+pJxwtRKs9cZLn1u4hmWHLdwUbXW/woz5aVku03QA5N6aEUSbhAm3gHEMhm4SaR003XL
+	fwWOXN4Cwdgjd5PEhQ9w4R8Ad/w4hlmfqbeLUXNnCx49x3UEdjnrL3c+3v32UJxl+txlA9//+AHCC
+	5X3PLVQwubzv8Yp8pzCyyVVPTR377L1WDJYL/rNG5n7o+I9myZamn7Qkbtk9+/PEsU1DuJYt4kQqt
+	q3BAgzAQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wqsZK-00CO11-3A;
+	Mon, 03 Aug 2026 13:19:03 +0000
+Date: Mon, 3 Aug 2026 06:18:58 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, git@amd.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: macb: remove unused ENST Q0/Q1 time
+ register defines
+Message-ID: <anCVKleezh_5oWhS@gmail.com>
+References: <20260803062834.3865755-1-vineeth.karumanchi@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260802-submit-acx00-of-dynamic-v1-v1-8-0a53cd9e21cc@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260803062834.3865755-1-vineeth.karumanchi@amd.com>
+X-Debian-User: leitao
 
-> +            ethernet-phy-control {
-> +                compatible = "x-powers,ac200-ephy-ctl";
-> +                nvmem-cells = <&ephy_calibration>;
-> +                nvmem-cell-names = "calibration";
-> +                phy-mode = "rmii";
-> +            };
+On Mon, Aug 03, 2026 at 11:58:34AM +0530, Vineeth Karumanchi wrote:
+> The ENST start/on/off time register definitions for Q0 and Q1 are not
+> referenced anywhere in the driver. The driver calculates these register
+> addresses from the ENST base offset and the queue index instead of using
+> fixed defines, removing the unused macros.
 
-What do you mean by an ethernet PHY control?
+The removal itself seems correct - I could not find a single user of the
+six macros anywhere in the tree.
 
-I assume this is not an actual Ethernet PHY, but some control logic
-around it? Where is the ethernet PHY itself?
+> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+> Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-       Andrew
+Reviewed-by: Breno Leitao <leitao@debian.org>
