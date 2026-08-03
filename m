@@ -1,630 +1,292 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010059.outbound.protection.outlook.com [52.101.85.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F373AFCE4
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 08:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785744865; cv=none; b=OwAfrIeiwEaxrOEpcPmOWVqLqbXgbRuiLaIp/MqsqDBXT+xu0iLI2ek2ISlbPMPcICSmQTT0cHinI28J7SAGO6gUf2MmF7MYZUPjwSSD1MBKR1thlrkSJCfBMmzOkT2OmEUkdMH/aj6V0iaCgRnnEuL7KcC39cdtj75gf1V28tw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785744865; c=relaxed/simple;
-	bh=xfEsl/VYVgy94mp39ejvrHTJ0IgJNdaRbGWnXkMPjas=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HxidezU44NLqOVxKRDSP16u8MqmhZWBX6+I29rj+n2QXMGwsjfktrHvFnJEW3X5b23BcCHhaOaqjCDQdeyVhmz9KfxR3KxKzzJC8aXrjLjHp+RoV/V9p8ik32n63tVAJYUAi+VFHoPGXuAGV05S1He4k+ilID/8Gi64KNDHtv5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y9Or/tR5; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DA33B1EC8;
+	Mon,  3 Aug 2026 08:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785744911; cv=fail; b=b3Bau+VY1cjvWhevwTkKH/MG0fQlntOi/VfWoiB860uSK+RTtWj6X1yuYg+o/cCjWj+dBcND83AIkLyVo/OrcfKY3mrdRUePUL3t8Mf/BH+XmnQ9Kot7is9/eL6y7zdGz2goCviYxmGi9u3CZossyvK3uHSHFcyNiwOKmzrsPWo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785744911; c=relaxed/simple;
+	bh=BWn//wz2XpIgqqueYOdd0geL6hWHQhzV7U3itsXn6ls=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=grL8tvhjQJbHY/4HJwlnCAXU+VpZRxDUurzoD4jS7Jp+domrj3jIHY3gVZwC1x4E2k0SP/XmM9vwGlSdD9Uu0H2JOE35+cenYct5WhnrzNBGXg8zTx13bNTieS0PM37Qk3xy9Ff1rDNVatwwVEO3tNQyXD3hl2rmBMVbl34KTXk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=G5NbxXqb; arc=fail smtp.client-ip=52.101.85.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y9Or/tR5"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c1c24ec9525so516741566b.1
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 01:14:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785744861; x=1786349661; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nfFsOevCiVpElPiIPf6rs46MR3hTgS81+rov2AShn4U=;
-        b=Y9Or/tR5xc1f3eLD6dtjuJUTgfal+h1yLC1iuY5tubfqpT//nXuXUJuBsFKqOfDknu
-         SvE3KtYDYI340PKGb3oHPtpVbs16qgCIWA2zJHURYaa9Jy+7euHimyXd8HHUhTb/kFJK
-         eWWiJEjOPz3iZrMPFFM7+RjRKl/kn6D4KPn7Z4qJshqgYpuMc68FwinKnaxoqQD9a2rK
-         QNmVqKtZDgW3D0JOXFq9NS7TsliIRNxthdS/HThLoZKje6wp1fCXbwbztLIEc5HloABD
-         +9bUjvyonsvW0FVQemIHwqLfkdb7+EdhauPg9NnKRwEFtdoZEJqi/rKf8Dpar+JTOcGp
-         nZ4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785744861; x=1786349661;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nfFsOevCiVpElPiIPf6rs46MR3hTgS81+rov2AShn4U=;
-        b=Xy68rJkQUEeQrJjRuYOft1H1DWWI6uTwcCEkQeC0dWAW5440QyjUJBq8G/wRv6WM2G
-         RZDb5eysEeVMFPG83gPE6KnvI69B+HlRTf4z41yR3zbFDwkdWh5qlPo5bMK5JE6MCzyE
-         T2SrQgynvPzEGZ50n3IjKljsPfJc9aiqXyCpQ3ADWjn4aGXuy5SUAdSMBlMV34ux4FRx
-         pGe+/ClxjvTf88l+kO21DujCvWAg7sHbypcwAx0rNh+tvugN1r/iDfaBAFwJVbOEnBY1
-         Abbtez/4kUy/knMPpH0t1Spms1h5GSESaLRHlnjC5aASfXyHWvoYJjL7tkfx1LkuCGPE
-         Xoqg==
-X-Forwarded-Encrypted: i=1; AHgh+RoqfH9nq1Sb3jRXtGBrV2FrYWddMALtHbPGd4ZcF7ALLh5P4Dw+6MucPiRTWIkcXkKMMspQzZg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdQP3eRVvH/VLNAkgLmeHq7RRu67PVc5XZ09teAax80xv1Nbdt
-	vgEV8gPyloAg8H9y0gaWkCIr0YSaMnhkBZB7Nqp1uNnqX+W+PLVrPfbt
-X-Gm-Gg: AR+sD13aVKUQzM43qp4y9Fe0XBxmd31zN6rLhF1n1wNPg0cQkNBOpYKQCu6JAUJuWMy
-	0S+bt3fqcr0wC9vNsOC1asHYQ727239bZfaCsOkQtoy5SLppV7p6WqKrb9TTxoamFRH4n6DB34s
-	xYkWM/rjlIqC1gX2ygA8VjgJOAS0t15nVCRsF2VM9zL1KsR+vZpp+eUm4hoRNGHu5X7JYo9Ng5w
-	VZIPx6eIQkFaXKfs/ifXyVMLzImqgsJAeBbwmV2jO6XvSM322iJZFwafAHqq8q69Mg2SihDj7pY
-	9jK1gxyQgvq6YWqFyQkz/CzBvvZBlBN28iurkVUipjTlhkX9zzjs+y3tB9zyKen6ZqSqoC57q/g
-	rCKbYcC1FRrM5bW4PRQ/+k/A4UKNEzuFwLHvPt5rJAmHR/4m6eUjO5UsWe/rShQ5i3tLmrvDLqD
-	pujhuCdzaAaqXSp3adeeOyxsYGhH0/S8gPeU+YXrZQU86/cmglLs50XOGn7EZ69qEBLrxZPUmO
-X-Received: by 2002:a17:907:ea8a:b0:c16:7a4b:33f1 with SMTP id a640c23a62f3a-c1fe7f99a31mr761314566b.21.1785744860670;
-        Mon, 03 Aug 2026 01:14:20 -0700 (PDT)
-Received: from grower.astralinux.ru ([82.22.172.205])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd3c5a48asm471851466b.11.2026.08.03.01.14.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 01:14:20 -0700 (PDT)
-From: Alexander Martyniuk <alexevgmart@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
-	lvc-project@linuxtesting.org,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Gustavo Padovan <gustavo.padovan@collabora.co.uk>,
-	linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@kernel.org,
-	Siwei Zhang <oss@fourdim.xyz>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.10/5.15] Bluetooth: L2CAP: Fix use-after-free in l2cap_sock_new_connection_cb()
-Date: Mon,  3 Aug 2026 11:14:12 +0300
-Message-ID: <20260803081414.729798-1-alexevgmart@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="G5NbxXqb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CBgoflM90nmE6IAclX/xk0WE7/ylw9K/C2POsxDfWYkswW4zcE3cqbYz4divCUxkhWmTqmvpIMR/TT3YIsdISU0puiNx0r08Z6pMztxMR1FJ3urRjZIq8kTQLG+GLKxrfo8wPnVeTGQoUV05qCHKSdJUvg4UxUJg+ESeK7CVZaQ/vzGrrU2Np/PHdc3M2A76LvZ3eeycJTkqTNu3eawtX/zJOoWj9hIYrjx3mNMw/6aRSmKf2hcT62r8BBwxrA2XKeRQcQVApGqzJmWLGf+0qiI7/ILcgDt6M2QeoVk73B66YencKSVAdRRcTMkE1cttlOVuSl1rIs4vZ4aeGqfReQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dHAI7QqT50ZcC1mENTcsrdbMInPhJPKCcSn82/7vfgI=;
+ b=rgbU/vBAnA8DR+vIUUmHAKydgFh1zGYweyzeTE9ZYrrLBa25PmjhAQnRt8KuDxVp0vdx+Vcp+0z0Oo0yz9zl3Fafkmlq+qFEvQQlac2Qsezlxz0iCMmjEVPHB70YwLdKuAB7tE2mkFFbMhOTbnFphwNuzloB3thafelewrmTSuRd++pZwKeh1Kx8DMkLSzQNKk67iJUfPYapVKNWKOO++3jemR0rTzZiqQe5Pydx0ha2qC7Cw2h77dcBw9kFRtU7si6yxyYMdhvIvdca19m5CJQOiHrtOm6WeO7LYhciTImqzFaxLvtyPUZVZ/KlI0d/aSPOBLZ/hGKtc1Dz1wPTaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dHAI7QqT50ZcC1mENTcsrdbMInPhJPKCcSn82/7vfgI=;
+ b=G5NbxXqb44AkmX4k5Mk2k1Tsvi3EkeyuPVtH4r2i4f2S5o5jckWt+l6kxvMGyLJB0z7/Uu3tMejqs4wccByquH8sZesqIci08ZjDYych4wpENOIMxf7HpAj/joChxwViqgJY4Lhzo9zH6ZcazbQ3ziq2fuK4IZnJIUbU5ISKZBp/B1a6CVawU32nc9iFrLBjPAG98JH/jvFcs00e/h6Mz8+Od6lqYgVdTipF6oS+K+qdRMDDubJnCTAS5vtGadCqweyG1N91CCuNWYjPurTWM6/PzFL8bR5dmW5AZUXDFm4MBMjaLs2K1p7jgzOlnG96NwWl8AyurKfnejmFh7MJLQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by CH3PR12MB7691.namprd12.prod.outlook.com (2603:10b6:610:151::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Mon, 3 Aug
+ 2026 08:15:03 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0270.016; Mon, 3 Aug 2026
+ 08:15:03 +0000
+Date: Mon, 3 Aug 2026 11:14:54 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Chris J Arges <carges@cloudflare.com>,
+	David Ahern <dsahern@kernel.org>, David Wei <dw@davidwei.uk>,
+	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Eric Dumazet <edumazet@google.com>, Gal Pressman <gal@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v4 01/10] ipv6: add ip6_del_rt_reason()
+Message-ID: <20260803081454.GA573507@shredder>
+References: <20260729120739.47880-1-sigefriedhyy@gmail.com>
+ <20260729120739.47880-2-sigefriedhyy@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260729120739.47880-2-sigefriedhyy@gmail.com>
+X-ClientProxiedBy: FR4P281CA0286.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e7::13) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CH3PR12MB7691:EE_
+X-MS-Office365-Filtering-Correlation-Id: f45340c8-c9ee-4003-1ea6-08def137519e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|6133799003|56012099006|4143699003|11063799006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	/AepK4Mv9s71Mgnj+wM5ZunNJWhFD0RmP0zv2Snrn4AXJVWd7onQ6A5CaE4JwhtLVixyEYyFWhfZdrI2MUqW8a1gWy5vuCdPXVhYrfk5xEc+B5+9eR2pw1OcoMKsVhVkt4futIrq7IbjPJ0g73d8nygVBvnqiwFUMbCnL/AjjJA5VeoBSbujrcyM+tdPPJwVJr+zFClTlrfII/vqVNagrUrdKMOSO/WVbl+wZcxB79r+bC+o3/x/ySzpstxNHDHsaROKADweTCYaStisagT82o5YYF2YSDY//p3vSBy3HnneiTAdjA+cC3Gh3DTIAM1VQHvVSn1RgxA5LT4fL6PASB2yMYUrJ2XJzacwajesJDUGq5VYeoBibJRec0e0116T4mVpp7dNiok3nRXCT8RvY7aRAIGQ87kgByfPdfxs9oFfcJjQbkJ68QHXcwRbor9hapnrGdGK0JtFpyzSh0w+Z4qPZY0QUsuuRlUyrSx3j7fPnaZnf92bzVBko9wTzO6EQiEYP22OiaHu0VtWpBGbjsM35l0LTDJlAOre7aqXdxZvsge9+YTSInKKkr9susOrEICdepsrtV0eAFs3GUeqk01zKbA+X6TUxYV5tQH0n/q4KoL2jAvUca6qoSqoY8r8P8xgTwfsB1mS+BPpRKei8aohm4rJLfLiUM3GAmbNpG4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(6133799003)(56012099006)(4143699003)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?rKvcxAVxUam0py/ty1YKonciqg8d9TYhd49Hj4sOdOKCeovDr8Vz38Wsrp+K?=
+ =?us-ascii?Q?1103gstjG+pmGRGgUHrpIhi7KNx8CTxqWzg1V7X/1axUa6vhozj0orqpquHT?=
+ =?us-ascii?Q?FM8jil1bhGhQonYfdsFkRreBvMuRpIIY3773g7HEef4piPj5EgYPjencK6GI?=
+ =?us-ascii?Q?NsdN/wnGozAc+oRHSQsiEXyrNwAHJcA+QUW2u6BI9wuFEqijqi8ewFWe/bMM?=
+ =?us-ascii?Q?bsNrvp1LM2kBUZgrK9ytkluf9b3a9lgIQKtUpo9p9xT35B9EdVUM7U5MXZ3P?=
+ =?us-ascii?Q?c49fjaAiL1F1aJ4OCzhzbi3tcojasLj263niF5ABa79YrEPOYXz+rK+M7530?=
+ =?us-ascii?Q?qBulcz/Rk8+raFFQz1xZDfuAPZsE7I4s5i3PFkh7iUiQYrGFxw1EOvFY5Umc?=
+ =?us-ascii?Q?CSQt8dwy6/Eov+mlbTfmkCZ7EFxa9J2ieK/9N/qGfHKtIQCgZKqWDC6TqE8z?=
+ =?us-ascii?Q?FM646gFHXo1FShwh82u9Qqy6TcL4KDf7CSb3JqtakOCfSI2i+42ESesIGd1j?=
+ =?us-ascii?Q?Lqa0h5mimWXznlp8loax3gALRvm+oUQbz/y963+471wjlvH5RGNy9JXTL6p5?=
+ =?us-ascii?Q?J9l+eSLALH7tb1DQbb2Nv5Wfsm8x8/FeyuvGPrCabsrvDwbcsVmUSbF6+TNc?=
+ =?us-ascii?Q?TIyJxLoGq79cyMxsmYvSBnjoHWPD4g3x++FvZPgqDR9+tHWLQ47cfj/52GdQ?=
+ =?us-ascii?Q?IVxYYVhYFcVrAvbIZinIuUdDMrpwjzlnckx9JLVVHrh8HCedgZMfl0VqJCKy?=
+ =?us-ascii?Q?dzQl9963whhk38KTWC7K2JQDExulA3s/HuuMkeZuC5SeYbmaKM7nLZq3EN1Q?=
+ =?us-ascii?Q?kEI5Nx7lDy9oQGdq2Euh4kNDpTU8Yex1cAekJWXGBiZc/pPdVIL/gVNKJuVM?=
+ =?us-ascii?Q?D2p5ry3hlFEMw9LMHIq0y7xzIJNQcGQULBwLLdV6nHRYkJWrX9pz323Np5i6?=
+ =?us-ascii?Q?e1hXQuGNRPFuowux/1ZwXOV3ypbdHyh1M/9/CcbOZMH39ugRVBQWA8mx2OQ/?=
+ =?us-ascii?Q?IaoOOiQkSxBFOdgAGcwqXo7KeSLUm3MMJxMIn2afnnZgHXLwM1dF+7xVRZ7V?=
+ =?us-ascii?Q?yBB9pXUZ0L7EkIF/2VYByoWoy5sriADZ/UXWKiXMqFJ3mEGBp+GW9MSZNpW2?=
+ =?us-ascii?Q?z/S9DRSNiE2mbKQ+r+FFZdKNdQULDd7wtE2rkYc7CyQOHzelCm5mePfg99cj?=
+ =?us-ascii?Q?P/A5rju7DbMuGD/FNG/IqOp49lPzdr2EtZOHLW1jPVsJScFdBG4o8+uJ1RsW?=
+ =?us-ascii?Q?671vyt3P2VCoFoWLbUmxtvCIvFBp8tIwkuK8wLlsUcz3N3lF1I4fWsjhKVaq?=
+ =?us-ascii?Q?aNB2vm5wdLhQU6KOSnjn4sXd4pkO8YmGM/hZ0+LieIrvo87zrDTfgTj79XOA?=
+ =?us-ascii?Q?kOnJdI4O5ooFOO0ZDUo5YiUMIfZxJ32c2z+Q9+IuENmpff1xd//aNPfxzYAs?=
+ =?us-ascii?Q?ru5G1oEQwTrb0E/rHFtq7vK6WD54lQy0n8kfETMoBDZAnc+NLtzCdjsXRcoB?=
+ =?us-ascii?Q?olr0j2EbaS3CPLgSz6RIqkAXEMmayvrv3mwFTmK1+ejdHXtHqqGsy3TL7m5j?=
+ =?us-ascii?Q?tMFYFID3uBQ8sfz6kpg144aFECOTyWs0J/7WBAqpIcyEy4n1JRnqL7Zcge1P?=
+ =?us-ascii?Q?djJONmhAx5iM3d5XCOR4NAzyQYqcq+xr50jVyyJCS3B5FWLr7DFykaDaR3/V?=
+ =?us-ascii?Q?jBau9FwVhpHnOUVNOH8ewIjxEGwT1NYMz4dgTuqtvM6OLLe6?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f45340c8-c9ee-4003-1ea6-08def137519e
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 08:15:02.9507
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1gIbZGpgGKfi3gn+Pf2RWmBukJUjni/5IWSXlmgtl+8WsKkJ4PD036TnVEyffBNRLJMdSoTWXtDygbWyRgflkA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7691
 
-From: Siwei Zhang <oss@fourdim.xyz>
+On Wed, Jul 29, 2026 at 09:07:30PM +0900, Yuyang Huang wrote:
+> Add RTA_DEL_REASON and enum rta_del_reason to the rtnetlink uAPI, and
+> add ip6_del_rt_reason(), which takes the reason a route is being
+> deleted. ip6_del_rt() becomes a wrapper that passes
+> RTA_DEL_REASON_UNSPEC, so its callers do not change.
+> 
+> The reason is unused for now. Subsequent patches propagate it to the
+> deletion path and report it on RTM_DELROUTE.
+> 
+> Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+> ---
+>  include/net/ip6_route.h        |  9 +++++++++
+>  include/uapi/linux/rtnetlink.h | 17 +++++++++++++++++
+>  net/ipv6/route.c               |  8 +++++++-
+>  3 files changed, 33 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
+> index 09ffe0f13ce7..92ad5a0d03a2 100644
+> --- a/include/net/ip6_route.h
+> +++ b/include/net/ip6_route.h
+> @@ -128,12 +128,21 @@ int ip6_route_add(struct fib6_config *cfg, gfp_t gfp_flags,
+>  int ip6_ins_rt(struct net *net, struct fib6_info *f6i);
+>  #if IS_ENABLED(CONFIG_IPV6)
+>  int ip6_del_rt(struct net *net, struct fib6_info *f6i, bool skip_notify);
+> +int ip6_del_rt_reason(struct net *net, struct fib6_info *f6i, bool skip_notify,
+> +		      enum rta_del_reason del_reason);
 
-commit 6fef032af0092ed5ccb767239a9ac1bc38c08a40 upstream.
+From Sashiko:
 
-l2cap_sock_new_connection_cb() returned l2cap_pi(sk)->chan after
-release_sock(parent). Once the parent lock is dropped the newly
-enqueued child socket sk is reachable via the accept queue, so another
-task can accept and free it before the callback dereferences sk,
-resulting in a use-after-free.
+"
+This isn't a bug, but was carrying the reason in struct nl_info considered
+instead of adding a parallel argument?
+"
 
-Rework the ->new_connection() op so the core, rather than the callback,
-owns the child channel's lifetime. The op now receives a pre-allocated
-new_chan and returns an errno instead of allocating and returning a
-channel. l2cap_new_connection() allocates the child channel and links
-it into the conn list via __l2cap_chan_add() before invoking the
-callback, so the conn-list reference keeps the channel alive once
-release_sock(parent) exposes the socket to other tasks.
+I did consider it, but it doesn't look like a good fit to carry a route
+deletion reason in a generic netlink structure (also used by nexthops).
 
-Channel configuration that was duplicated in l2cap_sock_init() and the
-various new_connection callbacks is consolidated into
-l2cap_chan_set_defaults(), which now inherits from the parent channel
-when one is supplied.
+It later says:
 
-Fixes: 8ffb929098a5 ("Bluetooth: Remove parent socket usage from l2cap_core.c")
-Cc: stable@kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
----
-Backport fix for CVE-2026-64557
- include/net/bluetooth/l2cap.h | 10 ++--
- net/bluetooth/6lowpan.c       | 18 +------
- net/bluetooth/l2cap_core.c    | 78 ++++++++++++++++++++++-----
- net/bluetooth/l2cap_sock.c    | 99 +++++++++++++++++------------------
- net/bluetooth/smp.c           | 27 +++-------
- 5 files changed, 127 insertions(+), 105 deletions(-)
+"
+One counter-point worth noting: rt6_fill_node() is also reached from dump,
+GET and hw-flags paths that have no struct nl_info at all, so an explicit
+parameter there is unavoidable either way, and nl_info is shared with
+IPv4, MPLS and nexthop code.
+"
 
-diff --git a/include/net/bluetooth/l2cap.h b/include/net/bluetooth/l2cap.h
-index beb690a162ff..dcb315112ed1 100644
---- a/include/net/bluetooth/l2cap.h
-+++ b/include/net/bluetooth/l2cap.h
-@@ -653,7 +653,8 @@ struct l2cap_chan {
- struct l2cap_ops {
- 	char			*name;
- 
--	struct l2cap_chan	*(*new_connection) (struct l2cap_chan *chan);
-+	int			(*new_connection)(struct l2cap_chan *chan,
-+						  struct l2cap_chan *new_chan);
- 	int			(*recv) (struct l2cap_chan * chan,
- 					 struct sk_buff *skb);
- 	void			(*teardown) (struct l2cap_chan *chan, int err);
-@@ -912,9 +913,10 @@ static inline __u16 __next_seq(struct l2cap_chan *chan, __u16 seq)
- 	return (seq + 1) % (chan->tx_win_max + 1);
- }
- 
--static inline struct l2cap_chan *l2cap_chan_no_new_connection(struct l2cap_chan *chan)
-+static inline int l2cap_chan_no_new_connection(struct l2cap_chan *chan,
-+					       struct l2cap_chan *new_chan)
- {
--	return NULL;
-+	return -EOPNOTSUPP;
- }
- 
- static inline int l2cap_chan_no_recv(struct l2cap_chan *chan, struct sk_buff *skb)
-@@ -989,7 +991,7 @@ int l2cap_chan_reconfigure(struct l2cap_chan *chan, __u16 mtu);
- int l2cap_chan_send(struct l2cap_chan *chan, struct msghdr *msg, size_t len);
- void l2cap_chan_busy(struct l2cap_chan *chan, int busy);
- int l2cap_chan_check_security(struct l2cap_chan *chan, bool initiator);
--void l2cap_chan_set_defaults(struct l2cap_chan *chan);
-+void l2cap_chan_set_defaults(struct l2cap_chan *chan, struct l2cap_chan *pchan);
- int l2cap_ertm_init(struct l2cap_chan *chan);
- void l2cap_chan_add(struct l2cap_conn *conn, struct l2cap_chan *chan);
- void __l2cap_chan_add(struct l2cap_conn *conn, struct l2cap_chan *chan);
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index 9424d153f323..147b09f03c23 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -631,7 +631,7 @@ static struct l2cap_chan *chan_create(void)
- 	if (!chan)
- 		return NULL;
- 
--	l2cap_chan_set_defaults(chan);
-+	l2cap_chan_set_defaults(chan, NULL);
- 
- 	chan->chan_type = L2CAP_CHAN_CONN_ORIENTED;
- 	chan->mode = L2CAP_MODE_LE_FLOWCTL;
-@@ -743,21 +743,6 @@ static inline void chan_ready_cb(struct l2cap_chan *chan)
- 	ifup(dev->netdev);
- }
- 
--static inline struct l2cap_chan *chan_new_conn_cb(struct l2cap_chan *pchan)
--{
--	struct l2cap_chan *chan;
--
--	chan = chan_create();
--	if (!chan)
--		return NULL;
--
--	chan->ops = pchan->ops;
--
--	BT_DBG("chan %p pchan %p", chan, pchan);
--
--	return chan;
--}
--
- static void delete_netdev(struct work_struct *work)
- {
- 	struct lowpan_btle_dev *entry = container_of(work,
-@@ -879,7 +864,6 @@ static long chan_get_sndtimeo_cb(struct l2cap_chan *chan)
- 
- static const struct l2cap_ops bt_6lowpan_chan_ops = {
- 	.name			= "L2CAP 6LoWPAN channel",
--	.new_connection		= chan_new_conn_cb,
- 	.recv			= chan_recv_cb,
- 	.close			= chan_close_cb,
- 	.state_change		= chan_state_change_cb,
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 196b3bdca264..61a06b394c07 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -540,7 +540,10 @@ void l2cap_chan_put(struct l2cap_chan *c)
- }
- EXPORT_SYMBOL_GPL(l2cap_chan_put);
- 
--void l2cap_chan_set_defaults(struct l2cap_chan *chan)
-+/* Initialise @chan with default values, inheriting from the parent channel
-+ * @pchan when it is given.
-+ */
-+void l2cap_chan_set_defaults(struct l2cap_chan *chan, struct l2cap_chan *pchan)
- {
- 	chan->fcs  = L2CAP_FCS_CRC16;
- 	chan->max_tx = L2CAP_DEFAULT_MAX_TX;
-@@ -554,6 +557,31 @@ void l2cap_chan_set_defaults(struct l2cap_chan *chan)
- 	chan->retrans_timeout = L2CAP_DEFAULT_RETRANS_TO;
- 	chan->monitor_timeout = L2CAP_DEFAULT_MONITOR_TO;
- 
-+	if (pchan) {
-+		BT_DBG("chan %p pchan %p", chan, pchan);
-+
-+		chan->chan_type = pchan->chan_type;
-+		chan->imtu = pchan->imtu;
-+		chan->omtu = pchan->omtu;
-+		chan->mode = pchan->mode;
-+		chan->fcs = pchan->fcs;
-+		chan->max_tx = pchan->max_tx;
-+		chan->tx_win = pchan->tx_win;
-+		chan->tx_win_max = pchan->tx_win_max;
-+		chan->sec_level = pchan->sec_level;
-+		chan->conf_state = pchan->conf_state;
-+		chan->flags = pchan->flags;
-+		chan->tx_credits = pchan->tx_credits;
-+		chan->rx_credits = pchan->rx_credits;
-+
-+		if (chan->chan_type == L2CAP_CHAN_FIXED) {
-+			chan->scid = pchan->scid;
-+			chan->dcid = pchan->scid;
-+		}
-+
-+		return;
-+	}
-+
- 	chan->conf_state = 0;
- 	set_bit(CONF_NOT_COMPLETE, &chan->conf_state);
- 
-@@ -4193,6 +4221,38 @@ static inline int l2cap_command_rej(struct l2cap_conn *conn,
- 	return 0;
- }
- 
-+/* Allocate and initialise a channel for an incoming connection.
-+ *
-+ * The channel inherits its configuration from @pchan and is linked into @conn
-+ * before ->new_connection() runs, so the conn list reference keeps it alive if
-+ * the callback exposes it (e.g. via the socket accept queue) before this
-+ * returns. The l2cap_chan_create() reference is taken over by the subsystem on
-+ * success and dropped here on failure.
-+ */
-+static struct l2cap_chan *l2cap_new_connection(struct l2cap_conn *conn,
-+					       struct l2cap_chan *pchan)
-+{
-+	struct l2cap_chan *chan;
-+
-+	chan = l2cap_chan_create();
-+	if (!chan)
-+		return NULL;
-+
-+	l2cap_chan_set_defaults(chan, pchan);
-+	chan->ops = pchan->ops;
-+
-+	__l2cap_chan_add(conn, chan);
-+
-+	if (pchan->ops->new_connection &&
-+	    pchan->ops->new_connection(pchan, chan) < 0) {
-+		l2cap_chan_del(chan, 0);
-+		l2cap_chan_put(chan);
-+		return NULL;
-+	}
-+
-+	return chan;
-+}
-+
- static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
- 					struct l2cap_cmd_hdr *cmd,
- 					u8 *data, u8 rsp_code, u8 amp_id)
-@@ -4241,7 +4301,7 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
- 		goto response;
- 	}
- 
--	chan = pchan->ops->new_connection(pchan);
-+	chan = l2cap_new_connection(conn, pchan);
- 	if (!chan)
- 		goto response;
- 
-@@ -4260,8 +4320,6 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
- 	chan->dcid = scid;
- 	chan->local_amp_id = amp_id;
- 
--	__l2cap_chan_add(conn, chan);
--
- 	dcid = chan->scid;
- 
- 	__set_chan_timer(chan, chan->ops->get_sndtimeo(chan));
-@@ -5976,7 +6034,7 @@ static int l2cap_le_connect_req(struct l2cap_conn *conn,
- 		goto response_unlock;
- 	}
- 
--	chan = pchan->ops->new_connection(pchan);
-+	chan = l2cap_new_connection(conn, pchan);
- 	if (!chan) {
- 		result = L2CAP_CR_LE_NO_MEM;
- 		goto response_unlock;
-@@ -5991,8 +6049,6 @@ static int l2cap_le_connect_req(struct l2cap_conn *conn,
- 	chan->omtu = mtu;
- 	chan->remote_mps = mps;
- 
--	__l2cap_chan_add(conn, chan);
--
- 	l2cap_le_flowctl_init(chan, __le16_to_cpu(req->credits));
- 
- 	dcid = chan->scid;
-@@ -6195,7 +6251,7 @@ static inline int l2cap_ecred_conn_req(struct l2cap_conn *conn,
- 			continue;
- 		}
- 
--		chan = pchan->ops->new_connection(pchan);
-+		chan = l2cap_new_connection(conn, pchan);
- 		if (!chan) {
- 			result = L2CAP_CR_LE_NO_MEM;
- 			continue;
-@@ -6210,8 +6266,6 @@ static inline int l2cap_ecred_conn_req(struct l2cap_conn *conn,
- 		chan->omtu = mtu;
- 		chan->remote_mps = mps;
- 
--		__l2cap_chan_add(conn, chan);
--
- 		l2cap_ecred_init(chan, __le16_to_cpu(req->credits));
- 
- 		/* Init response */
-@@ -8497,14 +8551,12 @@ static void l2cap_connect_cfm(struct hci_conn *hcon, u8 status)
- 			goto next;
- 
- 		l2cap_chan_lock(pchan);
--		chan = pchan->ops->new_connection(pchan);
-+		chan = l2cap_new_connection(conn, pchan);
- 		if (chan) {
- 			bacpy(&chan->src, &hcon->src);
- 			bacpy(&chan->dst, &hcon->dst);
- 			chan->src_type = bdaddr_src_type(hcon);
- 			chan->dst_type = dst_type;
--
--			__l2cap_chan_add(conn, chan);
- 		}
- 
- 		l2cap_chan_unlock(pchan);
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index 0b51c3e0f469..77a80fb17eb7 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -44,7 +44,8 @@ static struct bt_sock_list l2cap_sk_list = {
- static const struct proto_ops l2cap_sock_ops;
- static void l2cap_sock_init(struct sock *sk, struct sock *parent);
- static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
--				     int proto, gfp_t prio, int kern);
-+				     int proto, gfp_t prio, int kern,
-+				     struct l2cap_chan *chan);
- static void l2cap_sock_cleanup_listen(struct sock *parent);
- 
- bool l2cap_is_socket(struct socket *sock)
-@@ -1227,6 +1228,23 @@ static int l2cap_sock_recvmsg(struct socket *sock, struct msghdr *msg,
- 	return err;
- }
- 
-+/* Release the sock's ref on chan and clear the pointer so that the ref is
-+ * dropped exactly once even if both l2cap_sock_kill() and
-+ * l2cap_sock_destruct() run. Setting chan->data to NULL first stops any other
-+ * task from dereferencing the now-dead sock pointer.
-+ */
-+static void l2cap_sock_put_chan(struct sock *sk)
-+{
-+	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-+
-+	if (!chan)
-+		return;
-+
-+	chan->data = NULL;
-+	l2cap_pi(sk)->chan = NULL;
-+	l2cap_chan_put(chan);
-+}
-+
- /* Kill socket (only if zapped and orphan)
-  * Must be called on unlocked socket, with l2cap channel lock.
-  */
-@@ -1237,9 +1255,9 @@ static void l2cap_sock_kill(struct sock *sk)
- 
- 	BT_DBG("sk %p state %s", sk, state_to_string(sk->sk_state));
- 
--	/* Kill poor orphan */
-+	l2cap_sock_put_chan(sk);
- 
--	l2cap_chan_put(l2cap_pi(sk)->chan);
-+	/* Kill poor orphan */
- 	sock_set_flag(sk, SOCK_DEAD);
- 	sock_put(sk);
- }
-@@ -1483,12 +1501,13 @@ static void l2cap_sock_cleanup_listen(struct sock *parent)
- 	}
- }
- 
--static struct l2cap_chan *l2cap_sock_new_connection_cb(struct l2cap_chan *chan)
-+static int l2cap_sock_new_connection_cb(struct l2cap_chan *chan,
-+					struct l2cap_chan *new_chan)
- {
- 	struct sock *sk, *parent = chan->data;
- 
- 	if (!parent)
--		return NULL;
-+		return -EINVAL;
- 
- 	lock_sock(parent);
- 
-@@ -1496,25 +1515,28 @@ static struct l2cap_chan *l2cap_sock_new_connection_cb(struct l2cap_chan *chan)
- 	if (sk_acceptq_is_full(parent)) {
- 		BT_DBG("backlog full %d", parent->sk_ack_backlog);
- 		release_sock(parent);
--		return NULL;
-+		return -ENOBUFS;
- 	}
- 
- 	sk = l2cap_sock_alloc(sock_net(parent), NULL, BTPROTO_L2CAP,
--			      GFP_ATOMIC, 0);
-+			      GFP_ATOMIC, 0, new_chan);
- 	if (!sk) {
- 		release_sock(parent);
--		return NULL;
--        }
-+		return -ENOMEM;
-+	}
- 
- 	bt_sock_reclassify_lock(sk, BTPROTO_L2CAP);
- 
- 	l2cap_sock_init(sk, parent);
- 
-+	/* The conn list reference taken by l2cap_new_connection() keeps new_chan
-+	 * alive once release_sock() lets another task free this socket.
-+	 */
- 	bt_accept_enqueue(parent, sk, false);
- 
- 	release_sock(parent);
- 
--	return l2cap_pi(sk)->chan;
-+	return 0;
- }
- 
- static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
-@@ -1791,10 +1813,7 @@ static void l2cap_sock_destruct(struct sock *sk)
- {
- 	BT_DBG("sk %p", sk);
- 
--	if (l2cap_pi(sk)->chan) {
--		l2cap_pi(sk)->chan->data = NULL;
--		l2cap_chan_put(l2cap_pi(sk)->chan);
--	}
-+	l2cap_sock_put_chan(sk);
- 
- 	if (l2cap_pi(sk)->rx_busy_skb) {
- 		kfree_skb(l2cap_pi(sk)->rx_busy_skb);
-@@ -1825,30 +1844,12 @@ static void l2cap_sock_init(struct sock *sk, struct sock *parent)
- 	BT_DBG("sk %p", sk);
- 
- 	if (parent) {
--		struct l2cap_chan *pchan = l2cap_pi(parent)->chan;
--
- 		sk->sk_type = parent->sk_type;
- 		bt_sk(sk)->flags = bt_sk(parent)->flags;
- 
--		chan->chan_type = pchan->chan_type;
--		chan->imtu = pchan->imtu;
--		chan->omtu = pchan->omtu;
--		chan->conf_state = pchan->conf_state;
--		chan->mode = pchan->mode;
--		chan->fcs  = pchan->fcs;
--		chan->max_tx = pchan->max_tx;
--		chan->tx_win = pchan->tx_win;
--		chan->tx_win_max = pchan->tx_win_max;
--		chan->sec_level = pchan->sec_level;
--		chan->flags = pchan->flags;
--		chan->tx_credits = pchan->tx_credits;
--		chan->rx_credits = pchan->rx_credits;
--
--		if (chan->chan_type == L2CAP_CHAN_FIXED) {
--			chan->scid = pchan->scid;
--			chan->dcid = pchan->scid;
--		}
--
-+		/* Channel configuration is inherited from the parent by
-+		 * l2cap_new_connection().
-+		 */
- 		security_sk_clone(parent, sk);
- 	} else {
- 		switch (sk->sk_type) {
-@@ -1874,7 +1875,7 @@ static void l2cap_sock_init(struct sock *sk, struct sock *parent)
- 			chan->mode = L2CAP_MODE_BASIC;
- 		}
- 
--		l2cap_chan_set_defaults(chan);
-+		l2cap_chan_set_defaults(chan, NULL);
- 	}
- 
- 	/* Default config options */
-@@ -1891,10 +1892,10 @@ static struct proto l2cap_proto = {
- };
- 
- static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
--				     int proto, gfp_t prio, int kern)
-+				     int proto, gfp_t prio, int kern,
-+				     struct l2cap_chan *chan)
- {
- 	struct sock *sk;
--	struct l2cap_chan *chan;
- 
- 	sk = bt_sock_alloc(net, sock, &l2cap_proto, proto, prio, kern);
- 	if (!sk)
-@@ -1903,16 +1904,7 @@ static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
- 	sk->sk_destruct = l2cap_sock_destruct;
- 	sk->sk_sndtimeo = L2CAP_CONN_TIMEOUT;
- 
--	chan = l2cap_chan_create();
--	if (!chan) {
--		sk_free(sk);
--		if (sock)
--			sock->sk = NULL;
--		return NULL;
--	}
--
--	l2cap_chan_hold(chan);
--
-+	/* The sock takes ownership of the caller's reference on chan. */
- 	l2cap_pi(sk)->chan = chan;
- 
- 	return sk;
-@@ -1922,6 +1914,7 @@ static int l2cap_sock_create(struct net *net, struct socket *sock, int protocol,
- 			     int kern)
- {
- 	struct sock *sk;
-+	struct l2cap_chan *chan;
- 
- 	BT_DBG("sock %p", sock);
- 
-@@ -1936,10 +1929,16 @@ static int l2cap_sock_create(struct net *net, struct socket *sock, int protocol,
- 
- 	sock->ops = &l2cap_sock_ops;
- 
--	sk = l2cap_sock_alloc(net, sock, protocol, GFP_ATOMIC, kern);
--	if (!sk)
-+	chan = l2cap_chan_create();
-+	if (!chan)
- 		return -ENOMEM;
- 
-+	sk = l2cap_sock_alloc(net, sock, protocol, GFP_ATOMIC, kern, chan);
-+	if (!sk) {
-+		l2cap_chan_put(chan);
-+		return -ENOMEM;
-+	}
-+
- 	l2cap_sock_init(sk, NULL);
- 	bt_sock_link(&l2cap_sk_list, sk);
- 	return 0;
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 85bd00479a74..1f8561112ec1 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -3228,34 +3228,19 @@ static const struct l2cap_ops smp_chan_ops = {
- 	.get_sndtimeo		= l2cap_chan_no_get_sndtimeo,
- };
- 
--static inline struct l2cap_chan *smp_new_conn_cb(struct l2cap_chan *pchan)
-+static inline int smp_new_conn_cb(struct l2cap_chan *chan,
-+				  struct l2cap_chan *new_chan)
- {
--	struct l2cap_chan *chan;
--
--	BT_DBG("pchan %p", pchan);
--
--	chan = l2cap_chan_create();
--	if (!chan)
--		return NULL;
--
--	chan->chan_type	= pchan->chan_type;
--	chan->ops	= &smp_chan_ops;
--	chan->scid	= pchan->scid;
--	chan->dcid	= chan->scid;
--	chan->imtu	= pchan->imtu;
--	chan->omtu	= pchan->omtu;
--	chan->mode	= pchan->mode;
-+	new_chan->ops = &smp_chan_ops;
- 
- 	/* Other L2CAP channels may request SMP routines in order to
- 	 * change the security level. This means that the SMP channel
- 	 * lock must be considered in its own category to avoid lockdep
- 	 * warnings.
- 	 */
--	atomic_set(&chan->nesting, L2CAP_NESTING_SMP);
--
--	BT_DBG("created chan %p", chan);
-+	atomic_set(&new_chan->nesting, L2CAP_NESTING_SMP);
- 
--	return chan;
-+	return 0;
- }
- 
- static const struct l2cap_ops smp_root_chan_ops = {
-@@ -3326,7 +3311,7 @@ static struct l2cap_chan *smp_add_cid(struct hci_dev *hdev, u16 cid)
- 
- 	l2cap_add_scid(chan, cid);
- 
--	l2cap_chan_set_defaults(chan);
-+	l2cap_chan_set_defaults(chan, NULL);
- 
- 	if (cid == L2CAP_CID_SMP) {
- 		u8 bdaddr_type;
--- 
-2.43.0
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260729120739.47880-1-sigefriedhyy%40gmail.com
 
+
+>  #else
+>  static inline int ip6_del_rt(struct net *net, struct fib6_info *f6i,
+>  			     bool skip_notify)
+>  {
+>  	return -EAFNOSUPPORT;
+>  }
+> +
+> +static inline int ip6_del_rt_reason(struct net *net, struct fib6_info *f6i,
+> +				    bool skip_notify,
+> +				    enum rta_del_reason del_reason)
+> +{
+> +	return -EAFNOSUPPORT;
+> +}
+>  #endif
+>  
+>  void rt6_flush_exceptions(struct fib6_info *f6i);
+> diff --git a/include/uapi/linux/rtnetlink.h b/include/uapi/linux/rtnetlink.h
+> index 27265fd31e5f..fe00e624f3c3 100644
+> --- a/include/uapi/linux/rtnetlink.h
+> +++ b/include/uapi/linux/rtnetlink.h
+> @@ -399,6 +399,7 @@ enum rtattr_type_t {
+>  	RTA_DPORT,
+>  	RTA_NH_ID,
+>  	RTA_FLOWLABEL,
+> +	RTA_DEL_REASON,
+>  	__RTA_MAX
+>  };
+>  
+> @@ -407,6 +408,22 @@ enum rtattr_type_t {
+>  #define RTM_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct rtmsg))))
+>  #define RTM_PAYLOAD(n) NLMSG_PAYLOAD(n,sizeof(struct rtmsg))
+>  
+> +/* RTA_DEL_REASON: why the kernel deleted the route. u32.
+> + * Emitted only on RTM_DELROUTE notifications, and only when the deletion
+> + * path records a cause. Absence means either an older kernel or a
+> + * deletion path that does not (yet) record its cause - consumers must
+> + * treat "absent" and "unspec" identically. New causes may be appended.
+> + * Currently only IPv6 deletion paths record a cause.
+> + */
+> +enum rta_del_reason {
+> +	RTA_DEL_REASON_UNSPEC,		/* cause not recorded */
+> +	RTA_DEL_REASON_EXPIRED,		/* RTF_EXPIRES lifetime ran out (GC) */
+> +	RTA_DEL_REASON_RA_WITHDRAWN,	/* zero-lifetime RA / PIO / RIO */
+> +	__RTA_DEL_REASON_MAX
+> +};
+> +
+> +#define RTA_DEL_REASON_MAX (__RTA_DEL_REASON_MAX - 1)
+
+Valid comments from Sashiko:
+
+"
+This isn't a bug, but since these names become uAPI on first release, is
+the RTA_ prefix the right choice for the payload values?
+
+RTA_ is the established prefix for route attribute ids in enum
+rtattr_type_t, and RTA_DEL_REASON is added to that very enum a few lines
+above. So RTA_DEL_REASON_EXPIRED reads like an attribute id, and
+RTA_DEL_REASON_MAX visually parallels RTA_MAX while meaning something
+completely different. Elsewhere the payload value space of an attribute
+gets its own prefix, for instance LWTUNNEL_ENCAP_* for RTA_ENCAP_TYPE.
+
+[....]
+
+RTA_DEL_REASON_RA_WITHDRAWN is an IPv6-specific cause placed in the
+family-agnostic route attribute value space, and RTA_DEL_REASON_MAX has no
+in-tree user by the end of the series (rtm_ipv6_policy has no
+RTA_DEL_REASON entry). Would it be worth stating in the comment that the
+value space must never be reinterpreted per family, so a later family
+cannot reuse the numbers for its own causes?
+"
+
+And be aware of:
+
+https://lore.kernel.org/all/83360de7addb13a3b5f4d5e722148f248fdb2ae0.1784884817.git.pabeni@redhat.com/
+
+> +
+>  /* RTM_MULTIPATH --- array of struct rtnexthop.
+>   *
+>   * "struct rtnexthop" describes all necessary nexthop information,
+> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+> index a1301334da48..9f82829923ab 100644
+> --- a/net/ipv6/route.c
+> +++ b/net/ipv6/route.c
+> @@ -3994,7 +3994,8 @@ static int __ip6_del_rt(struct fib6_info *rt, struct nl_info *info)
+>  	return err;
+>  }
+>  
+> -int ip6_del_rt(struct net *net, struct fib6_info *rt, bool skip_notify)
+> +int ip6_del_rt_reason(struct net *net, struct fib6_info *rt, bool skip_notify,
+> +		      enum rta_del_reason del_reason)
+
+It's weird to have 'skip_notify' in a function that is supposed to
+notify the deletion reason to user space. All the callers except
+ip6_del_rt() pass 'false'. Can ip6_del_rt() call __ip6_del_rt() with
+'RTA_DEL_REASON_UNSPEC' ?
+
+>  {
+>  	struct nl_info info = {
+>  		.nl_net = net,
+> @@ -4004,6 +4005,11 @@ int ip6_del_rt(struct net *net, struct fib6_info *rt, bool skip_notify)
+>  	return __ip6_del_rt(rt, &info);
+>  }
+>  
+> +int ip6_del_rt(struct net *net, struct fib6_info *rt, bool skip_notify)
+> +{
+> +	return ip6_del_rt_reason(net, rt, skip_notify, RTA_DEL_REASON_UNSPEC);
+> +}
+> +
+>  static int __ip6_del_rt_siblings(struct fib6_info *rt, struct fib6_config *cfg)
+>  {
+>  	struct nl_info *info = &cfg->fc_nlinfo;
+> -- 
+> 2.43.0
+> 
