@@ -1,239 +1,207 @@
-Received: from mail-oa1-f99.google.com (mail-oa1-f99.google.com [209.85.160.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73103515C9
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 23:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FC03769F8;
+	Mon,  3 Aug 2026 23:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785798803; cv=none; b=gveJNOhiWxZi38S6NfxTyMmti3n4i0/EAuIoJWmDOtAgEwftqbYFivdRgVrcMc8VHIwlOXTVjlAp4kcjAaQwjCtwMgZK1wDsC5gwSzUdaPUPxD2ljW5HKa2+PFbbQg/irnnytn477isy+KrqWBk2umbKZXqq5xc5A5bMfu7T8hM=
+	t=1785798874; cv=none; b=h1clydIrU/cYFYrKKMDmxoPfbb/3fKeVec61rMwbxYgEXdRme5TsK2tURqIpFSeYKq5cfVcqDnsoSuX5u60WANEgb5AaniVE7+WHS8zr9KRSe7oSEa9dm14HflZ2fH9RRWdqQOA0aPP3peZTpJVVw9wuMzpvBvfPugcvKuJNEX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785798803; c=relaxed/simple;
-	bh=PvOE/mBSme9SxWRSJnaDyZkRQi5cvVB9/C0I/LWVxGM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YP++48WyZGrkZGydSdOXzNtPVDL0xo017PoNqfHY7g0f4ZO7VmneRvD5cpS7237AOTs3YPl0kTTlsK76oyBijnbxTR9+e02LmAVP0SJtajxiZmBk6EatPK1ksPl8OYIpyoZunRUVwCkCf6nhAQNhuih3kUM8f9LkJdbmMdecrdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=PLcVVlgO; arc=none smtp.client-ip=209.85.160.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1785798874; c=relaxed/simple;
+	bh=VBqevWXYRSsB3dtPiPFTx1565acpCc0K7Q4lcPUaKFw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iXd22ciqBABOOLhcGmStGHzHOQF+xoPvhXheDzeAqkPZItMmFGNzi1TBim6p+CYf/uJ3maXI5Aa0mZcvdrazpTV2IMKEW0jfEcyMEpXVRg7aVe3k8noqoE1ZnneMBmLcBo+H4Gwi2i2M7EwCVoaJIiPnoQ/+NeCZ0uC113to+6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cj2WlhH2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PLcVVlgO"
-Received: by mail-oa1-f99.google.com with SMTP id 586e51a60fabf-44cedfaab6bso1897301fac.3
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 16:13:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785798801; x=1786403601;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OqZfTUcGmtiLu7jFjtb7Wk8IDJOgVS4r0KpJELdXDlM=;
-        b=Bd2bvH3VueZ98l4hciUuxP9mo5VrqApjnQ/dKmjg5B/18xBQjlZR17FEM/NhvSU4wo
-         w14JuriwU0Wvcd9Yl6FjcHu6J80x8iDTNQ+ZrrUsnRwgRfy1G9I8uSwQfUB8EwD0EeoY
-         t7VSDgyRwjicYXjaT+AtOaFZU09y5Y/FEOmXpo82+aewJBSZ4MrTacpRTg3J9DUN3Tbf
-         DICi1DrgAc9xuqDvTA6WWQo6bLhsKXwH8cN7yPgSbOB9fhog3HJmvL84q0T6lAe3QX62
-         GOjdPX93BZKxwOXwYB+MOLsDNaUwQXS01/NEoj5KhL3lW4NnEFYwDevxHJe23W733CqO
-         1PIw==
-X-Forwarded-Encrypted: i=1; AHgh+RrxHvB4p2Jol2mx3RTpJrXzCE6nitkyrNPMntDu6bqJ4hBVapRiNEt57qTDA6e7rOXvvcFuyAk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWfyVl/t2zui8xh5BHcpsw5p6ChdPurbR8K927tT89/wLvedPO
-	F30MpOufhLZPw2snIwPYWu3smuKL9DyizG3/ybf0RS1zLLrOwRC0KVrEOqf71iYgodia6i2rGNQ
-	9MqEgNIk01EWQEjKhNFsIPVtR0SVUJCP8eWA4hBUyLPDORcA6auF77HAFXMPHPG04eNAOJmHUdA
-	q57qT1mKfB3Ko4x7A7GStysYc4zP9ab9dYS8HaZmrn/eYdkAbTmKZu+AKdWF0JfYc5Vd8F55CsC
-	z9xKcgYnbs=
-X-Gm-Gg: AR+sD11Am/mDSltga4oqKFPfflwLWsM4nryG1SslnJAfziIO6CQd3xoYEA8ltTArX4T
-	+YHNWZWoIC6rNgwBxM4VaQGD9xcbZQas47c6iwCEFMqapm2LcIozrFxN5jUUGv/2ZKqQ68fuU4S
-	kczw/7aR4ND4ncsYLsVWW+CJazSGVPKKcOVbwNZMnJTfSW6AC/XGw5wnzx2B5PGiLTWJbIJQ5LD
-	BUIrKuXxY8r4HXF3peoLMLVeZUEKls5tdM5oMlrLauTZISkNCj42Jramf/ltvY4LSanWruVrUED
-	g+SEofyPMmYMddeOUBjGkUosRsuDiHJ+THjCrKSWlIh+J8TzQeiapokH9E0rB47aBDLXUXuj5qy
-	ppeWn6BzXta45puvvFUSre59s9hQvQKQsfZzM1cq4EnpTFUshKjly0kHxZHJ9K1ogEmC/QkLb6J
-	7GCtO8y+ffHOMKyo+bHLuisbZsKq5tM/cIp6Y=
-X-Received: by 2002:a05:6870:15d3:b0:455:e6ea:bd8f with SMTP id 586e51a60fabf-45905dd8731mr17626848fac.16.1785798800632;
-        Mon, 03 Aug 2026 16:13:20 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-458f60ee2a1sm953179fac.4.2026.08.03.16.13.20
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 03 Aug 2026 16:13:20 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c15d4224f9dso298816966b.3
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 16:13:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1785798799; x=1786403599; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OqZfTUcGmtiLu7jFjtb7Wk8IDJOgVS4r0KpJELdXDlM=;
-        b=PLcVVlgO8C7Ci+6ju1QKVyGprG+SjqL3MdcAuW+/7HM4nTRE9SDdgezDiyzEzGTAaO
-         5SJVr7PGCJqgaXFBcgEYeiB9WkZIKpsJtZEXgpdtjJ1tzZNj+QGdUN36A7hqIadysFcM
-         nJn4fnwrS990gBFHYwClF1cShKx6r4W8/cHe0=
-X-Forwarded-Encrypted: i=1; AHgh+RrhkvefQwEfU+Eu5YpAOi2Wxh9ifmoyE+0xSpTsDV1sK5ANICzHhq2Q6pmGA/jj/gQ9EF2FsgA=@vger.kernel.org
-X-Received: by 2002:a17:907:960e:b0:c12:12b7:84de with SMTP id a640c23a62f3a-c1fe81068bcmr1054589166b.17.1785798798847;
-        Mon, 03 Aug 2026 16:13:18 -0700 (PDT)
-X-Received: by 2002:a17:907:960e:b0:c12:12b7:84de with SMTP id
- a640c23a62f3a-c1fe81068bcmr1054586966b.17.1785798798404; Mon, 03 Aug 2026
- 16:13:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cj2WlhH2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2D81F000E9;
+	Mon,  3 Aug 2026 23:14:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785798869;
+	bh=MD/yAV106LHwXRBAWHB+UTcvnPh9U5gA3masZYdFzbs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cj2WlhH2wMfz1PzsNsexYkjNmGlSGVARx7qzDVwI5QBgKyL9u46GqEA2RivKHfvwD
+	 Xa+gFFKe26IjJWCMmioVegHHTtOWaiTkk10HfhPKJIueUlj7IF0e05E7fbOxIXBkz+
+	 YNo181VU3Yq9dXHyk0Gh15nT1ySUU8nOFOqfm4+Al6pwT8LC/VAgy7fC3+fBeUfEa2
+	 yMiSfD3P9OZcvT3CEY7WKUiEAdDz9h7sBS/rjnqe2gV60M6SxwqJ4lmSocbHRdKRNH
+	 cDAArPhvCvG5kGoMya1Vku5VEuRHmB6YnucP6bpQkTtVfLdlWZdhXlQOE7fadK1yMo
+	 iUnueo4TWIqTQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: gongfan1@huawei.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	wudi234@huawei.com,
+	tengpeisen@huawei.com,
+	netdev@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	andrew+netdev@lunn.ch,
+	ioana.ciornei@nxp.com,
+	mohsin.bashr@gmail.com,
+	dimitri.daskalakis1@gmail.com,
+	hramamurthy@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	chenanwen@huawei.com,
+	august.hewei@huawei.com,
+	luosifu@huawei.com,
+	guoxin09@huawei.com,
+	zhoushuai28@huawei.com,
+	wulike1@huawei.com,
+	shijing34@huawei.com,
+	zhengjiezhen@h-partners.com,
+	maxime.chevallier@bootlin.com
+Subject: Re: [PATCH net-next v12 1/8] hinic3: Fix drop skb when skb_checksum_help() fails
+Date: Mon,  3 Aug 2026 16:07:43 -0700
+Message-ID: <20260803230745.2291141-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <d8091108ba3034f99c08cd8ad620406e7e9395bc.1785120952.git.root@localhost.localdomain>
+References: <d8091108ba3034f99c08cd8ad620406e7e9395bc.1785120952.git.root@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260803193135.2030368-1-kuba@kernel.org> <20260803193135.2030368-2-kuba@kernel.org>
- <CACKFLi=BXqtBuRAoSxdXoxSDfdX4QdLZwzdSRny7qcQsMkcWEg@mail.gmail.com>
-In-Reply-To: <CACKFLi=BXqtBuRAoSxdXoxSDfdX4QdLZwzdSRny7qcQsMkcWEg@mail.gmail.com>
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Mon, 3 Aug 2026 16:13:05 -0700
-X-Gm-Features: AUfX_mypsQqBgsUi2-MeYVWbA7rxZJ9_oY3NxKdMbUziLYGiZrIh4GfE5CcvZHM
-Message-ID: <CACKFLinExqpwHmNXgdyBiFdMkLMUP8cUkCEeJA=xbT8Pt1uVzw@mail.gmail.com>
-Subject: Re: [PATCH net 1/4] eth: bnxt: cancel IRQ notifier before freeing
- affinity mask
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
-	pavan.chebbi@broadcom.com, manoj.panicker2@amd.com, 
-	somnath.kotur@broadcom.com, andrew.gospodarek@broadcom.com, 
-	wei.huang2@amd.com
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000000fde0506582caf87"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
---0000000000000fde0506582caf87
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This is an AI-generated review of your patch. Larysa is right, this patch
+looks like a fix. And there seems to be more bugs in the csum handling
+according to AI.
+---
+> hinic3: Fix drop skb when skb_checksum_help() fails
 
-On Mon, Aug 3, 2026 at 1:01=E2=80=AFPM Michael Chan <michael.chan@broadcom.=
-com> wrote:
->
-> On Mon, Aug 3, 2026 at 12:31=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
-wrote:
-> >
-> > bnxt_irq_affinity_notify() copies into irq->cpu_mask.
-> > Cancel the notifier before freeing irq->cpu_mask.
-> >
-> > Fixes: c214410c47d6 ("bnxt_en: Add TPH support in BNXT driver")
-> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> > ---
-> >  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/et=
-hernet/broadcom/bnxt/bnxt.c
-> > index 7513618793da..4a2a44ffe669 100644
-> > --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> > +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> > @@ -11859,14 +11859,14 @@ static void bnxt_free_irq(struct bnxt *bp)
-> >
-> >                 irq =3D &bp->irq_tbl[map_idx];
-> >                 if (irq->requested) {
-> > +                       bnxt_release_irq_notifier(irq);
-> > +
->
-> bnxt_release_irq_notifier() calls irq_set_affinity_notifier() to set
-> the notifier to NULL.  But the call is not synchronous, right?  A
-> pending notifier is still possible after irq_set_affinity_notifier()
-> returns, right?
+[Severity: Low]
+A couple of things about the changelog itself:
 
-Nevermind.  It is synchronous so there is no issue.
+The subject reads a bit garbled ("Fix drop skb when ..."); something like
+"hinic3: drop skb when skb_checksum_help() fails" would be easier to parse.
+The body also carries a stray two-space indentation on the first line.
 
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+There is no Fixes: tag.  git blame on the pre-patch hunk
 
---0000000000000fde0506582caf87
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+	skb_checksum_help(skb);
+	return 0;
 
-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
-DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
-qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
-5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
-rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
-qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
-2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
-K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
-H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
-Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
-WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
-q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
-2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
-bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
-R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCBiKdE9
-JwDO6+EIypsfIL5hJxOdGBwYJinMGuvHxIpAxjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjA4MDMyMzEzMTlaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQCVlncwQZZGpbQA3ajnHis+YpRgehf2M4Nz9wI0M4Bj
-XbL8KptOtNFhfRP+JI+OwrQq4TCOPBq1cPOVFgBZ8pnYcLGwUE2TBfhnJl602nX1Mba6Tn9JGD8z
-EBHpoI1hvw6BSxGP7/lMovX3P91qvfypiv4MEe5sY4s85H5TzmkJQySpyKdEYj5qhjXWWKg4IGhw
-Cpn4PogAi7Bb8OwBuN545ZmjhBUgHEkV2u7pa/HxNaxL3sOCYIZ6PV+Q0esmrk7QEb/H9f5fUOe8
-ftPlxa2dBJvh/HkfcP0LtHxvmCpRbZ9CLfexBIREgiQrBl2gMn9PNQNhEf/vWjB68b2r8/jL
---0000000000000fde0506582caf87--
+in hinic3_tx_csum() points at 17fcb3dc12bb ("hinic3: module initialization
+and tx/rx logic"), so would it make sense to add:
+
+Fixes: 17fcb3dc12bb ("hinic3: module initialization and tx/rx logic")
+
+The body ("Changes hinic3_tx_csum()/hinic3_tx_offload() to propagate
+skb_checksum_help() failures into a TX drop.") restates the diff but not the
+observable defect.  skb_checksum_help() only sets skb->ip_summed =
+CHECKSUM_NONE on its success path (out_set_summed) and jumps to out on every
+error, so ip_summed stays CHECKSUM_PARTIAL.  The old code ignored that and
+returned 0, so HINIC3_TX_OFFLOAD_CSUM was not set and the frame went out with
+just the pseudo-header checksum in place.  Could the changelog describe that
+user-visible effect?
+
+> diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+> index 9306bf0020ca..53c065194136 100644
+> --- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+> +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+> @@ -261,8 +261,7 @@ static int hinic3_tx_csum(struct hinic3_txq *txq, struct hinic3_sq_task *task,
+>  		    ((struct udphdr *)skb_transport_header(skb))->dest !=
+>  		    VXLAN_OFFLOAD_PORT_LE) {
+>  			/* Unsupported tunnel packet, disable csum offload */
+> -			skb_checksum_help(skb);
+> -			return 0;
+> +			return skb_checksum_help(skb);
+>  		}
+>  	}
+
+[Severity: High]
+This isn't a bug introduced by this patch, since the old code called
+skb_checksum_help() in the same place and also kept transmitting, but this
+patch reworks exactly this return path so it may be the right place to deal
+with it.
+
+On the success side skb_checksum_help() can linearize the skb:
+
+net/core/dev.c:skb_checksum_help() {
+	...
+	if (skb_has_shared_frag(skb)) {
+		ret = __skb_linearize(skb);
+		if (ret)
+			goto out;
+	}
+	...
+}
+
+__skb_linearize() -> __pskb_pull_tail(skb, skb->data_len) collapses all page
+fragments, so skb_shinfo(skb)->nr_frags becomes 0 and 0 is returned, meaning
+hinic3_tx_offload() continues on to transmit.
+
+But hinic3_send_one_skb() sampled the fragment count before calling
+hinic3_tx_offload():
+
+	num_sge = skb_shinfo(skb)->nr_frags + 1;
+	/* assume normal wqe format + 1 wqebb for task info */
+	wqebb_cnt = num_sge + 1;
+	...
+	offload = hinic3_tx_offload(skb, &task, &queue_info, txq);
+
+and then keeps using that stale num_sge for both the WQEBB reservation
+(hinic3_set_wqe_combo()) and the descriptor count programmed into the
+control word (hinic3_prepare_sq_ctrl() -> SQ_CTRL_SET(nr_descs,
+BUFDESC_NUM)), while hinic3_tx_map_skb() only fills BD0 plus a loop over the
+now-zero skb_shinfo(skb)->nr_frags.
+
+Can the device then fetch buffer descriptors that were never written on this
+pass, i.e. leftover addresses from previously completed and already
+dma_unmap'ed WQEs at the same ring slots?  That would mean DMA reads of
+stale addresses appended to the frame, or an IOMMU translation fault.
+
+The path looks reachable for a non-GSO CHECKSUM_PARTIAL encapsulated skb
+carrying SKBFL_SHARED_FRAG page fragments (MSG_ZEROCOPY / MSG_SPLICE_PAGES /
+sendfile) over a tunnel that is not UDP dst port 4789, on a port that
+advertises VXLAN offload.
+
+Would recomputing num_sge and wqebb_cnt after hinic3_tx_offload() returns be
+the right fix?
+
+>  
+> @@ -412,6 +411,10 @@ static u32 hinic3_tx_offload(struct sk_buff *skb, struct hinic3_sq_task *task,
+>  		offload |= HINIC3_TX_OFFLOAD_TSO;
+>  	} else {
+>  		tso_cs_en = hinic3_tx_csum(txq, task, skb);
+> +		if (tso_cs_en < 0) {
+> +			offload = HINIC3_TX_OFFLOAD_INVALID;
+> +			return offload;
+> +		}
+
+[Severity: Medium]
+Should this new failure path bump a counter?
+
+HINIC3_TX_OFFLOAD_INVALID sends hinic3_send_one_skb() to err_drop_pkt, which
+does only:
+
+err_drop_pkt:
+	dev_kfree_skb_any(skb);
+err_out:
+	return NETDEV_TX_OK;
+
+Since NETDEV_TX_OK is returned, the core does not account the drop either,
+so the frame disappears with tx_dropped still reading zero in
+'ip -s link'.
+
+The driver already declares counters for this class of event in struct
+hinic3_txq_stats (dropped, offload_cow_skb_err, unknown_tunnel_pkt), and
+hinic3_get_stats64() already exports txq_stats.dropped as
+rtnl_link_stats64.tx_dropped, but a grep shows those fields are only cleared
+in hinic3_txq_clean_stats() and read back in hinic3_get_stats64() — nothing
+ever increments them.
+
+Would incrementing txq->txq_stats.dropped here under the existing
+u64_stats_update_begin()/u64_stats_update_end() pair make the drop visible?
+The other err_drop_pkt users (hinic3_tso() failure, PLDOFF overflow, DMA map
+failure) share the same gap, so only this new site comes from this patch.
+
+>  		if (tso_cs_en)
+>  			offload |= HINIC3_TX_OFFLOAD_CSUM;
+>  	}
+-- 
+pw-bot: cr
