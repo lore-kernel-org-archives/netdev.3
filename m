@@ -1,65 +1,67 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D9D30AAD8;
-	Mon,  3 Aug 2026 22:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C9C2C21F0;
+	Mon,  3 Aug 2026 22:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785794942; cv=none; b=AH3rYSs0wLrWxli3FwPDxNZES2Q0CieRNypL8hAjjgIILgi6vJrsGy+9axs43yX0yzC6e3VMHsHzxa/bbuZQnhfXU8yaBgs9xH2y477CpeChz+vij3wAToB+DPy9qSidWW9WUEWSloEOGyvE3uIdiiLm43fprILMhKA7f96H3WA=
+	t=1785795212; cv=none; b=Du+GAyra0wONMCoxFKu66h1uox0qoovXZyG5xRl/1QugBAEa9Mz6ipsvH88JwwUqbPlnn7hpxcSjrh3CydGKbSMv1OXtfbxsFpnV6x82lxRWoxzSCttjn5I/4y9HT4cSoU8IiYAmFhDjcFDKdhm/BdFTkuCxHCzJ4kUqg+GaOrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785794942; c=relaxed/simple;
-	bh=1DWDE6QLjQZ2bKZAsVMI80rxRGo0prsYl5kHKGIVQsY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HL94gVUKF1Qtf+F+k3a1QnlzkQB0ylP9Gx3NmRvKTy/P6YtXte7+zbGtJKDDx9FM+AikAi5k2ccj1ZjbJ812OSpATvkz8sbp7yVMUckEC0AGFgOnX7BHY9BUZJmuZoHvPOyiyK20ULCnOvNfUSQaIqWirNA+1ixg8W+GjJd4s/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3xVavcBm; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785795212; c=relaxed/simple;
+	bh=a+Iu1jvD4weg8gLdemIn2VXHuzkjDGAFzOKfmb4oXFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kdOS7VcFzwBrvMY8O/e3xAW2XXRD5wFoT90JW+QKqKabiYD4O2yRmypWtMQwfCfCJfT8vkKl0dfD3gnRnXqDkIAD51c6IW7tCDZkgk5seCNuZZNIlr9Nybf9OoGwSuUZtqtjBEWWJAGOM9OfIpmhS3IalAI+sdYA/9UFVtfzAMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRC5LBab; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3xVavcBm"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=DbFmzob2h3mc9NFDw7Z+MI3+hG4ALqWGM27Ae1WumvQ=; b=3xVavcBm/Z/zU0JYPwkA7lkDVs
-	z/Gh0732M2VyyVx4uPB6I9JdGtixRCXX4HXbss2qbRLQNfhs4pwncw7bpAsZjPPyprE6LWB9AetLU
-	OLOEVwWSvyT3fDPbKsiTc+be6GvaUTDg19jdx+XN8oYpAyTT+kzX2AJ9WiV0kFK9oFSc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wr0q4-00FqYW-Ox; Tue, 04 Aug 2026 00:08:52 +0200
-Date: Tue, 4 Aug 2026 00:08:52 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] net: phy: add PHY-autonomous EEE provider support
-Message-ID: <cf6b5768-3fb1-4221-bd13-db1fe5cb22e1@lunn.ch>
-References: <20260803-phy-autonomous-eee-v1-v2-0-222a187ba2bb@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRC5LBab"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CDE1F000E9;
+	Mon,  3 Aug 2026 22:13:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785795210;
+	bh=8OW2Z/fs88GRDkTjWf8werMO7BSTsauvt7Er95fV0I8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=oRC5LBabp7a9Tjlw/28qLD3P2pWaVqOlLPbkc60YoLEfnpmjDn2AzqaqUpSzEoysQ
+	 7c5wFlypmfUbQ+9pGZImeGCuFhxLcWdYvMzUukZVeIaCf9IxliavF8GxqP9reJJVk6
+	 DwEp4paNPHadTDyOPOW8ysQZGNLYwQeZ75S2lzrgi/NLRaFb9kjMCnOhm3lKWQRo09
+	 +eu8SN8UYj87qyVlhxsLmrIJRQuNqfPjighuVpYH/G88PIL81bC5/zKtYmCufqh9hM
+	 PFT25v9MOr8Zn/UzWKDqETAEl9MsjDdgM1Bw8TvXsJfcJOuMseoD0g+jE/va69wLxz
+	 QBiEN3Qd3yHKQ==
+Date: Mon, 3 Aug 2026 15:13:29 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: chanyoung <ppoo1220@gmail.com>
+Cc: Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org, John
+ Fastabend <john.fastabend@gmail.com>, David Howells <dhowells@redhat.com>,
+ Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net 1/2] tls: don't over-fill the plaintext sk_msg ring
+ in tls_sw_sendmsg_splice()
+Message-ID: <20260803151329.40ec5aa8@kernel.org>
+In-Reply-To: <20260727125804.2889161-1-ppoo1220@gmail.com>
+References: <amczWCEaLMVQWZp8@krikkit>
+	<20260727125804.2889161-1-ppoo1220@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260803-phy-autonomous-eee-v1-v2-0-222a187ba2bb@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 03, 2026 at 03:54:02PM -0600, James Hilliard wrote:
-> Some PHYs implement a vendor-specific autonomous EEE mode. Once EEE is
-> negotiated, the PHY can generate transmit Low Power Idle (LPI) without
-> MAC assistance. Linux must select exactly one LPI provider: enabling both
-> the MAC and PHY paths conflicts, while enabling neither makes a successful
-> ethtool request ineffective.
+On Mon, 27 Jul 2026 21:58:04 +0900 chanyoung wrote:
+> 2026-07-27, 12:30:48 +0200, Sabrina Dubroca wrote:
+> > This should never happen. We need to fix whatever path leads to that
+> > invalid condition.  
+> 
+> Your diff is right. Tested on net (53658c6f3682), stock config: without it
+> the test in 2/2 oopses in the AEAD walk, with it applied there is no oops
+> and no regression in the tls selftests.
+> 
+> Agreed, my patch was treating the symptom.
+> 
+> Sorry about the verbosity of v1.
+> 
+> Happy to send a v2 with your diff if you'd like me to carry it, or leave
+> it to you. Should Fixes: stay at fe1e81d4f73b?
 
-Thanks for splitting these out.
-
-For the moment, i suggest you drop them. Lets get very basic support
-in first, then we can think about EEE and all the nice to have
-features.
-
-	Andrew
+Please send a v2, I don't see anyone else sending a fix for this.
