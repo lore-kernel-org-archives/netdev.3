@@ -1,152 +1,157 @@
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011004.outbound.protection.outlook.com [52.101.52.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D7E332628
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 03:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785726409; cv=none; b=NG1QnJTh/rrrtmP48/TMPptZkEZ8AbIbia/ECZq5fcfF6ohCeCcKDF0g1W4oSl0BUgjguxivKRLJVFbIs526lQ+WG/iCKs9hbcz3p7cpCEDDeTpcyYaTqR2A+GIWfEhn/wIH17Bd7du5RjLuhSHCCidJcQBXg0kIadmkFa2qsMY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785726409; c=relaxed/simple;
-	bh=9y8A3ixVmnfAoBRcrSB73RJB9vL/v/t+a9iKLN2wIVo=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=b/Ld3F2DADs3ywT7pMHDuCK/FxlKhn021oiyq5C5t2t15rbR8rtjdIg3p5pw4WGZ9y+tjkeLPxkx0Pakp9e8VsF5UoWYCpjDSxuErycfes9plAc1gxk4oUnADpK7GqvDE0PbejSgvu888DcZqQRzA+8OXNtVBC5rd9qzQIclDhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:tivesync6t1785726389t03ecd43d
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [122.235.139.83])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 3037987298578021087
-To: "'Simon Horman'" <horms@kernel.org>
-Cc: <netdev@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Arend van Spriel'" <arend.vanspriel@broadcom.com>,
-	"'Jijie Shao'" <shaojijie@huawei.com>,
-	"'Rongguang Wei'" <weirongguang@kylinos.cn>,
-	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
-	"'Joe Damato'" <joe@dama.to>,
-	"'Larysa Zaremba'" <larysa.zaremba@intel.com>
-References: <21947C51A754F86C+20260728093554.9324-1-jiawenwu@trustnetic.com> <20260731135046.GI51943@horms.kernel.org>
-In-Reply-To: <20260731135046.GI51943@horms.kernel.org>
-Subject: RE: [PATCH net] net: ngbe: fix NULL pointer dereference in non-MSI-X interrupt enabling
-Date: Mon, 3 Aug 2026 11:06:28 +0800
-Message-ID: <058b01dd22f5$14072f50$3c158df0$@trustnetic.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4B4352026;
+	Mon,  3 Aug 2026 03:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.4
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785727447; cv=fail; b=DdpX85m56W15soThr+Y4TKDAN8YJyBVZGy0K8JmEOsMSO138fmt9iATuxfs8GXCzpIuoLuEoOO1WH2KnEAO7yb6x5JiHZOelozVI65KHdAY7P2EgKXR+6pejljesKsePjNpLAKD+5mXaltih+wTUrkCcznh9/Tm92Rat73ItNVg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785727447; c=relaxed/simple;
+	bh=zeCurmdmsxY0txIbfnCir4OvOOMdik+t79oANtWE34I=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=SfFijt6ZWSwqP1mt25ZKR5HUf2BqEx+R9AaD9+qV6ZTW7wxqAzz97697UqEp8dq13vA9YDCvOxi8ehodPPU7jhgpxpuiPFX3v92GmDaVubOhkOhNDsxzr9RruTUk9RntIPz9mQL0MKPIV9AFLpDFe13yoq34HMkA8UaMstq2Kk8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=IDKqrEiD; arc=fail smtp.client-ip=52.101.52.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="IDKqrEiD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kA/QEcE9JjDf5WJTaAi63FKf36/Z0W8l6nTMz0bAIxX1QeRADiVQxx17xrXpSK7nqoV8dkHmtn0wxsWoEwEdVbFq3BoZMQ7oxelEHfOWyw82OXiscxENWfjgE3dLXZ+sa/zT62488oxirzGZYhX2woZ2gCQSukS2rcYOglOjq8hrkREYBsGocEvzKLDIliS11j8PFeRDOVdOo7TVWyrFjahbjCLnACCHAFpMdPmNwdpCf5WcmsoVi6lCBBU4pHE4hgVV8yEJYnbcY36tOGpwv6elepJX5wrtsCo8NJNHzlGfdSWDSKal083Nx5O1V7fzHsiA3xgE67pS3SzjRNkOOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ujnk5wlepFe54qG7baPRbU3tIkHa3V1zNVQeZG6u4Tg=;
+ b=IBsBWUpNEA72RPEhPiZeZ+HvyepIvHyeIPJsfzbx3+FEArIL5beB5pleZnN3TY55DglcoP6sZAYNrJ3JU1QkfRFa/5GYT6LBXPZ66ZwjUB0v+2geHRCzuTOE/egEvp5g9Gucuiq+t6mctkWapPZTlSKCBYMmQhHNfTRJ14MWBPKxXAOM3IztYWyfJaKNyLZDcG2aF6SLke7lHnEgyzSr2KQlY9Pkrs2FwLl6GFBm5mxZQLgFbVe0OmF14M0YQKLYQY9NibLsI7gioNpwKhkZ0F6VlZgo9OCRLCk/FkUkTfjZkYIFu18XDdiM/9grChyuimYWeKngtHH1Bz+PTZpElw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
+ dkim=pass header.d=altera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ujnk5wlepFe54qG7baPRbU3tIkHa3V1zNVQeZG6u4Tg=;
+ b=IDKqrEiDF0WWq/aMApPkehV+EgRKyqa3ekP3TEzB+fvAnIXYyQHNmvVcTYQPmmmJh7qD75EaW4026XDYDo2wxJg2a9nfzswwm+faHRf1GpKtyFoPrC0u4WlFw3Yiml5WH6rt9WUVmvT4OWSsl0XWUlHDhfCghysQU3/cXAeNZtIT+a/sFHeZ8cT1MrhpBVfLaOglFQ8kjOv6A36jvPT7tIbgLW6KFx2WQIEcJXsLQExYhTYzD2BWcYDwoxAohMdR2XxMTTBQGmJgp3pxjuqc0l79DO3ejnXgYCRTT1JypTiAqCSIOdVNnVtytKOJ2bStlGhoCoFrstdoZS/WAMONSA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=altera.com;
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
+ by CH2PR03MB5335.namprd03.prod.outlook.com (2603:10b6:610:91::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.12; Mon, 3 Aug
+ 2026 03:24:01 +0000
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775%4]) with mapi id 15.21.0270.016; Mon, 3 Aug 2026
+ 03:24:00 +0000
+From: muhammad.nazim.amirul.nazle.asmade@altera.com
+To: maxime.chevallier@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com
+Cc: netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/3] net: stmmac: fpe: pmac and fprq fixes
+Date: Sun,  2 Aug 2026 20:23:55 -0700
+Message-ID: <20260803032358.16282-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+X-Mailer: git-send-email 2.43.7
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0388.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a1::33) To SJ0PR03MB6964.namprd03.prod.outlook.com
+ (2603:10b6:a03:432::18)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQFqT0y0mbKT69dqN2ZUmemCC0hMFgEi5kWFt2gfMqA=
-X-QQ-SENDSIZE: 520
-Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: M3ZkD08p3wd5AGQE2C+MhW7hLGERfLI9iExAJSbkV2iHxtJfM8R8xPKY
-	Q5mz8ZslXEtAKcl70O/11JQSFrCGg/sriZjAtnYIVJz76th0OPsj46xY0z3k0oByPsq30C8
-	YNJUQz6IuJd2aPfIncpVmA5qjgniRzN+Tz0UXhU7Co61FxXvdTbhw9JKJlCN4QfXGj3ROoV
-	ehFRVWdgrgXJHIWmc9/HpTAxhJEHTB3tWWEZtku2EnWi+SDbkQaIuLH20FbV7O/pGRuVLRX
-	pIBgdmPtvl6gOosfz/HFjN+Vn8RFR96l6xWPvxd/F6Gm1mxGruJ1E+sC3UN4BIGJiEUYWCj
-	d5NUYKHA53P4j905kmZ4bhjI90pwViE5FLhlQtI0DbRT/YpZCdUzG9WwJy7ADb4oSCNc2db
-	YVvuxuuRzUjP4Q5hMicLcbB6tqDQ0a1dz1xdkZ+bN1Dw9w6146UNZAhvDAoXpYS+EsPvEiS
-	kks+c2fdWCaZt30cCOonkvDbet11NvMTYDKTU/9WQhCpcYfBGw5Km0E/42il2QpiDSpLYyT
-	O7S9LdTuiplMvL1ideh5UCnjZ7yGdmMnKPjftQewsMba0ORLKD17Ks3UY82AYwNvLdHOXPY
-	5nnVgF7SmEtlnTVmh9AThjMhB8PpQ0ydDW7suOyYbGt2oBWzU0LljyYXvcIYimlMYJHmIaw
-	tGiD5sdBZ5mpOJ4syGMRMWigCGEGqW5rVnd+4MYqfurbIM6cx1FW/00t2ln9xlfG8CGERZr
-	9c28l3oiEtUn0qsdtpZlabZY1b9xVM7K4Y8B3BMRPDhFC2yiFi5X20WF03cLJF90Hw9z3QG
-	+BepsDBvzve/+2HQGEZ/olb/u48WfDu5NmO84hXDYgmJRU/dvGKAOpQ0UIJ9XJiA64Izw6H
-	AlWJ+I3Kf8i0zI2IjfzQUvQV1yPhuLIwCCnoXuEmRrdU9f8GOzyE/03tjSEt+yWTlhHDKt1
-	7yhkLC0U7o2N5Z+MoFqK5D+AoQk6qpt5KVyHfwqwOvj9eYftZoMvTbP/4iDZx9IsVaXVtX4
-	+jQE0hDInvLAGXJzzl40x4a1RKZQtMpuQV5gzRgOuk+BBqEpI4LjdgcuOwLgHnMytrLhKiy
-	NM0bwANy3qv
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR03MB6964:EE_|CH2PR03MB5335:EE_
+X-MS-Office365-Filtering-Correlation-Id: 80d73c03-1835-48ba-9c97-08def10ea8d1
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|11063799006|56012099006|6133799003|10067099003|55112099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	zYIev1PqmrHO887L+Ie7DlIgZLr0edB5FCZNjoM9wJgqyhDCcflDYJPIKhPOsZMl6GnGewcpTOQ4bPpnSNqnV4AOi9uosycERy56z3rlo5/ssbvUfUPuHxlQpgn/dnNdped7DLhsBBSvJC8iGowqSiBYp4Y/dyQXY+VAnHQ7PevaJns6aZbzhEj1uaHs1+0DPDuyamPw0h62X2MdMTzl2CPxLqA9GCK4EmZjRiUJdvr6h1yDVtxbVY7FaVK6gm7FNsV6QOW1eCZzDjvnqPqqrpjwx0Xa/y8VC2ssTQAr5JRC/fqJvUe/K+ApiXGZFmn/F/GqKd4HO95dytuJmtOsHcd5cRVzGnCHFWImmX26JlzYVstF39FciDtFiE3/RLjGPT6aL3d3P7x6AJbeWUVv/HHIWLYJXw5KOTP51Gyd7FY/WEN6zFc6DO/hHneqDF8vp2G1UGGMdK02Ef+EBr8d3EDdslr39+SQYZHd5XIKXBfHE3nyIzKNdUWTa+gsfBTXNWuWBF++yeKJb4g2si2dDBp5pmTn2PNxqZA7HSetCw8TILhChN1q+4yP8GyXgz1Kz+8OpxPznHtpDCnJNshnhdP9pVeAQAVzX+p3G2jMEpiOL2PILutoyPXUExaiYZXsIFVVmf8dNiBlJnrkcSk26YKyFT9jbomWtmv90hFCvek=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(11063799006)(56012099006)(6133799003)(10067099003)(55112099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?R3Eh0A3aqtTe3GrnEHhH+Gz23ANq9F7EnFB2K3GbC23sGq2hfQ9j4kAKLFGB?=
+ =?us-ascii?Q?+9c7027K9meYBg6JkTJfWlFiejsR7OquPCUPZw47rU4OVBMQHkypnBZnFO/p?=
+ =?us-ascii?Q?MrFjDG4jY3qiUNsKZCKFW5CHpM3G7yhflbjrVEyqAVMjcwtLiTJ4PiG+te9o?=
+ =?us-ascii?Q?0bKEHW44Q3ASKVOwAPpqjiLf1GqJ02ym3XyzKkggic3/GqQwuaOuGJnYaxQX?=
+ =?us-ascii?Q?DBjyCDCYzZCC1BBgPKljmyICuJoy2MXQnnOX7PHp74KBSExEnFAxFx1Y9ZB+?=
+ =?us-ascii?Q?YRqEJKIlPzNM0GJEACsa2+whng8Ml9KyVHVbMYW3PibZUBZ57DJUa2ATeI+d?=
+ =?us-ascii?Q?jJIEDrm0rRf4X1vHrzuppubUkBwP7/45R+J5UPilwva0VuhYQyLLU9GrvxM9?=
+ =?us-ascii?Q?0SIoU+Ssy4n1SufBWxzGpQYdGO5ky6f/ffFE3CGLRT1URTx4s7fpY7DaEg4X?=
+ =?us-ascii?Q?+8fvXcWqPKT9KA8iCJhC/MbEg8tv2UPG0PxU6aYvQpQvMo/5Dn6mlkWAbYEG?=
+ =?us-ascii?Q?ye4NVL+ECH9qIhcIcYIqVkAK07GTjWBsVWm4TAMgHXvEvfUponz3CAXEyj1J?=
+ =?us-ascii?Q?OnUIMkRxJXMb/G0Eqg3Xb2R0XzTmQYWJt0aXRtpQP8v2i4DH+lM6wAff81OV?=
+ =?us-ascii?Q?Ji37d20A5JNbePab0bOcKzEy/6z9oeSrgdLt8ll+5576cAzAlso68sWjbiMy?=
+ =?us-ascii?Q?cNF2hEI1LQ2zJVT6bc4Jj8m252lGDZXd9fWHuNNuBOo6Gq9kUh900LbzQJlL?=
+ =?us-ascii?Q?Ssyn+ymrdhsEu9vjRdB9miYJreVgz7p9U3V8Yl0K9ijXQ7I2LhdBaQa2aiQ/?=
+ =?us-ascii?Q?fG/WF7UT0cwnVNASEoohkfAyYTAQmoLcKRDqHzOYVepwedMwnqe9PGt5HUcq?=
+ =?us-ascii?Q?Y2Z2iaUc1m3YD2Uh2sW0CrfETNodga9BWKfI0Sdali1Xut6kWEV87OrZ7TsE?=
+ =?us-ascii?Q?TjalJ6Y65W8q0MpJgGUA9s9jP6joHHG6nAIxjbMYQ+f1PegQ90teIUh7kQTN?=
+ =?us-ascii?Q?8RZIxKWAT3EiK7ZWpnUmdJVv7ptYlaerG4CPCvWQ/mOglSwZJ+Li9RsuvoYI?=
+ =?us-ascii?Q?3bSmXCl7ZpSrZ3C4TgI7oAHv1gZOBi1F8MSy+xdg1dO9dz8JVoA6RA1oFFcM?=
+ =?us-ascii?Q?KuBVhtYalEOqXGrJxmOvZhRkQZ0qo3nQFNOziEdDSMzyMVp5T8ig6DsTIwZ7?=
+ =?us-ascii?Q?o/tq0L0efBP8JaaqXe/2dk5KWElBLwp99NcE3dIaZbmXoN7DDJDJQdXE8q5a?=
+ =?us-ascii?Q?nW8bwZyemKrZO9MDfZcPFRf0q25WGUasqwSw6zrb1wqvt7bpO2bpDtDx7BBB?=
+ =?us-ascii?Q?aJ/2gti1eM7eonPWBCdoGEdCOulGVwD+hUFdzMQPuT/7jALt2PcwB6GmfQOM?=
+ =?us-ascii?Q?dqQN0RJcW5ZSaKfklwuR/jHM4K3J8De9bY2Hfffd0OdfzYXY8WYUvstNWB+W?=
+ =?us-ascii?Q?9WVufbwDUV6cWoItCWtb2cgNDgGDrKy0CkOxy8QGIf1QUIcQwZUEL4qfnYjI?=
+ =?us-ascii?Q?OgGBfJetgKJ+WNodtmnbZZeUAwohbFyqiCwsMp6PopSX9A/4wtzNJP0xUS3A?=
+ =?us-ascii?Q?IvbrnIqijWUnDLHfQ4lg9+eXkekUS433Xtu+sDAvKc9iXxZUABWIHBeBRaov?=
+ =?us-ascii?Q?FhxfyLjggeOk0c8q0jUblChhPdZUyVeo6gTVVCfaxibS9P0Sf2TSC/AYkAa3?=
+ =?us-ascii?Q?24AUc26ZfP5r1C2HTVEu7rXO/zO7RgivSkhrfJAaAjdYgYN12BkiliIQHbaO?=
+ =?us-ascii?Q?ODNkh0DnBMqxka+1J0yuUWX+6t37Eee0b7qMf9xnSVccU5acmBHJmsSZtnGt?=
+X-MS-Exchange-AntiSpam-MessageData-1: AvEgzm6Haw6PFw==
+X-OriginatorOrg: altera.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80d73c03-1835-48ba-9c97-08def10ea8d1
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 03:23:59.9425
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ejNLrusW4jDvJVflLirIG6SgwQ2sJdSQvqMRs6oTS1H03tUNCLEO9nQsuhk6OupGj1xwLXVEdAxikvWJAZ6bjW0PP4cNZujTFDM7iXQC4gAdRUViLJ5kXV1nSY61RTSbWS0VkkBJs0tQhWZHgQWDEA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5335
 
-On Fri, Jul 31, 2026 9:51 PM, Simon Horman wrote:
-> On Tue, Jul 28, 2026 at 05:35:54PM +0800, Jiawen Wu wrote:
-> > In non-MSI-X mode (such as legacy INTx or single MSI), wx->msix_entry is
-> > not allocated or initialized. Calling NGBE_INTR_MISC(wx) dereferences
-> > wx->msix_entry->entry, leading to a NULL pointer dereference crash.
-> >
-> > This issue was introduced by fixing the IRQ vector when the number of
-> > VFs is 7. Since macro NGBE_INTR_MISC is used in only one place and
-> > relies on MSI-X allocation, remove it.
-> >
-> > Fix the issue by explicitly checking WX_FLAG_IRQ_VECTOR_SHARED to
-> > determine the correct vector index and using BIT() to convert it into
-> > the interrupt mask required by wx_intr_enable().
-> >
-> > Fixes: 4174c0c331a2 ("net: ngbe: specify IRQ vector when the number of VFs is 7")
-> > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> > ---
-> >  drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 4 +++-
-> >  drivers/net/ethernet/wangxun/ngbe/ngbe_type.h | 1 -
-> >  2 files changed, 3 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> > index a16221995909..5d89fc84e8bc 100644
-> > --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> > +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> > @@ -180,8 +180,10 @@ static void ngbe_irq_enable(struct wx *wx, bool queues)
-> >  	/* mask interrupt */
-> >  	if (queues)
-> >  		wx_intr_enable(wx, NGBE_INTR_ALL);
-> > +	else if (test_bit(WX_FLAG_IRQ_VECTOR_SHARED, wx->flags))
-> > +		wx_intr_enable(wx, BIT(0));
-> 
-> Hi Jiawen,
-> 
-> I am wondering if you could take a look over the following issue
-> which is included in the AI-generated review on sashiko.dev [1]
-> 
-> [1] https://sashiko.dev/#/patchset/21947C51A754F86C%2B20260728093554.9324-1-jiawenwu%40trustnetic.com
-> 
->   Does this change introduce a desynchronization between the software state
->   and the hardware configuration if SR-IOV enablement fails?
-> 
->   If pci_enable_sriov() fails inside wx_pci_sriov_enable(), the error path
->   clears the WX_FLAG_IRQ_VECTOR_SHARED flag via wx_sriov_clear_data():
+From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 
-Looks like a bad time to clear the flag...
-I'll change it to check pdev->msix_enabled but not the flag.
+Three fixes for the stmmac FPE implementation:
 
-> 
->   wx_pci_sriov_enable() {
->       ...
->       err = pci_enable_sriov(wx->pdev, num_vfs);
->       if (err) {
->           ...
->           goto err_out;
->       }
->       ...
->   err_out:
->       wx_sriov_clear_data(wx);
->       return err;
->   }
-> 
->   However, the hardware was already re-initialized with the MISC interrupt
->   mapped to vector 0. Since the hardware configuration isn't reverted, won't
->   subsequent shared interrupts cause the hardware to auto-mask vector 0, which
->   will then never be unmasked here because the flag was cleared? This appears
->   to result in a permanent masking of Queue 0 and MISC events.
-> 
-> >  	else
-> > -		wx_intr_enable(wx, NGBE_INTR_MISC(wx));
-> > +		wx_intr_enable(wx, BIT(wx->num_q_vectors));
-> >  }
-> >
-> >  /**
->
+- Keep pmac_enabled true in DWMAC since the preemptive MAC is always
+  on, enforce this in set_mm(), and guard set_mm() with fpesel check
+- Fix missing return in stmmac_fpe_init() when FPE is unsupported
+- Move fprq configuration to stmmac_fpe_configure_pmac() where it
+  belongs
 
+v2:
+  - Drop u32_replace_bits() in patch 3; fprq_mask is not a compile-time
+    constant and triggered __bad_mask on x86 builds. Keep the open-coded
+    mask/shift update instead.
+  - Collect Reviewed-by from Maxime Chevallier.
 
+Nazim Amirul (3):
+  net: stmmac: fpe: Enforce pmac_enabled in set_mm and keep it on at
+    init
+  net: stmmac: fpe: Add missing return in stmmac_fpe_init()
+  net: stmmac: fpe: Move fprq configuration to
+    stmmac_fpe_configure_pmac()
 
+ .../ethernet/stmicro/stmmac/stmmac_ethtool.c  |  7 +++++
+ .../net/ethernet/stmicro/stmmac/stmmac_fpe.c  | 34 +++++++++++++-------
+ 2 files changed, 29 insertions(+), 12 deletions(-)
+
+-- 
+2.43.7
