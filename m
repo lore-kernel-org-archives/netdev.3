@@ -1,56 +1,56 @@
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com [209.85.222.72])
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com [209.85.222.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727B43B14C7
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 20:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2506C3B05AA
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 20:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785788267; cv=none; b=OZ3ls3recC4PhLo9dKW/kW8UcOcoW6XejLO8ix5ss1vql2yHn5FfE34O3C6KEJI5QYyOgkSrky9J6d7J0Ry6YEjlC5F1XheZvXZShuR7+dKPd19Y4+hJliueZim8atJ7SHc361+lLQ8bw33UHQhs+QR33lCLZT46CYf7UJcuLe8=
+	t=1785788270; cv=none; b=eJAERUATMsidk4/m4Q80WkXDZIEXRr+adlcZLAi7we3BEqc793dgFKK+BrENgM32n3xJagVQqW46R3evkC6c8xwWAF8IWWr5CGdYnfc0xSt0FSk6KfvdzdOpn1iPKi5qkKLg8W9DNAAvqfwZSUC8OJdrp8XX8FOYa0qLeJimX6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785788267; c=relaxed/simple;
-	bh=xBC8RfiRmLQxJc0KR/6PjJbkdZl1/Dv0GkypCJyJVl8=;
+	s=arc-20240116; t=1785788270; c=relaxed/simple;
+	bh=5I/tSxviojv3fiQmkexFSr3+wjyG09NrO9LpP899mE8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rIzqTncvlpkfdCqM85wjIU6Dr35dc91Sb3+7nzzh9wTF4nZS/dUNK/nqTrqvD0dDWNRUBZt0qb49l6Zsa4flPJU8qZZ6ZCuiFKZMpvPwN0JE7YEZqZxpI4R92KL5xyiGryGGpffAmEtjeakYbNjS7NyaCcifeQSUpXWM0r6AW/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--thaisonphan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KsAgc17K; arc=none smtp.client-ip=209.85.222.72
+	 To:Cc:Content-Type; b=QiJS9FkUBRpFWCz+XUw8S2vN4M4z7yD+yMEi7U/SxRL1tme4qFY4ZcUfXJdyj2P6tyckwi2fX9Jb85fO/DxHQiPPlMWWjku8q7IRTooAzgmQLPwMYC3uVsXwdEgeJ2xPo5k1hIeJhsXss0y9wMsynovpfQMXeUwJLb5v0p9OVK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--thaisonphan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ICVZia5f; arc=none smtp.client-ip=209.85.222.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--thaisonphan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KsAgc17K"
-Received: by mail-ua1-f72.google.com with SMTP id a1e0cc1a2514c-9771c8f5045so3506605241.3
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 13:17:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ICVZia5f"
+Received: by mail-ua1-f71.google.com with SMTP id a1e0cc1a2514c-9772e18c186so3632149241.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 13:17:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785788264; x=1786393064; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785788267; x=1786393067; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=VqZh8sZuThEFyq0PldOP8TMB8ZECNpHPSl4JF/PtYzc=;
-        b=KsAgc17KDfc6KvKjALV19ZukWZYTImABDj9vd3LaHS5OHdM5/pyCITAluszUPmD9UZ
-         IEzPbCPfv9SwHf29LgwL9BejMXiSpjT/gvFGmu8FZbKhZ2ZIT3tmjgr7FP9y7R6UZtj+
-         6ceoC/Z6c8AjnhkI5r1p2tVrgkGJ4GUP3/QrtOl/h+2S0LVvOCLzEK0QbUhKnV0fw3Jt
-         OSl9nr2I5ElmAK/fH3gMzoQSXZ3w5RZ6reY7+QtvW4EQv45oDtVIvJlBvFiUqc+9VG6w
-         Or5cpVrf32SASD0u5aVgqiWqrr7ToOI6cDtx5bLnG9FMD0KW5nFMqQ0vCo4J/hN5PT5T
-         cszg==
+        bh=dxLh0Si8XbYFI0YXi0oKUPTXA5UlSt2whO2ADj2/Lto=;
+        b=ICVZia5f8fHEjbO240nwPOIkq3u2uW09s2qXWFMWb3LiBctoD1vK58/PIoNjLSODdv
+         fI1/8nitLSP4v0qzqixFBR8cZCtRHD5UwgVl/DFLY6164fx4sFjh0efIYiYXCobRDiap
+         H4b/daPTD3PsAJsLy+eITJAVj3QPmOyRyAXEgYHUezWjDIx8tPUE/Y3GhotyMIRp7UnC
+         ogvCcknLZPpEdpW7I56WIVhwCzGYYgdQqpJfEo9J3lxfmvcGIenj26klHI4r2FkUVNFj
+         ZjJXdq0f29+HIgkQ4XVgF76t6X7Iamld6Lz6YpdE+hGZEmORN20pAzw7oGyGoWFwfY7r
+         rX+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785788264; x=1786393064;
+        d=1e100.net; s=20251104; t=1785788267; x=1786393067;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VqZh8sZuThEFyq0PldOP8TMB8ZECNpHPSl4JF/PtYzc=;
-        b=mGNk1jPklub8XOA9r8uro5SA0BhQS+1QL/tl68jHmK879HXhj6irq3ufA1WPbXBek2
-         cXNpXqs2m/Tb+F2F8ff0m9+CW4UI2CW4FvJJOp9pOdqSJISMrHMzgZb2M+OmW4fmgaG5
-         Ycd/imJ33X+WnH7xUeqtQ94BdGGqHs4d3O2NShP3t0HKpv0I4dlhoiWlkxvaTyf3Yw7a
-         xFRD+BDwjSph0NOOT/uTIt+ZkIajXWNLjWs51Ge+3atBwOU3oVC83rwjo0TGrmswcHNb
-         nbZaQ11E5EyYf22z3tAbv1Kqsz4DF2ggR+Ph9CBnhsUS22Pfg+UShb/qVlz04eb9NmIx
-         Y//w==
-X-Forwarded-Encrypted: i=1; AHgh+RquL59zIWRJrr7hCV/hq/jOJFzNTkerkjnZ3PpTrd+qfqnvbzs0n0Fne4UnyWOYzpYcXOkUkTg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQTn8ahHbsNzSoyQB8BzDamHp96bZX4DWlkKU1Id87hKMiHAJP
-	N7HdJf/gpSZG8U8A2Pz5hB7Rf4YSLdJO+v67Ykd38tchf78wlw2zwhrmcgx04andbmrO2W0pyAV
-	lZyYPBG9GcxNApr9R4ZmawsE0bw==
-X-Received: from vsto13.prod.google.com ([2002:a05:6102:e0d:b0:73e:fc7a:f827])
+        bh=dxLh0Si8XbYFI0YXi0oKUPTXA5UlSt2whO2ADj2/Lto=;
+        b=SSYHAHUdlXW30kFIbPCQFspW0gS9rIMrHhUDXAf8qV8IBsDL0mR9CZrwDHFlARW3z8
+         liOOjezoOZ3TTIB28QurkseDM4QqtRpQxj7g4yXqqMT7dxjx46+uTvAiRUqEvJtznS3c
+         sra5jKZQC2vJDe5ce3SMNHfwuZP+UWTS3e+d2gv+oy7prO3BuugqtzpNLEnoolxMEeg2
+         J/p90031nhG5LVVc12qqOxXJUxlO9qtfucg3hz1ZUL11SWdVXR3wtT1Cml6hrcar1S8D
+         s/TsJrCoEYXfZBAFjWKpJ6e8ZLIYvxDPWrV2Fuo7uVMPQg1LSRzG2IpQ+tYib+jcf/1d
+         oF0g==
+X-Forwarded-Encrypted: i=1; AHgh+Rq1e/vPYXNi7XUlTNK4c6mP3U2IOJZCWR8yFUQ5BUxNducXsRVeCYxyLXzXqK6/bchjo7DA0q0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYfXYVK8LNFr/JI3W8wmE2HaQzoIQUe9KGxX/aK/DmOkGZpaJP
+	3l6yXgomASU++zX5qLz/7hfjoU88F+EIv4f+ua3FlWg4RbBXwlLcQpl6tHG86DycdbjJaiuivfJ
+	TmX1Ej1rWQjy7a6FzZ9VJNPskEA==
+X-Received: from vsts11.prod.google.com ([2002:a05:6102:370b:b0:738:a383:731])
  (user=thaisonphan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6102:6898:b0:737:e816:b26f with SMTP id ada2fe7eead31-75b23a65804mr10207145137.10.1785788263971;
- Mon, 03 Aug 2026 13:17:43 -0700 (PDT)
-Date: Mon,  3 Aug 2026 20:16:51 +0000
+ 2002:a05:6102:b0f:b0:745:1c72:cf7f with SMTP id ada2fe7eead31-75b21b5f2b9mr8916605137.5.1785788266382;
+ Mon, 03 Aug 2026 13:17:46 -0700 (PDT)
+Date: Mon,  3 Aug 2026 20:16:52 +0000
 In-Reply-To: <20260803201652.2752685-1-thaisonphan@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260803201652.2752685-1-thaisonphan@google.com>
 X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260803201652.2752685-2-thaisonphan@google.com>
-Subject: [PATCH net-next 1/2] tools: ynl: check for null ptr on dump free
+Message-ID: <20260803201652.2752685-3-thaisonphan@google.com>
+Subject: [PATCH net-next 2/2] tools: ynl: check alloc fails in generated code
 From: Thaison Phan <thaisonphan@google.com>
 To: Jakub Kicinski <kuba@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
 	"David S . Miller " <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -73,31 +73,152 @@ Cc: Simon Horman <horms@kernel.org>, Fengyuan Gong <gfengyuan@google.com>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Static analysis detected code paths where freeing a dump list after early
-errors when creating the corresponding dump list like in ynl_exec_dump()
-can result in a null pointer dereference since the first node in the
-ynl_dump_state would still be zero initialized. To prevent this potential
-problem updated the ynl c generation script to check for a NULL pointer
-before continuing to free the nodes in a dump list.
+Generated YNL code does not check the return value of malloc() and calloc()
+before passing the resulting pointer to memcpy(). This could lead to a NULL
+pointer dereference on memory allocation failure.
+
+Updated the C code generator to check for allocation failures and to return
+an error code when applicable, or to return with no error code for a user
+to check for a NULL in the field that allocation was attempted for.
 
 Signed-off-by: Thaison Phan <thaisonphan@google.com>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 53 ++++++++++++++++++++++----------
+ 1 file changed, 37 insertions(+), 16 deletions(-)
 
 diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index cdc3646f2642..2fd68c738075 100755
+index 2fd68c738075..a323acdc42ba 100755
 --- a/tools/net/ynl/pyynl/ynl_gen_c.py
 +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -2747,7 +2747,7 @@ def print_dump_type_free(ri):
-     ri.cw.block_start()
-     ri.cw.p(f"{sub_type} *next = rsp;")
-     ri.cw.nl()
--    ri.cw.block_start(line='while ((void *)next != YNL_LIST_END)')
-+    ri.cw.block_start(line='while (next && (void *)next != YNL_LIST_END)')
-     _free_type_members_iter(ri, ri.struct['reply'])
-     ri.cw.p('rsp = next;')
-     ri.cw.p('next = rsp->next;')
+@@ -526,16 +526,20 @@ class TypeString(Type):
+ 
+     def _attr_get(self, ri, var):
+         len_mem = var + '->_len.' + self.c_name
+-        return [f"{len_mem} = len;",
+-                f"{var}->{self.c_name} = malloc(len + 1);",
++        return [f"{var}->{self.c_name} = malloc(len + 1);",
++                f"if (!{var}->{self.c_name})",
++                "return YNL_PARSE_CB_ERROR;",
++                f"{len_mem} = len;",
+                 f"memcpy({var}->{self.c_name}, ynl_attr_get_str(attr), len);",
+                 f"{var}->{self.c_name}[len] = 0;"], \
+                ['len = strnlen(ynl_attr_get_str(attr), ynl_attr_data_len(attr));'], \
+                ['unsigned int len;']
+ 
+     def _setter_lines(self, ri, member, presence):
+-        return [f"{presence} = strlen({self.c_name});",
+-                f"{member} = malloc({presence} + 1);",
++        return [f"{member} = malloc(strlen({self.c_name}) + 1);",
++                f"if (!{member})",
++                "return;",
++                f"{presence} = strlen({self.c_name});",
+                 f'memcpy({member}, {self.c_name}, {presence});',
+                 f'{member}[{presence}] = 0;']
+ 
+@@ -582,15 +586,19 @@ class TypeBinary(Type):
+ 
+     def _attr_get(self, ri, var):
+         len_mem = var + '->_len.' + self.c_name
+-        return [f"{len_mem} = len;",
+-                f"{var}->{self.c_name} = malloc(len);",
++        return [f"{var}->{self.c_name} = malloc(len);",
++                f"if (!{var}->{self.c_name})",
++                "return YNL_PARSE_CB_ERROR;",
++                f"{len_mem} = len;",
+                 f"memcpy({var}->{self.c_name}, ynl_attr_data(attr), len);"], \
+                ['len = ynl_attr_data_len(attr);'], \
+                ['unsigned int len;']
+ 
+     def _setter_lines(self, ri, member, presence):
+-        return [f"{presence} = len;",
+-                f"{member} = malloc({presence});",
++        return [f"{member} = malloc(len);",
++                f"if (!{member})",
++                "return;",
++                f"{presence} = len;",
+                 f'memcpy({member}, {self.c_name}, {presence});']
+ 
+ 
+@@ -601,11 +609,13 @@ class TypeBinaryStruct(TypeBinary):
+     def _attr_get(self, ri, var):
+         struct_sz = 'sizeof(struct ' + c_lower(self.get("struct")) + ')'
+         len_mem = var + '->_' + self.presence_type() + '.' + self.c_name
+-        return [f"{len_mem} = len;",
+-                f"if (len < {struct_sz})",
++        return [f"if (len < {struct_sz})",
+                 f"{var}->{self.c_name} = calloc(1, {struct_sz});",
+                 "else",
+                 f"{var}->{self.c_name} = malloc(len);",
++                f"if (!{var}->{self.c_name})",
++                "return YNL_PARSE_CB_ERROR;",
++                f"{len_mem} = len;",
+                 f"memcpy({var}->{self.c_name}, ynl_attr_data(attr), len);"], \
+                ['len = ynl_attr_data_len(attr);'], \
+                ['unsigned int len;']
+@@ -631,18 +641,21 @@ class TypeBinaryScalarArray(TypeBinary):
+ 
+     def _attr_get(self, ri, var):
+         len_mem = var + '->_count.' + self.c_name
+-        return [f"{len_mem} = len / sizeof(__{self.get('sub-type')});",
+-                f"len = {len_mem} * sizeof(__{self.get('sub-type')});",
++        return [f"len = (len / sizeof(__{self.get('sub-type')})) * sizeof(__{self.get('sub-type')});",
+                 f"{var}->{self.c_name} = malloc(len);",
++                f"if (!{var}->{self.c_name})",
++                "return YNL_PARSE_CB_ERROR;",
++                f"{len_mem} = len / sizeof(__{self.get('sub-type')});",
+                 f"memcpy({var}->{self.c_name}, ynl_attr_data(attr), len);"], \
+                ['len = ynl_attr_data_len(attr);'], \
+                ['unsigned int len;']
+ 
+     def _setter_lines(self, ri, member, presence):
+-        return [f"{presence} = count;",
+-                f"count *= sizeof(__{self.get('sub-type')});",
+-                f"{member} = malloc(count);",
+-                f'memcpy({member}, {self.c_name}, count);']
++        return [f"{member} = malloc(count * sizeof(__{self.get('sub-type')}));",
++                f"if (!{member})",
++                "return;",
++                f"{presence} = count;",
++                f'memcpy({member}, {self.c_name}, count * sizeof(__{self.get("sub-type")}));']
+ 
+ 
+ class TypeBitfield32(Type):
+@@ -2227,6 +2240,8 @@ def _multi_parse(ri, struct, init_lines, local_vars):
+ 
+         ri.cw.block_start(line=f"if (n_{aspec.c_name})")
+         ri.cw.p(f"dst->{aspec.c_name} = calloc(n_{aspec.c_name}, sizeof(*dst->{aspec.c_name}));")
++        ri.cw.p(f"if (!dst->{aspec.c_name})")
++        ri.cw.p("return YNL_PARSE_CB_ERROR;")
+         ri.cw.p(f"dst->_count.{aspec.c_name} = n_{aspec.c_name};")
+         ri.cw.p('i = 0;')
+         if 'nested-attributes' in aspec:
+@@ -2252,6 +2267,8 @@ def _multi_parse(ri, struct, init_lines, local_vars):
+         aspec = struct[arg]
+         ri.cw.block_start(line=f"if (n_{aspec.c_name})")
+         ri.cw.p(f"dst->{aspec.c_name} = calloc(n_{aspec.c_name}, sizeof(*dst->{aspec.c_name}));")
++        ri.cw.p(f"if (!dst->{aspec.c_name})")
++        ri.cw.p("return YNL_PARSE_CB_ERROR;")
+         ri.cw.p(f"dst->_count.{aspec.c_name} = n_{aspec.c_name};")
+         ri.cw.p('i = 0;')
+         if 'nested-attributes' in aspec:
+@@ -2275,6 +2292,8 @@ def _multi_parse(ri, struct, init_lines, local_vars):
+             ri.cw.nl()
+             ri.cw.p('len = strnlen(ynl_attr_get_str(attr), ynl_attr_data_len(attr));')
+             ri.cw.p(f'dst->{aspec.c_name}[i] = malloc(sizeof(struct ynl_string) + len + 1);')
++            ri.cw.p(f"if (!dst->{aspec.c_name}[i])")
++            ri.cw.p("return YNL_PARSE_CB_ERROR;")
+             ri.cw.p(f"dst->{aspec.c_name}[i]->len = len;")
+             ri.cw.p(f"memcpy(dst->{aspec.c_name}[i]->str, ynl_attr_get_str(attr), len);")
+             ri.cw.p(f"dst->{aspec.c_name}[i]->str[len] = 0;")
+@@ -2434,6 +2453,8 @@ def print_req(ri):
+ 
+     if 'reply' in ri.op[ri.op_mode]:
+         ri.cw.p('rsp = calloc(1, sizeof(*rsp));')
++        ri.cw.p('if (!rsp)')
++        ri.cw.p(f'return {ret_err};')
+         ri.cw.p('yrs.yarg.data = rsp;')
+         ri.cw.p(f"yrs.cb = {op_prefix(ri, 'reply')}_parse;")
+         if ri.op.value is not None:
 -- 
 2.55.0.571.g244d577d93-goog
 
