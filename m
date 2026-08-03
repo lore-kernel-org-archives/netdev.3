@@ -1,256 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEC33FCB2C;
-	Mon,  3 Aug 2026 11:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD45B3BCD17;
+	Mon,  3 Aug 2026 11:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785756525; cv=none; b=NmaEvpgfa24khdqv80qulDjz662wWieSx0AF2LlgmwYiBKKq5rESiQIP7Zct+610nVFLYcSUm6OUt4jVrL4REbQOFKnM2jwLkoC95fpYKdHFXNZr2YsXg1BlLLkAokkqOjNuSKgMnR1uf9izHpFo+R/V82rpO5lEjODBonKBFcQ=
+	t=1785756623; cv=none; b=BVQTzrRKqOxfgRlU6HpOoGHhsnLDHg+SB4uylIShaoMX+G5T4f6FsD5gwajjiWGO/asZEdRXTZdCD/oQtCKGz+Go8CBuCp+mh6dL6ECojSbis6GQLOomMt0P1AE96V3+iey3Cwe+YExbuw7UkRA+RjTEqSiHBjEO8+YopAs4310=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785756525; c=relaxed/simple;
-	bh=ACS0eJexhbIfi9JF7VgvdcTuAu3qWlqMbMc8Xdm0VqE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=od+AXncyjiU9dx7y/Bfi8oh38riEY3JiiyZWOtNH/GCww3+BKCKfN+G73Fkgjx+Z9+vW168EWoByTp3ooav2YVETFx34zo+J7h8mAx+zyvf6ud0jeirmeemHiZ8xzjSsgEb8419aecWRohgtabFp8nNVChq9LsH9cRgLlEFeyow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kOZ8+suY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785756623; c=relaxed/simple;
+	bh=1hyD7n6x4B5WKNhx81QFig7jm9LpnsZfhzBuH5E/qz8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aBD8weH73NuqbXPtqgr803TL3RVFvn34TwE09++m0OIpHcholBBYDKrz32e8mKXI40IrIg4G7zzKMd+DSPgod5EZtUvBVEsMxJIKlAlX8ere/Sur3hnTN3atQIWLx9D1YyY7GhR19dvp8/Xjb9oB12r7jl2tijHISHhKuxHwggo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=UcvWIu2t; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kOZ8+suY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B171F000E9;
-	Mon,  3 Aug 2026 11:28:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785756524;
-	bh=ou4sT2BujwFMitQRzviT5KLE0YM4++tuPCN0yYss9us=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kOZ8+suYI9tE4kDLma/Id4gIZCQraiBxxVBj72UObGWTFLsPQdKqiOUvN9dPgO7v6
-	 wj+ICfXbZ1+gkoV7monhhWSIJK2aUP6Q0FJQFUSq6xmuuU0gKQI4y5Mi/JwwenyKt2
-	 uKcQ/oCiZRWyZAbsoWqv/us2EvZ2aWlHu+YXzqFSBv2jnijERqhH7tB2uEdkyxmBcb
-	 cdGIHuo9FMvI85PpMjc3uF2KaL2Sue11k+aBav1hsQ0Dp1yNsH60aXl/X59lYf15Rc
-	 +42vYqDTTuFyeLqHnETFPN+66oSpN2IaWkO1yqdUDjlOtdF4U6Mf2HF17brF6WbuAt
-	 3HHRES+JV7Akw==
-Date: Mon, 3 Aug 2026 12:28:25 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
-	Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev, 
-	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
-	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 3/5] mm: Add RCU-based VMA lookup helper that waits
- for writers
-Message-ID: <anB4uxEbKsa1Re0w@lucifer>
-References: <20260802215459.2769283-1-surenb@google.com>
- <20260802215459.2769283-4-surenb@google.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="UcvWIu2t"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=pezhe/jGLbZ8Imse26s/T+5MBjNkk8ZspZsG2MuLj6E=; b=UcvWIu2tdi/bvIcOpVieWLMPrB
+	Kvjf0LpacF+oR1zHl3aW619PaGLNNpalnqQfTBRBrHgOzLPDWoEDhNnm0sSGrahclJ+/ZtIoeypN8
+	wxJeYn2EfxMRNIvqE5sv5pS1oSdfD/wyJha2OEsyX93tqoc9rX78cwNkAxrGBEOptNbEqeG4zfUpC
+	lwCWv859219mFHWmfwAZnBMqKH3S8SAhEmsB9sAwd0ORHCjdtDkX0OjqvgHRfHaHh7BK6rKjz91ZE
+	NpXpB0E5yzyNTp6ICkTBBfyURIZEERe6zd63Gk3rmOB17j0fWNg3Elji2JGncreF8Ms+fNF2Q02bV
+	lCZwnpww==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wqqs0-00CKNb-0d;
+	Mon, 03 Aug 2026 11:30:12 +0000
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH net-next 0/2] netconsole: replace target_list_lock by RCU
+ on userdata hot path
+Date: Mon, 03 Aug 2026 04:30:02 -0700
+Message-Id: <20260803-netcons-userdata-rcu-v1-0-1e5e6b62b75d@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260802215459.2769283-4-surenb@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALp7cGoC/yXMQQrDIBAF0KvIX2dAg4h4ldKFNZPWLibF0RIIu
+ Xtpu37wDii3yopkDjR+V62bIBk3GZRHljtTXZAMZjsHG60j4V42URrKbck9UyuDvPU+sHVxjQG
+ TwavxWvdfe4FwJ+G94/oXHbcnl/5dcZ4fXvxpyYIAAAA=
+X-Change-ID: 20260801-netcons-userdata-rcu-40446e018f86
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, gustavold@gmail.com, asantostc@gmail.com, 
+ Breno Leitao <leitao@debian.org>, kernel-team@meta.com
+X-Mailer: b4 0.16-dev-d5d98
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1271; i=leitao@debian.org;
+ h=from:subject:message-id; bh=1hyD7n6x4B5WKNhx81QFig7jm9LpnsZfhzBuH5E/qz8=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqcHvAsd/OzvBdwyNWj98MK8TCPU99ZDrfG/Tb3
+ e6h1S3d6/CJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCanB7wAAKCRA1o5Of/Hh3
+ bSYwD/wPDlv7Im7UfY19uBeKqNDFFa+ILjlig/Z8kJFmFcCC+0iuLisAeh6AurnZF46LF693m+f
+ KAeVULp2ZNlqLfzltTJ+1EDBPfM16oaTmLN/RTWq8sEKgasE7Ck4zMR3BW2pDcBJ/iXi8qN9EX6
+ yhMHgqTYwIEEUnkqZ6hvuQFkmQBKNmOE+GwHVXrMCJoREJYkb+xeQ+cjIi4vg7wg1OWG5tNor4h
+ weZeGmSAwL5caUu1jpA7lZi6CfFjc9f9CKJUvZTXhdUxCpGjpoRY5rGsVQKi18XR+6P4SWRts43
+ ARg2XLzkjkHd6Tjqe1Va+jq1I6v25YA7arDvoNaLLzGrmOOcncstVoUidRf4cO8lNmobkw66D7M
+ Dthnzvdtm8ua11SgKUl2okE8U120GFoOyVb1E8/HYZHPG+wrX3MIQ4+eKYRPdlRggK8w/8ltxXB
+ pjL9RIRsU1FSCZG14SQi9QPmMsRWPsXq7UW2FFMRF3dQ/m+KCrfb3lPHvr+8OIykTfkRJYecon+
+ y1SzZEB8asCEOkTOexTHlG9wzR/cNA4XRE0olo39EbR2a2Xvmd/T0zLnrplaUKecQQzoHhUfXx5
+ BUsyAi2lcN++PjzH5itGl7QsZZIUChePADfVwwvVWwtRNPP3ctW/MEP1oVQ+UHXI8mThNGNnyEG
+ xlb1Z4z7c1ljZXQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-On Sun, Aug 02, 2026 at 02:54:57PM -0700, Suren Baghdasaryan wrote:
-> From: Dave Hansen <dave.hansen@linux.intel.com>
->
-> == Background ==
->
-> There are basically two parallel ways to look up a VMA: the
-> traditional way, which is protected by mmap_read_lock, and the RCU-based
-> per-VMA lock way which is based on RCU and refcounts.
->
-> == Problem ==
->
-> The mmap_lock one is more straightforward to use but it has a big
-> disadvantage in that it can not be mixed with page faults since those
-> can take mmap_lock for read, which can deadlock when mixed with nested
-> page faults and parallel writers.
-> For example:
->
-> 	mmap_read_lock(mm);
-> 	// Another thread does mmap_write_lock().
-> 	// New mmap_lock readers are blocked.
-> 	vma = vma_lookup(mm, address);
-> 	// This deadlocks on mmap_read_lock() if it faults:
-> 	copy_from_user(address);
-> 	mmap_read_unlock(mm);
->
-> The per-VMA lock can be mixed with faults, but they can fail and need to
-> be able to fall back to the traditional way.
->
-> == Solution ==
->
-> Add a variant of the RCU-based lookup that waits for writers. This is
-> basically the same as the existing RCU-based lookup, but on a failure to
-> lock it temporarily takes mmap_lock for read and waits for writers
-> to finish before locking the VMA, dropping the mmap_lock and returning
-> the locked VMA. This has some advantages:
->
->  1. Callers do not need to have a fallback path for when they
->     collide with writers.
->  2. It can be used in contexts where page faults can happen because
->     it can take the mmap_lock for read but never *holds* it.
->  3. Its fast path does not require taking mmap_lock for read.
->
-> Basically, when applied correctly, this approach results in faster
-> *and* simpler code.
->
+I would like to move netconsole to use RCU on the hot path for
+a while instead of target_list_lock. My goal is to have no lock on the
+tx side at all and eventually drop CON_NBCON_ATOMIC_UNSAFE, if that is
+possible [1].
 
-Would be nice to have a:
+Start removing target_list_lock on certain parts of the code. This patch
+transform the userdata array into a RCU-protected pointer, and use the
+dynamic mutex as the write lock.
 
-Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Added a selftest, given we didn't have any netconsole selftest for
+userdata operations. Feel free to drop it if this is not user, dear
+maintainers.
 
-Here given https://lore.kernel.org/linux-mm/af4Zx0gJIWbdDeY2@lucifer/ :)
+Link: https://lore.kernel.org/all/20251121-nbcon-v1-0-503d17b2b4af@debian.org/[1]
 
-> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> Cc: linux-mm@kvack.org
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Arve Hjønnevåg <arve@android.com>
-> Cc: Todd Kjos <tkjos@android.com>
-> Cc: Christian Brauner <christian@brauner.io>
-> Cc: Carlos Llamas <cmllamas@google.com>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: David Ahern <dsahern@kernel.org>
-> Cc: netdev@vger.kernel.org
-> ---
->  include/linux/mmap_lock.h | 15 +++++++++++----
->  mm/mmap_lock.c            | 29 +++++++++++++++++++++++++++++
->  mm/userfaultfd.c          |  6 ++++--
->  3 files changed, 44 insertions(+), 6 deletions(-)
->
-> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> index eb32b482434e..fdd8f5cf5722 100644
-> --- a/include/linux/mmap_lock.h
-> +++ b/include/linux/mmap_lock.h
-> @@ -228,10 +228,12 @@ static inline void vma_refcount_put(struct vm_area_struct *vma)
->  }
->
->  /*
-> - * Use only while holding mmap read lock which guarantees that locking will not
-> - * fail (nobody can concurrently write-lock the vma). vma_start_read() should
-> + * Use only while holding mmap read lock which guarantees that vma lock is not
-> + * contended (nobody can concurrently write-lock the vma). vma_start_read() should
->   * not be used in such cases because it might fail due to mm_lock_seq overflow.
->   * This functionality is used to obtain vma read lock and drop the mmap read lock.
-> + * VMA can't be detached while we are holding mmap lock, therefore in practice this
-> + * function can fail only when there are so many readers that vm_refcnt overflows.
->   */
->  static inline bool vma_start_read_locked_nested(struct vm_area_struct *vma, int subclass)
->  {
-> @@ -247,16 +249,21 @@ static inline bool vma_start_read_locked_nested(struct vm_area_struct *vma, int
->  }
->
->  /*
-> - * Use only while holding mmap read lock which guarantees that locking will not
-> - * fail (nobody can concurrently write-lock the vma). vma_start_read() should
-> + * Use only while holding mmap read lock which guarantees that vma lock is not
-> + * contended (nobody can concurrently write-lock the vma). vma_start_read() should
->   * not be used in such cases because it might fail due to mm_lock_seq overflow.
->   * This functionality is used to obtain vma read lock and drop the mmap read lock.
-> + * VMA can't be detached while we are holding mmap lock, therefore in practice this
-> + * function can fail only when there are so many readers that vm_refcnt overflows.
->   */
->  static inline bool vma_start_read_locked(struct vm_area_struct *vma)
->  {
->  	return vma_start_read_locked_nested(vma, 0);
->  }
->
-> +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
-> +					       unsigned long address);
-> +
->  static inline void vma_end_read(struct vm_area_struct *vma)
->  {
->  	vma_refcount_put(vma);
-> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-> index e20d01e8d38f..6ff05e68e61b 100644
-> --- a/mm/mmap_lock.c
-> +++ b/mm/mmap_lock.c
-> @@ -338,6 +338,35 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
->  	return NULL;
->  }
->
-> +/*
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Breno Leitao (2):
+      netconsole: publish the userdata payload with RCU
+      selftests: netconsole: add a userdata torture test
 
-Why not a kdoc comment?
+ drivers/net/netconsole.c                           |  88 ++++----
+ .../selftests/drivers/net/netconsole/Makefile      |   1 +
+ .../drivers/net/netconsole/netcons_userdata.sh     | 224 +++++++++++++++++++++
+ 3 files changed, 279 insertions(+), 34 deletions(-)
+---
+base-commit: 8ba098e6b6ff0db8edf28528d1552be261af30d4
+change-id: 20260801-netcons-userdata-rcu-40446e018f86
 
-> + * Find the VMA covering 'address' and lock it for reading. Waits for writers to
-> + * finish if the VMA is being modified. Returns NULL if there is no VMA covering
-> + * 'address'.
-> + *
-> + * Use only in code paths where no mmap_lock and no VMA lock is held.
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
-Well, a VMA read lock can be held which would make this a noop essentially.
-
-If a VMA write lock is held you're also ok as the mmap read lock will preclude
-an mmap write lock, meaning vma_end_write_all() will have been called and the
-write lock released.
-
-So I think you can just drop this line?
-
-> + *
-> + * The fast path does not take mmap_lock.
-> + */
-> +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
-> +					       unsigned long address)
-> +{
-> +	struct vm_area_struct *vma;
-> +
-> +	/* Fast path: return stable VMA covering 'address': */
-> +	vma = lock_vma_under_rcu(mm, address);
-> +	if (vma)
-> +		return vma;
-> +
-> +	/* Slow path: preclude VMA writers by temporarily getting mmap read lock. */
-> +	mmap_read_lock(mm);
-> +	vma = vma_lookup(mm, address);
-> +	if (vma && !vma_start_read_locked(vma))
-
-This maybe warrants an unlikely() given it can only happen if refcount
-overflows? Also worth having a comment to that effect here?
-
-> +		vma = NULL;
-> +	mmap_read_unlock(mm);
-> +
-> +	return vma;
-> +}
-> +
->  static struct vm_area_struct *lock_next_vma_under_mmap_lock(struct mm_struct *mm,
->  							    struct vma_iterator *vmi,
->  							    unsigned long from_addr)
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index edd90892f8cc..c3a0c38a3dc3 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -129,8 +129,10 @@ struct vm_area_struct *find_vma_and_prepare_anon(struct mm_struct *mm,
->   *
->   * Should be called without holding mmap_lock.
->   *
-> - * Return: A locked vma containing @address, -ENOENT if no vma is found, or
-> - * -ENOMEM if anon_vma couldn't be allocated.
-> + * Return: A locked vma containing @address, -ENOENT if no vma is found,
-> + * -ENOMEM if anon_vma couldn't be allocated, or -EAGAIN if vma refcount
-> + * overflow happened due to high number of readers and the caller should
-> + * retry later.
-
-I'm guessing you're fixing this up as part of the patch? But it feels a bit
-random, I mean fine but you should mention this change in the commit message +
-explain why.
-
->   */
->  static struct vm_area_struct *uffd_lock_vma(struct mm_struct *mm,
->  				       unsigned long address)
-> --
-> 2.55.0.508.g3f0d502094-goog
->
-
---
-Cheers, Lorenzo
