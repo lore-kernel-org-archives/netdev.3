@@ -1,78 +1,48 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725A43D891F
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 09:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBDE3D669F
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 09:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785748502; cv=none; b=kcHjt0LJ6np2atWvJNZb0JkXTpneVJ1JmODvMxKX3Qb8bClRCsvP3fzZGhX0e6uhlZ8y82ilsyZeEgOUhLUY/XZK6whc/qx6RVZKWyMVM6HSnJc6Gi9kV29Z57gzbSsVfKvMGsekWVXNB8uuEC8mBAOvHj7Ti7etFyL7lvjTo8g=
+	t=1785748685; cv=none; b=lozSPlAthpbQXPs3TFKTD19qqiXrE/mMpxTVRVyzY/dSwefS7RhJYavMLGnjeygBfQBCNcAsKQtniRQfpvfBVcH3bPpWe0IkKjBZDgDZpvQwobF/7VIQEV3+XuiwveQ3jWI/j58Z0qSOV5ehx8z7NxuUBywcL0JxVSiofvLarog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785748502; c=relaxed/simple;
-	bh=zcETIkLM8Cmdv8MV4Tk1OnRX5GmudwzCo/xVqqn0IWw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLARpe6RGVCO3511xLvbOqM2W75TXO2KdCc8/HgiTkZ/aOIUt4aWDG6L2Pq+OTizc/NTVM7CAtTm3yQOIQ6PyYSLfyUEpbynQk5nlR0maYdeSbTQEA3uNnL2l2kOLoHopyGIgT96dZ5UmbCxhDH64tWEHlDZ/rvVcKNFm5Vukx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=exFtZPS1; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785748685; c=relaxed/simple;
+	bh=LnkZykwJ0OB0VePr0Tuo+/8e8QgUR+81o58qqVoBNhQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GzxB7vt94OOUpSammz/x1vG39yAsCsAv7ucQ38Eibom2+TcSYHIf4y9JLJkXbopQlMV04+PfZcv5IB69gQK4VpHaIaEY1pVkKKWz8rYpLmOdD0r1pOAbeZ0P1YfkmEAvGQNYFkF0IAipYgrzR5lyns1Amk9U+GKJnP4o1hq5OZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Bg+6RgDi; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="exFtZPS1"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cea3004256so33390715ad.0
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 02:15:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785748500; x=1786353300; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kvun/rb+CpTslltyPoabb5PRPEjc9oqIPsRzwfjh80Q=;
-        b=exFtZPS1A8VyfqtbwdRaWaKJyRK35e3j6u/JuekVuVRgdPziOngRl91E0ivfkOBZ6p
-         yjcNcmvHByaRpYZDdMN5m8yZ3klf5u+y27xg7elSAxZKFujEbn8PAl0Q2MK1O3E9zDLg
-         fcYhqylaK+fQdmQPzuQeRsN97yTPWeUnNrJuzvhvAJ3M0VV7ila9D+JoTj/ShSj8GSTD
-         eCpdmAozPP3XtTcPOFF9q0Z8Jagb038wshU2Kkvj4NRGuZLejmOAJ8Dz6X+o0e10D0cX
-         jtL5km7H1HEEFQUGCiZVBHhAisrgzfBZsBxDgxhH7/KO3FUbaj25LOpsqseh+XD2oRz2
-         d8PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785748500; x=1786353300;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kvun/rb+CpTslltyPoabb5PRPEjc9oqIPsRzwfjh80Q=;
-        b=YIplnCMbBchWxwPlO0jMy01j6xGBrKWtIDF/nu4ff+bfddJ4fGThKFrserJ1UcszSP
-         ocL0jGQ1qhv45us8W4T0dFhm8WfAatoxHhnyH5aAVNSy2mK7S+97xGTMhZkh7rA4A0qd
-         4OVuWKsuZ5+Yk0MDKbJ7UJWGf/lk3gPl6DLbE7Qkhp+JsXYt17/KhVXSFgSdC30CIAOH
-         TMWfuslnk8FR1IgXGRD6Q/WGr17cjNc641IvoypTj4ekFJx76AI4VtzsPO6CIAqVLD70
-         w7z7EV4Ze9Mt81UWUv/MswdPuY3uwTyZ1EDd1hh8UonRybEqUD3Q7w3fOK9Tk/tDGmJ1
-         enpQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpHWxXgvJVz4nJ4xW1hEK5hTkPChq1f+xMLEE4xIJz8LObawKiSuQTSQdZeOU6/tKEnjlZ0gHU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkGylq47XheuZK1inhZhTpuC9rAGoADRFzz9VIXXyJxaTnrRqx
-	5N+6vN4+NJy9/pVOEsldSIpOyYrBtUyEedFIJ+cik9n329CHPms0jjpB
-X-Gm-Gg: AR+sD12dkW+XqqoBRbSi8Rep1HWXw+pbvzjvC1fzAjvSjfIqPFXcn1YmHyLBzV7H67q
-	DRlHtbm4u1zXcrKB/zKC1kOT+LFmNlfUlMVq3k8tXn2MKR9S1sPbdFNRoYt4ftwN3QN8Z2fhTCQ
-	nrTodFDaNhhQWWMU1WOlpc3ach6vRYui+wM2RsZj+TOfh2pa89BwyzXOZsB6nONynVJ1ipSLbPr
-	nHBsGi0imtBMciB3EWAGvvmXkn/CYH2lP05/EGOjqHGf9VqdjZxS4xff5FEFXqOuHL4iiwWoiit
-	Bc9p3XO23FuaIcBzuq11V0euRaLzDyggFNwDcZJ4CPvyE9XAW2bCFD4LfsxPqwL1o/krtOLfz9d
-	cWZgDUH/nc0DB1gYkn7X/+ka2iNqrdTo2EdeyhdIvBFB09EyoV4AtPuGDGkaMMPmTtnJXq4n4sG
-	eA7oeJFC0O7B4cPihQhkB3+0pquC5iQzwPtZozRYAxbQtHO0LGPwsAZAG5is/kncwYSGelBf9t+
-	5AP/anyUXN0cL1NAZZHQ87ujWrxAe0lFG5i3+6JyC/QbO1Z8DQ38w==
-X-Received: by 2002:a17:902:da90:b0:2ca:9d5a:8b6c with SMTP id d9443c01a7336-2d0521e8b31mr82117175ad.5.1785748499595;
-        Mon, 03 Aug 2026 02:14:59 -0700 (PDT)
-Received: from C-PF5A3Z8J.nsn-intra.net ([167.103.78.203])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b0eb7b7sm34546515ad.39.2026.08.03.02.14.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 02:14:59 -0700 (PDT)
-From: Sureshkumar S <ssureshmsd7@gmail.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol@kernel.org>
-Cc: Oliver Hartkopp <socketcan@hartkopp.net>,
-	linux-can@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Bg+6RgDi"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785748680;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ulk/V5btxwZtrABJCFPtp34M9DhWLr2JqKEP4dSpjm0=;
+	b=Bg+6RgDijOkwXUJPp4GVGi70cGWLskShR3XreGCMRium3XJcWTtrE9nTjtnWh8q5UXSe2X
+	r3ZHso5ZIU8N8VcscYibz9jBqrgzNLIY9W/YJNfOvVz3ePSrogEjlIKDscLrYTSa0gmu7r
+	vNGocEPYiNoKzioXgoCaRjhjcR7dM6Q=
+From: Chenguang Zhao <chenguang.zhao@linux.dev>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sureshkumar S <ssureshmsd7@gmail.com>
-Subject: [PATCH net 2/2] can: bittiming: fix bitrate error calculation on unsigned operands
-Date: Mon,  3 Aug 2026 09:14:26 +0000
-Message-ID: <20260803091426.29050-3-ssureshmsd7@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260803091426.29050-1-ssureshmsd7@gmail.com>
-References: <20260803091426.29050-1-ssureshmsd7@gmail.com>
+	chenguang.zhao@linux.dev,
+	kerneljasonxing@gmail.com,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	Mohsin Bashir <hmohsin@meta.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH net-next v4] i40e: xsk: use xdp_build_skb_from_zc() for XDP_PASS
+Date: Mon,  3 Aug 2026 17:17:50 +0800
+Message-Id: <20260803091750.1084506-1-chenguang.zhao@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,44 +50,243 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-can_calc_bittiming() rates each candidate against the requested bitrate
-with:
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 
-	bitrate_error = abs(bt->bitrate - bitrate);
+Replace the driver-local i40e_construct_skb_zc() with the common
+helper xdp_build_skb_from_zc(). On failure, free the xdp buff in
+the caller.
 
-Both operands are unsigned int, so the subtraction wraps instead of
-becoming negative, and abs() resolves an unsigned int argument to its
-int branch. A wrapped difference is therefore reinterpreted as a small
-positive value instead of the large error it actually represents.
+xdp_build_skb_from_zc() already calls skb_record_rx_queue() and
+eth_type_trans(), so pull the remaining descriptor field setup into
+__i40e_process_skb_fields() and use that on the XDP_PASS path.
 
-A requested bitrate far above anything the controller can reach then
-passes the CAN_CALC_MAX_ERROR gate. On a dummy_can device with a 160 MHz
-clock, requesting 4294967294 bps reports an error of 0.01%, configures
-415584 bps and returns success to userspace, where -EINVAL is expected.
+Select PAGE_POOL in Kconfig, since xdp_build_skb_from_zc() returns
+NULL when page pool support is disabled.
 
-Use abs_diff(), which subtracts the smaller operand from the larger one
-and keeps the whole comparison unsigned.
-
-Fixes: 7da29f97d6c8 ("can: dev: can-calc-bit-timing(): better sample point calculation")
-Signed-off-by: Sureshkumar S <ssureshmsd7@gmail.com>
+Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Reviewed-by: Mohsin Bashir <hmohsin@meta.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
 ---
- drivers/net/can/dev/calc_bittiming.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v4:
+- As suggested by Mohsin:
+  Select PAGE_POOL in I40E Kconfig so xdp_build_skb_from_zc() cannot
+  return NULL due to CONFIG_PAGE_POOL=n and drop XDP_PASS packets.
 
-diff --git a/drivers/net/can/dev/calc_bittiming.c b/drivers/net/can/dev/calc_bittiming.c
-index 4809f5e0c96e..2789b99ab6a8 100644
---- a/drivers/net/can/dev/calc_bittiming.c
-+++ b/drivers/net/can/dev/calc_bittiming.c
-@@ -132,7 +132,7 @@ int can_calc_bittiming(const struct net_device *dev, struct can_bittiming *bt,
- 			continue;
+v3:
+ - https://lore.kernel.org/all/20260731020736.170485-1-chenguang.zhao@linux.dev/
+
+v2:
+ - https://lore.kernel.org/all/20260729054916.720750-1-chenguang.zhao@linux.dev/
+
+v1:
+ - https://lore.kernel.org/all/20260724020125.246333-1-chenguang.zhao@linux.dev/
+---
+ drivers/net/ethernet/intel/Kconfig            |  1 +
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c   | 32 ++++++--
+ .../ethernet/intel/i40e/i40e_txrx_common.h    |  2 +
+ drivers/net/ethernet/intel/i40e/i40e_xsk.c    | 79 ++-----------------
+ 4 files changed, 34 insertions(+), 80 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/Kconfig b/drivers/net/ethernet/intel/Kconfig
+index 288fa8ce53af..75d1ad6e361d 100644
+--- a/drivers/net/ethernet/intel/Kconfig
++++ b/drivers/net/ethernet/intel/Kconfig
+@@ -234,6 +234,7 @@ config I40E
+ 	select LIBIE
+ 	select LIBIE_ADMINQ
+ 	select NET_DEVLINK
++	select PAGE_POOL
+ 	help
+ 	  This driver supports Intel(R) Ethernet Controller XL710 Family of
+ 	  devices.  For more information on how to identify your adapter, go
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+index ef5e657816f0..87553b14d34a 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+@@ -1833,17 +1833,17 @@ static inline void i40e_rx_hash(struct i40e_ring *ring,
+ }
  
- 		bitrate = priv->clock.freq / (brp * tsegall);
--		bitrate_error = abs(bt->bitrate - bitrate);
-+		bitrate_error = abs_diff(bt->bitrate, bitrate);
+ /**
+- * i40e_process_skb_fields - Populate skb header fields from Rx descriptor
++ * __i40e_process_skb_fields - Populate skb fields from Rx descriptor
+  * @rx_ring: rx descriptor ring packet is being transacted on
+  * @rx_desc: pointer to the EOP Rx descriptor
+  * @skb: pointer to current skb being populated
+  *
+- * This function checks the ring, descriptor, and packet information in
+- * order to populate the hash, checksum, VLAN, protocol, and
+- * other fields within the skb.
++ * Populate hash, checksum, PTP timestamp and VLAN from @rx_desc. Does not
++ * call skb_record_rx_queue() or eth_type_trans(); callers that already got
++ * those from xdp_build_skb_from_zc() should use this helper.
+  **/
+-void i40e_process_skb_fields(struct i40e_ring *rx_ring,
+-			     union i40e_rx_desc *rx_desc, struct sk_buff *skb)
++void __i40e_process_skb_fields(struct i40e_ring *rx_ring,
++			       union i40e_rx_desc *rx_desc, struct sk_buff *skb)
+ {
+ 	u64 qword = le64_to_cpu(rx_desc->wb.qword1.status_error_len);
+ 	u32 rx_status = FIELD_GET(I40E_RXD_QW1_STATUS_MASK, qword);
+@@ -1858,14 +1858,30 @@ void i40e_process_skb_fields(struct i40e_ring *rx_ring,
  
- 		/* tseg brp biterror */
- 		if (bitrate_error > best_bitrate_error)
+ 	i40e_rx_checksum(rx_ring->vsi, skb, rx_desc);
+ 
+-	skb_record_rx_queue(skb, rx_ring->queue_index);
+-
+ 	if (qword & BIT(I40E_RX_DESC_STATUS_L2TAG1P_SHIFT)) {
+ 		__le16 vlan_tag = rx_desc->wb.qword0.lo_dword.l2tag1;
+ 
+ 		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q),
+ 				       le16_to_cpu(vlan_tag));
+ 	}
++}
++
++/**
++ * i40e_process_skb_fields - Populate skb header fields from Rx descriptor
++ * @rx_ring: rx descriptor ring packet is being transacted on
++ * @rx_desc: pointer to the EOP Rx descriptor
++ * @skb: pointer to current skb being populated
++ *
++ * This function checks the ring, descriptor, and packet information in
++ * order to populate the hash, checksum, VLAN, protocol, and
++ * other fields within the skb.
++ **/
++void i40e_process_skb_fields(struct i40e_ring *rx_ring,
++			     union i40e_rx_desc *rx_desc, struct sk_buff *skb)
++{
++	__i40e_process_skb_fields(rx_ring, rx_desc, skb);
++
++	skb_record_rx_queue(skb, rx_ring->queue_index);
+ 
+ 	/* modifies the skb - consumes the enet header */
+ 	skb->protocol = eth_type_trans(skb, rx_ring->netdev);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h b/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
+index e26807fd2123..3c52e0e60487 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
+@@ -9,6 +9,8 @@
+ int i40e_xmit_xdp_tx_ring(struct xdp_buff *xdp, struct i40e_ring *xdp_ring);
+ void i40e_clean_programming_status(struct i40e_ring *rx_ring, u64 qword0_raw,
+ 				   u64 qword1);
++void __i40e_process_skb_fields(struct i40e_ring *rx_ring,
++			       union i40e_rx_desc *rx_desc, struct sk_buff *skb);
+ void i40e_process_skb_fields(struct i40e_ring *rx_ring,
+ 			     union i40e_rx_desc *rx_desc, struct sk_buff *skb);
+ void i40e_xdp_ring_update_tail(struct i40e_ring *xdp_ring);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+index 9f47388eaba5..dfa519c30a0d 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+@@ -3,6 +3,7 @@
+ 
+ #include <linux/bpf_trace.h>
+ #include <linux/unroll.h>
++#include <net/xdp.h>
+ #include <net/xdp_sock_drv.h>
+ #include "i40e_txrx_common.h"
+ #include "i40e_xsk.h"
+@@ -277,70 +278,6 @@ bool i40e_alloc_rx_buffers_zc(struct i40e_ring *rx_ring, u16 count)
+ 	return count == nb_buffs;
+ }
+ 
+-/**
+- * i40e_construct_skb_zc - Create skbuff from zero-copy Rx buffer
+- * @rx_ring: Rx ring
+- * @xdp: xdp_buff
+- *
+- * This functions allocates a new skb from a zero-copy Rx buffer.
+- *
+- * Returns the skb, or NULL on failure.
+- **/
+-static struct sk_buff *i40e_construct_skb_zc(struct i40e_ring *rx_ring,
+-					     struct xdp_buff *xdp)
+-{
+-	unsigned int totalsize = xdp->data_end - xdp->data_meta;
+-	unsigned int metasize = xdp->data - xdp->data_meta;
+-	struct skb_shared_info *sinfo = NULL;
+-	struct sk_buff *skb;
+-	u32 nr_frags = 0;
+-
+-	if (unlikely(xdp_buff_has_frags(xdp))) {
+-		sinfo = xdp_get_shared_info_from_buff(xdp);
+-		nr_frags = sinfo->nr_frags;
+-	}
+-	net_prefetch(xdp->data_meta);
+-
+-	/* allocate a skb to store the frags */
+-	skb = napi_alloc_skb(&rx_ring->q_vector->napi, totalsize);
+-	if (unlikely(!skb))
+-		goto out;
+-
+-	memcpy(__skb_put(skb, totalsize), xdp->data_meta,
+-	       ALIGN(totalsize, sizeof(long)));
+-
+-	if (metasize) {
+-		skb_metadata_set(skb, metasize);
+-		__skb_pull(skb, metasize);
+-	}
+-
+-	if (likely(!xdp_buff_has_frags(xdp)))
+-		goto out;
+-
+-	for (int i = 0; i < nr_frags; i++) {
+-		struct skb_shared_info *skinfo = skb_shinfo(skb);
+-		skb_frag_t *frag = &sinfo->frags[i];
+-		struct page *page;
+-		void *addr;
+-
+-		page = dev_alloc_page();
+-		if (!page) {
+-			dev_kfree_skb(skb);
+-			return NULL;
+-		}
+-		addr = page_to_virt(page);
+-
+-		memcpy(addr, skb_frag_page(frag), skb_frag_size(frag));
+-
+-		__skb_fill_page_desc_noacc(skinfo, skinfo->nr_frags++,
+-					   addr, 0, skb_frag_size(frag));
+-	}
+-
+-out:
+-	xsk_buff_free(xdp);
+-	return skb;
+-}
+-
+ static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
+ 				      struct xdp_buff *xdp_buff,
+ 				      union i40e_rx_desc *rx_desc,
+@@ -372,21 +309,19 @@ static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
+ 		 * BIT(I40E_RXD_QW1_ERROR_SHIFT). This is due to that
+ 		 * SBP is *not* set in PRT_SBPVSI (default not set).
+ 		 */
+-		skb = i40e_construct_skb_zc(rx_ring, xdp_buff);
++		skb = xdp_build_skb_from_zc(xdp_buff);
+ 		if (!skb) {
++			xsk_buff_free(xdp_buff);
+ 			rx_ring->rx_stats.alloc_buff_failed++;
+ 			*rx_packets = 0;
+ 			*rx_bytes = 0;
+ 			return;
+ 		}
+ 
+-		if (eth_skb_pad(skb)) {
+-			*rx_packets = 0;
+-			*rx_bytes = 0;
+-			return;
+-		}
+-
+-		i40e_process_skb_fields(rx_ring, rx_desc, skb);
++		/* xdp_build_skb_from_zc() already ran eth_type_trans() and
++		 * skb_record_rx_queue().
++		 */
++		__i40e_process_skb_fields(rx_ring, rx_desc, skb);
+ 		napi_gro_receive(&rx_ring->q_vector->napi, skb);
+ 		return;
+ 	}
 -- 
-2.43.0
+2.25.1
 
