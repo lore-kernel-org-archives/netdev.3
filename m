@@ -1,242 +1,195 @@
-Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012068.outbound.protection.outlook.com [52.101.43.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC3038F624
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 05:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785735390; cv=none; b=HUDzXbJcSzLJRYMvgCpNTEymUdTA37VLxadv9KJ9EcGuZkdlpVO0y1Fq6JBnxhJHnNRIjIh/BeEY7TI8R31+s9ffVIcQ521/86CMK+3PRuX4pmyGCWVQn1VaLHEZUI6KikFEGIkRRLT8sssqDlyxUwu/XZfcNdGy8Ieg/oATVGQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785735390; c=relaxed/simple;
-	bh=lUZaj7e6pgLyOmJVheZXyRVvDSMAyjXbCMTaNBaZyOk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nt5j2IsQNuGmlSy95/ENteF1NStalJncQV1gwSbhaHVY2ImgQ71O5W1at5TiXADDYc+FICK3nJ/3NCyGWVuHfBfP5yZMbeKwWhGMtTRQcQ6M4zx9AR4dvqy5khEoFBw5+ulvYFJ+xespG9v4EXRIMwQPQo1sLV15/LsMmAj7fEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=FEUxjGam; arc=none smtp.client-ip=209.85.214.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30C93770B;
+	Mon,  3 Aug 2026 06:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785736948; cv=fail; b=RD+/MU68jLfYTZ5erXWN6P+Tb0reCvhECoUSbYRdQqjsdaA8AR3MCU5BRM3mXGrETYrf8jzJdLbok9RyRn6ntQrD38NRc1/FFdTklD2I350MKn1e5YG6lHv+i1LB/ObuUq/I9xscpN7x2psM8pp7+EFeUfnVJOePkVyhv3/Mrxg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785736948; c=relaxed/simple;
+	bh=C07zNTj5JBmaxUQQ/cV4ON8g/CoFviJZe0uFjPEEv7g=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=U7Crzq1L9F0rx+c4kZjcJ/DT+LCNofOHVeCcEP9hZJeUuQeJJ9v4YIfHby5xJQnVmK06b2Ciq9jEBJ2iyJhg9UWJFJ+6K6LXAJYqf7PDDAelwD5vRLE8jMdH8zIJZpYor5fkn7GoymidlZyhPdZWFPHa4VMqzGUtywZ2d/QkNN8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jX0uttOO; arc=fail smtp.client-ip=52.101.43.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="FEUxjGam"
-Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2cace91f112so31324445ad.0
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 22:36:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785735388; x=1786340188;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hNrsD2wHC01yJoYi/MriLGAnk+aXQIbCkX3aTBnZikQ=;
-        b=ncCtsghPkyamUBSfx0033NIQ3/zmy+qKhVxGxInwd+o+WsGYx3mCPWhojM6Yx5rpT5
-         YHAqBKo4SwbRL877BjDV8Zeg5fC3s36VKGVV6CnwWOZ2NsmevcqVllxq+KgF5t9YS9s2
-         /skVsNh3wIGm3W+k8cZUGstZiA8VS9Eljsy1CMGP7Zwho6F7yBKwbDPdSOuEWSU3k6+1
-         S2TgU7k41fdVUrgbzWtWrFzR8tl7zSGk9XrxOYpgnjouxwYw5sdODDnZ3g+iIZsTyxcC
-         0w7SaljZ1pBec+xWH2wkz/00sGTba/Hi0Zg5lRTjje9jg/nQ4o7y7g1Fonn82LL4YeDW
-         p0+A==
-X-Forwarded-Encrypted: i=1; AHgh+Rr4Dil/o1armyLdPep8mh1os0NH7lp5JJNhgi+RwQMBhZBX3hv+SxmPWZZfQDa9EJxNnMvaucE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4H02dxeaE0h0llyNIZ27wPPmPaBTkyK7Hr/D+eSavPkOe3gZP
-	vyHddTrI9Kt01uNGqxhAzgTdI2dbUVBsrjlondIAjNe/HflXnLGQ42Ng/1Xc3h6aVowdGo7Qujw
-	t90TvmVfkZeFamTJlOMvoAEBf/xK39Z5tI/zWYeBgdV7A57nyQtLVwVmyS5bKKaGbhAHpP+11bh
-	RpdQd0mFGkYwPW1YzRmRuX1XJegvU7Wd3cghqBOlvQ37/Obky5KbbxPAPeP0qTxRx8oLPhzHdai
-	GpnzPdOgpbX3DSyjQ==
-X-Gm-Gg: AR+sD10sOish24BvrC7kDrgjnl0j3KAc7O7/fh6Byf2PxnpZuhnCO0ADv6mDes3v6pW
-	P3s2vi3JL+jh30M7NschfLPj2SoXMjFDL0IB69xz5fSpmKHQqAb3KEbZ/kVQmSa0jwaed1Yibtz
-	Y0uMNABEz0nVeQZy69KIleWrXNZsXZ+d3IYs2YcBpeDKsoVEQ/HXG4H7pyyPDQ0YIUPxwkBmiyw
-	jCRYzc0KEu2NdaTK9z8zsNZ4yyxIVhS/ma6Y2R/QuDKLjvqO0hKYW/Ld5fxDETpWzEEcIORzXXu
-	lFv+UjdFnJReccSzo+k5VEoxt/wvDypL8eIIOJFfM2xo6pHHgKUiuXvKj25h/A1Co/lgYweRFVC
-	ce2wTUwkaRqzT6YG/4RzxqQEmPbU2GSSNuAXsD3pxn1QRr0tVzNwc1Dx4CO8XKaEHZtnE9w6duV
-	2gE/4exIgkpAuYAdEcjnHD8nOaoxezfg/O0KVH/gErsw==
-X-Received: by 2002:a17:902:e543:b0:2ca:329:3da1 with SMTP id d9443c01a7336-2d052215bb2mr86608955ad.16.1785735387867;
-        Sun, 02 Aug 2026 22:36:27 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2d04b16f3cfsm9078605ad.51.2026.08.02.22.36.27
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 02 Aug 2026 22:36:27 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38f57e31b6eso2912194a91.1
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 22:36:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1785735386; x=1786340186; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hNrsD2wHC01yJoYi/MriLGAnk+aXQIbCkX3aTBnZikQ=;
-        b=FEUxjGamqVUOe4GO3WWfeilLcL3m1PRk1IXhV6p78/vy0mBtlemYAp5J/L9MTTuIxN
-         eCg3rWxH2l/wbZUFMJ2Sv4PDgdsc8C4FWm87vUc+Bn4CKfRXjNqsK/YC0UFmRWe1TauR
-         nC/GNUkWTLKl1s754nDjKXpxLsK4P6e4oxvkY=
-X-Forwarded-Encrypted: i=1; AHgh+RphR0gqig+OD9kca/SktaUyVnWTrMqzzIOagVbx06mKirWvYqqaeG/RC0j1kk0z2IHkDXeB/Xo=@vger.kernel.org
-X-Received: by 2002:a17:90b:280a:b0:38e:97f0:aa4b with SMTP id 98e67ed59e1d1-38fbc4542edmr7501042a91.13.1785735385881;
-        Sun, 02 Aug 2026 22:36:25 -0700 (PDT)
-X-Received: by 2002:a17:90b:280a:b0:38e:97f0:aa4b with SMTP id
- 98e67ed59e1d1-38fbc4542edmr7501019a91.13.1785735385394; Sun, 02 Aug 2026
- 22:36:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jX0uttOO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZCAdO6PCBpTzgxsy9DaTdsO22FUFaCuuHA+2g3DSLb+G7beOKzI6V1MYKLZnJUrCYxYMu/Y3UOIOfTHvKskzEFYBVpr4/LZ1nVNVwYpB3Q3fJEkDPEXoUx6SRXkarp8A16ZxYKpgTmfPyEx68NQ40Qo7fpqakdRxehmb6a8jtJjMNgEJ+Wf6Z8XMt9KMe1MPLNYacxOkL/O8OJPfTlFVJfBzMD3TzqCtufZGDU1vn8MWFVq44CKawT2FZ8C+g17mD/wqJldsOXRxhk+eClcXrfFNINpc01UqPRCbCLzTfm3x9HoMZCLsT/pI7iH34VbV4xP/xavHAtbI6qre/hVK5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hGJ0wIqyW3MzozBS/sxDafr7Rfc+98j6JiTqog1vRJ0=;
+ b=ajLxrbCrxjVZwj2uZ1iYO2YnFzOQtok5RKzmaXBYCxXuBQhss1Zk+1ECiN7K7sgmhXTEy0thmbJ06FoUro+F0222GupeOIvO2rp1gLzHAp41CFYzYnhwmQZ8KG4j6ecyMjN6p+Am36QM+L8X1wRUnotSzOOmJLEHSfkQsrCnhWn0f4Y1yLxhlooF9AzZNDIm4XctPaLvxddw7qJX/jSJp7BE5TsrODKYBJbs/JVN4SazzKegoTqpwkWu++YTWHqH+pyCAGkNjTUO8bbKRT9orzIKQls4dA4lQSq7MNwpJmGRkpOZ/pqoAbIej6//Da2L/bgz+xIKfhUV+uaxGrh9qg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hGJ0wIqyW3MzozBS/sxDafr7Rfc+98j6JiTqog1vRJ0=;
+ b=jX0uttOO0Gt8lAbZuSlC3hxduH9G9TnL1tIy8xwl7zyBFLnJt86SbvwxYDb17E2aSugqQV0PDEl7gELQE7ww9UgeS6n95Rgokl+Xy55fT0wfFXI+bW3qOqvTS80c9lUnBVzg87Uq/VF+VLdWQqqv/+vBHz6BwidqaQuBAqdZ9CkLRSQUD6PzWTgI5//PGZSnsKxJ3D0cHlb0fewAMBjIjYL87kyuf5ZhcvXo0Mn0qrwhGGxkGgszH2BtuTBcNEkOAHrAxLDZ5SunvqtpxzMwj+dJLWcAGjtuXzvwfQJRQeY3Mtt4I0xjG3U/N7VxhFaOUB5qZVO1MAyW/HWmzyp91Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA0PR12MB7090.namprd12.prod.outlook.com (2603:10b6:806:2d5::16)
+ by CY3PR12MB9702.namprd12.prod.outlook.com (2603:10b6:930:103::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Mon, 3 Aug
+ 2026 06:02:23 +0000
+Received: from SA0PR12MB7090.namprd12.prod.outlook.com
+ ([fe80::de78:df30:c2e6:7adc]) by SA0PR12MB7090.namprd12.prod.outlook.com
+ ([fe80::de78:df30:c2e6:7adc%6]) with mapi id 15.21.0270.016; Mon, 3 Aug 2026
+ 06:02:23 +0000
+Message-ID: <aa34a758-29b8-4705-822c-a3732fabcbeb@nvidia.com>
+Date: Mon, 3 Aug 2026 09:02:17 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net/mlx5e: fix BQL reset on SQ re-activation
+To: Bobby Eshleman <bobbyeshleman@gmail.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Dragos Tatulea <dtatulea@nvidia.com>, Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Bobby Eshleman <bobbyeshleman@meta.com>
+References: <20260729-mlx5-bql-v2-1-cdf285e586df@meta.com>
+Content-Language: en-US
+From: Tariq Toukan <tariqt@nvidia.com>
+In-Reply-To: <20260729-mlx5-bql-v2-1-cdf285e586df@meta.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0121.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b9::19) To SA0PR12MB7090.namprd12.prod.outlook.com
+ (2603:10b6:806:2d5::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260801100923.1498570-1-alok.a.tiwari@oracle.com>
-In-Reply-To: <20260801100923.1498570-1-alok.a.tiwari@oracle.com>
-From: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
-Date: Mon, 3 Aug 2026 11:06:12 +0530
-X-Gm-Features: AUfX_mwdYs5e-mfPfM-0E4hoNE8WGDD-0yXsmpgphnE4CSnvGie3L7hbfE6iHZA
-Message-ID: <CANXQDtYzo0FtTxjq+vvSDn8AxZ9g6SaGF67FKEdj0PoGMr1+2w@mail.gmail.com>
-Subject: Re: [PATCH net] bnge: use int for bnge_fix_rings_count() return value
-To: Alok Tiwari <alok.a.tiwari@oracle.com>
-Cc: rajashekar.hudumula@broadcom.com, vikas.gupta@broadcom.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, 
-	alok.a.tiwarilinux@gmail.com
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000005e60e106581deb1f"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA0PR12MB7090:EE_|CY3PR12MB9702:EE_
+X-MS-Office365-Filtering-Correlation-Id: a56ef7cc-cdb0-4c85-8e97-08def124c970
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|18002099003|22082099003|11063799006|10067099003|56012099006|921020;
+X-Microsoft-Antispam-Message-Info:
+	BSTQuv8YqG0yqBxtllOUD5sge1KptaWncsaQIp77klPX0Ut8Qx7PtYvIbUZ1UQcIG5C36sBLgMUBYvw2MpCnT0ndKx2dCKG7bMUM9RCY7muQVJo7TntLKNOfzVsC4cJxyl9fv02KMoP9xEcTx7zVLniY6xcsj1zyGWJFpbUp5LnlF9z+moB06w/MZlR6925kfubb304THk5VSIx7XJgFKZV/hlL12gK1lFX4b5eMTO06dazSlojsGQNl+6XYQcIJEwR/55WjyeOZSGh/p2kKjH8Jxage9TWjwEF8SHHwSMUso5xkQlANxUFkzKP5uYf9yzqoscE4VLLUHWiXdV95gjBLwO8nomxkPu7UgSyRi9DN1oDnfUYmqfR30HwdpJpxGk5FVBCTMAamNQSj6wCTiXpXHTwXX1Nl6yBiKwKe8AgOPRwnd6btdrOoyOgmbbgqQFWa+nnxtHDmGjgpmlWc2r/X0dKvpHj+Frp45XIWv1VbY+ufI2SIIArB2wq/+vto7w4XkNHiHuZgHyZRS+9UtXfvpROD8NNgfEo0RFv301LZUdO5sTsrcopEBd65Bk7xW2irIrBb9zsROJU2tAW7RnMf4+EuUmAzsZSsk8UBdYSkNBrk5ZymccQtDa6JvFMvWaZCPRDDKnxFG6WMfUSOQCyxDVm4vJSBFV5lZPihpY7LSrsgoHeTA7bHGwVZB3oRxqPIVu0XEoOGqtmJPtiRZA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB7090.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(18002099003)(22082099003)(11063799006)(10067099003)(56012099006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TEx2SHczemk5SEFyZmpPK253S0pVdVpISzFKeWhYdko3eURxM1VMYW9Ca3RI?=
+ =?utf-8?B?QUt6VklmQWk4K3VnOFlTYVlrL2IrSUhqWmh4c3pXbUZ1V2xhZlJvQldqN2FM?=
+ =?utf-8?B?dENnSTUzb2VNTk9XVzdPTnl6WWVQZ2xjV0dFei8xS0NENHlXT1R2Y2FSeHBy?=
+ =?utf-8?B?Szd5ZzA2SlBnMHF2NTdQQVZHbmVVcy9LWjYvVldoNENoR0IrRm1wcVR6Qk5i?=
+ =?utf-8?B?Zk9uNEkzbnpFNVpheVFuRVlaZWVjSFpHUFA4MmhGUUNheFplOE43YjlsVExz?=
+ =?utf-8?B?ajVlSU1JU05FbFVnRk1aTGhiTjZWL2F4ejcwNHdaQjJjbEMrUzlOUEliM1dK?=
+ =?utf-8?B?U1I0aVJkL0k1L1BKNlhmNFhIandqeTZCaVhpcFB3UEd4TDNtVUhieklvc3k5?=
+ =?utf-8?B?WEdHK1dLV2VISElRN2Y5UkYzaW9XMjRLTjNiRTdnRXR0WnQyeHRaMVV3Q3Fa?=
+ =?utf-8?B?bkliaFQ1QUlzdk0zNFhONUQ0Y1c4OXJ4aC85VHBNZjduTm10TnJJWU5VZU5m?=
+ =?utf-8?B?OFZBZml4OEhyQk0xbWtrc3JyRlRENzAwS2FWVHRZRCtCRlRJUFA0V3FDbGRk?=
+ =?utf-8?B?eEhtSmp5cm1NMmtsdnVsdkppcXdCNEMvWE1zdkU0d0k1VlZZQ0dEOXJFdGNl?=
+ =?utf-8?B?RG03UGlubWdTRStGbDJNUUU0STJ5SHE2S3Q4WWxKS29Ibk0ramtUSm9DR2U3?=
+ =?utf-8?B?QTU5ZXhUeWRQeFJFOExNYWVnaE1zNkZtMWhHRm44aE9haC81Y0VtOGFtb0c5?=
+ =?utf-8?B?YU83UVJVQlQweHFNQVlTUmNGandRL2tuWUE2MVY4RzJCdEMvY3BwSVJ4bitT?=
+ =?utf-8?B?MXZsTHpqYWNhbThSMHl5NGxGcTV2UlBCaDl0ejdUTUR6Z1RlbGw2MVFlSjR3?=
+ =?utf-8?B?bS91ZFo3UkJBMFVCVVh1aUdKVmVJdjd1MmUwSFhtYjV6NU1mR3NrTU82bU1v?=
+ =?utf-8?B?V0p3cVR0U1FQRFNLbUpTTVRTcXAxMmFVakJwbHFBb0ZYZUZhQUE5eW5ibDNT?=
+ =?utf-8?B?NjZYMGF0VkppdFh2ZWRTYnZIMXl1OUtjK1hPNUwvd0RlNzNZalRGWVhwWXFs?=
+ =?utf-8?B?NElYQzlIc1ZXeDh0bENZaGRmWmZJRnVDL1p1b2Uxamd5amt6K1Zmb1FjMDUz?=
+ =?utf-8?B?Um0xRUJ5dXNtZnpRZmtIQmZUSktUY21vbjJ6Z3FxZjVQSUhsYXh5ZlpId2lk?=
+ =?utf-8?B?dVUyWUgzS0Q2c0lyb1dxQUNPejkyU0R1M2hFYnp0M09hZVVCVXo2MmQ3ZEFB?=
+ =?utf-8?B?WmRObkx0cWFvcy9oc0dza0VSck9HcWdBclZmdjJ1SEpXYzliMDJOOCtWMFh6?=
+ =?utf-8?B?aXVOYTAvTHRyYURjSUFDakJwQUxTMFZ4T3F2V3VLaitZL3RHNjhHWkFXcEZl?=
+ =?utf-8?B?U3A5dGw2VFdRRlJVY1lCNDZ5eVZwVUZCNThzWWt0c1h1RUtOK0Z5azF5NkNt?=
+ =?utf-8?B?VDBzaUxGZklKTmYxQXI4eURPM09RSWJEbEdPckdRZ212dXo1M05rZ1UzaU04?=
+ =?utf-8?B?TjlBVG10ck5HOWNTY2o5MEx6NU9XSDBXd2FMeG1PL2t5WEtJUVR2ekZYUW9y?=
+ =?utf-8?B?ZWM0MTVsT3Nhb1RUaHM5VGJYQktWUHNJVkdNMGFrTHIzZkMxVXlKUVdNczUy?=
+ =?utf-8?B?Z3N5aEdpeHBtcFpaWU82SWwvbXZ6MmdLT0hiYzdJNk9EVGJYalFnc2MwS1pI?=
+ =?utf-8?B?b3ovcWpwcHFFYlcxL3Yxa2Z0ZlViQVV2bTRDcjVqYXdnWEozOGxkbnlXcUZh?=
+ =?utf-8?B?Z1E3OEdkSmtHYXBjQnZsM0Z1UnA3aU9yc3RRMEIrbVZKNkFtTkUyT2xydDhh?=
+ =?utf-8?B?VHdtSGozcFRJMXFESndqSTdmejN2dE8yV2JUNTVmR3JMcU5ETWtkcXp5TnRV?=
+ =?utf-8?B?bXVMREFZa2poR3RCbHJVQ3UvMnlCazFuSmo4RitabWRoTDJsSlZJVEdhbUp5?=
+ =?utf-8?B?ZlpzODM1bmRPRW1qWXdjaFU3ZXNBTytSak5YeVFnbmNyMnlNd1J2dFpFZTUz?=
+ =?utf-8?B?QkhlSDJrbnhSaE4vcXNVV2ZrVXV0eTNVZkd6TFNTTnhRRmlralZUb281TW5Y?=
+ =?utf-8?B?QW5FZ25OS0l3bjNNY3UvTWVLUitWd3k0TTZBODBwczJDc1BXeHVuVklZcVJ5?=
+ =?utf-8?B?eTN1WlhBTXFkSHR3MWVzM2tWc3B3N0hUWkRhREptWTZVTHZTS2NTWE5scDkx?=
+ =?utf-8?B?T1lFaVV4OWwzWlByN0RzTEM0NDBFdEVTY3pDam82M0t4d0I3VW9uOURzUlpM?=
+ =?utf-8?B?NjV0b3FwK0dKaW5HNzBDcnY5ck9uNWFRbC9GdzlFZld3S2NheU1TbGVneDFS?=
+ =?utf-8?Q?VsHUY5PkL0iQzzP3ND?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a56ef7cc-cdb0-4c85-8e97-08def124c970
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB7090.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 06:02:23.5981
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +d1mUvX3ShByzWMl1Hz22yr4B6I/qZ3l/TaLy9VNOXuHqQOzSuam2CXKNxdngji1rdZD7O+57fq3J4N9c9xWhw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9702
 
---0000000000005e60e106581deb1f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 1, 2026 at 3:39=E2=80=AFPM Alok Tiwari <alok.a.tiwari@oracle.co=
-m> wrote:
->
-> bnge_fix_rings_count() returns 0 on success or a negative errno on failur=
-e
-> However, bnge_adjust_rings() stores its return value in a u16 variable,
-> causing negative error codes such as -ENOMEM to be converted to a large
-> positive value.
->
-> Use an int for the return code variable so that error values are
-> preserved and propagated correctly.
->
-> Fixes: 627c67f038d2 ("bng_en: Add resource management support")
-> Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-Reviewed-by: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
-
+On 30/07/2026 4:57, Bobby Eshleman wrote:
+> From: Bobby Eshleman <bobbyeshleman@meta.com>
+> 
+> mlx5e_queue_start() deactivates and re-activates all channels but closes
+> only the queue being restarted. mlx5e_activate_txqsq() then
+> unconditionally calls netdev_tx_reset_queue(), zeroing the BQL counters
+> of channels that kept their in-flight TX WQEs. The next completion then
+> over-charges and trips the BUG_ON() in dql_completed():
+> 
+>    kernel BUG at lib/dynamic_queue_limits.c:99!
+>    RIP: 0010:dql_completed+0x23d/0x280
+>    Call Trace:
+>     <IRQ>
+>     mlx5e_poll_tx_cq+0x668/0xa60
+>     mlx5e_napi_poll+0x5b/0x7b0
+>     net_rx_action+0x15a/0x580
+> 
+> Reset BQL only when the SQ has no bytes in flight (sq->cc == sq->pc).
+> 
+> In the case that reset is skipped, the outstanding WQEs will eventually
+> complete and rebalance the dql. The dql->limit is carried across the
+> reset.
+> 
+> Fixes: b2588ea40ec9 ("net/mlx5e: Implement queue mgmt ops and single channel swap")
+> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 > ---
->  drivers/net/ethernet/broadcom/bnge/bnge_resc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c b/drivers/net=
-/ethernet/broadcom/bnge/bnge_resc.c
-> index 0e94f092813e..4711dd4945ff 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-> @@ -163,7 +163,8 @@ static int bnge_adjust_rings(struct bnge_dev *bd, u16=
- *rx,
->         u16 tx_chunks =3D bnge_num_tx_to_cp(bd, *tx);
->
->         if (tx_chunks !=3D *tx) {
-> -               u16 tx_saved =3D tx_chunks, rc;
-> +               u16 tx_saved =3D tx_chunks;
-> +               int rc;
->
->                 rc =3D bnge_fix_rings_count(rx, &tx_chunks, max_nq, sh);
->                 if (rc)
-> --
-> 2.52.0
->
+> Changes in v2:
+> - remove misleading comment (Tariq)
+> - Link to v1: https://lore.kernel.org/r/20260728-mlx5-bql-v1-1-99a0ab77ede7@meta.com
+> ---
+>   drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> index 4a8351f95b27..44834890a409 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> @@ -1940,7 +1940,9 @@ void mlx5e_activate_txqsq(struct mlx5e_txqsq *sq)
+>   {
+>   	sq->txq = netdev_get_tx_queue(sq->netdev, sq->txq_ix);
+>   	set_bit(MLX5E_SQ_STATE_ENABLED, &sq->state);
+> -	netdev_tx_reset_queue(sq->txq);
+> +	/* Reset BQL only when the SQ has no bytes in flight. */
+> +	if (sq->cc == sq->pc)
+> +		netdev_tx_reset_queue(sq->txq);
+>   	netif_tx_start_queue(sq->txq);
+>   	netif_queue_set_napi(sq->netdev, sq->txq_ix, NETDEV_QUEUE_TYPE_TX, sq->cq.napi);
+>   }
+> 
+> ---
+> base-commit: ec83512ba345b1e415ca491509a7a952db84c4c7
+> change-id: 20260728-mlx5-bql-84e02a5a46c8
+> 
+> Best regards,
 
---0000000000005e60e106581deb1f
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
 
-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
-tJVewHuOmXgWQxNWV7Oiszu1d9xAcqyj65s1PrEIIaHnxEM3eTK+teecLEy8QymZjjDTrCHg4x36
-2AczdlQAIiq5TSAucGja5VP8g1zTnfL/RAxEZvLS471GABptArolXY2hMVHdVEYcTduZlu8aHARc
-phXveOB5/l3bPqpMVf2aFalv4ab733Aw6cPuQkbtwpMFifp9Y3s/0HGBfADomK4OeDTDJfuvCp8g
-a907E48SjOJBGkh6c6B3ace2XH+CyB7+WBsoK6hsrV5twAXSe7frgP4lN/4Cm2isQl3D7vXM3PBQ
-ddI2aZzmewTfbgZptt4KCUhZh+t7FGB6ZKppQ++Rx0zsGN1s71MtjJnhXvJyPs9UyL1n7KQPTEX/
-07kwIwdMjxC/hpbZmVq0mVccpMy7FYlTuiwFD+TEnhmxGDTVTJ267fcfrySVBHioA7vugeXaX3yL
-SqGQdCWnsz5LyCxWvcfI7zjiXJLwefechLp0LWEBIH5+0fJPB1lfiy1DUutGDJTh9WZHeXfVVFsf
-rSQ3y0VaTqBESMjYsJnFFYQJ9tZJScBluOYacW6gqPGC6EU+bNYC1wpngwVayaQQMIIGqjCCBJKg
-AwIBAgIMFJTEEB7G+bRSFHogMA0GCSqGSIb3DQEBCwUAMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQK
-ExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAy
-MDIzMB4XDTI1MDYyMDEzNTI1NVoXDTI3MDYyMTEzNTI1NVowge0xCzAJBgNVBAYTAlVTMRMwEQYD
-VQQIEwpDYWxpZm9ybmlhMREwDwYDVQQHEwhTYW4gSm9zZTEZMBcGA1UEYRMQTlRSVVMrREUtNjYx
-MDExNzERMA8GA1UEBBMITWFycmVkZHkxGDAWBgNVBCoTD0JoYXJnYXZhIENoZW5uYTEWMBQGA1UE
-ChMNQlJPQURDT00gSU5DLjEnMCUGA1UEAwweYmhhcmdhdmEubWFycmVkZHlAYnJvYWRjb20uY29t
-MS0wKwYJKoZIhvcNAQkBFh5iaGFyZ2F2YS5tYXJyZWRkeUBicm9hZGNvbS5jb20wggEiMA0GCSqG
-SIb3DQEBAQUAA4IBDwAwggEKAoIBAQCq1sbXItt9Z31lzjb1WqEEegmLi72l7kDsxOJCWBCSkART
-C/LTHOEoELrltkLJnRJiEujzwxS1/cV0LQse38GKog0UmiG5Jsq4YbNxmC7s3BhuuZYSoyCQ7Jg+
-BzqQDU+k9ESjiD/R/11eODWJOxHipYabn/b+qYM+7CTSlVAy7vlJ+z1E/LnygVYHkWFN+IJSuY26
-OWgSyvM8/+TPOrECYbo+kLcjqZfLS9/8EDThXQgg9oCeQOD8pwExycHc9w6ohJLoK7mVWrDol6cl
-vW0XPONZARkdcZ69nJIHt/aMhihlyTUEqD0R8yRHfBp9nQwoSs8z+8xZ+cczX/XvtCVJAgMBAAGj
-ggHiMIIB3jAOBgNVHQ8BAf8EBAMCBaAwDAYDVR0TAQH/BAIwADCBkwYIKwYBBQUHAQEEgYYwgYMw
-RgYIKwYBBQUHMAKGOmh0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjZz
-bWltZWNhMjAyMy5jcnQwOQYIKwYBBQUHMAGGLWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dz
-Z2NjcjZzbWltZWNhMjAyMzBlBgNVHSAEXjBcMAkGB2eBDAEFAwMwCwYJKwYBBAGgMgEoMEIGCisG
-AQQBoDIKAwIwNDAyBggrBgEFBQcCARYmaHR0cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3Np
-dG9yeS8wQQYDVR0fBDowODA2oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2
-c21pbWVjYTIwMjMuY3JsMCkGA1UdEQQiMCCBHmJoYXJnYXZhLm1hcnJlZGR5QGJyb2FkY29tLmNv
-bTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNVHSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAd
-BgNVHQ4EFgQUkiPQZ5IKnCUHj3xJyO85n4OdVl4wDQYJKoZIhvcNAQELBQADggIBALtu8uco00Hh
-dGp+c7lMOYHnFquYd6CXMYL1sBTi51PmiOKDO2xgfVvR7XI/kkqK5Iut0PYzv7kvUJUpG7zmL+XW
-ABC2V9jvp5rUPlGSfP9Ugwx7yoGYEO+x42LeSKypUNV0UbBO8p32C1C/OkqikHlrQGuy8oUMNvOl
-rrSoYMXdlZEravXgTAGO1PLgwVHEpXKy+D523j8B7GfDKHG7M7FjuqqyuxiDvFSoo3iEjYVzKZO9
-NkcawmbO73W8o/5QE6GiIIvXyc+YUfVSNmX5/XpZFqbJ/uFhmiMmBhsT7xJA+L0NHTR7m09xCfZd
-+XauyU42jyqUrgRWA36o20SMf1IURZYWgH4V7gWF2f95BiJs0uV1ddjo5ND4pejlKGkCGBfXSAWP
-Ye5wAfgaC3LLKUnpYc3o6q5rUrhp9JlPey7HcnY9yJzQsw++DgKprh9TM/9jwlek8Kw1SIIiaFry
-iriecfkPEiR9HVip63lbWsOrBFyroVEsNmmWQYKaDM4DLIDItDZNDw0FgM1b6R/E2M0ME1Dibn8P
-alTJmpepLqlS2uwywOFZMLeiiVfTYSHwV/Gikq70KjVLNF59BWZMtRvyD5EoPHQavcOQTr7I/5Gc
-GboBOYvJvkYzugiHmztSchEvGtPA10eDOxR1voXJlPH95MB73ZQwqQNpRPq04ElwMYICVzCCAlMC
-AQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMf
-R2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0EgMjAyMwIMFJTEEB7G+bRSFHogMA0GCWCGSAFlAwQC
-AQUAoIHHMC8GCSqGSIb3DQEJBDEiBCAdeaYvP+MC/vl5loXZthWNDMQ5wwpRFBCh0DczN+w61jAY
-BgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yNjA4MDMwNTM2MjZaMFwG
-CSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYI
-KoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAjVh7r
-T5wpvZmhil/bBVM4RqPBp0xSwzw1Q7/doFHOJN6SEOKSKqmAMpRpv64X5ruL063aT734dW2oCDKD
-7Ua6lSNVDdNvnEO02SFoNWo1x/4y6CQ5kPlMgSEZG3MLVwahJbrQax+f1ffTZ1PGCgX7iiBAoLzj
-1TVx0mz1Md3aXIftixqN/lMK7iKWrk4gyyvEN76ls9UyfKBJKru4V2f6SRTnq3JsWbc8iqX/PLXF
-UJ3HqyJCEMd4F8ofMbiG+mb+/DcYgcc0oEZqCYrQjVH5fHKODe8OgV8mqdrJt/OY07ML/8kxLOi6
-PsDkaanpLKMgYd1vNywMDjq6pMRPYC7O
---0000000000005e60e106581deb1f--
