@@ -1,46 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCE034AB14;
-	Mon,  3 Aug 2026 16:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FC6345CA1
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785773195; cv=none; b=aNc/4zyTbiu/A+AT6FSg5qwmx1KSiULGw4nEU9ULe/QRLw5Q1qM5QLp7lqQ1FW15xd/WhTdgXwmqIVRiQjyHRojBZZys8S3FvOXiJJySIiGopiNr9R9r1b/yOyxmJqdxsmPUSmERSmLseOcP6Wd2G0AcxOaIMPaM1EFAzX3Y+vQ=
+	t=1785773270; cv=none; b=Pq0BD69EoMTvHTgatiVs2r3ecd17tqih6kmomE43kT97ZL8ToMRK8O1fCbo+XpDfOHJlRKmia6qKus+XgS1RXzU29njmlqun3yT/H3+1pZ5lRu2rPfiK39pn4A0IGTxhqGydi/TfAD4x90iTFmagvrtbbKgeaJquAxHg6dQFGXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785773195; c=relaxed/simple;
-	bh=yGX1L2ORh3cX/j6wF1bxBm4uVx13pn7Qm/tRgj4PiNU=;
+	s=arc-20240116; t=1785773270; c=relaxed/simple;
+	bh=ZseRgTJAwo05O2DD2YkpqFiqUIpZMU7SmGFGHXFSi3U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tPfxO5oho/uLam3dKnt6xVgCVBwpsyXMxpWmlvNvS5goDz4z9S2a63zg953wBQ1VJ+2WlwwnzsC0YC8RzT5AyjEqbkt34xFv89mH+9gQKPCMj9lDIVJgsDVqzgJGWvx5Esuc7bleNQ4trvTiXze6EnvOYC2XKpSDTqajjk74HRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nSRdCIoq; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=cSjL7sDE9v5CvCoPfval8uYi3TQYcoTo06m7xT7iYkdsNY9+wYcCV24ng0/VxRzyX4fiarHJf5/1M4jFKvIDFoWNJ75xiF/Bn7LRDvumr6SCUEGK0wPYoKj8YieAql/u+9MDVIs0Vqg4JobHIFRmX8B2azO51K/clAAntjmm6to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bgcFwN0O; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MAxcwLe7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nSRdCIoq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308621F000E9;
-	Mon,  3 Aug 2026 16:06:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785773193;
-	bh=ve1KJOPR+r25qUM2ukWeqcygSNCUpeyj5F86GUTctLY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nSRdCIoqlW/S2x/wv4+uK31nv5rue8u4kJe9Ax8Hj/eHbwpH8gzkLjXEZgqLfIQKE
-	 Low/rlzrcEVS7UyLrSPXA6nCdvYMVb/6NXgJ8yGfMSy/oH6JqKRluqVYwJw57q9s4C
-	 W8z9mg2cQN2UD4tg4FwtkcbpghQ0GjY2mylnk1kQvZ8qpmEPQ4QMBUwApDG9xYqe79
-	 slEiBaMF83M/p3aP5ueClHWzUHPNb7BxtYFhUi6cH9BBWrXaZsLZpf1aJlrlCHwqMt
-	 htNmrWdUqb9YjDCtSNYyc4TowN9xCS1FQn/E6lTH13XLM73tM7OUvSU9VlHzOlcJuq
-	 TkprMg/bIbuWA==
-Date: Mon, 3 Aug 2026 17:06:27 +0100
-From: Simon Horman <horms@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: netdev@vger.kernel.org, Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
-	stable@kernel.org
-Subject: Re: [PATCH net v5 07/10] afs: Create a server appdata key
-Message-ID: <20260803160627.GL51943@horms.kernel.org>
-References: <20260729160108.2031453-1-dhowells@redhat.com>
- <20260729160108.2031453-8-dhowells@redhat.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bgcFwN0O";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MAxcwLe7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785773268;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KF1qmdEimkgXxg6otcgk7H45mi45bXhYYW4FiUYh4Uc=;
+	b=bgcFwN0Oqt0jAb9XjmwYvwb5XMtYVhpCMjGcuCN/vmiej0pG0xOUvK7BYYvB3O67HAbExD
+	0YzyL1vlPSz+vKnxr2v6SJ/Z1buKxEcUDb/6sBmLR9Rpnl7lRdpcUd2tdvLC7AkN+r1ik4
+	i4FuSw1G07qqyJUhySX2uuf6PiIO1aM=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-640-8ljeebqhOlmB_nhftm2vbw-1; Mon, 03 Aug 2026 12:07:44 -0400
+X-MC-Unique: 8ljeebqhOlmB_nhftm2vbw-1
+X-Mimecast-MFC-AGG-ID: 8ljeebqhOlmB_nhftm2vbw_1785773263
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47407691804so2661326f8f.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 09:07:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785773263; x=1786378063; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KF1qmdEimkgXxg6otcgk7H45mi45bXhYYW4FiUYh4Uc=;
+        b=MAxcwLe7sobQyXQ3QBJETGjM9kAxUYa92U9cMa+28MkhS3KwMyCPW8vDj3noEKC0La
+         YNnZXOoiDRqEwDaxmG1NXTFPQMDublk6JpI3xbNYGxbh5Nf9mOz/fiqhEKSy6FsqPa8Q
+         DniShVR7ho5CtQELy4BpDqKLgruMB6++fyp/oNbpakXzqfCmKCvmU+ziJBbwH7Kjtgz5
+         MQmdmLbEYn78tWdgwMCUalvOqH+KA76Pf37VoT1G5avIGyVOT/AaL3zqT03C//2OMU8J
+         tN5aM+zm1/fbHoaj0FCE6L7BEt6pn07myvlkc935LkFKP09aEI0iPrn8lto4URVyo38/
+         e72g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785773263; x=1786378063;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KF1qmdEimkgXxg6otcgk7H45mi45bXhYYW4FiUYh4Uc=;
+        b=ZluUZygf0pIVgeX51yGN0ET1e/mXTkTFci1/8O9cv/2gHLgHlI/XjTmEDDvfhtstZU
+         /XF3PwAE14KQ4EqjdGqn2JVMH5dTagpsn+xCGrYQoDrh1sn8ypvZ7vEGhT1D9ajA7ZQz
+         +C+dxHqmvknO4dudP5CUm11OUSlpEUCgjifRQ2kX2+0F9NqPaE5ke7VTywlfcXcytIP/
+         oPyx9d2QPH+U54RCRPGSqzDc59t/HRKdLAQ0F1syqxOHkETTY3gBWfda3+E+5HVZWuyn
+         edi7tiPaIAzKQ5oemuw4/ScOvX3yV0r0P06WiSta5bZgsrKrFgBpAEcbEx5WZklGpRxX
+         TLNQ==
+X-Gm-Message-State: AOJu0Yx1gbDkcZoi19QuwG48TZkwi59MoKbrJSidBmafl+RFw9ZUG1X+
+	mKc3qFPwq+8+WPMS9dGgcTNgcKYETJYoGnjOYpQSqbfwEUI+gcK2RV4X8yGo+ibCXPC6JDM5nRb
+	REj2ECGdOkaKPTNjULoMWGpSwLfVONUBdd6v01dRqbm0GwJfCsfm0MAszew==
+X-Gm-Gg: AR+sD12fbvDWHlYE49Ezpb7vsQsyL8g2nQxUpoeMZFgOsuqOWMtZTAPyESpWIQuZNl6
+	3bbcIpucIMdJOYcdGNAfjWMGNB4K15A3B58tlvyqdJDVfgLP1vsEUDJCVpSu3J/sB1uuG6ILX9M
+	9Rdev1MgJ6zUyvq/7kDn4wSaVVn8uxXxwJpiOWZ8/HPvzIvYrbbgL8mYcID0301UjxTlqJAS7Cw
+	k54CYV+f/WO/IvTbXwZIFLEJxYIjawfF8PMLj6gccesrkgWwhudBdMMI01JrlqMwfSfgVCt3Vwi
+	9iXgk5lVA31ajz+IwBHVEXpI7t1cOvAjiKVVL3CTnMa8almENU0pqzrs6MdyqbBSeOGEH12/XEb
+	iJuYLFxbKCF8vaIFTCpCkjg==
+X-Received: by 2002:adf:fd10:0:b0:46e:c978:7ddc with SMTP id ffacd0b85a97d-47fd72bf1ddmr20522222f8f.24.1785773263389;
+        Mon, 03 Aug 2026 09:07:43 -0700 (PDT)
+X-Received: by 2002:adf:fd10:0:b0:46e:c978:7ddc with SMTP id ffacd0b85a97d-47fd72bf1ddmr20522117f8f.24.1785773262795;
+        Mon, 03 Aug 2026 09:07:42 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-28-14.inter.net.il. [80.230.28.14])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd458bb4esm33075414f8f.30.2026.08.03.09.07.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 09:07:42 -0700 (PDT)
+Date: Mon, 3 Aug 2026 12:07:39 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Shahar Shitrit <shshitrit@nvidia.com>
+Cc: netdev@vger.kernel.org, jasowang@redhat.com, pabeni@redhat.com,
+	virtualization@lists.linux.dev, parav@nvidia.com, yohadt@nvidia.com,
+	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, jgg@ziepe.ca,
+	kevin.tian@intel.com, kuba@kernel.org, andrew+netdev@lunn.ch,
+	edumazet@google.com, danielj@nvidia.com
+Subject: Re: [PATCH net-next v21 02/13] virtio: Add config_op for admin
+ commands
+Message-ID: <20260803120238-mutt-send-email-mst@kernel.org>
+References: <20260803140721.1871678-1-shshitrit@nvidia.com>
+ <20260803140721.1871678-3-shshitrit@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,111 +97,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260729160108.2031453-8-dhowells@redhat.com>
+In-Reply-To: <20260803140721.1871678-3-shshitrit@nvidia.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/#/patchset/20260729160108.2031453-2-dhowells@redhat.com?part=7
----
---- Patch [7]: [PATCH net v5 07/10] afs: Create a server appdata key ---
-commit 46d1f7800458c15b841827dd597a26f2786367f4
-Author: David Howells <dhowells@redhat.com>
-Subject: afs: Create a server appdata key
-
-This patch introduces an appdata key for each AFS fileserver the client
-communicates with using RxGK. It shifts the responsibility of generating
-application data from responding to challenges in the OOB queue to creating
-it when setting up the server record.
-
-Link: https://sashiko.dev/#/patchset/20260624163819.3017002-1-dhowells%40redhat.com
-
-> diff --git a/fs/afs/cm_security.c b/fs/afs/cm_security.c
-> index 103168c70dd4d..7f08ede12206a 100644
-> --- a/fs/afs/cm_security.c
-> +++ b/fs/afs/cm_security.c
-[ ... ]
-> @@ -23,6 +25,236 @@ static int afs_create_yfs_cm_token(struct sk_buff *challenge,
-[ ... ]
-> +	/* Store the appdata before the key pointer */
-> +	smp_store_release(&server->yfs_rxgk_appdata, appdata_key);
-> +
-> +out_aead:
-> +	crypto_free_aead(aead);
-> +out_token:
-> +	kfree(appdata);
-
-Simon says:
-
-Hi David,
-
-I'm wondering if you could take a look into the issue flagged below.
-
-[Severity: Medium]
-Could this leave the plaintext cryptographic callback key (K0) in the slab
-cache?
-
-When creating an RxGK appdata key, afs_create_yfs_rxgk_cm_appdata()
-allocates a temporary appdata buffer, generates a random cryptographic key
-into it, encrypts it, and then frees the temporary buffer using kfree().
-
-Can an unprivileged process or remote attacker who exploits an information leak
-recover the plaintext key from the heap and forge RxGK callback connections?
-Would kfree_sensitive() be more appropriate here to ensure the buffer is
-securely zeroed?
-
-> +out:
-> +	return ret;
-> +}
-> +#endif /* CONFIG_RXGK */
-[ ... ]
-
-Simon says: But I don't think we need to consider the pre-existing
-            issues flagged below in the context of this patch-set.
-
-I noticed a couple of pre-existing issues while reviewing this code:
-
-> fs/afs/cm_security.c:afs_respond_to_challenge()
->
-> 			server = (struct afs_server *)peer_data;
-> 			if (!server->cm_rxgk_appdata.data) {
-
-[Severity: Critical]
-This is a pre-existing issue, but is it safe to cast and dereference peer_data
-here?
-
-When a network CHALLENGE packet arrives and is processed in the OOB queue in
-afs_respond_to_challenge(), it reads peer_data and casts it to an afs_server
-pointer.
-
-Since the code dereferences this pointer without holding rcu_read_lock() or
-taking a reference on the server object, what happens if the server is
-concurrently destroyed or updated?
-
-If peer_data is set to 0, this causes a direct NULL dereference. If the
-server memory is freed, could this result in a use-after-free triggered by a
-remote attacker?
+On Mon, Aug 03, 2026 at 05:07:10PM +0300, Shahar Shitrit wrote:
+> From: Daniel Jurgens <danielj@nvidia.com>
+> 
+> This will allow device drivers to issue administration commands.
+> 
+> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+> Reviewed-by: Parav Pandit <parav@nvidia.com>
+> Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+> ---
+>  drivers/virtio/virtio_pci_modern.c | 2 ++
+>  include/linux/virtio_config.h      | 6 ++++++
+>  2 files changed, 8 insertions(+)
+> 
+> diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
+> index ef4a64eb9982..a18683761aa5 100644
+> --- a/drivers/virtio/virtio_pci_modern.c
+> +++ b/drivers/virtio/virtio_pci_modern.c
+> @@ -1238,6 +1238,7 @@ static const struct virtio_config_ops virtio_pci_config_nodev_ops = {
+>  	.get_shm_region  = vp_get_shm_region,
+>  	.disable_vq_and_reset = vp_modern_disable_vq_and_reset,
+>  	.enable_vq_after_reset = vp_modern_enable_vq_after_reset,
+> +	.admin_cmd_exec = vp_modern_admin_cmd_exec,
+>  };
+>  
+>  static const struct virtio_config_ops virtio_pci_config_ops = {
+> @@ -1258,6 +1259,7 @@ static const struct virtio_config_ops virtio_pci_config_ops = {
+>  	.get_shm_region  = vp_get_shm_region,
+>  	.disable_vq_and_reset = vp_modern_disable_vq_and_reset,
+>  	.enable_vq_after_reset = vp_modern_enable_vq_after_reset,
+> +	.admin_cmd_exec = vp_modern_admin_cmd_exec,
+>  };
+>  
+>  /* the PCI probing function */
 
 
-> fs/afs/server.c:afs_lookup_server()
->
-> out:
-> 	afs_put_addrlist(alist, afs_alist_trace_put_server_create);
-> 	if (candidate) {
-> 		kfree(rcu_access_pointer(server->endpoint_state));
-> 		kfree(candidate);
-> 		afs_dec_servers_outstanding(cell->net);
-> 	}
+So the issue here is that vp_modern_admin_cmd_exec has been
+broken for a while:
 
-[Severity: High]
-This isn't a bug introduced by this patch, but could this cleanup path free
-the active server's endpoint state?
 
-When two threads concurrently execute afs_lookup_server() for a new server,
-one thread installs its candidate and the other receives the installed server.
-On the exit path (out:), if candidate is non-null, the second thread
-erroneously calls kfree(rcu_access_pointer(server->endpoint_state)) instead
-of freeing the candidate's state.
+        spin_lock_irqsave(&admin_vq->lock, flags);
+        ret = virtqueue_add_sgs(vq, sgs, out_num, in_num, cmd, GFP_KERNEL);
 
-Also, if the first thread fails server creation, it sets server = NULL.
-Would accessing server->endpoint_state here then trigger a direct NULL
-pointer dereference?
+
+
+which is pre-existing but now that this is going to be triggered by userspace,
+we need to fix this.
+
+I guess admin vq lock must be a mutex and complete through a wq?
+
+> diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
+> index 69f84ea85d71..e36a32e0a20c 100644
+> --- a/include/linux/virtio_config.h
+> +++ b/include/linux/virtio_config.h
+> @@ -108,6 +108,10 @@ struct virtqueue_info {
+>   *	Returns 0 on success or error status
+>   *	If disable_vq_and_reset is set, then enable_vq_after_reset must also be
+>   *	set.
+> + * @admin_cmd_exec: Execute an admin VQ command (optional).
+> + *	vdev: the virtio_device
+> + *	cmd: the command to execute
+> + *	Returns 0 on success or error status
+>   */
+>  struct virtio_config_ops {
+>  	void (*get)(struct virtio_device *vdev, unsigned offset,
+> @@ -137,6 +141,8 @@ struct virtio_config_ops {
+>  			       struct virtio_shm_region *region, u8 id);
+>  	int (*disable_vq_and_reset)(struct virtqueue *vq);
+>  	int (*enable_vq_after_reset)(struct virtqueue *vq);
+> +	int (*admin_cmd_exec)(struct virtio_device *vdev,
+> +			      struct virtio_admin_cmd *cmd);
+>  };
+>  
+>  /**
+> -- 
+> 2.49.0
+
