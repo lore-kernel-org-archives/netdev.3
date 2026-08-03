@@ -1,70 +1,70 @@
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4835A396D28
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 05:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9B2397923
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 05:15:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785734152; cv=none; b=XinZtOhJmbDldf4znyLLQfkSfIl5dg0mVUKRYcFFuBV9iR7mew5niibbROYUflJVsPunkcOeJyN9PjbljBCaOnqHfoFwR9zaa34Wa0pMA77aiNjS3hHd+z4MPhpAkAOtN4h2rsmJ8rKTyxOQmCIlNHHswTd8cSze7TryxPsOca4=
+	t=1785734153; cv=none; b=pDf9ehKWPl0SZ87vnNc8pghrbL/byiTE8n7K37haaWlfV4Me3AaMEjP+DBNjU1JsZrdov034604qfeowTGfRi2S935OusuVF8++0Ht39SJLifH1im9hZSp7fQzuSefw1IwlM9o7ctU3GiZSRD/SlJ4bJJB7JGDLjBohOAi334IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785734152; c=relaxed/simple;
-	bh=CsTsehT4z8CJxsGhaiEo1pllL05TyPVSaHwPj6kU07s=;
+	s=arc-20240116; t=1785734153; c=relaxed/simple;
+	bh=ZUVZReuwX6u+VOoUVGjsuCMz/MOgQoewZH495TiPLJ0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=G/cPpN4M9hNGlJbdFYK+J0BOKRhCVCbPQKApnlegXNTY7C45henjz+AXlQMBAbpJQGmDRnT+PIB1ip2Cr4xwNDXGhOwdUbfWn8tAPy2mNlYkTpzRoA0hZPbkXT9TbnjXXTEJPjB6GG7aOnUvRrotNv6Jy3PDy6ZUy8qVEFmVpiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kYLyWDy0; arc=none smtp.client-ip=209.85.210.51
+	 In-Reply-To:To:Cc; b=mfpqCgBSnQQSidlEAnUYCnS/R5adEugf/IhfJI6ziayecfBDCo81fBtcWVqyyq4+t0pBqSU3F69wbUvbn6bnD64k1DVdaaqC96baV8kGw9yM2r1V6ZC/KpYWrpEhyIkA2PwW4Yftgqsfq0YbcWJQJSZAowwoXSVsrk/Yh04NkL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y2YZX1LQ; arc=none smtp.client-ip=209.85.210.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kYLyWDy0"
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7f18c0e03e3so1152371a34.2
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 22:15:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y2YZX1LQ"
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7e9d7464b71so1367534a34.0
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 22:15:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785734149; x=1786338949; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785734150; x=1786338950; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=9OpRGWNf+wnvCcP1DS85gL+udlM+7o9ZcunosuNBCWA=;
-        b=kYLyWDy0P4VE11xbG48gBf1b+3N4mTWJNz4xhKm5Y+avebwamRQX+zKYH8/4jdcnkI
-         c2JrRQoQxWkwm21PjVNNU6kZjZSzfhcLe5GtSYc7cm4Sksc4qawIJA3dZTmcSwEVJ0Ll
-         wIMRCtn1Egpuokh6TLmKzIwi39AFiN2ByEA3pBPj3eyosN+PO+YUikmY9Mk6+WTULa4t
-         Z9Uz3E1CLFTg9JsjigSQnytNgnxU+Onb38Xti4k3yxmwQNO+ubk6XBghKPCIKbT4bCcj
-         uHvCNqf14u26K12IMCel3S+LsqQXE/wGboBaON8gUdeOXnW1aGW8pwb5bjEJBy3dIb2b
-         0w2g==
+        bh=OJn8bgDlexj3pTLFD/TVKu44xwgcekcV50vMMBDdgSo=;
+        b=Y2YZX1LQVBjsbzcaecmpbQH5pP2HHE4QV5cE/AUREBPl/XM05rojqrphqrxNigbLhb
+         WeKfmbp96L9mk3atpyrL3XHTZURyxFW5/ycMVe0ZSe319RmS5ssdfY95QCtpaarCs6/f
+         +IkDyMRoGQvxo6JAbuHDhX0VJYeSd5rofIc3reptOyghmLmHROXLQHb++id/Wvp0Td0T
+         ddpSgW3biBRuvMNhLwWWPieoFAWgYji0Dc9BtbAZPEDsUFxnUIGcJVRROoG6Fh0e4+rZ
+         wRBs6+xJjxOfDBI9BhiIDBPNhLKMqK4H4Lk6nxYuyiorg5TuFGjOZ4+PTZJg4PqugkzL
+         YnSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785734149; x=1786338949;
+        d=1e100.net; s=20251104; t=1785734150; x=1786338950;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=9OpRGWNf+wnvCcP1DS85gL+udlM+7o9ZcunosuNBCWA=;
-        b=DyW8gATLGWejqBoBBBD5qC9LKwfsIizJH454zaz3PIpShFQKukwzFVvN4/Xc7Bl104
-         VKeoTeMxZ3FcK643e1ht86EvSlRr2rSjWYe1jlX83k63tnmCKvAKrGLgeher88C/2ST9
-         PhdPHbCHNQuPlqNK/1p4PYo6EgbiytZkLKS4KbPxvpaFVZJ3Ofgq1AF+sgEbgiz6kKMF
-         4AT3pbSYBDGwr7p/BpzG/N5IR0/cZrfo8ZQvEIuOZjZ6n7tTVMQ5RyYPo8y9JQVJJxXH
-         xdafGHPxKVxoxjookpA/UOQERjQB9Ye7aCwItaiysgJNIlNCYTityAoPqVENzS3GfwK3
-         DwJA==
-X-Gm-Message-State: AOJu0YwGE8U0aE267xGF46MzNnOgWwnPd/kBf7ezJxWS2CxkSz6q7B+8
-	QKvz8AuLVIKnh1q2sE+AJi195dMyxifwKeddPfrBUTVOjAv+O1XTqgFA
-X-Gm-Gg: AR+sD12zCzP8O/H+4HvA2kV8iCQcILOrONBqqY3vPKBNhhAtC43x+3xAdtiVdbF7/jp
-	oE0dVLk2UJ22aah6RacBxOfAroSjpdv25hn60GmgeINKMkwbXAVtukLNaTseqSb/5CUyIUbBSBV
-	QmljQNKQfCvy3ZJ7qvXvaND0yJAW/cG9gaa+Ij76h9N3O9Fptj4F5OnaDJ72b3mnm1arNLKgeEO
-	EflMn8JMeeP6GVKJ7JX1TXIDpdVQZvU+ActGkzwgy2cWUpMdD0aHIqWDlsBiYzg1pqd9Wv9jso2
-	NwEEF2HsFGrjgFxQwpMouwSAqZJ4UXOIrwDJdq6PNu+3IcaYiCHxAw7TRXf8q50UFlhR4NJYL1+
-	SMQyYcSSpt4ssDDOeb9X185JCzJfqkric0CgyJSygCOQ6inwlm7J13CXjrPbnv3Ihondzm1KC+e
-	+XaKTqStJA+ibua2XPtb8TuWNSKP1SGN7ekxZQZ2UK1zmqQ2vVkF88igDgaeTB542+0IsF2rpy8
-	QgIUJVFLfxEIwxO0m+f+3FnZ/kFm0fMxg7MSHaezNgF6q/7+oNx91UnHXlzteLfTaiL1PfFvU6S
-	hAKhVcuG/sRKZOrp2DDugL+6mbKe35OQUjj2B3ZEdGOi8ylm8ahLesBki3Du6fQ2kXdhfKlfzAP
-	3Nuy2VwsPH1r8fGd2
-X-Received: by 2002:a05:6830:3592:b0:7e9:e488:3bce with SMTP id 46e09a7af769-7f196bab78dmr14968611a34.6.1785734148846;
-        Sun, 02 Aug 2026 22:15:48 -0700 (PDT)
+        bh=OJn8bgDlexj3pTLFD/TVKu44xwgcekcV50vMMBDdgSo=;
+        b=ipu8VmMY5uP1naiuXIqALbN5WyeHbztqsAlObavq2EH3SM1LnDifr0O8q3Nxx8rm6Y
+         mimWR/C6OtVtlwNirLuhUVAK17oj0TSvnxgKT7JaXAGlsdbhc43ySFlkuE4kWIavxF1R
+         QOHye1elelgS7PdrlapifiVkuaDckamgnnakiLSawY6lq43vzbVuzlt46XRBwVwjZJBN
+         /ANx5rGF/zaPCJxUjt/uumHz1Sdza799skhXc23NMEjgIKlC087VEo/u0Y9NnU2i4g9j
+         DrIB4p23hke16SL9yvdnlNCutBTYUedaYX8dXV1b+KixjKVbFNNRp545Rf7LoCpuVKGy
+         He3w==
+X-Gm-Message-State: AOJu0YxJ9cRp4Nyrvshp71fGgV5/13aGJmVYsRgN9841cQk4pIFpZFfd
+	rV+rnHlW7sdVdRDQdXZh+EIxNdRnBMuwRiN0gaPbfRq4L3tFTw62I0C9
+X-Gm-Gg: AR+sD11AAhnNUFlBCOpeSESofLLSiw/jAneEb/2LwTiCZcFo+UPAh5LTBY87g1n+0hr
+	roehO+P1E0IKpD3yXkONZ6BEG3HJn9OYdtkUPAxHLMoNrlV51SIeAp8kOMcgXbu4Qcm+vevYYND
+	/Bsyj1w6KHHgbHKwxYKPAf22x3Eu+beDqqjAFq3KILbMir2jKlj1FUdFeF+sz5iyqtZdZZT6luF
+	jsgrO8yXwZqnwO8afSGsVjk9JcBenX+c+vezDWcuS0DUMU01VQjBvrTijPmiMiIsQnEARFWbyvg
+	KlJUzyOrKPdXaFghNU3gcWeiXMlK4TL5bupyzUAVj51lcYpiiexBkm9QgyHIBGnyMKWwqjtqY4Q
+	AftJNd/28d6NQNtVbbCqoy3f/M74GuPmXaUbAsRJ86owaclIkAM/YX8Y31o9yOc4oYqZSw6azRd
+	TCjKT8c1b0dIp6Jyv0QN3+/KBMwPEwKkQW6bGloto2K8wUW/5x9ML7tjRTvxG9QZslKxnE0MlW8
+	RDfM0KxWXpj/bk5KWyvuCvSXWlfXhsKhg/p6CkcA2H7qEFCRHWr/fEoCyKx+rlZqFovFJhL7JAv
+	EwOdT434hh5+BvQQqXCZQt4Jk+ufaOpfttEENdJxsMisz1ESi+qxTmCNMICXJUCsUnmGBHvSOgj
+	pw4b2debaJHLj/C6w
+X-Received: by 2002:a05:6830:82eb:b0:7eb:c933:eff7 with SMTP id 46e09a7af769-7f196f0d0e1mr13285248a34.9.1785734150243;
+        Sun, 02 Aug 2026 22:15:50 -0700 (PDT)
 Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f18f07a5e3sm6787108a34.15.2026.08.02.22.15.47
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f18f07a5e3sm6787108a34.15.2026.08.02.22.15.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 22:15:48 -0700 (PDT)
+        Sun, 02 Aug 2026 22:15:49 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sun, 02 Aug 2026 23:14:27 -0600
-Subject: [PATCH 17/21] arm64: dts: allwinner: h616: add ACx00 EPHY
- resources
+Date: Sun, 02 Aug 2026 23:14:28 -0600
+Subject: [PATCH 18/21] arm64: dts: allwinner: orangepi-zero2w: enable
+ Ethernet expansion
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,7 +73,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260802-submit-acx00-of-dynamic-v1-v1-17-0a53cd9e21cc@gmail.com>
+Message-Id: <20260802-submit-acx00-of-dynamic-v1-v1-18-0a53cd9e21cc@gmail.com>
 References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
 In-Reply-To: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -102,57 +102,130 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  James Hilliard <james.hilliard1@gmail.com>
 X-Mailer: b4 0.15.2
 
-Expose logical SID cells for the AC200/AC300 EPHY calibration, the combined
-companion-variant and AC300-calibration-range configuration, and the AC200
-bandgap fields.
+The optional Orange Pi Zero 2W expansion board exposes H618 EMAC1 through
+a 100 Mbit Ethernet jack.
 
-Also describe the PA10/PA11 I2C3 pin group used by the AC200 control
-interface.
+Add a reusable H616-family description of the AC200/AC300 EPHY wiring
+alongside its first board user. The forced-ID link PHY selects the
+populated control path and AC300 tuning range from the logical SID
+configuration field. Keep the AC200 I2C controller and AC300 MDIO control
+node at status fail-needs-probe so only the selected path claims its pins.
+
+Enable EMAC1 and its PWM clock provider through the common include,
+provide the board's 3.3 V rail to either companion variant, and make EMAC1
+the board Ethernet alias.
 
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
- arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ .../boot/dts/allwinner/sun50i-h616-acx00-ephy.dtsi | 61 ++++++++++++++++++++++
+ .../dts/allwinner/sun50i-h618-orangepi-zero2w.dts  | 13 +++++
+ 2 files changed, 74 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
-index 6879f27c2b2b..2cedda6e87a9 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
-@@ -252,6 +252,20 @@ ths_calibration: thermal-sensor-calibration@14 {
- 			cpu_speed_grade: cpu-speed-grade@0 {
- 				reg = <0x0 2>;
- 			};
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h616-acx00-ephy.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h616-acx00-ephy.dtsi
+new file mode 100644
+index 000000000000..26521429957a
+--- /dev/null
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h616-acx00-ephy.dtsi
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Common X-Powers AC200/AC300 Ethernet PHY support for H616-family SoCs
++ *
++ * Copyright (C) 2026 James Hilliard <james.hilliard1@gmail.com>
++ */
 +
-+			ephy_calibration: ethernet-phy-calibration@2c,0 {
-+				reg = <0x2c 1>;
-+				bits = <0 4>;
-+			};
++&emac1 {
++	phy-handle = <&acx00_ephy>;
++	status = "okay";
++};
 +
-+			ephy_config: ethernet-phy-configuration@2c {
-+				reg = <0x2c 2>;
-+				bits = <8 2>;
-+			};
++&i2c3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c3_pa_pins>;
++	status = "fail-needs-probe";
 +
-+			ac200_bandgap: bandgap@30 {
-+				reg = <0x30 2>;
-+			};
- 		};
++	ac200: mixed-signal@10 {
++		compatible = "x-powers,ac200";
++		reg = <0x10>;
++		clocks = <&pwm 5>;
++		nvmem-cells = <&ac200_bandgap>;
++		nvmem-cell-names = "bandgap";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pwm5_pin>;
++
++		ac200_ephy_ctl: ethernet-phy-control {
++			compatible = "x-powers,ac200-ephy-ctl";
++			nvmem-cells = <&ephy_calibration>;
++			nvmem-cell-names = "calibration";
++			phy-mode = "rmii";
++		};
++	};
++};
++
++&mdio1 {
++	ac300_ephy_ctl: ethernet-phy-control@10 {
++		compatible = "x-powers,ac300-ephy-ctl";
++		reg = <0x10>;
++		clocks = <&pwm 5>;
++		nvmem-cells = <&ephy_calibration>;
++		nvmem-cell-names = "calibration";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pwm5_pin>;
++		phy-mode = "rmii";
++		status = "fail-needs-probe";
++	};
++
++	acx00_ephy: ethernet-phy@0 {
++		compatible = "ethernet-phy-id0044.1400";
++		reg = <0>;
++		nvmem-cells = <&ephy_config>;
++		nvmem-cell-names = "configuration";
++		x-powers,ac200-control = <&ac200_ephy_ctl>;
++		x-powers,ac300-control = <&ac300_ephy_ctl>;
++	};
++};
++
++&pwm {
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h618-orangepi-zero2w.dts b/arch/arm64/boot/dts/allwinner/sun50i-h618-orangepi-zero2w.dts
+index b340bbcb710d..e833ee267c83 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h618-orangepi-zero2w.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h618-orangepi-zero2w.dts
+@@ -6,6 +6,7 @@
+ /dts-v1/;
  
- 		timer0: timer@3009000 {
-@@ -324,6 +338,13 @@ i2c0_pins: i2c0-pins {
- 				function = "i2c0";
- 			};
+ #include "sun50i-h616.dtsi"
++#include "sun50i-h616-acx00-ephy.dtsi"
+ #include "sun50i-h616-cpu-opp.dtsi"
  
-+			/omit-if-no-ref/
-+			i2c3_pa_pins: i2c3-pa-pins {
-+				pins = "PA10", "PA11";
-+				function = "i2c3";
-+				bias-pull-up;
-+			};
+ #include <dt-bindings/gpio/gpio.h>
+@@ -17,6 +18,7 @@ / {
+ 	compatible = "xunlong,orangepi-zero2w", "allwinner,sun50i-h618";
+ 
+ 	aliases {
++		ethernet0 = &emac1;
+ 		serial0 = &uart0;
+ 	};
+ 
+@@ -54,6 +56,17 @@ reg_vcc3v3: vcc3v3 {
+ 	};
+ };
+ 
++&ac200 {
++	ac-ldoin-supply = <&reg_vcc3v3>;
++	ephy-vcc-supply = <&reg_vcc3v3>;
++	rtc-vcc-supply = <&reg_vcc3v3>;
++	tv-vcc-supply = <&reg_vcc3v3>;
++};
 +
- 			i2c3_ph_pins: i2c3-ph-pins {
- 				pins = "PH4", "PH5";
- 				function = "i2c3";
++&ac300_ephy_ctl {
++	vcc1-supply = <&reg_vcc3v3>;
++};
++
+ &codec {
+ 	allwinner,audio-routing = "Line Out", "LINEOUT";
+ 	status = "okay";
 
 -- 
 2.53.0
