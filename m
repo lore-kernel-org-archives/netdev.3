@@ -1,83 +1,71 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-oi2-f0.google.com (mail-oi2-f0.google.com [74.125.231.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA722DA76A
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 07:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909C7288C30
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 07:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.192
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785742437; cv=none; b=sO7KnatPrsoVI7/Dt1C3uHhZZR56xqBlgiepu9rsI9w4tecITUwoMuoBA3tp5iM/6su85mnbsK7iqyczfMHVUwGNSiyLWMUPAlYcLbc1vxTV6yGsO6lunvsKGEjwYdYOp9gwgpwsvwvCQOXKLGKAIJLNKjvm9hw3Yn11fuC3GTQ=
+	t=1785742447; cv=none; b=ANlRfhblaQFCTWtM7mZJHCt0LHwCICW7iGSyOVXq22Eo+7kjske9R2+ON542I+T7/t+DDHCnbI5jsoYysmkPoGuZ9mLQ+8n3ygLx1Z7qhIGCTZzKEbxCbqFYIHxyhkjr6aitKYQ2orG3rzYuC52XLdxxbOHpwbufzYjH0+cbznw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785742437; c=relaxed/simple;
-	bh=/DmVr1I/uwji10ZFfwhluNchBTHGN9354X6a+AWJeRQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xhot50BZhwkdd8lDQ48ivyBrOPIDb9n6x66U58sEObWdzJU7KbjPzh9xE2VJ2pEXnBhcHqLK8pTvve1SxYbR4HuWT3dl5h59UM9X3YoR/GqwZsWHkPuFhSdvBSSr4jlDQgPhExQ6vZHq5jqnAzW0qavEY+UYwRLGdyHqesYYm7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rmCscYgv; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1785742447; c=relaxed/simple;
+	bh=JfqXRx8JxA6qPctLPEMsVO4C6pDFgeqjl6rhl7NgLvs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mWlNEQF49dSyqB+7yWSqznlu1CB00od/N9nZYX3mpEbpHa7nZwnQEZOx/Xd+yQov/36XaMV3+6udWautw9oGHpS2e4PCosxA1yuAw6XJgFjoueozrd7eReeXFA/Rku1ZbjJ5V0YmLgRIapx7fYdLFXnmk2sBV5/egfJnfxKCt54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bRB1wnjr; arc=none smtp.client-ip=74.125.231.192
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rmCscYgv"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cf452def93so28168585ad.1
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 00:33:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bRB1wnjr"
+Received: by mail-oi2-f0.google.com with SMTP id 5614622812f47-4a49b13b745so925080b6e.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 00:34:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785742435; x=1786347235; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/DmVr1I/uwji10ZFfwhluNchBTHGN9354X6a+AWJeRQ=;
-        b=rmCscYgvDJeAXeIuP3zDYzn8E4Ra/yjaGenXiulNX58lw5etwE8S+dQ82quCJ9kxwz
-         yKZxHFGItzQKbTjGzvtsXV5B5mm0AdXfsquHUlt3TXnoWGNmA4NwXn8RmtR8AHswGVnT
-         cRgmNL6+xk6eXeVRO2YCr86sMw+loHIdFxo/JZM1Qk7zWH3lAkrLPxrBL+yckDKUrTu4
-         W1c5t7d3w+Va1lwj1DEPwrAtBFxAaAUPI4BAHlaYF/fmOeziLlHFPrxWL+Nr4+9vZRuQ
-         nEkBG271Xf0ZY/gmU+mZDMCfJSJBZ0cZqJWjog0CXIo958SJZauE368MtytrT+B+x/ic
-         mazA==
+        d=gmail.com; s=20251104; t=1785742445; x=1786347245; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZwsQZAUG+S/BjqVWHNHMZh9+biN0VXGTHnyl6NsuJJM=;
+        b=bRB1wnjratCBTDYmKPcC+0j8oDOSOtZi1d8gk3ta6GxcOUUEmnpRGHgmSVz8DkR092
+         iB3Ph6qZboqHoLb08ahwQ4pvX/kERpkqI2fTNV8NNU0Zs2JwbDXKMttPF/K/tHEHQok1
+         Nj9qEnXRHUfXj46Y6enhUHnM+3bYKSGKIomxenNW5vvkUrqYhnFFvF6gikxHTxmU+XxR
+         jaHgCU6zRAk/t2TLHXpGlEEJDNfQHld8D2ui9oriYU7BzH4nEi96MOMsN6JBGn03Daw9
+         cgZdx+acOwD0G7oHmaW/JKq6+iF8NzLXKbJ2cHDWtclzhdhZDAokeF0rDY9B14CmkM57
+         licg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785742435; x=1786347235;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/DmVr1I/uwji10ZFfwhluNchBTHGN9354X6a+AWJeRQ=;
-        b=fo0F6EUfth18LFoJ2X8BMnVpGHIzf3FFguSsg3iL89S2ahcoLKmx2SIB/ax6rr3qoJ
-         TiRJBNZHnAuzrFz8sw1Cg+vQzQyXbe5dbUDDkoP9ItbTvvm5+wQlF7ggqyAn9qQmg+U4
-         DbezYZLwGrSWe8R/J63JFyQD5GkGSSnpPfwpK65EZX+yIwaF1ZqDW8MBQEJQ5gUYCnsd
-         VHHjnB4cuql7yfADBAkc0j7vm4f9oZ9SeXkZKo7jJEpa9SEifVjGrnc+aKgf7eFBoU0i
-         on1IwiWvrU6im4GHzBv0Is7/B9PmySmN/zLrOFhf36TY/vMpq9A56jJNp8ON8es+QAJh
-         ReVA==
-X-Forwarded-Encrypted: i=1; AHgh+RotfnSeCDQ06yD4WlMoNS3xhXKIu1QOdemkGnfN72UKM+6ZnMzKFyJdpmGjiLhkJ8f/94jzVD0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzrqu7rYMtXv8x2muZvNFnh9l6SAUTxEBxThqzmX9cJsHZ9ugVM
-	nKSmuS+Nv4Ox6VWVc/PF9OgEwYwWTvM47dGir4/M2aaxrjaEi+P7FOxD
-X-Gm-Gg: AR+sD11AF8oqD6/UjBni1XJhc/N/SKQeXQuTQTn80WYM1o/x0irpvlYNACkHd/O9Muf
-	yrkZVV1mMVjOY9fPc+kjJDGZezuoLI1BTmeSryCz5x3ffg2rlCMN0ExhMlNBmpUuD6+59yA5UHH
-	aIbiFqz9Dm5X1F4tCK+0IBMDaENogWGqwnOMaVvl7daEbx1kgjGyEWk3DkW7QrsufMPfZePWi3P
-	PcRcfqrYMY+qjw8iKIZGcv8FHun9L8UtJiBYrOOKVKQiOEB8s7vzCLJRXPWSuMaSGvot9unKFkr
-	xtSMPsO07Bj250ZFN8cRnW7IWHbTnG9fxVOR4HL9HAw4NL08LLQ9fQPnFWWeL23TGfplDfy9YY9
-	aTtrY4rFbRcJNf8vnQu6Bp13xIQrbxDiDZLhNpFORWGzyQ3c2SsHKFmNzd5YOYWt6ZgEwPkYgk6
-	KEWyqPD5VQNGktkPYUAbcRqKah/X2tf4ie2xBIf3MfvxIr1G47kgjosPHW6JrxNe8=
-X-Received: by 2002:a17:902:ea0c:b0:2cf:41ba:96c2 with SMTP id d9443c01a7336-2d05366b5dfmr76364185ad.12.1785742435408;
-        Mon, 03 Aug 2026 00:33:55 -0700 (PDT)
-Received: from Inspiron5409 ([138.199.21.246])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae5abbbsm33637465ad.22.2026.08.03.00.33.50
+        d=1e100.net; s=20251104; t=1785742445; x=1786347245;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZwsQZAUG+S/BjqVWHNHMZh9+biN0VXGTHnyl6NsuJJM=;
+        b=nrTMGeozt4Iv8H8D+dy3JLh0AwvxhOsoM7JqL4feg1J97mt2hQxWWamtiMVC6+A1r/
+         uNWKZmqsli9iF0OtY9WPlth8IhqlyWCYijs27DO3jQEZX/S9WQpvdYzO0WiilhjMrDwR
+         a5eJvdk1NMUWc+QQAmEg5LMMjRvI0clF5UMGRjGaeFPTDKmxwZME3lBmLJGGwSrUrSSR
+         w58ptRymLQpTYMJzIh914uxK/wiPyWHO0mYaCzHuG06SgnPQ6dW7uZ3Lqb4t0xP6pObc
+         Y19i1ZUCqYEirzImCtb9JYWTLZXSfEQhCm7M2Ys4I0ZXq08yiMLxIhI/RdLqVE0FjrJa
+         3r8w==
+X-Gm-Message-State: AOJu0Yx0arX46SW2js2SLyNKvYM2bpo4JKBqhNUPBeCno99tJPWQHOCi
+	io2q3yXqym2imqLNbAeY2roEtUw3mcnVnfgGVGI23jizUsIc+fJp7EOGonYlzbNwFMHeuA==
+X-Gm-Gg: AR+sD10Kf8bq06494NMjcsplWHUAySOAKc0jJ1O+SVjFR7cH6Jhznuiu4QfcaG8ELHr
+	dFDHtkQczlpPORpsKcmxlHhYknlbjSTVCWHrPmJukc4By1qLm2X7r24UCV8+qAZarq4eF+zt5jh
+	lCsvHTpyFR7JaZqNYKkXYdZb6+ooRDv1yIslxux6lLewq+4RxvNSxgo2AyIQeaQ9wpTK4+MIpg5
+	DRBkT91y14AazMSVsAO4py8gKi2N/74yNEjKXwd8Hksy9HpsdwFIXvIRFAQLMroTq2miZD8KqdS
+	GQCkwjBR/t8L9ernB7vKMvzJqioKayWVKiyX4QbpHa9/kHAjEVkzC4d89Prz1l3qme/G0S1rEcd
+	JMkFPkBV0o8BWy8I1c/8VlwiKA9SOOJ9e8voCVP/3YAItHpTbS1PJy8lgRLoGyWT6Mg1iR89T5N
+	74B6/A557uNNs9uiV5Kp51m+1bGzpArrPOnd86rtnnXRm0DdWxDo6FWhbMeyjCI0aZe22+DK1ho
+	HRFD4on4t1Lu/fVXyoA09GPgRwdqC9ogIcn
+X-Received: by 2002:a05:6820:811b:b0:6a3:7ee4:11c7 with SMTP id 006d021491bc7-6ae4336d8c5mr13345313eaf.29.1785742445310;
+        Mon, 03 Aug 2026 00:34:05 -0700 (PDT)
+Received: from localhost.localdomain ([14.22.11.162])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6ae39e2f5c2sm6173749eaf.8.2026.08.03.00.34.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 00:33:54 -0700 (PDT)
-From: Jianhui Xu <neuromoments@gmail.com>
-To: mail@birger-koblitz.de
-Cc: andrew+netdev@lunn.ch,
-	andrew@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	hkallweit1@gmail.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux@armlinux.org.uk,
-	netdev@vger.kernel.org,
-	neuromoments@gmail.com,
-	pabeni@redhat.com
-Subject: Re: [PATCH net-next v5 00/13] ax88179_178a: Add support for AX88179A-based chips
-Date: Mon,  3 Aug 2026 15:33:48 +0800
-Message-ID: <20260803073348.2190800-1-neuromoments@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260802-ax88179a-v5-0-dcb9fea4acd4@birger-koblitz.de>
-References: <20260802-ax88179a-v5-0-dcb9fea4acd4@birger-koblitz.de>
+        Mon, 03 Aug 2026 00:34:03 -0700 (PDT)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: netdev@vger.kernel.org
+Cc: dhowells@redhat.com,
+	marc.dionne@auristor.com,
+	linux-afs@lists.infradead.org,
+	Henry Martin <bsdhenrymartin@gmail.com>
+Subject: [PATCH 0/3] rxrpc: fix three bugs found by autokbug fuzzing
+Date: Mon,  3 Aug 2026 15:33:52 +0800
+Message-ID: <20260803073355.3895949-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,59 +74,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Birger,
+These three patches fix independent rxrpc bugs found by the autokbug
+dynamic kernel fuzzer at Tencent Yunding Lab.
 
-I tested v5 on the same ASIX AX88179B adapter (USB 0b95:1790,
-bcdDevice 0x0200, firmware 1.3.0.0).
+  [1/3] Stack OOB read in TLP soft-ACK processing. A malicious peer
+        can deterministically trigger it over an unencrypted
+        (security-none) AF_RXRPC association - an immediate KASAN
+        stack-out-of-bounds report even at the minimum offset.
 
-The 13 patches applied to net-next commit
-df13c1df8147675470213ffff29dd5762fa321f5 and built successfully as
-7.2.0-rc3-ax88179b-v5. The focused W=1 builds for ax88179.o and
-ax88796b.o were clean.
+  [2/3] kernel BUG in netns teardown: the conn_proc_list assertion
+        in rxrpc_destroy_all_connections() races with connection
+        destructors deferred to system_wq and fires on a healthy
+        state, killing the cleanup_net kworker. Unprivileged
+        userns+netns reachable.
 
-Unfortunately I reproduced an intermittent cold-activation failure, so I cannot
-add a Tested-by for v5. In four fresh direct-kernel QEMU starts with complete
-diagnostic capture, the old lease was released before starting DHCPDISCOVER. Two
-reported 1000baseT/Full carrier but timed out DHCP, while two succeeded
-normally. In both failed runs, RX remained at zero while TX increased. Reloading
-ax88179 and ax88796b recovered DHCP, RX, and bound traffic in both cases.
-
-Before this follow-up campaign, in the earlier v5 validation session, I observed
-a separate 100baseT/Full failure: the adapter negotiated carrier after I changed
-the advertisement to 100baseT/Full-only, but ARP and bound traffic failed.
-I then tried to reproduce that result with three new advertise-0x008
-transitions. All three negotiated 100baseT/Full and passed bound gateway
-traffic; two also explicitly passed traffic to the test host. These repetitions
-included tests both with and without a preceding module reload. I could not
-reproduce the earlier 100-Mbit failure.
-
-That earlier v5 validation session also produced a separate guest ACPI S3
-failure: after resume, the adapter returned with 1000baseT/Full carrier, but RX
-remained frozen and traffic was broken. I then performed three new S3 cycles.
-All three logged QEMU's same emulated-XHCI resume reinitialization and USB
-reset, but returned working traffic with increasing RX counters immediately. The
-final repetition also recreated the earlier speed, EEE, and pause setting
-sequence and verified working gateway traffic immediately before suspend.
-I could not reproduce the earlier frozen-RX result. This remains a QEMU
-emulated-XHCI test, not a physical-XHCI suspend test.
-
-While reviewing the speed result, I noticed ax88179a_bulkin_config() selects its
-table using ax179_data->speed, while ax88179a_mac_link_up() receives the speed
-argument but I could not find an assignment to that private member. The new
-passing 100-Mbit tests do not support linking that source observation to the
-original one-off failure, and the same pattern appears in v4.
-
-EEE disable/restore, pause enable/restore, EEPROM read, module reload, and USB
-detach/reattach otherwise worked. I also tried Wake-on-LAN in QEMU. The driver
-accepted magic-packet wake, ethtool read back Wake-on: g, and USB wakeup was
-enabled before the guest entered S3. QEMU was configured with USB remote-wake
-suppression disabled, but the guest did not resume after directed-broadcast,
-limited-broadcast, and unicast magic packets. I consider that result
-inconclusive because I did not independently verify the physical USB
-remote-wakeup propagation through QEMU.
-
-Please let me know if you would like me to test a fix or collect a specific
-register trace.
+  [3/3] WARN_ON in rxrpc_alloc_txqueue(): the TX_NO_MORE entry check
+        from commit ae4f89989479 ("rxrpc: Fix ability to add more
+        data to a call once MSG_MORE deasserted") is not re-done
+        after sleeping in wait_for_space, so a racing sendmsg on the
+        same call reaches the WARN on a legal finalized-call state
+        (spurious splat and -ENOMEM; panic_on_warn DoS).
 
 Thanks,
-Jianhui
+Henry
+
+Henry Martin (3):
+  rxrpc: fix stack OOB read in TLP soft-ACK processing
+  rxrpc: wait for deferred conn destruction before conn_proc_list check
+  rxrpc: recheck RXRPC_CALL_TX_NO_MORE after sleeping in rxrpc_send_data()
+
+ net/rxrpc/ar-internal.h | 3 ++-
+ net/rxrpc/conn_object.c | 10 ++++++----
+ net/rxrpc/sendmsg.c     | 8 ++++++++
+ 3 files changed, 16 insertions(+), 5 deletions(-)
+
+-- 
+2.43.0
