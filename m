@@ -1,144 +1,308 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012037.outbound.protection.outlook.com [52.101.48.37])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7734397E92;
-	Mon,  3 Aug 2026 06:28:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785738527; cv=fail; b=inCNRaxTpGqKjHfFLmMu+vG+sZ4vneXJeS2yoe1iu6+wUVRXMnj+5P0d8waaviV8LtHWR8ZSvJW8WzkzqRBYBGjZGL0PASB1lROk/rwcY2LMdH7+y5ihc97p3kVexZ3/NWiH2bBKI7jmxsg1JOc0Mw7RE/sEd146uGcENZEqucw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785738527; c=relaxed/simple;
-	bh=rw5PYLZMhj0i4b5mAOvHWlrNjuwrYmMsIXsdGacR0hc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CCDUGQah5loMWOz1H/Z/4MMl58TczJh93ysatL1h2l3uEf0PsFGLLGUX+57FpzUP3vEoP/x8UJmyuTUsCI95k6UCQbuImXhJEiCl9ysQJUpeZV88MRe8+DvqJzT4kjcSW/fuyy7Xj5fi5rYXd6GWnG/2pFNaEipOt/HYd+YtNKI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CADRkWsk; arc=fail smtp.client-ip=52.101.48.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D899396572;
+	Mon,  3 Aug 2026 06:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785738686; cv=none; b=kXQtbNxBKmzgEPQQFzMZEC+xt3P1DnE6mr6sJCCHNsBPo73UchO6OF81SHdbjcPWjQCMymSe5h7xhiySgjlbiHfpPOxcIp2ih/OaxJVxqgNLB6p9oI9UnP1wYYygwYkIsuhQISgwHSO1R+HsWQPkT7PlN4UxFrOgyrJM98OOdvQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785738686; c=relaxed/simple;
+	bh=0w26mLCibxmzad5cJ4RsBqQcZLwhm5292+fwf5AEBhg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=SpiroXl7M7H0nhWnWb+cnXpRfn/Ws6M6SMBxHVCdQCYX+DRu+wPojcBNnsqrR+i9cmrjn8M7IT4lAdZGIKfWcMpTps/sX3uMLuipDijqrVKr2NbhkPUXwNtii3wSuYJQOXvaIDf9HxRqPxhDWrtawm77fgo8q68PFqnBC0fLZek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=oer8sGJV; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CADRkWsk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wOTtyM9W7H/5axfsR5UbeBrX5KR5sl6zTQUc2sx6FhjAdU3OikRGz2J47c8pmsU6/8Y+x6paZOjWsblWIZBLs5iQiz91Mye27KLO1LTRZzoYxKZ+SDBsEouaYiXd8oBaIzhDbRIGXfaUF24YGGX8uD3c7NmGzwyQKxyUFbvq+6Mvaiwr03HnNeSsDtPoQJocv70S0ENjiiByls8Ms156hMmIFcxe9OPSZTY0nXmQjFqv6M86OoPuJ8435N0bdbrwbgh49dsQxCZjiYHPlUr7X3sWNyMYc15ovjLxZSmhYUvqFeS0liHdJXpQlsvyCNfEW5F3t8h1JAkUMkkJk6ZWkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RrqXku1fvNa6WSQmk9wRr2lmr2FJ+moa+DVjWToUKi4=;
- b=TZtswhWfowkTCi/QVxDE3wZ0LZnPUCp4GxWVbvOlqvQNubE6DcVn3xaHCvaAOHMQ0pIeyjlTnZ98SXlOjvIH5eiDcSItuZvUDBOfPtU8/sG4Hd1lde1cIovkPp+gIlI2PMGUtYrXXaGijsRWy2wropa1J3TeHyV7Vy2PVU3vAxnW+KIvZN985TYn7fBM+kVwzVjw7ZDxRZNejLo1jm5ssXtJnoms3fY0DtiVQrNEoSKbTNXLMpZsM51SdmpjQVq43W+ABFb8dxu+S/3LqKfNc7wrqW0ek4KYLv84+w48/tvAYB5RIIYPi1rj/Bl8e97IevDlp2vxSeBdSpZA0AFUDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=bootlin.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RrqXku1fvNa6WSQmk9wRr2lmr2FJ+moa+DVjWToUKi4=;
- b=CADRkWskVAPBnDUpap2yblgC0iXpoY7GVKyLiU1otu/z5RGajDQYTXITQOyOxTALCt01TvxuyiJJxT+DMf1mx7qHxnAxSKQcO4jLeKLoZ10fGBA8fqtCD/0yeQNUcT6CCm7GNeLqTT3u16itiS+gTS0CtGo2n6YpFgNXYRZ+1F4=
-Received: from BY5PR04CA0013.namprd04.prod.outlook.com (2603:10b6:a03:1d0::23)
- by SN7PR12MB6885.namprd12.prod.outlook.com (2603:10b6:806:263::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Mon, 3 Aug
- 2026 06:28:42 +0000
-Received: from SJ1PEPF00001CE2.namprd05.prod.outlook.com
- (2603:10b6:a03:1d0:cafe::ac) by BY5PR04CA0013.outlook.office365.com
- (2603:10b6:a03:1d0::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.17 via Frontend Transport; Mon, 3
- Aug 2026 06:28:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00001CE2.mail.protection.outlook.com (10.167.242.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.292.8 via Frontend Transport; Mon, 3 Aug 2026 06:28:40 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 3 Aug
- 2026 01:28:38 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 3 Aug
- 2026 01:28:37 -0500
-Received: from xhdvineethc40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Mon, 3 Aug 2026 01:28:34 -0500
-From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-To: <theo.lebrun@bootlin.com>, <conor.dooley@microchip.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-CC: <vineeth.karumanchi@amd.com>, <git@amd.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next v2] net: macb: remove unused ENST Q0/Q1 time register defines
-Date: Mon, 3 Aug 2026 11:58:34 +0530
-Message-ID: <20260803062834.3865755-1-vineeth.karumanchi@amd.com>
-X-Mailer: git-send-email 2.44.4
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="oer8sGJV"
+Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9B0DE512;
+	Mon,  3 Aug 2026 08:30:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1785738612;
+	bh=0w26mLCibxmzad5cJ4RsBqQcZLwhm5292+fwf5AEBhg=;
+	h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
+	b=oer8sGJVImG3eAdX/1tDX4OfNrWm4pjhxRA/1dweeK0/QNZxTPxYqBKHqEkpRPb3+
+	 Egk1n6NaDUmYkxMzDpzoE4nw/3yETSw8cW+rrdPTRWBDGvsL/5y/zRRpTIM1V1Upa9
+	 AsybJri2Bo0Ucca/CHkw+txSHZGcz913RI4heSi4=
+Message-ID: <f428f54b-90dd-425a-b204-531df0e1d5fa@ideasonboard.com>
+Date: Mon, 3 Aug 2026 09:31:14 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE2:EE_|SN7PR12MB6885:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb201970-9b58-4253-1f54-08def128757e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|23010399003|376014|18002099003|11063799006|10067099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	30BtDpsE5SWMg2z3n9NABCXoxc8UDO/knF1yl6fqxlefRLju6MkfutenEx9MdTyX5KUU8k5l1kx1EfXSfncTslGaAAsNrs0fEURcFA9T8whpx4bk9UBX7sRZLD6mTbttguziWRElfZF4DGSQHkwihrCcuOH4XvQWMJ2XN0lEYgE4jRdys4PDVT0ydg03Z4mYdVWenDWTm4+VGoizRvEOrAZsamqiU5Mtw0qIyNvv43NIeCCNgvBW8d9r5Z+OO4kvPM7i89M2+adnwpw0vLklUFV7TUtJ4iY/MK9AJYAbHTm6IYVzfHU1wGhNiL6AB9NmRV7dj272L6umGLstnfQBgGd6whCIYYnCVsqL3VHXV0k+PMznJsOJq75vVXxjxraWtvuVLJJe1mpWXlWcfxLEEGKZXaHv+eninmBoqaq/rTtNeALMjacALG95MegbRWhlJjo/ej+xBkqFzpKMMjcGn5regg8mNSGNIMQ66scuFv4bPl4xepqskvH5dwbMISB/5y9Sbetd4a8c4YmQ3gplzROy3eVyv4NgSA+L9kq+DVtQIIL5kTrXODDKe/K8BsUMtRYAdopvw9QrFi6QP8pik42nWRK9yTSrgtOICwnDty9hGYGeKl8ak+fsVHVZBE8dY28bPpxWlrL4x+w1qyCNy0UFRYpQW899n8kcu+twjhiNU3MxEFAoWZzfa7O1NAapFypQi83w+U3dvgP5H1Fetw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(23010399003)(376014)(18002099003)(11063799006)(10067099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	75JHs/DNf7D7vXuX6QYteg1DYHpQo4Wine/xwEzIrwn3jyZ9zAihJwZd4yYFA5fa7qtOpnvahy69uRHebd69o9XblGIP/sQ3Eismo9v3fF4zwhdvopf92MmiyCchW/x/b5oPgsGlcI894iV+n/L9VVIoXXkR934QMuXGxB447UDI8XE/n/1N5DhO3CeHebbVbEcy9wOBLxYgWUsnJ4vHQWYQ6o/anOaMgp91bIPwy1hVd5WH32OrbDR9lnKudDRMQb7u1pUfKgFQDjysF0+VDIK7CMvAPyeT6iOl+qnCDvKxen28gGvw04n7Vnb3zV9RvwlFug3Rfg3CviVEWX/kjbJVT1KYn7pQIeHc1xbMdE+8LHEI3QXyBsVIr7TDtSEqAhNlUK/FQrOnYKwlXUwLXuqiWMpYAFNbrQjSvOyVMX0stxQK9dUrg5E9kQG1NDSi
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 06:28:40.4682
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb201970-9b58-4253-1f54-08def128757e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE2.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6885
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: Correct white-space style
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+References: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
+Content-Language: en-US
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Mike Leach <mike.leach@arm.com>,
+ James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>,
+ Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+ Jyri Sarha <jyri.sarha@iki.fi>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+ Patrice Chotard <patrice.chotard@foss.st.com>,
+ Andi Shyti <andi.shyti@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>,
+ Lee Jones <lee@kernel.org>, Johannes Berg <johannes@sipsolutions.net>,
+ Jeff Johnson <jjohnson@kernel.org>, Viresh Kumar <vireshk@kernel.org>,
+ Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>,
+ Yangbo Lu <yangbo.lu@nxp.com>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
+ <ukleinek@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+ Samuel Holland <samuel.holland@sifive.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Jens Wiklander <jenswi@kernel.org>,
+ Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>,
+ YC Hung <yc.hung@mediatek.com>, Svyatoslav Ryhel <clamor95@gmail.com>,
+ Sean Wang <sean.wang@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Peter Ujfalusi <peter.ujfalusi@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ coresight@lists.linaro.org, linux-arm-msm@vger.kernel.org,
+ linux-ide@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org,
+ linux-i2c@vger.kernel.org, mfd@lists.linux.dev,
+ linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-pm@vger.kernel.org, netdev@vger.kernel.org, linux-pwm@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-usb@vger.kernel.org
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+In-Reply-To: <20260801195613.235430-2-krzysztof.kozlowski@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The ENST start/on/off time register definitions for Q0 and Q1 are not
-referenced anywhere in the driver. The driver calculates these register
-addresses from the ENST base offset and the queue index instead of using
-fixed defines, removing the unused macros.
+Hi,
 
-Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
----
-Changes in v2:
-- Split the patches for net and net-next.
-- Link to v1 : https://lore.kernel.org/netdev/20260724043257.2221030-1-vineeth.karumanchi@amd.com/
----
- drivers/net/ethernet/cadence/macb.h | 6 ------
- 1 file changed, 6 deletions(-)
+On 01/08/2026 22:56, Krzysztof Kozlowski wrote:
+> Correct a few white-space issues, like double space after '=' or before
+> bracket '{' characters, which will be flagged by dt-check-style.  No
+> functional changes.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> 
+> ---
+> 
+> Patch applies on Rob's for-next branch.
+> ---
+>   .../arm/firmware/linaro,optee-tz.yaml         |  8 +-
+>   .../devicetree/bindings/arm/psci.yaml         | 18 ++--
+>   .../bindings/arm/qcom,coresight-tnoc.yaml     |  2 +-
+>   .../devicetree/bindings/ata/st,ahci.yaml      | 22 ++---
+>   .../bindings/display/ti/ti,am65x-dss.yaml     | 12 +--
+>   .../bindings/display/ti/ti,j721e-dss.yaml     | 96 +++++++++----------
+>   .../bindings/display/ti/ti,k2g-dss.yaml       | 36 +++----
+>   .../bindings/dsp/mediatek,mt8195-dsp.yaml     |  2 +-
+>   .../bindings/gpio/st,nomadik-gpio.yaml        |  2 +-
+>   .../devicetree/bindings/i2c/st,sti-i2c.yaml   |  2 +-
+>   .../bindings/mailbox/st,sti-mailbox.yaml      |  2 +-
+>   .../bindings/mfd/maxim,max77620.yaml          |  2 +-
+>   .../bindings/net/wireless/qcom,ath10k.yaml    | 34 +++----
+>   .../devicetree/bindings/opp/opp-v2.yaml       | 28 +++---
+>   .../pinctrl/mediatek,mt7988-pinctrl.yaml      |  2 +-
+>   .../devicetree/bindings/ptp/fsl,ptp.yaml      | 12 +--
+>   .../devicetree/bindings/pwm/pwm-sifive.yaml   |  2 +-
+>   .../bindings/usb/ti,twl4030-usb.yaml          |  2 +-
+>   18 files changed, 142 insertions(+), 142 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-index 2de56017ee0d..a11052565436 100644
---- a/drivers/net/ethernet/cadence/macb.h
-+++ b/drivers/net/ethernet/cadence/macb.h
-@@ -184,12 +184,6 @@
- #define GEM_DCFG8		0x029C /* Design Config 8 */
- #define GEM_DCFG10		0x02A4 /* Design Config 10 */
- #define GEM_DCFG12		0x02AC /* Design Config 12 */
--#define GEM_ENST_START_TIME_Q0	0x0800 /* ENST Q0 start time */
--#define GEM_ENST_START_TIME_Q1	0x0804 /* ENST Q1 start time */
--#define GEM_ENST_ON_TIME_Q0	0x0820 /* ENST Q0 on time */
--#define GEM_ENST_ON_TIME_Q1	0x0824 /* ENST Q1 on time */
--#define GEM_ENST_OFF_TIME_Q0	0x0840 /* ENST Q0 off time */
--#define GEM_ENST_OFF_TIME_Q1	0x0844 /* ENST Q1 off time */
- #define GEM_ENST_CONTROL	0x0880 /* ENST control register */
- #define GEM_USX_CONTROL		0x0A80 /* High speed PCS control register */
- #define GEM_USX_STATUS		0x0A88 /* High speed PCS status register */
--- 
-2.44.4
+
+> diff --git a/Documentation/devicetree/bindings/display/ti/ti,am65x-dss.yaml b/Documentation/devicetree/bindings/display/ti/ti,am65x-dss.yaml
+> index 49a007cbcd3a..d1e530e12604 100644
+> --- a/Documentation/devicetree/bindings/display/ti/ti,am65x-dss.yaml
+> +++ b/Documentation/devicetree/bindings/display/ti/ti,am65x-dss.yaml
+> @@ -261,9 +261,9 @@ examples:
+>                   "ovr1", "ovr2", "vp1", "vp2", "common1";
+>           ti,am65x-oldi-io-ctrl = <&dss_oldi_io_ctrl>;
+>           power-domains = <&k3_pds 67 TI_SCI_PD_EXCLUSIVE>;
+> -        clocks =        <&k3_clks 67 1>,
+> -                        <&k3_clks 216 1>,
+> -                        <&k3_clks 67 2>;
+> +        clocks = <&k3_clks 67 1>,
+> +                 <&k3_clks 216 1>,
+> +                 <&k3_clks 67 2>;
+>           clock-names = "fck", "vp1", "vp2";
+>           interrupts = <GIC_SPI 166 IRQ_TYPE_EDGE_RISING>;
+>           ports {
+> @@ -299,9 +299,9 @@ examples:
+>               reg-names = "common", "vidl1", "vid",
+>                           "ovr1", "ovr2", "vp1", "vp2", "common1";
+>               power-domains = <&k3_pds 186 TI_SCI_PD_EXCLUSIVE>;
+> -            clocks =        <&k3_clks 186 6>,
+> -                            <&vp1_clock>,
+> -                            <&k3_clks 186 2>;
+> +            clocks = <&k3_clks 186 6>,
+> +                     <&vp1_clock>,
+> +                     <&k3_clks 186 2>;
+>               clock-names = "fck", "vp1", "vp2";
+>               interrupts = <GIC_SPI 84 IRQ_TYPE_LEVEL_HIGH>;
+>               oldi-transmitters {
+> diff --git a/Documentation/devicetree/bindings/display/ti/ti,j721e-dss.yaml b/Documentation/devicetree/bindings/display/ti/ti,j721e-dss.yaml
+> index 65ae8a1c3998..cac5ef1743d3 100644
+> --- a/Documentation/devicetree/bindings/display/ti/ti,j721e-dss.yaml
+> +++ b/Documentation/devicetree/bindings/display/ti/ti,j721e-dss.yaml
+> @@ -154,54 +154,54 @@ examples:
+>       #include <dt-bindings/soc/ti,sci_pm_domain.h>
+>   
+>       dss: dss@4a00000 {
+> -            compatible = "ti,j721e-dss";
+> -            reg =   <0x04a00000 0x10000>, /* common_m */
+> -                    <0x04a10000 0x10000>, /* common_s0*/
+> -                    <0x04b00000 0x10000>, /* common_s1*/
+> -                    <0x04b10000 0x10000>, /* common_s2*/
+> -                    <0x04a20000 0x10000>, /* vidl1 */
+> -                    <0x04a30000 0x10000>, /* vidl2 */
+> -                    <0x04a50000 0x10000>, /* vid1 */
+> -                    <0x04a60000 0x10000>, /* vid2 */
+> -                    <0x04a70000 0x10000>, /* ovr1 */
+> -                    <0x04a90000 0x10000>, /* ovr2 */
+> -                    <0x04ab0000 0x10000>, /* ovr3 */
+> -                    <0x04ad0000 0x10000>, /* ovr4 */
+> -                    <0x04a80000 0x10000>, /* vp1 */
+> -                    <0x04aa0000 0x10000>, /* vp2 */
+> -                    <0x04ac0000 0x10000>, /* vp3 */
+> -                    <0x04ae0000 0x10000>, /* vp4 */
+> -                    <0x04af0000 0x10000>; /* wb */
+> -            reg-names = "common_m", "common_s0",
+> -                    "common_s1", "common_s2",
+> -                    "vidl1", "vidl2","vid1","vid2",
+> -                    "ovr1", "ovr2", "ovr3", "ovr4",
+> -                    "vp1", "vp2", "vp3", "vp4",
+> -                    "wb";
+> -            clocks =        <&k3_clks 152 0>,
+> -                            <&k3_clks 152 1>,
+> -                            <&k3_clks 152 4>,
+> -                            <&k3_clks 152 9>,
+> -                            <&k3_clks 152 13>;
+> -            clock-names = "fck", "vp1", "vp2", "vp3", "vp4";
+> -            power-domains = <&k3_pds 152 TI_SCI_PD_EXCLUSIVE>;
+> -            interrupts =    <GIC_SPI 602 IRQ_TYPE_LEVEL_HIGH>,
+> -                            <GIC_SPI 603 IRQ_TYPE_LEVEL_HIGH>,
+> -                            <GIC_SPI 604 IRQ_TYPE_LEVEL_HIGH>,
+> -                            <GIC_SPI 605 IRQ_TYPE_LEVEL_HIGH>;
+> -            interrupt-names =       "common_m",
+> -                                    "common_s0",
+> -                                    "common_s1",
+> -                                    "common_s2";
+> -            ports {
+> -                    #address-cells = <1>;
+> -                    #size-cells = <0>;
+> -                    port@0 {
+> -                            reg = <0>;
+> +        compatible = "ti,j721e-dss";
+> +        reg = <0x04a00000 0x10000>, /* common_m */
+> +              <0x04a10000 0x10000>, /* common_s0*/
+> +              <0x04b00000 0x10000>, /* common_s1*/
+> +              <0x04b10000 0x10000>, /* common_s2*/
+> +              <0x04a20000 0x10000>, /* vidl1 */
+> +              <0x04a30000 0x10000>, /* vidl2 */
+> +              <0x04a50000 0x10000>, /* vid1 */
+> +              <0x04a60000 0x10000>, /* vid2 */
+> +              <0x04a70000 0x10000>, /* ovr1 */
+> +              <0x04a90000 0x10000>, /* ovr2 */
+> +              <0x04ab0000 0x10000>, /* ovr3 */
+> +              <0x04ad0000 0x10000>, /* ovr4 */
+> +              <0x04a80000 0x10000>, /* vp1 */
+> +              <0x04aa0000 0x10000>, /* vp2 */
+> +              <0x04ac0000 0x10000>, /* vp3 */
+> +              <0x04ae0000 0x10000>, /* vp4 */
+> +              <0x04af0000 0x10000>; /* wb */
+> +        reg-names = "common_m", "common_s0",
+> +                "common_s1", "common_s2",
+> +                "vidl1", "vidl2","vid1","vid2",
+> +                "ovr1", "ovr2", "ovr3", "ovr4",
+> +                "vp1", "vp2", "vp3", "vp4",
+> +                "wb";
+> +        clocks = <&k3_clks 152 0>,
+> +                 <&k3_clks 152 1>,
+> +                 <&k3_clks 152 4>,
+> +                 <&k3_clks 152 9>,
+> +                 <&k3_clks 152 13>;
+> +        clock-names = "fck", "vp1", "vp2", "vp3", "vp4";
+> +        power-domains = <&k3_pds 152 TI_SCI_PD_EXCLUSIVE>;
+> +        interrupts = <GIC_SPI 602 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 603 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 604 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 605 IRQ_TYPE_LEVEL_HIGH>;
+> +        interrupt-names = "common_m",
+> +                          "common_s0",
+> +                          "common_s1",
+> +                          "common_s2";
+> +        ports {
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +            port@0 {
+> +                reg = <0>;
+>   
+> -                            dpi_out_0: endpoint {
+> -                                    remote-endpoint = <&dp_bridge_input>;
+> -                            };
+> -                    };
+> +                dpi_out_0: endpoint {
+> +                    remote-endpoint = <&dp_bridge_input>;
+> +                };
+>               };
+> +        };
+>       };
+> diff --git a/Documentation/devicetree/bindings/display/ti/ti,k2g-dss.yaml b/Documentation/devicetree/bindings/display/ti/ti,k2g-dss.yaml
+> index 96b1439f88e3..87721da0a8af 100644
+> --- a/Documentation/devicetree/bindings/display/ti/ti,k2g-dss.yaml
+> +++ b/Documentation/devicetree/bindings/display/ti/ti,k2g-dss.yaml
+> @@ -80,26 +80,26 @@ examples:
+>       #include <dt-bindings/interrupt-controller/arm-gic.h>
+>       #include <dt-bindings/interrupt-controller/irq.h>
+>   
+> -    dss: dss@2540000 {
+> -            compatible = "ti,k2g-dss";
+> -            reg =   <0x02540000 0x400>,
+> -                    <0x02550000 0x1000>,
+> -                    <0x02557000 0x1000>,
+> -                    <0x0255a800 0x100>,
+> -                    <0x0255ac00 0x100>;
+> -            reg-names = "cfg", "common", "vid1", "ovr1", "vp1";
+> -            clocks =        <&k2g_clks 0x2 0>,
+> -                            <&k2g_clks 0x2 1>;
+> -            clock-names = "fck", "vp1";
+> -            interrupts = <GIC_SPI 247 IRQ_TYPE_EDGE_RISING>;
+> +    dss@2540000 {
+> +        compatible = "ti,k2g-dss";
+> +        reg = <0x02540000 0x400>,
+> +              <0x02550000 0x1000>,
+> +              <0x02557000 0x1000>,
+> +              <0x0255a800 0x100>,
+> +              <0x0255ac00 0x100>;
+> +        reg-names = "cfg", "common", "vid1", "ovr1", "vp1";
+> +        clocks = <&k2g_clks 0x2 0>,
+> +                 <&k2g_clks 0x2 1>;
+> +        clock-names = "fck", "vp1";
+> +        interrupts = <GIC_SPI 247 IRQ_TYPE_EDGE_RISING>;
+>   
+> -            power-domains = <&k2g_pds 0x2>;
+> +        power-domains = <&k2g_pds 0x2>;
+>   
+> -            max-memory-bandwidth = <230000000>;
+> +        max-memory-bandwidth = <230000000>;
+>   
+> -            port {
+> -                    dpi_out: endpoint {
+> -                            remote-endpoint = <&sii9022_in>;
+> -                    };
+> +        port {
+> +            dpi_out: endpoint {
+> +                remote-endpoint = <&sii9022_in>;
+>               };
+> +        };
+>       };
+For the TI DSS parts:
+
+Acked-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+
+  Tomi
 
