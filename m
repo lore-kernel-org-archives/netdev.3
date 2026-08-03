@@ -1,243 +1,549 @@
-Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+Received: from mail-wm2-f2.google.com (mail-wm2-f2.google.com [74.125.225.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20AD13976A0
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 20:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B91A3A0E97
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 20:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785787301; cv=none; b=DcSEOO9gC8PFmCKv1E14QDPSyjfBCrX67we/lH3HGyDh3MCXulO74Q2Tuk5sAmf82TStrodyKg3X5+tyFUIAG7XautPUTvzGFcD512GT421h2CGcVII3JTuXMku1RgxS8hrI84tQraCAoEDvqt3wS5+fAiJtjerpi5OBhq0yI2A=
+	t=1785787505; cv=none; b=cJELosFbrssoR9Slemm8ZJXEUUvOXmviNCpNbtNfHZkF8EfeFJHG0A9/G8XFG6hd21UtSwHuW/hEDZLVOanEKFIwxtHTd5SKBl9Sx/4LiQa80DZj7q19XOIyNvt8Zc5o2nA2CMSVwKBPeA68v3YMHIqxdEmDa8aMVWzVDL18vXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785787301; c=relaxed/simple;
-	bh=pzM68CKvgE8ylSkpz4lbDvjs0dGs8EUk3zeQicGZIXY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I+iV9hLdVEiofwFpFzW8fr4jSijysL/AkeAFUEqcJtuSqrbw0jQyUL/155BvL3QA7gSOkBEwpIS1Pcfzeek2DwXN3guGxyQpbaAvo4VhGn7AQ2O+J/ifVLJ/+2AIds6w6q8x6Nhm/rJZHlr1MWY/ENimm0FbEAGbNMSNAMz56RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=HEqOVYq8; arc=none smtp.client-ip=209.85.216.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="HEqOVYq8"
-Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-38759bcd877so3476106a91.2
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 13:01:39 -0700 (PDT)
+	s=arc-20240116; t=1785787505; c=relaxed/simple;
+	bh=Bv7cPCbdRWjrq2py12tZKz5xOwe2z4tGo6vIitHtGMc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q0d1DfhQlQZTcpbEJeDFyO/em/muDIS2UmjnJ3vSSSZdiZdLHYw42qtiBzsLcZL+/DxDzI/UK5WIn3jjNtPfbiVB2Yi5q1yl0fzf8jsGcePJgs9dZRvl+moKEAoFPz5Smy1/yd/j3vT7cgkbJs2Y7fjFHjsirWQg0KCgETKstXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm2-f2.google.com with SMTP id 5b1f17b1804b1-4926d058720so4020825e9.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 13:05:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785787299; x=1786392099;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=N1RMpJX3CqzOgja9cDdtQlm/BIaNlLNptb63omrcaHQ=;
-        b=Uu6v/2pDDuOsQ3P9OAOA0JItP2MromrC1BMN7SdQ+FFgEN7w947NMoeuVT1czGzGKv
-         VlDVnq8AgExs3hsIZtopkabqNg23KpZZhp4x2JVLnVASFA/lh9uAsPGE/deRIh4wp06n
-         h02wjPyPRodjgle1UXSW1UeKxIfZJQDe56Gd8GWOisB4DRtQPxPc/ZOStrZ19cmik/+l
-         rtuVcemjaBdt30jLNRwc6yhnhUcpQZ14hMnD+rIkAceJFcEniSkgrgbTtUnxqVLXl6tn
-         XDN/nMU1TFi77yzjWBYhHXPo4jgw2g//HeIIUOiKjvlNFnYD5eELRbS09pLtOT4lalao
-         3NBQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqOFOpZ0+iT/chgETXya7kVl7fhBoBV1mSnlj3aiRSKT7M2hrjdCvgRhgiY0jo7PggH5Ny1Ozc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5lStSEnnWhtF4fDoV7bsqUm/8QR0sPY37NOaaCh87yQoQh/dh
-	gPfMJGewrqoeMMJt+k9JqiV1MOMYh0Mmglw7LMdiRo2E48TDtywGhQ9fLCnA5/wGXphykAYC6LJ
-	fMt2EiD1oHTZBDe08IOC0ttbHQWDY++a1jYZdcezbVln7Ar2FS/vcsYgDGZQB0Fbxn784joAM4j
-	vO7L4UCDgKBbfjl4Lg2yANHGwvPGaEKVA+jgiWfgh8iipusSbHzzUoLs0hCQboDuKLu9ZqXUbm4
-	ZSaoATgMUQ=
-X-Gm-Gg: AR+sD13V/7HlFMsebBtFEDkND/7J6ru3J351X3Yxf4/LDv9IAcZN3U2bzAjiMvq2gz7
-	169eBIT8EdtSVM01XA+JxH4g8io0r+TpB/Pz4qaVb7jBT0xwJRgTeeU3D8LisoopOWsJBkOjneB
-	p5NvGTvpCnG2IYfMajUJpfd+DCfttFJLFA2n3UciyB1ZO+wQN+wKbyoob/R6prGtk0ihiDv+w9P
-	zN1jtqgjxvhlWF0cDcN89ckOIeVYGIVZ997ZH7FAGn/Ku1tdwxIUBbHApmSQeLvBxL0pDu/Yph8
-	io17G0jmpKzL3B+znEu5lFc48v7puLg4yOT8bGBrHXOunS1nUnIWyib4bVGUIxvp1vCrVVZAtaf
-	4xTRsI7EGkng0h0f6+znD6FNPGYQg98YV3DUnn4XhV7DAfYn36NwtZt2SvuQpdsgOK3EQ1q7GSZ
-	LkJrMMh8qbXMDARRp6KqSFDBb60lUCQ2rvWHs=
-X-Received: by 2002:a17:90b:384f:b0:38e:4482:ab14 with SMTP id 98e67ed59e1d1-38fbc552c88mr10801710a91.32.1785787298684;
-        Mon, 03 Aug 2026 13:01:38 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-27.dlp.protect.broadcom.com. [144.49.247.27])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-38febfe6765sm46036a91.6.2026.08.03.13.01.38
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 03 Aug 2026 13:01:38 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c1f3117bc6bso375482666b.0
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 13:01:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1785787297; x=1786392097; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=N1RMpJX3CqzOgja9cDdtQlm/BIaNlLNptb63omrcaHQ=;
-        b=HEqOVYq8POm3PHLeIPGXeJ9qCTObNQB2PTdJsDxTE3PMQKGUip3jy0QCn25dCJnHfq
-         cL5ZiJ6cZp8KZe3qmlwSKGW0Ub8RpOA9OCc1HEZafZWVNzilgI5EDLHJb4jn8gjWZ5XP
-         OIejj/NdOoR2RGz+lDwE35KMjB0KZf+MZ6yfQ=
-X-Forwarded-Encrypted: i=1; AHgh+RpRdUzKvivBv2nV75ovejoGi5yMs2Mr1GfF0R56OrJXDSr19gJkD74d8cLVkU1QClS2+O7NM9w=@vger.kernel.org
-X-Received: by 2002:a17:907:1b28:b0:c1c:6f0c:86f3 with SMTP id a640c23a62f3a-c1fe7ea7171mr972377166b.7.1785787296722;
-        Mon, 03 Aug 2026 13:01:36 -0700 (PDT)
-X-Received: by 2002:a17:907:1b28:b0:c1c:6f0c:86f3 with SMTP id
- a640c23a62f3a-c1fe7ea7171mr972372266b.7.1785787296220; Mon, 03 Aug 2026
- 13:01:36 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785787501; x=1786392301;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=c6FTQauhG06GafhJOCFr4+vdqLJ7MzYl3H4W5YbOxb8=;
+        b=KBaT+3q2bMQGgZUi8FhOjZmC3KW617A1HrCcWaWz6++ebVdmPdZlJcvX/dbIVX7h1L
+         4Pw7SE6qtUEyMnsCshoQvsBiDCS/V3/5fo/bStNTr+xnEAgCS4UBFA5kGE2fQFPB1U68
+         la0Rbc+FMUBjE6HBttU+odGW8tXkq7vosGRsCMMcvlIYc/o6yYBNe4KVRzKbBygqjpVz
+         +1ypOMQJn9wLPGfHUS+AEhD2T7cdCNCgU2/E4yCS3M7wkrau8Ee0WSJR4T52zVDgvPhW
+         ZEJljp8JizzCKKjhnhMfQknUVSrpy4Lb4niOdkaZoifhS8+78o8EFrX92Q42fOx2h4ta
+         ea7A==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8+v4+rq5pSWTmpDrfkz1NVq1lMgfrCsvfONTvhY1Y47SaRrIE3n09kTJqXl6tTdFAsu5jbW8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXLhVTAJhsfZnbNrZeL+jTwQHWkn9SOdgT+XQ9Ym78nN8amxVe
+	WjAVbJ8jry66d3Gibqtt72OY0y0yc3wXaIsBFGjM4buFcLPiyNsh9H6Y
+X-Gm-Gg: AR+sD13G/8Xs4aWmTEiFvapS9FFO6b1WHCh06/vnX2F1D0U8XsZtSQ3rxi3jHKSKlh3
+	+zKg5QTEy+pMOUlAU7yyXVjZLCE/XzgnQHwk7orfOSFVAflWwqL/dKZichWecAkSjy1scIhNELI
+	swBn4BbrRgaltG7yLlH5pgjVjTg5wTYILMjtd9Kml3YgcMb+HPl2sWsJFHIK9X3HBSasgFl1rIV
+	Q49TqEy74lWTDgmprAYyGtEPlnlYUjyYbLFpattMJdJmVZfZ8kmFweWTCXSygBbJAboT4YrgmY/
+	4SbtnTDl6NzU5lY66byMyHCtiXLz443tHom72XjZxxypTcYqdsxgOzATogwtgGkrv+965J8EvTT
+	4lfIgc9DOI6kwduCRpGGI3uQlV7/ldjiS8vuNF6uAE2Q9BtV9DPAmiU4niW4fEJtwQX4MkHVmmH
+	cPY5RkNhbEdgXbG1V/N9VwNvsAe3EwQZ8l2DE5H6GVBlJXw47m1oov0KiyFmuaHYVANx6GRQoNV
+	RYVS+/jDUrn1liYWIDuP5NQCA==
+X-Received: by 2002:a05:600c:6989:b0:495:4811:7998 with SMTP id 5b1f17b1804b1-4980c664d83mr307248445e9.17.1785787501019;
+        Mon, 03 Aug 2026 13:05:01 -0700 (PDT)
+Received: from [192.168.88.241] (78-80-108-129.customers.tmcz.cz. [78.80.108.129])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807bad893sm217157955e9.3.2026.08.03.13.04.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Aug 2026 13:05:00 -0700 (PDT)
+Message-ID: <0d488dcb-7d11-41a9-884a-5f67c6aebea9@ovn.org>
+Date: Mon, 3 Aug 2026 22:04:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260803193135.2030368-1-kuba@kernel.org> <20260803193135.2030368-2-kuba@kernel.org>
-In-Reply-To: <20260803193135.2030368-2-kuba@kernel.org>
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Mon, 3 Aug 2026 13:01:23 -0700
-X-Gm-Features: AUfX_mx8RtxASfn2sCNPwjEl-0tgmZ8-jYCJLoZlSIFNWOBrLR9Q_8Ien13Sa1k
-Message-ID: <CACKFLi=BXqtBuRAoSxdXoxSDfdX4QdLZwzdSRny7qcQsMkcWEg@mail.gmail.com>
-Subject: Re: [PATCH net 1/4] eth: bnxt: cancel IRQ notifier before freeing
- affinity mask
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
-	pavan.chebbi@broadcom.com, manoj.panicker2@amd.com, 
-	somnath.kotur@broadcom.com, andrew.gospodarek@broadcom.com, 
-	wei.huang2@amd.com
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000007c763806582a0187"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 1/1] openvswitch: Fix CT limit teardown
+ use-after-free
+To: Ren Wei <enjou1224z@gmail.com>, netdev@vger.kernel.org,
+ dev@openvswitch.org
+Cc: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, yihung.wei@gmail.com, vega@nebusec.ai,
+ tonanli66@gmail.com, xuyuqiabc@gmail.com
+References: <cover.1784866791.git.xuyuqiabc@gmail.com>
+ <8cf84ef117b917c4ca3a264af4df4cc1e293435a.1784866791.git.xuyuqiabc@gmail.com>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <8cf84ef117b917c4ca3a264af4df4cc1e293435a.1784866791.git.xuyuqiabc@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
---0000000000007c763806582a0187
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Aug 3, 2026 at 12:31=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> bnxt_irq_affinity_notify() copies into irq->cpu_mask.
-> Cancel the notifier before freeing irq->cpu_mask.
->
-> Fixes: c214410c47d6 ("bnxt_en: Add TPH support in BNXT driver")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+On 8/3/26 7:30 PM, Ren Wei wrote:
+> From: Yuqi Xu <xuyuqiabc@gmail.com>
+> 
+> Packet processing uses CT limit state under RCU, while netns teardown
+> frees that state under ovs_mutex. The CT limit pointer was neither removed
+> from readers nor protected by a grace period, allowing packet processing to
+> dereference the freed state.
+> 
+> Replace the pointer before freeing the CT limit state, and wait for RCU
+> readers before freeing its contents. Keep ovs_mutex only around CT limit
+> updates, while GET uses the RCU read-side lock for the lifetime of the
+> lookup.
+> 
+> Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: Codex:GPT-5.4
+> Co-developed-by: Nan Li <tonanli66@gmail.com>
+> Signed-off-by: Nan Li <tonanli66@gmail.com>
+> Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
+> Signed-off-by: Ren Wei <enjou1224z@gmail.com>
 > ---
->  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethe=
-rnet/broadcom/bnxt/bnxt.c
-> index 7513618793da..4a2a44ffe669 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -11859,14 +11859,14 @@ static void bnxt_free_irq(struct bnxt *bp)
->
->                 irq =3D &bp->irq_tbl[map_idx];
->                 if (irq->requested) {
-> +                       bnxt_release_irq_notifier(irq);
+> Changes in v3:
+> 
+> - Use RCU dereference and a NULL check for CT limit GET requests.
+> - Limit ovs_mutex to CT limit updates; do not hold it while preparing replies.
+> - Use ovsl_dereference() for update paths and clarify the RCU grace-period comment.
+> - v2 Link: https://lore.kernel.org/all/cover.1784711445.git.xuyuqiabc@gmail.com
+> 
+> Changes in v2:
+> 
+> - Sort local declarations modified by this patch in reverse Christmas-tree order.
+> - v1 Link: https://lore.kernel.org/all/aa8a1d8dcbac8a13dbdf077a642a66f4c5d81e4b.1784355642.git.xuyuqiabc@gmail.com/
+> 
+>  net/openvswitch/conntrack.c | 109 +++++++++++++++++++++---------------
+>  net/openvswitch/datapath.h  |   2 +-
+>  2 files changed, 65 insertions(+), 46 deletions(-)
+> 
+> diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+> index 95697d4e16e6..aa71a254fe24 100644
+> --- a/net/openvswitch/conntrack.c
+> +++ b/net/openvswitch/conntrack.c
+> @@ -933,10 +933,14 @@ static int ovs_ct_check_limit(struct net *net,
+>  			      const struct ovs_conntrack_info *info)
+>  {
+>  	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+> -	const struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
+> +	const struct ovs_ct_limit_info *ct_limit_info;
+>  	u32 per_zone_limit, connections;
+>  	u32 conncount_key;
+>  
+> +	ct_limit_info = rcu_dereference(ovs_net->ct_limit_info);
+> +	if (!ct_limit_info)
+> +		return 0;
+> +
+>  	conncount_key = info->zone.id;
+>  
+>  	per_zone_limit = ct_limit_get(ct_limit_info, info->zone.id);
+> @@ -1585,40 +1589,47 @@ static void __ovs_ct_free_action(struct ovs_conntrack_info *ct_info)
+>  #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+>  static int ovs_ct_limit_init(struct net *net, struct ovs_net *ovs_net)
+>  {
+> +	struct ovs_ct_limit_info *info;
+>  	int i, err;
+>  
+> -	ovs_net->ct_limit_info = kmalloc_obj(*ovs_net->ct_limit_info);
+> -	if (!ovs_net->ct_limit_info)
+> +	info = kmalloc_obj(*info);
+> +	if (!info)
+>  		return -ENOMEM;
+>  
+> -	ovs_net->ct_limit_info->default_limit = OVS_CT_LIMIT_DEFAULT;
+> -	ovs_net->ct_limit_info->limits =
+> +	info->default_limit = OVS_CT_LIMIT_DEFAULT;
+> +	info->limits =
+>  		kmalloc_objs(struct hlist_head, CT_LIMIT_HASH_BUCKETS);
+> -	if (!ovs_net->ct_limit_info->limits) {
+> -		kfree(ovs_net->ct_limit_info);
+> +	if (!info->limits) {
+> +		kfree(info);
+>  		return -ENOMEM;
+>  	}
+>  
+>  	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; i++)
+> -		INIT_HLIST_HEAD(&ovs_net->ct_limit_info->limits[i]);
+> +		INIT_HLIST_HEAD(&info->limits[i]);
+>  
+> -	ovs_net->ct_limit_info->data = nf_conncount_init(net, sizeof(u32));
+> +	info->data = nf_conncount_init(net, sizeof(u32));
+>  
+> -	if (IS_ERR(ovs_net->ct_limit_info->data)) {
+> -		err = PTR_ERR(ovs_net->ct_limit_info->data);
+> -		kfree(ovs_net->ct_limit_info->limits);
+> -		kfree(ovs_net->ct_limit_info);
+> +	if (IS_ERR(info->data)) {
+> +		err = PTR_ERR(info->data);
+> +		kfree(info->limits);
+> +		kfree(info);
+>  		pr_err("openvswitch: failed to init nf_conncount %d\n", err);
+>  		return err;
+>  	}
+> +	rcu_assign_pointer(ovs_net->ct_limit_info, info);
+>  	return 0;
+>  }
+>  
+>  static void ovs_ct_limit_exit(struct net *net, struct ovs_net *ovs_net)
+>  {
+> -	const struct ovs_ct_limit_info *info = ovs_net->ct_limit_info;
+> +	const struct ovs_ct_limit_info *info;
+>  	int i;
+>  
+> +	info = rcu_replace_pointer(ovs_net->ct_limit_info, NULL,
+> +				   lockdep_ovsl_is_held());
+> +	/* Wait for RCU readers to stop using the CT limits. */
+> +	synchronize_rcu();
+> +
+>  	nf_conncount_destroy(net, info->data);
+>  	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; ++i) {
+>  		struct hlist_head *head = &info->limits[i];
+> @@ -1665,22 +1676,28 @@ static bool check_zone_id(int zone_id, u16 *pzone)
+>  	return false;
+>  }
+>  
+> -static int ovs_ct_limit_set_zone_limit(struct nlattr *nla_zone_limit,
+> -				       struct ovs_ct_limit_info *info)
+> +static int ovs_ct_limit_set_zone_limit(struct ovs_net *ovs_net,
+> +				       struct nlattr *nla_zone_limit)
+>  {
+> +	struct ovs_ct_limit_info *info;
+
+Reverse xmass tree, please.
+
+>  	struct ovs_zone_limit *zone_limit;
+>  	int rem;
+>  	u16 zone;
+>  
+> +	ovs_lock();
+> +	info = ovsl_dereference(ovs_net->ct_limit_info);
+> +	if (!info) {
+> +		ovs_unlock();
+> +		return -ENOENT;
+> +	}
 > +
 
-bnxt_release_irq_notifier() calls irq_set_affinity_notifier() to set
-the notifier to NULL.  But the call is not synchronous, right?  A
-pending notifier is still possible after irq_set_affinity_notifier()
-returns, right?
+This is not really what I asked for.  I asked to keep the lock/unlock
+per entry as they are today and just add dereference + check under that
+lock.  Something like this:
 
->                         if (irq->have_cpumask) {
->                                 irq_update_affinity_hint(irq->vector, NUL=
-L);
->                                 free_cpumask_var(irq->cpu_mask);
->                                 irq->have_cpumask =3D 0;
->                         }
->
-> -                       bnxt_release_irq_notifier(irq);
-> -
->                         free_irq(irq->vector, bp->bnapi[i]);
->                 }
+@@ -1679,7 +1691,9 @@ static int ovs_ct_limit_set_zone_limit(struct nlattr *nla_zone_limit,
+                if (unlikely(zone_limit->zone_id ==
+                                OVS_ZONE_LIMIT_DEFAULT_ZONE)) {
+                        ovs_lock();
+-                       info->default_limit = zone_limit->limit;
++                       info = ovsl_dereference(ovs_net->ct_limit_info);
++                       if (likely(info))
++                               info->default_limit = zone_limit->limit;
+                        ovs_unlock();
+                } else if (unlikely(!check_zone_id(
+                                zone_limit->zone_id, &zone))) {
+@@ -1695,8 +1709,13 @@ static int ovs_ct_limit_set_zone_limit(struct nlattr *nla_zone_limit,
+                        ct_limit->limit = zone_limit->limit;
+ 
+                        ovs_lock();
+-                       ct_limit_set(info, ct_limit);
++                       info = ovsl_dereference(ovs_net->ct_limit_info);
++                       if (likley(info))
++                               ct_limit_set(info, ct_limit);
+                        ovs_unlock();
++
++                       if (unlikley(!info))
++                               kfree(ct_limit);
+                }
+                rem -= NLA_ALIGN(sizeof(*zone_limit));
+                zone_limit = (struct ovs_zone_limit *)((u8 *)zone_limit +
+---
 
---0000000000007c763806582a0187
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+This may memory allocations are kept outside of the lock and we're also not
+holding the lock for a long time in case of a long list of entries.
 
-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
-DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
-qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
-5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
-rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
-qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
-2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
-K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
-H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
-Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
-WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
-q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
-2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
-bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
-R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCAv+8Ya
-4QaAde4JgmJ6JxkaZGSmbSnx4SpQD+n0p+uaojAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjA4MDMyMDAxMzdaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQA709WXwjjr93SfzBK3IyCckWgciLQwW4NAtk+p09PF
-3kY0UYGWJAdRRfdToCWhwCrrHsD81Gh1IwRFEbEww2h0AimKSqRdgizBo5xohp3inYwmXBx16sVq
-Jz7bZHM6Kcc57IxJXBraSkEtb79D8jyOyHTT6F8oShDEYyP3M2kqtF7abx0Ez0SuHYX5lRas1u5/
-RVYsrDC1YqggY1+f39+bj5XsILbnOa9XLLmB7HC1NZ6kg9wx23+m2ksjvWXrw48VnHnibsVssM+6
-2kiB1SM3/VojYbJi9myjxycqYTqy/Mbu19MK+1IS8N7nCc7/NVHAgFRJDAawY3DZunA3rPFV
---0000000000007c763806582a0187--
+Note that this version of my suggestion doesn't return on error.  This
+should be fine, since the only way info is NULL is if the namespace is
+being destroyed anyway.  And we're not returning errors from this code
+when the id is out of range, so not returning an error here is not that
+different.  But, please, note that in the commit message.
+
+Also, returning ENOENT for the SET command is kind of weird, as it is
+supposed to create the entries when they do not exist.
+
+>  	rem = NLA_ALIGN(nla_len(nla_zone_limit));
+>  	zone_limit = (struct ovs_zone_limit *)nla_data(nla_zone_limit);
+>  
+>  	while (rem >= sizeof(*zone_limit)) {
+>  		if (unlikely(zone_limit->zone_id ==
+>  				OVS_ZONE_LIMIT_DEFAULT_ZONE)) {
+> -			ovs_lock();
+>  			info->default_limit = zone_limit->limit;
+> -			ovs_unlock();
+>  		} else if (unlikely(!check_zone_id(
+>  				zone_limit->zone_id, &zone))) {
+>  			OVS_NLERR(true, "zone id is out of range");
+> @@ -1688,15 +1705,15 @@ static int ovs_ct_limit_set_zone_limit(struct nlattr *nla_zone_limit,
+>  			struct ovs_ct_limit *ct_limit;
+>  
+>  			ct_limit = kmalloc_obj(*ct_limit, GFP_KERNEL_ACCOUNT);
+> -			if (!ct_limit)
+> +			if (!ct_limit) {
+> +				ovs_unlock();
+>  				return -ENOMEM;
+> +			}
+>  
+>  			ct_limit->zone = zone;
+>  			ct_limit->limit = zone_limit->limit;
+>  
+> -			ovs_lock();
+>  			ct_limit_set(info, ct_limit);
+> -			ovs_unlock();
+>  		}
+>  		rem -= NLA_ALIGN(sizeof(*zone_limit));
+>  		zone_limit = (struct ovs_zone_limit *)((u8 *)zone_limit +
+> @@ -1706,32 +1723,37 @@ static int ovs_ct_limit_set_zone_limit(struct nlattr *nla_zone_limit,
+>  	if (rem)
+>  		OVS_NLERR(true, "set zone limit has %d unknown bytes", rem);
+>  
+> +	ovs_unlock();
+>  	return 0;
+>  }
+>  
+> -static int ovs_ct_limit_del_zone_limit(struct nlattr *nla_zone_limit,
+> -				       struct ovs_ct_limit_info *info)
+> +static int ovs_ct_limit_del_zone_limit(struct ovs_net *ovs_net,
+> +				       struct nlattr *nla_zone_limit)
+>  {
+> +	struct ovs_ct_limit_info *info;
+
+Reverse xmass tree.
+
+>  	struct ovs_zone_limit *zone_limit;
+>  	int rem;
+>  	u16 zone;
+>  
+> +	ovs_lock();
+> +	info = ovsl_dereference(ovs_net->ct_limit_info);
+> +	if (!info) {
+> +		ovs_unlock();
+> +		return -ENOENT;
+> +	}
+> +
+
+Same thing here.  We should just deref and check under the existing
+locks inside the while loop:
+
+@@ -1723,14 +1742,18 @@ static int ovs_ct_limit_del_zone_limit(struct nlattr *nla_zone_limit,
+                if (unlikely(zone_limit->zone_id ==
+                                OVS_ZONE_LIMIT_DEFAULT_ZONE)) {
+                        ovs_lock();
+-                       info->default_limit = OVS_CT_LIMIT_DEFAULT;
++                       info = ovsl_dereference(ovs_net->ct_limit_info);
++                       if (likely(info))
++                               info->default_limit = OVS_CT_LIMIT_DEFAULT;
+                        ovs_unlock();
+                } else if (unlikely(!check_zone_id(
+                                zone_limit->zone_id, &zone))) {
+                        OVS_NLERR(true, "zone id is out of range");
+                } else {
+                        ovs_lock();
+-                       ct_limit_del(info, zone);
++                       info = ovsl_dereference(ovs_net->ct_limit_info);
++                       if (likely(info))
++                               ct_limit_del(info, zone);
+                        ovs_unlock();
+                }
+                rem -= NLA_ALIGN(sizeof(*zone_limit));
+---
+
+The code doesn't return any errors when the zone was not found,
+so we shouldn't return ENOENT when the info is not found either.
+
+>  	rem = NLA_ALIGN(nla_len(nla_zone_limit));
+>  	zone_limit = (struct ovs_zone_limit *)nla_data(nla_zone_limit);
+>  
+>  	while (rem >= sizeof(*zone_limit)) {
+>  		if (unlikely(zone_limit->zone_id ==
+>  				OVS_ZONE_LIMIT_DEFAULT_ZONE)) {
+> -			ovs_lock();
+>  			info->default_limit = OVS_CT_LIMIT_DEFAULT;
+> -			ovs_unlock();
+>  		} else if (unlikely(!check_zone_id(
+>  				zone_limit->zone_id, &zone))) {
+>  			OVS_NLERR(true, "zone id is out of range");
+>  		} else {
+> -			ovs_lock();
+>  			ct_limit_del(info, zone);
+> -			ovs_unlock();
+>  		}
+>  		rem -= NLA_ALIGN(sizeof(*zone_limit));
+>  		zone_limit = (struct ovs_zone_limit *)((u8 *)zone_limit +
+> @@ -1741,6 +1763,7 @@ static int ovs_ct_limit_del_zone_limit(struct nlattr *nla_zone_limit,
+>  	if (rem)
+>  		OVS_NLERR(true, "del zone limit has %d unknown bytes", rem);
+>  
+> +	ovs_unlock();
+>  	return 0;
+>  }
+>  
+> @@ -1796,12 +1819,10 @@ static int ovs_ct_limit_get_zone_limit(struct net *net,
+
+Should add a comment above the function that it is called under
+RCU read lock.
+
+>  							&zone))) {
+>  			OVS_NLERR(true, "zone id is out of range");
+>  		} else {
+> -			rcu_read_lock();
+>  			limit = ct_limit_get(info, zone);
+>  
+>  			err = __ovs_ct_limit_get_zone_limit(
+>  				net, info->data, zone, limit, reply);
+> -			rcu_read_unlock();
+>  			if (err)
+>  				return err;
+>  		}
+> @@ -1828,19 +1849,16 @@ static int ovs_ct_limit_get_all_zone_limit(struct net *net,
+
+Same here.
+
+>  	if (err)
+>  		return err;
+>  
+> -	rcu_read_lock();
+>  	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; ++i) {
+>  		head = &info->limits[i];
+>  		hlist_for_each_entry_rcu(ct_limit, head, hlist_node) {
+>  			err = __ovs_ct_limit_get_zone_limit(net, info->data,
+>  				ct_limit->zone, ct_limit->limit, reply);
+>  			if (err)
+> -				goto exit_err;
+> +				return err;
+>  		}
+>  	}
+>  
+> -exit_err:
+> -	rcu_read_unlock();
+>  	return err;
+>  }
+>  
+> @@ -1850,7 +1868,6 @@ static int ovs_ct_limit_cmd_set(struct sk_buff *skb, struct genl_info *info)
+>  	struct sk_buff *reply;
+>  	struct ovs_header *ovs_reply_header;
+>  	struct ovs_net *ovs_net = net_generic(sock_net(skb->sk), ovs_net_id);
+> -	struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
+>  	int err;
+>  
+>  	reply = ovs_ct_limit_cmd_reply_start(info, OVS_CT_LIMIT_CMD_SET,
+> @@ -1863,8 +1880,8 @@ static int ovs_ct_limit_cmd_set(struct sk_buff *skb, struct genl_info *info)
+>  		goto exit_err;
+>  	}
+>  
+> -	err = ovs_ct_limit_set_zone_limit(a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT],
+> -					  ct_limit_info);
+> +	err = ovs_ct_limit_set_zone_limit(ovs_net,
+> +					  a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT]);
+>  	if (err)
+>  		goto exit_err;
+>  
+> @@ -1884,7 +1901,6 @@ static int ovs_ct_limit_cmd_del(struct sk_buff *skb, struct genl_info *info)
+>  	struct sk_buff *reply;
+>  	struct ovs_header *ovs_reply_header;
+>  	struct ovs_net *ovs_net = net_generic(sock_net(skb->sk), ovs_net_id);
+> -	struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
+>  	int err;
+>  
+>  	reply = ovs_ct_limit_cmd_reply_start(info, OVS_CT_LIMIT_CMD_DEL,
+> @@ -1897,8 +1913,8 @@ static int ovs_ct_limit_cmd_del(struct sk_buff *skb, struct genl_info *info)
+>  		goto exit_err;
+>  	}
+>  
+> -	err = ovs_ct_limit_del_zone_limit(a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT],
+> -					  ct_limit_info);
+> +	err = ovs_ct_limit_del_zone_limit(ovs_net,
+> +					  a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT]);
+>  	if (err)
+>  		goto exit_err;
+>  
+> @@ -1918,7 +1934,7 @@ static int ovs_ct_limit_cmd_get(struct sk_buff *skb, struct genl_info *info)
+>  	struct ovs_header *ovs_reply_header;
+>  	struct net *net = sock_net(skb->sk);
+>  	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+> -	struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
+> +	struct ovs_ct_limit_info *ct_limit_info;
+>  	int err;
+>  
+>  	reply = ovs_ct_limit_cmd_reply_start(info, OVS_CT_LIMIT_CMD_GET,
+> @@ -1932,18 +1948,21 @@ static int ovs_ct_limit_cmd_get(struct sk_buff *skb, struct genl_info *info)
+>  		goto exit_err;
+>  	}
+>  
+> -	if (a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT]) {
+> +	rcu_read_lock();
+> +	ct_limit_info = rcu_dereference(ovs_net->ct_limit_info);
+> +	if (!ct_limit_info) {
+> +		err = -ENOENT;
+> +	} else if (a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT]) {
+>  		err = ovs_ct_limit_get_zone_limit(
+>  			net, a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT], ct_limit_info,
+>  			reply);
+> -		if (err)
+> -			goto exit_err;
+>  	} else {
+>  		err = ovs_ct_limit_get_all_zone_limit(net, ct_limit_info,
+>  						      reply);
+> -		if (err)
+> -			goto exit_err;
+>  	}
+> +	rcu_read_unlock();
+> +	if (err)
+> +		goto exit_err;
+>  
+>  	nla_nest_end(reply, nla_reply);
+>  	genlmsg_end(reply, ovs_reply_header);
+> diff --git a/net/openvswitch/datapath.h b/net/openvswitch/datapath.h
+> index 696640e88fa7..93e11e468d17 100644
+> --- a/net/openvswitch/datapath.h
+> +++ b/net/openvswitch/datapath.h
+> @@ -172,7 +172,7 @@ struct ovs_net {
+>  	struct work_struct dp_notify_work;
+>  	struct delayed_work masks_rebalance;
+>  #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+> -	struct ovs_ct_limit_info *ct_limit_info;
+> +	struct ovs_ct_limit_info __rcu *ct_limit_info;
+>  #endif
+>  	bool xt_label;
+>  };
+
