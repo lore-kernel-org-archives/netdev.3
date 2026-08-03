@@ -1,480 +1,207 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DAD3C5837
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 12:03:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9DA3E5A29
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 12:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785758586; cv=none; b=ZjrVsWbX+UvUYDEedk+luaxXenif2zLE4TQpNUUoOWgP1RByBHMYwDsp4sXByd9EupfNelwaLSvXS0beskI0vst79ob+MNH7EhmqJWo8XUhEwPVl1hHUkOEV2xYKnkw0zy83dhneWZ4v5a8YZAEUYeCIj3iwbY9KZyo5Phxk5M0=
+	t=1785759108; cv=none; b=idpADYy+d2obhx1uEBBPAArY6SX7mF+NL7JFydFXORvdl1EezN6JmDsGPf9nHpWS1LKx7HkO+DPG/4RgFvTuImsSFSi2hZZsNaOvSoJ8WETg6y0QBKL6ATMwhSineeyHmHYcD11oKu5SD2NTkdkdpUfp/V92/AJcxLsZqzL7w14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785758586; c=relaxed/simple;
-	bh=530ppNQUKz0zXjTPFOrzLNvTXDyohFqjkyTpB1SSUHk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eiXgymoO3UNbFIlFM6HvprL8AC4S961lIdkULrpsHXituXKRpaciZV7j5es4pIE7vzx6XtEKlKbHs/noZLLBQgHsoKEfGaPtibbchMXtI7iZ2ItsHK3t24jxB+8iS3X8fv+1mXXKwlSHATRxYrKKlqT3b5PqUnz7qMVfgeS8T5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NG0AYo7S; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785759108; c=relaxed/simple;
+	bh=5FhqZcuvXbUA7XKnBEjLE6oGOpoajtBISrkOKD3VszQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H/2LUMgqUATyg928jCZwqaYNMJFlfmavWuWeJXm5XZRE6pOMC1PkjOnBFUz+rxeC6Phpvw/2A/hDu3XR9IRt40hsJ+zlR94+KYjIWrCw3vL5yyx6aF9p1D9KQFQ+WbiDg1OmdAzO2aDZm5acp1eAggxc0I07l1NO+LDiS5tPrFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XuOcMBZU; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NG0AYo7S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785758583;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bVr3z3Ck/48+Wkpplkz1eC2Hv8i93VH9whGjf1eWSrQ=;
-	b=NG0AYo7ScYKr5ObgWzrB4nBUww/wQUni8UQGwhonZJdC+qjZGbskErtc8tnk4hAjzm/8zJ
-	cSHNl9XECBkqxgvVnFCqaiGDWV11daQLoOKfmG4/IlQWLHuNilGKWBJkgBJk9L3toXR844
-	FpiJN5TuO+xU2SEEiYd+tLXTF5njHVg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-82-aoHAzp8POZuuQ9FsNRWsVQ-1; Mon,
- 03 Aug 2026 08:02:59 -0400
-X-MC-Unique: aoHAzp8POZuuQ9FsNRWsVQ-1
-X-Mimecast-MFC-AGG-ID: aoHAzp8POZuuQ9FsNRWsVQ_1785758578
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1C0DF1956073;
-	Mon,  3 Aug 2026 12:02:58 +0000 (UTC)
-Received: from p16v.redhat.com (unknown [10.44.33.235])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 027EE424;
-	Mon,  3 Aug 2026 12:02:54 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XuOcMBZU"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6984169c126so5596582a12.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 05:11:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785759105; x=1786363905; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EcjQI2JYKwg5xZMIFGY1JaKQvya3kkElNk2GTcB9VuQ=;
+        b=XuOcMBZUeC2k9mf76uY50hO32n2nLw55ZjfbnJr7uW046ry/Vps3wUXhUhZVyOQfoU
+         PA5sW4uOQQSVwF4xANBnjPYpBA3gTS3+qiAd11d+sNTtxnzrIyIKL/MryZGUHhMwjFDi
+         BvCL6MbzQypQgtGVNu4c956qjuugbs2KDL9qKiURGIsS/eRpTIyraYmayljJgagQk8ch
+         pYriLdgVzDqXJLpYgJfgVFG858pe7WeayRTff4jVkB+jIuvjQ22SA+XOASFtkDXqmVUw
+         HFnL02PsknF+1BGBDLGsZNDezrvGGtUy3UeV5Ob1K6zjakgzSYyXlbt+EPuX+lJoGOaH
+         iAyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785759105; x=1786363905;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EcjQI2JYKwg5xZMIFGY1JaKQvya3kkElNk2GTcB9VuQ=;
+        b=lv8Ha9kfwb7x4mka6dEUKV3ohL8ZUkz/1Xn/bUySNoZVY7lnt20HI17xrPlZP0c56d
+         GBn7S0+Ba3YOfkmzhIFb5M4P/UgSO0yxD87cey2b4Gr2EYIWrokTmG6HgzGEg2rMxJg/
+         oATPMoHDHJS6HAveWTLpd/GIJAP1fLb4L2l6APjSQ4A8alAVR/W0VfF8ug78PLCBbx5c
+         Wd2RHPYaCH8aXqCSl2viAhj6Z4oxyS5ANA7Z3PkQg1Srfo3QdynlTSUcThwQwPUo73/U
+         TceBeiv0Cj8ywipCLQr83T7aCnyelLC2hIRuw6x155yj5MRvoDmU8juPTqHtA9o0sgZq
+         aFrg==
+X-Gm-Message-State: AOJu0Yy//UZ5id98Z7y7520x1hBrHW+CBdrCDx8YSlW7fgIahWzYnUy2
+	h9QvSMUb30BmojqDq4yleULRdpxKojmc6+ijIDgM+llBA7yy3a8WFRcLucaGy7BZMFY=
+X-Gm-Gg: AR+sD10IdWdDNRmcyZXCTXm9q/ub0ZF16Td3zpYiST2SG6NxQJGN2JleIBt1DyebhXA
+	bubJFkcIiEptet2XSwPT5x6m1wo2FuBFzz7WYh8NIum5mMrM+/zza82nkyu3ilOYWu7SmbYQRIX
+	C2nbPnRhnKO8kTU006Yx/lFvUePYiMZri8ZOwb/W9Z41KNi2WKHZK+eHjN+IogVnQx6TPEnFyq3
+	QipdSXo40IW4yzz0vkl5Yz9cmtUusA7f3F8qaqO3v/V/wy/HjpyEH55/zO6U822g/YgsVGV2c/H
+	NNlG1DEIFbM1vm8B0crmx5yqCbw/MC922BnN/Q63cQNwRL27g5eyNUaxo8tEyUCc2fnjm/T30D2
+	zG/rC+HovKwyFzjB+TkEjACFjyyyHhsBSWDdcSifjMiJRLcA5By9louxqCkE3GEPeUZgSh21Yoz
+	juMx6yrg7pHjzFEhYYhfh0+0mOyDyyyySii+4FhbekBzbpUzY3bWRfAc4Thp5eqWzeluMjGgjeR
+	xnoGLz7A2SCgKB35VLZH21zQ0rn5gdybZ6AXNiVDMALz8iKOZRDiAtJuAIDNOSODsP2u7Un3thm
+	ZsVawCBqXUDFG/dSLoGCYdzE++3AsAW3frK+mQ==
+X-Received: by 2002:a05:6402:21cf:b0:69e:8ad:515f with SMTP id 4fb4d7f45d1cf-6a0a7c60fbamr6798287a12.6.1785759104890;
+        Mon, 03 Aug 2026 05:11:44 -0700 (PDT)
+Received: from Ubuntu.ts.net (87-205-15-91.static.ip.netia.com.pl. [87.205.15.91])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a09c63daf7sm5208181a12.18.2026.08.03.05.11.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 05:11:44 -0700 (PDT)
+From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+To: netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Petr Oros <poros@redhat.com>,
-	Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 2/2] dpll: use pin owner's dpll ref for pin-level attribute setting
-Date: Mon,  3 Aug 2026 14:02:45 +0200
-Message-ID: <20260803120245.56046-3-ivecera@redhat.com>
-In-Reply-To: <20260803120245.56046-1-ivecera@redhat.com>
-References: <20260803120245.56046-1-ivecera@redhat.com>
+	Paolo Abeni <pabeni@redhat.com>
+Cc: syzkaller-bugs@googlegroups.com,
+	dskr99@gmail.com,
+	Kees Cook <kees@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	syzbot@lists.linux.dev,
+	syzbot+5fe14f2ff4ccbace9a26@syzkaller.appspotmail.com
+Subject: [PATCH net v2] ipvlan: keep lower device alive until private destruction
+Date: Mon,  3 Aug 2026 14:11:39 +0200
+Message-ID: <20260803121140.261329-1-krystianmkaniewski@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Pin-level attributes (frequency, phase adjust, embedded sync, reference
-sync) are properties of the pin itself, not of a particular DPLL device.
-The get callbacks already use only the pin owner's DPLL reference
-(via dpll_pin_own_dpll_ref_first()), but the set callbacks iterate over
-all registered DPLL references and invoke the set operation on each one.
+Commit 40b9d1ab63f5 ("ipvlan: hold lower dev to avoid possible
+use-after-free") added a reference to the lower net_device owned by struct
+ipvl_port. However, this reference is released when the last
+ipvlan_uninit() reduces port->count to zero and calls
+ipvlan_port_destroy(), which can happen before all outstanding external
+references to the ipvlan netdev have drained.
 
-This is redundant because a pin is a single physical entity — setting
-its frequency or phase adjust once through the owner's ops is sufficient.
-Calling set on every registered DPLL just results in duplicate HW writes
-for drivers that share a pin across multiple DPLL devices (e.g. ice
-registers each input pin with both the EEC and PPS DPLL, zl3073x
-registers input pins with every DPLL channel).
+Specifically, RXE acts as an asynchronous owner in this scenario. RXE
+queues RDMA device removal on NETDEV_UNREGISTER, meaning it can retain a
+reference to the ipvlan netdev after ndo_uninit has completed. This allows
+a later SMC port query to reach the ipvlan device and access its phy_dev.
 
-Simplify dpll_pin_freq_set(), dpll_pin_esync_set(),
-dpll_pin_ref_sync_state_set() and dpll_pin_phase_adj_set() to call the
-set callback only through the owner's DPLL reference, matching the
-existing get-side behavior. This removes the xa_for_each iteration
-loops, the now-unnecessary rollback logic, and several local variables.
+This leads to the following sequence:
+1. The shared ipvl_port owns the reference to the lower net_device
+(phy_dev).
+2. The last ipvlan_uninit() drops this reference by calling
+ipvlan_port_destroy() when port->count reaches zero.
+3. RXE retains a reference to the ipvlan netdev, keeping it alive.
+4. The lower net_device's refcount drops to 1 and it is freed by
+netdev_run_todo(), leaving ipvlan->phy_dev as a dangling pointer. A
+subsequent SMC port query accesses this dangling pointer, triggering a
+use-after-free.
+5. A new per-device hold keeps phy_dev alive until ipvlan_dev_free() runs.
 
-The -EOPNOTSUPP validation loop, which checked ops support across all
-owner-matching references, is replaced with a direct check on the
-single owner reference returned by dpll_pin_own_dpll_ref_first().
+The KASAN report illustrates this use-after-free:
 
-The documentation in dpll.rst is updated to reflect that pin-level
-attributes are set through the pin owner's dpll reference only.
+BUG: KASAN: slab-use-after-free in netdev_need_ops_lock
+include/net/netdev_lock.h:30 [inline]
+BUG: KASAN: slab-use-after-free in netdev_lock_ops
+include/net/netdev_lock.h:41 [inline]
+BUG: KASAN: slab-use-after-free in __ethtool_get_link_ksettings+0x230/0x250
+net/ethtool/ioctl.c:463
+Read of size 1 at addr ffff8881988dae09 by task kworker/1:3/1289
 
-No existing driver is affected:
-  - ptp_ocp and mlx5 register each pin with a single DPLL.
-  - ice registers input pins with two DPLLs (EEC and PPS) using
-    identical ops and pin_priv; the set callbacks address the HW by
-    pin index, not by DPLL, so the second call was a no-op.
-  - zl3073x registers input pins with every DPLL channel; the set
-    callbacks address HW by pin/ref ID regardless of DPLL. The
-    ref_sync_set callback was the only one with per-channel behavior,
-    addressed by the preceding patch.
+Call Trace:
+ <TASK>
+  __ethtool_get_link_ksettings+0x230/0x250 net/ethtool/ioctl.c:463
+  __ethtool_get_link_ksettings+0x11f/0x250 net/ethtool/ioctl.c:464
+  ib_get_eth_speed+0x180/0x7f0 drivers/infiniband/core/verbs.c:2052
+  rxe_query_port+0x93/0x3d0 drivers/infiniband/sw/rxe/rxe_verbs.c:56
+  __ib_query_port drivers/infiniband/core/device.c:2129 [inline]
+  ib_query_port+0x16e/0x830 drivers/infiniband/core/device.c:2161
+  smc_ib_remember_port_attr net/smc/smc_ib.c:364 [inline]
+  smc_ib_port_event_work+0x147/0x920 net/smc/smc_ib.c:388
+ </TASK>
 
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Fix this by holding a reference to the lower net_device using a
+netdevice_tracker in struct ipvl_dev. The reference is acquired in
+ipvlan_init() and released in the priv_destructor callback
+(ipvlan_dev_free()). Releasing the reference in ipvlan_dev_free()
+guarantees that the lower net_device is held until outstanding external
+references to the ipvlan netdev have drained and before final private
+teardown and object release. This mirrors the behavior of other stacked
+devices like macvlan and vlan, and safely covers ipvtap devices as well.
+
+Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
+Assisted-by: Gemini:gemini-3.5-flash Gemini:gemini-3.1-pro-preview syzbot
+Reported-by: syzbot+5fe14f2ff4ccbace9a26@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5fe14f2ff4ccbace9a26
+Link: https://syzkaller.appspot.com/ai_job?id=3e3edd19-4e52-49d3-bfdb-ebdde1bda5c3
+Signed-off-by: Krystian Kaniewski <krystianmkaniewski@gmail.com>
 ---
- Documentation/driver-api/dpll.rst |  10 +-
- drivers/dpll/dpll_netlink.c       | 213 +++++++-----------------------
- 2 files changed, 55 insertions(+), 168 deletions(-)
+v2:
+  - Rebased onto net/main; no code changes.
+  - Added the net target-tree prefix.
+v1: https://lore.kernel.org/all/26b3176e-d9ed-4508-bde7-388deefd970d@mail.kernel.org/
 
-diff --git a/Documentation/driver-api/dpll.rst b/Documentation/driver-api/dpll.rst
-index f83150917814e2..6fb50e53475c09 100644
---- a/Documentation/driver-api/dpll.rst
-+++ b/Documentation/driver-api/dpll.rst
-@@ -116,8 +116,8 @@ Shared pins
- A single pin object can be attached to multiple dpll devices.
- Then there are two groups of configuration knobs:
- 
--1) Set on a pin - the configuration affects all dpll devices pin is
--   registered to (i.e., ``DPLL_A_PIN_FREQUENCY``),
-+1) Set on a pin - the configuration is performed through the pin owner's
-+   dpll reference only (i.e., ``DPLL_A_PIN_FREQUENCY``),
- 2) Set on a pin-dpll tuple - the configuration affects only selected
-    dpll device (i.e., ``DPLL_A_PIN_PRIO``, ``DPLL_A_PIN_STATE``,
-    ``DPLL_A_PIN_DIRECTION``).
-@@ -507,9 +507,9 @@ as well as parameter being configured (``DPLL_A_MODE``).
- ``DPLL_CMD_PIN_SET`` - to target a pin user must provide a
- ``DPLL_A_PIN_ID``, which is unique identifier of a pin in the system.
- Also configured pin parameters must be added.
--If ``DPLL_A_PIN_FREQUENCY`` is configured, this affects all the dpll
--devices that are connected with the pin, that is why frequency attribute
--shall not be enclosed in ``DPLL_A_PIN_PARENT_DEVICE``.
-+If ``DPLL_A_PIN_FREQUENCY`` is configured, it is set through the pin
-+owner's dpll reference only.  The frequency attribute shall not be
-+enclosed in ``DPLL_A_PIN_PARENT_DEVICE``.
- Other attributes: ``DPLL_A_PIN_PRIO``, ``DPLL_A_PIN_STATE`` or
- ``DPLL_A_PIN_DIRECTION`` must be enclosed in
- ``DPLL_A_PIN_PARENT_DEVICE`` as their configuration relates to only one
-diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
-index afb31c0040382c..a909cd4451b008 100644
---- a/drivers/dpll/dpll_netlink.c
-+++ b/drivers/dpll/dpll_netlink.c
-@@ -1079,10 +1079,9 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
- 		  struct netlink_ext_ack *extack)
- {
- 	u64 freq = nla_get_u64(a), old_freq;
--	struct dpll_pin_ref *ref, *failed;
- 	const struct dpll_pin_ops *ops;
-+	struct dpll_pin_ref *ref;
- 	struct dpll_device *dpll;
--	unsigned long i;
- 	int ret;
- 
- 	if (!dpll_pin_is_freq_supported(pin, freq)) {
-@@ -1090,22 +1089,17 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
- 		return -EINVAL;
+ drivers/net/ipvlan/ipvlan.h      |  1 +
+ drivers/net/ipvlan/ipvlan_main.c | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/drivers/net/ipvlan/ipvlan.h b/drivers/net/ipvlan/ipvlan.h
+index 80f84fc87008..13cdad00297c 100644
+--- a/drivers/net/ipvlan/ipvlan.h
++++ b/drivers/net/ipvlan/ipvlan.h
+@@ -64,6 +64,7 @@ struct ipvl_dev {
+ 	struct list_head	pnode;
+ 	struct ipvl_port	*port;
+ 	struct net_device	*phy_dev;
++	netdevice_tracker dev_tracker;
+ 	struct list_head	addrs;
+ 	struct ipvl_pcpu_stats	__percpu *pcpu_stats;
+ 	DECLARE_BITMAP(mac_filters, IPVLAN_MAC_FILTER_SIZE);
+diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
+index ed46439a9f4e..b1435296a0f1 100644
+--- a/drivers/net/ipvlan/ipvlan_main.c
++++ b/drivers/net/ipvlan/ipvlan_main.c
+@@ -162,6 +162,9 @@ static int ipvlan_init(struct net_device *dev)
  	}
- 
--	xa_for_each(&pin->dpll_refs, i, ref) {
--		ops = dpll_pin_ops(ref);
--		if ((!ops->frequency_set || !ops->frequency_get) &&
--		    ref->dpll->module == pin->module &&
--		    ref->dpll->clock_id == pin->clock_id) {
--			NL_SET_ERR_MSG(extack,
--				       "frequency set not supported by the device");
--			return -EOPNOTSUPP;
--		}
--	}
- 	ref = dpll_pin_own_dpll_ref_first(pin);
- 	if (!ref) {
- 		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
- 		return -ENODEV;
- 	}
- 	ops = dpll_pin_ops(ref);
-+	if (!ops->frequency_set || !ops->frequency_get) {
-+		NL_SET_ERR_MSG(extack,
-+			       "frequency set not supported by the device");
-+		return -EOPNOTSUPP;
-+	}
- 	dpll = ref->dpll;
- 	ret = ops->frequency_get(pin, dpll_pin_on_dpll_priv(dpll, pin), dpll,
- 				 dpll_priv(dpll), &old_freq, extack);
-@@ -1116,68 +1110,42 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
- 	if (freq == old_freq)
- 		return 0;
- 
--	xa_for_each(&pin->dpll_refs, i, ref) {
--		ops = dpll_pin_ops(ref);
--		if (!ops->frequency_set)
--			continue;
--		dpll = ref->dpll;
--		ret = ops->frequency_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
--					 dpll, dpll_priv(dpll), freq, extack);
--		if (ret) {
--			failed = ref;
--			NL_SET_ERR_MSG_FMT(extack, "frequency set failed for dpll_id:%u",
--					   dpll->id);
--			goto rollback;
--		}
-+	ret = ops->frequency_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
-+				 dpll, dpll_priv(dpll), freq, extack);
-+	if (ret) {
-+		NL_SET_ERR_MSG_FMT(extack,
-+				   "frequency set failed for dpll_id:%u",
-+				   dpll->id);
-+		return ret;
- 	}
- 	__dpll_pin_change_ntf(pin);
- 
- 	return 0;
--
--rollback:
--	xa_for_each(&pin->dpll_refs, i, ref) {
--		if (ref == failed)
--			break;
--		ops = dpll_pin_ops(ref);
--		if (!ops->frequency_set)
--			continue;
--		dpll = ref->dpll;
--		if (ops->frequency_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
--				       dpll, dpll_priv(dpll), old_freq, extack))
--			NL_SET_ERR_MSG(extack, "set frequency rollback failed");
--	}
--	return ret;
- }
- 
- static int
- dpll_pin_esync_set(struct dpll_pin *pin, struct nlattr *a,
- 		   struct netlink_ext_ack *extack)
- {
--	struct dpll_pin_ref *ref, *failed;
- 	const struct dpll_pin_ops *ops;
- 	struct dpll_pin_esync esync;
- 	u64 freq = nla_get_u64(a);
-+	struct dpll_pin_ref *ref;
- 	struct dpll_device *dpll;
- 	bool supported = false;
--	unsigned long i;
--	int ret;
-+	int ret, i;
- 
--	xa_for_each(&pin->dpll_refs, i, ref) {
--		ops = dpll_pin_ops(ref);
--		if ((!ops->esync_set || !ops->esync_get) &&
--		    ref->dpll->module == pin->module &&
--		    ref->dpll->clock_id == pin->clock_id) {
--			NL_SET_ERR_MSG(extack,
--				       "embedded sync feature is not supported by this device");
--			return -EOPNOTSUPP;
--		}
--	}
- 	ref = dpll_pin_own_dpll_ref_first(pin);
- 	if (!ref) {
- 		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
- 		return -ENODEV;
- 	}
- 	ops = dpll_pin_ops(ref);
-+	if (!ops->esync_set || !ops->esync_get) {
-+		NL_SET_ERR_MSG(extack,
-+			       "embedded sync feature is not supported by this device");
-+		return -EOPNOTSUPP;
-+	}
- 	dpll = ref->dpll;
- 	ret = ops->esync_get(pin, dpll_pin_on_dpll_priv(dpll, pin), dpll,
- 			     dpll_priv(dpll), &esync, extack);
-@@ -1196,44 +1164,17 @@ dpll_pin_esync_set(struct dpll_pin *pin, struct nlattr *a,
- 		return -EINVAL;
- 	}
- 
--	xa_for_each(&pin->dpll_refs, i, ref) {
--		void *pin_dpll_priv;
--
--		ops = dpll_pin_ops(ref);
--		if (!ops->esync_set)
--			continue;
--		dpll = ref->dpll;
--		pin_dpll_priv = dpll_pin_on_dpll_priv(dpll, pin);
--		ret = ops->esync_set(pin, pin_dpll_priv, dpll, dpll_priv(dpll),
--				      freq, extack);
--		if (ret) {
--			failed = ref;
--			NL_SET_ERR_MSG_FMT(extack,
--					   "embedded sync frequency set failed for dpll_id: %u",
--					   dpll->id);
--			goto rollback;
--		}
-+	ret = ops->esync_set(pin, dpll_pin_on_dpll_priv(dpll, pin), dpll,
-+			     dpll_priv(dpll), freq, extack);
-+	if (ret) {
-+		NL_SET_ERR_MSG_FMT(extack,
-+				   "embedded sync frequency set failed for dpll_id: %u",
-+				   dpll->id);
-+		return ret;
- 	}
- 	__dpll_pin_change_ntf(pin);
- 
- 	return 0;
--
--rollback:
--	xa_for_each(&pin->dpll_refs, i, ref) {
--		void *pin_dpll_priv;
--
--		if (ref == failed)
--			break;
--		ops = dpll_pin_ops(ref);
--		if (!ops->esync_set)
--			continue;
--		dpll = ref->dpll;
--		pin_dpll_priv = dpll_pin_on_dpll_priv(dpll, pin);
--		if (ops->esync_set(pin, pin_dpll_priv, dpll, dpll_priv(dpll),
--				   esync.freq, extack))
--			NL_SET_ERR_MSG(extack, "set embedded sync frequency rollback failed");
--	}
--	return ret;
- }
- 
- static int
-@@ -1241,14 +1182,12 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin,
- 			    unsigned long ref_sync_pin_idx,
- 			    const enum dpll_pin_state state,
- 			    struct netlink_ext_ack *extack)
--
- {
--	struct dpll_pin_ref *ref, *failed;
- 	const struct dpll_pin_ops *ops;
- 	enum dpll_pin_state old_state;
- 	struct dpll_pin *ref_sync_pin;
-+	struct dpll_pin_ref *ref;
- 	struct dpll_device *dpll;
--	unsigned long i;
- 	int ret;
- 
- 	ref_sync_pin = xa_find(&pin->ref_sync_pins, &ref_sync_pin_idx,
-@@ -1282,42 +1221,20 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin,
- 	}
- 	if (state == old_state)
- 		return 0;
--	xa_for_each(&pin->dpll_refs, i, ref) {
--		ops = dpll_pin_ops(ref);
--		if (!ops->ref_sync_set)
--			continue;
--		dpll = ref->dpll;
--		ret = ops->ref_sync_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
--					ref_sync_pin,
--					dpll_pin_on_dpll_priv(dpll,
--							      ref_sync_pin),
--					state, extack);
--		if (ret) {
--			failed = ref;
--			NL_SET_ERR_MSG_FMT(extack, "reference sync set failed for dpll_id:%u",
--					   dpll->id);
--			goto rollback;
--		}
+ 	port = ipvlan_port_get_rtnl(phy_dev);
+ 	port->count += 1;
 +
-+	ret = ops->ref_sync_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
-+				ref_sync_pin,
-+				dpll_pin_on_dpll_priv(dpll, ref_sync_pin),
-+				state, extack);
-+	if (ret) {
-+		NL_SET_ERR_MSG_FMT(extack,
-+				   "reference sync set failed for dpll_id:%u",
-+				   dpll->id);
-+		return ret;
- 	}
- 	__dpll_pin_change_ntf(pin);
- 
++	netdev_hold(phy_dev, &ipvlan->dev_tracker, GFP_KERNEL);
++
  	return 0;
--
--rollback:
--	xa_for_each(&pin->dpll_refs, i, ref) {
--		if (ref == failed)
--			break;
--		ops = dpll_pin_ops(ref);
--		if (!ops->ref_sync_set)
--			continue;
--		dpll = ref->dpll;
--		if (ops->ref_sync_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
--				      ref_sync_pin,
--				      dpll_pin_on_dpll_priv(dpll, ref_sync_pin),
--				      old_state, extack))
--			NL_SET_ERR_MSG(extack, "set reference sync rollback failed");
--	}
--	return ret;
  }
  
- static int
-@@ -1478,11 +1395,10 @@ static int
- dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
- 		       struct netlink_ext_ack *extack)
+@@ -673,6 +676,13 @@ void ipvlan_link_delete(struct net_device *dev, struct list_head *head)
+ }
+ EXPORT_SYMBOL_GPL(ipvlan_link_delete);
+ 
++static void ipvlan_dev_free(struct net_device *dev)
++{
++	struct ipvl_dev *ipvlan = netdev_priv(dev);
++
++	netdev_put(ipvlan->phy_dev, &ipvlan->dev_tracker);
++}
++
+ void ipvlan_link_setup(struct net_device *dev)
  {
--	struct dpll_pin_ref *ref, *failed;
- 	const struct dpll_pin_ops *ops;
- 	s32 phase_adj, old_phase_adj;
-+	struct dpll_pin_ref *ref;
- 	struct dpll_device *dpll;
--	unsigned long i;
- 	int ret;
- 
- 	phase_adj = nla_get_s32(phase_adj_attr);
-@@ -1499,21 +1415,16 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
- 		return -EINVAL;
- 	}
- 
--	xa_for_each(&pin->dpll_refs, i, ref) {
--		ops = dpll_pin_ops(ref);
--		if ((!ops->phase_adjust_set || !ops->phase_adjust_get) &&
--		    ref->dpll->module == pin->module &&
--		    ref->dpll->clock_id == pin->clock_id) {
--			NL_SET_ERR_MSG(extack, "phase adjust not supported");
--			return -EOPNOTSUPP;
--		}
--	}
- 	ref = dpll_pin_own_dpll_ref_first(pin);
- 	if (!ref) {
- 		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
- 		return -ENODEV;
- 	}
- 	ops = dpll_pin_ops(ref);
-+	if (!ops->phase_adjust_set || !ops->phase_adjust_get) {
-+		NL_SET_ERR_MSG(extack, "phase adjust not supported");
-+		return -EOPNOTSUPP;
-+	}
- 	dpll = ref->dpll;
- 	ret = ops->phase_adjust_get(pin, dpll_pin_on_dpll_priv(dpll, pin),
- 				    dpll, dpll_priv(dpll), &old_phase_adj,
-@@ -1525,41 +1436,17 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
- 	if (phase_adj == old_phase_adj)
- 		return 0;
- 
--	xa_for_each(&pin->dpll_refs, i, ref) {
--		ops = dpll_pin_ops(ref);
--		if (!ops->phase_adjust_set)
--			continue;
--		dpll = ref->dpll;
--		ret = ops->phase_adjust_set(pin,
--					    dpll_pin_on_dpll_priv(dpll, pin),
--					    dpll, dpll_priv(dpll), phase_adj,
--					    extack);
--		if (ret) {
--			failed = ref;
--			NL_SET_ERR_MSG_FMT(extack,
--					   "phase adjust set failed for dpll_id:%u",
--					   dpll->id);
--			goto rollback;
--		}
-+	ret = ops->phase_adjust_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
-+				    dpll, dpll_priv(dpll), phase_adj, extack);
-+	if (ret) {
-+		NL_SET_ERR_MSG_FMT(extack,
-+				   "phase adjust set failed for dpll_id:%u",
-+				   dpll->id);
-+		return ret;
- 	}
- 	__dpll_pin_change_ntf(pin);
- 
- 	return 0;
--
--rollback:
--	xa_for_each(&pin->dpll_refs, i, ref) {
--		if (ref == failed)
--			break;
--		ops = dpll_pin_ops(ref);
--		if (!ops->phase_adjust_set)
--			continue;
--		dpll = ref->dpll;
--		if (ops->phase_adjust_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
--					  dpll, dpll_priv(dpll), old_phase_adj,
--					  extack))
--			NL_SET_ERR_MSG(extack, "set phase adjust rollback failed");
--	}
--	return ret;
+ 	ether_setup(dev);
+@@ -682,6 +692,7 @@ void ipvlan_link_setup(struct net_device *dev)
+ 	dev->priv_flags |= IFF_UNICAST_FLT | IFF_NO_QUEUE;
+ 	dev->netdev_ops = &ipvlan_netdev_ops;
+ 	dev->needs_free_netdev = true;
++	dev->priv_destructor = ipvlan_dev_free;
+ 	dev->header_ops = &ipvlan_header_ops;
+ 	dev->ethtool_ops = &ipvlan_ethtool_ops;
  }
- 
- static int
--- 
-2.54.0
 
+base-commit: af39eb111ce6b5eba9c08513b62c4868eb7e7fd5
+-- 
+2.53.0
