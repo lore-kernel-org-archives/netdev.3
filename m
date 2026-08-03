@@ -1,294 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60B438734E;
-	Mon,  3 Aug 2026 16:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785775446; cv=none; b=GdYo5EI1loVin9Q+L+nSIky/JZsk561W7wjeksZPTe5zOdQbQFejr7ow5nTYfmNMC4vCDF1GnJ3KnayMcP1vezKFXfosIpD4wcnSyx5iNhW1+NXm71GEzdovoOqGhY0KSaOfyguUtAkgIJ4bXeHDp2kTETiCCg0OTbF2bIbfHtk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785775446; c=relaxed/simple;
-	bh=H1Z7YJ4JsUCC5mWLRa4sfXuBI2wV1PJBfS22H8f4trM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O2U/wdgDrEnzD+NFeBWfW7e5OFg0G+DXAKZwMvIp+kaiVdjSE5hxO3Jyz9zy2sKffUEzmXJV7xm8apl/F3sFPt9i4QwejM9OkPqtPTOjJiyEJLQnAr6SHiAJKhPZTZhzK+rJAoRwthw6FBdkxMllf7cBVhyPnzlM3IPB5fw/xpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gbzyl6TM; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9862237F337
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785775538; cv=pass; b=B3DyHbGSNUsRAYaWTF122ssRY7nyTGcof+Gx0dBxiuvU74y9BbsYdCA6nsadvYzZMGzOk9ZWpdUcuoxQg1igCWdVzcFhXiR2lFA9pI1Nn9Taznd8kLFzec4xdnJFvBk7VJ7kVVrqdcIHj73U6imlhY2I+2eSqNlMAPIJFVrUnmk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785775538; c=relaxed/simple;
+	bh=pVJ/u9SrHtpIYcpsDllTKqpayBtCBNOqrDA3wdvqLR4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HZtsogAo2dTnpnTxvM5+LaJbSUjN3kC7RvmcksJdT3x+yscsNIJO0Q/4VlILIABlAsQM576xu2dbiri41HfJbvwLVqdvWnc4l8Z5t2bivMVxxV1HqYv6pupja8RYU3AKhH1p+d+VUuX587dxCZNc7dXbOmgVDeBKqmARqbb4rAc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jjb7+6s6; arc=pass smtp.client-ip=209.85.222.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gbzyl6TM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011E81F000E9;
-	Mon,  3 Aug 2026 16:44:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785775444;
-	bh=pDZf4SngBouo87PecrZqHP+WwuuBB8S8PZVMhXw1zaI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Gbzyl6TMQV2kG2YevL4XMFFo0GG8ANJPFq3PgX8brYQsbXFh/iS1AVUY6KwkgkdLy
-	 Zq5UvtsyR/5zp2Xzsui+gxD9H/3wRopONhg6ZeyNOupJNlGhTQrpt+/ePBYA7R6pqQ
-	 4tfgZDsUJrljnXZ3DQyVrZfgJrv3zJ4VZyJlp1ogVenv5mohq7HvtWU3KqzPT8ATl4
-	 vpp/Mh46EKggX5i/TDJcp7MiesW3gSgRSXYCx2zFydzk6Hb21zuTnN1IxrgHpFQSBF
-	 5OOxMyAXuzlAJrwnIy52QjyCTQA+uEmRf+Epx+zmQHvez1ha4Cp/FXDxJ2W74IK5Hn
-	 Bsv6/ciUgNUlg==
-Date: Mon, 3 Aug 2026 17:43:46 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
-	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
-	shakeel.butt@linux.dev, jannh@google.com, aliceryhl@google.com, arve@android.com, 
-	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 3/5] mm: Add RCU-based VMA lookup helper that waits
- for writers
-Message-ID: <anDBVu0PIzy7dks-@lucifer>
-References: <20260802215459.2769283-1-surenb@google.com>
- <20260802215459.2769283-4-surenb@google.com>
- <152ee467-b5e4-470c-ad95-c638aa9986bc@kernel.org>
- <anCst8u7ybHf39n8@lucifer>
- <9c301dd5-76cc-40dc-bbab-a79559d6db1a@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jjb7+6s6"
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-963a722ed59so863619241.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 09:45:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785775535; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QjyQjjm4m/EaGaTVzBBUO+u2uy3sVqzxLVQqBI+x9qlbXIi7/WRI20EAGO0QxY3a4A
+         fYr6RoVb5Kp7YGwgYBDGev6AZscZbBRlEIKOaIhYIbuQsU7r3fCqRfuXuoZRN7ldBfGe
+         e+KRugXdh0rx8l1pdxyP08EEW6ExQqk3a2IL/cGGwN85zoaYG1kTDcv4zN90MAoTkqI1
+         rtDHp8d24cx8nZjmRms+KV27iRMFqhhRcSpaESGy4UH6mkgRgq4OYfZSD64JUuwe1IX2
+         5LkqldYuLtsVh9kO31DB2jIMlXBReuYN7PTuLKIt7YPr/DjItRQC6AjBJKTJHQdD/t7k
+         vy4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=niqvePJlDSQd28Qyc7y5gE/vwAYMmaOcsvRZCG9PwY8=;
+        fh=smK2X5Pqiz6hzYtQ02nvoMO30gs1MaPwH4qoCPMYb9w=;
+        b=JAB1HcFgAk46kynulu7Rj3jau+v4dyjA+aZzgKz+bO9yO5VEKeZX2GKEm+dZ5Hh2nq
+         OiOsvV0oKrtgRFCI3vOtBGA4MTcoAQfa+KxgRtNnJVv2gWov9AueVgqbGPiHb4nOwOR2
+         Lot/txNS2sbN4BUkCO1F/60FrMjZSwYkgCCKVLIMakc5elpp4UzMoTIJE+Jeq5o0pxpv
+         JbSLwjEKKK0f/b1/PA/Bnysv0Px/pqVPlwSCKUV1d5Mxs+9XR50kBVJHRzcRDEvZT9sc
+         D84a8+0PnBWOq4Qxpn9KZAicJy1w1OCbLMlWru+ZU5/8g5KCBa41QPbfDuh7uP5S3i5S
+         BTwg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785775535; x=1786380335; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=niqvePJlDSQd28Qyc7y5gE/vwAYMmaOcsvRZCG9PwY8=;
+        b=Jjb7+6s6TLFWkOKejxwVE79v/pHkKWcfRtDNHkt49mRhfkUcOV65hnXYgFCgxlRbYM
+         OcgqZe3TxIn664s4+7YrY/E5n4QRGLLgYj6J9Vfz7SgRICyQZqIyTvWt8rW0MOLY0nlc
+         LlKqLm8Vzu0ip+aSFCUq+gyJJvJPvhMpcZobSUDu4WQSjoAX15+QnRoARTaBVejBzaGO
+         xbWR4SavD+rEoi/M/wf/SGEzW4HKYn4xaOZpprSjsUr5vua4l6B1VUsN1aI5tH5v3Rss
+         AaH3sQXP1H7gxi4lCQwoZjXD+A1iWZedLFs+aghC0X2OgtjnjEqlsKI5czbza+5Noyfu
+         q37w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785775535; x=1786380335;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=niqvePJlDSQd28Qyc7y5gE/vwAYMmaOcsvRZCG9PwY8=;
+        b=EBcejFZDa+AclgRKpsinPmjvt1ArGV6Zm/YHwZa7eb7D9e4BClfU92mxgp1paIRSxj
+         /Aqk8HFsa36RTxudd8z+njEbZw4RFjD56h6qQSsB/n97KloIGX8XugBzX+2fjqRLSg2w
+         NH+BMwPDrC69Z6/XkfK1Ikc9hfMFFHfp8XlEW7nV38rO5nwb8tWmkaF0nmiPX2dPaCKw
+         Hcn3d8mTaMgOYfARmxea1au4m2Tuvxh/uB4D8ob6QoWgnRExZbCI5EXwHkChRbH5yOWC
+         ASYD2EoI50RMh3e9CPBjwnGCiKzFuZL1TEUvYjE+99S/9h9ilCwtjUKeeZQ3AWYki2FG
+         CmyA==
+X-Forwarded-Encrypted: i=1; AHgh+Rph193Cq534Tjxc/9welnzpKXRyLsrCnfNVAFNp+X29CFewJhuEZMa8tC5lHvL6TrkOrPh8vR4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQ9zeAUZGMJa3/yq8BGUG0d3Ezfs3cNZ1ZpMLVDCLG51QnV46v
+	y1LyV/sGeT+h7VgZp2SlMX/N2HDuSdBXz3ao72k6Ujj/qxNhXp3epVNGxpa/RBHE6cL5sEkp86d
+	Bb9zsESWivXqULjJtipJutC8rKWVnzBA=
+X-Gm-Gg: AR+sD11DdLNpfBW1MRyU9Hv3LPqaAbr7jPNmZF77vHqyZtPYFFkraQ66vdpaieqaDCD
+	wgqDuoUNlZVx2pEoWzTU2dI56exZeVZAK/Yc5vcIXFGgvK8xlhkE3DH7iK1lkkb2KZD9DvbvYLj
+	ZYXe15wm20NV54lR8sOVi5mUrmF5cpwfqUvvDYJGhbsJRwq+k5z72UZB5ZX3tXsZh2y5W9+D1Af
+	JBC81mRU1I6jgfDwQ1Ew1y0EslFMnHy50qbktfyQiN/I11+A37irz7FxIa2dJPJQzhudDjnlDEZ
+	b6DOUxXyCmv5mKwWDAYHM6Lli4x2LMpmGlukm3ExKq4dnqYvDb12OkSAoVKH9RA9OCHX6AHXyHi
+	1A1YU2R3fE8/0bi+O2IaCmMOCy3I+Dn03iaX+N40HKZrlcwon4n9FZuifMfkI/JYCGqq4eR1GwZ
+	WgNiNmphdwWQVTYlRWAhV8Yl99sKZ/R1hBzNX0
+X-Received: by 2002:a05:6102:5e82:b0:73a:128c:4e3d with SMTP id
+ ada2fe7eead31-75b22b6375cmr7983333137.8.1785775535469; Mon, 03 Aug 2026
+ 09:45:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9c301dd5-76cc-40dc-bbab-a79559d6db1a@kernel.org>
+References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
+ <20260802-submit-acx00-of-dynamic-v1-v1-8-0a53cd9e21cc@gmail.com> <2c0210b3-2c68-41f1-aa33-3f1693454849@lunn.ch>
+In-Reply-To: <2c0210b3-2c68-41f1-aa33-3f1693454849@lunn.ch>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Mon, 3 Aug 2026 10:45:23 -0600
+X-Gm-Features: AUfX_myHhqSCOlS18NU3-rnIJB_yJDCs5Z0LNUdIv6o7tNasY8YkhUjPJd2Ilvs
+Message-ID: <CADvTj4pfNFVGrQV86T7X+nZQYUamxEYLLWuxVXk=av0da_XocQ@mail.gmail.com>
+Subject: Re: [PATCH 08/21] dt-bindings: mfd: x-powers: add AC200
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Andre Przywara <andre.przywara@arm.com>, 
+	Richard Genoud <richard.genoud@bootlin.com>, Maxime Ripard <mripard@kernel.org>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 03, 2026 at 06:24:34PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 8/3/26 17:00, Lorenzo Stoakes (ARM) wrote:
-> > On Mon, Aug 03, 2026 at 04:55:19PM +0200, Vlastimil Babka (SUSE) wrote:
-> >> On 8/2/26 23:54, Suren Baghdasaryan wrote:
-> >> > From: Dave Hansen <dave.hansen@linux.intel.com>
-> >> >
-> >> > == Background ==
-> >> >
-> >> > There are basically two parallel ways to look up a VMA: the
-> >> > traditional way, which is protected by mmap_read_lock, and the RCU-based
-> >> > per-VMA lock way which is based on RCU and refcounts.
-> >> >
-> >> > == Problem ==
-> >> >
-> >> > The mmap_lock one is more straightforward to use but it has a big
-> >> > disadvantage in that it can not be mixed with page faults since those
-> >> > can take mmap_lock for read, which can deadlock when mixed with nested
-> >> > page faults and parallel writers.
-> >> > For example:
-> >> >
-> >> > 	mmap_read_lock(mm);
-> >> > 	// Another thread does mmap_write_lock().
-> >> > 	// New mmap_lock readers are blocked.
-> >> > 	vma = vma_lookup(mm, address);
-> >> > 	// This deadlocks on mmap_read_lock() if it faults:
-> >> > 	copy_from_user(address);
-> >> > 	mmap_read_unlock(mm);
-> >> >
-> >> > The per-VMA lock can be mixed with faults, but they can fail and need to
-> >> > be able to fall back to the traditional way.
-> >> >
-> >> > == Solution ==
-> >> >
-> >> > Add a variant of the RCU-based lookup that waits for writers. This is
-> >> > basically the same as the existing RCU-based lookup, but on a failure to
-> >> > lock it temporarily takes mmap_lock for read and waits for writers
-> >> > to finish before locking the VMA, dropping the mmap_lock and returning
-> >> > the locked VMA. This has some advantages:
-> >>
-> >> Maybe mention that the helper is called vma_start_read_unlocked()?
-> >>
-> >> >
-> >> >  1. Callers do not need to have a fallback path for when they
-> >> >     collide with writers.
-> >> >  2. It can be used in contexts where page faults can happen because
-> >> >     it can take the mmap_lock for read but never *holds* it.
-> >> >  3. Its fast path does not require taking mmap_lock for read.
-> >> >
-> >> > Basically, when applied correctly, this approach results in faster
-> >> > *and* simpler code.
-> >> >
-> >> > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> >> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> >> > Cc: Suren Baghdasaryan <surenb@google.com>
-> >> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> >> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> >> > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> >> > Cc: Vlastimil Babka <vbabka@kernel.org>
-> >> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> >> > Cc: linux-mm@kvack.org
-> >> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >> > Cc: Arve Hjønnevåg <arve@android.com>
-> >> > Cc: Todd Kjos <tkjos@android.com>
-> >> > Cc: Christian Brauner <christian@brauner.io>
-> >> > Cc: Carlos Llamas <cmllamas@google.com>
-> >> > Cc: Alice Ryhl <aliceryhl@google.com>
-> >> > Cc: "David S. Miller" <davem@davemloft.net>
-> >> > Cc: David Ahern <dsahern@kernel.org>
-> >> > Cc: netdev@vger.kernel.org
-> >> > ---
-> >> >  include/linux/mmap_lock.h | 15 +++++++++++----
-> >> >  mm/mmap_lock.c            | 29 +++++++++++++++++++++++++++++
-> >> >  mm/userfaultfd.c          |  6 ++++--
-> >> >  3 files changed, 44 insertions(+), 6 deletions(-)
-> >> >
-> >> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> >> > index eb32b482434e..fdd8f5cf5722 100644
-> >> > --- a/include/linux/mmap_lock.h
-> >> > +++ b/include/linux/mmap_lock.h
-> >> > @@ -228,10 +228,12 @@ static inline void vma_refcount_put(struct vm_area_struct *vma)
-> >> >  }
-> >> >
-> >> >  /*
-> >> > - * Use only while holding mmap read lock which guarantees that locking will not
-> >> > - * fail (nobody can concurrently write-lock the vma). vma_start_read() should
-> >> > + * Use only while holding mmap read lock which guarantees that vma lock is not
-> >> > + * contended (nobody can concurrently write-lock the vma). vma_start_read() should
-> >> >   * not be used in such cases because it might fail due to mm_lock_seq overflow.
-> >> >   * This functionality is used to obtain vma read lock and drop the mmap read lock.
-> >> > + * VMA can't be detached while we are holding mmap lock, therefore in practice this
-> >> > + * function can fail only when there are so many readers that vm_refcnt overflows.
-> >> >   */
-> >> >  static inline bool vma_start_read_locked_nested(struct vm_area_struct *vma, int subclass)
-> >> >  {
-> >> > @@ -247,16 +249,21 @@ static inline bool vma_start_read_locked_nested(struct vm_area_struct *vma, int
-> >> >  }
-> >> >
-> >> >  /*
-> >> > - * Use only while holding mmap read lock which guarantees that locking will not
-> >> > - * fail (nobody can concurrently write-lock the vma). vma_start_read() should
-> >> > + * Use only while holding mmap read lock which guarantees that vma lock is not
-> >> > + * contended (nobody can concurrently write-lock the vma). vma_start_read() should
-> >> >   * not be used in such cases because it might fail due to mm_lock_seq overflow.
-> >> >   * This functionality is used to obtain vma read lock and drop the mmap read lock.
-> >> > + * VMA can't be detached while we are holding mmap lock, therefore in practice this
-> >> > + * function can fail only when there are so many readers that vm_refcnt overflows.
-> >> >   */
-> >> >  static inline bool vma_start_read_locked(struct vm_area_struct *vma)
-> >> >  {
-> >> >  	return vma_start_read_locked_nested(vma, 0);
-> >> >  }
-> >> >
-> >> > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
-> >> > +					       unsigned long address);
-> >> > +
-> >> >  static inline void vma_end_read(struct vm_area_struct *vma)
-> >> >  {
-> >> >  	vma_refcount_put(vma);
-> >> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-> >> > index e20d01e8d38f..6ff05e68e61b 100644
-> >> > --- a/mm/mmap_lock.c
-> >> > +++ b/mm/mmap_lock.c
-> >> > @@ -338,6 +338,35 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
-> >> >  	return NULL;
-> >> >  }
-> >> >
-> >> > +/*
-> >> > + * Find the VMA covering 'address' and lock it for reading. Waits for writers to
-> >> > + * finish if the VMA is being modified. Returns NULL if there is no VMA covering
-> >> > + * 'address'.
-> >>
-> >> Hm but it can also return NULL when vm_refcnt overflows, in theory.
-> >> Should we also return -EAGAIN (like uffd_lock_vma() below), or just retry in
-> >> here and hope for the best? The latter would be simpler for the users.
-> >> (AFAICS due to VM_REFCNT_LIMIT we never end up triggering the refcount
-> >> saturation)
-> >
-> > The problem is everything's unlocked so 'didn't find a VMA' doesn't really mean
-> > much more than 'something went wrong' because hey maybe if you check again now
-> > you'll find something :)
+On Mon, Aug 3, 2026 at 7:18=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> Well there might be use cases where you know that either there's a vma with
-> your address and then you need to do something with it, or there's not and
-> then you don't. And it can't suddenly appear after you check.
+> > +            ethernet-phy-control {
+> > +                compatible =3D "x-powers,ac200-ephy-ctl";
+> > +                nvmem-cells =3D <&ephy_calibration>;
+> > +                nvmem-cell-names =3D "calibration";
+> > +                phy-mode =3D "rmii";
+> > +            };
+>
+> What do you mean by an ethernet PHY control?
+>
+> I assume this is not an actual Ethernet PHY, but some control logic
+> around it? Where is the ethernet PHY itself?
 
-You don't hold a lock that prevents new VMAs appearing/disappearing
-spontaneously at the point you call lock_vma_under_rcu(), or after you drop the
-mmap read lock, only that at the point of checking a VMA spans address, so
-there's nothing preventing a VMA suddenly appearing after you check right? Or it
-not being the one you wanted?
+Correct, this is not the Ethernet PHY itself. It is the package-specific
+sideband control block that must be configured before the normal Clause 22
+PHY registers become usable. For AC200, this control block is accessed
+through the parent AC200 I2C regmap. For AC300, the equivalent control bloc=
+k
+is accessed through a separate non-PHY Clause 22 address.
 
-And checking to see if it's 'really the one you meant' is itself fraught (see
-the whole uffd saga on that).
+The actual Ethernet PHY is a separate device on the MAC's MDIO bus. The
+shared PHY driver for that device is added in patch 16:
 
-Point I'm making is that in any case where you'd actually care you'd need to
-take a stronger lock anyway, so it's actually potentially dangerous to
-differentiate between the two.
+https://lore.kernel.org/linux-sunxi/20260802-submit-acx00-of-dynamic-v1-v1-=
+16-0a53cd9e21cc@gmail.com/
 
-Given the overflow is very very unlikely I think it's also not a big deal to not
-differentiate anyway.
+The later board DTS patches instantiate it as an ethernet-phy node beneath
+the MAC's MDIO bus and reference the appropriate sideband control provider.
 
 >
-> So in that case treating that spurious NULL as "there's no vma so I don't
-> need to do anything" would be wrong.
->
-> The usages in 4/5 and 5/5 seem like they are not this case though. So it's
-> fine. But perhaps worth just mentioning it in the comment then.
-
-Agree this is worth spelling out in the comment (I raised similarly).
-
-Maybe something like:
-
-	If a VMA exists which spans @address, return that VMA, read-locked.
-
-	If no VMA is mapped there or, very unlikely, a reference count overflow
-	occurred, return NULL.
-
-	Nothing prevents VMAs being unmapped/mapped before or after the VMA is
-	looked up, if a stronger guarantee is required, take an mmap lock.
-
->
-> > So I think this might be a feature more than a bug, especially given overflow is
-> > not exactly likely.
-> >
-> >>
-> >> > + *
-> >> > + * Use only in code paths where no mmap_lock and no VMA lock is held.
-> >> > + *
-> >> > + * The fast path does not take mmap_lock.
-> >> > + */
-> >> > +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
-> >> > +					       unsigned long address)
-> >> > +{
-> >> > +	struct vm_area_struct *vma;
-> >> > +
-> >> > +	/* Fast path: return stable VMA covering 'address': */
-> >> > +	vma = lock_vma_under_rcu(mm, address);
-> >> > +	if (vma)
-> >> > +		return vma;
-> >> > +
-> >> > +	/* Slow path: preclude VMA writers by temporarily getting mmap read lock. */
-> >> > +	mmap_read_lock(mm);
-> >> > +	vma = vma_lookup(mm, address);
-> >> > +	if (vma && !vma_start_read_locked(vma))
-> >> > +		vma = NULL;
-> >> > +	mmap_read_unlock(mm);
-> >> > +
-> >> > +	return vma;
-> >> > +}
-> >> > +
-> >> >  static struct vm_area_struct *lock_next_vma_under_mmap_lock(struct mm_struct *mm,
-> >> >  							    struct vma_iterator *vmi,
-> >> >  							    unsigned long from_addr)
-> >> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> >> > index edd90892f8cc..c3a0c38a3dc3 100644
-> >> > --- a/mm/userfaultfd.c
-> >> > +++ b/mm/userfaultfd.c
-> >> > @@ -129,8 +129,10 @@ struct vm_area_struct *find_vma_and_prepare_anon(struct mm_struct *mm,
-> >> >   *
-> >> >   * Should be called without holding mmap_lock.
-> >> >   *
-> >> > - * Return: A locked vma containing @address, -ENOENT if no vma is found, or
-> >> > - * -ENOMEM if anon_vma couldn't be allocated.
-> >> > + * Return: A locked vma containing @address, -ENOENT if no vma is found,
-> >> > + * -ENOMEM if anon_vma couldn't be allocated, or -EAGAIN if vma refcount
-> >> > + * overflow happened due to high number of readers and the caller should
-> >> > + * retry later.
-> >> >   */
-> >> >  static struct vm_area_struct *uffd_lock_vma(struct mm_struct *mm,
-> >> >  				       unsigned long address)
-> >>
-> >
-> > --
-> > Cheers, Lorenzo
->
-
---
-Cheers, Lorenzo
+>        Andrew
