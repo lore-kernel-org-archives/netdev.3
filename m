@@ -1,43 +1,43 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010040.outbound.protection.outlook.com [52.101.84.40])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013043.outbound.protection.outlook.com [52.101.83.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E3930D407;
-	Mon,  3 Aug 2026 02:03:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21FD30E85B;
+	Mon,  3 Aug 2026 02:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785722617; cv=fail; b=ifV0hQ8sLliqY9PYu2uVhl4LznOrhZjYqjb8QD/tDqs2Kf1FrWFFCsf3OGHBhPsjofkPaAzDBChmzwMDzTsoIHZ8yAJNgDox61/TZahd+t65k3NVBgdDjps0r17Jj8Qb7V8us9e/w4zkSFfkmVf3V4p1P6gw4JXVRXmadxBx/YY=
+	t=1785723059; cv=fail; b=Ff86mhCLtL00v3ASZTb/yFgZiKphXx9BNhDnySDgvk21HwoL+NOZ2+1OkdnzNL40FTtFpnj/OPKJotplo7swo63yoJaaiVSl6NQBJvKZ6wgt0N3gPYzn0/iq+VtgoScG803/SUiEBOjXPBbi0cI2ltY+utNMdyuihlBZhqkYyXw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785722617; c=relaxed/simple;
-	bh=Oan2tP66p7uiJxl9W7a9WASkPYRy5AaiOPVT3eOMbns=;
+	s=arc-20240116; t=1785723059; c=relaxed/simple;
+	bh=VIO0jAjE7QQQa1I8nbOGp7phdHMRrUj/UGRTIIOjIIc=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CBlgogzKLw+iuA042Bdpo1fQ+dQ7+hNQkCNGv4SctI0vMTiy1EJWxGjNvKrPODvXzeDO19ppQSoSUdOP3m7aviTLM8r14Ujq09gFH7/8bpUzwhp9Gz96Hjp7G37tUZx+UkZmEMSDrIPivS1MjVXdaTU1JXdm0zipY3otIn9R2ug=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=LeqClGMM; arc=fail smtp.client-ip=52.101.84.40
+	 Content-Type:MIME-Version; b=oSzsFrk/HbZ/u7pQlgKJRP2HJv/lr79GPTpbbvEJDO/joCsyFtD41574ZT5S8pbECssgRlTpDZVZ6Izmw1BrXy9/sMdtTd3k4XhkWVR6bCdmf+GFD6vTaZ2DDFUG/u/eeYi8a42OpsCdfJNsSey0VE3dtjMAWeFoM4YFU5G4Sos=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=NE1CcgXq; arc=fail smtp.client-ip=52.101.83.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="LeqClGMM"
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="NE1CcgXq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GWeshv+HKtPfGsT3jnJB9EPv6Q6nDwA3F3vCxhI91csqcsOcI8Xgc1YyOmYrHsUFZtQYO1sZ7msLjRMVPqAnosh8jLdgvCuJPk8dE3xqmoHPVXcFTGgcUFZ7TFEAJbmnEIhQkQXPl83D0cuijPjgO04lUFswl97egeqadeZD0s9eYKXTC2GeHHqVSto0zlh4Fcl9n5LViM229gXDfyl1TL2ZoEe/43xNVCGsp1q4qPJ28xj5oF4klluIbiFUzEaTrxgf7lZn8JyK93Vo28LdJoUCYSxi+5sos2G4sTrsEnFZ5rGh9UGiqBIdEVaP4JjYcDIXlUyKHFm2QWjnn2vdaA==
+ b=FHmdKfAznYWzk6emzTFyXnStlrn3r/de3610mjS+bNrw42XDGTfA5FuJ/oyIzt4RxZdsPcGIqzAyBxXtgAyPxbUHfO8dZsYyGfO4GhB97lUcR9abVBPmJ0o0Ha+EU+jSNx9dR4MVuXgEX9YgrFUMyeq30EeJDyNVHiNY4QGEuK/LJKwISYHLV4JKkf3Hj2Pz6/Z5zyyym07ehBCFAxPLx3I9i8Y8Qr9bbZQe9xdaNnDFfRRMj080auuTxK5nOwRymIwr67zaZwjZoDptbogvqXOnGFn57mJBKy476vhYlnb51rcUyxBZiqmr9M0XxYnOZfCtOmp7YflCipLTOEhYhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vaWxyBWlocY/Y/VK6RTpY5H5+5rVi+wgQkOm2pfkfeI=;
- b=ZL1ELYjkUelqf028SarpwevjSXfyReFEVfa9/nM4hb1GlwzpAQYN1Ys6STeA4HRXehtI0sXnn1OcsP+feKi5Clztm0NiyPfBApgwUs6aCAeT3KewNwbfIgn2PQd9ucIiaBEi66VK3mtALZphWC/a8dLzD+bllUYCIOtzY6MqmjN2M+6wyePxh4A83SfVYxwSp69Y9X8WjXiaEcjkUm437tEs3pTVzr5+A/lbTTQ4dc49nAPqZNd+t4pl5q1A4pwULgkIa0koHYoWYXy235Y3pdU9mIoDQeEKs3fBNuCEisPqt7kmtQOUY5TfKAFHrhvNUDE8TTJElF4i6d8MBnn9kQ==
+ bh=Y7YtkKm5Mao8VdicMYuEkdx7rOQPZsmaWB9VxVrBtpY=;
+ b=H3uaPKO1iTTze7tK6ZcPoQrIqMvnZpLseKF8bT7BeITLUSpEZKjPn6bn15IayRICsJR2XTI68HftBmxXLRZWL98Bvy17CO9cv5Ir+/Eye6bVi5EPDODrwYMPRzh/6zTjZMsN/mysYNaCVdAYbsPtNSlFOGHAk69hI88sEFOpsSxLBpTz/taqH4wLmm43XBIBdfdc294LC2pBOHF/zPhcaD3LpuDbVKJ5rkuV7R6/P5a4vUgeUlsPGL+nwjV1MDHx24AaASL0FV/p2bSumfraur7FJ2Bhyz7aN3jn7ocvU4wW4FEkFNKLLOtmnjyP1fp0qrtPivtTif/F/VHco/CS/g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
  dkim=pass header.d=est.tech; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vaWxyBWlocY/Y/VK6RTpY5H5+5rVi+wgQkOm2pfkfeI=;
- b=LeqClGMMmJ3QQndHmEIbfOGR+UFsG85LuD5QATizs9/5AGfPp3isei0sN4cjXyWMdoGHuHojpWe+SIqnp6kJZG0LZGY23iyl/sQoGVySaEDAxY0llecrg/kUrVjEhmuqr5AvFpWXVX6auEsUOzLNLNRVU8XiK0uTcSk4sIWSygGhtYaZE0nIxJzDFuv2CRoP9B4Isg6k4yp+0Jv9jvYVUIupBqUXOakl3eMBTHNMxyNRbfYyGmmG4P87C7ggw4kEpe3+tSurKq5Hxgvoty0SCgOPlzRvhiLMyMueLuHB7OuIk1iUv7rXuHdlonz7wZ6neDVb2GrDxzl4JT/InzQtBg==
+ bh=Y7YtkKm5Mao8VdicMYuEkdx7rOQPZsmaWB9VxVrBtpY=;
+ b=NE1CcgXqbTtOBPfEkGTQrVZ1r5xhxnQ0djtAB5OW3GYZT2YC3CCTAwn3oter2MYa4T4KO4ryIDUfCdLuP7vlpqRzQuECy9aHN9OpjkNuAQbBvG4wOzO+jMgnJQhARFkDQ09qY2ZwIpnULFnQm+0v6OO63S9dIlM2mArboNFIyVtD5otZgiWyvsISfKmrrfMI9WHrgSEsbuoUqy/Xifs/SKGLK2kspp2Bq65rATh21wtsjqAXEWGRGff6HQuUdLxLZq1sjzuY2rBPgh36f87JEkAoPCMsTuO6BqrYi6k4L3jMfoBU0baMMs9FQmh7mqHmanSua+OnHi0tlrCkauRPtw==
 Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
- DU0P189MB1868.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:348::9) with Microsoft
+ PA1P189MB3652.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:504::20) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.292.13; Mon, 3 Aug 2026 02:03:29 +0000
+ 15.21.292.13; Mon, 3 Aug 2026 02:10:52 +0000
 Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
  ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
  ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0292.012; Mon, 3 Aug 2026
- 02:03:29 +0000
+ 02:10:52 +0000
 From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
 To: Jun Yang <juny24602@gmail.com>
 CC: Jun Yang <junvyyang@tencent.com>, "stable@kernel.org" <stable@kernel.org>,
@@ -48,16 +48,16 @@ CC: Jun Yang <junvyyang@tencent.com>, "stable@kernel.org" <stable@kernel.org>,
 	<tipc-discussion@lists.sourceforge.net>, "linux-kernel@vger.kernel.org"
 	<linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
 	<netdev@vger.kernel.org>
-Subject: RE: [PATCH net] tipc: read le->link under the node lock in
- tipc_node_link_down()
-Thread-Topic: [PATCH net] tipc: read le->link under the node lock in
- tipc_node_link_down()
-Thread-Index: AQHdINd+XsVb/aMoek6+cgQY0I4qUbaLk7zw
-Date: Mon, 3 Aug 2026 02:03:28 +0000
+Subject: RE: [PATCH net] tipc: reject name table updates with invalid origin
+ node
+Thread-Topic: [PATCH net] tipc: reject name table updates with invalid origin
+ node
+Thread-Index: AQHdINhDX/sK5ru1HUu9slybUJTejbaLlweA
+Date: Mon, 3 Aug 2026 02:10:52 +0000
 Message-ID:
- <GV1P189MB1988E2D270907F4D65EA2999C6D52@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-References: <20260731102145.33622-1-juny24602@gmail.com>
-In-Reply-To: <20260731102145.33622-1-juny24602@gmail.com>
+ <GV1P189MB19887144315DA4A6AF16FE02C6D52@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+References: <20260731101657.29119-1-juny24602@gmail.com>
+In-Reply-To: <20260731101657.29119-1-juny24602@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -65,48 +65,48 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=est.tech;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV1P189MB1988:EE_|DU0P189MB1868:EE_
-x-ms-office365-filtering-correlation-id: a6e5c80d-665f-4083-c58d-08def1036967
+x-ms-traffictypediagnostic: GV1P189MB1988:EE_|PA1P189MB3652:EE_
+x-ms-office365-filtering-correlation-id: 45a6822d-444c-4bf8-ec0c-08def1047196
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|23010399003|1800799024|7416014|376014|18002099003|22082099003|11063799006|38070700021|10067099003|56012099006;
+ BCL:0;ARA:13230040|366016|1800799024|4022899009|23010399003|7416014|376014|22082099003|18002099003|5023799004|11063799006|3023799007|38070700021|10067099003|56012099006;
 x-microsoft-antispam-message-info:
- 2//48yM4IKBaFiz8Cuxlf7IODIMOIPTi6op4uBSpySQi/Jbc/OwoOe//TFAkYMOdY1yp1Xinj2HvfKutMgSrMKyy1go0dKb3py+Qa/ItyCKL8AYfbRPnzQPRDePKakYNLoGtM2GTPt8MAWm0m38zZC2lo1yKDwaYuYe5tm+7tpKGt4yDjg2yi+actNu06ICzEGtkTi8oX1VmgosDYwKYj4NpouFvklNMrsKkR41Y/jwAqWpeLKivpUI4FcwKKvuPHNhWZrjfCxS9jtefJ1noLKYQVRcW2EU9xIBz5rjmzK07hABTR5PV+jWuBeg9MXNJQVdn8q3QO9f2fsd9yaIM+ftlRGddxY5l5dCNtv7JISO1BjsZ8BZ+YSv5PMKtoEBpeIciSchdnaPBRYdOMDIHbrMu+VvH4I5EwUK0OxWpEj8Aqrd1Bu8rgousksXKNfvrm+lsve30X1p7ph67vQXjPNyi8Ri36JhP881RL81R/WTGUoY2Z6n1fqlvSWk4wWlaH4xZoQPoEi+05x4Q0fLQr8iURgDSKDplvWzoy3UMgwSJ86wiqo1YhiOCunojXdTzgyjQRrDEfKa8NG3I7MiG+Kx28K52ut/+WkUSo2kDTfnQau6vpTxOXmzY2Du09hvIqJElGnPvBYfZMBuwjqNygb95xvKzDyNCWCx+UtCAW7sxgMVQBGaNfHKI5HYW4YENj1XiMQ/KMCGq0WyOKTXD3lbWkOs+GWL65HAMfotomZE=
+ AK5cyiA3zAuMSDQQqV/vQ3I/fEoLVsHM5NDCYb3urvhWyA41UdGjch0T9QGYI9D8KPAj4Zh+LmGCjhqhD+HFzZk8UrSGWv+4Ys1ssyWkSGDC5v09qt4z8ZgYlCQjNn+ycr7vJK2cJxaK9D12lGSuFaZwEic0lcVcQT1/GjLAJyBF90bbtxjOGaoVT4Af2C1wDj+r/Sf60nN798G1UiNq6wWwDfRJHkGnNuInJjQRckia4bKoAVUK3sxfrHl+6kJjmr2oWe0CHht4wFBessSfswHcBhnQKO3JOyCeAsjJxmgNmvRkbMbQu3dqrbdccgT3W+PpVRaOt5pDiL+m0qYTMQi9nOK+MdUSSTXE8BzOoqbX9HB5U4i+7hm/LuMtl67Efh9DPcyx3uTFub9HzRrl8rW5gnDVWW0OmeNZM0yK9ER/XLMUitcwa57oDCLjN+g5PMMHBcK7j67XhllRE0CBjPNDfLnTdaPSFOOB5/BJ9UScwOhZ1G5dP1IBMkgTwtcLjpsJCW+6i93YhEqBhqeBJUod0yCxxl1kB+NzPTA/RSCN4GyDgybfzCV1HJk+CNPQIyJWcO5FPe4og+mOSHg1O5Uh9FQfxQOkzOXzrB3UFP3hYhbWGQrrowHQyTTpQMcyDBmUusSocCW9LfC/qgFG7VMWd2Cgduj1XQjallai6sxlLYG56VEZiPdzitpXa7HdWVy1kOW+fJF0AO51MyvNzYBtTiHNEMm3da7Pb8CwcXc=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(7416014)(376014)(18002099003)(22082099003)(11063799006)(38070700021)(10067099003)(56012099006);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(4022899009)(23010399003)(7416014)(376014)(22082099003)(18002099003)(5023799004)(11063799006)(3023799007)(38070700021)(10067099003)(56012099006);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?EdJ8+CpxwnRvqECTq/jWP9vJVyPUqjFPyrTM250PaQSiOZamoApQQt20ECSN?=
- =?us-ascii?Q?4XWc/hJDJgGV3Q0TKLKQtmBlnajBWDOB1SStu9fBKqB+nQV49UlHIn/0lKlC?=
- =?us-ascii?Q?S5Cwd/R55x1iH2TWdW5vi3+wT91ZRNyOlmrnhn99htInptOFO3yPJGewWGue?=
- =?us-ascii?Q?yagD8ey+q5OqXxpi46x/ALFlZEPpaYhFoQxPOol/q/ZVA8c4buAg+hMGang7?=
- =?us-ascii?Q?JvUMnZHTZfzbv5OATRSciAXAizmeVFnclOxM4P/3yMtPVbV3AdO/oL1swbUc?=
- =?us-ascii?Q?mNB915prFO+GwYPJoM+P7kI4PbKGm5Lmz6vdPbkPxjhg75EhWK2Df/If5dhC?=
- =?us-ascii?Q?otprpnRNHFSsUWr5wP6T5ecohkXrltwumwObgkf7+AqtF8BZ0ahA6H18PP4y?=
- =?us-ascii?Q?GJKsXFKiBCSCVsgnGW9Z9LddO/MApmRqHrvpJrF7jRcHU2Ht8fSKrYNAtKIF?=
- =?us-ascii?Q?2EAhM4LEQhuM/WtNh+7h7+uWAasxcOfVlyUEI3HcEW5WYHLOGF1VygPCRhF3?=
- =?us-ascii?Q?gV+QXf+s0L8YCy6631hIlk8MTgefDL8yKB23RYjpzBEwKHajl8kMmiuZBmyp?=
- =?us-ascii?Q?y07c7ak4Hj/3d19aJsvQ9ldXrfAYo9Ob0x7YE+KSBeq3xXi8D7BjRAsid4y3?=
- =?us-ascii?Q?jZb/FwkTGLz5poBjpeC4izCZQPY3Tz1SY8HZMwg9qAFT/whoNVFi6YSTDuoA?=
- =?us-ascii?Q?Tl6HmnCrp5t353V7pkXHl/TXz/uvjWSia/MZxJKZoUEJufGDfvKhA/6bAnFH?=
- =?us-ascii?Q?eJehAlebmqsQ6mSN1hLsq3LPYqOuqKsrYWorfHyowK2IHpwIOuYFgaK3n8XX?=
- =?us-ascii?Q?q1MeOhcSDlO5nTqxqf5OAzpYy5aJnvxl4yPXpg9PT9HQEvRxTg0Y1EVKxKpl?=
- =?us-ascii?Q?4H7XHlbL2piUOlib/qWmPuQlF+zkn86TaW3GgBsK94pEUPJJgGw4rwDkhBUe?=
- =?us-ascii?Q?n0/HulGKTHRJUViebeicyHeFI16E6SBTTKjuVU/jkFiks73pFAKlsxKdbSUY?=
- =?us-ascii?Q?uiMImG0WGO83gPzBr6/BdL1cHRsRnoYGAN109Cgn6rxO+gzPFY31Vyh/CL3F?=
- =?us-ascii?Q?Wci4BizjblzDtzMvl0noWWhmeR6oldBS4zs49tEs/cNXITpqR7t03rfzBGo2?=
- =?us-ascii?Q?LRj3rcnJ7em90dhcFucbRXuUPYphXIt/D4vB2BKWO9HlcJuEA+sMj2zJYsU/?=
- =?us-ascii?Q?wu4QGMiOO1V5RVQTabAEBfUArCFvzG/gQMQ52ogGBNlO5MkHZXB4vyXGrcdo?=
- =?us-ascii?Q?3J2i2cCNHnoK1GrLkO/rR2kVBfvVn+hqkwfuNsolS5ZHCHT4rT1SlAqy42zl?=
- =?us-ascii?Q?/eW1QrwCWTa6iqhAerMrm/Y1qXxS+4c3lPJjXdylUEobdgw4UWAOIrMVQWh6?=
- =?us-ascii?Q?ABdm1UmqlUUxq4jPfv6TEEPO7XdAFfP/4yA/dMERreE57mjkdWcZKO07+xuH?=
- =?us-ascii?Q?ZuVRdyYtuo25STg0uCKDYiebRL8yh5h7c5xfmzLEgOIO8Qv40ocnrIAIWzSz?=
- =?us-ascii?Q?vG3+fdI9pFvgHZVRi8bwUVi19EO2ndn0obnvg5NBNXYJYj4aR8XrTC6/09sC?=
- =?us-ascii?Q?8pkXKscMfeItKhBa1JEM+gOtH2I6qsILW3710k0MnDFqPFzMMqvr4PYK2x30?=
- =?us-ascii?Q?4bUT4XR+YLESzHsSOFOLcpVyVuNRfcFQ5x7WDye7UZiBuvwChJL6JJYKFgu3?=
- =?us-ascii?Q?Bj3W9GEhxUHlBZgKljRtY8mnf5MrZ0qB5CTUxo9CvZU+q2Rk/qeP/ifhOgvz?=
- =?us-ascii?Q?vxbPDA5Qog=3D=3D?=
+ =?us-ascii?Q?dCUBfW88hzn7VCcaw1txQeyoHZYoovfCzdxJer3KLKLbC5E9Ff8GeKNqtHjE?=
+ =?us-ascii?Q?IgW7/ajA3AwJFvoIaDcsxszF6edCWJtq3Xe7/56/juv/DL7wL8EORkdSQfK4?=
+ =?us-ascii?Q?VpMY+q+WvWMroWqSJP77hUBnwta9/mzRKWJeyZM6yMLKV1izH99J7e1FQXy1?=
+ =?us-ascii?Q?flPxyE+8LWpd6FHHEJuq+fqZxA/rv72Uhr5gtVSht7PpNvqx8OtisueiP3h8?=
+ =?us-ascii?Q?hGEuzBvmmiuJVXk7wpYPjmItKeZS2atSLbHjwOXEHsXc+4MJyO5s7fRPLvdo?=
+ =?us-ascii?Q?Q896/dxscKOp/AJRI8ICe/iwHHBiIYsx7Oys3jCW/CFAwPFBGqELy3NeKnX5?=
+ =?us-ascii?Q?fCcwSIsHOpZO5bbO4XQpI8SW3XfHwrkvUxUODm9mfEdUEMGA7ikKZtoDSrgh?=
+ =?us-ascii?Q?cZgOUfelvFTOMYcGlcdXMmSDBZ+O43f1ZOdm0cbwr3zlZTdAgs6lva5u9Aq+?=
+ =?us-ascii?Q?NzY35CNE6bijcSy0aoAIESuMXqwQCmK6NZxn1mgzQswaS95YYesz9TkmNAsy?=
+ =?us-ascii?Q?3zhCt2Z1PlnB+xUZooIWOFUYlWm3XFJG5fwNmcNeoBUCNTqjYHl5zdYM8Cpx?=
+ =?us-ascii?Q?a3T3yHzdM53/0coPrOdsJB2PbpyJ0ohnAyMZHYEQZx097/qjQBbGeJ/T07gU?=
+ =?us-ascii?Q?JQOD51T7Iy8ttVW3L10i0vutX+iqR4D6mkw8H74k2+o+MMeRAKhRir34EKTY?=
+ =?us-ascii?Q?lZByoaP1AoN5nfh3Yna0HwNscq56TZ54iPfrOIgljPvC4weLOVFgLhBIExwt?=
+ =?us-ascii?Q?7rHJRdxjReq2tN7k69Ux2RFns94rWKwLu44zSsWHAk2RfsmYWonT5SZ595jo?=
+ =?us-ascii?Q?uKy3c50vsXIGbrQg5smoP9QWnTamMIMp5URRTjI5zpHUz3vp68pyXSiddy4Z?=
+ =?us-ascii?Q?jQc2XMhw4ndk8MH2RrrPHTuewRyVFOGgMdfj69y9fquIbewSwvjkyLWStCjU?=
+ =?us-ascii?Q?A+nQ4RAllVW1knejVuITPW5rHxdpX8NOBd1IRZXzaXU6S87ye4eW5aQNJua7?=
+ =?us-ascii?Q?XJ6aMbXEF4pIYhrgKsyBHSILsTXXFtNpPqEdbRlL4SfVukH7jRsPlsgbdCFE?=
+ =?us-ascii?Q?cMdVCNLLx1CL7DzqohEXhwIlfb5QE+b7TYk3ci77z2qnvgPOd/raQx+2cj//?=
+ =?us-ascii?Q?aDQBeof1mDbVS4Qm6ScnABjrADnm4kppmAzaL+DqXATtAXypO21Y3Dusvfhg?=
+ =?us-ascii?Q?xqhm93WTulP/Qs+L5HQmU5aYGTqKCqKJFA9IHgGdBvjLrxfWpeIx33pr73/S?=
+ =?us-ascii?Q?t9CQpbJeU/657CGTkgTBj96iA7SjLFAEnWlTI1XLuxVrkYmXl0Lk6ttOvZFx?=
+ =?us-ascii?Q?cCYv6J0nO4rAKynpQYLfsUJPk/wLypNt4sBQxF4lEgLw7Tj1c1UmJ1RDQiZO?=
+ =?us-ascii?Q?g4iFoIwwOQNKv99lzg1vkgpPCNo0yDSm1IgH4heQRaoOoKvdhQuUd5IvNtDi?=
+ =?us-ascii?Q?ABLGpEvlePxPgERBzjfQ6gCoeZnI/2F9f20Rr6jw5ftSa4mmhLIw+e08lZZh?=
+ =?us-ascii?Q?7s3ak5vYlM3LKCo+If3y3nMbTtZABPEFp/H83u8PxHfuFWCZ+QHegX8AFhpj?=
+ =?us-ascii?Q?LFJYNNEkGHp706fzzAv67243cOQN4SoMVBZM+UzPz8ISbylFOY0ouMJ+REnT?=
+ =?us-ascii?Q?160AN9MUrB/GTbQ009j3xXWZduU3GsenLnTXFUQu/dUtLmT76acxVfS/4XDu?=
+ =?us-ascii?Q?lGkGXFmLE8GwYy0rka/FwNyqXcReh9+pbbv40CFyaKeo0zQWdbFnyCTI8Hug?=
+ =?us-ascii?Q?XiYrp0YQ3g=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -118,129 +118,90 @@ MIME-Version: 1.0
 X-OriginatorOrg: est.tech
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6e5c80d-665f-4083-c58d-08def1036967
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Aug 2026 02:03:28.8565
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45a6822d-444c-4bf8-ec0c-08def1047196
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Aug 2026 02:10:52.0696
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: bwQpus7ig916R92P/9fRmJtTINKd96mat7VzRMRkK9ZMD4mwD4MXCXl/p29YP8xS+XsozkiGO/3eF1b8uggEgUO3wChUAJV1S/26VaNPknk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0P189MB1868
+X-MS-Exchange-CrossTenant-userprincipalname: pZQVhXTfaLo5nbJtKa7wtdwqBI4uLzt5gkMmJ6ZtSght6crfiXAF1Qs/94dOS14RIEiY1l//kMPZnnNrxwKhh9jdgGMFaSfuCv3EuPJ8M8A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1P189MB3652
 
->Subject: [PATCH net] tipc: read le->link under the node lock in
->tipc_node_link_down()
+>Subject: [PATCH net] tipc: reject name table updates with invalid origin n=
+ode
 >
 >From: Jun Yang <junvyyang@tencent.com>
 >
->tipc_node_link_down() caches the link pointer before taking n->lock:
+>tipc_update_nametbl() trusts the origin node carried in a received
+>NAME_DISTRIBUTOR message. For a WITHDRAWAL it removes and frees the
+>matching publication with tipc_nametbl_remove_publ() (a {key,ref} wildcard
+>match that ignores the node), then calls
+>tipc_node_unsubscribe() to unlink the publication from the advertising nod=
+e's
+>publ_list.
 >
->	struct tipc_link *l =3D le->link;		/* unlocked */
+>tipc_node_unsubscribe() is a no-op when in_own_node(net, node) is true,
+>and in_own_node() treats node 0 as "own" (addr =3D=3D own || !addr). So a
+>WITHDRAWAL with orignode =3D=3D 0 frees the publication via kfree_rcu() wh=
+ile
+>the paired unsubscribe silently does nothing, leaving the freed publicatio=
+n
+>linked on the owning peer's publ_list through its binding_node.
 >
->	if (!l)
->		return;
->	tipc_node_write_lock(n);
->	if (!tipc_link_is_establishing(l)) {	/* deref l */
->	...
->		tipc_link_reset(l);		/* write into l */
->	if (delete) {
->		kfree(l);
->		le->link =3D NULL;
->
->The delete=3Dtrue caller frees that very object under n->lock, so the lock=
- does
->not protect the cached pointer against it:
->
-> - CPU A, delete=3Dfalse: tipc_rcv() on TIPC_LINK_DOWN_EVT, or the link
->   supervision timer via tipc_node_timeout(), reads l unlocked and then
->   dereferences it under n->lock;
-> - CPU B, delete=3Dtrue: netlink TIPC_NL_BEARER_DISABLE -> bearer_disable(=
-)
->   -> tipc_node_delete_links() -> tipc_node_link_down(n, bearer_id, true)
->   -> kfree(l).
->
->The link is freed with plain kfree(), not kfree_rcu(), and for UDP bearers
->disable_media() only schedules the asynchronous cleanup_bearer() work, so
->its synchronize_net() runs after the links are already gone.  An in-flight=
- CPU A
->that has read l therefore dereferences freed memory once B frees it:
->a use-after-free read in tipc_link_is_establishing(), and a use-after-free=
- write
->via tipc_link_reset() on the establishing branch.
->
->  BUG: KASAN: slab-use-after-free in tipc_link_is_establishing+0x3f/0x50
->  Read of size 4 at addr ffff888111f90868 by task swapper/3/0
->   tipc_link_is_establishing+0x3f/0x50
->   tipc_node_link_down+0x1a0/0x450
->   tipc_node_timeout+0x63d/0xca0
->  Allocated by task 7903:
->   tipc_link_create+0x17e/0xf20
->   tipc_node_check_dest+0x98b/0x1150
->   tipc_disc_rcv+0x9f3/0x10c0
->   tipc_udp_recv+0x42a/0x7e0
->  Freed by task 7903:
->   tipc_node_link_down+0x301/0x450
->   tipc_node_delete_links+0xf5/0x240
->   bearer_disable+0xc0/0x240
->   __tipc_nl_bearer_disable+0x21f/0x380
->
+>A subsequent legitimate WITHDRAWAL for a neighbouring publication that the
+>same peer advertised then performs list_del() across the freed object, wri=
+ting
+>a kernel pointer into freed memory (use-after-free
+>write) and corrupting the live publ_list head. The whole sequence is attac=
+ker-
+>driven from received packets and is reachable by an unprivileged local use=
+r,
+>who can gain CAP_NET_ADMIN in a new network namespace via
+>unshare(CLONE_NEWUSER|CLONE_NEWNET), enable a TIPC UDP bearer, and
+>emulate a peer over loopback UDP.
 
-Please update the commit message with decoded stack trace (using linux/scri=
-pts/decode_stacktrace.sh).
+Please do not create fake TIPC protocol message in insecure environment.
+In insecure environment, IPSec needs to be used: https://datatracker.ietf.o=
+rg/doc/html/draft-maloy-tipc-01.txt#section-6
 
->Move the le->link read inside tipc_node_write_lock(), so it is serialised =
-against
->the kfree() in the delete path.  A racing teardown now either has not run =
-yet,
->and we see a valid link, or has already run, and we see NULL.
 >
->Fixes: 73f646cec354 ("tipc: delay ESTABLISH state event when link is
->established")
+>A name table update must always originate from a real peer node, never fro=
+m
+>our own address or from node 0. Reject such updates up front:
+>in_own_node() already covers both cases, so a single guard at the top of
+>tipc_update_nametbl() drops the malformed update before any publication is
+>removed or freed.
+>
+>Fixes: 37922ea4a310 ("tipc: permit overlapping service ranges in name tabl=
+e")
 >Cc: stable@kernel.org
 >Reported-by: TencentOS Corvus AI <corvus@tencent.com>
 >Signed-off-by: Jun Yang <junvyyang@tencent.com>
 >---
-> net/tipc/node.c | 15 +++++++++++----
-> 1 file changed, 11 insertions(+), 4 deletions(-)
+> net/tipc/name_distr.c | 3 +++
+> 1 file changed, 3 insertions(+)
 >
->diff --git a/net/tipc/node.c b/net/tipc/node.c index
->8e4ef2630ae4..918e59362d07 100644
->--- a/net/tipc/node.c
->+++ b/net/tipc/node.c
->@@ -1063,16 +1063,23 @@ static void tipc_node_link_down(struct tipc_node
->*n, int bearer_id, bool delete)  {
-> 	struct tipc_link_entry *le =3D &n->links[bearer_id];
-
-Above node access also needs to be moved to below ' tipc_node_write_lock()'=
-.
-
-> 	struct tipc_media_addr *maddr =3D NULL;
->-	struct tipc_link *l =3D le->link;
-> 	int old_bearer_id =3D bearer_id;
-> 	struct sk_buff_head xmitq;
->-
->-	if (!l)
->-		return;
->+	struct tipc_link *l;
+>diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c index
+>ba4f4906e13b..a496e2e9ef62 100644
+>--- a/net/tipc/name_distr.c
+>+++ b/net/tipc/name_distr.c
+>@@ -286,6 +286,9 @@ static bool tipc_update_nametbl(struct net *net, struc=
+t
+>distr_item *i,
+> 	u32 key =3D ntohl(i->key);
+> 	struct tipc_uaddr ua;
 >
-> 	__skb_queue_head_init(&xmitq);
->
->+	/* Read le->link under n->lock: the delete path below kfree()s it while
->+	 * holding the same lock, so an unlocked read here could be raced by a
->+	 * concurrent bearer teardown and leave us with a freed pointer.
->+	 */
-> 	tipc_node_write_lock(n);
->+	l =3D le->link;
->+	if (!l) {
->+		tipc_node_write_unlock(n);
+>+	if (in_own_node(net, node))
+>+		return false;
 
-Please use 'tipc_node_write_unlock_fast()' instead.
-
->+		return;
->+	}
+This is redundant because ' tipc_update_nametbl()' is called when receiving=
+ messages from other nodes.
+=20
 >+
-> 	if (!tipc_link_is_establishing(l)) {
-> 		__tipc_node_link_down(n, &bearer_id, &xmitq, &maddr);
-> 	} else {
+> 	/* A peer-advertised binding with lower > upper can never be
+>matched
+> 	 * or withdrawn and would leak the publication; the local bind path
+> 	 * rejects such ranges, so reject ranges learned from the network too.
 >--
 >2.55.0
 >
