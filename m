@@ -1,308 +1,183 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130013AFD19
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 17:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6AA3C3C0E
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 17:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785776496; cv=none; b=ehyPN/WXxhyI0MiX4rUOBoVcYNcjmNPgE55pfGn903FaZxGUdoaudFlEcLIkRjaLR3zUQLLDJx2Oa9MsypJ0EaAIHWnaCvOk4lsqeDh8+RYSJPqkO1UWiw7s78Nrh0qophjHedIIyCxnTMcGQXPyCjTnuJOdraZnKMm9JccTXc8=
+	t=1785776762; cv=none; b=ETsm77cWk3w3QDe9OSx4mNxaQe6q4FZ4K9h9/NvP2Mp+BO+A+1fYf0IYVBnnRsw0V0i2avIt9jsLXupHR1kRrqmbgExQ/RjDiSN5pwxRn/ZPB6afg/nPJNvGUVjcaHf9CqQqKaIUD7xKNba/NNAuhUoRyRb+NlznjM6xJZju5O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785776496; c=relaxed/simple;
-	bh=T7Xbv1HPgC8KcKf+J7vR+jsy468TNNxGnUktUUdkaK0=;
-	h=Content-Type:Date:Message-Id:From:Subject:Cc:To:In-Reply-To:
-	 References:MIME-Version; b=de1x4sfyIs7FE7q5mYZ824gPVt9xRTXKMHmUdrgKXHpI/eFuRxJtQxoZ3yX/plAarN5pWEONyLuUxxf2VbfK/q6CqMZhKsBKOJJ1OpoayZ/9fNMDJ311vNTGuto5bNcgX10w61UgWrdfZ/z/Rl9QVvcg8vQ8GTrOBOVyrcCAxyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=b1A3PKk5; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785776762; c=relaxed/simple;
+	bh=ptxOntIFwPlljFAuNIhhXdjtH2CSVaiI5tnXedt+VNk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JHUqd+C6kPTKntr8JL4XRHT5SXj0FtlO/pObbpMUS8iMUC8V+TP5Z3bSatVhy7Jkams3doamiRVfYwv9AejzDyXl9/StoRZlIRpdtdNui5GJRbDi9mCiqbYjMMGEfxEyiy5lzU86bmyugWwVVWbMrrzt+sJ+Dk1F8dTQTWvgOhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dHIdLIBv; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="b1A3PKk5"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 2ECC51A13D9;
-	Mon,  3 Aug 2026 17:01:31 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E815B6029B;
-	Mon,  3 Aug 2026 17:01:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7833611C31389;
-	Mon,  3 Aug 2026 19:01:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785776486; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Jtde3NvxnHWnhn3+uGuUKoEjppDuNtou4ptMWknv9Og=;
-	b=b1A3PKk5lkEXomNXKw8vVqwb5GLx5ggkCet8mYIHi4BPigZAQaIKN0XsDlgHPe9fQ4kJDR
-	/gCG9NJbVouJ1N9FG/oxlKTfBsHlmCltACdJuGDI4efQBDY8O56AFMLgFX6+c9NcUBIveB
-	bxuHsNMRMFK2DcF+CsTldrgS+7Fti8lZDnq6CnL6KwfSceGO1Ygv9/u8Gw5NKx7Hl8d0ns
-	WUS385d68bu5qtHkCPv8EoGBoshPscl7JCpzQHPSap2lyzRInxtUcWCmf6zhNIZibhDzyR
-	wnJzB49OtPZ7tq6cSMKfZ6D1L2OWnSwS0rs2jybRw7QDdeofjB6JUb8Yea1iAg==
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 03 Aug 2026 19:01:20 +0200
-Message-Id: <DKFGXHSHU73O.JE9E3TEWDAOX@bootlin.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next v6 14/16] net: macb: read ISR inside bp->lock
- critical section
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Nicolas
- Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Paolo Valerio" <pvalerio@redhat.com>, "Nicolai
- Buchwitz" <nb@tipi-net.de>, "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
- <maxime.chevallier@bootlin.com>
-To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, "Conor Dooley"
- <conor.dooley@microchip.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Richard Cochran" <richardcochran@gmail.com>, "Russell King"
- <linux@armlinux.org.uk>
-In-Reply-To: <20260731-macb-context-v6-14-49d5a1439d48@bootlin.com>
-References: <20260731-macb-context-v6-14-49d5a1439d48@bootlin.com>
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dHIdLIBv"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47fde295992so88387f8f.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 10:06:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785776759; x=1786381559; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5Bba4gcbhmr4SK0bvCYEbGznO8O2RUuHHW+hHe/3QmM=;
+        b=dHIdLIBvZtaQSbMfG6pZZYxSxtO6XbFqzpRyIH7LCjS6OmAcHY7WkODA0I7q5GQdZ/
+         g5YQ6Ce7tQRAJ0GvW2Dh5Xhj8j4w1MUKPqm3WGcruolHjnqXtw4BE9AVVBHZqr1Ej9EA
+         N1IU7vvoKLmUuJNYayK5w2rV+1pt8QGmLgjnCwAOHh3tBWQvU4N4C9oMHaMwkyi3FWSV
+         5a62W3SEUiwoaQMMObWCiLdZOD8r8KRa3XFDF+eTiuz6TYgO+qOVw+lzwJLmhoFIt7Zj
+         hw8n/2XfDJZPPQYatINmRDnSlfMWRNqkzEt55BBqZhLpJG4gR+P42brFekQIu85xv4jQ
+         4biw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785776759; x=1786381559;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5Bba4gcbhmr4SK0bvCYEbGznO8O2RUuHHW+hHe/3QmM=;
+        b=KZyHm2FArulSaJBdlxBT5hHImPgVnQGWp5ec4hxqaoDNwZ3iLHj8qrzrCdWm7Nia2l
+         7HyhAtMiUYwLoG/GFWuiQ0y1KF5/epGiUfcIJ4grlFtDjZHg1P8WTd4eNQwZQyCbDA1o
+         ucvBpVZizF3sOsgTmSaiWsxpZjQQOypSc/vlc0CZ+zKrN1q90lEx5ib/+6LM2b1/nKJ9
+         jx2mgcpVxkAG8InsihnmAl6I7QGCBq2hatIizr6n3DDlInycVPE2OCdtS4lDk9BXaMdU
+         qQzcCjkjL1Jct+hNaCc9zFvUcZO75bjsGCrC4hCj44k4kp6njsMP8itrqy+r4QIJCSiL
+         +3vA==
+X-Forwarded-Encrypted: i=1; AHgh+RrCkia/TNb38jNVG5PyXJuHFiO2UAvhV3qhLptATfVukjdiqadok4MZxOFapCQCfaUHeP+UG4M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiHblM1QwuQl0D1IKqDdei1DOhuis8RCXCdNmqP1QNiLaKHBCG
+	n+WoKNLMRE/uMYsST4JJHT/GYlasoc9ohDq9Ps0v1EgdcfZeGOkX+uw+
+X-Gm-Gg: AR+sD11ifY/AYrYG7vM6U+dIg0ZHhaRrp4gH4IGx+L9dKysNzou+7OMwTsPnJ7zdrAl
+	IDiFN5bHwEYYUGdz4PB/kg7wD7BG1S3gbOF2ifV0XLSA/JXETTLhNLGUAaoZUBXuf74bET2APSs
+	92D3lw4FD2AF7wbwolZPcq1Pgn1049x5aPSnzIykItANhds43lwPb4tK8Eb4Tkc8nHN8F4Tkjoh
+	ENC8nAazPZM1V0xnfp9UKAfbtqZoJGMjM7cdCLmShmmyU8svhruJ9LyEIjLQke/CPOaMqZGICMX
+	uEs3E37kxpFU+BK+Bdd7Z60UJ3+b803v/keZQtG/TEDsSmd94y3KwbAaldmtlgF1aqwgUB5S/wY
+	q5B1LOzm7QLQNbt32RjxbOG7qtuk7MyzSXHlQXNshuG6/5/nsPeUalDdExLRRDPMi/QhwO9AsXR
+	i1yDw5eIA64necQrrbUN3rrsCtFhNVhpgxJ8WDR+L1CIpID/cEfLfPGmRwDT61QBuWqLmqnuM=
+X-Received: by 2002:a05:6000:310a:b0:45e:dd32:92fa with SMTP id ffacd0b85a97d-47fe81cb7ccmr577898f8f.12.1785776759310;
+        Mon, 03 Aug 2026 10:05:59 -0700 (PDT)
+Received: from metepc ([46.197.185.197])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd456a6cbsm30855921f8f.23.2026.08.03.10.05.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 10:05:58 -0700 (PDT)
+From: =?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>,
+	syzbot+d3bc2f2eb498a0175940@syzkaller.appspotmail.com
+Subject: [PATCH] xfrm: fix suspicious RCU usage in xfrm_nlmsg_multicast
+Date: Mon,  3 Aug 2026 20:05:25 +0300
+Message-ID: <20260803170525.1767734-1-omermetekaya0@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TUID: bf927u7YwvMn
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Replying to non-net sashiko
-https://sashiko.dev/#/patchset/20260731-macb-context-v6-0-49d5a1439d48%40bo=
-otlin.com
+xfrm_nlmsg_multicast() dereferences net->xfrm.nlsk via
+rcu_dereference() and is documented as requiring the RCU read
+lock, but 11 of its 12 call sites in this file do not hold it.
 
-> commit c95e9317ebb0315f714eea20911c711f5b1a1ce7
-> Author: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
->
-> net: macb: read ISR inside bp->lock critical section
->
-> This commit moves the read of the Interrupt Status Register (ISR)
-> inside the spinlock critical section in the macb_interrupt handler.
-> The intention is to prevent a race condition where the status might
-> change before the lock is acquired.
->
-> > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/eth=
-ernet/cadence/macb_main.c
-> > --- a/drivers/net/ethernet/cadence/macb_main.c
-> > +++ b/drivers/net/ethernet/cadence/macb_main.c
-> > @@ -2190,12 +2190,13 @@ static irqreturn_t macb_interrupt(int irq, void=
- *dev_id)
-> >  	struct net_device *netdev =3D bp->netdev;
-> >  	u32 status;
-> > =20
-> > +	spin_lock(&bp->lock);
->
-> [Severity: High]
-> Does this unconditional lock acquisition cause hardirq stalls for shared
-> interrupts?
->
-> If this device shares an IRQ line, macb_interrupt() is called for other
-> devices' interrupts and will grab bp->lock before checking the ISR regist=
-er.
->
-> If another CPU is executing macb_tx_error_task(), which holds bp->lock an=
-d
-> can stall for up to 14ms via macb_halt_tx(), wouldn't the CPU handling th=
-e
-> shared interrupt spin with hard IRQs disabled for the entire duration?
+Move the RCU read-side critical section inside
+xfrm_nlmsg_multicast() itself instead of adding it to each call
+site individually. This is safe: xfrm_get_translator() takes its
+own nested RCU read lock internally, and nlmsg_multicast() is
+called with GFP_ATOMIC, whose only conditional yield() in
+netlink_broadcast_filtered() is gated on blocking being allowed,
+which GFP_ATOMIC never permits.
 
-Yes, and we cannot do anything better (at least ATM).
- - If we readl(ISR) outside bp->lock, it might contain an outdated value
-   once we enter bp->lock.
- - To fix, we must readl(ISR) inside bp->lock, but then we risk stalling
-   in this above (niche) case.
+The redundant rcu_read_lock()/rcu_read_unlock() pair in
+xfrm_notify_userpolicy(), the one caller that already took the
+lock, is removed accordingly.
 
-To recap the edge case described: we must have had a tx error
-(MACB_TX_ERR_FLAGS) and have the HW refuse to halt (I don't know in
-which context it can occur & I've never seen that).
-
-Picking correctness > performance, we'll tolerate the latency risk.
-
-> [Severity: Critical]
-> Can this lead to a recursive spinlock deadlock when netconsole is active?
->
-> If a hardware error like HRESP occurs, macb_interrupt_misc() logs the err=
-or
-> using netdev_err(). When netconsole is enabled on this interface, the pri=
-ntk()
-> call synchronously invokes netpoll_send_skb_on_dev(), which recursively c=
-alls
-> macb_poll_controller().
->
-> Since macb_poll_controller() calls macb_interrupt() on the same CPU, and =
-the
-> outer macb_interrupt() execution already holds bp->lock, will this inner
-> attempt to acquire the same lock spin forever?
-
-Yes, this was reported on [13/16].
-https://lore.kernel.org/all/DKFFXBM6VKXZ.22PW13MLAXSF@bootlin.com/
-
-Solution: defer the netdev_err() out of the critical section.
-
+Reported-by: syzbot+d3bc2f2eb498a0175940@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d3bc2f2eb498a0175940
+Signed-off-by: Ömer Mete Kaya <omermetekaya0@gmail.com>
 ---
+This patch intentionally centralizes the RCU read-side critical
+section in xfrm_nlmsg_multicast() rather than adding
+rcu_read_lock()/rcu_read_unlock() to each of the 11 affected call
+sites, since every caller has the same requirement.
 
-Replying to net sashiko
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260731-macb-context-v=
-6-0-49d5a1439d48%40bootlin.com
+If keeping the locking at each call site better matches the
+subsystem's conventions, I'm happy to rework the patch accordingly.
 
-> commit d8496423c6f6f3cdfb35cfe0e924250ba7610fa1
-> Author: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
->
-> net: macb: read ISR inside bp->lock critical section
->
-> The macb IRQ handler used to read the queue ISR register before taking
-> bp->lock, and returned IRQ_NONE without touching the lock when the read
-> came back empty.  This patch moves the ISR read inside the bp->lock
-> critical section, so the lock is now acquired unconditionally at handler
-> entry.
->
-> No Link: tags are present in the commit header.
->
-> > net: macb: read ISR inside bp->lock critical section
-> >
-> > The IRQ handler reads ISR register into the `status` stack variable.
-> > If empty, it early returns. Else, it grabs bp->lock and iterates on
-> > the status bits.
-> >
-> > We risk a race on spinlock acquire; status might have changed.
-> > Move the readl(ISR) inside the bp->lock critical section.
-> >
-> > One risk remains with spurious interrupts that would, in addition to
-> > taking excessive CPU time, also create lock contention. How bad is it?
-> > Probably not too bad.
->
-> [Severity: Low]
-> [Finding: main-1-1]
-> [Sources: opus-5, old-prompts]
-> This isn't a bug, but could the changelog name the concrete symptom?
->
-> "We risk a race on spinlock acquire; status might have changed" does not
-> say what breaks.  The pre-patch handler already re-read ISR at the bottom
-> of its loop:
->
-> drivers/net/ethernet/cadence/macb_main.c:macb_interrupt() {
-> 	...
-> 		status =3D queue_readl(queue, ISR);
-> 	}
->
-> 	spin_unlock(&bp->lock);
-> 	...
-> }
->
-> so a stale first snapshot was tolerated by design.
->
-> The rest of the series does supply a rationale that the message leaves
-> out: macb_context_swap_start() sets bp->ctx_swap and does
-> queue_writel(IDR, -1) / queue_readl(ISR) / macb_queue_isr_clear(-1)
-> under spin_lock_irqsave(&bp->lock), and the handler's locked loop then
-> tests bp->ctx_swap.  Reading ISR under bp->lock is what keeps the status
-> snapshot consistent with that state.
+Reproduced and verified on a locally built upstream kernel
+(v7.2.0-rc5) under QEMU/KVM, using the syzbot-provided .config and
+C reproducer: the warning triggered on every run before this patch,
+and did not trigger over 30+ runs after. xfrm_notify_userpolicy()
+(exercised via "ip xfrm policy getdefault") was also verified to
+still work correctly after removing its now-redundant RCU lock pair.
 
-This paragraph about bp->ctx_swap is fuzzy to me and sounds wrong. It
-isn't ISR being read in bp->lock that saves us, it is bp->ctx_swap
-being read in bp->lock. And that is always done (introduced in this
-series).
+ net/xfrm/xfrm_user.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-> Would it be worth spelling that dependency out in the changelog, and
-> quantifying "Probably not too bad" rather than leaving it open?
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index d6db63304..1f683516f 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -1622,31 +1622,35 @@ static struct sk_buff *xfrm_state_netlink(struct sk_buff *in_skb,
+ }
+ 
+ /* A wrapper for nlmsg_multicast() checking that nlsk is still available.
+- * Must be called with RCU read lock.
++ * Takes the RCU read lock internally around the multicast.
+  */
+ static inline int xfrm_nlmsg_multicast(struct net *net, struct sk_buff *skb,
+-				       u32 pid, unsigned int group)
++				      u32 pid, unsigned int group)
+ {
+-	struct sock *nlsk = rcu_dereference(net->xfrm.nlsk);
++	struct sock *nlsk;
+ 	struct xfrm_translator *xtr;
++	int err;
+ 
++	rcu_read_lock();
++	nlsk = rcu_dereference(net->xfrm.nlsk);
+ 	if (!nlsk) {
++		rcu_read_unlock();
+ 		kfree_skb(skb);
+ 		return -EPIPE;
+ 	}
+-
+ 	xtr = xfrm_get_translator();
+ 	if (xtr) {
+-		int err = xtr->alloc_compat(skb, nlmsg_hdr(skb));
+-
++		err = xtr->alloc_compat(skb, nlmsg_hdr(skb));
+ 		xfrm_put_translator(xtr);
+ 		if (err) {
++			rcu_read_unlock();
+ 			kfree_skb(skb);
+ 			return err;
+ 		}
+ 	}
+-
+-	return nlmsg_multicast(nlsk, skb, pid, group, GFP_ATOMIC);
++	err = nlmsg_multicast(nlsk, skb, pid, group, GFP_ATOMIC);
++	rcu_read_unlock();
++	return err;
+ }
+ 
+ static inline unsigned int xfrm_spdinfo_msgsize(void)
+@@ -2536,9 +2540,7 @@ static int xfrm_notify_userpolicy(struct net *net)
+ 
+ 	nlmsg_end(skb, nlh);
+ 
+-	rcu_read_lock();
+ 	err = xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_POLICY);
+-	rcu_read_unlock();
+ 
+ 	return err;
+ }
+-- 
+2.55.0
 
-The goal is to avoid duplicated handling of the same ISR status. So all
-macb_interrupt() codepaths that have side-effects are at risk. Most
-should handle it fine in the normal case, but we are at risk:
-
- - Two napi_schedule_irqoff() are idempotent if fast enough.
-
- - Two schedule_work(tx_error_task) are idempotent if fast enough.
-
- - Double increment of rx_overruns.
-
- - Two queue_work(hresp_err_bh_work) are idempotent if fast enough.
-
- - Two pm_wakeup_event() is safe.
-
-I'll expand the commit message.
-
-> > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/eth=
-ernet/cadence/macb_main.c
-> > index 65d5ff8a5e230..27824e4688882 100644
-> > --- a/drivers/net/ethernet/cadence/macb_main.c
-> > +++ b/drivers/net/ethernet/cadence/macb_main.c
-> > @@ -2190,12 +2190,13 @@ static irqreturn_t macb_interrupt(int irq, void=
- *dev_id)
-> >  	struct net_device *netdev =3D bp->netdev;
-> >  	u32 status;
-> > =20
-> > -	status =3D queue_readl(queue, ISR);
-> > +	spin_lock(&bp->lock);
-> > =20
-> > -	if (unlikely(!status))
-> > +	status =3D queue_readl(queue, ISR);
-> > +	if (unlikely(!status)) {
-> > +		spin_unlock(&bp->lock);
-> >  		return IRQ_NONE;
-> > -
-> > -	spin_lock(&bp->lock);
-> > +	}
->
-> [Severity: High]
-> [Finding: main-1-0]
-> [Sources: opus-5, old-prompts]
-> Can this recursively acquire bp->lock when netconsole is in use?
->
-> macb_interrupt() now takes bp->lock before it knows whether the interrupt
-> belongs to this device, and printk() calls still run inside that critical
-> section.  macb_interrupt_misc() is called from within the locked loop and
-> does:
->
-> [...]
-
-This is the same report as above and as in [13/16].
-
- - Moved the netdev_err() out of the macb_interrupt() bp->lock.
-
- - Ignoring voluntarily the debug calls. If you are debugging the MACB
-   driver then you know what you are doing. And you probably don't want
-   to debug MACB using netconsole...
-
-> [Severity: Medium]
-> [Finding: main-5-5]
-> [Sources: opus-5, old-prompts]
-> Does this add hardirq latency for other devices on the shared line?
->
-> The interrupt is requested shared:
->
-> drivers/net/ethernet/cadence/macb_main.c:macb_probe() {
-> 	...
-> 		err =3D devm_request_irq(&pdev->dev, queue->irq, macb_interrupt,
-> 				       IRQF_SHARED, netdev->name, queue);
-> 	...
-> }
->
-> so macb_interrupt() also runs for interrupts owned by other devices on
-> the line and for spurious/level assertions.  Those cases used to complete
-> lock-free in two MMIO cycles; now they block on bp->lock first.
->
-> [...]
-
-Yes it can add latency. No we cannot do anything in this series. Here we
-just fix a correctness bug.
-
-Proper fixes would be:
-
- - Per-queue locking mechanism.
-
- - I expect the main (only?) reason for shared support is queues using
-   the same IRQ lane. In that case it would be more efficient to
-   acquire a single handler that handles all queues at once.
-
-   Instead of calling macb_interrupt() N times and locking N times, we'd
-   do it once and iterate inside.
-
-Both are completely unrelated to this series. Here, as said before, we
-do correctness > performance.
-
-Thanks,
-
---=20
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
