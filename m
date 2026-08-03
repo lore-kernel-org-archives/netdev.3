@@ -1,139 +1,144 @@
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF961DFFB
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 07:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785741763; cv=pass; b=bMSXRDu9pvbaC5SopUcEmJLbxaql1KmymflxX0HSDFT0+A5AvLZ6GZAu/rKk5ar6cRzNcG7i+Y1i32cl6p+ZXQc+gC3ShQV2lFTQlA68B6bpJbBW7Ei9gC/HU2bEETiV0muISOPVWYZLJHZa2v9iRd9vUjNcA5BpmKBuAy0WgLQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785741763; c=relaxed/simple;
-	bh=A8u5ujOdUQWybgJKMqWZVqAeP8c+v+cuw6pgGBdqcGA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Znrd47hFIP/e/aq8FdI9jj4m1Y6rnrAI+/mDACzNiQbAi8g7sdm7EPBjZXwn5tahu+u7fvvod8w+ulfCccqEakT2pFzWQwW/M4xogIMSvZu2w7QtphcddGmhvAzxRKC/2PSOFHQC174cD5y7W56bPir+XKmuSLowglehQ9ZbYtQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RtXkvoJL; arc=pass smtp.client-ip=209.85.217.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA722DA76A
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 07:33:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785742437; cv=none; b=sO7KnatPrsoVI7/Dt1C3uHhZZR56xqBlgiepu9rsI9w4tecITUwoMuoBA3tp5iM/6su85mnbsK7iqyczfMHVUwGNSiyLWMUPAlYcLbc1vxTV6yGsO6lunvsKGEjwYdYOp9gwgpwsvwvCQOXKLGKAIJLNKjvm9hw3Yn11fuC3GTQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785742437; c=relaxed/simple;
+	bh=/DmVr1I/uwji10ZFfwhluNchBTHGN9354X6a+AWJeRQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Xhot50BZhwkdd8lDQ48ivyBrOPIDb9n6x66U58sEObWdzJU7KbjPzh9xE2VJ2pEXnBhcHqLK8pTvve1SxYbR4HuWT3dl5h59UM9X3YoR/GqwZsWHkPuFhSdvBSSr4jlDQgPhExQ6vZHq5jqnAzW0qavEY+UYwRLGdyHqesYYm7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rmCscYgv; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RtXkvoJL"
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-74ad03fa605so1747483137.0
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 00:22:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785741761; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DnyH+qKgNrm7oPPtqIKnkDpKyOYR/nLUXVyyNRpwR2obvij9dg9Eo2BRnYvOoMp/cH
-         7c5sckKOxBYqCibS/zibwZWr0oR56EK/F9s/5RollEKScQQ3Akb1zoIpj9DE6sk429hd
-         iyJWv4r+QXJxEr/LYBFLm7CgQwXZqlRrB9YJUUgUOEtdUmNdz7ZLItkD5Fvsg3iyvaLs
-         bxZsQD2RW82Ro/uZALi1e/xPsSycMbws/ZAetxT8iQ4NjAD0nSPOtX21v4nkT8ThgNy3
-         73ddOO6KT45FXzrMojHd7v7rk6jc/6wIJqnrK1PcoHOmbXkpyBRXI00pIhe1cJ3YwdDr
-         GgUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=A8u5ujOdUQWybgJKMqWZVqAeP8c+v+cuw6pgGBdqcGA=;
-        fh=PogHKoGBZsVdjLarAhMBhW/0EKBpQiwtSz7Rw1EOyAY=;
-        b=kcnrk8JOo9PFZadyeqHHOrGag5WH1Z5lAqk/2etvHladbp/weq0tlbVZDYxWXp7LgD
-         +645TB3e5kcccAj/MUyMMzZmNkq9tGzwhmSk6UfcergVrYXkIK4E5Xv/rMkrBqpcMmy7
-         Zb5hqheRSHCMY8HCo4Ls/iNAb6LaQLFUN4hLLVME8yRCdDQVgbLWmU+vfJN1bah4w5DA
-         LL2WfvcfTEp3hh2jn/e5QglcXa/oi1a88/ne6uDEoYLI1kGYc37MZ+NizPmmJI5PomuC
-         GoASVY3aVnEEffzzF4gkwnxe+01mL7zN3+avJflure2bdizrHewHFtxI5UklHG8bZik5
-         30Qg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rmCscYgv"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cf452def93so28168585ad.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 00:33:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785741761; x=1786346561; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=A8u5ujOdUQWybgJKMqWZVqAeP8c+v+cuw6pgGBdqcGA=;
-        b=RtXkvoJL0DeE5PV5je0JNzfJDfOA9W8nPRnPTBW5ZZKqkWRNB/qu/TN5lcPLpDtSB+
-         +z3P/MB7YzoFfD/+97h5uCeroQ2rSfZs9LwnlKkcpUE4/JRmppCPXv51pWaJVwI3PEqG
-         GujbFlNtSXSvX2ryz9x2PPAmnLinh6YFzD9FZ1bZ/4Do/Abmal4TCYrO4NZ+aN7W7Pg5
-         ozJ460cJkeB+rYqc7lOlri6KfJmDNk1kR1AUpLSf9DRIRKXapqzAaprNm99Ns2txetmn
-         eAxrzHAS0DBDJVGcpsnrkEAAneJ+oXtgXDf/OhDvQ5SnGRZtfDPdF3npz3diHOBl/x7R
-         T43A==
+        d=gmail.com; s=20251104; t=1785742435; x=1786347235; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/DmVr1I/uwji10ZFfwhluNchBTHGN9354X6a+AWJeRQ=;
+        b=rmCscYgvDJeAXeIuP3zDYzn8E4Ra/yjaGenXiulNX58lw5etwE8S+dQ82quCJ9kxwz
+         yKZxHFGItzQKbTjGzvtsXV5B5mm0AdXfsquHUlt3TXnoWGNmA4NwXn8RmtR8AHswGVnT
+         cRgmNL6+xk6eXeVRO2YCr86sMw+loHIdFxo/JZM1Qk7zWH3lAkrLPxrBL+yckDKUrTu4
+         W1c5t7d3w+Va1lwj1DEPwrAtBFxAaAUPI4BAHlaYF/fmOeziLlHFPrxWL+Nr4+9vZRuQ
+         nEkBG271Xf0ZY/gmU+mZDMCfJSJBZ0cZqJWjog0CXIo958SJZauE368MtytrT+B+x/ic
+         mazA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785741761; x=1786346561;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=A8u5ujOdUQWybgJKMqWZVqAeP8c+v+cuw6pgGBdqcGA=;
-        b=OXPtcRSVGj8ErVjI9+ToSIXhvPSBpQAMF7rbajjYrbg9Lhxu11gmDFCUAsxyEDN6uv
-         rn07hPqel32P/ILbgOwQe3CZRLR33kuB86rxThHvNDZRP2n40a/+pD52hCkQffmz03gP
-         t/ao7P0yDSSasSkze7gxxo+YHVf2zNcVmX0PDwZKb7c2lUWStaL10tawr+SDu6qTWagN
-         dshYvrvqVNwt50b81p0JcjyzRdwrnD5kHFoPzVP55/xHzRPcDbz7qfGysJN4lCqVG7dj
-         Mrj8CD0vZW4eynImiU2w7z+enJfSkOPRiGUU9rn9HDqijhJVSyyEoOQ6njr8dro1FGwj
-         3teQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro6Fh8trSZt0yfB4RJYDm8Y8mDKnRG8UtiUFjbMetJP+TxbDvU9UG9wr/Lh3AenxiqnFwcAWlE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN3kO2Q3h4BbwPubaRmucvt9Xk1YbzBU7QrQh2mdQtzAayQXeV
-	r7MKpgJUAUnPq7dSSBwCj2iaA7ToO2SiZqpd2t/cjhYilgj4wCzfLLrROk/E1aa+VbCxuCS0ySy
-	MamucYxqdZVkuxpQ4jvjlrOGGj4e17Mo=
-X-Gm-Gg: AR+sD12Ohlu/pZ0Y/I7arGfsKI4M7G2CzGpBnxoZ/eKy11zcR+HVXn1tPxgnOnnRo5O
-	1UdZPe2kFYeKvXhHQ0XmfhHw6RBtij4pJvzxIpVZeURxq44mxknWa9LLuOmTuj1Dd/vACCUd++x
-	I1Ept/3t419yUy+0G/3JsE5rq1tfY22p60W+P9mTlB2MoT30wsQXKhLN/LCdmZGqkJEl8U/E8LA
-	Yn+rBqAFEf1hRN9/7MO7s66KmFiyz8aOR3yuZaWkPoEl0dBnVfBeg1qzSBkbAB0Q2rn+J8mw4fx
-	TtU6+HPOkSyzrf8l4c2YcGkOCV2yHe1zhu3dSu2+KzKYy4C1dOwgGmqYwf+1AsbDxhmySIaKQ/1
-	dB+2wkOs+HhOkCx8J+p5jw6ZtbYiyArluBMmILkEKSoF45N0Jl2ugdcG6VEdFTSdPo+qGVsidZ8
-	BgqmVoEPtS2ux+YZV1WceKCDvWxL4J3LrlvGe7
-X-Received: by 2002:a05:6102:441a:b0:738:1ef6:51b9 with SMTP id
- ada2fe7eead31-75b22260dffmr6459811137.5.1785741760783; Mon, 03 Aug 2026
- 00:22:40 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785742435; x=1786347235;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/DmVr1I/uwji10ZFfwhluNchBTHGN9354X6a+AWJeRQ=;
+        b=fo0F6EUfth18LFoJ2X8BMnVpGHIzf3FFguSsg3iL89S2ahcoLKmx2SIB/ax6rr3qoJ
+         TiRJBNZHnAuzrFz8sw1Cg+vQzQyXbe5dbUDDkoP9ItbTvvm5+wQlF7ggqyAn9qQmg+U4
+         DbezYZLwGrSWe8R/J63JFyQD5GkGSSnpPfwpK65EZX+yIwaF1ZqDW8MBQEJQ5gUYCnsd
+         VHHjnB4cuql7yfADBAkc0j7vm4f9oZ9SeXkZKo7jJEpa9SEifVjGrnc+aKgf7eFBoU0i
+         on1IwiWvrU6im4GHzBv0Is7/B9PmySmN/zLrOFhf36TY/vMpq9A56jJNp8ON8es+QAJh
+         ReVA==
+X-Forwarded-Encrypted: i=1; AHgh+RotfnSeCDQ06yD4WlMoNS3xhXKIu1QOdemkGnfN72UKM+6ZnMzKFyJdpmGjiLhkJ8f/94jzVD0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzrqu7rYMtXv8x2muZvNFnh9l6SAUTxEBxThqzmX9cJsHZ9ugVM
+	nKSmuS+Nv4Ox6VWVc/PF9OgEwYwWTvM47dGir4/M2aaxrjaEi+P7FOxD
+X-Gm-Gg: AR+sD11AF8oqD6/UjBni1XJhc/N/SKQeXQuTQTn80WYM1o/x0irpvlYNACkHd/O9Muf
+	yrkZVV1mMVjOY9fPc+kjJDGZezuoLI1BTmeSryCz5x3ffg2rlCMN0ExhMlNBmpUuD6+59yA5UHH
+	aIbiFqz9Dm5X1F4tCK+0IBMDaENogWGqwnOMaVvl7daEbx1kgjGyEWk3DkW7QrsufMPfZePWi3P
+	PcRcfqrYMY+qjw8iKIZGcv8FHun9L8UtJiBYrOOKVKQiOEB8s7vzCLJRXPWSuMaSGvot9unKFkr
+	xtSMPsO07Bj250ZFN8cRnW7IWHbTnG9fxVOR4HL9HAw4NL08LLQ9fQPnFWWeL23TGfplDfy9YY9
+	aTtrY4rFbRcJNf8vnQu6Bp13xIQrbxDiDZLhNpFORWGzyQ3c2SsHKFmNzd5YOYWt6ZgEwPkYgk6
+	KEWyqPD5VQNGktkPYUAbcRqKah/X2tf4ie2xBIf3MfvxIr1G47kgjosPHW6JrxNe8=
+X-Received: by 2002:a17:902:ea0c:b0:2cf:41ba:96c2 with SMTP id d9443c01a7336-2d05366b5dfmr76364185ad.12.1785742435408;
+        Mon, 03 Aug 2026 00:33:55 -0700 (PDT)
+Received: from Inspiron5409 ([138.199.21.246])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae5abbbsm33637465ad.22.2026.08.03.00.33.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 00:33:54 -0700 (PDT)
+From: Jianhui Xu <neuromoments@gmail.com>
+To: mail@birger-koblitz.de
+Cc: andrew+netdev@lunn.ch,
+	andrew@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	hkallweit1@gmail.com,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux@armlinux.org.uk,
+	netdev@vger.kernel.org,
+	neuromoments@gmail.com,
+	pabeni@redhat.com
+Subject: Re: [PATCH net-next v5 00/13] ax88179_178a: Add support for AX88179A-based chips
+Date: Mon,  3 Aug 2026 15:33:48 +0800
+Message-ID: <20260803073348.2190800-1-neuromoments@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260802-ax88179a-v5-0-dcb9fea4acd4@birger-koblitz.de>
+References: <20260802-ax88179a-v5-0-dcb9fea4acd4@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <20260802-submit-acx00-of-dynamic-v1-v1-21-0a53cd9e21cc@gmail.com> <c3171c59-bc83-4be5-beb4-e93bfb4d05a2@kernel.org>
-In-Reply-To: <c3171c59-bc83-4be5-beb4-e93bfb4d05a2@kernel.org>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Mon, 3 Aug 2026 01:22:29 -0600
-X-Gm-Features: AUfX_my5qRz2h8yblU9_NUKeJ1t5ekFC9VrjQ-ysDEg0WGg4G6m5XNTvE_CWbqw
-Message-ID: <CADvTj4qg8Yjwr=6KVO_J+r+tEC=6TDrU3o_8YG7vuEdDA0ZpTQ@mail.gmail.com>
-Subject: Re: [PATCH 21/21] arm64: defconfig: enable X-Powers ACx00 Ethernet support
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Andre Przywara <andre.przywara@arm.com>, 
-	Richard Genoud <richard.genoud@bootlin.com>, Maxime Ripard <mripard@kernel.org>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 3, 2026 at 1:00=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.org=
-> wrote:
->
-> On 03/08/2026 07:14, James Hilliard wrote:
-> > Build the H616 PWM clock provider, AC200 MFD, both variant-specific
->
-> Use full names. Is it Samsung H616 PWM clock controller?
+Hi Birger,
 
-It's the Allwinner H616 PWM.
+I tested v5 on the same ASIX AX88179B adapter (USB 0b95:1790,
+bcdDevice 0x0200, firmware 1.3.0.0).
 
->
-> > EPHY control drivers and the shared link-PHY driver as modules. Enable =
-the
-> > netdev LED trigger as a module so DT-described PHY LEDs can use hardwar=
-e
-> > offload.
->
-> Why? IOW, which upstream board needs all of these?
+The 13 patches applied to net-next commit
+df13c1df8147675470213ffff29dd5762fa321f5 and built successfully as
+7.2.0-rc3-ax88179b-v5. The focused W=1 builds for ax88179.o and
+ax88796b.o were clean.
 
-The Orange Pi Zero 2W for example would use this along with
-any other boards using this copackaged x-powers ephy.
+Unfortunately I reproduced an intermittent cold-activation failure, so I cannot
+add a Tested-by for v5. In four fresh direct-kernel QEMU starts with complete
+diagnostic capture, the old lease was released before starting DHCPDISCOVER. Two
+reported 1000baseT/Full carrier but timed out DHCP, while two succeeded
+normally. In both failed runs, RX remained at zero while TX increased. Reloading
+ax88179 and ax88796b recovered DHCP, RX, and bound traffic in both cases.
 
->
->
-> Best regards,
-> Krzysztof
+Before this follow-up campaign, in the earlier v5 validation session, I observed
+a separate 100baseT/Full failure: the adapter negotiated carrier after I changed
+the advertisement to 100baseT/Full-only, but ARP and bound traffic failed.
+I then tried to reproduce that result with three new advertise-0x008
+transitions. All three negotiated 100baseT/Full and passed bound gateway
+traffic; two also explicitly passed traffic to the test host. These repetitions
+included tests both with and without a preceding module reload. I could not
+reproduce the earlier 100-Mbit failure.
+
+That earlier v5 validation session also produced a separate guest ACPI S3
+failure: after resume, the adapter returned with 1000baseT/Full carrier, but RX
+remained frozen and traffic was broken. I then performed three new S3 cycles.
+All three logged QEMU's same emulated-XHCI resume reinitialization and USB
+reset, but returned working traffic with increasing RX counters immediately. The
+final repetition also recreated the earlier speed, EEE, and pause setting
+sequence and verified working gateway traffic immediately before suspend.
+I could not reproduce the earlier frozen-RX result. This remains a QEMU
+emulated-XHCI test, not a physical-XHCI suspend test.
+
+While reviewing the speed result, I noticed ax88179a_bulkin_config() selects its
+table using ax179_data->speed, while ax88179a_mac_link_up() receives the speed
+argument but I could not find an assignment to that private member. The new
+passing 100-Mbit tests do not support linking that source observation to the
+original one-off failure, and the same pattern appears in v4.
+
+EEE disable/restore, pause enable/restore, EEPROM read, module reload, and USB
+detach/reattach otherwise worked. I also tried Wake-on-LAN in QEMU. The driver
+accepted magic-packet wake, ethtool read back Wake-on: g, and USB wakeup was
+enabled before the guest entered S3. QEMU was configured with USB remote-wake
+suppression disabled, but the guest did not resume after directed-broadcast,
+limited-broadcast, and unicast magic packets. I consider that result
+inconclusive because I did not independently verify the physical USB
+remote-wakeup propagation through QEMU.
+
+Please let me know if you would like me to test a fix or collect a specific
+register trace.
+
+Thanks,
+Jianhui
