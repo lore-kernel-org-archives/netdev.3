@@ -1,157 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013005.outbound.protection.outlook.com [52.101.72.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150FD2FE582
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 02:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785723098; cv=none; b=q8y++LsQJP1wP6/JG83nd7vxN8XraIFg79Rib6HCIz9FkJ0bpbpWXRiEuk8R/boV/4MoIC/BRKmoD562ZUftMYgOwK1V1n8joCYCVZULaYOfok9p7aE+lhqZ+DjISdHUAULFCYRWEhULWqWRc8aq+8/mjt4q/Nh2wCZa6zIeocc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785723098; c=relaxed/simple;
-	bh=HS4iD/fD1tV6Qn5A6qqqxAsg1E3IyPSJ9FwGKNSxf6E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EjYavAHzVQvT596xbhbTB61CZOnSVyaplb52Wv3ShZ1bodrzLppmBvt73w3eTLYuYeVtJmrWx0sw1cL44xnMXtN10zOA6k2pPlti0uRW1WEb/FinOM6NxbeOMSNcwibE3/J/fGRAMIDeEy7KJxzFTHqc+DZOVOU0AD9F8SLRRd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/h3eM78; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CC921CFEF;
+	Mon,  3 Aug 2026 02:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785723223; cv=fail; b=cz684vetEJP+tIbnemOyEGdjd9HYXKZ+5xcODMHRzvT3LO0ptIROZkKslbgDa9EBqUmUJNqb2smoI427e/fV0xtOkJJE9lPE81aHV6fPujUyIq3HJOgP5DNFW+Id6gTAcCThA4m37IeeS5mulJXrMbCHlXOowkjb/f8LfkBWwGg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785723223; c=relaxed/simple;
+	bh=0mXfWxeZA0SeGy03LECaq+T7OTsEc9xkGtMRdGN0/zU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bPYXM5HXVKbyn7mGvL8I/UOwiTNG6ydyeZcxr6EaoSfH0A1T3Hi5kyJ3Rqgfa5Fa10IKeeGyqJZPvHHEE3MhESXpx8DVFw5IlvM/I03x7K/xri7cY86UkyRH7hacL8F93Unb51ti+B/12QlWys1SdcRB5kyJIM+gm/4nUZot8r8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=w0+u0TMr; arc=fail smtp.client-ip=52.101.72.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k/h3eM78"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AABCF1F01558
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 02:11:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785723096;
-	bh=mVWtx48ZEGjKyIAYEU5Bv10cYMlPf9YBanNbhypqrsk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=k/h3eM78C7JHR2nlZcbFpPfmYOAVfCETMifYT9eDNmVAps/QzFnRQDyKCvZF+XVXi
-	 ooF0t3LNDpxi7L0QW+0ibsSNOhz04RWMCe7QKIFKqMq54douQ31BIukAJM6Gc0C8ow
-	 hl3FP+uWXavZHIIBcMxhSYVVHHNiW3LZahWyksNTYEEmF4OBrmeOy04R26mh2WMLpu
-	 Bj3jWGDTmZ1lh6wCSnLzagi1h9VQY559eAOI08yqu4mA0wpSIASck7DpP/uGrP5wVH
-	 FP5WLa9ADVBmovdkkNwNWN9Bx00FygsDoRokz9Xj9nA0X9HOo6e0r9AkTMLZBlKWpl
-	 87lnZa8hbFBlg==
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-92e5b048375so132642785a.1
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 19:11:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoDIBQ6n25d1KpR1PrixcRuLR75DMoLwEgyiKgm3ugTiN40uDrTwZt3tkroIfyuDn1plZfl1vQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOSwe4Y3U65zNsKeODC49dbCAbjdG4pgZ24y36JJkMQ3X/DFfe
-	AchM46S2PeVH4be9oC8J4GvHIymTuDL6bHLCpd8ai5OnmStb4IGsKCsp2sRnkm2FBPkL9QyeIfu
-	kOPkFip8IQstgzQLfKYVIVRS/z9OuIFA=
-X-Received: by 2002:a05:620a:640c:b0:92e:f101:5dd6 with SMTP id
- af79cd13be357-934a07561abmr1689941085a.6.1785723095889; Sun, 02 Aug 2026
- 19:11:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="w0+u0TMr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VGDn11ZacMnQVaTmmst0zQjK2gSIs1bl5JEhNMsIBSaZJ1zx9vlB9CIbdkJPoLma42hKvuJm056QJgHBfjeFscNDdCd3EqrulZ5ewYhcNfwyDqhiujDLRzIwi5g8fHwnPGvs69Qjw7kmViZqNNrtZOdm6Dgj0Mg4hTNsT4lHNF2CFKRqLGKDDa2D7cUvtV9ZI3N5hzfN55jlb3rY8VIM1I+Z1B0WbkFJ4hLhODfgg1sBbs5PFnf10MEacqePYgd6+aiwyihB4htMIjFF1iJvDU+aOHqzUfR205Xq61T8DM2RazAbKlo6MEbLh2tVYRFM/IpnMTzStIAsHQ/yiKHutA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IkITDzHsl0cEh+kZyitidnyH5Xahy2BgolxPxjT1Bjs=;
+ b=NfjkgxIOL3mp2dWFGnxLLrLK32yplkH2DdNx7iIUPNWIU7cKYZ/HtSNIChhj3u+4GJ5mkAe8EY7i2t28LB/M3Y/JqfCd5kPZw7eOlXkA+Jrta2iXrRfI6WntBOjTFH985JCH49RhexvmN2JxzMjlCtnBhc9luY8N7gL5kmM1+8GHJRYO8l75vwWNhPfeOGpt9jw+j8QtS6teL4Zp3m70roKFbYxCu4jzdsyB3yNJOZrpe6mn3VuaQYK9kMA+kQEkuzikYYFUmWcJLOsRMG4vZGCBInf6vEyGt2Qrf4ljUrc4TXgIV3f1nW/yEuV6L+kx02PhSFIgdrflXyiGqqyi6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IkITDzHsl0cEh+kZyitidnyH5Xahy2BgolxPxjT1Bjs=;
+ b=w0+u0TMrxKBl75pCHFm2biWYd2Oo+Oz64xLZ1mGlyt8raNMv/giIajcLg5qiKZe314S/b917JhrFOVAqy2V2t8kHTEM5xmFgu0gVuoZtjprGZwdTMTmOG3Bh8AYflatXCZhKCrt1JA6mH49zv84MMUHB9g7Yc/tXMZWgpxPO5iJ04KfDjlK3qvc79rxOyHmEkV8pkIYOh/gKhVVCPAiZ7mmQmOMB6u5Qudx44/eo/6h5GB61J63dZAbDySWFMvOzkX45PBOQZtT36CeQ8CLhUHe90C8u1RF1S1NmaAnXDeHvxpHs5mnv7h0Qmniwg14FNNmEoCMcCKuD8TFo4N+JDQ==
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
+ PA1P189MB3652.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:504::20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.13; Mon, 3 Aug 2026 02:13:39 +0000
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0292.012; Mon, 3 Aug 2026
+ 02:13:39 +0000
+From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+To: Jun Yang <juny24602@gmail.com>
+CC: Jun Yang <junvyyang@tencent.com>, "stable@kernel.org" <stable@kernel.org>,
+	TencentOS Corvus AI <corvus@tencent.com>, Jon Maloy <jmaloy@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"tipc-discussion@lists.sourceforge.net"
+	<tipc-discussion@lists.sourceforge.net>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net] tipc: purge cong_links under the socket lock in
+ tipc_release()
+Thread-Topic: [PATCH net] tipc: purge cong_links under the socket lock in
+ tipc_release()
+Thread-Index: AQHdINoXIkrjWyxEHEiOILfIgHLLNraLmSPQ
+Date: Mon, 3 Aug 2026 02:13:39 +0000
+Message-ID:
+ <GV1P189MB1988C7E0BAE5936514CC689FC6D52@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+References: <20260731101926.31514-1-juny24602@gmail.com>
+In-Reply-To: <20260731101926.31514-1-juny24602@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=est.tech;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV1P189MB1988:EE_|PA1P189MB3652:EE_
+x-ms-office365-filtering-correlation-id: 61bc25fb-b747-4ec4-5068-08def104d572
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|22082099003|18002099003|11063799006|38070700021|10067099003|56012099006;
+x-microsoft-antispam-message-info:
+ v1b4KXeL3OfjQLrKdc7RKus1vSBuqjAZ1RQARlkOOOFT+8bj8yiJvY+FK7usL4QpTtT+mWm9iIHWcRMdbeg0SvbHU8YgS2ecJ7q1t7WWymnUV8ifH+mCjDnUIfvcxGl2RVs5LAQYtXcTxZx757g+YH0LWvXFy2jdtKmcMqhGfGfqGgDKYcfM6Bq1dZPEt8dI3SP5CrhYjr0hGR1b34hpGY9ncttlpEBv6Vnog5KNBkBhDKyuAOYlCUQLJ8RI0VrZ9KgMO1PvVsNQeNC5OYioNcccM5Q4Gp93gvJz1rGBQwapZ+P3NCtTehz9qGpnWNWP3LVogbE3kj7Yd6lNq048Jw/ibO81QwqxoGqecf0wDb7DTrUO5imrSjQRnRpveVVgT4nEC3ocBnunA/3MnSDKhy2OH05QxSjy+a/CUdX/8ITLcoMREfGSXwxed4blGkglDcqLXLpScOx6jgolaCX243U8ES5uTpDjV/jpBTyvdP18LSBhnBvqR3hzQjmBDR2CLVe+yVemVMxVYwJc6hLk8NPo9NMV8IfrvLjL/PUd0xCIzl7RW072RvFwb2soRetGTIMHEDmZYrXcPhpFiGZri/QhKRhzhibZurqIpdKB5WS0YgwPvNgZC48qFjmnaa7PSJjRukh/hItc7/FdgefmPCgtpB2qADhzBrpv5omthpfy1ES1ptVFD9gIMwBSCsQiebkkn61GIadpidJNjOF33i1Crr7XDOhhXP3cUV2jPCY=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(22082099003)(18002099003)(11063799006)(38070700021)(10067099003)(56012099006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?3pkZ9aG3x3q2jJUC2kd6jRCuk7/Crjp5MAbaH3HQ/cOhdVdRGaT+9J4RCRfC?=
+ =?us-ascii?Q?Jb2lGtqaUv3f7tKvP8VOg1Ho0nec3+BMo3TiwZZXVes6r1K5z9RFKtSTVNXI?=
+ =?us-ascii?Q?ptz2kQ15xQCJTmABzCEJPNrM5dkyNhzQow36Oa0GQo20NWu/YEojg7a5CnjK?=
+ =?us-ascii?Q?U2+/je8iful2/RH48vPcAzsYTmV7ytrwivzT8hYSfGYd+woCDif8AkVSlhZY?=
+ =?us-ascii?Q?d+t/SYiirxSP89KIksFSkppGKu6gE/X7WqRjFOj6bf158BCZw2auK+ewljpG?=
+ =?us-ascii?Q?WIacv1FsORyfaFVCCerc34yaPMsmb1VlUCAFOf0j8PMPG8o6CvEyJWIqa+55?=
+ =?us-ascii?Q?jgzRFdic2tT0JYLFKusx0B8yjAag4xfu9tbPVpKwM2JDPaWKAnPJVpGa988v?=
+ =?us-ascii?Q?cDvYQQ9mrCE5UcPtbyK8OQhJl8jbe+cGPkSa2wcp34TMwwt47huBnzN0gSGJ?=
+ =?us-ascii?Q?cdnQiuwqjgt71+2xQEGW8W4I2otznmM/35G4So8TcTFOMPBisKl7YHJfqtu6?=
+ =?us-ascii?Q?t3Uwn5fXX/6MUi3kaktBO5QSnaqzIMWS3fSsb4IWWSI6Untf6B8JUfK0tALR?=
+ =?us-ascii?Q?LeQHP7v6J1mmT6ob8lSxNFTsmvOk0DmEGUgSci2rY+ubBeTcDL/sodz4APpy?=
+ =?us-ascii?Q?0BtJjebzzr25AUOsDfPUP4b24Rl6pAfbV4aKvTV+9shxzEGxvUVJUe5c0ir1?=
+ =?us-ascii?Q?eK11D7W9Ndwfs6aJi2rAw2YuH6tGefi58aMJ8G85qAhQFhOzhai8htizfTj6?=
+ =?us-ascii?Q?B4lXIaANT/oB4fqS9O6URuGJLYpuCXxJp8AFDY4m+UwB692oz2yR6a8kKPs8?=
+ =?us-ascii?Q?J/dy2Ad1PsxhJusnYOD3cpuTmOzw8P4VK3kXA3KgHmwOCf70lDAAA2fzIV/c?=
+ =?us-ascii?Q?b4LeqgGfjcdueCu5CgOA7kDI/YFZaUvoJ2TuLNDPxCd0uJic9ESY9auESUAw?=
+ =?us-ascii?Q?1afh+5b1dyweIzpJ5KG5gIoieYmEBXTVJOGm1Kxd6SQGWRKU9e958FuFvIqr?=
+ =?us-ascii?Q?wQRtgGsoBuW9uxc6rC6dpv+r/q4mqgAeyjwPeEr1jvNyMp6LSM6HwXMsi4Dr?=
+ =?us-ascii?Q?BZpLO+m1DPG1zCEyWHkhYzYFTwuilek+nDaSMjWkj2kvRhRfocgthQs0f5CT?=
+ =?us-ascii?Q?kUGuDcuTZp7HfL0InQ1L/MsfN1hQC0rCNp0keMClPHIzm/LwieHRckfU7MpC?=
+ =?us-ascii?Q?Wh+Zdd+z2s4YmVedVK3XU29ravtyL87j3trFyx66mqEP8UuEDf9RNmhbf/9+?=
+ =?us-ascii?Q?L7Lcv3TkvXbH4lI0b217nrCl+q1leIZ6cNQQpnhWTQ1CZWw7dp3DFATo/vPx?=
+ =?us-ascii?Q?+c4ns6D/ElxO5uizv1zZN4LO8dmlb4HK5AMIDJ8R0o1JOXKkW/GmTKCv0132?=
+ =?us-ascii?Q?pdyvWMQlZAjaJ7EAk5IZ2z/94DFag5h5jlS78VTYaX+7Llj2DQZDo2XY4H17?=
+ =?us-ascii?Q?Xqnrff3DjMTH7NMaxAHDb4z5eO8Y9TJwYFtUFEjZ++rnKMivYmkaEBjdBe+K?=
+ =?us-ascii?Q?1r0OIRdgejy2qjYH4PpmnqoV40hlqNhIvRojVO5mXhSfLdbgo4zxRZBN5TWh?=
+ =?us-ascii?Q?TbM18nc+cl2d2SzMyfK3TOouM+csnzzGhhIprRkIxMbg4Wlmke4IlmHgVu77?=
+ =?us-ascii?Q?kFqpbkXrjwo+iaFfUxJUPiYIgcdGLJCc+ltTXfz6SlnKtLHEIbI7WDsBpHVB?=
+ =?us-ascii?Q?+pMya3NbX0M3Pn/0kWl40MbfRT2VUnga9i5UlpzFV3bnEpY2LEqY2D/HufG/?=
+ =?us-ascii?Q?V+JHNb65hg=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260802215459.2769283-1-surenb@google.com>
-In-Reply-To: <20260802215459.2769283-1-surenb@google.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 3 Aug 2026 10:11:24 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wXGf90BMoJp3_z8G4fMTAgED88RXvbp6C4Gf+iy_2nvg@mail.gmail.com>
-X-Gm-Features: AUfX_mwIvcG96g06HvvXzFCI6z0cYnWGHyN0Cv1pFy9INXjHgI-8m_UrS99NoUg
-Message-ID: <CAGsJ_4wXGf90BMoJp3_z8G4fMTAgED88RXvbp6C4Gf+iy_2nvg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] mm: Unconditional per-VMA locks and cleanups
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
-	Liam.Howlett@oracle.com, ljs@kernel.org, david@redhat.com, 
-	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
-	jannh@google.com, aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
-	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 61bc25fb-b747-4ec4-5068-08def104d572
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Aug 2026 02:13:39.5894
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: isJDnwdiAJFs81sGHqT9PY3sAmu4HFvzTxuceCh5qQgxOcfncQHBHxGWddviDxMQdfzlqBZxolNoUCWaMAQ6QiBSYXSvPTw5J7mUhTRvF7w=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1P189MB3652
 
-On Mon, Aug 3, 2026 at 5:58=E2=80=AFAM Suren Baghdasaryan <surenb@google.co=
-m> wrote:
+>Subject: [PATCH net] tipc: purge cong_links under the socket lock in
+>tipc_release()
 >
-> v2 version of this patchset [1] was written by Dave Hansen and per his
-> request, I'm taking over this series.
+>From: Jun Yang <junvyyang@tencent.com>
 >
-> tl;dr: Make per-VMA locks available in all configs. Simplify some
-> of the per-VMA lock users now that they can rely on them being
-> always available.
+>tipc_release() frees the elements of tsk->cong_links after release_sock(),=
+ i.e.
+>with no lock held:
 >
-> Binder and networking folks: Your code is the target of the cleanups.
-> I'm cc'ing you now on v2 because there's emerging consensus on the mm
-> side that the approach here is sane. I'm not quite sure how this pile
-> would get merged, but ack/review tags would be appreciated if this
-> looks good to you.
+>	tipc_sk_remove(tsk);
+>	sock_orphan(sk);
+>	release_sock(sk);
+>	tipc_dest_list_purge(&tsk->cong_links);	/* no lock */
+>	tsk->cong_link_cnt =3D 0;
 >
-> Longer version:
+>Every other accessor of that list runs under the socket lock, including th=
+e
+>SOCK_WAKEUP handler in tipc_sk_proto_rcv(), which does tipc_dest_del(&tsk-
+>>cong_links, ...) while holding only sk->sk_lock.slock via tipc_sk_rcv()'s
+>spin_trylock_bh().  Because the purge never acquires that spinlock, it pro=
+vides
+>no mutual exclusion against the wakeup path.
 >
-> When working on some x86 shadow stack code, it was a real pain to
-> avoid causing recursive locking problems with mmap_lock. One way
-> to avoid those was to avoid mmap_lock and use per-VMA locks instead.
-> They are great, but they are not available in all configs which
-> makes them unusable in generic code, or if you want to completely
-> avoid mmap_lock.
+>A SOCK_WAKEUP delivered for this port can therefore run concurrently with
+>the purge: tipc_sk_rcv() looks the socket up and takes a reference before
+>tipc_sk_remove() unhashes it, is then delayed past release_sock() so
+>sock_owned_by_user() is false, its spin_trylock_bh() succeeds, and it list=
+_del()s
+>and kfree()s a struct tipc_dest that the closing task is walking at the sa=
+me time.
+>Both paths free entries of the same list.
 >
-> Make per-VMA locks available in all configs. Right now, they are
-> only available on select architectures when SMP and MMU are enabled.
-> But all of the primitives that per-VMA locks are built on (RCU, maple
-> trees, refcounts) work just fine without SMP or MMU.
+>__tipc_shutdown() does not close this window: it waits on !tsk->cong_link_=
+cnt
+>but ignores the return value of tipc_wait_for_cond(), which returns early =
+on
+>timeout, on a pending signal, or on sk_err, so the close can proceed with
+>cong_links still populated.
 >
-> The only real downside is that making VMAs a wee bit bigger on !MMU
-> and !SMP builds.
->
-> The upside is much cleaner code, lower complexity and less #ifdeffery.
->
-> Clean up a binder VMA locking site now that it can rely on per-VMA
-> locks.
->
-> Building on top of universally-available per-VMA locks, introduce a
-> new helper. Since the new API does not require callers to have a
-> fallback to mmap_lock, it's much easier to use. Callers can
-> potentially replace this very common kernel idiom:
->
->         mmap_read_lock(mm);
->         vma =3D vma_lookup()
->         // fiddle with vma
->         mmap_read_unlock(mm);
->
-> with:
->
->         vma =3D vma_start_read_unlocked(mm, address);
->         // fiddle with vma
->         vma_end_read(vma);
->
-> Which avoids mmap_lock entirely in the fast path.
->
-> Use that new API for another binder site and one in the TCP code.
+>  BUG: KASAN: slab-use-after-free in
+>__list_del_entry_valid_or_report+0x1ce/0x280
+>  Read of size 8 at addr ffff888105ddda88 by task poc_cong_race/7856
+>   __list_del_entry_valid_or_report+0x1ce/0x280
+>   tipc_dest_list_purge+0xad/0x240
+>   tipc_release+0x9a5/0x1340
+>  Allocated by task 7856:
+>   tipc_dest_push+0x11c/0x2f0
+>   __tipc_sendmsg+0x1443/0x17a0
+>  Freed by task 7851:
+>   tipc_dest_del+0x1ce/0x280
+>   tipc_sk_filter_rcv+0x1da7/0x2e70
+>   tipc_sk_rcv+0xdaa/0x1a80
+>   tipc_udp_recv+0x42a/0x7e0
 
-Nice, Suren and Dave.
+Please update the commit message with decoded stack trace (using linux/scri=
+pts/decode_stacktrace.sh).
 
-I wonder if we could use the same approach in the page fault
-path. Instead of falling back to mmap_lock when
-lock_vma_under_rcu() fails the first time, could we wait for the
-writer to finish and then retry acquiring the VMA lock?
-For example:
+>  Oops: general protection fault ... Kernel panic - not syncing: Fatal exc=
+eption
+>
+>Move the purge above release_sock() so it runs under the socket lock, the
+>same discipline commit 844cf763fba6 ("tipc: make macro tipc_wait_for_cond(=
+)
+>smp safe") established for the wait condition.  A concurrent tipc_sk_rcv()=
+ then
+>either backlogs the wakeup because the socket is owned, or processes it
+>against an already empty list, and no new delivery can arrive because
+>tipc_sk_remove() has already unhashed the socket.
+>
+>Fixes: 365ad353c256 ("tipc: reduce risk of user starvation during link
+>congestion")
+>Cc: stable@kernel.org
+>Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+>Signed-off-by: Jun Yang <junvyyang@tencent.com>
+>---
+> net/tipc/socket.c | 10 ++++++++--
+> 1 file changed, 8 insertions(+), 2 deletions(-)
+>
+>diff --git a/net/tipc/socket.c b/net/tipc/socket.c index
+>d5d70eb230b5..9b45b16d0a31 100644
+>--- a/net/tipc/socket.c
+>+++ b/net/tipc/socket.c
+>@@ -647,11 +647,17 @@ static int tipc_release(struct socket *sock)
+> 	sk_stop_timer(sk, &sk->sk_timer);
+> 	tipc_sk_remove(tsk);
+>
+>+	/* Purge under the socket lock: a straggler SOCK_WAKEUP that looked
+>the
+>+	 * socket up before tipc_sk_remove() can still reach tipc_dest_del() on
+>+	 * this list, and it only holds the socket spinlock.  Purging after
+>+	 * release_sock() would race that list_del()/kfree().
+>+	 */
+>+	tipc_dest_list_purge(&tsk->cong_links);
+>+	tsk->cong_link_cnt =3D 0;
+>+
+> 	sock_orphan(sk);
+> 	/* Reject any messages that accumulated in backlog queue */
+> 	release_sock(sk);
+>-	tipc_dest_list_purge(&tsk->cong_links);
+>-	tsk->cong_link_cnt =3D 0;
+> 	call_rcu(&tsk->rcu, tipc_sk_callback);
+> 	sock->sk =3D NULL;
+>
+>--
+>2.55.0
+>
 
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 85e23388f9bb..684f38cc4e74 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -677,7 +677,7 @@ static int __kprobes do_page_fault(unsigned long
-far, unsigned long esr,
-        if (!(mm_flags & FAULT_FLAG_USER))
-                goto lock_mmap;
-
--       vma =3D lock_vma_under_rcu(mm, addr);
-+       vma =3D vma_start_read_unlocked(mm, addr);
-        if (!vma)
-                goto lock_mmap;
-
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 45b99c3b1442..a3a4c4741e30 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -1331,7 +1331,7 @@ void do_user_addr_fault(struct pt_regs *regs,
-        if (!(flags & FAULT_FLAG_USER))
-                goto lock_mmap;
-
--       vma =3D lock_vma_under_rcu(mm, address);
-+       vma =3D vma_start_read_unlocked(mm, address);
-        if (!vma)
-                goto lock_mmap;
-
-Best Regards
-Barry
