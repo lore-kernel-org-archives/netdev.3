@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA83D24E4C3;
-	Mon,  3 Aug 2026 08:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7B1489863;
+	Mon,  3 Aug 2026 08:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785745245; cv=none; b=tPya2kpQc/pviRjIly5wPzlQiK+bwYVFLlMOsKo9BsK0GbkTi+kk+OYA/RmdiS67XUN6dIpv8M1gSMochBLbca6h8s2o8Ke8mbuBH93arwANk5PVCE0R2zTR0wJRphxtwQsNgkz+7egmX4mEWiUEumRYQk0S/aFuTGMI/FVfseo=
+	t=1785745310; cv=none; b=OrjAFwJm7d9m0tZdEpfPIW7EzS16iDiQ1Uwq8mnxrNjnf59iPB9Vc3TcyG49iK+rJMuBiCxRx0nN8V7How8p4IZ/gKE/xHhSp9IoFUveMVxK0GUUQDhjtixZ40eaKP8QNsvGOFw7dTGG+UR4ASFTybSIBqZBU0FcswaDZ+d6oi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785745245; c=relaxed/simple;
-	bh=x8sTt/zpr6WRtmjXKttmcVUnT9K1ZRHZhEP2vFb3kN8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t1qxcPAoxoI8zhmGh1LKcTZwHOtT2T0z7Dpmv5kCuY+L+PIY/5Op7sN6zd7+zkY6E6UKrswWUqsOVc2zMm9uH9xABUkgB/k9eC7tHpV0wjPbX05lKo8eW7Xqgys4ZvAlox4LapPChollMbzuS3GPYZ+lSZltAIY26YLujvChmwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/BStKSG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785745310; c=relaxed/simple;
+	bh=X9MwxYTwdCgXSNS4gRckHGyDyVA2TZTvHpPNebUxtKQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=kqqtPZW0Uni14eG3M8R9sQveYRWGV3vTMw67MziuoilM+JnTdScCNza6oDk0LGAjttTNbz1o5h8/VtvU1yTAFrkRUW5kIk1Ri5I2xsNuxcyA3ic1gHHe07rA8BtBLfYd0W34xUp40/ieP6RBwhIUd9a1jIVItOeZc+b9Qc/1r78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IucJlZnT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/BStKSG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDA81F000E9;
-	Mon,  3 Aug 2026 08:20:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IucJlZnT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532B21F000E9;
+	Mon,  3 Aug 2026 08:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785745244;
-	bh=oL77ikjGFVW7QH8ozMC74CWfxuPdNOXGLUeFKsMycB8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=V/BStKSGhLspBCfJaAyL/O1UrXPMY+cIrEN87pQ4cFZRFUCkbLwpEucGYZibMqVUt
-	 rKKPxVnP+n5lL5+QJBLYnF+MpSPAAGezZoKLMJvhMp4OLpqwLpztg/FQYzZ4H8GwMh
-	 GOALuLZvqqoAMl7nXGjm5sameAlhvDcgs/wH+OjxV3QiFTrTF/9kYsvLGDtkOpU+6c
-	 SCg+kUQuMhTZJUEp1v2kzIWMJWknuU8nUcZQQeYCNN9B6D2EyCrsQJ5sESITvN3QG8
-	 eJNr0lxm1BPCHAzj9aB1hycB4I//WCPwH3r6mAvQcxxUppMfIXhy2msFbxRPgwV/n7
-	 kqW0dHeBirljA==
-Message-ID: <e198e8fa-6c5e-4c8d-a4de-d8bb25aab0bd@kernel.org>
-Date: Mon, 3 Aug 2026 10:20:30 +0200
+	s=k20260515; t=1785745309;
+	bh=e5uwIV2Y4sYN43Sv15YtOuNlkl0578hRCHETri1JqXY=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=IucJlZnTzfbxH/e0Qk+Z9/AYn5jhp3/hetueeRO6zyjqCEHUwvFT/5690oo0ate+w
+	 rOVwoHcXPW2yYowgVEy2+IdW/gr2lYlQd1s+E4CHMpe3bUNFXR7S0tt9xmOyW6kFWZ
+	 AUSgoUbfrZeyU7/K+cPQHKATQQVNyvDvn1GoMo6f3c9sk+OR4CzLhj9yoMGiKrZXS5
+	 h4sOOrtlaucdEFiTddVsXNLh4cgMiSCpNFlbwM9lq3T5KFzsGbNdHpJcm4GujGtx1U
+	 IZ1ShWsfIfYP3J2fVee9eQuRpyXsEkRJffX8z7wpJ1DGbaNxw8TcYMUBF7sJ3kcZYm
+	 ngmdJrLYaEbTQ==
+Message-ID: <cd177647-827c-481a-9ac6-5f5a1882f14e@kernel.org>
+Date: Mon, 3 Aug 2026 10:21:35 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -36,6 +36,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 08/21] dt-bindings: mfd: x-powers: add AC200
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: James Hilliard <james.hilliard1@gmail.com>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -62,8 +64,7 @@ References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
  <20260802-submit-acx00-of-dynamic-v1-v1-8-0a53cd9e21cc@gmail.com>
  <f2cc3c90-060f-40c1-a55e-e2ed91e65487@kernel.org>
  <CADvTj4q7HnOYJZE-M070-1npEdne__Ct5D9FeUNVVXa8Bsm7qQ@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
+ <e198e8fa-6c5e-4c8d-a4de-d8bb25aab0bd@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -107,108 +108,37 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <CADvTj4q7HnOYJZE-M070-1npEdne__Ct5D9FeUNVVXa8Bsm7qQ@mail.gmail.com>
+In-Reply-To: <e198e8fa-6c5e-4c8d-a4de-d8bb25aab0bd@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 03/08/2026 09:54, James Hilliard wrote:
-> On Mon, Aug 3, 2026 at 1:07 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>
->> On 03/08/2026 07:14, James Hilliard wrote:
->>> The AC200 is an I2C-controlled mixed-signal companion IC containing
->>> audio, video, RTC and Fast Ethernet PHY functions.
->>
->> This fails when applied, because you did not explain the
->> dependencies/merging of this patchset.
->>
->> This is THE MOST important information of cover letter. The first thing
->> to explain.
-> 
-> I did mention in the cover letter that the pwm series is a dependency:
-> https://lore.kernel.org/all/20260703152215.192859-1-richard.genoud@bootlin.com/
-
-Apply this patch and test.
-
-> 
-> With the pwm series first this should apply on top of master. Should
-> I just mention that it applies on master or should I reference a specific
-> commit hash or something?
-> 
+On 03/08/2026 10:20, Krzysztof Kozlowski wrote:
+>>>> --- /dev/null
+>>>> +++ b/include/dt-bindings/mfd/x-powers,ac200.h
+>>>> @@ -0,0 +1,13 @@
+>>>> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
+>>>> +/*
+>>>> + * Interrupt numbers of the X-Powers AC200 interrupt controller.
+>>>> + */
+>>>> +
+>>>> +#ifndef _DT_BINDINGS_MFD_X_POWERS_AC200_H
+>>>> +#define _DT_BINDINGS_MFD_X_POWERS_AC200_H
+>>>> +
+>>>> +#define AC200_IRQ_TVE                        0
+>>>> +#define AC200_IRQ_EPHY                       1
+>>>> +#define AC200_IRQ_RTC                        2
 >>>
->>> Describe the parent device, its input clock, required function supplies,
->>> the optional SID bandgap calibration cell used by the vendor initialization
->>> sequence, and its optional Ethernet PHY control child. Document the 24 and
->>> 27 MHz rates encoded by the public EPHY clock selector.
->>>
+>>> Hardware constants are not really bindings, even though you use them in
+>>> the driver.
 >>
->> ...
->>
->>> +required:
->>> +  - compatible
->>> +  - reg
->>> +  - clocks
->>> +  - ac-ldoin-supply
->>> +  - ephy-vcc-supply
->>> +  - rtc-vcc-supply
->>> +  - tv-vcc-supply
->>> +
->>> +dependencies:
->>> +  interrupts: [ interrupt-controller ]
->>> +  interrupt-controller: [ '#interrupt-cells', interrupts ]
->>> +  '#interrupt-cells': [ interrupt-controller ]
->>> +  nvmem-cells: [ nvmem-cell-names ]
->>> +  nvmem-cell-names: [ nvmem-cells ]
->>
->> Why do you need all these dependencies? What are you trying to express?
+>> Should I do something different for this?
 > 
-> Looks like we probably can get rid of all except these:
-> interrupt-controller: [ interrupts ]
-> nvmem-cells: [ nvmem-cell-names ]
+> I would just drop the defines and the header, because these are fixed
+> hardware numbers.
 > 
-> I was just trying to express the MFD controller dependencies.
-> 
->>> +
->>> +additionalProperties: false
->>> +
->>> +examples:
->>> +  - |
->>> +    #include <dt-bindings/interrupt-controller/irq.h>
->>> +
->>> +    i2c {
->>> +        #address-cells = <1>;
->>> +        #size-cells = <0>;
->>> +
->>> +        mixed-signal@10 {
->>
->> ...
->>
->>> +...
->>> diff --git a/include/dt-bindings/mfd/x-powers,ac200.h b/include/dt-bindings/mfd/x-powers,ac200.h
->>> new file mode 100644
->>> index 000000000000..cc59e2ab4912
->>> --- /dev/null
->>> +++ b/include/dt-bindings/mfd/x-powers,ac200.h
->>> @@ -0,0 +1,13 @@
->>> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
->>> +/*
->>> + * Interrupt numbers of the X-Powers AC200 interrupt controller.
->>> + */
->>> +
->>> +#ifndef _DT_BINDINGS_MFD_X_POWERS_AC200_H
->>> +#define _DT_BINDINGS_MFD_X_POWERS_AC200_H
->>> +
->>> +#define AC200_IRQ_TVE                        0
->>> +#define AC200_IRQ_EPHY                       1
->>> +#define AC200_IRQ_RTC                        2
->>
->> Hardware constants are not really bindings, even though you use them in
->> the driver.
-> 
-> Should I do something different for this?
 
-I would just drop the defines and the header, because these are fixed
-hardware numbers.
-
+Hm, unless they are not and you added abstract ID numbers for both DTS
+and drivers? Then this would be fine.
 
 Best regards,
 Krzysztof
