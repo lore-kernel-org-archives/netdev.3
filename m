@@ -1,128 +1,152 @@
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E352E31F98E
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 03:04:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D7E332628
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 03:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785726242; cv=none; b=VkSM4CAtyFNGNTT8MLjZ4244SW3//xsZ5+KzA71eDbg/FeMN86ZQyfxb+pqBj5hxGgz5h4p5fMN8w/relr2CqmjJaxXzdQBJ1bB+tJDynvL3Fi2Of8zY46mhm9ZMQheH7IuelHVcqV3JmDGZD1Wn1xAEUiP2BJ0G1j7ZbdUz7os=
+	t=1785726409; cv=none; b=NG1QnJTh/rrrtmP48/TMPptZkEZ8AbIbia/ECZq5fcfF6ohCeCcKDF0g1W4oSl0BUgjguxivKRLJVFbIs526lQ+WG/iCKs9hbcz3p7cpCEDDeTpcyYaTqR2A+GIWfEhn/wIH17Bd7du5RjLuhSHCCidJcQBXg0kIadmkFa2qsMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785726242; c=relaxed/simple;
-	bh=dGItCc+au+pcL/D+6ERcN1tXZbKZDv2Dm1oT9YquwuA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=M5Lch2ERrB3/nX1r+7R06ibgMLaS/t5puWYaGXWQ68KIga+50+UMzZXsi9Xo4D9tzpkxjBxsaBQfeAzg8UlP4k70d6kYcE52sonoZxodom/bSHEiwbGtLgZSzcrWWT5Or1b1O7eCQnzHu3IacCKNyrr7pMC8h/RLxYaG/rGC1g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c7AuC8UZ; arc=none smtp.client-ip=209.85.161.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c7AuC8UZ"
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-6aaf2f9ce3dso1275885eaf.1
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 20:04:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785726240; x=1786331040; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xs3tFfBdwPHn5kHrb6XAfXxDle7pqRmPk1hmRTFHJR4=;
-        b=c7AuC8UZjARyiCduO879r/3ElbUDm4O14wCfSWe3xEPDnWf0hSyoAsFYniNBzeBe6d
-         ZcuFWNkg1bmokd9P35ofh3u2bWRkicjtKSYtx5r8E3bKB6Hm51hlfx7gipx0SyOLouDC
-         YQcVBuGe7RxczDLEOWVz5EQxonicB8CL2HKoCRhN/n/CghovKR2aAjc7bRwWB2XdaTzQ
-         JeaagDUxW0NMh7XpHsJaKu9IktM2/Ae8WDn3S3XDBC0qvxC2s+bLuZfTf3notGx2ZRB+
-         ekTBnXxrvxnAnteNM7QsW5jVva3mCi5GJ0Gi1D/A0BLyANEYGtLsAiIjOG08EDZ4SWnF
-         KAWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785726240; x=1786331040;
-        h=content-transfer-encoding:mime-version:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xs3tFfBdwPHn5kHrb6XAfXxDle7pqRmPk1hmRTFHJR4=;
-        b=WRu3MbZv8tqh3xPyeKfEy6UN2u7OIHgt/4Q8ZNeStu+DiCdqYB9vsGI+d44qlnwk3Z
-         ugFCfizBEkRBJgHngI2grnHjHWhHplngmrOmfIV8GLK42MYzBmdvVa76adAvSrrmrJ81
-         vaPST5TC+52GcAY7E/+HFY/RMNif5DCnDR1zr3JOx0bdWmgsqnVOM9E0zIPOw1tK66mB
-         zQ0kyrqaUdRdiV3E1v5/OT3V0cpjOiEEQHypjVb24jNHfSZ3+wCZk9lCzcrwNpE2LwWq
-         tKqJ55h62SgjGrQhpy1Q3mcxGbrQ3lBQrT9DuV1MGVnOyDagXbXE7RP2D+1XClMimMo2
-         Bqjw==
-X-Gm-Message-State: AOJu0YxKPS3U3H5tFLweE8AbaGQjlpQUWjT6hrbrCmgLFoI85ofd4kLO
-	aBK6SuDEvt84a4mrdj7SPcm+G82aP6LJNVCRKYW6MqwMfI4duf+lWO7sI23B5XmDG9g=
-X-Gm-Gg: AR+sD12Fm9kB5JtK0jS2mv5dYFtYfMxfrTVZAh1Kj85QUOW6N9gcsCfSJuPRN+t1Cgm
-	S/i+adi9fOyirHzmHI4avtXgmNwlGg2OId5Vd8FtdUsVp4BI0q+R7y2JZap4DQRjCQa3Ce4M9r4
-	swO77TNdQVQnFU0KlJIV2NlZLJwpvrdn/0ANTccS0xW7eNhyWfuHqCyKhW2wK1QmC8EnQbgtd8i
-	4RwIuOerIPdyzYrARCmWbqYy3P6MrtLpj5G2jvVbbl3HYLGkQR2QGAnkFKa08L9fAr2lXZh87y9
-	FNMIPyvFaEVlUDvQ5MzPm1UqhPdpyYaadY1KtGLwSbhbo3+dz0W2Gc8nT7bx5LqL4JBtuvuokOn
-	mMJvHGgn59NdiMeAz/6KMe/k04CVp+zcJwqjXjqDFgr9Tc3wUtgqVeBqa+/y+Xrzz/lhgXvTpbo
-	tXa93DH4xbgLH1TQbI7GR9nPpHXSDdqBqTsaEmAkch4XHWHwYfJ6Mn
-X-Received: by 2002:a05:6820:222a:b0:6a1:80a7:2c8d with SMTP id 006d021491bc7-6ae433c50ecmr12236926eaf.32.1785726239666;
-        Sun, 02 Aug 2026 20:03:59 -0700 (PDT)
-Received: from houminxi ([72.244.37.221])
-        by smtp.googlemail.com with ESMTPSA id 586e51a60fabf-458f60650c2sm7883058fac.2.2026.08.02.20.03.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 20:03:58 -0700 (PDT)
-From: Minxi Hou <houminxi@gmail.com>
-To: Aaron Conole <aconole@redhat.com>
-Cc: netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	dev@openvswitch.org,
-	linux-kselftest@vger.kernel.org,
-	shuah@kernel.org,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v8] selftests/net/openvswitch: add SCTP flow key support and test
-Date: Sun,  2 Aug 2026 23:03:50 -0400
-Message-ID: <20260803030350.56455-1-houminxi@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <f7tzez4v7vg.fsf@redhat.com>
-References: <20260731062655.4088575-1-houminxi@gmail.com> <f7tzez4v7vg.fsf@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1785726409; c=relaxed/simple;
+	bh=9y8A3ixVmnfAoBRcrSB73RJB9vL/v/t+a9iKLN2wIVo=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=b/Ld3F2DADs3ywT7pMHDuCK/FxlKhn021oiyq5C5t2t15rbR8rtjdIg3p5pw4WGZ9y+tjkeLPxkx0Pakp9e8VsF5UoWYCpjDSxuErycfes9plAc1gxk4oUnADpK7GqvDE0PbejSgvu888DcZqQRzA+8OXNtVBC5rd9qzQIclDhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:tivesync6t1785726389t03ecd43d
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [122.235.139.83])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 3037987298578021087
+To: "'Simon Horman'" <horms@kernel.org>
+Cc: <netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Arend van Spriel'" <arend.vanspriel@broadcom.com>,
+	"'Jijie Shao'" <shaojijie@huawei.com>,
+	"'Rongguang Wei'" <weirongguang@kylinos.cn>,
+	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
+	"'Joe Damato'" <joe@dama.to>,
+	"'Larysa Zaremba'" <larysa.zaremba@intel.com>
+References: <21947C51A754F86C+20260728093554.9324-1-jiawenwu@trustnetic.com> <20260731135046.GI51943@horms.kernel.org>
+In-Reply-To: <20260731135046.GI51943@horms.kernel.org>
+Subject: RE: [PATCH net] net: ngbe: fix NULL pointer dereference in non-MSI-X interrupt enabling
+Date: Mon, 3 Aug 2026 11:06:28 +0800
+Message-ID: <058b01dd22f5$14072f50$3c158df0$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQFqT0y0mbKT69dqN2ZUmemCC0hMFgEi5kWFt2gfMqA=
+X-QQ-SENDSIZE: 520
+Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: M3ZkD08p3wd5AGQE2C+MhW7hLGERfLI9iExAJSbkV2iHxtJfM8R8xPKY
+	Q5mz8ZslXEtAKcl70O/11JQSFrCGg/sriZjAtnYIVJz76th0OPsj46xY0z3k0oByPsq30C8
+	YNJUQz6IuJd2aPfIncpVmA5qjgniRzN+Tz0UXhU7Co61FxXvdTbhw9JKJlCN4QfXGj3ROoV
+	ehFRVWdgrgXJHIWmc9/HpTAxhJEHTB3tWWEZtku2EnWi+SDbkQaIuLH20FbV7O/pGRuVLRX
+	pIBgdmPtvl6gOosfz/HFjN+Vn8RFR96l6xWPvxd/F6Gm1mxGruJ1E+sC3UN4BIGJiEUYWCj
+	d5NUYKHA53P4j905kmZ4bhjI90pwViE5FLhlQtI0DbRT/YpZCdUzG9WwJy7ADb4oSCNc2db
+	YVvuxuuRzUjP4Q5hMicLcbB6tqDQ0a1dz1xdkZ+bN1Dw9w6146UNZAhvDAoXpYS+EsPvEiS
+	kks+c2fdWCaZt30cCOonkvDbet11NvMTYDKTU/9WQhCpcYfBGw5Km0E/42il2QpiDSpLYyT
+	O7S9LdTuiplMvL1ideh5UCnjZ7yGdmMnKPjftQewsMba0ORLKD17Ks3UY82AYwNvLdHOXPY
+	5nnVgF7SmEtlnTVmh9AThjMhB8PpQ0ydDW7suOyYbGt2oBWzU0LljyYXvcIYimlMYJHmIaw
+	tGiD5sdBZ5mpOJ4syGMRMWigCGEGqW5rVnd+4MYqfurbIM6cx1FW/00t2ln9xlfG8CGERZr
+	9c28l3oiEtUn0qsdtpZlabZY1b9xVM7K4Y8B3BMRPDhFC2yiFi5X20WF03cLJF90Hw9z3QG
+	+BepsDBvzve/+2HQGEZ/olb/u48WfDu5NmO84hXDYgmJRU/dvGKAOpQ0UIJ9XJiA64Izw6H
+	AlWJ+I3Kf8i0zI2IjfzQUvQV1yPhuLIwCCnoXuEmRrdU9f8GOzyE/03tjSEt+yWTlhHDKt1
+	7yhkLC0U7o2N5Z+MoFqK5D+AoQk6qpt5KVyHfwqwOvj9eYftZoMvTbP/4iDZx9IsVaXVtX4
+	+jQE0hDInvLAGXJzzl40x4a1RKZQtMpuQV5gzRgOuk+BBqEpI4LjdgcuOwLgHnMytrLhKiy
+	NM0bwANy3qv
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 
-Agreed.  v9 uses a single
+On Fri, Jul 31, 2026 9:51 PM, Simon Horman wrote:
+> On Tue, Jul 28, 2026 at 05:35:54PM +0800, Jiawen Wu wrote:
+> > In non-MSI-X mode (such as legacy INTx or single MSI), wx->msix_entry is
+> > not allocated or initialized. Calling NGBE_INTR_MISC(wx) dereferences
+> > wx->msix_entry->entry, leading to a NULL pointer dereference crash.
+> >
+> > This issue was introduced by fixing the IRQ vector when the number of
+> > VFs is 7. Since macro NGBE_INTR_MISC is used in only one place and
+> > relies on MSI-X allocation, remove it.
+> >
+> > Fix the issue by explicitly checking WX_FLAG_IRQ_VECTOR_SHARED to
+> > determine the correct vector index and using BIT() to convert it into
+> > the interrupt mask required by wx_intr_enable().
+> >
+> > Fixes: 4174c0c331a2 ("net: ngbe: specify IRQ vector when the number of VFs is 7")
+> > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> > ---
+> >  drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 4 +++-
+> >  drivers/net/ethernet/wangxun/ngbe/ngbe_type.h | 1 -
+> >  2 files changed, 3 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+> > index a16221995909..5d89fc84e8bc 100644
+> > --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+> > +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+> > @@ -180,8 +180,10 @@ static void ngbe_irq_enable(struct wx *wx, bool queues)
+> >  	/* mask interrupt */
+> >  	if (queues)
+> >  		wx_intr_enable(wx, NGBE_INTR_ALL);
+> > +	else if (test_bit(WX_FLAG_IRQ_VECTOR_SHARED, wx->flags))
+> > +		wx_intr_enable(wx, BIT(0));
+> 
+> Hi Jiawen,
+> 
+> I am wondering if you could take a look over the following issue
+> which is included in the AI-generated review on sashiko.dev [1]
+> 
+> [1] https://sashiko.dev/#/patchset/21947C51A754F86C%2B20260728093554.9324-1-jiawenwu%40trustnetic.com
+> 
+>   Does this change introduce a desynchronization between the software state
+>   and the hardware configuration if SR-IOV enablement fails?
+> 
+>   If pci_enable_sriov() fails inside wx_pci_sriov_enable(), the error path
+>   clears the WX_FLAG_IRQ_VECTOR_SHARED flag via wx_sriov_clear_data():
 
-  socat -u SCTP4-LISTEN:4443,fork STDOUT
+Looks like a bad time to clear the flag...
+I'll change it to check pdev->msix_enabled but not the flag.
 
-for the whole test, so the flow rules are the only thing that changes
-between the three phases.  Both respawn blocks go away.
+> 
+>   wx_pci_sriov_enable() {
+>       ...
+>       err = pci_enable_sriov(wx->pdev, num_vfs);
+>       if (err) {
+>           ...
+>           goto err_out;
+>       }
+>       ...
+>   err_out:
+>       wx_sriov_clear_data(wx);
+>       return err;
+>   }
+> 
+>   However, the hardware was already re-initialized with the MISC interrupt
+>   mapped to vector 0. Since the hardware configuration isn't reverted, won't
+>   subsequent shared interrupts cause the hardware to auto-mask vector 0, which
+>   will then never be unmasked here because the flag was cleared? This appears
+>   to result in a permanent masking of Queue 0 and MISC events.
+> 
+> >  	else
+> > -		wx_intr_enable(wx, NGBE_INTR_MISC(wx));
+> > +		wx_intr_enable(wx, BIT(wx->num_q_vectors));
+> >  }
+> >
+> >  /**
+>
 
-> BUT, as sashiko points out, we do this multiple times, and don't even
-> check whether the listen socket successfully comes up in the second /
-> third ones.
 
-The check is there -- each respawn is followed by
 
-  ovs_wait sctp_eps_has server 4443
-
-For reference, the sashiko run on v8 reports no open concerns; the
-listener restart and that wait both appear under dismissed concerns.
-
-What is fair to say is that the check is weaker than it looks.
-sctp_eps_has matches on the local port alone, so across a restart it
-can assert only that some listener holds 4443, not that it is the new
-one.  With a single forking listener that question does not arise,
-which is a better reason to make the change than the line count.
-
-> Sashiko seems to imply that we could also do the wait-test with longer
-> timeout, in the case that we respawn the listener.
-
-Not needed either way.  Two of those dismissed concerns are about the
-restart itself, so dropping it removes the code they were about rather
-than widening a window around it.
-
-> https://netdev-ctrl.bots.linux.dev/logs/build/1137903/14722442/check_selftest/
-
-That failure is unrelated to the listener.  The selftest config check
-strips underscores before comparing keys, so CONFIG_IP_SCTP has to
-sort before CONFIG_IPV6 even though a plain sort puts it after.
-Fixed in v9, and validate_config_format.py is clean on the new file.
-
-Thanks for the review.
