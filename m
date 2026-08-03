@@ -1,323 +1,148 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3F7432BC3
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 18:31:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72F8431E5F
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 18:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785781893; cv=pass; b=m5DTe/tOB5ngVmECkSqwFf3O+1HBHjNyIEV0Y13lrSS4lwMqrbAeeSWVgSsPCYBPweK6ho7NhMw996j8tTFGZwcyUWy0bmvSlwIPhAbTAewAy+4mlvIZ/1dIlB3k2FGqUEmn7sB0nEdEouyoP/TuEedofah4lmWAdp4xQpfjq44=
+	t=1785781931; cv=pass; b=JWimjB3cDL3v+pKBuNoiEEyoDmBxDX4r3blSej/I372N2bZlXcPIpKtKqHcmsTe8H9NHyD7RjHJG/rlPvWLVkkedFxS5tFLLapYTvJRmeBahChUY/stXlWB6/UsvnwuTmkYtwrqBm3rU0lKipm90FfTsjUFoZwZ9ft0Yr0fA6yA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785781893; c=relaxed/simple;
-	bh=rhtfUlxscQyCpYGSqc6xoSQg6l7vdr1+JAW5gQ3HRtk=;
+	s=arc-20240116; t=1785781931; c=relaxed/simple;
+	bh=VWbjPp6NkbMPfq2XEGlQC1OmjdeNiTHMdP+BoLTJlbU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dn5qfvy4KdgajYCQMH2MpHLp6vIZ0eVY9pub9y07kcaBm91bXI0qsgfkLGL4DA0Bv8luZH9gwOv7TesBjalLBY26aIXxqI+bz8iXNxfT2uboLiVub7nZI3i0Kz6J08DWM6AuyA9U/QyJID3GoxS8YYCsHtKJkFvqlalzx002QC0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OvEAT80w; arc=pass smtp.client-ip=209.85.160.176
+	 To:Cc:Content-Type; b=iAoYdclOsaJsDNKBmxLEypihg2siktGLOZTjOoAtCiC8yyeAoGCug3qlGFKMrpwKodMZKofjXbwplY55e3q48JDJk3A5AizMpGoCDX8INnpUvZ99PLnd4+7XATt0gLnmPnJ22IUYi07J367ot3oPwjWUdtUEkjIJRctfwEq7mXc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QD6ij8es; arc=pass smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OvEAT80w"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51c15a5b265so32891cf.0
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 11:31:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785781890; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QD6ij8es"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cacef7d299so19975ad.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 11:32:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785781929; cv=none;
         d=google.com; s=arc-20260327;
-        b=NSFwXINtzaHDaEJz36fHDs1YjlGqy+W/SoL2pcypsCMrfq8svQEgICIXxPIYDMnKIB
-         rF3jsdk2CuJAT2CHdEhQMaQPNbLmkuER4o48lVKj2F2pFeciCUR92nk5y45D219HyuEC
-         Du1kyugDf0XkKTUQbybqmCaucMc8OeWIoG2IgRgTfjypWOdP3pyri/FsR0utzY5ql2PW
-         HEjXAQxfEp7Zn9jlM3yfzJA0cVsJay0w5dWFUKGjni9uV5LDk5oPOqbLN+THOMBzp9yX
-         ixClk50UGoRrG2MHYae+9653zOboCpnvzO5PLhcZaOYWmyWjW7Om5xgSd9v6brXNRHWt
-         k/vA==
+        b=Tb1yl5MPiCNoc8wQQIQSM10dvThZYTXHWTIj7FjtJvdflp7JxCBXiOP/xRiMGLJX/m
+         /SN7UFRBm7iXKXD6Uy9q7Jbr87D5M/M+mfMKuLKDXIG8feGssK7c4fR6looAw6DyDCQZ
+         CDH2oxT7OvpmMSeE1vqg6bEzqO5DHWSHwE45rZXBg8fjP7zg9+80TOsOfchiB3xMwabL
+         eRbkFnmowTp01FiArERH2FNrPiREastb1iuemWGCe6SlAqSb4mSuPTvKD/xC/ZC2s6AO
+         IQwFtEk/2XVEJbH4uj6wHuXAdxUVRb8UjtdyuxrQ0/P4brBNbmwLK2nYzHWAd6UcTzxg
+         L0yA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=2sh20aaLjGDr49LHpT4MIdFB8Gf/03Udd36UxUfpzRE=;
-        fh=xd7ejye4zVn2MrWIgLbwI6X8hkLyGg/Qx+wihj+sNjw=;
-        b=BcR1OUuE88yG6CKwtEfWRN4c98IIo51WGyVBxf0A9zqEKvNHU7YGTtYqt5ObVRIMrj
-         CdIbclV3qIxJDFO/649ZYLkPD6dmkfhePYC4lXGsquflgkNVN7qsxK2o3/F2Ncf13VRB
-         rKVrm1lFVQfrnuYPUtIgK82zT5FsHkxakYI0jCxGwUB9KVEz/E1OD65cLodY0uyNXt2K
-         wx3Q0myXCn5B/5I3LXxtGcyM0eZQ0nyW5W400En3LuCuznxplBCdaAc+LpmEQL+6iubE
-         B+dhSkfaEMuKBgPvnlAeLp3qg+IgTJM8GDLkezh0vVSTGwRwQn3qYsFlZN8Mf17zxQky
-         gxgA==;
+        bh=VWbjPp6NkbMPfq2XEGlQC1OmjdeNiTHMdP+BoLTJlbU=;
+        fh=WexEU67wI5uxz4M0fOZ7GvKlLPCh0MbylXrNRwb1nlY=;
+        b=Msto+Nkx2Q9rh4PnFueRZCsNE2IjHQFIRgUhzfawh81Lr62MZBeTlvOXcqOhmJjBbv
+         NwmQsl1nKwQLSvmWvv2OGuJ5/8o5JGY7ki6qQI/+wAWvs+cmP28mSc4M9xx5eusancvr
+         4jDVOOr4OuK4xi2ZCTsvCKGPhHf5BJ/vGb9dKgiP2xgIUYQ0hzoa6A1paHdBb1qgsAmE
+         0memcSCcVfc6PN0Ju0uOX/PHYhChhtMfaUjyo1Nhpao0/Y3GJmJrQds/XFNXsR2RD+jL
+         riSMhqq7hNjFuPi7wlUAFSRIFICQSAZ+9K/P/wDCpFAnHD/zXu+vxIE3PIR8qCYUKgsK
+         oGBg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785781890; x=1786386690; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785781929; x=1786386729; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=2sh20aaLjGDr49LHpT4MIdFB8Gf/03Udd36UxUfpzRE=;
-        b=OvEAT80wuZ1Ys9LObhqEFs9Ipc1K1uzRjF0N2gx+dSnKVRSZSfqRFh4qoRr0ClrLij
-         5FHcFKyumcMIwDDya5V0JrU+gvrgdls188824h0oRh9Z0xj02f8La70LdxWAM2p/oHfv
-         FkCG+7k7nCpLxvvrKTv7qEM7ot+qmLhxyjdSswDhEHjaw4zyG7UEI4Szw3MeuyO5SQFY
-         8p2LjAmrjX6t71rlvdzdZi/2iQEbsRuwoZ6efzXw1KGqSeP34AUNSn/OghD2fAmmY7Co
-         e9bsHxOvg2FBJdVAMmgx0pCKJFYzJgdrKxnl+lqCC/beIhsBqEHa3brN5p/bEYrA7WVT
-         d6jg==
+        bh=VWbjPp6NkbMPfq2XEGlQC1OmjdeNiTHMdP+BoLTJlbU=;
+        b=QD6ij8esOYUdm2Uo++y+AEpUjnjjH0LBBYwmfY+bS9fhjaa2Jz6yMUdQJ6rdyiwJJR
+         Zpz6Ccu0E2qvoLIpHHRrJbUpvsUgTTyibW1YsdH8XtzWuNkma/PviKEf0T0Yat+QTnB7
+         8gq0Rwl42AoT1/z212tY8xY5VqAEHBNvDvaTAke2qiNRpZLr5iHz9XkOS6DSdyt5ae74
+         LI158rARYwKARIaxOCcK4NC3AfJoq6grQFB43hawuf8s+05uQn0jI67WEe6++/G5FC/v
+         g6S6JrG2Zxe5lWJMOro7sp7lK1yaAvlNbcJ3iRN7EJDv9iE99pweW6M+vXQU2Oo1Ydgo
+         Dr+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785781890; x=1786386690;
+        d=1e100.net; s=20251104; t=1785781929; x=1786386729;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2sh20aaLjGDr49LHpT4MIdFB8Gf/03Udd36UxUfpzRE=;
-        b=d2ydAJS+TqK3/XzsYpbCjHjTnMeb3swKcFhmyaNpGiZI4DnDG7BI+50E8RhvP2IoXW
-         d5eFW4VyfL424TEud634Z0ULEU0C03ey1MYxCXcW2GxW7whir5zuFrm5eTXG5mu1j/BF
-         fVPdGF60EbG08kkUYEqafTBcCRMq2QV65s7tDHGwHtBgV6olmjqKw0i/x58UYqhqi0nb
-         +GKSPeSt7Tr9VTwHNIBMqzb3O/DUxRbGgIY/VgnurLubDE8P90s2TWhH4ltY2E5kYHty
-         g7y3p2+Sr8TkGF+ptZugWLo69w5yfnTPZFdqSA6+4aRJc1O2Vqp8t5Rl9TcPF9qXhm0u
-         irxQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqHisRCGifMLRRL59/UMBN+pPi7Lu3Yr8KV0ZBrePKx650+NYmx1Epi4+imOMbZz/5c0qVViOs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyL26oqd9aaEmnDq/gJzn9NulvDZD2v/3VcqQdS/BHqwUJo8W7
-	IoH71TbZeUxhZNf69B03aNvUCR8ar67IA900j7KgiRfgSfMO2jgorbqNT+avVZjzYPexHzl4MNJ
-	f3Zege3J1vnSjnTnLussnmnYy2m0KkKZ0UQv8uaKB
-X-Gm-Gg: AR+sD116C/QzOmBwIOquQVi6edLNoHCy89q5n8rzf2iHCpQ0bhpOuaIBUy/lIucRZXv
-	EDeQHJs0VreOP3UbaJYs72Zb86bAAiLE2SzZNr6ygqqSCfmeJP18D6G9KoAChyjZHlGJEeoazgg
-	BZ5qJSZZDeU+OD1JtIpuuQvNQW+aEDB3YFpOE9hEH27xj4E4Nisu7HUkrOLApXupxYe/0aIk8Wd
-	vI+3vyiv6UDzxvDuM3uGFmK9PzOfpHLnJvwIvIDA65L7ETP4YIO/8/sIZtvtqTAYREDVlrZpVOX
-	GJnpUiZaVgEL7R28PdUSMf8FZCZa00jtxvbxwRMImkiZN9lJo9A8DC4=
-X-Received: by 2002:a05:622a:9013:b0:527:f08f:56a2 with SMTP id
- d75a77b69052e-52cd4e7dbedmr1574331cf.8.1785781885821; Mon, 03 Aug 2026
- 11:31:25 -0700 (PDT)
+        bh=VWbjPp6NkbMPfq2XEGlQC1OmjdeNiTHMdP+BoLTJlbU=;
+        b=iD3oKIlQF8ZYuEdj+MaNub/+C/Eo6o5Xnf03c+OVvv5O6MYKzyEPiNVSN4YvBsT3rP
+         4ixQhLY68q88NqejKaP/uubc7Nb+BtKLuB4V3A2JcYgDbqygoNB0ztGrwxMJxdNs4wCn
+         u0eqDgTbV/plwxRDPTKhwAfQVD9soinKtRM5jhGVuHl8RC67xrZHor+2/WOpUziHzPXR
+         P6XIBxm7iOAuuu86z4dCr9aUul0rbAL3AUoicFKoM61TrXZZWPwpbm8hdQIjm1hKt4Y5
+         vOloW+N/pr9JBmx+ZkI2cCNZyZ8WV1GVdebxLyiNHD12Kg3B5K6kSPK6O176pBpex9e8
+         Gxcw==
+X-Forwarded-Encrypted: i=1; AHgh+RoYtoRa0s2mnNXcGy5R1VDTC8q9qVrV6C/AuWETB/JfT0tX7p413bhxx8/U6UJON4aXwA8Kga4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5K9eAZmQ6jjSYp+11vELqjXwQI6gdV1uHv9mh75u2Kn0qEL6N
+	4KKg98mxfPlrJgqriQAZWShtvqRcYIXmfNHpDteiFqxc9M9NkB5OmKHNnH8t9iSV55OeTs1OJmO
+	6jcm+682coIIZJuLINDmiTJqjniPcmvpDhxqhm//J
+X-Gm-Gg: AR+sD10w1SFzZpPnzJOUMS/JW2uxZG5bj3V5w3cLHIpf9p9Ohp64JQdMBF2oMk2I/Bs
+	HbCCz8t9uSwKg4SjDS7UR9maKMxkxFscmX4u/QMkmKQK/Q0nTR4FOyTz2ZawFeU9K0N74y2PxF7
+	DYtx027ycYs9qYUxjO8RgNLvU5YSqu1Ih+nKbMjapLLr1ruoqZCGaM4xjUjMw6s5jKzcaZkyp9U
+	QPa+E8sOteUT7NSKEpgH4ITVBcn+FU87jfNQDS0HoHsj8t7EffYKPPMwfn7sFYIjgKEUu+smNES
+	Usr5I+E1bV97GoDMxEDoZhFP0DLPfH2nGLVVnMCWWMQ9
+X-Received: by 2002:a17:902:e945:b0:2d0:8b22:7eaa with SMTP id
+ d9443c01a7336-2d08cb31baamr1688045ad.20.1785781928753; Mon, 03 Aug 2026
+ 11:32:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260802215459.2769283-1-surenb@google.com> <20260802215459.2769283-3-surenb@google.com>
- <anByp6uVW77uofKx@lucifer>
-In-Reply-To: <anByp6uVW77uofKx@lucifer>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 3 Aug 2026 11:31:14 -0700
-X-Gm-Features: AUfX_myBOeiNVA0m1qVZE2GBbWEi5bWqHPnmKZfxbZ2vvxGu8qUxd_oIiqOluMk
-Message-ID: <CAJuCfpHPcE0=7825xiusBN0MmCp1hrnsDuYrfTKwGM43ozmmOQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/5] binder: Make shrinker rely solely on per-VMA lock
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
-	Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
-	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, 
-	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
-	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
+References: <tencent_29B860317921D68DE77C718242DA418EB608@qq.com> <tencent_EEDC35FAF2750A3A6A0B39BAE0E2C484860A@qq.com>
+In-Reply-To: <tencent_EEDC35FAF2750A3A6A0B39BAE0E2C484860A@qq.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Mon, 3 Aug 2026 11:31:56 -0700
+X-Gm-Features: AUfX_my3dNHecsoUf8e69cV4C1hLKJkdXZo40JvErJWzFKOvN7k3ok7JtkXPFd4
+Message-ID: <CAHS8izPdDV88eP90R2sVa_dLUy=btQWTHJ804g5TrDh_2xKKLw@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] net: atlantic: free stranded TX buffers on ring deinit
+To: Yangyu Chen <cyy@cyyself.name>
+Cc: Sukhdeep Singh <sukhdeeps@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Richard Cochran <richardcochran@gmail.com>, 
+	Lino Sanfilippo <LinoSanfilippo@gmx.de>, Igor Russkikh <irusskikh@marvell.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 3, 2026 at 4:10=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
+On Sun, Aug 2, 2026 at 8:46=E2=80=AFAM Yangyu Chen <cyy@cyyself.name> wrote=
+:
 >
-> On Sun, Aug 02, 2026 at 02:54:56PM -0700, Suren Baghdasaryan wrote:
-> > From: Dave Hansen <dave.hansen@linux.intel.com>
-> >
-> > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
-> > it and mmap_read_trylock().
-> >
-> > Long Version:
-> >
-> > =3D=3D Background =3D=3D
-> >
-> > Historically, binder used an mmap_read_trylock() in its shrinker code.
-> > This ensures that reclaim is not blocked on an mmap_lock. Commit
-> > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
-> > support for the per-VMA lock, but left mmap_read_trylock() as a
-> > fallback.
-> >
-> > This was presumably because the per-VMA locking can fail for several
-> > reasons and most (all?) lock_vma_under_rcu() callers have a fallback
-> > to mmap_read_trylock().
-> >
-> > =3D=3D Problem =3D=3D
-> >
-> > The fallback is not worth the complexity here. lock_vma_under_rcu() is
-> > essentially already a non-blocking trylock. The main reason it fails
-> > is also the reason mmap_read_trylock() fails: something is holding
-> > mmap_write_lock().
-> >
-> > The only remedy for a collision with mmap_write_lock() is to wait,
-> > which this code can not do. So the "fallback" after
-> > lock_vma_under_rcu() failure is not really a fallback: it is really
-> > likely to just be retrying in vain. That retry in an of itself isn't
-> > horrible. But it adds complexity.
-> >
-> > =3D=3D Solution =3D=3D
-> >
-> > Now that per-VMA locks are universally available, lock_vma_under_rcu()
-> > will not persistently fail. Rely on it alone and simplify the code.
-> >
-> > Full disclosure: I originally tried to do this with
-> > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
-> > trylock semantics. Claude caught this in a review and suggested the
-> > approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
-> > I guess.
-> >
-> > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > Cc: Vlastimil Babka <vbabka@kernel.org>
-> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> > Cc: linux-mm@kvack.org
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-> > Cc: Todd Kjos <tkjos@android.com>
-> > Cc: Christian Brauner <christian@brauner.io>
-> > Cc: Carlos Llamas <cmllamas@google.com>
-> > Cc: Alice Ryhl <aliceryhl@google.com>
-> > Cc: "David S. Miller" <davem@davemloft.net>
-> > Cc: David Ahern <dsahern@kernel.org>
-> > Cc: netdev@vger.kernel.org
-> > ---
-> >  drivers/android/binder_alloc.c | 29 +++++++++++++++--------------
-> >  1 file changed, 15 insertions(+), 14 deletions(-)
-> >
-> > diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_al=
-loc.c
-> > index e4488ad86a65..84104ba04e30 100644
-> > --- a/drivers/android/binder_alloc.c
-> > +++ b/drivers/android/binder_alloc.c
-> > @@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(struct lis=
-t_head *item,
-> >       struct vm_area_struct *vma;
-> >       struct page *page_to_free;
-> >       unsigned long page_addr;
-> > -     int mm_locked =3D 0;
-> >       size_t index;
-> >
-> >       if (!mmget_not_zero(mm))
-> > @@ -1151,14 +1150,20 @@ enum lru_status binder_alloc_free_page(struct l=
-ist_head *item,
-> >       index =3D mdata->page_index;
-> >       page_addr =3D alloc->vm_start + index * PAGE_SIZE;
-> >
-> > -     /* attempt per-vma lock first */
-> > +     /*
-> > +      * Attempt per-vma lock. This is essentially a
-> > +      * "trylock". It can fail even if the VMA exists
-> > +      * for 'page_addr'.
-> > +      */
+> aq_vec_deinit() drains the TX rings with a single aq_ring_tx_clean()
+> call, which frees at most AQ_CFG_TX_CLEAN_BUDGET (256) descriptors and
+> stops at hw_head, which no longer moves once aq_vec_stop() has stopped
+> the hardware and NAPI. Completed descriptors beyond the budget and
+> everything still posted in [hw_head, sw_tail) keep their skb or
+> xdp_frame when the interface goes down: aq_vec_ring_free() then frees
+> the buffer ring and the references are lost for good.
 >
-> This makes me wonder whether lock_vma_under_rcu() should really become
-> vma_trylock() at some point in time? :)
+> Today this is a silent memory leak on every interface down under
+> TX/XDP_TX load. With the conversion of the RX path to page_pool posted
+> for net-next it becomes much more visible: XDP_TX frames carry fragment
+> references on the RX ring's page_pool, so a single stranded frame keeps
+> the pool's inflight count above zero forever. page_pool_destroy() then
+> never completes, the pool is leaked together with its pages, and
+> "page_pool_release_retry() stalled pool shutdown" is warned every 60
+> seconds from that point on, on every ifdown, XDP detach or ring resize
+> under XDP_TX load.
 >
-> Or at least have 'trylock' in the name.
+> Bring back aq_ring_tx_deinit() as it was before the removal and use it
+> for teardown again, with one extension: TX rings can hold xdp_frames
+> nowadays, so release those too. They are returned with
+> xdp_return_frame() since this runs in process context.
+>
+> Fixes: eb36bedf28be ("net: aquantia: remove function aq_ring_tx_deinit")
+> Cc: stable@vger.kernel.org # v4.11+
+> Reviewed-by: Sukhdeep Singh <sukhdeeps@marvell.com>
+> Assisted-by: Claude:claude-fable-5
+> Signed-off-by: Yangyu Chen <cyy@cyyself.name>
 
-Makes sense. I think I'll postpone renames until after the series are
-merged. Don't want to mix too many changes together.
+FWIW,
 
->
-> >       vma =3D lock_vma_under_rcu(mm, page_addr);
-> >       if (!vma) {
-> > -             /* fall back to mmap_lock */
-> > -             if (!mmap_read_trylock(mm))
-> > -                     goto err_mmap_read_lock_failed;
-> > -             mm_locked =3D 1;
-> > -             vma =3D vma_lookup(mm, page_addr);
-> > +             /*
-> > +              * If the vma exists, we can't continue because we cannot
-> > +              * remove the page from the vma. However, if the vma was
-> > +              * unmapped, it's okay to continue.
-> > +              */
-> > +             if (binder_alloc_is_mapped(alloc))
-> > +                     goto err_vma_lock_failed;
->
-> Hmm, it seems a bit odd to me that you also have:
->
->         if (vma && !binder_alloc_is_mapped(alloc))
->                 goto err_invalid_vma;
->
-> Below?
->
-> So you have:
->
-> Before:
->
->                                 |binder_alloc_is_mapped()?
->                                 |yes    no
->                         --------|-----------------
->         vma is mapped?  yes     |OK     abort
->                         no      |OK     OK
->
-> Now:
->
->                                 |binder_alloc_is_mapped()?
->                                 |yes    no
->                         --------|-----------------
->         vma is mapped? maybe    |abort  OK
->                         yes     |OK     abort
->                         no      |OK     OK
->
-> The 'maybe' is because the VMA trylock failed.
+Acked-by: Mina Almasry <almasrymina@google.com>
 
-The case you are considering is lock_vma_under_rcu() failed for some
-reason other than lock contention (say seqno overflow). In that case
-we get vma=3D=3DNULL and binder_alloc_is_mapped() is called without any
-lock (VMA or mmap lock) being held. I'm not sure if this is a real
-problem since I see other places calling binder_alloc_is_mapped()
-without locking. Alice, Carlos, is this a problem?
+I've noticed these claude-generated commit messages are unusually
+large compared to the human written ones. In the future try reviewing
+the commit msg manually and making sure the amount of detail makes
+sense.
 
->
-> So the issue is you might have a case where the VMA _is_ mapped but
-> !binder_alloc_is_mapped(), which previously aborted because of the vma &&
-> !binder_alloc_is_mapped() check.
->
-> It seems like:
->
->         /*
->          * Since a binder_alloc can only be mapped once, we ensure
->          * the vma corresponds to this mapping by checking whether
->          * the binder_alloc is still mapped.
->          */
->         if (vma && !binder_alloc_is_mapped(alloc))
->                 goto err_invalid_vma;
->
-> Is testing for a specific scenario 'we found a VMA but it turns out it's
-> invalid' and aborting if so.
->
-> So either this check should be removed or you should uncondtionally abort=
- if
-> !vma I think?
+You can put extra details under the `---`
 
-I think this check is fine because it basically checks
-binder_alloc_is_mapped() after stabilizing the address range.
-Unconditionally aborting if !vma would prevent us from freeing the
-page if the VMA was already unmapped. The ultimate question is whether
-we can rely on binder_alloc_is_mapped() alone when freeing that page.
-IOW, VMA might still be in the VMA tree but
-binder_alloc_is_mapped()=3D=3Dfalse, can we free the page?
-
->
->
-> >       }
-> >
-> >       if (!mutex_trylock(&alloc->mutex))
-> > @@ -1191,9 +1196,7 @@ enum lru_status binder_alloc_free_page(struct lis=
-t_head *item,
-> >       }
-> >
-> >       mutex_unlock(&alloc->mutex);
-> > -     if (mm_locked)
-> > -             mmap_read_unlock(mm);
-> > -     else
-> > +     if (vma)
-> >               vma_end_read(vma);
-> >       mmput_async(mm);
-> >       binder_free_page(page_to_free);
-> > @@ -1203,11 +1206,9 @@ enum lru_status binder_alloc_free_page(struct li=
-st_head *item,
-> >  err_invalid_vma:
-> >       mutex_unlock(&alloc->mutex);
-> >  err_get_alloc_mutex_failed:
-> > -     if (mm_locked)
-> > -             mmap_read_unlock(mm);
-> > -     else
-> > +     if (vma)
-> >               vma_end_read(vma);
-> > -err_mmap_read_lock_failed:
-> > +err_vma_lock_failed:
-> >       mmput_async(mm);
-> >  err_mmget:
-> >       return LRU_SKIP;
-> > --
-> > 2.55.0.508.g3f0d502094-goog
-> >
->
-> --
-> Cheers, Lorenzo
+--=20
+Thanks,
+Mina
