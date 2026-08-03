@@ -1,150 +1,127 @@
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417BE426692;
-	Mon,  3 Aug 2026 17:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5DA427FA2
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 17:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785778330; cv=none; b=KSldkEUdUbIrRxclchtf/lq1zSxx43gqvjUnSPHkfW1FGwFrtvQPZYgkbbxBAi4xePWHw9pTXI9YVnFJPIKP13MxZHoEaTtyVtNrN50teYrMj8en6a3zRjIacywIjeFp/vVx+ozulDQyJq/RDFfK40wEV80tHeUSzq6W7JNrY0Y=
+	t=1785778343; cv=none; b=aw/9TIE7GVdk4kDMRz6VZSPQPFV3BemQuEMDms7RS6yBlZOEFGj0W0IY5xJpriUcNntr0D5/I+iMAr0FXBqhlmKlrSFugFX3Bmlkkd4HoST7bn3AffK0ZGWcQMae0+Nj83LAufiXSzXKsVk0nC6GBzf0eVDBQcK9to9e2f+DiPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785778330; c=relaxed/simple;
-	bh=qu0d2HFI122zUdYFpoReqfiJ5VLNeIUoDAHSHKhwPzA=;
-	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
-	 Content-Type:Date:Message-ID; b=gFqYDlwp+YFhV2c8sPH4LFU1t4M3iNIhgCx6K2oH0OHJuKYM0/dlIgbYES+6xkXMSpsBdmhKKqFlmiPumln6tPP2/NpoRVpD7wMuTazHDFtKMWF8igbq+M1LfCwFUyuws8GQCyfH9tyYxIRNXfVyTkLlT/eHrR/ax8aZMBXpAiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=zmoTzP9d; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GUNEkTJF; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
+	s=arc-20240116; t=1785778343; c=relaxed/simple;
+	bh=EX8uvH9BeVQAkFCLzO3hLwoyiGO09+5Jw4xPTKtpk9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I9lXA4HO8hWWszMD/UyM5z/yBFfNnyxeoNOtABzzto8Uk5sA5Xgil98qdDklV+QLm9mVRDBc/svD/Y00UMNykb3vQbOA4pLodLyTuc8bemG9mIb2mterPD1Meg6mk0DYxOU36RaxPVY0CAVjsIYQePd9GzsAyMoNtIC32D4SdkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rYifMGBb; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="zmoTzP9d";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GUNEkTJF"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 3ACBC7A00B0;
-	Mon,  3 Aug 2026 13:32:06 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 03 Aug 2026 13:32:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
-	 h=cc:cc:content-id:content-transfer-encoding:content-type
-	:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm1; t=1785778326; x=1785864726; bh=zyta5cKVJBeYd0OST+Xqx
-	/NbpgEfiG9Kn/2HGC63ruY=; b=zmoTzP9deL3YHwnx2Kyg7vvSLfT4kXacxxTBJ
-	NqyMXbV9R5PgGdsCHFks91sZlM8dIN7RhEW/WLohrgxNxWWUZUmdaM3GtDoMjGxM
-	R6Wg2l4IH/I81sSSN5fKZVP86srGNTxpzCELOxccovfZ9/Rb8FYAcrA+GSK7H8hG
-	AYsRMBMYxPw/usxzETqh0xqxiByZc83WIjBxlth/sBQiKKML/oPntCYakVTx0XsX
-	h6Mi/ljBV+DY6+foNo4hoRMT0fX1GVPLiPX+IKLKcntMduC2g0G4riuw/xySIKLu
-	iVCfVepgAwcclQ/bQ1Rc5ofgHlYZpKiWiDf0pCWZ5ipBuQvjA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-id
-	:content-transfer-encoding:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1785778326; x=1785864726; bh=zyta5cKVJBeYd0OST+Xqx/NbpgEfiG9Kn/2
-	HGC63ruY=; b=GUNEkTJFK1kH61JWMoGsmTL8ev5/tjePOD3i0KKZnWC4fT0U/ER
-	aoPAZgNPxrCF2TQ1d991GWtl1JxLYUEDZEwXdc49TMN3vXK0i/6TYmwX0RoXlK2D
-	RRqiD/U+VpKXBB4lpBEtoH8hJWiqKPgY3/pie3eRzO0ixwx2xfeabEOPjHRhspHC
-	lVWX6d0VfqRc79gP5zH5dz478K5kCOUMLunHC7nyEF93LpqbdK2y8jWODt7A64Oz
-	UzvbbmtTv9Lhzz6ZRJ8DWR0bwM/lSCWMwy7r3LiteueHFPj1L5SCgIpYMhwEwZKu
-	W1S8PwJPKc97ioS8aY41k5kHncJAHnpCuKQ==
-X-ME-Sender: <xms:ldBwanjYivS9mERzQgqSVYEGvhxF9pb2RyPr2fswcJWbIGNUCZkIBA>
-    <xme:ldBwauAYI_GmYWKNMY889DwGkk8y7oiPYfBMVu9460AcKQ6SYCB3ThL40NkrCO1a-
-    uqYMGYXgeApEYUhCM8enpeNnY_AQjOEe9iEcWBMzJWpxB0gGNY-5A>
-X-ME-Received: <xmr:ldBwattlCYsWj4Dj0-foX_HZHgla11g5XTKvRw0Kovp02iGf-Xi21QRq5gsTas8MZ-KMmg>
-X-ME-Proxy-Cause: dmFkZTGWsDSBQqODn0KbLouuZAoqeuTGzVb3k5zXV/nBKVF5BzJs3vDkUJu2MsKKbpiLOP
-    fyBc19gvJCoXiEL4kAHltRdR73dvjBmH7bGeCOns3rKLSGp8WTKGecRpBiQWECKNJ6CyLt
-    MMLADRtlc70AEWE9dhwisye47SCsqaGDErwnssS4Zi9fefuWeBrtx5m4hzWbVXL+bntam1
-    9Kq26aLTcO+mPrpUngj+kpdjPgqY3V686/caLJ2vsFmoIsjm2OWkEkuS24GwzMKwlYKXUZ
-    z2t7uxbK9Bvi7zlJPtoY0AYJW6mPEtM2QIuhArVyN1gNX/+dR9v7VbiZ0KUosL+FuWSfoW
-    tkOUr199Jzc1QVW67I+f4YZp7jQ8v++gg9Z53qCsLjPl4hbTuCXcgVSeAV8PQn6bu9nf7q
-    p1CK4+3YbEC98/eeJwVhOzcl2VBycLIXZpCyaMu+XAXtHY0M39vgbmeS+0j4rAyOYcNgkC
-    sXaOL0Sv/5vt9bRBKOeOknz+FTRm90Amp02EmZlUOmia2yrcflj4zWvWGXuLBlZxSytG8u
-    T6nI4W8Qi+THUW4Ig5A5tJy3Z+ZMazAZKqMHrAOtmiT9i0UrOvywFgKDutP2KpKJBMPNtz
-    Hb/ty4rBt7uUOo05xLxObowlqoZPmwwCttwkJZGof1vPqFdL7mmvEmBa7uvA
-X-ME-Proxy: <xmx:ldBwaiceH1U4o4nkvj9128BcMxG65yHQfgBgg226agzFHMX-7AyM5A>
-    <xmx:ldBwai8xDlS6HDjoPNM2I_uZFuXx2wGarMiRg1YLO97KMv1eUK1Taw>
-    <xmx:ldBwalQLQ9Z90PTa09EUxbe_ilXIa3w2idQEXWabvpqZWDv35KCM0Q>
-    <xmx:ldBwarofR0d89FWqlXOZzCjMFuuxsqXXOVFP30hNuYyfAryg2rx0LQ>
-    <xmx:ltBwas-1tLjHlZak4UdPPcNWHumMp6pgSW3GQSKsnsNvs680Vi0fA2mi>
-Feedback-ID: i53714940:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Aug 2026 13:32:05 -0400 (EDT)
-Received: by famine.localdomain (Postfix, from userid 1000)
-	id 00C459FC6C; Mon,  3 Aug 2026 10:32:03 -0700 (PDT)
-Received: from famine (localhost [127.0.0.1])
-	by famine.localdomain (Postfix) with ESMTP id F1CE79FC3F;
-	Mon,  3 Aug 2026 10:32:03 -0700 (PDT)
-From: Jay Vosburgh <jv@jvosburgh.net>
-To: Minhong He <heminhong@kylinos.cn>
-cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-    "David S. Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-    Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: bonding: check register_netdevice_notifier()
- error in bonding_init()
-In-reply-to: <20260803090012.142638-1-heminhong@kylinos.cn>
-References: <20260803090012.142638-1-heminhong@kylinos.cn>
-Comments: In-reply-to Minhong He <heminhong@kylinos.cn>
-   message dated "Mon, 03 Aug 2026 17:00:12 +0800."
-X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rYifMGBb"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ceb096e675so43495555ad.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 10:32:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785778341; x=1786383141; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RQTMIRdCXsVsCde5cKr+42MERUQxQLSc7sIpOyCPFdk=;
+        b=rYifMGBbUTkcKTJVF8Sky4+4ZcCwwiZpiLgpzmmkZggMV4BBqIeLIP7S0U3Pe2OGtA
+         39Go+2UOQgW4YaYOnqpw/tV/3Z9PcZz71tELxz53o9wAM2ysnzIRKyVBfOaTddOHarL+
+         ViS8jvBDuSJK5Q5bA1tJAqbgoTo0JTsy7ObHmM+i/9FHPHPigY14qUDcw1uqFdTYR6h0
+         /JhRCB3I0OZ60RrT54B3oE9+mtlzHifWNjbHwLWYRrhU/oor/fV6zhJcxs0wlD0XT1FK
+         Y1PrgT2ToHiG3WlkvEpasyQF46g7dtRoUEgeA3w/3loPZbXqkWhOvNN/feSVsdkmJgIA
+         +neA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785778341; x=1786383141;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RQTMIRdCXsVsCde5cKr+42MERUQxQLSc7sIpOyCPFdk=;
+        b=RKPQ1J9KWzbfLimSeiZl73/+BgRnw6H6/X2Cg/EZxYeiiI/KzumcRkaGuyT/Cwt0MG
+         aL3mtJGiqwPIpTR2iyO+kPlicOxsh4GcX2Bq0e85/Ept4W4Q9KAH2vQTiq7F6vPNRda6
+         ymfmfNTC1QkVtZPjtm4exo1GdwekI+6MENmV6yaEtf6g/SsXYKkuags2UWbnsrRVm7OM
+         X8DZoPe7pfD15m1mJWzeHjMhvOrmR5XAA1yB/J/8LvQc+makbk7WdIZRU/K7c6xhC+Fj
+         gQ4tAVQSGgtfy4nkBxyI5gp1P2R7PO0AzKZhVLIAbbAebHorkEsYRZ2qJRhoHeGq11g+
+         RU8Q==
+X-Gm-Message-State: AOJu0YztXvOzmhEvtvZwloMxUUIdMlA904FaT417v1pyqzDrTBerJwLk
+	nSbqeGVDcaVAaCDcddjJnQ45siTt6eSv6M/N3eUZOoQca5WFeo6Qo3oz
+X-Gm-Gg: AR+sD11U9EIkpPCcAoOJpm7Kf7mj64K6PI7LkT80vz/MEATVu4DXI+4DDNZz7JqXcQK
+	5k1uRITWP0Q7c/9G9BbfEo0e2g1i908uNQsTXTDVVMwTYF0TRVRNIPdTxVQW6OLt3C4vGU2g9QW
+	GZWvMMMRr3zBOkB2HYGyOFvjUxKlFXs4rJ7H4BfnaY/3DTWJsBFoPG6oVEQkfiXxa2jYrWeZdep
+	ITtL97Djd0CQJ8mGlxss949rXZ0EYHY99EeTgmIKyGTJeieRC0+eVkL7QQKTWDF6PTB0amqdFMe
+	RXpZIfcH55aCblO7p44ezcfF+pWCF5otSs0/1T0oEzyeL/KNDkAauyAT8YB5PMhCJeF4D6p/bCG
+	tU/XqFdmOvfq6ayfgrORs1F3glat8Xv8tWi9TVCgKyIq8QvIQAExDnnvM108oN6Vkr5zf9URlxk
+	TCsAAexSg+j4m81V0P86001QhJamUKX/cmkU2oEFGPkqb20is40SxtJ4yU7ULvDbsXXxmHnBNjc
+	cWPEutjpA==
+X-Received: by 2002:a17:903:3c23:b0:2ce:93a3:c16c with SMTP id d9443c01a7336-2d0521bbfd1mr106788675ad.12.1785778341319;
+        Mon, 03 Aug 2026 10:32:21 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:45::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b0ea002sm41300535ad.49.2026.08.03.10.32.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 10:32:20 -0700 (PDT)
+Date: Mon, 3 Aug 2026 10:32:18 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, kerneljasonxing@gmail.com,
+	kuniyu@google.com, bjorn@kernel.org, jiayuan.chen@linux.dev,
+	kaiyuanz@google.com, willemb@google.com, asml.silence@gmail.com,
+	sdf@fomichev.me, fw@strlen.de, Neal Cardwell <ncardwell@google.com>,
+	Ralf Lici <ralf@mandelbit.com>, Will Deacon <will@kernel.org>
+Subject: Re: [PATCH net v2 2/3] net: devmem: return EMSGSIZE on type mismatch
+Message-ID: <anDQon4xaZ+lDCOc@devvm29614.prn0.facebook.com>
+References: <20260803171441.408014-1-almasrymina@google.com>
+ <20260803171441.408014-2-almasrymina@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3479488.1785778323.1@famine>
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 03 Aug 2026 10:32:03 -0700
-Message-ID: <3479489.1785778323@famine>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803171441.408014-2-almasrymina@google.com>
 
-Minhong He <heminhong@kylinos.cn> wrote:
+On Mon, Aug 03, 2026 at 05:14:40PM +0000, Mina Almasry wrote:
+> When a devmem payload mixes with a standard page payload, return
+> -EMSGSIZE instead of -EFAULT. This enables tcp_sendmsg to seamlessly
+> fall back to creating a new segment instead of failing the socket send.
+> 
+> Fixes: bd61848900bff ("net: devmem: Implement TX path")
+> Cc: Pavel Begunkov <asml.silence@gmail.com>
+> Cc: Stanislav Fomichev <sdf@fomichev.me>
+> Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
+> Signed-off-by: Mina Almasry <almasrymina@google.com>
+> Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+> ---
+>  net/core/datagram.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/core/datagram.c b/net/core/datagram.c
+> index 173b5d97bd409..6f8ffd61bcab4 100644
+> --- a/net/core/datagram.c
+> +++ b/net/core/datagram.c
+> @@ -638,7 +638,7 @@ int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
+>  	int frag = skb_shinfo(skb)->nr_frags;
+>  
+>  	if (!skb_frags_readable(skb))
+> -		return -EFAULT;
+> +		return -EMSGSIZE;
+>  
+>  	while (length && iov_iter_count(from)) {
+>  		struct page *head, *last_head = NULL;
+> @@ -713,7 +713,7 @@ zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
+>  	struct net_iov *niov;
+>  
+>  	if (i && skb_frags_readable(skb))
+> -		return -EFAULT;
+> +		return -EMSGSIZE;
+>  
+>  	/* Devmem filling works by taking an IOVEC from the user where the
+>  	 * iov_addrs are interpreted as an offset in bytes into the dma-buf to
+> -- 
+> 2.55.0.571.g244d577d93-goog
+> 
 
->bonding_init() ignores register_netdevice_notifier() errors and still
->returns success, which can leave the bonding module loaded without its
->netdev notifier registered.
->
->Check the error and unwind prior initialization on failure.
->
->Signed-off-by: Minhong He <heminhong@kylinos.cn>
-
-	It appears that the matching unregister_netdevice_notifier call
-in bonding_exit has the same issue, although there's probably not much
-that could be done there other than printing a message.
-
-	Regardless:
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-
-	-J
-
-
->---
-> drivers/net/bonding/bond_main.c | 4 +++-
-> 1 file changed, 3 insertions(+), 1 deletion(-)
->
->diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_m=
-ain.c
->index e1bec8164221..3405a20bd498 100644
->--- a/drivers/net/bonding/bond_main.c
->+++ b/drivers/net/bonding/bond_main.c
->@@ -6637,7 +6637,9 @@ static int __init bonding_init(void)
-> 				flow_keys_bonding_keys,
-> 				ARRAY_SIZE(flow_keys_bonding_keys));
-> =
-
->-	register_netdevice_notifier(&bond_netdev_notifier);
->+	res =3D register_netdevice_notifier(&bond_netdev_notifier);
->+	if (res)
->+		goto err;
-> out:
-> 	return res;
-> err:
->-- =
-
->2.25.1
-
----
-	-Jay Vosburgh, jv@jvosburgh.net
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
