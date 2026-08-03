@@ -1,268 +1,199 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05960439014
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 18:46:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785782812; cv=none; b=HYI2IgZaIkS4W17vP/aJ6D2sHgJtd3Y5FPfh/rdh5IC2t+DTTO1O1ggx797xV/OFztPOwf76X3YA1oawj18Bru2sgxgi/zzGmbC+7W262PXU/uljyiljj/e/N37u0XINq46ruMUS2MIW8oGPy0v5/bAJjcbc+ryR5IsZsT0YW5I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785782812; c=relaxed/simple;
-	bh=+5keIfq+ahGjGb23E34eAMBpGZbIe+0PkejsdNponjM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OTrcW5AbFZB/bDEgm6fLa+MvlncO9WYMAdYnweG+ekXlHXTT4EjZB2fX5OLgSq9amEBtlk35fwUxmWClTF2z25fB3l+LVS4SauJ22bxuJy+IHKebZ3FAH0NHzg6mnw7vtxNaCKS1WV+P+RWctUqcH/P1hevoBAR3apLSFDXaCBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gjgFgxM2; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4388D42E8F4
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 18:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785783200; cv=pass; b=AX/5ddHuJJtfJpBwv/uujXfruABeTyxQAOxY0YiP6A3eBzsyNEcAcMqxpk05QaOwyB2xjt++aL5t+FfhJ7teDIa+P965wglsEUd0CIEGSFfQrVxI5hidzSkwe9RmirmklXETrnFY8iQT3njViR+uH0CgLSkHRdvkqSoD8z+Jj7w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785783200; c=relaxed/simple;
+	bh=d1GdJzffowGAnX7SgkQLsLTnYKo3xtqP/dyMoi66AaE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OInqkuLJrbMmGW7UUg8d7UINrgICisCNFMbbCUrBwEmYmKYSoNSGQ9pfPrRnEmRpMIZqL0KINRqpXFxkUe+R7YhhcUycNvN04Skjr0rd4EiH2hjga7xy847tIJ4oZZEISuWXAlwsKMYCug6nn2nA9u+RQDY2l3ZneRp1h3pSwZk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cAreKfbx; arc=pass smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gjgFgxM2"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e8e864ef0so6158978a91.0
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 11:46:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cAreKfbx"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ccdf36f63dso29365ad.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 11:53:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785783198; cv=none;
+        d=google.com; s=arc-20260327;
+        b=n93OSfHdQfpPn9irMNun73zfG/hdMAauF/Bf0z3WbbM9nZYNgV5u83yEy7OhgDOUjg
+         GoP1XAACwvlfcoQ8mHAMqEnGC2jwLD89uM59w8eGSs3SSQY4D/1hHieLwFNzvrTEg8ml
+         9RHj7JO7U56H+2ExROQA8boYllFS58zbpTIRj0EVNgCKnKnwDllWxXqHXx0XPI3AQ6rf
+         7KQnObeBr8akoaRCnUL8GQDxXuFtu7XHYyf+SjOl78GiJBMvw92ug4NS79X0EHChzpNN
+         PKG7gknbVlDcimzRN+41jmSL0LuYvIvqBf0IFA5e6TO9dkGDgi+6TmBJwZ0gKr7BuyAs
+         META==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YEGYHAhaI5Y4Bh50/L1Jde5LSR6VhkVNUjGLHvvRFMg=;
+        fh=DcgEIyTaXtgUmagKo2rAT1NkxpYhFWczbYZkg7dlTcs=;
+        b=sytAe4C05Vb5cmFANnxPKO73nIryDIfUxQBnntadqAfYUUom4o9sOmcUT6GzMm13iL
+         hnJ4r5RLjPD3Y3cg5QXBwZR27Hu/gf5NSO8pFMXbBSE6aeCJhWnuc6gzZNjGXz7gSr93
+         DEk1Mkg1CVZWL2BcqslvtDKmWHjK+XfO5kyAPfjcbeNNbDLJTv0VPQcBJ4+jQGFzgAvm
+         gOtD0uF8s8uPUnItnibhTIExxnm1QcPAdLcsTSE7juYpErEpFLYO3RXa1c6pXBSQZq4Y
+         U6Uo50bj9vmbTUCyCSUNLECysBsRwfk3/xMDzSg4aKi1FG5f84nHhxjCNC0rBXhwuIWn
+         T+rw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785782809; x=1786387609; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cw3abLLZFYPMN/Q20aJiudIzDZfANzTR+tzIkHl7qzg=;
-        b=gjgFgxM2dDXovNc7p/JLjANNzHnbt/S/yh0aBLdV6Z2R8XI477HASIx6ygntorMrjw
-         d3/8IghTkyEA0hVHMjXYXjGnsrMvHPTuJy0STUTBAs0Y4fSsI2i0mJM3IS7mgOqKjFa2
-         VTHxQegL3aSnU8H+9fbGvAwz7wMeuj2f7urDaqmJtNrFtJ4zCsUN5wzfZnY41n+7d8PN
-         ot/w2v8qRf43oRCSMq7gFRN14INCScc5XSTSWatDf/ZddFtwZiZ4TouAqZ1Q9Jwi1fF4
-         uaUcT4yAHjI/en4I3OAVf45ofCyHhkLYAZCgWKHe9+AnzRYbnOGZ+0VF+AN80igkMvsq
-         HS8g==
+        d=google.com; s=20251104; t=1785783198; x=1786387998; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=YEGYHAhaI5Y4Bh50/L1Jde5LSR6VhkVNUjGLHvvRFMg=;
+        b=cAreKfbx24pEd9QkWLjY2iIsA0X8yGOoCWK6phpeKAJOIBUUvuC9GzezY06m5ClYwj
+         7QuSB17MySUupo2bLoeYmVweNa/uNQNEqw+PNnK43YyXgLKrKG1K/l3g6TLAu/Gkt05F
+         /C3cmIDHHFEMa1gvP3I26SI0AoLwIlgW5ODyGYI3UzBzB/CYs2a3u1hicmny74gzwDst
+         POm2yDv72h/69n82VUFVNMDpCW/cRhCvddXTRuEPIyQkcc76jUgKycyPxOpcrxTDvMk8
+         Cqq0+5XGOEojPOpe18EqqlCEwJ/3ZON8EIzPKYsQCPrdoUkKG6NjCZFBFeAuPhOOoKig
+         QVfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785782809; x=1786387609;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cw3abLLZFYPMN/Q20aJiudIzDZfANzTR+tzIkHl7qzg=;
-        b=NERrPicXGSXYsivL0NxNIeeCXkKwei4BEr/IApWEBAMI/Gf17/Jyx+rqrkQqsJYXzQ
-         MjT3XbnvN471P8fRhSrsunfTrHD7UxZJIYKPocMBVRtksqH2KD5UlhVGIC2RyFxW/zvD
-         VBW4iNGO4shRk9ClU8zW2yeXO+W4aYw/hd13edbLL9WpRRGn35ZqyfM51ClNrFHKpkZR
-         kazmTWV4pHdsQn9y7i1O/iZWTo8QUSKWnw58vNkqm3/n4WVRzcmYDuDSoWZ2nG+zPfWL
-         Hm8G0KKzdWwK8rAXiz8iF4s+3HEaHT6MLZQNXxW4oZVGxsk9gebEExcWXy9gBELMfB37
-         7O0g==
-X-Gm-Message-State: AOJu0YzhovvM/mGq89bfx7aC513fM6q/6X3V7uu6fQbAKgNK1Jg8zA8T
-	glguQ0+aPlsSHkBq1l9WBM7mIxWKZe5rOqSJkJFw2MAeNrtjbAisH9qPDULlkqX+4Yvey3nIwIA
-	kv2vJCzDMJdxfuJdyQT/GoW2WvjBgeLXOVONE3cdLgd2RiNtjWEoCTPp1oNO1nMwiF7CEC7Ic9z
-	9iVTk57Gk1JC2ZJ6KvmaOB4twyZ0hT1ZSnZVnpjN3IHLQr/DMoNBlEV+DxRWQPazM=
-X-Received: from pjuu7.prod.google.com ([2002:a17:90b:5867:b0:38d:f003:cd24])
- (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:57e6:b0:38d:e658:5959 with SMTP id 98e67ed59e1d1-38fbc3e596cmr10248328a91.5.1785782805278;
- Mon, 03 Aug 2026 11:46:45 -0700 (PDT)
-Date: Mon,  3 Aug 2026 18:46:30 +0000
-In-Reply-To: <20260803184630.3813311-1-hramamurthy@google.com>
+        d=1e100.net; s=20251104; t=1785783198; x=1786387998;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YEGYHAhaI5Y4Bh50/L1Jde5LSR6VhkVNUjGLHvvRFMg=;
+        b=G/2TE5OCiUmSUIiyAfVhfuIxrL7aXeki/Ej6xRMqVmuxmlfMPiX0Liz7kHDjXC0td2
+         o/NHDa6JaM40J6TSzYerzf9CVlP2+WZ5ND5XLYTfD02aNb6oBw4n2AZIC6Sgi2PDFzTX
+         y/BJEb3urhjvBF2o9aZRIDY3j0b5NihNPLwbssm9RYLpduzqJySzC+hGWDrdfDi8cbpq
+         GcY5rFQYcpBlBAfOOwk65RjVlY+3eHTm9p/UC9lKATgXckeOKBHSnMnLZHTnxDUGUSPY
+         CNU4kdb8jDfIHAl+4fNjfq9E1rRpHL3P0h8UykBsxmhafmS3rPyijGF1xRM5+ItxABNx
+         lR6g==
+X-Gm-Message-State: AOJu0Yw3ogRxfP5woZRhs/gCgs0zqLz19aPZadHCbU+ErECPlNTfjpz8
+	is+7goSUcrHY9DF/VwBCvLcIXLyT1TlQFASkbZO3zWoPIydhIpKb26XAUU9bSPMNrRlcKVRWaQd
+	zpf/gKllsxr4B2aQDkokFvfWa9xvQyHyvXYYR8AS0
+X-Gm-Gg: AR+sD12K+echGz5EAIDqOrr5IRtjJM4q2tqrno1vir4UnGsOAM30jgn2bLTeRBcHXrb
+	XufiNKFCnGfRq6wbKmUsF3lxDxtEzNZqkFDbZYsjQpAoYMtn/mPLjXC4k6Lb0gbZwsCaPgR3VLi
+	pjp/MFN0jqZTYbVPpTIngbF/z+8yDz+/MilUjfb8FF8uTAk2jLWXY6A8ekpjzBeltOhClP3o242
+	1mTcwXw6sggOmzPG7zQz/f6Em76U3O6rWSWcJ4Iuz1Fv8kxKxD58zSE229wbExKKGc+n7B7Y6YI
+	XEdR4PfCrRjtN0byzVF5BT7CUdYnSgJkv5PKFtSHph1ybcrkfqmATo8=
+X-Received: by 2002:a17:902:d60f:b0:2ca:be81:b469 with SMTP id
+ d9443c01a7336-2d08c64e00bmr2176265ad.0.1785783197790; Mon, 03 Aug 2026
+ 11:53:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260803184630.3813311-1-hramamurthy@google.com>
-X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260803184630.3813311-16-hramamurthy@google.com>
-Subject: [PATCH net-next v3 15/15] gve: add link status/speed ctrl ops
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-To: netdev@vger.kernel.org
-Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
-	john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com, 
-	willemb@google.com, nktgrg@google.com, maolson@google.com, thostet@google.com, 
-	jacob.e.keller@intel.com, debarghyak@google.com, kees@kernel.org, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+References: <20260803070513.4657-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+ <20260803070513.4657-3-muhammad.nazim.amirul.nazle.asmade@altera.com> <CAHS8izN1mCBH5=ERy9OKaeC4Wz2-v2N2oGDW34P=ZoS7oo2aOw@mail.gmail.com>
+In-Reply-To: <CAHS8izN1mCBH5=ERy9OKaeC4Wz2-v2N2oGDW34P=ZoS7oo2aOw@mail.gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Mon, 3 Aug 2026 11:53:05 -0700
+X-Gm-Features: AUfX_mxKt7Hw3ljuyeXscU2rYJEdlvkjRCcwEfsOQmBdLq4h2KD5KKl3NZxDn60
+Message-ID: <CAHS8izO_wq4GRmbej=A0zQymB+mBrruD8zGtS5Afa2OGuSN9Qw@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/3] net: stmmac: Use pagepool instead of
+ streaming buffers for Tx
+To: muhammad.nazim.amirul.nazle.asmade@altera.com, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, dinguyen@kernel.org, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, alexandre.torgue@foss.st.com, peppe.cavallaro@st.com, 
+	joabreu@synopsys.com, mcoquelin.stm32@gmail.com, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Joshua Washington <joshwash@google.com>
+On Mon, Aug 3, 2026 at 11:39=E2=80=AFAM Mina Almasry <almasrymina@google.co=
+m> wrote:
+>
+> On Mon, Aug 3, 2026 at 12:08=E2=80=AFAM
+> <muhammad.nazim.amirul.nazle.asmade@altera.com> wrote:
+> >
+> > From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+> >
+> > Use page pool buffers instead of streaming skb buffers in stmmac_xmit
+> > when snps,pagepool-tx-buf-quirk is enabled. As page pool buffers are
+> > recycled, the overhead of dma map/unmap for each transmit can be
+> > avoided. There is a trade-off of copying from the skb into the page
+> > pool buffer, but this helps where the copy is cheaper than dma
+> > map/unmap (for example with IOMMU invalidate cost).
+> >
+> > Currently page pool buffers are only used for single-fragment transmit
+> > in the non-TSO path.
+> >
+> > Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.=
+com>
+>
+> Whoa!
+>
+> I haven't looked at the patch deeply to be honest, but using the
+> page-pool for tx is a bit interesting. There is no other code that
+> uses it like that I think. I can't think of any blockers off the top
+> of my head, but I think there are places where we keep a global list
+> of created page_pools on the system/netdev and the code parses those
+> lists may be assuming it's a normal page-pool, which is a pp used for
+> rx and attached to the an rx queue.
+>
+> Just Ccing the maintainers of pp to know about this use case. I can't
+> think of issues again, but I wonder if a more-expert has thoughts.
+>
 
-Refactor link status check to use a control plane op. Introduce
-new op for retrieving the link status in AQ mode. This op reads
-the link status from the device status register and stores the
-value in priv.
+Ah, yes, gemini reminded me of the most critical bit. The page_pool
+actually doesn't do concurrency checks on allocation because it
+assumes allocations only-ever come from the napi, and can't race with
+allocations coming from another napi. Does your patch account for that
+somehow? Or can allocations in tx come from multiple cpus in parallel?
 
-Also add an op for retrieving link speed in AQ mode which calls into
-gve_adminq_report_link_speed.
+Full feedback:
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
----
-Changes in v3:
-  - Fix kdoc typo ("set link status" -> "set link speed")
-  - Copy link speed into local variable instead of reading twice to
-    prevent TOCTOU issue.
+```
+  ### 1. Concurrency & Memory Corruption (The Lockless Fast-Path)
 
- drivers/net/ethernet/google/gve/gve.h         |  5 ++++
- drivers/net/ethernet/google/gve/gve_adminq.c  | 10 +++++++
- drivers/net/ethernet/google/gve/gve_adminq.h  |  1 +
- drivers/net/ethernet/google/gve/gve_ethtool.c |  3 +--
- drivers/net/ethernet/google/gve/gve_main.c    | 26 ++++++++++++-------
- 5 files changed, 33 insertions(+), 12 deletions(-)
+  page_pool allocations (page_pool_alloc_pages()) are lockless in the
+fast path (pool->alloc cache). They inherently assume exactly one
+allocator context (which natively maps to a single
+  RX NAPI softirq).
+  If this driver allows multiple CPUs to concurrently enter the TX
+routine and allocate from the same page_pool, the lockless cache will
+immediately corrupt. To use it in TX, they must
+  guarantee:
 
-diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-index 38b93238e2ca..8e34e9f75006 100644
---- a/drivers/net/ethernet/google/gve/gve.h
-+++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -846,6 +846,8 @@ struct gve_device_info {
-  * @reset_flow_rules: Flush all flow rules from device
-  * @create_queues: Sends commands to the device to create TX/RX queues.
-  * @destroy_queues: Sends commands to the device to destroy TX/RX queues.
-+ * @report_link_status: Set link status into @priv->link_up
-+ * @report_link_speed: Set link speed into @priv->link_speed
-  */
- struct gve_ctrl_ops {
- 	int (*map_db_bar)(struct gve_priv *priv);
-@@ -866,6 +868,8 @@ struct gve_ctrl_ops {
- 	int (*reset_flow_rules)(struct gve_priv *priv);
- 	int (*create_queues)(struct gve_priv *priv);
- 	int (*destroy_queues)(struct gve_priv *priv);
-+	int (*report_link_status)(struct gve_priv *priv);
-+	int (*report_link_speed)(struct gve_priv *priv);
- };
- 
- struct gve_priv {
-@@ -967,6 +971,7 @@ struct gve_priv {
- 
- 	/* Gvnic device link speed from hypervisor. */
- 	u64 link_speed;
-+	bool link_up;
- 	bool up_before_suspend; /* True if dev was up before suspend */
- 
- 	bool mgmt_irq_requested;
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
-index b04968257355..fe975d1547b2 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.c
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-@@ -1834,3 +1834,13 @@ int gve_adminq_create_queues(struct gve_priv *priv)
- 
- 	return err;
- }
-+
-+int gve_adminq_report_link_status(struct gve_priv *priv)
-+{
-+	u32 status;
-+
-+	status = ioread32be(&priv->reg_bar0->device_status);
-+	WRITE_ONCE(priv->link_up,
-+		   !!(GVE_DEVICE_STATUS_LINK_STATUS_MASK & status));
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.h b/drivers/net/ethernet/google/gve/gve_adminq.h
-index 03e8318f7327..82413369dec9 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.h
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.h
-@@ -643,6 +643,7 @@ int gve_adminq_report_stats(struct gve_priv *priv, u64 stats_report_len,
- 			    dma_addr_t stats_report_addr, u64 interval);
- int gve_adminq_verify_driver_compatibility(struct gve_priv *priv);
- int gve_adminq_get_device_properties(struct gve_priv *priv);
-+int gve_adminq_report_link_status(struct gve_priv *priv);
- int gve_adminq_report_link_speed(struct gve_priv *priv);
- int gve_adminq_add_flow_rule(struct gve_priv *priv, struct gve_adminq_flow_rule *rule, u32 loc);
- int gve_adminq_del_flow_rule(struct gve_priv *priv, u32 loc);
-diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
-index dd1c44fedc77..a3220c651438 100644
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -749,12 +749,11 @@ static int gve_get_link_ksettings(struct net_device *netdev,
- 	int err = 0;
- 
- 	if (priv->link_speed == 0)
--		err = gve_adminq_report_link_speed(priv);
-+		err = priv->ctrl_ops->report_link_speed(priv);
- 
- 	cmd->base.speed = priv->link_speed;
- 
- 	cmd->base.duplex = DUPLEX_FULL;
--
- 	return err;
- }
- 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 484f5a54a408..19e4b56238a0 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1502,15 +1502,18 @@ static int gve_close(struct net_device *dev)
- 	return err;
- }
- 
--static void gve_handle_link_status(struct gve_priv *priv, bool link_status)
-+static void gve_handle_link_status(struct gve_priv *priv)
- {
-+	bool link_up;
-+
- 	if (!gve_get_napi_enabled(priv))
- 		return;
- 
--	if (link_status == netif_carrier_ok(priv->dev))
-+	link_up = READ_ONCE(priv->link_up);
-+	if (link_up == netif_carrier_ok(priv->dev))
- 		return;
- 
--	if (link_status) {
-+	if (link_up) {
- 		netdev_info(priv->dev, "Device link is up.\n");
- 		netif_carrier_on(priv->dev);
- 	} else {
-@@ -1537,7 +1540,6 @@ static int gve_set_xdp(struct gve_priv *priv, struct bpf_prog *prog,
- {
- 	struct bpf_prog *old_prog;
- 	int err = 0;
--	u32 status;
- 
- 	old_prog = READ_ONCE(priv->xdp_prog);
- 	if (!netif_running(priv->dev)) {
-@@ -1564,8 +1566,8 @@ static int gve_set_xdp(struct gve_priv *priv, struct bpf_prog *prog,
- 		bpf_prog_put(old_prog);
- 
- out:
--	status = ioread32be(&priv->reg_bar0->device_status);
--	gve_handle_link_status(priv, GVE_DEVICE_STATUS_LINK_STATUS_MASK & status);
-+	priv->ctrl_ops->report_link_status(priv);
-+	gve_handle_link_status(priv);
- 	return err;
- }
- 
-@@ -1998,11 +2000,11 @@ static void gve_turnup(struct gve_priv *priv)
- 
- static void gve_turnup_and_check_status(struct gve_priv *priv)
- {
--	u32 status;
-+	const struct gve_ctrl_ops *ops = priv->ctrl_ops;
- 
- 	gve_turnup(priv);
--	status = ioread32be(&priv->reg_bar0->device_status);
--	gve_handle_link_status(priv, GVE_DEVICE_STATUS_LINK_STATUS_MASK & status);
-+	ops->report_link_status(priv);
-+	gve_handle_link_status(priv);
- }
- 
- static struct gve_notify_block *gve_get_tx_notify_block(struct gve_priv *priv,
-@@ -2326,12 +2328,14 @@ static void gve_service_task(struct work_struct *work)
- {
- 	struct gve_priv *priv = container_of(work, struct gve_priv,
- 					     service_task);
-+	const struct gve_ctrl_ops *ops = priv->ctrl_ops;
- 	u32 status = ioread32be(&priv->reg_bar0->device_status);
- 
- 	gve_handle_status(priv, status);
- 
- 	gve_handle_reset(priv);
--	gve_handle_link_status(priv, GVE_DEVICE_STATUS_LINK_STATUS_MASK & status);
-+	ops->report_link_status(priv);
-+	gve_handle_link_status(priv);
- }
- 
- static void gve_set_netdev_xdp_features(struct gve_priv *priv)
-@@ -2456,6 +2460,8 @@ static const struct gve_ctrl_ops gve_adminq_ops = {
- 	.teardown_mgmt_irq	= gve_adminq_teardown_mgmt_irq,
- 	.create_queues		= gve_adminq_create_queues,
- 	.destroy_queues		= gve_adminq_destroy_queues,
-+	.report_link_status	= gve_adminq_report_link_status,
-+	.report_link_speed	= gve_adminq_report_link_speed,
- };
- 
- static int gve_init_priv(struct gve_priv *priv)
--- 
-2.55.0.571.g244d577d93-goog
+  =E2=80=A2 They allocate 1 dedicated page_pool per TX ring.
+  =E2=80=A2 The TX ring is strictly protected by a spinlock (e.g.
+__netif_tx_lock) during all allocations, or they are utilizing strict
+CPU-bound XPS.
 
+  ### 2. Slow-Path Contention (ptr_ring Thrashing)
+
+  Even if the locking is safe, performance will likely tank due to
+NAPI mismatches.
+  page_pool keeps its speed because pages freed by the NAPI context
+are dropped directly back into the lockless alloc array. If a page is
+freed by a remote CPU or an unbound context, it
+  falls back to a spinlock-protected ptr_ring.
+  In a TX flow, if CPU A injects the packet (ndo_start_xmit) but CPU B
+handles the hardware TX-completion IRQ, CPU B will constantly push
+pages into the locked ptr_ring, and CPU A will
+  constantly pull from it. You lose all the lockless benefits of
+page_pool and just burn cycles on cross-CPU spinlocks.
+
+  ### 3. Memory Waste (Page Splitting)
+
+  TX injections are usually small (e.g., bouncing a fragmented
+header). page_pool allocates strictly in PAGE_SIZE chunks unless you
+heavily orchestrate page_pool_alloc_frag(). Standard
+  SLUB kmalloc() or skb_alloc() is almost always cheaper, more memory
+efficient, and more cache-friendly for TX bounce-buffers than spinning
+up dedicated page pools.
+
+  TL;DR: Unless the TX allocations and the TX completions are strictly
+pinned to the identical NAPI context/CPU, and they are allocating
+massive buffers, throwing page_pool at the TX
+  path usually results in lock contention and memory inefficiency.
+They are almost certainly better off using standard kernel allocators,
+or at minimum mapping DMA_TO_DEVICE correctly
+  over standard per-CPU locked pools.
+```
+
+--=20
+Thanks,
+Mina
