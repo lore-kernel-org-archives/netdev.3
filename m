@@ -1,213 +1,256 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011040.outbound.protection.outlook.com [52.101.62.40])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A89C3F483D;
-	Mon,  3 Aug 2026 11:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785756371; cv=fail; b=aut/8QE39DVTImnmTKHaEM6GvyLS8fiTiSpMXSQiuHEFEsx7857zLxodt3gBEDKjkKFr4psIppkJajKfBApJ8+lWojzQn80rWIfHFqTE8GTyVdMASRqGSlMhn1LslXLdGGLy8s8fjcSmMJlJ1Yhj5K7bN0rJcOg5j7mQJeOfnuE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785756371; c=relaxed/simple;
-	bh=qFjy9ineWjWQ9DVb7cRMJXeddCP1R5wk2Jd8BzId84g=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yksl2ewwF2myzbEFVl/e6nfS/8UbHuw74/zeU3BjJoqfffLgMkjfNR5xEmz38suRQ2kWa6XgF5STIf+HP/F50WDsbXIHKn3TQz/dxfIT3Cuq1FwtSEkCS8XVxWPm0s8cjBk+9D9z4Y4t+hxr1b6j2lyVbKWccoagax2QiHGw+O8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=n9/wAY2m; arc=fail smtp.client-ip=52.101.62.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEC33FCB2C;
+	Mon,  3 Aug 2026 11:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785756525; cv=none; b=NmaEvpgfa24khdqv80qulDjz662wWieSx0AF2LlgmwYiBKKq5rESiQIP7Zct+610nVFLYcSUm6OUt4jVrL4REbQOFKnM2jwLkoC95fpYKdHFXNZr2YsXg1BlLLkAokkqOjNuSKgMnR1uf9izHpFo+R/V82rpO5lEjODBonKBFcQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785756525; c=relaxed/simple;
+	bh=ACS0eJexhbIfi9JF7VgvdcTuAu3qWlqMbMc8Xdm0VqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=od+AXncyjiU9dx7y/Bfi8oh38riEY3JiiyZWOtNH/GCww3+BKCKfN+G73Fkgjx+Z9+vW168EWoByTp3ooav2YVETFx34zo+J7h8mAx+zyvf6ud0jeirmeemHiZ8xzjSsgEb8419aecWRohgtabFp8nNVChq9LsH9cRgLlEFeyow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kOZ8+suY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="n9/wAY2m"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=P0r3wUjyXnO1Ahwl5KGcHq5aFQ2aTOvU6fJzTXiNimUoVLpaV9DY7e7PzJBAdwPi2sh8kVbfh17ndKGtxb1yvYr/bauWlbgnEQIR2h4/ue79AuZ5YvLPzb5KDpiUz0P/VUFq58CNlBYgsAmK8KfnEP5Ze9zB3WjtWIzu9yZLTy7UM7n9QgVqYLMuJyCdnVOQDc/Cis4sV//+XxoLXz8LKzJeZjyyXwGoLTh7eAEMfzaVYxzjIUfKbX26qJOpEDjZ7fCeWlei41B5W+wBvoG4mJdYWMKttcNjDI4fGJ5RZUbwNnIvP6a8BnQdOL3Ng6xu0aO/FaxzGzk3iLdIX23wxA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BFKvHAQ+bIS+e+avEi8+UBCJf2WSCLF1319NYYwLpvE=;
- b=egSlloEERO3WF6aYrnHYO3KAvs6ThO84BVQVSC9k97S5HDFqSc9wf8fLRMG7BAuaixMQzG4AGYMsqSsL0dtAXsj/9VXE2PraLWimZph1WNzvGtIwhsyX0VPPY2nzY77KDyzEeqpnGYi+P0PoUnqm5dDUoTg01MKOclK0tGFZK8rUILT2/qgTmoTsY5DByA5Q9cyRd0WHJ7Ilu+AefM9ZiIG91tr3O3JQ1OGdvKAWKknyl0HdDQ8hNo6CY9u0pJBHeM4cqQr8i/TfROt9u+pjRdcc3F0ZSJ6EZrh1ZlucbLwWON+SkGXjer5SqfjcX8tFHinPy/qy4F2b44HcQ/rctg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BFKvHAQ+bIS+e+avEi8+UBCJf2WSCLF1319NYYwLpvE=;
- b=n9/wAY2mCj4hsi3wMASWeYQpFjj4v0hxpcv0b0iwWe5Vx3VOZ52/ygcgmtJ9Pwn1Ny/zC0viO+FXfJX5lSE6HQJCTToHCT047kI0NFalJzC4Asy62k38vWqSg4u4xnZGlH8+VdRHGozZC9JXP6K2rUu5NUZNS73U+gb32/lvL872Yqs2z6WaZwZWvfBFNyqrJUAqXvHJrsAMo/hk5TBI4T636SigtrVWZiVzbm0a88xaxSZXpYQP2OGCzqpApODQCc9ZIsCcy0WMAeAl4iymy2qUboYadrMhLsEoLKzfUqTw+fkBghz4C22/972/4XoQS4yr75DbX6PU4Puxfms2rA==
-Received: from BN9P220CA0009.NAMP220.PROD.OUTLOOK.COM (2603:10b6:408:13e::14)
- by CH3PR12MB9313.namprd12.prod.outlook.com (2603:10b6:610:1ca::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Mon, 3 Aug
- 2026 11:26:01 +0000
-Received: from BN1PEPF00004686.namprd03.prod.outlook.com
- (2603:10b6:408:13e:cafe::6a) by BN9P220CA0009.outlook.office365.com
- (2603:10b6:408:13e::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.17 via Frontend Transport; Mon, 3
- Aug 2026 11:26:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BN1PEPF00004686.mail.protection.outlook.com (10.167.243.91) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.292.8 via Frontend Transport; Mon, 3 Aug 2026 11:26:00 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 3 Aug
- 2026 04:25:47 -0700
-Received: from dev-r-vrt-155.mtr.labs.mlnx (10.126.231.37) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Mon, 3 Aug 2026 04:25:42 -0700
-From: Danielle Ratson <danieller@nvidia.com>
-To: <netdev@vger.kernel.org>
-CC: <dsahern@kernel.org>, <idosch@nvidia.com>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <razor@blackwall.org>, <ja@ssi.bg>, <petrm@nvidia.com>,
-	<fw@strlen.de>, <kuniyu@google.com>, <bridge@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, Danielle Ratson <danieller@nvidia.com>
-Subject: [PATCH net-next v2 5/5] bridge: Use ndisc_parse_options() to parse ND options in br_nd_send()
-Date: Mon, 3 Aug 2026 14:25:05 +0300
-Message-ID: <20260803112505.613873-6-danieller@nvidia.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260803112505.613873-1-danieller@nvidia.com>
-References: <20260803112505.613873-1-danieller@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kOZ8+suY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B171F000E9;
+	Mon,  3 Aug 2026 11:28:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785756524;
+	bh=ou4sT2BujwFMitQRzviT5KLE0YM4++tuPCN0yYss9us=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kOZ8+suYI9tE4kDLma/Id4gIZCQraiBxxVBj72UObGWTFLsPQdKqiOUvN9dPgO7v6
+	 wj+ICfXbZ1+gkoV7monhhWSIJK2aUP6Q0FJQFUSq6xmuuU0gKQI4y5Mi/JwwenyKt2
+	 uKcQ/oCiZRWyZAbsoWqv/us2EvZ2aWlHu+YXzqFSBv2jnijERqhH7tB2uEdkyxmBcb
+	 cdGIHuo9FMvI85PpMjc3uF2KaL2Sue11k+aBav1hsQ0Dp1yNsH60aXl/X59lYf15Rc
+	 +42vYqDTTuFyeLqHnETFPN+66oSpN2IaWkO1yqdUDjlOtdF4U6Mf2HF17brF6WbuAt
+	 3HHRES+JV7Akw==
+Date: Mon, 3 Aug 2026 12:28:25 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev, 
+	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v3 3/5] mm: Add RCU-based VMA lookup helper that waits
+ for writers
+Message-ID: <anB4uxEbKsa1Re0w@lucifer>
+References: <20260802215459.2769283-1-surenb@google.com>
+ <20260802215459.2769283-4-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004686:EE_|CH3PR12MB9313:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a90e220-00a5-4570-cd0e-08def151ff10
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|1800799024|7416014|376014|56012099006|10067099003|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	MXyySNOP46dJVXUOla6wzsIV6NjPXRlxX7aYffxB53kJUPK3AzQjSWPBMetCSQ51dewl/ROMnbo53QxoKS9Mhkd6EOOOry0v7LYfeIxbJkQZak8ISrytka0oW8Pg/gMPIiP2SKQnndddzIz0VE7bYJOVNSTfZdyKxS+DF+c9fh9m09pX+tMlqVCVhSs4KXltvfgX9xYcu3+qi/+KBaa6JtX2RSY+To4nWwl6FwfZGVWQ72ZBquzYR+9590CvROqhkvVLg0wZteH+sll84QGR8ceTMpdd+apYR0hvGbECbglLIUql8MfTpUpYnjzul+rYRxXaSGEz0b0//pw102c/PwkgXSbZpC88Do0J8n+UOV9lNyLRo4H/gfZnwMRHbS4bZd63SkF1tlGR2+pE+HxyCk+EJ8R6CDlh1mqdCQLhqJYrc0+h5yP1nzY4hVJQibtwiwj94GmttREPPz4NC+lESq8bQQjeEMpHL05Fb3W5z7EgLB2qAcY4qBy8IpUrZFis0yEOmPK6PnGumaG6iA3vlIG/o3KTA2SipbN63T4pqOQHopEXeDVu5sii/uHYXZsft1PXrwt5isp3MGHyjXccAciwV7GSgb4u0MDPowCVEvKa+EZqOAlowFu4pG4O+2zmqMxckoggEwR/ITqcF5CiGprvSqbOV2G9INSO93s2tm/6+ncj4IXrNo9FlbbAMaPyDe9AJQXMxICYoBmuhwCGqA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(1800799024)(7416014)(376014)(56012099006)(10067099003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	5N2hKtrvpgwvPVjT+cMn9VTkSj5NpSBr02OWIS8JNonCsnNpcLuElNBO7dwiEFQmyaEwSUGEaW800cyGczxxRuYBmpQLHzgcyFmo824ry51L0WtC2/FU/IW2i0CvSE0oh3VX7JKiWPCmLEIXEhLCY2CixQe0l7LNPfu/+bPgh5uCGtua4iykbxR7wC9fN8ohIQrLXLn4AwI0e2ms227XEWTg544wN/w/6kbf74uV70ckLsLVxW3HYr6Iu8SqcRRyVS6s8YVnkd9M1s9q37lW4XvY3TKgRdZ1IneG6YaH/rTwI0XH954plUdQKG/ajRFTV1RDllP6pIq3fuDFuoQlyhrNumxDTWkLDA7LjQk2vU/cDgq7angdnE75KmxZQ2n7pdrxFa1+ve67WdXUK9z6jpK4XSLSLXsai3s5+6dbkY/we++p7HAfeeiGTE99pwNm
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 11:26:00.5215
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a90e220-00a5-4570-cd0e-08def151ff10
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00004686.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9313
+In-Reply-To: <20260802215459.2769283-4-surenb@google.com>
 
-Replace the manual ND option parsing loop in br_nd_send() with
-ndisc_parse_options(), which provides proper validation and avoids the
-class of bugs that were fixed by commit 53fc685243bd ("bridge: Avoid
-infinite loop when suppressing NS messages with invalid options") and
-commit 850837965af1 ("bridge: br_nd_send: validate ND option lengths").
+On Sun, Aug 02, 2026 at 02:54:57PM -0700, Suren Baghdasaryan wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
+>
+> == Background ==
+>
+> There are basically two parallel ways to look up a VMA: the
+> traditional way, which is protected by mmap_read_lock, and the RCU-based
+> per-VMA lock way which is based on RCU and refcounts.
+>
+> == Problem ==
+>
+> The mmap_lock one is more straightforward to use but it has a big
+> disadvantage in that it can not be mixed with page faults since those
+> can take mmap_lock for read, which can deadlock when mixed with nested
+> page faults and parallel writers.
+> For example:
+>
+> 	mmap_read_lock(mm);
+> 	// Another thread does mmap_write_lock().
+> 	// New mmap_lock readers are blocked.
+> 	vma = vma_lookup(mm, address);
+> 	// This deadlocks on mmap_read_lock() if it faults:
+> 	copy_from_user(address);
+> 	mmap_read_unlock(mm);
+>
+> The per-VMA lock can be mixed with faults, but they can fail and need to
+> be able to fall back to the traditional way.
+>
+> == Solution ==
+>
+> Add a variant of the RCU-based lookup that waits for writers. This is
+> basically the same as the existing RCU-based lookup, but on a failure to
+> lock it temporarily takes mmap_lock for read and waits for writers
+> to finish before locking the VMA, dropping the mmap_lock and returning
+> the locked VMA. This has some advantages:
+>
+>  1. Callers do not need to have a fallback path for when they
+>     collide with writers.
+>  2. It can be used in contexts where page faults can happen because
+>     it can take the mmap_lock for read but never *holds* it.
+>  3. Its fast path does not require taking mmap_lock for read.
+>
+> Basically, when applied correctly, this approach results in faster
+> *and* simpler code.
+>
 
-Use ndisc_opt_addr_data() to extract the source link-layer address
-from the parsed options, which correctly validates the option length
-for the underlying device type.
+Would be nice to have a:
 
-Export ndisc_parse_options() so that it can be resolved from the bridge
-when it is built as a module (CONFIG_BRIDGE=m); otherwise modpost fails
-with an undefined symbol.
+Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Danielle Ratson <danieller@nvidia.com>
----
+Here given https://lore.kernel.org/linux-mm/af4Zx0gJIWbdDeY2@lucifer/ :)
 
-Notes:
-    v2:
-    	* Use EXPORT_SYMBOL_GPL() instead of EXPORT_SYMBOL() to export
-    	  ndisc_parse_options().
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: linux-mm@kvack.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arve Hjønnevåg <arve@android.com>
+> Cc: Todd Kjos <tkjos@android.com>
+> Cc: Christian Brauner <christian@brauner.io>
+> Cc: Carlos Llamas <cmllamas@google.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: David Ahern <dsahern@kernel.org>
+> Cc: netdev@vger.kernel.org
+> ---
+>  include/linux/mmap_lock.h | 15 +++++++++++----
+>  mm/mmap_lock.c            | 29 +++++++++++++++++++++++++++++
+>  mm/userfaultfd.c          |  6 ++++--
+>  3 files changed, 44 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> index eb32b482434e..fdd8f5cf5722 100644
+> --- a/include/linux/mmap_lock.h
+> +++ b/include/linux/mmap_lock.h
+> @@ -228,10 +228,12 @@ static inline void vma_refcount_put(struct vm_area_struct *vma)
+>  }
+>
+>  /*
+> - * Use only while holding mmap read lock which guarantees that locking will not
+> - * fail (nobody can concurrently write-lock the vma). vma_start_read() should
+> + * Use only while holding mmap read lock which guarantees that vma lock is not
+> + * contended (nobody can concurrently write-lock the vma). vma_start_read() should
+>   * not be used in such cases because it might fail due to mm_lock_seq overflow.
+>   * This functionality is used to obtain vma read lock and drop the mmap read lock.
+> + * VMA can't be detached while we are holding mmap lock, therefore in practice this
+> + * function can fail only when there are so many readers that vm_refcnt overflows.
+>   */
+>  static inline bool vma_start_read_locked_nested(struct vm_area_struct *vma, int subclass)
+>  {
+> @@ -247,16 +249,21 @@ static inline bool vma_start_read_locked_nested(struct vm_area_struct *vma, int
+>  }
+>
+>  /*
+> - * Use only while holding mmap read lock which guarantees that locking will not
+> - * fail (nobody can concurrently write-lock the vma). vma_start_read() should
+> + * Use only while holding mmap read lock which guarantees that vma lock is not
+> + * contended (nobody can concurrently write-lock the vma). vma_start_read() should
+>   * not be used in such cases because it might fail due to mm_lock_seq overflow.
+>   * This functionality is used to obtain vma read lock and drop the mmap read lock.
+> + * VMA can't be detached while we are holding mmap lock, therefore in practice this
+> + * function can fail only when there are so many readers that vm_refcnt overflows.
+>   */
+>  static inline bool vma_start_read_locked(struct vm_area_struct *vma)
+>  {
+>  	return vma_start_read_locked_nested(vma, 0);
+>  }
+>
+> +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
+> +					       unsigned long address);
+> +
+>  static inline void vma_end_read(struct vm_area_struct *vma)
+>  {
+>  	vma_refcount_put(vma);
+> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> index e20d01e8d38f..6ff05e68e61b 100644
+> --- a/mm/mmap_lock.c
+> +++ b/mm/mmap_lock.c
+> @@ -338,6 +338,35 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>  	return NULL;
+>  }
+>
+> +/*
 
- net/bridge/br_arp_nd_proxy.c | 32 +++++++++++++++++---------------
- net/ipv6/ndisc.c             |  1 +
- 2 files changed, 18 insertions(+), 15 deletions(-)
+Why not a kdoc comment?
 
-diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
-index 6b6de0eff38c..b6e5a86b6a92 100644
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -255,15 +255,16 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
- {
- 	struct net_device *dev = request->dev;
- 	struct net_bridge_vlan_group *vg;
-+	struct ndisc_options ndopts;
- 	struct nd_msg *na, *ns;
- 	struct sk_buff *reply;
- 	struct ipv6hdr *pip6;
- 	int na_olen = 8; /* opt hdr + ETH_ALEN for target */
- 	int ns_olen;
--	int i, len;
- 	u8 *daddr;
- 	bool dad;
- 	u16 pvid;
-+	int len;
- 
- 	if (!dev)
- 		return;
-@@ -284,20 +285,21 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
- 	daddr = eth_hdr(request)->h_source;
- 	ns = (struct nd_msg *)skb_transport_header(request);
- 
--	/* Do we need option processing ? */
--	ns_olen = request->len - (skb_network_offset(request) +
--				  sizeof(struct ipv6hdr)) - sizeof(*ns);
--	for (i = 0; i < ns_olen - 1; i += (ns->opt[i + 1] << 3)) {
--		if (!ns->opt[i + 1] || i + (ns->opt[i + 1] << 3) > ns_olen) {
--			kfree_skb(reply);
--			return;
--		}
--		if (ns->opt[i] == ND_OPT_SOURCE_LL_ADDR) {
--			if ((ns->opt[i + 1] << 3) >=
--			    sizeof(struct nd_opt_hdr) + ETH_ALEN)
--				daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
--			break;
--		}
-+	/* Derive the option length from the IPv6 payload length so that any
-+	 * trailing L2 padding in the skb is not parsed as ND options.
-+	 */
-+	ns_olen = ntohs(ipv6_hdr(request)->payload_len) - sizeof(*ns);
-+	if (!ndisc_parse_options(dev, ns->opt, ns_olen, &ndopts)) {
-+		kfree_skb(reply);
-+		return;
-+	}
-+
-+	if (ndopts.nd_opts_src_lladdr) {
-+		u8 *lladdr;
-+
-+		lladdr = ndisc_opt_addr_data(ndopts.nd_opts_src_lladdr, dev);
-+		if (lladdr)
-+			daddr = lladdr;
- 	}
- 
- 	dad = ipv6_addr_any(&ipv6_hdr(request)->saddr);
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index fe36b3f51285..2ceb655c4229 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -283,6 +283,7 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
- 	}
- 	return ndopts;
- }
-+EXPORT_SYMBOL_GPL(ndisc_parse_options);
- 
- int ndisc_mc_map(const struct in6_addr *addr, char *buf, struct net_device *dev, int dir)
- {
--- 
-2.54.0
+> + * Find the VMA covering 'address' and lock it for reading. Waits for writers to
+> + * finish if the VMA is being modified. Returns NULL if there is no VMA covering
+> + * 'address'.
+> + *
+> + * Use only in code paths where no mmap_lock and no VMA lock is held.
 
+Well, a VMA read lock can be held which would make this a noop essentially.
+
+If a VMA write lock is held you're also ok as the mmap read lock will preclude
+an mmap write lock, meaning vma_end_write_all() will have been called and the
+write lock released.
+
+So I think you can just drop this line?
+
+> + *
+> + * The fast path does not take mmap_lock.
+> + */
+> +struct vm_area_struct *vma_start_read_unlocked(struct mm_struct *mm,
+> +					       unsigned long address)
+> +{
+> +	struct vm_area_struct *vma;
+> +
+> +	/* Fast path: return stable VMA covering 'address': */
+> +	vma = lock_vma_under_rcu(mm, address);
+> +	if (vma)
+> +		return vma;
+> +
+> +	/* Slow path: preclude VMA writers by temporarily getting mmap read lock. */
+> +	mmap_read_lock(mm);
+> +	vma = vma_lookup(mm, address);
+> +	if (vma && !vma_start_read_locked(vma))
+
+This maybe warrants an unlikely() given it can only happen if refcount
+overflows? Also worth having a comment to that effect here?
+
+> +		vma = NULL;
+> +	mmap_read_unlock(mm);
+> +
+> +	return vma;
+> +}
+> +
+>  static struct vm_area_struct *lock_next_vma_under_mmap_lock(struct mm_struct *mm,
+>  							    struct vma_iterator *vmi,
+>  							    unsigned long from_addr)
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index edd90892f8cc..c3a0c38a3dc3 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -129,8 +129,10 @@ struct vm_area_struct *find_vma_and_prepare_anon(struct mm_struct *mm,
+>   *
+>   * Should be called without holding mmap_lock.
+>   *
+> - * Return: A locked vma containing @address, -ENOENT if no vma is found, or
+> - * -ENOMEM if anon_vma couldn't be allocated.
+> + * Return: A locked vma containing @address, -ENOENT if no vma is found,
+> + * -ENOMEM if anon_vma couldn't be allocated, or -EAGAIN if vma refcount
+> + * overflow happened due to high number of readers and the caller should
+> + * retry later.
+
+I'm guessing you're fixing this up as part of the patch? But it feels a bit
+random, I mean fine but you should mention this change in the commit message +
+explain why.
+
+>   */
+>  static struct vm_area_struct *uffd_lock_vma(struct mm_struct *mm,
+>  				       unsigned long address)
+> --
+> 2.55.0.508.g3f0d502094-goog
+>
+
+--
+Cheers, Lorenzo
