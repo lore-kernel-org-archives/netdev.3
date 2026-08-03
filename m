@@ -1,121 +1,120 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from ris.borea.si (ris.borea.si [193.77.156.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9054137BC
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 14:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4C6415F30
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 14:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.77.156.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768014; cv=none; b=H9y5jaWLACYp74zSHa+8LLG7qq46GlEGEdCicVHDKpihgODTC/Ag97U7Rbo0zqi0cx348mBM7KAkOWkNEfMiVFMtT1gHB7g5r0+E41xFCEi8JJhyEHujrdUsYez+0lhlL9uAIuQXiTkSkK/cX+0Qnj6ucxbzpWAqovV4EyhXp+Q=
+	t=1785768176; cv=none; b=CneEyQBr0NbH2RA3tQs9jxRotoMV50hTB6nk9HZuE2COjzu6X14O+MibJjrjXfnMYyUNsUWDgCQR4LszCHXEaWUcOfPrY6Anl8kM5Vio5+1jJDMxFOREfxoHrPh6xgycoY80BGdXd0AKJqP9j3CK/kyG+Exx/RI+2XicITTFlTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768014; c=relaxed/simple;
-	bh=yRItg3rDqLQ6YBYhIhF8iPn7fPEpjv7eS82GGOPWVH0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qzkTNuvvm/FeXNoWRaVclcQCWv0HaSbqpmorrEbfW1MpE5vjMLksAJyu2/299ngw+C44d93dnwMZXXeSf0Ko44PssE+Wd6DZDZvM5jSHrEYskP222KD2Mjg33c4Mc70LwzpgQrmgCOg9EZBt6t31tuctQ8VZ0T40unGVexKMsh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vd59kCVy; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GaCPVV2C; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785768176; c=relaxed/simple;
+	bh=hDZ+H8ZG3HNWKm1FTcB2IO1zuohXLz2NLnLM/E0lY8M=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Dx6oax6TK7rhGh6JN48QFrb1g/uVI4LEMVBzJnLfyfV8BjrQfg21HyE0LK56AbuhXCTEGt0iPkv2OivoF8dww6j3VomTPAbr5zuoJ9aTujLzkRn9oQpODpUxV5G20fc5sN24X0AU/3vGZTGN0DXvNVtsz/RHfwsJotjzQvFJMXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=borea.si; spf=pass smtp.mailfrom=borea.si; dkim=pass (1024-bit key) header.d=borea.si header.i=@borea.si header.b=rlK9T1qx; arc=none smtp.client-ip=193.77.156.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=borea.si
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=borea.si
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vd59kCVy";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GaCPVV2C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785768012;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VmoRzRSGaYrgmLSXQHd8nxnywAiGDAxo7QcVjOS8Dtk=;
-	b=Vd59kCVyh9AMk2fWhFJQPRZ6jnzTsVfI4pUeRdrPUxZbcl6VeSpKZIz+gOW6InDIcfL/5p
-	laolMSpCF3+19kMI6Qaym32IraMqW2TcaKmQUPYR3PsvyDT5RAWGS3FvtVtubgFHdA+KVT
-	+LSjid9lo38/JCnYWsLzI9ndt4XfsoM=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-74-xNloLJWmNhGFlzd5uY6wPw-1; Mon, 03 Aug 2026 10:40:05 -0400
-X-MC-Unique: xNloLJWmNhGFlzd5uY6wPw-1
-X-Mimecast-MFC-AGG-ID: xNloLJWmNhGFlzd5uY6wPw_1785768005
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-81ebbbd60cbso52607957b3.1
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 07:40:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785768005; x=1786372805; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=VmoRzRSGaYrgmLSXQHd8nxnywAiGDAxo7QcVjOS8Dtk=;
-        b=GaCPVV2C6EiEsAPf32UL1SA6BBsZ7S8GnmY3MeGjMgGxUI/AJ/RyV/kTFgxVVa4H+Q
-         Vc+nr7dgrPD2C5BNy/hCHzb+ReMBg+ecv14vBNi7QsWbWpA9dpzv+xoHJx+p6lvACXpi
-         EMF5f8jLBmzhBQEvpdRdag7uwy1mHxMpAT4sUx/SVSCqdTV9FrEcYWpp2QO2VhhFqSEg
-         G6TXsbOL7uKsWvWA18oeMzT6kWy8TAnm5VCufww1E0oVl1GaAHhZhxB8hPWZb2LttA5b
-         BIRnWWVJbxRyQvZHqIM9XwNrxhlhfcw7y1AWl1Y2xpu87Y4zfby/pre2qoZQa6FJpk4Y
-         gW9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785768005; x=1786372805;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VmoRzRSGaYrgmLSXQHd8nxnywAiGDAxo7QcVjOS8Dtk=;
-        b=Gyd7CF+kkzYpBIHF0IHWRUzKLS1l0G8dGlK3T9OmC+t8BIQ1bS1lQ7yT8dSsrOoejz
-         KFhzIgWjzAG1b8LTQ/bWfTtiqhRHZ/Nrc1TJnKRn18uQPScvx0Rava1XvhQapph5ulkP
-         A6FFh6qhdikuSCBoJnr8se/fS5jSo3DN6JOR1/R3HtPSVzJXhoREsQCP/3No3GMIl+rc
-         F/nd1qaNebLBaEQHP46u3uasFki21xstc+UCP13DUUdmNUhB0rvCcq+P1CPJjNMpJss5
-         uyUtbbM0q6R0YhgYGlET9di90UXXQUpV5eMIzNECmQaqq2eBj3sg1pRQdYLGFB4nwlMc
-         pZsg==
-X-Forwarded-Encrypted: i=1; AHgh+RplAvuYp9FHKE50nYVzWuIdEYzf9ndC8R6sdAyATqRoqPyl3wmKwbC9JU9CMRDwhEbupFWXf5s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywr76yWXV3VdcHwtw4ETD2p1Qwrx97+PpDT6Y46cym+mkNuEmTz
-	Pak9WWSYpFspXWPcX+FXYYkC5Ni8vkHcPIABTacea7ZyE+/aCdWIWb6KFJmjL1EuS2D60MhPQXb
-	lcCOCpqnBqZAfnnD+8xtSE1IgHVTpBU5dMMmpaNaBLwRN6xOraK7MP3ICSdcYeRpH1A==
-X-Gm-Gg: AR+sD11jC/dQCHyscKpv9G7Nc74IFFxFnL0tCCimBPTrOq4Si/ulTqR4g1I+hrgS7Uh
-	oxq0s8905xF4rAAAOmy9eylpJ355cQ9GPOF/pXBuS/VcwPGmpVyfMO6uUqiR7IF4tmwDcNYEy3w
-	LDUQA6TNtSrDdVG4xUUss39fsf/tJPGdhEzVfj+PSpnabL0osQVmF/FCdclm6RrjCbW5F9RAzKQ
-	sznkGmBjhvIonaPk531UsNNzV2X1V45Vx3NRRoe5xxg9BjLKYykqDFSQNxX6DJz+0SdMz4bXERS
-	pBMfpkBEk9sRYMa1WXeqhQ97tJg+De/rVWmnRG8AvkzAP1TdWOCPtENNTzUzVHcjqIDWRI6Afe6
-	t+V1QHLRUd3Xxa3xbMast1YW2KNMxawE485g=
-X-Received: by 2002:a05:690c:6b0b:b0:81e:5a57:b8ad with SMTP id 00721157ae682-81fd4b51df0mr122408317b3.21.1785768005026;
-        Mon, 03 Aug 2026 07:40:05 -0700 (PDT)
-X-Received: by 2002:a05:690c:6b0b:b0:81e:5a57:b8ad with SMTP id 00721157ae682-81fd4b51df0mr122407797b3.21.1785768004486;
-        Mon, 03 Aug 2026 07:40:04 -0700 (PDT)
-Received: from redhat.com (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fcd0d6fbbsm55781147b3.25.2026.08.03.07.40.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 07:40:03 -0700 (PDT)
-Date: Mon, 3 Aug 2026 10:40:01 -0400
-From: Brian Masney <bmasney@redhat.com>
-To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Jie Chen <chun-jie.chen@mediatek.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Edward-JW Yang <edward-jw.yang@mediatek.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Chen-Yu Tsai <wenst@chromium.org>, kernel@collabora.com,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v5 12/25] clk: mediatek: pll: Add PLL stabilization delay
- definition
-Message-ID: <anCoQeS2OoucB0mO@redhat.com>
-References: <20260801-mt8189-clocks-system-base-v5-0-ac4410697cc2@collabora.com>
- <20260801-mt8189-clocks-system-base-v5-12-ac4410697cc2@collabora.com>
+	dkim=pass (1024-bit key) header.d=borea.si header.i=@borea.si header.b="rlK9T1qx"
+Received: from ris.borea.si (ris.borea.si [127.0.0.1])
+	by ris.borea.si (Postfix) with ESMTP id 4hDKCb1tQWz1t6
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:42:51 +0200 (CEST)
+Authentication-Results: ris.borea.si (amavisd-new); dkim=pass (1024-bit key)
+	reason="pass (just generated, assumed good)" header.d=borea.si
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=borea.si; h=
+	x-mailer:to:references:message-id:content-transfer-encoding:date
+	:date:in-reply-to:from:from:subject:subject:mime-version
+	:content-type:content-type; s=dkim; t=1785768168; x=1788360169;
+	 bh=H2Vt4IlI3KMxVE8qBCDtjC+d1qIw883LCHhrBpB3u3E=; b=rlK9T1qxSQ+H
+	n0oWcp1Tt8EGjV7bKrSp+jCPwLif9NN5Ht9AEzt9ipsLE015h1Gun0MsRyeP6DA/
+	W/xwWNMvziJeLdVRSdsB49artUbHOWzmUhTf56/x6RIlaB7RWzTPcOrlGh1L0z2j
+	j0ArBH8KEinZEq9H3KItT4nfSLyFkOc=
+X-Virus-Scanned: Debian amavisd-new at ris.borea.si
+Received: from ris.borea.si ([127.0.0.1])
+	by ris.borea.si (ris.borea.si [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ZeE12RCr-Xno for <netdev@vger.kernel.org>;
+	Mon,  3 Aug 2026 16:42:48 +0200 (CEST)
+Received: from smtpclient.apple (unknown [IPv6:2a00:ee2:a80:0:880f:f393:d837:b93f])
+	by ris.borea.si (Postfix) with ESMTPSA id 4hDKCW6rqKzNQ;
+	Mon,  3 Aug 2026 16:42:47 +0200 (CEST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260801-mt8189-clocks-system-base-v5-12-ac4410697cc2@collabora.com>
-User-Agent: Mutt/2.4.0 (2026-06-19)
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH] net: wan: fsl_ucc_hdlc: allocate enough MURAM for HDLC
+ PRAM
+From: Matevz Langus <matevz.langus@borea.si>
+In-Reply-To: <03365777-874e-4e5a-be18-5e546b172db3@kernel.org>
+Date: Mon, 3 Aug 2026 16:42:37 +0200
+Cc: Zhao Qiang <qiang.zhao@nxp.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <066899BE-9B23-4FCC-BBE1-6CB3BC8CD196@borea.si>
+References: <C736AAC7-5345-4B3B-BA33-299ED9566F65@borea.si>
+ <03365777-874e-4e5a-be18-5e546b172db3@kernel.org>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
 
-On Sat, Aug 01, 2026 at 01:20:58PM +0200, Louis-Alexis Eyraud wrote:
-> Several functions uses a hardcoded value (20), to represent the
-> needed delay to stabilize a PLL.
-> Add a common define for this value.
-> 
-> Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Yes, this patch is for all devices with QE / QuiccEngine.
+In reality also for CPM based devices like MPC8260 even MPC860 on all =
+cases 256 Bytes should be reserved for PRAM.
 
-Reviewed-by: Brian Masney <bmasney@redhat.com>
+
+> On 3 Aug 2026, at 16:18, Christophe Leroy (CS GROUP) =
+<chleroy@kernel.org> wrote:
+>=20
+>=20
+>=20
+> Le 03/08/2026 =C3=A0 14:58, Matevz Langus a =C3=A9crit :
+>> [Vous ne recevez pas souvent de courriers de matevz.langus@borea.si. =
+D?couvrez pourquoi ceci est important ? =
+https://aka.ms/LearnAboutSenderIdentification ]
+>> More MURAM needs to be allocated than just sizeof(struct =
+ucc_hdlc_param).
+>> We have noticed MURAM corruption outside of struct ucc_hdlc_param. It =
+was
+>> caused by QE UCC HDLC microcode. NXP QEIWRM.pdf Rev.9 05/2018 chapter
+>> 14.2.2.1 HDLC Parameter RAM says 0x6c-0x100 Reserved.
+>> Even looking into QE UCC HDLC microcode source code reveals it =
+actually
+>> stores data beyond 0x6c.
+>> Tested on LS1043A, T1040 and MPC8569 boards running UCC in HDLC mode =
+on kernel 6.12.
+>> Signed-off-by: Matevz Langus <matevz.langus@borea.si>
+>=20
+> Same in MPC8323 reference manual, it is marked "reserved" until offset =
+0x100
+>=20
+> Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+>=20
+>=20
+>=20
+>> ---
+>>  drivers/net/wan/fsl_ucc_hdlc.h | 1 +
+>>  1 file changed, 1 insertion(+)
+>> diff --git a/drivers/net/wan/fsl_ucc_hdlc.h =
+b/drivers/net/wan/fsl_ucc_hdlc.h
+>> index 71d5ad0a7b98..e170d3ac9116 100644
+>> --- a/drivers/net/wan/fsl_ucc_hdlc.h
+>> +++ b/drivers/net/wan/fsl_ucc_hdlc.h
+>> @@ -60,6 +60,7 @@ struct ucc_hdlc_param {
+>>   __be16 haddr4;
+>>   __be16 ts_tmp;
+>>   __be16 tmp_mb;
+>> + __u8 reserved[148];
+>>  };
+>>    struct ucc_hdlc_private {
+>> --  2.34.1
+>=20
 
