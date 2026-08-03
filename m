@@ -1,46 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D2143800C;
-	Mon,  3 Aug 2026 21:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DF3340A52;
+	Mon,  3 Aug 2026 21:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785791993; cv=none; b=mRCKvOduB7d5qi+3V9Z7r2akYgZngmm8An/kRYS6wEgwnO+ap/sBb1hVx2hhSbOzlxcP8YjW8dPj2iRHjjFF7IaqLKMnmJqHlI2/ocZVZcJm4LR/Fn/xGxMPpcHQqXmz/ukrpER4QuLvaM7qarlpAJ9KarZs+SyqYDfmjFUW0T0=
+	t=1785792343; cv=none; b=KXGrLujJumWMYb56BSGnx5ay/FPxkOEw00c2hxXNgJts6cuMwjBedSKwFacvSTv35iz2Vkx48dYkWCw78X8ybyPwxQ5RtdzohoIGHO7rtZxbT8NS9dbBTK1jN9+EnJqxP7m+QFWxDJAWoHbdBvrr/wJgGTew4kJo+2QE79lU43s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785791993; c=relaxed/simple;
-	bh=tir6LW7aUj+LYuLgVB9motin0fApLWg0CyExsnpND3U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tCEgRVdthi+92r5Aqm9BoG0gOqMrJihDACL76Jgp9iHI6EC1B4qykG3C+qNvSMcdZyhMPKJloEz1kSpk3W6iVnlaJgHGEwyHgAq3182z7WjS4odiA2KBppBEOeDaiMnDXms1SRcJEdDKv65PHhJUIzl2zQTVAT5XxCJrp+j+EeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RlzAsnbm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785792343; c=relaxed/simple;
+	bh=je9GDD8GSsiIcEDF+ctWHs0z2fK8qmov7Bt8d7q138M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FReGbS4SPVKCPZ+dEuUxhsEs8oKA0fNQqy+sHdqcS1uxk46O8O3ltfu+7Y6RYrsBwTogVuhSZm7t2n7KDC9Mtu2Ba4LqbCLcscLAUyvXMoMXh9VGtsRMhsrlYYeSByl4wFfIdIeoay7xkavQktJyWxYZUhXPRYQMpL8jn3+/1yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKhKL9w+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RlzAsnbm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A121F000E9;
-	Mon,  3 Aug 2026 21:19:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKhKL9w+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13191F000E9;
+	Mon,  3 Aug 2026 21:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785791987;
-	bh=l76YY3okD5y9M96yYzcOA2UM5dO+2DAEnIVKUAYYydc=;
-	h=From:To:Cc:Subject:Date;
-	b=RlzAsnbmiTK4SelzG0ctV6mnP/dG4360jykX1lxz3auMdx2z3bQ6569iGhFGF4hnw
-	 GD7z+JHJvL1/v2yQupur/CZWsjK3SAJjnNg41gdPzuVKt2rmKuIFx0H5so1eu4sCGN
-	 4iNGdhSH+/yEH0jTgvsfbDCEZMaUPm+OdkloX0d4P+NDIS8WsCz/o/PPd2IfAZBzm8
-	 jMC+3MdbtZy4B27BKYvFd1o3wwnYvZtarMuCtwygOX6PhaAeLTtHu+SQO9l/U0CKSK
-	 B2dQkR9WpKD+nqDdODIV9pdKx/+gXv6mXo45Z5gIvOa2vbA1zYRdMXOc00DIYOgAIW
-	 +qWQZsE7vXV2w==
+	s=k20260515; t=1785792342;
+	bh=TW791XHfnbh/+kenPwpNOF4SjtuhI/21F3zEMqwYwb0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=UKhKL9w+Uhd4vbov5vSGvHLrk+XixCQt8mlqCdDc6EFhxjQMiVopFPFPZavmtzBDd
+	 2yuUeqUJc2dK2Ch/wVYY1QNoOC/F7IgUZstL3K9vUayP+wYvd4clLOd31pWHDd61CQ
+	 VPwo53hqGiLLavfbVR57lhQhqBSQYcIHB9xYGuo84afPv8wUCGtXu09xobbC4kZO27
+	 d/fAFnreRtkxq++8KDj5cPYj2r+e1aOIiW8rBAudueypEymjMrEU8N9dzsJzpheLgb
+	 86K0iTbY44UYHiN3JoLQuMmWphW5ccjJ8Jg5KIevXfRBf1QEWeQpQkEA/jG4VnWmtG
+	 qBqR9C4Diwa5A==
 From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
+To: syjcnss@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
 	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	shuah@kernel.org,
-	sdf@fomichev.me,
-	dw@davidwei.uk,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next] selftests: drv-net: print device info at the start
-Date: Mon,  3 Aug 2026 14:19:44 -0700
-Message-ID: <20260803211944.2166211-1-kuba@kernel.org>
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net: pktgen: fix out-of-bounds write in pktgen_finalize_skb()
+Date: Mon,  3 Aug 2026 14:25:37 -0700
+Message-ID: <20260803212537.2171760-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260729031252.54476-1-syjcnss@gmail.com>
+References: <20260729031252.54476-1-syjcnss@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,86 +50,110 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When a reviewer asks a developer to run an upstream test during code
-review, it's often ambiguous whether the test was actually run against
-a real device, or just against netdevsim. Print the driver name and
-ifname at the start of the test, e.g.:
-
-  # Interface: enp0s13f0u1u4, driver: r8152
-  TAP version 13
-  1..1
-  ok 1 ...
-
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
-CC: shuah@kernel.org
-CC: sdf@fomichev.me
-CC: dw@davidwei.uk
-CC: linux-kselftest@vger.kernel.org
----
- .../selftests/drivers/net/lib/py/env.py       | 21 ++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+--- Patch [1]: [PATCH net] net: pktgen: fix out-of-bounds write in pktgen_finalize_skb() ---
+commit 482871be2b4cb4112bd717673de3a4fe3ab0b9c3
+Author: Yuejie Shi <syjcnss@gmail.com>
 
-diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
-index e4acf3d8333f..a8e8029868a7 100644
---- a/tools/testing/selftests/drivers/net/lib/py/env.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/env.py
-@@ -7,7 +7,7 @@ import time
- import json
- from pathlib import Path
- from lib.py import KsftSkipEx, KsftXfailEx
--from lib.py import ksft_setup, wait_file
-+from lib.py import ksft_pr, ksft_setup, wait_file
- from lib.py import cmd, ethtool, ip, CmdExitFailure
- from lib.py import NetNS, NetdevSimDev, UserNetNS
- from .remote import Remote
-@@ -31,6 +31,7 @@ from . import bpftool, RtnlFamily, Netlink
- 
-         # Following attrs must be set be inheriting classes
-         self.dev = None
-+        self.ifname = None
- 
-     def _load_env_file(self):
-         env = os.environ.copy()
-@@ -58,6 +59,22 @@ from . import bpftool, RtnlFamily, Netlink
-     def __del__(self):
-         pass
- 
-+    def _print_dev_info(self):
-+        """
-+        Show whether the test ran on real hardware or netdevsim.
-+        Useful to confirm when results are shared on the mailing list.
-+        """
-+        driver = "unknown"
-+        try:
-+            info = ethtool(f"-i {self.ifname}").stdout
-+            for line in info.splitlines():
-+                if line.startswith("driver:"):
-+                    driver = line.split(':', 1)[1].strip() or driver
-+                    break
-+        except (CmdExitFailure, FileNotFoundError):
-+            pass
-+        ksft_pr(f"Interface: {self.ifname}, driver: {driver}")
-+
-     def __enter__(self):
-         ip(f"link set dev {self.dev['ifname']} up")
-         wait_file(f"/sys/class/net/{self.dev['ifname']}/carrier",
-@@ -94,6 +111,7 @@ from . import bpftool, RtnlFamily, Netlink
-             self.dev = self._ns.nsims[0].dev
-         self.ifname = self.dev['ifname']
-         self.ifindex = self.dev['ifindex']
-+        self._print_dev_info()
- 
-     def __del__(self):
-         if self._ns:
-@@ -163,6 +181,7 @@ from . import bpftool, RtnlFamily, Netlink
- 
-         self.ifname = self.dev['ifname']
-         self.ifindex = self.dev['ifindex']
-+        self._print_dev_info()
- 
-         # resolve remote interface name
-         self.remote_ifname = self.resolve_remote_ifc()
+net: pktgen: fix out-of-bounds write in pktgen_finalize_skb()
+
+The patch changes the per-fragment length in pktgen_finalize_skb() from a
+truncating division to DIV_ROUND_UP(), and adds an i < frags bound to the
+fragment fill loop, so the loop can no longer write past
+skb_shinfo(skb)->frags[].  The reported KASAN overflow with pkt_size in
+[69675, 69689] and frags 17 does look fixed by this.
+
+> diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+> index ee64f3012321..60dbe60005eb 100644
+> --- a/net/core/pktgen.c
+> +++ b/net/core/pktgen.c
+> @@ -2843,8 +2843,8 @@ static void pktgen_finalize_skb(struct pktgen_dev *pkt_dev, struct sk_buff *skb,
+>  		}
+>  
+>  		i = 0;
+> -		frag_len = min_t(int, datalen / frags, PAGE_SIZE);
+> -		while (datalen > 0) {
+> +		frag_len = min_t(int, DIV_ROUND_UP(datalen, frags), PAGE_SIZE);
+> +		while (datalen > 0 && i < frags) {
+
+[Severity: Medium]
+[Finding: main-2-0]
+[Sources: opus-5]
+With frag_len rounded up, can the partition now run out of bytes before
+i reaches frags - 1, so that the else branch over-charges the last
+fragment?
+
+frag_len is computed once and never re-clamped against the bytes still
+outstanding, and only the i == (frags - 1) branch uses min(datalen,
+PAGE_SIZE):
+
+		/*last fragment, fill rest of data*/
+		if (i == (frags - 1))
+			skb_frag_fill_page_desc(&skb_shinfo(skb)->frags[i],
+						pkt_dev->page, 0,
+						min(datalen, PAGE_SIZE));
+		else
+			skb_frag_fill_page_desc(&skb_shinfo(skb)->frags[i],
+						pkt_dev->page, 0, frag_len);
+
+		datalen -= skb_frag_size(&skb_shinfo(skb)->frags[i]);
+		skb->len += skb_frag_size(&skb_shinfo(skb)->frags[i]);
+		skb->data_len += skb_frag_size(&skb_shinfo(skb)->frags[i]);
+
+Taking pkt_size 77 with frags 17, which the pkt_size setter accepts since
+it only clamps against 14 + 20 + 8:
+
+  fill_packet_ipv4():   datalen = 77 - 42 = 35
+  pktgen_finalize_skb(): datalen -= sizeof(*pgh) -> 19
+  frag_len = DIV_ROUND_UP(19, 17) = 2
+
+Iterations i = 0..8 consume 18 bytes and leave 1 byte.  At i == 9 the
+i == (frags - 1) test is false (frags - 1 is 16), so the else branch
+charges the full frag_len of 2:
+
+  datalen becomes -1
+  skb->len and skb->data_len are 1 byte larger than requested
+  nr_frags ends at 10 instead of the requested 17
+
+Another example is datalen 71 with frags 17: frag_len is 5, 15 iterations
+consume 75 bytes, overshooting by 4, and nr_frags ends at 15.  The
+overshoot is bounded by frag_len - 1, so at most 16 bytes with
+MAX_SKB_FRAGS == 17, and fragment sizes still never exceed PAGE_SIZE, so
+this is a length-accounting problem rather than a memory-safety one.
+
+Does the inflated skb->len leave the frame inconsistent with the L3/L4
+headers?  fill_packet_ipv4() writes the lengths from the same datalen it
+hands to pktgen_finalize_skb():
+
+	udph->len = htons(datalen + 8);	/* DATA + udphdr */
+	...
+	iplen = 20 + 8 + datalen;
+	iph->tot_len = htons(iplen);
+
+fill_packet_ipv6() follows the same pattern.  pktgen_xmit() also does
+pkt_dev->last_pkt_size = pkt_dev->skb->len, which feeds
+pkt_dev->tx_bytes, so the reported byte counts would drift from the
+configured pkt_size too.
+
+Before this change these same inputs partitioned exactly: with datalen 19
+and frags 17 the truncated frag_len was 1, giving 16 one-byte fragments
+plus a last fragment of 3, and the i == (frags - 1) branch was always
+reached.
+
+Would using min(datalen, frag_len) in the else branch, or treating
+datalen <= frag_len as the last fragment, keep the sum equal to datalen
+in these cases?
+
+The commit message says:
+
+    the fragments now cover datalen exactly and the loop always terminates
+    on the last one.  As a side effect pktgen stops emitting zero-length
+    fragments when datalen < frags.
+
+Should this also mention that for small datalen with many fragments the
+loop terminates before the last fragment, and that fewer fragments than
+requested are produced?
 -- 
-2.55.0
-
+pw-bot: cr
