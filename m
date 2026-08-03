@@ -1,218 +1,159 @@
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1EE32470F
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 07:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785743670; cv=pass; b=phNQAxKV6YIPGMvZnitu/xMPbzFSqWiuB+twJoeCYiNFl4B9vudCajaVbgs/QwUDrKSI4BF9ucTnjKA9PoUAt2ggYk1Av9kIKZnmW0DEMG+cdGLtNvURlxcGtWXK/TakXjA0YBBAjOBp0t7Jh6YXZEIW8FCTPinEd89/8Lm+uxU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785743670; c=relaxed/simple;
-	bh=BfoGLnxKqkGHS3lXZmpg5V4S04rgmYKSRo//J2O5u7c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZGwIk/ad1M0EV2jI0i3noHP+F7qdpyTh4fIU0v/JzOTzS/vPDhr7+CJYTUrkokRE558byMmNUogAX4yQyC3rB+Wr+t0JfpzsAd9fgjdQysTrE6AjLMYIcJ21KVI70Kv4k1w0wVE+2h4LlBJD880w3WAPoTEGmwUInWW6rL9qP5s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PA3iWe/o; arc=pass smtp.client-ip=209.85.217.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PA3iWe/o"
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-747355a8565so682000137.3
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 00:54:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785743667; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WyBKjpa3urO1luVEJi2U7MxvjawQfatWNtwo+SRp35/HjtwVbemDQCCcJt4or3uwR0
-         7aEMJt/9/oL358UF61koxJqXtX1RZU1unuemA6HKtso7/N1MEBWxiNSS8OnfgSZbmE08
-         r/eTk62EUEw4O5CGmUWJGijDQo0zOv1sOiH3h0zGv3XWbDLvQl9oPUOj2QEX3p5LWZAX
-         8TbNHAtmXsXuL8dPPITSNFYgEaai4wRAVskoEk90d36+o16UrEPNyzOqDwPU0fkMb9PW
-         BEDsUafu475JcsDHazMfS5wmdom7xmNmYE8zYhfV05M5PpqRTXET71AwnhxFtFGl+m1a
-         XyEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=psfVqHSrgaZTUpwYinIDfYYI61bABe7ffXMHd3MgwJ8=;
-        fh=tLes+XRZ46RrWrtvRODJP6Ey3chKdsFcXY7sawLkLhs=;
-        b=rxp3s3l6Psjv7nXckEVwV2vCrYHdfIdc+MS+gPbhmyre9ScRU3OB6eeIC15HkSIWpM
-         ml2txO/llcjVFPkrf7Xx6LNLgp5508tggpXtXG+sMX5zidixNEldlxMkWVMvkiKIiBA6
-         RznHwnWQ7Kx59/GkzM3zSl21jGvdhOzFGwdV2mR+otDC0QyAn+KDJxD6l8oPtYuTuQZM
-         iGJy8HAahx6cxd4kLnyLWDHG5m80MMSayYaRPq4ZPOMM/3g36bxahNaibPhFvY9snzaP
-         tE+y9IbmuKHFd5aFw8ZarZ3+unphS/CU7zAaUz5v9peS32MBWgIpW1AOS0ieAUHc6UJw
-         OfHg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785743667; x=1786348467; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=psfVqHSrgaZTUpwYinIDfYYI61bABe7ffXMHd3MgwJ8=;
-        b=PA3iWe/oEWZEuC3LIWxmC553fpSLbGw/IDCbHHqTqmP+LN6RQHf4nzjamfd5V+D8J2
-         M8GnKDzNfuPoizj7Lm1J6PzvoIgXhy/Qxw19WjnWQVGlu447My9v+K7EqyufCbrWWQ2i
-         D3tmDjfieJNUrI/032Y6ewKklek+TvHqbBCXv+DDU+/ykQhzlCgOPJGGIMk/mtIGsZ2/
-         9v3OAa9FphGNqwDTzbS99nrzXqYhA/G4HN91FQdQvF74Vz5NZ5WP//2cLKSnC8vEE7f2
-         07PKbfG6a2xk+t9yg9Nc3qEwpKu2PqJ4u/GYMqBh9WfpLN+N1YmtIhiDVlXN9uxPnShp
-         GkLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785743667; x=1786348467;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=psfVqHSrgaZTUpwYinIDfYYI61bABe7ffXMHd3MgwJ8=;
-        b=ONdYBozFhq6JQmmIWv0o7B/cnIUTp+Qkh5Gf78Sbue6sAjXQU2zq7eavtZ8+fTWn6w
-         OjNh7x5YijX5F10AN4puCIn9AuxLQFlmKefUmoEOxyPo5Np/PY+TdSEFs5ZyGD6hiH8U
-         uYgF4nce6VS77EnpDgHTjUHqKlt0ETSacYaWFaRh0p+QddtJYKDlehdue+s9ugoigsZV
-         6JQlYaAK7dcOT/4icQCSxnoxGacM21nSTnyZgw2mbiOhMW6KJfjWekFPkOzDPR83qakt
-         4y7e9huizc0wTd6Jjv61iyx4vKUYi8LeVpcXKcZIwAhHWbj15AdOOf3WuZGmU5t7OpGi
-         hG6Q==
-X-Forwarded-Encrypted: i=1; AHgh+RopWrLSuzFGyv/0eKlRGwamSGqifmuf2TdxQRKBi7gNZSKEREAE4Gw29hisBlCwy1kQTFhOlxs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx+hanfP1RC02vsORin38cvtrT14hmOd/o8nZGB4euII5I/do0
-	P4ntmxMuFvfGauoZf4t+KUZtim66n1XpAGRUlMu9V7D3clb+tikfyTfCtgf8zffGtdLIf+YczrC
-	TS4mu3tnPd8FiWedDNMGGEQtwiNEsd84=
-X-Gm-Gg: AR+sD108GKoABK3F3wasUdCZF0pqn7EhOMmAj43lM0SnPAdjAkm4685f3kz0MMBvwlT
-	af0GtEFnzgVgSLHvEhI4jRmPDsylTKf7aUAiM0YWFlg3o3Y7KE6nplaMhNyA2x/6s3TC9PrMa++
-	wTbkOmDT81PBz9srwWl9MRAuBB05wA97N8T2jknQkCLJc3IMM6gO+FrxO9Ma+uCIiM8ENJEQA15
-	/jV/+GiWTOp3h9vvXxi8oMRBB/N2OKDdFoPQdog4Ygb1mxHtnpumTmPV0oXTT9PLIps6FAnMzhw
-	6SulFhqTSGsXewSCrGi08rIwleGy7+se0TsQ3lkb15pFAETbdBUk36BeR0rM4AQW0h4zu9aWFM+
-	nODcCKPIeUmKHrY66FIwpVZGzdvEJB2WEn0hyJtTga5oyTwToGHiafrZrIIpwNkdsLaiXLFYMyB
-	odw+UaCMrYZ0N7SlfV2MqwFOedRP5GiWRvpxH22NtrsDjTf5c=
-X-Received: by 2002:a05:6102:160e:b0:65a:fcea:5a8 with SMTP id
- ada2fe7eead31-75b21860c9dmr6557280137.3.1785743667347; Mon, 03 Aug 2026
- 00:54:27 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA76E9463
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 08:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785744081; cv=none; b=AF/O0/nlnIwFvndI07xFakWs8dI8ySRpDYB5uLcrATR34okOcIQ4Oovtrd0pDHbcPDUzl9oKrTGL7wfdM6akxGF8nFPWjUhfbM8p1CRbnTgBCrxhzENDE8sQU2bVrYSKYnwF3u7FlXjqDGiYAPFaYM7WhNe0RbVjT2FDmOqb94Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785744081; c=relaxed/simple;
+	bh=Y6Iobmfjdv2QPyopt8ifpiNvIE3fl2snHzpGNT44/Xo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=twSNqvlVrwn3H0lkY4BWAoflp6joO3XKAo3boQ1TzNKH8RZbC/W6/ihmA+bHWWRQWQdf93yP1OOrn4UePPcua9Kqejct/6pR/v5dJKC97GkKB849p/3KK0r3d7JLt+GEylMAXj8W1BuqL6fHh/TWJ9tEKH6rPQzm2PfTx4YHR10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: zesmtpgz4t1785744027t5b428cb5
+X-QQ-Originating-IP: MhhT18gcvevJf047QMn9HuexwxcF8yxWrq/8Yry1DbE=
+Received: from smtpclient.apple ( [122.235.139.83])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 03 Aug 2026 16:00:25 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 216033531120402893
+EX-QQ-RecipientCnt: 9
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <20260802-submit-acx00-of-dynamic-v1-v1-8-0a53cd9e21cc@gmail.com> <f2cc3c90-060f-40c1-a55e-e2ed91e65487@kernel.org>
-In-Reply-To: <f2cc3c90-060f-40c1-a55e-e2ed91e65487@kernel.org>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Mon, 3 Aug 2026 01:54:16 -0600
-X-Gm-Features: AUfX_mzypJX8cJAuXN5et4vt4pytYhwgZWhNFqSZnDYLwz1Lp-gZapkTkGPrkCE
-Message-ID: <CADvTj4q7HnOYJZE-M070-1npEdne__Ct5D9FeUNVVXa8Bsm7qQ@mail.gmail.com>
-Subject: Re: [PATCH 08/21] dt-bindings: mfd: x-powers: add AC200
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Andre Przywara <andre.przywara@arm.com>, 
-	Richard Genoud <richard.genoud@bootlin.com>, Maxime Ripard <mripard@kernel.org>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH net-next 0/5] net: wangxun: improve statistics support
+From: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
+In-Reply-To: <20260731164407.4ca13f14@kernel.org>
+Date: Mon, 3 Aug 2026 16:00:15 +0800
+Cc: netdev@vger.kernel.org,
+ jiawenwu@trustnetic.com,
+ duanqiangwen@net-swift.com,
+ linglingzhang@net-swift.com,
+ andrew+netdev@lunn.ch,
+ davem@davemloft.net,
+ edumazet@google.com,
+ pabeni@redhat.com
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <5FB351D7-A14F-4B30-A172-6D81417E4E69@net-swift.com>
+References: <20260731074958.19333-1-mengyuanlou@net-swift.com>
+ <20260731164407.4ca13f14@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: MIBXG9KNq+3G9ErhWerfn7D6fIz16RcEdP+aVIpRTSfPGS1QckatPfwK
+	4/hYX6+djUCxg3/NeOYDoD0kq7fVZnLs6zNQ2LQpgLuyodRP/ymTRtEMM+hi2/Ev32VqmZ1
+	DpfWYRdAb/x0zPn/P3DDT3Zu8SFELUTYDuqRc14SbKYEOZe90UqBB3GVugtLb60QSZsxWSf
+	lVgFJE3PdQjq0yteIa+/aZTb4y+45Eq44ly1M7yriusNE5QLX4VuyP/iZQAO85wk5EIBtrz
+	H3lnfEaLIMWJXZ+Bf3I070cpBdjQDVpHf9umEtDFE8XDtg6SeZQGCbCM9wmJiUDMb4jbMIN
+	ZGQIExzTI+LEc7gon+NoWOzDRDKm2iGADsIiRUnLLfA/N5B0DjPMAahSrReoEaMx54Bf9ro
+	7+73hq2vgwTBEhJVq5y+2KXIEoFvCmgKvtnDQPGrOnEi9QZYwyUHJecZDJApL3ZIxnkdYx7
+	VTwqNA8my3GjP783rNqWZc8tblRPG9LrvW34VglEG5kGhBNYH3XIXtHy7G9SglEb9gcft7r
+	VxqjDkOZCzub1CJ2zOkiDboe2TvFICpUobbvdB9Bmi1I+Gnr8C32R6HGqmii38NvzpmbvGQ
+	jbU7RgVtqfb4pw4buEjVj8XJgiGEWt6MxhPP7nWINWZsUi+G+OspbpV27LZ0DSoLvOBtEes
+	rL57RSUkveYAktIaPPBTOLx4SOJkhgyXCXzVVYlWqKVCfBehkAMEp5zZqrhw/IoGRVLDnRw
+	UmH2QYeohwSETAyFSJnoPJuXYAlCDyLd6q2CAJXgs220CNJtytGoUqmADcPC4YspnXgUD6S
+	RhnMAruVMOLNPWw7JxtRydRn9HT8oxWnpM0BthbzgftjGAR27PUiy/rwSEJxSxUt01Tqn1o
+	GwsAlhO15Z6ltyKYI/BxgJgZCg+uwfCUBVMJwEBrixZMTDNwiju9iKI1Skhcj3mlwVaMmx3
+	hO4GnKVi6o48DaIdlK/O22ZmPx3ZPF3qeUhBITfCOUcXElEWi04WCo6lu+ejq60HN5TtJGz
+	6yMABdVIqchIwSwaFXiPmQCj69w+f8NPcbNte493vhdkT0ba9HhWpDwT+DaNZL3ouSvA40k
+	b6Zu0dTZjwKFT5njT/eR720B0v3ZgVNhy/0T4KYIl78a6fu322IeVtOmp0kpCDLN7UZfv65
+	Zo/cfiNGbZx5NTM=
+X-QQ-XMRINFO: MPJ6Tf5t3I/yszlkyYblB6BTkL4Q6eR+Bw==
+X-QQ-RECHKSPAM: 0
 
-On Mon, Aug 3, 2026 at 1:07=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.org=
-> wrote:
->
-> On 03/08/2026 07:14, James Hilliard wrote:
-> > The AC200 is an I2C-controlled mixed-signal companion IC containing
-> > audio, video, RTC and Fast Ethernet PHY functions.
->
-> This fails when applied, because you did not explain the
-> dependencies/merging of this patchset.
->
-> This is THE MOST important information of cover letter. The first thing
-> to explain.
+Hi,
 
-I did mention in the cover letter that the pwm series is a dependency:
-https://lore.kernel.org/all/20260703152215.192859-1-richard.genoud@bootlin.=
-com/
+=E2=9E=9C PF
+python3 -m pyynl.cli \ --spec =
+/root/Work/mirror-net-next/Documentation/netlink/specs/netdev.yaml \ =
+--dump qstats-get \ --json '{"ifindex":160,"scope":"queue"}' =
+[{'ifindex': 160, 'queue-id': 0, 'queue-type': 'rx', 'rx-alloc-fail': 0, =
+'rx-bytes': 16737, 'rx-csum-bad': 0, 'rx-csum-complete': 28, =
+'rx-packets': 61}, {'ifindex': 160, 'queue-id': 1, 'queue-type': 'rx', =
+'rx-alloc-fail': 0, 'rx-bytes': 1507, 'rx-csum-bad': 0, =
+'rx-csum-complete': 28, 'rx-packets': 11}, {'ifindex': 160, 'queue-id': =
+2, 'queue-type': 'rx', 'rx-alloc-fail': 0, 'rx-bytes': 0, 'rx-csum-bad': =
+0, 'rx-csum-complete': 28, 'rx-packets': 0}, {'ifindex': 160, =
+'queue-id': 3, 'queue-type': 'rx', 'rx-alloc-fail': 0, 'rx-bytes': 5831, =
+'rx-csum-bad': 0, 'rx-csum-complete': 28, 'rx-packets': 17}, {'ifindex': =
+160, 'queue-id': 0, 'queue-type': 'tx', 'tx-bytes': 880, 'tx-packets': =
+8}, {'ifindex': 160, 'queue-id': 1, 'queue-type': 'tx', 'tx-bytes': =
+4672, 'tx-packets': 36}, {'ifindex': 160, 'queue-id': 2, 'queue-type': =
+'tx', 'tx-bytes': 6860, 'tx-packets': 20}, {'ifindex': 160, 'queue-id': =
+3, 'queue-type': 'tx', 'tx-bytes': 992, 'tx-packets': 16}]
 
-With the pwm series first this should apply on top of master. Should
-I just mention that it applies on master or should I reference a specific
-commit hash or something?
+=E2=9E=9C VF
+python3 -m pyynl.cli --spec =
+/root/Work/mirror-net-next/Documentation/netlink/specs/netdev.yaml =
+--dump qstats-get --json '{"ifindex":236,"scope":"queue"}' [{'ifindex': =
+236, 'queue-id': 0, 'queue-type': 'rx', 'rx-alloc-fail': 0, 'rx-bytes': =
+16836, 'rx-csum-bad': 0, 'rx-csum-complete': 0, 'rx-packets': 58}, =
+{'ifindex': 236, 'queue-id': 1, 'queue-type': 'rx', 'rx-alloc-fail': 0, =
+'rx-bytes': 1507, 'rx-csum-bad': 0, 'rx-csum-complete': 0, 'rx-packets': =
+11}, {'ifindex': 236, 'queue-id': 2, 'queue-type': 'rx', =
+'rx-alloc-fail': 0, 'rx-bytes': 3448, 'rx-csum-bad': 0, =
+'rx-csum-complete': 0, 'rx-packets': 24}, {'ifindex': 236, 'queue-id': =
+3, 'queue-type': 'rx', 'rx-alloc-fail': 0, 'rx-bytes': 7546, =
+'rx-csum-bad': 0, 'rx-csum-complete': 0, 'rx-packets': 22}, {'ifindex': =
+236, 'queue-id': 0, 'queue-type': 'tx', 'tx-bytes': 0, 'tx-packets': 0}, =
+{'ifindex': 236, 'queue-id': 1, 'queue-type': 'tx', 'tx-bytes': 2750, =
+'tx-packets': 25}, {'ifindex': 236, 'queue-id': 2, 'queue-type': 'tx', =
+'tx-bytes': 12671, 'tx-packets': 53}, {'ifindex': 236, 'queue-id': 3, =
+'queue-type': 'tx', 'tx-bytes': 1670, 'tx-packets': 25}]
 
-> >
-> > Describe the parent device, its input clock, required function supplies=
-,
-> > the optional SID bandgap calibration cell used by the vendor initializa=
-tion
-> > sequence, and its optional Ethernet PHY control child. Document the 24 =
-and
-> > 27 MHz rates encoded by the public EPHY clock selector.
-> >
->
-> ...
->
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - clocks
-> > +  - ac-ldoin-supply
-> > +  - ephy-vcc-supply
-> > +  - rtc-vcc-supply
-> > +  - tv-vcc-supply
-> > +
-> > +dependencies:
-> > +  interrupts: [ interrupt-controller ]
-> > +  interrupt-controller: [ '#interrupt-cells', interrupts ]
-> > +  '#interrupt-cells': [ interrupt-controller ]
-> > +  nvmem-cells: [ nvmem-cell-names ]
-> > +  nvmem-cell-names: [ nvmem-cells ]
->
-> Why do you need all these dependencies? What are you trying to express?
+=EF=8C=9B root @roy-System-Product-Name =E2=9E=9C =
+=E2=80=A6/mirror-net-next/tools/testing/selftests =EF=87=91 =EE=9C=82  =
+=EE=82=B6=EF=90=98 main=EE=82=B4 ?3  =EF=90=BA 15:54:46=20
+=E2=9C=98  python3 ./drivers/net/stats.py
+TAP version 13
+1..8
+ok 1 stats.check_pause
+ok 2 stats.check_fec
+ok 3 stats.check_fec_hist
+ok 4 stats.pkt_byte_sum
+ok 5 stats.qstat_by_ifindex
+ok 6 stats.check_down
+ok 7 stats.procfs_hammer
+# completed up/down cycles: 76
+ok 8 stats.procfs_downup_hammer
+# Totals: pass:8 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-Looks like we probably can get rid of all except these:
-interrupt-controller: [ interrupts ]
-nvmem-cells: [ nvmem-cell-names ]
 
-I was just trying to express the MFD controller dependencies.
+> 2026=E5=B9=B48=E6=9C=881=E6=97=A5 07:44=EF=BC=8CJakub Kicinski =
+<kuba@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> On Fri, 31 Jul 2026 15:49:53 +0800 Mengyuan Lou wrote:
+>> This series improves statistics support for Wangxun drivers.
+>> Currently, VF drivers do not periodically refresh software =
+statistics,
+>> do not expose per-queue statistics through the generic netdev =
+statistics
+>> interface, and do not provide ndo_get_stats64().
+>> The first patch fixes the suspend/resume flow for wxvf so the service
+>> task and device lifecycle are handled correctly. The second patch =
+makes
+>> wx_update_stats() safe for VF drivers by allowing it to cope with
+>> temporarily missing queue pointers during queue reconfiguration.
+>> Once periodic statistics updates are available, libwx can implement
+>> netdev_stat_ops, allowing Wangxun drivers to expose standard =
+per-queue
+>> statistics through the generic netdev qstats infrastructure.
+>=20
+> Were you able to run the qstats-related selftests against these =
+devices?
+>=20
+ I have tested these devices with netdev.yaml for pf/vf devices.
 
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > +
-> > +    i2c {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +
-> > +        mixed-signal@10 {
->
-> ...
->
-> > +...
-> > diff --git a/include/dt-bindings/mfd/x-powers,ac200.h b/include/dt-bind=
-ings/mfd/x-powers,ac200.h
-> > new file mode 100644
-> > index 000000000000..cc59e2ab4912
-> > --- /dev/null
-> > +++ b/include/dt-bindings/mfd/x-powers,ac200.h
-> > @@ -0,0 +1,13 @@
-> > +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-> > +/*
-> > + * Interrupt numbers of the X-Powers AC200 interrupt controller.
-> > + */
-> > +
-> > +#ifndef _DT_BINDINGS_MFD_X_POWERS_AC200_H
-> > +#define _DT_BINDINGS_MFD_X_POWERS_AC200_H
-> > +
-> > +#define AC200_IRQ_TVE                        0
-> > +#define AC200_IRQ_EPHY                       1
-> > +#define AC200_IRQ_RTC                        2
->
-> Hardware constants are not really bindings, even though you use them in
-> the driver.
 
-Should I do something different for this?
 
->
-> > +
-> > +#endif /* _DT_BINDINGS_MFD_X_POWERS_AC200_H */
-> >
->
->
-> Best regards,
-> Krzysztof
