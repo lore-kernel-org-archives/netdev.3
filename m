@@ -1,61 +1,64 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09953361948
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9D71E1DF0;
+	Mon,  3 Aug 2026 16:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785773665; cv=none; b=RTlqxj7TRC1mqDW3JXoAp5PrNLrtM6sugs6/bpYkOmQVX25dsTx58F2Kn+s3mBDv4IE8ONUVv9N3Tn9dpUQiudC9lcx0J0dveBYtAvWhi183+iRsuQqpJOdwJ0193BrDSNGi2jp9lLKF9r1xETfHLKRMg9soyHLxrt4uDyXYgUg=
+	t=1785773751; cv=none; b=oaQPKxfJVL964CAYohI8FxhD9R/55H5glrOLlwp/d32QuhU/yA8s8Krz1eVi79eFxlmssphA5gp9D1lglMlr570kptXxhFJqoKHn5uT3VqBkqCH7aq6XWxvjbB9z2Dr46FrrQPNicpKESGxfFbZkbrmaTjHL7TM8OUrt+H/PIEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785773665; c=relaxed/simple;
-	bh=05zUD1DqX//LGId/b0JLgygyPbfAgN6l4FTF+WdnVNg=;
-	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:In-Reply-To:
-	 References:MIME-Version; b=m8AlyWMGXBNK4/4Exe/HfnrjmtOA69A8VT3IJZtDZysZIZtYINBMLurUn1zfGNyTBW0YoY9olb/yw0chKBVNZAc7DLHg1sMCefdep5QDt6fejS9VfRwBmCBXW8d3tMAtN6ecC1zWHS4hhhl0HBTqEqvSionreYTFL/ULsVB1DqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LiKMYZvj; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785773751; c=relaxed/simple;
+	bh=eiVwnGPpXLldvG1QYpMWuvnbsqt6XAD0prg9nqLhy8Q=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hqa8PsmUn9tXDKjQCYvbjuWuIXvoJgCfRpBoot0sDKsv36oM3RwzI+n/+oQvn1Visj4qMns/lUT7pqaVqL/aywRtpoRfHHBjLL2rxNEcntSPQ8TsGDzsA6hfDN2KPwtsnlqnOpG03tox9W0udUvsPVVY6lH7EWEooNmQsxDyNLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vN5qt248; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+umJ5+H0; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LiKMYZvj"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DAA371A13C3;
-	Mon,  3 Aug 2026 16:14:16 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AAE876029B;
-	Mon,  3 Aug 2026 16:14:16 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7EAA011C31208;
-	Mon,  3 Aug 2026 18:14:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785773651; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Y4JgK5NUlRyN3S8WjIMJEXYYt8qj05KpzjPaRCWnPYU=;
-	b=LiKMYZvjePZJiaia2zjWJq5QWY3oEIVDa8mIEG2MUkMnAX84kEraHwqPghC3CUZH6n7lco
-	ndrs1B7s9cz+vBpNZIPIN+Rpdor7lZMIkqCbOGkQ/3aYvF4qS/40x3Dvunh8ViLxXea/b9
-	Up9vm1m/PcljBzN1z1IaZMPvFa7ykfyolukW4zUUxgED8QY6lC7bT/JRGHBNg/asQljNVx
-	7NWUaHHDyd4X22zUk+/kgRAMXlIZeTmnCmpNC9Q5CC9rVr5COkK3yJEeb+dd0EOlvXyUu2
-	d0vuBzM+sICj2Zmk9pv4PM0xlZKG/N4e3CZaxgNFODwJIn/RocSoyBGepRJrtA==
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 03 Aug 2026 18:14:06 +0200
-Message-Id: <DKFFXBM6VKXZ.22PW13MLAXSF@bootlin.com>
-Subject: Re: [PATCH net-next v6 13/16] net: macb: move printk() calls out of
- bp->lock critical section
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Nicolas
- Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Paolo Valerio" <pvalerio@redhat.com>, "Nicolai
- Buchwitz" <nb@tipi-net.de>, "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
- <maxime.chevallier@bootlin.com>
-To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, "Conor Dooley"
- <conor.dooley@microchip.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Richard Cochran" <richardcochran@gmail.com>, "Russell King"
- <linux@armlinux.org.uk>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-In-Reply-To: <20260731-macb-context-v6-13-49d5a1439d48@bootlin.com>
-References: <20260731-macb-context-v6-13-49d5a1439d48@bootlin.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vN5qt248";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+umJ5+H0"
+Message-ID: <411ec84fd55e152e94ac1f4edba497eac3a5623d.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1785773746;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ek6ePpaHq1nB/PByuKcYxFoevXTAY7o/Ubz27BONoTo=;
+	b=vN5qt248ue9jk6isClxGO2MndfGNMuayB0MulNHmns9lBBOYr4vSTOE2WHoZhI2MPrEe/a
+	0op6jCMbW3qUehbBUZx7iOqkYhWKS4Hc41+kK7pRVwdPdv/TLcHsQS+QNywnNdNzW7qE1z
+	/yGtt5Z3+L5h/y/+t6hIixLIi5deqZkqguQBnsTFxFHxBiQmWzSIYkq6B3PCH0sXO7MIvL
+	2TfGTU1tV2UF2NlRmWJzq7KLsFai7WVTjf01lCjErvHYdPRjDkKI/J98z5nE4/cdjLL1VA
+	nqvw+dxngMfnRIyQajJ2/wtjQY0pa6gOnmhUM23l7o1B1J0ogCvKWW+RfUCX/Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1785773746;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ek6ePpaHq1nB/PByuKcYxFoevXTAY7o/Ubz27BONoTo=;
+	b=+umJ5+H0ea1cGmtFLEqjbJuZkChWjNemaARRwFbCfpJHAWpVdg7QaRwybu1DSOoeu/u4DG
+	lk50JBFa7QpYZ5Dg==
+Subject: Re: [PATCH 2/4] dt-bindings: net: dsa: Add SoC-e switch IP and DSA
+ bindings
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Vladimir
+ Oltean <olteanv@gmail.com>,  "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
+ <martin.kaistra@linutronix.de>
+Date: Mon, 03 Aug 2026 18:15:45 +0200
+In-Reply-To: <20260730-loutish-labrador-of-joviality-6e6c79@quoll>
+References: 
+	<20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+	 <20260729-devel-vstrassheim-soce-dsa-ml-v1-2-be569dae1b20@linutronix.de>
+	 <20260730-loutish-labrador-of-joviality-6e6c79@quoll>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -63,140 +66,411 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TUID: rsbB8rKmzlrJ
-X-Last-TLS-Session-Version: TLSv1.3
 
-Replying to net sashiko
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260731-macb-context-v=
-6-0-49d5a1439d48%40bootlin.com
-
-> commit 99f5236ffcf1506bce8a08773b0456e50c57986e
-> Author: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
->
-> net: macb: move printk() calls out of bp->lock critical section
->
-> The two netdev_err() calls in macb_tx_error_task() are deferred until aft=
-er
-> the spin_unlock_irqrestore(&bp->lock, flags), using the existing
-> halt_timeout flag plus a new buggy_driver flag. The stated goal is to
-> guarantee that netpoll can never be entered while bp->lock is held.
->
-> > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/eth=
-ernet/cadence/macb_main.c
-> > index 987fafb2bf40d..65d5ff8a5e230 100644
-> > --- a/drivers/net/ethernet/cadence/macb_main.c
-> > +++ b/drivers/net/ethernet/cadence/macb_main.c
-> > @@ -1358,9 +1358,6 @@ static void macb_tx_error_task(struct work_struct=
- *work)
-> >  			 * since it's the only one written back by the hardware
-> >  			 */
-> >  			if (!(ctrl & MACB_BIT(TX_BUF_EXHAUSTED))) {
-> > -				netdev_vdbg(bp->netdev, "txerr skb %u (data %p) TX complete\n",
-> > -					    macb_tx_ring_wrap(ctx, tail),
-> > -					    skb->data);
-> >  				bp->netdev->stats.tx_packets++;
-> >  				queue->stats.tx_packets++;
-> >  				packets++;
->
-> [Severity: Low]
-> [Finding: main-1-1]
-> [Sources: opus-5]
-> This isn't a bug, but the commit message only describes deferring the
-> netdev_err() calls, while this hunk deletes the per-descriptor
-> netdev_vdbg() trace outright rather than moving it. Its arguments are
-> per-descriptor (macb_tx_ring_wrap(ctx, tail) and skb->data) and cannot be
-> reproduced after the loop, so VERBOSE_DEBUG builds lose that TX error
-> recovery trace. Could the commit message mention this removal?
-
-See below.
-
->
-> > @@ -1374,8 +1371,7 @@ static void macb_tx_error_task(struct work_struct=
- *work)
-> >  			 * those. Statistics are updated by hardware.
-> >  			 */
-> >  			if (ctrl & MACB_BIT(TX_BUF_EXHAUSTED))
-> > -				netdev_err(bp->netdev,
-> > -					   "BUG: TX buffers exhausted mid-frame\n");
-> > +				buggy_driver =3D true;
-> > =20
-> >  			desc->ctrl =3D ctrl | MACB_BIT(TX_USED);
-> >  		}
->
-> [Severity: Low]
-> [Finding: main-1-1]
-> [Sources: opus-5]
-> Same finding as above: this also converts a per-descriptor message into o=
-ne
-> aggregated message per invocation, so the number of affected descriptors =
-is
-> no longer visible. Worth a line in the commit message as well?
-
-Yes! Mentioned in cover letter but not enough in commit message.
-
-> > @@ -1412,6 +1408,13 @@ static void macb_tx_error_task(struct work_struc=
-t *work)
-> >  	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
-> > =20
-> >  	spin_unlock_irqrestore(&bp->lock, flags);
+On Thu, 2026-07-30 at 10:56 +0200, Krzysztof Kozlowski wrote:
+> On Wed, Jul 29, 2026 at 06:36:55PM +0200, Vasilij Strassheim wrote:
+> > Add DT schema documentation for SoC-e FPGA switch devices.
+> > The binding is split into:
+> >  - a switch IP node describing the MMIO register block
+> >  - a DSA MDIO node describing the DSA-facing switch instance
+> > Both nodes are linked through the soce,switch-ip phandle.
+> >=20
+> > Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
+> > ---
+> >  .../bindings/net/dsa/soce,switch-dsa.yaml          | 195 +++++++++++++=
+++++++++
+> >  .../bindings/net/dsa/soce,switch-ip.yaml           |  54 ++++++
+> >  2 files changed, 249 insertions(+)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/net/dsa/soce,switch-dsa.=
+yaml b/Documentation/devicetree/bindings/net/dsa/soce,switch-dsa.yaml
+> > new file mode 100644
+> > index 000000000000..a04e2838d14e
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/dsa/soce,switch-dsa.yaml
+> > @@ -0,0 +1,195 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/dsa/soce,switch-dsa.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > > +
-> > +	if (halt_timeout)
-> > +		netdev_err(bp->netdev, "BUG: halt tx timed out, we ignored it\n");
+> > +title: SoC-e DSA switch MDIO device
 > > +
-> > +	if (buggy_driver)
-> > +		netdev_err(bp->netdev, "BUG: TX buffers exhausted mid-frame\n");
+> > +maintainers:
+> > +  - SoC-e <info@soc-e.com>
+>=20
+> Nope, as explained more than once group boxes are not accepted.
+
+That rule makes actually sense. I just saw UNGLinuxDriver@microchip.com in
+several places and thought it wasn't completely forbidden here.
+Will change it to my address in the next version.
+
+>=20
 > > +
-> >  	napi_enable(&queue->napi_tx);
-> >  }
->
-> [Severity: High]
-> [Finding: main-1-0]
-> [Sources: opus-5]
-> The commit message says the goal is "to ensure we can never netpoll under
-> bp->lock's reign". Is that invariant actually established, given the
-> netdev_err() still present in macb_interrupt_misc()?
->
-> 	if (status & MACB_BIT(HRESP)) {
-> 		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
-> 		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
-> 		macb_queue_isr_clear(bp, queue, MACB_BIT(HRESP));
-> 	}
->
-> macb_interrupt() holds the lock across the whole status loop, including t=
-hat
-> call:
->
-> 	spin_lock(&bp->lock);
-> 	while (status) {
-> 		...
-> 		if (unlikely(status & MACB_INT_MISC_FLAGS))
-> 			if (macb_interrupt_misc(queue, status))
-> 				break;
-> 		status =3D queue_readl(queue, ISR);
-> 	}
-> 	spin_unlock(&bp->lock);
->
-> [...]
+> > +description: |
+> > +  This node is the MDIO-bus device entry for the SoC-e DSA switch driv=
+er.
+>=20
+> Node is not for a driver. Explain the hardware, not drivers, not DTS.
 
-Argh, yes. I had seen this printk() following the last review iteration
-but I couldn't think of a way to land in the interrupt handler while
-netpoll was doing its job. But actually it's the other way around: we
-might be in the IRQ handler and call our printk that triggers netpoll
-mode, re-entering into macb_interrupt_misc().
+Got it, will change it for the next version.
 
-Let's drop that netdev_err() in macb_interrupt_misc(). I've checked
-again, it's the only non-debug printk I could find potentially in a
-bp->lock section.
+>=20
+>=20
+> > +  It is a lightweight configuration node that lives on the MDIO bus of=
+ the
+> > +  SoC Ethernet controller acting as the DSA conduit (CPU port).
+> > +
+> > +  The switch hardware itself (MMIO register interface) is a separate I=
+P core
+> > +  described by a companion node with one of the SoC-e compatible strin=
+gs,
+> > +  for example:
+> > +    - soce,mrs-<version>
+>=20
+> How is this relevant here? do you describe this compatible?
 
-If you have debug prints active AND you land in this race, you have your
-hands in the engine anyway. This isn't hurting any real driver user. So
-I explicitely ignore them.
+I will completely rework the documentation to reflect other code changes an=
+d
+take the comment into account.
+>=20
+> > +  See the consolidated IP-core binding:
+> > +    - Documentation/devicetree/bindings/net/dsa/soce,switch-ip.yaml
+> > +  The two nodes are linked via the "soce,switch-ip" phandle property.
+> > +
+> > +  Port sub-nodes follow the DSA port binding documented in dsa-port.ya=
+ml.
+> > +  User ports should reference PHY nodes through "phy-handle". These PH=
+Y nodes
+> > +  live under the optional "mdio" child node of the switch and are expo=
+sed on
+> > +  the switch's synthetic DSA user MDIO bus.
+> > +
+> > +  The PHY-specific properties "soce,mdio-output" and "soce,phy-addr" d=
+escribe
+> > +  the MDIO bus index and hardware PHY address used by the on-chip MDIO=
+ master
+> > +  of the switch IP core.
+> > +
+> > +properties:
+> > +  '#address-cells':
+> > +    const: 1
+> > +
+> > +  '#size-cells':
+> > +    const: 0
+>=20
+> You need to follow DTS coding style.
 
-(Note: I will re-add the netdev_vdbg() in macb_tx_error_task().)
+I will check and correct this.
+
+>=20
+> > +
+> > +  compatible:
+> > +    const: soce,switch-dsa
+>=20
+> Way too generic. I understand that SoCe will NEVER - and you certify
+> that - develop a second, different "switch-dsa" model and they call this
+> one like this?
+
+It is intentionally generic to cover the common basics of all variants and
+configurations of the synthesized switch in DSA.
+I'm not sure what kind of guarantee I'm supposed to provide here regarding
+SoCe. If switch-dsa is already mainline in the future, then a different
+compatible will be needed for incompatible new models.
+
+> > +
+> > +  reg:
+> > +    description: MDIO address of this device on the parent MDIO bus.
+>=20
+> Drop.
+
+Will do.
+
+>=20
+> > +    maxItems: 1
+> > +
+> > +  soce,switch-ip:
+> > +    $ref: /schemas/types.yaml#/definitions/phandle
+> > +    description: |
+> > +      Phandle to the SoC-e switch IP core node that provides the MMIO =
+register
+> > +      window for this switch instance. The referenced node must carry =
+a
+> > +      compatible string documented in
+> > +      Documentation/devicetree/bindings/net/dsa/soce,switch-ip.yaml.
+> > +
+> > +  dsa,member:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32-array
+>=20
+> Why do you need to redefine existing property?
+
+This will be reworked in the next version.
+
+>=20
+> > +    minItems: 2
+> > +    maxItems: 2
+> > +    description:
+> > +      DSA cluster membership; see Documentation/devicetree/bindings/ne=
+t/dsa/dsa.yaml.
+>=20
+> Drop. Do not redefine properties. See other bindings how this is done.
+
+I will do that.
+
+>=20
+> > +
+> > +  mdio:
+> > +    $ref: /schemas/net/mdio.yaml#
+> > +    description: |
+> > +      Optional child MDIO bus exposing PHY devices attached to switch =
+user
+> > +      ports. PHY nodes referenced by port "phy-handle" properties shou=
+ld be
+> > +      placed here. The PHY address seen by Linux on this bus is the sw=
+itch port
+> > +      index, not necessarily the hardware PHY address selected interna=
+lly by
+> > +      the switch IP.
+> > +    unevaluatedProperties: false
+> > +
+> > +    patternProperties:
+> > +      "^ethernet-phy@[0-9a-f]+$":
+>=20
+> Use consistent quotes.
+
+Got it.
+
+>=20
+> > +        type: object
+> > +        $ref: /schemas/net/ethernet-phy.yaml#
+> > +        unevaluatedProperties: false
+> > +        description:
+> > +          PHY attached to a switch user port through the synthetic swi=
+tch MDIO
+> > +          bus.
+> > +        properties:
+> > +          soce,mdio-output:
+> > +            $ref: /schemas/types.yaml#/definitions/uint32
+> > +            description: |
+> > +              Zero-based index of the MDIO bus output of the switch IP=
+ core to
+> > +              which this PHY is connected.
+> > +
+> > +          soce,phy-addr:
+> > +            $ref: /schemas/types.yaml#/definitions/uint32
+> > +            description: |
+> > +              Hardware PHY address on the MDIO bus selected by
+> > +              "soce,mdio-output".
+> > +
+> > +        required:
+> > +          - soce,mdio-output
+> > +          - soce,phy-addr
+> > +
+> > +  ports:
+> > +    type: object
+> > +    description: Container node for the switch port sub-nodes.
+> > +    properties:
+> > +      '#address-cells':
+> > +        const: 1
+> > +      '#size-cells':
+> > +        const: 0
+> > +
+> > +    patternProperties:
+> > +      "^port@[0-9a-f]+$":
+> > +        $ref: dsa-port.yaml#
+> > +        unevaluatedProperties: false
+> > +        description: |
+> > +          Switch port. In addition to the standard DSA port properties
+> > +          (label, phy-mode, ethernet, fixed-link) the following
+> > +          vendor-specific properties are used for data ports connected=
+ to
+> > +          external PHYs.
+> > +
+> > +    required:
+> > +      - '#address-cells'
+> > +      - '#size-cells'
+> > +
+> > +    additionalProperties: false
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - soce,switch-ip
+> > +  - ports
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    /* Excerpt from a Xilinx ZynqMP design (ARM64) */
+> > +    mdio {
+> > +        #address-cells =3D <1>;
+> > +        #size-cells =3D <0>;
+> > +
+> > +        soce_switch: switch@10 {
+> > +            #address-cells =3D <1>;
+> > +            #size-cells =3D <0>;
+> > +            compatible =3D "soce,switch-dsa";
+> > +            reg =3D <0x10>;
+> > +            soce,switch-ip =3D <&soce_switch_ip>;
+> > +            dsa,member =3D <0 0>;
+> > +
+> > +            ports {
+> > +                #address-cells =3D <1>;
+> > +                #size-cells =3D <0>;
+> > +
+> > +                port@0 {
+> > +                    reg =3D <0x0>;
+> > +                    label =3D "PORT_0";
+> > +                    phy-handle =3D <&switchphy0>;
+> > +                    phy-mode =3D "rgmii-id";
+> > +                };
+> > +
+> > +                port@1 {
+> > +                    reg =3D <0x1>;
+> > +                    label =3D "PORT_1";
+> > +                    phy-handle =3D <&switchphy1>;
+> > +                    phy-mode =3D "rgmii-id";
+> > +                };
+> > +
+> > +                port@2 {
+> > +                    reg =3D <0x2>;
+> > +                    label =3D "INTERNAL_PORT";
+> > +                    ethernet =3D <&gem3>;
+> > +                    phy-mode =3D "gmii";
+> > +                    fixed-link {
+> > +                        speed =3D <1000>;
+> > +                        full-duplex;
+> > +                    };
+> > +                };
+> > +            };
+> > +
+> > +            mdio {
+> > +              #address-cells =3D <1>;
+> > +              #size-cells =3D <0>;
+> > +
+> > +                switchphy0: ethernet-phy@0 {
+> > +                    compatible =3D "ethernet-phy-ieee802.3-c22";
+> > +                    reg =3D <0x0>;
+> > +                    soce,mdio-output =3D <0x00000000>;
+> > +                    soce,phy-addr =3D <1>;
+> > +                };
+> > +
+> > +                switchphy1: ethernet-phy@1 {
+> > +                    compatible =3D "ethernet-phy-ieee802.3-c22";
+> > +                    reg =3D <0x1>;
+> > +                    soce,mdio-output =3D <0x00000001>;
+> > +                    soce,phy-addr =3D <1>;
+> > +                };
+> > +            };
+> > +        };
+> > +    };
+> > diff --git a/Documentation/devicetree/bindings/net/dsa/soce,switch-ip.y=
+aml b/Documentation/devicetree/bindings/net/dsa/soce,switch-ip.yaml
+> > new file mode 100644
+> > index 000000000000..ba9bb396235f
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/dsa/soce,switch-ip.yaml
+>=20
+> Filename must match compatible.
+
+I will rewrite the entire documentation to have a single file and take that
+into account.
+
+>=20
+> > @@ -0,0 +1,54 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/dsa/soce,switch-ip.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: SoC-e Ethernet Switch IP core
+> > +
+> > +maintainers:
+> > +  - SoC-e <info@soc-e.com>
+> > +
+> > +description: |
+> > +  SoC-e Ethernet switch IP cores are configurable FPGA switch fabrics =
+with
+> > +  Layer-2 bridging features (including STP/MSTP state control and FDB
+> > +  fast-age support). Some variants also provide TSN functionality.
+> > +
+> > +  This binding describes only the MMIO switch IP core node. The Linux =
+DSA
+> > +  driver is bound via a companion MDIO node described in:
+> > +    Documentation/devicetree/bindings/net/dsa/soce,switch-dsa.yaml.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - soce,mrs-21-01
+> > +      - soce,mrs-23-02
+> > +      - soce,mrs-24-01
+> > +
+> > +  reg:
+> > +    description: |
+> > +      MMIO base address and size of the switch register window.
+> > +      On 64-bit platforms (ARM64), this is typically encoded as two-ce=
+ll
+> > +      address and two-cell size values.
+>=20
+> Pointless. Please open any other existing binding.
+
+Got it.
+
+>=20
+> > +    maxItems: 1
+> > +
+> > +  soce,num-ports:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    description: |
+> > +      Total number of switch ports (external/user ports plus the CPU u=
+plink
+> > +      port). Must be greater than zero and not exceed the selected IP =
+variant.
+>=20
+> Either implied by compatible or not properly placed. Looks like propertt
+> of the DSA.
+
+This will be removed.
+
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - soce,num-ports
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    switch_ip: switch@80020000 {
+>=20
+> ethernet-switch
+>=20
+> And drop unused label.
+
+I will adjust it.
+
+>=20
+> Considering this wasn't tested I should not even give here review...
+>=20
+Thank you very much for the review!
+I'm not sure what you mean by not tested. I ran make dt_binding_check` few
+times, but forgot to do it after making the latest adjustments.
+The driver also worked for different people with the device tree that I tri=
+ed
+to reflect here.
+
+I will take a closer look at the documentation and other drivers, before I
+send the next version.
+
+> Best regards,
+> Krzysztof
+>=20
 
 Thanks,
+Vasilij
 
---=20
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
