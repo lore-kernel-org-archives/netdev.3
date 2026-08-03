@@ -1,687 +1,649 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013058.outbound.protection.outlook.com [40.93.201.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53A640BCBC
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 14:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785766020; cv=none; b=DU62SWBgcsqHOF810JWvOh3ZHrU2D1CMM1kPkH+Zq7ZYNV288XDOyVZIzmAgU7qA0/ppEGTC8wMBiwgmXy1lji/HexGxaMHtrDDDT5smuQF9ctNxJfUMtBXKlOlMYksx5hq18i9TnrbDNpsUujG5GHUVHLIwMc6B/xBK/1+H1O8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785766020; c=relaxed/simple;
-	bh=b4/90jOIpXbhGsujJPnk62/iZYkV7ZraG8BLGcBJock=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=paWrvE4HcKo5KRET8ooJCAXfQ271NwE4EOyx1UDPYxdtfrX/x9IijRBWeVTAMBqGgKXMgok8cQbLcdYbxHLkYL6FRP3nn7Anb80gvBkSLvZ4WP2GWTgTsOY6yCfXxIUSID/lqigr91FYUW/vdK/dOLpY1JrLpSO0DHd9a2mt0+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XHvQM4m2; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C6C40F758
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 14:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785766051; cv=fail; b=LCZx+QpeI/9R8xYb9Pwh6jKH0ttsA6I0ikWJUL3DVRnB7ZyfD/McO6WJQCg+P0zwaU5Wcb32p7xTgY1cD5i+Pi0FYcFjUkl4OwCDI3s3vTFj/o9/SjLkqotF3/qc0cejs/DK80pKLabQyGyDx+mwXqu+HWekSLok6Yl7m0pL/B4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785766051; c=relaxed/simple;
+	bh=r7inYm+T3J2d0vdoZ3HDXsiG9CBEG0WtFKWrosm+Kqc=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=GG2u+8xJ8oi+MCqNzk9eCdZv6rtuVVJFHnINM1sND2CFSuhMAWfKa5TdJ3iq0dBqTOxbpBel97R3bX6UgSSxjuLF5JH5hYDeUzs7pqjPG6LONUnmgYRwuBa4yH+qmSjBM4HXB8x6s0C+oImlVd2NAEs018a0fvhDJTpFaPrpCrs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UVpCXOeD; arc=fail smtp.client-ip=40.93.201.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XHvQM4m2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785766017;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LgRY73BzHAEpTGrOJ/sZboZTpnHNiysZbwmrDAaf6CQ=;
-	b=XHvQM4m2bL/t/lHOI1mQ9gS1NCESi6yZcdSVxsspvamnO1SQs3ARs8e0iKsqCYnrU9NeTB
-	bvHmAPF0Sf9Bbpq11MEv8Pt3hXTH8Ojsklr2fIbTRRYmIuqcLxPwQKAVihV1UHPahU8L52
-	luaEQgdKIga96Xk6C8qHSVQhgKeL1d4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-459-ow__LNqlMSmwsL57Q7RNvQ-1; Mon,
- 03 Aug 2026 10:06:47 -0400
-X-MC-Unique: ow__LNqlMSmwsL57Q7RNvQ-1
-X-Mimecast-MFC-AGG-ID: ow__LNqlMSmwsL57Q7RNvQ_1785766005
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 696331954B0C;
-	Mon,  3 Aug 2026 14:06:45 +0000 (UTC)
-Received: from p16v.redhat.com (unknown [10.44.33.235])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 06270423;
-	Mon,  3 Aug 2026 14:06:41 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	Chris du Quesnay <Chris.duQuesnay@microchip.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 1/2] dpll: zl3073x: add channel ToD, phase step and TIE operations
-Date: Mon,  3 Aug 2026 16:06:36 +0200
-Message-ID: <20260803140637.102339-2-ivecera@redhat.com>
-In-Reply-To: <20260803140637.102339-1-ivecera@redhat.com>
-References: <20260803140637.102339-1-ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UVpCXOeD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w8a4VYsn8Mr4soj1SYqQUUP8xsjeaxQBXiEfGMTES2RXKvEcgMl3L2/d+H3rkM7SjPrU2zbJ10EgwfJ2ktuHP2bIg2UXYix0tpkBlgXbanNQrwfZY9nR2HdjqneEkEwHlEKhT4gBLvbK8d4kXteZttvADvZCs0qMjiniwhr17Hhi4gmtj5MCnA83oJUl4HJLDGVGkjmMCSgwr/PROXbEugG8/WJj7qSyRhEv3ll2K26nO4xvD2LOHcUYIE04MVC4X/uuWZYamULqsD4OkhvFxZkTU4BHIq4iXBxstcq2KzJKAm88/Zj2T3HANwvs9ILRh1IUAJDd6qLVnm+jpr7K0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iovUH+Ca05qyTUmBTlO/Rdjk9ydZ4wxev894t1SaeqA=;
+ b=ZTs+bCKIJcJzpT2BQV5VbzuXINDoEoOBD9ozi5LDzbDRuABJhf6QTLiJZAt4daCljEx7qsOVfZ/2MV5RMyPz7PcwoIuCYMOovtkFz7dRcwew51yrQClAasCqil7z+xIcYubZCn2jHbuEOgt8hegG/PRJxXmz3YKIPPVMtmVBXd4g2PmJqtCuMTKrVrpEuQLdS0HdH2QdMti/5L6Kk3N+PAUdk6J5zag3b44zEplCGrS2S/D1ZVuqUQ1vZZ7huVL+mmN5sklQfQoQ1PddqONsHkMW8hr71uLXOZ+zUD/mWFDlE55MI43KWj1dvnJ4lS5egxdgQe0dQUC0gddnGEGtFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iovUH+Ca05qyTUmBTlO/Rdjk9ydZ4wxev894t1SaeqA=;
+ b=UVpCXOeD0o7keQLthAJyWgkMMOob/kiEZq2DngN47sqxKkyDiZ2TsttVHmm/5UDo67YO/0TLYbsvMqmevpj5avzSp4B9bve8DHiKx2EBRr8JarTR/wjU3lg7zkg2cHHrR4YMI66Wo3bGZJ45eqr0MTJRme0zANNBd1vhNpI8xg+9db+DweKTSrryHPG0ekTPxFTJLeC0z7rvYuGsWOHoBi39KHjw+0+s38R2CO82pG+80sdBo5/wn5/lnJ1B0aeTbr7yIJk8jyR3+HxuPGOJPn+J5XV1sM1lXb6TxhZyHV9MZEPFah5d1g0eQa7491b40nwfNdEle4d7+mj3iiGoiw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB5505.namprd12.prod.outlook.com (2603:10b6:208:1ce::7)
+ by MW9PR12MB999208.namprd12.prod.outlook.com (2603:10b6:303:301::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Mon, 3 Aug
+ 2026 14:07:24 +0000
+Received: from BL0PR12MB5505.namprd12.prod.outlook.com
+ ([fe80::9329:96cf:507a:eb21]) by BL0PR12MB5505.namprd12.prod.outlook.com
+ ([fe80::9329:96cf:507a:eb21%3]) with mapi id 15.21.0270.017; Mon, 3 Aug 2026
+ 14:07:24 +0000
+From: Shahar Shitrit <shshitrit@nvidia.com>
+To: netdev@vger.kernel.org,
+	mst@redhat.com,
+	jasowang@redhat.com,
+	pabeni@redhat.com
+Cc: virtualization@lists.linux.dev,
+	parav@nvidia.com,
+	shshitrit@nvidia.com,
+	yohadt@nvidia.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	jgg@ziepe.ca,
+	kevin.tian@intel.com,
+	kuba@kernel.org,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	danielj@nvidia.com
+Subject: [PATCH net-next v21 00/13] virtio_net: Add ethtool flow rules support
+Date: Mon,  3 Aug 2026 17:07:08 +0300
+Message-ID: <20260803140721.1871678-1-shshitrit@nvidia.com>
+X-Mailer: git-send-email 2.49.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TLZP290CA0001.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:9::14) To BL0PR12MB5505.namprd12.prod.outlook.com
+ (2603:10b6:208:1ce::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB5505:EE_|MW9PR12MB999208:EE_
+X-MS-Office365-Filtering-Correlation-Id: fde5e823-c30c-4ca0-a303-08def1688a9b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|6133799003|56012099006|10067099003|11063799006|5023799004|21046099003|21026099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	T9bnkXXhT/S9gRFPwGJU2hlG9o8CeYjj39ox23WDf3251VK048V54FbjcSirjos+S3sfWHyA2eOCxzbJMyom08iJpeeajhuvTtOGzFezkCZxdsM9LXnC/+zWWDkZB87FrHCZ352sDitwePHN5JKNAScUo8z+GgdHVWfRN1vldDZuWcmCIY3Bhpv5OLWVdh5K1p1d3zlYPSKQXKG9VC22L3gr/kJk5RRw8Gkqc8fXuK99ApYpg3P5B2Ik9Rbn3u4creMxfUchcSK85wFs9OG7NmMH1QH7g5f9XZV5lWEjMH1JNGTZaEI9HKRpHSIuC9Hujl7bqNKk2kWlkxVVYbHp/xxSLoVKJxbF53Pb5T28plJ7/S+FyvojPjdhpTKJQhZ8+Lsii6dRMRFV1GW+bNNyXbRuh+sMtaIV0zeDAhq96eTOQHqakjlroX7fifImHBQrRhc/nnZARD+vyMYCN7bOcsliSj42En6kG+JWRDv94QxlHCjdeqwHUlsvszLdJ4ReHum88mwZEs7FUL8RtGnF4cJRr1aUyHWhU9vl8WYtcmM8FKUwEMOF1oRkAK3EnU4IPiWH+Xl5RozkmVjq34GhtS75Zl5RRMs4o2TABQ20akEoxu118aBeVofc6Jm2Spl7y6FVRUe2soWMHJaLygtRjLRxjQHgvRm3LrxFAL6rs/Y=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB5505.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(6133799003)(56012099006)(10067099003)(11063799006)(5023799004)(21046099003)(21026099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?2UnL9RSK9DeFEvgkhLVBlbonEfUda3EaDJXNKDEI153gAkCsgf2+3fEoskP1?=
+ =?us-ascii?Q?P/ENv5TQjY7Qr+pjwS7AYm2jFCDso5KqBAPGUIXnxLYutFlYb/YK9JtU8PKK?=
+ =?us-ascii?Q?WmiJ+svrD5vVwoYTARwE5zO2hyaGS9qbq3q7kdoXg1yaQcjJv34dMZaNv/8g?=
+ =?us-ascii?Q?4nG5IDwyJtwYpMvtmY8fJFFzA4jNGaR7bQ9kCjlh0O3bBp5v9eRCHBgyEnac?=
+ =?us-ascii?Q?COHz8GITMNOTU8uDeOUtwQZ3v90LbB7k8BnrmgNj3HUcJ3XPdmfLASFd81+d?=
+ =?us-ascii?Q?st4K/ZxbuS0PkxKueNHaWirlyrodg6X5VGkXnmbyA/0g3meg+BFVFP1XsXpq?=
+ =?us-ascii?Q?qpGmxhGX+c+v2+DBeaDOsmvBViBTr+Oh1X2I+nT/ZaKBj7i/HlM7piyP/zxQ?=
+ =?us-ascii?Q?zMQ+ZYKk7bwtHZ9Fp0Msw3iwMHt/1lWi6sV90pM4gFVnQ/w70yKX9GqxpMvq?=
+ =?us-ascii?Q?qj+sZIeQ37epPPY4u2nyKT4cp2uAWbacXHGJIiovbm8Mg1j9D72+yJbOhW1T?=
+ =?us-ascii?Q?4RXJ7Flr/aI/ITa8853GePBCnOMoXN0Ct9bZ2X+gu6lQ94SbcE0Y9vdESuAo?=
+ =?us-ascii?Q?/MyijgV+Xh5zbw+JtUscWmh8zSXFiEOKp/EGZxa4FL0wqPGj3+khBxJNh+yU?=
+ =?us-ascii?Q?PtV9iDzrdY+jO/36Ddue07X3iRsa6DLHQYOtuXzJgLAn6n78v4q3LL5Sfgah?=
+ =?us-ascii?Q?fZUcQkco8FawsHBR0UAJhYBBMY1MLeWdWlOGCQvhxgrw5T+jXRfRKVQvjcsx?=
+ =?us-ascii?Q?evW4nnpXHkb4PFLzShLE/L/SQsK6lL9XmPp3oEGhGyM+XzyjYyafFOxcdZ+f?=
+ =?us-ascii?Q?bZEzFKOIkRYBrp52dSbnfTOrh7b4srlkJ6WtJP4wv15IGqJQ2mQWRYD2DJK6?=
+ =?us-ascii?Q?PRJwoF06FQzsEptsro2PxpKZ0SyIvpwxoea4L5uxe10YfjENfcKJFf2QfFeL?=
+ =?us-ascii?Q?xzPlY0kvmzEWyRGcRx65NjYk8UXkkBKKGrdCDNMzDwXFHqiX2fMLLGoy8l4L?=
+ =?us-ascii?Q?BGSqdJ2Wo0FyhFUd5FemooeVoq/FGzF3nP3JsCyv9wpFLwiHL5LrvZGJaMzh?=
+ =?us-ascii?Q?RU8pKh3YlFppWbMs0fMuMyh+6JCj1u5BbhYfiR83nQTV42lU2UouvoY7TzQn?=
+ =?us-ascii?Q?6UJ1aDD6l0+VosBkwjafuYdlfml1db6HAnwoRoQSy5TkQkGg1nsIjEzVxE7s?=
+ =?us-ascii?Q?mgQdAgOj5qezRmtj1lvo8vJrQNRmKOhLPk03y1Lgzzi97iuKKPI0nKdqefJJ?=
+ =?us-ascii?Q?Mu8NDdA2md56dYsEMzr9M5MIunpHPPqiQE+EhV93QYoajYNdgduYfNs6z42t?=
+ =?us-ascii?Q?Rz/bIRGEs0CmQV0aradn8HQWS5EHHqcszP3KDkE8m5pmr1vnu9biSCOL8iqm?=
+ =?us-ascii?Q?xWihU7cbDs3QYlPVCUMDNq2pPHHnhdY/AjkxPUfeKoZyT3HWGQejM35ZzCLR?=
+ =?us-ascii?Q?N0MeNZVnDu3Q+FGg51nbvqHVV1cj5EOIchrGKqzAhz9GmF3AWCRJv3256NFa?=
+ =?us-ascii?Q?Gu5iL5NBN9bGMwTXBJCH3MD/tVmP8WZMFo+qd7qt+bEzbGN+yfQYFReq/wZt?=
+ =?us-ascii?Q?9uD10JCr1jzFO0t/an3Osq3RqbLdTx5d6KklsQwVMgh8wdH9IOHlH+tNryu1?=
+ =?us-ascii?Q?Tvabx+C2eCBH8KbCww5FFaTIx120RmdcRduICyiAF81zObrePjxo4H+X31Co?=
+ =?us-ascii?Q?rBtTA15CUaD+6jD8EA/Sr68c2GhxwELiYQUvVpeV74Fj+7OEALcuGVmW/7sH?=
+ =?us-ascii?Q?HGd66d9yVQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fde5e823-c30c-4ca0-a303-08def1688a9b
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB5505.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 14:07:23.9534
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ekA7xh+viBSy6q1Y9eirYi5Rbp5REBRfJcUX19qxa6hC+U67POqlF11vtgG7wj5iM1yhB/XmTOjWxfzcs4P6GA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW9PR12MB999208
 
-Add low-level DPLL channel operations for ToD read/write/adjust,
-output phase step, delta frequency offset write and TIE (Time
-Interval Error) write. These serve as building blocks for the PTP
-clock callbacks added in the next patch.
+This is v21 of the series previously posted by Daniel Jurgens.
+I'll be taking over from this version onward.
 
-ToD operations use a wait-before-write pattern to avoid blocking
-after each operation.
+This series implements ethtool flow rules support for virtio_net using the
+virtio flow filter (FF) specification. The implementation allows users to
+configure packet filtering rules through ethtool commands, directing
+packets to specific receive queues, or dropping them based on various
+header fields.
 
-The tod_ready_wait helper selects the poll timeout based on the
-current ToD command - write operations use a longer timeout (1000 ms)
-than reads (30 ms).
+The series starts with infrastructure changes to expose virtio PCI admin
+capabilities and object management APIs. It then creates the virtio_net
+directory structure and implements the flow filter functionality with
+support for:
 
-The ToD read captures system timestamps (ptp_system_timestamp) around
-the HW command and completion poll to support cross-timestamping.
+- Layer 2 (Ethernet) flow rules
+- IPv4 and IPv6 flow rules
+- TCP and UDP flow rules (both IPv4 and IPv6)
+- Rule querying and management operations
 
-The TIE write operation provides sub-picosecond resolution phase
-adjustment for modes where the DPLL is tracking a reference
-(AUTO and REFLOCK).
+Setting, deleting and viewing flow filters, -1 action is drop, positive
+integers steer to that RQ:
 
-Add output step-time mask to struct zl3073x_dev and
-zl3073x_dev_out_is_stepped() helper to check if an output
-participates in step-time operations.
+$ ethtool -u ens9
+4 RX rings available
+Total 0 rules
 
-Reviewed-by: Petr Oros <poros@redhat.com>
-Tested-by: Chris du Quesnay <Chris.duQuesnay@microchip.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+$ ethtool -U ens9 flow-type ether src 1c:34:da:4a:33:dd action 0
+Added rule with ID 0
+$ ethtool -U ens9 flow-type udp4 dst-port 5001 action 3
+Added rule with ID 1
+$ ethtool -U ens9 flow-type tcp6 src-ip fc00::2 dst-port 5001 action 2
+Added rule with ID 2
+$ ethtool -U ens9 flow-type ip4 src-ip 192.168.51.101 action 1
+Added rule with ID 3
+$ ethtool -U ens9 flow-type ip6 dst-ip fc00::1 action -1
+Added rule with ID 4
+$ ethtool -U ens9 flow-type ip6 src-ip fc00::2 action -1
+Added rule with ID 5
+$ ethtool -U ens9 delete 4
+$ ethtool -u ens9
+4 RX rings available
+Total 5 rules
+
+Filter: 0
+        Flow Type: Raw Ethernet
+        Src MAC addr: 1C:34:DA:4A:33:DD mask: 00:00:00:00:00:00
+        Dest MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
+        Ethertype: 0x0 mask: 0xFFFF
+        Action: Direct to queue 0
+
+Filter: 1
+        Rule Type: UDP over IPv4
+        Src IP addr: 0.0.0.0 mask: 255.255.255.255
+        Dest IP addr: 0.0.0.0 mask: 255.255.255.255
+        TOS: 0x0 mask: 0xff
+        Src port: 0 mask: 0xffff
+        Dest port: 5001 mask: 0x0
+        Action: Direct to queue 3
+
+Filter: 2
+        Rule Type: TCP over IPv6
+        Src IP addr: fc00::2 mask: ::
+        Dest IP addr: :: mask: ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+        Traffic Class: 0x0 mask: 0xff
+        Src port: 0 mask: 0xffff
+        Dest port: 5001 mask: 0x0
+        Action: Direct to queue 2
+
+Filter: 3
+        Rule Type: Raw IPv4
+        Src IP addr: 192.168.51.101 mask: 0.0.0.0
+        Dest IP addr: 0.0.0.0 mask: 255.255.255.255
+        TOS: 0x0 mask: 0xff
+        Protocol: 0 mask: 0xff
+        L4 bytes: 0x0 mask: 0xffffffff
+        Action: Direct to queue 1
+
+Filter: 5
+        Rule Type: Raw IPv6
+        Src IP addr: fc00::2 mask: ::
+        Dest IP addr: :: mask: ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+        Traffic Class: 0x0 mask: 0xff
+        Protocol: 0 mask: 0xff
+        L4 bytes: 0x0 mask: 0xffffffff
+        Action: Drop
 ---
- drivers/dpll/zl3073x/chan.c | 310 +++++++++++++++++++++++++++++++++++-
- drivers/dpll/zl3073x/chan.h |  32 ++++
- drivers/dpll/zl3073x/core.c |  13 ++
- drivers/dpll/zl3073x/core.h |  23 +++
- drivers/dpll/zl3073x/regs.h |  52 ++++++
- 5 files changed, 428 insertions(+), 2 deletions(-)
+v2: https://lore.kernel.org/netdev/20250908164046.25051-1-danielj@nvidia.com/
+  - Fix sparse warnings
+  - Fix memory leak on subsequent failure to allocate
+  - Fix some Typos
 
-diff --git a/drivers/dpll/zl3073x/chan.c b/drivers/dpll/zl3073x/chan.c
-index 4ec2cf53dad468..79874a9fdb4962 100644
---- a/drivers/dpll/zl3073x/chan.c
-+++ b/drivers/dpll/zl3073x/chan.c
-@@ -3,6 +3,7 @@
- #include <linux/cleanup.h>
- #include <linux/delay.h>
- #include <linux/dev_printk.h>
-+#include <linux/ptp_clock_kernel.h>
- #include <linux/string.h>
- #include <linux/types.h>
- 
-@@ -162,8 +163,8 @@ int zl3073x_chan_nco_mode_set(struct zl3073x_dev *zldev, u8 index)
-  * @zldev: pointer to zl3073x_dev structure
-  * @index: DPLL channel index to fetch state for
-  *
-- * Reads the mode_refsel register and reference priority registers for
-- * the given DPLL channel and stores the raw values for later use.
-+ * Reads the mode_refsel, status and reference priority registers for
-+ * the given DPLL channel and stores the values for later use.
-  *
-  * Return: 0 on success, <0 on error
-  */
-@@ -234,6 +235,311 @@ const struct zl3073x_chan *zl3073x_chan_state_get(struct zl3073x_dev *zldev,
- 	return &zldev->chan[index];
- }
- 
-+/**
-+ * zl3073x_chan_tod_ready_wait - wait for ToD semaphore to clear
-+ * @zldev: pointer to zl3073x device
-+ * @ch: DPLL channel index
-+ *
-+ * Polls the ToD control register until the semaphore bit is cleared,
-+ * indicating the device has completed the previous ToD operation.
-+ *
-+ * Return: 0 on success, -EBUSY if semaphore not cleared, <0 on error
-+ */
-+int zl3073x_chan_tod_ready_wait(struct zl3073x_dev *zldev, u8 ch)
-+{
-+	unsigned int timeout;
-+	u8 tod_ctrl;
-+	int rc;
-+
-+	rc = zl3073x_read_u8(zldev, ZL_REG_DPLL_TOD_CTRL(ch), &tod_ctrl);
-+	if (rc)
-+		return rc;
-+
-+	switch (FIELD_GET(ZL_DPLL_TOD_CTRL_CMD, tod_ctrl)) {
-+	case ZL_DPLL_TOD_CTRL_CMD_WR_NEXT_1HZ:
-+		timeout = ZL_POLL_TOD_WR_TIMEOUT_US;
-+		break;
-+	default:
-+		timeout = ZL_POLL_TOD_RD_TIMEOUT_US;
-+		break;
-+	}
-+
-+	rc = zl3073x_poll_zero_u8(zldev, ZL_REG_DPLL_TOD_CTRL(ch),
-+				  ZL_DPLL_TOD_CTRL_SEM, timeout);
-+
-+	return rc == -ETIMEDOUT ? -EBUSY : rc;
-+}
-+
-+/**
-+ * zl3073x_chan_tod_ctrl - issue ToD command
-+ * @zldev: pointer to zl3073x device
-+ * @ch: DPLL channel index
-+ * @cmd: ToD command to execute
-+ *
-+ * Writes the semaphore and command to dpll_tod_ctrl. The caller must
-+ * ensure the device is ready (semaphore clear) before calling and
-+ * must wait for completion if needed.
-+ *
-+ * Return: 0 on success, <0 on error
-+ */
-+static int zl3073x_chan_tod_ctrl(struct zl3073x_dev *zldev, u8 ch, u8 cmd)
-+{
-+	return zl3073x_write_u8(zldev, ZL_REG_DPLL_TOD_CTRL(ch),
-+				ZL_DPLL_TOD_CTRL_SEM | cmd);
-+}
-+
-+/**
-+ * zl3073x_chan_tod_read - read ToD registers after issuing a command
-+ * @zldev: pointer to zl3073x device
-+ * @ch: DPLL channel index
-+ * @next_hz: if true, read predicted ToD at next 1 Hz; otherwise read current
-+ * @ts: timespec to store the result
-+ * @sts: optional system timestamp pair for cross-timestamping
-+ *
-+ * Context: Caller must serialize all zl3073x_chan_tod_* calls externally.
-+ * Return: 0 on success, <0 on error
-+ */
-+int zl3073x_chan_tod_read(struct zl3073x_dev *zldev, u8 ch,
-+			  bool next_hz, struct timespec64 *ts,
-+			  struct ptp_system_timestamp *sts)
-+{
-+	u32 nsec;
-+	u64 sec;
-+	u8 cmd;
-+	int rc;
-+
-+	if (next_hz)
-+		cmd = ZL_DPLL_TOD_CTRL_CMD_RD_NEXT_1HZ;
-+	else
-+		cmd = ZL_DPLL_TOD_CTRL_CMD_RD_CURRENT;
-+
-+	/* Wait for any previous ToD operation to complete */
-+	rc = zl3073x_chan_tod_ready_wait(zldev, ch);
-+	if (rc)
-+		return rc;
-+
-+	ptp_read_system_prets(sts);
-+	rc = zl3073x_chan_tod_ctrl(zldev, ch, cmd);
-+	if (rc)
-+		return rc;
-+
-+	rc = zl3073x_chan_tod_ready_wait(zldev, ch);
-+	if (rc)
-+		return rc;
-+	ptp_read_system_postts(sts);
-+
-+	rc = zl3073x_read_u48(zldev, ZL_REG_DPLL_TOD_SEC(ch), &sec);
-+	if (rc)
-+		return rc;
-+
-+	/* HW nanoseconds are always in [0, NSEC_PER_SEC) range */
-+	rc = zl3073x_read_u32(zldev, ZL_REG_DPLL_TOD_NS(ch), &nsec);
-+	if (rc)
-+		return rc;
-+
-+	ts->tv_sec = sec;
-+	ts->tv_nsec = nsec;
-+
-+	return 0;
-+}
-+
-+/**
-+ * zl3073x_chan_tod_write - write ToD registers and trigger 1 Hz update
-+ * @zldev: pointer to zl3073x device
-+ * @ch: DPLL channel index
-+ * @ts: time to set
-+ *
-+ * Context: Caller must serialize all zl3073x_chan_tod_* calls externally.
-+ * Return: 0 on success, <0 on error
-+ */
-+int zl3073x_chan_tod_write(struct zl3073x_dev *zldev, u8 ch,
-+			   struct timespec64 ts)
-+{
-+	int rc;
-+
-+	/* Wait for any previous ToD operation to complete */
-+	rc = zl3073x_chan_tod_ready_wait(zldev, ch);
-+	if (rc)
-+		return rc;
-+
-+	rc = zl3073x_write_u48(zldev, ZL_REG_DPLL_TOD_SEC(ch), ts.tv_sec);
-+	if (rc)
-+		return rc;
-+
-+	rc = zl3073x_write_u32(zldev, ZL_REG_DPLL_TOD_NS(ch), ts.tv_nsec);
-+	if (rc)
-+		return rc;
-+
-+	return zl3073x_chan_tod_ctrl(zldev, ch,
-+				     ZL_DPLL_TOD_CTRL_CMD_WR_NEXT_1HZ);
-+}
-+
-+/**
-+ * zl3073x_chan_tod_adjust - atomic ToD read-modify-write with rollover guard
-+ * @zldev: pointer to zl3073x device
-+ * @ch: DPLL channel index
-+ * @delta: time adjustment to apply
-+ *
-+ * Reads the next-Hz ToD and current ToD, then checks whether enough time
-+ * remains before the next 1 Hz rollover to safely complete the write.
-+ * If less than 20 ms remains, waits for the rollover and increments the
-+ * next-Hz seconds by one. If the tick crossed between the two reads,
-+ * normalizes by the number of elapsed ticks. Applies @delta and writes
-+ * the result back.
-+ *
-+ * Context: Caller must serialize all zl3073x_chan_tod_* calls externally.
-+ * Return: 0 on success, <0 on error
-+ */
-+int zl3073x_chan_tod_adjust(struct zl3073x_dev *zldev, u8 ch,
-+			    struct timespec64 delta)
-+{
-+	static const long threshold_ns = 20 * NSEC_PER_MSEC;
-+	struct timespec64 ts_next, ts_cur, diff;
-+	int rc;
-+
-+	/* Read predicted ToD at next 1 Hz tick */
-+	rc = zl3073x_chan_tod_read(zldev, ch, true, &ts_next, NULL);
-+	if (rc)
-+		return rc;
-+
-+	/* Read current ToD to determine remaining margin */
-+	rc = zl3073x_chan_tod_read(zldev, ch, false, &ts_cur, NULL);
-+	if (rc)
-+		return rc;
-+
-+	/* If too close to the next rollover, wait it out. If the 1 Hz tick
-+	 * crossed between the two reads, normalize by the elapsed ticks.
-+	 */
-+	diff = timespec64_sub(ts_next, ts_cur);
-+	if (!diff.tv_sec && diff.tv_nsec < threshold_ns) {
-+		fsleep((unsigned long)diff.tv_nsec / NSEC_PER_USEC + 1);
-+		ts_next.tv_sec++;
-+	} else if (diff.tv_sec < 0) {
-+		ts_next.tv_sec -= diff.tv_sec;
-+	}
-+
-+	/* Apply delta to the next-Hz ToD */
-+	ts_next = timespec64_add(ts_next, delta);
-+	if (!timespec64_valid(&ts_next))
-+		return -EINVAL;
-+
-+	return zl3073x_chan_tod_write(zldev, ch, ts_next);
-+}
-+
-+/**
-+ * zl3073x_chan_df_offset_set - write delta frequency offset to hardware
-+ * @zldev: pointer to zl3073x device
-+ * @ch: DPLL channel index
-+ * @offset: frequency offset in 2^-48 steps
-+ *
-+ * Context: Caller must hold the per-DPLL lock.
-+ * Return: 0 on success, <0 on error
-+ */
-+int zl3073x_chan_df_offset_set(struct zl3073x_dev *zldev, u8 ch, s64 offset)
-+{
-+	int rc;
-+
-+	rc = zl3073x_write_u48(zldev, ZL_REG_DPLL_DF_OFFSET(ch), offset);
-+	if (!rc)
-+		zldev->chan[ch].df_offset = offset;
-+
-+	return rc;
-+}
-+
-+/**
-+ * zl3073x_chan_tie_write - adjust DPLL phase using TIE write
-+ * @zldev: pointer to zl3073x device
-+ * @ch: DPLL channel index
-+ * @delta_ns: phase adjustment in nanoseconds (must be within +-1s)
-+ *
-+ * Converts nanoseconds to TIE units (0.01 ps) and writes TIE data
-+ * to the specified channel.
-+ *
-+ * Return: 0 on success, <0 on error
-+ */
-+int zl3073x_chan_tie_write(struct zl3073x_dev *zldev, u8 ch, s64 delta_ns)
-+{
-+	s64 tie_data;
-+	int rc;
-+
-+	if (WARN_ON(delta_ns <= -NSEC_PER_SEC || delta_ns >= NSEC_PER_SEC))
-+		return -ERANGE;
-+
-+	guard(mutex)(&zldev->tie_lock);
-+
-+	/* Wait for any previous TIE operation to complete */
-+	rc = zl3073x_poll_zero_u8(zldev, ZL_REG_DPLL_TIE_CTRL,
-+				  ZL_DPLL_TIE_CTRL_OP,
-+				  ZL_POLL_TIE_WR_TIMEOUT_US);
-+	if (rc)
-+		return rc;
-+
-+	/* Convert ns to TIE units (0.01 ps = 10^-14 s) */
-+	tie_data = delta_ns * 100000LL;
-+
-+	rc = zl3073x_write_u48(zldev, ZL_REG_DPLL_TIE_DATA(ch), tie_data);
-+	if (rc)
-+		return rc;
-+
-+	rc = zl3073x_write_u8(zldev, ZL_REG_DPLL_TIE_CTRL_MASK, BIT(ch));
-+	if (rc)
-+		return rc;
-+
-+	return zl3073x_write_u8(zldev, ZL_REG_DPLL_TIE_CTRL,
-+				ZL_DPLL_TIE_CTRL_OP_WR);
-+}
-+
-+/**
-+ * zl3073x_chan_phase_step - execute one output phase step operation
-+ * @zldev: pointer to zl3073x device
-+ * @ch: DPLL channel index
-+ * @out_mask: bitmask of outputs to step
-+ * @step_cycles: phase step in synthesizer clock cycles
-+ * @tod_step: also step the ToD counter
-+ *
-+ * All masked outputs must use synthesizers of the same frequency since
-+ * the step value is in synthesizer clock cycles.
-+ *
-+ * Return: 0 on success, <0 on error
-+ */
-+int zl3073x_chan_phase_step(struct zl3073x_dev *zldev, u8 ch,
-+			    u16 out_mask, s32 step_cycles,
-+			    bool tod_step)
-+{
-+	u8 ctrl;
-+	int rc;
-+
-+	guard(mutex)(&zldev->phase_step_lock);
-+
-+	/* Wait for any previous phase step operation to complete */
-+	rc = zl3073x_poll_zero_u8(zldev, ZL_REG_OUTPUT_PHASE_STEP_CTRL,
-+				  ZL_OUTPUT_PHASE_STEP_CTRL_OP,
-+				  ZL_POLL_PHASE_STEP_TIMEOUT_US);
-+	if (rc)
-+		return rc;
-+
-+	rc = zl3073x_write_u32(zldev, ZL_REG_OUTPUT_PHASE_STEP_DATA,
-+			       step_cycles);
-+	if (rc)
-+		return rc;
-+
-+	rc = zl3073x_write_u16(zldev, ZL_REG_OUTPUT_PHASE_STEP_MASK, out_mask);
-+	if (rc)
-+		return rc;
-+
-+	rc = zl3073x_write_u8(zldev, ZL_REG_OUTPUT_PHASE_STEP_NUMBER, 1);
-+	if (rc)
-+		return rc;
-+
-+	ctrl = FIELD_PREP(ZL_OUTPUT_PHASE_STEP_CTRL_DPLL, ch) |
-+	       FIELD_PREP(ZL_OUTPUT_PHASE_STEP_CTRL_OP,
-+			  ZL_OUTPUT_PHASE_STEP_CTRL_OP_WRITE);
-+	if (tod_step)
-+		ctrl |= ZL_OUTPUT_PHASE_STEP_CTRL_TOD_STEP;
-+
-+	return zl3073x_write_u8(zldev, ZL_REG_OUTPUT_PHASE_STEP_CTRL, ctrl);
-+}
-+
- /**
-  * zl3073x_chan_state_set - commit DPLL channel state changes to hardware
-  * @zldev: pointer to zl3073x_dev structure
-diff --git a/drivers/dpll/zl3073x/chan.h b/drivers/dpll/zl3073x/chan.h
-index dc9c6d95bdee75..99c3b7088f678f 100644
---- a/drivers/dpll/zl3073x/chan.h
-+++ b/drivers/dpll/zl3073x/chan.h
-@@ -5,10 +5,12 @@
- 
- #include <linux/bitfield.h>
- #include <linux/stddef.h>
-+#include <linux/time64.h>
- #include <linux/types.h>
- 
- #include "regs.h"
- 
-+struct ptp_system_timestamp;
- struct zl3073x_dev;
- 
- /**
-@@ -42,6 +44,21 @@ int zl3073x_chan_state_set(struct zl3073x_dev *zldev, u8 index,
- int zl3073x_chan_state_update(struct zl3073x_dev *zldev, u8 index);
- int zl3073x_chan_nco_mode_set(struct zl3073x_dev *zldev, u8 index);
- 
-+int zl3073x_chan_tod_ready_wait(struct zl3073x_dev *zldev, u8 ch);
-+int zl3073x_chan_tod_read(struct zl3073x_dev *zldev, u8 ch,
-+			  bool next_hz, struct timespec64 *ts,
-+			  struct ptp_system_timestamp *sts);
-+int zl3073x_chan_tod_write(struct zl3073x_dev *zldev, u8 ch,
-+			   struct timespec64 ts);
-+int zl3073x_chan_tod_adjust(struct zl3073x_dev *zldev, u8 ch,
-+			    struct timespec64 delta);
-+int zl3073x_chan_phase_step(struct zl3073x_dev *zldev, u8 ch,
-+			    u16 out_mask, s32 step_cycles, bool tod_step);
-+
-+int zl3073x_chan_df_offset_set(struct zl3073x_dev *zldev, u8 ch, s64 offset);
-+
-+int zl3073x_chan_tie_write(struct zl3073x_dev *zldev, u8 ch, s64 delta_ns);
-+
- /**
-  * zl3073x_chan_df_offset_get - get cached df_offset vs tracked reference
-  * @chan: pointer to channel state
-@@ -200,6 +217,21 @@ static inline bool zl3073x_chan_mode_is_reflock(const struct zl3073x_chan *chan)
- 	return zl3073x_chan_mode_get(chan) == ZL_DPLL_MODE_REFSEL_MODE_REFLOCK;
- }
- 
-+/**
-+ * zl3073x_chan_mode_supports_tie - check if channel mode supports TIE write
-+ * @chan: pointer to channel state
-+ *
-+ * TIE write is supported in AUTO and REFLOCK modes regardless of lock state.
-+ *
-+ * Return: true if TIE write is supported, false otherwise
-+ */
-+static inline bool
-+zl3073x_chan_mode_supports_tie(const struct zl3073x_chan *chan)
-+{
-+	return zl3073x_chan_mode_is_auto(chan) ||
-+		zl3073x_chan_mode_is_reflock(chan);
-+}
-+
- /**
-  * zl3073x_chan_is_ho_ready - check if holdover is ready
-  * @chan: pointer to channel state
-diff --git a/drivers/dpll/zl3073x/core.c b/drivers/dpll/zl3073x/core.c
-index 7f5afaaae6342f..8a8c27a06ac9de 100644
---- a/drivers/dpll/zl3073x/core.c
-+++ b/drivers/dpll/zl3073x/core.c
-@@ -510,6 +510,11 @@ zl3073x_dev_state_fetch(struct zl3073x_dev *zldev)
- 	int rc;
- 	u8 i;
- 
-+	rc = zl3073x_read_u16(zldev, ZL_REG_OUTPUT_STEP_TIME_MASK,
-+			      &zldev->out_step_time_mask);
-+	if (rc)
-+		return rc;
-+
- 	for (i = 0; i < ZL3073X_NUM_REFS; i++) {
- 		rc = zl3073x_ref_state_fetch(zldev, i);
- 		if (rc) {
-@@ -1033,6 +1038,14 @@ int zl3073x_dev_probe(struct zl3073x_dev *zldev)
- 	 * and/or polls are required to be done atomically.
- 	 */
- 	rc = devm_mutex_init(zldev->dev, &zldev->multiop_lock);
-+	if (rc)
-+		return dev_err_probe(zldev->dev, rc,
-+				     "Failed to initialize mutex\n");
-+	rc = devm_mutex_init(zldev->dev, &zldev->phase_step_lock);
-+	if (rc)
-+		return dev_err_probe(zldev->dev, rc,
-+				     "Failed to initialize mutex\n");
-+	rc = devm_mutex_init(zldev->dev, &zldev->tie_lock);
- 	if (rc)
- 		return dev_err_probe(zldev->dev, rc,
- 				     "Failed to initialize mutex\n");
-diff --git a/drivers/dpll/zl3073x/core.h b/drivers/dpll/zl3073x/core.h
-index 78dc208f3eea2a..67c10e2595118c 100644
---- a/drivers/dpll/zl3073x/core.h
-+++ b/drivers/dpll/zl3073x/core.h
-@@ -26,6 +26,10 @@ struct zl3073x_dpll;
- #define ZL_POLL_HWREG_TIMEOUT_US	(50 * USEC_PER_MSEC)
- #define ZL_POLL_MB_TIMEOUT_US		(30 * USEC_PER_MSEC)
- #define ZL_POLL_PHASE_ERR_TIMEOUT_US	(50 * USEC_PER_MSEC)
-+#define ZL_POLL_PHASE_STEP_TIMEOUT_US	(3000 * USEC_PER_MSEC)
-+#define ZL_POLL_TIE_WR_TIMEOUT_US	(1000 * USEC_PER_MSEC)
-+#define ZL_POLL_TOD_RD_TIMEOUT_US	(30 * USEC_PER_MSEC)
-+#define ZL_POLL_TOD_WR_TIMEOUT_US	(1000 * USEC_PER_MSEC)
- 
- enum zl3073x_flags {
- 	ZL3073X_FLAG_REF_PHASE_COMP_32_BIT,
-@@ -55,6 +59,8 @@ struct zl3073x_chip_info {
-  * @regmap: regmap to access device registers
-  * @info: detected chip info
-  * @multiop_lock: to serialize multiple register operations
-+ * @tie_lock: to serialize TIE write operations
-+ * @phase_step_lock: to serialize output phase step operations
-  * @ref: array of input references' invariants
-  * @out: array of outs' invariants
-  * @synth: array of synths' invariants
-@@ -63,6 +69,7 @@ struct zl3073x_chip_info {
-  * @kworker: thread for periodic work
-  * @work: periodic work
-  * @clock_id: clock id of the device
-+ * @out_step_time_mask: output step-time mask (device-global)
-  * @phase_avg_factor: phase offset measurement averaging factor
-  * @freq_monitor: is frequency monitor enabled
-  */
-@@ -71,6 +78,8 @@ struct zl3073x_dev {
- 	struct regmap			*regmap;
- 	const struct zl3073x_chip_info	*info;
- 	struct mutex			multiop_lock;
-+	struct mutex			tie_lock;
-+	struct mutex			phase_step_lock;
- 
- 	/* Invariants */
- 	struct zl3073x_ref	ref[ZL3073X_NUM_REFS];
-@@ -87,6 +96,7 @@ struct zl3073x_dev {
- 
- 	/* Per-chip parameters */
- 	u64			clock_id;
-+	u16			out_step_time_mask;
- 	u8			phase_avg_factor;
- 	bool			freq_monitor;
- };
-@@ -308,6 +318,19 @@ zl3073x_dev_out_is_enabled(struct zl3073x_dev *zldev, u8 index)
- 	return zl3073x_synth_is_enabled(synth) && zl3073x_out_is_enabled(out);
- }
- 
-+/**
-+ * zl3073x_dev_out_is_stepped - check if output is in step-time mask
-+ * @zldev: pointer to zl3073x device
-+ * @index: output index
-+ *
-+ * Return: true if output is affected by step-time operations
-+ */
-+static inline bool
-+zl3073x_dev_out_is_stepped(struct zl3073x_dev *zldev, u8 index)
-+{
-+	return !!(zldev->out_step_time_mask & BIT(index));
-+}
-+
- /**
-  * zl3073x_dev_out_dpll_get - get DPLL ID the output is driven by
-  * @zldev: pointer to zl3073x device
-diff --git a/drivers/dpll/zl3073x/regs.h b/drivers/dpll/zl3073x/regs.h
-index b70ead7d4495b2..f3a5e1215aa36b 100644
---- a/drivers/dpll/zl3073x/regs.h
-+++ b/drivers/dpll/zl3073x/regs.h
-@@ -179,6 +179,20 @@
- #define ZL_DPLL_DF_READ_CMD			GENMASK(2, 0)
- #define ZL_DPLL_DF_READ_CMD_ACC_I		4
- 
-+#define ZL_REG_DPLL_TIE_CTRL			ZL_REG(5, 0x30, 1)
-+#define ZL_DPLL_TIE_CTRL_OP			GENMASK(2, 0)
-+#define ZL_DPLL_TIE_CTRL_OP_WR			4
-+
-+#define ZL_REG_DPLL_TIE_CTRL_MASK		ZL_REG(5, 0x31, 1)
-+
-+#define ZL_REG_DPLL_TOD_CTRL(_idx)					\
-+	ZL_REG_IDX(_idx, 5, 0x38, 1, ZL3073X_MAX_CHANNELS, 1)
-+#define ZL_DPLL_TOD_CTRL_SEM			BIT(4)
-+#define ZL_DPLL_TOD_CTRL_CMD			GENMASK(3, 0)
-+#define ZL_DPLL_TOD_CTRL_CMD_WR_NEXT_1HZ	1
-+#define ZL_DPLL_TOD_CTRL_CMD_RD_CURRENT		8
-+#define ZL_DPLL_TOD_CTRL_CMD_RD_NEXT_1HZ	9
-+
- #define ZL_REG_DPLL_MEAS_CTRL			ZL_REG(5, 0x50, 1)
- #define ZL_DPLL_MEAS_CTRL_EN			BIT(0)
- #define ZL_DPLL_MEAS_CTRL_AVG_FACTOR		GENMASK(7, 4)
-@@ -193,6 +207,9 @@
- 
- /*******************************
-  * Register Pages 6-7, DPLL Data
-+ *
-+ * Per-channel registers with stride 0x20. Channels 0-3 reside on page 6,
-+ * channel 4 on page 7.
-  *******************************/
- 
- #define ZL_REG_DPLL_DF_OFFSET_03(_idx)					\
-@@ -202,6 +219,24 @@
- 	((_idx) < 4 ? ZL_REG_DPLL_DF_OFFSET_03(_idx) : ZL_REG_DPLL_DF_OFFSET_4)
- #define ZL_DPLL_DF_OFFSET_UNKNOWN	S64_MIN
- 
-+#define ZL_REG_DPLL_TIE_DATA_03(_idx)					\
-+	ZL_REG_IDX(_idx, 6, 0x0C, 6, 4, 0x20)
-+#define ZL_REG_DPLL_TIE_DATA_4			ZL_REG(7, 0x0C, 6)
-+#define ZL_REG_DPLL_TIE_DATA(_idx)					\
-+	((_idx) < 4 ? ZL_REG_DPLL_TIE_DATA_03(_idx) : ZL_REG_DPLL_TIE_DATA_4)
-+
-+#define ZL_REG_DPLL_TOD_SEC_03(_idx)					\
-+	ZL_REG_IDX(_idx, 6, 0x12, 6, 4, 0x20)
-+#define ZL_REG_DPLL_TOD_SEC_4			ZL_REG(7, 0x12, 6)
-+#define ZL_REG_DPLL_TOD_SEC(_idx)					\
-+	((_idx) < 4 ? ZL_REG_DPLL_TOD_SEC_03(_idx) : ZL_REG_DPLL_TOD_SEC_4)
-+
-+#define ZL_REG_DPLL_TOD_NS_03(_idx)					\
-+	ZL_REG_IDX(_idx, 6, 0x18, 4, 4, 0x20)
-+#define ZL_REG_DPLL_TOD_NS_4			ZL_REG(7, 0x18, 4)
-+#define ZL_REG_DPLL_TOD_NS(_idx)					\
-+	((_idx) < 4 ? ZL_REG_DPLL_TOD_NS_03(_idx) : ZL_REG_DPLL_TOD_NS_4)
-+
- /***********************************
-  * Register Page 9, Synth and Output
-  ***********************************/
-@@ -221,6 +256,23 @@
- #define ZL_OUTPUT_CTRL_EN			BIT(0)
- #define ZL_OUTPUT_CTRL_SYNTH_SEL		GENMASK(6, 4)
- 
-+#define ZL_REG_OUTPUT_STEP_TIME_MASK		ZL_REG(9, 0x36, 2)
-+
-+#define ZL_REG_OUTPUT_PHASE_STEP_CTRL		ZL_REG(9, 0x38, 1)
-+#define ZL_OUTPUT_PHASE_STEP_CTRL_DPLL		GENMASK(6, 4)
-+#define ZL_OUTPUT_PHASE_STEP_CTRL_TOD_STEP	BIT(3)
-+#define ZL_OUTPUT_PHASE_STEP_CTRL_OP		GENMASK(1, 0)
-+#define ZL_OUTPUT_PHASE_STEP_CTRL_OP_NONE	0
-+#define ZL_OUTPUT_PHASE_STEP_CTRL_OP_RESET	1
-+#define ZL_OUTPUT_PHASE_STEP_CTRL_OP_READ	2
-+#define ZL_OUTPUT_PHASE_STEP_CTRL_OP_WRITE	3
-+
-+#define ZL_REG_OUTPUT_PHASE_STEP_NUMBER		ZL_REG(9, 0x39, 1)
-+
-+#define ZL_REG_OUTPUT_PHASE_STEP_MASK		ZL_REG(9, 0x3a, 2)
-+
-+#define ZL_REG_OUTPUT_PHASE_STEP_DATA		ZL_REG(9, 0x3c, 4)
-+
- /*******************************
-  * Register Page 10, Ref Mailbox
-  *******************************/
+v3: https://lore.kernel.org/netdev/20250923141920.283862-1-danielj@nvidia.com/
+  - Added admin_ops to virtio_device kdoc.
+
+v4:
+  - Fixed double free bug inserting flows
+  - Fixed incorrect protocol field check parsing ip4 headers.
+  - (u8 *) changed to (void *)
+  - Added kdoc comments to UAPI changes.
+  - No longer split up virtio_net.c
+  - Added config op to execute admin commands.
+      - virtio_pci assigns vp_modern_admin_cmd_exec to this callback.
+  - Moved admin command API to new core file virtio_admin_commands.c
+
+v5:
+  - Fixed compile error
+  - Fixed static analysis warning on () after macro
+  - Added missing fields to kdoc comments
+  - Aligned parameter name between prototype and kdoc
+
+v6:
+  - Fix sparse warning "array of flexible structures" Jakub K/Simon H
+  - Use new variable and validate ff_mask_size before set_cap. MST
+
+v7:
+  - Change virtnet_ff_init to return a value. Allow -EOPNOTSUPP. Xuan
+  - Set ff->ff_{caps, mask, actions} NULL in error path. Paolo Abini
+  - Move for (int i removal hung back a patch. Paolo Abini
+
+v8
+  - Removed unused num_classifiers. Jason Wang
+  - Use real_ff_mask_size when setting the selector caps. Jason Wang
+
+v9:
+  - Set err to -ENOMEM after alloc failures in virtnet_ff_init. Simon H
+
+v10:
+  - Return -EOPNOTSUPP in virnet_ff_init before allocing any memory.
+    Jason Wang/Paolo Abeni
+
+v11:
+  - Return -EINVAL if any resource limit is 0. Simon Horman
+  - Ensure we don't overrun alloced space of ff->ff_mask by moving the
+    real_ff_mask_size > ff_mask_size check into the loop. Simon Horman
+
+v12: Many comments by MST, thanks Michael. Only the most significant
+     listed here:
+  - Fixed leak of key in build_and_insert.
+  - Fixed setting ethhdr proto for IPv6.
+  - Added 2 byte pad to struct virtio_net_ff_cap_data.
+  - Use and set rule_cnt when querying all flows.
+  - Cleanup and reinit in freeze/restore path.
+
+v13:
+  - Add private comment for reserved field in kdoc. Jakub
+  - Serveral comments from MST details in patches. Most significant:
+        - Fixed bug in ip4, check l3_mask vs mask when setting addrs.
+        - Changed ff_mask cap checking to not break on expanded
+          selector types
+        - Changed virtio_admin_obj_destroy to return void.
+        - Check tos field for ip4.
+        - Don't accept tclass field for ip6.
+        - If ip6 only flow check that l4_proto isn't set.
+
+v14:
+  - Handle virtio_ff_init errors in freeze/restore. MST
+  - Don't set proto in parse_ip4/6. The casted struct may not have that
+    field, and the proto field was set explicitly anyway. Simon H/AI.
+
+v15:
+  - In virtnet_restore_up only call virtnet_close in err path if
+    netif_running. AI
+
+v16:
+  - Return 0 from virtnet_restore_up if virtnet_init_ff return not
+    supported. AI
+  - Rebased over removing series to remove delayed refill.
+
+v17:
+  - Properly handle unaligned reads/writes. MST
+  - Fix use after free if init fails during virtnet_restor. AI
+  - Fix memory leak when validating the classifer vs caps fails. AI
+  - Added missing includes. MSTA
+
+v18:
+  - Validate selector cap lengths, instead of just checking they don't
+    exceed a max. AI
+  - Add __count_by attribute to flexible arrays in UAPI definitions.
+    Paolo A.
+
+v19:
+  - Style fixes. AI
+
+v20:
+  - Added missing include
+
+v21:
+  - Use le64_to_cpu() and BIT_ULL() instead of cpu_to_le64() for cap checking.
+  - Don't use __counted_by on flexible array of flexible structs.
+  - Replace UAPI header includes with kernel header includes.
+  - Add missing includes for linux/types.h and linux/byteorder/generic.h.
+  - Clamp the reported action count to the driver-supported maximum.
+  - Clamp the reported selector count to the driver-supported maximum.
+  - Validate sel->type is not 0.
+  - Reduce selectors' count in case selector's type is invalid.
+  - Move virtio_device_ready() before virtnet_ff_init() as the flow filter
+    initialization requires the device to be in ready state to issue admin
+    commands.
+  - Remove forward declarations.
+  - Validate action is supported before inserting rule.
+  - Convert ring_cookie to vq before assigning ff_rule->vq_index.
+  - reword a comment.
+  - Introduce a new patch that moves flow_type_mask() to include/linux/ethtool.h.
+  - Wrap __le32 limit fields in le32_to_cpu() to avoid sparse warnings.
+  - Use put_unaligned() in parse_ip4() to avoid misaligned 32-bit stores on
+    strict-alignment architectures.
+
+Comments from internal Sashiko review:
+> +int virtio_admin_obj_create(struct virtio_device *vdev,
+> +                         u16 obj_type,
+> +                         u32 obj_id,
+> +                         u16 group_type,
+> +                         u64 group_member_id,
+> +                         const void *obj_specific_data,
+> +                         size_t obj_specific_data_size)
+> +{
+[ ... ]
+> +     obj_create_data->hdr.type = cpu_to_le16(obj_type);
+> +     obj_create_data->hdr.id = cpu_to_le32(obj_id);
+> +     memcpy(obj_create_data->resource_obj_specific_data, obj_specific_data,
+> +            obj_specific_data_size);
+Can this memcpy trigger undefined behavior if callers pass NULL for
+obj_specific_data and 0 for obj_specific_data_size? In C, passing a NULL
+pointer to memcpy is undefined behavior even if the size is 0, which could
+cause UBSAN splats.
+
+[SS] It's the caller responsibly not to pass NULL. Current callers don't pass NULL.
+
+> +     sg_init_one(&data_sg, data, data_size);
+> +
+> +     cmd.opcode = cpu_to_le16(VIRTIO_ADMIN_CMD_RESOURCE_OBJ_CREATE);
+> +     cmd.group_type = cpu_to_le16(group_type);
+> +     cmd.group_member_id = cpu_to_le64(group_member_id);
+> +     cmd.data_sg = &data_sg;
+> +
+> +     err = vdev->config->admin_cmd_exec(vdev, &cmd);
+This isn't a bug introduced by this patch, but does this execution path sleep
+while holding a spinlock with interrupts disabled?
+If this calls into virtqueue_exec_admin_cmd() (for example via
+vp_modern_admin_cmd_exec()), the call chain looks like:
+virtqueue_exec_admin_cmd()
+    spin_lock_irqsave(&admin_vq->lock, flags);
+    virtqueue_add_sgs(vq, sgs, out_num, in_num, cmd, GFP_KERNEL);
+Since GFP_KERNEL allows direct reclaim and sleeping, can this cause a deadlock
+or trigger a BUG if the virtqueue falls back to allocating indirect descriptors?
+
+[SS] Right, but not related to this series. Can introduce a fix in a different patch.
+
+> +void virtio_admin_obj_destroy(struct virtio_device *vdev,
+> +                           u16 obj_type,
+> +                           u32 obj_id,
+> +                           u16 group_type,
+> +                           u64 group_member_id)
+> +{
+> +     struct virtio_admin_cmd_resource_obj_cmd_hdr *data;
+> +     struct virtio_admin_cmd cmd = {};
+> +     struct scatterlist data_sg;
+> +     int err;
+> +
+> +     if (!vdev->config->admin_cmd_exec)
+> +             return;
+> +
+> +     data = kzalloc(sizeof(*data), GFP_KERNEL);
+> +     if (!data)
+> +             return;
+If this kzalloc() fails, does this function return without sending the
+destroy command to the hardware?
+Since the return type is void, the caller has no way to detect this failure
+and will likely free its local software tracking objects. Will this leave
+the physical device and software tracking structures permanently
+desynchronized, leaking the object on the virtio device?
+
+[SS] Not much to do here. There could be a firmware error also,
+     and then what we do? Destroy flow is best effort.
+
+> +                     break;
+> +
+> +             if (sel->length != get_mask_size(sel->type) ||
+> +                 test_and_set_bit(sel->type, &sel_types)) {
+> +                     WARN_ON_ONCE(true);
+Is it safe to use WARN_ON_ONCE() for validating device input? A malicious
+or buggy virtio device could intentionally trigger this by providing an
+invalid length or duplicate selector types, potentially leading to a kernel
+panic if panic_on_warn is enabled. Would it be better to just return the
+error without the warning?
+> +                     err = -EINVAL;
+> +                     goto err_ff_action;
+> +             }
+> +             real_ff_mask_size += sizeof(struct virtio_net_ff_selector) + sel->length;
+> +             if (real_ff_mask_size > ff_mask_size) {
+> +                     WARN_ON_ONCE(true);
+Similarly, could this WARN_ON_ONCE() be triggered by a malicious device
+providing a larger size than expected, leading to a panic if panic_on_warn
+is enabled?
+
+[SS] These WARN_ON_ONCE() were requested by MST during review.
+
+[ ... ]
+> +static const struct ethtool_ops virtnet_ethtool_ops = {
+[ ... ]
+> +     .get_rxfh_fields = virtnet_get_hashflow,
+> +     .set_rxfh_fields = virtnet_set_hashflow,
+> +     .get_rx_ring_count = virtnet_get_rx_ring_count,
+> +     .set_rxnfc = virtnet_set_rxnfc,
+> +};
+Does this also need an implementation of .get_rxnfc to prevent invalid
+channel configurations?
+When .get_rxnfc is missing, the ethtool core function
+ethtool_get_max_rxnfc_channel() returns -EOPNOTSUPP. This causes
+ethtool_check_max_channel() to silently skip validating the new channel
+count against active flow rules.
+If a user adds a flow rule targeting a specific RX queue, and then reduces
+the active RX queues via ethtool -L, virtnet_set_channels() will update
+the queue count without checking the active rules stored in
+vi->ff.ethtool.rules.
+Could this leave hardware rules pointing to disabled queues and cause
+silent packet drops?
+
+[SS] .get_rxnfc exists (introduced in a later patch).
+
+> @@ -1258,6 +1259,7 @@ static const struct virtio_config_ops virtio_pci_config_ops = {
+>       .get_shm_region  = vp_get_shm_region,
+>       .disable_vq_and_reset = vp_modern_disable_vq_and_reset,
+>       .enable_vq_after_reset = vp_modern_enable_vq_after_reset,
+> +     .admin_cmd_exec = vp_modern_admin_cmd_exec,
+>  };
+This isn't a bug introduced by this patch, but by exposing this function to
+general drivers, can a driver trigger a NULL pointer dereference or
+use-after-free?
+If a driver calls the newly exposed config->admin_cmd_exec() early in probe
+before find_vqs(), or late in remove after del_vqs(),
+virtqueue_exec_admin_cmd() unconditionally dereferences admin_vq->info:
+    vq = admin_vq->info->vq;
+In vp_del_vqs(), the info structure is freed via kfree(info), but
+vp_dev->admin_vq.info is never set to NULL, leaving a dangling pointer.
+
+[SS] Current code is written in correct order. Future callers are responsible
+     to call this when VQs are initialized.
+
+This isn't a bug introduced by this patch, but does this error path lead to
+stack corruption?
+In virtqueue_exec_admin_cmd(), if virtqueue_kick() fails, it returns -EIO
+without waiting for completion or detaching the exposed buffer:
+    if (!virtqueue_kick(vq))
+            goto unlock_err;
+If the hardware later processes the descriptor and triggers
+vp_modern_avq_done(), it will call complete(&cmd->completion). Since the cmd
+structure was likely allocated on the caller's stack, this can overwrite
+out-of-scope stack memory.
+
+[SS] The vq->broken flag set by virtqueue_notify() causes virtqueue_get_buf()
+     to return NULL in vp_modern_avq_done(), so complete() is never called on
+     the freed cmd. No stack corruption.
+
+This isn't a bug introduced by this patch, but can this function return an
+uninitialized variable?
+virtqueue_exec_admin_cmd() returns cmd->ret at the end of the function:
+    return cmd->ret;
+However, on a successful command execution, vp_modern_avq_done() never
+explicitly sets cmd->ret to 0. If a driver allocates struct virtio_admin_cmd
+on the stack without zero-initializing it, could this return stack garbage
+and erroneously indicate failure?
+
+[SS] cmd is initialized in all callers struct with virtio_admin_cmd cmd = {};
+
+If the device responds with fewer bytes than the driver's provided data
+buffer, does this leave the rest of the output buffer uninitialized?
+The wrapper discards cmd.result_sg_size without zero-initializing data and
+returns 0, which could expose uninitialized memory to callers.
+
+[SS] Caller's responsibility to initialize the buffer.
+
+Second, if virtqueue_add_sgs() returns -ENOSPC, the code loops infinitely
+with cpu_relax() without a timeout or sleep:
+drivers/virtio/virtio_pci_modern.c:virtqueue_exec_admin_cmd() {
+...
+                if (ret == -ENOSPC) {
+                        spin_unlock_irqrestore(&admin_vq->lock, flags);
+                        cpu_relax();
+                        goto again;
+                }
+...
+}
+Can this soft-lockup the CPU if the virtqueue remains full and the device is
+unresponsive?
+
+[SS] Pre-existing, not introduced by this series, and bounded in practice by
+     the virtqueue_is_broken() check. Not something to fix here.
+
+Third, if virtqueue_kick() fails, the code jumps to unlock_err without
+detaching the buffer from the virtqueue:
+drivers/virtio/virtio_pci_modern.c:virtqueue_exec_admin_cmd() {
+...
+        if (!virtqueue_kick(vq))
+                goto unlock_err;
+        spin_unlock_irqrestore(&admin_vq->lock, flags);
+        wait_for_completion(&cmd->completion);
+        return cmd->ret;
+unlock_err:
+        spin_unlock_irqrestore(&admin_vq->lock, flags);
+        return -EIO;
+...
+}
+Does this leave a dangling pointer on the virtqueue?
+If the device later processes the command or the virtqueue is torn down,
+could it write to the freed heap memory and invoke complete() on a dangling
+stack pointer?
+
+[SS] Not a bug. vq->broken prevents complete() from firing.
+
+> +     sg_init_one(&data_sg, data, sizeof(*data));
+> +     sg_init_one(&result_sg, caps, cap_size);
+> +     cmd.opcode = cpu_to_le16(VIRTIO_ADMIN_CMD_DEVICE_CAP_GET);
+> +     cmd.group_type = cpu_to_le16(VIRTIO_ADMIN_GROUP_TYPE_SELF);
+> +     cmd.data_sg = &data_sg;
+> +     cmd.result_sg = &result_sg;
+> +
+> +     err = vdev->config->admin_cmd_exec(vdev, &cmd);
+Similar to virtio_admin_cap_id_list_query above, does this execution discard
+cmd.result_sg_size without zeroing the caps buffer, potentially returning
+uninitialized memory to the caller on a short response?
+
+[SS] Standard kernel API contract, caller owns the buffer, current callers
+     handle it correctly.
+
+> +     data->id = cpu_to_le16(id);
+> +     memcpy(data->cap_specific_data, caps, cap_size);
+If a caller invokes virtio_admin_cap_set() to enable a capability with no
+extra data (cap_size == 0 and caps == NULL), will this unconditionally pass a
+NULL pointer to memcpy(), invoking undefined behavior?
+
+[SS] Caller's responsibility.
+
+> +/**
+> + * VIRTIO_CAP_IN_LIST - Check if a capability is supported in the capability list
+> + * @cap_list: Pointer to capability list structure containing supported_caps array
+> + * @cap: Capability ID to check
+> + *
+> + * The cap_list contains a supported_caps array of little-endian 64-bit integers
+> + * where each bit represents a capability. Bit 0 of the first element represents
+> + * capability ID 0, bit 1 represents capability ID 1, and so on.
+> + *
+> + * Return: 1 if capability is supported, 0 otherwise
+> + */
+> +#define VIRTIO_CAP_IN_LIST(cap_list, cap) \
+> +     (!!(1 & (le64_to_cpu(cap_list->supported_caps[(cap) / 64]) >> (cap) % 64)))
+Could this macro trigger an out-of-bounds read on the supported_caps array if
+a caller passes a cap value greater than VIRTIO_ADMIN_MAX_CAP?
+Additionally, could evaluating cap multiple times cause unexpected side effects
+if passed an expression like cap++?
+
+[SS] All callers use named cap constants defined in the uapi headers, which are all
+     within bounds by construction. Passing side-effecting expressions to macros is
+     standard caller responsibility. No fix needed.
+
+>  static void virtnet_ff_cleanup(struct virtnet_ff *ff)
+>  {
+> +     struct virtnet_ethtool_rule *eth_rule;
+> +     unsigned long i;
+> +
+>       if (!ff->ff_supported)
+>               return;
+>
+> +     xa_for_each(&ff->ethtool.rules, i, eth_rule)
+> +             destroy_ethtool_rule(ff, eth_rule);
+> +
+Will this cause user-configured flow filter rules to be permanently lost
+across system suspend/resume or device migration?
+During suspend, device reset, or device freeze, virtnet_freeze_down() calls
+virtnet_ff_cleanup(). This loop iterates over all configured flow rules,
+sends the destroy commands to the hardware, and then calls kfree() via
+destroy_ethtool_rule(), permanently destroying the software representation of
+the rules.
+Upon resume, virtnet_restore_up() invokes virtnet_ff_init(), which
+initializes the flow filters as completely empty. The driver appears to make
+no attempt to retain the software state of the rules during suspend or
+replay them to the device during restore, meaning users must manually
+recreate all flow filter rules every time the system resumes or the device
+is migrated.
+
+[SS] This is intentional for now. Could be a follow up feature.
+
+Daniel Jurgens (11):
+  virtio_pci: Remove supported_cap size build assert
+  virtio: Add config_op for admin commands
+  virtio: Expose generic device capability operations
+  virtio: Expose object create and destroy API
+  virtio_net: Create a FF group for ethtool steering
+  virtio_net: Implement layer 2 ethtool flow rules
+  virtio_net: Use existing classifier if possible
+  virtio_net: Implement IPv4 ethtool flow rules
+  virtio_net: Add support for IPv6 ethtool steering
+  virtio_net: Add support for TCP and UDP ethtool rules
+  virtio_net: Add get ethtool flow rules ops
+
+Shahar Shitrit (2):
+  virtio_net: Query and set flow filter caps
+  ethtool: Introduce ethtool_flow_type_mask()
+
+ .../mellanox/mlx5/core/en_fs_ethtool.c        |   17 +-
+ .../mellanox/mlx5/core/ipoib/ethtool.c        |    7 +-
+ drivers/net/virtio_net.c                      | 1557 +++++++++++++++--
+ drivers/virtio/Makefile                       |    2 +-
+ drivers/virtio/virtio_admin_commands.c        |  173 ++
+ drivers/virtio/virtio_pci_common.h            |    1 -
+ drivers/virtio/virtio_pci_modern.c            |   12 +-
+ include/linux/ethtool.h                       |    6 +
+ include/linux/virtio_admin.h                  |  124 ++
+ include/linux/virtio_config.h                 |    6 +
+ include/uapi/linux/virtio_net_ff.h            |  156 ++
+ include/uapi/linux/virtio_pci.h               |    6 +-
+ 12 files changed, 1871 insertions(+), 196 deletions(-)
+ create mode 100644 drivers/virtio/virtio_admin_commands.c
+ create mode 100644 include/linux/virtio_admin.h
+ create mode 100644 include/uapi/linux/virtio_net_ff.h
+
 -- 
-2.54.0
+2.49.0
 
