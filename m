@@ -1,102 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9754F364043;
-	Mon,  3 Aug 2026 09:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEAD37E2EC
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 09:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785750254; cv=none; b=ngp52RZmdKXSu2s/7iiljYZe6912I7yPpzjQd5+cjW2d8bl5l36qkXMeiDW/G4mNtowz1tYH7wzEtzEJjYZ6koaAOmcBNvqnuwTMivTkfHJ2XHMggnRNdBqMYIUk7UYE+HLjnvqeBzDPJZZC3wUtsr7ZP1EaoAa4G2FLvgLHDX8=
+	t=1785750504; cv=none; b=mnjDYv92T5PFz2l5rMV4lkuoBmLOdRsyS7OwV63xIh0QanYqfJ1Rx+yAnj6gqvMZnYZjZ/C9vDfS6V3ueO3yQqy8WlE4zoe5PH0qX7j+2AXgLotlQYyzM4sNafTh83I5I7qFHZjkuhx20TsGwqjc7HyxBwKzsHRWU4h89cr3Xz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785750254; c=relaxed/simple;
-	bh=8Jp90i5P6qCJvpiC+LoxGxRWSo110yPgOtFD2FTvFD0=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=aScJAyY0RWa5P7RhcLz1M3bjzmC4Cvw0UPAg5ZrEPiKiz37MPYLLiLGFxfmIr0biC+tTG02O4OGmjtvmLsGxXjFwFC9o/ksgbWwzZOqeZrnuIpY0hzA8/2inF8PqAWPB3RihYy1Zf3GcbqjenOngsAUIGFClFLrDV6evIOvQVjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FK0II1mH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785750504; c=relaxed/simple;
+	bh=28jkTNwKXjpQpMBWhkJP+Sp6osKrHCBLOjzx6P1aFfg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ob36mZ7HuX48djEllGwuhPmUHT0uSUA9iJqLYx9ITCkMaL6PjbNm67HBhU1roIAIRCXmpEGy+i4qCeGnY+N9frhXsMjezZE/1ll15ihs51ETzIvm4T4Jcd/FqZshUHHP995jIsJu22rREC3EEKwZ1dG16Sdjs36f9LzAhbC2iHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OBvefgwB; arc=none smtp.client-ip=209.85.128.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FK0II1mH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8C21F000E9;
-	Mon,  3 Aug 2026 09:44:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785750252;
-	bh=g2yt5PVPdZJisc2EcEjvKomdU+Mn1lqjYdehP0zL6ec=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=FK0II1mHyB8TEMrg5nhNOLL/IUF+mCP8fbVVCqdO/IuTPXKc2idEFCQUnh1Dyt0Bw
-	 n64kDR1NVOeCH7U47dUQNcJ1pNHY/qhBcrF8IKa2nZ+tmEnOjg66w3RE4YMRiXzupI
-	 9U7dfyjueiF5VaECNTXV4iIfJChPgbfT8Slg4cg7GOvhc3mt+wA8zJWi614xCpCmJX
-	 NCrahE96r3gXAm+fi65TfuDy+uKBFJNCRnwY6PXF3F8/eBb1L/uFy5smP+If1ttAlt
-	 /NGNG1ieL42rKf+a4bxSFcjc4wx6R2ZzVw0ceOza8V+kG4oiHnL8k7ISahMN6tCHfa
-	 1JIszPFGQmv+w==
-Content-Type: multipart/mixed; boundary="===============3124136976014052694=="
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OBvefgwB"
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-495569acf8dso12689965e9.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 02:48:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785750501; x=1786355301; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wgBz2SZWInGYkxeV698PRx7vfdGy6WMbWCS7qMcdi/k=;
+        b=OBvefgwBbMNRyCwephLkb7d9fRcneDqNrnxz/TpdQb8NMEGKxHrRqky88CKdOp/wrx
+         /hoMmZSppcPdcC1HlE5a7HLNt/3IM6bQLZjb+ZjMWMnecpGk9MLedAjpLCmyRy+T7Gkj
+         CpZ7vJYp8wg6/AaVDoYPSMuJL/bJIPDba563Rh0a1/lqt50yKoPhYQGHwNveZxrq+YZb
+         WoQv536e56em62/F8c5Yh2XpxNxwZtLT9xfcMDEvZYmiOBrPaW2+Jad4QsGvwBYPSkPl
+         mG8aEKxzGyAOS7ExIyyoU7amM2X/60lhLEecuPAOZYFfzgWAg120p9vuIjuYePW3q4tR
+         AKOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785750501; x=1786355301;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wgBz2SZWInGYkxeV698PRx7vfdGy6WMbWCS7qMcdi/k=;
+        b=mDzDHFZUyekp9a/HyvPmxwQBltADwdsE5uq+/Yrj2SLIuyXPJM6D23cREy5Mcc0EY4
+         GfTL7ilq02yWtsfPWBwWtwzzpg4famXTHO6Z1KEVIvkFRKoyt0yqOU+lnEP4Nw/vnVA3
+         ZrnI4vrLF26mOSxpTPFtguAGALvLls3Z7i8K4Xf6U8X/esbvhtrZuimStMzxM2dZqJOa
+         qjRJMbClxhAbNrzmFc/0QFGyo/OWmgkAHbiGrA9YXuYblJMAsOL/V9O/V8YLfr7qsDjt
+         GqxZMTzSZ5pKVWJCUL5anoYcZoDa8u8jeukVDVRxjBQ1gNOg3te12iBcirRaKivcJ/qz
+         gfVg==
+X-Forwarded-Encrypted: i=1; AHgh+RrfEBSQXUfNNaNTwMAIic4NAR0czvJeyyw4wm+tjKy5yskx+NbsAIgpjIaXT/ar7WwwByfcP9Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEnqbMLwdsQmZO65jXL3QSZMWL/atelUKA+9fCrlD1iamv1cAM
+	std0bG1WrFYMchgbsYGzLl+m46bfqh1ReMBCmXA0Bg+OdOWaY7jbl0qWxWhan7yprM3ICvFCfhT
+	B1PdhniwXumERFL5jqA==
+X-Received: from wmsu12-n2.prod.google.com ([2002:a05:600c:c3cc:20b0:495:6d4c:6fea])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1f89:b0:493:cfe8:5b36 with SMTP id 5b1f17b1804b1-4980c66d7c6mr159543425e9.8.1785750500288;
+ Mon, 03 Aug 2026 02:48:20 -0700 (PDT)
+Date: Mon, 3 Aug 2026 09:48:19 +0000
+In-Reply-To: <20260802215459.2769283-3-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-Id: <43cad9ddcd7b1c7541a179444b27cd6b40fdf32f7aabfff2080c12bfc945dc94@mail.kernel.org>
-In-Reply-To: <20260803-sockmap-lookup-tcp-leak-v2-1-306e025bfe66@rbox.co>
-References: <20260803-sockmap-lookup-tcp-leak-v2-1-306e025bfe66@rbox.co>
-Subject: Re: [PATCH bpf v2 1/2] bpf: Extract shared reqsk-to-listener upgrade
-From: bot+bpf-ci@kernel.org
-To: mhal@rbox.co,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,john.fastabend@gmail.com,sdf@fomichev.me,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,kuniyu@google.com,willemb@google.com,jakub@cloudflare.com,jiayuan.chen@linux.dev,joe@wand.net.nz
-Cc: mhal@rbox.co,bpf@vger.kernel.org,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Mon,  3 Aug 2026 09:44:10 +0000 (UTC)
+Mime-Version: 1.0
+References: <20260802215459.2769283-1-surenb@google.com> <20260802215459.2769283-3-surenb@google.com>
+Message-ID: <anBj40CVAhcGMnQ4@google.com>
+Subject: Re: [PATCH v3 2/5] binder: Make shrinker rely solely on per-VMA lock
+From: Alice Ryhl <aliceryhl@google.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@redhat.com, 
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
+	jannh@google.com, arve@android.com, cmllamas@google.com, christian@brauner.io, 
+	tkjos@android.com, dsahern@kernel.org, davem@davemloft.net, 
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
---===============3124136976014052694==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Sun, Aug 02, 2026 at 02:54:56PM -0700, Suren Baghdasaryan wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
+> 
+> tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> it and mmap_read_trylock().
+> 
+> Long Version:
+> 
+> == Background ==
+> 
+> Historically, binder used an mmap_read_trylock() in its shrinker code.
+> This ensures that reclaim is not blocked on an mmap_lock. Commit
+> 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> support for the per-VMA lock, but left mmap_read_trylock() as a
+> fallback.
+> 
+> This was presumably because the per-VMA locking can fail for several
+> reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> to mmap_read_trylock().
+> 
+> == Problem ==
+> 
+> The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> essentially already a non-blocking trylock. The main reason it fails
+> is also the reason mmap_read_trylock() fails: something is holding
+> mmap_write_lock().
+> 
+> The only remedy for a collision with mmap_write_lock() is to wait,
+> which this code can not do. So the "fallback" after
+> lock_vma_under_rcu() failure is not really a fallback: it is really
+> likely to just be retrying in vain. That retry in an of itself isn't
+> horrible. But it adds complexity.
+> 
+> == Solution ==
+> 
+> Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> will not persistently fail. Rely on it alone and simplify the code.
+> 
+> Full disclosure: I originally tried to do this with
+> lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> trylock semantics. Claude caught this in a review and suggested the
+> approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> I guess.
+> 
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 11bb0d236822..fede810ef37f 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -7079,6 +7079,28 @@ __bpf_skc_lookup(struct sk_buff *skb, struct bpf_sock_tuple *tuple, u32 len,
->  	return sk;
->  }
->
-> +static struct sock *
-> +bpf_sk_lookup_full_sk(struct sock *sk)
-> +{
-
-This isn't a bug, but since this helper only converts a reqsk to its
-listener rather than performing a lookup, would a name outside the
-bpf_sk_lookup_* family - say sk_lookup_full_sk() or
-bpf_reqsk_to_listener() - read more clearly next to
-bpf_sk_lookup_tcp()/bpf_sk_lookup_udp() and struct bpf_sk_lookup?
-
-The bpf_sk_lookup_ prefix in this file already denotes the BPF helper family
-(bpf_sk_lookup_tcp(), bpf_sk_lookup_udp(), bpf_sk_lookup_assign(),
-bpf_sk_lookup_enabled) and the UAPI context type struct bpf_sk_lookup /
-struct bpf_sk_lookup_kern. Sitting about 20 lines above bpf_sk_lookup()
-itself, the name reads like another lookup entry point rather than a
-reqsk-to-listener conversion.
-
-> +	struct sock *sk2 = sk_to_full_sk(sk);
-> +
-> +	/*
-> +	 * sk_to_full_sk() may return sk->rsk_listener, make sure the original
-> +	 * sk sock refcnt is decremented to prevent a request_sock leak.
-> +	 */
-> +	if (sk2 != sk) {
-> +		sock_gen_put(sk);
-> +		/* Ensure there is no need to bump sk2 refcnt. */
-> +		if (unlikely(sk2 && !sock_flag(sk2, SOCK_RCU_FREE))) {
-> +			WARN_ONCE(1, "Found non-RCU, unreferenced socket!");
-> +			return NULL;
-> +		}
-> +		sk = sk2;
-> +	}
-> +
-> +	return sk;
-> +}
-
-[ ... ]
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/30800053349
---===============3124136976014052694==--
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
