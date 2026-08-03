@@ -1,63 +1,67 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB4538A717
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 17:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC703BCD05
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 17:14:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785777291; cv=none; b=Zu2OehtrNNj/GJbO5oamvNw1u0q87UqSw5STLn3g+Y9H/qwQW1c9PRdP0UPCUriimmZxeuFsDhUSlbkdynjhIruF2k9XVDzmrKPojTxxtWnc4g1saQg8Y4pDt7VsN6vY1FhFRKGVC3mJL1AAMlB+SqM1eqSjfwpXeJ9oY1ZmHwI=
+	t=1785777292; cv=none; b=fGd4IhyC9FRyX8dCcqnILsJ94ncptaI/pw85Oty5bq+PZnMsmu99ro0/oIOHoaJoRJdzJtKl7yW0L3o7C3h9J+6xLDakVOb+BjMzM5qq4auGpFajENwmeNI4pahbMebI1hIV49RXSMUvhjypokUl96cPogs5uLbv1MRWOsOYJEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785777291; c=relaxed/simple;
-	bh=lKizjzbX306AsZcOuKlswc5fA6mSPnfijXJ0Y7oZ2tQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rAgLIylkXwnGvRJWLyEbPMP/uVK7yCWADdPdEaG22zJ/VjzLnXSoQ2IUDRw9hcWEBBmanMDUd0hyR5htKIblb+I5tpSY8TzMfUyKRx7Ak7QxgFsDAxbR8YFi52GyEsd7RdRpiQhW8PUsSB5K/melamDtqQ3MqePNoeRYlmebNWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r2R7+fOi; arc=none smtp.client-ip=209.85.215.198
+	s=arc-20240116; t=1785777292; c=relaxed/simple;
+	bh=a48o3jwP9ErVvNTdsqlBCScRW0OkUrRHaz6QshGmefc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=t0nohQn+EYBv5m4AvCVnRhPxZj3Adl3CjdyZIXlhdbalVCBUb5VGsYLSuCVyBADaZ5z39p+1EXAa1Kd5qP++EtXcHz64iF+Sjs/m/IgKGR1A1eZLCXIZk2YlQ93/CxqBodFsEYRqKgtjYjpyNu+XpCmmiHUjsa4YWnhqe1WObAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZzSPsA2l; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r2R7+fOi"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb7d6ba548eso4619470a12.1
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 10:14:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZzSPsA2l"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cbb467e56aaso4505417a12.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 10:14:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785777289; x=1786382089; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Lfjv8btm7SM4nYiUku46hVA8+1TFQKBzNlJiSqVfZCI=;
-        b=r2R7+fOibDzfYrrV9xOJWaicYVFaC0eZECt8mBPTxMyy+cBoSbgBBc2BnAKzaf7r6M
-         hwz6mz/mFAmoLPC56N5N/Mi8ZPc6E36v9J22h8SIv9BmvFyDIHar5BZRiQZ8YCXy4ws/
-         xYTJcWj0okgmnnIqcZ3R3ZZMFzR0OEDBRffNt4kUHC4LIn52gWCxpwez689Soa/nmqIa
-         oxpB75/05HbwTXRafZiEIDwUHzfnAD2dOqkyUUazTT2duR0qexL2DMYCucS4HhTXXYTC
-         DqhhCykIgPTZKSiX3MUutGD5/qP2U8MmUxDg0O2YQ/1vpmjDzDGOobcfk8bXdURZcoDf
-         ZOyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785777289; x=1786382089;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785777290; x=1786382090; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Lfjv8btm7SM4nYiUku46hVA8+1TFQKBzNlJiSqVfZCI=;
-        b=Ny8bdTMlM1iv2dlD7wVeWgRlkzH4TwEQplnIFMoLT4jry4G9la3JRG7cDKz41gKyXj
-         LXeTPdLwUQV05iMi+PVD0U+m9ZTMUuwFWa063omFFHuPXEW+rs0UQEJ2NcxMfTP6d32b
-         NZRQM1WhnQCbTecTcBEILJbX5y8y2hmxq0EDlrlLkpbfzci5dcRoDZo4yYLoHtAIK2f/
-         Q9knjFTfyolbclBRUIVQhaQBrzD9HBz1xU2hgUbElPcOMPjpvdhkPA4gyizM1Jr7h1WT
-         +gD8lAWhVwBWnsKn7ta/Ie30FeMgC5joT9CnkzyifI+wr16CW8gh3MZQ7BIXnHWmpayn
-         6TFA==
-X-Gm-Message-State: AOJu0YxLsfoDCiKpcd7nkE9HWMex21qfZXnTSVE/gyD4KYXMdaWtoFZ6
-	rO7PQFgT4qzg2seH79UV5o/LSavdJ+c1sfgfs7a4f+JsQrgh2VjATsHsxxtcHV75Xj7CGaqayjV
-	g9LnDAqkXk0wmXCISzdCxFBN9tayWeyww8e6FZDoEafdQHOHf4ijatTVcDhfwASrk2orTElDw/N
-	tS98ounzBIdzWXnY+h+fPN0l68fUpaLq9K6wMLK7RbFCYCK/ISvfy/u/Mzg4W0+Ks=
-X-Received: from dyng4.prod.google.com ([2002:a05:7300:7f04:b0:314:f751:f881])
+        bh=yOW3n52VHLe0DVF46hmkA+PwFM2h9qnGl//NaQ6CV/A=;
+        b=ZzSPsA2l1K8g2ell5mUcUfVAYgD+OGESmiLwFP04AYRpHlJQE7TL8o/BIZvQ8MJuXy
+         prgVEgUwl426rdEJ5C5sIUHY0HtWgNON5JU12pfkQ6sunpytwdrzhNG9gG+UE2TNezka
+         5cnComwJ5e5qDcIMjSnUqSJILUIUF8BGBkdQY9ASZ9/F+iUBc7Bo+AEF9ncusTWK989o
+         17DghbDjC07VfLgjTGnx6SYApMYzHxSIOmRc7w+n09hYyQ/8SpVYnJF3FWEahO+JKWpJ
+         2/uYcKv0GAwLkhSTKTnO1hLur+JDOK32WO6qbQSuaaO7/b7Y53wCXkfc70oYMBEuruAm
+         zZ5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785777290; x=1786382090;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yOW3n52VHLe0DVF46hmkA+PwFM2h9qnGl//NaQ6CV/A=;
+        b=qxKyJ+0kLm9lU0Z7uVvyKKf4tniFnZuOmp5/gJwa6gU/AbXwe1y5Ecidbqyi11zsZH
+         5MwXsK4H69Tat641jn9jXaRmlkhk35NX4i3Lxs85NQKRwWAXt5g/kcSwC92+xvgP8kmW
+         Or5BRcVYlwmZT9poyDyKG9sFLojn7iR1zknVrRh8CW8u4OxbIWsT5vJEheHCZ9MtM7OA
+         Ysy+HgDt+BA27AvGXye4FGGWVZ64n63umXsKvUSfGX+ybf4eWx4kW6i2fiqA09eJqbDf
+         KzGEn5gliukoELs4/xblWdFJJNOBmjPg4PlmNTy9uuhrN+9A+ITVoBL22Ro54pvkNQgl
+         EkaQ==
+X-Gm-Message-State: AOJu0Yxt1cCj+NhtNZ4aqvZAzAVSoHqj9s7JXgJcADxz+loWHo8sBjxB
+	/pjV/az4bCtsjqBM9+C5rNaDQgLQlrYziEZV/uXi/KdzdztjU7qS5rfvPWKpl5PEno9+Q0g0Pn+
+	qv8z8EmWxTWYc2rjaMJufmTskra1EuXr25ef9X3cjXbYiW5R3PFARg0fXphqC9smXDLCJaaDrfX
+	ym/a0JmkBfENAONLUK9MRd5QhDDLuJmOn2W/sLwI3FGuDEe8MAWI1gNdp4RDtdcfs=
+X-Received: from dycue2.prod.google.com ([2002:a05:7300:82:b0:30c:1aab:2586])
  (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:93a1:b0:3c4:2cf9:2896 with SMTP id adf61e73a8af0-3c92a8af306mr11281485637.45.1785777289000;
+ 2002:a05:6a20:6a05:b0:3b4:7eb0:47a1 with SMTP id adf61e73a8af0-3c92a53b04cmr11334168637.19.1785777289991;
  Mon, 03 Aug 2026 10:14:49 -0700 (PDT)
-Date: Mon,  3 Aug 2026 17:14:39 +0000
+Date: Mon,  3 Aug 2026 17:14:40 +0000
+In-Reply-To: <20260803171441.408014-1-almasrymina@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260803171441.408014-1-almasrymina@google.com>
 X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260803171441.408014-1-almasrymina@google.com>
-Subject: [PATCH net v2 1/3] net: core: propagate unreadable flag in skb_zerocopy
+Message-ID: <20260803171441.408014-2-almasrymina@google.com>
+Subject: [PATCH net v2 2/3] net: devmem: return EMSGSIZE on type mismatch
 From: Mina Almasry <almasrymina@google.com>
 To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
@@ -69,59 +73,42 @@ Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
 	Ralf Lici <ralf@mandelbit.com>, Will Deacon <will@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-When skb_zerocopy() copies devmem payload fragments, it fails to update
-the target skb's unreadable flag. This causes the target to appear as
-readable memory.
+When a devmem payload mixes with a standard page payload, return
+-EMSGSIZE instead of -EFAULT. This enables tcp_sendmsg to seamlessly
+fall back to creating a new segment instead of failing the socket send.
 
-Propagate the unreadable flag if any devmem fragments were copied from
-the source.
-
-Additionally, to prevent memory corruption, explicitly return -EFAULT
-if standard payload from the head is mixed into the same skb alongside
-unreadable devmem fragments during a head-to-frag extraction.
-
-Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
+Fixes: bd61848900bff ("net: devmem: Implement TX path")
 Cc: Pavel Begunkov <asml.silence@gmail.com>
 Cc: Stanislav Fomichev <sdf@fomichev.me>
 Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: Florian Westphal <fw@strlen.de>
 Signed-off-by: Mina Almasry <almasrymina@google.com>
 Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-
 ---
-v2:
-- Return -EFAULT when mixing head-to-frag unreadable/readable frags to prevent memory corruption (Pavel).
-v1: https://lore.kernel.org/r/20260801125308.1342897-1-almasrymina@google.com
----
- net/core/skbuff.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/core/datagram.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index ba3dbac80fb49..8bacc6c4e16e1 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -3905,6 +3905,9 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
- 		}
- 	}
+diff --git a/net/core/datagram.c b/net/core/datagram.c
+index 173b5d97bd409..6f8ffd61bcab4 100644
+--- a/net/core/datagram.c
++++ b/net/core/datagram.c
+@@ -638,7 +638,7 @@ int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
+ 	int frag = skb_shinfo(skb)->nr_frags;
  
-+	if (!skb_frags_readable(from) && j > 0 && len)
-+		return -EFAULT;
-+
- 	skb_len_add(to, len + plen);
+ 	if (!skb_frags_readable(skb))
+-		return -EFAULT;
++		return -EMSGSIZE;
  
- 	if (unlikely(skb_orphan_frags(from, GFP_ATOMIC))) {
-@@ -3928,6 +3931,9 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
- 	}
- 	skb_shinfo(to)->nr_frags = j;
+ 	while (length && iov_iter_count(from)) {
+ 		struct page *head, *last_head = NULL;
+@@ -713,7 +713,7 @@ zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
+ 	struct net_iov *niov;
  
-+	if (i > 0 && from->unreadable)
-+		to->unreadable = 1;
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(skb_zerocopy);
-
-base-commit: af39eb111ce6b5eba9c08513b62c4868eb7e7fd5
+ 	if (i && skb_frags_readable(skb))
+-		return -EFAULT;
++		return -EMSGSIZE;
+ 
+ 	/* Devmem filling works by taking an IOVEC from the user where the
+ 	 * iov_addrs are interpreted as an offset in bytes into the dma-buf to
 -- 
 2.55.0.571.g244d577d93-goog
 
