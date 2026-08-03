@@ -1,131 +1,132 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4276533A9FC
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 21:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785791515; cv=none; b=EQnnN4Qg6QIfdMY77yh7PPlWUPl6WOMHMdbhur2pePmmLCG7xt8LXyz7gAxkh3uqh6hhE5rGn+5gUSIiWBAJjkdjzLY2sRj2Ay1v22ZsfxNGEdbjZazt0OpUHyjMfFlgyA0ilKfDGRJT22zn8v4MMQwlX/ePsxDoFbd32ZTFBrI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785791515; c=relaxed/simple;
-	bh=AZKPiQ9aiRW37dWddoXF7vN7LPSgaz8JeWjzxwFXxXU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MwdcL9eB0KdSFxr+vSOZ7qkrPlhO0YcERol8eIAEKGvtq1OIVX5xQDUZaaTlkdpmMobkTgBsHT4P52mFxnFC/8k8F6lEoDzJ8TxgXJBPc/8il8NRG7B9W7MOpQyFekJceGqoF1vB8E4RdAsLth8BdK0NI8sDpz6NsToHz3wEaxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ALMxsfM7; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0C3326D55
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 21:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785791560; cv=pass; b=XbnOYqaRkQVx0QPqsgeFvYD+roEWP/LA5ANr2dOs281PURWD4wBOUpvPGe9O8DYC3yrpaM2vXCghtDXRqg5nyY9Nj8DLXYs/uZVbA7eC57TRZlaj4mBzI8/hOZs1lx9wfJX48bkZutDPIcDGYk5jzIRyGSsLRabpzZU+U7XlLmY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785791560; c=relaxed/simple;
+	bh=5jJvfzzQqRDZBdeM5OEoiauFHPhYv6Wo6yFTQ3ygD8s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=phJSQd9QlynmACTgLA+ugfJ4+2DL24X4MpWk0wSNuasPK14b6cEneTQtXBO5FC8vL4c+RkM3oQR4lsPCTLHEYrIS0R8eFGB3M6RvlRFEMEQJA8Gitk8e6OlBT/DxcZYVwNZ6y45WwlFaydsQsfOUanp7ib3crRiE47Hpfp0Vcis=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NGG/UZq4; arc=pass smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ALMxsfM7"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49548e01d02so14672765e9.0
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 14:11:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NGG/UZq4"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cede6375caso38555ad.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 14:12:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785791559; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZR0kSkxvXshdkdu5V4pUjvv75YMsuTJpSMZmJ6PibfnkirIFf4ULUFUohlymcTfPgG
+         S9kOr3CxOHLNplhN5bZXD1GBmtF0X6+gUvnq9aGNzuNffzWEpLVSLdcBsgGI5UyHqWhn
+         EyKrKcM6MM6pnH3oH8BPjANeV4E0eH140jIjHb0kYC6A46xHBZzLUlY2E+UBW6PYTZGW
+         dHr2I/ldXdU3FrF+RKW+1OF1Rw/3U+4FppEG3XwPdmcwrRlSIiXMQ23myBsx79MiQ711
+         ok0Cb19Mm+A/skXLrrhbeEqOWKNmc0XSh/rJ975mXJofRW0bRkzfFVE3w8iZTR+cMuAK
+         xoTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5jJvfzzQqRDZBdeM5OEoiauFHPhYv6Wo6yFTQ3ygD8s=;
+        fh=ma0dZOKmT7E47Id7nCHa40HisrwUcs9Toi6FFkz9kmg=;
+        b=isYC71a18VpatpYM7rumyknDk2MkJlXjrnEBilkcWiy6KvnJQtIEdly1lPWpZ+66iW
+         djqQiSr9DGrkXpwrM/7oKP8FuQQxxAWWFt5oViaatoUar6BVNaENdCP3keMX1ZSr4cYy
+         FK854BTVIIp/yfG64T6gxX9aRkNOSbwvelR56jw+OGKBdOSKzPXq5P7LUW2aF7gdApYz
+         KLqKwMwfl/UeOPTPdS8gMQKjcHJLg6Jx63SuCwq4eeOKIfHoFf8l0QAVdBuKvNH6MU6q
+         tb914IXctcABRZ4YHFQ7ivonr7QSBc10OMO/+/oYFUkStVptB8wg4NUEQaLYxEOXr0fD
+         IZOg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785791512; x=1786396312; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=stFIXW7s/TnM/E95kc3HUht/NIboKcMs2RNUlN1S+GA=;
-        b=ALMxsfM7W4JVAfdzZaQCUveDr5Q9kvhGOPDDKkgoTSR0t2tP6KXBcRw17Nz1nUoNj6
-         L988uY9MuHSjVduJjoROoc1SawD/ScSycyl2Anp+iadpxUcaa8GMHa6uCTuRWSjm2qz/
-         ol6BVBF9PWZRKO4nwX0TDfrGnMNOEmZxttUiiuBc2jxwTwtZQtUCABZJeu46UwyTqcfZ
-         GTZun93V3qUdngbeuoApLKenH0pur4pWYT3syC++8C33zPI80+VxCJZrCQqNVTXKhmcW
-         fPx0UjP9HxX0p+HYMWL8TgHdO6+sFm1SD/3DTV1JL5bMupewbByyc6hmr7lH5MK0xRpY
-         6QVw==
+        d=google.com; s=20251104; t=1785791559; x=1786396359; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5jJvfzzQqRDZBdeM5OEoiauFHPhYv6Wo6yFTQ3ygD8s=;
+        b=NGG/UZq4KYNCZTTkTSLxC0nBxwsTLSJz/yIPbu8eA0FAYT41xJ66ZS+n0ulVzh6B+H
+         vlo02unWbPItVdsmMlNXX35F82QR1SaOCQcWwTsSasGuoQzsVD/50LwqDd8CrqJ1vQ8d
+         89j/P+s0shzjL6VxmzTDtDORWxhorXzYKP1fNoHfSme/SdaCFv4DkDmIYSkmoFVt4qta
+         vFgNEHuTh9dwdmlWTo9YWsIZ/PAHt9RJnO4s/u7EIKlR+4KWBfHrIYp0jSONLLVE8lxk
+         UUOMVnFcKaEKwDvd/juMbkVP2VHdmOd17+HtVavGc9GFuMCTcDzf+s8CZLw/iIi61L+j
+         Rrww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785791512; x=1786396312;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=stFIXW7s/TnM/E95kc3HUht/NIboKcMs2RNUlN1S+GA=;
-        b=BSw5InD+n60EndDvO/mRkglBMNh834oQ+tXXqTL5JTYoBRBd0NIChnDpSPIFCNfWWk
-         qzKMWR/rov2EyIhemyHGKxh9XPxt1QX80VMgQfvXndfEypY6pHJGN5EdSYp1Rkf+x40V
-         EMKwqHa4+5UIV/SC+D8QLosSkVQXbUwVPErYSSPUBWUvCZgyqloMsH/joPxUsu1djuOK
-         i+3dqoXn8Cu9Yj2tZBHGK7t+7B478V8tkneyDHtq38tCStM/zD6iQqccJHhQKOquv82K
-         d8VrWHqzOa2PKZhe3TBV1esHyd42+aSPsN9KFowQYLtA727QI6hr64kf+KsbuJAjI9C6
-         WSJw==
-X-Gm-Message-State: AOJu0YwYVL7pDXLLLyoJI0btPwXyp40AdJI09B1JNa2g5cChhRvShktO
-	U4U8Yt/kFJzzAMB3qYx/1ds8bvqR4PT3hmKClabLdBi6d8zDk3XHvFhep7Dn9a3Vajg=
-X-Gm-Gg: AR+sD11XYbx+O8UtrVKFPPwH0rOKtRe3wxDLn0IEx9GPyHXhlntXFD5steJg5hZi9bU
-	nfCvyvkAubVTXKO/ebGKsQbAyYQnb0uFgR/0RaUBUvURj8M6Eykcn81ryvsu4nw8AAu9TxpACmt
-	sb4g7TbtCLFHdzG9fOranpOgI8oCDl4fpG8ZiED4idIbAFmM5V1rI4WoZ9bPmSOzJW2jm0S8O9V
-	RUWZ5Ig2FC/f5Y8FPd43upGhJP/IrDnC1RHN8LAkAG7fTKCKOSeE/eV06CZUl4OgQ3F2wgpGX3G
-	YphOn+huYfsQKkaQQfLqAcoGn6MvKEhzz0lsbdBgt7iul14a7ebGsv/vpa9OEqmwnGDZDm/wkAv
-	2mRE4MBZqHOCVGAq13FmlqDMbPAtUzjMr4x5oEaJDqo85LBN8AlpcWho9lKNWHMqg1LKKu/z/o/
-	5RmKHOvm+0X4G0ouzX2jnoQnB0EkYxZuYfSxyINXyCtsv4K/h/oMBkVRLIMWH2zctpzdg=
-X-Received: by 2002:a05:600c:4e90:b0:495:7426:c392 with SMTP id 5b1f17b1804b1-4980eb4d5f9mr213539275e9.1.1785791512287;
-        Mon, 03 Aug 2026 14:11:52 -0700 (PDT)
-Received: from archlinux ([2001:861:79d1:d140:7f91:4899:f5d3:d30f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49949fc2da2sm25895085e9.3.2026.08.03.14.11.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 14:11:51 -0700 (PDT)
-From: Ronan Marchal <ronanmarchal29@gmail.com>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Ronan Marchal <ronanmarchal29@gmail.com>
-Subject: [PATCH v2] net: niu: fix potential buffer overflow/truncation in irq names
-Date: Mon,  3 Aug 2026 23:11:49 +0200
-Message-ID: <20260803211149.10585-1-ronanmarchal29@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1785791559; x=1786396359;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5jJvfzzQqRDZBdeM5OEoiauFHPhYv6Wo6yFTQ3ygD8s=;
+        b=ouhHEPL6txcIOPFbaJWg+kMBalE+uieuHvuI0Tke1Zq2SuoS0uHYX+Y1TPwmNpi0LY
+         L6k9kvRqouoRVWLBHGSQED3vQ2MYA1dJdPVfVy7mbFjzDa4FAUzo0G9+u9HMzrbi9te4
+         XjA39aaHdLvFwUpjTY0oNhIgtas1VO8TywI2GmWCidIVUG1GgdY0lcc2m5hbnJS96oY2
+         LYmUZ2pH5QMtsx91l98ZOU4lMSa83+PsafrIN4tTea+5hfwz3sRU/ZZDvqpiIdbRDjb8
+         rCPVtoJ+25pPrp/559BKIik9uff02vIVYsEHGitNQQkHjfjU/rL7ziakSIZaNks0tEmf
+         B7TA==
+X-Forwarded-Encrypted: i=1; AHgh+RrFz/W9QUYPiOtLpz4z8/veVu1eWye6GaQdZHkMAMbp/uAGF+DRobAbKiGvfJsBXdA80y8zHL4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxi40vdt00ttWM4iC1/x55ryM6m73PyoXUR+VVN1F516ZzNgsGb
+	rThfCXyQat9wHWSb6RkBaq1pCj8Z0JN1mbJ5j74VVyKZfaQxMScLEIjdXVPTTX+AI6Val0CuN84
+	t1lqVm1BRTQLuR4yyGA69HSYNxyXCq3O+u3tNKR6r
+X-Gm-Gg: AR+sD119w3FJ1gnn5yhROghPN8iEoTlALNQC9oWR4VWXQ/6foCNzXNNNsrTQNOBoPyc
+	sO3Zk7+ZKlMCg1mSkoMNkNwATeMBBVr8JpC8zN98U+9/4AWCiRSkqq4+TYUaSKF+a0BOBP41Swb
+	OPKRr24WciF/eAgMh/y5vGW+YZq4dq3xiR3EV/tnHn+qTFxcwA06LwZHfAwTmVV7D3MEonNSBv0
+	CsTuvD/QeUtRlm+DfOY0x8QvjqyAwt80JYY2421vEFnyph0maXfBGJN8MTUUjyHZeZ+BtMIza/4
+	w1LRh8KMjpfyA50ghsTmwvDYDjxjkH+jcQ0ANU+ye+kqtIMBfBCrHfCV1JKVQd+DOw0cUu+MVhX
+	Q7FXFg6GxZGgW/zZTo40nJrkoPWK/Hg==
+X-Received: by 2002:a17:902:cccf:b0:2d0:8b22:22e8 with SMTP id
+ d9443c01a7336-2d08dac64f2mr2794505ad.17.1785791558228; Mon, 03 Aug 2026
+ 14:12:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260802215459.2769283-1-surenb@google.com> <20260802215459.2769283-2-surenb@google.com>
+ <CAJuCfpGezxdaSme_QpHVq-QVeZAUaF360_Ajvkrn3QqDcSQVog@mail.gmail.com> <anC1iE21eonDK06n@lucifer>
+In-Reply-To: <anC1iE21eonDK06n@lucifer>
+From: Jann Horn <jannh@google.com>
+Date: Mon, 3 Aug 2026 23:12:01 +0200
+X-Gm-Features: AUfX_mzFwteAQxBUM4TvuzYNFGYmEeNzpupbj75hFXyN-f5Jb1ghubsN_Vgb6e8
+Message-ID: <CAG48ez1=_O0g7rArdpoVwg84jOJuELEAXu5sw=TO_CWBsK=T7w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] mm: Make per-VMA locks available universally
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
+	shakeel.butt@linux.dev, vbabka@kernel.org, aliceryhl@google.com, 
+	arve@android.com, cmllamas@google.com, christian@brauner.io, 
+	tkjos@android.com, dsahern@kernel.org, davem@davemloft.net, 
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Building with W=1 reports a -Wformat-truncation warning on
-niu_set_irq_name(): the "%s:SYSERR" format could be truncated
-because irq_name[] was one byte too small for the worst case
-interface name length (IFNAMSIZ-1) plus the ":SYSERR" suffix.
+On Mon, Aug 3, 2026 at 6:08=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
+> On Mon, Aug 03, 2026 at 08:24:44AM -0700, Suren Baghdasaryan wrote:
+> > On Sun, Aug 2, 2026 at 2:55=E2=80=AFPM Suren Baghdasaryan <surenb@googl=
+e.com> wrote:
+> > > -#endif /* CONFIG_PER_VMA_LOCK */
+> >
+> > Now that I'm looking closer into this, I think we would break NOMMU
+> > case because nommu.c does not take VMA write locks at all. So,
+> > lock_vma_under_rcu() for example would always succeed.
+>
+> I don't think anything's broken actually.
+>
+> Per-VMA locks was gated on CONFIG_MMU so nothing there assumes per-VMA fl=
+ags,
+> but now you have stuff that happens that didn't before but:
+>
+> * vm_area_free() -> vma_assert_detached() - fine - it's always detached i=
+n nommu.
 
-Increase the irq_name buffer size to account for the suffix and
-replace the remaining sprintf() calls in the same function with
-snprintf() to avoid possible buffer overflows.
+I don't think that's true, AFAICS vma_mark_attached() is called from
+vma_iter_store_new() which is called from the nommu version of
+do_mmap(). But I think you're right that one blunt workaround for this
+would be to add a hack that prevents ever marking VMAs in nommu as
+attached...
 
-Tested:
-- Built the kernel with W=1 and confirmed the warning is no longer reported.
-- No NIU hardware was available for runtime testing.
-
-Signed-off-by: Ronan Marchal <ronanmarchal29@gmail.com>
----
- drivers/net/ethernet/sun/niu.c | 6 +++---
- drivers/net/ethernet/sun/niu.h | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
-index 88df15e6dd74..54dd7281191d 100644
---- a/drivers/net/ethernet/sun/niu.c
-+++ b/drivers/net/ethernet/sun/niu.c
-@@ -6021,11 +6021,11 @@ static void niu_set_irq_name(struct niu *np)
- 	int port = np->port;
- 	int i, j = 1;
- 
--	sprintf(np->irq_name[0], "%s:MAC", np->dev->name);
-+	snprintf(np->irq_name[0], sizeof(np->irq_name[0]), "%s:MAC", np->dev->name);
- 
- 	if (port == 0) {
--		sprintf(np->irq_name[1], "%s:MIF", np->dev->name);
--		sprintf(np->irq_name[2], "%s:SYSERR", np->dev->name);
-+		snprintf(np->irq_name[1], sizeof(np->irq_name[1]), "%s:MIF", np->dev->name);
-+		snprintf(np->irq_name[2], sizeof(np->irq_name[2]), "%s:SYSERR", np->dev->name);
- 		j = 3;
- 	}
- 
-diff --git a/drivers/net/ethernet/sun/niu.h b/drivers/net/ethernet/sun/niu.h
-index d8368043fc3b..676d31499ac3 100644
---- a/drivers/net/ethernet/sun/niu.h
-+++ b/drivers/net/ethernet/sun/niu.h
-@@ -3262,7 +3262,7 @@ struct niu {
- #define NIU_FLAGS_XMAC			0x00010000 /* 0=BMAC 1=XMAC */
- 
- 	u32				msg_enable;
--	char                            irq_name[NIU_NUM_RXCHAN+NIU_NUM_TXCHAN+3][IFNAMSIZ + 6];
-+	char                            irq_name[NIU_NUM_RXCHAN + NIU_NUM_TXCHAN + 3][IFNAMSIZ + 7];
- 
- 	/* Protects hw programming, and ring state.  */
- 	spinlock_t			lock;
--- 
-2.55.0
-
+> * vm_area_dup() -> vma_lock_init() - no asserts, just sets refcount to 0 =
+(correct).
