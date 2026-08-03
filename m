@@ -1,48 +1,45 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF6819DF55;
-	Mon,  3 Aug 2026 01:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9269F277035;
+	Mon,  3 Aug 2026 01:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785721562; cv=none; b=oM46HoGPcHrBby6cbg1Gard9+0j9CoXLQW+5dMZTvDXfL2ydKxlTcrIoxIXbATWE6fUszv8O1Y4WQmFRnXgLqp+W5tQFVN08MNquByoV4TUK00LI/wyQbRmNzWAhlxQzbzbOc3gjSbt29Q4EdAiIaWIXAQGssFEHfeYamXCiQbI=
+	t=1785721710; cv=none; b=oQ1jrfVerDGBUd34Gp8/ezimfOdiNRgFrlLOEC7138zsvkGUkztfUCT7EnKMzcoFeawSXrddOuKy8AI41kpY72lguGsCvtpoegunuQ5vU0afF4UFEeS3ai7xcZ3zoE9d/M8HasclfUfghTxy+KgXs3/2v91U49Amccc+9sW/7Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785721562; c=relaxed/simple;
-	bh=QyFzjCqjY7uEZRws4LKtNTUJXsiwPaqTv20mgsxjKgc=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=p9SGXVxcF/PtEzNQBQ4FGSFQs/VU6cO6cg0HnkFwT8VytRd3quCL+QS5/c+kAstErh2wdL4Gvtijle1ruuO4M6L+I4Qa4R/uCmkRgkcrrg5S/gf14FwKto3cwyU/UyuqZ099+lcIGhdB2jx4rPdQB/5CZZQQY6z962WeZ4BWdUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=OayOjARH; arc=none smtp.client-ip=203.29.241.158
+	s=arc-20240116; t=1785721710; c=relaxed/simple;
+	bh=0D60OAFZS0pHsEF3mRUjGQUfRFQesoh4XoWWFbp+njU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=N4YOC88js8g2++KtRmNIHgHwWWRc8EXNPYvv+fTdta+K0rfcNYZXwOlBxP6mVdJlBbMDzCtQ+DCpzcSOG+pdsfwbTDjD1X5N1+DlUoXdQQB9HaWq/BtLAMvlFiERYkujE3kUqzxtdkTG8isnnaTewhTTI+7VGxQDfdxuN82ps/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=JXZkcoYh; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="OayOjARH"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="JXZkcoYh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1785721557;
-	bh=QyFzjCqjY7uEZRws4LKtNTUJXsiwPaqTv20mgsxjKgc=;
-	h=Subject:From:To:Date:In-Reply-To:References;
-	b=OayOjARHKRkxNBYY36mKOZRTyJ27C6uYSTe2cW2bpnXWYT2urB6PBDeRxj5h2TFDK
-	 saOMrz7UN98kIwWdnqp520JeIjAlQTFTAFQRYgI6HnAdfLIu9hS6PEFQYOSSTrqxVi
-	 8nVbIIyjdu8ffvLct+ZZZT/Dmd2itjnVjO6Sqm81zjJrrBQuZ386DPMMxZWUduSjpf
-	 dr7jZ1FzYX1/3O/GUv4x0QNpbgD8SFsauduI7RT1zjg9IIhYO96t12tDbPaVjOiKoD
-	 j6Zs9/INLCrs8zT8i4a673yl/tfy2dwyNYCiiwySMKz9ALebI2znc6e7hTMfBXTf7b
-	 HkU3dJkrz2OBg==
+	d=codeconstruct.com.au; s=2022a; t=1785721204;
+	bh=oE7uPS84rSpgE0ni9IOO8HgaNujh320gvuSNqcIFKN0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=JXZkcoYhdP4wQ8rk0b7KSvcLBNnm9iL3BDXs5bb/g/C/7jo069HuDO3gLd0euy8Mf
+	 Rd6WHdFXuoj5bJNnqzdwMO9PZdnzAHwGGf7gH/0g1KqkGdaHwsYHck5ui2BDRsgrYW
+	 HeYusjq2HspMnZ77704SLvYG6G5EiPmSrqjGXrTIA8uDCB3jYfavdx1QjLBx9m/B0/
+	 NeNdSJ7uv3nGfsRVwOrFCg1awpI+3bhec5Jd/AeLisCpJ5tyOQP+fNVen6BTEDAySB
+	 t7pqb9HAGJ2974YwhSTVZd3KZ+gSX/fgVlMsv9G+Kay0yEJkxtbe2n5SPJygtyBIdH
+	 RHdkqKyUs9zSQ==
 Received: from pecola.lan (unknown [159.196.93.152])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 8254365626;
-	Mon,  3 Aug 2026 09:45:54 +0800 (AWST)
-Message-ID: <7a537ca124f1b5d0b8dfbf9524f47ad5120e9dfc.camel@codeconstruct.com.au>
-Subject: Re: [PATCH net-next v11 01/10] net: mctp: usb: Allow multiple urbs
- in flight
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 27CC6655A9;
+	Mon,  3 Aug 2026 09:40:03 +0800 (AWST)
+Message-ID: <4f46ee4a8a0c389ca03dfab5d90cf53eb24a0cdb.camel@codeconstruct.com.au>
+Subject: Re: [PATCH] net: mctp: hold route device before source address
+ lookup
 From: Jeremy Kerr <jk@codeconstruct.com.au>
-To: Markus Stockhausen <markus.stockhausen@gmx.de>, andrew@lunn.ch, 
-	hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, 	chris.packham@alliedtelesis.co.nz,
- daniel@makrotopia.org, robh@kernel.org, 	krzk+dt@kernel.org,
- conor+dt@kernel.org, devicetree@vger.kernel.org
-Date: Mon, 03 Aug 2026 09:45:54 +0800
-In-Reply-To: <20260802083528.490216-2-markus.stockhausen@gmx.de>
-References: <20260802083528.490216-1-markus.stockhausen@gmx.de>
-	 <20260802083528.490216-2-markus.stockhausen@gmx.de>
+To: Yiqi Sun <sunyiqixm@gmail.com>, matt@codeconstruct.com.au
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, 	horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 03 Aug 2026 09:40:02 +0800
+In-Reply-To: <20260731022926.913865-1-sunyiqixm@gmail.com>
+References: <20260731022926.913865-1-sunyiqixm@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2-0+deb13u1 
@@ -53,14 +50,105 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Hi Markus,
+Hi Yiqi Sun,
 
-> Subject: [PATCH net-next v11 01/10] net: mctp: usb: Allow multiple urbs i=
-n flight
-> From: Jeremy Kerr <jk@codeconstruct.com.au>
+> mctp_route_lookup() walks the route table under RCU and may find a direct
+> route whose route-table reference to rt->dev is being removed concurrentl=
+y
+> by NETDEV_UNREGISTER.
+>=20
+> Since commit 22cb45afd221 ("net: mctp: perform source address lookups
+> when we populate our dst"), the direct-route lookup path reads the source
+> address with mctp_dev_saddr(rt->dev) before mctp_dst_from_route() takes t=
+he
+> dst's own mctp_dev reference. If device teardown wins that race,
+> mctp_route_remove_dev() can delete the route and mctp_route_release() can
+> drop the route's mctp_dev reference to zero. mctp_dev_put() frees
+> mdev->addrs synchronously, while only the mctp_dev body is deferred with
+> kfree_rcu().
+>=20
+> That leaves the lookup side able to read freed mdev->addrs in
+> mctp_dev_saddr(), or later increment a zero refcount in mctp_dev_hold().
+>=20
+> Add a try-hold helper for mctp_dev and use it before reading the source
+> address from a direct route. mctp_dst_from_route() now consumes that held
+> reference when it populates dst. If no dst is requested, drop the tempora=
+ry
+> reference in mctp_route_lookup(). Do the same when the route cannot be us=
+ed
+> for a gateway path without a source address.
 
-I don't think you intended to include this in your series? Did it just
-get pulled in from your net-next base?
+Good find, thank you. Just a couple of comments on the fix though:
+
+> index 1f3dccbb7aed..3d0737030917 100644
+> --- a/net/mctp/route.c
+> +++ b/net/mctp/route.c
+> @@ -897,15 +897,16 @@ static mctp_eid_t mctp_dev_saddr(struct mctp_dev *d=
+ev)
+> =C2=A0	return addr;
+> =C2=A0}
+> =C2=A0
+> -/* must only be called on a direct route, as the final output hop */
+> +/* must only be called on a direct route, as the final output hop, with =
+a
+> + * reference already held on route->dev.
+> + */
+> =C2=A0static void mctp_dst_from_route(struct mctp_dst *dst, mctp_eid_t ei=
+d,
+> =C2=A0				mctp_eid_t saddr, unsigned int mtu,
+> -				struct mctp_route *route)
+> +				struct mctp_route *route, struct mctp_dev *dev)
+> =C2=A0{
+> -	mctp_dev_hold(route->dev);
+> =C2=A0	dst->nexthop =3D eid;
+> -	dst->dev =3D route->dev;
+> -	dst->mtu =3D READ_ONCE(dst->dev->dev->mtu);
+> +	dst->dev =3D dev;
+> +	dst->mtu =3D READ_ONCE(dev->dev->mtu);
+> =C2=A0	if (mtu)
+> =C2=A0		dst->mtu =3D min(dst->mtu, mtu);
+> =C2=A0	dst->halen =3D 0;
+
+I don't see the need to pass the dev argument separately here, it's
+duplicating route->dev; all we need is to drop the mctp_dev_hold(), and
+update the comment, as you have done.
+
+> @@ -998,14 +999,25 @@ int mctp_route_lookup(struct net *net, unsigned int=
+ dnet,
+> =C2=A0			mtu =3D mtu ?: rt->mtu;
+> =C2=A0
+> =C2=A0		if (rt->dst_type =3D=3D MCTP_ROUTE_DIRECT) {
+> -			mctp_eid_t saddr =3D mctp_dev_saddr(rt->dev);
+> +			struct mctp_dev *dev =3D rt->dev;
+> +			mctp_eid_t saddr;
+> +
+> +			if (!mctp_dev_try_hold(dev))
+> +				break;
+
+I would also be fine with using refcount_inc_not_zero() directly, but
+adding the helper is good too.
+
+> +
+> +			saddr =3D mctp_dev_saddr(dev);
+> =C2=A0
+> =C2=A0			/* cannot do gateway-ed routes without a src=C2=A0 */
+> -			if (saddr =3D=3D MCTP_ADDR_NULL && depth !=3D 0)
+> +			if (saddr =3D=3D MCTP_ADDR_NULL && depth !=3D 0) {
+> +				mctp_dev_put(dev);
+> =C2=A0				break;
+> +			}
+> =C2=A0
+> =C2=A0			if (dst)
+> -				mctp_dst_from_route(dst, daddr, saddr, mtu, rt);
+> +				mctp_dst_from_route(dst, daddr, saddr, mtu, rt,
+> +						=C2=A0=C2=A0=C2=A0 dev);
+> +			else
+> +				mctp_dev_put(dev);
+> =C2=A0			rc =3D 0;
+> =C2=A0			break;
+
+If you end up doing a v2, don't forget the `[PATH net]` subject prefix,
+to indicate the net (vs. net-next) tree.
 
 Cheers,
 
