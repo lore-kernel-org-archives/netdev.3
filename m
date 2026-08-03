@@ -1,153 +1,254 @@
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C79383338
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785775016; cv=pass; b=j1hkJLYZ2VwjLTwjnlxD1NggR/i1ye85MjZa9Quq2+dx7DJ5GNgWuW2S3ykibNVeoJLGssNGsQRKY+09Vaech3ETy8BSJcCCYpuPby1DKJjTI6CyCQ+t8uVt9L+d3AWLOkjF25Lv/Bg4AUQtWtVCWlUQgM9mZFOADSvzl2g/hdM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785775016; c=relaxed/simple;
-	bh=K7WSdWoRnNatXjyT6a0V545KuC7+pJeUxQF1yR9byhQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k3/Sy785jTV+V5JHN5vbtindkc5YE4QQXxNdKGGY8OFix4n1+mWL98Udff/HVBlBhQCbj3EZb028lm6Bw6bO5VXOjhLD/wtZ0f/6p8aOzmPAaZ6tETq6DBxnJIClmkEQq25EprusyBLjLiC2XXbb5fzdpypb1aF9SY6l4s8FzPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EykJ06Xx; arc=pass smtp.client-ip=209.85.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D9E383338
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 16:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785775079; cv=none; b=E5UezoqqryGVDpt9N4v7v3GciPUHOUN4HgQS9qJ5OvPPos76b/P8+Gczhz5gIoosOesSCt18qREwNQDkL6KaXhjbb7xAIt1eEZ2GPfXnIlAbwruGMi1lWokKwKrL1JAoe/0LsmXyuSnhzhM3aTk3fsJw/S0UtI9fsuTxUVf9QaU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785775079; c=relaxed/simple;
+	bh=jX3Az3+fX99ZWH+Ur9rGdltR5hWBIyl4+x/apMK8G+4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o4ZLK4dc23XWTzrOXNLsRWj5QFCQoi4lf84CG1kwA8CoCE6JrPozDbr3B0uptc9Fj0FEDRs534bNDCYudOK5kxKCPNNJCAQkesOHFIi0JvR+RvTkJRbZyorjZP8dHrJbcxYWvl4ShY/iWPehE1rrQBVUScMX5ctkB3Q2hFwEImc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GzKVfFIS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rhhmpZ+Z; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EykJ06Xx"
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-97727c2064fso2387537241.0
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 09:36:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785775014; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XkSDkwE3DPaV+Wm7LYe98i0GCKJ+Q/miy+fVx2Z5oC5RPFuFsh0XsdNZQ8G4YdqdcI
-         +uuvrcYtI8MIwiJMo6bt7SmhBZwSg7NlBH9FoOA/lp5/g5qqfKUAP8f/QsO52AVaBmtt
-         WUEpeUzw746an1n9m1QavShbaJs7aMIXwHq/IIojJ4lhlBFrf11aAxFAYBmEEVsDz3dK
-         uS694bLMjWEOf3sO8jg3HPq9mWGb1OcHYel4R3ShTA+dHmaCbfAIxB9WfjNrSzWOrxO1
-         ETp3FBsE7mVH3xwVngK3heiGftbPRVOZJGD/e7jPIdmeZhSEcwCHF5SrZa262Oh/wu2F
-         wSyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=y2mO7QnlyPovrqJ9WwdH4iPAu4v/YWoM0OB9E5eGsqI=;
-        fh=n+gIhvgloThxNUxUCT2PVgoPspZ4onGE/WOtG3njjzk=;
-        b=k9t9skBsZxq1B6GZBQODi8ITQea+s579M3rOWXQqefb6v6fdXvHT982GoKsavEPCQj
-         Wt/94LBuhykfP8orJCieC5iXytZFDNkPmnYD54QLOnCEtsjgrbcvDRhjff6FaxyWD+Hu
-         cQSr9G7SAUULzz3b0u/vwghTpibF/02OnXjz1F1as2q0+DFnTyfly6xKN8Wqb0snbOch
-         j6qPpSW9iX21sx0Z/coqYsJuWuVLeCvo3q1CATl60Jq5tEAIbuQ2+jUbTM8P1Ej/JP9N
-         3OyIpLKYhRLCN6Zue53pqf9BDTOxn2zaFfx4ob48uibfNu3Uud2vRi+ZxIC+u5VJoxex
-         L04w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GzKVfFIS";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rhhmpZ+Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785775076;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x8FCHZBZLrk/TMZLPtJVaBIhiotGy01B8YQOZQmpfV4=;
+	b=GzKVfFISokBjJ2DYzGvr/6lcsbn984P5pZ9haDgQ27CgxNDCc26UnsPjJnJncQANm0RPAT
+	v1eTie4XQubjjszZXHCm2Ao8XpCBR4EnCHXMCMr5jEY4ZQOUxU064QUBiIPvpxjlqr08ai
+	SPqL06zS9GjHHNUUxE5rNY1doTFv4Qc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-323-EcplRssFNUiXohqCC0ScFQ-1; Mon, 03 Aug 2026 12:37:55 -0400
+X-MC-Unique: EcplRssFNUiXohqCC0ScFQ-1
+X-Mimecast-MFC-AGG-ID: EcplRssFNUiXohqCC0ScFQ_1785775074
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-473ac08a6a4so2860513f8f.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 09:37:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785775014; x=1786379814; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=redhat.com; s=google; t=1785775074; x=1786379874; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=y2mO7QnlyPovrqJ9WwdH4iPAu4v/YWoM0OB9E5eGsqI=;
-        b=EykJ06Xxy3io5WUp+JxhY3YKHP4TLnN1+ZdQYVPUJXq9avodpuMT58zhsh8LM3vZCn
-         EALEza4CeBVCDJXGQs8JH+XDtnp1R+GOR21cKcpADE/S2QpagkdngTrQcpcsvaT3DvQQ
-         3bzTjMNNvo04cpSh/5EvEq3Z6YtV3TfstqrtBRl1tPZDLkIvdDyCdWCGXOyrIkTTpvFj
-         mPqfj/cxbVkYkTz8hsy0HTJ5WgNAJ9yHlnrTmW1y9ay6oCoSWTFH7KVAvh/ldB0lUFZN
-         5nw25FquknG21anGdE4L9nqsMkHVT1JewOd7td7zRrk1+msGo4ExnpD4jZZlfsSUIu6f
-         Z9qw==
+        bh=x8FCHZBZLrk/TMZLPtJVaBIhiotGy01B8YQOZQmpfV4=;
+        b=rhhmpZ+ZA4DlLJzvCuZhZqrNvh+DAIYsQXWJ683KSqCZEnFCjynDGYPLE8v1eg7MMq
+         6nYtkU4CcfP+NUnqqF6fVScEP9VszA1FNmzWCTGvEHNKgumxpOWBvN451wd97fddjkF6
+         ULwGvalyHxpeAtgc0rMhYKO2yTxYMA1ci4wfFqSL0q1CyI2lWXd3o7Fvr+axugXKDveA
+         VBbBzi3NQTVPPtYd9ihQLP1oiLM/lEnyl9yfJUmIbRnBd5CrIEI3qkFrEskuohbkfmP9
+         +nD5zo2SVEwq2HdSOl7PSFs6790Q+7B2OJ5McQil57zVZxu94JoMObinERek659qXZSj
+         vNBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785775014; x=1786379814;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1785775074; x=1786379874;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=y2mO7QnlyPovrqJ9WwdH4iPAu4v/YWoM0OB9E5eGsqI=;
-        b=g+wfDozhZzI4tWZCVREa1S3sYKcUD9DMBbWbpF/KdhHuGZynHZKDcEiN0Yh2G7PxJU
-         sxurPUohmfsdC2nes8F/TgoEzCVdSxMmXG4p/k0KNLRh2CBBOxK10Mjo9pMVuZM0f5/n
-         MOq8JP858qtZCSzdJii2KESurWoauFa9ncG9+DRWtIV5vtp/OQNDKMbLF0LbRRmqytm4
-         1FJzMiydSty6v7BmQ2bE9HFm6lFBanGv58WQK6iKemwKWw+OH0PJymfour6m6AxxP3EG
-         8zH5AXfWibr4BxJjBQxOH1h4AepkwzBbenJ6BrUZMwxzeOHRpzZObZDTcGYVhyNCtv6V
-         db6w==
-X-Forwarded-Encrypted: i=1; AHgh+RrWpc3+HwS9A3qm0vlgwtXE6zDn4xl71EWN61OIW7UePVlzblLrCVQzM/9hbxHpWRNn4K0wxkg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypB2sT/KJL0akm2QRYA0DYSoTdJbWPS732RYTvN8Eh4F0qbXGS
-	W3JGGek+yJzHRcm5R9Ur9P2LagoX2GFrI1tApt3y1beTEjsxpEXvN8YZnxQSGDP4cZNb2zH5BpC
-	hPC1tMx+hdon8pxVJI8814EWN29s/M+8=
-X-Gm-Gg: AR+sD11az4lE9L8hbfSF/YBSeDc1B831l6Bm7bJUOptrJnDs/MS2+r1PAsbwCKqayTF
-	W7q1xGojLC94hwvC7+yYWGMKgfoAmH5HQupdVSJlim/f+YVvrcS2S/tdwWo2soV1CKG8fwRJ+3X
-	JitHVfY5h+VakRwfjA9hfqPD2g5u6iVnub4BQNvOyqzc0cCYMivJHXgcOGP9MKY08t17nb5Qd9R
-	YH4HgUwqKnHKnFGy6PItwVhJ5c1Ml0jnhC4ngWhvsR7K54fPxJZ/p5CkUQnyY98ab8LE8lwZ7ao
-	Rrl5gMvUsIHlHgecGjVL0kK+eiWtZ7LuGbqStIZnnCdK8/QWrz8P0DIu1JC4wWeR0Unm84nPKvH
-	u8LFDS+Z/FAPhTL5U6BHj8jQ+LkBromNR8fi5AUi68HpDKl2ETswmbssMvJibZoeFWs51Df7kVo
-	yJOwnsVAY2gjG+tO/BgiUBazphlKbUjaUauArIxn9149mynUY=
-X-Received: by 2002:a05:6102:41a9:b0:740:2bcd:24d2 with SMTP id
- ada2fe7eead31-75b2245a880mr8777953137.5.1785775013743; Mon, 03 Aug 2026
- 09:36:53 -0700 (PDT)
+        bh=x8FCHZBZLrk/TMZLPtJVaBIhiotGy01B8YQOZQmpfV4=;
+        b=ebf9T64Fw2ghISlCEknmO3TXQirlY4knp/tmv9SZ3KRL9WIpP64B26lPQbO4AblOjO
+         +QkgR+pEJsCDyTVjdqv6PIJ3+abO+uxlakXlmLlwTk5pl+faw3gMaDcZqG61qkxnmVhe
+         /JyTMkvWHltEP2pCjt9DZJnXvkk5Bn0tfYDyuJ9nOGlYWxTrtm/LJEZLuG+CmXGsA4D4
+         xLyxZjmyvTpSMrWq/gR7mPHpB4UBXbpKtnjA+r1+FcUkjZH7+nGCNdbvoNd00VYB5YDS
+         yfRaDzOv3ttQKISdWDysCvqPqII06GYkJFAIfZwW9ByFe8FR03x1WmaJD+DddbRVbnn2
+         gOOA==
+X-Gm-Message-State: AOJu0YwhYp/JbTvM8Xje3NEhs8/GsQjbj/kQN9APZkDXz/EjAaNTyEuv
+	JOaYI6zJwU3nvEhmwnVAaGNiNkatJ7GFm5Cv6j1/3FKaykB5dkOg3OiWJ68OgAskjDAwinMKYN/
+	oaLvOz0QN79OdRQ7VnyPI7HuXTfODftWTt+n7+ze0HnvBHUPV3XUM7yPPOw==
+X-Gm-Gg: AR+sD13glfa6Z+7b80JSwOb6liMwvuPzowx9FiAug78Qo0KPEd3Bty6r7HWr4X9PYy4
+	w2IvIUVPwNYOr+DuSwrL59gkffp5iTJHGk2IF2Sbjc3QWB8Gpcg+0/P+VmhSTVkqC3LemyvMuBq
+	l3h6Rty2uyXm2oDxE48tNRd4wHk/9gvdgI0K5PVXyfRNrdmEiihaNF64O97efBeQdBcIxIJeiNM
+	DFvYzRNLW22Vjbh3LAsjmMu8twUgQ2XQ5DnPE+5G+yf8ibji/B40ld5LE7AE/94Us3nJdO8cMW5
+	Gm4w6IJzco2Ybmb9e2vwe1rBQM6kqKnGCAznhGANl392bV8anFk54pxcn5m2fVqkJ0GMNGcJFod
+	eiCovMFRfAUQz6wjknow9EQ==
+X-Received: by 2002:a05:600c:4e89:b0:495:5e3d:15e1 with SMTP id 5b1f17b1804b1-4980c6788f8mr221835675e9.16.1785775074224;
+        Mon, 03 Aug 2026 09:37:54 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e89:b0:495:5e3d:15e1 with SMTP id 5b1f17b1804b1-4980c6788f8mr221835075e9.16.1785775073758;
+        Mon, 03 Aug 2026 09:37:53 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-28-14.inter.net.il. [80.230.28.14])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49949f68f95sm6288115e9.0.2026.08.03.09.37.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 09:37:53 -0700 (PDT)
+Date: Mon, 3 Aug 2026 12:37:49 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Shahar Shitrit <shshitrit@nvidia.com>
+Cc: netdev@vger.kernel.org, jasowang@redhat.com, pabeni@redhat.com,
+	virtualization@lists.linux.dev, parav@nvidia.com, yohadt@nvidia.com,
+	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, jgg@ziepe.ca,
+	kevin.tian@intel.com, kuba@kernel.org, andrew+netdev@lunn.ch,
+	edumazet@google.com, danielj@nvidia.com
+Subject: Re: [PATCH net-next v21 13/13] virtio_net: Add get ethtool flow
+ rules ops
+Message-ID: <20260803123507-mutt-send-email-mst@kernel.org>
+References: <20260803140721.1871678-1-shshitrit@nvidia.com>
+ <20260803140721.1871678-14-shshitrit@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <20260802-submit-acx00-of-dynamic-v1-v1-8-0a53cd9e21cc@gmail.com>
- <f2cc3c90-060f-40c1-a55e-e2ed91e65487@kernel.org> <CADvTj4q7HnOYJZE-M070-1npEdne__Ct5D9FeUNVVXa8Bsm7qQ@mail.gmail.com>
- <e198e8fa-6c5e-4c8d-a4de-d8bb25aab0bd@kernel.org> <cd177647-827c-481a-9ac6-5f5a1882f14e@kernel.org>
-In-Reply-To: <cd177647-827c-481a-9ac6-5f5a1882f14e@kernel.org>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Mon, 3 Aug 2026 10:36:39 -0600
-X-Gm-Features: AUfX_mxf143l7ltuwFHdM8jtybu0jFAqTogB47kH9lIVgz-FaKgqQGV-oPrZGYA
-Message-ID: <CADvTj4qby5jow6BkvumZFK6cF8aLCTeQZz39VKEdm59jEtRp8w@mail.gmail.com>
-Subject: Re: [PATCH 08/21] dt-bindings: mfd: x-powers: add AC200
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Andre Przywara <andre.przywara@arm.com>, 
-	Richard Genoud <richard.genoud@bootlin.com>, Maxime Ripard <mripard@kernel.org>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803140721.1871678-14-shshitrit@nvidia.com>
 
-On Mon, Aug 3, 2026 at 2:21=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.org=
-> wrote:
->
-> On 03/08/2026 10:20, Krzysztof Kozlowski wrote:
-> >>>> --- /dev/null
-> >>>> +++ b/include/dt-bindings/mfd/x-powers,ac200.h
-> >>>> @@ -0,0 +1,13 @@
-> >>>> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-> >>>> +/*
-> >>>> + * Interrupt numbers of the X-Powers AC200 interrupt controller.
-> >>>> + */
-> >>>> +
-> >>>> +#ifndef _DT_BINDINGS_MFD_X_POWERS_AC200_H
-> >>>> +#define _DT_BINDINGS_MFD_X_POWERS_AC200_H
-> >>>> +
-> >>>> +#define AC200_IRQ_TVE                        0
-> >>>> +#define AC200_IRQ_EPHY                       1
-> >>>> +#define AC200_IRQ_RTC                        2
-> >>>
-> >>> Hardware constants are not really bindings, even though you use them =
-in
-> >>> the driver.
-> >>
-> >> Should I do something different for this?
-> >
-> > I would just drop the defines and the header, because these are fixed
-> > hardware numbers.
-> >
->
-> Hm, unless they are not and you added abstract ID numbers for both DTS
-> and drivers? Then this would be fine.
+On Mon, Aug 03, 2026 at 05:07:21PM +0300, Shahar Shitrit wrote:
+> From: Daniel Jurgens <danielj@nvidia.com>
+> 
+> - Get total number of rules. There's no user interface for this.
 
-Yeah, these are more abstract ID numbers, they aren't really hardware
-constants as the driver translates them.
+For what? Isn't this ETHTOOL_GRXCLSRLCNT ?
 
->
-> Best regards,
-> Krzysztof
+
+> It is
+>   used to allocate an appropriately sized buffer for getting all the
+>   rules.
+> 
+> - Get specific rule
+> $ ethtool -u ens9 rule 0
+> 	Filter: 0
+> 		Rule Type: UDP over IPv4
+> 		Src IP addr: 0.0.0.0 mask: 255.255.255.255
+> 		Dest IP addr: 192.168.5.2 mask: 0.0.0.0
+> 		TOS: 0x0 mask: 0xff
+> 		Src port: 0 mask: 0xffff
+> 		Dest port: 4321 mask: 0x0
+> 		Action: Direct to queue 16
+> 
+> - Get all rules:
+> $ ethtool -u ens9
+> 31 RX rings available
+> Total 2 rules
+> 
+> Filter: 0
+>         Rule Type: UDP over IPv4
+>         Src IP addr: 0.0.0.0 mask: 255.255.255.255
+>         Dest IP addr: 192.168.5.2 mask: 0.0.0.0
+> ...
+> 
+> Filter: 1
+>         Flow Type: Raw Ethernet
+>         Src MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
+>         Dest MAC addr: 08:11:22:33:44:54 mask: 00:00:00:00:00:00
+> 
+> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+> Reviewed-by: Parav Pandit <parav@nvidia.com>
+> Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+> ---
+>  drivers/net/virtio_net.c | 75 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 75 insertions(+)
+> 
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index 236887c7976d..3d5eb716361a 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -6552,6 +6552,58 @@ static int virtnet_ethtool_flow_remove(struct virtnet_ff *ff, int location)
+>  	return err;
+>  }
+>  
+> +static int virtnet_ethtool_get_flow_count(struct virtnet_ff *ff,
+> +					  struct ethtool_rxnfc *info)
+> +{
+> +	if (!ff->ff_supported)
+> +		return -EOPNOTSUPP;
+> +
+> +	info->rule_cnt = ff->ethtool.num_rules;
+> +	info->data = le32_to_cpu(ff->ff_caps->rules_limit) | RX_CLS_LOC_SPECIAL;
+
+maybe check rules_per_group_limit too? they are all in 1 group ..
+
+> +
+> +	return 0;
+> +}
+> +
+> +static int virtnet_ethtool_get_flow(struct virtnet_ff *ff,
+> +				    struct ethtool_rxnfc *info)
+> +{
+> +	struct virtnet_ethtool_rule *eth_rule;
+> +
+> +	if (!ff->ff_supported)
+> +		return -EOPNOTSUPP;
+> +
+> +	eth_rule = xa_load(&ff->ethtool.rules, info->fs.location);
+> +	if (!eth_rule)
+> +		return -ENOENT;
+> +
+> +	info->fs = eth_rule->flow_spec;
+> +
+> +	return 0;
+> +}
+> +
+> +static int
+> +virtnet_ethtool_get_all_flows(struct virtnet_ff *ff,
+> +			      struct ethtool_rxnfc *info, u32 *rule_locs)
+> +{
+> +	struct virtnet_ethtool_rule *eth_rule;
+> +	unsigned long i = 0;
+> +	int idx = 0;
+> +
+> +	if (!ff->ff_supported)
+> +		return -EOPNOTSUPP;
+> +
+> +	xa_for_each(&ff->ethtool.rules, i, eth_rule) {
+> +		if (idx == info->rule_cnt)
+> +			return -EMSGSIZE;
+> +		rule_locs[idx++] = i;
+> +	}
+> +
+> +	info->data = le32_to_cpu(ff->ff_caps->rules_limit);
+> +	info->rule_cnt = idx;
+> +
+> +	return 0;
+> +}
+> +
+>  static size_t get_mask_size(u16 type)
+>  {
+>  	switch (type) {
+> @@ -6570,6 +6622,28 @@ static size_t get_mask_size(u16 type)
+>  	return 0;
+>  }
+>  
+> +static int virtnet_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info, u32 *rule_locs)
+> +{
+> +	struct virtnet_info *vi = netdev_priv(dev);
+> +	int rc;
+> +
+> +	switch (info->cmd) {
+> +	case ETHTOOL_GRXCLSRLCNT:
+> +		rc = virtnet_ethtool_get_flow_count(&vi->ff, info);
+> +		break;
+> +	case ETHTOOL_GRXCLSRULE:
+> +		rc = virtnet_ethtool_get_flow(&vi->ff, info);
+> +		break;
+> +	case ETHTOOL_GRXCLSRLALL:
+> +		rc = virtnet_ethtool_get_all_flows(&vi->ff, info, rule_locs);
+> +		break;
+> +	default:
+> +		rc = -EOPNOTSUPP;
+> +	}
+> +
+> +	return rc;
+> +}
+> +
+>  static int virtnet_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info)
+>  {
+>  	struct virtnet_info *vi = netdev_priv(dev);
+> @@ -6611,6 +6685,7 @@ static const struct ethtool_ops virtnet_ethtool_ops = {
+>  	.get_rxfh_fields = virtnet_get_hashflow,
+>  	.set_rxfh_fields = virtnet_set_hashflow,
+>  	.get_rx_ring_count = virtnet_get_rx_ring_count,
+> +	.get_rxnfc = virtnet_get_rxnfc,
+>  	.set_rxnfc = virtnet_set_rxnfc,
+>  };
+>  
+> -- 
+> 2.49.0
+
