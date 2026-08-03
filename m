@@ -1,594 +1,275 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C546313547;
-	Mon,  3 Aug 2026 02:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB962DCF4C
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 02:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785723232; cv=none; b=fMGkfPOnkXeW66wXZ5GxJ6RCMDGqPNeZT1hBYY90BgDiixrE6y/dPkTQQUfJDKtSSJ11v9EXd9HMHerC+GCFNhZvJsRK4kFW2/KaZpHOubj9aHD0EZ9Sh9KZS1GtQ0tUZ29vua+z5r6kIKLqiBJAPB3+4krlboDcFm2T+Vv/tHo=
+	t=1785724651; cv=none; b=GkPsyalldveCuxZ/U518SKqNvYXWucge+4pRjsxr4UbrTD+LkA9x01lg2om6OwLmr5RhAmb76XGK2shgGZdmZdMqkegDG71xxof4eiKSfJVTEmPG0HFzjADDSv8tpycsKEDzh8Zkkf48J+E8HUhO1tcwLSn7YDvbQ5+QDvkJy5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785723232; c=relaxed/simple;
-	bh=sYNCkFy5IhNsAmOUPEVLjoG0ZOha5XeLjbD3VHIcftw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QKwxXUP7T+qgtVUeRzcNyQPbu0udL8NVdMlmy0A9zNvEpQNCXwOxYZ6FhITQKObmQyhR6bA8WvHd2mHjqvCZzADje7DJsTDhRObl+IVR3s2cbW9mwF/QntxzF1pjDEwlNQq4F6OheNKEU+0yqzL6EtgZ5CfSKa4EronaagxNXOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=icsKZaYR; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1785724651; c=relaxed/simple;
+	bh=Foivba0ag4aw97TGJ0kAU1d7f4x1IDHsb31wVq/MELM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=BjLVkTu4r1yc/wnLS+lcYYy8aDIZTAcMlu9HUHIod2BW1VUrsaT/9baZ8pJJ3EzkuP2gsQiF+wlbAEV+t5lxdmifD+a8T1pLTAHGMgS/sRj0uWVIpx8j5n9RvDYfkxWKIEzhYNj8UL0nLvuCY7xE/OlVe8ZdTTA+He48zoKHGXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=dlkOKgA0; arc=none smtp.client-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="icsKZaYR"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6732D8bsC3810900, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1785723188;
-	bh=Zx2y0XCZK9sJBtDdMCWMgE2M5EFg1BTJpbIl6sHCZvw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=icsKZaYRAXTXTrjMjtChEeLhGtj0No23QocT8ll/r8b1TAPqoJuM3353jv81xupZQ
-	 53RB1c1M9XUD9xjDW3+QKMXRgRR4pRqqf1Iyusa4uLR1HYtUWehHq+mB2FCvUoVmKi
-	 fYkYKXA1lj8epsTvA4WAneyrUFalPhzRgztEWj5xj/D849BmqMATW5UC3AcXx77P3I
-	 iFnziLsMVBIVb16rU9aYwsMMGJl3xUJVEK0JEkjFMSaqdQB/9EuNe4N0Ln0S8QYgND
-	 XTUa7HouoUcXQ89o+yTqIm3QZMtGKD+i5wSxCUgoK6ZfX3C/VnBfsc+VArP4vgEHcf
-	 DAvdDxzAALyOg==
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6732D8bsC3810900
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 3 Aug 2026 10:13:08 +0800
-Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
- RS-EX-MBS3.realsil.com.cn (172.29.17.103) with Microsoft SMTP Server
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="dlkOKgA0"
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=/8R5nWAT30YSXmD0IExxy4cy8A4pFfsRSW7MmWDft6c=;
+	b=dlkOKgA0BKEhEer/rG9EumJuIQ+zO/y/nC0c8+lfdXvygZddJ/gxdDETwmpb73u8l0BMnY+mQ
+	fMf5zcYFw3zHgmW+aoUmPIvRPSrTaZN71OSb92ErOS9FIcuaJZQ4SbSk/WY7LWeSqNqlQHjV2Oh
+	k4Xzvc+pak5sXIqJqHgPkag=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hD0vd3VsNz12LHf;
+	Mon,  3 Aug 2026 10:27:57 +0800 (CST)
+Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9C61220333;
+	Mon,  3 Aug 2026 10:37:24 +0800 (CST)
+Received: from [10.136.112.147] (10.136.112.147) by
+ kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 3 Aug 2026 10:13:07 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
- (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.43 via Frontend
- Transport; Mon, 3 Aug 2026 10:13:07 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Javen Xu
-	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v10 2/7] r8169: refactor RX path to prepare for multi-queue
-Date: Mon, 3 Aug 2026 10:13:00 +0800
-Message-ID: <20260803021305.488-3-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20260803021305.488-1-javen_xu@realsil.com.cn>
-References: <20260803021305.488-1-javen_xu@realsil.com.cn>
+ 15.2.1544.36; Mon, 3 Aug 2026 10:37:23 +0800
+Message-ID: <1c4aed7c-b323-4793-93a6-a43a679d8f12@h-partners.com>
+Date: Mon, 3 Aug 2026 10:37:23 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net] vlan: fix skb_under_panic and races when toggling
+ HW VLAN offload
+From: xietangxin <xietangxin@h-partners.com>
+To: Eric Dumazet <edumazet@google.com>
+CC: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>, <eric.dumazet@gmail.com>,
+	gaoxingwang <gaoxingwang1@huawei.com>, huyizhen <huyizhen2@huawei.com>
+References: <20260724035419.1473174-1-edumazet@google.com>
+ <c05bb9fd-e7ac-472d-83e3-c289f81e717c@h-partners.com>
+ <CANn89iKtaD6-ABj5-FnKGpHcRAtAOkiYUn1yzNa4GHTrpH28hw@mail.gmail.com>
+ <f9136972-bc6a-4156-9a74-265c204fb1dc@h-partners.com>
+ <CANn89iLO_STTESJwU-shGJGZ7BbrFaePb64ePfr=J7bffV4WXA@mail.gmail.com>
+ <b00519e7-9c43-4867-baeb-f7ed1303424a@h-partners.com>
+ <CANn89iJWJD_KXpeDOne2ujeznOADV8O=rU5+jdqQF6YMEkNkJg@mail.gmail.com>
+ <e857b453-3fda-4457-9c93-9eae376157d5@h-partners.com>
+Content-Language: en-US
+In-Reply-To: <e857b453-3fda-4457-9c93-9eae376157d5@h-partners.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemr100001.china.huawei.com (7.202.195.168)
 
-From: Javen Xu <javen_xu@realsil.com.cn>
 
-This patch is a preparatory refactoring of the RX path. It introduces
-struct rtl8169_rx_ring and turns the previously embedded RX state in
-rtl8169_private into a per-queue array.
-While the netdev allocation is changed to devm_alloc_etherdev_mqs()
-with up to 8 RX queues, the actual number of active RX rings
-(num_rx_rings) is currently kept at 1. The actual multi-queue operation
-and RSS enablement will be introduced in subsequent patches.
 
-Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
----
-Changes in v2:
- - sort some registers by its number
- - remove some unused definitions, like RX_DESC_RING_TYPE_MAX
- - change recheck_desc_ownbit type
- - remove rdsar_reg in rx_ring struct
- - opts1 are different in rx_desc and rx_desc_rss, move the judgement
-   to Patch 5/7
+On 7/25/2026 9:42 AM, xietangxin wrote:
+> 
+> 
+> On 7/24/2026 6:43 PM, Eric Dumazet wrote:
+>> On Fri, Jul 24, 2026 at 12:24 PM xietangxin <xietangxin@h-partners.com> wrote:
+>>>
+>>>
+>>>
+>>> On 7/24/2026 5:39 PM, Eric Dumazet wrote:
+>>>> On Fri, Jul 24, 2026 at 11:29 AM xietangxin <xietangxin@h-partners.com> wrote:
+>>>>>
+>>>>>
+>>>>>
+>>>>> On 7/24/2026 4:40 PM, Eric Dumazet wrote:
+>>>>>> On Fri, Jul 24, 2026 at 10:13 AM xietangxin <xietangxin@h-partners.com> wrote:
+>>>>>>>
+>>>>>>>
+>>>>>>> Hi Eric,
+>>>>>>>
+>>>>>>> While testing this backport in our local environment, we hit a similar
+>>>>>>> skb_under_panic issue when layering macvlan on top of a VLAN device.
+>>>>>>>
+>>>>>>> macvlan does't sync vlan's need_headroom, so skb head align to 16 bytes.
+>>>>>>> when skb arrive vlan, call vlan_header_ops -> vlan_dev_hard_header,
+>>>>>>> push VLAN_HLEN 4 + ETH_LEN 14 to skb, oops.
+>>>>>>>
+>>>>>>> Call trace
+>>>>>>> ==========
+>>>>>>> [  103.088286] skbuff: skb_under_panic: text:ffff800080d2159c len:114 put:14 head:ffff0000d2055800 data:ffff0000d20557fe tail:0x70 end:0x6c0 dev:macvlan
+>>>>>>> [  103.088344] ------------[ cut here ]------------
+>>>>>>> [  103.088346] kernel BUG at net/core/skbuff.c:214!
+>>>>>>> [  103.088350] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+>>>>>>> [  103.098003] CPU: 3 UID: 0 PID: 160 Comm: kworker/3:3 Kdump: loaded Not tainted 7.2.0-rc4+ #56 PREEMPTLAZY
+>>>>>>> [  103.099007] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+>>>>>>> [  103.099725] Workqueue: mld mld_ifc_work
+>>>>>>> [  103.100169] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>>>>>>> [  103.100898] pc : skb_panic+0x58/0x68
+>>>>>>> [  103.101310] lr : skb_panic+0x58/0x68
+>>>>>>> [  103.101738] sp : ffff800083d1b950
+>>>>>>> [  103.109858] Call trace:
+>>>>>>> [  103.110161]  skb_panic+0x58/0x68 (P)
+>>>>>>> [  103.110578]  skb_push+0x58/0x60
+>>>>>>> [  103.110971]  eth_header+0x3c/0xe0
+>>>>>>> [  103.111359]  vlan_dev_hard_header+0x7c/0x1a8 [8021q]
+>>>>>>> [  103.111904]  macvlan_hard_header+0x38/0x60 [macvlan]
+>>>>>>> [  103.112455]  neigh_resolve_output.part.0+0xa8/0x168
+>>>>>>> [  103.113081]  neigh_resolve_output+0x4c/0x90
+>>>>>>> [  103.113639]  ip6_finish_output2+0x2c0/0x858
+>>>>>>> [  103.114182]  ip6_finish_output+0x23c/0x398
+>>>>>>> [  103.114741]  ip6_output+0x90/0x250
+>>>>>>> [  103.115211]  NF_HOOK.constprop.0+0x54/0x118
+>>>>>>> [  103.115699]  mld_sendpack+0x1cc/0x3d0
+>>>>>>> [  103.116202]  mld_send_cr+0x1cc/0x318
+>>>>>>> [  103.116696]  mld_ifc_work+0x38/0x128
+>>>>>>>
+>>>>>>>
+>>>>>>> Reproducer
+>>>>>>> ==========
+>>>>>>> ip link add veth0 type veth peer name veth1
+>>>>>>> ip link set veth0 up
+>>>>>>> ip link set veth1 up
+>>>>>>>
+>>>>>>> ip link add link veth0 name vlan_test type vlan id 10 reorder_hdr off
+>>>>>>> ip link set vlan_test up
+>>>>>>>
+>>>>>>> # macvlan does't sync vlan's need_headroom,
+>>>>>>> ip link add link vlan_test name macvlan type macvlan
+>>>>>>> ip link set macvlan up
+>>>>>>>
+>>>>>>> ethtool -K veth0 tx-vlan-hw-insert off
+>>>>>>>
+>>>>>>> # skb_under_panic
+>>>>>>> ip -6 addr add fe80::1/64 dev macvlan
+>>>>>>
+>>>>>> Thanks for testing and for providing a clean repro.
+>>>>>>
+>>>>>> This definitely is a bug in macvlan :/, I am pretty sure it can be
+>>>>>> stacked on top of devices that have a non zero needed_headroom.
+>>>>>>
+>>>>>> Maybe the bug was hidden because skb->head was properly reallocated
+>>>>>> for such lower devices incurring an expensive kmalloc()/kfree().
+>>>>>>
+>>>>>>
+>>>>>> diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+>>>>>> index c40fa331836bb2395267914807542ae5094e1a3c..0fb619413d94c89e472efed4a6a9f0dd7fb69940
+>>>>>> 100644
+>>>>>> --- a/drivers/net/macvlan.c
+>>>>>> +++ b/drivers/net/macvlan.c
+>>>>>> @@ -950,6 +950,7 @@ static int macvlan_init(struct net_device *dev)
+>>>>>>         dev->lltx               = true;
+>>>>>>         netif_inherit_tso_max(dev, lowerdev);
+>>>>>>         dev->hard_header_len    = lowerdev->hard_header_len;
+>>>>>> +       dev->needed_headroom    = lowerdev->needed_headroom;
+>>>>>>         macvlan_set_lockdep_class(dev);
+>>>>>>
+>>>>>>         vlan->pcpu_stats = netdev_alloc_pcpu_stats(struct vlan_pcpu_stats);
+>>>>>> @@ -1824,6 +1825,7 @@ static int macvlan_device_event(struct
+>>>>>> notifier_block *unused,
+>>>>>>         case NETDEV_FEAT_CHANGE:
+>>>>>>                 list_for_each_entry(vlan, &port->vlans, list) {
+>>>>>>                         netif_inherit_tso_max(vlan->dev, dev);
+>>>>>> +                       vlan->dev->needed_headroom = dev->needed_headroom;
+>>>>>>                         netdev_update_features(vlan->dev);
+>>>>>>                 }
+>>>>>>                 break;
+>>>>> Hi Eric,
+>>>>>
+>>>>> I tested this patch with two reproducers, and it indeed fixes.
+>>>>> However, are there other similar issues where devices on vlan?
+>>>>
+>>>> Tell me :)
+>>>>
+>>>> At least our selftests passed.
+>>>>
+>>>> Note that many devices have belts and suspenders. They use
+>>>> skb_cow(skb, min_headroom) or pskb_expand_head(), because we have
+>>>> numerous bugs yet to be fixed.
+>>> Hi Eric,
+>>>
+>>> I ran few tests on other devices over vlan,
+>>> and ipvlan triggers the exact same skb_under_panic issue.
+>>> I haven't tested many devices, and there might be others.
+>>>
+>>> Call trace
+>>> ==========
+>>> [  113.414244] skbuff: skb_under_panic: text:ffff800080d2159c len:114 put:14 head:ffff0000c716d000 data:ffff0000c716cffe tail:0x70 end:0x6c0 dev:ipvlan_test
+>>> [  113.414286] ------------[ cut here ]------------
+>>> [  113.414288] kernel BUG at net/core/skbuff.c:214!
+>>> [  113.414290] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+>>> [  113.424840] CPU: 1 UID: 0 PID: 315 Comm: kworker/1:4 Kdump: loaded Not tainted 7.2.0-rc4+ #59 PREEMPTLAZY
+>>> [  113.425832] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+>>> [  113.426573] Workqueue: mld mld_ifc_work
+>>> [  113.427039] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>>> [  113.427788] pc : skb_panic+0x58/0x68
+>>> [  113.428224] lr : skb_panic+0x58/0x68
+>>> [  113.428638] sp : ffff800083d1b950
+>>> [  113.437079]  skb_panic+0x58/0x68 (P)
+>>> [  113.437558]  skb_push+0x58/0x60
+>>> [  113.437949]  eth_header+0x3c/0xe0
+>>> [  113.438344]  vlan_dev_hard_header+0xa0/0x1d0 [8021q]
+>>> [  113.438913]  ipvlan_hard_header+0x34/0x58 [ipvlan]
+>>> [  113.439491]  neigh_resolve_output.part.0+0xa8/0x168
+>>> [  113.440027]  neigh_resolve_output+0x4c/0x90
+>>> [  113.440505]  ip6_finish_output2+0x2c0/0x858
+>>> [  113.440976]  ip6_finish_output+0x23c/0x398
+>>> [  113.441442]  ip6_output+0x90/0x250
+>>> [  113.441835]  NF_HOOK.constprop.0+0x54/0x118
+>>> [  113.442305]  mld_sendpack+0x1cc/0x3d0
+>>> [  113.442726]  mld_send_cr+0x1cc/0x318
+>>> [  113.443157]  mld_ifc_work+0x38/0x128
+>>>
+>>> Reproducer
+>>> ==========
+>>> ip link add veth0 type veth peer name veth1
+>>> ip link set veth0 up
+>>> ip link set veth1 up
+>>>
+>>> ip link add link veth0 name vlan_test type vlan id 10 reorder_hdr off
+>>> ip link set vlan_test up
+>>>
+>>> ip link add link vlan_test name ipvlan_test type ipvlan mode l2
+>>> ip link set ipvlan_test up
+>>>
+>>> ethtool -K veth0 tx-vlan-hw-insert off
+>>>
+>>> ip -6 addr add fe80::1/64 dev ipvlan_test
+>>
+>> I am not surprised, ipvlan has been copy/pasted from macvlan :)
+>>
+>> diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
+>> index ed46439a9f4eb1dd8bfaf6c83476ba4f2aff31bc..7513c005a5121676d3f8edb0898492ad434a9fab
+>> 100644
+>> --- a/drivers/net/ipvlan/ipvlan_main.c
+>> +++ b/drivers/net/ipvlan/ipvlan_main.c
+>> @@ -146,6 +146,7 @@ static int ipvlan_init(struct net_device *dev)
+>>         dev->lltx = true;
+>>         netif_inherit_tso_max(dev, phy_dev);
+>>         dev->hard_header_len = phy_dev->hard_header_len;
+>> +       dev->needed_headroom = phy_dev->needed_headroom;
+>>
+>>         netdev_lockdep_set_classes(dev);
+>>
+>> @@ -773,6 +774,7 @@ static int ipvlan_device_event(struct
+>> notifier_block *unused,
+>>         case NETDEV_FEAT_CHANGE:
+>>                 list_for_each_entry(ipvlan, &port->ipvlans, pnode) {
+>>                         netif_inherit_tso_max(ipvlan->dev, dev);
+>> +                       ipvlan->dev->needed_headroom = dev->needed_headroom;
+>>                         netdev_update_features(ipvlan->dev);
+>>                 }
+>>                 break;
+> Hi Eric,
+> 
+> It works fine.
+> Thanks for the quick fix!
+Hi Eric,
 
-Changes in v3:
- - remove ring->rx_desc_alloc_size, use constant instead
+Gentle ping on this thread.
 
-Changes in v4:
- - change rdsar_reg type to unsigned int
- - follow reverse xmas tree, in rtl_set_rx_tx_desc_registers(),
-   rtl8169_alloc_rx_data(), rtl8169_alloc_rx_desc(),
-   rtl8169_free_rx_desc()
- - add comments on LED_CTRL, remove helper function
-
-Changes in v5:
- - modify rtl8169_init_ring(), do rx clear when failed
- - add definition R8169_MAX_TX_QUEUES 1
-
-Changes in v6:
- - Restore the secondary Rx error filter when NETIF_F_RXFALL is enabled
-   in rtl_rx()
-
-Changes in v7:
- - remove code associated with recheck_desc_ownbit
-
-Changes in v8:
- - remove le64_to_cpu() for addr, rx get addr from rx_desc_phy_addr
-
-Changes in v9:
- - remove R8127_MAX_RX_QUEUES
- - remvoe rx_desc_ring_type to the following patch
- - Fix loop bound in init_ring_indexes
- - Restore checksum API
-
-Changes in v10:
- - alloc rtl8169_rx_ring struct according to the num_rx_ring dynamically
----
- drivers/net/ethernet/realtek/r8169_main.c | 239 +++++++++++++++++-----
- 1 file changed, 184 insertions(+), 55 deletions(-)
-
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 8f3a5c50299f..924df0639828 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -74,9 +74,19 @@
- #define NUM_TX_DESC	256	/* Number of Tx descriptor registers */
- #define NUM_RX_DESC	256	/* Number of Rx descriptor registers */
- #define R8169_TX_RING_BYTES	(NUM_TX_DESC * sizeof(struct TxDesc))
--#define R8169_RX_RING_BYTES	(NUM_RX_DESC * sizeof(struct RxDesc))
-+
-+/*
-+ * Workaround for the hardware DMA prefetcher. The H/W might aggressively
-+ * fetch one more descriptor even after hitting the RingEnd mark. We
-+ * allocate this extra dummy space as padding to prevent out-of-bounds
-+ * access and potential IOMMU faults.
-+ */
-+#define R8169_RX_RING_BYTES	((NUM_RX_DESC + 1) * sizeof(struct RxDesc))
- #define R8169_TX_STOP_THRS	(MAX_SKB_FRAGS + 1)
- #define R8169_TX_START_THRS	(2 * R8169_TX_STOP_THRS)
-+#define R8169_MAX_RX_QUEUES	8
-+#define R8169_DEFAULT_RX_QUEUES	1
-+#define R8169_MAX_TX_QUEUES	1
- 
- #define OCP_STD_PHY_BASE	0xa400
- 
-@@ -441,6 +451,7 @@ enum rtl8125_registers {
- 	TxPoll_8125		= 0x90,
- 	LEDSEL3			= 0x96,
- 	MAC0_BKP		= 0x19e0,
-+	RDSAR_Q1_LOW		= 0x4000,
- 	RSS_CTRL_8125		= 0x4500,
- 	Q_NUM_CTRL_8125		= 0x4800,
- 	EEE_TXIDLE_TIMER_8125	= 0x6048,
-@@ -728,6 +739,15 @@ enum rtl_dash_type {
- 	RTL_DASH_25_BP,
- };
- 
-+struct rtl8169_rx_ring {
-+	u32 cur_rx;					/* Index of next Rx pkt. */
-+	u32 dirty_rx;					/* Index for recycling. */
-+	struct RxDesc *rx_desc_array;			/* array of Rx Desc*/
-+	dma_addr_t rx_desc_phy_addr[NUM_RX_DESC];	/* Rx data buffer physical dma address */
-+	dma_addr_t rx_phy_addr;				/* Rx desc physical address */
-+	struct page *rx_databuff[NUM_RX_DESC];		/* Rx data buffers */
-+};
-+
- struct rtl8169_private {
- 	void __iomem *mmio_addr;	/* memory map physical address */
- 	struct pci_dev *pci_dev;
-@@ -735,20 +755,18 @@ struct rtl8169_private {
- 	struct phy_device *phydev;
- 	enum mac_version mac_version;
- 	enum rtl_dash_type dash_type;
--	u32 cur_rx; /* Index into the Rx descriptor buffer of next Rx pkt. */
- 	u32 cur_tx; /* Index into the Tx descriptor buffer of next Rx pkt. */
- 	u32 dirty_tx;
- 	struct TxDesc *TxDescArray;	/* 256-aligned Tx descriptor ring */
--	struct RxDesc *RxDescArray;	/* 256-aligned Rx descriptor ring */
- 	dma_addr_t TxPhyAddr;
--	dma_addr_t RxPhyAddr;
--	struct page *Rx_databuff[NUM_RX_DESC];	/* Rx data buffers */
- 	struct ring_info tx_skb[NUM_TX_DESC];	/* Tx data buffers */
- 	struct napi_struct *rtl8169_napi;
-+	struct rtl8169_rx_ring *rx_ring;
- 	unsigned int num_rx_rings;
- 	u16 cp_cmd;
- 	u16 tx_lpi_timer;
- 	u32 irq_mask;
-+	unsigned int hw_supp_num_rx_queues;
- 	unsigned int irq_nvecs;
- 	struct clk *clk;
- 
-@@ -2620,9 +2638,26 @@ static void rtl_init_rxcfg(struct rtl8169_private *tp)
- 	}
- }
- 
-+static void rtl8169_rx_desc_init(struct rtl8169_private *tp)
-+{
-+	for (int i = 0; i < tp->num_rx_rings; i++) {
-+		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
-+
-+		memset(ring->rx_desc_array, 0x0, R8169_RX_RING_BYTES);
-+	}
-+}
-+
- static void rtl8169_init_ring_indexes(struct rtl8169_private *tp)
- {
--	tp->dirty_tx = tp->cur_tx = tp->cur_rx = 0;
-+	tp->dirty_tx = 0;
-+	tp->cur_tx = 0;
-+
-+	for (int i = 0; i < tp->num_rx_rings; i++) {
-+		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
-+
-+		ring->dirty_rx = 0;
-+		ring->cur_rx = 0;
-+	}
- }
- 
- static void rtl_jumbo_config(struct rtl8169_private *tp)
-@@ -2684,6 +2719,14 @@ static void rtl_hw_reset(struct rtl8169_private *tp)
- static void rtl_setup_rx_params(struct rtl8169_private *tp)
- {
- 	tp->num_rx_rings = 1;
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_80:
-+		tp->hw_supp_num_rx_queues = R8169_MAX_RX_QUEUES;
-+		break;
-+	default:
-+		tp->hw_supp_num_rx_queues = R8169_DEFAULT_RX_QUEUES;
-+		break;
-+	}
- }
- 
- static void rtl_request_firmware(struct rtl8169_private *tp)
-@@ -2810,6 +2853,8 @@ static void rtl_set_rx_max_size(struct rtl8169_private *tp)
- 
- static void rtl_set_rx_tx_desc_registers(struct rtl8169_private *tp)
- {
-+	struct rtl8169_rx_ring *ring = &tp->rx_ring[0];
-+
- 	/*
- 	 * Magic spell: some iop3xx ARM board needs the TxDescAddrHigh
- 	 * register to be written before TxDescAddrLow to work.
-@@ -2817,8 +2862,16 @@ static void rtl_set_rx_tx_desc_registers(struct rtl8169_private *tp)
- 	 */
- 	RTL_W32(tp, TxDescStartAddrHigh, ((u64) tp->TxPhyAddr) >> 32);
- 	RTL_W32(tp, TxDescStartAddrLow, ((u64) tp->TxPhyAddr) & DMA_BIT_MASK(32));
--	RTL_W32(tp, RxDescAddrHigh, ((u64) tp->RxPhyAddr) >> 32);
--	RTL_W32(tp, RxDescAddrLow, ((u64) tp->RxPhyAddr) & DMA_BIT_MASK(32));
-+	RTL_W32(tp, RxDescAddrHigh, ((u64) ring->rx_phy_addr) >> 32);
-+	RTL_W32(tp, RxDescAddrLow, ((u64) ring->rx_phy_addr) & DMA_BIT_MASK(32));
-+
-+	for (int i = 1; i < tp->num_rx_rings; i++) {
-+		unsigned int rdsar_reg = RDSAR_Q1_LOW + (i - 1) * 8;
-+		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
-+
-+		RTL_W32(tp, rdsar_reg + 4, ((u64)ring->rx_phy_addr >> 32));
-+		RTL_W32(tp, rdsar_reg, ((u64)ring->rx_phy_addr) & DMA_BIT_MASK(32));
-+	}
- }
- 
- static void rtl8169_set_magic_reg(struct rtl8169_private *tp)
-@@ -4165,8 +4218,9 @@ static void rtl8169_mark_to_asic(struct RxDesc *desc)
- }
- 
- static struct page *rtl8169_alloc_rx_data(struct rtl8169_private *tp,
--					  struct RxDesc *desc)
-+					  struct rtl8169_rx_ring *ring, unsigned int index)
- {
-+	struct RxDesc *desc = ring->rx_desc_array + index;
- 	struct device *d = tp_to_dev(tp);
- 	int node = dev_to_node(d);
- 	dma_addr_t mapping;
-@@ -4184,55 +4238,106 @@ static struct page *rtl8169_alloc_rx_data(struct rtl8169_private *tp,
- 	}
- 
- 	desc->addr = cpu_to_le64(mapping);
-+	ring->rx_desc_phy_addr[index] = mapping;
- 	rtl8169_mark_to_asic(desc);
- 
- 	return data;
- }
- 
--static void rtl8169_rx_clear(struct rtl8169_private *tp)
-+static void rtl8169_rx_clear(struct rtl8169_private *tp, struct rtl8169_rx_ring *ring)
- {
- 	int i;
- 
--	for (i = 0; i < NUM_RX_DESC && tp->Rx_databuff[i]; i++) {
-+	for (i = 0; i < NUM_RX_DESC && ring->rx_databuff[i]; i++) {
- 		dma_unmap_page(tp_to_dev(tp),
--			       le64_to_cpu(tp->RxDescArray[i].addr),
-+			       ring->rx_desc_phy_addr[i],
- 			       R8169_RX_BUF_SIZE, DMA_FROM_DEVICE);
--		__free_pages(tp->Rx_databuff[i], get_order(R8169_RX_BUF_SIZE));
--		tp->Rx_databuff[i] = NULL;
--		tp->RxDescArray[i].addr = 0;
--		tp->RxDescArray[i].opts1 = 0;
-+		__free_pages(ring->rx_databuff[i], get_order(R8169_RX_BUF_SIZE));
-+		ring->rx_databuff[i] = NULL;
-+		ring->rx_desc_phy_addr[i] = 0;
-+		ring->rx_desc_array[i].addr = 0;
-+		ring->rx_desc_array[i].opts1 = 0;
- 	}
- }
- 
--static int rtl8169_rx_fill(struct rtl8169_private *tp)
-+static int rtl8169_rx_fill(struct rtl8169_private *tp, struct rtl8169_rx_ring *ring)
- {
- 	int i;
- 
- 	for (i = 0; i < NUM_RX_DESC; i++) {
- 		struct page *data;
- 
--		data = rtl8169_alloc_rx_data(tp, tp->RxDescArray + i);
-+		data = rtl8169_alloc_rx_data(tp, ring, i);
- 		if (!data) {
--			rtl8169_rx_clear(tp);
-+			rtl8169_rx_clear(tp, ring);
- 			return -ENOMEM;
- 		}
--		tp->Rx_databuff[i] = data;
-+		ring->rx_databuff[i] = data;
- 	}
- 
- 	/* mark as last descriptor in the ring */
--	tp->RxDescArray[NUM_RX_DESC - 1].opts1 |= cpu_to_le32(RingEnd);
-+	ring->rx_desc_array[NUM_RX_DESC - 1].opts1 |= cpu_to_le32(RingEnd);
- 
- 	return 0;
- }
- 
-+static int rtl8169_alloc_rx_desc(struct rtl8169_private *tp)
-+{
-+	struct pci_dev *pdev = tp->pci_dev;
-+	struct rtl8169_rx_ring *ring;
-+
-+	for (int i = 0; i < tp->num_rx_rings; i++) {
-+		ring = &tp->rx_ring[i];
-+		ring->rx_desc_array = dma_alloc_coherent(&pdev->dev,
-+							 R8169_RX_RING_BYTES,
-+							 &ring->rx_phy_addr,
-+							 GFP_KERNEL);
-+		if (!ring->rx_desc_array)
-+			return -ENOMEM;
-+	}
-+	return 0;
-+}
-+
-+static void rtl8169_free_rx_desc(struct rtl8169_private *tp)
-+{
-+	struct pci_dev *pdev = tp->pci_dev;
-+	struct rtl8169_rx_ring *ring;
-+
-+	for (int i = 0; i < tp->num_rx_rings; i++) {
-+		ring = &tp->rx_ring[i];
-+		if (ring->rx_desc_array) {
-+			dma_free_coherent(&pdev->dev,
-+					  R8169_RX_RING_BYTES,
-+					  ring->rx_desc_array,
-+					  ring->rx_phy_addr);
-+			ring->rx_desc_array = NULL;
-+		}
-+	}
-+}
-+
- static int rtl8169_init_ring(struct rtl8169_private *tp)
- {
-+	int i, ret;
-+
- 	rtl8169_init_ring_indexes(tp);
-+	rtl8169_rx_desc_init(tp);
- 
- 	memset(tp->tx_skb, 0, sizeof(tp->tx_skb));
--	memset(tp->Rx_databuff, 0, sizeof(tp->Rx_databuff));
- 
--	return rtl8169_rx_fill(tp);
-+	for (i = 0; i < tp->num_rx_rings; i++) {
-+		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
-+
-+		memset(ring->rx_databuff, 0, sizeof(ring->rx_databuff));
-+		ret = rtl8169_rx_fill(tp, ring);
-+		if (ret < 0)
-+			goto err_clear;
-+	}
-+	return 0;
-+
-+err_clear:
-+	while (--i >= 0)
-+		rtl8169_rx_clear(tp, &tp->rx_ring[i]);
-+	return ret;
- }
- 
- static void rtl8169_unmap_tx_skb(struct rtl8169_private *tp, unsigned int entry)
-@@ -4321,16 +4426,23 @@ static void rtl8169_cleanup(struct rtl8169_private *tp)
- 	rtl8169_init_ring_indexes(tp);
- }
- 
--static void rtl_reset_work(struct rtl8169_private *tp)
-+static void rtl8169_rx_desc_reset(struct rtl8169_private *tp)
- {
--	int i;
-+	for (int i = 0; i < tp->num_rx_rings; i++) {
-+		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
- 
-+		for (int j = 0; j < NUM_RX_DESC; j++)
-+			rtl8169_mark_to_asic(ring->rx_desc_array + j);
-+	}
-+}
-+
-+static void rtl_reset_work(struct rtl8169_private *tp)
-+{
- 	netif_stop_queue(tp->dev);
- 
- 	rtl8169_cleanup(tp);
- 
--	for (i = 0; i < NUM_RX_DESC; i++)
--		rtl8169_mark_to_asic(tp->RxDescArray + i);
-+	rtl8169_rx_desc_reset(tp);
- 
- 	rtl8169_napi_enable(tp);
- 	rtl_hw_start(tp);
-@@ -4776,7 +4888,8 @@ static inline int rtl8169_fragmented_frame(u32 status)
- 	return (status & (FirstFrag | LastFrag)) != (FirstFrag | LastFrag);
- }
- 
--static inline void rtl8169_rx_csum(struct sk_buff *skb, u32 opts1)
-+static inline void rtl8169_rx_csum(struct sk_buff *skb,
-+				   u32 opts1)
- {
- 	u32 status = opts1 & (RxProtoMask | RxCSFailMask);
- 
-@@ -4786,15 +4899,29 @@ static inline void rtl8169_rx_csum(struct sk_buff *skb, u32 opts1)
- 		skb_checksum_none_assert(skb);
- }
- 
-+static bool rtl8169_check_rx_desc_error(struct net_device *dev,
-+					struct rtl8169_private *tp,
-+					u32 status)
-+{
-+	if (unlikely(status & RxRES)) {
-+		if (status & (RxRWT | RxRUNT))
-+			dev->stats.rx_length_errors++;
-+		if (status & RxCRC)
-+			dev->stats.rx_crc_errors++;
-+		return true;
-+	}
-+	return false;
-+}
-+
- static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
--		  int budget, struct napi_struct *napi)
-+		  struct rtl8169_rx_ring *ring, int budget, struct napi_struct *napi)
- {
- 	struct device *d = tp_to_dev(tp);
- 	int count;
- 
--	for (count = 0; count < budget; count++, tp->cur_rx++) {
--		unsigned int pkt_size, entry = tp->cur_rx % NUM_RX_DESC;
--		struct RxDesc *desc = tp->RxDescArray + entry;
-+	for (count = 0; count < budget; count++, ring->cur_rx++) {
-+		unsigned int pkt_size, entry = ring->cur_rx % NUM_RX_DESC;
-+		struct RxDesc *desc = ring->rx_desc_array + entry;
- 		struct sk_buff *skb;
- 		const void *rx_buf;
- 		dma_addr_t addr;
-@@ -4810,15 +4937,11 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
- 		 */
- 		dma_rmb();
- 
--		if (unlikely(status & RxRES)) {
-+		if (rtl8169_check_rx_desc_error(dev, tp, status)) {
- 			if (net_ratelimit())
- 				netdev_warn(dev, "Rx ERROR. status = %08x\n",
- 					    status);
- 			dev->stats.rx_errors++;
--			if (status & (RxRWT | RxRUNT))
--				dev->stats.rx_length_errors++;
--			if (status & RxCRC)
--				dev->stats.rx_crc_errors++;
- 
- 			if (!(dev->features & NETIF_F_RXALL))
- 				goto release_descriptor;
-@@ -4845,8 +4968,8 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
- 			goto release_descriptor;
- 		}
- 
--		addr = le64_to_cpu(desc->addr);
--		rx_buf = page_address(tp->Rx_databuff[entry]);
-+		addr = ring->rx_desc_phy_addr[entry];
-+		rx_buf = page_address(ring->rx_databuff[entry]);
- 
- 		dma_sync_single_for_cpu(d, addr, pkt_size, DMA_FROM_DEVICE);
- 		prefetch(rx_buf);
-@@ -4973,7 +5096,8 @@ static int rtl8169_poll(struct napi_struct *napi, int budget)
- 
- 	rtl_tx(dev, tp, budget);
- 
--	work_done = rtl_rx(dev, tp, budget, napi);
-+	/* rtl8169_poll() is used only when there is a single RX ring. */
-+	work_done = rtl_rx(dev, tp, &tp->rx_ring[0], budget, napi);
- 
- 	if (work_done < budget && napi_complete_done(napi, work_done))
- 		rtl_irq_enable(tp);
-@@ -5104,18 +5228,17 @@ static int rtl8169_close(struct net_device *dev)
- 
- 	netif_stop_queue(dev);
- 	rtl8169_down(tp);
--	rtl8169_rx_clear(tp);
-+	for (int i = 0; i < tp->num_rx_rings; i++)
-+		rtl8169_rx_clear(tp, &tp->rx_ring[i]);
- 
- 	rtl8169_free_irq(tp);
- 
- 	phy_disconnect(tp->phydev);
- 
--	dma_free_coherent(&pdev->dev, R8169_RX_RING_BYTES, tp->RxDescArray,
--			  tp->RxPhyAddr);
- 	dma_free_coherent(&pdev->dev, R8169_TX_RING_BYTES, tp->TxDescArray,
- 			  tp->TxPhyAddr);
- 	tp->TxDescArray = NULL;
--	tp->RxDescArray = NULL;
-+	rtl8169_free_rx_desc(tp);
- 
- 	pm_runtime_put_sync(&pdev->dev);
- 
-@@ -5151,10 +5274,8 @@ static int rtl_open(struct net_device *dev)
- 	if (!tp->TxDescArray)
- 		goto out;
- 
--	tp->RxDescArray = dma_alloc_coherent(&pdev->dev, R8169_RX_RING_BYTES,
--					     &tp->RxPhyAddr, GFP_KERNEL);
--	if (!tp->RxDescArray)
--		goto err_free_tx_0;
-+	if (rtl8169_alloc_rx_desc(tp) < 0)
-+		goto err_free_rx_1;
- 
- 	retval = rtl8169_init_ring(tp);
- 	if (retval < 0)
-@@ -5182,12 +5303,10 @@ static int rtl_open(struct net_device *dev)
- 	rtl8169_free_irq(tp);
- err_release_fw_2:
- 	rtl_release_firmware(tp);
--	rtl8169_rx_clear(tp);
-+	for (int i = 0; i < tp->num_rx_rings; i++)
-+		rtl8169_rx_clear(tp, &tp->rx_ring[i]);
- err_free_rx_1:
--	dma_free_coherent(&pdev->dev, R8169_RX_RING_BYTES, tp->RxDescArray,
--			  tp->RxPhyAddr);
--	tp->RxDescArray = NULL;
--err_free_tx_0:
-+	rtl8169_free_rx_desc(tp);
- 	dma_free_coherent(&pdev->dev, R8169_TX_RING_BYTES, tp->TxDescArray,
- 			  tp->TxPhyAddr);
- 	tp->TxDescArray = NULL;
-@@ -5688,7 +5807,10 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	u32 txconfig;
- 	u32 xid;
- 
--	dev = devm_alloc_etherdev(&pdev->dev, sizeof (*tp));
-+	dev = devm_alloc_etherdev_mqs(&pdev->dev, sizeof(*tp),
-+				      R8169_MAX_TX_QUEUES,
-+				      R8169_MAX_RX_QUEUES);
-+
- 	if (!dev)
- 		return -ENOMEM;
- 
-@@ -5873,9 +5995,15 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	if (rc)
- 		return rc;
- 
-+	tp->rx_ring = kcalloc(tp->num_rx_rings, sizeof(struct rtl8169_rx_ring), GFP_KERNEL);
-+	if (!tp->rx_ring)
-+		return -ENOMEM;
-+
- 	tp->rtl8169_napi = kcalloc(tp->irq_nvecs, sizeof(struct napi_struct), GFP_KERNEL);
--	if (!tp->rtl8169_napi)
-+	if (!tp->rtl8169_napi) {
-+		kfree(tp->rx_ring);
- 		return -ENOMEM;
-+	}
- 
- 	r8169_init_napi(tp);
- 
-@@ -5912,6 +6040,7 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- err_free_napi:
- 	r8169_free_napi(tp);
-+	kfree(tp->rx_ring);
- 	return rc;
- }
- 
+Just wanted to check if you have time to post the v3 patch,
+or if there's anything else needed on my end?
 -- 
-2.43.0
+Best regards,
+Tangxin Xie
 
