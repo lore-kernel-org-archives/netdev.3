@@ -1,107 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AA733FE33;
-	Mon,  3 Aug 2026 16:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEB334A78E;
+	Mon,  3 Aug 2026 16:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785773822; cv=none; b=L321iChxsxKTpzYJ4+Pl73QpU3IGjcRDB5e4mRxChp0AzSbH8L884sQSub9t3UuGk1zptY1IxCgwFLQCY1vEqgolouapVDbO5DUhZrGLP0rR5+t6wgBO3vTNA7+w5V34LrbPR9f5xV12PICP2fOSBkK9+H7QlRL76OpKPhvmmss=
+	t=1785773823; cv=none; b=WWhd8Esl21bUgVp8ikWB8cR9P1l1T06mqw6cgekpszTIFGV7bxIi8X5r5TJvSKjc9vBEVvdOR/L4XGiY/7GDG7O0cWntkR5Lz4JM1a4UdxZWO60kvyKHR/wCj40Lj0Rs9rU8GfkwWP8MFo2OPgaDaKCbPVZgPN3HLzXU3iqMSZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785773822; c=relaxed/simple;
-	bh=lvmkn61vQQEGAHxKyJX6XZhY6CoTu18WnEURCPq786A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AgkvWU+mCNaWTwXO+3KBIjRqIhrK9VVue3Vh28GaOrO8vZDEUmH2k5wzOZMlCezye/BrBicDF5i21vfNwezCM1CKiKEZXuCV6jMGZ0t1sq7ZPdseIVSrB/KPqmh7aAD/pUD8+GvLXrf9YZBuRpq4zOtPLfUqWKI2/y8SKKz+/VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bw9pcqpU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785773823; c=relaxed/simple;
+	bh=aSLmt+PR3+Osn8wgid3oVqYxSJu2yj6JoNUkxPECYhY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IdGX5s3LdphfQrrGK4yA4LNbBxNGK5siRJMygIAlseBIS9H5JCb8YANhS6htEFL7IcXTD2nkhoeY/0RD3s+ncg6LnlP9NPwSKmYRXodP7oWDjWFZZ4lm/DVHNapOuiyZWP3KPPQc4CNISlTjrtUoAhhJg4pu6+jxOKb0SIWZktc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Mepk03sS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jcve4gue; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bw9pcqpU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE081F00A3A;
-	Mon,  3 Aug 2026 16:16:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785773820;
-	bh=BEcd7zqaFXXWz5985otFpOCYR4kc99cvg9uym3Vjsvc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Bw9pcqpUSekjhf0CErwZIK6L6/WVaubHnd95Nu3H+t4rUzx8O1mAUd0YAoUHRRZIo
-	 SUl78qJ3n/Tv3HzJNtXKuiH7OMG286LoYmU0dYgz2QIQujAfKfMhpha/UtafyChLNy
-	 ghtDBv3MP7QbiA4A5GMo8FBt/nuUC+Xxs+/Kk133M0VhDr2vb21xfiRWxGIWKlfJZI
-	 aF2nFLMwFszM2CMO1Af6zCAM8ZtLXuLZpKoqMWa/nTVjlMY4WMLwSjLaBb7OQ9d//P
-	 ZvjAEJH4dONxCEbiI46Umi+ddvkIaAhZ3eCSX/cHNlckE1aWGqh+JvELG2m27rBSa0
-	 SQ3MUqy4iH//A==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 03 Aug 2026 18:16:33 +0200
-Subject: [PATCH net v2 1/8] mptcp: options: reset DSS fields in case of
- unexpected size
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Mepk03sS";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jcve4gue"
+Message-ID: <ee90e6477075541e2e8f20ba69532c38146cc0b7.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1785773819;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8M3rDvmC95591Shteu27p4HREejvHEeIU4YwNmcwB/0=;
+	b=Mepk03sSNdRo3Z1jcbONSDu9OZTeCpcfMcPNwhzcGp0jIH8g6LedjLq6QeYTBrcRhqYKcj
+	j/81MoULEaqC9a7mI2qD/IIWS3sksi5L+gyOcVL28nc2jgFqe5DYsuygeNg6gL4yw2U6hm
+	PVPf6SAC+30VOKS+6pt5jUDHIMUyK2pXmAAeYadTANh7Mev12ehoLBIIeT7oG3Str7HLoQ
+	XRKHU1XVieX+MzOQRTLuXsYsyW5vFyBLlxRRLoudMhMmVAEdjglw6OvAde54GWu43lIVCL
+	ptZeFN2/2L+69G/OIe0JC877AflMZk0eqxrN9YJC3hdokls6Op6e6mvdtxJ8cA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1785773819;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8M3rDvmC95591Shteu27p4HREejvHEeIU4YwNmcwB/0=;
+	b=jcve4gueRyQmWmXtRk5UzQ+6V9ZUauX3ng9zKcnuW6A+NWArPPnLKdE03XN07B1tTXBNG2
+	xvbEWpzO+QEJBYAw==
+Subject: Re: [PATCH 2/4] dt-bindings: net: dsa: Add SoC-e switch IP and DSA
+ bindings
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Vladimir
+ Oltean <olteanv@gmail.com>,  "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
+ <martin.kaistra@linutronix.de>
+Date: Mon, 03 Aug 2026 18:16:59 +0200
+In-Reply-To: <20260730-positive-vagabond-coot-f9d8f7@quoll>
+References: 
+	<20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de>
+	 <20260729-devel-vstrassheim-soce-dsa-ml-v1-2-be569dae1b20@linutronix.de>
+	 <20260730-positive-vagabond-coot-f9d8f7@quoll>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260803-net-mptcp-misc-fixes-7-2-rc6-v2-1-b8f496d71664@kernel.org>
-References: <20260803-net-mptcp-misc-fixes-7-2-rc6-v2-0-b8f496d71664@kernel.org>
-In-Reply-To: <20260803-net-mptcp-misc-fixes-7-2-rc6-v2-0-b8f496d71664@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- stable@vger.kernel.org, Davide Caratti <dcaratti@redhat.com>, 
- Florian Westphal <fw@strlen.de>, Christoph Paasch <cpaasch@openai.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1627; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=lvmkn61vQQEGAHxKyJX6XZhY6CoTu18WnEURCPq786A=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLIK9r39toNV6MPpvHXfBfaes2FyUrpto/P3VJSH3pX1D
- Ln+JrMWdZSyMIhxMciKKbJIt0Xmz3xexVvi5WcBM4eVCWQIAxenAEzkTijDH85DN8pecKypXMlm
- cnS9U0gl1/OFKbIG7YmlvG+kmJVnWTIybPZvitW7Ya58UeJJ/abje6N//3885coWr0CFhmNPrqx
- bxwkA
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-A remote peer could send a malformed DSS with a wrong size, followed by
-another DSS or MPC + Data. In this case, the first suboption will be
-ignored, but leaving some fields written, which could lead to
-inconsistency or access uninitialized data.
+On Thu, 2026-07-30 at 10:56 +0200, Krzysztof Kozlowski wrote:
+> On Wed, Jul 29, 2026 at 06:36:55PM +0200, Vasilij Strassheim wrote:
+> > Add DT schema documentation for SoC-e FPGA switch devices.
+> > The binding is split into:
+> >  - a switch IP node describing the MMIO register block
+> >  - a DSA MDIO node describing the DSA-facing switch instance
+> > Both nodes are linked through the soce,switch-ip phandle.
+>=20
+> A nit, subject: drop second/last, redundant "bindings". The
+> "dt-bindings" prefix is already stating that these are bindings.
+> See also:
+> https://elixir.bootlin.com/linux/v7.1-rc7/source/Documentation/devicetree=
+/bindings/submitting-patches.rst#L23
+>=20
+I will fix that.
 
-Explicitly reset the fields that could have been modified in case of
-unexpected size.
+> Best regards,
+> Krzysztof
+>=20
 
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260728-net-mptcp-misc-fixes-7-2-rc6-v1-0-f7e2d229159d%40kernel.org?part=1
-Fixes: 648ef4b88673 ("mptcp: Implement MPTCP receive path")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
-Cc: Davide Caratti <dcaratti@redhat.com>
-Cc: Florian Westphal <fw@strlen.de>
-Cc: Christoph Paasch <cpaasch@openai.com>
-Note: Peter Krystad's email address is no longer valid
-v2: New. (Clashiko)
----
- net/mptcp/options.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index c664023d37ba..038eca33c6b1 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -188,8 +188,14 @@ static void mptcp_parse_option(const struct sk_buff *skb,
- 		 * RFC 8684 Section 3.3.0 checks later in subflow_data_ready
- 		 */
- 		if (opsize != expected_opsize &&
--		    opsize != expected_opsize + TCPOLEN_MPTCP_DSS_CHECKSUM)
-+		    opsize != expected_opsize + TCPOLEN_MPTCP_DSS_CHECKSUM) {
-+			mp_opt->dsn64 = 0;
-+			mp_opt->use_map = 0;
-+			mp_opt->ack64 = 0;
-+			mp_opt->use_ack = 0;
-+			mp_opt->data_fin = 0;
- 			break;
-+		}
- 
- 		mp_opt->suboptions |= OPTION_MPTCP_DSS;
- 		if (mp_opt->use_ack) {
-
--- 
-2.53.0
-
+Thanks,
+Vasilij
