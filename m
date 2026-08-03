@@ -1,69 +1,69 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B064393DF2
-	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 05:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B313976A9
+	for <netdev@vger.kernel.org>; Mon,  3 Aug 2026 05:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785734140; cv=none; b=iZztqBqhqSz+IWXnPwq2LAStK+5Dk1BG3IK4Zxmku98+7781bjZ1vLMNwad+RpQ7rSfXhpnKErPtGNyfsbYm5n1c0U97ghcJ2ioApw/Ll027cjaXz6F0x+nSQ8GPlcCI4H1c9v4D3EDgO1yPI8UAgZWlr4mE5LIVnUgsx1LNUqo=
+	t=1785734142; cv=none; b=unI9lRpLIntEFB6Zikh7kbqmBBmLBq5XRUNc9365+Bqi5kMCD6xAjyKqXeao7XIfrHb/vwUVmyXwJ6L8jBaarjM3B2Qbx0Ko0QDV7GT4njje2v4+4zUF3NVM4Vp7IHQ7lXLBTYvh7UFKP0l4WnjIgYoI3qCYdm/M/Kay9AiwYFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785734140; c=relaxed/simple;
-	bh=6OQnGRpMnyrb+bp+bGTn43xoUYsbGDK19SjrvuCzOUU=;
+	s=arc-20240116; t=1785734142; c=relaxed/simple;
+	bh=2SOkuuUqffJAqXcEW7ZDhEaFHvF0SZKllJC1Nh5E8zo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pGdjt95/B+bvNH8u9wcgvsdYekW1pv2hfzz/A9A6+zhLvST9ItdPGhXDqn7IeFqeHRRnBJBlyPAGoFwX6VImVzpdUOLC9Smbkjid2Tr/mmWuh4Qsw/CRxGJkqsB/xo1NUmEljafWuLS+A7bH830Y4H0+m2h/bPXsbqaa+v0korw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oi4x0b3k; arc=none smtp.client-ip=209.85.210.42
+	 In-Reply-To:To:Cc; b=LUjH498BPYzAR/xRtcsicZwiyKPxNgCpdMNdc3d0b8T+t/2K0cJy9IgxcN3nZnv54Juxu454OEMk4S7xC5nMsAe6sw1ePKBebynrxYxnhy1uIKarwgK25wFVMRHtltfOdrwm53KlzSKlJsBeUNxoYhIIEAYZ2JxN98MqQ91r27Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XiIWB36y; arc=none smtp.client-ip=209.85.210.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oi4x0b3k"
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7eb34c17b96so2068817a34.2
-        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 22:15:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XiIWB36y"
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7eb4d532e65so1138669a34.0
+        for <netdev@vger.kernel.org>; Sun, 02 Aug 2026 22:15:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785734137; x=1786338937; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785734138; x=1786338938; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ws0LFhZuUjZTnhwPoD3ztO16rIL3gtosandi83LBFNY=;
-        b=Oi4x0b3ki8qQ0Wsn2Pa/0zAMxU4V7MYLmkko5UHfR/mnt8fAJf/wa7w8Zd0SFg+i9F
-         SKiTQ2TH2b61Dfx/XPCn50eJzFZQ8Etk1MruJlSljUUI92TiR9CdVS2YhYrXDGed5fyS
-         KE/zm6LYsMvoLXwdSWVYR22Bnn0lzC2L0NoJsTEbvBxijmkASl+08CbhtsUZXdqVbQi+
-         dgRY9p+GNM+WsV9/2f7F+Y1k5JkycQPMxHioQW2Y9LiBP5hsGydB9ovCxXbedO/2lDT7
-         WhxKq2J/Fy5OSKP18/hLIRphPoeWxSEDcsx3dglNewRU/p0+zgl30dEsv8XyAHGHCpwJ
-         MNWQ==
+        bh=GTwjTV5MzEj5mt/lgWMCGvinpE29xZysk84NZ5krcS8=;
+        b=XiIWB36y+ctp2h/vcBxuJgrrd7pGCplgyG69UMP9K2TEDFvjAsmcU/8p0nlafeR6tx
+         q8uf5vA2LFoysoiCU7Dh/atuC74pkqQgJf/9982ta7Imms7jkD84Xm1F0L+YJ64PLrMK
+         m/ISqcRZoQA3bucxpfW70OSOkYXg7MkZMeDVULK/UH7rztYYXPoYehziikXwrY9dMgoX
+         oV7ppK5H1T/aQPhxB1kKwGCvGwDgsFbRtHT+5nonuPQqMTOOBicASamXYyLUAFhsU/Ap
+         pyh8JCTS9kdLeLMfaKFhTCy/n6zcO5r+NEgl66x4zNdnNvg1XMiyjQIEUBSTilhbTaq0
+         YINA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785734137; x=1786338937;
+        d=1e100.net; s=20251104; t=1785734138; x=1786338938;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ws0LFhZuUjZTnhwPoD3ztO16rIL3gtosandi83LBFNY=;
-        b=q+/yqlF3PthTSI8URTdERqx5M7OcjWa8BKwvb9H8hAqZVoHX0FjlYuhIboQu2q1Kek
-         K+h2sLUUcaz0/nR0R9tYG77yFkJ5VPxQ9kWMqmDzJqMoR9uvbQ51Yu/VGZqiWRs5tKCf
-         crsQkItoJ1A81I1Jp+TPjr2yJFIaPrFkhmZmCL1cJ1AVqMT3pI6BmXeIJJ9/aq6sXRNR
-         vu2wGTcJE73GOiDoGOzT1YqBQhSJBgvvGnBNP8cY4NP//IU4w+WLjiTvs2aB7dR0YP3e
-         pP4iAOSEtt8sTGrx0QzColh1i2Tyvp/mWUsUPdf98DJm6w+Unuzt/hci2VPcsEIin1ao
-         tCsA==
-X-Gm-Message-State: AOJu0YxUJ0UOFhPk5BTCjJ8d4dUHuZA+iSg4KZv59pNb0rRUd+6FEZgq
-	Iwt1mPniju1I7h0AeAoP+W3iWQiu6xxl8VFwF8hjiFaKWL6g8GcKgCpE
-X-Gm-Gg: AR+sD12Fi9f+OZPLWalEv7ZM9Gbm1001iT5GImJJgAzeSTJr6R78ogLL/3Nlq4ebbis
-	4xZk7QgMusFrSNrJNdD1u2qsiCTZGPMreYIe+uwRDPMMcvjbSfU2IcDjoSf+dmQJW2nDQ/6rfQq
-	67wCd1QbbeJRrvtxLl5IklIRymEBRYpg5OEBxCOA7QZIrrRe6DPqgoQGm87nKyIjLMbYhg84Pcs
-	/Y+UndpS7wbq0dj0OaYM7tj8ctsl2DoGV4HmbjTuQKTgD3TKrRTYcZeRlm7jVPPe0kd46FUP4u0
-	78789OTp7S8DJ8kCdlfMhdJc2/QKWu3md6X84l0EyVm+T5uiDazIlzWEF4ZpAVu87omYAqJ/mq6
-	zJ+HORb4EDoptaLC31ZEKAhsez15G3wrSYdNJDmUPCichtJyoqGKAcqVmrQDslkyZkzS51GPxhq
-	xOimnM7ZCDRinA6+C7lpZ4GnGnKZWy2N7LkojNVFLKkNFfDsPgoBq/nA1hdBK1S7MH2wDSh2ZNW
-	d4YsLh8ncgyLoO5IzckAvb/rO0zwvWJbJfctx0LRSSfgXTQ6I6R5vAKefijsDcAyQLh0uiXA4r7
-	JuEak7LOIwS0r/1c/8VB9L4uBi0+5RLVxurFq99MyUH/gm7rCCU9DreikBLuP9NGB9T+I702ULo
-	dUrhjkRr0tgJcX6NV
-X-Received: by 2002:a05:6830:6737:b0:7dc:df37:844b with SMTP id 46e09a7af769-7f196baee6fmr14985696a34.4.1785734132204;
-        Sun, 02 Aug 2026 22:15:32 -0700 (PDT)
+        bh=GTwjTV5MzEj5mt/lgWMCGvinpE29xZysk84NZ5krcS8=;
+        b=CKH7imO7m51Co6Kq6TQ4YnH/5CAKIhjC7d9LrkcvfkdCSVThee3HEWAFbIAgkYanvi
+         zKbVLOM19ufgq5tS0DggTbuklrUv4n42FJ1JIcN+tuI56S0hEa7IKGpebge4jK084ZjD
+         7IdQUuEx7DtY4t9psJrfE6HZWypK2TKjY9lAGpddCCmsiPyKmvSpU70kM2GLvaUWiElE
+         LNwDyOsT6PeEz+nT4uEpeLZdTaorO+kwwNwysyht+ifwDyhPO1NbIxz7xrYKRf+TBKdS
+         IMhk5kd6MauUhJhxWPWZwFORrfAhgnWhNleJsCmKhH9XIIxkgygHirUtzIfca6lAyAA2
+         GUqQ==
+X-Gm-Message-State: AOJu0Yyu50+tfMFjBMOMtqVmhUIi4lyDckS4IfUjk3kRRNL/P8wifFVR
+	tBMYav8GcsI00Z1K5B+SHvuPylclNfEel2GVt9XIX8u9dGrdRptKhvQo
+X-Gm-Gg: AR+sD10rCDt8/VngP6qFbJ3OUvEb5ZX+uhYKpEe0MLJZoTF9jCM+DCZdrmq590168nb
+	h9VwFDajv2Xl8XWO7Ld+/RwpEjaUydjI2vQd7b6BKVP8hS9AIaSMu/acGjC9U2AUN3l6Ek5dWiK
+	VVbWfOWKyLPVJQe81ahz9zLVkVSWG07qYhgdw2xbff6iGuEh2a6SYrz49t5jX0Mb9tVuWOyOaWc
+	aAAauPAEV+gHkFRZbChYkGE76Sq3jnQ9nOvkkQpspKKLrvONBILXHV7ywBrEBa/EyYCboHCrEhJ
+	uJoW3zkrMHO6K9KROMymwGma5+1QOIrrW4vWOq6XJVBsxbNRexo4YF6QfKaeWxKfu/gENclOZgn
+	7/YedB5hlud3lffFc0N1KVOlnf+HpNHnO3cpqQYarg4bnXtli6Woqpsxz/m99r4tTcHxuP+2+fB
+	zs0CyPft02Yes1NUXpOYWbC+lanbF95qsGowW9i1o7E3J58MxprKqDjfdZDviX1EwpKh94oqbla
+	pXWV9WucOJ4W3sLWycjHAhCvIBKNqDK9CkWstDHDM9uBNLO7rIW9aNe+NZAXlxuyXivqr7NT7ZS
+	NMJoTi2Hp7jbSexozhv5HtHctp9TxrqslXA8DZIul17ZgBDEZMWedXRiYvXQE4CrA+P+QR+9lDy
+	MiLW0/LzXfc7KPq0G
+X-Received: by 2002:a05:6830:4489:b0:7e9:cddb:142a with SMTP id 46e09a7af769-7f196bd63a9mr15354948a34.7.1785734137863;
+        Sun, 02 Aug 2026 22:15:37 -0700 (PDT)
 Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f18f07a5e3sm6787108a34.15.2026.08.02.22.15.30
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f18f07a5e3sm6787108a34.15.2026.08.02.22.15.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 22:15:31 -0700 (PDT)
+        Sun, 02 Aug 2026 22:15:37 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sun, 02 Aug 2026 23:14:18 -0600
-Subject: [PATCH 08/21] dt-bindings: mfd: x-powers: add AC200
+Date: Sun, 02 Aug 2026 23:14:21 -0600
+Subject: [PATCH 11/21] dt-bindings: net: x-powers: add AC300 EPHY control
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,7 +72,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260802-submit-acx00-of-dynamic-v1-v1-8-0a53cd9e21cc@gmail.com>
+Message-Id: <20260802-submit-acx00-of-dynamic-v1-v1-11-0a53cd9e21cc@gmail.com>
 References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
 In-Reply-To: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -101,167 +101,102 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  James Hilliard <james.hilliard1@gmail.com>
 X-Mailer: b4 0.15.2
 
-The AC200 is an I2C-controlled mixed-signal companion IC containing
-audio, video, RTC and Fast Ethernet PHY functions.
+The AC300 companion IC exposes the Fast Ethernet PHY control registers
+through a separate non-PHY Clause 22 address. The manual defines the
+control address as the link-PHY address plus 16, giving address ranges
+of 16-23 and 0-7 respectively.
 
-Describe the parent device, its input clock, required function supplies,
-the optional SID bandgap calibration cell used by the vendor initialization
-sequence, and its optional Ethernet PHY control child. Document the 24 and
-27 MHz rates encoded by the public EPHY clock selector.
-
-Also describe the optional open-drain, level-triggered INTB output and the
-nested interrupt controller which exposes the TV encoder, Ethernet PHY and
-RTC sources. Define the interrupt source numbers for child consumers.
+Describe the control endpoint, its required VCC1 supply, its 24, 25 or
+27 MHz input clock, interface mode and calibration cell.
 
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
- .../devicetree/bindings/mfd/x-powers,ac200.yaml    | 118 +++++++++++++++++++++
- include/dt-bindings/mfd/x-powers,ac200.h           |  13 +++
- 2 files changed, 131 insertions(+)
+ .../bindings/net/x-powers,ac300-ephy-ctl.yaml      | 77 ++++++++++++++++++++++
+ 1 file changed, 77 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mfd/x-powers,ac200.yaml b/Documentation/devicetree/bindings/mfd/x-powers,ac200.yaml
+diff --git a/Documentation/devicetree/bindings/net/x-powers,ac300-ephy-ctl.yaml b/Documentation/devicetree/bindings/net/x-powers,ac300-ephy-ctl.yaml
 new file mode 100644
-index 000000000000..017629cca73c
+index 000000000000..a6634fcfafd4
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/mfd/x-powers,ac200.yaml
-@@ -0,0 +1,118 @@
++++ b/Documentation/devicetree/bindings/net/x-powers,ac300-ephy-ctl.yaml
+@@ -0,0 +1,77 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/mfd/x-powers,ac200.yaml#
++$id: http://devicetree.org/schemas/net/x-powers,ac300-ephy-ctl.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: X-Powers AC200 mixed-signal IC
++title: X-Powers AC300 Ethernet PHY control interface
 +
 +maintainers:
 +  - James Hilliard <james.hilliard1@gmail.com>
 +
 +description:
-+  The AC200 is a mixed-signal companion IC containing audio, video, RTC and
-+  Fast Ethernet PHY functions. Its control registers are accessed over I2C.
++  The AC300 Fast Ethernet PHY has a separate control interface accessed as a
++  non-PHY Clause 22 device. Its address is 16 plus the address of the link PHY.
 +
 +properties:
 +  compatible:
-+    const: x-powers,ac200
++    const: x-powers,ac300-ephy-ctl
 +
 +  reg:
-+    maxItems: 1
++    minimum: 16
++    maximum: 23
 +
 +  clocks:
 +    maxItems: 1
 +    description:
-+      AC200 input clock. When using the Ethernet PHY, its configured rate must
-+      be 24 or 27 MHz, matching the rates encoded by the documented EPHY clock
-+      selector.
++      AC300 input clock. Its configured rate must be 24, 25, or 27 MHz and
++      determines the corresponding EPHY_CLK_SEL value.
 +
-+  interrupts:
-+    maxItems: 1
++  vcc1-supply:
 +    description:
-+      The INTB pin, which is a shared open-drain, level-triggered output for
-+      the TV encoder, Ethernet PHY and RTC interrupt sources.
-+
-+  interrupt-controller: true
-+
-+  '#interrupt-cells':
-+    const: 1
-+    description:
-+      The interrupt number, as defined in
-+      include/dt-bindings/mfd/x-powers,ac200.h.
-+
-+  ac-ldoin-supply:
-+    description: 3.3 V supply for the audio-codec LDO input
-+
-+  ephy-vcc-supply:
-+    description: 3.3 V supply for the Ethernet PHY analog front end
-+
-+  rtc-vcc-supply:
-+    description: 3.3 V supply for the RTC
-+
-+  tv-vcc-supply:
-+    description: 3.3 V supply for the TV encoder DAC
++      3.3 V supply for the AC300 I/O, bandgap, Ethernet PHY analog front end,
++      and internal digital LDO
 +
 +  nvmem-cells:
 +    maxItems: 1
 +    description:
-+      Optional SoC SID cell containing the AC200 bandgap calibration value.
-+      The trim is used by the TV encoder; the public AC200 datasheet does not
-+      document the corresponding register fields.
++      SoC SID cell containing the Ethernet PHY calibration value written to
++      the AC300 BGS_EFFUSE field after adding 3 modulo 16, as prescribed by
++      the vendor initialization sequence.
 +
 +  nvmem-cell-names:
-+    const: bandgap
++    const: calibration
 +
-+  ethernet-phy-control:
-+    $ref: /schemas/net/x-powers,ac200-ephy-ctl.yaml#
++  phy-mode:
++    enum:
++      - mii
++      - rmii
 +
 +required:
 +  - compatible
 +  - reg
 +  - clocks
-+  - ac-ldoin-supply
-+  - ephy-vcc-supply
-+  - rtc-vcc-supply
-+  - tv-vcc-supply
-+
-+dependencies:
-+  interrupts: [ interrupt-controller ]
-+  interrupt-controller: [ '#interrupt-cells', interrupts ]
-+  '#interrupt-cells': [ interrupt-controller ]
-+  nvmem-cells: [ nvmem-cell-names ]
-+  nvmem-cell-names: [ nvmem-cells ]
++  - vcc1-supply
++  - nvmem-cells
++  - nvmem-cell-names
++  - phy-mode
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    i2c {
++    mdio {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        mixed-signal@10 {
-+            compatible = "x-powers,ac200";
++        ethernet-phy-control@10 {
++            compatible = "x-powers,ac300-ephy-ctl";
 +            reg = <0x10>;
 +            clocks = <&pwm 5>;
-+            ac-ldoin-supply = <&reg_3v3>;
-+            ephy-vcc-supply = <&reg_3v3>;
-+            rtc-vcc-supply = <&reg_3v3>;
-+            tv-vcc-supply = <&reg_3v3>;
-+            interrupt-parent = <&pio>;
-+            interrupts = <1 20 IRQ_TYPE_LEVEL_LOW>;
-+            interrupt-controller;
-+            #interrupt-cells = <1>;
-+            nvmem-cells = <&ac200_bandgap>;
-+            nvmem-cell-names = "bandgap";
-+
-+            ethernet-phy-control {
-+                compatible = "x-powers,ac200-ephy-ctl";
-+                nvmem-cells = <&ephy_calibration>;
-+                nvmem-cell-names = "calibration";
-+                phy-mode = "rmii";
-+            };
++            vcc1-supply = <&reg_3v3>;
++            nvmem-cells = <&ephy_calibration>;
++            nvmem-cell-names = "calibration";
++            phy-mode = "rmii";
 +        };
 +    };
 +...
-diff --git a/include/dt-bindings/mfd/x-powers,ac200.h b/include/dt-bindings/mfd/x-powers,ac200.h
-new file mode 100644
-index 000000000000..cc59e2ab4912
---- /dev/null
-+++ b/include/dt-bindings/mfd/x-powers,ac200.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-+/*
-+ * Interrupt numbers of the X-Powers AC200 interrupt controller.
-+ */
-+
-+#ifndef _DT_BINDINGS_MFD_X_POWERS_AC200_H
-+#define _DT_BINDINGS_MFD_X_POWERS_AC200_H
-+
-+#define AC200_IRQ_TVE			0
-+#define AC200_IRQ_EPHY			1
-+#define AC200_IRQ_RTC			2
-+
-+#endif /* _DT_BINDINGS_MFD_X_POWERS_AC200_H */
 
 -- 
 2.53.0
