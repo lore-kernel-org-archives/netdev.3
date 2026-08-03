@@ -1,115 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41DA3BCD17;
-	Mon,  3 Aug 2026 11:34:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39F53B9DAB;
+	Mon,  3 Aug 2026 11:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785756860; cv=none; b=uhoWQUDvTEOVSDb1skvz8Drml59gMAgszuxZYiIZq4MT3ZH2DCJqB1FYqjxXDqn/xQDo7lPZD8QyJw7wsRdby7kVVo7EAlGecUi8gE6EeqYrpeGA0o/AdzJhcPoHTqt96NmKrAhNh/uUuVcxIZUW5+VCcyKc4Y9Nb2ymlNRYo7g=
+	t=1785757280; cv=none; b=M84OIUswDJsKRlmSJQg10+AYknWVGXM3VEt6IBTBp+mfyMa49yR//tPDVsPxkE0Y3HoJKIo+5jRHmwsoCXmJiYKIbm3vsHRVMWiu+U9RoWpdSXIqPlTmbpGhq/7uFhqkqexDbU0EP+IngLlN5B2tvV6duQH8zkFOVqsaGhuyCtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785756860; c=relaxed/simple;
-	bh=0kHUmLMeRZVJZjueskv9sjmPlPCMx3RZ4Rj1jejfviM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KFeibEB06LYWz2bpwvJgd8XEiDPly8zTICb4fTmd9HqNPz91+LzSM2orLFBQgBNarR+nnjsE+lJ9br6jOMXgegvNG04guiTwyVE506BXKnthyDLNY6Wb+UTtUWAZ+c3vOI9d+kfxobHilk7TmgEbs6mtMu0VRu5h1OU8Yjcpzhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=laxXRj3+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785757280; c=relaxed/simple;
+	bh=J5J8BGB+qNHC0Yjk2zJKkVE6+rid+ufAR9hbEF2Mo/w=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Yp9so0W4RJxyUp8agTEhQFCI6OxARXghHswG1BYV8NfRyY5WBMUeuUPuOJzjTxwDB0dA+R/Eh4IjW2Wj+Jy/gBIWTBiTMToNWsEOz1JdzshSdfsUsyIVdDddveVMNe/AfRwlNFZgZlQcpbtuFRIP6bMBweU/j/hYVOzJp+GiOCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UpVUf3ec; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="laxXRj3+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8171F000E9;
-	Mon,  3 Aug 2026 11:34:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785756858;
-	bh=0kHUmLMeRZVJZjueskv9sjmPlPCMx3RZ4Rj1jejfviM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=laxXRj3+r8yZ9K+RSpG6vi6zKPDvYe3GBYTALOFtRWTH76t/I70VijHNz5j7r1YnN
-	 K42uEbRi7TYxjqJpNq+sI8ickY/webiCvSvJ4kA92iCsWF1MF+nH2sJgSjPaxlVNaA
-	 nkFiYLwbaCdJmmm2ra700kIvVrWHk+HsMAQen60pOIryMAaBgjOWl0fkQzZzefnGmL
-	 tywpJe+9RccEmg8ZJLN9bo//HnItnHLK/3+HLNxSC1noJ3RzfapmRypwjRqBQrWqLP
-	 78wZoIX9HcVY45Kr80Wpuk4lxUiGHBOySzTDyOnpoRxcpSJjtjHfNbCTMLSf98w+Up
-	 pqe/HkGpyJsTw==
-Date: Mon, 3 Aug 2026 12:33:59 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
-	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
-	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, arve@android.com, 
-	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
-	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 2/5] binder: Make shrinker rely solely on per-VMA lock
-Message-ID: <anB8kGIczeuqRA_P@lucifer>
-References: <20260802215459.2769283-1-surenb@google.com>
- <20260802215459.2769283-3-surenb@google.com>
- <anBj40CVAhcGMnQ4@google.com>
- <anByayBh6Ed2bXox@lucifer>
- <anB3XVHI2nVgz_T8@lucifer>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UpVUf3ec"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785757279; x=1817293279;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=J5J8BGB+qNHC0Yjk2zJKkVE6+rid+ufAR9hbEF2Mo/w=;
+  b=UpVUf3ec2qNPDI96QPjeAu4lUyfSZv41ApHBEeEOBOeKGt2r+L8OWZQC
+   o+kQbCwoJ9dx4rG1CqsNOAhef1FCTZfLMuXtqH2gupfBTHgZWrSji1/X9
+   8ByjP2Er2rcnFJ1gehAoeq1jx/qxT1zyCZoVj5Z5WRVZG8IX7y9Vn/58v
+   2OfWDEytai82YPLA8MELjNA0hgEEEsTgQR3/+xYeeTxayyLFJgkhR37xO
+   cVi6tlNHy1cPZkQVe8TxU9/mgFxLhocNwTDXWGwrS6zV2fqnEjXox0fiE
+   uAlZTNNG8qI9ClQ9Rl4svBkbHuX6KpxvgXzv7n7FJaadYv8m3WSuqvTuC
+   g==;
+X-CSE-ConnectionGUID: JkdThejfQUep7e3XNfw/Cw==
+X-CSE-MsgGUID: KbMmp7moRA2ZshTECoC1Cg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11863"; a="96878831"
+X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; 
+   d="scan'208";a="96878831"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 04:41:17 -0700
+X-CSE-ConnectionGUID: 1j6TNZkoRIGltW9gZIzNug==
+X-CSE-MsgGUID: ukto2IKZS7WUUT64vEHI2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; 
+   d="scan'208";a="257299043"
+Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
+  by fmviesa010.fm.intel.com with ESMTP; 03 Aug 2026 04:40:06 -0700
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	richardcochran@gmail.com,
+	andrew+netdev@lunn.ch,
+	przemyslaw.kitszel@intel.com,
+	anthony.l.nguyen@intel.com,
+	arkadiusz.kubalewski@intel.com,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>
+Subject: [PATCH v3 iwl-next 0/3] ice: expose TSPLL state on E825 through dpll subsystem
+Date: Mon,  3 Aug 2026 13:35:04 +0200
+Message-Id: <20260803113507.1858083-1-grzegorz.nitka@intel.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anB3XVHI2nVgz_T8@lucifer>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 03, 2026 at 12:11:42PM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Aug 03, 2026 at 11:50:41AM +0100, Lorenzo Stoakes (ARM) wrote:
-> > On Mon, Aug 03, 2026 at 09:48:19AM +0000, Alice Ryhl wrote:
-> > > On Sun, Aug 02, 2026 at 02:54:56PM -0700, Suren Baghdasaryan wrote:
-> > > > From: Dave Hansen <dave.hansen@linux.intel.com>
-> > > >
-> > > > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
-> > > > it and mmap_read_trylock().
-> > > >
-> > > > Long Version:
-> > > >
-> > > > == Background ==
-> > > >
-> > > > Historically, binder used an mmap_read_trylock() in its shrinker code.
-> > > > This ensures that reclaim is not blocked on an mmap_lock. Commit
-> > > > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
-> > > > support for the per-VMA lock, but left mmap_read_trylock() as a
-> > > > fallback.
-> > > >
-> > > > This was presumably because the per-VMA locking can fail for several
-> > > > reasons and most (all?) lock_vma_under_rcu() callers have a fallback
-> > > > to mmap_read_trylock().
-> > > >
-> > > > == Problem ==
-> > > >
-> > > > The fallback is not worth the complexity here. lock_vma_under_rcu() is
-> > > > essentially already a non-blocking trylock. The main reason it fails
-> > > > is also the reason mmap_read_trylock() fails: something is holding
-> > > > mmap_write_lock().
-> > > >
-> > > > The only remedy for a collision with mmap_write_lock() is to wait,
-> > > > which this code can not do. So the "fallback" after
-> > > > lock_vma_under_rcu() failure is not really a fallback: it is really
-> > > > likely to just be retrying in vain. That retry in an of itself isn't
-> > > > horrible. But it adds complexity.
-> > > >
-> > > > == Solution ==
-> > > >
-> > > > Now that per-VMA locks are universally available, lock_vma_under_rcu()
-> > > > will not persistently fail. Rely on it alone and simplify the code.
-> > > >
-> > > > Full disclosure: I originally tried to do this with
-> > > > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
-> > > > trylock semantics. Claude caught this in a review and suggested the
-> > > > approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
-> > > > I guess.
-> > > >
-> > > > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > >
-> > > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> >
-> > Is there anything on the rust side that needs to be changed also?
->
-> Ah ok addressed in 4/5, disregard :)
+On E825 devices that own the source timer, the TSPLL can lose lock when
+the TCXO or TIME_REF signal is disrupted. This series adds monitoring
+and recovery for that condition, then surfaces the lock status and clock
+source selection through the dpll subsystem. It also fixes the clock_id
+generation for E825 generic DPLL devices so userspace can unambiguously
+map each DPLL device to its owning interface.
 
-OK disregard the disregard :)) that addresses something different. So question
-remains :P
+Patch 1 adds TSPLL lock monitoring to ice_ptp_periodic_work(). Placing it
+there ensures recovery runs regardless of whether DPLL init succeeded or
+CONFIG_DPLL is enabled. Lock state is cached in pf->ptp.tspll_locked via
+WRITE_ONCE()/READ_ONCE() for consumption by the DPLL worker.
 
---
-Cheers, Lorenzo
+Patch 2 registers the TSPLL as a DPLL_TYPE_GENERIC device for E825 owner
+PFs, with a fwnode-backed "time_ref" input pin. The pin state_on_dpll_set
+callback switches the clock source between TIME_REF and TCXO. Lock status
+is read from pf->ptp.tspll_locked; UNLOCKED is reported unconditionally
+when the clock source is TCXO to reflect the free-running oscillator state.
+
+Patch 3 changes the clock_id generation for E825 TX-CLK and TSPLL DPLLs.
+Previously they used the board-level PCIe DSN, which is identical for
+all interfaces sharing the same NAC/quad, so userspace could not tell
+them apart. The new scheme derives the clock_id from the permanent port
+MAC (with a dedicated tag bit distinguishing TSPLL from TX-CLK), while
+other DPLL objects (EEC/PPS and non-E825 paths) keep the board-level
+DSN-derived clock_id.
+
+Changes in v3:
+- Addressed Sashiko concerns from:
+  https://sashiko.dev/#/patchset/20260731121216.1841413-1-grzegorz.nitka%40intel.com
+  - Fix spurious TSPLL lock-status flapping from the DPLL set callback.
+  - Serialize ice_ptp_tspll_monitor() with the DPLL set callback under
+    pf->dplls.lock (mutex lifetime moved to ice_init_features()).
+
+Changes in v2:
+- rebased
+- Patch 2: Fix TOCTOU race between DPLL state_on_dpll_set and PTP
+  TSPLL monitor by serializing both paths on pf->dplls.lock. Lift
+  pf->dplls.lock lifetime to ice_init_features()/ice_deinit_features()
+  so ice_ptp_tspll_monitor() can take it unconditionally. Remove the
+  now-redundant ICE_FLAG_DPLL gate in the monitor. Update kernel-doc
+  Context: notes to reflect the new lifetime. (Addresses review from
+  https://sashiko.dev/#/patchset/20260728091314.1420656-1-grzegorz.nitka%40intel.com)
+
+Grzegorz Nitka (3):
+  ice: monitor TSPLL lock from PTP periodic worker
+  ice: add TSPLL DPLL device and TIME_REF pin for E825
+  ice: use per-interface clock_id for E825 generic DPLLs
+
+ drivers/net/ethernet/intel/ice/ice_dpll.c  | 501 ++++++++++++++++++---
+ drivers/net/ethernet/intel/ice/ice_dpll.h  |   4 +
+ drivers/net/ethernet/intel/ice/ice_main.c  |   9 +
+ drivers/net/ethernet/intel/ice/ice_ptp.c   |  82 ++++
+ drivers/net/ethernet/intel/ice/ice_ptp.h   |  11 +
+ drivers/net/ethernet/intel/ice/ice_tspll.c | 122 ++++-
+ drivers/net/ethernet/intel/ice/ice_tspll.h |   6 +
+ 7 files changed, 674 insertions(+), 61 deletions(-)
+
+
+base-commit: 6e41d29c60deeb29a88debd2540dab757674834d
+-- 
+2.39.3
+
