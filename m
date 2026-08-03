@@ -1,102 +1,102 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136F5194AE6;
-	Mon,  3 Aug 2026 03:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459D83264DD;
+	Mon,  3 Aug 2026 03:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785728730; cv=none; b=H7PelgrqLqrXRcBv4yl4vY8/LKJ6hdk51M61kSIO91wYh2rJZE//ID1TiWbRqflYparvEvXJt+cpFtNheoSMSdFk4xLtbrgiScCxpUlB0G44SkBgjFw5xClHacPT9V/pscPyApirZwxPesKIlyQHpTqSSdpq1f+dgNYiR8pTS40=
+	t=1785728923; cv=none; b=SKHZdKe8o6S7q9/l5ovXTtxB3DcqapLZR8wy28HAJk7zY7VQvTZHwtth9nt7Pnk6sSaFN6F1pyNvwdvWM9rLV5fGkPT2R7/XV5scrYELPWsogizyfnp+JZpLZSYh/c5AzZNH38Pbc+D61fZhBAv6Famrk4fpHscTfNMMt9ogkao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785728730; c=relaxed/simple;
-	bh=AqgTWvYbY8Lt5SwMa+oGhH7ygHjlxirbB8XxRh/pHNw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bT+xkDg0kMpAqiKtIpdVHPDJwkubxsAaqOBJvmjZpMhVrxsyEGbMmKmtbMmXi+PcWES9eYO9+gA+JoAD/DHlKY9H3vPMnKM058trRvz6f205rMsM82UKfbNUF7PX1YK9L9XEakfjUTFbHNdLehfbxsPk9InLdyXJeHF8/HqAFu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AJtqOEAh; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785728923; c=relaxed/simple;
+	bh=dVsjgrUwchBffeX3KlCenYqIkgGr7ByrO+79ODarF/s=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fkYtsIMUVmEmZpUeyqV0MSN1XFy+4a/JoCWbz11CvDSNnQk0BdO5ik2y9di0XlxR+WXthz4hx+oPef9QVeVRirjLqG/lYV5vSx294nVKDWjE4koi1dU8wBbHbRl7MwZvtz11iqZHfzsSbKuthYfJVypPfZZ91R8Uro0K6mMWkNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=U/EwvLC0; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AJtqOEAh"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=njwIKGLdgpfnbU8tdPotISfWRyBO6jlALlnzijNACdE=; b=AJtqOEAhJMVWc09JBSsEuJHj9w
-	vWgUCTdsVmXYei8TkOtclykFEO+UALnaepAu8a38fkI2tQ3ZjCHv4u2F7l43msC77xug+FXttNOpX
-	XF/xPLJujFzdixz/oBXBzcHS0oeAI6emkp49fB92yja+prSDux+DYVvrHdLi256qM0zg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wqjbw-00FeRm-6F; Mon, 03 Aug 2026 05:45:08 +0200
-Date: Mon, 3 Aug 2026 05:45:08 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Javen <javen_xu@realsil.com.cn>
-Cc: "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"nic_swsd@realtek.com" <nic_swsd@realtek.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"maxime.chevallier@bootlin.com" <maxime.chevallier@bootlin.com>,
-	"horms@kernel.org" <horms@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"daniel@makrotopia.org" <daniel@makrotopia.org>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"enelsonmoore@gmail.com" <enelsonmoore@gmail.com>,
-	"daniel@thingy.jp" <daniel@thingy.jp>
-Subject: Re: [PATCH net-next v8 3/7] r8169: add support for phylink
-Message-ID: <0ddca9cd-4834-4d00-adc5-520e74a803eb@lunn.ch>
-References: <20260730065014.883-1-javen_xu@realsil.com.cn>
- <20260730065014.883-4-javen_xu@realsil.com.cn>
- <cfcf87aa-3d4d-411a-9af0-5a5b78c9ae89@lunn.ch>
- <4338caa7b5d244e1b0d9a6713ed8fce3@realsil.com.cn>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="U/EwvLC0"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Zz2d46lkBCrs3SFpxBGmLfu2XD6bDSKaK+OQ1YBMGo8=;
+	b=U/EwvLC0QIt757Tqvm/urK5ltALybquLts6iwQLrgYkzYADtiDFfglPa1Eb6Ih4xTdgsq0kUN
+	b5EveNYSdm7z9tsdUxhn3asoRascQcfL2/BILXASAarf2ZTIClWTsGat3oD1KKa0X5ljXgyITks
+	ufv+1FPJDj1ylnw5ADHxv8M=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4hD2Tl5CJjz1cyVf;
+	Mon,  3 Aug 2026 11:39:07 +0800 (CST)
+Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4427C40563;
+	Mon,  3 Aug 2026 11:48:36 +0800 (CST)
+Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
+ kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Mon, 3 Aug 2026 11:48:35 +0800
+From: Fan Gong <gongfan1@huawei.com>
+To: Fan Gong <gongfan1@huawei.com>, Teng Peisen <tengpeisen@huawei.com>,
+	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Larysa Zaremba <larysa.zaremba@intel.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Chen Anwen
+	<chenanwen@huawei.com>, He Wei <august.hewei@huawei.com>, luosifu
+	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
+	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
+	<shijing34@huawei.com>, Wu Di <wudi234@huawei.com>
+Subject: [PATCH net 2/2] hinic3: Fix partial RX buffer allocation check during queue setup
+Date: Mon, 3 Aug 2026 11:48:25 +0800
+Message-ID: <30b9c237a8a385bc949edf17693dae4f18803694.1785727595.git.tengpeisen@huawei.com>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <16ed10bb3470f17fe78b0803a8a550c2c720f3e6.1785727595.git.tengpeisen@huawei.com>
+References: <16ed10bb3470f17fe78b0803a8a550c2c720f3e6.1785727595.git.tengpeisen@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4338caa7b5d244e1b0d9a6713ed8fce3@realsil.com.cn>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemf100013.china.huawei.com (7.202.181.12)
 
-On Mon, Aug 03, 2026 at 03:32:12AM +0000, Javen wrote:
-> >
-> >> +static void rtl_mac_link_up(struct phylink_config *config, struct phy_device
-> >*phydev,
-> >> +                         unsigned int mode, phy_interface_t interface,
-> >> +                         int speed, int duplex, bool tx_pause, bool
-> >> +rx_pause) {
-> >> +     struct rtl8169_private *tp = container_of(config, struct rtl8169_private,
-> >phylink_config);
-> >> +     struct device *d = tp_to_dev(tp);
-> >> +
-> >> +     tp->speed = speed;
-> >> +     rtl_link_chg_patch(tp, speed);
-> >> +
-> >> +     pm_request_resume(d);
-> >
-> >This does nothing with rx_pause and tx_pause. How is the MAC getting
-> >configured for flow control?
-> 
-> To actually generate pause frames, the MAC needs Rx FIFO "Near Full" and "Near Empty" thresholds. The driver configures these statically during hardware initialization (rtl_hw_start_xxx) by writing to ERI registers 0xCC (RFIFONFULL_TH) and 0xD0 (RFIFOEMPTY_TH) via rtl8168g_set_pause_thresholds().
-> 
-> Software enables/disables flow control by setting the Local PHY registers phy_set_asym_pause(). After auto-negotiation with the Link Partner, the PHY resolves the flow control capabilities. Once the link is up and flow control is negotiated, the integrated Realtek MAC hardware automatically reads the PHY result.
-> 
-> Therefore, we don't need to do anything with tx_pause and rx_pause in mac_link_up.
+From: Teng Peisen <tengpeisen@huawei.com>
 
-Yes you do.
+From: Fan Gong <gongfan1@huawei.com>
 
-ethtool -A|--pause devname [autoneg on|off] [rx on|off] [tx on|off]
+In hinic3_configure_rxqs(), the check for hinic3_rx_fill_buffers() only
+verifies that at least one buffer was allocated (!pkts).
 
-Pause configuration falls into three major categories:
+If memory allocation partially fails during RX queue setup, the function
+incorrectly treats a partially populated RX ring as successful, which
+may cause RX queue instability or unexpected packet drops at runtime.
 
-1: The link is negotiated, and pause is negotiated
-2: The link is negotiated, but pause is forced. ethtool -A autoneg off ...
-3: The link is forced, ethtool -s autoneg off, and pause is forced, ethtool -A netneg off ...
+Fix this by tightening the condition to 'pkts < rxq->q_mask'. This ensures
+that RX queue configuration fails with -ENOMEM unless the RX ring is
+completely filled as expected.
 
-The PHY registers only tell you about 1:. phylink mac_link_up tells
-you the right thing to do for all three.
+Fixes: b83bb584bc97 ("hinic3: Tx & Rx configuration")
+Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
+Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
+Signed-off-by: Fan Gong <gongfan1@huawei.com>
+---
+ drivers/net/ethernet/huawei/hinic3/hinic3_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-    Andrew
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
+index 309ab5901379..389b1c2158be 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
+@@ -541,7 +541,7 @@ int hinic3_configure_rxqs(struct net_device *netdev, u16 num_rq,
+ 		rq_associate_cqes(rxq);
+ 
+ 		pkts = hinic3_rx_fill_buffers(rxq);
+-		if (!pkts) {
++		if (pkts < rxq->q_mask) {
+ 			netdev_err(netdev, "Failed to fill Rx buffer\n");
+ 			return -ENOMEM;
+ 		}
+-- 
+2.54.0
+
