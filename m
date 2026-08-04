@@ -1,111 +1,95 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F2339CCF3;
-	Tue,  4 Aug 2026 08:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E500941D20C;
+	Tue,  4 Aug 2026 08:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785833063; cv=none; b=T1knGNVTQ2be4uFy0d4u76zMIbPJ8L/aXeEkG0h9IGY2ALFiNqxBOivwM0kHbst0aK50w8OsLaoyO+Ad5vYdK8px82JIC7Wvs7MWsEVZ30WZcET80/iZpz0qpSN2F49CYuLMxcQby2kExcjeCthatALwES1Y0di5AEQFiwtUBY8=
+	t=1785833072; cv=none; b=V+/Ho2BqkpP7nqUGfQUQ5nTZYpEEr5RJHExdl2AcEq3LMqZR8fTm8IRj2biWblUHZEf54bzdb7ZhdPj1tNcJrh1B4kTBP7hOYBWchUqDwObTvjcZNV/HkTCaBbHZbGvykutIkXMthyz4726j6jLyNbAGYdPVFryqSDvQbjuBZvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785833063; c=relaxed/simple;
-	bh=yaAp/R/gMkSEUBp21YJTjtYQVAXCn7g5EQDVaXl0Oa8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S6I7VYuRGyakF0Lga/4X4AzvV5GUyxmsAMTB+c2l1WrIUxx9O8j9dwppeKgNpt/siW/XOhOjK0Xh3t9owfwfBwySzmqp1tsMC+uu/YTFjDB3Z4MYXiaqH5n5DOa2Zi4hTXLMKLJKkVYL+xMqA2Z6U869IvjWnzjNRxLLzowHxts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=gKSF6kG3; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1785833072; c=relaxed/simple;
+	bh=OT3+foCGo7aKyCUQZURjG8OogfJ5e5a51HxQO/NFW5s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E3pfwx5nMmGxoJBAxNWE7XS83HviHd+yjeIW+OI7Y6p+KAnzCFnvc+MWO1npP8ZdlAaunM3npmmzyKu1H9RBg+7+N8keeB2sKtLqa2pXs8xFiSIPnFp3y3khxnRNP6qxM+p7unV/DL30G7E1aqJepfgltHzP0LykfwXnwJn21o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oj09pSEn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="gKSF6kG3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=rZ
-	uJVJJ4WHp1oKzmA9jHPcBkuXt8jzhliS3SwNI/FoY=; b=gKSF6kG3jbGPGzhMTt
-	Mw4OLBBMQD6FApy+frgYA1bFtBs2Y8e8VLEksKw+c8JZh7nNFt/wnILO3CFubF+b
-	DsLeL1njlBcs6uytf73PPifjAa6x+GT7UkCZ+ckDfMNSHjeFboAjc0ATHuFipLe9
-	yy4dK4gJ2cMDky/Ad8N/V+5qY=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wAnpF0epnFquLOxNQ--.49672S2;
-	Tue, 04 Aug 2026 16:43:12 +0800 (CST)
-From: luoqing <l1138897701@163.com>
-To: marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] sctp: fix use-after-free in timeout event handling
-Date: Tue,  4 Aug 2026 16:43:10 +0800
-Message-Id: <20260804084310.818056-1-l1138897701@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oj09pSEn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930F51F000E9;
+	Tue,  4 Aug 2026 08:44:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785833070;
+	bh=eWvmrmCJDGo1lxE60w8dVMIzmS5KyDLB9bo2sNqG5Ko=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oj09pSEn2XCHi/UftM5Ok1TWmx0Jv4cXkt2c2IjvkzHEyaxfSxK8UJRCFSUpsqoRb
+	 t9iR70UOz1n/DVt0uZjKHygTNSED5Rpe527CDPL4t0AHiZ6HQwK28SWfw5d+2Qhyg9
+	 fVhQTtqETVuDD5DmMoJA+1bS5NUIhMehrGpSP1XbcakVStpvI77KFcExaIJQqaobVv
+	 e4CTRCN9BV853t50S8FWraRuHQvBcljoSPvlyNKwnuZkMsV8ZvHhG3cW7srLW8DfAC
+	 x6TqQO0wBpr1jXvmp1aaufIIPU0aM+zGcugmzm7A3VycxmjUrzGoV+dAVEDb75Wo02
+	 bt9QY8xxjDPMA==
+Date: Tue, 4 Aug 2026 09:44:11 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, 
+	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org, 
+	shakeel.butt@linux.dev, jannh@google.com, aliceryhl@google.com, arve@android.com, 
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v3 3/5] mm: Add RCU-based VMA lookup helper that waits
+ for writers
+Message-ID: <anGmUrVVabSqWZq7@lucifer>
+References: <20260802215459.2769283-1-surenb@google.com>
+ <20260802215459.2769283-4-surenb@google.com>
+ <152ee467-b5e4-470c-ad95-c638aa9986bc@kernel.org>
+ <anCst8u7ybHf39n8@lucifer>
+ <9c301dd5-76cc-40dc-bbab-a79559d6db1a@kernel.org>
+ <anDBVu0PIzy7dks-@lucifer>
+ <CAJuCfpEYFs94heKZn3hikYuCJU3CEHr2u1SSxXMyFQwHHAcjDg@mail.gmail.com>
+ <6af71dfd-37b0-4489-8b7a-63478c8fdd4c@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAnpF0epnFquLOxNQ--.49672S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ZFWDtryUZr4rKF4furW8tFb_yoW8Zr15p3
-	yYka93KF1DJr12qF4fAF4kJa4fuan7K39xJFyYvr1fAan5try0gFW3trZ8KFWDJr4kJFyF
-	qF1DK3y3Ar4DZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jj4EiUUUUU=
-X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3QCo7GpxpiB2GwAA3p
+In-Reply-To: <6af71dfd-37b0-4489-8b7a-63478c8fdd4c@kernel.org>
 
-From: Qing Luo <luoqing@kylinos.cn>
+On Tue, Aug 04, 2026 at 09:59:26AM +0200, Vlastimil Babka (SUSE) wrote:
+> On 8/3/26 21:13, Suren Baghdasaryan wrote:
+> > On Mon, Aug 3, 2026 at 9:44 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> >> Agree this is worth spelling out in the comment (I raised similarly).
+> >>
+> >> Maybe something like:
+> >>
+> >>         If a VMA exists which spans @address, return that VMA, read-locked.
+> >>
+> >>         If no VMA is mapped there or, very unlikely, a reference count overflow
+> >>         occurred, return NULL.
+> >>
+> >>         Nothing prevents VMAs being unmapped/mapped before or after the VMA is
+> >>         looked up, if a stronger guarantee is required, take an mmap lock.
+> >
+> > This last statement is true only if the function returns NULL, so I
+> > think it should be in the same paragraph as the "If no VMA is
+> > mapped..." sentence and prepended with "In this case...". So:
+> >
+> >        If no VMA is mapped there or, very unlikely, a reference count overflow
+> >        occurred, return NULL. In this case, nothing prevents VMAs
+> > being unmapped/
+> >        mapped before or after the VMA is looked up, if a stronger guarantee is
+> >        required, take an mmap lock.
+> >
+> > Does that sounds good?
+>
+> Yeah, thanks both!
 
-sctp_do_sm() in sctp_generate_timeout_event() may process an
-SCTP_CMD_ASSOC_FAILED command, which calls sctp_association_free() and
-drops the last reference, freeing the association and its socket while
-the timer callback is still running. The callback then dereferences the
-freed sk and asoc, a use-after-free.
+Agreed thanks!
 
-Hold an extra reference on the association at the start of the callback
-so both it and its socket stay alive until we are done, and release it
-at out_unlock along with the timer's reference. Also only set sk->sk_err
-while the association is still alive.
+>
+>
 
-Assisted-by: LLM
-Signed-off-by: Qing Luo <luoqing@kylinos.cn>
----
- net/sctp/sm_sideeffect.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
-index 424f10a6fdba..f384c2faf1c4 100644
---- a/net/sctp/sm_sideeffect.c
-+++ b/net/sctp/sm_sideeffect.c
-@@ -275,6 +275,12 @@ static void sctp_generate_timeout_event(struct sctp_association *asoc,
- 	int error = 0;
- 
- 	bh_lock_sock(sk);
-+
-+	/* Take an extra ref to keep asoc alive through sctp_do_sm().
-+	 * The timer already holds one ref; we'll release both at out_unlock.
-+	 */
-+	sctp_association_hold(asoc);
-+
- 	if (sock_owned_by_user(sk)) {
- 		pr_debug("%s: sock is busy: timer %d\n", __func__,
- 			 timeout_type);
-@@ -296,13 +302,13 @@ static void sctp_generate_timeout_event(struct sctp_association *asoc,
- 			   SCTP_ST_TIMEOUT(timeout_type),
- 			   asoc->state, asoc->ep, asoc,
- 			   (void *)timeout_type, GFP_ATOMIC);
--
--	if (error)
-+	if (!asoc->base.dead && error)
- 		sk->sk_err = -error;
- 
- out_unlock:
- 	bh_unlock_sock(sk);
--	sctp_association_put(asoc);
-+	sctp_association_put(asoc); 	/* release timer's ref */
-+	sctp_association_put(asoc);	/* release our extra ref */
- }
- 
- static void sctp_generate_t1_cookie_event(struct timer_list *t)
--- 
-2.25.1
-
+--
+Cheers, Lorenzo
