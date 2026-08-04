@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532D63EC822;
-	Tue,  4 Aug 2026 03:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395894137A4;
+	Tue,  4 Aug 2026 03:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785813069; cv=none; b=BOky/kj1udzcbA+08Yaa75yXnNlvN3vImgnOh0P//y0l35rMzM2W1LdyaUSGWsXKUwyrYLxbeaTLqfgzDzk6eY7UZ7fuKQk9rdcrpFwhKhtmUtjGcXCfr4zlUuS5ZCPQCK1BD6ljkjan8E8v2AnuJ9qhZTo5Ws8KNKxPlTuVbFw=
+	t=1785813080; cv=none; b=neTCE/14WDNQ9y7n9RCaDpFReV4WO6b5U4UAyiJDYK3psz177+J5xJ0xabXmgOFP6j9gj0yzIj78MPoWLFtE6B9JHPbrHSbDi5q5WaJQILVgasf0CM3rD6qUotEywvFR+kjN6vUhRRXYXqRwI50Iwd7vpE4ShkzD8/FgVI7Z5Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785813069; c=relaxed/simple;
-	bh=ub3F+rC6rtI5cSg69MhEnLJ+09HEPdAJ/HE8GsNy/H4=;
+	s=arc-20240116; t=1785813080; c=relaxed/simple;
+	bh=lajCqPx6jV3haO6tC7/t50NM+yt1i4h/9bTDosJt22o=;
 	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jL0mI2AKq9NALmmuBQ+biKaZ2+58wFmpWCFDbRI94xEPl3nA4Z+Z2y6czaxSdiyDixERWjxmuqi5H+/g8qAdXCOQygyt7eErFAatoQDWtKOYCGwPo51xIZBm9nN/1jHfpCdZVzACrbY4DvTbNlH8M22aDTGii10eBk0/CgHGr0k=
+	 Content-Type:Content-Disposition:In-Reply-To; b=eEkCSJjPVw7KeAgH1jAaVlelbS/mFq4tL5qknP62EvHRweuQvT3y6jKFXEETC1F+ZeyYI968/9LbFtjdQ8TPzWQ8Jhi7tMheRN7Gf+7MRkCQRP87wd1szucMPGgOBWbhgy3oolWXJtgzg+fSeZkleQ3aKT++jyavq8/eEfWWVvk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1wr5YO-00000000471-1sJf;
-	Tue, 04 Aug 2026 03:10:56 +0000
-Date: Tue, 4 Aug 2026 04:10:53 +0100
+	id 1wr5YW-0000000047y-2TLa;
+	Tue, 04 Aug 2026 03:11:04 +0000
+Date: Tue, 4 Aug 2026 04:11:01 +0100
 From: Daniel Golle <daniel@makrotopia.org>
 To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
@@ -39,9 +39,9 @@ To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH net v2 5/6] net: dsa: mt7530: check command register writes
- in fdb and vlan cmd
-Message-ID: <0e5d65a672313286e5a8ce28a9faba9c8972dbb6.1785811140.git.daniel@makrotopia.org>
+Subject: [PATCH net v2 6/6] net: dsa: mt7530: serialize the regmap IRQ chip
+ like every other user
+Message-ID: <818840879e9cd20f8d568789da29b3474c8f3ab9.1785811140.git.daniel@makrotopia.org>
 References: <cover.1785811140.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -53,70 +53,113 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1785811140.git.daniel@makrotopia.org>
 
-mt7530_fdb_cmd() and mt7530_vlan_cmd() start a command by writing the
-BUSY bit to MT7530_ATC / MT7530_VTCR, then poll for it to clear.
-mt7530_write() discards the write's return value, so a failed command
-write leaves BUSY unset and the poll succeeds on its first read,
-reporting a command that never ran as done -- returning stale FDB data
-or silently dropping a VLAN table update.
+The switch register regmap is created with .disable_locking = true;
+every other user in this driver calls mt7530_mutex_lock()/unlock()
+around it, which takes priv->bus->mdio_lock, since the underlying
+mt7530_regmap_read()/write() issue raw, unserialized bus->read()/
+write() MDIO transactions.
 
-Return mt7530_mii_write()'s error from mt7530_write() and check it in
-both command helpers.
+mt7530_setup_irq() hands this same unlocked regmap straight to
+devm_regmap_add_irq_chip_fwnode(), whose threaded IRQ handler then
+calls regmap_read()/regmap_update_bits() on it without ever calling
+mt7530_mutex_lock(). An interrupt firing while another thread is
+mid-transaction on the same regmap (e.g. a paged register access, or
+an indirect PHY access) can interleave with the IRQ handler's own
+paged access and corrupt page selection on either side.
 
-Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
+Use struct regmap_irq_chip's handle_mask_sync hook to call
+mt7530_mutex_lock()/unlock() around the mask register write regmap-irq
+issues whenever a consumer of one of the mapped sub-IRQs enables,
+disables, requests or frees its line. This needs a per-device copy of
+mt7530_regmap_irq_chip, since devm_regmap_add_irq_chip_fwnode() keeps
+a pointer to it rather than copying it.
+
+handle_pre_irq/handle_post_irq, which would additionally cover the
+status read and ack write the threaded handler does directly, bracket
+the whole handler including its handle_nested_irq() calls. Lockdep
+caught this on hardware: those calls reach phy_interrupt() for the
+per-port PHY IRQ lines mapped through this chip, which takes
+phydev->lock, while phy_attach_direct() and this driver's own indirect
+PHY access already establish the opposite order (phydev->lock, then
+priv->bus->mdio_lock) elsewhere. Using them here would close that
+cycle, so they are not used.
+
+regmap_irq_sync_unlock() also has its own init_ack_masked path, used
+by this chip, which unconditionally does its own regmap_write() to ack
+currently-masked IRQs; that path has no per-driver hook. Together with
+the threaded handler's own status read and ack write, these stay
+unprotected -- a narrower, harder-to-hit gap than the recurring mask
+sync above -- and will be closed once the switch regmap moves to
+regmap's own locking in the driver-wide register access cleanup.
+
+Fixes: 254f6b272e3b ("dsa: mt7530: Utilize REGMAP_IRQ for interrupt handling")
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
-v2: new patch
+v2: no changes
 
- drivers/net/dsa/mt7530.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/dsa/mt7530.c | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 69cee61564cb..c0437273270b 100644
+index c0437273270b..0b39f2348115 100644
 --- a/drivers/net/dsa/mt7530.c
 +++ b/drivers/net/dsa/mt7530.c
-@@ -185,14 +185,18 @@ mt7530_mii_read(struct mt7530_priv *priv, u32 reg)
- 	return val;
- }
+@@ -2319,6 +2319,21 @@ static const struct regmap_irq mt7530_irqs[] = {
+ 	REGMAP_IRQ_REG_LINE(31, 32), /* ACL */
+ };
  
--static void
-+static int
- mt7530_write(struct mt7530_priv *priv, u32 reg, u32 val)
- {
++/* Serialize regmap-irq's mask sync like every other regmap user */
++static int mt7530_irq_mask_sync(int index, unsigned int mask_buf_def,
++				unsigned int mask_buf, void *irq_drv_data)
++{
++	struct mt7530_priv *priv = irq_drv_data;
 +	int ret;
 +
- 	mt7530_mutex_lock(priv);
- 
--	mt7530_mii_write(priv, reg, val);
-+	ret = mt7530_mii_write(priv, reg, val);
- 
- 	mt7530_mutex_unlock(priv);
++	mt7530_mutex_lock(priv);
++	ret = regmap_update_bits(priv->regmap, MT7530_SYS_INT_EN,
++				 mask_buf_def, ~mask_buf);
++	mt7530_mutex_unlock(priv);
 +
 +	return ret;
- }
++}
++
+ static const struct regmap_irq_chip mt7530_regmap_irq_chip = {
+ 	.name = KBUILD_MODNAME,
+ 	.status_base = MT7530_SYS_INT_STS,
+@@ -2328,12 +2343,14 @@ static const struct regmap_irq_chip mt7530_regmap_irq_chip = {
+ 	.irqs = mt7530_irqs,
+ 	.num_irqs = ARRAY_SIZE(mt7530_irqs),
+ 	.num_regs = 1,
++	.handle_mask_sync = mt7530_irq_mask_sync,
+ };
  
- static u32
-@@ -249,7 +253,9 @@ mt7530_fdb_cmd(struct mt7530_priv *priv, enum mt7530_fdb_cmd cmd, u32 *rsp)
+ static int
+ mt7530_setup_irq(struct mt7530_priv *priv)
+ {
+ 	struct regmap_irq_chip_data *irq_data;
++	struct regmap_irq_chip *chip;
+ 	struct device *dev = priv->dev;
+ 	struct device_node *np = dev->of_node;
+ 	int irq, ret;
+@@ -2353,10 +2370,17 @@ mt7530_setup_irq(struct mt7530_priv *priv)
+ 	if (priv->id == ID_MT7530 || priv->id == ID_MT7621)
+ 		mt7530_set(priv, MT7530_TOP_SIG_CTRL, TOP_SIG_CTRL_NORMAL);
  
- 	/* Set the command operating upon the MAC address entries */
- 	val = ATC_BUSY | ATC_MAT(0) | cmd;
--	mt7530_write(priv, MT7530_ATC, val);
-+	ret = mt7530_write(priv, MT7530_ATC, val);
-+	if (ret)
-+		return ret;
- 
- 	mt7530_mutex_lock(priv);
- 
-@@ -1632,7 +1638,9 @@ mt7530_vlan_cmd(struct mt7530_priv *priv, enum mt7530_vlan_cmd cmd, u16 vid)
- 	int ret;
- 
- 	val = VTCR_BUSY | VTCR_FUNC(cmd) | vid;
--	mt7530_write(priv, MT7530_VTCR, val);
-+	ret = mt7530_write(priv, MT7530_VTCR, val);
-+	if (ret)
-+		return ret;
- 
- 	mt7530_mutex_lock(priv);
- 
++	chip = devm_kmemdup(dev, &mt7530_regmap_irq_chip, sizeof(*chip),
++			    GFP_KERNEL);
++	if (!chip)
++		return -ENOMEM;
++
++	chip->irq_drv_data = priv;
++
+ 	ret = devm_regmap_add_irq_chip_fwnode(dev, dev_fwnode(dev),
+ 					      priv->regmap, irq,
+ 					      IRQF_ONESHOT,
+-					      0, &mt7530_regmap_irq_chip,
++					      0, chip,
+ 					      &irq_data);
+ 	if (ret)
+ 		return ret;
 -- 
 2.55.0
