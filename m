@@ -1,206 +1,190 @@
-Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C8C2FE575
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 06:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543F73E49F5;
+	Tue,  4 Aug 2026 06:24:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785824146; cv=none; b=tydybsrF1Baeh0FB7ZZXcO6gQH1NvwykXkIn+DCXqLABveaN+oiPsIRH7CMixc0ftSy6vuHrq/XfGO5iiyyRxpbXk3T0eRdBwNMcU1I25NOI1GywiJlzz0p0PnV52rtWvBmkWdOwPTk9M5Uwhk4MsDVVOReLvzKGCtI8mQKopsQ=
+	t=1785824686; cv=none; b=INozVsuUQUJp49xnkesjWKnEBU6ld6KjucuNbHUOZu+i1TndLIj5pkQ8yOXsaf7O4zZ/8pJ8K0N7HVpCIhGZI3rMpsHgMy463f1j5YFal+jOFxiQOdsKjnmHTMvQZCJMIw1Pllf5K0JHoYKGQ+ZXPcWYikfF8+nV2EtySxeMDXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785824146; c=relaxed/simple;
-	bh=OMTYknmyi+Kf0MkGf+5N5zv/GKFdOXnsgRB6z8/YHwM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=O6hJI7fKftwTIyKKpqD+u6X5Gq0vlr8EVv2coQ6y81db5r+qJdYtAY4dibqKee5eBdB8wWnBn+0N6ulgv2gIwXbznE2cpCNCDokbJ2oLfn0JRRF7/hNJ5hOFAJWAdxISllI3dJraa25xtC4Q+jDVLuv543o0J54MgfINMkt0/ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.206.34.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: esmtpsz10t1785824086t8cfb8f8e
-X-QQ-Originating-IP: DO/ilig9mEocfbU+OSEUl1tCGiyNx2mbJJ+64EjgAWQ=
-Received: from smtpclient.apple ( [122.235.196.25])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 04 Aug 2026 14:14:44 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 12982565464166425355
-EX-QQ-RecipientCnt: 9
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1785824686; c=relaxed/simple;
+	bh=KKZFpNziv8p8HKPLsoOocbI9p7wTHRY7703zAFRVqFM=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=IXhQfnxSa1QOhlFnO25oUSOua9DFoYylz/mdevOKxpMKyrikiuX0V3VoDi5ihNN8sd+8adRulu5AnQ/zVs2SctfdF/kncn/hJK23Ke9MFdCFIpnW8TxhjRYNnwGEt26fIYPPIahMTAU53ORJ36PXV8aicOOXpGUJMgpZ73HOTv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jRBQuaXc; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jRBQuaXc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785824684; x=1817360684;
+  h=date:from:to:cc:subject:message-id;
+  bh=KKZFpNziv8p8HKPLsoOocbI9p7wTHRY7703zAFRVqFM=;
+  b=jRBQuaXcHv+jtggjffiFHpd3ZoKS+eeL32LLqLR/PCBlFs57zufmaasI
+   4LaI7E0KWuWhaNhDA+Y21WU+vDMgp0rFCdOmscj+i40/QRZIAAqW2zAZ9
+   T7RvT7OqHcSpIuUXj8S2Lf0GdHsn31BCVgCr6dSOkLZtTV/miHObWYx+k
+   kC851gh4uDdkjTMOvZUUhWZDwgvmxTtS/YBZpcWytuzO3oDnR4oScmMiv
+   pHIe9yclA3x9FAlTfMpiBjbfCNmOEvHrB969aKULKbf6A6EkpN/AV50ok
+   FiI3tIwd05V3TrpaSQTbtGk484NzWc+H6XnnC1cJUI3dktlVHsXKRHECK
+   Q==;
+X-CSE-ConnectionGUID: vM8Fu5QqQGCOdzzRqWt9+g==
+X-CSE-MsgGUID: D/6Qv+MyTmOGyGLc+rdinQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="90179417"
+X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
+   d="scan'208";a="90179417"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 23:24:42 -0700
+X-CSE-ConnectionGUID: COFkYOwiRDeMNnPUy81RQg==
+X-CSE-MsgGUID: WbO2gSoCTg+tnth5R6yU4Q==
+X-ExtLoop1: 1
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 03 Aug 2026 23:24:39 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wr8Zp-0000000097p-0Ov6;
+	Tue, 04 Aug 2026 06:24:37 +0000
+Date: Tue, 04 Aug 2026 14:24:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 9a4cdc958dd79fc6c3b20b51a10debec6ca09fec
+Message-ID: <202608041404.bOHh2XuT-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH net-next 0/5] net: wangxun: improve statistics support
-From: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
-In-Reply-To: <20260803135915.1fd95602@kernel.org>
-Date: Tue, 4 Aug 2026 14:14:34 +0800
-Cc: netdev@vger.kernel.org,
- jiawenwu@trustnetic.com,
- duanqiangwen@net-swift.com,
- linglingzhang@net-swift.com,
- andrew+netdev@lunn.ch,
- davem@davemloft.net,
- edumazet@google.com,
- pabeni@redhat.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F44139D9-C43A-4D62-BEF7-C56161FE5D4C@net-swift.com>
-References: <20260731074958.19333-1-mengyuanlou@net-swift.com>
- <20260731164407.4ca13f14@kernel.org>
- <5FB351D7-A14F-4B30-A172-6D81417E4E69@net-swift.com>
- <20260803135915.1fd95602@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: NpfbsqbTlzxU138b1mTWDtejPvmZpoV5C3voYi3+bcsumT/pj37iwFx+
-	o7iKOJE7U96bka11rkunusm87xBNKvx3U1VtEB+bsBi7JYi8zzAEga0vkdZLxQ1iRGJOHep
-	Kiis5Z/455y4JVk9muT75jyd6ZoqIVtXOqs1VwOyNEupZy8O8cMKEdrKqzdBJNxIcqKhNfG
-	F/bopu9gcqyc/5gRGuaMUnOwdSAWCzLxs+78n1iloaRVbS8wgmL/8QwA1YBve5aXofpWg25
-	yjoAruEGGnMr6uwB790QUGvuUzmnPIyFj/R1CurOB8WNjjKNIpfQmUzFp9CxusqXPJE5zRD
-	yIhl8sjesxhdighlEW6syPl7Ua5cFRqUoeF8nUNpvo7tECKFKVo3De9nnTRrrLD9TilQo08
-	7uTU6hgWtBtAHau/2vFix4svAfxe0/Or9H/iKfj0HRpGyObKpjpMX26iM5Djtjxa+SYKZ2R
-	MmH4gGhZvkPaR3RpqjK3ISjf2lqQZXGO3Iz/CZcHPeYvWMdn2lEiJXl3hharPopN5p7uiNp
-	HC8Yr5usRjNIOjWiUBsi8zUee1EJvljt22KUf2R6vIPfAoQFWk+IVKfeCnBN2DmIbvXnhxO
-	eflBMik0UdMr5m7bsmthLvXJx++gBRrZPiIEHrI9aaFL/m08NYRYXj+1yuxJuKLKRIfOP+v
-	46T4WgP+NYPsXz7AhPheA0ajceGBjIn0zJzl9q+d0EJQUuN9r5Q8aE91tHCjqzoqBwVxVeC
-	ZYgN0139M5zLhxzMKnjXGSS1rU5gq7ihUxdkSX3UxI2IyBgbYOtcYOg6t0J3PWTMwd3RG6+
-	Tg69/iAoUxWfOVHYpD5rmciSnzar7k0kVeAMfdBQ8PQw0P/qE/CQ/lhxiHRX80jd5GNGWDM
-	/+nZnX0azMKqvYnUzxWQk5Vhv+mookSwQw7/kqavT/EzsU/OCTylxykHWepE57f7rYL+I63
-	ZroWlgnBS/uKMGuy90JQ2BWIrw/0c6RKchc7ZsfQC4totxYJSzGDAhBR2RS+1KWoHs+/zxe
-	EG1c8eCTCP+Hn5CQLVYnO0w0CdXV6zQ9fa6ca4A/hY53U1ZSLeQXaJ3FwGOfo//I+IsOQ9F
-	/9RQcpU2S4dACeO4apC594=
-X-QQ-XMRINFO: NS+P29fieYNwXa6WNmDbxN9kmko6wt4pnw==
-X-QQ-RECHKSPAM: 0
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 9a4cdc958dd79fc6c3b20b51a10debec6ca09fec  Add linux-next specific files for 20260803
 
+Unverified Error/Warning (likely false positive, kindly check if interested):
 
-> 2026=E5=B9=B48=E6=9C=884=E6=97=A5 04:59=EF=BC=8CJakub Kicinski =
-<kuba@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On Mon, 3 Aug 2026 16:00:15 +0800 mengyuanlou@net-swift.com wrote:
->> root @roy-System-Product-Name =E2=9E=9C =
-=E2=80=A6/mirror-net-next/tools/testing/selftests =EF=87=91 =EE=9C=82  =
-=EE=82=B6=EF=90=98 main=EE=82=B4 ?3  =EF=90=BA 15:54:46=20
->> =E2=9C=98  python3 ./drivers/net/stats.py
->> TAP version 13
->> 1..8
->> ok 1 stats.check_pause
->> ok 2 stats.check_fec
->> ok 3 stats.check_fec_hist
->> ok 4 stats.pkt_byte_sum
->> ok 5 stats.qstat_by_ifindex
->> ok 6 stats.check_down
->> ok 7 stats.procfs_hammer
->> # completed up/down cycles: 76
->> ok 8 stats.procfs_downup_hammer
->> # Totals: pass:8 fail:0 xfail:0 xpass:0 skip:0 error:0
->=20
-> Thanks, did you set up the env variables like NETIF?
-> The context you shared does not specify how you set things up..
->=20
+    https://lore.kernel.org/oe-kbuild/202608040800.45L57Mym-lkp@intel.com
 
-Thanks, I just set NETIF to PF/VF(ngbe) devices. And do the tests again.
+    drivers/iio/magnetometer/qmc6308.c:402:7: error: call to '__compiletime_assert_472' declared with 'error' attribute: FIELD_PREP: value too large for the field
+    drivers/net/ethernet/airoha/airoha_eth.c:3470:25: sparse: sparse: division by zero
 
+Error/Warning ids grouped by kconfigs:
 
-=E2=9C=98  NETIF=3Denp6s0f0 python3 -u ./drivers/net/stats.py
-TAP version 13
-1..8
-ok 1 stats.check_pause
-ok 2 stats.check_fec # SKIP FEC not supported by the device
-ok 3 stats.check_fec_hist # SKIP FEC not supported by the device
-ok 4 stats.pkt_byte_sum
-ok 5 stats.qstat_by_ifindex
-ok 6 stats.check_down
-ok 7 stats.procfs_hammer
-# completed up/down cycles: 50
-ok 8 stats.procfs_downup_hammer
-# Totals: pass:6 fail:0 xfail:0 xpass:0 skip:2 error:0
+recent_errors
+|-- arm-randconfig-r121-20260803
+|   `-- drivers-net-ethernet-airoha-airoha_eth.c:sparse:sparse:division-by-zero
+`-- um-randconfig-002-20260803
+    `-- drivers-iio-magnetometer-qmc6308.c:error:call-to-__compiletime_assert_NNN-declared-with-error-attribute:FIELD_PREP:value-too-large-for-the-field
 
-dmesg -w
+elapsed time: 726m
 
-=E2=80=A6=E2=80=A6
-[1283721.111104] ngbe 0000:06:00.0: removed PHC on enp6s0f0
-[1283721.187152] ngbe 0000:06:00.0 enp6s0f0: PHY [ngbe-600:00] driver =
-[Generic FE-GE Realtek PHY] (irq=3DPOLL)
-[1283721.187455] ngbe 0000:06:00.0: registered PHC device on enp6s0f0
-[1283721.187496] ngbe 0000:06:00.0 enp6s0f0: configuring for =
-phy/rgmii-rxid link mode
-[1283721.262749] ngbe 0000:06:00.0: removed PHC on enp6s0f0
-[1283721.286142] ngbe 0000:06:00.0 enp6s0f0: PHY [ngbe-600:00] driver =
-[Generic FE-GE Realtek PHY] (irq=3DPOLL)
-[1283721.286289] ngbe 0000:06:00.0: registered PHC device on enp6s0f0
-[1283721.286329] ngbe 0000:06:00.0 enp6s0f0: configuring for =
-phy/rgmii-rxid link mode
-[1283721.309968] ngbe 0000:06:00.0: removed PHC on enp6s0f0
-[1283721.386142] ngbe 0000:06:00.0 enp6s0f0: PHY [ngbe-600:00] driver =
-[Generic FE-GE Realtek PHY] (irq=3DPOLL)
-[1283721.386389] ngbe 0000:06:00.0: registered PHC device on enp6s0f0
-[1283721.386430] ngbe 0000:06:00.0 enp6s0f0: configuring for =
-phy/rgmii-rxid link mode
-[1283721.460411] ngbe 0000:06:00.0: removed PHC on enp6s0f0
-[1283721.484139] ngbe 0000:06:00.0 enp6s0f0: PHY [ngbe-600:00] driver =
-[Generic FE-GE Realtek PHY] (irq=3DPOLL)
-[1283721.484255] ngbe 0000:06:00.0: registered PHC device on enp6s0f0
-[1283721.484295] ngbe 0000:06:00.0 enp6s0f0: configuring for =
-phy/rgmii-rxid link mode
-[1283721.506989] ngbe 0000:06:00.0: removed PHC on enp6s0f0
-[1283721.583146] ngbe 0000:06:00.0 enp6s0f0: PHY [ngbe-600:00] driver =
-[Generic FE-GE Realtek PHY] (irq=3DPOLL)
-[1283721.583446] ngbe 0000:06:00.0: registered PHC device on enp6s0f0
-[1283721.583487] ngbe 0000:06:00.0 enp6s0f0: configuring for =
-phy/rgmii-rxid link mode
-[1283724.663809] ngbe 0000:06:00.0 enp6s0f0: Link is Up - 1Gbps/Full - =
-flow control rx/tx
-[1283724.855515] ngbevf 0000:07:00.4 enp6s0f0v1: Link is Up - 1Gbps
-[1283724.919544] ngbevf 0000:07:00.0 enp6s0f0v0: Link is Up - 1Gbps
-[1283726.903575] ngbevf 0000:07:00.4 enp6s0f0v1: Link is Down
-[1283727.927585] ngbevf 0000:07:00.4 enp6s0f0v1: Link is Up - 1Gbps
+configs tested: 100
+configs skipped: 1
 
+tested configs:
+alpha                            allnoconfig    gcc-16.1.0
+alpha                           allyesconfig    gcc-16.1.0
+alpha                              defconfig    gcc-16.1.0
+arc                             allmodconfig    gcc-16.1.0
+arc                             allyesconfig    gcc-16.1.0
+arc                  randconfig-001-20260804    gcc-15.2.0
+arc                  randconfig-002-20260804    gcc-8.5.0
+arm                  randconfig-001-20260804    gcc-10.5.0
+arm                  randconfig-002-20260804    gcc-15.2.0
+arm                  randconfig-003-20260804    clang-17
+arm                  randconfig-004-20260804    gcc-8.5.0
+arm64                randconfig-001-20260804    clang-24
+arm64                randconfig-002-20260804    gcc-9.5.0
+arm64                randconfig-003-20260804    gcc-11.5.0
+arm64                randconfig-004-20260804    gcc-9.5.0
+csky                            allmodconfig    gcc-16.1.0
+csky                 randconfig-001-20260804    gcc-9.5.0
+csky                 randconfig-002-20260804    gcc-11.5.0
+hexagon              randconfig-001-20260804    clang-24
+hexagon              randconfig-002-20260804    clang-24
+i386                            allmodconfig    gcc-14
+i386                buildonly-randconfig-001    gcc-14
+i386       buildonly-randconfig-001-20260804    clang-22
+i386       buildonly-randconfig-002-20260804    clang-22
+i386       buildonly-randconfig-003-20260804    clang-22
+i386       buildonly-randconfig-004-20260804    gcc-12
+i386       buildonly-randconfig-005-20260804    clang-22
+i386       buildonly-randconfig-006-20260804    gcc-14
+i386                 randconfig-001-20260804    gcc-14
+i386                 randconfig-002-20260804    gcc-14
+i386                 randconfig-003-20260804    gcc-14
+i386                 randconfig-004-20260804    gcc-14
+i386                 randconfig-005-20260804    gcc-14
+i386                 randconfig-006-20260804    clang-22
+i386                 randconfig-007-20260804    gcc-14
+i386                 randconfig-011-20260804    clang-22
+i386                 randconfig-012-20260804    gcc-14
+i386                 randconfig-013-20260804    clang-22
+i386                 randconfig-014-20260804    gcc-14
+i386                 randconfig-015-20260804    clang-22
+i386                 randconfig-016-20260804    gcc-13
+i386                 randconfig-017-20260804    clang-22
+loongarch                          defconfig    clang-24
+loongarch            randconfig-001-20260804    clang-24
+loongarch            randconfig-002-20260804    gcc-16.1.0
+nios2                           allmodconfig    gcc-11.5.0
+nios2                            allnoconfig    gcc-11.5.0
+nios2                randconfig-001-20260804    gcc-8.5.0
+nios2                randconfig-002-20260804    gcc-11.5.0
+parisc                          allmodconfig    gcc-16.1.0
+parisc                          allyesconfig    gcc-16.1.0
+parisc                             defconfig    gcc-16.1.0
+parisc               randconfig-001-20260804    gcc-8.5.0
+parisc               randconfig-002-20260804    gcc-8.5.0
+powerpc                      eiger_defconfig    clang-24
+powerpc              randconfig-001-20260804    clang-24
+powerpc              randconfig-002-20260804    gcc-11.5.0
+powerpc64            randconfig-001-20260804    gcc-8.5.0
+powerpc64            randconfig-002-20260804    gcc-8.5.0
+riscv                randconfig-002-20260804    gcc-13.4.0
+s390                 randconfig-001-20260804    clang-21
+s390                 randconfig-002-20260804    clang-18
+sh                                 defconfig    gcc-16.1.0
+sh                   randconfig-001-20260804    gcc-16.1.0
+sh                   randconfig-002-20260804    gcc-16.1.0
+sparc                randconfig-001-20260804    gcc-16.1.0
+sparc                randconfig-002-20260804    gcc-16.1.0
+sparc64              randconfig-001-20260804    clang-24
+sparc64              randconfig-002-20260804    clang-20
+um                   randconfig-001-20260804    gcc-14
+um                   randconfig-002-20260804    gcc-14
+x86_64              buildonly-randconfig-001    gcc-12
+x86_64     buildonly-randconfig-001-20260804    gcc-14
+x86_64     buildonly-randconfig-002-20260804    clang-22
+x86_64     buildonly-randconfig-003-20260804    gcc-14
+x86_64     buildonly-randconfig-004-20260804    gcc-14
+x86_64     buildonly-randconfig-005-20260804    clang-22
+x86_64     buildonly-randconfig-006-20260804    clang-22
+x86_64                                 kexec    clang-22
+x86_64               randconfig-001-20260804    gcc-14
+x86_64               randconfig-002-20260804    gcc-13
+x86_64               randconfig-003-20260804    clang-22
+x86_64               randconfig-004-20260804    clang-22
+x86_64               randconfig-005-20260804    gcc-14
+x86_64               randconfig-006-20260804    clang-22
+x86_64               randconfig-011-20260804    clang-22
+x86_64               randconfig-012-20260804    gcc-14
+x86_64               randconfig-013-20260804    clang-22
+x86_64               randconfig-014-20260804    clang-22
+x86_64               randconfig-015-20260804    clang-22
+x86_64               randconfig-016-20260804    clang-22
+x86_64               randconfig-071-20260804    gcc-14
+x86_64               randconfig-072-20260804    gcc-14
+x86_64               randconfig-073-20260804    gcc-14
+x86_64               randconfig-074-20260804    gcc-12
+x86_64               randconfig-075-20260804    gcc-14
+x86_64               randconfig-076-20260804    clang-22
+x86_64                          rhel-9.4-bpf    gcc-14
+xtensa               randconfig-001-20260804    gcc-8.5.0
+xtensa               randconfig-002-20260804    gcc-14.3.0
 
-=E2=9C=98  NETIF=3Denp6s0f0v0 python3 -u ./drivers/net/stats.py
-TAP version 13
-1..8
-ok 1 stats.check_pause # SKIP pause not supported by the device
-ok 2 stats.check_fec # SKIP FEC not supported by the device
-ok 3 stats.check_fec_hist # SKIP FEC not supported by the device
-ok 4 stats.pkt_byte_sum
-ok 5 stats.qstat_by_ifindex
-ok 6 stats.check_down
-ok 7 stats.procfs_hammer
-# Exception| Traceback (most recent call last):
-# Exception|   File =
-"/root/Work/mirror-net-next/tools/testing/selftests/net/lib/py/ksft.py", =
-line 420, in ksft_run
-# Exception|     func(*args)
-# Exception|     ~~~~^^^^^^^
-# Exception|   File =
-"/root/Work/mirror-net-next/tools/testing/selftests/net/lib/py/ksft.py", =
-line 257, in wrapper
-# Exception|     return func(*args, **kwargs)
-# Exception|   File =
-"/root/Work/mirror-net-next/tools/testing/selftests/./drivers/net/stats.py=
-", line 268, in procfs_downup_hammer
-# Exception|     channels =3D ethnl.channels_get({'header': =
-{'dev-index': cfg.ifindex}})
-# Exception|   File =
-"/root/Work/mirror-net-next/tools/net/ynl/pyynl/lib/ynl.py", line 1440, =
-in _op
-# Exception|     return self._ops(ops)[0]
-# Exception|            ~~~~~~~~~^^^^^
-# Exception|   File =
-"/root/Work/mirror-net-next/tools/net/ynl/pyynl/lib/ynl.py", line 1397, =
-in _ops
-# Exception|     raise NlError(nl_msg)
-# Exception| net.ynl.pyynl.lib.ynl.NlError: Netlink error: Operation not =
-supported
-# Exception|=20
-not ok 8 stats.procfs_downup_hammer
-# Totals: pass:4 fail:1 xfail:0 xpass:0 skip:3 error:0
-
-Dmesg -w
-
-[1283852.025298] ngbevf 0000:07:00.0 enp6s0f0v0: Link is Up - 1Gbps
-[1283869.049493] ngbevf 0000:07:00.0 enp6s0f0v0: Link is Up - 1Gbps
-
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
