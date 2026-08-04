@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091403E49FE;
-	Tue,  4 Aug 2026 01:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0513E558C;
+	Tue,  4 Aug 2026 01:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785808124; cv=none; b=WPtHd1xlbwmc6P6Z6YSEs5Z7TbBImLdll1X8Psa6QbyHuySYvPjXMlNt1IYwOjtJe9xlZDUohMziObvPaAbcOE2lLebAdycvY0kWcF/rlml5mOaDj+ElIm/WcEPQqaIb4onSBoYYpVvVIyg3EQUXJOnGen41GRBGBeM+0DXqPg4=
+	t=1785808125; cv=none; b=fwu7J2zmTY7ermPfeitmfySt/u60+AN9ew1H+S+lfMscK7xSDoikaOmxtECYSyeVcgFvzlLMHIbx00RqK6WHvxFGRSmXWqvQJKlbD+QzwCrNoykizwOmgRhdmNO1RFet/A+SbCYZC8UHje0WRPxzKOR//CUNqr62eS/DZnIwFDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785808124; c=relaxed/simple;
-	bh=2R0GdeCveOI6ycPkaBvvXhhhbVKycxo+5eqIDVJr+9c=;
+	s=arc-20240116; t=1785808125; c=relaxed/simple;
+	bh=GdBrPCmLTTSeYl2vrGZ24aPjvdnAQDGYXxoUy+REh8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQWGyTqsRy1nsYyDapXzk2amcAacbwkH2NRcEFUIGBw6Hba8aJtuTmDYgVEKYoHJ+2nek7yMgn+9kkDKWNDUDjkYh58Yze5C9n/gGRjGHUs6Tks9kLLjlbylLjPgi8NOAlneKl/ucWOwW76nQTuc+HW0wAA1XtI88fKm9gw875Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gK+HN69D; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=r5aGRUw8Z8/PQt3p2YgQPfsa/YXrxJMHGYIg6d9udmBW/DbRiJj6SY6d2WGTQJj/gBVSEE39Nr0xF/5gvIVknu+20qRSI30CBXGfHJhQf0mvolyl0xAyQGo7/kwYtI0YKp8LNl/c0yeRpYjIz+tgL+Sef0pdvhi3VjqTnVUxK/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TZ+0cI+O; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gK+HN69D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1EF1F000E9;
-	Tue,  4 Aug 2026 01:48:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TZ+0cI+O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC9F1F00A3A;
+	Tue,  4 Aug 2026 01:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785808122;
-	bh=o5/uLZyoO7BQy8ea5qK4bo3MMlgsiikC/QCBoEBBC6o=;
+	s=k20260515; t=1785808124;
+	bh=KOj/MoIuWTIbulUmAd9OiQ8Ymew8MDhrYEbW1DUwYUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gK+HN69DfaozHJWy+merVq2UzVmVk/cuj+RfYX8roDLlnCPE4sUO0y54JfptdoaGp
-	 3bV0pY2TaDRmS9gwk40AXDK3riCfuxfwKbRUnrPKq9zgVFDWhl68FZYdKqAEsMIYp/
-	 94upRIA6Xhq1z/ayz62v3zG9wgRz8wJJICl6e9CVHcBwYq0mX5NSqWoUNax/x47OVa
-	 a6u4TKpqwN219Tn3hWUpRPMNcKWwty/me0IwVg21vwebUxLa7lFKlHOkoyPRh5lTbq
-	 sEbODj+ubWlV2uob+UiLyZzIOJdxNT0uSYombiNunYLB/uu+DnU2vjCF77tNr6l53U
-	 qo2B78D63wtXQ==
+	b=TZ+0cI+OfocFuubmx3Nw24umAr8gIJO4NI3+yXOpNc0Gm2iBDjG039+DEdkPWa8Y7
+	 gz8l8AZkDMwELY/eySGpbdu5wRrPTU4fIh6pfSBYcT4T9hkio2NlT68wFiFa+gYKHX
+	 /sMQQ+rl4o5jS54NUocf1W1/2UCPmJYUEt8cdRgvDSiVMCsSlfJ6nRGgPctGctsMWH
+	 mOm44ZPNynsb9o/3ejSXnJTlzKcd2ipryvx1LS8fan8+VZCorjSnNMVXkILjKxaWY1
+	 BlD5pFSD6ZhbSMt+n7z3LwAGNhF+nl+9eebm1v8h31OZIb4sKnwpcSMNOmjIB6f+qD
+	 CzvtctOTswoYw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: alexander.duyck@gmail.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -45,12 +45,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	mengyuanlou@net-swift.com,
 	mohsin.bashr@gmail.com,
 	pabeni@redhat.com
-Subject: Re: [net-next PATCH v4 2/4] net: pcs: xpcs: Allow for multiple addr in creation
-Date: Mon,  3 Aug 2026 18:48:30 -0700
-Message-ID: <20260804014830.2532522-1-kuba@kernel.org>
+Subject: Re: [net-next PATCH v4 3/4] net: pcs: xpcs: Add hooks for xpcs configuration of rsfec
+Date: Mon,  3 Aug 2026 18:48:42 -0700
+Message-ID: <20260804014842.2532708-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <178536366014.250758.7525172425951669429.stgit@ahduyck-xeon-server.home.arpa>
-References: <178536366014.250758.7525172425951669429.stgit@ahduyck-xeon-server.home.arpa>
+In-Reply-To: <178536379932.250758.16153445046800294554.stgit@ahduyck-xeon-server.home.arpa>
+References: <178536379932.250758.16153445046800294554.stgit@ahduyck-xeon-server.home.arpa>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,215 +62,228 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
---- Patch [2]: [net-next PATCH v4 2/4] net: pcs: xpcs: Allow for multiple addr in creation ---
-commit 659d2ab0068099d84cd67aa41fc9d8519508054c
+--- Patch [3]: [net-next PATCH v4 3/4] net: pcs: xpcs: Add hooks for xpcs configuration of rsfec ---
+commit 6935ace349fd9a75ff7b20b38cca3d38ecc8571b
 Author: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
 
-net: pcs: xpcs: Allow for multiple addr in creation
+net: pcs: xpcs: Add hooks for xpcs configuration of rsfec
 
-This extends xpcs_create_data(), xpcs_create() and xpcs_free_data() to take
-an array of mdio devices, adds a new exported xpcs_create_pcs_mdiodevs()
-entry point, and switches fbnic over to registering two MDIO addresses.  A
-new xpcs->channels field records how many mdio devices were provisioned.
+This adds a per-interface-mode .pma_config hook to the Synopsys xPCS
+compat table and uses it to write MDIO_PMA_RSFEC_CTRL for 25GBASE-R,
+50GBASE-R, LAUI and 100GBASE-P. A new vendor bit is added to pcs-xpcs.h
+and a new bit define is added to include/uapi/linux/mdio.h.
 
-A few questions below on the new multi-channel plumbing and the
-kernel-doc/changelog wording.
-
-The changelog says:
-
-    Add xpcs_create_mdiodevs() and xpcs_create_pcs_mdiodevs calls so that a
-    driver using the above part can tell xpcs the addr values in one call.
-
-xpcs_create_mdiodevs() is added as static, with no EXPORT_SYMBOL_GPL and no
-declaration in include/linux/pcs/pcs-xpcs.h, so a driver that needs the
-struct dw_xpcs handle (the xpcs_create_mdiodev() users) still cannot pass
-more than one address.  Should the changelog only mention
-xpcs_create_pcs_mdiodevs() as the driver-facing addition?
-
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_phylink.c b/drivers/net/ethernet/meta/fbnic/fbnic_phylink.c
-> index 09c5225111be3..88fc78d55c7a5 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_phylink.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_phylink.c
-> @@ -200,9 +200,11 @@ int fbnic_phylink_create(struct net_device *netdev)
->  	struct fbnic_dev *fbd = fbn->fbd;
->  	struct phylink_pcs *pcs;
->  	struct phylink *phylink;
-> +	/* See fbnic_mdio.c addr usage */
-> +	int addrs[] = { 0, 1 };
->  	int err;
->  
-> -	pcs = xpcs_create_pcs_mdiodev(fbd->mdio_bus, 0);
-> +	pcs = xpcs_create_pcs_mdiodevs(fbd->mdio_bus, addrs, ARRAY_SIZE(addrs));
->  	if (IS_ERR(pcs)) {
->  		err = PTR_ERR(pcs);
->  		dev_err(fbd->dev, "Failed to create PCS device: %d\n", err);
+A few questions below.
 
 > diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
-> index 6a645df58f9b8..a6b993745f3be 100644
+> index a6b993745f3be..3800c129dae2e 100644
 > --- a/drivers/net/pcs/pcs-xpcs.c
 > +++ b/drivers/net/pcs/pcs-xpcs.c
-> @@ -214,9 +214,18 @@ int xpcs_read(struct dw_xpcs *xpcs, int dev, u32 reg)
->  	return mdiodev_c45_read(xpcs->mdiodev[0], dev, reg);
+> @@ -1394,6 +1394,69 @@ static int xpcs_read_ids(struct dw_xpcs *xpcs)
+>  	return 0;
 >  }
 >  
+> +struct pma_pcs_values {
+> +	int channels;
+> +	u16 rsfec_ctrl;
+> +};
+> +
 > +static int
-> +xpcs_mdev_write_ch(struct dw_xpcs *xpcs, int ch, int dev, u32 reg, u16 val)
+> +xpcs_config_rsfec_pma(struct dw_xpcs *xpcs, const struct pma_pcs_values *v)
 > +{
-> +	if (ch >= xpcs->channels)
-> +		return -ENXIO;
+> +	/* fbnic's DW IP exposes the RS-FEC PMA at SEP_PMA1, so use it
+> +	 * directly. Scanning DEVS1 for the correct PMA MMD is left as future
+> +	 * work for enabling a non-fbnic device on this PCS.
+> +	 */
+> +	int pma_mmd = MDIO_MMD_SEP_PMA1;
+> +	int ret = 0, i;
 > +
-> +	return mdiodev_c45_write(xpcs->mdiodev[ch], dev, reg, val);
+> +	for (i = 0; ret >= 0 && i < v->channels; i++) {
+> +		ret = xpcs_mdev_write_ch(xpcs, i, pma_mmd,
+> +					 MDIO_PMA_RSFEC_CTRL, v->rsfec_ctrl);
+> +	}
+> +
+> +	return ret;
 > +}
+
+[Severity: Medium]
+[Finding: main-1-0]
+[Sources: opus-5, sonnet-5]
+The comment states the SEP_PMA1 placement is an fbnic property, but the
+hooks below are attached to synopsys_xpcs_compat[], which xpcs_identify()
+selects for every device matching DW_XPCS_ID/DW_XPCS_ID_MASK (stmmac via
+xpcs_create_fwnode()/xpcs_create_mdiodev(), ksz9477, txgbe SP). Should
+these hooks be gated on xpcs->info.pma, or live in a device specific
+compat table?
+
+The file already has both mechanisms: xpcs_do_config() checks
+WX_TXGBE_XPCS_PMA_10G_ID, xpcs_create() checks
+MP_FBNIC_XPCS_PMA_100G_ID, and nxp_sja1105_xpcs_compat /
+nxp_sja1110_xpcs_compat show the separate table approach.
+
+There is also no MDIO_DEVS1 / MDIO_DEVS_SEP_PMA1 presence check before
+writing, so on a DW xPCS that does not implement SEP_PMA1 this writes
+into an MMD that may not exist. Is that intended?
+
+Second question on the same loop: the iteration count comes from
+v->channels rather than xpcs->channels. Given:
+
+drivers/net/pcs/pcs-xpcs.c:xpcs_mdev_write_ch() {
+	if (ch >= xpcs->channels)
+		return -ENXIO;
+	...
+}
+
+and xpcs_do_config() propagating the pma_config() error, wouldn't a
+single channel xPCS instance selecting PHY_INTERFACE_MODE_LAUI or
+PHY_INTERFACE_MODE_100GBASEP (both .channels = 2 below) fail interface
+configuration outright with -ENXIO, after channel 0 has already been
+written and with no unwind of that write?
+
+In the current tree fbnic creates its PCS with two addresses so
+xpcs->channels is 2 and this is not reachable today, and the 25G
+Wangxun AML part never instantiates an xPCS at all, so this looks
+latent rather than an active regression. Would deriving the loop bound
+from xpcs->channels avoid it entirely?
+
 > +
->  int xpcs_write(struct dw_xpcs *xpcs, int dev, u32 reg, u16 val)
->  {
-> -	return mdiodev_c45_write(xpcs->mdiodev[0], dev, reg, val);
-> +	return xpcs_mdev_write_ch(xpcs, 0, dev, reg, val);
->  }
->  
->  int xpcs_modify(struct dw_xpcs *xpcs, int dev, u32 reg, u16 mask, u16 set)
+> +static int xpcs_25gbaser_pma_config(struct dw_xpcs *xpcs)
+> +{
+> +	const struct pma_pcs_values v = {
+> +		.rsfec_ctrl = 0,
+> +		.channels = 1,
+> +	};
 
 [Severity: Medium]
 [Finding: main-1-1]
 [Sources: opus-5]
-Only the write path becomes channel aware here.  xpcs_read(),
-xpcs_modify(), xpcs_modify_changed() and the
-phylink_mii_c45_pcs_get_state(xpcs->mdiodev[0], ...) call in
-xpcs_get_state_c73() stay pinned to mdiodev[0], and no per-channel read or
-read-modify-write helper appears later in the series either (checked at
-7b16dc0f9f78, where xpcs_write_pcs_ch() and xpcs_mdev_write_ch() are the
-only channel-aware accessors).
+The commit message says this "enables the correct FEC settings to enable
+RS-FEC encoding on the link". Which write sets an RS-FEC enable bit?
 
-For fbnic, addr 1 is a distinct register page:
+For 25GBASE-R the value written to MDIO_PMA_RSFEC_CTRL is a literal 0.
+The other three hooks write only DW_VR_RSFEC_CTRL_TC_PAD_ALTER (BIT(10))
+or MDIO_PMA_RSFEC_CTRL_4LANE_PMD (BIT(3)).
 
-drivers/net/ethernet/meta/fbnic/fbnic_mdio.c maps addr 0/1 onto
-FBNIC_PCS_PAGE(addr), described as allowing access to both halves of the
-PCS for the 50R2 config.
+Also, xpcs_config_rsfec_pma() does a full 16-bit write rather than a
+masked update via the existing xpcs_modify() helper, so the RS-FEC
+enable / bypass-correction / bypass-indication bits of this
+standards-defined register are unconditionally cleared. Is it safe to
+discard whatever firmware or an earlier bring-up stage programmed there?
 
-So in the two-instance modes (PHY_INTERFACE_MODE_LAUI and
-PHY_INTERFACE_MODE_100GBASEP, both with .channels = 2), instance 1 gets the
-vendor writes from xpcs_config_rsfec_pma() later in the series, but:
+A related question on the keying: the value depends only on
+phy_interface_t and not on the selected FEC mode. fbnic handles
+FBNIC_AUI_LAUI2 with FBNIC_FEC_OFF in fbnic_mac_get_link_status(), yet
+PHY_INTERFACE_MODE_LAUI here always programs the transcode pad alter
+bit, and FBNIC_AUI_25GAUI with FBNIC_FEC_RS still ends up writing 0.
+Should the register contents track the negotiated FEC mode?
 
-xpcs_pre_config() -> xpcs_soft_reset() -> xpcs_modify() -> mdiodev[0]
-xpcs_get_state_c73() -> xpcs_read(MDIO_STAT1/STAT2) -> mdiodev[0]
+Nothing reads the register back or checks an RS-FEC status bit
+afterwards, so a wrong value would be silent.
 
-Does instance 1 need its own soft reset for those vendor writes to latch,
-and should its fault/alignment status be folded into the state reported to
-phylink?  As written, a faulted or unreset second half would not be visible.
-
-> @@ -1507,16 +1516,21 @@ static int xpcs_identify(struct dw_xpcs *xpcs)
-
-[ ... ]
-
-> @@ -1610,25 +1627,24 @@ static struct dw_xpcs *xpcs_create(struct mdio_device *mdiodev)
->  	return ERR_PTR(ret);
->  }
->  
-> -/**
-> - * xpcs_create_mdiodev() - create a DW xPCS instance with the MDIO @addr
-> - * @bus: pointer to the MDIO-bus descriptor for the device to be looked at
-> - * @addr: device MDIO-bus ID
-> - *
-> - * Return: a pointer to the DW XPCS handle if successful, otherwise -ENODEV if
-> - * the PCS device couldn't be found on the bus and other negative errno related
-> - * to the data allocation and MDIO-bus communications.
-> - */
-> -struct dw_xpcs *xpcs_create_mdiodev(struct mii_bus *bus, int addr)
-> +static struct dw_xpcs *
-> +xpcs_create_mdiodevs(struct mii_bus *bus, const int *addrs, int channels)
->  {
-> -	struct mdio_device *mdiodev;
-> +	struct mdio_device *mdiodev[DW_XPCS_MAX_CHANNELS], *rval;
->  	struct dw_xpcs *xpcs;
-> +	int i;
 > +
-> +	if (!addrs || channels <= 0 || channels > DW_XPCS_MAX_CHANNELS)
-> +		return ERR_PTR(-EINVAL);
-
-[ ... ]
-
-> +/**
-> + * xpcs_create_pcs_mdiodevs() - create a DW xPCS instance with multiple @addrs
-> + * @bus: pointer to the embedded phylink PCS instance
-
-[Severity: Low]
-[Finding: main-1-4]
-[Sources: opus-5]
-Should @bus be described as the MDIO-bus descriptor, as the existing
-xpcs_create_mdiodev() kernel-doc does?  It is a struct mii_bus * that gets
-handed to mdio_device_create(bus, addrs[i]); the embedded phylink PCS is
-what the function returns.
-
-> + * @addrs: an array of int
-> + * @channels: the number of addrs items or channels
-> + *
-> + * Return: a pointer to the phylink PCS if successful, otherwise -ENODEV if
-> + * the PCS device couldn't be found on the bus and other negative errno related
-> + * to the data allocation and MDIO-bus communications.
-> + */
-
-[Severity: Low]
-[Finding: main-1-4]
-[Sources: opus-5]
-Could the Return: section also mention -EINVAL?  The new check in
-xpcs_create_mdiodevs():
-
-	if (!addrs || channels <= 0 || channels > DW_XPCS_MAX_CHANNELS)
-		return ERR_PTR(-EINVAL);
-
-is reachable through this exported wrapper, but only -ENODEV and
-allocation/MDIO errors are listed.  Both wording issues are still present at
-the end of the series (7b16dc0f9f78).
-
-> +struct phylink_pcs *
-> +xpcs_create_pcs_mdiodevs(struct mii_bus *bus, const int *addrs, int channels)
-> +{
-> +	struct dw_xpcs *xpcs;
-> +
-> +	xpcs = xpcs_create_mdiodevs(bus, addrs, channels);
-> +	if (IS_ERR(xpcs))
-> +		return ERR_CAST(xpcs);
-> +
-> +	return &xpcs->pcs;
+> +	return xpcs_config_rsfec_pma(xpcs, &v);
 > +}
-> +EXPORT_SYMBOL_GPL(xpcs_create_pcs_mdiodevs);
+> +
+> +static int xpcs_50gbaser_pma_config(struct dw_xpcs *xpcs)
+> +{
+> +	const struct pma_pcs_values v = {
+> +		.rsfec_ctrl = DW_VR_RSFEC_CTRL_TC_PAD_ALTER,
+> +		.channels = 1,
+> +	};
+> +
+> +	return xpcs_config_rsfec_pma(xpcs, &v);
+> +}
+> +
+> +static int xpcs_50gbaser2_pma_config(struct dw_xpcs *xpcs)
+> +{
+> +	const struct pma_pcs_values v = {
+> +		.rsfec_ctrl = DW_VR_RSFEC_CTRL_TC_PAD_ALTER,
+> +		.channels = 2,
+> +	};
+> +
+> +	return xpcs_config_rsfec_pma(xpcs, &v);
+> +}
+> +
+> +static int xpcs_100gbasep_pma_config(struct dw_xpcs *xpcs)
+> +{
+> +	const struct pma_pcs_values v = {
+> +		.rsfec_ctrl = MDIO_PMA_RSFEC_CTRL_4LANE_PMD,
+> +		.channels = 2,
+> +	};
+> +
+> +	return xpcs_config_rsfec_pma(xpcs, &v);
+> +}
+> +
+>  static const struct dw_xpcs_compat synopsys_xpcs_compat[] = {
 
 [ ... ]
 
 > diff --git a/drivers/net/pcs/pcs-xpcs.h b/drivers/net/pcs/pcs-xpcs.h
-> index 5c804cfd47d3c..36f4906e689a8 100644
+> index 36f4906e689a8..ab47d6dd050c7 100644
 > --- a/drivers/net/pcs/pcs-xpcs.h
 > +++ b/drivers/net/pcs/pcs-xpcs.h
-> @@ -114,6 +114,7 @@ struct dw_xpcs {
->  	struct mdio_device *mdiodev[DW_XPCS_MAX_CHANNELS];
->  	struct clk_bulk_data clks[DW_XPCS_NUM_CLKS];
->  	struct phylink_pcs pcs;
-> +	int channels;
+> @@ -94,6 +94,12 @@
+>  #define DW_VR_MII_DIG_CTRL2_TX_POL_INV		BIT(4)
+>  #define DW_VR_MII_DIG_CTRL2_RX_POL_INV		BIT(0)
+>  
+> +/* Clause 133 defines */
+> +/* RSFEC transcode pad alter
+> + * DW vendor extension in RS-FEC control
+> + */
+> +#define DW_VR_RSFEC_CTRL_TC_PAD_ALTER	BIT(10)
+
+[Severity: Low]
+[Finding: main-3-8]
+[Sources: opus-5]
+This isn't a bug, but is "Clause 133" the right reference here? In IEEE
+802.3-2022 the RS-FEC sublayer and its MDIO registers are Clause 134
+(Clause 108 for 25G RS-FEC), and Clause 133 is a PCS clause. The next
+patch in this series cites "IEEE 133.2.2" for PCS alignment marker
+content, which suggests the same.
+
+Also, the macro name implies a register macro DW_VR_RSFEC_CTRL, which
+does not exist anywhere in the tree; the register actually written is
+MDIO_PMA_RSFEC_CTRL in MDIO_MMD_SEP_PMA1. The rest of the file prefixes
+a bit macro with the register macro it belongs to, for example
+DW_VR_MII_DIG_CTRL2 -> DW_VR_MII_DIG_CTRL2_TX_POL_INV.
+
+The define is also placed right after the DW_VR_MII_* block, which is
+MMD 31 vendor MII, while this bit belongs to a PMA MMD register. Would
+moving it and renaming it to match the register make this clearer?
+
+> +
+>  #define DW_XPCS_INFO_DECLARE(_name, _pcs, _pma)				\
+>  	static const struct dw_xpcs_info _name = { .pcs = _pcs, .pma = _pma }
+>  
+> diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
+> index b2541c948fc1e..5219c877b2cfd 100644
+> --- a/include/uapi/linux/mdio.h
+> +++ b/include/uapi/linux/mdio.h
+> @@ -317,6 +317,9 @@
+>  #define MDIO_PMA_10GBR_FECABLE_ABLE	0x0001	/* FEC ability */
+>  #define MDIO_PMA_10GBR_FECABLE_ERRABLE	0x0002	/* FEC error indic. ability */
+>  
+> +/* RSFEC PMA Control register */
+> +#define MDIO_PMA_RSFEC_CTRL_4LANE_PMD	BIT(3)
+> +
 
 [Severity: Low]
 [Finding: main-1-2]
 [Sources: opus-5]
-This isn't a bug, but the name channels now carries two different meanings
-in this driver.  Here it counts the MDIO devices a driver provisioned, while
-struct pma_pcs_values::channels in pcs-xpcs.c counts the PCS instances the
-active link mode uses (.channels = 1 for 25GBASER/50GBASER, .channels = 2
-for LAUI/100GBASEP).
+This isn't a bug, but could the IEEE clause and table that define bit 3
+of register 1.200 be cited here? Since the sibling bit of the same
+register added by this patch (DW_VR_RSFEC_CTRL_TC_PAD_ALTER) is
+described as a DW vendor extension and kept in the driver header, it is
+hard to tell from the patch whether bit 3 is genuinely standard or also
+Synopsys specific. If it is vendor specific, pcs-xpcs.h with a DW_VR_
+prefix would be the better home.
 
-fbnic_phylink_create() passes addrs[] = { 0, 1 } before any interface is
-selected, so xpcs->channels is 2 even in the single-instance modes fbnic
-also advertises.  The bound in xpcs_mdev_write_ch():
+Placement is also a little odd: the new define sits inside the
+10GBASE-R FEC ability block, between MDIO_PMA_10GBR_FECABLE_ERRABLE and
+MDIO_PMA_10GBR_FSRT_ENABLE, rather than next to the
+MDIO_PMA_RSFEC_CTRL register definition earlier in the file. Would
+moving it beside MDIO_PMA_RSFEC_CTRL be preferable?
 
-	if (ch >= xpcs->channels)
-		return -ENXIO;
-
-then checks against the provisioned count rather than the active mode's
-count.  Would a name like n_mdiodevs or num_addrs make that invariant
-clearer?
-
-The fbnic side also repeats the fbnic_mdio.c address layout as bare numbers
-tied to it only by the "/* See fbnic_mdio.c addr usage */" comment; could
-those addresses come from a shared define?
-
->  	phy_interface_t interface;
->  	bool need_reset;
->  	u8 eee_mult_fact;
+>  /* PMA 10GBASE-R Fast Retrain status and control register. */
+>  #define MDIO_PMA_10GBR_FSRT_ENABLE	0x0001	/* Fast retrain enable */
+>
