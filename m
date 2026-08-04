@@ -1,68 +1,86 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3573543E9FD
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 17:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DA6476CDB
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 17:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785864851; cv=none; b=n69rLgnPQwHtzfXRcRFo1YiuMxKyLSZT2MWDyEcTby7i4Rc6wfUdIWIDAL2S0oXQN6fGisUy/yPPn5cU5YVeyVvy0INlcuXmCgDxwCgpUyGA4c6kzGJpCxO2zd45XPeh9VZhuujperUy4Q0/PDBHAK9HaPf9KCvxsFExVQc9K6E=
+	t=1785864898; cv=none; b=EFIa2LH43lcgoHtHD6KDwhSeS2k+D0XbHeDRlSW1X9G76h2ZFyegh5gniRb6Jv68Y/uw9TOfT8AtPVGdnF+DAUo6sY5DUcFCBVmsG9SdN4TVUNWMK0jyi8Qx2Ng4vYuiJAg6A6Q5bOvavDZqLpfjA3DsTVCDKIy77TAGVScFdVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785864851; c=relaxed/simple;
-	bh=iAX2mZPsJFIlY7/TcdBe53KvOmZofj+ZPCzSXkrrIgQ=;
+	s=arc-20240116; t=1785864898; c=relaxed/simple;
+	bh=WEJbkA4NVp34ndRVamv+M7qqX0YbqfRrQ5HXGOWsGYc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gk3RW6IoWaW2tqdWiulTonZzX0QjXVTN3ZpWRxvPblDUs/VSXVQ4boaqa+7iciFL+qztQoFNptTW8ATGMvQ34DVbyIZPzs1sWpOZqwrgu1lrj58wppRdRqrZxI0gdb2gpGwikwNx1HANRfUMkLMpzqc8458bZj1UfJpjZWEpdTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rTGhvLh8; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=D1WikId68wQz7RSRzcBymtRvU+vytovCYoVP99nF8Si6wdo1v8Ql4BRGpRSG3VZ372FkVJYYQzRN4EhHX4pW668+DyU+UCE2gF4ePEAYv2cwxtshE51YZDS0s66SnfYk6Pj/bx9WgMMSLPMDGO3ghmdZGTxVV51saF36pTeyiLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MJnqNgnt; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cPFLnHvY; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rTGhvLh8"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38dc4553f62so93273a91.0
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 10:34:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MJnqNgnt";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cPFLnHvY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785864896;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=875xjetkT5UuOybTTeZ61TUYqirr87m2MjPaJA71Q+c=;
+	b=MJnqNgntxAymlBlHUQA9wfZmGdNKXtXk2NhuNlIo2gLV33H9c8UsAUTr5TkdsucDTu+VEA
+	RwYYA0cNHBb3mtmJiIDZJ7HW5IogsLCRiduk+BIeubov9LLPg/YO/+TRtRnIwqP7QfV0+H
+	aASjLd5ZFdY+HWfcOFUAY5E5fOfpAts=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-361-WNgJD0hRMz-e17GY_KlfAA-1; Tue, 04 Aug 2026 13:34:54 -0400
+X-MC-Unique: WNgJD0hRMz-e17GY_KlfAA-1
+X-Mimecast-MFC-AGG-ID: WNgJD0hRMz-e17GY_KlfAA_1785864893
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f6d70223dso36192f8f.1
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 10:34:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785864847; x=1786469647; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mJZVCPW6aaT95lIDoaRsFoVQmof2m7B0Dm3vD+5MmzM=;
-        b=rTGhvLh88TLq/VN8G65RTIgtM2zoQldCXrSE+DkV0738yVivDGs4tF7htoXUgucW5o
-         UY2D010cRFMVIEzpYMCuZxtHWJ5nbdkoM5Io4a62gkGlq+Ov6+pz1eqquk81YuutFUAC
-         hUq4pr+dY0GedaZJQthy78EB/UkShVtuxQn2VrE5ZUAWiaDkJTXcD0EsjnnEySblMTIN
-         y70W8SZmwbmemzIOaVVn5ELWr5kau/PFIFVyHJUegg33CMvm2HMMdGZol4q9iHvkUaAg
-         YnLeyfOJo+fbumC+IrJxHCTlfQqO15oieAR5mnjgIPIda+VAjqC2KYRFic76YzuCbiG/
-         /CLw==
+        d=redhat.com; s=google; t=1785864893; x=1786469693; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=875xjetkT5UuOybTTeZ61TUYqirr87m2MjPaJA71Q+c=;
+        b=cPFLnHvYdhnmiy/bDa/R3FpE9v3vS6PxlLXIF72fNpzJYVVwuXEvMOWd4mVsTpEh5c
+         FB2AV9E4WRgfcR8dNougCjLVTetad5fJr9P/UfpH0AbbxGbldXmFPMLTUaWug3Cms24C
+         qZkA/xr99/j70Jmmyfcu43SFu+ngkaINVVi4k0O02SmdidPa1JqYI5fJ8zEliuZEHfRr
+         ahtPZzcIQbiuP/nZakygq5vyTFpS9NojcWS33FFS3Gt7Rha6HXm27rrqisuqpl66cA6V
+         f53g7BI1p9m0W+Vr7vmq0utx8nuhvHtCr4rvr6BuEcyrqxSMzO5uMN8Ja95JcBy/qfS0
+         6B/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785864847; x=1786469647;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1785864893; x=1786469693;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mJZVCPW6aaT95lIDoaRsFoVQmof2m7B0Dm3vD+5MmzM=;
-        b=AOHK/QcPyb8Ja3v7pzcQOVDSgrMWBN8jm9HZsN+MX/G45J/GVAyWV7VPkeo9T3M2nI
-         PFsyb9koqW1kN5mxpSSLczj5HxxQsrAsEJEEALlH+cHQ4nJKd54hwLAj7AG0/ROY3k9G
-         K/JIyx+SM6mNdQaiSWwtPXfl+rieLVBHWQC2Nh8vlFWYH0wXxqqjbgKYR4CkIuPaKQeC
-         jJoxOuZxqYEW9BwlRu7cC9lMg2Td8wDEH65X3l/2eBSJDEsV2C2Jks6gR6ulq7sWBRdt
-         eDSiUArkKZT7YregNVuRP9w+BQTttBv9fX45EN9RdJS+vH1CXfKVOYHLi19bDS9Tao4O
-         ijkg==
-X-Forwarded-Encrypted: i=1; AHgh+RrUUcJkA7203f9iH9wMpUup0Navas1fnrWJLeaAHLQpryVZWfFcefb2VqO4MSgJWor8zgu3xAc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwO2+EzLrlTCuqiCPE5er//N03U4hTS3Itnm9Af7FozCcQ+dHZg
-	aSv5G3daWMZa5vbN1Fvh9LOxWQ2+7BFDQYapsBW6MBH7G7iblpWz5+0r
-X-Gm-Gg: AR+sD103QaM40koufzfC712vOk/W5JMD4OHaP/OkezWweuaSMnULP+IstnrX4MNh9ez
-	BeBSlpCC02B8s9CBkhxwt4wv9XNXQ4lnVD6+tEvnByi56b+qaBOS//vkR44FgEBbwqqxPDkmoQq
-	hc6fLOLqKCyzpO2JJDnXez6egVzKPMEMXK6qjtqTAZGC2XkYov6qJ3Ay4NUXyMxCexyNdGXgHuF
-	mRGncs350jCQGUIN55sf4gD+Le9exJXL3mt6dUVE7nWT6kJKMjJTx2/EXcuXVs9IduccEG09TrV
-	HROZwOi1Ekf+LaiHutigPN60PXEiadFZvHxEddpfJQGKZfQc0OYx4vwI4o+1Eu3kv5RJFnqjTAk
-	9ymP5HBY1WofOgbKjktuoAbWO6oqcKWVQtpsEdL27YGgiTrtIH6n1eL2rD62+GCDJMWpdcgeZ6M
-	v0tDVzMlJP74lHxmEjAvl0lyXapslQQmQLxvOBzB6bZ6zT9xwePhGTgK/1Y3c0u/2yaqytheAZx
-	qceV69QQPenGUzAhgMFQ2JnFGccvG7Cbn0AGHMFdCA=
-X-Received: by 2002:a17:90b:2f03:b0:382:1aaf:4bab with SMTP id 98e67ed59e1d1-3903c6cc30fmr526351a91.27.1785864847541;
-        Tue, 04 Aug 2026 10:34:07 -0700 (PDT)
-Received: from ?IPV6:2600:4040:9399:4000:e553:72e5:7d37:c7ef? ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3903927c711sm255036a91.11.2026.08.04.10.34.04
+        bh=875xjetkT5UuOybTTeZ61TUYqirr87m2MjPaJA71Q+c=;
+        b=FmfqlXHgpLQBHRGI26bV3bcafo7fWd6kgscyn39k/6sIfq4Vln+7xaRn4eHQ57qfWd
+         WLaouyC0RTGTrNP5Lj04fDAfQtjYKpZenaH/r1vItPP2FNbOpf3WcX9gME2GhR3G99Il
+         CPQ7302tH7b+ALAWnEZ6hF+92L0psZSwjdrKbQdBzlOyK/17d/JhDST11uzefpYylgEJ
+         IS2Rhcup56IsyYcJJirNZqz5DNsv43/i/1dGXASc49qHEG/7FVltQNA2WnNKtdxuo2Nq
+         bE8rY/0VdYP4zFIioYkSlb8CNuYhnqFtRULi4yqWBbo3e1cziLtcHricck0GpVd5YUw0
+         UIew==
+X-Forwarded-Encrypted: i=1; AHgh+RrcknWNjwBqFQdf0zfXoLq/M69Fn5Wy2jH0/nTajv5j9tjGmFSIYRY7vDnP8QyK6kCoocwHCXk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyG+nNZtUm5nXIMIgKsSexKPwUEzLtxi4mIV7+1mxS9Y7vBuZLI
+	8uGnCvT7+cm7LiBrPrMFLZ6tK65T7cgxn7jXv0KdAGWbpZyloLgb9PxuvR5Y+sQvaZDxTNKzDBL
+	7nqrLwrzMy5+YCAzGTDsfhWHmh51WrCnAUcR+bh0Z8SPCfxWqFjhOl5YFpA==
+X-Gm-Gg: AR+sD10rm/XPRGsvHOdWMc4gWHQ06YjTOvUkvQ+KAKjT/S2Vl7tn3tmb6q575gPt/k9
+	i0oR00/3QphQIXSq25fbbv8pSbqbyRIILSLOJLMR4EbgihVdEgI8Q4oSPqKy+t1EpaHul4r+tU3
+	qju+QGOjjNrZ7pErEu5J0ZSTihnXGElVTQshzg8NOcMN/q9lAcNhNMlo5LWt6OLJ3XeEhtn5M4j
+	SzhUNe5nDMx3TFJYy6ucOnPmTZO2SkTIPD07Z8kxzfuQyswpaIjEAVIUE5CtaEPja9OOMjNSRJf
+	PczTKJjmSYFQCSaGVXTj6MpMzkOG0Y03MmV0dKo6fVyC3JNtOYNOLnwkc0FnohOqapeekHZADjz
+	tHseXZan5YDmjiCHi9bPDp4En3CDrwqt4MU0vhKnbuLvq9u39zAiJ8y+MeKw5PDUG2EDfTzafKT
+	s=
+X-Received: by 2002:a05:6000:2403:b0:47f:4650:e45c with SMTP id ffacd0b85a97d-47fec50e0ffmr1440968f8f.12.1785864893230;
+        Tue, 04 Aug 2026 10:34:53 -0700 (PDT)
+X-Received: by 2002:a05:6000:2403:b0:47f:4650:e45c with SMTP id ffacd0b85a97d-47fec50e0ffmr1440894f8f.12.1785864892762;
+        Tue, 04 Aug 2026 10:34:52 -0700 (PDT)
+Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec232333sm1776679f8f.18.2026.08.04.10.34.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Aug 2026 10:34:06 -0700 (PDT)
-Message-ID: <0b3278c9-550e-4b72-8469-00c86180c2ea@gmail.com>
-Date: Tue, 4 Aug 2026 13:34:03 -0400
+        Tue, 04 Aug 2026 10:34:52 -0700 (PDT)
+Message-ID: <922e3cc9-8621-4b4a-af0c-4b8b7c660027@redhat.com>
+Date: Tue, 4 Aug 2026 19:34:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,53 +88,158 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next V2 08/13] net/mlx5e: psp: Handle HW-decapsulated
- RX PSP packets
-To: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca <sd@queasysnail.net>
-Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- Alexei Lazar <alazar@nvidia.com>, Boris Pismenny <borisp@nvidia.com>,
- Carolina Jubran <cjubran@nvidia.com>, Chris Mi <cmi@nvidia.com>,
- Cosmin Ratiu <cratiu@nvidia.com>, Doruk Tan Ozturk <doruk@0sec.ai>,
- Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>,
- Jacob Keller <Jacob.e.keller@intel.com>, Jianbo Liu <jianbol@nvidia.com>,
- Kees Cook <kees@kernel.org>, Lama Kayal <lkayal@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org,
- Mark Bloch <mbloch@nvidia.com>, Patrisious Haddad <phaddad@nvidia.com>,
- Raed Salem <raeds@nvidia.com>, Rahul Rameshbabu <rrameshbabu@nvidia.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>,
- Stanislav Fomichev <sdf.kernel@gmail.com>
-References: <20260804083535.2946459-1-tariqt@nvidia.com>
- <20260804083535.2946459-9-tariqt@nvidia.com>
+Subject: Re: [PATCH v1 net-next 3/3] geneve: Support per-netns netdev
+ unregistration.
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org, i.maximets@ovn.org
+References: <20260731164612.2148830-1-kuniyu@google.com>
+ <20260731164612.2148830-4-kuniyu@google.com>
+ <bfa765c2-a3e7-42b7-90c5-9757d8392687@redhat.com>
+ <CAAVpQUDmZEaQNDSySLayqexgTrUbhBaL7XPCt9XNQzh+NGQ=UQ@mail.gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 Content-Language: en-US
-From: Daniel Zahka <daniel.zahka@gmail.com>
-In-Reply-To: <20260804083535.2946459-9-tariqt@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <CAAVpQUDmZEaQNDSySLayqexgTrUbhBaL7XPCt9XNQzh+NGQ=UQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On 8/4/26 5:24 PM, Kuniyuki Iwashima wrote:
+> On Tue, Aug 4, 2026 at 6:47 AM Paolo Abeni <pabeni@redhat.com> wrote:
+>> On 7/31/26 6:45 PM, Kuniyuki Iwashima wrote:
+>>> geneve_exit_rtnl_net() iterates geneve devices whose sockets
+>>> are in the dying netns and queues them for destruction.
+>>>
+>>> So the devices may reside in different netns.
+>>>
+>>> Let's use unregister_netdevice_queue_net() to support per-netns
+>>> device unregistration.
+>>>
+>>> list_del() is changed to list_del_init() to avoid queueing the
+>>> same device twice.
+>>>
+>>> Even after geneve_exit_rtnl_net() queues a cross-netns geneve
+>>> device, geneve_dellink() can be called concurrently for it.
+>>> In such a case, __rtnl_net_unlock() will perform the unregistration.
+>>>
+>>> Note that geneve uses register_pernet_subsys() instead of _device(),
+>>> so default_device_exit_batch() guarantees that the async per-netns
+>>> works are flushed before ->exit().
+>>>
+>>> Tested:
+>>>
+>>> 1. Create geneve device across two netns.
+>>>
+>>>   # ip netns add ns1
+>>>   # ip netns add ns2
+>>>   # ip -n ns1 link add geneve0 link-netns ns2 type geneve external
+>>>
+>>> 2. Run bpftrace to check that geneve_uninit() is called between
+>>>    ->exit_rtnl() and ->exit().
+>>>
+>>>   # bpftrace -e '#include <linux/netdevice.h>
+>>>   kprobe:geneve_uninit {
+>>>       $dev = (struct net_device *)arg0;
+>>>       printf("PID: %d | DEV: %s%s\n", pid, $dev->name, kstack());
+>>>   }
+>>>   kprobe:geneve_exit_rtnl_net,
+>>>   kprobe:geneve_exit_net {
+>>>       printf("PID: %d%s\n", pid, kstack());
+>>>   }'
+>>>
+>>> 3. Remove the netns where the geneve socket resides
+>>>
+>>>   # ip netns del ns2
+>>>
+>>> Now, we can see geneve0 is unregistered by per-netns work
+>>> instead of cleanup_net() and it finishes before ->exit() to
+>>> avoid WARN_ON_ONCE(!list_empty(&gn->sock_list)) there.
+>>>
+>>>   PID: 571
+>>>           geneve_exit_rtnl_net+5
+>>>           ops_undo_list+702
+>>>           cleanup_net+1122
+>>>           process_scheduled_works+2538
+>>>   ...
+>>>   PID: 1047 | DEV: geneve0
+>>>           geneve_uninit+5
+>>>           unregister_netdevice_many_notify+7129
+>>>           unregister_netdevice_many_net+1050
+>>>           rtnl_net_work_func+136
+>>>           process_scheduled_works+2538
+>>>   ...
+>>>   PID: 571
+>>>           geneve_exit_net+5
+>>>           ops_undo_list+1064
+>>>           cleanup_net+1122
+>>>           process_scheduled_works+2538
+>>>   ...
+>>>
+>>> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+>>> ---
+>>>  drivers/net/geneve.c | 12 +++++++-----
+>>>  1 file changed, 7 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+>>> index f456a85dca77..a6a8978e3b81 100644
+>>> --- a/drivers/net/geneve.c
+>>> +++ b/drivers/net/geneve.c
+>>> @@ -2502,12 +2502,13 @@ static int geneve_changelink(struct net_device *dev, struct nlattr *tb[],
+>>>       return err;
+>>>  }
+>>>
+>>> -static void __geneve_dellink(struct net_device *dev, struct list_head *head)
+>>> +static void __geneve_dellink(struct net *net, struct net_device *dev,
+>>> +                          struct list_head *head)
+>>>  {
+>>>       struct geneve_dev *geneve = netdev_priv(dev);
+>>>
+>>> -     list_del(&geneve->next);
+>>> -     unregister_netdevice_queue(dev, head);
+>>> +     list_del_init(&geneve->next);
+>>> +     unregister_netdevice_queue_net(net, dev, head);
+>>>  }
+>>>
+>>>  static void geneve_dellink(struct net_device *dev, struct list_head *head)
+>>> @@ -2518,7 +2519,8 @@ static void geneve_dellink(struct net_device *dev, struct list_head *head)
+>>>       gn = net_generic(geneve->net, geneve_net_id);
+>>>
+>>>       mutex_lock(&gn->lock);
+>>> -     __geneve_dellink(dev, head);
+>>> +     if (!list_empty(&geneve->next))
+>>> +             __geneve_dellink(dev_net(dev), dev, head);
+>>
+>> Sashiko noted that the lockdep chain between dev->lock, utn->loc and
+>> gn->lock is not trivial, possibly a documentation follow-up would be useful
+>>
+>>>       mutex_unlock(&gn->lock);
+>>>  }
+>>>
+>>> @@ -2754,7 +2756,7 @@ static void __net_exit geneve_exit_rtnl_net(struct net *net,
+>>>       mutex_lock(&gn->lock);
+>>>
+>>>       list_for_each_entry_safe(geneve, next, &gn->geneve_list, next)
+>>> -             __geneve_dellink(geneve->dev, dev_to_kill);
+>>> +             __geneve_dellink(net, geneve->dev, dev_to_kill);
+>>
+>> Here sashiko foresees some problem with CONFIG_DEBUG_NET_SMALL_RTNL
+>> before full conversion to per netns lock even of ovs. Just more
+>> follow-up, I guess.
+> 
+> Is it Sashiko-nipa output ?
 
+Yes, sorry I should have included the link:
 
-On 8/4/26 4:35 AM, Tariq Toukan wrote:
->   #define MLX5E_ACCEL_FLOW_TAG_PROTO_MASK		GENMASK(23, 21)
-> @@ -25,6 +27,10 @@
->   #define MLX5E_ACCEL_FLOW_TAG_PROTO_IPSEC	(1 << 21)
->   #define MLX5E_ACCEL_FLOW_TAG_PROTO_MACSEC	(2 << 21)
->   #define MLX5E_ACCEL_FLOW_TAG_PROTO_PSP		(3 << 21)
-> +#define MLX5E_ACCEL_FLOW_TAG_PROTO_PSP_DECAP	(4 << 21)
-> +
-> +#define MLX5E_ACCEL_FLOW_TAG_PSP_VER_SHIFT	17
-> +#define MLX5E_ACCEL_FLOW_TAG_PSP_VER_MASK	(0xF << MLX5E_ACCEL_FLOW_TAG_PSP_VER_SHIFT)
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260731164612.2148830-1-kuniyu%40google.com
 
-[...]
+sometimes PW reports a timeout, but the report is still available via
+the sashiko nipa UI. You can search for the patch title in:
 
-> +static inline u8 mlx5e_psp_get_version(struct mlx5_cqe64 *cqe)
-> +{
-> +	return (mlx5e_accel_flow_tag(cqe) & MLX5E_ACCEL_FLOW_TAG_PSP_VER_MASK) >>
-> +		MLX5E_ACCEL_FLOW_TAG_PSP_VER_SHIFT;
-> +}
-maybe GENMASK()/FIELD_GET() would help deal with this bitfield?
+https://netdev-ai.bots.linux.dev/sashiko/
+
+alike the gemini instance.
+
+/P
+
