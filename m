@@ -1,86 +1,87 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7862367DF;
-	Tue,  4 Aug 2026 13:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCFA43F8D4;
+	Tue,  4 Aug 2026 13:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785848472; cv=none; b=cnxZuFRVJd/WCpdr8Zec65q9/aXMxAjbWQjbs/zZWVOtEwmGESPek29T042bj6Ypq++SIOfI48GIpMUAnUARrPTWzgbgYRNVR70rw1QnuuHNhZ9kTmGu4oVPPprEnEsEQHgJvWq6tI1+B1QbrxAYEC73wVml0WRjGdQQqXdr2tQ=
+	t=1785848780; cv=none; b=gzQOiXTUTDIkWGgwa+W4XmwJICIZIYJwx6jHGBnHiRbe33x6ED0zHnmvI2dlK+2U5O/C0nbzW5ClxTFYthlc0r80AJuJ+dx7lGH3rSXrhxtNd6terCqMGs8Jvrz/iZ31fMJ1wZ1iGSeLyRbL0qFHOs7/3q5C8BVSD0wvT1iaTHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785848472; c=relaxed/simple;
-	bh=GghmK73lGDhJPo+ZGVrMVuOGucOVnfFHdols4fzazhs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YXMMvAPVbVdIzEtC1NpgKWMjohjGcUHQkignxQd08n3nRuUgBc/m2j41JB76RMbhmqcs3Obyz3ko5RM/qZ8Sy9yFCWztD5IE+uWBOn/Qz8kz/QG1ZLN8OTbojzyxSUGRt7dgvadOcQNSv+vewKhrXMeBoEDLUeHEe0VPRUtCcYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zkhk2nuE; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785848780; c=relaxed/simple;
+	bh=3TwIWzyIBCVaWUC12zHhkewmyLDVSfAxslpouR3ztPc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tNn1hZ8Z/qt3heiKp/wLvstF1ieRTbGdLv3pKbJuTyWp6K/ljDbKfnj2QAIMWzKWBc6jr0/SkPBRDQLPnq9reW6Y8u5TRhuVfc9+ZuHCvV4Bi28IF+zUFWDiZQNkOfuehZQZ+iMMR5Ih11fLJ7ly5yueMifGUBA0OvMjU5mjHMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=rJYdpWGk; arc=none smtp.client-ip=113.46.200.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zkhk2nuE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=RHqOtFViWLom0UOkJ7evWITdjcrMvUN59L7Fwdq263g=; b=zkhk2nuENDPn5x95KTAqfD262P
-	hntbLHyspiSQ9VCoSovjkU+mVq0X72P+V7u5HjQ8wB34FT1ewu442YEUzA2Izx/OhByY3RaZWw9zT
-	j8zJMhLn8cO8WW+Ih6hPSbeST+xBOGwWAISWeb39CbRdxtRoR/WmchrZ638yLXC0mbUM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wrElL-00FzOx-6C; Tue, 04 Aug 2026 15:00:55 +0200
-Date: Tue, 4 Aug 2026 15:00:55 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Ahmed Naseef <naseefkm@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>, Qingfang Deng <dqfext@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	SkyLake Huang <SkyLake.Huang@mediatek.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next] net: phy: mediatek: add EcoNet EN7528 PHY
- support
-Message-ID: <f176e285-bd19-4a17-8b79-d19c76ba9f81@lunn.ch>
-References: <20260804103321.3331802-1-naseefkm@gmail.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="rJYdpWGk"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=IcYKgu/tZYio1J0TW6HqHgtSR1994OX1gMfBz7vbenQ=;
+	b=rJYdpWGkcB+289uVJJVePNUq+9O8vtHNSa5LXt1mJfS/v3vUrJwK0lWeyYVyaZylS9lVGOlY0
+	KV3gBEjIxE5eCE5uvDLdoQGO/rMovNmTmQUF+sdEuiwhhJZcPf521pRJ64m9pd3Nxk/Ydb9DLM3
+	xILZno9M6zPsuSoT53S9T4w=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4hDtpf1Tgbz1K96b;
+	Tue,  4 Aug 2026 20:56:42 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id C9D2D4057A;
+	Tue,  4 Aug 2026 21:06:11 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 4 Aug 2026 21:06:11 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <yangshuaisong@h-partners.com>,
+	<ningwei15@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH net] MAINTAINERS: add myself as a maintainer for Hisilicon Network Subsystem
+Date: Tue, 4 Aug 2026 21:05:54 +0800
+Message-ID: <20260804130554.871716-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260804103321.3331802-1-naseefkm@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
-On Tue, Aug 04, 2026 at 02:33:21PM +0400, Ahmed Naseef wrote:
-> The EcoNet EN7528 MIPS SoC embeds four Gigabit Ethernet PHYs (PHY ID
-> 0x03a29491) behind its built-in MT7530 switch. They use the same LED
-> register layout as the other SoC PHYs handled by this driver, but their
-> LED controller powers up with its external control disabled, so the LED
-> pins stay dark regardless of what is programmed into the LED control
-> registers.
-> 
-> Add a phy_driver entry for it, modelled on the Airoha AN7583 one. Its
-> config_init callback enables the LED controller through the LED basic
-> control register, which this driver does not program for its other
-> PHYs, but which the air_en8811h driver already handles as
-> AIR_PHY_LED_BCR. LED behaviour is then controlled through the phylib
-> LED operations shared with the other PHYs of this driver.
-> 
-> The LED block is shared by the four PHYs of the EN7528: the LED
-> configuration programmed through any one of them applies to all four,
-> while each PHY still drives its own LED pin from its own link state.
-> 
-> The EN7528 PHYs need no efuse calibration data, so relax the
-> MEDIATEK_GE_SOC_PHY dependencies to allow building the driver on the
-> ECONET platform.
-> 
-> Signed-off-by: Ahmed Naseef <naseefkm@gmail.com>
+I am already listed as a maintainer for the HNS3 and HIBMCGE drivers,
+but not for the broader Hisilicon Network Subsystem entry, whose file
+pattern covers drivers/net/ethernet/hisilicon/ (e.g. the legacy hns
+driver). As a result, patches to those files are not CC'd to me.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Add myself alongside Jian Shen to help maintain these legacy Hisilicon
+ethernet drivers and ensure patches in this tree are routed to me.
 
-    Andrew
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Acked-by: Jian Shen <shenjian15@huawei.com>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0d7987278c07..a77cf599bac2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -11743,6 +11743,7 @@ F:	drivers/net/ethernet/hisilicon/hibmcge/
+ 
+ HISILICON NETWORK SUBSYSTEM DRIVER
+ M:	Jian Shen <shenjian15@huawei.com>
++M:	Jijie Shao <shaojijie@huawei.com>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ W:	http://www.hisilicon.com
+
+base-commit: 1a35da325cac4d5bcad76a2aa943408a6f1d9000
+-- 
+2.43.0
+
