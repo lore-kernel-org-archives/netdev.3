@@ -1,121 +1,106 @@
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2998C470119
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 15:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3012A463B6D;
+	Tue,  4 Aug 2026 16:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785858860; cv=none; b=T2zlHmepoUqOSrDxjjT7Vz2hPU1j8/XgM0g28s8slX/KDKHlTMz/ogwuWrPd1FYtDeFew9W8FpUsK+MHpDxf6qaPrse8LczaCwod5UPsd+CaFfqCe95Fqt5T/oJ0+iI10j0jHQpDinpUu3j89dl+a2qHyrsJc4/IOJIYkWsR9/A=
+	t=1785859512; cv=none; b=PzvDOCA2ytCcdMgB0ajoSLpkbS3R1BHw7lxH7UeVlyXEjzBtBPgQN+Ndg8qExzKjJ5TL0wPf1ZiMZNixvpn1sf2AXKmCNKPpd1NIc5QacdY6Op9Vb8Bx9MzNAGme9DeM/B4e8PIN3+733JrwZoeV02cU8W5h3n79HhJWaZcWdY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785858860; c=relaxed/simple;
-	bh=jU+3f89ymxzifmU9mxynIu75rAWJIl6clmXF85030ac=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=V12XT5Wl1sEjEubs5UZETLv+bhYtvS7oXDM03YvuPhOiselvzZ7wc15d4Y8ft4ChfuZBYw1VAHj6zfNFgZMGmUKjR9ToPEV6ENPcSY/XU5jzWZFrG2t/kzRpN1IgOJZbApgP0bEcF+cSudLLwzR8Fxqwtiiw1dlJfQohXPfD0hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PlpCIhm+; arc=none smtp.client-ip=209.85.219.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1785859512; c=relaxed/simple;
+	bh=ayczpbs10IRaGQSyxSkR7xRoVkbToh4EoscVg0eS5dk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FSAjCWga2CN7pi6kZ46K3feowtHi6Dh7Nse98yvnfM142NOecSq//av4oo5VdG69kDSTCxX7UsU0r9VX3iIA5qrtd3pBVtQwYpH8ES7CRb5iIwipsq6S1BaJA5LJldvruOFMnBjx0G9cNzdMhIYOazwhonGR+8EGo4YMsSOvE58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VJHCF3OX; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PlpCIhm+"
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8efe7db1c42so53508796d6.3
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 08:54:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785858858; x=1786463658; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4aI9w/0nmZPq1RfO1pNEdmzN8LhGBhlT9DnGtqMgwm4=;
-        b=PlpCIhm+ucTJ22omyDT8P5IpymsmbMmZ9pXENS6YxVa1n5xesRRtgJor9eu9OmMR+Y
-         EPWRdKmYPmoQaqOar/ejjxK+TTzRjm8JCBZ9YoB0a0VYz+Gmw/yyUoan6CsZXE+3Oiag
-         u/VpMSOgm452ZAhgP2Ri6u5kF7V3EoWAT92wHG3D6tHCNdEFkf5qX5bWRnJ1MUBPwm2S
-         uOF63zewjAWILmI9MdMdQY677PLJId1vpPaJfSbMlebKYD6RpawSy7BagoyY5CVm/SUK
-         svjPjyht+oQwQM0q/aZVTsuKE8+kZp7T/6zAf3rPdWUIZ/Pzd2x1Z+zw4xQJdlTWnucV
-         rMAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785858858; x=1786463658;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4aI9w/0nmZPq1RfO1pNEdmzN8LhGBhlT9DnGtqMgwm4=;
-        b=U5UVz/9xpG0x5NRUvbRP63iGOcMUKG/Xs0YKUCFmUCMH/eq6LJA4WHKfO9YBtOS+me
-         NK7Zpk3bo+rhth8OGd+EC7LvSbLx7S2dlGjVUafJjl9dUjU0FSXRENmnrOh3c73La/Mg
-         0DO3Pp9Ta9xP+mJWZ7c15UgB05H+2KP7neUnilHLS+GQVjaeo5761YXSRPrqzDlkaw0I
-         A9kz5y8LaT5cal54imgmoAOPhgepM4ZGvsJbAlFYlTD1+k6+hNN6vtqXRmArm+OWO+JR
-         1CEcP8OhDWBa/FquvNM+NHa2n7zu90Ntg0HnQynCca4Vi9mKvwDehoXx0tv5uxsnvbLH
-         iIEg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq/7JjTblNhrOT7ddFc6DYc9Elo4GMWeqXPs0CD72sryupwMtiFSTd8mDqidBtmD3zA+6TSGHo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUXLF6+aXgoSoH1kqBAJrGq1s6UOepcOVaGfuyr3w+jn+/VEDC
-	mlV1WzTehU7FDJjJgbzwKLu8TxOuG22T+HsK9RGndqIYX58C0YHqikiEbqN0g7DkPZ2MZfVf9Vm
-	kdAr/egUlHHlNag==
-X-Received: from qvcq11.prod.google.com ([2002:a05:6214:19eb:b0:904:58e5:9f88])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:3115:b0:8cc:d29:9f78 with SMTP id 6a1803df08f44-908811af1f0mr3429956d6.11.1785858857490;
- Tue, 04 Aug 2026 08:54:17 -0700 (PDT)
-Date: Tue,  4 Aug 2026 15:54:16 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VJHCF3OX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785859509; x=1817395509;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ayczpbs10IRaGQSyxSkR7xRoVkbToh4EoscVg0eS5dk=;
+  b=VJHCF3OXYK9b2OMR4kIXFnJN+MxWEVysxdNi0oi3Ljj0hoVQjmkJd75j
+   bWMYY6aqJ3cqqYCHiaQHTJjuSM0yDVvvHYzSpAk45rOeaq6Tp+vav4SR4
+   4bp7XJcqPagVjXyjm2qtp83NgTLQE6/5RpGbGI9IZwtAYUQAF1ChtMl9k
+   1G0z5Dp3jtCAor7VwnmU/Tu+Rl71rJTveFFRe9QxzHLbkLorIhBWXuq7Q
+   TH7L3orT3r5RD3ULTDwBy6E1xGJfKqlXzjbvPuQYMWFw2QVnxfq/K4WWE
+   9lIvkgxBtTS/wCNHn7f2JndGKvvtJ929unkee+fQ9GgSarkWfRPW/YRIa
+   A==;
+X-CSE-ConnectionGUID: LClTc+bMSmS3tLoB5uRLlw==
+X-CSE-MsgGUID: 7f1Mnq68T72RREGadQ9WtA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="103955489"
+X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; 
+   d="scan'208";a="103955489"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 09:05:03 -0700
+X-CSE-ConnectionGUID: 6OWvW/zEQlamFuZ/OHC/ow==
+X-CSE-MsgGUID: qmjsC0YGS3aGztoeLNJPPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; 
+   d="scan'208";a="255252961"
+Received: from mszycik-mobl1.ger.corp.intel.com (HELO [10.94.248.216]) ([10.94.248.216])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 09:04:59 -0700
+Message-ID: <0e4bdc1a-48ce-4860-a0f0-201bebf6d716@linux.intel.com>
+Date: Tue, 4 Aug 2026 18:04:53 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260804155416.2168523-1-edumazet@google.com>
-Subject: [PATCH net] ipvlan: inherit needed_headroom from phy_dev
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+1f9fd0f4b601cf88d6e6@syzkaller.appspotmail.com, 
-	Tangxin Xie <xietangxin@h-partners.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl v4] ice: acquire NVM lock around
+ each flash read
+To: Robert Malz <robert.malz@canonical.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Jesse Brandeburg <jbrandeb@kernel.org>,
+ Jacob Keller <jacob.e.keller@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260804083537.3997889-1-robert.malz@canonical.com>
+Content-Language: en-US
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
+In-Reply-To: <20260804083537.3997889-1-robert.malz@canonical.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-ipvlan devices inherit hard_header_len from phy_dev during ipvlan_init(),
-but leave needed_headroom set to 0.
 
-When the underlying phy_dev (or stacked lower device) requires extra headroom
-for headers (e.g. macsec, ipsec, wireguard, tunnels, or veth with rx headroom),
-upper layers calculating packet headroom via LL_RESERVED_SPACE(dev) fail to
-reserve sufficient headroom.
 
-This can result in reallocation failures, skb headroom underflows, or KASAN
-slab-use-after-free crashes when dev_hard_header() / ipvlan_hard_header()
-prepends header data.
+On 04.08.2026 10:35, Robert Malz via Intel-wired-lan wrote:
+> FW caps the NVM read lock at a maximum of 3000ms regardless of the timeout
+> requested via ice_acquire_nvm(). ice_read_flat_nvm() splits a read into
+> multiple ice_aq_read_nvm() commands, one per 4KB sector, all issued under a
+> single lock taken by the caller. Reading a large region can exceed 3000ms,
+> so FW reclaims the lock mid-read and the remaining commands might fail.
+> 
+> Move the lock acquire/release into ice_read_flat_nvm() so it brackets each
+> individual ice_aq_read_nvm() command, ensuring the lock is never held
+> across more than one FW read.
+> 
+> ice_release_nvm() issues its own AQ command and overwrites
+> hw->adminq.sq_last_status, which some callers inspect after a failed read.
+> Add an optional read_aq_err output parameter to ice_read_flat_nvm() to
+> capture the failing read's AQ error before the release; callers that need
+> it (ice_discover_flash_size() and the ethtool/devlink log paths) use it
+> instead of sq_last_status, others pass NULL.
+> 
+> Callers that previously took the lock around ice_read_flat_nvm(),
+> ice_read_sr_word() or ice_read_flash_module() now call them without it.
+> The now-redundant per-block locking in ice_devlink_nvm_snapshot() is
+> dropped. ice_read_sr_word() is now a thin wrapper, so ice_read_sr_word_aq()
+> is folded into it.
+> 
+> Fixes: e94509906d6b ("ice: create function to read a section of the NVM and Shadow RAM")
+> Signed-off-by: Robert Malz <robert.malz@canonical.com>
 
-Fix this by:
-1. Inheriting needed_headroom from phy_dev in ipvlan_init().
-2. Propagating needed_headroom updates to attached ipvlans in
-   ipvlan_device_event() when receiving NETDEV_FEAT_CHANGE events.
+Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
 
-Note that a similar issue exists in macvlan and will be handled in another
-patch.
-
-Fixes: 2ad7bfab3016 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Reported-by: syzbot+1f9fd0f4b601cf88d6e6@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a720a21.40259c87.584f4.04bb.GAE@google.com/T/#u
-Reported-by: Tangxin Xie <xietangxin@h-partners.com>
-Closes: https://lore.kernel.org/netdev/CANn89i+1EW-sFNK8xoq98gMbPCeLS7e=+rs9gHfLg5Wj+4x0sw@mail.gmail.com/T/#mcc6307f115e500df23ea2980d5669fe95f20b6b4
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- drivers/net/ipvlan/ipvlan_main.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index ed46439a9f4eb1dd8bfaf6c83476ba4f2aff31bc..7513c005a5121676d3f8edb0898492ad434a9fab 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -146,6 +146,7 @@ static int ipvlan_init(struct net_device *dev)
- 	dev->lltx = true;
- 	netif_inherit_tso_max(dev, phy_dev);
- 	dev->hard_header_len = phy_dev->hard_header_len;
-+	dev->needed_headroom = phy_dev->needed_headroom;
- 
- 	netdev_lockdep_set_classes(dev);
- 
-@@ -773,6 +774,7 @@ static int ipvlan_device_event(struct notifier_block *unused,
- 	case NETDEV_FEAT_CHANGE:
- 		list_for_each_entry(ipvlan, &port->ipvlans, pnode) {
- 			netif_inherit_tso_max(ipvlan->dev, dev);
-+			ipvlan->dev->needed_headroom = dev->needed_headroom;
- 			netdev_update_features(ipvlan->dev);
- 		}
- 		break;
--- 
-2.55.0.571.g244d577d93-goog
-
+---8<---
