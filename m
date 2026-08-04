@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DB03EA66;
-	Tue,  4 Aug 2026 00:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD33236BCDA;
+	Tue,  4 Aug 2026 00:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785804652; cv=none; b=TFQhMfv47KxdMZtYoEBivMaPlgte6OYXCq7L7Pfj0Xo4OjWXP0uaY524U6VBDtLUNg5yE/dXUGxvhlrYC6FLvkAEL0u7jscEx30DrFHVKyDtxydXk4tZaw2i27KtvQZA8MExOclJ7zDle1ZN0cd/soZpSgsWMiR3GQ0HztuJPdE=
+	t=1785804653; cv=none; b=SQXyQNle3uHf+8dyPTF4ZQcay1OHf4NGojg58OX/Kj7XRuOwJb1bOeRfzEIq8tF+v2H194ApRdpX/48n9EEqHXVjw3mmgGxi0urBVz1dWAV1uCIeCIn79O4WjDk/8Akvzvqsphvvv/EA4SYHfyrsitT9ZQk0Q1I3TZRPFIWPb54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785804652; c=relaxed/simple;
-	bh=9JWDOeM7XxRSRi3LG0cC1wx4SR+75GxfaJM6yuGDQow=;
+	s=arc-20240116; t=1785804653; c=relaxed/simple;
+	bh=MwJbiK+C42LDg5bWLfggiBHOXF35bdVOnxK/mJ8n3dU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Ixix6Oz6anN0E+ME3mse1NaNXp3fneEVXaezQm9wM7RB7yvGQ1D5VVptyGSaAHtFuBWvNzO96OesG0DnvGJ5pB+CK/DSGeJXM0sUF52ZChc8MAQ6rx21OsJS1D1hvNmOzFeY1+yYI2VTg01t9fG9UWk8nQfDkGs04iW9LR6lEt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cRiHyw1D; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Lucz3Utdugak8up2GU0ZOdz48cOjFTaFeIuClyp7wfGfiVGDVDEqqXxWKH/DP9ieJ6uLJdFSaZ1Cy5OwBp6ZSMDaNM3p6FtR759VaFY3vRjwXune1sBUZgZeJHWXWimZI7iP8nGi3+o1I0095QMBSxVKMp76t3iOqcfpi2sgRAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aKkDJcxt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cRiHyw1D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C6C1F000E9;
-	Tue,  4 Aug 2026 00:50:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aKkDJcxt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376B51F00A3A;
+	Tue,  4 Aug 2026 00:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785804649;
-	bh=ikesVMyU8GIDPp0PUGYx0cWmJ5xN4U6c26tRvP0TWKA=;
+	s=k20260515; t=1785804651;
+	bh=truZYXkB8uoUeVw3Akf5N2rp6MgtiisUzz/pHUFsBZ4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=cRiHyw1DRr8KtiYWWb1oOq5Q74/VYv5FLnzLlSjNwT2UM/M7NejIORXZM2jaKLSBF
-	 VtmtYKHyKgM+gmrguISlg+u3ImxpuYvhM61t44Ys6Zd0cWOTvI4kkCGinQq2Wak7ms
-	 onfUoQmC3X9TqTrr2ds1qM0mn+rPEHIGJZN4YHh5JjoIfDt/xKI1N8qg+WaLfKLYz8
-	 5EUkCsMY2FX7Q2/8lfJKQe2pjm7N0P4UfarRug1cQe7OVFt2sTG3pUf7pjXb21ZtA7
-	 hDPRE53nTYWd0gHQkW/QB35dmykZnUh5+5VuO6l3VQ53dFbsf9Xny4CoULq0kWL69r
-	 sFuvvUafOZl1Q==
+	b=aKkDJcxtYh9ncQZIDMn/U1+rTX6JXDYXYowZy9iVhDrX5PC9OrjfpJtcvBLSLJOm2
+	 dI4hyjfE0Wqe7fXF8Qtz6xv27t8MIPlXFAGRSweEAsW+ErL8ISBcn1e1FVLTn3HWSZ
+	 4McN4sTB2GRiLBlX4RF+kLjU+JvrzAMwBBnrJKNl7DwJrssmZul1XERvKFp3tOr56P
+	 4mazZ4r7l0HOA9cXnrNEdGluW+gjkNT2iGtk3AsUnfy6vbdLy8lSRlURgqdH9w2uaI
+	 iwDj6+0+ZM3iyBZ2VZxgsMzNpcVsi4jLO/QJUWW6JFkD/m3OyRBCXOVIQLlM2yD895
+	 jApOp0AjJkyQA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AB33924467;
-	Tue,  4 Aug 2026 00:50:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568F23924467;
+	Tue,  4 Aug 2026 00:50:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,46 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/2] net: stmmac: only use MAC loopback for
- selftests
+Subject: Re: [PATCH net-next v4] net: phy: motorcomm: enable the reference
+ clock
+ for YT8521
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178580461039.2897167.3732640516841415246.git-patchwork-notify@kernel.org>
-Date: Tue, 04 Aug 2026 00:50:10 +0000
-References: <20260728155728.1193169-1-maxime.chevallier@bootlin.com>
-In-Reply-To: <20260728155728.1193169-1-maxime.chevallier@bootlin.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- linux@armlinux.org.uk, o.rempel@pengutronix.de, zxyan0222@gmail.com,
- thomas.petazzoni@bootlin.com, alexis.lothore@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com
+ <178580461189.2897167.9622896344243715541.git-patchwork-notify@kernel.org>
+Date: Tue, 04 Aug 2026 00:50:11 +0000
+References: <20260731013807.1488843-1-gahing@gahingwoo.com>
+In-Reply-To: <20260731013807.1488843-1-gahing@gahingwoo.com>
+To: Jiaxing Hu <gahing@gahingwoo.com>
+Cc: Frank.Sae@motor-comm.com, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, maxime.chevallier@bootlin.com, heiko@sntech.de,
+ linux-rockchip@lists.infradead.org, attinagaoxu@gmail.com, alchark@gmail.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 28 Jul 2026 17:57:25 +0200 you wrote:
-> stmmac selftests currently use PHY loopback when a PHY is attached, and
-> fallback to MAC loopback otherwise. PHY loopback however isn't ideal nor
-> necessary for the tests we are running, that only stress the internal
-> stmmac features.
+On Fri, 31 Jul 2026 13:38:07 +1200 you wrote:
+> Commit 42310a24389c ("net: phy: motorcomm: Enable optional clock for
+> YT8531") enables the SoC-provided reference clock for the YT8531 in its
+> probe. The YT8521 has the same need on crystal-less boards but goes
+> through yt8521_probe(), so enable it there too. The clock is optional,
+> so crystal-clocked boards are unaffected.
 > 
-> Some PHYs bring the carrier state down when in loopback mode, which will
-> prevent any packet transmission even for ourselves, making selftests
-> fail for non-stmmac related reasons.
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Tested-by: Gavin Gao <attinagaoxu@gmail.com>
+> Signed-off-by: Jiaxing Hu <gahing@gahingwoo.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,1/2] net: stmmac: Don't use PHY loopback for selftests
-    https://git.kernel.org/netdev/net-next/c/1528af830077
-  - [net-next,2/2] net: stmmac: Don't rely on the PHY for flow-control testing
-    https://git.kernel.org/netdev/net-next/c/48806dbee0c2
+  - [net-next,v4] net: phy: motorcomm: enable the reference clock for YT8521
+    https://git.kernel.org/netdev/net-next/c/dc3b7209b5d3
 
 You are awesome, thank you!
 -- 
