@@ -1,172 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47423EF666
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 02:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4413F329F;
+	Tue,  4 Aug 2026 02:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785809275; cv=none; b=ZKw61B0V6Q0OjTeVB21xZRFUDDSJRC2uSOejNYRX4DK/OmWym6K1csPtKyZlasTmn1BfICFbR/C72aWwb5XhBO7GS3wUuvMt+hh0yLokJfqS3kFAegIJj9pL3Q0kvVN9K/Cmj3LNu8Gu483+8VMFGU06j+QqAWAbo+HWL29Edwg=
+	t=1785809325; cv=none; b=Y9BYEXmIeFwXwFrcDC74CD2V5HobAcFHyJgt7YGQBzJBxp4L7uSEIPLPADzRZJ6l5cmH2hOe5avOTM6jI6Z9RY/4v+xxwEzsGr1ylFUK61QywbBppT7epQ2REV2x6mExpB2Z3z/CTi0vqgxcjYZrVZjV1XBA3t+yEpkxsLytoGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785809275; c=relaxed/simple;
-	bh=Gwm9t4RXpl+fHzy0Th3Jy27NVDr19uPXEPuQmLJwTuc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tm/8uLn0ps01pXjMcm+eLSxj6pKZmDXfjWsv9cun12WW1xOg4bfbXYVvlkF2zs1u7bUM/7glGe8Qsl5MvQFts6kl7tlxYkpXh1cim7vG0KPsYhAhcifilsxP+sD2BXb6Kh1dFy0zswFAuAMKdPfD56bwctSy8wqiaJmGZhrCrgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ca16PMlx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785809325; c=relaxed/simple;
+	bh=lG1npyH/N3XxCott4dScsf4E27x9td+0vqWynAnKvFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GfcqrCfeSxpPHNeSIM8DyALAW+xAGG34TTL3kTXwOYQhHyIZ7+xeddsVWP3n13r4EDI9kpX0gAhjLGz/xFaJBLDc9ra8LvUtb4nN1+uqnC+WTdoqdL9FylTj4PHt4hEnmjH4766FoPvd9m+DpJ1rLL9l6JUW04KbfRqnLZawTbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hysqWGGq; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ca16PMlx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004941F00A3A
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 02:07:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785809272;
-	bh=mhqh3Nz3FO5T9fLfc4e6l+Yx57i8XvSVRlL8MU9+QdA=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc;
-	b=ca16PMlxzRpA6Oq/fIE1y3VavJRKMJk11tEGYT4u8JfvW/lI1YhYc0iBHFai7yAlZ
-	 D1klSGP1VbJbevPvXuJ42EsiIW/znQk6Uw9wkENrtWGubwmrbqkPsAZibK//O6AMqg
-	 hJiSyka3RBYKxwU5TZaV6OYUUhdr3tvk+PDJSdD5cA+WYNhqMsAbUxjcST6+7M5umB
-	 ve0aQrpx6KQjQ8+iqcBIHEa8CTYwYJB8qx6v4G7XNZrrGWNUEScqmrwUsTqlHF8ARi
-	 0ndcsxkrxX3NjxD+u3G4cMJ5QfXF1pv2LsdVduYPNULmUQ5BZxoaa/jy+PIDHTZkuN
-	 OC6BQR3rzxQ6w==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b2a4359d16so3696220e87.3
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 19:07:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqMXA+kVV2A7q18kEJaF/xoyGoYrilJ8C+q13/lNTNVhTN6snHhHtn7MeMIsRYyc6uBhyujecc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxllx7Rmy20+eWTrZJc4dZTQQxZwgKWYHHnpuRXZs11TA4tX7tM
-	Qs4r4IVuicPYhtsgVRGIrhnN5tHbi+gQceU01N+caxXwKeGaeiivNVq0X4ibr2xyAjWj/QnJoAF
-	XdzZTUAuxMBopzAL6/so+91MQfRuRQXk=
-X-Received: by 2002:a2e:9fc6:0:b0:39b:14ba:a5da with SMTP id
- 38308e7fff4ca-39f86175217mr27582561fa.13.1785809270230; Mon, 03 Aug 2026
- 19:07:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hysqWGGq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=U2EK07+wqnSMzescspEC9qsT2233v6Xmazp/HC0ovbI=; b=hysqWGGqjQ64vonaJgoLWb0oEB
+	rPgAjIo1dk2UsVdsLFuox1nd/XEI2HqSWifXpDZUEpuYBDU9PLd18FApx1m/exERlbbBZ9Sj/+lX5
+	bVSBi/u5JCsCQB8CcSpoHAMSCT0zAhN8+zp5Wzm/dxgI/nCRtxYQ6jupp6hekYPKCz9g=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wr4Zg-00FtJQ-3B; Tue, 04 Aug 2026 04:08:12 +0200
+Date: Tue, 4 Aug 2026 04:08:12 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: "Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alexander Couzens <lynxis@fe80.eu>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Landen Chao <Landen.Chao@mediatek.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net v2 1/5] net: pcs: mtk-lynxi: check regmap reads in
+ mtk_pcs_lynxi_get_state()
+Message-ID: <b2f3f283-90f0-458f-ad0e-1745cf38b008@lunn.ch>
+References: <cover.1785368701.git.daniel@makrotopia.org>
+ <b58d5d99dddd67e35a6f14a14a6ad63d8b3fbadc.1785368701.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <20260802-submit-acx00-of-dynamic-v1-v1-10-0a53cd9e21cc@gmail.com>
- <05b1e6a2-725e-4b8e-8629-249637bbcb81@lunn.ch> <CADvTj4o0JdjoO+FC4pO=qnjEQ8MRyzQdKp2Hxy9NsPU-gym5OQ@mail.gmail.com>
- <9b8be475-1fde-409c-a82e-be4b2e402650@lunn.ch> <CADvTj4pBovti19MXgQjFpxm=7aRm0sYQz9jxfo8bu3txH94THQ@mail.gmail.com>
-In-Reply-To: <CADvTj4pBovti19MXgQjFpxm=7aRm0sYQz9jxfo8bu3txH94THQ@mail.gmail.com>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Tue, 4 Aug 2026 10:07:38 +0800
-X-Gmail-Original-Message-ID: <CAGb2v64U9ZQxfb7M3VfoGH60iMHL01XDy6tjs8VbFPLfyaJWgw@mail.gmail.com>
-X-Gm-Features: AUfX_mwGp_0m2GBis6TyXtQmz_W7xdVls2yXgA2h06qYGgsxLQfwj2BxAwZBVtk
-Message-ID: <CAGb2v64U9ZQxfb7M3VfoGH60iMHL01XDy6tjs8VbFPLfyaJWgw@mail.gmail.com>
-Subject: Re: [PATCH 10/21] net: phy: add X-Powers AC200 EPHY control driver
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Andre Przywara <andre.przywara@arm.com>, Richard Genoud <richard.genoud@bootlin.com>, 
-	Maxime Ripard <mripard@kernel.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b58d5d99dddd67e35a6f14a14a6ad63d8b3fbadc.1785368701.git.daniel@makrotopia.org>
 
-On Tue, Aug 4, 2026 at 2:45=E2=80=AFAM James Hilliard <james.hilliard1@gmai=
-l.com> wrote:
->
-> On Mon, Aug 3, 2026 at 11:57=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrot=
-e:
-> >
-> > On Mon, Aug 03, 2026 at 10:09:01AM -0600, James Hilliard wrote:
-> > > On Mon, Aug 3, 2026 at 7:51=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> w=
-rote:
-> > > >
-> > > > > +static int
-> > > > > +ac200_ephy_ctl_set_led_outputs(struct acx00_ephy_control *contro=
-l,
-> > > > > +                            unsigned long outputs)
-> > > > > +{
-> > > > > +}
-> > > >
-> > > > > +static int
-> > > > > +ac200_ephy_ctl_set_led_polarity(struct acx00_ephy_control *contr=
-ol,
-> > > > > +                             bool active_low)
-> > > > > +{
-> > > > > +}
-> > > >
-> > > > I've not looked into the details, but these look like pinmux. Does
-> > > > this I2C device have a GPIO controller? Can these pins be used for
-> > > > other things than LEDs? Maybe you should be implementing a GPIO and
-> > > > pinmux driver. The Ethernet PHY driver can then just select the
-> > > > correct pinmux configuration.
-> > >
-> > > These do not appear to be GPIO or muxable pins. The AC200
-> > > documentation describes them as three dedicated EPHY LED
-> > > outputs: link/activity, speed, and duplex. The bits in SYS_EPHY_CTL1
-> > > enable those output pads, while EPHY_CTL provides their shared
-> > > polarity setting. I have not found any documented GPIO data
-> > > registers or alternative functions for these pins.
-> >
-> > So what i'm trying to do with both of these is make it look more like
-> > standard Linux building blocks.
-> >
-> > If that is not possible, i would actually put all this code into the
-> > PHY driver. You then have a regmap property to gain access to the I2C
-> > registers.
->
-> I understand the goal of using standard Linux building blocks where they
-> fit, but I do not think folding these control paths into the common PHY
-> driver gives the right device model here.
->
-> The AC200 and AC300 expose the same Clause 22 PHY interface, but their
-> control functions are separate devices with different transports and
-> lifetimes. The AC200 control function is an MFD child accessed through
-> the parent I2C regmap. The AC300 control function is a separately
-> addressed non-PHY MDIO device. A regmap reference only describes the
-> AC200 transport; it does not represent the AC300 control device.
->
-> Folding both implementations into the common PHY driver would make that
-> driver manage AC200 MFD registers and resources as well as an AC300 MDIO
-> control endpoint. That would mix the package-specific control transports
-> with the otherwise common Clause 22 implementation.
->
-> The current split uses standard subsystems wherever they provide a
-> matching abstraction: MFD, regmap, MDIO devices, clocks, regulators,
-> NVMEM, device links, and the PHY LED framework. The narrow private
-> interface covers only the compound operation which those frameworks
-> cannot express: calibrating, addressing, configuring, and sequencing the
-> package control block before the Clause 22 interface becomes usable.
->
-> The link address is an important example. It is defined once by
-> phydev->mdio.addr. AC200 must program that value through its I2C control
-> interface, while AC300 must validate it against the address of its MDIO
-> control endpoint. Generic PHY operations do not carry a consumer MDIO
-> address. Encoding it in a phys specifier or control-node property would
-> duplicate the PHY node's reg value. Giving the common PHY driver a raw
-> regmap avoids passing the address only by moving the provider-specific
-> implementation across the driver boundary.
->
-> The LED pad-enable and polarity bits are similarly part of the package
-> control function. They control dedicated EPHY outputs rather than GPIOs
-> or muxable pins. The common PHY driver still owns the PHY LED semantics,
-> while the selected control driver performs the package-specific register
-> access.
->
-> For those reasons, I think keeping the transport-specific control drivers
-> and the common Clause 22 PHY driver separate is the cleaner division.
+On Thu, Jul 30, 2026 at 01:14:38AM +0100, Daniel Golle wrote:
+> mtk_pcs_lynxi_get_state() ignores regmap_read()'s return value; a
+> failed read leaves bm and adv holding uninitialized stack values
+> which are then decoded into the reported link state. The regmaps
+> backing the MT7531 SGMII PCS instances sit on an MDIO bus where
+> reads can fail. Check both reads and leave the state untouched on
+> error.
+> 
+> Fixes: 4765a9722e09 ("net: pcs: add driver for MediaTek SGMII PCS")
+> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 
-I think what Andrew is saying is that you can expose the regmap from the
-MFD node, which you then reference from the PHY node with a custom phandle.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-In the PHY driver, the first thing to do is retrieve the syscon, and if it
-is not available yet, return -EPROBE_DEFER. Then you program all the bits
-you currently do, just without going through a layer of redirection.
-You can fetch the PHY address to program from the device tree. The downside
-to doing all the setup in the PHY driver is that the PHY node has to have
-the PHY ID in the compatible, as it is no longer generic. But you already
-have that.
-
-
-ChenYu
+    Andrew
