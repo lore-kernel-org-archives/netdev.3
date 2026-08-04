@@ -1,72 +1,163 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6C438B131;
-	Tue,  4 Aug 2026 17:45:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD3A38D3E2;
+	Tue,  4 Aug 2026 17:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785865541; cv=none; b=n+38Q6kLk1R374BzcuLDeo6oArI6zpClu3ZPhlZOXEcqwhepQ4LAeD2WgUUtz8WyCu5+6qF0RTaUtzAJCyJ2p+wKourbODnmZ/oJcvEKMCiSiJ/X5/noE6D1CtxOBC/AO98cTvFdkSGZTgeWrXLqaICNzibGaimUGbuz+oFY7AE=
+	t=1785865656; cv=none; b=kpsvOk34nu9bNmhD1DRffOlIKECb5CUVKzH4V4cg9po1E/4AdpjMH30HMY5uGFgmiyTPGjJwfDHZangN+t2Nxr9VAlRMGGAS7ttv5gVoHiTjb4i4WRTNx96BTsYqy5l1z09rhI9DjuvWD1vyW8SozOcNJVgTsrdJRARhTU64PG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785865541; c=relaxed/simple;
-	bh=t9Ohl5wJ4MnaO4pCN5wLzn7TllSLUtilSZFUKygQRc0=;
+	s=arc-20240116; t=1785865656; c=relaxed/simple;
+	bh=j/hPP8jkbfi3rboQ6Wnz+CDqqpULZUvZIxsVMAuWt2U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oq7G/hGl2IjC1E166EM3Ck/QgFbFuZBkfNnJHeqO7++x5dzsTdf13eUdotZlPEj+PHrUy1pKyanJLZnmhKxQ/k9NFq2V0DzTKPFH8r162Bdq9KSaMfpCLcUAL75t44ZQCVIf0nIM2xPC5CbaftwQNSGNieaMxhGFPLZZKCJr+UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3rEpGIP7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=myDdA4pPj+WgFWgeTEQYNzxnVy2QxDS9CHq8N2ZzXHaA1HsA5pwuJDXQPp1U3XOx3JBpE/uaBUDzRSMDVn2Evcp5jISSJJrMyeDQHvSODULurquBam4RnsU67XzwXzhn2h2ikBh3nivtsoOUxsk6Z103iHZSZDXrnCmuAaD6BHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=NEN801rJ; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3rEpGIP7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=osSW8pITCgD4+RMq14591sZtxfXFxKGPBcEYIBgm7KU=; b=3rEpGIP7KPlH1lZ2dfkUwxFsOG
-	VmZgwrCcL/YdqjSaHuXaaNBxVRshb8IFJj0gl/tAAI2uxC7ag3aPuDM9kx9fkA98C0iDj1mKAImy5
-	m6AnEoBck3zT8OXdH1ALrtc2QQkODAwKbGVNxmrFJ2MmLykdPLjy73xl162SJSxioyj0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wrJCe-00G1q5-T6; Tue, 04 Aug 2026 19:45:24 +0200
-Date: Tue, 4 Aug 2026 19:45:24 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Christophe Roullier <christophe.roullier@foss.st.com>
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="NEN801rJ"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 23DFC3ED12;
+	Tue,  4 Aug 2026 17:47:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1785865651;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7vkceEGEwK/ANQemAF3H6G68yDEuGawBZ5Gr2wXTA6Q=;
+	b=NEN801rJQPFCC5TFexQrJp3xyO1W914RbOAdhH08M5LChCS4RnY8SqDO9g+8l4Ioudgdwq
+	a4sjNJHp1dOQCEyoB5WBs//wM266653Qq5QDcnU53jYtr3Xn4FcpZbYe/BEu2XQk4CCD09
+	BGDfRw1sCQlhRPN12yd8HEC+JR/rGuj/Jp9BjytIM3WeDFfchO9wduEY6llhp5L2UDnMcb
+	fvNTkVKN6KU4T/192vi2l4qcRNVnRLXSGH2HdxSioWcd8cHst/amJeZ11ZhRgH8W1lhn3v
+	k7y36JjES5lw6FuhQZXWL5kPX07NugGsj8D75hGl9yVBe123rq0x6a7idsRuaA==
+Date: Tue, 4 Aug 2026 19:47:20 +0200
+From: Arthur =?utf-8?Q?Cr=C3=A9pin?= Leblond <arthur@marmottus.net>
+To: Arnd Bergmann <arnd@arndb.de>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <rmk+kernel@armlinux.org.uk>, linusw@kernel.org,
-	antonio.borneo@foss.st.com,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] net: stmmac: manage error case during
- stmmac_dvr_probe
-Message-ID: <17bdf6d8-a31d-4601-bbc9-4d7b78897272@lunn.ch>
-References: <20260804132052.205273-1-christophe.roullier@foss.st.com>
- <20260804132052.205273-5-christophe.roullier@foss.st.com>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Netdev <netdev@vger.kernel.org>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] w5100: restore GPIO-based link detection
+Message-ID: <anIlqILTusVzSefH@pc-du-fromage>
+References: <20260804-wiznet-link-gpio-v1-1-b626fd4f7ccb@marmottus.net>
+ <75937d1b-8ae9-4daa-bc36-08bdf5a6c5a9@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260804132052.205273-5-christophe.roullier@foss.st.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <75937d1b-8ae9-4daa-bc36-08bdf5a6c5a9@app.fastmail.com>
+X-GND-Sasl: arthur@marmottus.net
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: dmFkZTFd1G6aU6NpiT96xs0T3HJ4vOA0zeGEzJunf9PVWnVHeLQDFlORYa9HG9rmVmtZUGqcazTsix+7IfhgXF8jIcWYUf0HG3FbFt//r9QBp7TvsBOAhhXtCNL5Wf3hS3CaIeNlMTnswOMVYylUux58OG0A2nHPOLyf5vT7aocApvoIMU3SuDKmsNB1DIM8GDg+YFnml2eOTmzLHaLSM89L64J5MEs3lhPP9Oy6VppRAz/arnOvYkgTns8eDMNY/ENuSjyuze/Ht0SsO8R1ZDsZUcXPSZf6xshZDae56grWENGSl2UfBZxz7A1XJGh8JYxmKPcfCnDFC5Kieoj71t8ZXX2TES14mnMR7Ncn/0f3IaNXeQInX3eFZcatupKTmXM3FviUM18cNbWteQUqKn5Sgu0vBYWSKQs9/yGOHCmDnHEp23zSD9JPaeA0MSa67e4WLGpTHTLfUx9vdtVpDA0g2mgQYUXgfXy2FX7oHl3/V8VsFpxqsaq4878U2AT7MJlgr04UTAv2+KzG8Yk2N4TxIOwkbB2XcA6A07fk/+LFApRPylWGaWfun5LVIqlOXQ+7I0oV8tqiNlxxTFWCXk0kYBr4E7nDAMR1UdyGCMh/RQwP4QH9YPduZoZ7/UAkJ2QbIs5LC700QQmtu247Ygh8ikTkJ5FsMSMvVY8GCZpobO6UZQ
 
-On Tue, Aug 04, 2026 at 03:20:52PM +0200, Christophe Roullier wrote:
-> In case of error during stmmac_mdio_register, pm_runtime is not
-> cleaning before exit probe.
-> 
-> Signed-off-by: Christophe Roullier <christophe.roullier@foss.st.com>
-> Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+On Tue, Aug 04, 2026 at 05:02:48PM +0200, Arnd Bergmann wrote:
+>On Tue, Aug 4, 2026, at 16:38, Arthur Crépin Leblond wrote:
+>> Commit dacf281771a9 ("w5100: remove unused gpio link detection")
+>> dropped the link_gpio/link_irq handling on the grounds that no
+>> devicetree user passed a "link" GPIO at the time.
+>>
+>> Signed-off-by: Arthur Crépin Leblond <arthur@marmottus.net>
+>
+>Hi Arthur,
 
-I don't want to accuse you of anything, but Russell has not been
-active for a while, this is v1 of a patchset, so seeing a Reviewed-by:
-by Russell jumped out at me. Can you point me at the archived email
-from Russell. Just doing my due diligence, trust but verify etc.
+Hi Arnd,
 
-     Andrew
+Thanks for the reply and the review!
+
+>
+>The patch description could use some more explanation here, and
+>a clarification that you don't just bring back the original
+>broken code but add devicetree support for it.
+>
+>>  .../devicetree/bindings/net/wiznet,w5x00.txt       |  8 ++-
+>>  drivers/net/ethernet/wiznet/w5100.c                | 84 ++++++++++++++++++++++
+>>  2 files changed, 89 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
+>> b/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
+>> index e9665798c4be..e97ce3cb9183 100644
+>> --- a/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
+>> +++ b/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
+>> @@ -25,6 +25,7 @@ Optional properties:
+>>    According to the w5500 datasheet, the chip allows a maximum of 80
+>> MHz, however,
+>>    board designs may need to limit this value.
+>>  - local-mac-address: See ethernet.txt in the same directory.
+>> +- link-gpios: a GPIO line used for the link detection interrupt
+>>
+>>
+>>  Example (for Raspberry Pi with pin control stuff for GPIO irq):
+>> @@ -38,13 +39,14 @@ Example (for Raspberry Pi with pin control stuff
+>> for GPIO irq):
+>>  		interrupt-parent = <&gpio>;
+>>  		interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
+>>  		spi-max-frequency = <30000000>;
+>> +		link-gpios = <&gpio 4 GPIO_ACTIVE_HIGH>;
+>>  	};
+>>  };
+>
+>Ok, so you are using the binding I suggested originally,
+>which I think is fine here, but note that Rob asked for
+>the binding to be converted to yaml format in
+>https://lore.kernel.org/all/20260427145010.GA2502144-robh@kernel.org/
+>
+>I avoiding touching it by just removing the broken implementation,
+>but it would be good if you could do this now.
+
+Yes, I started to reintroduce the driver link GPIO code from the 6.18 tree
+and converted to gpiod_ and noticed that you already had a patch
+(20230127095839.3266452-1-arnd@kernel.org) so I reused most of your code.
+
+>
+>> +
+>> +		priv->link_irq = gpiod_to_irq(priv->link_gpio);
+>> +		if (priv->link_irq < 0) {
+>> +			err = priv->link_irq;
+>> +			goto err_gpio;
+>> +		}
+>> +
+>> +		err = request_any_context_irq(priv->link_irq, w5100_detect_link,
+>> +					      IRQF_TRIGGER_RISING |
+>> +						      IRQF_TRIGGER_FALLING,
+>> +					      link_name, priv->ndev);
+>
+>I think you can just use a hardcoded link name here, and
+>an open-coded gpiod_to_irq(priv->link_gpio) for simplicity. My
+>previous version kept this from the original code, but if you
+>reintroduce it, you can improve it further (as you did elsewhere
+>already)
+>
+>I would probably also use devm_request_threaded_irq()
+>
+>> @@ -840,6 +918,7 @@ static int w5100_suspend(struct device *dev)
+>>
+>>  	if (netif_running(ndev)) {
+>>  		netif_carrier_off(ndev);
+>> +
+>>  		netif_device_detach(ndev);
+>...
+>>  		w5100_hw_close(priv);
+>>  	}
+>> +
+>>  	return 0;
+>
+>The whitespace changes should not be part of the patch.
+>
+>     Arnd
+
+I took your changes into account and made a v2.
+
+Thanks!
+
+-- 
+Arthur Crépin Leblond
