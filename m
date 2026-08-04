@@ -1,187 +1,122 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7BAF3914E0
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 09:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FF7367B74
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 09:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785835993; cv=none; b=tBCQSWzzMEXr44Jmks1/LemWqFuFw/zTlbfl4kpAi9YEfB18qsPkyiAZ9BKuikZlQlGyrw/hIsTucUdFPAlhtI1tSLa8VxiVbc7sB+iT0ekw6hubGJZXCubULqxY5wQdUK/QBhkRoxgv7H89JVAEkKDJTUuegBIQZicw4zWd33s=
+	t=1785836013; cv=none; b=SEKxABEx+HNAiHtSsgmVZRfuqZ0wFG04sZDAJdlv4iX3NwlL3cdUxZtwk6AB+63pUjrosj4lCNZUfC3BoelYByDS/SFpFpmTGqCjcAFvP5aXaRClZOZ84ma5s9gxtfdmSnRYvYhGzJp48YpACL/1Z/6nf7g9TTp/OPHLnA2Xu3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785835993; c=relaxed/simple;
-	bh=2c3j+x1oQYyMuC6YkSoOlfgH9+YHkAE/oawSeizlMoI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c2I3etMqHm/enG1aDv21TWgOBBd/S7caUBVAtiQiZWV6yf+D+5FA2/n90/DE/dZs0+NWv+Hahu6SyCkMXO5a1sQbddkpBTh1dqc7W/LLZOS9PjGcxv03FM8rNAPpylKev7bzM4s5vT8kaKfxrpV/J79ilICDr0C9aNVBacm2kG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DNd0WWVD; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785836013; c=relaxed/simple;
+	bh=S5d77MO7jT+Hxg/r1TJiTp0m7KHLUEVxmp4cjvqHef8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=WDKHQqFhVJnEE05o9SxLFa7Bjz29tdS+aKMLy+kBqRn5KIH0CzjH6u/8EPlZ/xLzqcQVS/nrZqSGgut2yq2NOSDL+3xOPSOv0GEb1E2H1t2wzvTXua5oCkiMx6pi90+Zfn0m1ADexh3GQgpaaaZXnUqi1pMbRRqG+xHXrdnKJNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OshbyIpJ; arc=none smtp.client-ip=209.85.222.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DNd0WWVD"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cad68425a7so4784155ad.1
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 02:33:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OshbyIpJ"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e9a2b95b5so784248385a.2
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 02:33:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785835991; x=1786440791; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bJek6yMdu453eh5vhUQNuwpWpa+Mp383syuPawBLsMg=;
-        b=DNd0WWVDOyy9O+FC9u9GJ35Tz+7+tBzaoeDtaX4gn/D9koMZFRA75DQu0zE/AGwk+Y
-         mEBKjoKWmXjn5Y4s4SlHgRWlP/NGwPGGfg01rgN+yoaZhG1QWqJC5xeeMH0v0kVnZ5yu
-         1GHmxruifYZDFayDjOAYwTqLivYGjwoDhig2m9Rgth0hpkRyB8f/S1NLKFHJH2dZ8k4H
-         3530AgtnfL6LUanOSc7xRFVDvoGpBm9JFDnuQgDFFEMZJlWt9NJOEGKMlDPScMuWcNmm
-         B593Uz7o7CPwgAbZpgdwSXtyIF5YvNakNdRrU6OziPN2Ces7WmA5ISAsSPEq3Hc0LjhX
-         HTlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785835991; x=1786440791;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=google.com; s=20251104; t=1785836010; x=1786440810; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bJek6yMdu453eh5vhUQNuwpWpa+Mp383syuPawBLsMg=;
-        b=qkWvWfslG0lCgoeRqjnOPBWXjixgkmpTTAtXeV+UP7XbmxWU7dyAFRVBm3enaa8qsS
-         KVa1YPcfWr7mCWV1wFsJ8DCkVDkF8/zxaeVm/CI2tfzq2opxj8l/TnP/d30MiUt7/AWs
-         ry11OcQeeCZmDI3J4wC9UUXHKInvovVkWKTCzsfUocs41k8T/pqSGIJdFD4wjCMprl2v
-         uYJevg+xYcEdsDm06pXNFd+4AFMMS3lGNBB6q0i+uppHS8SR9vzZsVf5z5QfxyTRi9b0
-         Jg5SmBcr4lGAQYtWFuYzd9xoBue/0HdoA3egZT+JP74x4yGcUvrvU9UjXywleI7N3dwi
-         OgiQ==
-X-Gm-Message-State: AOJu0Ywpg8KrD60mFmNQE9d3lQqNLlXY+qNGhiqGFk73mXTuppGRXspN
-	3N8ln27pBO5DB2FgHnZrJNZtyRWMtAX5Gzpo0GHm8JuSOl6hqmp6knkf4+G7B1k0LZ4=
-X-Gm-Gg: AR+sD13UvJ6bG4lWAgTWDnUu+wy/6YXDk2UcXr4Z29rnkVcAUWjMgfUXJjpWC/TV8LZ
-	8X0iFXrSAjwVjXrnUosRZuLQDgP/ODm7/N3KfgeA7KB1z0R3M7o/9RwIMgE/01oRPQCndpOYZ7r
-	vX9ZkG1zmBS8fxe/tmWGXho/np+tcK2VCFqK483Ehn+A7ARMAgHdCOQe2Q5yo/Gv6VrRiIXJB6F
-	UuI9puoBTsMGpWD5rmeoQOF6JEGn6RcXqp1kjhGBZWFs8sj58Z/4imgDmp6Hm6q2xSaUzYZDZqF
-	0jvrEiGY0QjjTD2og3YnZLY2XvPJL4/+3Ol7socdfBs56nPiJb3fte/uMYXmthlvpc0SVJyyzJb
-	pI51a+nI+pZS44Eag0nZmwEt9+fOVjmvA0e4CX0X5DNOZ0ecVyGhdrJjxgOt7I9GxNAui4Fu+YF
-	TMyUUrmb6KHUX5SIQswNYATV/iDAPDVebBOyMl4yyZZdkaG1GWATo13Sc0zxppz5O6mcYm7ZzEe
-	uBTBNRkH27WzppOCnpP39QWkzUU9JKy51PQWVZm0kQQqp43kIo=
-X-Received: by 2002:a17:903:1450:b0:2c9:d298:6c0a with SMTP id d9443c01a7336-2d05246fbb8mr198442035ad.2.1785835991198;
-        Tue, 04 Aug 2026 02:33:11 -0700 (PDT)
-Received: from localhost.localdomain ([139.159.170.67])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0a9fd5f7fsm3731525ad.19.2026.08.04.02.33.06
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 04 Aug 2026 02:33:10 -0700 (PDT)
-From: Qihang <q.h.hack.winter@gmail.com>
-To: netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com,
-	willemb@google.com,
-	daniel.zahka@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	stable@vger.kernel.org,
-	Qihang Tang <q.h.hack.winter@gmail.com>
-Subject: [PATCH net v6 3/3] packet: use consistent hard_header_len in TX_RING send path
-Date: Tue,  4 Aug 2026 17:33:02 +0800
-Message-ID: <20260804093302.33990-1-q.h.hack.winter@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260730082925.93759-1-q.h.hack.winter@gmail.com>
-References: <20260730082925.93759-1-q.h.hack.winter@gmail.com>
+        bh=n/o2KUQEG4PbIJNYMsLCUH5mINGumQTL57V04We/jqE=;
+        b=OshbyIpJ/qOd58KLeDLCpeTZUAYPDNuqFmPUVG2Er//a/3AZQm0UW8DFtkUaTqD0jr
+         0HBg1FEW6YNreWEdoffSjknHK7VDuUZAjYO5X+llSv6f3/ePXgohJoc/pRmjk1VVkf4L
+         CbuvpZ07/fscy4Ao1VG4X05tGTDC+JJtrqlV8z950Y1kZMwccCWcUxMMi4CGjhfp1Xy/
+         zb17/CsKPFu4E9ivOdLhxWfFZvRjSDe7HOj07irI//v6z0IbMTZqr5rq0rDsaiUjA72O
+         iPRKlUT1fhz6OFKU68O+L6Bn3etZNqJVuwOtFpE2h4sqL6Uzcj+e1xlJEGoS3GAafIUR
+         8fqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785836010; x=1786440810;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=n/o2KUQEG4PbIJNYMsLCUH5mINGumQTL57V04We/jqE=;
+        b=fKuhY6zvMDpqT80hKLFZU02aP1mFg2NRuY2F5tIS6V70Pi+9KrDs926kg4KB/LllYY
+         l2s3yQwG85l0Q51Fl1rfEtFArwZheXSf8x+R7zq23B8O3004ey2r2n7r40KCePAFNCjq
+         zXlMWEFjl87vf8eKNzQK/jO4uHmdXbkI3FcizN/psUns8oNVzEMB4y24Z89PBxevUkwc
+         X1otNEYYWtfJM6BO2Zdc/Wqsj48eJ4256gSx8x0j8xEw1nphGyf97kRJDfQP4wnZTi+8
+         JfukS3atF2EZgw0MeUBcfEe+T18M8fLWX/uBnCgOpywxH6L1I5aZKKJ9HYsvQ7+J8DfA
+         cFWg==
+X-Gm-Message-State: AOJu0YwOooCWFtZ8JbvQkgXWreyncBG6NOhOduvIlCdlz28RnD6hfDoH
+	KYBx+d7L3uLogPsrEY0OUKwq5p9zhGO5W6Jq/AUDCl+ojSQ7LFDOOJfg0cYighlUZYHKmJ0k0fD
+	Ftuac2SKtyopF2A==
+X-Received: from qkll29.prod.google.com ([2002:a05:620a:211d:b0:92e:6d70:ad3])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:1588:b0:925:e485:fca7 with SMTP id af79cd13be357-934a078282cmr2094859685a.15.1785836010270;
+ Tue, 04 Aug 2026 02:33:30 -0700 (PDT)
+Date: Tue,  4 Aug 2026 09:33:28 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
+Message-ID: <20260804093328.1831847-1-edumazet@google.com>
+Subject: [PATCH net] netfilter: nf_flow_table: drop existing skb dst before skb_dst_set_noref()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
+Cc: netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, 
+	coreteam@netfilter.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+76d4e3a055aec3b007ec@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Qihang Tang <q.h.hack.winter@gmail.com>
+Incoming skbs passing through netfilter flowtable offload hooks (or XFRM
+offload path) might already carry a ref-counted dst_entry assigned during
+earlier RX or routing steps.
 
-tpacket_snd() reads dev->hard_header_len independently for skb
-allocation and header construction in tpacket_fill_skb(). Concurrent
-netdevice reconfiguration can therefore make the reserved headroom
-smaller than the amount later pushed, or make copylen - hard_header_len
-negative.
+Calling skb_dst_set_noref() when skb already holds a ref-counted dst
+overwrites skb->_skb_refdst, leaking the previous dst_entry reference
+count and triggering a DEBUG_NET_WARN_ON_ONCE assertion in
+skb_dst_check_unset():
 
-Snapshot hard_header_len once before processing ring frames and use it
-for the frame limit, headroom allocation, copy length, and skb
-construction. Pass the snapshot to tpacket_fill_skb().
+  WARNING: at skb_dst_check_unset include/linux/skbuff.h:1170
+  WARNING: at skb_dst_set_noref include/linux/skbuff.h:1234
+  WARNING: at nf_flow_offload_ip_hook+0xf6c/0x2b60 net/netfilter/nf_flow_table_ip.c:864
 
-The separate SOCK_DGRAM consistency problem between hard_header_len and
-header_ops->create is not addressed here.
+Drop any existing dst_entry reference with skb_dst_drop(skb) before
+setting the non-referenced flowtable destination.
 
-Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qihang Tang <q.h.hack.winter@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Fixes: 2a79fd3908ac ("netfilter: nf_flow_table: attach dst to skbs")
+Reported-by: syzbot+76d4e3a055aec3b007ec@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6a71b141.9511d2ce.1fc5b9.033b.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/packet/af_packet.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ net/netfilter/nf_flow_table_ip.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 88674a6e868c..e9b6810c885e 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2574,6 +2574,7 @@ static int packet_snd_vnet_parse(struct msghdr *msg, size_t *len,
- static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
- 		void *frame, struct net_device *dev, void *data, int tp_len,
- 		__be16 proto, unsigned char *addr, int hlen, int copylen,
-+		int hard_header_len,
- 		const struct sockcm_cookie *sockc)
+diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+index 0b78decce8a9bdc3ed404f9913384335408b00d3..c9e332fafcb5c22559f68858b36f3207822c4423 100644
+--- a/net/netfilter/nf_flow_table_ip.c
++++ b/net/netfilter/nf_flow_table_ip.c
+@@ -310,6 +310,7 @@ static unsigned int nf_flow_xmit_xfrm(struct sk_buff *skb,
+ 				      struct dst_entry *dst)
  {
- 	union tpacket_uhdr ph;
-@@ -2605,8 +2606,8 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
- 	} else if (copylen) {
- 		int hdrlen = min_t(int, copylen, tp_len);
- 
--		skb_push(skb, dev->hard_header_len);
--		skb_put(skb, copylen - dev->hard_header_len);
-+		skb_push(skb, hard_header_len);
-+		skb_put(skb, copylen - hard_header_len);
- 		err = skb_store_bits(skb, 0, data, hdrlen);
- 		if (unlikely(err))
- 			return err;
-@@ -2737,7 +2738,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 	void *data;
- 	int len_sum = 0;
- 	int status = TP_STATUS_AVAILABLE;
--	int hlen, tlen, copylen = 0;
-+	int hard_header_len, hlen, tlen, copylen = 0;
- 	long timeo;
- 
- 	mutex_lock(&po->pg_vec_lock);
-@@ -2784,8 +2785,9 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 			goto out_put;
- 	}
- 
-+	hard_header_len = READ_ONCE(dev->hard_header_len);
- 	if (po->sk.sk_socket->type == SOCK_RAW)
--		reserve = dev->hard_header_len;
-+		reserve = hard_header_len;
- 	size_max = po->tx_ring.frame_size
- 		- (po->tp_hdrlen - sizeof(struct sockaddr_ll));
- 
-@@ -2822,7 +2824,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 			goto tpacket_error;
- 
- 		status = TP_STATUS_SEND_REQUEST;
--		hlen = LL_RESERVED_SPACE(dev);
-+		hlen = LL_RESERVED_SPACE_EX(dev, hard_header_len);
- 		tlen = dev->needed_tailroom;
- 		if (vnet_hdr_sz) {
- 			data += vnet_hdr_sz;
-@@ -2840,10 +2842,10 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 						    vnet_hdr.hdr_len);
- 			has_vnet_hdr = true;
+ 	skb_orphan(skb);
++	skb_dst_drop(skb);
+ 	skb_dst_set_noref(skb, dst);
+ 	dst_output(state->net, state->sk, skb);
+ 	return NF_STOLEN;
+@@ -861,6 +862,7 @@ nf_flow_offload_ip_hook(void *priv, struct sk_buff *skb,
+ 			return NF_DROP;
  		}
--		copylen = max_t(int, copylen, dev->hard_header_len);
-+		copylen = max_t(int, copylen, hard_header_len);
- 		skb = sock_alloc_send_skb(&po->sk,
- 				hlen + tlen + sizeof(struct sockaddr_ll) +
--				(copylen - dev->hard_header_len),
-+				(copylen - hard_header_len),
- 				!need_wait, &err);
- 
- 		if (unlikely(skb == NULL)) {
-@@ -2853,7 +2855,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 			goto out_status;
+ 		xmit.dest = neigh->ha;
++		skb_dst_drop(skb);
+ 		skb_dst_set_noref(skb, &rt->dst);
+ 		break;
+ 	case FLOW_OFFLOAD_XMIT_DIRECT:
+@@ -1178,6 +1180,7 @@ nf_flow_offload_ipv6_hook(void *priv, struct sk_buff *skb,
+ 			return NF_DROP;
  		}
- 		tp_len = tpacket_fill_skb(po, skb, ph, dev, data, tp_len, proto,
--					  addr, hlen, copylen, &sockc);
-+					  addr, hlen, copylen, hard_header_len,
-+					  &sockc);
- 		if (likely(tp_len >= 0) &&
- 		    tp_len > dev->mtu + reserve &&
- 		    !vnet_hdr_sz &&
+ 		xmit.dest = neigh->ha;
++		skb_dst_drop(skb);
+ 		skb_dst_set_noref(skb, &rt->dst);
+ 		break;
+ 	case FLOW_OFFLOAD_XMIT_DIRECT:
 -- 
-2.50.1 (Apple Git-155)
+2.55.0.571.g244d577d93-goog
 
