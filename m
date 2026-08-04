@@ -1,165 +1,86 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395894137A4;
-	Tue,  4 Aug 2026 03:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A395D3F1676
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 03:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785813080; cv=none; b=neTCE/14WDNQ9y7n9RCaDpFReV4WO6b5U4UAyiJDYK3psz177+J5xJ0xabXmgOFP6j9gj0yzIj78MPoWLFtE6B9JHPbrHSbDi5q5WaJQILVgasf0CM3rD6qUotEywvFR+kjN6vUhRRXYXqRwI50Iwd7vpE4ShkzD8/FgVI7Z5Dw=
+	t=1785813090; cv=none; b=Nx6XjC4lJj0lPEnik5C0d6U3bRT7q4C8cJgYuRDWWhlZ5BpPc07Q6XsQSLPK0QhlDQwZrK3kSUDZWYrI/EfOSOJz7UKXL3ZoJtnJLztQ0d29CPe3R6TQpKSBXqIvs2gfsVF+RtFaXApCNeRy+3YdhJ4A5MYlf8yMqgkFl0B5Oao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785813080; c=relaxed/simple;
-	bh=lajCqPx6jV3haO6tC7/t50NM+yt1i4h/9bTDosJt22o=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eEkCSJjPVw7KeAgH1jAaVlelbS/mFq4tL5qknP62EvHRweuQvT3y6jKFXEETC1F+ZeyYI968/9LbFtjdQ8TPzWQ8Jhi7tMheRN7Gf+7MRkCQRP87wd1szucMPGgOBWbhgy3oolWXJtgzg+fSeZkleQ3aKT++jyavq8/eEfWWVvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1wr5YW-0000000047y-2TLa;
-	Tue, 04 Aug 2026 03:11:04 +0000
-Date: Tue, 4 Aug 2026 04:11:01 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Alexander Couzens <lynxis@fe80.eu>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Landen Chao <Landen.Chao@mediatek.com>,
-	Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH net v2 6/6] net: dsa: mt7530: serialize the regmap IRQ chip
- like every other user
-Message-ID: <818840879e9cd20f8d568789da29b3474c8f3ab9.1785811140.git.daniel@makrotopia.org>
-References: <cover.1785811140.git.daniel@makrotopia.org>
+	s=arc-20240116; t=1785813090; c=relaxed/simple;
+	bh=j0mufMSuKnhX2/ovchw6+aaDzAm1BL+aWMDZ0rsyfoU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PpHKaT/oSjFJ28it//U4YuWHXxJKvOOR4YnMSmPV3kx4al2Y41p+Lmr9sXVEw8zjNV+da3jjxmq56gah6Mg7gxEW1+hDtzQtX/OEgicjgtw0I59UKR1jkntTU4bm5VwM3PnBhbI4ge7VJkgXmx6ZGEhbCcEoOSRb5aDz+yLfk/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S22WY6nt; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S22WY6nt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE131F000E9
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 03:11:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785813077;
+	bh=3kgaZqDQUIAJeM0ISENNIK8m7boslYUgftvdD1PiZw0=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc;
+	b=S22WY6ntoQfkDL8DZvdChixVpgJU7Q4dD8F06+1bG8Co2P6nvIFYg+DxCTjD1cRll
+	 onZNWNruCOYw4RZq7mn9zhsscrdMd9NyTI/sytz4zvrfP3A9mWfuzmTnXGsPVbJ/8K
+	 aJKeRRR55yqubNjXs4InIYUE1AXcAL066FnQFEfF9oluIX20HCg10BTnGhj36Yyb3L
+	 oHYhm+BWBkWtNo9EFdlKzG9dY9vjNz9ka/b+E1mEm80xezmbnPHzgTwf09Tdjj0knN
+	 wNspKFuczGA4PqtM3CINb1aegZECoHRXPfXt7axUn81mA/J0XIf8h8cHavagb1VbNx
+	 NGLNz/NDq0pIQ==
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-39db07589caso37433851fa.2
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 20:11:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqpqTraSm0i19eFlKvrSlWZWg03iILdoHn5qcYuS8Uio8zdrNfRYLCVzsl4FGA7nH78tfqH10w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAkvWmFW6dnclZdtIQuy47U4Xx8120xKqrfMzBizuQQX+9fb89
+	u8hYVJa7lzECclS/mEueCgLW0BJ8Tu04AhNhDdX7T8vtHf9/9XPAgYbVaK9awy1ztt3yAwERNY0
+	RxQ8JZa0TvQ8apYxTSGP6DljTUqqFAK4=
+X-Received: by 2002:a05:651c:43c7:20b0:394:184:f7a7 with SMTP id
+ 38308e7fff4ca-39f8610a7bcmr16699651fa.6.1785813075746; Mon, 03 Aug 2026
+ 20:11:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1785811140.git.daniel@makrotopia.org>
+References: <20260803101452.2993721-1-andre.przywara@arm.com>
+ <20260803101452.2993721-7-andre.przywara@arm.com> <ad2e46d5-53db-49b2-a128-7c54883e18eb@lunn.ch>
+In-Reply-To: <ad2e46d5-53db-49b2-a128-7c54883e18eb@lunn.ch>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Tue, 4 Aug 2026 11:11:04 +0800
+X-Gmail-Original-Message-ID: <CAGb2v64yH+grXMbxg1te6XHt1PxhUc4Jzch_OdUW50tq2Eg1cw@mail.gmail.com>
+X-Gm-Features: AUfX_mzJ30C6xeyppFwdQIE9h-X2BZ86M3EAAzUkPSMo3bVFKVcmKT8a2L5ByFI
+Message-ID: <CAGb2v64yH+grXMbxg1te6XHt1PxhUc4Jzch_OdUW50tq2Eg1cw@mail.gmail.com>
+Subject: Re: [PATCH 6/6] arm64: dts: allwinner: a523: x96qpro+: enable
+ Ethernet support
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andre Przywara <andre.przywara@arm.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Liu Changjie <liucj1228@outlook.com>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-sunxi@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The switch register regmap is created with .disable_locking = true;
-every other user in this driver calls mt7530_mutex_lock()/unlock()
-around it, which takes priv->bus->mdio_lock, since the underlying
-mt7530_regmap_read()/write() issue raw, unserialized bus->read()/
-write() MDIO transactions.
+On Tue, Aug 4, 2026 at 10:53=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > +&gmac1 {
+> > +     clocks =3D <&ccu CLK_BUS_EMAC1>, <&ccu CLK_MBUS_EMAC1>;
+> > +     pinctrl-names =3D "default";
+> > +     pinctrl-0 =3D <&rgmii1_pins>;
+> > +     phy-mode =3D "rgmii-id";
+> > +     phy-handle =3D <&ext_rgmii_phy>;
+> > +     phy-supply =3D <&reg_cldo3>;
+> > +
+> > +     tx-internal-delay-ps =3D <200>;
+> > +     rx-internal-delay-ps =3D <500>;
+>
+> 500ns is quite big. How did you come to this value? Do you have the
+> schematic & gerber files? Does the lines look unbalanced?
 
-mt7530_setup_irq() hands this same unlocked regmap straight to
-devm_regmap_add_irq_chip_fwnode(), whose threaded IRQ handler then
-calls regmap_read()/regmap_update_bits() on it without ever calling
-mt7530_mutex_lock(). An interrupt firing while another thread is
-mid-transaction on the same regmap (e.g. a paged register access, or
-an indirect PHY access) can interleave with the IRQ handler's own
-paged access and corrupt page selection on either side.
+Unit is ps, not ns.
 
-Use struct regmap_irq_chip's handle_mask_sync hook to call
-mt7530_mutex_lock()/unlock() around the mask register write regmap-irq
-issues whenever a consumer of one of the mapped sub-IRQs enables,
-disables, requests or frees its line. This needs a per-device copy of
-mt7530_regmap_irq_chip, since devm_regmap_add_irq_chip_fwnode() keeps
-a pointer to it rather than copying it.
 
-handle_pre_irq/handle_post_irq, which would additionally cover the
-status read and ack write the threaded handler does directly, bracket
-the whole handler including its handle_nested_irq() calls. Lockdep
-caught this on hardware: those calls reach phy_interrupt() for the
-per-port PHY IRQ lines mapped through this chip, which takes
-phydev->lock, while phy_attach_direct() and this driver's own indirect
-PHY access already establish the opposite order (phydev->lock, then
-priv->bus->mdio_lock) elsewhere. Using them here would close that
-cycle, so they are not used.
-
-regmap_irq_sync_unlock() also has its own init_ack_masked path, used
-by this chip, which unconditionally does its own regmap_write() to ack
-currently-masked IRQs; that path has no per-driver hook. Together with
-the threaded handler's own status read and ack write, these stay
-unprotected -- a narrower, harder-to-hit gap than the recurring mask
-sync above -- and will be closed once the switch regmap moves to
-regmap's own locking in the driver-wide register access cleanup.
-
-Fixes: 254f6b272e3b ("dsa: mt7530: Utilize REGMAP_IRQ for interrupt handling")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
-v2: no changes
-
- drivers/net/dsa/mt7530.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index c0437273270b..0b39f2348115 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2319,6 +2319,21 @@ static const struct regmap_irq mt7530_irqs[] = {
- 	REGMAP_IRQ_REG_LINE(31, 32), /* ACL */
- };
- 
-+/* Serialize regmap-irq's mask sync like every other regmap user */
-+static int mt7530_irq_mask_sync(int index, unsigned int mask_buf_def,
-+				unsigned int mask_buf, void *irq_drv_data)
-+{
-+	struct mt7530_priv *priv = irq_drv_data;
-+	int ret;
-+
-+	mt7530_mutex_lock(priv);
-+	ret = regmap_update_bits(priv->regmap, MT7530_SYS_INT_EN,
-+				 mask_buf_def, ~mask_buf);
-+	mt7530_mutex_unlock(priv);
-+
-+	return ret;
-+}
-+
- static const struct regmap_irq_chip mt7530_regmap_irq_chip = {
- 	.name = KBUILD_MODNAME,
- 	.status_base = MT7530_SYS_INT_STS,
-@@ -2328,12 +2343,14 @@ static const struct regmap_irq_chip mt7530_regmap_irq_chip = {
- 	.irqs = mt7530_irqs,
- 	.num_irqs = ARRAY_SIZE(mt7530_irqs),
- 	.num_regs = 1,
-+	.handle_mask_sync = mt7530_irq_mask_sync,
- };
- 
- static int
- mt7530_setup_irq(struct mt7530_priv *priv)
- {
- 	struct regmap_irq_chip_data *irq_data;
-+	struct regmap_irq_chip *chip;
- 	struct device *dev = priv->dev;
- 	struct device_node *np = dev->of_node;
- 	int irq, ret;
-@@ -2353,10 +2370,17 @@ mt7530_setup_irq(struct mt7530_priv *priv)
- 	if (priv->id == ID_MT7530 || priv->id == ID_MT7621)
- 		mt7530_set(priv, MT7530_TOP_SIG_CTRL, TOP_SIG_CTRL_NORMAL);
- 
-+	chip = devm_kmemdup(dev, &mt7530_regmap_irq_chip, sizeof(*chip),
-+			    GFP_KERNEL);
-+	if (!chip)
-+		return -ENOMEM;
-+
-+	chip->irq_drv_data = priv;
-+
- 	ret = devm_regmap_add_irq_chip_fwnode(dev, dev_fwnode(dev),
- 					      priv->regmap, irq,
- 					      IRQF_ONESHOT,
--					      0, &mt7530_regmap_irq_chip,
-+					      0, chip,
- 					      &irq_data);
- 	if (ret)
- 		return ret;
--- 
-2.55.0
+ChenYu
