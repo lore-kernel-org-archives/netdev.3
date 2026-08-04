@@ -1,81 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD8046A61C
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 14:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785852054; cv=none; b=rthfiFi+3Mr7CS4tRIr6VreVNV6sAeLPjAUIX16IalEg4VSTpMNLzRZ0YNDBeqpwVHO6mLYUcj/ao4EsBWUMw9Glmmb7TLn3Cm/KkoDBfseoA78abMeAAjLr5iFup5DncpamcmIiObMQKg3FsAM0ZCFWNF0abLZDR+MAXo8X0jo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785852054; c=relaxed/simple;
-	bh=awLNbBUM1fpSscM1IhQ/q6xdDpdGVLAQaMA3UEMkFQY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rAfMe96iCTzKGUDGZF1wET8RIH+QrnsTrgB2n0nH7Bg6vUrlEKWXIATP/KyNg0/0/Pvu58B6TG50mPEyb2FOnwCbwHXGxnw7OG/+4KCyO2GXSArafwuWAtjHjuTFC7v9GZdJfiJiwdEt00NN8PNiPGawntA982LWTKhmo+3Tqm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QbWPJiK8; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED834749E6
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 14:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785852336; cv=pass; b=EHaj6gejleHTb5aPDRY+ge2UHanZ9UPcCvBgX0CHJgH14vpQECXQTUjHk9vvyyvBKyK+VYUW5QVchCUDS5leicbDbn4TQ0YXfSNTSj4v88EA0mTF4tHIwEENJDsvKvY5xgS7rECH63LjRx+xqPx0Em53vz8yBzcKNLAMPC/4/Gs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785852336; c=relaxed/simple;
+	bh=uh87EH3FNFHbG0MjAtvtPoh1GXZVe4Phu8T1IymeRJg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ScFsymGIuQ6EekKytjXUtLaecbUD/HYmbdVaLwQqYnLdTyNdmSCMFAUAtwgumFxSnuXtNKKYNGfxsEqUwsK5Iv7yBwW/OrQEIe/qEENeRBAdtRiU8D9aSwNycu9IvOh9tX2jOrv+mF+zyCnmgpQ6LcuJdObiXb7as7DUP40BXi8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jLx88TWt; arc=pass smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QbWPJiK8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4534A1F00A3A;
-	Tue,  4 Aug 2026 14:00:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785852053;
-	bh=FhDuG6mCg4ErOPSIUhBG0hqhXTR1TwlMB8tUZiwKkeI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=QbWPJiK8irHr4OT0AnKc8o0Bv5HOANhvPyZlR3ng+KWkfc9lBu2sEBqyxO2Cr1tMN
-	 XuWcA1mEjfKhZHSxwRj+xaS1ZBtfsoOOfbNVMJ/A792KHuKlhuj3LVhwIIAh5IS1U7
-	 i02sui+a81DTphf70V9pnHbKfUaAXWZsCcJn9OB+OT9JngKyj8/KJlqt6NJZrqTqpI
-	 cCXClL2EkD5GDU0TPMwBo/B0lhGOQRJFIoki9QAbHoFdCXgvbxTa0fhNhuPNWyrT6Y
-	 +kDxMDXl+W2lkrlat4tT2zXHHrrL3AuDuAG+nUp7b+eslTM50KTYibHeORbP/WtpyL
-	 p8slmCUzo26uw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198F339253CB;
-	Tue,  4 Aug 2026 14:00:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jLx88TWt"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c15f020a223so712596566b.1
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 07:05:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785852333; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YpheJakmepEf62jROq8+kHefkyH8V5PcLlPVWPlaBsxnVfDlJ2rLyOOMZjcqL+x/1H
+         KY3FQlz3UEIq5lhMCvkxq7D65ik3zddFPb8zM2f5i+dLZ7JJZ3i/lvLdsn17bRWwAo+L
+         NHDX9uht6x8Nyp0SG1FWRgCDpzm59+fzZ5ho8SI0FMrYtf51HFR3+WDrObJjGNggEOHE
+         1NgimSoBGiFF6pzZY63/9MqGFKJ00eURD2Ss3bPsgjvjOMcI3f8ykCpcKqLp6DdDnjFq
+         CnoQmq56pJGg3zdqaQsMGsuW+YoFhd8I6MpIZ55JO0j9F5N5kTBXgllcf4xQpA7tJrCR
+         S2Dg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uh87EH3FNFHbG0MjAtvtPoh1GXZVe4Phu8T1IymeRJg=;
+        fh=Vld2zxj/xZjnE3RLNH/H4EIU4fJXydtO/ZAYYhaOfNE=;
+        b=pZpJGafIaYLrSM0hgNIXbNyFtgfZBDJj+u5BYG4kLUrA9Wsk4shYNdmYHcS/ID6KZz
+         iMYbRzijSXryUygusM3FtPta2f6zu19YGirNC34mKq/PeGDqOvhv69hch/BLp5Bb3zV3
+         NyXFotaLjGDHFgiZxGDHRlJathHMefqHh5l92CuXu4AkXQ8iqewYeBrW5iF5b3lEaqmv
+         eBPXcIlvTpMve8IzFx+2m9q5igm2ePAj/BeHvn4ykBXhW0o+XFE/BuQOxmV9hcCy+IuQ
+         dO8yCfX359AJ0Rd0g+VlLRF8LVN6TMUdj4SplyI/bs6aEooWO7XtPeVG60J/JdWmMrxW
+         A8dA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785852333; x=1786457133; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uh87EH3FNFHbG0MjAtvtPoh1GXZVe4Phu8T1IymeRJg=;
+        b=jLx88TWtb42V4LhKuLgwQVPmacJ894kP4ZaXch8u5/cHqRV6GR9ibkaz4395/ux6bT
+         lF5YV8Jv8DEUg3O7FA4MvvUkthPp37B/2cM5etoFJbwP/jIlQaKhcXnciWreu6DjeT4r
+         Fre9ArdoyGm2A2P/Z0A58T2NIPgqyK8ON3grx4sqGk1PVYc7FwkcnQ70Vc4mmj2EDP32
+         gNxALN8uqzHi+0p8BLak4BmPxQrFISKta+jQFHLb2kiE13ooxUuPNwpnxFOStczSC/QB
+         WWVxqe2s+J8Anley56H15qz0kxp9XxyZjkt3aC3y1tEPFNfORihh2n/g+Cx2yEt1mYxo
+         mDgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785852333; x=1786457133;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uh87EH3FNFHbG0MjAtvtPoh1GXZVe4Phu8T1IymeRJg=;
+        b=To79x41fJ0CPM8rdZB2Bxi9QkRhRHRbrHpirmVnrSUlTMr6ENna/46QoUXbOfjmvBM
+         PjQ0IgHAfaFiYdkOPSp3CtrTKyDtBHYaXwwMSqMw2wArLWaQdzBEoeexq5E8byhxsLJb
+         ZZCGOScxH78Zx3f8knKRgx0dapo/Nu1ADv1ClmNrNCr0l6SmhT1X2ONLzIRItCFEqGmP
+         MlFGkIGmlZqPLD8AHs9XL7Vk7pUEmDYgYre+Idj8EiPu3Ac0iiJBa115biMaI92LEvHo
+         u2tVfku7hPcYKfZebEc5i2hXGVVe5qhhbTSJ0Awu9nDV21fuDnc4OyDw8kSW57Br1yZO
+         l0lQ==
+X-Gm-Message-State: AOJu0YzMHDdZ0WoufLzaP4S+8DYFAE9RqYP4IZnhpuA+a0mzHKzTa+sX
+	1cwSHoQApyZ7RaEfoimSVnRIJq68XX8o1Q63lV0GO/sLTs0EZt7UQyubBvyArB0+0XjF//VIBgy
+	VDoT5VihB2T1BNprd5inq+6jmIngGeQw=
+X-Gm-Gg: AR+sD121MLFRn4ySrPt7Ujg2CA9jQs3S/I5pOYa4G61ci5pTOqfoQZxpvZM4Ek1Po8P
+	tgUJ2g1N+/vg3YoZSnKsr7u0lKJ0dehgelV0qXHXQozAieZHA8q4wBQVxS9yzri7qRX8QbFf+QR
+	HQCcbBwdL2lUKo/lrHvU7YrPo1HHjVVlHTC9dpllClbB7LHi4koN+nn73VdFgMWhudJjTCPnpu6
+	9vFxhESgfthqKXbRmEA/S+e0q9BI/Kh6m/ynUfaTBeaxoYZYZOFNXJCjkkgguZYUf1soiJu2yai
+	btgcWQhtJQgI97XUiXjgtSWCGfkQHDjYei2mUfBw+ksBUwchC8eRVqfutQ==
+X-Received: by 2002:a17:906:d9cb:b0:c1f:7b9e:8400 with SMTP id
+ a640c23a62f3a-c1fe817da21mr1039198766b.30.1785852332606; Tue, 04 Aug 2026
+ 07:05:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1 net-next 0/3] geneve: Support per-netns device
- unregistration.
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178585201363.3168424.1619703184127764039.git-patchwork-notify@kernel.org>
-Date: Tue, 04 Aug 2026 14:00:13 +0000
-References: <20260731164612.2148830-1-kuniyu@google.com>
-In-Reply-To: <20260731164612.2148830-1-kuniyu@google.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuni1840@gmail.com,
- netdev@vger.kernel.org
+References: <20260803101734.270821-1-a.shimko.dev@gmail.com>
+ <20260803101734.270821-4-a.shimko.dev@gmail.com> <239a7699-bbda-4fab-bfa0-604b1d8806a9@lunn.ch>
+ <CAOPX744YEhdgmOFPT8PjfKp=v4tVq4XefYaRnk7N3J4MPB9sfQ@mail.gmail.com> <78ad6961-6be7-4759-8c7b-f4ce070521d3@lunn.ch>
+In-Reply-To: <78ad6961-6be7-4759-8c7b-f4ce070521d3@lunn.ch>
+From: Artem Shimko <a.shimko.dev@gmail.com>
+Date: Tue, 4 Aug 2026 17:05:21 +0300
+X-Gm-Features: AUfX_mwPmNyhuHL06sDHGot-7HNxt9vk569IkwVex18nFN6qIuG3Dbu_KFGLeoQ
+Message-ID: <CAOPX744zBT16jcTQHTPSDHv2rov1UPt=aTxECkrPK=7yG6FSQw@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 3/3] net: phy: add DAPU Telecom DAP8211R(I)
+ Gigabit Ethernet PHY driver
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+Hi Andrew,
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+On Tue, Aug 4, 2026 at 4:26=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
 
-On Fri, 31 Jul 2026 16:45:52 +0000 you wrote:
-> Patch 1 is a prep patch to make patch 2 clean, which
-> adds a per-netns mutex for geneve linked lists.
-> 
-> Patch 3 supports per-netns netdev unreg by using
-> unregister_netdevice_queue_net().
-> 
-> 
-> [...]
+> Ah, please add a comment about that. It could be there is a minor
+> design issue within the PHY, and this is their workaround. So keep
+> it. A comment will then stop reviewers like me asking...
+>
+> Part of producing a good patch is to try to think of all the questions
+> reviewers will ask, and answer them as part of the patch. Either
+> comments in the code, to text in the commit message.
+Will do. I'll add a comment explaining the hardware reset defaults
+and update the commit message.
 
-Here is the summary with links:
-  - [v1,net-next,1/3] geneve: Unlink geneve->sock[46].hlist[46].hlist in __geneve_sock_release().
-    https://git.kernel.org/netdev/net-next/c/cf31c7f186ed
-  - [v1,net-next,2/3] geneve: Protect geneve_net and geneve_sock with per-netns mutex.
-    https://git.kernel.org/netdev/net-next/c/7df47efd6db1
-  - [v1,net-next,3/3] geneve: Support per-netns netdev unregistration.
-    https://git.kernel.org/netdev/net-next/c/ccb161b71a1f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks for the review!
+---
+Best regards,
+Artem
