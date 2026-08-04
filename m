@@ -1,122 +1,164 @@
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FF7367B74
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 09:33:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944E43F3285
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 09:37:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785836013; cv=none; b=SEKxABEx+HNAiHtSsgmVZRfuqZ0wFG04sZDAJdlv4iX3NwlL3cdUxZtwk6AB+63pUjrosj4lCNZUfC3BoelYByDS/SFpFpmTGqCjcAFvP5aXaRClZOZ84ma5s9gxtfdmSnRYvYhGzJp48YpACL/1Z/6nf7g9TTp/OPHLnA2Xu3s=
+	t=1785836274; cv=none; b=Qd5DlFJY7oOJTJYj12YNf6CMlGNVwdfJsSaitM5s0pwBdXzhMp2M+METtTO1KgqEs9wvJ1i/FSWHDynE0+LYeET728V3VFiaXifzXDRzRNM7RqXdBjdCN/dQpcwzo6IpFRrHcF0VlnBt/U6jPpEB+1PNidBnfPiby7JtQRHbqQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785836013; c=relaxed/simple;
-	bh=S5d77MO7jT+Hxg/r1TJiTp0m7KHLUEVxmp4cjvqHef8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=WDKHQqFhVJnEE05o9SxLFa7Bjz29tdS+aKMLy+kBqRn5KIH0CzjH6u/8EPlZ/xLzqcQVS/nrZqSGgut2yq2NOSDL+3xOPSOv0GEb1E2H1t2wzvTXua5oCkiMx6pi90+Zfn0m1ADexh3GQgpaaaZXnUqi1pMbRRqG+xHXrdnKJNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OshbyIpJ; arc=none smtp.client-ip=209.85.222.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1785836274; c=relaxed/simple;
+	bh=YHCzNxOR8vzG0iWXONmBMTdnogbrhp36qxhg1+Egca0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JBwXh7+8S0W34UVk/9wZSnfgu2olJnjQ6t0V44PF8X8EOZ/CpBiIlG+I/BuwE9Zv+RcLx2/coyzFIXacAwhN/W+d1fy8rTBna0tOh+tiQARoxmqq808cpQS1xfQ+RtXwe16W1w16nDr8ZE8jH4UZRjCGyBtfQUIdVEZo0FOKvnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YvXaRT0E; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DHAij9fo; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OshbyIpJ"
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e9a2b95b5so784248385a.2
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 02:33:31 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YvXaRT0E";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DHAij9fo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785836270;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EM7xpqXAUJNazCozbweIvpU+TjAspQcIOmydlbjLiPo=;
+	b=YvXaRT0ElD6vdd61DR715l7mnfjazG65mS9Du4Uk9emLWoOGzweb5wOLs3YYWwtQIlRiBF
+	3LIdZ90sFZVCdrFLjdmMDKnEO8Ix5V5UGo/1tqmeynmg4UpAREYYGJ8WpcgMrRLmp3eQ82
+	YAkiHhyK0SyFU9PxsOGcrUfAPk5vC1U=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-468-zDBW_W9wPeGpsOHyTiGdkQ-1; Tue, 04 Aug 2026 05:37:48 -0400
+X-MC-Unique: zDBW_W9wPeGpsOHyTiGdkQ-1
+X-Mimecast-MFC-AGG-ID: zDBW_W9wPeGpsOHyTiGdkQ_1785836267
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49808ea1b64so10470725e9.1
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 02:37:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785836010; x=1786440810; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=n/o2KUQEG4PbIJNYMsLCUH5mINGumQTL57V04We/jqE=;
-        b=OshbyIpJ/qOd58KLeDLCpeTZUAYPDNuqFmPUVG2Er//a/3AZQm0UW8DFtkUaTqD0jr
-         0HBg1FEW6YNreWEdoffSjknHK7VDuUZAjYO5X+llSv6f3/ePXgohJoc/pRmjk1VVkf4L
-         CbuvpZ07/fscy4Ao1VG4X05tGTDC+JJtrqlV8z950Y1kZMwccCWcUxMMi4CGjhfp1Xy/
-         zb17/CsKPFu4E9ivOdLhxWfFZvRjSDe7HOj07irI//v6z0IbMTZqr5rq0rDsaiUjA72O
-         iPRKlUT1fhz6OFKU68O+L6Bn3etZNqJVuwOtFpE2h4sqL6Uzcj+e1xlJEGoS3GAafIUR
-         8fqA==
+        d=redhat.com; s=google; t=1785836267; x=1786441067; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EM7xpqXAUJNazCozbweIvpU+TjAspQcIOmydlbjLiPo=;
+        b=DHAij9foOmWtR7wbCNRrWWFGwdRE3O6SFA9FoguTPzoZ0obRnrmhYhdrQit3Sev549
+         CytQD/xL2PhwGG5U5/QZ1N1LV92F6i316QPAqbEa5oTNX/LHJQArImryJiJLITykGA88
+         oAGcFjOcmbgG51m3WwkdJbppcrkNJpwDCHEmUH60P0r/0SMbmS/suzEMs12qiTwy1bp6
+         BOsDAP2hGEelvPqe9P//Z29Ef+YwdzkktSTRZrWh2ybnrHOD7L8ZHKqoWij2q0A1oico
+         VoBfNvWj/goYuSpbbWXkQdZjFIIrDGQ1fMeY7fYw5Cz8fiPLAKRoG/MXMuJdXV5S+PUy
+         myTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785836010; x=1786440810;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20251104; t=1785836267; x=1786441067;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=n/o2KUQEG4PbIJNYMsLCUH5mINGumQTL57V04We/jqE=;
-        b=fKuhY6zvMDpqT80hKLFZU02aP1mFg2NRuY2F5tIS6V70Pi+9KrDs926kg4KB/LllYY
-         l2s3yQwG85l0Q51Fl1rfEtFArwZheXSf8x+R7zq23B8O3004ey2r2n7r40KCePAFNCjq
-         zXlMWEFjl87vf8eKNzQK/jO4uHmdXbkI3FcizN/psUns8oNVzEMB4y24Z89PBxevUkwc
-         X1otNEYYWtfJM6BO2Zdc/Wqsj48eJ4256gSx8x0j8xEw1nphGyf97kRJDfQP4wnZTi+8
-         JfukS3atF2EZgw0MeUBcfEe+T18M8fLWX/uBnCgOpywxH6L1I5aZKKJ9HYsvQ7+J8DfA
-         cFWg==
-X-Gm-Message-State: AOJu0YwOooCWFtZ8JbvQkgXWreyncBG6NOhOduvIlCdlz28RnD6hfDoH
-	KYBx+d7L3uLogPsrEY0OUKwq5p9zhGO5W6Jq/AUDCl+ojSQ7LFDOOJfg0cYighlUZYHKmJ0k0fD
-	Ftuac2SKtyopF2A==
-X-Received: from qkll29.prod.google.com ([2002:a05:620a:211d:b0:92e:6d70:ad3])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:1588:b0:925:e485:fca7 with SMTP id af79cd13be357-934a078282cmr2094859685a.15.1785836010270;
- Tue, 04 Aug 2026 02:33:30 -0700 (PDT)
-Date: Tue,  4 Aug 2026 09:33:28 +0000
+        bh=EM7xpqXAUJNazCozbweIvpU+TjAspQcIOmydlbjLiPo=;
+        b=UVdflGR6No6KqAnDty5zE+SWhMpaealoYbTNICTmhcUone2A0HRfIG8tek2CfLN6k+
+         WQbMSurwKI2MN4xb9UThhZbkEZmrT2QHjO5kW+qZS61lFBrRd3BJ4Wt/oCDWTPGC+YU3
+         D29/tiQP/e6jQK2AZWPHfVuXXFAXtEdl2s4/qTI/+Jcny32LSwk207/0YmSFV6U1QO2M
+         Kp5i7VNVRDYUsGRdqywkQEaDYrnfdHgGIiQijCREYbKvEA49sGstfjMAzmowqIuybj94
+         eCqHAcNPbuDNwVzVbbjVN18H9DJ7HspviaEA2kTX1uzfx6TMOPb6x+V69sAAAdHi2PYs
+         dauA==
+X-Forwarded-Encrypted: i=1; AHgh+RoX33GUQB5rpjdffxKvesC8b/7ncxMj4eoVhuEvaXr9cSAhYDd59QXNtMFlpEP1j7eHgzt7TGw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzABBdewSCjGSeElTDwqzFfSvdzmSAZbcnpOQ4ZcwzD55+jt83S
+	I9p/NfNqxPdW0o0gtpY8PuZaUYOgz1Dwvrr+vkSpNMrtJJrk3cWVAYgoJfmmTUmZCmAbZbm+TfC
+	EXMKfLaowVvNL2llVExni8iJwUqpu2vXE2EyZPE9dA4WJhYgZ3al7hqFMmg==
+X-Gm-Gg: AR+sD11KBhzjZsfWogAIxkhSl/a86gs8MODc12sAKxIOe6Fw8qIKvB8vJ7dq4yosK0m
+	jsKY5AtRCTInW976bHbsXsjDjZBfJLQf2uUhiraKHMzRVeAW9xfZ1rHGrsV175gxT2ekmD8oSGz
+	zAgGneAWK1wqPbs9OHlL4JPvJjGCI6zF0DE5A1ovXgeDdmt4izd41oacuJlZvNcYMcMhs5KEcnD
+	VbCDYtMCBoC+SUKpFmnLye1gWXbsEAZxQlrJWBbaecS7/qJsHLiYfJti6yKCgVvMP1JDOrthEX7
+	6yOa/cwKKadHTM1BVhmc9CMtJNQa2RSOYJc87NGuOl/IrZOVk3p9Baey+n5ZGe1wCqmmYTbrdTj
+	K7nY=
+X-Received: by 2002:a7b:ce08:0:b0:495:5d6d:9cc1 with SMTP id 5b1f17b1804b1-49949f89850mr56638975e9.0.1785836267197;
+        Tue, 04 Aug 2026 02:37:47 -0700 (PDT)
+X-Received: by 2002:a7b:ce08:0:b0:495:5d6d:9cc1 with SMTP id 5b1f17b1804b1-49949f89850mr56638165e9.0.1785836266578;
+        Tue, 04 Aug 2026 02:37:46 -0700 (PDT)
+Received: from sgarzare-redhat ([5.11.104.130])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49949fec606sm86248365e9.14.2026.08.04.02.37.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 02:37:45 -0700 (PDT)
+Date: Tue, 4 Aug 2026 11:37:37 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Paolo Abeni <pabeni@redhat.com>, Michal Luczaj <mhal@rbox.co>
+Cc: phind.uet@gmail.com, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Andy King <acking@vmware.com>, 
+	George Zhang <georgezhang@vmware.com>, Dmitry Torokhov <dtor@vmware.com>, 
+	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com, Wupeng Ma <mawupeng1@huawei.com>, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] vsock: use sock_error() to consume sk_err after a
+ failed connect
+Message-ID: <anGyP3hBQfO0I1Pe@sgarzare-redhat>
+References: <20260730081843.287563-1-phind.uet@gmail.com>
+ <6a2958d9-5d16-404a-ac02-21940e90162d@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260804093328.1831847-1-edumazet@google.com>
-Subject: [PATCH net] netfilter: nf_flow_table: drop existing skb dst before skb_dst_set_noref()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, 
-	coreteam@netfilter.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+76d4e3a055aec3b007ec@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <6a2958d9-5d16-404a-ac02-21940e90162d@redhat.com>
 
-Incoming skbs passing through netfilter flowtable offload hooks (or XFRM
-offload path) might already carry a ref-counted dst_entry assigned during
-earlier RX or routing steps.
+On Tue, Aug 04, 2026 at 11:26:57AM +0200, Paolo Abeni wrote:
+>
+>
+>On 7/30/26 10:18 AM, phind.uet@gmail.com wrote:
+>> From: Nguyen Dinh Phi <phind.uet@gmail.com>
+>>
+>> Syzbot report an issue which can be reproduced with these steps:
+>>
+>>    r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
+>>    bind(r0, {VMADDR_CID_ANY, PORT})
+>>    connect(r0, {VMADDR_CID_LOCAL, PORT})   -> -1, EPROTO  (self-connect)
+>>    listen(r0, backlog)                     -> 0
+>>    r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
+>>    connect(r1, {VMADDR_CID_LOCAL, PORT})   -> 0
+>>    accept(r0)                              -> -1, EPROTO  (stale sk_err)
+>>
+>> Basically, it creates a socket (r0) and triggers a self-connect after
+>> binding it. This self-connect fails with EPROTO because it loops back to
+>> r0 while the socket is still in the TCP_SYN_SENT state, causing it to be
+>> incorrectly dispatched to the connecting-client path. The unexpected
+>> packet type encountered there sets sk_err to EPROTO.
+>>
+>> After that, it invokes a listen() call on the same socket. This listen()
+>> call succeeds because the kernel's listening path never inspects or
+>> clears sk_err. Then, a new socket (r1) is created as a normal client and
+>> connects to r0. However, vsock_accept() rejects this incoming connection
+>> because the listener's sk_err still holds the EPROTO error from the
+>> earlier failed self-connect.
+>>
+>> This rejection causes the child socket created for r1's connection to
+>> never be freed on virtio or hyperv transports; only the VMCI transport
+>> implements pending_work to revisit and clean up a rejected socket
+>>
+>> Fix the issue by using sock_error() to read the sk_err to prevent the
+>> rejection branch from occurring  in this scenario.
+>>
+>> sock_error() atomically reads and clears sk_err, ensuring the error is
+>> consumed when vsock_connect() returns and cannot affect subsequent
+>> operations on the same socket. This matches the established pattern
+>> used by other protocol connect() implementations in the network
+>> stack like __inet_stream_connect(), tipc_wait_for_connect()...
+>>
+>> Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+>> Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
+>> Fixes: d021c344051af ("VSOCK: Introduce VM Sockets")
+>> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
+>> Tested-by: Wupeng Ma <mawupeng1@huawei.com>
+>Sashiko nipa points out that the race still exits:
+>
+>https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260730081843.287563-1-phind.uet%40gmail.com
 
-Calling skb_dst_set_noref() when skb already holds a ref-counted dst
-overwrites skb->_skb_refdst, leaking the previous dst_entry reference
-count and triggering a DEBUG_NET_WARN_ON_ONCE assertion in
-skb_dst_check_unset():
+Yeah, it seems the same conclusion we reached with Michal on v1 and Phi 
+agreed on: https://lore.kernel.org/netdev/148e56ec-dc26-4be2-a7af-eb547b517a68@gmail.com/
 
-  WARNING: at skb_dst_check_unset include/linux/skbuff.h:1170
-  WARNING: at skb_dst_set_noref include/linux/skbuff.h:1234
-  WARNING: at nf_flow_offload_ip_hook+0xf6c/0x2b60 net/netfilter/nf_flow_table_ip.c:864
+Not sure why sk_err check was not removed in vsock_accept.
 
-Drop any existing dst_entry reference with skb_dst_drop(skb) before
-setting the non-referenced flowtable destination.
+Phi can you check?
 
-Fixes: 2a79fd3908ac ("netfilter: nf_flow_table: attach dst to skbs")
-Reported-by: syzbot+76d4e3a055aec3b007ec@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a71b141.9511d2ce.1fc5b9.033b.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/netfilter/nf_flow_table_ip.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index 0b78decce8a9bdc3ed404f9913384335408b00d3..c9e332fafcb5c22559f68858b36f3207822c4423 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -310,6 +310,7 @@ static unsigned int nf_flow_xmit_xfrm(struct sk_buff *skb,
- 				      struct dst_entry *dst)
- {
- 	skb_orphan(skb);
-+	skb_dst_drop(skb);
- 	skb_dst_set_noref(skb, dst);
- 	dst_output(state->net, state->sk, skb);
- 	return NF_STOLEN;
-@@ -861,6 +862,7 @@ nf_flow_offload_ip_hook(void *priv, struct sk_buff *skb,
- 			return NF_DROP;
- 		}
- 		xmit.dest = neigh->ha;
-+		skb_dst_drop(skb);
- 		skb_dst_set_noref(skb, &rt->dst);
- 		break;
- 	case FLOW_OFFLOAD_XMIT_DIRECT:
-@@ -1178,6 +1180,7 @@ nf_flow_offload_ipv6_hook(void *priv, struct sk_buff *skb,
- 			return NF_DROP;
- 		}
- 		xmit.dest = neigh->ha;
-+		skb_dst_drop(skb);
- 		skb_dst_set_noref(skb, &rt->dst);
- 		break;
- 	case FLOW_OFFLOAD_XMIT_DIRECT:
--- 
-2.55.0.571.g244d577d93-goog
+Thanks,
+Stefano
 
