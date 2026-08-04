@@ -1,152 +1,167 @@
-Received: from mail-ot1-f79.google.com (mail-ot1-f79.google.com [209.85.210.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A493E171F
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 14:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3D53F6C50
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 14:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785853981; cv=none; b=Ou9ufoLksFCl+WPIXsDl5wxr3H8OBcXPp1ktgMYG+Z0bXYEQEeGv69Z5GreKy0ny2DI7b8F7TYUwnewiqwB0Fw9mQG+mJsEzjJgpYAZUV9ATRo/m1uZnRMPyhUa2SyArD/3faOHEA6PE7FjHUkHmfeAUEK77Jn2+JcVqZUV7X40=
+	t=1785854033; cv=none; b=k2ShC/qG1eH7s6kxPMOZL3hroVI6uymDEZIyrslaDRoXPo5++FlOz1M161kYG36Qz9/zC+YaDaoazTcwgS8Tho+N8GL62W0yW8icDFJJOrtVJTke0EJeWcusJ+r6OXotSp/KjzjEFY5lLC4Es5niV6yDp/h5OKlGYDiJAbqi5rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785853981; c=relaxed/simple;
-	bh=kn+YB4KdX6gzE0cSD9I/1GsySqihz01vxAHeLtRBS7g=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Vxk5jyfQQTCPAUOTVV90qeFwNmQXRKvraplR84kadXY4lixxAxncVA/hzMWBOWhPEUQIzt1wXKIrdY1d59zJFuWUGnVTRrRspV1kz5WNc6OghLGfqrgguVDzzPnYPsVT8VrDzaixZYlCufGY2LVldJjhRyXdvA/JfIBlHIIsCGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f79.google.com with SMTP id 46e09a7af769-7e9ee20bde0so3435877a34.2
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 07:32:46 -0700 (PDT)
+	s=arc-20240116; t=1785854033; c=relaxed/simple;
+	bh=q6nFZ1R6gzXut+K/+tnOlHI88I/nj/Df9nXi6+JJ8e4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X8Kv5CKDxU2cLjZoZ+VuV1TunUMyEAViX7Lqpa8NzLjqrrvL9Hltgb4MNo6HOdBmXNBBJsKYElIoxPIl7VDbVysp9ib6WNMyfdoiaTYKI4w5Fw61ClGHt9jqaNJlyyRZip9RXGEuiMo51zsIni+BU9z3F1ky7HDFTpq98SRVTeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EwBcZbFY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qiNhL1md; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EwBcZbFY";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qiNhL1md"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785854019;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sMR8kYlXa1CTxfv23QQO2kULReZbJe35SSbkC/BppCQ=;
+	b=EwBcZbFYgasCAGTHT/cc9l4bWy5p3iU8fM8GH73UOwcpgJU+90e4t4leMCTLhaICoUoCkY
+	/MMy5NNQiJqFYce39Q1zD3aHvvSlQ9VU++ulcSY3xpM1Vj5q86ccxnOlJgA1bHYEI6bWWl
+	OhqWHPTiVFU/BRIoQj0YBg6JRfegpmI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-270-Hg_97tsQOhuGU4ZaPept0g-1; Tue, 04 Aug 2026 10:33:38 -0400
+X-MC-Unique: Hg_97tsQOhuGU4ZaPept0g-1
+X-Mimecast-MFC-AGG-ID: Hg_97tsQOhuGU4ZaPept0g_1785854017
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-496b61bd846so27881115e9.2
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 07:33:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785854017; x=1786458817; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sMR8kYlXa1CTxfv23QQO2kULReZbJe35SSbkC/BppCQ=;
+        b=qiNhL1mdYWBpSxiSJo2PiVO2pjTqdQhqUZalBMspe76dltCOwROb6m7b4bUJwBogL5
+         7aNKrCbVolqtvBEsZ2Ei5eSQufZdNar3cJgO86B60+FJMp4B9UpfIGenrnI/oGD7fJ4z
+         DPULb7WQlspQa6MSBxrDAHx5Iq8aCsoO0NoL+snyawI177uEDAwmMrFW3CmdomT3lxHv
+         Jkjbwy4f3KnK7zBGj2pWwkQRzIIV8UPiT5e9GPtwrjKGFOm3MLkZS4C502Y2AgGvI8Dz
+         1gNLWYr5pONySRcXqRmDYSEG+gXRwm1yFYDzNdEvI82o/qMgBqh2u312fnUnO8lDJhkF
+         j70w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785853965; x=1786458765;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jIWh+MuuKJnCrhJDGHpX6JEMCkNxEUgCFjoaSiOaBGc=;
-        b=f9U5oKkQldDemgjZMxYCNj/+Qtu9lSFZl8VAQm6PCtbNYZYn19bTKtVbb+6pBVx5+i
-         1cW6xSbhJlfLeCRJyuwT4HvSU1a2Q3Mhfjdu3N1d7bqUyhLzRAN4d4/mRErhcN1k078g
-         i6qnAmQqnF4w045Uu/Id91FrK32pe1xAvAdYkCMx2YP2lPQ5Z75ED0OZs6VzP++LRDPa
-         lqe4wiD49OLn2GIobDVYfqTFVcUF6cZupmdNB5BH1LefgAXd5kdg4UoFAZOgnsjoXDd7
-         YGf/+IRCxTi6ALMt6GbJEKe8Riex30B+IJS0pzjgBAcXXZYf5w5Aysy2h692KVJie9Tn
-         JlBQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrQCUxjDYXdtF61fzh1yjKTPyF/DcJyPSbJi+ryNBHoD4GdvG/2VUzUF+sJIyfpWaCGc2da2qc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzgbjbad6FFZBbVmt9QNxuZ74uWYcsYXg9LHLz7HAKLo4807hh6
-	xG/bbsT53CWPNKZmBNqmFE3ze9BYvTprm3+aXAvnQy3FfThfyn7dW+wGi1w7oNNwFTtUPLF8jFJ
-	eqhPFzIkb5VqEo3u0udjFV914/+3mjg5wB51GhGN5rpG1js0pfxWQrMiT78Y=
+        d=1e100.net; s=20251104; t=1785854017; x=1786458817;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sMR8kYlXa1CTxfv23QQO2kULReZbJe35SSbkC/BppCQ=;
+        b=T4AZicCrfSvCEBvNnSywEqjH66D+RGIM3TvMFr89q2AI+FrBK/Eih5vHclYHwQxO4c
+         uRXweZG/SCh5So/Q3mThwoRhzfJcd2uqDxyeKv+x6rwYVmnSE8c6Fgf7CmsM4MGcXGFQ
+         SDmUVrLBffZX08OJQUHrQodPicqFXJ2FORWQj1/bAK2kCQz0/sw4vCkTQTAEXJXpHLZA
+         cErhj+lfMe371JN0tyybynN2WEitdLxeOdhhzHHKiyKxn0nZUZVHq0pQllQVR623s4/Q
+         +nGRtMMCOHUgClt9e1LhT6E07Ca+FyKW0CucIp2Z2bJEUGvRWm6Ej5oPfsk7Rk7WiLZh
+         XnLg==
+X-Forwarded-Encrypted: i=1; AHgh+RpR6VkRzeUDL27YvXSo0u8jJIsnNvzkWD9x0c/1mgVpHLkkgsh7we7N8x8tT2mB26e9bJT6/pE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCbfj43xYBr/RC55pIbG2RXZcStWF7GX7wMZK7rqbXZn5tzYMF
+	UqElAQfoqEJF4GmNj6Kb+FmtZrMPdGU9nwdA6qLPunfJo4c+bXXI9P/Rh6ggihSeiHPcSSLroho
+	8syo2C0SQZXwLVM2C8CnEPSCyghYNYdQJjfiYL3sCaSa9FLKAbA45aGxO5VA9h4CMJA==
+X-Gm-Gg: AR+sD13tT/Y9MlLO//ak5U7JtOYKGVyvzsJD3yBYeTmHy9gqAW2d0Q21oLHB2ABfV2+
+	PrZ26Cf7mFXXIl6nbdmsGiUr7fGzx1ru685455RK+znVtOwThyqGJk+OvLQB54J6GEpAcEWzaql
+	stCkYwXh4qfXYCBbBQ696DWRWKZGAdrNR5j8tBevlvW8wC4yE8RowWWbE5EpOLu7xkuxrQMbhRP
+	iLWeJzGehtZZ/lW0THCceviNIImb426s+V2oTEfc68l9jODUmqTZ/MRUnGUQbCwrTD+RJIzG4tQ
+	DKWXGG4OqG7ELQh+v/q4oWhRg9vKwtpbSxVOkK8J6qrV2HMibZx1gn5S7JKoal6jvGJR0/+QdbE
+	pscOc3I9EYT39IABuIxtCNYTN/Hkz586Xc8IquV3X46m5fviFMLWX/OaN1C9eMx6aSGuVIDUS1u
+	o=
+X-Received: by 2002:a05:600c:5395:b0:493:faf3:3ea5 with SMTP id 5b1f17b1804b1-4980c66c751mr434202875e9.4.1785854016751;
+        Tue, 04 Aug 2026 07:33:36 -0700 (PDT)
+X-Received: by 2002:a05:600c:5395:b0:493:faf3:3ea5 with SMTP id 5b1f17b1804b1-4980c66c751mr434201535e9.4.1785854016281;
+        Tue, 04 Aug 2026 07:33:36 -0700 (PDT)
+Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4994a100e14sm91151965e9.14.2026.08.04.07.33.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Aug 2026 07:33:35 -0700 (PDT)
+Message-ID: <c74a0579-dc37-4f3b-8dba-8380223b361c@redhat.com>
+Date: Tue, 4 Aug 2026 16:33:34 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a4a:e845:0:b0:6aa:d909:1457 with SMTP id
- 006d021491bc7-6ae433e58d2mr17742594eaf.36.1785853964747; Tue, 04 Aug 2026
- 07:32:44 -0700 (PDT)
-Date: Tue, 04 Aug 2026 07:32:44 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a71f80c.40259c87.584f4.04b9.GAE@google.com>
-Subject: [syzbot] [net?] WARNING in netdev_queue_get_dma_dev
-From: syzbot <syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] netdevsim: fix deadlock in nsim_bus_dev_max_vfs_write()
+To: syzbot <syzbot@kernel.org>, syzkaller-bugs@googlegroups.com,
+ Slawomir Stepien <sst@poczta.fm>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
+References: <b7bf56ea-7522-4163-acd5-aaa69ad03b3a@mail.kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <b7bf56ea-7522-4163-acd5-aaa69ad03b3a@mail.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On 7/31/26 11:55 AM, syzbot wrote:
+> From: Slawomir Stepien <sst@poczta.fm>
+> 
+> There is an ABBA deadlock between the devlink instance lock and the debugfs
+> active file reference mechanism.
+> 
+> When a device is being removed (e.g., via nsim_drv_remove()), the driver
+> acquires the devlink instance lock and then calls
+> debugfs_remove_recursive(). This function blocks waiting for all active
+> file operations on the debugfs files to complete.
+> 
+> Concurrently, if a user writes to the "max_vfs" debugfs file, the VFS layer
+> acquires an active reference to the file. The write handler,
+> nsim_bus_dev_max_vfs_write(), then attempts to acquire the devlink instance
+> lock, which is already held by the removal task.
+> 
+> This creates a circular dependency resulting in a deadlock:
+> 
+> INFO: task blocked for more than 143 seconds.
+> Call Trace:
+>  wait_for_completion+0x2ca/0x5e0 kernel/sched/completion.c:153
+>  __debugfs_file_removed fs/debugfs/inode.c:751 [inline]
+>  remove_one+0x2df/0x3b0 fs/debugfs/inode.c:758
+>  __simple_recursive_removal+0x215/0x520 fs/libfs.c:623
+>  debugfs_remove+0x5b/0x70 fs/debugfs/inode.c:781
+>  nsim_dev_debugfs_exit drivers/net/netdevsim/dev.c:372 [inline]
+>  nsim_drv_remove+0xc0/0x170 drivers/net/netdevsim/dev.c:1803
+> 
+> INFO: task blocked for more than 143 seconds.
+> Call Trace:
+>  __mutex_lock+0x7bf/0x1550 kernel/locking/mutex.c:821
+>  nsim_bus_dev_max_vfs_write+0x229/0x3d0 drivers/net/netdevsim/dev.c:276
+>  full_proxy_write+0x127/0x1f0 fs/debugfs/file.c:388
+>  vfs_write+0x296/0xba0 fs/read_write.c:685
+> 
+> To fix this, use devl_trylock() in nsim_bus_dev_max_vfs_write() instead of
+> devl_lock(). If the lock cannot be acquired, return -EBUSY. This aborts the
+> write operation, releases the debugfs active file reference, and allows the
+> pending debugfs_remove_recursive() to proceed.
+> 
+> Assisted-by: Gemini:gemini-3.5-flash Gemini:gemini-3.1-pro-preview syzbot
+> Reported-by: syzbot+3147c5de186107ffc7a1@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3147c5de186107ffc7a1
+> Link: https://syzkaller.appspot.com/ai_job?id=fcdda182-bebf-49ab-ada0-d4d2e814ebf7
+> Signed-off-by: Slawomir Stepien <sst@poczta.fm>
+> 
+> ---
+> diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+> index aed9ad5f1..421cd7327 100644
+> --- a/drivers/net/netdevsim/dev.c
+> +++ b/drivers/net/netdevsim/dev.c
+> @@ -273,7 +273,11 @@ static ssize_t nsim_bus_dev_max_vfs_write(struct file *file,
+>  		return -ENOMEM;
+>  
+>  	nsim_dev = file->private_data;
+> -	devl_lock(priv_to_devlink(nsim_dev));
+> +	if (!devl_trylock(priv_to_devlink(nsim_dev))) {
+> +		ret = -EBUSY;
 
-syzbot found the following issue on:
+I think this should return restart_syscall(). This kind of schema is
+calling for trouble, but for netdevsim should be okish.
 
-HEAD commit:    075b74841bd0 Linux 7.2-rc6
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=176a7db9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
-dashboard link: https://syzkaller.appspot.com/bug?extid=a78926bdac2adb52dc0e
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16225db9580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17bade32580000
+/P
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/1dc04730d019/disk-075b7484.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/d76da42271f4/vmlinux-075b7484.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/07b1cdbcbe45/bzImage-075b7484.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-RTNL: assertion failed at ./include/net/netdev_lock.h (72)
-WARNING: ./include/net/netdev_lock.h:72 at netdev_assert_locked_ops_compat include/net/netdev_lock.h:72 [inline], CPU#1: syz-executor223/5620
-WARNING: ./include/net/netdev_lock.h:72 at netdev_queue_get_dma_dev+0x52e/0x660 net/core/netdev_queues.c:43, CPU#1: syz-executor223/5620
-Modules linked in:
-CPU: 1 UID: 0 PID: 5620 Comm: syz-executor223 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-RIP: 0010:netdev_assert_locked_ops_compat include/net/netdev_lock.h:72 [inline]
-RIP: 0010:netdev_queue_get_dma_dev+0x53a/0x660 net/core/netdev_queues.c:43
-Code: 89 c5 89 c6 e8 27 f7 68 f8 45 85 ed 0f 85 be fb ff ff e8 a9 fc 68 f8 48 8d 3d 12 0e 90 07 ba 48 00 00 00 48 c7 c6 a0 88 18 8d <67> 48 0f b9 3a e9 9c fb ff ff e8 87 fc 68 f8 48 8d bd 00 08 00 00
-RSP: 0018:ffffc90003b47a80 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff888029874000 RCX: ffffffff89a16569
-RDX: 0000000000000048 RSI: ffffffff8d1888a0 RDI: ffffffff91317390
-RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
-R13: 0000000000000000 R14: ffff88807b3f2568 R15: ffffc90003b47be0
-FS:  00005555885ac400(0000) GS:ffff888123ed8000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000001000 CR3: 000000006f8b6000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- zcrx_register_netdev io_uring/zcrx.c:831 [inline]
- io_register_zcrx+0xe94/0x1d30 io_uring/zcrx.c:983
- __io_uring_register io_uring/register.c:942 [inline]
- __do_sys_io_uring_register+0x1193/0x1bc0 io_uring/register.c:1040
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fd0b54bbcb9
-Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffe25f0a7f8 EFLAGS: 00000246 ORIG_RAX: 00000000000001ab
-RAX: ffffffffffffffda RBX: 00007ffe25f0a928 RCX: 00007fd0b54bbcb9
-RDX: 0000200000000400 RSI: 0000000000000020 RDI: 0000000000000003
-RBP: 0000000000000001 R08: 0000000000000000 R09: 00007ffe25f0a928
-R10: 0000000000000001 R11: 0000000000000246 R12: 00007ffe25f0a918
-R13: 0000000000000002 R14: 00007fd0b554cca0 R15: 0000000000000002
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	89 c5                	mov    %eax,%ebp
-   2:	89 c6                	mov    %eax,%esi
-   4:	e8 27 f7 68 f8       	call   0xf868f730
-   9:	45 85 ed             	test   %r13d,%r13d
-   c:	0f 85 be fb ff ff    	jne    0xfffffbd0
-  12:	e8 a9 fc 68 f8       	call   0xf868fcc0
-  17:	48 8d 3d 12 0e 90 07 	lea    0x7900e12(%rip),%rdi        # 0x7900e30
-  1e:	ba 48 00 00 00       	mov    $0x48,%edx
-  23:	48 c7 c6 a0 88 18 8d 	mov    $0xffffffff8d1888a0,%rsi
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	e9 9c fb ff ff       	jmp    0xfffffbd0
-  34:	e8 87 fc 68 f8       	call   0xf868fcc0
-  39:	48 8d bd 00 08 00 00 	lea    0x800(%rbp),%rdi
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
