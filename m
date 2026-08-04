@@ -1,217 +1,98 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA1F3C9880;
-	Tue,  4 Aug 2026 08:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED620435EEC;
+	Tue,  4 Aug 2026 08:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785830522; cv=none; b=TbmlvwnA7EC4hKttH+gpnez35wg4s8hoVplctb8LZCTqqjDq9jmQKNY/ynNvelT+X3XJ8QRsfZYn6vusm6T2FPeXbcQiPT/viCVT0QlhV8I4gcB8QSZRhPacIZsMH2kFTpT4OPIjIfRwas5NnsuGcUa35Rl36elgkc0iJMD+uPA=
+	t=1785830575; cv=none; b=LzG/NfkukMvKpgJVQVDNXJIWFWhywK8Ru7usnXYHPDozPSZ2+eHiWV2OWI9efmAnQebmQ7NO0udMkX4ZUCSUoHzdOH+9MFBFLUD60a6ZFM1X5zeMDtu0iyBxzTlc00+mgSliXEmuQgGCd4IGVaEzY91EuIyS8K6qM4nH/B4SvOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785830522; c=relaxed/simple;
-	bh=jv/8jh4nUeoRb+P/0T3xefwTXs5/+xJ/He96kSRljGY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JRyKWtrxuz5lu2ckJEhx2eiblbDKJI3ig2Xu9NDdxav7C8zatGd+8NRtdI3Ub68X0VLehSkSuJ4XjrVoF5eCNG14uvrJTc3PGDUs4cV9k7fpFMhJn1kBYP5ce9yg5Z6aztLW+jdHNcpuT0ai8o2aekhnkYrvveHU4WtZudo+WMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=HCq1Es2X; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1785830575; c=relaxed/simple;
+	bh=0eUymY74CT1v7y60NK/l/HWKk/ejJQBud/7a6M+avh4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ibFNplqfHnLJpPXTU/c4RkEsGdVlfvXrqiwLQTVdp8/Ju+e/wAUNIuvKhOmaZUvVqRzsfQ4bY4CHKcrhGqYTNqG+6c+OvtZrLsr6rUJw/y6VJ23VCgjIB3NHkC//T/azd4WPdbZfyq856cZC7Rmf040j3GSAbXGOH2uurCy5At4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=iRZA6pXh; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="HCq1Es2X"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=GD
-	XLoRKgzjKVnPrgwJcrOOcZrQyU97XBZRb6Hz6oZlY=; b=HCq1Es2XyjzlONBs2u
-	wjs1KTefU8C1R/l72mjb6w9ZyueDEEmWlceHcp0UTFJAExFmQxlLS5bcYsnQTlA+
-	9tDCPvGS6cMOAjHIdqTDdYS0RvziQ9YwXBdhzp0T1fdOmTogxKNla0CeCJ0m+QGd
-	WbeA6uKI50m1yH+5Z+vxBA3+0=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgA3+bZVnHFqQsQvLQ--.12248S5;
-	Tue, 04 Aug 2026 16:01:29 +0800 (CST)
-From: "rom.wang" <r4o5m6e8o@163.com>
-To: virtualization@lists.linux.dev
-Cc: eperezma@redhat.com,
-	mst@redhat.com,
-	jasowang@redhat.com,
-	pabeni@redhat.com,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yufeng Wang <wangyufeng@kylinos.cn>
-Subject: [PATCH 3/3] tools/virtio: add --features-array switch
-Date: Tue,  4 Aug 2026 16:01:25 +0800
-Message-Id: <20260804080125.79403-4-r4o5m6e8o@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260804080125.79403-1-r4o5m6e8o@163.com>
-References: <CAJaqyWfP7j5_PvOP0JiHuAQ8appGnoJDS3OB-qK7riBpZ_d_tQ@mail.gmail.com>
- <20260804080125.79403-1-r4o5m6e8o@163.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="iRZA6pXh"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=gGHl823a0STAPKow6K4Qh+Y4iP0l4O50pJSyvjeHidQ=; b=iRZA6pXhdo2wVMkozIY46Aj2gP
+	j9ygTCya8cJ5qh8uJ099UkOnIX1MVkcjR4tJdygIhP8wufRHI5bdGbXG2xFVrcfP178zvMPoSAa10
+	EEO9pKH7nsS8YyP+tjUmNSWdJ4BveoLp4cGajHAjcfjemavXGNmI7hpanlvR3WEHBR9nzDexiY37D
+	hhk6Uof1vfFgN+rUHRQi/lGfraj7CD7xpkiMk+l+EIkSpYtDi8oo3V19a8CaTnzjSdfyePeT90NWH
+	3S42cNqgfHNjVy6fXS7Vms+bs4M8DUGQET3/28RHYDZ56Djaggalxiz34+P3FCPNF0VtdcZfWhFN0
+	tcrGtEPA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wrA6f-00CzrO-0N;
+	Tue, 04 Aug 2026 08:02:37 +0000
+Date: Tue, 4 Aug 2026 01:02:30 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Sidraya Jayagond <sidraya@linux.ibm.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, alibuda@linux.alibaba.com, dust.li@linux.alibaba.com, 
+	horms@kernel.org, mjambigi@linux.ibm.com, tonylu@linux.alibaba.com, 
+	guwen@linux.alibaba.com, hidayath@linux.ibm.com, pasic@linux.ibm.com, 
+	netdev@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH net] net/smc: fix TOCTOU race between smc_listen_out()
+ and listener close
+Message-ID: <anGciOvYt4wCmNep@gmail.com>
+References: <20260803070701.126339-1-sidraya@linux.ibm.com>
+ <anCPZl_Rvqj2B7vI@gmail.com>
+ <4157b86a-e2cb-470b-a526-137a650b9d5a@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgA3+bZVnHFqQsQvLQ--.12248S5
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtr1fXrW3WF4xZrWkAF17Awb_yoW7GFy8p3
-	ySqF15AF43Jr1xCa13J39ruF45Gw1xAF45ArZ2y34rC3WUGFyUAFs2ka10qa9xZ3ykXFWa
-	gFn0vr4xCFWDu3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j76p9UUUUU=
-X-CM-SenderInfo: 3uurkzkwhy0qqrwthudrp/xtbC8Bk0qWpxnFnjNAAA39
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4157b86a-e2cb-470b-a526-137a650b9d5a@linux.ibm.com>
+X-Debian-User: leitao
 
-From: Yufeng Wang <wangyufeng@kylinos.cn>
+On Tue, Aug 04, 2026 at 12:52:12PM +0530, Sidraya Jayagond wrote:
+> 
+> 
+> On 03/08/26 6:24 pm, Breno Leitao wrote:
+> >> @@ -1931,11 +1931,12 @@ static void smc_listen_out(struct smc_sock *new_smc)
+> >>  		atomic_dec(&lsmc->queued_smc_hs);
+> >>  
+> >>  	release_sock(newsmcsk); /* lock in smc_listen_work() */
+> >> +	lock_sock_nested(&lsmc->sk, SINGLE_DEPTH_NESTING);
+> >>  	if (lsmc->sk.sk_state == SMC_LISTEN) {
+> >> -		lock_sock_nested(&lsmc->sk, SINGLE_DEPTH_NESTING);
+> >>  		smc_accept_enqueue(&lsmc->sk, newsmcsk);
+> >>  		release_sock(&lsmc->sk);
+> >>  	} else { /* no longer listening */
+> >> +		release_sock(&lsmc->sk);
+> >>  		smc_close_non_accepted(newsmcsk);
+> >>  	}
+> > 
+> > Do you need to call smc_close_non_accepted() without the lock? otherwise
+> > you can have the lock around the whole if/else clause.
+> 
+> Yes, smc_close_non_accepted() calls __smc_release() in turn calls
+> smc_close_active(), which in the SMC_ACTIVE case hits
+> smc_close_stream_wait() a blocking wait that can sleep up to
+> SMC_MAX_STREAM_WAIT_TIMEOUT (2 minutes). Holding the listener lock
+> across that would stall any concurrent smc_accept(), smc_listen_out(),
+> or smc_release() on the listener for the same duration.
+> 
+> The release_sock() is intentionally placed before
+> smc_close_non_accepted() to keep the critical section minimal:
+> lock
+>   check state
+>     enqueue or not
+>       unlock
+>         then do the slow close work without the listener lock held.
 
-Add a --features-array command-line switch that exercises the array-variant
-feature ioctls, VHOST_SET_FEATURES_ARRAY and VHOST_GET_FEATURES_ARRAY,
-instead of the legacy VHOST_SET_FEATURES.  The legacy path is used when the
-switch is omitted, so both code paths stay covered.
+That makes sense.
 
-SET: features are programmed via VHOST_SET_FEATURES_ARRAY.
-
-GET: VHOST_GET_FEATURES_ARRAY is issued twice with a count above
-VIRTIO_FEATURES_U64S, once into a zero-initialized buffer and once into a
-sentinel-filled one; the two reads must match.  This verifies the kernel
-fills the prefix and clear_user()s the trailing entries, and stays correct
-as the kernel's feature-word count grows.
-
-Signed-off-by: Yufeng Wang <wangyufeng@kylinos.cn>
----
- tools/virtio/vhost_net_test.c | 70 +++++++++++++++++++++++++++++++++--
- 1 file changed, 66 insertions(+), 4 deletions(-)
-
-diff --git a/tools/virtio/vhost_net_test.c b/tools/virtio/vhost_net_test.c
-index 389d99a6d7c7..77191e60a7a3 100644
---- a/tools/virtio/vhost_net_test.c
-+++ b/tools/virtio/vhost_net_test.c
-@@ -26,6 +26,12 @@
- #define TEST_PTYPE	ETH_P_LOOPBACK
- #define DESC_NUM	256
- 
-+/* Number of u64 entries that the kernel uses to store all currently-defined
-+ * virtio features. Must stay in sync with the kernel's VIRTIO_FEATURES_U64S. */
-+#define FEATURES_U64S	2
-+/* Above VIRTIO_FEATURES_U64S so trailing entries hit the clear_user() tail. */
-+#define GET_FEATURES_ARRAY_COUNT	8
-+
- /* Used by implementation of kmalloc() in tools/virtio/linux/kernel.h */
- void *__kmalloc_fake, *__kfree_ignore_start, *__kfree_ignore_end;
- 
-@@ -205,8 +211,10 @@ static void vq_info_add(struct vdev_info *dev, int idx, int num, int fd)
- 	assert(!r);
- }
- 
--static void vdev_info_init(struct vdev_info *dev, unsigned long long features)
-+static void vdev_info_init(struct vdev_info *dev, unsigned long long features,
-+			   bool features_array)
- {
-+	struct vhost_features_array *fa;
- 	struct ether_header *eh;
- 	int i, r;
- 
-@@ -248,8 +256,20 @@ static void vdev_info_init(struct vdev_info *dev, unsigned long long features)
- 	r = ioctl(dev->control, VHOST_SET_MEM_TABLE, dev->mem);
- 	assert(r >= 0);
- 
--	r = ioctl(dev->control, VHOST_SET_FEATURES, &features);
--	assert(r >= 0);
-+	if (features_array) {
-+		fa = calloc(1, struct_size(fa, features, FEATURES_U64S));
-+		assert(fa);
-+		fa->count = FEATURES_U64S;
-+		fa->features[0] = features;
-+
-+		r = ioctl(dev->control, VHOST_SET_FEATURES_ARRAY, fa);
-+		assert(r >= 0);
-+
-+		free(fa);
-+	} else {
-+		r = ioctl(dev->control, VHOST_SET_FEATURES, &features);
-+		assert(r >= 0);
-+	}
- 
- 	dev->nvqs = 2;
- }
-@@ -455,6 +475,10 @@ static const struct option longopts[] = {
- 		.val = 'b',
- 		.has_arg = required_argument,
- 	},
-+	{
-+		.name = "features-array",
-+		.val = 'F',
-+	},
- 	{
- 	}
- };
-@@ -467,11 +491,43 @@ static void help(int status)
- 		" [--no-virtio-1]"
- 		" [--delayed-interrupt]"
- 		" [--buf-num]"
-+		" [--features-array]"
- 		"\n");
- 
- 	exit(status);
- }
- 
-+static void verify_get_features_array(struct vdev_info *dev)
-+{
-+	struct vhost_features_array *clean, *dirty;
-+	int r, i;
-+
-+	clean = calloc(1, struct_size(clean, features, GET_FEATURES_ARRAY_COUNT));
-+	assert(clean);
-+	clean->count = GET_FEATURES_ARRAY_COUNT;
-+	r = ioctl(dev->control, VHOST_GET_FEATURES_ARRAY, clean);
-+	assert(r >= 0);
-+
-+	/* Sentinel-fill so the kernel's clear_user() of the tail is visible. */
-+	dirty = calloc(1, struct_size(dirty, features, GET_FEATURES_ARRAY_COUNT));
-+	assert(dirty);
-+	dirty->count = GET_FEATURES_ARRAY_COUNT;
-+	memset(dirty->features, 0xa5, GET_FEATURES_ARRAY_COUNT * sizeof(dirty->features[0]));
-+	r = ioctl(dev->control, VHOST_GET_FEATURES_ARRAY, dirty);
-+	assert(r >= 0);
-+
-+	/* Must match; a wrong clear_user() start would leave them unequal. */
-+	for (i = 0; i < GET_FEATURES_ARRAY_COUNT; i++)
-+		assert(clean->features[i] == dirty->features[i]);
-+
-+	printf("GET_FEATURES_ARRAY: 0x%llx 0x%llx (tail zeroed) OK\n",
-+	       (unsigned long long)clean->features[0],
-+	       (unsigned long long)clean->features[1]);
-+
-+	free(clean);
-+	free(dirty);
-+}
-+
- int main(int argc, char **argv)
- {
- 	unsigned long long features = (1ULL << VIRTIO_RING_F_INDIRECT_DESC) |
-@@ -480,6 +536,7 @@ int main(int argc, char **argv)
- 	long nbufs = 0x100000;
- 	struct vdev_info dev;
- 	bool delayed = false;
-+	bool features_array = false;
- 	int o, fd;
- 
- 	for (;;) {
-@@ -503,6 +560,9 @@ int main(int argc, char **argv)
- 		case 'D':
- 			delayed = true;
- 			break;
-+		case 'F':
-+			features_array = true;
-+			break;
- 		case 'n':
- 			nbufs = strtol(optarg, NULL, 10);
- 			assert(nbufs > 0);
-@@ -520,7 +580,9 @@ int main(int argc, char **argv)
- 	fd = tun_alloc(&dev, tun_name);
- 	assert(fd >= 0);
- 
--	vdev_info_init(&dev, features);
-+	vdev_info_init(&dev, features, features_array);
-+	if (features_array)
-+		verify_get_features_array(&dev);
- 	vq_info_add(&dev, 0, DESC_NUM, fd);
- 	vq_info_add(&dev, 1, DESC_NUM, fd);
- 	vdev_create_socket(&dev, tun_name);
--- 
-2.34.1
-
+Reviewed-by: Breno Leitao <leitao@debian.org>
