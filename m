@@ -1,128 +1,174 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA044949E8;
-	Tue,  4 Aug 2026 17:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785865147; cv=none; b=YFpQ6PKn4ElhwqeFLACohfKjvZ351v9PqhRouxUP4IxBnxUgoMszvhfC24hRMSTTCysBJlGF8ZbiELJxNIdzuU+pPLb+iVCOKDtQlCPaNxzgP7fv+DjRoCUu4w7VSM6226Yl/RO2LWsRVNIrbtwqsIWL2ZZfQJPya8KGsBEWwMI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785865147; c=relaxed/simple;
-	bh=n9k+STtkLseuWk2U/CPOHJLHCuyJ8LwrTKpV0GGni7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lvMecZ3enbnbsuX0QgW+XUSDK40vWCcbhLvzKooLB00uod9antQ85bxkyywDQ6uACfhDUwfwOP6hwABakL0Wl33I9gXULd2x99La/kr7uupZr9o23SY3X+3DWXPlBElIAVHaVwR17FYN54eIxFl2n9w78fe2dvk3RmNuMgyaRDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=yoyLWprD; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EF743C069
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 17:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785865177; cv=pass; b=bd2vFSPOZKHapc/FoE0g5bgRoJuxMZ/7+C3LZaWPegQr0of3gqkbQEBZKHRMA52b+U7r2Z+1o/FhFTlE71SKQ13mReDUitDr5fTQNioZJgl5cJp3tXHwpS1ZQmO+/gcjX6FRHeC02dL/r5j3g6+xWa3za1MbJe1hA3/NpsBu97w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785865177; c=relaxed/simple;
+	bh=7s4GgU0yWjrvZ/GMpAO1ho1vTRBzA7w8yzjMsH3cMCI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ev0vXGZpos46nTZUvWuCUttas2LUC8kBWBdFfP8NRh5rn05601oPbyelK2PF1AmwssvhSuyt2PQN6CYjqdDRsfqnnCktI3W0C8W4BpFVjl22c2H7hKTWdBC7xGUrmrZ5aS5gxNlAcV5EGsC+Kpox+Pm0Rt3RY3oNfprAK2a6ldY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gkSW/Cub; arc=pass smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="yoyLWprD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=iEI0tsAN27gcGUyJPUFdfbIkSDOcl8zJRY+yO6IjA8E=; b=yoyLWprDwgxFu5mYAEn0SWOsHd
-	Oi46csV9zN33JyPIvHApKBtCDW42AQUUUlGXzFn6E7Dze5qPN7pVQwVvCWC4K1hG93ghBJ021aTf0
-	ySxCwlGTz8UX6CmusMreZx/UoBOyZxDReyZBxhEut4FvMZpxKWFxCBhafQuqyXb/cWCc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wrJ63-00G1hx-Un; Tue, 04 Aug 2026 19:38:35 +0200
-Date: Tue, 4 Aug 2026 19:38:35 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Jernej =?utf-8?Q?=C5=A0krabec?= <jernej.skrabec@gmail.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Samuel Holland <samuel@sholland.org>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com, mfd@lists.linux.dev,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH 00/21] net: phy: add X-Powers AC200/AC300 EPHY support
-Message-ID: <9dd29610-d9e4-48f2-9638-2c92863626f8@lunn.ch>
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <aaec8809-8218-4412-a60d-931406dbf287@arm.com>
- <CADvTj4qCYjQHOQn1jRTHNNL=xeX6z3Dgc-PLwOBUvX34AU6cuA@mail.gmail.com>
- <AGtA6uUwR9yJMX3xYVDz6g@gmail.com>
- <CADvTj4qBhiPczrP9YC2uTW3xss3W7ghoBzbctM45yUROfsgPhw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gkSW/Cub"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47fd66a094eso24190f8f.3
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 10:39:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785865174; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Kg3WJfbGMqPzfSBQBTrl1dkaFbtwtDR3HnV8kCBfrjxZ/b4H7RVtobG0gwNGunk9Y3
+         y3x4B7fA3Q6KFRR/tXjUmjrar+IRkoU+VclXih3P8SDNfDpTCQtbklUofCBm8gcn4umQ
+         qjsOP5bz2YHjitKIc7B4aeAMO0wtBHuznMPZvy2YSnX0pedJAa+WaNZtCbCN+ukcWlz9
+         r2lP3Wt23qwESFYnhv+a/MLAIm4vonhFoOfsX6Xx8p3OsG7iq9XVWedkVWoXmBTkEgxL
+         DMD34plY9lOzPsfnRKa8P0kmzOMgcJY2hwiQyfaodVwPSeqrd3SLRrryoxsC0/JbjJwu
+         xjUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=a57h1gKhOLUfkryQSWJzZFefceNYQazOuLC74TR29w0=;
+        fh=PKbUBpoesM0t9BM3xVosDoJDvj/rwrkalseCFe3WFFQ=;
+        b=hHBM3w3ZBN4NAmCAXglD200y6GC8goSX3rjbzMFfdS6dahbw3PLOvZ3fC5QuQTWQIP
+         NHPmtTa0gOOUdM6S0cgNWcsx+CNN7x0gGrVo9VqB32XmkSYnKx0VxuBh4JbNTjVCsjCh
+         LqZp0JvZdF9vlqi1npsub35WIfNDZrUqyrQ49i00OHj+xm15ZjkMB/g/aJ6ZvyjprCYF
+         7KOidSOTy4ToQVdEsMXun6Sd69E+3TbKQPluQWpikBNorSl03+36R5VIHNbIqymp9pvU
+         HsmRX2nXjlxVvBo14mCftxeLGEkFhGKedWFutev9R/SA3aHrsNIZnd5koOFgE24BpN+A
+         UDdQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785865174; x=1786469974; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=a57h1gKhOLUfkryQSWJzZFefceNYQazOuLC74TR29w0=;
+        b=gkSW/Cub3m+GnJMFc58mnY7dBg0tMJQhp6kijgnSEceLH29PViUBdTKNIN2qU2mo/t
+         s9tyXTDhwh4FCACfhgx0ZyB2VLE6WWmvh1QoT4uKwDRuI4yjw4URtTKPvI5It9O/96x3
+         tnLE13iQ1+ZccST/m8GQpY/A9jZ3UPq7IhKuiZizCHSbyyDTFAgV2Ivn/qty7EAI2vJ5
+         ngnv9wpzVWPaZhF1xevtD9S7gR+vmyF9VWi1fFMnN6XhIvEU2y1rhthaL4D0uwFmCqAW
+         9+qm2pjqN9+ZhinNEzH+saepD3WPma65FkCwDkL14UupY4l+W/cXYE4OYB8GrElSwzjl
+         ZdOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785865174; x=1786469974;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=a57h1gKhOLUfkryQSWJzZFefceNYQazOuLC74TR29w0=;
+        b=IgXpnvKwxPMuLFKVYgKjyHrlQMAH1/92yQch6juGuPaML9XXZeeDhsk323eda6LgoV
+         MqMNgUCeqkSYErtECnfuEaPsISEZ46iHIbA7tfuP/RQ65S7jCEk+kQHPXJJQW3cjf+1W
+         jD/ehkd7tLiJHcpPPA5xjFb+7vqoGOKLLq8GyrhHYrcrMVvxidzGOAvT8SYDugjCQ8dx
+         z+IdBHt7Fis8YttuIzSXsG0NLr9PvXUABXPQ4JOVuAyGzJ7wzVIVTE5eoEeRH0Z89B7i
+         HzmgzITHSjUQOTJN8NWK6SnaFpEw2D+mWRAF+BIKsRdMpFfiZwcBk5+BkgFxoEbQI3ky
+         JUIA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq3jYu1wAEYzqESFIaVteFuJLQvMuC5EXVSKHrdxS+r/P2rcG3o0PQTWl4YZSoftKzO+aBDIQw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyth3OWm0jhJSeYW2ShS3diDYtSs4uUUhkEnPTtb91Y6jiZ/tPW
+	vqVonqEUwgIP0ip2GDKZxgzluK/CtY+Pbp64AJWMQpDsh2FSMDK8dXWQUWYhshyvQ0bUUXzwYxZ
+	Pc3eVsDLP3UjOpgSdYXhaz5QY2Cjcf0F8tybkhtaM
+X-Gm-Gg: AR+sD10DeqkHuv4mjGldVOFEGI4gb/speI8eSVldg5Gtn4vhpG5i013l0Bs5aQTVBO8
+	ymzK7wEonpFmPcH9ZGroKuYQ6KdUOVL/S10yPjpeEz1JTq0iaRa5sqeFaYv72j7zXR5vltJ+xcS
+	NzEOxPW40n6stIkRgmRjH2fLWjvCrOqRU7CoPeGQLK2yWCQd3VFt+4hLwzgVdCj/KN0wPqrYAdS
+	89TmtBfNGPhP+PVUYjT2lwzCFMetCXZjdDx8bsJL3RTJryPadvW24y9pqqFNFeWMqWuzPEw5o7Z
+	Sud+vSMPkTKyCzIITfNCgxxyIxA0wEapqjReA/0bYQDS3mqPpiUgbZkXm5s1qFyX1hg7Q3P0Zzw
+	=
+X-Received: by 2002:a05:6000:1787:b0:47f:8802:c182 with SMTP id
+ ffacd0b85a97d-47fec63cdd1mr1488152f8f.29.1785865173107; Tue, 04 Aug 2026
+ 10:39:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CADvTj4qBhiPczrP9YC2uTW3xss3W7ghoBzbctM45yUROfsgPhw@mail.gmail.com>
+References: <20260721063829.7d9e6c7f@kernel.org> <CADWJPTsP=2=JFE9Oh5ym_wz4vROEFOCqa+dyCLRymyYLRB1BSg@mail.gmail.com>
+ <20260723103607.55debff2@kernel.org> <CADWJPTs6G7zy+9aLxz9QD9Fk1szZK0b-vEFUm2jxTMtxt+t1uQ@mail.gmail.com>
+ <20260804072522.784ead37@kernel.org>
+In-Reply-To: <20260804072522.784ead37@kernel.org>
+From: Sheena Mohan <sheenamo@google.com>
+Date: Tue, 4 Aug 2026 10:39:21 -0700
+X-Gm-Features: AUfX_mxHkTMCgS1g1WD7h_0w76Yi_-GTF4WXvZRsN7AiPbNZ7Ij2p-EGz7gYc5g
+Message-ID: <CADWJPTuxT4Vh4ja_5Wza=0Y-XW-xVh6DwEBVfKmXdBoUJKMwRw@mail.gmail.com>
+Subject: Re: [TEST] google runner needs nested cases
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Harshitha Ramamurthy <hramamurthy@google.com>, netdev@vger.kernel.org, 
+	Willem de Bruijn <willemb@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> The AC200 Datasheet V1.1 and AC300 User Manual V1.0 block diagrams show
-> effectively the same EPHY organization: MII/RMII, auto-negotiation,
-> Auto-MDIX, 10/100 transmit and receive PCS/PMA blocks, LED and
-> clock/reset logic, a PLL, and the EPHY analog front end. Both variants
-> also report PHY ID 0x00441400, and testing shows compatible link-side
-> paged registers and behavior.
-> 
-> What differs is the surrounding control path.
-
-Which is still part of the PHY, needs driver code, and so should be
-part of the PHY driver. 
-
-> AC200 is configured
-> through its RSB/TWI-backed MFD registers, while AC300 has a separate
-> non-PHY MDIO control endpoint.
-
-Which is an implementation detail.
-
-> I do not think the control-provider reference is artificial. It
-> describes a real functional dependency: the Clause 22 endpoint cannot
-> be accessed until the selected package-specific control block has
-> powered, calibrated and configured it.
-
-Nothing too special here. There are PHYs which do this, in the PHY
-driver.
-
-> I also do not think a bootloader fixup should be the only supported
-> selection mechanism. Boards using the same compatible have shipped with
-> either package, and the SID field provides an authoritative package
-> selector which Linux can read directly. Handling that selector in Linux
-> avoids making support depend on a particular bootloader implementation.
-
-There is a trade off here. If the hardware design is just ugly, badly
-thought out, poorly executed, not following the industries norms, we
-want to push back on the hardware vendor to make the next version
-better. Until that improved version comes out, either the vendor crap
-driver should be used, not Mainline, or we try to hide away the issues
-in the bootloader. A vendor which actually cares will improve, they
-know what Mainline means. And for vendors which don't care, why should
-Mainline care, especially if the issues can be pushed to the
-bootloader.
-
-We don't want to mess up core Linux code to handle one broken device,
-that just makes ongoing Maintenance more expensive for everybody.
-
-> A bootloader fixup remains compatible with this design. If firmware
-> enables only the correct provider, the fixed-description path is used
-> and Linux does not need to change the tree. Runtime selection is used
-> when firmware leaves the package variant unresolved.
-
-So i would not try to fix up the unresolved situation, just do a
-dev_error(dev, "Please upgrade your bootloader"); and return -ENODEV.
-
-	Andrew
+On Tue, Aug 4, 2026 at 7:25=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
+> On Tue, 28 Jul 2026 10:07:15 -0700 Sheena Mohan wrote:
+> > The recent updates have been merged, and the tests should now report
+> > sub-case results.
+> > Please let us know if any further improvements are needed.
+>
+> It doesn't look right.
+>
+> https://gve-netdev-nipa.static.usercontent.goog/json/results-202608040108=
+-88cb54ab-ca48-426b-9c9a-50bfbb0de32a.json
+>
+> test    "napi-threaded-py"
+> group   "selftests-drivers-net"
+> result  "pass"
+> ^^^^^^^^^^^^^
+> link    "https://gve-netdev-nipa.static.usercontent.goog/results/20260804=
+0108-88cb54ab-ca48-426b-9c9a-50bfbb0de32a/napi-threaded-py/logs.html"
+> time    20.788391
+>
+> # selftests: drivers/net: napi_threaded.py
+> not ok 1 selftests: drivers/net: napi_threaded.py # exit=3D1
+> # Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
+> # not ok 1 napi_threaded.napi_init
+> # not ok 2 napi_threaded.change_num_queues
+> # not ok 3 napi_threaded.enable_dev_threaded_disable_napi_threaded
+>
+> Does not look like a pass at all. Subcases not in JSON.
+> Not sure why the subcases are listed under the main return
+> in the output, I've never seen that.
+>
+>
+> test    "psp-py"
+> group   "selftests-drivers-net"
+> result  "pass"
+> link    "https://gve-netdev-nipa.static.usercontent.goog/results/20260804=
+0108-88cb54ab-ca48-426b-9c9a-50bfbb0de32a/psp-py/logs.html"
+> time    341.833939
+>
+> # selftests: drivers/net: psp.py
+> not ok 1 selftests: drivers/net: psp.py # exit=3D1
+> # Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
+>
+> Again, doesn't seem to be a pass??
+>
+>
+> test    "queues-py"
+> group   "selftests-drivers-net"
+> result  "pass"
+> link    "https://gve-netdev-nipa.static.usercontent.goog/results/20260804=
+0108-88cb54ab-ca48-426b-9c9a-50bfbb0de32a/queues-py/logs.html"
+> time    686.483495
+> results
+>         test    "queues-check-xsk"
+>         result  "pass"
+>
+> Okay, here we have a subcase..
+>
+> # selftests: drivers/net: queues.py
+> ok 1 selftests: drivers/net: queues.py
+> # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+> check_down
+> # ok 4 queues.check_xsk
+> # # Totals: pass:4 fail:0 xfail:0 xpass:0 skip:0 error:0
+>
+> But why only one? What happened to the other 3 that ksft clearly saw
+> since it enumerated check_xsk as the fourth??
+>
+>
+> Something is mangling the output on your runner, it seems.
+> And the parsing seems off.
+Thanks for bringing this to our attention. We will look into the
+parsing issues and work on getting this fixed.
