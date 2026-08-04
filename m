@@ -1,145 +1,139 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41503429CEF
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 07:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F3442BC45;
+	Tue,  4 Aug 2026 07:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785829540; cv=none; b=YAB+VuKWFSryH1FxF5BuSwoUcDt3q0JayzS40tamYbWeTlem98JCFoXE0EJJsvkbZhAppwp9xtxUgJ+cfDsSDL/IPu5RMR3WYymfic2idapgfrUA1LxFBgdYyozkfS56pegon/8o1eXGxDE+MfDQobMZnvLUbKP4DFprk+oLhcY=
+	t=1785830097; cv=none; b=XMpWoZzFzE68QsrFAtGE63qgfkeASzrNI9f3yUWXpTbFGPKZ01cv61VjU9Mz1CBtQtp9zGb5+yRSZbiNvxPr/WWoVF7SaptbCJMx13kJUod8Etx6GtJrRO7UB//WyLonoh2Oid98HerlfZ5NxiOm0hIysRWD/ksCid+8QJFigPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785829540; c=relaxed/simple;
-	bh=2RlmN3sgqp9WHsXqioLXIcYivJBWcywepD/647jK51Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lxoRk9/tuuR9okYXXFyeOPPJclStRopyXs6Fj6OmFkXl7ne/XgOglxNsDr1jHy+OX5GJT8PB3xz9ryenia5eEQjcpm58vohOjLWCr6iGg4bw4EtxO/g+XwwBBiy4uNB1grSbBxgzyo2O4eQFGKuUyZPrUUaLEMHy7u4aMISffi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GFIX43b5; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785830097; c=relaxed/simple;
+	bh=E1kWG1uHm/uN2Er4tihZjGr9qGMdABFmHit7Zv79agA=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=Cs1vywdETRv8j9JHI0Lkg2C9AUw+YwhlSh4O4MF6wzlD8avyq7slfwIc59tXzlK8vpaqkKkujPi/DelAw4VR/D/ozN50k3BuDL3pAMYcxyhUOMLFK0PdK7yHGBZ6Fc99kpUvfJxGdNFAsmbEHTT2w1QKF9jQCE7mGDpBAzmv/Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=bmSvA7v0; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GFIX43b5"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785829526;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=bRfFInjJf/bMgDbl6yuOL4E9YQkxpA9l/Y7rsAspSY8=;
-	b=GFIX43b5egGwO4UGExij7o0iadKnI6QIKHWIyihw90sFU6Dl6xqYhFhqyu9mTOjiN0cd6C
-	/+p3SBt7diar1TKULIwGMKTLNZnXNYefm8VIcl4wM7yrZcJ79yt5k7cZNdjOVw7/NbCmlT
-	0wjoj9tXLfrnKXC3i3PCoiUQ4vgKS/k=
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: linux-ppp@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Felix Fietkau <nbd@nbd.name>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Norbert Szetei <norbert@doyensec.com>,
-	Guillaume Nault <gnault@redhat.com>
-Subject: [PATCH net-next] pppoe: pass bound packets directly to generic PPP
-Date: Tue,  4 Aug 2026 15:44:50 +0800
-Message-ID: <20260804074452.75548-1-qingfang.deng@linux.dev>
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="bmSvA7v0"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 3EDA021CD4;
+	Tue, 04 Aug 2026 10:54:38 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=vbzLnRrjwW4/yN490Jf2P42lWBieB/9dHIcKbB4UuCs=; b=bmSvA7v0ypxZ
+	vetC+thg4AP2w+r+L6QbOaVrbnkCbtWd4Fp/5AwtpRFbI66mpSxHSxjn+ZDslM7t
+	HxKHY5zMxsbZT91VtGY41ifeH89945xRdpaHsBTRPkvkxBOQsKTo4Tf0bODmxDJ7
+	ClyC4VfAl8hv0A4O96DLQLM77rMQOq6UmvYevapb+gRijkdLxRTB0cP0vUIV1pQ3
+	Q9PeDNFjNtcHQP7insVeZ8MOu6cVRv7jLQ8FdHFPT7KvugU4o1HJV11PZd/Sgiam
+	BphPTJ2ErowGgSlKOUswu9Fyfgi7F6KbqvcfjV05ndjsVAuDoRtI92PjIKoHmcNc
+	RymQPNsrNw0NZ7iELqhzmLvW8BwBzNdFU790mXe0hGuNfFTpnyqm/b/ahufnmdye
+	MAK1F3NAvOyxqWi/tTgfG0vjG5n4i93plkUEP426hXDquRFGFw75FXGjdZQQz446
+	JN9FtlpVQ3sWYS70n5eq218sA1IIpIFuM/RLB77sGsc6Q1K4zrr+/v62btkH/oiV
+	g6+S08TnKGkgWeGRNDRtDXM1Ca1I5aqmFk3Raj+sw8bj2t8epRQIrybihHKA7XyY
+	FCKG4CVJj59r4fAeS1ynziFs5wXkI53JrOgPUtj5gqBKpEZeyqu3oc0VG2CyGyI2
+	pxu+I//OUHNfX3ImbPrgHxwzVtDVWjo=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Tue, 04 Aug 2026 10:54:38 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id C365061E56;
+	Tue,  4 Aug 2026 10:54:38 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 6747sUSw018857;
+	Tue, 4 Aug 2026 10:54:30 +0300
+Date: Tue, 4 Aug 2026 10:54:30 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: David Lee <david.lee@trailofbits.com>
+cc: horms@verge.net.au, pablo@netfilter.org, fw@strlen.de, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        Kyle Zeng <kylebot@openai.com>,
+        "Dominik 'Disconnect3d' Czarnota" <dominik.czarnota@trailofbits.com>,
+        Sven Eckelmann <sven@narfation.org>, phil@nwl.cc,
+        netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH nf v2] ipvs: clear IPv4 options after rebasing tunnel
+ ICMP errors
+In-Reply-To: <20260804061055.711402-1-david.lee@trailofbits.com>
+Message-ID: <32d90953-67ed-e133-5703-7c63b2ec7ed6@ssi.bg>
+References: <20260804061055.711402-1-david.lee@trailofbits.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII
 
-Bound PPPoE sockets pass received frames to the generic PPP layer. They
-currently do so through __sk_receive_skb(), which takes the socket BH
-lock and serializes calls to ppp_input().
 
-The lock originally prevented ppp_input() from racing with
-ppp_unregister_channel(). Commit ec4215683e47 ("ppp: defer channel free
-to an RCU grace period to fix pppol2tp RX UAF") now keeps the generic
-PPP channel alive until in-flight RCU readers have completed, so bound
-packets can be passed directly to ppp_input() from pppoe_rcv().
+	Hello,
 
-That lifetime guarantee does not cover reuse of the ppp_channel embedded
-in struct pppox_sock. An RX handler can find the old session before it
-is unhashed, then resume after disconnect and reconnect have cleared and
-re-registered po->chan. It could then race initialization of the new
-channel or pass an old-session packet through it.
+On Tue, 4 Aug 2026, David Lee wrote:
 
-After unhashing an old session, call synchronize_net() before clearing
-and reusing po->chan. This drains every receive path that could have
-found the old binding while retaining concurrent delivery for the active
-session.
+> From: Kyle Zeng <kylebot@openai.com>
+> 
+> ip_vs_in_icmp() rebases an skb from the outer ICMP packet to the
+> quoted original request before passing it to icmp_send(). However,
+> IPCB(skb)->opt still describes the outer IPv4 header.
+> 
+> A timestamp option in the outer header can therefore leave an offset
+> that points into the quoted transport header after the rebase.
+> __ip_options_echo() treats a byte at that stale location as the option
+> length and copies it into the fixed-size option storage on the
+> __icmp_send() stack, causing a stack out-of-bounds write.
+> 
+> Clear the stale option metadata after resetting the network header.
+> Keep the remaining control block fields, including the ingress
+> interface used by the ICMP response path.
+> 
+> Fixes: f2edb9f7706d ("ipvs: implement passive PMTUD for IPIP packets")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> Co-developed-by: David Lee <david.lee@trailofbits.com>
+> Signed-off-by: David Lee <david.lee@trailofbits.com>
 
-Assisted-by: Codex:GPT-5.6
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
- drivers/net/ppp/pppoe.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+	Looks good to me, thanks!
 
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index 6874a1a8edaf..062411624182 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -345,10 +345,10 @@ static struct notifier_block pppoe_notifier = {
- 
- /************************************************************************
-  *
-- * Do the real work of receiving a PPPoE Session frame.
-+ * Backlog receive a PPPoE Session frame and deliver to userspace.
-  *
-  ***********************************************************************/
--static int pppoe_rcv_core(struct sock *sk, struct sk_buff *skb)
-+static int pppoe_backlog_rcv(struct sock *sk, struct sk_buff *skb)
- {
- 	struct pppox_sock *po = pppox_sk(sk);
- 
-@@ -373,7 +373,7 @@ static int pppoe_rcv_core(struct sock *sk, struct sk_buff *skb)
- 
- /************************************************************************
-  *
-- * Receive wrapper called in BH context.
-+ * Receive a PPPoE Session frame.
-  *
-  ***********************************************************************/
- static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
-@@ -420,6 +420,10 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
- 	if (!po)
- 		goto drop;
- 
-+	if (likely(po->sk.sk_state & PPPOX_BOUND)) {
-+		ppp_input(&po->chan, skb);
-+		return NET_RX_SUCCESS;
-+	}
- 	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
- 
- drop:
-@@ -524,7 +528,7 @@ static int pppoe_create(struct net *net, struct socket *sock, int kern)
- 	sock->state	= SS_UNCONNECTED;
- 	sock->ops	= &pppoe_ops;
- 
--	sk->sk_backlog_rcv	= pppoe_rcv_core;
-+	sk->sk_backlog_rcv	= pppoe_backlog_rcv;
- 	sk->sk_destruct		= pppoe_destruct;
- 	sk->sk_state		= PPPOX_NONE;
- 	sk->sk_type		= SOCK_STREAM;
-@@ -625,6 +629,13 @@ static int pppoe_connect(struct socket *sock, struct sockaddr_unsized *uservaddr
- 		pn = pppoe_pernet(sock_net(sk));
- 		delete_item(pn, po->pppoe_pa.sid,
- 			    po->pppoe_pa.remote, po->pppoe_ifindex);
-+
-+		/* pppoe_rcv() can call ppp_input() without taking the socket
-+		 * lock. Once the socket is unhashed, wait for any receive path
-+		 * that found it earlier before clearing and reusing po->chan.
-+		 */
-+		synchronize_net();
-+
- 		if (po->pppoe_dev) {
- 			dev_put(po->pppoe_dev);
- 			po->pppoe_dev = NULL;
--- 
-2.43.0
+Acked-by: Julian Anastasov <ja@ssi.bg>
+
+> ---
+> Changes in v2:
+> - Add the nf tree prefix to the subject.
+> - Restore Kyle Zeng as the patch author and correct the sign-off chain.
+> - Move the research credit below the commit-message separator.
+> 
+> v1: https://lore.kernel.org/netdev/20260731140822.567128-1-david.lee@trailofbits.com/
+> 
+> Bug found and triaged by OpenAI Security Research and
+> validated by Trail of Bits.
+> 
+> Trail of Bits has a reproducer for this bug that triggers a
+> KASAN stack-out-of-bounds write in __ip_options_echo() and can share
+> if needed.
+> 
+>  net/netfilter/ipvs/ip_vs_core.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
+> index bafab9345..fe06c380c 100644
+> --- a/net/netfilter/ipvs/ip_vs_core.c
+> +++ b/net/netfilter/ipvs/ip_vs_core.c
+> @@ -1951,6 +1951,7 @@ ip_vs_in_icmp(struct netns_ipvs *ipvs, struct sk_buff *skb, int *related,
+>  		if (pskb_pull(skb, offset2) == NULL)
+>  			goto ignore_tunnel;
+>  		skb_reset_network_header(skb);
+> +		memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
+>  		/* Ensure the IP header is present in headroom */
+>  		if (!pskb_may_pull(skb, hlen_orig))
+>  			goto ignore_tunnel;
+> -- 
+> 2.53.0
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
 
