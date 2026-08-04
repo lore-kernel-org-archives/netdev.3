@@ -1,95 +1,56 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585573E8C64
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 01:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091403E49FE;
+	Tue,  4 Aug 2026 01:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785808104; cv=none; b=ozHAbPif1ZGSV1dNy1ZKwkgoZfAS0pjnjOcoEfbF/hZp+0e+nX83M4pXMgDggrhoHBLdJhCkRAhPd5FipTmhLUHiQb322OT2aRo5CU/XDX8cR+NHYc357qGAkqF6NQanMb7T2S0uReC0OhVzLjSBZi3rdu3tLw2mNN8kp17XWAI=
+	t=1785808124; cv=none; b=WPtHd1xlbwmc6P6Z6YSEs5Z7TbBImLdll1X8Psa6QbyHuySYvPjXMlNt1IYwOjtJe9xlZDUohMziObvPaAbcOE2lLebAdycvY0kWcF/rlml5mOaDj+ElIm/WcEPQqaIb4onSBoYYpVvVIyg3EQUXJOnGen41GRBGBeM+0DXqPg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785808104; c=relaxed/simple;
-	bh=O1CQFr8gL/tx0nZELxNaajoTVr4qy8kYNkp4eOn+3D8=;
+	s=arc-20240116; t=1785808124; c=relaxed/simple;
+	bh=2R0GdeCveOI6ycPkaBvvXhhhbVKycxo+5eqIDVJr+9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GfD9pnXJwjrbb+oLytA2xdviBDryFaayc3XJ1EDgS9IROj3bTsnlzkEs/maDBhDr7UJP0AwVnCRzeLAX1BLo+lSpGwsolk5WoFYUyn0ByLF4dMHXD14eOy4irynJD5Xgd63kWdq05lvhHV9kuBBC0w34RSgZBeetop5YYdvVOwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iFLd+eJJ; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=RQWGyTqsRy1nsYyDapXzk2amcAacbwkH2NRcEFUIGBw6Hba8aJtuTmDYgVEKYoHJ+2nek7yMgn+9kkDKWNDUDjkYh58Yze5C9n/gGRjGHUs6Tks9kLLjlbylLjPgi8NOAlneKl/ucWOwW76nQTuc+HW0wAA1XtI88fKm9gw875Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gK+HN69D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iFLd+eJJ"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-848743155bcso1552363b3a.0
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 18:48:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785808103; x=1786412903; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IfEzsYijpMni+dHKVnbyAeGeNkrEFny9SRjpkXNKFps=;
-        b=iFLd+eJJSdtsDCGhSc5ZyuE3+2myHIMNqcNAKOwent4o570T9ECl0/3kcIkxKARVU2
-         yvoas6ZKzde4ZuedQQWKxxYzhc37ceUp8p/gpnMeQgg6KpzKqXIjS6uVpXOxtgFc69go
-         MbYwvj1clJsKoUlifFjMdX9g9xOjespvjJv8b8KAu+EA7IaBPsHbDdDy9e6lfOewuCor
-         1CdO595vaN0kHuQdQIy+9WNE6b04yWDuGKyodGci1iqkVPpTEC94tkVjty3PkWdi+Nsm
-         WilZvDCzQ0Kjs+lmec2X1TZlJZCevWhOE8QiE/LBxAxcuutwvfVWoF7CktE087UqPFu0
-         p9qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785808103; x=1786412903;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IfEzsYijpMni+dHKVnbyAeGeNkrEFny9SRjpkXNKFps=;
-        b=gj0GInVBsDqiXtY53wTWBU+yqIGxjlCKNAwP7WF/o+4MapZ3KGbWT0FvzO6r93d2UR
-         TwqpS8fVtK/6n3gPEMJ9ErUmgY3rcUB2VAZr6nuPrSoGgbS3fOnPf3s1lnI5L/2IFv8x
-         e6XF4o1OEYzaCY8smrqLWulp/D4kPqQbjt3WpzPuVNL8M11s79bq+FLp1FyMyLUIZh4+
-         Bu8N+VWuzSiylbNYL6y1YgNb7FS6ZPJXb3EQo99VHRPaZLv5lNyXifuBIT1kf+N53vZQ
-         VV0jcX47sCNF7cFV8yQnpeqCNaW7jGLDuWAS7qvoRTk8+43uyrfYAB8qzpSXE2wwqrtd
-         KOZA==
-X-Forwarded-Encrypted: i=1; AHgh+RrQGhqX+r1AhaxRxxdKuYPgrrT+CU1ZLmsh/r6Nc7jxJLcYDxDtCaWyNbB9f95J0EWd1Z102MU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTJ0ONW446ijaLrZ0bTaH7I1J6UBkD1Wy0uYHyivA4meP30sBa
-	wYUuVicR8nvUCd21C0UvLMertppek3CP9Htj7mvLk9kc3XbS89Bm5mNf
-X-Gm-Gg: AR+sD135a5RKHOz3thsHFmJvAM6snXPHqFVjRUTaUfzjIZP3rVWw9FOJ/l4bZ9wF+tR
-	yCPt5jRD0um0HKZp2XXATiVmjhtzEwb1Zqf28oyxqjCGpcPMLsQwqxzKxpvOZWVGdhLkxElzL9z
-	7yhU7Iaah3Tfa3hAZOnpp/tl+lVGPWus3b0aWD/5cI6G1CWUJX96ACewOBBnhWZCtbNINzxIZHO
-	T04I+jqMyMpIJAY49t0TzuR+WDNVriAcNi1zZEVztjqM5LcjCybTs3LBpqSWHoBc35NlopcVbc4
-	NnNFtw4hoCztaHfokTrEW0ou8YOInj2CNr/ofkHfPHqfwXp+dPWOCZJ9lqqzbxaxvWp0BgHk+q2
-	06+v4Nj8Z/gVM2idsJBk/Esy3XY2t/b9JHAW1gq2OUSYDJqhGRUhpoOvf7Kr0QKQqsyzWlzhBiM
-	ZQhjKvqLE1ixujjPW5rBVZGVwmYlbmOyVq+cigFDrHWhLR4IAhHfKFSmEgVzdtB0ESrM7+6kjxo
-	ctjc33t/atLq9I+68w1ST2dasECu9vM0tPoa/A57AGGkqHSPWiLipiqf7BTlQ==
-X-Received: by 2002:a05:6a00:3926:b0:848:2e3c:9955 with SMTP id d2e1a72fcca58-84ee47e01ecmr10832317b3a.4.1785808102604;
-        Mon, 03 Aug 2026 18:48:22 -0700 (PDT)
-Received: from m-upc-A520M-HDV.flets-east.jp ([2400:2410:3f60:500:cb1c:934a:3e5f:ef88])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edc2d7b97sm4410164b3a.43.2026.08.03.18.48.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 18:48:22 -0700 (PDT)
-Sender: Yuyang Huang <uyoko90@gmail.com>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Chris J Arges <carges@cloudflare.com>,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	David Wei <dw@davidwei.uk>,
-	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Nimrod Oren <noren@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Willem de Bruijn <willemb@google.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gK+HN69D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1EF1F000E9;
+	Tue,  4 Aug 2026 01:48:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785808122;
+	bh=o5/uLZyoO7BQy8ea5qK4bo3MMlgsiikC/QCBoEBBC6o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gK+HN69DfaozHJWy+merVq2UzVmVk/cuj+RfYX8roDLlnCPE4sUO0y54JfptdoaGp
+	 3bV0pY2TaDRmS9gwk40AXDK3riCfuxfwKbRUnrPKq9zgVFDWhl68FZYdKqAEsMIYp/
+	 94upRIA6Xhq1z/ayz62v3zG9wgRz8wJJICl6e9CVHcBwYq0mX5NSqWoUNax/x47OVa
+	 a6u4TKpqwN219Tn3hWUpRPMNcKWwty/me0IwVg21vwebUxLa7lFKlHOkoyPRh5lTbq
+	 sEbODj+ubWlV2uob+UiLyZzIOJdxNT0uSYombiNunYLB/uu+DnU2vjCF77tNr6l53U
+	 qo2B78D63wtXQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: alexander.duyck@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	mike.marciniszyn@gmail.com,
+	alexanderduyck@fb.com,
+	andrew+netdev@lunn.ch,
+	andrew@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	hkallweit1@gmail.com,
+	jiawenwu@trustnetic.com,
+	kees@kernel.org,
+	kernel-team@meta.com,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v5 10/10] selftests: net: verify RTA_DEL_REASON on route deletion
-Date: Tue,  4 Aug 2026 10:47:14 +0900
-Message-ID: <20260804014714.4362-11-sigefriedhyy@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260804014714.4362-1-sigefriedhyy@gmail.com>
-References: <20260804014714.4362-1-sigefriedhyy@gmail.com>
+	linux@armlinux.org.uk,
+	mengyuanlou@net-swift.com,
+	mohsin.bashr@gmail.com,
+	pabeni@redhat.com
+Subject: Re: [net-next PATCH v4 2/4] net: pcs: xpcs: Allow for multiple addr in creation
+Date: Mon,  3 Aug 2026 18:48:30 -0700
+Message-ID: <20260804014830.2532522-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <178536366014.250758.7525172425951669429.stgit@ahduyck-xeon-server.home.arpa>
+References: <178536366014.250758.7525172425951669429.stgit@ahduyck-xeon-server.home.arpa>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -98,270 +59,218 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Extend rtnetlink.py to check the reason reported in RTM_DELROUTE:
-
-- expired: route with a 2s lifetime collected by the fib6 GC
-  (gc_interval lowered like fib_tests.sh fib6_gc_test does);
-- ra-withdrawn: a single RA advertises a default route (router
-  lifetime), an on-link prefix route (RFC 4861 prefix information
-  option) and a route information option route (RFC 4191), then a
-  second RA withdraws all three with zero lifetimes; the RAs are
-  crafted over a raw ICMPv6 socket so the test does not depend on an
-  external RA tool;
-- absence: a userspace deletion request records no cause and must not
-  carry the attribute at all.
-
-Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
- .../testing/selftests/net/lib/py/__init__.py  |   4 +-
- tools/testing/selftests/net/lib/py/ynl.py     |   7 +-
- tools/testing/selftests/net/rtnetlink.py      | 181 +++++++++++++++++-
- 3 files changed, 187 insertions(+), 5 deletions(-)
+--- Patch [2]: [net-next PATCH v4 2/4] net: pcs: xpcs: Allow for multiple addr in creation ---
+commit 659d2ab0068099d84cd67aa41fc9d8519508054c
+Author: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
 
-diff --git a/tools/testing/selftests/net/lib/py/__init__.py b/tools/testing/selftests/net/lib/py/__init__.py
-index e58bdbdc58ee..34935886b6ad 100644
---- a/tools/testing/selftests/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/net/lib/py/__init__.py
-@@ -17,7 +17,7 @@ from .utils import CmdExitFailure, fd_read_timeout, cmd, bkg, defer, \
-     wait_file, tool, tc
- from .bpf import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
- from .ynl import NlError, NlctrlFamily, YnlFamily, \
--    EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily
-+    EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily, RtnlRouteFamily
- from .ynl import NetshaperFamily, DevlinkFamily, PSPFamily, Netlink
- 
- __all__ = ["KSRC",
-@@ -34,4 +34,4 @@ __all__ = ["KSRC",
-            "NetdevSim", "NetdevSimDev",
-            "NetshaperFamily", "DevlinkFamily", "PSPFamily", "NlError",
-            "YnlFamily", "EthtoolFamily", "NetdevFamily", "RtnlFamily",
--           "NlctrlFamily", "RtnlAddrFamily", "Netlink"]
-+           "NlctrlFamily", "RtnlAddrFamily", "RtnlRouteFamily", "Netlink"]
-diff --git a/tools/testing/selftests/net/lib/py/ynl.py b/tools/testing/selftests/net/lib/py/ynl.py
-index 2e567062aa6c..08deff756f29 100644
---- a/tools/testing/selftests/net/lib/py/ynl.py
-+++ b/tools/testing/selftests/net/lib/py/ynl.py
-@@ -29,7 +29,7 @@ except ModuleNotFoundError as e:
- 
- __all__ = [
-     "NlError", "NlPolicy", "Netlink", "YnlFamily", "SPEC_PATH",
--    "EthtoolFamily", "RtnlFamily", "RtnlAddrFamily",
-+    "EthtoolFamily", "RtnlFamily", "RtnlAddrFamily", "RtnlRouteFamily",
-     "NetdevFamily", "NetshaperFamily", "NlctrlFamily", "DevlinkFamily",
-     "PSPFamily",
- ]
-@@ -54,6 +54,11 @@ class RtnlAddrFamily(YnlFamily):
-         super().__init__((SPEC_PATH / Path('rt-addr.yaml')).as_posix(),
-                          schema='', recv_size=recv_size)
- 
-+class RtnlRouteFamily(YnlFamily):
-+    def __init__(self, recv_size=0):
-+        super().__init__((SPEC_PATH / Path('rt-route.yaml')).as_posix(),
-+                         schema='', recv_size=recv_size)
-+
- class NetdevFamily(YnlFamily):
-     def __init__(self, recv_size=0):
-         super().__init__((SPEC_PATH / Path('netdev.yaml')).as_posix(),
-diff --git a/tools/testing/selftests/net/rtnetlink.py b/tools/testing/selftests/net/rtnetlink.py
-index 0c67c7c00d84..f74ccd5c2d13 100755
---- a/tools/testing/selftests/net/rtnetlink.py
-+++ b/tools/testing/selftests/net/rtnetlink.py
-@@ -5,7 +5,8 @@ import socket
- import struct
- import time
- from lib.py import bkg, ip, ksft_exit, ksft_run, ksft_eq, ksft_ge, ksft_true, KsftSkipEx
--from lib.py import CmdExitFailure, NetNS, NetNSEnter, RtnlAddrFamily
-+from lib.py import ksft_not_in, ksft_not_none
-+from lib.py import CmdExitFailure, NetNS, NetNSEnter, RtnlAddrFamily, RtnlRouteFamily
- 
- IPV4_ALL_HOSTS_MULTICAST = b'\xe0\x00\x00\x01'
- IPV4_TEST_MULTICAST = b'\xef\x01\x01\x01'
-@@ -134,8 +135,184 @@ def ipv4_devconf_notify() -> None:
-     ksft_true(f"inet {ifname} forwarding on" in cmd_obj.stdout,
-               f"No 'forwarding on' notificiation found for interface {ifname}")
- 
-+def _rtnl_route_subscribe(ns):
-+    with NetNSEnter(str(ns)):
-+        rtnl = RtnlRouteFamily()
-+    rtnl.ntf_subscribe("rtnlgrp-ipv6-route")
-+    return rtnl
-+
-+
-+def _wait_route_ntf(rtnl, name, dst_len, dst=None, deadline=10):
-+    """Return the attrs of the first matching notification, None on timeout."""
-+
-+    for msg in rtnl.poll_ntf(duration=deadline):
-+        if msg['name'] != name:
-+            continue
-+        attrs = msg['msg']
-+        if attrs['rtm-dst-len'] != dst_len:
-+            continue
-+        if dst is not None and attrs.get('dst') != dst:
-+            continue
-+        return attrs
-+    return None
-+
-+
-+def _collect_route_ntfs(rtnl, name, want, deadline=10):
-+    """Gather attrs of matching notifications, keyed by (dst_len, dst)."""
-+
-+    seen = {}
-+    for msg in rtnl.poll_ntf(duration=deadline):
-+        if msg['name'] != name:
-+            continue
-+        attrs = msg['msg']
-+        key = (attrs['rtm-dst-len'], attrs.get('dst'))
-+        if key in want:
-+            seen[key] = attrs
-+            if len(seen) == len(want):
-+                break
-+    return seen
-+
-+
-+def _write_ipv6_sysctl(name, value):
-+    with open(f"/proc/sys/net/ipv6/{name}", "w") as f:
-+        f.write(f"{value}\n")
-+
-+
-+def ipv6_route_del_reason_expired() -> None:
-+    """An expired route reports RTA_DEL_REASON == expired."""
-+
-+    with NetNS() as ns:
-+        rtnl = _rtnl_route_subscribe(ns)
-+        with NetNSEnter(str(ns)):
-+            _write_ipv6_sysctl("route/gc_interval", 2)
-+        ip("link add name dummy1 type dummy", ns=str(ns))
-+        ip("link set dev dummy1 up", ns=str(ns))
-+        ip("-6 route add 2001:db8:2::/64 dev dummy1 expires 2", ns=str(ns))
-+
-+        attrs = _wait_route_ntf(rtnl, 'delroute-ntf', 64, '2001:db8:2::',
-+                                deadline=15)
-+        ksft_not_none(attrs, "no RTM_DELROUTE for the expired route")
-+        if attrs is not None:
-+            ksft_eq(attrs.get('del-reason'), 'expired')
-+
-+
-+def _send_ra(sock, ifindex, lifetime, rio=None, pio=None):
-+    """The kernel fills in the ICMPv6 checksum on raw ICMPv6 sockets."""
-+
-+    # type, code, cksum, hop limit, flags, router lifetime,
-+    # reachable time, retrans timer
-+    ra = struct.pack('!BBHBBHII', 134, 0, 0, 64, 0, lifetime, 0, 0)
-+    if rio is not None:
-+        prefix, plen, rio_lifetime = rio
-+        # RFC 4191 route information option, /64 prefix (8 bytes)
-+        ra += struct.pack('!BBBBI', 24, 2, plen, 0, rio_lifetime)
-+        ra += socket.inet_pton(socket.AF_INET6, prefix)[:8]
-+    if pio is not None:
-+        prefix, plen, valid_lft = pio
-+        # RFC 4861 prefix information option, on-link only (L set, A clear)
-+        ra += struct.pack('!BBBBIII', 3, 4, plen, 0x80, valid_lft, 0, 0)
-+        ra += socket.inet_pton(socket.AF_INET6, prefix)
-+    sock.sendto(ra, ('ff02::1', 0, 0, ifindex))
-+
-+
-+def _ra_router_sock(ns_r, ifname):
-+    with NetNSEnter(str(ns_r)):
-+        sock = socket.socket(socket.AF_INET6, socket.SOCK_RAW,
-+                             socket.IPPROTO_ICMPV6)
-+        sock.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_MULTICAST_HOPS, 255)
-+        return sock, socket.if_nametoindex(ifname)
-+
-+
-+def _ra_advertise_routes(rtnl, sock, ifindex, want, **ra_opts):
-+    """
-+    Sending fails with EADDRNOTAVAIL until the router's link-local
-+    address passes DAD, so retry.
-+    """
-+
-+    seen = {}
-+    for _ in range(10):
-+        try:
-+            _send_ra(sock, ifindex, **ra_opts)
-+        except OSError:
-+            time.sleep(0.2)
-+            continue
-+        seen.update(_collect_route_ntfs(rtnl, 'newroute-ntf',
-+                                        want - set(seen.keys()), deadline=2))
-+        if len(seen) == len(want):
-+            break
-+    return seen
-+
-+
-+def ipv6_route_del_reason_ra_withdrawn() -> None:
-+    """
-+    Routes withdrawn by a zero-lifetime RA (router lifetime, RFC 4861
-+    PIO, RFC 4191 RIO) report RTA_DEL_REASON == ra-withdrawn.
-+    """
-+
-+    # (rtm-dst-len, dst); the default route carries no RTA_DST
-+    routes = {(0, None), (64, '2001:db8:6::'), (64, '2001:db8:5::')}
-+
-+    with NetNS() as ns_h, NetNS() as ns_r:
-+        ip(f"link add veth0 netns {ns_h} type veth peer name veth1 netns {ns_r}")
-+        with NetNSEnter(str(ns_h)):
-+            _write_ipv6_sysctl("conf/veth0/accept_ra", 2)
-+            _write_ipv6_sysctl("conf/veth0/forwarding", 0)
-+            try:
-+                _write_ipv6_sysctl("conf/veth0/accept_ra_rt_info_max_plen", 64)
-+            except FileNotFoundError:
-+                raise KsftSkipEx("no CONFIG_IPV6_ROUTE_INFO")
-+        with NetNSEnter(str(ns_r)):
-+            # skip DAD so the router's link-local source is usable right away
-+            _write_ipv6_sysctl("conf/veth1/accept_dad", 0)
-+        ip("link set dev veth0 up", ns=str(ns_h))
-+        ip("link set dev veth1 up", ns=str(ns_r))
-+
-+        rtnl = _rtnl_route_subscribe(ns_h)
-+        sock, ifindex = _ra_router_sock(ns_r, "veth1")
-+
-+        seen = _ra_advertise_routes(rtnl, sock, ifindex, routes,
-+                                    lifetime=1800,
-+                                    rio=('2001:db8:5::', 64, 600),
-+                                    pio=('2001:db8:6::', 64, 600))
-+        ksft_eq(set(seen), routes, "not all RA routes were installed")
-+        if set(seen) != routes:
-+            return
-+
-+        _send_ra(sock, ifindex, 0, rio=('2001:db8:5::', 64, 0),
-+                 pio=('2001:db8:6::', 64, 0))
-+        seen = _collect_route_ntfs(rtnl, 'delroute-ntf', routes)
-+        for key in routes:
-+            attrs = seen.get(key)
-+            ksft_not_none(attrs, f"no RTM_DELROUTE for {key}")
-+            if attrs is not None:
-+                ksft_eq(attrs.get('del-reason'), 'ra-withdrawn')
-+
-+
-+def ipv6_route_del_reason_absent() -> None:
-+    """
-+    A deletion path that records no cause (here a userspace request)
-+    must not carry RTA_DEL_REASON at all.
-+    """
-+
-+    with NetNS() as ns:
-+        rtnl = _rtnl_route_subscribe(ns)
-+        ip("link add name dummy1 type dummy", ns=str(ns))
-+        ip("link set dev dummy1 up", ns=str(ns))
-+        ip("-6 route add 2001:db8:1::/64 dev dummy1", ns=str(ns))
-+        ip("-6 route del 2001:db8:1::/64 dev dummy1", ns=str(ns))
-+
-+        attrs = _wait_route_ntf(rtnl, 'delroute-ntf', 64, '2001:db8:1::')
-+        ksft_not_none(attrs, "no RTM_DELROUTE for 2001:db8:1::/64")
-+        if attrs is not None:
-+            ksft_not_in('del-reason', attrs,
-+                        "user deletion must not carry del-reason")
-+
-+
- def main() -> None:
--    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, ipv4_devconf_notify])
-+    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, ipv4_devconf_notify,
-+              ipv6_route_del_reason_expired,
-+              ipv6_route_del_reason_ra_withdrawn,
-+              ipv6_route_del_reason_absent])
-     ksft_exit()
- 
- if __name__ == "__main__":
--- 
-2.43.0
+net: pcs: xpcs: Allow for multiple addr in creation
 
+This extends xpcs_create_data(), xpcs_create() and xpcs_free_data() to take
+an array of mdio devices, adds a new exported xpcs_create_pcs_mdiodevs()
+entry point, and switches fbnic over to registering two MDIO addresses.  A
+new xpcs->channels field records how many mdio devices were provisioned.
+
+A few questions below on the new multi-channel plumbing and the
+kernel-doc/changelog wording.
+
+The changelog says:
+
+    Add xpcs_create_mdiodevs() and xpcs_create_pcs_mdiodevs calls so that a
+    driver using the above part can tell xpcs the addr values in one call.
+
+xpcs_create_mdiodevs() is added as static, with no EXPORT_SYMBOL_GPL and no
+declaration in include/linux/pcs/pcs-xpcs.h, so a driver that needs the
+struct dw_xpcs handle (the xpcs_create_mdiodev() users) still cannot pass
+more than one address.  Should the changelog only mention
+xpcs_create_pcs_mdiodevs() as the driver-facing addition?
+
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_phylink.c b/drivers/net/ethernet/meta/fbnic/fbnic_phylink.c
+> index 09c5225111be3..88fc78d55c7a5 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_phylink.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_phylink.c
+> @@ -200,9 +200,11 @@ int fbnic_phylink_create(struct net_device *netdev)
+>  	struct fbnic_dev *fbd = fbn->fbd;
+>  	struct phylink_pcs *pcs;
+>  	struct phylink *phylink;
+> +	/* See fbnic_mdio.c addr usage */
+> +	int addrs[] = { 0, 1 };
+>  	int err;
+>  
+> -	pcs = xpcs_create_pcs_mdiodev(fbd->mdio_bus, 0);
+> +	pcs = xpcs_create_pcs_mdiodevs(fbd->mdio_bus, addrs, ARRAY_SIZE(addrs));
+>  	if (IS_ERR(pcs)) {
+>  		err = PTR_ERR(pcs);
+>  		dev_err(fbd->dev, "Failed to create PCS device: %d\n", err);
+
+> diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
+> index 6a645df58f9b8..a6b993745f3be 100644
+> --- a/drivers/net/pcs/pcs-xpcs.c
+> +++ b/drivers/net/pcs/pcs-xpcs.c
+> @@ -214,9 +214,18 @@ int xpcs_read(struct dw_xpcs *xpcs, int dev, u32 reg)
+>  	return mdiodev_c45_read(xpcs->mdiodev[0], dev, reg);
+>  }
+>  
+> +static int
+> +xpcs_mdev_write_ch(struct dw_xpcs *xpcs, int ch, int dev, u32 reg, u16 val)
+> +{
+> +	if (ch >= xpcs->channels)
+> +		return -ENXIO;
+> +
+> +	return mdiodev_c45_write(xpcs->mdiodev[ch], dev, reg, val);
+> +}
+> +
+>  int xpcs_write(struct dw_xpcs *xpcs, int dev, u32 reg, u16 val)
+>  {
+> -	return mdiodev_c45_write(xpcs->mdiodev[0], dev, reg, val);
+> +	return xpcs_mdev_write_ch(xpcs, 0, dev, reg, val);
+>  }
+>  
+>  int xpcs_modify(struct dw_xpcs *xpcs, int dev, u32 reg, u16 mask, u16 set)
+
+[Severity: Medium]
+[Finding: main-1-1]
+[Sources: opus-5]
+Only the write path becomes channel aware here.  xpcs_read(),
+xpcs_modify(), xpcs_modify_changed() and the
+phylink_mii_c45_pcs_get_state(xpcs->mdiodev[0], ...) call in
+xpcs_get_state_c73() stay pinned to mdiodev[0], and no per-channel read or
+read-modify-write helper appears later in the series either (checked at
+7b16dc0f9f78, where xpcs_write_pcs_ch() and xpcs_mdev_write_ch() are the
+only channel-aware accessors).
+
+For fbnic, addr 1 is a distinct register page:
+
+drivers/net/ethernet/meta/fbnic/fbnic_mdio.c maps addr 0/1 onto
+FBNIC_PCS_PAGE(addr), described as allowing access to both halves of the
+PCS for the 50R2 config.
+
+So in the two-instance modes (PHY_INTERFACE_MODE_LAUI and
+PHY_INTERFACE_MODE_100GBASEP, both with .channels = 2), instance 1 gets the
+vendor writes from xpcs_config_rsfec_pma() later in the series, but:
+
+xpcs_pre_config() -> xpcs_soft_reset() -> xpcs_modify() -> mdiodev[0]
+xpcs_get_state_c73() -> xpcs_read(MDIO_STAT1/STAT2) -> mdiodev[0]
+
+Does instance 1 need its own soft reset for those vendor writes to latch,
+and should its fault/alignment status be folded into the state reported to
+phylink?  As written, a faulted or unreset second half would not be visible.
+
+> @@ -1507,16 +1516,21 @@ static int xpcs_identify(struct dw_xpcs *xpcs)
+
+[ ... ]
+
+> @@ -1610,25 +1627,24 @@ static struct dw_xpcs *xpcs_create(struct mdio_device *mdiodev)
+>  	return ERR_PTR(ret);
+>  }
+>  
+> -/**
+> - * xpcs_create_mdiodev() - create a DW xPCS instance with the MDIO @addr
+> - * @bus: pointer to the MDIO-bus descriptor for the device to be looked at
+> - * @addr: device MDIO-bus ID
+> - *
+> - * Return: a pointer to the DW XPCS handle if successful, otherwise -ENODEV if
+> - * the PCS device couldn't be found on the bus and other negative errno related
+> - * to the data allocation and MDIO-bus communications.
+> - */
+> -struct dw_xpcs *xpcs_create_mdiodev(struct mii_bus *bus, int addr)
+> +static struct dw_xpcs *
+> +xpcs_create_mdiodevs(struct mii_bus *bus, const int *addrs, int channels)
+>  {
+> -	struct mdio_device *mdiodev;
+> +	struct mdio_device *mdiodev[DW_XPCS_MAX_CHANNELS], *rval;
+>  	struct dw_xpcs *xpcs;
+> +	int i;
+> +
+> +	if (!addrs || channels <= 0 || channels > DW_XPCS_MAX_CHANNELS)
+> +		return ERR_PTR(-EINVAL);
+
+[ ... ]
+
+> +/**
+> + * xpcs_create_pcs_mdiodevs() - create a DW xPCS instance with multiple @addrs
+> + * @bus: pointer to the embedded phylink PCS instance
+
+[Severity: Low]
+[Finding: main-1-4]
+[Sources: opus-5]
+Should @bus be described as the MDIO-bus descriptor, as the existing
+xpcs_create_mdiodev() kernel-doc does?  It is a struct mii_bus * that gets
+handed to mdio_device_create(bus, addrs[i]); the embedded phylink PCS is
+what the function returns.
+
+> + * @addrs: an array of int
+> + * @channels: the number of addrs items or channels
+> + *
+> + * Return: a pointer to the phylink PCS if successful, otherwise -ENODEV if
+> + * the PCS device couldn't be found on the bus and other negative errno related
+> + * to the data allocation and MDIO-bus communications.
+> + */
+
+[Severity: Low]
+[Finding: main-1-4]
+[Sources: opus-5]
+Could the Return: section also mention -EINVAL?  The new check in
+xpcs_create_mdiodevs():
+
+	if (!addrs || channels <= 0 || channels > DW_XPCS_MAX_CHANNELS)
+		return ERR_PTR(-EINVAL);
+
+is reachable through this exported wrapper, but only -ENODEV and
+allocation/MDIO errors are listed.  Both wording issues are still present at
+the end of the series (7b16dc0f9f78).
+
+> +struct phylink_pcs *
+> +xpcs_create_pcs_mdiodevs(struct mii_bus *bus, const int *addrs, int channels)
+> +{
+> +	struct dw_xpcs *xpcs;
+> +
+> +	xpcs = xpcs_create_mdiodevs(bus, addrs, channels);
+> +	if (IS_ERR(xpcs))
+> +		return ERR_CAST(xpcs);
+> +
+> +	return &xpcs->pcs;
+> +}
+> +EXPORT_SYMBOL_GPL(xpcs_create_pcs_mdiodevs);
+
+[ ... ]
+
+> diff --git a/drivers/net/pcs/pcs-xpcs.h b/drivers/net/pcs/pcs-xpcs.h
+> index 5c804cfd47d3c..36f4906e689a8 100644
+> --- a/drivers/net/pcs/pcs-xpcs.h
+> +++ b/drivers/net/pcs/pcs-xpcs.h
+> @@ -114,6 +114,7 @@ struct dw_xpcs {
+>  	struct mdio_device *mdiodev[DW_XPCS_MAX_CHANNELS];
+>  	struct clk_bulk_data clks[DW_XPCS_NUM_CLKS];
+>  	struct phylink_pcs pcs;
+> +	int channels;
+
+[Severity: Low]
+[Finding: main-1-2]
+[Sources: opus-5]
+This isn't a bug, but the name channels now carries two different meanings
+in this driver.  Here it counts the MDIO devices a driver provisioned, while
+struct pma_pcs_values::channels in pcs-xpcs.c counts the PCS instances the
+active link mode uses (.channels = 1 for 25GBASER/50GBASER, .channels = 2
+for LAUI/100GBASEP).
+
+fbnic_phylink_create() passes addrs[] = { 0, 1 } before any interface is
+selected, so xpcs->channels is 2 even in the single-instance modes fbnic
+also advertises.  The bound in xpcs_mdev_write_ch():
+
+	if (ch >= xpcs->channels)
+		return -ENXIO;
+
+then checks against the provisioned count rather than the active mode's
+count.  Would a name like n_mdiodevs or num_addrs make that invariant
+clearer?
+
+The fbnic side also repeats the fbnic_mdio.c address layout as bare numbers
+tied to it only by the "/* See fbnic_mdio.c addr usage */" comment; could
+those addresses come from a shared define?
+
+>  	phy_interface_t interface;
+>  	bool need_reset;
+>  	u8 eee_mult_fact;
