@@ -1,159 +1,152 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-ot1-f79.google.com (mail-ot1-f79.google.com [209.85.210.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED9C449EC2
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 14:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A493E171F
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 14:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785853806; cv=none; b=ezDuZwooWFRz5jA+nyptOluY1pHJ+lkeu4krLiCG+G21lM7DDjRCvYxK9XNddgddz6ZZP8wxPIaUf03DMNJIJ7SqryPPCya0V6y1FPlB4lzcBaRyjgd3n1L5shTC5JlDgTLPxA3SG6h/P9CtHbPX1Zfo0OpG1G1yqYSK8/vVLRc=
+	t=1785853981; cv=none; b=Ou9ufoLksFCl+WPIXsDl5wxr3H8OBcXPp1ktgMYG+Z0bXYEQEeGv69Z5GreKy0ny2DI7b8F7TYUwnewiqwB0Fw9mQG+mJsEzjJgpYAZUV9ATRo/m1uZnRMPyhUa2SyArD/3faOHEA6PE7FjHUkHmfeAUEK77Jn2+JcVqZUV7X40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785853806; c=relaxed/simple;
-	bh=ruf5sMxreReMwQaIQKSAQblQ/Q/x7RT3lTJ+YvAyFk8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nJBGHp+ExgtONmxUJV7POj1zfE0ekHLIszKmm002Fdwv/DQhdU+dUH9GYjlBPMBLwtWUYbv2z9eZB9p6GITCIlmibj93Q8ZNAO8gqYqRF/tlYhNnaQyP7vaLIeYEsqwiPJHUSaYCrZ2qhP8zzpDIrUWBYWtbREjVp82K3g3gBjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QXNNU+Ex; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QXNNU+Ex"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47f703a9e5dso2334162f8f.0
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 07:29:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785853776; x=1786458576; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Jt5TtSlsS1iDkROg1uOIa6AAAcNAVrK5bbtBRy35vPA=;
-        b=QXNNU+Ex2BrP1zwaRxLGFIsIonYi9w9e1PD69fRgdPWhZQy8ll8vxirQJx0qwFj3ge
-         hVKYgvYQcjZmCcr8P+0AObecbeqnekhR+WziGPh7gR2f7xDblt0qe7wd9yqQmE/+/bLz
-         AZBG59x6LrXWmO+MeCse/U0bu9Xe4TASSIcek/49HjJcSN6KtxMggpUFngUMdGn5nCjD
-         EKpwX6HEiMmCDrz5WKgBEa0JVuA3MT+ZrpKdRnPUUaB9BUs/KkYFifh1KQEZ1ZUPBJhM
-         iR7nvc/Vb6Tto+/8KEZv3jXmqV16Ti9JsBxp1mH6AhfCpQeJM6Ux9EEQQQagUCks/GG4
-         dfdA==
+	s=arc-20240116; t=1785853981; c=relaxed/simple;
+	bh=kn+YB4KdX6gzE0cSD9I/1GsySqihz01vxAHeLtRBS7g=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Vxk5jyfQQTCPAUOTVV90qeFwNmQXRKvraplR84kadXY4lixxAxncVA/hzMWBOWhPEUQIzt1wXKIrdY1d59zJFuWUGnVTRrRspV1kz5WNc6OghLGfqrgguVDzzPnYPsVT8VrDzaixZYlCufGY2LVldJjhRyXdvA/JfIBlHIIsCGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f79.google.com with SMTP id 46e09a7af769-7e9ee20bde0so3435877a34.2
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 07:32:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785853776; x=1786458576;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Jt5TtSlsS1iDkROg1uOIa6AAAcNAVrK5bbtBRy35vPA=;
-        b=dUwpiRxrNbxdE5lXWMDJb84yGrwxS/XOdRhgWqyGqbA5hKpSrAemkrJKwrPNeJjeld
-         lBa6FJCntvRCW4MDyL7iV7ysDuqrjrO19NCmVMWd0MnEb9LmcSNcAN1UPSofnf45aj/I
-         DSUJDUns1c9CegaPNgln6a15hck4GSaoLeUnQtdYAPF/6ZznpaofklMC5r9SbGrI+He5
-         s/uQcJGk1d0DoJaDDwOCRzQjZmkHgC1pLU6XQcaftfXfIWJ51SnboL0lCA8iE3fUhtge
-         M9CQZKS/7VxnmveLqY5g6xtKEjk118GjscRD373GDqcXvGDSFnaVkYVpzj6mwWgsQGdC
-         2lGA==
-X-Forwarded-Encrypted: i=1; AHgh+RohgAW6y3DmQT9OXh5kCBXXpoNPOg2yy5SIvb6dYwJZdKYzsZ5b1bGws1f8uhZHfzGwfrhLJeU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfTGKls1CjFZQuY/l5IA9MRWXsYf0IwtMLKBzIjtZvvo+DR8FG
-	iOJYCdU5lmHab5ET0Oie+olm63S5EZcEqya1ACoY6gpgtfBCgSxwHdaw
-X-Gm-Gg: AR+sD11mPjLQMDtqp4nSngzPfUGvKfe4zTPdqf8i6XzZZKUm7JhQKOaebyi5PEW7+Y/
-	TUjx47YnBy+O6D5wK9lVbfAwsf1+ilqPRsEZ5G7NG56WLmC57FttGm6ONLPDpCMvna9uJlsR7i8
-	oIyHKqsqcPQatoj0rHFIXTPmeh05/azM3YOwR8Bc82pZvbrOXc6qUolB4kN9Ofy6ULpDbRDSEqj
-	trlkOV+7BXjAgnU0TUDTqNclWkUzm9wIr9llA36GXKZg8SqVhsZgWaxYc0wGhrJrDvrRA8F2GOJ
-	ws9GIDLScWu69CXkzod1fYOZ+nxJqNntjgbZ39mSrgjjofmFVWDnm/OU0xASwrVDQCuA8J0NsiN
-	3F9nT6QC+/NKgnHUSEz4WQK4lsFe027nRVbufI6dmGwYWsz/YTuMuszcN28HOSGGE/QFmjEYASR
-	r84Ff1i5rUZXLY/Htx2Js+yOx3qQ7yqKVSI/sEKjasaclo3VWmz9EqvxE7wroV3T1QmIXRYKzmY
-	kWLBWAfx4uX3y9lod1OA1LebpsUFAaw
-X-Received: by 2002:a05:6000:41ec:b0:474:3b3b:5e5f with SMTP id ffacd0b85a97d-47fd72c4d4dmr35160284f8f.16.1785853775675;
-        Tue, 04 Aug 2026 07:29:35 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([194.156.154.185])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec232d74sm5088f8f.17.2026.08.04.07.29.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 07:29:35 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: kuniyu@google.com,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: daniel@iogearbox.net,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	martin.lau@linux.dev,
-	ast@kernel.org,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	emil@etsalapatis.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	lmb@cloudflare.com,
-	ppenkov@google.com,
-	vega@nebusec.ai,
-	rakukuip@gmail.com,
-	enjou1224z@gmail.com
-Subject: [PATCH bpf v2 1/1] bpf: Check sk_state before sk_protocol in bpf_tcp_*_syncookie
-Date: Tue,  4 Aug 2026 22:29:01 +0800
-Message-ID: <6218aa3534d0d2d3f448fde70a8dc2769d7a8201.1785823138.git.rakukuip@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1785823138.git.rakukuip@gmail.com>
-References: <cover.1785823138.git.rakukuip@gmail.com>
+        d=1e100.net; s=20251104; t=1785853965; x=1786458765;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jIWh+MuuKJnCrhJDGHpX6JEMCkNxEUgCFjoaSiOaBGc=;
+        b=f9U5oKkQldDemgjZMxYCNj/+Qtu9lSFZl8VAQm6PCtbNYZYn19bTKtVbb+6pBVx5+i
+         1cW6xSbhJlfLeCRJyuwT4HvSU1a2Q3Mhfjdu3N1d7bqUyhLzRAN4d4/mRErhcN1k078g
+         i6qnAmQqnF4w045Uu/Id91FrK32pe1xAvAdYkCMx2YP2lPQ5Z75ED0OZs6VzP++LRDPa
+         lqe4wiD49OLn2GIobDVYfqTFVcUF6cZupmdNB5BH1LefgAXd5kdg4UoFAZOgnsjoXDd7
+         YGf/+IRCxTi6ALMt6GbJEKe8Riex30B+IJS0pzjgBAcXXZYf5w5Aysy2h692KVJie9Tn
+         JlBQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrQCUxjDYXdtF61fzh1yjKTPyF/DcJyPSbJi+ryNBHoD4GdvG/2VUzUF+sJIyfpWaCGc2da2qc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzgbjbad6FFZBbVmt9QNxuZ74uWYcsYXg9LHLz7HAKLo4807hh6
+	xG/bbsT53CWPNKZmBNqmFE3ze9BYvTprm3+aXAvnQy3FfThfyn7dW+wGi1w7oNNwFTtUPLF8jFJ
+	eqhPFzIkb5VqEo3u0udjFV914/+3mjg5wB51GhGN5rpG1js0pfxWQrMiT78Y=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a4a:e845:0:b0:6aa:d909:1457 with SMTP id
+ 006d021491bc7-6ae433e58d2mr17742594eaf.36.1785853964747; Tue, 04 Aug 2026
+ 07:32:44 -0700 (PDT)
+Date: Tue, 04 Aug 2026 07:32:44 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a71f80c.40259c87.584f4.04b9.GAE@google.com>
+Subject: [syzbot] [net?] WARNING in netdev_queue_get_dma_dev
+From: syzbot <syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Luxiao Xu <rakukuip@gmail.com>
+Hello,
 
-bpf_tcp_gen_syncookie and bpf_tcp_check_syncookie accept a socket pointer
-'sk' with argument type ARG_PTR_TO_BTF_ID_SOCK_COMMON. However, they access
-sk->sk_protocol without validating whether 'sk' represents a full socket.
+syzbot found the following issue on:
 
-When a BPF program passes a mini-socket (such as struct request_sock or
-struct inet_timewait_sock obtained via bpf_skc_lookup_tcp), sk_protocol
-is located beyond the memory boundary allocated for mini-sockets.
-Directly dereferencing sk->sk_protocol leads to a slab-out-of-bounds
-kernel read.
+HEAD commit:    075b74841bd0 Linux 7.2-rc6
+git tree:       upstream
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=176a7db9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
+dashboard link: https://syzkaller.appspot.com/bug?extid=a78926bdac2adb52dc0e
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16225db9580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17bade32580000
 
-Fix this issue by checking sk->sk_state != TCP_LISTEN before inspecting
-sk->sk_protocol in both bpf_tcp_gen_syncookie and bpf_tcp_check_syncookie.
-Since mini-sockets are never in the TCP_LISTEN state, the condition
-short-circuits and prevents dereferencing fullsock-specific fields.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/1dc04730d019/disk-075b7484.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d76da42271f4/vmlinux-075b7484.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/07b1cdbcbe45/bzImage-075b7484.xz
 
-Fixes: 399040847084 ("bpf: add helper to check for a valid SYN cookie")
-Fixes: 70d66244317e ("bpf: add bpf_tcp_gen_syncookie helper")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+a78926bdac2adb52dc0e@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+RTNL: assertion failed at ./include/net/netdev_lock.h (72)
+WARNING: ./include/net/netdev_lock.h:72 at netdev_assert_locked_ops_compat include/net/netdev_lock.h:72 [inline], CPU#1: syz-executor223/5620
+WARNING: ./include/net/netdev_lock.h:72 at netdev_queue_get_dma_dev+0x52e/0x660 net/core/netdev_queues.c:43, CPU#1: syz-executor223/5620
+Modules linked in:
+CPU: 1 UID: 0 PID: 5620 Comm: syz-executor223 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
+RIP: 0010:netdev_assert_locked_ops_compat include/net/netdev_lock.h:72 [inline]
+RIP: 0010:netdev_queue_get_dma_dev+0x53a/0x660 net/core/netdev_queues.c:43
+Code: 89 c5 89 c6 e8 27 f7 68 f8 45 85 ed 0f 85 be fb ff ff e8 a9 fc 68 f8 48 8d 3d 12 0e 90 07 ba 48 00 00 00 48 c7 c6 a0 88 18 8d <67> 48 0f b9 3a e9 9c fb ff ff e8 87 fc 68 f8 48 8d bd 00 08 00 00
+RSP: 0018:ffffc90003b47a80 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff888029874000 RCX: ffffffff89a16569
+RDX: 0000000000000048 RSI: ffffffff8d1888a0 RDI: ffffffff91317390
+RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
+R13: 0000000000000000 R14: ffff88807b3f2568 R15: ffffc90003b47be0
+FS:  00005555885ac400(0000) GS:ffff888123ed8000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000001000 CR3: 000000006f8b6000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ zcrx_register_netdev io_uring/zcrx.c:831 [inline]
+ io_register_zcrx+0xe94/0x1d30 io_uring/zcrx.c:983
+ __io_uring_register io_uring/register.c:942 [inline]
+ __do_sys_io_uring_register+0x1193/0x1bc0 io_uring/register.c:1040
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fd0b54bbcb9
+Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffe25f0a7f8 EFLAGS: 00000246 ORIG_RAX: 00000000000001ab
+RAX: ffffffffffffffda RBX: 00007ffe25f0a928 RCX: 00007fd0b54bbcb9
+RDX: 0000200000000400 RSI: 0000000000000020 RDI: 0000000000000003
+RBP: 0000000000000001 R08: 0000000000000000 R09: 00007ffe25f0a928
+R10: 0000000000000001 R11: 0000000000000246 R12: 00007ffe25f0a918
+R13: 0000000000000002 R14: 00007fd0b554cca0 R15: 0000000000000002
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	89 c5                	mov    %eax,%ebp
+   2:	89 c6                	mov    %eax,%esi
+   4:	e8 27 f7 68 f8       	call   0xf868f730
+   9:	45 85 ed             	test   %r13d,%r13d
+   c:	0f 85 be fb ff ff    	jne    0xfffffbd0
+  12:	e8 a9 fc 68 f8       	call   0xf868fcc0
+  17:	48 8d 3d 12 0e 90 07 	lea    0x7900e12(%rip),%rdi        # 0x7900e30
+  1e:	ba 48 00 00 00       	mov    $0x48,%edx
+  23:	48 c7 c6 a0 88 18 8d 	mov    $0xffffffff8d1888a0,%rsi
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	e9 9c fb ff ff       	jmp    0xfffffbd0
+  34:	e8 87 fc 68 f8       	call   0xf868fcc0
+  39:	48 8d bd 00 08 00 00 	lea    0x800(%rbp),%rdi
+
+
 ---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-changes in v2:
-v1 Link: https://lore.kernel.org/all/ca8d8c570509b02355bb4bd4e56859f3e2564c9c.1785576172.git.rakukuip@gmail.com/
-- Check sk_state before sk_protocol instead of adding sk_fullsock() check (Kuniyuki Iwashima)
-- Correct Fixes tags to point to 399040847084 and 70d66244317e (CI bot)
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
- net/core/filter.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b446aa8be5c3..1a5f1bac0a75 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7679,7 +7679,7 @@ BPF_CALL_5(bpf_tcp_check_syncookie, struct sock *, sk, void *, iph, u32, iph_len
- 		return -EINVAL;
- 
- 	/* sk_listener() allows TCP_NEW_SYN_RECV, which makes no sense here. */
--	if (sk->sk_protocol != IPPROTO_TCP || sk->sk_state != TCP_LISTEN)
-+	if (sk->sk_state != TCP_LISTEN || sk->sk_protocol != IPPROTO_TCP)
- 		return -EINVAL;
- 
- 	if (!READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_syncookies))
-@@ -7752,7 +7752,7 @@ BPF_CALL_5(bpf_tcp_gen_syncookie, struct sock *, sk, void *, iph, u32, iph_len,
- 	if (unlikely(!sk || th_len < sizeof(*th) || th_len != th->doff * 4))
- 		return -EINVAL;
- 
--	if (sk->sk_protocol != IPPROTO_TCP || sk->sk_state != TCP_LISTEN)
-+	if (sk->sk_state != TCP_LISTEN || sk->sk_protocol != IPPROTO_TCP)
- 		return -EINVAL;
- 
- 	if (!READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_syncookies))
--- 
-2.43.0
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
