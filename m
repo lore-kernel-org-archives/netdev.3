@@ -1,114 +1,99 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0861043FD11
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 14:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115E73515E6;
+	Tue,  4 Aug 2026 14:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785855008; cv=none; b=dM85hT1ogfxX3Y2JW7PGo3JpZhjyXwqtPZ4doDXwdb6vzSfYVa/DEP2SGyf0zHw61n69PYHtr0U+qq1yGwD2Jh6rZbjh9mVRgi9Q70MrOlOfT8uHsQUs0dJxEa3kBs0eqUszCZLT82an9IsOQjcHY964EJXHt97sF2J7ye6Pwls=
+	t=1785855277; cv=none; b=KaQZZnWhUpnT1h0+gfbSR26UVEV4lHYabH0rfB83tGeICBqDnKwxOzgA83xrMX0bcqC+fPaC0B2xUXFS1UrcyE4ebe3vIYy7u0wEMlCAm2YHLWR3UMoeee20ewvTVezvp/f1hyeXVZmo1/0FLFf+5Tnm2mAFRnU0o+qaJJoos3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785855008; c=relaxed/simple;
-	bh=gqPCJwNk1+lfMV2dt9/GSiSzz3eomKWxhZ66tnw3U8U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cxnp7SisyvjAWZF/sAjVzJ0kdCgv+QXEswVtxjW3N6SFp9l3JCqJzEYM/OX378slHJtw8n9M8uGM3mCLjqMrYCk1ZJT6iGaLE1ez4w26b/oMX0UBXD8DEJcCO6Fdj2ymCKl1oB3lrkKPNYPk7kCMwaJucdOwC7MLOP7rPvht8lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=Uux1Z2YV; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	s=arc-20240116; t=1785855277; c=relaxed/simple;
+	bh=LladUGeQqQO+Z/uhca5U89Of9v8zaoBpTmkeNyerAWQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r9Zg2Z0ETdZ5HuGALZOmmGvdxALO83yn69fpCD7jJAv5iVa9APCJqeH2yRbMQRyk08bZ566CSedFrVvKUKf3oUfkbqPKDFR7DyUZBJxNUKCeR+rQdvvQ+/lJG+iqKbIqP1hOFOKYEKd4ysOQoA0CW4gD7KHTxz9RX9vGlBMU0T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=G6RA/B6N; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="Uux1Z2YV"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47f5d5dbf80so273905f8f.2
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 07:50:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1785855004; x=1786459804; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+cEHIVakSLT1mPOIXcjrTOODhL8FI9shkgRG7uYO/jc=;
-        b=Uux1Z2YVmPjyd6IbXqXc0xUjUCKZIpgifnm3EXosQ9MJblYq5HvEP334M8w3PaWzOe
-         fmF6tXNBImt2qjY+e4twKYnazDVJ/NDxbjAveisKhN0uIpDQOvReE4gKJYrYbKS9Q2Um
-         idm4h5LL4iA5ZIqC8rcFOnIKrNyMqExhG/Tsdb3bYx/PFX7qVXWgAL2mAQj5SMRC25LS
-         DjmiDxf0kST4W+ZQG0UwRooikKEAmiMKZ1mCW5Btcaqr4WiKMFouZ3bVRfXmA0R63r8C
-         GlcTcwlo1BlcgQWAM5R9E8Us3JPO2oxBtKCFurJweZeBE0bYiiEtppYi+6lxufavVtkK
-         FeUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785855004; x=1786459804;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=+cEHIVakSLT1mPOIXcjrTOODhL8FI9shkgRG7uYO/jc=;
-        b=fwaI6Ebk7ROEt2A12G+UqqKiRGtSlGddixHtj6RENgmed6zU1YRXYXw9rQzTBcbZyh
-         GZxo0BMzPql2vzECHRIQJjNmZYAizR/V9Jp14cSbaB1ndo4gNSn7a5wyQXyUjhmauSwX
-         R9UaxTWuhVUSSHZpiLrEvIkGJrI8jYSI7dYgFtPdxCzW3ZgfOPVwUiy5Ih/ZfT0dCvKL
-         mBfQL5Z1XzzSuXkhnXAP7LifixKFaSvdLmhLsjLd7aisdZKCh8cj09bF2O3uhlZvntKV
-         q47R3tJ0xFjZ45RYSnslEuDjeAoLuTOOuuCW8yhb5WhmP2SgyRsLqEAqiPruVNOkGcNM
-         +5xA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq+0YsjcyI1g0wamhbtnKVuuGZtiTlfjZXqlU7jlWwnSR2xsC1qt8lRrmwTN+IiM7kjNWPpJ88=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyFTy6uTevFcJZ73Ne34c4CnjM01Zam6B43meLbHxP8KlrHiet
-	2kRZTo+53fZ4lsNHF6tlGOdgZvQCaGKOrYnRC21fbXxuXACiZm/9x+KYg8SnxXV5BIc=
-X-Gm-Gg: AR+sD13AfYVuQXM+EGSo0pGnRAoqedNJXx8KS2Eml9R22m1/FYpm4J6LF4utWGo/wDb
-	wsLGZDAGvLtw3H1vgaLxnyFdSatZyzXMeeN7qI5LXqCq6Qr2rGn/yQaOaKmyyyyIoZbQpIQ6xmY
-	F1cLm0pFLryhPwshj0KmtLSCIp1osrtjPpaC8Qczx3TiwXVTjwQa2MZnwCI4YlBTgmdZNoE8znh
-	/5O5q48qgBK+x3zqgj2wTsdvaxLK2AwkFcS54IpQPlzVQSlvDNdSk9yMc2rkJl0K+xXQyl+M5sI
-	IbcvhL41aEXFn0C7eSw9OIoxEKNVt5cN+vxzHNfzUBWhcs/Rgjm1k/2dPzABYywy1wlrmmfzmRR
-	NDu9TGSsrs9IHPIW9X0r8KBVHBgPaIdD6D/kIvXTcOdhdM2ETuXhwrYMxMphkss0/zQDF5ixiLQ
-	V3bSUrdOcUkjaAR90A4pZnvn9Q+WfbFjczWQPXZsI3ry+ZPflshgsWZb01xFtIN4Mun+JXInfml
-	2JRvbsFD6EK/Aj6ioTBNxIuvcQ4yhSypSAFVoHjKA==
-X-Received: by 2002:a05:6000:41cb:b0:47f:8e4c:8a4c with SMTP id ffacd0b85a97d-47fd7312532mr20496377f8f.4.1785855003616;
-        Tue, 04 Aug 2026 07:50:03 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec232d7fsm198422f8f.20.2026.08.04.07.50.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Aug 2026 07:50:03 -0700 (PDT)
-Message-ID: <519a06fd-c9aa-425b-a374-607aff0a9140@6wind.com>
-Date: Tue, 4 Aug 2026 16:50:02 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="G6RA/B6N"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=FVcysNhXi0SKuam3CXUhAeBuqKpKKoH5Agw3hOwh+OQ=; b=G6RA/B6N9QcAQXF9n5BBZcIvR6
+	udxKfvx1udCDq1mUllEsc1W+KanrgLjoCOw7n5czm5NayiKbRiyVAlPiVq39BhGrqwFxmSajG8VZJ
+	WSCcdogKlJa3QF5eqLXoTNEgUkDQf5AUdxIoRjkFYOih/yukSGAQDR/E5KiB/sZOJGrA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wrGX6-00G0Oe-HM; Tue, 04 Aug 2026 16:54:20 +0200
+Date: Tue, 4 Aug 2026 16:54:20 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com, mfd@lists.linux.dev,
+	linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH 10/21] net: phy: add X-Powers AC200 EPHY control driver
+Message-ID: <205e9051-8e43-44bb-a4b5-4ec69a192fa3@lunn.ch>
+References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
+ <20260802-submit-acx00-of-dynamic-v1-v1-10-0a53cd9e21cc@gmail.com>
+ <05b1e6a2-725e-4b8e-8629-249637bbcb81@lunn.ch>
+ <CADvTj4o0JdjoO+FC4pO=qnjEQ8MRyzQdKp2Hxy9NsPU-gym5OQ@mail.gmail.com>
+ <9b8be475-1fde-409c-a82e-be4b2e402650@lunn.ch>
+ <CADvTj4pBovti19MXgQjFpxm=7aRm0sYQz9jxfo8bu3txH94THQ@mail.gmail.com>
+ <a9ce53dd-0873-41c0-ad6a-fb42e6cc7aaa@lunn.ch>
+ <CADvTj4qpHU3F0DrEmc0vFi+JiwTNERniiMHKo1LmBd8sg58wJA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net v2] ipv6: seg6: clear IPv4 control block in End.DT4
-To: David Lee <david.lee@trailofbits.com>, andrea.mayer@uniroma2.it,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: Kyle Zeng <kylebot@openai.com>,
- Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
- horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260804094625.715305-1-david.lee@trailofbits.com>
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <20260804094625.715305-1-david.lee@trailofbits.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CADvTj4qpHU3F0DrEmc0vFi+JiwTNERniiMHKo1LmBd8sg58wJA@mail.gmail.com>
 
-Le 04/08/2026 à 11:46, David Lee a écrit :
-> From: Kyle Zeng <kylebot@openai.com>
-> 
-> The End.DT4 input path decapsulates an IPv4 packet and sends it
-> directly to ip_route_input() and dst_input(). It therefore bypasses
-> ip_rcv_core(), which normally clears IPCB. The skb still contains
-> IP6CB data from the outer packet, and IPv6 extension-header offsets
-> overlap the IPv4 option fields. This can make __ip_options_echo()
-> copy beyond the allocation for saved options.
-> 
-> Clear IPCB after validating the inner IPv4 header and preserve the
-> ingress interface as ip_rcv_core() does. This prevents outer IPv6
-> metadata from being interpreted as inner IPv4 options.
-> 
-> Fixes: 664d6f86868b ("seg6: add support for the SRv6 End.DT4 behavior")
-> Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> Co-developed-by: David Lee <david.lee@trailofbits.com>
-> Signed-off-by: David Lee <david.lee@trailofbits.com>
-> ---
-> Changes in v2:
-> - Restore Kyle Zeng as the patch author and correct the sign-off chain.
+> I agree that the link PHY cannot be identified by reading its
+> registers before the package control sequence has run. I do not agree
+> that this means an arbitrary ID should be placed in DT, though.
 
-You didn't answer my previous question:
+The ability to put the ID in DT is there for two reasons:
 
-> End.DX4 also calls ip_route_input(). I guess the same problem exists. Am I
-> wrong?
+1) You cannot enumerate the PHY because of missing clocks etc.
+2) The vendor messed up, and did not put a valid ID in registers 2 and 3.
+
+2 does not happen very often, but this is one example. They are
+different PHYs, they need different driver code, when you consider the
+PHY as a whole.
+
+I also wound not put in an arbitrary ID, pick an unused ID in the
+vendors range.
+
+> Both AC200 and AC300 expose the same link-side PHY ID and register
+> layout.
+
+No they don't. There are extra registers in different address domains.
+
+	Andrew
