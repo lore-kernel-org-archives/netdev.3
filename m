@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D1C3EE1FE;
-	Tue,  4 Aug 2026 03:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88327426EB2;
+	Tue,  4 Aug 2026 03:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785813413; cv=none; b=oQHBuFlC7k+PGMKCQrX6QhrZtHQJOEhP5EXDVF5XwphHhby7YN4OnCOpRHF4lRvc92UHSuG6fjcFSk/5s0CzOG0tmriLXv+4laDhKEmjVzExzR3kiLLX4dmVpBnORr96dFJL8MHDuBckKrH4YB4Ohc6fNc2KgERNHWWuVD1XD5k=
+	t=1785813414; cv=none; b=qgxAuPeV+WHZ36d1l8V3+fqUnYsEi0lJxX0gsz8zz6KAa8rl2QHH3VAbygqEiPM36twxUR8cbi73ITkkAkJkpTiq4/Dxz0SUt64pjG2njr7q5t3/BtiM8VVjkHSaCm5b0XKOzEbqwNd3YBlYYb/DRzK78EdvpgjWJ3W44gfz2+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785813413; c=relaxed/simple;
-	bh=jAVsiDfymLgCR/8Q4K7Y2kRg4L0jDxeqNLYmvrrEUeE=;
+	s=arc-20240116; t=1785813414; c=relaxed/simple;
+	bh=xPWU6A15255rg3AWJCN1NE53VQ3gUaGDvBsTInTMid0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nYpO4zmPtIqLA31djAoetdUPraYWEe2r6gOqD9GSHqaF8J2XDBEg4b6MpxeECzSR+QezFE/CRLE+T+6x+fG8H2a3eANW509QN5PEmm5/2CTFeKjHskDOqn1U8EFjoMa69FBLR1skYVYtBZF9JTIa6TnJLMhj3RWEQx64Vb3MgO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NiipRmib; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=Ki8too5Ly8K0jXUaYEpCTAzqrDqI0xzSym0KaCjoKteNG9UL2AixKDakpBqfsb7XQbDgPz8HwBkBiGH7zuHpbGVpOID3dLp7djDk83y4NsIp2pUerPevP0sChfnKsPbZkL7SzXoFgtN8KHAn1N8KlSMex4FLG9dCH3CfNn8j2Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WKUlbLzE; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NiipRmib"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WKUlbLzE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785813412; x=1817349412;
+  t=1785813413; x=1817349413;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jAVsiDfymLgCR/8Q4K7Y2kRg4L0jDxeqNLYmvrrEUeE=;
-  b=NiipRmiba/g7XmIuWk82Gp1RvVK5zdQGXMWXa1PfIrVXm+P+Qivw3iea
-   xJV5rMdfiWlFqYHInfEQFVqpSz/j1622blpIrY7xPsTmy0FZiCNb/YWzQ
-   8jamgK2k3nmGZTkFi0HvAnYQzSdVefbdCgdaKedDVKWPSoQdUaXJ8oq9b
-   lN8IXisFTN0+p/LJe+fxr/0H1IlKmrFsJ9P+LHGoj9PsdfagWxi+5JemO
-   DdqZCkOOfBICCBVQdFhy0TUcVX/eFlFIOHgHKQnGyQpde8qSuAn9ZAAyD
-   sCWm+WKf+WinygS/YEj/WYhz+aemUCE8aHq+p77sXC3Gm3XxSRy2XzraR
-   w==;
-X-CSE-ConnectionGUID: SKDMluAjRfSLwowfXd7m0w==
-X-CSE-MsgGUID: lo4ToGEQTz+CcBrnRmpHNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="86555109"
+  bh=xPWU6A15255rg3AWJCN1NE53VQ3gUaGDvBsTInTMid0=;
+  b=WKUlbLzEa9tnPlirXlsb9NQfOx6M9OMucufQ+SHGHijBGNfwzXy24/LH
+   TZGfiWgVh0fwmDh4f7DEEqboq9Mpih933xA1KniMlJ9cAuzMhtnPuAor/
+   a+NAjfE2iltXzXOCyTIQVO8ythjBkw3B3VDNksghBIpWQqcObxZVCx95o
+   SH4lYngR77gPlwpjMHsgXKMTRK8V8g3fvt31qkYzXFZjO7+B+Ogekow8z
+   1C+ib6L3aFOuEjyMFunZfgji72PsbW0kaJIuWhCq6X26CE7U6NN6EXtWV
+   d5Gkxe6UT3UtX5zjGrbYKHZBSvXzrbcXVDT9/bxc8Gm1SnpyDDpE4nnQU
+   g==;
+X-CSE-ConnectionGUID: zktCuxZ/RbqxXE2fRw4jHA==
+X-CSE-MsgGUID: 8JXFZ2HyREGNzUm+ZIdrdA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="86555114"
 X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
-   d="scan'208";a="86555109"
+   d="scan'208";a="86555114"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 20:16:45 -0700
-X-CSE-ConnectionGUID: YjnFgC5bQRK8lPN+SkpAjQ==
-X-CSE-MsgGUID: LDfRPxIDReSpfdSJzbFLaA==
+X-CSE-ConnectionGUID: m0bN9BOdRtif2Rv3PCH6Lw==
+X-CSE-MsgGUID: U61IJa95QbSXawpEumG6yw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
-   d="scan'208";a="299613774"
+   d="scan'208";a="299613777"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa001.jf.intel.com with ESMTP; 03 Aug 2026 20:16:44 -0700
+  by orviesa001.jf.intel.com with ESMTP; 03 Aug 2026 20:16:45 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -68,11 +68,10 @@ Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
 	richardcochran@gmail.com,
 	skhan@linuxfoundation.org,
 	linux-doc@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Samuel Salin <Samuel.salin@intel.com>
-Subject: [PATCH net-next v7 11/15] idpf: print a debug message and bail in case of non-event ctlq message
-Date: Mon,  3 Aug 2026 20:16:31 -0700
-Message-ID: <20260804031638.1531994-12-anthony.l.nguyen@intel.com>
+	Bharath R <Bharath.r@intel.com>
+Subject: [PATCH net-next v7 12/15] ixd: add basic driver framework for Intel(R) Control Plane Function
+Date: Mon,  3 Aug 2026 20:16:32 -0700
+Message-ID: <20260804031638.1531994-13-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260804031638.1531994-1-anthony.l.nguyen@intel.com>
 References: <20260804031638.1531994-1-anthony.l.nguyen@intel.com>
@@ -86,44 +85,334 @@ Content-Transfer-Encoding: 8bit
 
 From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-Unlike previous internal idpf ctlq implementation, idpf calls the default
-message handler for all received messages that do not have a matching xn
-transaction, not only for VIRTCHNL2_OP_EVENT. This leads to many error
-messages printing garbage, because the parsing expected a valid event
-message, but got e.g. a delayed response for a timed-out transaction.
+Add module register and probe functionality. Add the required support to
+register IXD PCI driver, as well as probe, remove and shutdown callbacks.
+Enable the PCI device and request to reserve the memory resources that will
+be used by the driver. Finally map the BAR0 address space.
 
-The information about timed-out transactions and otherwise unhandleable
-messages can still be valuable for developers, so print the information
-with dynamic debug and exit the function, so the following functions can
-parse valid events in peace.
+For now, use devm_kzalloc() to allocate adapter, as it requires the least
+amount of code. In a later commit, it will be replaced with a devlink
+alternative.
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Co-developed-by: Amritha Nambiar <amritha.nambiar@intel.com>
+Signed-off-by: Amritha Nambiar <amritha.nambiar@intel.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: Bharath R <Bharath.r@intel.com>
 Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../device_drivers/ethernet/index.rst         |   1 +
+ .../device_drivers/ethernet/intel/ixd.rst     |  39 ++++++
+ drivers/net/ethernet/intel/Kconfig            |   2 +
+ drivers/net/ethernet/intel/Makefile           |   1 +
+ drivers/net/ethernet/intel/ixd/Kconfig        |  12 ++
+ drivers/net/ethernet/intel/ixd/Makefile       |   8 ++
+ drivers/net/ethernet/intel/ixd/ixd.h          |  28 +++++
+ drivers/net/ethernet/intel/ixd/ixd_lan_regs.h |  28 +++++
+ drivers/net/ethernet/intel/ixd/ixd_main.c     | 112 ++++++++++++++++++
+ 9 files changed, 231 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/intel/ixd.rst
+ create mode 100644 drivers/net/ethernet/intel/ixd/Kconfig
+ create mode 100644 drivers/net/ethernet/intel/ixd/Makefile
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd.h
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_main.c
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 9b7451a81497..f32f8c65dc2b 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -84,6 +84,13 @@ void idpf_recv_event_msg(struct libie_ctlq_ctx *ctx,
- 	u32 event;
+diff --git a/Documentation/networking/device_drivers/ethernet/index.rst b/Documentation/networking/device_drivers/ethernet/index.rst
+index 786a23c84b90..d9980c84487a 100644
+--- a/Documentation/networking/device_drivers/ethernet/index.rst
++++ b/Documentation/networking/device_drivers/ethernet/index.rst
+@@ -35,6 +35,7 @@ Contents:
+    intel/idpf
+    intel/igb
+    intel/igbvf
++   intel/ixd
+    intel/ixgbe
+    intel/ixgbevf
+    intel/i40e
+diff --git a/Documentation/networking/device_drivers/ethernet/intel/ixd.rst b/Documentation/networking/device_drivers/ethernet/intel/ixd.rst
+new file mode 100644
+index 000000000000..1387626e5d20
+--- /dev/null
++++ b/Documentation/networking/device_drivers/ethernet/intel/ixd.rst
+@@ -0,0 +1,39 @@
++.. SPDX-License-Identifier: GPL-2.0+
++
++==========================================================================
++iXD Linux* Base Driver for the Intel(R) Control Plane Function
++==========================================================================
++
++Intel iXD Linux driver.
++Copyright(C) 2025 Intel Corporation.
++
++.. contents::
++
++For questions related to hardware requirements, refer to the documentation
++supplied with your Intel adapter. All hardware requirements listed apply to use
++with Linux.
++
++
++Identifying Your Adapter
++========================
++For information on how to identify your adapter, and for the latest Intel
++network drivers, refer to the Intel Support website:
++http://www.intel.com/support
++
++
++Support
++=======
++For general information, go to the Intel support website at:
++http://www.intel.com/support/
++
++If an issue is identified with the released source code on a supported kernel
++with a supported adapter, email the specific information related to the issue
++to intel-wired-lan@lists.osuosl.org.
++
++
++Trademarks
++==========
++Intel is a trademark or registered trademark of Intel Corporation or its
++subsidiaries in the United States and/or other countries.
++
++* Other names and brands may be claimed as the property of others.
+diff --git a/drivers/net/ethernet/intel/Kconfig b/drivers/net/ethernet/intel/Kconfig
+index 288fa8ce53af..780f113986ea 100644
+--- a/drivers/net/ethernet/intel/Kconfig
++++ b/drivers/net/ethernet/intel/Kconfig
+@@ -398,4 +398,6 @@ config IGC_LEDS
  
- 	adapter = container_of(ctx, struct idpf_adapter, ctlq_ctx);
-+	if (ctlq_msg->chnl_opcode != VIRTCHNL2_OP_EVENT) {
-+		dev_dbg(&adapter->pdev->dev,
-+			"Unhandled message with opcode %u from CP\n",
-+			ctlq_msg->chnl_opcode);
-+		goto free_rx_buf;
+ source "drivers/net/ethernet/intel/idpf/Kconfig"
+ 
++source "drivers/net/ethernet/intel/ixd/Kconfig"
++
+ endif # NET_VENDOR_INTEL
+diff --git a/drivers/net/ethernet/intel/Makefile b/drivers/net/ethernet/intel/Makefile
+index 9a37dc76aef0..08b29f3b6801 100644
+--- a/drivers/net/ethernet/intel/Makefile
++++ b/drivers/net/ethernet/intel/Makefile
+@@ -19,3 +19,4 @@ obj-$(CONFIG_IAVF) += iavf/
+ obj-$(CONFIG_FM10K) += fm10k/
+ obj-$(CONFIG_ICE) += ice/
+ obj-$(CONFIG_IDPF) += idpf/
++obj-$(CONFIG_IXD) += ixd/
+diff --git a/drivers/net/ethernet/intel/ixd/Kconfig b/drivers/net/ethernet/intel/ixd/Kconfig
+new file mode 100644
+index 000000000000..5279cee2a050
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ixd/Kconfig
+@@ -0,0 +1,12 @@
++# SPDX-License-Identifier: GPL-2.0-only
++# Copyright (C) 2025 Intel Corporation
++
++config IXD
++	tristate "Intel(R) Control Plane Function Support"
++	depends on PCI_MSI
++	select LIBIE_PCI
++	help
++	  This driver supports Intel(R) Control Plane PCI Function
++	  of Intel E2100 and later IPUs and FNICs.
++	  It facilitates a centralized control over multiple IDPF PFs/VFs/SFs
++	  exposed by the same card.
+diff --git a/drivers/net/ethernet/intel/ixd/Makefile b/drivers/net/ethernet/intel/ixd/Makefile
+new file mode 100644
+index 000000000000..3849bc240600
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ixd/Makefile
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: GPL-2.0-only
++# Copyright (C) 2025 Intel Corporation
++
++# Intel(R) Control Plane Function Linux Driver
++
++obj-$(CONFIG_IXD) += ixd.o
++
++ixd-y := ixd_main.o
+diff --git a/drivers/net/ethernet/intel/ixd/ixd.h b/drivers/net/ethernet/intel/ixd/ixd.h
+new file mode 100644
+index 000000000000..1b918c5d31cd
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ixd/ixd.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright (C) 2025 Intel Corporation */
++
++#ifndef _IXD_H_
++#define _IXD_H_
++
++#include <linux/net/intel/libie/pci.h>
++
++/**
++ * struct ixd_adapter - Data structure representing a CPF
++ * @hw: Device access data
++ */
++struct ixd_adapter {
++	struct libie_mmio_info hw;
++};
++
++/**
++ * ixd_to_dev - Get the corresponding device struct from an adapter
++ * @adapter: PCI device driver-specific private data
++ *
++ * Return: struct device corresponding to the given adapter
++ */
++static inline struct device *ixd_to_dev(struct ixd_adapter *adapter)
++{
++	return &adapter->hw.pdev->dev;
++}
++
++#endif /* _IXD_H_ */
+diff --git a/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h b/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
+new file mode 100644
+index 000000000000..fbb88929d0de
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright (C) 2025 Intel Corporation */
++
++#ifndef _IXD_LAN_REGS_H_
++#define _IXD_LAN_REGS_H_
++
++/* Control Plane Function PCI ID */
++#define IXD_DEV_ID_CPF			0x1efe
++
++/* Control Queue (Mailbox) */
++#define PF_FW_MBX_REG_LEN		4096
++#define PF_FW_MBX			0x08400000
++
++/* Reset registers */
++#define PFGEN_RTRIG_REG_LEN		2048
++#define PFGEN_RTRIG			0x08407000	/* Device resets */
++
++/**
++ * struct ixd_bar_region - BAR region description
++ * @offset: BAR region offset
++ * @size: BAR region size
++ */
++struct ixd_bar_region {
++	resource_size_t offset;
++	resource_size_t size;
++};
++
++#endif /* _IXD_LAN_REGS_H_ */
+diff --git a/drivers/net/ethernet/intel/ixd/ixd_main.c b/drivers/net/ethernet/intel/ixd/ixd_main.c
+new file mode 100644
+index 000000000000..75ee53152e61
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ixd/ixd_main.c
+@@ -0,0 +1,112 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright (C) 2025 Intel Corporation */
++
++#include "ixd.h"
++#include "ixd_lan_regs.h"
++
++MODULE_DESCRIPTION("Intel(R) Control Plane Function Device Driver");
++MODULE_IMPORT_NS("LIBIE_PCI");
++MODULE_LICENSE("GPL");
++
++/**
++ * ixd_remove - remove a CPF PCI device
++ * @pdev: PCI device being removed
++ */
++static void ixd_remove(struct pci_dev *pdev)
++{
++	struct ixd_adapter *adapter = pci_get_drvdata(pdev);
++
++	libie_pci_unmap_all_mmio_regions(&adapter->hw);
++}
++
++/**
++ * ixd_shutdown - shut down a CPF PCI device
++ * @pdev: PCI device being shut down
++ */
++static void ixd_shutdown(struct pci_dev *pdev)
++{
++	ixd_remove(pdev);
++
++	if (system_state == SYSTEM_POWER_OFF)
++		pci_set_power_state(pdev, PCI_D3hot);
++}
++
++/**
++ * ixd_iomap_regions - iomap PCI BARs
++ * @adapter: adapter to map memory regions for
++ *
++ * Returns: %0 on success, negative on failure
++ */
++static int ixd_iomap_regions(struct ixd_adapter *adapter)
++{
++	const struct ixd_bar_region regions[] = {
++		{
++			.offset = PFGEN_RTRIG,
++			.size = PFGEN_RTRIG_REG_LEN,
++		},
++		{
++			.offset = PF_FW_MBX,
++			.size = PF_FW_MBX_REG_LEN,
++		},
++	};
++
++	for (int i = 0; i < ARRAY_SIZE(regions); i++) {
++		struct libie_mmio_info *mmio_info = &adapter->hw;
++		bool map_ok;
++
++		map_ok = libie_pci_map_mmio_region(mmio_info,
++						   regions[i].offset,
++						   regions[i].size);
++		if (!map_ok) {
++			dev_err(ixd_to_dev(adapter),
++				"Failed to map PCI device MMIO region\n");
++
++			libie_pci_unmap_all_mmio_regions(mmio_info);
++			return -EIO;
++		}
 +	}
 +
- 	if (payload_size < sizeof(*v2e)) {
- 		dev_err_ratelimited(&adapter->pdev->dev, "Failed to receive valid payload for event msg (op %d len %d)\n",
- 				    ctlq_msg->chnl_opcode,
++	return 0;
++}
++
++/**
++ * ixd_probe - probe a CPF PCI device
++ * @pdev: corresponding PCI device
++ * @ent: entry in ixd_pci_tbl
++ *
++ * Returns: %0 on success, negative errno code on failure
++ */
++static int ixd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
++{
++	struct ixd_adapter *adapter;
++	int err;
++
++	adapter = devm_kzalloc(&pdev->dev, sizeof(*adapter), GFP_KERNEL);
++	if (!adapter)
++		return -ENOMEM;
++	adapter->hw.pdev = pdev;
++	INIT_LIST_HEAD(&adapter->hw.mmio_list);
++
++	err = libie_pci_init_dev(pdev);
++	if (err)
++		return err;
++
++	pci_set_drvdata(pdev, adapter);
++
++	return ixd_iomap_regions(adapter);
++}
++
++static const struct pci_device_id ixd_pci_tbl[] = {
++	{ PCI_VDEVICE(INTEL, IXD_DEV_ID_CPF) },
++	{ }
++};
++MODULE_DEVICE_TABLE(pci, ixd_pci_tbl);
++
++static struct pci_driver ixd_driver = {
++	.name			= KBUILD_MODNAME,
++	.id_table		= ixd_pci_tbl,
++	.probe			= ixd_probe,
++	.remove			= ixd_remove,
++	.shutdown		= ixd_shutdown,
++};
++module_pci_driver(ixd_driver);
 -- 
 2.47.1
 
