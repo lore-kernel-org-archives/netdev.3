@@ -1,218 +1,118 @@
-Received: from out-168.mta1.migadu.com (out-168.mta1.migadu.com [95.215.58.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938DD2F12A1;
-	Tue,  4 Aug 2026 13:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.168
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785851756; cv=none; b=p1YyQH0J4Z60/byrj4qcaIXaJc79lpIEwrsd4CQuj1XWyk08nMtw6qd242DEw0XMAHRgVw2/+3O2SGH9ANQFXKiEjKF7DIPZs3Kk+ti8wimlJe95nslas9/WQVhKsUUXaf9f9t/4J5r7lqji2as/ulyL3MvI87nsx9p+XN8RzaE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785851756; c=relaxed/simple;
-	bh=LcYiPqB4tVrRiy7Cltegl8juqIwND8gItntjWapowOk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pZbSulHAVWNATRU+8zwENoyM/USUFEDurc4VEBf1COX76uHHB/l9sCZOD9ra6A/c+8BnRRLZCB0Ifzra6Bk60JSmAMCD3l6mvXdIVPX+H+BB8nV2ggx4IcuP57VvL0h/tELhu0NDmXP9gIeYy0QENKrInoCoTwCIbp8rz7hlD9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FYZtil51; arc=none smtp.client-ip=95.215.58.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9A2463B72
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 13:57:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785851859; cv=pass; b=cJA0N1qwjjSAbEJfo5Xsw8z0UmEV7kPJN11dYyPtN1vEyEk4PHcd81WK9gx490z5INV9vOyFCVYeXPz+BSAsfC8TV9cB7kocvSDYTwSUSCdr0UBkXUAtDIJAVSWUq3NEGbBHZcdbg76USz5IAsAU+9aWPnLPGzFGD4xLCIX3MVE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785851859; c=relaxed/simple;
+	bh=bbfGwGDiOTik9OqdWY952RI2Az73rmUNw+iO+t3QLpE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ojQ74WELzFNxfslBohuvgP7+FNGeajOSNYtO7MVDc0rNEjkFrgrlA+qwTu2P1hlcd/vzfPOkYNCOn2gvG5tCZPSWXM94tnV2crcQm7HSzEwC/wfCURBGiD6We+kJm8/6i2jxG4CpylTSf4kiUiTkCfbcjg7R99HmqgDOoEkECiQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wmHofTy8; arc=pass smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FYZtil51"
-Message-ID: <4ef01fa0-969f-4ec0-997b-5f5f3f67e11a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785851742;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gYaRYJJ4lK/MLOWAM2e1uCFUmqoZIVPfPNaQ31GMp0Q=;
-	b=FYZtil51LzrZNx/hTwezUS2eYSm/487ebVTBuTingdSO8uBcyrhjubzK1fAG6PcwWSkRPD
-	zBrz32hja2gVCBTzht+8r03mrRntjCdIpIvmrBDfj3qKue+wASayNRuJEd3iYBE708hwp2
-	46ODWFVYxV9tghywi/XhsIpsaAGZbZM=
-Date: Tue, 4 Aug 2026 14:55:17 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wmHofTy8"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8efec2c28f8so31473086d6.2
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 06:57:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785851857; cv=none;
+        d=google.com; s=arc-20260327;
+        b=EK/gTIAWI8+s1DWdSbcdjICd1D6h6ZZCRkXdWbKcI/cFjJEIM8vswZHmaG6ubQ219T
+         6PK3Ln0RfPQaGz8+D15nPO8471lRIzT0wSca5lu4meJS/OFZHqLXhTRQlJQQ7tRxygFI
+         fhYFMyWFqtknuTpbmrGCZ5gGMOWMSPabeL9J+o6LI3aZbjKO7xUas+4GHmHnE8+WGL2w
+         KCGwlkgdx6GKF/J4yDR2owM2eV9Ms4jzC7uK/9UPZyHkMXkyGh/OKVI4RNHJCIDvv2nV
+         y9d2oY2IoxsPUgBcWZF1aNGePJczvxEuZhAC2Zx0u7MccU94hN4CnOSCliFt/fNbYe+z
+         WGWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bbfGwGDiOTik9OqdWY952RI2Az73rmUNw+iO+t3QLpE=;
+        fh=jgLaJnQ39eDrgW1BMqtRytfrHtJTUAifhonZoZnF85E=;
+        b=amE+Y50Xh31xkKCf8bHinqQ/t00c4j/5O0LYu7LTA/4UYsRlq5QwcwjS36e9r3vjA/
+         gip7v5KuoRpYY+M6jS+hhGVuaoz1MIapKSX3w8qGgVbOoX5NUerUuTuzy4qihjSE9m8n
+         kVFU17FYr2tVs1/UO+Q8i43uteihFkW2oeHlP7DlDqHxZ1zGUM0Y9BrrSW/hTrKKlhZ9
+         7S9aFtZhv2kfYNRdzf888jJ1L5+xQKxm5VhJXImGI2ij3ukHHA1EqXGV9XjU2q2UsXzZ
+         N+bjh7MFg3RyNmNXHrWLu1IAB6pXBnj/4lHb9t+wu+14Ek6qJuMTarlQ4uW49fI5Br9l
+         I+HA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785851857; x=1786456657; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bbfGwGDiOTik9OqdWY952RI2Az73rmUNw+iO+t3QLpE=;
+        b=wmHofTy8RMPtPaFbGxxJDhdzYgh/Irq63SuvMjZpUsr4h/oJ1o/j4HmXZw8/8IXWiL
+         mxzot6Qf8Fh6hDFuFkng3UXmmtUDrH5JNf6U2yHtv9SJvjJl9JwUdEmc6/u8oEy04hbR
+         eA0Lr0XsdcBEKhg2/SAQgWfnMa1L8SyFfFiwnsVp+E3+Uyjl34pF078t8F8ksHBXKtiH
+         ieX/F3ESEuN0+eqZQK8SwyskWs5TfQNOdd/G1qe3LSXRCUK6ClIaqoLuKnrzXAp7OenR
+         YvTZ3ZWeLDf2G33GmsZQI9fH3BSs1ulVjK3tU7l9n25vKb886UFMrMgX0gChOXckJexA
+         v8xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785851857; x=1786456657;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bbfGwGDiOTik9OqdWY952RI2Az73rmUNw+iO+t3QLpE=;
+        b=KgW6/FaGSKKo/5bdgsAcEGS0ks1OGYlunrtJzibdnbrrNnWNTQOJCXxRBGm/6B8w2N
+         0Bj+fM8ZGW/rHWPdck/X7QYdPDour9h4rQkWyxYgvM2a+Pb5jdConBRmOsG1io1N8T4A
+         YjHeHEI/KIGGJbg92IBSlhJVWAzC2yd4yjJHfOmeLL9cK3WQ4TkFOv/s/Rrl4eEhPhay
+         YV0D+cV8SKE8VBMeT3Vtd0Gb7JTQINzv3FuRY7C8G4fhdDCV5VNEitN1/jUkqdtNfWO6
+         s4E1PPBP6gP0wiqL5zbDvqZJiZ9whi407ZzhIKqYIl+VPNygv3Wkh+DlJgc+d7wy6ozC
+         fLYQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoQZY9185/JT9GHvFzh8msY3SHdHuvNNyeNQDZbsjWtRniu5fQ9bhMaLYKxGnur3mdX3GU9SQ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkUNiIWGM4Kzo0anqkBzbLhEgoSNMUg+2asVqE+ww19JbPe2ke
+	dWhI1cg+Pz3eFcK8sVgMXNeX818S6gM1xsKIlAMTCw+Zr4Hh5efAjboKxzZoOhvuslY/ushVZ5X
+	dK4OYoGDsgP7BR6nje1P3oLu3g1CK19W91LEAObUn
+X-Gm-Gg: AR+sD13bFkiM15IcUdkaCZLgsfU7XmrtRJKNyZJ/k+rw/U21NgCpbPtqyKZNyHkXJet
+	lVJNwNLNEwycYst86sRGW9G60YIjhXxf3fPWGql9v7h+GZAsq/FyFb2Sv6vhVFYdj7Uc/6tJV4u
+	qEz/CD/5Qj84xsIg4dXGPeutVE8aULzV5pOXgDOO/ktTlujG9fqFwdllxmn3okb3uqe+kWAqYrr
+	qImPTIqDWPWZSckLAWXFR/9ozWXCdc/dl80RcIDI5e78mpI8xYGlfANDHmKGvGuZxnl5AIn0bcw
+	QVYSRBxi5uLA4juA8DECCMSlKOOqpKKWun0/IpM+c9laNsvvtuwisahx5LXeFhVa22oi/YR05Uq
+	DCDVnxFbglH2DuXPnswxvTh1SEjC1cB062MoLnTxm0wOHj/GxH3rdwr8=
+X-Received: by 2002:a05:622a:22a4:b0:50b:4491:a2cf with SMTP id
+ d75a77b69052e-52b5674cd39mr273710301cf.27.1785851856160; Tue, 04 Aug 2026
+ 06:57:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [RFC net-next v2 4/6] ptp: ocp: Validate EEPROM board IDs
-To: Ahmad Byagowi <ahmadexp@gmail.com>, linux-leds@vger.kernel.org,
- devicetree@vger.kernel.org, linux-i2c@vger.kernel.org, netdev@vger.kernel.org
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
- Peter Rosin <peda@lysator.liu.se>, Nam Tran <trannamatk@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260803205011.1249-1-ahmadexp@gmail.com>
- <20260803205011.1249-5-ahmadexp@gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260803205011.1249-5-ahmadexp@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+References: <20260724035419.1473174-1-edumazet@google.com> <c05bb9fd-e7ac-472d-83e3-c289f81e717c@h-partners.com>
+ <CANn89iKtaD6-ABj5-FnKGpHcRAtAOkiYUn1yzNa4GHTrpH28hw@mail.gmail.com>
+ <f9136972-bc6a-4156-9a74-265c204fb1dc@h-partners.com> <CANn89iLO_STTESJwU-shGJGZ7BbrFaePb64ePfr=J7bffV4WXA@mail.gmail.com>
+ <b00519e7-9c43-4867-baeb-f7ed1303424a@h-partners.com> <CANn89iJWJD_KXpeDOne2ujeznOADV8O=rU5+jdqQF6YMEkNkJg@mail.gmail.com>
+ <e857b453-3fda-4457-9c93-9eae376157d5@h-partners.com> <1c4aed7c-b323-4793-93a6-a43a679d8f12@h-partners.com>
+In-Reply-To: <1c4aed7c-b323-4793-93a6-a43a679d8f12@h-partners.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 4 Aug 2026 15:57:24 +0200
+X-Gm-Features: AUfX_mwkFFbPjSUt1Z5AWS5nWZqmRy3c8IZQtijD5Qx4kGoZ8QOZm9aZ8udURgk
+Message-ID: <CANn89i+1EW-sFNK8xoq98gMbPCeLS7e=+rs9gHfLg5Wj+4x0sw@mail.gmail.com>
+Subject: Re: [PATCH v2 net] vlan: fix skb_under_panic and races when toggling
+ HW VLAN offload
+To: xietangxin <xietangxin@h-partners.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	gaoxingwang <gaoxingwang1@huawei.com>, huyizhen <huyizhen2@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 03/08/2026 21:50, Ahmad Byagowi wrote:
-> The EEPROM board ID is a fixed 13-byte field. It is stored without room
-> for a terminator and passed to devlink as a C string. An erased EEPROM
-> therefore exposes 0xff bytes and can make devlink read beyond the field
-> while formatting board.id.
-> 
-> Reserve a trailing byte, classify erased and malformed contents, and
-> publish board.id only when the field contains printable text with valid
-> padding. Continue reporting the serial number when the board ID is
-> absent.
-> 
-> Fixes: 0cfcdd1ebcfe1a9b262f6ad8419580720dc843c4 ("ptp: ocp: add nvmem interface for accessing eeprom")
+On Mon, Aug 3, 2026 at 4:37=E2=80=AFAM xietangxin <xietangxin@h-partners.co=
+m> wrote:
+>
+>
 
-use short format of hash to provide commit to fix:
+> Hi Eric,
+>
+> Gentle ping on this thread.
+>
+> Just wanted to check if you have time to post the v3 patch,
+> or if there's anything else needed on my end?
 
-Fixes: 0cfcdd1ebcfe ("ptp: ocp: add nvmem interface for accessing eeprom")
-
-And as this is a fix, it has to go to net rather than net-next
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ahmad Byagowi <ahmadexp@gmail.com>
-> ---
->   drivers/ptp/ptp_ocp.c | 69 +++++++++++++++++++++++++++++++++++++++++--
->   1 file changed, 66 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-> index 35e911f1a..cec936bd1 100644
-> --- a/drivers/ptp/ptp_ocp.c
-> +++ b/drivers/ptp/ptp_ocp.c
-> @@ -347,6 +347,13 @@ struct ptp_ocp_serial_port {
->   #define OCP_SIGNAL_NUM			4
->   #define OCP_FREQ_NUM			4
->   
-> +enum ptp_ocp_board_id_state {
-> +	OCP_BOARD_ID_UNREAD,
-> +	OCP_BOARD_ID_VALID,
-> +	OCP_BOARD_ID_ERASED,
-> +	OCP_BOARD_ID_INVALID,
-> +};
-> +
->   enum {
->   	PORT_GNSS,
->   	PORT_GNSS2,
-> @@ -401,8 +408,9 @@ struct ptp_ocp {
->   	bool			fw_loader;
->   	u8			fw_tag;
->   	u16			fw_version;
-> -	u8			board_id[OCP_BOARD_ID_LEN];
-> +	char			board_id[OCP_BOARD_ID_LEN + 1];
->   	u8			serial[OCP_SERIAL_LEN];
-> +	enum ptp_ocp_board_id_state board_id_state;
->   	bool			has_eeprom_data;
->   	u32			pps_req_map;
->   	int			flash_start;
-> @@ -472,18 +480,23 @@ struct ptp_ocp_eeprom_map {
->   	.len = sizeof_field(struct ptp_ocp, member),		\
->   	.bp_offset = offsetof(struct ptp_ocp, member)
->   
-> +#define EEPROM_ENTRY_LEN(addr, member, entry_len)		\
-> +	.off = addr,						\
-> +	.len = entry_len,					\
-> +	.bp_offset = offsetof(struct ptp_ocp, member)
-> +
->   #define BP_MAP_ENTRY_ADDR(bp, map) ({				\
->   	(void *)((uintptr_t)(bp) + (map)->bp_offset);		\
->   })
->   
->   static struct ptp_ocp_eeprom_map fb_eeprom_map[] = {
-> -	{ EEPROM_ENTRY(0x43, board_id) },
-> +	{ EEPROM_ENTRY_LEN(0x43, board_id, OCP_BOARD_ID_LEN) },
->   	{ EEPROM_ENTRY(0x00, serial), .tag = "mac" },
->   	{ }
->   };
->   
->   static struct ptp_ocp_eeprom_map art_eeprom_map[] = {
-> -	{ EEPROM_ENTRY(0x200 + 0x43, board_id) },
-> +	{ EEPROM_ENTRY_LEN(0x200 + 0x43, board_id, OCP_BOARD_ID_LEN) },
->   	{ EEPROM_ENTRY(0x200 + 0x63, serial) },
->   	{ }
->   };
-> @@ -1969,6 +1982,52 @@ ptp_ocp_nvmem_device_put(struct nvmem_device **nvmemp)
->   	*nvmemp = NULL;
->   }
->   
-> +static enum ptp_ocp_board_id_state
-> +ptp_ocp_classify_board_id(char *board_id)
-> +{
-> +	bool all_zero = true;
-> +	bool all_ones = true;
-> +	bool terminated = false;
-> +	unsigned int i;
-> +
-> +	board_id[OCP_BOARD_ID_LEN] = '\0';
-> +	for (i = 0; i < OCP_BOARD_ID_LEN; i++) {
-> +		u8 value = board_id[i];
-> +
-> +		all_zero &= value == 0;
-> +		all_ones &= value == 0xff;
-> +	}
-> +
-> +	if (all_zero || all_ones) {
-> +		board_id[0] = '\0';
-> +		return OCP_BOARD_ID_ERASED;
-> +	}
-> +
-> +	for (i = 0; i < OCP_BOARD_ID_LEN; i++) {
-> +		u8 value = board_id[i];
-> +
-> +		if (terminated) {
-> +			if (value)
-> +				goto invalid;
-> +			continue;
-> +		}
-> +
-> +		if (!value) {
-> +			terminated = true;
-> +			continue;
-> +		}
-> +		if (value < 0x20 || value > 0x7e)
-> +			goto invalid;
-> +	}
-> +
-> +	if (board_id[0])
-> +		return OCP_BOARD_ID_VALID;
-> +
-> +invalid:
-> +	board_id[0] = '\0';
-> +	return OCP_BOARD_ID_INVALID;
-> +}
-> +
->   static void
->   ptp_ocp_read_eeprom(struct ptp_ocp *bp)
->   {
-> @@ -2001,6 +2060,7 @@ ptp_ocp_read_eeprom(struct ptp_ocp *bp)
->   			goto fail;
->   	}
->   
-> +	bp->board_id_state = ptp_ocp_classify_board_id(bp->board_id);
->   	bp->has_eeprom_data = true;
->   
->   out:
-> @@ -2177,6 +2237,9 @@ ptp_ocp_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
->   	if (err)
->   		return err;
->   
-> +	if (bp->board_id_state != OCP_BOARD_ID_VALID)
-> +		return 0;
-> +
-
-why don't simply
-snprintf(buf, OCP_BOARD_ID_LEN + 1, "%s", bp->board_id); ?
-
-buf is already used in the function, let's reuse it
-
->   	err = devlink_info_version_fixed_put(req,
->   			DEVLINK_INFO_VERSION_GENERIC_BOARD_ID,
->   			bp->board_id);
-
+I have been on PTO, I will send a series soon. Thanks.
