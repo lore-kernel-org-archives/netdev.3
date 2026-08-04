@@ -1,407 +1,149 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6C3483BC9
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 17:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785863805; cv=pass; b=Fv7a/UDU7OphSPJB7K1WgiyG2GPgM1Kdx2fu4ck0w+hB1LCgAKCFal30+SJpcCBQQEsLN3uofdXGcMS3nqGRUJ4Zi2e7HzF7UQ0ZpRnzp2BG6bGBwgmc3VKWmnHq07SjDWrJAzr6NXLmArKUgkj+N8wK12jMelT4dxyRp0lf370=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785863805; c=relaxed/simple;
-	bh=LF7+JYUCMqsJVubyUU/m/CpnjWFFkBdxSn4kk2Z///U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NWHFvX7pLriLuxqVOCQ6nXGE8C0UAFuH3o9EcleiReJZdZPZsLXK+BysmDEoK3VwVHMfQWnoLfKw4hVPNNbWwmcOLs7EfaSiIjMR3lrt0DsBZlL5Tt37QGoHjv7T1MMLY1YfAKqMzJ0SRSi+3EofZNqY82IVrB/1SOevFYOpUpk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pTPv6qNq; arc=pass smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A073B2FD0
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 17:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785864009; cv=none; b=D7WwPBfFmuZRR33QIFLGrLQdCTqrrfvNzpzty/cd51v6r7kNka3vDVDOBWiSoSM2EKrBNgSFySlpqsFWnKpwsFEzMKLo2RvPy/XF0IarwcQWyKDCJ49V/uw4cIPLHp923rYlor0CeGMlFwY5iEDXPBilFpVVTtExFv0diBPGnaQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785864009; c=relaxed/simple;
+	bh=tn37vxDktpDeGNGM/rBHg3ypjb94/j/pKijNf4Af2V4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=auqT5jw1UAiL3PyCAd91w3jHBBH4kfHB4jq8uyYMcTEYYOVmLRJWY9MR8CmkljCrB9BX7gjS0iQLN0W0LcOAXoIujw5NjLaYqkqxyMASznbCS85V7coIJGZonglMlA4AsURli7ru+LVz+gNoKKYHLsP6xyjHKEKCpWkUhhEJ13E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G0bQfcky; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pTPv6qNq"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38e07ebd263so45691a91.1
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 10:16:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785863780; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cyAH15ojQz2OQb+QIPxOFDTfp2MSeosHEfWahVoQp7JF2WNvPS3MEQqgU3y/NUmJb8
-         Mt5I9TsazvlHtcdT6crQEIjLEJFTgyEjcO2m/Fo4BRdL1CK8DsuaMiCTkL43/dirwL62
-         h1G3EHnH4cFulvlRXCp7gdClB5YGKVUJHrD10jSiAzc2fGmlxKh0e0UtxpLdNpol2SMX
-         SduBpS9IOJ6Vd/P7phL0l2FKIv0QQCtXdLdepSG1Faw7/ygfK6q/ZQib2oO166hQvQEL
-         Tx/q5kyHVjHZl0CWkxsXbRIqSbHBdi9riXVq4rwIn343UfAwLuebGbPsA32pfdSfjYZ/
-         YflQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CBmg3o5zRRlI21PlSNYstLuxWjLbvI4zhMWhzTM4nt4=;
-        fh=khuenhUqc7VrpYIDKzqALh2xwJua6YeabbmizRRizTE=;
-        b=bMN1oPzi8pWr5gpT0sw5YrNLQann9uFWWc2FO5QDIxglWOwsMXJlqs2Kq3mvbSwmnx
-         U0JWRzX31XMzZF21QeWZzUbXWpxLeoaJXTi24poiaUp6RzKjVVPjWIDGKzZh3EI1NwPd
-         CsLqkUmnqWhIE4YaaHxEu6M04WKmnCBnNYqT3AXMA8I6rvWOewDYBA5Obuo9ElQiCc6f
-         xsEN9HNWZGpgAJNJbIhwB54es5BNi81jx7sK2QoNl+e30NzG7I/AnUdkMCrBn9Mx+2sF
-         XEG/FREPmgGW76fyO3p3GBA1SmVZuS+mG3YGlYVC+gGkye4agwBldeFWV6oBkYLaD2OK
-         3koA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G0bQfcky"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-930fad20240so6776585a.0
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 10:20:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785863780; x=1786468580; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CBmg3o5zRRlI21PlSNYstLuxWjLbvI4zhMWhzTM4nt4=;
-        b=pTPv6qNqmMRlGL8AZ/Y/14JeHwhE6waF2n720iVqc3b1cFOvQ6964cKkEjkziOSk6K
-         qmKAS2OZ9igfJlbwtuPFO+lBmvIslxLb8iyyZdBYHKHIlRHUZnPPq0mK4wo/vtJx7REH
-         yVtaHhJXbWIBEL3CmQtn0TN0w7FL7QMguU8wvel/ZcGGjZMHRSMDIi5y6BL44WCVL/Jd
-         Wv4LR4HlEWnzy99BzSTU+ck5SJ2v0Nz9rJjdlsabUs+vKlnc0Ic7briQ88jEpcGa0vzB
-         DkiS2x5dfEdvIN+3eSa+TtIQG1Dy3UdKaLHphA8ggYi/Yh+l+RjVXV3E+JlJxesAkZ8W
-         6roQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785863780; x=1786468580;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1785864001; x=1786468801; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=CBmg3o5zRRlI21PlSNYstLuxWjLbvI4zhMWhzTM4nt4=;
-        b=S1gHckiQ4JlVQJASgXIKVPmfFyCYGqNCeNRZBhGE/QgorTxa/2YZ7qYZHbaBF5uCcq
-         /2YH+ibPBt6XtYa34GIgb/bMLm7kTwskrvxVsLtJv/H4bZ1kgY+A8065pIkLdM8y+OrL
-         jxWb/cVCAhbWjUvPJzxQI7KkrqzUJqSt29tGwzGKzUbK053N0+mEpJASvpfiTJO/gtfD
-         qEDVmnEMqlIusLIpTrPexpvhHjv4xrTSVDzVFu6gsi/JWMVzVMhJKjwRqXxbc3Q8LI9A
-         RjGWP6yS0CEjwlscYKrZsF0NswWxdnmZKH61QPa8xvCYemtS+lNzJgLp49Myo5U62xCr
-         OaTQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrhoeulqpSsYsgGlGK3PYcTHBK3KTrYkFn9tqunlQQYTBKocH6SMpPmVcQ7DbiXTkeyFNtmB6I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqCcdE2YekXMN0K0r/aTsR5oHy33CmD9QhOukn5FoZM51B5Ta9
-	Ueou0rXV4yJfFEFNbXLyCvSb4vtOMESCYl6LzND6vMUPbyuq8ZGWC5rCJw9d0Ts539VLPOE85rS
-	hx5iVN4VCbvZkpH2ciR0gWLtfm1dPl/jFopvwwnEq
-X-Gm-Gg: AR+sD10qrfGotKUGxUamJQBf8nqEWoc0QmU5bR8beiFYfbA4grjd+wnsfPCBjynosCf
-	8TGqqAnne0w5hcBd3kk0gb0fVr9NITMEsXk9liGDqBzqoYhhC9GtnBl9K+9t10+XTVUHk35J+Nz
-	WVCF+ZLJQ0NUB+z6tlfr9SzAZ7vQd/W7WNdoLk8ak39T3ja7zc9yyzJNiqrisMIAPsO/FTackB2
-	U2zfE1dVIj0TBbfArP2umJ9dS0AoXLSZiiNRypSkHNjfWEwBJLZXS2qIl+SwhQDTpgwWbKxwDwY
-	uRj+RzqkpV5LTqJWYZVlXge+e7IzUVKOUwcpo3+6FbqAThAh3rQezIhbLUh+lHiPH1EU3g+UU6h
-	qm5u6hM86Ml01LIvGezzlxeS48UXSzIB+Bp+Ew8/g6tdG7DELxXOrnXW9ExcB/VCm/OoPWWP5Tt
-	JjoB/Unn6CfBs=
-X-Received: by 2002:a17:90b:55c7:b0:383:f52b:d616 with SMTP id
- 98e67ed59e1d1-3903c592495mr527481a91.10.1785863779555; Tue, 04 Aug 2026
- 10:16:19 -0700 (PDT)
+        bh=7OCTjJNAS4rOdu/mpclXfbvVSReH6ouoLdPqO+Ho98Y=;
+        b=G0bQfcky/kqtsFltIMez8SJRfkbHcNAMtu6Xl7ZmXizeEYASwSEnpTFISmu3mo65y1
+         Y1MIxjSRKkamTrT9V4TNzKz3XoHsQOIcMxxAdSoYUKbCiUIROtCT0QEeDkQ3Xc04CKPG
+         ShZjbmKmFFF3WOfIqt/18PpjsHqHQ/sfvmglC0YJbj6zUNkDlP2/UL8QHhe5CXavsvQC
+         eOOUlH7R91V+av0Yn3KkCEhhDa8fSfs72WNsBsh5KeFURdLuP10dYQKxo7UWFc9+NVY4
+         GqbQVXx0pjvmDpFa80nxmG9rrIQ0iuRpU+Hg//TWP0rtDWYUnMa42ax12kNoFW+4PkUQ
+         oUMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785864001; x=1786468801;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7OCTjJNAS4rOdu/mpclXfbvVSReH6ouoLdPqO+Ho98Y=;
+        b=nWytUqGp3M6UssnEfud4cV5AeAEbhkPWWh6HQecaeNrE5Gb20lVgvwGUJuXClLHdXC
+         cQHjCkwDgQ37YOGHUmxoqe7YnoJwlDM3eGFSUDOZifXcdZCTf1M77RYy2LqxUsopS2b0
+         /cjvbhzXRUtTTqI6PHIWjreemmsjT0RvOcLZtwzu9JcVlIUOaacyKRyHiaB8QaNU+HK3
+         RhM5o3ad+x65Q/7MwNMg2j0pJM2HItRnnbCwlco9LQ6e/gsKi8/v362m//GN1AKcJ4M5
+         av2xr9We508WTd5qsV0xAapNXI8h7c5MeROTuqzGPgVYOZ0v+gd84BOLOQMcrX1BMp9g
+         vlWQ==
+X-Forwarded-Encrypted: i=1; AHgh+RroHWs4gQw9GDZ9Uetf0neJClbC8/WMEon0piBdEek7OKWNnfwXaGPtbjJ0NEfqe39Ke9qws/g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwD/GQfPpJCvhziYj5HKFGhZomYp+totJaOHfKHwjMfNqljtR6
+	r7aiKGAla8+z9Fcu+0kRiUHAFLplov5CorzokRsbOjirT5TVOQYQl/ka
+X-Gm-Gg: AR+sD11u2D1qBT3oIpwp/5alkUyiKml0AjdXD+YPO2qubCqbXjEm63+lU/aHjkjlYQV
+	DOSG4W75NDuZbQf3QFrhOAiad2pb6OwrHzJZQrsPaaUfL4UnyqQUYcTrZFsVkNQV26sIdfM6MmN
+	KVyjSG8moVZ3GfAtt0AMknbsIw4HDdakAO+pqNZTLbiZNdQTBx1An0WlD4OyuNtMOWoELJBK88V
+	sBYWSdGm6woaRQJV0qscmG+u3FTao1BpBfptXwMXVqepWNF+S/d4hiDZfPK0h5nqR2WQTatn4gi
+	8UHjHln7w4WvNFBeqSbVtaBCFPMs44F8fk/aiVwi9RhO7Q60XTbpC1TybHHNSohOZcQaMSPAcSR
+	sZQb4j4E8TpKPksEU9d44hi5yzHa4qaO+N5nvOjqI5uS94qggUyta/GFPHAsUD5zQ4AeC+TcFx/
+	jSOAg/dski1SgBp49ZdkWW6X2bJkn0T2siz2tccZZJfiv7KJY0W1whgnqedxlVQRnq7LQ/LhGMV
+	RiFwlIF3/+x+2SlHtlG4+0H9zCaiQul4H5CfWno+sErvmwvrm9+nQ==
+X-Received: by 2002:a05:620a:8bc7:b0:930:a631:68bf with SMTP id af79cd13be357-934a0955e3amr2166079185a.22.1785864000974;
+        Tue, 04 Aug 2026 10:20:00 -0700 (PDT)
+Received: from ?IPV6:2600:4040:9399:4000:e553:72e5:7d37:c7ef? ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93641702c6asm126843985a.3.2026.08.04.10.19.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Aug 2026 10:20:00 -0700 (PDT)
+Message-ID: <3a936f25-95b1-4b85-9d8d-d5ef9949b7d6@gmail.com>
+Date: Tue, 4 Aug 2026 13:19:59 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260802151212.3294591-1-jkoolstra@xs4all.nl> <20260802151212.3294591-4-jkoolstra@xs4all.nl>
-In-Reply-To: <20260802151212.3294591-4-jkoolstra@xs4all.nl>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 4 Aug 2026 10:16:06 -0700
-X-Gm-Features: AUfX_mzrlkWRXfGhh9gUJLOiw_c0m3vTxSo6H_tm_VElR2P5S6SMKo8PVaUgFbc
-Message-ID: <CAAVpQUCo0r+DDRJ9BT1_2JYmPcsUNnk6aS+oqPvOrO9ruCPUKw@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 3/4] net: af_unix: useful handling of LSM
- denials on SCM_RIGHTS
-To: Jori Koolstra <jkoolstra@xs4all.nl>
-Cc: brauner@kernel.org, cyphar@cyphar.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Sun, Aug 2, 2026 at 8:11=E2=80=AFAM Jori Koolstra <jkoolstra@xs4all.nl> =
-wrote:
->
-> Right now if some LSM such as Smack denies an AF_UNIX socket peer to
-> receive an SCM_RIGHTS fd, the SCM_RIGHTS fd array will be cut short at
-> that point, and MSG_CTRUNC is set on return of recvmsg(). This is
-> highly problematic behaviour, because it leaves the receiver
-> wondering what happened. As per man page MSG_CTRUNC is supposed to
-> indicate that the control buffer was sized too short, but suddenly
-> a permission error might result in the exact same flag being set.
-> Moreover, the receiver has no chance to determine how many fds got
-> originally sent and how many were suppressed.[1]
->
-> Add a SO_RIGHTS_NOTRUNC option to UNIX sockets to enable more useful
-> handling of LSM denials when receiving SCM_RIGHTS messages: instead of
-> truncating the message at the first blocked fd, keep every fd slot
-> and store the LSM errno in the blocked slot. The socket option is
-> inherited by the child accept() socket if set on the listen() socket.
->
-> [1]: https://github.com/uapi-group/kernel-features#useful-handling-of-lsm=
--denials-on-scm_rights
->
-> Reviewed-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
-> ---
->  arch/alpha/include/uapi/asm/socket.h  |  2 ++
->  arch/mips/include/uapi/asm/socket.h   |  2 ++
->  arch/parisc/include/uapi/asm/socket.h |  2 ++
->  arch/sparc/include/uapi/asm/socket.h  |  2 ++
->  include/net/af_unix.h                 |  1 +
->  include/net/scm.h                     | 13 +++------
->  include/uapi/asm-generic/socket.h     |  2 ++
->  net/compat.c                          |  4 +--
->  net/core/scm.c                        | 38 +++++++++++++++++++++++----
->  net/unix/af_unix.c                    | 12 ++++++++-
->  10 files changed, 61 insertions(+), 17 deletions(-)
->
-> diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/ua=
-pi/asm/socket.h
-> index 5ef57f88df6b..946a5fad2691 100644
-> --- a/arch/alpha/include/uapi/asm/socket.h
-> +++ b/arch/alpha/include/uapi/asm/socket.h
-> @@ -155,6 +155,8 @@
->  #define SO_INQ                 84
->  #define SCM_INQ                        SO_INQ
->
-> +#define SO_RIGHTS_NOTRUNC      85
-> +
->  #if !defined(__KERNEL__)
->
->  #if __BITS_PER_LONG =3D=3D 64
-> diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi=
-/asm/socket.h
-> index 72fb1b006da9..f1641dde135f 100644
-> --- a/arch/mips/include/uapi/asm/socket.h
-> +++ b/arch/mips/include/uapi/asm/socket.h
-> @@ -166,6 +166,8 @@
->  #define SO_INQ                 84
->  #define SCM_INQ                        SO_INQ
->
-> +#define SO_RIGHTS_NOTRUNC      85
-> +
->  #if !defined(__KERNEL__)
->
->  #if __BITS_PER_LONG =3D=3D 64
-> diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/=
-uapi/asm/socket.h
-> index c16ec36dfee6..f3a3815c7dc2 100644
-> --- a/arch/parisc/include/uapi/asm/socket.h
-> +++ b/arch/parisc/include/uapi/asm/socket.h
-> @@ -147,6 +147,8 @@
->  #define SO_INQ                 0x4052
->  #define SCM_INQ                        SO_INQ
->
-> +#define SO_RIGHTS_NOTRUNC      0x4053
-> +
->  #if !defined(__KERNEL__)
->
->  #if __BITS_PER_LONG =3D=3D 64
-> diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/ua=
-pi/asm/socket.h
-> index 71befa109e1c..7907f3b1f0ee 100644
-> --- a/arch/sparc/include/uapi/asm/socket.h
-> +++ b/arch/sparc/include/uapi/asm/socket.h
-> @@ -148,6 +148,8 @@
->  #define SO_INQ                   0x005d
->  #define SCM_INQ                  SO_INQ
->
-> +#define SO_RIGHTS_NOTRUNC        0x005e
-> +
->  #if !defined(__KERNEL__)
->
->
-> diff --git a/include/net/af_unix.h b/include/net/af_unix.h
-> index 34f53dde65ce..bb1b3dee02e8 100644
-> --- a/include/net/af_unix.h
-> +++ b/include/net/af_unix.h
-> @@ -49,6 +49,7 @@ struct unix_sock {
->         struct scm_stat         scm_stat;
->         int                     inq_len;
->         bool                    recvmsg_inq;
-> +       bool                    scm_rights_notrunc;
->  #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
->         struct sk_buff          *oob_skb;
->  #endif
-> diff --git a/include/net/scm.h b/include/net/scm.h
-> index c52519669349..86ae6bc109ec 100644
-> --- a/include/net/scm.h
-> +++ b/include/net/scm.h
-> @@ -50,8 +50,8 @@ struct scm_cookie {
->  #endif
->  };
->
-> -void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm);
-> -void scm_detach_fds_compat(struct msghdr *msg, struct scm_cookie *scm);
-> +void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm, bool not=
-runc);
-> +void scm_detach_fds_compat(struct msghdr *msg, struct scm_cookie *scm, b=
-ool notrunc);
->  int __scm_send(struct socket *sock, struct msghdr *msg, struct scm_cooki=
-e *scm);
->  void __scm_destroy(struct scm_cookie *scm);
->  struct scm_fp_list *scm_fp_dup(struct scm_fp_list *fpl);
-> @@ -107,13 +107,8 @@ void scm_recv(struct socket *sock, struct msghdr *ms=
-g,
->  void scm_recv_unix(struct socket *sock, struct msghdr *msg,
->                    struct scm_cookie *scm, int flags);
->
-> -static inline int scm_recv_one_fd(struct file *f, int __user *ufd,
-> -                                 unsigned int flags)
-> -{
-> -       if (!ufd)
-> -               return -EFAULT;
-> -       return receive_fd(f, ufd, flags);
-> -}
-> +int scm_recv_one_fd(struct file *f, int __user *ufd, unsigned int flags,
-> +                   bool notrunc);
->
->  #endif /* __LINUX_NET_SCM_H */
->
-> diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic=
-/socket.h
-> index 53b5a8c002b1..84ea7b92936e 100644
-> --- a/include/uapi/asm-generic/socket.h
-> +++ b/include/uapi/asm-generic/socket.h
-> @@ -150,6 +150,8 @@
->  #define SO_INQ                 84
->  #define SCM_INQ                        SO_INQ
->
-> +#define SO_RIGHTS_NOTRUNC      85
-> +
->  #if !defined(__KERNEL__)
->
->  #if __BITS_PER_LONG =3D=3D 64 || (defined(__x86_64__) && defined(__ILP32=
-__))
-> diff --git a/net/compat.c b/net/compat.c
-> index d68cf9c3aad5..6bdf4a2c9077 100644
-> --- a/net/compat.c
-> +++ b/net/compat.c
-> @@ -286,7 +286,7 @@ static int scm_max_fds_compat(struct msghdr *msg)
->         return (msg->msg_controllen - sizeof(struct compat_cmsghdr)) / si=
-zeof(int);
->  }
->
-> -void scm_detach_fds_compat(struct msghdr *msg, struct scm_cookie *scm)
-> +void scm_detach_fds_compat(struct msghdr *msg, struct scm_cookie *scm, b=
-ool notrunc)
->  {
->         struct compat_cmsghdr __user *cm =3D
->                 (struct compat_cmsghdr __user *)msg->msg_control_user;
-> @@ -296,7 +296,7 @@ void scm_detach_fds_compat(struct msghdr *msg, struct=
- scm_cookie *scm)
->         int err =3D 0, i;
->
->         for (i =3D 0; i < fdmax; i++) {
-> -               err =3D scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i, o_=
-flags);
-> +               err =3D scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i, o_=
-flags, notrunc);
->                 if (err < 0)
->                         break;
->         }
-> diff --git a/net/core/scm.c b/net/core/scm.c
-> index a73b1eb30fd2..f0d44ecdb11f 100644
-> --- a/net/core/scm.c
-> +++ b/net/core/scm.c
-> @@ -351,7 +351,31 @@ static int scm_max_fds(struct msghdr *msg)
->         return (msg->msg_controllen - sizeof(struct cmsghdr)) / sizeof(in=
-t);
->  }
->
-> -void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm)
-> +int scm_recv_one_fd(struct file *f, int __user *ufd, unsigned int flags,
-> +                   bool notrunc)
-> +{
-> +       int error;
-> +
-> +       if (!ufd)
-> +               return -EFAULT;
-> +
-> +       error =3D security_file_receive(f);
-> +       if (error)
-> +               return notrunc ? put_user(error, ufd) : error;
-> +
-> +       FD_PREPARE(fdf, flags, get_file(f));
-> +       if (fdf.err)
-> +               return fdf.err;
-> +
-> +       error =3D put_user(fd_prepare_fd(fdf), ufd);
-> +       if (error)
-> +               return error;
-> +
-> +       __receive_sock(fd_prepare_file(fdf));
-> +       return fd_publish(fdf);
-> +}
-> +
-> +void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm, bool not=
-runc)
->  {
->         struct cmsghdr __user *cm =3D
->                 (__force struct cmsghdr __user *)msg->msg_control_user;
-> @@ -365,12 +389,12 @@ void scm_detach_fds(struct msghdr *msg, struct scm_=
-cookie *scm)
->                 return;
->
->         if (msg->msg_flags & MSG_CMSG_COMPAT) {
-> -               scm_detach_fds_compat(msg, scm);
-> +               scm_detach_fds_compat(msg, scm, notrunc);
->                 return;
->         }
->
->         for (i =3D 0; i < fdmax; i++) {
-> -               err =3D scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i, o_=
-flags);
-> +               err =3D scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i, o_=
-flags, notrunc);
->                 if (err < 0)
->                         break;
->         }
-> @@ -542,8 +566,12 @@ void scm_recv_unix(struct socket *sock, struct msghd=
-r *msg,
->         if (!__scm_recv_common(sock->sk, msg, scm, flags))
->                 return;
->
-> -       if (scm->fp)
-> -               scm_detach_fds(msg, scm);
-> +       if (scm->fp) {
-> +               struct unix_sock *u;
-> +
-> +               u =3D unix_sk(sock->sk);
-> +               scm_detach_fds(msg, scm, READ_ONCE(u->scm_rights_notrunc)=
-);
-> +       }
->
->         if (sock->sk->sk_scm_pidfd)
->                 scm_pidfd_recv(msg, scm);
-> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-> index 51cbf920130d..03ce23a4ebee 100644
-> --- a/net/unix/af_unix.c
-> +++ b/net/unix/af_unix.c
-> @@ -922,6 +922,7 @@ static bool unix_custom_sockopt(int optname)
->  {
->         switch (optname) {
->         case SO_INQ:
-> +       case SO_RIGHTS_NOTRUNC:
->                 return true;
->         default:
->                 return false;
-> @@ -957,6 +958,14 @@ static int unix_setsockopt(struct socket *sock, int =
-level, int optname,
->
->                 WRITE_ONCE(u->recvmsg_inq, val);
->                 break;
-> +
-> +       case SO_RIGHTS_NOTRUNC:
-> +               if (val > 1 || val < 0)
-> +                       return -EINVAL;
-> +
-> +               WRITE_ONCE(u->scm_rights_notrunc, val);
-> +               break;
-> +
->         default:
->                 return -ENOPROTOOPT;
->         }
-> @@ -1746,9 +1755,10 @@ static int unix_stream_connect(struct socket *sock=
-, struct sockaddr_unsized *uad
->         init_peercred(newsk, &peercred);
->
->         newu =3D unix_sk(newsk);
-> +       otheru =3D unix_sk(other);
->         newu->listener =3D other;
-> +       newu->scm_rights_notrunc =3D otheru->scm_rights_notrunc;
-
-nit: READ_ONCE() is needed here.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next V2 09/13] net/mlx5e: psp: Add an rx_decap
+ steering table
+To: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca <sd@queasysnail.net>
+Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Alexei Lazar <alazar@nvidia.com>, Boris Pismenny <borisp@nvidia.com>,
+ Carolina Jubran <cjubran@nvidia.com>, Chris Mi <cmi@nvidia.com>,
+ Cosmin Ratiu <cratiu@nvidia.com>, Doruk Tan Ozturk <doruk@0sec.ai>,
+ Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+ Jacob Keller <Jacob.e.keller@intel.com>, Jianbo Liu <jianbol@nvidia.com>,
+ Kees Cook <kees@kernel.org>, Lama Kayal <lkayal@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org,
+ Mark Bloch <mbloch@nvidia.com>, Patrisious Haddad <phaddad@nvidia.com>,
+ Raed Salem <raeds@nvidia.com>, Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>,
+ Stanislav Fomichev <sdf.kernel@gmail.com>
+References: <20260804083535.2946459-1-tariqt@nvidia.com>
+ <20260804083535.2946459-10-tariqt@nvidia.com>
+Content-Language: en-US
+From: Daniel Zahka <daniel.zahka@gmail.com>
+In-Reply-To: <20260804083535.2946459-10-tariqt@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
 
->         RCU_INIT_POINTER(newsk->sk_wq, &newu->peer_wq);
-> -       otheru =3D unix_sk(other);
->
->         /* copy address information from listening to new sock
->          *
-> --
-> 2.55.0
->
+On 8/4/26 4:35 AM, Tariq Toukan wrote:
+> From: Cosmin Ratiu <cratiu@nvidia.com>
+> 
+> Introduce an additional steering table for PSP transport mode
+> decapsulation, containing:
+> - one rule per supported PSP version which does:
+>    - transport mode decap (removes UDP+PSP headers and PSP trailer)
+>      - recomputes iph->tot_len
+>      - recomputes IP checksum
+>      - reparses packet headers
+>    - copy SPI into reg_b (which ends up as cqe.ft_metadata)
+>    - set a decap marker and the PSP version in the flow_tag, so the RX
+>      handler can make sense of the packet
+> - default drop rule for unsupported PSP versions (per PSP spec).
+> 
+> Packets are forwarded to the previously added rx table, where:
+> - one rule forwards UDP traffic to the UDP default destination.
+> - default rule forwards traffic to the TTC table.
+> 
+> The reason is to avoid steering loops. If packets were to be injected
+> into the TTC directly after rx_decap, it may be possible to create a
+> steering loop with RX packets of the form IP|UDP|PSP|UDP|PSP...
+> The rx flow table guarantees that packets go through PSP steering at
+> most once.
+> 
+> The steering mode is saved in a new field 'fs.decap_enabled'.
+> Updating the mode is done through accel_psp_fs_rx_reconfigure(), which
+> creates the decap steering table if needed and possible. It then uses an
+> atomic rule update to redirect traffic to the new table.
+> This is now invoked with decap_wanted == false.
+> The intention is for failures creating the new table to not block feature
+> reconfig. A message is logged when table creation failed and PSP for HW
+> GRO will not work in that case.
+> Nothing happens on HW without the ability to decapsulate PSP transport.
+> 
+> An upcoming patch will add dynamic reconfiguration of PSP steering based
+> on HW GRO.
+> 
+> Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Cosmin, can you TAL at 
+https://lore.kernel.org/all/0d72c5b2-6d4c-40d4-8cbe-8cd95d61a230@gmail.com/ 
+and let me know if this is an issue or not? I see the patch looks the 
+same, but wasn't sure if you didn't see my message or if it is a false 
+positive.
