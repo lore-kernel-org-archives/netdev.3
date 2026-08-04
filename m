@@ -1,63 +1,62 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDF441D126
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 02:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CBC3F4DD6
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 02:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785812389; cv=none; b=IXakV5VctTOdzpoh/2Jp+cSmh7dVYueUkaTMRadZBwFbT91IC0Jv/3a/s0U1wm7DRkx4HnCuy6sVEHuJ+5DMQCLPAV+gddxbthuKSx/VTihUqS1K/XfQ0WFAsHhwIPdVjVTd3cu0ab39cii7NfuDzxqPy/tH5GRWFz7Jzrh4nJk=
+	t=1785812390; cv=none; b=r6MjQuEmstqJQvVl/X08nAwl/KF0hG/eRtrCYWK8UeAPgXn+QsgZ8K8xVa0QYkJjOueRcyrGJp5opGXksOc1ZuZ1TFyM5GWz6KqXN59sFJ2htQCF5H8tw81yG6FGE6sJizq+b4IPAyMCcVe+v3QYudpcf3o/Afb4LW5Ug4IKZGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785812389; c=relaxed/simple;
-	bh=JmhELRI2ithkLQv4rBVDAJOIi3ocRRvtV26qJNG/l5o=;
+	s=arc-20240116; t=1785812390; c=relaxed/simple;
+	bh=FpK+PjjhCN3h8Em234HUUSWkZ7XkOYTLlXHlmQ8TqeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmeiUzlNtpqPH74PzbvW3z3IYnNtMZrSuy72Mqd55VNljxugE1r2bGholyQUG5MbVZI5MCk4qdTK4tJ7IG8VfJuc4YbyPQ81A7JJuNySfvBnQ0YpYtHa2ECEEuygwBcP5gAEBJcERZPYoaq9/Dm1TSj61RoflBRl5DKtVKofZWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Umm9D5CG; arc=none smtp.client-ip=209.85.216.48
+	 MIME-Version; b=QFE1bWphzilD2ycNh+KdXvMlJ77SrYG6FQfm+01LDohzUqS4PDaV0U0HFxOxn5gm/+Pd24ffiCJSW77wgVMGg13UCQCiBt7lpBkmFmMrK0B7Ks3OFgeRoayuwROgrngu5C3PreJtTxmuCXQAY2JBbTm98F4ZSZJR0vCpJcBRaFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AdmgjJA6; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Umm9D5CG"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso3125837a91.3
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 19:59:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AdmgjJA6"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38e347638adso4692104a91.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 19:59:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785812384; x=1786417184; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785812388; x=1786417188; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fEwXBy8GqBmJpL/bfLNE70Yj9p6IegQd47Zgr1mcc8U=;
-        b=Umm9D5CGiqD9wJ5b0bLDhXBjpvJfP1pOA1l9iPfkjuCp0zxa170eMMbJP6pO/CSnmJ
-         FKdIq87leBBX2yk08b7BSJccAt4nJClHzldU24pgnJ+WOycec2R+egrdfsOQTsr6AqgX
-         Sf1R9pxT1fFyil+tBucAvqDoQc6bcc2epWxq4lpDnUV0A99ucSVHl1QiVgkKROPC4w8W
-         Upl6/C9oiFY4A1SW29qlBNRflYbmYV4+H/DeyMApPwY+YWSNFYOXEuherz0i92OzzWbp
-         HUWk0vxFD7Op7urQUfZH0gi4l+92WrCkLnf/zLYs2cw63oQsUHysERy1AyO6Y6QBzl/1
-         H/4A==
+        bh=wQo8OcjOTMXh9X3kaJrhqxoi/2bzY3rrnHALBkkL6gk=;
+        b=AdmgjJA6SChaUVOrLRrWjVjcF7nBFg5P7vhAiaVZf3/Z9KEOoXhzYNWn/qGvcWdIO9
+         6DflZYywJbrRPLe/gLc/3W1eFEzSh7SOhxBnQMBxLLGN/9OJEMzL47hxmTsOWCIocKvw
+         YlkNXexHELXKZf0J9QxnsQEHhR3X0Jry2RR0Y29d0wQ6HKNscXaqQIm1PCc79EVJ1iz6
+         7EHZhl1kykClWrUgYMZi/qd2nPUzn83e+zi8N4EHmQPohhAvMMNOTtjgKAv12Cb2fFZi
+         ie+0IGvOki2raPhlqy8E+u97P+sLcEa5lj8tIUr12+8Gb+z4azJP9d4qxiSiMuEM7vaG
+         P0JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785812384; x=1786417184;
+        d=1e100.net; s=20251104; t=1785812388; x=1786417188;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fEwXBy8GqBmJpL/bfLNE70Yj9p6IegQd47Zgr1mcc8U=;
-        b=RgvV5XhB5Nev5jNVf4dGeVyt/e0GGLRp3kufUkPGm6GgcWPCxFBnA5BbJB7pl9j1J+
-         d0uwsSMbIKA4ZFUs6rJ2/1UYuD9z9wrAO4XlOo8ASEGTzqyX50h/zU7PNXPkHPChymuw
-         +7g79rxEoOV9O2dss6iOu/M/zn3EBtQe6axlR+ccJE5cRL9WZVoUVXmjCUL6CAQs2x8D
-         nfZvLlB01gj3AxiQQOGmB+zVen00gIxcuqWSSZQskV7avqMjQ/9e/Vp4ZxR1cOeMnBoK
-         NLuPsfrKIgqc9tiNAlND6/9UwouqWJMm83O1sjY2S6u4Asg8kvkyVedLqqcKuP3SPO4C
-         i7oQ==
-X-Gm-Message-State: AOJu0Yx/6+No3tJFTSkS4jcS7LDP4UiZe5YKeiq7LtQq56r/PGORPcxR
-	w2SP/p678/X/weaub54xT4g1fb0q9M8rSxZYVB767sUzPi4IDRKr8+r6A7RLy3Eq
-X-Gm-Gg: AR+sD12KCSUAdF35ETpWg46/geU6B1QbCWQSgIaWg6Tab+amjkJ3bpK4PnlinlfnDnI
-	dWjw+YViRbA8v19zJ8L+kF/1owd3jPMYyuCeLyT0Dp75HRM7s2EzQYcvpHIdiv8VBAZS4BLzX1F
-	A6LR7gCMiZRROeVIMqxmXmBUGzjS5JVme3r5OEUKj5mT2QV5PA8hrfESNYrmTgU6QJnKJRdw6n9
-	2aTxP9PlC7kA/pDNdMANpId8FJ12UyccNpUG4JQtGahO/7OYpPiMMtOyv+B1SlsX+dmr4d0BpBg
-	Oh0Qx+L+nBYPHkiDvawxjtq7TGN9cMK5xtuznC+gWc8GzmvjbQNkyv9F05gWE5cncGkOzXwl2yP
-	xT4/BHcLRoMpJhYPgR7NT6dYWhjmth8UnHCkCsqq0ynxAD4yWs93HWmKtQFO8W7ghabYm3ybytx
-	3V7KOWiY0/a+Ea5yrVeo9oqoE6maADwFLJJmk0h6M0rTj8S3GPS5nWDaj7ojowg4hWyEoBzvawY
-	Vn0
-X-Received: by 2002:a17:90b:57e6:b0:38f:23d6:b4ad with SMTP id 98e67ed59e1d1-38fbc3f7e43mr11073937a91.8.1785812384145;
-        Mon, 03 Aug 2026 19:59:44 -0700 (PDT)
+        bh=wQo8OcjOTMXh9X3kaJrhqxoi/2bzY3rrnHALBkkL6gk=;
+        b=HWefcuG5mcciIHwDGGqd30G+/R0kw9pSyZqEUS3zVzHNmuCdDlkUgaihkrlcu6D40G
+         D0BmCppB763JqrtJIWBWXez3phj5QlMK+EgSPjTuKeStT7mFwNxAsQRuJfPMLx7hYysq
+         C0v2Udf672Mbm52jKKlxOcgf1d8gp4L2QGpUzdawEE0OtpjWP/pFhU9MrT3PmlYbqnxu
+         LtVIRvu1paC9/80iVf7JBI9hahxlL0qwT2iO+46jhyr2QV0/LxkVyGVqsftwp70tqyNP
+         J463f/lLQ0KoTTJEg/gWIW0SZ/JTnLHMzc+B1OwALVvHN83/I6/cAOhWW3e2rhU18d72
+         XxyQ==
+X-Gm-Message-State: AOJu0YwpisMMxVyD0p2qvRZr+jA0Arwz0T2PH04JuWWcgutEkItGSIL9
+	ZP6yOXM6zKqPcwNTMnlAz7SttvzkVLRxhrwNozHldwni8/HEq8VVx66yeAiqGtaR
+X-Gm-Gg: AR+sD111umtpKLC/AmyEKxAJ6xQx6JFPV0p2Mi+uhg2p7RBrTW3XCxgw5UNLlBiHfcl
+	+eclNIBxYjYwJjbk3y4XX6Lm8egGU+fq0vhYzBsqXx+WUiR4bNtDymEc6EGxw4CKw6S6Ef09G/i
+	WnfKmWL4SnyJEMKuN7LVTiyRbVPiQLjVe9QfPYQcFOHjI/VoPIVpCLE7kRkfcBo1+suzryBoLas
+	Tc81lCX39VMOIyCerjVnoGOGclERS7lksCSpN1G/OzMpon9mUe27AreKx797ePOPu9S6rYxC3JG
+	Rno2VssbR+qhNYvcJIV7J1iEr/srcbdMZ/xmdyKomU9RMRPRKTR5xbiahavI7CMvBDqCv9tWOW9
+	0rKae0pGQSiZkhrWVzaelT0hQmMpbkqv4DQPfU78y+OZ5yNc5J+aVv7VLTXidwOJbuyRoWo6Knb
+	XZKj4nEozXhyGU3epZeefdqWu5MDR9UOIKzcS0Jd5zB4m1ptRxoOB9NrKgedVV5cHtpw==
+X-Received: by 2002:a17:90b:54c3:b0:38e:659b:f366 with SMTP id 98e67ed59e1d1-38fbc0b4324mr10179461a91.0.1785812387519;
+        Mon, 03 Aug 2026 19:59:47 -0700 (PDT)
 Received: from fedora ([2804:1b3:a8c3:8ee5:1c39:64d9:e257:73dc])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fab2530c0sm35974758c88.8.2026.08.03.19.59.41
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fab2530c0sm35974758c88.8.2026.08.03.19.59.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 19:59:43 -0700 (PDT)
+        Mon, 03 Aug 2026 19:59:47 -0700 (PDT)
 From: Marcelo Mendes Spessoto Junior <marcelomspessoto@gmail.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -69,9 +68,9 @@ Cc: davem@davemloft.net,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Marcelo Mendes Spessoto Junior <marcelomspessoto@gmail.com>
-Subject: [PATCH net-next v2 3/4] selftests: net: test IPV6_FL_F_REFLECT
-Date: Mon,  3 Aug 2026 23:59:09 -0300
-Message-ID: <20260804025910.50145-4-marcelomspessoto@gmail.com>
+Subject: [PATCH net-next v2 4/4] selftests: net: adopt harness for flow label mgr
+Date: Mon,  3 Aug 2026 23:59:10 -0300
+Message-ID: <20260804025910.50145-5-marcelomspessoto@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260804025910.50145-1-marcelomspessoto@gmail.com>
 References: <20260804025910.50145-1-marcelomspessoto@gmail.com>
@@ -83,121 +82,603 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-According to source code, flowlabel_consistency must be deactivated
-for the IPV6_FL_F_REFLECT flag to work. Therefore, take the following
-measures: deactivate it on the wrapper .sh script, and skip this test
-if it is run on an environment that does not correspond.
+The kselftest_harness.h file contains modern helpers to build tests
+for kselftest. Dropping current test helpers for ipv6_flowlabel_mgr
+to use harness helps tests to be more legible and conform to the
+structure of the latest tests. It also enforces TAP standard.
 
-The previously defined tcp_listen and tcp_connect helpers were reused,
-since the connection flow required for REFLECT validation is very
-similar to REMOTE.
+Another change made to the structure of ipv6_flowlabel_mgr test file
+was the removal of parse_opts. The supported opts were already unused:
+the binary is listed in TEST_GEN_FILES, and is driven solely by
+ipv6_flowlabel.sh via "./in_netns.sh ./ipv6_flowlabel_mgr",
+which never passed -l or -v. Dropping the -l gate means the two checks
+it previously guarded (each with a 13-second sleep, ~26 seconds total)
+are now unconditionally enabled on every run instead of never running
+at all. The TH_LOG and code comments cover the information obtainable
+from (-v).
 
 Signed-off-by: Marcelo Mendes Spessoto Junior <marcelomspessoto@gmail.com>
 ---
- tools/testing/selftests/net/ipv6_flowlabel.sh |  3 +-
- .../selftests/net/ipv6_flowlabel_mgr.c        | 61 +++++++++++++++++++
- 2 files changed, 63 insertions(+), 1 deletion(-)
+ .../selftests/net/ipv6_flowlabel_mgr.c        | 521 ++++++++++--------
+ 1 file changed, 299 insertions(+), 222 deletions(-)
 
-diff --git a/tools/testing/selftests/net/ipv6_flowlabel.sh b/tools/testing/selftests/net/ipv6_flowlabel.sh
-index cee95e252bee..4c3de3a27807 100755
---- a/tools/testing/selftests/net/ipv6_flowlabel.sh
-+++ b/tools/testing/selftests/net/ipv6_flowlabel.sh
-@@ -8,7 +8,8 @@
- set -e
- 
- echo "TEST management"
--./in_netns.sh ./ipv6_flowlabel_mgr
-+./in_netns.sh \
-+  sh -c 'sysctl -q -w net.ipv6.flowlabel_consistency=0 && ./ipv6_flowlabel_mgr'
- 
- echo "TEST datapath"
- ./in_netns.sh \
 diff --git a/tools/testing/selftests/net/ipv6_flowlabel_mgr.c b/tools/testing/selftests/net/ipv6_flowlabel_mgr.c
-index d482be2e9f9f..af87eec799c8 100644
+index af87eec799c8..482921f7ee11 100644
 --- a/tools/testing/selftests/net/ipv6_flowlabel_mgr.c
 +++ b/tools/testing/selftests/net/ipv6_flowlabel_mgr.c
-@@ -6,6 +6,7 @@
- #include <arpa/inet.h>
- #include <error.h>
- #include <errno.h>
-+#include <fcntl.h>
- #include <limits.h>
- #include <linux/in6.h>
- #include <stdbool.h>
-@@ -158,6 +159,22 @@ static void tcp_connect(int listener, uint32_t flowlabel, int *client, int *acce
+@@ -20,6 +20,7 @@
+ #include <sys/types.h>
+ #include <sys/wait.h>
+ #include <unistd.h>
++#include "kselftest_harness.h"
+ 
+ /* uapi/glibc weirdness may leave this undefined */
+ #ifndef IPV6_FLOWLABEL_MGR
+@@ -33,35 +34,6 @@
+ #define FL_MIN_LINGER		6
+ #define FL_MAX_LINGER	150
+ 
+-#define explain(x)							\
+-	do { if (cfg_verbose) fprintf(stderr, "       " x "\n"); } while (0)
+-
+-#define __expect(x)							\
+-	do {								\
+-		if (!(x))						\
+-			fprintf(stderr, "[OK]   " #x "\n");		\
+-		else							\
+-			error(1, 0, "[ERR]  " #x " (line %d)", __LINE__); \
+-	} while (0)
+-
+-#define expect_pass(x)	__expect(x)
+-#define expect_fail(x)	__expect(!(x))
+-
+-#define expect_fail_errno(x, e)						\
+-	do {								\
+-		int __exp = (e);					\
+-		int __ret = (x);					\
+-		int __err = errno;					\
+-		if (__ret && __err == __exp)				\
+-			fprintf(stderr, "[OK]   " #x "\n");		\
+-		else							\
+-			error(1, 0, "[ERR]  " #x " (line %d): expected errno %d, got %d", \
+-			      __LINE__, __exp, __err);			\
+-	} while (0)
+-
+-static bool cfg_long_running;
+-static bool cfg_verbose;
+-
+ static int flowlabel_get(int fd, uint32_t label, uint8_t share, uint16_t flags)
+ {
+ 	struct in6_flowlabel_req req = {
+@@ -159,230 +131,335 @@ static void tcp_connect(int listener, uint32_t flowlabel, int *client, int *acce
  	*accepted = afd;
  }
  
+-static bool flowlabel_consistency_enabled(void)
++TEST(cannot_get_non_existent_label)
+ {
+-	char buf[2] = {};
+-	int fd;
++	int fd, err;
+ 
+-	fd = open("/proc/sys/net/ipv6/flowlabel_consistency", O_RDONLY);
+-	if (fd == -1)
+-		return true;
++	fd = socket(PF_INET6, SOCK_DGRAM, 0);
++	ASSERT_GE(fd, 0) TH_LOG("socket failed");
+ 
+-	if (read(fd, buf, sizeof(buf) - 1) < 0)
+-		buf[0] = '1';
+-	close(fd);
++	err = flowlabel_get(fd, 9, IPV6_FL_S_ANY, 0);
++	ASSERT_TRUE(err) TH_LOG("expected get of a non-existent label to fail");
++	ASSERT_EQ(ENOENT, errno) TH_LOG("expected ENOENT, got %d", errno);
+ 
+-	return buf[0] != '0';
++	ASSERT_EQ(0, close(fd));
++}
++
++TEST(cannot_put_non_existent_label)
++{
++	int fd, err;
++
++	fd = socket(PF_INET6, SOCK_DGRAM, 0);
++	ASSERT_GE(fd, 0) TH_LOG("socket failed");
++
++	err = flowlabel_put(fd, 10);
++	ASSERT_TRUE(err) TH_LOG("expected put of a non-existent label to fail");
++	ASSERT_EQ(ESRCH, errno) TH_LOG("expected ESRCH, got %d", errno);
++
++	ASSERT_EQ(0, close(fd));
++}
++
++TEST(cannot_create_label_greater_than_20_bits)
++{
++	int fd, err;
++
++	fd = socket(PF_INET6, SOCK_DGRAM, 0);
++	ASSERT_GE(fd, 0) TH_LOG("socket failed");
++
++	err = flowlabel_get(fd, 0x1FFFFF, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(err) TH_LOG("expected label > 20 bits to be rejected");
++	ASSERT_EQ(EINVAL, errno) TH_LOG("expected EINVAL, got %d", errno);
++
++	ASSERT_EQ(0, close(fd));
++}
++
++TEST(can_create_and_get_and_put_labels)
++{
++	int fd, err;
++
++	fd = socket(PF_INET6, SOCK_DGRAM, 0);
++	ASSERT_GE(fd, 0) TH_LOG("socket failed");
++
++	err = flowlabel_get(fd, 1, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(!err) TH_LOG("failed to create label (FL_F_CREATE)");
++
++	err = flowlabel_get(fd, 1, IPV6_FL_S_ANY, 0);
++	ASSERT_TRUE(!err) TH_LOG("failed to get the label without FL_F_CREATE");
++
++	err = flowlabel_get(fd, 1, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(!err) TH_LOG("failed to get it again with create flag set, too");
++
++	err = flowlabel_get(fd, 1, IPV6_FL_S_ANY, IPV6_FL_F_CREATE | IPV6_FL_F_EXCL);
++	ASSERT_TRUE(err) TH_LOG("expected FL_F_EXCL to reject an already-existing label");
++	ASSERT_EQ(EEXIST, errno) TH_LOG("expected EEXIST, got %d", errno);
++
++	err = flowlabel_put(fd, 1);
++	ASSERT_TRUE(!err) TH_LOG("failed to put first reference");
++	err = flowlabel_put(fd, 1);
++	ASSERT_TRUE(!err) TH_LOG("failed to put second reference");
++	err = flowlabel_put(fd, 1);
++	ASSERT_TRUE(!err) TH_LOG("failed to put third reference");
++	err = flowlabel_put(fd, 1);
++	ASSERT_TRUE(err) TH_LOG("expected fourth put to fail, no references left");
++	ASSERT_EQ(ESRCH, errno) TH_LOG("expected ESRCH, got %d", errno);
++
++	ASSERT_EQ(0, close(fd));
++}
++
++TEST(exclusive_label_share)
++{
++	int fd, err;
++
++	fd = socket(PF_INET6, SOCK_DGRAM, 0);
++	ASSERT_GE(fd, 0) TH_LOG("socket failed");
++
++	err = flowlabel_get(fd, 2, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(!err) TH_LOG("failed to create a new exclusive label (FL_S_EXCL)");
++
++	err = flowlabel_get(fd, 2, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(err) TH_LOG("expected reuse in non-exclusive mode to fail");
++	ASSERT_EQ(EPERM, errno) TH_LOG("expected EPERM, got %d", errno);
++
++	err = flowlabel_get(fd, 2, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(err) TH_LOG("expected reuse in exclusive mode to fail too");
++	ASSERT_EQ(EPERM, errno) TH_LOG("expected EPERM, got %d", errno);
++
++	err = flowlabel_put(fd, 2);
++	ASSERT_TRUE(!err) TH_LOG("failed to put the exclusive label");
++
++	err = flowlabel_get(fd, 2, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(err) TH_LOG("expected reuse to fail, due to linger");
++	ASSERT_EQ(EPERM, errno) TH_LOG("expected EPERM, got %d", errno);
++
++	sleep(FL_MIN_LINGER * 2 + 1);
++
++	err = flowlabel_get(fd, 2, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(!err) TH_LOG("expected reuse to succeed after linger");
++
++	ASSERT_EQ(0, close(fd));
+ }
+ 
+-static void run_tests(int fd)
++TEST(user_private_label_share)
+ {
+-	int wstatus;
++	int fd, err, wstatus;
+ 	pid_t pid;
+ 
+-	explain("cannot get non-existent label");
+-	expect_fail(flowlabel_get(fd, 1, IPV6_FL_S_ANY, 0));
+-
+-	explain("cannot put non-existent label");
+-	expect_fail(flowlabel_put(fd, 1));
+-
+-	explain("cannot create label greater than 20 bits");
+-	expect_fail(flowlabel_get(fd, 0x1FFFFF, IPV6_FL_S_ANY,
+-				  IPV6_FL_F_CREATE));
+-
+-	explain("create a new label (FL_F_CREATE)");
+-	expect_pass(flowlabel_get(fd, 1, IPV6_FL_S_ANY, IPV6_FL_F_CREATE));
+-	explain("can get the label (without FL_F_CREATE)");
+-	expect_pass(flowlabel_get(fd, 1, IPV6_FL_S_ANY, 0));
+-	explain("can get it again with create flag set, too");
+-	expect_pass(flowlabel_get(fd, 1, IPV6_FL_S_ANY, IPV6_FL_F_CREATE));
+-	explain("cannot get it again with the exclusive (FL_FL_EXCL) flag");
+-	expect_fail(flowlabel_get(fd, 1, IPV6_FL_S_ANY,
+-					 IPV6_FL_F_CREATE | IPV6_FL_F_EXCL));
+-	explain("can now put exactly three references");
+-	expect_pass(flowlabel_put(fd, 1));
+-	expect_pass(flowlabel_put(fd, 1));
+-	expect_pass(flowlabel_put(fd, 1));
+-	expect_fail(flowlabel_put(fd, 1));
+-
+-	explain("create a new exclusive label (FL_S_EXCL)");
+-	expect_pass(flowlabel_get(fd, 2, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE));
+-	explain("cannot get it again in non-exclusive mode");
+-	expect_fail(flowlabel_get(fd, 2, IPV6_FL_S_ANY,  IPV6_FL_F_CREATE));
+-	explain("cannot get it again in exclusive mode either");
+-	expect_fail(flowlabel_get(fd, 2, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE));
+-	expect_pass(flowlabel_put(fd, 2));
+-
+-	if (cfg_long_running) {
+-		explain("cannot reuse the label, due to linger");
+-		expect_fail(flowlabel_get(fd, 2, IPV6_FL_S_ANY,
+-					  IPV6_FL_F_CREATE));
+-		explain("after sleep, can reuse");
+-		sleep(FL_MIN_LINGER * 2 + 1);
+-		expect_pass(flowlabel_get(fd, 2, IPV6_FL_S_ANY,
+-					  IPV6_FL_F_CREATE));
+-	}
++	fd = socket(PF_INET6, SOCK_DGRAM, 0);
++	ASSERT_GE(fd, 0) TH_LOG("socket failed");
++
++	err = flowlabel_get(fd, 3, IPV6_FL_S_USER, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(!err) TH_LOG("failed to create a new user-private label (FL_S_USER)");
++
++	err = flowlabel_get(fd, 3, IPV6_FL_S_ANY, 0);
++	ASSERT_TRUE(err) TH_LOG("expected get in non-exclusive mode to fail");
++	ASSERT_EQ(EPERM, errno) TH_LOG("expected EPERM, got %d", errno);
++
++	err = flowlabel_get(fd, 3, IPV6_FL_S_EXCL, 0);
++	ASSERT_TRUE(err) TH_LOG("expected get in exclusive mode to fail");
++	ASSERT_EQ(EPERM, errno) TH_LOG("expected EPERM, got %d", errno);
++
++	err = flowlabel_get(fd, 3, IPV6_FL_S_USER, 0);
++	ASSERT_TRUE(!err) TH_LOG("failed to get it again in user mode");
+ 
+-	explain("create a new user-private label (FL_S_USER)");
+-	expect_pass(flowlabel_get(fd, 3, IPV6_FL_S_USER, IPV6_FL_F_CREATE));
+-	explain("cannot get it again in non-exclusive mode");
+-	expect_fail(flowlabel_get(fd, 3, IPV6_FL_S_ANY, 0));
+-	explain("cannot get it again in exclusive mode");
+-	expect_fail(flowlabel_get(fd, 3, IPV6_FL_S_EXCL, 0));
+-	explain("can get it again in user mode");
+-	expect_pass(flowlabel_get(fd, 3, IPV6_FL_S_USER, 0));
+-	explain("child process can get it too, but not after setuid(nobody)");
+ 	pid = fork();
+-	if (pid == -1)
+-		error(1, errno, "fork");
++	ASSERT_NE(-1, pid) TH_LOG("fork failed");
+ 	if (!pid) {
+-		expect_pass(flowlabel_get(fd, 3, IPV6_FL_S_USER, 0));
+-		if (setuid(USHRT_MAX))
++		err = flowlabel_get(fd, 3, IPV6_FL_S_USER, 0);
++		ASSERT_TRUE(!err) TH_LOG("child failed to get the user-private label");
++
++		if (setuid(USHRT_MAX)) {
+ 			fprintf(stderr, "[INFO] skip setuid child test\n");
+-		else
+-			expect_fail(flowlabel_get(fd, 3, IPV6_FL_S_USER, 0));
++			exit(0);
++		}
++
++		err = flowlabel_get(fd, 3, IPV6_FL_S_USER, 0);
++		ASSERT_TRUE(err) TH_LOG("child unexpectedly got the label after setuid(nobody)");
++		ASSERT_EQ(EPERM, errno) TH_LOG("expected EPERM, got %d", errno);
+ 		exit(0);
+ 	}
+-	if (wait(&wstatus) == -1)
+-		error(1, errno, "wait");
+-	if (!WIFEXITED(wstatus) || WEXITSTATUS(wstatus) != 0)
+-		error(1, errno, "wait: unexpected child result");
+-
+-	explain("create a new process-private label (FL_S_PROCESS)");
+-	expect_pass(flowlabel_get(fd, 4, IPV6_FL_S_PROCESS, IPV6_FL_F_CREATE));
+-	explain("can get it again");
+-	expect_pass(flowlabel_get(fd, 4, IPV6_FL_S_PROCESS, 0));
+-	explain("child process cannot can get it");
++	ASSERT_EQ(pid, wait(&wstatus)) TH_LOG("wait failed");
++	ASSERT_TRUE(WIFEXITED(wstatus)) TH_LOG("child did not exit normally");
++	ASSERT_EQ(0, WEXITSTATUS(wstatus)) TH_LOG("child reported unexpected result");
++
++	ASSERT_EQ(0, close(fd));
++}
++
++TEST(process_private_label_share)
++{
++	int fd, err, wstatus;
++	pid_t pid;
++
++	fd = socket(PF_INET6, SOCK_DGRAM, 0);
++	ASSERT_GE(fd, 0) TH_LOG("socket failed");
++
++	err = flowlabel_get(fd, 4, IPV6_FL_S_PROCESS, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(!err) TH_LOG("failed to create a new process-private label (FL_S_PROCESS)");
++
++	err = flowlabel_get(fd, 4, IPV6_FL_S_PROCESS, 0);
++	ASSERT_TRUE(!err) TH_LOG("failed to get it again");
++
+ 	pid = fork();
+-	if (pid == -1)
+-		error(1, errno, "fork");
++	ASSERT_NE(-1, pid) TH_LOG("fork failed");
+ 	if (!pid) {
+-		expect_fail(flowlabel_get(fd, 4, IPV6_FL_S_PROCESS, 0));
++		err = flowlabel_get(fd, 4, IPV6_FL_S_PROCESS, 0);
++		ASSERT_TRUE(err) TH_LOG("child unexpectedly got the process-private label");
++		ASSERT_EQ(EPERM, errno) TH_LOG("expected EPERM, got %d", errno);
+ 		exit(0);
+ 	}
+-	if (wait(&wstatus) == -1)
+-		error(1, errno, "wait");
+-	if (!WIFEXITED(wstatus) || WEXITSTATUS(wstatus) != 0)
+-		error(1, errno, "wait: unexpected child result");
+-
+-	explain("It is not possible to renew a label that does not exist");
+-	expect_fail_errno(flowlabel_renew(fd, 5, 2 * (FL_MIN_LINGER * 2 + 1)), ESRCH);
+-
+-	explain("Create a label for basic renew validation");
+-	expect_pass(flowlabel_get(fd, 5, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE));
+-	explain("Check if renew does not return errors for existing and valid label");
+-	expect_pass(flowlabel_renew(fd, 5, 2 * (FL_MIN_LINGER * 2 + 1)));
+-
+-	if (cfg_long_running) {
+-		explain("create a new label with FL_MIN_LINGER linger time");
+-		expect_pass(flowlabel_get(fd, 6, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE));
+-		explain("renew the label to increase its linger time and put it");
+-		expect_pass(flowlabel_renew(fd, 6, 2 * (FL_MIN_LINGER * 2 + 1)));
+-		expect_pass(flowlabel_put(fd, 6));
+-		sleep(FL_MIN_LINGER * 2 + 1);
+-		explain("The label cannot be created because the new linger time is not over yet");
+-		expect_fail_errno(flowlabel_get(fd, 6, IPV6_FL_S_ANY, IPV6_FL_F_CREATE), EPERM);
+-	}
++	ASSERT_EQ(pid, wait(&wstatus)) TH_LOG("wait failed");
++	ASSERT_TRUE(WIFEXITED(wstatus)) TH_LOG("child did not exit normally");
++	ASSERT_EQ(0, WEXITSTATUS(wstatus)) TH_LOG("child reported unexpected result");
+ 
+-	{
+-		struct in6_flowlabel_req freq = {
+-			.flr_action = IPV6_FL_A_GET,
+-			.flr_flags = IPV6_FL_F_REMOTE,
+-		};
+-		socklen_t freq_len = sizeof(freq);
+-		int remote_listener = tcp_listen();
+-		int remote_cfd, remote_afd;
+-
+-		explain("Prepare TCP SYN for REMOTE flag validation");
+-		tcp_connect(remote_listener, 7, &remote_cfd, &remote_afd);
+-
+-		explain("Query for label sent by client with IPV6_FL_F_REMOTE");
+-		expect_pass(getsockopt(remote_afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &freq, &freq_len));
+-		if (ntohl(freq.flr_label) != 7)
+-			error(1, 0, "unexpected remote flowlabel %u", ntohl(freq.flr_label));
+-
+-		close(remote_afd);
+-		close(remote_cfd);
+-		close(remote_listener);
+-	}
+-
+-	if (flowlabel_consistency_enabled()) {
+-		fprintf(stderr,
+-			"[INFO] skip REFLECT flag validation (net.ipv6.flowlabel_consistency must be 0)\n");
+-	} else {
+-		struct in6_flowlabel_req reflect_query = {
+-			.flr_action = IPV6_FL_A_GET,
+-		};
+-		struct in6_flowlabel_req reflect_off = {
+-			.flr_action = IPV6_FL_A_PUT,
+-			.flr_flags = IPV6_FL_F_REFLECT,
+-		};
+-		struct in6_flowlabel_req reflect_on = {
+-			.flr_action = IPV6_FL_A_GET,
+-			.flr_flags = IPV6_FL_F_REFLECT,
+-		};
+-		socklen_t reflect_query_len = sizeof(reflect_query);
+-		int reflect_listener = tcp_listen();
+-		int reflect_cfd, reflect_afd;
+-
+-		explain("Enable REFLECT on the listener before the client connects");
+-		expect_pass(setsockopt(reflect_listener, SOL_IPV6, IPV6_FLOWLABEL_MGR,
+-				       &reflect_on, sizeof(reflect_on)));
+-
+-		tcp_connect(reflect_listener, 8, &reflect_cfd, &reflect_afd);
+-
+-		explain("Query the accepted socket's outgoing label, should be reflected");
+-		expect_pass(getsockopt(reflect_afd, SOL_IPV6, IPV6_FLOWLABEL_MGR,
+-				       &reflect_query, &reflect_query_len));
+-		if (ntohl(reflect_query.flr_label) != 8)
+-			error(1, 0, "unexpected reflected flowlabel %u",
+-			      ntohl(reflect_query.flr_label));
+-
+-		explain("PUT+REFLECT disables reflection on the accepted socket");
+-		expect_pass(setsockopt(reflect_afd, SOL_IPV6, IPV6_FLOWLABEL_MGR,
+-				       &reflect_off, sizeof(reflect_off)));
+-		explain("cannot disable reflection twice");
+-		expect_fail(setsockopt(reflect_afd, SOL_IPV6, IPV6_FLOWLABEL_MGR,
+-				       &reflect_off, sizeof(reflect_off)));
+-
+-		close(reflect_afd);
+-		close(reflect_cfd);
+-		close(reflect_listener);
+-	}
++	ASSERT_EQ(0, close(fd));
+ }
+ 
+-static void parse_opts(int argc, char **argv)
++TEST(cannot_renew_non_existent_label)
+ {
+-	int c;
+-
+-	while ((c = getopt(argc, argv, "lv")) != -1) {
+-		switch (c) {
+-		case 'l':
+-			cfg_long_running = true;
+-			break;
+-		case 'v':
+-			cfg_verbose = true;
+-			break;
+-		default:
+-			error(1, 0, "%s: parse error", argv[0]);
+-		}
+-	}
++	int fd, err;
++
++	fd = socket(PF_INET6, SOCK_DGRAM, 0);
++	ASSERT_GE(fd, 0) TH_LOG("socket failed");
++
++	err = flowlabel_renew(fd, 5, 2 * (FL_MIN_LINGER * 2 + 1));
++	ASSERT_TRUE(err) TH_LOG("expected renew of a non-existent label to fail");
++	ASSERT_EQ(ESRCH, errno) TH_LOG("expected ESRCH, got %d", errno);
++
++	ASSERT_EQ(0, close(fd));
+ }
+ 
+-int main(int argc, char **argv)
++TEST(can_renew_existing_label)
+ {
+-	int fd;
++	int fd, err;
++
++	fd = socket(PF_INET6, SOCK_DGRAM, 0);
++	ASSERT_GE(fd, 0) TH_LOG("socket failed");
++
++	err = flowlabel_get(fd, 5, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(!err) TH_LOG("failed to create a new label for renew validation");
+ 
+-	parse_opts(argc, argv);
++	err = flowlabel_renew(fd, 5, 2 * (FL_MIN_LINGER * 2 + 1));
++	ASSERT_TRUE(!err) TH_LOG("failed to renew an existing valid label");
++
++	err = flowlabel_put(fd, 5);
++	ASSERT_TRUE(!err) TH_LOG("failed to put the label");
++
++	ASSERT_EQ(0, close(fd));
++}
++
++TEST(renew_label_linger)
++{
++	/* RENEW must extend a label's linger period: putting a renewed
++	 * label and waiting out its original linger time must not be
++	 * enough to allow the label to be recreated.
++	 */
++	int fd, err;
+ 
+ 	fd = socket(PF_INET6, SOCK_DGRAM, 0);
++	ASSERT_GE(fd, 0) TH_LOG("socket failed");
++
++	err = flowlabel_get(fd, 6, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(!err) TH_LOG("failed to create a new label with FL_MIN_LINGER linger time");
++
++	err = flowlabel_renew(fd, 6, 2 * (FL_MIN_LINGER * 2 + 1));
++	ASSERT_TRUE(!err) TH_LOG("failed to renew the label to increase its linger time");
++
++	err = flowlabel_put(fd, 6);
++	ASSERT_TRUE(!err) TH_LOG("failed to put the label");
++
++	sleep(FL_MIN_LINGER * 2 + 1);
++
++	err = flowlabel_get(fd, 6, IPV6_FL_S_ANY, IPV6_FL_F_CREATE);
++	ASSERT_TRUE(err) TH_LOG("expected reuse to fail, new linger time not over yet");
++	ASSERT_EQ(EPERM, errno) TH_LOG("expected EPERM, got %d", errno);
++
++	ASSERT_EQ(0, close(fd));
++}
++
++TEST(remote_flag)
++{
++	/* The REMOTE flag, used for getsockopt, is expected to retrieve the
++	 * label from the latest received header.
++	 */
++	struct in6_flowlabel_req freq = {
++		.flr_action = IPV6_FL_A_GET,
++		.flr_flags = IPV6_FL_F_REMOTE,
++	};
++	socklen_t freq_len = sizeof(freq);
++	int listener, cfd, afd, err;
++
++	listener = tcp_listen();
++	tcp_connect(listener, 7, &cfd, &afd);
++
++	err = getsockopt(afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &freq, &freq_len);
++	ASSERT_TRUE(!err) TH_LOG("getsockopt with IPV6_FL_F_REMOTE failed");
++	ASSERT_EQ(7, ntohl(freq.flr_label)) TH_LOG("unexpected remote flow label");
++
++	ASSERT_EQ(0, close(afd));
++	ASSERT_EQ(0, close(cfd));
++	ASSERT_EQ(0, close(listener));
++}
++
 +static bool flowlabel_consistency_enabled(void)
 +{
 +	char buf[2] = {};
 +	int fd;
 +
 +	fd = open("/proc/sys/net/ipv6/flowlabel_consistency", O_RDONLY);
-+	if (fd == -1)
+ 	if (fd == -1)
+-		error(1, errno, "socket");
 +		return true;
 +
 +	if (read(fd, buf, sizeof(buf) - 1) < 0)
 +		buf[0] = '1';
 +	close(fd);
-+
+ 
+-	run_tests(fd);
 +	return buf[0] != '0';
 +}
 +
- static void run_tests(int fd)
- {
- 	int wstatus;
-@@ -288,6 +305,50 @@ static void run_tests(int fd)
- 		close(remote_cfd);
- 		close(remote_listener);
- 	}
++TEST(reflect_flag)
++{
++	/* The REFLECT flag acts as a trigger to the REPFLOW bit. When REPFLOW
++	 * is triggered for a socket, it adopts the label received from the
++	 * connected socket.
++	 */
++	struct in6_flowlabel_req reflect_on = {
++		.flr_action = IPV6_FL_A_GET,
++		.flr_flags = IPV6_FL_F_REFLECT,
++	};
++	struct in6_flowlabel_req reflect_query = {
++		.flr_action = IPV6_FL_A_GET,
++	};
++	struct in6_flowlabel_req reflect_off = {
++		.flr_action = IPV6_FL_A_PUT,
++		.flr_flags = IPV6_FL_F_REFLECT,
++	};
++	socklen_t reflect_query_len = sizeof(reflect_query);
++	int listener, cfd, afd, err;
 +
-+	if (flowlabel_consistency_enabled()) {
-+		fprintf(stderr,
-+			"[INFO] skip REFLECT flag validation (net.ipv6.flowlabel_consistency must be 0)\n");
-+	} else {
-+		struct in6_flowlabel_req reflect_query = {
-+			.flr_action = IPV6_FL_A_GET,
-+		};
-+		struct in6_flowlabel_req reflect_off = {
-+			.flr_action = IPV6_FL_A_PUT,
-+			.flr_flags = IPV6_FL_F_REFLECT,
-+		};
-+		struct in6_flowlabel_req reflect_on = {
-+			.flr_action = IPV6_FL_A_GET,
-+			.flr_flags = IPV6_FL_F_REFLECT,
-+		};
-+		socklen_t reflect_query_len = sizeof(reflect_query);
-+		int reflect_listener = tcp_listen();
-+		int reflect_cfd, reflect_afd;
++	if (flowlabel_consistency_enabled())
++		SKIP(return,
++		     "net.ipv6.flowlabel_consistency must be 0 (run via ipv6_flowlabel.sh)");
 +
-+		explain("Enable REFLECT on the listener before the client connects");
-+		expect_pass(setsockopt(reflect_listener, SOL_IPV6, IPV6_FLOWLABEL_MGR,
-+				       &reflect_on, sizeof(reflect_on)));
-+
-+		tcp_connect(reflect_listener, 8, &reflect_cfd, &reflect_afd);
-+
-+		explain("Query the accepted socket's outgoing label, should be reflected");
-+		expect_pass(getsockopt(reflect_afd, SOL_IPV6, IPV6_FLOWLABEL_MGR,
-+				       &reflect_query, &reflect_query_len));
-+		if (ntohl(reflect_query.flr_label) != 8)
-+			error(1, 0, "unexpected reflected flowlabel %u",
-+			      ntohl(reflect_query.flr_label));
-+
-+		explain("PUT+REFLECT disables reflection on the accepted socket");
-+		expect_pass(setsockopt(reflect_afd, SOL_IPV6, IPV6_FLOWLABEL_MGR,
-+				       &reflect_off, sizeof(reflect_off)));
-+		explain("cannot disable reflection twice");
-+		expect_fail(setsockopt(reflect_afd, SOL_IPV6, IPV6_FLOWLABEL_MGR,
-+				       &reflect_off, sizeof(reflect_off)));
-+
-+		close(reflect_afd);
-+		close(reflect_cfd);
-+		close(reflect_listener);
-+	}
- }
++	listener = tcp_listen();
++	err = setsockopt(listener, SOL_IPV6, IPV6_FLOWLABEL_MGR, &reflect_on, sizeof(reflect_on));
++	ASSERT_TRUE(!err) TH_LOG("failed to enable REFLECT on the listener");
  
- static void parse_opts(int argc, char **argv)
+-	if (close(fd))
+-		error(1, errno, "close");
++	tcp_connect(listener, 8, &cfd, &afd);
+ 
+-	return 0;
++	err = getsockopt(afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &reflect_query, &reflect_query_len);
++	ASSERT_TRUE(!err) TH_LOG("failed to query the accepted socket's outgoing label");
++	ASSERT_EQ(8, ntohl(reflect_query.flr_label))
++		TH_LOG("accepted socket did not reflect client's label");
++
++	err = setsockopt(afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &reflect_off, sizeof(reflect_off));
++	ASSERT_TRUE(!err) TH_LOG("failed to disable REFLECT on the accepted socket");
++
++	err = setsockopt(afd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &reflect_off, sizeof(reflect_off));
++	ASSERT_TRUE(err) TH_LOG("expected disabling REFLECT twice to fail");
++	ASSERT_EQ(ESRCH, errno) TH_LOG("expected ESRCH, got %d", errno);
++
++	ASSERT_EQ(0, close(afd));
++	ASSERT_EQ(0, close(cfd));
++	ASSERT_EQ(0, close(listener));
+ }
++
++TEST_HARNESS_MAIN
 -- 
 2.55.0
 
