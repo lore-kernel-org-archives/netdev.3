@@ -1,60 +1,62 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7647D4756C0
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 16:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D021447A0C4
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 16:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785862051; cv=none; b=Rw/OXmpg61Q91BP30qUXD1eXZuPQXO8lnZZ7dPulkhJcpzl0f0De12KgmQSLRWC6aDRL1OQUv9ZYwhYKfs756J0swxBlnOcPZ8ngNYi68rB1HaVZq3KThMc0xuzrlQGr8o2AzxOM1SN10a+mXOFCChCNMF36tocIAjSLUQRvcVE=
+	t=1785862052; cv=none; b=W9iLZTz1h4c4ztYMTvmm+A238L/ycttUWZm1hpMSr0TZ0RGuUscJTBFX8QE13YWbWnHrILoN/BM1iYSXSoBHNkWq9rpc7cDJ1Gq+QgHF31GzaS3Jgwmv1S7Rfe180iGfjAn62+dTGaEeuUHAEajY9WfmYIbtLvffn8c1PzlhML8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785862051; c=relaxed/simple;
-	bh=eek9IG+Bai7GTcqw2chitHR1uDwx5tASOpnUG0Wl0ek=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KMw6NBRPA0/TysVeu6+AD9r5tqJITGUojhFfh39dhNHKPcJCWlkYo+T8xNDCFlBYRX5fCnZ54EW9/+nd+8yCm5h3nkbsx++5yMwexPhpQTE4HB1hCER9YJy3zq9UCtvzHTsA6E5TgSxAoEEZi4Ze9+EnGqTZrjA2TTaKE6LF9gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JznapSvR; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1785862052; c=relaxed/simple;
+	bh=XV0B/JhCsG40H9ag/PHxTNYCI0x+JONwkI59bxqGKMM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=W16/kYJGwJwkqSKe3i1lJH8npJ1wn9dKxECVlWxCo3cSLuLX4oTb/dllDFtK8Y5i4AXye8ExVWgCmfoPHD460Qe+tLIK/dyXtdvt8IwV7cXBEUHwDT15kUXJW9LeMa/iuFEjweP+vJqBpBIbFZe6mX2ifLzrePtRYLsHBHsBb6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAT5shlp; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JznapSvR"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4980fe6b3beso9015515e9.0
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 09:47:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAT5shlp"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4980dc26022so236815e9.1
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 09:47:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20251104; t=1785862026; x=1786466826; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gObdtMIk+etzcDrMNS37rCpHYdRlnIlpC3JIoWVru4g=;
-        b=JznapSvR6VlsShWcuUOoFj9LbJcz8aS9uA5UUyPRklWJXRUdorkuAQCrAfbbekxKcs
-         J8PGtWpd4LWu2R8BBw47CVPqhZEgVe3XgZs0iqFpv3cjF+aEQtkf8QOW6OgCPdrik/y/
-         OAOEH5GUWKSspCB4/P4hipgRlzMn4OO5Pc+03wKW9VRmqXfwCbhg+xF/0OrfTK6bAddJ
-         cKTXc4jx003YLx09wpmPKTs29leimyU4Gqc5HiCsMoptQHq+MmHoEEa3a5Gt4StM3piP
-         +IftAV1BWBOomiKg3qboVvbSl5+hf+3/JEaK4ZqroDtL9eZkM7mPkapKEYYd1SBC/gR5
-         HY5w==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1rwrdJxGLamDKuaEmMI5UrE7st//n0E96F1Xn4wpyT0=;
+        b=FAT5shlpzlKMdMyn68N0l2a8Xtqxu1ZS0eYBJ4NyrLfkd6PFvObcpXzHZepI4YudT3
+         K0G39a3nFqrhnrq8KHttO9o18HOXHzYY9Ep0qguYZ091J9R2Z/ozbXASlvYLp1TIV1is
+         9pq9SgGs6cdjyigWagzFNW/YjoRrbl3fTo21bARl/PSRVNPEpH89Nqfoq3yLpHl6O1rY
+         6B9MDc98xc3QBHvwMfgDHPvlL/8B8Agt+TekLEBCWHbLQRad8SxKoN9dHhmgLyAOYsEe
+         rPkczLw43Ltm3EFORizcwn/L+ZIR4a0r9w16V0XFxj9LoQXmQ/RK7WRqsET5WCjGijWQ
+         1zxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1785862026; x=1786466826;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gObdtMIk+etzcDrMNS37rCpHYdRlnIlpC3JIoWVru4g=;
-        b=Z0ugkcTM5stYpb4He2m8PwH5r7J4bNWhA6yQ1VgSxXUEvc68aE5gqfVujpSqE5SwTN
-         SCo3LFjhpsyYKBbzt5wBCSIJw57/e7tNef6msx/JE99+qALIcWzVDOL+2lIMC1iVxSeH
-         W+Mlgu6k1pRCFE4cBCtLNuENDc8xS8YJUt6AqI2AGNUdOnrIxeWrJu8C29vajAuORWd0
-         b3jxkdlwgYNQYnc4InKKS6LO4gN+boElKb0OR9cUODLILA2TJD92wpZZEOFM7ldPoAKM
-         3zjlNfAGOnYzHUduD+HSpYp370AuOO/0LOc6KZTrmhsVyYnLr8mYcm2wSBbXA79nmSzU
-         Xh2g==
-X-Forwarded-Encrypted: i=1; AHgh+RoygqNURsVSOP8e5Supqzk6OOLiqdR+bfFn7jq/3xa/7HwaHgDsdJCZqv+Bd5/g0M86PeSvxvw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxV/WfJX7UngDM7dwmR3USrlrOq7Ij0K9SYC1g635Q6Vo5Wy73X
-	x/S40z6cilSsX0d8DcRVGe7zykltjGi3QbTUQB3I6VVb5ks3XxUSaUri
-X-Gm-Gg: AR+sD114QBr64kHdcmtc0Xb1VJeJUNMz9YGCPYlCuIULR1Hy6wy7qkiOYcdTckj59Tz
-	HPXNAIDdfCWAIhs+dfzMvm66lzypy6Y1WB7ZJFXw6dOvLCkhqdZro2z//lxcLHfIs0FdqhYMKAt
-	LEZwRTpVf/SWb5cMzUZmkBtxGhIkgNkFtQEe47XqakNRKnjOYOpVA2aUFjEFtik+YeO8O/lSgIB
-	h9rj0qyks332q9GGMSku1wmUH1XNxbg+hoQJ/fI6I/SkZE7eSwqiQfRu9HIFOrxb5P9sglENL3N
-	n+atc7O09iDc2JxPpGvrQd5XIY1k9ZnDzxgHo4GmhIxdVrxZrcGCBb7oJ9mWgzNurqV0O4caDIj
-	HnbkfNMEFpwS+dBOotQea2DVP2l1aRpltLFKGP9ggqzqN2UOyAOghFWVUjZuz4BG10SBuVoqys/
-	2uECUgxkV38gjjTGix7OJGCE15zdpu1srkuFYzlnZYsjrWwqBTbj0L/QLHXJxwENa2ukqebwWoq
-	sHFmCsnfG8/pPcDX6THaJXEGdbzuKgH0g==
-X-Received: by 2002:a05:600c:1649:b0:495:3c6f:7c18 with SMTP id 5b1f17b1804b1-4994e349da1mr6494525e9.3.1785862025473;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1rwrdJxGLamDKuaEmMI5UrE7st//n0E96F1Xn4wpyT0=;
+        b=BHgEZztZSo9a08a8AF5ywfDFov0+aUgPvalZNWau4zEFnx03vTGEIdUjtqY4DrmMUO
+         9T1UOEX6ppxrM1CiyxQTrSpvnK//4Ls437E98YuTJAdCj3i+mAcQjLErG0s3fsT1uB3q
+         y5gfa7Xi6tAScQokw7x0tzmxmlDy9uB2Lg1HMwxiEvJ0mWnjdiCXCOjpM9Ow+8yDS8pe
+         XkI28rmIPafGLrNPKNjRXH2UwZa0w6bHslDCDWjNRaL8xcxxWbAj6NQ4GHPDjN5DZjLx
+         GnYMhCdzvEelWUIALTdm/ZA/iusA4VpYq+jNB/4SFSsrZX6GLYX9uiOoLNMDWdBwMMXL
+         Ab3g==
+X-Forwarded-Encrypted: i=1; AHgh+RqiLvj4XkT5Y5i25lYOCo9mP6FmUjNaQjxazx8nGjHaDb+2cNOhqchAEfqsYiAy8JQpAHTSWyQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwQghua13WzBnZHwUS3AP5narUAz7ZU4gTy3EZwVeedgi0ifEn
+	NIMlehyiy+lJk53x60XzU61eXmqGDQDwPqAiYGI7yhT06S625cVN8r7D
+X-Gm-Gg: AR+sD128hdUXBkIEFsTNRlzQN2AeUR87j2XPO7/oHoMHKIHjpatAADXy1iVKLwUQpmt
+	S2PNOs/gAyDwhJekFRTxLgnDYVoqqQy2nqRFYh+1mc5IC5uAfYcw+JxVrj8XxTR34QKQ3FIEPsx
+	oLtXX0sI8e3kQpxmELAiELDmuMqUkFEVSeduykVbIxAiqodFISlUVumPN6H69jtRo1p8GaKhZ9S
+	RbW2iJOlAXHkRzXAOMNd1/xT2m7pSDEEBrcPFBTSpaPyaGEuOrq2PAJcVWodrbr+nSHF6qYUFaI
+	Wid22qFAz7HfNdvqtuUGigDHBNWA9RP5sHSfXG1NhJr8B/b66lcMGQUwe8kPcPV/kqa2G6xFjnk
+	UHgQWcdk6xMsxjQp3kTf9U1pXMIMe+k5Qj1CiDCYYqYn5v97NBqf1Hm9jrQOdkeo38RY5Ka5pu/
+	wTG2wzYYFCitjjmlJkpGc/UAfb3RTijUYNlUendlOKIbCQM11WeNGoNPJlQvAMUzZJdaMv4g2Ry
+	q5Xt9wwoQcLOlo8RF5RWrRokkLUbo3YFA==
+X-Received: by 2002:a05:600c:840f:b0:493:aa0a:45ad with SMTP id 5b1f17b1804b1-4980c64520fmr314174835e9.2.1785862025962;
         Tue, 04 Aug 2026 09:47:05 -0700 (PDT)
 Received: from mtardy-friendly-lvh-runner.europe-west1-c.c.cilium-dev.internal ([2600:1900:4010:1a8::])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4994e04db3asm14229485e9.15.2026.08.04.09.47.04
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4994e04db3asm14229485e9.15.2026.08.04.09.47.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 04 Aug 2026 09:47:05 -0700 (PDT)
 From: Mahe Tardy <mahe.tardy@gmail.com>
@@ -77,10 +79,12 @@ Cc: andrew+netdev@lunn.ch,
 	ameryhung@gmail.com,
 	kuniyu@google.com,
 	Mahe Tardy <mahe.tardy@gmail.com>
-Subject: [PATCH bpf-next v3 0/5] Introduce bpf_ksock
-Date: Tue,  4 Aug 2026 16:46:47 +0000
-Message-Id: <20260804164652.296919-1-mahe.tardy@gmail.com>
+Subject: [PATCH bpf-next v3 1/5] net: Add __sys_connect_socket() helper
+Date: Tue,  4 Aug 2026 16:46:48 +0000
+Message-Id: <20260804164652.296919-2-mahe.tardy@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260804164652.296919-1-mahe.tardy@gmail.com>
+References: <20260804164652.296919-1-mahe.tardy@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,124 +93,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series introduces bpf_ksock, a set of BPF kfuncs to allow BPF
-programs to create UDP sockets and send data. This provides a mechanism
-for BPF LSM progs to emit telemetry over UDP independently of userspace.
+Add a helper that connects an existing socket while invoking the LSM
+hook. Reuse it in __sys_connect_file() to avoid duplicating the connect
+logic. Other socket operations have equivalent helpers that trigger the
+appropriate LSM hooks that can be reused, this one was the only one
+missing.
 
-The main use case is to be able to completely dispense with
-agents/daemons for BPF programs after startup. In the case of
-Isovalent's Tetragon, the idea would be to be able to emit security
-alerts or export data from BPF even when the agent is down. For meta,
-according to Liam presentation[^2], this could replace logging via
-ringbuffers which created cross-binary versioning issues.
+Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
+---
+ include/linux/socket.h |  2 ++
+ net/socket.c           | 32 ++++++++++++++++++--------------
+ 2 files changed, 20 insertions(+), 14 deletions(-)
 
-The implementation follows the established kfunc lifecycle pattern
-(create/acquire/release with refcounting, kptr map storage, dtor
-registration), for example used by the network bpf_crypto kfuncs.
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index 2a8d7b14f1d1..48f1eb8193de 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -461,6 +461,8 @@ extern struct file *__sys_socket_file(int family, int type, int protocol);
+ extern int __sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen);
+ extern int __sys_bind_socket(struct socket *sock, struct sockaddr_storage *address,
+ 			     int addrlen);
++extern int __sys_connect_socket(struct socket *sock, struct sockaddr_storage *addr,
++				int addrlen, int flags);
+ extern int __sys_connect_file(struct file *file, struct sockaddr_storage *addr,
+ 			      int addrlen, int file_flags);
+ extern int __sys_connect(int fd, struct sockaddr __user *uservaddr,
+diff --git a/net/socket.c b/net/socket.c
+index 63c69a0fa74e..c7427dd4dd52 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -2115,27 +2115,31 @@ SYSCALL_DEFINE3(accept, int, fd, struct sockaddr __user *, upeer_sockaddr,
+  *	include the -EINPROGRESS status for such sockets.
+  */
 
-For reference, this was discussed at LSF/MM/BPF 2025[^1] in Montreal,
-again at Plumbers 2025 in Tokyo. Liam Wisehart mentioned this work
-during his presentation of BpfJailer[^2]. Then it was also discussed
-during LSF/MM/BPF 2026 in Zagreb.
++int __sys_connect_socket(struct socket *sock, struct sockaddr_storage *address,
++			 int addrlen, int flags)
++{
++	int err;
++
++	err = security_socket_connect(sock, (struct sockaddr *)address, addrlen);
++	if (err)
++		return err;
++
++	return READ_ONCE(sock->ops)->connect(sock,
++				    (struct sockaddr_unsized *)address,
++				    addrlen, flags);
++}
++
+ int __sys_connect_file(struct file *file, struct sockaddr_storage *address,
+ 		       int addrlen, int file_flags)
+ {
+ 	struct socket *sock;
+-	int err;
 
-A first version of it, called bpf_netpoll was submitted to the mailing
-list but eventually NACKED by Jakub Kicinski[^3]. The discussion
-eventually reached an agreement that we should use regular kernel
-sockets if we want to do network from BPF programs[^4]. This was
-fundamentally more complex to implement but here is a first proposition
-of how it could look like after several automated reviews using sashiko.
+ 	sock = sock_from_file(file);
+-	if (!sock) {
+-		err = -ENOTSOCK;
+-		goto out;
+-	}
+-
+-	err =
+-	    security_socket_connect(sock, (struct sockaddr *)address, addrlen);
+-	if (err)
+-		goto out;
++	if (!sock)
++		return -ENOTSOCK;
 
-For more details, here are some of the main adjustements I had to make
-during the preparation of these patches:
+-	err = READ_ONCE(sock->ops)->connect(sock, (struct sockaddr_unsized *)address,
+-					    addrlen, sock->file->f_flags | file_flags);
+-out:
+-	return err;
++	return __sys_connect_socket(sock, address, addrlen,
++				    sock->file->f_flags | file_flags);
+ }
 
-Initially, the goal was to register the ksock_kfunc_set with
-BPF_PROG_TYPE_UNSPEC to allow send to be called from any programs. This
-introduces significant challenges (but might be doable). The limitation
-is still that the programs should be able to sleep but combining this
-with bpf workqueue allows to send from virtually anywhere. However, not
-by-passing LSM socket hooks make it impossible to be called from the
-workqueue context as the credential of the initial caller would not be
-preserved. Also, it would be easy for users to shoot themselves in the
-foot and attach a program that sends asynchronously over the network on
-a network hook. So the idea for now is to restrict the ksock_kfunc_set
-(which is acquire, release and send) to SYSCALL and LSM to make it
-simpler. Also to make the patch set easier to start with, the sockets
-are restricted to UDP.
-
-v3 updates:
-Simplifies bpf_ksock_connect arg by using a union (union bpf_ksock_addr)
-containing struct sockaddr_in and struct sockaddr_in6 to remove most of
-bpf_ksock_parse_addr() code (Stanislav).
-
-Note that I initially tried to put the union inside of struct
-bpf_ksock_addr_opts but we ended up with too much struct nesting depth
-from bpf, for example when trying to write the ipv4 address:
-
-	addr_opts.addr.sin.sin_addr.s_addr = ipv4_remote;
-
-It resulted in:
-
-	max struct nesting depth exceeded
-	R2 pointer type STRUCT bpf_ksock_addr_opts must point to void,
-	scalar, or struct with scalar
-
-v2 updates:
-This second version simplifies the patch set by removing bind, keeping
-connect + send for now (could be replaced per sendto if needed). It also
-removes the sysctl limit and the whole hashtable ksock_send guard with a
-single bit in task_struct.
-
-- remove bind from the API (Stanislav, Amery, Kuniyuki)
-- remove the bpf_ksock_max sysctl limit (Stanislav, Kuniyuki)
-- replace ksock_send_guard with a bit in task_struct (Kuniyuki)
-- remove unnecessary init struct sockaddr_storage addr = {}; (Kuniyuki)
-- remove redundant ASSERT_OK_FD (sashiko)
-- fix typos in ksock test patch commit log (bot+bpf-ci)
-- fix return statement in kfunc registration (bot+bpf-ci)
-
-v1 updates (from local sashiko iterations):
-- do not bypass the LSM and thus add send re-enter protection;
-- limit the number of socket creation through the kfunc per ns;
-- copy the arg values to avoid TOCTOU race since kfunc can sleep;
-- prevent calling bpf_ksock_create from workqueue with improper creds.
-
-[^1]: https://lwn.net/Articles/1022034/
-[^2]: https://lpc.events/event/19/contributions/2159/
-[^3]: https://lore.kernel.org/bpf/20260511182019.69ebc7c6@kernel.org/
-[^4]: https://lore.kernel.org/bpf/CAPhsuW71P58XqsXrLbqsShgnozg66TA=T_c=fYrqSSzvL1tTWA@mail.gmail.com/
-
-Link to v2: https://lore.kernel.org/bpf/20260722104454.165911-1-mahe.tardy@gmail.com/
-
-Mahe Tardy (5):
-  net: Add __sys_connect_socket() helper
-  bpf: Add ksock kfuncs
-  selftests/bpf: Add ksock kfunc test
-  selftests/bpf: Add ksock LSM recursion test
-  selftests/bpf: Add ksock test for async callback guard
-
- include/linux/bpf_ksock.h                     |  36 ++
- include/linux/sched.h                         |   4 +
- include/linux/socket.h                        |   2 +
- kernel/bpf/verifier.c                         |   3 +
- net/core/Makefile                             |   3 +
- net/core/bpf_ksock.c                          | 329 ++++++++++++++++++
- net/socket.c                                  |  32 +-
- .../testing/selftests/bpf/prog_tests/ksock.c  | 231 ++++++++++++
- .../selftests/bpf/prog_tests/ksock_wq.c       |  34 ++
- .../testing/selftests/bpf/progs/ksock_basic.c |  37 ++
- .../selftests/bpf/progs/ksock_common.h        |  99 ++++++
- .../selftests/bpf/progs/ksock_recursion.c     |  69 ++++
- tools/testing/selftests/bpf/progs/ksock_wq.c  |  62 ++++
- 13 files changed, 927 insertions(+), 14 deletions(-)
- create mode 100644 include/linux/bpf_ksock.h
- create mode 100644 net/core/bpf_ksock.c
- create mode 100644 tools/testing/selftests/bpf/prog_tests/ksock.c
- create mode 100644 tools/testing/selftests/bpf/prog_tests/ksock_wq.c
- create mode 100644 tools/testing/selftests/bpf/progs/ksock_basic.c
- create mode 100644 tools/testing/selftests/bpf/progs/ksock_common.h
- create mode 100644 tools/testing/selftests/bpf/progs/ksock_recursion.c
- create mode 100644 tools/testing/selftests/bpf/progs/ksock_wq.c
-
+ int __sys_connect(int fd, struct sockaddr __user *uservaddr, int addrlen)
 --
 2.34.1
 
