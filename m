@@ -1,181 +1,198 @@
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0002e601.pphosted.com (mx0b-0002e601.pphosted.com [148.163.154.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4736332D0FC
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 04:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E94175A99;
+	Tue,  4 Aug 2026 04:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.154.28
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785818284; cv=pass; b=aGQEXP0hLQO4DeQUN3al1I+9y/Z78I2gL0vicmhD1LD0ppKM+Pz50i5bn+PLaueVJPcl1e7kpOE/7b2LFAa1fRt1B0jsqOLieJYaXC8HdRZEqCqk3DX+s+5PanmnCSMiWq2ocSLtOjn/2RpZlnd+6cN7sxmnFUq3VRgdbyE0GW0=
+	t=1785819504; cv=fail; b=ncm4D6RVpXcqQlajPd10tQNk1SwD+Lxa2gokPY90CJ2h8QQQKdd6KJxTdFisH3MnyXhWp6YKL6+exRiRpGNF4JcZYgZ0rvC3SF8ynIaZkkmLs1qgW4XTdQ7dpTN+8swwRrD1ZDsOkaaLPJqn/V01h2Dc/IKwYAlE5B1RM+RLSkA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785818284; c=relaxed/simple;
-	bh=KCujiFsubPppZdIzZBFgzB0FHL+kaNCYcrxKl9k6kYk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B6v19ZryoZnqJdbO0S+Mx+dXO7FskSo5RXJzVVNldt/gPXgRp8zj6HUL1Z36btJPErkSe0uAJ7FPBG40c/35P5O40WzZz7AkXq+7cKeF24OBu2QIi684AIryGZAHA9TMI7KtYDs1g/SxBHhH/lsX/Z7B+ZT+IU8GM4nMxqNrjHI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=liNCeUs4; arc=pass smtp.client-ip=209.85.217.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785819504; c=relaxed/simple;
+	bh=wVC2l72RhhVAps+PiLlMhW7RL/aLBqvJ6m6LdocbY5E=;
+	h=From:To:CC:In-Reply-To:References:Subject:Message-ID:Date:
+	 MIME-Version:Content-Type; b=KZpvOsBgfIO6fXWSJROqFODg0hTQOKThey7R+gvZtBTkTXlkHQ9WW28yu8Y0kgVLBap2TBs/JRKstOJEtJIYfKehTmqiMVs6SMbmCkiGRLhQR27Et1POThVuQhT5tpGeFDUuFuW8xb+ZG0WpicaxS0ywlYsMgl/hJDoopFdSeXw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=JCOoMY9r; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=oGdyJtB8; arc=fail smtp.client-ip=148.163.154.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="liNCeUs4"
-Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-74d55dac06dso916656137.1
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 21:38:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785818282; cv=none;
-        d=google.com; s=arc-20260327;
-        b=c5O7+YE70IbXI7UKX4hvEn5DaN5OiZnTvR9J6P6hNWoITtSSPt3IFMC4WyCCxWMzJj
-         abP74pmzEWztB8XXo+huKW1CIG2X/Et/RyVcmA4mWd0Qsg2JT4+LHHlUiDm3PvlS4lf1
-         GIXNh6zdrcwjiKWXpW3OX3zdQfJAjG8c8vonqBIb5meHp9ED2zqKyCivwk6p6Uj6o94x
-         I6UNqGYUubaELBWa+Qok59al8Z6ippszi77107S9DqLu+K0F5F0Ll07CWCkzRXAhl34n
-         qWFDt75jM3ia1atyYyspibcMvbHMD7mVzH2KO99cFyR5NgTNlEK8zo/rmORszcMAB1iS
-         yeYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KCujiFsubPppZdIzZBFgzB0FHL+kaNCYcrxKl9k6kYk=;
-        fh=c8yxI+oVyYVI3BfphdkLCV+TQ4OqmcxqP9OGZATa8Z0=;
-        b=KZMNBkw/4SwGQyNEi6pJUEZHAKAvjWbixV6qLjN329mNCKdHXy0EuDk/fmkfKBWiT5
-         M05m37Tnw1KOLCn+KFMWW+HGuxflwYuWxXd/1cBSC45KT9sbehBEmz5Z0HeBIz1Wf/xM
-         ZBr8u66/M7xwiiI8eoONPp1a/BTCK1xJma1nF7uw+9259KQxODIsW5VRlXrjIEUDdkVn
-         dMe/z+Ie/+E4Wcqkm96ufZkJV6NnPtQ2W5kVZ3CDt0D0mzijo49s77HOm4dbCimkRNeM
-         2Fl7j1DuqdoetvRsVxvNRwYqw2ZFAgvXSPFEXU0A7faHGk1U2zmYrjm2I0P241t7sxW3
-         vhrw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785818282; x=1786423082; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KCujiFsubPppZdIzZBFgzB0FHL+kaNCYcrxKl9k6kYk=;
-        b=liNCeUs4ECDJvcEZ4Rc0Abd4lQbDzvcu7iOIFYL9wXpzEvtDs2yKblPq4exJb/iLVw
-         eDCmk7AHckSRnc+1K5xQ43URrohTb+uNgiHt6PEQ4r5rJBqZmdLTdL/8Djn3WTHYzZtA
-         X9TC3QSLxfg905jpGEvTaY7nQ8GcyMsadgbm5R9pbZIHXgONSDcoYWAoirSK7bXwv9fc
-         s3BY8/wWskDBTM2zXwqq+cCH4u4FDn89YsSGOzJ7Gi1hhpoEumm3JPvDpWVkrEOnJWiJ
-         xLhv1i4xZJpofa4T198bCQBrrpG6lATK8IGztX5pFZ3a7iCqtI7SHfn8c9t525JdoigM
-         CvFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785818282; x=1786423082;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KCujiFsubPppZdIzZBFgzB0FHL+kaNCYcrxKl9k6kYk=;
-        b=TzPS5O3a/zlhiJH+aooEoZ8N+ksex0VzItl7dgcI0SVwnG2Aqd7qTVI+oGkSS52vDk
-         PFaYUlGAFTRrzTc2oh0+IW/Io4pFfKkRwifj2cbdTQe99XA91FYF9WpsUlc0hn50Q+9G
-         2skogeMebXWl2qqoBNrG85MAPePbI9yN33Ot7MDagvVlVHTzEtq+jY0rITsaG+9hyK9f
-         iE32r/uUAlrJlVJRA18iiR13N6QV3uBGxH56PWupmDycv/0WJ4vRRmV39ktWxqcLpK5/
-         nSeFhbtZKUwlY3IchzCNfNI2XKXF+UxgOdQO9SjiJP3fBd4YdtGEqh+OUARlaU3w+BVW
-         sugQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr5WjUpXOtoxDjL8ivxBr+g/Ub9Ejk+7NOnroihDV0lJ23+oXF7S4gIyQl8cif7AGGLPOoLbP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9U2lkmqg6zbg72rOgQ/y7c6nxBUcmsL/SgkY+NrOlhub4AKUb
-	zuc57hY+GJT5bRCsmDpPUQ73UV4ZT2ef6s2Zpv8WmmDJGGgAppnytLQnGXG5T9cKoRse6jc8l0p
-	SOrfy0kjo16WruBHcOEgWaft6q0XYzAI=
-X-Gm-Gg: AR+sD11ULPmqMNBYHd2oeDLBbB1gIya62qq8H2TkhbUHdZ1/FLUexvuAvpiLGh1r2dM
-	3fyz5NrTFtCDsAteji4GPHX4PUORhRYSnXbbKgXMeYDnO7B8syX9zLGbr4Z8Lo6NnrS/XaH4g+5
-	x6UqQLT3tF+iFOy9l1xoRA64AbzimTnen2gXEzMFEKeoPx+rVr8PN40VHxbFMmhXuUdJRcG+wYL
-	wgycFYfg/K/omzeabe34go4UIR5KM4G9toQKbj3OZWV4/TiDgR+iUSOcJBfkJgCFO6GiQebTN1T
-	DPbruhrsQDi+Xg3c7haavp7NzofvuQIMChdGNfisaQzzxLSLnj4/sc8OwwyF5XuuP9IkAAUpWKD
-	2R9Qx7TpyyV+So4ERhTLh9+34XICFu0y5C+mQ19AifCoPkzTzIMnFkUoWUiPeHi4STwlHLAEeg6
-	n55YJXaqmcrQrKsyHtnBXf2Gcsh73ap/VcZEijN+YqUoYLYu9w
-X-Received: by 2002:a05:6102:1492:b0:745:78d4:4856 with SMTP id
- ada2fe7eead31-75b2226b36dmr8916982137.7.1785818282020; Mon, 03 Aug 2026
- 21:38:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="JCOoMY9r";
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="oGdyJtB8"
+Received: from pps.filterd (m0374955.ppops.net [127.0.0.1])
+	by mx0b-0002e601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67418peC1418210;
+	Mon, 3 Aug 2026 23:58:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	proofpoint-05-2026; bh=XoQjSLSIMOUeaDh6HDReplQlapwewnYey0/f/k/k0
+	k8=; b=JCOoMY9rKPHrD5MOP1/GMAh3BEv2iM2nN7/T1p3Fe3lLvo12gUo67o1+C
+	pkrfc7yi4BBYB1C0sE0op5MnUHkliI+uFQMfxsnXQQ4bmCJfka5kOn+y0LbC1Wxb
+	q9UkwdIEV5NkAk9euidTP3frTVQBX4rLgPc8BNZU3lXhCH7atkL2cQPB8U7VxQQY
+	SZ9TdirQBRVNZzcarMuOl/SmduVT/vPVoPJOmduVkawwd0amdgyjm4Ugy8MFrKoI
+	DMC2VpPj9W8XleH4tQXTK1epw3jV11nuE7bA7uMITGIS4nnAkCIZvXEG2/6hENhl
+	CvwvIRxBU2wgxopoch6CViSu6rLHQ==
+Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010049.outbound.protection.outlook.com [52.101.193.49])
+	by mx0b-0002e601.pphosted.com (PPS) with ESMTPS id 4ftt0apx89-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 03 Aug 2026 23:58:15 -0500 (CDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GD2+LsChRsUgzMLpLv/8O96PMYyyzEgWHuLwcCSYqmSySxR/FTvp6L8DwnDZpxa+OxzlOtbTsUtxi+QsFgfWKTMzq2rCg5r2hFH2nz5BnggljNoeTXE3pRMgxVv0i2PuJtDLRS7t5IB6e/MP87fnNAj9THpJIguoCeKSBOz3bZ5FWNMQzLNv6iAVZrKaIorWh9fzoNideDPbE+D1utkITUNkWalr+gtAy3O8WwCiHZbooBjoJJgW4yVVeYrEQV06AkSF987aX+P7ssxT+D++86x8m8BGqAEKbGHOzxOC8m9Oh3qlx6b1KuPuOgkaIZdBC3ZXy1CDCqnwSvJmutpKyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XoQjSLSIMOUeaDh6HDReplQlapwewnYey0/f/k/k0k8=;
+ b=kU6H+moHdhuEbveK8i06lp9dp7SATYTKT8T8gLlFBySuhA1u6fU9wV0EE3WsndpIPw/DIke9nmzJ7ln+yRJHEbNSWM9rYy8owWIx26Ab2uImFE4Jf3M3b6oDl4asdL/CYS2IIxEolBQyO2Ms/DJBP+egUe/GFyJlfAMQO251st6WFYJUfSY6mN4M6hZd0R3MF75gr4RFseVE1MDHqmm5S731+fGxkYxO4gfAMDSvFR2EJ7MpNf2bn1AZsZjGvh1jGxya8eREfXJ2euuJfYooq7Um971e3TKYuoAYnOhcKtzXCEsPNqCJ6DN9nPqIbQ0wx68TQBdA6EtbmUlKHdNKyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XoQjSLSIMOUeaDh6HDReplQlapwewnYey0/f/k/k0k8=;
+ b=oGdyJtB8FK7ismhLJpojW3EuMIV8oAl81+g/p9NIZ6HoeSTke6BA/eykhjrflfu6GqFirLMwEn0CLXPFl8XJzGwHG+vs4ZdGhxZT3nchVj5qkn/wAiy8NeqhVAHugn+BLfbtkHumBW/otHaav1TiTpZ3BCWEOiDaVQrBss3BgBE=
+Received: from SJ0PR13CA0015.namprd13.prod.outlook.com (2603:10b6:a03:2c0::20)
+ by CH0PR10MB5129.namprd10.prod.outlook.com (2603:10b6:610:d8::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Tue, 4 Aug
+ 2026 04:58:13 +0000
+Received: from CO1PEPF000066EC.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c0:cafe::7f) by SJ0PR13CA0015.outlook.office365.com
+ (2603:10b6:a03:2c0::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.15 via Frontend Transport; Tue, 4
+ Aug 2026 04:58:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
+Received: from lewvzet201.ext.ti.com (198.47.23.195) by
+ CO1PEPF000066EC.mail.protection.outlook.com (10.167.249.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.8 via Frontend Transport; Tue, 4 Aug 2026 04:58:13 +0000
+Received: from DLEE202.ent.ti.com (157.170.170.77) by lewvzet201.ext.ti.com
+ (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 3 Aug
+ 2026 23:58:10 -0500
+Received: from DLEE202.ent.ti.com (157.170.170.77) by DLEE202.ent.ti.com
+ (157.170.170.77) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 3 Aug
+ 2026 23:58:10 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE202.ent.ti.com
+ (157.170.170.77) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
+ Transport; Mon, 3 Aug 2026 23:58:10 -0500
+Received: from [127.0.1.1] (uda0132425.dhcp.ti.com [10.24.50.130])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 6744w69u3766543;
+	Mon, 3 Aug 2026 23:58:06 -0500
+From: Vignesh Raghavendra <vigneshr@ti.com>
+To: Nishanth Menon <nm@ti.com>, Meghana Malladi <m-malladi@ti.com>
+CC: <s-anna@ti.com>, <grygorii.strashko@ti.com>, <conor+dt@kernel.org>,
+        <krzk+dt@kernel.org>, <robh@kernel.org>, <kristo@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>, <srk@ti.com>,
+        <danishanwar@ti.com>
+In-Reply-To: <20260706092229.82674-1-m-malladi@ti.com>
+References: <20260706092229.82674-1-m-malladi@ti.com>
+Subject: Re: [PATCH net] arm64: dts: ti: k3-am64: Fix MDIO clock reference
+ for ICSSG0 node
+Message-ID: <178581947933.886571.4153072563060252898.b4-ty@b4>
+Date: Tue, 4 Aug 2026 10:27:59 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <20260802-submit-acx00-of-dynamic-v1-v1-10-0a53cd9e21cc@gmail.com>
- <05b1e6a2-725e-4b8e-8629-249637bbcb81@lunn.ch> <CADvTj4o0JdjoO+FC4pO=qnjEQ8MRyzQdKp2Hxy9NsPU-gym5OQ@mail.gmail.com>
- <9b8be475-1fde-409c-a82e-be4b2e402650@lunn.ch> <CADvTj4pBovti19MXgQjFpxm=7aRm0sYQz9jxfo8bu3txH94THQ@mail.gmail.com>
- <a9ce53dd-0873-41c0-ad6a-fb42e6cc7aaa@lunn.ch>
-In-Reply-To: <a9ce53dd-0873-41c0-ad6a-fb42e6cc7aaa@lunn.ch>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Mon, 3 Aug 2026 22:37:51 -0600
-X-Gm-Features: AUfX_my4YsBDZd6K0e5M7YLW68aLI1B4Ub2Wc8OS8k7km2q52f4ciX_OEuUghsE
-Message-ID: <CADvTj4qpHU3F0DrEmc0vFi+JiwTNERniiMHKo1LmBd8sg58wJA@mail.gmail.com>
-Subject: Re: [PATCH 10/21] net: phy: add X-Powers AC200 EPHY control driver
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Andre Przywara <andre.przywara@arm.com>, 
-	Richard Genoud <richard.genoud@bootlin.com>, Maxime Ripard <mripard@kernel.org>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15.2
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000066EC:EE_|CH0PR10MB5129:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c213716-9dfe-46f1-7bea-08def1e4fd14
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|23010399003|1800799024|82310400026|13003099007|56012099006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	8A3ikRsu61fQuV/Rz2ARCzGznT57e95My28r2Kyh3AyugrYlc16eAf563hBi8iChvnnXuYSMvqa32TEI3nerJ/giSS1pUimwL6juadCYjnLtFTqTkvYa05cPJwwUNiAsQ83dxVd5Lp+gwjvX/BEUHSsl9BxY5itTboGsarCi31jjEpwo8SgtCX8p9FDKvXEEomsX+pZg1mHO74IcHAN/UekJyOfPqcSEMCeTwN8i2GPa0BMr6wlwghm5xSRN0yoOE4lhoavsEFDTYJy7Fbc35aOa8H0J+iccFrV05cm5nzpqZCvlP21BP+Rz52tmK25I8uXeX02psQ57V74EJ0lQ4F8NMO/cOtaDcYPkaMkWO9Hyh8YK2f5ZVSe3HhYa2BTZvkEFHJ+XmpEKFMF0mgefT+5DMbcHDBIuB63jM2jc5UBTdxbAv32KFevjfrJi94Yum8+ghDvZ6G7B8eqtE8Ws/8rZ95nUPn+El729VrTbNMLm/RzC54WzSp9joS4U6dccQ/5iNMV5PbXN+wIT+9QXRKcV0DtlCKt4GKkHQaBrLmAs4bj0gKjojdyjTC2Rs7Kw0bTZZVmOEMquvXW2cbb7jXM7FWFPOGaJoIbTfVb6MJo+6yvJ8Bg3Lep5HFiln6VFfWSh44cQW5UsTxAnlZI6hfyDlCNWxDvmeJ5nlJ7tT3c4ExS6geV4hQusUoAUGwSZKcl4yPQLOFhqwxUMhu6P4w==
+X-Forefront-Antispam-Report:
+	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(23010399003)(1800799024)(82310400026)(13003099007)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	D/B8xpLm4duGEbEAAVRdwnGpALsiwxMBWAsfnVmf2rg9zks80W5joYoMppsO5AUQXIyiGSmUPAUGUIVVi2bi9kU/54mrXE0eNM+uSDJYyyuc+xSYj/C4hY3Dd/vPa2NhNN1IOUNk/TrhxM4+eJmMFd0/Rdwi43wEbAqILlih5JZE5RsyIHGBE84tx5BB4gAttEf0E+dhq8yBGPAyeAOYEwJbvSWla9I4SolUD+ioDGQpw3qeenYBxZxV6EeGwScY1xfZIytuP25eJh56ElccNP5WoSRrjHILOSiAEqExiZAm0p4li/4mRw66C/Emyk1ByeBmWO5sKVONnH0cmmQDMtHLXQ5pTtqjguPoVQKhhKMD9R5e6cuNpV9zaFwbug4BMdlQy6gRj4jbNSn1ZG18rAsNay6UIUYcQ+s2Yb7cfJ+7gBu/rF9f+uzyB35QHHMN
+X-Exchange-RoutingPolicyChecked:
+	YoER29pTcgoWU4OTLVAtikWjUT8yx9KULeVq5S1hEj+QFamkre6F7JkQZFrFSr9fX+tkBMiuseS4Xw6ratDVKoqx+Joj/VxYhX2jmRZ9GoDUSo373NjXFZKmoUiECARtyOFj7oyh2+HliOSUHnM/LRSmPILob+0TEDqSSFwn/IFFzNgm0x2deGLpZoYFegKUF+9TPs0JKMIAAsEy0iyoZl53GJLVMcriMjE8d4r8GcQIZuEBHcCukKtq6jhYLBPWe58qoCZtJE28920H+FpdvxoZMexgiYB/B6AVZ7wVI/F1LA8H2DEgi6kq/X4Q0D+ubzxGnZ4pue0676/0u9BReQ==
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 04:58:13.2716
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c213716-9dfe-46f1-7bea-08def1e4fd14
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000066EC.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5129
+X-Proofpoint-GUID: 0pIlmg2bjflfy18_xDWfQFS6Ad0s4xK2
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDAzNiBTYWx0ZWRfXwDNetoVzc72t
+ FoqOAqHLYY8p/uULaWhrGr4mklLTUy6kLFKwRlQrFW1Q+mgnq0wSfDq8W+OM1M9jkzgiXqUf4CC
+ 2NJT78YIw0z6R6Xl6HuwXV6kwJ8GPow=
+X-Authority-Analysis: v=2.4 cv=EpniaycA c=1 sm=1 tr=0 ts=6a717167 cx=c_pps
+ a=ZSUkm9skZvR9PgEjA8jAeg==:117 a=f+v6EHfkeJbVwR46tk4DMg==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
+ a=s63m1ICgrNkA:10 a=V5UXEbMT0ywA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Z8NIEmU8O1QQgoT56wFK:22 a=fPAWb5peG099m5CrUpKH:22 a=VwQbUJbxAAAA:8
+ a=o1kACPpZKAZCWsj7fAYA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 0pIlmg2bjflfy18_xDWfQFS6Ad0s4xK2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDAzNiBTYWx0ZWRfX1OkW2SVcEApP
+ rv7ABwHhkx7BKdPtrBGM0FmaO4+JqyiwyZuC6TZewY/hqC0hMYron7GIWqbCuOUu7I8kA0g/ULw
+ hzIA0+jijbcRE/SDkhpHnal9Ruq30UZDrfpdzKwj7eqTRcy0g09mBwyISLQN5QxpYMx5qIdEMyG
+ J2NNhgCSE5/rJ0FphMU8iH27SIUpcfzrsnqiphfnfsrrDXxaHWG7FzGNR8BJWvb9gtFBssoa06X
+ 8xLh17/8rPjul3JfMjF+9uFP4Y9yOUhbYEnca+4o3IkwlCa+KINBUt2XyFfS24Sca8IjVlH6kbl
+ RC81Xq4nEhf/ziIgLXqpO+WFhvRFlXdhQWBtU5AGQqNzs3TWkR/oQfkwwUU2dE3z0SNt6wsVcQR
+ VCASTnqVjUff6jNEkSu1F2XTxzcnZM2fak4TArBPtwucD/xzBMDhuKOk5E7PKamxP3NNafJ38Yp
+ 06LVKFHL5dO3TqT8JZw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-04_01,2026-08-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 malwarescore=0 spamscore=0 phishscore=0 bulkscore=0
+ adultscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608040036
 
-On Mon, Aug 3, 2026 at 8:22=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > > So what i'm trying to do with both of these is make it look more like
-> > > standard Linux building blocks.
-> > >
-> > > If that is not possible, i would actually put all this code into the
-> > > PHY driver. You then have a regmap property to gain access to the I2C
-> > > registers.
-> >
-> > I understand the goal of using standard Linux building blocks where the=
-y
-> > fit, but I do not think folding these control paths into the common PHY
-> > driver gives the right device model here.
-> >
-> > The AC200 and AC300 expose the same Clause 22 PHY interface, but their
-> > control functions are separate devices with different transports and
-> > lifetimes. The AC200 control function is an MFD child accessed through
-> > the parent I2C regmap. The AC300 control function is a separately
-> > addressed non-PHY MDIO device. A regmap reference only describes the
-> > AC200 transport; it does not represent the AC300 control device.
-> >
-> > Folding both implementations into the common PHY driver would make that
-> > driver manage AC200 MFD registers and resources as well as an AC300 MDI=
-O
-> > control endpoint. That would mix the package-specific control transport=
-s
-> > with the otherwise common Clause 22 implementation.
->
-> Given how messy this hardware is, i doubt it is discoverable. We have
-> been pushing back on hacks to enable various things before probe in
-> order to make it discoverable. So you are going to end up putting IDs
-> in DT so that the driver probes without it being discovered. That
-> means you can put any ID you want in DT, and the driver. So you have
-> two different phy driver structs, two different probe functions, etc.
+Hi Meghana Malladi,
 
-I agree that the link PHY cannot be identified by reading its
-registers before the package control sequence has run. I do not agree
-that this means an arbitrary ID should be placed in DT, though.
+On Mon, 06 Jul 2026 14:52:29 +0530, Meghana Malladi wrote:
+> arm64: dts: ti: k3-am64: Fix MDIO clock reference for ICSSG0 node
 
-The Ethernet PHY binding explicitly defines
-ethernet-phy-idAAAA.BBBB as the correct contents of the PHY identifier
-registers. It also documents using that compatible when clocks,
-resets, supplies, or another initialization sequence must be applied
-before those registers can be read. That is exactly our situation, so
-ethernet-phy-id0044.1400 lets phylib create the phy_device without an
-initial MDIO read. Once the selected control provider has powered the
-hardware, the driver can read MII_PHYSID1 and MII_PHYSID2 and validate
-that ID.
+I have applied the following to branch ti-k3-dts-fixes on [1].
+Thank you!
 
-Both AC200 and AC300 expose the same link-side PHY ID and register
-layout. The package choice changes how that PHY is initialized, not
-the identity of the link PHY itself. Inventing separate IDs would turn
-the compatible into a Linux driver selector and would describe values
-which the hardware never reports.
+[1/1] arm64: dts: ti: k3-am64: Fix MDIO clock reference for ICSSG0 node
+      commit: b45d8371f9eb651bf936531120f70ed7f1fa6f68
 
-The package variant is discoverable independently through the SID
-configuration field. Fixed boards can reference one control provider,
-while boards shipped with either package can use SID to select between
-the AC200 I2C control provider and the AC300 MDIO control provider.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-For that reason, I do not think two phy_driver structures and two PHY
-probe functions model the hardware correctly. There is one common
-link PHY, so its Clause 22 implementation should remain in one PHY
-driver. The two different implementations belong at the control
-endpoints, where AC200 and AC300 genuinely differ in transport,
-resources, and lifetime.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+--
+Vignesh
+
+
