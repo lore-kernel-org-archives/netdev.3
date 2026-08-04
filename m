@@ -1,165 +1,160 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775123932F7
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 23:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A01374A01;
+	Tue,  4 Aug 2026 23:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785884857; cv=none; b=Y5tU9QM3H8XdMdDS7AqUF/+QuzzKlqv4D94x4GIVxXseaE/Oy+1aGylgnicE2GtODyH5e0vH1UumXZRU8f1gyF9KTQhNCJb2HF/lkmTK//QJlg2ecNcI1S036BwRIUvjzrmeuK7SK7ei1XsLTjlwR0mdgm4N2cIvK81JAzebdGc=
+	t=1785885764; cv=none; b=GQdBRrpx1SxUuF9+Jdz3nXzsTJjp992mt+HYmBpgkACmRF/aFJuXJwZEit+7KL7DVLoeDstrSFXfbBAGV9inoX/RxWnZZWWZPNu4KUScnlUW1o7TnCi+34a0AQpZQsaUkUTMhfo8v/N1gfeHcfWvs2NRI+ncArP39+CN4ry3G6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785884857; c=relaxed/simple;
-	bh=1hDIff361753XBYUL6NRGP33azA76JKU74y8cWRiAuI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NONu9aQ1dXpra/QJkgH4GYzEfJLGZZ7aCAEVGWbAby3jNDBjPsXqIqL8yTSgJfw+I+xk1AwNj5Z8+3SBjC6hJyJb67FPX9JIq/+BL+cBmjIs76A0CBAQ4gy+5/sQ2b/mK6Vem8zwPMxPC4XS/qmvRHvwUnZLYnBpGago5olkPxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Djc2GsZO; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785885764; c=relaxed/simple;
+	bh=Z6rdk3+ZACGv6xMckRBzF3XjZ36GzektoiXHKVQ5/yI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CF+pJ69bqVdU+79QiPS1kvmj+znz7q9KjYtQzoSvh2drzTl8INKkjJ+FZNIrD4JbJZT2wwjZZe1l/yKZEyFaeGDC77CB0NH5UVejv9eH5U7nfrIou3zGrPIaqUtEhKCuyVy1mhxZCtXRyo/Pt2svR0XwGGc/OBlawO7FqCDBC4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GHz8VKZj; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Djc2GsZO"
-Message-ID: <bc5060c8-7709-4354-aa48-7f64b857c00c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785884843;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=trDSFRPvj2GCWVyUH5CMYnL2x3JtdfnWGWy7m3/e5iI=;
-	b=Djc2GsZOdr6i9TZisgz3SWPTj0vNpJ5HpdShb/cju9/OXbppSkLMesf0Ih+ZlB4KU9Kirl
-	7zUZozneUYcjTMmS0tKRjhLL1/9MTAJX6VMO7/q0PILZ3NXOh0+In/YILdmUCpL1VgHbaC
-	k+857HJWGx1SwpqE+ehLJLMbRdgD2Bo=
-Date: Wed, 5 Aug 2026 00:07:04 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GHz8VKZj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785885762; x=1817421762;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Z6rdk3+ZACGv6xMckRBzF3XjZ36GzektoiXHKVQ5/yI=;
+  b=GHz8VKZjsELTvxNshLGoeF2LZyMwYEjl0wWJOlEhnxceLQMKOioOgdf7
+   ZevRGUn6ZnAeG+BHFsOSujwPAp4oTSNlcXyCz29gVNx3DFjCyJRTg+kYt
+   F/Ph8H5THF+8+yvnokIEpdPhhD2lmKaDf0cvH9o3/x6XYZkjwbIrHuVlw
+   nZJ6mpoAGp6Bu6/1qA72lWO+Zg/0YaNSNfClaFVhIGzts/QOxAehn+lGz
+   L0Lx32A/tuVhtSCX5kaiYVD5fodEFkcQTz1zzn+qiRQ5DwswvjI5XSpr5
+   IYAWVy+Si2nA7+06NertipWabNWC46rPXHxcpva+a3EWnrUttPQ/haPxj
+   Q==;
+X-CSE-ConnectionGUID: FdDE634LTTeU4VvwXZHGhw==
+X-CSE-MsgGUID: iOORMbPBSpaes4P/5eP8Gg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="86327473"
+X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
+   d="scan'208";a="86327473"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:22:41 -0700
+X-CSE-ConnectionGUID: LrK5kGOGQUq3nNzhjqMtEQ==
+X-CSE-MsgGUID: mZeqokLyS2Sdj85xjW4irQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
+   d="scan'208";a="299847314"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 04 Aug 2026 16:22:38 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wrOSw-00000000Awb-2wyW;
+	Tue, 04 Aug 2026 23:22:34 +0000
+Date: Wed, 5 Aug 2026 07:21:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chenguang Zhao <chenguang.zhao@linux.dev>, leon@kernel.org,
+	jgg@ziepe.ca, saeedm@nvidia.com, tariqt@nvidia.com,
+	mbloch@nvidia.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com
+Cc: oe-kbuild-all@lists.linux.dev, linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org, chenguang.zhao@linux.dev,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>
+Subject: Re: [PATCH v2] RDMA/core: quiesce CQ polling before device shutdown
+ on reboot
+Message-ID: <202608050723.aNI2gkmv-lkp@intel.com>
+References: <20260714075558.1420384-1-chenguang.zhao@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v4 1/2] dpll: zl3073x: add channel ToD, phase
- step and TIE operations
-To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
- Chris du Quesnay <Chris.duQuesnay@microchip.com>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
- Paolo Abeni <pabeni@redhat.com>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Richard Cochran <richardcochran@gmail.com>, linux-kernel@vger.kernel.org
-References: <20260803140637.102339-1-ivecera@redhat.com>
- <20260803140637.102339-2-ivecera@redhat.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260803140637.102339-2-ivecera@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260714075558.1420384-1-chenguang.zhao@linux.dev>
 
-On 03/08/2026 15:06, Ivan Vecera wrote:
-> Add low-level DPLL channel operations for ToD read/write/adjust,
-> output phase step, delta frequency offset write and TIE (Time
-> Interval Error) write. These serve as building blocks for the PTP
-> clock callbacks added in the next patch.
-> 
-> ToD operations use a wait-before-write pattern to avoid blocking
-> after each operation.
-> 
-> The tod_ready_wait helper selects the poll timeout based on the
-> current ToD command - write operations use a longer timeout (1000 ms)
-> than reads (30 ms).
-> 
-> The ToD read captures system timestamps (ptp_system_timestamp) around
-> the HW command and completion poll to support cross-timestamping.
-> 
-> The TIE write operation provides sub-picosecond resolution phase
-> adjustment for modes where the DPLL is tracking a reference
-> (AUTO and REFLOCK).
-> 
-> Add output step-time mask to struct zl3073x_dev and
-> zl3073x_dev_out_is_stepped() helper to check if an output
-> participates in step-time operations.
-> 
-> Reviewed-by: Petr Oros <poros@redhat.com>
-> Tested-by: Chris du Quesnay <Chris.duQuesnay@microchip.com>
-> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-> ---
->   drivers/dpll/zl3073x/chan.c | 310 +++++++++++++++++++++++++++++++++++-
->   drivers/dpll/zl3073x/chan.h |  32 ++++
->   drivers/dpll/zl3073x/core.c |  13 ++
->   drivers/dpll/zl3073x/core.h |  23 +++
->   drivers/dpll/zl3073x/regs.h |  52 ++++++
->   5 files changed, 428 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/dpll/zl3073x/chan.c b/drivers/dpll/zl3073x/chan.c
-> index 4ec2cf53dad468..79874a9fdb4962 100644
-> --- a/drivers/dpll/zl3073x/chan.c
-> +++ b/drivers/dpll/zl3073x/chan.c
-> @@ -3,6 +3,7 @@
->   #include <linux/cleanup.h>
->   #include <linux/delay.h>
->   #include <linux/dev_printk.h>
-> +#include <linux/ptp_clock_kernel.h>
->   #include <linux/string.h>
->   #include <linux/types.h>
->   
-> @@ -162,8 +163,8 @@ int zl3073x_chan_nco_mode_set(struct zl3073x_dev *zldev, u8 index)
->    * @zldev: pointer to zl3073x_dev structure
->    * @index: DPLL channel index to fetch state for
->    *
-> - * Reads the mode_refsel register and reference priority registers for
-> - * the given DPLL channel and stores the raw values for later use.
-> + * Reads the mode_refsel, status and reference priority registers for
-> + * the given DPLL channel and stores the values for later use.
->    *
->    * Return: 0 on success, <0 on error
->    */
-> @@ -234,6 +235,311 @@ const struct zl3073x_chan *zl3073x_chan_state_get(struct zl3073x_dev *zldev,
->   	return &zldev->chan[index];
->   }
->   
-> +/**
-> + * zl3073x_chan_tod_ready_wait - wait for ToD semaphore to clear
-> + * @zldev: pointer to zl3073x device
-> + * @ch: DPLL channel index
-> + *
-> + * Polls the ToD control register until the semaphore bit is cleared,
-> + * indicating the device has completed the previous ToD operation.
-> + *
-> + * Return: 0 on success, -EBUSY if semaphore not cleared, <0 on error
-> + */
-> +int zl3073x_chan_tod_ready_wait(struct zl3073x_dev *zldev, u8 ch)
-> +{
-> +	unsigned int timeout;
-> +	u8 tod_ctrl;
-> +	int rc;
-> +
-> +	rc = zl3073x_read_u8(zldev, ZL_REG_DPLL_TOD_CTRL(ch), &tod_ctrl);
-> +	if (rc)
-> +		return rc;
-> +
-> +	switch (FIELD_GET(ZL_DPLL_TOD_CTRL_CMD, tod_ctrl)) {
-> +	case ZL_DPLL_TOD_CTRL_CMD_WR_NEXT_1HZ:
-> +		timeout = ZL_POLL_TOD_WR_TIMEOUT_US;
-> +		break;
-> +	default:
-> +		timeout = ZL_POLL_TOD_RD_TIMEOUT_US;
-> +		break;
-> +	}
+Hi Chenguang,
 
-there are 3 cmds defined, but FIELD_GET(ZL_DPLL_TOD_CTRL_CMD) can return
-up to 16 possible values. I would explicitly put defined commands in
-cases and make default to ENOTSUPP..
+kernel test robot noticed the following build errors:
 
-> +
-> +	rc = zl3073x_poll_zero_u8(zldev, ZL_REG_DPLL_TOD_CTRL(ch),
-> +				  ZL_DPLL_TOD_CTRL_SEM, timeout);
-> +
-> +	return rc == -ETIMEDOUT ? -EBUSY : rc;
-> +}
+[auto build test ERROR on linus/master]
+[also build test ERROR on v7.2-rc6 next-20260804]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-[...]
+url:    https://github.com/intel-lab-lkp/linux/commits/Chenguang-Zhao/RDMA-core-quiesce-CQ-polling-before-device-shutdown-on-reboot/20260805-044210
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20260714075558.1420384-1-chenguang.zhao%40linux.dev
+patch subject: [PATCH v2] RDMA/core: quiesce CQ polling before device shutdown on reboot
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260805/202608050723.aNI2gkmv-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 16.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260805/202608050723.aNI2gkmv-lkp@intel.com/reproduce)
 
-> +#define ZL_DPLL_TOD_CTRL_SEM			BIT(4)
-> +#define ZL_DPLL_TOD_CTRL_CMD			GENMASK(3, 0)
-> +#define ZL_DPLL_TOD_CTRL_CMD_WR_NEXT_1HZ	1
-> +#define ZL_DPLL_TOD_CTRL_CMD_RD_CURRENT		8
-> +#define ZL_DPLL_TOD_CTRL_CMD_RD_NEXT_1HZ	9
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608050723.aNI2gkmv-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/kernel.h:23,
+                    from drivers/infiniband/hw/mlx5/mlx5_ib.h:10,
+                    from drivers/infiniband/hw/mlx5/ah.c:33:
+   include/linux/mlx5/driver.h: In function 'mlx5_core_is_shutting_down':
+>> include/linux/mlx5/driver.h:661:65: error: invalid use of undefined type 'struct mlx5_core_dev'
+     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
+         |                                                                 ^~
+   include/linux/bitops.h:44:44: note: in definition of macro 'bitop'
+      44 |           __builtin_constant_p((uintptr_t)(addr) != (uintptr_t)NULL) && \
+         |                                            ^~~~
+   include/linux/mlx5/driver.h:661:16: note: in expansion of macro 'test_bit'
+     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
+         |                ^~~~~~~~
+>> include/linux/mlx5/driver.h:661:65: error: invalid use of undefined type 'struct mlx5_core_dev'
+     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
+         |                                                                 ^~
+   include/linux/bitops.h:45:23: note: in definition of macro 'bitop'
+      45 |           (uintptr_t)(addr) != (uintptr_t)NULL &&                       \
+         |                       ^~~~
+   include/linux/mlx5/driver.h:661:16: note: in expansion of macro 'test_bit'
+     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
+         |                ^~~~~~~~
+>> include/linux/mlx5/driver.h:661:65: error: invalid use of undefined type 'struct mlx5_core_dev'
+     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
+         |                                                                 ^~
+   include/linux/bitops.h:46:57: note: in definition of macro 'bitop'
+      46 |           __builtin_constant_p(*(const unsigned long *)(addr))) ?       \
+         |                                                         ^~~~
+   include/linux/mlx5/driver.h:661:16: note: in expansion of macro 'test_bit'
+     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
+         |                ^~~~~~~~
+>> include/linux/mlx5/driver.h:661:65: error: invalid use of undefined type 'struct mlx5_core_dev'
+     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
+         |                                                                 ^~
+   include/linux/bitops.h:47:24: note: in definition of macro 'bitop'
+      47 |          const##op(nr, addr) : op(nr, addr))
+         |                        ^~~~
+   include/linux/mlx5/driver.h:661:16: note: in expansion of macro 'test_bit'
+     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
+         |                ^~~~~~~~
+>> include/linux/mlx5/driver.h:661:65: error: invalid use of undefined type 'struct mlx5_core_dev'
+     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
+         |                                                                 ^~
+   include/linux/bitops.h:47:39: note: in definition of macro 'bitop'
+      47 |          const##op(nr, addr) : op(nr, addr))
+         |                                       ^~~~
+   include/linux/mlx5/driver.h:661:16: note: in expansion of macro 'test_bit'
+     661 |         return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
+         |                ^~~~~~~~
+
+
+vim +661 include/linux/mlx5/driver.h
+
+   658	
+   659	static inline bool mlx5_core_is_shutting_down(struct mlx5_core_dev *dev)
+   660	{
+ > 661		return test_bit(MLX5_INTERFACE_STATE_SHUTTING_DOWN, &dev->intf_state);
+   662	}
+   663	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
