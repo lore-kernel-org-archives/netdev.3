@@ -1,242 +1,231 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DD44657E7
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 13:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.168.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785850994; cv=pass; b=Tpx31TPsyTwNTTYLzkIbAACEebXyt1Z10vahoivtcHDEqmpJWD9ZNUhITHoCxSU5sYg7xfQnyfUg5bUJ2c/p8W/aStlHFS3Gj8A9ghUsnMBJdqRJezHY50+/Y7hIG8pGfh8+6IMcGYaIgqMS3rwG00hL1vxfs0jEbnDVY8hKly8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785850994; c=relaxed/simple;
-	bh=Av355PoOiQqfN+lI28kxuagN2wHx9snA+0ylF3eg6GI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XE+goeRcToxaAhZqn6prTa0EUdo4l5ERROuOJmh8Sp5ah7FbRUYRjPk2/2SCP2b1OlXuJ5+l9gc0lVTLhgOfhW01McmbsxEPENkN9MG9hUrGAt/miN8x4iyeXBglpfmsxhjRPRy6sAxI63tBwSTrezmemBW/DktNKnWsO0FTvcI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gWSqX4An; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=MZQslKWR; arc=pass smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05B0468C32
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 13:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785851261; cv=none; b=VwdCI4c8wm/zYBp/8BoRkl0VspsOK70Mg3paK+QExaOzpyiwVe1gbiEqdWXRbvEmLP8RGYwaWRWlmkQGbc9HX1K9QKH84GzoiVOVSFIMfV1V8nYBdOr9gb6oN/Lh9oQgiGSL/nA8UWAEL8kZaodpeJ+yFr6iCKQlvrwmzb03Wvs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785851261; c=relaxed/simple;
+	bh=+UjXpoSkPCJ3H3YYtH/8v2t5djdHLVlM326DbTnbVCs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t8ys9R+Q1DfUwjGf5JrNmAN/YIDAgoGfCHtWWqS5AJKnf/qY4IjA4AiVJmVyklBi8Xgf7ZIYXqfaiaE2pLZsUC+dgRdsLaziUs3XhzmFGIJso2ea6DKyV72zHQJEXF/v6Zb9lL4ff9XsDlst2ajyepD1n0JIK74aK50zupGATCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B6Z633Nu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KXGWGESM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gWSqX4An";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="MZQslKWR"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674CWwBO3211649
-	for <netdev@vger.kernel.org>; Tue, 4 Aug 2026 13:43:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	QWQr/x5bEL6Unr8s/2mTIOitfI4p3mr1jrf6Pl+pGJk=; b=gWSqX4AnlEtpxj6Q
-	Kolx19zNihtI79jb/u5x93/3RIRF/ynzmhH52E2pAWDlIG40klO9F3WYrDnNecrA
-	Mvfb6nxJuTNXh4JIR0ajkI+lba7CtsfsM09qOuD/mdptyX0Fkf+w5a8+m+IWObVr
-	aoTJeUXIt42+xRXjKmsCzTEjliHe6lqAV/6HQxo0H/0HTZTXYesd8+gx2QHlfItC
-	Uew28HCg6lftgQb+cr7Mj5MnfKzClGCf0NxQGhPFOyFFZNWAElTdp0VHyA92Nsf9
-	Dys7phUWfnLavtU7rZNonD8m8pk88xbX8sSZjkD/5YryOFt+sg1FIwW31MLvK0VZ
-	D6JX7g==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fud23h2p9-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 13:43:11 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8ef8249f871so47326896d6.0
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 06:43:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785850991; cv=none;
-        d=google.com; s=arc-20260327;
-        b=krHyE9a2pRkWixi1puo/4Y5KnxXScHApruNkeylFfef5x5f7dhFEHCJUvBre9pt/XG
-         2+tL07poeUm1y91TYBqNXWCVaPk+lKPiRGz9j2WHFl5SUSi/FgA4V1gYLvpyLPDcBw3B
-         zMX0THA6TcoTPBJRcqQwvRTsFfz5/TnVLNBCPdsLlpUzfiYtc9ijb7p8D+nC4rif6RhG
-         VGmOHHy7I2SvWt8yOEOmDKqVEgt2shLXMda+ncu401GhBdba3ClqIds7g2MnKN6eNQCU
-         3cjZn2ICT6vyn4C04hJGw0NuXwlbuUj5+chx84ZLPSz9AkjNlgkYKiMswe3w0uF7DKZo
-         0rTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QWQr/x5bEL6Unr8s/2mTIOitfI4p3mr1jrf6Pl+pGJk=;
-        fh=WKJWYWm7wKfnkbNDgqlwEIx6aHmW7g6FcNZXj9r3RdU=;
-        b=C9QA81/s5eCJrW1WrtIEi/mv+yMZHv79gxCk8iUilXuZaEfT+WI8uriQZHbRA6LiP9
-         Hu8L1RMljJmaPHShDHMJSnH3QTL0Mv1sFSpIp0RYwyRDeuaggNZyQVuvEjwUZsnsrm1R
-         +px29cS5EwBPCYjsOJCphhZKxTibEMu748HBRMm70X3eKIWnS7wUviPW5LgJsDfS/j7q
-         eUn0UR2/iIguPZpb3nBO5g0IsFbTMcTxENdcb0iBfkanP9DwsSdq0ESY/OpU3fuz/Dm+
-         AKDiO4vKO53Jgr5lKV9aIkjmfhr14Ov3/AlXxcQjS4b0FSur21Dw7/QTWDPJ82CVUGzR
-         sd/w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B6Z633Nu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KXGWGESM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785851258;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5zaL/1JHVuONmYFhHxcP8bgazkeWVUzyYecLMTZNi7E=;
+	b=B6Z633NuRxslOmrx6RX5QqU8DO5/tx0gD2gjSs/ZbVNn+3qz6zYhWeTYbAVf1PMwtU+wFD
+	QSW2ptHx0qAaGu39jZRaMhtbzRp52PdMCLGjQTZqvnaK/HipAz0AGYbU5pj8mPt3LLHTQm
+	GNc/LRklzTUql9Jh24V1UbMI8oz7P28=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-307-duxpG-l0NzqUIFIMwmboGA-1; Tue, 04 Aug 2026 09:47:25 -0400
+X-MC-Unique: duxpG-l0NzqUIFIMwmboGA-1
+X-Mimecast-MFC-AGG-ID: duxpG-l0NzqUIFIMwmboGA_1785851244
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4955ce558d8so33811445e9.3
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 06:47:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1785850991; x=1786455791; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QWQr/x5bEL6Unr8s/2mTIOitfI4p3mr1jrf6Pl+pGJk=;
-        b=MZQslKWRcv5ULJPy3/9e0Lr8QrlZmnZ/9XLbE5GYSOpr9wLEcalSBa5ZNL4BIhEefb
-         gWKkEnCAMLbRmGlXOpWJMsMNL7jRTkfgr5nThaNruYZMrlDJMpQNM83N2booE4iAe1kN
-         MkJclyw6s6J5dLh5T52wa5pfRw/I2pyULfgYuaUJRsd8mVBZ96PD+UET11TaevicIFQO
-         /Dk7CiIUDFgM5yCdnH0g4H7rW8oUbX0f87LE7rSngW83OuFgXnncn3Alfpdte25tCJey
-         1SWe2f2SDYL1xy4JBe2zvFqgW+vcZgbwsXF9A4/payzciquWTs+KfNdc4msTGe2mKVoY
-         DkMA==
+        d=redhat.com; s=google; t=1785851244; x=1786456044; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5zaL/1JHVuONmYFhHxcP8bgazkeWVUzyYecLMTZNi7E=;
+        b=KXGWGESMEk7gsto/ryCQyAFsYLf+X9OLIcLF6Rfj3PEUf7g6C9aX0zGV79/vLo9XvG
+         V/uP1VIa70vF3KTAS29qY1IGikxZrhnTJTHerK3EQf+p3ZQDSw8HsZERBU8KQfIv3Fe9
+         NEBvE5WQdW3mHkDDCQzSoqLNORV1XLk92rlfsxdLGupYAOM9SJ2hHJcC735GVnVyq0wO
+         nsWRnUbHrS3FsBABbTNZUuOvsUwycNe0ro/5f9gkNPJQc1BPSFht7Woou1bKCIPEwhr6
+         V4KS0W65X9G2MsznXT8s9tgiMMbQsmcSc9CTqJi2pKDkDNy4Rbm4GOZLERUVuPFI9vJ4
+         TwRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785850991; x=1786455791;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QWQr/x5bEL6Unr8s/2mTIOitfI4p3mr1jrf6Pl+pGJk=;
-        b=AeghYIfto7Q7CFPNc/7HBXV082Th88Zt1HClgi9ElNH3kK9yZ/GkJvmV1kDe1YxzA2
-         8sgAxJwL7ku72CwuB/+mOPKLp+8VOe75nW4ZVR9Sad62Zj4ghTciinvp4EoHg0aLd2vS
-         hWl+kNJBp/lnVTiOFgnucmp+A7U2zuIUplBFqj5fzr1OhOKJF57PT4VFrBQEYGX1Co+d
-         MprvmefouqOeO2C2kqTHQ0aedReBB8Y/5vILoTYR4RswxKgQM1Rfcd5kDM0aYjS5o8Os
-         BGPtt0oczOiH0ZP3XdWrAVdsTHadDjI5yIUSpa5JtcJgY+RSWomilO48wti7fBp6rcRo
-         TZ8g==
-X-Forwarded-Encrypted: i=1; AHgh+RrWIWnT/6chaBm/asITLILzNxJdX2O+iRoFJt3/TMEYxOYPB+W+Rp+PonF1nXWbkO+uBoCplcI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJ8Ke4Jd8FYmRWdDJrRs3tVjbw5kMB4+9fmmrPWxaje6f2Lzm2
-	5QcHdvAHdF9dTtcqCeoHf4jPmHbxjwdewumsCjM7+pZRGK7I98XGz32GEjfF3XBLA/e0Hq3RoyP
-	EmLAmbHwNQ9/RJ3uB0li0d4XQQDGISoC8SBpFIHYVGZ8igIyykbYaZetUy1UpkJoCf/iFJMwESl
-	CbwC7iX6BNmBMeE5E3GwiHpvbfctZpzfhfsw==
-X-Gm-Gg: AR+sD120k2HlKn5ME4Sl3J7ZwLivkHTYOJDRy7kv7k7hlY/aqPi3H/tZwp+UCYfKoew
-	CI1t44Pp7t1gQlcCZl34UNTGrOqs3aU+X8Ec/pGkF8LGt6uX8Yw+TbJYbGhmhhgT4aAKqCqN0h6
-	qMdkx219FixZMSgva5ciiJWgtte85J+NcCWU1dJbb5TH8Ze0YUYgCM6LNPvQ==
-X-Received: by 2002:a05:6214:20e5:b0:8f3:ba0f:e7b9 with SMTP id 6a1803df08f44-90849603117mr235603256d6.18.1785850990516;
-        Tue, 04 Aug 2026 06:43:10 -0700 (PDT)
-X-Received: by 2002:a05:6214:20e5:b0:8f3:ba0f:e7b9 with SMTP id
- 6a1803df08f44-90849603117mr235602546d6.18.1785850990119; Tue, 04 Aug 2026
- 06:43:10 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785851244; x=1786456044;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5zaL/1JHVuONmYFhHxcP8bgazkeWVUzyYecLMTZNi7E=;
+        b=geB+LqrkCqmMekTK87rNkHK+VJOiWyqzQJDe3cZTaNyTli1kPykeGR5r86LhCsjTJX
+         szMhxpd3kSwst09JtZcRM2S/7HrTIyNLq+n84Uw7cbAn+R16UhB1Sek9FByWHNz1MzDw
+         uMvTER0N5T51ElQ+MlMCJc0hW1D5CH38EAk1TtSMzmAsTFq5t7SYJ3rJ8Um5XMatpKQJ
+         EEp6ZnxDrcIvzclDk7B2+FqGmdzBNGVIk+QV8IL6JWctdk+Z8iZYhlrrekIxDyeVqAL3
+         Pu4W9gackH+SjXqR3trY+dbUrmrJONa+GfE9mlK3onJzYj3kpv9yYzVzGi/+49md5ElX
+         aPYg==
+X-Forwarded-Encrypted: i=1; AHgh+RqvK0Rcg6poUCNASQG9bX0u+zB8gsATH3yACM/4tXTN9BgbT0WZVa3gBjf9eBAUOJshNbQILRs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMoOeQ9ASFcjVQbzR5BnpJ5OlijAv2gk/iY3XlYeRDVMGVGUHi
+	jBI/npPMcbmcUDXgGDooe5B9LXaV0wBuhtvrWXRzYWxd35+aRDLZGCDAqCWqegL1Fw4CyoL4g2Z
+	Z74R8+8asW8KfAP6L8o1+pFrWWsUeZG6qY8vlrcrn/AxaawGMqN+aOmO9VA==
+X-Gm-Gg: AR+sD13TEBY2C5uvZ9ZsCZ6phwg/+Y1/yfvp+ZNg4xtLYy4dijt+zJbLaxm/eYUuJlh
+	ZZGaj4hSQSN9iYlLscADHk6NWofqvjTFz7qYj+4YwCxkfcWpeN9KL376wgVl3D8X3Ezo+pyfMfR
+	ysubKYVNP0Ai4WbOiJ9kEAhTOUdkogwUCUeuyNncIDqiw94/ZexL9aBopiGMLJnHahGIbv/DDT4
+	Hj8lHQurHVhsRrJ+/JWVS/ZFMSxNZ9HtuH+U6bF+OMD0SDC5qe3V23LWrbO7tggSOjydBINcHYO
+	74+h4yi2IJMEcZbSw4dU2ItSS3faneCJRdeE81y6PjRUMHQJe7aicS7vpEog42TIEoLcM7t+3wU
+	pagwXCUuPeU1aQaB7GfYb1JgZrSW/iaMoqaAo4xhQtWJOgapIMpwIOTVFbkdM7oWSoMUxF1cWdq
+	I=
+X-Received: by 2002:a05:600c:354a:b0:495:4e89:3f30 with SMTP id 5b1f17b1804b1-4980c673874mr328895745e9.15.1785851244076;
+        Tue, 04 Aug 2026 06:47:24 -0700 (PDT)
+X-Received: by 2002:a05:600c:354a:b0:495:4e89:3f30 with SMTP id 5b1f17b1804b1-4980c673874mr328894735e9.15.1785851243565;
+        Tue, 04 Aug 2026 06:47:23 -0700 (PDT)
+Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807bad893sm276636685e9.3.2026.08.04.06.47.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Aug 2026 06:47:23 -0700 (PDT)
+Message-ID: <bfa765c2-a3e7-42b7-90c5-9757d8392687@redhat.com>
+Date: Tue, 4 Aug 2026 15:47:22 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260730-block-as-nvmem-v9-0-f72935817dbf@oss.qualcomm.com> <20260730-block-as-nvmem-v9-1-f72935817dbf@oss.qualcomm.com>
-In-Reply-To: <20260730-block-as-nvmem-v9-1-f72935817dbf@oss.qualcomm.com>
-From: Ulf Hansson <ulf.hansson@oss.qualcomm.com>
-Date: Tue, 4 Aug 2026 15:42:57 +0200
-X-Gm-Features: AUfX_mzk0wJt2Gak_njsh0rcAEI1svN-3axItB8B6ASWCCxtH7hxRBo8wnhVM-8
-Message-ID: <CAPx+jO8rMUaw7MAYpfp4cLASZ75mfFD4n3NOi2wdHNVvnb4rbw@mail.gmail.com>
-Subject: Re: [PATCH v9 01/10] dt-bindings: mmc: Document fixed-layout NVMEM
- provider support
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-        Rocky Liao <quic_rjliao@quicinc.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Saravana Kannan <saravanak@kernel.org>,
-        Christian Marangi <ansuelsmth@gmail.com>, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-        daniel@makrotopia.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: GjDxzamH3VFclVgsuiUroPheW7dd8EZz
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDExMCBTYWx0ZWRfX2rXxZZNuIOud
- J+pteNnOjtiyG0jsc3Gd4UfUNWv3kmKEU7jiS6F7yN57bQgZBtSVaN20iZtEAQApIrMVGyMSs07
- pKp7MTrmNCrHCA093+s6V6oPUsC0k5k=
-X-Authority-Analysis: v=2.4 cv=XIkAjwhE c=1 sm=1 tr=0 ts=6a71ec6f cx=c_pps
- a=wEM5vcRIz55oU/E2lInRtA==:117 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=DJpcGTmdVt4CTyJn9g5Z:22 a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8
- a=F73tXhIjRpzWiH7OJSEA:9 a=QEXdDO2ut3YA:10 a=OIgjcC2v60KrkQgK7BGD:22
-X-Proofpoint-GUID: GjDxzamH3VFclVgsuiUroPheW7dd8EZz
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDExMCBTYWx0ZWRfX9oC3kYd/Aj9D
- YytZN6FcWaxWM2MeHsrpNn+TJJaMcikMy01qh1e5yJwFlMavTC551FMffSwkWEn6LsAtx7a539G
- /tNFl/SwNUgH4/thsnq60XLxUNQlLGtGgwc154M5jvZZVTv6iVuEyZXNDWlyp6one3Ar3Nz6J/X
- +fl7E3TiM+i2gtqlmV6HpqVqJW7Th7jLx6CkLMG5nLD2eQePeE+uCACjq7IRP26mDrynNBUKGbr
- caQgbNtpR6OIizlNgnIJQxpdEDSTIkyGwWaFQ00Ts5nUvbed+KgOQZ+pZRhb+T/9O5pUVic9vtV
- ujk8iIKQxdSUqa0P//CAKdyCVSYz9+xBi00UWua0yBFS4aBW0ff4w73EuGB0LR3i8hHsL1aWwP9
- zThcFe0tOPW+eYDjeS//m6LKLs1HIlVdBvpIhrnIpzhM5swl1/NO4ieHmmjyyFMgTpotYGYh0Sl
- yZMoihhZexsdSRbf1EA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-04_03,2026-08-03_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 lowpriorityscore=0 phishscore=0
- priorityscore=1501 malwarescore=0 adultscore=0 impostorscore=0 bulkscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608040110
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 net-next 3/3] geneve: Support per-netns netdev
+ unregistration.
+To: Kuniyuki Iwashima <kuniyu@google.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org
+References: <20260731164612.2148830-1-kuniyu@google.com>
+ <20260731164612.2148830-4-kuniyu@google.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260731164612.2148830-4-kuniyu@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 30, 2026 at 6:00=E2=80=AFPM Loic Poulain
-<loic.poulain@oss.qualcomm.com> wrote:
->
-> Allow an eMMC hardware partition node to describe an NVMEM layout so the
-> partition can be exposed as an NVMEM provider. This lets a partition
-> (e.g. an eMMC boot partition) store device-specific information such as a
-> WiFi MAC address or a Bluetooth BD address and reference it through NVMEM
-> cells.
->
-> Accept "fixed-layout" as the partition node compatible, in addition to
-> "fixed-partitions", so the layout can be described directly on the
-> partition node.
->
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-
-I don't think there is any reason to push this any further, the
-updated mmc binding is ready to go. So, applied for next, thanks!
-
-Kind regards
-Uffe
-
-
+On 7/31/26 6:45 PM, Kuniyuki Iwashima wrote:
+> geneve_exit_rtnl_net() iterates geneve devices whose sockets
+> are in the dying netns and queues them for destruction.
+> 
+> So the devices may reside in different netns.
+> 
+> Let's use unregister_netdevice_queue_net() to support per-netns
+> device unregistration.
+> 
+> list_del() is changed to list_del_init() to avoid queueing the
+> same device twice.
+> 
+> Even after geneve_exit_rtnl_net() queues a cross-netns geneve
+> device, geneve_dellink() can be called concurrently for it.
+> In such a case, __rtnl_net_unlock() will perform the unregistration.
+> 
+> Note that geneve uses register_pernet_subsys() instead of _device(),
+> so default_device_exit_batch() guarantees that the async per-netns
+> works are flushed before ->exit().
+> 
+> Tested:
+> 
+> 1. Create geneve device across two netns.
+> 
+>   # ip netns add ns1
+>   # ip netns add ns2
+>   # ip -n ns1 link add geneve0 link-netns ns2 type geneve external
+> 
+> 2. Run bpftrace to check that geneve_uninit() is called between
+>    ->exit_rtnl() and ->exit().
+> 
+>   # bpftrace -e '#include <linux/netdevice.h>
+>   kprobe:geneve_uninit {
+>       $dev = (struct net_device *)arg0;
+>       printf("PID: %d | DEV: %s%s\n", pid, $dev->name, kstack());
+>   }
+>   kprobe:geneve_exit_rtnl_net,
+>   kprobe:geneve_exit_net {
+>       printf("PID: %d%s\n", pid, kstack());
+>   }'
+> 
+> 3. Remove the netns where the geneve socket resides
+> 
+>   # ip netns del ns2
+> 
+> Now, we can see geneve0 is unregistered by per-netns work
+> instead of cleanup_net() and it finishes before ->exit() to
+> avoid WARN_ON_ONCE(!list_empty(&gn->sock_list)) there.
+> 
+>   PID: 571
+>           geneve_exit_rtnl_net+5
+>           ops_undo_list+702
+>           cleanup_net+1122
+>           process_scheduled_works+2538
+>   ...
+>   PID: 1047 | DEV: geneve0
+>           geneve_uninit+5
+>           unregister_netdevice_many_notify+7129
+>           unregister_netdevice_many_net+1050
+>           rtnl_net_work_func+136
+>           process_scheduled_works+2538
+>   ...
+>   PID: 571
+>           geneve_exit_net+5
+>           ops_undo_list+1064
+>           cleanup_net+1122
+>           process_scheduled_works+2538
+>   ...
+> 
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 > ---
->  .../devicetree/bindings/mmc/mmc-card.yaml          | 23 ++++++++++++++++=
-+++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/mmc-card.yaml b/Docume=
-ntation/devicetree/bindings/mmc/mmc-card.yaml
-> index a61d6c96df759102f9c1fbfd548b026a77921cae..0422894508478c8d0ca68292b=
-58a5fdbee218358 100644
-> --- a/Documentation/devicetree/bindings/mmc/mmc-card.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/mmc-card.yaml
-> @@ -38,7 +38,9 @@ patternProperties:
->      properties:
->        compatible:
->          contains:
-> -          const: fixed-partitions
-> +          enum:
-> +            - fixed-partitions
-> +            - fixed-layout
->
->  required:
->    - compatible
-> @@ -86,6 +88,25 @@ examples:
->                      read-only;
->                  };
->              };
-> +
-> +            partitions-boot2 {
-> +                compatible =3D "fixed-layout";
-> +
-> +                #address-cells =3D <1>;
-> +                #size-cells =3D <1>;
-> +
-> +                mac-addr@4400 {
-> +                    compatible =3D "mac-base";
-> +                    reg =3D <0x4400 0x6>;
-> +                    #nvmem-cell-cells =3D <1>;
-> +                };
-> +
-> +                bd-addr@5400 {
-> +                    compatible =3D "mac-base";
-> +                    reg =3D <0x5400 0x6>;
-> +                    #nvmem-cell-cells =3D <1>;
-> +                };
-> +            };
->          };
->      };
->
->
-> --
-> 2.34.1
->
+>  drivers/net/geneve.c | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+> index f456a85dca77..a6a8978e3b81 100644
+> --- a/drivers/net/geneve.c
+> +++ b/drivers/net/geneve.c
+> @@ -2502,12 +2502,13 @@ static int geneve_changelink(struct net_device *dev, struct nlattr *tb[],
+>  	return err;
+>  }
+>  
+> -static void __geneve_dellink(struct net_device *dev, struct list_head *head)
+> +static void __geneve_dellink(struct net *net, struct net_device *dev,
+> +			     struct list_head *head)
+>  {
+>  	struct geneve_dev *geneve = netdev_priv(dev);
+>  
+> -	list_del(&geneve->next);
+> -	unregister_netdevice_queue(dev, head);
+> +	list_del_init(&geneve->next);
+> +	unregister_netdevice_queue_net(net, dev, head);
+>  }
+>  
+>  static void geneve_dellink(struct net_device *dev, struct list_head *head)
+> @@ -2518,7 +2519,8 @@ static void geneve_dellink(struct net_device *dev, struct list_head *head)
+>  	gn = net_generic(geneve->net, geneve_net_id);
+>  
+>  	mutex_lock(&gn->lock);
+> -	__geneve_dellink(dev, head);
+> +	if (!list_empty(&geneve->next))
+> +		__geneve_dellink(dev_net(dev), dev, head);
+
+Sashiko noted that the lockdep chain between dev->lock, utn->loc and
+gn->lock is not trivial, possibly a documentation follow-up would be useful
+
+>  	mutex_unlock(&gn->lock);
+>  }
+>  
+> @@ -2754,7 +2756,7 @@ static void __net_exit geneve_exit_rtnl_net(struct net *net,
+>  	mutex_lock(&gn->lock);
+>  
+>  	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next)
+> -		__geneve_dellink(geneve->dev, dev_to_kill);
+> +		__geneve_dellink(net, geneve->dev, dev_to_kill);
+
+Here sashiko foresees some problem with CONFIG_DEBUG_NET_SMALL_RTNL
+before full conversion to per netns lock even of ovs. Just more
+follow-up, I guess.
+
+/P
+
+>  
+>  	mutex_unlock(&gn->lock);
+>  }
+
