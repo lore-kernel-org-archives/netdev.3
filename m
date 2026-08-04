@@ -1,126 +1,141 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F402C427FAF
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 21:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EE841D11D;
+	Tue,  4 Aug 2026 21:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785877676; cv=none; b=I591SH5y1TVM0ZO1E+FMxDHnlI6xQKQrjASXCwFB5IZtNtcuox+2NoFlsfasZ1CKC2ORg75NFAgmk6LLpbh0iyYHvRgrF6dv+kONz2m7Gsv7qZbnYYL5rLGrscyw/mpuHUpKdjc33/2bTc0uIPC9p+oGtfL8ke8U2YezhKEOzUI=
+	t=1785877802; cv=none; b=tB4PSZq68BIUNy63Rq3hh/hTmavgW9qNVSH2oHlOemrwxPwU5FyzP6wA5F7lvNmcvt/nU89Tiq0zdKALlmK0iyNARZU84CeiHPMqShQxb9VYFiSonqrZGtlxNpeGKk0R58+/igXrMaTLCRLUqXEGSPEjJD6Yd3Yy5QmRhG1uhpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785877676; c=relaxed/simple;
-	bh=E9SBvdW+/KiAZtFTbyHkjkv0EG0f1ZJd0WKHjYFUkJ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pkJ+0e7QtBExpvTITpX6GZbKn1Q8/nrN41U0goajTUNsojkHgit+B/RTUBDxFBiOHDvBASxYyLXRjKyqdTJ0kl0CxbBNgR3ZiTvk1qN12sGY3kGGE63UmHwZYzn6UraU/XgdqPFN8qkjd4yctz8KYxjJtiS+1mroAlmZ8NCxAEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qQy7pB6I; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785877802; c=relaxed/simple;
+	bh=6xJuS7d+Bq7at5WjvJDNZE+NnxBBbs6FgLj52stjyE8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=b+1gdMJdE/qW98lclqGfdQ/PhFb3WFBwlmOcHwA8Yi+HSpb1yPRPlVrl1LEzeXECHxJ+o7XX68FKWEevs8sMLisv8r+MHNURmgn9lSIkDrwtfHDLV3URLs3DfscJasB0PsqrPF0AbKe7/jtY2tU3dbKZk+nxU0kN+jn2342UX7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gpdRfyA5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qQy7pB6I"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-ca88130e09aso170593a12.3
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 14:07:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785877674; x=1786482474; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=76fbOMML2BB/JSL2cFNmUHBc2T+2DJy3Cef/Dsg9aWg=;
-        b=qQy7pB6Iv6YICiTyAOIGA9cg0UW/xbTzurpujg0Kpq+jY1zd8q9Pkc3h/drAoHSH31
-         chtUKuLUe/XJbOUR3fuzr+sSSGwcOdg+KfAAp+mIAditSnj2qTRfq6AynbY35f14OD5z
-         JuunxPuDxwinRr8Nu45qGRcGUBRK/VCWT/K01tDkFiKaMYD3ai3sATt/2HA1Ha9BwOmT
-         8yAcZeh+MCHBRCOEB8Z09/wOte8HKYWEi73NQAPBrsRTt35fzWE3wdL0HAbMk7d1/7kK
-         5q52ViZ/w82L8KWVAjprYZpW/l0zJDBq8zVYw462XG0plWO7BOd83Y6S/U++VClsLEqC
-         pwjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785877674; x=1786482474;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=76fbOMML2BB/JSL2cFNmUHBc2T+2DJy3Cef/Dsg9aWg=;
-        b=RUkbiE2TXhLqUikXxR8SnKRxLLd4HgOY9c+5/rItJY9Hcc0/fOSTKTtd5HGRYF1Xj0
-         3QvYdzcTu9lZbozrXH+vME2i4aCYLJhw8s6vcYGAipGHr0FJV12s8bEPuovXiq5vz6+V
-         NLkd1BVE3cvFJGvqrqiES5ZRg0v1d5ZDeoU2NlmMPUcBHTsTz8ZhuppbhL441XrCK67w
-         j5UyeG2CmhVVas4VE8H/fPZkndGg8PY2LJ1AGaUyXJuL0O4DuD89nvgq8t+H1SPZ3LgB
-         mV/ZJWs5GBktDxX09LhWuoUpKLb7ok5+iE3U0Usxer8Ln904o1kIf4yGF9ubBPOi+Iok
-         zawQ==
-X-Gm-Message-State: AOJu0YynyAnjMJb7naitfdLU70vpurl4UbJLpor8KGoiKCtchw1kTbV7
-	nvtZ55G4xAcxcCCyNQt/Wwyw4Ta9wJ33xZb7EEQJMmxg34sCW0O8YLM2pDsy5TcT
-X-Gm-Gg: AR+sD131RJZU8v461PjIzXhls7QSGP01BP749YNXDYf1VWyZXT3P4OAyn1SJqKDnEc1
-	Q6Z4HTeMAfJLDt2MmeRVXsQcXskNgKXflM/D3/LAvtGxXRuwPWKAKZ/qakiYNDCYgczBeISIBsS
-	I0Ob85I9Di/0NPx9lgqQpHHc73pMkECRTUoO02KoWNG2NvBhFy/g5KoMvS2LzPxmGwOsFRZFLvw
-	xuOJgnNPxLObPkPkYE84Egqc9OPBsOvFDCXKL8yoUlOAG+3UAhTZCt6L9QDRCI43vqsox+nDDbd
-	3aoCEQR4tS6E+sIBztL4kuJ83CUhKJNbK3eTZD7AXa/cEgruZZBnnOyplkx4DdmI7YRqqfjjMQP
-	JYN/NrgNHH+BjGoV83G5I/5zYKVU8lzabOqXJ8UxfM0jPiR5cEpdqMRNlw9LEurUPONWjBaEQoK
-	Icv2TPXWGlLPcSAA5Wx23VLVn32cu0nJAokMwTuKxNVZtPYWkxo73jZiU4BEn4xqarzSkeYG63a
-	cMCGbQH2+kt7Q==
-X-Received: by 2002:a05:6a21:7007:b0:3b4:870e:6f44 with SMTP id adf61e73a8af0-3cb85ffca47mr1802919637.35.1785877674192;
-        Tue, 04 Aug 2026 14:07:54 -0700 (PDT)
-Received: from localhost.localdomain ([12.162.234.74])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31586402e53sm12142151eec.11.2026.08.04.14.07.52
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 04 Aug 2026 14:07:53 -0700 (PDT)
-From: Ahmad Byagowi <ahmadexp@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v3] ptp: ocp: Fix board ID over-read
-Date: Tue,  4 Aug 2026 14:07:51 -0700
-Message-ID: <20260804210751.48248-1-ahmadexp@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gpdRfyA5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7911C1F00A3A;
+	Tue,  4 Aug 2026 21:09:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785877799;
+	bh=DzacPbjzy8EiMC8VtVTjzjaOu/KR0fpQHwwLSzCAHhw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=gpdRfyA5WsG2+LKwaOboEZ0R74vDpQ1DZkCoO09y/RyjR7rWxJsnnQpPvYyT125qO
+	 1hY2p4FIaKBdgWyV/lDIqlxIT/p303KNZkJJrIUCt78ANNTMCXe+Bk3nXsm5kkbWMb
+	 dN+U7FGSqP/kumN1UCrfPS+ySvlr9atYku2QIWTXeXlNauDq70CXGParaOqzgWb1x7
+	 A3ZABnzFF15m9w1LZQ18U9SFviAat/HBkohPoknWqflXrLY0KM30h6UFR8MHSk0Dfu
+	 GVT17YgaICt2shhX1D9Q3vY8tta0q1hxu5PCE36A1y3cfu8Skc/BWUzEvFnAuQDI/b
+	 AxBfOk5UIU7hQ==
+Date: Tue, 4 Aug 2026 14:09:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Jacob Keller
+ <jacob.e.keller@intel.com>, <shshitrit@nvidia.com>, <tariqt@nvidia.com>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: Defer netdev KOBJ_ADD uevent until the device
+ is published
+Message-ID: <20260804140958.3144eabb@kernel.org>
+In-Reply-To: <20260804155103.742898-1-dtatulea@nvidia.com>
+References: <20260804155103.742898-1-dtatulea@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The EEPROM board ID is a fixed 13-byte field and is not guaranteed to
-contain a NUL terminator. Passing it directly to
-devlink_info_version_fixed_put() treats it as a C string and may read
-beyond the field.
+On Tue, 4 Aug 2026 18:51:01 +0300 Dragos Tatulea wrote:
+> netdev_register_kobject() calls device_add(), which emits KOBJ_ADD and
+> wakes udev, but register_netdevice() only makes the device findable by
+> name later, in list_netdevice().  A udev worker that reacts to the uevent
+> can therefore run against a device that no lookup can find yet.
+> 
+> This used to be harmless because the ethtool ioctl took the rtnl_lock
+> when looking the device up, and register_netdevice() runs under rtnl, so
+> the worker simply blocked until registration finished. The commit in the
+> fixes tag moved the lookup out from under rtnl for ops-locked drivers.
+> Now there is a short window in register_netdevice() between
+> netdev_register_kobject() until list_netdevice() when the device is not
+> findable by name.
+> 
+> This was reproduced with the mlx5 driver on a kernel with KASAN enabled
+> during devlink reload: systemd-udevd's net_driver builtin gets -ENODEV
+> from ETHTOOL_GDRVINFO, which was preventing interface renaming.
+> 
+> Suppress the uevent in netdev_register_kobject() and emit it from
+> register_netdevice() next to rtmsg_ifinfo(). This is the last point in
+> register_netdevice() where no error can happen, so only fully registered
+> devices are announced: the registration error paths never reach it, and
+> the device_del() that unwinds them stays silent as well, leaving
+> userspace with neither an add nor a remove.
+> 
+> Fixes: f994752b1127 ("net: ethtool: optionally skip rtnl_lock on IOCTL path")
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
 
-Format at most OCP_BOARD_ID_LEN bytes into the existing local buffer
-before reporting the ID. Use a precision limit because the snprintf()
-output size alone does not bound the source string scan.
+LGTM, one nit..
 
-Fixes: 0cfcdd1ebcfe ("ptp: ocp: add nvmem interface for accessing eeprom")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ahmad Byagowi <ahmadexp@gmail.com>
----
-Changes since RFC v2:
-- Split the safety fix from the net-next feature series and target net.
-- Use the short Fixes hash.
-- Reuse the existing devlink info buffer and bound the source scan with
-  string precision.
-- Limit the change to the board ID over-read.
+>  net/core/dev.c       |  1 +
+>  net/core/net-sysfs.c | 16 ++++++++++++++++
+>  net/core/net-sysfs.h |  1 +
+>  3 files changed, 18 insertions(+)
+> 
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index c1c1be1a6962..32cc092d5d11 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -11499,6 +11499,7 @@ int register_netdevice(struct net_device *dev)
+>  	 *	Prevent userspace races by waiting until the network
+>  	 *	device is fully setup before sending notifications.
+>  	 */
+> +	netdev_uevent_add(dev);
+>  	if (!(dev->rtnl_link_ops && dev->rtnl_link_initializing))
+>  		rtmsg_ifinfo(RTM_NEWLINK, dev, ~0U, GFP_KERNEL, 0, NULL);
+>  
+> diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+> index 0e71c9ed41e8..9a403259a3d0 100644
+> --- a/net/core/net-sysfs.c
+> +++ b/net/core/net-sysfs.c
+> @@ -2334,6 +2334,11 @@ int netdev_register_kobject(struct net_device *ndev)
+>  		*groups++ = &wireless_group;
+>  #endif /* CONFIG_SYSFS */
+>  
+> +	/* Hold back the KOBJ_ADD uevent until the device is discoverable
+> +	 * by name.
 
-RFC v2:
-https://lore.kernel.org/r/20260803205011.1249-5-ahmadexp@gmail.com/
+nit: maybe just say "until the device is listed" ?
+Or there's some less than obvious relevance of the name lookup 
+vs ifindex lookup?
 
- drivers/ptp/ptp_ocp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> +	 */
+> +	dev_set_uevent_suppress(dev, 1);
+> +
+>  	error = device_add(dev);
+>  	if (error)
+>  		return error;
+> @@ -2349,6 +2354,17 @@ int netdev_register_kobject(struct net_device *ndev)
+>  	return error;
+>  }
+>  
+> +/* Announce a fully registered device to userspace. This pairs with the uevent
+> + * suppression from netdev_register_kobject();
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 35e911f1ad78c..3d26ec1f7b9ec 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -2177,9 +2177,11 @@ ptp_ocp_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
- 	if (err)
- 		return err;
- 
-+	snprintf(buf, sizeof(buf), "%.*s", OCP_BOARD_ID_LEN,
-+		 (const char *)bp->board_id);
- 	err = devlink_info_version_fixed_put(req,
- 			DEVLINK_INFO_VERSION_GENERIC_BOARD_ID,
--			bp->board_id);
-+			buf);
- 	if (err)
- 		return err;
- 
+nit: s/;/./ ?
+
+> + */
+> +void netdev_uevent_add(struct net_device *ndev)
+> +{
+> +	struct device *dev = &ndev->dev;
+> +
+> +	dev_set_uevent_suppress(dev, 0);
+> +	kobject_uevent(&dev->kobj, KOBJ_ADD);
+> +}
+
+Please wait for Clashiko to cross-review before posting v2.
 -- 
-2.50.1 (Apple Git-155)
+pw-bot: cr
