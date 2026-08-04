@@ -1,139 +1,127 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F3442BC45;
-	Tue,  4 Aug 2026 07:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707A441DDF0;
+	Tue,  4 Aug 2026 07:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785830097; cv=none; b=XMpWoZzFzE68QsrFAtGE63qgfkeASzrNI9f3yUWXpTbFGPKZ01cv61VjU9Mz1CBtQtp9zGb5+yRSZbiNvxPr/WWoVF7SaptbCJMx13kJUod8Etx6GtJrRO7UB//WyLonoh2Oid98HerlfZ5NxiOm0hIysRWD/ksCid+8QJFigPU=
+	t=1785830373; cv=none; b=bQBJR/iwiI8I8745KxrgnW5gPIVgXPn9lKpQp8mEcqp3gymlx2WgUnX8Lk80gZ8xvvJB3lr0APAQBEKY/nWd6aAjZ/rPPjvpQgaKWHCBVyvsCwDdWee8qlGvN3HKjs1BZzxigk2vJ0dZO4MKj5s+ZcXhOug8KKoM+SbFwfI96eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785830097; c=relaxed/simple;
-	bh=E1kWG1uHm/uN2Er4tihZjGr9qGMdABFmHit7Zv79agA=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Cs1vywdETRv8j9JHI0Lkg2C9AUw+YwhlSh4O4MF6wzlD8avyq7slfwIc59tXzlK8vpaqkKkujPi/DelAw4VR/D/ozN50k3BuDL3pAMYcxyhUOMLFK0PdK7yHGBZ6Fc99kpUvfJxGdNFAsmbEHTT2w1QKF9jQCE7mGDpBAzmv/Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=bmSvA7v0; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	s=arc-20240116; t=1785830373; c=relaxed/simple;
+	bh=zst4gQXdUf9wIFeWVzHRmEgbUh3H7cqmNaSN2phfHP4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VKGjRwigNzFIkLDQZ1Z6fJkoFF5YsfPACLY9NW/qZYim5BGlNJ+QZ2Jzy/zR9QUOmvXsN4h2e8zR7LPZ9DITSwT3rF+7oY0KcGMeJ7uJzbikh4U912m773YL4P6VcN56r3aBTNFvVKqiAsBzju7yGKXEo2OGYGEJPaQdP4admFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HEBnBRSb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="bmSvA7v0"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 3EDA021CD4;
-	Tue, 04 Aug 2026 10:54:38 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=vbzLnRrjwW4/yN490Jf2P42lWBieB/9dHIcKbB4UuCs=; b=bmSvA7v0ypxZ
-	vetC+thg4AP2w+r+L6QbOaVrbnkCbtWd4Fp/5AwtpRFbI66mpSxHSxjn+ZDslM7t
-	HxKHY5zMxsbZT91VtGY41ifeH89945xRdpaHsBTRPkvkxBOQsKTo4Tf0bODmxDJ7
-	ClyC4VfAl8hv0A4O96DLQLM77rMQOq6UmvYevapb+gRijkdLxRTB0cP0vUIV1pQ3
-	Q9PeDNFjNtcHQP7insVeZ8MOu6cVRv7jLQ8FdHFPT7KvugU4o1HJV11PZd/Sgiam
-	BphPTJ2ErowGgSlKOUswu9Fyfgi7F6KbqvcfjV05ndjsVAuDoRtI92PjIKoHmcNc
-	RymQPNsrNw0NZ7iELqhzmLvW8BwBzNdFU790mXe0hGuNfFTpnyqm/b/ahufnmdye
-	MAK1F3NAvOyxqWi/tTgfG0vjG5n4i93plkUEP426hXDquRFGFw75FXGjdZQQz446
-	JN9FtlpVQ3sWYS70n5eq218sA1IIpIFuM/RLB77sGsc6Q1K4zrr+/v62btkH/oiV
-	g6+S08TnKGkgWeGRNDRtDXM1Ca1I5aqmFk3Raj+sw8bj2t8epRQIrybihHKA7XyY
-	FCKG4CVJj59r4fAeS1ynziFs5wXkI53JrOgPUtj5gqBKpEZeyqu3oc0VG2CyGyI2
-	pxu+I//OUHNfX3ImbPrgHxwzVtDVWjo=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Tue, 04 Aug 2026 10:54:38 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id C365061E56;
-	Tue,  4 Aug 2026 10:54:38 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 6747sUSw018857;
-	Tue, 4 Aug 2026 10:54:30 +0300
-Date: Tue, 4 Aug 2026 10:54:30 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: David Lee <david.lee@trailofbits.com>
-cc: horms@verge.net.au, pablo@netfilter.org, fw@strlen.de, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        Kyle Zeng <kylebot@openai.com>,
-        "Dominik 'Disconnect3d' Czarnota" <dominik.czarnota@trailofbits.com>,
-        Sven Eckelmann <sven@narfation.org>, phil@nwl.cc,
-        netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH nf v2] ipvs: clear IPv4 options after rebasing tunnel
- ICMP errors
-In-Reply-To: <20260804061055.711402-1-david.lee@trailofbits.com>
-Message-ID: <32d90953-67ed-e133-5703-7c63b2ec7ed6@ssi.bg>
-References: <20260804061055.711402-1-david.lee@trailofbits.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HEBnBRSb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184AC1F00A3A;
+	Tue,  4 Aug 2026 07:59:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785830372;
+	bh=XFxakEObTj5ILt5cc6UMrFBA4R2PYJOH6KLglW0VZUA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HEBnBRSbawyk083vGvvKdEbDf5vihi1OOpO1vAzkk11NCROBU8Ej4mDcVliwr5EjM
+	 P8mqXj3BMNHjIvaVuMlGGSenTG3QGlXDdS0uUmhF2PenrH+hDp9aO3zSxyKgAfFKNl
+	 VXXKrE4ZvMdnfQ8LFRLK2wNjFP7Jw8W8HhQGgtrTV0jnxJYeFL/rU6tDmUw/9LQ5rT
+	 qqRLF7QB0yTx7mtonjlQ3ao0iJfsyTHg3aSDiQAYpEcHN9Tk7SjQ3NBTjf/P8kGiPm
+	 0NjhWfM5vy+45gXYorynlnUdSUsNjXsUZk9oj+7Qc0HSl/ySN+6Sri7KgSNOklq9CM
+	 wtc4rhBoRjVLw==
+Message-ID: <6af71dfd-37b0-4489-8b7a-63478c8fdd4c@kernel.org>
+Date: Tue, 4 Aug 2026 09:59:26 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/5] mm: Add RCU-based VMA lookup helper that waits for
+ writers
+Content-Language: en-US
+To: Suren Baghdasaryan <surenb@google.com>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com,
+ Liam.Howlett@oracle.com, david@redhat.com, willy@infradead.org,
+ shakeel.butt@linux.dev, jannh@google.com, aliceryhl@google.com,
+ arve@android.com, cmllamas@google.com, christian@brauner.io,
+ tkjos@android.com, dsahern@kernel.org, davem@davemloft.net,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, netdev@vger.kernel.org
+References: <20260802215459.2769283-1-surenb@google.com>
+ <20260802215459.2769283-4-surenb@google.com>
+ <152ee467-b5e4-470c-ad95-c638aa9986bc@kernel.org> <anCst8u7ybHf39n8@lucifer>
+ <9c301dd5-76cc-40dc-bbab-a79559d6db1a@kernel.org> <anDBVu0PIzy7dks-@lucifer>
+ <CAJuCfpEYFs94heKZn3hikYuCJU3CEHr2u1SSxXMyFQwHHAcjDg@mail.gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <CAJuCfpEYFs94heKZn3hikYuCJU3CEHr2u1SSxXMyFQwHHAcjDg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On 8/3/26 21:13, Suren Baghdasaryan wrote:
+> On Mon, Aug 3, 2026 at 9:44 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+>> Agree this is worth spelling out in the comment (I raised similarly).
+>>
+>> Maybe something like:
+>>
+>>         If a VMA exists which spans @address, return that VMA, read-locked.
+>>
+>>         If no VMA is mapped there or, very unlikely, a reference count overflow
+>>         occurred, return NULL.
+>>
+>>         Nothing prevents VMAs being unmapped/mapped before or after the VMA is
+>>         looked up, if a stronger guarantee is required, take an mmap lock.
+> 
+> This last statement is true only if the function returns NULL, so I
+> think it should be in the same paragraph as the "If no VMA is
+> mapped..." sentence and prepended with "In this case...". So:
+> 
+>        If no VMA is mapped there or, very unlikely, a reference count overflow
+>        occurred, return NULL. In this case, nothing prevents VMAs
+> being unmapped/
+>        mapped before or after the VMA is looked up, if a stronger guarantee is
+>        required, take an mmap lock.
+> 
+> Does that sounds good?
 
-	Hello,
+Yeah, thanks both!
 
-On Tue, 4 Aug 2026, David Lee wrote:
-
-> From: Kyle Zeng <kylebot@openai.com>
-> 
-> ip_vs_in_icmp() rebases an skb from the outer ICMP packet to the
-> quoted original request before passing it to icmp_send(). However,
-> IPCB(skb)->opt still describes the outer IPv4 header.
-> 
-> A timestamp option in the outer header can therefore leave an offset
-> that points into the quoted transport header after the rebase.
-> __ip_options_echo() treats a byte at that stale location as the option
-> length and copies it into the fixed-size option storage on the
-> __icmp_send() stack, causing a stack out-of-bounds write.
-> 
-> Clear the stale option metadata after resetting the network header.
-> Keep the remaining control block fields, including the ingress
-> interface used by the ICMP response path.
-> 
-> Fixes: f2edb9f7706d ("ipvs: implement passive PMTUD for IPIP packets")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> Co-developed-by: David Lee <david.lee@trailofbits.com>
-> Signed-off-by: David Lee <david.lee@trailofbits.com>
-
-	Looks good to me, thanks!
-
-Acked-by: Julian Anastasov <ja@ssi.bg>
-
-> ---
-> Changes in v2:
-> - Add the nf tree prefix to the subject.
-> - Restore Kyle Zeng as the patch author and correct the sign-off chain.
-> - Move the research credit below the commit-message separator.
-> 
-> v1: https://lore.kernel.org/netdev/20260731140822.567128-1-david.lee@trailofbits.com/
-> 
-> Bug found and triaged by OpenAI Security Research and
-> validated by Trail of Bits.
-> 
-> Trail of Bits has a reproducer for this bug that triggers a
-> KASAN stack-out-of-bounds write in __ip_options_echo() and can share
-> if needed.
-> 
->  net/netfilter/ipvs/ip_vs_core.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
-> index bafab9345..fe06c380c 100644
-> --- a/net/netfilter/ipvs/ip_vs_core.c
-> +++ b/net/netfilter/ipvs/ip_vs_core.c
-> @@ -1951,6 +1951,7 @@ ip_vs_in_icmp(struct netns_ipvs *ipvs, struct sk_buff *skb, int *related,
->  		if (pskb_pull(skb, offset2) == NULL)
->  			goto ignore_tunnel;
->  		skb_reset_network_header(skb);
-> +		memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
->  		/* Ensure the IP header is present in headroom */
->  		if (!pskb_may_pull(skb, hlen_orig))
->  			goto ignore_tunnel;
-> -- 
-> 2.53.0
-
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
 
