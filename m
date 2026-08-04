@@ -1,162 +1,218 @@
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-168.mta1.migadu.com (out-168.mta1.migadu.com [95.215.58.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4500468C3C
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 13:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938DD2F12A1;
+	Tue,  4 Aug 2026 13:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785851581; cv=none; b=Z7FF5jfZM1hz0+jgtTUT7DtXubkl1SjL9R4j+sJkAEdCUiS+MgA7k/o+OKe6qn9PoXJK9+KkjM+n4ePORP2qR7Mz9dNdoP5y/PKfbdruNfwMfD8U1N4rlkyEujuXYy33ASZsEtD/6/W7Myz6iXw+zFVD2ZGoe92RZsiL8MFKgRo=
+	t=1785851756; cv=none; b=p1YyQH0J4Z60/byrj4qcaIXaJc79lpIEwrsd4CQuj1XWyk08nMtw6qd242DEw0XMAHRgVw2/+3O2SGH9ANQFXKiEjKF7DIPZs3Kk+ti8wimlJe95nslas9/WQVhKsUUXaf9f9t/4J5r7lqji2as/ulyL3MvI87nsx9p+XN8RzaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785851581; c=relaxed/simple;
-	bh=sYuesqJRcMBILfBcDLpqyx4D7Li5OZlu3MjsUJUKCGc=;
+	s=arc-20240116; t=1785851756; c=relaxed/simple;
+	bh=LcYiPqB4tVrRiy7Cltegl8juqIwND8gItntjWapowOk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dnHF386V0WBC3FPYZaRHdBSS6iaRmH+lzbnnR9xsGWDvGWZHJb33GBdRAIc4pDaLEjnx6VUeOwxg4LvlRzi5CxVJnPEDI/eqjEMe+FwEJ51Nn2Dx1DFJOOD1oWKLj4QmnCIZpt5gG94LtUNHdmjy+QCztrQ03HGZpFUljjq+p1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NVzHH1IF; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=pZbSulHAVWNATRU+8zwENoyM/USUFEDurc4VEBf1COX76uHHB/l9sCZOD9ra6A/c+8BnRRLZCB0Ifzra6Bk60JSmAMCD3l6mvXdIVPX+H+BB8nV2ggx4IcuP57VvL0h/tELhu0NDmXP9gIeYy0QENKrInoCoTwCIbp8rz7hlD9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FYZtil51; arc=none smtp.client-ip=95.215.58.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NVzHH1IF"
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7e9ecb1e13cso5137573a34.3
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 06:52:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785851579; x=1786456379; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=drpKu4tj29YfpA+sxDZnVnvfwoyDj4O4bftTxpPVl9M=;
-        b=NVzHH1IFvZffgpkQDoTXt5R7lp8HRkKWd3/5WwamEHONRdBK4FmbO5BDopUA4UlscC
-         ZzOA4MK2elPR6BY58XUVqfl/TKaw2VbEy48nKTLci8PRw1Jbu+ENVuGEla34iEUjvdD8
-         8m5M1x5hjgvO5uJtm/7Fsb8b33EsHEf030b9ucPV9FPYu8VGgyLPEC6C+XoqNQ1FGVKY
-         6WUJz7yP8WqFUJG7huevTy4i7UbMzfmU5UtKcIcbzW7+sX1+36DE0YY1LlwlpG1rCrec
-         GjmnmGxM3J93PMHsH6QEfb9YI8P9oW30Kgog8LbB7VG0gQlG9NkTFY71mTzz+C1vF3km
-         xo7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785851579; x=1786456379;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=drpKu4tj29YfpA+sxDZnVnvfwoyDj4O4bftTxpPVl9M=;
-        b=aT7e7yB632X/OgJlgpeEbte2KQW3DfuMVclfpWdmlmauXHv9vFDw/7PxI0STgZJ5to
-         kTpXI/Hrqck3C6iBGezuaYc8XKYFvRi3myDmYHR/1pnXp+APw3Gyzf7V+yibg9pLOcCR
-         eNxiwP9F3ux+Fzi6/lxBbXFUCcH0Q6VOZ2jonkWkSq4WYv1Fhc+JG3plB0Er3nWXTs5Y
-         TFuGem4Ye3nWDyZKkkBpd6cFZ9LrSkMcG4rGF2HqvoNt9RQuRY4XB/zYKypuK2Z+sYwV
-         gsVmth0b+6yTsC7nEVkOqb+Y+graCWUwfvTD/kBt2gLYRiVaIPYFnJctLGOnRscnNdQO
-         xxBw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr/CzOI2pixHn0ec8PvQ72gIqb7Su8Y0jyqjAqz3ku0Mi4Z/2Eo7nqf1T+WnzTJU5l2KlEYGb4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUVbmUnX9ZXjcs/zzyI6n2CWNX2w4ErH/nSbU9tHGVr2k4V4SO
-	aifoLuC6bwa7R6AUE/ltUwHCk/b0e/QibhVRepqcICqkPk88MrGo1XZI
-X-Gm-Gg: AR+sD115TOZVKSichR3MVqvhlwmLkLh0zqspq/TWoyIYTBqfKqf2gxSh2hjmVt9DSeC
-	H/EROkv+E2xqmYz+IBZyKmOT2Tr/Dc/+U1Ti0oE1icgL7SilX1z/DYj6+NjqLT6QYQoU8sINGiK
-	5I6c2pPwft+KxK/ri3HSuiVV2HQjOSsGIoTBPOQ1xOii/GwIjoRGQMUUzAZ01I6oGRZrDuD0WPw
-	rqVATiNS9svTO10Rw8Hnf9Vvq/YMVwVcn4G9/22Tf0pRuXcOdGSKo5oWqNBDtcmKvvQKNuwiwn7
-	4qmpDdMxL0HJMnzkokkAtEm01+remomwZ9H6dQEJ3docbsskulMqsy2GkGNV+xYi1WkaZICz0R/
-	wcQiuVCYTMoyHitOELmxaII6VjTzIhrK7iXHy7jvCusOEo8UHCLzvT7AvC46Ky0QWfuIyUW/6ju
-	i9qeE2Cj/cCBMlD8X+Y3DC/65CK8tRPIVmd67cbO6PcoeszqWqeBD3b9erPZmUp3H9fBKfuEhqC
-	ldrug==
-X-Received: by 2002:a05:6830:6018:b0:7dc:c7aa:22bd with SMTP id 46e09a7af769-7f196bedf8cmr23522764a34.6.1785851578711;
-        Tue, 04 Aug 2026 06:52:58 -0700 (PDT)
-Received: from [10.22.76.20] ([111.223.92.222])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f1df346a8bsm823526a34.11.2026.08.04.06.52.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Aug 2026 06:52:58 -0700 (PDT)
-Message-ID: <1fbf5f0b-e9ed-4241-b986-76e71a1b0c89@gmail.com>
-Date: Tue, 4 Aug 2026 21:52:51 +0800
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FYZtil51"
+Message-ID: <4ef01fa0-969f-4ec0-997b-5f5f3f67e11a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785851742;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gYaRYJJ4lK/MLOWAM2e1uCFUmqoZIVPfPNaQ31GMp0Q=;
+	b=FYZtil51LzrZNx/hTwezUS2eYSm/487ebVTBuTingdSO8uBcyrhjubzK1fAG6PcwWSkRPD
+	zBrz32hja2gVCBTzht+8r03mrRntjCdIpIvmrBDfj3qKue+wASayNRuJEd3iYBE708hwp2
+	46ODWFVYxV9tghywi/XhsIpsaAGZbZM=
+Date: Tue, 4 Aug 2026 14:55:17 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] vsock: use sock_error() to consume sk_err after a
- failed connect
-To: Stefano Garzarella <sgarzare@redhat.com>, Paolo Abeni
- <pabeni@redhat.com>, Michal Luczaj <mhal@rbox.co>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Andy King <acking@vmware.com>,
- George Zhang <georgezhang@vmware.com>, Dmitry Torokhov <dtor@vmware.com>,
- syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
- Wupeng Ma <mawupeng1@huawei.com>, virtualization@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260730081843.287563-1-phind.uet@gmail.com>
- <6a2958d9-5d16-404a-ac02-21940e90162d@redhat.com>
- <anGyP3hBQfO0I1Pe@sgarzare-redhat>
-Content-Language: en-GB
-From: "Nguyen Dinh Phi [SG]" <phind.uet@gmail.com>
-In-Reply-To: <anGyP3hBQfO0I1Pe@sgarzare-redhat>
+Subject: Re: [RFC net-next v2 4/6] ptp: ocp: Validate EEPROM board IDs
+To: Ahmad Byagowi <ahmadexp@gmail.com>, linux-leds@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-i2c@vger.kernel.org, netdev@vger.kernel.org
+Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+ Peter Rosin <peda@lysator.liu.se>, Nam Tran <trannamatk@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260803205011.1249-1-ahmadexp@gmail.com>
+ <20260803205011.1249-5-ahmadexp@gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260803205011.1249-5-ahmadexp@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On 4/8/26 17:37, Stefano Garzarella wrote:
-> On Tue, Aug 04, 2026 at 11:26:57AM +0200, Paolo Abeni wrote:
->>
->>
->> On 7/30/26 10:18 AM, phind.uet@gmail.com wrote:
->>> From: Nguyen Dinh Phi <phind.uet@gmail.com>
->>>
->>> Syzbot report an issue which can be reproduced with these steps:
->>>
->>>    r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
->>>    bind(r0, {VMADDR_CID_ANY, PORT})
->>>    connect(r0, {VMADDR_CID_LOCAL, PORT})   -> -1, EPROTO  (self-connect)
->>>    listen(r0, backlog)                     -> 0
->>>    r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
->>>    connect(r1, {VMADDR_CID_LOCAL, PORT})   -> 0
->>>    accept(r0)                              -> -1, EPROTO  (stale sk_err)
->>>
->>> Basically, it creates a socket (r0) and triggers a self-connect after
->>> binding it. This self-connect fails with EPROTO because it loops back to
->>> r0 while the socket is still in the TCP_SYN_SENT state, causing it to be
->>> incorrectly dispatched to the connecting-client path. The unexpected
->>> packet type encountered there sets sk_err to EPROTO.
->>>
->>> After that, it invokes a listen() call on the same socket. This listen()
->>> call succeeds because the kernel's listening path never inspects or
->>> clears sk_err. Then, a new socket (r1) is created as a normal client and
->>> connects to r0. However, vsock_accept() rejects this incoming connection
->>> because the listener's sk_err still holds the EPROTO error from the
->>> earlier failed self-connect.
->>>
->>> This rejection causes the child socket created for r1's connection to
->>> never be freed on virtio or hyperv transports; only the VMCI transport
->>> implements pending_work to revisit and clean up a rejected socket
->>>
->>> Fix the issue by using sock_error() to read the sk_err to prevent the
->>> rejection branch from occurring  in this scenario.
->>>
->>> sock_error() atomically reads and clears sk_err, ensuring the error is
->>> consumed when vsock_connect() returns and cannot affect subsequent
->>> operations on the same socket. This matches the established pattern
->>> used by other protocol connect() implementations in the network
->>> stack like __inet_stream_connect(), tipc_wait_for_connect()...
->>>
->>> Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
->>> Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
->>> Fixes: d021c344051af ("VSOCK: Introduce VM Sockets")
->>> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
->>> Tested-by: Wupeng Ma <mawupeng1@huawei.com>
->> Sashiko nipa points out that the race still exits:
->>
->> https://netdev-ai.bots.linux.dev/sashiko/#/ 
->> patchset/20260730081843.287563-1-phind.uet%40gmail.com
+On 03/08/2026 21:50, Ahmad Byagowi wrote:
+> The EEPROM board ID is a fixed 13-byte field. It is stored without room
+> for a terminator and passed to devlink as a C string. An erased EEPROM
+> therefore exposes 0xff bytes and can make devlink read beyond the field
+> while formatting board.id.
 > 
-> Yeah, it seems the same conclusion we reached with Michal on v1 and Phi 
-> agreed on: https://lore.kernel.org/netdev/148e56ec-dc26-4be2-a7af- 
-> eb547b517a68@gmail.com/
+> Reserve a trailing byte, classify erased and malformed contents, and
+> publish board.id only when the field contains printable text with valid
+> padding. Continue reporting the serial number when the board ID is
+> absent.
 > 
-> Not sure why sk_err check was not removed in vsock_accept.
-> 
-> Phi can you check?
-> 
-> Thanks,
-> Stefano
-> 
+> Fixes: 0cfcdd1ebcfe1a9b262f6ad8419580720dc843c4 ("ptp: ocp: add nvmem interface for accessing eeprom")
 
-Sorry, I made a mistake when sending email.
-I've just sent a new version.
+use short format of hash to provide commit to fix:
 
-Thanks,
-Phi.
+Fixes: 0cfcdd1ebcfe ("ptp: ocp: add nvmem interface for accessing eeprom")
+
+And as this is a fix, it has to go to net rather than net-next
+
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ahmad Byagowi <ahmadexp@gmail.com>
+> ---
+>   drivers/ptp/ptp_ocp.c | 69 +++++++++++++++++++++++++++++++++++++++++--
+>   1 file changed, 66 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+> index 35e911f1a..cec936bd1 100644
+> --- a/drivers/ptp/ptp_ocp.c
+> +++ b/drivers/ptp/ptp_ocp.c
+> @@ -347,6 +347,13 @@ struct ptp_ocp_serial_port {
+>   #define OCP_SIGNAL_NUM			4
+>   #define OCP_FREQ_NUM			4
+>   
+> +enum ptp_ocp_board_id_state {
+> +	OCP_BOARD_ID_UNREAD,
+> +	OCP_BOARD_ID_VALID,
+> +	OCP_BOARD_ID_ERASED,
+> +	OCP_BOARD_ID_INVALID,
+> +};
+> +
+>   enum {
+>   	PORT_GNSS,
+>   	PORT_GNSS2,
+> @@ -401,8 +408,9 @@ struct ptp_ocp {
+>   	bool			fw_loader;
+>   	u8			fw_tag;
+>   	u16			fw_version;
+> -	u8			board_id[OCP_BOARD_ID_LEN];
+> +	char			board_id[OCP_BOARD_ID_LEN + 1];
+>   	u8			serial[OCP_SERIAL_LEN];
+> +	enum ptp_ocp_board_id_state board_id_state;
+>   	bool			has_eeprom_data;
+>   	u32			pps_req_map;
+>   	int			flash_start;
+> @@ -472,18 +480,23 @@ struct ptp_ocp_eeprom_map {
+>   	.len = sizeof_field(struct ptp_ocp, member),		\
+>   	.bp_offset = offsetof(struct ptp_ocp, member)
+>   
+> +#define EEPROM_ENTRY_LEN(addr, member, entry_len)		\
+> +	.off = addr,						\
+> +	.len = entry_len,					\
+> +	.bp_offset = offsetof(struct ptp_ocp, member)
+> +
+>   #define BP_MAP_ENTRY_ADDR(bp, map) ({				\
+>   	(void *)((uintptr_t)(bp) + (map)->bp_offset);		\
+>   })
+>   
+>   static struct ptp_ocp_eeprom_map fb_eeprom_map[] = {
+> -	{ EEPROM_ENTRY(0x43, board_id) },
+> +	{ EEPROM_ENTRY_LEN(0x43, board_id, OCP_BOARD_ID_LEN) },
+>   	{ EEPROM_ENTRY(0x00, serial), .tag = "mac" },
+>   	{ }
+>   };
+>   
+>   static struct ptp_ocp_eeprom_map art_eeprom_map[] = {
+> -	{ EEPROM_ENTRY(0x200 + 0x43, board_id) },
+> +	{ EEPROM_ENTRY_LEN(0x200 + 0x43, board_id, OCP_BOARD_ID_LEN) },
+>   	{ EEPROM_ENTRY(0x200 + 0x63, serial) },
+>   	{ }
+>   };
+> @@ -1969,6 +1982,52 @@ ptp_ocp_nvmem_device_put(struct nvmem_device **nvmemp)
+>   	*nvmemp = NULL;
+>   }
+>   
+> +static enum ptp_ocp_board_id_state
+> +ptp_ocp_classify_board_id(char *board_id)
+> +{
+> +	bool all_zero = true;
+> +	bool all_ones = true;
+> +	bool terminated = false;
+> +	unsigned int i;
+> +
+> +	board_id[OCP_BOARD_ID_LEN] = '\0';
+> +	for (i = 0; i < OCP_BOARD_ID_LEN; i++) {
+> +		u8 value = board_id[i];
+> +
+> +		all_zero &= value == 0;
+> +		all_ones &= value == 0xff;
+> +	}
+> +
+> +	if (all_zero || all_ones) {
+> +		board_id[0] = '\0';
+> +		return OCP_BOARD_ID_ERASED;
+> +	}
+> +
+> +	for (i = 0; i < OCP_BOARD_ID_LEN; i++) {
+> +		u8 value = board_id[i];
+> +
+> +		if (terminated) {
+> +			if (value)
+> +				goto invalid;
+> +			continue;
+> +		}
+> +
+> +		if (!value) {
+> +			terminated = true;
+> +			continue;
+> +		}
+> +		if (value < 0x20 || value > 0x7e)
+> +			goto invalid;
+> +	}
+> +
+> +	if (board_id[0])
+> +		return OCP_BOARD_ID_VALID;
+> +
+> +invalid:
+> +	board_id[0] = '\0';
+> +	return OCP_BOARD_ID_INVALID;
+> +}
+> +
+>   static void
+>   ptp_ocp_read_eeprom(struct ptp_ocp *bp)
+>   {
+> @@ -2001,6 +2060,7 @@ ptp_ocp_read_eeprom(struct ptp_ocp *bp)
+>   			goto fail;
+>   	}
+>   
+> +	bp->board_id_state = ptp_ocp_classify_board_id(bp->board_id);
+>   	bp->has_eeprom_data = true;
+>   
+>   out:
+> @@ -2177,6 +2237,9 @@ ptp_ocp_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
+>   	if (err)
+>   		return err;
+>   
+> +	if (bp->board_id_state != OCP_BOARD_ID_VALID)
+> +		return 0;
+> +
+
+why don't simply
+snprintf(buf, OCP_BOARD_ID_LEN + 1, "%s", bp->board_id); ?
+
+buf is already used in the function, let's reuse it
+
+>   	err = devlink_info_version_fixed_put(req,
+>   			DEVLINK_INFO_VERSION_GENERIC_BOARD_ID,
+>   			bp->board_id);
+
