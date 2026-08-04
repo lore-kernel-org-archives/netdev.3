@@ -1,176 +1,318 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107DC442FB7;
-	Tue,  4 Aug 2026 08:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B419D45A284;
+	Tue,  4 Aug 2026 08:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785833942; cv=none; b=blq35KxcF+O13nLvDilyOajbtSMcMlw1HKfSTwFLJfQCsKulzlLQvQ8ZEjDtuCaE+tvCKYn9awWYff41yBOKo6A4oSHrgwVC8s+ms/eXwSdv7kFW1dRPRK/k8rQt9gB6sMgCzdQruRCKEQn/FcaLPCw6pBkwUtdCDTzsk5zA2r8=
+	t=1785833954; cv=none; b=jKwuLsHo6utNqe4FEC1G62+q0wyo7mDJd1B9Sj5A59ON4KOBtB5fVdFozHZFFyjmTSrClmeZnLIvZJes5KRrHF3SmAHH3jZnmmAKL8kEcrqgKNh9L0N0DKQ/i1w3/XXyjhEkV+dFrPwq95vu6/p1uVQrLEcUEHotakNhhSu1MY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785833942; c=relaxed/simple;
-	bh=Je6vKkUp/+7zRMPokN8+f1do3UhOUA0E54l3kWOWZ+U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NH8HUgwJDCPkqO8bLOrBdnTkNu9nUKJbBVGRl0P5rTqa0/a2DIRaxZH+025Th66/d1kJiNYaJz1W22Uf8wbr+kj3JaZeP1q2Hdj4q0y6ETZ6IQBCWAZADHCCMUe7ddAaDZ4IcXJTWq9SdBG9+14lc8Ve+jzrn+wtDKjBdrhXubk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LyQrhK3R; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785833954; c=relaxed/simple;
+	bh=SuhdJH0mJNZG8H/Nuaail2tzG7PGczAeHmHhFxcj+6s=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=guj7PwSals8WXnp32Z10kpzc6XdmTd6fbhG/2gHUwQ1b2NqYfvGw6UfGmZpi3FwhopbhXyaRFjW5Bry82o8ORqY42Elm0g/T5bsliodBnYtsEEX5oUI8B6o4ti+mfHwdAt//dTUQa2EMX+yeWv+q0QSX3F64TKpoL4ANdjoAjds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=VHvJjXmf; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LyQrhK3R"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6748HY3Z2640220;
-	Tue, 4 Aug 2026 08:58:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=QNg/HbvmC/rx8tp89ixJSSZjEJr5cqSrnJvxm+Bwm
-	bg=; b=LyQrhK3RJcYe2+WKObZmabOe7PCKs2ZRAcLtTTvntOp8fPD0KtbTxtqHJ
-	l50Sk4Ay6NhLAm1aDIctTMjXYNBM+AymLBEdvURSD4UmCrcZWOETq+EQ6/6zDCnD
-	Q3wwP589Riyr6wL9AcHf8h/jFaM51tc37wYeNvPia26x/h+JvWYOOlAV8f7VW7I3
-	zgfCYQJ++J1QhtXQ7oChTIW446A9yT+bZHt781jqSP4mph0AJTf5vZzbD/qmhfQ+
-	9TUHcHQhqMYOBD9AQVv3z4Y3evAT7Zj3EBKx9hp1C/CKe3nI+nWOcX0MxTEZQM+f
-	RpfVznj350f37VHpLxX/fZkcXGJUA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8fqmyk5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Aug 2026 08:58:53 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6748uEup010042;
-	Tue, 4 Aug 2026 08:58:52 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswtygysv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Aug 2026 08:58:52 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6748wmoB42926338
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Aug 2026 08:58:48 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8EF982004B;
-	Tue,  4 Aug 2026 08:58:48 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 547CE20043;
-	Tue,  4 Aug 2026 08:58:48 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue,  4 Aug 2026 08:58:48 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55271)
-	id 342461628DA; Tue, 04 Aug 2026 10:58:48 +0200 (CEST)
-From: Alexandra Winter <wintera@linux.ibm.com>
-To: Hidayath Khan <hidayath@linux.ibm.com>, David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>,
-        stable@vger.kernel.org
-Subject: [PATCH net] net/dibs: Fix UAF of dmb_clientid_arr after dibs_dev_del()
-Date: Tue,  4 Aug 2026 10:58:48 +0200
-Message-ID: <20260804085848.3579518-1-wintera@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="VHvJjXmf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=K5
+	KxzrOGlOM9w7WCIH4VqeA5yRySXnQ4JjjN81CWiUg=; b=VHvJjXmfX+gc9bPbkA
+	lO8PJ84G64u2qQP6XTHvkxxAbwo7JiN7kFq6sVSFUl/EX3NCE4y1WXhvn+C/gPo6
+	YxdmPSkBNnOLe4Ei7T2pThnaHBaLO1Aou221foxMzHd7DRXe3LBGVrsPo7imstB+
+	6/lQfhDo7SzWHZdUDo2lp6954=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgDHZJC0qXFqKOiKJA--.35550S2;
+	Tue, 04 Aug 2026 16:58:30 +0800 (CST)
+From: luoqing <l1138897701@163.com>
+To: l1138897701@163.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com,
+	vladislav.yasevich@hp.com,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] sctp: auth: propagate HMAC calculation errors to callers
+Date: Tue,  4 Aug 2026 16:58:27 +0800
+Message-Id: <20260804085827.843042-1-l1138897701@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260804065036.618869-1-l1138897701@163.com>
+References: <20260804065036.618869-1-l1138897701@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: dJ8rKf8KJihxKqjlmOwusvoi6369nmJR
-X-Proofpoint-ORIG-GUID: MIXW45-rt74MP9nk1bJwGNJcYUawEiE5
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDA2OCBTYWx0ZWRfX1nTRh7d3gY7w
- hUUubkw3s6j/DCt3x6OHvb1H0f1cjC1GbPlANmWMO0F7q7vq6s6FKErs3HBmUnPyvKG0QnMthzs
- OcC6RwOtAUNKVJu7nDcDQF49Pk7eR2w=
-X-Authority-Analysis: v=2.4 cv=K8cS2SWI c=1 sm=1 tr=0 ts=6a71a9cd cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=ULihBTfnfYTdAxTj7HYA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDA2OCBTYWx0ZWRfX/Qfhmxe9hvmG
- hw8M+QctmLoWEl0P2ZSDztiOpt6eubtKRMdiQLPDfwpYRFp76x1U3xTREb6Mxm/cxZovzLSW0fG
- 9yS5VoujBX40UfyOQsi/mF7wP49CRDAcCaRrLg8T9TRadWdpQ9HoGdENc5+yvCCMZkJyLjC7GrA
- HtTJQk0675LF+HB6kVRURtgOVIWiMVDIsQNdyjWkVcUITI7oivbOy12yspYZfZ6FHDIwEhiuLHJ
- UUmQ5xbv2KWCDoybtw7Zl4pzls+IlcGg84nac3twJbjekwXJ7GPerwjyKOdN5PCEaYZBNX0qzAl
- +w8zNNpaF2PJ2/p5E9mtGnGoy6SYl+2Sti0ITyaxipJWoE4SqtpYUDJvWKTPKrDtRrwaF5X1PtM
- QqUACrqEs86NmtugnabVeK0tjWxmQj8xSYpnt3KzuhY8LkFN8/0ZMeCRDNTypiH85wn42/HQWP4
- F+j0xuLmwa9Mc9qLz1A==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-04_02,2026-08-03_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608040068
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgDHZJC0qXFqKOiKJA--.35550S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Ar4xZw1UZw1xuw1UWw1xXwb_yoWfKr1kpa
+	15uaykAr18Jr43XFs5Cw18Ga13Ww4kG3y3tFy5Xw1Sy3Z8WryrKryjy3y0g3y5GrZ8Ga47
+	Aw4jgF17WF1DAFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pi_-BtUUUUU=
+X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3RaO0mpxqba5mgAA3w
 
-A dibs device interrupt handler can be active after dibs_dev_del() and
-may still access dmb_clientid_arr.
+From: Qing Luo <luoqing@kylinos.cn>
 
-Free dmb_clientid_arr in dibs_dev_release() after last reference is gone.
-Note that allocating in dibs_dev_add() instead of dibs_dev_alloc() is ok
-for now, because no dmbs can be registered before dibs_dev_add().
+sctp_auth_calculate_hmac() can fail when building the association secret
+under memory pressure, but its void return silently leaves the HMAC digest
+zeroed.  On the receive path, sctp_sf_authenticate() compares this zeroed
+digest against the peer-supplied one using crypto_memneq(), potentially
+accepting an all-zero HMAC from the peer if the allocation failed.  A peer
+can reach this path with a configured but non-active shared key id, so
+association setup is affected too.  Although the allocation failure itself
+is not attacker controlled, the incorrect acceptance is a security issue.
 
-Fixes: cc21191b584c ("dibs: Move data path to dibs layer")
+Fix this by making sctp_auth_calculate_hmac() return int:
+- sctp_sf_authenticate() returns SCTP_IERROR_NOMEM instead of accepting
+  a zero HMAC.
+- sctp_auth_chunk_verify() propagates the ierror so delayed COOKIE ECHO
+  and other paths see NOMEM vs BAD_SIG correctly.
+- sctp_packet_pack() drops the packet on failure instead of transmitting
+  a zeroed HMAC that the peer would reject.
+
+Update the declaration in auth.h accordingly.
+
+Fixes: 1f485649f529 ("[SCTP]: Implement SCTP-AUTH internals")
 Cc: stable@vger.kernel.org
-Co-developed-by: Hidayath Khan <hidayath@linux.ibm.com>
-Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Assisted-by: LLM:code-review
+Signed-off-by: Qing Luo <luoqing@kylinos.cn>
 ---
- drivers/dibs/dibs_main.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ include/net/sctp/auth.h |  6 ++---
+ net/sctp/auth.c         | 10 ++++----
+ net/sctp/output.c       | 12 +++++++---
+ net/sctp/sm_statefuns.c | 51 ++++++++++++++++++++++++++++++-----------
+ 4 files changed, 56 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/dibs/dibs_main.c b/drivers/dibs/dibs_main.c
-index 14c3e2d84902..f059fefb09bf 100644
---- a/drivers/dibs/dibs_main.c
-+++ b/drivers/dibs/dibs_main.c
-@@ -128,6 +128,7 @@ static void dibs_dev_release(struct device *dev)
-=20
- 	dibs =3D container_of(dev, struct dibs_dev, dev);
-=20
-+	kfree(dibs->dmb_clientid_arr);
- 	kfree(dibs);
- }
-=20
-@@ -194,12 +195,13 @@ int dibs_dev_add(struct dibs_dev *dibs)
-=20
- 	ret =3D device_add(&dibs->dev);
- 	if (ret)
--		goto free_client_arr;
-+		return ret;
-=20
- 	ret =3D sysfs_create_group(&dibs->dev.kobj, &dibs_dev_attr_group);
- 	if (ret) {
- 		dev_err(&dibs->dev, "sysfs_create_group failed for dibs_dev\n");
--		goto err_device_del;
-+		device_del(&dibs->dev);
-+		return ret;
+diff --git a/include/net/sctp/auth.h b/include/net/sctp/auth.h
+index 6f2cd562b1de..eeb3297fe97d 100644
+--- a/include/net/sctp/auth.h
++++ b/include/net/sctp/auth.h
+@@ -83,9 +83,9 @@ int sctp_auth_send_cid(enum sctp_cid chunk,
+ 		       const struct sctp_association *asoc);
+ int sctp_auth_recv_cid(enum sctp_cid chunk,
+ 		       const struct sctp_association *asoc);
+-void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
+-			      struct sk_buff *skb, struct sctp_auth_chunk *auth,
+-			      struct sctp_shared_key *ep_key, gfp_t gfp);
++int sctp_auth_calculate_hmac(const struct sctp_association *asoc,
++			     struct sk_buff *skb, struct sctp_auth_chunk *auth,
++			     struct sctp_shared_key *ep_key, gfp_t gfp);
+ void sctp_auth_shkey_release(struct sctp_shared_key *sh_key);
+ void sctp_auth_shkey_hold(struct sctp_shared_key *sh_key);
+ 
+diff --git a/net/sctp/auth.c b/net/sctp/auth.c
+index c901d373af80..6de66f56c41c 100644
+--- a/net/sctp/auth.c
++++ b/net/sctp/auth.c
+@@ -613,9 +613,9 @@ int sctp_auth_recv_cid(enum sctp_cid chunk, const struct sctp_association *asoc)
+  *    zero (as shown in Figure 6) followed by all chunks that are placed
+  *    after the AUTH chunk in the SCTP packet.
+  */
+-void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
+-			      struct sk_buff *skb, struct sctp_auth_chunk *auth,
+-			      struct sctp_shared_key *ep_key, gfp_t gfp)
++int sctp_auth_calculate_hmac(const struct sctp_association *asoc,
++			     struct sk_buff *skb, struct sctp_auth_chunk *auth,
++			     struct sctp_shared_key *ep_key, gfp_t gfp)
+ {
+ 	struct sctp_auth_bytes *asoc_key;
+ 	__u16 key_id, hmac_id;
+@@ -636,7 +636,7 @@ void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
+ 		/* ep_key can't be NULL here */
+ 		asoc_key = sctp_auth_asoc_create_secret(asoc, ep_key, gfp);
+ 		if (!asoc_key)
+-			return;
++			return -ENOMEM;
+ 
+ 		free_key = 1;
  	}
- 	mutex_lock(&dibs_dev_list.mutex);
- 	mutex_lock(&clients_lock);
-@@ -214,13 +216,6 @@ int dibs_dev_add(struct dibs_dev *dibs)
- 	mutex_unlock(&dibs_dev_list.mutex);
-=20
- 	return 0;
--
--err_device_del:
--	device_del(&dibs->dev);
--free_client_arr:
--	kfree(dibs->dmb_clientid_arr);
--	return ret;
--
+@@ -654,6 +654,8 @@ void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
+ 
+ 	if (free_key)
+ 		sctp_auth_key_put(asoc_key);
++
++	return 0;
  }
- EXPORT_SYMBOL_GPL(dibs_dev_add);
-=20
-@@ -247,7 +242,6 @@ void dibs_dev_del(struct dibs_dev *dibs)
- 	mutex_unlock(&dibs_dev_list.mutex);
-=20
- 	device_del(&dibs->dev);
--	kfree(dibs->dmb_clientid_arr);
+ 
+ /* API Helpers */
+diff --git a/net/sctp/output.c b/net/sctp/output.c
+index 23e96305cad7..3d7ead9d40e1 100644
+--- a/net/sctp/output.c
++++ b/net/sctp/output.c
+@@ -517,8 +517,14 @@ static int sctp_packet_pack(struct sctp_packet *packet,
+ 		}
+ 
+ 		if (auth) {
+-			sctp_auth_calculate_hmac(tp->asoc, nskb, auth,
+-						 packet->auth->shkey, gfp);
++			if (sctp_auth_calculate_hmac(tp->asoc, nskb, auth,
++						     packet->auth->shkey, gfp)) {
++				sctp_chunk_free(packet->auth);
++				packet->auth = NULL;
++				if (gso)
++					kfree_skb(nskb);
++				return -ENOMEM;
++			}
+ 			/* free auth if no more chunks, or add it back */
+ 			if (list_empty(&packet->chunk_list))
+ 				sctp_chunk_free(packet->auth);
+@@ -619,7 +625,7 @@ int sctp_packet_transmit(struct sctp_packet *packet, gfp_t gfp)
+ 
+ 	/* pack up chunks */
+ 	pkt_count = sctp_packet_pack(packet, head, gso, gfp);
+-	if (!pkt_count) {
++	if (pkt_count <= 0) {
+ 		kfree_skb(head);
+ 		goto out;
+ 	}
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 708fa07d5fff..e19881c90b49 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -637,13 +637,17 @@ enum sctp_disposition sctp_sf_do_5_1C_ack(struct net *net,
+ 	return SCTP_DISPOSITION_CONSUME;
  }
- EXPORT_SYMBOL_GPL(dibs_dev_del);
-=20
---=20
-2.53.0
+ 
+-static bool sctp_auth_chunk_verify(struct net *net, struct sctp_chunk *chunk,
+-				   const struct sctp_association *asoc)
++static enum sctp_ierror sctp_auth_chunk_verify(struct net *net,
++					       struct sctp_chunk *chunk,
++					       const struct sctp_association *asoc)
+ {
+ 	struct sctp_chunk auth;
+ 
+-	if (!chunk->auth_chunk)
+-		return !sctp_auth_recv_cid(chunk->chunk_hdr->type, asoc);
++	if (!chunk->auth_chunk) {
++		if (sctp_auth_recv_cid(chunk->chunk_hdr->type, asoc))
++			return SCTP_IERROR_BAD_SIG;
++		return SCTP_IERROR_NO_ERROR;
++	}
+ 
+ 	/* SCTP-AUTH:  auth_chunk pointer is only set when the cookie-echo
+ 	 * is supposed to be authenticated and we have to do delayed
+@@ -654,7 +658,7 @@ static bool sctp_auth_chunk_verify(struct net *net, struct sctp_chunk *chunk,
+ 
+ 	/* Make sure that we and the peer are AUTH capable */
+ 	if (!net->sctp.auth_enable || !asoc->peer.auth_capable)
+-		return false;
++		return SCTP_IERROR_BAD_SIG;
+ 
+ 	/* set-up our fake chunk so that we can process it */
+ 	auth.skb = chunk->auth_chunk;
+@@ -666,7 +670,7 @@ static bool sctp_auth_chunk_verify(struct net *net, struct sctp_chunk *chunk,
+ 	skb_pull(chunk->auth_chunk, sizeof(struct sctp_chunkhdr));
+ 	auth.transport = chunk->transport;
+ 
+-	return sctp_sf_authenticate(asoc, &auth) == SCTP_IERROR_NO_ERROR;
++	return sctp_sf_authenticate(asoc, &auth);
+ }
+ 
+ /*
+@@ -826,8 +830,11 @@ enum sctp_disposition sctp_sf_do_5_1D_ce(struct net *net,
+ 	if (error)
+ 		goto nomem_init;
+ 
+-	if (!sctp_auth_chunk_verify(net, chunk, new_asoc)) {
++	error = sctp_auth_chunk_verify(net, chunk, new_asoc);
++	if (error != SCTP_IERROR_NO_ERROR) {
+ 		sctp_association_free(new_asoc);
++		if (error == SCTP_IERROR_NOMEM)
++			return SCTP_DISPOSITION_NOMEM;
+ 		return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
+ 	}
+ 
+@@ -1889,6 +1896,7 @@ static enum sctp_disposition sctp_sf_do_dupcook_a(
+ {
+ 	struct sctp_init_chunk *peer_init;
+ 	enum sctp_disposition disposition;
++	enum sctp_ierror error;
+ 	struct sctp_ulpevent *ev;
+ 	struct sctp_chunk *repl;
+ 	struct sctp_chunk *err;
+@@ -1904,8 +1912,12 @@ static enum sctp_disposition sctp_sf_do_dupcook_a(
+ 	if (sctp_auth_asoc_init_active_key(new_asoc, GFP_ATOMIC))
+ 		goto nomem;
+ 
+-	if (!sctp_auth_chunk_verify(net, chunk, new_asoc))
++	error = sctp_auth_chunk_verify(net, chunk, new_asoc);
++	if (error != SCTP_IERROR_NO_ERROR) {
++		if (error == SCTP_IERROR_NOMEM)
++			return SCTP_DISPOSITION_NOMEM;
+ 		return SCTP_DISPOSITION_DISCARD;
++	}
+ 
+ 	/* Make sure no new addresses are being added during the
+ 	 * restart.  Though this is a pretty complicated attack
+@@ -2011,6 +2023,7 @@ static enum sctp_disposition sctp_sf_do_dupcook_b(
+ 					struct sctp_association *new_asoc)
+ {
+ 	struct sctp_init_chunk *peer_init;
++	enum sctp_ierror error;
+ 	struct sctp_chunk *repl;
+ 
+ 	/* new_asoc is a brand-new association, so these are not yet
+@@ -2024,8 +2037,12 @@ static enum sctp_disposition sctp_sf_do_dupcook_b(
+ 	if (sctp_auth_asoc_init_active_key(new_asoc, GFP_ATOMIC))
+ 		goto nomem;
+ 
+-	if (!sctp_auth_chunk_verify(net, chunk, new_asoc))
++	error = sctp_auth_chunk_verify(net, chunk, new_asoc);
++	if (error != SCTP_IERROR_NO_ERROR) {
++		if (error == SCTP_IERROR_NOMEM)
++			return SCTP_DISPOSITION_NOMEM;
+ 		return SCTP_DISPOSITION_DISCARD;
++	}
+ 
+ 	sctp_add_cmd_sf(commands, SCTP_CMD_NEW_STATE,
+ 			SCTP_STATE(SCTP_STATE_ESTABLISHED));
+@@ -2118,6 +2135,7 @@ static enum sctp_disposition sctp_sf_do_dupcook_d(
+ 					struct sctp_association *new_asoc)
+ {
+ 	struct sctp_ulpevent *ev = NULL, *ai_ev = NULL, *auth_ev = NULL;
++	enum sctp_ierror error;
+ 	struct sctp_chunk *repl;
+ 
+ 	/* Clarification from Implementor's Guide:
+@@ -2127,8 +2145,12 @@ static enum sctp_disposition sctp_sf_do_dupcook_d(
+ 	 * a COOKIE ACK.
+ 	 */
+ 
+-	if (!sctp_auth_chunk_verify(net, chunk, asoc))
++	error = sctp_auth_chunk_verify(net, chunk, asoc);
++	if (error != SCTP_IERROR_NO_ERROR) {
++		if (error == SCTP_IERROR_NOMEM)
++			return SCTP_DISPOSITION_NOMEM;
+ 		return SCTP_DISPOSITION_DISCARD;
++	}
+ 
+ 	/* Don't accidentally move back into established state. */
+ 	if (asoc->state < SCTP_STATE_ESTABLISHED) {
+@@ -4455,9 +4477,12 @@ static enum sctp_ierror sctp_sf_authenticate(
+ 
+ 	memset(digest, 0, sig_len);
+ 
+-	sctp_auth_calculate_hmac(asoc, chunk->skb,
+-				 (struct sctp_auth_chunk *)chunk->chunk_hdr,
+-				 sh_key, GFP_ATOMIC);
++	if (sctp_auth_calculate_hmac(asoc, chunk->skb,
++				     (struct sctp_auth_chunk *)chunk->chunk_hdr,
++				     sh_key, GFP_ATOMIC)) {
++		kfree(save_digest);
++		return SCTP_IERROR_NOMEM;
++	}
+ 
+ 	/* Discard the packet if the digests do not match */
+ 	if (crypto_memneq(save_digest, digest, sig_len)) {
+-- 
+2.25.1
+
+v3: Add missing SCTP maintainers and sctp mailing list, no code changes
 
