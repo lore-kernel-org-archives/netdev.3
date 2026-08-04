@@ -1,132 +1,112 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8109371860
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 18:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9CF41686B;
+	Tue,  4 Aug 2026 18:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785868368; cv=none; b=K2gy6OomQkcp6v0Nb8VcERdqH0mAInMCBWuV/jBsrybQcv5v4XkNHfBsklYYx2AGKIxYsTTUL0HKEuIunC5XfSddMnYlZMD/dg5LzeYQWEBgc0fZHvh+EEZxf/lgjRNNBHV+vSVXIBo/jV9NK/bnKQPV3MIY+azd6K/k1WQ1y2M=
+	t=1785869089; cv=none; b=Ir6pg3xNGrpIHOT/SWPQbgTYj57sT3yWumLjJnM623KpdSOBKYD0c8bsjlsVgcqOP0K6CwZSE4LNry7u91HXfuyK5q7Ps0PnVrAaOabNjmYNLXpXWLqUV1Tl3Ru0YwBq3hdhMckLBkgUPgbqTppWOFP5VrNnVDDoN1ds5C6jxbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785868368; c=relaxed/simple;
-	bh=RZ2UBfczD/1R4n+p2pN7umHlT0/VqSZbWqI1U5UVaS0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=puwbHgmHSwqsXAoIKcpoo9sAxeB/PyQ+gOWprPNREz7MP0TNqVT/L8snut3Liw2z5ufhkrV5RVDbK/9rnLnYDYKE2EM4P7NRRogqv1Qlgr0fP5GybWRcnCBpidELKp1s5ynZ5/woVxkKNnGu0utf6S2hmgBqxFD/dwPcTW1rudQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PBKEYcbR; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785869089; c=relaxed/simple;
+	bh=CiHyGw5nuroIb56valNV/0/CpH/ApDNi5aql+zgAtao=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=cm5RIDjvbQeD0DRni8iLyl0Zo77jWLtTxMnBUZrqgDREvvhMHMTCpXgRW6ep70VxPRyKGk3VHJiT6PgjtlPAqTPcppFL7FAwwQAuJPFJIpJg7hA6uyC2oJwY8gSHXxh4oHG9n/Hj4D0D4BSKL2JDF+pbezXL4GWl5FiKqMkZJqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=CU9Ap36P; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=if6SD2hQ; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PBKEYcbR"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so101554a91.2
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 11:32:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785868367; x=1786473167; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=T46aT6b6jrcEqP7BKbyuJ+Dqx/tXTl32zZ60csvLnD8=;
-        b=PBKEYcbR0PvT1zeXts34GIlYiHL3q5pnqDhgG4ltjJA5tu8fhM2N3LGGp1TPT5GUM1
-         PEJNliQktkqVNYcV3yu11EZ2lJyuiES6kyqtsgWoVrjgpUs9CycCtJS00W2A7USnJWdZ
-         3KY4GpNCHVROWLGmTnTRHlnkWRfmiuqh76UawMRmT4HetY7JXFzurWcstZwE7s2OLO6k
-         DVbWsRYaksm5bURGklSIxUUBVwJBYJIQ33E1CwnUz00IsJ8D+hY9sSqZMJlBFKE420EM
-         beUCb2PRuIDTRDSyXtHdf3Hz+EZZ8M5H8RGZOF/9msErfpR71zwM1nx/QYgdOyPAviAf
-         UddA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785868367; x=1786473167;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T46aT6b6jrcEqP7BKbyuJ+Dqx/tXTl32zZ60csvLnD8=;
-        b=TDND0P90OawdkAX8qVA+rZCAaWMAzW7A5vrwIffhr5m1EhDD/uhMJF4mnQhp+QV04d
-         7BIuxWsGYe5RtXlNC3dkR56WUAcIZgFwefrIfjhYRUUGhvs4TOhSm38Fxvtq1/akqJVQ
-         Rtk0sMSYU1n47qkhtdnAkzHY7cXLPmZgHS47kxslB/L9iF9/A5+SriOxK4LZYdol7EBw
-         T+/LzirzTWZIflDdgw+Nr3Yh3BNuWZhIkkigBfheQ5hPT/d6kl7Uky+0oT+UdnrhFLcd
-         EiUlo/yYFtCLo2dG1TUTlfv1+xMRHbDPPf6JzSATNqeU0UARyAClAqrKlCd+vtn51mwB
-         iG0A==
-X-Forwarded-Encrypted: i=1; AHgh+Rrt1CflA6XUNiYLRU2Fw/A4ErzwyAnpzvdFGuKreerEkfiJFPFJcYqqyI2/Zj5+ut0y8WWX95w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsXoqs2U5i2Tc73So/UwpE9e3kcwLcTSTwxRJ2o9b45eC95YcW
-	Fm7vbuRoBAFEzqNFgtVlDtDPCy7Bq3hjtOekQ3U6Cc8z80aBBNDoxWWm
-X-Gm-Gg: AR+sD13W2MLg87qJ2MJwBEnoEzdd8sZiadeB80sUWb3Oj/ZggFI2c5xqqm9be2bEN90
-	2ndMwVoQOa3VV9rUR0k/gJmJg0w3mhhRYnA5QoSkzZ/4H0P6gcF++6nvLUELcaZNuehISvOsbPI
-	V48jNrP7ma6yAY8sjiWHfooiLgC0wIlLz0zIu2/G6H2pnR6yp69oZI0saLnlVrXd/cmzWIvHF5o
-	o5r09+fs0CX9JTVizwzmJHbitG0Zb6c3CSY8bGZZDysOzlU8mM7GuDufNjgWJs4DYaATIpeSgXT
-	OUJnEKlqJYfwRAEzaaEdBAxQXeQJO7+3Pei7dFjyxtDeQLiGarfQ8Z2iERQwlW7QsLp9tBzBy2T
-	IvR4+5TDS86ia6Zio6ufhJnQXPQWUyqcjRpAPK6bVZ2apE2/vJjWHV08QoKDaGMiHDvEwsfgKDv
-	RbT63coQ709aIspzniINkSWpoFBrVpM9npePGbLApPxzmM/jcNnJiaj3OKUQbr224dGfjSEqlnp
-	SZb
-X-Received: by 2002:a17:90b:224e:b0:38e:9ef9:eb97 with SMTP id 98e67ed59e1d1-3903c5c443dmr636262a91.16.1785868366824;
-        Tue, 04 Aug 2026 11:32:46 -0700 (PDT)
-Received: from DESKTOP-TIT0J8O.localdomain ([49.47.198.15])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fca926c0bsm5440864c88.14.2026.08.04.11.32.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 11:32:46 -0700 (PDT)
-Date: Tue, 4 Aug 2026 22:32:38 +0400
-From: Ahmed Naseef <naseefkm@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Ahmed Naseef <naseefkm@gmail.com>, netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>, Qingfang Deng <dqfext@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	SkyLake Huang <SkyLake.Huang@mediatek.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net] net: phy: mediatek: fix TX blink masks using the RX
- bits
-Message-ID: <anIwRrQT9qMD89v5@DESKTOP-TIT0J8O.localdomain>
-References: <20260804113511.3371248-1-naseefkm@gmail.com>
- <ab2f7f4f-0f46-4c6e-b3b1-ea713dbd08c6@lunn.ch>
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="CU9Ap36P";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="if6SD2hQ"
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.phl.internal (Postfix) with ESMTP id 40FE3EC00D2;
+	Tue,  4 Aug 2026 14:44:45 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 04 Aug 2026 14:44:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1785869084;
+	 x=1785955484; bh=CiHyGw5nuroIb56valNV/0/CpH/ApDNi5aql+zgAtao=; b=
+	CU9Ap36PMQw7CxobXoModlxGiHRsH6szsDDWJtWxLyF6IUZAb4aUVbR+bP8IEqqf
+	RKWP5fTKkijVYly8N077eRimtu6h2gno09Z+HQ52h/RzFRyceMN/uI04kMjnLAvM
+	MZCXf2kkAB8oOBu3dXoS0zQAyxsGvUPPq9Kgtja+ADaTFtVaTmgRnJIwJX1qsoEk
+	DFi62BXyt0nEbrW/Tb9I1iatBbLYAWt4fWc1sjjaxHQLEv1PvDcWHkpDmQIOWOlE
+	5OKFSwWyBH37zCAZx+BpbUwkEUI1Nzl3InaaTRH8ys1BQcrbE+R7S/Sn+bF/XmS4
+	EaZqo/fMPS8bzclQCH5fNQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785869084; x=
+	1785955484; bh=CiHyGw5nuroIb56valNV/0/CpH/ApDNi5aql+zgAtao=; b=i
+	f6SD2hQjw9wNA22baQWS4XNZoM/nx4Xs2tQBZd/OugF546knQF6WzTR78JHeuIsS
+	y0K0sIqBOaRfyrLzsgAosyRasf1XdOumAlRefU3aqNwUM2WZ9/Yb3PBUHLpWwwBW
+	mHYatuXpOBOsvPinxLIBis7VsVRRNXgNhbSVcCexzqnxO+0Ww2wo55LQxxt7WeZi
+	8onMUZWopbUDGWgriyjdJpkpd/e6tgjPIeM77FbkRUE1iCJlw11dk0U+C6QNPMk4
+	4INZ7TwHU/8czK8Knp/QItTFqdZsdN77oYn+oHqGSna0t2PFTK9R7CTQAlJjaXOp
+	GHpABg/klu7pQwYMipntg==
+X-ME-Sender: <xms:FjNyaqOqizyPyN9mFlOCPKwT50sh6KlRa2bkmwmm3SE67t5l-Icd9w>
+    <xme:FjNyajztmMY3RVDNr9LpV5ROaQa_RhpK2vqCtbvkVJzJuF0jOPT-ljfDBwEXRZjG2
+    Iuytlu6zWF8eeim9HMrlxYvoB4ZT5FfklErcx5eJgJXfOq3HUYIt9o>
+X-ME-Proxy-Cause: dmFkZTGQKlZ9Xbi8fAn1P8ReUFpaOMRJIWofvKva/Ri1P63V/SDP9r2GsvIIJZPMXxu/LP
+    WOlKT5d16J+Po+W9v5OR3HZNSAs5njYjEytyeH53PEuYqsH/KXjIwply9izR2TEMFtx2+B
+    PmuQ1rvGxKwec9Ry98WBxV7MIKHPlY8yuFTrSZB96gB6zZL1oxf6uqzEa5uYWwRdzAONyZ
+    r+KbmF7UoAfjLjwG0gw3+R1Z9fcoEr28TfQ8wpHs4O5KhzswTpYH4vWqJ0IeBdRjPzlXN+
+    Te8ELQpdH7NEIwSVtXnLTCwDdnYDpCpRTq49FOEQQZQDzkmBNCfZ6Tjwe8spRn1TlJmMLo
+    d3//fatMdeRkv+XSszorud1t2I0jImLhyzYglwjg6Nd8aTSQDRvGBdF2F/FG8l3+Q/XUQm
+    7aPVsgMG+RlpdQLsk7Gk1gnwyQZ1bjGJqNfQneCvG5djulraNMfTKGUgYLI7HWTt4N2VoX
+    cXAM7qmba6mv/6wrJSUw6iHoRZTbpNbLStSrao+XEr5ScBOj7+C0p0wTafpgSHXDWepFZQ
+    VPJTBIVgZXcndBGt3TMMSThLJltW8EOB3/sZdp5ISTzIDS0GlP2fhWKfhnpyy+Bf2FoD6R
+    hLxQw+tbhODe5lpLVIkUjbsJ0EU+h152V9G0Mj6KBD39rdvTzKR7fO02l9UA
+X-ME-Proxy: <xmx:GDNyaqIlQ8Ksjg75YKg411rajMPl91VryjjgVkFi-0m6Idq7K0Z1jw>
+    <xmx:GDNyaogQKYrd6hcDdQwSEuJKnNavIsIKxR_7b_cgKA9fde6flo2dYQ>
+    <xmx:GDNyam9bpmLxKDzLTy8fNwurFLOBiHyeqj2s2v3Y9SaKW7eY02qmLg>
+    <xmx:GDNyatNHvGiOmNKTd09OSogex45R1Q0qClwASI5G85Q-SQ2vH8-uSA>
+    <xmx:HDNyaqhP09HqQyqryQGriWUsalWxp2cJnVUcyY6SZXCl21ZAZQyKIWxa>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 2582B32A0062; Tue,  4 Aug 2026 14:44:38 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-ThreadId: AW9x60_DFePc
+Date: Tue, 04 Aug 2026 20:44:16 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: =?UTF-8?Q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>,
+ "Andrew Lunn" <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>
+Cc: Netdev <netdev@vger.kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <8295f924-1b74-4a10-b9e2-47f70df02938@app.fastmail.com>
+In-Reply-To: <20260804-wiznet-link-gpio-v2-1-3b1d0c870f35@marmottus.net>
+References: <20260804-wiznet-link-gpio-v2-0-3b1d0c870f35@marmottus.net>
+ <20260804-wiznet-link-gpio-v2-1-3b1d0c870f35@marmottus.net>
+Subject: Re: [PATCH v2 1/2] w5100: restore GPIO-based link detection
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ab2f7f4f-0f46-4c6e-b3b1-ea713dbd08c6@lunn.ch>
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 04, 2026 at 08:11:21PM +0200, Andrew Lunn wrote:
-> On Tue, Aug 04, 2026 at 03:35:11PM +0400, Ahmed Naseef wrote:
-> > MTK_GPHY_LED_TX_BLINK_SET and MTK_2P5GPHY_LED_TX_BLINK_SET are built
-> > from the RX blink bits instead of the TX ones, so both TX masks are
-> > identical to their RX counterparts. The TX bits they should be using,
-> > MTK_PHY_LED_BLINK_{10,100,1000,2500}TX, are otherwise only referenced
-> > by the per-speed branch of mtk_phy_led_hw_ctrl_set().
-> > 
-> > A TX trigger selected without a link trigger therefore programs the RX
-> > blink bits, and the LED blinks on received traffic. The masks are also
-> > used to decode the blink register in mtk_phy_led_hw_ctrl_get(), which
-> > as a result cannot tell the two triggers apart: an RX-only
-> > configuration reads back as RX and TX, and a TX-only configuration
-> > reads back as neither.
-> > 
-> > Fixes: 7f9c320c98db ("net: phy: mediatek: Move LED helper functions into mtk phy lib")
-> 
-> Was this bug introduced in this commit, or did this commit just move
-> the code around and it was broken before? The Fixes should go back to
-> where the bug was added, which could be earlier.
+On Tue, Aug 4, 2026, at 19:40, Arthur Cr=C3=A9pin Leblond wrote:
+> Commit dacf281771a9 ("w5100: remove unused gpio link detection")
+> dropped the link_gpio/link_irq handling on the grounds that no
+> devicetree user passed a "link" GPIO at the time.
+>
+> This isn't a plain revert of that removal. The link GPIO is now
+> bound from the device tree link-gpios property using the resource
+> managed GPIO descriptors.
+>
+> The link IRQ is also requested with devm_request_threaded_irq()
+> instead of request_any_context_irq(), so it is released automatically
+> on driver removal or probe failure.
+>
+> Signed-off-by: Arthur Cr=C3=A9pin Leblond <arthur@marmottus.net>
 
-It was introduced by that commit. Before it, mtk-ge-soc.c correctly had:
-
-  #define   MTK_PHY_LED_BLINK_TX      (MTK_PHY_LED_BLINK_10TX |\
-                                       MTK_PHY_LED_BLINK_100TX |\
-                                       MTK_PHY_LED_BLINK_1000TX)
-
-which 7f9c320c98db removed, adding to mtk.h in the same commit:
-
-  #define MTK_GPHY_LED_TX_BLINK_SET   (MTK_PHY_LED_BLINK_1000RX | \
-                                       MTK_PHY_LED_BLINK_100RX | \
-                                       MTK_PHY_LED_BLINK_10RX)
-
-
-Thanks,
-Ahmed
-
-> 
-> 	Andrew
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
