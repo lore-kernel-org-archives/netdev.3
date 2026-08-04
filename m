@@ -1,55 +1,49 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C58F41D136;
-	Tue,  4 Aug 2026 07:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41503429CEF
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 07:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785829033; cv=none; b=REVtDdFxDlhcjuU7gglO2lJkLkktfdpAYFoF3ri/22cMpETcn14A08LL2xkR7jOgyWHe2G8lex6aj5gvn31dCoIJh2pSDg5TPih5rdWA2eDV8lgBpgnfJ1oEMalTcJ/zM30KTTItF2QRBv0YB6EdECkCJ8fpfnTlc7fTnfRa4bA=
+	t=1785829540; cv=none; b=YAB+VuKWFSryH1FxF5BuSwoUcDt3q0JayzS40tamYbWeTlem98JCFoXE0EJJsvkbZhAppwp9xtxUgJ+cfDsSDL/IPu5RMR3WYymfic2idapgfrUA1LxFBgdYyozkfS56pegon/8o1eXGxDE+MfDQobMZnvLUbKP4DFprk+oLhcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785829033; c=relaxed/simple;
-	bh=CbOyoYrDtV4DNVnOD/IZBNe/FGxESa2gKjw5k3UToHE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UH/o7t0MY4payFkUF/y46rH3n3EW2v8t4NX9VDbYnVojvEFhPiY65p24uuYtGqrW95ZtSNfSJMyxMYYzs0Ra10njYdh3i4TF1oiULOIiv2zLxGW2tCeKPMEhEzfC+HQFS+ARCNIIu2VSAUiOuOkeclYF9dV1nszQCR0cjTk21h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 45c97d148fd711f1aa26b74ffac11d73-20260804
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:fd106d4a-38aa-4d86-8241-07bd762a0807,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:fd82b126bca751d90c8842ee01519f04,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|865|898,TC:nil,Content:0|15|50,E
-	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 45c97d148fd711f1aa26b74ffac11d73-20260804
-X-User: xiongweimin@kylinos.cn
-Received: from xwm-tianyi510pro-14imb.. [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <xiongweimin@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1858656050; Tue, 04 Aug 2026 15:36:57 +0800
-From: Xiong Weimin <xiongweimin@kylinos.cn>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	s=arc-20240116; t=1785829540; c=relaxed/simple;
+	bh=2RlmN3sgqp9WHsXqioLXIcYivJBWcywepD/647jK51Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lxoRk9/tuuR9okYXXFyeOPPJclStRopyXs6Fj6OmFkXl7ne/XgOglxNsDr1jHy+OX5GJT8PB3xz9ryenia5eEQjcpm58vohOjLWCr6iGg4bw4EtxO/g+XwwBBiy4uNB1grSbBxgzyo2O4eQFGKuUyZPrUUaLEMHy7u4aMISffi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GFIX43b5; arc=none smtp.client-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GFIX43b5"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785829526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bRfFInjJf/bMgDbl6yuOL4E9YQkxpA9l/Y7rsAspSY8=;
+	b=GFIX43b5egGwO4UGExij7o0iadKnI6QIKHWIyihw90sFU6Dl6xqYhFhqyu9mTOjiN0cd6C
+	/+p3SBt7diar1TKULIwGMKTLNZnXNYefm8VIcl4wM7yrZcJ79yt5k7cZNdjOVw7/NbCmlT
+	0wjoj9tXLfrnKXC3i3PCoiUQ4vgKS/k=
+From: Qingfang Deng <qingfang.deng@linux.dev>
+To: linux-ppp@vger.kernel.org,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Xiong Weimin <xiongweimin@kylinos.cn>
-Subject: [PATCH] virtio_net: roll back RSS state on control failure
-Date: Tue,  4 Aug 2026 15:36:54 +0800
-Message-ID: <20260804073654.1293243-1-xiongweimin@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
+	Paolo Abeni <pabeni@redhat.com>,
+	Qingfang Deng <qingfang.deng@linux.dev>,
+	Kees Cook <kees@kernel.org>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Asim Viladi Oglu Manizada <manizada@pm.me>,
+	Felix Fietkau <nbd@nbd.name>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Norbert Szetei <norbert@doyensec.com>,
+	Guillaume Nault <gnault@redhat.com>
+Subject: [PATCH net-next] pppoe: pass bound packets directly to generic PPP
+Date: Tue,  4 Aug 2026 15:44:50 +0800
+Message-ID: <20260804074452.75548-1-qingfang.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,133 +51,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-The ethtool RSS and RXHASH paths update the driver's cached RSS state
-before committing the change to the device.  If the control virtqueue
-command fails, the cached hash types, key or indirection table can then
-report a configuration that the device did not accept.
+Bound PPPoE sockets pass received frames to the generic PPP layer. They
+currently do so through __sk_receive_skb(), which takes the socket BH
+lock and serializes calls to ppp_input().
 
-Preserve the previous local state around RSS/hash control commands and
-restore it when the device update fails, while propagating the error to
-the caller.
+The lock originally prevented ppp_input() from racing with
+ppp_unregister_channel(). Commit ec4215683e47 ("ppp: defer channel free
+to an RCU grace period to fix pppol2tp RX UAF") now keeps the generic
+PPP channel alive until in-flight RCU readers have completed, so bound
+packets can be passed directly to ppp_input() from pppoe_rcv().
 
-Signed-off-by: Xiong Weimin <xiongweimin@kylinos.cn>
+That lifetime guarantee does not cover reuse of the ppp_channel embedded
+in struct pppox_sock. An RX handler can find the old session before it
+is unhashed, then resume after disconnect and reconnect have cleared and
+re-registered po->chan. It could then race initialization of the new
+channel or pass an old-session packet through it.
+
+After unhashing an old session, call synchronize_net() before clearing
+and reusing po->chan. This drains every receive path that could have
+found the old binding while retaining concurrent delivery for the active
+session.
+
+Assisted-by: Codex:GPT-5.6
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
 ---
- drivers/net/virtio_net.c | 54 ++++++++++++++++++++++++++++++----------
- 1 file changed, 41 insertions(+), 13 deletions(-)
+ drivers/net/ppp/pppoe.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 3e2a5876c..ccd96315a 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -4295,6 +4295,7 @@ static int virtnet_set_hashflow(struct net_device *dev,
- 				struct netlink_ext_ack *extack)
+diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+index 6874a1a8edaf..062411624182 100644
+--- a/drivers/net/ppp/pppoe.c
++++ b/drivers/net/ppp/pppoe.c
+@@ -345,10 +345,10 @@ static struct notifier_block pppoe_notifier = {
+ 
+ /************************************************************************
+  *
+- * Do the real work of receiving a PPPoE Session frame.
++ * Backlog receive a PPPoE Session frame and deliver to userspace.
+  *
+  ***********************************************************************/
+-static int pppoe_rcv_core(struct sock *sk, struct sk_buff *skb)
++static int pppoe_backlog_rcv(struct sock *sk, struct sk_buff *skb)
  {
- 	struct virtnet_info *vi = netdev_priv(dev);
-+	u32 old_hashtypes = vi->rss_hash_types_saved;
- 	u32 new_hashtypes = vi->rss_hash_types_saved;
- 	bool is_disable = info->data & RXH_DISCARD;
- 	bool is_l4 = info->data == (RXH_IP_SRC | RXH_IP_DST | RXH_L4_B_0_1 | RXH_L4_B_2_3);
-@@ -4350,9 +4351,13 @@ static int virtnet_set_hashflow(struct net_device *dev,
- 	if (new_hashtypes != vi->rss_hash_types_saved) {
- 		vi->rss_hash_types_saved = new_hashtypes;
- 		vi->rss_hdr->hash_types = cpu_to_le32(vi->rss_hash_types_saved);
--		if (vi->dev->features & NETIF_F_RXHASH)
--			if (!virtnet_commit_rss_command(vi))
-+		if (vi->dev->features & NETIF_F_RXHASH) {
-+			if (!virtnet_commit_rss_command(vi)) {
-+				vi->rss_hash_types_saved = old_hashtypes;
-+				vi->rss_hdr->hash_types = cpu_to_le32(old_hashtypes);
- 				return -EINVAL;
-+			}
-+		}
- 	}
+ 	struct pppox_sock *po = pppox_sk(sk);
  
- 	return 0;
-@@ -5546,6 +5551,8 @@ static int virtnet_set_rxfh(struct net_device *dev,
- 			    struct netlink_ext_ack *extack)
- {
- 	struct virtnet_info *vi = netdev_priv(dev);
-+	struct virtio_net_rss_config_hdr *old_rss_hdr = NULL;
-+	u8 old_rss_key[NETDEV_RSS_KEY_LEN];
- 	bool update = false;
- 	int i;
+@@ -373,7 +373,7 @@ static int pppoe_rcv_core(struct sock *sk, struct sk_buff *skb)
  
-@@ -5553,14 +5560,8 @@ static int virtnet_set_rxfh(struct net_device *dev,
- 	    rxfh->hfunc != ETH_RSS_HASH_TOP)
- 		return -EOPNOTSUPP;
+ /************************************************************************
+  *
+- * Receive wrapper called in BH context.
++ * Receive a PPPoE Session frame.
+  *
+  ***********************************************************************/
+ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+@@ -420,6 +420,10 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (!po)
+ 		goto drop;
  
--	if (rxfh->indir) {
--		if (!vi->has_rss)
--			return -EOPNOTSUPP;
--
--		for (i = 0; i < vi->rss_indir_table_size; ++i)
--			vi->rss_hdr->indirection_table[i] = cpu_to_le16(rxfh->indir[i]);
--		update = true;
--	}
-+	if (rxfh->indir && !vi->has_rss)
-+		return -EOPNOTSUPP;
- 
- 	if (rxfh->key) {
- 		/* If either _F_HASH_REPORT or _F_RSS are negotiated, the
-@@ -5569,13 +5570,36 @@ static int virtnet_set_rxfh(struct net_device *dev,
- 		 */
- 		if (!vi->has_rss && !vi->has_rss_hash_report)
- 			return -EOPNOTSUPP;
++	if (likely(po->sk.sk_state & PPPOX_BOUND)) {
++		ppp_input(&po->chan, skb);
++		return NET_RX_SUCCESS;
 +	}
+ 	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
+ 
+ drop:
+@@ -524,7 +528,7 @@ static int pppoe_create(struct net *net, struct socket *sock, int kern)
+ 	sock->state	= SS_UNCONNECTED;
+ 	sock->ops	= &pppoe_ops;
+ 
+-	sk->sk_backlog_rcv	= pppoe_rcv_core;
++	sk->sk_backlog_rcv	= pppoe_backlog_rcv;
+ 	sk->sk_destruct		= pppoe_destruct;
+ 	sk->sk_state		= PPPOX_NONE;
+ 	sk->sk_type		= SOCK_STREAM;
+@@ -625,6 +629,13 @@ static int pppoe_connect(struct socket *sock, struct sockaddr_unsized *uservaddr
+ 		pn = pppoe_pernet(sock_net(sk));
+ 		delete_item(pn, po->pppoe_pa.sid,
+ 			    po->pppoe_pa.remote, po->pppoe_ifindex);
 +
-+	if (rxfh->indir) {
-+		old_rss_hdr = kmemdup(vi->rss_hdr, virtnet_rss_hdr_size(vi),
-+				      GFP_KERNEL);
-+		if (!old_rss_hdr)
-+			return -ENOMEM;
++		/* pppoe_rcv() can call ppp_input() without taking the socket
++		 * lock. Once the socket is unhashed, wait for any receive path
++		 * that found it earlier before clearing and reusing po->chan.
++		 */
++		synchronize_net();
 +
-+		for (i = 0; i < vi->rss_indir_table_size; ++i)
-+			vi->rss_hdr->indirection_table[i] =
-+				cpu_to_le16(rxfh->indir[i]);
-+		update = true;
-+	}
- 
-+	if (rxfh->key) {
-+		memcpy(old_rss_key, vi->rss_hash_key_data, vi->rss_key_size);
- 		memcpy(vi->rss_hash_key_data, rxfh->key, vi->rss_key_size);
- 		update = true;
- 	}
- 
--	if (update)
--		virtnet_commit_rss_command(vi);
-+	if (update && !virtnet_commit_rss_command(vi)) {
-+		if (old_rss_hdr)
-+			memcpy(vi->rss_hdr, old_rss_hdr, virtnet_rss_hdr_size(vi));
-+		if (rxfh->key)
-+			memcpy(vi->rss_hash_key_data, old_rss_key, vi->rss_key_size);
-+		kfree(old_rss_hdr);
-+		return -EINVAL;
-+	}
-+
-+	kfree(old_rss_hdr);
- 
- 	return 0;
- }
-@@ -6171,13 +6195,17 @@ static int virtnet_set_features(struct net_device *dev,
- 	}
- 
- 	if ((dev->features ^ features) & NETIF_F_RXHASH) {
-+		__le32 hash_types = vi->rss_hdr->hash_types;
-+
- 		if (features & NETIF_F_RXHASH)
- 			vi->rss_hdr->hash_types = cpu_to_le32(vi->rss_hash_types_saved);
- 		else
- 			vi->rss_hdr->hash_types = cpu_to_le32(VIRTIO_NET_HASH_REPORT_NONE);
- 
--		if (!virtnet_commit_rss_command(vi))
-+		if (!virtnet_commit_rss_command(vi)) {
-+			vi->rss_hdr->hash_types = hash_types;
- 			return -EINVAL;
-+		}
- 	}
- 
- 	return 0;
+ 		if (po->pppoe_dev) {
+ 			dev_put(po->pppoe_dev);
+ 			po->pppoe_dev = NULL;
 -- 
 2.43.0
 
