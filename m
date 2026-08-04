@@ -1,119 +1,133 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B273B9929
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 12:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785845680; cv=pass; b=QelNd0tr9VEqlGQEXjmCPs8i2vGHxTvGO4oKgK8XvnCa11duMfeagnpt27sHciOJ9mSRnVqU0GKHPEDOfsogW4nOAQB+CSy0SxyRwihkqkfgAvvzFSNWteIKCfGxpyjzN971vNSOFs01RvVNbO1qduDmt8p2Vq/9slXp+tswiZg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785845680; c=relaxed/simple;
-	bh=ms6p7ER/WG9Qjzd8gnC+OsGxIvYrtwElhhEqL7PK6WA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uLz0gRV+DIdV5BIjMy1Vh3dm6cZ0G4onlznoUyjbp17J+tgwPPZwg+rC/n8t4w7wdU6rNfjRU/Ka+oj+2RM3jyqjBtBkOmYxZ74vQ9GOVFH/2o7k5chX8w8dpOPOClLNKxArR8uZ3FnHfumFonkcDP7iLrYoOg6L8D64W7dXIrQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JTG3FKco; arc=pass smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2AD33B6D9
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 12:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785845801; cv=none; b=o1TEUAsp+eS1tFv1iVzzAml1DlJUuYWeIPGwrVNBV6Wsgcm5j6IChoj9rwMVl57elYJvvHjkY9zSj9oiv0tmqePwCBj9xHtETLZuQbfFPqzftGC3Hi5dbqqWBICeU8ZmzGmkJfynjAMMYACBhaSlMs/+1KbkNOL3O+hQdpQ99n0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785845801; c=relaxed/simple;
+	bh=bklSOIvEO6ydtChVkoQV9BjzbbdWhS+ESNcqx1MZvzE=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=FUv26EzXzhnhxIxY0LSaDPwtYoeZk2soCxE0xOOJ82bpn3x/TECQXM7jm3WBAzZnNj2SD1qfaZ3ybphV0WlICbhyofn7UCRid8DS2HA+/+Lou9a4SRYKsTuJ2+6mFhga6aT5JO7qWmXwbvDalQcPBDDtd2LknX9cFkbkMTn67xY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z0PaeMVz; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JTG3FKco"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b2a8e4c77eso4508699e87.1
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 05:14:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785845677; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GPFH6NhAzBfpgRhdyc1LG2WevB0kA7ozL423w+mjD7Su22Yup9Dep2ed7OVo5L8Qh+
-         45mc5NofwSx5kCrY5bBybErs4wTl3ehh2vTsr3sjuaf6xcHVgCVuQ92HCYKCtcSLCbxy
-         hU6rvkuTGe2Mzooz3SiAf1ZIN5ltxRrLqde497r/9UfV7Yj3xkTSobuuXoDNGb1Wa2ng
-         hrIQJQZckOD4l6yGh9R/QfXLJqxkgxE/mjvo03t2kqnSQghFjuRFp7krJB2o/PJAWhdm
-         FntWD+8F6gZjvJ9W29KP54rqrtVS7Lyod08mODV0SjSHx3YT6UKkyMmMFxLzBb0I/qhU
-         WyLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ms6p7ER/WG9Qjzd8gnC+OsGxIvYrtwElhhEqL7PK6WA=;
-        fh=dsmG6lNSLPMkg2bGOfUfx8B6lEiSuUq69Cqfv57J0Sw=;
-        b=p2bzYQCK+kzdwyog7CTWM0IkudqXigC/Iak4F/NQYMPSLoKY4iJG/c2MqN6yVrzQzv
-         pj8jVO1Q3MurYXMK/2UDcRgHG8DCyvhJUBwN032x41uPvFehgVbTkCgcYVphCOjhGkna
-         5hq1cN0G3FXxwNgtFdSsLFpIVl/wbQbjYqPzkj0ZRgZzzI86eY86RrKptRFdpetgNwqU
-         Isd9UIPVLdHvaO3JLxx+7DZUYMxm4+E6wxsBdeiukY2oKrnC3a90khCwBBVyJY13Nyg7
-         qfEZQnoTgHWzBS3eTl0E9koFQrcgESHr5vpakY4vGfbD80Cwqj3T2xILh4IAZ3yR1YaH
-         aiaw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z0PaeMVz"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-8200b55dc47so10372337b3.3
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 05:16:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785845677; x=1786450477; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ms6p7ER/WG9Qjzd8gnC+OsGxIvYrtwElhhEqL7PK6WA=;
-        b=JTG3FKcoyXD9+KkyoZkT+4ZpSd63OWCYlandM8KjZ3g/uYvYCDIJlSPDi6YQAQlWhp
-         9elhvtyem6Rn76f33C+xh7+6nqtOSnHSpjgz9NtHYYMtjWboDm8pvK3ZgQbHHUqi3ptt
-         aUjnr9koW2AvtmHc8iSmVYSTJjD+/VKe8lq0WvO6ExChe+Pt3fZ6ZMsngHnUQz8yLD3g
-         LCmOOwVEycm0mYsaGetgOXJBtM+qWN/3rmPd5ZuYgj0hb0DcjY/75pwzrkDUbwbyiZVL
-         1mJV+0IVs5qSfYuDxbzrcN5fya3tYYYcwKHbsrWsRBiVSXiR1OvpRiS3GZQ2/DnkLs03
-         /6fw==
+        d=gmail.com; s=20251104; t=1785845797; x=1786450597; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=3WZH5i3Rn0Miw5AIdlaT1MFKoD8HfWrkPOLXr3/e2mM=;
+        b=Z0PaeMVzfUSvVYc4ajX07y9SzmpB+myLqRO1cMY7zr7oQQG2NQIrXNshLSTqyyJEXf
+         Q6ciaDxsc0rZrdhBeTeGrrH9mF2WZqidjcQvhnWUjIBFql/vY752Ej2aDarvRTXFgs9Y
+         uwNAtDG4vlcJeJzHJDXbio1lky2b0YLb/4oC6hamjonXbkuQxR3WX1TOiTJy9O+8avgm
+         R+WAnXO7r4vcR93Br4Em6bxJhJIqUJwMH5oE7DZ+Nk6t3C4L3BPrmua7njAg1U304d5E
+         ehlGIv/4cys+Cv+N4XYT6LbkneSm04Ek61+WFkL94j6xiHl+9Racv2/yQfGQ9GLDL3uH
+         yobQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785845677; x=1786450477;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1785845797; x=1786450597;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ms6p7ER/WG9Qjzd8gnC+OsGxIvYrtwElhhEqL7PK6WA=;
-        b=NFg74URXgOeI6pI3Zk8mHJoOxhVVKuF8vuf04mtsrV7gQlXSTK/p8pReByE7LofoUs
-         v+zX/DDjqUoWW+xgSlA4I0feDBi/LwzFyQOr+EoHFBXYZwNInhgUbbESN3JyQL+Bg64J
-         p5jiRkWkU1wzzAUvcd8QPz/5Qo+qx5nMvx11TD68myCssvqr4uQjUEAIOCCSK+YSspne
-         dIi/8IugEhdey6fSqaArVHqlx4J76CXz1Wm8aFI2WKQ9vl0COMSR+NY1DMGms0tL+I6s
-         kTckgLQyoHPayBVfx2/OW3IVrDtd4cgY7aOoDSPJ5Z2mPwVxENugJyODE50q+JWBU96v
-         NdsQ==
-X-Gm-Message-State: AOJu0YycJiZX1UlgqQKVmyBunNKGjccMDtfS/bOpYHsf6rCThMOBAGEB
-	LPL90AUWJQUnYqAeKZbgw2mKm+xg1/iDV8P1ioOwg3DhpNcgMkhH2t7wLBvKeaC5t36G+QfAIil
-	G52/Zp1XOUQmRDLOlDefllm9E47hxa1A=
-X-Gm-Gg: AR+sD136VjjgoYRGgnJB0gGzdW0F63rTMKrhRj69OJC90Tyk6pGLNIbBA3kV5h/g2Lv
-	lnyc409cXIKGIWQQ1ljbVJXPgFnAD7vh+AVIzzXv3UakkS+PBqHxZ+i5Ocvc84zLnaJxO3oJvDn
-	N2DEbohQ1Mwriuu/5xQMMYvMqFSthESQfhr7+OmGZf285wkkbowFS+30rPsJ8i0F0dXtOdJjcUP
-	JcirhWPlCEMGNmrCFNb1q4Yol32VklVc8IBpCtTNcxwzlO2jgh07bKdRSVkJ0HnCAi6+xTh2biO
-	mOsFB0REhQGtlsbjtZwKH/5Jwm2WW4BA6ZGu3Wr5Vj27cBC81H5LxEzlOETBcYTE1hOy29IUnFJ
-	6rfLU2bbld766dZeZwdBL83YDVK3FgqehH7QEjII2WAKDAAqXMJM5PXosyHA=
-X-Received: by 2002:a05:6512:400e:b0:5b2:a558:b222 with SMTP id
- 2adb3069b0e04-5b2f0ce19c1mr609896e87.10.1785845676638; Tue, 04 Aug 2026
- 05:14:36 -0700 (PDT)
+        bh=3WZH5i3Rn0Miw5AIdlaT1MFKoD8HfWrkPOLXr3/e2mM=;
+        b=csIuFFskbS6ciTMouKqsiRwcR0y1dj3BT4hqCd//XhJsIQ/v8cU/NwKlNmweS4K2et
+         2ku7FacBFIXnd7DItaA4t363QWBgkjSc2DtrEOVOIfX6saD6tAoeY5/HdPwo8kBEiJLt
+         GqIECqTH3pPkl6DkQ0+sOkzloEijJ3+UUokX3pNF5sP8ZEmU/5s5D0K0EVeMlIrVdkRd
+         gbZWc+SU1L+ZYA220ecvCc2EJ57TvcbIbMXQZ37HWWYqqXHlcySj9WCNc7p/0Ur9vxmJ
+         iqUZtnAfEEA8OA1JMXKdg/jXQQ4zCfwr3FLd22AXSnzeI6FeIQ3gQFYoM/WffiZnf+cZ
+         HTTA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpa2YKxopbC07QTQnA04DtBTUJADfUcB+i+oQsc3W29Yuo2SERqBRN9HbNoMfmpetYlEPqhiPg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9bos60KIZyTuVdtj4oEMbP75fHTt4BoN4M4K4sqTC2RLjGFBo
+	Pf/DMsVCIg1JUo4oH16t53FPVVK3R5GYZxh/B7byDFCLuTUAXz9QRyX+
+X-Gm-Gg: AR+sD13RzjYxVOj4cwYADULM8UkisgunhBVVnczDHO+vVHpCeH0WwJ5t7u5QvoPP3I7
+	xcv1ZPvCzmmKlqYn9lUS92S1UBy0zMMIYJMPIuIqfBYTDU80198WL3q0gu6A90I4VJWH9PvNBYj
+	RmhYERde3Jf9ailDHPyZZNDm8Wh0zlJnuKvgzLxx1GBOChb/zqEbg5w7g1myC9ptJ+NT9vQfYlL
+	Fc69qDgY7IQ4nVZycLpaO7uRETiw8obSzdd8DCMsUcfUZ9nP+agjqNbuT0F1SYFpgPGCdIn45Ft
+	QAYH7Mvluy1tAOm19BnsZJ6tSHY+fOuQ2AsmyxETiRfkr5YhkF0zsuGfVzPcQQSHGI4K/9D+r3Z
+	3i+3HWbhmKRPLNZzEQEfuIAD3AB7OLRXlvIgtxx/thkQ0m0YULsKZCdM9Qx14Wx5l4BYfMjVxJA
+	3qNUfYqjBH0SYg3BqQCQdeqq5i1ObJi1s4vze+l2IAtRzA9CD6lNLEjwEIRt3OQeJGDVhCclQqw
+	jOjiQjiw4bDl3rsenXGi/2Hmddbud+YDhEl
+X-Received: by 2002:a05:690c:6b05:b0:80f:9998:e614 with SMTP id 00721157ae682-81fd4bc110emr162889387b3.28.1785845797150;
+        Tue, 04 Aug 2026 05:16:37 -0700 (PDT)
+Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-820134d8ed2sm3812087b3.45.2026.08.04.05.16.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 05:16:36 -0700 (PDT)
+Date: Tue, 04 Aug 2026 08:16:35 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Qihang <q.h.hack.winter@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, 
+ willemb@google.com, 
+ daniel.zahka@gmail.com, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ stable@vger.kernel.org, 
+ Qihang Tang <q.h.hack.winter@gmail.com>
+Message-ID: <willemdebruijn.kernel.1d1da452d95b8@gmail.com>
+In-Reply-To: <20260804090016.33353-2-q.h.hack.winter@gmail.com>
+References: <20260730082925.93759-1-q.h.hack.winter@gmail.com>
+ <20260804090016.33353-1-q.h.hack.winter@gmail.com>
+ <20260804090016.33353-2-q.h.hack.winter@gmail.com>
+Subject: Re: [PATCH net v6 1/3] net: remove CAP_SYS_RAWIO zero-padding in
+ dev_validate_header
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260803210707.1912217-1-willemdebruijn.kernel@gmail.com>
-In-Reply-To: <20260803210707.1912217-1-willemdebruijn.kernel@gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 4 Aug 2026 20:13:59 +0800
-X-Gm-Features: AUfX_my_EL6N_MS-28suKnKJLSuE06TW9KPNUI3ox4Goimy-hx0bTUFeNm2fQ_k
-Message-ID: <CAL+tcoDDRQz9KJmABC3R+CzVxiS70r+-0=aB86yDdrPHU1EPRA@mail.gmail.com>
-Subject: Re: [PATCH iwl-net v2] idpf: add missing cpu_to_le32 in idpf_tx_splitq_build_flow_desc
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
-	anthony.l.nguyen@intel.com, joshua.a.hay@intel.com, 
-	przemyslaw.kitszel@intel.com, Willem de Bruijn <willemb@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 4, 2026 at 5:08=E2=80=AFAM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
->
-> From: Willem de Bruijn <willemb@google.com>
->
-> idpf_tx_splitq_build_flow_desc performs a 32-bit store to &cmd_dtype
-> to set the 8-bit cmd_dtype and zero the adjacent 3-byte timestamp
-> field in a single operation.
->
-> Descriptors are in little endian. Add missing cpu_to_le32 and cast to
-> __le32 to ensure the fields are written correctly also on big endian
-> platforms.
->
-> Fixes: 1a49cf814fe1 ("idpf: add Tx timestamp flows")
-> Signed-off-by: Willem de Bruijn <willemb@google.com>
-> Reviewed-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Qihang wrote:
+> From: Qihang Tang <q.h.hack.winter@gmail.com>
+> 
+> dev_validate_header() reads dev->hard_header_len directly when
+> zero-padding short link layer headers for CAP_SYS_RAWIO holders:
+> 
+>     if (capable(CAP_SYS_RAWIO)) {
+>         memset(ll_header + len, 0, dev->hard_header_len - len);
+>         return true;
+>     }
+> 
+> Packet send paths call dev_validate_header() on skbs whose headroom was
+> allocated from an earlier hard_header_len read. If the device is
+> reconfigured so that dev->hard_header_len increases before validation,
+> the memset writes past the reserved buffer, an out-of-bounds write.
+> 
+> This out-of-bounds write is masked in some SOCK_RAW paths today because
+> the same concurrent increase can first make skb_push() exceed the
+> reserved headroom and trigger skb_under_panic(). Remove the zero-padding
+> branch before making those hard_header_len reads consistent, so the
+> snapshot fixes do not turn a loud panic into a silent overwrite.
+> 
+> This path is only reached for variable length L2 protocols, where
+> len < hard_header_len but len >= min_header_len. No remaining in-tree
+> variable length L2 protocol implements header_ops->validate, and the
+> CAP_SYS_RAWIO bypass that zero-pads and accepts short headers has no
+> real value beyond allowing testing of intentionally malformed input.
+> 
+> Drop the CAP_SYS_RAWIO branch. The remaining reads of
+> dev->hard_header_len in dev_validate_header() are comparisons only and
+> have no memory safety impact.
+> 
+> Suggested-by: Willem de Bruijn <willemb@google.com>
+> Fixes: 2793a23aacbd ("net: validate variable length ll headers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qihang Tang <q.h.hack.winter@gmail.com>
 
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
-Thanks,
-Jason
+For future patches: don't send new revisions as replies to existing threads.
