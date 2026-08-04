@@ -1,97 +1,63 @@
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C0042CAFB
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 21:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780B343B4A3;
+	Tue,  4 Aug 2026 21:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785878349; cv=none; b=vDMqd8QUu7HvNkgybPnIoOzKFZ0y5Q+DgmdIlWE1L0Dih1NkLKlynoCAIb+GlO7vPDsLm3jXgCB2qd+1wr0G9Z3o8G92HyRTyjVvVxe3ftBMO6qFY2/iXt/V8oq43Q0ZRyfK8T4zsLJqY4+CX4JlqWTIakBNo9QN6Cj1dzOO1UE=
+	t=1785878684; cv=none; b=kNsx4NmfbKsB4t6ZPOXVIESVLwQx4v16O46HM/nSo1He7T1QUOF1S+7P1Gn7Ml/kzdKjYG65XFPKPf6+LipDwKitxrlkhg+Avduw3sFwEdLs5I8dEgPBBayZjrlGiT8QiS/WM66aKdefLSfFAB9iQhQYX/PpwWAPIEiw7ziXsoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785878349; c=relaxed/simple;
-	bh=sr2Cq9PRWWi2YOdQ68q3lF48Fp53MwBlfAhHyCZ5ViE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ScpwNomHU6LEBaCDItRrAF1XuNooWxn4MCOHiNAdZ1hc27wwUz6n5n5qUoP1wSpkWXfkydxaxDoVC7dZtfLzyv+/QduL0wFnDkSHQNnhiJVzQiDb2d1K6vpCuD8YMkJk1e+1k4szeWlwYuhUjdaLuPXbWoql1KrxrNrJ6JXarrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hZC2a5Cw; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785878684; c=relaxed/simple;
+	bh=6dl8OSg1XFIwh3f39Je6VMfFapVo5mv9XzWgUhjWrwk=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=D9iXxCvbpBxm6K/p8gpjkZh5Au4QaQNquzcWU6/yC1DPlQ/1k5fJnYt3Bin/g1hOHIlnbsHEAsssW2VkvWXuBE3C5cEJUi/zYEux9S54bCJSLwhV5uSzYTT3aXJYXsnyzQ9NI69cAsN2nfaUgBvfXbTJQaD+5K8j+IiprLYMI30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZAqWE4u; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hZC2a5Cw"
-Message-ID: <38b89c7d-58db-410a-b943-7ebf30c47905@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785878335;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u7+ldWnQ/ZMVcD+XRoaEbqgZ0HqDoRKLAZFfAukpgXc=;
-	b=hZC2a5CwsVGTNf9ebavs5WVzJDIOV99BR4asEfugnfeE/yQ96emVvepo7MriWJwfIIcFcC
-	g4w5Da1GlJdfLgSy5qK4nredpSlQ72jwzzmWwrZI4RHYCN31E9SKhpSb+P7qRsa6Lzq2eH
-	NhrFYoWGrLkZ4whU50V10DckZvfl0Bc=
-Date: Tue, 4 Aug 2026 22:18:41 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZAqWE4u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9A71F00A3A;
+	Tue,  4 Aug 2026 21:24:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785878683;
+	bh=Q9c4Uy+59nf+0whCDDdw4y4B/NrYM64oav86QXjz8G8=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=iZAqWE4umkFufExEJQhVYR2zhJDtJ5vzdTRK62M/OXXpOZ4ieVKr13xc2T0gN3ftI
+	 lnMWfVqRd1TQlCyz4xCdXymbxppCrR4KB95rFki416g6Wvx7g1GnRWg/N3zqu7SLmw
+	 XVvsguuPNYoACIoASLDsFXRmEvTHtz3Woav2kHkmv5Ibg6ucVylzfcNPiBKK1S3NQC
+	 kNNd1Gz8lZtOohfRVsKnBzlJOiWLcWsGMyiOJFl2PII+aUnS4V2hckW+OwafpsQwA2
+	 VYEiar5Vw5OTG9KG4dni/ENBkpPmncAiHOdh6RBhLkAAKWs/0fy8nxWa4g1+gHJrl3
+	 G5TwO+UZnbtbw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A5C3926648;
+	Tue,  4 Aug 2026 21:24:04 +0000 (UTC)
+Subject: Re: [GIT PULL] vhost,vdpa: last minute fixes
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260804170624-mutt-send-email-mst@kernel.org>
+References: <20260804170624-mutt-send-email-mst@kernel.org>
+X-PR-Tracked-List-Id: <virtualization.lists.linux.dev>
+X-PR-Tracked-Message-Id: <20260804170624-mutt-send-email-mst@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+X-PR-Tracked-Commit-Id: 42bc45df5905e2b7dccb72adaf7730f66cfbe03f
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c21bb4193868a8de71fc4693fa741e195fdf5d86
+Message-Id: <178587864330.3792733.10616267372223041264.pr-tracker-bot@kernel.org>
+Date: Tue, 04 Aug 2026 21:24:03 +0000
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org, virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, alhouseenyousef@gmail.com, borntraeger@linux.ibm.com, dtatulea@nvidia.com, junvyyang@tencent.com, linfeng.sun.dev@gamil.com, linfeng.sun.dev@gmail.com, mst@redhat.com, physicalmtea@gmail.com, slf@hdu.edu.cn, stable@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH net v3] ptp: ocp: Fix board ID over-read
-To: Ahmad Byagowi <ahmadexp@gmail.com>, netdev@vger.kernel.org
-Cc: Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260804210751.48248-1-ahmadexp@gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260804210751.48248-1-ahmadexp@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
-On 04.08.2026 22:07, Ahmad Byagowi wrote:
-> The EEPROM board ID is a fixed 13-byte field and is not guaranteed to
-> contain a NUL terminator. Passing it directly to
-> devlink_info_version_fixed_put() treats it as a C string and may read
-> beyond the field.
-> 
-> Format at most OCP_BOARD_ID_LEN bytes into the existing local buffer
-> before reporting the ID. Use a precision limit because the snprintf()
-> output size alone does not bound the source string scan.
-> 
-> Fixes: 0cfcdd1ebcfe ("ptp: ocp: add nvmem interface for accessing eeprom")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ahmad Byagowi <ahmadexp@gmail.com>
-> ---
-> Changes since RFC v2:
-> - Split the safety fix from the net-next feature series and target net.
-> - Use the short Fixes hash.
-> - Reuse the existing devlink info buffer and bound the source scan with
->    string precision.
-> - Limit the change to the board ID over-read.
-> 
-> RFC v2:
-> https://lore.kernel.org/r/20260803205011.1249-5-ahmadexp@gmail.com/
-> 
->   drivers/ptp/ptp_ocp.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-> index 35e911f1ad78c..3d26ec1f7b9ec 100644
-> --- a/drivers/ptp/ptp_ocp.c
-> +++ b/drivers/ptp/ptp_ocp.c
-> @@ -2177,9 +2177,11 @@ ptp_ocp_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
->   	if (err)
->   		return err;
->   
-> +	snprintf(buf, sizeof(buf), "%.*s", OCP_BOARD_ID_LEN,
-> +		 (const char *)bp->board_id);
->   	err = devlink_info_version_fixed_put(req,
->   			DEVLINK_INFO_VERSION_GENERIC_BOARD_ID,
-> -			bp->board_id);
-> +			buf);
->   	if (err)
->   		return err;
->   
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+The pull request you sent on Tue, 4 Aug 2026 17:06:24 -0400:
+
+> https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c21bb4193868a8de71fc4693fa741e195fdf5d86
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
