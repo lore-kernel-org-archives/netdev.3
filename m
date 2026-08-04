@@ -1,163 +1,175 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010022.outbound.protection.outlook.com [52.101.193.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF634347FFE
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 17:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785863708; cv=none; b=Yi1uKmWStGhA//IkLyZsf/Ajpu/JmtGFxDJKofLElCPt/CMWvsRsWfavRIvzkxFViw+OYpr/aoYOrqcvGOJa5utp+35Ao7Zz5s1i/5Eh+cXwCmhQvqFIkOJNj9ZArQu/16DyijXmt7NSnkApqqqdBzrvMKaZ1qe6jMERfwqIQ4Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785863708; c=relaxed/simple;
-	bh=CDg7R4z19rm3HhNKcpDry/8FXJmNNTW/k1bNkbouDnA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=op6VhvRS/Z5gskLW48jb14vZHuHEKSg8JchyDqfefc7RSQ4RMFvpfGJq9tG3zpWANe1E1fyLoildZPtr5heY1BMemKU3tM2gHRvKYqQoaV8cr3wKHlt8SSQx2ay4h/cYF321orp0qwRAJeR1+DVaY93Q3jyO21nU1dBgugp8gm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tmc0909F; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFFF48A8B6
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 17:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785863795; cv=fail; b=GFLwzznOkDTZ8YsJvtjVOiiBFXvlfmvJ40F3td0KJuedLHSZzhQmbNGAi0VW2yOlqNHnY3jDGOcEwX/H+Z36PVYRnlJiuEcKuq9RJkXb6k4KaFlh+BHuXu29ejbmdNd56PfNjeIQQYmuntLljc2nUgkqY0njtLlkLhCK4X1ZU78=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785863795; c=relaxed/simple;
+	bh=rkxI8DV1GmCwVuxCz0UMaTriOjAJMt2PqZCRMWD1XLE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=AmXyBwTQ3mGKt0CH7GVO/Bn+vGuwPkWqnhS3matw8IuFJvGUhmVMjuKWeqKi8zSU6we+tEILa6L6YYbrEkYU7DEUuPYwc+lpLSSlotnMkVA/lpIm3FeOPdlPBOCjYUVa7SoPivgy5d0xX9Uo1GAGbwrd++mAFWTIYAQindby2bk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=c87zgwXf; arc=fail smtp.client-ip=52.101.193.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tmc0909F"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8486ac3f347so1374981b3a.1
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 10:14:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785863693; x=1786468493; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+FyhIVgwr2eNJZrKd4apq3PGwedIYUrqhXnEIT+9gD0=;
-        b=Tmc0909Fbx4wvfuc8YQaau8WA430Z0l5R23o64tJN0MXXVaNqEr/lEgTnvwwM0p/YN
-         5PhTICdctolgRCT+oid4JmxUEtJiS1c5Zu+m7haLWGeXWc/ryZXOzDkfj2vfcG1tDUtI
-         1tSB0Sx+hLPHTC63EkJ/O6/DdN+aRno8s2kSCfzPWrlgmX1Ozpk7tW4sH2CX6huUhwn3
-         P8X01kMYx06vJzxJt0qEvvd8n817HdLOgQXbYdCIYaOmH/k7uzEMbYeIcU2mdbFL3uUX
-         Zzftbi0Q8Ak4mw/G4IiaT1hXx4BhFEJ8Wy3tAKkIt6Zs3fK+YhzQc4YYdQ79QjuS7Jc3
-         awyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785863693; x=1786468493;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+FyhIVgwr2eNJZrKd4apq3PGwedIYUrqhXnEIT+9gD0=;
-        b=kBYHQrL3NuNBPzGqppJ8Y64bDYG4Md2+JG0T4cneiR2daxksj4pZAxuDWrNEq5QJ+6
-         QrrNVMCcmrwBpuTiRJCZRfat5fWVfmos7pPLMrGkqEGy7gelCUuQgPbMP1LhjHIl7ra6
-         f86e7ZLIr+fljfkMJ2/EEP+aYOO2rZL0A78pgnL7ZOzH/jek95f5Sx/5TqZM5vTSP/HR
-         E/Vrl7NxgjyZozOlXOYonRSrZAGMQ9qbBk90Hri4ydcA5v7Kcpu6A9l0HLKhLvwr6Dmf
-         WqF4gPr1w/QiCtf2oLr+rJC7NJsAjuLWk49JrvUhwEfkyXujajAH9T+/ldh9z0nt+H6Q
-         /mHA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr/Fo+Rn7CcAYdmn2irfa5k4pQ0ZZPfdy8WDVLMWJs2bIVcPXEhTZK3A7yExBzraKoS8JBwsx8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmvvgmUZ+l9bEWJGoy77JlnFKqecT/TNbzk0dc0TolP032MWzh
-	BRNQcv9rzi8ljuipzEP9mBxhB4U/DsYZMG9sT5gOgVob6/gKMKjS3VX5
-X-Gm-Gg: AR+sD117W8kt7Ndsk26jzrnu3txSI9+up7du7Fq/ibCpQus1+rxZLefJB86nStucqXy
-	nuI3o7+kyWeVSPtHLV/Qf1FENTycCmcQWQEQOLPkYLx0QiLevwPRG/6yGjjdguXmaOzqTHxqFJC
-	EvBQun0A+Cwe/HTz9u80xjCZUG+4YW7tRPrp1cklW7OnLbJZt4W2zipUccWZjJldsx5xZOc5WrY
-	ul7zfeD04glDsk82/ssGBSsVh4GqUx2uJDyGIKpU81ll5HPDh302F3+v34xIHOm0eJy+XId8XfG
-	8BSqTZqFjNo4zZcvC4Dk7yrNRlKtNTgNHmN1dSy3Vv7ug1aoz85k0Gv1B6+piVZh0bmlf3+ah0D
-	fBaDWANCu1J61IewoeDWwPDsoFxA+TeqjOKUQPgX5fzrancnhalcpPR7PtZ20I1tX1IcHdQpS9J
-	K/dsQ0VYNSdLO9PikQXsQaf3h2DwcYz8BLDJISZCkIJujKp9dgwV2fUelDBa2XZCrxqflrN0YNU
-	ichy3BU5Q==
-X-Received: by 2002:a05:6a00:12c9:b0:848:50ef:4157 with SMTP id d2e1a72fcca58-84f1cb966c9mr4481009b3a.27.1785863692576;
-        Tue, 04 Aug 2026 10:14:52 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4a::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe707c9970sm77984a12.6.2026.08.04.10.14.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 10:14:51 -0700 (PDT)
-Date: Tue, 4 Aug 2026 10:14:49 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net v3] net/mlx5e: fix BQL reset on SQ re-activation
-Message-ID: <anIeCTh6IUJaP2mz@devvm29614.prn0.facebook.com>
-References: <20260803-mlx5-bql-v3-1-a30d4c66fe1d@meta.com>
- <6ac643bf-c6f4-4ff2-ba57-964a645d9323@nvidia.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="c87zgwXf"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Z38wtqNGkbu6LbD7vEeAaco38qwDEk9DONFWHSu3afaiBTd7i97eu9HPPNF1P8x9UdpsnwxOql+YM9sz4FpUZIbISGdcXyzl2a04Lg4gjnnHovUNFW2dJ0F4dDwP5DXOLH/9GhuJ/zlOmcjzr1AGbWsDw6vZr/+1WQIx/kGu1LPWde3HwAO+ybSNPjMVZAKXLf8Ht/DqtCKYuDHRFJm5WAetTYY8VkWutCarQrw6n9hTWrgdyobGtsqWYlPKgtBOSZpXGvTFqyCXfpBZyx1ro8XQDZBQS8IFdIwFLApYerSxxFmeN2IrxBaRwZnwoaMf57Una+ylnRWjnb3pzhclFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FtgLPFZHvbCJy04Z9f/N0Je/1kJC4sWDM5ENonNKYvI=;
+ b=udWw377Y3eioFdCh0CVLrORHHWA0lE1RgenECfYVwxJYBk/Ithj20/o8uxVV0uD4gl4fPoJkGD89ikMEugJXPB2EyUN/S/R6U0neKbAvL8MGbXw5mW09vXLZMlaCvybKDizlavbFnbDBKIxSUtySLFdr1xFccoz4/VSPF415cnKkvnRytFTIpp2IQWqWb0OPaaL7AgGVEWpl3foH2pf+cUeouJCXHIzHXwQ4qgE3zQFlkjWnlf0mYkLqAuP6barwjclQ84KuD10fyXe+xCufvUSH8eCqzt6tp3t/dRT7CHYnzs1cV8PdytJQz9C214V5IH8iKyGJBFoFGk8vnyRK+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FtgLPFZHvbCJy04Z9f/N0Je/1kJC4sWDM5ENonNKYvI=;
+ b=c87zgwXfTsdD32TZhT3C2C10IlOKQVJfQBqCzasl6Kl9Vf9pK4+w+Y7rJQYH1rYrsRKXq1jPhXU7GKQik3EFae4Ah9acyJhsDNPDPdCigsNDnKT2GqAlQJ/ENvD+ioA+FT7RJzCgHZX2C7xRBzfwkOCzeZjc5uH2G+GNfdtIQokmsAW8IVgc6RIOVnoskvxS6CHIZpLbyMOCTSJjHR2R98/PQYQ5R3yfDCJGuHeNyXHp1ygis3OB3lpkI29LqW72bCdhR1cwDm8gUdI6iPJHrOCUEJhaJWbux8saeEfGzB9Rh4abe+W8EZHVwlahocLq1wpKnLcXjSN2mjGiEaVMxw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
+ by BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.15; Tue, 4 Aug
+ 2026 17:16:22 +0000
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0270.017; Tue, 4 Aug 2026
+ 17:16:22 +0000
+Message-ID: <37c7d934-b356-4920-a332-9416b1f7fce8@nvidia.com>
+Date: Tue, 4 Aug 2026 19:16:19 +0200
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [TEST] CX7 timeouts on reconfig w/ page pool failure injection
+To: Jakub Kicinski <kuba@kernel.org>, Nimrod Oren <noren@nvidia.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <20260804094518.53b56d24@kernel.org>
+Content-Language: en-US
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <20260804094518.53b56d24@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0082.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9b::9) To CH3PR12MB8728.namprd12.prod.outlook.com
+ (2603:10b6:610:171::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ac643bf-c6f4-4ff2-ba57-964a645d9323@nvidia.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|BY5PR12MB4116:EE_
+X-MS-Office365-Filtering-Correlation-Id: f03cbbda-9f93-4c2d-b632-08def24c1b49
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|366016|3023799007|56012099006|5023799004|11063799006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	SumnFMql06p86QxUVt/czu/lvyuGA1i54rWtY6CoU9U1CnjJdNiQxR4BqM1RQMguD6+WJPUZnJ71TD7e27K3ZroVy8ZdGaCooHR+vZBGDhIN99cosvcr2AyK/Wvav+0gifaw8S3pJ37DTWhjh4sDTe9EJ7MG+S4i0Eh3gYWSvY7N1ZIiACvCiwNYwjddQXSO7xPgNNiAes9MCmNq28357eRdt/7cloVIgHm9ccJbPu6x91fK3ZLUtoeemzUTNCxU+8q+12zq714BAxMngHmMajbn5BxobbikYdUjBh4mLCjyb+H70FyGf4DscY6A+GpKGNXtytctJqlgaB4fxxp3Wv+SP1jB+iBdgoh6hn465OTAi1jP6wLuFJpWJflnPhcZJ/ZjMYql/Q/ohZUV5OkeVFiR8xgkmSEFNgOfXuM9NiwcGq8uITFVuMj0esKG2ecwQ9WW3SU4RtQ6sqsMJ4CpvL7E7v90lSlVnfl6iTPEFTYa253jXVS4jPqulYvt/XA0pEY9OvYcZOP8TNM36M3Od7fMvYlajdYgXIuxcN6nbmtJ6mvgYB88bwpA6swXzzrCSF/cBM9V0hKgrkQEM/IQBB6LMrBLqbaeeWn/u/cm+aWwTAJET2P8plc3j7ilt/08T5wB2JDhfuhKHeW8vccsDD+V6g8UATJvZzRvWz884Is=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(3023799007)(56012099006)(5023799004)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OWpHMituY0xFRE96ZEkybU12N0JVVnVqRlhyS2cwNTJ0RHh3cGJFSitiOW53?=
+ =?utf-8?B?bEU3bUQ1L2F0dEFObDk0eHN0UlF0cUJhWDBqdWtOWEFGWWxoQTVCdm9IUVpG?=
+ =?utf-8?B?U045Kzh2ZnloT3B5V3ByMFFZUkpVNVU0YnZ1VFFrZzJVMWtqbWpvSjNZQ0VG?=
+ =?utf-8?B?WldDdktIQmVLYVJraHloWjJlcktjL1lpVm9FWldrVXFURUJDUDIrMmM3MnZU?=
+ =?utf-8?B?U2wxWktUcWw1cVRCMzNFaVZ6ejJ1M2pxa0NmSlVzQ0tJdGM3RFoyVnR0T1Q0?=
+ =?utf-8?B?V0x5aEVOWWxqVDIzT1RaY1NtbVpJY3NOUlc0TjVkdFdEOTRUd0Q5czBFMlFi?=
+ =?utf-8?B?cFcxeG5uMFdWOVhlQzhrM284eTdSTGNjK1BlekZ5YTRDeWRYSWp1QUxtczcw?=
+ =?utf-8?B?Tktnem40bmhmQVFpZ2FBUy90V0pKbmJVK0lSZFE0TVpaYWFwSFQyb2hjNXpZ?=
+ =?utf-8?B?Nk85NVJYQ3BuYVgxdVdZQlJRcnFUMjhicmFpQzJtbVM4TUNLTkpjY2RhMm5Q?=
+ =?utf-8?B?K1Fia3l0Ti9zWmVOWlVOa3NPblBxbWh5RlBjTGFXNDN2Q0R0NWhBVjFXbFBo?=
+ =?utf-8?B?L3BOOEJuR2tUSXdCQ0pCa25zVVhTVmhjdytoR3NrcTN0UWdaZ1RVUm92aW45?=
+ =?utf-8?B?a0dzS3NiTEUya2lNMktnb1ZPbW1zMkY1NEx4bnJFU1c2aFNySjRrZzdGTjJW?=
+ =?utf-8?B?cy9XemhmYlllaHJzdzdWUTNybnhPZjVlTllWY0FaaDBqVUdJWitEeU51cGhq?=
+ =?utf-8?B?aVZrTFNCbFVveUhGajYrZGdzTXg1b3NRWjB3SWFXcGlGbFEwSzJUcHptYlY4?=
+ =?utf-8?B?NnVGc0lHc1JiNURhZ3FXMExYeEZkNmhtcnBFVDlIdkZJQm5sNm9iZWZ3OEJM?=
+ =?utf-8?B?eXdsV1FpbkNTem5ucDBFT1FFcXhqU0tGa1RWb1ZqbkxvUld5YVJZa1h1N1ZG?=
+ =?utf-8?B?aXo0UytvUWptV3B0NUMvOG5wcURKV21INkJZdWIwelRlTTZiQzd0bk1Uc01M?=
+ =?utf-8?B?K0VWZWMxR0RnU2pCRDVOSW9JOU01Y3J6QURKK3RIcS90UHgxNytoLzhMTWQv?=
+ =?utf-8?B?SzhCaU1IRVYzbmRXejBNVUgzZWhTVlRDcjl3Q3RqY2JUNGE3OUEwS2V4NEJQ?=
+ =?utf-8?B?SE9ZUjdDQnRXTU9xNUtPTnJoUlJYRURiM2J3a3c0cnVkd243MWo5NE9iLzB4?=
+ =?utf-8?B?V3JXT3RTSzFldWZVRXdQRG8rYWhBRG5hZmx2MzdaOGlpSmM0bGdyT0RMbTFj?=
+ =?utf-8?B?bm85VGNXRnpEUHRBUXd3U0FYZVVEQjlzQXBjSmpmQkNDUHJJTDF6b251TnRq?=
+ =?utf-8?B?VVduUW1kZk84R0ZaeThqYTBFZmkyYUs5bFVkdVN3WS93elRxd0U4ZGxNbGUv?=
+ =?utf-8?B?b3N4ZFdVRGs5RnFSZW1JS05WYlNKTElmRTZtZFpDUGwzTE1qdTN0bHBxMDVi?=
+ =?utf-8?B?cGM3UzdFV2lydGlod0NVVWpUMmRkcEYzcUF2UWJCVTRUTnN6SlZRbm1PMlI0?=
+ =?utf-8?B?dVR0bDVTZi9OQjZTV2RpZE9ET20yOG1DM096cmJhaTkwMVRFK1NHRGRPWk8w?=
+ =?utf-8?B?V0VCbDNyOGgrSU5nakdINlpJWFpKMitZOVVxLzJBKzNYVTRBdWZKKytHSmhk?=
+ =?utf-8?B?WGk2K05HcmdoaEQ1NFkraUJDcTFPd2gwbldQUUhBaEdIN0lZK2dwM2dLRHdx?=
+ =?utf-8?B?dGdRNnRqUWw3aStOVFRqSkZHdXRqTlB6YVFTMFlwUS9vdFJ5WDhYbHFBaVFm?=
+ =?utf-8?B?Tmdyb1R4U3VOU1dkUlZPSmJvL0UrQ2JPNWxGenRCNytUS1IrbmJENnBJRjUr?=
+ =?utf-8?B?QUZiM2hCZWNxMWEvV0pwMHVydE9xV29ySjU3aHptVVduclB2cStQSXNFaEhM?=
+ =?utf-8?B?L3N4WHViaHF5UnB0NFVYRXBPQVVQajI0TTBLaXkyU3NPNEpZNHZ2K2V0N1gr?=
+ =?utf-8?B?S2drT2JUQUpUWS9odWw3WFhRbDdyNkM3OTlOQWVTTHdoQ0FzNHpydkJnbUVp?=
+ =?utf-8?B?cldTTktlV0c1cmNid09ZVXk4dks1MHZCYlJjVjNmZFBVc3YwZXE0Ym5tVzZR?=
+ =?utf-8?B?MERDME91UWZIWERBQlZ0azJvMWpCaFluZ1c5TFVzZmdjdExIR1diWnVjMWR1?=
+ =?utf-8?B?ZEVKL1hzdkFWcGpDSzZUSFJJeW1OY28yL0MvekJuWHpBNEN5RjdlMmNhNStz?=
+ =?utf-8?B?bDVmQVR3eXJtRTBzSjRlenNlM0ZoNFFLdXhBcjJZaU5sdld4dFhNMnhlZk5a?=
+ =?utf-8?B?ajJaczJYS3pKc2JIU3Y5aFBSanp0bXBRTG05Mk1LazV1OEtTSkFDN2VMbU91?=
+ =?utf-8?B?S1BrUiszbFhvRlZKWGYyR3RwQ0xYdEVIaTZydHo0dGRYTUlCWEJIQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f03cbbda-9f93-4c2d-b632-08def24c1b49
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 17:16:22.4742
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YEIh/YTCDlamQ6Llv+7/SELSjFMOI5+jPM/lQKQXbDP7zK/P080OCAVrHg7SbjLri8d3yf+tuYGp5bj84OFhWQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4116
 
-On Tue, Aug 04, 2026 at 11:23:53AM +0300, Tariq Toukan wrote:
-> 
-> 
-> On 04/08/2026 2:47, Bobby Eshleman wrote:
-> > From: Bobby Eshleman <bobbyeshleman@meta.com>
-> > 
-> > mlx5e_queue_start() deactivates and re-activates all channels but closes
-> > only the queue being restarted. mlx5e_activate_txqsq() then
-> > unconditionally calls netdev_tx_reset_queue(), zeroing the BQL counters
-> > of channels that kept their in-flight TX WQEs. The next completion then
-> > over-charges and trips the BUG_ON() in dql_completed():
-> > 
-> >    kernel BUG at lib/dynamic_queue_limits.c:99!
-> >    RIP: 0010:dql_completed+0x23d/0x280
-> >    Call Trace:
-> >     <IRQ>
-> >     mlx5e_poll_tx_cq+0x668/0xa60
-> >     mlx5e_napi_poll+0x5b/0x7b0
-> >     net_rx_action+0x15a/0x580
-> > 
-> > Reset BQL only when the SQ has no bytes in flight (sq->cc == sq->pc).
-> > 
-> > In the case that reset is skipped, the outstanding WQEs will eventually
-> > complete and rebalance the dql. The dql->limit is carried across the
-> > reset.
-> > 
-> > Fixes: b2588ea40ec9 ("net/mlx5e: Implement queue mgmt ops and single channel swap")
-> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> 
-> Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-> 
-> Thanks.
 
-Thanks Tariq, and my apologies for forgetting to carry the R-b forward.
 
+On 04.08.26 18:45, Jakub Kicinski wrote:
+> Hi!
 > 
-> > ---
-> > Changes in v3:
-> > - Sample sq->cc/sq->pc before setting MLX5E_SQ_STATE_ENABLED, so a
-> >    concurrent mlx5e_poll_tx_cq() cannot un-charge BQL between the check
-> >    and netdev_tx_reset_queue() (Sashiko:
-> >    https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260729-mlx5-bql-v2-1-cdf285e586df@meta.com)
-> > - Link to v2: https://lore.kernel.org/r/20260729-mlx5-bql-v2-1-cdf285e586df@meta.com
-> > 
-> > Changes in v2:
-> > - remove misleading comment (Tariq)
-> > - Link to v1: https://lore.kernel.org/r/20260728-mlx5-bql-v1-1-99a0ab77ede7@meta.com
-> > ---
-> >   drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 4 +++-
-> >   1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> > index 7d47a1da8b6b..f0407a850ea8 100644
-> > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> > @@ -1939,8 +1939,10 @@ int mlx5e_open_txqsq(struct mlx5e_channel *c, u32 tisn, int txq_ix,
-> >   void mlx5e_activate_txqsq(struct mlx5e_txqsq *sq)
-> >   {
-> >   	sq->txq = netdev_get_tx_queue(sq->netdev, sq->txq_ix);
-> > +	/* Reset BQL only when the SQ has no bytes in flight. */
-> > +	if (sq->cc == sq->pc)
-> > +		netdev_tx_reset_queue(sq->txq);
-> >   	set_bit(MLX5E_SQ_STATE_ENABLED, &sq->state);
-> > -	netdev_tx_reset_queue(sq->txq);
-> >   	netif_tx_start_queue(sq->txq);
-> >   	netif_queue_set_napi(sq->netdev, sq->txq_ix, NETDEV_QUEUE_TYPE_TX, sq->cq.napi);
-> >   }
-> > 
-> > ---
-> > base-commit: d1000fd7995e51deec872d154e0a40d82f7a539f
-> > change-id: 20260728-mlx5-bql-84e02a5a46c8
-> > 
-> > Best regards,
+> The CX7 testing in NIPA is looking pretty good, one major source of
+> noise, tho, is that the pp-alloc test sometimes locks rtnl for
+> a minute.
 > 
+> Here's a failure in that test itself:
+> 
+> # # Exception| subprocess.TimeoutExpired: Command '['ethtool', '-G', 'ens25f1np1', 'rx', '2048']' timed out after 20 seconds
+> # # Exception| 
+> # not ok 1 pp_alloc_fail.test_pp_alloc
+> 
+> https://netdev.bots.linux.dev/logview.html?f=/logs/hwksft/CX7-dbg/results/763842/test-outputs/36-pp-alloc-fail-py/stdout
+> 
+> Then the next test that runs also times out during setup:
+> 
+> # subprocess.TimeoutExpired: Command '['ip', '--json', '-d', 'link', 'show', 'dev', 'ens25f1np1']' timed out after 20 seconds
+> not ok 1 selftests: drivers/net/hw: rss_api.py # exit=1
+> 
+> https://netdev.bots.linux.dev/logs/hwksft/CX7-dbg/results/763842/test-outputs/37-rss-api-py/stdout
+> 
+> pp_alloc test can fail, but spilling into the next test is a problem.
+> 
+> At the retry things clear up enough to return to happiness, tho:
+> 
+> https://netdev.bots.linux.dev/logs/hwksft/CX7-dbg/results/763842/test-outputs/37-rss-api-py-retry/stdout
+> 
+> I haven't try to dig into where it is blocked but does this ring any
+> bells?
+Not to me. We can try an internal reproduction.
+
+Randomly clicking around the flakes page, I found another instance of
+pp_alloc_fail.py running and getting crashes in mlx5 during page
+deallocation:
+https://netdev.bots.linux.dev/logs/hwksft/CX7-dbg/results/762402/sol-machine-2
+
+Is this also something new?
+
+Thanks,
+Dragos
+
+
+
