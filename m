@@ -1,135 +1,221 @@
-Received: from mail-oo1-f77.google.com (mail-oo1-f77.google.com [209.85.161.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62ADA47CA9E
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 17:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1E6484239;
+	Tue,  4 Aug 2026 17:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785862910; cv=none; b=Ig9zL0Z/BxCyKZHw0maafoO/ZSzQSUt4Mpi6QuwRSjs/YqZw22X0D1PqqGHzOzjdngmaMXyxVkhC0TKO/hUhFjqpuuNCzCynSlm8MQO/7FwlZ8aeaWt2HdpM9wIQGzRdcSOWWYVMbnarbbo4mpVFIF/ssx51vdmFF6sF2RTVYRA=
+	t=1785862951; cv=none; b=KSzYkJ77QIT6G/kK00wICgsP2JIocZKdWtGXXizcBqZLEeX/1AX2SrBPsYoQIe1pvKtvG3Drm+EIEBHGSfCkOLwpBxoGazWyyE5xiHULkFSc8Gjvb/Dd7UoKIwoe167lt5u9qAUeRKVBQWrRbWbTuhz77uaA2leojcwcJs+MnGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785862910; c=relaxed/simple;
-	bh=AXJkorNTacYIuGn8PIp7IKVMWx+i20Mzs/6C15iQGFQ=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=KIaHDixU2LIUiUl/M8KqgYtHLJCN2749wAvHW0bUV5iC2mnqaxoCjySCAIdBSlJWYP6tH1kDPC5TcmMQFgcy2CTi4VzCGZzCM1UuMuAIUOEWjm6f1YMwSkh+q97wTs+qGfUC6AUHt5PVg2IqEsvBkGGWVWdmdVdFg8uMFKo39MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f77.google.com with SMTP id 006d021491bc7-6ab1946bb8eso82652eaf.2
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 10:01:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785862893; x=1786467693;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=IA8IVfUPjKlyNF0LpBtdvGn/1kyZDtNIWrtz8Lq9ops=;
-        b=BbzisIOko/pdww2UdWst8mh5dwEL3e+GQAqDUnh33qOSi472+a9VOQ56TMjzcep8M4
-         rE3w33IU6nL1zw7nZ251/1BZN7b/6fsG7R4jvRSQZUq8MU3oXpPm8wkpTq4Bzq4HnbbO
-         MX2Ro0nY+lahuKGTlpY4rgC8FWbHMSTML/DKanfEzOjTMKgPJb3lY5ZAVbkJbg9ngIyh
-         P1WpPiU97XaShkRTIQFafJPGuVDN4CUfwQ/MPXwWfYGOWU+g2y8+QZrRDd1telcuELBF
-         zwSwIg4h5Uy6YIkeWqTqez6BRUM1QmQjvU99EhM8ObZB0U8t4Ob2a7vZPc9n0iRJwqzx
-         9Q4g==
-X-Forwarded-Encrypted: i=1; AHgh+Rrb2xVEktC0VvytjyJ9/BAABh275ja/rBAm4czid4E4WRMU2RY7vyVxJr4fY8xH9GhEzcCn184=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4Lo/xXju2gfEjDvXLMF/qcc8zlAUuL6jmA/MAEWNXWzNq6whb
-	V//B2offr+5JzrT18LcDCRyMEjCcqZeacXCFOT63FSlrpMwd+zr1AZDHnT0LEFpSmeN0GHHQd0Y
-	MyFp2GGtlR6oamT4LK4wZMnIyzCbitNVEYTwkecbLw3Y7o48zEdrZohpW8yE=
+	s=arc-20240116; t=1785862951; c=relaxed/simple;
+	bh=kPUCeIB2RJhyarauEbgq4Nr5biCLiwT4sXhQFwqG5CI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=r68F4kJZ7xGYi5MpqE+2EzBb6k9NF5MDF4Pi9cUmchtJ3mhSw9kelZXESpSwbgQ0lW6RHWyxD+yWlKCe7cCEVjbNlf3tKPPFZvZ+ok3ZcTCL6mZ1ISyRvOdj8/r+GNQzK9eFFpZyVAHQSKVPWuDbyJfn0swjGL6nDpMX0VLueow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X5tYTaeg; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X5tYTaeg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085F71F000E9;
+	Tue,  4 Aug 2026 17:02:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785862935;
+	bh=etCVaetWE8gtiCKDaU0Grtt/SITut8tqHIOF7rRaem4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=X5tYTaegfXczgD3LSeCTxDmIglIK1O7T69cGUcwSv33g/HrePwqC9UK0/kaHtBpa2
+	 MWJjx18NE9T0Phs0QTC06P5opUFNWtuLrrJ7Xkkkro5NkOY78q8YiPgdtOj993sXtN
+	 P58hQ+fasv/XhuTKyQRKciqwCbYW1fU4q79949ISrLu69/nvZaOhss/0DcOSqUJB+y
+	 eGMLsCT27rLJLh1axEiy806WSbu06/txoskuSkzxaEvrFX3hRLIW23Yg38+Tc1VND6
+	 mHcaegiKu4fj6GJR2WnCRvR8VG8DUlKFvNaNCXPiKYQ5w3a/NHp6VpqRJeo8okRUpV
+	 965I6T4sPCOcA==
+From: Simon Horman <horms@kernel.org>
+To: hidayath@linux.ibm.com
+Cc: Simon Horman <horms@kernel.org>,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	wintera@linux.ibm.com,
+	alibuda@linux.alibaba.com,
+	dust.li@linux.alibaba.com,
+	sidraya@linux.ibm.com,
+	wenjia@linux.ibm.com,
+	mjambigi@linux.ibm.com,
+	tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	svens@linux.ibm.com,
+	pasic@linux.ibm.com,
+	gbayer@linux.ibm.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] dibs: initialise dibs->lock in dibs_dev_alloc()
+Date: Tue,  4 Aug 2026 18:02:06 +0100
+Message-ID: <20260804170206.526356-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260730124227.167829-1-hidayath@linux.ibm.com>
+References: <20260730124227.167829-1-hidayath@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a4a:e844:0:b0:6aa:e854:d03b with SMTP id
- 006d021491bc7-6ae96bb2dc0mr235720eaf.2.1785862893651; Tue, 04 Aug 2026
- 10:01:33 -0700 (PDT)
-Date: Tue, 04 Aug 2026 10:01:33 -0700
-In-Reply-To: <6a6f9105.1aa927e4.17d4bf.001b.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a721aed.9511d2ce.1fc5b9.0341.GAE@google.com>
-Subject: Re: [syzbot] [net?] WARNING in ipgre_xmit (2)
-From: syzbot <syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-	horms@kernel.org, idosch@nvidia.com, kerneljasonxing@gmail.com, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-syzbot has found a reproducer for the following issue on:
-
-HEAD commit:    848acc8ffe1b Merge tag 'fsverity-for-linus' of git://git.k..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=178fb649580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4e38b15c29e6a1d9
-dashboard link: https://syzkaller.appspot.com/bug?extid=f16c1b285c9f63994eec
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1617be32580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11d113b9580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/4949138dcfef/disk-848acc8f.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/31cc6fbe5b8a/vmlinux-848acc8f.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/433919ca6520/bzImage-848acc8f.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-len > ((int)(~0U >> 1))
-WARNING: ./include/linux/skbuff.h:2864 at pskb_may_pull_reason include/linux/skbuff.h:2864 [inline], CPU#1: syz-executor147/5638
-WARNING: ./include/linux/skbuff.h:2864 at pskb_network_may_pull_reason include/linux/skbuff.h:3265 [inline], CPU#1: syz-executor147/5638
-WARNING: ./include/linux/skbuff.h:2864 at pskb_inet_may_pull_reason include/net/ip_tunnels.h:481 [inline], CPU#1: syz-executor147/5638
-WARNING: ./include/linux/skbuff.h:2864 at pskb_inet_may_pull include/net/ip_tunnels.h:486 [inline], CPU#1: syz-executor147/5638
-WARNING: ./include/linux/skbuff.h:2864 at ipgre_xmit+0x958/0xcd0 net/ipv4/ip_gre.c:658, CPU#1: syz-executor147/5638
-Modules linked in:
-CPU: 1 UID: 0 PID: 5638 Comm: syz-executor147 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-RIP: 0010:pskb_may_pull_reason include/linux/skbuff.h:2864 [inline]
-RIP: 0010:pskb_network_may_pull_reason include/linux/skbuff.h:3265 [inline]
-RIP: 0010:pskb_inet_may_pull_reason include/net/ip_tunnels.h:481 [inline]
-RIP: 0010:pskb_inet_may_pull include/net/ip_tunnels.h:486 [inline]
-RIP: 0010:ipgre_xmit+0x958/0xcd0 net/ipv4/ip_gre.c:658
-Code: 48 3b 84 24 80 00 00 00 0f 85 3b 01 00 00 31 c0 48 8d 65 d8 5b 41 5c 41 5d 41 5e 41 5f 5d e9 3f 1a 78 01 cc e8 09 f5 6a f7 90 <0f> 0b 90 e9 08 f8 ff ff 44 89 ff 44 89 e6 e8 b5 f6 6a f7 45 39 e7
-RSP: 0018:ffffc900039af5e0 EFLAGS: 00010293
-RAX: ffffffff8a5c1d67 RBX: 0000000000000000 RCX: ffff888079535d00
-RDX: 0000000000000000 RSI: 00000000ffffff40 RDI: 0000000000000000
-RBP: ffffc900039af6b0 R08: ffff888079535d00 R09: 0000000000000002
-R10: 0000000000004888 R11: ffffffff8a5c1410 R12: ffff88807ecbc000
-R13: dffffc0000000000 R14: ffff88807b7f2780 R15: 00000000ffffff40
-FS:  0000555590a0a400(0000) GS:ffff88812504b000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055704428ded0 CR3: 00000000788f2000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- __netdev_start_xmit include/linux/netdevice.h:5400 [inline]
- netdev_start_xmit include/linux/netdevice.h:5409 [inline]
- __dev_direct_xmit+0x4b6/0x730 net/core/dev.c:4942
- __xsk_generic_xmit net/xdp/xsk.c:1253 [inline]
- xsk_generic_xmit+0x2759/0x47b0 net/xdp/xsk.c:1309
- __xsk_sendmsg net/xdp/xsk.c:1363 [inline]
- xsk_sendmsg+0x482/0x810 net/xdp/xsk.c:1373
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
- __sock_sendmsg net/socket.c:790 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
- __sys_sendmsg net/socket.c:2770 [inline]
- __do_sys_sendmsg net/socket.c:2775 [inline]
- __se_sys_sendmsg net/socket.c:2773 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fc137b1b409
-Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fffc9ef46d8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fc137b1b409
-RDX: 0000000000000040 RSI: 0000200000000700 RDI: 0000000000000003
-RBP: 0000000000000000 R08: 0000000080000000 R09: 0000000080000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000003
- </TASK>
-
-
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260730124227.167829-1-hidayath@linux.ibm.com?part=1
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+--- Patch [1]: [PATCH net] dibs: initialise dibs->lock in dibs_dev_alloc() ---
+commit d5daf0b54be512c77adffebc7ed60dee0c5e8e74
+Author: Hidayath Khan <hidayath@linux.ibm.com>
+
+dibs: initialise dibs->lock in dibs_dev_alloc()
+
+This moves spin_lock_init(&dibs->lock) from dibs_dev_add() into
+dibs_dev_alloc(), so the lock is valid as soon as a driver can hand the
+device to its interrupt handler, and updates the dibs_dev_alloc()
+kerneldoc accordingly.
+
+While looking at the surrounding lifetime rules for struct dibs_dev, two
+questions came up about pre-existing behaviour in the same area.
+
+> diff --git a/drivers/dibs/dibs_main.c b/drivers/dibs/dibs_main.c
+> index 14c3e2d84902e..4c26fd06973f7 100644
+> --- a/drivers/dibs/dibs_main.c
+> +++ b/drivers/dibs/dibs_main.c
+> @@ -138,6 +138,7 @@ struct dibs_dev *dibs_dev_alloc(void)
+>  	dibs = kzalloc_obj(*dibs);
+>  	if (!dibs)
+>  		return dibs;
+> +	spin_lock_init(&dibs->lock);
+>  	dibs->dev.release = dibs_dev_release;
+>  	dibs->dev.class = &dibs_class;
+>  	device_initialize(&dibs->dev);
+
+[Severity: High]
+[Finding: main-3-1]
+[Sources: opus-5]
+This isn't a bug introduced by this patch, but since the commit message
+argues about ism_handle_irq() running before dibs_dev_add(), does the
+mirror-image window at teardown need the same attention?
+
+ism_remove() tears things down in this order:
+
+drivers/s390/net/ism_drv.c:ism_remove() {
+	...
+	dibs_dev_del(dibs);
+	ism_dev_exit(ism);
+	/* pairs with dibs_dev_alloc() */
+	put_device(&dibs->dev);
+}
+
+and ism_dev_exit() only disarms the interrupt as its last step:
+
+drivers/s390/net/ism_drv.c:ism_dev_exit() {
+	...
+	unregister_ieq(ism);
+	unregister_sba(ism);
+	free_irq(pci_irq_vector(pdev, 0), ism);
+}
+
+unregister_sba() frees the SBA and sets ism->sba = NULL, but the handler
+writes through it unconditionally on entry:
+
+drivers/s390/net/ism_drv.c:ism_handle_irq() {
+	spin_lock(&dibs->lock);
+	ism->sba->s = 0;
+	...
+}
+
+Likewise unregister_ieq() frees the IEQ buffer and NULLs ism->ieq, while
+ism_handle_event() dereferences it in the loop condition:
+
+	while ((ism->ieq_idx + 1) != READ_ONCE(ism->ieq->header.idx)) {
+
+Is there anything that serializes ism_handle_irq() against those frees?
+dibs->lock is the only lock the handler takes, and unregister_ieq() /
+unregister_sba() never take it, so an MSI serviced on another CPU during
+ism_remove() looks like it can write to a freed/NULL sba and read a freed
+ieq in hardirq context. Would calling free_irq() (or synchronize_irq())
+before releasing the structures the handler consumes close this?
+
+The same ordering shows up on the probe error path: dibs_dev_add() failure
+frees dmb_clientid_arr and returns to ism_probe(), which only reaches
+ism_dev_exit() (and thus free_irq()) afterwards.
+
+> @@ -186,7 +187,6 @@ int dibs_dev_add(struct dibs_dev *dibs)
+>  	int i, ret;
+>  
+>  	max_dmbs = dibs->ops->max_dmbs();
+> -	spin_lock_init(&dibs->lock);
+>  	dibs->dmb_clientid_arr = kzalloc(max_dmbs, GFP_KERNEL);
+>  	if (!dibs->dmb_clientid_arr)
+>  		return -ENOMEM;
+
+[Severity: High]
+[Finding: main-3-0]
+[Sources: opus-5]
+This is a pre-existing issue and not something this patch changes, but
+while the ownership rules of dibs_dev_add() are in view: can
+dmb_clientid_arr be freed twice on the loopback probe error path?
+
+dibs_dev_add() frees the array on every failure after the allocation and
+leaves the pointer in place:
+
+drivers/dibs/dibs_main.c:dibs_dev_add() {
+	...
+	ret = device_add(&dibs->dev);
+	if (ret)
+		goto free_client_arr;
+	...
+err_device_del:
+	device_del(&dibs->dev);
+free_client_arr:
+	kfree(dibs->dmb_clientid_arr);
+	return ret;
+}
+
+and dibs_lo_dev_probe() frees it again:
+
+drivers/dibs/dibs_loopback.c:dibs_lo_dev_probe() {
+	ret = dibs_dev_add(dibs);
+	if (ret)
+		goto err_reg;
+	...
+err_reg:
+	kfree(dibs->dmb_clientid_arr);
+	/* pairs with dibs_dev_alloc() */
+	put_device(&dibs->dev);
+	kfree(ldev);
+}
+
+The early -ENOMEM return is harmless because the pointer is still NULL,
+but a device_add() or sysfs_create_group() failure would reach the same
+slab object twice. The two callers also disagree here: ism_probe()'s
+err_ism / err_dibs paths do not repeat the kfree(). Would setting
+dibs->dmb_clientid_arr = NULL after the kfree() in dibs_dev_add(), or
+documenting who owns the array on failure, resolve the mismatch?
+
+Also, dibs_dev_del() ends with kfree(dibs->dmb_clientid_arr) without
+clearing the pointer, while ism_handle_irq() reads it for any set DMB bit:
+
+drivers/s390/net/ism_drv.c:ism_handle_irq() {
+	...
+	client_id = dibs->dmb_clientid_arr[bit];
+	if (unlikely(client_id == NO_DIBS_CLIENT ||
+		     !dibs->subs[client_id]))
+	...
+}
+
+Since client_id comes straight from that buffer and is used unchecked as
+an index into the 8-entry subs[] array before an indirect call, does a
+post-free interrupt here read freed memory and potentially index past the
+end of struct dibs_dev?
+
+[ ... ]
