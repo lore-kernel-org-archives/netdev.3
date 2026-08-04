@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B97A41D21F;
-	Tue,  4 Aug 2026 03:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532D63EC822;
+	Tue,  4 Aug 2026 03:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785813061; cv=none; b=QGaFF8dpXmwfiSsI5ZpAoAV9E+rTS3Gy4sXoiiaw7QVo8GMqbRkC9Hfg2zKh/ogXOSq2cms/4wTkBbK4DU6RtwhJkGQKPU2u7rdFbCtXw0XMJUdSBic8g58Exe4rTyLCAQ2eicvIqh9NCu3/W8LRKkhdjWatPPju3fL2d90t5Ww=
+	t=1785813069; cv=none; b=BOky/kj1udzcbA+08Yaa75yXnNlvN3vImgnOh0P//y0l35rMzM2W1LdyaUSGWsXKUwyrYLxbeaTLqfgzDzk6eY7UZ7fuKQk9rdcrpFwhKhtmUtjGcXCfr4zlUuS5ZCPQCK1BD6ljkjan8E8v2AnuJ9qhZTo5Ws8KNKxPlTuVbFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785813061; c=relaxed/simple;
-	bh=tX8MbX7a1nCwghjOyoElljxt29Um9JEC02OIIOUHF5k=;
+	s=arc-20240116; t=1785813069; c=relaxed/simple;
+	bh=ub3F+rC6rtI5cSg69MhEnLJ+09HEPdAJ/HE8GsNy/H4=;
 	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kdvgKecg3q2nT/OYYsIyzmH7BmLygD/KiSWg7wclKdS4x40HIJoRgYXeNor+zG0yzlEC8MYZkyDsGgsGmFZz68HLH6h2EeBIfj175LCs3YMQv3QNfwz2nupULwMB17ReNsOE/3r1OtuFieySVXSCp8DMbwVY6+IT2HVUfnGV4Yk=
+	 Content-Type:Content-Disposition:In-Reply-To; b=jL0mI2AKq9NALmmuBQ+biKaZ2+58wFmpWCFDbRI94xEPl3nA4Z+Z2y6czaxSdiyDixERWjxmuqi5H+/g8qAdXCOQygyt7eErFAatoQDWtKOYCGwPo51xIZBm9nN/1jHfpCdZVzACrbY4DvTbNlH8M22aDTGii10eBk0/CgHGr0k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1wr5YH-0000000045u-3fjr;
-	Tue, 04 Aug 2026 03:10:49 +0000
-Date: Tue, 4 Aug 2026 04:10:46 +0100
+	id 1wr5YO-00000000471-1sJf;
+	Tue, 04 Aug 2026 03:10:56 +0000
+Date: Tue, 4 Aug 2026 04:10:53 +0100
 From: Daniel Golle <daniel@makrotopia.org>
 To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
@@ -39,9 +39,9 @@ To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH net v2 4/6] net: dsa: mt7530: check CORE_PLL_GROUP4 access in
- mt7531_setup()
-Message-ID: <a7dfe3b66ea6ac1ae7915034de0527060e6ddcd4.1785811140.git.daniel@makrotopia.org>
+Subject: [PATCH net v2 5/6] net: dsa: mt7530: check command register writes
+ in fdb and vlan cmd
+Message-ID: <0e5d65a672313286e5a8ce28a9faba9c8972dbb6.1785811140.git.daniel@makrotopia.org>
 References: <cover.1785811140.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -53,51 +53,70 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1785811140.git.daniel@makrotopia.org>
 
-mt7531_setup() reads CORE_PLL_GROUP4 through the MT7531 indirect c45
-PHY access, modifies it and writes it back to enable the PHY core
-PLL, but checks neither the read nor the write. Now that the indirect
-access functions propagate command-write failures, a failed read
-returns a negative errno that would be bit-modified and written back
-into the PLL register, and a failed write-back would go unnoticed.
-Check both and bail out. The adjacent EEE advertisement writes push a
-constant value and cannot corrupt state, so they are left as is.
+mt7530_fdb_cmd() and mt7530_vlan_cmd() start a command by writing the
+BUSY bit to MT7530_ATC / MT7530_VTCR, then poll for it to clear.
+mt7530_write() discards the write's return value, so a failed command
+write leaves BUSY unset and the poll succeeds on its first read,
+reporting a command that never ran as done -- returning stale FDB data
+or silently dropping a VLAN table update.
 
-Fixes: c288575f7810 ("net: dsa: mt7530: Add the support of MT7531 switch")
+Return mt7530_mii_write()'s error from mt7530_write() and check it in
+both command helpers.
+
+Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
 v2: new patch
 
- drivers/net/dsa/mt7530.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/net/dsa/mt7530.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 2a17696e6a45..69cee61564cb 100644
+index 69cee61564cb..c0437273270b 100644
 --- a/drivers/net/dsa/mt7530.c
 +++ b/drivers/net/dsa/mt7530.c
-@@ -2781,14 +2781,20 @@ mt7531_setup(struct dsa_switch *ds)
- 	 * phy_[read,write]_mmd_indirect is called, we provide our own
- 	 * mt7531_ind_mmd_phy_[read,write] to complete this function.
- 	 */
--	val = mt7531_ind_c45_phy_read(priv,
-+	ret = mt7531_ind_c45_phy_read(priv,
- 				      MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
- 				      MDIO_MMD_VEND2, CORE_PLL_GROUP4);
-+	if (ret < 0)
-+		return ret;
+@@ -185,14 +185,18 @@ mt7530_mii_read(struct mt7530_priv *priv, u32 reg)
+ 	return val;
+ }
+ 
+-static void
++static int
+ mt7530_write(struct mt7530_priv *priv, u32 reg, u32 val)
+ {
++	int ret;
 +
-+	val = ret;
- 	val |= MT7531_RG_SYSPLL_DMY2 | MT7531_PHY_PLL_BYPASS_MODE;
- 	val &= ~MT7531_PHY_PLL_OFF;
--	mt7531_ind_c45_phy_write(priv,
--				 MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
--				 MDIO_MMD_VEND2, CORE_PLL_GROUP4, val);
-+	ret = mt7531_ind_c45_phy_write(priv,
-+				       MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
-+				       MDIO_MMD_VEND2, CORE_PLL_GROUP4, val);
-+	if (ret < 0)
+ 	mt7530_mutex_lock(priv);
+ 
+-	mt7530_mii_write(priv, reg, val);
++	ret = mt7530_mii_write(priv, reg, val);
+ 
+ 	mt7530_mutex_unlock(priv);
++
++	return ret;
+ }
+ 
+ static u32
+@@ -249,7 +253,9 @@ mt7530_fdb_cmd(struct mt7530_priv *priv, enum mt7530_fdb_cmd cmd, u32 *rsp)
+ 
+ 	/* Set the command operating upon the MAC address entries */
+ 	val = ATC_BUSY | ATC_MAT(0) | cmd;
+-	mt7530_write(priv, MT7530_ATC, val);
++	ret = mt7530_write(priv, MT7530_ATC, val);
++	if (ret)
 +		return ret;
  
- 	/* Disable EEE advertisement on the switch PHYs. */
- 	for (i = MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr);
+ 	mt7530_mutex_lock(priv);
+ 
+@@ -1632,7 +1638,9 @@ mt7530_vlan_cmd(struct mt7530_priv *priv, enum mt7530_vlan_cmd cmd, u16 vid)
+ 	int ret;
+ 
+ 	val = VTCR_BUSY | VTCR_FUNC(cmd) | vid;
+-	mt7530_write(priv, MT7530_VTCR, val);
++	ret = mt7530_write(priv, MT7530_VTCR, val);
++	if (ret)
++		return ret;
+ 
+ 	mt7530_mutex_lock(priv);
+ 
 -- 
 2.55.0
