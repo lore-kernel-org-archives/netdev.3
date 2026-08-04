@@ -1,40 +1,48 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E6E3E8C5A;
-	Tue,  4 Aug 2026 01:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8749E2DF132;
+	Tue,  4 Aug 2026 01:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785808508; cv=none; b=cQxqQxPa1HqeCiuZmGi5F107JvzSI9cAD3NHDPXJ8nfrgeaCWIOQW4ErlR8xtIsCNhnO9tkt5cOAVVZvG8ah3S45ugcqvBiU6jFXKFYJF3oCPpm2SXyaKYiC1W2J6GbLDmJNMTRIYysLMh4pYsPAx8Vu9tNOT8LLMw8SOwuvP2c=
+	t=1785808557; cv=none; b=bL7nKv/foIZaTXyrTTiJjiSztDVoU/K/VHOkvF9ZwEsm9pRFdFwknuMsoXGf15hlnn++/v6utTABUfJupLjdv/CePcMuqKXk60UUBJgERUPr8hy1v3FXG0V7eJZSFvsFrIT8QRjKFUNtF86673jaZmQuignYzZeJmNm+buuJSrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785808508; c=relaxed/simple;
-	bh=q1co3iadCb8BY0UmFxkJQFD+//2XEWlM5uUvIxwvgBA=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pjvmcm5H4nRNeU7mZqPKz32jWbvAWr1PuwpdH7YNYbwhsCUta4T6YxAeCBDJIxU5+kYtzf0/SVdVki/dUP0y/Bsxry+1jUpMehvWf3j2TOsRZKa7YKDPjgfg1RW4/SwA+qBaeLTliEGY0+daO6Bmw/BFETNGQxRVeKMUb0HKS+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
-Received: from simon-Latitude-5450.. (tmo-075-57.customers.d1-online.com [80.187.75.57])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.19.0.2/8.19.0.2) with ESMTPSA id 673IarsG011387
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 3 Aug 2026 20:37:01 +0200 (CEST)
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-To: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com, jasowang@redhat.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
-        eperezma@redhat.com, leiyang@redhat.com, stephen@networkplumber.org,
-        jon@nutanix.com, brett@librecast.net, corbet@lwn.net,
-        skhan@linuxfoundation.org, tim.gebauer@tu-dortmund.de,
-        simon.schippers@tu-dortmund.de, netdev@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, virtualization@lists.linux.dev
-Subject: [PATCH net-next v14 5/5] tun/tap & vhost-net: stop tail-drop when IFF_BACKPRESSURE is set
-Date: Mon,  3 Aug 2026 20:36:41 +0200
-Message-ID: <20260803183641.96882-6-simon.schippers@tu-dortmund.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260803183641.96882-1-simon.schippers@tu-dortmund.de>
-References: <20260803183641.96882-1-simon.schippers@tu-dortmund.de>
+	s=arc-20240116; t=1785808557; c=relaxed/simple;
+	bh=DUg0rv0jTYhujFDz1jgpvjK7v97ovv6zvnUsjUVQHB8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LQd/a5jbadv9txdFqmGOakwIK4v3YYE9c5BtwNpEe2omF6H2pBGEJWsf720vISjdkYE91wV6gU0RYbtwUWryVw/XyyykCSzcPpYPcofXiwSxwoNhUDtzVhOWVSWBoGn46su4qCN8rvvicXKGwleton2EQjAEOCMCBf2pJGgWses=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJ+/4h4n; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJ+/4h4n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B381F000E9;
+	Tue,  4 Aug 2026 01:55:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785808556;
+	bh=g4K9MOpy1qJIJEehjHf2KBECn9hyc0IvRb3u+wdSoKQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cJ+/4h4n6UA3JPhe+5nO0YO+bLy1xkch2XPCCi9JWML7TMrYExulJU4DmvdoJm7Pz
+	 06aRtQ4vdaqYaoB/FQdXTAJ1N+sCELgl3UJkUk6Ptr995m7nsJM5H/N42Yu88o7+fI
+	 pu0BaLlqZOAPhCTsU86zd39ozfXA8xZI+9Wz7Gn+lTQ7xotHRH/vB29cFXqmrFb13W
+	 6EWbRy/nYDKjLvCSABE4wt2wtyMsVPVxNwHKtVgiXYRd0e4qG0Uz7pwH12uJWeCaDa
+	 5Xppn6/0SVwyhixUIOBJdqQFLhCiZevhsGaEm98U19pHarHvyHk6WWQxsVv6e/MaYD
+	 g82L6dmuZz0bQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: l1138897701@163.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] sctp: sm_statefuns: Fix zero window detection in T3 timeout handling
+Date: Mon,  3 Aug 2026 18:55:55 -0700
+Message-ID: <20260804015555.2548414-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260730063344.770679-1-l1138897701@163.com>
+References: <20260730063344.770679-1-l1138897701@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,243 +51,233 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This commit prevents tail-drop when IFF_BACKPRESSURE is set, a qdisc is
-present and the ptr_ring becomes full. Once the ring reaches capacity
-after a produce attempt, the netdev queue is stopped instead of dropping
-subsequent packets. Without the flag, or if no qdisc is present, the
-previous tail-drop behavior is preserved.
-
-IFF_BACKPRESSURE is added to TUN_FEATURES here and not in the patch that
-defines it, so that TUNSETIFF honours the flag only once the
-implementation behind it is complete.
-
-The unconditional version of this behavior was reverted because it caused
-a significant throughput drop in an IPv6 multicast testcase on Brett
-Sheffield's librecast testbed [1]: with 8 iperf3 TCP threads sending, the
-throughput dropped from 13.5 Gbit/s to 9.13 Gbit/s. This is why the queue
-stopping is now gated on IFF_BACKPRESSURE.
-
-If producing an entry fails anyway due to a race, tun_net_xmit() drops
-the packet. Such rare races are expected because LLTX is enabled and the
-transmit path operates without the usual locking.
-
-The queue state is only touched while the device is running. The stop
-itself would be harmless during teardown, as tun_net_close() sets the
-same bit, but the re-check below it wakes the queue again and must not
-clear that stop.
-
-A later TUNSETIFF can clear the flag again while the device has at most
-one queue. Past that point tun_set_iff() returns before it writes
-tun->flags, which is how it already treats every other TUN_FEATURES bit.
-For the case where the flag does change, tun_set_iff() calls
-tun_force_wake_queue() for the attached tfiles, so that no queue stays
-stopped without a consumer that would wake it.
-
-The __tun_wake_queue() function of the consumer races with the producer
-for waking/stopping the netdev queue, which could result in a stalled
-queue. Therefore, an smp_mb__after_atomic() is introduced that pairs
-with the smp_mb() of the consumer. It follows the principle of store
-buffering described in tools/memory-model/Documentation/recipes.txt:
-
-- The producer in tun_net_xmit() first sets __QUEUE_STATE_DRV_XOFF,
-  followed by an smp_mb__after_atomic() (= smp_mb()), and then reads the
-  ring with __ptr_ring_check_produce().
-
-- The consumer in __tun_wake_queue() first writes zero to the ring in
-  __ptr_ring_consume(), followed by an smp_mb(), and then reads the queue
-  status with netif_tx_queue_stopped().
-
-=> Following the aforementioned principle, it is impossible for the
-   producer to see a full ring (and therefore not wake the queue on the
-   re-check) while the consumer simultaneously fails to see a stopped
-   queue (and therefore also does not wake it).
-
-tun_net_xmit() holds only the producer_lock and can not reset cons_cnt,
-which the consumer_lock protects, so the wake on the re-check leaves
-stale credit behind. That is accepted as best-effort, the re-check rarely
-succeeds and the next drain corrects the count.
-
-The documentation in tuntap.rst is updated accordingly.
-
-Benchmarks:
-My own benchmarks show a slight regression in raw transmission performance
-when using two sending threads. Packet loss also occurs only in the
-two-thread sending case; no packet loss was observed with a single
-sending thread.
-
-Test setup:
-AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
-Average over 50 runs @ 100,000,000 packets. SRSO and spectre v2
-mitigations disabled.
-
-Note for tap+vhost-net:
-XDP drop program active in VM -> ~2.5x faster; slower for tap due to
-more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
-
-+--------------------------+--------------+----------------+----------+
-| 1 thread                 | Stock        | Patched with   | diff     |
-| sending                  |              | fq_codel qdisc |          |
-+------------+-------------+--------------+----------------+----------+
-| TAP        | Received    | 1.132 Mpps   | 1.123 Mpps     | -0.8%    |
-|            +-------------+--------------+----------------+----------+
-|            | Lost/s      | 3.765 Mpps   | 0 pps          |          |
-+------------+-------------+--------------+----------------+----------+
-| TAP        | Received    | 3.857 Mpps   | 3.901 Mpps     | +1.1%    |
-|            +-------------+--------------+----------------+----------+
-| +vhost-net | Lost/s      | 0.802 Mpps   | 0 pps          |          |
-+------------+-------------+--------------+----------------+----------+
-
-+--------------------------+--------------+----------------+----------+
-| 2 threads                | Stock        | Patched with   | diff     |
-| sending                  |              | fq_codel qdisc |          |
-+------------+-------------+--------------+----------------+----------+
-| TAP        | Received    | 1.115 Mpps   | 1.081 Mpps     | -3.0%    |
-|            +-------------+--------------+----------------+----------+
-|            | Lost/s      | 8.490 Mpps   | 391 pps        |          |
-+------------+-------------+--------------+----------------+----------+
-| TAP        | Received    | 3.664 Mpps   | 3.555 Mpps     | -3.0%    |
-|            +-------------+--------------+----------------+----------+
-| +vhost-net | Lost/s      | 5.330 Mpps   | 938 pps        |          |
-+------------+-------------+--------------+----------------+----------+
-
-[1] https://lore.kernel.org/netdev/akVnoOYQOrt8k-Gu@karahi.librecast.net/
-
-Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
-Link: https://lore.kernel.org/netdev/akVnoOYQOrt8k-Gu@karahi.librecast.net/
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
- Documentation/networking/tuntap.rst | 32 +++++++++++++++++++++++
- drivers/net/tun.c                   | 39 ++++++++++++++++++++++++-----
- 2 files changed, 65 insertions(+), 6 deletions(-)
+--- Patch [1]: [PATCH net] sctp: sm_statefuns: Fix zero window detection in T3 timeout handling ---
+commit e24cf7acae572e3936b6d8fbcb1d3942444ce068
+Author: Qing Luo <luoqing@kylinos.cn>
 
-diff --git a/Documentation/networking/tuntap.rst b/Documentation/networking/tuntap.rst
-index 4d7087f727be..56c9dc7b96af 100644
---- a/Documentation/networking/tuntap.rst
-+++ b/Documentation/networking/tuntap.rst
-@@ -206,6 +206,38 @@ enable is true we enable it, otherwise we disable it::
-       return ioctl(fd, TUNSETQUEUE, (void *)&ifr);
-   }
- 
-+3.4 qdisc backpressure
-+----------------------
-+
-+IFF_BACKPRESSURE can be set to enable qdisc backpressure. Without it, TX
-+drops occur when the internal ring buffer is full, so any attached qdisc
-+is effectively bypassed and applications only learn about congestion
-+through those drops.
-+
-+With it, the kernel stops the queue instead, letting the qdisc hold and
-+schedule packets, so its AQM, shaping and fairness actually apply. This
-+helps protocols like TCP, which cut throughput in reaction to packet
-+drops. With IFF_BACKPRESSURE, drops then only occur as a rare race.
-+Backpressure requires a qdisc to be attached and has no effect with
-+noqueue.
-+
-+The flag is a property of the TUN/TAP device rather than of the file
-+descriptor it was set on, so it applies to all queues of the device,
-+regardless of which process opened which queue.
-+
-+The flag can only be changed while the device has at most one queue. On a
-+multiqueue device that already has a second queue attached or detached, a
-+later TUNSETIFF succeeds but leaves the flag as it is. All the other
-+TUNSETIFF flags behave the same way.
-+
-+The txqueuelen can be reduced alongside this flag to further shift
-+buffering into the qdisc and reduce bufferbloat, at a possible
-+performance cost.
-+
-+When running multiple network streams in parallel through a single
-+TUN/TAP queue, the flag may reduce performance due to the extra overhead
-+of the backpressure mechanism.
-+
- Universal TUN/TAP device driver Frequently Asked Question
- =========================================================
- 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index dc32566588d1..ec90fef4a42f 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -98,7 +98,8 @@ static void tun_default_link_ksettings(struct net_device *dev,
- #define TUN_FASYNC	IFF_ATTACH_QUEUE
- 
- #define TUN_FEATURES (IFF_NO_PI | IFF_ONE_QUEUE | IFF_VNET_HDR | \
--		      IFF_MULTI_QUEUE | IFF_NAPI | IFF_NAPI_FRAGS)
-+		      IFF_MULTI_QUEUE | IFF_NAPI | IFF_NAPI_FRAGS | \
-+		      IFF_BACKPRESSURE)
- 
- #define GOODCOPY_LEN 128
- 
-@@ -1063,6 +1064,7 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
- 	struct netdev_queue *queue;
- 	struct tun_file *tfile;
- 	int len = skb->len;
-+	int ret;
- 
- 	rcu_read_lock();
- 	tfile = rcu_dereference(tun->tfiles[txq]);
-@@ -1117,13 +1119,35 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 	nf_reset_ct(skb);
- 
--	if (ptr_ring_produce(&tfile->tx_ring, skb)) {
-+	queue = netdev_get_tx_queue(dev, txq);
-+
-+	spin_lock(&tfile->tx_ring.producer_lock);
-+	ret = __ptr_ring_produce(&tfile->tx_ring, skb);
-+	/* Do not touch the queue state of a device that is going down. */
-+	if ((tun->flags & IFF_BACKPRESSURE) && netif_running(dev) &&
-+	    !qdisc_txq_has_no_queue(queue) &&
-+	    __ptr_ring_check_produce(&tfile->tx_ring) == -ENOSPC) {
-+		netif_tx_stop_queue(queue);
-+		/* Paired with smp_mb() in __tun_wake_queue() */
-+		smp_mb__after_atomic();
-+		if (!__ptr_ring_check_produce(&tfile->tx_ring))
-+			netif_tx_wake_queue(queue);
-+	}
-+	spin_unlock(&tfile->tx_ring.producer_lock);
-+
-+	if (ret) {
-+		/* This should be a rare case if IFF_BACKPRESSURE is enabled and
-+		 * a qdisc is present, but can happen due to lltx.
-+		 * Since skb_tx_timestamp(), skb_orphan(),
-+		 * run_ebpf_filter() and pskb_trim() could have tinkered
-+		 * with the SKB, returning NETDEV_TX_BUSY is unsafe and
-+		 * we must drop instead.
-+		 */
- 		drop_reason = SKB_DROP_REASON_FULL_RING;
- 		goto drop;
- 	}
- 
- 	/* dev->lltx requires to do our own update of trans_start */
--	queue = netdev_get_tx_queue(dev, txq);
- 	txq_trans_cond_update(queue);
- 
- 	/* Notify and wake up reader process */
-@@ -2806,8 +2830,9 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
- {
- 	struct tun_struct *tun;
- 	struct tun_file *tfile = file->private_data;
-+	struct tun_file *ntfile;
- 	struct net_device *dev;
--	int err;
-+	int err, i;
- 
- 	if (tfile->detached)
- 		return -EINVAL;
-@@ -2936,8 +2961,10 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
- 	/* Make sure persistent devices do not get stuck in
- 	 * xoff state.
- 	 */
--	if (netif_running(tun->dev))
--		netif_tx_wake_all_queues(tun->dev);
-+	for (i = 0; i < tun->numqueues; i++) {
-+		ntfile = rtnl_dereference(tun->tfiles[i]);
-+		tun_force_wake_queue(tun, ntfile);
-+	}
- 
- 	strscpy(ifr->ifr_name, tun->dev->name);
- 	return 0;
+sctp: sm_statefuns: Fix zero window detection in T3 timeout handling
+
+This drops the asoc->state == SCTP_STATE_SHUTDOWN_PENDING qualifier from
+the zero-window branch of sctp_sf_do_6_3_3_rtx(), so the T5 shutdown
+guard timer is now started whenever asoc->peer.zero_window_announced is
+set, in any state that dispatches the T3-rtx timeout.
+
+No Link: tags were present in the commit header.
+
+> diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+> index 708fa07d5fffc..b01db33bbc360 100644
+> --- a/net/sctp/sm_statefuns.c
+> +++ b/net/sctp/sm_statefuns.c
+> @@ -5842,8 +5842,7 @@ enum sctp_disposition sctp_sf_do_6_3_3_rtx(struct net *net,
+>  	SCTP_INC_STATS(net, SCTP_MIB_T3_RTX_EXPIREDS);
+>  
+>  	if (asoc->overall_error_count >= asoc->max_retrans) {
+> -		if (asoc->peer.zero_window_announced &&
+> -		    asoc->state == SCTP_STATE_SHUTDOWN_PENDING) {
+> +		if (asoc->peer.zero_window_announced) {
+
+[Severity: High]
+[Finding: main-1-0]
+[Sources: opus-5]
+
+Is the T5 timer actually handled in the states this now arms it in?
+
+sctp_sf_do_6_3_3_rtx() runs in COOKIE_ECHOED, ESTABLISHED,
+SHUTDOWN_PENDING and SHUTDOWN_RECEIVED per the T3-rtx table in
+net/sctp/sm_statetable.c:
+
+  #define TYPE_SCTP_EVENT_TIMEOUT_T3_RTX { \
+        ...
+        /* SCTP_STATE_ESTABLISHED */ \
+        TYPE_SCTP_FUNC(sctp_sf_do_6_3_3_rtx), \
+
+But the T5 table in the same file dispatches the expiry to
+sctp_sf_timer_ignore() for exactly the extra states this patch adds:
+
+  #define TYPE_SCTP_EVENT_TIMEOUT_T5_SHUTDOWN_GUARD { \
+        ...
+        /* SCTP_STATE_COOKIE_ECHOED */ \
+        TYPE_SCTP_FUNC(sctp_sf_timer_ignore), \
+        /* SCTP_STATE_ESTABLISHED */ \
+        TYPE_SCTP_FUNC(sctp_sf_timer_ignore), \
+        /* SCTP_STATE_SHUTDOWN_PENDING */ \
+        TYPE_SCTP_FUNC(sctp_sf_t5_timer_expire), \
+        ...
+        /* SCTP_STATE_SHUTDOWN_RECEIVED */ \
+        TYPE_SCTP_FUNC(sctp_sf_timer_ignore), \
+
+So in ESTABLISHED the "one last chance ... before aborting" described by
+the retained comment never happens, since sctp_sf_timer_ignore() only
+returns SCTP_DISPOSITION_CONSUME.
+
+Does this remove the Association.Max.Retrans enforcement for those
+states?  The else branch, which is the only place that does
+SCTP_CMD_SET_SK_ERR(ETIMEDOUT) + SCTP_CMD_ASSOC_FAILED and returns
+SCTP_DISPOSITION_DELETE_TCB, is now skipped whenever
+zero_window_announced is set.  Each later T3-rtx expiry still sees
+overall_error_count >= max_retrans, so it only queues STRIKE + RETRAN
+and re-arms the (no longer pending) T5, because
+sctp_cmd_interpreter() in net/sctp/sm_sideeffect.c re-arms on
+SCTP_CMD_TIMER_START_ONCE whenever the timer is not pending:
+
+  case SCTP_CMD_TIMER_START_ONCE:
+        timer = &asoc->timers[cmd->obj.to];
+
+        if (timer_pending(timer))
+                break;
+        fallthrough;
+
+Can the sender then retransmit indefinitely with no error reported to
+the application, keeping the association, its outqueue chunks, sndbuf
+charge, transports and socket pinned?
+
+Note the flag that now solely decides abort vs. no abort comes straight
+from the remote peer, in sctp_outq_sack():
+
+  asoc->peer.zero_window_announced = !sack_a_rwnd;
+
+so a peer that announces a_rwnd == 0 and then goes silent controls the
+trigger.
+
+The heartbeat path sctp_sf_sendbeat_8_3() is the only remaining
+teardown for this condition, and it looks deferrable: every
+retransmission refreshes transport->last_time_sent in net/sctp/outqueue.c,
+while sctp_generate_heartbeat_event() keeps rescheduling instead of
+feeding the state machine:
+
+  elapsed = jiffies - transport->last_time_sent;
+  timeout = sctp_transport_timeout(transport);
+  if (elapsed < timeout) {
+          elapsed = timeout - elapsed;
+          if (!mod_timer(&transport->hb_timer, jiffies + elapsed))
+                  sctp_transport_hold(transport);
+          goto out_unlock;
+  }
+
+Since sctp_transport_timeout() is rto/2 + hbinterval, does any
+configuration with hbinterval > rto/2 (for example the default 30 s
+hbinterval with net.sctp.rto_max lowered, or hbinterval raised via
+net.sctp.hb_interval or SCTP_PEER_ADDR_PARAMS) push the heartbeat event
+out forever so no abort ever occurs?
+
+[Severity: High]
+[Finding: main-1-2]
+[Sources: opus-5]
+
+Should the matching cancel site be updated too?  The only place that
+stops T5 on forward progress is still state-qualified, in
+sctp_check_transmitted() in net/sctp/outqueue.c:
+
+  if (asoc->state == SCTP_STATE_SHUTDOWN_PENDING &&
+      timer_delete(&asoc->timers[SCTP_EVENT_TIMEOUT_T5_SHUTDOWN_GUARD]))
+                  sctp_association_put(asoc);
+
+A T5 armed while ESTABLISHED is therefore not disarmed when the peer
+reopens its window and acknowledges data: sctp_check_transmitted()
+clears transport->error_count and asoc->overall_error_count but skips
+the timer_delete() because the state is not SHUTDOWN_PENDING.  The
+remaining SCTP_CMD_TIMER_STOP(T5) sites in net/sctp/sm_statefuns.c are
+ABORT/close handlers, and the T5 SCTP_CMD_TIMER_RESTART lives only in
+sctp_sf_do_9_2_start_shutdown(), which is not reached with a non-empty
+outqueue.
+
+The timer then stays pending with its ESTABLISHED-era deadline
+(asoc->timeouts[T5] is 5 * rto_max, 300 s by default).  If the
+application later calls shutdown()/close() with data still queued,
+sctp_sf_do_9_2_prm_shutdown() moves to SHUTDOWN_PENDING without
+touching T5:
+
+  sctp_add_cmd_sf(commands, SCTP_CMD_NEW_STATE,
+                  SCTP_STATE(SCTP_STATE_SHUTDOWN_PENDING));
+
+  disposition = SCTP_DISPOSITION_CONSUME;
+  if (sctp_outq_is_empty(&asoc->outqueue)) {
+          disposition = sctp_sf_do_9_2_start_shutdown(...);
+
+In SHUTDOWN_PENDING the stale expiry now reaches
+sctp_sf_t5_timer_expire(), which unconditionally aborts:
+
+  reply = sctp_make_abort(asoc, NULL, 0);
+  ...
+  sctp_add_cmd_sf(commands, SCTP_CMD_SET_SK_ERR, SCTP_ERROR(ETIMEDOUT));
+  sctp_add_cmd_sf(commands, SCTP_CMD_ASSOC_FAILED, SCTP_PERR(SCTP_ERROR_NO_ERROR));
+  return SCTP_DISPOSITION_DELETE_TCB;
+
+Can this tear down a healthy, fully recovered association and discard
+queued user data with far fewer than Max.Retrans shutdown-phase
+retransmissions?
+
+Also, can the legitimate shutdown-guard arming still repair the
+deadline?  SCTP_CMD_TIMER_START_ONCE short-circuits on timer_pending()
+and the SCTP_CMD_TIMER_START fallthrough uses timer_reduce(), which
+only moves an expiry earlier:
+
+  if (timer_pending(timer))
+                  break;
+          fallthrough;
+  case SCTP_CMD_TIMER_START:
+          ...
+          timer_reduce(timer, jiffies + timeout);
+
+For reference, the arming and the SHUTDOWN_PENDING-gated cancel were
+added together by f8d960524328 ("sctp: Enforce retransmission limit
+during shutdown"), so the two sites appear intended to be paired.
+
+[Severity: Medium]
+[Finding: main-1-1]
+[Sources: opus-5]
+
+A question about the changelog rationale as well.  It states:
+
+  "This caused premature ABORTs when the receiver's rwnd was closed but
+   the association was still in ESTABLISHED state."
+
+In ESTABLISHED (state < SCTP_STATE_SHUTDOWN_PENDING) the counters that
+gate this ABORT are already reset on any sign of life from the peer.
+sctp_check_transmitted() in net/sctp/outqueue.c has a zero-window probe
+block:
+
+  if (!q->asoc->peer.rwnd &&
+      !list_empty(&tlist) &&
+      (sack_ctsn+2 == q->asoc->next_tsn) &&
+      q->asoc->state < SCTP_STATE_SHUTDOWN_PENDING) {
+          ...
+          q->asoc->overall_error_count = 0;
+          transport->error_count = 0;
+
+and sctp_cmd_transport_on() in net/sctp/sm_sideeffect.c clears the
+counter on every HEARTBEAT ACK:
+
+  if (t->asoc->state < SCTP_STATE_SHUTDOWN_PENDING)
+          t->asoc->overall_error_count = 0;
+
+Given those, can overall_error_count reach max_retrans in ESTABLISHED
+unless the peer acknowledges neither data nor heartbeats at all?  If it
+cannot, is the ABORT being suppressed here the RFC 4960/9260 section 8.2
+behaviour rather than a premature one?
+
+Two further points on the header:
+
+  Fixes: 8a0d19c5ed41 ("sctp: start t5 timer only when peer rwnd is 0 and local state is SHUTDOWN_PENDING")
+
+That commit added the zero_window_announced conjunct.  The
+asoc->state == SCTP_STATE_SHUTDOWN_PENDING condition being removed came
+from f8d960524328 ("sctp: Enforce retransmission limit during
+shutdown"), which deliberately confined the T5 guard to the shutdown
+phase.  Should the Fixes: tag point there instead, and can the changelog
+address that commit's rationale?
+
+  "According to RFC 2960 Section 6.1, zero window probing is a normal
+   protocol behavior."
+
+RFC 2960 is obsoleted; RFC 4960/9260 would be the current reference.
+T5 is defined as the shutdown-sequence guard (RFC 4960 section 9.2, see
+the comment above sctp_sf_t5_timer_expire), so could the changelog also
+explain why reusing it as a generic zero-window guard in ESTABLISHED is
+appropriate, and update the "one last chance ... before aborting"
+comment that no longer describes what happens in that state?
 -- 
-2.43.0
-
+pw-bot: cr
