@@ -1,79 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B112F305691;
-	Tue,  4 Aug 2026 21:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CCB3AEF3D;
+	Tue,  4 Aug 2026 21:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785880246; cv=none; b=gU8mJT88btG88K7o5SEgltD7ROZEUVOyj3wNRHCPBwsAg9IS1CA/FksfG7HFI/HmyGOhLchxEcOHBba9v7rCtf9ZyGoo6oUfNuovJ/i7u+LLjLSPMMnOPBR/Nun4egtSrhCs8x6vvYXzneC1ywvNbTvngDq7FfS2A2sgMCFaN0w=
+	t=1785880679; cv=none; b=urVpTTSVCuHChyle8gcnvx4eivgucmntbl/m9zl5FPCTj3G0Co/N7+HhiofeQ5+vCg5Ez/RlUT9OjgcrbABDwl5WIVsYGG8Uy2Anm5U5xlynWBPMeKAOa18oHaKaU6DtXPwYKSWJR+0H3K7kXkwGtS6VTue4hscapIEeaGH04vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785880246; c=relaxed/simple;
-	bh=M4EZdC8ygero/2zdy1CztBDKiGMFuAH/qwXJQRYs8+I=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=m/AyXdAiUyOBf4sk64+Ehny7jA/1fM/0AQucdXHkzvqbartHWr/tBCAzbw/GaqcAI7ftowo4BaZVvcsWr7DZuaqnaoRKWgj0K0W14Haq1yjyA396FnuIjiUR111G6WrJMUaNBSUk3T4Uhs15M/MYlo1Oa0YAPTctl3NlU5fwcG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GFTbfl04; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785880679; c=relaxed/simple;
+	bh=Km5Rbzt6otWkuq18nAmHrL+0nk1sVh/QtNTPObAoywM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G71TVy6GhhIkEq8ATTMJl33RJA4IAhrGxqyru6tJnY6DSQOs+PtogeOLofy7SI2AM+0dBu1NqVWO+ne/y3Wih6mgUMdpE4T1+TB/HtQhyKznITh2Pm2R4uITAM6RGuKWn7z7kIg+NS0ZmGfxlmsbmOUfrJFHXHZCQaETLmyEcMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MySsu/eE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GFTbfl04"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5013E1F000E9;
-	Tue,  4 Aug 2026 21:50:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MySsu/eE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FB91F000E9;
+	Tue,  4 Aug 2026 21:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785880245;
-	bh=EkNRpLkFQbklpXhlhpSbYoouuppf1lhtf6KMzefUN9A=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=GFTbfl04sWNuT/qvwrHvc+GheIIpTIE0Q19QLDg3GkRZT7TCpNtSz+nieqjStPwYs
-	 xFW0n1qSkAHAxTbNmyBY2hY9fyeXRzK3pRIrUP8pCGc+s/EnvitJ5HFpTn/dhwfoLu
-	 N6VjDbObW8WuZqq2tff13gRwuqu/QiiJ6OLAVbcWjoFNy640quOraLlKRPV72IdXv/
-	 KQke4yHFpamL8TYP9CbjL9VGRHvteJ+0oOHgxnqTnfzHWSaw35gwSyjC97QF09ZuRH
-	 P80y9CBP+wwyKJc/FxK9kHC1/3YsJk3l+7U/nYUEKXyLWF4RrACOvIWMOUgvMdYEcT
-	 OnLfnPgdTuQ6Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id E9494392664C;
-	Tue,  4 Aug 2026 21:50:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1785880678;
+	bh=MgP8aPuZKKLDuPnK56SDEqWhpb91AaRFG/k46OhHMcE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=MySsu/eEClo89latN5PBuct/V1rTNjkTdLLXHYYR3HAR6Xndo20kRrnY4vS5FjNVf
+	 LUD+N5qMTjnLJSAJu8/VYmxd7pVPW3uVwPu/RJnoCju4gv3fcviKmmob65GbeBZLBB
+	 XJQqGF5AtLS7UK1D8fObEfkKKU3gyWXJnqxbRnaifwkCw97gTdrJvsvFnqunzizawJ
+	 GXed0dJlrNPNja/Y+6Zyr11ttGFCvx5FZ7Wl+u6CoHiWPBlSioKlvlY07/UzM5B+NV
+	 ThP20wF0ETGTNBGHVd0x6jGRl5g3gTMUGgCxvlHe5VyAwPFZp4Dqxarpa/o3+gil61
+	 gBvpT8Dkh1SRA==
+Date: Tue, 4 Aug 2026 14:57:56 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, netdev@vger.kernel.org, Paolo Abeni
+ <pabeni@redhat.com>, Alex Vesker <valex@nvidia.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Gal Pressman <gal@nvidia.com>, Kalesh AP
+ <kalesh-anakkur.purayil@broadcom.com>, Kees Cook <kees@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, Mark Bloch
+ <mbloch@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Yevgeny Kliteynik
+ <kliteyn@nvidia.com>
+Subject: Re: [PATCH net RESEND] net/mlx5: Use unique names for software
+ steering caches
+Message-ID: <20260804145756.331951b7@kernel.org>
+In-Reply-To: <20260804080455.GB326170@unreal>
+References: <20260730210200.2590115-1-tariqt@nvidia.com>
+	<20260803182614.23f26c91@kernel.org>
+	<20260804080455.GB326170@unreal>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: stmmac: remove ptpaddr/mmcaddr/estaddr "safe"
- initialization
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178588020564.3802025.2220394407123145162.git-patchwork-notify@kernel.org>
-Date: Tue, 04 Aug 2026 21:50:05 +0000
-References: <20260803135745.12600-1-jszhang@kernel.org>
-In-Reply-To: <20260803135745.12600-1-jszhang@kernel.org>
-To: Jisheng Zhang <jszhang@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon,  3 Aug 2026 21:57:45 +0800 you wrote:
-> These so called "safe" initializations aren't needed any more from
-> sometime, but the unnecessaries are obvious after recent clean up
-> by Russell. The code will correctly initialize them after getting
-> the correct stmmac_hwif_entry by calling stmmac_hwif_find().
+On Tue, 4 Aug 2026 11:04:55 +0300 Leon Romanovsky wrote:
+> On Mon, Aug 03, 2026 at 06:26:14PM -0700, Jakub Kicinski wrote:
+> > On Fri, 31 Jul 2026 00:02:00 +0300 Tariq Toukan wrote:  
+> > > Prefix each cache name with the device name to make it unique.  
+> > 
+> > Why do we need a per-device kmem_cache?
+> > Isn't the right fix to make this driver-level state?  
 > 
-> Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-> 
-> [...]
+> This kmem_cache is required only for software managed steering mode, which is
+> configured per device by mlx5_fs_mode_set(). In general, resources
+> should be allocated only when they are actually needed.
 
-Here is the summary with links:
-  - net: stmmac: remove ptpaddr/mmcaddr/estaddr "safe" initialization
-    https://git.kernel.org/netdev/net-next/c/95a390ce6aee
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Of course you have to wrap the init in a lock and count users.
+Trivial stuff.
