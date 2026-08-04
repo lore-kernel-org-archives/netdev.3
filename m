@@ -1,124 +1,145 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5276532B10D
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 03:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785814790; cv=none; b=Fhk39SlJm1HOrZzg+eDRfyCz1+A2NOX46Vs+tpl/u3XsAGBiaTf2/HK/gacnQRAWIAv627C52uVAbTRoyEYKeiL2ab6emBq+fgBUenUMH9bnUnJkCHgHQWqjGfs7R6HlvSyDb0ehbx7q8SK6RBl1hsHLAwdveN+x2f+75H1BVpU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785814790; c=relaxed/simple;
-	bh=vC4qQclBoV67ud2evHeSbDFkaZmPoEXMBUWK5AoYXEM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jYPd9pdhIFDb2uxSi7H9fZXzFjRK3o1Oj8QwUNCB+r2U7XLFfVqLL2Kj1b+IBaXBIRIodvfl5B7byN0PTU56s5Fro8N+2Nk/+zff5MDex6Jvx7Nky1SrdkZXcPUz4IvF4Q8H9/78Fzbmawe0RpWMiof/v9dJxR/f6Wwd5n6hgkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Juk83/iO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KeLwA2vK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA083423E9F
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 04:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785816185; cv=pass; b=W6G+vafxt+XHjF4Vkf7eSHgQ7smNqZHLbVV8/4/lMmewEKlqWJQffLAfX1rqGTWnoMtuePZwUzlt2R6PosekugRQ+nF+c+SgArbSJErIEYLh284GF9Je872AXReOoD00rhER0iaQ0EPMda4BcLDMBlcoKkwhLBrCALYr3g+y/lc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785816185; c=relaxed/simple;
+	bh=RkdB92KGZY7tyP0CuxNF3WyK0sWw7koVzFr0NNoR0sc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ioxSU/UrRAgil82uChaROQ8ZQ+SfbKCA2sCK98FETzS54TeUcOzFOvTUsPmujH200/l4ae7eh7oVAR+GBOK++c/PTRaUMckDlfRKEYdlQKay/3OvfQ3IpMob4l846REcTJDKCoklY12CtJICICSFLQnO/bCx1ihMe6nJEwaD5Os=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xb6qbD/g; arc=pass smtp.client-ip=209.85.217.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Juk83/iO";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KeLwA2vK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785814788;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=diYn9AH5DOp5LofRkeGafvYOwV70LwGGTt9FgR+upFQ=;
-	b=Juk83/iOdm0tjHtFCgUmf5Klhrj8uE5QeKkrODXz3iqDV1szgft0SGbIgt2KBavmJFPFCP
-	1h0RXKJ8783kGOvkIzzRAcma5EDT00isVUvp9m85YGOcK6TOXEnq40XkYL7pi4FGKWzyvy
-	jinodFs57F1V/q+Vtjvuhp9/Xr6SDwg=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-413-BFfTmsacM7aSrKMmTK5FVA-1; Mon, 03 Aug 2026 23:39:46 -0400
-X-MC-Unique: BFfTmsacM7aSrKMmTK5FVA-1
-X-Mimecast-MFC-AGG-ID: BFfTmsacM7aSrKMmTK5FVA_1785814786
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c15e82278cbso334494066b.2
-        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 20:39:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xb6qbD/g"
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-754ac74c495so1283051137.0
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 21:03:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785816182; cv=none;
+        d=google.com; s=arc-20260327;
+        b=r/A5yNw5R7gVThkuohQla76g9YOc5b08rJcx9t7tBE5NDn5u+Ib2AZHyf9t4F1tSMY
+         g3pa76TP6O9Ys3lXOlHTM2kDUmjKJ3ia1PyUeredB8OvOAcqwmYYLBc8Tfsa5F5tyriL
+         +o+X79zFex2Kvnhr1RU4tPPsrDV25CePrQGo/zSYjzaYHJuHYsp1mnXRsyZyuEMETyx2
+         ZZFrZ2JdAbniR7ruBcsR6sr/ink8VNmhk87lJplfAXvHqRF2WqNBODtvuPVo7q8chQgX
+         uQKZ2vZu9oIE4NrEH+kEV6iEfLy2fTNRohgiMnlpfdIhLHF3xRP6XwtwZcKSdSs6EYTL
+         1Jbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vjyfvHU8F3NgL4NW8N8+pld5mLwJIrHHWmLLvG4oy4g=;
+        fh=jVxORfdOhrK9zDTGUDGmIiE9xZNd/MltMi+L2CZrGRo=;
+        b=ULdUe1ueXfbg9mIcLiV/qj5XjMsvXNMmNCH4sDyue2LmZjJ87NmF4mtZwbYrBe07Nk
+         4j5o7+A9XkB6sMgVCOWHLYT4QqA67gwl8Kl5XcJY46FThMfQMgryvP+0YV2FMQyoeeeq
+         lpEhKytAP97rcpv9LzOm3yLYDlQdOg8GIm1rGqsFc7w7oqPK+Ue+Wy9qHxiTjtBWIXW+
+         TFT7KzVEcfrL8GiBGkspvWQzWjPVLSgi38KrvMQCNpg4cDNPpx5Lx5P3r1HB70tLAwtg
+         NM0wMOeF3rboeO+2VbxA0nuOndzF/8Z51XfP9Ga4CrZVCrcIZT0KJdY5Mcl7t946JqV2
+         /P/w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785814786; x=1786419586; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1785816182; x=1786420982; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=diYn9AH5DOp5LofRkeGafvYOwV70LwGGTt9FgR+upFQ=;
-        b=KeLwA2vK3RZo27HZPVubdSmwRL0xIBz119y5Vq7xH3jZFqXyqktSwargQSQrSlBucx
-         uxv79aGqfx+actWpsxMaj0XZ3Yzexl/Lf7ljqnFot2hChf17qqgsX9hwdH1+j1suxxE/
-         NhMhEYfFPQhkMgIvHBnZ+AfVQf4WXBMfSCoBlnnIvYdVqTnibHtwsGrxnk/TuQU49z4p
-         2XFhAIPATmmsA5PWKwCz/ZSyMZnOv0PDDzt699oQywO59x+A0177013ovKZ2af0iT1Uu
-         MWeE09ukGQmq3LGhc7SVtfG3+60c4q2Lrcq7oUXqYh/7i3ctCnRsvdYzoohB0S+iOerf
-         /Tfg==
+        bh=vjyfvHU8F3NgL4NW8N8+pld5mLwJIrHHWmLLvG4oy4g=;
+        b=Xb6qbD/gZN1fxX/kenbFvB0Ro308w++AMJG9KrgkmFLQjh37LT+apr5yEExHxIQfWS
+         vS7dDwtgO3zUGSHvORS1I6gjydYmv+iz1zk7MbRBhpS09tFAXLKYpseGge9ZFX546xXT
+         ANSKOfFTHDPLRbfoEXbanXm+Yl3Wpf4ixD1ef/DN7ltNZwmXrkYemL25RjqhHPR7H1qx
+         Jt7+ua2zvaE3FSA0iUFTfhitzmq7dKa7svLIqeTTLYCbNfjAuC+pjmV3uQ2HN3OUUJur
+         E1FXlrSXn2dthwG5naVNzxW7+LOJ863Kjl54IVd7LByAwUPUyK1Cw2fXatINDcMM+Z8V
+         +WJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785814786; x=1786419586;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1785816182; x=1786420982;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=diYn9AH5DOp5LofRkeGafvYOwV70LwGGTt9FgR+upFQ=;
-        b=AydcHhBBpnMlhsw6xrrMFo0Tb99790FyBlllJOLTDUgRITGX8cJEnFKdpeeMGi+B+i
-         IRNXcG7Jdlmbx+D7xMOkUuxVrd8DM62D6PvUN+bFqeD5+i3X/lCr26pdH/O1TMfhp7Bu
-         vfCbcHOJUc/HPd5+Zvn5g9i/3iLGeKbw3Bd7F37I8foSAO6/V2J5g3bK34pgrpq4OM7s
-         38C1WJlqClZ4w6XV2tT6agTcPZVrztjyFAvpYCx6VrWi1eXSgg1FcLSx5BPHUNfp1EiG
-         l3GzPfI9Zrh7ekG6Wb02Q/rUkZDIXUXS7+Mt7yqS2SLxsSzeiL7BpA+xBEDWhlzdglom
-         FWYQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrlsfAmpMx49GTosWUdI8WURBUmTwKn0fCGKP/A9xKDenSSjh4bDixpI2mohhCjwdCP5Yv4y48=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxtz4f3UJP8+7Zfp91p761x0M6bU2NjCXoDXJ2Hs0bvU2fYAV9o
-	xtXNeG5U+n7SF5h3aeu8j8N9yhMMs+BAcdfrH9VFfmn+1GTMCLz8v09cTnv2tGtMj22hlvvrpIJ
-	X5g+iaOcsXF2mgDRICpdNyimWOGHikKwfdh5fhf3LsdFvmBezzCkyzE8D3Q==
-X-Gm-Gg: AR+sD12nXVrtDcMQw3d4G8LoeKpl0pirv60kKnKF6Al9XGRrowfLB51XOWx+T/+i0e1
-	24T2pBlr1nvrnksbwdr1wRTCTXdzmkRlPngO59/ujASlneM24CPvQW7CB6B1KwF4eKtVzcn4nwU
-	KytL4Al2DnGlxsVz8cuaoceKKA7kyvHzrshNXLJf4JRmOLE9brq7rOpAmZNy4vSPbudA2Pew9ce
-	67tqxXYTOYmcaKn7jVB7h/a/r7G/XjwkjjJaBr/WF7jix/BWEGflzw3YTRR8EWtmKYbcuQzI/iM
-	xFFXUROku48ino8IZsI9ZQVkTEq04/EoS/YfBKKSSpNl+uSjvkCorc5An5E1lJp3z6lN
-X-Received: by 2002:a17:907:1c22:b0:c15:d4f8:dade with SMTP id a640c23a62f3a-c1fe7eebb0amr1148197066b.2.1785814785650;
-        Mon, 03 Aug 2026 20:39:45 -0700 (PDT)
-X-Received: by 2002:a17:907:1c22:b0:c15:d4f8:dade with SMTP id a640c23a62f3a-c1fe7eebb0amr1148193466b.2.1785814785204;
-        Mon, 03 Aug 2026 20:39:45 -0700 (PDT)
-Received: from redhat.com ([186.247.166.67])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd3c93a87sm631061866b.18.2026.08.03.20.39.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 20:39:43 -0700 (PDT)
-Date: Mon, 3 Aug 2026 23:39:40 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Mike Christie <michael.christie@oracle.com>
-Cc: Jia Jia <physicalmtea@gmail.com>, jasowangio@gmail.com,
-	pbonzoni@redhat.com, stefanha@redhat.com, eperezma@redhat.com,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH] vhost-scsi: flush backend after device ioctls
-Message-ID: <20260803233841-mutt-send-email-mst@kernel.org>
-References: <20260721073639.1532488-1-physicalmtea@gmail.com>
- <3d2dfa19-42f8-4d1f-a411-c72669f4c4bc@oracle.com>
- <20260723105451.1563439-1-physicalmtea@gmail.com>
- <45a33302-0b28-4d00-8724-c3af6e1783f6@oracle.com>
+        bh=vjyfvHU8F3NgL4NW8N8+pld5mLwJIrHHWmLLvG4oy4g=;
+        b=gEtmtQNx9gRWrVJ5COiWsDnsqatFkwO12iXPJH3WLkTSmWc8cTJ0mW20+u41S/XYC6
+         qGq5yqOEdYhd5R1wbM+sej4XuaFohpalQyZM4wOZlW0ELCx5RkcHklBEUa0lf3w0p4Uj
+         3jU3ZdDjJBBpbVOBf7Tok4Qy08RYOE72XWOMgyd4Z/XUpL88l3f0mJdgBtJhaDkop7iY
+         ii62H8+q+idpUUbcOIRBxjRXsM8z16oAn7LnIhGS9+kPwqqATwS1EWdmrQI0s0GSI1qE
+         zkt/QVenEsCj/0cN7iK2q2Gv92p+oeOR2/0jdVgx3sbKGz0KGwpRsdTIUyMUl6X/kJz7
+         hFdw==
+X-Forwarded-Encrypted: i=1; AHgh+RqH/olHah9TVJiz2R0sQW5IDyMSz/htsL2fETQXQpkYpM9cEJeyNWvni4YCvkuG5uzW44o28GU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/eIi+fzYr0QkZYntAjpeTUQgoYq8A9jXaU6XEQ01dFt/wxTkA
+	bPE1afy1H8rbSL5/YSHKkssnrqQu1HD4GU4oiWemT+yDf8787oQpcCftlYnzFk85ftrx7rBds9g
+	VSD9wkYlFV1YemfEcY5vEL1zlsEm0MQI=
+X-Gm-Gg: AR+sD13Jvm1tzry8tvUm2GTf27UXGGZCDneNmFPeLH/13zwVylHSRZKTDfMZbnlZhww
+	TT2ikqwCVhI1DuanhZeICzkBy4MJjRlaqkXk1kkXnt0x5i7t+Z5lFMYMfTYkYBcTSDsB6uORhXR
+	6ZYfLLoTxNBiAJ+xfbRvhF8SVIAZVt4mAyo7Cbjte1Kgmg2z4jFDDnNfkHgXTah4RkeU/pF1Xz5
+	AQlHOYVnwMHH5Inx4/TKzplyyRHVen9xFbGPnenxIW+T3IDJ9ER8Q+t0Vi5WS8Q9RdsPs2LQnQU
+	fyozbQO7Yy317pV4kuzTKFvf3ZBbEDLRqi1TIZkL1igUluV/nYuQ4be5xBiyz0Z56QkGAG/13NZ
+	weyREykV1kFmMZVjhvHOClLgzqP+js4w3FddJwkfnLSTm3+3r1yAjRAZaCbfB2GSq2fXxvTr+BV
+	IxU1k5kY4LJqx63xt1eds7hLrich6qWb1JjSos1FZZ3y9kjOr+
+X-Received: by 2002:a05:6102:6899:b0:726:cd42:d023 with SMTP id
+ ada2fe7eead31-75b2375d6eemr8045788137.11.1785816182410; Mon, 03 Aug 2026
+ 21:03:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <45a33302-0b28-4d00-8724-c3af6e1783f6@oracle.com>
+References: <20260803-submit-mdio-of-dynamic-v2-v2-0-f8841f3124d7@gmail.com> <c1c5ce0f-2c65-4c19-a525-cdd2ef33b6e4@lunn.ch>
+In-Reply-To: <c1c5ce0f-2c65-4c19-a525-cdd2ef33b6e4@lunn.ch>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Mon, 3 Aug 2026 22:02:50 -0600
+X-Gm-Features: AUfX_mzYnShoXS6dXEQ_Ip01VArc0qPkR2yK0Lso7PSkwQm8kgd7SY9mx0R0MLc
+Message-ID: <CADvTj4o+B933k4TUshgcvZ4tENDbit3fHEBtwy5ODpsf60osyw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 0/3] net: mdio: support dynamic OF device changes
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 03, 2026 at 07:02:43PM -0500, Mike Christie wrote:
-> On 7/23/26 5:54 AM, Jia Jia wrote:
-> > The owner must keep the old mappings valid until the ioctl returns.
-> > Remapping or dropping them from another userspace thread before then is
-> > outside the lifetime assumption of this transition barrier.
-> 
-> Ok I get it now. For some reason I thought that was valid.
-> 
-> For the patch we don't want to flush if vhost_dev_ioctl fails
-> and there's no reason to flush for operations like
-> VHOST_GET_FORK_FROM_OWNER or VHOST_SET_OWNER.
-> 
-> Could vhost_dev_ioctl return when a flush is needed?
+On Mon, Aug 3, 2026 at 8:06=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Mon, Aug 03, 2026 at 05:48:09PM -0600, James Hilliard wrote:
+> > MDIO buses enumerate firmware children only when the bus is registered.=
+ A
+> > later devicetree overlay or status transition is ignored, unlike on I2C=
+ and
+> > SPI buses. Supporting live reconfiguration also means that population a=
+nd
+> > removal can race address scanning, PHY attachment and bus teardown.
+> >
+> > Patch 1 factors fixed-address child registration and legacy PHY scannin=
+g
+> > into helpers shared by initial and dynamic population.
+> >
+> > Patch 2 serializes MDIO device-map changes, reserves addresses while
+> > registration is in progress, and coordinates scans, attachment, removal
+> > and bus teardown. Dynamically removed devices remain pinned until bus
+> > teardown, preserving the borrowed-pointer convention of
+> > mdiobus_get_phy().
+> >
+> > Patch 3 adds the OF reconfiguration notifier. It supports fixed-address
+> > PHYs and generic MDIO devices, scanned PHY addresses, and Ethernet PHY
+> > packages. It also preflights overlay removal and rejects removal of
+> > attached or in-flight PHYs before their firmware nodes can disappear.
+>
+> This is a lot of complexity which i think should be avoided by just
+> getting the bootloader to put the correct nodes in DT.
 
-I agree but also this is consistent with all other vhost
-devices.
+This should all be generic OF_DYNAMIC support for MDIO, so the
+changes shouldn't really be tied to a specific PHY driver in any case.
 
-So I'm taking v2 of this, and we can iterate to optimize
-all devices with patches on top.
+> If this was a hat on top of a SBC, with an EEPROM indicating what the
+> hat was, then maybe DT overlays would make sense. But from what you
+> have said, this is a fixed PCB design, nothing hot/cold plugable.
 
--- 
-MST
+Some H616/H618 boards have the ethernet port on an expansion board:
+http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/2=
+W-expansion-board.html
 
+>
+>      Andrew
+>
