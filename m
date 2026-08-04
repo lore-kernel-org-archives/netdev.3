@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AAC37F75B;
-	Tue,  4 Aug 2026 00:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50833815CA;
+	Tue,  4 Aug 2026 00:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785804060; cv=none; b=MOs03fz2u/d8tuerNV1GxeazWlkoxU7fWLueIRtJGYVV928hVxhrBfDZvm3MCa0zQh4N7Tr2HZBE/WRFXXYOZ+VbZPS2ntINYI7AoA+YKHHwttfDuX9VKKn/INLXpO8yaq84ycJ4+5aKC+0Ij6w9P11TuQPxG43OoJJoOiMhrVc=
+	t=1785804062; cv=none; b=lPI41qRJU5yo13u3nmryABw1r1IF9muZhM3Jee3MVn9orxZP7fpBoig0roURv1wdiVuqt6xXaztF75U5nzSQSDQK/JHQfSR1c5hljycEZiMxKtEbLf9earfvEfmnJkFFmE/qyjBOeOEzVzJU12aYjdvPH5ArCv5H49wqSe1EMKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785804060; c=relaxed/simple;
-	bh=XZuIyhDNwBk9Eyv+la6sPhj7BVxhXavKiUQ++AeVIrQ=;
+	s=arc-20240116; t=1785804062; c=relaxed/simple;
+	bh=Ttk4APAcDUGNXXflERaRnDO9QfZRKHaeXex/NK/VFEs=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=XGmvJ6xWL+2af1o6tPvl/yBIorT8n7J8wdexVbczH05j8ynDNp0Rl3n2b51r7i5EQTQNATTy6ud9CMukYFgNuREPQmnMDyS5WZu1e8NIUOEOPbcDsMEhNB0OfXfjm8wkznl8WUj425RHvL5xtwMIB7i5jpOVIsNmfDKfLwkuKdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T/rCJ+RL; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=I1Fw/2nPTLjInIEbSHLp9wW+XmjwRePy061F/MTuGBa1nm++7wrR1x0qnDXdV6ffnHl1+b1DmPC0EpOUxnzARuVMrT/g/THHBofsuWoQAlJxqZwB8sSlsjc7CTghGSlZPjNIccD8XIS4Eg4Wf+IQbHbdHgp6AFE6r0TUNuSoZD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFQUBfmH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T/rCJ+RL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36541F000E9;
-	Tue,  4 Aug 2026 00:40:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFQUBfmH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A11E1F00A3A;
+	Tue,  4 Aug 2026 00:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785804058;
-	bh=+PZgqEv1Au8SDYqdzdFIk7I+j3Y9scLbRGeASAO9kFY=;
+	s=k20260515; t=1785804060;
+	bh=qD/kTSIycb4D0zwgPTSDDqWXIMWN3dBO5Y/1O5wHyq0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=T/rCJ+RLl1/g2aBac/QefbFAx/GUqhZ9E4DdGq1LxCmulk89mmh8I6P1np/vrESIN
-	 8hFPHX1dly/sySiICzP2RC9mCDwtCZjkt6Zg64uMAajO8iRE4IEpK1Chm0HUJJdTNI
-	 HvmO1dWHXiTGih/4rM7S59BI7VECHjLKA8vLCQze7qPeYb8G3oXJvmhWTnJEZ8jE0K
-	 js0AXWyajqzO5OxdVCtBiCB0Lh8K+T3S4jAdi0Bhvjnn5qk3h9c4xk1oOCjEIsC1sY
-	 ZtGFIRaltEUnNypUEWL43OD1jWvyi1R2L1RGuw0fOicRBVG9o2lwuu6Yi0ES0MZHHb
-	 eGP0PZed+BmpQ==
+	b=kFQUBfmHS++WLFAJKGYgkyoaTcdYafYfeww/3HnI8VWa+InVYbcaKF52JAuFAoTlg
+	 hO+Raogh8fUf0AVizyisjlWY0xKNrcVbWc13dSSe9cn8sRPJJsb40JhJX6/KPmwwCM
+	 AkD4DMlJCHkk/qHDmxLBM1+HGjxS79IuxsfBxbd6qDCbTBQDbCTyUspa89UnrEdqw2
+	 VoDRtA2tCCj/LNQGvHrt4nZiJQaJaxkb3ICtS55UlJ8ATDjxsuGCfnQM2iaKg5GU8d
+	 qIfaIcnjfaMVm70gIjkkRDHT7kYscMaU8FuyfInZEhMOuGXmmc/F1+F/zbgyV1RM4x
+	 k5czMrK0BvmaQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B563924467;
-	Tue,  4 Aug 2026 00:40:20 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5698E3924467;
+	Tue,  4 Aug 2026 00:40:22 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,57 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4 0/7] net: convert rawv6, ieee802154,
- phonet and
- tls getsockopt to sockopt_t
+Subject: Re: [PATCH net-next v3 0/2] net: stmmac: Fix PHY attach when custom
+ PCS
+ is in use
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178580401944.2893509.4047199420753049273.git-patchwork-notify@kernel.org>
-Date: Tue, 04 Aug 2026 00:40:19 +0000
-References: <20260729-getsockopt_phase4-v4-0-c44576757c17@debian.org>
-In-Reply-To: <20260729-getsockopt_phase4-v4-0-c44576757c17@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: sdf@fomichev.me, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, alex.aring@gmail.com,
- stefan@datenfreihafen.org, miquel.raynal@bootlin.com, courmisch@gmail.com,
- remi.denis-courmont@nokia.com, john.fastabend@gmail.com, sd@queasysnail.net,
- shuah@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-wpan@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kernel-team@meta.com, joe@dama.to, remi@remlab.net
+ <178580402088.2893509.17745137125486197990.git-patchwork-notify@kernel.org>
+Date: Tue, 04 Aug 2026 00:40:20 +0000
+References: <20260729074237.2624940-1-zxyan0222@gmail.com>
+In-Reply-To: <20260729074237.2624940-1-zxyan0222@gmail.com>
+To: Zxyan Zhu <zxyan0222@gmail.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ linux@armlinux.org.uk, rmk+kernel@armlinux.org.uk,
+ maxime.chevallier@bootlin.com, fancer.lancer@gmail.com,
+ romain.gantois@bootlin.com, hkelam@marvell.com,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 29 Jul 2026 02:29:43 -0700 you wrote:
-> Now that sockopt_init_user() was already merged, builds a user-backed
-> sockopt_t from the __user pair. A getsockopt leaf can then take
-> a sockopt_t behind a thin __user wrapper: the wrapper builds it, calls
-> the leaf, and writes the length back to optlen. The leaf copies with
-> copy_to_iter() instead of copy_to_user().
+On Wed, 29 Jul 2026 15:42:35 +0800 you wrote:
+> This series fixes the issue where stmmac platforms using a custom PCS
+> via the pcs_init callback fail to probe when no phy-handle is specified
+> in the device tree.
 > 
-> Convert four more leaves the way udp and raw already were: ipv6 raw
-> (do_rawv6_getsockopt), ieee802154 dgram, phonet pep, and tls
-> (do_tls_getsockopt and its per-option helpers).
+> Patch 1 skips the PHY attach in stmmac when a custom PCS is already
+> configured via priv->hw->phylink_pcs and phy_addr is invalid, avoiding
+> the "no phy found" error for platforms that manage link state entirely
+> through the PCS.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v4,1/7] ipv6: raw: drop unused level argument from do_rawv6_getsockopt
-    https://git.kernel.org/netdev/net-next/c/aee44196d216
-  - [net-next,v4,2/7] ipv6: raw: convert do_rawv6_getsockopt to sockopt_t
-    https://git.kernel.org/netdev/net-next/c/8472b68c2497
-  - [net-next,v4,3/7] ieee802154: convert dgram getsockopt to sockopt_t
-    https://git.kernel.org/netdev/net-next/c/6cd4e6c0449e
-  - [net-next,v4,4/7] phonet: pep: do not write beyond optlen in getsockopt
-    https://git.kernel.org/netdev/net-next/c/77e5eb0e192a
-  - [net-next,v4,5/7] phonet: pep: convert getsockopt to sockopt_t
-    https://git.kernel.org/netdev/net-next/c/d05a7f0ab550
-  - [net-next,v4,6/7] tls: convert getsockopt to sockopt_t
-    https://git.kernel.org/netdev/net-next/c/c7049902075a
-  - [net-next,v4,7/7] selftests: net: getsockopt_iter: cover rawv6 and tls
-    https://git.kernel.org/netdev/net-next/c/6b21a3ac84c9
+  - [net-next,v3,1/2] net: stmmac: Skip PHY attach if custom PCS is in use
+    https://git.kernel.org/netdev/net-next/c/af4d93416445
+  - [net-next,v3,2/2] net: phylink: allow PHYs to be attached in 802.3z inband mode
+    https://git.kernel.org/netdev/net-next/c/e5db987f5d7f
 
 You are awesome, thank you!
 -- 
