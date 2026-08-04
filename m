@@ -1,74 +1,225 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3A532AAA8;
-	Tue,  4 Aug 2026 01:43:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65971248F72
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 01:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785807785; cv=none; b=mXmZ12a3lRoQUiBylhrw77m1ckJ+RtWMIm+ntujhVyOAcBrbxFVhc1c3umI3pvEXEw1tDgocODKyXGC2R+55sOscOY0ORoewSNNS4nEtc+MAGHf7l4Que8RYdoHHveN/12sO0VGf4rGtl+PAsBYme/CF7BUAks7zZLDUSiAfFvs=
+	t=1785808047; cv=none; b=DEImD0dZnaIggUWidi2bfwPO7+PNSgb77b3QG5+4wkFHjw8LfsLTcSTpjwv2d5d0yyHEascB0h0+FwoxWEsfa702tWwAD1YyyMDlzpo6Y2pDCXsDmrSTyDQ9QG4yhUoci0gbHSkD9PX+1KYZ3YMQnV29dRATwaJPfmX02RZLefg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785807785; c=relaxed/simple;
-	bh=VlXdWwTV7LCto4gFFImF5QEKubLeu6fzgcfbalIuMoA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LXr6o/j4ntCf3rKKi0JyvJ3SnN6o6BxMgcW9eB//SyJZcvy/0nuEnZPPlV6VL2HmiTOrF0WOZkPmiP2w9c44fnRm0Lw19FMZdxmuhKCHpELSzaQ9Mc3a4BgAcvcgE+68ngzeSK59GKE7gk/20QLmqebiC9BpTDpKbrC3WEjqBdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mdryV+b/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785808047; c=relaxed/simple;
+	bh=kbrc5RDVqiSJUz7Yoqe+ack4M4ZHY8xLX4ADtFH1obc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bAokTDZCgmbAn2THp1zGUzyke5BZwRM48b/3yvUJRB+9mRQ8qvT2UUa9oW448a3kZJIcKO6kgSacVt0dpodlzYiI6XWi1I94+ri6bR8l/Wj52p8nHqqdpfH4Cbx9xuf9lG04evDZzzlAGw5wsfOelxBjfbSPduijoe5GLsUxY8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JXmZoRqm; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mdryV+b/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37C71F000E9;
-	Tue,  4 Aug 2026 01:43:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785807783;
-	bh=DO7JjvLw7hnkPqHoC7TvmXBtgyEkXrMt3vhNNd4UZtY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mdryV+b/4inJrTTpR2WeVz0bsmaWlx281cGQ0MCds5qWkNGX5eOVQgHP/8RbmndM3
-	 PGxjtuNDhhSsWwAIwQQoODjVPTSqAZFihsbykGp0kD6J+E/CaUMicMiNdaKDdwlf7g
-	 j+z7oFzDEo5lCiNo86k+rz2clboOl2hN8KnUYxbMyCE97ZBERLwEF+bP5x+5ZuSg9N
-	 /yACL6gAFE1Jo7Xn2bMFOr8xKHDHfBnD7ThURiy/0bnETMvl6dCFGZwt3d0i5Fyn7F
-	 AQ35qxRxDCFsklqEXtLCw482xM4hQYw33Ex+eKlWvKpjUum2n8NNKRm2+9jsxTGDIV
-	 Zlky0p/NN5oEw==
-Date: Mon, 3 Aug 2026 18:43:02 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: "Chester A. Unal" <chester.a.unal@arinc9.com>, Andrew Lunn
- <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Alexander Couzens <lynxis@fe80.eu>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Russell King
- <rmk+kernel@armlinux.org.uk>, Landen Chao <Landen.Chao@mediatek.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Sean Wang
- <sean.wang@mediatek.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net 0/4] net: dsa: mt7530: fix remaining swallowed MDIO
- access errors
-Message-ID: <20260803184302.0df91301@kernel.org>
-In-Reply-To: <cover.1785427248.git.daniel@makrotopia.org>
-References: <cover.1785427248.git.daniel@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JXmZoRqm"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84f10e55beaso386679b3a.1
+        for <netdev@vger.kernel.org>; Mon, 03 Aug 2026 18:47:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785808044; x=1786412844; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AW3ZoLD4+GjjFhWeUfeqDmpp6KzO7McHCLtQoEvLvdM=;
+        b=JXmZoRqm8PXQE6kgEMAd9E/PpCPtKngOKi884nadsWsLH795dMTeEGJGAe0obn6ArN
+         gnwx7eI1LF5wi7enAXK8yIWdbpD4mpXsVxOPnqX595QJw6rjfdKeNtbGMcNWppjZBHNL
+         4lJkR+V46j7O77yQVpt5VA2pWhS1ajjZGyz2QqrqzVPqliFRZrEKFyyIZmLSmf8+w+ic
+         mCdqXnI2je/f/nSuPswnbGQr0EAx8KlGN1zsqsTF1tpx5eBwFqzFw1gcPkMYTHtKN2xK
+         LPV0sxUfLPOe92KEklTlfm7iOhD0XNDi5NaoykZHxbkAcsoV1qyeTeI6rLFutjItW2Jz
+         IFBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785808044; x=1786412844;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AW3ZoLD4+GjjFhWeUfeqDmpp6KzO7McHCLtQoEvLvdM=;
+        b=Cm2A0tUt4s5whrTooV3lS6lh7BYI3rSSO/s3tIlUAk1h+xujAO+b9VOFhG0+Q6zwN3
+         V7iACeUiGAqqMLReu7pW9rlPnhkRhDd+Er2CWIPEoigB7BiUqQTXfv1Jzs5AKyMELx1H
+         /iDB0+utCTX4diRex5H++kCoRyvsyTuK8+vBi0AQk1BBXvMWly2xhuJcvZS2ygY41Gdh
+         OUYpCqITe76jQFoiB60LRuuDGuXiveTNiaoN4L0IJ9leJGQO46i1wmw9VjGlPglbkplp
+         q7vxKq1B28YmBS6xzkt+eV2tr9/7cvweRXQJYkPO846c0Flr0ehVQVW62ZkI/iCpQC08
+         OTHg==
+X-Forwarded-Encrypted: i=1; AHgh+RqZpM+Bb4q1QcyKyi0a4+n4vrlJCiEKzvsIy3ZMlxvaptF4KZA5i7eQdUoag4zLXqs/6VPLSzU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywwyr48y9UeyQE75V08NGqw2UgY6sTRMglBjS56wA2tCfJ6XUPS
+	3fhsasv/5CGlaSA++7nsXyr1dpxV3+91UoTPwxqf2fDi+QI6kbGyAI0X
+X-Gm-Gg: AR+sD133/NjZ08ipNa2SHNKIFw0m+apoVzi/AK7NG3g9/6EGaWbSQnE5EmBvn8X6hzT
+	dRIspZSJW4g1S1ilkSf7DlwzMS+lAE6Ps3eBbiuM0V5tEtnWjyeRShLqq8BmdBPiSzchrK2Z7rF
+	pxlfp9AehD2hdMFAEiHdrB6V7P42pY40tnh6hWMi7xZ8rwpWdcBu+4XqB7pPzhwiEaLUkgM3sDm
+	jB43OckghNBaMY3zPpliQbjd4Zo0aoI4COUSWjYwhqpi/Vxpk5QNaxLdch/jw1u2Uouvkn6GETn
+	zTM02/ENjANZD8i/PSnlx1IxJKrsBpm1XrS/6j5yFLnKQjilFgw6aRyozOKAUtz2zjSkBapuyXT
+	6Im0v3BP+/fwbDcgZsH3hL/5fgECZ6aDSL92rINQ1RDHCbQ97GlMy89TKpDCR7j3bOrUWG0Vz2Z
+	IoveZ1ldVxLfNHCiV7KJ7ZRwBPZRDRmOk2qZ0OBxQmkDVbXdsOOyrkYNv52+2qcvLMoORik93DF
+	xlzqI+NOq9diJIlKF7ge7/DgvT27aaHUz14bigPb6iRJLpi3hc=
+X-Received: by 2002:a05:6a00:410b:b0:848:2f71:b659 with SMTP id d2e1a72fcca58-84ee49a597bmr11311750b3a.68.1785808043583;
+        Mon, 03 Aug 2026 18:47:23 -0700 (PDT)
+Received: from m-upc-A520M-HDV.flets-east.jp ([2400:2410:3f60:500:cb1c:934a:3e5f:ef88])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edc2d7b97sm4410164b3a.43.2026.08.03.18.47.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 18:47:22 -0700 (PDT)
+Sender: Yuyang Huang <uyoko90@gmail.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Chris J Arges <carges@cloudflare.com>,
+	Daniel Zahka <daniel.zahka@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	David Wei <dw@davidwei.uk>,
+	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Nimrod Oren <noren@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Willem de Bruijn <willemb@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v5 00/10] ipv6: report why a route was deleted in RTM_DELROUTE
+Date: Tue,  4 Aug 2026 10:47:04 +0900
+Message-ID: <20260804014714.4362-1-sigefriedhyy@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 30 Jul 2026 17:03:00 +0100 Daniel Golle wrote:
-> v1 of "net: dsa: mt7530: fix swallowed MDIO read errors" [1] was
-> applied to net just before v2 [2] went out. This series carries
-> everything from v2 which was not already applied with v1 and still
-> qualifies as a fix: the two standalone patches v2 had grown following
-> the Sashiko AI reviewers' findings on v1, and, as patches of their
-> own, the companion fixes v2 added inside the already applied patches:
-> the unchecked bus->read() in core_rmw() and the unchecked PHY_IAC
-> command writes in the MT7531 indirect PHY access functions.
-> 
-> The remaining non-fix changes from v2, dropping a redundant read-back
-> and improving the poll failure messages, will follow via net-next.
+When the kernel deletes an IPv6 route on its own, the RTM_DELROUTE
+notification does not say why. User space cannot tell a route that
+expired from one the router explicitly withdrew, yet the two call for
+different reactions: an expired RA route means the router failed to
+refresh it in time, which points at a misconfigured or unreliable
+router and may warrant action such as disabling IPv6 on that network,
+while a zero-lifetime withdrawal is normal, RFC-compliant operation.
 
-Let me ask explicitly this time -- are you planing to address any of
-the Clashiko nit picks and send a v2? :)
+This is a general problem for any consumer device running Linux,
+especially on Wi-Fi networks, where multicast delivery is not
+guaranteed (e.g. frames can be lost around DTIM for clients in power
+save mode). The motivating case is Android: the userspace NetworkStack
+process listens on RTMGRP_IPV6_ROUTE and today treats any loss of the
+IPv6 default route as "router lost". To avoid the device repeatedly
+gaining and losing IPv6 connectivity on a badly configured network,
+when it detects the device is on a dual-stack network with working
+IPv4 connectivity, it defensively clears accept_ra_defrtr and restarts
+IPv6, so user space apps stop using broken global IPv6 connectivity
+while link-local IPv6 keeps working. That reaction is wrong if the
+route was withdrawn by a zero-lifetime RA (some ISPs do this
+intentionally for reconfiguration) - with accept_ra_defrtr off, IPv6
+never recovers once the router advertises again. It is the right
+reaction if the route genuinely expired, since the router failed to
+refresh it in time.
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/c41c256a5b4695bec24abc6baa4f990fca88f834.1785427248.git.daniel@makrotopia.org
+Fixing this in user space is not practical: RTM_NEWROUTE carries the
+initial route lifetime (in rta_cacheinfo), but the kernel does not
+resend it when a later RA refreshes the lifetime. So distinguishing
+the cause of an RTM_DELROUTE from user space would mean opening a raw
+socket, listening to RAs, and tracking lifetimes independently,
+duplicating logic the kernel already has. Sending RTM_NEWROUTE on
+every RA lifetime refresh was also considered, but that would be
+spammy and is technically wrong, since a lifetime update does not add
+a new route.
+
+This series proposes RTA_DEL_REASON instead: it tells user space why
+the route was deleted so it can react accordingly. In the Android
+case, NetworkStack would defensively disable global IPv6 only on
+RT_DEL_REASON_EXPIRED, and take no action on
+RT_DEL_REASON_RA_WITHDRAWN, since that is RFC-compliant behavior.
+
+Patches 1 to 6 add RTA_DEL_REASON and enum rt_del_reason to the
+rtnetlink uAPI, thread the reason from the kernel-initiated IPv6
+deletion paths down to the RTM_DELROUTE notification, and record the
+cause: RT_DEL_REASON_EXPIRED for routes garbage collected after their
+RTF_EXPIRES lifetime ran out, and RT_DEL_REASON_RA_WITHDRAWN for
+default routes, prefix routes and RFC 4191 route information routes
+withdrawn by Router Advertisements. Patches 1 to 5 are no-ops on the
+wire; the attribute first appears in patch 6. The route addition path
+is not touched.
+
+Patches 7 to 9 extend the rt-route Netlink spec with the route
+notifications and their multicast groups, split the newroute and
+delroute request attribute lists out of the shared getroute reply
+list, and add the new attribute and its enum.
+
+Only kernel-initiated deletions that user space cannot otherwise
+explain are attributed. User-requested deletions are self-explanatory
+to the requester, so they carry no reason; the UAPI documents that
+absence and RT_DEL_REASON_UNSPEC must be treated identically, which
+keeps the door open for attributing more paths (nexthop removal
+cascades, device removal) later.
+
+Patch 10 adds selftests covering all three producer paths: a
+GC-expired route, and a default route + PIO prefix route + RIO route
+advertised and then withdrawn by hand-crafted RAs over a raw ICMPv6
+socket (no external RA tool needed), plus a check that user-requested
+deletions carry no attribute. The notifications are decoded with YNL,
+which also exercises the rt-route spec additions.
+
+Changes since v4:
+- Rename the payload values to RT_DEL_REASON_*, so they do not read as
+  attribute ids. The attribute id is still RTA_DEL_REASON.
+- Document that the reason value space is family-agnostic.
+- Drop the skip_notify argument from ip6_del_rt_reason(); all callers
+  passed false, and skipping the notification discards the reason.
+- Drop the unused !CONFIG_IPV6 stub for ip6_del_rt_reason().
+
+Changes since v3:
+- Split the single kernel patch into six, one logical step each, per
+  review.
+- Use the enum throughout instead of a plain u32.
+- Add inet6_rt_del_notify() and call it from fib6_del_route(), so the
+  route addition path is unchanged.
+- Move the route notifications and their multicast groups to their own
+  spec patch.
+- Split the newroute and delroute request attribute lists out of the
+  getroute reply list in a separate spec patch, so the attribute
+  addition is a one-line diff.
+
+Changes since v2:
+- Fix the patch 1 commit message, which still said u8.
+- Keep del-reason out of the newroute and delroute request attribute
+  lists in the rt-route spec, since the kernel rejects it in requests.
+
+Changes since v1:
+- Expand the motivation with the Android use case, per review request.
+- Widen RTA_DEL_REASON from u8 to u32, per Netlink uAPI convention.
+- Convert dict_keys to a set before the set difference in the
+  selftest, for clarity.
+
+Yuyang Huang (10):
+  ipv6: add ip6_del_rt_reason()
+  ipv6: propagate the route deletion reason to fib6_del_route()
+  ipv6: record the reason for kernel-initiated route deletions
+  ipv6: add a deletion reason argument to rt6_fill_node()
+  ipv6: expose the route deletion reason in RTM_DELROUTE
+  ipv6: add inet6_rt_del_notify()
+  netlink: specs: rt-route: add route notifications
+  netlink: specs: rt-route: split out the request attribute list
+  netlink: specs: rt-route: add the route deletion reason
+  selftests: net: verify RTA_DEL_REASON on route deletion
+
+ Documentation/netlink/specs/rt-route.yaml     |  68 ++++++-
+ include/net/ip6_fib.h                         |   5 +-
+ include/net/ip6_route.h                       |   2 +
+ include/uapi/linux/rtnetlink.h                |  22 +++
+ net/ipv6/addrconf.c                           |   3 +-
+ net/ipv6/ip6_fib.c                            |  14 +-
+ net/ipv6/ndisc.c                              |   4 +-
+ net/ipv6/route.c                              |  75 ++++++--
+ .../testing/selftests/net/lib/py/__init__.py  |   4 +-
+ tools/testing/selftests/net/lib/py/ynl.py     |   7 +-
+ tools/testing/selftests/net/rtnetlink.py      | 181 +++++++++++++++++-
+ 11 files changed, 349 insertions(+), 36 deletions(-)
+
+--
+2.43.0
+
