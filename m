@@ -1,76 +1,107 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F66C1A6809;
-	Tue,  4 Aug 2026 02:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B3B35838E;
+	Tue,  4 Aug 2026 02:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785812030; cv=none; b=EFsx//O9moHcihdcaJ+b/nGjXjSGbMejPsDcngURv0lASAKplUhzyrFJ2bAOE9VgX1M3WOG0tvHCGyxgVYWLNm3CHCy8gk7Efkk9j6Gr0l3veDC66uS6xzGYULoj5/QpDJz8JRnDDQFjG/7z7VlGL0Wlvh3cqD64j8Ht/FrZ3UU=
+	t=1785812158; cv=none; b=Su4pgKRtaLckdU1k9qjoi3zd3/Fj9TsGhKlaXSpiIDgd7HOY4UJERT+/pr0+Y6y9acVdoPCKBbhNqhD+kbEdkhJ5LvZDHz/uFUu9DNXBiTgwXTgMvbkZDy2OC3c4weFQa6aeov3/9S9Pa/nxLkyaucd3585vb97eBOb6Zjn39zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785812030; c=relaxed/simple;
-	bh=kK5Tx8FFFQ47mP05ikhEX2IFhrZ7+GdR9l4nZl29jiE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ap8tXkOYTw7VWlIeekpqcUf2XV02EACYElmCQ46BemLGHfY7SwXuoFJWQbiAh89Wr19Nh1D3EW7bbnqxZFQrCea6bcIOs1dGs9DmQXPs1nvXuoiXcoeudBZG2wguy/myHWlwRd1BxtLYvjde1hzJiKZEnbalqg2nWaRiH5GcJ4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lFwn2scV; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785812158; c=relaxed/simple;
+	bh=UwDl4R3cZ1wPyAKE9kk0VMdRV3AzShHTLvcH1XhOpf0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=o47e83ePufTT8m5CPAOR5+CxC7kktEqqwBD9nH9sRH+c+G5FlSERfbCbZkj5ie9pWc2SziCxvRd6bobKpCeoVRPjJpc7YNsh6rOk+e20zX2jakWV6fVnNJriozC4UQx7fn8B0nvYe3vjp+NkeEjgsncJ6TOcEJUcB2bVvdIvsaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UPrt2gXL; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lFwn2scV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=IsQlcnApQ5yTWyBgwu7AHLGT/eRyiK29Qhu3u+8huV4=; b=lFwn2scVNrt3frs61Y32q/dVdQ
-	/Ay4Nl2OSJFbIYdlwGBFlnZUFGT6DhGTu3i0EIZVxMmk8oBJFrzoMLox/mXYrwl+l8PRQ8Ab5bxp2
-	IAdHGSUeXArMVxHWQaPLiWeF4zNCi+iK9tm84N2Vo04Wn4xjFbcLFI7PZrczeXsy61QY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wr5Hd-00Fto4-KL; Tue, 04 Aug 2026 04:53:37 +0200
-Date: Tue, 4 Aug 2026 04:53:37 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Andre Przywara <andre.przywara@arm.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Liu Changjie <liucj1228@outlook.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-sunxi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 6/6] arm64: dts: allwinner: a523: x96qpro+: enable
- Ethernet support
-Message-ID: <ad2e46d5-53db-49b2-a128-7c54883e18eb@lunn.ch>
-References: <20260803101452.2993721-1-andre.przywara@arm.com>
- <20260803101452.2993721-7-andre.przywara@arm.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UPrt2gXL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=mk
+	4MQDhnrxXqGFitsTvlsVF7npFqLHGF3eQ7yqlGUlE=; b=UPrt2gXLFK8TZZz4yl
+	5EQ8zl4s6BeTHsm4690C6mJyNTf60zcQ5nWABwWTdeJY069oC/g0sH0kwWV/0WK7
+	see9Enw8Ie1likLasfUe+8GHj2Qm+z1kIGtGv3VoH8JSzyNuSeEd4Ni8sVQaXAoE
+	jrHh03ax25WYhMlXEkN0JOCI4=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgBXLs6SVHFqaVhsKg--.51731S2;
+	Tue, 04 Aug 2026 10:55:16 +0800 (CST)
+From: luoqing <l1138897701@163.com>
+To: l1138897701@163.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	linux-sctp@vger.kernel.org,
+	lucien.xin@gmail.com,
+	marcelo.leitner@gmail.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com
+Subject: [PATCH net v2] sctp: fix addip_serial increment on ASCONF_ACK allocation failure
+Date: Tue,  4 Aug 2026 10:55:14 +0800
+Message-Id: <20260804025514.241767-1-l1138897701@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260723071818.459034-1-l1138897701@163.com>
+References: <20260723071818.459034-1-l1138897701@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260803101452.2993721-7-andre.przywara@arm.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgBXLs6SVHFqaVhsKg--.51731S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw15AF48uF1DCw15tr47urg_yoW8Cw13pr
+	WSgr48twn3Xr1UArs5u3yxKw4Ykan5Kw43Gr4YgrsYyanxJryS9ry3Gw4Dt3WjkFn5AFWj
+	gryYqr47JF1YvFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUUhL8UUUUU=
+X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3hQxdWpxVJRc4QAA3o
 
-> +&gmac1 {
-> +	clocks = <&ccu CLK_BUS_EMAC1>, <&ccu CLK_MBUS_EMAC1>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&rgmii1_pins>;
-> +	phy-mode = "rgmii-id";
-> +	phy-handle = <&ext_rgmii_phy>;
-> +	phy-supply = <&reg_cldo3>;
-> +
-> +	tx-internal-delay-ps = <200>;
-> +	rx-internal-delay-ps = <500>;
+From: Qing Luo <luoqing@kylinos.cn>
 
-500ns is quite big. How did you come to this value? Do you have the
-schematic & gerber files? Does the lines look unbalanced?
+In sctp_process_asconf(), when sctp_make_asconf_ack() fails to allocate
+the ASCONF_ACK chunk due to memory pressure, the code jumps to the
+done label where asoc->peer.addip_serial is unconditionally incremented.
 
-	Andrew
+This leaves the peer's ASCONF (serial N) unacknowledged while the local
+endpoint now expects serial N+1. When the peer retransmits serial N, it
+falls into the serial < addip_serial + 1 branch ,
+which attempts to look up a cached ACK for serial N. No cached ACK
+exists since the allocation failed, so the retransmission is silently
+discarded. The peer eventually times out and ABORTs the association.
+
+Move the addip_serial increment inside the if (asconf_ack) block so that
+the serial number is only advanced when the ASCONF_ACK is successfully
+created and cached. This way, on allocation failure, the serial number
+is unchanged and the peer's retransmitted ASCONF will be correctly
+re-processed.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Qing Luo <luoqing@kylinos.cn>
+---
+ net/sctp/sm_make_chunk.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index c02809264075..30c0da27430e 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -3327,12 +3327,11 @@ struct sctp_chunk *sctp_process_asconf(struct sctp_association *asoc,
+ 			goto done;
+ 	}
+ done:
+-	asoc->peer.addip_serial++;
+-
+ 	/* If we are sending a new ASCONF_ACK hold a reference to it in assoc
+ 	 * after freeing the reference to old asconf ack if any.
+ 	 */
+ 	if (asconf_ack) {
++		asoc->peer.addip_serial++;
+ 		sctp_chunk_hold(asconf_ack);
+ 		list_add_tail(&asconf_ack->transmitted_list,
+ 			      &asoc->asconf_ack_list);
+-- 
+2.25.1
+> nit: missing quotation marks around the subject
+> LGTM, except the nit Jakub pointed out.
+Correct the code formatting
+
