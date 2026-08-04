@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EE841D11D;
-	Tue,  4 Aug 2026 21:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3632DDA9
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 21:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785877802; cv=none; b=tB4PSZq68BIUNy63Rq3hh/hTmavgW9qNVSH2oHlOemrwxPwU5FyzP6wA5F7lvNmcvt/nU89Tiq0zdKALlmK0iyNARZU84CeiHPMqShQxb9VYFiSonqrZGtlxNpeGKk0R58+/igXrMaTLCRLUqXEGSPEjJD6Yd3Yy5QmRhG1uhpU=
+	t=1785878169; cv=none; b=hZIqS6U453pn0E0gGDi8mpYcbh0iNxkye5I1U4zPB0DUIlAqfaCNi/YyE8Uvn494g3pOQ0l+i/kYhrxuSJarrRMFFtHMmHspMKngzy/iV6iE1GnbhnZa9UfqAk21Yeijb8ZmD1uvKcK8POD+t23q/pnXZoY7OEUEhie3fuczYyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785877802; c=relaxed/simple;
-	bh=6xJuS7d+Bq7at5WjvJDNZE+NnxBBbs6FgLj52stjyE8=;
+	s=arc-20240116; t=1785878169; c=relaxed/simple;
+	bh=z3BsySwBz4s7ySjxA5kPtqC7nZEbxHm5e2uGwt+M48k=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b+1gdMJdE/qW98lclqGfdQ/PhFb3WFBwlmOcHwA8Yi+HSpb1yPRPlVrl1LEzeXECHxJ+o7XX68FKWEevs8sMLisv8r+MHNURmgn9lSIkDrwtfHDLV3URLs3DfscJasB0PsqrPF0AbKe7/jtY2tU3dbKZk+nxU0kN+jn2342UX7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gpdRfyA5; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=d7FjcIYF/1226M68sClug+zS6dfAWrb6smQW4WkTk2fKIhKcm+rZ+LyVsY4EgKTS3kKcoUsim0+EsoCSwm2za9ARzvKWa7xc4vDKO3sZqwXrhJ9zzYNqu5PCyRHYHV03yKfZlAOuGoqAvndryXLfrY21WtUc3qFQP1y+33RiprU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O+K1a6u7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gpdRfyA5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7911C1F00A3A;
-	Tue,  4 Aug 2026 21:09:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O+K1a6u7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEFD1F000E9;
+	Tue,  4 Aug 2026 21:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785877799;
-	bh=DzacPbjzy8EiMC8VtVTjzjaOu/KR0fpQHwwLSzCAHhw=;
+	s=k20260515; t=1785878168;
+	bh=cVGVr2SxrTVYo+lbMQ7+1mGDwWGFzklfwfkNH5NHtuw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=gpdRfyA5WsG2+LKwaOboEZ0R74vDpQ1DZkCoO09y/RyjR7rWxJsnnQpPvYyT125qO
-	 1hY2p4FIaKBdgWyV/lDIqlxIT/p303KNZkJJrIUCt78ANNTMCXe+Bk3nXsm5kkbWMb
-	 dN+U7FGSqP/kumN1UCrfPS+ySvlr9atYku2QIWTXeXlNauDq70CXGParaOqzgWb1x7
-	 A3ZABnzFF15m9w1LZQ18U9SFviAat/HBkohPoknWqflXrLY0KM30h6UFR8MHSk0Dfu
-	 GVT17YgaICt2shhX1D9Q3vY8tta0q1hxu5PCE36A1y3cfu8Skc/BWUzEvFnAuQDI/b
-	 AxBfOk5UIU7hQ==
-Date: Tue, 4 Aug 2026 14:09:58 -0700
+	b=O+K1a6u7wBw3AtZqAeLnOd4l9BHOaWpjZbkfhJFaJyC0lbLK0v0bswxashFIMZR1E
+	 dBPzvhOAyk4+uml3EQYoM0BUiQXJARB3SuDQFTnjNlIEqxgsUwbOnAxxo2IliLzH/O
+	 l7luyVCiML1Al1I+fNgst2YyCklVoO7zhSHmZPaEEw8bS0nsyBupKykI5M3s0CeCyZ
+	 H8vEl+egyo6bL60ox+4qTbxDJEfcqMOfxcjnVwAzd7l4HLh9M1RTJPFvZ6fIWR/6NR
+	 2JgB8U1fkgTwdJWBLjqm3Ks94eHwZN4ngav8W8gcNqyAx3V3m1rWFB5nPod+DydYwC
+	 +bw27iq4JbkBw==
+Date: Tue, 4 Aug 2026 14:16:07 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Dragos Tatulea <dtatulea@nvidia.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
 Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
  <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Jacob Keller
- <jacob.e.keller@intel.com>, <shshitrit@nvidia.com>, <tariqt@nvidia.com>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: Defer netdev KOBJ_ADD uevent until the device
- is published
-Message-ID: <20260804140958.3144eabb@kernel.org>
-In-Reply-To: <20260804155103.742898-1-dtatulea@nvidia.com>
-References: <20260804155103.742898-1-dtatulea@nvidia.com>
+ <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org, Kyle Zeng <kylebot@openai.com>
+Subject: Re: [PATCH v1 net-next] af_unix: Unlink scc_entry in
+ unix_del_edge().
+Message-ID: <20260804141607.111111ed@kernel.org>
+In-Reply-To: <CAAVpQUAnR+7W6fXgWo4AzABSn08YAZL0P3ipzkO2FS1B9Q6X_A@mail.gmail.com>
+References: <20260804002155.2233594-1-kuniyu@google.com>
+	<CAAVpQUAnR+7W6fXgWo4AzABSn08YAZL0P3ipzkO2FS1B9Q6X_A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,94 +48,9 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 4 Aug 2026 18:51:01 +0300 Dragos Tatulea wrote:
-> netdev_register_kobject() calls device_add(), which emits KOBJ_ADD and
-> wakes udev, but register_netdevice() only makes the device findable by
-> name later, in list_netdevice().  A udev worker that reacts to the uevent
-> can therefore run against a device that no lookup can find yet.
+On Mon, 3 Aug 2026 17:46:37 -0700 Kuniyuki Iwashima wrote:
+> > [PATCH v1 net-next] af_unix: Unlink scc_entry in unix_del_edge().  
 > 
-> This used to be harmless because the ethtool ioctl took the rtnl_lock
-> when looking the device up, and register_netdevice() runs under rtnl, so
-> the worker simply blocked until registration finished. The commit in the
-> fixes tag moved the lookup out from under rtnl for ops-locked drivers.
-> Now there is a short window in register_netdevice() between
-> netdev_register_kobject() until list_netdevice() when the device is not
-> findable by name.
-> 
-> This was reproduced with the mlx5 driver on a kernel with KASAN enabled
-> during devlink reload: systemd-udevd's net_driver builtin gets -ENODEV
-> from ETHTOOL_GDRVINFO, which was preventing interface renaming.
-> 
-> Suppress the uevent in netdev_register_kobject() and emit it from
-> register_netdevice() next to rtmsg_ifinfo(). This is the last point in
-> register_netdevice() where no error can happen, so only fully registered
-> devices are announced: the registration error paths never reach it, and
-> the device_del() that unwinds them stays silent as well, leaving
-> userspace with neither an add nor a remove.
-> 
-> Fixes: f994752b1127 ("net: ethtool: optionally skip rtnl_lock on IOCTL path")
-> Assisted-by: Claude:claude-opus-5
-> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+> Sorry, this is for net.git.
 
-LGTM, one nit..
-
->  net/core/dev.c       |  1 +
->  net/core/net-sysfs.c | 16 ++++++++++++++++
->  net/core/net-sysfs.h |  1 +
->  3 files changed, 18 insertions(+)
-> 
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index c1c1be1a6962..32cc092d5d11 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -11499,6 +11499,7 @@ int register_netdevice(struct net_device *dev)
->  	 *	Prevent userspace races by waiting until the network
->  	 *	device is fully setup before sending notifications.
->  	 */
-> +	netdev_uevent_add(dev);
->  	if (!(dev->rtnl_link_ops && dev->rtnl_link_initializing))
->  		rtmsg_ifinfo(RTM_NEWLINK, dev, ~0U, GFP_KERNEL, 0, NULL);
->  
-> diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-> index 0e71c9ed41e8..9a403259a3d0 100644
-> --- a/net/core/net-sysfs.c
-> +++ b/net/core/net-sysfs.c
-> @@ -2334,6 +2334,11 @@ int netdev_register_kobject(struct net_device *ndev)
->  		*groups++ = &wireless_group;
->  #endif /* CONFIG_SYSFS */
->  
-> +	/* Hold back the KOBJ_ADD uevent until the device is discoverable
-> +	 * by name.
-
-nit: maybe just say "until the device is listed" ?
-Or there's some less than obvious relevance of the name lookup 
-vs ifindex lookup?
-
-> +	 */
-> +	dev_set_uevent_suppress(dev, 1);
-> +
->  	error = device_add(dev);
->  	if (error)
->  		return error;
-> @@ -2349,6 +2354,17 @@ int netdev_register_kobject(struct net_device *ndev)
->  	return error;
->  }
->  
-> +/* Announce a fully registered device to userspace. This pairs with the uevent
-> + * suppression from netdev_register_kobject();
-
-nit: s/;/./ ?
-
-> + */
-> +void netdev_uevent_add(struct net_device *ndev)
-> +{
-> +	struct device *dev = &ndev->dev;
-> +
-> +	dev_set_uevent_suppress(dev, 0);
-> +	kobject_uevent(&dev->kobj, KOBJ_ADD);
-> +}
-
-Please wait for Clashiko to cross-review before posting v2.
--- 
-pw-bot: cr
+ack
