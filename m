@@ -1,97 +1,172 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7566E2737F8
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 22:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785880880; cv=none; b=hlNDB0PwzORaDSj3Z1drUVZnE8KR+rnSFdirKjnYju5q+C9DAmiIr8yVMOA4bFyWpBn78QnGcMxh1VJWZglSY9cEfSNIQBKXfVnkni1TKtZ2iZgLdR9OFnhyUGbD3vMbzswAeurAzt1A49UHrZKkOFw+tv2CL/8j+muqHzFTU0A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785880880; c=relaxed/simple;
-	bh=CtuHMW71aRHu06GjXYnauI73d16ZkzPDw4ZvP0se94E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R8bAUK4TpyqYPFi9ORMwRrEuobjfKNofuBYpf/3lX6zA70xQdGdIOVd3duo19baREuAjO6ITXukt8GRd9nP5fnE81PuIIZzGl1Umihb0+XH5muC79jb2bLsZggRpzLwBT8k7S6QiNDkxuuC0oRJIwMPuTuQQwiYPboTrqvjIaiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IiRCCGof; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC84368D71
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 22:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785881417; cv=pass; b=h1iZnsKH/AV3r4yGklaJLWDr2wqbaWuCd1mrD1UE0/XGuLTGtsdXh5hGh9xIli2sYmlmMj/1+qoQXdYRFCF1UAqj/szV3bhtyp5nssD6c5UVpV5KlJq/gHg+prk3eY9gkm2QXzYFb9YG4HH3lnWiGFR7QIG7ixVwTEZeU1Ub26A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785881417; c=relaxed/simple;
+	bh=7X5cSaIboniyv0K9SwBjXLnvxPS6WGXW/hc2d3Q4Zig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s6YJkLiw+oj3fYEQ3PZNSvFXT0kALy5SxAJYhEwFM695g8y8/m/WXNvVocgpbaSEy0ZsyvXRHT4/XSAYxXcyHWIjfAwKn3JpJWFPR8ZPuEvFUsS3An52esZZj0WYZZK4ZllgwNqfw6/m6PN2Huv2OrKV+jbAz+RIOxHyidaPfVw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bher2DFi; arc=pass smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IiRCCGof"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785880878;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V4rkQKf60hLXqoIgBxA6Jm3Hc2+y/ugAgl4QJUR5/D0=;
-	b=IiRCCGof2PnZyaxUMHzGP+Qs8vknLrzM7STjs1V7g0sHdShCJt+50RYmeNPKbXtmoK73FH
-	foBkinxAuHBYp6iKfDPv2JgEpMOqlb2epVnBC2BxFF4CHzoTSnikB1GVQRJ7OZW+C5GGOk
-	cO6AJkBaahbAuCCXVInh8sANL6Egsh8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-83-tuGiHkpOMGyF2_xKrPLMvw-1; Tue,
- 04 Aug 2026 18:01:15 -0400
-X-MC-Unique: tuGiHkpOMGyF2_xKrPLMvw-1
-X-Mimecast-MFC-AGG-ID: tuGiHkpOMGyF2_xKrPLMvw_1785880873
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B3BE319560AA;
-	Tue,  4 Aug 2026 22:01:13 +0000 (UTC)
-Received: from bgrech-thinkpadp1gen3.rmtustx.csb (unknown [10.2.16.127])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1BEFC414;
-	Tue,  4 Aug 2026 22:01:11 +0000 (UTC)
-From: Brian Grech <bgrech@redhat.com>
-To: netdev@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org,
-	shuah@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	Brian Grech <bgrech@redhat.com>
-Subject: [PATCH] selftests/net: fin_ack_lat: fix latency threshold typo
-Date: Tue,  4 Aug 2026 17:01:08 -0500
-Message-ID: <20260804220108.1630366-1-bgrech@redhat.com>
-In-Reply-To: <20260731145914.4014912-1-bgrech@redhat.com>
-References: <20260731145914.4014912-1-bgrech@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bher2DFi"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8487088510aso387577b3a.0
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 15:10:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785881416; cv=none;
+        d=google.com; s=arc-20260327;
+        b=neFFXnXveGJ/+fnx+Cgvk2P+3lk0ih2wyn7izIKLZ6rU/1PCUF83KYQOyZrkdsaNvM
+         Tj0VV/U8SaRXO1nZbWLiZP5ldeYSE7ZqddSOLExOrt4EA2bir2nMwCk8CLhJA/6PCZVZ
+         u8sXd9Nkh/mPO4q9Y1l0ODv9xRa5pSpKmckbdLJLiaPyEQXLVf9a/AQqoT7BC4LyyoRU
+         BbqumJaAm7Y0mVUB9ezasB5WwrSUNLvq20n5zG4UAYnaB35gkHmJ/bOaXSnj3bcH5XW4
+         vKyXdw4cOIv+SmsXxwBDL8rzXm5qWk0XoXz/hKfSeRLoKY0/8nxxDakc2YUDxWubPd3u
+         YkUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MEsur95lzysG65UeFCPO1I0QCJo39klMfTJllaEhaIw=;
+        fh=VbYL8Cq6A/7xcGC77AtyR6hOsfTVYZtp+IjRGItlbgg=;
+        b=Hj+Kjf4vaYcJJB05nRcP29b0nwU7qcimthy+eKbYuhmL2PIO6bzlO/K10zJUd1EPNn
+         knJ0xiwRkSn/gfdRHfEbOuBz+y5BHPuTEo72dyk0RPXnPwnYLIlTlc4XKwd7VPbZ4hdI
+         VLYRiUZkGGdCe4mputMhTuJYsnIOYw8SfPa4UyhfDQzC0/NMgBw0stcS6xrTq1lGUStM
+         hUKH3258nZMq8O8JSRMeiZxKO49cC+0tF/SvO02EjjjqJuW1iNH44fUntQ78FzAPcZiL
+         bZ+QoTZdc/cyZCONfQySjtHzJMb/Nnkb1LiEVGDDvj+YG/pfebFrx2Q15J3Jp2wiNZSU
+         siAw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785881416; x=1786486216; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MEsur95lzysG65UeFCPO1I0QCJo39klMfTJllaEhaIw=;
+        b=bher2DFioxtrGJJ8dFbFICZjcFp/z+BMYay933VbMlU27cnXyebB5JBdGq9W96Efns
+         ExJLlWb9CJ91ytfujdPAnrzdQSEHk7Hpc1FwvLS9lZ2yn/qoHMvh2IWh7hflYpJlfW/K
+         n0MnlraL94m5ngTdoHgxQy3xj9VO6eQFOV41vVmSGOX9FExOhf3nXvutYe/UVP/ddSSW
+         /NogScA9RZjoycWPl/zKgfhQDJoPEZLsjJFqR4x1S781qeDv3zQ62dTuODPjx1EGVIJv
+         Yu0qJlZAtUcQfMmuF0Sh4UE9YCYcBRWEiy6iEntnh5rfd1M5PHU7+JTqoE3XQGvymNqK
+         O32g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785881416; x=1786486216;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MEsur95lzysG65UeFCPO1I0QCJo39klMfTJllaEhaIw=;
+        b=GQFgOhklCdaJw3KT2ZL/oAptuoLGAu48+P4/UeWPEiNkI7e86xeWtATlnU+NWAYhtC
+         H/L8ABBuCiqHBlSmeWfyLd3MZg+TDrB2g2u8Tb9MHKPcLzzCD2i7w/FHkn2i3GybBbia
+         kQ8sTyp999BwxRKA8SCbI/o6HTMaWPo4ciqVWSvVEcM7OKlYGSfN2y9m29xz7WRkQRPZ
+         TWmPb5gZD19GFv/hNdrvLB56HOSaGunDSGfLK8vU5FwZp3rvaUXNucJKAn829qOQ/uBI
+         u+0tOSJTIigZS96CTCIeWwq28GfUWCQSvECs8KeFixoT8H8DAmzpfZIJTXqAC9sc028e
+         0tjw==
+X-Forwarded-Encrypted: i=1; AHgh+RoE9jV6C1rqnvBUgfqNKoEre08RmcWfpq6JQyGB9WdxxVZexaHQNauVCPtkwvRaj2jVcH056cM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtI0iiZQsXS1z8dbzgkvTsN4HsNF6gNwzQ8sgM1fBWSQeUdyyB
+	muyY1sbJG0ALcQIZ0n+aok3sy+5hALVcrjGv57wBxMDlAHcYKadG1CLKUHFiwKDdWS2SFI4mdmh
+	l0wVVXhkLhfppL9JIrWRmm1kooEbK9Po=
+X-Gm-Gg: AR+sD11LDoj/jbnpUWt5gSPvB2EHP4ao8VdaxmIAF12tLv0NB4TQLsp2V9MD0PDI6VL
+	TPrg+bveNFMJsl+qXpxkAtXoY2BA4zZmF76i1Tk5SHd+9hohdSdhx0v/PTGsC6pN3WumfO4Tz/R
+	wIsLoQ6NanwTyp/sc4Pu7NlcdFQ+x//QsvSxjc8anzZc7r1xX0TjZiKX0lKKbMdtXUIHBl77gyX
+	/XrNEYjIjM4aHat7Buvh5ssoTowt6DHH4wn7ALe7iO6pKckKmIEcDGQfEagKKDyTTsZRbw2S3e/
+	zbdxPRffPtK9I48EbtSvAWk1iT2sjqwZoaIEUrM0GczL59LBdd45LxjxV1gkftcaKiwtwG0D+4/
+	EoRcFrYKC88K3JPtOpw8q2T+Sc0rSpDTCB4v9MYbfyfA=
+X-Received: by 2002:a05:6a00:2c9:b0:848:5ed6:9d27 with SMTP id
+ d2e1a72fcca58-84f2e12c9f4mr1932259b3a.36.1785881415967; Tue, 04 Aug 2026
+ 15:10:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+References: <20260804084310.818056-1-l1138897701@163.com>
+In-Reply-To: <20260804084310.818056-1-l1138897701@163.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Tue, 4 Aug 2026 18:10:04 -0400
+X-Gm-Features: AUfX_myk3fRliFcAY6f6ydLKWG57MHJVOOKE5vhJtiNaQeP_eu-slQ7PjG3Bu-g
+Message-ID: <CADvbK_daHZ4vizDt4fiMT=rTDwhT=AJdKK5qe8v_jaLNAYBqxQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] sctp: fix use-after-free in timeout event handling
+To: luoqing <l1138897701@163.com>
+Cc: marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The FIN-ACK latency threshold was written as 100000 (100ms) instead
-of the intended 1000000 (1 second). Connections completing between
-100ms and 1 second were incorrectly flagged as high-latency outliers
-and printed as failures on loaded systems.
+On Tue, Aug 4, 2026 at 4:44=E2=80=AFAM luoqing <l1138897701@163.com> wrote:
+>
+> From: Qing Luo <luoqing@kylinos.cn>
+>
+> sctp_do_sm() in sctp_generate_timeout_event() may process an
+> SCTP_CMD_ASSOC_FAILED command, which calls sctp_association_free() and
+> drops the last reference, freeing the association and its socket while
+> the timer callback is still running. The callback then dereferences the
+> freed sk and asoc, a use-after-free.
+>
+I don't understand how this happened.
 
-Add the missing zero to restore the intended 1 second threshold.
+If the timer callback is still running, the asoc refcnt must be held until =
+the
+callback completes, and sctp_association_destroy() is not supposed to
+put the refcnt any running timer holds.
 
-Signed-off-by: Brian Grech <bgrech@redhat.com>
----
-v2: Added missing maintainer CCs
+Can you share the PoC and the call trace if any?
 
- tools/testing/selftests/net/fin_ack_lat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks.
 
-diff --git a/tools/testing/selftests/net/fin_ack_lat.c b/tools/testing/selftests/net/fin_ack_lat.c
-index 70187494b57a..4117332eb1a9 100644
---- a/tools/testing/selftests/net/fin_ack_lat.c
-+++ b/tools/testing/selftests/net/fin_ack_lat.c
-@@ -69,7 +69,7 @@ static void client(int port)
- 		lat = timediff(start, end);
- 		sum_lat += lat;
- 		nr_lat++;
--		if (lat < 100000)
-+		if (lat < 1000000)
- 			goto close;
- 
- 		if (getsockname(sock, (struct sockaddr *)&laddr, &len) == -1)
--- 
-2.55.0
-
+> Hold an extra reference on the association at the start of the callback
+> so both it and its socket stay alive until we are done, and release it
+> at out_unlock along with the timer's reference. Also only set sk->sk_err
+> while the association is still alive.
+>
+> Assisted-by: LLM
+> Signed-off-by: Qing Luo <luoqing@kylinos.cn>
+> ---
+>  net/sctp/sm_sideeffect.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
+> index 424f10a6fdba..f384c2faf1c4 100644
+> --- a/net/sctp/sm_sideeffect.c
+> +++ b/net/sctp/sm_sideeffect.c
+> @@ -275,6 +275,12 @@ static void sctp_generate_timeout_event(struct sctp_=
+association *asoc,
+>         int error =3D 0;
+>
+>         bh_lock_sock(sk);
+> +
+> +       /* Take an extra ref to keep asoc alive through sctp_do_sm().
+> +        * The timer already holds one ref; we'll release both at out_unl=
+ock.
+> +        */
+> +       sctp_association_hold(asoc);
+> +
+>         if (sock_owned_by_user(sk)) {
+>                 pr_debug("%s: sock is busy: timer %d\n", __func__,
+>                          timeout_type);
+> @@ -296,13 +302,13 @@ static void sctp_generate_timeout_event(struct sctp=
+_association *asoc,
+>                            SCTP_ST_TIMEOUT(timeout_type),
+>                            asoc->state, asoc->ep, asoc,
+>                            (void *)timeout_type, GFP_ATOMIC);
+> -
+> -       if (error)
+> +       if (!asoc->base.dead && error)
+>                 sk->sk_err =3D -error;
+>
+>  out_unlock:
+>         bh_unlock_sock(sk);
+> -       sctp_association_put(asoc);
+> +       sctp_association_put(asoc);     /* release timer's ref */
+> +       sctp_association_put(asoc);     /* release our extra ref */
+>  }
+>
+>  static void sctp_generate_t1_cookie_event(struct timer_list *t)
+> --
+> 2.25.1
+>
