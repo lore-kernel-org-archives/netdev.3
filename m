@@ -1,160 +1,227 @@
-Received: from mail-ot1-f79.google.com (mail-ot1-f79.google.com [209.85.210.79])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C60F3115AE
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 09:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEFE343D72
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 09:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785835846; cv=none; b=PVhs+krwCCKMXHRReneZ0Im91u7CIDCQgHkdhSUrHQWFIhnBtGOWdQEYUlKnqWYl9xFo/TRZF0fhpqz8y/AJtbrC3qY//z7auJkH1DdGU+UV+x5/EIaNYBHRThRSDshNnWP69V+4ZFyPe9t7jbugclPo7WYFp4ZM3F0jw96qg1k=
+	t=1785835951; cv=none; b=CW94RCtbRbA/+yjs56ZudONUei8huavlfEVDBytVwEiacLSUzbgzUiJtHNic2Rbq7eWXxeJsg2B/Kh5ygAQBwuBhkfsmwAZ6dTUDjWnT3jkKZDQWfGo6u4GFQxhcax9oMite2Ijvsc2jzkVrajaywAZxUBYpx2pLtJDFecZ7u9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785835846; c=relaxed/simple;
-	bh=2Nvl+FcCWnQTP8dz7BDgrCn/pvk04Qu1rH0pORcvUuw=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=pcDcobRYlYEPETlDzJfVtNpkC8BO6xVk9N5fKBVzxr6PP8PP7/JqPzmi4ZV20xT238FTCzQqsAtGa8xin6TRWfQl2mbRk2zChVBehECTsxDh26/VC2ScNUIfTjpu7oe2KsiLp0Z4TKTVzgdGFcVbONyRef4gSKgbTT0jiot3rMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f79.google.com with SMTP id 46e09a7af769-7ebeeb51976so1347610a34.1
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 02:30:43 -0700 (PDT)
+	s=arc-20240116; t=1785835951; c=relaxed/simple;
+	bh=B9hksGm9ntRRj9QAGHsjEV4YR/Q7/10o0v3GbCpC97g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SVoQ37TKg96IafJ0A/G0dh/CJTM0RCyxb4gbliUqnPp4Gbn336X21GaDg2SK/ICWm8HSgsxdRVaMEcSNMpsrVZCyA29i2WAwHBCXaoGt7GyXTs6PowkXef1R0risBL/EvdkZcOXgWahh+s0UVFswQV/6kBFO9cn2TiiqHHVi5cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=foX1r/kg; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="foX1r/kg"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ccdce28edeso5548945ad.0
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 02:32:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785835950; x=1786440750; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/CQIRskVYtbOfiKczfu0y6F86/TMtPEfVhmtJ7xiMZw=;
+        b=foX1r/kg8eYUxeKPru1VC6xZ8R9LGW4O6/BW8Jwu3542HU6bQrUhoRU0LlgGH64Mnj
+         KYva5wpjCdMv0HNLltb3Fz33NNUotFZFL4noc7kYiJFq2+chP4Yk10vaRRNjWGJIhso7
+         mMYWwBDnaE187QeRPr9o27Pfk4SQV3Ei4X6vYy9lg3iswn8l1v4DwEHK72I7Iqh7pZ0b
+         m0BbkYleiqOv6suehuf4WPacCfIx4K15oo5TZear9FML7Z8ebAlzL9DyufiSRqinxOgY
+         AQg9QxnFp/p4AOCx0DNxuuyB6uhMHCmGUV96QlG621fIBQqWuB+zujHhB5Ls1I8T5qP8
+         cmuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785835842; x=1786440642;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wWYLaZJYHGeTT3/jLXgg+lvcsltZ1764CitCaIrhdEE=;
-        b=EtciTJ1Hgxo1YCvMsfamQuuIbhMvkzE79Iv+G2zcmAXx60ajH0D/u9Hhg+NRKzrkBu
-         5kTIQg+3BRbSXB43Wl1eJPIe3B8ZvsqcRmGhBx0xvBxfkCdnUCrEDxZN2j75RCNVecc/
-         EJWjeAZC0EyxUSAoIZBa4SGxLNlV3h3CB/YXbVb3Wapxuo3xzWTzjJDDzrGR/ywCqF8F
-         R1jJJ9U3HhCSrJaEMOKej+c1fOAufrXMzKfpPLU/ofVZhm+seSyYiUz66M4sTx0bgg6h
-         xHqYwYbs8EdVUxEBFc3cyg9IvuRYFzYONthSrHYe9zBhqIfmiddvR31TC8E7QMv4NRu0
-         mGnQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqajeoKt3vXd9qLCRJujRCP5tGXcjF7PPaxWyckn182GWpzfOsUkJuzkPAn/Oy5Qn2LM1ixFFA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8eoQvEXEBqyH4WyiylQIjJ/g2djqiwTEOsZvKEZq4igIRmF8a
-	zJYf+QYZSAPNhqyPqXR29WVpU8qHOqVOBMAJYzk6BmwpldM9thrEfjFgg8oxE0MY+g18wrJcWzK
-	X0jehwcpoNmPEpNyQgRj6X9r8J5N80vVuRk9ZPnyKWBb1kf+BJ3LUHpWrMus=
+        d=1e100.net; s=20251104; t=1785835950; x=1786440750;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/CQIRskVYtbOfiKczfu0y6F86/TMtPEfVhmtJ7xiMZw=;
+        b=XTe0+p7okUKvNybGYl2OHeDwPv1b+y1eqDH0pHMOEibTtl4E/GsqTmjrSnTHGraf45
+         sKdI5UA1zC3NFKaF3V/sNTx6od91dppvJiixjrdflS3yZcHnnfRWjHl2XjNbFRVhMIez
+         lUxOX994Gd2JxJfVoJVG8y3cPHpM4hVOGpl3ATNanTTY12gGaP10+xOyOouzMm/MQCH2
+         P+Baaa1/wZut74smh0z6sFuUONQHcq+pNyIIufylyAN/zUDO6piSNz/3cPHmW0Wmph4Z
+         YSWovXs7I4AVi2hPxjjEdokraHndD4T8jV4riFeXzdASUrciwLrERsS23oaQFxnRC/5Z
+         Tm6Q==
+X-Gm-Message-State: AOJu0YwdPBHBCJJqZ4n35I6hf6W32p0GAs30z3p65y6fEZ4utP7Jpsgl
+	Kswpe7x8hm0SGS8XfqGvCUjO6IK6PXTqmddC592/bPaNGjGTBHrB4XpwunbVzKv8AaY=
+X-Gm-Gg: AR+sD11fOUvnvH9Q0QZ8AMmsyiKd4KSbs7xZqWlRhw3I4+PxM4FRmurTHzbIjCfAW2h
+	79NQL3/c6EE+Utp6//ol+pCRDOrbsb570b6Yx+/koYT7UHo7VvpQlYYlWVsAiGzPFnRmLdSfVhG
+	9o+eppy2RCOvxcW2HTbUYsQ7ejs82lDgjCcFqVvZSZ1I0vOQqqTyw4HhGCZjiJnSf9j1jxtRXB7
+	rLdV1gl0rw7gpiVxdulLcuB4YXNFRFwTEfrtvfpsrjUISoxp76+c49aA588aNDH/eCm130yXAB+
+	brP+H88Qm/gOAkCIXxJmQOGKuork2HIGU/Xz12VC/qutXOl+G5C3Podxu2W45t9PA/hMu3VXdcv
+	WzHu+y70aKUWEM9QcVCRIMqbA9DOnJ22gRVDqthYIG9X48iGBSBVWIvBRFLcU5ScvRRVLE8IbtF
+	wSMdkL4XgBBaIZd77ajVrkbBtjV5F9aKTYK/tigLW5JcgQVWQNvKMvv3guBJ6yoW5+H/azwPD4W
+	g4wJdQ9X1OhUrdEGvw8GKzFrSW1ysjMr9uQ/jElVvKAltTmoeY=
+X-Received: by 2002:a17:903:1aa3:b0:2cf:ca85:57e2 with SMTP id d9443c01a7336-2d05219bb79mr183170125ad.1.1785835949479;
+        Tue, 04 Aug 2026 02:32:29 -0700 (PDT)
+Received: from localhost.localdomain ([139.159.170.67])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0aa49325bsm3478945ad.40.2026.08.04.02.32.25
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 04 Aug 2026 02:32:29 -0700 (PDT)
+From: Qihang <q.h.hack.winter@gmail.com>
+To: netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
+	willemb@google.com,
+	daniel.zahka@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	Qihang Tang <q.h.hack.winter@gmail.com>
+Subject: [PATCH net v6 2/3] packet: use consistent hard_header_len in non-ring send paths
+Date: Tue,  4 Aug 2026 17:32:18 +0800
+Message-ID: <20260804093218.33952-1-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260730082925.93759-1-q.h.hack.winter@gmail.com>
+References: <20260730082925.93759-1-q.h.hack.winter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:160f:b0:69d:7fdb:3416 with SMTP id
- 006d021491bc7-6ae82b35c55mr3480032eaf.21.1785835841773; Tue, 04 Aug 2026
- 02:30:41 -0700 (PDT)
-Date: Tue, 04 Aug 2026 02:30:41 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a71b141.9511d2ce.1fc5b9.033b.GAE@google.com>
-Subject: [syzbot] [netfilter?] WARNING in nf_flow_offload_ip_hook
-From: syzbot <syzbot+76d4e3a055aec3b007ec@syzkaller.appspotmail.com>
-To: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
-	fw@strlen.de, horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, pabeni@redhat.com, 
-	pablo@netfilter.org, phil@nwl.cc, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+From: Qihang Tang <q.h.hack.winter@gmail.com>
 
-syzbot found the following issue on:
+packet_snd() reads dev->hard_header_len multiple times while allocating
+and constructing an skb. Device reconfiguration can change this value
+concurrently, for example through bonding device type changes.
 
-HEAD commit:    075b74841bd0 Linux 7.2-rc6
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=13a8a649580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
-dashboard link: https://syzkaller.appspot.com/bug?extid=76d4e3a055aec3b007ec
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14725db9580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12581c9e580000
+For SOCK_RAW, packet_snd() can save a larger value in reserve and later
+allocate headroom using a smaller value. Moving skb->data back by reserve
+then places it before skb->head, and the following copy from userspace can
+attempt an out-of-bounds write.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/1dc04730d019/disk-075b7484.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/d76da42271f4/vmlinux-075b7484.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/07b1cdbcbe45/bzImage-075b7484.xz
+packet_sendmsg_spkt() has the same issue because it calculates its
+reservation and header offset from separate reads before dropping the RCU
+read lock to allocate the skb.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+76d4e3a055aec3b007ec@syzkaller.appspotmail.com
+Add LL_RESERVED_SPACE_EX() for callers that already saved a header length.
+Read hard_header_len once in packet_snd() and use it for allocation and
+construction. In packet_sendmsg_spkt(), preserve the allocation-time value
+through the device lookup retry.
 
-------------[ cut here ]------------
-(skb->_skb_refdst & ~(1UL)) && !(skb->_skb_refdst & 1UL)
-WARNING: ./include/linux/skbuff.h:1170 at skb_dst_check_unset include/linux/skbuff.h:1170 [inline], CPU#0: syz-executor103/5623
-WARNING: ./include/linux/skbuff.h:1170 at skb_dst_set_noref include/linux/skbuff.h:1234 [inline], CPU#0: syz-executor103/5623
-WARNING: ./include/linux/skbuff.h:1170 at nf_flow_offload_ip_hook+0xf6c/0x2b60 net/netfilter/nf_flow_table_ip.c:864, CPU#0: syz-executor103/5623
-Modules linked in:
-CPU: 0 UID: 0 PID: 5623 Comm: syz-executor103 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-RIP: 0010:skb_dst_check_unset include/linux/skbuff.h:1170 [inline]
-RIP: 0010:skb_dst_set_noref include/linux/skbuff.h:1234 [inline]
-RIP: 0010:nf_flow_offload_ip_hook+0xf6c/0x2b60 net/netfilter/nf_flow_table_ip.c:864
-Code: 89 ee e8 87 4b 14 f8 48 83 fd 01 76 20 e8 dc 50 14 f8 83 e5 01 31 ff 48 89 ee e8 6f 4b 14 f8 48 85 ed 75 09 e8 c5 50 14 f8 90 <0f> 0b 90 e8 bc 50 14 f8 e8 e7 73 f7 f7 31 ff 89 c5 89 c6 e8 1c 4b
-RSP: 0018:ffffc90000007798 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff89f61151
-RDX: ffff88807cee8000 RSI: ffffffff89f6115b RDI: ffff88807cee8000
-RBP: 0000000000000000 R08: 0000000000000007 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff88806f5d0558
-R13: ffff88807a526900 R14: ffff8880291401c0 R15: ffff88807a526900
-FS:  00005555816fc400(0000) GS:ffff888123dd8000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000006a1b90 CR3: 000000007029a000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- nf_hook_entry_hookfn include/linux/netfilter.h:158 [inline]
- nf_hook_slow+0xbf/0x220 net/netfilter/core.c:619
- nf_hook_ingress include/linux/netfilter_netdev.h:34 [inline]
- nf_ingress net/core/dev.c:5975 [inline]
- __netif_receive_skb_core.constprop.0+0x1689/0x3530 net/core/dev.c:6071
- __netif_receive_skb_one_core+0xb0/0x1e0 net/core/dev.c:6210
- __netif_receive_skb+0x1f/0x120 net/core/dev.c:6325
- process_backlog+0x37a/0x1580 net/core/dev.c:6676
- __napi_poll.constprop.0+0xaf/0x450 net/core/dev.c:7735
- napi_poll net/core/dev.c:7798 [inline]
- net_rx_action+0xa40/0xf20 net/core/dev.c:7955
- handle_softirqs+0x1ea/0x9b0 kernel/softirq.c:622
- do_softirq kernel/softirq.c:523 [inline]
- do_softirq+0xac/0xe0 kernel/softirq.c:510
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0xf8/0x120 kernel/softirq.c:450
- local_bh_enable include/linux/bottom_half.h:33 [inline]
- tun_rx_batched.isra.0+0x407/0x750 drivers/net/tun.c:1512
- tun_get_user+0x1e31/0x3c20 drivers/net/tun.c:1955
- tun_chr_write_iter+0xdc/0x200 drivers/net/tun.c:2001
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x6ac/0x1050 fs/read_write.c:687
- ksys_write+0x12a/0x250 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fd3f3236427
-Code: 48 89 fa 4c 89 df e8 78 1e 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-RSP: 002b:00007ffce22a8bd0 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00005555816fc400 RCX: 00007fd3f3236427
-RDX: 000000000000002a RSI: 0000200000000300 RDI: 00000000000000c8
-RBP: 00007ffce22a8c60 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 00007ffce22a8c30
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
+The separate SOCK_DGRAM consistency problem between hard_header_len and
+header_ops->create is not addressed here.
 
-
+Fixes: b84bbaf7a6c8 ("packet: in packet_snd start writing at link layer allocation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qihang Tang <q.h.hack.winter@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ include/linux/netdevice.h |  6 ++++--
+ net/packet/af_packet.c    | 26 ++++++++++++++++----------
+ 2 files changed, 20 insertions(+), 12 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 9a770eb823ce..8840b126979f 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -300,9 +300,11 @@ struct hh_cache {
+  * We could use other alignment values, but we must maintain the
+  * relationship HH alignment <= LL alignment.
+  */
+-#define LL_RESERVED_SPACE(dev) \
+-	((((dev)->hard_header_len + READ_ONCE((dev)->needed_headroom)) \
++#define LL_RESERVED_SPACE_EX(dev, hlen) \
++	((((hlen) + READ_ONCE((dev)->needed_headroom)) \
+ 	  & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
++#define LL_RESERVED_SPACE(dev) \
++	LL_RESERVED_SPACE_EX(dev, (dev)->hard_header_len)
+ #define LL_RESERVED_SPACE_EXTRA(dev,extra) \
+ 	((((dev)->hard_header_len + READ_ONCE((dev)->needed_headroom) + (extra)) \
+ 	  & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index e75d2932475a..88674a6e868c 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -1953,8 +1953,9 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
+ 	struct net_device *dev;
+ 	struct sockcm_cookie sockc;
+ 	__be16 proto = 0;
+-	int err;
++	int hard_header_len;
+ 	int extra_len = 0;
++	int err;
+ 
+ 	/*
+ 	 *	Get and verify the address.
+@@ -1997,14 +1998,18 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
+ 		extra_len = 4; /* We're doing our own CRC */
+ 	}
+ 
++	/* Keep the allocation-time header length across retry. */
++	if (!skb)
++		hard_header_len = READ_ONCE(dev->hard_header_len);
++
+ 	err = -EMSGSIZE;
+-	if (len > dev->mtu + dev->hard_header_len + VLAN_HLEN + extra_len)
++	if (len > dev->mtu + hard_header_len + VLAN_HLEN + extra_len)
+ 		goto out_unlock;
+ 
+ 	if (!skb) {
+-		size_t reserved = LL_RESERVED_SPACE(dev);
++		size_t reserved = LL_RESERVED_SPACE_EX(dev, hard_header_len);
+ 		int tlen = dev->needed_tailroom;
+-		unsigned int hhlen = dev->header_ops ? dev->hard_header_len : 0;
++		unsigned int hhlen = dev->header_ops ? hard_header_len : 0;
+ 
+ 		rcu_read_unlock();
+ 		skb = sock_wmalloc(sk, len + reserved + tlen, 0, GFP_KERNEL);
+@@ -2034,7 +2039,7 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
+ 		err = -EINVAL;
+ 		goto out_unlock;
+ 	}
+-	if (len > (dev->mtu + dev->hard_header_len + extra_len) &&
++	if (len > (dev->mtu + hard_header_len + extra_len) &&
+ 	    !packet_extra_vlan_len_allowed(dev, skb)) {
+ 		err = -EMSGSIZE;
+ 		goto out_unlock;
+@@ -2956,7 +2961,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 	int offset = 0;
+ 	struct packet_sock *po = pkt_sk(sk);
+ 	int vnet_hdr_sz = READ_ONCE(po->vnet_hdr_sz);
+-	int hlen, tlen, linear;
++	int hard_header_len, hlen, tlen, linear;
+ 	int extra_len = 0;
+ 
+ 	/*
+@@ -2996,8 +3001,9 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 			goto out_unlock;
+ 	}
+ 
++	hard_header_len = READ_ONCE(dev->hard_header_len);
+ 	if (sock->type == SOCK_RAW)
+-		reserve = dev->hard_header_len;
++		reserve = hard_header_len;
+ 	if (vnet_hdr_sz) {
+ 		err = packet_snd_vnet_parse(msg, &len, &vnet_hdr, vnet_hdr_sz);
+ 		if (err)
+@@ -3018,10 +3024,10 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 		goto out_unlock;
+ 
+ 	err = -ENOBUFS;
+-	hlen = LL_RESERVED_SPACE(dev);
++	hlen = LL_RESERVED_SPACE_EX(dev, hard_header_len);
+ 	tlen = dev->needed_tailroom;
+ 	linear = __virtio16_to_cpu(vio_le(), vnet_hdr.hdr_len);
+-	linear = max(linear, min_t(int, len, dev->hard_header_len));
++	linear = max(linear, min_t(int, len, hard_header_len));
+ 	skb = packet_alloc_skb(sk, hlen + tlen, hlen, len, linear,
+ 			       msg->msg_flags & MSG_DONTWAIT, &err);
+ 	if (skb == NULL)
+@@ -3037,7 +3043,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 	} else if (reserve) {
+ 		skb_reserve(skb, -reserve);
+ 		if (len < reserve + sizeof(struct ipv6hdr) &&
+-		    dev->min_header_len != dev->hard_header_len)
++		    dev->min_header_len != hard_header_len)
+ 			skb_reset_network_header(skb);
+ 	}
+ 
+-- 
+2.50.1 (Apple Git-155)
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
