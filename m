@@ -1,247 +1,175 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77B846AF10
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 15:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBD6468C3A
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 15:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785857079; cv=pass; b=HDSO904kqFUoRras3VvDVTSvEVrW42RvviWGGCkeY5wgzFxNpjwkS8+Jsoq5gPXKR9X7rw5rvzbtn64Rx93R3JqdICXXeJx4LtINtZYpAgZdDB7rA69/tPJ/mWNJ5i8HPrqVAuEdqzH84f05izMb1CcqR3JE3s0wOd7kwduoCfU=
+	t=1785857210; cv=pass; b=rlF2PR8n+gugpwak4PpkPMNHdu5QXJNv4o16UPnpL68AYftQPaEldW4E8MociM+/uRAP2xBJ9Qiefbf4rUFOd4CzXauhxSu5Qv+CxNqP0o/vkls3gJdeaUcbFhsQRv2nWILJLFHQeHiAaxRMlBFnG4hxAfFvGFt+LCG6ZkfH3xE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785857079; c=relaxed/simple;
-	bh=Tjm0yDQYlrH8X6N6E9I9ZGiI+Lm92WeCfGZhIDCgUp8=;
+	s=arc-20240116; t=1785857210; c=relaxed/simple;
+	bh=XUmOi/B6laQ6eMCxOrhzePhtH6HxroybD30jr5qhuKU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uWsgthtMYp/FgOkmD9nXL8Y8rm7s4+KSihG/xSK2pWhzPT4L2HTTDzNUtuoc4BdbrhElpxIvb48ojeZ1ZAFU7Fwc9ZeRA7d2Qlqyvo5qzCEcm4pagQT+ZGXbXMQy6EGNhfMu+egwjRUSufGPi2flKpkGg0OlYqCwzRTNFbo4V7M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bV/eNJ4J; arc=pass smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=hrnpRG14pQ+8Q8QhoGzWroz2ayZU1KobItp/pLNCzN2lgAgzrw+ANJFmjpqs/jRi4Jk9U9oZvqy1WyZk9sfo5+Uz9JG0QBLc6KVKNBRKpsnuaiGMBOEhzRSn7Z9U7r7Qm+7gKgzM33slJfEuOAnNueMTfp81AhyrOhXfp1YdGq4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kZFOvsbb; arc=pass smtp.client-ip=209.85.222.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bV/eNJ4J"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-84862b0d5aeso5682371b3a.2
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 08:24:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785857077; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kZFOvsbb"
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-9693bbb962eso2795259241.2
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 08:26:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785857207; cv=none;
         d=google.com; s=arc-20260327;
-        b=rCFTTYQzwbAbHqPeyv16ltOcXOzDWupvgzaE3z4e55S4p4NF5BSdhBIhPDkSnp8tNn
-         0/SZj5SW/Dw6XugdI2WmMDiKvc4rEkX91AQ/9M6sMS4gfi4Vt3XmSihsohnORaJRsyMC
-         IRJ5SB2QvvAxUza08l3lkfCdwwwwRJ1ESjN4Esi1U0sX50eDm0TG374//9BVYIURxqv8
-         9cN7kH3S5zlRcvugwQZyj44kt0V5ESzLUsMEWMkhrJLzjZUbUKV/lLki5CMRPxSHoo44
-         sh0aicmHloGr9xFZcqXRjkLhx832d99NxrpP4Eo4VQR5p0oxdvYNT8PedF6A2uLntLr+
-         4DNw==
+        b=hh+2T9wu7tF85TpGQIy+E6TLYN2nnB/DgG9zC+mZKvxrX5LVHyZfz2uf9pjMbrRefa
+         rkLzfjpPCn+x8IFZabQ2Vm/IIP598/9ly3k4J8QZVIjHvUAu25AyAQ+T/IL2XfapUBqp
+         6LnKX88XFNyYWtSpU4f7T4Go20HdhMEpvtlaQilcIlNTaIOc7dXXoRlsIedHiLvNgDEY
+         XWt0FmazYmwMs1h8i03oCkbwPugrF6/T+ODrvCvQfj+V8hIngMdybp1OPJj3sHH0fL0G
+         DHgpSHuxZ4Gm4o5rSyOxG6qLOgStk3hcLZNW+Ch/h9WbR478NG6K2ZokbthBOd79mx3z
+         YyJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=fDD1em8JG1NbNzy8g2mfMsu5ZDnxM+Ezbp7dHoWAl+Q=;
-        fh=TDDZIr+F9BgXOOVmnfkSGFAxZ+N9+nmygnveSJnmKE4=;
-        b=rrCoVyTaqHdxqpyrMqaqeDjhvoDCB2ysi4+swu4MWV4NWb5IoY/XOQJ9XWlP03DhU8
-         nch8s9gSU7osteuZIOy4VjZ69bcX7gemQC8zT2Dkop3Kf2SgtXozanucnmRSf8CiVFfN
-         MpR0e7r1sDmVIcHfiMA1YSll8l15ORxov7aaAM6ElP8vKxs9chZ+E5bU3iBvmx2QMCmK
-         vWzH/RDWyxlME7oGBA3xyArquZUik1DmQRjvFzeZRVM0H48QOJEajf77cnUNzca0fXbJ
-         tXbiZ3PS1aZHuIQdGmQsaLpyGAYxkPpBhPUJBfFWSG7nPaHnLv4dkB90RDwx7KqPoHLt
-         suOg==;
+        bh=DIzf+HYojrQvIG1FuzM4Jdr3lr/d2D1NXMxs/JfDycE=;
+        fh=A1iWtzZmrtUt9+UMcMlhzHVhssSo1PPt6nx9uNwFeO0=;
+        b=KrBVfJT9mr33zjdCb8qZnPH6jET6zFxeZNTh36nDLomHfe8EHFBbEvWG9WHtnLzmxA
+         SQT+fcvfOxR1MM/D4IB/kaT0RlXz82O2vb+EtvUM4VEvGPbu5zfv608wiHrrWuaDPd68
+         Wkqf1q25cVSeUi8HJy+IJ7/2wvnM/3quS3nGupuLxtfPbczplro58Sv11j6W2gSwE+jP
+         Ska5IZ9g8kWn4wiZ1YftCJTOENPp3zBjdI7sWWsxqdwjrkTZpByU5VnP27yBKJVS8RMX
+         iDUB2/M3qfBvhwe1ZFwRYpNDUIYFdN5cFm3e38/bRk0PkZTIl//BCkdYmzsyJvZJzYhh
+         DNYw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785857077; x=1786461877; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785857207; x=1786462007; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=fDD1em8JG1NbNzy8g2mfMsu5ZDnxM+Ezbp7dHoWAl+Q=;
-        b=bV/eNJ4Js24pBwgtvjRNyPhAhBC0MdtgA59ZmSdu3v19joU2W++lYIr44NbXqcCUSs
-         ZEXx7v+h1sjmpsgL1Oo/G8tzmAqO3jw4nIjWy3ufuDDNkWAhfq8Hn08+pjoMILMPiZ1+
-         mnvgVaJE5LiqKKaCv4j3L7GWFHXexiJBmzQ0XtnAVitLCd6pQRh6VjhiGswbwAoP3cfH
-         uS3vC1vL24ft+aSsOaVXy6oDZbuUf+01h+1NGk8kYLHE8Yrq7m17XjtMr2/cdVaspcn5
-         MWdVr00/V7bs2y/nA9Q2ASFsMW792LmhPtGmn0qmtbkpldNO/qPtRixtgRQ19jF4BCXL
-         2yYA==
+        bh=DIzf+HYojrQvIG1FuzM4Jdr3lr/d2D1NXMxs/JfDycE=;
+        b=kZFOvsbbm0JHFd/9XJGRnuUrvMfAh4TpKYi56w5dQWmSWE0KVaii9T+vo7U52I/ryE
+         x3m292Z1MP9KCMWHjVHWxpqSnzOYCgeEHw0zYqcKUYWGqLjKMjgFvtK9gitR7gu4q4lt
+         gs/XK+lLB7dA07fq36vAP6RK8PvbnzqPZd/oex2A8IGw4zNap3Utnf1wQp1hVroSRWCj
+         WLsZ8b8bMBIHKsa4RDIqcdFyXB0ypkemA8OKlBGZW4Q8nSGvxwdtOu4WNYbGKvxAxLhf
+         vJhAhCCaVGLX3wBIh0aZuhM4JKdq0iOmMYDQT9S95rqFzUtzUbwRddTg11tLgvsla2Ln
+         Wcfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785857077; x=1786461877;
+        d=1e100.net; s=20251104; t=1785857207; x=1786462007;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fDD1em8JG1NbNzy8g2mfMsu5ZDnxM+Ezbp7dHoWAl+Q=;
-        b=PqlebgtkU+Ajj4H4i75QL+uu+qhTaPhtbVq9hBAZ+UfguaEw5GAufDStBdv/Jw+C/w
-         aN+z1jaAcYklLSagPPdfOV3Ta77JXs6DXFp8pWfuZOrvLNbvQb3aIQGYb4spsc15dFgZ
-         6YyRRgyW1Edbvefca0jZM5VmhaAAFy0SDtCInhFCbE2Qm8SRsjHbOgnWwUS1uXSEhBkr
-         lL2nKxVo7nB+HyX3V0rusxEkfwBC8vP0dvXAv5miwEloLWMbgn6ohh54vrsBR+rilQe4
-         ERkuFgJ8yiNj03L2cc9fqbW1q5gorL+eL2o4oIu/f/IcfA4oZCWJheUkacOQ/YKJEVKC
-         jJmA==
-X-Forwarded-Encrypted: i=1; AHgh+RoMHsnfA+5pfl63OMgVgbemxAMURMoFRE/ppS6670Fv65uObWVvwd/ssUFoLZiwMXpYDwj8IK0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyI+vG+e6biEoj0pi2uX+1NwAV9s9DuqHCeHJcJc5cjHw8ToOnQ
-	iG+bXjmeVYMKrk11+m5MY4pEj1eeGaBAwT29Jj47GfmsnAp1wf1Bpdl3JsWymlixvqYjSlTyeZP
-	DDgzAnWawkGyC3kXZAv1mjdrllaiOChLTOXJYCMH0
-X-Gm-Gg: AR+sD12ZC1OD0wxH17VtiHNqwiQBNzWZJi76Jzvk5sY1r0ErsXm+BEgkZdBQhba6dRV
-	HFU00/dE5JgxySvYmq4lYBqmLwvkoH2nlkMml0Kf0FNsSbxETGdZbfNk/HMxjIJLv8cR4hXHqbF
-	tvPjftM2S6u9tfzilpVaJ4aUZsGx5+a1ZSc2wMNTU4jH00Vs5WuY7hKkfwvvHSssMOPAu3shf5/
-	fI9EQs+qBnTd8viOaAf5rHQc4YzSO0sR1DpZbaR4ASK+WSXZhNk4ngVtZ+mWBuh/NWKgVBbEWC1
-	F9MI1PoE+zsG4TlGacbWgNrlKxz5ATkRCoN7N2d29q/h5JRUwmuPR6tp4F8e0qwV2uweNrfJqgU
-	TuIXBH+Z6Z9A40uIhfbVZki6cwHtzS/+Arp5Om2ZaeGEBlxdY9KkEGZwb/pQHbGY2EG4=
-X-Received: by 2002:a05:6a20:54a1:b0:3b3:f46:1efa with SMTP id
- adf61e73a8af0-3c92a8134eamr15448119637.42.1785857076459; Tue, 04 Aug 2026
- 08:24:36 -0700 (PDT)
+        bh=DIzf+HYojrQvIG1FuzM4Jdr3lr/d2D1NXMxs/JfDycE=;
+        b=nd0QrYb3+2qXFMQevDwqOWfLa2nX96axBKi7i5LL64m7z6kM/PfZG77p+alNLmbp5C
+         tb0Zq74WLjh6M7c4RsxtPoeAUxr8TytGR79BusMM51XKnF56MgcrNPG6w6AB5Za9noFT
+         FoJ+322uLTHWnqZ3AIOYcHDS92wFYOCC5Bx4fOrLHwjt7ydedI05npWWaDYJz1EriGin
+         DRcS9Mruec30DO6Hv+VH2JZ2odjoXUwAZ+M9nihFNFoLKjdLCLVx28+4Rgul3FlY/B8E
+         rpj8XfRspzWrdAO+CVPVONugXC4Zljm5/iYZ7/jivZS/NCIYsknAplpACwLe2ZiERj1I
+         uTRA==
+X-Forwarded-Encrypted: i=1; AHgh+RoqEujFXqoPc7ngc1kkqyRIckXQFe8GnqUfFvQJvKsMW2jkiaYZ8KaRFkSCJW8IXF1vDw0FrDc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9K+9OA9DoqmLkYYVTQUlsLKzSpHfclMR78zJNeLIlbVq3Z5om
+	C3Su9Bfp+ztLUnRaNNj9Kppw5HXRgc/0odV69KCqeiDIZIMTNm1Ye9pV7vWSFrmJf3BItmLZ8i7
+	Ttm4dqdog6WI+IbQeeLrtKrcpUL5ENyQ=
+X-Gm-Gg: AR+sD11bBolWfXBKLMmkQG0kqWq9cu+Kup0KPjvRtAFiHixsqtQk1W/xBe3Hh3TpsCA
+	f4cD1vg5kFWdipqTGOuBxCmmpcNim7ZGD9ZKX4k5gEO7CDikSr1e8WCT80PEq7/iiPWlfwQiLOM
+	snwwSBJ1aZ2VhJw/9OiAhVdNSbaDA5iYLuqNfOzq73CiAC2Q15QLzYhg1fw1NsgsdELl7zPPs1j
+	gJXFdWeK644z4o9SvOhEEtGE3R45yD8lxl4yM6zjAzYXKH094miOgztOfU/elw0hbV/iRnWxD3B
+	IgWBwDHrtUeS9uy60UzC5jkWwclDt7TpckWOzEgzTfl4vFSPOsuqGfaCqEMVojhPW6ypDo68zJ8
+	icLFvOtlkmISJDgV/MVlrC9dYMYZY1ohBkXJsTMmLoeMCLPhgfxhEWq2r6HZI7OaV/VZUNTNWFe
+	UsWjK6rXSKNNljgmHk6+tPzlsDd22sRUVAAMlF
+X-Received: by 2002:a05:6102:5093:b0:740:2717:a1b2 with SMTP id
+ ada2fe7eead31-75b21a600f9mr11149553137.1.1785857207439; Tue, 04 Aug 2026
+ 08:26:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260731164612.2148830-1-kuniyu@google.com> <20260731164612.2148830-4-kuniyu@google.com>
- <bfa765c2-a3e7-42b7-90c5-9757d8392687@redhat.com>
-In-Reply-To: <bfa765c2-a3e7-42b7-90c5-9757d8392687@redhat.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 4 Aug 2026 08:24:25 -0700
-X-Gm-Features: AUfX_mwTl5e82BD-5cS-IVeo7O_hExYrG7Q4ypm_qBbMDp6b_IieMMA5_hyL97o
-Message-ID: <CAAVpQUDmZEaQNDSySLayqexgTrUbhBaL7XPCt9XNQzh+NGQ=UQ@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 3/3] geneve: Support per-netns netdev unregistration.
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, i.maximets@ovn.org
+References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
+ <20260802-submit-acx00-of-dynamic-v1-v1-10-0a53cd9e21cc@gmail.com>
+ <05b1e6a2-725e-4b8e-8629-249637bbcb81@lunn.ch> <CADvTj4o0JdjoO+FC4pO=qnjEQ8MRyzQdKp2Hxy9NsPU-gym5OQ@mail.gmail.com>
+ <9b8be475-1fde-409c-a82e-be4b2e402650@lunn.ch> <CADvTj4pBovti19MXgQjFpxm=7aRm0sYQz9jxfo8bu3txH94THQ@mail.gmail.com>
+ <a9ce53dd-0873-41c0-ad6a-fb42e6cc7aaa@lunn.ch> <CADvTj4qpHU3F0DrEmc0vFi+JiwTNERniiMHKo1LmBd8sg58wJA@mail.gmail.com>
+ <205e9051-8e43-44bb-a4b5-4ec69a192fa3@lunn.ch>
+In-Reply-To: <205e9051-8e43-44bb-a4b5-4ec69a192fa3@lunn.ch>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Tue, 4 Aug 2026 09:26:35 -0600
+X-Gm-Features: AUfX_mxUgphmHVN2nVqeDHtOoQ4DhYlfN2EUsZlGA6OuEq-kXlUnQLFlQtbWoRc
+Message-ID: <CADvTj4qmXWbDsc-vigcSrF1N=zpxmZWGp3YaZ9PFcWK551h3mg@mail.gmail.com>
+Subject: Re: [PATCH 10/21] net: phy: add X-Powers AC200 EPHY control driver
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Andre Przywara <andre.przywara@arm.com>, 
+	Richard Genoud <richard.genoud@bootlin.com>, Maxime Ripard <mripard@kernel.org>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 4, 2026 at 6:47=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wrot=
-e:
+On Tue, Aug 4, 2026 at 8:54=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> On 7/31/26 6:45 PM, Kuniyuki Iwashima wrote:
-> > geneve_exit_rtnl_net() iterates geneve devices whose sockets
-> > are in the dying netns and queues them for destruction.
-> >
-> > So the devices may reside in different netns.
-> >
-> > Let's use unregister_netdevice_queue_net() to support per-netns
-> > device unregistration.
-> >
-> > list_del() is changed to list_del_init() to avoid queueing the
-> > same device twice.
-> >
-> > Even after geneve_exit_rtnl_net() queues a cross-netns geneve
-> > device, geneve_dellink() can be called concurrently for it.
-> > In such a case, __rtnl_net_unlock() will perform the unregistration.
-> >
-> > Note that geneve uses register_pernet_subsys() instead of _device(),
-> > so default_device_exit_batch() guarantees that the async per-netns
-> > works are flushed before ->exit().
-> >
-> > Tested:
-> >
-> > 1. Create geneve device across two netns.
-> >
-> >   # ip netns add ns1
-> >   # ip netns add ns2
-> >   # ip -n ns1 link add geneve0 link-netns ns2 type geneve external
-> >
-> > 2. Run bpftrace to check that geneve_uninit() is called between
-> >    ->exit_rtnl() and ->exit().
-> >
-> >   # bpftrace -e '#include <linux/netdevice.h>
-> >   kprobe:geneve_uninit {
-> >       $dev =3D (struct net_device *)arg0;
-> >       printf("PID: %d | DEV: %s%s\n", pid, $dev->name, kstack());
-> >   }
-> >   kprobe:geneve_exit_rtnl_net,
-> >   kprobe:geneve_exit_net {
-> >       printf("PID: %d%s\n", pid, kstack());
-> >   }'
-> >
-> > 3. Remove the netns where the geneve socket resides
-> >
-> >   # ip netns del ns2
-> >
-> > Now, we can see geneve0 is unregistered by per-netns work
-> > instead of cleanup_net() and it finishes before ->exit() to
-> > avoid WARN_ON_ONCE(!list_empty(&gn->sock_list)) there.
-> >
-> >   PID: 571
-> >           geneve_exit_rtnl_net+5
-> >           ops_undo_list+702
-> >           cleanup_net+1122
-> >           process_scheduled_works+2538
-> >   ...
-> >   PID: 1047 | DEV: geneve0
-> >           geneve_uninit+5
-> >           unregister_netdevice_many_notify+7129
-> >           unregister_netdevice_many_net+1050
-> >           rtnl_net_work_func+136
-> >           process_scheduled_works+2538
-> >   ...
-> >   PID: 571
-> >           geneve_exit_net+5
-> >           ops_undo_list+1064
-> >           cleanup_net+1122
-> >           process_scheduled_works+2538
-> >   ...
-> >
-> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > ---
-> >  drivers/net/geneve.c | 12 +++++++-----
-> >  1 file changed, 7 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-> > index f456a85dca77..a6a8978e3b81 100644
-> > --- a/drivers/net/geneve.c
-> > +++ b/drivers/net/geneve.c
-> > @@ -2502,12 +2502,13 @@ static int geneve_changelink(struct net_device =
-*dev, struct nlattr *tb[],
-> >       return err;
-> >  }
-> >
-> > -static void __geneve_dellink(struct net_device *dev, struct list_head =
-*head)
-> > +static void __geneve_dellink(struct net *net, struct net_device *dev,
-> > +                          struct list_head *head)
-> >  {
-> >       struct geneve_dev *geneve =3D netdev_priv(dev);
-> >
-> > -     list_del(&geneve->next);
-> > -     unregister_netdevice_queue(dev, head);
-> > +     list_del_init(&geneve->next);
-> > +     unregister_netdevice_queue_net(net, dev, head);
-> >  }
-> >
-> >  static void geneve_dellink(struct net_device *dev, struct list_head *h=
-ead)
-> > @@ -2518,7 +2519,8 @@ static void geneve_dellink(struct net_device *dev=
-, struct list_head *head)
-> >       gn =3D net_generic(geneve->net, geneve_net_id);
-> >
-> >       mutex_lock(&gn->lock);
-> > -     __geneve_dellink(dev, head);
-> > +     if (!list_empty(&geneve->next))
-> > +             __geneve_dellink(dev_net(dev), dev, head);
+> > I agree that the link PHY cannot be identified by reading its
+> > registers before the package control sequence has run. I do not agree
+> > that this means an arbitrary ID should be placed in DT, though.
 >
-> Sashiko noted that the lockdep chain between dev->lock, utn->loc and
-> gn->lock is not trivial, possibly a documentation follow-up would be usef=
-ul
+> The ability to put the ID in DT is there for two reasons:
 >
-> >       mutex_unlock(&gn->lock);
-> >  }
-> >
-> > @@ -2754,7 +2756,7 @@ static void __net_exit geneve_exit_rtnl_net(struc=
-t net *net,
-> >       mutex_lock(&gn->lock);
-> >
-> >       list_for_each_entry_safe(geneve, next, &gn->geneve_list, next)
-> > -             __geneve_dellink(geneve->dev, dev_to_kill);
-> > +             __geneve_dellink(net, geneve->dev, dev_to_kill);
+> 1) You cannot enumerate the PHY because of missing clocks etc.
+> 2) The vendor messed up, and did not put a valid ID in registers 2 and 3.
 >
-> Here sashiko foresees some problem with CONFIG_DEBUG_NET_SMALL_RTNL
-> before full conversion to per netns lock even of ovs. Just more
-> follow-up, I guess.
+> 2 does not happen very often, but this is one example. They are
+> different PHYs, they need different driver code, when you consider the
+> PHY as a whole.
+>
+> I also wound not put in an arbitrary ID, pick an unused ID in the
+> vendors range.
 
-Is it Sashiko-nipa output ?
-I can't find the comments from patchwork.
-https://patchwork.kernel.org/project/netdevbpf/patch/20260731164612.2148830=
--2-kuniyu@google.com/
-https://sashiko.dev/#/patchset/20260731164612.2148830-1-kuniyu@google.com
+The value currently used in DT is not arbitrary: 0x00441400 is exactly
+what both link-side Clause 22 endpoints report from registers 2 and 3
+after the corresponding package control sequence has run. This is case
+(1), rather than case (2): the ID cannot initially be read because the
+EPHY has not yet been clocked, configured and released from reset.
 
-btw, I was hoping this series would land upstream so that
-I don't need to care about OVS :)
-https://lore.kernel.org/netdev/20260513183559.2141010-1-i.maximets@ovn.org/
-
+The reported ID does not distinguish the two packages, but replacing it
+with a synthetic unused ID would make an ethernet-phy-idAAAA.BBBB
+compatible disagree with the value actually reported by registers 2 and
+3. If separate AC200 and AC300 PHY driver entries are needed to identify
+the complete package variants, they can use package-specific match data
+while sharing the common link-PHY implementation.
 
 >
-> /P
+> > Both AC200 and AC300 expose the same link-side PHY ID and register
+> > layout.
 >
-> >
-> >       mutex_unlock(&gn->lock);
-> >  }
+> No they don't. There are extra registers in different address domains.
+
+The block diagrams make the distinction clearer. Both diagrams depict
+an EPHY block with the same internal organization: MII/RMII, auto
+negotiation, auto-MDIX, 10/100 TX and RX PCS/PMA blocks, LED logic,
+clock/reset, PLL and EPHY AFE.
+
+What differs is the surrounding top-level control path. In AC200,
+E_MDC/E_MDIO connect directly to the EPHY, while the package control
+logic and registers are reached separately through RSB/TWI. In AC300,
+the external MDC/MDIO pins first enter a top-level MDIO slave and
+register block, which then provides internal MDC/MDIO connections to
+the EPHY. That top-level block also contains the AC300-specific reset,
+clock, I/O and eFuse controls.
+
+Therefore, I agree that saying the complete register layouts are the
+same was too broad. The packages have different top-level control
+registers in different address domains, but the diagrams indicate that
+they contain the same link-facing EPHY implementation. That maps
+naturally to shared link-PHY code with separate AC200 and AC300 control
+backends, rather than two copies of the common EPHY implementation.
+
 >
+>         Andrew
