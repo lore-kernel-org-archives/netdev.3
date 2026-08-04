@@ -1,233 +1,317 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010031.outbound.protection.outlook.com [52.101.85.31])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1BD43B495;
-	Tue,  4 Aug 2026 08:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9D043C7DD
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 08:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.125.188.123
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785832659; cv=fail; b=L/R9beqS14ANKSHfNtM8jha3IemZp6ewqf7c6et0M3da0wI1CxPFpPylPUioJdSTwd+ArevuifcZVuoMHUxClwmVIV5/4a8gi0WvVCutnXJwlXtaRyHiS03q125FmJPEX7UQbgIQjkWkoMauCBeradSRbhgxdwWXbZYgqxzEgXQ=
+	t=1785832665; cv=pass; b=WpGrZG0+HquFTFJIrJp7tGrqsvRHsqhbe2Ohvx/HWv12vDTvNDB5Fx/HD2t4NhAjjpKzm8HaGXOWk55ylKqbpwIcHDHJQXvgFpe1rnoVXDXO9msO0cTE7GAxecGBJJhxlJi/Wm8hh8q8JrR3l+uIMwpEvDmZJ+s7i50fLk5Gzhg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785832659; c=relaxed/simple;
-	bh=qeFRiCic+mGtSPAV57nx6XrXVLjcTWxDab3n49sOJaw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=go0vCxJecR9mmwp9EcHzcqRkOFQ0UcimnVqcY1cUbX8s1wplNosfOzFqGAWG9SdTVt721NXPsJegsRzCUR0frtM+rSIQeym/uDmHJ6ftIxqmTG3t9AcXeD+jejUZdWuXHQLshh5YKEuUqNfbOlTyCAHyRQ+DhJ/X57zj/np/njw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=A0FxRHa4; arc=fail smtp.client-ip=52.101.85.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1785832665; c=relaxed/simple;
+	bh=g13WE+ZHZNFUd7bHV6icamQv5+p7zEb2iX96VPgdsVA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pWR8kEFkRAnSfrbPgAN+W+1oVT8VnsRZ1BN9aujfyzoW1M/kRu6ppG/G/UbJfC8q+YOSNT1dYy1JWluYzGOWTkYeA18T4E1bqqw1/nJHv4bC2n8/cNS+uU1hxKVHAjapNTDA/CP2IwZR4Mm728fKXP5V1gFLlrhnb2gopV+tBpM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=jH6oseHL; arc=pass smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="A0FxRHa4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m/k+Pk5mXJYl7joxgHoUa/N+RwNDPEFJYGsj6TdN0qAa0SOvt70KlRI6fRL8t8r4k+odWOneq3Y1dGDbDlI9cNwZ2UyEPfnz2dGWVba2KfFwZvKjSriJLxWs4YyArsUcQ0aBu/AG792ICu+MKzVy4YmPitvmGJXvWOdhDMjfmN34fobf56i0FnlSzR32pEgDhR9CFoAalysC9ihh3VNtSIVQYDnNacaLhpWjZuBHkyt60c3GTduXtrzLKqcONHOxQywNjpSLi1oIAt018SZCWIKLOAc/eN13wobezceltpj+PIB9OHUxQIaQmGOqhQ57F4ABpvPSYow3I5hQNaXSUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XgenrtbmBM7uKo18CtVEVQeizlrtxMYTw6HIT8pCGDk=;
- b=c0NMQ46MQOnlLDCe7tpRZtyPBVlKnlqZ55SXaOEMTYeRGkOu8p+qHIjfhSVpi0zMyah2gKq3IOMHGmuC91lWElM3dAsD3Yqb37HKZrG3OfSGFUiwTHIv7yyXQfPNeny0iSSc3RDi28n9FRSc/hWvB34bmJpL9vSRantGSlqhmk5EJeuNyUWTTDPZX90VQ4kikjdh50/DQ1soclMwnxmgMkEPohMJy4uQ34p/gGh2CoB3QEXN1cf5jLBT6+uHAxBVeIwzCxE8G+0/SCDOns8ChUJte6pdEl4Wohnc+DRgJYYa9J6rbP/3XAkJ34HID07pqOnBJq9EgwqMVrGQ/mqPaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XgenrtbmBM7uKo18CtVEVQeizlrtxMYTw6HIT8pCGDk=;
- b=A0FxRHa4xBsetCvqvFjEVSOs0CfzuMEZOFHCOGHAOwendmF4FSd7yYoMgJ/7rhwpfhWOyQJYu58maKXhAjSafoSOvuheNVyOA7eHUhpMAC9xPc1L8qPHQgjw0SnFsMvrFp6kKU7AEgTCr9nXVbTgs20S5ebC3NpcNT+NAmdudpwi3KZFNS4rxoMO51pMkzO/lHyDZ5Qr4UhG4Nj+xMkrUYdtTN9qfBgYMRTveCvF+7PDV/uWR7hDS1S6b+5KcPu9drElvWoO0Mtp8hvboKuR8lqdzUe0EbiL5bSJiKHU4NlGj2J0ikj2lNeDywx0zX/8iEkZf55W1GDdNttjrYCaTQ==
-Received: from BLAPR03CA0137.namprd03.prod.outlook.com (2603:10b6:208:32e::22)
- by DS2PR12MB9568.namprd12.prod.outlook.com (2603:10b6:8:27c::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.15; Tue, 4 Aug
- 2026 08:37:32 +0000
-Received: from BL6PEPF00020E5F.namprd04.prod.outlook.com
- (2603:10b6:208:32e:cafe::43) by BLAPR03CA0137.outlook.office365.com
- (2603:10b6:208:32e::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.18 via Frontend Transport; Tue, 4
- Aug 2026 08:37:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- BL6PEPF00020E5F.mail.protection.outlook.com (10.167.249.20) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.292.8 via Frontend Transport; Tue, 4 Aug 2026 08:37:32 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 4 Aug
- 2026 01:37:18 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Tue, 4 Aug 2026 01:37:18 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Tue, 4 Aug 2026 01:37:10 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>
-CC: Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Alexei Lazar
-	<alazar@nvidia.com>, Boris Pismenny <borisp@nvidia.com>, Carolina Jubran
-	<cjubran@nvidia.com>, Chris Mi <cmi@nvidia.com>, Cosmin Ratiu
-	<cratiu@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>, Doruk Tan Ozturk
-	<doruk@0sec.ai>, Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman
-	<gal@nvidia.com>, Jacob Keller <Jacob.e.keller@intel.com>, Jianbo Liu
-	<jianbol@nvidia.com>, Kees Cook <kees@kernel.org>, Lama Kayal
-	<lkayal@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, "Patrisious
- Haddad" <phaddad@nvidia.com>, Raed Salem <raeds@nvidia.com>, Rahul Rameshbabu
-	<rrameshbabu@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan
-	<shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Simon Horman
-	<horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Stanislav Fomichev
-	<sdf.kernel@gmail.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net-next V2 04/13] net/mlx5e: macsec: Block TC offload when MACsec is enabled
-Date: Tue, 4 Aug 2026 11:35:26 +0300
-Message-ID: <20260804083535.2946459-5-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260804083535.2946459-1-tariqt@nvidia.com>
-References: <20260804083535.2946459-1-tariqt@nvidia.com>
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="jH6oseHL"
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 440C93F978
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 08:37:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1785832660;
+	bh=QK2XXQQ2ltf6JIJm9pr2aAQX19gqEISwvzdd/qkFtXk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type;
+	b=jH6oseHLZD0nW+2AezxIfZwnVA0jwJNEuhMVpefIdrzNXgco5bG2wuE0bMtY2MQhQ
+	 HpU0LjADgfTetREkiKwgBQL1ULc5G85zrIBVB19kSmaVyV7uzz3hHaOyKVV8IAjJa1
+	 IVc2tZ00adqmKgCkHQEt/Z7ICrFYy0fxmy+BRyz8ZPS/bCGpKP2DMTDD6UHrEPLAXT
+	 XVK9Xd2AReQBY1+cSpEMp8LFPZ/JWJ+hWR8HfvbneWYI/k3T1KlVSLgl1UnOIy9Lp0
+	 cAeuGhRK2P9WVORd3v7YJO8ZFSpX/+cMCNuQy33ff31LJM7B66Dhwk8/jc9EGH4Txe
+	 Y26AdJ7gzp/PcugTwJfwZacNf9nSsG7yOgvUSvCTInldxma2aDZRN3spHYm9bIPTxU
+	 vhiPJAkCPhQjznJJe93BqBGpQRyTkjktI3ALWRzPwRCN4BG9A6zmXlEUx7x0kAeY0g
+	 zWKQLIPpAsG78FjFD++X9OIITe4wVyCMX+HAvcltVXiturcIYg2ektwU/ilUI9N8kU
+	 OfdFNlg8jWgzbfqEJPE4LeXs/CaWFvJd1IWfBMJptTxlVolSSnIx1ux/LoYd150WKs
+	 VVMPqX/JzUtzmbhSi0giCiKfCS9dpgaZ6iuZjEC7DgZCMI/jkelVdEdTPbS0jT7xHq
+	 pRy28K6qph+aDg7jQE2Q7j0g=
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c15d4224f9dso329952566b.3
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 01:37:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785832660; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YwX33Y+bTUMPa5J/aT4ghnc1pMwNt/0INCDoEVmbwX08H/dOEwNRqxgEmXxHucQ1O6
+         6IUVEv2uzrKWougUE6fIaGd5Gjlscl3emIafUeom8G5p4nlSvTsrNguKNIwL7Wt+bMPM
+         OzH6vlxfq002ROUWaERzt8mVhfEmueuUNb2dzHx5ekb/CQhoyEleUhzYCAnnBbIOlX2/
+         KOUhrRqmUM0Q92xgUeLIUVcfxUyTGqvCFEZbS17QdaUKmgngMYi5kZrq9RRV4scsH3VA
+         u7VGNMsp9IG/P/VCevxH5mogebXrMyQPlDyZ9GZhwlaYE0eCgL39yB+F0BN/HuXlc0Hu
+         lRYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=QK2XXQQ2ltf6JIJm9pr2aAQX19gqEISwvzdd/qkFtXk=;
+        fh=bFNbSeVKcDCdVasMXCg4MuCR7/1lrCRGtPL/RCDbLEo=;
+        b=UbmPxI/lf9VkemwZr0AEfe27fsEIZcs8sOoyHHB3/ghli+L44eynYNPK//xKblFTsa
+         6xOIafyyjV0h8V46+JEptyskxgHk7uXwlMe887AILGci43eiadosZ9cQedmjO4D8drnI
+         5nkXCmoVFhqS0gw7+I3/OvsY2ApKgB9WQ5rZacFD0zIAlErrM4PUR/OXfcEkbzJLG3TT
+         3861z87NcK9n0k4sSuz/k6n9AzfO3PcR1xKfcG+/Z8qa3vvI548Ephr4qEoj0ZeyvmFZ
+         unhwFu6zS3OqO2Xo4mayWQ9vLYmyofOZ3U2zWdiHIX9VTcMITKfVpeElHewhgMJDszln
+         zn8w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785832660; x=1786437460;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QK2XXQQ2ltf6JIJm9pr2aAQX19gqEISwvzdd/qkFtXk=;
+        b=H55+j4y5dyLiKJ3Z5UqScqLOJ/x6GWQziteTtmMU+/ucJhaAA8SlKxd+LjkK0iA/qC
+         GmmbNrlEXY98Jm3KhnOQsMz7MrgElVCbOCutJ+JQS/cWxlaJP+o20SyThD+Tn3kIxpkg
+         iqSIkMuTF01l/LccVXdXBHA7bkukJAAbbencP5+bZ61iYfb7G16K5Y8/W/kPHGZPP1zq
+         SQ4qH8sQgOpSQRsyNymCGMcWj/nalHP9z6fxYySKwjDzONNPudaMCTrjVvQiTBnzK6lR
+         1HDlC9JSaz71FmSeNDKDSrlG61dLp6zwXfWpXCvNhu9E9FhvhbZxvbBMvja32sNPjhwg
+         MX5w==
+X-Forwarded-Encrypted: i=1; AHgh+Rrt9LsvNn4XQ+N45A37S0iSm2WIMHzIYjOl30XDz2Uz3JweEkdnlrWRI1P4RL2D83WR59nhfV0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/rvTk/s+PU2vfTwUoyBEmpmuk9ukUGjSgyZnjTCM9LsshwDrL
+	G/gg7shdKjmp9uVPA8aPD5ogXmQzHrE1bGVJlpnWckWH9G4CQGigqWQqasP7pR+bgxU8ZUaGctn
+	Vsm2OI5CbLPrju2sGbYkiX33EbQR5JMIQG/CTF9KEyNrmQBwD5/vdyUWx6CQJasjlKhJ4R8Szhs
+	Sy3aIkimsLmpUeHewpnrembeH0OZ1Xj6KFuFbE1nW9ZtisE6Gr
+X-Gm-Gg: AR+sD13Q5yIJJKuBfDPURoIR1hqw7C+BUfd92l/iwA6UD3R/fvcFwRprkORVOllKZFz
+	r3VXZGFbjNj6K4D2u9R+IZ/VmKtJLzABFiKDht9mHLhypWwd3iWbywhGMRLn2aylRpONTpIBRNF
+	Za7CQCMnWcJ0gmsGc9dm0lQJohZBLASHb2jwGo09AwiopTewBzPaIOAzY=
+X-Received: by 2002:a17:906:3c1:b0:c16:581a:2a51 with SMTP id a640c23a62f3a-c1fe80c6321mr881100466b.12.1785832659698;
+        Tue, 04 Aug 2026 01:37:39 -0700 (PDT)
+X-Received: by 2002:a17:906:3c1:b0:c16:581a:2a51 with SMTP id
+ a640c23a62f3a-c1fe80c6321mr881097366b.12.1785832659261; Tue, 04 Aug 2026
+ 01:37:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E5F:EE_|DS2PR12MB9568:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8fe8a22f-c520-492c-2e0e-08def203a0a6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|23010399003|376014|7416014|1800799024|82310400026|10067099003|56012099006|22082099003|18002099003|3023799007|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	+ee8YEvCmelo9f8GanzEghvh7/O9BTLxpgUZzpR9mhAmETa2D80aOSx0wORWHc/Qm8ZRca9JqVl2TvXHrg3/kfrMH7Qgv/sTQzQuJOy2Ji2JJ1rXeNmdeINKGaS+k7RSzPMCCFLQ4bgy50v+EzwogGKqVwdOhLNoHvHdmsjD6axpPznJfRrvH2+JOpTFr28IcsUyXhb6zsQ7FOP/mMblYgH8qK1dm1abS4XGrapQ+I9ZSKAvuImmQf16+8/L5ExJLfPDkLov4X30+dJqvcwsCaUtagKuvUFDaOpefpFX0b6aa6QbxEPk+y4IfY3q3QLqET2hRQ+CExMEr5AyeHrXxLKpNSJ1cfa/E7/5pZVsF9xuAocsyQREp3RJqU9o0dH+vkSRqRUVJ4KC3Rj1u5XJXcDKod2W+XkW+S77wRP18xKnl6RLzHiDtIRu1Df0errpjfTViLki/cqkFmJkcPsu7cPyNPm4EQfu7XdZR6JexN3XoLZ7qDkLx7XdVAaxu8Ul+W5bH9FdcmPH8chzw3p4+tMaXSrh+hRfH+FZnjOlYYOGABk8fZK2xto7XXcpHnuf9zgBvCqepioZVjoSFRE85gcWVJ+JZRLWoEjo/7IAoSa0np2v+8NzH4pzIM/PezET/ZR2TVERRfbM5hkp74RMOThJnfJ/X5KhnxOVJmyMkeIUfVM08dcNXOoVttbot7c8R6ulrMQ8okWs5Ik+9JD5Fw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(376014)(7416014)(1800799024)(82310400026)(10067099003)(56012099006)(22082099003)(18002099003)(3023799007)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	BFHCP+mPa//2k75xtH1y3RDE8jz2B6lBJKTnPMzNuG4E0Tzz6oP2gjjeBjmI4FadPAx+qqsGeEdoVZ3BEit87Dg0SX3lqzC6r30Rl23weFzPHo4mrK2aAgO3L5vrg37awXS368nRoLmAVCw+xxzBjeuOyOWq+yFu4cjA4ADZWlIk97WdYI7fz3P8Vh69IpPK0kniuEUvFvGFQtTNOIR44g1Cj6nTVIHC4jdptWFq/K5F9AofTgVQsWmMLd+ZDguX4yY4TMyK0n+X68I2t8H/nk26Qpt39nXqtqDa9bL/slrkzIKIlvzsip++iaYlqZ8nZ7AKBvNrWTHZ/9vqxxt4VwjNcmQDPpoghO4nW2p5jukgYC6qN3Vet7ueJFP9zZwiLViHZOWplXh5mZkYE/33r7ZNWAu8uZ3cbBM378hx/KEKBtrtbl0EtYLRAau3BIwI
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 08:37:32.5279
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8fe8a22f-c520-492c-2e0e-08def203a0a6
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00020E5F.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9568
+References: <20260731111008.1266444-1-robert.malz@canonical.com> <2e3101ea-13ab-4c9a-913c-999eb15207be@linux.intel.com>
+In-Reply-To: <2e3101ea-13ab-4c9a-913c-999eb15207be@linux.intel.com>
+From: Robert Malz <robert.malz@canonical.com>
+Date: Tue, 4 Aug 2026 10:37:27 +0200
+X-Gm-Features: AUfX_mz_Jae7dMx4vYi_J6NQ-TLRVLNHOrhEpeKex3aI5IX41UDwspVk9wh0tZM
+Message-ID: <CADcc-bzeA2CeWUttUcPTOhS=4e0k3=NMFS7i4=EgJHe-w=1j4A@mail.gmail.com>
+Subject: Re: [Intel-wired-lan] [PATCH iwl v3] ice: acquire NVM lock around
+ each flash read
+To: Marcin Szycik <marcin.szycik@linux.intel.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Jesse Brandeburg <jbrandeb@kernel.org>, 
+	Jacob Keller <jacob.e.keller@intel.com>, intel-wired-lan@lists.osuosl.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+Hey Marcin,
+Thanks for the review. Changes applied in v4.
+I removed ice_read_sr_word_aq instead of ice_read_sr_word as callers
+already are using ice_read_sr_word.
 
-The MACsec protocol marker will soon move to flow_tag and that will make
-TC offload unusable at the same time as MACsec on the same device.
+v4 ref: https://lists.osuosl.org/pipermail/intel-wired-lan/Week-of-Mon-2026=
+0803/056281.html
 
-This patch makes use of the mutual exclusion mechanism to make sure that
-TC and MACsec cannot be both active at the same time.
+Thanks,
+Robert
 
-One extra bit of logic is in macsec_upd_secy_hw_address(), where
-existing macsec rules are drained then readded. During the two loops
-it's possible a mistimed TC filter add to throw a wrench into things and
-prevent the 2nd loop from adding anything, since accel rules are now
-blocked. Fix that by keeping a best-effort TC block across the entire
-operation.
-
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- .../mellanox/mlx5/core/en_accel/macsec.c      | 28 +++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-index daff53ba7d09..a15a0aff292f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-@@ -10,6 +10,7 @@
- #include "en.h"
- #include "lib/aso.h"
- #include "lib/crypto.h"
-+#include "en_accel/en_accel.h"
- #include "en_accel/macsec.h"
- 
- #define MLX5_MACSEC_EPN_SCOPE_MID 0x80000000L
-@@ -324,6 +325,8 @@ static void mlx5e_macsec_cleanup_sa_fs(struct mlx5e_macsec *macsec,
- 	mlx5_macsec_fs_del_rule(macsec->mdev->macsec_fs, sa->macsec_rule, action, netdev,
- 				fs_id);
- 	sa->macsec_rule = NULL;
-+	if (!is_tx)
-+		mlx5e_accel_unblock_tc_offload(macsec->mdev);
- }
- 
- static void mlx5e_macsec_cleanup_sa(struct mlx5e_macsec *macsec,
-@@ -343,6 +346,7 @@ static int mlx5e_macsec_init_sa_fs(struct macsec_context *ctx,
- 	const struct macsec_tx_sc *tx_sc = &ctx->secy->tx_sc;
- 	struct mlx5_macsec_rule_attrs rule_attrs;
- 	union mlx5_macsec_rule *macsec_rule;
-+	int err = 0;
- 
- 	if (is_tx && tx_sc->encoding_sa != sa->assoc_num)
- 		return 0;
-@@ -353,13 +357,26 @@ static int mlx5e_macsec_init_sa_fs(struct macsec_context *ctx,
- 	rule_attrs.action = (is_tx) ? MLX5_ACCEL_MACSEC_ACTION_ENCRYPT :
- 				      MLX5_ACCEL_MACSEC_ACTION_DECRYPT;
- 
-+	if (!is_tx) {
-+		err = mlx5e_accel_block_tc_offload(priv->mdev);
-+		if (err)
-+			return err;
-+	}
-+
- 	macsec_rule = mlx5_macsec_fs_add_rule(macsec_fs, ctx, &rule_attrs, fs_id);
--	if (!macsec_rule)
--		return -ENOMEM;
-+	if (!macsec_rule) {
-+		err = -ENOMEM;
-+		goto out_unblock_tc;
-+	}
- 
- 	sa->macsec_rule = macsec_rule;
- 
- 	return 0;
-+
-+out_unblock_tc:
-+	if (!is_tx)
-+		mlx5e_accel_unblock_tc_offload(priv->mdev);
-+	return err;
- }
- 
- static int mlx5e_macsec_init_sa(struct macsec_context *ctx,
-@@ -1137,7 +1154,12 @@ static int macsec_upd_secy_hw_address(struct macsec_context *ctx,
- 	struct mlx5e_macsec_sa *rx_sa;
- 	struct list_head *list;
- 	int i, err = 0;
-+	bool block_tc;
- 
-+	/* Best-effort TC block across the operation, to prevent a mistimed TC
-+	 * filter add from preventing the 2nd loop from happening.
-+	 */
-+	block_tc = mlx5e_accel_block_tc_offload(priv->mdev) == 0;
- 
- 	list = &macsec_device->macsec_rx_sc_list_head;
- 	list_for_each_entry_safe(rx_sc, tmp, list, rx_sc_list_element) {
-@@ -1168,6 +1190,8 @@ static int macsec_upd_secy_hw_address(struct macsec_context *ctx,
- 
- 	memcpy(macsec_device->dev_addr, dev->dev_addr, dev->addr_len);
- out:
-+	if (block_tc)
-+		mlx5e_accel_unblock_tc_offload(priv->mdev);
- 	return err;
- }
- 
--- 
-2.44.0
-
+On Mon, Aug 3, 2026 at 12:05=E2=80=AFPM Marcin Szycik
+<marcin.szycik@linux.intel.com> wrote:
+>
+>
+>
+> On 31/07/2026 13:10, Robert Malz via Intel-wired-lan wrote:
+> > FW caps the NVM read lock at a maximum of 3000ms regardless of the time=
+out
+> > requested via ice_acquire_nvm(). ice_read_flat_nvm() splits a read into
+> > multiple ice_aq_read_nvm() commands, one per 4KB sector, all issued und=
+er a
+> > single lock taken by the caller. Reading a large region can exceed 3000=
+ms,
+> > so FW reclaims the lock mid-read and the remaining commands might fail.
+> >
+> > Move the lock acquire/release into ice_read_flat_nvm() so it brackets e=
+ach
+> > individual ice_aq_read_nvm() command, ensuring the lock is never held
+> > across more than one FW read.
+> >
+> > ice_release_nvm() issues its own AQ command and overwrites
+> > hw->adminq.sq_last_status, which some callers inspect after a failed re=
+ad.
+> > Add an optional read_aq_err output parameter to ice_read_flat_nvm() to
+> > capture the failing read's AQ error before the release; callers that ne=
+ed
+> > it (ice_discover_flash_size() and the ethtool/devlink log paths) use it
+> > instead of sq_last_status, others pass NULL.
+> >
+> > Callers that previously took the lock around ice_read_flat_nvm(),
+> > ice_read_sr_word() or ice_read_flash_module() now call them without it.
+> > The now-redundant per-block locking in ice_devlink_nvm_snapshot() is
+> > dropped.
+> >
+> > Fixes: e94509906d6b ("ice: create function to read a section of the NVM=
+ and Shadow RAM")
+> > Signed-off-by: Robert Malz <robert.malz@canonical.com>
+> > ---
+> > v3:
+> > - Log the failure via ice_debug() when ice_acquire_nvm() fails inside
+> >   ice_read_flat_nvm(), rather than silently aborting the read.
+> > v2:
+> > - Replace the save/restore of sq_last_status across ice_release_nvm(),
+> >   which could race with a concurrent AdminQ command, with a new optiona=
+l
+> >   read_aq_err output parameter.
+> > - Add missing "Return:" kdoc to ice_read_sr_word().
+> > ---
+> >  .../net/ethernet/intel/ice/devlink/devlink.c  | 32 ++------
+> >  drivers/net/ethernet/intel/ice/ice_ethtool.c  | 16 +---
+> >  drivers/net/ethernet/intel/ice/ice_nvm.c      | 79 +++++++++++--------
+> >  drivers/net/ethernet/intel/ice/ice_nvm.h      |  2 +-
+> >  4 files changed, 59 insertions(+), 70 deletions(-)
+> >
+> > diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers=
+/net/ethernet/intel/ice/devlink/devlink.c
+> > index 22b7d8e6bd9e..5a1ab9654fb8 100644
+> > --- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
+> > +++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+> > @@ -1856,6 +1856,7 @@ static int ice_devlink_nvm_snapshot(struct devlin=
+k *devlink,
+> >  {
+> >       struct ice_pf *pf =3D devlink_priv(devlink);
+> >       struct device *dev =3D ice_pf_to_dev(pf);
+> > +     enum libie_aq_err read_aq_err =3D LIBIE_AQ_RC_OK;
+>
+> RCT
+> Also scope can be reduced.
+>
+> >       struct ice_hw *hw =3D &pf->hw;
+> >       bool read_shadow_ram;
+> >       u8 *nvm_data, *tmp, i;
+> > @@ -1891,26 +1892,16 @@ static int ice_devlink_nvm_snapshot(struct devl=
+ink *devlink,
+> >       for (i =3D 0; i < num_blks; i++) {
+> >               u32 read_sz =3D min_t(u32, ICE_DEVLINK_READ_BLK_SIZE, lef=
+t);
+> >
+> > -             status =3D ice_acquire_nvm(hw, ICE_RES_READ);
+> > -             if (status) {
+> > -                     dev_dbg(dev, "ice_acquire_nvm failed, err %d aq_e=
+rr %d\n",
+> > -                             status, hw->adminq.sq_last_status);
+> > -                     NL_SET_ERR_MSG_MOD(extack, "Failed to acquire NVM=
+ semaphore");
+> > -                     vfree(nvm_data);
+> > -                     return -EIO;
+> > -             }
+> > -
+> >               status =3D ice_read_flat_nvm(hw, i * ICE_DEVLINK_READ_BLK=
+_SIZE,
+> > -                                        &read_sz, tmp, read_shadow_ram=
+);
+> > +                                        &read_sz, tmp, read_shadow_ram=
+,
+> > +                                        &read_aq_err);
+> >               if (status) {
+> >                       dev_dbg(dev, "ice_read_flat_nvm failed after read=
+ing %u bytes, err %d aq_err %d\n",
+> > -                             read_sz, status, hw->adminq.sq_last_statu=
+s);
+> > +                             read_sz, status, read_aq_err);
+> >                       NL_SET_ERR_MSG_MOD(extack, "Failed to read NVM co=
+ntents");
+> > -                     ice_release_nvm(hw);
+> >                       vfree(nvm_data);
+> >                       return -EIO;
+> >               }
+> > -             ice_release_nvm(hw);
+> >
+> >               tmp +=3D read_sz;
+> >               left -=3D read_sz;
+> > @@ -1945,6 +1936,7 @@ static int ice_devlink_nvm_read(struct devlink *d=
+evlink,
+> >  {
+> >       struct ice_pf *pf =3D devlink_priv(devlink);
+> >       struct device *dev =3D ice_pf_to_dev(pf);
+> > +     enum libie_aq_err read_aq_err =3D LIBIE_AQ_RC_OK;
+>
+> RCT
+>
+> >       struct ice_hw *hw =3D &pf->hw;
+> >       bool read_shadow_ram;
+> >       u64 nvm_size;
+>
+> ...
+>
+> >  /**
+> > - * ice_read_sr_word - Reads Shadow RAM word and acquire NVM if necessa=
+ry
+> > + * ice_read_sr_word - Reads Shadow RAM word
+> >   * @hw: pointer to the HW structure
+> >   * @offset: offset of the Shadow RAM word to read (0x000000 - 0x001FFF=
+)
+> >   * @data: word read from the Shadow RAM
+> >   *
+> > - * Reads one 16 bit word from the Shadow RAM using the ice_read_sr_wor=
+d_aq.
+> > + * Reads one 16 bit word from the Shadow RAM using ice_read_sr_word_aq=
+.
+> > + *
+> > + * The NVM lock is acquired and released internally by ice_read_flat_n=
+vm()
+> > + * around the FW read, so this function must be called without the loc=
+k held.
+> > + *
+> > + * Return: zero on success, or a negative error code on failure.
+> >   */
+> >  int ice_read_sr_word(struct ice_hw *hw, u16 offset, u16 *data)
+> >  {
+> > -     int status;
+> > -
+> > -     status =3D ice_acquire_nvm(hw, ICE_RES_READ);
+> > -     if (!status) {
+> > -             status =3D ice_read_sr_word_aq(hw, offset, data);
+> > -             ice_release_nvm(hw);
+> > -     }
+> > -
+> > -     return status;
+> > +     return ice_read_sr_word_aq(hw, offset, data);
+>
+> ice_read_sr_word() is now a wrapper - can we remove it and use
+> ice_read_sr_word_aq() directly?
+>
+> >  }
+> >
+> >  /**
+> > @@ -856,20 +876,18 @@ int ice_get_inactive_netlist_ver(struct ice_hw *h=
+w, struct ice_netlist_info *net
+> >  static int ice_discover_flash_size(struct ice_hw *hw)
+> >  {
+> >       u32 min_size =3D 0, max_size =3D ICE_AQC_NVM_MAX_OFFSET + 1;
+> > -     int status;
+> > -
+> > -     status =3D ice_acquire_nvm(hw, ICE_RES_READ);
+> > -     if (status)
+> > -             return status;
+> > +     int status =3D 0;
+> >
+> >       while ((max_size - min_size) > 1) {
+> >               u32 offset =3D (max_size + min_size) / 2;
+> > +             enum libie_aq_err read_aq_err =3D LIBIE_AQ_RC_OK;
+>
+> RCT
+>
+> >               u32 len =3D 1;
+> >               u8 data;
+>
+> ---8<---
+>
+> Thanks,
+> Marcin
