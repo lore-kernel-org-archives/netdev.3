@@ -1,313 +1,348 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5551C30B51E
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 18:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785867493; cv=none; b=IAH+HpLr/6UxFN+fyJeml4L1wxwTIXvSQYbQh08l9GLAIp/6oJv6TlsqqW5yzeeMtD4/uafkrYt5v4VcBRZxQFuWxdRrDJdmMBpBYiTw7nD/pGXWLl9ko1bppHPee7s6EeP2ObITrKIbOqavWgRtnbnsT2WntqbZBobPAOgqyQo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785867493; c=relaxed/simple;
-	bh=rQO/ku7rhJNWWciyJsMvLSoIqI31m9XLEOWcUdgRZfc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=B+8c3UN9MI8UduEVrYAR+HuqscTjIixRjprP9bR13NXDpTDI1UjZzX50rm9ZdSF+38uZ33Jam9VznwzJD3thufY0twB58zn5HId24z+2WW7rXMkI0uFkwi+Js1c8CeXQZURepvNpqdJhmkAWjFtX3wL25z6wNVZtppLysQsvDqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pSsd4KLi; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PniQeLoN; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6A93815E2
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 18:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785867546; cv=pass; b=Iu8VyW5z1NfXRvkdnteNwNHUBXL5tJ4c26yQsCqf+gEOVOTmCvAeB30szhf14RO9/QkiuHqSFhSt6056iXDyvz92zru5ke3Y64XYm1Or2cb+N9dYxRnQcdsoqpQW5rBBeTdTVZGwcwK4qKQeW9SuCkLmjGnx3V6OZczA9aIPMf0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785867546; c=relaxed/simple;
+	bh=VMtqXL1u/poIsOpl4Ypuo8toy3O5Sm+q1plElgkX+5M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Doh5tyEQIFOWoYABj3a8Ak7IdhvKRDr9qWKuOImRx1JOqj/rGP1Fa4Rerby5igcO6nNucD6Fn3Y4SNe7j5nIZutN/dQ0rMRnSRr1ePSeF6cUv7jCV6g1qOjD0b3zm/F55YGWJMcz93L5S9+aXJBq5xCbrjj6f3h9dV6hrHhvkI0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cv89+yOT; arc=pass smtp.client-ip=209.85.217.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pSsd4KLi";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PniQeLoN"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674G5BI44072256
-	for <netdev@vger.kernel.org>; Tue, 4 Aug 2026 18:18:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=QR9ClPuBMuHzwg6AqtRW2N
-	xHD7YJh16VACOa8a1PgRc=; b=pSsd4KLiwt4RvnFgf0/q4JxacmupQzzv+PwYEG
-	2uISJtni6NcGSu68UEX/B8DuiHGwvDRFuf/Ah0Ol/zK6H1Ei+UqbIxmfjO/+MbTm
-	eLavw6L9V0SHgTqgRC6REEVGS7XpNvpUNzt9J3XtPCCa2BJdBou2V0fon/BkBKzF
-	uZDUUYEXiphyXRVz7p1p+q3BORQuh+aA0nftm5J6pR+i0N0g4AX+0pqJx330KOlL
-	uYSkDkPcFCOQ9WAoUFCk5XnYTjahs+hx+EfH8NI23d5ixStAyDzRMn7Rytb++Mn1
-	v9TZ6WGgMHt+LbfqycvSllOiywLoQRaq5XLcT+tZq0Br2Z+Q==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fuk9u0mqj-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 18:18:11 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-51c20762d21so959481cf.0
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 11:18:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cv89+yOT"
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-7542a2ee156so40789137.0
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 11:19:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785867543; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hgZ3pYhPdzxYo5yt/up3mLP6OqwTX9+k0axknpDK8xy0UrZaS+bj5AjNmW2ctNZFIH
+         2g/QyYLEzQLkxTlvVqSQTX+uiqO/HAuXANUWv5IY5Fq7aMxIn5yRR4tlhiirOvrTraY6
+         r/PeVqx3JsOLuCK/Nh2RpihCrM7oAWAVsfv1ty09293iU3Zi4SxOKdDWlIcGaTDhfX7/
+         gy0nIBNHccmWOMqOXPZLWvQ7DBT+NK6MMeHShmCZqMaIWvvnltFFyIKPHO7pMlfcYJjc
+         yFzrdKY6ss/3F281B5IFETZt4LQbM0tF2qHZ/oqpGBOiWMgZ62ytjemVjA6JgmExgzy9
+         uJFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VMtqXL1u/poIsOpl4Ypuo8toy3O5Sm+q1plElgkX+5M=;
+        fh=ZAPOzQAzZLjjwbkASN35j8X/orhMyRByRJosMDhI+hQ=;
+        b=odShV43B1Ai4b3liIsEtLeZWfqwR+l68Tdo5OBloSRK7y7nutfP5p4SEAKWnmvKgM1
+         PbuUhK07rPS4R6NRXOQ52eqcziMlog+SSKmjwVjael2Uz8UmFWUlYLI0Xzf03uFxtVl5
+         1tw1s4I9LPoOgGhkUJMPjiRia0HKTppducZ1u6REyoeb9Nyay85oXl6ROlEMOc4qSgBI
+         7tI2PFVRRcGMpKsLIC/hIa3lxnr2jH0rj6qAyWK6t4b3F1JeQYQfYf6AZm5+uzy2lg00
+         XKUXRN+U1k5sErHVfG6t9+EdeZsld0PGik6P7w5WQoZMn1EtimwZrDFp3OOZao3QH2vv
+         4CMg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1785867489; x=1786472289; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=QR9ClPuBMuHzwg6AqtRW2NxHD7YJh16VACOa8a1PgRc=;
-        b=PniQeLoN6W8qsTBhGELuSak2NNVjm55zYoimj/ZKKBq8V8bEua2V/qGGI6nc9XT+9H
-         2CWBJGgHB4du+6aj1ewMCamHXRPsPxZwlG68OKRYesri7gd5k8tYmBZLo1NB+T+69xRH
-         ymFdauRfyIYzzsG1OkBGi/gXJy4knjxc1DMRSjl5eHbt/AEIUBbThyZV16C4WOxJjY2m
-         qPUtxlWLs41VJbt1cUJqisnSQEvSOL+3uFgtARwhZpBQIjqCCvosCEqwy20lZd30Q1VS
-         kplfl+YK6+iQNyGYahMwONyfL55HXpp4PEVQQ+2q/Ssuw1Pv5c63opWS7map4EsWSdRn
-         WJIQ==
+        d=gmail.com; s=20251104; t=1785867543; x=1786472343; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VMtqXL1u/poIsOpl4Ypuo8toy3O5Sm+q1plElgkX+5M=;
+        b=cv89+yOTFsqGIK18VxinYYIQAftoMy+78Ze7yyGc4GcYZdcbsPU9qeAgO8u1+jctPX
+         ELLmGdTeavyLs7C4dK+ch7H4WwxWyhKkJOabT8YHHNUP9W03fXJt4i6eSHP8CVTpEpF5
+         HscrvVfWqsDYWPB5QsRgGmSnNKDDKB7AhrpZcqSuIE6uZVg3fdrG4OniTLWzagdoStk5
+         M7/N+M4pZyiPJUIt3OOAAuufWSJjbQqkYK8wYIbb3WZP+R+kaszBlm50ToPuiJ4mY8SS
+         +wFrbG3DxcgcC5rTyC0eomKimIubDDyLgx++SnvqxQaUYlSXSxT7VgZuipcuq70absUd
+         UFuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785867489; x=1786472289;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=QR9ClPuBMuHzwg6AqtRW2NxHD7YJh16VACOa8a1PgRc=;
-        b=QujYA/Jnj4Qw/E4hnvQruW5pk3zEGIpycAjt94Oog8t7ua17JZK3IRxXiBoixgDd1R
-         LLoNu1DUiFaqv2JnJZ1KRYfyFUrxMGX022O2oZcxRvaSdn2Hbz+NsPeO1/LHhZT6mtvo
-         e334QBcHFmnD3xA456JX0hpVioaLbjV7OHgC+TwhERi7wDTAoXphBsoM2rPXlrCY3Y1U
-         jsOduhZrS0updTnXdToNJDVUl+DSYFlY+neS/3mi1eitp8rsoSDrKx1QEesyzRlMfH0C
-         z63g0ZOS1EWiKPQCI73SgE5cekk1TxGwXYABD9VZ3Afdm/zxiYipq3q2C7YD+uk+8CxC
-         tQCw==
-X-Forwarded-Encrypted: i=1; AHgh+RrSGUfsrCYxz1pqwdOPNfjOzlB6qUdJnf/hFPzzeYCN6FeBkoFn8MEZFTDjO6r0LeiQFA6fpGk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN4uObvQzrNEpf0IA7nTXvadCi9GgODo9vdGo7RvmZjcHjCbgT
-	oS175v4HgOWwLZe+9Nzt/T7TTJi0VODd5ee0kix/VjGbG9PihCmPc3cBTUv6sylkCrNqQDBcv1E
-	JKzn/WR1iTTHPFEiVrn/HxxwUkEl28ox/gu1odRAzy9ng53IH9T7GSFbYbic=
-X-Gm-Gg: AR+sD13THADccyzJ/RLtVwpxUiz3WM40rb8pOfrvtAeDO9vAVtnU1IjXAP68Eguss0s
-	Bgn9OblbtcgMmEzfQLrkx7OZzXfzDl6t8w50ZfCHwk9X7XPMhj3qO8P7fjudx/N2ZQtF0d89ffS
-	ACbLArVZKBNrE+NpYHxifFjm4YCMAVFkmtXZt9yqC5C0ukQAjDZVuK8zqNHioLlAlyOYwAwKV3S
-	/Hg0WUbGQXd07MDVsCyS1xlO9lbEuzSEIa/t8pcod5fR1wI664We23REJK6f5KuXX0RBg2vinb2
-	wfLCX3YO2InFpFKsRI6j7V0Dt5vzK7FGZ+m5BASYnZpHM/btvfUFLpcDPANjbFVjBOlHS76Fj1U
-	6FaNgIJVF2xSNF0U=
-X-Received: by 2002:a05:622a:4818:b0:51c:164b:b241 with SMTP id d75a77b69052e-52ce5f71ee3mr12899231cf.13.1785867489243;
-        Tue, 04 Aug 2026 11:18:09 -0700 (PDT)
-X-Received: by 2002:a05:622a:4818:b0:51c:164b:b241 with SMTP id d75a77b69052e-52ce5f71ee3mr12898491cf.13.1785867488722;
-        Tue, 04 Aug 2026 11:18:08 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4994a0f7bf4sm109490455e9.11.2026.08.04.11.18.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 11:18:07 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Tue, 04 Aug 2026 20:17:35 +0200
-Subject: [PATCH net-next] net: stmmac: add tc-ets qdisc offload
+        d=1e100.net; s=20251104; t=1785867543; x=1786472343;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VMtqXL1u/poIsOpl4Ypuo8toy3O5Sm+q1plElgkX+5M=;
+        b=qylwvhvhVc0JNqdR9QIafmr1wzDVcNrWYg0y9c/jEH/BmXGPFfHnRt8jYhANrJkFA/
+         D5CmRzbcbqw/7Wqa9/AVYDwoJT8FQEKgKxM/OvsGytkEALz13wA5/fs0A4uOQQg4BNt0
+         RMHtxCdqYMiLIu1rpvtPA61qrYMUHQJVZB1swdteqUyg8NMEK5MY3j1X3JTrZLaHFChu
+         QC7pJGS6CKpsgjiCTwJgukaIXBd9L9l7cj8aDKu29lbIY2IO5tQ8uf6AR9hMpc6lN6xw
+         GyeV2NxJt5h5xqK6U+iKNQBkoIjBJWNapRb3e9NTRnP0nyCOghNcy9c5D0Ikb1swGJ+u
+         xhMA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp2Sm9AP9pWjEnoG/TX5Fs3Bh6GGWzBP2HNB/lOmPhA/O7cZRO7UvBg1SWfsyhuVzqh0snnxPI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBNFcH7OVJnkvAtlrGbcMgrwqemfo7POwtlLgdD9GvpOpriIBE
+	KEB89Ze58+ClErpbnBH3QuW+sewwskacLlcBgNmIZPBWU1c6MQ53t6tustQ4nH6Sm22aYIYoWv1
+	Ii2gKebXRXt1eapMT9hAHA6zDxUHtnm4=
+X-Gm-Gg: AR+sD13WlFzvypVIHwe5KoWO7W3kxYiGf3y2PGzJMJVHHKDOOZoXKSxpYFqvy+91luT
+	I549iRTMjxdQlQxEYntE7WBtQhhRWBz8rW+gNknzawo/yZ3fvhqQultSm/ApbSEU0SHBr9j2rEx
+	sbveejbqxHlHv8pNg44KxtsPRmLU7Wc38rn/10B2U7dZq7je6ZmLhfjmBnuNUVfajyqhQy3H8NG
+	d/uRVYgvdXwQZ7ET1RIbL/1JI9RrkmAsp4zqMc8v3M49gyNvFYTxVDQS+C50I4LNh2JhZO5drOY
+	1Uv5NQmmSu+h2rQz8RVCVSKtPYdVEWvTlB+9ioqkAwB9hZtjLwwiuvPwiBbremu8Gwy4NFBQ3vw
+	cR8E7Zc1N7UUPIfyiWrN7KYyDWkHawGlA/xSuMgEossrdRhhGwhVofihySkQNQmEozsOrnXtX3g
+	3jZufAMDuqLsc786mp2nTSwY4w8NnqAFvIT+ys
+X-Received: by 2002:a05:6102:5045:b0:74d:ce64:efa9 with SMTP id
+ ada2fe7eead31-760e9951613mr248343137.12.1785867542499; Tue, 04 Aug 2026
+ 11:19:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260804-stmmac-ets-offload-v1-1-f3a09169d22b@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqDMBBA0avIrB2IVqTpVYqLdDKxAzUpmSAB8
- e4Gl2/x/wHKWVjh1R2QeReVFBuGvgP6urgyim+G0YyzeZoJtWybI+SimEL4JeeRyD5msjb4zwA
- t/GcOUu/pGyIXjFwLLOd5AdpkLNFuAAAA
-X-Change-ID: 20260804-stmmac-ets-offload-cc936c99fdb1
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Daniel Thompson <daniel@riscstar.com>, Alex Elder <elder@riscstar.com>,
-        netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Authority-Analysis: v=2.4 cv=NInlPU6g c=1 sm=1 tr=0 ts=6a722ce3 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=EUspDBNiAAAA:8 a=zDO8lxRZ4TI0GpO-95QA:9 a=QEXdDO2ut3YA:10
- a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-GUID: _0hFL_Ranwn5pJC-LeSj90qsDr9cnMIW
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDE0OCBTYWx0ZWRfX2OBHWkEAaLQh
- oVVolfJPAc6+D0ZpH+Vq8ZE/3Gs3+Xt+r6yR2tZKW1YS96sx80Jk4zrgIGm03eFVSqfp9WaeMfi
- UZ0UftWsm3uzxa5GYAQlk1RIYrkCfhc=
-X-Proofpoint-ORIG-GUID: _0hFL_Ranwn5pJC-LeSj90qsDr9cnMIW
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDE0OCBTYWx0ZWRfX1mfysoRadgW4
- ZKL+90pd0bRB3pwnX1/gARidwmSgKvq/CJjOpXppkcTQrgMaYuaJvvvaEq0zQ6pDdrwdFJ69RJx
- TrQy8y75o041NClFjFrQ/77tfhgk9RqyCu+53OE+/02ebN+vzEYLiVsmbhPD+ST75E7blA549pU
- Gabnez1W5tTU7J/f4SgllcMArhSEpvLUCj0N+x7aQTEcivYLelhE1AiBVNGNanb/KcWLEjym24A
- CWDYnkHxrIt3h7lr9NG3bQ/IynYhqNnaNrGt1QbCvkvCKhTdRcd7APaXGBtQGqhhQNEIovpJXfk
- 2Wyk0Nn2vhffpZVkKm00scjdUVYQedO/6UO1uyeIyOq8k8ZVTxFoQaT8hzsgH9xEbgEn1KdutuY
- SXzkEl2ZXuvG4Z5yZl60mjkvXUC2PJMEqzV8/quzPbzytCo5HtBnorxZkyl0aePiCAhwI4R4Zf/
- L0LCbWCEZ9bqyzRILgw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-04_03,2026-08-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 suspectscore=0 clxscore=1011 adultscore=0
- malwarescore=0 spamscore=0 priorityscore=1501 phishscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608040148
+References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
+ <aaec8809-8218-4412-a60d-931406dbf287@arm.com> <CADvTj4qCYjQHOQn1jRTHNNL=xeX6z3Dgc-PLwOBUvX34AU6cuA@mail.gmail.com>
+ <AGtA6uUwR9yJMX3xYVDz6g@gmail.com> <CADvTj4qBhiPczrP9YC2uTW3xss3W7ghoBzbctM45yUROfsgPhw@mail.gmail.com>
+ <9dd29610-d9e4-48f2-9638-2c92863626f8@lunn.ch>
+In-Reply-To: <9dd29610-d9e4-48f2-9638-2c92863626f8@lunn.ch>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Tue, 4 Aug 2026 12:18:50 -0600
+X-Gm-Features: AUfX_mz3g4QTcPY454fO0IFbyzeMUZwp-7hNsyVehWuEMEZKpHqKrBiqjbTDjEY
+Message-ID: <CADvTj4phzmD4otOSkVDaKOWH1nf1aCku37RUncqWeDBcwzjMJw@mail.gmail.com>
+Subject: Re: [PATCH 00/21] net: phy: add X-Powers AC200/AC300 EPHY support
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: =?UTF-8?Q?Jernej_=C5=A0krabec?= <jernej.skrabec@gmail.com>, 
+	Andre Przywara <andre.przywara@arm.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
+	Samuel Holland <samuel@sholland.org>, Richard Genoud <richard.genoud@bootlin.com>, 
+	Maxime Ripard <mripard@kernel.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Saravana Kannan <saravanak@kernel.org>, Lee Jones <lee@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Implement offload of the tc-ets qdisc in the stmmac driver. The number
-of ETS bands cannot exceed the number of TX queues, and mixing strict
-priority bands (zero quanta) with weighted bands is rejected.
+On Tue, Aug 4, 2026 at 11:38=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > The AC200 Datasheet V1.1 and AC300 User Manual V1.0 block diagrams show
+> > effectively the same EPHY organization: MII/RMII, auto-negotiation,
+> > Auto-MDIX, 10/100 transmit and receive PCS/PMA blocks, LED and
+> > clock/reset logic, a PLL, and the EPHY analog front end. Both variants
+> > also report PHY ID 0x00441400, and testing shows compatible link-side
+> > paged registers and behavior.
+> >
+> > What differs is the surrounding control path.
+>
+> Which is still part of the PHY, needs driver code, and so should be
+> part of the PHY driver.
 
-When all bands are strict priority, the MTL scheduler is programmed with
-SP scheduling; otherwise the requested weights are applied to the TX
-queues and the scheduler is switched to DWRR. The TC_ETS_STATS command
-is accepted and handled.
+I agree that the EPHY-specific control registers are functionally part
+of the Ethernet function. I do not agree that this implies every device
+containing or exposing those registers must be owned by one
+struct phy_driver.
 
-Export stmmac_set_tx_queue_weight() so the ETS path can reprogram queue
-weights, and wire TC_SETUP_QDISC_ETS into stmmac_setup_tc().
+There are two orthogonal parts to this design. The control-driver split
+models the actual hardware devices and is used by fixed AC200, fixed
+AC300 and bootloader-selected systems. CONFIG_OF_DYNAMIC is only one
+optional mechanism for resolving which provider exists on a
+dual-source system. Removing that mechanism would change variant
+selection, not the device boundaries or the justification for sharing
+the link-PHY code.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
- drivers/net/ethernet/stmicro/stmmac/hwif.h        |  4 ++
- drivers/net/ethernet/stmicro/stmmac/stmmac.h      |  1 +
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |  4 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c   | 69 +++++++++++++++++++++++
- 4 files changed, 77 insertions(+), 1 deletion(-)
+AC200 in particular is not an Ethernet PHY. It is an MFD containing
+audio, RTC, TV encoder and Ethernet functions, with a shared parent
+regmap, input clock, supplies and interrupt controller. The EPHY
+control registers are associated with its Ethernet function, but that
+does not make the whole AC200 an MDIO PHY device or make its parent
+resources belong to a struct phy_driver.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index 04dafec021b4..b70883a53b09 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -580,6 +580,8 @@ struct stmmac_tc_ops {
- 			    struct tc_taprio_qopt_offload *qopt);
- 	int (*setup_etf)(struct stmmac_priv *priv,
- 			 struct tc_etf_qopt_offload *qopt);
-+	int (*setup_ets)(struct stmmac_priv *priv,
-+			 struct tc_ets_qopt_offload *qopt);
- 	int (*query_caps)(struct stmmac_priv *priv,
- 			  struct tc_query_caps_base *base);
- 	int (*setup_mqprio)(struct stmmac_priv *priv,
-@@ -598,6 +600,8 @@ struct stmmac_tc_ops {
- 	stmmac_do_callback(__priv, tc, setup_taprio, __args)
- #define stmmac_tc_setup_etf(__priv, __args...) \
- 	stmmac_do_callback(__priv, tc, setup_etf, __args)
-+#define stmmac_tc_setup_ets(__priv, __args...) \
-+	stmmac_do_callback(__priv, tc, setup_ets, __args)
- #define stmmac_tc_query_caps(__priv, __args...) \
- 	stmmac_do_callback(__priv, tc, query_caps, __args)
- #define stmmac_tc_setup_mqprio(__priv, __args...) \
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-index 8ba8f03e1ce0..8ea6dd0c1697 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-@@ -394,6 +394,7 @@ enum stmmac_state {
- 
- extern const struct dev_pm_ops stmmac_simple_pm_ops;
- 
-+void stmmac_set_tx_queue_weight(struct stmmac_priv *priv);
- int stmmac_mdio_unregister(struct net_device *ndev);
- int stmmac_mdio_register(struct net_device *ndev);
- int stmmac_mdio_reset(struct mii_bus *mii);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 79b71466d5b0..404f4132f223 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3419,7 +3419,7 @@ static void stmmac_set_rings_length(struct stmmac_priv *priv)
-  *  @priv: driver private structure
-  *  Description: It is used for setting TX queues weight
-  */
--static void stmmac_set_tx_queue_weight(struct stmmac_priv *priv)
-+void stmmac_set_tx_queue_weight(struct stmmac_priv *priv)
- {
- 	u8 tx_queues_count = priv->plat->tx_queues_to_use;
- 	u32 weight;
-@@ -6424,6 +6424,8 @@ static int stmmac_setup_tc(struct net_device *ndev, enum tc_setup_type type,
- 		return stmmac_tc_setup_taprio(priv, priv, type_data);
- 	case TC_SETUP_QDISC_ETF:
- 		return stmmac_tc_setup_etf(priv, priv, type_data);
-+	case TC_SETUP_QDISC_ETS:
-+		return stmmac_tc_setup_ets(priv, priv, type_data);
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 14cabe76e53e..17be37e43bf8 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -1210,6 +1210,73 @@ static int tc_setup_etf(struct stmmac_priv *priv,
- 	return 0;
- }
- 
-+static int tc_setup_sp_sched(struct stmmac_priv *priv)
-+{
-+	struct plat_stmmacenet_data *pdata = priv->plat;
-+	int i;
-+
-+	for (i = 0; i < pdata->tx_queues_to_use; i++)
-+		pdata->tx_queues_cfg[i].weight = 0;
-+	stmmac_set_tx_queue_weight(priv);
-+
-+	pdata->tx_sched_algorithm = MTL_TX_ALGORITHM_SP;
-+	stmmac_prog_mtl_tx_algorithms(priv, priv->hw,
-+				      pdata->tx_sched_algorithm);
-+
-+	return 0;
-+}
-+
-+static int tc_setup_ets_sched(struct stmmac_priv *priv,
-+			      struct tc_ets_qopt_offload *qopt)
-+{
-+	struct tc_ets_qopt_offload_replace_params *p = &qopt->replace_params;
-+	struct plat_stmmacenet_data *pdata = priv->plat;
-+	int i, nstrict = 0;
-+
-+	if (p->bands > priv->plat->tx_queues_to_use)
-+		return -EOPNOTSUPP;
-+
-+	for (i = 0; i < p->bands; i++) {
-+		if (!p->quanta[i])
-+			nstrict++;
-+	}
-+
-+	if (p->bands && nstrict)
-+		return -EOPNOTSUPP;
-+
-+	if (nstrict) {
-+		tc_setup_sp_sched(priv);
-+	} else {
-+		for (i = 0; i < pdata->tx_queues_to_use; i++) {
-+			if (i < p->bands)
-+				pdata->tx_queues_cfg[i].weight = p->weights[i];
-+			else
-+				pdata->tx_queues_cfg[i].weight = 0;
-+		}
-+		stmmac_set_tx_queue_weight(priv);
-+		pdata->tx_sched_algorithm = MTL_TX_ALGORITHM_DWRR;
-+		stmmac_prog_mtl_tx_algorithms(priv, priv->hw,
-+					      pdata->tx_sched_algorithm);
-+	}
-+
-+	return 0;
-+}
-+
-+static int tc_setup_ets(struct stmmac_priv *priv,
-+			struct tc_ets_qopt_offload *qopt)
-+{
-+	switch (qopt->command) {
-+	case TC_ETS_REPLACE:
-+		return tc_setup_ets_sched(priv, qopt);
-+	case TC_ETS_DESTROY:
-+		return tc_setup_sp_sched(priv);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	return 0;
-+}
-+
- static int tc_query_caps(struct stmmac_priv *priv,
- 			 struct tc_query_caps_base *base)
- {
-@@ -1308,6 +1375,7 @@ const struct stmmac_tc_ops dwmac4_tc_ops = {
- 	.setup_cls = tc_setup_cls,
- 	.setup_taprio = tc_setup_taprio_without_fpe,
- 	.setup_etf = tc_setup_etf,
-+	.setup_ets = tc_setup_ets,
- 	.query_caps = tc_query_caps,
- 	.setup_mqprio = tc_setup_mqprio_unimplemented,
- };
-@@ -1319,6 +1387,7 @@ const struct stmmac_tc_ops dwmac510_tc_ops = {
- 	.setup_cls = tc_setup_cls,
- 	.setup_taprio = tc_setup_taprio,
- 	.setup_etf = tc_setup_etf,
-+	.setup_ets = tc_setup_ets,
- 	.query_caps = tc_query_caps,
- 	.setup_mqprio = tc_setup_dwmac510_mqprio,
- };
+Mainline MFDs normally keep the shared device and regmap in the MFD
+core and bind child drivers to the individual functions. The existing
+X-Powers AC100 and AXP20x drivers follow that model. This distinction
+also matters once multiple AC200 functions are active: the Ethernet
+driver must not assume exclusive ownership of the parent or reset and
+disable resources which may be used by the audio, RTC or TV encoder
+children.
 
----
-base-commit: 828c4a5a9518117f9f7bdc445a7eeca85fc91bf8
-change-id: 20260804-stmmac-ets-offload-cc936c99fdb1
+There are also Ethernet precedents for keeping such controls outside
+the link-PHY driver. In
+drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c, the H3/V3s EPHY
+clock, reset, power sequencing, mux selection and MDIO address
+programming are handled outside the PHY driver. The link endpoint is
+still managed through phylib. The Rockchip stmmac glue similarly
+handles integrated EPHY power-up and power-down outside its PHY
+driver.
 
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Those examples are not identical to ACx00, but they show that mainline
+does not impose a rule that every register affecting a PHY must reside
+in its phylib driver. The appropriate boundary depends on how the
+devices are addressed and owned.
 
+The MDIO PHY node and the AC200 control child represent devices on
+different buses. The phandle between them describes that the MDIO
+endpoint depends on the Ethernet function of the AC200 MFD; it does
+not claim that the whole AC200 is part of the link PHY.
+
+AC300 has a different topology, but its control interface is likewise
+a separately addressed MDIO device. Folding everything into the
+link-PHY driver would not eliminate either cross-device dependency. It
+would make the driver reach through an MFD parent in one case and
+operate a second MDIO device in the other case.
+
+This remains true with CONFIG_OF_DYNAMIC disabled. A fixed AC200
+system still consists of an AC200 MFD function and an MDIO PHY, while
+a fixed AC300 system still has a control endpoint and link endpoint at
+different MDIO addresses. Both then use the same link-side PHY
+implementation.
+
+> > AC200 is configured
+> > through its RSB/TWI-backed MFD registers, while AC300 has a separate
+> > non-PHY MDIO control endpoint.
+>
+> Which is an implementation detail.
+
+It is an implementation detail of the common power and configuration
+operations, but it is not an implementation detail of the Linux device
+model. It determines which bus enumerates the device, which driver owns
+its registers, how accesses are serialized, and how its resources,
+power-management lifetime and removal are handled.
+
+Mainline commonly separates shared functionality from
+transport-specific frontends. For example, the AXP20x MFD has common
+code with separate I2C and RSB frontends, and the Microchip KSZ switch
+drivers share ksz_common.c while retaining separate I2C and SPI
+frontends. MDIO mux drivers likewise model access-path control
+separately from the PHY devices behind the mux.
+
+The ACx00 provider operations serve the same purpose. They keep the
+common link-side PHY behavior independent of whether its prerequisite
+control device is an AC200 MFD child or an AC300 MDIO device, without
+pretending those devices have the same bus semantics.
+
+These bus, ownership and lifetime differences exist in a completely
+static DT. They are not introduced by CONFIG_OF_DYNAMIC or by runtime
+node selection.
+
+> > I do not think the control-provider reference is artificial. It
+> > describes a real functional dependency: the Clause 22 endpoint cannot
+> > be accessed until the selected package-specific control block has
+> > powered, calibrated and configured it.
+>
+> Nothing too special here. There are PHYs which do this, in the PHY
+> driver.
+
+The individual reset and calibration operations are not unusual. The
+relevant difference is ordering: the real PHY ID cannot be read, and a
+normal PHY driver therefore cannot be matched, until another device on
+another control bus has completed the sequence.
+
+Mainline already handles some pre-identification prerequisites outside
+PHY drivers. Phylib handles generic reset and supply resources before
+driver binding, MDIO mux drivers establish access paths, and the sun8i
+stmmac driver powers its internal EPHY before MDIO enumeration.
+
+Using a forced compatible can arrange for the link driver to bind
+without reading the ID, but it does not make the prerequisite control
+device part of the link MDIO device. In particular, AC300 still occupies
+a separate MDIO address and should have normal MDIO-device ownership
+rather than being accessed behind the MDIO core's back by a driver bound
+to another address.
+
+The same cross-device prerequisite exists on fixed AC200 and fixed
+AC300 systems with CONFIG_OF_DYNAMIC disabled. Runtime selection only
+decides which prerequisite device exists on a dual-source system; it
+does not create the dependency or motivate the control-driver split.
+
+> > I also do not think a bootloader fixup should be the only supported
+> > selection mechanism. Boards using the same compatible have shipped with
+> > either package, and the SID field provides an authoritative package
+> > selector which Linux can read directly. Handling that selector in Linux
+> > avoids making support depend on a particular bootloader implementation.
+>
+> There is a trade off here. If the hardware design is just ugly, badly
+> thought out, poorly executed, not following the industries norms, we
+> want to push back on the hardware vendor to make the next version
+> better. Until that improved version comes out, either the vendor crap
+> driver should be used, not Mainline, or we try to hide away the issues
+> in the bootloader. A vendor which actually cares will improve, they
+> know what Mainline means. And for vendors which don't care, why should
+> Mainline care, especially if the issues can be pushed to the
+> bootloader.
+
+I agree that mainline should not absorb an unbounded vendor workaround.
+I do not think this is such a case, however. The package choice and SID
+selector are documented hardware configuration, not a heuristic for
+guessing around an unknown silicon failure. Supporting second-source
+components under one board identity is also not unique to this
+hardware.
+
+Mainline's drivers/i2c/i2c-core-of-prober.c exists specifically for
+systems such as the Google Hana Chromebooks which were produced with
+alternative components. Their candidate nodes are marked
+"fail-needs-probe", and Linux determines which component exists and
+enables exactly that node so the candidates do not fight over shared
+resources.
+
+That helper only covers alternatives on one I2C bus, so it cannot be
+used directly for the AC200-I2C versus AC300-MDIO topology. It does,
+however, establish that selecting a documented second-source component
+in Linux is an accepted model and not inherently bootloader policy.
+
+Whether a future component should be redesigned also does not resolve
+how to model already shipped systems. I think the relevant mainline
+questions are whether the description matches the hardware, whether
+the implementation is bounded and maintainable, and whether it has
+real users and testing. Here the selection is deterministic, comes
+from an authoritative SID field, and has been tested on both package
+variants.
+
+A bootloader fixup can resolve the package variant, but it does not
+change the driver architecture. Once the bootloader has enabled the
+correct provider, Linux still has an AC200 MFD child or an AC300 MDIO
+control device plus the common link PHY. The bootloader chooses which
+provider is instantiated; it does not merge that device into the link
+PHY.
+
+This is another point which is independent of CONFIG_OF_DYNAMIC. Fixed
+descriptions and bootloader-resolved descriptions still use the
+control-provider split. Dynamic OF handling only adds Linux-side
+selection when firmware leaves both candidates unresolved.
+
+> We don't want to mess up core Linux code to handle one broken device,
+> that just makes ongoing Maintenance more expensive for everybody.
+
+I agree that core changes require separate justification. The proposed
+MDIO OF reconfiguration support is generic rather than containing
+ACx00-specific checks, but it should be reviewed independently on its
+own API, concurrency and lifetime merits.
+
+However, rejecting or narrowing the CONFIG_OF_DYNAMIC and MDIO-core
+portion would only mean that unresolved dual-source systems require
+firmware selection. It would not make a fixed AC200 cease to be an MFD,
+make the AC300 control endpoint cease to be a separate MDIO device, or
+justify duplicating the common link-PHY implementation.
+
+Fixed AC200 and fixed AC300 descriptions do not require dynamic OF
+handling at all. The control-provider model therefore does not impose
+this core cost on systems whose package variant is already known.
+
+> > A bootloader fixup remains compatible with this design. If firmware
+> > enables only the correct provider, the fixed-description path is used
+> > and Linux does not need to change the tree. Runtime selection is used
+> > when firmware leaves the package variant unresolved.
+>
+> So i would not try to fix up the unresolved situation, just do a
+> dev_error(dev, "Please upgrade your bootloader"); and return -ENODEV.
+
+I do not think -ENODEV is appropriate when the configuration is not
+actually ambiguous. Linux has the authoritative SID selector and all
+the resources needed to instantiate the selected provider safely.
+
+A bootloader fixup remains useful and takes precedence naturally: when
+firmware has already enabled one provider, Linux follows that fixed
+description. Runtime selection only handles the otherwise unresolved
+description, just as the mainline I2C component prober handles
+unresolved second-source components.
+
+If the SID cell is absent, invalid, or selects a provider not described
+by firmware, then failing with an actionable error is appropriate. When
+the SID value and both candidate descriptions are valid, requiring a
+bootloader upgrade would reject a configuration Linux can identify
+without guessing.
+
+This proposed error path concerns only the optional unresolved-selection
+case. It is not an argument for folding the AC200 MFD function and AC300
+MDIO control endpoint into the common link-PHY driver. With
+CONFIG_OF_DYNAMIC disabled, fixed and bootloader-selected systems still
+retain exactly the same provider and common-PHY division.
