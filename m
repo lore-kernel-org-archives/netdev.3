@@ -1,63 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780B343B4A3;
-	Tue,  4 Aug 2026 21:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AF2305691;
+	Tue,  4 Aug 2026 21:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785878684; cv=none; b=kNsx4NmfbKsB4t6ZPOXVIESVLwQx4v16O46HM/nSo1He7T1QUOF1S+7P1Gn7Ml/kzdKjYG65XFPKPf6+LipDwKitxrlkhg+Avduw3sFwEdLs5I8dEgPBBayZjrlGiT8QiS/WM66aKdefLSfFAB9iQhQYX/PpwWAPIEiw7ziXsoI=
+	t=1785878756; cv=none; b=sv8spQ7q/UB9KpeS7rcbk/4dM4nL+NK232HhIU+f4yfi2Vk2IEl+09aBSQ7ENEjSyOgxgxp4wyi8HSu4m/2VQh3QQ/YiD114XpqIhCQyLbOahYQdI5fi4wCm+wz4YDTJvDD1Oinhq1fZs/7EZ0zWTys38QlfhOWHKjKSCa7EMmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785878684; c=relaxed/simple;
-	bh=6dl8OSg1XFIwh3f39Je6VMfFapVo5mv9XzWgUhjWrwk=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=D9iXxCvbpBxm6K/p8gpjkZh5Au4QaQNquzcWU6/yC1DPlQ/1k5fJnYt3Bin/g1hOHIlnbsHEAsssW2VkvWXuBE3C5cEJUi/zYEux9S54bCJSLwhV5uSzYTT3aXJYXsnyzQ9NI69cAsN2nfaUgBvfXbTJQaD+5K8j+IiprLYMI30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZAqWE4u; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785878756; c=relaxed/simple;
+	bh=xyOdhxzWnQiFkS11SfI1QDBsvLBCN/T02pS7RGWQFAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cw6EmkN9ozy/HclCzBsV59A56R4hSHIle3n60DIuYDh+j2+0eGPKBQ7movD37PurqF7zyeF4YCVziE1LkgOrenYq/mm7YJUJE6Y2qE4IR1a3ylF11zWCPULwvX8wjDlIgfdbTueQ4lICdb9BIjSor6V0Qc/OUUHj/tPL1Wxz+fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oy3a+slK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZAqWE4u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9A71F00A3A;
-	Tue,  4 Aug 2026 21:24:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oy3a+slK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8A51F000E9;
+	Tue,  4 Aug 2026 21:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785878683;
-	bh=Q9c4Uy+59nf+0whCDDdw4y4B/NrYM64oav86QXjz8G8=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=iZAqWE4umkFufExEJQhVYR2zhJDtJ5vzdTRK62M/OXXpOZ4ieVKr13xc2T0gN3ftI
-	 lnMWfVqRd1TQlCyz4xCdXymbxppCrR4KB95rFki416g6Wvx7g1GnRWg/N3zqu7SLmw
-	 XVvsguuPNYoACIoASLDsFXRmEvTHtz3Woav2kHkmv5Ibg6ucVylzfcNPiBKK1S3NQC
-	 kNNd1Gz8lZtOohfRVsKnBzlJOiWLcWsGMyiOJFl2PII+aUnS4V2hckW+OwafpsQwA2
-	 VYEiar5Vw5OTG9KG4dni/ENBkpPmncAiHOdh6RBhLkAAKWs/0fy8nxWa4g1+gHJrl3
-	 G5TwO+UZnbtbw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A5C3926648;
-	Tue,  4 Aug 2026 21:24:04 +0000 (UTC)
-Subject: Re: [GIT PULL] vhost,vdpa: last minute fixes
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260804170624-mutt-send-email-mst@kernel.org>
-References: <20260804170624-mutt-send-email-mst@kernel.org>
-X-PR-Tracked-List-Id: <virtualization.lists.linux.dev>
-X-PR-Tracked-Message-Id: <20260804170624-mutt-send-email-mst@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
-X-PR-Tracked-Commit-Id: 42bc45df5905e2b7dccb72adaf7730f66cfbe03f
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: c21bb4193868a8de71fc4693fa741e195fdf5d86
-Message-Id: <178587864330.3792733.10616267372223041264.pr-tracker-bot@kernel.org>
-Date: Tue, 04 Aug 2026 21:24:03 +0000
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org, virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, alhouseenyousef@gmail.com, borntraeger@linux.ibm.com, dtatulea@nvidia.com, junvyyang@tencent.com, linfeng.sun.dev@gamil.com, linfeng.sun.dev@gmail.com, mst@redhat.com, physicalmtea@gmail.com, slf@hdu.edu.cn, stable@vger.kernel.org
+	s=k20260515; t=1785878755;
+	bh=JSJ8cuBfx1QfxUySXJCZeVl/NB4WhTxNOyDVJz5zRhY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=oy3a+slK03f4AJBonKYTMWRtG/CSSGhRtGU8EvQwH6diMD/P8z3YI7Aa3J0bju89F
+	 b7FMcockNB35OPbmNljsFDiotKHS8BADnz7KRSl2NRLc904CiUWaCnY/SynwAN8qrK
+	 gOiMhEQ0BMykVst+TVZ80oGWyBa6DQ27hkS9aNEsVXe+vuTmmJgumrUJUnU9MVARZ0
+	 FfeVBkvbmHQcX32tloK8Ws/cKZUdiaZ7Oh18eDDYTG5KIsA1TGsJiNZ+QmeUX3x97b
+	 0kiYt6eQSfTFSuGdLupXhel4xYGuZNhIbpoOExkK1WmOLBYwoLvbijObCAp+IdOvqM
+	 EhY3SdYqUVZuQ==
+Date: Tue, 4 Aug 2026 14:25:53 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Thaison Phan <thaisonphan@google.com>
+Cc: Donald Hunter <donald.hunter@gmail.com>, "David S . Miller "
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Fengyuan Gong
+ <gfengyuan@google.com>, Stan Iliev <stani@google.com>, "=?UTF-8?B?QXNi?=
+ =?UTF-8?B?asO4cm4=?= Sloth =?UTF-8?B?VMO4bm5lc2Vu?=" <ast@fiberby.net>,
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/2] tools: ynl: check for null ptr on dump
+ free
+Message-ID: <20260804142553.6a67fff0@kernel.org>
+In-Reply-To: <20260803201652.2752685-2-thaisonphan@google.com>
+References: <20260803201652.2752685-1-thaisonphan@google.com>
+	<20260803201652.2752685-2-thaisonphan@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The pull request you sent on Tue, 4 Aug 2026 17:06:24 -0400:
+On Mon,  3 Aug 2026 20:16:51 +0000 Thaison Phan wrote:
+> Static analysis
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+What's the tool? I guess we can do this but I'd factor it out to 
+a separate check at the start of the function. Otherwise it reads
+as if there could be a NULL on the list itself.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/c21bb4193868a8de71fc4693fa741e195fdf5d86
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+FWIW NULL is not an empty list, it's a dump error. So the static
+tool / LLM is definitely wrong. But I guess free(NULL) is supposed
+to be a noop in general so whatever.
