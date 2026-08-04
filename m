@@ -1,167 +1,286 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3D53F6C50
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 14:33:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD66378825;
+	Tue,  4 Aug 2026 14:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785854033; cv=none; b=k2ShC/qG1eH7s6kxPMOZL3hroVI6uymDEZIyrslaDRoXPo5++FlOz1M161kYG36Qz9/zC+YaDaoazTcwgS8Tho+N8GL62W0yW8icDFJJOrtVJTke0EJeWcusJ+r6OXotSp/KjzjEFY5lLC4Es5niV6yDp/h5OKlGYDiJAbqi5rY=
+	t=1785854341; cv=none; b=M9hf48gU5P/wT4NG68Htt05SpjMg91M6HGaGOL51q4MfaumRi9y0I/VE4r4MpnvOJvuArj0kE63G7xnDvQ/8qlRna3MP8+1PU1FfEF/YnFq5b9Iu5g6OJRUG5BBDQ42whUJW063yaki4q5IeBav+m+p+IkKwY6ym0ynW/pTlkpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785854033; c=relaxed/simple;
-	bh=q6nFZ1R6gzXut+K/+tnOlHI88I/nj/Df9nXi6+JJ8e4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X8Kv5CKDxU2cLjZoZ+VuV1TunUMyEAViX7Lqpa8NzLjqrrvL9Hltgb4MNo6HOdBmXNBBJsKYElIoxPIl7VDbVysp9ib6WNMyfdoiaTYKI4w5Fw61ClGHt9jqaNJlyyRZip9RXGEuiMo51zsIni+BU9z3F1ky7HDFTpq98SRVTeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EwBcZbFY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qiNhL1md; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785854341; c=relaxed/simple;
+	bh=a9EhhRfa1GWmrgvr6o9vR7XXTvQizd+JuQuq1rmRFXE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EPlCOCwOGg4P/aSq3hz5mgi9Y3yHfwqbTYjLtj6Hlyk9SbFLwL+PdMJbedUzvP8jmlxMxaPjqkY/Uhhn/XDUb4/YrlFTdbYrSy/KC8zgl2/aV+g2LO3dK9C9gTn+x+xavTz/TloWkDDcv3MZ7MH1e5iLKUCDzjtiEDVEC6So9w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=VMdqKkjh; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EwBcZbFY";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qiNhL1md"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785854019;
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="VMdqKkjh"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 87B423ECB6;
+	Tue,  4 Aug 2026 14:38:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1785854336;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sMR8kYlXa1CTxfv23QQO2kULReZbJe35SSbkC/BppCQ=;
-	b=EwBcZbFYgasCAGTHT/cc9l4bWy5p3iU8fM8GH73UOwcpgJU+90e4t4leMCTLhaICoUoCkY
-	/MMy5NNQiJqFYce39Q1zD3aHvvSlQ9VU++ulcSY3xpM1Vj5q86ccxnOlJgA1bHYEI6bWWl
-	OhqWHPTiVFU/BRIoQj0YBg6JRfegpmI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-270-Hg_97tsQOhuGU4ZaPept0g-1; Tue, 04 Aug 2026 10:33:38 -0400
-X-MC-Unique: Hg_97tsQOhuGU4ZaPept0g-1
-X-Mimecast-MFC-AGG-ID: Hg_97tsQOhuGU4ZaPept0g_1785854017
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-496b61bd846so27881115e9.2
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 07:33:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785854017; x=1786458817; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sMR8kYlXa1CTxfv23QQO2kULReZbJe35SSbkC/BppCQ=;
-        b=qiNhL1mdYWBpSxiSJo2PiVO2pjTqdQhqUZalBMspe76dltCOwROb6m7b4bUJwBogL5
-         7aNKrCbVolqtvBEsZ2Ei5eSQufZdNar3cJgO86B60+FJMp4B9UpfIGenrnI/oGD7fJ4z
-         DPULb7WQlspQa6MSBxrDAHx5Iq8aCsoO0NoL+snyawI177uEDAwmMrFW3CmdomT3lxHv
-         Jkjbwy4f3KnK7zBGj2pWwkQRzIIV8UPiT5e9GPtwrjKGFOm3MLkZS4C502Y2AgGvI8Dz
-         1gNLWYr5pONySRcXqRmDYSEG+gXRwm1yFYDzNdEvI82o/qMgBqh2u312fnUnO8lDJhkF
-         j70w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785854017; x=1786458817;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sMR8kYlXa1CTxfv23QQO2kULReZbJe35SSbkC/BppCQ=;
-        b=T4AZicCrfSvCEBvNnSywEqjH66D+RGIM3TvMFr89q2AI+FrBK/Eih5vHclYHwQxO4c
-         uRXweZG/SCh5So/Q3mThwoRhzfJcd2uqDxyeKv+x6rwYVmnSE8c6Fgf7CmsM4MGcXGFQ
-         SDmUVrLBffZX08OJQUHrQodPicqFXJ2FORWQj1/bAK2kCQz0/sw4vCkTQTAEXJXpHLZA
-         cErhj+lfMe371JN0tyybynN2WEitdLxeOdhhzHHKiyKxn0nZUZVHq0pQllQVR623s4/Q
-         +nGRtMMCOHUgClt9e1LhT6E07Ca+FyKW0CucIp2Z2bJEUGvRWm6Ej5oPfsk7Rk7WiLZh
-         XnLg==
-X-Forwarded-Encrypted: i=1; AHgh+RpR6VkRzeUDL27YvXSo0u8jJIsnNvzkWD9x0c/1mgVpHLkkgsh7we7N8x8tT2mB26e9bJT6/pE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCbfj43xYBr/RC55pIbG2RXZcStWF7GX7wMZK7rqbXZn5tzYMF
-	UqElAQfoqEJF4GmNj6Kb+FmtZrMPdGU9nwdA6qLPunfJo4c+bXXI9P/Rh6ggihSeiHPcSSLroho
-	8syo2C0SQZXwLVM2C8CnEPSCyghYNYdQJjfiYL3sCaSa9FLKAbA45aGxO5VA9h4CMJA==
-X-Gm-Gg: AR+sD13tT/Y9MlLO//ak5U7JtOYKGVyvzsJD3yBYeTmHy9gqAW2d0Q21oLHB2ABfV2+
-	PrZ26Cf7mFXXIl6nbdmsGiUr7fGzx1ru685455RK+znVtOwThyqGJk+OvLQB54J6GEpAcEWzaql
-	stCkYwXh4qfXYCBbBQ696DWRWKZGAdrNR5j8tBevlvW8wC4yE8RowWWbE5EpOLu7xkuxrQMbhRP
-	iLWeJzGehtZZ/lW0THCceviNIImb426s+V2oTEfc68l9jODUmqTZ/MRUnGUQbCwrTD+RJIzG4tQ
-	DKWXGG4OqG7ELQh+v/q4oWhRg9vKwtpbSxVOkK8J6qrV2HMibZx1gn5S7JKoal6jvGJR0/+QdbE
-	pscOc3I9EYT39IABuIxtCNYTN/Hkz586Xc8IquV3X46m5fviFMLWX/OaN1C9eMx6aSGuVIDUS1u
-	o=
-X-Received: by 2002:a05:600c:5395:b0:493:faf3:3ea5 with SMTP id 5b1f17b1804b1-4980c66c751mr434202875e9.4.1785854016751;
-        Tue, 04 Aug 2026 07:33:36 -0700 (PDT)
-X-Received: by 2002:a05:600c:5395:b0:493:faf3:3ea5 with SMTP id 5b1f17b1804b1-4980c66c751mr434201535e9.4.1785854016281;
-        Tue, 04 Aug 2026 07:33:36 -0700 (PDT)
-Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4994a100e14sm91151965e9.14.2026.08.04.07.33.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Aug 2026 07:33:35 -0700 (PDT)
-Message-ID: <c74a0579-dc37-4f3b-8dba-8380223b361c@redhat.com>
-Date: Tue, 4 Aug 2026 16:33:34 +0200
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XN5zCAOTaCpGETYPCuHm/vqvIrfyyQ05BbG/d0WpThc=;
+	b=VMdqKkjhn9SwD/9beJQYcjmlL7/99aCjuz9V3q/pXNah1jInfzvVAH9dMbGdwh5oe/R9vT
+	TDDmoog7X0r6NcCZj+2dcaaA/eIMzQuGU3AXc5i/jTc38EMcS+r/R7DRlMWmXHJaaNr7ew
+	iBNPvrsirW/GjEJwm/p4eo7TxNH/d8KUD4byOvNKc2VR9u7IqSA/TqRAqLYkakV5O1XwGK
+	M9u/RQSDX2Vhp3gxprAjkwKMlrIpv2szp+KKOxId2UC4KHH5d5Fssc8Rc2zksetVSYlf2k
+	fUzAFX+p/D08dAKTlBMB6FpkSmtuAEsaDMK1KSNll6ViPCCSfjCIi0Ei/MjZbA==
+From: =?utf-8?q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>
+Date: Tue, 04 Aug 2026 16:38:35 +0200
+Subject: [PATCH] w5100: restore GPIO-based link detection
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] netdevsim: fix deadlock in nsim_bus_dev_max_vfs_write()
-To: syzbot <syzbot@kernel.org>, syzkaller-bugs@googlegroups.com,
- Slawomir Stepien <sst@poczta.fm>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
-References: <b7bf56ea-7522-4163-acd5-aaa69ad03b3a@mail.kernel.org>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <b7bf56ea-7522-4163-acd5-aaa69ad03b3a@mail.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260804-wiznet-link-gpio-v1-1-b626fd4f7ccb@marmottus.net>
+X-B4-Tracking: v=1; b=H4sIAGr5cWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDCwMT3fLMqrzUEt2czLxs3fSCzHxdc0uzNGOz5BRDkzRLJaC2gqLUtMw
+ KsJHRsRB+cWlSVmpyCcgcpdpaAAF3+dh0AAAA
+X-Change-ID: 20260804-wiznet-link-gpio-796f36cd14f9
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Arthur_Cr=C3=A9pin_Leblond?= <arthur@marmottus.net>
+X-Mailer: b4 0.15.2
+X-GND-Sasl: arthur@marmottus.net
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: dmFkZTEYIk4PNHVGpW+FXA8nCsfg7M8yHo5S2dUsal/GKpVGBHt2oSRnXkcPzJN7VX+nrZxy6vsW4i024Zzk+KrnzrgyVM/7cNkjhoZ0fiLzNOqJeBaFoNUcVJXTTr4KlB+DIREpEv9hZsVHgAU6mer+yFiQWNFGfzlbaFKczKgTdTg1lSCyHjfN9UtVi1ARUrsz4WgOtRkbskr0Hm5I9BQpo6Ph5hzhA+Yhyrg1F6SNOaM2KGMXzSjz4hClk5Q7Fjdblw+goKlAlICf/FuLgvxdodFdOLyo7RvqtbiPz9EJWoURnz0U5PANXYiObTJ40OlpKMaVKkiO5J6TVaa5oC10MHmCPN3HLNR90i0xTscEJnREVQ+DBrRXdrd697JMGURtvddYwbyMDqPbma7bLe6BDG0e/t176TDZTfLz6hMY7V7CZKZXVxt44m70s/73TTjj6D4YJJxIQXPg9SjzAw1BLWgEuLI4D7j0TOclG45xxmukR7vvzvo+q4lOlGr22ELprcBVkeSKnQWihuuDVDfcVma/68efiEqB9QGAxGRq4sMgi3a6s8dA5/e8huKMpnvOSGRudvOVRmcX6xxaeHLWZAEsL2rd9uxbV85RDyBYoc8jtboIxD5e0y75K8JMFVHTeQOtVCUZAgxxEfhrBn5meD1p2PqKd/nWqL7/DoRDns6ecQ
 
-On 7/31/26 11:55 AM, syzbot wrote:
-> From: Slawomir Stepien <sst@poczta.fm>
-> 
-> There is an ABBA deadlock between the devlink instance lock and the debugfs
-> active file reference mechanism.
-> 
-> When a device is being removed (e.g., via nsim_drv_remove()), the driver
-> acquires the devlink instance lock and then calls
-> debugfs_remove_recursive(). This function blocks waiting for all active
-> file operations on the debugfs files to complete.
-> 
-> Concurrently, if a user writes to the "max_vfs" debugfs file, the VFS layer
-> acquires an active reference to the file. The write handler,
-> nsim_bus_dev_max_vfs_write(), then attempts to acquire the devlink instance
-> lock, which is already held by the removal task.
-> 
-> This creates a circular dependency resulting in a deadlock:
-> 
-> INFO: task blocked for more than 143 seconds.
-> Call Trace:
->  wait_for_completion+0x2ca/0x5e0 kernel/sched/completion.c:153
->  __debugfs_file_removed fs/debugfs/inode.c:751 [inline]
->  remove_one+0x2df/0x3b0 fs/debugfs/inode.c:758
->  __simple_recursive_removal+0x215/0x520 fs/libfs.c:623
->  debugfs_remove+0x5b/0x70 fs/debugfs/inode.c:781
->  nsim_dev_debugfs_exit drivers/net/netdevsim/dev.c:372 [inline]
->  nsim_drv_remove+0xc0/0x170 drivers/net/netdevsim/dev.c:1803
-> 
-> INFO: task blocked for more than 143 seconds.
-> Call Trace:
->  __mutex_lock+0x7bf/0x1550 kernel/locking/mutex.c:821
->  nsim_bus_dev_max_vfs_write+0x229/0x3d0 drivers/net/netdevsim/dev.c:276
->  full_proxy_write+0x127/0x1f0 fs/debugfs/file.c:388
->  vfs_write+0x296/0xba0 fs/read_write.c:685
-> 
-> To fix this, use devl_trylock() in nsim_bus_dev_max_vfs_write() instead of
-> devl_lock(). If the lock cannot be acquired, return -EBUSY. This aborts the
-> write operation, releases the debugfs active file reference, and allows the
-> pending debugfs_remove_recursive() to proceed.
-> 
-> Assisted-by: Gemini:gemini-3.5-flash Gemini:gemini-3.1-pro-preview syzbot
-> Reported-by: syzbot+3147c5de186107ffc7a1@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3147c5de186107ffc7a1
-> Link: https://syzkaller.appspot.com/ai_job?id=fcdda182-bebf-49ab-ada0-d4d2e814ebf7
-> Signed-off-by: Slawomir Stepien <sst@poczta.fm>
-> 
-> ---
-> diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-> index aed9ad5f1..421cd7327 100644
-> --- a/drivers/net/netdevsim/dev.c
-> +++ b/drivers/net/netdevsim/dev.c
-> @@ -273,7 +273,11 @@ static ssize_t nsim_bus_dev_max_vfs_write(struct file *file,
->  		return -ENOMEM;
->  
->  	nsim_dev = file->private_data;
-> -	devl_lock(priv_to_devlink(nsim_dev));
-> +	if (!devl_trylock(priv_to_devlink(nsim_dev))) {
-> +		ret = -EBUSY;
+Commit dacf281771a9 ("w5100: remove unused gpio link detection")
+dropped the link_gpio/link_irq handling on the grounds that no
+devicetree user passed a "link" GPIO at the time.
 
-I think this should return restart_syscall(). This kind of schema is
-calling for trouble, but for netdevsim should be okish.
+Signed-off-by: Arthur Crépin Leblond <arthur@marmottus.net>
+---
+Hi,
 
-/P
+I am using the W5500 on a Raspberry Pi and rely on the link GPIO for
+the carrier detection.
+If we could bring it back, I would greatly appreciate.
+
+Thank you!
+
+Arthur Crépin Leblond
+---
+ .../devicetree/bindings/net/wiznet,w5x00.txt       |  8 ++-
+ drivers/net/ethernet/wiznet/w5100.c                | 84 ++++++++++++++++++++++
+ 2 files changed, 89 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/net/wiznet,w5x00.txt b/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
+index e9665798c4be..e97ce3cb9183 100644
+--- a/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
++++ b/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
+@@ -25,6 +25,7 @@ Optional properties:
+   According to the w5500 datasheet, the chip allows a maximum of 80 MHz, however,
+   board designs may need to limit this value.
+ - local-mac-address: See ethernet.txt in the same directory.
++- link-gpios: a GPIO line used for the link detection interrupt
+ 
+ 
+ Example (for Raspberry Pi with pin control stuff for GPIO irq):
+@@ -38,13 +39,14 @@ Example (for Raspberry Pi with pin control stuff for GPIO irq):
+ 		interrupt-parent = <&gpio>;
+ 		interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
+ 		spi-max-frequency = <30000000>;
++		link-gpios = <&gpio 4 GPIO_ACTIVE_HIGH>;
+ 	};
+ };
+ 
+ &gpio {
+ 	eth1_pins: eth1_pins {
+-		brcm,pins = <25>;
+-		brcm,function = <0>; /* in */
+-		brcm,pull = <0>; /* none */
++		brcm,pins = <25 4>;
++		brcm,function = <0 0>; /* in */
++		brcm,pull = <0 0>; /* none */
+ 	};
+ };
+diff --git a/drivers/net/ethernet/wiznet/w5100.c b/drivers/net/ethernet/wiznet/w5100.c
+index 53d8dc642fbd..c9d1891f37b9 100644
+--- a/drivers/net/ethernet/wiznet/w5100.c
++++ b/drivers/net/ethernet/wiznet/w5100.c
+@@ -22,6 +22,7 @@
+ #include <linux/ioport.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
++#include <linux/gpio/consumer.h>
+ 
+ #include "w5100.h"
+ 
+@@ -154,6 +155,8 @@ struct w5100_priv {
+ 	u16 s0_rx_buf_size;
+ 
+ 	int irq;
++	int link_irq;
++	struct gpio_desc *link_gpio;
+ 
+ 	struct napi_struct napi;
+ 	struct net_device *ndev;
+@@ -414,6 +417,16 @@ static void w5100_get_drvinfo(struct net_device *ndev,
+ 		sizeof(info->bus_info));
+ }
+ 
++static u32 w5100_get_link(struct net_device *ndev)
++{
++	struct w5100_priv *priv = netdev_priv(ndev);
++
++	if (priv->link_gpio)
++		return !!gpiod_get_value_cansleep(priv->link_gpio);
++
++	return 1;
++}
++
+ static u32 w5100_get_msglevel(struct net_device *ndev)
+ {
+ 	struct w5100_priv *priv = netdev_priv(ndev);
+@@ -616,6 +629,24 @@ static irqreturn_t w5100_interrupt(int irq, void *ndev_instance)
+ 	return IRQ_HANDLED;
+ }
+ 
++static irqreturn_t w5100_detect_link(int irq, void *ndev_instance)
++{
++	struct net_device *ndev = ndev_instance;
++	struct w5100_priv *priv = netdev_priv(ndev);
++
++	if (netif_running(ndev)) {
++		if (gpiod_get_value(priv->link_gpio) != 0) {
++			netif_info(priv, link, ndev, "link is up\n");
++			netif_carrier_on(ndev);
++		} else {
++			netif_info(priv, link, ndev, "link is down\n");
++			netif_carrier_off(ndev);
++		}
++	}
++
++	return IRQ_HANDLED;
++}
++
+ static void w5100_setrx_work(struct work_struct *work)
+ {
+ 	struct w5100_priv *priv = container_of(work, struct w5100_priv,
+@@ -659,6 +690,14 @@ static int w5100_open(struct net_device *ndev)
+ 	w5100_hw_start(priv);
+ 	napi_enable(&priv->napi);
+ 	netif_start_queue(ndev);
++
++	if (priv->link_gpio) {
++		if (gpiod_get_value_cansleep(priv->link_gpio) != 0)
++			netif_carrier_on(ndev);
++		else
++			netif_carrier_off(ndev);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -678,6 +717,7 @@ static const struct ethtool_ops w5100_ethtool_ops = {
+ 	.get_drvinfo		= w5100_get_drvinfo,
+ 	.get_msglevel		= w5100_get_msglevel,
+ 	.set_msglevel		= w5100_set_msglevel,
++	.get_link		= w5100_get_link,
+ 	.get_regs_len		= w5100_get_regs_len,
+ 	.get_regs		= w5100_get_regs,
+ };
+@@ -751,6 +791,13 @@ int w5100_probe(struct device *dev, const struct w5100_ops *ops,
+ 	priv->ndev = ndev;
+ 	priv->ops = ops;
+ 	priv->irq = irq;
++	priv->link_gpio = gpiod_get_optional(dev, "link", GPIOD_IN);
++	if (IS_ERR(priv->link_gpio)) {
++		err = dev_err_probe(dev, PTR_ERR(priv->link_gpio),
++				    "failed to get link GPIO\n");
++		priv->link_gpio = NULL;
++		goto err_register;
++	}
+ 
+ 	ndev->netdev_ops = &w5100_netdev_ops;
+ 	ndev->ethtool_ops = &w5100_ethtool_ops;
+@@ -803,13 +850,40 @@ int w5100_probe(struct device *dev, const struct w5100_ops *ops,
+ 	if (err)
+ 		goto err_hw;
+ 
++	if (priv->link_gpio) {
++		char *link_name = devm_kasprintf(dev, GFP_KERNEL, "%s-link",
++						 dev_name(dev));
++		if (!link_name) {
++			err = -ENOMEM;
++			goto err_gpio;
++		}
++
++		priv->link_irq = gpiod_to_irq(priv->link_gpio);
++		if (priv->link_irq < 0) {
++			err = priv->link_irq;
++			goto err_gpio;
++		}
++
++		err = request_any_context_irq(priv->link_irq, w5100_detect_link,
++					      IRQF_TRIGGER_RISING |
++						      IRQF_TRIGGER_FALLING,
++					      link_name, priv->ndev);
++		if (err < 0)
++			goto err_gpio;
++	}
++
+ 	return 0;
+ 
++err_gpio:
++	free_irq(priv->irq, ndev);
+ err_hw:
+ 	destroy_workqueue(priv->xfer_wq);
+ err_wq:
+ 	unregister_netdev(ndev);
+ err_register:
++	if (priv->link_gpio)
++		gpiod_put(priv->link_gpio);
++
+ 	free_netdev(ndev);
+ 	return err;
+ }
+@@ -822,6 +896,10 @@ void w5100_remove(struct device *dev)
+ 
+ 	w5100_hw_reset(priv);
+ 	free_irq(priv->irq, ndev);
++	if (priv->link_gpio) {
++		free_irq(priv->link_irq, ndev);
++		gpiod_put(priv->link_gpio);
++	}
+ 
+ 	flush_work(&priv->setrx_work);
+ 	flush_work(&priv->restart_work);
+@@ -840,6 +918,7 @@ static int w5100_suspend(struct device *dev)
+ 
+ 	if (netif_running(ndev)) {
+ 		netif_carrier_off(ndev);
++
+ 		netif_device_detach(ndev);
+ 
+ 		w5100_hw_close(priv);
+@@ -857,7 +936,12 @@ static int w5100_resume(struct device *dev)
+ 		w5100_hw_start(priv);
+ 
+ 		netif_device_attach(ndev);
++
++		if (!priv->link_gpio ||
++		    gpiod_get_value_cansleep(priv->link_gpio) != 0)
++			netif_carrier_on(ndev);
+ 	}
++
+ 	return 0;
+ }
+ #endif /* CONFIG_PM_SLEEP */
+
+
 
