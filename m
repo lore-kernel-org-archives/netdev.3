@@ -1,120 +1,126 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12624399E2
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 21:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F402C427FAF
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 21:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785877662; cv=none; b=UYhL85sd6Nuv1g9nNarY6QfJnH/Kq6Nd0A8CoVNGH2OK4x5Ki2bMwBgW4DDQov+M+oJ4ZK0aTxkZKWL7kaNKGNSkDqNy9UHCvil4pxvmXRKlD3x3a+LGgTpGzaRfGHfJmpzm8/Ue37eCh0nKfPHhNP+fTTDvcYNn+A2irtzoFjs=
+	t=1785877676; cv=none; b=I591SH5y1TVM0ZO1E+FMxDHnlI6xQKQrjASXCwFB5IZtNtcuox+2NoFlsfasZ1CKC2ORg75NFAgmk6LLpbh0iyYHvRgrF6dv+kONz2m7Gsv7qZbnYYL5rLGrscyw/mpuHUpKdjc33/2bTc0uIPC9p+oGtfL8ke8U2YezhKEOzUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785877662; c=relaxed/simple;
-	bh=M94F1PqXP2R4azTv5VsBrw3fcVY3YhyrZvCDUpvojig=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=McVppQqnG1A2ghzFSpL/oxWLelnZhzbAZ4Jri5QuMSZnfJU84f10WPhVL0EBLVm9tWKSl7oSs0acOi40IPyzFmQgr6e2aM1vC7+iXWU2RT2v0lCF8io/Rohkf3PPRK38kC+H5f6tzMQ5uBV8PayPQ1vuic2jkF4ZKiH5m7QIAEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s/JyTPzm; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1785877676; c=relaxed/simple;
+	bh=E9SBvdW+/KiAZtFTbyHkjkv0EG0f1ZJd0WKHjYFUkJ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pkJ+0e7QtBExpvTITpX6GZbKn1Q8/nrN41U0goajTUNsojkHgit+B/RTUBDxFBiOHDvBASxYyLXRjKyqdTJ0kl0CxbBNgR3ZiTvk1qN12sGY3kGGE63UmHwZYzn6UraU/XgdqPFN8qkjd4yctz8KYxjJtiS+1mroAlmZ8NCxAEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qQy7pB6I; arc=none smtp.client-ip=209.85.215.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s/JyTPzm"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8486ac3f347so1607979b3a.1
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 14:07:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qQy7pB6I"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-ca88130e09aso170593a12.3
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 14:07:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785877660; x=1786482460; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5VUaS6lIR89fzUXE8jE1kCkmVqVFSCHPmmwJhW/Xieo=;
-        b=s/JyTPzmzEy4CYMFx0MDLuGE+Hz9l9t0GpvdDSsuX6ku14z12aoaDR2OJu60H7O8VP
-         1fl5KymTjLMPLGt4YuDWeSSUZdNkRrIWHhaB2fwnW6LxD33/8HSOxRMuxD36+cIAeSFs
-         oAWrzA2+GfzsqWbs2n5swGClIIwf+vZo48iZgoxXV6+Um2UP1QeHj69XQ68xUcm6E7Zr
-         Dz+nSSlWrsUXfnFYtukGJgoQ4RDl/bNZNIt2MbviTqPz/56gAHTX4OaF62Ipi1qUlPkN
-         rJc//7Le8rHgmUaIxWbz3FO9JAeIRxzpT5Nj4qO5sD//y0RXvFTgzxLJyNXJAhhpoYG+
-         PRQg==
+        d=gmail.com; s=20251104; t=1785877674; x=1786482474; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=76fbOMML2BB/JSL2cFNmUHBc2T+2DJy3Cef/Dsg9aWg=;
+        b=qQy7pB6Iv6YICiTyAOIGA9cg0UW/xbTzurpujg0Kpq+jY1zd8q9Pkc3h/drAoHSH31
+         chtUKuLUe/XJbOUR3fuzr+sSSGwcOdg+KfAAp+mIAditSnj2qTRfq6AynbY35f14OD5z
+         JuunxPuDxwinRr8Nu45qGRcGUBRK/VCWT/K01tDkFiKaMYD3ai3sATt/2HA1Ha9BwOmT
+         8yAcZeh+MCHBRCOEB8Z09/wOte8HKYWEi73NQAPBrsRTt35fzWE3wdL0HAbMk7d1/7kK
+         5q52ViZ/w82L8KWVAjprYZpW/l0zJDBq8zVYw462XG0plWO7BOd83Y6S/U++VClsLEqC
+         pwjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785877660; x=1786482460;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5VUaS6lIR89fzUXE8jE1kCkmVqVFSCHPmmwJhW/Xieo=;
-        b=q1siMewiN1dM416Y1pJozbCklR8Gg68ugfuIzHW/HTaH4LpNQaV+ZI+fjMNQkVu7ZL
-         WSm/cifhmEsx5Xh3gGhk5kAYqx+R6NBSuJnXC9TbmDb6LvHjycOHCFmx0aYwEpY1jwu7
-         aOE2ulqXBwKCg2R7P/Gq/+TgG1WLBRDNs81Dl86LS/zuchijY560eUIqNlMskYtF7jca
-         Cq4V/KaLqngYLRhpmwo6thObibUkKdSJOI7YVXc7d24x2b/lw8M0L4CPokhzWnSna+BP
-         480O2Q4pMWBnuloSCcMh8l88nxe8evGcFtQRtXqjZA41cZE9rpGycJVWxpp0iTCC2rIm
-         kjHg==
-X-Forwarded-Encrypted: i=1; AHgh+RrjgCqvmZ14vephxNeuv6MhSk+74kqDVAJ96HzpAtjmOOmDqygn1EzHt7Sq9qLw4RgLZxPn6TI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9wP7WfY+HXSPOG5BtEzV0RWdcbd2jMrsLrzT0BrJtx8dUDe5g
-	kdBoJIerQSWs3LpWMEAil4y6sG9UXwlM0yar0Cbix1c9TcLnAED3mBGe
-X-Gm-Gg: AR+sD10aN5hwEQ3U8F2NUAJ2Fpy29HXe4x48zpezYnQBZsfqr0Riq+kjuH1CffCPTbr
-	ODLzRtP7OC2MymLfmZx/UmNC9+UuKSG+uVfGilq47NjQo8GPtuGTjdN0DXO7qu+WkMEStxqO3zc
-	xwokZX+1AomPqt2EpnVdF/eWLhaNfwcuCjSHkC+8Vq1ye/AXw/iILArGCTNPcq8S8ry6mUYSR8w
-	23VFqrNMEPVi2MRCcep5w56wonBy8Qr7mRUlVHHr2eWFSF3I55IJxyBFkSGmW6CalI4CSOmwnG4
-	DQq62qbOzOqU5Zsj6Lf3faKNoxfFzmHxozcDwlm08fde0k93PshwAHvkp/54T+K3z/eWhm5XtHn
-	gLtEeDZzOxb9nXmUHtrvENWFsOANB2//w7l91274B9M7ZrQ3fuTKmPWYxCNPOaGX7rvgC/VP43W
-	JOohbh7+JPZ7H4IlD11X2jc27Jfjio1ukPOiyM51kOUyxPlEqqG0XbwU0CJqMK0+0xgrkSQfQ1B
-	ShJM7JjiCvsgw==
-X-Received: by 2002:a05:6a20:4320:b0:3c4:3750:2c03 with SMTP id adf61e73a8af0-3cb6c7b71b0mr5878476637.9.1785877660120;
-        Tue, 04 Aug 2026 14:07:40 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785877674; x=1786482474;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=76fbOMML2BB/JSL2cFNmUHBc2T+2DJy3Cef/Dsg9aWg=;
+        b=RUkbiE2TXhLqUikXxR8SnKRxLLd4HgOY9c+5/rItJY9Hcc0/fOSTKTtd5HGRYF1Xj0
+         3QvYdzcTu9lZbozrXH+vME2i4aCYLJhw8s6vcYGAipGHr0FJV12s8bEPuovXiq5vz6+V
+         NLkd1BVE3cvFJGvqrqiES5ZRg0v1d5ZDeoU2NlmMPUcBHTsTz8ZhuppbhL441XrCK67w
+         j5UyeG2CmhVVas4VE8H/fPZkndGg8PY2LJ1AGaUyXJuL0O4DuD89nvgq8t+H1SPZ3LgB
+         mV/ZJWs5GBktDxX09LhWuoUpKLb7ok5+iE3U0Usxer8Ln904o1kIf4yGF9ubBPOi+Iok
+         zawQ==
+X-Gm-Message-State: AOJu0YynyAnjMJb7naitfdLU70vpurl4UbJLpor8KGoiKCtchw1kTbV7
+	nvtZ55G4xAcxcCCyNQt/Wwyw4Ta9wJ33xZb7EEQJMmxg34sCW0O8YLM2pDsy5TcT
+X-Gm-Gg: AR+sD131RJZU8v461PjIzXhls7QSGP01BP749YNXDYf1VWyZXT3P4OAyn1SJqKDnEc1
+	Q6Z4HTeMAfJLDt2MmeRVXsQcXskNgKXflM/D3/LAvtGxXRuwPWKAKZ/qakiYNDCYgczBeISIBsS
+	I0Ob85I9Di/0NPx9lgqQpHHc73pMkECRTUoO02KoWNG2NvBhFy/g5KoMvS2LzPxmGwOsFRZFLvw
+	xuOJgnNPxLObPkPkYE84Egqc9OPBsOvFDCXKL8yoUlOAG+3UAhTZCt6L9QDRCI43vqsox+nDDbd
+	3aoCEQR4tS6E+sIBztL4kuJ83CUhKJNbK3eTZD7AXa/cEgruZZBnnOyplkx4DdmI7YRqqfjjMQP
+	JYN/NrgNHH+BjGoV83G5I/5zYKVU8lzabOqXJ8UxfM0jPiR5cEpdqMRNlw9LEurUPONWjBaEQoK
+	Icv2TPXWGlLPcSAA5Wx23VLVn32cu0nJAokMwTuKxNVZtPYWkxo73jZiU4BEn4xqarzSkeYG63a
+	cMCGbQH2+kt7Q==
+X-Received: by 2002:a05:6a21:7007:b0:3b4:870e:6f44 with SMTP id adf61e73a8af0-3cb85ffca47mr1802919637.35.1785877674192;
+        Tue, 04 Aug 2026 14:07:54 -0700 (PDT)
 Received: from localhost.localdomain ([12.162.234.74])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fca6576b7sm6062339c88.7.2026.08.04.14.07.36
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31586402e53sm12142151eec.11.2026.08.04.14.07.52
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 04 Aug 2026 14:07:39 -0700 (PDT)
+        Tue, 04 Aug 2026 14:07:53 -0700 (PDT)
 From: Ahmad Byagowi <ahmadexp@gmail.com>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: linux-leds@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Peter Rosin <peda@lysator.liu.se>,
-	Nam Tran <trannamatk@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
+To: netdev@vger.kernel.org
+Cc: Richard Cochran <richardcochran@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [RFC net-next v2 4/6] ptp: ocp: Validate EEPROM board IDs
-Date: Tue,  4 Aug 2026 14:07:35 -0700
-Message-ID: <20260804210735.48116-1-ahmadexp@gmail.com>
+Subject: [PATCH net v3] ptp: ocp: Fix board ID over-read
+Date: Tue,  4 Aug 2026 14:07:51 -0700
+Message-ID: <20260804210751.48248-1-ahmadexp@gmail.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <4ef01fa0-969f-4ec0-997b-5f5f3f67e11a@linux.dev>
-References: <20260803205011.1249-1-ahmadexp@gmail.com> <20260803205011.1249-5-ahmadexp@gmail.com> <4ef01fa0-969f-4ec0-997b-5f5f3f67e11a@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Thanks for the review.
+The EEPROM board ID is a fixed 13-byte field and is not guaranteed to
+contain a NUL terminator. Passing it directly to
+devlink_info_version_fixed_put() treats it as a C string and may read
+beyond the field.
 
-Agreed, I will use the 12-character Fixes hash and split this safety fix
-from the feature series so it can target net.
+Format at most OCP_BOARD_ID_LEN bytes into the existing local buffer
+before reporting the ID. Use a precision limit because the snprintf()
+output size alone does not bound the source string scan.
 
-One detail about the suggested snprintf(): the size argument limits writes
-to buf, but a plain %s still scans bp->board_id for a NUL beyond its fixed
-13-byte storage. I reused buf with a precision-bounded conversion instead:
+Fixes: 0cfcdd1ebcfe ("ptp: ocp: add nvmem interface for accessing eeprom")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ahmad Byagowi <ahmadexp@gmail.com>
+---
+Changes since RFC v2:
+- Split the safety fix from the net-next feature series and target net.
+- Use the short Fixes hash.
+- Reuse the existing devlink info buffer and bound the source scan with
+  string precision.
+- Limit the change to the board ID over-read.
 
-snprintf(buf, sizeof(buf), "%.*s", OCP_BOARD_ID_LEN,
-	 (const char *)bp->board_id);
+RFC v2:
+https://lore.kernel.org/r/20260803205011.1249-5-ahmadexp@gmail.com/
 
-I have reduced this to a standalone net patch containing only the over-read
-fix. I will rebase the remaining R4006 and V9 feature series onto net-next
-after the fix reaches it.
+ drivers/ptp/ptp_ocp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Thanks,
-Ahmad
+diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+index 35e911f1ad78c..3d26ec1f7b9ec 100644
+--- a/drivers/ptp/ptp_ocp.c
++++ b/drivers/ptp/ptp_ocp.c
+@@ -2177,9 +2177,11 @@ ptp_ocp_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
+ 	if (err)
+ 		return err;
+ 
++	snprintf(buf, sizeof(buf), "%.*s", OCP_BOARD_ID_LEN,
++		 (const char *)bp->board_id);
+ 	err = devlink_info_version_fixed_put(req,
+ 			DEVLINK_INFO_VERSION_GENERIC_BOARD_ID,
+-			bp->board_id);
++			buf);
+ 	if (err)
+ 		return err;
+ 
+-- 
+2.50.1 (Apple Git-155)
