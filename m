@@ -1,576 +1,136 @@
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C333A35F161
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 11:35:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A573546C0
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 11:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785843314; cv=none; b=K2/k4MvTZp/oHVWedmMBgyKz8TlueFHSRXP/7cDBHwICQxFFvZMvv1QraC9/Jnn17Jmqk+vyl2Gq7dOSJte/KK9wnqsNYy0IJVw8eT0PcG0AyI1fLlTGoZgC3NZDwSO4DnMILeAA46NTv8WNiH1yF8wK6vL5QBGMBU9uQjBhdIg=
+	t=1785843339; cv=none; b=mcRzPKtVMrcW/Lq6t2DebXz0yuZRr8V/6bL9ERvJc/qe3qkuB4x1Im8ouSOYBOQFr+e1U63A5vD3kvXzlHnP3JgmrumUNRKzgwpPYqJZA5HtN35z7LWOt13flLIh0OV6sfzN+5m1QOgjwl0nEMafWDbupb8Uyg9ksizOZgWmibE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785843314; c=relaxed/simple;
-	bh=wwe0tJgFgj6xGZ69YmaW0MWUyxWVhECQ5L+QflGzvPw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SxhzJoqAARxE+Lq8iw37rlXdzJm0NrN+O/FSgtc+EWQ4sh0jpyAVSv98o26gLrgFixA31oNB7CBZY5jH4epC/3WRArHFDwg54yBv05IbbNTuSRJB8qKCFjm5ZRuU2oid1NbUDGgJm5+fDfTYhHlZvs5dYSiBB8VdyYiGjaqu1Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QNEv53Jl; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785843339; c=relaxed/simple;
+	bh=eG0RFUZjcwUsngo8jMc0RSRwUDp+/m+lU3rnsR26qXA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Io1cGh/0xf8Ak4vWDZXDPAPJ667WWmy++3JfCkD/ANlYu+4yqnQdcU0o9axVMtpspfrNqKxaBfKjGFrXG5RUdx5IcQeOEp9pGBgeCNPAdrtrac+M3+jeg1nQn0pwGGohMFafQtiVsTm7Uyfg2FT5+xLDM52KfAONKqwHkpA2/vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BKs1Woo5; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QNEv53Jl"
-Message-ID: <65c42538-9607-4dff-adbe-d9d5c9a338d0@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785843308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tJBz0QPm/37VpuFBA1epM1ll5ftoL/nQgLvLHANImr4=;
-	b=QNEv53Jlrwv511+t7srJdEpqiJhuVR66q29WQ5pG9cnRGDFGB74hGNbNJj+1Lh90pkPkwv
-	bS2EcjlrUc0YH8T9RhLNQihaTARAC83qfLFeogL8gviXmQ7zwIhKp8qXVjUJsYYNWrhr+x
-	tkTt/CpEEvSjojcbnSsWnIZn6TnQIZw=
-Date: Tue, 4 Aug 2026 12:35:03 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BKs1Woo5"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cacf197759so65994445ad.2
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 04:35:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785843337; x=1786448137; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uNVTFfdfEZG90+jAE3BzNE+piQiVWzc95vgbhLXgILA=;
+        b=BKs1Woo5URfJ5kDfQ+z9YbJslopDx79/r+BcbYYD/dQPqz95ZTZL73ys300wr6nBh/
+         Ma8Zlz4u4C5fIdt2qkiOtDMngAP+e0szg+KNxoQ+NwEVn3JwhixRIzxcV4yJDlHpvlPQ
+         aPnh5/RvvF8U9snS8IRvGm6SCZyqYlRttgb0x9vEWlYZBaenu5+ySTEfDyoiAn3HF6GL
+         WaHy7eRx2zdmp787lO+18bbuEZwJseJO6ZuK9FVwO9H+6xh5z1EmjCxHzzXwkobjfuUx
+         b8VXeVMeVc/+3rA6CX7Rq+mhyzTRzqurD3KEcXbdnrYdC4uvwm77V8/Ld2lcLYG7CDdR
+         zHvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785843337; x=1786448137;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uNVTFfdfEZG90+jAE3BzNE+piQiVWzc95vgbhLXgILA=;
+        b=Hxa/9OvUimslSneZNsYIrqcmQw06cfV8SRMql1CbYVFH7aWAtgomYRLm3kmL0wl4+r
+         XhHxSGv/1APqOvIoMPWqAaGhJjI2ykoZkxqZHYvgcTAnkXbqL9Sv7LFbJzq5K8LpD2m3
+         UmfJy3czH3LMExiAYF3nITi5goJFPXgYwsup2KBKRaws4oaobJr65F41bEIPv6Tki/h5
+         ttgW/JA2uh7xU/ucUMGEC69G5TQpl0aq+vy/U+xCV8J85UU/athJLvxlIt59FKsX8mxn
+         gjIV+baPEB2+IjmzDXjYBqI6YahFLuttSCO5/CWFXOhzWjpvpz8Kp64qAlevms2BNlwZ
+         I+Ow==
+X-Gm-Message-State: AOJu0YzJQwBvgWfJiewjsQ0e66VkX6DC5xecJg7D2jQLLMjBNLspX0u1
+	t1sMmx+1C8ak7QInO0R5HrNRQ1sSdl3TpaPsQik3BGwYfeemlmiA/g1TsUjLo6VA
+X-Gm-Gg: AR+sD12adnkbF9b7vwdwsXCVIaPkvu8tjoN0yPN9T5lPv3c9B+ZGeEqUV43jTh6wmAF
+	6d+/1KGbfzbD7k/SP4OP0kpyEZj6Cm2KA6jrQNeM3NWxvpQYG4qx0qaUj9trMSCNs0ebLlqQ7Jl
+	17EUbt4ZY0OYY0/5pP3Tl9QoLbXwZwqq2WrappZ7ivVDkXQ5ZiecbfdBkwn7pcDVnQ1hmqQ9hnr
+	L3JCczcPQf3uUdccu0lWjHPSSLOTd0u6e41oiT4FLmYdPkRkOLAAhwTJpW8/6szGPz/Y4/yzJri
+	LwmbSs/jBJWc9jzUw3vNU+GDStZRiFXv5Jj89aWvareGHy6GeFknNt3W39YjMtqvv27ALqqCeaQ
+	uRHfLivpgMYC5nlaE/v/vT7TKEf7L7NCONuTZKpfmds2m8hzJQGzXbzvsrhyuiSGF8jE3lrVmxV
+	TbYEmPPfHVddhX13PrxIdfNwPn0DmIMFv3D4vmTS7NKgwKByKO0xTJMZWP1e/oJ6cc1wwJ
+X-Received: by 2002:a05:6a21:3a47:b0:3c0:278c:6a31 with SMTP id adf61e73a8af0-3c92a51df73mr13770829637.11.1785843337304;
+        Tue, 04 Aug 2026 04:35:37 -0700 (PDT)
+Received: from DESKTOP-TIT0J8O.dm.ae ([49.47.198.15])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fca63ce12sm3569493c88.5.2026.08.04.04.35.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 04:35:36 -0700 (PDT)
+From: Ahmed Naseef <naseefkm@gmail.com>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	SkyLake Huang <SkyLake.Huang@mediatek.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	Ahmed Naseef <naseefkm@gmail.com>
+Subject: [PATCH net] net: phy: mediatek: fix TX blink masks using the RX bits
+Date: Tue,  4 Aug 2026 15:35:11 +0400
+Message-Id: <20260804113511.3371248-1-naseefkm@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v8] ptp: ocp: add CPLD ISP support for ADVA TimeCard X1
-To: Sagi Maimon <maimon.sagi@gmail.com>, jonathan.lemon@gmail.com,
- richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20260802071132.5078-1-maimon.sagi@gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260802071132.5078-1-maimon.sagi@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-On 02/08/2026 08:11, Sagi Maimon wrote:
-> The ADVA TimeCard X1 (PCI device 0x0410) uses a Lattice MachXO3 CPLD
-> that is programmed over I2C using in-system programming (ISP).
-> 
-> The CPLD is connected to a secondary I2C bus shared with the onboard
-> MicroBlaze soft CPU.
-> 
-> Add support for CPLD access and firmware updates on the ADVA TimeCard X1
-> board by arbitration of the shared I2C bus, CPLD ISP command handling,
-> status polling, and firmware upload operations using the firmware-upload
-> subsystem.
-> 
-> Add the following X1-only user-visible interfaces:
-> 
->    /sys/class/timecard/ocpN/cpld_device_id
->          report the 32-bit Lattice MachXO3 CPLD device ID
-> 
->    /sys/class/timecard/ocpN/cpld_status
->          report the CPLD status register, including the DONE,
->          BUSY, and FAILED indicators
-> 
-> Firmware updates are performed through the firmware-upload framework,
-> which acquires ownership of the shared I2C bus, erases the CPLD
-> configuration flash, programs the image page-by-page, and activates
-> the new image using the MachXO3 REFRESH command.
-> 
-> All CPLD operations are serialized and coordinated with the MicroBlaze
-> firmware to ensure exclusive access to the shared I2C bus. The added
-> interfaces are available only on ADVA TimeCard X1 boards.
-> 
-> Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
-> ---
-> 
->   Addressed comments from:
->    - Jakub Kicinski :https://lore.kernel.org/all/20260730130424.77a90fa3@kernel.org/
->    - Vadim Fedorenko :https://lore.kernel.org/all/7075bcdb-da4d-4d2c-bd09-516d9f244277@linux.dev/
->   
->   Changes since v7:
->   - Use %pe instead of %ld + PTR_ERR() (coccicheck)
->   - Add #include <linux/unaligned.h>
->   - Widen adva_x1_i2c_xfer() buffer pointers to void *
->   - Use cpu_to_be32() in adva_x1_cpld_cmd_read()
->   - Use get_unaligned_be32() in adva_x1_cpld_read_status()
->   
->   Documentation/ABI/testing/sysfs-timecard |  34 ++
->   drivers/ptp/ptp_ocp.c                    | 497 ++++++++++++++++++++++-
->   2 files changed, 527 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-timecard b/Documentation/ABI/testing/sysfs-timecard
-> index 3ae41b7634ac..f7c9955acb0a 100644
-> --- a/Documentation/ABI/testing/sysfs-timecard
-> +++ b/Documentation/ABI/testing/sysfs-timecard
-> @@ -11,6 +11,40 @@ Contact:	Jonathan Lemon <jonathan.lemon@gmail.com>
->   Description:	This directory contains the attributes of the Nth timecard
->   		registered.
->   
-> +What:		/sys/class/timecard/ocpN/cpld_device_id
-> +Date:		July 2026
-> +Contact:	Sagi Maimon <maimon.sagi@gmail.com>
-> +Description:	(RO) The 32-bit Lattice device ID of the TAP CPLD, reported as
-> +		a hex string, e.g. "0xe12bc043".
-> +
-> +		Only present on ADVA x1 TAP boards (PCI ID 0xad5a:0x0410).
-> +		The Lattice LCMXO3LF-210 reports 0xe12bc043.
-> +
-> +		The driver acquires the MicroBlaze I2C bus internally before
-> +		issuing the READ_IDCODE command; no bus arbitration is required
-> +		from userspace.
-> +
-> +What:		/sys/class/timecard/ocpN/cpld_status
-> +Date:		July 2026
-> +Contact:	Sagi Maimon <maimon.sagi@gmail.com>
-> +Description:	(RO) The status register of the TAP CPLD, in human-readable
-> +		form:
-> +
-> +		  done=<0|1> busy=<0|1> failed=<0|1>
-> +
-> +		Only present on ADVA x1 TAP boards (PCI ID 0xad5a:0x0410).
-> +
-> +		done=1 indicates the configuration flash was successfully
-> +		programmed and is active.  busy=1 means an internal operation
-> +		is in progress.  failed=1 means the last ISC operation failed.
-> +
-> +		The driver acquires the MicroBlaze I2C bus internally; no bus
-> +		arbitration is required from userspace.
-> +
-> +		To program new CPLD firmware use the standard kernel
-> +		firmware-upload interface registered at:
-> +		/sys/class/firmware/adva-cpld/
-> +
->   What:		/sys/class/timecard/ocpN/available_clock_sources
->   Date:		September 2021
->   Contact:	Jonathan Lemon <jonathan.lemon@gmail.com>
-> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-> index 35e911f1ad78..a4a8cab5ed7d 100644
-> --- a/drivers/ptp/ptp_ocp.c
-> +++ b/drivers/ptp/ptp_ocp.c
-> @@ -24,6 +24,11 @@
->   #include <linux/nvmem-consumer.h>
->   #include <linux/crc16.h>
->   #include <linux/dpll.h>
-> +#include <linux/unaligned.h>
-> +#include <linux/delay.h>
-> +#include <linux/firmware.h>
-> +#include <linux/delay.h>
-> +#include <linux/firmware.h>
+MTK_GPHY_LED_TX_BLINK_SET and MTK_2P5GPHY_LED_TX_BLINK_SET are built
+from the RX blink bits instead of the TX ones, so both TX masks are
+identical to their RX counterparts. The TX bits they should be using,
+MTK_PHY_LED_BLINK_{10,100,1000,2500}TX, are otherwise only referenced
+by the per-speed branch of mtk_phy_led_hw_ctrl_set().
 
-why do you double include headers?
+A TX trigger selected without a link trigger therefore programs the RX
+blink bits, and the LED blinks on received traffic. The masks are also
+used to decode the blink register in mtk_phy_led_hw_ctrl_get(), which
+as a result cannot tell the two triggers apart: an RX-only
+configuration reads back as RX and TX, and a TX-only configuration
+reads back as neither.
 
->   
->   #define PCI_DEVICE_ID_META_TIMECARD		0x0400
->   
-> @@ -85,6 +90,7 @@ struct ptp_ocp_adva_info {
->   	u8				signals_nr;
->   	u8				freq_in_nr;
->   	const struct ocp_attr_group	*attr_groups;
-> +	bool				has_cpld; /* x1: supports CPLD firmware upload */
->   };
->   
->   #define OCP_CTRL_ENABLE		BIT(0)
-> @@ -163,7 +169,8 @@ struct gpio_reg {
->   	u32	gpio1;
->   	u32	__pad0;
->   	u32	gpio2;
-> -	u32	__pad1;
-> +	/* adva_x1: I2C bus ownership register; reserved on other variants */
-> +	u32	i2c_bus_ctrl;
->   };
->   
->   struct irig_master_reg {
-> @@ -416,6 +423,12 @@ struct ptp_ocp {
->   	dpll_tracker tracker;
->   	int signals_nr;
->   	int freq_in_nr;
-> +	/* adva_x1 CPLD I2C (internal use only) */
-> +	struct mutex		cpld_lock;            /* serialises CPLD operations */
-> +	int			cpld_i2c_adap_nr;     /* I2C adapter nr; -1 if absent */
-> +	struct fw_upload	*cpld_fw_upload;      /* firmware upload handle; NULL if absent */
-> +	bool			cpld_cancel;          /* cancellation requested */
-> +	bool			cpld_in_config_mode;  /* EN_CFG_TP issued but not yet REFRESH'd */
->   };
->   
->   #define OCP_REQ_TIMESTAMP	BIT(0)
-> @@ -449,6 +462,8 @@ static int ptp_ocp_art_board_init(struct ptp_ocp *bp, struct ocp_resource *r);
->   
->   static int ptp_ocp_adva_board_init(struct ptp_ocp *bp, struct ocp_resource *r);
->   
-> +static const struct fw_upload_ops adva_cpld_upload_ops;
-> +
->   static const struct ocp_sma_op ocp_adva_sma_op;
->   static const struct ocp_sma_op ocp_adva_x1_sma_op;
->   
-> @@ -1273,6 +1288,7 @@ static struct ocp_resource ocp_adva_x1_resource[] = {
->   			.signals_nr   = 4,
->   			.freq_in_nr   = 4,
->   			.attr_groups  = adva_timecard_x1_groups,
-> +			.has_cpld     = true,
->   		},
->   	},
->   	{ }
-> @@ -3197,6 +3213,20 @@ ptp_ocp_adva_board_init(struct ptp_ocp *bp, struct ocp_resource *r)
->   		return err;
->   	ptp_ocp_sma_init(bp);
->   
-> +	if (info->has_cpld) {
-> +		struct fw_upload *fwl;
-> +
-> +		fwl = firmware_upload_register(THIS_MODULE, &bp->pdev->dev,
-> +					       "adva-cpld",
-> +					       &adva_cpld_upload_ops, bp);
-> +		if (IS_ERR(fwl))
-> +			dev_warn(&bp->pdev->dev,
-> +				 "CPLD firmware upload unavailable: %pe\n",
-> +				 fwl);
-> +		else
-> +			bp->cpld_fw_upload = fwl;
-> +	}
-> +
->   	return ptp_ocp_init_clock(bp, &info->servo);
->   }
->   
-> @@ -4224,6 +4254,442 @@ static const struct ocp_attr_group art_timecard_groups[] = {
->   	{ },
->   };
->   
-> +/*
-> + * Internal helpers for the adva_x1 TAP CPLD (Lattice LCMXO3LF-210).
-> + *
-> + * The CPLD sits at I2C address 0x40 behind a PCA9548 mux (0x74) on
-> + * channel 0.  The I2C bus is shared with the MicroBlaze firmware;
-> + * cpld_lock + mblaze acquire/release provide mutual exclusion for the
-> + * full duration of any CPLD operation.  No raw I2C access is exposed
-> + * to userspace; only the high-level attributes below are.
-> + */
-> +
-> +#define ADVA_MUX_ADDR     0x74
-> +#define ADVA_CPLD_ADDR    0x40
-> +#define ADVA_MUX_CHANNEL  0
-> +
-> +#define MBLAZE_REQUEST    0x0000ffffU
-> +#define MBLAZE_GRANTED    0xffffffffU
-> +#define MBLAZE_RETRIES    200
-> +#define MBLAZE_RETRY_US   10000
-> +
-> +/* Lattice LCMXO3LF ISC command codes */
-> +#define CPLD_CMD_READ_ID      0xE0000000UL
-> +#define CPLD_CMD_READ_STATUS  0x3C000000UL
-> +#define CPLD_CMD_EN_CFG_TP    0x74   /* enable config, transparent mode */
-> +#define CPLD_CMD_DIS_CFG      0x26
-> +#define CPLD_CMD_ERASE        0x0E
-> +#define CPLD_CMD_RESET_ADDR   0x46
-> +#define CPLD_CMD_WRITE_PAGE   0x70
-> +#define CPLD_CMD_SET_DONE     0x5E
-> +#define CPLD_CMD_REFRESH      0x79
-> +#define CPLD_PAGE_SIZE        16
-> +
-> +/* Status register bit positions (Lattice LCMXO3LF datasheet) */
-> +#define CPLD_STATUS_DONE   BIT(8)
-> +#define CPLD_STATUS_BUSY   BIT(12)
-> +#define CPLD_STATUS_FAILED BIT(13)
-> +
-> +/*
-> + * adva_x1_i2c_xfer() - issue a single I2C transaction on the CPLD bus.
-> + *
-> + * All buffers are heap-allocated internally to guarantee DMA safety for
-> + * the Xilinx I2C controller.  Caller must hold bp->cpld_lock.
-> + */
-> +static int adva_x1_i2c_xfer(struct ptp_ocp *bp,
-> +			    u8 addr, const void *wdata, u8 wlen,
-> +			    void *rdata, u8 rlen, bool nostart)
-> +{
-> +	struct i2c_adapter *adap;
-> +	struct i2c_msg msgs[2];
-> +	u8 *wbuf = NULL, *rbuf = NULL;
-> +	int nmsgs = 0, ret;
+Fixes: 7f9c320c98db ("net: phy: mediatek: Move LED helper functions into mtk phy lib")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ahmed Naseef <naseefkm@gmail.com>
+---
+ drivers/net/phy/mediatek/mtk.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-as this patch goes through netdev, please respect reverse xmass tree
-ordering of variables declaration here and futher in the patch
+diff --git a/drivers/net/phy/mediatek/mtk.h b/drivers/net/phy/mediatek/mtk.h
+index 320f76ffa81f..79e09727b81b 100644
+--- a/drivers/net/phy/mediatek/mtk.h
++++ b/drivers/net/phy/mediatek/mtk.h
+@@ -53,15 +53,15 @@
+ #define MTK_GPHY_LED_RX_BLINK_SET		(MTK_PHY_LED_BLINK_1000RX | \
+ 						 MTK_PHY_LED_BLINK_100RX | \
+ 						 MTK_PHY_LED_BLINK_10RX)
+-#define MTK_GPHY_LED_TX_BLINK_SET		(MTK_PHY_LED_BLINK_1000RX | \
+-						 MTK_PHY_LED_BLINK_100RX | \
+-						 MTK_PHY_LED_BLINK_10RX)
++#define MTK_GPHY_LED_TX_BLINK_SET		(MTK_PHY_LED_BLINK_1000TX | \
++						 MTK_PHY_LED_BLINK_100TX | \
++						 MTK_PHY_LED_BLINK_10TX)
+ 
+ #define MTK_2P5GPHY_LED_ON_SET			(MTK_PHY_LED_ON_LINK2500 | \
+ 						 MTK_GPHY_LED_ON_SET)
+ #define MTK_2P5GPHY_LED_RX_BLINK_SET		(MTK_PHY_LED_BLINK_2500RX | \
+ 						 MTK_GPHY_LED_RX_BLINK_SET)
+-#define MTK_2P5GPHY_LED_TX_BLINK_SET		(MTK_PHY_LED_BLINK_2500RX | \
++#define MTK_2P5GPHY_LED_TX_BLINK_SET		(MTK_PHY_LED_BLINK_2500TX | \
+ 						 MTK_GPHY_LED_TX_BLINK_SET)
+ 
+ #define MTK_PHY_LED_STATE_FORCE_ON	0
 
-> +
-> +	adap = i2c_get_adapter(READ_ONCE(bp->cpld_i2c_adap_nr));
-> +	if (!adap)
-> +		return -ENODEV;
-> +
-> +	if (wlen) {
-> +		wbuf = kmemdup(wdata, wlen, GFP_KERNEL);
-> +		if (!wbuf) {
-> +			ret = -ENOMEM;
-> +			goto put;
-> +		}
-> +		msgs[nmsgs++] = (struct i2c_msg){
-> +			.addr  = addr,
-> +			.flags = I2C_M_DMA_SAFE,
-> +			.len   = wlen,
-> +			.buf   = wbuf,
-> +		};
-> +	}
-> +	if (rlen) {
-> +		rbuf = kzalloc(rlen, GFP_KERNEL);
-> +		if (!rbuf) {
-> +			ret = -ENOMEM;
-> +			goto put;
-> +		}
-> +		msgs[nmsgs++] = (struct i2c_msg){
-> +			.addr  = addr,
-> +			.flags = I2C_M_RD | I2C_M_DMA_SAFE |
-> +				 (nostart ? I2C_M_NOSTART : 0),
-> +			.len   = rlen,
-> +			.buf   = rbuf,
-> +		};
-> +	}
-> +
-> +	ret = i2c_transfer(adap, msgs, nmsgs);
-> +	if (ret == nmsgs) {
-> +		if (rdata && rlen)
-> +			memcpy(rdata, rbuf, rlen);
-> +		ret = 0;
-> +	} else {
-> +		ret = (ret < 0) ? ret : -EIO;
-> +	}
-> +put:
-> +	kfree(wbuf);
-> +	kfree(rbuf);
-> +	i2c_put_adapter(adap);
-> +	return ret;
-> +}
-> +
-> +/* Acquire the shared I2C bus from the MicroBlaze firmware. */
-> +static int adva_x1_mblaze_acquire(struct ptp_ocp *bp)
-> +{
-> +	u32 val;
-> +	int i;
-> +
-> +	if (!bp->pps_select)
-> +		return -ENODEV;
-> +
-> +	/* Release any stale grant left by a previous crashed caller. */
-> +	iowrite32(0, &bp->pps_select->i2c_bus_ctrl);
-> +	val = ioread32(&bp->pps_select->i2c_bus_ctrl);
-> +	if (val != 0)
-> +		return -EBUSY;
-> +
-> +	iowrite32(MBLAZE_REQUEST, &bp->pps_select->i2c_bus_ctrl);
-> +	for (i = 0; i < MBLAZE_RETRIES; i++) {
-> +		usleep_range(MBLAZE_RETRY_US, MBLAZE_RETRY_US + 1000);
-> +		val = ioread32(&bp->pps_select->i2c_bus_ctrl);
-> +		if (val == MBLAZE_GRANTED)
-> +			return 0;
-> +	}
-> +	return -ETIMEDOUT;
-> +}
-> +
-> +static void adva_x1_mblaze_release(struct ptp_ocp *bp)
-> +{
-> +	if (bp->pps_select)
-> +		iowrite32(0, &bp->pps_select->i2c_bus_ctrl);
-> +}
-> +
-> +static int adva_x1_mux_select(struct ptp_ocp *bp, int ch)
-> +{
-> +	u8 val = (ch >= 0) ? BIT(ch) : 0;
-> +
-> +	return adva_x1_i2c_xfer(bp, ADVA_MUX_ADDR, &val, 1, NULL, 0, false);
-> +}
-> +
-> +/* Send 1-byte ISC command + optional arguments. */
-> +static int adva_x1_cpld_write(struct ptp_ocp *bp,
-> +			      u8 cmd, const u8 *args, u8 nargs)
-> +{
-> +	u8 buf[1 + 64];
-> +
-> +	if (nargs > 64)
-> +		return -EINVAL;
-> +	buf[0] = cmd;
-> +	if (nargs)
-> +		memcpy(&buf[1], args, nargs);
-> +	return adva_x1_i2c_xfer(bp, ADVA_CPLD_ADDR, buf, 1 + nargs,
-> +				 NULL, 0, false);
-> +}
-> +
-> +/*
-> + * Send a 4-byte command then read data back without an intermediate STOP
-> + * (Lattice combined write→repeated-START→read).
-> + */
-> +static int adva_x1_cpld_cmd_read(struct ptp_ocp *bp,
-> +				 u32 cmd_be, u8 *out, u8 out_len)
-> +{
-> +	__be32 cmd = cpu_to_be32(cmd_be);
-> +
-> +	return adva_x1_i2c_xfer(bp, ADVA_CPLD_ADDR, &cmd, 4, out, out_len, true);
-> +}
-> +
-> +static int adva_x1_cpld_read_status(struct ptp_ocp *bp, u32 *status)
-> +{
-> +	u8 buf[4];
-> +	int ret;
-> +
-> +	ret = adva_x1_cpld_cmd_read(bp, CPLD_CMD_READ_STATUS, buf, 4);
-> +	if (ret)
-> +		return ret;
-> +	*status = get_unaligned_be32(buf);
-> +	return 0;
-> +}
-> +
-> +static int adva_x1_cpld_wait_ready(struct ptp_ocp *bp, unsigned int max_ms)
-> +{
-> +	u32 status;
-> +	unsigned int elapsed = 0;
-> +
-> +	while (elapsed < max_ms) {
-> +		if (adva_x1_cpld_read_status(bp, &status))
-> +			return -EIO;
-> +		if (status & CPLD_STATUS_FAILED)
-> +			return -EIO;
-> +		if (!(status & CPLD_STATUS_BUSY))
-> +			return 0;
-> +		usleep_range(100000, 101000);
-> +		elapsed += 100;
-> +	}
-> +	return -ETIMEDOUT;
-> +}
-> +
-> +/*
-> + * cpld_device_id - show the Lattice device ID of the TAP CPLD.
-> + *
-> + * Returns the 32-bit ID as a hex string, e.g. "0x612bc043\n".
-> + * Lattice LCMXO3LF-210 reports 0x612BC043.
-> + */
-> +static ssize_t
-> +cpld_device_id_show(struct device *dev, struct device_attribute *attr,
-> +		    char *buf)
-> +{
-> +	struct ptp_ocp *bp = dev_get_drvdata(dev);
-> +	u8 data[4];
-> +	u32 id = 0;
-> +	int ret;
-> +
-> +	mutex_lock(&bp->cpld_lock);
-> +	ret = adva_x1_mblaze_acquire(bp);
-> +	if (ret)
-> +		goto out;
-> +	ret = adva_x1_mux_select(bp, ADVA_MUX_CHANNEL);
-> +	if (ret)
-> +		goto release;
-> +	ret = adva_x1_cpld_cmd_read(bp, CPLD_CMD_READ_ID, data, 4);
-> +	if (!ret)
-> +		id = ((u32)data[0] << 24) | ((u32)data[1] << 16) |
-> +		     ((u32)data[2] <<  8) |  (u32)data[3];
-
-why is this code not changed to be32_to_cpu()?
-
-> +	adva_x1_mux_select(bp, -1);
-> +release:
-> +	adva_x1_mblaze_release(bp);
-> +out:
-> +	mutex_unlock(&bp->cpld_lock);
-> +	return ret ? ret : sysfs_emit(buf, "0x%08x\n", id);
-> +}
-> +static DEVICE_ATTR_RO(cpld_device_id);
-> +
-> +/*
-> + * cpld_status - show the status register of the TAP CPLD.
-> + *
-> + * Returns a human-readable string: "done=<0|1> busy=<0|1> failed=<0|1>\n"
-> + */
-> +static ssize_t
-> +cpld_status_show(struct device *dev, struct device_attribute *attr,
-> +		 char *buf)
-> +{
-> +	struct ptp_ocp *bp = dev_get_drvdata(dev);
-> +	u32 st = 0;
-> +	int ret;
-> +
-> +	mutex_lock(&bp->cpld_lock);
-> +	ret = adva_x1_mblaze_acquire(bp);
-> +	if (ret)
-> +		goto out;
-> +	ret = adva_x1_mux_select(bp, ADVA_MUX_CHANNEL);
-> +	if (ret)
-> +		goto release;
-> +	ret = adva_x1_cpld_read_status(bp, &st);
-> +	adva_x1_mux_select(bp, -1);
-> +release:
-> +	adva_x1_mblaze_release(bp);
-> +out:
-> +	mutex_unlock(&bp->cpld_lock);
-> +	return ret ? ret : sysfs_emit(buf, "done=%u busy=%u failed=%u\n",
-> +				      !!(st & CPLD_STATUS_DONE),
-> +				      !!(st & CPLD_STATUS_BUSY),
-> +				      !!(st & CPLD_STATUS_FAILED));
-> +}
-> +static DEVICE_ATTR_RO(cpld_status);
-> +
-> +/*
-> + * adva_x1 CPLD firmware-upload callbacks.
-> + *
-> + * The kernel firmware-upload subsystem (CONFIG_FW_UPLOAD) exposes:
-> + *   /sys/class/firmware/adva-cpld/{data,loading,status,error,...}
-> + * Userspace writes the raw binary page data directly — no /lib/firmware/
-> + * staging file is needed.
-> + *
-> + * Callback sequence driven by the framework:
-> + *   prepare()      - validate size, acquire bus, enable config, erase flash
-> + *   write()        - program one 16-byte page per call
-> + *   poll_complete()- set DONE, REFRESH, wait for CPLD to reboot
-> + *   cancel()       - set flag; checked at the start of each callback
-> + *   cleanup()      - release bus resources (called on success or failure)
-> + */
-> +static enum fw_upload_err
-> +adva_cpld_prepare(struct fw_upload *fwl, const u8 *data, u32 size)
-> +{
-> +	struct ptp_ocp *bp = fwl->dd_handle;
-> +	const u8 en_args[2]  = { 0x08, 0x00 };
-> +	const u8 era_args[3] = { 0x04, 0x00, 0x00 }; /* cfg sector only */
-> +	const u8 zero3[3]    = { 0 };
-> +	const u8 dis_args[2] = { 0x00, 0x00 };
-
-this constants can be made static, no need to re-init stack on every
-call
-
-> +	enum fw_upload_err ret = FW_UPLOAD_ERR_NONE;
-> +
-> +	if (!size || size % CPLD_PAGE_SIZE)
-> +		return FW_UPLOAD_ERR_INVALID_SIZE;
-> +
-> +	bp->cpld_cancel		= false;
-> +	bp->cpld_in_config_mode	= false;
-> +
-> +	mutex_lock(&bp->cpld_lock);
-> +
-> +	if (adva_x1_mblaze_acquire(bp)) {
-> +		ret = FW_UPLOAD_ERR_TIMEOUT;
-> +		goto err_unlock;
-> +	}
-> +
-> +	if (adva_x1_mux_select(bp, ADVA_MUX_CHANNEL)) {
-> +		ret = FW_UPLOAD_ERR_HW_ERROR;
-> +		goto err_release;
-> +	}
-> +
-> +	if (adva_x1_cpld_write(bp, CPLD_CMD_EN_CFG_TP, en_args, 2) ||
-> +	    adva_x1_cpld_wait_ready(bp, 5000)) {
-> +		ret = FW_UPLOAD_ERR_HW_ERROR;
-> +		goto err_deselect;
-> +	}
-> +	bp->cpld_in_config_mode = true;
-> +
-> +	if (bp->cpld_cancel) {
-> +		ret = FW_UPLOAD_ERR_CANCELED;
-> +		goto err_deselect;
-> +	}
-> +
-> +	if (adva_x1_cpld_write(bp, CPLD_CMD_ERASE, era_args, 3) ||
-> +	    adva_x1_cpld_wait_ready(bp, 15000)) {
-> +		ret = FW_UPLOAD_ERR_HW_ERROR;
-> +		goto err_deselect;
-> +	}
-> +
-> +	if (bp->cpld_cancel) {
-> +		ret = FW_UPLOAD_ERR_CANCELED;
-> +		goto err_deselect;
-
-it looks like a duplicate of check, or do you expect something to change
-cpld_cancel during writes?
-
+base-commit: 1a35da325cac4d5bcad76a2aa943408a6f1d9000
+-- 
+2.34.1
 
