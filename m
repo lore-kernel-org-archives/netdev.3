@@ -1,80 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3C13EA66;
-	Tue,  4 Aug 2026 22:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C3B3CB57D;
+	Tue,  4 Aug 2026 22:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785882646; cv=none; b=PNV9YKSsta9RUb4fPfE3rbGGlh9KcTOVSjXMwARU4pwDq7ETWDhe3R2uPOVApWZJqNEsNTbbIamc6jtklzKL5LzR+/VobAy4q8knKi/OrSEER981Xhl2QawzF4RpLi6xKgwpO1wi53SiNwdM/mLPrwl/djIfIZAlEhathlH2XrE=
+	t=1785882691; cv=none; b=BZiJOrFvG6HsAZ89OVdRw9yBDJpyeGpgFoSKp+KV8cpD1sJNQegoRWxQ7QRng8bzaz16wlKDNh5p8V45wecAAG/3knADj07N6/ITY+cd/d8USevJ7wW3mtCiGpjxgPM3RoxDvqKl3//jX0ioqVHj4aQy4jzcvUaOMEhym+OdcZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785882646; c=relaxed/simple;
-	bh=R4meS5TRxOPrYTgAHKeq7Mr11/rRHStJ1OvMdrYJ9eo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Vj7AMwQZ4Koy4JNEf3lGwfVYkuO+tOWW1lXhCo6OU2UE4YHoGLfwRGiZRwcJ+SGQB2Tu3p1cf1/9iVPn/vV6/p6a/rzCsJTc4gvtN9b1kVmc6MH6UMsk2w2gzTC4yssBkO/wxogLyE5I53kuf6PxLTnil2kTRyfy/kBCT5rs/HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K4k6xtpA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785882691; c=relaxed/simple;
+	bh=mG1SLwAJIubIVjXdTFNOBu8EzWB7e3//i6VKXIlyBlc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GIL1tRAGhXa2ctKkf5q1cZGh/dhagDAxBuUz/sibERw+Q8EyZq4g69hlfdhP4QhkNKKW+KpY47Kn+D1OgRsRabMMPLwLXIj69zf7G0mP18vHixzPs7KmvYQBKYPHRU1CWTJJHxHvixNl7kP+ruUPSBHWo++ZHcvMEb/x/PrR+bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VSdW48Lc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K4k6xtpA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274371F000E9;
-	Tue,  4 Aug 2026 22:30:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VSdW48Lc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C731F00A3D;
+	Tue,  4 Aug 2026 22:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785882645;
-	bh=qumM/ZUvhwCYG8/BhtTMQCcxLsfhFjHB5gMQ4M558k4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=K4k6xtpAmJCBXq/WO7+NJwcEEQVvsGTlGaRZD7oXeH7lDjy7uvABUrYnroTkJOIj6
-	 WqyBg+Vxqop6H+c2dRM21muAM0Q/0jpwEsndr3zlgqoTEJDykxAqyd6ODx7stF+r/d
-	 oCqFd8a0OXf+U01whnyllLv3pAbtmcOi6Y8q7K5O9urkTRhK/ndqjOPqWydi8WlyNS
-	 lGmWJQGIZrb3fQfaGGtfe6HuVS1Zez9yzj0ubkDFngpzdsvlYhxVT4bXTYgNYNwIj8
-	 vG6N2PlG8IUw4WWtpVGFw2L66tTQaR+jTIsPotT1T30o7Ud0DkaVjHuOSkfRDTCxxt
-	 jLHEj5u42VXJg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B8E50392664C;
-	Tue,  4 Aug 2026 22:30:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1785882685;
+	bh=1rNKgpIx6sZKzmYQ6FweqLBwIUVjPux1He9OuvdAw/w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VSdW48Lc4jRQjSvOYK6+1RkSCe23ufhDsOsXhNt4Ddw8D/YQHxmW320dvP2P7ORz+
+	 Nzz4hCaj/lJheSxjNhu3iK8vKtbjkdRaSYOp9A3xKfMCmjo1wFCtcIoxttJJ7CHyTW
+	 6FMLdwzCEAHkqLj2FEznUUNVP76O0jKtDVItxv3ED11ABBaD/MjbZTwf7dKQLMYfYP
+	 dEaRKsKWQs/SpA7P9pNqP15pttyCi9lzKbUd8DJdKNkfS4l3ybZmwCkpxRabdDxoZc
+	 l51MfSH06sfXgb8HFBXSqbR2LPPJEGwI4O/DC9mCeNnBGbOkIY2Ycs3abL1ZRO0ZNw
+	 8giP29bCtxPug==
+From: Bjorn Andersson <andersson@kernel.org>
+To: konradybcio@kernel.org,
+	Sumit Garg <sumit.garg@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org,
+	linux-media@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	robin.clark@oss.qualcomm.com,
+	sean@poorly.run,
+	akhilpo@oss.qualcomm.com,
+	lumag@kernel.org,
+	abhinav.kumar@linux.dev,
+	jesszhan0024@gmail.com,
+	marijn.suijten@somainline.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	vikash.garodia@oss.qualcomm.com,
+	bod@kernel.org,
+	mchehab@kernel.org,
+	elder@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jjohnson@kernel.org,
+	mathieu.poirier@linaro.org,
+	trilokkumar.soni@oss.qualcomm.com,
+	mukesh.ojha@oss.qualcomm.com,
+	pavan.kondeti@oss.qualcomm.com,
+	jorge.ramirez@oss.qualcomm.com,
+	tonyh@qti.qualcomm.com,
+	vignesh.viswanathan@oss.qualcomm.com,
+	srinivas.kandagatla@oss.qualcomm.com,
+	amirreza.zarrabi@oss.qualcomm.com,
+	jenswi@kernel.org,
+	op-tee@lists.trustedfirmware.org,
+	apurupa@qti.qualcomm.com,
+	skare@qti.qualcomm.com,
+	linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH v9 00/14] firmware: qcom: Add OP-TEE PAS service support
+Date: Tue,  4 Aug 2026 17:31:15 -0500
+Message-ID: <178588267268.451855.11887423649046062153.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260702115835.167602-1-sumit.garg@kernel.org>
+References: <20260702115835.167602-1-sumit.garg@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] ipv6: prevent in6_dev_get() from resurrecting
- inet6_dev
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178588260564.3813627.866249845630224776.git-patchwork-notify@kernel.org>
-Date: Tue, 04 Aug 2026 22:30:05 +0000
-References: <20260803122758.666112-1-david.lee@trailofbits.com>
-In-Reply-To: <20260803122758.666112-1-david.lee@trailofbits.com>
-To: David Lee <david.lee@trailofbits.com>
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, kylebot@openai.com,
- dominik.czarnota@trailofbits.com, sven@narfation.org, horms@kernel.org,
- yoshfuji@linux-ipv6.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon,  3 Aug 2026 12:27:57 +0000 you wrote:
-> From: Kyle Zeng <kylebot@openai.com>
+On Thu, 02 Jul 2026 17:28:16 +0530, Sumit Garg wrote:
+> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
 > 
-> in6_dev_get() reads dev->ip6_ptr under RCU and then unconditionally
-> increments its refcount. Device teardown can clear the pointer and drop
-> the last reference between these operations. The increment then
-> resurrects an object whose RCU free has already been queued, so callers
-> can use it after it is freed.
+> Qcom platforms has the legacy of using non-standard SCM calls
+> splintered over the various kernel drivers. These SCM calls aren't
+> compliant with the standard SMC calling conventions which is a
+> prerequisite to enable migration to the FF-A specifications from Arm.
 > 
 > [...]
 
-Here is the summary with links:
-  - [net,v2] ipv6: prevent in6_dev_get() from resurrecting inet6_dev
-    https://git.kernel.org/netdev/net/c/0e243671bc7b
+Applied, thanks!
 
-You are awesome, thank you!
+[09/14] media: qcom: Switch to generic PAS TZ APIs
+        commit: 94d3305d990b055e1561e3b78275344b1f40c86e
+
+Best regards,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Bjorn Andersson <andersson@kernel.org>
