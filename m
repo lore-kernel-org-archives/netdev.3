@@ -1,131 +1,108 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5202F4570F5
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 15:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785857816; cv=pass; b=NTcod7eh04nq5P/XgALNsbO1VzoIWrONPbGKAuk2H//1J4bNrNLszS4qXnvfk5/9sFqmMIKjeXb516O6qNx6DJ6ubnkRUOgfbTTozkZI5/DEB0w69vlxZnC1VYj9x2T/g2tQRdXwBma2i6WJhlI1r2cnkUldki9+24j5dV6uTzo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785857816; c=relaxed/simple;
-	bh=QoqA5p+Wuo8wFkgQJ36BVaTJYSEKleUgWMC9y+XvXXM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lOwC7LuMI8AgGWC3pWTtzUTG9VOtH138SteTHOJVdOHyaSPVWFeUoLmo120+WHdDW8cNs8sIjKu7EGSPXDAxAf+J3VQd+riGKueXRk/lucfnZK0B0KQTqLPfD319cNyRCKBcCtbEznzUqwaRUv02WXCH+sX0U8F/1vBEtY6BOU8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gjc2wqYS; arc=pass smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3E946F4BE
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 15:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785858388; cv=none; b=Zbd5dKrloLNBNomWbNiKFaIRYxC8Pn9ZAwwFL33j9wgjbiJdRU6qw7bVpLijlXxLj6/rdRSqin5XY8rKcSNdDwkqt7aO5jgyX9FIBsnWhCQNJiOMR2s1hD1XJi9KapaOULFnLs/3ZsNb87Id3WoxkVySDGa3BaTwRv36+ksXwsI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785858388; c=relaxed/simple;
+	bh=q+kjQZGeNYkDUQaCl5pvpzjrayG8WHyTuYoZD3SgIHw=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=mS5k+H3CPU+1fOVI5OpM5xtNJV91vincZDiabtPZg05eUmda01zd6My/i84oWW32eD+4PTD9JcAjxf78PHfDEATfomPhHBMBv9YhfOO0GhYuSXUI/IzpxkMVVPPhIyXsjTeQI1O/XifbEdbEpHQCH99V+tDz9b8Qj+DqGSBpFlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Pm1JWKIR; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gjc2wqYS"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cab97c86bdso131935ad.1
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 08:36:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785857814; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GXxpme7AHlp83MtrlKSYSUH+/odwptMNJ68Xpx6XgeM007kfZv9ku5VjiSP/7Dp6dS
-         KKdiA97MtSCIs6k3a9TbFesFwIQC+GNJKkoCyynSXhw8kEFCYlnlxV81a16ow7HMoFy4
-         fGvY+88/wMu8ErfdeinSFBUAVQuppsXI+2oxxmlS+NN8rtPWwSezCMX0EBMCP4F0zbKO
-         mF2oQM0c+lXkl9Wyd6XUnS/8p4v5PfzWIMYx/FeEcCF71JjWrIizTHjLsPWRxucZJ36a
-         jwS2ag+hVdRY9Cy40BYUfU8G57VtU9XcfH8jfr1qO9St1Ky1jso0JJUJz1BmnrcDY3rQ
-         QQrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NHvR8jpL0frcraM9Qb/892YAD+UgJpqS6viyACeo2sQ=;
-        fh=A8pq0rKAB5cbTjfMHGCyqThCkW0TXyatxEc24nOAoQc=;
-        b=JWJyX5/RQYf/1lim8UQzKob5DtUPsl3ZeTnNB75J+0+SCZbL44jcFYnWubu36OZJhT
-         hfT4XcmK946qAF/FrkTE6dZBy02tkkTnSwb9fSAtHyjbWJcFlB9sv7Xo/L9PfZCODR6d
-         bdr2tgaBG5D5BYIQHMGLHoCFyDrBg7A6bCef1dPulHKeC7JOHKNfhofxyVHgS7UDIuo+
-         NXN0G64cr0FH/fdtP8Rm7gyiv554Ihl5TNQgzbU9zXP+nUV/o2qRUtgkXBRoYPV3Oebh
-         /unzkTyrUqAFwnsbK5l/L8WCdu/7SQHNi/3qFO225GGdEcT59DspLKYgUAQlBVokn+11
-         jXIQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785857814; x=1786462614; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NHvR8jpL0frcraM9Qb/892YAD+UgJpqS6viyACeo2sQ=;
-        b=gjc2wqYSvgYNem9/nmYs8R7KtoorjHj45j9gi0iDyr5VnjGjVTz3UbFwZToiddK1Og
-         JV2TX2qr0p4uTcVy+Vu6RXQIv1N5SbqpOVXqLrq9WzwphcygK5qM9ll8S8KywzU6oIy0
-         M6CZGm/U83hu2dCceVc6GFFSRiBRX7K5lHfON7v4MSo2sXyVoxW86VlXC5Mr0jS6Lg68
-         Ykm/PJPDaFrpyH5jH8gTdz+R8w5eUXAEInZ0Nsrp5N503/cRzhZhQdcxS3jrP/WqCMgW
-         A5fPds0SlrYBobx7j4OtNGCgYoXJHjkJbo88v+QxBrLFYSbjhSxv/h0R4MEwIv3xCq41
-         /+FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785857814; x=1786462614;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NHvR8jpL0frcraM9Qb/892YAD+UgJpqS6viyACeo2sQ=;
-        b=D+vkkHFlJqb/s/LvXDFYVJMlfmCec/HaZnmYqzASbEAnvUdjGUf8YxLHHtNf3UkErj
-         YCCJc4ZF2uTO1SwyEQUFlx2FO3JsAVmjeA4A2QO/7rFN06W/ED4StYQVKiYjH49rl38i
-         pXgkJe/uLnXjp09dIh4HEVDrDzZsecKIjiBULnojUmry+G0vbzQ1xLze4QArLrDTW/Mf
-         XMlxrDS1YiCIyKAbu4KKd5ERrftRky9aVz6ibKuEVycf7o5EZ65tP+6aYr4qIrwssqKK
-         rheW3AayIo6WXxovXQ8aqobQ9MSSoVoAhAlKWA4qnDAruurxrrRZnBfNLX3vwqnUL9Rx
-         61NA==
-X-Gm-Message-State: AOJu0YxktfDLeNB6P+iKgEJdBjpccKoioaP/CMvIFQsA+5aDMES5TL6E
-	SAFaIUIoMEq7Ii1e2+acHtTyyfp9EHFRgbyccegXkTFbbMowUQ5TM2rjtOJquUfGvmt6kKa7Ele
-	L24RnolsJDBbSLnz6OI77NCJIb56VHRV0teo/9pVt5OJ1g7sk5JPW5gct
-X-Gm-Gg: AR+sD10U7pA8OrGOthWFDxlSKwsidOtUWGUkAxGRicGoowCPf/XpKbsYEp3mQPXWaIZ
-	kYVyBCIdKwHaJkRqxZ0JECXlKsRk+6mKziaOjxb8UiYxJcrFrmRORILkdQMQUND4CeApDNiZqrY
-	HyYQ2CAcrDmUDuEzwVfRY1gqj8+fPR5dgIIDYwVFtUy2EkJ1IuDKJSk+TXqiKx5WkOQHBdhOpFz
-	xGm+Cj+WCOqXau95D67N60a8b5Pg2mrqcjK4WC0Q/FiDP0HvDPc9E0y3FDc08vEFWfMirUpv3j1
-	gnhvuilTpoq86Qn5uYm1R+xl+lyF+mjY4WTOTj4OmArq
-X-Received: by 2002:a17:903:41d1:b0:2c0:defb:557e with SMTP id
- d9443c01a7336-2d0bb0c2b23mr1282675ad.1.1785857812960; Tue, 04 Aug 2026
- 08:36:52 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pm1JWKIR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785858386;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q+kjQZGeNYkDUQaCl5pvpzjrayG8WHyTuYoZD3SgIHw=;
+	b=Pm1JWKIRYddRlW7NF/RQxSZXWdt4pfIrQ9uaCcibxzohmqjCrs/K+/d+oGVzZcDhXJpr0a
+	hQlZMqnkzwhoLcrdLd5wdPMYJCP6U3RHLrUNwG4wfZ2MTScuP3tXrqmA1ysVK1PiBg2lkQ
+	8OivcR8Xgh5E6kcuyonTyUQ2GVrlFMc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-141-7wP6TBZjPEOmoPUmdjIsNg-1; Tue,
+ 04 Aug 2026 11:46:17 -0400
+X-MC-Unique: 7wP6TBZjPEOmoPUmdjIsNg-1
+X-Mimecast-MFC-AGG-ID: 7wP6TBZjPEOmoPUmdjIsNg_1785858375
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B6BA31800364;
+	Tue,  4 Aug 2026 15:46:14 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.32.44])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1E9E61800480;
+	Tue,  4 Aug 2026 15:46:09 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20260803160627.GL51943@horms.kernel.org>
+References: <20260803160627.GL51943@horms.kernel.org> <20260729160108.2031453-1-dhowells@redhat.com> <20260729160108.2031453-8-dhowells@redhat.com>
+To: Simon Horman <horms@kernel.org>
+Cc: dhowells@redhat.com, netdev@vger.kernel.org,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Jakub Kicinski <kuba@kernel.org>,
+    "David S. Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+    linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org,
+    Jeffrey Altman <jaltman@auristor.com>,
+    Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+    stable@kernel.org
+Subject: Re: [PATCH net v5 07/10] afs: Create a server appdata key
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260803171441.408014-1-almasrymina@google.com>
- <20260803171441.408014-2-almasrymina@google.com> <20260803125414.500138af@kernel.org>
-In-Reply-To: <20260803125414.500138af@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 4 Aug 2026 08:36:40 -0700
-X-Gm-Features: AUfX_mzy5kYFIzbtflFGs3lGly5zlL2NqHWr9z7AMn8mNiMPfUlJW8TL4oWNol8
-Message-ID: <CAHS8izMK_GNTmoUnkNB4iJv-7msx0F+vugg+-dTCcyRxyk3YQA@mail.gmail.com>
-Subject: Re: [PATCH net v2 2/3] net: devmem: return EMSGSIZE on type mismatch
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
-	kerneljasonxing@gmail.com, kuniyu@google.com, bjorn@kernel.org, 
-	jiayuan.chen@linux.dev, kaiyuanz@google.com, willemb@google.com, 
-	asml.silence@gmail.com, sdf@fomichev.me, bobbyeshleman@gmail.com, 
-	fw@strlen.de, Neal Cardwell <ncardwell@google.com>, Ralf Lici <ralf@mandelbit.com>, 
-	Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2804995.1785858368.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
+Date: Tue, 04 Aug 2026 16:46:08 +0100
+Message-ID: <2804996.1785858368@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Mon, Aug 3, 2026 at 12:54=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Mon,  3 Aug 2026 17:14:40 +0000 Mina Almasry wrote:
-> > When a devmem payload mixes with a standard page payload, return
-> > -EMSGSIZE instead of -EFAULT. This enables tcp_sendmsg to seamlessly
-> > fall back to creating a new segment instead of failing the socket send.
->
-> Sure but AFAIU this was discovered during a ML discussion,
-> so the change is an improvement for net-next rather than a fix.
-> Do you have any reason to believe that real applications hit
-> the error?
->
+Simon Horman <horms@kernel.org> wrote:
 
-No, I don't have a reason; I just thought it was a straightforward fix
-you might want to take in net. I can definitely punt this to net-next.
-I'm a bit unsure whether you want this series reposted as v3 without
-this patch, or if you're going to take the other 2 patches. I guess if
-I don't see the rest merged I'll repost. Thanks!
+> [Severity: Critical]
+> This is a pre-existing issue, but is it safe to cast and dereference pee=
+r_data
+> here?
+> =
 
-> Also please add cover letters for submissions with more than 2 patches.
+> When a network CHALLENGE packet arrives and is processed in the OOB queu=
+e in
+> afs_respond_to_challenge(), it reads peer_data and casts it to an afs_se=
+rver
+> pointer.
+> =
 
-Will do, thanks! I'm slightly unsure about a commit message that
-basically says "Here a bunch of fixes to devmem reported by sashiko.",
-but I'll give that a shot.
+> Since the code dereferences this pointer without holding rcu_read_lock()=
+ or
+> taking a reference on the server object, what happens if the server is
+> concurrently destroyed or updated?
+> =
 
---=20
-Thanks,
-Mina
+> If peer_data is set to 0, this causes a direct NULL dereference. If the
+> server memory is freed, could this result in a use-after-free triggered =
+by a
+> remote attacker?
+
+Note that the OOB code is removed by these patches.
+
+The other two issues here need addressing, though for one of them, the fix
+will need to go via the vfs tree.
+
+David
+
