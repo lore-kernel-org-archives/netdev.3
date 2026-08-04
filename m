@@ -1,188 +1,163 @@
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E785A3E5A09
-	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 17:09:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785863412; cv=pass; b=LYbMhgEeaJFeWll+XHCimvkhIPEP8no8C/aa3pl13Pqmtx89PKRff46/rzBZD1iNPBNzgCLLAXg2IJWF+LFoP2DBKOSOe8plT1GcB8CtDOLON7JTk29kta37hc08ikSeY1kGvuiHPH2bvVTb47JgbOvRoXncZrwcBecoq+HORvU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785863412; c=relaxed/simple;
-	bh=qlNVDBjLr3ZY4uqSXXboWV38S/5DYsKm7VLU/yyEiVM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UdPgGgmvG/unuLqoyDXfLvJ5yW9t64xefsKOe0uZGEPHG8IaSOqmWN3rbW+06xTEgjLSN3zYP/lMgQFsWTFxImr1QhpidkU1O4bcyyL4UaB6ZbwE9DgqczCidSVd1Fb4Da9LBhHfsD7Zl8JQkOqii03MyqgqQ/Pekndf8QjA9hI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eec1unJ6; arc=pass smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF634347FFE
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 17:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785863708; cv=none; b=Yi1uKmWStGhA//IkLyZsf/Ajpu/JmtGFxDJKofLElCPt/CMWvsRsWfavRIvzkxFViw+OYpr/aoYOrqcvGOJa5utp+35Ao7Zz5s1i/5Eh+cXwCmhQvqFIkOJNj9ZArQu/16DyijXmt7NSnkApqqqdBzrvMKaZ1qe6jMERfwqIQ4Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785863708; c=relaxed/simple;
+	bh=CDg7R4z19rm3HhNKcpDry/8FXJmNNTW/k1bNkbouDnA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=op6VhvRS/Z5gskLW48jb14vZHuHEKSg8JchyDqfefc7RSQ4RMFvpfGJq9tG3zpWANe1E1fyLoildZPtr5heY1BMemKU3tM2gHRvKYqQoaV8cr3wKHlt8SSQx2ay4h/cYF321orp0qwRAJeR1+DVaY93Q3jyO21nU1dBgugp8gm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tmc0909F; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eec1unJ6"
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-4ab3c6f7f44so8886b6e.3
-        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 10:09:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785863396; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QSYQpd3ObPY6a8AEXYfTR8qzlcstow5vA3pc6gzLI+8I29+MDARyGA7pjp/tbixtz3
-         T6BKOgclzyZ6Kt2XfXNNbZgQFOOW4epQupDNAR/yNmL6bpAd/eG27e83Mx8F6uTfRej6
-         Bua29uFZB753yL/7FwyA/g2XXysgjSsSGZVYjYM0UzwK9avxTxgbNYZbPd3P6TdCWjtB
-         SmAc7CBPgnka5sP9v177f9QTVzkUfboUFio3DfLKP2TAjYy7J8AIHbxc3tTaAL1poOr0
-         5/3gMtzsxe59Bpehq7lQI+15RIBJQ+0wTKNLvHXsyPKeVZUZA8Y1f/nWgQNk4Xr6hu8x
-         3aOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=resBrknXGwVF7We6VuEyfyRafwvNfm4i3nwr4XTNczA=;
-        fh=5hojzL/mCb8XPbjzwu6FVia8VKCI/d7J4hj87T4AxRI=;
-        b=WPbiGC6sp1ArALlo/w1/f4Y+18SDe/F0dFlLYQ0zm6hv9NcVm5rB61JKgy2NPacB9e
-         mKRvlwrhy65yH09ISmoxlcI1Q+XsESZ0tOuGkXZ7xsC2MptOzpugcbtqpLLZOdt6O53q
-         uWUKcGt1H6j01rdWmXT8bjUg1Oernw+0feGSkstqbpDZi4ozRjzLJqciDsmsvdkIgVMN
-         1HQRhQQgg8+NcTrjQE377V1ILKabxad4OtiXvUBmJxd+GSa34SmpbsrOQFVo0KIFaj/6
-         EdwPE3olnorKVnaGgz1Rf+qwW0CVRk69oFXT8cjKlndUorpDPGVuIwcvRXUiK0Ep4GDb
-         bK1Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tmc0909F"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8486ac3f347so1374981b3a.1
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 10:14:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785863396; x=1786468196; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1785863693; x=1786468493; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=resBrknXGwVF7We6VuEyfyRafwvNfm4i3nwr4XTNczA=;
-        b=Eec1unJ6cD7LiZ9slbnIkpRWrNbwfEC/YTyz1oEmhdvtahTquI45v4epsnMbw3lXfn
-         EPTxtz/GUVHEYa4ZRwCXhPzIkEfTnszpKNTzD9DygYLn12naCvsRt6kt+mGwMFBigKpo
-         JGuuDDsC2xrttmQiK8YBNpKMxw8OAVUF3V6wT3Qcirh/VjIXKli5WqYNX4s9hIpYF0+T
-         nkg4z+MqEZzLDJuYxGWc2lE1+PhaaZ1Va2ArKgGb+zZkzIMEn0F+hWaB+c/V0Od1c5qB
-         3vNniq2GXYXpSOS/F1UZ9/faz9m3JuX8sEl0vsP+1uG3mDd3Y2ld1Wi/NzxrCdAO17Zp
-         mGoQ==
+        bh=+FyhIVgwr2eNJZrKd4apq3PGwedIYUrqhXnEIT+9gD0=;
+        b=Tmc0909Fbx4wvfuc8YQaau8WA430Z0l5R23o64tJN0MXXVaNqEr/lEgTnvwwM0p/YN
+         5PhTICdctolgRCT+oid4JmxUEtJiS1c5Zu+m7haLWGeXWc/ryZXOzDkfj2vfcG1tDUtI
+         1tSB0Sx+hLPHTC63EkJ/O6/DdN+aRno8s2kSCfzPWrlgmX1Ozpk7tW4sH2CX6huUhwn3
+         P8X01kMYx06vJzxJt0qEvvd8n817HdLOgQXbYdCIYaOmH/k7uzEMbYeIcU2mdbFL3uUX
+         Zzftbi0Q8Ak4mw/G4IiaT1hXx4BhFEJ8Wy3tAKkIt6Zs3fK+YhzQc4YYdQ79QjuS7Jc3
+         awyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785863396; x=1786468196;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1785863693; x=1786468493;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=resBrknXGwVF7We6VuEyfyRafwvNfm4i3nwr4XTNczA=;
-        b=qTLDmrTLlgiwBQxsolPaRILRVnbmTOSuaAJq/rIcyQ1mpCqXwOavEfw+bOeP49VSYX
-         dMAaImWwwjm912KOEIqPBjObGnIOZDi4Bn3no4Txf/2PiGkUdp6xT0DJi9O6w8Qvk2Ee
-         oa5Iz01KKxnji3T9fIaGKaK2VFE9849155JGdNNvGgANv2RgLIQ5Y3Z1igRqUL2/PS+S
-         yujBftuWiVQCnoS35zgD+BUS/yjDMU6tyxC9l9gYX+F8XoXItnD0nAvSklw70SAIpX6w
-         V8smH04uGhPTSxJzOGS/V1wDgrqTKrcbjXbAKH11/uZGAs+uX4Ppg/qTuzGX1SozOIwg
-         U9Rg==
-X-Forwarded-Encrypted: i=1; AHgh+RpbFYVG+uhp6yM0q8ZtU5KUlNoVNjSzDZ8y5nX4CNjHQcGBpVZ9p2LcrH67aPjwt1MRCJBG5i0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5tsKKozN6KBMCRq+R5F3VP5FWWfw3YthmnqC9NrRmu6fh85tw
-	FUqdp2Wdt9XjBpXsz2nQE6/xBXhxMGbFH3MDFO7YJCR9y0wHiFwa3rsAaHshJXDIvrNA3tUST74
-	akr21HNY8BJsaiAl+jzsXuUVimGu+a58=
-X-Gm-Gg: AR+sD10g+BfdwAzfmIeNu5bhilZ7X2GyvLYavEC//CH/DlaR/gYeMdvsBxRCocGv6n2
-	CkGSoNfk8MYrJz91LjTnlfBwYJjFqgDfW6oWM/gDywKlX0Gb/8iW+EmAyiKlckSuawsglXGh87L
-	DyVRIe3dq207DbzfRLwsMlvl+AVBUiKQYvnReoxPsTbKoZ5io1Y/7gAZ6pi9ggy011x0rORpBZn
-	Nmeu+KMTbVwvhJOGKlGMRcE2PXjh+f3CZeYZwGFKhT6akZqCY5xnYbBOnjqUuDDgPxFpqNbQwY7
-	hRyTiUtMAVv/8Wsn4sNXRDu4XUecnVU1xHLZzRJffS5tb89E4kBCswEul6tD22RCBWuV9O9+
-X-Received: by 2002:a05:6808:1588:b0:4af:5d69:1cb8 with SMTP id
- 5614622812f47-4afadbf4d3amr100488b6e.0.1785863395341; Tue, 04 Aug 2026
- 10:09:55 -0700 (PDT)
+        bh=+FyhIVgwr2eNJZrKd4apq3PGwedIYUrqhXnEIT+9gD0=;
+        b=kBYHQrL3NuNBPzGqppJ8Y64bDYG4Md2+JG0T4cneiR2daxksj4pZAxuDWrNEq5QJ+6
+         QrrNVMCcmrwBpuTiRJCZRfat5fWVfmos7pPLMrGkqEGy7gelCUuQgPbMP1LhjHIl7ra6
+         f86e7ZLIr+fljfkMJ2/EEP+aYOO2rZL0A78pgnL7ZOzH/jek95f5Sx/5TqZM5vTSP/HR
+         E/Vrl7NxgjyZozOlXOYonRSrZAGMQ9qbBk90Hri4ydcA5v7Kcpu6A9l0HLKhLvwr6Dmf
+         WqF4gPr1w/QiCtf2oLr+rJC7NJsAjuLWk49JrvUhwEfkyXujajAH9T+/ldh9z0nt+H6Q
+         /mHA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr/Fo+Rn7CcAYdmn2irfa5k4pQ0ZZPfdy8WDVLMWJs2bIVcPXEhTZK3A7yExBzraKoS8JBwsx8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmvvgmUZ+l9bEWJGoy77JlnFKqecT/TNbzk0dc0TolP032MWzh
+	BRNQcv9rzi8ljuipzEP9mBxhB4U/DsYZMG9sT5gOgVob6/gKMKjS3VX5
+X-Gm-Gg: AR+sD117W8kt7Ndsk26jzrnu3txSI9+up7du7Fq/ibCpQus1+rxZLefJB86nStucqXy
+	nuI3o7+kyWeVSPtHLV/Qf1FENTycCmcQWQEQOLPkYLx0QiLevwPRG/6yGjjdguXmaOzqTHxqFJC
+	EvBQun0A+Cwe/HTz9u80xjCZUG+4YW7tRPrp1cklW7OnLbJZt4W2zipUccWZjJldsx5xZOc5WrY
+	ul7zfeD04glDsk82/ssGBSsVh4GqUx2uJDyGIKpU81ll5HPDh302F3+v34xIHOm0eJy+XId8XfG
+	8BSqTZqFjNo4zZcvC4Dk7yrNRlKtNTgNHmN1dSy3Vv7ug1aoz85k0Gv1B6+piVZh0bmlf3+ah0D
+	fBaDWANCu1J61IewoeDWwPDsoFxA+TeqjOKUQPgX5fzrancnhalcpPR7PtZ20I1tX1IcHdQpS9J
+	K/dsQ0VYNSdLO9PikQXsQaf3h2DwcYz8BLDJISZCkIJujKp9dgwV2fUelDBa2XZCrxqflrN0YNU
+	ichy3BU5Q==
+X-Received: by 2002:a05:6a00:12c9:b0:848:50ef:4157 with SMTP id d2e1a72fcca58-84f1cb966c9mr4481009b3a.27.1785863692576;
+        Tue, 04 Aug 2026 10:14:52 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4a::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe707c9970sm77984a12.6.2026.08.04.10.14.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 10:14:51 -0700 (PDT)
+Date: Tue, 4 Aug 2026 10:14:49 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net v3] net/mlx5e: fix BQL reset on SQ re-activation
+Message-ID: <anIeCTh6IUJaP2mz@devvm29614.prn0.facebook.com>
+References: <20260803-mlx5-bql-v3-1-a30d4c66fe1d@meta.com>
+ <6ac643bf-c6f4-4ff2-ba57-964a645d9323@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260803-netcons-userdata-rcu-v1-0-1e5e6b62b75d@debian.org> <20260803-netcons-userdata-rcu-v1-1-1e5e6b62b75d@debian.org>
-In-Reply-To: <20260803-netcons-userdata-rcu-v1-1-1e5e6b62b75d@debian.org>
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Tue, 4 Aug 2026 18:09:44 +0100
-X-Gm-Features: AUfX_mz0x1sNnb8P41S_VG9EDQAZvd5FxVLF-LnA8kzMUMUHAspc7VDEE8Ne7Fs
-Message-ID: <CAGSyskVKAwf8nb_3uFDbYUugR+dtO-cwSef8C9nSEgKZt_K=CQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] netconsole: publish the userdata payload
- with RCU
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, asantostc@gmail.com, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6ac643bf-c6f4-4ff2-ba57-964a645d9323@nvidia.com>
 
-On Mon, Aug 3, 2026 at 12:30=E2=80=AFPM Breno Leitao <leitao@debian.org> wr=
-ote:
->
-> update_userdata() takes target_list_lock to swap nt->userdata and
-> nt->userdata_length, then frees the old buffer. Since commit
-> 7eab73b18630 ("netconsole: convert to NBCON console infrastructure")
-> that lock is also the console's device_lock, so writing a userdata value
-> from configfs serialises against the printk core emitting messages.
->
-> The buffer is immutable once published, which is what RCU is for. Move
-> the string and its length into a single netconsole_userdata object and
-> publish it with rcu_replace_pointer(), freeing the old one with
-> kfree_rcu().
->
-> New userdata design:
->
-> 0) Unify the userdata fields into a struct netcons_userdata
-> 1) update_userdata() no longer needs target_list_lock.
-> 2) writers stay serialised by dynamic_netconsole_mutex.
-> 3) reading userdata needs an RCU read lock.
->
-> No functional change intended.
->
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  drivers/net/netconsole.c | 88 +++++++++++++++++++++++++++++-------------=
-------
->  1 file changed, 54 insertions(+), 34 deletions(-)
->
-> diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-> index 862001d09aa84..c88c82f2136cb 100644
-> --- a/drivers/net/netconsole.c
-> +++ b/drivers/net/netconsole.c
-> @@ -135,13 +135,27 @@ enum target_state {
->         STATE_DEACTIVATED,
->  };
->
-> +/**
-> + * struct netcons_userdata - Formatted userdata payload of a target.
-> + * @rcu:       Used to free the payload after a grace period.
-> + * @length:    Length of @data, excluding the NUL terminator.
-> + * @data:      Formatted " key=3Dvalue\n" entries, NUL terminated.
-> + *
-> + * Immutable once published, so the transmit path never observes @data a=
-nd
-> + * @length disagreeing.
-> + */
-> +struct netcons_userdata {
-> +       struct rcu_head         rcu;
-> +       size_t                  length;
-> +       char                    data[];
-> +};
-> +
->  /**
->   * struct netconsole_target - Represents a configured netconsole target.
->   * @list:      Links this target into the target_list.
->   * @group:     Links us into the configfs subsystem hierarchy.
->   * @userdata_group:    Links to the userdata configfs hierarchy
-> - * @userdata:          Cached, formatted string of append
-> - * @userdata_length:   String length of userdata.
-> + * @userdata:          Cached, formatted userdata payload. RCU protected=
-.
->   * @sysdata:           Cached, formatted string of append
->   * @sysdata_fields:    Sysdata features enabled.
->   * @msgcounter:        Message sent counter.
-> @@ -176,8 +190,7 @@ struct netconsole_target {
->  #ifdef CONFIG_NETCONSOLE_DYNAMIC
->         struct config_group     group;
->         struct config_group     userdata_group;
-> -       char                    *userdata;
-> -       size_t                  userdata_length;
-> +       struct netcons_userdata __rcu *userdata;
+On Tue, Aug 04, 2026 at 11:23:53AM +0300, Tariq Toukan wrote:
+> 
+> 
+> On 04/08/2026 2:47, Bobby Eshleman wrote:
+> > From: Bobby Eshleman <bobbyeshleman@meta.com>
+> > 
+> > mlx5e_queue_start() deactivates and re-activates all channels but closes
+> > only the queue being restarted. mlx5e_activate_txqsq() then
+> > unconditionally calls netdev_tx_reset_queue(), zeroing the BQL counters
+> > of channels that kept their in-flight TX WQEs. The next completion then
+> > over-charges and trips the BUG_ON() in dql_completed():
+> > 
+> >    kernel BUG at lib/dynamic_queue_limits.c:99!
+> >    RIP: 0010:dql_completed+0x23d/0x280
+> >    Call Trace:
+> >     <IRQ>
+> >     mlx5e_poll_tx_cq+0x668/0xa60
+> >     mlx5e_napi_poll+0x5b/0x7b0
+> >     net_rx_action+0x15a/0x580
+> > 
+> > Reset BQL only when the SQ has no bytes in flight (sq->cc == sq->pc).
+> > 
+> > In the case that reset is skipped, the outstanding WQEs will eventually
+> > complete and rebalance the dql. The dql->limit is carried across the
+> > reset.
+> > 
+> > Fixes: b2588ea40ec9 ("net/mlx5e: Implement queue mgmt ops and single channel swap")
+> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> 
+> Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+> 
+> Thanks.
 
-With userdata now annotated with __rcu, it should be freed with
-kfree(rcu_access_pointer(nt->userdata)) to avoid a sparse warning:
+Thanks Tariq, and my apologies for forgetting to carry the R-b forward.
 
-$ make C=3D1 drivers/net/netconsole.o
-  DESCEND objtool
-  DESCEND bpf/resolve_btfids
-  INSTALL libsubcmd_headers
-  CC      drivers/net/netconsole.o
-  CHECK   drivers/net/netconsole.c
-drivers/net/netconsole.c:1702:17:    expected void const *objp
-drivers/net/netconsole.c:1702:17:    got struct netcons_userdata
-[noderef] __rcu *userdata
-drivers/net/netconsole.c:2689:17:    expected void const *objp
-drivers/net/netconsole.c:2689:17:    got struct netcons_userdata
-[noderef] __rcu *userdata
+> 
+> > ---
+> > Changes in v3:
+> > - Sample sq->cc/sq->pc before setting MLX5E_SQ_STATE_ENABLED, so a
+> >    concurrent mlx5e_poll_tx_cq() cannot un-charge BQL between the check
+> >    and netdev_tx_reset_queue() (Sashiko:
+> >    https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260729-mlx5-bql-v2-1-cdf285e586df@meta.com)
+> > - Link to v2: https://lore.kernel.org/r/20260729-mlx5-bql-v2-1-cdf285e586df@meta.com
+> > 
+> > Changes in v2:
+> > - remove misleading comment (Tariq)
+> > - Link to v1: https://lore.kernel.org/r/20260728-mlx5-bql-v1-1-99a0ab77ede7@meta.com
+> > ---
+> >   drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 4 +++-
+> >   1 file changed, 3 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> > index 7d47a1da8b6b..f0407a850ea8 100644
+> > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> > @@ -1939,8 +1939,10 @@ int mlx5e_open_txqsq(struct mlx5e_channel *c, u32 tisn, int txq_ix,
+> >   void mlx5e_activate_txqsq(struct mlx5e_txqsq *sq)
+> >   {
+> >   	sq->txq = netdev_get_tx_queue(sq->netdev, sq->txq_ix);
+> > +	/* Reset BQL only when the SQ has no bytes in flight. */
+> > +	if (sq->cc == sq->pc)
+> > +		netdev_tx_reset_queue(sq->txq);
+> >   	set_bit(MLX5E_SQ_STATE_ENABLED, &sq->state);
+> > -	netdev_tx_reset_queue(sq->txq);
+> >   	netif_tx_start_queue(sq->txq);
+> >   	netif_queue_set_napi(sq->netdev, sq->txq_ix, NETDEV_QUEUE_TYPE_TX, sq->cq.napi);
+> >   }
+> > 
+> > ---
+> > base-commit: d1000fd7995e51deec872d154e0a40d82f7a539f
+> > change-id: 20260728-mlx5-bql-84e02a5a46c8
+> > 
+> > Best regards,
+> 
