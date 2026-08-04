@@ -1,57 +1,57 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48851456DFF;
-	Tue,  4 Aug 2026 10:47:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF6F4570FC;
+	Tue,  4 Aug 2026 10:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785840462; cv=none; b=MqfY8wlth7UIZn22rVJNyqv0uVKXHmKqxmPVB8X/4Xa1ZQNMrEfp9ij9n56owdMFkdgxNfVcFhyUBEbCHh2Ob7rmanhVLB9n5yGjJKYARXqUAY7fMDDSKtzOKhCxlOi+dsJbh6Ijx9mznJgSxqAzNCnoSI4qPXkLljoWnR/2tQc=
+	t=1785840469; cv=none; b=MvgZRPMP3RBp6jx9NbcVeAznmz3QuwwVgsZ32U4mDXkSZ1szGwfkas7bDrjdw/Ocg5PZt/WsmAhu4+AAlFKOZVRNObppR9jOL04ynU0NxKBRuNdOOACF7qlkRZdyQq9cYekIrTGXM48rST4dwDH6Y0wav/0Gw/ftbrJWtqwZPmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785840462; c=relaxed/simple;
-	bh=drbnUMv18ZtVshaKdIX4hW2NOYCNhGiHinT1w3T+AQI=;
+	s=arc-20240116; t=1785840469; c=relaxed/simple;
+	bh=/dpO4jY7C+3xkd+d5JBll0zkv5HbcXRZpMM2U+bil7c=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XrH4FnwI0M7LZonrboLPviFCQPA1ttO4amIvG2QWvYYiCMPJlUv2AlYk4gZCltCAUWx3nNPaiq9Vph3OKgD20SgsZ9l/4aO71uMgeMLEsjrHRMlw3dObcGAbbb3HZnbsWizLXrddRNBMU3De3iIUIdb59L6a6d92PX1npQ37HnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=RQWd49D5; arc=none smtp.client-ip=67.231.148.174
+	 MIME-Version:Content-Type; b=iuVu8i7g0M6hdU+RKH0dHORdlAewR0sbRfb6nTWWw1ByP6uAe9xaZuwNi1L5Cl0Wyw17aKnmam/RiDdQS8wqhxzC0xmCdIchuZ27beqelmgITkRJaCHApZ8xMuTqFUy+pOE4Yr7+VuUNQgPE2ZO6A1d45NogAdF8z/OmG23KBRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=IXp3DFCQ; arc=none smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="RQWd49D5"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6749c0s22676640;
-	Tue, 4 Aug 2026 03:47:32 -0700
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="IXp3DFCQ"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674AaQPF2878027;
+	Tue, 4 Aug 2026 03:47:36 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=Q
-	rKGvtn5E0FL2fM4UmFJLkATfybhTxeou5LkBiGE5NM=; b=RQWd49D5IuOf5FBYl
-	8XjpkmR8QDpVpBexuNWcBiMp7IYvR2lBhKJIYf/0LeMIgL3tWQ6APmH7Tb/9Lw90
-	Ex7n2Y9VJu7lbx48VhawwpMmIZXloFCvydGLdCJ6nv6bU1RzCgBzmwHpq9e0pO4X
-	Wo++8FReTAFKBOj2C1xNIal3zQkzIeSEdFzlsxMeTqiuJhQsFHk7vyjXb3IFZAR5
-	2YBkJgdH0jBJMXn1bZAcMy9cqqH8MtT5wGDNhNRopaZlr1G757swOl0TWsL0XXG/
-	xHwpgVgyXSurE2YhtVJX1QcVlGUW9qwtpHOyo8sJZjsRNaQuFnGTdzj5s6CooWx0
-	bq77A==
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=M
+	kQHLSkEukjxoXX7TSbZq9ehGVJXD0K7CLiO3nnDegI=; b=IXp3DFCQaS83QBHq9
+	6reV49Q682hyMy0cIvomF3x7JuHr+XKy6mXmOxFzran14wu1UG/HAtn/O/roxHGP
+	ngXr4rtuOp9oSDSxI5LB+z0A6srNFKMy7IM2zKX+mehYcqVmCik8gXauWNdTPrO2
+	qcM7bkiqRmg57c3XwmMHPKrcOL33CGudDmv2L7OxTqsVH5FDyz4FiRhHkgsm1Ek3
+	sI3/9EUsf35c/ZO0INW4hBAqFK1/XbVdIIOkPlJNhVjII8/0mPtcRZRQ+G4vFRvG
+	W68cEW6JHwDfKWuVHt0TY0MzkxeZaLLmxa1iH6QR3BLbmmN/j4kmukav2vxGKA+g
+	/XXgQ==
 Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ft5266q0b-1
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fu4pfsm39-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Aug 2026 03:47:32 -0700 (PDT)
+	Tue, 04 Aug 2026 03:47:35 -0700 (PDT)
 Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
  DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 4 Aug 2026 03:47:31 -0700
+ 15.2.1544.25; Tue, 4 Aug 2026 03:47:35 -0700
 Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
  (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 4 Aug 2026 03:47:31 -0700
+ Transport; Tue, 4 Aug 2026 03:47:35 -0700
 Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 1F76A5B693A;
-	Tue,  4 Aug 2026 03:47:27 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id AB2A35B693A;
+	Tue,  4 Aug 2026 03:47:31 -0700 (PDT)
 From: Ratheesh Kannoth <rkannoth@marvell.com>
 To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
 CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
         <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
         "Ratheesh
  Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH v7 net-next 5/9] octeontx2-af: switch: TL1 scheduling and NPC channel control
-Date: Tue, 4 Aug 2026 16:17:02 +0530
-Message-ID: <20260804104706.120996-6-rkannoth@marvell.com>
+Subject: [PATCH v7 net-next 6/9] octeontx2-pf: switch: Register notifiers for switch offload
+Date: Tue, 4 Aug 2026 16:17:03 +0530
+Message-ID: <20260804104706.120996-7-rkannoth@marvell.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260804104706.120996-1-rkannoth@marvell.com>
 References: <20260804104706.120996-1-rkannoth@marvell.com>
@@ -63,559 +63,1486 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=VdbH+lp9 c=1 sm=1 tr=0 ts=6a71c344 cx=c_pps
+X-Proofpoint-GUID: WNKs_7Y2_NciaWrfEkJ-7NWfR-aEGz6j
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDA4NSBTYWx0ZWRfX5HwbclEhnHY8
+ mPRANsxZZkiMSfmuzlz84QRZkmhNSOFFrkclFwBPaNvV9hTG6RQzpSw9H0OJo8y+bN2o8b9sAJc
+ mFz1xEDZJQZnM0gpUrQ+pNRo/o3s2FG2Nxio6DjaqHA284ClGQg5jGRt9kllaUpGEm4LLh8DpZJ
+ FhGb6JRQR+8nLQWpN1CVLU9UtZPz8pR57BYFAYwTxesGF31qfqkYYrAn5wcD4RXHOXH+cni+0GV
+ U7llX4YEtxxFUh4i5P+8eOi3bNqbZ7FVutcmMWQuhpNzuLps9J8eUYFPxqlcjK3wE4r2QB85XG8
+ 2VYzT57TBBF/T7IWaVCrqxA6PcknNvpF22yIyjyZOn+w6sPCghHVGSlPOIfx9Ae0EVLUHAorw3I
+ tsOCUfsnnY7DbZwenc6YWdGcn45CT1DqVRnMnCr8IPMxYEgiWg8QY3cwTC5KRdfhxX4oI1onaWm
+ PVmpaV088P7btGz2PHQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDA4NSBTYWx0ZWRfX2evF/2dWzM7O
+ N0UOqF6ljGAaW4OPc2a83akOUNxrtJNrISRSFdl5atq6Qgb/s1RDEuWdI0kgI2KIc1Fk9qCqPWl
+ jlzu6HslBwG3FWRWb+sX5VMR9OdzDcE=
+X-Proofpoint-ORIG-GUID: WNKs_7Y2_NciaWrfEkJ-7NWfR-aEGz6j
+X-Authority-Analysis: v=2.4 cv=TPx1jVla c=1 sm=1 tr=0 ts=6a71c348 cx=c_pps
  a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
  a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8 a=b2e9Q_Z-T6RzkBTqyW8A:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: MBWghnkIlvtcwD5UjWuenKQ4bpWisSUG
-X-Proofpoint-GUID: MBWghnkIlvtcwD5UjWuenKQ4bpWisSUG
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDA4NSBTYWx0ZWRfX85j7RlGziu/l
- zQwQCenmmAoCmqbGM7XxAqRCaYaXkcVUQPg9TuJEXyyfFZspEMva5YSL6wHF8y9pkoIepEjuc2Z
- n2h8gjDJDYiD7RrvAyYagbP18ahh42I=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDA4NSBTYWx0ZWRfX3SP0yGHb9QJS
- a89HC0NR2gZEOrqnwGBgQMs7/kXKTcX1XLsf/bp0+ZX05HQkuciMQwWPQuOpNRXeN30A9bZ+NEF
- +k13wInDAVuzWUIgjwUV8kTplYscEO/5e4uuL2rOOI+B9AUya0m8Onwlf2wEQEHKX24C1XMCstL
- prGBYCtZHGeroYyvnpwxCiN3W7JyEZQt48WinSc4s4yY3tdNZqBx3g/BaddKWBHzx4QsxctXIJq
- GPE3o2VSVEc0jZkuMyKslaiirsvlgYWjwm+2pY1J12QXl6KqEOCti3u3Qsdzs+WEUr2zUIQut9S
- Iz6DOY9h8AKauIofNaPzvcx0tyZQHnnkKRbBg97KyLDC+9k3uWEXyNvQJfVj6Qb8YQFcA6MxOYA
- BuNVW1fzDxiEVM50yTUVN8FDWOlTqkSMzbK72gA765gFrxJwVvGveSYZK7SbaE1TtYxhGbuqxlR
- UZk06pJcSF4sICPqGYQ==
+ a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=8wW_avamfZ6aU7XiXjQA:9
+ a=O8hF6Hzn-FEA:10 a=OBjm3rFKGHvpk9ecZwUJ:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-04_02,2026-08-03_02,2025-10-01_01
 
-Switch (PAN) mode needs more than one TL1 scheduler queue index so the
-hardware can steer traffic to different links according to NPC flow
-rules, not only the PF/VF default Tx link.
-Add NIX_TXSCH_ALLOC_FLAG_PAN to nix_txsch_alloc requests: use the PAN
-link index for scheduler range calculation, allow multiple TL1 queues
-when the aggregate level spans start..end, and allocate indices in
-that range. Add TXSCHQ_FREE_PAN_TL1 so TL1 entries in that path can be
-freed via nix_txsch_free where they were previously skipped.
-For NPC install flow, add set_chanmask so callers can keep a non-default
-chan_mask when the requester is not the AF; without it, chan_mask was
-always forced to 0xFFF for non-AF functions.
-Allocate the NIX LF SQ bitmap with the same span used by
-bitmap_weight(..., BITS_PER_LONG * 16) in rvu_get_hwinfo().
-Extend struct sg_list with cq_idx and len for transmit-side metadata.
+The representor enables switch mode via devlink; register and unregister
+the switch notifier blocks when that mode is turned on or off so the PF
+can observe FIB routes, neighbour updates, IPv4/IPv6 address changes,
+netdev state, and switchdev FDB notifications.
+Add sw_nb_v4.c and sw_nb_v6.c for IPv4 and IPv6-specific handling, build
+sw_nb_v6.o only when CONFIG_IPV6 is set, and extend sw_nb.c with device
+filtering for Cavium ports behind bridges and VLANs.
+Initialize and tear down the existing sw_fdb, sw_fib, and sw_fl helpers
+together with notifier registration.
 
 Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 ---
- .../net/ethernet/marvell/octeontx2/af/mbox.h  |  15 ++
- .../net/ethernet/marvell/octeontx2/af/rvu.c   |  25 ++-
- .../net/ethernet/marvell/octeontx2/af/rvu.h   |   6 +
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 180 ++++++++++++++++--
- .../marvell/octeontx2/af/rvu_npc_fs.c         |  20 +-
- .../marvell/octeontx2/nic/otx2_txrx.h         |   2 +
- 6 files changed, 217 insertions(+), 31 deletions(-)
+ .../ethernet/marvell/octeontx2/nic/Makefile   |  13 +-
+ .../net/ethernet/marvell/octeontx2/nic/rep.c  |  40 +-
+ .../marvell/octeontx2/nic/switch/sw_nb.c      | 541 +++++++++++++++++-
+ .../marvell/octeontx2/nic/switch/sw_nb.h      |  37 +-
+ .../marvell/octeontx2/nic/switch/sw_nb_v4.c   | 359 ++++++++++++
+ .../marvell/octeontx2/nic/switch/sw_nb_v4.h   |  21 +
+ .../marvell/octeontx2/nic/switch/sw_nb_v6.c   | 299 ++++++++++
+ .../marvell/octeontx2/nic/switch/sw_nb_v6.h   |  21 +
+ 8 files changed, 1322 insertions(+), 9 deletions(-)
+ create mode 100644 drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v4.c
+ create mode 100644 drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v4.h
+ create mode 100644 drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v6.c
+ create mode 100644 drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v6.h
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index 3176f952c969..60e25c1dcc3a 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -1160,6 +1160,13 @@ struct nix_txsch_alloc_req {
- 	/* Scheduler queue count request at each level */
- 	u16 schq_contig[NIX_TXSCH_LVL_CNT]; /* No of contiguous queues */
- 	u16 schq[NIX_TXSCH_LVL_CNT]; /* No of non-contiguous queues */
-+	/* Set only by the single switchdev PF (rvu->rswitch.pcifunc). This is
-+	 * not the eswitch representor (rvu->rep_pcifunc). That PF requests two
-+	 * aggregate-level TL2 queues on the PAN link, one for CGX and one for
-+	 * SDP steering. No other PF or VF sets this flag.
-+	 */
-+#define NIX_TXSCH_ALLOC_FLAG_PAN BIT(0)
-+	u32 flags;
- };
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/Makefile b/drivers/net/ethernet/marvell/octeontx2/nic/Makefile
+index 27590b94133b..6050228be067 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/Makefile
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/Makefile
+@@ -11,7 +11,18 @@ rvu_nicpf-y := otx2_pf.o otx2_common.o otx2_txrx.o otx2_ethtool.o \
+                otx2_flows.o otx2_tc.o cn10k.o cn20k.o otx2_dmac_flt.o \
+                otx2_devlink.o qos_sq.o qos.o otx2_xsk.o switch/sw_fdb.o \
+ 	       switch/sw_fl.o
+-rvu_nicpf-$(CONFIG_OCTEONTX_SWITCH) += switch/sw_nb.o switch/sw_fib.o
++rvu_nicpf-$(CONFIG_OCTEONTX_SWITCH) += switch/sw_nb.o switch/sw_fib.o \
++				       switch/sw_nb_v4.o
++# sw_nb_v6.o calls IPv6 symbols exported by the ipv6 module; only link it
++# when those symbols are reachable (IPv6 built-in, or both driver and IPv6
++# are modules).
++ifeq ($(CONFIG_IPV6),y)
++rvu_nicpf-$(CONFIG_OCTEONTX_SWITCH) += switch/sw_nb_v6.o
++else ifneq ($(CONFIG_IPV6),)
++ifeq ($(CONFIG_OCTEONTX2_PF),m)
++rvu_nicpf-$(CONFIG_OCTEONTX_SWITCH) += switch/sw_nb_v6.o
++endif
++endif
  
- struct nix_txsch_alloc_rsp {
-@@ -1178,6 +1185,10 @@ struct nix_txsch_alloc_rsp {
- struct nix_txsch_free_req {
- 	struct mbox_msghdr hdr;
- #define TXSCHQ_FREE_ALL BIT_ULL(0)
-+	/* Frees PAN TL2 queues allocated with NIX_TXSCH_ALLOC_FLAG_PAN. Used
-+	 * only by the switchdev PF (rvu->rswitch.pcifunc), not by other PFs/VFs.
+ rvu_nicvf-y := otx2_vf.o
+ rvu_rep-y := rep.o
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+index 257a2ae6a53e..52960c8d2f41 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+@@ -15,6 +15,7 @@
+ #include "cn10k.h"
+ #include "otx2_reg.h"
+ #include "rep.h"
++#include "switch/sw_nb.h"
+ 
+ #define DRV_NAME	"rvu_rep"
+ #define DRV_STRING	"Marvell RVU Representor Driver"
+@@ -399,22 +400,57 @@ static void rvu_rep_get_stats64(struct net_device *dev,
+ 
+ static int rvu_eswitch_config(struct otx2_nic *priv, u8 ena)
+ {
++#if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
++	struct net_device *netdev = priv->netdev;
++#endif
+ 	struct devlink_port_attrs attrs = {};
+ 	struct esw_cfg_req *req;
++	int mbox_err;
++#if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
++	int err;
++#endif
+ 
+ 	rvu_rep_devlink_set_switch_id(priv, &attrs.switch_id);
+ 
++#if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
++	/* Disable unregisters PF notifiers before ESW_CFG clears rep_mode on
++	 * the AF.  unregister_*_notifier() removes each block synchronously,
++	 * so there is no window where the AF considers the eswitch off while
++	 * sw_nb_* handlers remain registered and could still send mailbox
++	 * traffic (that race existed only when disable ran after the mailbox).
 +	 */
-+#define TXSCHQ_FREE_PAN_TL1 BIT_ULL(1)
- 	u16 flags;
- 	/* Scheduler queue level to be freed */
- 	u16 schq_lvl;
-@@ -2129,6 +2140,10 @@ struct npc_install_flow_req {
- 	u8 hw_prio;
- 	u8  req_kw_type; /* Key type to be written */
- 	u8 alloc_entry;	/* only for cn20k */
-+	/* When set, keep caller chan_mask instead of the CPT default. Only
-+	 * honored for the switchdev PF; see rvu_mbox_handler_npc_install_flow().
-+	 */
-+	u8 set_chanmask;
- /* For now use any priority, once AF driver is changed to
-  * allocate least priority entry instead of mid zone then make
-  * NPC_MCAM_LEAST_PRIO as 3
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index 2a5070c56bdb..a675cb79a285 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -1990,18 +1990,29 @@ int rvu_mbox_handler_msix_offset(struct rvu *rvu, struct msg_req *req,
++	if (ena) {
++		err = sw_nb_register(netdev);
++		if (err)
++			return err;
++	} else {
++		err = sw_nb_unregister(netdev);
++		if (err)
++			return err;
++	}
++#endif
++
+ 	mutex_lock(&priv->mbox.lock);
+ 	req = otx2_mbox_alloc_msg_esw_cfg(&priv->mbox);
+ 	if (!req) {
+ 		mutex_unlock(&priv->mbox.lock);
++#if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
++		if (ena)
++			sw_nb_unregister(netdev);
++#endif
+ 		return -ENOMEM;
+ 	}
+ 	req->ena = ena;
+ 	memcpy(req->switch_id, attrs.switch_id.id, attrs.switch_id.id_len);
+-	otx2_sync_mbox_msg(&priv->mbox);
++	mbox_err = otx2_sync_mbox_msg(&priv->mbox);
+ 	mutex_unlock(&priv->mbox.lock);
+-	return 0;
++
++#if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
++	if (ena && mbox_err)
++		sw_nb_unregister(netdev);
++#endif
++
++	return mbox_err;
+ }
+ 
+ static netdev_tx_t rvu_rep_xmit(struct sk_buff *skb, struct net_device *dev)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c
+index 243611835e3a..724ce154c812 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c
+@@ -4,18 +4,555 @@
+  * Copyright (C) 2026 Marvell.
+  *
+  */
++#include <linux/kernel.h>
++#include <linux/netdevice.h>
++#include <linux/etherdevice.h>
++#include <net/switchdev.h>
++#include <net/netevent.h>
++#include <net/arp.h>
++#include <net/route.h>
++#include <linux/inetdevice.h>
++#include <net/addrconf.h>
++
++#include "../otx2_reg.h"
++#include "../otx2_common.h"
++#include "../otx2_struct.h"
++#include "../cn10k.h"
+ #include "sw_nb.h"
++#include "sw_fdb.h"
++#include "sw_fib.h"
++#include "sw_fl.h"
++#include "sw_nb_v4.h"
++#include "sw_nb_v6.h"
+ 
+ #if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
+ 
+-int sw_nb_unregister(void)
++/* PF netdev for netdev_* logging when notifier info has no device */
++static struct net_device *sw_nb_pf_netdev;
++/* Notifier registration is toggled only from rvu_eswitch_config(), which is
++ * reached exclusively when switchdev mode is enabled on the RVU eswitch
++ * representor PF (PCI_DEVID_RVU_REP). The sole call path is:
++ *
++ *   DEVLINK_CMD_ESWITCH_MODE_SET
++ *     -> otx2_devlink_eswitch_mode_set()  [otx2_rep_dev() only]
++ *       -> rvu_rep_create() / rvu_rep_destroy()
++ *         -> rvu_eswitch_config(ena = 1) -> sw_nb_register()
++ *         -> rvu_eswitch_config(ena = 0) -> sw_nb_unregister()
++ *
++ * On disable, sw_nb_unregister() runs before the ESW_CFG mailbox so flush
++ * paths in sw_fdb/fib/fl_deinit() can still reach hardware.
++ *
++ * Other OcteonTX2 netdev PFs/VFs also have a devlink, but their
++ * eswitch_mode_set handler returns -EOPNOTSUPP. The AF rvu_devlink
++ * eswitch_mode_set does not register these notifiers. There is exactly
++ * one RVU_REP PCI function (and netdev devlink) per RVU, and devlink
++ * core holds devlink->lock for the full DEVLINK_CMD_ESWITCH_MODE_SET
++ * handler, so this path cannot run concurrently on the same device.
++ * sw_nb_registered further ensures at most one active registration.
++ */
++static bool sw_nb_registered;
++
++static const char *sw_nb_cmd2str[OTX2_CMD_MAX] = {
++	[OTX2_DEV_UP]  = "OTX2_DEV_UP",
++	[OTX2_DEV_DOWN] = "OTX2_DEV_DOWN",
++	[OTX2_DEV_CHANGE] = "OTX2_DEV_CHANGE",
++	[OTX2_NEIGH_UPDATE] = "OTX2_NEIGH_UPDATE",
++	[OTX2_FIB_ENTRY_REPLACE] = "OTX2_FIB_ENTRY_REPLACE",
++	[OTX2_FIB_ENTRY_ADD] = "OTX2_FIB_ENTRY_ADD",
++	[OTX2_FIB_ENTRY_DEL] = "OTX2_FIB_ENTRY_DEL",
++	[OTX2_FIB_ENTRY_APPEND] = "OTX2_FIB_ENTRY_APPEND",
++};
++
++const char *sw_nb_get_cmd2str(int cmd)
++{
++	return sw_nb_cmd2str[cmd];
++}
++EXPORT_SYMBOL(sw_nb_get_cmd2str);
++
++bool sw_nb_is_cavium_dev(struct net_device *netdev)
++{
++	struct pci_dev *pdev;
++	struct device *dev;
++
++	dev = netdev->dev.parent;
++	if (!dev || dev->bus != &pci_bus_type)
++		return false;
++
++	pdev = to_pci_dev(dev);
++	if (pdev->vendor != PCI_VENDOR_ID_CAVIUM)
++		return false;
++
++	return true;
++}
++
++/* Resolve the Cavium PF netdev used to reach the switch AF for offload.
++ *
++ * For a bridge master netdev, any Cavium netdev enslaved to the bridge is
++ * sufficient: callers only need a PF netdev to obtain the switch AF mailbox
++ * context (pcifunc). Bridge-specific information is tagged separately in
++ * the offload entry (entry->bridge), so walking every lower netdev is not
++ * required here.
++ *
++ * Only a single level of netdev nesting is resolved (bridge lower dev or
++ * VLAN real dev). Nested topologies such as VLAN-over-bridge are not
++ * supported; offload will not work for those configurations.
++ */
++struct net_device *sw_nb_resolve_pf_dev(struct net_device *dev)
++{
++	struct net_device *pf_dev = dev;
++	struct list_head *iter;
++
++	rcu_read_lock();
++
++	if (netif_is_bridge_master(dev)) {
++		iter = &dev->adj_list.lower;
++		pf_dev = netdev_next_lower_dev_rcu(dev, &iter);
++		if (!pf_dev)
++			pf_dev = dev;
++	} else if (is_vlan_dev(dev)) {
++		pf_dev = vlan_dev_real_dev(dev);
++	}
++
++	rcu_read_unlock();
++
++	if (!sw_nb_is_cavium_dev(pf_dev))
++		return NULL;
++
++	return pf_dev;
++}
++
++static int sw_nb_check_slaves(struct net_device *dev,
++			      struct netdev_nested_priv *priv)
+ {
++	int *cnt;
++
++	if (!priv->flags)
++		return 0;
++
++	priv->flags &= sw_nb_is_cavium_dev(dev);
++	if (priv->flags) {
++		cnt = priv->data;
++		(*cnt)++;
++	}
++
  	return 0;
  }
  
--static void rvu_iface_get_qcnts(struct rvu *rvu, struct rvu_pfvf *pfvf,
--				struct iface_info *info)
-+static void rvu_iface_get_qcnts(struct rvu *rvu, u16 pcifunc,
-+				struct rvu_pfvf *pfvf, struct iface_info *info)
- {
-+	int sq_bmap_bits;
-+
- 	mutex_lock(&rvu->rsrc_lock);
- 
- 	info->sq_cnt = 0;
- 	info->cq_cnt = 0;
- 	info->rq_cnt = 0;
- 
--	/* Use each LF queue context size; bitmaps are sized to qsize longs. */
--	if (pfvf->sq_ctx && pfvf->sq_bmap)
--		info->sq_cnt = bitmap_weight(pfvf->sq_bmap, pfvf->sq_ctx->qsize);
-+	if (pfvf->sq_bmap) {
-+		/* Match switchdev sq_bmap allocation size in nix_lf_alloc(). */
-+		if (rvu_is_switch_pcifunc(rvu, pcifunc))
-+			sq_bmap_bits = NIX_SQ_BMAP_BITS;
-+		else if (pfvf->sq_ctx)
-+			sq_bmap_bits = pfvf->sq_ctx->qsize;
-+		else
-+			sq_bmap_bits = 0;
-+
-+		if (sq_bmap_bits)
-+			info->sq_cnt = bitmap_weight(pfvf->sq_bmap, sq_bmap_bits);
-+	}
- 	if (pfvf->cq_ctx && pfvf->cq_bmap)
- 		info->cq_cnt = bitmap_weight(pfvf->cq_bmap, pfvf->cq_ctx->qsize);
- 	if (pfvf->rq_ctx && pfvf->rq_bmap)
-@@ -2065,7 +2076,7 @@ int rvu_mbox_handler_iface_get_info(struct rvu *rvu, struct msg_req *req,
- 		if (is_sdp_pfvf(rvu, pcifunc))
- 			info->is_sdp = 1;
- 
--		rvu_iface_get_qcnts(rvu, pfvf, info);
-+		rvu_iface_get_qcnts(rvu, pcifunc, pfvf, info);
- 
- 		if (pfvf->nix_blkaddr == BLKADDR_NIX0)
- 			info->nix = 0;
-@@ -2098,7 +2109,7 @@ int rvu_mbox_handler_iface_get_info(struct rvu *rvu, struct msg_req *req,
- 			if (is_sdp_pfvf(rvu, pcifunc))
- 				info->is_sdp = 1;
- 
--			rvu_iface_get_qcnts(rvu, pfvf, info);
-+			rvu_iface_get_qcnts(rvu, pcifunc, pfvf, info);
- 
- 			if (pfvf->nix_blkaddr == BLKADDR_NIX0)
- 				info->nix = 0;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index 9174b879850a..0b0ba1350922 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -335,6 +335,7 @@ struct nix_txsch {
- 	u8   lvl;
- #define NIX_TXSCHQ_FREE		      BIT_ULL(1)
- #define NIX_TXSCHQ_CFG_DONE	      BIT_ULL(0)
-+#define NIX_SQ_BMAP_BITS	      (BITS_PER_LONG * 16)
- #define TXSCH_MAP_FUNC(__pfvf_map)    ((__pfvf_map) & 0xFFFF)
- #define TXSCH_MAP_FLAGS(__pfvf_map)   ((__pfvf_map) >> 16)
- #define TXSCH_MAP(__func, __flags)    (((__func) & 0xFFFF) | ((__flags) << 16))
-@@ -904,6 +905,11 @@ static inline bool is_pffunc_af(u16 pcifunc)
- 	return !pcifunc;
- }
- 
-+static inline bool rvu_is_switch_pcifunc(struct rvu *rvu, u16 pcifunc)
+-int sw_nb_register(void)
++/* Switch offload has no network namespace support. The global notifiers
++ * registered below are not scoped to a netns, and sw_nb_is_cavium_dev()
++ * matches any Cavium PCI netdev without checking dev_net(). All netdevs
++ * involved in offload (PF/VF ports, bridge members, VLANs, neighbours,
++ * and routes) must therefore reside in &init_net for offload to work.
++ */
++bool sw_nb_is_valid_dev(struct net_device *netdev)
 +{
-+	return rvu->rswitch.pcifunc && pcifunc == rvu->rswitch.pcifunc;
++	struct netdev_nested_priv priv;
++	struct net_device *br;
++	int cnt = 0;
++	bool valid;
++
++	priv.flags = true;
++	priv.data = &cnt;
++
++	rcu_read_lock();
++
++	if (netif_is_bridge_master(netdev) || is_vlan_dev(netdev)) {
++		netdev_walk_all_lower_dev_rcu(netdev, sw_nb_check_slaves, &priv);
++		valid = priv.flags && cnt;
++		rcu_read_unlock();
++		return valid;
++	}
++
++	if (netif_is_bridge_port(netdev)) {
++		br = netdev_master_upper_dev_get_rcu(netdev);
++		if (!br) {
++			rcu_read_unlock();
++			return false;
++		}
++		netdev_walk_all_lower_dev_rcu(br, sw_nb_check_slaves, &priv);
++		valid = priv.flags && cnt;
++		rcu_read_unlock();
++		return valid;
++	}
++
++	rcu_read_unlock();
++
++	return sw_nb_is_cavium_dev(netdev);
 +}
 +
- static inline bool is_rvu_fwdata_valid(struct rvu *rvu)
++static int sw_nb_fdb_event(struct notifier_block *unused,
++			   unsigned long event, void *ptr)
++{
++	struct net_device *dev = switchdev_notifier_info_to_dev(ptr);
++	struct switchdev_notifier_fdb_info *fdb_info = ptr;
++
++	if (!sw_nb_is_valid_dev(dev))
++		return NOTIFY_DONE;
++
++	switch (event) {
++	case SWITCHDEV_FDB_ADD_TO_DEVICE:
++		if (fdb_info->is_local)
++			break;
++		break;
++
++	case SWITCHDEV_FDB_DEL_TO_DEVICE:
++		if (fdb_info->is_local)
++			break;
++		break;
++
++	default:
++		return NOTIFY_DONE;
++	}
++
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block sw_nb_fdb = {
++	.notifier_call = sw_nb_fdb_event,
++};
++
++static void __maybe_unused
++sw_nb_fib_event_dump(unsigned long event, void *ptr)
++{
++	struct fib_entry_notifier_info *fen_info = ptr;
++	struct net_device *log_dev;
++	struct fib_nh *fib_nh;
++	struct fib_info *fi;
++	int i;
++
++	fi = fen_info->fi;
++	log_dev = (fi && fi->fib_nhs) ? fi->fib_nh->fib_nh_dev : sw_nb_pf_netdev;
++	if (log_dev)
++		netdev_info(log_dev, "%s: FIB event=%lu dst=%pI4h dstlen=%d type=%u\n",
++			    __func__, event, &fen_info->dst, fen_info->dst_len,
++			    fen_info->type);
++
++	if (!fi)
++		return;
++
++	fib_nh = fi->fib_nh;
++	for (i = 0; i < fi->fib_nhs; i++, fib_nh++) {
++		if (!fib_nh->fib_nh_dev)
++			continue;
++		netdev_info(fib_nh->fib_nh_dev,
++			    "%s: dev=%s saddr=%pI4n gw=%pI4n\n",
++			    __func__, fib_nh->fib_nh_dev->name,
++			    &fib_nh->nh_saddr, &fib_nh->fib_nh_gw4);
++	}
++}
++
++#define SWITCH_NB_FIB_EVENT_DUMP(...) \
++	sw_nb_fib_event_dump(__VA_ARGS__)
++
++int sw_nb_fib_event_to_otx2_event(int event, struct net_device *netdev)
++{
++	switch (event) {
++	case FIB_EVENT_ENTRY_REPLACE:
++		return OTX2_FIB_ENTRY_REPLACE;
++	case FIB_EVENT_ENTRY_ADD:
++		return OTX2_FIB_ENTRY_ADD;
++	case FIB_EVENT_ENTRY_DEL:
++		return OTX2_FIB_ENTRY_DEL;
++	default:
++		break;
++	}
++
++	netdev_err(netdev, "Wrong FIB event %d\n", event);
++	return -1;
++}
++
++static int sw_nb_fib_event(struct notifier_block *nb,
++			   unsigned long event, void *ptr)
++{
++	struct fib_notifier_info *info = ptr;
++
++	switch (event) {
++	case FIB_EVENT_ENTRY_REPLACE:
++	case FIB_EVENT_ENTRY_ADD:
++	case FIB_EVENT_ENTRY_DEL:
++		break;
++	default:
++		if (sw_nb_pf_netdev)
++			netdev_dbg(sw_nb_pf_netdev,
++				   "%s: Won't process FIB event %lu\n",
++				   __func__, event);
++		return NOTIFY_DONE;
++	}
++
++	switch (info->family) {
++	case AF_INET:
++		return sw_nb_v4_fib_event(nb, event, ptr);
++#if IS_REACHABLE(CONFIG_IPV6)
++	case AF_INET6:
++		return sw_nb_v6_fib_event(nb, event, ptr);
++#endif
++	default:
++		break;
++	}
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block sw_nb_fib = {
++	.notifier_call = sw_nb_fib_event,
++};
++
++static int sw_nb_net_event(struct notifier_block *nb,
++			   unsigned long event, void *ptr)
++{
++	struct neighbour *n = ptr;
++
++	if (!sw_nb_is_valid_dev(n->dev))
++		return NOTIFY_DONE;
++
++	if (event != NETEVENT_NEIGH_UPDATE)
++		return NOTIFY_DONE;
++
++	switch (n->tbl->family) {
++	case AF_INET:
++		return sw_nb_net_v4_neigh_update(nb, event, ptr);
++#if IS_REACHABLE(CONFIG_IPV6)
++	case AF_INET6:
++		return sw_nb_net_v6_neigh_update(nb, event, ptr);
++#endif
++	default:
++		break;
++	}
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block sw_nb_netevent = {
++	.notifier_call = sw_nb_net_event,
++
++};
++
++int sw_nb_inetaddr_event_to_otx2_event(int event, struct net_device *netdev)
++{
++	switch (event) {
++	case NETDEV_CHANGE:
++		return OTX2_DEV_CHANGE;
++	case NETDEV_UP:
++		return OTX2_DEV_UP;
++	case NETDEV_DOWN:
++		return OTX2_DEV_DOWN;
++	default:
++		break;
++	}
++	netdev_dbg(netdev, "%s: Wrong interaddr event %d\n",
++		   __func__, event);
++	return -1;
++}
++
++static struct notifier_block sw_nb_v4_inetaddr = {
++	.notifier_call = sw_nb_v4_inetaddr_event,
++};
++
++#if IS_REACHABLE(CONFIG_IPV6)
++static struct notifier_block sw_nb_v6_inetaddr = {
++	.notifier_call = sw_nb_v6_inetaddr_event,
++};
++#endif
++
++static int sw_nb_netdev_event(struct notifier_block *unused,
++			      unsigned long event, void *ptr)
++{
++	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
++	struct in_device *idev;
++	struct inet6_dev *i6dev;
++
++	if (event != NETDEV_CHANGE &&
++	    event != NETDEV_UP &&
++	    event != NETDEV_DOWN) {
++		return NOTIFY_DONE;
++	}
++
++	if (!sw_nb_is_valid_dev(dev))
++		return NOTIFY_DONE;
++
++	idev = __in_dev_get_rtnl(dev);
++	if (idev)
++		sw_nb_v4_netdev_event(unused, event, ptr);
++
++#if IS_REACHABLE(CONFIG_IPV6)
++	i6dev = __in6_dev_get(dev);
++	if (i6dev)
++		sw_nb_v6_netdev_event(unused, event, ptr);
++#endif
++
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block sw_nb_netdev = {
++	.notifier_call = sw_nb_netdev_event,
++};
++
++int sw_nb_unregister(struct net_device *netdev)
++{
++	int err, ret = 0;
++
++	if (!sw_nb_registered)
++		return 0;
++
++	err = unregister_switchdev_notifier(&sw_nb_fdb);
++	if (err) {
++		netdev_err(netdev, "Failed to unregister switchdev nb\n");
++		ret = err;
++	}
++
++	err = unregister_fib_notifier(&init_net, &sw_nb_fib);
++	if (err) {
++		netdev_err(netdev, "Failed to unregister fib nb\n");
++		if (!ret)
++			ret = err;
++	}
++
++	err = unregister_netevent_notifier(&sw_nb_netevent);
++	if (err) {
++		netdev_err(netdev, "Failed to unregister netevent\n");
++		if (!ret)
++			ret = err;
++	}
++
++	err = unregister_inetaddr_notifier(&sw_nb_v4_inetaddr);
++	if (err) {
++		netdev_err(netdev, "Failed to unregister addr event\n");
++		if (!ret)
++			ret = err;
++	}
++
++#if IS_REACHABLE(CONFIG_IPV6)
++	err = unregister_inet6addr_notifier(&sw_nb_v6_inetaddr);
++	if (err) {
++		netdev_err(netdev, "Failed to unregister addr event\n");
++		if (!ret)
++			ret = err;
++	}
++#endif
++
++	err = unregister_netdevice_notifier(&sw_nb_netdev);
++	if (err) {
++		netdev_err(netdev, "Failed to unregister netdev notifier\n");
++		if (!ret)
++			ret = err;
++	}
++
++	sw_fl_deinit();
++	sw_fib_deinit();
++	sw_fdb_deinit();
++
++	sw_nb_pf_netdev = NULL;
++	sw_nb_registered = false;
++
++	return ret;
++}
++EXPORT_SYMBOL(sw_nb_unregister);
++
++/* Concurrent registration from multiple devlink instances cannot occur on a
++ * given RVU: only the RVU_REP netdev devlink reaches this function (see
++ * comment above). The AF and PF/VF devlinks do not call sw_nb_register(),
++ * and their eswitch_mode_set handlers return -EOPNOTSUPP. devlink core
++ * holds devlink->lock for the full DEVLINK_CMD_ESWITCH_MODE_SET handler,
++ * so two threads cannot enter here concurrently on that single rep devlink.
++ * A second call after successful registration returns -EBUSY before any
++ * notifier or workqueue state is modified.
++ */
++int sw_nb_register(struct net_device *netdev)
  {
- 	return (rvu->fwdata->header_magic == RVU_FWDATA_HEADER_MAGIC) &&
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 1eac434749f0..f833291ca50b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -1081,6 +1081,7 @@ static int rvu_nix_blk_aq_enq_inst(struct rvu *rvu, struct nix_hw *nix_hw,
- 	u16 pcifunc = req->hdr.pcifunc;
- 	int nixlf, blkaddr, rc = 0;
- 	struct nix_aq_inst_s inst;
-+	u64 sq_bmap_bits, max_q;
- 	struct rvu_block *block;
- 	struct admin_queue *aq;
- 	struct rvu_pfvf *pfvf;
-@@ -1115,10 +1116,25 @@ static int rvu_nix_blk_aq_enq_inst(struct rvu *rvu, struct nix_hw *nix_hw,
- 		if (!pfvf->rq_ctx || req->qidx >= pfvf->rq_ctx->qsize)
- 			rc = NIX_AF_ERR_AQ_ENQUEUE;
- 		break;
--	case NIX_AQ_CTYPE_SQ:
--		if (!pfvf->sq_ctx || req->qidx >= pfvf->sq_ctx->qsize)
-+	case NIX_AQ_CTYPE_SQ: {
-+		if (!pfvf->sq_ctx) {
-+			rc = NIX_AF_ERR_AQ_ENQUEUE;
++	int err;
++
++	/* Notifier blocks are global and only one RVU_REP may register at a
++	 * time (switch offload is init_net-wide; see comment at file top).
++	 * A second RVU card gets -EBUSY here by design.  Concurrent calls on
++	 * the same RVU_REP cannot happen: only that netdev's devlink reaches
++	 * this function (otx2_rep_dev()), and devlink core holds
++	 * devlink->lock for the full DEVLINK_CMD_ESWITCH_MODE_SET handler.
++	 * No extra lock is needed to protect the notifier chains.
++	 */
++	if (sw_nb_registered)
++		return -EBUSY;
++
++	sw_nb_pf_netdev = netdev;
++
++	err = sw_fdb_init();
++	if (err)
++		goto err_clear;
++
++	err = sw_fib_init();
++	if (err)
++		goto err_fdb;
++
++	err = sw_fl_init();
++	if (err)
++		goto err_fib;
++
++	err = register_switchdev_notifier(&sw_nb_fdb);
++	if (err) {
++		netdev_err(netdev, "Failed to register switchdev nb\n");
++		goto err_helpers;
++	}
++
++	err = register_fib_notifier(&init_net, &sw_nb_fib, NULL, NULL);
++	if (err) {
++		netdev_err(netdev, "Failed to register fb notifier block\n");
++		goto err1;
++	}
++
++	err = register_netevent_notifier(&sw_nb_netevent);
++	if (err) {
++		netdev_err(netdev, "Failed to register netevent\n");
++		goto err2;
++	}
++
++#if IS_REACHABLE(CONFIG_IPV6)
++	err = register_inet6addr_notifier(&sw_nb_v6_inetaddr);
++	if (err) {
++		netdev_err(netdev, "Failed to register addr event\n");
++		goto err3;
++	}
++#endif
++
++	err = register_inetaddr_notifier(&sw_nb_v4_inetaddr);
++	if (err) {
++		netdev_err(netdev, "Failed to register addr event\n");
++		goto err4;
++	}
++
++	err = register_netdevice_notifier(&sw_nb_netdev);
++	if (err) {
++		netdev_err(netdev, "Failed to register netdevice nb\n");
++		goto err5;
++	}
++
++	sw_nb_registered = true;
++
+ 	return 0;
++
++err5:
++	unregister_inetaddr_notifier(&sw_nb_v4_inetaddr);
++
++err4:
++#if IS_REACHABLE(CONFIG_IPV6)
++	unregister_inet6addr_notifier(&sw_nb_v6_inetaddr);
++
++err3:
++#endif
++	unregister_netevent_notifier(&sw_nb_netevent);
++
++err2:
++	unregister_fib_notifier(&init_net, &sw_nb_fib);
++
++err1:
++	unregister_switchdev_notifier(&sw_nb_fdb);
++
++err_helpers:
++	sw_fl_deinit();
++err_fib:
++	sw_fib_deinit();
++err_fdb:
++	sw_fdb_deinit();
++err_clear:
++	sw_nb_pf_netdev = NULL;
++	return err;
+ }
++EXPORT_SYMBOL(sw_nb_register);
+ 
+ #endif
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.h b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.h
+index 73cc1e99b8ec..e995c0e6046b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.h
+@@ -9,12 +9,41 @@
+ 
+ #include <linux/kconfig.h>
+ 
++struct net_device;
++struct otx2_nic;
++struct af2pf_fdb_refresh_req;
++struct msg_rsp;
++
+ #if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
+-int sw_nb_register(void);
+-int sw_nb_unregister(void);
++enum {
++	OTX2_DEV_UP = 1,
++	OTX2_DEV_DOWN,
++	OTX2_DEV_CHANGE,
++	OTX2_NEIGH_UPDATE,
++	OTX2_FIB_ENTRY_REPLACE,
++	OTX2_FIB_ENTRY_ADD,
++	OTX2_FIB_ENTRY_DEL,
++	OTX2_FIB_ENTRY_APPEND,
++	OTX2_CMD_MAX,
++};
++
++int sw_nb_register(struct net_device *netdev);
++int sw_nb_unregister(struct net_device *netdev);
++bool sw_nb_is_valid_dev(struct net_device *netdev);
++struct net_device *sw_nb_resolve_pf_dev(struct net_device *dev);
++
++int otx2_mbox_up_handler_af2pf_fdb_refresh(struct otx2_nic *pf,
++					   struct af2pf_fdb_refresh_req *req,
++					   struct msg_rsp *rsp);
++
++bool sw_nb_is_cavium_dev(struct net_device *netdev);
++int sw_nb_fib_event_to_otx2_event(int event, struct net_device *netdev);
++int sw_nb_inetaddr_event_to_otx2_event(int event, struct net_device *netdev);
++
++const char *sw_nb_get_cmd2str(int cmd);
+ #else
+-static inline int sw_nb_register(void) { return 0; }
+-static inline int sw_nb_unregister(void) { return 0; }
++static inline int sw_nb_register(struct net_device *netdev) { return 0; }
++static inline int sw_nb_unregister(struct net_device *netdev) { return 0; }
+ #endif
+ 
+ #endif /* SW_NB_H_ */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v4.c b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v4.c
+new file mode 100644
+index 000000000000..e0caf6531dfd
+--- /dev/null
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v4.c
+@@ -0,0 +1,359 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Marvell RVU switch driver
++ *
++ * Copyright (C) 2026 Marvell.
++ *
++ */
++#include <linux/kernel.h>
++#include <linux/netdevice.h>
++#include <linux/etherdevice.h>
++#include <net/switchdev.h>
++#include <net/netevent.h>
++#include <net/arp.h>
++#include <net/route.h>
++#include <linux/inetdevice.h>
++
++#include "../otx2_reg.h"
++#include "../otx2_common.h"
++#include "../otx2_struct.h"
++#include "../cn10k.h"
++#include "sw_nb.h"
++#include "sw_fdb.h"
++#include "sw_fib.h"
++#include "sw_fl.h"
++#include "sw_nb_v4.h"
++
++#if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
++
++int sw_nb_v4_netdev_event(struct notifier_block *unused,
++			  unsigned long event, void *ptr)
++{
++	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
++	struct netdev_hw_addr *dev_addr;
++	struct net_device *pf_dev;
++	struct in_device *idev;
++	struct in_ifaddr *ifa;
++	struct fib_entry *entry;
++	struct otx2_nic *pf;
++
++	idev = __in_dev_get_rtnl(dev);
++	if (!idev || !idev->ifa_list)
++		return NOTIFY_DONE;
++
++	/* Switch offload supports a single IPv4 address per interface for now. */
++	ifa = rtnl_dereference(idev->ifa_list);
++
++	entry = kcalloc(1, sizeof(*entry), GFP_KERNEL);
++	if (!entry)
++		return NOTIFY_DONE;
++
++	entry->cmd = sw_nb_inetaddr_event_to_otx2_event(event, dev);
++	entry->dst = ifa->ifa_address;
++	entry->dst_len = 32;
++	entry->mac_valid = 1;
++	entry->host = 1;
++
++	pf_dev = sw_nb_resolve_pf_dev(dev);
++	if (!pf_dev) {
++		kfree(entry);
++		return NOTIFY_DONE;
++	}
++
++	if (netif_is_bridge_master(dev)) {
++		entry->bridge = 1;
++	} else if (is_vlan_dev(dev)) {
++		entry->vlan_valid = 1;
++		entry->vlan_tag = cpu_to_be16(vlan_dev_vlan_id(dev));
++	}
++
++	pf = netdev_priv(pf_dev);
++	entry->port_id = pf->pcifunc;
++
++	rcu_read_lock();
++	for_each_dev_addr(dev, dev_addr) {
++		ether_addr_copy(entry->mac, dev_addr->addr);
++		break;
++	}
++	rcu_read_unlock();
++
++	netdev_dbg(dev, "%s: pushing netdev event from HOST interface address %pI4n, %pM, dev=%s\n",
++		   __func__, &entry->dst, entry->mac, dev->name);
++	kfree(entry);
++
++	return NOTIFY_DONE;
++}
++
++int sw_nb_v4_inetaddr_event(struct notifier_block *nb,
++			    unsigned long event, void *ptr)
++{
++	struct in_ifaddr *ifa = (struct in_ifaddr *)ptr;
++	struct net_device *dev = ifa->ifa_dev->dev;
++	struct netdev_hw_addr *dev_addr;
++	struct net_device *pf_dev;
++	struct in_device *idev;
++	struct fib_entry *entry;
++	struct otx2_nic *pf;
++
++	if (event != NETDEV_CHANGE &&
++	    event != NETDEV_UP &&
++	    event != NETDEV_DOWN) {
++		return NOTIFY_DONE;
++	}
++
++	if (!sw_nb_is_valid_dev(dev))
++		return NOTIFY_DONE;
++
++	idev = __in_dev_get_rtnl(dev);
++	if (!idev || !idev->ifa_list)
++		return NOTIFY_DONE;
++
++	entry = kcalloc(1, sizeof(*entry), GFP_ATOMIC);
++	if (!entry)
++		return NOTIFY_DONE;
++
++	entry->cmd = sw_nb_inetaddr_event_to_otx2_event(event, dev);
++	entry->dst = ifa->ifa_address;
++	entry->dst_len = 32;
++	entry->mac_valid = 1;
++	entry->host = 1;
++
++	pf_dev = sw_nb_resolve_pf_dev(dev);
++	if (!pf_dev) {
++		kfree(entry);
++		return NOTIFY_DONE;
++	}
++
++	if (netif_is_bridge_master(dev)) {
++		entry->bridge = 1;
++	} else if (is_vlan_dev(dev)) {
++		entry->vlan_valid = 1;
++		entry->vlan_tag = cpu_to_be16(vlan_dev_vlan_id(dev));
++	}
++
++	pf = netdev_priv(pf_dev);
++	entry->port_id = pf->pcifunc;
++
++	rcu_read_lock();
++	for_each_dev_addr(dev, dev_addr) {
++		ether_addr_copy(entry->mac, dev_addr->addr);
++		break;
++	}
++	rcu_read_unlock();
++
++	netdev_dbg(dev, "%s: pushing inetaddr event from HOST interface address %pI4n, %pM, %s\n",
++		   __func__, &entry->dst, entry->mac, dev->name);
++
++	kfree(entry);
++	return NOTIFY_DONE;
++}
++
++int sw_nb_v4_fib_event(struct notifier_block *nb,
++		       unsigned long event, void *ptr)
++{
++	struct net_device *dev, *pf_dev = NULL, *nh_pf_dev;
++	struct fib_entry_notifier_info *fen_info = ptr;
++	struct fib_entry *entries, *iter;
++	struct netdev_hw_addr *dev_addr;
++	struct neighbour *neigh;
++	struct fib_nh *fib_nh;
++	struct fib_info *fi;
++	struct otx2_nic *pf;
++	__be32 *haddr;
++	int hcnt = 0;
++	int cnt, i;
++
++	/* Process only UNICAST routes add or del */
++	if (fen_info->type != RTN_UNICAST)
++		return NOTIFY_DONE;
++
++	fi = fen_info->fi;
++	if (!fi)
++		return NOTIFY_DONE;
++
++	if (fi->fib_nh_is_v6) {
++		struct net_device *log_dev = (fi->fib_nhs > 0) ?
++			fi->fib_nh->fib_nh_dev : NULL;
++
++		if (log_dev)
++			netdev_dbg(log_dev, "%s: Received v6 notification\n",
++				   __func__);
++		return NOTIFY_DONE;
++	}
++
++	/* TODO: External nexthop routes (fi->nh set, fi->fib_nhs == 0) are not
++	 * yet supported for switch offload. Only embedded fi->fib_nh[] paths
++	 * are walked below; nhid and nexthop-group installs are intentionally
++	 * skipped until fib_info_num_path()/fib_info_nhc() handling is added.
++	 */
++	entries = kcalloc(fi->fib_nhs, sizeof(*entries), GFP_ATOMIC);
++	if (!entries)
++		return NOTIFY_DONE;
++
++	haddr = kcalloc(fi->fib_nhs, sizeof(*haddr), GFP_ATOMIC);
++	if (!haddr) {
++		kfree(entries);
++		return NOTIFY_DONE;
++	}
++
++	iter = entries;
++	fib_nh = fi->fib_nh;
++	for (i = 0; i < fi->fib_nhs; i++, fib_nh++) {
++		dev = fib_nh->fib_nh_dev;
++
++		if (!dev)
++			continue;
++
++		if (dev->type != ARPHRD_ETHER)
++			continue;
++
++		if (!sw_nb_is_valid_dev(dev))
++			continue;
++
++		iter->cmd = sw_nb_fib_event_to_otx2_event(event, dev);
++		iter->dst = htonl(fen_info->dst);
++		iter->dst_len = fen_info->dst_len;
++		iter->gw = fib_nh->fib_nh_gw4;
++
++		netdev_dbg(dev, "%s: FIB route Rule cmd=%llu dst=%pI4n dst_len=%u gw=%pI4n\n",
++			   __func__, iter->cmd, &iter->dst, iter->dst_len, &iter->gw);
++
++		nh_pf_dev = sw_nb_resolve_pf_dev(dev);
++		if (!nh_pf_dev)
++			continue;
++		pf_dev = nh_pf_dev;
++
++		if (netif_is_bridge_master(dev)) {
++			iter->bridge = 1;
++		} else if (is_vlan_dev(dev)) {
++			iter->vlan_valid = 1;
++			iter->vlan_tag = cpu_to_be16(vlan_dev_vlan_id(dev));
++		}
++
++		pf = netdev_priv(pf_dev);
++		iter->port_id = pf->pcifunc;
++
++		/* Point-to-point routes, including default routes with no
++		 * gateway, are not supported for switch offload.
++		 */
++		if (!fib_nh->fib_nh_gw4)
++			continue;
++		iter->gw_valid = 1;
++
++		if (fib_nh->nh_saddr)
++			haddr[hcnt++] = fib_nh->nh_saddr;
++
++		rcu_read_lock();
++		neigh = ip_neigh_gw4(fib_nh->fib_nh_dev, fib_nh->fib_nh_gw4);
++		if (!neigh || IS_ERR(neigh)) {
++			rcu_read_unlock();
++			continue;
++		}
++
++		neigh_ha_snapshot(iter->mac, neigh, fib_nh->fib_nh_dev);
++		if (is_valid_ether_addr(iter->mac))
++			iter->mac_valid = 1;
++
++		iter++;
++		rcu_read_unlock();
++	}
++
++	cnt = iter - entries;
++	if (!cnt) {
++		kfree(entries);
++		kfree(haddr);
++		return NOTIFY_DONE;
++	}
++
++	if (pf_dev)
++		netdev_dbg(pf_dev, "pf_dev is %s cnt=%d\n", pf_dev->name, cnt);
++	kfree(entries);
++
++	if (!hcnt) {
++		kfree(haddr);
++		return NOTIFY_DONE;
++	}
++
++	if (!pf_dev) {
++		kfree(haddr);
++		return NOTIFY_DONE;
++	}
++
++	entries = kcalloc(hcnt, sizeof(*entries), GFP_ATOMIC);
++	if (!entries) {
++		kfree(haddr);
++		return NOTIFY_DONE;
++	}
++
++	iter = entries;
++
++	/* Host routes reuse pf_dev/pf from the last resolved Cavium netdev:
++	 * pf_dev only identifies the switch AF mailbox context for switchdev
++	 * programming; any previously resolved Cavium netdev is sufficient.
++	 */
++	for (i = 0; i < hcnt; i++, iter++) {
++		iter->cmd = sw_nb_fib_event_to_otx2_event(event, pf_dev);
++		iter->dst = haddr[i];
++		iter->dst_len = 32;
++		iter->mac_valid = 1;
++		iter->host = 1;
++		iter->port_id = pf->pcifunc;
++
++		rcu_read_lock();
++		for_each_dev_addr(pf_dev, dev_addr) {
++			ether_addr_copy(iter->mac, dev_addr->addr);
 +			break;
 +		}
++		rcu_read_unlock();
 +
-+		/* Switchdev PF uses a fixed sq_bmap (NIX_SQ_BMAP_BITS); cap qidx
-+		 * to that span so __set_bit() cannot run past the allocation.
-+		 * nix_lf_alloc() also rejects sq_cnt above NIX_SQ_BMAP_BITS.
-+		 */
-+		sq_bmap_bits = rvu_is_switch_pcifunc(rvu, pcifunc) ?
-+			       NIX_SQ_BMAP_BITS :
-+			       (u64)pfvf->sq_ctx->qsize * BITS_PER_LONG;
-+		max_q = min_t(u64, pfvf->sq_ctx->qsize, sq_bmap_bits);
-+
-+		if ((u64)req->qidx >= max_q)
- 			rc = NIX_AF_ERR_AQ_ENQUEUE;
- 		break;
++		netdev_dbg(pf_dev, "%s: FIB host Rule cmd=%llu dst=%pI4n dst_len=%u %s\n",
++			   __func__, iter->cmd, &iter->dst, iter->dst_len,
++			   pf_dev->name);
 +	}
- 	case NIX_AQ_CTYPE_CQ:
- 		if (!pfvf->cq_ctx || req->qidx >= pfvf->cq_ctx->qsize)
- 			rc = NIX_AF_ERR_AQ_ENQUEUE;
-@@ -1543,18 +1559,28 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
- 	struct qmem *rq_ctx, *sq_ctx, *cq_ctx;
- 	u16 bcast, mcast, promisc, ucast;
- 	struct rvu_hwinfo *hw = rvu->hw;
-+	u64 cfg, ctx_cfg, sq_bmap_bits;
- 	u16 pcifunc = req->hdr.pcifunc;
- 	u8 cgx_id = 0, lmac_id = 0;
- 	bool rules_created = false;
- 	struct rvu_block *block;
- 	struct rvu_pfvf *pfvf;
- 	struct cgx *cgxd;
--	u64 cfg, ctx_cfg;
- 	int blkaddr;
- 
- 	if (!req->rq_cnt || !req->sq_cnt || !req->cq_cnt)
- 		return NIX_AF_ERR_PARAM;
- 
-+	/* Switchdev PF sq_bmap is fixed at NIX_SQ_BMAP_BITS; reject larger
-+	 * sq_cnt before allocating context memory or the bitmap.
-+	 */
-+	sq_bmap_bits = rvu_is_switch_pcifunc(rvu, pcifunc) ?
-+		NIX_SQ_BMAP_BITS :
-+		(u64)req->sq_cnt * BITS_PER_LONG;
-+
-+	if ((u64)req->sq_cnt > sq_bmap_bits)
-+		return NIX_AF_ERR_PARAM;
-+
- 	if (req->way_mask)
- 		req->way_mask &= 0xFFFF;
- 
-@@ -1636,7 +1662,12 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
- 	if (rc)
- 		goto free_mem;
- 
--	sq_bmap = kcalloc(req->sq_cnt, sizeof(long), GFP_KERNEL);
-+	if (rvu_is_switch_pcifunc(rvu, pcifunc))
-+		/* Fixed-size bitmap; sq_cnt capped to NIX_SQ_BMAP_BITS above. */
-+		sq_bmap = kcalloc(BITS_TO_LONGS(NIX_SQ_BMAP_BITS),
-+				  sizeof(long), GFP_KERNEL);
-+	else
-+		sq_bmap = kcalloc(req->sq_cnt, sizeof(long), GFP_KERNEL);
- 	if (!sq_bmap) {
- 		rc = -ENOMEM;
- 		goto free_mem;
-@@ -2183,6 +2214,25 @@ static void nix_get_txschq_range(struct rvu *rvu, u16 pcifunc,
- 	}
- }
- 
-+static int nix_get_pan_tx_link(struct rvu *rvu)
-+{
-+	struct rvu_hwinfo *hw = rvu->hw;
-+
-+	return hw->cgx_links + hw->lbk_links + 1;
++	kfree(entries);
++	kfree(haddr);
++	return NOTIFY_DONE;
 +}
 +
-+static bool nix_txsch_is_pan_schq(struct rvu *rvu, int schq)
++int sw_nb_net_v4_neigh_update(struct notifier_block *nb,
++			      unsigned long event, void *ptr)
 +{
-+	int pan_link = nix_get_pan_tx_link(rvu);
++	struct net_device *pf_dev;
++	struct neighbour *n = ptr;
++	struct fib_entry *entry;
++	struct otx2_nic *pf;
 +
-+	return schq >= pan_link && schq <= pan_link + 1;
++	if (n->tbl != &arp_tbl)
++		return NOTIFY_DONE;
++
++	entry = kcalloc(1, sizeof(*entry), GFP_ATOMIC);
++	if (!entry)
++		return NOTIFY_DONE;
++
++	entry->cmd = OTX2_NEIGH_UPDATE;
++	entry->dst = *(__be32 *)n->primary_key;
++	entry->dst_len = n->tbl->key_len * 8;
++	entry->mac_valid = 1;
++	entry->nud_state = n->nud_state;
++	neigh_ha_snapshot(entry->mac, n, n->dev);
++
++	pf_dev = sw_nb_resolve_pf_dev(n->dev);
++	if (!pf_dev) {
++		kfree(entry);
++		return NOTIFY_DONE;
++	}
++
++	if (netif_is_bridge_master(n->dev)) {
++		entry->bridge = 1;
++	} else if (is_vlan_dev(n->dev)) {
++		entry->vlan_valid = 1;
++		entry->vlan_tag = cpu_to_be16(vlan_dev_vlan_id(n->dev));
++	}
++
++	pf = netdev_priv(pf_dev);
++	entry->port_id = pf->pcifunc;
++
++	kfree(entry);
++	return NOTIFY_DONE;
 +}
 +
-+static bool nix_txsch_pan_allowed(struct rvu *rvu, u16 pcifunc)
++#endif
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v4.h b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v4.h
+new file mode 100644
+index 000000000000..c6dbf4b93a9a
+--- /dev/null
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v4.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Marvell switch driver
++ *
++ * Copyright (C) 2026 Marvell.
++ *
++ */
++#ifndef SW_NB_V4_H_
++#define SW_NB_V4_H_
++
++int sw_nb_v4_fib_event(struct notifier_block *nb,
++		       unsigned long event, void *ptr);
++
++int sw_nb_net_v4_neigh_update(struct notifier_block *nb,
++			      unsigned long event, void *ptr);
++
++int sw_nb_v4_inetaddr_event(struct notifier_block *nb,
++			    unsigned long event, void *ptr);
++
++int sw_nb_v4_netdev_event(struct notifier_block *unused,
++			  unsigned long event, void *ptr);
++#endif // SW_NB_V4_H__
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v6.c b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v6.c
+new file mode 100644
+index 000000000000..ddc09baefcb2
+--- /dev/null
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v6.c
+@@ -0,0 +1,299 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Marvell RVU switch driver
++ *
++ * Copyright (C) 2026 Marvell.
++ *
++ */
++#include <linux/kernel.h>
++#include <linux/netdevice.h>
++#include <linux/etherdevice.h>
++#include <net/switchdev.h>
++#include <net/netevent.h>
++#include <net/arp.h>
++#include <net/route.h>
++#include <linux/inetdevice.h>
++#include <net/addrconf.h>
++#include <net/ip6_fib.h>
++#include <net/nexthop.h>
++
++#include "../otx2_reg.h"
++#include "../otx2_common.h"
++#include "../otx2_struct.h"
++#include "../cn10k.h"
++#include "sw_nb.h"
++#include "sw_fdb.h"
++#include "sw_fib.h"
++#include "sw_fl.h"
++#include "sw_nb_v6.h"
++
++#if IS_ENABLED(CONFIG_IPV6) && IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
++
++int sw_nb_v6_netdev_event(struct notifier_block *unused,
++			  unsigned long event, void *ptr)
 +{
-+	return rvu_is_switch_pcifunc(rvu, pcifunc);
++	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
++	struct netdev_hw_addr *dev_addr;
++	struct net_device *pf_dev;
++	struct inet6_ifaddr *ifp;
++	struct inet6_dev *i6dev;
++	struct fib_entry *entry;
++	struct in6_addr addr;
++	struct otx2_nic *pf;
++	bool found = false;
++	u32 prefix_len;
++
++	i6dev = __in6_dev_get(dev);
++	if (!i6dev)
++		return NOTIFY_DONE;
++
++	/* addr_list is RCU-protected; hold rcu_read_lock() while walking it.
++	 * Address updates from SLAAC/DAD may occur under idev->lock without
++	 * RTNL, so the list must be read with an RCU-safe helper.
++	 */
++	rcu_read_lock();
++	/* Switch offload supports a single IPv6 address per interface for now.
++	 * Skip link-local entries and use the first global address on the list.
++	 */
++	list_for_each_entry_rcu(ifp, &i6dev->addr_list, if_list) {
++		if (ipv6_addr_type(&ifp->addr) & IPV6_ADDR_LINKLOCAL)
++			continue;
++
++		addr = ifp->addr;
++		prefix_len = ifp->prefix_len;
++		found = true;
++		break;
++	}
++	rcu_read_unlock();
++
++	if (!found)
++		return NOTIFY_DONE;
++
++	entry = kcalloc(1, sizeof(*entry), GFP_KERNEL);
++	if (!entry)
++		return NOTIFY_DONE;
++
++	pf_dev = sw_nb_resolve_pf_dev(dev);
++	if (!pf_dev) {
++		kfree(entry);
++		return NOTIFY_DONE;
++	}
++
++	entry->cmd = sw_nb_inetaddr_event_to_otx2_event(event, dev);
++	memcpy(entry->dst6, &addr, sizeof(entry->dst6));
++	entry->dst6_plen = prefix_len;
++	entry->host = 1;
++	entry->ipv6 = 1;
++
++	pf = netdev_priv(pf_dev);
++	entry->port_id = pf->pcifunc;
++
++	rcu_read_lock();
++	for_each_dev_addr(dev, dev_addr) {
++		entry->mac_valid = 1;
++		ether_addr_copy(entry->mac, dev_addr->addr);
++		break;
++	}
++	rcu_read_unlock();
++
++	netdev_dbg(dev, "netdev event addr=%pI6c plen=%u mac=%pM\n",
++		   &addr, prefix_len, entry->mac);
++	kfree(entry);
++	return NOTIFY_DONE;
 +}
 +
- static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
- 				      struct nix_hw *nix_hw,
- 				      struct nix_txsch_alloc_req *req)
-@@ -2198,12 +2248,27 @@ static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
- 	if (!req_schq)
- 		return 0;
- 
--	link = nix_get_tx_link(rvu, pcifunc);
-+	if (req->flags & NIX_TXSCH_ALLOC_FLAG_PAN) {
-+		if (!nix_txsch_pan_allowed(rvu, pcifunc))
-+			return NIX_AF_ERR_TLX_ALLOC_FAIL;
-+		link = nix_get_pan_tx_link(rvu);
-+	} else {
-+		link = nix_get_tx_link(rvu, pcifunc);
-+	}
- 
- 	/* For traffic aggregating scheduler level, one queue is enough */
- 	if (lvl >= hw->cap.nix_tx_aggr_lvl) {
--		if (req_schq != 1)
-+		if (req_schq != 1 && !(req->flags & NIX_TXSCH_ALLOC_FLAG_PAN))
- 			return NIX_AF_ERR_TLX_ALLOC_FAIL;
-+		if (req->schq[lvl] > MAX_TXSCHQ_PER_FUNC ||
-+		    req->schq_contig[lvl] > MAX_TXSCHQ_PER_FUNC)
-+			return NIX_AF_ERR_TLX_ALLOC_FAIL;
-+		if (req->flags & NIX_TXSCH_ALLOC_FLAG_PAN) {
-+			if (link >= txsch->schq.max || link + 1 >= txsch->schq.max)
-+				return NIX_AF_ERR_TLX_ALLOC_FAIL;
-+			if (req_schq > 2)
-+				return NIX_AF_ERR_TLX_ALLOC_FAIL;
-+		}
- 		return 0;
- 	}
- 
-@@ -2232,9 +2297,9 @@ static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
- 	return 0;
- }
- 
--static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
--			    struct nix_txsch_alloc_rsp *rsp,
--			    int lvl, int start, int end)
-+static int nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
-+			   struct nix_txsch_alloc_rsp *rsp,
-+			   int lvl, int start, int end)
- {
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	u16 pcifunc = rsp->hdr.pcifunc;
-@@ -2244,6 +2309,46 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
- 	 * on transmit link to which PF_FUNC is mapped to.
- 	 */
- 	if (lvl >= hw->cap.nix_tx_aggr_lvl) {
-+		if (start != end) {
-+			int want_contig = rsp->schq_contig[lvl];
-+			int got_contig = 0, got = 0;
-+			int want = rsp->schq[lvl];
++int sw_nb_v6_fib_event(struct notifier_block *nb,
++		       unsigned long event, void *ptr)
++{
++	struct fib6_entry_notifier_info *f6_eni;
++	struct fib_notifier_info *info = ptr;
++	struct net_device *fib_dev, *pf_dev;
++	struct fib_entry *entry;
++	struct fib6_info *f6i;
++	struct neighbour *neigh;
++	struct fib6_nh *nh6;
++	struct rt6key *key;
++	struct otx2_nic *pf;
 +
-+			for (schq = start; schq <= end; schq++) {
-+				if (test_bit(schq, txsch->schq.bmap))
-+					continue;
++	f6_eni = container_of(info, struct fib6_entry_notifier_info, info);
++	f6i = f6_eni->rt;
 +
-+				if (got_contig < want_contig) {
-+					set_bit(schq, txsch->schq.bmap);
-+					rsp->schq_contig_list[lvl][got_contig++] = schq;
-+					continue;
-+				}
++	fib_dev = fib6_info_nh_dev(f6i);
 +
-+				if (got < want) {
-+					set_bit(schq, txsch->schq.bmap);
-+					rsp->schq_list[lvl][got++] = schq;
-+				}
-+			}
++	if (!fib_dev)
++		return NOTIFY_DONE;
 +
-+			rsp->schq_contig[lvl] = got_contig;
-+			rsp->schq[lvl] = got;
++	if (fib_dev->type != ARPHRD_ETHER)
++		return NOTIFY_DONE;
 +
-+			if (got_contig < want_contig || got < want) {
-+				for (idx = 0; idx < got_contig; idx++)
-+					clear_bit(rsp->schq_contig_list[lvl][idx],
-+						  txsch->schq.bmap);
-+				for (idx = 0; idx < got; idx++)
-+					clear_bit(rsp->schq_list[lvl][idx],
-+						  txsch->schq.bmap);
-+				rsp->schq_contig[lvl] = 0;
-+				rsp->schq[lvl] = 0;
-+				dev_err(rvu->dev,
-+					"Could not allocate schq at lvl=%u start=%u end=%u\n",
-+					lvl, start, end);
-+				return -ENOMEM;
-+			}
-+			return 0;
-+		}
- 		/* A single TL queue is allocated */
- 		if (rsp->schq_contig[lvl]) {
- 			rsp->schq_contig[lvl] = 1;
-@@ -2258,7 +2363,7 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
- 			rsp->schq[lvl] = 1;
- 			rsp->schq_list[lvl][0] = start;
- 		}
--		return;
-+		return 0;
- 	}
- 
- 	/* Adjust the queue request count if HW supports
-@@ -2270,7 +2375,7 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
- 		if (idx >= (end - start) || test_bit(schq, txsch->schq.bmap)) {
- 			rsp->schq_contig[lvl] = 0;
- 			rsp->schq[lvl] = 0;
--			return;
-+			return 0;
- 		}
- 
- 		if (rsp->schq_contig[lvl]) {
-@@ -2283,7 +2388,7 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
- 			set_bit(schq, txsch->schq.bmap);
- 			rsp->schq_list[lvl][0] = schq;
- 		}
--		return;
-+		return 0;
- 	}
- 
- 	/* Allocate contiguous queue indices requesty first */
-@@ -2314,6 +2419,8 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
- 		/* Update how many were allocated */
- 		rsp->schq[lvl] = idx;
- 	}
++	if (!sw_nb_is_valid_dev(fib_dev))
++		return NOTIFY_DONE;
 +
-+	return 0;
- }
- 
- int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
-@@ -2338,6 +2445,10 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
- 	if (!nix_hw)
- 		return NIX_AF_ERR_INVALID_NIXBLK;
- 
-+	if ((req->flags & NIX_TXSCH_ALLOC_FLAG_PAN) &&
-+	    !nix_txsch_pan_allowed(rvu, pcifunc))
-+		return NIX_AF_ERR_TLX_ALLOC_FAIL;
++	if (f6i->fib6_type != RTN_UNICAST)
++		return NOTIFY_DONE;
 +
- 	mutex_lock(&rvu->rsrc_lock);
- 
- 	/* Check if request is valid as per HW capabilities
-@@ -2360,11 +2471,14 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
- 		rsp->schq[lvl] = req->schq[lvl];
- 		rsp->schq_contig[lvl] = req->schq_contig[lvl];
- 
--		link = nix_get_tx_link(rvu, pcifunc);
-+		if (req->flags & NIX_TXSCH_ALLOC_FLAG_PAN)
-+			link = nix_get_pan_tx_link(rvu);
-+		else
-+			link = nix_get_tx_link(rvu, pcifunc);
- 
- 		if (lvl >= hw->cap.nix_tx_aggr_lvl) {
- 			start = link;
--			end = link;
-+			end = link + !!(req->flags & NIX_TXSCH_ALLOC_FLAG_PAN);
- 		} else if (hw->cap.nix_fixed_txschq_mapping) {
- 			nix_get_txschq_range(rvu, pcifunc, link, &start, &end);
- 		} else {
-@@ -2372,10 +2486,11 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
- 			end = txsch->schq.max;
- 		}
- 
--		nix_txsch_alloc(rvu, txsch, rsp, lvl, start, end);
-+		if (nix_txsch_alloc(rvu, txsch, rsp, lvl, start, end))
-+			goto err;
- 
- 		/* Reset queue config */
--		for (idx = 0; idx < req->schq_contig[lvl]; idx++) {
-+		for (idx = 0; idx < rsp->schq_contig[lvl]; idx++) {
- 			schq = rsp->schq_contig_list[lvl][idx];
- 			if (!(TXSCH_MAP_FLAGS(pfvf_map[schq]) &
- 			    NIX_TXSCHQ_CFG_DONE))
-@@ -2385,7 +2500,7 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
- 			nix_reset_tx_schedule(rvu, blkaddr, lvl, schq);
- 		}
- 
--		for (idx = 0; idx < req->schq[lvl]; idx++) {
-+		for (idx = 0; idx < rsp->schq[lvl]; idx++) {
- 			schq = rsp->schq_list[lvl][idx];
- 			if (!(TXSCH_MAP_FLAGS(pfvf_map[schq]) &
- 			    NIX_TXSCHQ_CFG_DONE))
-@@ -2654,6 +2769,20 @@ static int nix_txschq_free(struct rvu *rvu, u16 pcifunc)
- 	}
- 	nix_clear_tx_xoff(rvu, blkaddr, NIX_TXSCH_LVL_TL1,
- 			  nix_get_tx_link(rvu, pcifunc));
-+	/* TL1 is at nix_tx_aggr_lvl so the loop above skips it; also clear
-+	 * PAN TL1 XOFF on switch-owned links before flushing SMQs.
++	key = &f6i->fib6_dst;
++	/* TODO: vlan and bridge support */
++	if (ipv6_addr_type(&key->addr) & IPV6_ADDR_LINKLOCAL)
++		return NOTIFY_DONE;
++
++	netdev_dbg(fib_dev, "fib6dst rt6key.addr=%pI6c len=%d\n", &key->addr,
++		   key->plen);
++
++	netdev_dbg(fib_dev, "fib6flags=%#x proto=%u type=%u\n",
++		   f6i->fib6_flags, f6i->fib6_protocol, f6i->fib6_type);
++
++	nh6 = f6i->nh ? nexthop_fib6_nh(f6i->nh) : f6i->fib6_nh;
++	if (nh6->fib_nh_gw_family != AF_INET6)
++		return NOTIFY_DONE;
++
++	netdev_dbg(nh6->fib_nh_dev ? nh6->fib_nh_dev : fib_dev,
++		   "nh family=%u dev=%s  gw=%pI6c gwfamily=%u\n",
++		   nh6->fib_nh_family,
++		   nh6->fib_nh_dev ? nh6->fib_nh_dev->name : "No dev",
++		   &nh6->fib_nh_gw6, nh6->fib_nh_gw_family);
++
++	pf_dev = sw_nb_resolve_pf_dev(fib_dev);
++	if (!pf_dev)
++		return NOTIFY_DONE;
++
++	pf = netdev_priv(pf_dev);
++
++	entry = kcalloc(1, sizeof(*entry), GFP_ATOMIC);
++	if (!entry)
++		return NOTIFY_DONE;
++
++	entry->cmd = sw_nb_fib_event_to_otx2_event(event, fib_dev);
++	entry->ipv6 = 1;
++	entry->port_id = pf->pcifunc;
++	memcpy(entry->dst6, &key->addr, sizeof(entry->dst6));
++	entry->dst6_plen = key->plen;
++
++	memcpy(entry->gw6, &nh6->fib_nh_gw6, sizeof(nh6->fib_nh_gw6));
++	entry->gw_valid = !!(ipv6_addr_type(&nh6->fib_nh_gw6) & IPV6_ADDR_UNICAST);
++
++	/* TODO: No replay mechanism yet when the gateway neighbor is unresolved.
++	 * If ip_neigh_gw6() returns NULL the route is skipped here; add replay
++	 * from the neighbor update handler once nexthop resolution completes.
 +	 */
-+	if (nix_txsch_pan_allowed(rvu, pcifunc)) {
-+		txsch = &nix_hw->txsch[NIX_TXSCH_LVL_TL1];
-+
-+		for (schq = nix_get_pan_tx_link(rvu);
-+		     schq < txsch->schq.max &&
-+		     nix_txsch_is_pan_schq(rvu, schq); schq++) {
-+			if (TXSCH_MAP_FUNC(txsch->pfvf_map[schq]) != pcifunc)
-+				continue;
-+			nix_clear_tx_xoff(rvu, blkaddr, NIX_TXSCH_LVL_TL1, schq);
-+		}
-+	}
- 
- 	/* On PF cleanup, clear cfg done flag as
- 	 * PF would have changed default config.
-@@ -2681,11 +2810,11 @@ static int nix_txschq_free(struct rvu *rvu, u16 pcifunc)
- 		 /* TLs above aggregation level are shared across all PF
- 		  * and it's VFs, hence skip freeing them.
- 		  */
--		if (lvl >= hw->cap.nix_tx_aggr_lvl)
--			continue;
--
- 		txsch = &nix_hw->txsch[lvl];
- 		for (schq = 0; schq < txsch->schq.max; schq++) {
-+			if (lvl >= hw->cap.nix_tx_aggr_lvl &&
-+			    !nix_txsch_is_pan_schq(rvu, schq))
-+				continue;
- 			if (TXSCH_MAP_FUNC(txsch->pfvf_map[schq]) != pcifunc)
- 				continue;
- 			nix_reset_tx_schedule(rvu, blkaddr, lvl, schq);
-@@ -2729,7 +2858,16 @@ static int nix_txschq_free_one(struct rvu *rvu,
- 	schq = req->schq;
- 	txsch = &nix_hw->txsch[lvl];
- 
--	if (lvl >= hw->cap.nix_tx_aggr_lvl || schq >= txsch->schq.max)
-+	if (req->flags & TXSCHQ_FREE_PAN_TL1) {
-+		if (!nix_txsch_pan_allowed(rvu, pcifunc))
-+			return NIX_AF_ERR_TLX_INVALID;
-+		if (!nix_txsch_is_pan_schq(rvu, schq))
-+			return NIX_AF_ERR_TLX_INVALID;
-+	} else if (lvl >= hw->cap.nix_tx_aggr_lvl) {
-+		return 0;
++	rcu_read_lock();
++	neigh = ip_neigh_gw6(fib_dev, &nh6->fib_nh_gw6);
++	if (!neigh || IS_ERR(neigh)) {
++		rcu_read_unlock();
++		kfree(entry);
++		return NOTIFY_DONE;
 +	}
 +
-+	if (schq >= txsch->schq.max)
- 		return 0;
- 
- 	pfvf_map = txsch->pfvf_map;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-index e36c68ee5d84..40d49a323814 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-@@ -1833,9 +1833,23 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
- 		target = req->hdr.pcifunc;
- 	}
- 
--	/* ignore chan_mask in case pf func is not AF, revisit later */
--	if (!is_pffunc_af(req->hdr.pcifunc))
--		req->chan_mask = rvu_get_cpt_chan_mask(rvu);
-+	/* Non-AF callers get the CPT default chan_mask unless the authorized
-+	 * switchdev PF sets set_chanmask to preserve a caller-supplied mask.
-+	 * VFs and other PFs must not use set_chanmask; that would bypass
-+	 * channel isolation.
-+	 */
-+	if (!is_pffunc_af(req->hdr.pcifunc)) {
-+		if (req->set_chanmask &&
-+		    !rvu_is_switch_pcifunc(rvu, req->hdr.pcifunc)) {
-+			rvu_npc_free_entry_for_flow_install(rvu,
-+							    req->hdr.pcifunc,
-+							    allocated,
-+							    req->entry);
-+			return NPC_FLOW_VF_PERM_DENIED;
-+		}
-+		if (!req->set_chanmask)
-+			req->chan_mask = rvu_get_cpt_chan_mask(rvu);
++	neigh_ha_snapshot(entry->mac, neigh, fib_dev);
++	if (is_valid_ether_addr(entry->mac)) {
++		entry->mac_valid = 1;
++		netdev_dbg(fib_dev, "fib found MAC=%pM\n", entry->mac);
 +	}
- 
- 	err = npc_check_unsupported_flows(rvu, req->features, req->intf);
- 	if (err) {
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
-index acf259d72008..73a98b94426b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
-@@ -78,6 +78,8 @@ struct otx2_rcv_queue {
- struct sg_list {
- 	u16	num_segs;
- 	u16	flags;
-+	u16	cq_idx;
-+	u16	len;
- 	u64	skb;
- 	u64	size[OTX2_MAX_FRAGS_IN_SQE];
- 	u64	dma_addr[OTX2_MAX_FRAGS_IN_SQE];
++
++	rcu_read_unlock();
++	kfree(entry);
++
++	return NOTIFY_DONE;
++}
++
++int sw_nb_net_v6_neigh_update(struct notifier_block *nb,
++			      unsigned long event, void *ptr)
++{
++	struct net_device *pf_dev;
++	struct neighbour *n = ptr;
++	struct fib_entry *entry;
++	struct otx2_nic *pf;
++
++	if (n->tbl != &nd_tbl)
++		return NOTIFY_DONE;
++
++	if (ipv6_addr_type((struct in6_addr *)n->primary_key) & IPV6_ADDR_LINKLOCAL)
++		return NOTIFY_DONE;
++
++	entry = kcalloc(1, sizeof(*entry), GFP_ATOMIC);
++	if (!entry)
++		return NOTIFY_DONE;
++
++	pf_dev = sw_nb_resolve_pf_dev(n->dev);
++	if (!pf_dev) {
++		kfree(entry);
++		return NOTIFY_DONE;
++	}
++
++	pf = netdev_priv(pf_dev);
++
++	entry->cmd = OTX2_NEIGH_UPDATE;
++	entry->dst6_plen = n->tbl->key_len * 8;
++	memcpy(entry->dst6, (struct in6_addr *)n->primary_key,
++	       sizeof(entry->dst6));
++	entry->ipv6 = 1;
++	entry->nud_state = n->nud_state;
++	neigh_ha_snapshot(entry->mac, n, n->dev);
++	entry->mac_valid = 1;
++	entry->port_id = pf->pcifunc;
++
++	netdev_dbg(n->dev, "v6 neigh update %pI6c mac=%pM plen=%u\n",
++		   (struct in6_addr *)n->primary_key, entry->mac,
++		   n->tbl->key_len * 8);
++	kfree(entry);
++
++	return NOTIFY_DONE;
++}
++
++int sw_nb_v6_inetaddr_event(struct notifier_block *nb,
++			    unsigned long event, void *ptr)
++{
++	struct inet6_ifaddr *ifa6 = (struct inet6_ifaddr *)ptr;
++	struct net_device *dev = ifa6->idev->dev;
++	struct netdev_hw_addr *dev_addr;
++	struct net_device *pf_dev;
++	struct fib_entry *entry;
++	struct otx2_nic *pf;
++
++	if (event != NETDEV_CHANGE &&
++	    event != NETDEV_UP &&
++	    event != NETDEV_DOWN) {
++		return NOTIFY_DONE;
++	}
++
++	if (dev->type != ARPHRD_ETHER)
++		return NOTIFY_DONE;
++
++	if (!sw_nb_is_valid_dev(dev))
++		return NOTIFY_DONE;
++
++	if (ipv6_addr_type(&ifa6->addr) & IPV6_ADDR_LINKLOCAL)
++		return NOTIFY_DONE;
++
++	entry = kcalloc(1, sizeof(*entry), GFP_ATOMIC);
++	if (!entry)
++		return NOTIFY_DONE;
++
++	pf_dev = sw_nb_resolve_pf_dev(dev);
++	if (!pf_dev) {
++		kfree(entry);
++		return NOTIFY_DONE;
++	}
++
++	pf = netdev_priv(pf_dev);
++
++	entry->cmd = sw_nb_inetaddr_event_to_otx2_event(event, dev);
++	memcpy(entry->dst6, &ifa6->addr, sizeof(entry->dst6));
++	entry->dst6_plen = ifa6->prefix_len;
++	entry->mac_valid = 1;
++	entry->host = 1;
++	entry->ipv6 = 1;
++	entry->port_id = pf->pcifunc;
++
++	for_each_dev_addr(dev, dev_addr) {
++		ether_addr_copy(entry->mac, dev_addr->addr);
++		entry->mac_valid = 1;
++		break;
++	}
++
++	netdev_dbg(dev, "inetaddr addr=%pI6c len=%u %pM\n",
++		   &ifa6->addr, ifa6->prefix_len, entry->mac);
++	kfree(entry);
++
++	return NOTIFY_DONE;
++}
++#endif
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v6.h b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v6.h
+new file mode 100644
+index 000000000000..f73efc98c311
+--- /dev/null
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v6.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Marvell switch driver
++ *
++ * Copyright (C) 2026 Marvell.
++ *
++ */
++#ifndef SW_NB_V6_H_
++#define SW_NB_V6_H_
++
++int sw_nb_v6_fib_event(struct notifier_block *nb,
++		       unsigned long event, void *ptr);
++
++int sw_nb_net_v6_neigh_update(struct notifier_block *nb,
++			      unsigned long event, void *ptr);
++
++int sw_nb_v6_inetaddr_event(struct notifier_block *nb,
++			    unsigned long event, void *ptr);
++
++int sw_nb_v6_netdev_event(struct notifier_block *unused,
++			  unsigned long event, void *ptr);
++#endif // SW_NB_V6_H__
 -- 
 2.43.0
 
