@@ -1,157 +1,100 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BE7455183;
-	Tue,  4 Aug 2026 15:19:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDB0344DBB
+	for <netdev@vger.kernel.org>; Tue,  4 Aug 2026 15:20:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785856787; cv=none; b=QelHFBOPKO61HjCBCU/d+UnEJe4Z9Zh81wxr9+4RO33w6CvjrEkZkD/MUVnl6NAzlPsZgICXadJYhvkvK+bR4g6VV7qxaZZixlVYfBXKH3Fo+BtJRUWFGx2UjN7f/1bqoWfdXxRU1ZM5Q9u3B+2qNuQuOln25+6kjl8Rzce9IdI=
+	t=1785856852; cv=none; b=ky3OR/9TGWsJabJsd/rjzZ8dwQAP2Qpj7P1JKLT+R1dbxgm6rh1G1T9EIfLu3rCd7d5Mdb3SRqY7e9P9ChBZmVU4j2Ls57d4ER2SVaFemf4VUG38x2yXu/7lZcSy9B9E89wuwW3yFQvpQtRmq1TxrREw89L+9dBFOjhPkCZN/6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785856787; c=relaxed/simple;
-	bh=jHltiOiAvr9ZQvuIheOP1QCkJE8KiD1x6LCMspZLq4Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N8qW9/TW1jrlc0WIcJZl3vYQ5wnwA8WRy82LmBGIWUKdXk0wMhfrPOR4jvHFo348q5Unw3zuQOzpVBcdY11WlbGJA5uH6nw0cnX9IKjCn+bL96yr2GRvil36KirEoBhYRz1BHkdyrR+MtzUSbqOIQsIg+OACMiV8abOdffCHlKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jSp+Y/w9; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785856852; c=relaxed/simple;
+	bh=S+T5o2sQd27ef7/PPd4xw6GTuaSFG2Dg+orl5Xtrfp4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cxqU7TSE2/KbCdH0nz2O2ZQ8gxMIpR/651LxSQTZgEQd+Y8HTeCT20SKaS1Js5Nm921ptCpAYIcMJL6b+lfzZeatu5nHeGyi3e9npqzsiI6vbHFSJq89CSkuvAHdG5KwYGVDIFOZUW2bWsNouu6bRbgOKpShFRS0aNAFeafqp9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DUbMSN9v; arc=none smtp.client-ip=209.85.222.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jSp+Y/w9"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 2888F1A140C;
-	Tue,  4 Aug 2026 15:19:44 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E140F6029E;
-	Tue,  4 Aug 2026 15:19:43 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DD35E11C32FF4;
-	Tue,  4 Aug 2026 17:19:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785856778; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=nYUWloGlZLgoX2T56mF6PXpKO2BUjGPorcVZHz9FUV4=;
-	b=jSp+Y/w99NZGav9vFYshkbjvOhrHnWNoYuGaVJCsq62DXCVwGe5q+Dd70RRn0puKVDVXaP
-	FVMe1YqNPgsLgNBQqT/VRZMleJIBnQXkhbXWKqP5DJk57e0ivYru3Vy9G1CZ2iz8yv/EFQ
-	olXx7EsFayVBnNIh1nisaTixWWVl0y1y6hKFdGCeetDGtVBkUbjdZwN0pdzd9g/l051UqR
-	SCHalEpPpgnsIcTLUlmciNq3b/Gsd34SWGO1T9dH/CCKouytz7upQP7VdBisPi7FlPXUI/
-	jZM0pYzAkSfTmS6Jb7uNnCcdU2IQ6POya3Van9QF8QqOJpjH7DsyjN0gCxlAfw==
-Message-ID: <9d201ac0-a4e3-4b74-a6ae-72c3b33bd519@bootlin.com>
-Date: Tue, 4 Aug 2026 17:19:25 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DUbMSN9v"
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-930f5da3467so447841785a.2
+        for <netdev@vger.kernel.org>; Tue, 04 Aug 2026 08:20:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785856849; x=1786461649; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hsrDM6cHFgDCcftCKwVBi09aO7huvb3tC/nRdMq9zCo=;
+        b=DUbMSN9vSxnarqPCxYyj5OA1OOdqaw7+gKTzfr584t/itsqp7cX8k6ibjrW8llqxYX
+         vQtRYXpp5X+HnAUlQQZYBIAmWuQLjBP1EmjP4HuUInZ/D8GLgcQScLW1Zi2fAgW2FkiG
+         AK33DOxHGuFTF428l+xktC2mEq5hTgv9sEclRonSE36WGyBqyO3+k975x+rcTGsvGPcs
+         p76J5FNOgg+7kI/HtrmKaeT2KLQGUpYckUi47Z3UzWwlhiJZDl4dyE7kWV0Fk/EoD0mT
+         1WGiK31i8/E53Oor/F0HWVHf1xSkyfz5jV//0+Umikq0eV1yMzKfO84BV3Epg+YCHt63
+         b1Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785856849; x=1786461649;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hsrDM6cHFgDCcftCKwVBi09aO7huvb3tC/nRdMq9zCo=;
+        b=mMANP3UBxO6Bhwp9E2a8QIvBSHwH7bnTxZHv1LXgiXW37d7u2e2iVQ8AfubMqm8A4N
+         mI+DHkrb1jZKQFlMUjisTrCKmHWi+dvadr4gWWv669NLgzZdwUjS7c64TlkGwlm6OU6S
+         P//OjXIPqTuYNs1QjrOj9Kie4bLWnf+AqwFXUKcDrD1ElHw5D0AdZPDnSnfjmSQjA78O
+         LH/5rxksjhZz1q6IybHxrXwmLpTC1AtXI/mpDCd+CfXajHkMteHOxPkxft7dVfNLXg3t
+         WVixDRygKurwCQ4Aau4UdEuFSOFCuleHAf/AXg5ZwRInM6kqLHCooiQx6qNljsLMoFAE
+         UyiA==
+X-Forwarded-Encrypted: i=1; AHgh+RrDEvUF5vVBAlk5xuiyFw8KbXgP/kRRMQgOxcOn1pq2CC6Pzz4mE68C7CTIdlx6dYdfN34GJOQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiqB1pJwdwAGqCTkkHRqcczuFvHTO7R1o3WNvWdMQcF6TOqVSQ
+	O0ARu0Te2lYax1TFM/I+BWsTkFB+xrNLtF2qF7U4KMGMjDsif5jl4/d/x5bBDNiC40HB4GGB1aj
+	StvazVQM0A9EkAg==
+X-Received: from qkg6.prod.google.com ([2002:a05:620a:9506:b0:92e:9011:92f])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:9142:b0:92e:e1d1:49dd with SMTP id af79cd13be357-934a078e741mr2185104585a.21.1785856849018;
+ Tue, 04 Aug 2026 08:20:49 -0700 (PDT)
+Date: Tue,  4 Aug 2026 15:20:48 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/21] net: phy: add X-Powers AC200/AC300 EPHY driver
-To: James Hilliard <james.hilliard1@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Andre Przywara
- <andre.przywara@arm.com>, Richard Genoud <richard.genoud@bootlin.com>,
- Maxime Ripard <mripard@kernel.org>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Jose Abreu <joabreu@synopsys.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, Saravana Kannan <saravanak@kernel.org>,
- Lee Jones <lee@kernel.org>, Heiko Stuebner <heiko@sntech.de>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- mfd@lists.linux.dev, linux-rockchip@lists.infradead.org
-References: <20260802-submit-acx00-of-dynamic-v1-v1-0-0a53cd9e21cc@gmail.com>
- <20260802-submit-acx00-of-dynamic-v1-v1-16-0a53cd9e21cc@gmail.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260802-submit-acx00-of-dynamic-v1-v1-16-0a53cd9e21cc@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
+Message-ID: <20260804152048.2134341-1-edumazet@google.com>
+Subject: [PATCH net] net: remove WARN_ON_ONCE() from sk_mc_loop()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+22c3218a6fa219e47321@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi James,
+sk_mc_loop() can be called for sockets that are neither AF_INET
+nor AF_INET6 (e.g. AF_PACKET sockets when sending packets via raw/packet
+socket over virtual devices such as VRF or ipvlan).
 
-On 8/3/26 07:14, James Hilliard wrote:
-> AC200 and AC300 contain compatible Fast Ethernet link-PHY implementations
-> which report the same ID, but their identification registers are not
-> accessible until the companion-specific control interface completes
-> its power-up sequence. Match the ID supplied by firmware and require
-> an X-Powers control reference because the Rockchip RK630 PHY reports
-> the same ID.
-> 
-> On fixed hardware, reference one already enabled control device. A fixed
-> AC300 system may optionally read the configuration field for calibration-
-> range tuning; its absence selects the normal range. On systems which may
-> contain either companion, require a logical two-bit NVMEM field to select
-> the control interface and the AC300 calibration range. Enable a selected
-> fail-needs-probe node when CONFIG_OF_DYNAMIC is available; otherwise the
-> same topology works when both candidate providers are already enabled.
-> Validate that each phandle references the expected control-device type and
-> restore the selector's status changeset if dynamic device creation fails.
-> 
-> Keep a device link to the selected provider and defer until its driver
-> binds. Verify that the MAC interface agrees with the provider's phy-mode
-> before resetting the hardware. Power the control block before each PHY
-> reset, shut it down during PHY suspend, and restore the vendor
-> configuration after resume. If control power-off fails during suspend,
-> attempt to power the PHY back on and restore its link configuration before
-> returning the error. Pass the link address to the AC200 provider for
-> EPHY_CTL.PHY_ADDR programming; the AC300 provider instead validates its
-> package-strapped address relationship.
-> 
-> Apply the common vendor analog initialization and SID-derived tuning while
-> preserving unrelated register fields. Support a board-selected xMII
-> receive-clock inversion and report and configure forced or automatic
-> MDI/MDI-X state.
-> 
-> Expose UAPS through the ethtool energy-detect power-down tunable as its
-> no-transmit mode. Accumulate the hardware receive-byte, receive-packet and
-> receive-CRC-error counters across PHY resets, expose all three as driver
-> statistics and map CRC errors to the standardized PHY receive-error
-> counter. Treat counter snapshots as best-effort telemetry so a read failure
-> cannot prevent PHY recovery.
-> 
-> Start both standard EEE advertisement and the PHY-autonomous Intelligent
-> EEE transmitter disabled, matching the vendor configuration. Preserve the
-> supported modes so ethtool can enable and configure both at runtime. The
-> PHY has no documented programmable LPI timer, so reject a nonzero timer
-> when enabling Tx LPI while accepting any timer value when disabling it.
-> Clear BMCR_PDOWN before soft reset because ACx00 can acknowledge reset
-> while powered down without restarting its link logic.
-> 
-> Use the shared PHY interrupt for link changes when firmware provides one;
-> otherwise retain the normal phylib polling fallback. On wakeup-source
-> systems with a routed interrupt, expose magic-packet and link-change
-> Wake-on-LAN, program the detector MAC address for magic wake, and arm the
-> nested IRQ as a wake source. Keep the PHY powered while either PHY or MAC
-> Wake-on-LAN is active. During suspend, leave only requested PHY wake events
-> unmasked, then restore normal link monitoring on resume. Do not advertise
-> either wake mode in polling mode because the CPU cannot poll while
-> suspended.
-> 
-> Register standard PHY LEDs for the described package outputs and expose
-> their fixed link/activity, 100 Mbps speed and duplex rules to the netdev
-> trigger. Use the vendor fallback of all three outputs active-low when no
-> LED topology is provided; otherwise apply the described output set and
-> shared polarity. Quiesce the provider if PHY probing or removal tears down
-> the link device.
+In such cases, sk_family is not AF_INET/AF_INET6 and sk_mc_loop() falls
+through the switch statement and triggers WARN_ON_ONCE(1).
 
-That's a very verbose commit message, which gives it an 'LLM generated' vibe.
+Non-INET sockets do not support IP_MULTICAST_LOOP or IPV6_MULTICAST_LOOP
+options, so loopback should default to true without generating a warning.
 
-Can you submit that driver separately and split down into multiple pieces ?
+Fixes: f60e5990d9c1 ("ipv6: protect skb->sk accesses from recursive dereference inside the stack")
+Reported-by: syzbot+22c3218a6fa219e47321@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6a72024c.13623e66.bdc14.0019.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/core/sock.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-1457 lines is quite big for a PHY driver, especially one that supports
-just a pair of PHYs. That makes it hard to review.
-
-Can you plit it into more logical chunks, one bringing basic features,
-one for LEDs, one for WoL, one for stats, etc.
-
-Thanks,
-
-Maxime
-
+diff --git a/net/core/sock.c b/net/core/sock.c
+index ffa73594c13c7557d011730676edc887ec1de5cb..1ad41904db25b48a914640f538760686f40eb100 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -779,7 +779,6 @@ bool sk_mc_loop(const struct sock *sk)
+ 		return inet6_test_bit(MC6_LOOP, sk);
+ #endif
+ 	}
+-	WARN_ON_ONCE(1);
+ 	return true;
+ }
+ EXPORT_SYMBOL(sk_mc_loop);
+-- 
+2.55.0.571.g244d577d93-goog
 
