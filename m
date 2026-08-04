@@ -1,31 +1,31 @@
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2759D3DAAAB;
-	Tue,  4 Aug 2026 12:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64813DA5BA;
+	Tue,  4 Aug 2026 12:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785847617; cv=none; b=jxE31Bpc1eBIQl/rviNXmF9Ncd33wpDXFWxN82b6iRiPL35blDWuMFmDGA9DypAiyd+djmqYS9dcHFAqSLbhV8lz+nNuMfeU5g8RjdMAZePXwNT2IegQIrQpvg2Ohf642hayJ+9m1y6Ifocb4RbkjBc2EBWTzzQWej6swAV/XEo=
+	t=1785847617; cv=none; b=QQkxvF7hhvZKdSE0flNrLjraCAckMVdEwNb3VyLX1vdiaiT1LeASjqE74SW5wSx0vFpjhGJ/LaaOUyQ+b8qak+SpdWAy/f0S3b59dlbYl1bLZT198xzWHtimFKhpXwuG83ppm2Dthk/PZKjZewASQ9zDZ7n0rz6FjJnSTEe9u3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785847617; c=relaxed/simple;
-	bh=H4LHYlQc45mhuD0f86b1o6mPUaOz+kZIrnMaufA3GyE=;
+	bh=Yka8y4MuABKUUA4nM4OJm/mqnlrKhA4Bjd70mO4jVXU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hcY+qPPygRQ85VVN8xzB4KMS2RksMTLJ4t6/KNBimJir9HEzx4lB/ALH3M++KhyIc7ToNfU9VLE5p8irYtziefpLgmhc4SXUqowo7CDYPWT6EkGvKpBqvnyorpX3rzkuudsbNbtdwTWqU4mstNWyaaCVW8VyY7qIt+sW1czdPVE=
+	 In-Reply-To:To:Cc; b=rLrlOvUpsSqsO5GXS458U6Rvvk3RdEtS+OvVhE1xYwJOg8zzO1iOirT/k3dyIBBG7or2nHXsriOpN7gXKc5LSi8FcVJ4Ix68sxWF9bTr1ghTxm8VrCtj3LiJLOR1ETdcUhMQOLbMwSf7X78C8p0SjMFLQrHDrU2c3sVd4FAnxak=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 885C2200F83;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1A8992004B6;
 	Tue, 04 Aug 2026 14:46:46 +0200 (CEST)
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1wrEXe-002s0o-1I;
+	id 1wrEXe-002s0o-00;
 	Tue, 04 Aug 2026 14:46:46 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 04 Aug 2026 14:46:34 +0200
-Subject: [PATCH 2/2] net: phy: dp83867: support setting output-impedance
+Date: Tue, 04 Aug 2026 14:46:33 +0200
+Subject: [PATCH 1/2] dt-bindings: dp83867: add binding for output-impedance
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -34,7 +34,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260804-v7-2-topic-dp83867-v1-2-1ca79eb54eef@pengutronix.de>
+Message-Id: <20260804-v7-2-topic-dp83867-v1-1-1ca79eb54eef@pengutronix.de>
 References: <20260804-v7-2-topic-dp83867-v1-0-1ca79eb54eef@pengutronix.de>
 In-Reply-To: <20260804-v7-2-topic-dp83867-v1-0-1ca79eb54eef@pengutronix.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -47,58 +47,62 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1872;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2112;
  i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=H4LHYlQc45mhuD0f86b1o6mPUaOz+kZIrnMaufA3GyE=;
- b=owGbwMvMwCUmtVehiCsuTInxtFoSQ1bhfdPV4qvunTf1z77LpZ7zYWGf/t8nSxRSmisXLp2o8
- nBWo/jdjlIWBjEuBlkxRRaVhRV8oh4fPCOniXDBzGFlAhnCwMUpABOZ8pWR4U3AMcN6v7lPilY/
- OiWVnBZzL936VNu32eX77puaF23894bhf3oax7I7lg6+Nv0eS5fP/e9R+MhVtn7R6101Cdy/12Z
- zsAAA
+ bh=Yka8y4MuABKUUA4nM4OJm/mqnlrKhA4Bjd70mO4jVXU=;
+ b=owGbwMvMwCUmtVehiCsuTInxtFoSQ1bhfZOZ7/9ea1dZKlX/4H3yjeVLrXTXxCu8zY73VNz0e
+ zmLQJhyRykLgxgXg6yYIovKwgo+UY8PnpHTRLhg5rAygQxh4OIUgInkyTL89+SNWuQ9iVPqYTHf
+ ofrJdQFHUzx2qDYeOFzOXxnZYdTVzsjwMexRi+sGLrec3L37edQSJsgps31ddk+j8Myn2vir+2r
+ 4AA==
 X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
  fpr=24A1780E1548F0495996140A1ABD20720A5E5622
 
-Currently the dp83867 supports setting the io impedance to minimum,
-maximum, default or a value from a nvmem cell. In situations where there
-is no backend for a nvmem cell, the value can not be set to anything but
-minimum, maximum or default.
+Currently, the output-impedance can only be set to default, minimum or
+maximum or via a nvmem cell.
+In cases where there is no backend for a nvmem cell, a value can not be
+set.
 
-Add support for the ti,output-impedance binding, allowing to specify the
-impedance via the devicetree. The existing boolean bindings for minimum
-and maximum take precedence over this new binding. The nvmem consumer
-still takes lowest precedence.
+Add a DT binding for specifying the output-impedance via a fixed value.
+The existing boolean values for minimum and maximum still take
+precendance over the new value.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/net/phy/dp83867.c | 13 ++++++++++---
+ Documentation/devicetree/bindings/net/ti,dp83867.yaml | 13 ++++++++++---
  1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
-index 88255e92b4cdb..e98c5d940410e 100644
---- a/drivers/net/phy/dp83867.c
-+++ b/drivers/net/phy/dp83867.c
-@@ -542,12 +542,19 @@ static int dp83867_of_init_io_impedance(struct phy_device *phydev)
- 						"failed to get nvmem cell io_impedance_ctrl\n");
+diff --git a/Documentation/devicetree/bindings/net/ti,dp83867.yaml b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+index 4bc1f98fd9fe5..f43b4e44ef7ab 100644
+--- a/Documentation/devicetree/bindings/net/ti,dp83867.yaml
++++ b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+@@ -41,6 +41,12 @@ properties:
+     items:
+       - const: io_impedance_ctrl
  
- 		/* If no nvmem cell, check for the boolean properties. */
--		if (of_property_read_bool(of_node, "ti,max-output-impedance"))
-+		if (of_property_read_bool(of_node, "ti,max-output-impedance")) {
- 			dp83867->io_impedance = DP83867_IO_MUX_CFG_IO_IMPEDANCE_MAX;
--		else if (of_property_read_bool(of_node, "ti,min-output-impedance"))
-+		} else if (of_property_read_bool(of_node, "ti,min-output-impedance")) {
- 			dp83867->io_impedance = DP83867_IO_MUX_CFG_IO_IMPEDANCE_MIN;
--		else
-+		} else if (of_property_read_u32(of_node, "ti,output-impedance", &val)) {
-+			if ((val & DP83867_IO_MUX_CFG_IO_IMPEDANCE_MASK) != val) {
-+				phydev_err(phydev, "'ti,output-impedance' contents out of range\n");
-+				return -ERANGE;
-+			}
-+			dp83867->io_impedance = val;
-+		} else {
- 			dp83867->io_impedance = -1; /* leave at default */
-+		}
++  ti,output-impedance:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      MAC Interface Impedance control to set the programmable output impedance
++      to a value between minimum (35 ohms) and maximum (70 ohms).
++
+   ti,min-output-impedance:
+     type: boolean
+     description: |
+@@ -53,10 +59,11 @@ properties:
+       MAC Interface Impedance control to set the programmable output impedance
+       to a maximum value (70 ohms).
+       Note: Specifying an io_impedance_ctrl nvmem cell or one of the
+-        ti,min-output-impedance, ti,max-output-impedance properties
+-        are mutually exclusive. If more than one is present, an nvmem
++        ti,min-output-impedance, ti,max-output-impedance or ti,output-impedance
++        properties are mutually exclusive. If more than one is present, an nvmem
+         cell takes precedence over ti,max-output-impedance, which in
+-        turn takes precedence over ti,min-output-impedance.
++        turn takes precedence over ti,min-output-impedance. Both take precedence
++        over ti,output-impedance.
  
- 		return 0;
- 	}
+   tx-fifo-depth:
+     $ref: /schemas/types.yaml#/definitions/uint32
 
 -- 
 2.54.0
